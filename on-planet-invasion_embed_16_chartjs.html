@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script src="gdpr/gdprscript.js?buildTime=1234"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secret Societies (1090-2025)</title>
+    
+    <style>
+        .embed-wrapper {
+            width: 1200px;
+            height: 800px;
+            overflow: auto;
+            border: 1px solid #2a2a2a;
+            background: #0a0a0a;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            color: #c4c4c4;
+            line-height: 1.6;
+        }
+        
+        .embed-wrapper * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        .embed-wrapper .container {
+            max-width: 2200px;
+            min-width: 1900px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+        
+        .embed-wrapper header {
+            text-align: center;
+            padding: 60px 20px;
+            background: #121212;
+            border-bottom: 1px solid #2a2a2a;
+            margin-bottom: 40px;
+        }
+        
+        .embed-wrapper h1 {
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            color: #ffffff;
+            font-weight: 200;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .embed-wrapper .subtitle {
+            font-size: 1em;
+            color: #808080;
+            margin-bottom: 10px;
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .embed-wrapper .section-title {
+            font-size: 1.4em;
+            margin: 50px 0 25px 0;
+            color: #ffffff;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 300;
+        }
+        
+        .embed-wrapper .zoom-hint {
+            text-align: center;
+            color: #606060;
+            font-size: 0.85em;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+        
+        .embed-wrapper #map {
+            height: 600px;
+            margin-bottom: 40px;
+            border: 1px solid #1a1a1a;
+            background: #0d1117;
+            position: relative;
+            overflow: hidden;
+            cursor: grab;
+        }
+        
+        .embed-wrapper #map:active {
+            cursor: grabbing;
+        }
+        
+        .embed-wrapper #mapSvg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .embed-wrapper .map-tooltip {
+            position: absolute;
+            background: #000000;
+            border: 2px solid #2a2a2a;
+            padding: 15px;
+            display: none;
+            z-index: 1000;
+            pointer-events: none;
+            color: #ffffff;
+            font-size: 0.9em;
+            max-width: 350px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        }
+        
+        .embed-wrapper .tooltip-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #ffffff;
+            border-bottom: 1px solid #2a2a2a;
+            padding-bottom: 5px;
+        }
+        
+        .embed-wrapper .tooltip-row {
+            margin: 4px 0;
+            display: flex;
+            align-items: baseline;
+        }
+        
+        .embed-wrapper .tooltip-label {
+            color: #808080;
+            min-width: 100px;
+            font-size: 0.85em;
+        }
+        
+        .embed-wrapper .tooltip-value {
+            color: #c4c4c4;
+            flex: 1;
+        }
+        
+        .embed-wrapper .status-active {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        
+        .embed-wrapper .status-defunct {
+            color: #F44336;
+            font-weight: bold;
+        }
+        
+        .embed-wrapper .evidence-confirmed {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        
+        .embed-wrapper .evidence-documented {
+            color: #2196F3;
+            font-weight: bold;
+        }
+        
+        .embed-wrapper .evidence-suspected {
+            color: #FFC107;
+            font-weight: bold;
+        }
+        
+        .embed-wrapper .evidence-contested {
+            color: #FF9800;
+            font-weight: bold;
+        }
+        
+        .embed-wrapper .tooltip-description {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #2a2a2a;
+        }
+        
+        .embed-wrapper .tooltip-figures {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #2a2a2a;
+            font-size: 0.85em;
+            line-height: 1.4;
+        }
+        
+        .embed-wrapper .chart-container {
+            background: #0a0a0a;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 1px solid #1a1a1a;
+        }
+        
+        .embed-wrapper .chart-box {
+            background: #0a0a0a;
+            padding: 40px;
+            border: 1px solid #1a1a1a;
+            margin-bottom: 40px;
+        }
+        
+        .embed-wrapper .chart-box h3 {
+            color: #ffffff;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 300;
+        }
+        
+        .embed-wrapper .org-list {
+            background: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            margin-bottom: 40px;
+        }
+        
+        .embed-wrapper .org-list-item {
+            padding: 20px 30px;
+            border-bottom: 1px solid #1a1a1a;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .embed-wrapper .org-list-item:last-child {
+            border-bottom: none;
+        }
+        
+        .embed-wrapper .org-list-item:hover {
+            background: #121212;
+            filter: brightness(1.2);
+        }
+        
+        .embed-wrapper .org-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .embed-wrapper .org-list-name {
+            font-size: 1.3em;
+            font-weight: 400;
+            color: #ffffff;
+        }
+        
+        .embed-wrapper .org-list-status {
+            font-weight: 400;
+            padding: 4px 10px;
+            border: 1px solid;
+            font-size: 0.85em;
+        }
+        
+        .embed-wrapper .status-active {
+            background: rgba(139, 195, 74, 0.15);
+            color: #8BC34A;
+            border-color: #8BC34A;
+        }
+        
+        .embed-wrapper .status-defunct {
+            background: rgba(244, 67, 54, 0.15);
+            color: #F44336;
+            border-color: #F44336;
+        }
+        
+        .embed-wrapper .org-list-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 12px;
+        }
+        
+        .embed-wrapper .org-list-detail {
+            font-size: 0.9em;
+            color: #808080;
+        }
+        
+        .embed-wrapper .org-list-detail strong {
+            color: #c4c4c4;
+        }
+        
+        .embed-wrapper .org-notable {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #1a1a1a;
+            font-size: 0.9em;
+            color: #808080;
+        }
+        
+        .embed-wrapper .org-notable strong {
+            color: #c4c4c4;
+        }
+        
+        .embed-wrapper footer {
+            text-align: center;
+            padding: 50px 20px;
+            color: #606060;
+            margin-top: 80px;
+            border-top: 1px solid #2a2a2a;
+        }
+        
+        .embed-wrapper footer p {
+            margin: 10px 0;
+            font-weight: 300;
+        }
+        
+        .embed-wrapper .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            overflow-y: auto;
+        }
+        
+        .embed-wrapper .modal-content {
+            background: #0a0a0a;
+            margin: 50px auto;
+            padding: 40px;
+            max-width: 1000px;
+            border: 1px solid #2a2a2a;
+        }
+        
+        .embed-wrapper .close {
+            color: #808080;
+            float: right;
+            font-size: 32px;
+            font-weight: 200;
+            cursor: pointer;
+            line-height: 1;
+        }
+        
+        .embed-wrapper .close:hover {
+            color: #ffffff;
+        }
+        
+        .embed-wrapper .modal h2 {
+            color: #ffffff;
+            margin-bottom: 10px;
+            font-size: 2em;
+            font-weight: 300;
+        }
+        
+        .embed-wrapper .modal h3 {
+            color: #ffffff;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-size: 1.2em;
+            font-weight: 300;
+        }
+        
+        .embed-wrapper .modal p {
+            margin: 10px 0;
+            line-height: 1.8;
+            color: #c4c4c4;
+            font-weight: 300;
+        }
+        
+        .embed-wrapper canvas {
+            max-width: 100%;
+            height: auto !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="embed-wrapper">
+        <div class="container">
+        <header>
+            <h1>International Military Secret Societies</h1>
+            <p class="subtitle">Global Networks & Cross-Border Coordination: 1099-2025 (926 Years)</p>
+            <p style="color: #606060; margin-top: 10px; font-weight: 300;">25 Organizations · Evidence-Based Analysis</p>
+        </header>
+
+        <h2 class="section-title">Geographic Distribution</h2>
+        <p class="zoom-hint">□️ Scroll to zoom · Click and drag to pan · Hover markers for details</p>
+        <div id="map">
+            <svg width="100%" height="100%" viewbox="0 0 1000 500" preserveaspectratio="xMidYMid meet">
+                <defs>
+                    <style>
+                        .country { fill: #21262d; stroke: #30363d; stroke-width: 0.5; }
+                        .country:hover { fill: #2d333b; }
+                        .ocean { fill: #161b22; }
+                    </style>
+                </defs>
+                
+                <g id="mapContent">
+                <!-- Ocean background -->
+                <rect width="1000" height="500" class="ocean"/>
+                
+                <!-- NORTH AMERICA -->
+                <!-- Canada -->
+                <path class="country" d="M 50,60 L 100,50 L 150,55 L 200,65 L 240,80 L 260,100 L 270,120 L 260,140 L 240,155 L 220,160 L 200,155 L 180,145 L 160,135 L 140,130 L 120,125 L 100,115 L 80,100 L 60,80 Z"/>
+                <!-- USA -->
+                <path class="country" d="M 60,165 L 120,155 L 180,160 L 220,170 L 250,185 L 260,200 L 255,220 L 240,235 L 220,240 L 200,235 L 180,230 L 160,225 L 140,220 L 120,210 L 100,195 L 80,180 Z"/>
+                <!-- Mexico -->
+                <path class="country" d="M 140,245 L 180,250 L 210,260 L 220,275 L 210,285 L 190,280 L 170,270 L 150,260 Z"/>
+                
+                <!-- SOUTH AMERICA -->
+                <!-- Brazil -->
+                <path class="country" d="M 220,305 L 260,315 L 280,335 L 290,360 L 285,385 L 270,400 L 250,405 L 230,395 L 220,375 L 215,350 L 218,325 Z"/>
+                <!-- Argentina -->
+                <path class="country" d="M 230,410 L 250,415 L 260,435 L 255,455 L 240,460 L 225,450 L 220,430 Z"/>
+                <!-- Other SA countries -->
+                <path class="country" d="M 200,295 L 220,300 L 230,315 L 220,330 L 205,325 L 195,310 Z"/>
+                
+                <!-- EUROPE -->
+                <!-- UK -->
+                <path class="country" d="M 455,125 L 475,120 L 485,130 L 480,145 L 465,150 L 455,140 Z"/>
+                <!-- France -->
+                <path class="country" d="M 475,155 L 495,150 L 510,160 L 505,180 L 490,185 L 475,175 Z"/>
+                <!-- Germany -->
+                <path class="country" d="M 510,135 L 530,130 L 545,140 L 540,160 L 525,165 L 510,155 Z"/>
+                <!-- Spain -->
+                <path class="country" d="M 460,180 L 485,175 L 500,185 L 495,200 L 475,205 L 460,195 Z"/>
+                <!-- Italy -->
+                <path class="country" d="M 520,180 L 535,175 L 545,190 L 540,210 L 530,220 L 520,210 L 518,195 Z"/>
+                <!-- Scandinavia -->
+                <path class="country" d="M 520,80 L 545,70 L 565,80 L 570,100 L 560,115 L 540,120 L 525,110 L 518,95 Z"/>
+                <!-- Eastern Europe -->
+                <path class="country" d="M 550,130 L 580,125 L 600,135 L 605,155 L 595,170 L 575,175 L 555,165 L 548,150 Z"/>
+                
+                <!-- AFRICA -->
+                <!-- North Africa -->
+                <path class="country" d="M 470,215 L 520,210 L 560,220 L 580,235 L 575,255 L 550,260 L 520,255 L 490,245 L 470,235 Z"/>
+                <!-- West Africa -->
+                <path class="country" d="M 450,260 L 490,265 L 510,280 L 505,300 L 480,305 L 460,295 L 450,280 Z"/>
+                <!-- Central Africa -->
+                <path class="country" d="M 510,285 L 545,290 L 565,310 L 560,330 L 540,335 L 520,325 L 512,310 Z"/>
+                <!-- East Africa -->
+                <path class="country" d="M 570,240 L 595,245 L 610,265 L 605,290 L 590,300 L 575,290 L 570,270 Z"/>
+                <!-- Southern Africa -->
+                <path class="country" d="M 520,340 L 545,345 L 560,365 L 555,385 L 540,395 L 520,390 L 510,370 L 512,355 Z"/>
+                
+                <!-- MIDDLE EAST -->
+                <!-- Turkey -->
+                <path class="country" d="M 580,175 L 610,170 L 630,180 L 625,195 L 605,200 L 585,190 Z"/>
+                <!-- Iran -->
+                <path class="country" d="M 630,185 L 665,180 L 685,195 L 680,215 L 660,220 L 640,210 L 632,200 Z"/>
+                <!-- Saudi Arabia -->
+                <path class="country" d="M 610,205 L 640,215 L 655,235 L 645,255 L 620,250 L 608,235 Z"/>
+                <!-- Iraq -->
+                <path class="country" d="M 620,195 L 640,190 L 655,200 L 650,215 L 635,218 L 622,210 Z"/>
+                
+                <!-- ASIA -->
+                <!-- Russia -->
+                <path class="country" d="M 610,60 L 680,50 L 750,55 L 820,65 L 870,80 L 900,100 L 920,120 L 910,145 L 880,155 L 840,150 L 790,140 L 740,135 L 690,130 L 650,125 L 620,115 L 605,90 Z"/>
+                <!-- China -->
+                <path class="country" d="M 720,160 L 780,155 L 830,165 L 860,185 L 855,215 L 830,230 L 790,235 L 750,225 L 720,210 L 715,185 Z"/>
+                <!-- India -->
+                <path class="country" d="M 690,220 L 720,215 L 745,230 L 750,255 L 735,275 L 710,280 L 690,265 L 688,245 Z"/>
+                <!-- Japan -->
+                <path class="country" d="M 880,185 L 900,180 L 910,195 L 905,215 L 890,220 L 878,210 Z"/>
+                <!-- Southeast Asia -->
+                <path class="country" d="M 760,240 L 790,245 L 810,265 L 805,285 L 785,290 L 765,280 L 758,265 Z"/>
+                
+                <!-- AUSTRALIA -->
+                <path class="country" d="M 800,340 L 850,335 L 890,350 L 900,375 L 885,400 L 850,410 L 810,405 L 785,385 L 790,360 Z"/>
+                
+                <g id="markers"></g>
+                </g>
+            </svg>
+            <div id="mapTooltip" class="map-tooltip"></div>
+        </div>
+
+        <div class="chart-box">
+            <h3>Power Index Over Time</h3>
+            <p class="zoom-hint">□️ Scroll to zoom · Click and drag to pan · Double-click to reset</p>
+            <canvas id="powerTimelineChart" height="400"></canvas>
+        </div>
+
+        <div class="chart-box">
+            <h3>Membership Numbers Over Time</h3>
+            <p class="zoom-hint">□️ Scroll to zoom · Click and drag to pan · Double-click to reset</p>
+            <canvas id="membershipTimelineChart" height="400"></canvas>
+        </div>
+
+        <div class="chart-box">
+            <h3>Secrecy Levels Over Time</h3>
+            <p class="zoom-hint">□️ Scroll to zoom · Click and drag to pan · Double-click to reset</p>
+            <canvas id="secrecyTimelineChart" height="400"></canvas>
+        </div>
+
+        <h2 class="section-title">Analytical Breakdown</h2>
+        <div class="chart-box">
+            <h3>Organization Types</h3>
+            <canvas id="typeChart" height="250"></canvas>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>Database Compiled December 2025</strong></p>
+        <p>Evidence-Based Analysis · 25 Organizations · Multiple Sources</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
+
+    <script>
+        const organizations = [
+            {name: "Knights Templar", founded: 1119, dissolved: 1312, status: "Defunct", duration: 193, type: "Military-Religious Order", origin: {name: "Jerusalem", x: 610, y: 250}, reach: "Europe, Middle East", secrecy: "Total", category: "Military Order", evidenceLevel: "Confirmed", description: "International banking network, operated in 10+ countries, secret inner circle rituals, coordinated military operations across continents. Members in every European royal court. Suppressed simultaneously across Europe 1307-1312.", notableFigures: "Jacques de Molay, Bernard de Clairvaux, Hugues de Payens",
+             powerTimeline: [{year: 1119, power: 40}, {year: 1150, power: 80}, {year: 1200, power: 92}, {year: 1250, power: 90}, {year: 1300, power: 85}, {year: 1312, power: 0}],
+             membershipTimeline: [{year: 1119, members: 9}, {year: 1150, members: 5000}, {year: 1200, members: 15000}, {year: 1250, members: 20000}, {year: 1300, members: 15000}, {year: 1312, members: 500}],
+             secrecyTimeline: [{year: 1119, level: 3}, {year: 1200, level: 5}, {year: 1310, level: 5}]},
+            
+            {name: "Knights Hospitaller (Order of Malta)", founded: 1099, dissolved: null, status: "Active", duration: 926, type: "Military-Religious Order", origin: {name: "Jerusalem", x: 610, y: 250}, reach: "Global (120 countries)", secrecy: "Partial", category: "Military Order", evidenceLevel: "Confirmed", description: "Still active sovereign entity recognized by 110 countries. Issues own passports, UN observer status. Members include military/intelligence officials. Operates hospitals and diplomatic missions in 120 countries. Could theoretically coordinate internationally today.", notableFigures: "Jean Parisot de Valette, Fra' Matthew Festing, Fra' Giacomo dalla Torre",
+             powerTimeline: [{year: 1099, power: 30}, {year: 1200, power: 60}, {year: 1400, power: 70}, {year: 1565, power: 90}, {year: 1700, power: 85}, {year: 1800, power: 65}, {year: 1950, power: 75}, {year: 2025, power: 88}],
+             membershipTimeline: [{year: 1099, members: 20}, {year: 1200, members: 2000}, {year: 1565, members: 8000}, {year: 1700, members: 10000}, {year: 1950, members: 9000}, {year: 2025, members: 13500}],
+             secrecyTimeline: [{year: 1099, level: 2}, {year: 1565, level: 3}, {year: 2025, level: 3}]},
+            
+            {name: "Teutonic Knights", founded: 1190, dissolved: 1525, status: "Defunct (as state)", duration: 335, type: "Military-Religious Order", origin: {name: "Acre, Holy Land", x: 600, y: 250}, reach: "Europe, Baltic", secrecy: "Partial", category: "Military Order", evidenceLevel: "Confirmed", description: "Created independent military state in Prussia and Baltic. Ruled territory from 1224-1525. Secret chapter meetings, international recruitment from German nobility. Influenced creation of modern Prussia and Germany.", notableFigures: "Hermann von Salza, Albrecht von Brandenburg-Ansbach",
+             powerTimeline: [{year: 1190, power: 35}, {year: 1250, power: 75}, {year: 1350, power: 85}, {year: 1410, power: 80}, {year: 1466, power: 70}, {year: 1525, power: 60}],
+             membershipTimeline: [{year: 1190, members: 50}, {year: 1250, members: 3000}, {year: 1350, members: 8000}, {year: 1410, members: 10000}, {year: 1525, members: 6000}],
+             secrecyTimeline: [{year: 1190, level: 3}, {year: 1350, level: 3}, {year: 1525, level: 2}]},
+            
+            {name: "Military Masonic Lodges", founded: 1700, dissolved: null, status: "Active", duration: 325, type: "Fraternal Order", origin: {name: "England", x: 470, y: 140}, reach: "Global (NATO militaries)", secrecy: "High", category: "Masonic", evidenceLevel: "Confirmed", description: "Exists in virtually every country's military. International Masonic network coordinates globally. Secret rituals, degrees, passwords. Members include generals, admirals, intelligence chiefs. Cross-border recognition and coordination. Present in NATO military bases worldwide. Estimated 100,000+ military Masons globally.", notableFigures: "George Washington, Marquis de Lafayette, Simón Bolívar, Giuseppe Garibaldi",
+             powerTimeline: [{year: 1700, power: 50}, {year: 1776, power: 78}, {year: 1850, power: 80}, {year: 1945, power: 82}, {year: 2025, power: 82}],
+             membershipTimeline: [{year: 1700, members: 500}, {year: 1776, members: 5000}, {year: 1850, members: 50000}, {year: 1945, members: 80000}, {year: 2025, members: 100000}],
+             secrecyTimeline: [{year: 1700, level: 4}, {year: 1850, level: 4}, {year: 2025, level: 4}]},
+            
+            {name: "Operation Gladio (Stay-Behind)", founded: 1952, dissolved: 1990, status: "Defunct (officially)", duration: 38, type: "NATO Covert Network", origin: {name: "NATO HQ, Belgium", x: 485, y: 145}, reach: "14+ European countries", secrecy: "Total", category: "Covert Ops", evidenceLevel: "Confirmed", description: "NATO-sponsored secret armies in Italy, Belgium, France, Germany, Spain, Greece, Turkey, Norway, Denmark, Netherlands, Luxembourg, Portugal, Austria, Sweden, Switzerland. Coordinated from NATO SHAPE headquarters. Secret weapons caches. Parallel command structure unknown to elected governments. Confirmed by Italian Parliamentary investigation 1990.", notableFigures: "Licio Gelli, CIA Directors (names classified)",
+             powerTimeline: [{year: 1952, power: 75}, {year: 1960, power: 85}, {year: 1975, power: 88}, {year: 1985, power: 88}, {year: 1990, power: 80}],
+             membershipTimeline: [{year: 1952, members: 500}, {year: 1960, members: 2000}, {year: 1975, members: 5000}, {year: 1985, members: 6000}, {year: 1990, members: 5000}],
+             secrecyTimeline: [{year: 1952, level: 5}, {year: 1975, level: 5}, {year: 1990, level: 5}]},
+            
+            {name: "Society of the Cincinnati", founded: 1783, dissolved: null, status: "Active", duration: 242, type: "Hereditary Officers Society", origin: {name: "Newburgh, New York", x: 202, y: 215}, reach: "USA, France, Poland", secrecy: "Moderate", category: "Military Order", evidenceLevel: "Confirmed", description: "Founded by Continental Army officers including George Washington. Hereditary membership passed to eldest sons. International chapters in USA, France, Poland. Feared as aristocratic conspiracy in early American republic. Maintains connections between military elite families across generations. Private meetings and coordination.", notableFigures: "George Washington, Alexander Hamilton, Friedrich Wilhelm von Steuben",
+             powerTimeline: [{year: 1783, power: 75}, {year: 1800, power: 80}, {year: 1850, power: 70}, {year: 1950, power: 75}, {year: 2025, power: 80}],
+             membershipTimeline: [{year: 1783, members: 2150}, {year: 1800, members: 1800}, {year: 1850, members: 1200}, {year: 1950, members: 3500}, {year: 2025, members: 5000}],
+             secrecyTimeline: [{year: 1783, level: 3}, {year: 1850, level: 3}, {year: 2025, level: 2}]},
+            
+            {name: "Comintern Military Intelligence", founded: 1919, dissolved: 1943, status: "Defunct", duration: 24, type: "International Communist Network", origin: {name: "Moscow, USSR", x: 620, y: 130}, reach: "Global (50+ countries)", secrecy: "Total", category: "Covert Ops", evidenceLevel: "Confirmed", description: "International communist military coordination through 4th Department. Secret cells in Chinese, Spanish, German, and other militaries. Coordinated coups and revolutions globally. International Brigade in Spanish Civil War. Infiltrated multiple national militaries. Extensively documented in Soviet archives.", notableFigures: "Mikhail Frunze, Yan Berzin, Richard Sorge",
+             powerTimeline: [{year: 1919, power: 60}, {year: 1930, power: 78}, {year: 1937, power: 81}, {year: 1941, power: 80}, {year: 1943, power: 75}],
+             membershipTimeline: [{year: 1919, members: 1000}, {year: 1930, members: 10000}, {year: 1937, members: 35000}, {year: 1941, members: 30000}, {year: 1943, members: 25000}],
+             secrecyTimeline: [{year: 1919, level: 5}, {year: 1937, level: 5}, {year: 1943, level: 5}]},
+            
+            {name: "Le Cercle (The Circle)", founded: 1952, dissolved: null, status: "Active", duration: 73, type: "Policy Coordination Group", origin: {name: "Europe (rotating)", x: 500, y: 150}, reach: "Global (NATO + allies)", secrecy: "High", category: "Elite Network", evidenceLevel: "Well-Documented", description: "International policy coordination group. Members include NATO generals, intelligence chiefs (CIA, MI6), defense ministers, politicians from USA, UK, France, Germany, Spain, Saudi Arabia. Meets secretly twice per year. No official records. Well-documented by investigative journalists Stephen Dorril and David Teacher. Could influence NATO and international military policy.", notableFigures: "Franz Josef Strauss, William Colby, Edwin Feulner, Jonathan Aitken",
+             powerTimeline: [{year: 1952, power: 65}, {year: 1975, power: 74}, {year: 1990, power: 76}, {year: 2010, power: 76}, {year: 2025, power: 76}],
+             membershipTimeline: [{year: 1952, members: 30}, {year: 1975, members: 60}, {year: 1990, members: 80}, {year: 2010, members: 90}, {year: 2025, members: 100}],
+             secrecyTimeline: [{year: 1952, level: 5}, {year: 1990, level: 4}, {year: 2025, level: 4}]},
+            
+            {name: "Safari Club", founded: 1976, dissolved: 1985, status: "Defunct", duration: 9, type: "Intelligence Consortium", origin: {name: "Multiple locations", x: 550, y: 200}, reach: "Global", secrecy: "Total", category: "Covert Ops", evidenceLevel: "Confirmed", description: "Secret coordination between France, Egypt, Saudi Arabia, Morocco, Iran (until 1979) intelligence and military. Operated outside official channels. Conducted operations CIA couldn't after Congressional restrictions. Coordinated covert operations globally including Afghanistan mujahideen support. Confirmed by declassified documents.", notableFigures: "Alexandre de Marenches, Kamal Adham, Hassan II",
+             powerTimeline: [{year: 1976, power: 70}, {year: 1980, power: 74}, {year: 1983, power: 74}, {year: 1985, power: 70}],
+             membershipTimeline: [{year: 1976, members: 50}, {year: 1980, members: 200}, {year: 1983, members: 300}, {year: 1985, members: 250}],
+             secrecyTimeline: [{year: 1976, level: 5}, {year: 1980, level: 5}, {year: 1985, level: 5}]},
+            
+            {name: "White Russian Officers' Union (ROVS)", founded: 1924, dissolved: 1945, status: "Defunct", duration: 21, type: "Exile Military Network", origin: {name: "Paris, France", x: 480, y: 155}, reach: "Europe, China, Americas", secrecy: "Moderate", category: "Elite Network", evidenceLevel: "Confirmed", description: "Exiled Tsarist military officers coordinated across France, Germany, China, USA, Yugoslavia. Secret coordination against Soviet Union. Members infiltrated various militaries and intelligence services. 100,000+ members at peak. Influenced by and influenced Nazi Germany and other intelligence services.", notableFigures: "Pyotr Wrangel, Yevgeny Miller, Alexander Kutepov",
+             powerTimeline: [{year: 1924, power: 65}, {year: 1930, power: 72}, {year: 1937, power: 70}, {year: 1941, power: 68}, {year: 1945, power: 60}],
+             membershipTimeline: [{year: 1924, members: 40000}, {year: 1930, members: 100000}, {year: 1937, members: 80000}, {year: 1941, members: 60000}, {year: 1945, members: 30000}],
+             secrecyTimeline: [{year: 1924, level: 3}, {year: 1937, level: 3}, {year: 1945, level: 3}]},
+            
+            {name: "International Brigades Command", founded: 1936, dissolved: 1939, status: "Defunct", duration: 3, type: "Volunteer Military Force", origin: {name: "Spain", x: 460, y: 210}, reach: "Global (50+ countries)", secrecy: "Partial", category: "Covert Ops", evidenceLevel: "Confirmed", description: "Multinational volunteer military force in Spanish Civil War. 35,000 volunteers from 50+ countries. Communist-coordinated from Moscow via Comintern. Secret recruitment networks globally. Military officers from many countries. Veterans formed networks lasting decades post-war.", notableFigures: "André Marty, Luigi Longo, George Orwell, Ernest Hemingway",
+             powerTimeline: [{year: 1936, power: 60}, {year: 1937, power: 70}, {year: 1938, power: 68}, {year: 1939, power: 65}],
+             membershipTimeline: [{year: 1936, members: 5000}, {year: 1937, members: 35000}, {year: 1938, members: 32000}, {year: 1939, members: 15000}],
+             secrecyTimeline: [{year: 1936, level: 3}, {year: 1937, level: 3}, {year: 1939, level: 3}]},
+            
+            {name: "Black International (Anarchist Military)", founded: 1872, dissolved: 1920, status: "Defunct", duration: 48, type: "Revolutionary Network", origin: {name: "Multiple cities", x: 500, y: 160}, reach: "Europe, Americas", secrecy: "High", category: "Revolutionary", evidenceLevel: "Confirmed", description: "International anarchist coordination including military veterans. Coordinated assassinations across borders in Russia, France, Italy, Spain, USA, Argentina. Secret communication networks. Killed Russian Tsar Alexander II, Italian King Umberto I, US President McKinley, others. Propaganda by deed.", notableFigures: "Mikhail Bakunin, Errico Malatesta, Luigi Galleani",
+             powerTimeline: [{year: 1872, power: 55}, {year: 1890, power: 66}, {year: 1900, power: 68}, {year: 1910, power: 65}, {year: 1920, power: 55}],
+             membershipTimeline: [{year: 1872, members: 2000}, {year: 1890, members: 15000}, {year: 1900, members: 25000}, {year: 1910, members: 20000}, {year: 1920, members: 10000}],
+             secrecyTimeline: [{year: 1872, level: 4}, {year: 1900, level: 4}, {year: 1920, level: 4}]},
+            
+            {name: "Order of Assassins (Nizari Ismailis)", founded: 1090, dissolved: 1275, status: "Defunct", duration: 185, type: "Religious-Military Order", origin: {name: "Alamut, Persia", x: 680, y: 195}, reach: "Middle East, Persia", secrecy: "Total", category: "Military Order", evidenceLevel: "Confirmed", description: "Islamic military-religious secret society. Elaborate initiation rituals, secret ranks, Paradise legends. Political assassination as primary strategy. Network of mountain fortresses across Middle East. Influenced regional politics for 185 years. Used as mercenaries by both Crusaders and Muslims.", notableFigures: "Hassan-i Sabbah, Rashid ad-Din Sinan",
+             powerTimeline: [{year: 1090, power: 60}, {year: 1150, power: 80}, {year: 1200, power: 88}, {year: 1256, power: 40}, {year: 1275, power: 0}],
+             membershipTimeline: [{year: 1090, members: 500}, {year: 1150, members: 8000}, {year: 1200, members: 5000}, {year: 1250, members: 2000}, {year: 1275, members: 100}],
+             secrecyTimeline: [{year: 1090, level: 5}, {year: 1200, level: 5}, {year: 1275, level: 4}]},
+            
+            {name: "NATO Rapid Deployable Corps Network", founded: 1992, dissolved: null, status: "Active", duration: 33, type: "Multinational Command", origin: {name: "NATO HQ, Belgium", x: 485, y: 145}, reach: "NATO (30+ countries)", secrecy: "Moderate", category: "Elite Network", evidenceLevel: "Suspected", description: "Multinational military command structure. Officers rotate through NATO commands developing personal networks across allied militaries. Coordinate operations across national boundaries. Classified planning. Could theoretically coordinate outside official channels. Official structure enables unofficial networks. Officers from 30+ countries.", notableFigures: "Various NATO generals (names classified)",
+             powerTimeline: [{year: 1992, power: 65}, {year: 2000, power: 68}, {year: 2010, power: 70}, {year: 2025, power: 70}],
+             membershipTimeline: [{year: 1992, members: 500}, {year: 2000, members: 2000}, {year: 2010, members: 5000}, {year: 2025, members: 8000}],
+             secrecyTimeline: [{year: 1992, level: 3}, {year: 2010, level: 3}, {year: 2025, level: 3}]},
+            
+            {name: "Synarchist Movement d'Empire", founded: 1922, dissolved: 1945, status: "Defunct (allegedly)", duration: 23, type: "Technocratic Conspiracy", origin: {name: "France", x: 480, y: 155}, reach: "France, Spain, Portugal, Latin America", secrecy: "Total", category: "Elite Network", evidenceLevel: "Contested", description: "Alleged international technocratic conspiracy. Members included French military, industrialists, bankers. Connections to Spain, Portugal, Latin America. Alleged coordination of military coups. Vichy France connections. International business/military network. Never fully proven but extensively investigated. Documents suggest real organization.", notableFigures: "Eugène Deloncle, Jacques Corrèze (alleged)",
+             powerTimeline: [{year: 1922, power: 55}, {year: 1935, power: 65}, {year: 1940, power: 67}, {year: 1943, power: 60}, {year: 1945, power: 50}],
+             membershipTimeline: [{year: 1922, members: 100}, {year: 1935, members: 2000}, {year: 1940, members: 5000}, {year: 1943, members: 4000}, {year: 1945, members: 1000}],
+             secrecyTimeline: [{year: 1922, level: 5}, {year: 1940, level: 5}, {year: 1945, level: 5}]},
+            
+            {name: "Sovereign Military Order of Saint John", founded: 1520, dissolved: null, status: "Active", duration: 505, type: "Catholic Military Order", origin: {name: "Naples, Italy", x: 540, y: 210}, reach: "30+ countries", secrecy: "Moderate", category: "Military Order", evidenceLevel: "Confirmed", description: "International Catholic military order. Royal patronage from Spain and Sicily. Members in many countries including military officers. Diplomatic activities with some governments. Maintains military traditions and ranks. Secret higher initiations. Smaller than Order of Malta but similar structure.", notableFigures: "Various European nobility",
+             powerTimeline: [{year: 1520, power: 50}, {year: 1700, power: 58}, {year: 1850, power: 55}, {year: 1950, power: 60}, {year: 2025, power: 64}],
+             membershipTimeline: [{year: 1520, members: 200}, {year: 1700, members: 1500}, {year: 1850, members: 2000}, {year: 1950, members: 3000}, {year: 2025, members: 5000}],
+             secrecyTimeline: [{year: 1520, level: 3}, {year: 1850, level: 3}, {year: 2025, level: 2}]},
+            
+            {name: "Order of Saint Maurice and Lazarus", founded: 1572, dissolved: null, status: "Active", duration: 453, type: "Catholic Military Order", origin: {name: "Savoy, Italy", x: 485, y: 175}, reach: "30+ countries", secrecy: "Moderate", category: "Military Order", evidenceLevel: "Confirmed", description: "International Catholic military order. Operates in 30+ countries. Members include military officers. Diplomatic status in some countries. Secret higher initiations. Coordinates with Vatican. Smaller than Malta but maintains international presence.", notableFigures: "House of Savoy (hereditary grand masters)",
+             powerTimeline: [{year: 1572, power: 45}, {year: 1700, power: 55}, {year: 1850, power: 58}, {year: 1950, power: 62}, {year: 2025, power: 66}],
+             membershipTimeline: [{year: 1572, members: 150}, {year: 1700, members: 800}, {year: 1850, members: 1500}, {year: 1950, members: 2500}, {year: 2025, members: 4000}],
+             secrecyTimeline: [{year: 1572, level: 3}, {year: 1850, level: 3}, {year: 2025, level: 2}]},
+            
+            {name: "International Assoc. Military Chaplains", founded: 1925, dissolved: null, status: "Active", duration: 100, type: "Vatican-Sponsored Network", origin: {name: "Vatican City", x: 530, y: 210}, reach: "Global (100+ countries)", secrecy: "Moderate", category: "Elite Network", evidenceLevel: "Confirmed", description: "Vatican-sponsored coordination of military chaplains globally. Operates in 100+ countries. Secret reporting to Vatican. Coordinates Catholic military officers worldwide. Private communications network. Could influence Catholic officers in many militaries internationally.", notableFigures: "Various Vatican officials",
+             powerTimeline: [{year: 1925, power: 50}, {year: 1950, power: 60}, {year: 1975, power: 63}, {year: 2000, power: 65}, {year: 2025, power: 65}],
+             membershipTimeline: [{year: 1925, members: 500}, {year: 1950, members: 3000}, {year: 1975, members: 8000}, {year: 2000, members: 12000}, {year: 2025, members: 15000}],
+             secrecyTimeline: [{year: 1925, level: 3}, {year: 1975, level: 3}, {year: 2025, level: 3}]},
+            
+            {name: "Five Eyes Military Coordination", founded: 1946, dissolved: null, status: "Active", duration: 79, type: "Intelligence Alliance", origin: {name: "Multiple locations", x: 300, y: 180}, reach: "USA, UK, Canada, Australia, NZ", secrecy: "High", category: "Elite Network", evidenceLevel: "Well-Documented", description: "Intelligence sharing between USA, UK, Canada, Australia, New Zealand. Official cooperation confirmed. Military coordination beyond official treaties. Personal networks among military elite. Secret classification levels. Alleged deeper coordination outside official channels. Officers rotate through allied commands.", notableFigures: "Various intelligence chiefs (names classified)",
+             powerTimeline: [{year: 1946, power: 75}, {year: 1960, power: 78}, {year: 1990, power: 80}, {year: 2010, power: 82}, {year: 2025, power: 82}],
+             membershipTimeline: [{year: 1946, members: 1000}, {year: 1960, members: 5000}, {year: 1990, members: 15000}, {year: 2010, members: 25000}, {year: 2025, members: 35000}],
+             secrecyTimeline: [{year: 1946, level: 4}, {year: 1990, level: 4}, {year: 2025, level: 4}]},
+            
+            {name: "Templar Successor Orders (Multiple)", founded: 1804, dissolved: null, status: "Active", duration: 221, type: "Neo-Templar Organizations", origin: {name: "France", x: 480, y: 155}, reach: "Global (multiple chapters)", secrecy: "Moderate", category: "Military Order", evidenceLevel: "Confirmed", description: "Multiple organizations claiming Templar succession. Not officially recognized but internationally organized. Members include military veterans. Operate in multiple countries. Most significant: Sovereign Military Order of the Temple of Jerusalem (OSMTH). Maintain international presence and coordination.", notableFigures: "Various claimed grand masters",
+             powerTimeline: [{year: 1804, power: 40}, {year: 1900, power: 50}, {year: 1950, power: 58}, {year: 2000, power: 62}, {year: 2025, power: 63}],
+             membershipTimeline: [{year: 1804, members: 50}, {year: 1900, members: 500}, {year: 1950, members: 2000}, {year: 2000, members: 5000}, {year: 2025, members: 8000}],
+             secrecyTimeline: [{year: 1804, level: 3}, {year: 1950, level: 3}, {year: 2025, level: 2}]},
+            
+            {name: "Black Hand (Unification or Death)", founded: 1901, dissolved: 1917, status: "Defunct", duration: 16, type: "Nationalist Secret Society", origin: {name: "Belgrade, Serbia", x: 565, y: 190}, reach: "Balkans (limited international)", secrecy: "Total", category: "Revolutionary", evidenceLevel: "Confirmed", description: "Serbian military officers' secret society. Secret oaths, initiation ceremonies. Plotted to unite South Slavs. Orchestrated assassination of Archduke Franz Ferdinand triggering WWI. Primarily regional but international impact. Influenced by and coordinated with some Russian military circles.", notableFigures: "Dragutin Dimitrijević 'Apis', Gavrilo Princip (assassin)",
+             powerTimeline: [{year: 1901, power: 50}, {year: 1910, power: 70}, {year: 1914, power: 80}, {year: 1916, power: 75}, {year: 1917, power: 0}],
+             membershipTimeline: [{year: 1901, members: 20}, {year: 1910, members: 200}, {year: 1914, members: 2500}, {year: 1916, members: 2000}, {year: 1917, members: 0}],
+             secrecyTimeline: [{year: 1901, level: 5}, {year: 1914, level: 5}, {year: 1917, level: 5}]},
+            
+            {name: "Young Turks (Committee Union Progress)", founded: 1889, dissolved: 1918, status: "Defunct", duration: 29, type: "Military Revolutionary Society", origin: {name: "Salonika, Ottoman Empire", x: 570, y: 210}, reach: "Ottoman Empire (limited international)", secrecy: "High", category: "Revolutionary", evidenceLevel: "Confirmed", description: "Secret society of Ottoman military officers. Initiated 1908 revolution. Overthrew Sultan Abdul Hamid II. Led Ottoman Empire in WWI. Secret lodges with elaborate rituals. Primarily Ottoman but international connections to European revolutionary movements and Masonic lodges.", notableFigures: "Enver Pasha, Talaat Pasha, Djemal Pasha",
+             powerTimeline: [{year: 1889, power: 40}, {year: 1908, power: 75}, {year: 1913, power: 82}, {year: 1916, power: 80}, {year: 1918, power: 65}],
+             membershipTimeline: [{year: 1889, members: 50}, {year: 1908, members: 5000}, {year: 1913, members: 30000}, {year: 1916, members: 40000}, {year: 1918, members: 20000}],
+             secrecyTimeline: [{year: 1889, level: 5}, {year: 1908, level: 4}, {year: 1918, level: 4}]},
+            
+            {name: "Carbonari", founded: 1800, dissolved: 1831, status: "Defunct", duration: 31, type: "Revolutionary Secret Society", origin: {name: "Southern Italy", x: 540, y: 215}, reach: "Italy, France, Spain, Portugal", secrecy: "High", category: "Revolutionary", evidenceLevel: "Confirmed", description: "Italian secret revolutionary society. Many military officers as members. Secret lodges, elaborate rituals. Influenced Italian unification. Spread to France, Spain, Portugal with international coordination. Multiple uprisings across Southern Europe. International network of revolutionary cells.", notableFigures: "Giuseppe Mazzini, Silvio Pellico, Marquis de Lafayette (French)",
+             powerTimeline: [{year: 1800, power: 45}, {year: 1820, power: 70}, {year: 1825, power: 72}, {year: 1828, power: 68}, {year: 1831, power: 60}],
+             membershipTimeline: [{year: 1800, members: 500}, {year: 1820, members: 60000}, {year: 1825, members: 80000}, {year: 1828, members: 70000}, {year: 1831, members: 40000}],
+             secrecyTimeline: [{year: 1800, level: 5}, {year: 1820, level: 4}, {year: 1831, level: 4}]},
+            
+            {name: "Sons of Liberty", founded: 1765, dissolved: 1776, status: "Defunct", duration: 11, type: "Colonial Revolutionary Society", origin: {name: "Boston, Massachusetts", x: 198, y: 212}, reach: "13 American Colonies", secrecy: "Moderate", category: "Revolutionary", evidenceLevel: "Confirmed", description: "American colonial secret society with many militiamen. Secret meetings, passwords, coordination across colonies. Boston Tea Party and other resistance actions. Sparked American Revolution. Coordinated revolutionary activities across colonial boundaries. International connections to British radicals.", notableFigures: "Samuel Adams, Paul Revere, John Hancock, Patrick Henry",
+             powerTimeline: [{year: 1765, power: 50}, {year: 1770, power: 65}, {year: 1773, power: 68}, {year: 1775, power: 70}, {year: 1776, power: 68}],
+             membershipTimeline: [{year: 1765, members: 200}, {year: 1770, members: 2000}, {year: 1773, members: 5000}, {year: 1775, members: 7000}, {year: 1776, members: 6000}],
+             secrecyTimeline: [{year: 1765, level: 3}, {year: 1773, level: 3}, {year: 1776, level: 2}]},
+            
+            {name: "Transnational Special Forces Network", founded: 1990, dissolved: null, status: "Active (informal)", duration: 35, type: "Elite Operators Network", origin: {name: "Multiple locations", x: 400, y: 180}, reach: "Global (NATO + allies)", secrecy: "High", category: "Elite Network", evidenceLevel: "Suspected", description: "Alleged informal network of elite special forces operators. Former SEAL Team Six, SAS, GSG-9, GIGN, Spetsnaz members. Private security contractor networks. Personal relationships from joint operations. Could theoretically coordinate internationally. No evidence of organized secret society but networks exist.", notableFigures: "Various former operators (names withheld)",
+             powerTimeline: [{year: 1990, power: 55}, {year: 2000, power: 62}, {year: 2010, power: 68}, {year: 2025, power: 70}],
+             membershipTimeline: [{year: 1990, members: 500}, {year: 2000, members: 2000}, {year: 2010, members: 5000}, {year: 2025, members: 8000}],
+             secrecyTimeline: [{year: 1990, level: 4}, {year: 2010, level: 4}, {year: 2025, level: 4}]}
+        ];
+
+
+        const categoryColors = {
+            'Military Order': '#8B4513',
+            'Masonic': '#4A5F7F',
+            'Covert Ops': '#8B0000',
+            'Elite Network': '#2F4F4F',
+            'Revolutionary': '#B8860B'
+        };
+
+        window.addEventListener('load', function() {
+            console.log('Initializing all 25 international military secret societies...');
+            
+            // SVG Map markers
+            const markersGroup = document.getElementById('markers');
+            const tooltip = document.getElementById('mapTooltip');
+            
+            organizations.forEach(org => {
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('cx', org.origin.x);
+                circle.setAttribute('cy', org.origin.y);
+                circle.setAttribute('r', '6');
+                circle.setAttribute('fill', categoryColors[org.category]);
+                circle.setAttribute('stroke', '#ffffff');
+                circle.setAttribute('stroke-width', '2');
+                circle.style.cursor = 'pointer';
+                
+                circle.addEventListener('mouseenter', (e) => {
+                    const statusClass = org.status === 'Active' ? 'status-active' : 'status-defunct';
+                    const evidenceClass = org.evidenceLevel === 'Confirmed' ? 'evidence-confirmed' : 
+                                         org.evidenceLevel === 'Well-Documented' ? 'evidence-documented' :
+                                         org.evidenceLevel === 'Suspected' ? 'evidence-suspected' : 'evidence-contested';
+                    tooltip.innerHTML = `
+                        <div class="tooltip-name">${org.name}</div>
+                        <div class="tooltip-row">
+                            <span class="tooltip-label">Evidence:</span>
+                            <span class="tooltip-value ${evidenceClass}">${org.evidenceLevel}</span>
+                        </div>
+                        <div class="tooltip-row">
+                            <span class="tooltip-label">Status:</span>
+                            <span class="tooltip-value ${statusClass}">${org.status}</span>
+                        </div>
+                        <div class="tooltip-row">
+                            <span class="tooltip-label">Founded:</span>
+                            <span class="tooltip-value">${org.founded}</span>
+                        </div>
+                        <div class="tooltip-row">
+                            <span class="tooltip-label">Dissolved:</span>
+                            <span class="tooltip-value">${org.dissolved || 'Present'}</span>
+                        </div>
+                        <div class="tooltip-row">
+                            <span class="tooltip-label">Type:</span>
+                            <span class="tooltip-value">${org.type}</span>
+                        </div>
+                        <div class="tooltip-row">
+                            <span class="tooltip-label">Origin:</span>
+                            <span class="tooltip-value">${org.origin.name}</span>
+                        </div>
+                        <div class="tooltip-row">
+                            <span class="tooltip-label">Reach:</span>
+                            <span class="tooltip-value">${org.reach}</span>
+                        </div>
+                        <div class="tooltip-description">
+                            <div style="color: #808080; font-weight: bold; margin: 8px 0 3px 0;">Description:</div>
+                            <div style="color: #c4c4c4; font-size: 0.85em; line-height: 1.4;">${org.description}</div>
+                        </div>
+                        <div class="tooltip-figures">
+                            <div style="color: #808080; font-weight: bold; margin-top: 8px; margin-bottom: 3px;">Notable Figures:</div>
+                            <div style="color: #c4c4c4;">${org.notableFigures}</div>
+                        </div>
+                    `;
+                    tooltip.style.display = 'block';
+                });
+                
+                circle.addEventListener('mousemove', (e) => {
+                    tooltip.style.left = (e.clientX + 10) + 'px';
+                    tooltip.style.top = (e.clientY + 10) + 'px';
+                });
+                
+                circle.addEventListener('mouseleave', () => {
+                    tooltip.style.display = 'none';
+                });
+                
+                markersGroup.appendChild(circle);
+            });
+
+            // SVG Map Zoom and Pan
+            const mapContent = document.getElementById('mapContent');
+            const mapContainer = document.getElementById('map');
+            let scale = 1;
+            let translateX = 0;
+            let translateY = 0;
+            let isDragging = false;
+            let startX, startY;
+            
+            function updateTransform() {
+                mapContent.setAttribute('transform', 
+                    `translate(${translateX}, ${translateY}) scale(${scale})`);
+            }
+            
+            mapContainer.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                const delta = e.deltaY > 0 ? 0.9 : 1.1;
+                const newScale = scale * delta;
+                if (newScale >= 0.5 && newScale <= 5) {
+                    scale = newScale;
+                    updateTransform();
+                }
+            }, { passive: false });
+            
+            mapContainer.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                startX = e.clientX - translateX;
+                startY = e.clientY - translateY;
+            });
+            
+            mapContainer.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    translateX = e.clientX - startX;
+                    translateY = e.clientY - startY;
+                    updateTransform();
+                }
+            });
+            
+            mapContainer.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+            
+            mapContainer.addEventListener('mouseleave', () => {
+                isDragging = false;
+            });
+
+            // Power Timeline
+            const powerDatasets = organizations.map(org => ({
+                label: org.name,
+                data: org.powerTimeline.map(pt => ({x: pt.year, y: pt.power})),
+                borderColor: categoryColors[org.category],
+                backgroundColor: categoryColors[org.category] + '33',
+                fill: false,
+                tension: 0.4,
+                borderWidth: 2,
+                pointRadius: 3
+            }));
+
+            new Chart(document.getElementById('powerTimelineChart'), {
+                type: 'line',
+                data: { datasets: powerDatasets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    aspectRatio: 2.5,
+                    plugins: {
+                        legend: { 
+                            display: true,
+                            position: 'right',
+                            labels: {color: '#808080', padding: 8, font: {size: 9}}
+                        },
+                        tooltip: {
+                            backgroundColor: '#000000',
+                            titleColor: '#ffffff',
+                            bodyColor: '#c4c4c4',
+                            borderColor: '#2a2a2a',
+                            borderWidth: 1
+                        },
+                        zoom: {
+                            pan: {
+                                enabled: true,
+                                mode: 'xy'
+                            },
+                            zoom: {
+                                wheel: {
+                                    enabled: true
+                                },
+                                pinch: {
+                                    enabled: true
+                                },
+                                mode: 'xy'
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            title: { display: true, text: 'Year', color: '#808080', font: {size: 11} },
+                            ticks: { color: '#808080', font: {size: 10} },
+                            grid: { color: '#1a1a1a' },
+                            min: 1050,
+                            max: 2025
+                        },
+                        y: {
+                            title: { display: true, text: 'Power Index (0-100)', color: '#808080', font: {size: 11} },
+                            ticks: { color: '#808080', font: {size: 10} },
+                            grid: { color: '#1a1a1a' },
+                            min: 0,
+                            max: 100
+                        }
+                    }
+                }
+            });
+
+            // Membership Timeline
+            const membershipDatasets = organizations.map(org => ({
+                label: org.name,
+                data: org.membershipTimeline.map(mt => ({x: mt.year, y: mt.members})),
+                borderColor: categoryColors[org.category],
+                backgroundColor: categoryColors[org.category] + '33',
+                fill: false,
+                tension: 0.4,
+                borderWidth: 2,
+                pointRadius: 3
+            }));
+
+            new Chart(document.getElementById('membershipTimelineChart'), {
+                type: 'line',
+                data: { datasets: membershipDatasets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    aspectRatio: 2.5,
+                    plugins: {
+                        legend: { 
+                            display: true,
+                            position: 'right',
+                            labels: {color: '#808080', padding: 8, font: {size: 9}}
+                        },
+                        tooltip: {
+                            backgroundColor: '#000000',
+                            titleColor: '#ffffff',
+                            bodyColor: '#c4c4c4',
+                            borderColor: '#2a2a2a',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: (item) => `${item.dataset.label}: ${item.parsed.y.toLocaleString()} members`
+                            }
+                        },
+                        zoom: {
+                            pan: {
+                                enabled: true,
+                                mode: 'xy'
+                            },
+                            zoom: {
+                                wheel: {
+                                    enabled: true
+                                },
+                                pinch: {
+                                    enabled: true
+                                },
+                                mode: 'xy'
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            title: { display: true, text: 'Year', color: '#808080', font: {size: 11} },
+                            ticks: { color: '#808080', font: {size: 10} },
+                            grid: { color: '#1a1a1a' },
+                            min: 1050,
+                            max: 2025
+                        },
+                        y: {
+                            type: 'logarithmic',
+                            title: { display: true, text: 'Members (log scale)', color: '#808080', font: {size: 11} },
+                            ticks: { color: '#808080', font: {size: 10} },
+                            grid: { color: '#1a1a1a' }
+                        }
+                    }
+                }
+            });
+
+            // Secrecy Timeline
+            const secrecyDatasets = organizations.map(org => ({
+                label: org.name,
+                data: org.secrecyTimeline.map(st => ({x: st.year, y: st.level})),
+                borderColor: categoryColors[org.category],
+                backgroundColor: categoryColors[org.category] + '33',
+                fill: false,
+                tension: 0.4,
+                borderWidth: 2,
+                pointRadius: 3,
+                stepped: true
+            }));
+
+            new Chart(document.getElementById('secrecyTimelineChart'), {
+                type: 'line',
+                data: { datasets: secrecyDatasets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    aspectRatio: 2.5,
+                    plugins: {
+                        legend: { 
+                            display: true,
+                            position: 'right',
+                            labels: {color: '#808080', padding: 8, font: {size: 9}}
+                        },
+                        tooltip: {
+                            backgroundColor: '#000000',
+                            titleColor: '#ffffff',
+                            bodyColor: '#c4c4c4',
+                            borderColor: '#2a2a2a',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: (item) => {
+                                    const levels = {1: 'Low', 2: 'Partial', 3: 'Moderate', 4: 'High', 5: 'Total'};
+                                    return `${item.dataset.label}: ${levels[item.parsed.y]}`;
+                                }
+                            }
+                        },
+                        zoom: {
+                            pan: {
+                                enabled: true,
+                                mode: 'xy'
+                            },
+                            zoom: {
+                                wheel: {
+                                    enabled: true
+                                },
+                                pinch: {
+                                    enabled: true
+                                },
+                                mode: 'xy'
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            title: { display: true, text: 'Year', color: '#808080', font: {size: 11} },
+                            ticks: { color: '#808080', font: {size: 10} },
+                            grid: { color: '#1a1a1a' },
+                            min: 1050,
+                            max: 2025
+                        },
+                        y: {
+                            title: { display: true, text: 'Secrecy Level', color: '#808080', font: {size: 11} },
+                            ticks: { 
+                                color: '#808080', 
+                                font: {size: 10},
+                                callback: function(value) {
+                                    const labels = {1: 'Low', 2: 'Partial', 3: 'Moderate', 4: 'High', 5: 'Total'};
+                                    return labels[value] || '';
+                                }
+                            },
+                            grid: { color: '#1a1a1a' },
+                            min: 0,
+                            max: 5
+                        }
+                    }
+                }
+            });
+
+            // Type Chart
+            const typeCounts = {};
+            organizations.forEach(org => {
+                typeCounts[org.category] = (typeCounts[org.category] || 0) + 1;
+            });
+
+            new Chart(document.getElementById('typeChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(typeCounts),
+                    datasets: [{
+                        data: Object.values(typeCounts),
+                        backgroundColor: Object.keys(typeCounts).map(cat => categoryColors[cat]),
+                        borderWidth: 2,
+                        borderColor: '#0a0a0a'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    aspectRatio: 1.5,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {color: '#808080', padding: 10, font: {size: 10}}
+                        }
+                    }
+                }
+            });
+
+            console.log('All 25 organizations initialized successfully');
+        });
+
+    </script>
+    </div>
+</body>
+</html>

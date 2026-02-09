@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embedded Content</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0a0a0a; overflow: hidden; }
+    </style>
+</head>
+<body>
+<div id="cm-widget" style="width:100%; max-width:1200px; margin:0 auto; font-family:Arial,Helvetica,sans-serif;">
+
+  <!-- Interactive Map -->
+  <div id="cm-map" style="width:100%; height:500px; border-radius:12px 12px 0 0; position:relative; z-index:1;"></div>
+
+  <!-- Info Panel -->
+  <div style="background:linear-gradient(135deg,#0d1117 0%,#161b22 100%); border-radius:0 0 12px 12px; padding:28px 32px; box-shadow:0 4px 20px rgba(0,0,0,0.25);">
+
+    <div style="display:flex; flex-wrap:wrap; align-items:center; gap:16px; margin-bottom:16px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:14px; height:14px; border-radius:50%; background:radial-gradient(circle,#ff6b35,#ff3d00); box-shadow:0 0 8px rgba(255,61,0,0.5);"></div>
+        <span style="color:#f0f0f0; font-size:20px; font-weight:700;">Carbon Mapper</span>
+      </div>
+      <span style="background:#1e2a3a; color:#f97316; padding:4px 12px; border-radius:6px; font-size:13px; font-weight:600;">CH₄ Methane Plumes</span>
+      <span style="background:#1e2a3a; color:#8b9fc5; padding:4px 12px; border-radius:6px; font-size:13px;">Sector 6A — Solid Waste Disposal</span>
+    </div>
+
+    <p style="color:#9aa5b4; font-size:14px; line-height:1.7; margin:0 0 8px 0;">
+      Satellite-detected methane point-source emissions from waste sector facilities worldwide. Data from NASA EMIT, Planet Tanager-1, AVIRIS-NG, and Global Airborne Observatory imaging spectrometers.
+    </p>
+    <p style="color:#596575; font-size:12px; margin:0 0 20px 0;">
+      Plume concentrations measured in ppm·m — click the map or button below to explore the full interactive dataset.
+    </p>
+
+    <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:center;">
+      <a href="https://data.carbonmapper.org/?plume_gas=CH4&sectors=6A#1.18/31.1/58.2"
+         target="_blank" rel="noopener noreferrer"
+         style="display:inline-flex; align-items:center; gap:8px; background:#f97316; color:#fff; text-decoration:none; padding:12px 28px; border-radius:8px; font-weight:700; font-size:15px; transition:all 0.2s ease;"
+         onmouseover="this.style.background='#fb923c'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 14px rgba(249,115,22,0.4)';"
+         onmouseout="this.style.background='#f97316'; this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+        □️ Open Full Interactive Portal
+      </a>
+      <a href="https://carbonmapper.org/data"
+         target="_blank" rel="noopener noreferrer"
+         style="display:inline-flex; align-items:center; gap:6px; color:#8b9fc5; text-decoration:none; padding:12px 20px; border:1px solid #2a3444; border-radius:8px; font-size:13px; transition:all 0.2s ease;"
+         onmouseover="this.style.borderColor='#4a5a6a'; this.style.color='#b0bfcf';"
+         onmouseout="this.style.borderColor='#2a3444'; this.style.color='#8b9fc5';">
+        About the Data &amp; API →
+      </a>
+    </div>
+
+    <p style="color:#3a4555; font-size:11px; margin:16px 0 0 0;">Data: Carbon Mapper · carbonmapper.org · CC BY-SA 4.0 (non-commercial)</p>
+  </div>
+</div>
+
+<!-- Leaflet CSS & JS from CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+
+<script>
+(function() {
+  // Initialize map at Carbon Mapper's view: zoom 2.5 (Leaflet equivalent of their 1.18), center 31.1, 58.2
+  var map = L.map('cm-map', {
+    center: [31.1, 58.2],
+    zoom: 2,
+    zoomControl: false,
+    attributionControl: false,
+    scrollWheelZoom: false
+  });
+
+  // Dark basemap tiles (no API key needed)
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; OpenStreetMap &copy; CARTO',
+    subdomains: 'abcd',
+    maxZoom: 19
+  }).addTo(map);
+
+  // Add zoom control top-right
+  L.control.zoom({ position: 'topright' }).addTo(map);
+
+  // Attribution bottom-right
+  L.control.attribution({ position: 'bottomright', prefix: false })
+    .addAttribution('Map: &copy; <a href="https://carto.com/" target="_blank">CARTO</a> · <a href="https://www.openstreetmap.org/copyright" target="_blank">OSM</a>')
+    .addTo(map);
+
+  // ── Sample waste-sector CH₄ hotspot markers ──
+  // These are well-known major waste-sector methane sources from public Carbon Mapper data
+  var hotspots = [
+    { lat: 37.418, lng: -121.917, name: "Newby Island Landfill", loc: "Milpitas, CA", rate: "~500-1700 kg/hr" },
+    { lat: 34.058, lng: -117.449, name: "San Timoteo Landfill", loc: "Redlands, CA", rate: "~300-900 kg/hr" },
+    { lat: 33.946, lng: -117.315, name: "Badlands Landfill", loc: "Moreno Valley, CA", rate: "~200-600 kg/hr" },
+    { lat: 37.505, lng: -122.130, name: "Tri-Cities Landfill", loc: "Fremont, CA", rate: "~100-500 kg/hr" },
+    { lat: 34.012, lng: -117.556, name: "Mid-Valley Sanitary Landfill", loc: "Rialto, CA", rate: "~200-800 kg/hr" },
+    { lat: 26.05, lng: 50.55, name: "Waste Facility", loc: "Bahrain", rate: "Detected" },
+    { lat: 25.34, lng: 51.44, name: "Waste Facility", loc: "Qatar", rate: "Detected" },
+    { lat: 33.30, lng: 44.37, name: "Al-Nahrawan Waste Site", loc: "Baghdad, Iraq", rate: "Detected" },
+    { lat: 28.57, lng: 77.32, name: "Ghazipur Landfill", loc: "Delhi, India", rate: "Detected" },
+    { lat: 19.06, lng: 72.92, name: "Deonar Dumping Ground", loc: "Mumbai, India", rate: "Detected" },
+    { lat: -23.55, lng: -46.56, name: "CTL Caieiras Landfill", loc: "São Paulo, Brazil", rate: "Detected" },
+    { lat: -6.22, lng: 106.93, name: "Bantar Gebang Landfill", loc: "Jakarta, Indonesia", rate: "Detected" },
+    { lat: 30.08, lng: 31.35, name: "15th of May Landfill", loc: "Cairo, Egypt", rate: "Detected" },
+    { lat: 31.65, lng: 34.57, name: "Waste Facility", loc: "Israel", rate: "Detected" },
+    { lat: -1.29, lng: 36.86, name: "Dandora Dumpsite", loc: "Nairobi, Kenya", rate: "Detected" },
+    { lat: 14.66, lng: 121.06, name: "Rodriguez Landfill", loc: "Manila, Philippines", rate: "Detected" }
+  ];
+
+  // Pulsing icon style
+  var pulseIcon = function(size) {
+    return L.divIcon({
+      className: '',
+      html: '<div style="width:'+size+'px; height:'+size+'px; background:radial-gradient(circle,rgba(255,107,22,0.9) 0%,rgba(255,61,0,0.3) 60%,transparent 70%); border-radius:50%; animation:cmpulse 2s ease-in-out infinite;"></div>',
+      iconSize: [size, size],
+      iconAnchor: [size/2, size/2]
+    });
+  };
+
+  hotspots.forEach(function(h) {
+    L.marker([h.lat, h.lng], { icon: pulseIcon(18) })
+      .addTo(map)
+      .bindPopup(
+        '<div style="font-family:Arial,sans-serif; min-width:180px;">' +
+        '<strong style="font-size:14px; color:#1a1a2e;">' + h.name + '</strong><br>' +
+        '<span style="color:#555; font-size:12px;">' + h.loc + '</span><br>' +
+        '<span style="color:#f97316; font-size:12px; font-weight:600;">CH₄ Rate: ' + h.rate + '</span><br>' +
+        '<a href="https://data.carbonmapper.org/?plume_gas=CH4&sectors=6A#1.18/31.1/58.2" target="_blank" style="color:#2563eb; font-size:11px;">View on Carbon Mapper →</a>' +
+        '</div>'
+      );
+  });
+
+  // Click map → open Carbon Mapper
+  map.on('dblclick', function() {
+    window.open('https://data.carbonmapper.org/?plume_gas=CH4&sectors=6A#1.18/31.1/58.2', '_blank');
+  });
+
+  // Inject pulse animation
+  var style = document.createElement('style');
+  style.textContent = '@keyframes cmpulse { 0%,100% { transform:scale(1); opacity:0.8; } 50% { transform:scale(1.6); opacity:0.4; } }';
+  document.head.appendChild(style);
+})();
+</script>
+</body>
+</html>

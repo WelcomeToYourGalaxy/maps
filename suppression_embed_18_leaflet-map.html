@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script src="gdpr/gdprscript.js?buildTime=1234"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Central Banks Map</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Montserrat:wght@200;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #0a0a0a;
+            --gold: #d4af37;
+            --gold-light: #f4d03f;
+            --gold-dark: #b8942c;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--black);
+            color: var(--gold);
+            margin: 0;
+            padding: 0;
+    /* Removed overflow: hidden to allow page scrolling */
+}
+
+        .map-embed-container {
+            width: 100%;
+            height: 700px;
+            position: relative;
+            background: var(--black);
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            padding: 1.5rem 1rem 1rem;
+            margin: 0;
+        }
+
+        #map {
+            width: 100%;
+            height: calc(100% - 80px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        /* Leaflet popup custom styling */
+        .leaflet-popup-content-wrapper {
+            background: rgba(10, 10, 10, 0.95) !important;
+            border: 1px solid var(--gold) !important;
+            border-radius: 2px !important;
+            box-shadow: 0 10px 40px rgba(212, 175, 55, 0.3) !important;
+            padding: 0 !important;
+        }
+
+        .leaflet-popup-content {
+            margin: 0 !important;
+            padding: 1.5rem !important;
+            color: var(--gold) !important;
+            font-family: 'Montserrat', sans-serif !important;
+            min-width: 300px !important;
+        }
+
+        .leaflet-popup-tip {
+            background: rgba(10, 10, 10, 0.95) !important;
+        }
+
+        .leaflet-popup-close-button {
+            color: var(--gold) !important;
+        }
+
+        .popup-content h3 {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--gold-light);
+            font-size: 1.4rem;
+            margin: 0 0 0.5rem 0;
+            font-weight: 600;
+        }
+
+        .popup-content .country-name {
+            color: var(--gold);
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .popup-content .detail {
+            color: rgba(212, 175, 55, 0.7);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin-bottom: 0.4rem;
+        }
+
+        .popup-content .detail strong {
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        /* Leaflet controls styling */
+        .leaflet-control-zoom {
+            border: 1px solid var(--gold) !important;
+            border-radius: 2px !important;
+        }
+
+        .leaflet-control-zoom a {
+            background: rgba(10, 10, 10, 0.9) !important;
+            color: var(--gold) !important;
+            border: none !important;
+            font-size: 20px !important;
+            font-weight: 300 !important;
+        }
+
+        .leaflet-control-zoom a:hover {
+            background: var(--gold) !important;
+            color: var(--black) !important;
+        }
+
+        .leaflet-bar {
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2) !important;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+                padding: 1rem 0.5rem 0.5rem;
+            }
+            .map-embed-container {
+                height: 500px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="map-embed-container">
+        <h1>Central Banks</h1>
+        <div id="map"></div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        const centralBanks = [
+            { country: "United States", name: "Federal Reserve", lat: 38.8935, lon: -77.0425, established: "1913", governor: "Jerome Powell", currency: "USD", address: "20th Street and Constitution Avenue NW, Washington, DC 20551" },
+            { country: "United Kingdom", name: "Bank of England", lat: 51.5142, lon: -0.0886, established: "1694", governor: "Andrew Bailey", currency: "GBP", address: "Threadneedle Street, London EC2R 8AH" },
+            { country: "European Union", name: "European Central Bank", lat: 50.1109, lon: 8.6821, established: "1998", governor: "Christine Lagarde", currency: "EUR", address: "Sonnemannstrasse 20, 60314 Frankfurt am Main, Germany" },
+            { country: "Japan", name: "Bank of Japan", lat: 35.6795, lon: 139.7744, established: "1882", governor: "Kazuo Ueda", currency: "JPY", address: "2-1-1 Nihonbashi Hongokucho, Chuo-ku, Tokyo 103-8660" },
+            { country: "China", name: "People's Bank of China", lat: 39.9075, lon: 116.3974, established: "1948", governor: "Pan Gongsheng", currency: "CNY", address: "32 Chengfang Street, Xicheng District, Beijing 100800" },
+            { country: "Switzerland", name: "Swiss National Bank", lat: 46.9479, lon: 7.4474, established: "1907", governor: "Thomas Jordan", currency: "CHF", address: "Bundesplatz 1, 3003 Bern" },
+            { country: "Canada", name: "Bank of Canada", lat: 45.4215, lon: -75.6972, established: "1934", governor: "Tiff Macklem", currency: "CAD", address: "234 Wellington Street, Ottawa, Ontario K1A 0G9" },
+            { country: "Australia", name: "Reserve Bank of Australia", lat: -33.8688, lon: 151.2093, established: "1960", governor: "Michele Bullock", currency: "AUD", address: "65 Martin Place, Sydney NSW 2000" },
+            { country: "India", name: "Reserve Bank of India", lat: 18.9389, lon: 72.8353, established: "1935", governor: "Shaktikanta Das", currency: "INR", address: "Shahid Bhagat Singh Road, Fort, Mumbai 400001" },
+            { country: "Brazil", name: "Central Bank of Brazil", lat: -15.7939, lon: -47.8828, established: "1964", governor: "Roberto Campos Neto", currency: "BRL", address: "SBS Quadra 3 Bloco B, Brasília, DF 70074-900" },
+            { country: "Russia", name: "Central Bank of Russia", lat: 55.7558, lon: 37.6173, established: "1990", governor: "Elvira Nabiullina", currency: "RUB", address: "12 Neglinnaya Street, Moscow 107016" },
+            { country: "South Korea", name: "Bank of Korea", lat: 37.5665, lon: 126.9780, established: "1950", governor: "Rhee Chang-yong", currency: "KRW", address: "67 Namdaemun-ro, Jung-gu, Seoul 04531" },
+            { country: "Mexico", name: "Bank of Mexico", lat: 19.4326, lon: -99.1332, established: "1925", governor: "Victoria Rodríguez", currency: "MXN", address: "Avenida 5 de Mayo 2, Mexico City 06059" },
+            { country: "Indonesia", name: "Bank Indonesia", lat: -6.2088, lon: 106.8456, established: "1953", governor: "Perry Warjiyo", currency: "IDR", address: "Jl. M.H. Thamrin No.2, Jakarta 10350" },
+            { country: "Saudi Arabia", name: "Saudi Central Bank", lat: 24.7136, lon: 46.6753, established: "1952", governor: "Ayman Al-Sayari", currency: "SAR", address: "King Saud Road, Riyadh 11169" },
+            { country: "Turkey", name: "Central Bank of Turkey", lat: 39.9334, lon: 32.8597, established: "1930", governor: "Hafize Gaye Erkan", currency: "TRY", address: "Istiklal Caddesi 10, Ulus, Ankara" },
+            { country: "Argentina", name: "Central Bank of Argentina", lat: -34.6037, lon: -58.3816, established: "1935", governor: "Miguel Pesce", currency: "ARS", address: "Reconquista 266, Buenos Aires C1003ABF" },
+            { country: "South Africa", name: "South African Reserve Bank", lat: -25.7479, lon: 28.2293, established: "1921", governor: "Lesetja Kganyago", currency: "ZAR", address: "370 Church Street, Pretoria 0002" },
+            { country: "Thailand", name: "Bank of Thailand", lat: 13.7563, lon: 100.5018, established: "1942", governor: "Sethaput Suthiwartnarueput", currency: "THB", address: "273 Samsen Road, Bangkok 10200" },
+            { country: "Malaysia", name: "Bank Negara Malaysia", lat: 3.1390, lon: 101.6869, established: "1959", governor: "Abdul Rasheed Ghaffour", currency: "MYR", address: "Jalan Dato' Onn, Kuala Lumpur 50480" },
+            { country: "Singapore", name: "Monetary Authority of Singapore", lat: 1.3521, lon: 103.8198, established: "1971", governor: "Ravi Menon", currency: "SGD", address: "10 Shenton Way, MAS Building, Singapore 079117" },
+            { country: "Nigeria", name: "Central Bank of Nigeria", lat: 9.0765, lon: 7.3986, established: "1958", governor: "Olayemi Cardoso", currency: "NGN", address: "33 Tafawa Balewa Way, Central Business District, Abuja" },
+            { country: "Egypt", name: "Central Bank of Egypt", lat: 30.0444, lon: 31.2357, established: "1961", governor: "Hassan Abdalla", currency: "EGP", address: "31 Kasr El Nil Street, Downtown, Cairo 11511" },
+            { country: "Philippines", name: "Bangko Sentral ng Pilipinas", lat: 14.5995, lon: 120.9842, established: "1993", governor: "Felipe Medalla", currency: "PHP", address: "A. Mabini Street, Malate, Manila 1004" },
+            { country: "Vietnam", name: "State Bank of Vietnam", lat: 21.0285, lon: 105.8542, established: "1951", governor: "Nguyen Thi Hong", currency: "VND", address: "49 Ly Thai To Street, Hoan Kiem District, Hanoi" },
+            { country: "Poland", name: "National Bank of Poland", lat: 52.2297, lon: 21.0122, established: "1945", governor: "Adam Glapiński", currency: "PLN", address: "ul. Świętokrzyska 11/21, Warsaw 00-919" },
+            { country: "Sweden", name: "Sveriges Riksbank", lat: 59.3293, lon: 18.0686, established: "1668", governor: "Erik Thedéen", currency: "SEK", address: "Brunkebergstorg 11, Stockholm SE-103 37" },
+            { country: "Norway", name: "Norges Bank", lat: 59.9139, lon: 10.7522, established: "1816", governor: "Ida Wolden Bache", currency: "NOK", address: "Bankplassen 2, Oslo 0107" },
+            { country: "Denmark", name: "Danmarks Nationalbank", lat: 55.6761, lon: 12.5683, established: "1818", governor: "Lars Rohde", currency: "DKK", address: "Havnegade 5, Copenhagen 1093" },
+            { country: "New Zealand", name: "Reserve Bank of New Zealand", lat: -41.2865, lon: 174.7762, established: "1934", governor: "Adrian Orr", currency: "NZD", address: "2 The Terrace, Wellington 6011" },
+            { country: "Israel", name: "Bank of Israel", lat: 31.7683, lon: 35.2137, established: "1954", governor: "Amir Yaron", currency: "ILS", address: "Kiryat HaMemshala, Jerusalem 91007" },
+            { country: "Chile", name: "Central Bank of Chile", lat: -33.4489, lon: -70.6693, established: "1925", governor: "Rosanna Costa", currency: "CLP", address: "Agustinas 1180, Santiago Centro, Santiago" },
+            { country: "Colombia", name: "Bank of the Republic", lat: 4.6097, lon: -74.0817, established: "1923", governor: "Leonardo Villar", currency: "COP", address: "Carrera 7 No. 14-78, Bogotá" },
+            { country: "Peru", name: "Central Reserve Bank of Peru", lat: -12.0464, lon: -77.0428, established: "1922", governor: "Julio Velarde", currency: "PEN", address: "Jr. Antonio Miró Quesada 441-445, Lima 1" },
+            { country: "Czech Republic", name: "Czech National Bank", lat: 50.0875, lon: 14.4213, established: "1993", governor: "Aleš Michl", currency: "CZK", address: "Na Příkopě 28, Prague 115 03" },
+            { country: "Hungary", name: "National Bank of Hungary", lat: 47.4979, lon: 19.0402, established: "1924", governor: "György Matolcsy", currency: "HUF", address: "Szabadság tér 9, Budapest H-1054" },
+            { country: "Romania", name: "National Bank of Romania", lat: 44.4268, lon: 26.1025, established: "1880", governor: "Mugur Isărescu", currency: "RON", address: "25 Lipscani Street, Bucharest 030031" },
+            { country: "Pakistan", name: "State Bank of Pakistan", lat: 24.8607, lon: 67.0011, established: "1948", governor: "Jameel Ahmad", currency: "PKR", address: "I.I. Chundrigar Road, Karachi 74200" },
+            { country: "Bangladesh", name: "Bangladesh Bank", lat: 23.8103, lon: 90.4125, established: "1971", governor: "Abdur Rouf Talukder", currency: "BDT", address: "Motijheel Commercial Area, Dhaka 1000" },
+            { country: "Kenya", name: "Central Bank of Kenya", lat: -1.2864, lon: 36.8172, established: "1966", governor: "Kamau Thugge", currency: "KES", address: "Haile Selassie Avenue, Nairobi" },
+            { country: "Morocco", name: "Bank Al-Maghrib", lat: 33.9716, lon: -6.8498, established: "1959", governor: "Abdellatif Jouahri", currency: "MAD", address: "277 Avenue Mohammed V, Rabat" },
+            { country: "Ghana", name: "Bank of Ghana", lat: 5.6037, lon: -0.1870, established: "1957", governor: "Ernest Addison", currency: "GHS", address: "1 Thorpe Road, Accra" },
+            { country: "Ukraine", name: "National Bank of Ukraine", lat: 50.4501, lon: 30.5234, established: "1991", governor: "Andriy Pyshnyy", currency: "UAH", address: "9 Instytutska Street, Kyiv 01601" },
+            { country: "Iran", name: "Central Bank of Iran", lat: 35.6892, lon: 51.3890, established: "1960", governor: "Mohammad Reza Farzin", currency: "IRR", address: "Ferdowsi Avenue, Tehran" },
+            { country: "Iraq", name: "Central Bank of Iraq", lat: 33.3152, lon: 44.3661, established: "1947", governor: "Ali Mohsen Al-Alaq", currency: "IQD", address: "Rasheed Street, Baghdad" },
+            { country: "UAE", name: "Central Bank of UAE", lat: 24.4539, lon: 54.3773, established: "1980", governor: "Khaled Mohamed Balama", currency: "AED", address: "Bainunah (Al Muroor) Street, Abu Dhabi" },
+            { country: "Qatar", name: "Qatar Central Bank", lat: 25.2854, lon: 51.5310, established: "1993", governor: "Sheikh Bandar bin Mohammed Al Thani", currency: "QAR", address: "Grand Hamad Street, Doha" },
+            { country: "Kuwait", name: "Central Bank of Kuwait", lat: 29.3759, lon: 47.9774, established: "1968", governor: "Basel Al-Haroon", currency: "KWD", address: "Abdullah Al-Ahmed Street, Kuwait City" },
+            { country: "Venezuela", name: "Central Bank of Venezuela", lat: 10.5060, lon: -66.9146, established: "1939", governor: "Calixto Ortega", currency: "VES", address: "Esquina Las Carmelitas, Caracas 1010" },
+            { country: "Ecuador", name: "Central Bank of Ecuador", lat: -0.1807, lon: -78.4678, established: "1927", governor: "Guillermo Avellan", currency: "USD", address: "Av. 10 de Agosto, Quito" },
+            { country: "Croatia", name: "Croatian National Bank", lat: 45.8150, lon: 15.9819, established: "1990", governor: "Boris Vujčić", currency: "EUR", address: "Trg hrvatskih velikana 3, Zagreb 10002" },
+            { country: "Serbia", name: "National Bank of Serbia", lat: 44.7866, lon: 20.4489, established: "1884", governor: "Jorgovanka Tabaković", currency: "RSD", address: "Nemanjina 17, Belgrade 11000" },
+            { country: "Bulgaria", name: "Bulgarian National Bank", lat: 42.6977, lon: 23.3219, established: "1879", governor: "Dimitar Radev", currency: "BGN", address: "1 Alexander Battenberg Square, Sofia 1000" },
+            { country: "Kazakhstan", name: "National Bank of Kazakhstan", lat: 51.1694, lon: 71.4491, established: "1993", governor: "Galymzhan Pirmatov", currency: "KZT", address: "Samal-2, Nur-Sultan 010000" },
+            { country: "Algeria", name: "Bank of Algeria", lat: 36.7538, lon: 3.0588, established: "1962", governor: "Salah Eddine Taleb", currency: "DZD", address: "38 Avenue Franklin Roosevelt, Algiers 16000" },
+            { country: "Tunisia", name: "Central Bank of Tunisia", lat: 36.8065, lon: 10.1815, established: "1958", governor: "Marouane El Abassi", currency: "TND", address: "25 Rue Hedi Nouira, Tunis 1001" },
+            { country: "Angola", name: "National Bank of Angola", lat: -8.8383, lon: 13.2344, established: "1976", governor: "José de Lima Massano", currency: "AOA", address: "Avenida 4 de Fevereiro 151, Luanda" },
+            { country: "Ethiopia", name: "National Bank of Ethiopia", lat: 9.0320, lon: 38.7469, established: "1963", governor: "Mamo Mihretu", currency: "ETB", address: "Namibia Street, Addis Ababa" },
+            { country: "Tanzania", name: "Bank of Tanzania", lat: -6.7924, lon: 39.2083, established: "1966", governor: "Emmanuel Tutuba", currency: "TZS", address: "10 Mirambo Street, Dar es Salaam" },
+            { country: "Uganda", name: "Bank of Uganda", lat: 0.3476, lon: 32.5825, established: "1966", governor: "Emmanuel Tumusiime-Mutebile", currency: "UGX", address: "37/45 Kampala Road, Kampala" },
+            { country: "Zambia", name: "Bank of Zambia", lat: -15.3875, lon: 28.3228, established: "1964", governor: "Denny Kalyalya", currency: "ZMW", address: "Bank Square, Cairo Road, Lusaka" },
+            { country: "Zimbabwe", name: "Reserve Bank of Zimbabwe", lat: -17.8252, lon: 31.0335, established: "1964", governor: "John Mangudya", currency: "ZWL", address: "80 Samora Machel Avenue, Harare" },
+            { country: "Sri Lanka", name: "Central Bank of Sri Lanka", lat: 6.9271, lon: 79.8612, established: "1950", governor: "Nandalal Weerasinghe", currency: "LKR", address: "30 Janadhipathi Mawatha, Colombo 01" },
+            { country: "Myanmar", name: "Central Bank of Myanmar", lat: 16.8661, lon: 96.1951, established: "1948", governor: "Than Nyein", currency: "MMK", address: "Pansodan Street, Yangon" },
+            { country: "Cambodia", name: "National Bank of Cambodia", lat: 11.5564, lon: 104.9282, established: "1954", governor: "Chea Chanto", currency: "KHR", address: "Preah Norodom Boulevard, Phnom Penh" },
+            { country: "Laos", name: "Bank of Lao PDR", lat: 17.9757, lon: 102.6331, established: "1968", governor: "Bounleua Sinxayvoravong", currency: "LAK", address: "Lane Xang Avenue, Vientiane" },
+            { country: "Nepal", name: "Nepal Rastra Bank", lat: 27.7172, lon: 85.3240, established: "1956", governor: "Maha Prasad Adhikari", currency: "NPR", address: "Baluwatar, Kathmandu" },
+            { country: "Botswana", name: "Bank of Botswana", lat: -24.6282, lon: 25.9231, established: "1975", governor: "Moses Pelaelo", currency: "BWP", address: "Khama Crescent, Gaborone" },
+            { country: "Namibia", name: "Bank of Namibia", lat: -22.5597, lon: 17.0832, established: "1990", governor: "Johannes !Gawaxab", currency: "NAD", address: "71 Robert Mugabe Avenue, Windhoek" },
+            { country: "Mauritius", name: "Bank of Mauritius", lat: -20.1654, lon: 57.5014, established: "1967", governor: "Harvesh Seegolam", currency: "MUR", address: "Sir William Newton Street, Port Louis" },
+            { country: "Iceland", name: "Central Bank of Iceland", lat: 64.1466, lon: -21.9426, established: "1961", governor: "Ásgeir Jónsson", currency: "ISK", address: "Kalkofnsvegur 1, Reykjavík 150" },
+            { country: "Ireland", name: "Central Bank of Ireland", lat: 53.3498, lon: -6.2603, established: "1943", governor: "Gabriel Makhlouf", currency: "EUR", address: "North Wall Quay, Dublin D01 F7X3" },
+            { country: "Portugal", name: "Bank of Portugal", lat: 38.7223, lon: -9.1393, established: "1846", governor: "Mário Centeno", currency: "EUR", address: "Rua do Comércio 148, Lisbon 1100-150" },
+            { country: "Greece", name: "Bank of Greece", lat: 37.9838, lon: 23.7275, established: "1927", governor: "Yannis Stournaras", currency: "EUR", address: "21 El. Venizelos Avenue, Athens 102 50" },
+            { country: "Austria", name: "National Bank of Austria", lat: 48.2082, lon: 16.3738, established: "1816", governor: "Robert Holzmann", currency: "EUR", address: "Otto-Wagner-Platz 3, Vienna 1090" },
+            { country: "Belgium", name: "National Bank of Belgium", lat: 50.8503, lon: 4.3517, established: "1850", governor: "Pierre Wunsch", currency: "EUR", address: "Boulevard de Berlaimont 14, Brussels 1000" },
+            { country: "Netherlands", name: "De Nederlandsche Bank", lat: 52.3676, lon: 4.9041, established: "1814", governor: "Klaas Knot", currency: "EUR", address: "Westeinde 1, Amsterdam 1017 ZN" },
+            { country: "Finland", name: "Bank of Finland", lat: 60.1699, lon: 24.9384, established: "1811", governor: "Olli Rehn", currency: "EUR", address: "Snellmaninkatu 6, Helsinki 00101" },
+            { country: "Spain", name: "Bank of Spain", lat: 40.4168, lon: -3.7038, established: "1782", governor: "Pablo Hernández de Cos", currency: "EUR", address: "Calle de Alcalá 48, Madrid 28014" },
+            { country: "Italy", name: "Bank of Italy", lat: 41.9028, lon: 12.4964, established: "1893", governor: "Fabio Panetta", currency: "EUR", address: "Via Nazionale 91, Rome 00184" },
+            { country: "Germany", name: "Deutsche Bundesbank", lat: 50.1155, lon: 8.6842, established: "1957", governor: "Joachim Nagel", currency: "EUR", address: "Wilhelm-Epstein-Strasse 14, Frankfurt 60431" },
+            { country: "France", name: "Bank of France", lat: 48.8566, lon: 2.3522, established: "1800", governor: "François Villeroy de Galhau", currency: "EUR", address: "31 Rue Croix-des-Petits-Champs, Paris 75001" },
+            { country: "Luxembourg", name: "Central Bank of Luxembourg", lat: 49.6116, lon: 6.1319, established: "1998", governor: "Gaston Reinesch", currency: "EUR", address: "2 Boulevard Royal, Luxembourg L-2983" },
+            { country: "Slovakia", name: "National Bank of Slovakia", lat: 48.1486, lon: 17.1077, established: "1993", governor: "Peter Kažimír", currency: "EUR", address: "Imricha Karvaša 1, Bratislava 813 25" },
+            { country: "Slovenia", name: "Bank of Slovenia", lat: 46.0569, lon: 14.5058, established: "1991", governor: "Boštjan Vasle", currency: "EUR", address: "Slovenska cesta 35, Ljubljana 1000" },
+            { country: "Estonia", name: "Bank of Estonia", lat: 59.4370, lon: 24.7536, established: "1919", governor: "Madis Müller", currency: "EUR", address: "Estonia pst 13, Tallinn 15095" },
+            { country: "Latvia", name: "Bank of Latvia", lat: 56.9496, lon: 24.1052, established: "1922", governor: "Mārtiņš Kazāks", currency: "EUR", address: "K. Valdemāra iela 2A, Riga LV-1050" },
+            { country: "Lithuania", name: "Bank of Lithuania", lat: 54.6872, lon: 25.2797, established: "1922", governor: "Gediminas Šimkus", currency: "EUR", address: "Totorių g. 4, Vilnius 01121" },
+            { country: "Cyprus", name: "Central Bank of Cyprus", lat: 35.1264, lon: 33.4299, established: "1963", governor: "Constantinos Herodotou", currency: "EUR", address: "Kennedy Avenue 80, Nicosia 1076" },
+            { country: "Malta", name: "Central Bank of Malta", lat: 35.8989, lon: 14.5146, established: "1968", governor: "Edward Scicluna", currency: "EUR", address: "Pjazza Kastilja, Valletta VLT 1060" },
+            { country: "Jordan", name: "Central Bank of Jordan", lat: 31.9454, lon: 35.9284, established: "1964", governor: "Adel Sharkas", currency: "JOD", address: "King Hussein Street, Amman 11118" },
+            { country: "Lebanon", name: "Banque du Liban", lat: 33.8886, lon: 35.4955, established: "1963", governor: "Riad Salameh", currency: "LBP", address: "Masraf Lubnan Street, Beirut" },
+            { country: "Oman", name: "Central Bank of Oman", lat: 23.6100, lon: 58.5454, established: "1974", governor: "Taimur Al Said", currency: "OMR", address: "Al Muttrah Street, Muscat 112" },
+            { country: "Bahrain", name: "Central Bank of Bahrain", lat: 26.2235, lon: 50.5876, established: "1973", governor: "Rasheed Al Maraj", currency: "BHD", address: "King Faisal Highway, Manama" },
+            { country: "Azerbaijan", name: "Central Bank of Azerbaijan", lat: 40.4093, lon: 49.8671, established: "1992", governor: "Taleh Kazimov", currency: "AZN", address: "Bul-Bul Avenue 19, Baku AZ1014" },
+            { country: "Armenia", name: "Central Bank of Armenia", lat: 40.1872, lon: 44.5152, established: "1993", governor: "Martin Galstyan", currency: "AMD", address: "V. Sargsyan 6, Yerevan 0010" },
+            { country: "Georgia", name: "National Bank of Georgia", lat: 41.7151, lon: 44.8271, established: "1991", governor: "Koba Gvenetadze", currency: "GEL", address: "2/4 Sanapiro Street, Tbilisi 0114" },
+            { country: "Uzbekistan", name: "Central Bank of Uzbekistan", lat: 41.2995, lon: 69.2401, established: "1991", governor: "Mamarizo Nurmuratov", currency: "UZS", address: "Uzbekistan Street, Tashkent 100000" },
+            { country: "Mongolia", name: "Bank of Mongolia", lat: 47.9191, lon: 106.9178, established: "1924", governor: "Lkhagvasuren Byadran", currency: "MNT", address: "Peace Avenue 15, Ulaanbaatar 210646" },
+            { country: "Costa Rica", name: "Central Bank of Costa Rica", lat: 9.9281, lon: -84.0907, established: "1950", governor: "Róger Madrigal", currency: "CRC", address: "Avenida Central, San José 10058" },
+            { country: "Panama", name: "National Bank of Panama", lat: 8.9824, lon: -79.5199, established: "1904", governor: "José Javier Rivera", currency: "PAB", address: "Via Espana, Panama City" },
+            { country: "Uruguay", name: "Central Bank of Uruguay", lat: -34.9011, lon: -56.1645, established: "1967", governor: "Diego Labat", currency: "UYU", address: "Diagonal Fabini 777, Montevideo 11100" },
+            { country: "Paraguay", name: "Central Bank of Paraguay", lat: -25.2637, lon: -57.5759, established: "1952", governor: "Carlos Fernández Valdovinos", currency: "PYG", address: "Federación Rusa esq. Pablo VI, Asunción" },
+            { country: "Bolivia", name: "Central Bank of Bolivia", lat: -16.5000, lon: -68.1500, established: "1928", governor: "Edwin Rojas", currency: "BOB", address: "Ayacucho esq. Mercado, La Paz" },
+            { country: "Guatemala", name: "Bank of Guatemala", lat: 14.6349, lon: -90.5069, established: "1946", governor: "Sergio Recinos", currency: "GTQ", address: "7a Avenida 22-01, Guatemala City 01001" },
+            { country: "Honduras", name: "Central Bank of Honduras", lat: 14.0723, lon: -87.1921, established: "1950", governor: "Wilfredo Cerrato", currency: "HNL", address: "5 Avenida 1 Calle, Tegucigalpa" },
+            { country: "El Salvador", name: "Central Reserve Bank of El Salvador", lat: 13.6929, lon: -89.2182, established: "1934", governor: "Douglas Rodríguez", currency: "USD", address: "Alameda Juan Pablo II, San Salvador" },
+            { country: "Nicaragua", name: "Central Bank of Nicaragua", lat: 12.1150, lon: -86.2362, established: "1960", governor: "Ovidio Reyes", currency: "NIO", address: "Carretera Sur Km 7, Managua" },
+            { country: "Jamaica", name: "Bank of Jamaica", lat: 17.9714, lon: -76.7931, established: "1960", governor: "Richard Byles", currency: "JMD", address: "Nethersole Place, Kingston" },
+            { country: "Trinidad and Tobago", name: "Central Bank of Trinidad and Tobago", lat: 10.6918, lon: -61.2225, established: "1964", governor: "Alvin Hilaire", currency: "TTD", address: "Eric Williams Plaza, Port of Spain" },
+            { country: "Barbados", name: "Central Bank of Barbados", lat: 13.1939, lon: -59.5432, established: "1972", governor: "Winston Cox", currency: "BBD", address: "Tom Adams Financial Centre, Bridgetown" },
+            { country: "Albania", name: "Bank of Albania", lat: 41.3275, lon: 19.8187, established: "1992", governor: "Gent Sejko", currency: "ALL", address: "Sheshi Skenderbej 1, Tirana 1001" },
+            { country: "North Macedonia", name: "National Bank of North Macedonia", lat: 41.9981, lon: 21.4254, established: "1992", governor: "Anita Angelovska-Bezhoska", currency: "MKD", address: "Kompleks Banki 3, Skopje 1000" },
+            { country: "Bosnia and Herzegovina", name: "Central Bank of Bosnia and Herzegovina", lat: 43.8564, lon: 18.4131, established: "1997", governor: "Senad Softić", currency: "BAM", address: "Maršala Tita 25, Sarajevo 71000" },
+            { country: "Moldova", name: "National Bank of Moldova", lat: 47.0105, lon: 28.8638, established: "1991", governor: "Octavian Armașu", currency: "MDL", address: "Renasterii Boulevard 7, Chisinau MD-2005" },
+            { country: "Belarus", name: "National Bank of Belarus", lat: 53.9045, lon: 27.5615, established: "1922", governor: "Pavel Kallaur", currency: "BYN", address: "Nezavisimosti Avenue 20, Minsk 220008" },
+            { country: "Kyrgyzstan", name: "National Bank of Kyrgyzstan", lat: 42.8746, lon: 74.5698, established: "1992", governor: "Tolkunbek Abdygulov", currency: "KGS", address: "Umetalieva Street 101, Bishkek 720040" },
+            { country: "Tajikistan", name: "National Bank of Tajikistan", lat: 38.5598, lon: 68.7738, established: "1991", governor: "Jamshed Nurmuhammadzoda", currency: "TJS", address: "Rudaki Avenue 107, Dushanbe 734003" },
+            { country: "Turkmenistan", name: "Central Bank of Turkmenistan", lat: 37.9601, lon: 58.3261, established: "1991", governor: "Muhammetgeldi Serdarov", currency: "TMT", address: "Bitarap Turkmenistan Avenue, Ashgabat 744000" },
+            { country: "Papua New Guinea", name: "Bank of Papua New Guinea", lat: -9.4438, lon: 147.1803, established: "1973", governor: "Loi Bakani", currency: "PGK", address: "Douglas Street, Port Moresby" },
+            { country: "Fiji", name: "Reserve Bank of Fiji", lat: -18.1416, lon: 178.4419, established: "1984", governor: "Ariff Ali", currency: "FJD", address: "Pratt Street, Suva" },
+            { country: "Haiti", name: "Bank of the Republic of Haiti", lat: 18.5944, lon: -72.3074, established: "1979", governor: "Jean Baden Dubois", currency: "HTG", address: "Rue des Miracles, Port-au-Prince" },
+            { country: "Dominican Republic", name: "Central Bank of the Dominican Republic", lat: 18.4861, lon: -69.9312, established: "1947", governor: "Héctor Valdez Albizu", currency: "DOP", address: "Calle Pedro Henríquez Ureña, Santo Domingo" },
+            { country: "Cuba", name: "Central Bank of Cuba", lat: 23.1136, lon: -82.3666, established: "1997", governor: "Marta Wilson González", currency: "CUP", address: "Calle Cuba 402, Havana 10100" },
+            { country: "Suriname", name: "Central Bank of Suriname", lat: 5.8520, lon: -55.2038, established: "1957", governor: "Maurice Robles", currency: "SRD", address: "Waterkant 20, Paramaribo" },
+            { country: "Guyana", name: "Bank of Guyana", lat: 6.8013, lon: -58.1551, established: "1965", governor: "Gobind Ganga", currency: "GYD", address: "1 Avenue of the Republic, Georgetown" },
+            { country: "Mozambique", name: "Bank of Mozambique", lat: -25.9655, lon: 32.5832, established: "1975", governor: "Rogério Zandamela", currency: "MZN", address: "Avenida 25 de Setembro 1695, Maputo" },
+            { country: "Madagascar", name: "Central Bank of Madagascar", lat: -18.8792, lon: 47.5079, established: "1973", governor: "Alain Rasolofondraibe", currency: "MGA", address: "Avenue de la Révolution Socialiste, Antananarivo 101" },
+            { country: "Malawi", name: "Reserve Bank of Malawi", lat: -13.9626, lon: 33.7741, established: "1965", governor: "Wilson Banda", currency: "MWK", address: "Convention Drive, Lilongwe" },
+            { country: "Rwanda", name: "National Bank of Rwanda", lat: -1.9403, lon: 29.8739, established: "1964", governor: "John Rwangombwa", currency: "RWF", address: "Avenue Paul VI, Kigali" },
+            { country: "Senegal", name: "Central Bank of West African States (BCEAO)", lat: 14.6937, lon: -17.4441, established: "1959", governor: "Jean-Claude Kassi Brou", currency: "XOF", address: "Avenue Abdoulaye Fadiga, Dakar" },
+            { country: "Ivory Coast", name: "BCEAO - Ivory Coast", lat: 5.3600, lon: -4.0083, established: "1959", governor: "Jean-Claude Kassi Brou", currency: "XOF", address: "Avenue Joseph Anoma, Abidjan" },
+            { country: "Cameroon", name: "Bank of Central African States (BEAC)", lat: 3.8480, lon: 11.5021, established: "1972", governor: "Abbas Mahamat Tolli", currency: "XAF", address: "Avenue Monseigneur Vogt 736, Yaoundé" },
+            { country: "Gabon", name: "BEAC - Gabon", lat: 0.4162, lon: 9.4673, established: "1972", governor: "Abbas Mahamat Tolli", currency: "XAF", address: "Boulevard de l'Indépendance, Libreville" },
+            { country: "Congo", name: "BEAC - Congo", lat: -4.2634, lon: 15.2429, established: "1972", governor: "Abbas Mahamat Tolli", currency: "XAF", address: "Avenue Amilcar Cabral, Brazzaville" },
+            { country: "Liberia", name: "Central Bank of Liberia", lat: 6.3156, lon: -10.8074, established: "1999", governor: "Aloysius Tarlue", currency: "LRD", address: "Warren and Carey Streets, Monrovia" },
+            { country: "Sierra Leone", name: "Bank of Sierra Leone", lat: 8.4657, lon: -13.2317, established: "1963", governor: "Kelfala Kallon", currency: "SLL", address: "Siaka Stevens Street, Freetown" },
+            { country: "Afghanistan", name: "Da Afghanistan Bank", lat: 34.5553, lon: 69.2075, established: "1939", governor: "Hidayatullah Badri", currency: "AFN", address: "Ibn Sina Wat, Kabul" },
+            { country: "Yemen", name: "Central Bank of Yemen", lat: 15.5527, lon: 48.5164, established: "1971", governor: "Ahmed Ghaleb", currency: "YER", address: "Ali Abdul Mughni Street, Aden" },
+            { country: "Syria", name: "Central Bank of Syria", lat: 33.5138, lon: 36.2765, established: "1953", governor: "Hazem Younes Karfoul", currency: "SYP", address: "Sabaa Bahrat Square, Damascus" },
+            { country: "Libya", name: "Central Bank of Libya", lat: 32.8872, lon: 13.1913, established: "1956", governor: "Naji Issa", currency: "LYD", address: "PO Box 1103, Tripoli" },
+            { country: "Sudan", name: "Central Bank of Sudan", lat: 15.5007, lon: 32.5599, established: "1960", governor: "Burai El Siddiq", currency: "SDG", address: "Al Gamaa Avenue, Khartoum" },
+            { country: "Somalia", name: "Central Bank of Somalia", lat: 2.0469, lon: 45.3182, established: "1960", governor: "Abdirahman Abdullahi", currency: "SOS", address: "Corso Somalia, Mogadishu" },
+            { country: "Burundi", name: "Bank of the Republic of Burundi", lat: -3.3614, lon: 29.3599, established: "1966", governor: "Jean Ciza", currency: "BIF", address: "Avenue de la Banque 1, Bujumbura" },
+            { country: "Lesotho", name: "Central Bank of Lesotho", lat: -29.3167, lon: 27.4833, established: "1978", governor: "Rets'elisitsoe Matlanyane", currency: "LSL", address: "Corner of Airport and Moshoeshoe Roads, Maseru 100" },
+            { country: "Eswatini", name: "Central Bank of Eswatini", lat: -26.3054, lon: 31.1367, established: "1974", governor: "Sibusiso Dlamini", currency: "SZL", address: "Mahlokohla Street, Mbabane H100" },
+            { country: "Bhutan", name: "Royal Monetary Authority of Bhutan", lat: 27.4728, lon: 89.6393, established: "1982", governor: "Dasho Penjore", currency: "BTN", address: "Thori Lam, Thimphu 11001" },
+            { country: "Maldives", name: "Maldives Monetary Authority", lat: 4.1755, lon: 73.5093, established: "1981", governor: "Ali Hashim", currency: "MVR", address: "Boduthakurufaanu Magu, Malé 20182" },
+            { country: "Brunei", name: "Autoriti Monetari Brunei Darussalam", lat: 4.9031, lon: 114.9398, established: "2011", governor: "Dato Seri Setia Dr. Amin Liew", currency: "BND", address: "Jalan Pretty, Bandar Seri Begawan BB3910" },
+            { country: "Timor-Leste", name: "Central Bank of Timor-Leste", lat: -8.5569, lon: 125.5603, established: "2011", governor: "Abraão de Vasconselos", currency: "USD", address: "Avenida Bispo de Medeiros, Dili" },
+            { country: "Hong Kong", name: "Hong Kong Monetary Authority", lat: 22.3193, lon: 114.1694, established: "1993", governor: "Eddie Yue", currency: "HKD", address: "55th Floor, Two International Finance Centre, Central" },
+            { country: "Taiwan", name: "Central Bank of Taiwan", lat: 25.0330, lon: 121.5654, established: "1924", governor: "Yang Chin-long", currency: "TWD", address: "2 Roosevelt Road Section 1, Taipei 10066" }
+        ];
+
+        const map = L.map('map', {
+            center: [20, 0],
+            zoom: 3,
+            minZoom: 2,
+            maxZoom: 19
+        });
+
+        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Esri',
+            maxZoom: 19
+        }).addTo(map);
+
+        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+            maxZoom: 19,
+            opacity: 0.5
+        }).addTo(map);
+
+        centralBanks.forEach(bank => {
+            const marker = L.circleMarker([bank.lat, bank.lon], {
+                radius: 8,
+                fillColor: '#d4af37',
+                color: '#f4d03f',
+                weight: 2,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+
+            const popupContent = `
+                <div class="popup-content">
+                    <h3>${bank.name}</h3>
+                    <div class="country-name">${bank.country}</div>
+                    <div class="detail"><strong>Address:</strong> ${bank.address}</div>
+                    <div class="detail"><strong>Established:</strong> ${bank.established}</div>
+                    <div class="detail"><strong>Governor:</strong> ${bank.governor}</div>
+                    <div class="detail"><strong>Currency:</strong> ${bank.currency}</div>
+                </div>
+            `;
+
+            marker.bindPopup(popupContent, { maxWidth: 400, autoPan: true });
+
+            marker.on('click', function() {
+                setTimeout(() => {
+                    map.flyTo([bank.lat, bank.lon], 18, { duration: 1.5 });
+                }, 100);
+            });
+        });
+    </script>
+</body>
+</html>

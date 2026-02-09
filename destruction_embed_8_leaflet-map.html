@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Soy Organizations</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0e27;
+            color: #ffffff;
+        }
+        
+        #map-container {
+            position: relative;
+            width: 100%;
+            height: 800px;
+        }
+        
+        #map {
+            width: 100%;
+            height: 800px;
+        }
+        
+        #title {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background: rgba(10, 14, 39, 0.95);
+            padding: 20px 40px;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+        
+        #title h1 {
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            background: linear-gradient(135deg, #00d4ff, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+        
+        #title p {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0;
+        }
+        
+        #legend {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            background: rgba(10, 14, 39, 0.95);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 280px;
+        }
+        
+        #legend h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #00d4ff;
+            letter-spacing: 0.5px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+        
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            margin-right: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .leaflet-popup-content-wrapper {
+            background: rgba(10, 14, 39, 0.98);
+            color: #ffffff;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+        }
+        
+        .leaflet-popup-content {
+            margin: 16px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .leaflet-popup-content h4 {
+            color: #00d4ff;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .leaflet-popup-tip {
+            background: rgba(10, 14, 39, 0.98);
+        }
+        
+        .leaflet-popup-close-button {
+            color: #00d4ff !important;
+            font-size: 20px !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="map-container">
+        <div id="title">
+            <h1>Global Soy Organizations</h1>
+            <p>Representing countries that produce >95% of global soybean supply</p>
+        </div>
+        
+        <div id="map"></div>
+        
+        <div id="legend">
+            <h3>Organizations by Country</h3>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #FF6B6B;"></div>
+                <span>Brazil</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #4ECDC4;"></div>
+                <span>United States</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #95E1D3;"></div>
+                <span>United Kingdom</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #FFD93D;"></div>
+                <span>China</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #FF9A76;"></div>
+                <span>India</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #A8E6CF;"></div>
+                <span>Paraguay</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #C7CEEA;"></div>
+                <span>Uruguay</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #FF85A2;"></div>
+                <span>Argentina</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #A8DADC;"></div>
+                <span>Canada</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize map with satellite view and boundaries
+        const map = L.map('map', {
+            center: [20, 0],
+            zoom: 2,
+            minZoom: 2,
+            maxZoom: 18,
+            maxBounds: [[-85, -180], [85, 180]],
+            maxBoundsViscosity: 1.0,
+            worldCopyJump: false,
+            scrollWheelZoom: true
+        });
+
+        // Add Google Satellite imagery
+        L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+            maxZoom: 18,
+            minZoom: 2,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+            attribution: '© Google',
+            noWrap: true,
+            bounds: [[-85, -180], [85, 180]]
+        }).addTo(map);
+
+        // Color scheme by country
+        const colors = {
+            'Brazil': '#FF6B6B',
+            'United States': '#4ECDC4',
+            'United Kingdom': '#95E1D3',
+            'China': '#FFD93D',
+            'India': '#FF9A76',
+            'Paraguay': '#A8E6CF',
+            'Uruguay': '#C7CEEA',
+            'Argentina': '#FF85A2',
+            'Canada': '#A8DADC'
+        };
+
+        // Organization data with verified locations
+        const organizations = [
+            {
+                name: 'FOSFA International',
+                address: '6th Floor, Augustine House, 6a Austin Friars, London EC2N 2HA, United Kingdom',
+                lat: 51.5155,
+                lon: -0.0824,
+                country: 'United Kingdom'
+            },
+            {
+                name: 'American Soybean Association (ASA)',
+                address: '12125 Woodcrest Executive Drive, Suite 100, St. Louis, MO 63141-5009, USA',
+                lat: 38.6601,
+                lon: -90.4449,
+                country: 'United States'
+            },
+            {
+                name: 'United Soybean Board (USB)',
+                address: '16305 Swingley Ridge Road, Suite 100, Chesterfield, MO 63017, USA',
+                lat: 38.6531,
+                lon: -90.5826,
+                country: 'United States'
+            },
+            {
+                name: 'U.S. Soybean Export Council (USSEC)',
+                address: '16305 Swingley Ridge Road, Suite 200, Chesterfield, MO 63017, USA',
+                lat: 38.6531,
+                lon: -90.5826,
+                country: 'United States'
+            },
+            {
+                name: 'Abiove (Brazilian Association of Vegetable Oil Industries)',
+                address: 'Avenida Vereador José Diniz 3707 apt 73 - Campo Belo, São Paulo 04603-004, Brazil',
+                lat: -23.6254,
+                lon: -46.6659,
+                country: 'Brazil'
+            },
+            {
+                name: 'Aprosoja Brasil',
+                address: 'SHIS QL10 conjunto 8 casa 6, Lago Sul, Brasília - DF, CEP: 71.630-085, Brazil',
+                lat: -15.8267,
+                lon: -47.9218,
+                country: 'Brazil'
+            },
+            {
+                name: 'APS (Asociación de Productores de Soja - Paraguay)',
+                address: 'Supercarretera km 4 1/2, Camino a Hernandarias, Ciudad del Este, Alto Parana, Paraguay',
+                lat: -25.5095,
+                lon: -54.6125,
+                country: 'Paraguay'
+            },
+            {
+                name: 'CAPECO (Paraguayan Chamber of Grain and Oilseed Exporters)',
+                address: 'Avda. Brasilia N° 840 c/Sgto. Gauto, Asunción, Paraguay',
+                lat: -25.2637,
+                lon: -57.5759,
+                country: 'Paraguay'
+            },
+            {
+                name: 'MTO - Mesa Tecnológica de Oleaginosos (Uruguay)',
+                address: 'Av. Gral. Rondeau 1908 Piso 1, 11800 Montevideo, Uruguay',
+                lat: -34.9011,
+                lon: -56.1645,
+                country: 'Uruguay'
+            },
+            {
+                name: 'China Soybean Industry Association (CSIA)',
+                address: 'No.89 Mail Box, No. 12 South Street of Zhongguancun, Haidian District, Beijing, 100081, China',
+                lat: 39.9817,
+                lon: 116.3142,
+                country: 'China'
+            },
+            {
+                name: 'COFCO Group',
+                address: 'No.8, Chao Yang Men South Street, COFCO Fortune Plaza, Chaoyang District, Beijing, 100020, China',
+                lat: 39.9270,
+                lon: 116.4342,
+                country: 'China'
+            },
+            {
+                name: 'Soybean Processors Association of India (SOPA)',
+                address: 'Scheme No. 53, Near Malviya Nagar, A.B. Road, Indore 452008, Madhya Pradesh, India',
+                lat: 22.7196,
+                lon: 75.8577,
+                country: 'India'
+            },
+            {
+                name: 'Solvent Extractors\' Association of India (SEA)',
+                address: '142, Jolly Maker Chambers No 2, 14th Floor, 225, Nariman Point, Mumbai 400021, India',
+                lat: 18.9256,
+                lon: 72.8235,
+                country: 'India'
+            },
+            {
+                name: 'All India Soybean Growers Association (AISGA)',
+                address: '142, Jolly Maker Chambers No 2, 14th Floor, 225, Nariman Point, Mumbai 400021, India',
+                lat: 18.9256,
+                lon: 72.8235,
+                country: 'India'
+            },
+            {
+                name: 'CIARA-CEC (Argentine Oilseed and Cereal Exporters Chamber)',
+                address: 'Bouchard 454 (C1106ABE), Buenos Aires, Argentina',
+                lat: -34.6011,
+                lon: -58.3714,
+                country: 'Argentina'
+            },
+            {
+                name: 'ACSOJA (Asociación de la Cadena de la Soja Argentina)',
+                address: 'Paraguay 777 – 4th Floor (S2000CVO), Rosario, Argentina',
+                lat: -32.9442,
+                lon: -60.6505,
+                country: 'Argentina'
+            },
+            {
+                name: 'ANEC (National Association of Cereal Exporters)',
+                address: 'Av. Brigadeiro Faria Lima, 1656 - 8th Floor - Suite 8A, Jd. Paulistano, São Paulo, Brazil',
+                lat: -23.5629,
+                lon: -46.6901,
+                country: 'Brazil'
+            },
+            {
+                name: 'Canadian Oilseed Processors Association (COPA)',
+                address: '404-167 Lombard Avenue, Winnipeg MB R3B 0V3, Canada',
+                lat: 49.8951,
+                lon: -97.1384,
+                country: 'Canada'
+            },
+            {
+                name: 'Soy Canada',
+                address: '703-350 Sparks Street, Ottawa, Ontario K1R 7S8, Canada',
+                lat: 45.4215,
+                lon: -75.6972,
+                country: 'Canada'
+            },
+            {
+                name: 'China National Grain and Oils Information Center (CNGOIC)',
+                address: 'No. 25 Yuetan North Street, Xicheng District, Beijing 100834, China',
+                lat: 39.9186,
+                lon: 116.3472,
+                country: 'China'
+            },
+            {
+                name: 'International Soybean Growers Alliance (ISGA)',
+                address: '12647 Olive Boulevard, Ste. 410, St. Louis, MO 63141, USA (Coordinated through ASA)',
+                lat: 38.6640,
+                lon: -90.4280,
+                country: 'United States'
+            }
+        ];
+
+        // Add markers to map
+        organizations.forEach(org => {
+            const marker = L.circleMarker([org.lat, org.lon], {
+                radius: 8,
+                fillColor: colors[org.country],
+                color: '#ffffff',
+                weight: 2,
+                opacity: 1,
+                fillOpacity: 0.9
+            }).addTo(map);
+
+            marker.bindPopup(`
+                <h4>${org.name}</h4>
+                <p><strong>Address:</strong><br>${org.address}</p>
+            `);
+
+            marker.on('mouseover', function(e) {
+                this.openPopup();
+            });
+        });
+    </script>
+</body>
+</html>

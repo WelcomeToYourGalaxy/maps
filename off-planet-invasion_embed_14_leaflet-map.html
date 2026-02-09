@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embedded Content</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0a0a0a; overflow: hidden; }
+    </style>
+</head>
+<body>
+<!-- WEEBLY EMBED CODE - Copy everything below and paste into Weebly's "Embed Code" element -->
+
+<div style="width: 100%; height: 600px; max-width: 1200px; margin: 0 auto; position: relative; border: 2px solid #333; border-radius: 8px; overflow: hidden;">
+    <div id="ufomap" style="width: 100%; height: 100%;"></div>
+</div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+    .leaflet-popup-content-wrapper {
+        background: rgba(0, 0, 0, 0.9) !important;
+        color: #fff !important;
+        border: 2px solid #444 !important;
+        border-radius: 8px !important;
+    }
+    .leaflet-popup-content {
+        margin: 15px !important;
+        max-width: 350px !important;
+    }
+    .popup-title {
+        font-weight: bold;
+        font-size: 16px;
+        color: #4af;
+        margin-bottom: 8px;
+        border-bottom: 1px solid #444;
+        padding-bottom: 5px;
+    }
+    .popup-date {
+        color: #f84;
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+    .popup-description {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+    .leaflet-popup-tip {
+        background: rgba(0, 0, 0, 0.9) !important;
+    }
+    .ufo-legend {
+        position: absolute;
+        bottom: 30px;
+        right: 10px;
+        background: rgba(0, 0, 0, 0.85);
+        padding: 15px;
+        border-radius: 8px;
+        border: 2px solid #444;
+        z-index: 1000;
+        color: #fff;
+        font-size: 12px;
+    }
+    .legend-title {
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #4af;
+    }
+    .legend-item {
+        display: flex;
+        align-items: center;
+        margin: 5px 0;
+    }
+    .legend-color {
+        width: 20px;
+        height: 20px;
+        margin-right: 8px;
+        border: 1px solid #666;
+        border-radius: 3px;
+    }
+</style>
+
+<script>
+(function() {
+    // Wait for DOM and Leaflet to be ready
+    if (typeof L === 'undefined') {
+        setTimeout(arguments.callee, 100);
+        return;
+    }
+
+    const mapDiv = document.getElementById('ufomap');
+    if (!mapDiv || mapDiv.querySelector('.leaflet-container')) {
+        return; // Map already initialized
+    }
+
+    const map = L.map('ufomap', {
+        center: [30, 0],
+        zoom: 2,
+        minZoom: 2,
+        maxZoom: 18,
+        scrollWheelZoom: true
+    });
+
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri',
+        maxZoom: 18
+    }).addTo(map);
+
+    function getColor(year) {
+        if (year <= -8000) return '#fff5e1';
+        if (year <= -1000) return '#ffe4b3';
+        if (year <= 0) return '#ffd485';
+        if (year <= 500) return '#ffc357';
+        if (year <= 1000) return '#ffb329';
+        if (year <= 1400) return '#ff9900';
+        if (year <= 1600) return '#ff7700';
+        if (year <= 1800) return '#ff5500';
+        return '#ff3300';
+    }
+
+    const sightings = [
+        {lat: 25, lng: 10, year: -8000, location: "Tassili n'Ajjer, Sahara Desert", desc: "Cave paintings depicting strange humanoids and what appear to be craft or 'beams of light' emanating from the sky (c. 8,000 BCE to 4,000 BCE)"},
+        {lat: 36, lng: -112, year: -5000, location: "North America", desc: "Native American oral traditions across numerous tribes contain accounts of 'star people' or celestial visitors arriving in craft from the sky. The Hopi, Lakota, Cherokee, and many other nations have traditions describing beings descending from the stars in flying objects"},
+        {lat: 15, lng: 5, year: -2500, location: "Africa (Mali region)", desc: "Various tribes' oral traditions describe celestial beings or 'sky gods' descending to Earth in flying chariots or ships. The Dogon people of Mali describe beings from the star Sirius descending to Earth in flying vehicles (c. 3,000-500 BCE)"},
+        {lat: 28, lng: 77, year: -2000, location: "India", desc: "Ancient Indian texts, like the Mahabharata and the Ramayana, describe flying chariots called 'Vimanas,' advanced machines with incredible capabilities, flying through the air and between planets (c. 3,000 - 500 BCE)"},
+        {lat: 33, lng: 44, year: -2000, location: "Iraq (Sumeria)", desc: "The ancient Sumerians recorded strange celestial phenomena in their texts, including the Epic of Gilgamesh. In some of their mythologies, gods or beings from the heavens descend in chariots or other flying vehicles (c. 2,000 BCE)"},
+        {lat: 35, lng: 115, year: -2000, location: "China", desc: "Some ancient Chinese texts mention strange lights or 'gods' descending from the sky (c. 2,000 BCE)"},
+        {lat: 31, lng: 35, year: -1500, location: "Israel/Palestine/Egypt", desc: "The Book of Enoch, an ancient Jewish religious work, describes the descent of the Watchers, a group of angels, from the heavens in chariots that are said to impart forbidden knowledge to humanity (c. 2,000 - 1,000 BCE)"},
+        {lat: 30, lng: 31, year: -1500, location: "Egypt", desc: "The Tulli Papyrus, the authenticity of which is debated, allegedly describes a 'circle of fire' in the sky (c. 1,500 BCE)"},
+        {lat: 32.5, lng: 35, year: -580, location: "Iraq/Israel", desc: "The Book of Ezekiel describes a vision of a 'wheel within a wheel' and 'four living creatures' with a 'bright fire' and 'wings' that appeared from the sky (c. 593-571 BCE)"},
+        {lat: 33.27, lng: 35.19, year: -329, location: "Tyre, Phoenicia (Lebanon)", desc: "During Alexander the Great's siege of Tyre, 'flying shields' appeared in the sky. According to accounts, these objects flew in triangular formation, circled the city walls, and appeared to shoot beams of light that destroyed sections of the wall (329 BCE)"},
+        {lat: 41.9, lng: 12.5, year: -218, location: "Rome, Italy", desc: "'A spectacle of ships (navium) gleamed in the sky' - from Livy's prodigy lists derived from the Annales Maximi (218 BC)"},
+        {lat: 41.3, lng: 15.6, year: -217, location: "Arpi, Italy", desc: "'Round shields (parmas) were seen in the sky' - a parma being a small round metal shield used by Roman forces (217 BC)"},
+        {lat: 42.4, lng: 12.9, year: -214, location: "Hadria, Italy", desc: "'An altar was seen in the sky and about it the forms of men in white clothes' - recorded by Julius Obsequens. Also 'phantom ships' seen gleaming in the sky (214 BC)"},
+        {lat: 40.3, lng: 14.0, year: -214, location: "Cales, Italy", desc: "'Rain of chalk' fell from the sky - an early example of what modern ufologists call 'angel hair' (214 BC)"},
+        {lat: 42.4, lng: 12.9, year: -213, location: "Hadria, Italy", desc: "Similar sighting of an altar in the sky with a man in white clothing (213 BC)"},
+        {lat: 42.4, lng: 12.9, year: -212, location: "Reate, Italy", desc: "'A huge stone (saxum) was seen flying about' (212 BC)"},
+        {lat: 42.2, lng: 13.8, year: -204, location: "Alba Fucens, Italy", desc: "The 'miracle of the two suns' - two suns appeared in broad daylight. Documented by Julius Obsequens in his Liber Prodigiorum (~204 BC)"},
+        {lat: 41.7, lng: 12.7, year: -173, location: "Lanuvium, Italy", desc: "'A spectacle of a great fleet was said to have been seen in the sky' (173 BC)"},
+        {lat: 41.7, lng: 12.7, year: -170, location: "Lanupium, Italy", desc: "Medieval writer Conrad Wolfhart Lycothenes reports 'A remarkable spectacle of a fleet of ships was seen in the air' (170 BC)"},
+        {lat: 41.1, lng: 14.8, year: -163, location: "Formice/Capua, Italy", desc: "Multiple phenomena - 'At Capua the sun was seen by night. At Formice two suns were seen by day. The sky was afire. In Cephallenia a trumpet seemed to sound from the sky' (163 BC)"},
+        {lat: 40.8, lng: 14.3, year: -154, location: "Compsa, Italy", desc: "'Weapons (arma) appeared flying in the sky' (154 BC)"},
+        {lat: 45.5, lng: 3.0, year: -122, location: "Gaul/Ariminium", desc: "'Three suns and three moons were seen' - visible during daytime (122 BC)"},
+        {lat: 42.5, lng: 12.4, year: -104, location: "Ameria and Tuder, Italy", desc: "'Weapons in the sky rushing together from east and west, those from the west being routed' (104 BC)"},
+        {lat: 35, lng: 110, year: -100, location: "China", desc: "The Shiji (Records of the Grand Historian) by Sima Qian describes multiple occurrences of 'suns' or 'moons' that appear or behave oddly in the sky (c. 100 BCE)"},
+        {lat: 41.9, lng: 12.5, year: -100, location: "Rome, Italy", desc: "'A round shield (clipeus), burning and emitting sparks, ran across the sky from west to east, at sunset' (100 BC)"},
+        {lat: 41.9, lng: 12.5, year: -98, location: "Rome, Italy", desc: "Another 'rain of chalk' similar to the 214 BC Cales incident (98 BC)"},
+        {lat: 41.9, lng: 12.5, year: -85, location: "Rome, Italy", desc: "'A burning shield scattering sparks ran across the sky' - Pliny, Natural History (85 BC)"},
+        {lat: 42.7, lng: 12.9, year: -81, location: "Spoletium, Italy", desc: "'A gold-colored fireball rolled down to the ground, increased in size; seemed to move off the ground toward the east and was big enough to blot out the sun' (81 BC)"},
+        {lat: 41.9, lng: 12.5, year: -76, location: "Rome, Italy", desc: "Pliny the Elder documented that 'a spark fell from a star' and grew to the size of the moon, then shrunk back and disappeared (76 BCE)"},
+        {lat: 39.5, lng: 37.0, year: -74, location: "Phrygia, Asia Minor (Turkey)", desc: "During battle between Roman forces under Lucullus and King Mithridates VI, Plutarch records: 'a huge, flame-like body was seen to fall between the two armies. In shape, it was most like a wine-jar, and in color, like molten silver.' Witnessed by thousands (74 BC)"},
+        {lat: 41.9, lng: 12.5, year: -66, location: "Rome, Italy", desc: "'A spark was seen to fall from a star and increase in size as it approached the earth. After becoming as large as the moon it diffused a sort of cloudy daylight' (66 BC)"},
+        {lat: 41.9, lng: 12.5, year: -42, location: "Rome, Italy", desc: "Multiple Roman sources describe unusual lights and aerial phenomena around the time of Julius Caesar's assassination and the subsequent civil wars. These 'prodigies' were considered omens (42 BCE)"},
+        {lat: 41.9, lng: 12.5, year: -12, location: "Rome, Italy", desc: "A comet-like object hovered over Rome for several days, then 'melted into flashes resembling torches.' No sound mentioned, suggesting possibly a dispersal of smaller craft (12 BC)"},
+        {lat: 33.3, lng: 130.4, year: -9, location: "Kyushu, Japan", desc: "'Nine moons were seen in the night sky over the community' (9 BC)"},
+        {lat: 57.0, lng: -4.5, year: 60, location: "Caledon Wood, Scotland", desc: "When the Roman emperor Agricola was in Scotland, wondrous flames were seen in the skies over Caledon Wood, all one winter night. A ship was seen in the air moving fast - recorded by Conrad Wolfhart Lycothenes (60 AD)"},
+        {lat: 32.0, lng: 35.0, year: 66, location: "Judea", desc: "Josephus documented in 'The Jewish War' that 'chariots and armed troops' appeared 'coursing through the clouds and surrounding the cities.' Multiple eyewitnesses across the entire country near the beginning of the First Jewish-Roman War (66-70 AD)"},
+        {lat: 41.5, lng: 12.5, year: 150, location: "Via Campana, Italy", desc: "Hermas, brother of Pope Pius I, saw a 'beast', like a piece of pottery, 100 feet in size, multicolored on top and shooting out fiery rays. The object landed in a cloud of dust, accompanied by a 'maiden' clad in white (~150 AD)"},
+        {lat: 41.9, lng: 12.5, year: 196, location: "Rome, Italy", desc: "Cassius Dio's 'fine rain resembling silver' - fell all over Rome despite there not being a cloud in the sky. He collected some with three bronze coins for study. The substance remained for three days then disappeared (196 AD)"},
+        {lat: 41.9, lng: 12.5, year: 312, location: "Rome/Constantinople", desc: "Constantine the Great and his army witnessed a cross of light in the sky above the sun before the Battle of Milvian Bridge, accompanied by the words 'In this sign, conquer.' Some accounts mention a pillar of light. Mass sighting (312 CE)"},
+        {lat: 35.5, lng: 135.0, year: 394, location: "Japan", desc: "Japanese chronicles record unusual objects appearing in the sky during this period, described in terms consistent with aerial phenomena rather than purely astronomical events (394 CE)"},
+        {lat: 45.8, lng: 4.8, year: 496, location: "Vienne, Gaul (France)", desc: "Bishop Avitus of Vienne recorded in his writings about unusual lights and phenomena in the sky, though details are sparse in surviving texts (496 CE)"},
+        {lat: 41.0, lng: 29.0, year: 554, location: "Constantinople", desc: "Byzantine sources describe a luminous object seen in the sky, recorded in imperial chronicles as a notable event during Justinian I's reign (554 CE)"},
+        {lat: 47.4, lng: 0.7, year: 584, location: "Francia (France)", desc: "Gregory of Tours documented in his 'History of the Franks' that 'there appeared in the sky brilliant rays of light which seemed to cross and collide with one another' followed by 'golden globes' seen moving through the air on multiple occasions (584 CE)"},
+        {lat: 41.9, lng: 12.5, year: 593, location: "Rome, Italy", desc: "Pope Gregory I (Gregory the Great) documented unusual aerial phenomena during this period (593 CE)"},
+        {lat: 51.5, lng: -0.1, year: 664, location: "Britain", desc: "The Anglo-Saxon Chronicle records unusual lights and phenomena in the sky coinciding with a major plague outbreak (664 CE)"},
+        {lat: 53.3, lng: -6.3, year: 748, location: "Ireland", desc: "The Annals of Ulster describe 'ships sailing through the clouds' (748 CE)"},
+        {lat: 35, lng: 110, year: 750, location: "China", desc: "Chinese astronomical records continued documenting unusual aerial phenomena in official chronicles, including the 'guest stars' and unusual moving lights throughout the 1st-8th centuries CE"},
+        {lat: 51.6, lng: 7.8, year: 776, location: "Sigiburg Castle, Francia (Germany)", desc: "During the siege of Sigiburg Castle, Saxon forces and Frankish defenders both witnessed 'flaming shields' hovering over a church. According to the Annales Laurissenses, these objects caused the Saxons to flee in panic (776 CE)"},
+        {lat: 45.8, lng: 4.8, year: 820, location: "Lyons, France", desc: "According to Archbishop Agobard of Lyons' writings, 'three men and a woman were seen descending from these aerial ships.' They claimed they had been taken aboard by 'miraculous men.' The mob attempted to stone them to death (~800-840 CE)"},
+        {lat: 35.0, lng: 135.8, year: 900, location: "Japan", desc: "A 'burning wheel' was depicted in the sky over Japan (900 AD)"},
+        {lat: 31.0, lng: 121.5, year: 1088, location: "China", desc: "Shen Kuo, a Song Chinese government scholar-official and polymath inventor, wrote a vivid passage in his 'Dream Pool Essays' (1088) about an unidentified flying object. Notable as one of the few medieval Chinese accounts with specific dating (1088 CE)"},
+        {lat: 53.0, lng: -8.0, year: 1211, location: "Cloera/Clonmacnoise, Ireland", desc: "During Sunday mass, recorded by Gervase of Tilbury, an anchor dropped from the sky and caught on a church archway. A being 'swam' down through the air to release it. The Bishop warned seizing him might kill him. The crew cut the rope and sailed away. The anchor was kept in the church (~1211 AD)"},
+        {lat: 51.8, lng: 5.9, year: 1218, location: "Munster/Cologne/Leiden", desc: "Multiple locations saw 'a formation of three crosses across the sky.' A 'blue cross' appeared in the sky over Friesland at the same time (1218)"},
+        {lat: 51.5, lng: -0.1, year: 1222, location: "London, England", desc: "'Dragons' were observed above the city, coinciding with severe storms and major flooding (November 30, 1222)"},
+        {lat: 45.9, lng: 11.0, year: 1224, location: "Alverno, Italy", desc: "Brother Leo saw 'a ball of fire' in the sky (September 14, 1224)"},
+        {lat: 35.0, lng: 135.8, year: 1235, location: "Japan", desc: "General Yoritsume and his army witnessed mysterious lights performing 'amazing aerobatic movements, such as circling endlessly and flying in loops.' Yoritsume ordered the first known official scientific investigation of a UFO. His scientists concluded 'the whole thing is completely natural' (1235)"},
+        {lat: 45.4, lng: 11.9, year: 1252, location: "Padua, Italy", desc: "Cronaca di Rolandino da Padova records: 'A certain great star, like a comet, but it was not a comet because it did not have a tail...it looked almost as large as the moon, and it moved faster than the moon' (1252)"},
+        {lat: 52.6, lng: -1.1, year: 1253, location: "England", desc: "Nicholas of Findern reported to Burton Abbey: 'About the hour of vespers, the sky being clear, suddenly a large bright star appeared out of a black cloud with two smaller stars in the vicinity' (October 14, 1253)"},
+        {lat: 52.2, lng: 0.1, year: 1290, location: "England", desc: "William of Newburgh's account: A large, flat, round, shining, silvery object appeared and caused great terror among witnesses (~1290)"},
+        {lat: 48.5, lng: 2.2, year: 1350, location: "Alençon, France", desc: "A 'flying ship' was seen crossing the sky, interpreted as a divine sign (Medieval period, exact date unclear)"},
+        {lat: 41.0, lng: 29.0, year: 1453, location: "Constantinople", desc: "Strange lights circled the city the night before the Ottoman conquest. Some lights flew straight up at high speed then split into smaller lights. A light remained above Hagia Sophia all night - Christians interpreted this as the Holy Spirit leaving the city (1453)"},
+        {lat: 25.8, lng: -80.2, year: 1492, location: "Atlantic Ocean (Columbus voyage)", desc: "September 15, 1492: Columbus and crew witnessed 'a stick of fire falling from the sky into the sea.' October 11, 1492: Columbus alone saw a glimmering light that 'rose and fell' before disappearing (1492)"},
+        {lat: 30.0, lng: 120.0, year: 1523, location: "China", desc: "Two ships were seen 'sailing in the sky' during continuous rain, with occupants described as 'tall men wearing red hats and multi-colored clothes' (1523)"},
+        {lat: 41.9, lng: 12.5, year: 1526, location: "Rome, Italy", desc: "A countryman claimed to have been transported by 'goat-men' to a witch gathering (possible abduction account) (1526)"},
+        {lat: 43.7, lng: 7.4, year: 1554, location: "France", desc: "Nostradamus and approximately 1,000 witnesses saw 'a bright burning rod in the sky that displayed a swinging motion' (February 1554)"},
+        {lat: 50.0, lng: 10.0, year: 1558, location: "Europe", desc: "Reports of 'floating phantom cities and dragons' visible in the sky over Europe (1558)"},
+        {lat: 49.5, lng: 11.1, year: 1561, location: "Nuremberg, Germany", desc: "The city witnessed an aerial 'fight' - '[They] flew back and forth among themselves and fought vehemently with each other for over an hour. And when the conflict was most intense, they became fatigued to such an extent that they all fell from the sun down upon the earth as if they all burned and they then wasted away on the earth with immense smoke' (April 14, 1561)"},
+        {lat: 47.6, lng: 7.6, year: 1566, location: "Basel, Switzerland", desc: "Celestial phenomena resembling red and black balls fought together in the sky before the rising sun. 'At the dawn of August 7, we saw large black spheres coming and going with great speed and precision before the sun and chattered as if they led a fight. Many of them were fiery red and, soon crumbled and then extinguished' (August 7, 1566)"},
+        {lat: 51.0, lng: 20.0, year: 1571, location: "Poland", desc: "A shepherd had a mysterious encounter (detailed Renaissance account) (1571)"},
+        {lat: 14.6, lng: 121.0, year: 1593, location: "Manila, Philippines / Mexico City", desc: "In Manila, a soldier disappeared without a trace. He later appeared in Mexico City's Plaza Mayor, claiming instantaneous transport. Though often dismissed as folklore, it's documented in period records as the 'teleportation of Gil Pérez' (October 24, 1593)"},
+        {lat: 35.0, lng: 135.8, year: 1606, location: "Kyoto, Japan", desc: "Residents saw 'a succession of fireballs in the sky.' One 'hovered near the Nijo castle in front of a host of witnesses spinning like a wheel' (May 1606)"},
+        {lat: 37.8, lng: 128.9, year: 1609, location: "Gangwon Province, Korea (Joseon Dynasty)", desc: "Between 9 AM and 3 PM, a round, shiny object 'about 6 feet in diameter' was seen across Gangwon Province by multiple witnesses. It was 'white on the right side, blueish in the middle, and reddish on the left side.' It eventually split in two. Similar phenomena reported in Japan the same year (August 25, 1609 / September 22 Gregorian)"},
+        {lat: 48.9, lng: 2.3, year: 1621, location: "France", desc: "A bizarre flying object was observed that 'shook the nation' (1621)"},
+        {lat: 42.4, lng: -71.1, year: 1639, location: "Massachusetts Bay Colony", desc: "Governor John Winthrop recorded the first documented UFO sighting in America. James Everell and two companions rowing on the Muddy River at night saw a light 'when it stood still, it flamed up, and was about three yards square; when it ran, it was contracted into the figure of a swine.' It moved back and forth for two to three hours. When it vanished, the men found themselves a mile upstream with no memory of rowing there (March 1, 1639)"},
+        {lat: 53.6, lng: 10.0, year: 1697, location: "Hamburg and Lübeck, Germany", desc: "'Strange apparitions' were witnessed (1697)"},
+        {lat: 51.5, lng: -0.6, year: 1783, location: "Windsor Castle, England", desc: "The 'Great Meteor' event - Paul Sandby's watercolor shows not just the meteor but another smaller object following it, which attracted witnesses' attention (August 18, 1783)"},
+        {lat: 35.5, lng: 140.5, year: 1799, location: "Japan", desc: "Earlier Utsuro-bune account (1799)"},
+        {lat: 36.6, lng: 140.6, year: 1803, location: "Hitachi Province, Japan", desc: "The 'Utsuro-bune' (hollow ship) incident, documented in three separate Japanese texts. A strange vessel washed ashore, described as round, made of metal and rosewood with glass or crystal windows, containing a woman with pale skin and red hair who spoke an unknown language. Detailed technical descriptions with diagrams (1803)"},
+        {lat: 36.1, lng: -86.8, year: 1853, location: "Tennessee (Burritt College)", desc: "Students noticed two luminous objects near the rising sun - one like 'a small new moon,' the other a 'large star.' They changed size for about half an hour while remaining stationary against passing clouds (June 1, 1853)"},
+        {lat: 39.7, lng: -75.5, year: 1860, location: "Wilmington, Delaware", desc: "A 200-foot-long object streaked 100 feet above ground, glowing pale blue. Trailing behind at 100-foot intervals were three 'very red and glowing balls.' A fourth ball shot out from the rear of the main object, which was 'giving off sparkles after the manner of a rocket' (July 13, 1860)"},
+        {lat: 33.0, lng: -84.0, year: 1864, location: "Georgia, USA", desc: "A Confederate Sergeant in Company B 46th Mississippi Infantry Regiment reports in his journal that they witnessed a white object about half a mile high in the sky moving rapidly. Enemy troops did not have balloons at the time and spy balloons move only vertically, not horizontally (1864)"},
+        {lat: 38.6, lng: -121.5, year: 1876, location: "Sacramento, California", desc: "Between 6-7 PM, a light 'resembling an electric arc lamp propelled by some mysterious force' was seen by hundreds passing over the city - the beginning of California's first airship wave. Returned November 20 and 21 (November 17-21, 1876)"},
+        {lat: 37.7, lng: -122.2, year: 1876, location: "Oakland, California", desc: "The airship appeared again, described as 'a peculiar looking contrivance' with headlight and searchlight (November 21, 1876)"},
+        {lat: 38.3, lng: -85.8, year: 1880, location: "Louisville, Kentucky", desc: "Two witnesses saw 'a man surrounded by machinery which he seemed to be working with his hands' with wings protruding from his back (July 29, 1880)"},
+        {lat: 40.7, lng: -74.0, year: 1880, location: "New Jersey", desc: "Similar sighting to the Louisville case (August 1880)"},
+        {lat: 38.6, lng: -121.5, year: 1896, location: "Sacramento area, California", desc: "First sighting of the Great Airship Wave - witnesses saw a bright light up to 1,000 feet high with outline of an airship above it. Many heard singing or arguing voices. This sparked the massive 1896-1897 wave (November 1896)"},
+        {lat: 38.1, lng: -121.3, year: 1896, location: "Lodi, California", desc: "Ten days after Sacramento sighting, a man told the Stockton Evening Mail he met three alien beings who tried to abduct him before fleeing in a cigar-shaped airship - first reported alien abduction attempt in UFO history (~November 1896)"},
+        {lat: 40.6, lng: -98.4, year: 1897, location: "Hastings, Nebraska", desc: "Citizens reported seeing an airship - beginning of eastward spread of sightings (February 2, 1897)"},
+        {lat: 41.3, lng: -96.0, year: 1897, location: "Omaha, Nebraska", desc: "Residents claimed they saw the airship three times (February-March 1897)"},
+        {lat: 41.4, lng: -98.8, year: 1897, location: "North Loup, Nebraska", desc: "Residents reported a strange fireball (March 1897)"},
+        {lat: 39.1, lng: -94.6, year: 1897, location: "Kansas City, Missouri", desc: "As many as 10,000 people reportedly observed a huge aerial machine (April 1, 1897)"},
+        {lat: 35.0, lng: -100.0, year: 1897, location: "Multiple locations: Texas, Oklahoma, Nebraska, Missouri, California, Arizona", desc: "Hundreds of reports of a huge machine hovering over farms, ranches, and small towns, often sweeping a brilliant spotlight (April 1897)"},
+        {lat: 44.0, lng: -100.0, year: 1897, location: "South Dakota", desc: "Two days prior to Aurora, Texas incident: 'Object descends and follows locomotive.' This is the first pre-1900 report in the NUFORC dataset (April 15, 1897)"},
+        {lat: 33.1, lng: -97.5, year: 1897, location: "Aurora, Texas", desc: "The Dallas Morning News reported a crash at six in the morning. 'The pilot of the ship is supposed to have been the only one aboard, and while his remains are badly disfigured, enough of the original has been picked up to show that he was not an inhabitant of this world. Papers found on his person are written in some unknown hieroglyphics.' Part of the massive 1896-1897 Great Airship Wave (April 17, 1897)"}
+    ];
+
+    sightings.forEach(s => {
+        const marker = L.circleMarker([s.lat, s.lng], {
+            radius: 8,
+            fillColor: getColor(s.year),
+            color: '#000',
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.9
+        }).addTo(map);
+
+        const yearDisplay = s.year < 0 ? `${Math.abs(s.year)} BCE` : `${s.year} CE`;
+        const popupContent = `<div class="popup-title">${s.location}</div><div class="popup-date">${yearDisplay}</div><div class="popup-description">${s.desc}</div>`;
+        
+        marker.bindPopup(popupContent, {maxWidth: 350});
+
+        marker.on('mouseover', function() {
+            this.setStyle({radius: 12, weight: 2});
+        });
+        marker.on('mouseout', function() {
+            this.setStyle({radius: 8, weight: 1});
+        });
+    });
+
+    const group = L.featureGroup(sightings.map(s => L.marker([s.lat, s.lng])));
+    map.fitBounds(group.getBounds().pad(0.1));
+
+    // Add legend
+    const legend = document.createElement('div');
+    legend.className = 'ufo-legend';
+    legend.innerHTML = `
+        <div class="legend-title">Time Period</div>
+        <div class="legend-item"><div class="legend-color" style="background: #fff5e1;"></div>10,000-3,000 BCE</div>
+        <div class="legend-item"><div class="legend-color" style="background: #ffe4b3;"></div>3,000-1,000 BCE</div>
+        <div class="legend-item"><div class="legend-color" style="background: #ffd485;"></div>1,000 BCE-1 CE</div>
+        <div class="legend-item"><div class="legend-color" style="background: #ffc357;"></div>1-500 CE</div>
+        <div class="legend-item"><div class="legend-color" style="background: #ffb329;"></div>500-1000 CE</div>
+        <div class="legend-item"><div class="legend-color" style="background: #ff9900;"></div>1000-1400 CE</div>
+        <div class="legend-item"><div class="legend-color" style="background: #ff7700;"></div>1400-1600 CE</div>
+        <div class="legend-item"><div class="legend-color" style="background: #ff5500;"></div>1600-1800 CE</div>
+        <div class="legend-item"><div class="legend-color" style="background: #ff3300;"></div>1800-1897 CE</div>
+    `;
+    mapDiv.parentElement.appendChild(legend);
+})();
+</script>
+
+<!-- END OF EMBED CODE -->
+</body>
+</html>

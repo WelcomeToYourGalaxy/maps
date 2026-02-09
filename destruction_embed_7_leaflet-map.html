@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html style="height:800px;max-height:800px;overflow:hidden">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Soybean Companies</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body style="margin:0;padding:0;height:800px;max-height:800px;overflow:hidden">
+<div id="map" style="width:100%;height:800px;max-height:800px"></div>
+<script>
+var map=L.map('map').setView([20,0],2);
+L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{attribution:'Google'}).addTo(map);
+var d=[["ADM","Global HQ","Chicago",41.89,-87.64,"#DC143C"],["ADM","N.America HQ","Decatur",39.84,-88.95,"#DC143C"],["ADM","Europe HQ","Rolle",46.46,6.34,"#DC143C"],["ADM","Asia-Pacific HQ","Singapore",1.35,103.82,"#DC143C"],["ADM","Regional","São Paulo",-23.55,-46.63,"#DC143C"],["Bunge","Global HQ","St. Louis",38.63,-90.20,"#DC143C"],["Bunge","Registered","Geneva",46.20,6.14,"#DC143C"],["Bunge","Regional","São Paulo",-23.55,-46.63,"#DC143C"],["Bunge","Regional","Buenos Aires",-34.60,-58.38,"#DC143C"],["Cargill","Global HQ","Wayzata",44.97,-93.51,"#DC143C"],["Cargill","Ocean HQ","Geneva",46.20,6.14,"#DC143C"],["Cargill","Regional","Singapore",1.35,103.82,"#DC143C"],["Cargill","Regional","Shanghai",31.23,121.47,"#DC143C"],["Louis Dreyfus","Head Office","Rotterdam",51.92,4.48,"#DC143C"],["Louis Dreyfus","Holding HQ","Amsterdam",52.37,4.90,"#DC143C"],["Louis Dreyfus","Regional","Singapore",1.28,103.85,"#DC143C"],["Louis Dreyfus","Regional","São Paulo",-23.56,-46.69,"#DC143C"],["COFCO Intl","Global HQ","Geneva",46.20,6.17,"#FF8C00"],["COFCO Corp","Corporate HQ","Beijing",39.92,116.42,"#FF8C00"],["COFCO Intl","Regional","São Paulo",-23.57,-46.69,"#FF8C00"],["COFCO Intl","Regional","Buenos Aires",-34.55,-58.49,"#FF8C00"],["Amaggi","Global HQ","Cuiabá",-15.60,-56.10,"#FF8C00"],["Amaggi","Regional","Rotterdam",51.92,4.48,"#FF8C00"],["Amaggi","Regional","Buenos Aires",-34.60,-58.38,"#FF8C00"]];
+d.forEach(function(l){L.circleMarker([l[3],l[4]],{radius:7,color:l[5],fillColor:l[5],fillOpacity:0.7,weight:2}).bindPopup("<b>"+l[0]+"</b><br>"+l[1]+"<br>"+l[2]+"<br><small>ABCD: 50-60% wheat/corn/soy<br>Brazil top 6: 57% soy</small>").addTo(map);});
+setTimeout(function(){map.invalidateSize();},100);
+</script>
+</body>
+</html>

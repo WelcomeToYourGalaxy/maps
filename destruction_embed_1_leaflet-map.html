@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embedded Content</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0a0a0a; overflow: hidden; }
+    </style>
+</head>
+<body>
+<!-- COMPLETE ANIMAL FIGHTING MAP - ANTI-CRUELTY ACTIVISM RESOURCE -->
+<!-- 144 LOCATIONS - 16 TYPES - PASTE INTO WEEBLY "EMBED CODE" ELEMENT -->
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+.animal-fight-map {
+    width: 100%;
+    height: 1000px; /* FIXED HEIGHT - NO EXPANSION */
+    position: relative;
+    background: #0a0a0a;
+    border-radius: 12px;
+    overflow: hidden; /* CRITICAL - prevents expansion */
+    margin: 20px 0;
+}
+.animal-fight-map * { margin: 0; padding: 0; box-sizing: border-box; }
+#fightMap { height: 100%; width: 100%; position: absolute; top: 0; left: 0; }
+.fight-header {
+    position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1000;
+    background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(10px); padding: 18px 35px;
+    border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center; max-width: 90%;
+}
+.fight-header h1 {
+    font-size: 26px; font-weight: 700; margin-bottom: 6px;
+    background: linear-gradient(135deg, #ff0000, #cc0000);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; color: #ff0000;
+}
+.fight-header p { font-size: 12px; color: #aaa; line-height: 1.3; }
+.disclaimer { font-size: 10px; color: #ff6666; margin-top: 6px; font-weight: 600; }
+.fight-filters {
+    position: absolute; top: 130px; left: 20px; z-index: 1000;
+    background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(10px); padding: 15px;
+    border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 260px;
+    max-height: calc(100% - 220px); /* FIXED - prevents expansion */
+    overflow-y: auto; overflow-x: hidden;
+}
+.fight-filters::-webkit-scrollbar { width: 6px; }
+.fight-filters::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 3px; }
+.fight-filters::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 3px; }
+.fight-filters h3 { font-size: 15px; margin-bottom: 12px; color: #fff; font-weight: 600; }
+.fg { margin-bottom: 8px; }
+.fg label {
+    display: flex; align-items: center; padding: 6px 8px; cursor: pointer;
+    border-radius: 5px; transition: all 0.2s; font-size: 13px; color: #fff;
+}
+.fg label:hover { background: rgba(255, 255, 255, 0.05); }
+.fg input { margin-right: 8px; width: 14px; height: 14px; cursor: pointer; flex-shrink: 0; }
+.fg .cn {
+    margin-left: auto; font-size: 11px; color: #888;
+    background: rgba(255, 255, 255, 0.1); padding: 2px 6px; border-radius: 8px; flex-shrink: 0;
+}
+.illegal-text { color: #ff6666 !important; }
+.fight-stats {
+    position: absolute; bottom: 20px; left: 20px; z-index: 1000;
+    background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(10px); padding: 12px 18px;
+    border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.1); font-size: 13px; color: #fff;
+}
+.fight-stats strong { color: #ff0000; font-size: 18px; }
+.leaflet-popup-content-wrapper { background: rgba(0, 0, 0, 0.95) !important; color: #fff !important; border-radius: 8px !important; }
+.leaflet-popup-content { margin: 15px !important; font-size: 14px !important; color: #fff !important; }
+.leaflet-popup-content h4 { margin: 0 0 8px 0 !important; font-size: 16px !important; color: #ff0000 !important; }
+.leaflet-popup-tip { background: rgba(0, 0, 0, 0.95) !important; }
+@media (max-width: 768px) {
+    .animal-fight-map { height: 600px; } /* FIXED mobile height */
+    .fight-header { top: 10px; left: 10px; right: 10px; transform: none; padding: 12px; max-width: none; }
+    .fight-header h1 { font-size: 18px; }
+    .fight-filters { 
+        top: auto; bottom: 60px; left: 10px; right: 10px; width: auto;
+        max-height: 40vh; /* FIXED mobile filter height */
+    }
+    .fight-stats { left: 10px; right: 10px; bottom: 10px; }
+}
+</style>
+
+<div class="animal-fight-map">
+    <div class="fight-header">
+        <h1>Animal Fighting Locations Map</h1>
+        <p>Anti-Cruelty Activism Resource - 144 locations, 16 types</p>
+        <p class="disclaimer">⚠️ For animal welfare advocacy & law enforcement</p>
+    </div>
+    <div class="fight-filters">
+        <h3>Filter by Type</h3>
+        <div class="fg"><label><input type="checkbox" class="cb" value="bullfighting" checked><span>Bullfighting</span><span class="cn" id="c-bullfighting">0</span></label></div>
+        <div class="fg"><label class="illegal-text"><input type="checkbox" class="cb" value="dogfighting" checked><span>Dog Fighting (ILLEGAL)</span><span class="cn" id="c-dogfighting">0</span></label></div>
+        <div class="fg"><label><input type="checkbox" class="cb" value="cockfighting" checked><span>Cockfighting</span><span class="cn" id="c-cockfighting">0</span></label></div>
+        <div class="fg"><label><input type="checkbox" class="cb" value="ram" checked><span>Ram Fighting</span><span class="cn" id="c-ram">0</span></label></div>
+        <div class="fg"><label><input type="checkbox" class="cb" value="cricket" checked><span>Cricket Fighting</span><span class="cn" id="c-cricket">0</span></label></div>
+        <div class="fg"><label><input type="checkbox" class="cb" value="buffalo" checked><span>Buffalo Fighting</span><span class="cn" id="c-buffalo">0</span></label></div>
+        <div class="fg"><label><input type="checkbox" class="cb" value="camel" checked><span>Camel Wrestling</span><span class="cn" id="c-camel">0</span></label></div>
+        <div class="fg"><label><input type="checkbox" class="cb" value="betta" checked><span>Betta Fish</span><span class="cn" id="c-betta">0</span></label></div>
+        <div class="fg"><label><input type="checkbox" class="cb" value="spider" checked><span>Spider Fighting</span><span class="cn" id="c-spider">0</span></label></div>
+        <div class="fg"><label><input type="checkbox" class="cb" value="beetle" checked><span>Beetle Fighting</span><span class="cn" id="c-beetle">0</span></label></div>
+        <div class="fg"><label><input type="checkbox" class="cb" value="quail" checked><span>Quail Fighting</span><span class="cn" id="c-quail">0</span></label></div>
+        <div class="fg"><label><input type="checkbox" class="cb" value="horse" checked><span>Horse Fighting</span><span class="cn" id="c-horse">0</span></label></div>
+        <div class="fg"><label class="illegal-text"><input type="checkbox" class="cb" value="badger" checked><span>Badger Baiting (ILLEGAL)</span><span class="cn" id="c-badger">0</span></label></div>
+        <div class="fg"><label class="illegal-text"><input type="checkbox" class="cb" value="bear" checked><span>Bear Baiting (ILLEGAL)</span><span class="cn" id="c-bear">0</span></label></div>
+        <div class="fg"><label class="illegal-text"><input type="checkbox" class="cb" value="monkey" checked><span>Monkey Fighting (ILLEGAL)</span><span class="cn" id="c-monkey">0</span></label></div>
+        <div class="fg"><label><input type="checkbox" class="cb" value="scorpion" checked><span>Scorpion Fighting</span><span class="cn" id="c-scorpion">0</span></label></div>
+    </div>
+    <div class="fight-stats">
+        <div>Showing: <strong id="vis">144</strong> of <strong>144</strong></div>
+    </div>
+    <div id="fightMap"></div>
+</div>
+
+<script>
+(function() {
+    function init() {
+        if (typeof L === 'undefined') { setTimeout(init, 100); return; }
+        var map = L.map('fightMap', { center: [30, 10], zoom: 3, minZoom: 2, maxZoom: 18 });
+        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: '&copy; Esri', maxZoom: 18
+        }).addTo(map);
+        var locs = [
+    {
+        "name": "Plaza de Toros de Las Ventas",
+        "city": "Madrid",
+        "country": "Spain",
+        "lat": 40.431,
+        "lon": -3.6672,
+        "type": "bullfighting",
+        "size": "Major Arena (23,798)"
+    },
+    {
+        "name": "Plaza de Toros de la Real Maestranza",
+        "city": "Seville",
+        "country": "Spain",
+        "lat": 37.386,
+        "lon": -5.9987,
+        "type": "bullfighting",
+        "size": "Major Arena (12,500)"
+    },
+    {
+        "name": "Plaza de Toros Monumental",
+        "city": "Barcelona",
+        "country": "Spain",
+        "lat": 41.3954,
+        "lon": 2.1811,
+        "type": "bullfighting",
+        "size": "Major Arena (19,582)"
+    },
+    {
+        "name": "Plaza de Toros de Valencia",
+        "city": "Valencia",
+        "country": "Spain",
+        "lat": 39.4699,
+        "lon": -0.3763,
+        "type": "bullfighting",
+        "size": "Major Arena (10,500)"
+    },
+    {
+        "name": "Plaza de Toros de Ronda",
+        "city": "Ronda",
+        "country": "Spain",
+        "lat": 36.7418,
+        "lon": -5.1651,
+        "type": "bullfighting",
+        "size": "Historic Arena (5,000)"
+    },
+    {
+        "name": "Plaza de Toros de M\u00e1laga",
+        "city": "M\u00e1laga",
+        "country": "Spain",
+        "lat": 36.7184,
+        "lon": -4.4167,
+        "type": "bullfighting",
+        "size": "Major Arena (9,000)"
+    },
+    {
+        "name": "Plaza de Toros de C\u00f3rdoba",
+        "city": "C\u00f3rdoba",
+        "country": "Spain",
+        "lat": 37.8782,
+        "lon": -4.7794,
+        "type": "bullfighting",
+        "size": "Arena (4,800)"
+    },
+    {
+        "name": "Plaza de Toros de Zaragoza",
+        "city": "Zaragoza",
+        "country": "Spain",
+        "lat": 41.6488,
+        "lon": -0.8891,
+        "type": "bullfighting",
+        "size": "Arena (10,000)"
+    },
+    {
+        "name": "Plaza de Toros de Bilbao",
+        "city": "Bilbao",
+        "country": "Spain",
+        "lat": 43.263,
+        "lon": -2.9253,
+        "type": "bullfighting",
+        "size": "Arena (13,500)"
+    },
+    {
+        "name": "Plaza de Toros de Granada",
+        "city": "Granada",
+        "country": "Spain",
+        "lat": 37.1773,
+        "lon": -3.5986,
+        "type": "bullfighting",
+        "size": "Arena (4,400)"
+    },
+    {
+        "name": "Plaza de Toros de Pamplona",
+        "city": "Pamplona",
+        "country": "Spain",
+        "lat": 42.8125,
+        "lon": -1.6458,
+        "type": "bullfighting",
+        "size": "Arena (19,720)"
+    },
+    {
+        "name": "Plaza de Toros de Murcia",
+        "city": "Murcia",
+        "country": "Spain",
+        "lat": 37.9922,
+        "lon": -1.1307,
+        "type": "bullfighting",
+        "size": "Arena (15,000)"
+    },
+    {
+        "name": "Plaza de Toros de Albacete",
+        "city": "Albacete",
+        "country": "Spain",
+        "lat": 38.9943,
+        "lon": -1.8585,
+        "type": "bullfighting",
+        "size": "Arena (10,250)"
+    },
+    {
+        "name": "Plaza de Toros de Valladolid",
+        "city": "Valladolid",
+        "country": "Spain",
+        "lat": 41.6488,
+        "lon": -4.7286,
+        "type": "bullfighting",
+        "size": "Arena (11,000)"
+    },
+    {
+        "name": "Plaza de Toros de Santander",
+        "city": "Santander",
+        "country": "Spain",
+        "lat": 43.4623,
+        "lon": -3.8099,
+        "type": "bullfighting",
+        "size": "Arena (10,000)"
+    },
+    {
+        "name": "Plaza de Toros de Logro\u00f1o",
+        "city": "Logro\u00f1o",
+        "country": "Spain",
+        "lat": 42.4627,
+        "lon": -2.445,
+        "type": "bullfighting",
+        "size": "Arena (11,000)"
+    },
+    {
+        "name": "Plaza de Toros de Burgos",
+        "city": "Burgos",
+        "country": "Spain",
+        "lat": 42.3439,
+        "lon": -3.6969,
+        "type": "bullfighting",
+        "size": "Arena (10,000)"
+    },
+    {
+        "name": "Plaza de Toros de San Sebasti\u00e1n",
+        "city": "San Sebasti\u00e1n",
+        "country": "Spain",
+        "lat": 43.3183,
+        "lon": -1.9812,
+        "type": "bullfighting",
+        "size": "Arena (9,600)"
+    },
+    {
+        "name": "Plaza de Toros de Jerez de la Frontera",
+        "city": "Jerez",
+        "country": "Spain",
+        "lat": 36.6853,
+        "lon": -6.1369,
+        "type": "bullfighting",
+        "size": "Arena (11,000)"
+    },
+    {
+        "name": "Plaza de Toros de C\u00e1diz",
+        "city": "C\u00e1diz",
+        "country": "Spain",
+        "lat": 36.5299,
+        "lon": -6.2934,
+        "type": "bullfighting",
+        "size": "Arena (10,500)"
+    },
+    {
+        "name": "Plaza de Toros de Alicante",
+        "city": "Alicante",
+        "country": "Spain",
+        "lat": 38.346,
+        "lon": -0.4907,
+        "type": "bullfighting",
+        "size": "Arena (15,000)"
+    },
+    {
+        "name": "Plaza de Toros de Gij\u00f3n",
+        "city": "Gij\u00f3n",
+        "country": "Spain",
+        "lat": 43.5322,
+        "lon": -5.6611,
+        "type": "bullfighting",
+        "size": "Arena (7,000)"
+    },
+    {
+        "name": "Plaza de Toros de Salamanca",
+        "city": "Salamanca",
+        "country": "Spain",
+        "lat": 40.9651,
+        "lon": -5.664,
+        "type": "bullfighting",
+        "size": "Arena (10,866)"
+    },
+    {
+        "name": "Plaza de Toros de Badajoz",
+        "city": "Badajoz",
+        "country": "Spain",
+        "lat": 38.8794,
+        "lon": -6.9707,
+        "type": "bullfighting",
+        "size": "Arena (10,000)"
+    },
+    {
+        "name": "Plaza de Toros de C\u00e1ceres",
+        "city": "C\u00e1ceres",
+        "country": "Spain",
+        "lat": 39.4753,
+        "lon": -6.3724,
+        "type": "bullfighting",
+        "size": "Arena (8,000)"
+    },
+    {
+        "name": "Plaza de Toros de Tarragona",
+        "city": "Tarragona",
+        "country": "Spain",
+        "lat": 41.1189,
+        "lon": 1.2445,
+        "type": "bullfighting",
+        "size": "Arena (8,000)"
+    },
+    {
+        "name": "Plaza de Toros de Castell\u00f3n",
+        "city": "Castell\u00f3n",
+        "country": "Spain",
+        "lat": 39.9864,
+        "lon": -0.0513,
+        "type": "bullfighting",
+        "size": "Arena (15,000)"
+    },
+    {
+        "name": "Plaza de Toros de Ja\u00e9n",
+        "city": "Ja\u00e9n",
+        "country": "Spain",
+        "lat": 37.7796,
+        "lon": -3.7849,
+        "type": "bullfighting",
+        "size": "Arena (13,000)"
+    },
+    {
+        "name": "Plaza de Toros de Almer\u00eda",
+        "city": "Almer\u00eda",
+        "country": "Spain",
+        "lat": 36.8381,
+        "lon": -2.4597,
+        "type": "bullfighting",
+        "size": "Arena (9,000)"
+    },
+    {
+        "name": "Plaza de Toros de Huelva",
+        "city": "Huelva",
+        "country": "Spain",
+        "lat": 37.2614,
+        "lon": -6.9447,
+        "type": "bullfighting",
+        "size": "Arena (6,500)"
+    },
+    {
+        "name": "Pra\u00e7a de Touros do Campo Pequeno",
+        "city": "Lisbon",
+        "country": "Portugal",
+        "lat": 38.7412,
+        "lon": -9.1455,
+        "type": "bullfighting",
+        "size": "Major Arena (9,000)"
+    },
+    {
+        "name": "Pra\u00e7a de Touros de Vila Franca de Xira",
+        "city": "Vila Franca de Xira",
+        "country": "Portugal",
+        "lat": 38.9512,
+        "lon": -8.9882,
+        "type": "bullfighting",
+        "size": "Arena (5,000)"
+    },
+    {
+        "name": "Pra\u00e7a de Touros de Cascais",
+        "city": "Cascais",
+        "country": "Portugal",
+        "lat": 38.6979,
+        "lon": -9.4189,
+        "type": "bullfighting",
+        "size": "Arena (5,500)"
+    },
+    {
+        "name": "Pra\u00e7a de Touros de Santar\u00e9m",
+        "city": "Santar\u00e9m",
+        "country": "Portugal",
+        "lat": 39.2364,
+        "lon": -8.6868,
+        "type": "bullfighting",
+        "size": "Arena (8,000)"
+    },
+    {
+        "name": "Pra\u00e7a de Touros de \u00c9vora",
+        "city": "\u00c9vora",
+        "country": "Portugal",
+        "lat": 38.5744,
+        "lon": -7.907,
+        "type": "bullfighting",
+        "size": "Arena (5,000)"
+    },
+    {
+        "name": "Ar\u00e8nes de N\u00eemes",
+        "city": "N\u00eemes",
+        "country": "France",
+        "lat": 43.8338,
+        "lon": 4.3601,
+        "type": "bullfighting",
+        "size": "Historic Arena (13,000)"
+    },
+    {
+        "name": "Ar\u00e8nes d'Arles",
+        "city": "Arles",
+        "country": "France",
+        "lat": 43.6776,
+        "lon": 4.6309,
+        "type": "bullfighting",
+        "size": "Historic Arena (12,650)"
+    },
+    {
+        "name": "Ar\u00e8nes de B\u00e9ziers",
+        "city": "B\u00e9ziers",
+        "country": "France",
+        "lat": 43.3442,
+        "lon": 3.215,
+        "type": "bullfighting",
+        "size": "Arena (13,000)"
+    },
+    {
+        "name": "Ar\u00e8nes de Bayonne",
+        "city": "Bayonne",
+        "country": "France",
+        "lat": 43.4933,
+        "lon": -1.4747,
+        "type": "bullfighting",
+        "size": "Arena (10,000)"
+    },
+    {
+        "name": "Ar\u00e8nes de Dax",
+        "city": "Dax",
+        "country": "France",
+        "lat": 43.7097,
+        "lon": -1.05,
+        "type": "bullfighting",
+        "size": "Arena (8,000)"
+    },
+    {
+        "name": "Ar\u00e8nes de Mont-de-Marsan",
+        "city": "Mont-de-Marsan",
+        "country": "France",
+        "lat": 43.8904,
+        "lon": -0.4986,
+        "type": "bullfighting",
+        "size": "Arena (5,500)"
+    },
+    {
+        "name": "Plaza M\u00e9xico",
+        "city": "Mexico City",
+        "country": "Mexico",
+        "lat": 19.4025,
+        "lon": -99.1803,
+        "type": "bullfighting",
+        "size": "World's Largest (41,262)"
+    },
+    {
+        "name": "Plaza de Toros Monumental de Tijuana",
+        "city": "Tijuana",
+        "country": "Mexico",
+        "lat": 32.5149,
+        "lon": -117.0382,
+        "type": "bullfighting",
+        "size": "Major Arena (21,000)"
+    },
+    {
+        "name": "Plaza de Toros Monumental de Aguascalientes",
+        "city": "Aguascalientes",
+        "country": "Mexico",
+        "lat": 21.8818,
+        "lon": -102.2916,
+        "type": "bullfighting",
+        "size": "Major Arena (16,000)"
+    },
+    {
+        "name": "Plaza de Toros El Progreso",
+        "city": "Guadalajara",
+        "country": "Mexico",
+        "lat": 20.6737,
+        "lon": -103.3467,
+        "type": "bullfighting",
+        "size": "Major Arena (13,000)"
+    },
+    {
+        "name": "Plaza de Toros Santa Mar\u00eda",
+        "city": "Quer\u00e9taro",
+        "country": "Mexico",
+        "lat": 20.5888,
+        "lon": -100.3899,
+        "type": "bullfighting",
+        "size": "Major Arena (13,000)"
+    },
+    {
+        "name": "Plaza de Toros La Monumental",
+        "city": "Monterrey",
+        "country": "Mexico",
+        "lat": 25.6866,
+        "lon": -100.3161,
+        "type": "bullfighting",
+        "size": "Major Arena (10,000)"
+    },
+    {
+        "name": "Plaza de Toros de Le\u00f3n",
+        "city": "Le\u00f3n",
+        "country": "Mexico",
+        "lat": 21.1215,
+        "lon": -101.6806,
+        "type": "bullfighting",
+        "size": "Arena (10,500)"
+    },
+    {
+        "name": "Plaza de Toros de Morelia",
+        "city": "Morelia",
+        "country": "Mexico",
+        "lat": 19.706,
+        "lon": -101.1895,
+        "type": "bullfighting",
+        "size": "Arena (8,000)"
+    },
+    {
+        "name": "Plaza de Toros de Santamar\u00eda",
+        "city": "Bogot\u00e1",
+        "country": "Colombia",
+        "lat": 4.6482,
+        "lon": -74.0632,
+        "type": "bullfighting",
+        "size": "Major Arena (14,500)"
+    },
+    {
+        "name": "Plaza de Toros La Macarena",
+        "city": "Medell\u00edn",
+        "country": "Colombia",
+        "lat": 6.2476,
+        "lon": -75.5658,
+        "type": "bullfighting",
+        "size": "Major Arena (11,000)"
+    },
+    {
+        "name": "Plaza de Toros de Cali",
+        "city": "Cali",
+        "country": "Colombia",
+        "lat": 3.4516,
+        "lon": -76.532,
+        "type": "bullfighting",
+        "size": "Major Arena (12,500)"
+    },
+    {
+        "name": "Plaza de Toros de Manizales",
+        "city": "Manizales",
+        "country": "Colombia",
+        "lat": 5.0689,
+        "lon": -75.5174,
+        "type": "bullfighting",
+        "size": "Arena (8,500)"
+    },
+    {
+        "name": "Plaza de Acho",
+        "city": "Lima",
+        "country": "Peru",
+        "lat": -12.031,
+        "lon": -77.0424,
+        "type": "bullfighting",
+        "size": "Historic Arena (13,000)"
+    },
+    {
+        "name": "Plaza de Toros de Arequipa",
+        "city": "Arequipa",
+        "country": "Peru",
+        "lat": -16.3989,
+        "lon": -71.5369,
+        "type": "bullfighting",
+        "size": "Arena (7,000)"
+    },
+    {
+        "name": "Plaza de Toros Quito",
+        "city": "Quito",
+        "country": "Ecuador",
+        "lat": -0.1807,
+        "lon": -78.4678,
+        "type": "bullfighting",
+        "size": "Major Arena (10,000)"
+    },
+    {
+        "name": "Plaza Monumental de Guayaquil",
+        "city": "Guayaquil",
+        "country": "Ecuador",
+        "lat": -2.1709,
+        "lon": -79.9224,
+        "type": "bullfighting",
+        "size": "Arena (8,000)"
+    },
+    {
+        "name": "Plaza Monumental de Valencia",
+        "city": "Valencia",
+        "country": "Venezuela",
+        "lat": 10.1621,
+        "lon": -68.0077,
+        "type": "bullfighting",
+        "size": "Major Arena (27,000)"
+    },
+    {
+        "name": "Plaza de Toros Nuevo Circo",
+        "city": "Caracas",
+        "country": "Venezuela",
+        "lat": 10.4806,
+        "lon": -66.9036,
+        "type": "bullfighting",
+        "size": "Arena (16,500)"
+    },
+    {
+        "name": "Araneta Coliseum",
+        "city": "Quezon City",
+        "country": "Philippines",
+        "lat": 14.6271,
+        "lon": 121.0333,
+        "type": "cockfighting",
+        "size": "Major Arena (20,000)"
+    },
+    {
+        "name": "World Slasher Cup Arena",
+        "city": "Manila",
+        "country": "Philippines",
+        "lat": 14.5995,
+        "lon": 120.9842,
+        "type": "cockfighting",
+        "size": "Major Arena (6,000)"
+    },
+    {
+        "name": "Paranaque Cockpit Arena",
+        "city": "Para\u00f1aque",
+        "country": "Philippines",
+        "lat": 14.4793,
+        "lon": 121.0198,
+        "type": "cockfighting",
+        "size": "Regional Arena (3,500)"
+    },
+    {
+        "name": "Pasay Cockpit",
+        "city": "Pasay",
+        "country": "Philippines",
+        "lat": 14.5378,
+        "lon": 120.9896,
+        "type": "cockfighting",
+        "size": "Regional Arena (4,000)"
+    },
+    {
+        "name": "Cebu Cockpit Arena",
+        "city": "Cebu City",
+        "country": "Philippines",
+        "lat": 10.3157,
+        "lon": 123.8854,
+        "type": "cockfighting",
+        "size": "Major Arena (5,000)"
+    },
+    {
+        "name": "Bacolod Cockpit",
+        "city": "Bacolod",
+        "country": "Philippines",
+        "lat": 10.677,
+        "lon": 122.9506,
+        "type": "cockfighting",
+        "size": "Regional Arena (3,000)"
+    },
+    {
+        "name": "Iloilo Cockpit Arena",
+        "city": "Iloilo City",
+        "country": "Philippines",
+        "lat": 10.7202,
+        "lon": 122.5621,
+        "type": "cockfighting",
+        "size": "Regional Arena (3,500)"
+    },
+    {
+        "name": "Davao Cockpit Arena",
+        "city": "Davao City",
+        "country": "Philippines",
+        "lat": 7.0731,
+        "lon": 125.6128,
+        "type": "cockfighting",
+        "size": "Major Arena (5,000)"
+    },
+    {
+        "name": "Cagayan de Oro Cockpit",
+        "city": "Cagayan de Oro",
+        "country": "Philippines",
+        "lat": 8.4542,
+        "lon": 124.6319,
+        "type": "cockfighting",
+        "size": "Regional Arena (3,500)"
+    },
+    {
+        "name": "Club Gallistico de Puerto Rico",
+        "city": "San Juan",
+        "country": "Puerto Rico",
+        "lat": 18.4655,
+        "lon": -66.1057,
+        "type": "cockfighting",
+        "size": "Major Arena (5,000)"
+    },
+    {
+        "name": "Coliseo Gallistico de Isla Verde",
+        "city": "Carolina",
+        "country": "Puerto Rico",
+        "lat": 18.4339,
+        "lon": -66.0015,
+        "type": "cockfighting",
+        "size": "Major Arena (4,500)"
+    },
+    {
+        "name": "Club Gallistico de Ponce",
+        "city": "Ponce",
+        "country": "Puerto Rico",
+        "lat": 18.0111,
+        "lon": -66.6141,
+        "type": "cockfighting",
+        "size": "Regional Arena (3,000)"
+    },
+    {
+        "name": "Denpasar Cockfighting Arena",
+        "city": "Denpasar",
+        "country": "Indonesia",
+        "lat": -8.6705,
+        "lon": 115.2126,
+        "type": "cockfighting",
+        "size": "Regional Arena (2,000)"
+    },
+    {
+        "name": "Ubud Traditional Cockpit",
+        "city": "Ubud",
+        "country": "Indonesia",
+        "lat": -8.5069,
+        "lon": 115.2625,
+        "type": "cockfighting",
+        "size": "Arena (1,500)"
+    },
+    {
+        "name": "Chonburi Buffalo Fighting Stadium",
+        "city": "Chonburi",
+        "country": "Thailand",
+        "lat": 13.3611,
+        "lon": 100.9847,
+        "type": "buffalo",
+        "size": "Major Arena (5,000)"
+    },
+    {
+        "name": "Nakhon Si Thammarat Buffalo Arena",
+        "city": "Nakhon Si Thammarat",
+        "country": "Thailand",
+        "lat": 8.4304,
+        "lon": 99.9631,
+        "type": "buffalo",
+        "size": "Regional Arena (3,000)"
+    },
+    {
+        "name": "Songkhla Buffalo Fighting",
+        "city": "Songkhla",
+        "country": "Thailand",
+        "lat": 7.1756,
+        "lon": 100.6144,
+        "type": "buffalo",
+        "size": "Regional Arena (2,500)"
+    },
+    {
+        "name": "Pattani Buffalo Arena",
+        "city": "Pattani",
+        "country": "Thailand",
+        "lat": 6.8686,
+        "lon": 101.2508,
+        "type": "buffalo",
+        "size": "Regional Arena (2,000)"
+    },
+    {
+        "name": "Bangkok Cockfighting Stadium",
+        "city": "Bangkok",
+        "country": "Thailand",
+        "lat": 13.7563,
+        "lon": 100.5018,
+        "type": "cockfighting",
+        "size": "Major Arena (3,000)"
+    },
+    {
+        "name": "Chiang Mai Cockpit",
+        "city": "Chiang Mai",
+        "country": "Thailand",
+        "lat": 18.7883,
+        "lon": 98.9853,
+        "type": "cockfighting",
+        "size": "Regional Arena (2,000)"
+    },
+    {
+        "name": "Sel\u00e7uk Camel Wrestling Arena",
+        "city": "Sel\u00e7uk",
+        "country": "Turkey",
+        "lat": 37.9493,
+        "lon": 27.3689,
+        "type": "camel",
+        "size": "Major Arena (5,000)"
+    },
+    {
+        "name": "Ayd\u0131n Camel Wrestling Festival Ground",
+        "city": "Ayd\u0131n",
+        "country": "Turkey",
+        "lat": 37.856,
+        "lon": 27.8416,
+        "type": "camel",
+        "size": "Regional Arena (3,000)"
+    },
+    {
+        "name": "\u0130zmir Camel Wrestling Arena",
+        "city": "\u0130zmir",
+        "country": "Turkey",
+        "lat": 38.4192,
+        "lon": 27.1287,
+        "type": "camel",
+        "size": "Regional Arena (2,500)"
+    },
+    {
+        "name": "Denizli Camel Wrestling",
+        "city": "Denizli",
+        "country": "Turkey",
+        "lat": 37.7765,
+        "lon": 29.0864,
+        "type": "camel",
+        "size": "Regional Arena (2,000)"
+    },
+    {
+        "name": "Kabul Ram Fighting Arena",
+        "city": "Kabul",
+        "country": "Afghanistan",
+        "lat": 34.5553,
+        "lon": 69.2075,
+        "type": "ram",
+        "size": "Regional Arena (2,000)"
+    },
+    {
+        "name": "Herat Ram Fighting Ground",
+        "city": "Herat",
+        "country": "Afghanistan",
+        "lat": 34.3482,
+        "lon": 62.1997,
+        "type": "ram",
+        "size": "Arena (1,500)"
+    },
+    {
+        "name": "Tashkent Ram Fighting Arena",
+        "city": "Tashkent",
+        "country": "Uzbekistan",
+        "lat": 41.2995,
+        "lon": 69.2401,
+        "type": "ram",
+        "size": "Regional Arena (2,000)"
+    },
+    {
+        "name": "Dushanbe Ram Fighting",
+        "city": "Dushanbe",
+        "country": "Tajikistan",
+        "lat": 38.5598,
+        "lon": 68.7738,
+        "type": "ram",
+        "size": "Regional Arena (1,500)"
+    },
+    {
+        "name": "Algiers Ram Fighting Arena",
+        "city": "Algiers",
+        "country": "Algeria",
+        "lat": 36.7538,
+        "lon": 3.0588,
+        "type": "ram",
+        "size": "Regional Arena (2,000)"
+    },
+    {
+        "name": "Casablanca Ram Fighting",
+        "city": "Casablanca",
+        "country": "Morocco",
+        "lat": 33.5731,
+        "lon": -7.5898,
+        "type": "ram",
+        "size": "Regional Arena (2,000)"
+    },
+    {
+        "name": "Tehran Ram Fighting Arena",
+        "city": "Tehran",
+        "country": "Iran",
+        "lat": 35.6892,
+        "lon": 51.389,
+        "type": "ram",
+        "size": "Regional Arena (2,500)"
+    },
+    {
+        "name": "Beijing Cricket Fighting Market",
+        "city": "Beijing",
+        "country": "China",
+        "lat": 39.9042,
+        "lon": 116.4074,
+        "type": "cricket",
+        "size": "Market Area (1,000)"
+    },
+    {
+        "name": "Shanghai Cricket Fighting Arena",
+        "city": "Shanghai",
+        "country": "China",
+        "lat": 31.2304,
+        "lon": 121.4737,
+        "type": "cricket",
+        "size": "Market Area (800)"
+    },
+    {
+        "name": "Tianjin Cricket Market",
+        "city": "Tianjin",
+        "country": "China",
+        "lat": 39.3434,
+        "lon": 117.3616,
+        "type": "cricket",
+        "size": "Market Area (600)"
+    },
+    {
+        "name": "Nanjing Cricket Fighting",
+        "city": "Nanjing",
+        "country": "China",
+        "lat": 32.0603,
+        "lon": 118.7969,
+        "type": "cricket",
+        "size": "Arena (500)"
+    },
+    {
+        "name": "Hangzhou Cricket Arena",
+        "city": "Hangzhou",
+        "country": "China",
+        "lat": 30.2741,
+        "lon": 120.1551,
+        "type": "cricket",
+        "size": "Arena (500)"
+    },
+    {
+        "name": "Tokyo Beetle Fighting Arena",
+        "city": "Tokyo",
+        "country": "Japan",
+        "lat": 35.6895,
+        "lon": 139.6917,
+        "type": "beetle",
+        "size": "Arena (500)"
+    },
+    {
+        "name": "Osaka Beetle Fighting",
+        "city": "Osaka",
+        "country": "Japan",
+        "lat": 34.6937,
+        "lon": 135.5023,
+        "type": "beetle",
+        "size": "Arena (400)"
+    },
+    {
+        "name": "Nagoya Beetle Arena",
+        "city": "Nagoya",
+        "country": "Japan",
+        "lat": 35.1815,
+        "lon": 136.9066,
+        "type": "beetle",
+        "size": "Arena (300)"
+    },
+    {
+        "name": "Dubai Quail Fighting Arena",
+        "city": "Dubai",
+        "country": "UAE",
+        "lat": 25.2048,
+        "lon": 55.2708,
+        "type": "quail",
+        "size": "Arena (500)"
+    },
+    {
+        "name": "Riyadh Quail Fighting",
+        "city": "Riyadh",
+        "country": "Saudi Arabia",
+        "lat": 24.7136,
+        "lon": 46.6753,
+        "type": "quail",
+        "size": "Arena (600)"
+    },
+    {
+        "name": "Abu Dhabi Quail Arena",
+        "city": "Abu Dhabi",
+        "country": "UAE",
+        "lat": 24.4539,
+        "lon": 54.3773,
+        "type": "quail",
+        "size": "Arena (400)"
+    },
+    {
+        "name": "Bangkok Betta Fighting Market",
+        "city": "Bangkok",
+        "country": "Thailand",
+        "lat": 13.7563,
+        "lon": 100.5018,
+        "type": "betta",
+        "size": "Market Area (500)"
+    },
+    {
+        "name": "Chatuchak Fish Fighting Section",
+        "city": "Bangkok",
+        "country": "Thailand",
+        "lat": 13.7997,
+        "lon": 100.5523,
+        "type": "betta",
+        "size": "Market Area (300)"
+    },
+    {
+        "name": "Chiang Mai Betta Arena",
+        "city": "Chiang Mai",
+        "country": "Thailand",
+        "lat": 18.7883,
+        "lon": 98.9853,
+        "type": "betta",
+        "size": "Arena (200)"
+    },
+    {
+        "name": "Pattaya Betta Fighting",
+        "city": "Pattaya",
+        "country": "Thailand",
+        "lat": 12.9236,
+        "lon": 100.8825,
+        "type": "betta",
+        "size": "Arena (150)"
+    },
+    {
+        "name": "United States - South Region",
+        "city": "Atlanta, GA",
+        "country": "USA",
+        "lat": 33.749,
+        "lon": -84.388,
+        "type": "dogfighting",
+        "size": "Documented Activity Region"
+    },
+    {
+        "name": "United States - South Region",
+        "city": "Memphis, TN",
+        "country": "USA",
+        "lat": 35.1495,
+        "lon": -90.049,
+        "type": "dogfighting",
+        "size": "Documented Activity Region"
+    },
+    {
+        "name": "United States - South Region",
+        "city": "Houston, TX",
+        "country": "USA",
+        "lat": 29.7604,
+        "lon": -95.3698,
+        "type": "dogfighting",
+        "size": "Documented Activity Region"
+    },
+    {
+        "name": "United States - South Region",
+        "city": "Miami, FL",
+        "country": "USA",
+        "lat": 25.7617,
+        "lon": -80.1918,
+        "type": "dogfighting",
+        "size": "Documented Activity Region"
+    },
+    {
+        "name": "United States - South Region",
+        "city": "New Orleans, LA",
+        "country": "USA",
+        "lat": 29.9511,
+        "lon": -90.0715,
+        "type": "dogfighting",
+        "size": "Documented Activity Region"
+    },
+    {
+        "name": "United States - East Coast",
+        "city": "Baltimore, MD",
+        "country": "USA",
+        "lat": 39.2904,
+        "lon": -76.6122,
+        "type": "dogfighting",
+        "size": "Documented Activity Region"
+    },
+    {
+        "name": "United States - East Coast",
+        "city": "Philadelphia, PA",
+        "country": "USA",
+        "lat": 39.9526,
+        "lon": -75.1652,
+        "type": "dogfighting",
+        "size": "Documented Activity Region"
+    },
+    {
+        "name": "United States - Midwest",
+        "city": "Detroit, MI",
+        "country": "USA",
+        "lat": 42.3314,
+        "lon": -83.0458,
+        "type": "dogfighting",
+        "size": "Documented Activity Region"
+    },
+    {
+        "name": "United States - Midwest",
+        "city": "Chicago, IL",
+        "country": "USA",
+        "lat": 41.8781,
+        "lon": -87.6298,
+        "type": "dogfighting",
+        "size": "Documented Activity Region"
+    },
+    {
+        "name": "United States - West Coast",
+        "city": "Los Angeles, CA",
+        "country": "USA",
+        "lat": 34.0522,
+        "lon": -118.2437,
+        "type": "dogfighting",
+        "size": "Documented Activity Region"
+    },
+    {
+        "name": "Mexico Border Region",
+        "city": "Tijuana",
+        "country": "Mexico",
+        "lat": 32.5149,
+        "lon": -117.0382,
+        "type": "dogfighting",
+        "size": "Documented Activity Region"
+    },
+    {
+        "name": "Mexico Border Region",
+        "city": "Ciudad Ju\u00e1rez",
+        "country": "Mexico",
+        "lat": 31.6904,
+        "lon": -106.4245,
+        "type": "dogfighting",
+        "size": "Documented Activity Region"
+    },
+    {
+        "name": "Mexico Central",
+        "city": "Mexico City",
+        "country": "Mexico",
+        "lat": 19.4326,
+        "lon": -99.1332,
+        "type": "dogfighting",
+        "size": "Documented Activity Region"
+    },
+    {
+        "name": "Russia - Southern Region",
+        "city": "Dagestan",
+        "country": "Russia",
+        "lat": 42.9849,
+        "lon": 47.5047,
+        "type": "dogfighting",
+        "size": "Traditional Activity Region"
+    },
+    {
+        "name": "Russia - Central",
+        "city": "Moscow",
+        "country": "Russia",
+        "lat": 55.7558,
+        "lon": 37.6173,
+        "type": "dogfighting",
+        "size": "Documented Activity Region"
+    },
+    {
+        "name": "Pakistan - Punjab",
+        "city": "Lahore",
+        "country": "Pakistan",
+        "lat": 31.5204,
+        "lon": 74.3587,
+        "type": "dogfighting",
+        "size": "Traditional Activity Region"
+    },
+    {
+        "name": "Pakistan - Punjab",
+        "city": "Faisalabad",
+        "country": "Pakistan",
+        "lat": 31.4504,
+        "lon": 73.135,
+        "type": "dogfighting",
+        "size": "Traditional Activity Region"
+    },
+    {
+        "name": "Afghanistan",
+        "city": "Kabul",
+        "country": "Afghanistan",
+        "lat": 34.5553,
+        "lon": 69.2075,
+        "type": "dogfighting",
+        "size": "Traditional Activity Region"
+    },
+    {
+        "name": "Japan - Kanto",
+        "city": "Tokyo",
+        "country": "Japan",
+        "lat": 35.6762,
+        "lon": 139.6503,
+        "type": "dogfighting",
+        "size": "Documented Activity Region"
+    },
+    {
+        "name": "South Africa",
+        "city": "Johannesburg",
+        "country": "South Africa",
+        "lat": -26.2041,
+        "lon": 28.0473,
+        "type": "dogfighting",
+        "size": "Documented Activity Region"
+    },
+    {
+        "name": "South Africa",
+        "city": "Cape Town",
+        "country": "South Africa",
+        "lat": -33.9249,
+        "lon": 18.4241,
+        "type": "dogfighting",
+        "size": "Documented Activity Region"
+    },
+    {
+        "name": "Brazil",
+        "city": "S\u00e3o Paulo",
+        "country": "Brazil",
+        "lat": -23.5505,
+        "lon": -46.6333,
+        "type": "dogfighting",
+        "size": "Documented Activity Region"
+    },
+    {
+        "name": "Brazil",
+        "city": "Rio de Janeiro",
+        "country": "Brazil",
+        "lat": -22.9068,
+        "lon": -43.1729,
+        "type": "dogfighting",
+        "size": "Documented Activity Region"
+    },
+    {
+        "name": "Argentina",
+        "city": "Buenos Aires",
+        "country": "Argentina",
+        "lat": -34.6037,
+        "lon": -58.3816,
+        "type": "dogfighting",
+        "size": "Documented Activity Region"
+    },
+    {
+        "name": "United Kingdom",
+        "city": "London",
+        "country": "UK",
+        "lat": 51.5074,
+        "lon": -0.1278,
+        "type": "dogfighting",
+        "size": "Documented Activity Region"
+    },
+    {
+        "name": "United Kingdom",
+        "city": "Birmingham",
+        "country": "UK",
+        "lat": 52.4862,
+        "lon": -1.8904,
+        "type": "dogfighting",
+        "size": "Documented Activity Region"
+    },
+    {
+        "name": "Spider Fighting Arena",
+        "city": "Manila",
+        "country": "Philippines",
+        "lat": 14.5995,
+        "lon": 120.9842,
+        "type": "spider",
+        "size": "Traditional Arena (200)"
+    },
+    {
+        "name": "Davao Spider Fighting",
+        "city": "Davao City",
+        "country": "Philippines",
+        "lat": 7.0731,
+        "lon": 125.6128,
+        "type": "spider",
+        "size": "Arena (150)"
+    },
+    {
+        "name": "Cebu Spider Arena",
+        "city": "Cebu City",
+        "country": "Philippines",
+        "lat": 10.3157,
+        "lon": 123.8854,
+        "type": "spider",
+        "size": "Arena (100)"
+    },
+    {
+        "name": "Tokyo Spider Fighting",
+        "city": "Tokyo",
+        "country": "Japan",
+        "lat": 35.6895,
+        "lon": 139.6917,
+        "type": "spider",
+        "size": "Arena (80)"
+    },
+    {
+        "name": "Guangxi Horse Fighting",
+        "city": "Guangxi",
+        "country": "China",
+        "lat": 23.7247,
+        "lon": 108.8076,
+        "type": "horse",
+        "size": "Traditional Event (1,000)"
+    },
+    {
+        "name": "Mindanao Horse Fighting",
+        "city": "General Santos",
+        "country": "Philippines",
+        "lat": 6.1164,
+        "lon": 125.1716,
+        "type": "horse",
+        "size": "Traditional Event (800)"
+    },
+    {
+        "name": "Morocco Scorpion Fighting",
+        "city": "Marrakech",
+        "country": "Morocco",
+        "lat": 31.6295,
+        "lon": -7.9811,
+        "type": "scorpion",
+        "size": "Traditional Arena (50)"
+    },
+    {
+        "name": "United Kingdom - Rural England",
+        "city": "Yorkshire",
+        "country": "UK",
+        "lat": 53.9591,
+        "lon": -1.0815,
+        "type": "badger",
+        "size": "ILLEGAL - Documented Activity"
+    },
+    {
+        "name": "United Kingdom - Rural Scotland",
+        "city": "Scottish Borders",
+        "country": "UK",
+        "lat": 55.5754,
+        "lon": -2.7815,
+        "type": "badger",
+        "size": "ILLEGAL - Documented Activity"
+    },
+    {
+        "name": "Pakistan - Punjab Region",
+        "city": "Lahore area",
+        "country": "Pakistan",
+        "lat": 31.5204,
+        "lon": 74.3587,
+        "type": "bear",
+        "size": "ILLEGAL - Documented Activity"
+    },
+    {
+        "name": "Pakistan - Sindh Region",
+        "city": "Karachi area",
+        "country": "Pakistan",
+        "lat": 24.8607,
+        "lon": 67.0011,
+        "type": "bear",
+        "size": "ILLEGAL - Documented Activity"
+    },
+    {
+        "name": "Indonesia - Java Region",
+        "city": "Jakarta area",
+        "country": "Indonesia",
+        "lat": -6.2088,
+        "lon": 106.8456,
+        "type": "monkey",
+        "size": "ILLEGAL - Documented Activity"
+    },
+    {
+        "name": "Thailand - Southern Region",
+        "city": "Phuket area",
+        "country": "Thailand",
+        "lat": 7.8804,
+        "lon": 98.3923,
+        "type": "monkey",
+        "size": "ILLEGAL - Documented Activity"
+    }
+];
+        var markers = [];
+        var colors = {
+            'bullfighting': '#DC143C', 'cockfighting': '#FF4500', 'dogfighting': '#8B0000',
+            'buffalo': '#8B4513', 'ram': '#CD853F', 'camel': '#DEB887', 'cricket': '#32CD32',
+            'beetle': '#228B22', 'quail': '#FFD700', 'betta': '#4169E1', 'spider': '#9370DB',
+            'horse': '#D2691E', 'scorpion': '#DAA520', 'badger': '#696969', 'bear': '#8B4513',
+            'monkey': '#A0522D'
+        };
+        var illegalTypes = ['dogfighting', 'badger', 'bear', 'monkey'];
+        locs.forEach(function(loc) {
+            var isIllegal = illegalTypes.indexOf(loc.type) !== -1;
+            var m = L.circleMarker([loc.lat, loc.lon], {
+                radius: isIllegal ? 10 : 8,
+                fillColor: colors[loc.type] || '#808080',
+                color: '#fff', weight: 2, opacity: 1, fillOpacity: 0.9
+            });
+            var popup = "<h4>" + loc.name + "</h4><strong>□</strong> " + loc.city + ", " + loc.country + 
+                       "<br><strong>□</strong> " + loc.type.charAt(0).toUpperCase() + loc.type.slice(1) + 
+                       "<br><strong>ℹ️</strong> " + loc.size;
+            if (isIllegal) {
+                popup += "<br><strong style='color:#ff6666'>⚠️ ILLEGAL - Documented Region</strong>";
+            }
+            m.bindPopup(popup);
+            m.locationData = loc;
+            markers.push(m);
+            m.addTo(map);
+        });
+        var counts = {};
+        locs.forEach(function(l) { counts[l.type] = (counts[l.type] || 0) + 1; });
+        Object.keys(counts).forEach(function(t) {
+            var e = document.getElementById("c-" + t);
+            if (e) e.textContent = counts[t];
+        });
+        var cbs = document.querySelectorAll('.cb');
+        var vis = document.getElementById('vis');
+        cbs.forEach(function(cb) {
+            cb.addEventListener('change', function() {
+                var checked = Array.from(cbs).filter(function(c) { return c.checked; }).map(function(c) { return c.value; });
+                var visible = 0;
+                markers.forEach(function(m) {
+                    if (checked.indexOf(m.locationData.type) !== -1) {
+                        if (!map.hasLayer(m)) m.addTo(map);
+                        visible++;
+                    } else {
+                        if (map.hasLayer(m)) map.removeLayer(m);
+                    }
+                });
+                vis.textContent = visible;
+            });
+        });
+    }
+    init();
+})();
+</script>
+
+<!-- END EMBED CODE -->
+</body>
+</html>

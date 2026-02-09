@@ -1,0 +1,2351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embedded Content</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0a0a0a; overflow: hidden; }
+    </style>
+</head>
+<body>
+<!-- COMPLETE GLOBAL SUBSISTENCE CULTURES MAP - ALL 415+ GROUPS -->
+<!-- Copy and paste this ENTIRE code block into Weebly's "Embed Code" element -->
+<!-- WARNING: This is a large code block - make sure you copy ALL of it -->
+
+<div id="subsistence-map-container">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        #subsistence-map-container {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+        #subsistence-map {
+            width: 100%;
+            height: 700px;
+            border: 2px solid #333;
+            border-radius: 8px;
+        }
+        .subsistence-legend {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            max-width: 280px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .subsistence-legend h4 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 5px;
+        }
+        .subsistence-legend-item {
+            margin: 8px 0;
+            display: flex;
+            align-items: center;
+            font-size: 11px;
+        }
+        .subsistence-legend-color {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            margin-right: 8px;
+            border: 2px solid rgba(0,0,0,0.3);
+            flex-shrink: 0;
+        }
+        .subsistence-popup h3 {
+            margin: 0 0 8px 0;
+            color: #2c3e50;
+            font-size: 15px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+        .subsistence-popup p {
+            margin: 5px 0;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        .subsistence-popup strong {
+            color: #2c3e50;
+        }
+        .subsistence-info {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            max-width: 300px;
+        }
+        .subsistence-info h2 {
+            margin: 0 0 10px 0;
+            font-size: 17px;
+            color: #2c3e50;
+        }
+        .subsistence-info p {
+            margin: 5px 0;
+            font-size: 11px;
+            line-height: 1.5;
+            color: #555;
+        }
+    </style>
+    
+    <div id="subsistence-map"></div>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Wait for Leaflet to load
+        if (typeof L !== 'undefined') {
+            const subsistenceMap = L.map('subsistence-map', {
+                center: [20, 0],
+                zoom: 2,
+                minZoom: 2,
+                maxZoom: 18
+            });
+
+            L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+                maxZoom: 20,
+                subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+                attribution: '© Google'
+            }).addTo(subsistenceMap);
+
+            const groupTypes = {
+                'Nomadic Hunter-Gatherer': '#e74c3c',
+                'Sedentary Hunter-Gatherer': '#c0392b',
+                'Fisher-Gatherer': '#1abc9c',
+                'Pastoral Nomad': '#f39c12',
+                'Reindeer Herder': '#3498db',
+                'Arctic/Subarctic Hunter': '#34495e',
+                'Uncontacted/Isolated': '#e91e63',
+                'Traditional Fisher': '#16a085',
+                'Mixed Subsistence': '#8e44ad',
+                'Limited Subsistence (Restricted)': '#95a5a6'
+            };
+
+            const subsistenceGroups = [
+                
+                // ========== AFRICA - HUNTER-GATHERERS ==========
+                
+                {
+                    name: "Hadza",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-3.7, 35.0],
+                    region: "Lake Eyasi, Tanzania",
+                    population: "1,000-1,500",
+                    description: "One of the last true nomadic hunter-gatherer societies. Practice traditional bow hunting and gathering."
+                },
+                {
+                    name: "!Kung San",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-20.5, 20.5],
+                    region: "Kalahari, Botswana/Namibia",
+                    population: "~10,000 traditional",
+                    description: "Traditional Kalahari hunter-gatherers with sophisticated tracking."
+                },
+                {
+                    name: "Ju/'hoansi",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-19.5, 20.0],
+                    region: "Nyae Nyae, Namibia",
+                    population: "~3,000",
+                    description: "San people maintaining traditional hunting and gathering."
+                },
+                {
+                    name: "G/wi and G//ana",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-22.0, 23.0],
+                    region: "Central Kalahari, Botswana",
+                    population: "~5,000",
+                    description: "Desert hunter-gatherers with extensive plant knowledge."
+                },
+                {
+                    name: "Khwe",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-18.0, 21.5],
+                    region: "Okavango, Botswana/Namibia",
+                    population: "~8,000",
+                    description: "Riverine and desert hunter-gatherers."
+                },
+                {
+                    name: "≠Khomani San",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-26.5, 20.5],
+                    region: "Southern Kalahari, South Africa",
+                    population: "~500 traditional",
+                    description: "Southern San groups maintaining traditional practices."
+                },
+                {
+                    name: "Mbuti Pygmies",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [1.5, 27.5],
+                    region: "Ituri Forest, DR Congo",
+                    population: "30,000-40,000",
+                    description: "Forest hunter-gatherers practicing net hunting."
+                },
+                {
+                    name: "Efe Pygmies",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [1.8, 28.5],
+                    region: "Ituri Forest, DR Congo",
+                    population: "~5,000",
+                    description: "Bow-hunting forest people with extensive botanical knowledge."
+                },
+                {
+                    name: "Baka Pygmies - Cameroon",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [3.0, 13.5],
+                    region: "Southeast Cameroon",
+                    population: "~40,000",
+                    description: "Rainforest hunter-gatherers with deep plant knowledge."
+                },
+                {
+                    name: "Baka Pygmies - Gabon",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-1.0, 12.5],
+                    region: "Northern Gabon",
+                    population: "~10,000",
+                    description: "Forest hunter-gatherers maintaining traditional practices."
+                },
+                {
+                    name: "Aka Pygmies",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [4.0, 18.0],
+                    region: "CAR/Congo",
+                    population: "~30,000",
+                    description: "Forest-dwelling hunter-gatherers with egalitarian culture."
+                },
+                {
+                    name: "Twa Pygmies - Rwanda",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-2.0, 29.5],
+                    region: "Rwanda",
+                    population: "~30,000",
+                    description: "Forest hunter-gatherers, some maintain traditional practices."
+                },
+                {
+                    name: "Twa Pygmies - Burundi",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-3.5, 30.0],
+                    region: "Burundi",
+                    population: "~80,000",
+                    description: "Original inhabitants maintaining some traditional subsistence."
+                },
+                {
+                    name: "Batwa - Uganda",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-1.0, 29.8],
+                    region: "Southwest Uganda",
+                    population: "~6,000",
+                    description: "Former forest hunter-gatherers, some practice traditional methods."
+                },
+                
+                // ========== SOUTH AMERICA - HUNTER-GATHERERS ==========
+                
+                {
+                    name: "Awá - Uncontacted",
+                    type: "Uncontacted/Isolated",
+                    location: [-3.5, -46.5],
+                    region: "Maranhão, Brazil",
+                    population: "~100 uncontacted",
+                    description: "Uncontacted nomadic hunter-gatherers in Amazon."
+                },
+                {
+                    name: "Awá - Contacted",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-3.8, -46.3],
+                    region: "Maranhão, Brazil",
+                    population: "~350 contacted",
+                    description: "Recently contacted, maintaining traditional hunting and gathering."
+                },
+                {
+                    name: "Nukak",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [2.2, -72.5],
+                    region: "Guaviare, Colombia",
+                    population: "~550",
+                    description: "Recently contacted Amazonian hunter-gatherers."
+                },
+                {
+                    name: "Maku (Hupd'äh)",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [0.5, -69.5],
+                    region: "Vaupés, Colombia/Brazil",
+                    population: "~1,500",
+                    description: "Nomadic rainforest hunter-gatherers."
+                },
+                {
+                    name: "Yuhup Maku",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [0.8, -70.0],
+                    region: "Vaupés, Colombia",
+                    population: "~600",
+                    description: "Nomadic hunter-gatherers with minimal agriculture."
+                },
+                {
+                    name: "Nadëb",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-0.5, -65.5],
+                    region: "Amazonas, Brazil",
+                    population: "~500",
+                    description: "Semi-nomadic hunter-gatherers in rainforest."
+                },
+                {
+                    name: "Dâw",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-0.3, -64.8],
+                    region: "Amazonas, Brazil",
+                    population: "~150",
+                    description: "Nomadic forest hunter-gatherers."
+                },
+                {
+                    name: "Pirahã",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-7.5, -62.0],
+                    region: "Maici River, Brazil",
+                    population: "~800",
+                    description: "Semi-nomadic hunter-gatherers and fishers."
+                },
+                {
+                    name: "Ayoreo - Isolated",
+                    type: "Uncontacted/Isolated",
+                    location: [-20.5, -60.0],
+                    region: "Gran Chaco, Paraguay",
+                    population: "~100-150",
+                    description: "Last uncontacted groups outside Amazon, nomadic hunter-gatherers."
+                },
+                {
+                    name: "Ayoreo - Contacted",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-20.0, -60.5],
+                    region: "Gran Chaco, Bolivia/Paraguay",
+                    population: "~5,500",
+                    description: "Some groups maintain traditional nomadic hunting and gathering."
+                },
+                {
+                    name: "Aché",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-25.5, -55.0],
+                    region: "Eastern Paraguay",
+                    population: "~2,000",
+                    description: "Former nomadic hunter-gatherers, some maintain traditional practices."
+                },
+                {
+                    name: "Sirionó",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-14.0, -63.5],
+                    region: "Beni, Bolivia",
+                    population: "~400",
+                    description: "Traditionally nomadic hunter-gatherers in Amazon."
+                },
+                {
+                    name: "Yaminahua",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-10.5, -71.0],
+                    region: "Madre de Dios, Peru",
+                    population: "~3,000",
+                    description: "Semi-nomadic with extensive hunting and gathering."
+                },
+                
+                // UNCONTACTED GROUPS - BRAZIL
+                {
+                    name: "Vale do Javari - Multiple Groups",
+                    type: "Uncontacted/Isolated",
+                    location: [-6.0, -72.0],
+                    region: "Vale do Javari, Amazonas, Brazil",
+                    population: "~2,000 (7+ groups)",
+                    description: "Largest concentration of uncontacted peoples in Amazon."
+                },
+                {
+                    name: "Korubo - Contacted",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-6.5, -71.5],
+                    region: "Vale do Javari, Brazil",
+                    population: "~200",
+                    description: "Recently contacted hunter-gatherers."
+                },
+                {
+                    name: "Matis",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-5.8, -70.5],
+                    region: "Vale do Javari, Brazil",
+                    population: "~450",
+                    description: "Hunter-gatherers with minimal horticulture."
+                },
+                {
+                    name: "Kawahiva",
+                    type: "Uncontacted/Isolated",
+                    location: [-10.0, -60.0],
+                    region: "Mato Grosso, Brazil",
+                    population: "<100",
+                    description: "Uncontacted nomadic hunter-gatherers."
+                },
+                {
+                    name: "Massaco",
+                    type: "Uncontacted/Isolated",
+                    location: [-12.5, -61.0],
+                    region: "Rondônia, Brazil",
+                    population: "~5-50",
+                    description: "Uncontacted hunter-gatherers."
+                },
+                {
+                    name: "Piripkura",
+                    type: "Uncontacted/Isolated",
+                    location: [-9.5, -61.5],
+                    region: "Mato Grosso, Brazil",
+                    population: "~3 known",
+                    description: "Nearly extinct nomadic hunter-gatherers."
+                },
+                {
+                    name: "Hi-Merimã",
+                    type: "Uncontacted/Isolated",
+                    location: [-7.5, -64.0],
+                    region: "Amazonas, Brazil",
+                    population: "Unknown",
+                    description: "Uncontacted group in voluntary isolation."
+                },
+                {
+                    name: "Yanomami Uncontacted",
+                    type: "Uncontacted/Isolated",
+                    location: [2.0, -64.5],
+                    region: "Venezuela/Brazil border",
+                    population: "Unknown numbers",
+                    description: "Several uncontacted Yanomami subgroups."
+                },
+                
+                // UNCONTACTED - PERU
+                {
+                    name: "Mashco-Piro",
+                    type: "Uncontacted/Isolated",
+                    location: [-12.0, -71.0],
+                    region: "Madre de Dios, Peru",
+                    population: "~600-800",
+                    description: "Isolated nomadic hunter-gatherers."
+                },
+                {
+                    name: "Isconahua",
+                    type: "Uncontacted/Isolated",
+                    location: [-8.0, -73.5],
+                    region: "Ucayali, Peru",
+                    population: "Unknown",
+                    description: "Isolated group in voluntary isolation."
+                },
+                {
+                    name: "Cacataibo Uncontacted",
+                    type: "Uncontacted/Isolated",
+                    location: [-8.5, -75.5],
+                    region: "Ucayali, Peru",
+                    population: "Unknown",
+                    description: "Isolated groups avoiding contact."
+                },
+                {
+                    name: "Nahua Uncontacted",
+                    type: "Uncontacted/Isolated",
+                    location: [-11.5, -72.5],
+                    region: "Ucayali, Peru",
+                    population: "Unknown",
+                    description: "Isolated Nahua subgroups."
+                },
+                {
+                    name: "Murunahua",
+                    type: "Uncontacted/Isolated",
+                    location: [-10.0, -72.5],
+                    region: "Ucayali, Peru",
+                    population: "Unknown",
+                    description: "Uncontacted hunter-gatherers in Amazon."
+                },
+                
+                // UNCONTACTED - ECUADOR
+                {
+                    name: "Tagaeri",
+                    type: "Uncontacted/Isolated",
+                    location: [-0.8, -76.0],
+                    region: "Yasuni, Ecuador",
+                    population: "~100-200",
+                    description: "Isolated nomadic hunter-gatherers."
+                },
+                {
+                    name: "Taromenane",
+                    type: "Uncontacted/Isolated",
+                    location: [-1.0, -75.8],
+                    region: "Yasuni, Ecuador",
+                    population: "~100-200",
+                    description: "Isolated group in Yasuni National Park."
+                },
+                
+                // ========== AUSTRALIA - HUNTER-GATHERERS ==========
+                
+                {
+                    name: "Pintupi",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-24.0, 129.0],
+                    region: "Western Desert, Australia",
+                    population: "~100 traditional",
+                    description: "Western Desert people maintaining traditional practices."
+                },
+                {
+                    name: "Pintupi Nine",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-23.0, 128.0],
+                    region: "Gibson Desert, Australia",
+                    population: "Last contacted 1984",
+                    description: "Last group contacted in Australia, maintaining traditions."
+                },
+                {
+                    name: "Spinifex People",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-26.5, 127.5],
+                    region: "Great Victoria Desert",
+                    population: "Some traditional",
+                    description: "Desert Aboriginal maintaining traditional nomadic practices."
+                },
+                {
+                    name: "Martu",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-23.5, 122.0],
+                    region: "Western Desert, WA",
+                    population: "~1,000, some traditional",
+                    description: "Maintain traditional hunting and burning practices."
+                },
+                {
+                    name: "Ngaanyatjarra",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-26.0, 127.0],
+                    region: "Western Australia",
+                    population: "~2,000, some traditional",
+                    description: "Central desert people maintaining traditional knowledge."
+                },
+                {
+                    name: "Warlpiri (Traditional)",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-20.5, 133.0],
+                    region: "Central Australia, NT",
+                    population: "Some maintain traditional",
+                    description: "Some practice traditional semi-nomadic lifestyle."
+                },
+                {
+                    name: "Anmatyerre",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-22.5, 134.5],
+                    region: "Central Australia, NT",
+                    population: "~1,500, some traditional",
+                    description: "Central Australian group maintaining traditional practices."
+                },
+                {
+                    name: "Arrernte (Traditional)",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-23.7, 133.9],
+                    region: "Central Australia, NT",
+                    population: "Some traditional",
+                    description: "Some maintain traditional hunting and gathering."
+                },
+                {
+                    name: "Pitjantjatjara",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-26.5, 131.5],
+                    region: "Central Australia, SA/NT",
+                    population: "~3,000, some traditional",
+                    description: "Western Desert people, some maintain traditional practices."
+                },
+                {
+                    name: "Yankunytjatjara",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-27.0, 132.0],
+                    region: "Central Australia, SA",
+                    population: "Some traditional",
+                    description: "Western Desert group maintaining traditional knowledge."
+                },
+                {
+                    name: "Anangu (APY Lands)",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-26.5, 131.0],
+                    region: "South Australia",
+                    population: "~2,500, some traditional",
+                    description: "Western Desert people maintaining traditional practices."
+                },
+                {
+                    name: "Yolngu - Northeast Arnhem",
+                    type: "Sedentary Hunter-Gatherer",
+                    location: [-12.0, 135.0],
+                    region: "Northeast Arnhem Land, NT",
+                    population: "~7,000, many traditional",
+                    description: "Maintain strong traditional hunting, fishing, gathering."
+                },
+                {
+                    name: "Yolngu - Coastal Groups",
+                    type: "Traditional Fisher",
+                    location: [-12.3, 136.5],
+                    region: "Northeast Arnhem Land",
+                    population: "Many maintain traditional",
+                    description: "Coastal clans maintaining traditional fishing practices."
+                },
+                {
+                    name: "Tiwi",
+                    type: "Sedentary Hunter-Gatherer",
+                    location: [-11.5, 130.5],
+                    region: "Tiwi Islands, NT",
+                    population: "~3,000, many traditional",
+                    description: "Island people maintaining traditional hunting and gathering."
+                },
+                {
+                    name: "Larrakia",
+                    type: "Sedentary Hunter-Gatherer",
+                    location: [-12.5, 131.0],
+                    region: "Darwin region, NT",
+                    population: "Some traditional",
+                    description: "Coastal people maintaining some traditional practices."
+                },
+                {
+                    name: "Jawoyn",
+                    type: "Sedentary Hunter-Gatherer",
+                    location: [-13.8, 132.8],
+                    region: "Katherine region, NT",
+                    population: "Many traditional",
+                    description: "Maintain traditional hunting and gathering in ranges."
+                },
+                {
+                    name: "Gunwinggu",
+                    type: "Sedentary Hunter-Gatherer",
+                    location: [-12.8, 133.0],
+                    region: "Western Arnhem Land, NT",
+                    population: "~3,000, many traditional",
+                    description: "Maintain extensive traditional practices."
+                },
+                {
+                    name: "Burarra",
+                    type: "Sedentary Hunter-Gatherer",
+                    location: [-12.2, 134.5],
+                    region: "Central Arnhem Land, NT",
+                    population: "~1,000, many traditional",
+                    description: "Coastal and inland hunters and gatherers."
+                },
+                {
+                    name: "Anindilyakwa",
+                    type: "Sedentary Hunter-Gatherer",
+                    location: [-13.9, 136.5],
+                    region: "Groote Eylandt, NT",
+                    population: "~2,000, many traditional",
+                    description: "Island people maintaining traditional practices."
+                },
+                {
+                    name: "Bardi",
+                    type: "Traditional Fisher",
+                    location: [-16.5, 123.0],
+                    region: "Dampier Peninsula, WA",
+                    population: "~500, many traditional",
+                    description: "Coastal people with strong fishing traditions."
+                },
+                {
+                    name: "Yawuru",
+                    type: "Traditional Fisher",
+                    location: [-18.0, 122.2],
+                    region: "Broome region, WA",
+                    population: "~800, some traditional",
+                    description: "Coastal people maintaining fishing practices."
+                },
+                {
+                    name: "Karajarri",
+                    type: "Sedentary Hunter-Gatherer",
+                    location: [-19.5, 121.5],
+                    region: "Western Desert coast, WA",
+                    population: "Some traditional",
+                    description: "Desert and coastal people with traditional practices."
+                },
+                {
+                    name: "Nyikina",
+                    type: "Sedentary Hunter-Gatherer",
+                    location: [-18.0, 124.5],
+                    region: "Fitzroy Valley, WA",
+                    population: "Some traditional",
+                    description: "River people maintaining traditional fishing and hunting."
+                },
+                {
+                    name: "Wunambal",
+                    type: "Sedentary Hunter-Gatherer",
+                    location: [-14.8, 125.5],
+                    region: "Kimberley, WA",
+                    population: "Some traditional",
+                    description: "Northern people with traditional practices."
+                },
+                {
+                    name: "Torres Strait Islanders",
+                    type: "Traditional Fisher",
+                    location: [-10.2, 142.2],
+                    region: "Torres Strait Islands",
+                    population: "Many maintain traditional",
+                    description: "Maritime people maintaining traditional fishing and hunting."
+                },
+                
+                // ========== SOUTH ASIA - HUNTER-GATHERERS ==========
+                
+                {
+                    name: "Sentinelese",
+                    type: "Uncontacted/Isolated",
+                    location: [11.55, 92.23],
+                    region: "North Sentinel Island, Andaman",
+                    population: "~50-400",
+                    description: "Completely isolated hunter-gatherers, maintain full traditional subsistence."
+                },
+                {
+                    name: "Jarawa",
+                    type: "Sedentary Hunter-Gatherer",
+                    location: [11.85, 92.65],
+                    region: "South & Middle Andaman",
+                    population: "~400-450",
+                    description: "Recently contacted forest hunter-gatherers."
+                },
+                {
+                    name: "Great Andamanese",
+                    type: "Sedentary Hunter-Gatherer",
+                    location: [11.6, 92.7],
+                    region: "Strait Island, Andaman",
+                    population: "~50-60",
+                    description: "Nearly extinct hunter-gatherer group."
+                },
+                {
+                    name: "Onge",
+                    type: "Sedentary Hunter-Gatherer",
+                    location: [11.5, 92.55],
+                    region: "Little Andaman Island",
+                    population: "~100",
+                    description: "Hunter-gatherers maintaining largely traditional subsistence."
+                },
+                {
+                    name: "Shompen",
+                    type: "Sedentary Hunter-Gatherer",
+                    location: [7.9, 93.8],
+                    region: "Great Nicobar Island",
+                    population: "~200-400",
+                    description: "Semi-isolated hunter-gatherers and horticulturalists."
+                },
+                {
+                    name: "Raute",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [29.3, 82.2],
+                    region: "Western Nepal",
+                    population: "~150",
+                    description: "Last nomadic hunter-gatherers in South Asia."
+                },
+                {
+                    name: "Chenchu",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [16.5, 78.5],
+                    region: "Telangana/Andhra Pradesh, India",
+                    population: "~50,000, some traditional",
+                    description: "Forest hunter-gatherers, some maintain traditional practices."
+                },
+                {
+                    name: "Kattunayakan",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [11.5, 76.5],
+                    region: "Kerala/Tamil Nadu, India",
+                    population: "~25,000, some traditional",
+                    description: "Forest hunter-gatherers in Western Ghats."
+                },
+                {
+                    name: "Kurumbas",
+                    type: "Sedentary Hunter-Gatherer",
+                    location: [11.3, 76.6],
+                    region: "Nilgiris, India",
+                    population: "~5,000, some traditional",
+                    description: "Forest people maintaining hunting and gathering."
+                },
+                {
+                    name: "Cholanaickan",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [11.4, 76.4],
+                    region: "Kerala, India",
+                    population: "~500",
+                    description: "One of most isolated groups in India, forest hunter-gatherers."
+                },
+                {
+                    name: "Kadar",
+                    type: "Sedentary Hunter-Gatherer",
+                    location: [10.5, 76.8],
+                    region: "Kerala/Tamil Nadu, India",
+                    population: "~2,000",
+                    description: "Forest hunter-gatherers with minimal agriculture."
+                },
+                {
+                    name: "Hill Pandaram",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [9.0, 77.0],
+                    region: "Kerala/Tamil Nadu, India",
+                    population: "~2,000",
+                    description: "Traditionally nomadic forest people."
+                },
+                {
+                    name: "Paliyan",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [10.0, 77.5],
+                    region: "Tamil Nadu, India",
+                    population: "~10,000, some traditional",
+                    description: "Forest people maintaining hunting and gathering."
+                },
+                {
+                    name: "Vedda",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [7.8, 81.0],
+                    region: "Sri Lanka",
+                    population: "~2,500, few traditional",
+                    description: "Indigenous hunter-gatherers of Sri Lanka, few maintain traditional lifestyle."
+                },
+                
+                // ========== SOUTHEAST ASIA - HUNTER-GATHERERS ==========
+                
+                {
+                    name: "Penan - Eastern",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [3.0, 115.0],
+                    region: "Eastern Sarawak, Malaysian Borneo",
+                    population: "~300 nomadic",
+                    description: "Traditional nomadic hunter-gatherers in rainforest."
+                },
+                {
+                    name: "Penan - Western",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [4.0, 114.0],
+                    region: "Western Sarawak, Malaysian Borneo",
+                    population: "~200 nomadic",
+                    description: "Forest nomads maintaining traditional lifestyle."
+                },
+                {
+                    name: "Punan Bah",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [3.2, 113.8],
+                    region: "Sarawak, Malaysian Borneo",
+                    population: "~500",
+                    description: "Forest hunter-gatherers with minimal horticulture."
+                },
+                {
+                    name: "Mlabri",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [19.5, 101.5],
+                    region: "Thailand/Laos border",
+                    population: "~300-400",
+                    description: "Last nomadic hunter-gatherers in mainland Southeast Asia."
+                },
+                {
+                    name: "Maniq",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [6.5, 101.5],
+                    region: "Southern Thailand",
+                    population: "~300-400",
+                    description: "Semi-nomadic rainforest hunter-gatherers."
+                },
+                {
+                    name: "Batek",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [4.8, 102.3],
+                    region: "Peninsular Malaysia",
+                    population: "~1,500",
+                    description: "Nomadic rainforest hunter-gatherers."
+                },
+                {
+                    name: "Jahai",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [5.5, 101.2],
+                    region: "Perak, Malaysia",
+                    population: "~1,000",
+                    description: "Semang group, forest hunter-gatherers."
+                },
+                {
+                    name: "Lanoh",
+                    type: "Sedentary Hunter-Gatherer",
+                    location: [4.9, 101.1],
+                    region: "Perak, Malaysia",
+                    population: "~500",
+                    description: "Forest hunter-gatherers in northern Perak."
+                },
+                {
+                    name: "Kensiu",
+                    type: "Sedentary Hunter-Gatherer",
+                    location: [6.3, 100.6],
+                    region: "Kedah, Malaysia/Thailand",
+                    population: "~300",
+                    description: "Semang people maintaining traditional forest life."
+                },
+                {
+                    name: "Menriq",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [5.2, 101.8],
+                    region: "Kelantan, Malaysia",
+                    population: "~2,000",
+                    description: "Forest hunter-gatherers maintaining traditional practices."
+                },
+                {
+                    name: "Agta - Casiguran",
+                    type: "Sedentary Hunter-Gatherer",
+                    location: [16.2, 122.1],
+                    region: "Aurora, Philippines",
+                    population: "~1,000",
+                    description: "Coastal and forest hunter-gatherers."
+                },
+                {
+                    name: "Agta - Dupaningan",
+                    type: "Sedentary Hunter-Gatherer",
+                    location: [17.5, 122.0],
+                    region: "Isabela, Philippines",
+                    population: "~5,000",
+                    description: "Negrito hunter-gatherers maintaining traditional practices."
+                },
+                {
+                    name: "Aeta - Pinatubo",
+                    type: "Sedentary Hunter-Gatherer",
+                    location: [15.1, 120.4],
+                    region: "Zambales, Philippines",
+                    population: "~20,000",
+                    description: "Highland hunter-gatherers."
+                },
+                {
+                    name: "Aeta - Bataan",
+                    type: "Sedentary Hunter-Gatherer",
+                    location: [14.7, 120.5],
+                    region: "Bataan, Philippines",
+                    population: "~5,000",
+                    description: "Forest and coastal hunter-gatherers."
+                },
+                {
+                    name: "Ati",
+                    type: "Sedentary Hunter-Gatherer",
+                    location: [11.5, 122.0],
+                    region: "Panay, Philippines",
+                    population: "~50,000",
+                    description: "Negrito maintaining hunting, gathering, fishing."
+                },
+                {
+                    name: "Mamanwa",
+                    type: "Sedentary Hunter-Gatherer",
+                    location: [9.5, 125.5],
+                    region: "Mindanao, Philippines",
+                    population: "~5,000-8,000",
+                    description: "Forest hunter-gatherers maintaining traditional subsistence."
+                },
+                {
+                    name: "Badjao (Forest)",
+                    type: "Sedentary Hunter-Gatherer",
+                    location: [9.0, 123.0],
+                    region: "Mindanao, Philippines",
+                    population: "Some inland groups",
+                    description: "Inland groups practicing hunting and gathering."
+                },
+                
+                // SOUTHEAST ASIA - WEST PAPUA
+                {
+                    name: "Korowai",
+                    type: "Sedentary Hunter-Gatherer",
+                    location: [-5.0, 139.5],
+                    region: "Papua, Indonesia",
+                    population: "~4,000",
+                    description: "Treehouse dwellers, practice hunting and sago gathering."
+                },
+                {
+                    name: "Kombai",
+                    type: "Sedentary Hunter-Gatherer",
+                    location: [-5.2, 139.7],
+                    region: "Papua, Indonesia",
+                    population: "~4,000",
+                    description: "Forest hunter-gatherers and sago collectors."
+                },
+                {
+                    name: "Asmat - Interior",
+                    type: "Sedentary Hunter-Gatherer",
+                    location: [-5.5, 138.5],
+                    region: "South Papua, Indonesia",
+                    population: "~20,000 traditional",
+                    description: "Sago harvesters with hunting and fishing."
+                },
+                {
+                    name: "West Papua Uncontacted",
+                    type: "Uncontacted/Isolated",
+                    location: [-4.0, 137.0],
+                    region: "Central Highlands, Papua",
+                    population: "Unknown, multiple groups",
+                    description: "Several isolated groups in remote highlands."
+                },
+                
+                // ========== FISHER-GATHERERS ==========
+                
+                // AFRICA
+                {
+                    name: "Vezo",
+                    type: "Fisher-Gatherer",
+                    location: [-22.5, 43.5],
+                    region: "Western Madagascar",
+                    population: "~30,000",
+                    description: "Semi-nomadic maritime people practicing traditional fishing."
+                },
+                {
+                    name: "Mikea",
+                    type: "Nomadic Hunter-Gatherer",
+                    location: [-23.0, 43.7],
+                    region: "Southwest Madagascar",
+                    population: "~1,000 traditional",
+                    description: "Forest hunter-gatherers maintaining traditional lifestyle."
+                },
+                
+                // SOUTHEAST ASIA - SEA NOMADS
+                {
+                    name: "Moken - Myanmar",
+                    type: "Fisher-Gatherer",
+                    location: [10.0, 98.0],
+                    region: "Mergui Archipelago, Myanmar",
+                    population: "~2,000",
+                    description: "Maritime nomads living on boats, traditional sea gathering."
+                },
+                {
+                    name: "Moken - Thailand",
+                    type: "Fisher-Gatherer",
+                    location: [9.0, 98.3],
+                    region: "Surin Islands, Thailand",
+                    population: "~1,000",
+                    description: "Sea nomads maintaining traditional maritime subsistence."
+                },
+                {
+                    name: "Bajau Laut - Sulu",
+                    type: "Fisher-Gatherer",
+                    location: [5.5, 120.8],
+                    region: "Sulu Sea, Philippines",
+                    population: "~30,000 traditional",
+                    description: "Sea nomads living on boats, subsistence fishing."
+                },
+                {
+                    name: "Bajau Laut - Sulawesi",
+                    type: "Fisher-Gatherer",
+                    location: [0.5, 123.0],
+                    region: "North Sulawesi, Indonesia",
+                    population: "~10,000 traditional",
+                    description: "Boat-dwelling sea nomads."
+                },
+                {
+                    name: "Sama Dilaut",
+                    type: "Fisher-Gatherer",
+                    location: [5.0, 119.8],
+                    region: "Tawi-Tawi, Philippines",
+                    population: "~20,000 traditional",
+                    description: "Maritime nomads maintaining boat-dwelling lifestyle."
+                },
+                {
+                    name: "Orang Laut - Riau",
+                    type: "Fisher-Gatherer",
+                    location: [1.2, 103.8],
+                    region: "Riau Islands, Indonesia",
+                    population: "~1,000 traditional",
+                    description: "Sea nomads practicing traditional maritime subsistence."
+                },
+                {
+                    name: "Orang Laut - Johor",
+                    type: "Fisher-Gatherer",
+                    location: [1.4, 104.0],
+                    region: "Johor, Malaysia",
+                    population: "~500 traditional",
+                    description: "Maritime people maintaining traditional fishing."
+                },
+                {
+                    name: "Salone",
+                    type: "Fisher-Gatherer",
+                    location: [7.8, 98.0],
+                    region: "Southern Thailand",
+                    population: "~3,000",
+                    description: "Sea people with traditional maritime subsistence."
+                },
+                
+                // ========== PASTORAL NOMADS ==========
+                
+                // AFRICA
+                {
+                    name: "Tuareg - Mali",
+                    type: "Pastoral Nomad",
+                    location: [17.0, -2.0],
+                    region: "Northern Mali",
+                    population: "~500,000 nomadic",
+                    description: "Saharan camel and cattle nomads."
+                },
+                {
+                    name: "Tuareg - Niger",
+                    type: "Pastoral Nomad",
+                    location: [18.0, 8.0],
+                    region: "Northern Niger",
+                    population: "~1 million, many nomadic",
+                    description: "Traditional pastoral nomads in Sahara."
+                },
+                {
+                    name: "Tuareg - Algeria",
+                    type: "Pastoral Nomad",
+                    location: [23.0, 5.0],
+                    region: "Southern Algeria",
+                    population: "~100,000 nomadic",
+                    description: "Desert nomads herding camels and goats."
+                },
+                {
+                    name: "Tuareg - Libya",
+                    type: "Pastoral Nomad",
+                    location: [26.0, 14.0],
+                    region: "Southern Libya",
+                    population: "~50,000 nomadic",
+                    description: "Saharan pastoral nomads."
+                },
+                {
+                    name: "Wodaabe Fulani",
+                    type: "Pastoral Nomad",
+                    location: [14.0, 9.0],
+                    region: "Niger/Nigeria",
+                    population: "~100,000",
+                    description: "Nomadic cattle herders with annual migrations."
+                },
+                {
+                    name: "Fulani - Nigeria",
+                    type: "Pastoral Nomad",
+                    location: [11.0, 8.0],
+                    region: "Northern Nigeria",
+                    population: "Millions, many nomadic",
+                    description: "Pastoral nomads herding cattle."
+                },
+                {
+                    name: "Fulani - Cameroon",
+                    type: "Pastoral Nomad",
+                    location: [9.0, 13.0],
+                    region: "Northern Cameroon",
+                    population: "Many nomadic",
+                    description: "Cattle herders with seasonal migrations."
+                },
+                {
+                    name: "Fulani - Burkina Faso",
+                    type: "Pastoral Nomad",
+                    location: [12.5, -1.5],
+                    region: "Burkina Faso",
+                    population: "Many nomadic",
+                    description: "Pastoral nomads across Sahel."
+                },
+                {
+                    name: "Bedouin - Saudi Arabia",
+                    type: "Pastoral Nomad",
+                    location: [25.0, 42.0],
+                    region: "Northern Saudi Arabia",
+                    population: "Declining nomadic",
+                    description: "Desert pastoral nomads herding camels."
+                },
+                {
+                    name: "Bedouin - Jordan",
+                    type: "Pastoral Nomad",
+                    location: [30.0, 37.0],
+                    region: "Southern Jordan",
+                    population: "~50,000 semi-nomadic",
+                    description: "Some maintain traditional pastoral nomadism."
+                },
+                {
+                    name: "Bedouin - Sinai",
+                    type: "Pastoral Nomad",
+                    location: [29.0, 34.0],
+                    region: "Sinai Peninsula, Egypt",
+                    population: "~70,000, some nomadic",
+                    description: "Desert nomads herding goats and camels."
+                },
+                {
+                    name: "Bedouin - Negev",
+                    type: "Pastoral Nomad",
+                    location: [30.5, 34.8],
+                    region: "Negev Desert, Israel",
+                    population: "~200,000, some semi-nomadic",
+                    description: "Some maintain pastoral traditions."
+                },
+                {
+                    name: "Himba",
+                    type: "Pastoral Nomad",
+                    location: [-19.0, 13.5],
+                    region: "Kunene, Namibia",
+                    population: "20,000-50,000",
+                    description: "Semi-nomadic pastoralists maintaining traditional culture."
+                },
+                {
+                    name: "Herero",
+                    type: "Pastoral Nomad",
+                    location: [-20.0, 16.0],
+                    region: "Namibia/Botswana",
+                    population: "~250,000, some semi-nomadic",
+                    description: "Cattle herders, some maintain pastoral traditions."
+                },
+                {
+                    name: "Afar",
+                    type: "Pastoral Nomad",
+                    location: [11.5, 41.0],
+                    region: "Afar Triangle, Ethiopia",
+                    population: "~3.5 million, many nomadic",
+                    description: "Nomadic pastoralists in extreme desert."
+                },
+                {
+                    name: "Somali Nomads",
+                    type: "Pastoral Nomad",
+                    location: [7.0, 46.0],
+                    region: "Somalia",
+                    population: "Millions, many nomadic",
+                    description: "Camel and livestock nomads."
+                },
+                {
+                    name: "Borana",
+                    type: "Pastoral Nomad",
+                    location: [4.0, 38.5],
+                    region: "Southern Ethiopia/Kenya",
+                    population: "~500,000 nomadic",
+                    description: "Cattle nomads with traditional grazing systems."
+                },
+                {
+                    name: "Maasai - Kenya",
+                    type: "Pastoral Nomad",
+                    location: [-1.5, 36.5],
+                    region: "Rift Valley, Kenya",
+                    population: "Some semi-nomadic",
+                    description: "Some maintain traditional cattle herding."
+                },
+                {
+                    name: "Maasai - Tanzania",
+                    type: "Pastoral Nomad",
+                    location: [-3.0, 36.0],
+                    region: "Northern Tanzania",
+                    population: "Some semi-nomadic",
+                    description: "Traditional pastoralists maintaining seasonal migration."
+                },
+                {
+                    name: "Samburu",
+                    type: "Pastoral Nomad",
+                    location: [1.5, 37.0],
+                    region: "Northern Kenya",
+                    population: "Many semi-nomadic",
+                    description: "Semi-nomadic pastoralists herding cattle, goats, camels."
+                },
+                {
+                    name: "Rendille",
+                    type: "Pastoral Nomad",
+                    location: [2.3, 37.8],
+                    region: "Northern Kenya",
+                    population: "~60,000",
+                    description: "Camel-herding nomads in arid regions."
+                },
+                {
+                    name: "Turkana",
+                    type: "Pastoral Nomad",
+                    location: [3.0, 35.8],
+                    region: "Northwestern Kenya",
+                    population: "Many semi-nomadic",
+                    description: "Pastoral nomads herding multiple species."
+                },
+                {
+                    name: "Pokot",
+                    type: "Pastoral Nomad",
+                    location: [1.8, 35.5],
+                    region: "West Pokot, Kenya",
+                    population: "Many semi-nomadic",
+                    description: "Pastoralists with seasonal migrations."
+                },
+                {
+                    name: "Karamojong",
+                    type: "Pastoral Nomad",
+                    location: [2.5, 34.5],
+                    region: "Karamoja, Uganda",
+                    population: "~1 million, many nomadic",
+                    description: "Cattle nomads maintaining traditional practices."
+                },
+                {
+                    name: "Toposa",
+                    type: "Pastoral Nomad",
+                    location: [4.5, 33.5],
+                    region: "Eastern Equatoria, South Sudan",
+                    population: "~300,000",
+                    description: "Nilotic pastoralists herding cattle."
+                },
+                {
+                    name: "Dinka",
+                    type: "Pastoral Nomad",
+                    location: [7.0, 29.0],
+                    region: "South Sudan",
+                    population: "~4 million, many semi-nomadic",
+                    description: "Cattle herders with seasonal migrations."
+                },
+                {
+                    name: "Nuer",
+                    type: "Pastoral Nomad",
+                    location: [8.5, 31.0],
+                    region: "South Sudan/Ethiopia",
+                    population: "~4 million, many semi-nomadic",
+                    description: "Cattle nomads with transhumance patterns."
+                },
+                {
+                    name: "Baggara Arabs",
+                    type: "Pastoral Nomad",
+                    location: [11.0, 27.0],
+                    region: "Western Sudan",
+                    population: "Millions, many nomadic",
+                    description: "Cattle and camel nomads."
+                },
+                
+                // MIDDLE EAST & CENTRAL ASIA
+                {
+                    name: "Kuchi - Afghanistan",
+                    type: "Pastoral Nomad",
+                    location: [33.0, 66.0],
+                    region: "Afghanistan",
+                    population: "~2.5 million",
+                    description: "Nomadic and semi-nomadic pastoralists."
+                },
+                {
+                    name: "Kuchi - Pakistan",
+                    type: "Pastoral Nomad",
+                    location: [30.0, 67.0],
+                    region: "Balochistan, Pakistan",
+                    population: "~500,000",
+                    description: "Seasonal migrants with livestock."
+                },
+                {
+                    name: "Baloch Nomads",
+                    type: "Pastoral Nomad",
+                    location: [28.0, 64.0],
+                    region: "Balochistan, Pakistan/Iran",
+                    population: "Many semi-nomadic",
+                    description: "Pastoral nomads in arid regions."
+                },
+                {
+                    name: "Brahui",
+                    type: "Pastoral Nomad",
+                    location: [29.0, 66.5],
+                    region: "Balochistan, Pakistan",
+                    population: "Many semi-nomadic",
+                    description: "Pastoral people with seasonal migrations."
+                },
+                {
+                    name: "Shahsavan",
+                    type: "Pastoral Nomad",
+                    location: [38.5, 47.5],
+                    region: "Northwestern Iran",
+                    population: "~500,000 semi-nomadic",
+                    description: "Pastoral nomads practicing transhumance."
+                },
+                {
+                    name: "Qashqai",
+                    type: "Pastoral Nomad",
+                    location: [30.0, 52.5],
+                    region: "Southern Iran",
+                    population: "~1.5 million, many semi-nomadic",
+                    description: "Turkic pastoral nomads with traditional migrations."
+                },
+                {
+                    name: "Bakhtiari",
+                    type: "Pastoral Nomad",
+                    location: [32.0, 50.5],
+                    region: "Zagros Mountains, Iran",
+                    population: "~1 million, many semi-nomadic",
+                    description: "Mountain pastoralists with dramatic migrations."
+                },
+                {
+                    name: "Lurs",
+                    type: "Pastoral Nomad",
+                    location: [33.5, 48.5],
+                    region: "Western Iran",
+                    population: "~5 million, many semi-nomadic",
+                    description: "Mountain pastoralists practicing transhumance."
+                },
+                {
+                    name: "Kurds - Nomadic",
+                    type: "Pastoral Nomad",
+                    location: [36.0, 43.0],
+                    region: "Kurdistan, Iraq/Turkey/Iran",
+                    population: "Some nomadic",
+                    description: "Some Kurdish groups maintain pastoral nomadism."
+                },
+                {
+                    name: "Yörük",
+                    type: "Pastoral Nomad",
+                    location: [37.0, 35.0],
+                    region: "Southern Turkey",
+                    population: "~500,000 semi-nomadic",
+                    description: "Turkic pastoral nomads practicing transhumance."
+                },
+                {
+                    name: "Sarıkeçili",
+                    type: "Pastoral Nomad",
+                    location: [37.5, 33.5],
+                    region: "Taurus Mountains, Turkey",
+                    population: "~20,000",
+                    description: "Turkic nomads with traditional migration routes."
+                },
+                
+                // CENTRAL ASIA
+                {
+                    name: "Mongolian Herders - Mongolia",
+                    type: "Pastoral Nomad",
+                    location: [47.0, 105.0],
+                    region: "Mongolia",
+                    population: "~800,000 nomadic",
+                    description: "One of largest nomadic populations. Herd multiple species."
+                },
+                {
+                    name: "Mongolian Herders - Inner Mongolia",
+                    type: "Pastoral Nomad",
+                    location: [43.0, 115.0],
+                    region: "Inner Mongolia, China",
+                    population: "Many semi-nomadic",
+                    description: "Traditional herders maintaining pastoral practices."
+                },
+                {
+                    name: "Kazakh Herders - Mongolia",
+                    type: "Pastoral Nomad",
+                    location: [48.5, 89.0],
+                    region: "Western Mongolia",
+                    population: "~100,000 nomadic",
+                    description: "Eagle hunters and pastoral nomads."
+                },
+                {
+                    name: "Kazakh Herders - Kazakhstan",
+                    type: "Pastoral Nomad",
+                    location: [47.0, 67.0],
+                    region: "Kazakhstan",
+                    population: "Hundreds of thousands semi-nomadic",
+                    description: "Some maintain traditional pastoral nomadism."
+                },
+                {
+                    name: "Kazakh Herders - Xinjiang",
+                    type: "Pastoral Nomad",
+                    location: [43.5, 83.0],
+                    region: "Xinjiang, China",
+                    population: "Many semi-nomadic",
+                    description: "Pastoral nomads in Altai and Tian Shan."
+                },
+                {
+                    name: "Kyrgyz - Kyrgyzstan",
+                    type: "Pastoral Nomad",
+                    location: [41.5, 74.5],
+                    region: "Kyrgyzstan",
+                    population: "~200,000 nomadic",
+                    description: "High-altitude pastoral nomads."
+                },
+                {
+                    name: "Kyrgyz - Pamir",
+                    type: "Pastoral Nomad",
+                    location: [39.0, 73.5],
+                    region: "Pamir Mountains, Tajikistan",
+                    population: "~10,000 nomadic",
+                    description: "High-altitude yak and sheep herders."
+                },
+                {
+                    name: "Kyrgyz - Afghanistan",
+                    type: "Pastoral Nomad",
+                    location: [37.0, 73.0],
+                    region: "Wakhan Corridor, Afghanistan",
+                    population: "~1,000",
+                    description: "Isolated pastoral nomads in Pamirs."
+                },
+                {
+                    name: "Kyrgyz - Xinjiang",
+                    type: "Pastoral Nomad",
+                    location: [39.0, 75.0],
+                    region: "Xinjiang, China",
+                    population: "Many semi-nomadic",
+                    description: "Pastoral nomads in western China."
+                },
+                {
+                    name: "Changtang Nomads - Tibet",
+                    type: "Pastoral Nomad",
+                    location: [33.0, 82.0],
+                    region: "Tibetan Plateau, Tibet",
+                    population: "~400,000",
+                    description: "High-altitude yak and sheep herders."
+                },
+                {
+                    name: "Changtang Nomads - Ladakh",
+                    type: "Pastoral Nomad",
+                    location: [33.5, 79.0],
+                    region: "Ladakh, India",
+                    population: "~10,000",
+                    description: "High-altitude pastoral nomads."
+                },
+                {
+                    name: "Drokpa - Tibet",
+                    type: "Pastoral Nomad",
+                    location: [31.0, 91.0],
+                    region: "Central Tibet",
+                    population: "Many nomadic",
+                    description: "Tibetan yak herders maintaining traditional lifestyle."
+                },
+                {
+                    name: "Drokpa - Bhutan",
+                    type: "Pastoral Nomad",
+                    location: [27.8, 90.2],
+                    region: "Northern Bhutan",
+                    population: "~5,000",
+                    description: "High-altitude yak herders."
+                },
+                {
+                    name: "Van Gujjar",
+                    type: "Pastoral Nomad",
+                    location: [30.5, 78.0],
+                    region: "Uttarakhand, India",
+                    population: "~100,000",
+                    description: "Buffalo-herding nomads with Himalayan migrations."
+                },
+                {
+                    name: "Gaddis",
+                    type: "Pastoral Nomad",
+                    location: [32.2, 76.5],
+                    region: "Himachal Pradesh, India",
+                    population: "~170,000, many semi-nomadic",
+                    description: "Himalayan shepherds practicing transhumance."
+                },
+                {
+                    name: "Gujjar - Kashmir",
+                    type: "Pastoral Nomad",
+                    location: [34.0, 74.5],
+                    region: "Jammu & Kashmir, India",
+                    population: "Many semi-nomadic",
+                    description: "Pastoral nomads in Kashmir valleys."
+                },
+                {
+                    name: "Bakarwal",
+                    type: "Pastoral Nomad",
+                    location: [33.5, 75.0],
+                    region: "Jammu & Kashmir, India",
+                    population: "~200,000",
+                    description: "Goat and sheep herders with seasonal migrations."
+                },
+                {
+                    name: "Rabari",
+                    type: "Pastoral Nomad",
+                    location: [23.0, 71.0],
+                    region: "Gujarat/Rajasthan, India",
+                    population: "~600,000, some nomadic",
+                    description: "Camel and livestock herders, some maintain nomadism."
+                },
+                
+                // ========== REINDEER HERDERS ==========
+                
+                // SIBERIA & ARCTIC RUSSIA
+                {
+                    name: "Nenets - Yamal",
+                    type: "Reindeer Herder",
+                    location: [68.0, 70.0],
+                    region: "Yamal Peninsula, Russia",
+                    population: "~10,000 nomadic",
+                    description: "Arctic reindeer herders with 1,000 km migrations."
+                },
+                {
+                    name: "Nenets - European",
+                    type: "Reindeer Herder",
+                    location: [67.0, 55.0],
+                    region: "European Russia",
+                    population: "~5,000 nomadic",
+                    description: "Western Nenets maintaining reindeer herding."
+                },
+                {
+                    name: "Khanty",
+                    type: "Reindeer Herder",
+                    location: [62.0, 69.0],
+                    region: "Khanty-Mansi, Russia",
+                    population: "~5,000 herding",
+                    description: "Forest and tundra reindeer herders."
+                },
+                {
+                    name: "Mansi",
+                    type: "Reindeer Herder",
+                    location: [61.0, 63.0],
+                    region: "Khanty-Mansi, Russia",
+                    population: "~2,000 herding",
+                    description: "Reindeer herders and hunters in Urals."
+                },
+                {
+                    name: "Selkup",
+                    type: "Reindeer Herder",
+                    location: [64.0, 77.0],
+                    region: "Yamalo-Nenets, Russia",
+                    population: "~1,000 herding",
+                    description: "Traditional reindeer herders in taiga."
+                },
+                {
+                    name: "Enets",
+                    type: "Reindeer Herder",
+                    location: [69.0, 82.0],
+                    region: "Taymyr, Russia",
+                    population: "~200",
+                    description: "Small group of Arctic reindeer herders."
+                },
+                {
+                    name: "Nganasan",
+                    type: "Reindeer Herder",
+                    location: [73.0, 95.0],
+                    region: "Taymyr Peninsula, Russia",
+                    population: "~800, some herding",
+                    description: "Northernmost ethnic group in Russia, reindeer herders."
+                },
+                {
+                    name: "Dolgans",
+                    type: "Reindeer Herder",
+                    location: [71.0, 105.0],
+                    region: "Taymyr, Russia",
+                    population: "~8,000",
+                    description: "Arctic reindeer herders in extreme conditions."
+                },
+                {
+                    name: "Evenks - Central Siberia",
+                    type: "Reindeer Herder",
+                    location: [60.0, 102.0],
+                    region: "Evenkia, Russia",
+                    population: "~3,000 nomadic",
+                    description: "Reindeer herders and hunters in taiga."
+                },
+                {
+                    name: "Evenks - Transbaikal",
+                    type: "Reindeer Herder",
+                    location: [52.0, 117.0],
+                    region: "Zabaykalsky, Russia",
+                    population: "~2,000 herding",
+                    description: "Southern Evenk reindeer herders."
+                },
+                {
+                    name: "Evenks - Sakha",
+                    type: "Reindeer Herder",
+                    location: [65.0, 129.0],
+                    region: "Sakha Republic, Russia",
+                    population: "~5,000 herding",
+                    description: "Reindeer herding and hunting people."
+                },
+                {
+                    name: "Evens",
+                    type: "Reindeer Herder",
+                    location: [62.0, 152.0],
+                    region: "Magadan/Kamchatka, Russia",
+                    population: "~5,000 herding",
+                    description: "Reindeer herders in Far East Russia."
+                },
+                {
+                    name: "Chukchi - Reindeer",
+                    type: "Reindeer Herder",
+                    location: [66.0, 172.0],
+                    region: "Chukotka, Russia",
+                    population: "~5,000 herding",
+                    description: "Reindeer herding Chukchi in Arctic."
+                },
+                {
+                    name: "Chukchi - Maritime",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [67.0, -172.0],
+                    region: "Coastal Chukotka, Russia",
+                    population: "~5,000",
+                    description: "Maritime hunters focusing on sea mammals."
+                },
+                {
+                    name: "Koryaks - Reindeer",
+                    type: "Reindeer Herder",
+                    location: [60.5, 166.0],
+                    region: "Kamchatka, Russia",
+                    population: "~3,000 herding",
+                    description: "Interior reindeer herders."
+                },
+                {
+                    name: "Koryaks - Maritime",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [59.5, 163.0],
+                    region: "Coastal Kamchatka, Russia",
+                    population: "~3,000",
+                    description: "Coastal fishers and sea mammal hunters."
+                },
+                {
+                    name: "Itelmen",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [56.0, 158.0],
+                    region: "Southern Kamchatka, Russia",
+                    population: "~1,500",
+                    description: "Traditional fishers and hunters."
+                },
+                {
+                    name: "Yukagir",
+                    type: "Reindeer Herder",
+                    location: [67.0, 149.0],
+                    region: "Sakha/Magadan, Russia",
+                    population: "~1,500",
+                    description: "Reindeer herders and hunters."
+                },
+                {
+                    name: "Tofa",
+                    type: "Reindeer Herder",
+                    location: [53.0, 97.0],
+                    region: "Irkutsk, Russia",
+                    population: "~800",
+                    description: "Sayan mountain reindeer herders."
+                },
+                {
+                    name: "Soyot",
+                    type: "Reindeer Herder",
+                    location: [52.0, 99.0],
+                    region: "Buryatia, Russia",
+                    population: "~3,600",
+                    description: "Mountain reindeer herders."
+                },
+                {
+                    name: "Tuva Herders",
+                    type: "Reindeer Herder",
+                    location: [51.5, 94.5],
+                    region: "Tuva Republic, Russia",
+                    population: "Many semi-nomadic",
+                    description: "Yak, reindeer, and livestock nomads."
+                },
+                {
+                    name: "Tsaatan (Dukha)",
+                    type: "Reindeer Herder",
+                    location: [51.5, 99.5],
+                    region: "Northern Mongolia",
+                    population: "~200-400",
+                    description: "Small group of reindeer herders, southernmost reindeer culture."
+                },
+                
+                // SCANDINAVIA
+                {
+                    name: "Sami - Norway",
+                    type: "Reindeer Herder",
+                    location: [69.0, 23.0],
+                    region: "Finnmark, Norway",
+                    population: "~3,000 herding",
+                    description: "Arctic reindeer herders maintaining traditional practices."
+                },
+                {
+                    name: "Sami - Sweden",
+                    type: "Reindeer Herder",
+                    location: [67.5, 18.0],
+                    region: "Norrbotten, Sweden",
+                    population: "~2,500 herding",
+                    description: "Reindeer herding Sami in northern Sweden."
+                },
+                {
+                    name: "Sami - Finland",
+                    type: "Reindeer Herder",
+                    location: [68.5, 27.0],
+                    region: "Lapland, Finland",
+                    population: "~1,000 herding",
+                    description: "Reindeer herders in Finnish Lapland."
+                },
+                {
+                    name: "Sami - Kola",
+                    type: "Reindeer Herder",
+                    location: [67.5, 38.0],
+                    region: "Kola Peninsula, Russia",
+                    population: "~500 herding",
+                    description: "Eastern Sami reindeer herders."
+                },
+                
+                // ========== ARCTIC/SUBARCTIC HUNTERS - NORTH AMERICA ==========
+                
+                // GREENLAND
+                {
+                    name: "Kalaallit",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [72.0, -40.0],
+                    region: "West Greenland",
+                    population: "Many maintain subsistence",
+                    description: "Greenlandic Inuit maintaining traditional hunting and fishing."
+                },
+                {
+                    name: "Inughuit",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [77.5, -69.0],
+                    region: "Northwest Greenland",
+                    population: "~800",
+                    description: "Northernmost indigenous people, traditional hunters."
+                },
+                {
+                    name: "Tunumiit",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [66.0, -37.0],
+                    region: "East Greenland",
+                    population: "~3,500",
+                    description: "East Greenlandic Inuit maintaining hunting traditions."
+                },
+                
+                // CANADIAN ARCTIC
+                {
+                    name: "Inuit - Nunavut",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [70.0, -85.0],
+                    region: "Nunavut, Canada",
+                    population: "~30,000, many subsistence",
+                    description: "Arctic hunters maintaining traditional practices."
+                },
+                {
+                    name: "Inuit - Nunavik",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [60.0, -72.0],
+                    region: "Northern Quebec, Canada",
+                    population: "~11,000, many subsistence",
+                    description: "Quebec Inuit maintaining hunting and fishing."
+                },
+                {
+                    name: "Inuit - Nunatsiavut",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [56.5, -62.0],
+                    region: "Northern Labrador, Canada",
+                    population: "~6,000, many subsistence",
+                    description: "Labrador Inuit with traditional subsistence."
+                },
+                {
+                    name: "Inuit - Inuvialuit",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [69.0, -133.0],
+                    region: "Northwest Territories, Canada",
+                    population: "~5,000, many subsistence",
+                    description: "Western Arctic Inuit maintaining traditional practices."
+                },
+                {
+                    name: "Inuit - Kivalliq",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [63.0, -92.0],
+                    region: "Kivalliq Region, Nunavut",
+                    population: "~9,000, many subsistence",
+                    description: "Central Arctic hunters and fishers."
+                },
+                {
+                    name: "Inuit - Qikiqtaaluk",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [74.0, -90.0],
+                    region: "Baffin Island, Nunavut",
+                    population: "~15,000, many subsistence",
+                    description: "Baffin Inuit maintaining hunting traditions."
+                },
+                {
+                    name: "Inuit - Kitikmeot",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [68.5, -108.0],
+                    region: "Kitikmeot Region, Nunavut",
+                    population: "~6,000, many subsistence",
+                    description: "Central Arctic Inuit with traditional subsistence."
+                },
+                
+                // ALASKA
+                {
+                    name: "Inupiat - North Slope",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [71.0, -156.0],
+                    region: "North Slope, Alaska",
+                    population: "~7,500, many subsistence",
+                    description: "Arctic whalers and hunters."
+                },
+                {
+                    name: "Inupiat - Northwest",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [67.0, -162.0],
+                    region: "Northwest Alaska",
+                    population: "~7,000, many subsistence",
+                    description: "Traditional subsistence hunters and fishers."
+                },
+                {
+                    name: "Yup'ik - Southwest",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [61.0, -163.0],
+                    region: "Yukon-Kuskokwim Delta, Alaska",
+                    population: "~25,000, many subsistence",
+                    description: "Maintain traditional subsistence hunting and fishing."
+                },
+                {
+                    name: "Cup'ik",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [60.0, -164.5],
+                    region: "Southwest Alaska",
+                    population: "~3,000, many subsistence",
+                    description: "Pacific Yup'ik maintaining traditional practices."
+                },
+                {
+                    name: "Siberian Yupik",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [63.7, -171.7],
+                    region: "St. Lawrence Island, Alaska",
+                    population: "~1,500",
+                    description: "Maritime hunters maintaining traditional whaling."
+                },
+                {
+                    name: "Aleut - Aleutian",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [52.5, -174.0],
+                    region: "Aleutian Islands, Alaska",
+                    population: "~2,000, many subsistence",
+                    description: "Maritime people maintaining traditional fishing and hunting."
+                },
+                {
+                    name: "Alutiiq",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [57.5, -153.0],
+                    region: "Kodiak/South Alaska",
+                    population: "~3,000, many subsistence",
+                    description: "Coastal hunters and fishers."
+                },
+                
+                // CANADIAN SUBARCTIC
+                {
+                    name: "Gwich'in",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [67.0, -134.0],
+                    region: "Yukon/NWT/Alaska",
+                    population: "~9,000, many subsistence",
+                    description: "Caribou hunters maintaining traditional practices."
+                },
+                {
+                    name: "Sahtu Dene",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [65.0, -125.0],
+                    region: "Sahtu, NWT",
+                    population: "~2,500, many subsistence",
+                    description: "Traditional hunters and fishers."
+                },
+                {
+                    name: "Tłı̨chǫ",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [63.5, -117.0],
+                    region: "Northwest Territories",
+                    population: "~4,000, many subsistence",
+                    description: "Dene people maintaining traditional hunting."
+                },
+                {
+                    name: "Dehcho Dene",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [61.5, -121.0],
+                    region: "Dehcho, NWT",
+                    population: "~3,500, many subsistence",
+                    description: "Traditional hunters in Mackenzie region."
+                },
+                {
+                    name: "Dene Tha'",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [59.5, -117.5],
+                    region: "Northern Alberta/NWT",
+                    population: "~2,500, many subsistence",
+                    description: "Dene hunters and trappers."
+                },
+                {
+                    name: "Chipewyan",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [59.0, -105.0],
+                    region: "Saskatchewan/NWT",
+                    population: "~12,000, many subsistence",
+                    description: "Caribou hunters maintaining traditional practices."
+                },
+                {
+                    name: "Cree - Eastern",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [53.0, -78.0],
+                    region: "James Bay, Quebec/Ontario",
+                    population: "~18,000, many subsistence",
+                    description: "Eastern Cree maintaining traditional hunting and trapping."
+                },
+                {
+                    name: "Cree - Western",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [55.0, -95.0],
+                    region: "Northern Manitoba/Saskatchewan",
+                    population: "Many subsistence",
+                    description: "Woods Cree hunters and trappers."
+                },
+                {
+                    name: "Naskapi",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [55.0, -66.5],
+                    region: "Northern Quebec/Labrador",
+                    population: "~1,500, many subsistence",
+                    description: "Caribou hunters in subarctic."
+                },
+                {
+                    name: "Innu - Labrador",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [54.0, -63.0],
+                    region: "Labrador",
+                    population: "~3,000, many subsistence",
+                    description: "Traditional caribou hunters."
+                },
+                {
+                    name: "Innu - Quebec",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [52.0, -68.0],
+                    region: "Northern Quebec",
+                    population: "~15,000, many subsistence",
+                    description: "Maintain traditional hunting and fishing."
+                },
+                {
+                    name: "Atikamekw",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [47.5, -73.5],
+                    region: "Quebec",
+                    population: "~7,500, many subsistence",
+                    description: "Forest hunters and fishers."
+                },
+                {
+                    name: "Algonquin",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [47.0, -78.0],
+                    region: "Ontario/Quebec",
+                    population: "~11,000, some subsistence",
+                    description: "Some maintain traditional hunting and fishing."
+                },
+                {
+                    name: "Ojibwe - Northern",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [51.0, -90.0],
+                    region: "Northern Ontario",
+                    population: "Many subsistence",
+                    description: "Northern Ojibwe maintaining traditional practices."
+                },
+                {
+                    name: "Oji-Cree",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [52.5, -91.0],
+                    region: "Northern Ontario",
+                    population: "~15,000, many subsistence",
+                    description: "Traditional hunters and trappers."
+                },
+                
+                // ALASKA INTERIOR
+                {
+                    name: "Koyukon",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [65.5, -155.0],
+                    region: "Interior Alaska",
+                    population: "~2,000, many subsistence",
+                    description: "Athabascan hunters and fishers."
+                },
+                {
+                    name: "Gwich'in - Alaska",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [66.5, -145.0],
+                    region: "Northeast Alaska",
+                    population: "~1,000, many subsistence",
+                    description: "Caribou hunters in Alaska."
+                },
+                {
+                    name: "Tanana",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [65.0, -150.0],
+                    region: "Interior Alaska",
+                    population: "~1,000, many subsistence",
+                    description: "Traditional Athabascan hunters."
+                },
+                {
+                    name: "Deg Hit'an",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [63.5, -157.5],
+                    region: "Western Alaska",
+                    population: "~500, many subsistence",
+                    description: "River-based hunters and fishers."
+                },
+                {
+                    name: "Holikachuk",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [63.5, -159.0],
+                    region: "Western Alaska",
+                    population: "~200, most subsistence",
+                    description: "Small Athabascan group maintaining traditions."
+                },
+                {
+                    name: "Dena'ina",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [61.0, -150.0],
+                    region: "South-Central Alaska",
+                    population: "~1,500, many subsistence",
+                    description: "Coastal and interior hunters."
+                },
+                {
+                    name: "Ahtna",
+                    type: "Arctic/Subarctic Hunter",
+                    location: [62.0, -145.0],
+                    region: "Copper River, Alaska",
+                    population: "~500, many subsistence",
+                    description: "Athabascan salmon and caribou hunters."
+                },
+                
+                // NORTHWEST COAST - TRADITIONAL FISHERS
+                {
+                    name: "Tlingit",
+                    type: "Traditional Fisher",
+                    location: [58.0, -135.0],
+                    region: "Southeast Alaska/Yukon/BC",
+                    population: "~16,000, many subsistence",
+                    description: "Traditional salmon fishers and hunters."
+                },
+                {
+                    name: "Haida",
+                    type: "Traditional Fisher",
+                    location: [53.0, -132.0],
+                    region: "Haida Gwaii, BC",
+                    population: "~4,500, many subsistence",
+                    description: "Maritime people maintaining traditional fishing."
+                },
+                {
+                    name: "Tsimshian",
+                    type: "Traditional Fisher",
+                    location: [54.5, -130.0],
+                    region: "Northwest BC",
+                    population: "~5,000, many subsistence",
+                    description: "Coastal fishers with traditional practices."
+                },
+                {
+                    name: "Gitxsan",
+                    type: "Traditional Fisher",
+                    location: [55.5, -127.5],
+                    region: "Interior BC",
+                    population: "~7,000, many subsistence",
+                    description: "Salmon fishing people of Skeena River."
+                },
+                {
+                    name: "Wet'suwet'en",
+                    type: "Traditional Fisher",
+                    location: [54.5, -126.0],
+                    region: "Central BC",
+                    population: "~3,000, many subsistence",
+                    description: "Interior people maintaining traditional fishing."
+                },
+                {
+                    name: "Haisla",
+                    type: "Traditional Fisher",
+                    location: [53.8, -128.7],
+                    region: "Northern BC",
+                    population: "~1,600, many subsistence",
+                    description: "Coastal fishers and hunters."
+                },
+                {
+                    name: "Heiltsuk",
+                    type: "Traditional Fisher",
+                    location: [52.2, -128.0],
+                    region: "Central Coast, BC",
+                    population: "~2,300, many subsistence",
+                    description: "Maritime people with traditional fishing."
+                },
+                {
+                    name: "Nuxalk",
+                    type: "Traditional Fisher",
+                    location: [52.4, -126.5],
+                    region: "Bella Coola, BC",
+                    population: "~1,700, many subsistence",
+                    description: "Salmon people maintaining traditional practices."
+                },
+                {
+                    name: "Kwakwaka'wakw",
+                    type: "Traditional Fisher",
+                    location: [50.7, -127.0],
+                    region: "Northern Vancouver Island, BC",
+                    population: "~5,500, many subsistence",
+                    description: "Traditional fishers and marine resource harvesters."
+                },
+                {
+                    name: "Nuu-chah-nulth",
+                    type: "Traditional Fisher",
+                    location: [49.0, -125.5],
+                    region: "West Vancouver Island, BC",
+                    population: "~8,000, many subsistence",
+                    description: "Traditional whalers and fishers."
+                },
+                {
+                    name: "Coast Salish",
+                    type: "Traditional Fisher",
+                    location: [49.0, -123.0],
+                    region: "Southern BC/Washington",
+                    population: "Many maintain subsistence",
+                    description: "Multiple groups maintaining traditional fishing."
+                },
+                {
+                    name: "Makah",
+                    type: "Traditional Fisher",
+                    location: [48.4, -124.6],
+                    region: "Northwest Washington",
+                    population: "~3,000, many subsistence",
+                    description: "Traditional whalers maintaining cultural practices."
+                },
+                {
+                    name: "Quileute",
+                    type: "Traditional Fisher",
+                    location: [47.9, -124.6],
+                    region: "Northwest Washington",
+                    population: "~750, many subsistence",
+                    description: "Coastal fishers and hunters."
+                },
+                {
+                    name: "Quinault",
+                    type: "Traditional Fisher",
+                    location: [47.5, -124.3],
+                    region: "Washington Coast",
+                    population: "~3,000, many subsistence",
+                    description: "Traditional salmon fishers."
+                },
+                
+                // CHINA - LIMITED SUBSISTENCE (Government restrictions)
+                {
+                    name: "Oroqen (Limited)",
+                    type: "Limited Subsistence (Restricted)",
+                    location: [50.5, 127.0],
+                    region: "Hinggan Mountains, Heilongjiang/Inner Mongolia, China",
+                    population: "~12 licensed hunters (of ~8,700 total)",
+                    description: "Hunting BANNED 1996. Only 12 licensed hunters remain, 3-month seasons only. Most settled."
+                },
+                {
+                    name: "Hezhen",
+                    type: "Limited Subsistence (Restricted)",
+                    location: [47.6, 133.5],
+                    region: "Heilongjiang, China",
+                    population: "~5,400 total, subsistence largely ended",
+                    description: "Traditionally fish-dependent. Modern restrictions severely limit traditional fishing."
+                },
+                {
+                    name: "Derung (Dulong)",
+                    type: "Limited Subsistence (Restricted)",
+                    location: [27.8, 98.3],
+                    region: "Nujiang, Yunnan, China",
+                    population: "~7,000",
+                    description: "Remote mountain people. Some maintain hunting/gathering with increasing restrictions."
+                },
+                
+                // U.S. LOWER 48 - Additional Treaty Subsistence Groups
+                {
+                    name: "Ojibwe - Red Lake",
+                    type: "Traditional Fisher",
+                    location: [48.0, -95.0],
+                    region: "Red Lake, Minnesota",
+                    population: "~5,000, many subsistence",
+                    description: "Maintain strong wild rice harvesting and fishing traditions under treaty rights."
+                },
+                {
+                    name: "Ojibwe - Mille Lacs",
+                    type: "Traditional Fisher",
+                    location: [46.2, -93.7],
+                    region: "Mille Lacs, Minnesota",
+                    population: "Treaty fishing maintained",
+                    description: "Maintain traditional fishing and wild rice gathering under treaty rights."
+                },
+                {
+                    name: "Ojibwe - Lac du Flambeau",
+                    type: "Traditional Fisher",
+                    location: [45.97, -89.89],
+                    region: "Wisconsin",
+                    population: "Many traditional",
+                    description: "Maintain spearfishing, wild rice harvesting, traditional hunting."
+                },
+                {
+                    name: "Ojibwe - Leech Lake",
+                    type: "Traditional Fisher",
+                    location: [47.5, -94.4],
+                    region: "Minnesota",
+                    population: "Treaty rights maintained",
+                    description: "Wild rice harvesting and fishing traditions continue."
+                },
+                {
+                    name: "Menominee",
+                    type: "Traditional Fisher",
+                    location: [45.1, -88.6],
+                    region: "Wisconsin",
+                    population: "Some subsistence",
+                    description: "Some maintain traditional hunting, fishing, wild rice harvesting."
+                },
+                {
+                    name: "Hoopa",
+                    type: "Traditional Fisher",
+                    location: [41.0, -123.7],
+                    region: "Northern California",
+                    population: "Treaty fishing maintained",
+                    description: "Maintain traditional salmon fishing and acorn gathering."
+                },
+                {
+                    name: "Hopi",
+                    type: "Limited Subsistence (Restricted)",
+                    location: [35.8, -110.6],
+                    region: "Arizona",
+                    population: "Some traditional",
+                    description: "Some maintain traditional hunting of rabbits, deer, and gathering."
+                },
+                {
+                    name: "Tohono O'odham",
+                    type: "Limited Subsistence (Restricted)",
+                    location: [32.0, -112.0],
+                    region: "Southern Arizona",
+                    population: "Some traditional",
+                    description: "Some maintain gathering of saguaro fruit, mesquite, and hunting."
+                },
+                {
+                    name: "White Mountain Apache",
+                    type: "Limited Subsistence (Restricted)",
+                    location: [33.8, -109.9],
+                    region: "Eastern Arizona",
+                    population: "Some traditional",
+                    description: "Some maintain traditional elk and deer hunting practices."
+                },
+                {
+                    name: "Pueblos (Various)",
+                    type: "Limited Subsistence (Restricted)",
+                    location: [35.5, -106.0],
+                    region: "New Mexico",
+                    population: "Some traditional",
+                    description: "Various Pueblo groups maintain some traditional hunting and gathering."
+                }
+            ];
+
+            subsistenceGroups.forEach(group => {
+                const color = groupTypes[group.type];
+                
+                const marker = L.circleMarker(group.location, {
+                    radius: 6,
+                    fillColor: color,
+                    color: '#fff',
+                    weight: 2,
+                    opacity: 1,
+                    fillOpacity: 0.85
+                }).addTo(subsistenceMap);
+
+                const popupContent = `
+                    <div class="subsistence-popup">
+                        <h3>${group.name}</h3>
+                        <p><strong>Type:</strong> ${group.type}</p>
+                        <p><strong>Region:</strong> ${group.region}</p>
+                        <p><strong>Population:</strong> ${group.population}</p>
+                        <p>${group.description}</p>
+                    </div>
+                `;
+
+                marker.bindPopup(popupContent, {
+                    maxWidth: 300
+                });
+
+                marker.on('mouseover', function() {
+                    this.setStyle({ radius: 10, fillOpacity: 1 });
+                });
+
+                marker.on('mouseout', function() {
+                    this.setStyle({ radius: 6, fillOpacity: 0.85 });
+                });
+            });
+
+            const legend = L.control({position: 'bottomleft'});
+            legend.onAdd = function(m) {
+                const div = L.DomUtil.create('div', 'subsistence-legend');
+                div.innerHTML = '<h4>Subsistence Types</h4>';
+                
+                for (const [type, color] of Object.entries(groupTypes)) {
+                    div.innerHTML += `
+                        <div class="subsistence-legend-item">
+                            <div class="subsistence-legend-color" style="background-color: ${color}"></div>
+                            <span>${type}</span>
+                        </div>
+                    `;
+                }
+                
+                return div;
+            };
+            legend.addTo(subsistenceMap);
+
+            const infoBox = L.control({position: 'topright'});
+            infoBox.onAdd = function(m) {
+                const div = L.DomUtil.create('div', 'subsistence-info');
+                div.innerHTML = `
+                    <h2>Global Subsistence Cultures</h2>
+                    <p><strong>Total Groups:</strong> ${subsistenceGroups.length}</p>
+                    <p>Complete comprehensive mapping of all documented subsistence cultures worldwide</p>
+                    <p><strong>Click markers</strong> for details</p>
+                `;
+                return div;
+            };
+            infoBox.addTo(subsistenceMap);
+        }
+    </script>
+</div>
+
+<!-- END OF EMBED CODE - Make sure you copied everything above this line -->
+</body>
+</html>
