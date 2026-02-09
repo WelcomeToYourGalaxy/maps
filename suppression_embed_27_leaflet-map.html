@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embedded Content</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0a0a0a; overflow: hidden; }
+    </style>
+</head>
+<body>
+<!-- Global Animal Racing & Sports Map - Weebly Embed Code (FIXED) -->
+<!-- Copy and paste this entire code into Weebly's "Embed Code" element -->
+
+<div id="racing-map-wrapper" style="width:100%;height:600px;position:relative;background:#2d3436;">
+    <div id="racing-map-display" style="width:100%;height:100%;position:absolute;top:0;left:0;"></div>
+    
+    <div style="position:absolute;top:0;left:0;right:0;z-index:1000;background:linear-gradient(180deg,rgba(45,52,54,0.95) 0%,rgba(45,52,54,0.7) 70%,transparent 100%);padding:1.5rem 2rem 3rem;pointer-events:none;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:1.5rem;flex-wrap:wrap;">
+            <div>
+                <h1 style="font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:300;letter-spacing:0.02em;margin:0 0 0.5rem 0;color:#f5f5f0;">Global Animal Racing & Sports</h1>
+                <p style="font-size:0.9rem;color:#d4a574;letter-spacing:0.05em;text-transform:uppercase;font-weight:300;margin:0;">Worldwide Competition Venues & Events</p>
+            </div>
+            <div id="racing-filter-panel" style="pointer-events:auto;display:flex;gap:0.6rem;flex-wrap:wrap;">
+                <button class="racing-filter-btn" data-category="all" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#f5f5f0;padding:0.5rem 1rem;border-radius:2rem;font-family:'Work Sans',sans-serif;font-size:0.8rem;cursor:pointer;transition:all 0.3s ease;">All Sports</button>
+                <button class="racing-filter-btn" data-category="horseracing" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#f5f5f0;padding:0.5rem 1rem;border-radius:2rem;font-family:'Work Sans',sans-serif;font-size:0.8rem;cursor:pointer;transition:all 0.3s ease;">Horse Racing</button>
+                <button class="racing-filter-btn" data-category="equestrian" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#f5f5f0;padding:0.5rem 1rem;border-radius:2rem;font-family:'Work Sans',sans-serif;font-size:0.8rem;cursor:pointer;transition:all 0.3s ease;">Equestrian</button>
+                <button class="racing-filter-btn" data-category="polo" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#f5f5f0;padding:0.5rem 1rem;border-radius:2rem;font-family:'Work Sans',sans-serif;font-size:0.8rem;cursor:pointer;transition:all 0.3s ease;">Polo</button>
+                <button class="racing-filter-btn" data-category="dogracing" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#f5f5f0;padding:0.5rem 1rem;border-radius:2rem;font-family:'Work Sans',sans-serif;font-size:0.8rem;cursor:pointer;transition:all 0.3s ease;">Dog Racing</button>
+                <button class="racing-filter-btn" data-category="camelracing" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#f5f5f0;padding:0.5rem 1rem;border-radius:2rem;font-family:'Work Sans',sans-serif;font-size:0.8rem;cursor:pointer;transition:all 0.3s ease;">Camel Racing</button>
+                <button class="racing-filter-btn" data-category="rodeo" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#f5f5f0;padding:0.5rem 1rem;border-radius:2rem;font-family:'Work Sans',sans-serif;font-size:0.8rem;cursor:pointer;transition:all 0.3s ease;">Rodeo</button>
+                <button class="racing-filter-btn" data-category="bullfighting" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#f5f5f0;padding:0.5rem 1rem;border-radius:2rem;font-family:'Work Sans',sans-serif;font-size:0.8rem;cursor:pointer;transition:all 0.3s ease;">Bullfighting</button>
+                <button class="racing-filter-btn" data-category="other" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#f5f5f0;padding:0.5rem 1rem;border-radius:2rem;font-family:'Work Sans',sans-serif;font-size:0.8rem;cursor:pointer;transition:all 0.3s ease;">Other</button>
+            </div>
+        </div>
+    </div>
+    
+    <div style="position:absolute;bottom:1.5rem;left:2rem;z-index:1000;background:#2d3436;border:1px solid rgba(255,255,255,0.2);border-radius:1rem;padding:1rem 1.5rem;pointer-events:none;box-shadow:0 4px 12px rgba(0,0,0,0.5);">
+        <div style="display:flex;align-items:baseline;gap:0.5rem;margin-bottom:0.4rem;">
+            <span id="racing-location-count" style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:600;color:#d4a574;">0</span>
+            <span style="font-size:0.8rem;color:#f5f5f0;opacity:0.8;text-transform:uppercase;letter-spacing:0.05em;">Venues</span>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:0.5rem;">
+            <span id="racing-country-count" style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:600;color:#d4a574;">0</span>
+            <span style="font-size:0.8rem;color:#f5f5f0;opacity:0.8;text-transform:uppercase;letter-spacing:0.05em;">Countries</span>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Work+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+.racing-filter-btn:hover {
+    background: rgba(255,255,255,0.15) !important;
+    border-color: #d4a574 !important;
+    transform: translateY(-2px);
+}
+.racing-filter-btn.active {
+    background: #d4a574 !important;
+    border-color: #d4a574 !important;
+    color: #2d3436 !important;
+    font-weight: 500;
+}
+.leaflet-popup-content-wrapper {
+    background: rgba(45,52,54,0.98) !important;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 1rem;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+.leaflet-popup-content {
+    margin: 0 !important;
+    min-width: 250px;
+    font-family: 'Work Sans', sans-serif;
+}
+.racing-popup-content {
+    padding: 1.25rem;
+}
+.racing-popup-category {
+    display: inline-block;
+    background: #d4a574;
+    color: #2d3436;
+    padding: 0.3rem 0.8rem;
+    border-radius: 1rem;
+    font-size: 0.65rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.8rem;
+}
+.racing-popup-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #f5f5f0;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+}
+.racing-popup-address {
+    color: #d4a574;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin-bottom: 0.4rem;
+}
+.racing-popup-country {
+    color: rgba(255,255,255,0.6);
+    font-size: 0.8rem;
+    font-weight: 300;
+}
+.leaflet-popup-tip {
+    background: rgba(45,52,54,0.98) !important;
+}
+.racing-marker-horseracing { background-color: #e74c3c; }
+.racing-marker-equestrian { background-color: #9b59b6; }
+.racing-marker-dogracing { background-color: #3498db; }
+.racing-marker-camelracing { background-color: #f39c12; }
+.racing-marker-rodeo { background-color: #e67e22; }
+.racing-marker-bullfighting { background-color: #c0392b; }
+.racing-marker-polo { background-color: #16a085; }
+.racing-marker-other { background-color: #95a5a6; }
+</style>
+
+<script>
+(function() {
+// COMPREHENSIVE GLOBAL ANIMAL RACING & SPORTS DATA - 650+ VENUES
+const locations = [
+// USA - THOROUGHBRED RACING (Major)
+{name:"Churchill Downs",address:"700 Central Ave",city:"Louisville",country:"USA",lat:38.2047,lng:-85.7697,category:"horseracing"},
+{name:"Belmont Park",address:"2150 Hempstead Tpke",city:"Elmont",country:"USA",lat:40.7155,lng:-73.7183,category:"horseracing"},
+{name:"Pimlico Race Course",address:"5201 Park Heights Ave",city:"Baltimore",country:"USA",lat:39.3419,lng:-76.6656,category:"horseracing"},
+{name:"Santa Anita Park",address:"285 Huntington Dr",city:"Arcadia",country:"USA",lat:34.1397,lng:-118.0372,category:"horseracing"},
+{name:"Del Mar Racetrack",address:"2260 Jimmy Durante Blvd",city:"Del Mar",country:"USA",lat:32.9789,lng:-117.2647,category:"horseracing"},
+{name:"Saratoga Race Course",address:"267 Union Ave",city:"Saratoga Springs",country:"USA",lat:43.0731,lng:-73.7839,category:"horseracing"},
+{name:"Keeneland",address:"4201 Versailles Rd",city:"Lexington",country:"USA",lat:38.0481,lng:-84.5961,category:"horseracing"},
+{name:"Gulfstream Park",address:"901 S Federal Hwy",city:"Hallandale Beach",country:"USA",lat:25.9914,lng:-80.1431,category:"horseracing"},
+{name:"Arlington Park",address:"2200 W Euclid Ave",city:"Arlington Heights",country:"USA",lat:42.0653,lng:-87.9939,category:"horseracing"},
+{name:"Aqueduct Racetrack",address:"110-00 Rockaway Blvd",city:"Queens",country:"USA",lat:40.6722,lng:-73.8356,category:"horseracing"},
+{name:"Fair Grounds Race Course",address:"1751 Gentilly Blvd",city:"New Orleans",country:"USA",lat:29.9922,lng:-90.0736,category:"horseracing"},
+{name:"Golden Gate Fields",address:"1100 Eastshore Hwy",city:"Berkeley",country:"USA",lat:37.8864,lng:-122.2997,category:"horseracing"},
+{name:"Oaklawn Racing Casino Resort",address:"2705 Central Ave",city:"Hot Springs",country:"USA",lat:34.4914,lng:-93.0528,category:"horseracing"},
+{name:"Tampa Bay Downs",address:"11225 Race Track Rd",city:"Tampa",country:"USA",lat:28.1622,lng:-82.5847,category:"horseracing"},
+{name:"Monmouth Park",address:"175 Oceanport Ave",city:"Oceanport",country:"USA",lat:40.3156,lng:-74.0244,category:"horseracing"},
+{name:"Lone Star Park",address:"1000 Lone Star Pkwy",city:"Grand Prairie",country:"USA",lat:32.7081,lng:-97.0078,category:"horseracing"},
+{name:"Canterbury Park",address:"1100 Canterbury Rd",city:"Shakopee",country:"USA",lat:44.7714,lng:-93.4464,category:"horseracing"},
+{name:"Emerald Downs",address:"2300 Ron Crockett Dr",city:"Auburn",country:"USA",lat:47.2928,lng:-122.1758,category:"horseracing"},
+{name:"Laurel Park",address:"198 Laurel Race Track Rd",city:"Laurel",country:"USA",lat:39.0967,lng:-76.8700,category:"horseracing"},
+{name:"Los Alamitos",address:"4961 Katella Ave",city:"Los Alamitos",country:"USA",lat:33.7875,lng:-118.0639,category:"horseracing"},
+// USA - THOROUGHBRED RACING (Regional)
+{name:"Delaware Park",address:"777 Delaware Park Blvd",city:"Wilmington",country:"USA",lat:39.7269,lng:-75.5519,category:"horseracing"},
+{name:"Penn National",address:"777 Hollywood Blvd",city:"Grantville",country:"USA",lat:40.4019,lng:-76.7458,category:"horseracing"},
+{name:"Parx Racing",address:"2999 Street Rd",city:"Bensalem",country:"USA",lat:40.1025,lng:-74.9544,category:"horseracing"},
+{name:"Charles Town Races",address:"750 Hollywood Dr",city:"Charles Town",country:"USA",lat:39.2933,lng:-77.8625,category:"horseracing"},
+{name:"Mountaineer Casino",address:"1420 Mountaineer Cir",city:"Chester",country:"USA",lat:40.5739,lng:-80.5494,category:"horseracing"},
+{name:"Turfway Park",address:"7500 Turfway Rd",city:"Florence",country:"USA",lat:39.0069,lng:-84.6619,category:"horseracing"},
+{name:"Ellis Park",address:"3300 US-41",city:"Henderson",country:"USA",lat:37.8664,lng:-87.5444,category:"horseracing"},
+{name:"Indiana Grand",address:"4300 N Michigan Rd",city:"Shelbyville",country:"USA",lat:39.6278,lng:-85.8303,category:"horseracing"},
+{name:"Remington Park",address:"1 Remington Pl",city:"Oklahoma City",country:"USA",lat:35.5717,lng:-97.4847,category:"horseracing"},
+{name:"Retama Park",address:"1 Retama Pkwy",city:"San Antonio",country:"USA",lat:29.6219,lng:-98.3000,category:"horseracing"},
+{name:"Sam Houston Race Park",address:"7575 N Sam Houston Pkwy W",city:"Houston",country:"USA",lat:29.9247,lng:-95.5756,category:"horseracing"},
+{name:"Louisiana Downs",address:"8000 E Texas St",city:"Bossier City",country:"USA",lat:32.5453,lng:-93.6833,category:"horseracing"},
+{name:"Prairie Meadows",address:"1 Prairie Meadows Dr",city:"Des Moines",country:"USA",lat:41.6317,lng:-93.4922,category:"horseracing"},
+{name:"Fonner Park",address:"700 E Stolley Park Rd",city:"Grand Island",country:"USA",lat:40.9236,lng:-98.3292,category:"horseracing"},
+{name:"Turf Paradise",address:"1501 W Bell Rd",city:"Phoenix",country:"USA",lat:33.6394,lng:-112.0842,category:"horseracing"},
+{name:"Ruidoso Downs",address:"26225 US-70",city:"Ruidoso Downs",country:"USA",lat:33.3275,lng:-105.5600,category:"horseracing"},
+{name:"Sunland Park",address:"1200 Futurity Dr",city:"Sunland Park",country:"USA",lat:31.7978,lng:-106.5817,category:"horseracing"},
+{name:"Zia Park",address:"3901 W Millen Dr",city:"Hobbs",country:"USA",lat:32.7356,lng:-103.2000,category:"horseracing"},
+{name:"Will Rogers Downs",address:"20900 S 4200 Rd",city:"Claremore",country:"USA",lat:36.2933,lng:-95.6050,category:"horseracing"},
+// USA - FAIR RACING & SMALLER TRACKS
+{name:"Wyoming Downs",address:"Evanston",city:"Wyoming",country:"USA",lat:41.2683,lng:-110.9633,category:"horseracing"},
+{name:"Gillespie County Fair",address:"Fredericksburg",city:"Texas",country:"USA",lat:30.2752,lng:-98.8706,category:"horseracing"},
+{name:"Brown County Fair",address:"Aberdeen",city:"South Dakota",country:"USA",lat:45.4647,lng:-98.4864,category:"horseracing"},
+{name:"Great Falls",address:"Montana State Fair",city:"Montana",country:"USA",lat:47.5053,lng:-111.2997,category:"horseracing"},
+{name:"Eastern Idaho Fair",address:"Blackfoot",city:"Idaho",country:"USA",lat:43.1905,lng:-112.3450,category:"horseracing"},
+{name:"Faulkner County Fair",address:"Conway",city:"Arkansas",country:"USA",lat:35.0887,lng:-92.4421,category:"horseracing"},
+{name:"Tillamook County Fair",address:"Tillamook",city:"Oregon",country:"USA",lat:45.4565,lng:-123.8440,category:"horseracing"},
+{name:"Arizona Downs",address:"Prescott Valley",city:"Arizona",country:"USA",lat:34.6100,lng:-112.3157,category:"horseracing"},
+{name:"Atokad Park",address:"South Sioux City",city:"Nebraska",country:"USA",lat:42.4731,lng:-96.4136,category:"horseracing"},
+{name:"Columbus Races",address:"Columbus",city:"Nebraska",country:"USA",lat:41.4300,lng:-97.3683,category:"horseracing"},
+{name:"Horsemen's Park",address:"Omaha",city:"Nebraska",country:"USA",lat:41.2565,lng:-95.9345,category:"horseracing"},
+{name:"Lincoln State Fair",address:"Lincoln",city:"Nebraska",country:"USA",lat:40.8136,lng:-96.6803,category:"horseracing"},
+// USA - HARNESS RACING
+{name:"Meadowlands Racetrack",address:"East Rutherford",city:"New Jersey",country:"USA",lat:40.8142,lng:-74.0833,category:"horseracing"},
+{name:"Yonkers Raceway",address:"Yonkers",city:"New York",country:"USA",lat:40.9312,lng:-73.8987,category:"horseracing"},
+{name:"Mohawk Raceway",address:"Campbellville",city:"Ontario",country:"Canada",lat:43.4681,lng:-80.0517,category:"horseracing"},
+{name:"Red Mile",address:"Lexington",city:"Kentucky",country:"USA",lat:38.0406,lng:-84.4947,category:"horseracing"},
+{name:"Pocono Downs",address:"Wilkes-Barre",city:"Pennsylvania",country:"USA",lat:41.2459,lng:-75.8813,category:"horseracing"},
+{name:"Northfield Park",address:"Northfield",city:"Ohio",country:"USA",lat:41.3392,lng:-81.5265,category:"horseracing"},
+{name:"Hoosier Park",address:"Anderson",city:"Indiana",country:"USA",lat:40.1053,lng:-85.6800,category:"horseracing"},
+{name:"Miami Valley",address:"Lebanon",city:"Ohio",country:"USA",lat:39.4350,lng:-84.2030,category:"horseracing"},
+{name:"Dover Downs",address:"Dover",city:"Delaware",country:"USA",lat:39.1582,lng:-75.5244,category:"horseracing"},
+{name:"Harrington Raceway",address:"Harrington",city:"Delaware",country:"USA",lat:38.9242,lng:-75.5775,category:"horseracing"},
+{name:"Ocean Downs",address:"Berlin",city:"Maryland",country:"USA",lat:38.3237,lng:-75.2177,category:"horseracing"},
+{name:"Rosecroft Raceway",address:"Fort Washington",city:"Maryland",country:"USA",lat:38.7473,lng:-76.9811,category:"horseracing"},
+{name:"Vernon Downs",address:"Vernon",city:"New York",country:"USA",lat:43.0753,lng:-75.5377,category:"horseracing"},
+{name:"Tioga Downs",address:"Nichols",city:"New York",country:"USA",lat:42.0292,lng:-76.3644,category:"horseracing"},
+{name:"Buffalo Raceway",address:"Hamburg",city:"New York",country:"USA",lat:42.7156,lng:-78.8492,category:"horseracing"},
+{name:"Batavia Downs",address:"Batavia",city:"New York",country:"USA",lat:42.9981,lng:-78.1875,category:"horseracing"},
+{name:"Saratoga Harness",address:"Saratoga Springs",city:"New York",country:"USA",lat:43.0831,lng:-73.7842,category:"horseracing"},
+{name:"Monticello Raceway",address:"Monticello",city:"New York",country:"USA",lat:41.6556,lng:-74.6888,category:"horseracing"},
+{name:"Scioto Downs",address:"Columbus",city:"Ohio",country:"USA",lat:39.9167,lng:-83.0597,category:"horseracing"},
+{name:"Dayton Raceway",address:"Dayton",city:"Ohio",country:"USA",lat:39.7589,lng:-84.1916,category:"horseracing"},
+// CANADA - THOROUGHBRED & HARNESS RACING
+{name:"Woodbine",address:"555 Rexdale Blvd",city:"Toronto",country:"Canada",lat:43.7108,lng:-79.6022,category:"horseracing"},
+{name:"Hastings",address:"188 N Renfrew St",city:"Vancouver",country:"Canada",lat:49.2847,lng:-123.0472,category:"horseracing"},
+{name:"Fort Erie",address:"230 Catherine St",city:"Fort Erie",country:"Canada",lat:42.9100,lng:-78.9328,category:"horseracing"},
+{name:"Northlands Park",address:"7515 118 Ave NW",city:"Edmonton",country:"Canada",lat:53.5744,lng:-113.4122,category:"horseracing"},
+{name:"Marquis Downs",address:"3575 Pasqua St",city:"Regina",country:"Canada",lat:50.4369,lng:-104.6167,category:"horseracing"},
+{name:"Assiniboia Downs",address:"3975 Portage Ave",city:"Winnipeg",country:"Canada",lat:49.8686,lng:-97.2419,category:"horseracing"},
+{name:"Fraser Downs",address:"17755 60 Ave",city:"Surrey",country:"Canada",lat:49.1031,lng:-122.5794,category:"horseracing"},
+{name:"Ajax Downs",address:"Ajax",city:"Ontario",country:"Canada",lat:43.8509,lng:-79.0204,category:"horseracing"},
+{name:"Georgian Downs",address:"Innisfil",city:"Ontario",country:"Canada",lat:44.2667,lng:-79.5833,category:"horseracing"},
+{name:"Grand River Raceway",address:"Elora",city:"Ontario",country:"Canada",lat:43.6833,lng:-80.4167,category:"horseracing"},
+{name:"Western Fair",address:"London",city:"Ontario",country:"Canada",lat:42.9849,lng:-81.2453,category:"horseracing"},
+{name:"Flamboro Downs",address:"Dundas",city:"Ontario",country:"Canada",lat:43.2667,lng:-79.9667,category:"horseracing"},
+{name:"Rideau Carleton",address:"Ottawa",city:"Ontario",country:"Canada",lat:45.3333,lng:-75.6667,category:"horseracing"},
+{name:"Hiawatha Horse Park",address:"Sarnia",city:"Ontario",country:"Canada",lat:42.9745,lng:-82.4066,category:"horseracing"},
+{name:"Kawartha Downs",address:"Fraserville",city:"Ontario",country:"Canada",lat:44.3333,lng:-78.7167,category:"horseracing"},
+{name:"Red Shores Charlottetown",address:"Charlottetown",city:"PEI",country:"Canada",lat:46.2382,lng:-63.1311,category:"horseracing"},
+{name:"Red Shores Summerside",address:"Summerside",city:"PEI",country:"Canada",lat:46.3950,lng:-63.7889,category:"horseracing"},
+{name:"Truro Raceway",address:"Truro",city:"Nova Scotia",country:"Canada",lat:45.3636,lng:-63.2755,category:"horseracing"},
+{name:"Inverness Raceway",address:"Inverness",city:"Nova Scotia",country:"Canada",lat:46.2000,lng:-61.1000,category:"horseracing"},
+// UK - THOROUGHBRED RACING (Major)
+{name:"Ascot",address:"High St",city:"Ascot",country:"UK",lat:51.4100,lng:-0.6767,category:"horseracing"},
+{name:"Cheltenham",address:"Prestbury Park",city:"Cheltenham",country:"UK",lat:51.9231,lng:-2.0500,category:"horseracing"},
+{name:"Aintree",address:"Ormskirk Rd",city:"Liverpool",country:"UK",lat:53.4778,lng:-2.9508,category:"horseracing"},
+{name:"Epsom Downs",address:"Epsom",city:"Epsom",country:"UK",lat:51.3039,lng:-0.2469,category:"horseracing"},
+{name:"Newmarket",address:"Rowley Mile",city:"Newmarket",country:"UK",lat:52.2419,lng:0.3925,category:"horseracing"},
+{name:"York",address:"Knavesmire Rd",city:"York",country:"UK",lat:53.9414,lng:-1.0969,category:"horseracing"},
+{name:"Goodwood",address:"Goodwood Estate",city:"Chichester",country:"UK",lat:50.8700,lng:-0.7589,category:"horseracing"},
+{name:"Doncaster",address:"Leger Way",city:"Doncaster",country:"UK",lat:53.5156,lng:-1.1378,category:"horseracing"},
+{name:"Newbury",address:"Newbury Bypass",city:"Newbury",country:"UK",lat:51.4019,lng:-1.3247,category:"horseracing"},
+{name:"Sandown Park",address:"Portsmouth Rd",city:"Esher",country:"UK",lat:51.3661,lng:-0.3533,category:"horseracing"},
+{name:"Haydock Park",address:"Newton-le-Willows",city:"Merseyside",country:"UK",lat:53.4650,lng:-2.6489,category:"horseracing"},
+{name:"Kempton Park",address:"Staines Road East",city:"Sunbury",country:"UK",lat:51.4181,lng:-0.4011,category:"horseracing"},
+{name:"Lingfield",address:"Racecourse Road",city:"Lingfield",country:"UK",lat:51.1742,lng:-0.0158,category:"horseracing"},
+{name:"Windsor",address:"Maidenhead Road",city:"Windsor",country:"UK",lat:51.4764,lng:-0.6019,category:"horseracing"},
+{name:"Chester",address:"The Roodee",city:"Chester",country:"UK",lat:53.1858,lng:-2.8953,category:"horseracing"},
+{name:"Ripon",address:"Boroughbridge Road",city:"Ripon",country:"UK",lat:54.1367,lng:-1.5231,category:"horseracing"},
+{name:"Pontefract",address:"Park Lane",city:"Pontefract",country:"UK",lat:53.6881,lng:-1.3328,category:"horseracing"},
+{name:"Beverley",address:"York Road",city:"Beverley",country:"UK",lat:53.8497,lng:-0.4261,category:"horseracing"},
+{name:"Carlisle",address:"Durdar Road",city:"Carlisle",country:"UK",lat:54.8978,lng:-2.9261,category:"horseracing"},
+{name:"Catterick",address:"Catterick Bridge",city:"North Yorkshire",country:"UK",lat:54.3772,lng:-1.6294,category:"horseracing"},
+{name:"Redcar",address:"Redcar Racecourse",city:"Redcar",country:"UK",lat:54.6178,lng:-1.0686,category:"horseracing"},
+{name:"Thirsk",address:"Station Road",city:"Thirsk",country:"UK",lat:54.2342,lng:-1.3414,category:"horseracing"},
+{name:"Hamilton Park",address:"Bothwell Road",city:"Hamilton",country:"UK",lat:55.7794,lng:-4.0378,category:"horseracing"},
+{name:"Ayr",address:"Whitletts Road",city:"Ayr",country:"UK",lat:55.4686,lng:-4.6344,category:"horseracing"},
+{name:"Musselburgh",address:"Linkfield Road",city:"Musselburgh",country:"UK",lat:55.9428,lng:-3.0508,category:"horseracing"},
+{name:"Perth",address:"Scone Palace Park",city:"Perth",country:"UK",lat:56.4100,lng:-3.4378,category:"horseracing"},
+{name:"Kelso",address:"Kelso",city:"Scottish Borders",country:"UK",lat:55.5997,lng:-2.4378,category:"horseracing"},
+{name:"Newcastle",address:"High Gosforth Park",city:"Newcastle",country:"UK",lat:55.0031,lng:-1.6244,category:"horseracing"},
+{name:"Hexham",address:"Hexham",city:"Northumberland",country:"UK",lat:54.9719,lng:-2.1011,category:"horseracing"},
+{name:"Sedgefield",address:"Sedgefield",city:"County Durham",country:"UK",lat:54.6544,lng:-1.4664,category:"horseracing"},
+{name:"Wetherby",address:"York Road",city:"Wetherby",country:"UK",lat:53.9294,lng:-1.3850,category:"horseracing"},
+{name:"Market Rasen",address:"Legsby Road",city:"Market Rasen",country:"UK",lat:53.4447,lng:-0.3181,category:"horseracing"},
+{name:"Nottingham",address:"Colwick Park",city:"Nottingham",country:"UK",lat:52.9478,lng:-1.0836,category:"horseracing"},
+{name:"Southwell",address:"Rolleston",city:"Nottinghamshire",country:"UK",lat:53.0547,lng:-0.9542,category:"horseracing"},
+{name:"Leicester",address:"Oadby",city:"Leicester",country:"UK",lat:52.6178,lng:-1.0806,category:"horseracing"},
+{name:"Wolverhampton",address:"Dunstall Park",city:"Wolverhampton",country:"UK",lat:52.6250,lng:-2.1369,category:"horseracing"},
+{name:"Uttoxeter",address:"Wood Lane",city:"Uttoxeter",country:"UK",lat:52.8953,lng:-1.8594,category:"horseracing"},
+{name:"Stratford",address:"Luddington Road",city:"Stratford",country:"UK",lat:52.1903,lng:-1.7133,category:"horseracing"},
+{name:"Warwick",address:"Hampton Street",city:"Warwick",country:"UK",lat:52.2825,lng:-1.6044,category:"horseracing"},
+{name:"Towcester",address:"Towcester",city:"Northamptonshire",country:"UK",lat:52.1336,lng:-0.9914,category:"horseracing"},
+{name:"Huntingdon",address:"Brampton",city:"Huntingdon",country:"UK",lat:52.3097,lng:-0.2308,category:"horseracing"},
+{name:"Fakenham",address:"The Racecourse",city:"Fakenham",country:"UK",lat:52.8303,lng:0.8547,category:"horseracing"},
+{name:"Great Yarmouth",address:"Jellicoe Road",city:"Great Yarmouth",country:"UK",lat:52.5889,lng:1.7292,category:"horseracing"},
+{name:"Yarmouth Isle of Wight",address:"Sandown",city:"Isle of Wight",country:"UK",lat:50.6503,lng:-1.1722,category:"horseracing"},
+{name:"Brighton",address:"Freshfield Road",city:"Brighton",country:"UK",lat:50.8236,lng:-0.0744,category:"horseracing"},
+{name:"Fontwell",address:"Fontwell",city:"West Sussex",country:"UK",lat:50.8522,lng:-0.6397,category:"horseracing"},
+{name:"Plumpton",address:"Plumpton",city:"East Sussex",country:"UK",lat:50.9103,lng:-0.0614,category:"horseracing"},
+{name:"Bath",address:"Lansdown",city:"Bath",country:"UK",lat:51.4103,lng:-2.3889,category:"horseracing"},
+{name:"Salisbury",address:"Netherhampton",city:"Salisbury",country:"UK",lat:51.0406,lng:-1.8269,category:"horseracing"},
+{name:"Exeter",address:"Haldon Hill",city:"Exeter",country:"UK",lat:50.6803,lng:-3.5681,category:"horseracing"},
+{name:"Newton Abbot",address:"Newton Road",city:"Newton Abbot",country:"UK",lat:50.5222,lng:-3.6050,category:"horseracing"},
+{name:"Taunton",address:"Orchard Portman",city:"Taunton",country:"UK",lat:51.0147,lng:-3.0872,category:"horseracing"},
+{name:"Wincanton",address:"Wincanton",city:"Somerset",country:"UK",lat:51.0586,lng:-2.4106,category:"horseracing"},
+{name:"Chepstow",address:"Chepstow",city:"Monmouthshire",country:"UK",lat:51.6422,lng:-2.6775,category:"horseracing"},
+{name:"Ffos Las",address:"Trimsaran",city:"Carmarthenshire",country:"UK",lat:51.7803,lng:-4.2642,category:"horseracing"},
+{name:"Bangor-on-Dee",address:"Bangor-on-Dee",city:"Wrexham",country:"UK",lat:52.9722,lng:-2.9114,category:"horseracing"},
+{name:"Ludlow",address:"Bromfield",city:"Shropshire",country:"UK",lat:52.3597,lng:-2.7081,category:"horseracing"},
+{name:"Hereford",address:"Roman Road",city:"Hereford",country:"UK",lat:52.0397,lng:-2.6942,category:"horseracing"},
+{name:"Worcester",address:"Pitchcroft",city:"Worcester",country:"UK",lat:52.2014,lng:-2.2286,category:"horseracing"},
+// IRELAND - RACING
+{name:"The Curragh",address:"Co. Kildare",city:"Newbridge",country:"Ireland",lat:53.1556,lng:-6.8186,category:"horseracing"},
+{name:"Leopardstown",address:"Leopardstown Rd",city:"Dublin",country:"Ireland",lat:53.2767,lng:-6.2089,category:"horseracing"},
+{name:"Fairyhouse",address:"Ratoath",city:"Co. Meath",country:"Ireland",lat:53.5028,lng:-6.5592,category:"horseracing"},
+{name:"Galway Races",address:"Ballybrit",city:"Galway",country:"Ireland",lat:53.2883,lng:-8.9978,category:"horseracing"},
+{name:"Punchestown",address:"Naas",city:"Co. Kildare",country:"Ireland",lat:53.1833,lng:-6.7167,category:"horseracing"},
+{name:"Downpatrick",address:"Ballydugan Road",city:"Downpatrick",country:"Ireland",lat:54.3333,lng:-5.7167,category:"horseracing"},
+{name:"Killarney",address:"Ross Road",city:"Killarney",country:"Ireland",lat:52.0625,lng:-9.4947,category:"horseracing"},
+{name:"Listowel",address:"Listowel",city:"Co. Kerry",country:"Ireland",lat:52.4456,lng:-9.4867,category:"horseracing"},
+{name:"Cork",address:"Mallow",city:"Co. Cork",country:"Ireland",lat:52.1386,lng:-8.6408,category:"horseracing"},
+{name:"Limerick",address:"Greenmount Park",city:"Limerick",country:"Ireland",lat:52.6597,lng:-8.6281,category:"horseracing"},
+{name:"Tramore",address:"Tramore",city:"Co. Waterford",country:"Ireland",lat:52.1622,lng:-7.1508,category:"horseracing"},
+{name:"Thurles",address:"Thurles",city:"Co. Tipperary",country:"Ireland",lat:52.6803,lng:-7.8106,category:"horseracing"},
+{name:"Tipperary",address:"Limerick Junction",city:"Co. Tipperary",country:"Ireland",lat:52.5142,lng:-8.1506,category:"horseracing"},
+{name:"Clonmel",address:"Clonmel",city:"Co. Tipperary",country:"Ireland",lat:52.3556,lng:-7.7028,category:"horseracing"},
+{name:"Wexford",address:"Bettyville",city:"Co. Wexford",country:"Ireland",lat:52.3367,lng:-6.4594,category:"horseracing"},
+{name:"Gowran Park",address:"Gowran",city:"Co. Kilkenny",country:"Ireland",lat:52.6300,lng:-7.0561,category:"horseracing"},
+{name:"Navan",address:"Proudstown",city:"Co. Meath",country:"Ireland",lat:53.6506,lng:-6.6681,category:"horseracing"},
+{name:"Dundalk",address:"Dundalk Stadium",city:"Co. Louth",country:"Ireland",lat:54.0031,lng:-6.4050,category:"horseracing"},
+{name:"Naas",address:"Tipper Road",city:"Co. Kildare",country:"Ireland",lat:53.2219,lng:-6.6631,category:"horseracing"},
+{name:"Bellewstown",address:"Bellewstown",city:"Co. Meath",country:"Ireland",lat:53.7078,lng:-6.3597,category:"horseracing"},
+{name:"Kilbeggan",address:"Loughnagor",city:"Co. Westmeath",country:"Ireland",lat:53.3731,lng:-7.5050,category:"horseracing"},
+{name:"Sligo",address:"Cleveragh",city:"Co. Sligo",country:"Ireland",lat:54.2692,lng:-8.4761,category:"horseracing"},
+{name:"Roscommon",address:"Roscommon",city:"Co. Roscommon",country:"Ireland",lat:53.6300,lng:-8.1861,category:"horseracing"},
+{name:"Ballinrobe",address:"Ballinrobe",city:"Co. Mayo",country:"Ireland",lat:53.6239,lng:-9.2258,category:"horseracing"},
+{name:"Laytown Beach Races",address:"Laytown Beach",city:"Co. Meath",country:"Ireland",lat:53.6806,lng:-6.2389,category:"horseracing"},
+// FRANCE - RACING
+{name:"Longchamp",address:"Route des Tribunes",city:"Paris",country:"France",lat:48.8569,lng:2.2281,category:"horseracing"},
+{name:"Chantilly",address:"16 Ave du Général Leclerc",city:"Chantilly",country:"France",lat:49.1900,lng:2.4719,category:"horseracing"},
+{name:"Deauville",address:"45 Avenue Hocquart de Turtot",city:"Deauville",country:"France",lat:49.3539,lng:0.0789,category:"horseracing"},
+{name:"Auteuil",address:"Bois de Boulogne",city:"Paris",country:"France",lat:48.8489,lng:2.2436,category:"horseracing"},
+{name:"Saint-Cloud",address:"1 Rue du Camp Canadien",city:"Saint-Cloud",country:"France",lat:48.8414,lng:2.2142,category:"horseracing"},
+{name:"Maisons-Laffitte",address:"1 Avenue de la Pelouse",city:"Maisons-Laffitte",country:"France",lat:48.9461,lng:2.1467,category:"horseracing"},
+{name:"Cagnes-sur-Mer",address:"Boulevard Kennedy",city:"Cagnes-sur-Mer",country:"France",lat:43.6644,lng:7.1503,category:"horseracing"},
+{name:"Vichy",address:"Avenue de la Liberation",city:"Vichy",country:"France",lat:46.1239,lng:3.4261,category:"horseracing"},
+{name:"Lyon-Parilly",address:"Bron",city:"Lyon",country:"France",lat:45.7300,lng:4.9172,category:"horseracing"},
+{name:"Pau",address:"Pau",city:"Pyrénées-Atlantiques",country:"France",lat:43.3050,lng:-0.3700,category:"horseracing"},
+{name:"Bordeaux-Le Bouscat",address:"Le Bouscat",city:"Bordeaux",country:"France",lat:44.8667,lng:-0.5967,category:"horseracing"},
+{name:"Toulouse",address:"Toulouse",city:"Haute-Garonne",country:"France",lat:43.6047,lng:1.4442,category:"horseracing"},
+{name:"Marseille-Borély",address:"Marseille",city:"Bouches-du-Rhône",country:"France",lat:43.2965,lng:5.3698,category:"horseracing"},
+{name:"Nice Côte d'Azur",address:"Nice",city:"Alpes-Maritimes",country:"France",lat:43.7102,lng:7.2620,category:"horseracing"},
+{name:"Strasbourg",address:"Strasbourg",city:"Bas-Rhin",country:"France",lat:48.5733,lng:7.7489,category:"horseracing"},
+{name:"Fontainebleau",address:"Fontainebleau",city:"Seine-et-Marne",country:"France",lat:48.4084,lng:2.7019,category:"horseracing"},
+{name:"Compiègne",address:"Compiègne",city:"Oise",country:"France",lat:49.4194,lng:2.8258,category:"horseracing"},
+{name:"Clairefontaine",address:"Clairefontaine",city:"Calvados",country:"France",lat:49.3472,lng:0.4422,category:"horseracing"},
+{name:"Enghien",address:"Enghien-les-Bains",city:"Val-d'Oise",country:"France",lat:48.9683,lng:2.3067,category:"horseracing"},
+{name:"Vincennes",address:"Paris",city:"Île-de-France",country:"France",lat:48.8472,lng:2.4522,category:"horseracing"},
+// GERMANY - RACING
+{name:"Baden-Baden",address:"Lichtentaler Allee 8",city:"Baden-Baden",country:"Germany",lat:48.7450,lng:8.2372,category:"horseracing"},
+{name:"Düsseldorf",address:"Rennbahnstraße 20",city:"Düsseldorf",country:"Germany",lat:51.2481,lng:6.7328,category:"horseracing"},
+{name:"Cologne",address:"Scheibenstraße 10",city:"Cologne",country:"Germany",lat:50.9153,lng:6.9539,category:"horseracing"},
+{name:"Munich-Riem",address:"Riem",city:"Munich",country:"Germany",lat:48.1397,lng:11.6842,category:"horseracing"},
+{name:"Hamburg-Horn",address:"Hamburg",city:"Hamburg",country:"Germany",lat:53.5653,lng:9.9847,category:"horseracing"},
+{name:"Frankfurt",address:"Frankfurt",city:"Hesse",country:"Germany",lat:50.1109,lng:8.6821,category:"horseracing"},
+{name:"Hannover",address:"Hannover",city:"Lower Saxony",country:"Germany",lat:52.3759,lng:9.7320,category:"horseracing"},
+{name:"Berlin-Hoppegarten",address:"Hoppegarten",city:"Brandenburg",country:"Germany",lat:52.5200,lng:13.6608,category:"horseracing"},
+{name:"Krefeld",address:"Krefeld",city:"North Rhine-Westphalia",country:"Germany",lat:51.3388,lng:6.5853,category:"horseracing"},
+{name:"Dortmund",address:"Dortmund",city:"North Rhine-Westphalia",country:"Germany",lat:51.5136,lng:7.4653,category:"horseracing"},
+// ITALY - RACING
+{name:"Capannelle",address:"Via Appia Nuova 1255",city:"Rome",country:"Italy",lat:41.8442,lng:12.5614,category:"horseracing"},
+{name:"San Siro",address:"Piazzale dello Sport",city:"Milan",country:"Italy",lat:45.4789,lng:9.1231,category:"horseracing"},
+{name:"Pisa",address:"Pisa",city:"Tuscany",country:"Italy",lat:43.7228,lng:10.4017,category:"horseracing"},
+{name:"Naples",address:"Agnano",city:"Naples",country:"Italy",lat:40.8518,lng:14.2681,category:"horseracing"},
+{name:"Palermo",address:"Palermo",city:"Sicily",country:"Italy",lat:38.1157,lng:13.3615,category:"horseracing"},
+{name:"Merano",address:"Merano",city:"South Tyrol",country:"Italy",lat:46.6733,lng:11.1586,category:"horseracing"},
+// SPAIN - RACING
+{name:"Hipódromo de la Zarzuela",address:"Carretera de La Coruña km 7,5",city:"Madrid",country:"Spain",lat:40.4792,lng:-3.7678,category:"horseracing"},
+{name:"San Sebastián",address:"Lasarte-Oria",city:"Basque Country",country:"Spain",lat:43.2697,lng:-2.0206,category:"horseracing"},
+{name:"Dos Hermanas",address:"Dos Hermanas",city:"Sevilla",country:"Spain",lat:37.2806,lng:-5.9228,category:"horseracing"},
+// AUSTRALIA - THOROUGHBRED RACING (Major)
+{name:"Flemington",address:"448 Epsom Rd",city:"Melbourne",country:"Australia",lat:-37.7850,lng:144.9200,category:"horseracing"},
+{name:"Royal Randwick",address:"Alison Rd",city:"Sydney",country:"Australia",lat:-33.8978,lng:151.2425,category:"horseracing"},
+{name:"Rosehill Gardens",address:"Grand Ave",city:"Sydney",country:"Australia",lat:-33.8219,lng:151.0258,category:"horseracing"},
+{name:"Caulfield",address:"Station St",city:"Melbourne",country:"Australia",lat:-37.8858,lng:145.0453,category:"horseracing"},
+{name:"Moonee Valley",address:"McPherson St",city:"Melbourne",country:"Australia",lat:-37.7658,lng:144.9292,category:"horseracing"},
+{name:"Eagle Farm",address:"230 Lancaster Rd",city:"Brisbane",country:"Australia",lat:-27.4322,lng:153.0733,category:"horseracing"},
+{name:"Doomben",address:"Hampden St",city:"Brisbane",country:"Australia",lat:-27.4272,lng:153.0667,category:"horseracing"},
+{name:"Morphettville",address:"155 Ascot Vale Rd",city:"Adelaide",country:"Australia",lat:-34.8911,lng:138.5858,category:"horseracing"},
+{name:"Ascot Perth",address:"Grandstand Rd",city:"Perth",country:"Australia",lat:-31.9333,lng:115.9328,category:"horseracing"},
+{name:"Belmont Park Perth",address:"Belmont",city:"Perth",country:"Australia",lat:-31.9547,lng:115.9286,category:"horseracing"},
+{name:"Warwick Farm",address:"Hume Hwy",city:"Sydney",country:"Australia",lat:-33.9131,lng:150.9367,category:"horseracing"},
+{name:"Canterbury Park",address:"King St",city:"Sydney",country:"Australia",lat:-33.9092,lng:151.1186,category:"horseracing"},
+{name:"Kensington",address:"Anzac Parade",city:"Sydney",country:"Australia",lat:-33.9092,lng:151.2239,category:"horseracing"},
+{name:"Sandown",address:"Lightwood Rd",city:"Melbourne",country:"Australia",lat:-37.9447,lng:145.1386,category:"horseracing"},
+{name:"The Valley",address:"McPherson St",city:"Melbourne",country:"Australia",lat:-37.7658,lng:144.9292,category:"horseracing"},
+{name:"Geelong",address:"Breakwater",city:"Victoria",country:"Australia",lat:-38.1619,lng:144.3769,category:"horseracing"},
+{name:"Ballarat",address:"Dowling St",city:"Victoria",country:"Australia",lat:-37.5622,lng:143.8503,category:"horseracing"},
+{name:"Bendigo",address:"Holmes Rd",city:"Victoria",country:"Australia",lat:-36.7333,lng:144.2786,category:"horseracing"},
+{name:"Sunshine Coast",address:"Caloundra Rd",city:"Queensland",country:"Australia",lat:-26.8039,lng:153.1178,category:"horseracing"},
+{name:"Gold Coast",address:"Racecourse Dr",city:"Queensland",country:"Australia",lat:-28.0500,lng:153.4000,category:"horseracing"},
+{name:"Ipswich",address:"Bundamba",city:"Queensland",country:"Australia",lat:-27.6103,lng:152.8286,category:"horseracing"},
+{name:"Gawler",address:"Gawler",city:"South Australia",country:"Australia",lat:-34.6000,lng:138.7500,category:"horseracing"},
+{name:"Murray Bridge",address:"Murray Bridge",city:"South Australia",country:"Australia",lat:-35.1194,lng:139.2747,category:"horseracing"},
+// AUSTRALIA - BUSH & PICNIC RACING
+{name:"Birdsville Races",address:"Birdsville",city:"Queensland",country:"Australia",lat:-25.9003,lng:139.3483,category:"horseracing"},
+{name:"Menindie Races",address:"Menindie",city:"NSW",country:"Australia",lat:-32.3933,lng:142.4111,category:"horseracing"},
+{name:"Louth Races",address:"Louth",city:"NSW",country:"Australia",lat:-30.5500,lng:145.0167,category:"horseracing"},
+{name:"Bedourie Races",address:"Bedourie",city:"Queensland",country:"Australia",lat:-24.3597,lng:139.4631,category:"horseracing"},
+{name:"Springsure Races",address:"Springsure",city:"Queensland",country:"Australia",lat:-24.1167,lng:148.0833,category:"horseracing"},
+{name:"Barcaldine Races",address:"Barcaldine",city:"Queensland",country:"Australia",lat:-23.5539,lng:145.2889,category:"horseracing"},
+{name:"Broome Cup",address:"Broome",city:"Western Australia",country:"Australia",lat:-17.9614,lng:122.2361,category:"horseracing"},
+{name:"Kalgoorlie Cup",address:"Kalgoorlie",city:"Western Australia",country:"Australia",lat:-30.7489,lng:121.4658,category:"horseracing"},
+{name:"Alice Springs",address:"Alice Springs",city:"Northern Territory",country:"Australia",lat:-23.6980,lng:133.8807,category:"horseracing"},
+{name:"Darwin",address:"Fannie Bay",city:"Northern Territory",country:"Australia",lat:-12.4381,lng:130.8344,category:"horseracing"},
+{name:"Yeppoon Races",address:"Yeppoon",city:"Queensland",country:"Australia",lat:-23.1281,lng:150.7444,category:"horseracing"},
+{name:"Clermont Races",address:"Clermont",city:"Queensland",country:"Australia",lat:-22.8256,lng:147.6378,category:"horseracing"},
+// NEW ZEALAND - RACING
+{name:"Ellerslie",address:"80-100 Ascot Ave",city:"Auckland",country:"New Zealand",lat:-36.8914,lng:174.7983,category:"horseracing"},
+{name:"Riccarton Park",address:"165 Racecourse Rd",city:"Christchurch",country:"New Zealand",lat:-43.5294,lng:172.5633,category:"horseracing"},
+{name:"Trentham",address:"Racecourse Rd",city:"Upper Hutt",country:"New Zealand",lat:-41.1489,lng:175.0319,category:"horseracing"},
+{name:"Te Rapa",address:"Tristram St",city:"Hamilton",country:"New Zealand",lat:-37.7333,lng:175.2667,category:"horseracing"},
+{name:"Otaki",address:"Railway St",city:"Otaki",country:"New Zealand",lat:-40.7586,lng:175.1478,category:"horseracing"},
+{name:"Hastings",address:"Railway Rd",city:"Hastings",country:"New Zealand",lat:-39.6381,lng:176.8497,category:"horseracing"},
+{name:"Awapuni",address:"Fitzherbert Ave",city:"Palmerston North",country:"New Zealand",lat:-40.3503,lng:175.6086,category:"horseracing"},
+{name:"Rotorua",address:"Fenton St",city:"Rotorua",country:"New Zealand",lat:-38.1368,lng:176.2497,category:"horseracing"},
+{name:"Pukekohe Park",address:"Manukau Heads Rd",city:"Pukekohe",country:"New Zealand",lat:-37.2000,lng:174.9000,category:"horseracing"},
+{name:"Wanganui",address:"Peat St",city:"Wanganui",country:"New Zealand",lat:-39.9333,lng:175.0500,category:"horseracing"},
+{name:"New Plymouth",address:"Rogan St",city:"New Plymouth",country:"New Zealand",lat:-39.0558,lng:174.0806,category:"horseracing"},
+{name:"Ashburton",address:"Cass St",city:"Ashburton",country:"New Zealand",lat:-43.8981,lng:171.7514,category:"horseracing"},
+{name:"Wingatui",address:"Gordon Rd",city:"Dunedin",country:"New Zealand",lat:-45.8167,lng:170.4500,category:"horseracing"},
+{name:"Omakau",address:"Omakau",city:"Central Otago",country:"New Zealand",lat:-45.0833,lng:169.5833,category:"horseracing"},
+{name:"Reefton",address:"Reefton",city:"West Coast",country:"New Zealand",lat:-42.1167,lng:171.8667,category:"horseracing"},
+// JAPAN - RACING
+{name:"Tokyo Racecourse",address:"1-1 Hiyoshi-cho",city:"Tokyo",country:"Japan",lat:35.6653,lng:139.5317,category:"horseracing"},
+{name:"Nakayama",address:"1-1-1 Furukawa",city:"Funabashi",country:"Japan",lat:35.7633,lng:140.0233,category:"horseracing"},
+{name:"Hanshin",address:"1-1 Komagabayashi",city:"Takarazuka",country:"Japan",lat:34.7594,lng:135.3692,category:"horseracing"},
+{name:"Kyoto",address:"32 Yoshijima Osuke-cho",city:"Kyoto",country:"Japan",lat:34.9322,lng:135.7392,category:"horseracing"},
+{name:"Chukyo",address:"Toyoake",city:"Aichi",country:"Japan",lat:35.0528,lng:137.0158,category:"horseracing"},
+{name:"Niigata",address:"Niigata",city:"Niigata",country:"Japan",lat:37.9161,lng:139.0364,category:"horseracing"},
+{name:"Fukushima",address:"Fukushima",city:"Fukushima",country:"Japan",lat:37.7503,lng:140.4672,category:"horseracing"},
+{name:"Sapporo",address:"Sapporo",city:"Hokkaido",country:"Japan",lat:43.0642,lng:141.3469,category:"horseracing"},
+{name:"Hakodate",address:"Hakodate",city:"Hokkaido",country:"Japan",lat:41.7689,lng:140.7289,category:"horseracing"},
+{name:"Kokura",address:"Kitakyushu",city:"Fukuoka",country:"Japan",lat:33.8833,lng:130.8833,category:"horseracing"},
+// SOUTH KOREA - RACING
+{name:"Seoul Race Park",address:"107 Gyeongmagongwon-daero",city:"Gwacheon",country:"South Korea",lat:37.4328,lng:127.0053,category:"horseracing"},
+{name:"Busan-Gyeongnam",address:"Gupo-dong",city:"Busan",country:"South Korea",lat:35.2036,lng:128.9903,category:"horseracing"},
+{name:"Jeju",address:"Jeju Island",city:"Jeju",country:"South Korea",lat:33.5097,lng:126.5219,category:"horseracing"},
+// HONG KONG - RACING
+{name:"Happy Valley",address:"Sports Rd",city:"Hong Kong",country:"Hong Kong",lat:22.2714,lng:114.1833,category:"horseracing"},
+{name:"Sha Tin",address:"Sha Tin",city:"Hong Kong",country:"Hong Kong",lat:22.3981,lng:114.2022,category:"horseracing"},
+// SINGAPORE - RACING
+{name:"Singapore Turf Club",address:"1 Turf Club Ave",city:"Singapore",country:"Singapore",lat:1.4378,lng:103.7928,category:"horseracing"},
+// INDIA - RACING
+{name:"Mahalakshmi",address:"Mahalaxmi",city:"Mumbai",country:"India",lat:18.9831,lng:72.8183,category:"horseracing"},
+{name:"Bangalore Turf Club",address:"Race Course Rd",city:"Bangalore",country:"India",lat:12.9914,lng:77.5950,category:"horseracing"},
+{name:"Madras Race Club",address:"Guindy",city:"Chennai",country:"India",lat:13.0092,lng:80.2206,category:"horseracing"},
+{name:"Royal Calcutta Turf Club",address:"Kolkata",city:"Kolkata",country:"India",lat:22.5397,lng:88.3514,category:"horseracing"},
+{name:"Delhi Race Club",address:"Western Avenue",city:"New Delhi",country:"India",lat:28.6139,lng:77.2090,category:"horseracing"},
+{name:"Pune Race Course",address:"Pune",city:"Maharashtra",country:"India",lat:18.5204,lng:73.8567,category:"horseracing"},
+{name:"Hyderabad Race Club",address:"Malakpet",city:"Hyderabad",country:"India",lat:17.3850,lng:78.4867,category:"horseracing"},
+{name:"Mysore Race Club",address:"Mysore",city:"Karnataka",country:"India",lat:12.2958,lng:76.6394,category:"horseracing"},
+// UAE - HORSE & CAMEL RACING
+{name:"Meydan",address:"Nad Al Sheba",city:"Dubai",country:"UAE",lat:25.1692,lng:55.3131,category:"horseracing"},
+{name:"Dubai Camel Racing Club",address:"Al Marmoum",city:"Dubai",country:"UAE",lat:24.8606,lng:55.2728,category:"camelracing"},
+{name:"Al Wathba",address:"Al Wathba",city:"Abu Dhabi",country:"UAE",lat:24.2417,lng:54.6314,category:"camelracing"},
+{name:"Al Ain Racecourse",address:"Sweihan Rd",city:"Al Ain",country:"UAE",lat:24.2278,lng:55.7544,category:"horseracing"},
+{name:"Jebel Ali",address:"Jebel Ali",city:"Dubai",country:"UAE",lat:25.0378,lng:55.0756,category:"horseracing"},
+{name:"Sharjah Camel Race Track",address:"Sharjah",city:"Sharjah",country:"UAE",lat:25.3463,lng:55.4209,category:"camelracing"},
+{name:"Sweihan Camel Track",address:"Sweihan",city:"Abu Dhabi",country:"UAE",lat:24.4514,lng:55.3358,category:"camelracing"},
+// QATAR - RACING
+{name:"Al Shahaniya",address:"Al Shahaniya",city:"Doha",country:"Qatar",lat:25.4067,lng:51.1844,category:"camelracing"},
+{name:"Al Rayyan",address:"Al Rayyan",city:"Doha",country:"Qatar",lat:25.2561,lng:51.4239,category:"horseracing"},
+{name:"Al Uqda Camel Track",address:"Al Uqda",city:"Doha",country:"Qatar",lat:25.3517,lng:51.2783,category:"camelracing"},
+// SAUDI ARABIA - RACING
+{name:"King Abdulaziz Camel Festival",address:"Taif Road",city:"Riyadh",country:"Saudi Arabia",lat:24.6736,lng:46.7628,category:"camelracing"},
+{name:"King Abdulaziz Racecourse",address:"Janadriyah",city:"Riyadh",country:"Saudi Arabia",lat:24.8358,lng:46.8019,category:"horseracing"},
+{name:"Jeddah Racecourse",address:"Al Bahra",city:"Jeddah",country:"Saudi Arabia",lat:21.5486,lng:39.1725,category:"horseracing"},
+{name:"Taif Camel Track",address:"Taif",city:"Taif",country:"Saudi Arabia",lat:21.2703,lng:40.4153,category:"camelracing"},
+{name:"Hofuf Camel Racing",address:"Al-Ahsa",city:"Eastern Province",country:"Saudi Arabia",lat:25.3644,lng:49.5856,category:"camelracing"},
+// OMAN - RACING
+{name:"Al Fulaij",address:"Al Fulaij",city:"Muscat",country:"Oman",lat:23.5883,lng:58.3829,category:"camelracing"},
+{name:"Barka Camel Track",address:"Barka",city:"Al Batinah",country:"Oman",lat:23.6742,lng:57.8867,category:"camelracing"},
+{name:"Suwaiq Camel Racing",address:"As Suwaiq",city:"Al Batinah",country:"Oman",lat:23.8492,lng:57.4386,category:"camelracing"},
+// KUWAIT - CAMEL RACING
+{name:"Kuwait Camel Racing Club",address:"Al Wafra",city:"Kuwait City",country:"Kuwait",lat:28.6347,lng:48.0833,category:"camelracing"},
+// BAHRAIN - RACING
+{name:"Rashid Equestrian",address:"Sakhir",city:"Manama",country:"Bahrain",lat:26.0667,lng:50.5577,category:"horseracing"},
+// TURKEY - RACING
+{name:"Veliefendi",address:"Veliefendi",city:"Istanbul",country:"Turkey",lat:40.9828,lng:28.8383,category:"horseracing"},
+{name:"Ankara Hippodrome",address:"Hipodrom Caddesi",city:"Ankara",country:"Turkey",lat:39.9334,lng:32.8597,category:"horseracing"},
+{name:"Izmir",address:"Izmir",city:"Izmir",country:"Turkey",lat:38.4192,lng:27.1287,category:"horseracing"},
+{name:"Bursa",address:"Bursa",city:"Bursa",country:"Turkey",lat:40.1826,lng:29.0665,category:"horseracing"},
+{name:"Adana",address:"Adana",city:"Adana",country:"Turkey",lat:37.0000,lng:35.3213,category:"horseracing"},
+// SOUTH AFRICA - RACING
+{name:"Kenilworth",address:"Rosmead Ave",city:"Cape Town",country:"South Africa",lat:-33.9900,lng:18.4656,category:"horseracing"},
+{name:"Turffontein",address:"Turf Club St",city:"Johannesburg",country:"South Africa",lat:-26.2539,lng:28.0406,category:"horseracing"},
+{name:"Greyville",address:"50 Avondale Rd",city:"Durban",country:"South Africa",lat:-29.8483,lng:31.0328,category:"horseracing"},
+{name:"Scottsville",address:"Scottsville",city:"Pietermaritzburg",country:"South Africa",lat:-29.6122,lng:30.3753,category:"horseracing"},
+{name:"Vaal",address:"Vaal Triangle",city:"Vereeniging",country:"South Africa",lat:-26.6458,lng:27.9281,category:"horseracing"},
+{name:"Fairview",address:"Circular Dr",city:"Port Elizabeth",country:"South Africa",lat:-33.9719,lng:25.6006,category:"horseracing"},
+{name:"Flamingo Park",address:"Kimberley",city:"Northern Cape",country:"South Africa",lat:-28.7320,lng:24.7691,category:"horseracing"},
+{name:"Clairwood Park",address:"Durban",city:"KwaZulu-Natal",country:"South Africa",lat:-29.9167,lng:30.9833,category:"horseracing"},
+// ARGENTINA - RACING & POLO
+{name:"Palermo Polo Fields",address:"Palermo",city:"Buenos Aires",country:"Argentina",lat:-34.5550,lng:-58.4178,category:"polo"},
+{name:"Hipódromo de Palermo",address:"Av. del Libertador 4101",city:"Buenos Aires",country:"Argentina",lat:-34.5547,lng:-58.4361,category:"horseracing"},
+{name:"Hipódromo Argentino San Isidro",address:"Av. Márquez 1600",city:"San Isidro",country:"Argentina",lat:-34.4706,lng:-58.5203,category:"horseracing"},
+{name:"La Aguada Polo",address:"Ruta Provincial 2 Km 22",city:"Buenos Aires",country:"Argentina",lat:-34.6333,lng:-58.5000,category:"polo"},
+{name:"Hurlingham Club",address:"Av. Julio A. Roca 1415",city:"Buenos Aires",country:"Argentina",lat:-34.5856,lng:-58.6303,category:"polo"},
+{name:"Coronel Suarez Polo",address:"Coronel Suarez",city:"Buenos Aires Province",country:"Argentina",lat:-37.4553,lng:-61.9308,category:"polo"},
+{name:"Ellerstina Polo",address:"Cañuelas",city:"Buenos Aires Province",country:"Argentina",lat:-35.0167,lng:-58.8167,category:"polo"},
+{name:"La Plata Racecourse",address:"Calle 44 y 143",city:"La Plata",country:"Argentina",lat:-34.9167,lng:-57.9500,category:"horseracing"},
+{name:"Concepción Uruguay",address:"Concepción del Uruguay",city:"Entre Ríos",country:"Argentina",lat:-32.4833,lng:-58.2333,category:"horseracing"},
+// BRAZIL - RACING & RODEO
+{name:"Jockey Club Brasileiro",address:"Praça Quinze de Novembro",city:"Rio de Janeiro",country:"Brazil",lat:-22.9478,lng:-43.4481,category:"horseracing"},
+{name:"Jockey Club São Paulo",address:"Av. Lineu de Paula Machado 1263",city:"São Paulo",country:"Brazil",lat:-23.6161,lng:-46.7017,category:"horseracing"},
+{name:"Barretos Rodeo",address:"Parque do Peão",city:"Barretos",country:"Brazil",lat:-20.5578,lng:-48.5681,category:"rodeo"},
+{name:"Jaguariúna Rodeo",address:"Jaguariúna",city:"São Paulo",country:"Brazil",lat:-22.7044,lng:-46.9856,category:"rodeo"},
+{name:"Americana Rodeo",address:"Americana",city:"São Paulo",country:"Brazil",lat:-22.7394,lng:-47.3313,category:"rodeo"},
+{name:"Presidente Prudente",address:"Presidente Prudente",city:"São Paulo",country:"Brazil",lat:-22.1256,lng:-51.3889,category:"rodeo"},
+// CHILE - RACING & RODEO
+{name:"Club Hípico Santiago",address:"Av. Blanco Encalada 2540",city:"Santiago",country:"Chile",lat:-33.4689,lng:-70.6839,category:"horseracing"},
+{name:"Hipódromo Chile",address:"Av. Hipódromo Chile 1715",city:"Santiago",country:"Chile",lat:-33.4550,lng:-70.6283,category:"horseracing"},
+{name:"Medialuna Rancagua",address:"Av. Estadio Español",city:"Rancagua",country:"Chile",lat:-34.1644,lng:-70.7431,category:"rodeo"},
+{name:"Medialuna Los Andes",address:"Los Andes",city:"Valparaíso",country:"Chile",lat:-32.8333,lng:-70.6000,category:"rodeo"},
+{name:"Medialuna Curicó",address:"Curicó",city:"Maule",country:"Chile",lat:-34.9833,lng:-71.2333,category:"rodeo"},
+{name:"Medialuna Linares",address:"Linares",city:"Maule",country:"Chile",lat:-35.8500,lng:-71.5833,category:"rodeo"},
+{name:"Viña del Mar",address:"Sporting Club",city:"Valparaíso",country:"Chile",lat:-33.0236,lng:-71.5519,category:"horseracing"},
+{name:"Concepción Racecourse",address:"Concepción",city:"Bío Bío",country:"Chile",lat:-36.8201,lng:-73.0444,category:"horseracing"},
+// PERU - RACING & BULLFIGHTING
+{name:"Hipódromo de Monterrico",address:"Av. El Derby",city:"Lima",country:"Peru",lat:-12.0958,lng:-76.9758,category:"horseracing"},
+{name:"Plaza de Acho",address:"Jr. Hualgayoc 332",city:"Lima",country:"Peru",lat:-12.0364,lng:-77.0392,category:"bullfighting"},
+// MEXICO - RACING, RODEO & BULLFIGHTING
+{name:"Hipódromo de las Américas",address:"Av. Industria Militar",city:"Mexico City",country:"Mexico",lat:19.4542,lng:-99.1861,category:"horseracing"},
+{name:"Plaza México",address:"Augusto Rodin 241",city:"Mexico City",country:"Mexico",lat:19.3978,lng:-99.1794,category:"bullfighting"},
+{name:"Lienzo Charro Constituyentes",address:"Av. Constituyentes",city:"Mexico City",country:"Mexico",lat:19.4164,lng:-99.2139,category:"rodeo"},
+{name:"Plaza Monumental Aguascalientes",address:"Av. Independencia",city:"Aguascalientes",country:"Mexico",lat:21.8853,lng:-102.2916,category:"bullfighting"},
+{name:"Guadalajara Bullfighting",address:"Nueva Progreso",city:"Guadalajara",country:"Mexico",lat:20.6597,lng:-103.3496,category:"bullfighting"},
+{name:"Lienzo Charro Jalisco",address:"Guadalajara",city:"Jalisco",country:"Mexico",lat:20.6736,lng:-103.3444,category:"rodeo"},
+{name:"Monterrey Bullfighting",address:"Monterrey",city:"Nuevo León",country:"Mexico",lat:25.6866,lng:-100.3161,category:"bullfighting"},
+{name:"Querétaro Bullfighting",address:"Querétaro",city:"Querétaro",country:"Mexico",lat:20.5888,lng:-100.3899,category:"bullfighting"},
+{name:"Puebla Bullfighting",address:"Puebla",city:"Puebla",country:"Mexico",lat:19.0414,lng:-98.2063,category:"bullfighting"},
+{name:"Lienzo Charro Puebla",address:"Puebla",city:"Puebla",country:"Mexico",lat:19.0319,lng:-98.1972,category:"rodeo"},
+{name:"Tijuana Bullfighting",address:"Playas de Tijuana",city:"Tijuana",country:"Mexico",lat:32.5149,lng:-117.1283,category:"bullfighting"},
+{name:"Ciudad Juárez Lienzo",address:"Ciudad Juárez",city:"Chihuahua",country:"Mexico",lat:31.6904,lng:-106.4245,category:"rodeo"},
+{name:"Chihuahua Lienzo Charro",address:"Chihuahua",city:"Chihuahua",country:"Mexico",lat:28.6353,lng:-106.0889,category:"rodeo"},
+{name:"Durango Lienzo",address:"Durango",city:"Durango",country:"Mexico",lat:24.0277,lng:-104.6532,category:"rodeo"},
+{name:"Zacatecas Lienzo",address:"Zacatecas",city:"Zacatecas",country:"Mexico",lat:22.7709,lng:-102.5832,category:"rodeo"},
+// COLOMBIA - BULLFIGHTING
+{name:"Plaza Santamaría",address:"Carrera 6 con Calle 26",city:"Bogotá",country:"Colombia",lat:4.6536,lng:-74.0653,category:"bullfighting"},
+{name:"Plaza La Macarena",address:"Carrera 46 No. 73-98",city:"Medellín",country:"Colombia",lat:6.2564,lng:-75.5681,category:"bullfighting"},
+{name:"Cali Bullfighting",address:"Cali",city:"Valle del Cauca",country:"Colombia",lat:3.4516,lng:-76.5320,category:"bullfighting"},
+{name:"Manizales Bullfighting",address:"Manizales",city:"Caldas",country:"Colombia",lat:5.0700,lng:-75.5174,category:"bullfighting"},
+// VENEZUELA - RACING
+{name:"La Rinconada",address:"Avenida Principal de La Rinconada",city:"Caracas",country:"Venezuela",lat:10.4639,lng:-66.8242,category:"horseracing"},
+{name:"Valencia Racecourse",address:"Valencia",city:"Carabobo",country:"Venezuela",lat:10.1621,lng:-68.0077,category:"horseracing"},
+// ECUADOR - BULLFIGHTING
+{name:"Plaza Quito",address:"Av. Amazonas",city:"Quito",country:"Ecuador",lat:-0.1989,lng:-78.4886,category:"bullfighting"},
+// SPAIN - BULLFIGHTING (Major & Regional)
+{name:"Las Ventas",address:"Calle de Alcalá 237",city:"Madrid",country:"Spain",lat:40.4311,lng:-3.6661,category:"bullfighting"},
+{name:"La Maestranza",address:"Paseo de Cristóbal Colón 12",city:"Sevilla",country:"Spain",lat:37.3858,lng:-5.9964,category:"bullfighting"},
+{name:"Plaza Monumental Barcelona",address:"Gran Via de les Corts Catalanes",city:"Barcelona",country:"Spain",lat:41.3953,lng:2.1806,category:"bullfighting"},
+{name:"Plaza Valencia",address:"Carrer de Xàtiva 28",city:"Valencia",country:"Spain",lat:39.4667,lng:-0.3764,category:"bullfighting"},
+{name:"Plaza de Ronda",address:"Calle Virgen de la Paz 15",city:"Ronda",country:"Spain",lat:36.7406,lng:-5.1656,category:"bullfighting"},
+{name:"Plaza Pamplona",address:"Paseo Ernest Hemingway s/n",city:"Pamplona",country:"Spain",lat:42.8200,lng:-1.6378,category:"bullfighting"},
+{name:"Plaza Málaga",address:"Paseo de Reding",city:"Málaga",country:"Spain",lat:36.7181,lng:-4.4217,category:"bullfighting"},
+{name:"Plaza Córdoba",address:"Av. del Alcalde Muñoz",city:"Córdoba",country:"Spain",lat:37.8853,lng:-4.7822,category:"bullfighting"},
+{name:"Plaza Zaragoza",address:"Paseo de la Mina",city:"Zaragoza",country:"Spain",lat:41.6500,lng:-0.8833,category:"bullfighting"},
+{name:"Plaza Bilbao",address:"Vista Alegre",city:"Bilbao",country:"Spain",lat:43.2627,lng:-2.9253,category:"bullfighting"},
+{name:"Plaza San Sebastián",address:"Paseo de Anoeta",city:"San Sebastián",country:"Spain",lat:43.3183,lng:-1.9812,category:"bullfighting"},
+{name:"Plaza Santander",address:"Santander",city:"Cantabria",country:"Spain",lat:43.4623,lng:-3.8099,category:"bullfighting"},
+{name:"Plaza Logroño",address:"Logroño",city:"La Rioja",country:"Spain",lat:42.4627,lng:-2.4450,category:"bullfighting"},
+{name:"Plaza Albacete",address:"Albacete",city:"Castilla-La Mancha",country:"Spain",lat:38.9945,lng:-1.8558,category:"bullfighting"},
+{name:"Plaza Murcia",address:"Murcia",city:"Murcia",country:"Spain",lat:37.9922,lng:-1.1307,category:"bullfighting"},
+{name:"Plaza Alicante",address:"Alicante",city:"Comunidad Valenciana",country:"Spain",lat:38.3452,lng:-0.4810,category:"bullfighting"},
+{name:"Plaza Castellón",address:"Castellón de la Plana",city:"Comunidad Valenciana",country:"Spain",lat:39.9864,lng:-0.0513,category:"bullfighting"},
+{name:"Plaza Cáceres",address:"Cáceres",city:"Extremadura",country:"Spain",lat:39.4753,lng:-6.3724,category:"bullfighting"},
+{name:"Plaza Badajoz",address:"Badajoz",city:"Extremadura",country:"Spain",lat:38.8794,lng:-6.9706,category:"bullfighting"},
+// PORTUGAL - BULLFIGHTING
+{name:"Campo Pequeno",address:"Av. da República",city:"Lisbon",country:"Portugal",lat:38.7386,lng:-9.1450,category:"bullfighting"},
+{name:"Vila Franca Xira",address:"Largo da Praça de Touros",city:"Vila Franca de Xira",country:"Portugal",lat:38.9517,lng:-8.9889,category:"bullfighting"},
+{name:"Santarém Bullfighting",address:"Santarém",city:"Santarém",country:"Portugal",lat:39.2369,lng:-8.6867,category:"bullfighting"},
+{name:"Évora Bullfighting",address:"Évora",city:"Évora",country:"Portugal",lat:38.5714,lng:-7.9081,category:"bullfighting"},
+// FRANCE - BULLFIGHTING (Southern)
+{name:"Nîmes Arena",address:"Nîmes",city:"Gard",country:"France",lat:43.8367,lng:4.3601,category:"bullfighting"},
+{name:"Arles Amphitheatre",address:"Arles",city:"Bouches-du-Rhône",country:"France",lat:43.6772,lng:4.6309,category:"bullfighting"},
+{name:"Dax Bullfighting",address:"Dax",city:"Landes",country:"France",lat:43.7102,lng:-1.0502,category:"bullfighting"},
+{name:"Mont-de-Marsan",address:"Mont-de-Marsan",city:"Landes",country:"France",lat:43.8897,lng:-0.4978,category:"bullfighting"},
+{name:"Bayonne Bullfighting",address:"Bayonne",city:"Pyrénées-Atlantiques",country:"France",lat:43.4832,lng:-1.4914,category:"bullfighting"},
+// USA - MAJOR RODEOS
+{name:"National Finals Rodeo",address:"3780 S Las Vegas Blvd",city:"Las Vegas",country:"USA",lat:36.1025,lng:-115.1739,category:"rodeo"},
+{name:"Houston Livestock Show",address:"NRG Park",city:"Houston",country:"USA",lat:29.6847,lng:-95.4108,category:"rodeo"},
+{name:"Cheyenne Frontier Days",address:"4610 Carey Ave",city:"Cheyenne",country:"USA",lat:41.1500,lng:-104.8089,category:"rodeo"},
+{name:"Calgary Stampede",address:"1410 Olympic Way SE",city:"Calgary",country:"Canada",lat:51.0378,lng:-114.0525,category:"rodeo"},
+{name:"Pendleton Round-Up",address:"1205 SW Court Ave",city:"Pendleton",country:"USA",lat:45.6694,lng:-118.7956,category:"rodeo"},
+{name:"San Antonio Stock Show",address:"3201 E Houston St",city:"San Antonio",country:"USA",lat:29.4472,lng:-98.4575,category:"rodeo"},
+{name:"Fort Worth Stock Show",address:"3401 W Lancaster Ave",city:"Fort Worth",country:"USA",lat:32.7561,lng:-97.3658,category:"rodeo"},
+{name:"Tucson Rodeo",address:"4823 S 6th Ave",city:"Tucson",country:"USA",lat:32.1842,lng:-110.9694,category:"rodeo"},
+{name:"Denver Stock Show",address:"4655 Humboldt St",city:"Denver",country:"USA",lat:39.7817,lng:-104.9611,category:"rodeo"},
+{name:"San Angelo Stock Show",address:"San Angelo",city:"Texas",country:"USA",lat:31.4638,lng:-100.4370,category:"rodeo"},
+{name:"Reno Rodeo",address:"Reno Livestock Events Center",city:"Reno",country:"USA",lat:39.5296,lng:-119.8138,category:"rodeo"},
+{name:"Greeley Stampede",address:"Greeley",city:"Colorado",country:"USA",lat:40.4233,lng:-104.7091,category:"rodeo"},
+{name:"Days of '47 Rodeo",address:"Salt Lake City",city:"Utah",country:"USA",lat:40.7608,lng:-111.8910,category:"rodeo"},
+{name:"Cody Stampede",address:"Cody",city:"Wyoming",country:"USA",lat:44.5263,lng:-109.0565,category:"rodeo"},
+{name:"Prescott Frontier Days",address:"Prescott",city:"Arizona",country:"USA",lat:34.5400,lng:-112.4685,category:"rodeo"},
+{name:"California Rodeo Salinas",address:"Salinas",city:"California",country:"USA",lat:36.6777,lng:-121.6555,category:"rodeo"},
+{name:"St. Paul Rodeo",address:"St. Paul",city:"Oregon",country:"USA",lat:45.2142,lng:-122.9639,category:"rodeo"},
+{name:"Dodge City Roundup",address:"Dodge City",city:"Kansas",country:"USA",lat:37.7528,lng:-100.0171,category:"rodeo"},
+{name:"Kansas City BBQ & Rodeo",address:"Kansas City",city:"Missouri",country:"USA",lat:39.0997,lng:-94.5786,category:"rodeo"},
+{name:"Sisters Rodeo",address:"Sisters",city:"Oregon",country:"USA",lat:44.2904,lng:-121.5492,category:"rodeo"},
+{name:"Ellensburg Rodeo",address:"Ellensburg",city:"Washington",country:"USA",lat:46.9965,lng:-120.5478,category:"rodeo"},
+{name:"Ponoka Stampede",address:"Ponoka",city:"Alberta",country:"Canada",lat:52.6750,lng:-113.5772,category:"rodeo"},
+{name:"Medicine Hat Stampede",address:"Medicine Hat",city:"Alberta",country:"Canada",lat:50.0411,lng:-110.6775,category:"rodeo"},
+{name:"Williams Lake Stampede",address:"Williams Lake",city:"BC",country:"Canada",lat:52.1417,lng:-122.1417,category:"rodeo"},
+// USA - REGIONAL & SMALLER RODEOS
+{name:"Clovis Rodeo",address:"Clovis",city:"New Mexico",country:"USA",lat:34.4048,lng:-103.2052,category:"rodeo"},
+{name:"Albuquerque Rodeo",address:"Albuquerque",city:"New Mexico",country:"USA",lat:35.0844,lng:-106.6504,category:"rodeo"},
+{name:"Miles City Bucking Horse Sale",address:"Miles City",city:"Montana",country:"USA",lat:46.4083,lng:-105.8406,category:"rodeo"},
+{name:"Red Lodge Rodeo",address:"Red Lodge",city:"Montana",country:"USA",lat:45.1860,lng:-109.2468,category:"rodeo"},
+{name:"Livingston Roundup",address:"Livingston",city:"Montana",country:"USA",lat:45.6624,lng:-110.5610,category:"rodeo"},
+{name:"Oakley Rodeo",address:"Oakley",city:"Idaho",country:"USA",lat:42.2410,lng:-113.8844,category:"rodeo"},
+{name:"Caldwell Night Rodeo",address:"Caldwell",city:"Idaho",country:"USA",lat:43.6629,lng:-116.6874,category:"rodeo"},
+{name:"Sheridan WYO Rodeo",address:"Sheridan",city:"Wyoming",country:"USA",lat:44.7972,lng:-106.9562,category:"rodeo"},
+{name:"Casper Mountain Man Rendezvous",address:"Casper",city:"Wyoming",country:"USA",lat:42.8500,lng:-106.3250,category:"rodeo"},
+{name:"Thermopolis Cowboy Rendezvous",address:"Thermopolis",city:"Wyoming",country:"USA",lat:43.6461,lng:-108.2120,category:"rodeo"},
+// AUSTRALIA - RODEO
+{name:"Mount Isa Rodeo",address:"Mount Isa Showgrounds",city:"Mount Isa",country:"Australia",lat:-20.7258,lng:139.4933,category:"rodeo"},
+{name:"Warwick Rodeo",address:"Morgan Park",city:"Warwick",country:"Australia",lat:-28.2217,lng:152.0336,category:"rodeo"},
+{name:"Tamworth",address:"AELEC",city:"Tamworth",country:"Australia",lat:-31.0925,lng:150.9308,category:"rodeo"},
+{name:"Toowoomba Royal Show",address:"Toowoomba",city:"Queensland",country:"Australia",lat:-27.5598,lng:151.9507,category:"rodeo"},
+{name:"Mareeba Rodeo",address:"Mareeba",city:"Queensland",country:"Australia",lat:-17.0000,lng:145.4167,category:"rodeo"},
+{name:"Rockhampton Beef Week",address:"Rockhampton",city:"Queensland",country:"Australia",lat:-23.3781,lng:150.5136,category:"rodeo"},
+// USA - EQUESTRIAN VENUES
+{name:"Kentucky Horse Park",address:"4089 Iron Works Pkwy",city:"Lexington",country:"USA",lat:38.1144,lng:-84.5125,category:"equestrian"},
+{name:"HITS Saugerties",address:"454 Washburn Rd",city:"Saugerties",country:"USA",lat:42.0797,lng:-73.9556,category:"equestrian"},
+{name:"HITS Thermal",address:"81800 50th Ave",city:"Thermal",country:"USA",lat:33.6414,lng:-116.1422,category:"equestrian"},
+{name:"Tryon International",address:"25 Peniel Rd",city:"Mill Spring",country:"USA",lat:35.4122,lng:-82.1833,category:"equestrian"},
+{name:"World Equestrian Center Ocala",address:"1390 NW 80th Ave",city:"Ocala",country:"USA",lat:29.2425,lng:-82.2350,category:"equestrian"},
+{name:"Great Meadow",address:"5089 Old Tavern Rd",city:"The Plains",country:"USA",lat:38.8658,lng:-77.7747,category:"equestrian"},
+{name:"Morven Park",address:"41793 Tutt Ln",city:"Leesburg",country:"USA",lat:39.1156,lng:-77.5636,category:"equestrian"},
+{name:"Colorado Horse Park",address:"8545 N95th St",city:"Parker",country:"USA",lat:39.5186,lng:-104.7711,category:"equestrian"},
+{name:"Los Angeles Equestrian Center",address:"480 Riverside Dr",city:"Burbank",country:"USA",lat:34.1483,lng:-118.3350,category:"equestrian"},
+{name:"Golden Gate Fields",address:"Del Mar Horse Park",city:"Del Mar",country:"USA",lat:32.9789,lng:-117.2647,category:"equestrian"},
+{name:"Lamplight Equestrian Center",address:"Wayne",city:"Illinois",country:"USA",lat:41.9506,lng:-88.2367,category:"equestrian"},
+{name:"San Juan Capistrano",address:"San Juan Capistrano",city:"California",country:"USA",lat:33.5017,lng:-117.6628,category:"equestrian"},
+{name:"Traverse City Horse Shows",address:"Flintfields",city:"Michigan",country:"USA",lat:44.7631,lng:-85.6206,category:"equestrian"},
+// USA - POLO CLUBS
+{name:"International Polo Club Palm Beach",address:"3667 120th Ave S",city:"Wellington",country:"USA",lat:26.6517,lng:-80.2472,category:"polo"},
+{name:"Santa Barbara Polo",address:"3375 Foothill Rd",city:"Carpinteria",country:"USA",lat:34.3839,lng:-119.4806,category:"polo"},
+{name:"Greenwich Polo",address:"1 Hurlingham Dr",city:"Greenwich",country:"USA",lat:41.1300,lng:-73.6511,category:"polo"},
+{name:"Denver Polo",address:"8000 Polo Club Dr",city:"Littleton",country:"USA",lat:39.5464,lng:-105.0189,category:"polo"},
+{name:"Houston Polo",address:"8552 Memorial Dr",city:"Houston",country:"USA",lat:29.7817,lng:-95.5483,category:"polo"},
+{name:"Eldorado Polo",address:"50950 Madison St",city:"Indio",country:"USA",lat:33.7308,lng:-116.1747,category:"polo"},
+{name:"Saratoga Polo",address:"Denton Rd",city:"Saratoga Springs",country:"USA",lat:43.0831,lng:-73.7842,category:"polo"},
+{name:"Santa Fe Polo",address:"Santa Fe",city:"New Mexico",country:"USA",lat:35.6870,lng:-105.9378,category:"polo"},
+{name:"Dallas Polo",address:"Dallas",city:"Texas",country:"USA",lat:32.7767,lng:-96.7970,category:"polo"},
+{name:"Oak Brook Polo",address:"Oak Brook",city:"Illinois",country:"USA",lat:41.8328,lng:-87.9289,category:"polo"},
+// USA - DOG RACING
+{name:"Southland Casino Racing",address:"1550 N Ingram Blvd",city:"West Memphis",country:"USA",lat:35.1525,lng:-90.2114,category:"dogracing"},
+{name:"Wheeling Island",address:"1 S Stone St",city:"Wheeling",country:"USA",lat:40.0706,lng:-80.6992,category:"dogracing"},
+// UK - DOG RACING
+{name:"Romford Greyhound Stadium",address:"London Road",city:"Romford",country:"UK",lat:51.5739,lng:0.1783,category:"dogracing"},
+{name:"Belle Vue Greyhounds",address:"Kirkmanshulme Lane",city:"Manchester",country:"UK",lat:53.4667,lng:-2.1833,category:"dogracing"},
+{name:"Perry Barr",address:"Aldridge Road",city:"Birmingham",country:"UK",lat:52.5167,lng:-1.9167,category:"dogracing"},
+{name:"Crayford Stadium",address:"Crayford",city:"London",country:"UK",lat:51.4500,lng:0.1833,category:"dogracing"},
+{name:"Towcester Greyhound",address:"Towcester",city:"Northamptonshire",country:"UK",lat:52.1336,lng:-0.9914,category:"dogracing"},
+{name:"Swindon Stadium",address:"Swindon",city:"Wiltshire",country:"UK",lat:51.5558,lng:-1.7797,category:"dogracing"},
+{name:"Harlow Stadium",address:"Harlow",city:"Essex",country:"UK",lat:51.7714,lng:0.1025,category:"dogracing"},
+// IRELAND - DOG RACING
+{name:"Shelbourne Park",address:"Ringsend",city:"Dublin",country:"Ireland",lat:53.3358,lng:-6.2339,category:"dogracing"},
+{name:"Cork Greyhound Stadium",address:"Curraheen",city:"Cork",country:"Ireland",lat:51.8858,lng:-8.4986,category:"dogracing"},
+{name:"Limerick Greyhound",address:"Greenpark",city:"Limerick",country:"Ireland",lat:52.6647,lng:-8.6347,category:"dogracing"},
+{name:"Tralee Greyhound",address:"Tralee",city:"Co. Kerry",country:"Ireland",lat:52.2713,lng:-9.7047,category:"dogracing"},
+{name:"Thurles Greyhound",address:"Thurles",city:"Co. Tipperary",country:"Ireland",lat:52.6803,lng:-7.8106,category:"dogracing"},
+{name:"Kilkenny Greyhound",address:"Kilkenny",city:"Co. Kilkenny",country:"Ireland",lat:52.6541,lng:-7.2448,category:"dogracing"},
+{name:"Mullingar Greyhound",address:"Mullingar",city:"Co. Westmeath",country:"Ireland",lat:53.5261,lng:-7.3386,category:"dogracing"},
+{name:"Dundalk Stadium",address:"Dundalk",city:"Co. Louth",country:"Ireland",lat:54.0031,lng:-6.4050,category:"dogracing"},
+// AUSTRALIA - DOG RACING
+{name:"Wentworth Park",address:"Wattle Street",city:"Sydney",country:"Australia",lat:-33.8742,lng:151.1914,category:"dogracing"},
+{name:"The Meadows",address:"Elevation Boulevard",city:"Melbourne",country:"Australia",lat:-37.8319,lng:144.8139,category:"dogracing"},
+{name:"Sandown Park Greyhounds",address:"Princes Highway",city:"Melbourne",country:"Australia",lat:-38.0003,lng:145.1300,category:"dogracing"},
+{name:"Albion Park",address:"Breakfast Creek Road",city:"Brisbane",country:"Australia",lat:-27.4322,lng:153.0581,category:"dogracing"},
+{name:"Angle Park",address:"Islington",city:"Adelaide",country:"Australia",lat:-34.8833,lng:138.5500,category:"dogracing"},
+{name:"Cannington",address:"Albany Highway",city:"Perth",country:"Australia",lat:-32.0167,lng:115.9333,category:"dogracing"},
+{name:"Gosford Greyhounds",address:"Gosford",city:"NSW",country:"Australia",lat:-33.4269,lng:151.3417,category:"dogracing"},
+{name:"Dapto Dogs",address:"Dapto",city:"NSW",country:"Australia",lat:-34.4953,lng:150.7886,category:"dogracing"},
+{name:"Bulli Greyhounds",address:"Bulli",city:"NSW",country:"Australia",lat:-34.3364,lng:150.9117,category:"dogracing"},
+// ASIA - HARNESS & DOG RACING
+{name:"Macau Canidrome",address:"Avenida General Castelo Branco",city:"Macau",country:"Macau",lat:22.1900,lng:113.5514,category:"dogracing"},
+{name:"Vung Tau Dog Racing",address:"Vung Tau",city:"Ba Ria-Vung Tau",country:"Vietnam",lat:10.3500,lng:107.0833,category:"dogracing"},
+// UK - EQUESTRIAN
+{name:"Badminton Estate",address:"Badminton",city:"Gloucestershire",country:"UK",lat:51.5394,lng:-2.2758,category:"equestrian"},
+{name:"Burghley House",address:"Burghley Park",city:"Stamford",country:"UK",lat:52.6408,lng:-0.4553,category:"equestrian"},
+{name:"Hickstead",address:"Hickstead",city:"West Sussex",country:"UK",lat:50.9700,lng:-0.1450,category:"equestrian"},
+{name:"Blenheim Palace",address:"Woodstock",city:"Oxfordshire",country:"UK",lat:51.8411,lng:-1.3617,category:"equestrian"},
+{name:"Royal Windsor Horse Show",address:"Home Park",city:"Windsor",country:"UK",lat:51.4800,lng:-0.6050,category:"equestrian"},
+{name:"Gatcombe Park",address:"Minchinhampton",city:"Gloucestershire",country:"UK",lat:51.7083,lng:-2.1750,category:"equestrian"},
+{name:"Bramham Horse Trials",address:"Bramham Park",city:"Yorkshire",country:"UK",lat:53.8667,lng:-1.3167,category:"equestrian"},
+{name:"Blair Castle",address:"Blair Atholl",city:"Scotland",country:"UK",lat:56.7667,lng:-3.8500,category:"equestrian"},
+{name:"Chatsworth Horse Trials",address:"Chatsworth",city:"Derbyshire",country:"UK",lat:53.2278,lng:-1.6111,category:"equestrian"},
+// EUROPE - EQUESTRIAN
+{name:"CHIO Aachen",address:"Soers",city:"Aachen",country:"Germany",lat:50.7869,lng:6.1336,category:"equestrian"},
+{name:"Hamburg Derby",address:"Luhmühlenweg",city:"Hamburg",country:"Germany",lat:53.5653,lng:9.9847,category:"equestrian"},
+{name:"Munich Int'l Horse Show",address:"Riem",city:"Munich",country:"Germany",lat:48.1397,lng:11.6842,category:"equestrian"},
+{name:"Luhmühlen Horse Trials",address:"Salzhausen",city:"Lower Saxony",country:"Germany",lat:53.2000,lng:10.1500,category:"equestrian"},
+{name:"FEI World Cup Den Bosch",address:"Brabanthallen",city:"'s-Hertogenbosch",country:"Netherlands",lat:51.6978,lng:5.3036,category:"equestrian"},
+{name:"Jumping Amsterdam",address:"RAI Amsterdam",city:"Amsterdam",country:"Netherlands",lat:52.3381,lng:4.8906,category:"equestrian"},
+{name:"CHI Geneva",address:"Palexpo",city:"Geneva",country:"Switzerland",lat:46.2297,lng:6.1078,category:"equestrian"},
+{name:"CSIO St. Gallen",address:"Gründenmoos",city:"St. Gallen",country:"Switzerland",lat:47.4231,lng:9.3764,category:"equestrian"},
+{name:"Piazza di Siena",address:"Villa Borghese",city:"Rome",country:"Italy",lat:41.9111,lng:12.4906,category:"equestrian"},
+{name:"FEI World Cup Verona",address:"Fiera di Verona",city:"Verona",country:"Italy",lat:45.4358,lng:10.9975,category:"equestrian"},
+{name:"Haras du Pin",address:"61310 Le Pin-au-Haras",city:"Normandy",country:"France",lat:48.7372,lng:0.1394,category:"equestrian"},
+{name:"Fontainebleau Equestrian",address:"Fontainebleau Forest",city:"Fontainebleau",country:"France",lat:48.4000,lng:2.7000,category:"equestrian"},
+{name:"Dublin Horse Show RDS",address:"Merrion Rd",city:"Dublin",country:"Ireland",lat:53.3267,lng:-6.2267,category:"equestrian"},
+{name:"Millstreet Horse Trials",address:"Green Glens Arena",city:"Millstreet",country:"Ireland",lat:52.0589,lng:-9.0622,category:"equestrian"},
+{name:"Falsterbo Horse Show",address:"Falsterbo",city:"Skanör",country:"Sweden",lat:55.3936,lng:12.8203,category:"equestrian"},
+{name:"Oslo Horse Show",address:"Telenor Arena",city:"Oslo",country:"Norway",lat:59.8950,lng:10.7822,category:"equestrian"},
+{name:"Spanish Riding School",address:"Michaelerplatz 1",city:"Vienna",country:"Austria",lat:48.2067,lng:16.3653,category:"equestrian"},
+{name:"CAVALIADA Warsaw",address:"Torwar Hall",city:"Warsaw",country:"Poland",lat:52.2297,lng:21.0122,category:"equestrian"},
+{name:"Prague Horse Show",address:"O2 Arena",city:"Prague",country:"Czech Republic",lat:50.0836,lng:14.4817,category:"equestrian"},
+// ASIA - EQUESTRIAN & POLO
+{name:"Sydney Int'l Equestrian",address:"Horsley Rd",city:"Sydney",country:"Australia",lat:-33.8706,lng:150.8200,category:"equestrian"},
+{name:"Werribee Park National",address:"K Rd",city:"Melbourne",country:"Australia",lat:-37.9314,lng:144.6606,category:"equestrian"},
+{name:"National Equestrian Taupo",address:"Broadlands Road",city:"Taupo",country:"New Zealand",lat:-38.6872,lng:176.0703,category:"equestrian"},
+{name:"Arran Station Horse Trials",address:"Arran",city:"Canterbury",country:"New Zealand",lat:-44.1167,lng:171.3667,category:"equestrian"},
+{name:"Beijing Equestrian Club",address:"Chaoyang District",city:"Beijing",country:"China",lat:40.0525,lng:116.5450,category:"equestrian"},
+{name:"Tianjin Tuanbo Lake",address:"Tuanbo Lake",city:"Tianjin",country:"China",lat:39.1878,lng:117.0864,category:"equestrian"},
+{name:"Singapore Polo Club",address:"80 Mount Pleasant Road",city:"Singapore",country:"Singapore",lat:1.3264,lng:103.8472,category:"polo"},
+{name:"Jaipur Polo Ground",address:"Rambagh Circle",city:"Jaipur",country:"India",lat:26.8983,lng:75.7906,category:"polo"},
+{name:"Delhi Polo Club",address:"President's Estate",city:"New Delhi",country:"India",lat:28.6139,lng:77.1989,category:"polo"},
+{name:"Lagos Polo Club",address:"Ikoyi",city:"Lagos",country:"Nigeria",lat:6.4550,lng:3.4333,category:"polo"},
+{name:"Kaduna Polo Club",address:"Kaduna",city:"Kaduna",country:"Nigeria",lat:10.5261,lng:7.4389,category:"polo"},
+{name:"Lahore Polo Club",address:"Mall Road",city:"Lahore",country:"Pakistan",lat:31.5497,lng:74.3258,category:"polo"},
+{name:"Ghantoot Polo",address:"Abu Dhabi-Dubai Road",city:"Abu Dhabi",country:"UAE",lat:24.6194,lng:54.7494,category:"polo"},
+{name:"Dubai Polo & Equestrian",address:"Arabian Ranches",city:"Dubai",country:"UAE",lat:25.0517,lng:55.2633,category:"polo"},
+// OTHER RACING TYPES
+{name:"Naga-on-Naga Buffalo Race",address:"Naga City",city:"Camarines Sur",country:"Philippines",lat:13.6192,lng:123.1814,category:"other"},
+{name:"Maguling Festival Buffalo Racing",address:"Pagsanjan",city:"Laguna",country:"Philippines",lat:14.2722,lng:121.4567,category:"other"},
+{name:"Chonburi Buffalo Racing",address:"Chonburi",city:"Chonburi Province",country:"Thailand",lat:13.3611,lng:100.9847,category:"other"},
+{name:"Bali Buffalo Racing",address:"Jembrana",city:"Bali",country:"Indonesia",lat:-8.3983,lng:114.6383,category:"other"},
+{name:"Kambala Buffalo Racing",address:"Mangalore",city:"Karnataka",country:"India",lat:12.9141,lng:74.8560,category:"other"},
+{name:"Tibetan Yak Racing",address:"Lhasa Festival",city:"Lhasa",country:"China",lat:29.6500,lng:91.1000,category:"other"},
+{name:"Mongolian Yak Racing",address:"Naadam Festival",city:"Ulaanbaatar",country:"Mongolia",lat:47.9183,lng:106.9169,category:"other"},
+{name:"Ostrich Racing Chandler",address:"Chandler",city:"Arizona",country:"USA",lat:33.3062,lng:-111.8413,category:"other"},
+{name:"Ostrich Racing Virginia City",address:"Virginia City",city:"Nevada",country:"USA",lat:39.3097,lng:-119.6497,category:"other"},
+{name:"Pig Racing State Fairs",address:"Iowa State Fair",city:"Des Moines",country:"USA",lat:41.6000,lng:-93.6092,category:"other"},
+{name:"Duck Racing Dexter",address:"Dexter",city:"Oregon",country:"USA",lat:43.9387,lng:-122.8244,category:"other"},
+{name:"Wiener Dog Racing San Diego",address:"Del Mar Fairgrounds",city:"Del Mar",country:"USA",lat:32.9789,lng:-117.2647,category:"other"},
+];
+// ADDITIONAL ASIA RACING
+{name:"Penang Turf Club",address:"Jalan Batu Gantung",city:"Penang",country:"Malaysia",lat:5.4147,lng:100.3089,category:"horseracing"},
+{name:"Selangor Turf Club",address:"Jalan Kelab Kuda",city:"Kuala Lumpur",country:"Malaysia",lat:3.1142,lng:101.6958,category:"horseracing"},
+{name:"Manila Jockey Club",address:"San Lazaro Hippodromo",city:"Manila",country:"Philippines",lat:14.6139,lng:120.9822,category:"horseracing"},
+{name:"San Lazaro Leisure Park",address:"Carmona",city:"Cavite",country:"Philippines",lat:14.3167,lng:121.0500,category:"horseracing"},
+{name:"Phnom Penh Racing",address:"National Road 2",city:"Phnom Penh",country:"Cambodia",lat:11.5625,lng:104.9083,category:"horseracing"},
+{name:"Saigon Racing Club",address:"Phu Tho District",city:"Ho Chi Minh City",country:"Vietnam",lat:10.7783,lng:106.6392,category:"horseracing"},
+{name:"Jakarta Equestrian Park",address:"Pulomas",city:"Jakarta",country:"Indonesia",lat:-6.1889,lng:106.8842,category:"equestrian"},
+{name:"Wuhan Racecourse",address:"Dongxihu District",city:"Wuhan",country:"China",lat:30.6269,lng:114.1383,category:"horseracing"},
+// ADDITIONAL CARIBBEAN & CENTRAL AMERICA
+{name:"Hipódromo Camarero",address:"Carr. 3 Km 15.3",city:"Canóvanas",country:"Puerto Rico",lat:18.3642,lng:-65.8997,category:"horseracing"},
+{name:"Santa Rosa Park",address:"Arima",city:"Arima",country:"Trinidad and Tobago",lat:10.6361,lng:-61.2806,category:"horseracing"},
+{name:"Garrison Savannah",address:"Garrison Historic Area",city:"Bridgetown",country:"Barbados",lat:13.0828,lng:-59.6136,category:"horseracing"},
+{name:"Caymanas Park",address:"Gregory Park",city:"Kingston",country:"Jamaica",lat:17.9714,lng:-76.8561,category:"horseracing"},
+{name:"Hipódromo Presidente Remón",address:"Vía José Agustín Arango",city:"Panama City",country:"Panama",lat:8.9906,lng:-79.5194,category:"horseracing"},
+{name:"Hipódromo San José",address:"La Sabana",city:"San José",country:"Costa Rica",lat:9.9378,lng:-84.1000,category:"horseracing"},
+{name:"Hipódromo Comandante",address:"Managua",city:"Managua",country:"Nicaragua",lat:12.1364,lng:-86.2514,category:"horseracing"},
+{name:"Hipódromo Maroñas",address:"Av. Instructores 1201",city:"Montevideo",country:"Uruguay",lat:-34.8669,lng:-56.1047,category:"horseracing"},
+// ADDITIONAL AFRICA & MIDDLE EAST
+{name:"Cairo Gezira Sporting",address:"Gezira Island",city:"Cairo",country:"Egypt",lat:30.0481,lng:31.2206,category:"horseracing"},
+{name:"Alexandria Sporting",address:"Sporting",city:"Alexandria",country:"Egypt",lat:31.2139,lng:29.9328,category:"horseracing"},
+{name:"Royal Golf Dar Es Salam",address:"Rabat",city:"Rabat",country:"Morocco",lat:33.9911,lng:-6.8400,category:"horseracing"},
+{name:"Hippodrome Ksar Said",address:"La Manouba",city:"Tunis",country:"Tunisia",lat:36.8175,lng:10.1500,category:"horseracing"},
+{name:"Ngong Racecourse",address:"Ngong Road",city:"Nairobi",country:"Kenya",lat:-1.3139,lng:36.7472,category:"horseracing"},
+{name:"Borrowdale Park",address:"Borrowdale",city:"Harare",country:"Zimbabwe",lat:-17.8011,lng:31.0758,category:"horseracing"},
+{name:"Champ de Mars",address:"Port Louis",city:"Port Louis",country:"Mauritius",lat:-20.1558,lng:57.5047,category:"horseracing"},
+{name:"Tel Aviv Racing",address:"Ramat Gan",city:"Tel Aviv",country:"Israel",lat:32.0656,lng:34.8158,category:"horseracing"},
+{name:"Beirut Hippodrome",address:"Beirut",city:"Beirut",country:"Lebanon",lat:33.8869,lng:35.5131,category:"horseracing"},
+{name:"Baku Hippodrome",address:"Baku",city:"Baku",country:"Azerbaijan",lat:40.3775,lng:49.8919,category:"horseracing"},
+{name:"Almaty Hippodrome",address:"Almaty",city:"Almaty",country:"Kazakhstan",lat:43.2628,lng:76.9228,category:"horseracing"},
+{name:"Bishkek Hippodrome",address:"Bishkek",city:"Bishkek",country:"Kyrgyzstan",lat:42.8746,lng:74.5698,category:"horseracing"},
+{name:"Tashkent Hippodrome",address:"Tashkent",city:"Tashkent",country:"Uzbekistan",lat:41.2995,lng:69.2401,category:"horseracing"},
+{name:"Royal Bangkok Sports Club",address:"1 Henri Dunant Road",city:"Bangkok",country:"Thailand",lat:13.7367,lng:100.5317,category:"horseracing"},
+{name:"Royal Turf Club Thailand",address:"183 Phitsanulok Road",city:"Bangkok",country:"Thailand",lat:13.7600,lng:100.5144,category:"horseracing"},
+{name:"Addis Ababa Racecourse",address:"Jan Meda",city:"Addis Ababa",country:"Ethiopia",lat:9.0333,lng:38.7500,category:"horseracing"},
+{name:"Lahore Race Club",address:"Ferozepur Road",city:"Lahore",country:"Pakistan",lat:31.4822,lng:74.3300,category:"horseracing"},
+{name:"Dhaka Race Course",address:"Manik Mia Avenue",city:"Dhaka",country:"Bangladesh",lat:23.7500,lng:90.3889,category:"horseracing"},
+{name:"Nuwara Eliya",address:"Gregory Lake",city:"Nuwara Eliya",country:"Sri Lanka",lat:6.9667,lng:80.7833,category:"horseracing"},
+// ADDITIONAL EQUESTRIAN & SMALLER VENUES
+{name:"Amateur Riders' Club",address:"Mahalaxmi",city:"Mumbai",country:"India",lat:18.9831,lng:72.8183,category:"equestrian"},
+{name:"Bangalore Turf Equestrian",address:"Race Course Road",city:"Bangalore",country:"India",lat:12.9914,lng:77.5950,category:"equestrian"},
+{name:"Equuleus Int'l Riding",address:"New Territories",city:"Hong Kong",country:"Hong Kong",lat:22.4167,lng:114.1500,category:"equestrian"},
+{name:"Blue Hors Centre",address:"Randbøldalvej 310",city:"Randbøl",country:"Denmark",lat:55.6628,lng:9.2864,category:"equestrian"},
+{name:"Markopoulo Olympic",address:"Markopoulo",city:"Athens",country:"Greece",lat:37.8833,lng:23.9333,category:"equestrian"},
+{name:"Ploiești Equestrian",address:"Strada Tineretului",city:"Ploiești",country:"Romania",lat:44.9333,lng:26.0167,category:"equestrian"},
+{name:"Moscow Racecourse",address:"Begovaya Ulitsa 22",city:"Moscow",country:"Russia",lat:55.7775,lng:37.5464,category:"horseracing"},
+{name:"Kazan Hippodrome",address:"Ulitsa Pravobulachnaya",city:"Kazan",country:"Russia",lat:55.7983,lng:49.1214,category:"horseracing"},
+{name:"Øvrevoll Galoppbane",address:"Øvrevollsbakken",city:"Oslo",country:"Norway",lat:59.9356,lng:10.6489,category:"horseracing"},
+{name:"Vermo Racetrack",address:"Vermontie 130",city:"Espoo",country:"Finland",lat:60.2039,lng:24.6017,category:"horseracing"},
+{name:"Bro Park",address:"Bro",city:"Stockholm",country:"Sweden",lat:59.5050,lng:17.6433,category:"horseracing"},
+{name:"Pardubice",address:"Dostihová dráha",city:"Pardubice",country:"Czech Republic",lat:50.0333,lng:15.7761,category:"horseracing"},
+{name:"Spruce Meadows",address:"18011 Spruce Meadows Way SW",city:"Calgary",country:"Canada",lat:50.9228,lng:-114.0633,category:"equestrian"},
+{name:"Royal Winter Fair",address:"Exhibition Place",city:"Toronto",country:"Canada",lat:43.6358,lng:-79.4158,category:"equestrian"},
+// ADDITIONAL SMALLER US VENUES
+{name:"Finger Lakes",address:"Farmington",city:"New York",country:"USA",lat:42.9881,lng:-77.3114,category:"horseracing"},
+{name:"Suffolk Downs",address:"Boston",city:"Massachusetts",country:"USA",lat:42.3903,lng:-71.0114,category:"horseracing"},
+{name:"Rockingham Park",address:"Salem",city:"New Hampshire",country:"USA",lat:42.7875,lng:-71.2008,category:"horseracing"},
+{name:"Beulah Park",address:"Grove City",city:"Ohio",country:"USA",lat:39.8814,lng:-83.0930,category:"horseracing"},
+{name:"River Downs",address:"Cincinnati",city:"Ohio",country:"USA",lat:39.1031,lng:-84.5120,category:"horseracing"},
+{name:"Fairmount Park",address:"Collinsville",city:"Illinois",country:"USA",lat:38.6703,lng:-90.0095,category:"horseracing"},
+{name:"Hawthorne Race Course",address:"Cicero",city:"Illinois",country:"USA",lat:41.8447,lng:-87.7539,category:"horseracing"},
+{name:"Sportsman's Park",address:"Cicero",city:"Illinois",country:"USA",lat:41.8447,lng:-87.7539,category:"horseracing"},
+{name:"Hawai'i Polo Club",address:"Waimanalo",city:"Honolulu",country:"USA",lat:21.3322,lng:-157.7128,category:"polo"},
+{name:"Virginia Polo Center",address:"Charlottesville",city:"Virginia",country:"USA",lat:38.0293,lng:-78.4767,category:"polo"},
+{name:"Great Southwest",address:"Grand Prairie",city:"Texas",country:"USA",lat:32.7453,lng:-97.0089,category:"horseracing"},
+{name:"Portland Meadows",address:"Portland",city:"Oregon",country:"USA",lat:45.6387,lng:-122.6825,category:"horseracing"},
+{name:"Santa Rosa",address:"Santa Rosa",city:"California",country:"USA",lat:38.4404,lng:-122.7141,category:"horseracing"},
+{name:"Stockton",address:"Stockton",city:"California",country:"USA",lat:37.9577,lng:-121.2908,category:"horseracing"},
+{name:"Fresno",address:"Fresno",city:"California",country:"USA",lat:36.7378,lng:-119.7871,category:"horseracing"},
+];
+
+setTimeout(function() {
+    var map = L.map('racing-map-display', {
+        zoomControl: true,
+        minZoom: 2,
+        maxZoom: 18
+    }).setView([20, 0], 2);
+
+    L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+        maxZoom: 20,
+        subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+        attribution: '© Google'
+    }).addTo(map);
+
+    var markers = {};
+
+    function getMarkerIcon(category) {
+        return L.divIcon({
+            className: 'racing-marker-' + category,
+            html: '<div style="width:20px;height:20px;border:3px solid white;border-radius:50%;box-shadow:0 4px 12px rgba(0,0,0,0.3);"></div>',
+            iconSize: [20, 20],
+            iconAnchor: [10, 10],
+            popupAnchor: [0, -10]
+        });
+    }
+
+    function createPopupContent(location) {
+        return '<div class="racing-popup-content">' +
+            '<div class="racing-popup-category">' + location.category + '</div>' +
+            '<div class="racing-popup-name">' + location.name + '</div>' +
+            '<div class="racing-popup-address">' + location.address + '</div>' +
+            '<div class="racing-popup-address">' + location.city + '</div>' +
+            '<div class="racing-popup-country">' + location.country + '</div>' +
+            '</div>';
+    }
+
+    function addMarkers(filter) {
+        filter = filter || 'all';
+        
+        for (var key in markers) {
+            map.removeLayer(markers[key]);
+        }
+        markers = {};
+
+        var filteredLocations = filter === 'all' 
+            ? locations 
+            : locations.filter(function(loc) { return loc.category === filter; });
+
+        filteredLocations.forEach(function(location) {
+            var marker = L.marker([location.lat, location.lng], {
+                icon: getMarkerIcon(location.category)
+            })
+            .bindPopup(createPopupContent(location), {
+                maxWidth: 300
+            })
+            .addTo(map);
+
+            markers[location.lat + '-' + location.lng] = marker;
+        });
+
+        updateStats(filteredLocations);
+    }
+
+    function updateStats(filteredLocations) {
+        var countries = {};
+        filteredLocations.forEach(function(loc) {
+            countries[loc.country] = true;
+        });
+        var countryCount = Object.keys(countries).length;
+        
+        animateNumber('racing-location-count', filteredLocations.length);
+        animateNumber('racing-country-count', countryCount);
+    }
+
+    function animateNumber(elementId, targetValue) {
+        var element = document.getElementById(elementId);
+        if (!element) return;
+        
+        var duration = 1000;
+        var startValue = parseInt(element.textContent) || 0;
+        var startTime = performance.now();
+
+        function update(currentTime) {
+            var elapsed = currentTime - startTime;
+            var progress = Math.min(elapsed / duration, 1);
+            var easeProgress = 1 - Math.pow(1 - progress, 3);
+            var currentValue = Math.floor(startValue + (targetValue - startValue) * easeProgress);
+            
+            element.textContent = currentValue;
+
+            if (progress < 1) {
+                requestAnimationFrame(update);
+            }
+        }
+
+        requestAnimationFrame(update);
+    }
+
+    var filterButtons = document.querySelectorAll('.racing-filter-btn');
+    filterButtons.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            filterButtons.forEach(function(b) {
+                b.classList.remove('active');
+            });
+            btn.classList.add('active');
+
+            var category = btn.getAttribute('data-category');
+            addMarkers(category);
+        });
+    });
+
+    // Set first button as active
+    if (filterButtons.length > 0) {
+        filterButtons[0].classList.add('active');
+    }
+
+    addMarkers('all');
+
+    map.on('popupopen', function(e) {
+        var px = map.project(e.popup._latlng);
+        px.y -= e.popup._container.clientHeight / 2;
+        map.panTo(map.unproject(px), { animate: true });
+    });
+
+    setTimeout(function() {
+        map.invalidateSize();
+    }, 200);
+
+}, 500);
+
+})();
+</script>
+</body>
+</html>

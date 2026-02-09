@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <style>
+        #flowchart-container {
+            width: 100%;
+            height: 800px;
+            background-color: #1a1a1a;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid #444;
+        }
+        
+        #mermaid-svg {
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+        }
+        
+        #mermaid-svg:active {
+            cursor: grabbing;
+        }
+        
+        .controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 100;
+        }
+        
+        .controls button {
+            background: #333;
+            color: #ccc;
+            border: 1px solid #666;
+            padding: 8px 12px;
+            margin: 2px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        
+        .controls button:hover {
+            background: #444;
+        }
+        
+        .mermaid {
+            font-family: Arial, sans-serif;
+        }
+        
+        .mermaid .label {
+            color: #cccccc !important;
+        }
+        
+        .zoom-info {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.7);
+            color: #ccc;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        
+        .power-legend {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.8);
+            color: #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            border: 1px solid #444;
+            z-index: 100;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 3px;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div id="flowchart-container">
+        <div class="controls">
+            <button onclick="zoomIn()">Zoom In</button>
+            <button onclick="zoomOut()">Zoom Out</button>
+            <button onclick="resetView()">Reset</button>
+        </div>
+        
+        <div class="power-legend">
+            <strong>Power Color Coding:</strong>
+            <div class="legend-item"><div class="legend-color" style="background: #ff4444;"></div> USA & Allies</div>
+            <div class="legend-item"><div class="legend-color" style="background: #44ff44;"></div> China & Partners</div>
+            <div class="legend-item"><div class="legend-color" style="background: #4444ff;"></div> European Union</div>
+            <div class="legend-item"><div class="legend-color" style="background: #ff44ff;"></div> Russia & Allies</div>
+        </div>
+        
+        <div class="zoom-info">Use mouse wheel to zoom • Click and drag to pan</div>
+        <div id="mermaid-diagram" class="mermaid">
+flowchart TB
+    %% GLOBAL POWER CENTERS
+    subgraph TopPowers [MAJOR GLOBAL POWERS & ALLIANCES]
+        P1[USA & Core Allies<br/>UK, Canada, Australia, Japan, South Korea,<br/>New Zealand, Israel, Taiwan]
+        P2[China & Strategic Partners<br/>Pakistan, North Korea, Laos, Cambodia,<br/>Myanmar, Venezuela, Zimbabwe, Iran, Russia]
+        P3[European Union & Associated States<br/>Germany, France, Italy, Spain, Netherlands,<br/>Poland, Sweden, Norway, Switzerland, Ukraine,<br/>Western Balkans, Moldova, Georgia, UK]
+        P4[Russia & Dependent States<br/>Belarus, Syria, Central Asian Republics,<br/>Armenia, Mali, Wagner Group states,<br/>African military partnerships]
+    end
+
+    %% USA INFLUENCE
+    P1 --> USA1
+    P1 --> USA2
+    P1 --> USA3
+    P1 --> USA4
+    
+    subgraph USA_Influence [UNITED STATES INFLUENCE ARCHITECTURE]
+        USA1[INSTITUTIONAL HEGEMONY<br/>IMF/World Bank control, SWIFT financial system,<br/>Military alliances, Dollar reserve currency<br/>ACTIVE: 95% GLOBALIZED: 98% UNETHICAL: 75%]
+        USA2[STRATEGIC PARTNERSHIPS<br/>Security cooperation with authoritarian states,<br/>Military base network 750+ worldwide<br/>ACTIVE: 85% GLOBALIZED: 90% UNETHICAL: 85%]
+        USA3[AUTHORITARIAN ENABLEMENT<br/>Arming repressive regimes, coup support,<br/>Training security forces, Regime change<br/>ACTIVE: 90% GLOBALIZED: 85% UNETHICAL: 90%]
+        USA4[ECONOMIC COERCION<br/>Sanctions regimes, conditional aid,<br/>Trade restrictions, dollar weaponization<br/>ACTIVE: 80% GLOBALIZED: 88% UNETHICAL: 80%]
+    end
+
+    %% CHINA INFLUENCE
+    P2 --> CH1
+    P2 --> CH2
+    P2 --> CH3
+    P2 --> CH4
+    
+    subgraph China_Influence [CHINA INFLUENCE ARCHITECTURE]
+        CH1[ECONOMIC INTERDEPENDENCE<br/>Belt & Road Initiative 1 trillion+,<br/>Trade dependency, infrastructure control,<br/>Market access conditioning<br/>ACTIVE: 99% GLOBALIZED: 92% UNETHICAL: 75%]
+        CH2[DEBT DIPLOMACY & LEVERAGE<br/>Predatory lending, asset seizure ports,<br/>Resource-backed loans, debt pressure<br/>Hambantota Port model<br/>ACTIVE: 95% GLOBALIZED: 87% UNETHICAL: 95%]
+        CH3[ELITE CAPTURE & POLITICAL WARFARE<br/>United Front influence operations,<br/>Political financing, corruption networks,<br/>Covert political interference<br/>ACTIVE: 95% GLOBALIZED: 83% UNETHICAL: 85%]
+        CH4[RESOURCE SECURITY & EXTRACTION<br/>Strategic resource control, mining rights,<br/>Agricultural land, water resource control<br/>Neo-colonial resource extraction<br/>ACTIVE: 90% GLOBALIZED: 79% UNETHICAL: 90%]
+    end
+
+    %% EU INFLUENCE
+    P3 --> EU1
+    P3 --> EU2
+    P3 --> EU3
+    P3 --> EU4
+    
+    subgraph EU_Influence [EUROPEAN UNION INFLUENCE ARCHITECTURE]
+        EU1[REGULATORY HEGEMONY<br/>Brussels Effect, global standards imposition,<br/>GDPR, environmental regulations, CBAM<br/>Technical standard setting power<br/>ACTIVE: 90% GLOBALIZED: 85% UNETHICAL: 65%]
+        EU2[ACCESSION & ASSOCIATION LEVERAGE<br/>Membership conditionality, reform demands,<br/>Rule of law requirements, political conditionality<br/>Stabilization agreements<br/>ACTIVE: 85% GLOBALIZED: 70% UNETHICAL: 70%]
+        EU3[TRADE & MONETARY INFLUENCE<br/>Economic partnership agreements,<br/>Market access conditioning, Euro usage,<br/>Investment screening mechanisms<br/>ACTIVE: 80% GLOBALIZED: 75% UNETHICAL: 75%]
+        EU4[NORMATIVE POWER & GOVERNANCE EXPORT<br/>Legal models, governance standards export,<br/>Human rights, democracy promotion,<br/>Soft power and cultural influence<br/>ACTIVE: 75% GLOBALIZED: 80% UNETHICAL: 45%]
+    end
+
+    %% RUSSIA INFLUENCE
+    P4 --> RU1
+    P4 --> RU2
+    P4 --> RU3
+    
+    subgraph Russia_Influence [RUSSIA INFLUENCE ARCHITECTURE]
+        RU1[ASYMMETRIC & PROXY WARFARE<br/>Wagner Group operations, mercenary deployments,<br/>Arms transfers, coup support,<br/>Private military company use<br/>ACTIVE: 85% GLOBALIZED: 72% UNETHICAL: 98%]
+        RU2[HYBRID INFLUENCE & INFORMATION WARFARE<br/>Systematic disinformation, cyber operations,<br/>Political corruption, election interference,<br/>Social media manipulation<br/>ACTIVE: 75% GLOBALIZED: 68% UNETHICAL: 95%]
+        RU3[ENERGY & RESOURCE COERCION<br/>Gas supply weaponization, price manipulation,<br/>Pipeline politics, resource nationalism,<br/>Energy dependency exploitation<br/>ACTIVE: 70% GLOBALIZED: 65% UNETHICAL: 85%]
+    end
+
+    %% TARGET NATIONS
+    
+    %% USA connections to targets
+    USA1 --> T1
+    USA2 --> T2
+    USA3 --> T3
+    USA4 --> T4
+    
+    %% China connections to targets
+    CH1 --> T1
+    CH2 --> T2
+    CH3 --> T3
+    CH4 --> T4
+    
+    %% EU connections to targets
+    EU1 --> T1
+    EU2 --> T2
+    EU3 --> T3
+    EU4 --> T4
+    
+    %% Russia connections to targets
+    RU1 --> T3
+    RU2 --> T4
+    RU3 --> T1
+
+    subgraph MiddleGroups [TARGET NATIONS & GEOPOLITICAL BATTLEGROUNDS]
+        T1[MAJOR STRATEGIC PARTNERS & COMPETITORS<br/>India, Brazil, Mexico, South Africa, Nigeria,<br/>Egypt, Indonesia, Philippines, Vietnam, Thailand,<br/>Saudi Arabia, UAE, Chile, Argentina, Turkey]
+        T2[EMERGING & REGIONAL POWERS<br/>Malaysia, Singapore, South Korea, Kazakhstan,<br/>Colombia, Ethiopia, Kenya, Morocco, Algeria,<br/>Peru, Bangladesh, Qatar, Oman, Azerbaijan]
+        T3[GEOPOLITICAL SWING STATES & CONFLICT ZONES<br/>Pakistan, Serbia, Hungary, Sri Lanka, Ghana,<br/>Angola, Ecuador, Tunisia, Uzbekistan, Iraq,<br/>Lebanon, Yemen, Sudan, Myanmar]
+        T4[DEVELOPING & VULNERABLE STATES<br/>All other African, Asian, Latin American,<br/>Caribbean, Pacific Island nations including:<br/>DRC, Tanzania, Uganda, Nepal, Cambodia, Laos,<br/>Bolivia, Paraguay, Cuba, Haiti, Papua New Guinea,<br/>Vanuatu, Solomon Islands, Maldives]
+    end
+
+    %% STYLING
+    style TopPowers fill:#000000,stroke:#666666,color:#cccccc
+    style USA_Influence fill:#1a1a1a,stroke:#444444,color:#cccccc
+    style China_Influence fill:#1a1a1a,stroke:#444444,color:#cccccc
+    style EU_Influence fill:#1a1a1a,stroke:#444444,color:#cccccc
+    style Russia_Influence fill:#1a1a1a,stroke:#444444,color:#cccccc
+    style MiddleGroups fill:#2a2a2a,stroke:#666666,color:#cccccc
+    
+    %% Arrow styling for better visibility - USA Red
+    linkStyle 0 stroke:#ff4444,stroke-width:3px
+    linkStyle 1 stroke:#ff4444,stroke-width:3px
+    linkStyle 2 stroke:#ff4444,stroke-width:3px
+    linkStyle 3 stroke:#ff4444,stroke-width:3px
+    
+    %% China Green
+    linkStyle 4 stroke:#44ff44,stroke-width:3px
+    linkStyle 5 stroke:#44ff44,stroke-width:3px
+    linkStyle 6 stroke:#44ff44,stroke-width:3px
+    linkStyle 7 stroke:#44ff44,stroke-width:3px
+    
+    %% EU Blue
+    linkStyle 8 stroke:#4444ff,stroke-width:3px
+    linkStyle 9 stroke:#4444ff,stroke-width:3px
+    linkStyle 10 stroke:#4444ff,stroke-width:3px
+    linkStyle 11 stroke:#4444ff,stroke-width:3px
+    
+    %% Russia Magenta
+    linkStyle 12 stroke:#ff44ff,stroke-width:3px
+    linkStyle 13 stroke:#ff44ff,stroke-width:3px
+    linkStyle 14 stroke:#ff44ff,stroke-width:3px
+    
+    %% Target connections with different colors per power - USA to Targets
+    linkStyle 15 stroke:#ff4444,stroke-width:2px,stroke-dasharray:5 5
+    linkStyle 16 stroke:#ff4444,stroke-width:2px,stroke-dasharray:5 5
+    linkStyle 17 stroke:#ff4444,stroke-width:2px,stroke-dasharray:5 5
+    linkStyle 18 stroke:#ff4444,stroke-width:2px,stroke-dasharray:5 5
+    
+    %% China to Targets
+    linkStyle 19 stroke:#44ff44,stroke-width:2px,stroke-dasharray:5 5
+    linkStyle 20 stroke:#44ff44,stroke-width:2px,stroke-dasharray:5 5
+    linkStyle 21 stroke:#44ff44,stroke-width:2px,stroke-dasharray:5 5
+    linkStyle 22 stroke:#44ff44,stroke-width:2px,stroke-dasharray:5 5
+    
+    %% EU to Targets
+    linkStyle 23 stroke:#4444ff,stroke-width:2px,stroke-dasharray:5 5
+    linkStyle 24 stroke:#4444ff,stroke-width:2px,stroke-dasharray:5 5
+    linkStyle 25 stroke:#4444ff,stroke-width:2px,stroke-dasharray:5 5
+    linkStyle 26 stroke:#4444ff,stroke-width:2px,stroke-dasharray:5 5
+    
+    %% Russia to Targets
+    linkStyle 27 stroke:#ff44ff,stroke-width:2px,stroke-dasharray:5 5
+    linkStyle 28 stroke:#ff44ff,stroke-width:2px,stroke-dasharray:5 5
+    linkStyle 29 stroke:#ff44ff,stroke-width:2px,stroke-dasharray:5 5
+        </div>
+    </div>
+
+    <script>
+        let scale = 1;
+        let panning = false;
+        let startX, startY;
+        let translateX = 0, translateY = 0;
+        let svgElement;
+
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            flowchart: {
+                useMaxWidth: false,
+                htmlLabels: true,
+                curve: 'basis'
+            },
+            securityLevel: 'loose'
+        });
+
+        function initializePanZoom() {
+            setTimeout(() => {
+                svgElement = document.querySelector('#mermaid-diagram svg');
+                if (svgElement) {
+                    // Make SVG pannable and zoomable
+                    svgElement.style.transformOrigin = '0 0';
+                    updateTransform();
+                    
+                    // Mouse wheel zoom
+                    svgElement.addEventListener('wheel', function(e) {
+                        e.preventDefault();
+                        const rect = svgElement.getBoundingClientRect();
+                        const mouseX = e.clientX - rect.left;
+                        const mouseY = e.clientY - rect.top;
+                        
+                        const zoomIntensity = 0.1;
+                        const wheel = e.deltaY < 0 ? 1 : -1;
+                        const zoom = Math.exp(wheel * zoomIntensity);
+                        
+                        // Calculate new scale and translation
+                        scale = Math.max(0.1, Math.min(5, scale * zoom));
+                        
+                        translateX = mouseX - zoom * (mouseX - translateX);
+                        translateY = mouseY - zoom * (mouseY - translateY);
+                        
+                        updateTransform();
+                    });
+                    
+                    // Mouse panning
+                    svgElement.addEventListener('mousedown', function(e) {
+                        if (e.button === 0) { // Left mouse button
+                            panning = true;
+                            startX = e.clientX - translateX;
+                            startY = e.clientY - translateY;
+                            svgElement.style.cursor = 'grabbing';
+                        }
+                    });
+                    
+                    svgElement.addEventListener('mousemove', function(e) {
+                        if (panning) {
+                            translateX = e.clientX - startX;
+                            translateY = e.clientY - startY;
+                            updateTransform();
+                        }
+                    });
+                    
+                    svgElement.addEventListener('mouseup', function() {
+                        panning = false;
+                        svgElement.style.cursor = 'grab';
+                    });
+                    
+                    svgElement.addEventListener('mouseleave', function() {
+                        panning = false;
+                        svgElement.style.cursor = 'grab';
+                    });
+                    
+                    svgElement.style.cursor = 'grab';
+                }
+            }, 500);
+        }
+
+        function updateTransform() {
+            if (svgElement) {
+                svgElement.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+            }
+        }
+
+        function zoomIn() {
+            scale = Math.min(5, scale * 1.2);
+            updateTransform();
+        }
+
+        function zoomOut() {
+            scale = Math.max(0.1, scale / 1.2);
+            updateTransform();
+        }
+
+        function resetView() {
+            scale = 1;
+            translateX = 0;
+            translateY = 0;
+            updateTransform();
+        }
+
+        // Initialize mermaid and then set up pan/zoom
+        mermaid.init(undefined, document.querySelectorAll('.mermaid'));
+        initializePanZoom();
+        
+        // Reinitialize if the diagram changes
+        document.querySelector('#mermaid-diagram').addEventListener('DOMSubtreeModified', initializePanZoom);
+    </script>
+</body>
+</html>

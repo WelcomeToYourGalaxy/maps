@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embedded Content</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0a0a0a; overflow: hidden; }
+    </style>
+</head>
+<body>
+<div style="width: 100%; height: 700px; position: relative; background: #000;">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        .forest500-map-container {
+            width: 100%;
+            height: 700px;
+            position: relative;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .forest500-map {
+            width: 100%;
+            height: 100%;
+        }
+        .forest500-title {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            max-width: 90%;
+        }
+        .forest500-subtitle {
+            font-size: 14px;
+            font-weight: 400;
+            margin-top: 8px;
+            color: #ccc;
+        }
+        .forest500-legend {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 20px;
+            border-radius: 8px;
+            z-index: 1000;
+            color: #fff;
+            font-size: 13px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            max-width: 300px;
+        }
+        .forest500-legend-title {
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 15px;
+            border-bottom: 2px solid #ff4444;
+            padding-bottom: 8px;
+        }
+        .forest500-legend-item {
+            margin: 8px 0;
+            display: flex;
+            align-items: center;
+        }
+        .forest500-legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        .leaflet-popup-content-wrapper {
+            background: rgba(0, 0, 0, 0.9) !important;
+            color: #fff !important;
+            border-radius: 8px !important;
+        }
+        .leaflet-popup-content {
+            margin: 15px !important;
+            font-size: 14px !important;
+            line-height: 1.6 !important;
+            color: #fff !important;
+        }
+        .leaflet-popup-tip {
+            background: rgba(0, 0, 0, 0.9) !important;
+        }
+        .forest500-popup-name {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 6px;
+            color: #ff4444;
+        }
+        .forest500-popup-detail {
+            margin: 4px 0;
+            color: #ddd;
+        }
+    </style>
+    
+    <div class="forest500-map-container">
+        <div class="forest500-title">
+            Forest 500: Worst Soy Financial Institutions (2024)
+            <div class="forest500-subtitle">70 Institutions with Soy Policy Scores ≤ 2/94</div>
+        </div>
+        
+        <div id="forest500map" class="forest500-map"></div>
+        
+        <div class="forest500-legend">
+            <div class="forest500-legend-title">Soy Policy Score (out of 94)</div>
+            <div class="forest500-legend-item">
+                <div class="forest500-legend-color" style="background: #cc0000;"></div>
+                <div>0.0 (50 institutions)</div>
+            </div>
+            <div class="forest500-legend-item">
+                <div class="forest500-legend-color" style="background: #ff4444;"></div>
+                <div>0.1 - 0.99 (4 institutions)</div>
+            </div>
+            <div class="forest500-legend-item">
+                <div class="forest500-legend-color" style="background: #ff8800;"></div>
+                <div>1.0 - 1.49 (12 institutions)</div>
+            </div>
+            <div class="forest500-legend-item">
+                <div class="forest500-legend-color" style="background: #ffaa00;"></div>
+                <div>1.5 - 2.0 (4 institutions)</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        (function() {
+            const map = L.map('forest500map', {
+                zoomControl: true,
+                attributionControl: true
+            });
+
+            L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+                maxZoom: 20,
+                subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+                attribution: '© Google'
+            }).addTo(map);
+
+            const institutions = [{"name": "Affiliated Managers Group", "country": "United States", "lat": 38.8977, "lon": -77.0365, "soy_score": 0.563}, {"name": "American Century Investments", "country": "United States", "lat": 38.8977, "lon": -77.0365, "soy_score": 0.0}, {"name": "Aviva", "country": "United Kingdom", "lat": 51.5074, "lon": -0.1278, "soy_score": 1.875}, {"name": "Bank Negara Indonesia", "country": "Indonesia", "lat": -6.2088, "lon": 106.8456, "soy_score": 0.0}, {"name": "Bank of China", "country": "China", "lat": 39.9042, "lon": 116.4074, "soy_score": 0.0}, {"name": "Bank of Communications", "country": "China", "lat": 39.9042, "lon": 116.4074, "soy_score": 0.0}, {"name": "Berkshire Hathaway", "country": "United States", "lat": 38.8977, "lon": -77.0365, "soy_score": 0.0}, {"name": "BlackRock", "country": "United States", "lat": 38.8977, "lon": -77.0365, "soy_score": 1.25}, {"name": "CI Financial", "country": "Canada", "lat": 45.4215, "lon": -75.6972, "soy_score": 0.0}, {"name": "CIBC", "country": "Canada", "lat": 45.4215, "lon": -75.6972, "soy_score": 1.875}, {"name": "CITIC", "country": "China", "lat": 39.9042, "lon": 116.4074, "soy_score": 0.0}, {"name": "CSC Financial", "country": "China", "lat": 39.9042, "lon": 116.4074, "soy_score": 0.0}, {"name": "California State Teachers' Retirement System (CalSTRS)", "country": "United States", "lat": 38.8977, "lon": -77.0365, "soy_score": 1.875}, {"name": "Canada Pension Plan Investment Board", "country": "Canada", "lat": 45.4215, "lon": -75.6972, "soy_score": 0.0}, {"name": "Capital Group", "country": "United States", "lat": 38.8977, "lon": -77.0365, "soy_score": 0.0}, {"name": "Charles Schwab", "country": "United States", "lat": 38.8977, "lon": -77.0365, "soy_score": 0.0}, {"name": "China Construction Bank", "country": "China", "lat": 39.9042, "lon": 116.4074, "soy_score": 1.0}, {"name": "China Development Bank", "country": "China", "lat": 39.9042, "lon": 116.4074, "soy_score": 0.0}, {"name": "China Everbright", "country": "China", "lat": 39.9042, "lon": 116.4074, "soy_score": 1.25}, {"name": "China Guangfa Bank", "country": "China", "lat": 39.9042, "lon": 116.4074, "soy_score": 0.0}, {"name": "China Merchants Bank", "country": "China", "lat": 39.9042, "lon": 116.4074, "soy_score": 0.0}, {"name": "China Minsheng Banking", "country": "China", "lat": 39.9042, "lon": 116.4074, "soy_score": 0.0}, {"name": "Crédit Mutuel", "country": "France", "lat": 48.8566, "lon": 2.3522, "soy_score": 0.0}, {"name": "Dimensional Fund Advisors", "country": "United States", "lat": 38.8977, "lon": -77.0365, "soy_score": 1.25}, {"name": "Equitable Holdings", "country": "United States", "lat": 38.8977, "lon": -77.0365, "soy_score": 0.0}, {"name": "Farm Credit Services Commercial Finance Group", "country": "United States", "lat": 38.8977, "lon": -77.0365, "soy_score": 0.0}, {"name": "Fisher Investments", "country": "United States", "lat": 38.8977, "lon": -77.0365, "soy_score": 0.0}, {"name": "Flossbach & von Storch", "country": "Germany", "lat": 52.52, "lon": 13.405, "soy_score": 0.0}, {"name": "Franklin Resources", "country": "United States", "lat": 38.8977, "lon": -77.0365, "soy_score": 0.0}, {"name": "GQG Partners", "country": "United States", "lat": 38.8977, "lon": -77.0365, "soy_score": 0.0}, {"name": "Geode Capital Holdings", "country": "United States", "lat": 38.8977, "lon": -77.0365, "soy_score": 0.75}, {"name": "Government Pension Investment Fund (GPIF)", "country": "Japan", "lat": 35.6762, "lon": 139.6503, "soy_score": 0.0}, {"name": "Grupo Financiero Galicia", "country": "Argentina", "lat": -34.6037, "lon": -58.3816, "soy_score": 0.0}, {"name": "Industrial Bank Company", "country": "China", "lat": 39.9042, "lon": 116.4074, "soy_score": 0.0}, {"name": "Industrial and Commercial Bank of China", "country": "China", "lat": 39.9042, "lon": 116.4074, "soy_score": 0.0}, {"name": "Invesco", "country": "United States", "lat": 38.8977, "lon": -77.0365, "soy_score": 1.0}, {"name": "KB Financial Group", "country": "South Korea", "lat": 37.5665, "lon": 126.978, "soy_score": 1.0}, {"name": "Lazard", "country": "Bermuda", "lat": 32.2949, "lon": -64.782, "soy_score": 0.0}, {"name": "Life Insurance Corporation of India", "country": "India", "lat": 28.6139, "lon": 77.209, "soy_score": 0.0}, {"name": "Manulife Financial", "country": "Canada", "lat": 45.4215, "lon": -75.6972, "soy_score": 1.0}, {"name": "Mawer Investment Management", "country": "Canada", "lat": 45.4215, "lon": -75.6972, "soy_score": 0.0}, {"name": "Mirae Asset Financial Group", "country": "South Korea", "lat": 37.5665, "lon": 126.978, "soy_score": 0.0}, {"name": "National Bank of Canada", "country": "Canada", "lat": 45.4215, "lon": -75.6972, "soy_score": 0.0}, {"name": "National Pension Service", "country": "South Korea", "lat": 37.5665, "lon": 126.978, "soy_score": 0.0}, {"name": "Neuberger Berman", "country": "United States", "lat": 38.8977, "lon": -77.0365, "soy_score": 0.75}, {"name": "PNC Financial Services", "country": "United States", "lat": 38.8977, "lon": -77.0365, "soy_score": 0.0}, {"name": "Pension Fund Association for Local Government Officials", "country": "Japan", "lat": 35.6762, "lon": 139.6503, "soy_score": 0.0}, {"name": "Pictet", "country": "Switzerland", "lat": 46.9481, "lon": 7.4474, "soy_score": 0.0}, {"name": "Ping An Insurance Group", "country": "China", "lat": 39.9042, "lon": 116.4074, "soy_score": 0.0}, {"name": "Postal Savings Bank of China", "country": "China", "lat": 39.9042, "lon": 116.4074, "soy_score": 0.0}, {"name": "Power Corporation of Canada", "country": "Canada", "lat": 45.4215, "lon": -75.6972, "soy_score": 0.0}, {"name": "Principal Financial Group", "country": "United States", "lat": 38.8977, "lon": -77.0365, "soy_score": 0.0}, {"name": "Prudential Financial (US)", "country": "United States", "lat": 38.8977, "lon": -77.0365, "soy_score": 0.0}, {"name": "Qatar Investment Authority", "country": "Qatar", "lat": 25.2854, "lon": 51.531, "soy_score": 0.0}, {"name": "Raymond James Financial", "country": "United States", "lat": 38.8977, "lon": -77.0365, "soy_score": 0.0}, {"name": "Royal Bank of Canada", "country": "Canada", "lat": 45.4215, "lon": -75.6972, "soy_score": 0.563}, {"name": "Safra Group", "country": "Brazil", "lat": -15.8267, "lon": -47.9218, "soy_score": 1.25}, {"name": "Schweizerische Nationalbank", "country": "Switzerland", "lat": 46.9481, "lon": 7.4474, "soy_score": 0.0}, {"name": "Shanghai Pudong Development Bank", "country": "China", "lat": 39.9042, "lon": 116.4074, "soy_score": 0.0}, {"name": "Siam Commercial Bank", "country": "Thailand", "lat": 13.7563, "lon": 100.5018, "soy_score": 1.0}, {"name": "State Bank of India", "country": "India", "lat": 28.6139, "lon": 77.209, "soy_score": 1.0}, {"name": "State Farm", "country": "United States", "lat": 38.8977, "lon": -77.0365, "soy_score": 0.0}, {"name": "Sun Life Financial", "country": "Canada", "lat": 45.4215, "lon": -75.6972, "soy_score": 1.25}, {"name": "T. Rowe Price", "country": "United States", "lat": 38.8977, "lon": -77.0365, "soy_score": 1.875}, {"name": "TIAA", "country": "United States", "lat": 38.8977, "lon": -77.0365, "soy_score": 0.0}, {"name": "Toyota Financial Services Securities", "country": "United States", "lat": 38.8977, "lon": -77.0365, "soy_score": 0.0}, {"name": "Truist Financial", "country": "United States", "lat": 38.8977, "lon": -77.0365, "soy_score": 1.0}, {"name": "Vanguard", "country": "United States", "lat": 38.8977, "lon": -77.0365, "soy_score": 0.0}, {"name": "Wellington Management", "country": "United States", "lat": 38.8977, "lon": -77.0365, "soy_score": 0.0}, {"name": "Yayasan Pelaburan Bumiputra", "country": "Malaysia", "lat": 3.139, "lon": 101.6869, "soy_score": 0.0}];
+
+            function getColorByScore(score) {
+                if (score === 0.0) return '#cc0000';
+                if (score < 1.0) return '#ff4444';
+                if (score < 1.5) return '#ff8800';
+                return '#ffaa00';
+            }
+
+            const lats = institutions.map(i => i.lat);
+            const lons = institutions.map(i => i.lon);
+            const bounds = [
+                [Math.min(...lats) - 5, Math.min(...lons) - 5],
+                [Math.max(...lats) + 5, Math.max(...lons) + 5]
+            ];
+            
+            map.fitBounds(bounds);
+
+            const usedPositions = new Map();
+            
+            institutions.forEach(inst => {
+                const posKey = `${inst.lat.toFixed(2)},${inst.lon.toFixed(2)}`;
+                const offset = (usedPositions.get(posKey) || 0) * 0.3;
+                usedPositions.set(posKey, (usedPositions.get(posKey) || 0) + 1);
+                
+                const adjustedLat = inst.lat + (Math.random() - 0.5) * offset;
+                const adjustedLon = inst.lon + (Math.random() - 0.5) * offset;
+                
+                const marker = L.circleMarker([adjustedLat, adjustedLon], {
+                    radius: 8,
+                    fillColor: getColorByScore(inst.soy_score),
+                    color: '#fff',
+                    weight: 2,
+                    opacity: 1,
+                    fillOpacity: 0.85
+                }).addTo(map);
+
+                const popupContent = `
+                    <div class="forest500-popup-name">${inst.name}</div>
+                    <div class="forest500-popup-detail"><strong>Country:</strong> ${inst.country}</div>
+                    <div class="forest500-popup-detail"><strong>Soy Score:</strong> ${inst.soy_score}/94</div>
+                `;
+
+                marker.bindPopup(popupContent);
+            });
+        })();
+    </script>
+</div>
+</body>
+</html>

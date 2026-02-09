@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <style>
+        #flowchart-container {
+            width: 100%;
+            height: 800px;
+            background-color: #0a0a0a;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            border: 2px solid #444;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        
+        #mermaid-svg {
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+        }
+        
+        #mermaid-svg:active {
+            cursor: grabbing;
+        }
+        
+        .controls {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            z-index: 100;
+            display: flex;
+            gap: 5px;
+        }
+        
+        .controls button {
+            background: linear-gradient(135deg, #222 0%, #333 100%);
+            color: #fff;
+            border: 1px solid #555;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        
+        .controls button:hover {
+            background: linear-gradient(135deg, #333 0%, #444 100%);
+            border-color: #666;
+            transform: translateY(-1px);
+        }
+        
+        .mermaid {
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        
+        .mermaid .label {
+            color: #ffffff !important;
+            font-weight: 500;
+        }
+        
+        .zoom-info {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            background: rgba(0,0,0,0.8);
+            color: #aaa;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            border: 1px solid #444;
+        }
+        
+        .power-legend {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(0,0,0,0.9);
+            color: #ddd;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            border: 1px solid #555;
+            z-index: 100;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            min-width: 180px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .legend-title {
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+            font-size: 12px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 4px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 6px 0;
+            font-size: 11px;
+        }
+        
+        .legend-color {
+            width: 24px;
+            height: 4px;
+            margin-right: 10px;
+            border-radius: 2px;
+        }
+        
+        .error-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255,50,50,0.15);
+            color: #ff6b6b;
+            padding: 25px;
+            border: 2px solid #ff4444;
+            border-radius: 8px;
+            text-align: center;
+            z-index: 1000;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            font-weight: 600;
+        }
+        
+        .diagram-title {
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.9);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            border: 1px solid #555;
+            z-index: 99;
+            backdrop-filter: blur(5px);
+        }
+    </style>
+</head>
+<body>
+    <div id="flowchart-container">
+        <div class="diagram-title">GLOBAL ECONOMIC POWER STRUCTURE</div>
+        
+        <div class="controls">
+            <button onclick="zoomIn()">+ Zoom In</button>
+            <button onclick="zoomOut()">- Zoom Out</button>
+            <button onclick="resetView()">⟲ Reset</button>
+        </div>
+        
+        <div class="power-legend">
+            <div class="legend-title">POWER HIERARCHY</div>
+            <div class="legend-item"><div class="legend-color" style="background: #e74c3c;"></div> TIER 1: Core Power</div>
+            <div class="legend-item"><div class="legend-color" style="background: #f39c12;"></div> TIER 2: Control Systems</div>
+            <div class="legend-item"><div class="legend-color" style="background: #3498db;"></div> TIER 3: Enforcement</div>
+            <div class="legend-item"><div class="legend-color" style="background: #9b59b6;"></div> TIER 4: Extraction Tools</div>
+            <div class="legend-item"><div class="legend-color" style="background: #2ecc71;"></div> TIER 5: Ideological Control</div>
+            <div class="legend-item"><div class="legend-color" style="background: #95a5a6;"></div> BASE: Extraction Zone</div>
+        </div>
+        
+        <div class="zoom-info">□️ Mouse Wheel: Zoom • Click + Drag: Pan</div>
+        
+        <div id="mermaid-diagram" class="mermaid">
+graph TB
+    %% ===== TIER 1: CORE POWER NEXUS =====
+    subgraph TIER1[TIER 1: CORE POWER NEXUS]
+        BANKS[Banking Families & Institutions<br/>Rothschild, Rockefeller, etc<br/>Federal Reserve shareholders]
+        FED[Central Banking System<br/>Creates money from nothing<br/>Sets interest rates worldwide]
+        GOV[U.S. Government<br/>Accumulates unpayable debt<br/>Funds military apparatus]
+    end
+    
+    BANKS -->|absolute control| FED
+    FED -->|capital supply| WALL_ST
+    FED -->|debt financing| GOV
+    
+    %% ===== TIER 2: POWER DISTRIBUTION =====
+    subgraph TIER2[TIER 2: POWER DISTRIBUTION]
+        WALL_ST[Wall Street<br/>J.P. Morgan, Goldman Sachs, etc<br/>Primary dealers of debt]
+        WALL_ST -->|equity control| CORPORATIONS
+        WALL_ST -->|financial engineering| VULTURE
+    end
+    
+    CORPORATIONS[Multinational Corporations<br/>Walmart, Shell, Exxon, Apple<br/>51 of top 100 economies]
+    VULTURE[Vulture Funds & Shadow Banking<br/>Elliott Management, Blackstone<br/>Debt speculation systems]
+    
+    %% ===== TIER 3: INTERNATIONAL CONTROL =====
+    subgraph TIER3[TIER 3: INTERNATIONAL CONTROL]
+        GOV -->|voting power control| IMF_WB
+        CORPORATIONS -->|corporate lobbying| WTO
+    end
+    
+    IMF_WB[IMF & World Bank<br/>Structural Adjustment Policies<br/>Debt trap enforcement]
+    WTO[WTO & OECD<br/>Forces trade liberalization<br/>Sets global standards]
+    
+    %% ===== TIER 4: ENFORCEMENT & EXTRACTION =====
+    subgraph TIER4[TIER 4: ENFORCEMENT & EXTRACTION]
+        IMF_WB -->|policy imposition| ECAS
+        WTO -->|legal enforcement| TRIPS
+        VULTURE -->|legal warfare| ISDS
+        GOV -->|military funding| MILITARY
+        GOV -->|covert operations| INTELLIGENCE
+        CORPORATIONS -->|market control| AGRO
+    end
+    
+    ECAS[Export Credit Agencies<br/>Fund destructive projects<br/>Create perpetual debt]
+    TRIPS[TRIPS Intellectual Property<br/>Makes medicine/seeds expensive<br/>Prevents development]
+    ISDS[ISDS Tribunals<br/>Corporations sue nations<br/>For lost future profits]
+    MILITARY[Military-Industrial Complex<br/>750+ global bases<br/>Regime change operations]
+    INTELLIGENCE[Intelligence Agencies<br/>CIA covert operations<br/>Economic hitmen system]
+    AGRO[Agro-Chemical Cartel<br/>Monsanto, Bayer, Syngenta<br/>Controls global food supply]
+    
+    %% ===== TIER 5: IDEOLOGICAL CONTROL =====
+    subgraph TIER5[TIER 5: IDEOLOGICAL CONTROL]
+        BANKS -->|media ownership| MEDIA
+        BANKS -->|policy influence| FOUNDATIONS
+        CORPORATIONS -->|academic capture| THINK_TANKS
+    end
+    
+    MEDIA[Media Conglomerates<br/>Disney, Comcast, News Corp<br/>25% bank-owned]
+    FOUNDATIONS[Philanthropcapitalism<br/>Gates, Rockefeller Foundations<br/>Policy shaping via aid]
+    THINK_TANKS[Think Tanks & Academia<br/>CFR, Heritage Foundation, Harvard<br/>Manufactured consensus]
+    
+    %% ===== BASE: EXTRACTION ZONE =====
+    subgraph BASE[BASE: PERMANENT EXTRACTION ZONE - DEVELOPING WORLD]
+        POPULATION[Local Populations<br/>152M child laborers<br/>50% live on <$5.50/day]
+        GOVERNMENTS[Compromised Governments<br/>Corrupt elites<br/>Tax haven users]
+        RESOURCES[Natural Resources<br/>Oil, minerals, water, land<br/>Systematic extraction]
+        RESISTANCE[Resistance Movements<br/>Anti-colonial struggles<br/>Sovereignty defense]
+    end
+    
+    %% ===== DOWNWARD CONTROL FLOWS =====
+    ECAS -->|debt ensnarement| GOVERNMENTS
+    TRIPS -->|technology blockade| RESOURCES
+    ISDS -->|legal paralysis| GOVERNMENTS
+    CORPORATIONS -->|resource extraction| RESOURCES
+    MILITARY -->|regime change| RESISTANCE
+    INTELLIGENCE -->|destabilization| RESISTANCE
+    AGRO -->|food dependency| POPULATION
+    
+    %% ===== IDEOLOGICAL CONTROL FLOWS =====
+    MEDIA -->|narrative control| POPULATION
+    THINK_TANKS -->|policy capture| GOVERNMENTS
+    FOUNDATIONS -->|agenda setting| GOVERNMENTS
+    
+    %% ===== PROTECTION FLOWS =====
+    MILITARY -->|asset protection| CORPORATIONS
+    
+    %% ===== ECONOMIC COERCION FLOWS =====
+    FED -.->|inflation weapon| POPULATION
+    IMF_WB -.->|austerity enforcement| GOVERNMENTS
+    
+    %% ===== UPWARD WEALTH EXTRACTION =====
+    RESOURCES -->|raw material flows| CORPORATIONS
+    POPULATION -->|labor exploitation| CORPORATIONS
+    GOVERNMENTS -->|debt servicing| IMF_WB
+    CORPORATIONS -->|profit extraction| WALL_ST
+    WALL_ST -->|wealth consolidation| BANKS
+
+    %% ===== STRUCTURED STYLING =====
+    classDef tier1 fill:#2c3e50,color:#fff,stroke:#e74c3c,stroke-width:3px
+    classDef tier2 fill:#34495e,color:#fff,stroke:#f39c12,stroke-width:2px
+    classDef tier3 fill:#2c3e50,color:#fff,stroke:#3498db,stroke-width:2px
+    classDef tier4 fill:#34495e,color:#fff,stroke:#9b59b6,stroke-width:2px
+    classDef tier5 fill:#2c3e50,color:#fff,stroke:#2ecc71,stroke-width:2px
+    classDef base fill:#1a252f,color:#ccc,stroke:#95a5a6,stroke-width:2px
+    
+    class TIER1,BANKS,FED,GOV tier1
+    class TIER2,WALL_ST,CORPORATIONS,VULTURE tier2
+    class TIER3,IMF_WB,WTO tier3
+    class TIER4,ECAS,TRIPS,ISDS,MILITARY,INTELLIGENCE,AGRO tier4
+    class TIER5,MEDIA,FOUNDATIONS,THINK_TANKS tier5
+    class BASE,POPULATION,GOVERNMENTS,RESOURCES,RESISTANCE base
+        </div>
+        
+        <div id="error-message" class="error-message" style="display: none;">
+            Diagram failed to load. Check browser console for errors.
+        </div>
+    </div>
+
+    <script>
+        let scale = 1;
+        let panning = false;
+        let startX, startY;
+        let translateX = 0, translateY = 0;
+        let svgElement;
+
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            flowchart: {
+                useMaxWidth: false,
+                htmlLabels: true,
+                curve: 'monotoneX',
+                rankSpacing: 50,
+                nodeSpacing: 30
+            },
+            securityLevel: 'loose'
+        });
+
+        function initializePanZoom() {
+            setTimeout(() => {
+                svgElement = document.querySelector('#mermaid-diagram svg');
+                if (svgElement) {
+                    svgElement.style.transformOrigin = '0 0';
+                    updateTransform();
+                    
+                    svgElement.addEventListener('wheel', function(e) {
+                        e.preventDefault();
+                        const rect = svgElement.getBoundingClientRect();
+                        const mouseX = e.clientX - rect.left;
+                        const mouseY = e.clientY - rect.top;
+                        
+                        const zoomIntensity = 0.1;
+                        const wheel = e.deltaY < 0 ? 1 : -1;
+                        const zoom = Math.exp(wheel * zoomIntensity);
+                        
+                        scale = Math.max(0.1, Math.min(5, scale * zoom));
+                        translateX = mouseX - zoom * (mouseX - translateX);
+                        translateY = mouseY - zoom * (mouseY - translateY);
+                        
+                        updateTransform();
+                    });
+                    
+                    svgElement.addEventListener('mousedown', function(e) {
+                        if (e.button === 0) {
+                            panning = true;
+                            startX = e.clientX - translateX;
+                            startY = e.clientY - translateY;
+                            svgElement.style.cursor = 'grabbing';
+                        }
+                    });
+                    
+                    svgElement.addEventListener('mousemove', function(e) {
+                        if (panning) {
+                            translateX = e.clientX - startX;
+                            translateY = e.clientY - startY;
+                            updateTransform();
+                        }
+                    });
+                    
+                    svgElement.addEventListener('mouseup', function() {
+                        panning = false;
+                        svgElement.style.cursor = 'grab';
+                    });
+                    
+                    svgElement.addEventListener('mouseleave', function() {
+                        panning = false;
+                        svgElement.style.cursor = 'grab';
+                    });
+                    
+                    svgElement.style.cursor = 'grab';
+                    document.getElementById('error-message').style.display = 'none';
+                } else {
+                    document.getElementById('error-message').style.display = 'block';
+                }
+            }, 1000);
+        }
+
+        function updateTransform() {
+            if (svgElement) {
+                svgElement.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+            }
+        }
+
+        function zoomIn() {
+            scale = Math.min(5, scale * 1.2);
+            updateTransform();
+        }
+
+        function zoomOut() {
+            scale = Math.max(0.1, scale / 1.2);
+            updateTransform();
+        }
+
+        function resetView() {
+            scale = 1;
+            translateX = 0;
+            translateY = 0;
+            updateTransform();
+        }
+
+        try {
+            mermaid.init(undefined, document.querySelectorAll('.mermaid'));
+            initializePanZoom();
+        } catch (error) {
+            console.error('Mermaid error:', error);
+            document.getElementById('error-message').style.display = 'block';
+            document.getElementById('error-message').innerHTML = 'Load Error: ' + error.message;
+        }
+        
+        document.querySelector('#mermaid-diagram').addEventListener('DOMSubtreeModified', initializePanZoom);
+    </script>
+</body>
+</html>

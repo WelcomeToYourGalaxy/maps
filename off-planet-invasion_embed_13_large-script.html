@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script src="gdpr/gdprscript.js?buildTime=1234"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biosignature Evidence Assessment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .biosig-wrapper {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0e17;
+            color: #e8eaed;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            max-width: 1400px;
+            box-sizing: border-box;
+            position: relative;
+            contain: layout style;
+        }
+
+        .biosig-wrapper * {
+            box-sizing: border-box;
+        }
+
+        .biosig-wrapper :root {
+            --deep-black: #0a0e17;
+            --card-bg: #141824;
+            --border-gray: #2a2f3f;
+            --text-primary: #e8eaed;
+            --text-secondary: #9aa0a6;
+            --accent-blue: #4a90e2;
+            --mars: #d84a3f;
+            --europa: #e8954c;
+            --enceladus: #d4af37;
+            --k2-18b: #4fc3f7;
+        }
+
+        .biosig-container {
+            padding: 1rem 1.5rem;
+            background: #0a0e17;
+        }
+
+        .biosig-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #2a2f3f;
+        }
+
+        .biosig-header h1 {
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin: 0 0 0.75rem 0;
+            color: #e8eaed;
+        }
+
+        .biosig-subtitle {
+            font-size: 0.875rem;
+            color: #9aa0a6;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        .biosig-disclaimer {
+            font-size: 0.813rem;
+            color: #9aa0a6;
+            max-width: 700px;
+            margin: 1rem auto 0;
+            line-height: 1.5;
+        }
+
+        .biosig-distance-scale {
+            background: #141824;
+            border: 1px solid #2a2f3f;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .biosig-scale-title {
+            font-size: 0.813rem;
+            color: #9aa0a6;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        .biosig-scale-bar {
+            position: relative;
+            height: 50px;
+            background: rgba(74, 144, 226, 0.05);
+            border: 1px solid #2a2f3f;
+            border-radius: 4px;
+        }
+
+        .biosig-scale-marker {
+            position: absolute;
+            bottom: 0;
+            width: 1px;
+            height: 100%;
+            background: #2a2f3f;
+        }
+
+        .biosig-scale-label {
+            position: absolute;
+            bottom: -22px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.688rem;
+            color: #9aa0a6;
+            white-space: nowrap;
+        }
+
+        .biosig-space-map {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background: #141824;
+            border: 1px solid #2a2f3f;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .biosig-distance-axis {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #2a2f3f, transparent);
+        }
+
+        .biosig-axis-label {
+            position: absolute;
+            top: 10px;
+            font-size: 0.688rem;
+            color: #9aa0a6;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .biosig-celestial-body {
+            position: absolute;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .biosig-celestial-body:hover {
+            transform: scale(1.15);
+        }
+
+        .biosig-body-marker {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            position: relative;
+            border: 2px solid currentColor;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.2), transparent);
+        }
+
+        .biosig-body-marker::after {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border: 1px solid currentColor;
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+
+        .biosig-body-label {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            font-weight: 500;
+            white-space: nowrap;
+            color: currentColor;
+        }
+
+        .biosig-mars {
+            bottom: 35%;
+            left: 15%;
+            color: #d84a3f;
+        }
+
+        .biosig-europa {
+            top: 25%;
+            left: 35%;
+            color: #e8954c;
+        }
+
+        .biosig-enceladus {
+            bottom: 30%;
+            left: 50%;
+            color: #d4af37;
+        }
+
+        .biosig-k2-18b {
+            top: 40%;
+            right: 12%;
+            color: #4fc3f7;
+        }
+
+        .biosig-popup {
+            position: absolute;
+            background: #141824;
+            border: 1px solid;
+            border-radius: 8px;
+            padding: 1.5rem;
+            width: 380px;
+            max-width: 90vw;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .biosig-popup.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .biosig-popup-header {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            letter-spacing: -0.01em;
+        }
+
+        .biosig-popup-distance {
+            font-size: 0.813rem;
+            color: #9aa0a6;
+            margin-bottom: 1rem;
+        }
+
+        .biosig-probability-container {
+            background: rgba(74, 144, 226, 0.05);
+            border: 1px solid #2a2f3f;
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .biosig-probability-label {
+            font-size: 0.688rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #9aa0a6;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .biosig-probability-value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: currentColor;
+            margin-bottom: 0.5rem;
+        }
+
+        .biosig-probability-bar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .biosig-probability-fill {
+            height: 100%;
+            background: currentColor;
+            border-radius: 3px;
+        }
+
+        .biosig-probability-note {
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+            color: #9aa0a6;
+        }
+
+        .biosig-popup-section {
+            margin: 1rem 0;
+        }
+
+        .biosig-popup-label {
+            font-size: 0.688rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #9aa0a6;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .biosig-popup-content {
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: #e8eaed;
+        }
+
+        .biosig-status-badge {
+            display: inline-block;
+            padding: 0.375rem 0.875rem;
+            border-radius: 4px;
+            font-size: 0.688rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0.75rem;
+        }
+
+        .biosig-status-controversial {
+            background: rgba(216, 74, 63, 0.1);
+            border: 1px solid #d84a3f;
+            color: #d84a3f;
+        }
+
+        .biosig-status-strongest {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid #d4af37;
+            color: #d4af37;
+        }
+
+        .biosig-status-target {
+            background: rgba(79, 195, 247, 0.1);
+            border: 1px solid #4fc3f7;
+            color: #4fc3f7;
+        }
+
+        .biosig-mission-timeline {
+            background: #141824;
+            border: 1px solid #2a2f3f;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .biosig-timeline-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            letter-spacing: -0.01em;
+        }
+
+        .biosig-timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .biosig-timeline-item {
+            border-left: 2px solid currentColor;
+            padding-left: 1rem;
+        }
+
+        .biosig-timeline-mission {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .biosig-timeline-date {
+            font-size: 0.813rem;
+            color: #9aa0a6;
+            margin-bottom: 0.5rem;
+        }
+
+        .biosig-timeline-description {
+            font-size: 0.813rem;
+            line-height: 1.5;
+            color: #9aa0a6;
+        }
+
+        .biosig-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .biosig-info-card {
+            background: #141824;
+            border: 1px solid #2a2f3f;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .biosig-info-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.01em;
+        }
+
+        .biosig-info-text {
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: #9aa0a6;
+        }
+
+        .biosig-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding: 1rem 1rem 0.5rem;
+            border-top: 1px solid #2a2f3f;
+            color: #9aa0a6;
+            font-size: 0.813rem;
+        }
+
+        .biosig-footer p + p {
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .biosig-space-map {
+                height: 350px;
+            }
+            
+            .biosig-popup {
+                width: calc(100vw - 2rem);
+                max-width: 380px;
+            }
+            
+            .biosig-timeline-grid,
+            .biosig-info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="biosig-wrapper">
+        <div class="biosig-container">
+            <header class="biosig-header">
+                <h1>Biosignature Evidence Assessment</h1>
+                <p class="biosig-subtitle">Scientific Analysis • December 2025</p>
+                <p class="biosig-disclaimer">
+                    Probability estimates based on peer-reviewed research, NASA/ESA mission data, and scientific consensus. 
+                    No confirmed extraterrestrial life has been discovered. Percentages represent current assessments of 
+                    biosignature authenticity.
+                </p>
+            </header>
+
+            <div class="biosig-distance-scale">
+                <div class="biosig-scale-title">Logarithmic Distance Scale from Earth</div>
+                <div class="biosig-scale-bar">
+                    <div class="biosig-scale-marker" style="left: 0%;">
+                        <div class="biosig-scale-label">0 mi</div>
+                    </div>
+                    <div class="biosig-scale-marker" style="left: 20%;">
+                        <div class="biosig-scale-label">10⁸ mi</div>
+                    </div>
+                    <div class="biosig-scale-marker" style="left: 40%;">
+                        <div class="biosig-scale-label">10⁹ mi</div>
+                    </div>
+                    <div class="biosig-scale-marker" style="left: 60%;">
+                        <div class="biosig-scale-label">10¹² mi</div>
+                    </div>
+                    <div class="biosig-scale-marker" style="left: 100%;">
+                        <div class="biosig-scale-label">10¹⁵+ mi</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="biosig-space-map" id="biosigSpaceMap">
+                <div class="biosig-distance-axis">
+                    <div class="biosig-axis-label" style="left: 0;">Near</div>
+                    <div class="biosig-axis-label" style="right: 0;">Far</div>
+                </div>
+
+                <div class="biosig-celestial-body biosig-mars" data-body="mars">
+                    <div class="biosig-body-marker"></div>
+                    <div class="biosig-body-label">Mars</div>
+                </div>
+
+                <div class="biosig-celestial-body biosig-europa" data-body="europa">
+                    <div class="biosig-body-marker"></div>
+                    <div class="biosig-body-label">Europa</div>
+                </div>
+
+                <div class="biosig-celestial-body biosig-enceladus" data-body="enceladus">
+                    <div class="biosig-body-marker"></div>
+                    <div class="biosig-body-label">Enceladus</div>
+                </div>
+
+                <div class="biosig-celestial-body biosig-k2-18b" data-body="k2-18b">
+                    <div class="biosig-body-marker"></div>
+                    <div class="biosig-body-label">K2-18 b</div>
+                </div>
+
+                <!-- Popups -->
+                <div class="biosig-popup" id="biosig-popup-k2-18b" style="border-color: #4fc3f7;">
+                    <div class="biosig-popup-header" style="color: #4fc3f7;">K2-18 b</div>
+                    <div class="biosig-popup-distance">730 trillion miles (124 light-years) • Leo constellation</div>
+                    
+                    <div class="biosig-probability-container" style="border-color: #4fc3f7;">
+                        <div class="biosig-probability-label">Probability of Life</div>
+                        <div class="biosig-probability-value" style="color: #4fc3f7;">&lt;1%</div>
+                        <div class="biosig-probability-bar">
+                            <div class="biosig-probability-fill" style="width: 1%; background: #4fc3f7;"></div>
+                        </div>
+                        <div class="biosig-probability-note">Extremely low • Requires confirmation</div>
+                    </div>
+
+                    <div class="biosig-popup-section">
+                        <div class="biosig-popup-label">Evidence</div>
+                        <div class="biosig-popup-content">Tentative dimethyl sulfide (DMS) detection at 3-sigma confidence. On Earth, DMS is produced almost exclusively by marine phytoplankton.</div>
+                    </div>
+                    <div class="biosig-popup-section">
+                        <div class="biosig-popup-label">Status</div>
+                        <div class="biosig-popup-content">July 2025 NASA reanalysis found no conclusive evidence. Signal below 5-sigma threshold required for confirmation. Alternative explanations include gas-rich mini-Neptune with no habitable surface.</div>
+                        <span class="biosig-status-badge biosig-status-controversial">Highly Controversial</span>
+                    </div>
+                </div>
+
+                <div class="biosig-popup" id="biosig-popup-mars" style="border-color: #d84a3f;">
+                    <div class="biosig-popup-header" style="color: #d84a3f;">Mars - Cheyava Falls</div>
+                    <div class="biosig-popup-distance">140 million miles • Jezero Crater</div>
+                    
+                    <div class="biosig-probability-container" style="border-color: #d84a3f;">
+                        <div class="biosig-probability-label">Probability of Life</div>
+                        <div class="biosig-probability-value" style="color: #d84a3f;">3-8%</div>
+                        <div class="biosig-probability-bar">
+                            <div class="biosig-probability-fill" style="width: 6%; background: #d84a3f;"></div>
+                        </div>
+                        <div class="biosig-probability-note">Strongest evidence to date • Sample return only confirmation possible</div>
+                    </div>
+
+                    <div class="biosig-popup-section">
+                        <div class="biosig-popup-label">Evidence</div>
+                        <div class="biosig-popup-content">"Leopard spots" containing vivianite and greigite minerals with organic molecules. These patterns are associated with ancient microbial activity on Earth.</div>
+                    </div>
+                    <div class="biosig-popup-section">
+                        <div class="biosig-popup-label">Status</div>
+                        <div class="biosig-popup-content">Peer-reviewed in Nature (September 2025). Rock aged 2-3 billion years. Sample return only definitive confirmation possible. Non-biological processes cannot be ruled out.</div>
+                        <span class="biosig-status-badge biosig-status-strongest">Strongest Candidate</span>
+                    </div>
+                </div>
+
+                <div class="biosig-popup" id="biosig-popup-europa" style="border-color: #e8954c;">
+                    <div class="biosig-popup-header" style="color: #e8954c;">Europa</div>
+                    <div class="biosig-popup-distance">390 million miles • Jupiter's Moon</div>
+                    
+                    <div class="biosig-probability-container" style="border-color: #e8954c;">
+                        <div class="biosig-probability-label">Probability of Life</div>
+                        <div class="biosig-probability-value" style="color: #e8954c;">5-15%</div>
+                        <div class="biosig-probability-bar">
+                            <div class="biosig-probability-fill" style="width: 10%; background: #e8954c;"></div>
+                        </div>
+                        <div class="biosig-probability-note">High habitability • No biosignatures yet</div>
+                    </div>
+
+                    <div class="biosig-popup-section">
+                        <div class="biosig-popup-label">Evidence</div>
+                        <div class="biosig-popup-content">Subsurface liquid ocean beneath 15-25 km ice shell. Contains organic molecules, energy sources, and all ingredients necessary for life.</div>
+                    </div>
+                    <div class="biosig-popup-section">
+                        <div class="biosig-popup-label">Status</div>
+                        <div class="biosig-popup-content">Highest planetary habitability score in solar system. Ocean likely in contact with rocky seafloor, enabling hydrothermal activity. No direct biosignatures detected.</div>
+                        <span class="biosig-status-badge biosig-status-target">Prime Target</span>
+                    </div>
+                </div>
+
+                <div class="biosig-popup" id="biosig-popup-enceladus" style="border-color: #d4af37;">
+                    <div class="biosig-popup-header" style="color: #d4af37;">Enceladus</div>
+                    <div class="biosig-popup-distance">790 million miles • Saturn's Moon</div>
+                    
+                    <div class="biosig-probability-container" style="border-color: #d4af37;">
+                        <div class="biosig-probability-label">Probability of Life</div>
+                        <div class="biosig-probability-value" style="color: #d4af37;">10-20%</div>
+                        <div class="biosig-probability-bar">
+                            <div class="biosig-probability-fill" style="width: 15%; background: #d4af37;"></div>
+                        </div>
+                        <div class="biosig-probability-note">Best conditions for extant life in solar system</div>
+                    </div>
+
+                    <div class="biosig-popup-section">
+                        <div class="biosig-popup-label">Evidence</div>
+                        <div class="biosig-popup-content">Active cryovolcanic plumes ejecting ocean material into space. October 2025: Complex organics detected including aromatic compounds, amino acids, and phosphorus.</div>
+                    </div>
+                    <div class="biosig-popup-section">
+                        <div class="biosig-popup-label">Status</div>
+                        <div class="biosig-popup-content">"All conditions at the same place at the same time for life to evolve and thrive" - Caroline Freissinet, NASA astrobiologist. Evidence of hydrothermal activity. Direct ocean sampling via plumes.</div>
+                        <span class="biosig-status-badge biosig-status-target">Prime Target</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="biosig-mission-timeline">
+                <div class="biosig-timeline-title">Future Mission Timeline</div>
+                <div class="biosig-timeline-grid">
+                    <div class="biosig-timeline-item" style="color: #4fc3f7;">
+                        <div class="biosig-timeline-mission">JWST K2-18 b Observations</div>
+                        <div class="biosig-timeline-date">2026 • Ongoing</div>
+                        <div class="biosig-timeline-description">16-24 hours of additional JWST observations scheduled. Goal: Achieve 5-sigma confidence level for DMS detection. ESA's Ariel mission (launch 2029) will provide comparative exoplanet data.</div>
+                    </div>
+                    
+                    <div class="biosig-timeline-item" style="color: #e8954c;">
+                        <div class="biosig-timeline-mission">Europa Clipper Mission</div>
+                        <div class="biosig-timeline-date">Arrives 2030</div>
+                        <div class="biosig-timeline-description">Already launched (October 2024). Will conduct 50+ close flybys of Europa to investigate ocean habitability and potential biosignatures beneath ice shell.</div>
+                    </div>
+
+                    <div class="biosig-timeline-item" style="color: #d84a3f;">
+                        <div class="biosig-timeline-mission">Mars Sample Return</div>
+                        <div class="biosig-timeline-date">2030-2039</div>
+                        <div class="biosig-timeline-description">Earth Return Orbiter launch: ~2030. Sample Retrieval Lander launch: ~2031. Sample arrival on Earth: 2035-2039. Mission architecture under review until mid-2026. China's Tianwen-3 may return samples by 2031.</div>
+                    </div>
+
+                    <div class="biosig-timeline-item" style="color: #d4af37;">
+                        <div class="biosig-timeline-mission">Enceladus Orbilander</div>
+                        <div class="biosig-timeline-date">Launch Late 2038 • Land Early 2050s</div>
+                        <div class="biosig-timeline-description">Proposed NASA Flagship mission ($4.9B). Project start FY2029. 7.5-year cruise + 4.5-year Saturn tour. 1.5 years orbiting Enceladus, then 2-year surface mission to search for biosignatures.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="biosig-info-grid">
+                <div class="biosig-info-card">
+                    <div class="biosig-info-title">Scientific Methodology</div>
+                    <div class="biosig-info-text">
+                        Probability estimates derived from peer-reviewed publications, NASA/ESA mission data, 
+                        expert consensus, biosignature detection confidence levels, and habitability assessments. 
+                        Scientists require 5-sigma confidence (99.99997% certainty) for definitive claims.
+                    </div>
+                </div>
+
+                <div class="biosig-info-card">
+                    <div class="biosig-info-title">Conservative Standards</div>
+                    <div class="biosig-info-text">
+                        Multiple independent confirmations required. All abiotic explanations must be ruled out. 
+                        Many promising signals have been later explained by non-biological chemistry. 
+                        Current biosignatures remain inconclusive.
+                    </div>
+                </div>
+
+                <div class="biosig-info-card">
+                    <div class="biosig-info-title">Detection Timeline</div>
+                    <div class="biosig-info-text">
+                        First definitive detection of extraterrestrial life could occur within 10-20 years through 
+                        Mars sample return, direct ocean sampling at Enceladus, or Europa Clipper findings. 
+                        Technological capabilities are advancing rapidly.
+                    </div>
+                </div>
+            </div>
+
+            <footer class="biosig-footer">
+                <p>Data compiled from NASA, ESA, Nature, The Astrophysical Journal, and peer-reviewed astrobiology research</p>
+                <p>Probability estimates are scientific assessments based on current evidence and do not represent certainty</p>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const bodies = document.querySelectorAll('.biosig-celestial-body');
+            const spaceMap = document.getElementById('biosigSpaceMap');
+            let activePopup = null;
+
+            bodies.forEach(body => {
+                body.addEventListener('mouseenter', function(e) {
+                    const bodyType = this.dataset.body;
+                    const popup = document.getElementById(`biosig-popup-${bodyType}`);
+                    
+                    if (activePopup && activePopup !== popup) {
+                        activePopup.classList.remove('active');
+                    }
+                    
+                    const rect = this.getBoundingClientRect();
+                    const mapRect = spaceMap.getBoundingClientRect();
+                    
+                    let left = rect.right - mapRect.left + 15;
+                    let top = rect.top - mapRect.top - 50;
+                    
+                    if (left + 380 > mapRect.width) {
+                        left = rect.left - mapRect.left - 395;
+                    }
+                    
+                    if (top < 0) top = 10;
+                    if (top + popup.offsetHeight > mapRect.height) {
+                        top = mapRect.height - popup.offsetHeight - 10;
+                    }
+                    
+                    popup.style.left = left + 'px';
+                    popup.style.top = top + 'px';
+                    popup.classList.add('active');
+                    activePopup = popup;
+                });
+
+                body.addEventListener('mouseleave', function(e) {
+                    setTimeout(() => {
+                        const bodyType = this.dataset.body;
+                        const popup = document.getElementById(`biosig-popup-${bodyType}`);
+                        if (!popup.matches(':hover') && !this.matches(':hover')) {
+                            popup.classList.remove('active');
+                            if (activePopup === popup) activePopup = null;
+                        }
+                    }, 100);
+                });
+            });
+
+            document.querySelectorAll('.biosig-popup').forEach(popup => {
+                popup.addEventListener('mouseenter', function() {
+                    this.classList.add('active');
+                });
+
+                popup.addEventListener('mouseleave', function() {
+                    this.classList.remove('active');
+                    activePopup = null;
+                });
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.biosig-celestial-body') && !e.target.closest('.biosig-popup')) {
+                    document.querySelectorAll('.biosig-popup').forEach(p => p.classList.remove('active'));
+                    activePopup = null;
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

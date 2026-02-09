@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World's Largest Synthetic Fertilizer Production Facilities</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 800px;
+            max-height: 800px;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+        }
+
+        .map-wrapper {
+            position: relative;
+            width: 100%;
+            height: 800px;
+            overflow: hidden;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        .map-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.97);
+            padding: 16px 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            z-index: 1000;
+        }
+        .map-header h1 {
+            margin: 0 0 6px 0;
+            font-size: 24px;
+            text-align: center;
+            color: #1a1a1a;
+            font-weight: 700;
+        }
+        .map-header .subtitle {
+            margin: 0;
+            text-align: center;
+            font-size: 13px;
+            color: #555;
+            font-weight: 600;
+        }
+        .legend {
+            position: absolute;
+            top: 110px;
+            right: 15px;
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.28);
+            max-width: 320px;
+            max-height: 600px;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        .legend h4 {
+            margin: 0 0 14px 0;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a1a;
+            border-bottom: 2px solid #d0d0d0;
+            padding-bottom: 8px;
+        }
+        .legend-item {
+            margin: 8px 0;
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            padding: 4px 0;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+            border: 2px solid #333;
+            flex-shrink: 0;
+        }
+        .legend-text { flex: 1; line-height: 1.3; }
+        .legend-capacity {
+            color: #666;
+            font-size: 10px;
+            margin-top: 2px;
+        }
+        .leaflet-popup-content-wrapper { border-radius: 8px; }
+        .leaflet-popup-content {
+            margin: 14px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .popup-company {
+            font-weight: 700;
+            font-size: 15px;
+            color: #1a1a1a;
+            margin-bottom: 4px;
+        }
+        .popup-facility {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 2px;
+        }
+        .popup-capacity {
+            color: #666;
+            font-size: 11px;
+            font-style: italic;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="map-wrapper">
+        <div id="map"></div>
+        <div class="map-header">
+            <h1>World's Largest Synthetic Nitrogen Fertilizer Production Facilities</h1>
+            <p class="subtitle">Primary Sources of Agricultural Nitrous Oxide (N₂O) Emissions Worldwide</p>
+        </div>
+        <div class="legend">
+            <h4>Production Facilities</h4>
+            <div id="legend-content"></div>
+        </div>
+    </div>
+
+    <script>
+const facilities = [
+    {"company": "CF Industries", "name": "Donaldsonville Complex", "city": "Donaldsonville", "state": "Louisiana", "country": "USA", "lat": 30.1037, "lon": -90.9954, "capacity": "4.3M tons ammonia/year - world's largest"},
+    {"company": "CF Industries", "name": "Medicine Hat Complex", "city": "Medicine Hat", "state": "Alberta", "country": "Canada", "lat": 50.0419, "lon": -110.6775, "capacity": "1.23M tons ammonia/year"},
+    {"company": "CF Industries", "name": "Port Neal Complex", "city": "Sioux City", "state": "Iowa", "country": "USA", "lat": 42.5344, "lon": -96.3522, "capacity": "1.23M tons ammonia + 1.35M tons urea"},
+    {"company": "CF Industries", "name": "Verdigris Complex", "city": "Verdigris", "state": "Oklahoma", "country": "USA", "lat": 36.2317, "lon": -95.6914, "capacity": "1.21M tons ammonia/year"},
+    {"company": "CF Industries", "name": "Courtright Complex", "city": "Courtright", "state": "Ontario", "country": "Canada", "lat": 42.7833, "lon": -82.4667, "capacity": "0.5M tons ammonia + UAN"},
+    {"company": "CF Industries", "name": "Yazoo City Complex", "city": "Yazoo City", "state": "Mississippi", "country": "USA", "lat": 32.8551, "lon": -90.4056, "capacity": "0.57M tons ammonia + 1M tons AN"},
+    {"company": "CF Industries", "name": "Woodward Complex", "city": "Woodward", "state": "Oklahoma", "country": "USA", "lat": 36.4336, "lon": -99.3901, "capacity": "0.48M tons ammonia + UAN"},
+    {"company": "CF Industries", "name": "Billingham Complex", "city": "Billingham", "country": "UK", "lat": 54.6050, "lon": -1.2750, "capacity": "0.595M tons ammonia + AN"},
+    {"company": "SABIC", "name": "SAFCO IV - Al Jubail", "city": "Jubail Industrial City", "country": "Saudi Arabia", "lat": 27.0167, "lon": 49.5833, "capacity": "3.76M tons ammonia/year - world's largest single plant"},
+    {"company": "SABIC", "name": "SAFCO V - Al Jubail", "city": "Jubail Industrial City", "country": "Saudi Arabia", "lat": 27.0234, "lon": 49.5890, "capacity": "Major urea production"},
+    {"company": "SABIC", "name": "Ibn Al-Baytar - Al Jubail", "city": "Jubail Industrial City", "country": "Saudi Arabia", "lat": 27.0200, "lon": 49.5850, "capacity": "Nitrogen complex"},
+    {"company": "Yara International", "name": "Porsgrunn Plant", "city": "Porsgrunn", "country": "Norway", "lat": 59.1400, "lon": 9.6567, "capacity": "Major ammonia, nitrates, NPK"},
+    {"company": "Yara International", "name": "Sluiskil Plant", "city": "Sluiskil", "country": "Netherlands", "lat": 51.2817, "lon": 3.8467, "capacity": "Largest ammonia plant in Europe"},
+    {"company": "Yara International", "name": "Le Havre Plant", "city": "Le Havre", "country": "France", "lat": 49.4944, "lon": 0.1079, "capacity": "Ammonia and nitrogen products"},
+    {"company": "Yara International", "name": "Ferrara Plant", "city": "Ferrara", "country": "Italy", "lat": 44.8381, "lon": 11.6198, "capacity": "Urea and nitrogen fertilizers"},
+    {"company": "Yara International", "name": "Trinidad Plant", "city": "Point Lisas", "country": "Trinidad and Tobago", "lat": 10.4000, "lon": -61.4500, "capacity": "Ammonia production"},
+    {"company": "Yara International", "name": "Pilbara Plant", "city": "Karratha", "country": "Australia", "lat": -20.7364, "lon": 116.8465, "capacity": "Ammonia production"},
+    {"company": "Nutrien", "name": "Redwater Facility", "city": "Redwater", "state": "Alberta", "country": "Canada", "lat": 53.9500, "lon": -113.1333, "capacity": "Ammonia and urea production"},
+    {"company": "Nutrien", "name": "Carseland Facility", "city": "Carseland", "state": "Alberta", "country": "Canada", "lat": 50.8667, "lon": -113.6333, "capacity": "Ammonia and urea"},
+    {"company": "Nutrien", "name": "Joffre Facility", "city": "Joffre", "state": "Alberta", "country": "Canada", "lat": 52.0833, "lon": -113.6500, "capacity": "Ammonia and nitrogen products"},
+    {"company": "Nutrien", "name": "Aurora Facility", "city": "Aurora", "state": "North Carolina", "country": "USA", "lat": 35.3079, "lon": -76.7919, "capacity": "Phosphate and nitrogen"},
+    {"company": "Nutrien", "name": "White Springs Facility", "city": "White Springs", "state": "Florida", "country": "USA", "lat": 30.3285, "lon": -82.7573, "capacity": "Phosphate operations"},
+    {"company": "QAFCO", "name": "Mesaieed Industrial City", "city": "Mesaieed", "country": "Qatar", "lat": 24.9500, "lon": 51.5500, "capacity": "5.8M tons urea + 3.8M tons ammonia/year"},
+    {"company": "OCI N.V.", "name": "Iowa Fertilizer Company", "city": "Wever", "state": "Iowa", "country": "USA", "lat": 40.7247, "lon": -91.2317, "capacity": "Major urea and UAN"},
+    {"company": "OCI N.V.", "name": "Beaumont Facility", "city": "Beaumont", "state": "Texas", "country": "USA", "lat": 30.0802, "lon": -94.1266, "capacity": "Ammonia and methanol"},
+    {"company": "OCI N.V.", "name": "Geleen Plant", "city": "Geleen", "country": "Netherlands", "lat": 50.9667, "lon": 5.8167, "capacity": "Melamine and fertilizers"},
+    {"company": "OCI N.V.", "name": "Tahrir Facility", "city": "Tahrir", "country": "Egypt", "lat": 30.7500, "lon": 30.9000, "capacity": "Nitrogen fertilizers"},
+    {"company": "OCI N.V.", "name": "Sorfert Facility", "city": "Arzew", "country": "Algeria", "lat": 35.8500, "lon": -0.3000, "capacity": "Ammonia production"},
+    {"company": "EuroChem", "name": "Novomoskovsk Plant", "city": "Novomoskovsk", "country": "Russia", "lat": 54.0167, "lon": 38.2833, "capacity": "Major nitrogen and NPK"},
+    {"company": "EuroChem", "name": "Nevinnomyssk Plant", "city": "Nevinnomyssk", "country": "Russia", "lat": 44.6333, "lon": 41.9500, "capacity": "Ammonia and nitrogen products"},
+    {"company": "EuroChem", "name": "Kingisepp Plant", "city": "Kingisepp", "country": "Russia", "lat": 59.3667, "lon": 28.6167, "capacity": "Phosphates and NPK"},
+    {"company": "EuroChem", "name": "Lifosa Plant", "city": "Kedainiai", "country": "Lithuania", "lat": 55.2833, "lon": 23.9667, "capacity": "Phosphates and NPK"},
+    {"company": "EuroChem", "name": "Antwerp Plant", "city": "Antwerp", "country": "Belgium", "lat": 51.2194, "lon": 4.4025, "capacity": "Nitrogen products"},
+    {"company": "Koch Fertilizer", "name": "Enid Nitrogen Plant", "city": "Enid", "state": "Oklahoma", "country": "USA", "lat": 36.3896, "lon": -97.8322, "capacity": "1.1M tons ammonia/year"},
+    {"company": "Koch Fertilizer", "name": "Beatrice Plant", "city": "Beatrice", "state": "Nebraska", "country": "USA", "lat": 40.2681, "lon": -96.7564, "capacity": "Ammonia and nitrogen"},
+    {"company": "Koch Fertilizer", "name": "Fort Dodge Plant", "city": "Duncombe", "state": "Iowa", "country": "USA", "lat": 42.4689, "lon": -94.0589, "capacity": "Nitrogen fertilizers"},
+    {"company": "Koch Fertilizer", "name": "Brandon Plant", "city": "Brandon", "state": "Manitoba", "country": "Canada", "lat": 49.8467, "lon": -99.9517, "capacity": "Ammonia production"},
+    {"company": "Acron Group", "name": "Veliky Novgorod Plant", "city": "Veliky Novgorod", "country": "Russia", "lat": 58.5167, "lon": 31.2833, "capacity": "5.1M tons nitrogen fertilizers"},
+    {"company": "Acron Group", "name": "Dorogobuzh Plant", "city": "Dorogobuzh", "country": "Russia", "lat": 54.9167, "lon": 33.2833, "capacity": "Major nitrogen and NPK"},
+    {"company": "PhosAgro", "name": "Cherepovets Plant", "city": "Cherepovets", "country": "Russia", "lat": 59.1333, "lon": 37.9000, "capacity": "6.2M tons phosphate + nitrogen"},
+    {"company": "PhosAgro", "name": "Balakovo Plant", "city": "Balakovo", "country": "Russia", "lat": 52.0286, "lon": 47.7983, "capacity": "Ammonia and phosphates"},
+    {"company": "PhosAgro", "name": "Volkhov Plant", "city": "Volkhov", "country": "Russia", "lat": 59.9167, "lon": 32.3333, "capacity": "Phosphates and NPK"},
+    {"company": "Mosaic Company", "name": "Riverview Plant", "city": "Riverview", "state": "Florida", "country": "USA", "lat": 27.8658, "lon": -82.3265, "capacity": "1.6M tons phosphate/year"},
+    {"company": "Mosaic Company", "name": "Bartow Plant", "city": "Bartow", "state": "Florida", "country": "USA", "lat": 27.8964, "lon": -81.8431, "capacity": "2.2M tons DAP/MAP/year"},
+    {"company": "Mosaic Company", "name": "New Wales Plant", "city": "Mulberry", "state": "Florida", "country": "USA", "lat": 27.8822, "lon": -81.9751, "capacity": "Major phosphate production"},
+    {"company": "Mosaic Company", "name": "Esterhazy K3 Mine", "city": "Esterhazy", "state": "Saskatchewan", "country": "Canada", "lat": 50.6544, "lon": -102.0700, "capacity": "Potash operations"},
+    {"company": "Mosaic Company", "name": "Colonsay Mine", "city": "Colonsay", "state": "Saskatchewan", "country": "Canada", "lat": 51.9167, "lon": -106.2833, "capacity": "Potash production"},
+    {"company": "Coromandel International", "name": "Visakhapatnam Complex", "city": "Visakhapatnam", "country": "India", "lat": 17.6868, "lon": 83.2185, "capacity": "Major urea and phosphates"},
+    {"company": "Coromandel International", "name": "Kakinada Unit", "city": "Kakinada", "country": "India", "lat": 16.9891, "lon": 82.2475, "capacity": "DAP/NPK production"},
+    {"company": "Sinofert/Sinochem", "name": "Major Distribution Hub", "city": "Beijing", "country": "China", "lat": 39.9042, "lon": 116.4074, "capacity": "12M tons total fertilizer sales"},
+    {"company": "IFFCO", "name": "Kalol Unit", "city": "Gandhinagar", "country": "India", "lat": 23.2156, "lon": 72.6369, "capacity": "Major ammonia and urea"},
+    {"company": "IFFCO", "name": "Phulpur Unit", "city": "Prayagraj", "country": "India", "lat": 25.4358, "lon": 81.8463, "capacity": "Urea production"},
+    {"company": "ICL Group", "name": "Dead Sea Works", "city": "Sodom", "country": "Israel", "lat": 31.0333, "lon": 35.3833, "capacity": "Potash and specialty products"},
+    {"company": "ICL Group", "name": "Rotem Plant", "city": "Dimona", "country": "Israel", "lat": 30.9625, "lon": 35.1256, "capacity": "Phosphates and acids"},
+    {"company": "Haifa Group", "name": "Mishor Rotem Facility", "city": "Dimona", "country": "Israel", "lat": 30.9625, "lon": 35.1256, "capacity": "Specialty NPK and water-soluble"},
+    {"company": "Ma'aden", "name": "Wa'ad Al Shamal", "city": "Wa'ad Al Shamal", "country": "Saudi Arabia", "lat": 27.6667, "lon": 40.8667, "capacity": "Major phosphate complex"},
+    {"company": "RCF", "name": "Trombay Unit", "city": "Mumbai", "country": "India", "lat": 19.0144, "lon": 72.9246, "capacity": "Urea and ammonia"},
+    {"company": "Shandong Hualu", "name": "Dezhou Plant", "city": "Dezhou", "country": "China", "lat": 37.4513, "lon": 116.3594, "capacity": "1.8M tons urea/year"}
+];
+
+const companyColors = {
+    "CF Industries": "#e74c3c",
+    "SABIC": "#9b59b6",
+    "Yara International": "#3498db",
+    "Nutrien": "#2ecc71",
+    "QAFCO": "#f39c12",
+    "OCI N.V.": "#1abc9c",
+    "EuroChem": "#e67e22",
+    "Koch Fertilizer": "#c0392b",
+    "Acron Group": "#34495e",
+    "PhosAgro": "#d35400",
+    "Mosaic Company": "#16a085",
+    "Coromandel International": "#8e44ad",
+    "Sinofert/Sinochem": "#27ae60",
+    "IFFCO": "#2980b9",
+    "ICL Group": "#d98880",
+    "Haifa Group": "#a569bd",
+    "Ma'aden": "#f8b739",
+    "RCF": "#5dade2",
+    "Shandong Hualu": "#48c9b0"
+};
+
+const map = L.map('map', {
+    center: [25, 15],
+    zoom: 2,
+    minZoom: 2,
+    maxZoom: 18,
+    maxBounds: [[-90, -180], [90, 180]],
+    maxBoundsViscosity: 1.0
+});
+
+L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+    attribution: '© Google',
+    maxZoom: 20
+}).addTo(map);
+
+facilities.forEach(facility => {
+    const color = companyColors[facility.company];
+    const marker = L.circleMarker([facility.lat, facility.lon], {
+        radius: 8,
+        fillColor: color,
+        color: '#333',
+        weight: 2,
+        opacity: 1,
+        fillOpacity: 0.85
+    }).addTo(map);
+    
+    let popupContent = `<div class="popup-company">${facility.company}</div>`;
+    popupContent += `<div class="popup-facility">${facility.name}</div>`;
+    popupContent += `${facility.city}`;
+    if (facility.state) popupContent += `, ${facility.state}`;
+    popupContent += `<br>${facility.country}`;
+    if (facility.capacity) {
+        popupContent += `<div class="popup-capacity">${facility.capacity}</div>`;
+    }
+    marker.bindPopup(popupContent);
+});
+
+const companyCounts = {};
+facilities.forEach(f => {
+    companyCounts[f.company] = (companyCounts[f.company] || 0) + 1;
+});
+
+const legendContent = document.getElementById('legend-content');
+Object.keys(companyColors).forEach(company => {
+    if (companyCounts[company]) {
+        const item = document.createElement('div');
+        item.className = 'legend-item';
+        item.innerHTML = `
+            <div class="legend-color" style="background-color: ${companyColors[company]}"></div>
+            <div class="legend-text">
+                <strong>${company}</strong>
+                <div class="legend-capacity">${companyCounts[company]} facilities</div>
+            </div>
+        `;
+        legendContent.appendChild(item);
+    }
+});
+
+setTimeout(function(){ map.invalidateSize(); }, 100);
+    </script>
+</body>
+</html>
