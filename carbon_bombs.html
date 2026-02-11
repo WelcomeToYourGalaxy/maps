@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbon Bombs Map</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #1a1a1a;
+        }
+        
+        .embed-container {
+            position: relative;
+            width: 100%;
+            height: 800px;
+            max-width: 100%;
+            margin: 0 auto;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        
+        .embed-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 18px;
+            z-index: 1;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .embed-container {
+                height: 600px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .embed-container {
+                height: 500px;
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="embed-container">
+        <div class="loading">Loading Carbon Bombs Map...
+        <iframe 
+            src="https://carbonbombs.org/?tab=projects" 
+            allowfullscreen
+            loading="lazy"
+            title="Carbon Bombs Interactive Map">
+        </iframe>
+    
+</body>
+</html>

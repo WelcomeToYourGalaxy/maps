@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<head><script src="gdpr/gdprscript.js?buildTime=1234"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global Animal Sacrifice Map</title>
@@ -140,18 +141,18 @@
 </head>
 <body>
     <div class="map-wrapper">
-        <div id="loading">Loading map...</div>
-        <div id="map"></div>
+        <div id="loading">Loading map...
+        <div id="map">
         <div class="info-panel">
             <h2>Animal Sacrifice Map</h2>
             <p>207 verified locations worldwide</p>
-            <div class="filters" id="filters"></div>
-        </div>
+            <div class="filters" id="filters">
+        
         <div class="stats" id="stats">
-            <div><strong id="count">207</strong> Locations</div>
-            <div><strong>60+</strong> Countries</div>
-        </div>
-    </div>
+            <div><strong id="count">207</strong> Locations
+            <div><strong>60+</strong> Countries
+        
+    
     
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
@@ -428,9 +429,9 @@
             });
             
             const popup = `
-                <div class="popup-title">${loc.name}</div>
-                <div class="popup-location">${loc.city}, ${loc.country}</div>
-                <div class="popup-sources">Sources: ${loc.source}</div>
+                <div class="popup-title">${loc.name}
+                <div class="popup-location">${loc.city}, ${loc.country}
+                <div class="popup-sources">Sources: ${loc.source}
             `;
             
             const marker = L.marker([loc.lat, loc.lng], { icon })
@@ -485,4 +486,3 @@
     </script>
 </body>
 </html>
-
