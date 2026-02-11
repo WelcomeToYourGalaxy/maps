@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corn Map Explorer</title>
+    <link rel="stylesheet" href="https://ipad.fas.usda.gov/arcgis_js_api/library/4.14/dijit/themes/claro/claro.css" />
+    <link rel="stylesheet" href="https://ipad.fas.usda.gov/arcgis_js_api/library/4.14/esri/themes/light/main.css" />
+    <style>
+        html, body, #commodityMapView {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+        }
+        #commodityMapView {
+            height: 600px;
+            width: 100%;
+        }
+        .esri-expand__content .esri-widget {
+            margin-left: -5px;
+            width: 180px !important;
+        }
+        .esri-popup .esri-popup-header .esri-title {
+            font-size: 18px;
+            font-weight: bolder;
+        }
+        .esri-popup .esri-popup-body .esri-popup-content {
+            font-size: 14px;
+        }
+        .esri-legend__message {
+            display: none;
+        }
+        .esri-layer-list__item-title {
+            text-align: left;
+            font-size: 15px;
+        }
+        .esri-layer-list__child-toggle + .esri-layer-list__item-label > .esri-layer-list__item-toggle {
+            display: none;
+        }
+        .pane-title2 {
+            border-bottom: 2px solid #d8ab2d;
+            margin-bottom: 20px;
+            margin-top: 20px;
+            padding-bottom: 0.1em;
+            width: 99%;
+            text-align: left;
+        }
+        .btnZoomToMap:hover img {
+            cursor: pointer;
+            transform: scale(1.1);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+        }
+    </style>
+    <script src="https://ipad.fas.usda.gov/arcgis_js_api/library/4.14/dojo/dojo.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="pane-title2">Corn Map Explorer</h1>
+        <div id="commodityMapView">
+        <div style="margin-top: 20px; font-size: 14px;">
+            <p><strong>Instructions:</strong> Click on the map to view corn production details by region. Use the zoom buttons in the table below to focus on specific countries.</p>
+            <p><strong>Note:</strong> This embedded version contains only the interactive map. For full functionality (data tables, charts, etc.), visit the <a href="https://ipad.fas.usda.gov/cropexplorer/cropview/commodityView.aspx?cropid=0440000&sel_year=2025&rankby=Production" target="_blank">complete Corn Explorer</a>.</p>
+        
+        <h3 class="pane-title2">Top Corn Producing Countries (2025)</h3>
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+            <thead>
+                <tr style="background-color: #f2f2f2;">
+                    <th style="padding: 10px; text-align: left;">Country</th>
+                    <th style="padding: 10px; text-align: left;">Production (1000 MT)</th>
+                    <th style="padding: 10px; text-align: left;">Zoom to Map</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="padding: 10px;">United States</td>
+                    <td style="padding: 10px;">384,777</td>
+                    <td style="padding: 10px;">
+                        <a class="btnZoomToMap" onclick="zoomToCountry('USA', 'United States');" style="cursor: pointer;">
+                            <img src="https://ipad.fas.usda.gov/rssiws/images/ce_home/zoomintime.png" title="Zoom To Map" border="0" />
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px;">China</td>
+                    <td style="padding: 10px;">292,000</td>
+                    <td style="padding: 10px;">
+                        <a class="btnZoomToMap" onclick="zoomToCountry('CHN', 'China');" style="cursor: pointer;">
+                            <img src="https://ipad.fas.usda.gov/rssiws/images/ce_home/zoomintime.png" title="Zoom To Map" border="0" />
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px;">Brazil</td>
+                    <td style="padding: 10px;">127,000</td>
+                    <td style="padding: 10px;">
+                        <a class="btnZoomToMap" onclick="zoomToCountry('BRA', 'Brazil');" style="cursor: pointer;">
+                            <img src="https://ipad.fas.usda.gov/rssiws/images/ce_home/zoomintime.png" title="Zoom To Map" border="0" />
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px;">Argentina</td>
+                    <td style="padding: 10px;">48,000</td>
+                    <td style="padding: 10px;">
+                        <a class="btnZoomToMap" onclick="zoomToCountry('ARG', 'Argentina');" style="cursor: pointer;">
+                            <img src="https://ipad.fas.usda.gov/rssiws/images/ce_home/zoomintime.png" title="Zoom To Map" border="0" />
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px;">Ukraine</td>
+                    <td style="padding: 10px;">26,500</td>
+                    <td style="padding: 10px;">
+                        <a class="btnZoomToMap" onclick="zoomToCountry('UKR', 'Ukraine');" style="cursor: pointer;">
+                            <img src="https://ipad.fas.usda.gov/rssiws/images/ce_home/zoomintime.png" title="Zoom To Map" border="0" />
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    
+
+    <script>
+        // Global variables
+        var cntryId, cntryName;
+        var cropName = "Corn";
+        var cropMapService = "Corn";
+
+        // Zoom to country function
+        function zoomToCountry(id, name) {
+            cntryId = id.trim();
+            cntryName = name.trim();
+            document.getElementById("commodityMapView").style.cursor = "wait";
+            doQuery();
+        }
+
+        // ArcGIS Map Setup
+        require([
+            "esri/Map",
+            "esri/views/MapView",
+            "esri/layers/MapImageLayer",
+            "esri/layers/FeatureLayer",
+            "esri/layers/GraphicsLayer",
+            "esri/Graphic",
+            "esri/tasks/IdentifyTask",
+            "esri/tasks/support/IdentifyParameters",
+            "esri/tasks/QueryTask",
+            "esri/tasks/support/Query",
+            "esri/widgets/Expand",
+            "esri/widgets/BasemapGallery",
+            "esri/widgets/Legend",
+            "esri/widgets/LayerList",
+            "esri/request"
+        ], function (Map, MapView, MapImageLayer, FeatureLayer, GraphicsLayer, Graphic,
+            IdentifyTask, IdentifyParameters, QueryTask, Query,
+            Expand, BasemapGallery, Legend, LayerList, esriRequest) {
+
+            // Create the map layer
+            var cropLayer = new MapImageLayer({
+                url: "https://gis.ipad.fas.usda.gov/arcgis/rest/services/CommodityExplorer" + cropMapService + "/MapServer",
+                title: cropName
+            });
+
+            var identifyTask, params;
+            var visibleLayerIds = [];
+            var resultsLayer = new GraphicsLayer();
+
+            var myMap = new Map({
+                basemap: "gray",
+                layers: [cropLayer, resultsLayer]
+            });
+
+            var view = new MapView({
+                container: "commodityMapView",
+                map: myMap,
+                zoom: 2,
+                constraints: { minZoom: 2 }
+            });
+
+            // Add Basemap Gallery
+            var basemapGallery = new BasemapGallery({ view: view });
+            var bgExpand = new Expand({ view: view, content: basemapGallery });
+            view.ui.add(bgExpand, "top-right");
+
+            // Add Legend
+            var legendExpand = new Expand({
+                content: new Legend({ view: view, style: "classic" }),
+                view: view,
+                expanded: false
+            });
+            view.ui.add(legendExpand, "bottom-left");
+
+            // Map click interaction
+            view.when(function () {
+                view.on("click", executeIdentifyTask);
+                identifyTask = new IdentifyTask(cropLayer.url);
+                params = new IdentifyParameters();
+                params.tolerance = 3;
+                params.layerOption = "top";
+                params.width = view.width;
+                params.height = view.height;
+            });
+
+            function getVisibleLayerIds(layerList) {
+                var visiableIds = [];
+                layerList.forEach(function (item) {
+                    if (!item.sublayers && item.visible) {
+                        visiableIds.push(item.id);
+                    }
+                });
+                return visiableIds;
+            }
+
+            function executeIdentifyTask(event) {
+                params.geometry = event.mapPoint;
+                params.mapExtent = view.extent;
+                visibleLayerIds = getVisibleLayerIds(cropLayer.allSublayers);
+                if (visibleLayerIds.length > 0) {
+                    visibleLayerIds.sort();
+                    params.layerIds = visibleLayerIds;
+                }
+
+                document.getElementById("commodityMapView").style.cursor = "wait";
+                identifyTask.execute(params).then(function (response) {
+                    var results = response.results;
+                    return results.map(function (result) {
+                        var feature = result.feature;
+                        var layerName = result.layerName;
+                        feature.attributes.layerName = layerName;
+                        cntryName = feature.attributes.cntryname;
+
+                        if (layerName === cropName + ' Percentage') {
+                            feature.popupTemplate = {
+                                title: "<b>" + cropName + " - " + cntryName + "</b>",
+                                content: [{
+                                    type: "fields",
+                                    fieldInfos: [
+                                        { fieldName: "name", label: "Sub Region" },
+                                        { fieldName: "rank", label: "Rank" }
+                                    ]
+                                }]
+                            };
+                        } else if (layerName === 'Crop Explorer Subregions') {
+                            feature.popupTemplate = {
+                                title: "<b>{name}</b>",
+                                content: [{
+                                    type: "fields",
+                                    fieldInfos: [{ fieldName: "name", label: "Sub Region" }]
+                                }]
+                            };
+                        }
+                        return feature;
+                    });
+                }).then(showPopup);
+
+                function showPopup(response) {
+                    if (response.length > 0) {
+                        view.popup.open({
+                            features: response,
+                            location: event.mapPoint
+                        });
+                    }
+                    document.getElementById("commodityMapView").style.cursor = "auto";
+                }
+            }
+
+            // Query to zoom to a country
+            window.doQuery = function() {
+                if (!cntryId) return;
+
+                var cntryUrl = cropLayer.url + "/0";
+                resultsLayer.removeAll();
+
+                var cntryQuery = new Query({
+                    where: "cntryid = '" + cntryId + "'",
+                    outFields: ["*"],
+                    returnGeometry: true
+                });
+
+                var qTask = new QueryTask({ url: cntryUrl });
+                qTask.execute(cntryQuery)
+                    .then(displayResults)
+                    .otherwise(function(err) {
+                        console.error("Promise rejected: ", err.message);
+                        document.getElementById("commodityMapView").style.cursor = "auto";
+                    });
+            };
+
+            function displayResults(results) {
+                var features = results.features.map(function (graphic) {
+                    graphic.symbol = {
+                        type: "simple-fill",
+                        outline: { width: 2, color: [255, 0, 0, 1] },
+                        style: "none"
+                    };
+                    return graphic;
+                });
+                resultsLayer.removeAll();
+                resultsLayer.addMany(features);
+                view.goTo(features);
+                document.getElementById("commodityMapView").style.cursor = "auto";
+            }
+        });
+    </script>
+</body>
+</html>
