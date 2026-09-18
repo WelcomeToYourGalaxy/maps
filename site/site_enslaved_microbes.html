@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0" />
+<title>The Unnecessary Enslavement of Microorganisms 2026</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<style>
+  :root{--bg:#0b0e13;--panel:#10151d;--panel2:#171e28;--line:#262f3b;--ink:#e6ebf1;--ink-dim:#8d99a8;--accent:#7fa8d0}
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+  #map{position:absolute;inset:0;background:#0b0e13}
+  .tabs{position:absolute;top:14px;left:50%;transform:translateX(-50%);z-index:700;display:flex;gap:2px;background:rgba(9,12,17,.9);border:1px solid var(--line);border-radius:8px;padding:3px;box-shadow:0 2px 14px rgba(0,0,0,.4)}
+  .tab{background:transparent;border:0;color:var(--ink-dim);font:inherit;font-size:12px;font-weight:600;letter-spacing:.03em;padding:7px 14px;border-radius:6px;cursor:pointer;transition:color .15s,background .15s;white-space:nowrap}
+  .tab:hover{color:var(--ink)}
+  .tab.on{background:var(--panel2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+  .title{position:absolute;top:60px;left:14px;z-index:600;background:rgba(9,12,17,.78);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:10px;padding:12px 15px;max-width:398px;box-shadow:0 2px 18px rgba(0,0,0,.35)}
+  .title h1{margin:0;font-size:13.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;line-height:1.3}
+  .title p{margin:6px 0 0;font-size:11px;color:var(--ink-dim);line-height:1.5}
+  .title .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:0}
+  .panel{position:absolute;top:14px;right:14px;z-index:600;width:316px;max-width:calc(100vw - 28px);background:rgba(16,21,29,.93);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:10px;display:flex;flex-direction:column;max-height:calc(100vh - 28px);box-shadow:0 2px 18px rgba(0,0,0,.4)}
+  .panel .pad{padding:13px 13px 11px}
+  .search{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:7px;color:var(--ink);padding:9px 11px;font-size:13px;outline:none;transition:border-color .15s}
+  .search::placeholder{color:#5e6b7a}
+  .search:focus{border-color:#3f5a76}
+  .legend{margin-top:11px;display:flex;flex-direction:column;gap:3px}
+  .leg{display:flex;align-items:center;gap:9px;cursor:pointer;user-select:none;font-size:12px;padding:5px 6px;border-radius:6px;transition:background .12s}
+  .leg:hover{background:var(--panel2)}
+  .leg.off{opacity:.38}
+  .leg .dot{width:10px;height:10px;border-radius:2px;flex:0 0 auto;box-shadow:0 0 0 1px rgba(255,255,255,.18)}
+  .leg .lab{flex:1;color:var(--ink)}
+  .leg .cnt{font-family:ui-monospace,monospace;color:var(--ink-dim);font-size:11px}
+  .sizenote{font-size:10.5px;color:#5f6b79;margin-top:10px;line-height:1.5}
+  .meta{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--ink-dim);margin-top:10px;padding-top:9px;border-top:1px solid var(--line)}
+  .meta a{color:var(--accent);text-decoration:none;cursor:pointer}
+  .meta a:hover{color:#a9c8e6}
+  .listwrap{overflow:auto;border-top:1px solid var(--line);padding:6px 6px 9px}
+  .listwrap::-webkit-scrollbar{width:8px}
+  .listwrap::-webkit-scrollbar-thumb{background:#2a3543;border-radius:8px}
+  .row{display:flex;gap:9px;align-items:flex-start;padding:7px 8px;border-radius:7px;cursor:pointer;transition:background .12s}
+  .row:hover{background:var(--panel2)}
+  .row .rk{font-family:ui-monospace,monospace;font-size:11px;color:var(--ink-dim);min-width:22px;text-align:right;margin-top:1px}
+  .row .bar{width:3px;align-self:stretch;border-radius:2px;flex:0 0 auto;margin-top:1px}
+  .row .nm{font-size:12.5px;line-height:1.3;font-weight:600}
+  .row .sub{font-size:10.5px;color:var(--ink-dim);margin-top:2px;line-height:1.35}
+  .row .sub .mono{font-family:ui-monospace,monospace}
+  .leaflet-pane path.mk{filter:drop-shadow(0 1px 2px rgba(0,0,0,.55))}
+  .leaflet-popup-content-wrapper{background:var(--panel);color:var(--ink);border-radius:10px;border:1px solid var(--line);box-shadow:0 6px 26px rgba(0,0,0,.5)}
+  .leaflet-popup-tip{background:var(--panel);border:1px solid var(--line)}
+  .leaflet-popup-content{margin:12px 14px;font-size:12.5px;line-height:1.5;min-width:238px}
+  .pop h3{margin:0 0 2px;font-size:14px;line-height:1.3;font-weight:700}
+  .pop .rkbig{font-family:ui-monospace,monospace;font-size:10.5px;color:var(--ink-dim);letter-spacing:.04em;text-transform:uppercase}
+  .pop .tag{display:inline-block;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:4px;margin:7px 0 8px;font-weight:700;color:#0b0e13}
+  .pop .kv{margin:3px 0}
+  .pop .kv b{color:var(--ink-dim);font-weight:600}
+  .pop .note{margin-top:8px;padding-top:7px;border-top:1px solid var(--line);color:#c4cedb;font-size:11.5px}
+  .leaflet-bar a{background:#171e28;color:#e6ebf1;border-bottom:1px solid var(--line)}
+  .leaflet-bar a:hover{background:#222c39}
+  .leaflet-control-attribution{background:rgba(9,12,17,.72)!important;color:#6c7785!important;font-size:10px!important}
+  .leaflet-control-attribution a{color:#8fa9c2!important}
+  .leaflet-control-layers{background:rgba(16,21,29,.96)!important;color:var(--ink)!important;border:1px solid var(--line)!important;border-radius:8px!important}
+  .leaflet-control-layers-expanded{padding:9px 11px!important}
+  @media (max-width:640px){
+    .title{max-width:calc(100vw - 28px);left:8px;padding:9px 11px}
+    .title h1{font-size:12px}
+    .panel{width:calc(100vw - 28px);top:auto;bottom:14px;right:14px;max-height:44vh}
+    .tabs{top:8px;font-size:11px}
+    .tab{padding:7px 9px}
+  }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div class="tabs">
+  <button class="tab on" id="tab-cos">Biggest culprits</button>
+  <button class="tab" id="tab-own">Who owns them</button>
+  <button class="tab" id="tab-scale">Scale of the problem</button>
+</div>
+<div class="title">
+  <h1 id="title-h"></h1>
+  <p id="title-p"></p>
+</div>
+<div class="panel">
+  <div class="pad">
+    <input id="search" class="search" type="text" placeholder="Search…" autocomplete="off" />
+    <div class="legend" id="legend"></div>
+    <div class="sizenote" id="sizenote"></div>
+    <div class="meta"><span id="count" class="mono">--</span><a id="reset">Reset view</a></div>
+  </div>
+  <div class="listwrap" id="list"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+const CATS_CO = {
+  alcohol:{label:"Alcohol \u2014 beer, wine, spirits, baijiu",color:"#cf6a5e"},
+  tobacco:{label:"Tobacco (fermented leaf)",color:"#9c7b4d"},
+  coffee_cacao:{label:"Coffee, cacao & fermented tea",color:"#7e5a3c"},
+  flavor_additives:{label:"Flavour additives (MSG, citric acid)",color:"#c7a35a"},
+  cosmetics:{label:"Cosmetics & fermented beauty",color:"#c98aa8"},
+  synbio:{label:"Engineered-microbe / synthetic biology",color:"#a986c2"}
+};
+const CATS_OWN = {
+  state:{label:"Government / state",color:"#cf6a5e"},
+  family:{label:"Family / founder-controlled",color:"#5fa98a"},
+  institutional:{label:"Fund / foundation / VC",color:"#6699c9"},
+  public:{label:"Public company",color:"#c7a35a"}
+};
+const CATS_SCALE = {
+  shown:{label:"Shown on this map",color:"#cf6a5e"},
+  excluded:{label:"Not included",color:"#6699c9"}
+};
+const RADIUS = {1:12,2:9.5,3:7.5,4:5.5};
+const STROKE = 'rgba(7,11,16,.9)';
+
+const DATA_CO    = [
+{n:"Anheuser-Busch InBev",hq:"Leuven, BE",lat:50.8798,lng:4.7005,cat:"alcohol",tier:1,mag:100,scale:"495.5M hL beer/yr",detail:"Feeds grain sugars to Saccharomyces yeast that ferment them into alcohol and CO2; spent yeast is filtered out and discarded. World’s largest brewer.",own:"Public; 3G Capital & founding families",note:""},
+{n:"Kweichow Moutai",hq:"Renhuai, CN",lat:27.79,lng:106.4,cat:"alcohol",tier:1,mag:95,scale:"World’s most valuable liquor co",detail:"Baijiu is made by repeated solid-state fermentation of sorghum by vast wild microbial communities, killed and re-grown each cycle.",own:"Chinese state (Guizhou)",note:""},
+{n:"Heineken",hq:"Amsterdam, NL",lat:52.376,lng:4.8951,cat:"alcohol",tier:1,mag:92,scale:"240.7M hL beer/yr",detail:"Industrial yeast fermentation of malted barley into beer across 70+ countries. World’s #2 brewer.",own:"Heineken family",note:""},
+{n:"China Resources Snow",hq:"Shenzhen, CN",lat:22.543,lng:114.054,cat:"alcohol",tier:1,mag:90,scale:"108.8M hL/yr; Snow = best-selling beer",detail:"Brews Snow, the best-selling beer on earth by volume, via mass yeast fermentation.",own:"Chinese state",note:""},
+{n:"Diageo",hq:"London, GB",lat:51.5079,lng:-0.134,cat:"alcohol",tier:1,mag:88,scale:"World’s largest spirits company",detail:"Ferments grain/agave sugars with yeast, then distills the alcohol off (Johnnie Walker, Guinness, Smirnoff).",own:"Public",note:""},
+{n:"Wuliangye Yibin",hq:"Yibin, CN",lat:28.751,lng:104.64,cat:"alcohol",tier:2,mag:78,scale:"World’s #2 baijiu",detail:"Multi-grain baijiu fermented in centuries-old microbial mud pit-cellars.",own:"Chinese state",note:""},
+{n:"Pernod Ricard",hq:"Paris, FR",lat:48.88,lng:2.321,cat:"alcohol",tier:2,mag:76,scale:"#2 global spirits",detail:"Yeast fermentation then distillation (Absolut, Jameson, Chivas).",own:"Ricard family",note:""},
+{n:"Carlsberg",hq:"Copenhagen, DK",lat:55.665,lng:12.536,cat:"alcohol",tier:2,mag:74,scale:"Top-5 brewer",detail:"Pioneered single-strain brewing yeast (Saccharomyces carlsbergensis); ferments beer at scale.",own:"Carlsberg Foundation",note:""},
+{n:"Constellation Brands",hq:"Victor, US",lat:42.981,lng:-77.418,cat:"alcohol",tier:2,mag:72,scale:"Corona (US) + major wine",detail:"Beer and wine fermentation — yeast converts grape and grain sugars to alcohol.",own:"Sands family",note:""},
+{n:"Molson Coors",hq:"Chicago, US",lat:41.88,lng:-87.636,cat:"alcohol",tier:2,mag:70,scale:"Top-5 brewer",detail:"Mass yeast brewing of Coors, Miller, Blue Moon.",own:"Molson & Coors families",note:""},
+{n:"Suntory",hq:"Osaka, JP",lat:34.7,lng:135.5,cat:"alcohol",tier:2,mag:66,scale:"Whisky/beer/spirits",detail:"Ferments and distills whisky and brews beer (Yamazaki, Jim Beam).",own:"Saji & Torii families",note:""},
+{n:"E&J Gallo",hq:"Modesto, US",lat:37.639,lng:-120.997,cat:"alcohol",tier:2,mag:64,scale:"World’s largest wine producer",detail:"The planet’s largest grape-to-wine yeast fermentation operation.",own:"Gallo family (private)",note:""},
+{n:"Asahi Group",hq:"Tokyo, JP",lat:35.7,lng:139.8,cat:"alcohol",tier:3,mag:58,scale:"Major brewer & spirits",detail:"Beer fermentation (Asahi, Peroni, Pilsner Urquell).",own:"Public",note:""},
+{n:"Brown-Forman",hq:"Louisville, US",lat:38.23,lng:-85.76,cat:"alcohol",tier:3,mag:55,scale:"Jack Daniel’s",detail:"Sour-mash yeast fermentation then distillation of whiskey.",own:"Brown family",note:""},
+{n:"Bacardi",hq:"Hamilton, BM",lat:32.295,lng:-64.782,cat:"alcohol",tier:3,mag:54,scale:"Largest private spirits",detail:"Yeast-ferments molasses/grain then distills (rum, vodka, gin).",own:"Bacardi family",note:""},
+{n:"Treasury Wine Estates",hq:"Melbourne, AU",lat:-37.82,lng:144.96,cat:"alcohol",tier:3,mag:52,scale:"Largest pure-play wine co",detail:"Large-scale wine fermentation (Penfolds, 19 Crimes).",own:"Public",note:""},
+{n:"China Tobacco (CNTC)",hq:"Beijing, CN",lat:39.91,lng:116.4,cat:"tobacco",tier:1,mag:86,scale:"World’s largest tobacco producer",detail:"Tobacco leaf is cured and fermented by microbial communities that break down proteins and starches to mellow flavour and cut harshness.",own:"Chinese state monopoly",note:""},
+{n:"Philip Morris International",hq:"Stamford, US",lat:41.053,lng:-73.539,cat:"tobacco",tier:2,mag:72,scale:"Marlboro (ex-US)",detail:"Leaf fermentation during curing develops the aroma and chemistry of cigarette tobacco.",own:"Public",note:""},
+{n:"Altria",hq:"Richmond, US",lat:37.541,lng:-77.436,cat:"tobacco",tier:2,mag:68,scale:"Marlboro (US)",detail:"Microbial leaf fermentation in tobacco curing.",own:"Public",note:""},
+{n:"British American Tobacco",hq:"London, GB",lat:51.498,lng:-0.13,cat:"tobacco",tier:2,mag:67,scale:"Dunhill, Lucky Strike",detail:"Cures and ferments tobacco leaf with microbes before manufacture.",own:"Public",note:""},
+{n:"Japan Tobacco",hq:"Tokyo, JP",lat:35.67,lng:139.74,cat:"tobacco",tier:3,mag:55,scale:"JT, Camel (ex-US)",detail:"Microbial fermentation of cured leaf.",own:"Japanese state (~33%) + public",note:""},
+{n:"Imperial Brands",hq:"Bristol, GB",lat:51.45,lng:-2.59,cat:"tobacco",tier:3,mag:50,scale:"Major global tobacco",detail:"Leaf fermentation in curing.",own:"Public",note:""},
+{n:"Nestlé",hq:"Vevey, CH",lat:46.46,lng:6.84,cat:"coffee_cacao",tier:1,mag:84,scale:"World’s largest food/coffee co",detail:"Coffee cherries and cacao pods are fermented by wild yeasts and bacteria for days to build flavour before drying and roasting (Nescafé, KitKat).",own:"Public",note:""},
+{n:"Starbucks",hq:"Seattle, US",lat:47.581,lng:-122.336,cat:"coffee_cacao",tier:2,mag:70,scale:"Largest coffee chain",detail:"Sources coffee whose beans are microbially fermented during wet/dry processing.",own:"Public",note:""},
+{n:"JDE Peet’s",hq:"Amsterdam, NL",lat:52.34,lng:4.88,cat:"coffee_cacao",tier:2,mag:68,scale:"World’s largest pure coffee co",detail:"Coffee bean fermentation underlies its flavour (Jacobs, Douwe Egberts, Peet’s).",own:"JAB / Reimann family",note:""},
+{n:"Mondelez",hq:"Chicago, US",lat:41.885,lng:-87.623,cat:"coffee_cacao",tier:2,mag:66,scale:"Cadbury, Milka",detail:"Cacao beans are fermented by microbes for days to develop chocolate flavour precursors.",own:"Public",note:""},
+{n:"Mars Wrigley",hq:"McLean, US",lat:38.934,lng:-77.178,cat:"coffee_cacao",tier:2,mag:64,scale:"M&M’s, Snickers",detail:"Relies on microbial cacao fermentation for chocolate.",own:"Mars family (private)",note:""},
+{n:"TAETEA (Dayi)",hq:"Menghai, CN",lat:21.96,lng:100.45,cat:"coffee_cacao",tier:3,mag:53,scale:"World’s largest pu-erh brand",detail:"Ripe pu-erh is post-fermented by a managed microbial wet-piling (Aspergillus and others) over weeks to develop its prized flavour.",own:"Private (Yunnan)",note:""},
+{n:"The Hershey Company",hq:"Hershey, US",lat:40.286,lng:-76.65,cat:"coffee_cacao",tier:3,mag:52,scale:"Hershey’s chocolate",detail:"Cacao fermentation by yeasts and bacteria precedes drying and roasting.",own:"Hershey Trust",note:""},
+{n:"Ferrero",hq:"Alba, IT",lat:44.7,lng:8.035,cat:"coffee_cacao",tier:3,mag:50,scale:"Nutella, Ferrero Rocher",detail:"Microbially fermented cacao is the basis of its chocolate.",own:"Ferrero family (private)",note:""},
+{n:"Lindt & Sprüngli",hq:"Kilchberg, CH",lat:47.32,lng:8.55,cat:"coffee_cacao",tier:3,mag:48,scale:"Premium chocolate",detail:"Fermented cacao beans.",own:"Public; founder foundation",note:""},
+{n:"Ajinomoto",hq:"Tokyo, JP",lat:35.676,lng:139.76,cat:"flavor_additives",tier:1,mag:80,scale:"World’s largest MSG/amino-acid maker",detail:"Mass-produces MSG and amino acids by feeding sugar to Corynebacterium glutamicum bacteria, which excrete glutamate.",own:"Public",note:""},
+{n:"Fufeng Group",hq:"Hohhot, CN",lat:40.842,lng:111.749,cat:"flavor_additives",tier:2,mag:66,scale:"Largest MSG producer (China)",detail:"Bacterial fermentation of corn starch into MSG and amino acids at industrial scale.",own:"Public",note:""},
+{n:"ADM",hq:"Chicago, US",lat:41.85,lng:-87.65,cat:"flavor_additives",tier:2,mag:64,scale:"Citric acid, sweeteners",detail:"Citric acid is excreted by Aspergillus niger mould fed on sugar; also ferments amino acids and gums.",own:"Public",note:""},
+{n:"Jungbunzlauer",hq:"Basel, CH",lat:47.56,lng:7.59,cat:"flavor_additives",tier:3,mag:50,scale:"Citric acid & xanthan",detail:"Fungal and bacterial fermentation makes citric acid and xanthan gum for foods and drinks.",own:"Private (Montana family)",note:""},
+{n:"Givaudan",hq:"Geneva, CH",lat:46.22,lng:6.13,cat:"flavor_additives",tier:3,mag:48,scale:"World’s largest flavour & fragrance co",detail:"Increasingly brews flavour and fragrance molecules via engineered-microbe fermentation.",own:"Public",note:""},
+{n:"IFF",hq:"New York, US",lat:40.74,lng:-74.008,cat:"flavor_additives",tier:3,mag:46,scale:"Flavours & fragrances",detail:"Uses microbial fermentation to produce flavour and fragrance ingredients.",own:"Public",note:""},
+{n:"L’Oréal",hq:"Clichy, FR",lat:48.904,lng:2.306,cat:"cosmetics",tier:2,mag:82,scale:"World’s largest cosmetics co",detail:"Cultures microbes to brew ‘bio-fermented’ actives (hyaluronic acid, peptides) for luxury skincare.",own:"Bettencourt-Meyers family + Nestlé",note:""},
+{n:"SK-II (P&G)",hq:"Cincinnati, US",lat:39.101,lng:-84.512,cat:"cosmetics",tier:2,mag:74,scale:"Pitera = yeast-ferment filtrate",detail:"SK-II’s flagship Pitera is the filtrate of cultured Galactomyces yeast — microbes grown and killed for a serum.",own:"Public (P&G)",note:""},
+{n:"Estée Lauder",hq:"New York, US",lat:40.762,lng:-73.972,cat:"cosmetics",tier:3,mag:58,scale:"Prestige beauty",detail:"Ferments yeast and bacteria to make skincare actives.",own:"Lauder family",note:""},
+{n:"Shiseido",hq:"Tokyo, JP",lat:35.67,lng:139.76,cat:"cosmetics",tier:3,mag:56,scale:"Fermented/sake-derived actives",detail:"Uses fermentation-derived ingredients (e.g. sake-yeast filtrates) in skincare.",own:"Public",note:""},
+{n:"Amorepacific",hq:"Seoul, KR",lat:37.529,lng:126.965,cat:"cosmetics",tier:3,mag:54,scale:"Fermentation-forward K-beauty",detail:"Ferments botanicals with microbes for its skincare (Sulwhasoo).",own:"Suh family",note:""},
+{n:"LVMH Beauty",hq:"Paris, FR",lat:48.872,lng:2.306,cat:"cosmetics",tier:3,mag:52,scale:"Luxury beauty",detail:"Fermented luxury actives in Dior and Guerlain skincare.",own:"Arnault family",note:""},
+{n:"Ginkgo Bioworks",hq:"Boston, US",lat:42.387,lng:-71.047,cat:"synbio",tier:2,mag:62,scale:"‘The organism company’",detail:"Reprograms cells’ DNA so engineered microbes act as living factories churning out fragrances, flavours and novelty molecules.",own:"Public",note:""},
+{n:"Amyris",hq:"Emeryville, US",lat:37.831,lng:-122.287,cat:"synbio",tier:3,mag:46,scale:"Engineered yeast",detail:"Yeast engineered to ferment sugar into cosmetic squalane and scent molecules.",own:"Restructured (2023)",note:""},
+{n:"Conagen / Manus Bio",hq:"Boston, US",lat:42.46,lng:-71.28,cat:"synbio",tier:3,mag:42,scale:"Fermented flavours",detail:"Engineered microbes ferment sugar into flavours, sweeteners and fragrances.",own:"Private",note:""}
+];
+const DATA_OWN   = [
+{n:"Chinese state",hq:"Beijing, CN",lat:39.9087,lng:116.3975,cat:"state",tier:1,mag:95,scale:"Liquor + tobacco monopolies",sec:"CR Snow, Moutai, Wuliangye + China Tobacco (world’s largest tobacco producer)",note:"Controls the planet’s biggest alcohol AND tobacco fermentation operations."},
+{n:"Anheuser-Busch InBev",hq:"Leuven, BE",lat:50.8798,lng:4.7005,cat:"public",tier:1,mag:100,scale:"World’s largest brewer",sec:"500+ beer brands",note:"Public; 3G Capital & founding families."},
+{n:"Heineken family",hq:"Amsterdam, NL",lat:52.376,lng:4.8951,cat:"family",tier:1,mag:90,scale:"#2 brewer",sec:"Heineken beer empire",note:"Charlene de Carvalho-Heineken controls ~50%."},
+{n:"Diageo",hq:"London, GB",lat:51.5079,lng:-0.134,cat:"public",tier:1,mag:88,scale:"World’s largest spirits",sec:"Johnnie Walker, Guinness, Smirnoff",note:"Widely held."},
+{n:"Reimann family / JAB",hq:"Vienna, AT",lat:48.208,lng:16.373,cat:"family",tier:2,mag:72,scale:"World’s largest pure coffee co",sec:"JDE Peet’s, Pret, Panera",note:"Secretive dynasty controlling much of global coffee."},
+{n:"Mars family",hq:"McLean, US",lat:38.934,lng:-77.178,cat:"family",tier:2,mag:66,scale:"Chocolate giant",sec:"Mars Wrigley",note:"Private family controls one of the world’s biggest confectioners."},
+{n:"Ricard family",hq:"Paris, FR",lat:48.88,lng:2.321,cat:"family",tier:2,mag:76,scale:"#2 spirits",sec:"Pernod Ricard",note:"Founding family control."},
+{n:"Sands family",hq:"Victor, US",lat:42.981,lng:-77.418,cat:"family",tier:2,mag:72,scale:"Corona (US) + wine",sec:"Constellation Brands",note:"Family voting control."},
+{n:"Bettencourt-Meyers family",hq:"Clichy, FR",lat:48.904,lng:2.306,cat:"family",tier:2,mag:82,scale:"World’s largest cosmetics",sec:"L’Oréal (+ Nestlé stake)",note:"World’s richest family."},
+{n:"Procter & Gamble",hq:"Cincinnati, US",lat:39.101,lng:-84.512,cat:"public",tier:2,mag:74,scale:"SK-II Pitera",sec:"Yeast-ferment skincare",note:"Widely held."},
+{n:"Gallo family",hq:"Modesto, US",lat:37.639,lng:-120.997,cat:"family",tier:2,mag:64,scale:"Largest wine producer",sec:"E&J Gallo (private)",note:"Family-owned."},
+{n:"Saji & Torii families",hq:"Osaka, JP",lat:34.7,lng:135.5,cat:"family",tier:2,mag:66,scale:"Whisky/beer/spirits",sec:"Suntory (private)",note:"Founding families."},
+{n:"Hershey Trust",hq:"Hershey, US",lat:40.286,lng:-76.65,cat:"institutional",tier:3,mag:52,scale:"Hershey’s chocolate",sec:"The Hershey Company",note:"A charitable trust controls the chocolate maker."},
+{n:"Ferrero family",hq:"Alba, IT",lat:44.7,lng:8.035,cat:"family",tier:3,mag:50,scale:"Nutella, Ferrero Rocher",sec:"Ferrero (private)",note:"Family-owned confectioner."},
+{n:"Lauder family",hq:"New York, US",lat:40.762,lng:-73.972,cat:"family",tier:3,mag:58,scale:"Prestige beauty",sec:"Estée Lauder",note:"Family voting control."},
+{n:"Arnault family / LVMH",hq:"Paris, FR",lat:48.872,lng:2.306,cat:"family",tier:3,mag:52,scale:"Luxury beauty",sec:"Dior, Guerlain",note:"Controls the luxury group."},
+{n:"Brown family",hq:"Louisville, US",lat:38.23,lng:-85.76,cat:"family",tier:3,mag:55,scale:"Jack Daniel’s",sec:"Brown-Forman",note:"Family voting control."},
+{n:"Bacardi family",hq:"Hamilton, BM",lat:32.295,lng:-64.782,cat:"family",tier:3,mag:54,scale:"Largest private spirits",sec:"Bacardi",note:"Family-owned 160+ years."},
+{n:"Venture capital (synbio)",hq:"San Francisco, US",lat:37.7749,lng:-122.4194,cat:"institutional",tier:3,mag:50,scale:"Engineered-microbe startups",sec:"Ginkgo, Amyris, Conagen",note:"VC bankrolls the synthetic-biology fragrance/flavour firms."},
+{n:"Index-fund Big Three",hq:"New York, US",lat:40.7531,lng:-74.001,cat:"institutional",tier:1,mag:40,scale:"Largest shareholders",sec:"AB InBev, Diageo, L’Oréal, P&G, Nestlé, PMI, Ajinomoto…",note:"BlackRock, Vanguard, State Street — shareholders, not controllers."}
+];
+const DATA_SCALE = [
+{n:"Wastewater treatment",hq:"(global)",lat:51.5,lng:-0.1,cat:"excluded",tier:1,mag:100,scale:"~10^25 cells/yr · continuous",detail:"Trillions of bacteria are grown in aeration tanks to eat sewage, then continuously killed and dewatered as sludge — likely the single largest microbial kill on earth.",note:"Placed over a major metropolis as a universal-infrastructure stand-in."},
+{n:"Agricultural inoculants & soil",hq:"Iowa, US",lat:41.5,lng:-93.6,cat:"excluded",tier:1,mag:96,scale:"~10^24/yr · seasonal",detail:"Nitrogen-fixing bacteria and mycorrhizal fungi are mass-grown and ploughed into fields by the tonne.",note:"The US Corn Belt, heartland of industrial agriculture."},
+{n:"Composting",hq:"Netherlands",lat:52.1,lng:5.3,cat:"excluded",tier:1,mag:94,scale:"~10^24/yr · continuous",detail:"Managed microbial communities are grown to rot organic waste, then die as the pile cools.",note:"The Netherlands, a leader in industrial composting and circular waste."},
+{n:"Dairy & food fermentation",hq:"India",lat:22.0,lng:79.0,cat:"excluded",tier:1,mag:92,scale:"~10^23/yr · batch",detail:"Lactic-acid bacteria are grown by the trillion to make yogurt, cheese and kimchi, then eaten or killed.",note:"India, the world’s largest dairy producer."},
+{n:"Alcohol fermentation",hq:"Belgium",lat:50.5,lng:4.5,cat:"shown",tier:1,mag:90,scale:"~10^23/yr · batch",detail:"Yeast is grown, ferments sugar to alcohol, then is filtered off and killed — for a recreational drink.",note:"Belgium, home of AB InBev, the world’s largest brewer."},
+{n:"Bread / baking yeast",hq:"France",lat:48.0,lng:2.0,cat:"excluded",tier:2,mag:78,scale:"~10^22/yr · batch",detail:"Saccharomyces yeast leavens dough, then is killed by oven heat.",note:"France, a baking heartland and home of major yeast producers."},
+{n:"Silage / feed fermentation",hq:"Wisconsin, US",lat:43.5,lng:-90.0,cat:"excluded",tier:2,mag:76,scale:"~10^22/yr · batch",detail:"Bacteria ferment and preserve animal feed, then die off.",note:"Wisconsin, the US dairy belt where silage feeds the herds."},
+{n:"Industrial enzymes",hq:"Denmark",lat:56.0,lng:9.5,cat:"excluded",tier:2,mag:74,scale:"~10^22/yr · fed-batch",detail:"Microbes are grown in giant tanks to excrete enzymes for detergents and food, then killed and discarded.",note:"Denmark, home of Novonesis, the world’s largest enzyme maker."},
+{n:"Biofuel (ethanol/algae)",hq:"Brazil",lat:-15.0,lng:-47.0,cat:"excluded",tier:2,mag:72,scale:"~10^22/yr · continuous",detail:"Yeast or algae are grown and fermented for fuel, then spent.",note:"Brazil, the world’s sugarcane-ethanol leader."},
+{n:"Coffee & cacao fermentation",hq:"Côte d’Ivoire",lat:7.0,lng:-5.0,cat:"shown",tier:2,mag:70,scale:"~10^21/yr · batch",detail:"Wild yeasts and bacteria ferment coffee cherries and cacao pods for days to build flavour, then are dried/roasted off.",note:"Côte d’Ivoire, the world’s largest cacao producer."},
+{n:"MSG & citric-acid fermentation",hq:"China",lat:34.0,lng:113.0,cat:"shown",tier:2,mag:68,scale:"~10^21/yr · fed-batch",detail:"Bacteria and moulds are fed sugar to excrete MSG, amino acids and citric acid for flavouring.",note:"China, the world’s largest MSG and amino-acid producer."},
+{n:"Antibiotics production",hq:"China",lat:36.0,lng:118.0,cat:"excluded",tier:2,mag:66,scale:"~10^21/yr · fed-batch",detail:"Bacteria/fungi are grown to secrete antibiotics, then killed during extraction.",note:"China, the dominant global antibiotic-fermentation hub."},
+{n:"Probiotic supplements",hq:"(US/EU)",lat:40.0,lng:-90.0,cat:"excluded",tier:2,mag:64,scale:"~10^21/yr · batch",detail:"Live bacteria are mass-grown, freeze-dried and bottled as wellness pills and drinks.",note:"Placed across the US/EU, the largest supplement markets."},
+{n:"Livestock feed microbiome",hq:"Kansas, US",lat:38.5,lng:-98.0,cat:"excluded",tier:2,mag:62,scale:"~10^21/yr · continuous",detail:"Probiotics are bred and dosed into animal feed for growth.",note:"Kansas, US feedlot country."},
+{n:"Fermented tea (pu-erh)",hq:"Yunnan, CN",lat:22.0,lng:100.8,cat:"shown",tier:3,mag:57,scale:"~10^20/yr · batch",detail:"Ripe pu-erh tea is wet-pile fermented by managed microbes (Aspergillus and others) for weeks.",note:"Yunnan, China, the birthplace and capital of pu-erh."},
+{n:"Bioremediation",hq:"Gulf of Mexico",lat:27.0,lng:-90.0,cat:"excluded",tier:3,mag:55,scale:"~10^20/yr · project",detail:"Microbes are grown and released to digest oil spills and toxins.",note:"The Gulf of Mexico, site of major oil-spill bioremediation."},
+{n:"Bioleaching / mining",hq:"Atacama, CL",lat:-24.0,lng:-69.0,cat:"excluded",tier:3,mag:54,scale:"~10^20/yr · continuous",detail:"Bacteria are grown on ore heaps to leach out copper and gold.",note:"Chile’s Atacama, the world’s largest copper-mining region."},
+{n:"Insulin & biopharma",hq:"Switzerland",lat:47.4,lng:8.5,cat:"excluded",tier:3,mag:53,scale:"~10^20/yr · fed-batch",detail:"Engineered bacteria/yeast are grown to make insulin and drugs, then killed for extraction.",note:"Switzerland, a global biopharma hub."},
+{n:"Cosmetics / fermented beauty",hq:"Korea",lat:37.0,lng:127.5,cat:"shown",tier:3,mag:50,scale:"~10^19/yr · batch",detail:"Yeast and bacteria are cultured and killed to harvest filtrates and actives for skincare.",note:"South Korea, the K-beauty fermentation capital."},
+{n:"Tobacco fermentation",hq:"China",lat:28.0,lng:112.0,cat:"shown",tier:3,mag:49,scale:"~10^19/yr · batch",detail:"Microbes ferment cured tobacco leaf to mellow a recreational drug.",note:"China, home of China Tobacco, the world’s largest producer."},
+{n:"Synthetic biology",hq:"Boston, US",lat:42.4,lng:-71.1,cat:"shown",tier:3,mag:48,scale:"~10^19/yr · continuous",detail:"Engineered microbes are run as living factories for novelty molecules across many generations.",note:"Boston, the global synthetic-biology hub."},
+{n:"Kombucha",hq:"California, US",lat:34.0,lng:-118.0,cat:"excluded",tier:3,mag:47,scale:"~10^19/yr · batch",detail:"A live SCOBY of bacteria and yeast ferments sweet tea for a fad drink.",note:"California, the US kombucha heartland."},
+{n:"Mycelium materials / bioplastics",hq:"New York, US",lat:42.7,lng:-73.7,cat:"excluded",tier:3,mag:44,scale:"~10^18/yr · batch",detail:"Fungal mycelium is grown into leather and packaging, then dried (killed).",note:"Upstate New York, home of mycelium-materials pioneers."},
+{n:"Vaccine & viral-vector cultures",hq:"Germany",lat:50.0,lng:8.5,cat:"excluded",tier:3,mag:43,scale:"~10^18/yr · batch",detail:"Cell lines and viruses are grown to make vaccines and gene-therapy vectors.",note:"Germany, a major vaccine-manufacturing hub."},
+{n:"Algae display & photobioreactors",hq:"Israel",lat:31.5,lng:35.0,cat:"excluded",tier:3,mag:42,scale:"~10^18/yr · continuous",detail:"Algae are grown in lit reactors for supplements, art, oxygen and study.",note:"Israel, a leader in algae photobioreactor R&D."},
+{n:"Human microbiome (FMT/diets)",hq:"Washington, US",lat:38.9,lng:-77.0,cat:"excluded",tier:4,mag:32,scale:"~10^17/yr · per-treatment",detail:"Donor microbiomes are transplanted and diets used to reshape gut bacteria.",note:"Placed near US clinical-research centres."},
+{n:"Lab research / model organisms",hq:"Cambridge, GB",lat:52.2,lng:0.12,cat:"excluded",tier:4,mag:30,scale:"~10^17/yr · continuous",detail:"E. coli, yeast and other models are grown and killed by the billion for experiments.",note:"Cambridge, a global research-university hub."},
+{n:"Virus propagation / phage therapy",hq:"Tbilisi, GE",lat:41.7,lng:44.8,cat:"excluded",tier:4,mag:28,scale:"~10^16/yr · batch",detail:"Viruses and bacteriophages are propagated in host cells for research and therapy.",note:"Tbilisi, home of the Eliava Institute, the historic phage-therapy centre."},
+{n:"Home fermentation kits",hq:"(US/EU)",lat:39.0,lng:-98.0,cat:"excluded",tier:4,mag:26,scale:"~10^16/yr · batch",detail:"Hobbyists grow sourdough, kefir and kombucha cultures at home.",note:"Placed across the US/EU home-fermentation market."},
+{n:"Aquarium & pond bacteria",hq:"(US)",lat:33.0,lng:-97.0,cat:"excluded",tier:4,mag:24,scale:"~10^15/yr · continuous",detail:"Live nitrifying bacteria are bottled and sold to cycle tanks.",note:"Placed in the US, a large aquarium-hobby market."},
+{n:"Culture collections / biobanks",hq:"Virginia, US",lat:38.9,lng:-77.4,cat:"excluded",tier:4,mag:22,scale:"Billions of strains · frozen",detail:"Reference strains are kept frozen indefinitely — enslaved (held), though not killed.",note:"Virginia, home of the ATCC biobank."}
+];
+
+const map = L.map('map',{zoomControl:true,worldCopyJump:true,minZoom:2,maxZoom:19}).setView([28,30],2.2);
+const gHyb=L.tileLayer('https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',{subdomains:['mt0','mt1','mt2','mt3'],maxZoom:20,attribution:'Imagery &copy; Google'});
+const gSat=L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{subdomains:['mt0','mt1','mt2','mt3'],maxZoom:20,attribution:'Imagery &copy; Google'});
+const esri=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Imagery &copy; Esri, Maxar'});
+gHyb.addTo(map);
+L.control.layers({"Satellite + labels":gHyb,"Satellite":gSat,"Esri imagery":esri},{},{position:'bottomleft',collapsed:true}).addTo(map);
+
+function coPopup(d,r){
+  const c=CATS_CO[d.cat];
+  return `<div class="pop"><div class="rkbig">Rank #${r} &middot; scale of exploitation: tier ${d.tier}</div>
+  <h3>${d.n}</h3><span class="tag" style="background:${c.color}">${c.label}</span>
+  <div class="kv"><b>Based:</b> ${d.hq}</div>
+  <div class="kv"><b>Scale:</b> ${d.scale}</div>
+  <div class="kv"><b>How it uses microbes:</b> ${d.detail}</div>
+  <div class="kv"><b>Owner:</b> ${d.own}</div>
+  ${d.note?`<div class="note">${d.note}</div>`:''}</div>`;
+}
+function ownPopup(d,r){
+  const c=CATS_OWN[d.cat];
+  return `<div class="pop"><div class="rkbig">Rank #${r} &middot; control weight: tier ${d.tier}</div>
+  <h3>${d.n}</h3><span class="tag" style="background:${c.color}">${c.label}</span>
+  <div class="kv"><b>Based:</b> ${d.hq}</div>
+  <div class="kv"><b>Controls:</b> ${d.sec}</div>
+  <div class="kv"><b>Scale:</b> ${d.scale}</div>
+  ${d.note?`<div class="note">${d.note}</div>`:''}</div>`;
+}
+function scalePopup(d,r){
+  const c=CATS_SCALE[d.cat];
+  return `<div class="pop"><div class="rkbig">Magnitude rank #${r} &middot; tier ${d.tier}</div>
+  <h3>${d.n}</h3><span class="tag" style="background:${c.color}">${d.cat==='shown'?'On this map':'Not included'}</span>
+  <div class="kv"><b>Representative site:</b> ${d.hq}</div>
+  <div class="kv"><b>Est. scale &amp; frequency:</b> ${d.scale}</div>
+  <div class="kv"><b>How microbes are used:</b> ${d.detail}</div>
+  ${d.note?`<div class="note"><b>Why here:</b> ${d.note}</div>`:''}</div>`;
+}
+
+const CFG = {
+  cos:{
+    data:DATA_CO, cats:CATS_CO, popup:coPopup,
+    h:"The Biggest Unnecessary Enslavers of Microorganisms",
+    p:'This map documents the unnecessary industrial-scale propagation and killing of microorganisms \u2014 the largest culprits across recreational alcohol and tobacco, coffee, cacao and fermented tea, flavour additives, cosmetics and novelty synthetic biology. <span class="mono">(2026)</span>',
+    note:"Marker size = scale of microbial propagation and killing (production volume, revenue or output). Company facts are real and sourced (BarthHaas brewing report, company filings, industry data). The \u2018Scale of the problem\u2019 tab maps the wider universe of microbe-using industries for comparison.",
+    sub:d=>`${d.hq} &middot; <span class="mono">${d.scale}</span>`
+  },
+  own:{
+    data:DATA_OWN, cats:CATS_OWN, popup:ownPopup,
+    h:"Who Owns the Microbe Enslavers",
+    p:'The families, founders, funds and states that control the largest microbial-exploitation industries. <span class="mono">(2026)</span>',
+    note:"A few dynastic families and the Chinese state control the biggest alcohol and tobacco producers; family, foundation and private control dominates beer, spirits, coffee, chocolate and cosmetics; venture capital bankrolls the engineered-microbe startups. Index funds are the largest shareholders of the listed firms \u2014 shareholders, not controllers.",
+    sub:d=>`${d.hq} &middot; <span class="mono">${d.scale}</span>`
+  },
+  scale:{
+    data:DATA_SCALE, cats:CATS_SCALE, popup:scalePopup,
+    h:"Scale of the Problem \u2014 Industries that Use Microbes",
+    p:'Most industries that propagate and kill microorganisms, sized by rough magnitude and placed at a representative site. <span class="mono">(2026)</span>',
+    note:"IMPORTANT: the cell counts are illustrative ORDER-OF-MAGNITUDE estimates only \u2014 production volume \u00d7 typical microbial density. The true numbers are unknowable and could be off by powers of ten; they are shown to compare relative scale, not as measured figures.",
+    sub:d=>`${d.scale} &middot; <span class="mono">${d.cat==='shown'?'on map':'not incl'}</span>`
+  }
+};
+
+const listEl=document.getElementById('list'), legendEl=document.getElementById('legend');
+const searchEl=document.getElementById('search'), countEl=document.getElementById('count');
+let cur={items:[],active:new Set(),cfg:null,key:null};
+function clearCur(){cur.items.forEach(it=>map.removeLayer(it.marker));cur.items=[];listEl.innerHTML='';legendEl.innerHTML='';}
+
+function build(key){
+  clearCur();
+  const cfg=CFG[key]; cur.cfg=cfg; cur.key=key;
+  document.getElementById('title-h').innerHTML=cfg.h;
+  document.getElementById('title-p').innerHTML=cfg.p;
+  document.getElementById('sizenote').innerHTML=cfg.note;
+  cur.active=new Set(Object.keys(cfg.cats));
+  Object.entries(cfg.cats).forEach(([k,c])=>{
+    const el=document.createElement('div'); el.className='leg';
+    el.innerHTML=`<span class="dot" style="background:${c.color}"></span><span class="lab">${c.label}</span><span class="cnt" id="cnt-${k}"></span>`;
+    el.addEventListener('click',()=>{if(cur.active.has(k)){cur.active.delete(k);el.classList.add('off');}else{cur.active.add(k);el.classList.remove('off');}applyFilters();});
+    legendEl.appendChild(el);
+  });
+  const rows=[...cfg.data].sort((a,b)=>(a.tier-b.tier)||(b.mag-a.mag));
+  rows.forEach((d,i)=>{
+    const rank=i+1, c=cfg.cats[d.cat], base=RADIUS[d.tier];
+    const marker=L.circleMarker([d.lat,d.lng],{radius:base,color:STROKE,weight:1,fillColor:c.color,fillOpacity:.82,className:'mk'}).bindPopup(cfg.popup(d,rank),{maxWidth:300});
+    marker.on('mouseover',()=>marker.setStyle({radius:base+2.5,weight:1.6,color:'rgba(255,255,255,.92)'}));
+    marker.on('mouseout',()=>marker.setStyle({radius:base,weight:1,color:STROKE}));
+    marker.addTo(map);
+    const row=document.createElement('div'); row.className='row';
+    row.innerHTML=`<div class="rk">${rank}</div><div class="bar" style="background:${c.color}"></div><div><div class="nm">${d.n}</div><div class="sub">${cfg.sub(d)}</div></div>`;
+    row.addEventListener('click',()=>{map.flyTo([d.lat,d.lng],Math.max(map.getZoom(),5),{duration:.8});marker.openPopup();});
+    listEl.appendChild(row);
+    cur.items.push({d,marker,row});
+  });
+  applyFilters();
+}
+function applyFilters(){
+  const q=searchEl.value.trim().toLowerCase(); let shown=0; const per={};
+  Object.keys(cur.cfg.cats).forEach(k=>per[k]=0);
+  cur.items.forEach(({d,marker,row})=>{
+    const ok=cur.active.has(d.cat)&&(!q||(d.n+' '+d.hq+' '+d.scale+' '+(d.detail||d.sec||'')+' '+(d.own||'')).toLowerCase().includes(q));
+    if(ok){if(!map.hasLayer(marker))marker.addTo(map);row.style.display='';shown++;per[d.cat]++;}
+    else{if(map.hasLayer(marker))map.removeLayer(marker);row.style.display='none';}
+  });
+  countEl.textContent=shown+' / '+cur.items.length+' shown';
+  Object.keys(cur.cfg.cats).forEach(k=>{const e=document.getElementById('cnt-'+k);if(e)e.textContent=per[k];});
+}
+searchEl.addEventListener('input',applyFilters);
+document.getElementById('reset').addEventListener('click',()=>{searchEl.value='';build(cur.key);map.setView([28,30],2.2);});
+const tabs={cos:document.getElementById('tab-cos'),own:document.getElementById('tab-own'),scale:document.getElementById('tab-scale')};
+function setTab(k){Object.entries(tabs).forEach(([kk,el])=>el.classList.toggle('on',kk===k));build(k);}
+tabs.cos.addEventListener('click',()=>setTab('cos'));
+tabs.own.addEventListener('click',()=>setTab('own'));
+tabs.scale.addEventListener('click',()=>setTab('scale'));
+build('cos');
+</script>
+</body>
+</html>

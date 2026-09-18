@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Who Owns the Food System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}html,body{height:100%}
+  body{font-family:'Archivo',sans-serif;background:#f4f3ef;color:#222;overflow:hidden;-webkit-font-smoothing:antialiased}
+  .app{display:flex;flex-direction:column;height:100vh}
+  .topbar{display:flex;align-items:center;gap:16px;padding:0 16px;height:58px;flex-shrink:0;background:#111;color:#fff;border-bottom:3px solid #e0a93a;z-index:30}
+  .title{display:flex;flex-direction:column;line-height:1;flex-shrink:0}
+  .title .t{font-family:'Anton',sans-serif;font-size:20px;letter-spacing:.02em;text-transform:uppercase}.title .t span{color:#e0a93a}
+  .title .s{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#9a9a9a;margin-top:4px;font-weight:600}
+  .searchwrap{position:relative;flex:1;max-width:330px}
+  .searchwrap svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:#888}
+  #search{width:100%;padding:9px 14px 9px 38px;border:1px solid #333;border-radius:9px;font-family:'Archivo';font-size:14px;color:#fff;background:#222;outline:none}
+  #search::placeholder{color:#888}#search:focus{border-color:#e0a93a;box-shadow:0 0 0 3px rgba(224,169,58,.18)}
+  .result{font-size:12px;color:#aaa;font-weight:600;white-space:nowrap;flex-shrink:0}.result b{color:#e0a93a}
+  .tools{display:flex;gap:8px;flex-shrink:0}
+  .tools button{font-family:'Archivo';font-weight:600;font-size:12px;color:#ddd;background:#222;border:1px solid #333;border-radius:8px;padding:8px 11px;cursor:pointer}
+  .tools button:hover{border-color:#e0a93a;color:#fff}
+
+  .panes{display:flex;flex-direction:row;flex:1;min-height:0}
+  .pane{position:relative;min-width:0}
+  .pane-top{flex:1.18;display:flex;flex-direction:column;background:#fff;border-right:2px solid #d9d6cf;min-width:0}
+  .pane-map{flex:1}
+  .tabbar{height:46px;flex-shrink:0;display:flex;align-items:center;gap:8px;background:#fafafa;border-bottom:1px solid #e8e6e0;padding:0 12px}
+  .tab{display:flex;align-items:center;gap:7px;border:1.5px solid #e0ddd6;background:#fff;border-radius:999px;font-family:'Archivo';font-weight:700;font-size:12.5px;color:#777;padding:7px 14px;cursor:pointer;transition:.15s}
+  .tab:hover{color:#333;border-color:#cfcbc2}
+  .tab .ic{width:14px;height:14px;flex-shrink:0;stroke-width:2.2;fill:none}
+  .tab.on{color:#fff;border-color:transparent}
+  .tab.on.t-companies{background:#1f6fb2}.tab.on.t-financial{background:#2c3e50}
+  .tab.on.t-lobby{background:#c2185b}.tab.on.t-ownership{background:#16a085}.tab.on.t-orbit{background:#3949ab}.tab.on.t-all{background:#111}
+  .stage{flex:1;position:relative;min-height:0}
+  #netsvg{width:100%;height:100%;display:block;cursor:grab;touch-action:none}#netsvg:active{cursor:grabbing}
+  #map{width:100%;height:100%;background:#0b1418}
+
+  .guide{fill:none;stroke:#ececec;stroke-width:1.4;stroke-dasharray:2 6}
+  .spine{fill:none;stroke:#d9d6cf;stroke-width:1.5;stroke-dasharray:3 5;opacity:.7}
+  .ringlabel rect{fill:#fff;stroke:#e4e2dc;rx:6}
+  .ringlabel text{font-family:'Anton',sans-serif;text-transform:uppercase;letter-spacing:.04em;dominant-baseline:middle}
+  .tie{fill:none;stroke-opacity:0;transition:stroke-opacity .25s;pointer-events:none}
+  .tie.show{stroke-opacity:.82}.tie.hot{stroke-opacity:1}.tie.cold{stroke-opacity:.06}.tie.dim{stroke-opacity:.14}
+  .hub{cursor:pointer}
+  .hub text.main{font-weight:800;text-anchor:middle;dominant-baseline:middle}
+  .hub line.ul{stroke-width:3;stroke-linecap:round}
+  .hub text.sub{font-weight:700;font-size:12px;letter-spacing:.02em;text-anchor:middle}
+  .ownernode text.main{font-family:'Anton',sans-serif;font-weight:400}
+  .bb text{font-size:11.5px;font-weight:600;fill:#333;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
+  .bb rect{fill:#fff;rx:5}.bl{stroke-opacity:.5;stroke-width:1.2}
+  .core text{font-family:'Anton',sans-serif;fill:#111;text-anchor:middle;dominant-baseline:middle}.core circle{fill:#fff;stroke:#111;stroke-width:2.5}
+  .faded{opacity:.12;transition:opacity .25s}
+
+  .leaflet-popup-content-wrapper{border-radius:9px}.leaflet-popup-content{margin:11px 13px;font-family:'Archivo';font-size:12.5px;line-height:1.45}
+  .pop-n{font-weight:800;font-size:14px}.pop-meta{color:#666;margin-top:3px}
+  .badge{position:absolute;z-index:500;background:rgba(255,255,255,.96);border:1px solid #e4e2dc;border-radius:8px;font-size:11.5px;color:#666;padding:8px 12px;line-height:1.45;max-width:300px;max-height:40%;overflow:auto}
+  .badge.tl{top:10px;left:10px}.badge b{color:#333}
+  .mapbadge{position:absolute;z-index:500;top:10px;left:10px;background:rgba(10,20,24,.82);color:#cfe;border:1px solid #1e3a44;border-radius:8px;font-size:11px;padding:7px 11px;max-width:300px;line-height:1.4}.mapbadge b{color:#fff}
+  .legend{position:absolute;z-index:500;top:10px;right:10px;background:rgba(255,255,255,.96);border:1px solid #e4e2dc;border-radius:9px;padding:9px 11px;box-shadow:0 4px 16px rgba(0,0,0,.06);max-height:calc(100% - 20px);overflow:auto;min-width:140px}
+  .legend .lh{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#aaa;font-weight:800;margin-bottom:6px}
+  .legend .row{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:#444;cursor:pointer;padding:3px 5px;border-radius:5px}
+  .legend .row:hover{background:#f3f1ec}.legend .row.off{opacity:.3}.legend .row.sel{background:#f0ede7}
+  .legend .sw{width:12px;height:12px;border-radius:3px;flex-shrink:0}.legend .ln{width:16px;height:0;border-top:3px solid;flex-shrink:0;border-radius:2px}
+  .legend .ct{margin-left:auto;color:#bbb;font-size:10px;font-weight:700}
+
+  .info{position:absolute;z-index:500;bottom:10px;left:10px;width:290px;max-height:calc(100% - 20px);overflow:auto;background:rgba(255,255,255,.97);border:1px solid #e4e2dc;border-left:4px solid #ccc;border-radius:10px;padding:11px 13px;box-shadow:0 6px 22px rgba(0,0,0,.08)}
+  .info .iname{font-weight:800;font-size:15px;line-height:1.1}.info .icity{font-size:11px;color:#999;font-weight:600;margin-top:2px}
+  .info .idesc{font-size:11.5px;color:#555;margin-top:7px;line-height:1.4;min-height:28px}
+  .info .imetrics{display:flex;gap:14px;margin-top:8px}.info .imetrics .m .v{font-family:'Anton',sans-serif;font-size:16px;line-height:1}
+  .info .imetrics .m .k{font-size:8px;letter-spacing:.07em;text-transform:uppercase;color:#aaa;font-weight:700;margin-top:3px}
+  .iown{margin-top:8px;font-size:11px;color:#444}.iown b{color:#111}
+  .irels{margin-top:9px;border-top:1px solid #eee;padding-top:7px}
+  .relhd{font-size:8px;letter-spacing:.05em;text-transform:uppercase;color:#aaa;font-weight:800;margin-bottom:5px}
+  .relrow{display:flex;align-items:center;gap:5px;margin:3px 0}
+  .reldot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+  .reln{font-size:10.5px;font-weight:700;color:#333;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:0 0 76px}
+  .reltier{font-size:8.5px;font-weight:800;flex:0 0 72px}
+  .relbarwrap{flex:1;height:5px;background:#eee;border-radius:3px;overflow:hidden;min-width:18px}
+  .relbar{height:100%;border-radius:3px}
+  .ibarwrap{margin-top:8px}.ibarwrap .lbl{font-size:8.5px;letter-spacing:.05em;text-transform:uppercase;color:#aaa;font-weight:700;display:flex;justify-content:space-between}
+  .ibar{height:7px;background:#eee;border-radius:4px;margin-top:3px;overflow:hidden}.ibar>div{height:100%;border-radius:4px;transition:width .4s}
+  @media(max-width:760px){.result{display:none}.title .t{font-size:14px}.topbar{gap:8px;padding:0 8px}.info{width:188px}.legend{display:none}.tab{padding:6px 10px;font-size:11px}.panes{flex-direction:column}.pane-top{border-right:none;border-bottom:2px solid #d9d6cf}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="title"><span class="t">Who Owns the <span>Food System</span></span><span class="s">Seed to shelf · 2026</span></div>
+    <div class="searchwrap"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="search" type="text" placeholder="Search a brand or company…" autocomplete="off" spellcheck="false"></div>
+    <div class="result" id="result"></div>
+    <div class="tools"><button id="fit">Fit</button><button id="reset">Reset</button></div>
+  </div>
+  <div class="panes">
+    <div class="pane pane-top">
+      <div class="tabbar" id="tabbar"></div>
+      <div class="stage" id="stage">
+        <svg id="netsvg"></svg>
+        <div class="badge tl" id="badge"></div>
+        <div class="legend" id="legend"></div>
+        <div class="info" id="info">
+          <div class="iname" id="i-name">Hover or click a company</div>
+          <div class="icity" id="i-city"></div>
+          <div class="idesc" id="i-desc">Revenue, ownership and two share bars appear here.</div>
+          <div class="imetrics"><div class="m"><div class="v" id="i-rev">--</div><div class="k">Revenue</div></div><div class="m"><div class="v" id="i-br">--</div><div class="k">Brands shown</div></div></div>
+          <div class="iown" id="i-own"></div>
+          <div class="ibarwrap"><div class="lbl"><span>Est. share of food system <span style="color:#ccc">(rev/$12T)</span></span><span id="i-gpct">--</span></div><div class="ibar"><div id="i-gbar" style="width:0;background:#ccc"></div></div></div>
+          <div class="ibarwrap"><div class="lbl"><span id="i-seclbl">Share of sector</span><span id="i-pct">--</span></div><div class="ibar"><div id="i-bar" style="width:0;background:#ccc"></div></div></div>
+          <div class="ibarwrap"><div class="lbl"><span>Total market influence <span style="color:#ccc">(controls / sways)</span></span><span id="i-inflpct">--</span></div><div class="ibar"><div id="i-inflbar" style="width:0;background:#111"></div></div></div>
+          <div class="irels" id="i-rels"></div>
+        </div>
+      </div>
+    </div>
+    <div class="pane pane-map"><div id="map"></div>
+      <div class="mapbadge"><b>Satellite:</b> Esri World Imagery. Large pins = HQ (true location) · small pins = approx. regional hubs.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SECTORS=["Inputs","Traders","Meat & Protein","Manufacturers","Retail","Foodservice","Capital","Influence"];
+const SECMETA={
+ "Inputs":{col:"#2e7d32",label:"Inputs · Seeds & Agrochemicals",short:"Inputs"},
+ "Traders":{col:"#b8860b",label:"Commodity Traders",short:"Traders"},
+ "Meat & Protein":{col:"#a93226",label:"Meat & Protein",short:"Meat"},
+ "Manufacturers":{col:"#1f6fb2",label:"Branded Manufacturers",short:"Manufacturers"},
+ "Retail":{col:"#884ea0",label:"Retail & Grocery",short:"Retail"},
+ "Foodservice":{col:"#d35400",label:"Foodservice & Restaurants",short:"Foodservice"},
+ "Capital":{col:"#2c3e50",label:"Capital & Owners",short:"Capital"},
+ "Influence":{col:"#c2185b",label:"Industry Lobby",short:"Lobby"},
+ "Orbit":{col:"#3949ab",label:"In Industry's Orbit",short:"Orbit"}};
+
+/* ---- COMPANIES (supply chain) ---- */
+const COMP=[
+ {n:"Bayer",sec:"Inputs",hq:[51.0307,6.9850],city:"Leverkusen, Germany",rev:25,own:"Public",bt:true,desc:"Crop Science arm: world's biggest seeds & pesticides supplier (absorbed Monsanto).",reg:[[38.6627,-90.5640,"Crop Science US -- St. Louis"]],b:["DEKALB seeds","Asgrow","Roundup","Channel"]},
+ {n:"Corteva",sec:"Inputs",hq:[39.7872,-86.2664],city:"Indianapolis, USA",rev:17,own:"Public",bt:true,desc:"Seeds & crop protection spun out of DowDuPont in 2019.",reg:[],b:["Pioneer seeds","Brevant","Enlist"]},
+ {n:"Syngenta",sec:"Inputs",hq:[47.5550,7.5906],city:"Basel, Switzerland",rev:33,own:"State (ChemChina)",bt:false,desc:"Seeds & agrochemicals; owned by Chinese state group Sinochem/ChemChina.",reg:[[39.9088,116.3975,"Parent -- Beijing"]],b:["NK Seeds","Golden Harvest","Gramoxone"]},
+ {n:"Nutrien",sec:"Inputs",hq:[52.1170,-106.6345],city:"Saskatoon, Canada",rev:26,own:"Public",bt:true,desc:"World's largest fertilizer producer and ag-retail network.",reg:[],b:["Nutrien Ag Solutions","Loveland Products"]},
+ {n:"Cargill",sec:"Traders",hq:[44.9690,-93.5106],city:"Wayzata, USA",rev:160,own:"Family (private)",bt:false,desc:"Largest private US company; grain, oils, meat, cocoa, sweeteners.",reg:[[51.5074,-0.1278,"Europe -- London"],[-23.5950,-46.6850,"S. America -- São Paulo"]],b:["Truvia","Diamond Crystal","Honeysuckle White","Shady Brook Farms"]},
+ {n:"ADM",sec:"Traders",hq:[41.8869,-87.6320],city:"Chicago, USA (77 W Wacker)",rev:85,own:"Public",bt:true,desc:"Archer-Daniels-Midland -- grain processing, oilseeds, sweeteners, nutrition.",reg:[[46.4583,6.3286,"EMEA -- Rolle, CH"],[1.2897,103.8501,"APAC -- Singapore"],[-23.6230,-46.6970,"S. America -- São Paulo"]],b:["ADM Milling","ADM Animal Nutrition"]},
+ {n:"Bunge",sec:"Traders",hq:[38.6631,-90.5771],city:"Chesterfield, USA",rev:53,own:"Public",bt:true,desc:"Oilseed & grain trader; merged with Viterra in 2025.",reg:[[46.2044,6.1432,"Europe -- Geneva"]],b:["Bunge oils","Viterra"]},
+ {n:"Louis Dreyfus",sec:"Traders",hq:[46.2089,6.1478],city:"Geneva, Switzerland",rev:50,own:"Family (private)",bt:false,desc:"The 'D' of the ABCD traders; grains, oilseeds, coffee, sugar, juice.",reg:[[-23.5630,-46.6540,"S. America -- São Paulo"]],b:["Imperial Sugar","LDC juice"]},
+ {n:"COFCO",sec:"Traders",hq:[39.9088,116.3975],city:"Beijing, China",rev:70,own:"State (China)",bt:false,desc:"China's state agribusiness giant and a top global commodity trader.",reg:[[1.2840,103.8510,"COFCO Intl -- Singapore"]],b:["Great Wall Wine","Fortune oil"]},
+ {n:"Wilmar",sec:"Traders",hq:[1.2756,103.8456],city:"Singapore",rev:67,own:"Public (Kuok)",bt:false,desc:"Asia's largest agribusiness; palm oil, cooking oils, grains.",reg:[],b:["Arawana","Goodman Fielder"]},
+ {n:"JBS",sec:"Meat & Protein",hq:[-23.5133,-46.7397],city:"São Paulo, Brazil",rev:77,own:"Family (Batista)",bt:false,desc:"World's largest meat company; beef, poultry, pork across 5 continents.",reg:[[40.4221,-104.7091,"US -- Greeley, CO"]],b:["Pilgrim's","Swift","Seara","Friboi","Moy Park"]},
+ {n:"Tyson Foods",sec:"Meat & Protein",hq:[36.2099,-94.1286],city:"Springdale, USA",rev:53,own:"Family (Tyson)",bt:false,desc:"Largest US meat processor; chicken, beef, pork and prepared foods.",reg:[],b:["Jimmy Dean","Hillshire Farm","Ball Park","Aidells","Wright Brand"]},
+ {n:"WH Group",sec:"Meat & Protein",hq:[22.2783,114.1747],city:"Hong Kong",rev:26,own:"Public (founder)",bt:false,desc:"World's largest pork company; owns Smithfield (USA).",reg:[[36.9899,-76.6316,"Smithfield -- Virginia"]],b:["Smithfield","Eckrich","Armour","Farmland"]},
+ {n:"BRF",sec:"Meat & Protein",hq:[-23.5018,-46.8456],city:"São Paulo (Itu), Brazil",rev:14,own:"Public (Marfrig)",bt:false,desc:"Brazilian poultry & processed-food major; merging with Marfrig.",reg:[],b:["Sadia","Perdigão","Qualy"]},
+ {n:"Marfrig",sec:"Meat & Protein",hq:[-23.6010,-46.6970],city:"São Paulo, Brazil",rev:26,own:"Family (Molina)",bt:false,desc:"Global beef heavyweight; controls National Beef (USA) and BRF.",reg:[],b:["Bassi","Montana","National Beef"]},
+ {n:"Nestlé",sec:"Manufacturers",hq:[46.4577,6.8421],city:"Vevey, Switzerland",rev:103,own:"Public",bt:true,desc:"World's largest food & beverage company -- coffee, water, dairy, pet care, nutrition.",reg:[[38.8816,-77.0910,"Nestlé USA -- Arlington"],[1.2903,103.8519,"Zone AOA -- Singapore"]],b:["Nescafé","Nespresso","Nesquik","Kit Kat","Smarties","Aero","Toll House","Coffee mate","Milo","Maggi","Stouffer's","Lean Cuisine","Hot Pockets","DiGiorno","Häagen-Dazs (US)","Gerber","Carnation","San Pellegrino","Perrier","Acqua Panna","Vital Proteins","Purina","Friskies","Fancy Feast","Pro Plan","Felix"]},
+ {n:"PepsiCo",sec:"Manufacturers",hq:[41.0290,-73.7006],city:"Purchase, USA",rev:92,own:"Public",bt:true,desc:"#1 food-and-beverage firm -- Frito-Lay snacks plus a huge drinks portfolio.",reg:[[25.2048,55.2708,"AMESA -- Dubai"],[19.4326,-99.1332,"LatAm -- Mexico City"],[31.2304,121.4737,"APAC -- Shanghai"]],b:["Pepsi","Mountain Dew","Gatorade","Lay's","Doritos","Cheetos","Fritos","Ruffles","Tostitos","Quaker","Aquafina","Bubly","Rockstar","SodaStream","Sabra","Siete","Poppi","Cap'n Crunch","Smartfood","Stacy's"]},
+ {n:"Coca-Cola",sec:"Manufacturers",hq:[33.7676,-84.3921],city:"Atlanta, USA",rev:47,own:"Public",bt:true,desc:"World's largest non-alcoholic beverage company; owns Costa Coffee.",reg:[[51.5074,-0.1278,"Europe -- London"],[19.4326,-99.1332,"LatAm -- Mexico City"]],b:["Coca-Cola","Diet Coke","Sprite","Fanta","Dasani","Smartwater","Vitaminwater","Powerade","Minute Maid","Simply","Fairlife","Topo Chico","Costa Coffee","Gold Peak","BodyArmor","Schweppes (intl.)","Fresca"]},
+ {n:"Mondelēz",sec:"Manufacturers",hq:[41.8855,-87.6219],city:"Chicago, USA",rev:36,own:"Public",bt:true,desc:"Global snacking leader (biscuits, chocolate, gum); spun from Kraft in 2012.",reg:[[47.3769,8.5417,"Europe -- Zurich"],[1.2903,103.8519,"APAC -- Singapore"]],b:["Oreo","Chips Ahoy!","Ritz","Triscuit","Wheat Thins","belVita","Cadbury","Milka","Toblerone","Trident","Halls","Sour Patch Kids","Tang","Clif Bar","Tate's Bake Shop"]},
+ {n:"Mars",sec:"Manufacturers",hq:[38.9300,-77.1760],city:"McLean, USA",rev:60,own:"Family (Mars)",bt:false,desc:"Private; candy, gum, pet care -- and, since Dec 2025, Kellanova's snacks.",reg:[[51.5105,-0.5950,"EMEA -- Slough"],[50.8503,4.3517,"Petcare -- Brussels"]],b:["M&M's","Snickers","Twix","Dove choc","Extra","Orbit","Skittles","Starburst","Life Savers","Altoids","Ben's Original","Pedigree","Whiskas","Royal Canin","Iams","Sheba","KIND","Pringles","Cheez-It","Pop-Tarts","Rice Krispies Treats","RXBAR","Eggo","Kashi","MorningStar Farms"]},
+ {n:"General Mills",sec:"Manufacturers",hq:[44.9690,-93.3636],city:"Minneapolis, USA",rev:20,own:"Public",bt:true,desc:"US cereal, baking and snacks; owns Blue Buffalo and Häagen-Dazs (ex-US).",reg:[[46.3833,6.2333,"Europe -- Nyon"]],b:["Cheerios","Lucky Charms","Cinnamon Toast Crunch","Trix","Chex","Betty Crocker","Pillsbury","Annie's","Nature Valley","Old El Paso","Progresso","Yoplait (US)","Häagen-Dazs (intl.)","Totino's","Blue Buffalo"]},
+ {n:"Danone",sec:"Manufacturers",hq:[48.8716,2.3010],city:"Paris, France",rev:29,own:"Public",bt:true,desc:"French leader in yogurt, plant-based and early-life / medical nutrition.",reg:[[1.2903,103.8519,"Asia -- Singapore"],[-23.5505,-46.6333,"LatAm -- São Paulo"]],b:["Activia","Oikos","Dannon","Two Good","Silk","So Delicious","Horizon Organic","Evian","Volvic","Aptamil","Nutricia","Actimel","Alpro","Happy Family","STōK"]},
+ {n:"Assoc. British Foods",sec:"Manufacturers",hq:[51.5093,-0.1357],city:"London, UK",rev:15,own:"Family (Weston)",bt:false,desc:"UK group -- grocery, sugar, ingredients + the Primark retail chain.",reg:[],b:["Twinings","Ovaltine","Jordans","Ryvita","Patak's","Blue Dragon","Mazola","Karo","Silver Spoon","Kingsmill","Primark"]},
+ {n:"Kraft Heinz",sec:"Manufacturers",hq:[41.8849,-87.6213],city:"Chicago & Pittsburgh, US",rev:26,own:"Public",bt:true,desc:"Condiments & grocery staples; a planned 2-way split was paused in Feb 2026.",reg:[[40.4419,-79.9956,"Co-HQ -- Pittsburgh"],[52.3676,4.9041,"Intl -- Amsterdam"]],b:["Heinz","Kraft","Oscar Mayer","Philadelphia","Velveeta","Kraft Mac & Cheese","Jell-O","Maxwell House","Capri Sun (US)","Kool-Aid","Lunchables","Ore-Ida","Grey Poupon","Lea & Perrins","Stove Top"]},
+ {n:"Ferrero",sec:"Manufacturers",hq:[44.7009,8.0353],city:"Alba, Italy",rev:19,own:"Family (Ferrero)",bt:false,desc:"Italian confectioner (Nutella, Kinder); bought WK Kellogg's US cereals in 2025.",reg:[[49.6116,6.1319,"Holding -- Luxembourg"],[40.8579,-74.4257,"N. America -- Parsippany"]],b:["Nutella","Kinder","Ferrero Rocher","Tic Tac","Butterfinger","Crunch","Nerds","Brach's","Trolli","Keebler","Famous Amos","Halo Top","Frosted Flakes","Froot Loops","Rice Krispies","Special K","Raisin Bran"]},
+ {n:"Keurig Dr Pepper",sec:"Manufacturers",hq:[33.1003,-96.8200],city:"Frisco, USA",rev:15,own:"Holding (JAB)",bt:false,desc:"US soft drinks & single-serve coffee; JAB Holding is the largest shareholder.",reg:[[42.5048,-71.1956,"Coffee -- Burlington, MA"]],b:["Dr Pepper","7UP","Snapple","Canada Dry","A&W","Sunkist","Mott's","Keurig","Green Mountain Coffee","Bai","Core","Crush"]},
+ {n:"Campbell's",sec:"Manufacturers",hq:[39.9290,-75.1190],city:"Camden, USA",rev:10,own:"Family (Dorrance)",bt:false,desc:"Soups & snacks (Goldfish, Pepperidge Farm); added Rao's in 2024.",reg:[],b:["Campbell's","Pepperidge Farm","Goldfish","Prego","Pace","V8","Swanson","Snyder's","Lance","Cape Cod","Kettle Brand","Rao's","SpaghettiOs"]},
+ {n:"Conagra",sec:"Manufacturers",hq:[41.8836,-87.6386],city:"Chicago, USA",rev:12,own:"Public",bt:true,desc:"US frozen & shelf-stable meals; acquired Pinnacle Foods in 2018.",reg:[],b:["Healthy Choice","Marie Callender's","Birds Eye","Slim Jim","Reddi-wip","Hunt's","Chef Boyardee","Duncan Hines","Orville Redenbacher's","Vlasic","Banquet","PAM"]},
+ {n:"J.M. Smucker",sec:"Manufacturers",hq:[40.8423,-81.7646],city:"Orrville, USA",rev:9,own:"Public",bt:true,desc:"Spreads, coffee & pet snacks; bought Hostess (Twinkies) in 2023.",reg:[],b:["Smucker's","Jif","Folgers","Café Bustelo","Uncrustables","Hostess","Twinkies","Milk-Bone","Meow Mix","9Lives"]},
+ {n:"Hormel",sec:"Manufacturers",hq:[43.6694,-92.9747],city:"Austin, USA",rev:12,own:"Foundation",bt:false,desc:"Meat & protein (Spam, Skippy); Hormel Foundation holds voting control.",reg:[],b:["Spam","Skippy","Planters","Justin's","Applegate","Jennie-O","Dinty Moore","Wholly Guacamole","Columbus","Herdez"]},
+ {n:"Unilever",sec:"Manufacturers",hq:[51.5113,-0.1057],city:"London, UK",rev:14,own:"Public",bt:true,desc:"UK/NL group; food is now a minority of a personal-care-led business.",reg:[[51.9244,4.4777,"Rotterdam"],[19.0760,72.8777,"HUL -- Mumbai"]],b:["Knorr","Hellmann's","Best Foods","Maille","Marmite","Colman's","Pot Noodle","Sir Kensington's","Pukka","Horlicks"]},
+ {n:"Magnum Ice Cream Co.",sec:"Manufacturers",hq:[52.3091,4.9469],city:"Amsterdam, NL",rev:8.5,own:"Public",bt:true,desc:"World's largest ice-cream company; demerged from Unilever in Dec 2025.",reg:[[51.4575,-0.9700,"Ops -- Reading, UK"]],b:["Magnum","Ben & Jerry's","Cornetto","Wall's","Breyers","Klondike","Talenti","Popsicle","Good Humor"]},
+ {n:"Primo Brands",sec:"Manufacturers",hq:[27.9620,-82.4480],city:"Tampa, USA",rev:6.8,own:"Public",bt:true,desc:"US bottled water; ex-Nestlé Waters NA (BlueTriton) merged with Primo.",reg:[],b:["Poland Spring","Arrowhead","Deer Park","Ozarka","Zephyrhills","Ice Mountain","Pure Life (US)","Saratoga"]},
+ {n:"Tropicana Brands Grp",sec:"Manufacturers",hq:[41.8500,-87.6500],city:"Chicago, USA",rev:3,own:"PE (PAI Partners)",bt:false,desc:"Juice business PepsiCo sold control of in 2022 (PAI Partners majority).",reg:[],b:["Tropicana","Naked","Pure Premium","Twister","Copella"]},
+ {n:"Lipton Teas & Infusions",sec:"Manufacturers",hq:[52.0705,4.3007],city:"Rotterdam, NL",rev:2.5,own:"PE (CVC)",bt:false,desc:"Tea business (ekaterra) Unilever sold to CVC in 2022.",reg:[],b:["Lipton tea","PG Tips","TAZO","Brooke Bond","Pure Leaf (leaf)","T2","Red Rose"]},
+ {n:"Walmart",sec:"Retail",hq:[36.3641,-94.2192],city:"Bentonville, USA",rev:681,own:"Family (Walton)",bt:false,desc:"World's largest retailer & grocer; ~half of sales are food.",reg:[[19.4326,-99.1332,"Walmart de México"]],b:["Great Value","Sam's Choice","Marketside","Bettergoods","Sam's Club"]},
+ {n:"Costco",sec:"Retail",hq:[47.5468,-122.0269],city:"Issaquah, USA",rev:255,own:"Public",bt:true,desc:"Warehouse-club retailer; groceries dominate basket size.",reg:[],b:["Kirkland Signature"]},
+ {n:"Schwarz Group",sec:"Retail",hq:[49.1486,9.2080],city:"Neckarsulm, Germany",rev:175,own:"Family (Schwarz)",bt:false,desc:"Europe's biggest retailer; owns discount chains Lidl and Kaufland.",reg:[],b:["Lidl","Kaufland"]},
+ {n:"Kroger",sec:"Retail",hq:[39.1023,-84.5067],city:"Cincinnati, USA",rev:150,own:"Public",bt:true,desc:"Largest dedicated US supermarket operator.",reg:[],b:["Simple Truth","Private Selection","Home Chef","Ralphs","Fred Meyer"]},
+ {n:"Ahold Delhaize",sec:"Retail",hq:[52.4389,4.8270],city:"Zaandam, NL",rev:98,own:"Public",bt:true,desc:"Transatlantic grocer; big US East-Coast and Benelux banners.",reg:[[42.2529,-71.0023,"US -- Quincy, MA"]],b:["Stop & Shop","Food Lion","Giant","Hannaford","Albert Heijn"]},
+ {n:"Carrefour",sec:"Retail",hq:[48.7297,2.2654],city:"Massy, France",rev:94,own:"Public",bt:true,desc:"French multinational hypermarket and grocery group.",reg:[[-23.5505,-46.6333,"Brazil -- São Paulo"]],b:["Carrefour banner","Carrefour Bio"]},
+ {n:"Tesco",sec:"Retail",hq:[51.8008,-0.2061],city:"Welwyn Garden City, UK",rev:85,own:"Public",bt:true,desc:"UK's largest grocer.",reg:[],b:["Tesco banner","Tesco Finest","F&F"]},
+ {n:"Sysco",sec:"Foodservice",hq:[29.7958,-95.5654],city:"Houston, USA",rev:79,own:"Public",bt:true,desc:"World's largest foodservice distributor (restaurants, schools, hospitals).",reg:[],b:["Sysco brand","Block & Barrel"]},
+ {n:"Compass Group",sec:"Foodservice",hq:[51.3870,-0.4960],city:"Chertsey, UK",rev:42,own:"Public",bt:true,desc:"World's largest contract caterer (offices, venues, institutions).",reg:[[35.2271,-80.8431,"US -- Charlotte"]],b:["Levy","Chartwells","Eurest","Bon Appétit"]},
+ {n:"McDonald's",sec:"Foodservice",hq:[41.8868,-87.6533],city:"Chicago, USA",rev:26,own:"Public",bt:true,desc:"Largest restaurant chain by systemwide sales (~$130B across franchises).",reg:[[51.5074,-0.1278,"Intl -- London"]],b:["McDonald's","McCafé"]},
+ {n:"Yum! Brands",sec:"Foodservice",hq:[38.2210,-85.6480],city:"Louisville, USA",rev:7.5,own:"Public",bt:true,desc:"Operates KFC, Pizza Hut, Taco Bell -- ~$65B systemwide sales.",reg:[],b:["KFC","Pizza Hut","Taco Bell","Habit Burger"]},
+ {n:"Restaurant Brands Intl",sec:"Foodservice",hq:[43.6481,-79.3870],city:"Toronto, Canada",rev:8.4,own:"Holding (3G)",bt:false,desc:"Burger King, Tim Hortons, Popeyes; 3G Capital is the founding holder.",reg:[],b:["Burger King","Tim Hortons","Popeyes","Firehouse Subs"]},
+ {n:"Starbucks",sec:"Foodservice",hq:[47.5805,-122.3354],city:"Seattle, USA",rev:36,own:"Public",bt:true,desc:"World's largest coffeehouse chain.",reg:[[31.2304,121.4737,"China -- Shanghai"]],b:["Starbucks","Seattle's Best","Teavana"]}
+];
+
+/* ---- FINANCIERS (Capital) ---- holdsBt = top-3 shareholder of widely-held public firms ---- */
+const FIN=[
+ {n:"Vanguard",sec:"Capital",hq:[40.0451,-75.5022],city:"Malvern, PA, USA",aum:"≈ $10T managed",tcol:"#c0392b",desc:"World's largest mutual-fund manager; consistently a top-3 shareholder of nearly every widely-held public food firm (index funds, voting on behalf of clients).",holdsBt:true},
+ {n:"BlackRock",sec:"Capital",hq:[40.7589,-73.9786],city:"New York, USA",aum:"≈ $11.5T managed",tcol:"#1c2833",desc:"World's largest asset manager; a top-3 shareholder of most public food companies via iShares index funds.",holdsBt:true},
+ {n:"State Street",sec:"Capital",hq:[42.3554,-71.0530],city:"Boston, USA",aum:"≈ $4.7T managed",tcol:"#2471a3",desc:"Third of the 'Big Three' index managers; a top shareholder right across the sector.",holdsBt:true},
+ {n:"Berkshire Hathaway",sec:"Capital",hq:[41.2335,-95.9920],city:"Omaha, USA",aum:"Active holder",tcol:"#148f77",desc:"Warren Buffett's group: the single largest shareholder of Coca-Cola and a top holder of Kraft Heinz.",holds:[["Coca-Cola",0.55],["Kraft Heinz",0.7]]},
+ {n:"JAB Holding",sec:"Capital",hq:[49.6116,6.1319],city:"Luxembourg",aum:"Coffee & drinks empire",tcol:"#8e44ad",desc:"Reimann-family investment group; controlling shareholder of Keurig Dr Pepper (also JDE Peet's, Panera, Pret).",holds:[["Keurig Dr Pepper",0.9]]},
+ {n:"3G Capital",sec:"Capital",hq:[40.7549,-73.9840],city:"New York / Rio",aum:"Private equity",tcol:"#e67e22",desc:"PE firm behind the Kraft-Heinz merger; founding controlling holder of Restaurant Brands Intl.",holds:[["Restaurant Brands Intl",0.85],["Kraft Heinz",0.5]]},
+ {n:"PAI Partners",sec:"Capital",hq:[48.8698,2.3078],city:"Paris, France",aum:"Private equity",tcol:"#d4ac0d",desc:"PE owner of Tropicana -- bought majority control from PepsiCo in 2022.",holds:[["Tropicana Brands Grp",0.95]]},
+ {n:"CVC Capital",sec:"Capital",hq:[49.6100,6.1300],city:"Luxembourg",aum:"Private equity",tcol:"#16a085",desc:"PE owner of Lipton Teas & Infusions (ekaterra) -- bought from Unilever in 2022.",holds:[["Lipton Teas & Infusions",1]]}
+];
+/* ---- LOBBY GROUPS (Influence) ---- */
+const LOB=[
+ {n:"IFBA",sec:"Influence",hq:[46.2044,6.1432],city:"Geneva / Brussels",aum:"Global F&B alliance",tcol:"#c2185b",desc:"International Food & Beverage Alliance -- coordinates the largest manufacturers on marketing pledges & nutrition policy.",members:["Coca-Cola","Danone","Ferrero","General Mills","Mars","Nestlé","PepsiCo","Unilever","Mondelēz","McDonald's"]},
+ {n:"Consumer Brands Assoc.",sec:"Influence",hq:[38.8799,-77.1068],city:"Arlington, VA",aum:"US CPG lobby",tcol:"#2471a3",desc:"Leading US packaged-goods trade group (formerly the Grocery Manufacturers Association).",members:["Nestlé","General Mills","Campbell's","Kraft Heinz","Tyson Foods"]},
+ {n:"American Beverage Assoc.",sec:"Influence",hq:[38.9026,-77.0421],city:"Washington, DC",aum:"US drinks lobby",tcol:"#148f77",desc:"US non-alcoholic beverage trade association; soda-tax & recycling policy.",members:["Coca-Cola","PepsiCo","Keurig Dr Pepper"]},
+ {n:"Meat Institute",sec:"Influence",hq:[38.9045,-77.0500],city:"Washington, DC",aum:"US meat lobby",tcol:"#a93226",desc:"North American Meat Institute -- the main US meat & poultry trade group.",members:["Tyson Foods","JBS","Cargill","WH Group","Hormel","Marfrig"]},
+ {n:"CropLife Intl",sec:"Influence",hq:[50.8503,4.3517],city:"Brussels, Belgium",aum:"Agro-input lobby",tcol:"#2e7d32",desc:"Global trade body for the pesticide & agricultural-biotech (seed) industry.",members:["Bayer","Corteva","Syngenta"]}
+];
+
+const ORB=[
+ {n:"WEF",sec:"Orbit",hq:[46.2260,6.1800],city:"Geneva (Cologny), CH",aum:"Davos forum · partner-funded",tcol:"#3949ab",desc:"Davos convenor funded by ~100 corporate 'strategic partners' incl. the biggest food, drink & agribusiness firms; runs the Food Action Alliance & food-systems agenda.",ties:["Nestlé","PepsiCo","Coca-Cola","Unilever","Mondelēz","Mars","Danone","Cargill","Bayer"]},
+ {n:"Consumer Goods Forum",sec:"Orbit",hq:[48.8245,2.2730],city:"Paris (Issy), France",aum:"CEO-led industry network",tcol:"#6a1b9a",desc:"CEO-led club of ~400 retailers & manufacturers; runs the Global Food Safety Initiative -- industry writing its own safety rules.",ties:["Nestlé","PepsiCo","Coca-Cola","Unilever","Mondelēz","Mars","Danone","General Mills","Walmart","Carrefour","Tesco","Ahold Delhaize"]},
+ {n:"Codex Alimentarius",sec:"Orbit",hq:[41.8835,12.4894],city:"Rome, Italy (FAO/WHO)",aum:"FAO/WHO standards body",tcol:"#00897b",desc:"Joint FAO/WHO body whose food standards underpin WTO trade law; industry shapes them via observer trade-groups (formerly incl. ILSI).",ties:["Nestlé","PepsiCo","Coca-Cola","Mondelēz","Danone","Unilever","Mars"]},
+ {n:"FAO",sec:"Orbit",hq:[41.8790,12.4850],city:"Rome, Italy",aum:"UN agriculture agency",tcol:"#00838f",desc:"UN food & agriculture agency; signed a formal 2020 partnership with the pesticide lobby CropLife International over staff & NGO objections.",ties:["Bayer","Corteva","Syngenta","Nestlé"]},
+ {n:"WHO",sec:"Orbit",hq:[46.2336,6.1400],city:"Geneva, Switzerland",aum:"UN health agency",tcol:"#1565c0",desc:"UN health agency; heavily lobbied by food & drink giants on sugar taxes, marketing limits and front-of-pack labels.",ties:["Coca-Cola","PepsiCo","Nestlé","Mondelēz","Unilever"]},
+ {n:"WTO",sec:"Orbit",hq:[46.2244,6.1495],city:"Geneva, Switzerland",aum:"Trade-rules body",tcol:"#4527a0",desc:"Its Agreement on Agriculture and reliance on Codex standards entrench a trade order favouring the giant ABCD commodity traders.",ties:["Cargill","ADM","Bunge","Louis Dreyfus","COFCO","Wilmar"]},
+ {n:"GAIN",sec:"Orbit",hq:[46.2280,6.1370],city:"Geneva, Switzerland",aum:"Public-private nutrition PPP",tcol:"#d81b60",desc:"Global Alliance for Improved Nutrition -- public-private body that partners with major manufacturers; long criticised for industry proximity.",ties:["Nestlé","PepsiCo","Danone","Unilever","Mars","General Mills"]},
+ {n:"SUN Movement",sec:"Orbit",hq:[46.2200,6.1500],city:"Geneva, Switzerland",aum:"UN nutrition movement",tcol:"#ad1457",desc:"Scaling Up Nutrition -- UN-backed movement whose business network seats big food MNCs at the table, raising standing conflict-of-interest concerns.",ties:["Nestlé","PepsiCo","Unilever","Mondelēz","Danone","Cargill"]},
+ {n:"ILSI / IAFNS",sec:"Orbit",hq:[38.9050,-77.0430],city:"Washington, DC, USA",aum:"Industry-funded science",tcol:"#b71c1c",desc:"Institute founded by a Coca-Cola executive, funded by F&B firms; documented steering nutrition science & policy. Rebranded IAFNS in 2021.",ties:["Coca-Cola","PepsiCo","Nestlé","Mars","General Mills","Mondelēz","Kraft Heinz"]},
+ {n:"RSPO",sec:"Orbit",hq:[3.1500,101.7100],city:"Kuala Lumpur, Malaysia",aum:"Industry-led certifier",tcol:"#1b5e20",desc:"Roundtable on Sustainable Palm Oil -- certifier governed largely by its own corporate members; widely criticised as greenwashing.",ties:["Wilmar","Nestlé","PepsiCo","Unilever","Mondelēz","Mars","Cargill"]},
+ {n:"Gates Foundation",sec:"Orbit",hq:[47.6270,-122.3510],city:"Seattle, USA",aum:"Philanthrocapital",tcol:"#ef6c00",desc:"Among the largest funders of global agriculture; promotes commercial seed/fertiliser models aligned with the agro-input giants (via AGRA, CGIAR).",ties:["Bayer","Corteva","Cargill"]},
+ {n:"AGRA",sec:"Orbit",hq:[-1.2860,36.8170],city:"Nairobi, Kenya",aum:"Foundation-backed initiative",tcol:"#6d4c41",desc:"Gates/Rockefeller-backed; pushes commercial seeds & synthetic fertiliser across Africa, aligning with Bayer, Corteva & the fertiliser majors; opposed by food-sovereignty movements.",ties:["Bayer","Corteva","Syngenta","Nutrien"]}
+];
+const CO=COMP.concat(FIN).concat(LOB).concat(ORB);
+CO.forEach(c=>c.color=SECMETA[c.sec].col);
+const idxOf=n=>CO.findIndex(c=>c.n===n);
+const COMP_N=COMP.length;
+const ORB_START=COMP.length+FIN.length+LOB.length;
+
+const OWN=[["Public","#2e7d32"],["Founder-controlled","#f1c40f"],["Family / private","#e67e22"],["State","#c0392b"],["Private equity","#8e44ad"],["Foundation","#16a085"],["Holding co.","#2980b9"],["Asset manager","#34495e"],["Alliance","#c2185b"]];
+const OWNCOL=Object.fromEntries(OWN);
+function ownCat(o){if(/manage|Active|equity firm/.test(o))return"Asset manager";if(/alliance|lobby/.test(o))return"Alliance";
+ if(/^Public \(/.test(o))return"Founder-controlled";if(/^Public$/.test(o))return"Public";
+ if(/Family/.test(o))return"Family / private";if(/State/.test(o))return"State";
+ if(/PE|equity/.test(o))return"Private equity";if(/Foundation/.test(o))return"Foundation";if(/Holding/.test(o))return"Holding co.";return"Public";}
+
+const secTotals={};CO.forEach(c=>{if(c.rev!=null)secTotals[c.sec]=(secTotals[c.sec]||0)+c.rev;});
+CO.forEach(c=>c.share=(c.rev!=null&&secTotals[c.sec])?c.rev/secTotals[c.sec]*100:null);
+const GLOBAL=12000;CO.forEach(c=>c.gshare=(c.rev!=null)?c.rev/GLOBAL*100:null);
+const maxG=d3.max(CO,c=>c.gshare||0);
+const revVals=CO.filter(c=>c.rev!=null).map(c=>c.rev);
+const revFont=d3.scaleSqrt().domain([d3.min(revVals),d3.max(revVals)]).range([19,42]);
+
+/* ---- TIES ---- */
+const tieList=[];
+FIN.forEach(f=>{const fi=idxOf(f.n);
+  if(f.holdsBt)COMP.forEach((c,ci)=>{if(c.bt)tieList.push({a:fi,b:ci,col:f.tcol,kind:"fin",owner:fi,s:0.4});});
+  if(f.holds)f.holds.forEach(h=>{const nm=Array.isArray(h)?h[0]:h,st=Array.isArray(h)?h[1]:0.8;const bi=idxOf(nm);if(bi>=0)tieList.push({a:fi,b:bi,col:f.tcol,kind:"fin",owner:fi,s:st});});});
+LOB.forEach(l=>{const li=idxOf(l.n);l.members.forEach(nm=>{const bi=idxOf(nm);if(bi>=0)tieList.push({a:li,b:bi,col:l.tcol,kind:"inf",owner:li,s:0.4});});});
+ORB.forEach(o=>{const oi=idxOf(o.n);(o.ties||[]).forEach(nm=>{const bi=idxOf(nm);if(bi>=0)tieList.push({a:oi,b:bi,col:o.tcol,kind:"inst",owner:oi,s:0.3});});});
+const finSet=new Set(),infSet=new Set(),instSet=new Set();
+tieList.forEach(t=>{const S=t.kind==="fin"?finSet:(t.kind==="inf"?infSet:instSet);S.add(t.a);S.add(t.b);});
+const tieW=d3.scalePow().exponent(2.4).domain([0.25,1]).range([0.7,11]);
+tieList.forEach(t=>{t._w=tieW(Math.max(0.25,Math.min(1,t.s||0.4)));});
+tieList.sort((a,b)=>(a.s||0.4)-(b.s||0.4));
+CO.forEach(c=>c._infl=c.rev||0);
+tieList.forEach(t=>{if(CO[t.a])CO[t.a]._infl+=(t.s||0.4)*((CO[t.b]&&CO[t.b].rev)||0);});
+const maxInfl=d3.max(CO,c=>c._infl||0)||1;
+CO.forEach(c=>c._inflPct=c._infl/12000*100);
+
+/* ---- RING LAYOUT ---- */
+const RINGS=[
+ {secs:["Inputs"],r:230,label:"1 · SEEDS & SPRAYS",desc:"Sold to farmers so crops can grow."},
+ {secs:["Traders"],r:370,label:"2 · THE MOVERS",desc:"Buy the crops and ship them worldwide."},
+ {secs:["Meat & Protein"],r:510,label:"3 · MEAT",desc:"Raise and pack animals into meat."},
+ {secs:["Manufacturers"],r:670,label:"4 · THE MAKERS",desc:"Turn crops and meat into the brands you know."},
+ {secs:["Retail"],r:830,label:"5 · THE SHOPS",desc:"Supermarkets put the food on the shelf."},
+ {secs:["Foodservice"],r:965,label:"6 · EATING OUT",desc:"Restaurants and caterers serve meals out."},
+ {secs:["Capital","Influence"],r:1100,label:"7 · OWNERS & LOBBIES",desc:"Own the shares and shape the rules."}
+];
+RINGS.forEach((ring,ri)=>{
+  ring.members=CO.map((c,i)=>({c,i})).filter(o=>ring.secs.includes(o.c.sec));
+  const n=ring.members.length,gap=0.62,gapCenter=-Math.PI/2,span=2*Math.PI-gap,start=gapCenter+gap/2;
+  ring.members.forEach((o,j)=>{const ang=start+(j+0.5)*(span/n);const rr=ring.r+(n>9?(j%2?34:-34):0);
+    o.c._hx=Math.cos(ang)*rr;o.c._hy=Math.sin(ang)*rr;});
+  ring._labelPos=[Math.cos(gapCenter)*ring.r,Math.sin(gapCenter)*ring.r];
+  ring._labelText=ring.label||SECMETA[ring.secs[0]].label;ring._col=SECMETA[ring.secs[0]].col;
+  (function(){const words=(ring.desc||"").split(" "),lines=[];let cur="";words.forEach(w=>{if((cur+" "+w).trim().length>40){lines.push(cur.trim());cur=w;}else cur+=" "+w;});if(cur.trim())lines.push(cur.trim());ring._descLines=lines;})();
+});
+ORB.forEach((c,k)=>{const ang=-Math.PI/2+(k+0.5)/ORB.length*2*Math.PI;c._hx=Math.cos(ang)*1300;c._hy=Math.sin(ang)*1300;});
+const hubByIdx={};
+const hubNodes=CO.map((c,i)=>{const h={idx:i,label:c.n,hx:c._hx,hy:c._hy,x:c._hx,y:c._hy,px:c._hx,py:c._hy,_vis:true};hubByIdx[i]=h;return h;});
+const brandsByCo=CO.map((c)=>(c.b||[]).map(label=>({label,color:c.color,w:Math.max(label.length*6.6+18,38),h:23,r:Math.hypot(Math.max(label.length*6.6+18,38),23)/2+2})));
+
+/* ---- RENDER ---- */
+const svg=d3.select("#netsvg");
+svg.append("rect").attr("x",-200000).attr("y",-200000).attr("width",400000).attr("height",400000).attr("fill","none").attr("pointer-events","all");
+const root=svg.append("g");
+const guideG=root.append("g");RINGS.forEach(r=>guideG.append("circle").attr("class","guide").attr("r",r.r));guideG.append("line").attr("class","spine").attr("x1",0).attr("x2",0).attr("y1",-(RINGS[0].r-18)).attr("y2",-(RINGS[RINGS.length-1].r+8));
+function tieD(a,b){const cx=(a.x+b.x)*0.28,cy=(a.y+b.y)*0.28;return `M${a.x},${a.y}Q${cx},${cy} ${b.x},${b.y}`;}
+const tie=root.append("g").selectAll("path").data(tieList).join("path").attr("class","tie")
+  .attr("stroke",d=>d.col).attr("stroke-width",d=>d._w).attr("stroke-linecap","round").attr("d",d=>tieD(hubByIdx[d.a],hubByIdx[d.b]));
+const bloomLayer=root.append("g");
+const hub=root.append("g").selectAll("g").data(hubNodes).join("g")
+  .attr("class",d=>"hub"+(d.idx>=COMP_N?" ownernode":"")).attr("transform",d=>`translate(${d.x},${d.y})`);
+hub.append("rect").attr("fill","transparent").attr("x",d=>-d.label.length*5.6).attr("y",-16).attr("width",d=>d.label.length*11.2).attr("height",34);
+hub.append("text").attr("class","main").attr("fill",d=>CO[d.idx].color).attr("font-size",d=>{const c=CO[d.idx];return c.rev!=null?revFont(c.rev):20;}).text(d=>d.label);
+hub.append("line").attr("class","ul").attr("stroke",d=>CO[d.idx].color).attr("x1",d=>-d.label.length*5.2).attr("x2",d=>d.label.length*5.2).attr("y1",16).attr("y2",16);
+hub.append("text").attr("class","sub").attr("fill",d=>CO[d.idx].color).attr("y",30).text(d=>{const c=CO[d.idx];return c.rev!=null?("$"+c.rev+"B"):(c.aum||"");});
+const rl=root.append("g").selectAll("g").data(RINGS).join("g").attr("class","ringlabel").attr("transform",d=>`translate(${d._labelPos[0]},${d._labelPos[1]})`);
+rl.each(function(d){const sel=d3.select(this);
+  const titleW=d._labelText.length*8.4+20;const descW=(d3.max(d._descLines,l=>l.length)||0)*6.2+20;
+  const w=Math.max(titleW,descW,90);const nL=d._descLines.length;const h=24+nL*15+6;
+  sel.append("rect").attr("width",w).attr("x",-w/2).attr("y",-15).attr("height",h).attr("rx",7);
+  sel.append("text").attr("fill",d._col).attr("font-size",15).attr("text-anchor","middle").attr("y",2).text(d._labelText);
+  d._descLines.forEach((ln,k)=>sel.append("text").attr("font-family","'Archivo',sans-serif").attr("font-weight",600).attr("fill","#777").attr("font-size",10.5).attr("text-anchor","middle").attr("y",22+k*15).style("text-transform","none").style("letter-spacing","0").text(ln));
+});
+const coreG=root.append("g").attr("class","core");coreG.append("circle").attr("r",72);
+["GLOBAL","FOOD","SYSTEM"].forEach((t,k)=>coreG.append("text").attr("y",-12+k*22).attr("font-size",17).text(t));
+
+/* ---- BLOOM ---- */
+function bloomLayout(h,bn){const out=Math.atan2(h.y,h.x);
+  bn.forEach(b=>{b.x=h.x+Math.cos(out)*52+(Math.random()-.5)*34;b.y=h.y+Math.sin(out)*52+(Math.random()-.5)*34;});
+  const tx=h.x+Math.cos(out)*200,ty=h.y+Math.sin(out)*200;
+  const s=d3.forceSimulation(bn).force("x",d3.forceX(tx).strength(.05)).force("y",d3.forceY(ty).strength(.05))
+    .force("charge",d3.forceManyBody().strength(-55)).force("collide",d3.forceCollide(d=>d.r+3).iterations(2)).stop();
+  for(let k=0;k<175;k++){s.tick();bn.forEach(b=>{const dx=b.x-h.x,dy=b.y-h.y,d=Math.hypot(dx,dy)||1;if(d<56){const f=56/d;b.x=h.x+dx*f;b.y=h.y+dy*f;}});}}
+function renderBloom(groups){const links=[],boxes=[];groups.forEach(g=>g.bnodes.forEach(b=>{boxes.push(b);links.push({h:g.hub,b});}));
+  const bl=bloomLayer.selectAll("line.bl").data(links,d=>d.b.label+d.h.idx);bl.exit().remove();
+  bl.enter().append("line").attr("class","bl").merge(bl).attr("stroke",d=>d.b.color).attr("x1",d=>d.h.x).attr("y1",d=>d.h.y).attr("x2",d=>d.b.x).attr("y2",d=>d.b.y);
+  const bb=bloomLayer.selectAll("g.bb").data(boxes,d=>d.label+d.color);bb.exit().remove();
+  const e=bb.enter().append("g").attr("class","bb");e.append("rect");e.append("text");
+  const m=e.merge(bb).attr("transform",d=>`translate(${d.x},${d.y})`);
+  m.select("rect").attr("width",d=>d.w).attr("height",d=>d.h).attr("rx",5).attr("x",d=>-d.w/2).attr("y",d=>-d.h/2).attr("stroke",d=>d.color).attr("stroke-width",1.3);
+  m.select("text").attr("dy",1).text(d=>d.label);}
+function clearBloom(){bloomLayer.selectAll("*").remove();}
+
+/* ---- ZOOM / PAN ---- */
+let _dragMoved=false;
+const zoom=d3.zoom().scaleExtent([.06,4])
+  .on("start",()=>{_dragMoved=false;})
+  .on("zoom",e=>{root.attr("transform",e.transform);if(e.sourceEvent&&/move/.test(e.sourceEvent.type))_dragMoved=true;});
+svg.call(zoom).on("dblclick.zoom",null);
+svg.on("click",e=>{if(_dragMoved){_dragMoved=false;return;}if(e.target.closest&&e.target.closest('.hub,.bb'))return;clearSelection();});
+function clearSelection(){
+  if(ringMode()){const was=focused!==null||legend.querySelector('.row.sel');
+    focused=null;clearBloom();hub.classed("faded",false);styleMarkers(null);
+    [...legend.querySelectorAll('.row')].forEach(r=>r.classList.remove('off','sel'));
+    if(was)fitView(true);}
+  else{if(sel!==null){sel=null;g('i-rels').innerHTML="";applyTies();}}}
+function paneSize(){const p=document.getElementById('stage');return [p.clientWidth||800,p.clientHeight||500];}
+function fitBox(b,anim){const[W,H]=paneSize();const w=b.x1-b.x0,h=b.y1-b.y0;const k=Math.min(W/w,H/h)*0.94;
+  const t=d3.zoomIdentity.translate(W/2-k*(b.x0+w/2),H/2-k*(b.y0+h/2)).scale(k);(anim?svg.transition().duration(600):svg).call(zoom.transform,t);}
+const ringMode=()=>mode==="companies"||mode==="ownership";
+function fitView(anim){
+  if(ringMode()){const R=RINGS[RINGS.length-1].r+80;fitBox({x0:-R,y0:-R,x1:R,y1:R},anim);return;}
+  let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;hubNodes.forEach(h=>{if(!h._vis)return;const hw=h.label.length*6+30;x0=Math.min(x0,h.x-hw);y0=Math.min(y0,h.y-40);x1=Math.max(x1,h.x+hw);y1=Math.max(y1,h.y+40);});
+  fitBox({x0:x0-30,y0:y0-30,x1:x1+30,y1:y1+30},anim);}
+
+/* ---- MAP ---- */
+const map=L.map('map',{worldCopyJump:true}).setView([25,0],2);
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Imagery © Esri, Maxar'}).addTo(map);
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,opacity:.9}).addTo(map);
+const pts=[];CO.forEach((co,i)=>{pts.push({i,lat:co.hq[0],lng:co.hq[1],main:true,label:co.city});(co.reg||[]).forEach(r=>pts.push({i,lat:r[0],lng:r[1],main:false,label:r[2]}));});
+const used=new Array(pts.length).fill(false);
+for(let a=0;a<pts.length;a++){if(used[a])continue;const cl=[pts[a]];used[a]=true;
+  for(let b=a+1;b<pts.length;b++){if(used[b])continue;if(Math.abs(pts[a].lat-pts[b].lat)<0.25&&Math.abs(pts[a].lng-pts[b].lng)<0.25){cl.push(pts[b]);used[b]=true;}}
+  if(cl.length===1){cl[0].dlat=cl[0].lat;cl[0].dlng=cl[0].lng;}
+  else{const R=0.13;cl.forEach((p,k)=>{const ang=k/cl.length*2*Math.PI;p.dlat=p.lat+Math.sin(ang)*R;p.dlng=p.lng+Math.cos(ang)*R/Math.max(.35,Math.cos(p.lat*Math.PI/180));});}}
+const markersByIdx={};const allLatLngs=[];CO.forEach((co,i)=>markersByIdx[i]=[]);
+pts.forEach(p=>{const co=CO[p.i];
+  const m=L.circleMarker([p.dlat,p.dlng],{radius:p.main?8:4.5,color:'#fff',weight:p.main?2:1.4,fillColor:co.color,fillOpacity:p.main?.95:.82}).addTo(map);
+  if(p.main)m.bindPopup(`<div class="pop-n" style="color:${co.color}">${co.n}</div><div>${co.desc}</div><div class="pop-meta">${SECMETA[co.sec].label}${co.rev!=null?` · ≈ $${co.rev}B`:(co.aum?` · ${co.aum}`:"")}${co.gshare!=null?` · ~${co.gshare<1?co.gshare.toFixed(2):co.gshare.toFixed(1)}% of system`:""}</div><div class="pop-meta">${co.own?("Ownership: "+co.own+" · "):""}HQ: ${co.city}</div>`);
+  else m.bindPopup(`<div class="pop-n" style="color:${co.color};font-size:12px">${co.n}</div><div class="pop-meta">${p.label} (approx.)</div>`);
+  m.on('click',()=>{if(ringMode())focusCompany(p.i,true);else pickNode(p.i);});m._isMain=p.main;markersByIdx[p.i].push(m);allLatLngs.push([p.dlat,p.dlng]);});
+
+/* ---- INFO ---- */
+const g=id=>document.getElementById(id);
+function showInfo(i){const co=CO[i];
+  g('i-name').textContent=co.n;g('i-name').style.color=co.color;g('i-city').textContent="HQ · "+co.city;g('i-desc').textContent=co.desc;
+  g('i-rev').textContent=co.rev!=null?("$"+co.rev+"B"):"—";g('i-br').textContent=co.b?co.b.length:"—";
+  g('i-own').innerHTML=(co.own?("Ownership: <b>"+co.own+"</b> · "):"")+SECMETA[co.sec].label;
+  if(co.gshare!=null){g('i-gpct').textContent=(co.gshare<1?co.gshare.toFixed(2):co.gshare.toFixed(1))+"%";g('i-gbar').style.width=(co.gshare/maxG*100)+"%";g('i-gbar').style.background=co.color;}
+  else{g('i-gpct').textContent="--";g('i-gbar').style.width="0";}
+  if(co.share!=null){g('i-seclbl').textContent="Share of "+SECMETA[co.sec].short+" (mapped)";g('i-pct').textContent=co.share.toFixed(0)+"%";
+    const mx=d3.max(CO.filter(c=>c.sec===co.sec&&c.share!=null),c=>c.share);g('i-bar').style.width=(co.share/mx*100)+"%";g('i-bar').style.background=co.color;}
+  else{g('i-seclbl').textContent=co.aum||"";g('i-pct').textContent="";g('i-bar').style.width="0";}
+  document.querySelector('.info').style.borderLeftColor=co.color;
+  if(co._infl!=null){const ip=co._inflPct;g('i-inflpct').textContent=(ip<1?ip.toFixed(2):ip.toFixed(1))+"% of system";g('i-inflbar').style.width=(co._infl/maxInfl*100)+"%";g('i-inflbar').style.background=co.tcol||co.color;}else{g('i-inflpct').textContent="--";g('i-inflbar').style.width="0";}}
+function relTier(s){return s>=0.85?["Control","#c0392b"]:s>=0.6?["Large stake","#d35400"]:s>=0.45?["Active stake","#b9960b"]:s>=0.36?["Index / member","#2471a3"]:["Partnership","#7f8c8d"];}
+function showRels(i){const box=g('i-rels');if(!box)return;const isInst=i>=COMP_N;
+  const rows=tieList.filter(t=>isInst?t.owner===i:t.b===i).map(t=>{const o=isInst?t.b:t.a;return {n:CO[o].n,s:t.s||0.4,col:CO[o].tcol||CO[o].color};});
+  rows.sort((a,b)=>b.s-a.s);
+  if(!rows.length){box.innerHTML="";return;}
+  let h='<div class="relhd">'+(isInst?"Holds / sways — strongest first":"Held / swayed by — strongest first")+' ('+rows.length+')</div>';
+  rows.forEach(r=>{const tt=relTier(r.s);h+='<div class="relrow"><span class="reldot" style="background:'+r.col+'"></span><span class="reln" title="'+r.n+'">'+r.n+'</span><span class="reltier" style="color:'+tt[1]+'">'+tt[0]+'</span><span class="relbarwrap"><span class="relbar" style="width:'+Math.round(r.s*100)+'%;background:'+tt[1]+'"></span></span></div>';});
+  box.innerHTML=h;}
+
+let focused=null,mode="companies",sel=null;
+function styleMarkers(set){Object.entries(markersByIdx).forEach(([k,arr])=>arr.forEach(m=>{const on=set==null||set.has(+k);
+  m.setStyle({fillOpacity:on?(m._isMain?.95:.82):.14,radius:on?(m._isMain?(set&&set.size===1?11:8):4.5):(m._isMain?6:3)});}));}
+
+/* ---- TIE STATE (financial/lobby) ---- */
+function applyTies(){
+  if(ringMode()){tie.classed("show",false).classed("hot",false).classed("cold",false);return;}
+  const involved=new Set();
+  tie.each(function(t){const vis=(mode==="financial"&&t.kind==="fin")||(mode==="lobby"&&t.kind==="inf")||(mode==="orbit"&&t.kind==="inst")||(mode==="all");
+    const el=d3.select(this);el.classed("show",false).classed("hot",false).classed("cold",false).classed("dim",false).style("stroke-opacity",null);
+    if(!vis)return;
+    if(!sel){if(mode==="all"){el.classed("dim",true).attr("stroke-width",t._w).style("stroke-opacity",0.1+0.6*Math.pow(t.s||0.4,1.6));}else{el.classed("show",true).attr("stroke-width",t._w).style("stroke-opacity",0.32+0.6*Math.pow(t.s||0.4,1.3));}}
+    else{const hit=(sel.type==="owner"&&t.owner===sel.idx)||(sel.type==="co"&&t.b===sel.idx);
+      el.classed(hit?"hot":"cold",true).attr("stroke-width",hit?Math.min(t._w*1.4+0.6,13):Math.max(t._w*0.4,0.4)).style("stroke-opacity",hit?(0.62+0.38*(t.s||0.4)):0.05);if(hit){involved.add(t.a);involved.add(t.b);}}});
+  hub.classed("faded",d=>{if(!d._vis)return false;return sel?!involved.has(d.idx):false;});
+  styleMarkers(sel?involved:(mode==="all"?null:(mode==="financial"?finSet:(mode==="lobby"?infSet:instSet))));
+  syncLegendSel();}
+
+function pickNode(i){ // click in fin/lobby
+  const isOwner=i>=COMP_N;
+  const newSel=isOwner?{type:"owner",idx:i}:{type:"co",idx:i};
+  if(sel&&sel.type===newSel.type&&sel.idx===newSel.idx)sel=null;else sel=newSel;
+  showInfo(i);if(sel)showRels(i);else g('i-rels').innerHTML="";applyTies();
+  if(markersByIdx[i][0]){map.flyTo(CO[i].hq,4,{duration:.8});markersByIdx[i][0].openPopup();}}
+
+/* ---- FOCUS (ring modes) ---- */
+function zoomToCluster(i,bs){const h=hubByIdx[i];const arr=[[h.x,h.y]].concat(bs.map(b=>[b.x,b.y]));
+  let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;arr.forEach(p=>{x0=Math.min(x0,p[0]-90);y0=Math.min(y0,p[1]-40);x1=Math.max(x1,p[0]+90);y1=Math.max(y1,p[1]+40);});
+  const[W,H]=paneSize();const w=x1-x0,h2=y1-y0,k=Math.min(Math.min(W/w,H/h2)*0.85,1.8);
+  svg.transition().duration(600).call(zoom.transform,d3.zoomIdentity.translate(W/2-k*(x0+w/2),H/2-k*(y0+h2/2)).scale(k));}
+function focusCompany(i,fromMap){
+  if(i>=ORB_START&&mode!=="orbit")return;
+  if(focused===i){focused=null;clearBloom();hub.classed("faded",false);styleMarkers(null);return;}
+  focused=i;showInfo(i);hub.classed("faded",d=>d.idx!==i);styleMarkers(new Set([i]));
+  clearBloom();const bs=brandsByCo[i];if(bs.length){bloomLayout(hubByIdx[i],bs);renderBloom([{hub:hubByIdx[i],bnodes:bs}]);}
+  zoomToCluster(i,bs);map.flyTo(CO[i].hq,(CO[i].reg&&CO[i].reg.length)?4:5,{duration:.9});if(markersByIdx[i][0])markersByIdx[i][0].openPopup();}
+hub.on("click",(e,d)=>{if(ringMode())focusCompany(d.idx,false);else pickNode(d.idx);});
+hub.on("mouseenter",(e,d)=>{if(focused===null&&sel===null)showInfo(d.idx);});
+
+/* ---- TABS / MODES ---- */
+const ICON={all:'<svg class="ic" viewBox="0 0 24 24" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3v18"/><path d="M5.6 5.6 18.4 18.4M18.4 5.6 5.6 18.4"/></svg>',
+ companies:'<svg class="ic" viewBox="0 0 24 24" stroke="currentColor"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/></svg>',
+ financial:'<svg class="ic" viewBox="0 0 24 24" stroke="currentColor"><circle cx="5" cy="12" r="2.5"/><circle cx="19" cy="6" r="2.5"/><circle cx="19" cy="18" r="2.5"/><path d="M7.3 11l9.4-4M7.3 13l9.4 4"/></svg>',
+ lobby:'<svg class="ic" viewBox="0 0 24 24" stroke="currentColor"><path d="M3 11l18-7-7 18-2.5-7.5z"/></svg>',
+ ownership:'<svg class="ic" viewBox="0 0 24 24" stroke="currentColor"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-6h6v6"/></svg>',
+ orbit:'<svg class="ic" viewBox="0 0 24 24" stroke="currentColor" fill="none"><circle cx="12" cy="12" r="3"/><ellipse cx="12" cy="12" rx="10" ry="4.3"/><ellipse cx="12" cy="12" rx="4.3" ry="10"/></svg>'};
+const TABS=[["all","All"],["companies","Companies"],["financial","Financial Ties"],["lobby","Lobby Groups"],["ownership","Ownership"],["orbit","Orbit"]];
+const tabbar=g('tabbar');
+const tabBtns=TABS.map(([k,lab])=>{const b=document.createElement('button');b.className="tab t-"+k;b.dataset.m=k;b.innerHTML=ICON[k]+"<span>"+lab+"</span>";b.onclick=()=>setMode(k);tabbar.appendChild(b);return b;});
+const BADGE={all:"<b>The whole system in one view.</b> Every entry — supply chain, capital, lobbies and the bodies in their orbit — placed by role, sized by revenue, with all financial, lobbying &amp; partnership threads drawn faintly. <b>Click any node</b> to light up only its connections and fly the map to its HQ. The focused tabs at right isolate one relationship type at a time. <b>Thread thickness</b> = how strong each tie is — outright control is heaviest, a controlling stake strong, an index-fund holding or trade-group membership lighter.",
+ companies:"Each ring = a link of the food chain. Node size = revenue. <b>Click</b> a company → its brands fan out and the map flies to its HQ.",
+ financial:"<b>Who are the big shareholders?</b> The three giant index managers — Vanguard, BlackRock, State Street — sit at the centre, each with its own coloured threads to the public firms it's a top-3 shareholder of. Berkshire and the private-equity / holding owners (JAB, 3G, PAI, CVC) show their controlling stakes. <b>Click any owner</b> (or its colour in the key) to see exactly what it holds. These are large holdings, <i>not</i> operational control — family/state/PE-owned firms aren't held this way.",
+ lobby:"<b>Industry lobby ties.</b> Five trade groups at the centre, each linked in its own colour to its member companies. <b>Click a group</b> (or a company) to isolate its ties.",
+ ownership:"<b>Ownership.</b> Every company recoloured by who actually controls it — widely-held public vs founder, family, state, private-equity, foundation or holding-company control.",
+ orbit:"<b>In the industry's orbit.</b> Worldwide bodies that aren't food companies but are deeply entangled with them — UN standard-setters, multistakeholder platforms, an industry-funded science institute, a 'sustainability' certifier and philanthrocapital. Each sits at the centre, linked in its own colour to the giant firms that fund, staff, partner with or lobby it. <b>Click a body</b> (or its colour in the key) to isolate its ties. Threads denote documented funding, membership, partnership or lobbying — <i>not</i> proof of control."};
+function recolor(){
+  const fn=d=>{const c=CO[d.idx];
+    if(c.sec==="Orbit")return c.tcol;
+    if(mode==="ownership")return OWNCOL[ownCat(c.own||(c.sec==="Capital"?"Asset manager":"Alliance"))];
+    if((mode==="financial"||mode==="all")&&c.sec==="Capital")return c.tcol;
+    if((mode==="lobby"||mode==="all")&&c.sec==="Influence")return c.tcol;
+    return c.color;};
+  hub.select(".main").attr("fill",fn);hub.select(".ul").attr("stroke",fn);hub.select(".sub").attr("fill",fn);
+  Object.entries(markersByIdx).forEach(([k,arr])=>{const d={idx:+k};arr.forEach(m=>m.setStyle({fillColor:fn(d)}));});}
+
+function modeTargets(m){const T={};
+  if(m==="financial"){
+    const Ri=255,Ro=680;FIN.forEach((f,k)=>{const fi=idxOf(f.n);const ang=k/FIN.length*2*Math.PI-Math.PI/2;T[fi]={x:Math.cos(ang)*Ri,y:Math.sin(ang)*Ri,vis:true};});
+    const held=[...finSet].filter(i=>i<COMP_N).sort((a,b)=>SECTORS.indexOf(CO[a].sec)-SECTORS.indexOf(CO[b].sec)||a-b);
+    held.forEach((i,k)=>{const ang=k/held.length*2*Math.PI-Math.PI/2;T[i]={x:Math.cos(ang)*Ro,y:Math.sin(ang)*Ro,vis:true};});
+  }else if(m==="lobby"){
+    const Ri=215,Ro=560;LOB.forEach((l,k)=>{const li=idxOf(l.n);const ang=k/LOB.length*2*Math.PI-Math.PI/2;T[li]={x:Math.cos(ang)*Ri,y:Math.sin(ang)*Ri,vis:true};});
+    const mem=[...infSet].filter(i=>i<COMP_N).sort((a,b)=>SECTORS.indexOf(CO[a].sec)-SECTORS.indexOf(CO[b].sec)||a-b);
+    mem.forEach((i,k)=>{const ang=k/mem.length*2*Math.PI-Math.PI/2;T[i]={x:Math.cos(ang)*Ro,y:Math.sin(ang)*Ro,vis:true};});
+  }else if(m==="orbit"){
+    const Ri=305,Ro=775;ORB.forEach((o,k)=>{const oi=idxOf(o.n);const ang=k/ORB.length*2*Math.PI-Math.PI/2;T[oi]={x:Math.cos(ang)*Ri,y:Math.sin(ang)*Ri,vis:true};});
+    const conn=[...instSet].filter(i=>i<COMP_N).sort((a,b)=>SECTORS.indexOf(CO[a].sec)-SECTORS.indexOf(CO[b].sec)||a-b);
+    conn.forEach((i,k)=>{const ang=k/conn.length*2*Math.PI-Math.PI/2;T[i]={x:Math.cos(ang)*Ro,y:Math.sin(ang)*Ro,vis:true};});
+  }
+  hubNodes.forEach(h=>{if(h.idx in T)return;const isOrb=h.idx>=ORB_START;T[h.idx]={x:h.hx,y:h.hy,vis:isOrb?(m==="all"):ringMode2(m)};});
+  return T;}
+function ringMode2(m){return m==="companies"||m==="ownership"||m==="all";}
+
+function setMode(m){mode=m;focused=null;sel=null;clearBloom();if(g('i-rels'))g('i-rels').innerHTML="";
+  tabBtns.forEach(b=>b.classList.toggle("on",b.dataset.m===m));
+  g('badge').innerHTML=BADGE[m];recolor();
+  const ring=ringMode2(m);
+  guideG.style("display",ring?null:"none");rl.style("display",ring?null:"none");coreG.style("display",ring?null:"none");
+  buildLegend(m);
+  const T=modeTargets(m);hubNodes.forEach(h=>{h.px=h.x;h.py=h.y;const t=T[h.idx];h.x=t.x;h.y=t.y;h._vis=t.vis;});
+  hub.style("pointer-events",d=>d._vis?"all":"none");
+  const TT=svg.transition().duration(680);
+  hub.transition(TT).attrTween("transform",function(d){const x0=d.px,y0=d.py,x1=d.x,y1=d.y;return t=>`translate(${x0+(x1-x0)*t},${y0+(y1-y0)*t})`;})
+     .style("opacity",d=>d._vis?1:0).on("end",function(d){if(d._vis)this.style.opacity="";});
+  tie.transition(TT).attrTween("d",function(d){const a=hubByIdx[d.a],b=hubByIdx[d.b];const ax0=a.px,ay0=a.py,bx0=b.px,by0=b.py,ax1=a.x,ay1=a.y,bx1=b.x,by1=b.y;
+     return t=>{const ax=ax0+(ax1-ax0)*t,ay=ay0+(ay1-ay0)*t,bx=bx0+(bx1-bx0)*t,by=by0+(by1-by0)*t,cx=(ax+bx)*0.28,cy=(ay+by)*0.28;return `M${ax},${ay}Q${cx},${cy} ${bx},${by}`;};});
+  hub.classed("faded",false);
+  applyTies();
+  setTimeout(()=>fitView(true),140);}
+
+/* ---- LEGEND ---- */
+const legend=g('legend');let legType=null;
+function buildLegend(m){legend.innerHTML="";
+  if(m==="financial"||m==="lobby"||m==="orbit"){legType=m;
+    const head=document.createElement('div');head.className="lh";head.textContent=(m==="financial")?"Owners -- click to isolate":(m==="lobby"?"Lobby groups -- click":"Bodies -- click to isolate");legend.appendChild(head);
+    (m==="financial"?FIN:(m==="lobby"?LOB:ORB)).forEach(o=>{const oi=idxOf(o.n);const ct=tieList.filter(t=>t.owner===oi).length;
+      const row=document.createElement('div');row.className="row";row.dataset.oi=oi;
+      row.innerHTML=`<span class="ln" style="border-color:${o.tcol}"></span><span>${o.n}</span><span class="ct">${ct}</span>`;
+      row.onclick=()=>{if(sel&&sel.type==="owner"&&sel.idx===oi)sel=null;else{sel={type:"owner",idx:oi};showInfo(oi);}if(sel)showRels(oi);else g('i-rels').innerHTML="";applyTies();};
+      legend.appendChild(row);});
+    return;}
+  legType="ring";
+  const type=(m==="ownership")?"own":"sector";
+  const head=document.createElement('div');head.className="lh";head.textContent=(type==="own")?"Who controls it":"Links of the chain";legend.appendChild(head);
+  const rows=(type==="own")?OWN.map(o=>[o[0],o[1],CO.filter(c=>c.sec!=="Orbit"&&ownCat(c.own||(c.sec==="Capital"?"Asset manager":"Alliance"))===o[0]).length]):SECTORS.map(s=>[SECMETA[s].short,SECMETA[s].col,CO.filter(c=>c.sec===s).length]);
+  rows.forEach(([name,col,ct])=>{if(!ct)return;const row=document.createElement('div');row.className="row";
+    row.innerHTML=`<span class="sw" style="background:${col}"></span><span>${name}</span><span class="ct">${ct}</span>`;
+    row.onclick=()=>{const cur=row.classList.contains('sel');[...legend.querySelectorAll('.row')].forEach(r=>r.classList.remove('off','sel'));
+      if(cur){hub.classed("faded",false);styleMarkers(null);}
+      else{[...legend.querySelectorAll('.row')].forEach(r=>r.classList.toggle('off',r!==row));row.classList.add('sel');
+        const set=new Set(CO.map((c,i)=>((type==="own"?ownCat(c.own||(c.sec==="Capital"?"Asset manager":"Alliance")):SECMETA[c.sec].short)===name)?i:-1).filter(x=>x>=0));
+        focused=null;clearBloom();hub.classed("faded",d=>!set.has(d.idx));styleMarkers(set);}};
+    legend.appendChild(row);});}
+function syncLegendSel(){if(legType!=="financial"&&legType!=="lobby"&&legType!=="orbit")return;
+  [...legend.querySelectorAll('.row')].forEach(r=>{const on=sel&&sel.type==="owner"&&+r.dataset.oi===sel.idx;r.classList.toggle('sel',on);r.classList.toggle('off',sel&&!on);});}
+
+/* ---- SEARCH ---- */
+const search=g('search'),result=g('result');
+search.addEventListener("input",()=>{const q=search.value.trim().toLowerCase();
+  if(!q){if(ringMode()){focused=null;clearBloom();hub.classed("faded",false);styleMarkers(null);}else{sel=null;g('i-rels').innerHTML="";applyTies();}result.innerHTML="";return;}
+  const owners=new Set();const groups=[];let n=0;
+  CO.forEach((c,i)=>{if(!hubNodes[i]._vis)return;const mB=(c.b||[]).filter(x=>x.toLowerCase().includes(q));const mN=c.n.toLowerCase().includes(q);
+    if(mB.length||mN){owners.add(i);const bs=(mB.length?mB:(c.b||[])).map(label=>({label,color:c.color,w:Math.max(label.length*6.6+18,38),h:23,r:Math.hypot(Math.max(label.length*6.6+18,38),23)/2+2}));
+      n+=mB.length;if(owners.size<=8&&bs.length&&ringMode()){bloomLayout(hubByIdx[i],bs);groups.push({hub:hubByIdx[i],bnodes:bs});}}});
+  clearBloom();if(groups.length)renderBloom(groups);
+  hub.classed("faded",d=>owners.size?!owners.has(d.idx):true);styleMarkers(owners.size?owners:new Set([-1]));
+  if(!ringMode())tie.classed("show",false).classed("hot",false).classed("cold",true).classed("dim",false).style("stroke-opacity",null);
+  result.innerHTML=n===0?(owners.size?`<b>${owners.size}</b> match`:`no match for “${q}”`):`<b>${n}</b> brand${n>1?'s':''} · <b>${owners.size}</b> owner${owners.size>1?'s':''}`;});
+
+g('fit').onclick=()=>fitView(true);
+g('reset').onclick=()=>{search.value="";setMode("all");result.innerHTML="";map.fitBounds(allLatLngs,{padding:[40,40]});};
+
+/* ---- INIT ---- */
+setMode("all");
+function stageInit(){fitView(false);map.invalidateSize();}
+stageInit();requestAnimationFrame(stageInit);
+window.addEventListener('load',()=>{stageInit();setTimeout(()=>map.fitBounds(allLatLngs,{padding:[40,40]}),200);});
+if(window.ResizeObserver){new ResizeObserver(()=>{clearTimeout(window._rt);window._rt=setTimeout(()=>{fitView(false);map.invalidateSize();},120);}).observe(document.getElementById('stage'));}
+</script>
+</body>
+</html>

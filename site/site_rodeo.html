@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Rodeo & Charreada Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Work+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --earth-dark: #2d3436;
+            --earth-brown: #6c5448;
+            --earth-sand: #d4a574;
+            --earth-sage: #8b9474;
+            --earth-sky: #7c9eb2;
+            --accent-warm: #c9896b;
+            --text-light: #f5f5f0;
+            --text-dark: #2d2d2d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background: var(--earth-dark);
+            color: var(--text-light);
+            overflow: hidden;
+        }
+
+        #map {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .map-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: linear-gradient(180deg, rgba(45,52,54,0.95) 0%, rgba(45,52,54,0.7) 70%, transparent 100%);
+            padding: 2rem 3rem 4rem;
+            pointer-events: none;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 2rem;
+        }
+
+        .title-section h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            font-weight: 300;
+            letter-spacing: 0.02em;
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .title-section p {
+            font-size: 0.95rem;
+            color: var(--earth-sand);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            font-weight: 300;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.2s forwards;
+        }
+
+        .filter-panel {
+            pointer-events: auto;
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.4s forwards;
+        }
+
+        .filter-btn {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: var(--text-light);
+            padding: 0.6rem 1.2rem;
+            border-radius: 2rem;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            letter-spacing: 0.02em;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: var(--earth-sand);
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: var(--earth-sand);
+            border-color: var(--earth-sand);
+            color: var(--earth-dark);
+            font-weight: 500;
+        }
+
+        .stats-panel {
+            position: absolute;
+            bottom: 2rem;
+            left: 3rem;
+            z-index: 1000;
+            background: rgba(45,52,54,0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 1rem;
+            padding: 1.5rem 2rem;
+            pointer-events: none;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.6s forwards;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .stat-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--earth-sand);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Custom Leaflet Popup Styling */
+        .leaflet-popup-content-wrapper {
+            background: rgba(45,52,54,0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 1rem;
+            padding: 0;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .leaflet-popup-content {
+            margin: 0;
+            min-width: 250px;
+        }
+
+        .leaflet-popup-tip {
+            background: rgba(45,52,54,0.98);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-top: none;
+            border-right: none;
+        }
+
+        .popup-content {
+            padding: 1.5rem;
+        }
+
+        .popup-category {
+            display: inline-block;
+            background: var(--earth-sand);
+            color: var(--earth-dark);
+            padding: 0.3rem 0.8rem;
+            border-radius: 1rem;
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+        }
+
+        .popup-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .popup-address {
+            font-size: 0.9rem;
+            color: var(--earth-sand);
+            margin-bottom: 0.25rem;
+            opacity: 0.9;
+        }
+
+        .popup-country {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 0.5rem;
+        }
+
+        /* Marker Icons */
+        .marker-icon {
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .marker-icon:hover {
+            transform: scale(1.2);
+            border-width: 3px;
+        }
+
+        .marker-rodeo { background: rgba(212, 165, 116, 0.9); }
+        .marker-charreada { background: rgba(201, 137, 107, 0.9); }
+        .marker-coleo { background: rgba(139, 148, 116, 0.9); }
+        .marker-rodeio { background: rgba(124, 158, 178, 0.9); }
+        .marker-other { background: rgba(108, 84, 72, 0.9); }
+
+        @media (max-width: 768px) {
+            .title-section h1 {
+                font-size: 2rem;
+            }
+            
+            .map-overlay {
+                padding: 1.5rem;
+            }
+            
+            .stats-panel {
+                left: 1.5rem;
+                bottom: 1.5rem;
+                padding: 1rem 1.5rem;
+            }
+            
+            .filter-panel {
+                gap: 0.5rem;
+            }
+            
+            .filter-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    
+    <div class="map-overlay">
+        <div class="header">
+            <div class="title-section">
+                <h1>Global Rodeo & Charreada Map</h1>
+                <p>Worldwide Rodeo Events & Traditional Equestrian Competitions</p>
+            </div>
+            <div class="filter-panel">
+                <button class="filter-btn active" data-category="all">All Events</button>
+                <button class="filter-btn" data-category="rodeo">Rodeos</button>
+                <button class="filter-btn" data-category="charreada">Charreadas</button>
+                <button class="filter-btn" data-category="coleo">Coleo</button>
+                <button class="filter-btn" data-category="rodeio">Rodeios</button>
+                <button class="filter-btn" data-category="other">Other</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="stats-panel">
+        <div class="stat-item">
+            <span class="stat-number" id="location-count">0</span>
+            <span class="stat-label">Venues</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number" id="country-count">0</span>
+            <span class="stat-label">Countries</span>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        const locations = [
+            // UNITED STATES - MAJOR RODEOS (PRCA Circuit)
+            { name: "National Finals Rodeo", address: "Thomas & Mack Center", city: "Las Vegas", country: "USA", lat: 36.0839, lng: -115.1833, category: "rodeo" },
+            { name: "Cheyenne Frontier Days", address: "Frontier Park", city: "Cheyenne", country: "USA", lat: 41.1400, lng: -104.8231, category: "rodeo" },
+            { name: "Calgary Stampede", address: "Stampede Park", city: "Calgary", country: "Canada", lat: 51.0375, lng: -114.0533, category: "rodeo" },
+            { name: "Houston Livestock Show", address: "NRG Stadium", city: "Houston", country: "USA", lat: 29.6847, lng: -95.4107, category: "rodeo" },
+            { name: "Pendleton Round-Up", address: "Round-Up Grounds", city: "Pendleton", country: "USA", lat: 45.6721, lng: -118.7886, category: "rodeo" },
+            { name: "Reno Rodeo", address: "Reno Livestock Events Center", city: "Reno", country: "USA", lat: 39.5045, lng: -119.7721, category: "rodeo" },
+            { name: "Dodge City Roundup", address: "Dodge City Arena", city: "Dodge City", country: "USA", lat: 37.7528, lng: -100.0171, category: "rodeo" },
+            { name: "Greeley Stampede", address: "Island Grove Park", city: "Greeley", country: "USA", lat: 40.4075, lng: -104.7092, category: "rodeo" },
+            { name: "San Antonio Stock Show", address: "AT&T Center", city: "San Antonio", country: "USA", lat: 29.4270, lng: -98.4375, category: "rodeo" },
+            { name: "Fort Worth Stock Show", address: "Dickies Arena", city: "Fort Worth", country: "USA", lat: 32.7897, lng: -97.3621, category: "rodeo" },
+            { name: "Denver Stock Show", address: "National Western Complex", city: "Denver", country: "USA", lat: 39.7817, lng: -104.9750, category: "rodeo" },
+            { name: "Cody Stampede", address: "Stampede Park", city: "Cody", country: "USA", lat: 44.5263, lng: -109.0565, category: "rodeo" },
+            { name: "Prescott Frontier Days", address: "Rodeo Grounds", city: "Prescott", country: "USA", lat: 34.5400, lng: -112.4685, category: "rodeo" },
+            { name: "Red Bluff Round-Up", address: "Tehama District Fairgrounds", city: "Red Bluff", country: "USA", lat: 40.1785, lng: -122.2358, category: "rodeo" },
+            { name: "Salinas Rodeo", address: "Salinas Sports Complex", city: "Salinas", country: "USA", lat: 36.6777, lng: -121.6555, category: "rodeo" },
+            { name: "Lewiston Roundup", address: "Roundup Grounds", city: "Lewiston", country: "USA", lat: 46.4165, lng: -117.0177, category: "rodeo" },
+            { name: "La Fiesta de los Vaqueros", address: "Tucson Rodeo Grounds", city: "Tucson", country: "USA", lat: 32.2226, lng: -110.9747, category: "rodeo" },
+            { name: "Ellensburg Rodeo", address: "Ellensburg Rodeo Arena", city: "Ellensburg", country: "USA", lat: 46.9965, lng: -120.5478, category: "rodeo" },
+            { name: "Oakdale Saddle Club Rodeo", address: "Oakdale Rodeo Grounds", city: "Oakdale", country: "USA", lat: 37.7666, lng: -120.8472, category: "rodeo" },
+            { name: "Clovis Rodeo", address: "Clovis Rodeo Grounds", city: "Clovis", country: "USA", lat: 36.8252, lng: -119.7029, category: "rodeo" },
+            
+            // USA TEXAS RODEOS
+            { name: "San Angelo Stock Show", address: "San Angelo Fairgrounds", city: "San Angelo", country: "USA", lat: 31.4638, lng: -100.4370, category: "rodeo" },
+            { name: "Mesquite Championship Rodeo", address: "Mesquite Arena", city: "Mesquite", country: "USA", lat: 32.7668, lng: -96.5991, category: "rodeo" },
+            { name: "Austin Rodeo", address: "Travis County Expo Center", city: "Austin", country: "USA", lat: 30.2672, lng: -97.7431, category: "rodeo" },
+            { name: "Amarillo Tri-State Fair", address: "Amarillo Civic Center", city: "Amarillo", country: "USA", lat: 35.2220, lng: -101.8313, category: "rodeo" },
+            { name: "Abilene Western Heritage", address: "Taylor County Expo", city: "Abilene", country: "USA", lat: 32.4487, lng: -99.7331, category: "rodeo" },
+            { name: "Odessa Permian Basin Fair", address: "Ector County Coliseum", city: "Odessa", country: "USA", lat: 31.8457, lng: -102.3676, category: "rodeo" },
+            { name: "Lubbock Panhandle South Plains", address: "Lubbock Municipal Coliseum", city: "Lubbock", country: "USA", lat: 33.5779, lng: -101.8552, category: "rodeo" },
+            { name: "Corpus Christi Buccaneer Days", address: "American Bank Center", city: "Corpus Christi", country: "USA", lat: 27.8006, lng: -97.3964, category: "rodeo" },
+            { name: "El Paso Stock Show", address: "El Paso County Coliseum", city: "El Paso", country: "USA", lat: 31.7619, lng: -106.4850, category: "rodeo" },
+            { name: "Waco Heart of Texas Fair", address: "Extraco Events Center", city: "Waco", country: "USA", lat: 31.5493, lng: -97.1467, category: "rodeo" },
+            { name: "Beaumont South Texas State Fair", address: "Ford Park", city: "Beaumont", country: "USA", lat: 30.0802, lng: -94.1266, category: "rodeo" },
+            { name: "Tyler East Texas State Fair", address: "Tyler Rose Garden Arena", city: "Tyler", country: "USA", lat: 32.3513, lng: -95.3011, category: "rodeo" },
+            { name: "Laredo Washington's Birthday", address: "Laredo Civic Center", city: "Laredo", country: "USA", lat: 27.5306, lng: -99.4803, category: "rodeo" },
+            { name: "Kingsville Ranch Hand Rodeo", address: "King Ranch", city: "Kingsville", country: "USA", lat: 27.5159, lng: -97.8561, category: "rodeo" },
+            { name: "Big Spring Cowboy Reunion", address: "Howard County Fairgrounds", city: "Big Spring", country: "USA", lat: 32.2504, lng: -101.4787, category: "rodeo" },
+            
+            // USA CALIFORNIA RODEOS
+            { name: "Rowell Ranch Rodeo", address: "Rowell Ranch Park", city: "Castro Valley", country: "USA", lat: 37.6941, lng: -122.0866, category: "rodeo" },
+            { name: "Livermore Rodeo", address: "Robertson Park", city: "Livermore", country: "USA", lat: 37.6819, lng: -121.7680, category: "rodeo" },
+            { name: "Folsom Pro Rodeo", address: "Folsom Rodeo Grounds", city: "Folsom", country: "USA", lat: 38.6780, lng: -121.1760, category: "rodeo" },
+            { name: "Rancho Mission Viejo Rodeo", address: "San Juan Capistrano", city: "San Juan Capistrano", country: "USA", lat: 33.5017, lng: -117.6628, category: "rodeo" },
+            { name: "Santa Maria Elks Rodeo", address: "Santa Maria Fairpark", city: "Santa Maria", country: "USA", lat: 34.9530, lng: -120.4357, category: "rodeo" },
+            { name: "Redding Rodeo Week", address: "Redding Rodeo Grounds", city: "Redding", country: "USA", lat: 40.5865, lng: -122.3917, category: "rodeo" },
+            { name: "Tehachapi Mountain Festival", address: "Tehachapi Rodeo Grounds", city: "Tehachapi", country: "USA", lat: 35.1322, lng: -118.4490, category: "rodeo" },
+            { name: "Bishop Mule Days", address: "Tri-County Fairgrounds", city: "Bishop", country: "USA", lat: 37.3614, lng: -118.3951, category: "rodeo" },
+            { name: "Lakeside Rodeo", address: "Lakeside Rodeo Grounds", city: "Lakeside", country: "USA", lat: 32.8576, lng: -116.9223, category: "rodeo" },
+            { name: "Norco Mounted Police Rodeo", address: "George Ingalls Arena", city: "Norco", country: "USA", lat: 33.9311, lng: -117.5487, category: "rodeo" },
+            
+            // USA ARIZONA RODEOS
+            { name: "Phoenix Rodeo", address: "Arizona State Fairgrounds", city: "Phoenix", country: "USA", lat: 33.4484, lng: -112.0740, category: "rodeo" },
+            { name: "Payson Rodeo", address: "Payson Event Center", city: "Payson", country: "USA", lat: 34.2309, lng: -111.3251, category: "rodeo" },
+            { name: "Globe Apache County Fair", address: "Globe Rodeo Arena", city: "Globe", country: "USA", lat: 33.3942, lng: -110.7865, category: "rodeo" },
+            { name: "Williams Route 66 Rodeo", address: "Williams Rodeo Grounds", city: "Williams", country: "USA", lat: 35.2495, lng: -112.1910, category: "rodeo" },
+            { name: "Wickenburg Gold Rush Days", address: "Wickenburg Arena", city: "Wickenburg", country: "USA", lat: 33.9687, lng: -112.7296, category: "rodeo" },
+            { name: "Flagstaff Navajo County Fair", address: "Fort Tuthill Fairgrounds", city: "Flagstaff", country: "USA", lat: 35.1983, lng: -111.6513, category: "rodeo" },
+            { name: "Yuma County Fair Rodeo", address: "Yuma Civic Center", city: "Yuma", country: "USA", lat: 32.7253, lng: -114.6244, category: "rodeo" },
+            { name: "Casa Grande Cowboy Days", address: "Pinal County Fairgrounds", city: "Casa Grande", country: "USA", lat: 32.8795, lng: -111.7573, category: "rodeo" },
+            
+            // USA COLORADO RODEOS
+            { name: "Colorado State Fair Rodeo", address: "Pueblo State Fairgrounds", city: "Pueblo", country: "USA", lat: 38.2544, lng: -104.6091, category: "rodeo" },
+            { name: "Steamboat Springs Rodeo", address: "Brent Romick Rodeo Arena", city: "Steamboat Springs", country: "USA", lat: 40.4850, lng: -106.8317, category: "rodeo" },
+            { name: "Grand Junction Western Slope", address: "Mesa County Fairgrounds", city: "Grand Junction", country: "USA", lat: 39.0639, lng: -108.5506, category: "rodeo" },
+            { name: "Durango Fiesta Days", address: "La Plata County Fairgrounds", city: "Durango", country: "USA", lat: 37.2753, lng: -107.8801, category: "rodeo" },
+            { name: "Estes Park Rooftop Rodeo", address: "Stanley Fairgrounds", city: "Estes Park", country: "USA", lat: 40.3772, lng: -105.5217, category: "rodeo" },
+            { name: "La Junta Arkansas Valley Fair", address: "Otero County Fairgrounds", city: "La Junta", country: "USA", lat: 37.9847, lng: -103.5438, category: "rodeo" },
+            { name: "Fort Collins Western Heritage", address: "The Ranch Events Complex", city: "Fort Collins", country: "USA", lat: 40.5853, lng: -105.0844, category: "rodeo" },
+            { name: "Alamosa San Luis Valley", address: "Alamosa County Fairgrounds", city: "Alamosa", country: "USA", lat: 37.4695, lng: -105.8700, category: "rodeo" },
+            
+            // USA MONTANA RODEOS
+            { name: "Miles City Bucking Horse Sale", address: "Eastern Montana Fairgrounds", city: "Miles City", country: "USA", lat: 46.4083, lng: -105.8406, category: "rodeo" },
+            { name: "Livingston Roundup", address: "Park County Fairgrounds", city: "Livingston", country: "USA", lat: 45.6627, lng: -110.5608, category: "rodeo" },
+            { name: "Red Lodge Mountain Man Rendezvous", address: "Carbon County Fairgrounds", city: "Red Lodge", country: "USA", lat: 45.1858, lng: -109.2471, category: "rodeo" },
+            { name: "Wolf Point Wild Horse Stampede", address: "Wolf Point Fairgrounds", city: "Wolf Point", country: "USA", lat: 48.0906, lng: -105.6408, category: "rodeo" },
+            { name: "Augusta American Legion Rodeo", address: "Dearborn Valley", city: "Augusta", country: "USA", lat: 47.4735, lng: -112.4031, category: "rodeo" },
+            { name: "Great Falls Montana Pro Rodeo", address: "Montana ExpoPark", city: "Great Falls", country: "USA", lat: 47.5053, lng: -111.3008, category: "rodeo" },
+            { name: "Missoula Stampede", address: "Missoula County Fairgrounds", city: "Missoula", country: "USA", lat: 46.8721, lng: -113.9940, category: "rodeo" },
+            { name: "Billings Wild West Winterfest", address: "MetraPark Arena", city: "Billings", country: "USA", lat: 45.7833, lng: -108.5007, category: "rodeo" },
+            
+            // USA WYOMING RODEOS
+            { name: "Sheridan WYO Rodeo", address: "Sheridan County Fairgrounds", city: "Sheridan", country: "USA", lat: 44.7974, lng: -106.9562, category: "rodeo" },
+            { name: "Jackson Hole Rodeo", address: "Teton County Fairgrounds", city: "Jackson", country: "USA", lat: 43.4799, lng: -110.7624, category: "rodeo" },
+            { name: "Casper Central Wyoming Fair", address: "Central Wyoming Fairgrounds", city: "Casper", country: "USA", lat: 42.8501, lng: -106.3252, category: "rodeo" },
+            { name: "Laramie Jubilee Days", address: "Albany County Fairgrounds", city: "Laramie", country: "USA", lat: 41.3114, lng: -105.5911, category: "rodeo" },
+            { name: "Gillette Cam-plex PRCA Rodeo", address: "Cam-plex Multi-Event Facilities", city: "Gillette", country: "USA", lat: 44.2910, lng: -105.5022, category: "rodeo" },
+            { name: "Riverton Rendezvous", address: "Fremont County Fairgrounds", city: "Riverton", country: "USA", lat: 43.0250, lng: -108.3801, category: "rodeo" },
+            { name: "Rock Springs Red Desert Roundup", address: "Sweetwater County Fairgrounds", city: "Rock Springs", country: "USA", lat: 41.5875, lng: -109.2029, category: "rodeo" },
+            
+            // USA OKLAHOMA RODEOS
+            { name: "Oklahoma State Fair Rodeo", address: "Oklahoma State Fairgrounds", city: "Oklahoma City", country: "USA", lat: 35.4676, lng: -97.5164, category: "rodeo" },
+            { name: "Tulsa State Fair Rodeo", address: "Expo Square", city: "Tulsa", country: "USA", lat: 36.1540, lng: -95.9928, category: "rodeo" },
+            { name: "Enid Tri-State Music Festival", address: "Garfield County Fairgrounds", city: "Enid", country: "USA", lat: 36.3956, lng: -97.8784, category: "rodeo" },
+            { name: "Woodward Elks Rodeo", address: "Woodward Elks Arena", city: "Woodward", country: "USA", lat: 36.4336, lng: -99.3901, category: "rodeo" },
+            { name: "Ponca City 101 Ranch Rodeo", address: "101 Ranch Coliseum", city: "Ponca City", country: "USA", lat: 36.7070, lng: -97.0856, category: "rodeo" },
+            { name: "Guymon Pioneer Days Rodeo", address: "Texas County Fairgrounds", city: "Guymon", country: "USA", lat: 36.6828, lng: -101.4813, category: "rodeo" },
+            { name: "Ada Pontotoc County Fair", address: "Pontotoc County Agriplex", city: "Ada", country: "USA", lat: 34.7745, lng: -96.6783, category: "rodeo" },
+            
+            // USA NEW MEXICO RODEOS
+            { name: "Albuquerque State Fair Rodeo", address: "Tingley Coliseum", city: "Albuquerque", country: "USA", lat: 35.0844, lng: -106.6504, category: "rodeo" },
+            { name: "Santa Fe Rodeo de Santa Fe", address: "Santa Fe County Fairgrounds", city: "Santa Fe", country: "USA", lat: 35.6870, lng: -105.9378, category: "rodeo" },
+            { name: "Ruidoso Downs All-American Futurity", address: "Ruidoso Downs Racetrack", city: "Ruidoso", country: "USA", lat: 33.3300, lng: -105.6050, category: "rodeo" },
+            { name: "Las Cruces Whole Enchilada Fiesta", address: "Southern New Mexico Fairgrounds", city: "Las Cruces", country: "USA", lat: 32.3199, lng: -106.7637, category: "rodeo" },
+            { name: "Farmington Connie Mack World Series", address: "McGee Park Arena", city: "Farmington", country: "USA", lat: 36.7280, lng: -108.2187, category: "rodeo" },
+            { name: "Roswell Eastern New Mexico Fair", address: "Eastern New Mexico Fairgrounds", city: "Roswell", country: "USA", lat: 33.3943, lng: -104.5230, category: "rodeo" },
+            
+            // USA NEVADA RODEOS
+            { name: "Las Vegas National Finals", address: "South Point Equestrian Center", city: "Las Vegas", country: "USA", lat: 36.1699, lng: -115.1398, category: "rodeo" },
+            { name: "Elko National Cowboy Poetry", address: "Elko Civic Auditorium", city: "Elko", country: "USA", lat: 40.8324, lng: -115.7631, category: "rodeo" },
+            { name: "Winnemucca Ranch Hand Rodeo", address: "Winnemucca Events Complex", city: "Winnemucca", country: "USA", lat: 40.9730, lng: -117.7357, category: "rodeo" },
+            { name: "Fallon Silver State Stampede", address: "Churchill County Fairgrounds", city: "Fallon", country: "USA", lat: 39.4735, lng: -118.7774, category: "rodeo" },
+            { name: "Ely White Pine County Fair", address: "White Pine County Fairgrounds", city: "Ely", country: "USA", lat: 39.2472, lng: -114.8886, category: "rodeo" },
+            
+            // USA OREGON RODEOS
+            { name: "St. Paul Rodeo", address: "St. Paul Rodeo Arena", city: "St. Paul", country: "USA", lat: 45.2082, lng: -122.9656, category: "rodeo" },
+            { name: "Sisters Rodeo", address: "Sisters Rodeo Arena", city: "Sisters", country: "USA", lat: 44.2909, lng: -121.5492, category: "rodeo" },
+            { name: "Molalla Buckeroo", address: "Molalla Arena", city: "Molalla", country: "USA", lat: 45.1459, lng: -122.5770, category: "rodeo" },
+            { name: "Burns Harney County Fair", address: "Harney County Fairgrounds", city: "Burns", country: "USA", lat: 43.5860, lng: -119.0544, category: "rodeo" },
+            { name: "Hermiston Oregon Trail Rodeo", address: "Eastern Oregon Trade Center", city: "Hermiston", country: "USA", lat: 45.8404, lng: -119.2894, category: "rodeo" },
+            { name: "Prineville Crooked River Roundup", address: "Crook County Fairgrounds", city: "Prineville", country: "USA", lat: 44.2999, lng: -120.8342, category: "rodeo" },
+            { name: "Coos Bay Oregon Coast", address: "Coos County Fairgrounds", city: "Coos Bay", country: "USA", lat: 43.3665, lng: -124.2179, category: "rodeo" },
+            
+            // USA WASHINGTON RODEOS
+            { name: "Omak Stampede & Suicide Race", address: "Omak Stampede Grounds", city: "Omak", country: "USA", lat: 48.4110, lng: -119.5275, category: "rodeo" },
+            { name: "Toppenish Pow Wow & Rodeo", address: "Toppenish Rodeo Grounds", city: "Toppenish", country: "USA", lat: 46.3779, lng: -120.3086, category: "rodeo" },
+            { name: "Walla Walla Frontier Days", address: "Walla Walla County Fairgrounds", city: "Walla Walla", country: "USA", lat: 46.0646, lng: -118.3430, category: "rodeo" },
+            { name: "Spokane Interstate Fair", address: "Spokane County Fair & Expo", city: "Spokane", country: "USA", lat: 47.6588, lng: -117.4260, category: "rodeo" },
+            { name: "Puyallup Spring Fair Rodeo", address: "Washington State Fairgrounds", city: "Puyallup", country: "USA", lat: 47.1855, lng: -122.2929, category: "rodeo" },
+            
+            // USA IDAHO RODEOS
+            { name: "Caldwell Night Rodeo", address: "Caldwell Rodeo Grounds", city: "Caldwell", country: "USA", lat: 43.6629, lng: -116.6874, category: "rodeo" },
+            { name: "Snake River Stampede", address: "Idaho Center", city: "Nampa", country: "USA", lat: 43.5407, lng: -116.5635, category: "rodeo" },
+            { name: "Twin Falls County Fair", address: "Filer Fairgrounds", city: "Twin Falls", country: "USA", lat: 42.5630, lng: -114.4703, category: "rodeo" },
+            { name: "Pocatello Dodge National Circuit Finals", address: "Holt Arena", city: "Pocatello", country: "USA", lat: 42.8713, lng: -112.4450, category: "rodeo" },
+            { name: "Burley Cassia County Fair", address: "Cassia County Fairgrounds", city: "Burley", country: "USA", lat: 42.5358, lng: -113.7933, category: "rodeo" },
+            
+            // USA UTAH RODEOS
+            { name: "Days of '47 Rodeo", address: "Utah State Fairgrounds", city: "Salt Lake City", country: "USA", lat: 40.7608, lng: -111.8910, category: "rodeo" },
+            { name: "Ogden Pioneer Days Rodeo", address: "Golden Spike Arena", city: "Ogden", country: "USA", lat: 41.2230, lng: -111.9738, category: "rodeo" },
+            { name: "Spanish Fork Fiesta Days", address: "Spanish Fork Fairgrounds", city: "Spanish Fork", country: "USA", lat: 40.1150, lng: -111.6549, category: "rodeo" },
+            { name: "Vernal Dinosaur Roundup Rodeo", address: "Uintah County Fairgrounds", city: "Vernal", country: "USA", lat: 40.4555, lng: -109.5287, category: "rodeo" },
+            { name: "Price Carbon County Fair", address: "Carbon County Fairgrounds", city: "Price", country: "USA", lat: 39.5997, lng: -110.8107, category: "rodeo" },
+            
+            // USA SOUTH DAKOTA RODEOS
+            { name: "Days of '76 Rodeo", address: "Days of '76 Arena", city: "Deadwood", country: "USA", lat: 44.3766, lng: -103.7296, category: "rodeo" },
+            { name: "Black Hills Stock Show", address: "Rushmore Plaza Civic Center", city: "Rapid City", country: "USA", lat: 44.0805, lng: -103.2310, category: "rodeo" },
+            { name: "Fort Pierre Buffalo Roundup", address: "Custer State Park", city: "Fort Pierre", country: "USA", lat: 44.3525, lng: -100.3754, category: "rodeo" },
+            { name: "Sioux Falls Sports Complex", address: "Sioux Empire Fairgrounds", city: "Sioux Falls", country: "USA", lat: 43.5473, lng: -96.7311, category: "rodeo" },
+            
+            // USA NORTH DAKOTA RODEOS
+            { name: "Mandan Rodeo Days", address: "Mandan Rodeo Grounds", city: "Mandan", country: "USA", lat: 46.8267, lng: -100.8896, category: "rodeo" },
+            { name: "Dickinson Roughrider Days", address: "West River Community Center", city: "Dickinson", country: "USA", lat: 46.8792, lng: -102.7896, category: "rodeo" },
+            { name: "Minot State Fair Rodeo", address: "North Dakota State Fairgrounds", city: "Minot", country: "USA", lat: 48.2324, lng: -101.2963, category: "rodeo" },
+            { name: "Fargo Red River Valley Fair", address: "Red River Valley Fairgrounds", city: "Fargo", country: "USA", lat: 46.8772, lng: -96.7898, category: "rodeo" },
+            
+            // USA NEBRASKA RODEOS
+            { name: "Burwell Nebraska Big Rodeo", address: "Burwell Rodeo Arena", city: "Burwell", country: "USA", lat: 41.7808, lng: -99.1331, category: "rodeo" },
+            { name: "Ogallala Rodeo & Festival", address: "Keith County Fairgrounds", city: "Ogallala", country: "USA", lat: 41.1278, lng: -101.7199, category: "rodeo" },
+            { name: "Sidney Rodeo", address: "Cheyenne County Fairgrounds", city: "Sidney", country: "USA", lat: 41.1425, lng: -102.9780, category: "rodeo" },
+            { name: "North Platte PRCA Rodeo", address: "Lincoln County Fair", city: "North Platte", country: "USA", lat: 41.1394, lng: -100.7654, category: "rodeo" },
+            { name: "Omaha River City Rodeo", address: "CHI Health Center", city: "Omaha", country: "USA", lat: 41.2565, lng: -95.9345, category: "rodeo" },
+            
+            // USA KANSAS RODEOS
+            { name: "Topeka Wild West Festival", address: "Stormont Vail Events Center", city: "Topeka", country: "USA", lat: 39.0473, lng: -95.6752, category: "rodeo" },
+            { name: "Garden City Western Festival", address: "Finney County Fairgrounds", city: "Garden City", country: "USA", lat: 37.9717, lng: -100.8726, category: "rodeo" },
+            { name: "Wichita Wild West Days", address: "Kansas Coliseum", city: "Wichita", country: "USA", lat: 37.6872, lng: -97.3301, category: "rodeo" },
+            { name: "Salina Stampede", address: "Tony's Pizza Events Center", city: "Salina", country: "USA", lat: 38.8403, lng: -97.6114, category: "rodeo" },
+            { name: "Hays Wild West Festival", address: "Ellis County Fairgrounds", city: "Hays", country: "USA", lat: 38.8792, lng: -99.3268, category: "rodeo" },
+            
+            // USA MISSOURI RODEOS
+            { name: "American Royal Rodeo", address: "American Royal Complex", city: "Kansas City", country: "USA", lat: 39.0997, lng: -94.5786, category: "rodeo" },
+            { name: "Springfield Ozark Empire Fair", address: "Ozark Empire Fairgrounds", city: "Springfield", country: "USA", lat: 37.2090, lng: -93.2923, category: "rodeo" },
+            { name: "Sikeston Jaycee Bootheel Rodeo", address: "Sikeston Rodeo Arena", city: "Sikeston", country: "USA", lat: 36.8767, lng: -89.5878, category: "rodeo" },
+            { name: "Columbia Mid-Missouri Rodeo", address: "Boone County Fairgrounds", city: "Columbia", country: "USA", lat: 38.9517, lng: -92.3341, category: "rodeo" },
+            
+            // USA ARKANSAS RODEOS
+            { name: "Fort Smith Rodeo of the Ozarks", address: "Kay Rodgers Park", city: "Fort Smith", country: "USA", lat: 35.3859, lng: -94.3985, category: "rodeo" },
+            { name: "Little Rock Arkansas State Fair", address: "Barton Coliseum", city: "Little Rock", country: "USA", lat: 34.7465, lng: -92.2896, category: "rodeo" },
+            { name: "Hot Springs Oaklawn Racing", address: "Oaklawn Park", city: "Hot Springs", country: "USA", lat: 34.5037, lng: -93.0552, category: "rodeo" },
+            
+            // USA LOUISIANA RODEOS
+            { name: "Sulphur Southwest Louisiana", address: "Burton Coliseum", city: "Sulphur", country: "USA", lat: 30.2366, lng: -93.3774, category: "rodeo" },
+            { name: "Alexandria Red River District Fair", address: "Rapides Parish Coliseum", city: "Alexandria", country: "USA", lat: 31.3113, lng: -92.4451, category: "rodeo" },
+            { name: "Shreveport State Fair of Louisiana", address: "Louisiana State Fairgrounds", city: "Shreveport", country: "USA", lat: 32.5252, lng: -93.7502, category: "rodeo" },
+            
+            // USA MISSISSIPPI RODEOS
+            { name: "Jackson Mississippi State Fair", address: "Mississippi Coliseum", city: "Jackson", country: "USA", lat: 32.2988, lng: -90.1848, category: "rodeo" },
+            { name: "Hattiesburg Hub City Rodeo", address: "Forrest County Multi-Purpose", city: "Hattiesburg", country: "USA", lat: 31.3271, lng: -89.2903, category: "rodeo" },
+            
+            // USA TENNESSEE RODEOS
+            { name: "Memphis Rodeo", address: "Landers Center", city: "Memphis", country: "USA", lat: 35.1495, lng: -90.0490, category: "rodeo" },
+            { name: "Knoxville Tennessee Valley Fair", address: "Chilhowee Park", city: "Knoxville", country: "USA", lat: 35.9606, lng: -83.9207, category: "rodeo" },
+            { name: "Nashville Tennessee State Fair", address: "Tennessee State Fairgrounds", city: "Nashville", country: "USA", lat: 36.1627, lng: -86.7816, category: "rodeo" },
+            
+            // USA KENTUCKY RODEOS
+            { name: "Louisville Championship Rodeo", address: "Kentucky Exposition Center", city: "Louisville", country: "USA", lat: 38.2527, lng: -85.7585, category: "rodeo" },
+            { name: "Lexington Kentucky Horse Park", address: "Kentucky Horse Park", city: "Lexington", country: "USA", lat: 38.0406, lng: -84.5037, category: "rodeo" },
+            
+            // USA ALABAMA RODEOS
+            { name: "Dothan Peanut Festival Rodeo", address: "Houston County Farm Center", city: "Dothan", country: "USA", lat: 31.2232, lng: -85.3905, category: "rodeo" },
+            { name: "Birmingham Alabama State Fair", address: "BJCC Arena", city: "Birmingham", country: "USA", lat: 33.5186, lng: -86.8104, category: "rodeo" },
+            
+            // USA GEORGIA RODEOS
+            { name: "Marietta Cobb County Fair", address: "Jim R. Miller Park", city: "Marietta", country: "USA", lat: 33.9526, lng: -84.5499, category: "rodeo" },
+            { name: "Perry Georgia National Fair", address: "Georgia National Fairgrounds", city: "Perry", country: "USA", lat: 32.4582, lng: -83.7316, category: "rodeo" },
+            { name: "Augusta CSRA Fair & Rodeo", address: "Julian Smith Casino", city: "Augusta", country: "USA", lat: 33.4735, lng: -82.0105, category: "rodeo" },
+            
+            // USA FLORIDA RODEOS
+            { name: "Davie Orange Blossom Classic", address: "Bergeron Rodeo Grounds", city: "Davie", country: "USA", lat: 26.0765, lng: -80.2520, category: "rodeo" },
+            { name: "Arcadia All-Florida Championship", address: "Arcadia Rodeo Arena", city: "Arcadia", country: "USA", lat: 27.2164, lng: -81.8584, category: "rodeo" },
+            { name: "Kissimmee Silver Spurs Rodeo", address: "Osceola Heritage Park", city: "Kissimmee", country: "USA", lat: 28.2920, lng: -81.4076, category: "rodeo" },
+            { name: "Ocala Marion County Fair", address: "Southeastern Livestock Pavilion", city: "Ocala", country: "USA", lat: 29.1872, lng: -82.1401, category: "rodeo" },
+            { name: "Jacksonville Agricultural Fair", address: "Jacksonville Equestrian Center", city: "Jacksonville", country: "USA", lat: 30.3322, lng: -81.6557, category: "rodeo" },
+            { name: "Homestead Redland Rodeo", address: "Redland Fruit & Spice Park", city: "Homestead", country: "USA", lat: 25.4687, lng: -80.4776, category: "rodeo" },
+            
+            // USA NORTH CAROLINA RODEOS
+            { name: "Charlotte Carolina Classic Fair", address: "Carolina Classic Fairgrounds", city: "Charlotte", country: "USA", lat: 35.2271, lng: -80.8431, category: "rodeo" },
+            { name: "Fayetteville Carolina Rodeo", address: "Crown Complex", city: "Fayetteville", country: "USA", lat: 35.0527, lng: -78.8784, category: "rodeo" },
+            { name: "Shelby Cleveland County Fair", address: "Cleveland County Fairgrounds", city: "Shelby", country: "USA", lat: 35.2923, lng: -81.5357, category: "rodeo" },
+            
+            // USA SOUTH CAROLINA RODEOS
+            { name: "Columbia South Carolina State Fair", address: "South Carolina State Fairgrounds", city: "Columbia", country: "USA", lat: 34.0007, lng: -81.0348, category: "rodeo" },
+            { name: "Anderson County Fair Rodeo", address: "Anderson Civic Center", city: "Anderson", country: "USA", lat: 34.5034, lng: -82.6501, category: "rodeo" },
+            
+            // USA VIRGINIA RODEOS
+            { name: "Salem Virginia Championship Rodeo", address: "Salem Civic Center", city: "Salem", country: "USA", lat: 37.2935, lng: -80.0548, category: "rodeo" },
+            { name: "Roanoke Virginia Mountain Cowboy", address: "Berglund Center", city: "Roanoke", country: "USA", lat: 37.2710, lng: -79.9414, category: "rodeo" },
+            
+            // USA WEST VIRGINIA RODEOS
+            { name: "Buckhannon West Virginia Strawberry", address: "Upshur County Fairgrounds", city: "Buckhannon", country: "USA", lat: 38.9934, lng: -80.2320, category: "rodeo" },
+            { name: "Charleston Mountain State Fair", address: "West Virginia State Fairgrounds", city: "Charleston", country: "USA", lat: 38.3498, lng: -81.6326, category: "rodeo" },
+            
+            // USA PENNSYLVANIA RODEOS
+            { name: "Huntingdon Pennsylvania Ag Progress Days", address: "Russell E. Larson Research Center", city: "Huntingdon", country: "USA", lat: 40.4851, lng: -77.9703, category: "rodeo" },
+            { name: "Bloomsburg Fair Rodeo", address: "Bloomsburg Fairgrounds", city: "Bloomsburg", country: "USA", lat: 40.9959, lng: -76.4541, category: "rodeo" },
+            
+            // USA NEW YORK RODEOS
+            { name: "Malone Franklin County Fair", address: "Franklin County Fairgrounds", city: "Malone", country: "USA", lat: 44.8486, lng: -74.2943, category: "rodeo" },
+            { name: "Goshen Orange County Fair", address: "Orange County Fairgrounds", city: "Goshen", country: "USA", lat: 41.4023, lng: -74.3243, category: "rodeo" },
+            
+            // USA NEW JERSEY RODEOS
+            { name: "Cowtown Rodeo", address: "Cowtown Rodeo Arena", city: "Pilesgrove", country: "USA", lat: 39.7451, lng: -75.3146, category: "rodeo" },
+            
+            // CANADA - MAJOR RODEOS
+            { name: "Canadian Finals Rodeo", address: "ENMAX Centre", city: "Red Deer", country: "Canada", lat: 52.2681, lng: -113.8111, category: "rodeo" },
+            { name: "Medicine Hat Stampede", address: "Medicine Hat Stampede Grounds", city: "Medicine Hat", country: "Canada", lat: 50.0417, lng: -110.6778, category: "rodeo" },
+            { name: "Grande Prairie Stompede", address: "Evergreen Park", city: "Grande Prairie", country: "Canada", lat: 55.1708, lng: -118.7947, category: "rodeo" },
+            { name: "Ponoka Stampede", address: "Ponoka Stampede Grounds", city: "Ponoka", country: "Canada", lat: 52.6819, lng: -113.5786, category: "rodeo" },
+            { name: "Williams Lake Stampede", address: "Williams Lake Stampede Grounds", city: "Williams Lake", country: "Canada", lat: 52.1417, lng: -122.1417, category: "rodeo" },
+            { name: "Strathmore Stampede", address: "Strathmore Rodeo Grounds", city: "Strathmore", country: "Canada", lat: 51.0381, lng: -113.4011, category: "rodeo" },
+            { name: "High River Little Britches Rodeo", address: "George Lane Park", city: "High River", country: "Canada", lat: 50.5786, lng: -113.8694, category: "rodeo" },
+            { name: "Cloverdale Rodeo", address: "Cloverdale Fairgrounds", city: "Surrey", country: "Canada", lat: 49.1044, lng: -122.7181, category: "rodeo" },
+            { name: "Armstrong Interior Provincial Exhibition", address: "Armstrong Fairgrounds", city: "Armstrong", country: "Canada", lat: 50.4489, lng: -119.1956, category: "rodeo" },
+            { name: "Dawson Creek Fall Fair & Rodeo", address: "Dawson Creek Exhibition Park", city: "Dawson Creek", country: "Canada", lat: 55.7606, lng: -120.2358, category: "rodeo" },
+            { name: "Kamloops Cowboy Festival", address: "McArthur Island Park", city: "Kamloops", country: "Canada", lat: 50.6745, lng: -120.3273, category: "rodeo" },
+            { name: "Merritt Mountain Music Festival", address: "Nicola Valley Memorial Arena", city: "Merritt", country: "Canada", lat: 50.1111, lng: -120.7906, category: "rodeo" },
+            { name: "Lethbridge Exhibition & Stampede", address: "ENMAX Centre", city: "Lethbridge", country: "Canada", lat: 49.6942, lng: -112.8328, category: "rodeo" },
+            { name: "Lloydminster Colonial Days", address: "Lloydminster Exhibition Grounds", city: "Lloydminster", country: "Canada", lat: 53.2807, lng: -110.0054, category: "rodeo" },
+            { name: "Teepee Creek Stampede", address: "Teepee Creek Rodeo Grounds", city: "Teepee Creek", country: "Canada", lat: 55.5333, lng: -118.9000, category: "rodeo" },
+            { name: "Drumheller Valley Stampede", address: "Drumheller Stampede Grounds", city: "Drumheller", country: "Canada", lat: 51.4636, lng: -112.7094, category: "rodeo" },
+            { name: "Airdrie Pro Rodeo", address: "Nose Creek Valley Museum", city: "Airdrie", country: "Canada", lat: 51.2917, lng: -114.0144, category: "rodeo" },
+            { name: "Olds College Rodeo", address: "Olds College Campus", city: "Olds", country: "Canada", lat: 51.7917, lng: -114.1083, category: "rodeo" },
+            { name: "Hanna Prairie Panorama", address: "Hanna Stampede Grounds", city: "Hanna", country: "Canada", lat: 51.6414, lng: -111.9339, category: "rodeo" },
+            { name: "Morris Stampede", address: "Morris Stampede Grounds", city: "Morris", country: "Canada", lat: 49.3547, lng: -97.3653, category: "rodeo" },
+            { name: "Weyburn Exhibition Rodeo", address: "Tom Laing Park", city: "Weyburn", country: "Canada", lat: 49.6614, lng: -103.8525, category: "rodeo" },
+            { name: "Estevan Exhibition Rodeo", address: "Estevan Exhibition Grounds", city: "Estevan", country: "Canada", lat: 49.1394, lng: -102.9867, category: "rodeo" },
+            { name: "Moose Jaw Kinsmen Sportsmen's Dinner", address: "Moose Jaw Exhibition Grounds", city: "Moose Jaw", country: "Canada", lat: 50.3933, lng: -105.5514, category: "rodeo" },
+            { name: "Brandon Provincial Exhibition", address: "Keystone Centre", city: "Brandon", country: "Canada", lat: 49.8483, lng: -99.9497, category: "rodeo" },
+            { name: "Boissevain Turtle Derby", address: "Boissevain Fair Grounds", city: "Boissevain", country: "Canada", lat: 49.2303, lng: -100.0556, category: "rodeo" },
+            { name: "Killarney Turtle Mountain Rodeo", address: "Killarney Rodeo Grounds", city: "Killarney", country: "Canada", lat: 49.1839, lng: -99.6647, category: "rodeo" },
+            { name: "Virden Oilmen's Celebration", address: "Virden Rodeo Grounds", city: "Virden", country: "Canada", lat: 49.8511, lng: -100.9319, category: "rodeo" },
+            { name: "Bowden Pioneer Days", address: "Bowden Rodeo Grounds", city: "Bowden", country: "Canada", lat: 51.9314, lng: -114.0847, category: "rodeo" },
+            { name: "Sundre Pro Rodeo", address: "Sundre Rodeo Grounds", city: "Sundre", country: "Canada", lat: 51.7972, lng: -114.6408, category: "rodeo" },
+            { name: "Pincher Creek Rodeo", address: "Pincher Creek Rodeo Grounds", city: "Pincher Creek", country: "Canada", lat: 49.4833, lng: -113.9500, category: "rodeo" },
+            { name: "Fort Macleod Fair & Rodeo", address: "Fort Macleod Fairgrounds", city: "Fort Macleod", country: "Canada", lat: 49.7242, lng: -113.4047, category: "rodeo" },
+            
+            // MEXICO - CHARREADAS
+            { name: "Lienzo Charro de Constitucion", address: "Insurgentes Sur", city: "Mexico City", country: "Mexico", lat: 19.3701, lng: -99.1620, category: "charreada" },
+            { name: "Lienzo Charro de Jalisco", address: "Zapopan", city: "Guadalajara", country: "Mexico", lat: 20.6597, lng: -103.3496, category: "charreada" },
+            { name: "Lienzo Charro de Monterrey", address: "Santa Catarina", city: "Monterrey", country: "Mexico", lat: 25.6694, lng: -100.3094, category: "charreada" },
+            { name: "Lienzo Charro de Puebla", address: "Cholula", city: "Puebla", country: "Mexico", lat: 19.0414, lng: -98.2063, category: "charreada" },
+            { name: "Lienzo Charro de Querétaro", address: "Centro Histórico", city: "Querétaro", country: "Mexico", lat: 20.5888, lng: -100.3899, category: "charreada" },
+            { name: "Lienzo Charro de San Luis Potosí", address: "Tangamanga Park", city: "San Luis Potosí", country: "Mexico", lat: 22.1565, lng: -100.9855, category: "charreada" },
+            { name: "Lienzo Charro de Aguascalientes", address: "Isla San Marcos", city: "Aguascalientes", country: "Mexico", lat: 21.8853, lng: -102.2916, category: "charreada" },
+            { name: "Lienzo Charro de Morelia", address: "Bosque Cuauhtémoc", city: "Morelia", country: "Mexico", lat: 19.7060, lng: -101.1949, category: "charreada" },
+            { name: "Lienzo Charro de Guanajuato", address: "León", city: "León", country: "Mexico", lat: 21.1619, lng: -101.6826, category: "charreada" },
+            { name: "Lienzo Charro de Zacatecas", address: "Centro Histórico", city: "Zacatecas", country: "Mexico", lat: 22.7709, lng: -102.5832, category: "charreada" },
+            { name: "Lienzo Charro de Durango", address: "Parque Guadiana", city: "Durango", country: "Mexico", lat: 24.0277, lng: -104.6532, category: "charreada" },
+            { name: "Lienzo Charro de Chihuahua", address: "Quinta Gameros", city: "Chihuahua", country: "Mexico", lat: 28.6353, lng: -106.0889, category: "charreada" },
+            { name: "Lienzo Charro de Culiacán", address: "Parque Revolución", city: "Culiacán", country: "Mexico", lat: 24.8091, lng: -107.3938, category: "charreada" },
+            { name: "Lienzo Charro de Hermosillo", address: "Centro Ecológico", city: "Hermosillo", country: "Mexico", lat: 29.0729, lng: -110.9559, category: "charreada" },
+            { name: "Lienzo Charro de Tijuana", address: "Zona Centro", city: "Tijuana", country: "Mexico", lat: 32.5149, lng: -117.0382, category: "charreada" },
+            { name: "Lienzo Charro de Mexicali", address: "Ciudad Deportiva", city: "Mexicali", country: "Mexico", lat: 32.6245, lng: -115.4523, category: "charreada" },
+            { name: "Lienzo Charro de La Paz BCS", address: "El Manglito", city: "La Paz", country: "Mexico", lat: 24.1426, lng: -110.3128, category: "charreada" },
+            { name: "Lienzo Charro de Saltillo", address: "Sarape", city: "Saltillo", country: "Mexico", lat: 25.4232, lng: -100.9737, category: "charreada" },
+            { name: "Lienzo Charro de Torreon", address: "Periférico Raul Lopez Sanchez", city: "Torreón", country: "Mexico", lat: 25.5428, lng: -103.4068, category: "charreada" },
+            { name: "Lienzo Charro de Tampico", address: "Zona Dorada", city: "Tampico", country: "Mexico", lat: 22.2331, lng: -97.8612, category: "charreada" },
+            { name: "Lienzo Charro de Veracruz", address: "Boca del Río", city: "Veracruz", country: "Mexico", lat: 19.1738, lng: -96.1342, category: "charreada" },
+            { name: "Lienzo Charro de Xalapa", address: "Centro", city: "Xalapa", country: "Mexico", lat: 19.5438, lng: -96.9102, category: "charreada" },
+            { name: "Lienzo Charro de Oaxaca", address: "Centro Histórico", city: "Oaxaca", country: "Mexico", lat: 17.0732, lng: -96.7266, category: "charreada" },
+            { name: "Lienzo Charro de Tuxtla Gutiérrez", address: "Caña Hueca", city: "Tuxtla Gutiérrez", country: "Mexico", lat: 16.7569, lng: -93.1292, category: "charreada" },
+            { name: "Lienzo Charro de Villahermosa", address: "Tabasco 2000", city: "Villahermosa", country: "Mexico", lat: 17.9892, lng: -92.9475, category: "charreada" },
+            { name: "Lienzo Charro de Mérida", address: "Paseo de Montejo", city: "Mérida", country: "Mexico", lat: 20.9674, lng: -89.5926, category: "charreada" },
+            { name: "Lienzo Charro de Cancún", address: "Región 93", city: "Cancún", country: "Mexico", lat: 21.1619, lng: -86.8515, category: "charreada" },
+            { name: "Lienzo Charro de Chetumal", address: "Centro", city: "Chetumal", country: "Mexico", lat: 18.5001, lng: -88.2960, category: "charreada" },
+            { name: "Lienzo Charro de Pachuca", address: "Zona Plateada", city: "Pachuca", country: "Mexico", lat: 20.1011, lng: -98.7591, category: "charreada" },
+            { name: "Lienzo Charro de Toluca", address: "Metepec", city: "Toluca", country: "Mexico", lat: 19.2906, lng: -99.6561, category: "charreada" },
+            { name: "Lienzo Charro de Cuernavaca", address: "Acapantzingo", city: "Cuernavaca", country: "Mexico", lat: 18.9186, lng: -99.2342, category: "charreada" },
+            { name: "Lienzo Charro de Irapuato", address: "Zona Centro", city: "Irapuato", country: "Mexico", lat: 20.6767, lng: -101.3542, category: "charreada" },
+            { name: "Lienzo Charro de Celaya", address: "Zona Industrial", city: "Celaya", country: "Mexico", lat: 20.5288, lng: -100.8157, category: "charreada" },
+            { name: "Lienzo Charro de Salamanca", address: "Prados de la Capilla", city: "Salamanca", country: "Mexico", lat: 20.5739, lng: -101.1956, category: "charreada" },
+            { name: "Lienzo Charro de Ciudad Obregon", address: "Centro", city: "Ciudad Obregón", country: "Mexico", lat: 27.4827, lng: -109.9305, category: "charreada" },
+            { name: "Lienzo Charro de Mazatlán", address: "Zona Dorada", city: "Mazatlán", country: "Mexico", lat: 23.2494, lng: -106.4111, category: "charreada" },
+            { name: "Lienzo Charro de Los Mochis", address: "Centro", city: "Los Mochis", country: "Mexico", lat: 25.7933, lng: -108.9864, category: "charreada" },
+            { name: "Lienzo Charro de Ensenada", address: "Valle de Guadalupe", city: "Ensenada", country: "Mexico", lat: 31.8670, lng: -116.5974, category: "charreada" },
+            { name: "Lienzo Charro de Rosarito", address: "Playas de Rosarito", city: "Rosarito", country: "Mexico", lat: 32.3350, lng: -117.0353, category: "charreada" },
+            { name: "Lienzo Charro de Tepic", address: "Centro", city: "Tepic", country: "Mexico", lat: 21.5041, lng: -104.8945, category: "charreada" },
+            { name: "Lienzo Charro de Puerto Vallarta", address: "Las Juntas", city: "Puerto Vallarta", country: "Mexico", lat: 20.6534, lng: -105.2253, category: "charreada" },
+            { name: "Lienzo Charro de Colima", address: "Villa de Alvarez", city: "Colima", country: "Mexico", lat: 19.2453, lng: -103.7240, category: "charreada" },
+            { name: "Lienzo Charro de Acapulco", address: "Ciudad Renacimiento", city: "Acapulco", country: "Mexico", lat: 16.8531, lng: -99.8237, category: "charreada" },
+            { name: "Lienzo Charro de Chilpancingo", address: "Centro", city: "Chilpancingo", country: "Mexico", lat: 17.5506, lng: -99.5005, category: "charreada" },
+            { name: "Lienzo Charro de Tlaxcala", address: "Apizaco", city: "Tlaxcala", country: "Mexico", lat: 19.4133, lng: -98.1436, category: "charreada" },
+            { name: "Lienzo Charro de Campeche", address: "Centro Histórico", city: "Campeche", country: "Mexico", lat: 19.8301, lng: -90.5349, category: "charreada" },
+            
+            // MEXICO - JARIPEOS (Bull Riding Events)
+            { name: "Jaripeo Tepatitlán", address: "Fiestas de Octubre", city: "Tepatitlán", country: "Mexico", lat: 20.8154, lng: -102.7637, category: "charreada" },
+            { name: "Jaripeo Tlajomulco", address: "Plaza de Toros", city: "Tlajomulco", country: "Mexico", lat: 20.4733, lng: -103.4431, category: "charreada" },
+            { name: "Jaripeo Arandas", address: "Fiestas Patronales", city: "Arandas", country: "Mexico", lat: 20.7079, lng: -102.3502, category: "charreada" },
+            { name: "Jaripeo Lagos de Moreno", address: "Feria de Lagos", city: "Lagos de Moreno", country: "Mexico", lat: 21.3558, lng: -101.9318, category: "charreada" },
+            { name: "Jaripeo San Juan de los Lagos", address: "Feria Regional", city: "San Juan de los Lagos", country: "Mexico", lat: 21.2503, lng: -102.3475, category: "charreada" },
+            { name: "Jaripeo Nochistlán", address: "Fiestas de Mayo", city: "Nochistlán", country: "Mexico", lat: 21.3667, lng: -102.8500, category: "charreada" },
+            { name: "Jaripeo Jerez", address: "Feria de la Primavera", city: "Jerez", country: "Mexico", lat: 22.6472, lng: -102.9922, category: "charreada" },
+            
+            // BRAZIL - RODEIOS
+            { name: "Festa do Peão de Barretos", address: "Parque do Peão", city: "Barretos", country: "Brazil", lat: -20.5575, lng: -48.5677, category: "rodeio" },
+            { name: "Festa do Peão de Americana", address: "Parque de Rodeio", city: "Americana", country: "Brazil", lat: -22.7394, lng: -47.3314, category: "rodeio" },
+            { name: "Festa do Peão de Jaguariúna", address: "Recinto de Rodeios", city: "Jaguariúna", country: "Brazil", lat: -22.7056, lng: -46.9856, category: "rodeio" },
+            { name: "Festa do Peão de Ribeirão Preto", address: "Parque de Exposições", city: "Ribeirão Preto", country: "Brazil", lat: -21.1775, lng: -47.8099, category: "rodeio" },
+            { name: "Festa do Peão de São José do Rio Preto", address: "Recinto de Rodeio", city: "São José do Rio Preto", country: "Brazil", lat: -20.8197, lng: -49.3794, category: "rodeio" },
+            { name: "Festa do Peão de Araçatuba", address: "Recinto de Rodeio", city: "Araçatuba", country: "Brazil", lat: -21.2089, lng: -50.4329, category: "rodeio" },
+            { name: "Festa do Peão de Presidente Prudente", address: "Recinto de Exposições", city: "Presidente Prudente", country: "Brazil", lat: -22.1256, lng: -51.3889, category: "rodeio" },
+            { name: "Festa do Peão de Mirassol", address: "Parque de Rodeio", city: "Mirassol", country: "Brazil", lat: -20.8203, lng: -49.5169, category: "rodeio" },
+            { name: "Festa do Peão de Catanduva", address: "Recinto de Rodeio", city: "Catanduva", country: "Brazil", lat: -21.1378, lng: -48.9728, category: "rodeio" },
+            { name: "Festa do Peão de Votuporanga", address: "Parque de Exposições", city: "Votuporanga", country: "Brazil", lat: -20.4228, lng: -49.9728, category: "rodeio" },
+            { name: "Festa do Peão de Fernandópolis", address: "Recinto de Rodeio", city: "Fernandópolis", country: "Brazil", lat: -20.2844, lng: -50.2461, category: "rodeio" },
+            { name: "Festa do Peão de Marília", address: "Parque de Exposições", city: "Marília", country: "Brazil", lat: -22.2139, lng: -49.9456, category: "rodeio" },
+            { name: "Festa do Peão de Tupã", address: "Recinto de Rodeio", city: "Tupã", country: "Brazil", lat: -21.9347, lng: -50.5136, category: "rodeio" },
+            { name: "Festa do Peão de Andradina", address: "Parque de Rodeio", city: "Andradina", country: "Brazil", lat: -20.8958, lng: -51.3792, category: "rodeio" },
+            { name: "Festa do Peão de Ourinhos", address: "Recinto de Exposições", city: "Ourinhos", country: "Brazil", lat: -22.9789, lng: -49.8706, category: "rodeio" },
+            { name: "Festa do Peão de Jaboticabal", address: "Parque de Rodeio", city: "Jaboticabal", country: "Brazil", lat: -21.2550, lng: -48.3228, category: "rodeio" },
+            { name: "Festa do Peão de Araraquara", address: "Recinto de Rodeio", city: "Araraquara", country: "Brazil", lat: -21.7944, lng: -48.1756, category: "rodeio" },
+            { name: "Festa do Peão de São Carlos", address: "Parque de Exposições", city: "São Carlos", country: "Brazil", lat: -22.0175, lng: -47.8908, category: "rodeio" },
+            { name: "Festa do Peão de Limeira", address: "Recinto de Rodeio", city: "Limeira", country: "Brazil", lat: -22.5647, lng: -47.4017, category: "rodeio" },
+            { name: "Festa do Peão de Piracicaba", address: "Parque de Exposições", city: "Piracicaba", country: "Brazil", lat: -22.7253, lng: -47.6492, category: "rodeio" },
+            { name: "Festa do Peão de Sorocaba", address: "Recinto de Exposições", city: "Sorocaba", country: "Brazil", lat: -23.5015, lng: -47.4526, category: "rodeio" },
+            { name: "Festa do Peão de Itapetininga", address: "Parque de Rodeio", city: "Itapetininga", country: "Brazil", lat: -23.5917, lng: -48.0525, category: "rodeio" },
+            { name: "Festa do Peão de Lins", address: "Recinto de Rodeio", city: "Lins", country: "Brazil", lat: -21.6789, lng: -49.7436, category: "rodeio" },
+            { name: "Festa do Peão de Botucatu", address: "Parque de Exposições", city: "Botucatu", country: "Brazil", lat: -22.8858, lng: -48.4450, category: "rodeio" },
+            { name: "Festa do Peão de Guarulhos", address: "Recinto de Rodeio", city: "Guarulhos", country: "Brazil", lat: -23.4538, lng: -46.5333, category: "rodeio" },
+            { name: "Festa do Peão de Mogi das Cruzes", address: "Parque de Exposições", city: "Mogi das Cruzes", country: "Brazil", lat: -23.5228, lng: -46.1856, category: "rodeio" },
+            { name: "Festa do Peão de Campinas", address: "Recinto de Exposições", city: "Campinas", country: "Brazil", lat: -22.9099, lng: -47.0626, category: "rodeio" },
+            { name: "Festa do Peão de Londrina", address: "Parque de Exposições", city: "Londrina", country: "Brazil", lat: -23.3045, lng: -51.1696, category: "rodeio" },
+            { name: "Festa do Peão de Maringá", address: "Parque de Exposições", city: "Maringá", country: "Brazil", lat: -23.4205, lng: -51.9333, category: "rodeio" },
+            { name: "Festa do Peão de Campo Grande", address: "Parque de Exposições", city: "Campo Grande", country: "Brazil", lat: -20.4697, lng: -54.6201, category: "rodeio" },
+            { name: "Festa do Peão de Dourados", address: "Recinto de Rodeio", city: "Dourados", country: "Brazil", lat: -22.2211, lng: -54.8056, category: "rodeio" },
+            { name: "Festa do Peão de Cuiabá", address: "Parque de Exposições", city: "Cuiabá", country: "Brazil", lat: -15.6014, lng: -56.0979, category: "rodeio" },
+            { name: "Festa do Peão de Goiânia", address: "Centro de Convenções", city: "Goiânia", country: "Brazil", lat: -16.6869, lng: -49.2648, category: "rodeio" },
+            { name: "Festa do Peão de Uberlândia", address: "Parque de Exposições", city: "Uberlândia", country: "Brazil", lat: -18.9188, lng: -48.2766, category: "rodeio" },
+            { name: "Festa do Peão de Uberaba", address: "Parque Fernando Costa", city: "Uberaba", country: "Brazil", lat: -19.7479, lng: -47.9381, category: "rodeio" },
+            { name: "Festa do Peão de Brasília", address: "Parque da Cidade", city: "Brasília", country: "Brazil", lat: -15.7975, lng: -47.8919, category: "rodeio" },
+            
+            // ARGENTINA - RODEOS CRIOLLOS
+            { name: "Rodeo de Jesús María", address: "Anfiteatro José Hernández", city: "Jesús María", country: "Argentina", lat: -30.9806, lng: -64.0958, category: "rodeo" },
+            { name: "Rodeo de Cosquín", address: "Plaza Próspero Molina", city: "Cosquín", country: "Argentina", lat: -31.2428, lng: -64.4667, category: "rodeo" },
+            { name: "Rodeo de La Falda", address: "Anfiteatro Municipal", city: "La Falda", country: "Argentina", lat: -31.0844, lng: -64.4953, category: "rodeo" },
+            { name: "Rodeo de Villa María", address: "Predio Ferial", city: "Villa María", country: "Argentina", lat: -32.4075, lng: -63.2403, category: "rodeo" },
+            { name: "Rodeo de Río Cuarto", address: "Predio Ferial", city: "Río Cuarto", country: "Argentina", lat: -33.1301, lng: -64.3499, category: "rodeo" },
+            { name: "Rodeo de Laboulaye", address: "Predio de la Sociedad Rural", city: "Laboulaye", country: "Argentina", lat: -34.1267, lng: -63.3917, category: "rodeo" },
+            { name: "Rodeo de Mendoza", address: "Parque General San Martín", city: "Mendoza", country: "Argentina", lat: -32.8895, lng: -68.8458, category: "rodeo" },
+            { name: "Rodeo de San Rafael", address: "Parque de Exposiciones", city: "San Rafael", country: "Argentina", lat: -34.6177, lng: -68.3301, category: "rodeo" },
+            { name: "Rodeo de San Juan", address: "Parque de Mayo", city: "San Juan", country: "Argentina", lat: -31.5375, lng: -68.5364, category: "rodeo" },
+            { name: "Rodeo de La Rioja", address: "Parque del Folklore", city: "La Rioja", country: "Argentina", lat: -29.4131, lng: -66.8558, category: "rodeo" },
+            { name: "Rodeo de Catamarca", address: "Predio Ferial", city: "Catamarca", country: "Argentina", lat: -28.4696, lng: -65.7795, category: "rodeo" },
+            { name: "Rodeo de Tucumán", address: "Parque 9 de Julio", city: "San Miguel de Tucumán", country: "Argentina", lat: -26.8083, lng: -65.2176, category: "rodeo" },
+            { name: "Rodeo de Salta", address: "Estadio Delmi", city: "Salta", country: "Argentina", lat: -24.7821, lng: -65.4232, category: "rodeo" },
+            { name: "Rodeo de Jujuy", address: "Predio Ferial", city: "San Salvador de Jujuy", country: "Argentina", lat: -24.1858, lng: -65.2995, category: "rodeo" },
+            { name: "Rodeo de Santiago del Estero", address: "Predio Ferial", city: "Santiago del Estero", country: "Argentina", lat: -27.7951, lng: -64.2615, category: "rodeo" },
+            { name: "Rodeo de Resistencia", address: "Complejo Polideportivo", city: "Resistencia", country: "Argentina", lat: -27.4514, lng: -58.9867, category: "rodeo" },
+            { name: "Rodeo de Corrientes", address: "Anfiteatro Cocomarola", city: "Corrientes", country: "Argentina", lat: -27.4692, lng: -58.8306, category: "rodeo" },
+            { name: "Rodeo de Posadas", address: "Parque del Conocimiento", city: "Posadas", country: "Argentina", lat: -27.3671, lng: -55.8961, category: "rodeo" },
+            { name: "Rodeo de Formosa", address: "Estadio Antonio Romero", city: "Formosa", country: "Argentina", lat: -26.1775, lng: -58.1781, category: "rodeo" },
+            { name: "Rodeo de Santa Fe", address: "Estación Belgrano", city: "Santa Fe", country: "Argentina", lat: -31.6333, lng: -60.7000, category: "rodeo" },
+            { name: "Rodeo de Rosario", address: "Anfiteatro Municipal", city: "Rosario", country: "Argentina", lat: -32.9442, lng: -60.6505, category: "rodeo" },
+            { name: "Rodeo de Paraná", address: "Parque Urquiza", city: "Paraná", country: "Argentina", lat: -31.7413, lng: -60.5115, category: "rodeo" },
+            { name: "Rodeo de Concordia", address: "Parque San Carlos", city: "Concordia", country: "Argentina", lat: -31.3930, lng: -58.0209, category: "rodeo" },
+            { name: "Rodeo de Gualeguaychú", address: "Corsódromo", city: "Gualeguaychú", country: "Argentina", lat: -33.0094, lng: -58.5173, category: "rodeo" },
+            { name: "Rodeo de La Pampa", address: "Predio Ferial", city: "Santa Rosa", country: "Argentina", lat: -36.6167, lng: -64.2833, category: "rodeo" },
+            { name: "Rodeo de General Pico", address: "Anfiteatro Municipal", city: "General Pico", country: "Argentina", lat: -35.6597, lng: -63.7567, category: "rodeo" },
+            { name: "Rodeo de Neuquén", address: "Parque Central", city: "Neuquén", country: "Argentina", lat: -38.9516, lng: -68.0591, category: "rodeo" },
+            { name: "Rodeo de Bariloche", address: "Centro Cívico", city: "San Carlos de Bariloche", country: "Argentina", lat: -41.1335, lng: -71.3103, category: "rodeo" },
+            { name: "Rodeo de Esquel", address: "Parque Nacional Los Alerces", city: "Esquel", country: "Argentina", lat: -42.9115, lng: -71.3186, category: "rodeo" },
+            { name: "Rodeo de Comodoro Rivadavia", address: "Estadio Municipal", city: "Comodoro Rivadavia", country: "Argentina", lat: -45.8644, lng: -67.4806, category: "rodeo" },
+            { name: "Rodeo de Río Gallegos", address: "Predio Ferial", city: "Río Gallegos", country: "Argentina", lat: -51.6226, lng: -69.2181, category: "rodeo" },
+            { name: "Rodeo de Ushuaia", address: "Estadio Municipal", city: "Ushuaia", country: "Argentina", lat: -54.8019, lng: -68.3030, category: "rodeo" },
+            
+            // CHILE - RODEOS CHILENOS
+            { name: "Rodeo Nacional de Rancagua", address: "Medialuna Monumental", city: "Rancagua", country: "Chile", lat: -34.1704, lng: -70.7407, category: "rodeo" },
+            { name: "Rodeo de Santiago", address: "Club Hípico", city: "Santiago", country: "Chile", lat: -33.4489, lng: -70.6693, category: "rodeo" },
+            { name: "Rodeo de Quilpué", address: "Medialuna Municipal", city: "Quilpué", country: "Chile", lat: -33.0472, lng: -71.4425, category: "rodeo" },
+            { name: "Rodeo de Curicó", address: "Medialuna de Curicó", city: "Curicó", country: "Chile", lat: -34.9829, lng: -71.2394, category: "rodeo" },
+            { name: "Rodeo de Talca", address: "Medialuna de Talca", city: "Talca", country: "Chile", lat: -35.4264, lng: -71.6554, category: "rodeo" },
+            { name: "Rodeo de Linares", address: "Medialuna de Linares", city: "Linares", country: "Chile", lat: -35.8469, lng: -71.5989, category: "rodeo" },
+            { name: "Rodeo de Chillán", address: "Medialuna de Chillán", city: "Chillán", country: "Chile", lat: -36.6065, lng: -72.1034, category: "rodeo" },
+            { name: "Rodeo de Los Ángeles", address: "Medialuna Municipal", city: "Los Ángeles", country: "Chile", lat: -37.4697, lng: -72.3544, category: "rodeo" },
+            { name: "Rodeo de Concepción", address: "Parque Ecuador", city: "Concepción", country: "Chile", lat: -36.8201, lng: -73.0444, category: "rodeo" },
+            { name: "Rodeo de Temuco", address: "Medialuna de Temuco", city: "Temuco", country: "Chile", lat: -38.7359, lng: -72.5904, category: "rodeo" },
+            { name: "Rodeo de Valdivia", address: "Parque Saval", city: "Valdivia", country: "Chile", lat: -39.8142, lng: -73.2459, category: "rodeo" },
+            { name: "Rodeo de Osorno", address: "Medialuna de Osorno", city: "Osorno", country: "Chile", lat: -40.5735, lng: -73.1500, category: "rodeo" },
+            { name: "Rodeo de Puerto Montt", address: "Estadio Regional", city: "Puerto Montt", country: "Chile", lat: -41.4693, lng: -72.9424, category: "rodeo" },
+            { name: "Rodeo de Castro", address: "Isla de Chiloé", city: "Castro", country: "Chile", lat: -42.4788, lng: -73.7622, category: "rodeo" },
+            { name: "Rodeo de Coyhaique", address: "Medialuna Regional", city: "Coyhaique", country: "Chile", lat: -45.5752, lng: -72.0662, category: "rodeo" },
+            { name: "Rodeo de La Serena", address: "Estadio La Portada", city: "La Serena", country: "Chile", lat: -29.9027, lng: -71.2519, category: "rodeo" },
+            { name: "Rodeo de Ovalle", address: "Medialuna de Ovalle", city: "Ovalle", country: "Chile", lat: -30.5979, lng: -71.1992, category: "rodeo" },
+            { name: "Rodeo de Vallenar", address: "Estadio Municipal", city: "Vallenar", country: "Chile", lat: -28.5744, lng: -70.7594, category: "rodeo" },
+            { name: "Rodeo de Copiapó", address: "Medialuna de Copiapó", city: "Copiapó", country: "Chile", lat: -27.3665, lng: -70.3316, category: "rodeo" },
+            { name: "Rodeo de Calama", address: "Estadio Municipal", city: "Calama", country: "Chile", lat: -22.4569, lng: -68.9219, category: "rodeo" },
+            { name: "Rodeo de Antofagasta", address: "Estadio Regional", city: "Antofagasta", country: "Chile", lat: -23.6509, lng: -70.3975, category: "rodeo" },
+            { name: "Rodeo de Iquique", address: "Estadio Tierra de Campeones", city: "Iquique", country: "Chile", lat: -20.2141, lng: -70.1522, category: "rodeo" },
+            { name: "Rodeo de Arica", address: "Estadio Carlos Dittborn", city: "Arica", country: "Chile", lat: -18.4746, lng: -70.2979, category: "rodeo" },
+            
+            // COLOMBIA - COLEO EVENTS
+            { name: "Coleo de Villavicencio", address: "Parque Las Malocas", city: "Villavicencio", country: "Colombia", lat: 4.1420, lng: -73.6266, category: "coleo" },
+            { name: "Coleo de Acacías", address: "Manga de Coleo", city: "Acacías", country: "Colombia", lat: 3.9894, lng: -73.7561, category: "coleo" },
+            { name: "Coleo de Granada", address: "Coliseo de Coleo", city: "Granada", country: "Colombia", lat: 3.5367, lng: -73.7078, category: "coleo" },
+            { name: "Coleo de San Martín", address: "Plaza de Coleo", city: "San Martín", country: "Colombia", lat: 3.6956, lng: -73.6989, category: "coleo" },
+            { name: "Coleo de Yopal", address: "Parque La Iguana", city: "Yopal", country: "Colombia", lat: 5.3378, lng: -72.3959, category: "coleo" },
+            { name: "Coleo de Arauca", address: "Manga de Coleo", city: "Arauca", country: "Colombia", lat: 7.0902, lng: -70.7619, category: "coleo" },
+            { name: "Coleo de Tame", address: "Coliseo Municipal", city: "Tame", country: "Colombia", lat: 6.4594, lng: -71.7344, category: "coleo" },
+            { name: "Coleo de Saravena", address: "Manga de Coleo", city: "Saravena", country: "Colombia", lat: 6.9533, lng: -71.8739, category: "coleo" },
+            { name: "Coleo de Paz de Ariporo", address: "Coliseo de Coleo", city: "Paz de Ariporo", country: "Colombia", lat: 5.8794, lng: -71.8847, category: "coleo" },
+            { name: "Coleo de Maní", address: "Plaza de Coleo", city: "Maní", country: "Colombia", lat: 4.8036, lng: -72.3053, category: "coleo" },
+            { name: "Coleo de Puerto López", address: "Manga de Coleo", city: "Puerto López", country: "Colombia", lat: 4.0858, lng: -72.9572, category: "coleo" },
+            { name: "Coleo de Puerto Gaitán", address: "Coliseo Municipal", city: "Puerto Gaitán", country: "Colombia", lat: 4.3178, lng: -72.0850, category: "coleo" },
+            { name: "Coleo de Aguazul", address: "Plaza de Coleo", city: "Aguazul", country: "Colombia", lat: 5.1756, lng: -72.5631, category: "coleo" },
+            { name: "Coleo de Monterrey", address: "Manga de Coleo", city: "Monterrey", country: "Colombia", lat: 4.8847, lng: -72.8900, category: "coleo" },
+            { name: "Coleo de Restrepo", address: "Coliseo de Coleo", city: "Restrepo", country: "Colombia", lat: 4.2550, lng: -73.5689, category: "coleo" },
+            { name: "Coleo de Cumaral", address: "Plaza de Coleo", city: "Cumaral", country: "Colombia", lat: 4.2722, lng: -73.4872, category: "coleo" },
+            { name: "Coleo de Guamal", address: "Manga de Coleo", city: "Guamal", country: "Colombia", lat: 3.8872, lng: -73.7644, category: "coleo" },
+            { name: "Coleo de Castilla La Nueva", address: "Coliseo Municipal", city: "Castilla La Nueva", country: "Colombia", lat: 3.8153, lng: -73.7078, category: "coleo" },
+            { name: "Coleo de San Carlos de Guaroa", address: "Plaza de Coleo", city: "San Carlos de Guaroa", country: "Colombia", lat: 3.7611, lng: -73.2517, category: "coleo" },
+            { name: "Coleo de Puerto Lleras", address: "Manga de Coleo", city: "Puerto Lleras", country: "Colombia", lat: 3.2706, lng: -73.3817, category: "coleo" },
+            
+            // VENEZUELA - COLEO EVENTS
+            { name: "Coleo de Barinas", address: "Manga de Coleo La Pedregosa", city: "Barinas", country: "Venezuela", lat: 8.6226, lng: -70.2072, category: "coleo" },
+            { name: "Coleo de Guanare", address: "Feria Internacional de Guanare", city: "Guanare", country: "Venezuela", lat: 9.0417, lng: -69.7422, category: "coleo" },
+            { name: "Coleo de Calabozo", address: "Manga de Coleo", city: "Calabozo", country: "Venezuela", lat: 8.9242, lng: -67.4292, category: "coleo" },
+            { name: "Coleo de Valle de la Pascua", address: "Plaza de Coleo", city: "Valle de la Pascua", country: "Venezuela", lat: 9.2167, lng: -65.9833, category: "coleo" },
+            { name: "Coleo de San Fernando de Apure", address: "Coliseo de Coleo", city: "San Fernando de Apure", country: "Venezuela", lat: 7.8878, lng: -67.4728, category: "coleo" },
+            { name: "Coleo de Acarigua", address: "Feria de Acarigua", city: "Acarigua", country: "Venezuela", lat: 9.5553, lng: -69.1953, category: "coleo" },
+            { name: "Coleo de El Tigre", address: "Manga de Coleo", city: "El Tigre", country: "Venezuela", lat: 8.8894, lng: -64.2528, category: "coleo" },
+            { name: "Coleo de Maturín", address: "Plaza de Coleo", city: "Maturín", country: "Venezuela", lat: 9.7469, lng: -63.1833, category: "coleo" },
+            { name: "Coleo de Tucupita", address: "Coliseo Municipal", city: "Tucupita", country: "Venezuela", lat: 9.0575, lng: -62.0503, category: "coleo" },
+            { name: "Coleo de Ciudad Bolívar", address: "Manga de Coleo", city: "Ciudad Bolívar", country: "Venezuela", lat: 8.1222, lng: -63.5497, category: "coleo" },
+            { name: "Coleo de Zaraza", address: "Plaza de Coleo", city: "Zaraza", country: "Venezuela", lat: 9.3506, lng: -65.3239, category: "coleo" },
+            { name: "Coleo de El Sombrero", address: "Coliseo de Coleo", city: "El Sombrero", country: "Venezuela", lat: 9.1833, lng: -66.2167, category: "coleo" },
+            { name: "Coleo de San Juan de los Morros", address: "Manga de Coleo", city: "San Juan de los Morros", country: "Venezuela", lat: 9.9069, lng: -67.3539, category: "coleo" },
+            { name: "Coleo de Maracay", address: "Plaza de Toros Maestranza", city: "Maracay", country: "Venezuela", lat: 10.2469, lng: -67.5958, category: "coleo" },
+            { name: "Coleo de Valencia", address: "Coliseo de Coleo", city: "Valencia", country: "Venezuela", lat: 10.1621, lng: -68.0078, category: "coleo" },
+            
+            // AUSTRALIA - RODEOS
+            { name: "Mount Isa Rotary Rodeo", address: "Buchanan Park", city: "Mount Isa", country: "Australia", lat: -20.7264, lng: 139.4928, category: "rodeo" },
+            { name: "Warwick Rodeo", address: "Warwick Showgrounds", city: "Warwick", country: "Australia", lat: -28.2167, lng: 152.0333, category: "rodeo" },
+            { name: "Mareeba Rodeo", address: "Mareeba Showgrounds", city: "Mareeba", country: "Australia", lat: -16.9944, lng: 145.4222, category: "rodeo" },
+            { name: "St George Campdraft", address: "St George Showgrounds", city: "St George", country: "Australia", lat: -28.0333, lng: 148.5833, category: "rodeo" },
+            { name: "Cloncurry Merry Muster", address: "Cloncurry Showgrounds", city: "Cloncurry", country: "Australia", lat: -20.7067, lng: 140.5083, category: "rodeo" },
+            { name: "Julia Creek Dirt & Dust Festival", address: "Julia Creek Showgrounds", city: "Julia Creek", country: "Australia", lat: -20.6564, lng: 141.7453, category: "rodeo" },
+            { name: "Tamworth Country Music Festival", address: "AELEC", city: "Tamworth", country: "Australia", lat: -31.0927, lng: 150.9308, category: "rodeo" },
+            { name: "Toowoomba Royal Show Rodeo", address: "Toowoomba Showgrounds", city: "Toowoomba", country: "Australia", lat: -27.5598, lng: 151.9507, category: "rodeo" },
+            { name: "Rockhampton Beef Australia", address: "Great Western Hotel", city: "Rockhampton", country: "Australia", lat: -23.3781, lng: 150.5136, category: "rodeo" },
+            { name: "Dalby Show & Rodeo", address: "Dalby Showgrounds", city: "Dalby", country: "Australia", lat: -27.1833, lng: 151.2667, category: "rodeo" },
+            { name: "Charleville Show & Rodeo", address: "Charleville Showgrounds", city: "Charleville", country: "Australia", lat: -26.4000, lng: 146.2419, category: "rodeo" },
+            { name: "Longreach Stockman's Hall", address: "Australian Stockman's Hall of Fame", city: "Longreach", country: "Australia", lat: -23.4406, lng: 144.2472, category: "rodeo" },
+            { name: "Winton Outback Festival", address: "Winton Showgrounds", city: "Winton", country: "Australia", lat: -22.3833, lng: 143.0333, category: "rodeo" },
+            { name: "Birdsville Races", address: "Birdsville Racecourse", city: "Birdsville", country: "Australia", lat: -25.9000, lng: 139.3500, category: "rodeo" },
+            { name: "Boulia Camels Cup", address: "Boulia Racecourse", city: "Boulia", country: "Australia", lat: -22.9133, lng: 139.9047, category: "rodeo" },
+            { name: "Bedourie Camel Races", address: "Bedourie Racecourse", city: "Bedourie", country: "Australia", lat: -24.3567, lng: 139.4639, category: "rodeo" },
+            { name: "Eidsvold Show & Rodeo", address: "Eidsvold Showgrounds", city: "Eidsvold", country: "Australia", lat: -25.3667, lng: 151.1167, category: "rodeo" },
+            { name: "Charters Towers Show", address: "Charters Towers Showgrounds", city: "Charters Towers", country: "Australia", lat: -20.0739, lng: 146.2619, category: "rodeo" },
+            { name: "Clermont Show & Rodeo", address: "Clermont Showgrounds", city: "Clermont", country: "Australia", lat: -22.8272, lng: 147.6392, category: "rodeo" },
+            { name: "Emerald Show & Rodeo", address: "Emerald Showgrounds", city: "Emerald", country: "Australia", lat: -23.5250, lng: 148.1617, category: "rodeo" },
+            { name: "Blackall Show & Rodeo", address: "Blackall Showgrounds", city: "Blackall", country: "Australia", lat: -24.4167, lng: 145.4667, category: "rodeo" },
+            { name: "Augathella Show & Rodeo", address: "Augathella Showgrounds", city: "Augathella", country: "Australia", lat: -25.7944, lng: 146.5917, category: "rodeo" },
+            { name: "Chinchilla Show & Rodeo", address: "Chinchilla Showgrounds", city: "Chinchilla", country: "Australia", lat: -26.7400, lng: 150.6300, category: "rodeo" },
+            { name: "Roma Easter in the Country", address: "Roma Showgrounds", city: "Roma", country: "Australia", lat: -26.5667, lng: 148.7833, category: "rodeo" },
+            { name: "Goondiwindi Show & Rodeo", address: "Goondiwindi Showgrounds", city: "Goondiwindi", country: "Australia", lat: -28.5489, lng: 150.3078, category: "rodeo" },
+            { name: "Dubbo Show & Rodeo", address: "Dubbo Showgrounds", city: "Dubbo", country: "Australia", lat: -32.2426, lng: 148.6011, category: "rodeo" },
+            { name: "Orange Show & Rodeo", address: "Orange Showgrounds", city: "Orange", country: "Australia", lat: -33.2806, lng: 149.1000, category: "rodeo" },
+            { name: "Bathurst Show & Rodeo", address: "Bathurst Showgrounds", city: "Bathurst", country: "Australia", lat: -33.4192, lng: 149.5806, category: "rodeo" },
+            { name: "Wagga Wagga Show", address: "Wagga Showgrounds", city: "Wagga Wagga", country: "Australia", lat: -35.1082, lng: 147.3598, category: "rodeo" },
+            { name: "Albury Show & Rodeo", address: "Albury Showgrounds", city: "Albury", country: "Australia", lat: -36.0737, lng: 146.9135, category: "rodeo" },
+            { name: "Deniliquin Ute Muster", address: "Deniliquin Showgrounds", city: "Deniliquin", country: "Australia", lat: -35.5333, lng: 144.9667, category: "rodeo" },
+            { name: "Canberra Show & Rodeo", address: "Exhibition Park", city: "Canberra", country: "Australia", lat: -35.2809, lng: 149.1300, category: "rodeo" },
+            { name: "Goulburn Show & Rodeo", address: "Goulburn Showgrounds", city: "Goulburn", country: "Australia", lat: -34.7531, lng: 149.7208, category: "rodeo" },
+            { name: "Coffs Harbour Show", address: "Coffs Harbour Showgrounds", city: "Coffs Harbour", country: "Australia", lat: -30.2986, lng: 153.1158, category: "rodeo" },
+            { name: "Grafton Show & Rodeo", address: "Grafton Showgrounds", city: "Grafton", country: "Australia", lat: -29.6833, lng: 152.9333, category: "rodeo" },
+            { name: "Casino Beef Week", address: "Casino Showgrounds", city: "Casino", country: "Australia", lat: -28.8597, lng: 153.0472, category: "rodeo" },
+            { name: "Lismore Show & Rodeo", address: "Lismore Showgrounds", city: "Lismore", country: "Australia", lat: -28.8147, lng: 153.2769, category: "rodeo" },
+            { name: "Sydney Royal Easter Show", address: "Sydney Showground", city: "Sydney", country: "Australia", lat: -33.8468, lng: 151.2093, category: "rodeo" },
+            { name: "Hawkesbury Show & Rodeo", address: "Hawkesbury Showgrounds", city: "Clarendon", country: "Australia", lat: -33.6089, lng: 150.7833, category: "rodeo" },
+            { name: "Parkes Show & Rodeo", address: "Parkes Showgrounds", city: "Parkes", country: "Australia", lat: -33.1381, lng: 148.1750, category: "rodeo" },
+            { name: "Forbes Show & Rodeo", address: "Forbes Showgrounds", city: "Forbes", country: "Australia", lat: -33.3858, lng: 148.0069, category: "rodeo" },
+            { name: "Gilgandra Show & Rodeo", address: "Gilgandra Showgrounds", city: "Gilgandra", country: "Australia", lat: -31.7094, lng: 148.6617, category: "rodeo" },
+            { name: "Mudgee Show & Rodeo", address: "Mudgee Showgrounds", city: "Mudgee", country: "Australia", lat: -32.5961, lng: 149.5883, category: "rodeo" },
+            { name: "Scone Horse Festival", address: "Scone Showgrounds", city: "Scone", country: "Australia", lat: -32.0569, lng: 150.8706, category: "rodeo" },
+            { name: "Muswellbrook Show", address: "Muswellbrook Showgrounds", city: "Muswellbrook", country: "Australia", lat: -32.2644, lng: 150.8883, category: "rodeo" },
+            { name: "Armidale Show & Rodeo", address: "Armidale Showgrounds", city: "Armidale", country: "Australia", lat: -30.5122, lng: 151.6644, category: "rodeo" },
+            { name: "Glen Innes Show", address: "Glen Innes Showgrounds", city: "Glen Innes", country: "Australia", lat: -29.7383, lng: 151.7358, category: "rodeo" },
+            { name: "Tenterfield Show & Rodeo", address: "Tenterfield Showgrounds", city: "Tenterfield", country: "Australia", lat: -29.0544, lng: 152.0242, category: "rodeo" },
+            { name: "Inverell Show & Rodeo", address: "Inverell Showgrounds", city: "Inverell", country: "Australia", lat: -29.7739, lng: 151.1122, category: "rodeo" },
+            { name: "Moree Show & Rodeo", address: "Moree Showgrounds", city: "Moree", country: "Australia", lat: -29.4647, lng: 149.8411, category: "rodeo" },
+            { name: "Narrabri Show & Rodeo", address: "Narrabri Showgrounds", city: "Narrabri", country: "Australia", lat: -30.3286, lng: 149.7819, category: "rodeo" },
+            { name: "Gunnedah Show & Rodeo", address: "Gunnedah Showgrounds", city: "Gunnedah", country: "Australia", lat: -30.9833, lng: 150.2500, category: "rodeo" },
+            { name: "Coonabarabran Show", address: "Coonabarabran Showgrounds", city: "Coonabarabran", country: "Australia", lat: -31.2731, lng: 149.2769, category: "rodeo" },
+            
+            // NEW ZEALAND - RODEOS
+            { name: "Waikaremoana Rodeo", address: "Te Urewera", city: "Waikaremoana", country: "New Zealand", lat: -38.7500, lng: 177.0833, category: "rodeo" },
+            { name: "Gisborne Rodeo", address: "Gisborne Showgrounds", city: "Gisborne", country: "New Zealand", lat: -38.6625, lng: 178.0175, category: "rodeo" },
+            { name: "Wairoa Rodeo", address: "Wairoa Showgrounds", city: "Wairoa", country: "New Zealand", lat: -39.0333, lng: 177.4167, category: "rodeo" },
+            { name: "Hawke's Bay Rodeo", address: "Hastings Showgrounds", city: "Hastings", country: "New Zealand", lat: -39.6381, lng: 176.8419, category: "rodeo" },
+            { name: "Dannevirke Rodeo", address: "Dannevirke A&P Showgrounds", city: "Dannevirke", country: "New Zealand", lat: -40.2000, lng: 176.1000, category: "rodeo" },
+            { name: "Taihape Rodeo", address: "Memorial Park", city: "Taihape", country: "New Zealand", lat: -39.6800, lng: 175.7900, category: "rodeo" },
+            { name: "Wanganui Rodeo", address: "Springvale Park", city: "Wanganui", country: "New Zealand", lat: -39.9300, lng: 175.0500, category: "rodeo" },
+            { name: "Stratford Rodeo", address: "King Edward Park", city: "Stratford", country: "New Zealand", lat: -39.3400, lng: 174.2800, category: "rodeo" },
+            { name: "New Plymouth Rodeo", address: "Yarrow Stadium", city: "New Plymouth", country: "New Zealand", lat: -39.0556, lng: 174.0752, category: "rodeo" },
+            { name: "Taupo Rodeo", address: "Owen Delany Park", city: "Taupo", country: "New Zealand", lat: -38.6856, lng: 176.0704, category: "rodeo" },
+            { name: "Rotorua Rodeo", address: "Arawa Park Racecourse", city: "Rotorua", country: "New Zealand", lat: -38.1368, lng: 176.2497, category: "rodeo" },
+            { name: "Hamilton Rodeo", address: "Claudelands Showgrounds", city: "Hamilton", country: "New Zealand", lat: -37.7870, lng: 175.2793, category: "rodeo" },
+            { name: "Te Awamutu Rodeo", address: "Te Awamutu Events Centre", city: "Te Awamutu", country: "New Zealand", lat: -38.0089, lng: 175.3239, category: "rodeo" },
+            { name: "Huntly Rodeo", address: "Huntly Domain", city: "Huntly", country: "New Zealand", lat: -37.5583, lng: 175.1717, category: "rodeo" },
+            { name: "Thames Rodeo", address: "War Memorial Park", city: "Thames", country: "New Zealand", lat: -37.1381, lng: 175.5422, category: "rodeo" },
+            { name: "Whitianga Rodeo", address: "Whitianga Sports Ground", city: "Whitianga", country: "New Zealand", lat: -36.8333, lng: 175.7000, category: "rodeo" },
+            { name: "Paeroa Rodeo", address: "Paeroa Domain", city: "Paeroa", country: "New Zealand", lat: -37.3667, lng: 175.6667, category: "rodeo" },
+            { name: "Whakatane Rodeo", address: "Rugby Park", city: "Whakatane", country: "New Zealand", lat: -37.9519, lng: 176.9856, category: "rodeo" },
+            { name: "Opotiki Rodeo", address: "Princess Street Reserve", city: "Opotiki", country: "New Zealand", lat: -38.0089, lng: 177.2867, category: "rodeo" },
+            { name: "Auckland Rodeo", address: "Pukekohe Park", city: "Auckland", country: "New Zealand", lat: -37.2000, lng: 174.9000, category: "rodeo" },
+            { name: "Kaikohe Rodeo", address: "Pioneer Park", city: "Kaikohe", country: "New Zealand", lat: -35.4147, lng: 173.8047, category: "rodeo" },
+            { name: "Kaitaia Rodeo", address: "Kaitaia Showgrounds", city: "Kaitaia", country: "New Zealand", lat: -35.1167, lng: 173.2667, category: "rodeo" },
+            { name: "Whangarei Rodeo", address: "Barge Park", city: "Whangarei", country: "New Zealand", lat: -35.7275, lng: 174.3166, category: "rodeo" },
+            { name: "Wellsford Rodeo", address: "Wellsford Showgrounds", city: "Wellsford", country: "New Zealand", lat: -36.2900, lng: 174.5200, category: "rodeo" },
+            { name: "Helensville Rodeo", address: "Helensville Showgrounds", city: "Helensville", country: "New Zealand", lat: -36.6778, lng: 174.4486, category: "rodeo" },
+            { name: "Matamata Rodeo", address: "Matamata Showgrounds", city: "Matamata", country: "New Zealand", lat: -37.8089, lng: 175.7756, category: "rodeo" },
+            { name: "Cambridge Rodeo", address: "Cambridge Racecourse", city: "Cambridge", country: "New Zealand", lat: -37.8833, lng: 175.4667, category: "rodeo" },
+            { name: "Morrinsville Rodeo", address: "Morrinsville Domain", city: "Morrinsville", country: "New Zealand", lat: -37.6558, lng: 175.5289, category: "rodeo" },
+            { name: "Tokoroa Rodeo", address: "Tokoroa Memorial Sportsground", city: "Tokoroa", country: "New Zealand", lat: -38.2167, lng: 175.8667, category: "rodeo" },
+            { name: "Turangi Rodeo", address: "Turangi Domain", city: "Turangi", country: "New Zealand", lat: -38.9833, lng: 175.8167, category: "rodeo" },
+            
+            // PERU - RODEOS
+            { name: "Rodeo de Lima", address: "Hipódromo de Monterrico", city: "Lima", country: "Peru", lat: -12.0894, lng: -76.9778, category: "rodeo" },
+            { name: "Rodeo de Arequipa", address: "Campo Ferial Cerro Juli", city: "Arequipa", country: "Peru", lat: -16.4090, lng: -71.5375, category: "rodeo" },
+            { name: "Rodeo de Cusco", address: "Centro de Exposiciones", city: "Cusco", country: "Peru", lat: -13.5319, lng: -71.9675, category: "rodeo" },
+            { name: "Rodeo de Cajamarca", address: "Coliseo Gran Qhapaq Ñan", city: "Cajamarca", country: "Peru", lat: -7.1631, lng: -78.5125, category: "rodeo" },
+            { name: "Rodeo de Huancayo", address: "Coliseo Wanka", city: "Huancayo", country: "Peru", lat: -12.0699, lng: -75.2039, category: "rodeo" },
+            { name: "Rodeo de Piura", address: "Coliseo Municipal", city: "Piura", country: "Peru", lat: -5.1975, lng: -80.6328, category: "rodeo" },
+            { name: "Rodeo de Trujillo", address: "Gran Chimú", city: "Trujillo", country: "Peru", lat: -8.1116, lng: -79.0288, category: "rodeo" },
+            { name: "Rodeo de Chiclayo", address: "Coliseo Cerrado", city: "Chiclayo", country: "Peru", lat: -6.7714, lng: -79.8411, category: "rodeo" },
+            { name: "Rodeo de Ayacucho", address: "Estadio Ciudad de Cumaná", city: "Ayacucho", country: "Peru", lat: -13.1631, lng: -74.2236, category: "rodeo" },
+            { name: "Rodeo de Pucallpa", address: "Coliseo Eduardo Brito", city: "Pucallpa", country: "Peru", lat: -8.3791, lng: -74.5539, category: "rodeo" },
+            
+            // URUGUAY - RODEOS
+            { name: "Rodeo de Montevideo", address: "Prado de Montevideo", city: "Montevideo", country: "Uruguay", lat: -34.8694, lng: -56.2067, category: "rodeo" },
+            { name: "Rodeo de Paysandú", address: "Predio Ferial", city: "Paysandú", country: "Uruguay", lat: -32.3214, lng: -58.0756, category: "rodeo" },
+            { name: "Rodeo de Tacuarembó", address: "Parque 25 de Agosto", city: "Tacuarembó", country: "Uruguay", lat: -31.7167, lng: -55.9833, category: "rodeo" },
+            { name: "Rodeo de Melo", address: "Predio Ferial", city: "Melo", country: "Uruguay", lat: -32.3703, lng: -54.1678, category: "rodeo" },
+            { name: "Rodeo de Rivera", address: "Predio Ferial", city: "Rivera", country: "Uruguay", lat: -30.9056, lng: -55.5508, category: "rodeo" },
+            { name: "Rodeo de Salto", address: "Parque Solari", city: "Salto", country: "Uruguay", lat: -31.3833, lng: -57.9667, category: "rodeo" },
+            { name: "Rodeo de Durazno", address: "Parque de las Ciencias", city: "Durazno", country: "Uruguay", lat: -33.3833, lng: -56.5167, category: "rodeo" },
+            { name: "Rodeo de Treinta y Tres", address: "Predio Ferial", city: "Treinta y Tres", country: "Uruguay", lat: -33.2333, lng: -54.3833, category: "rodeo" },
+            
+            // BOLIVIA - RODEOS
+            { name: "Rodeo de La Paz", address: "Feria Exposición", city: "La Paz", country: "Bolivia", lat: -16.5000, lng: -68.1500, category: "rodeo" },
+            { name: "Rodeo de Santa Cruz", address: "Fexpocruz", city: "Santa Cruz de la Sierra", country: "Bolivia", lat: -17.7833, lng: -63.1821, category: "rodeo" },
+            { name: "Rodeo de Cochabamba", address: "Campo Ferial", city: "Cochabamba", country: "Bolivia", lat: -17.3895, lng: -66.1568, category: "rodeo" },
+            { name: "Rodeo de Tarija", address: "Predio Ferial", city: "Tarija", country: "Bolivia", lat: -21.5355, lng: -64.7295, category: "rodeo" },
+            { name: "Rodeo de Sucre", address: "Estadio Patria", city: "Sucre", country: "Bolivia", lat: -19.0196, lng: -65.2619, category: "rodeo" },
+            
+            // PARAGUAY - RODEOS
+            { name: "Rodeo de Asunción", address: "Jockey Club", city: "Asunción", country: "Paraguay", lat: -25.2637, lng: -57.5759, category: "rodeo" },
+            { name: "Rodeo de Encarnación", address: "Predio Ferial", city: "Encarnación", country: "Paraguay", lat: -27.3333, lng: -55.8667, category: "rodeo" },
+            { name: "Rodeo de Ciudad del Este", address: "Expo del Este", city: "Ciudad del Este", country: "Paraguay", lat: -25.5095, lng: -54.6112, category: "rodeo" },
+            { name: "Rodeo de Mariano Roque Alonso", address: "Campo Ferial", city: "Mariano Roque Alonso", country: "Paraguay", lat: -25.2167, lng: -57.5333, category: "rodeo" },
+            
+            // ECUADOR - RODEOS
+            { name: "Rodeo de Quito", address: "Parque Bicentenario", city: "Quito", country: "Ecuador", lat: -0.1807, lng: -78.4678, category: "rodeo" },
+            { name: "Rodeo de Guayaquil", address: "Malecón Simón Bolívar", city: "Guayaquil", country: "Ecuador", lat: -2.1894, lng: -79.8883, category: "rodeo" },
+            { name: "Rodeo de Cuenca", address: "Parque de la Madre", city: "Cuenca", country: "Ecuador", lat: -2.9005, lng: -79.0059, category: "rodeo" },
+            { name: "Rodeo de Riobamba", address: "Feria de Ganado", city: "Riobamba", country: "Ecuador", lat: -1.6711, lng: -78.6475, category: "rodeo" },
+            { name: "Rodeo de Machala", address: "Recinto Ferial", city: "Machala", country: "Ecuador", lat: -3.2667, lng: -79.9667, category: "rodeo" },
+            { name: "Rodeo de Latacunga", address: "Plaza de Toros", city: "Latacunga", country: "Ecuador", lat: -0.9333, lng: -78.6167, category: "rodeo" },
+            { name: "Rodeo de Ambato", address: "Parque Provincial", city: "Ambato", country: "Ecuador", lat: -1.2543, lng: -78.6210, category: "rodeo" },
+            { name: "Rodeo de Loja", address: "Parque Jipiro", city: "Loja", country: "Ecuador", lat: -3.9933, lng: -79.2042, category: "rodeo" },
+            { name: "Rodeo de Ibarra", address: "Plaza de Toros", city: "Ibarra", country: "Ecuador", lat: 0.3499, lng: -78.1228, category: "rodeo" },
+            { name: "Rodeo de Santo Domingo", address: "Recinto Ferial", city: "Santo Domingo", country: "Ecuador", lat: -0.2522, lng: -79.1750, category: "rodeo" },
+            
+            // USA SMALL TOWN RODEOS - ADDITIONAL STATES
+            // MISSISSIPPI RURAL
+            { name: "Philadelphia Choctaw Fair", address: "Choctaw Fairgrounds", city: "Philadelphia", country: "USA", lat: 32.7715, lng: -89.1167, category: "rodeo" },
+            { name: "Starkville Bulldog Stampede", address: "MSU Arena", city: "Starkville", country: "USA", lat: 33.4504, lng: -88.8184, category: "rodeo" },
+            { name: "Tupelo Fair Rodeo", address: "BancorpSouth Arena", city: "Tupelo", country: "USA", lat: 34.2576, lng: -88.7034, category: "rodeo" },
+            
+            // INDIANA RODEOS
+            { name: "Indianapolis Circle City Rodeo", address: "Indiana State Fairgrounds", city: "Indianapolis", country: "USA", lat: 39.8283, lng: -86.1347, category: "rodeo" },
+            { name: "Fort Wayne Mad Anthony Rodeo", address: "Memorial Coliseum", city: "Fort Wayne", country: "USA", lat: 41.0793, lng: -85.1394, category: "rodeo" },
+            { name: "Terre Haute Wabash Valley", address: "Vigo County Fairgrounds", city: "Terre Haute", country: "USA", lat: 39.4667, lng: -87.4139, category: "rodeo" },
+            
+            // OHIO RODEOS
+            { name: "Columbus Ohio State Fair", address: "Ohio Expo Center", city: "Columbus", country: "USA", lat: 39.9833, lng: -83.0167, category: "rodeo" },
+            { name: "Dayton Great Darke County Fair", address: "Darke County Fairgrounds", city: "Dayton", country: "USA", lat: 39.7589, lng: -84.1916, category: "rodeo" },
+            { name: "Findlay Hancock County Fair", address: "Hancock County Fairgrounds", city: "Findlay", country: "USA", lat: 41.0420, lng: -83.6499, category: "rodeo" },
+            
+            // MICHIGAN RODEOS
+            { name: "St. Louis Gratiot County Fair", address: "Gratiot Fairgrounds", city: "St. Louis", country: "USA", lat: 43.4083, lng: -84.6072, category: "rodeo" },
+            { name: "Ogemaw County Rodeo", address: "West Branch Fairgrounds", city: "West Branch", country: "USA", lat: 44.2764, lng: -84.2386, category: "rodeo" },
+            { name: "Clare County Rodeo", address: "Clare County Fairgrounds", city: "Clare", country: "USA", lat: 43.8195, lng: -84.7697, category: "rodeo" },
+            
+            // WISCONSIN RODEOS
+            { name: "Tomah Rodeo", address: "Monroe County Fairgrounds", city: "Tomah", country: "USA", lat: 43.9786, lng: -90.5040, category: "rodeo" },
+            { name: "Wausau Rodeo", address: "Marathon Park", city: "Wausau", country: "USA", lat: 44.9592, lng: -89.6301, category: "rodeo" },
+            { name: "Chippewa Falls Rodeo", address: "Northern Wisconsin Fair", city: "Chippewa Falls", country: "USA", lat: 44.9369, lng: -91.3929, category: "rodeo" },
+            
+            // MINNESOTA RODEOS
+            { name: "Willmar Rodeo", address: "Kandiyohi County Fair", city: "Willmar", country: "USA", lat: 45.1219, lng: -95.0433, category: "rodeo" },
+            { name: "Brainerd Lakes Area Rodeo", address: "Crow Wing County Fair", city: "Brainerd", country: "USA", lat: 46.3580, lng: -94.2008, category: "rodeo" },
+            { name: "Alexandria Rodeo", address: "Douglas County Fairgrounds", city: "Alexandria", country: "USA", lat: 45.8852, lng: -95.3773, category: "rodeo" },
+            
+            // IOWA RODEOS
+            { name: "Sidney Championship Rodeo", address: "Sidney Rodeo Arena", city: "Sidney", country: "USA", lat: 40.7478, lng: -95.6472, category: "rodeo" },
+            { name: "Algona Kossuth County Fair", address: "Kossuth Fairgrounds", city: "Algona", country: "USA", lat: 43.0708, lng: -94.2333, category: "rodeo" },
+            { name: "Decorah Nordic Fest", address: "Winneshiek County Fair", city: "Decorah", country: "USA", lat: 43.3033, lng: -91.7857, category: "rodeo" },
+            { name: "Mason City North Iowa Fair", address: "North Iowa Events Center", city: "Mason City", country: "USA", lat: 43.1536, lng: -93.2010, category: "rodeo" },
+            
+            // ILLINOIS RODEOS
+            { name: "Kankakee County Fair Rodeo", address: "Kankakee Fairgrounds", city: "Kankakee", country: "USA", lat: 41.1200, lng: -87.8612, category: "rodeo" },
+            { name: "Du Quoin State Fair", address: "Du Quoin State Fairgrounds", city: "Du Quoin", country: "USA", lat: 38.0114, lng: -89.2362, category: "rodeo" },
+            { name: "Sandwich Fair Rodeo", address: "Sandwich Fairgrounds", city: "Sandwich", country: "USA", lat: 41.6456, lng: -88.6217, category: "rodeo" },
+            
+            // SMALL TEXAS TOWNS
+            { name: "Bandera Frontier Days", address: "Mansfield Park", city: "Bandera", country: "USA", lat: 29.7266, lng: -99.0736, category: "rodeo" },
+            { name: "Pecos West of the Pecos", address: "Buck Jackson Arena", city: "Pecos", country: "USA", lat: 31.4229, lng: -103.4933, category: "rodeo" },
+            { name: "Uvalde Southwest Texas Junior", address: "Uvalde County Fairgrounds", city: "Uvalde", country: "USA", lat: 29.2097, lng: -99.7864, category: "rodeo" },
+            { name: "Del Rio Fiesta de Amistad", address: "Val Verde County Fairgrounds", city: "Del Rio", country: "USA", lat: 29.3627, lng: -100.8968, category: "rodeo" },
+            { name: "Kerrville Hill Country Youth", address: "Hill Country Youth Center", city: "Kerrville", country: "USA", lat: 30.0474, lng: -99.1403, category: "rodeo" },
+            { name: "Fredericksburg Easter Fires", address: "Gillespie County Fair", city: "Fredericksburg", country: "USA", lat: 30.2752, lng: -98.8720, category: "rodeo" },
+            { name: "Boerne Kendall County Fair", address: "Kendall County Fairgrounds", city: "Boerne", country: "USA", lat: 29.7947, lng: -98.7320, category: "rodeo" },
+            { name: "Junction Wild Game Dinner", address: "Kimble County Fairgrounds", city: "Junction", country: "USA", lat: 30.4893, lng: -99.7717, category: "rodeo" },
+            { name: "Sonora Sutton County Days", address: "Sutton County Arena", city: "Sonora", country: "USA", lat: 30.5666, lng: -100.6434, category: "rodeo" },
+            { name: "Ozona Crockett County Fair", address: "Crockett County Arena", city: "Ozona", country: "USA", lat: 30.7104, lng: -101.2012, category: "rodeo" },
+            { name: "Alpine Big Bend Cowboy", address: "Sul Ross Arena", city: "Alpine", country: "USA", lat: 30.3583, lng: -103.6605, category: "rodeo" },
+            { name: "Marfa Trans-Pecos Rodeo", address: "Marfa Rodeo Grounds", city: "Marfa", country: "USA", lat: 30.3078, lng: -104.0183, category: "rodeo" },
+            { name: "Fort Stockton Pecos County", address: "Pecos County Coliseum", city: "Fort Stockton", country: "USA", lat: 30.8943, lng: -102.8779, category: "rodeo" },
+            { name: "Monahans Sandhills Rodeo", address: "Ward County Arena", city: "Monahans", country: "USA", lat: 31.5943, lng: -102.8926, category: "rodeo" },
+            { name: "Andrews Permian Basin", address: "Andrews County Fairgrounds", city: "Andrews", country: "USA", lat: 32.3187, lng: -102.5446, category: "rodeo" },
+            { name: "Seminole Gaines County", address: "Gaines County Coliseum", city: "Seminole", country: "USA", lat: 32.7187, lng: -102.6452, category: "rodeo" },
+            { name: "Brownfield Terry County", address: "Terry County Arena", city: "Brownfield", country: "USA", lat: 33.1809, lng: -102.2738, category: "rodeo" },
+            { name: "Lamesa Dawson County Fair", address: "Dawson County Fairgrounds", city: "Lamesa", country: "USA", lat: 32.7376, lng: -101.9507, category: "rodeo" },
+            { name: "Snyder Scurry County", address: "Scurry County Coliseum", city: "Snyder", country: "USA", lat: 32.7179, lng: -100.9176, category: "rodeo" },
+            { name: "Sweetwater Rattlesnake Roundup", address: "Nolan County Coliseum", city: "Sweetwater", country: "USA", lat: 32.4709, lng: -100.4062, category: "rodeo" },
+            { name: "Stamford Texas Cowboy Reunion", address: "Texas Cowboy Reunion Grounds", city: "Stamford", country: "USA", lat: 32.9493, lng: -99.8034, category: "rodeo" },
+            { name: "Haskell County Fair", address: "Haskell County Arena", city: "Haskell", country: "USA", lat: 33.1576, lng: -99.7342, category: "rodeo" },
+            { name: "Seymour Rodeo", address: "Baylor County Arena", city: "Seymour", country: "USA", lat: 33.5940, lng: -99.2603, category: "rodeo" },
+            { name: "Vernon Santa Rosa Roundup", address: "Santa Rosa Arena", city: "Vernon", country: "USA", lat: 34.1548, lng: -99.2929, category: "rodeo" },
+            { name: "Childress County Fair", address: "Fair Park", city: "Childress", country: "USA", lat: 34.4265, lng: -100.2040, category: "rodeo" },
+            { name: "Clarendon Saints' Roost", address: "COEA Arena", city: "Clarendon", country: "USA", lat: 34.9387, lng: -100.8879, category: "rodeo" },
+            { name: "Canadian Hemphill County", address: "Canadian Rodeo Arena", city: "Canadian", country: "USA", lat: 35.9120, lng: -100.3826, category: "rodeo" },
+            { name: "Perryton Wheatheart", address: "Ochiltree County Arena", city: "Perryton", country: "USA", lat: 36.4000, lng: -100.8029, category: "rodeo" },
+            { name: "Dalhart XIT Rodeo", address: "Rita Blanca Park", city: "Dalhart", country: "USA", lat: 36.0595, lng: -102.5130, category: "rodeo" },
+            { name: "Dumas Moore County", address: "Moore County Arena", city: "Dumas", country: "USA", lat: 35.8656, lng: -101.9732, category: "rodeo" },
+            { name: "Borger Hutchinson County", address: "Hutchinson County Arena", city: "Borger", country: "USA", lat: 35.6678, lng: -101.3974, category: "rodeo" },
+            
+            // SMALL NEW MEXICO TOWNS
+            { name: "Clovis Pioneer Days", address: "Curry County Fairgrounds", city: "Clovis", country: "USA", lat: 34.4048, lng: -103.2052, category: "rodeo" },
+            { name: "Portales Roosevelt County", address: "Roosevelt County Fairgrounds", city: "Portales", country: "USA", lat: 34.1862, lng: -103.3338, category: "rodeo" },
+            { name: "Tucumcari Quay County", address: "Quay County Fairgrounds", city: "Tucumcari", country: "USA", lat: 35.1717, lng: -103.7252, category: "rodeo" },
+            { name: "Hobbs Lea County Fair", address: "Lea County Event Center", city: "Hobbs", country: "USA", lat: 32.7026, lng: -103.1360, category: "rodeo" },
+            { name: "Artesia Eddy County", address: "Eddy County Fairgrounds", city: "Artesia", country: "USA", lat: 32.8423, lng: -104.4033, category: "rodeo" },
+            { name: "Carlsbad Cavern City", address: "Walter Gerrells Arena", city: "Carlsbad", country: "USA", lat: 32.4207, lng: -104.2288, category: "rodeo" },
+            { name: "Alamogordo Otero County", address: "Otero County Fairgrounds", city: "Alamogordo", country: "USA", lat: 32.8995, lng: -105.9603, category: "rodeo" },
+            { name: "Truth or Consequences Sierra County", address: "Sierra County Fairgrounds", city: "Truth or Consequences", country: "USA", lat: 33.1284, lng: -107.2528, category: "rodeo" },
+            { name: "Silver City Grant County", address: "Grant County Fairgrounds", city: "Silver City", country: "USA", lat: 32.7701, lng: -108.2803, category: "rodeo" },
+            { name: "Deming Luna County", address: "Luna County Fairgrounds", city: "Deming", country: "USA", lat: 32.2687, lng: -107.7586, category: "rodeo" },
+            { name: "Lordsburg Hidalgo County", address: "Hidalgo County Fairgrounds", city: "Lordsburg", country: "USA", lat: 32.3501, lng: -108.7092, category: "rodeo" },
+            { name: "Socorro County Fair", address: "Socorro Rodeo Arena", city: "Socorro", country: "USA", lat: 34.0584, lng: -106.8914, category: "rodeo" },
+            { name: "Grants Cibola County", address: "Cibola County Fairgrounds", city: "Grants", country: "USA", lat: 35.1473, lng: -107.8523, category: "rodeo" },
+            { name: "Gallup Inter-Tribal Ceremonial", address: "Red Rock Park", city: "Gallup", country: "USA", lat: 35.5281, lng: -108.7426, category: "rodeo" },
+            { name: "Shiprock Northern Navajo", address: "Shiprock Fairgrounds", city: "Shiprock", country: "USA", lat: 36.7856, lng: -108.6870, category: "rodeo" },
+            { name: "Bloomfield San Juan County", address: "San Juan County Fairgrounds", city: "Bloomfield", country: "USA", lat: 36.7072, lng: -107.9845, category: "rodeo" },
+            { name: "Aztec San Juan Fiesta", address: "McGee Park", city: "Aztec", country: "USA", lat: 36.8214, lng: -107.9928, category: "rodeo" },
+            { name: "Taos County Fair", address: "Kit Carson Park", city: "Taos", country: "USA", lat: 36.4072, lng: -105.5731, category: "rodeo" },
+            { name: "Española Rio Arriba County", address: "Northern New Mexico Fairgrounds", city: "Española", country: "USA", lat: 35.9911, lng: -106.0806, category: "rodeo" },
+            { name: "Los Alamos County Fair", address: "Overlook Park", city: "Los Alamos", country: "USA", lat: 35.8809, lng: -106.3031, category: "rodeo" },
+            
+            // MORE SMALL CALIFORNIA TOWNS
+            { name: "Willows Glenn County Fair", address: "Glenn County Fairgrounds", city: "Willows", country: "USA", lat: 39.5243, lng: -122.1936, category: "rodeo" },
+            { name: "Orland Glenn County", address: "Orland Rodeo Grounds", city: "Orland", country: "USA", lat: 39.7473, lng: -122.1964, category: "rodeo" },
+            { name: "Corning Olive Festival", address: "Corning Fairgrounds", city: "Corning", country: "USA", lat: 39.9279, lng: -122.1794, category: "rodeo" },
+            { name: "Quincy Plumas County", address: "Plumas County Fairgrounds", city: "Quincy", country: "USA", lat: 39.9371, lng: -120.9469, category: "rodeo" },
+            { name: "Susanville Lassen County", address: "Lassen County Fairgrounds", city: "Susanville", country: "USA", lat: 40.4163, lng: -120.6530, category: "rodeo" },
+            { name: "Alturas Modoc County", address: "Modoc County Fairgrounds", city: "Alturas", country: "USA", lat: 41.4871, lng: -120.5425, category: "rodeo" },
+            { name: "Yreka Siskiyou Golden Fair", address: "Siskiyou Fairgrounds", city: "Yreka", country: "USA", lat: 41.7354, lng: -122.6345, category: "rodeo" },
+            { name: "Etna Scott Valley", address: "Scott Valley Arena", city: "Etna", country: "USA", lat: 41.4565, lng: -122.8942, category: "rodeo" },
+            { name: "Weaverville Trinity County", address: "Trinity County Fairgrounds", city: "Weaverville", country: "USA", lat: 40.7307, lng: -122.9417, category: "rodeo" },
+            { name: "Hayfork Trinity Alps", address: "Hayfork Rodeo Arena", city: "Hayfork", country: "USA", lat: 40.5540, lng: -123.1819, category: "rodeo" },
+            { name: "Garberville Humboldt County", address: "Redwood Acres Fairgrounds", city: "Garberville", country: "USA", lat: 40.1007, lng: -123.7947, category: "rodeo" },
+            { name: "Ferndale Humboldt County", address: "Ferndale Rodeo Arena", city: "Ferndale", country: "USA", lat: 40.5762, lng: -124.2639, category: "rodeo" },
+            { name: "Ukiah Redwood Empire", address: "Redwood Empire Fairgrounds", city: "Ukiah", country: "USA", lat: 39.1502, lng: -123.2078, category: "rodeo" },
+            { name: "Willits Frontier Days", address: "Willits Rodeo Grounds", city: "Willits", country: "USA", lat: 39.4096, lng: -123.3558, category: "rodeo" },
+            { name: "Fort Bragg Paul Bunyan Days", address: "Mendocino County Fairgrounds", city: "Fort Bragg", country: "USA", lat: 39.4457, lng: -123.8053, category: "rodeo" },
+            { name: "Boonville Sierra Nevada World Series", address: "Anderson Valley Fairgrounds", city: "Boonville", country: "USA", lat: 39.0093, lng: -123.3658, category: "rodeo" },
+            { name: "Lakeport Lake County Fair", address: "Lake County Fairgrounds", city: "Lakeport", country: "USA", lat: 39.0427, lng: -122.9158, category: "rodeo" },
+            { name: "Williams Colusa County", address: "Colusa County Fairgrounds", city: "Williams", country: "USA", lat: 39.1546, lng: -122.1497, category: "rodeo" },
+            { name: "Yuba City Sutter County", address: "Sutter County Fairgrounds", city: "Yuba City", country: "USA", lat: 39.1404, lng: -121.6169, category: "rodeo" },
+            { name: "Grass Valley Nevada County", address: "Nevada County Fairgrounds", city: "Grass Valley", country: "USA", lat: 39.2191, lng: -121.0611, category: "rodeo" },
+            { name: "Auburn Placer County", address: "Placer County Fairgrounds", city: "Auburn", country: "USA", lat: 38.8966, lng: -121.0770, category: "rodeo" },
+            { name: "Placerville El Dorado County", address: "El Dorado County Fairgrounds", city: "Placerville", country: "USA", lat: 38.7296, lng: -120.7985, category: "rodeo" },
+            { name: "Jackson Amador County", address: "Amador County Fairgrounds", city: "Jackson", country: "USA", lat: 38.3488, lng: -120.7743, category: "rodeo" },
+            { name: "Angels Camp Calaveras County", address: "Calaveras County Fairgrounds", city: "Angels Camp", country: "USA", lat: 38.0677, lng: -120.5399, category: "rodeo" },
+            { name: "Sonora Tuolumne County", address: "Mother Lode Fairgrounds", city: "Sonora", country: "USA", lat: 37.9830, lng: -120.3826, category: "rodeo" },
+            { name: "Mariposa County Fair", address: "Mariposa Fairgrounds", city: "Mariposa", country: "USA", lat: 37.4849, lng: -119.9663, category: "rodeo" },
+            { name: "Oakhurst Mountain Heritage", address: "Coarsegold Rodeo Grounds", city: "Oakhurst", country: "USA", lat: 37.3280, lng: -119.6490, category: "rodeo" },
+            { name: "Bridgeport Mono County", address: "Mono County Fairgrounds", city: "Bridgeport", country: "USA", lat: 38.2557, lng: -119.2315, category: "rodeo" },
+            { name: "Mammoth Lakes High Sierra", address: "Mammoth Rodeo Grounds", city: "Mammoth Lakes", country: "USA", lat: 37.6486, lng: -118.9719, category: "rodeo" },
+            { name: "Lone Pine Alabama Hills", address: "Lone Pine Rodeo Arena", city: "Lone Pine", country: "USA", lat: 36.6060, lng: -118.0629, category: "rodeo" },
+            { name: "Independence Inyo County", address: "Inyo County Fairgrounds", city: "Independence", country: "USA", lat: 36.8038, lng: -118.1948, category: "rodeo" },
+            { name: "Ridgecrest Indian Wells Valley", address: "Desert Empire Fairgrounds", city: "Ridgecrest", country: "USA", lat: 35.6225, lng: -117.6709, category: "rodeo" },
+            { name: "Lone Pine Film History", address: "Alabama Hills Arena", city: "Lone Pine", country: "USA", lat: 36.6010, lng: -118.0680, category: "rodeo" },
+            
+            // RURAL AUSTRALIA EXPANSION
+            { name: "Cunnamulla Fella Festival", address: "Cunnamulla Showgrounds", city: "Cunnamulla", country: "Australia", lat: -28.0667, lng: 145.6833, category: "rodeo" },
+            { name: "Quilpie Baldy Red Dirt", address: "Quilpie Showgrounds", city: "Quilpie", country: "Australia", lat: -26.6167, lng: 144.2667, category: "rodeo" },
+            { name: "Thargomindah Bush Races", address: "Thargomindah Racecourse", city: "Thargomindah", country: "Australia", lat: -27.9833, lng: 143.8167, category: "rodeo" },
+            { name: "Eromanga Natural History", address: "Eromanga Showgrounds", city: "Eromanga", country: "Australia", lat: -26.6500, lng: 143.2500, category: "rodeo" },
+            { name: "Windorah Yabbie Races", address: "Windorah Showgrounds", city: "Windorah", country: "Australia", lat: -25.4167, lng: 142.6500, category: "rodeo" },
+            { name: "Barcaldine Tree of Knowledge", address: "Barcaldine Showgrounds", city: "Barcaldine", country: "Australia", lat: -23.5500, lng: 145.2833, category: "rodeo" },
+            { name: "Jundah Outback Rodeo", address: "Jundah Showgrounds", city: "Jundah", country: "Australia", lat: -24.8333, lng: 143.0667, category: "rodeo" },
+            { name: "Aramac Bush Poetry", address: "Aramac Showgrounds", city: "Aramac", country: "Australia", lat: -22.9667, lng: 145.2333, category: "rodeo" },
+            { name: "Muttaburra Cassowary", address: "Muttaburra Showgrounds", city: "Muttaburra", country: "Australia", lat: -22.5967, lng: 144.5489, category: "rodeo" },
+            { name: "Hughenden Yellowbelly", address: "Hughenden Showgrounds", city: "Hughenden", country: "Australia", lat: -20.8450, lng: 144.1989, category: "rodeo" },
+            { name: "Richmond Fossil Festival", address: "Richmond Showgrounds", city: "Richmond", country: "Australia", lat: -20.7297, lng: 143.1422, category: "rodeo" },
+            { name: "McKinlay Walkabout Creek", address: "McKinlay Rodeo Arena", city: "McKinlay", country: "Australia", lat: -21.2667, lng: 141.2833, category: "rodeo" },
+            { name: "Karumba Sunset Festival", address: "Karumba Point", city: "Karumba", country: "Australia", lat: -17.4833, lng: 140.8333, category: "rodeo" },
+            { name: "Normanton Purple Pub", address: "Normanton Showgrounds", city: "Normanton", country: "Australia", lat: -17.6731, lng: 141.0783, category: "rodeo" },
+            { name: "Croydon Golden Gateway", address: "Croydon Showgrounds", city: "Croydon", country: "Australia", lat: -18.2000, lng: 142.2333, category: "rodeo" },
+            { name: "Georgetown Rodeo", address: "Georgetown Showgrounds", city: "Georgetown", country: "Australia", lat: -18.2833, lng: 143.5333, category: "rodeo" },
+            { name: "Einasleigh Rodeo", address: "Einasleigh Rodeo Grounds", city: "Einasleigh", country: "Australia", lat: -18.5000, lng: 144.0833, category: "rodeo" },
+            { name: "Forsayth Bush Races", address: "Forsayth Racecourse", city: "Forsayth", country: "Australia", lat: -18.5833, lng: 143.6000, category: "rodeo" },
+            { name: "Chillagoe Bronze Festival", address: "Chillagoe Showgrounds", city: "Chillagoe", country: "Australia", lat: -17.1500, lng: 144.5167, category: "rodeo" },
+            { name: "Ravenshoe Races", address: "Ravenshoe Racecourse", city: "Ravenshoe", country: "Australia", lat: -17.6094, lng: 145.4731, category: "rodeo" },
+            { name: "Herberton Mining Festival", address: "Herberton Showgrounds", city: "Herberton", country: "Australia", lat: -17.3833, lng: 145.3833, category: "rodeo" },
+            { name: "Mount Garnet Rodeo", address: "Mount Garnet Showgrounds", city: "Mount Garnet", country: "Australia", lat: -17.6833, lng: 145.1167, category: "rodeo" },
+            { name: "Dimbulah Races", address: "Dimbulah Racecourse", city: "Dimbulah", country: "Australia", lat: -17.1333, lng: 145.1167, category: "rodeo" },
+            { name: "Atherton Maize Festival", address: "Atherton Showgrounds", city: "Atherton", country: "Australia", lat: -17.2667, lng: 145.4667, category: "rodeo" },
+            { name: "Innisfail Feast of the Senses", address: "Innisfail Showgrounds", city: "Innisfail", country: "Australia", lat: -17.5239, lng: 146.0311, category: "rodeo" },
+            { name: "Tully Sugar Festival", address: "Tully Showgrounds", city: "Tully", country: "Australia", lat: -17.9333, lng: 145.9333, category: "rodeo" },
+            { name: "Ingham Italian Festival", address: "Ingham Showgrounds", city: "Ingham", country: "Australia", lat: -18.6500, lng: 146.1667, category: "rodeo" },
+            { name: "Ayr Burdekin Show", address: "Ayr Showgrounds", city: "Ayr", country: "Australia", lat: -19.5833, lng: 147.4000, category: "rodeo" },
+            { name: "Home Hill Harvest Festival", address: "Home Hill Showgrounds", city: "Home Hill", country: "Australia", lat: -19.6500, lng: 147.4167, category: "rodeo" },
+            { name: "Bowen Races", address: "Bowen Racecourse", city: "Bowen", country: "Australia", lat: -20.0167, lng: 148.2333, category: "rodeo" },
+            { name: "Proserpine Show", address: "Proserpine Showgrounds", city: "Proserpine", country: "Australia", lat: -20.4000, lng: 148.5833, category: "rodeo" },
+            { name: "Moranbah Coal & Country", address: "Moranbah Showgrounds", city: "Moranbah", country: "Australia", lat: -22.0000, lng: 148.0500, category: "rodeo" },
+            { name: "Dysart Rodeo", address: "Dysart Showgrounds", city: "Dysart", country: "Australia", lat: -22.5833, lng: 148.3500, category: "rodeo" },
+            { name: "Middlemount Mining Town", address: "Middlemount Arena", city: "Middlemount", country: "Australia", lat: -22.8167, lng: 148.7167, category: "rodeo" },
+            
+            // SMALL MEXICAN TOWNS CHARREADAS
+            { name: "Lienzo Charro Tlaquepaque", address: "San Pedro Tlaquepaque", city: "Tlaquepaque", country: "Mexico", lat: 20.6411, lng: -103.3117, category: "charreada" },
+            { name: "Lienzo Charro Tonalá", address: "Tonalá Centro", city: "Tonalá", country: "Mexico", lat: 20.6228, lng: -103.2339, category: "charreada" },
+            { name: "Lienzo Charro Zapotlanejo", address: "Zapotlanejo Centro", city: "Zapotlanejo", country: "Mexico", lat: 20.6167, lng: -103.0667, category: "charreada" },
+            { name: "Lienzo Charro Tala", address: "Tala Centro", city: "Tala", country: "Mexico", lat: 20.6564, lng: -103.7103, category: "charreada" },
+            { name: "Lienzo Charro Ahualulco", address: "Ahualulco de Mercado", city: "Ahualulco", country: "Mexico", lat: 20.7167, lng: -103.9667, category: "charreada" },
+            { name: "Lienzo Charro La Barca", address: "La Barca Centro", city: "La Barca", country: "Mexico", lat: 20.2833, lng: -102.5500, category: "charreada" },
+            { name: "Lienzo Charro Ocotlán", address: "Ocotlán Centro", city: "Ocotlán", country: "Mexico", lat: 20.3500, lng: -102.7667, category: "charreada" },
+            { name: "Lienzo Charro Tototlán", address: "Tototlán Centro", city: "Tototlán", country: "Mexico", lat: 20.5000, lng: -102.7667, category: "charreada" },
+            { name: "Lienzo Charro Jamay", address: "Jamay Ribera", city: "Jamay", country: "Mexico", lat: 20.2906, lng: -102.7075, category: "charreada" },
+            { name: "Lienzo Charro Degollado", address: "Degollado Centro", city: "Degollado", country: "Mexico", lat: 20.4333, lng: -102.3833, category: "charreada" },
+            { name: "Lienzo Charro Ayotlán", address: "Ayotlán Centro", city: "Ayotlán", country: "Mexico", lat: 20.2667, lng: -102.5667, category: "charreada" },
+            { name: "Lienzo Charro Tuxpan", address: "Tuxpan Centro", city: "Tuxpan", country: "Mexico", lat: 19.5586, lng: -103.3833, category: "charreada" },
+            { name: "Lienzo Charro Tamazula", address: "Tamazula de Gordiano", city: "Tamazula", country: "Mexico", lat: 19.6833, lng: -103.2500, category: "charreada" },
+            { name: "Lienzo Charro Zapotiltic", address: "Zapotiltic Centro", city: "Zapotiltic", country: "Mexico", lat: 19.6167, lng: -103.4167, category: "charreada" },
+            { name: "Lienzo Charro Tuxcueca", address: "Tuxcueca Ribera", city: "Tuxcueca", country: "Mexico", lat: 20.1167, lng: -103.0333, category: "charreada" },
+            { name: "Lienzo Charro Jocotepec", address: "Jocotepec Lago", city: "Jocotepec", country: "Mexico", lat: 20.2833, lng: -103.4333, category: "charreada" },
+            { name: "Lienzo Charro Chapala", address: "Chapala Ribera", city: "Chapala", country: "Mexico", lat: 20.2969, lng: -103.1914, category: "charreada" },
+            { name: "Lienzo Charro Ajijic", address: "Ajijic Lago", city: "Ajijic", country: "Mexico", lat: 20.3000, lng: -103.2667, category: "charreada" },
+            { name: "Lienzo Charro San Juan Cosalá", address: "San Juan Cosalá", city: "San Juan Cosalá", country: "Mexico", lat: 20.2667, lng: -103.3500, category: "charreada" },
+            { name: "Lienzo Charro Mazamitla", address: "Mazamitla Pueblo Mágico", city: "Mazamitla", country: "Mexico", lat: 19.9167, lng: -103.0167, category: "charreada" },
+            { name: "Lienzo Charro Valle de Juárez", address: "Valle de Juárez", city: "Valle de Juárez", country: "Mexico", lat: 19.9500, lng: -102.9833, category: "charreada" },
+            { name: "Lienzo Charro Tapalpa", address: "Tapalpa Pueblo Mágico", city: "Tapalpa", country: "Mexico", lat: 19.9500, lng: -103.7667, category: "charreada" },
+            { name: "Lienzo Charro Atemajac de Brizuela", address: "Atemajac Centro", city: "Atemajac de Brizuela", country: "Mexico", lat: 20.1833, lng: -103.7167, category: "charreada" },
+            { name: "Lienzo Charro Tequila", address: "Tequila Pueblo Mágico", city: "Tequila", country: "Mexico", lat: 20.8811, lng: -103.8353, category: "charreada" },
+            { name: "Lienzo Charro Magdalena", address: "Magdalena Centro", city: "Magdalena", country: "Mexico", lat: 20.9167, lng: -103.9833, category: "charreada" },
+            { name: "Lienzo Charro Hostotipaquillo", address: "Hostotipaquillo Centro", city: "Hostotipaquillo", country: "Mexico", lat: 21.0500, lng: -104.0667, category: "charreada" },
+            { name: "Lienzo Charro San Marcos", address: "San Marcos Centro", city: "San Marcos", country: "Mexico", lat: 20.7333, lng: -104.4000, category: "charreada" },
+            { name: "Lienzo Charro Ameca", address: "Ameca Centro", city: "Ameca", country: "Mexico", lat: 20.5500, lng: -104.0500, category: "charreada" },
+            { name: "Lienzo Charro Cocula", address: "Cocula Mariachi", city: "Cocula", country: "Mexico", lat: 20.4667, lng: -103.8000, category: "charreada" },
+            { name: "Lienzo Charro Etzatlán", address: "Etzatlán Centro", city: "Etzatlán", country: "Mexico", lat: 20.7667, lng: -104.0833, category: "charreada" },
+            
+            // MORE BRAZIL INTERIOR RODEIOS
+            { name: "Festa do Peão de Assis", address: "Recinto de Rodeio", city: "Assis", country: "Brazil", lat: -22.6614, lng: -50.4122, category: "rodeio" },
+            { name: "Festa do Peão de Paraguaçu Paulista", address: "Parque de Exposições", city: "Paraguaçu Paulista", country: "Brazil", lat: -22.4128, lng: -50.5753, category: "rodeio" },
+            { name: "Festa do Peão de Osvaldo Cruz", address: "Recinto de Rodeio", city: "Osvaldo Cruz", country: "Brazil", lat: -21.7978, lng: -50.8783, category: "rodeio" },
+            { name: "Festa do Peão de Adamantina", address: "Parque de Rodeio", city: "Adamantina", country: "Brazil", lat: -21.6844, lng: -51.0733, category: "rodeio" },
+            { name: "Festa do Peão de Dracena", address: "Recinto de Exposições", city: "Dracena", country: "Brazil", lat: -21.4842, lng: -51.5322, category: "rodeio" },
+            { name: "Festa do Peão de Pres. Venceslau", address: "Parque de Rodeio", city: "Presidente Venceslau", country: "Brazil", lat: -21.8761, lng: -51.8428, category: "rodeio" },
+            { name: "Festa do Peão de Pres. Epitácio", address: "Recinto de Rodeio", city: "Presidente Epitácio", country: "Brazil", lat: -21.7636, lng: -52.1158, category: "rodeio" },
+            { name: "Festa do Peão de Presidente Bernardes", address: "Parque de Exposições", city: "Presidente Bernardes", country: "Brazil", lat: -22.0133, lng: -51.5528, category: "rodeio" },
+            { name: "Festa do Peão de Rancharia", address: "Recinto de Rodeio", city: "Rancharia", country: "Brazil", lat: -22.2294, lng: -50.8936, category: "rodeio" },
+            { name: "Festa do Peão de Martinópolis", address: "Parque de Rodeio", city: "Martinópolis", country: "Brazil", lat: -22.1461, lng: -51.1711, category: "rodeio" },
+            { name: "Festa do Peão de Pirapozinho", address: "Recinto de Exposições", city: "Pirapozinho", country: "Brazil", lat: -22.2744, lng: -51.4997, category: "rodeio" },
+            { name: "Festa do Peão de Mirante do Paranapanema", address: "Parque de Rodeio", city: "Mirante do Paranapanema", country: "Brazil", lat: -22.2931, lng: -51.9050, category: "rodeio" },
+            { name: "Festa do Peão de Teodoro Sampaio", address: "Recinto de Rodeio", city: "Teodoro Sampaio", country: "Brazil", lat: -22.5328, lng: -52.1667, category: "rodeio" },
+            { name: "Festa do Peão de Rosana", address: "Parque de Exposições", city: "Rosana", country: "Brazil", lat: -22.5803, lng: -52.8547, category: "rodeio" },
+            { name: "Festa do Peão de Caiuá", address: "Recinto de Rodeio", city: "Caiuá", country: "Brazil", lat: -21.8333, lng: -51.9833, category: "rodeio" },
+            { name: "Festa do Peão de Indiana", address: "Parque de Rodeio", city: "Indiana", country: "Brazil", lat: -22.1725, lng: -51.2547, category: "rodeio" },
+            { name: "Festa do Peão de Alvares Machado", address: "Recinto de Exposições", city: "Álvares Machado", country: "Brazil", lat: -22.0786, lng: -51.4717, category: "rodeio" },
+            { name: "Festa do Peão de Tarabai", address: "Parque de Rodeio", city: "Tarabai", country: "Brazil", lat: -22.3083, lng: -51.5736, category: "rodeio" },
+            { name: "Festa do Peão de Anhumas", address: "Recinto de Rodeio", city: "Anhumas", country: "Brazil", lat: -22.2936, lng: -51.3792, category: "rodeio" },
+            { name: "Festa do Peão de Regente Feijó", address: "Parque de Exposições", city: "Regente Feijó", country: "Brazil", lat: -22.2189, lng: -51.3047, category: "rodeio" },
+            
+            // MORE RURAL CANADA
+            { name: "Ponoka Little Britches", address: "Ponoka Stampede Grounds", city: "Ponoka", country: "Canada", lat: 52.6758, lng: -113.5731, category: "rodeo" },
+            { name: "Innisfail Pro Rodeo", address: "Innisfail Arena", city: "Innisfail", country: "Canada", lat: 52.0353, lng: -113.9503, category: "rodeo" },
+            { name: "Didsbury Pro Rodeo", address: "Didsbury Rodeo Grounds", city: "Didsbury", country: "Canada", lat: 51.6647, lng: -114.1342, category: "rodeo" },
+            { name: "Cochrane Pro Rodeo", address: "Cochrane Rodeo Grounds", city: "Cochrane", country: "Canada", lat: 51.1842, lng: -114.4681, category: "rodeo" },
+            { name: "Okotoks Pro Rodeo", address: "Okotoks Rodeo Grounds", city: "Okotoks", country: "Canada", lat: 50.7253, lng: -113.9781, category: "rodeo" },
+            { name: "Claresholm Rodeo", address: "Claresholm Rodeo Grounds", city: "Claresholm", country: "Canada", lat: 50.0253, lng: -113.5836, category: "rodeo" },
+            { name: "Vulcan Rodeo", address: "Vulcan Rodeo Grounds", city: "Vulcan", country: "Canada", lat: 50.4031, lng: -113.2550, category: "rodeo" },
+            { name: "Stavely Rodeo", address: "Stavely Rodeo Grounds", city: "Stavely", country: "Canada", lat: 50.1656, lng: -113.6392, category: "rodeo" },
+            { name: "Nanton Rodeo", address: "Nanton Rodeo Grounds", city: "Nanton", country: "Canada", lat: 50.3486, lng: -113.7717, category: "rodeo" },
+            { name: "Black Diamond Rodeo", address: "Black Diamond Rodeo Grounds", city: "Black Diamond", country: "Canada", lat: 50.6928, lng: -114.2289, category: "rodeo" },
+            { name: "Turner Valley Rodeo", address: "Turner Valley Rodeo Grounds", city: "Turner Valley", country: "Canada", lat: 50.6656, lng: -114.2539, category: "rodeo" },
+            { name: "Longview Rodeo", address: "Longview Rodeo Grounds", city: "Longview", country: "Canada", lat: 50.7517, lng: -114.4517, category: "rodeo" },
+            { name: "Caroline Rodeo", address: "Caroline Rodeo Grounds", city: "Caroline", country: "Canada", lat: 51.9306, lng: -114.7222, category: "rodeo" },
+            { name: "Rocky Mountain House", address: "Rocky Rodeo Grounds", city: "Rocky Mountain House", country: "Canada", lat: 52.3739, lng: -114.9178, category: "rodeo" },
+            { name: "Rimbey Rodeo", address: "Rimbey Rodeo Grounds", city: "Rimbey", country: "Canada", lat: 52.6358, lng: -114.2364, category: "rodeo" },
+            { name: "Lacombe Rodeo", address: "Lacombe Rodeo Grounds", city: "Lacombe", country: "Canada", lat: 52.4678, lng: -113.7369, category: "rodeo" },
+            { name: "Blackfalds Rodeo", address: "Blackfalds Rodeo Grounds", city: "Blackfalds", country: "Canada", lat: 52.3836, lng: -113.7978, category: "rodeo" },
+            { name: "Sylvan Lake Rodeo", address: "Sylvan Lake Rodeo Grounds", city: "Sylvan Lake", country: "Canada", lat: 52.3081, lng: -114.0983, category: "rodeo" },
+            { name: "Eckville Rodeo", address: "Eckville Rodeo Grounds", city: "Eckville", country: "Canada", lat: 52.3628, lng: -114.3653, category: "rodeo" },
+            { name: "Bentley Rodeo", address: "Bentley Rodeo Grounds", city: "Bentley", country: "Canada", lat: 52.4644, lng: -114.0664, category: "rodeo" },
+            { name: "Millet Rodeo", address: "Millet Rodeo Grounds", city: "Millet", country: "Canada", lat: 53.0983, lng: -113.4756, category: "rodeo" },
+            { name: "Wetaskiwin Rodeo", address: "Wetaskiwin Rodeo Grounds", city: "Wetaskiwin", country: "Canada", lat: 52.9694, lng: -113.3769, category: "rodeo" },
+            { name: "Camrose Rodeo", address: "Camrose Exhibition Grounds", city: "Camrose", country: "Canada", lat: 53.0167, lng: -112.8236, category: "rodeo" },
+            { name: "Tofield Rodeo", address: "Tofield Rodeo Grounds", city: "Tofield", country: "Canada", lat: 53.3739, lng: -112.6658, category: "rodeo" },
+            { name: "Vegreville Rodeo", address: "Vegreville Exhibition Grounds", city: "Vegreville", country: "Canada", lat: 53.4939, lng: -112.0542, category: "rodeo" },
+            { name: "Vermilion Rodeo", address: "Vermilion Rodeo Grounds", city: "Vermilion", country: "Canada", lat: 53.3542, lng: -110.8542, category: "rodeo" },
+            { name: "Wainwright Rodeo", address: "Wainwright Stampede Grounds", city: "Wainwright", country: "Canada", lat: 52.8308, lng: -110.8603, category: "rodeo" },
+            { name: "Provost Rodeo", address: "Provost Rodeo Grounds", city: "Provost", country: "Canada", lat: 52.3528, lng: -110.2681, category: "rodeo" },
+            { name: "Consort Rodeo", address: "Consort Rodeo Grounds", city: "Consort", country: "Canada", lat: 51.8919, lng: -110.7647, category: "rodeo" },
+            { name: "Oyen Rodeo", address: "Oyen Rodeo Grounds", city: "Oyen", country: "Canada", lat: 51.3494, lng: -110.4558, category: "rodeo" },
+            { name: "Brooks Rodeo", address: "Brooks Stampede Grounds", city: "Brooks", country: "Canada", lat: 50.5628, lng: -111.8983, category: "rodeo" },
+            { name: "Bassano Rodeo", address: "Bassano Rodeo Grounds", city: "Bassano", country: "Canada", lat: 50.7869, lng: -112.4594, category: "rodeo" },
+            { name: "Gleichen Rodeo", address: "Gleichen Rodeo Grounds", city: "Gleichen", country: "Canada", lat: 50.8658, lng: -113.0503, category: "rodeo" },
+            { name: "Carseland Rodeo", address: "Carseland Rodeo Grounds", city: "Carseland", country: "Canada", lat: 50.8853, lng: -113.3486, category: "rodeo" },
+            { name: "Crossfield Rodeo", address: "Crossfield Rodeo Grounds", city: "Crossfield", country: "Canada", lat: 51.4264, lng: -114.0294, category: "rodeo" },
+            { name: "Carstairs Rodeo", address: "Carstairs Rodeo Grounds", city: "Carstairs", country: "Canada", lat: 51.5611, lng: -114.0983, category: "rodeo" },
+            { name: "Three Hills Rodeo", address: "Three Hills Rodeo Grounds", city: "Three Hills", country: "Canada", lat: 51.7044, lng: -113.2642, category: "rodeo" },
+            { name: "Trochu Rodeo", address: "Trochu Rodeo Grounds", city: "Trochu", country: "Canada", lat: 51.8119, lng: -113.2383, category: "rodeo" },
+            { name: "Acme Rodeo", address: "Acme Rodeo Grounds", city: "Acme", country: "Canada", lat: 51.4847, lng: -113.5328, category: "rodeo" },
+            { name: "Beiseker Rodeo", address: "Beiseker Rodeo Grounds", city: "Beiseker", country: "Canada", lat: 51.3942, lng: -113.5231, category: "rodeo" },
+            { name: "Irricana Rodeo", address: "Irricana Rodeo Grounds", city: "Irricana", country: "Canada", lat: 51.3253, lng: -113.6083, category: "rodeo" },
+            { name: "Standard Rodeo", address: "Standard Rodeo Grounds", city: "Standard", country: "Canada", lat: 51.0408, lng: -113.0161, category: "rodeo" },
+            { name: "Hussar Rodeo", address: "Hussar Rodeo Grounds", city: "Hussar", country: "Canada", lat: 51.1342, lng: -112.9578, category: "rodeo" },
+            { name: "Hanna Wild West Days", address: "Hanna Rodeo Grounds", city: "Hanna", country: "Canada", lat: 51.6414, lng: -111.9339, category: "rodeo" },
+            { name: "Delia Rodeo", address: "Delia Rodeo Grounds", city: "Delia", country: "Canada", lat: 51.5744, lng: -112.4806, category: "rodeo" },
+            { name: "Drumheller Badlands", address: "Drumheller Arena", city: "Drumheller", country: "Canada", lat: 51.4622, lng: -112.7094, category: "rodeo" },
+            { name: "Morrin Rodeo", address: "Morrin Rodeo Grounds", city: "Morrin", country: "Canada", lat: 51.6194, lng: -112.8903, category: "rodeo" },
+            { name: "Munson Rodeo", address: "Munson Rodeo Grounds", city: "Munson", country: "Canada", lat: 51.6508, lng: -113.1644, category: "rodeo" },
+            { name: "Rosebud Rodeo", address: "Rosebud Rodeo Grounds", city: "Rosebud", country: "Canada", lat: 51.4567, lng: -112.9328, category: "rodeo" },
+            
+            // MORE SMALL ALBERTA TOWNS
+            { name: "Mayerthorpe Rodeo", address: "Mayerthorpe Exhibition Grounds", city: "Mayerthorpe", country: "Canada", lat: 53.9528, lng: -115.1403, category: "rodeo" },
+            { name: "Whitecourt Rodeo", address: "Whitecourt Rodeo Grounds", city: "Whitecourt", country: "Canada", lat: 54.1433, lng: -115.6836, category: "rodeo" },
+            { name: "Fox Creek Rodeo", address: "Fox Creek Rodeo Grounds", city: "Fox Creek", country: "Canada", lat: 54.3989, lng: -116.8042, category: "rodeo" },
+            { name: "Valleyview Rodeo", address: "Valleyview Rodeo Grounds", city: "Valleyview", country: "Canada", lat: 55.0728, lng: -117.2803, category: "rodeo" },
+            { name: "Beaverlodge Rodeo", address: "Beaverlodge Exhibition Grounds", city: "Beaverlodge", country: "Canada", lat: 55.2114, lng: -119.4278, category: "rodeo" },
+            { name: "Sexsmith Rodeo", address: "Sexsmith Rodeo Grounds", city: "Sexsmith", country: "Canada", lat: 55.3489, lng: -118.7853, category: "rodeo" },
+            { name: "Wembley Rodeo", address: "Wembley Rodeo Grounds", city: "Wembley", country: "Canada", lat: 55.1531, lng: -119.1461, category: "rodeo" },
+            { name: "Hythe Rodeo", address: "Hythe Rodeo Grounds", city: "Hythe", country: "Canada", lat: 55.3161, lng: -120.2381, category: "rodeo" },
+            { name: "Beaverlodge Heritage Days", address: "South Peace Centennial Museum", city: "Beaverlodge", country: "Canada", lat: 55.2089, lng: -119.4256, category: "rodeo" },
+            { name: "La Glace Rodeo", address: "La Glace Rodeo Grounds", city: "La Glace", country: "Canada", lat: 55.1303, lng: -119.0869, category: "rodeo" },
+            { name: "Rycroft Rodeo", address: "Rycroft Rodeo Grounds", city: "Rycroft", country: "Canada", lat: 55.6464, lng: -119.1528, category: "rodeo" },
+            { name: "Spirit River Rodeo", address: "Spirit River Rodeo Grounds", city: "Spirit River", country: "Canada", lat: 55.7814, lng: -118.8303, category: "rodeo" },
+            { name: "Fairview Rodeo", address: "Fairview Rodeo Grounds", city: "Fairview", country: "Canada", lat: 56.0719, lng: -118.3892, category: "rodeo" },
+            { name: "Hines Creek Rodeo", address: "Hines Creek Rodeo Grounds", city: "Hines Creek", country: "Canada", lat: 56.1994, lng: -118.6147, category: "rodeo" },
+            { name: "Berwyn Rodeo", address: "Berwyn Rodeo Grounds", city: "Berwyn", country: "Canada", lat: 56.3569, lng: -117.7236, category: "rodeo" },
+            { name: "Grimshaw Rodeo", address: "Grimshaw Rodeo Grounds", city: "Grimshaw", country: "Canada", lat: 56.1878, lng: -117.6089, category: "rodeo" },
+            { name: "Peace River Rodeo", address: "Peace River Stampede Grounds", city: "Peace River", country: "Canada", lat: 56.2364, lng: -117.2861, category: "rodeo" },
+            { name: "Manning Rodeo", address: "Manning Rodeo Grounds", city: "Manning", country: "Canada", lat: 56.9214, lng: -117.6203, category: "rodeo" },
+            { name: "High Level Rodeo", address: "High Level Rodeo Grounds", city: "High Level", country: "Canada", lat: 58.5172, lng: -117.1367, category: "rodeo" },
+            { name: "Rainbow Lake Rodeo", address: "Rainbow Lake Rodeo Grounds", city: "Rainbow Lake", country: "Canada", lat: 58.4992, lng: -119.4000, category: "rodeo" },
+            { name: "Fort Vermilion Rodeo", address: "Fort Vermilion Rodeo Grounds", city: "Fort Vermilion", country: "Canada", lat: 58.3906, lng: -116.0133, category: "rodeo" },
+            { name: "Slave Lake Rodeo", address: "Slave Lake Rodeo Grounds", city: "Slave Lake", country: "Canada", lat: 55.2808, lng: -114.7694, category: "rodeo" },
+            { name: "High Prairie Rodeo", address: "High Prairie Rodeo Grounds", city: "High Prairie", country: "Canada", lat: 55.4353, lng: -116.4881, category: "rodeo" },
+            { name: "Grouard Rodeo", address: "Grouard Rodeo Grounds", city: "Grouard", country: "Canada", lat: 55.5489, lng: -116.1667, category: "rodeo" },
+            { name: "Athabasca Rodeo", address: "Athabasca Exhibition Grounds", city: "Athabasca", country: "Canada", lat: 54.7214, lng: -113.2853, category: "rodeo" },
+            { name: "Boyle Rodeo", address: "Boyle Rodeo Grounds", city: "Boyle", country: "Canada", lat: 54.5589, lng: -112.8144, category: "rodeo" },
+            { name: "Lac La Biche Rodeo", address: "Lac La Biche Rodeo Grounds", city: "Lac La Biche", country: "Canada", lat: 54.7714, lng: -112.0267, category: "rodeo" },
+            { name: "Plamondon Rodeo", address: "Plamondon Rodeo Grounds", city: "Plamondon", country: "Canada", lat: 54.8194, lng: -112.4461, category: "rodeo" },
+            { name: "Glendon Rodeo", address: "Glendon Rodeo Grounds", city: "Glendon", country: "Canada", lat: 54.3014, lng: -111.1453, category: "rodeo" },
+            { name: "Bonnyville Rodeo", address: "Bonnyville Exhibition Grounds", city: "Bonnyville", country: "Canada", lat: 54.2694, lng: -110.7439, category: "rodeo" },
+            { name: "Cold Lake Rodeo", address: "Cold Lake Rodeo Grounds", city: "Cold Lake", country: "Canada", lat: 54.4639, lng: -110.1828, category: "rodeo" },
+            { name: "St. Paul Rodeo", address: "St. Paul Rodeo Grounds", city: "St. Paul", country: "Canada", lat: 53.9906, lng: -111.2983, category: "rodeo" },
+            { name: "Elk Point Rodeo", address: "Elk Point Rodeo Grounds", city: "Elk Point", country: "Canada", lat: 53.8972, lng: -110.8983, category: "rodeo" },
+            { name: "Two Hills Rodeo", address: "Two Hills Rodeo Grounds", city: "Two Hills", country: "Canada", lat: 53.7139, lng: -111.7422, category: "rodeo" },
+            { name: "Mundare Rodeo", address: "Mundare Rodeo Grounds", city: "Mundare", country: "Canada", lat: 53.5839, lng: -112.3431, category: "rodeo" },
+            { name: "Andrew Rodeo", address: "Andrew Rodeo Grounds", city: "Andrew", country: "Canada", lat: 53.8972, lng: -112.3258, category: "rodeo" },
+            { name: "Lamont Rodeo", address: "Lamont Rodeo Grounds", city: "Lamont", country: "Canada", lat: 53.7631, lng: -112.7772, category: "rodeo" },
+            { name: "Smoky Lake Rodeo", address: "Smoky Lake Rodeo Grounds", city: "Smoky Lake", country: "Canada", lat: 54.1142, lng: -112.4681, category: "rodeo" },
+            { name: "Vilna Rodeo", address: "Vilna Rodeo Grounds", city: "Vilna", country: "Canada", lat: 54.1347, lng: -112.5436, category: "rodeo" },
+            
+            // SASKATCHEWAN RURAL RODEOS
+            { name: "Maple Creek Rodeo", address: "Maple Creek Stampede Grounds", city: "Maple Creek", country: "Canada", lat: 49.9167, lng: -109.4833, category: "rodeo" },
+            { name: "Swift Current Rodeo", address: "Swift Current Exhibition Grounds", city: "Swift Current", country: "Canada", lat: 50.2883, lng: -107.7939, category: "rodeo" },
+            { name: "Shaunavon Rodeo", address: "Shaunavon Rodeo Grounds", city: "Shaunavon", country: "Canada", lat: 49.6489, lng: -108.4167, category: "rodeo" },
+            { name: "Assiniboia Rodeo", address: "Assiniboia Rodeo Grounds", city: "Assiniboia", country: "Canada", lat: 49.6333, lng: -105.9833, category: "rodeo" },
+            { name: "Gravelbourg Rodeo", address: "Gravelbourg Rodeo Grounds", city: "Gravelbourg", country: "Canada", lat: 49.8811, lng: -106.5503, category: "rodeo" },
+            { name: "Ponteix Rodeo", address: "Ponteix Rodeo Grounds", city: "Ponteix", country: "Canada", lat: 49.6900, lng: -107.9644, category: "rodeo" },
+            { name: "Gull Lake Rodeo", address: "Gull Lake Rodeo Grounds", city: "Gull Lake", country: "Canada", lat: 50.0500, lng: -108.4833, category: "rodeo" },
+            { name: "Abbey Rodeo", address: "Abbey Rodeo Grounds", city: "Abbey", country: "Canada", lat: 50.7167, lng: -108.0000, category: "rodeo" },
+            { name: "Kindersley Rodeo", address: "Kindersley Rodeo Grounds", city: "Kindersley", country: "Canada", lat: 51.4664, lng: -109.1642, category: "rodeo" },
+            { name: "Eston Rodeo", address: "Eston Rodeo Grounds", city: "Eston", country: "Canada", lat: 51.1667, lng: -108.7333, category: "rodeo" },
+            { name: "Rosetown Rodeo", address: "Rosetown Rodeo Grounds", city: "Rosetown", country: "Canada", lat: 51.5500, lng: -107.9833, category: "rodeo" },
+            { name: "Kerrobert Rodeo", address: "Kerrobert Rodeo Grounds", city: "Kerrobert", country: "Canada", lat: 51.9167, lng: -109.1333, category: "rodeo" },
+            { name: "Macklin Rodeo", address: "Macklin Rodeo Grounds", city: "Macklin", country: "Canada", lat: 52.3333, lng: -109.9333, category: "rodeo" },
+            { name: "Unity Rodeo", address: "Unity Rodeo Grounds", city: "Unity", country: "Canada", lat: 52.4500, lng: -109.1667, category: "rodeo" },
+            { name: "Wilkie Rodeo", address: "Wilkie Rodeo Grounds", city: "Wilkie", country: "Canada", lat: 52.4167, lng: -108.7000, category: "rodeo" },
+            { name: "Biggar Rodeo", address: "Biggar Rodeo Grounds", city: "Biggar", country: "Canada", lat: 52.0600, lng: -107.9833, category: "rodeo" },
+            { name: "Perdue Rodeo", address: "Perdue Rodeo Grounds", city: "Perdue", country: "Canada", lat: 52.0500, lng: -106.9833, category: "rodeo" },
+            { name: "Outlook Rodeo", address: "Outlook Rodeo Grounds", city: "Outlook", country: "Canada", lat: 51.4833, lng: -107.0500, category: "rodeo" },
+            { name: "Davidson Rodeo", address: "Davidson Rodeo Grounds", city: "Davidson", country: "Canada", lat: 51.2500, lng: -105.9833, category: "rodeo" },
+            { name: "Craik Rodeo", address: "Craik Rodeo Grounds", city: "Craik", country: "Canada", lat: 51.0500, lng: -105.9000, category: "rodeo" },
+            { name: "Watrous Rodeo", address: "Watrous Rodeo Grounds", city: "Watrous", country: "Canada", lat: 51.6667, lng: -105.4667, category: "rodeo" },
+            { name: "Lanigan Rodeo", address: "Lanigan Rodeo Grounds", city: "Lanigan", country: "Canada", lat: 51.8500, lng: -105.0333, category: "rodeo" },
+            { name: "Humboldt Rodeo", address: "Humboldt Exhibition Grounds", city: "Humboldt", country: "Canada", lat: 52.2011, lng: -105.1239, category: "rodeo" },
+            { name: "Wakaw Rodeo", address: "Wakaw Rodeo Grounds", city: "Wakaw", country: "Canada", lat: 52.6500, lng: -105.7667, category: "rodeo" },
+            { name: "Rosthern Rodeo", address: "Rosthern Rodeo Grounds", city: "Rosthern", country: "Canada", lat: 52.6667, lng: -106.3333, category: "rodeo" },
+            { name: "Hague Rodeo", address: "Hague Rodeo Grounds", city: "Hague", country: "Canada", lat: 52.5833, lng: -106.6833, category: "rodeo" },
+            { name: "Warman Rodeo", address: "Warman Rodeo Grounds", city: "Warman", country: "Canada", lat: 52.3217, lng: -106.5842, category: "rodeo" },
+            { name: "Martensville Rodeo", address: "Martensville Rodeo Grounds", city: "Martensville", country: "Canada", lat: 52.2897, lng: -106.6664, category: "rodeo" },
+            { name: "Langham Rodeo", address: "Langham Rodeo Grounds", city: "Langham", country: "Canada", lat: 52.3597, lng: -106.9717, category: "rodeo" },
+            { name: "Dalmeny Rodeo", address: "Dalmeny Rodeo Grounds", city: "Dalmeny", country: "Canada", lat: 52.3667, lng: -106.7667, category: "rodeo" },
+            
+            // MORE AUSTRALIAN BUSH RODEOS
+            { name: "Dirranbandi Rodeo", address: "Dirranbandi Showgrounds", city: "Dirranbandi", country: "Australia", lat: -28.5833, lng: 148.2167, category: "rodeo" },
+            { name: "Thallon Rodeo", address: "Thallon Showgrounds", city: "Thallon", country: "Australia", lat: -28.7000, lng: 148.8167, category: "rodeo" },
+            { name: "Mungindi Rodeo", address: "Mungindi Showgrounds", city: "Mungindi", country: "Australia", lat: -28.9833, lng: 148.9833, category: "rodeo" },
+            { name: "Collarenebri Rodeo", address: "Collarenebri Showgrounds", city: "Collarenebri", country: "Australia", lat: -29.5333, lng: 148.5833, category: "rodeo" },
+            { name: "Walgett Rodeo", address: "Walgett Showgrounds", city: "Walgett", country: "Australia", lat: -30.0167, lng: 148.1167, category: "rodeo" },
+            { name: "Lightning Ridge Opal Festival", address: "Lightning Ridge Showgrounds", city: "Lightning Ridge", country: "Australia", lat: -29.4258, lng: 147.9783, category: "rodeo" },
+            { name: "Wee Waa Rodeo", address: "Wee Waa Showgrounds", city: "Wee Waa", country: "Australia", lat: -30.2333, lng: 149.4333, category: "rodeo" },
+            { name: "Boggabri Rodeo", address: "Boggabri Showgrounds", city: "Boggabri", country: "Australia", lat: -30.7167, lng: 150.0500, category: "rodeo" },
+            { name: "Bingara Rodeo", address: "Bingara Showgrounds", city: "Bingara", country: "Australia", lat: -29.8667, lng: 150.5667, category: "rodeo" },
+            { name: "Warialda Rodeo", address: "Warialda Showgrounds", city: "Warialda", country: "Australia", lat: -29.5500, lng: 150.5667, category: "rodeo" },
+            { name: "Yetman Rodeo", address: "Yetman Showgrounds", city: "Yetman", country: "Australia", lat: -28.9167, lng: 150.8833, category: "rodeo" },
+            { name: "Texas Rodeo", address: "Texas Showgrounds", city: "Texas", country: "Australia", lat: -28.8500, lng: 151.1667, category: "rodeo" },
+            { name: "Ashford Rodeo", address: "Ashford Showgrounds", city: "Ashford", country: "Australia", lat: -28.9833, lng: 151.1667, category: "rodeo" },
+            { name: "Boomi Rodeo", address: "Boomi Showgrounds", city: "Boomi", country: "Australia", lat: -28.7167, lng: 149.3833, category: "rodeo" },
+            { name: "Bellata Rodeo", address: "Bellata Showgrounds", city: "Bellata", country: "Australia", lat: -30.1333, lng: 149.8167, category: "rodeo" },
+            { name: "Pilliga Rodeo", address: "Pilliga Showgrounds", city: "Pilliga", country: "Australia", lat: -30.3833, lng: 149.2833, category: "rodeo" },
+            { name: "Gwabegar Rodeo", address: "Gwabegar Showgrounds", city: "Gwabegar", country: "Australia", lat: -30.8500, lng: 149.1167, category: "rodeo" },
+            { name: "Baradine Rodeo", address: "Baradine Showgrounds", city: "Baradine", country: "Australia", lat: -30.9500, lng: 149.0667, category: "rodeo" },
+            { name: "Coonamble Rodeo", address: "Coonamble Showgrounds", city: "Coonamble", country: "Australia", lat: -30.9667, lng: 148.3833, category: "rodeo" },
+            { name: "Gulargambone Rodeo", address: "Gulargambone Showgrounds", city: "Gulargambone", country: "Australia", lat: -31.3500, lng: 148.4833, category: "rodeo" },
+            { name: "Quambone Rodeo", address: "Quambone Showgrounds", city: "Quambone", country: "Australia", lat: -31.1333, lng: 148.1500, category: "rodeo" },
+            { name: "Nyngan Rodeo", address: "Nyngan Showgrounds", city: "Nyngan", country: "Australia", lat: -31.5633, lng: 147.1867, category: "rodeo" },
+            { name: "Cobar Miners Memorial Rodeo", address: "Cobar Showgrounds", city: "Cobar", country: "Australia", lat: -31.4956, lng: 145.8378, category: "rodeo" },
+            { name: "Bourke Mud Festival", address: "Bourke Showgrounds", city: "Bourke", country: "Australia", lat: -30.0917, lng: 145.9422, category: "rodeo" },
+            { name: "Brewarrina Rodeo", address: "Brewarrina Showgrounds", city: "Brewarrina", country: "Australia", lat: -29.9600, lng: 146.8589, category: "rodeo" },
+            { name: "Walgett Show & Campdraft", address: "Walgett Rodeo Arena", city: "Walgett", country: "Australia", lat: -30.0300, lng: 148.1233, category: "rodeo" },
+            
+            // SOUTH AFRICA - RODEOS
+            { name: "Rodeo de Johannesburg", address: "Kyalami Grand Prix Circuit", city: "Johannesburg", country: "South Africa", lat: -26.2041, lng: 28.0473, category: "rodeo" },
+            { name: "Rodeo de Cape Town", address: "Cape Town Stadium", city: "Cape Town", country: "South Africa", lat: -33.9249, lng: 18.4241, category: "rodeo" },
+            { name: "Rodeo de Durban", address: "Moses Mabhida Stadium", city: "Durban", country: "South Africa", lat: -29.8587, lng: 31.0218, category: "rodeo" },
+            { name: "Rodeo de Pretoria", address: "Loftus Versfeld Stadium", city: "Pretoria", country: "South Africa", lat: -25.7479, lng: 28.2293, category: "rodeo" },
+            { name: "Rodeo de Bloemfontein", address: "Free State Stadium", city: "Bloemfontein", country: "South Africa", lat: -29.1212, lng: 26.2269, category: "rodeo" }
+        ];
+
+        // Initialize map with satellite view
+        const map = L.map('map', {
+            zoomControl: true,
+            minZoom: 2,
+            maxZoom: 18
+        }).setView([20, 0], 2);
+
+        // Add Google Satellite layer
+        L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+            maxZoom: 20,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+            attribution: '© Google'
+        }).addTo(map);
+
+        // Store markers
+        let markers = {};
+
+        // Custom icon function
+        function getMarkerIcon(category) {
+            return L.divIcon({
+                className: `marker-icon marker-${category}`,
+                iconSize: [20, 20],
+                iconAnchor: [10, 10],
+                popupAnchor: [0, -10]
+            });
+        }
+
+        // Create popup content
+        function createPopupContent(location) {
+            return `
+                <div class="popup-content">
+                    <div class="popup-category">${location.category}</div>
+                    <div class="popup-name">${location.name}</div>
+                    <div class="popup-address">${location.address}</div>
+                    <div class="popup-address">${location.city}</div>
+                    <div class="popup-country">${location.country}</div>
+                </div>
+            `;
+        }
+
+        // Add all markers
+        function addMarkers(filter = 'all') {
+            // Clear existing markers
+            Object.values(markers).forEach(marker => map.removeLayer(marker));
+            markers = {};
+
+            // Filter locations
+            const filteredLocations = filter === 'all' 
+                ? locations 
+                : locations.filter(loc => loc.category === filter);
+
+            // Add markers
+            filteredLocations.forEach(location => {
+                const marker = L.marker([location.lat, location.lng], {
+                    icon: getMarkerIcon(location.category)
+                })
+                .bindPopup(createPopupContent(location), {
+                    maxWidth: 300,
+                    className: 'custom-popup'
+                })
+                .addTo(map);
+
+                markers[`${location.lat}-${location.lng}`] = marker;
+            });
+
+            // Update stats
+            updateStats(filteredLocations);
+        }
+
+        // Update statistics
+        function updateStats(filteredLocations) {
+            const countries = new Set(filteredLocations.map(loc => loc.country));
+            
+            animateNumber('location-count', filteredLocations.length);
+            animateNumber('country-count', countries.size);
+        }
+
+        // Animate number counting
+        function animateNumber(elementId, targetValue) {
+            const element = document.getElementById(elementId);
+            const duration = 1000;
+            const startValue = parseInt(element.textContent) || 0;
+            const startTime = performance.now();
+
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const easeProgress = 1 - Math.pow(1 - progress, 3); // Ease out cubic
+                const currentValue = Math.floor(startValue + (targetValue - startValue) * easeProgress);
+                
+                element.textContent = currentValue;
+
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+
+            requestAnimationFrame(update);
+        }
+
+        // Filter button handling
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active state
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // Filter markers
+                const category = btn.dataset.category;
+                addMarkers(category);
+            });
+        });
+
+        // Initialize map with all markers
+        addMarkers();
+
+        // Add smooth zoom on marker click
+        map.on('popupopen', function(e) {
+            const px = map.project(e.popup._latlng);
+            px.y -= e.popup._container.clientHeight / 2;
+            map.panTo(map.unproject(px), { animate: true });
+        });
+    </script>
+</body>
+</html>

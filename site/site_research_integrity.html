@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0" />
+<title>World Research Integrity 2026 — Who's Breaking Science</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<style>
+  :root{--bg:#0b0e13;--panel:#10151d;--panel2:#171e28;--line:#262f3b;--ink:#e6ebf1;--ink-dim:#8d99a8;--accent:#7fa8d0}
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+  #map{position:absolute;inset:0;background:#0b0e13}
+  .tabs{position:absolute;top:14px;left:50%;transform:translateX(-50%);z-index:700;display:flex;gap:2px;background:rgba(9,12,17,.9);border:1px solid var(--line);border-radius:8px;padding:3px;box-shadow:0 2px 14px rgba(0,0,0,.4)}
+  .tab{background:transparent;border:0;color:var(--ink-dim);font:inherit;font-size:12px;font-weight:600;letter-spacing:.03em;padding:7px 15px;border-radius:6px;cursor:pointer;transition:color .15s,background .15s}
+  .tab:hover{color:var(--ink)}
+  .tab.on{background:var(--panel2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+  .title{position:absolute;top:60px;left:14px;z-index:600;background:rgba(9,12,17,.78);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:10px;padding:12px 15px;max-width:390px;box-shadow:0 2px 18px rgba(0,0,0,.35)}
+  .title h1{margin:0;font-size:13.5px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;line-height:1.3}
+  .title p{margin:6px 0 0;font-size:11px;color:var(--ink-dim);line-height:1.5}
+  .title .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:0}
+  .panel{position:absolute;top:14px;right:14px;z-index:600;width:312px;max-width:calc(100vw - 28px);background:rgba(16,21,29,.93);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:10px;display:flex;flex-direction:column;max-height:calc(100vh - 28px);box-shadow:0 2px 18px rgba(0,0,0,.4)}
+  .panel .pad{padding:13px 13px 11px}
+  .search{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:7px;color:var(--ink);padding:9px 11px;font-size:13px;outline:none;transition:border-color .15s}
+  .search::placeholder{color:#5e6b7a}
+  .search:focus{border-color:#3f5a76}
+  .legend{margin-top:11px;display:flex;flex-direction:column;gap:3px}
+  .leg{display:flex;align-items:center;gap:9px;cursor:pointer;user-select:none;font-size:12px;padding:5px 6px;border-radius:6px;transition:background .12s}
+  .leg:hover{background:var(--panel2)}
+  .leg.off{opacity:.38}
+  .leg .dot{width:10px;height:10px;border-radius:2px;flex:0 0 auto;box-shadow:0 0 0 1px rgba(255,255,255,.18)}
+  .leg .lab{flex:1;color:var(--ink)}
+  .leg .cnt{font-family:ui-monospace,monospace;color:var(--ink-dim);font-size:11px}
+  .sizenote{font-size:10.5px;color:#5f6b79;margin-top:10px;line-height:1.5}
+  .meta{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--ink-dim);margin-top:10px;padding-top:9px;border-top:1px solid var(--line)}
+  .meta a{color:var(--accent);text-decoration:none;cursor:pointer}
+  .meta a:hover{color:#a9c8e6}
+  .listwrap{overflow:auto;border-top:1px solid var(--line);padding:6px 6px 9px}
+  .listwrap::-webkit-scrollbar{width:8px}
+  .listwrap::-webkit-scrollbar-thumb{background:#2a3543;border-radius:8px}
+  .row{display:flex;gap:9px;align-items:flex-start;padding:7px 8px;border-radius:7px;cursor:pointer;transition:background .12s}
+  .row:hover{background:var(--panel2)}
+  .row .rk{font-family:ui-monospace,monospace;font-size:11px;color:var(--ink-dim);min-width:22px;text-align:right;margin-top:1px}
+  .row .bar{width:3px;align-self:stretch;border-radius:2px;flex:0 0 auto;margin-top:1px}
+  .row .nm{font-size:12.5px;line-height:1.3;font-weight:600}
+  .row .sub{font-size:10.5px;color:var(--ink-dim);margin-top:2px;line-height:1.35}
+  .row .sub .mono{font-family:ui-monospace,monospace}
+  .leaflet-pane path.mk{filter:drop-shadow(0 1px 2px rgba(0,0,0,.55))}
+  .leaflet-popup-content-wrapper{background:var(--panel);color:var(--ink);border-radius:10px;border:1px solid var(--line);box-shadow:0 6px 26px rgba(0,0,0,.5)}
+  .leaflet-popup-tip{background:var(--panel);border:1px solid var(--line)}
+  .leaflet-popup-content{margin:12px 14px;font-size:12.5px;line-height:1.5;min-width:235px}
+  .pop h3{margin:0 0 2px;font-size:14px;line-height:1.3;font-weight:700}
+  .pop .rkbig{font-family:ui-monospace,monospace;font-size:10.5px;color:var(--ink-dim);letter-spacing:.04em;text-transform:uppercase}
+  .pop .tag{display:inline-block;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:4px;margin:7px 0 8px;font-weight:700;color:#0b0e13}
+  .pop .kv{margin:3px 0}
+  .pop .kv b{color:var(--ink-dim);font-weight:600}
+  .pop .note{margin-top:8px;padding-top:7px;border-top:1px solid var(--line);color:#c4cedb;font-size:11.5px}
+  .leaflet-bar a{background:#171e28;color:#e6ebf1;border-bottom:1px solid var(--line)}
+  .leaflet-bar a:hover{background:#222c39}
+  .leaflet-control-attribution{background:rgba(9,12,17,.72)!important;color:#6c7785!important;font-size:10px!important}
+  .leaflet-control-attribution a{color:#8fa9c2!important}
+  .leaflet-control-layers{background:rgba(16,21,29,.96)!important;color:var(--ink)!important;border:1px solid var(--line)!important;border-radius:8px!important}
+  .leaflet-control-layers-expanded{padding:9px 11px!important}
+  @media (max-width:640px){
+    .title{max-width:calc(100vw - 28px);left:8px;padding:9px 11px}
+    .title h1{font-size:12px}
+    .panel{width:calc(100vw - 28px);top:auto;bottom:14px;right:14px;max-height:46vh}
+    .tabs{top:8px}
+  }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div class="tabs">
+  <button class="tab on" id="tab-pub">Publishers &amp; journals</button>
+  <button class="tab" id="tab-make">Who makes it</button>
+</div>
+<div class="title">
+  <h1 id="title-h"></h1>
+  <p id="title-p"></p>
+</div>
+<div class="panel">
+  <div class="pad">
+    <input id="search" class="search" type="text" placeholder="Search…" autocomplete="off" />
+    <div class="legend" id="legend"></div>
+    <div class="sizenote" id="sizenote"></div>
+    <div class="meta"><span id="count" class="mono">--</span><a id="reset">Reset view</a></div>
+  </div>
+  <div class="listwrap" id="list"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+const CATS_PUB = {
+  infiltrated:{label:"Major publisher hit by paper mills",color:"#cf6a5e"},
+  megajournal:{label:"High-volume megajournal (criticised)",color:"#c7a35a"},
+  predatory:{label:"Predatory publisher (sanctioned/listed)",color:"#a986c2"},
+  conference:{label:"Predatory conference organiser",color:"#6699c9"}
+};
+const CATS_MAKE = {
+  paper_mill:{label:"Paper mill (authorship-for-sale)",color:"#cf6a5e"},
+  operator:{label:"Predatory operator",color:"#a986c2"},
+  fraudster:{label:"Record-setting fabricator (individual)",color:"#c7a35a"},
+  enabler:{label:"Enabler (cartels, hijacking, AI, essay mills)",color:"#5fa98a"}
+};
+const RADIUS = {1:12,2:9.5,3:7.5,4:5.5};
+const STROKE = 'rgba(7,11,16,.9)';
+
+const DATA_PUB  = [
+{n:"Wiley / Hindawi",hq:"Hoboken, US",lat:40.744,lng:-74.0324,cat:"infiltrated",tier:1,mag:11300,scale:"11,300+ retractions",detail:"After Wiley bought Hindawi (2021), paper mills flooded its special issues; Wiley retracted 11,300+ papers and had 19 journals delisted by Clarivate.",note:"Wiley discontinued the Hindawi brand in 2024; cleanup cost an estimated $35-40M."},
+{n:"OMICS Publishing Group",hq:"Hyderabad, IN",lat:17.385,lng:78.4867,cat:"predatory",tier:1,mag:5000,scale:"$50.1M US court judgment",detail:"A US court ordered OMICS to pay $50.1M (2019) after the FTC proved deceptive practices: fake peer review, hidden fees, bogus impact factors and misused researcher names.",note:"The archetypal predatory publisher; also runs Allied Academies, Pulsus, iMedPub, Longdom."},
+{n:"IEEE",hq:"Piscataway, US",lat:40.5187,lng:-74.4121,cat:"infiltrated",tier:2,mag:7000,scale:"Thousands of papers removed",detail:"Has withdrawn thousands of substandard or fabricated conference papers from IEEE Xplore, including computer-generated (SCIgen) nonsense papers.",note:"The world's largest technical professional body; mostly a conference-proceedings problem."},
+{n:"Springer Nature",hq:"Berlin, DE",lat:52.52,lng:13.405,cat:"infiltrated",tier:2,mag:3000,scale:"Thousands of retractions",detail:"Repeated mass retractions across BMC, the Arabian Journal of Geosciences and others for fake peer review and paper-mill content.",note:"A leading legitimate publisher; several journals were infiltrated and later purged."},
+{n:"MDPI",hq:"Basel, CH",lat:47.5596,lng:7.5886,cat:"megajournal",tier:2,mag:2500,scale:"Megajournal; 2 journals delisted",detail:"High-volume special-issue model; its IJERPH published ~17,000 papers in 2022; Clarivate delisted 2 MDPI titles and China's CAS put 22 on a warning list.",note:"MDPI rejects paper-mill claims and says delistings were on a 'content-relevance' criterion, not quality."},
+{n:"Elsevier",hq:"Amsterdam, NL",lat:52.3676,lng:4.9041,cat:"infiltrated",tier:2,mag:1500,scale:"Hundreds+ retractions",detail:"Paper-mill-infiltrated special issues and fake peer review have triggered retractions across multiple Elsevier journals.",note:"The largest scientific publisher; targeted by mills like everyone else."},
+{n:"Beall's-listed predatory publishers",hq:"(global list)",lat:24.0,lng:12.0,cat:"predatory",tier:2,mag:1200,scale:"1,000+ publishers catalogued",detail:"Beall's List and its successor lists catalogued well over 1,000 predatory open-access publishers and journals that charge fees with little or no real peer review.",note:"A category, not one firm; the long tail of pay-to-publish operations."},
+{n:"WASET",hq:"Istanbul, TR",lat:41.0082,lng:28.9784,cat:"conference",tier:2,mag:1000,scale:"Predatory conferences & journals",detail:"The World Academy of Science, Engineering and Technology is widely flagged for predatory conferences and journals using copied names and fake metrics.",note:"Investigated by journalists across Europe (e.g. the 2018 'Fake Science' exposes)."},
+{n:"SCIRP (Scientific Research Publishing)",hq:"Wuhan, CN",lat:30.5928,lng:114.3055,cat:"predatory",tier:3,mag:800,scale:"Long predatory-listed",detail:"Scientific Research Publishing has long appeared on predatory-publisher lists for weak review and aggressive fee-seeking.",note:""},
+{n:"Taylor & Francis",hq:"Abingdon, GB",lat:51.671,lng:-1.288,cat:"infiltrated",tier:3,mag:600,scale:"Journal delisted; 86+ retractions",detail:"Its journal Bioengineered was delisted by Clarivate after paper-mill activity, with 86+ retractions there alone.",note:"A major legitimate publisher with infiltrated titles."},
+{n:"Sage",hq:"Thousand Oaks, US",lat:34.1706,lng:-118.8376,cat:"infiltrated",tier:3,mag:400,scale:"Hundreds of retractions",detail:"Retracted 209 + 122 papers from one engineering journal for compromised peer review; earlier exposed a 2014 fake-peer-review ring.",note:""},
+{n:"Frontiers",hq:"Lausanne, CH",lat:46.5197,lng:6.6323,cat:"megajournal",tier:3,mag:1500,scale:"Megajournal; integrity criticism",detail:"Very high volume with heavy China exposure; once appeared on Beall's predatory list; criticised for pressure on editors. Cut output sharply after 2022.",note:"Frontiers disputes the predatory label; no mass-retraction event like Hindawi's."},
+{n:"Bentham Open",hq:"Sharjah, AE",lat:25.3463,lng:55.4209,cat:"predatory",tier:3,mag:400,scale:"Predatory-listed (since 2009)",detail:"Subject of a famous 2009 sting when a deliberately nonsensical computer-generated paper was accepted.",note:""},
+{n:"Allied Academies / Pulsus",hq:"London, GB",lat:51.5074,lng:-0.1,cat:"predatory",tier:3,mag:300,scale:"OMICS-owned",detail:"Acquired by OMICS; carries the same predatory journal and conference practices.",note:""},
+{n:"Science Publishing Group",hq:"New York, US",lat:40.7128,lng:-74.006,cat:"predatory",tier:4,mag:200,scale:"Predatory-listed",detail:"Open-access publisher long flagged for minimal review and deceptive metrics.",note:""},
+{n:"David Publishing",hq:"El Monte, US",lat:34.0686,lng:-118.0276,cat:"predatory",tier:4,mag:200,scale:"Predatory-listed",detail:"Mass solicitation and pay-to-publish journals across many fields.",note:""},
+{n:"Academic Journals",hq:"Lagos, NG",lat:6.5244,lng:3.3792,cat:"predatory",tier:4,mag:180,scale:"Predatory-listed",detail:"High-volume open-access publisher repeatedly listed as predatory.",note:""},
+{n:"PLOS (PLOS ONE)",hq:"San Francisco, US",lat:37.7749,lng:-122.4194,cat:"megajournal",tier:3,mag:600,scale:"Hundreds of retractions",detail:"PLOS ONE, long the world’s largest journal, has retracted hundreds of papers, many for image manipulation and integrity failures.",note:"A nonprofit open-access pioneer; sheer volume left a large cleanup."},
+{n:"Scientific Reports (Springer Nature)",hq:"Berlin, DE",lat:52.5250,lng:13.4100,cat:"megajournal",tier:3,mag:550,scale:"World’s largest journal; hundreds of retractions",detail:"Publishes ~20,000 papers a year and has accumulated hundreds of retractions for manipulation and paper-mill content.",note:""},
+{n:"Cabells Predatory Reports",hq:"Beaumont, US",lat:30.0802,lng:-94.1266,cat:"predatory",tier:2,mag:15000,scale:"15,000+ journals flagged",detail:"The successor to Beall’s List; catalogues over 15,000 journals using deceptive or predatory practices.",note:"A catalogue, not one firm — a measure of the predatory long tail."},
+{n:"e-Century Publishing",hq:"Madison, US",lat:43.0731,lng:-89.4012,cat:"infiltrated",tier:3,mag:500,scale:"Mass paper-mill retractions",detail:"Its biomedical journals saw mass retractions for paper-mill and image-duplication content; several were delisted.",note:""},
+{n:"Spandidos Publications",hq:"Athens, GR",lat:37.9838,lng:23.7275,cat:"infiltrated",tier:4,mag:300,scale:"Image-duplication retractions",detail:"Greek biomedical publisher hit by waves of image-duplication retractions flagged by integrity sleuths.",note:""},
+{n:"AME Publishing Company",hq:"Hong Kong, CN",lat:22.3193,lng:114.1694,cat:"infiltrated",tier:4,mag:250,scale:"Journals delisted (2023)",detail:"Several AME journals were removed from Clarivate’s Web of Science in the 2023 purge.",note:""}
+];
+const DATA_MAKE = [
+{n:"'International Publisher' LLC",hq:"Moscow, RU",lat:55.7558,lng:37.6173,cat:"paper_mill",tier:1,mag:1063,scale:"1,000+ authorship sales",detail:"Russia-based mill documented by Anna Abalkina; sold co-authorship slots on papers. Russian journals later retracted 800+ articles.",note:"One of the best-documented mills; sells authorship before a ghostwriter even writes the paper."},
+{n:"Ukraine-linked mill network",hq:"Kyiv, UA",lat:50.4501,lng:30.5234,cat:"paper_mill",tier:1,mag:1500,scale:"1,500+ papers in 380 journals",detail:"A group of companies flooded ~380 journals with ~1,500 suspect papers since 2017 - possibly Europe's largest mill (Nature, 2025).",note:""},
+{n:"Srinubabu Gedela (OMICS)",hq:"Hyderabad, IN",lat:17.41,lng:78.48,cat:"operator",tier:1,mag:5000,scale:"$50.1M FTC judgment",detail:"Founder of OMICS; the US FTC won a $50.1M judgment against his companies for deceptive publishing and conferences.",note:""},
+{n:"Joachim Boldt",hq:"Ludwigshafen, DE",lat:49.48,lng:8.45,cat:"fraudster",tier:1,mag:239,scale:"239 retractions",detail:"German anaesthesiologist; the all-time record-holder for retractions after fabricating data and forging ethics approvals.",note:"Retraction Watch leaderboard #1."},
+{n:"Yoshitaka Fujii",hq:"Tokyo, JP",lat:35.68,lng:139.76,cat:"fraudster",tier:1,mag:172,scale:"172 retractions",detail:"Japanese anaesthesiologist who fabricated data across ~170 papers - for years the record-holder.",note:"A statistician calculated the odds of his 'natural' data as astronomically small."},
+{n:"Tadpole paper mill",hq:"(China)",lat:30.6,lng:114.35,cat:"paper_mill",tier:2,mag:600,scale:"Hundreds of papers",detail:"Chinese mill exposed by Elisabeth Bik (2020): hundreds of papers sharing identical western-blot images shaped like tadpoles.",note:""},
+{n:"AI / LLM-generated papers",hq:"(Silicon Valley)",lat:37.4,lng:-122.1,cat:"enabler",tier:2,mag:700,scale:"Surging since 2023",detail:"ChatGPT-style text is flooding journals; sleuths flag 'tortured phrases' and a surge of 'prolific debutante' authors and AI-written peer reviews.",note:""},
+{n:"Hijacked / cloned journals",hq:"(Iran/Turkey hubs)",lat:38.0,lng:35.0,cat:"enabler",tier:2,mag:500,scale:"450+ documented",detail:"Fake clone websites impersonate real indexed journals to sell publication slots; the Retraction Watch Hijacked Journal Checker lists 450+.",note:""},
+{n:"Essay & contract-cheating mills",hq:"Nairobi, KE",lat:-1.2921,lng:36.8219,cat:"enabler",tier:2,mag:600,scale:"Industry-scale ghostwriting",detail:"Commercial services write essays, theses and papers for a fee; banned in several countries but still vast.",note:"Kenya is a documented global hub for academic ghostwriting."},
+{n:"Yoshihiro Sato",hq:"Oita, JP",lat:33.2,lng:131.6,cat:"fraudster",tier:2,mag:124,scale:"124 retractions",detail:"Japanese bone researcher who fabricated clinical-trial data over decades.",note:""},
+{n:"Hironobu Ueshima",hq:"Tokyo, JP",lat:35.7,lng:139.7,cat:"fraudster",tier:2,mag:124,scale:"124 retractions",detail:"Japanese anaesthesiologist with scores of fabricated studies.",note:""},
+{n:"Andrew Wakefield",hq:"London, GB",lat:51.51,lng:-0.13,cat:"fraudster",tier:2,mag:100,scale:"Landmark retraction; struck off",detail:"His 1998 Lancet paper linking the MMR vaccine to autism was retracted; he was struck off the UK medical register. The fraud fuelled global vaccine hesitancy.",note:""},
+{n:"Olive Academic",hq:"Jinan, CN",lat:36.65,lng:117.0,cat:"paper_mill",tier:3,mag:300,scale:"Hundreds of papers",detail:"Chinese mill linked to large batches of image-duplicated biomedical papers.",note:""},
+{n:"ARDA / authorship-for-sale sites",hq:"Moscow, RU",lat:55.8,lng:37.5,cat:"paper_mill",tier:3,mag:250,scale:"Paid authorship slots",detail:"Russian sites that openly sell authorship positions in indexed journals.",note:""},
+{n:"Iran-based mills",hq:"Tehran, IR",lat:35.6892,lng:51.389,cat:"paper_mill",tier:3,mag:200,scale:"Documented networks",detail:"Investigations have documented Iranian mills selling papers and theses.",note:""},
+{n:"India-based mills",hq:"New Delhi, IN",lat:28.6139,lng:77.209,cat:"paper_mill",tier:3,mag:200,scale:"Documented networks",detail:"India hosts both predatory publishers and authorship-for-sale operations.",note:""},
+{n:"Citation cartels",hq:"(Hong Kong hub)",lat:22.3,lng:114.2,cat:"enabler",tier:3,mag:300,scale:"Coordinated citation rings",detail:"Groups of authors, editors and journals that cite each other to inflate impact factors and h-indices.",note:""},
+{n:"Tortured-phrase / SCIgen generators",hq:"Cambridge, US",lat:42.36,lng:-71.09,cat:"enabler",tier:3,mag:200,scale:"Auto-generated nonsense",detail:"Software that spins or fabricates text; SCIgen-generated papers have been caught in IEEE and Springer venues.",note:""},
+{n:"Diederik Stapel",hq:"Tilburg, NL",lat:51.56,lng:5.09,cat:"fraudster",tier:3,mag:58,scale:"58 retractions",detail:"Dutch social psychologist who admitted fabricating data in dozens of studies.",note:""},
+{n:"Jan Hendrik Schon",hq:"Konstanz, DE",lat:47.66,lng:9.18,cat:"fraudster",tier:3,mag:32,scale:"~30 retractions",detail:"Physicist whose fabricated semiconductor results were retracted from Science and Nature.",note:""},
+{n:"Hwang Woo-suk",hq:"Seoul, KR",lat:37.57,lng:126.98,cat:"fraudster",tier:3,mag:20,scale:"Cloning fraud; convicted",detail:"Korean scientist whose landmark human-cloning papers were fabricated; convicted in 2009.",note:""},
+{n:"Paolo Macchiarini",hq:"Stockholm, SE",lat:59.35,lng:18.03,cat:"fraudster",tier:3,mag:15,scale:"Convicted; multiple retractions",detail:"Surgeon convicted in Sweden over experimental trachea implants; several papers retracted.",note:""},
+{n:"Didier Raoult",hq:"Marseille, FR",lat:43.3,lng:5.37,cat:"fraudster",tier:3,mag:30,scale:"Numerous EOCs & retractions",detail:"French microbiologist; subject of many expressions of concern and retractions, including hydroxychloroquine COVID studies.",note:"An ethics body found one of his studies among the largest unauthorised human experiments in France."},
+{n:"Chinese contract-paper services",hq:"(China)",lat:34.0000,lng:108.0000,cat:"paper_mill",tier:2,mag:500,scale:"Large commercial mills",detail:"Commercial services in China that write or sell papers to meet hospital and university publication quotas — a major documented source of fabricated work.",note:""},
+{n:"Tanu.pro / Russian authorship market",hq:"Moscow, RU",lat:55.7300,lng:37.6500,cat:"paper_mill",tier:2,mag:400,scale:"Authorship & citation sales",detail:"Russian-language platform documented by investigators selling authorship slots and citations in indexed journals.",note:""},
+{n:"Chen-Yuan (Peter) Chen",hq:"Pingtung, TW",lat:22.6760,lng:120.4940,cat:"fraudster",tier:3,mag:60,scale:"60 retractions (peer-review ring)",detail:"Ran a fake-peer-review ring using bogus reviewer identities; SAGE retracted 60 papers in 2014.",note:""},
+{n:"Yuhji Saitoh",hq:"Chiba, JP",lat:35.6070,lng:140.1230,cat:"fraudster",tier:3,mag:53,scale:"~53 retractions",detail:"Anaesthesiologist whose fabricated data overlapped with the Fujii case.",note:""},
+{n:"Ali Nazari",hq:"Melbourne, AU",lat:-37.8136,lng:144.9631,cat:"fraudster",tier:3,mag:50,scale:"~50 retractions",detail:"Engineering researcher with dozens of papers retracted for duplication and fabrication.",note:""},
+{n:"Shigeaki Kato",hq:"Tokyo, JP",lat:35.7100,lng:139.7500,cat:"fraudster",tier:3,mag:43,scale:"~43 retractions",detail:"Molecular biologist; a university investigation found extensive data manipulation.",note:""},
+{n:"James Hunton",hq:"Boston, US",lat:42.3601,lng:-71.0589,cat:"fraudster",tier:4,mag:37,scale:"~37 retractions",detail:"Accounting professor; dozens of papers retracted after data could not be verified.",note:""},
+{n:"Bharat Aggarwal",hq:"Houston, US",lat:29.7604,lng:-95.3698,cat:"fraudster",tier:4,mag:30,scale:"~30 retractions",detail:"Cancer researcher; dozens of papers retracted for image manipulation.",note:""}
+];
+
+const map = L.map('map',{zoomControl:true,worldCopyJump:true,minZoom:2,maxZoom:19}).setView([28,15],2.4);
+const gHyb=L.tileLayer('https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',{subdomains:['mt0','mt1','mt2','mt3'],maxZoom:20,attribution:'Imagery &copy; Google'});
+const gSat=L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{subdomains:['mt0','mt1','mt2','mt3'],maxZoom:20,attribution:'Imagery &copy; Google'});
+const esri=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Imagery &copy; Esri, Maxar'});
+gHyb.addTo(map);
+L.control.layers({"Satellite + labels":gHyb,"Satellite":gSat,"Esri imagery":esri},{},{position:'bottomleft',collapsed:true}).addTo(map);
+
+function popup(d,r,cats){
+  const c=cats[d.cat];
+  return `<div class="pop"><div class="rkbig">Rank #${r} &middot; documented scale: tier ${d.tier}</div>
+  <h3>${d.n}</h3><span class="tag" style="background:${c.color}">${c.label}</span>
+  <div class="kv"><b>Based:</b> ${d.hq}</div>
+  <div class="kv"><b>Documented scale:</b> ${d.scale}</div>
+  <div class="kv"><b>Detail:</b> ${d.detail}</div>
+  ${d.note?`<div class="note">${d.note}</div>`:''}</div>`;
+}
+
+const CFG = {
+  pub:{
+    data:DATA_PUB, cats:CATS_PUB,
+    h:"Where Compromised Science Gets Published",
+    p:'Publishers and journals with documented research-integrity failures — mass retractions, paper-mill infiltration, delistings and sanctions. Sized by documented scale, not total output. By retracted-paper volume (~65,000 verified retractions) the publishers and mills mapped here account for the majority; by raw entity count the predatory long tail (15,000+ journals) is far larger. <span class="mono">(2026)</span>',
+    note:"Sources: Retraction Watch, Clarivate Web of Science, COPE, the US FTC, and reporting in Nature and Science. Several listed names are large legitimate publishers whose journals were infiltrated by paper mills and who responded with mass retractions -- that is different from the predatory and sanctioned operators. Megajournals are flagged for documented criticism and delistings, not proven fraud, and dispute the characterisation.",
+    sub:d=>`${d.hq} &middot; <span class="mono">${d.scale}</span>`
+  },
+  make:{
+    data:DATA_MAKE, cats:CATS_MAKE,
+    h:"Who Manufactures Fake Science",
+    p:'The paper mills, predatory operators, serial fabricators and enablers behind fraudulent and ghost-written research. Sized by documented scale. <span class="mono">(2026)</span>',
+    note:"Individuals shown are documented cases with official findings, retraction records or convictions (the Retraction Watch leaderboard, university investigations, court rulings). Paper-mill entries come from investigations by Anna Abalkina, Elisabeth Bik, Guillaume Cabanac, Nick Wise, Dorothy Bishop and reporting in Nature/Science. Several 'enabler' entries are categories (cartels, AI text, hijacked journals) rather than single organisations.",
+    sub:d=>`${d.hq} &middot; <span class="mono">${d.scale}</span>`
+  }
+};
+
+const listEl=document.getElementById('list'), legendEl=document.getElementById('legend');
+const searchEl=document.getElementById('search'), countEl=document.getElementById('count');
+let cur={items:[],active:new Set(),cfg:null,key:null};
+function clearCur(){cur.items.forEach(it=>map.removeLayer(it.marker));cur.items=[];listEl.innerHTML='';legendEl.innerHTML='';}
+
+function build(key){
+  clearCur();
+  const cfg=CFG[key]; cur.cfg=cfg; cur.key=key;
+  document.getElementById('title-h').innerHTML=cfg.h;
+  document.getElementById('title-p').innerHTML=cfg.p;
+  document.getElementById('sizenote').innerHTML=cfg.note;
+  cur.active=new Set(Object.keys(cfg.cats));
+  Object.entries(cfg.cats).forEach(([k,c])=>{
+    const el=document.createElement('div'); el.className='leg';
+    el.innerHTML=`<span class="dot" style="background:${c.color}"></span><span class="lab">${c.label}</span><span class="cnt" id="cnt-${k}"></span>`;
+    el.addEventListener('click',()=>{if(cur.active.has(k)){cur.active.delete(k);el.classList.add('off');}else{cur.active.add(k);el.classList.remove('off');}applyFilters();});
+    legendEl.appendChild(el);
+  });
+  const rows=[...cfg.data].sort((a,b)=>(a.tier-b.tier)||(b.mag-a.mag));
+  rows.forEach((d,i)=>{
+    const rank=i+1, c=cfg.cats[d.cat], base=RADIUS[d.tier];
+    const marker=L.circleMarker([d.lat,d.lng],{radius:base,color:STROKE,weight:1,fillColor:c.color,fillOpacity:.82,className:'mk'}).bindPopup(popup(d,rank,cfg.cats),{maxWidth:300});
+    marker.on('mouseover',()=>marker.setStyle({radius:base+2.5,weight:1.6,color:'rgba(255,255,255,.92)'}));
+    marker.on('mouseout',()=>marker.setStyle({radius:base,weight:1,color:STROKE}));
+    marker.addTo(map);
+    const row=document.createElement('div'); row.className='row';
+    row.innerHTML=`<div class="rk">${rank}</div><div class="bar" style="background:${c.color}"></div><div><div class="nm">${d.n}</div><div class="sub">${cfg.sub(d)}</div></div>`;
+    row.addEventListener('click',()=>{map.flyTo([d.lat,d.lng],Math.max(map.getZoom(),5),{duration:.8});marker.openPopup();});
+    listEl.appendChild(row);
+    cur.items.push({d,marker,row});
+  });
+  applyFilters();
+}
+function applyFilters(){
+  const q=searchEl.value.trim().toLowerCase(); let shown=0; const per={};
+  Object.keys(cur.cfg.cats).forEach(k=>per[k]=0);
+  cur.items.forEach(({d,marker,row})=>{
+    const ok=cur.active.has(d.cat)&&(!q||(d.n+' '+d.hq+' '+d.scale+' '+d.detail).toLowerCase().includes(q));
+    if(ok){if(!map.hasLayer(marker))marker.addTo(map);row.style.display='';shown++;per[d.cat]++;}
+    else{if(map.hasLayer(marker))map.removeLayer(marker);row.style.display='none';}
+  });
+  countEl.textContent=shown+' / '+cur.items.length+' shown';
+  Object.keys(cur.cfg.cats).forEach(k=>{const e=document.getElementById('cnt-'+k);if(e)e.textContent=per[k];});
+}
+searchEl.addEventListener('input',applyFilters);
+document.getElementById('reset').addEventListener('click',()=>{searchEl.value='';build(cur.key);map.setView([28,15],2.4);});
+const tP=document.getElementById('tab-pub'), tM=document.getElementById('tab-make');
+tP.addEventListener('click',()=>{tP.classList.add('on');tM.classList.remove('on');build('pub');});
+tM.addEventListener('click',()=>{tM.classList.add('on');tP.classList.remove('on');build('make');});
+build('pub');
+</script>
+</body>
+</html>

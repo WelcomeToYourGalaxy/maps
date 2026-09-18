@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0" />
+<title>World News 2026 — Outlets & Owners</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<style>
+  :root{--bg:#0b0e13;--panel:#10151d;--panel2:#171e28;--line:#262f3b;--ink:#e6ebf1;--ink-dim:#8d99a8;--accent:#7fa8d0}
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+  #map{position:absolute;inset:0;background:#0b0e13}
+  .tabs{position:absolute;top:14px;left:50%;transform:translateX(-50%);z-index:700;display:flex;gap:2px;background:rgba(9,12,17,.9);border:1px solid var(--line);border-radius:8px;padding:3px;box-shadow:0 2px 14px rgba(0,0,0,.4)}
+  .tab{background:transparent;border:0;color:var(--ink-dim);font:inherit;font-size:12px;font-weight:600;letter-spacing:.03em;padding:7px 15px;border-radius:6px;cursor:pointer;transition:color .15s,background .15s}
+  .tab:hover{color:var(--ink)}
+  .tab.on{background:var(--panel2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+  .title{position:absolute;top:60px;left:14px;z-index:600;background:rgba(9,12,17,.78);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:10px;padding:12px 15px;max-width:360px;box-shadow:0 2px 18px rgba(0,0,0,.35)}
+  .title h1{margin:0;font-size:13.5px;letter-spacing:.10em;text-transform:uppercase;font-weight:700;line-height:1.3}
+  .title p{margin:6px 0 0;font-size:11px;color:var(--ink-dim);line-height:1.5}
+  .title .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:0}
+  .panel{position:absolute;top:14px;right:14px;z-index:600;width:302px;max-width:calc(100vw - 28px);background:rgba(16,21,29,.93);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:10px;display:flex;flex-direction:column;max-height:calc(100vh - 28px);box-shadow:0 2px 18px rgba(0,0,0,.4)}
+  .panel .pad{padding:13px 13px 11px}
+  .search{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:7px;color:var(--ink);padding:9px 11px;font-size:13px;outline:none;transition:border-color .15s}
+  .search::placeholder{color:#5e6b7a}
+  .search:focus{border-color:#3f5a76}
+  .legend{margin-top:11px;display:flex;flex-direction:column;gap:3px}
+  .leg{display:flex;align-items:center;gap:9px;cursor:pointer;user-select:none;font-size:12px;padding:5px 6px;border-radius:6px;transition:background .12s}
+  .leg:hover{background:var(--panel2)}
+  .leg.off{opacity:.38}
+  .leg .dot{width:10px;height:10px;border-radius:2px;flex:0 0 auto;box-shadow:0 0 0 1px rgba(255,255,255,.18)}
+  .leg .lab{flex:1;color:var(--ink)}
+  .leg .cnt{font-family:ui-monospace,monospace;color:var(--ink-dim);font-size:11px}
+  .sizenote{font-size:10.5px;color:#5f6b79;margin-top:10px;line-height:1.5}
+  .meta{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--ink-dim);margin-top:10px;padding-top:9px;border-top:1px solid var(--line)}
+  .meta a{color:var(--accent);text-decoration:none;cursor:pointer}
+  .meta a:hover{color:#a9c8e6}
+  .listwrap{overflow:auto;border-top:1px solid var(--line);padding:6px 6px 9px}
+  .listwrap::-webkit-scrollbar{width:8px}
+  .listwrap::-webkit-scrollbar-thumb{background:#2a3543;border-radius:8px}
+  .row{display:flex;gap:9px;align-items:flex-start;padding:7px 8px;border-radius:7px;cursor:pointer;transition:background .12s}
+  .row:hover{background:var(--panel2)}
+  .row .rk{font-family:ui-monospace,monospace;font-size:11px;color:var(--ink-dim);min-width:22px;text-align:right;margin-top:1px}
+  .row .bar{width:3px;align-self:stretch;border-radius:2px;flex:0 0 auto;margin-top:1px}
+  .row .nm{font-size:12.5px;line-height:1.3;font-weight:600}
+  .row .sub{font-size:10.5px;color:var(--ink-dim);margin-top:2px;line-height:1.35}
+  .row .sub .mono{font-family:ui-monospace,monospace}
+  .leaflet-pane path.mk{filter:drop-shadow(0 1px 2px rgba(0,0,0,.55))}
+  .leaflet-popup-content-wrapper{background:var(--panel);color:var(--ink);border-radius:10px;border:1px solid var(--line);box-shadow:0 6px 26px rgba(0,0,0,.5)}
+  .leaflet-popup-tip{background:var(--panel);border:1px solid var(--line)}
+  .leaflet-popup-content{margin:12px 14px;font-size:12.5px;line-height:1.5;min-width:220px}
+  .pop h3{margin:0 0 2px;font-size:14px;line-height:1.3;font-weight:700}
+  .pop .rkbig{font-family:ui-monospace,monospace;font-size:10.5px;color:var(--ink-dim);letter-spacing:.04em;text-transform:uppercase}
+  .pop .tag{display:inline-block;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:4px;margin:7px 0 8px;font-weight:700;color:#0b0e13}
+  .pop .kv{margin:3px 0}
+  .pop .kv b{color:var(--ink-dim);font-weight:600}
+  .pop .note{margin-top:8px;padding-top:7px;border-top:1px solid var(--line);color:#c4cedb;font-size:11.5px}
+  .pop .mono{font-family:ui-monospace,monospace}
+  .leaflet-bar a{background:#171e28;color:#e6ebf1;border-bottom:1px solid var(--line)}
+  .leaflet-bar a:hover{background:#222c39}
+  .leaflet-control-attribution{background:rgba(9,12,17,.72)!important;color:#6c7785!important;font-size:10px!important}
+  .leaflet-control-attribution a{color:#8fa9c2!important}
+  .leaflet-control-layers{background:rgba(16,21,29,.96)!important;color:var(--ink)!important;border:1px solid var(--line)!important;border-radius:8px!important}
+  .leaflet-control-layers-expanded{padding:9px 11px!important}
+  @media (max-width:640px){
+    .title{max-width:calc(100vw - 28px);left:8px;padding:9px 11px}
+    .title h1{font-size:12px}
+    .panel{width:calc(100vw - 28px);top:auto;bottom:14px;right:14px;max-height:48vh}
+    .tabs{top:8px}
+  }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div class="tabs">
+  <button class="tab on" id="tab-cos">Largest news outlets</button>
+  <button class="tab" id="tab-own">Who controls the news</button>
+</div>
+<div class="title">
+  <h1 id="title-h"></h1>
+  <p id="title-p"></p>
+</div>
+<div class="panel">
+  <div class="pad">
+    <input id="search" class="search" type="text" placeholder="Search…" autocomplete="off" />
+    <div class="legend" id="legend"></div>
+    <div class="sizenote" id="sizenote"></div>
+    <div class="meta"><span id="count" class="mono">--</span><a id="reset">Reset view</a></div>
+  </div>
+  <div class="listwrap" id="list"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+const CATS_CO = {
+  agency:{label:"Wire / news agency",color:"#c7a35a"},
+  broadcast:{label:"TV / broadcast news",color:"#6699c9"},
+  print:{label:"Newspaper / print",color:"#cf6a5e"},
+  digital:{label:"Digital & aggregators",color:"#5fa98a"},
+  business:{label:"Business / financial news",color:"#a986c2"}
+};
+const CATS_OWN = {
+  state:{label:"Government / state",color:"#cf6a5e"},
+  family:{label:"Family / founder-controlled",color:"#5fa98a"},
+  institutional:{label:"Institutional / trust / fund",color:"#6699c9"},
+  public:{label:"Public company / platform",color:"#c7a35a"}
+};
+const RADIUS = {1:12,2:9.5,3:7.5,4:5.5};
+const STROKE = 'rgba(7,11,16,.9)';
+
+const DATA_CO  = [
+{n:"Yahoo News",hq:"Sunnyvale, US",lat:37.4170,lng:-122.0253,cat:"digital",tier:1,sec:"Aggregator / portal",reach:"~4.5B visits/mo — world's most-visited news site",own:"Apollo Global Management",note:"Aggregates from thousands of publishers; produces little original reporting."},
+{n:"Google News / Discover",hq:"Mountain View, US",lat:37.4220,lng:-122.0841,cat:"digital",tier:1,sec:"AI news aggregator",reach:"~3.9B visits/mo; curates 70,000+ publishers",own:"Alphabet",note:"With Search and Discover, the single biggest gateway to news worldwide."},
+{n:"MSN / Microsoft Start",hq:"Redmond, US",lat:37.6396,lng:-122.1284,cat:"digital",tier:1,sec:"News aggregator / portal",reach:"One of the largest news portals globally",own:"Microsoft",note:"AI-curated, licensed news; default on Windows & Edge."},
+{n:"BBC News",hq:"London, GB",lat:51.5180,lng:-0.1440,cat:"broadcast",tier:1,sec:"Global public-service news (TV/radio/online)",reach:"~1B+ visits/mo; World Service in 40+ languages",own:"UK public corporation (Royal Charter)",note:""},
+{n:"Xinhua / CGTN / People's Daily",hq:"Beijing, CN",lat:39.9100,lng:116.3990,cat:"broadcast",tier:1,sec:"State news agency + global TV + flagship paper",reach:"World's largest state-news apparatus",own:"Chinese state",note:"Thousands of journalists worldwide; near-total domestic control."},
+{n:"The New York Times",hq:"New York, US",lat:40.7559,lng:-73.9903,cat:"print",tier:1,sec:"Newspaper + digital",reach:"#1 English news site (~600M+ visits/mo); ~11M digital subs",own:"Sulzberger family (NYT Co.)",note:""},
+{n:"CNN",hq:"Atlanta, US",lat:33.7945,lng:-84.3870,cat:"broadcast",tier:1,sec:"Global cable & digital news",reach:"Major global TV-news brand",own:"Warner Bros. Discovery (Paramount takeover pending)",note:""},
+{n:"Reuters",hq:"London, GB",lat:51.5092,lng:-0.1100,cat:"agency",tier:1,sec:"Global wire service",reach:"~111M visits/mo; feeds thousands of outlets",own:"Thomson Reuters (Thomson family ~69%)",note:""},
+{n:"Associated Press (AP)",hq:"New York, US",lat:40.7480,lng:-73.9930,cat:"agency",tier:1,sec:"Global wire service (cooperative)",reach:"~148M visits/mo; supplies much of the world's press",own:"Nonprofit cooperative of US member outlets",note:""},
+
+{n:"Fox News",hq:"New York, US",lat:40.7589,lng:-73.9817,cat:"broadcast",tier:2,sec:"Cable & digital news",reach:"#1 US cable news 23+ yrs; ~18% US weekly reach; top US news site",own:"Fox Corp (Lachlan Murdoch)",note:""},
+{n:"The Wall Street Journal",hq:"New York, US",lat:40.7565,lng:-73.9903,cat:"business",tier:2,sec:"Business newspaper + digital",reach:"Largest US paid newspaper; global business readership",own:"News Corp (Lachlan Murdoch)",note:""},
+{n:"Bloomberg News",hq:"New York, US",lat:40.7625,lng:-73.9700,cat:"business",tier:2,sec:"Financial news, data, TV, radio",reach:"~1.1B visits/mo; terminal feeds professionals worldwide",own:"Michael Bloomberg (~88%)",note:""},
+{n:"The Washington Post",hq:"Washington, US",lat:38.9047,lng:-77.0400,cat:"print",tier:2,sec:"Newspaper + digital",reach:"Major US national paper",own:"Jeff Bezos (Nash Holdings)",note:""},
+{n:"Daily Mail / MailOnline",hq:"London, GB",lat:51.4990,lng:-0.1980,cat:"print",tier:2,sec:"Tabloid + huge English news site",reach:"Long among the most-visited English news sites",own:"Rothermere family (DMGT)",note:"DMGT also owns Metro and the i Paper; agreed to buy The Telegraph in 2025."},
+{n:"The Guardian",hq:"London, GB",lat:51.5340,lng:-0.1200,cat:"print",tier:2,sec:"Newspaper + global digital",reach:"Top-5 English news site worldwide",own:"The Scott Trust (no private owner)",note:""},
+{n:"Al Jazeera",hq:"Doha, QA",lat:25.3260,lng:51.5310,cat:"broadcast",tier:2,sec:"Global TV & digital news",reach:"~63M visits/mo, fast-growing; major non-Western voice",own:"Qatari state",note:""},
+{n:"NBC News / MSNBC / CNBC",hq:"New York, US",lat:40.7570,lng:-73.9810,cat:"broadcast",tier:2,sec:"Broadcast + cable news",reach:"Major US news operation",own:"Comcast (cable nets spinning off as 'Versant', 2025)",note:""},
+{n:"CBS News",hq:"New York, US",lat:40.7637,lng:-73.9772,cat:"broadcast",tier:2,sec:"US broadcast news (60 Minutes)",reach:"'Big Three' US network newsroom",own:"Paramount Skydance (Ellison family)",note:""},
+{n:"ABC News",hq:"New York, US",lat:40.7610,lng:-73.9790,cat:"broadcast",tier:2,sec:"US broadcast news",reach:"'Big Three' US network newsroom",own:"Disney",note:""},
+{n:"Agence France-Presse (AFP)",hq:"Paris, FR",lat:48.8690,lng:2.3380,cat:"agency",tier:2,sec:"Global wire service",reach:"One of the 'big three' wire agencies",own:"Independent; commercial with French-state ties",note:""},
+{n:"Sky News",hq:"London, GB",lat:51.4790,lng:-0.0090,cat:"broadcast",tier:2,sec:"TV & digital news (UK/Europe)",reach:"Major European broadcast news",own:"Comcast",note:""},
+{n:"Deutsche Welle (DW)",hq:"Bonn, DE",lat:50.7110,lng:7.1490,cat:"broadcast",tier:2,sec:"Germany's global broadcaster",reach:"Multilingual global news",own:"German state",note:""},
+{n:"France 24 / RFI",hq:"Paris, FR",lat:48.8290,lng:2.2400,cat:"broadcast",tier:2,sec:"France's global news (TV/radio)",reach:"Multilingual global news (France Médias Monde)",own:"French state",note:""},
+{n:"Times of India",hq:"Mumbai, IN",lat:19.0560,lng:72.8290,cat:"print",tier:2,sec:"World's largest English daily + digital",reach:"Among the most-read English papers; vast Indian reach",own:"Jain family (Bennett, Coleman & Co.)",note:""},
+{n:"India Today / Aaj Tak",hq:"Noida, IN",lat:28.5700,lng:77.3210,cat:"broadcast",tier:2,sec:"TV + digital news (Eng/Hindi)",reach:"~1B+ visits/mo; dominant Indian digital news",own:"Living Media (Purie family)",note:""},
+{n:"Hindustan Times / India.com",hq:"New Delhi, IN",lat:28.6280,lng:77.2180,cat:"print",tier:2,sec:"Newspaper + high-traffic digital",reach:"Among the fastest-growing global news sites",own:"HT Media (Birla family) and others",note:""},
+{n:"NDTV",hq:"New Delhi, IN",lat:28.5670,lng:77.2030,cat:"broadcast",tier:2,sec:"TV news (Eng/Hindi)",reach:"Major Indian broadcaster",own:"Adani Group (acquired 2022)",note:""},
+{n:"Grupo Globo (G1 / GloboNews)",hq:"Rio de Janeiro, BR",lat:-22.9510,lng:-43.2010,cat:"broadcast",tier:2,sec:"Largest news operation in Latin America",reach:"Dominant Brazilian TV & digital news",own:"Marinho family",note:""},
+
+{n:"The Economist",hq:"London, GB",lat:51.5070,lng:-0.1340,cat:"business",tier:3,sec:"Global news magazine",reach:"Influential global weekly",own:"Exor (Agnelli) + Rothschild + staff",note:""},
+{n:"Financial Times",hq:"London, GB",lat:51.5130,lng:-0.0900,cat:"business",tier:3,sec:"Global business newspaper",reach:"Premier global business daily",own:"Nikkei (Japan)",note:""},
+{n:"Nikkei",hq:"Tokyo, JP",lat:35.6870,lng:139.7660,cat:"business",tier:3,sec:"Japan's business-news giant",reach:"Largest financial daily in Asia; owns the FT",own:"Employee-held",note:""},
+{n:"Yomiuri Shimbun",hq:"Tokyo, JP",lat:35.6890,lng:139.7660,cat:"print",tier:3,sec:"World's largest-circulation newspaper",reach:"~6-7M daily circulation",own:"Shoriki family",note:""},
+{n:"Asahi Shimbun",hq:"Tokyo, JP",lat:35.6620,lng:139.7610,cat:"print",tier:3,sec:"Major Japanese daily",reach:"Among the world's largest circulations",own:"Murayama / Ueno families",note:""},
+{n:"Le Monde",hq:"Paris, FR",lat:48.8290,lng:2.3690,cat:"print",tier:3,sec:"France's paper of record",reach:"Leading French daily",own:"Xavier Niel & Kretinsky stakes; staff trust",note:""},
+{n:"El Pais (Prisa)",hq:"Madrid, ES",lat:40.4790,lng:-3.6890,cat:"print",tier:3,sec:"Spain's leading daily",reach:"Top Spanish-language news brand",own:"Prisa (Oughourlian / Amber; Vivendi stake)",note:""},
+{n:"Der Spiegel",hq:"Hamburg, DE",lat:53.5440,lng:9.9940,cat:"print",tier:3,sec:"Germany's flagship news magazine",reach:"Leading German investigative news",own:"Staff (Mitarbeiter KG) + Augstein heirs",note:""},
+{n:"Politico",hq:"Arlington, US",lat:38.8790,lng:-77.1080,cat:"digital",tier:3,sec:"Political news",reach:"~53M visits/mo; influential in DC & Brussels",own:"Axel Springer",note:""},
+{n:"Substack",hq:"San Francisco, US",lat:37.7790,lng:-122.4170,cat:"digital",tier:3,sec:"Independent / newsletter journalism",reach:"~150M visits/mo; home to many independent writers",own:"Private (Best, McKenzie, Sethi)",note:""},
+{n:"CBC / Radio-Canada",hq:"Ottawa, CA",lat:45.4200,lng:-75.6960,cat:"broadcast",tier:3,sec:"Canada's public broadcaster",reach:"~100M visits/mo; fast-growing",own:"Canadian crown corporation",note:""},
+{n:"ABC (Australia)",hq:"Sydney, AU",lat:-33.8700,lng:151.2010,cat:"broadcast",tier:3,sec:"Australia's public broadcaster",reach:"Leading Australian news",own:"Australian public broadcaster",note:""},
+{n:"RT (Russia Today)",hq:"Moscow, RU",lat:55.7900,lng:37.5800,cat:"broadcast",tier:3,sec:"Russian state global TV/digital",reach:"State-funded international broadcaster",own:"Russian state",note:""},
+{n:"TASS / RIA Novosti",hq:"Moscow, RU",lat:55.7700,lng:37.6300,cat:"agency",tier:3,sec:"Russian state wire services",reach:"Primary Russian state agencies",own:"Russian state (Rossiya Segodnya)",note:""},
+{n:"Anadolu Agency",hq:"Ankara, TR",lat:39.9100,lng:32.8200,cat:"agency",tier:3,sec:"Turkish state wire service",reach:"Major regional wire",own:"Turkish state",note:""},
+{n:"EFE",hq:"Madrid, ES",lat:40.4300,lng:-3.7000,cat:"agency",tier:3,sec:"Spanish-language wire service",reach:"Largest Spanish-language wire",own:"Spanish state (SEPI)",note:""},
+{n:"Kyodo News",hq:"Tokyo, JP",lat:35.6660,lng:139.7570,cat:"agency",tier:3,sec:"Japanese wire service",reach:"Feeds the Japanese press",own:"Cooperative",note:""},
+{n:"Press Trust of India (PTI)",hq:"New Delhi, IN",lat:28.6280,lng:77.2200,cat:"agency",tier:3,sec:"India's main wire service",reach:"Feeds the Indian press",own:"Nonprofit cooperative",note:""},
+{n:"Euronews",hq:"Lyon, FR",lat:45.7330,lng:4.8180,cat:"broadcast",tier:3,sec:"Pan-European TV news",reach:"Multilingual European news",own:"Alpac Capital (maj.) / Sawiris (min.)",note:""},
+{n:"Network18 (CNN-News18, CNBC-TV18)",hq:"Mumbai, IN",lat:19.0410,lng:72.8680,cat:"broadcast",tier:3,sec:"English & Hindi TV news",reach:"Major Indian broadcast-news group",own:"Reliance (Ambani)",note:""},
+{n:"The Telegraph",hq:"London, GB",lat:51.5000,lng:-0.1110,cat:"print",tier:3,sec:"UK centre-right daily + The Spectator was split off",reach:"Major UK quality paper",own:"Axel Springer (acquisition agreed 2026; prev. RedBird IMI)",note:""},
+{n:"USA Today (Gannett)",hq:"McLean, US",lat:38.9340,lng:-77.1810,cat:"print",tier:3,sec:"National daily + ~200 US local papers",reach:"Largest US local-newspaper network",own:"Gannett",note:""},
+{n:"Sinclair",hq:"Hunt Valley, US",lat:39.4900,lng:-76.6580,cat:"broadcast",tier:3,sec:"US local TV news (185+ stations)",reach:"Reaches ~40% of US TV households",own:"Smith family",note:""},
+{n:"Nexstar / NewsNation",hq:"Irving, US",lat:32.8730,lng:-96.9690,cat:"broadcast",tier:3,sec:"Largest US local-TV news owner + NewsNation",reach:"Stations reach ~68% of US TV households",own:"Widely held",note:""},
+{n:"The Times / The Sun (News UK)",hq:"London, GB",lat:51.5050,lng:-0.0840,cat:"print",tier:3,sec:"UK quality + tabloid dailies",reach:"Major UK newspapers",own:"News Corp (Lachlan Murdoch)",note:""},
+{n:"Naver / Daum portals",hq:"Seongnam, KR",lat:37.3590,lng:127.1050,cat:"digital",tier:3,sec:"Dominant Korean news portals",reach:"Most South Koreans read news via Naver/Daum",own:"Naver / Kakao",note:""},
+{n:"South China Morning Post",hq:"Hong Kong, CN",lat:22.2870,lng:114.1880,cat:"print",tier:3,sec:"Leading English daily on China/Asia",reach:"Influential Asia coverage",own:"Alibaba",note:""},
+{n:"Apple News",hq:"Cupertino, US",lat:37.3349,lng:-122.0090,cat:"digital",tier:3,sec:"News aggregator (iOS)",reach:"Built-in reach on ~2B Apple devices; Apple News+",own:"Apple",note:""},
+{n:"Toutiao (Jinri Toutiao)",hq:"Beijing, CN",lat:39.9897,lng:116.4810,cat:"digital",tier:1,sec:"News aggregator (China)",reach:"One of the world’s largest news aggregators — hundreds of millions of users",own:"ByteDance (Zhang Yiming)",note:"Algorithmic news feed; ByteDance’s Chinese news app."},
+{n:"Tencent News",hq:"Shenzhen, CN",lat:22.5403,lng:113.9340,cat:"digital",tier:2,sec:"News portal & app (China)",reach:"Major Chinese news platform — hundreds of millions of users",own:"Tencent",note:"Distributed through QQ and WeChat."},
+{n:"Sina / Weibo",hq:"Beijing, CN",lat:39.9750,lng:116.3310,cat:"digital",tier:3,sec:"Social news platform (China)",reach:"Leading Chinese microblog for breaking news",own:"Sina; Alibaba stake",note:""},
+{n:"Dainik Jagran",hq:"Kanpur, IN",lat:26.4500,lng:80.3320,cat:"print",tier:2,sec:"Hindi daily newspaper (India)",reach:"World’s most-read daily — ~56M readership (IRS)",own:"Jagran Prakashan (Gupta family)",note:"Declared the largest-read daily in the world by WAN."},
+{n:"Dainik Bhaskar",hq:"Bhopal, IN",lat:23.2600,lng:77.4130,cat:"print",tier:3,sec:"Hindi daily newspaper (India)",reach:"Among India’s largest-circulation dailies (~3.6M)",own:"D B Corp (Agarwal family)",note:"India’s largest print-media company."},
+{n:"Al Arabiya",hq:"Dubai, AE",lat:25.0950,lng:55.1600,cat:"broadcast",tier:2,sec:"Pan-Arab TV news",reach:"Leading Arabic news channel; main rival to Al Jazeera",own:"Saudi state (MBC / PIF)",note:""},
+{n:"TRT (TRT World)",hq:"Istanbul, TR",lat:41.0660,lng:28.9930,cat:"broadcast",tier:3,sec:"Turkey’s state broadcaster (global English channel)",reach:"Multilingual state news with a global reach",own:"Turkish state",note:""},
+{n:"Bild",hq:"Berlin, DE",lat:52.5060,lng:13.3910,cat:"print",tier:3,sec:"Tabloid newspaper (Germany)",reach:"Germany’s largest newspaper by reach",own:"Axel Springer (Döpfner & Springer family)",note:""}
+];
+const DATA_OWN = [
+{n:"Government of China",hq:"Beijing, CN",lat:39.9087,lng:116.3975,cat:"state",tier:1,sec:"Xinhua, CGTN/CCTV, People's Daily + entire domestic press",note:"The largest news apparatus on earth, with near-total control of domestic news for ~1.4B people."},
+{n:"Murdoch family",hq:"New York, US",lat:40.7575,lng:-73.9890,cat:"family",tier:1,sec:"Fox News, WSJ, NY Post, The Times & The Sun (UK), Sky News Australia, most of Australia's metro press",note:"The most powerful private news dynasty in the English-speaking world. Lachlan Murdoch took voting control after the family-trust settlement of Sept 2025."},
+{n:"Government of the UK (BBC)",hq:"London, GB",lat:51.5180,lng:-0.1440,cat:"state",tier:1,sec:"BBC News — TV, radio, online, World Service (40+ languages)",note:"Among the most-used and most-trusted news brands globally."},
+{n:"Alphabet (Google)",hq:"Mountain View, US",lat:37.4220,lng:-122.0841,cat:"public",tier:1,sec:"Google News, Search, Discover, YouTube",note:"Controls distribution, not newsrooms — but as the dominant gateway it effectively sets how billions find news and how much traffic publishers get."},
+{n:"Comcast / Roberts family",hq:"Philadelphia, US",lat:39.9540,lng:-75.1686,cat:"family",tier:1,sec:"NBC News, MSNBC, CNBC, Sky News, Telemundo",note:"One of the largest broadcast-news owners; Roberts family hold ~33% voting control. Cable news nets spinning off as 'Versant' (2025)."},
+
+{n:"Government of Russia",hq:"Moscow, RU",lat:55.7520,lng:37.6175,cat:"state",tier:2,sec:"RT, TASS, RIA Novosti, Channel One, state press",note:"Extensive state-controlled news, foreign and domestic."},
+{n:"Government of Qatar",hq:"Doha, QA",lat:25.3260,lng:51.5310,cat:"state",tier:2,sec:"Al Jazeera network (Arabic, English, Balkans, digital)",note:"Funds one of the most-watched global news networks."},
+{n:"Government of France",hq:"Paris, FR",lat:48.8704,lng:2.3166,cat:"state",tier:2,sec:"France Medias Monde (France 24/RFI), France TV news, AFP ties",note:"Major state news footprint at home and abroad."},
+{n:"Government of Germany",hq:"Berlin, DE",lat:52.5186,lng:13.3762,cat:"state",tier:2,sec:"Deutsche Welle + ARD/ZDF news",note:"Public-broadcast news at home and DW globally."},
+{n:"Government of India",hq:"New Delhi, IN",lat:28.6140,lng:77.2090,cat:"state",tier:2,sec:"Doordarshan News, All India Radio, PTI influence",note:"State broadcast news to 1.4B, plus heavy government sway over private outlets."},
+{n:"Government of Saudi Arabia (PIF)",hq:"Riyadh, SA",lat:24.7136,lng:46.6753,cat:"state",tier:2,sec:"MBC/Al Arabiya, SRMG (Asharq, Arab News, Asharq Bloomberg)",note:"Controls the leading pan-Arab news outlets."},
+{n:"Warner Bros. Discovery",hq:"New York, US",lat:40.7538,lng:-74.0019,cat:"public",tier:2,sec:"CNN, CNN International, HLN",note:"Owns one of the largest global TV-news brands (pending Paramount Skydance takeover)."},
+{n:"Sulzberger family (NYT Co.)",hq:"New York, US",lat:40.7559,lng:-73.9903,cat:"family",tier:2,sec:"The New York Times, The Athletic, Wirecutter, Cooking",note:"Controls the most influential US newspaper through Class B shares."},
+{n:"Thomson family (Thomson Reuters)",hq:"Toronto, CA",lat:43.6470,lng:-79.3810,cat:"family",tier:2,sec:"Reuters global wire service + legal/financial data",note:"Controls one of the 'big three' wire agencies (~69% via Woodbridge)."},
+{n:"Michael Bloomberg",hq:"New York, US",lat:40.7625,lng:-73.9700,cat:"family",tier:2,sec:"Bloomberg News, TV, radio, Businessweek",note:"Owns the dominant financial-news machine (~88%)."},
+{n:"Jeff Bezos",hq:"Washington, US",lat:38.9047,lng:-77.0400,cat:"family",tier:2,sec:"The Washington Post (Nash Holdings)",note:"Individual owner of a major US national newspaper."},
+{n:"Paramount Skydance (Ellison family)",hq:"New York, US",lat:40.7637,lng:-73.9772,cat:"family",tier:2,sec:"CBS News, 60 Minutes, local CBS stations",note:"Controls a 'Big Three' US network newsroom (Ellison-controlled since Aug 2025)."},
+{n:"Disney",hq:"Burbank, US",lat:34.1561,lng:-118.3247,cat:"public",tier:2,sec:"ABC News, local ABC stations, National Geographic",note:"Owns a 'Big Three' US broadcast newsroom."},
+{n:"Axel Springer (Dopfner & Springer family)",hq:"Berlin, DE",lat:52.5060,lng:13.3910,cat:"family",tier:2,sec:"Bild, Welt, Politico, Business Insider; acquiring The Telegraph (2026)",note:"Europe's largest digital-news publisher, expanding into the US and UK."},
+{n:"Rothermere family (DMGT)",hq:"London, GB",lat:51.4990,lng:-0.1980,cat:"family",tier:2,sec:"Daily Mail/MailOnline, Metro, i Paper, New Scientist",note:"One of the largest UK newspaper owners; agreed to buy The Telegraph in 2025."},
+{n:"Meta",hq:"Menlo Park, US",lat:37.4848,lng:-122.1484,cat:"public",tier:2,sec:"Facebook, Instagram, Threads, WhatsApp",note:"Controls vast news distribution (~36% use Facebook for news weekly) though it has deprioritised news in its feeds."},
+
+{n:"The Scott Trust (The Guardian)",hq:"London, GB",lat:51.5340,lng:-0.1200,cat:"institutional",tier:3,sec:"The Guardian + global digital",note:"Trust ownership designed to keep the Guardian free of any single proprietor."},
+{n:"Marinho family (Grupo Globo)",hq:"Rio de Janeiro, BR",lat:-22.9510,lng:-43.2010,cat:"family",tier:3,sec:"TV Globo news, G1, GloboNews",note:"Controls Latin America's largest news operation."},
+{n:"Jain family (Bennett Coleman)",hq:"Mumbai, IN",lat:19.0560,lng:72.8290,cat:"family",tier:3,sec:"Times of India, Economic Times, Times Now",note:"India's largest print and news group."},
+{n:"Adani Group",hq:"Ahmedabad, IN",lat:23.0300,lng:72.5800,cat:"family",tier:3,sec:"NDTV + media stakes",note:"Industrial conglomerate that took control of TV news in 2022."},
+{n:"Reliance (Ambani)",hq:"Mumbai, IN",lat:19.0410,lng:72.8680,cat:"family",tier:3,sec:"Network18, CNN-News18, CNBC-TV18",note:"Controls a major Indian broadcast-news group."},
+{n:"Gannett",hq:"McLean, US",lat:38.9340,lng:-77.1810,cat:"public",tier:3,sec:"USA Today + ~200 US local dailies",note:"Largest US local-newspaper owner by number of titles."},
+{n:"Nexstar Media Group",hq:"Irving, US",lat:32.8730,lng:-96.9690,cat:"public",tier:3,sec:"200+ local TV stations, NewsNation, The CW",note:"Largest US local-TV news owner; stations reach ~68% of US TV households."},
+{n:"Sinclair (Smith family)",hq:"Hunt Valley, US",lat:39.4900,lng:-76.6580,cat:"family",tier:3,sec:"185+ local TV stations",note:"Known for centralised must-run segments across local newsrooms."},
+{n:"Hearst",hq:"New York, US",lat:40.7660,lng:-73.9870,cat:"family",tier:3,sec:"~30 newspapers, ~35 TV stations, A&E/History, ESPN stake",note:"Large US local-news and magazine owner (Hearst family trust)."},
+{n:"Apollo Global Management",hq:"New York, US",lat:40.7575,lng:-73.9760,cat:"institutional",tier:3,sec:"Yahoo (incl. Yahoo News)",note:"Owns the world's most-visited news portal."},
+{n:"Microsoft",hq:"Redmond, US",lat:47.6396,lng:-122.1284,cat:"public",tier:3,sec:"MSN / Microsoft Start",note:"Controls a top global news aggregator; distribution, not original reporting."},
+{n:"Apple",hq:"Cupertino, US",lat:37.3349,lng:-122.0090,cat:"public",tier:3,sec:"Apple News / News+",note:"Default news gateway on ~2B Apple devices."},
+{n:"Exor (Agnelli family)",hq:"London, GB",lat:51.5070,lng:-0.1340,cat:"family",tier:3,sec:"The Economist (largest holder), GEDI (La Repubblica, La Stampa)",note:"Controls leading Italian press plus a big Economist stake."},
+{n:"Government of Turkey",hq:"Ankara, TR",lat:39.9100,lng:32.8200,cat:"state",tier:3,sec:"TRT, Anadolu Agency + allied press",note:"Dominant state and pro-government news."},
+{n:"Naguib Sawiris / Alpac Capital",hq:"Lyon, FR",lat:45.7330,lng:4.8180,cat:"family",tier:3,sec:"Euronews",note:"Controls a pan-European TV-news network."},
+{n:"Index-fund 'Big Three'",hq:"New York, US",lat:40.7531,lng:-74.0010,cat:"institutional",tier:3,sec:"Top shareholders of NYT, Fox, Comcast, WBD, Gannett, Nexstar…",note:"BlackRock, Vanguard and State Street are the largest *shareholders* of nearly every listed news company — though they exercise no editorial control."},
+{n:"Patrick Soon-Shiong",hq:"El Segundo, US",lat:33.9200,lng:-118.3870,cat:"family",tier:4,sec:"Los Angeles Times",note:"Individual owner of a major US metro newspaper."},
+{n:"Laurene Powell Jobs (Emerson Collective)",hq:"Washington, US",lat:38.9040,lng:-77.0360,cat:"family",tier:4,sec:"The Atlantic (majority)",note:"Owns a leading US magazine."},
+{n:"Marc Benioff",hq:"New York, US",lat:40.7570,lng:-73.9910,cat:"family",tier:4,sec:"Time magazine",note:"Individual owner of Time."},
+{n:"ByteDance / Zhang Yiming",hq:"Beijing, CN",lat:39.9897,lng:116.4810,cat:"family",tier:1,sec:"Toutiao + TikTok — among the largest news distributors in the world",note:"Algorithmic feeds shape the news for hundreds of millions; founder holds ~21%."},
+{n:"Tencent",hq:"Shenzhen, CN",lat:22.5403,lng:113.9340,cat:"public",tier:2,sec:"Tencent News + WeChat news distribution",note:"Reaches over a billion people through WeChat."},
+{n:"Jagran Prakashan (Gupta family)",hq:"Kanpur, IN",lat:26.4500,lng:80.3320,cat:"family",tier:3,sec:"Dainik Jagran — world’s most-read daily newspaper",note:""},
+{n:"D B Corp (Agarwal family)",hq:"Bhopal, IN",lat:23.2600,lng:77.4130,cat:"family",tier:4,sec:"Dainik Bhaskar group",note:"India’s largest print-media company."},
+{n:"Alden Global Capital",hq:"New York, US",lat:40.7560,lng:-73.9730,cat:"institutional",tier:3,sec:"~200 US local newspapers (Chicago Tribune, NY Daily News, Denver Post, Mercury News)",note:"Hedge fund known for deep newsroom cost-cutting."}
+];
+
+const map = L.map('map',{zoomControl:true,worldCopyJump:true,minZoom:2,maxZoom:19}).setView([30,-20],2.5);
+const gHyb=L.tileLayer('https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',{subdomains:['mt0','mt1','mt2','mt3'],maxZoom:20,attribution:'Imagery &copy; Google'});
+const gSat=L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{subdomains:['mt0','mt1','mt2','mt3'],maxZoom:20,attribution:'Imagery &copy; Google'});
+const esri=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Imagery &copy; Esri, Maxar'});
+gHyb.addTo(map);
+L.control.layers({"Satellite + labels":gHyb,"Satellite":gSat,"Esri imagery":esri},{},{position:'bottomleft',collapsed:true}).addTo(map);
+
+function coPopup(d,r){
+  const c=CATS_CO[d.cat];
+  return `<div class="pop"><div class="rkbig">Rank #${r} &middot; news reach: tier ${d.tier}</div>
+  <h3>${d.n}</h3><span class="tag" style="background:${c.color}">${c.label}</span>
+  <div class="kv"><b>HQ:</b> ${d.hq}</div><div class="kv"><b>Role:</b> ${d.sec}</div>
+  <div class="kv"><b>Reach:</b> ${d.reach}</div>
+  <div class="kv"><b>Owner:</b> ${d.own}</div>
+  ${d.note?`<div class="note">${d.note}</div>`:''}</div>`;
+}
+function ownPopup(d,r){
+  const c=CATS_OWN[d.cat];
+  return `<div class="pop"><div class="rkbig">Rank #${r} &middot; news-control weight: tier ${d.tier}</div>
+  <h3>${d.n}</h3><span class="tag" style="background:${c.color}">${c.label}</span>
+  <div class="kv"><b>HQ:</b> ${d.hq}</div><div class="kv"><b>Controls:</b> ${d.sec}</div>
+  ${d.note?`<div class="note">${d.note}</div>`:''}</div>`;
+}
+
+const CFG = {
+  cos:{
+    data:DATA_CO, cats:CATS_CO,
+    h:"The World's Largest News Organisations",
+    p:'The biggest news producers and distributors worldwide, sized by global news reach \u2014 from wire agencies that feed everyone to the platforms that now decide what most people see. Together these cover the great majority of global news reach. <span class="mono">(2026)</span>',
+    note:"Marker size = approximate global news reach/scale (tiers). Reach figures come from Reuters Institute, Press Gazette/Similarweb and company data (2025). There is no single summable 'share of world news' (unlike ad dollars), so entries are sized by reach, not market share. This set spans essentially all the world's largest news outlets plus the platforms most people use to find news.",
+    size:d=>RADIUS[d.tier], popup:coPopup,
+    sub:d=>`${d.hq} &middot; ${d.sec}`
+  },
+  own:{
+    data:DATA_OWN, cats:CATS_OWN,
+    h:"Who Controls the World's News",
+    p:'The biggest owners of news \u2014 the states, families, funds and platforms that control the outlets and the distribution. Sized by breadth of news control. <span class="mono">(2026)</span>',
+    note:"Marker size = approximate breadth of news control. States and founder-families dominate editorial control; index funds are the largest shareholders of listed news firms; platforms control distribution, not newsrooms.",
+    size:d=>RADIUS[d.tier], popup:ownPopup,
+    sub:d=>`${d.hq} &middot; ${d.sec}`
+  }
+};
+
+const listEl=document.getElementById('list'), legendEl=document.getElementById('legend');
+const searchEl=document.getElementById('search'), countEl=document.getElementById('count');
+let cur={items:[],active:new Set(),cfg:null,key:null};
+function clearCur(){cur.items.forEach(it=>map.removeLayer(it.marker));cur.items=[];listEl.innerHTML='';legendEl.innerHTML='';}
+
+function build(key){
+  clearCur();
+  const cfg=CFG[key]; cur.cfg=cfg; cur.key=key;
+  document.getElementById('title-h').innerHTML=cfg.h;
+  document.getElementById('title-p').innerHTML=cfg.p;
+  document.getElementById('sizenote').innerHTML=cfg.note;
+  cur.active=new Set(Object.keys(cfg.cats));
+  Object.entries(cfg.cats).forEach(([k,c])=>{
+    const el=document.createElement('div'); el.className='leg';
+    el.innerHTML=`<span class="dot" style="background:${c.color}"></span><span class="lab">${c.label}</span><span class="cnt" id="cnt-${k}"></span>`;
+    el.addEventListener('click',()=>{if(cur.active.has(k)){cur.active.delete(k);el.classList.add('off');}else{cur.active.add(k);el.classList.remove('off');}applyFilters();});
+    legendEl.appendChild(el);
+  });
+  const rows=[...cfg.data].sort((a,b)=>cfg.size(b)-cfg.size(a));
+  rows.forEach((d,i)=>{
+    const rank=i+1, c=cfg.cats[d.cat], base=cfg.size(d);
+    const marker=L.circleMarker([d.lat,d.lng],{radius:base,color:STROKE,weight:1,fillColor:c.color,fillOpacity:.82,className:'mk'}).bindPopup(cfg.popup(d,rank),{maxWidth:300});
+    marker.on('mouseover',()=>marker.setStyle({radius:base+2.5,weight:1.6,color:'rgba(255,255,255,.92)'}));
+    marker.on('mouseout',()=>marker.setStyle({radius:base,weight:1,color:STROKE}));
+    marker.addTo(map);
+    const row=document.createElement('div'); row.className='row';
+    row.innerHTML=`<div class="rk">${rank}</div><div class="bar" style="background:${c.color}"></div><div><div class="nm">${d.n}</div><div class="sub">${cfg.sub(d)}</div></div>`;
+    row.addEventListener('click',()=>{map.flyTo([d.lat,d.lng],Math.max(map.getZoom(),6),{duration:.8});marker.openPopup();});
+    listEl.appendChild(row);
+    cur.items.push({d,marker,row});
+  });
+  applyFilters();
+}
+function applyFilters(){
+  const q=searchEl.value.trim().toLowerCase(); let shown=0; const per={};
+  Object.keys(cur.cfg.cats).forEach(k=>per[k]=0);
+  cur.items.forEach(({d,marker,row})=>{
+    const ok=cur.active.has(d.cat)&&(!q||(d.n+' '+d.hq+' '+d.sec+' '+(d.own||'')).toLowerCase().includes(q));
+    if(ok){if(!map.hasLayer(marker))marker.addTo(map);row.style.display='';shown++;per[d.cat]++;}
+    else{if(map.hasLayer(marker))map.removeLayer(marker);row.style.display='none';}
+  });
+  countEl.textContent=shown+' / '+cur.items.length+' shown';
+  Object.keys(cur.cfg.cats).forEach(k=>{const e=document.getElementById('cnt-'+k);if(e)e.textContent=per[k];});
+}
+searchEl.addEventListener('input',applyFilters);
+document.getElementById('reset').addEventListener('click',()=>{searchEl.value='';build(cur.key);map.setView([30,-20],2.5);});
+const tC=document.getElementById('tab-cos'), tW=document.getElementById('tab-own');
+tC.addEventListener('click',()=>{tC.classList.add('on');tW.classList.remove('on');build('cos');});
+tW.addEventListener('click',()=>{tW.classList.add('on');tC.classList.remove('on');build('own');});
+build('cos');
+</script>
+</body>
+</html>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0" />
+<title>World Entertainment 2026 — Companies & Owners</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<style>
+  :root{--bg:#0b0e13;--panel:#10151d;--panel2:#171e28;--line:#262f3b;--ink:#e6ebf1;--ink-dim:#8d99a8;--accent:#7fa8d0}
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+  #map{position:absolute;inset:0;background:#0b0e13}
+  .tabs{position:absolute;top:14px;left:50%;transform:translateX(-50%);z-index:700;display:flex;gap:2px;background:rgba(9,12,17,.9);border:1px solid var(--line);border-radius:8px;padding:3px;box-shadow:0 2px 14px rgba(0,0,0,.4)}
+  .tab{background:transparent;border:0;color:var(--ink-dim);font:inherit;font-size:12px;font-weight:600;letter-spacing:.03em;padding:7px 15px;border-radius:6px;cursor:pointer;transition:color .15s,background .15s}
+  .tab:hover{color:var(--ink)}
+  .tab.on{background:var(--panel2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+  .title{position:absolute;top:60px;left:14px;z-index:600;background:rgba(9,12,17,.78);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:10px;padding:12px 15px;max-width:380px;box-shadow:0 2px 18px rgba(0,0,0,.35)}
+  .title h1{margin:0;font-size:13.5px;letter-spacing:.10em;text-transform:uppercase;font-weight:700;line-height:1.3}
+  .title p{margin:6px 0 0;font-size:11px;color:var(--ink-dim);line-height:1.5}
+  .title .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:0}
+  .panel{position:absolute;top:14px;right:14px;z-index:600;width:306px;max-width:calc(100vw - 28px);background:rgba(16,21,29,.93);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:10px;display:flex;flex-direction:column;max-height:calc(100vh - 28px);box-shadow:0 2px 18px rgba(0,0,0,.4)}
+  .panel .pad{padding:13px 13px 11px}
+  .search{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:7px;color:var(--ink);padding:9px 11px;font-size:13px;outline:none;transition:border-color .15s}
+  .search::placeholder{color:#5e6b7a}
+  .search:focus{border-color:#3f5a76}
+  .legend{margin-top:11px;display:flex;flex-direction:column;gap:3px}
+  .leg{display:flex;align-items:center;gap:9px;cursor:pointer;user-select:none;font-size:12px;padding:5px 6px;border-radius:6px;transition:background .12s}
+  .leg:hover{background:var(--panel2)}
+  .leg.off{opacity:.38}
+  .leg .dot{width:10px;height:10px;border-radius:2px;flex:0 0 auto;box-shadow:0 0 0 1px rgba(255,255,255,.18)}
+  .leg .lab{flex:1;color:var(--ink)}
+  .leg .cnt{font-family:ui-monospace,monospace;color:var(--ink-dim);font-size:11px}
+  .sizenote{font-size:10.5px;color:#5f6b79;margin-top:10px;line-height:1.5}
+  .meta{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--ink-dim);margin-top:10px;padding-top:9px;border-top:1px solid var(--line)}
+  .meta a{color:var(--accent);text-decoration:none;cursor:pointer}
+  .meta a:hover{color:#a9c8e6}
+  .listwrap{overflow:auto;border-top:1px solid var(--line);padding:6px 6px 9px}
+  .listwrap::-webkit-scrollbar{width:8px}
+  .listwrap::-webkit-scrollbar-thumb{background:#2a3543;border-radius:8px}
+  .row{display:flex;gap:9px;align-items:flex-start;padding:7px 8px;border-radius:7px;cursor:pointer;transition:background .12s}
+  .row:hover{background:var(--panel2)}
+  .row .rk{font-family:ui-monospace,monospace;font-size:11px;color:var(--ink-dim);min-width:22px;text-align:right;margin-top:1px}
+  .row .bar{width:3px;align-self:stretch;border-radius:2px;flex:0 0 auto;margin-top:1px}
+  .row .nm{font-size:12.5px;line-height:1.3;font-weight:600}
+  .row .sub{font-size:10.5px;color:var(--ink-dim);margin-top:2px;line-height:1.35}
+  .row .sub .mono{font-family:ui-monospace,monospace}
+  .leaflet-pane path.mk{filter:drop-shadow(0 1px 2px rgba(0,0,0,.55))}
+  .leaflet-popup-content-wrapper{background:var(--panel);color:var(--ink);border-radius:10px;border:1px solid var(--line);box-shadow:0 6px 26px rgba(0,0,0,.5)}
+  .leaflet-popup-tip{background:var(--panel);border:1px solid var(--line)}
+  .leaflet-popup-content{margin:12px 14px;font-size:12.5px;line-height:1.5;min-width:230px}
+  .pop h3{margin:0 0 2px;font-size:14px;line-height:1.3;font-weight:700}
+  .pop .rkbig{font-family:ui-monospace,monospace;font-size:10.5px;color:var(--ink-dim);letter-spacing:.04em;text-transform:uppercase}
+  .pop .tag{display:inline-block;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:4px;margin:7px 0 8px;font-weight:700;color:#0b0e13}
+  .pop .kv{margin:3px 0}
+  .pop .kv b{color:var(--ink-dim);font-weight:600}
+  .pop .note{margin-top:8px;padding-top:7px;border-top:1px solid var(--line);color:#c4cedb;font-size:11.5px}
+  .pop .mono{font-family:ui-monospace,monospace}
+  .leaflet-bar a{background:#171e28;color:#e6ebf1;border-bottom:1px solid var(--line)}
+  .leaflet-bar a:hover{background:#222c39}
+  .leaflet-control-attribution{background:rgba(9,12,17,.72)!important;color:#6c7785!important;font-size:10px!important}
+  .leaflet-control-attribution a{color:#8fa9c2!important}
+  .leaflet-control-layers{background:rgba(16,21,29,.96)!important;color:var(--ink)!important;border:1px solid var(--line)!important;border-radius:8px!important}
+  .leaflet-control-layers-expanded{padding:9px 11px!important}
+  @media (max-width:640px){
+    .title{max-width:calc(100vw - 28px);left:8px;padding:9px 11px}
+    .title h1{font-size:12px}
+    .panel{width:calc(100vw - 28px);top:auto;bottom:14px;right:14px;max-height:46vh}
+    .tabs{top:8px}
+  }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div class="tabs">
+  <button class="tab on" id="tab-cos">Largest entertainment companies</button>
+  <button class="tab" id="tab-own">Who owns entertainment</button>
+</div>
+<div class="title">
+  <h1 id="title-h"></h1>
+  <p id="title-p"></p>
+</div>
+<div class="panel">
+  <div class="pad">
+    <input id="search" class="search" type="text" placeholder="Search…" autocomplete="off" />
+    <div class="legend" id="legend"></div>
+    <div class="sizenote" id="sizenote"></div>
+    <div class="meta"><span id="count" class="mono">--</span><a id="reset">Reset view</a></div>
+  </div>
+  <div class="listwrap" id="list"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+const CATS_CO = {
+  film_tv:{label:"Film, TV & streaming",color:"#c7a35a"},
+  games:{label:"Video games",color:"#5fa98a"},
+  music:{label:"Music",color:"#6699c9"},
+  live_parks:{label:"Live entertainment & theme parks",color:"#cf6a5e"},
+  cinema:{label:"Cinema exhibition",color:"#a986c2"}
+};
+const CATS_OWN = {
+  state:{label:"Government / sovereign fund",color:"#cf6a5e"},
+  family:{label:"Family / founder-controlled",color:"#5fa98a"},
+  institutional:{label:"Institutional / fund",color:"#6699c9"},
+  public:{label:"Public company",color:"#c7a35a"}
+};
+const RADIUS = {1:12,2:9.5,3:7.5,4:5.5};
+const entR = p => Math.max(5, Math.min(18, 4 + Math.sqrt(p)*3.4));
+const STROKE = 'rgba(7,11,16,.9)';
+
+const DATA_CO  = [
+{n:"The Walt Disney Company",hq:"Burbank, US",lat:34.1561,lng:-118.3247,cat:"film_tv",pct:6.5,role:"Film, TV, streaming & theme parks",metric:"Captures ~6.5% — entertainment revenue ≈$91B",own:"Widely held",note:"World's largest entertainment company: Disney+, ESPN, Marvel, Pixar, Lucasfilm, Hulu, parks."},
+{n:"Sony",hq:"Tokyo, JP",lat:35.631,lng:139.743,cat:"games",pct:3.43,role:"PlayStation, music & film",metric:"Captures ~3.43% — entertainment revenue ≈$48B",own:"Widely held (Japan)",note:"Combined entertainment: PlayStation, Sony Music (~$13B), Sony Pictures, Crunchyroll."},
+{n:"Netflix",hq:"Los Gatos, US",lat:37.2358,lng:-121.9623,cat:"film_tv",pct:2.79,role:"Subscription streaming",metric:"Captures ~2.79% — entertainment revenue ≈$39B",own:"Widely held",note:"The largest standalone streaming service; ~300M paid memberships."},
+{n:"Warner Bros. Discovery",hq:"New York, US",lat:40.7538,lng:-74.0019,cat:"film_tv",pct:2.79,role:"Film, TV & streaming",metric:"Captures ~2.79% — entertainment revenue ≈$39B",own:"Widely held",note:"HBO/Max, Warner Bros studios, DC, CNN, Discovery; being acquired by Paramount Skydance."},
+{n:"Comcast / NBCUniversal",hq:"Philadelphia, US",lat:39.9526,lng:-75.1652,cat:"film_tv",pct:2.57,role:"TV, film & theme parks",metric:"Captures ~2.57% — entertainment revenue ≈$36B",own:"Roberts family (voting control)",note:"NBC, Universal Pictures, Peacock and Universal theme parks (entertainment arm only)."},
+{n:"Tencent",hq:"Shenzhen, CN",lat:22.5403,lng:113.934,cat:"games",pct:2.14,role:"Games, music & video",metric:"Captures ~2.14% — entertainment revenue ≈$30B",own:"Widely held; Ma Huateng founder",note:"World's largest games company: Riot, Supercell, plus Tencent Music and Tencent Video."},
+{n:"Paramount Skydance",hq:"New York, US",lat:40.7637,lng:-73.9772,cat:"film_tv",pct:2.07,role:"Film, TV & streaming",metric:"Captures ~2.07% — entertainment revenue ≈$29B",own:"Ellison family",note:"CBS, Paramount Pictures, Nickelodeon, MTV, Paramount+; acquiring Warner Bros. Discovery."},
+{n:"Live Nation",hq:"Beverly Hills, US",lat:34.07,lng:-118.4,cat:"live_parks",pct:1.64,role:"Concerts & ticketing",metric:"Captures ~1.64% — entertainment revenue ≈$23B",own:"Liberty Media (John Malone) stake",note:"The dominant live-music and ticketing company (Ticketmaster)."},
+{n:"Microsoft (Xbox)",hq:"Redmond, US",lat:47.6396,lng:-122.1284,cat:"games",pct:1.57,role:"Video games",metric:"Captures ~1.57% — entertainment revenue ≈$22B",own:"Widely held",note:"Xbox plus Activision Blizzard King (Call of Duty, Candy Crush) and Bethesda."},
+{n:"Spotify",hq:"Stockholm, SE",lat:59.3346,lng:18.059,cat:"music",pct:1.14,role:"Music & podcast streaming",metric:"Captures ~1.14% — entertainment revenue ≈$16B",own:"Daniel Ek (voting control)",note:"The largest music-streaming service worldwide."},
+{n:"NetEase",hq:"Hangzhou, CN",lat:30.287,lng:120.099,cat:"games",pct:1.07,role:"Video games",metric:"Captures ~1.07% — entertainment revenue ≈$15B",own:"William Ding (founder)",note:"China's #2 games company."},
+{n:"Fox Entertainment",hq:"New York, US",lat:40.7589,lng:-73.982,cat:"film_tv",pct:1.0,role:"Broadcast & streaming",metric:"Captures ~1.0% — entertainment revenue ≈$14B",own:"Lachlan Murdoch (control)",note:"Fox network entertainment and the free streamer Tubi (entertainment side)."},
+{n:"Amazon (entertainment)",hq:"Seattle, US",lat:47.6062,lng:-122.3321,cat:"film_tv",pct:0.93,role:"Streaming, studios & games",metric:"Captures ~0.93% — entertainment revenue ≈$13B (est.)",own:"Widely held (Bezos founder)",note:"Prime Video, MGM, Twitch, Audible and Amazon Games (estimate)."},
+{n:"Universal Music Group",hq:"Hilversum, NL",lat:52.23,lng:5.175,cat:"music",pct:0.88,role:"Recorded music & publishing",metric:"Captures ~0.88% — entertainment revenue ≈$12.3B",own:"Bollore, Tencent, Pershing Square",note:"The world's largest music company (~32% of recorded music)."},
+{n:"Nintendo",hq:"Kyoto, JP",lat:34.971,lng:135.756,cat:"games",pct:0.86,role:"Video games & hardware",metric:"Captures ~0.86% — entertainment revenue ≈$12B",own:"Widely held (Japan)",note:"Mario, Zelda, Pokemon, the Switch console."},
+{n:"Reliance / JioStar",hq:"Mumbai, IN",lat:19.076,lng:72.8777,cat:"film_tv",pct:0.61,role:"TV & streaming (India)",metric:"Captures ~0.61% — entertainment revenue ≈$8.5B",own:"Ambani family",note:"Star India + Disney+ Hotstar + JioCinema - India's biggest entertainment platform."},
+{n:"Bandai Namco",hq:"Tokyo, JP",lat:35.73,lng:139.71,cat:"games",pct:0.57,role:"Games, anime & toys",metric:"Captures ~0.57% — entertainment revenue ≈$8B",own:"Widely held (Japan)",note:"Games plus Gundam and major anime/toy franchises."},
+{n:"Electronic Arts",hq:"Redwood City, US",lat:37.529,lng:-122.264,cat:"games",pct:0.54,role:"Video games",metric:"Captures ~0.54% — entertainment revenue ≈$7.5B",own:"Widely held",note:"EA Sports (FC, Madden), Battlefield, The Sims, Apex Legends."},
+{n:"Vivendi / Canal+",hq:"Paris, FR",lat:48.85,lng:2.277,cat:"film_tv",pct:0.5,role:"Pay-TV & film (Europe/Africa)",metric:"Captures ~0.5% — entertainment revenue ≈$7B",own:"Bollore family",note:"Canal+ pay-TV and Studiocanal; spun out of Vivendi in 2024."},
+{n:"Warner Music Group",hq:"New York, US",lat:40.748,lng:-74.003,cat:"music",pct:0.46,role:"Recorded music & publishing",metric:"Captures ~0.46% — entertainment revenue ≈$6.4B",own:"Len Blavatnik / Access Industries",note:"One of the big-three music majors (~16%)."},
+{n:"Epic Games",hq:"Cary, US",lat:35.79,lng:-78.78,cat:"games",pct:0.43,role:"Games & engine",metric:"Captures ~0.43% — entertainment revenue ≈$6B (est.)",own:"Tim Sweeney (control); Tencent ~40%",note:"Fortnite and the Unreal Engine (estimate; private)."},
+{n:"Take-Two Interactive",hq:"New York, US",lat:40.743,lng:-73.991,cat:"games",pct:0.4,role:"Video games",metric:"Captures ~0.4% — entertainment revenue ≈$5.6B",own:"Strauss Zelnick / widely held",note:"Rockstar (Grand Theft Auto), 2K, Zynga."},
+{n:"Banijay (FL Entertainment)",hq:"Paris, FR",lat:48.872,lng:2.33,cat:"film_tv",pct:0.36,role:"TV production",metric:"Captures ~0.36% — entertainment revenue ≈$5B",own:"Stephane Courbit",note:"The world's largest independent TV producer (Endemol Shine, MasterChef, Big Brother)."},
+{n:"Valve",hq:"Bellevue, US",lat:47.615,lng:-122.195,cat:"games",pct:0.36,role:"PC game store & studio",metric:"Captures ~0.36% — entertainment revenue ≈$5B (est.)",own:"Gabe Newell (private)",note:"Steam, the dominant PC-game store (estimate; private)."},
+{n:"AMC Theatres",hq:"Leawood, US",lat:38.917,lng:-94.63,cat:"cinema",pct:0.32,role:"Cinema exhibition",metric:"Captures ~0.32% — entertainment revenue ≈$4.5B",own:"Widely held (Adam Aron, CEO)",note:"The world's largest cinema chain."},
+{n:"Roku",hq:"San Jose, US",lat:37.397,lng:-121.975,cat:"film_tv",pct:0.29,role:"Streaming platform & content",metric:"Captures ~0.29% — entertainment revenue ≈$4B",own:"Anthony Wood (founder)",note:"Leading connected-TV operating system and free Roku Channel."},
+{n:"iQIYI",hq:"Beijing, CN",lat:40.041,lng:116.274,cat:"film_tv",pct:0.29,role:"Streaming (China)",metric:"Captures ~0.29% — entertainment revenue ≈$4B",own:"Baidu (majority)",note:"One of China's largest video-streaming services."},
+{n:"Sega Sammy",hq:"Tokyo, JP",lat:35.626,lng:139.75,cat:"games",pct:0.29,role:"Video games",metric:"Captures ~0.29% — entertainment revenue ≈$4B",own:"Widely held (Japan)",note:"Sonic, Persona, Football Manager; plus arcade and amusement."},
+{n:"HoYoverse (miHoYo)",hq:"Shanghai, CN",lat:31.2,lng:121.5,cat:"games",pct:0.29,role:"Video games",metric:"Captures ~0.29% — entertainment revenue ≈$4B (est.)",own:"Founders (private)",note:"Genshin Impact, Honkai, Zenless Zone Zero (estimate; private)."},
+{n:"Lionsgate / Starz",hq:"Santa Monica, US",lat:34.0195,lng:-118.4912,cat:"film_tv",pct:0.29,role:"Film, TV & streaming",metric:"Captures ~0.29% — entertainment revenue ≈$4B",own:"Widely held",note:"Lionsgate film/TV studio and the Starz network."},
+{n:"Roblox",hq:"San Mateo, US",lat:37.563,lng:-122.326,cat:"games",pct:0.26,role:"Games platform",metric:"Captures ~0.26% — entertainment revenue ≈$3.6B",own:"David Baszucki (founder)",note:"User-generated games platform popular with younger players."},
+{n:"Bilibili",hq:"Shanghai, CN",lat:31.2304,lng:121.4737,cat:"film_tv",pct:0.25,role:"Video & games (China)",metric:"Captures ~0.25% — entertainment revenue ≈$3.5B",own:"Widely held",note:"Chinese video community with anime, games and live content."},
+{n:"Six Flags (Cedar Fair)",hq:"Charlotte, US",lat:35.227,lng:-80.843,cat:"live_parks",pct:0.24,role:"Theme parks",metric:"Captures ~0.24% — entertainment revenue ≈$3.4B",own:"Widely held",note:"Largest regional theme-park operator after the 2024 merger."},
+{n:"Cinemark",hq:"Plano, US",lat:33.049,lng:-96.749,cat:"cinema",pct:0.24,role:"Cinema exhibition",metric:"Captures ~0.24% — entertainment revenue ≈$3.3B",own:"Widely held",note:"Major cinema chain across the Americas."},
+{n:"CJ ENM",hq:"Seoul, KR",lat:37.5665,lng:126.8895,cat:"film_tv",pct:0.21,role:"Film, TV, music & cinema (Korea)",metric:"Captures ~0.21% — entertainment revenue ≈$3B",own:"CJ Group (Lee family)",note:"Korean entertainment giant (Parasite producer); also CJ CGV cinemas."},
+{n:"Nexon",hq:"Seoul, KR",lat:37.402,lng:127.11,cat:"games",pct:0.21,role:"Video games",metric:"Captures ~0.21% — entertainment revenue ≈$3B",own:"NXC (Kim family estate)",note:"MapleStory, Dungeon & Fighter; major Korean publisher."},
+{n:"Globo",hq:"Rio de Janeiro, BR",lat:-22.951,lng:-43.201,cat:"film_tv",pct:0.21,role:"TV & film (Brazil)",metric:"Captures ~0.21% — entertainment revenue ≈$3B",own:"Marinho family",note:"Latin America's largest entertainment producer/broadcaster."},
+{n:"Scopely",hq:"Culver City, US",lat:34.022,lng:-118.396,cat:"games",pct:0.21,role:"Mobile games",metric:"Captures ~0.21% — entertainment revenue ≈$3B",own:"Saudi PIF / Savvy Games",note:"Monopoly Go!, Star Trek Fleet Command; owned by Saudi Arabia's Savvy Games."},
+{n:"Cineworld / Regal",hq:"London, GB",lat:51.515,lng:-0.13,cat:"cinema",pct:0.21,role:"Cinema exhibition",metric:"Captures ~0.21% — entertainment revenue ≈$3B",own:"Widely held (post-restructuring)",note:"Second-largest cinema chain (Regal in the US)."},
+{n:"TKO (WWE + UFC)",hq:"Stamford, US",lat:41.057,lng:-73.539,cat:"live_parks",pct:0.2,role:"Sports entertainment",metric:"Captures ~0.2% — entertainment revenue ≈$2.8B",own:"Silver Lake / Endeavor; McMahon legacy",note:"WWE wrestling and UFC mixed martial arts."},
+{n:"Merlin Entertainments",hq:"Poole, GB",lat:50.72,lng:-1.98,cat:"live_parks",pct:0.19,role:"Theme parks & attractions",metric:"Captures ~0.19% — entertainment revenue ≈$2.7B",own:"Blackstone, KIRKBI (Lego family), CPPIB",note:"Legoland, Madame Tussauds, Sea Life - #2 attractions operator after Disney."},
+{n:"CTS Eventim",hq:"Munich, DE",lat:48.137,lng:11.575,cat:"live_parks",pct:0.19,role:"Ticketing & live (Europe)",metric:"Captures ~0.19% — entertainment revenue ≈$2.7B",own:"Klaus-Peter Schulenberg",note:"Europe's largest ticketing and live-entertainment company."},
+{n:"Konami",hq:"Tokyo, JP",lat:35.689,lng:139.743,cat:"games",pct:0.18,role:"Video games",metric:"Captures ~0.18% — entertainment revenue ≈$2.5B",own:"Widely held (Japan)",note:"eFootball, Metal Gear, Yu-Gi-Oh."},
+{n:"Square Enix",hq:"Tokyo, JP",lat:35.623,lng:139.74,cat:"games",pct:0.18,role:"Video games",metric:"Captures ~0.18% — entertainment revenue ≈$2.5B",own:"Widely held (Japan)",note:"Final Fantasy, Dragon Quest."},
+{n:"Playtika",hq:"Herzliya, IL",lat:32.162,lng:34.809,cat:"games",pct:0.18,role:"Mobile games",metric:"Captures ~0.18% — entertainment revenue ≈$2.5B",own:"Widely held",note:"Casual and social mobile games."},
+{n:"AMC Networks",hq:"New York, US",lat:40.77,lng:-73.983,cat:"film_tv",pct:0.17,role:"Cable & streaming",metric:"Captures ~0.17% — entertainment revenue ≈$2.4B",own:"Dolan family",note:"AMC, BBC America; streamers Acorn, Shudder, AMC+."},
+{n:"Ubisoft",hq:"Paris, FR",lat:48.861,lng:2.441,cat:"games",pct:0.16,role:"Video games",metric:"Captures ~0.16% — entertainment revenue ≈$2.3B",own:"Guillemot family; Tencent stake",note:"Assassin's Creed, Far Cry, Rainbow Six."},
+{n:"Toho",hq:"Tokyo, JP",lat:35.672,lng:139.766,cat:"film_tv",pct:0.14,role:"Film & anime (Japan)",metric:"Captures ~0.14% — entertainment revenue ≈$2B",own:"Widely held (Japan)",note:"Godzilla and Japan's leading film distributor; anime hits."},
+{n:"Krafton",hq:"Seoul, KR",lat:37.483,lng:127.034,cat:"games",pct:0.14,role:"Video games",metric:"Captures ~0.14% — entertainment revenue ≈$2B",own:"Widely held",note:"PUBG: Battlegrounds."},
+{n:"Netmarble",hq:"Seoul, KR",lat:37.506,lng:127.056,cat:"games",pct:0.14,role:"Mobile games",metric:"Captures ~0.14% — entertainment revenue ≈$2B",own:"Bang Jun-hyuk (founder)",note:"Major Korean mobile-games publisher; stake in HYBE."},
+{n:"HYBE",hq:"Seoul, KR",lat:37.524,lng:127.021,cat:"music",pct:0.14,role:"Music / K-pop",metric:"Captures ~0.14% — entertainment revenue ≈$2B",own:"Bang Si-hyuk (founder)",note:"Home of BTS and a leading K-pop company."},
+{n:"Sea / Garena",hq:"Singapore, SG",lat:1.284,lng:103.851,cat:"games",pct:0.14,role:"Video games (SE Asia)",metric:"Captures ~0.14% — entertainment revenue ≈$2B (est.)",own:"Forrest Li (founder)",note:"Free Fire mobile game and game publishing (estimate)."},
+{n:"Wanda Film",hq:"Beijing, CN",lat:39.918,lng:116.44,cat:"cinema",pct:0.14,role:"Cinema & film (China)",metric:"Captures ~0.14% — entertainment revenue ≈$2B",own:"Wang Jianlin / Wanda",note:"China's largest cinema operator and a major film producer."},
+{n:"Chimelong",hq:"Guangzhou, CN",lat:23.0,lng:113.327,cat:"live_parks",pct:0.14,role:"Theme parks (China)",metric:"Captures ~0.14% — entertainment revenue ≈$2B (est.)",own:"Su Zhigang (founder)",note:"China's largest home-grown theme-park group (estimate)."},
+{n:"United Parks (SeaWorld)",hq:"Orlando, US",lat:28.411,lng:-81.464,cat:"live_parks",pct:0.12,role:"Theme parks",metric:"Captures ~0.12% — entertainment revenue ≈$1.7B",own:"Widely held",note:"SeaWorld, Busch Gardens."},
+{n:"Cinepolis",hq:"Morelia, MX",lat:19.703,lng:-101.195,cat:"cinema",pct:0.11,role:"Cinema exhibition",metric:"Captures ~0.11% — entertainment revenue ≈$1.5B",own:"Ramirez family",note:"A top-3 global cinema chain; strong in Latin America and India."},
+{n:"Believe",hq:"Paris, FR",lat:48.84,lng:2.39,cat:"music",pct:0.07,role:"Digital music",metric:"Captures ~0.07% — entertainment revenue ≈$1B",own:"Denis Ladegaillerie (founder)",note:"Fast-growing digital-music company (TuneCore)."},
+{n:"BMG",hq:"Berlin, DE",lat:52.506,lng:13.391,cat:"music",pct:0.07,role:"Music rights",metric:"Captures ~0.07% — entertainment revenue ≈$1B",own:"Bertelsmann (Mohn family)",note:"Music publishing and recordings."},
+{n:"Zee Entertainment",hq:"Mumbai, IN",lat:19.118,lng:72.863,cat:"film_tv",pct:0.07,role:"TV & film (India)",metric:"Captures ~0.07% — entertainment revenue ≈$1B",own:"Subhash Chandra / widely held",note:"Major Indian entertainment broadcaster and ZEE5 streamer."},
+{n:"SM Entertainment",hq:"Seoul, KR",lat:37.538,lng:127.05,cat:"music",pct:0.06,role:"Music / K-pop",metric:"Captures ~0.06% — entertainment revenue ≈$0.8B",own:"Widely held; Kakao stake",note:"Pioneer K-pop label (NCT, aespa)."},
+{n:"PVR Inox",hq:"Mumbai, IN",lat:19.13,lng:72.87,cat:"cinema",pct:0.05,role:"Cinema exhibition (India)",metric:"Captures ~0.05% — entertainment revenue ≈$0.7B",own:"Bijli & Inox families",note:"India's largest cinema chain."}
+];
+const DATA_OWN = [
+{n:"The Walt Disney Company",hq:"Burbank, US",lat:34.1561,lng:-118.3247,cat:"public",tier:1,pct:6.5,pl:"~6.5%",share:"≈6.5% — the Disney empire (studios, Disney+, ESPN, Marvel, Pixar, Lucasfilm, parks)",sec:"Disney studios, streaming & theme parks",note:"Widely held; the single largest entertainment company."},
+{n:"Index-fund Big Three",hq:"New York, US",lat:40.7531,lng:-74.001,cat:"institutional",tier:1,pct:0,pl:"top shareholder",share:"No operating control — but the largest shareholders of Disney, Netflix, WBD, Microsoft, Live Nation, EA and most listed entertainment firms",sec:"Equity stakes across the industry",note:"BlackRock, Vanguard and State Street own the giants on paper."},
+{n:"Sony",hq:"Tokyo, JP",lat:35.631,lng:139.743,cat:"public",tier:2,pct:3.4,pl:"~3.4%",share:"≈3.4% — PlayStation, Sony Music & Sony Pictures",sec:"Games, music and film",note:"Japan's entertainment champion; widely held."},
+{n:"Netflix",hq:"Los Gatos, US",lat:37.2358,lng:-121.9623,cat:"public",tier:2,pct:2.8,pl:"~2.8%",share:"≈2.8% — the largest standalone streamer",sec:"Netflix",note:"Widely held; founders Hastings & Randolph."},
+{n:"Warner Bros. Discovery",hq:"New York, US",lat:40.7538,lng:-74.0019,cat:"public",tier:2,pct:2.8,pl:"~2.8%",share:"≈2.8% — HBO/Max, Warner Bros, DC, Discovery",sec:"WBD studios & streaming",note:"Being acquired by Paramount Skydance."},
+{n:"Roberts family (Comcast)",hq:"Philadelphia, US",lat:39.9526,lng:-75.1652,cat:"family",tier:2,pct:2.6,pl:"~2.6%",share:"≈2.6% — NBCUniversal, Universal Pictures & Universal theme parks",sec:"NBCUniversal entertainment",note:"Family voting control of Comcast."},
+{n:"Ma Huateng / Tencent",hq:"Shenzhen, CN",lat:22.5403,lng:113.934,cat:"public",tier:2,pct:2.1,pl:"~2.1% + stakes",share:"≈2.1% directly — plus stakes in Epic (~40%), Ubisoft, FromSoftware and many studios",sec:"Riot, Supercell, Tencent Music & Video",note:"The world's most powerful games owner by reach."},
+{n:"Ellison family (Paramount Skydance)",hq:"New York, US",lat:40.7637,lng:-73.9772,cat:"family",tier:2,pct:2.1,pl:"~2.1%",share:"≈2.1% — CBS, Paramount Pictures, Nickelodeon, MTV",sec:"Paramount studios & networks",note:"David & Larry Ellison control; acquiring WBD."},
+{n:"Microsoft",hq:"Redmond, US",lat:47.6396,lng:-122.1284,cat:"public",tier:2,pct:1.6,pl:"~1.6%",share:"≈1.6% — Xbox + Activision Blizzard King + Bethesda",sec:"Xbox games empire",note:"Widely held; owns the largest Western games portfolio."},
+{n:"Liberty Media / John Malone",hq:"Englewood, US",lat:39.6478,lng:-104.9878,cat:"family",tier:2,pct:1.6,pl:"~1.6%",share:"≈1.6% — Live Nation-Ticketmaster, Formula 1",sec:"Live entertainment & motorsport",note:"Malone's media empire; controls live events and F1."},
+{n:"Saudi PIF / Savvy Games",hq:"Riyadh, SA",lat:24.7136,lng:46.6753,cat:"state",tier:2,pct:0.5,pl:"~0.5% + huge stakes",share:"≈0.5% direct (Scopely, ESL) — plus multi-billion stakes in Nintendo, EA, Take-Two and Nexon",sec:"Savvy Games Group",note:"Saudi sovereign fund is reshaping the games industry."},
+{n:"Daniel Ek (Spotify)",hq:"Stockholm, SE",lat:59.3346,lng:18.059,cat:"family",tier:3,pct:1.1,pl:"~1.1%",share:"≈1.1% — the largest music-streaming service",sec:"Spotify",note:"Founder holds voting control."},
+{n:"William Ding (NetEase)",hq:"Hangzhou, CN",lat:30.287,lng:120.099,cat:"family",tier:3,pct:1.1,pl:"~1.1%",share:"≈1.1% — China's #2 games company",sec:"NetEase Games",note:"Founder control."},
+{n:"Bollore family (Vivendi)",hq:"Paris, FR",lat:48.85,lng:2.277,cat:"family",tier:3,pct:0.9,pl:"~0.9% + UMG",share:"≈0.9% (Canal+) — and the largest shareholder (~18%+) of Universal Music",sec:"Canal+, Studiocanal; UMG stake",note:"Controls Canal+ and is UMG's biggest single holder."},
+{n:"Bezos / Amazon",hq:"Seattle, US",lat:47.6062,lng:-122.3321,cat:"public",tier:3,pct:0.9,pl:"~0.9%",share:"≈0.9% — Prime Video, MGM, Twitch, Audible, Amazon Games",sec:"Amazon entertainment",note:"Widely held; Bezos founder."},
+{n:"Nintendo",hq:"Kyoto, JP",lat:34.971,lng:135.756,cat:"public",tier:3,pct:0.9,pl:"~0.9%",share:"≈0.9% — Mario, Zelda, Pokemon, the Switch",sec:"Nintendo",note:"Widely held; one of gaming's most valuable IP libraries."},
+{n:"Ambani / Reliance",hq:"Mumbai, IN",lat:19.076,lng:72.8777,cat:"family",tier:3,pct:0.6,pl:"~0.6%",share:"≈0.6% — JioStar (Star India + Disney+ Hotstar), JioCinema",sec:"India's largest entertainment platform",note:"Reliance controls Indian streaming & TV at scale."},
+{n:"Bandai Namco",hq:"Tokyo, JP",lat:35.73,lng:139.71,cat:"public",tier:3,pct:0.6,pl:"~0.6%",share:"≈0.6% — games, Gundam and anime/toy franchises",sec:"Bandai Namco",note:"Widely held (Japan)."},
+{n:"Bertelsmann / Mohn family",hq:"Gutersloh, DE",lat:51.907,lng:8.385,cat:"family",tier:3,pct:0.5,pl:"~0.5%",share:"≈0.5% — RTL, Fremantle, BMG, Penguin Random House",sec:"European media & content",note:"Family foundations control Bertelsmann."},
+{n:"Len Blavatnik / Access",hq:"New York, US",lat:40.748,lng:-74.003,cat:"family",tier:3,pct:0.46,pl:"~0.46%",share:"≈0.46% — Warner Music Group",sec:"Warner Music",note:"Access Industries controls the #3 music major."},
+{n:"Murdoch family (Fox)",hq:"New York, US",lat:40.7589,lng:-73.982,cat:"family",tier:3,pct:0.43,pl:"~0.43%",share:"≈0.43% — Fox Entertainment and Tubi",sec:"Fox entertainment",note:"Lachlan Murdoch control."},
+{n:"Marinho family (Globo)",hq:"Rio de Janeiro, BR",lat:-22.951,lng:-43.201,cat:"family",tier:3,pct:0.21,pl:"~0.21%",share:"≈0.21% — Latin America's largest entertainment producer",sec:"Globo",note:"Brazil's dominant entertainment family."},
+{n:"Silver Lake / Egon Durban",hq:"Menlo Park, US",lat:37.453,lng:-122.182,cat:"institutional",tier:3,pct:0.2,pl:"~0.2%",share:"≈0.2% — WWE, UFC and IMG (TKO/Endeavor)",sec:"Sports & live entertainment",note:"Private-equity control of TKO/Endeavor."},
+{n:"Electronic Arts",hq:"Redwood City, US",lat:37.529,lng:-122.264,cat:"public",tier:4,pct:0.54,pl:"~0.54%",share:"≈0.54% — EA Sports, Battlefield, The Sims",sec:"Electronic Arts",note:"Widely held (Saudi PIF among holders)."},
+{n:"Tim Sweeney (Epic Games)",hq:"Cary, US",lat:35.79,lng:-78.78,cat:"family",tier:4,pct:0.43,pl:"~0.43%",share:"≈0.43% — Fortnite and the Unreal Engine",sec:"Epic Games",note:"Founder control; Tencent owns ~40%."},
+{n:"Strauss Zelnick (Take-Two)",hq:"New York, US",lat:40.743,lng:-73.991,cat:"family",tier:4,pct:0.4,pl:"~0.4%",share:"≈0.4% — Rockstar (Grand Theft Auto), 2K, Zynga",sec:"Take-Two Interactive",note:"CEO-led; widely held."},
+{n:"Gabe Newell (Valve)",hq:"Bellevue, US",lat:47.615,lng:-122.195,cat:"family",tier:4,pct:0.36,pl:"~0.36%",share:"≈0.36% — Steam, the dominant PC-game store",sec:"Valve / Steam",note:"Privately held by its founder."},
+{n:"Adam Aron (AMC Theatres)",hq:"Leawood, US",lat:38.917,lng:-94.63,cat:"public",tier:4,pct:0.32,pl:"~0.32%",share:"≈0.32% — the world's largest cinema chain",sec:"AMC Theatres",note:"Widely held; once Wanda-owned."},
+{n:"Anthony Wood (Roku)",hq:"San Jose, US",lat:37.397,lng:-121.975,cat:"family",tier:4,pct:0.29,pl:"~0.29%",share:"≈0.29% — Roku TV platform & Roku Channel",sec:"Roku",note:"Founder control."},
+{n:"David Baszucki (Roblox)",hq:"San Mateo, US",lat:37.563,lng:-122.326,cat:"family",tier:4,pct:0.26,pl:"~0.26%",share:"≈0.26% — the Roblox games platform",sec:"Roblox",note:"Founder-CEO."},
+{n:"CJ Group (Lee family)",hq:"Seoul, KR",lat:37.5665,lng:126.8895,cat:"family",tier:4,pct:0.21,pl:"~0.21%",share:"≈0.21% — CJ ENM film/TV/music and CJ CGV cinemas",sec:"Korean entertainment",note:"Drove the global Korean-content wave."},
+{n:"NXC / Kim family (Nexon)",hq:"Seoul, KR",lat:37.402,lng:127.11,cat:"family",tier:4,pct:0.21,pl:"~0.21%",share:"≈0.21% — Nexon (MapleStory, Dungeon & Fighter)",sec:"Nexon",note:"Founder family estate controls a top Korean publisher."},
+{n:"Blackstone + KIRKBI (Merlin)",hq:"London, GB",lat:51.507,lng:-0.128,cat:"institutional",tier:4,pct:0.19,pl:"~0.19%",share:"≈0.19% — Legoland, Madame Tussauds, Sea Life",sec:"Merlin Entertainments",note:"Lego's family office (KIRKBI) co-owns the #2 attractions group."},
+{n:"Bang Si-hyuk (HYBE)",hq:"Seoul, KR",lat:37.524,lng:127.021,cat:"family",tier:4,pct:0.14,pl:"~0.14%",share:"≈0.14% — BTS and leading K-pop labels",sec:"HYBE",note:"Founder; reshaped global pop music."},
+{n:"Wang Jianlin / Wanda",hq:"Beijing, CN",lat:39.918,lng:116.44,cat:"family",tier:4,pct:0.14,pl:"~0.14%",share:"≈0.14% — Wanda Film and Chinese cinemas",sec:"Wanda Film",note:"Built and later sold AMC."}
+];
+
+const map = L.map('map',{zoomControl:true,worldCopyJump:true,minZoom:2,maxZoom:19}).setView([30,-20],2.5);
+const gHyb=L.tileLayer('https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',{subdomains:['mt0','mt1','mt2','mt3'],maxZoom:20,attribution:'Imagery &copy; Google'});
+const gSat=L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{subdomains:['mt0','mt1','mt2','mt3'],maxZoom:20,attribution:'Imagery &copy; Google'});
+const esri=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Imagery &copy; Esri, Maxar'});
+gHyb.addTo(map);
+L.control.layers({"Satellite + labels":gHyb,"Satellite":gSat,"Esri imagery":esri},{},{position:'bottomleft',collapsed:true}).addTo(map);
+
+function coPopup(d,r){
+  const c=CATS_CO[d.cat];
+  return `<div class="pop"><div class="rkbig">Rank #${r} &middot; entertainment</div>
+  <h3>${d.n}</h3><span class="tag" style="background:${c.color}">${c.label}</span>
+  <div class="kv"><b>HQ:</b> ${d.hq}</div><div class="kv"><b>Sector:</b> ${d.role}</div>
+  <div class="kv"><b>Share of entertainment market:</b> \u2248${d.pct}%</div>
+  <div class="kv"><b>Detail:</b> ${d.metric}</div>
+  <div class="kv"><b>Owner:</b> ${d.own}</div>
+  ${d.note?`<div class="note">${d.note}</div>`:''}</div>`;
+}
+function ownPopup(d,r){
+  const c=CATS_OWN[d.cat];
+  return `<div class="pop"><div class="rkbig">Rank #${r} &middot; control weight: tier ${d.tier}</div>
+  <h3>${d.n}</h3><span class="tag" style="background:${c.color}">${c.label}</span>
+  <div class="kv"><b>HQ:</b> ${d.hq}</div><div class="kv"><b>Controls:</b> ${d.sec}</div>
+  <div class="kv"><b>Share of entertainment market:</b> ${d.share}</div>
+  ${d.note?`<div class="note">${d.note}</div>`:''}</div>`;
+}
+
+const CFG = {
+  cos:{
+    data:DATA_CO, cats:CATS_CO,
+    h:"The World's Largest Entertainment Companies",
+    p:'Sized by share of the ~$1.4 trillion global entertainment market — what people spend on film, TV & streaming, video games, music, and live entertainment & theme parks. These entries account for roughly 42% of it; the rest is a long tail of game studios, local broadcasters, cinemas and venues. <span class="mono">(2026)</span>',
+    note:"Marker size = share of the ~$1.4T global entertainment market (consumer spending on content & experiences -- film/TV/streaming, games, music, live & parks; PwC E&M 2024 basis, excluding advertising and connectivity). Figures are each company's entertainment revenue (2024-25) from company reports; cross-segment giants (Sony, Tencent, Comcast, Disney) are shown by combined entertainment revenue. Private-company figures (Epic, Valve, HoYoverse, Garena, Chimelong) are estimates.",
+    size:d=>entR(d.pct), popup:coPopup,
+    sub:d=>`${d.hq} &middot; ${d.role} &middot; <span class="mono">\u2248${d.pct}%</span>`
+  },
+  own:{
+    data:DATA_OWN, cats:CATS_OWN,
+    h:"Who Owns Global Entertainment",
+    p:'The studios, founders, families, funds and states behind the screens, speakers and stages. Sized by breadth of entertainment control. <span class="mono">(2026)</span>',
+    note:"Marker size = approximate breadth of entertainment control. A handful of US conglomerates plus founder-led tech and games firms dominate; sovereign funds (notably Saudi Arabia) and index funds are growing forces; many empires are family- or founder-controlled.",
+    size:d=>RADIUS[d.tier], popup:ownPopup,
+    sub:d=>`${d.hq} &middot; <span class="mono">${d.pl}</span>`
+  }
+};
+
+const listEl=document.getElementById('list'), legendEl=document.getElementById('legend');
+const searchEl=document.getElementById('search'), countEl=document.getElementById('count');
+let cur={items:[],active:new Set(),cfg:null,key:null};
+function clearCur(){cur.items.forEach(it=>map.removeLayer(it.marker));cur.items=[];listEl.innerHTML='';legendEl.innerHTML='';}
+
+function build(key){
+  clearCur();
+  const cfg=CFG[key]; cur.cfg=cfg; cur.key=key;
+  document.getElementById('title-h').innerHTML=cfg.h;
+  document.getElementById('title-p').innerHTML=cfg.p;
+  document.getElementById('sizenote').innerHTML=cfg.note;
+  cur.active=new Set(Object.keys(cfg.cats));
+  Object.entries(cfg.cats).forEach(([k,c])=>{
+    const el=document.createElement('div'); el.className='leg';
+    el.innerHTML=`<span class="dot" style="background:${c.color}"></span><span class="lab">${c.label}</span><span class="cnt" id="cnt-${k}"></span>`;
+    el.addEventListener('click',()=>{if(cur.active.has(k)){cur.active.delete(k);el.classList.add('off');}else{cur.active.add(k);el.classList.remove('off');}applyFilters();});
+    legendEl.appendChild(el);
+  });
+  const rows=[...cfg.data].sort((a,b)=>(cfg.size(b)-cfg.size(a))||((b.pct||0)-(a.pct||0)));
+  rows.forEach((d,i)=>{
+    const rank=i+1, c=cfg.cats[d.cat], base=cfg.size(d);
+    const marker=L.circleMarker([d.lat,d.lng],{radius:base,color:STROKE,weight:1,fillColor:c.color,fillOpacity:.82,className:'mk'}).bindPopup(cfg.popup(d,rank),{maxWidth:300});
+    marker.on('mouseover',()=>marker.setStyle({radius:base+2.5,weight:1.6,color:'rgba(255,255,255,.92)'}));
+    marker.on('mouseout',()=>marker.setStyle({radius:base,weight:1,color:STROKE}));
+    marker.addTo(map);
+    const row=document.createElement('div'); row.className='row';
+    row.innerHTML=`<div class="rk">${rank}</div><div class="bar" style="background:${c.color}"></div><div><div class="nm">${d.n}</div><div class="sub">${cfg.sub(d)}</div></div>`;
+    row.addEventListener('click',()=>{map.flyTo([d.lat,d.lng],Math.max(map.getZoom(),6),{duration:.8});marker.openPopup();});
+    listEl.appendChild(row);
+    cur.items.push({d,marker,row});
+  });
+  applyFilters();
+}
+function applyFilters(){
+  const q=searchEl.value.trim().toLowerCase(); let shown=0; const per={};
+  Object.keys(cur.cfg.cats).forEach(k=>per[k]=0);
+  cur.items.forEach(({d,marker,row})=>{
+    const ok=cur.active.has(d.cat)&&(!q||(d.n+' '+d.hq+' '+(d.role||d.sec||'')+' '+(d.own||'')).toLowerCase().includes(q));
+    if(ok){if(!map.hasLayer(marker))marker.addTo(map);row.style.display='';shown++;per[d.cat]++;}
+    else{if(map.hasLayer(marker))map.removeLayer(marker);row.style.display='none';}
+  });
+  countEl.textContent=shown+' / '+cur.items.length+' shown';
+  Object.keys(cur.cfg.cats).forEach(k=>{const e=document.getElementById('cnt-'+k);if(e)e.textContent=per[k];});
+}
+searchEl.addEventListener('input',applyFilters);
+document.getElementById('reset').addEventListener('click',()=>{searchEl.value='';build(cur.key);map.setView([30,-20],2.5);});
+const tC=document.getElementById('tab-cos'), tW=document.getElementById('tab-own');
+tC.addEventListener('click',()=>{tC.classList.add('on');tW.classList.remove('on');build('cos');});
+tW.addEventListener('click',()=>{tW.classList.add('on');tC.classList.remove('on');build('own');});
+build('cos');
+</script>
+</body>
+</html>
