@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0" />
+<title>World Advertising 2026 — Companies & Owners</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<style>
+  :root{--bg:#0b0e13;--panel:#10151d;--panel2:#171e28;--line:#262f3b;--ink:#e6ebf1;--ink-dim:#8d99a8;--accent:#7fa8d0}
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+  #map{position:absolute;inset:0;background:#0b0e13}
+  .tabs{position:absolute;top:14px;left:50%;transform:translateX(-50%);z-index:700;display:flex;gap:2px;background:rgba(9,12,17,.9);border:1px solid var(--line);border-radius:8px;padding:3px;box-shadow:0 2px 14px rgba(0,0,0,.4)}
+  .tab{background:transparent;border:0;color:var(--ink-dim);font:inherit;font-size:12px;font-weight:600;letter-spacing:.03em;padding:7px 15px;border-radius:6px;cursor:pointer;transition:color .15s,background .15s}
+  .tab:hover{color:var(--ink)}
+  .tab.on{background:var(--panel2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+  .title{position:absolute;top:60px;left:14px;z-index:600;background:rgba(9,12,17,.78);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:10px;padding:12px 15px;max-width:370px;box-shadow:0 2px 18px rgba(0,0,0,.35)}
+  .title h1{margin:0;font-size:13.5px;letter-spacing:.10em;text-transform:uppercase;font-weight:700;line-height:1.3}
+  .title p{margin:6px 0 0;font-size:11px;color:var(--ink-dim);line-height:1.5}
+  .title .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:0}
+  .panel{position:absolute;top:14px;right:14px;z-index:600;width:306px;max-width:calc(100vw - 28px);background:rgba(16,21,29,.93);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:10px;display:flex;flex-direction:column;max-height:calc(100vh - 28px);box-shadow:0 2px 18px rgba(0,0,0,.4)}
+  .panel .pad{padding:13px 13px 11px}
+  .search{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:7px;color:var(--ink);padding:9px 11px;font-size:13px;outline:none;transition:border-color .15s}
+  .search::placeholder{color:#5e6b7a}
+  .search:focus{border-color:#3f5a76}
+  .legend{margin-top:11px;display:flex;flex-direction:column;gap:3px}
+  .leg{display:flex;align-items:center;gap:9px;cursor:pointer;user-select:none;font-size:12px;padding:5px 6px;border-radius:6px;transition:background .12s}
+  .leg:hover{background:var(--panel2)}
+  .leg.off{opacity:.38}
+  .leg .dot{width:10px;height:10px;border-radius:2px;flex:0 0 auto;box-shadow:0 0 0 1px rgba(255,255,255,.18)}
+  .leg .lab{flex:1;color:var(--ink)}
+  .leg .cnt{font-family:ui-monospace,monospace;color:var(--ink-dim);font-size:11px}
+  .sizenote{font-size:10.5px;color:#5f6b79;margin-top:10px;line-height:1.5}
+  .meta{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--ink-dim);margin-top:10px;padding-top:9px;border-top:1px solid var(--line)}
+  .meta a{color:var(--accent);text-decoration:none;cursor:pointer}
+  .meta a:hover{color:#a9c8e6}
+  .listwrap{overflow:auto;border-top:1px solid var(--line);padding:6px 6px 9px}
+  .listwrap::-webkit-scrollbar{width:8px}
+  .listwrap::-webkit-scrollbar-thumb{background:#2a3543;border-radius:8px}
+  .row{display:flex;gap:9px;align-items:flex-start;padding:7px 8px;border-radius:7px;cursor:pointer;transition:background .12s}
+  .row:hover{background:var(--panel2)}
+  .row .rk{font-family:ui-monospace,monospace;font-size:11px;color:var(--ink-dim);min-width:22px;text-align:right;margin-top:1px}
+  .row .bar{width:3px;align-self:stretch;border-radius:2px;flex:0 0 auto;margin-top:1px}
+  .row .nm{font-size:12.5px;line-height:1.3;font-weight:600}
+  .row .sub{font-size:10.5px;color:var(--ink-dim);margin-top:2px;line-height:1.35}
+  .row .sub .mono{font-family:ui-monospace,monospace}
+  .leaflet-pane path.mk{filter:drop-shadow(0 1px 2px rgba(0,0,0,.55))}
+  .leaflet-popup-content-wrapper{background:var(--panel);color:var(--ink);border-radius:10px;border:1px solid var(--line);box-shadow:0 6px 26px rgba(0,0,0,.5)}
+  .leaflet-popup-tip{background:var(--panel);border:1px solid var(--line)}
+  .leaflet-popup-content{margin:12px 14px;font-size:12.5px;line-height:1.5;min-width:230px}
+  .pop h3{margin:0 0 2px;font-size:14px;line-height:1.3;font-weight:700}
+  .pop .rkbig{font-family:ui-monospace,monospace;font-size:10.5px;color:var(--ink-dim);letter-spacing:.04em;text-transform:uppercase}
+  .pop .tag{display:inline-block;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:4px;margin:7px 0 8px;font-weight:700;color:#0b0e13}
+  .pop .kv{margin:3px 0}
+  .pop .kv b{color:var(--ink-dim);font-weight:600}
+  .pop .note{margin-top:8px;padding-top:7px;border-top:1px solid var(--line);color:#c4cedb;font-size:11.5px}
+  .pop .mono{font-family:ui-monospace,monospace}
+  .leaflet-bar a{background:#171e28;color:#e6ebf1;border-bottom:1px solid var(--line)}
+  .leaflet-bar a:hover{background:#222c39}
+  .leaflet-control-attribution{background:rgba(9,12,17,.72)!important;color:#6c7785!important;font-size:10px!important}
+  .leaflet-control-attribution a{color:#8fa9c2!important}
+  .leaflet-control-layers{background:rgba(16,21,29,.96)!important;color:var(--ink)!important;border:1px solid var(--line)!important;border-radius:8px!important}
+  .leaflet-control-layers-expanded{padding:9px 11px!important}
+  @media (max-width:640px){
+    .title{max-width:calc(100vw - 28px);left:8px;padding:9px 11px}
+    .title h1{font-size:12px}
+    .panel{width:calc(100vw - 28px);top:auto;bottom:14px;right:14px;max-height:46vh}
+    .tabs{top:8px}
+  }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div class="tabs">
+  <button class="tab on" id="tab-cos">Largest ad companies</button>
+  <button class="tab" id="tab-own">Who owns the ads</button>
+</div>
+<div class="title">
+  <h1 id="title-h"></h1>
+  <p id="title-p"></p>
+</div>
+<div class="panel">
+  <div class="pad">
+    <input id="search" class="search" type="text" placeholder="Search…" autocomplete="off" />
+    <div class="legend" id="legend"></div>
+    <div class="sizenote" id="sizenote"></div>
+    <div class="meta"><span id="count" class="mono">--</span><a id="reset">Reset view</a></div>
+  </div>
+  <div class="listwrap" id="list"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+const CATS_CO = {
+  platform:{label:"Digital ad platform",color:"#c7a35a"},
+  retail:{label:"Retail / commerce media",color:"#5fa98a"},
+  broadcast:{label:"TV / streaming ad seller",color:"#6699c9"},
+  ooh_audio:{label:"Out-of-home & audio",color:"#cf6a5e"},
+  agency:{label:"Agency holding group",color:"#a986c2"},
+  adtech:{label:"Ad-tech & measurement",color:"#8aa0b2"}
+};
+const CATS_OWN = {
+  state:{label:"Government / state",color:"#cf6a5e"},
+  family:{label:"Family / founder-controlled",color:"#5fa98a"},
+  institutional:{label:"Institutional / fund",color:"#6699c9"},
+  public:{label:"Public company / platform",color:"#c7a35a"}
+};
+const RADIUS = {1:12,2:9.5,3:7.5,4:5.5};
+const adR = p => Math.max(5, Math.min(18, 4 + Math.sqrt(p)*3.0));
+const STROKE = 'rgba(7,11,16,.9)';
+
+const DATA_CO  = [
+{n:"Alphabet (Google, YouTube)",hq:"Mountain View, US",lat:37.422,lng:-122.0841,cat:"platform",pct:24,role:"Search & video advertising",metric:"Captures ~24% — ad revenue ≈$265B",own:"Page & Brin (supervoting)",note:"~86% of the global search-ad market; the single largest ad business on earth."},
+{n:"Meta (Facebook, Instagram)",hq:"Menlo Park, US",lat:37.4848,lng:-122.1484,cat:"platform",pct:15,role:"Social advertising",metric:"Captures ~15% — ad revenue ≈$165B",own:"Mark Zuckerberg (voting control)",note:"~60% of all social-media ad spend."},
+{n:"Omnicom (incl. Interpublic)",hq:"New York, US",lat:40.748,lng:-73.987,cat:"agency",pct:9,role:"Agency holding group (creative + media)",metric:"Directs ~9% of global media spend — group revenue ≈$25B; world's largest after the 2025 IPG merger",own:"Widely held",note:"Omnicom + Interpublic merger completed Nov 2025."},
+{n:"Publicis Groupe",hq:"Paris, FR",lat:48.8704,lng:2.332,cat:"agency",pct:7,role:"Agency holding group",metric:"Directs ~7% — group revenue ≈$16-26B; led the Big Six on net revenue in 2024",own:"Badinter family (largest shareholder)",note:""},
+{n:"ByteDance (TikTok, Douyin)",hq:"Beijing, CN",lat:39.9897,lng:116.481,cat:"platform",pct:6.4,role:"Short-video advertising",metric:"Captures ~6% — ad revenue ≈$70B",own:"Zhang Yiming (~21%)",note:"The fastest-growing major ad seller."},
+{n:"WPP",hq:"London, GB",lat:51.516,lng:-0.119,cat:"agency",pct:6,role:"Agency holding group",metric:"Directs ~6% — WPP Media manages over $60B in media investment",own:"Widely held",note:""},
+{n:"Amazon Ads",hq:"Seattle, US",lat:47.6228,lng:-122.3366,cat:"retail",pct:5.1,role:"Retail-media advertising",metric:"Captures ~5% — ad revenue ≈$56B (rising to ~$69B)",own:"Widely held (Bezos founder)",note:"Leader of the fastest-growing ad segment, retail media."},
+{n:"Dentsu",hq:"Tokyo, JP",lat:35.671,lng:139.763,cat:"agency",pct:3.6,role:"Agency holding group (Asia-led)",metric:"Directs ~3.6% — revenue ≈$8B",own:"Widely held (Japan)",note:""},
+{n:"Alibaba",hq:"Hangzhou, CN",lat:30.19,lng:120.193,cat:"retail",pct:2.7,role:"E-commerce advertising (China)",metric:"Captures ~2.7% — marketing revenue ≈$30B",own:"Partnership control",note:""},
+{n:"PDD / Temu (Pinduoduo)",hq:"Shanghai, CN",lat:31.2304,lng:121.4737,cat:"retail",pct:2.7,role:"E-commerce advertising",metric:"Captures ~2.7% — marketing revenue ≈$30B",own:"Colin Huang (founder)",note:"Temu's global push is reshaping retail-media flows."},
+{n:"Microsoft (Bing, LinkedIn, Xandr)",hq:"Redmond, US",lat:47.6396,lng:-122.1284,cat:"platform",pct:1.8,role:"Search, professional & news advertising",metric:"Captures ~1.8% — ad revenue ≈$20B",own:"Widely held",note:""},
+{n:"Havas",hq:"Paris, FR",lat:48.892,lng:2.239,cat:"agency",pct:1.8,role:"Agency holding group",metric:"Directs ~1.8% — revenue ≈$3B",own:"Bolloré family (Vivendi split, 2024)",note:""},
+{n:"Accenture Song",hq:"Dublin, IE",lat:53.344,lng:-6.267,cat:"agency",pct:1.7,role:"Tech-led marketing services",metric:"Revenue ≈$19B — the largest tech-led marketing-services business",own:"Widely held (Accenture)",note:""},
+{n:"Tencent",hq:"Shenzhen, CN",lat:22.5403,lng:113.934,cat:"platform",pct:1.5,role:"Social advertising (WeChat)",metric:"Captures ~1.5% — ad revenue ≈$17B",own:"Widely held; Ma Huateng founder",note:""},
+{n:"Hakuhodo DY",hq:"Tokyo, JP",lat:35.665,lng:139.729,cat:"agency",pct:1.4,role:"Agency holding group (Japan)",metric:"Directs ~1.4% — Japan's #2 group",own:"Widely held",note:""},
+{n:"Baidu",hq:"Beijing, CN",lat:40.057,lng:116.301,cat:"platform",pct:1.2,role:"Search advertising (China)",metric:"Captures ~1.2% — ad revenue ≈$13B",own:"Robin Li (supervoting)",note:""},
+{n:"Apple (App Store ads)",hq:"Cupertino, US",lat:37.3349,lng:-122.009,cat:"platform",pct:1.0,role:"App-store search advertising",metric:"Captures ~1% — ad revenue ≈$11B, growing fast",own:"Widely held",note:"Its App Tracking Transparency rules reshaped the whole mobile-ad market."},
+{n:"Kuaishou",hq:"Beijing, CN",lat:39.99,lng:116.45,cat:"platform",pct:0.9,role:"Short-video advertising (China)",metric:"Captures ~0.9% — ad revenue ≈$10B",own:"Widely held",note:""},
+{n:"Disney (ESPN, ABC, Hulu)",hq:"Burbank, US",lat:34.1561,lng:-118.3247,cat:"broadcast",pct:0.9,role:"TV & streaming advertising",metric:"Captures ~0.9% — ad revenue ≈$10B (est.)",own:"Widely held",note:"ESPN, ABC, Hulu and Disney+ ad sales."},
+{n:"NBCUniversal (Comcast)",hq:"New York, US",lat:40.7589,lng:-73.9817,cat:"broadcast",pct:0.73,role:"TV & streaming advertising",metric:"Captures ~0.7% — ad revenue ≈$8B",own:"Roberts family (voting control)",note:"NBC, Bravo, Peacock; cable nets spun into Versant (2025)."},
+{n:"Yahoo",hq:"Sunnyvale, US",lat:37.417,lng:-122.0253,cat:"platform",pct:0.55,role:"Portal & DSP advertising",metric:"Captures ~0.55% — ad revenue ≈$6B",own:"Apollo Global Management",note:"Yahoo properties plus its demand-side platform."},
+{n:"Warner Bros. Discovery",hq:"New York, US",lat:40.7538,lng:-74.0019,cat:"broadcast",pct:0.55,role:"TV & streaming advertising",metric:"Captures ~0.55% — ad revenue ≈$6B",own:"Widely held",note:"CNN, TNT, Discovery, Max; pending Paramount takeover."},
+{n:"Stagwell",hq:"New York, US",lat:40.76,lng:-73.97,cat:"agency",pct:0.5,role:"Challenger agency network",metric:"Revenue ≈$3B",own:"Mark Penn (control)",note:""},
+{n:"Paramount Skydance",hq:"New York, US",lat:40.7637,lng:-73.9772,cat:"broadcast",pct:0.45,role:"TV & streaming advertising",metric:"Captures ~0.45% — ad revenue ≈$5B",own:"Ellison family",note:"CBS, Paramount+, Pluto TV ad sales."},
+{n:"Fox Corporation",hq:"New York, US",lat:40.7589,lng:-73.982,cat:"broadcast",pct:0.45,role:"TV & streaming advertising",metric:"Captures ~0.45% — ad revenue ≈$5B",own:"Lachlan Murdoch (control)",note:"Fox News, Fox Sports, Tubi — strongest linear-TV ad performer."},
+{n:"Snap (Snapchat)",hq:"Santa Monica, US",lat:34.0086,lng:-118.4978,cat:"platform",pct:0.45,role:"Social advertising",metric:"Captures ~0.45% — ad revenue ≈$5B",own:"Evan Spiegel (voting control)",note:""},
+{n:"Yandex",hq:"Moscow, RU",lat:55.734,lng:37.588,cat:"platform",pct:0.45,role:"Search & display advertising (Russia)",metric:"Captures ~0.45% — ad revenue ≈$5B",own:"Russian consortium (2024 buyout)",note:"Russia's dominant search-ad platform."},
+{n:"LY Corp (Yahoo Japan, LINE)",hq:"Tokyo, JP",lat:35.666,lng:139.731,cat:"platform",pct:0.45,role:"Portal & messaging advertising (Japan)",metric:"Captures ~0.45% — ad revenue ≈$5B",own:"SoftBank & Naver (joint control)",note:""},
+{n:"Walmart Connect",hq:"Bentonville, US",lat:36.365,lng:-94.216,cat:"retail",pct:0.41,role:"Retail-media advertising (US)",metric:"Captures ~0.4% — ad revenue ≈$4.5B",own:"Walton family",note:"Largest US retail-media network after Amazon."},
+{n:"JCDecaux",hq:"Paris, FR",lat:48.884,lng:2.269,cat:"ooh_audio",pct:0.38,role:"Out-of-home advertising",metric:"Captures ~0.38% — revenue ≈$4.2B; world's largest OOH network",own:"Decaux family",note:""},
+{n:"ProSiebenSat.1",hq:"Unterföhring, DE",lat:48.19,lng:11.664,cat:"broadcast",pct:0.36,role:"TV advertising (Europe)",metric:"Captures ~0.36% — ad revenue ≈$4B",own:"MFE / Berlusconi (Fininvest)",note:""},
+{n:"iHeartMedia",hq:"San Antonio, US",lat:29.476,lng:-98.504,cat:"ooh_audio",pct:0.35,role:"Radio & podcast advertising",metric:"Captures ~0.35% — ad revenue ≈$3.8B; largest US radio",own:"Widely held",note:""},
+{n:"Pinterest",hq:"San Francisco, US",lat:37.772,lng:-122.389,cat:"platform",pct:0.33,role:"Visual-discovery advertising",metric:"Captures ~0.33% — ad revenue ≈$3.6B",own:"Widely held",note:""},
+{n:"Roku",hq:"San Jose, US",lat:37.397,lng:-121.975,cat:"broadcast",pct:0.32,role:"Connected-TV advertising",metric:"Captures ~0.32% — platform/ad revenue ≈$3.5B",own:"Anthony Wood (founder)",note:"Leading US connected-TV ad platform."},
+{n:"Nielsen",hq:"New York, US",lat:40.757,lng:-73.978,cat:"adtech",pct:0.3,role:"Audience measurement",metric:"The measurement currency for TV & ads — revenue ≈$3.5B",own:"Elliott & Brookfield (private)",note:""},
+{n:"TelevisaUnivision",hq:"Mexico City, MX",lat:19.39,lng:-99.275,cat:"broadcast",pct:0.27,role:"Spanish-language TV advertising",metric:"Captures ~0.27% — ad revenue ≈$3B",own:"Azcárraga family + investors",note:""},
+{n:"Grupo Globo",hq:"Rio de Janeiro, BR",lat:-22.951,lng:-43.201,cat:"broadcast",pct:0.27,role:"TV advertising (Brazil)",metric:"Captures ~0.27% — ad revenue ≈$3B",own:"Marinho family",note:"Latin America's largest broadcaster."},
+{n:"Naver",hq:"Seongnam, KR",lat:37.359,lng:127.105,cat:"platform",pct:0.27,role:"Search & commerce advertising (Korea)",metric:"Captures ~0.27% — ad revenue ≈$3B",own:"Widely held",note:""},
+{n:"Sea / Shopee",hq:"Singapore, SG",lat:1.284,lng:103.851,cat:"retail",pct:0.27,role:"E-commerce advertising (SE Asia)",metric:"Captures ~0.27% — ad revenue ≈$3B",own:"Forrest Li (founder control)",note:""},
+{n:"Nexstar / NewsNation",hq:"Irving, US",lat:32.873,lng:-96.969,cat:"broadcast",pct:0.27,role:"Local-TV advertising (US)",metric:"Captures ~0.27% — ad revenue ≈$3B",own:"Widely held",note:"Largest US local-TV owner."},
+{n:"X (Twitter)",hq:"San Francisco, US",lat:37.7758,lng:-122.417,cat:"platform",pct:0.23,role:"Social advertising",metric:"Captures ~0.2% — ad revenue ≈$2.5B (down sharply since 2022)",own:"Elon Musk (xAI)",note:""},
+{n:"Sinclair",hq:"Hunt Valley, US",lat:39.49,lng:-76.658,cat:"broadcast",pct:0.23,role:"Local-TV advertising (US)",metric:"Captures ~0.23% — ad revenue ≈$2.5B",own:"Smith family",note:""},
+{n:"TEGNA",hq:"Tysons, US",lat:38.92,lng:-77.23,cat:"broadcast",pct:0.23,role:"Local-TV advertising (US)",metric:"Captures ~0.23% — ad revenue ≈$2.5B",own:"Widely held",note:""},
+{n:"The Trade Desk",hq:"Ventura, US",lat:34.274,lng:-119.229,cat:"adtech",pct:0.22,role:"Independent demand-side platform (DSP)",metric:"Largest independent DSP — revenue ≈$2.4B; directs billions in programmatic",own:"Jeff Green (founder voting control)",note:""},
+{n:"ITV",hq:"London, GB",lat:51.508,lng:-0.128,cat:"broadcast",pct:0.21,role:"TV advertising (UK)",metric:"Captures ~0.21% — ad revenue ≈$2.3B",own:"Widely held",note:""},
+{n:"Lamar Advertising",hq:"Baton Rouge, US",lat:30.451,lng:-91.187,cat:"ooh_audio",pct:0.2,role:"Out-of-home advertising (US)",metric:"Captures ~0.2% — revenue ≈$2.2B; largest US billboard network",own:"Reilly family",note:""},
+{n:"SiriusXM",hq:"New York, US",lat:40.748,lng:-73.997,cat:"ooh_audio",pct:0.18,role:"Audio / satellite-radio advertising",metric:"Captures ~0.18% — ad revenue ≈$2B",own:"Liberty Media (Malone)",note:""},
+{n:"Spotify",hq:"Stockholm, SE",lat:59.3346,lng:18.059,cat:"ooh_audio",pct:0.18,role:"Audio advertising",metric:"Captures ~0.18% — ad revenue ≈$2B",own:"Founders (voting control)",note:""},
+{n:"Netflix Ads",hq:"Los Gatos, US",lat:37.258,lng:-121.9637,cat:"broadcast",pct:0.18,role:"Streaming-TV advertising",metric:"Captures ~0.18% — ad-tier revenue ≈$2B, growing fast",own:"Widely held",note:""},
+{n:"RTL Group",hq:"Luxembourg, LU",lat:49.6116,lng:6.1319,cat:"broadcast",pct:0.18,role:"TV advertising (Europe)",metric:"Captures ~0.18% — ad revenue ≈$2B",own:"Bertelsmann (Mohn family)",note:""},
+{n:"Rakuten",hq:"Tokyo, JP",lat:35.636,lng:139.73,cat:"retail",pct:0.18,role:"E-commerce advertising (Japan)",metric:"Captures ~0.18% — ad revenue ≈$2B",own:"Hiroshi Mikitani (founder)",note:""},
+{n:"Kakao",hq:"Seongnam, KR",lat:37.392,lng:127.112,cat:"platform",pct:0.18,role:"Messaging & portal advertising (Korea)",metric:"Captures ~0.18% — ad revenue ≈$2B",own:"Widely held",note:""},
+{n:"Ströer",hq:"Cologne, DE",lat:50.942,lng:6.958,cat:"ooh_audio",pct:0.18,role:"Out-of-home advertising (Germany)",metric:"Captures ~0.18% — OOH revenue ≈$2B",own:"Ströer family",note:""},
+{n:"Focus Media",hq:"Shanghai, CN",lat:31.224,lng:121.476,cat:"ooh_audio",pct:0.18,role:"Out-of-home advertising (China)",metric:"Captures ~0.18% — revenue ≈$2B; dominates Chinese elevator screens",own:"Jason Jiang (founder)",note:""},
+{n:"Criteo",hq:"Paris, FR",lat:48.873,lng:2.33,cat:"adtech",pct:0.18,role:"Retargeting / commerce media",metric:"Revenue ≈$2B",own:"Widely held",note:""},
+{n:"Outfront Media",hq:"New York, US",lat:40.751,lng:-73.992,cat:"ooh_audio",pct:0.16,role:"Out-of-home advertising (US transit)",metric:"Captures ~0.16% — revenue ≈$1.8B",own:"Widely held",note:""},
+{n:"Taboola",hq:"New York, US",lat:40.739,lng:-73.992,cat:"platform",pct:0.15,role:"Content-recommendation advertising",metric:"Captures ~0.15% — revenue ≈$1.7B",own:"Adam Singolda (founder)",note:""},
+{n:"eBay Ads",hq:"San Jose, US",lat:37.298,lng:-121.929,cat:"retail",pct:0.14,role:"Marketplace advertising",metric:"Captures ~0.14% — first-party ad revenue ≈$1.5B",own:"Widely held",note:""},
+{n:"Coupang",hq:"Seoul, KR",lat:37.505,lng:127.004,cat:"retail",pct:0.14,role:"E-commerce advertising (Korea)",metric:"Captures ~0.14% — ad revenue ≈$1.5B",own:"Bom Kim (founder)",note:""},
+{n:"Uber Advertising",hq:"San Francisco, US",lat:37.7752,lng:-122.418,cat:"retail",pct:0.14,role:"Mobility & delivery retail-media",metric:"Captures ~0.14% — ad run-rate ≈$1.5B",own:"Widely held",note:""},
+{n:"AMC Networks",hq:"New York, US",lat:40.77,lng:-73.983,cat:"broadcast",pct:0.14,role:"Cable-TV advertising",metric:"Captures ~0.14% — ad revenue ≈$1.5B",own:"Dolan family",note:""},
+{n:"Clear Channel Outdoor",hq:"San Antonio, US",lat:29.49,lng:-98.5,cat:"ooh_audio",pct:0.14,role:"Out-of-home advertising",metric:"Captures ~0.14% — revenue ≈$1.5B",own:"Widely held",note:""},
+{n:"Reddit",hq:"San Francisco, US",lat:37.7785,lng:-122.3927,cat:"platform",pct:0.13,role:"Forum advertising",metric:"Captures ~0.13% — ad revenue ≈$1.4B",own:"Widely held",note:""},
+{n:"Yelp",hq:"San Francisco, US",lat:37.786,lng:-122.399,cat:"platform",pct:0.13,role:"Local-business advertising",metric:"Captures ~0.13% — ad revenue ≈$1.4B",own:"Widely held",note:""},
+{n:"MercadoLibre (Mercado Ads)",hq:"Montevideo, UY",lat:-34.9011,lng:-56.1645,cat:"retail",pct:0.12,role:"E-commerce advertising (Latin America)",metric:"Captures ~0.12% — ad revenue ≈$1.3B; ~55% of LatAm retail media",own:"Marcos Galperin (founder)",note:""},
+{n:"DoorDash Ads",hq:"San Francisco, US",lat:37.778,lng:-122.395,cat:"retail",pct:0.09,role:"Delivery retail-media",metric:"Captures ~0.09% — ad revenue ≈$1B",own:"Widely held",note:""},
+{n:"Instacart (Carrot Ads)",hq:"San Francisco, US",lat:37.79,lng:-122.39,cat:"retail",pct:0.09,role:"Grocery retail-media",metric:"Captures ~0.09% — ad revenue ≈$1B",own:"Widely held",note:""},
+{n:"Audacy",hq:"Philadelphia, US",lat:39.952,lng:-75.164,cat:"ooh_audio",pct:0.09,role:"Radio & audio advertising (US)",metric:"Captures ~0.09% — ad revenue ≈$1B",own:"Widely held (post-restructuring)",note:""},
+{n:"DoubleVerify",hq:"New York, US",lat:40.743,lng:-73.992,cat:"adtech",pct:0.06,role:"Ad verification / measurement",metric:"Revenue ≈$0.7B",own:"Widely held",note:""},
+{n:"Magnite",hq:"Los Angeles, US",lat:34.02,lng:-118.49,cat:"adtech",pct:0.06,role:"Sell-side platform (SSP)",metric:"Largest independent SSP — revenue ≈$0.7B",own:"Widely held",note:""},
+{n:"Comscore",hq:"Reston, US",lat:38.956,lng:-77.339,cat:"adtech",pct:0.04,role:"Measurement / analytics",metric:"Revenue ≈$0.4B",own:"Widely held",note:""},
+{n:"PubMatic",hq:"Redwood City, US",lat:37.523,lng:-122.26,cat:"adtech",pct:0.03,role:"Sell-side platform (SSP)",metric:"Revenue ≈$0.3B",own:"Widely held",note:""},
+{n:"JD.com (JD Ads)",hq:"Beijing, CN",lat:39.9960,lng:116.4810,cat:"retail",pct:0.9,role:"Retail-media advertising (China)",metric:"Captures ~0.9% — ad/marketplace revenue ≈$10B",own:"Richard Liu (founder, supervoting)",note:"One of China’s largest retail-media platforms."},
+{n:"Meituan",hq:"Beijing, CN",lat:40.0410,lng:116.4130,cat:"retail",pct:0.55,role:"Local-services advertising (China)",metric:"Captures ~0.55% — online-marketing revenue ≈$6B",own:"Wang Xing (founder control)",note:"Dominant Chinese local-services & food-delivery ads."},
+{n:"CCTV / China Media Group",hq:"Beijing, CN",lat:39.9230,lng:116.3210,cat:"broadcast",pct:0.32,role:"State TV advertising (China)",metric:"Captures ~0.32% — ad revenue ≈$3.5B",own:"Chinese state",note:"China’s national broadcaster."},
+{n:"Nippon TV",hq:"Tokyo, JP",lat:35.6890,lng:139.7590,cat:"broadcast",pct:0.23,role:"TV advertising (Japan)",metric:"Captures ~0.23% — ad revenue ≈$2.5B",own:"Yomiuri / Shoriki family",note:"Japan’s top commercial broadcaster."},
+{n:"Fuji Media Holdings",hq:"Tokyo, JP",lat:35.6260,lng:139.7770,cat:"broadcast",pct:0.18,role:"TV advertising (Japan)",metric:"Captures ~0.18% — ad revenue ≈$2B",own:"Widely held (Japan)",note:""},
+{n:"TF1",hq:"Paris, FR",lat:48.8330,lng:2.2510,cat:"broadcast",pct:0.18,role:"TV advertising (France)",metric:"Captures ~0.18% — ad revenue ≈$2B",own:"Bouygues family",note:"France’s largest commercial broadcaster."},
+{n:"Zillow",hq:"Seattle, US",lat:47.6100,lng:-122.3370,cat:"platform",pct:0.18,role:"Real-estate marketplace advertising (US)",metric:"Captures ~0.18% — ad revenue ≈$2B",own:"Widely held",note:"Dominant US real-estate ad marketplace."},
+{n:"Weibo",hq:"Beijing, CN",lat:39.9750,lng:116.3310,cat:"platform",pct:0.14,role:"Social advertising (China)",metric:"Captures ~0.14% — ad revenue ≈$1.5B",own:"Sina; Alibaba stake",note:""},
+{n:"Samsung Ads",hq:"Suwon, KR",lat:37.2570,lng:127.0530,cat:"broadcast",pct:0.14,role:"Connected-TV advertising",metric:"Captures ~0.14% — ad revenue ≈$1.5B",own:"Samsung (Lee family)",note:"Ads across ~600M Samsung smart TVs and devices."}
+];
+const DATA_OWN = [
+{n:"Larry Page & Sergey Brin (Alphabet)",hq:"Mountain View, US",lat:37.422,lng:-122.0841,cat:"family",tier:1,pct:24,pl:"~24%",share:"≈24% of the ~$1.1T world ad market — via Google & YouTube",sec:"Google & YouTube advertising",note:"Two founders hold supervoting control of the largest ad business on earth."},
+{n:"Mark Zuckerberg (Meta)",hq:"Menlo Park, US",lat:37.4848,lng:-122.1484,cat:"family",tier:1,pct:15,pl:"~15%",share:"≈15% — via Facebook, Instagram, WhatsApp, Threads",sec:"Meta advertising (~60% of all social ad spend)",note:"Sole voting control of the #2 ad seller."},
+{n:"Index-fund 'Big Three'",hq:"New York, US",lat:40.7531,lng:-74.001,cat:"institutional",tier:1,pct:0,pl:"top shareholder",share:"No market control — but the largest shareholders (~15-20% combined equity) of nearly every listed ad company",sec:"Stakes in Alphabet, Meta, Amazon, Microsoft, Apple, Omnicom, WPP…",note:"BlackRock, Vanguard and State Street own the ad giants on paper but exercise no operational control."},
+{n:"Chinese state",hq:"Beijing, CN",lat:39.9087,lng:116.3975,cat:"state",tier:2,pct:15,pl:"~16% (oversight)",share:"≈16% of the world ad market — the Chinese platforms it oversees (ByteDance, Tencent, Alibaba, JD, PDD, Baidu, Meituan, Kuaishou, Weibo, CCTV)",sec:"Oversight via golden shares, data and content rules",note:"Effectively supervises the advertising engines of the world's #2 ad market."},
+{n:"Zhang Yiming (ByteDance)",hq:"Beijing, CN",lat:39.9897,lng:116.481,cat:"family",tier:2,pct:6.4,pl:"~6%",share:"≈6% — via ByteDance (TikTok + Douyin)",sec:"TikTok & Douyin advertising",note:"Founder holds ~21% of the fastest-growing ad platform."},
+{n:"Amazon / Jeff Bezos",hq:"Seattle, US",lat:47.6228,lng:-122.3366,cat:"public",tier:2,pct:5.1,pl:"~5%",share:"≈5% — via Amazon Ads & retail media",sec:"Amazon Ads & retail media",note:"Widely held; Bezos founder ~9%. Leads the booming retail-media segment."},
+{n:"Microsoft",hq:"Redmond, US",lat:47.6396,lng:-122.1284,cat:"public",tier:2,pct:1.8,pl:"~1.8%",share:"≈1.8% — Bing, LinkedIn, news & Xandr",sec:"Bing, LinkedIn, Xandr advertising",note:"Widely held."},
+{n:"Apple",hq:"Cupertino, US",lat:37.3349,lng:-122.009,cat:"public",tier:2,pct:1.0,pl:"~1% + influence",share:"≈1% directly (App Store ads) — plus outsized indirect influence over the whole mobile-ad market",sec:"App Store search ads; privacy rules",note:"Its App Tracking Transparency policy rewired mobile advertising."},
+{n:"Disney",hq:"Burbank, US",lat:34.1561,lng:-118.3247,cat:"public",tier:2,pct:0.9,pl:"~0.9% (TV)",share:"≈0.9% — ESPN, ABC, Hulu & Disney+ advertising",sec:"Disney/ESPN/ABC/Hulu ad sales",note:"Widely held."},
+{n:"Omnicom",hq:"New York, US",lat:40.748,lng:-73.987,cat:"public",tier:3,pct:9,pl:"~9% directed",share:"Directs ≈9% of global media spend (post-IPG, world's largest agency group)",sec:"World's largest agency group after absorbing Interpublic (2025)",note:"Directs, rather than captures, the spend."},
+{n:"Badinter family (Publicis)",hq:"Paris, FR",lat:48.8704,lng:2.332,cat:"family",tier:3,pct:7,pl:"~7% directed",share:"Directs ≈7% — via Publicis Groupe",sec:"Publicis Groupe (Leo Burnett, Saatchi, Epsilon, Publicis Media)",note:"The founder's heirs (Elisabeth Badinter) remain the largest shareholders."},
+{n:"WPP",hq:"London, GB",lat:51.516,lng:-0.119,cat:"public",tier:3,pct:6,pl:"~6% directed",share:"Directs ≈6% — WPP Media manages over $60B in media investment",sec:"WPP Media, Ogilvy, GroupM legacy",note:"Widely held since Martin Sorrell's exit."},
+{n:"Dentsu",hq:"Tokyo, JP",lat:35.671,lng:139.763,cat:"public",tier:3,pct:3.6,pl:"~3.6% directed",share:"Directs ≈3.6% — Japan's dominant agency group",sec:"Carat, iProspect, Merkle",note:"Widely held."},
+{n:"Colin Huang (PDD / Temu)",hq:"Shanghai, CN",lat:31.2304,lng:121.4737,cat:"family",tier:3,pct:2.7,pl:"~2.7%",share:"≈2.7% — via Pinduoduo & Temu",sec:"Pinduoduo & Temu commerce advertising",note:"Founder retains major control."},
+{n:"Bolloré family",hq:"Paris, FR",lat:48.854,lng:2.279,cat:"family",tier:3,pct:1.8,pl:"~1.8% directed",share:"Directs ≈1.8% — via Havas",sec:"Havas advertising + Vivendi media",note:"Controls Havas after the 2024 Vivendi break-up."},
+{n:"Accenture",hq:"Dublin, IE",lat:53.344,lng:-6.267,cat:"public",tier:3,pct:1.7,pl:"services ~$19B",share:"~$19B marketing-services revenue (Accenture Song); directs less media than the holdcos",sec:"Accenture Song — largest tech-led marketing-services arm",note:"Widely held."},
+{n:"Ma Huateng / Tencent",hq:"Shenzhen, CN",lat:22.5403,lng:113.934,cat:"public",tier:3,pct:1.5,pl:"~1.5%",share:"≈1.5% — via Tencent / WeChat",sec:"WeChat & Tencent advertising",note:"Founder-led; widely held."},
+{n:"Robin Li (Baidu)",hq:"Beijing, CN",lat:40.057,lng:116.301,cat:"family",tier:3,pct:1.2,pl:"~1.2%",share:"≈1.2% — via Baidu",sec:"China's largest search-ad business",note:"Supervoting control."},
+{n:"Roberts family (Comcast/NBCU)",hq:"New York, US",lat:40.7589,lng:-73.9817,cat:"family",tier:3,pct:0.73,pl:"~0.7% (TV)",share:"≈0.7% — NBCUniversal & Peacock advertising",sec:"NBC, Bravo, Peacock ad sales",note:"Roberts family voting control; cable nets spun into Versant (2025)."},
+{n:"Apollo (Yahoo)",hq:"New York, US",lat:40.7575,lng:-73.976,cat:"institutional",tier:3,pct:0.55,pl:"~0.55%",share:"≈0.55% — Yahoo's global ad properties & DSP",sec:"Yahoo Ads",note:"Private-equity owned."},
+{n:"Warner Bros. Discovery",hq:"New York, US",lat:40.7538,lng:-74.0019,cat:"public",tier:3,pct:0.55,pl:"~0.55% (TV)",share:"≈0.55% — CNN, TNT, Discovery, Max advertising",sec:"WBD networks & Max ad sales",note:"Pending Paramount takeover."},
+{n:"Murdoch family (Fox)",hq:"New York, US",lat:40.7589,lng:-73.982,cat:"family",tier:3,pct:0.45,pl:"~0.45% (TV)",share:"≈0.45% — Fox & Tubi advertising",sec:"Fox News, Fox Sports, Tubi ad sales",note:"Lachlan Murdoch control."},
+{n:"Paramount Skydance (Ellison)",hq:"New York, US",lat:40.7637,lng:-73.9772,cat:"family",tier:3,pct:0.45,pl:"~0.45% (TV)",share:"≈0.45% — CBS & Paramount+ advertising",sec:"CBS, Paramount+, Pluto TV ad sales",note:"Ellison-controlled (2025)."},
+{n:"Yandex (Russian consortium)",hq:"Moscow, RU",lat:55.734,lng:37.588,cat:"institutional",tier:3,pct:0.45,pl:"~0.45%",share:"≈0.45% — Russia's dominant search advertising",sec:"Yandex search & display ads",note:"Russian business sold to a domestic consortium in 2024."},
+{n:"SoftBank & Naver (LY Corp)",hq:"Tokyo, JP",lat:35.666,lng:139.731,cat:"public",tier:3,pct:0.45,pl:"~0.45%",share:"≈0.45% — Yahoo Japan & LINE advertising",sec:"LY Corp (Yahoo Japan, LINE) ad sales",note:"SoftBank and Naver joint control."},
+{n:"Walton family (Walmart Connect)",hq:"Bentonville, US",lat:36.365,lng:-94.216,cat:"family",tier:3,pct:0.41,pl:"~0.4%",share:"≈0.4% — Walmart's fast-growing US retail-media network",sec:"Walmart Connect",note:"The family controls Walmart."},
+{n:"Decaux family (JCDecaux)",hq:"Paris, FR",lat:48.884,lng:2.269,cat:"family",tier:3,pct:0.38,pl:"~0.38% (OOH)",share:"≈0.38% — world's largest out-of-home network",sec:"JCDecaux billboards & transit ads",note:"Family-controlled."},
+{n:"Berlusconi family (MFE)",hq:"Milan, IT",lat:45.498,lng:9.279,cat:"family",tier:3,pct:0.36,pl:"~0.36% (TV)",share:"≈0.36% — ProSiebenSat.1 & Mediaset advertising",sec:"MFE / ProSiebenSat.1 TV ad sales",note:"Fininvest control."},
+{n:"Anthony Wood (Roku)",hq:"San Jose, US",lat:37.397,lng:-121.975,cat:"family",tier:3,pct:0.32,pl:"~0.32% (CTV)",share:"≈0.32% — leading US connected-TV ad platform",sec:"Roku CTV ad sales",note:"Founder-CEO."},
+{n:"Azcárraga family (TelevisaUnivision)",hq:"Mexico City, MX",lat:19.39,lng:-99.275,cat:"family",tier:3,pct:0.27,pl:"~0.27% (TV)",share:"≈0.27% — world's biggest Spanish-language TV advertising",sec:"TelevisaUnivision ad sales",note:"Founder family + investors."},
+{n:"Marinho family (Globo)",hq:"Rio de Janeiro, BR",lat:-22.951,lng:-43.201,cat:"family",tier:3,pct:0.27,pl:"~0.27% (TV)",share:"≈0.27% — TV Globo advertising (Brazil)",sec:"Globo TV ad sales",note:"Latin America's largest broadcaster."},
+{n:"Jeff Green (The Trade Desk)",hq:"Ventura, US",lat:34.274,lng:-119.229,cat:"family",tier:3,pct:0.22,pl:"~0.2% + programmatic",share:"≈0.2% captured, but directs billions in programmatic as the top independent DSP",sec:"Largest independent demand-side platform",note:"Founder holds supervoting control of the key independent ad-tech firm."},
+{n:"Mark Penn (Stagwell)",hq:"New York, US",lat:40.76,lng:-73.97,cat:"family",tier:4,pct:0.5,pl:"~0.5% directed",share:"Directs ≈0.5% — via Stagwell",sec:"Challenger agency network",note:"Founder-CEO with effective control."},
+{n:"iHeartMedia",hq:"San Antonio, US",lat:29.476,lng:-98.504,cat:"public",tier:4,pct:0.35,pl:"~0.35% (audio)",share:"≈0.35% — largest US radio advertising",sec:"iHeart radio & podcast ad sales",note:"Widely held."},
+{n:"Forrest Li (Sea / Shopee)",hq:"Singapore, SG",lat:1.284,lng:103.851,cat:"family",tier:4,pct:0.27,pl:"~0.27%",share:"≈0.27% — Shopee commerce advertising (SE Asia)",sec:"Shopee Ads",note:"Founder control."},
+{n:"Smith family (Sinclair)",hq:"Hunt Valley, US",lat:39.49,lng:-76.658,cat:"family",tier:4,pct:0.23,pl:"~0.23% (TV)",share:"≈0.23% — US local-TV advertising",sec:"Sinclair local-TV ad sales",note:"Smith family control."},
+{n:"Elon Musk (X / xAI)",hq:"San Francisco, US",lat:37.7758,lng:-122.417,cat:"family",tier:4,pct:0.23,pl:"~0.2%",share:"≈0.2% — via X (down sharply since 2022)",sec:"X advertising",note:"Sole owner."},
+{n:"Reilly family (Lamar)",hq:"Baton Rouge, US",lat:30.451,lng:-91.187,cat:"family",tier:4,pct:0.2,pl:"~0.2% (OOH)",share:"≈0.2% — largest US billboard network",sec:"Lamar billboards",note:"Reilly family control."},
+{n:"Liberty Media / Malone (SiriusXM)",hq:"Englewood, US",lat:39.6478,lng:-104.9878,cat:"family",tier:4,pct:0.18,pl:"~0.18% (audio)",share:"≈0.18% — SiriusXM satellite-radio advertising",sec:"SiriusXM ad sales",note:"John Malone control."},
+{n:"Mohn family (Bertelsmann / RTL)",hq:"Gütersloh, DE",lat:51.907,lng:8.385,cat:"family",tier:4,pct:0.18,pl:"~0.18% (TV)",share:"≈0.18% — RTL Group TV advertising (Europe)",sec:"RTL Group ad sales",note:"Family foundations control Bertelsmann."},
+{n:"Hiroshi Mikitani (Rakuten)",hq:"Tokyo, JP",lat:35.636,lng:139.73,cat:"family",tier:4,pct:0.18,pl:"~0.18%",share:"≈0.18% — Rakuten commerce advertising (Japan)",sec:"Rakuten Ads",note:"Founder control."},
+{n:"Adam Singolda (Taboola)",hq:"New York, US",lat:40.739,lng:-73.992,cat:"family",tier:4,pct:0.15,pl:"~0.15%",share:"≈0.15% — content-recommendation advertising",sec:"Taboola network",note:"Founder-CEO."},
+{n:"Marcos Galperin (MercadoLibre)",hq:"Montevideo, UY",lat:-34.9011,lng:-56.1645,cat:"family",tier:4,pct:0.12,pl:"~0.12%",share:"≈0.12% — ~55% of Latin America's retail media",sec:"Mercado Ads",note:"Founder-led."},
+{n:"Elliott & Brookfield (Nielsen)",hq:"New York, US",lat:40.757,lng:-73.978,cat:"institutional",tier:4,pct:0,pl:"measurement",share:"Owns the ad-measurement currency (Nielsen) rather than a market share",sec:"Nielsen audience measurement",note:"Private-equity owners."},
+{n:"Richard Liu (JD.com)",hq:"Beijing, CN",lat:39.9960,lng:116.4810,cat:"family",tier:4,pct:0.9,pl:"~0.9%",share:"≈0.9% — via JD retail-media",sec:"JD Ads",note:"Founder holds supervoting control."},
+{n:"Wang Xing (Meituan)",hq:"Beijing, CN",lat:40.0410,lng:116.4130,cat:"family",tier:4,pct:0.55,pl:"~0.55%",share:"≈0.55% — via Meituan local-services ads",sec:"Meituan Ads",note:"Founder control."},
+{n:"Shoriki family (Nippon TV)",hq:"Tokyo, JP",lat:35.6890,lng:139.7590,cat:"family",tier:4,pct:0.23,pl:"~0.23% (TV)",share:"≈0.23% — via Nippon TV (Japan’s top broadcaster)",sec:"Nippon TV ad sales",note:"Also controls the Yomiuri newspaper."},
+{n:"Bouygues family (TF1)",hq:"Paris, FR",lat:48.8330,lng:2.2510,cat:"family",tier:4,pct:0.18,pl:"~0.18% (TV)",share:"≈0.18% — via TF1 (France’s largest commercial broadcaster)",sec:"TF1 ad sales",note:"Bouygues conglomerate control."}
+];
+
+const map = L.map('map',{zoomControl:true,worldCopyJump:true,minZoom:2,maxZoom:19}).setView([30,-20],2.5);
+const gHyb=L.tileLayer('https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',{subdomains:['mt0','mt1','mt2','mt3'],maxZoom:20,attribution:'Imagery &copy; Google'});
+const gSat=L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{subdomains:['mt0','mt1','mt2','mt3'],maxZoom:20,attribution:'Imagery &copy; Google'});
+const esri=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Imagery &copy; Esri, Maxar'});
+gHyb.addTo(map);
+L.control.layers({"Satellite + labels":gHyb,"Satellite":gSat,"Esri imagery":esri},{},{position:'bottomleft',collapsed:true}).addTo(map);
+
+function coPopup(d,r){
+  const c=CATS_CO[d.cat];
+  return `<div class="pop"><div class="rkbig">Rank #${r} &middot; advertising</div>
+  <h3>${d.n}</h3><span class="tag" style="background:${c.color}">${c.label}</span>
+  <div class="kv"><b>HQ:</b> ${d.hq}</div><div class="kv"><b>Role:</b> ${d.role}</div>
+  <div class="kv"><b>Share of world ad market:</b> \u2248${d.pct}%</div>
+  <div class="kv"><b>Detail:</b> ${d.metric}</div>
+  <div class="kv"><b>Owner:</b> ${d.own}</div>
+  ${d.note?`<div class="note">${d.note}</div>`:''}</div>`;
+}
+function ownPopup(d,r){
+  const c=CATS_OWN[d.cat];
+  return `<div class="pop"><div class="rkbig">Rank #${r} &middot; ad-control weight: tier ${d.tier}</div>
+  <h3>${d.n}</h3><span class="tag" style="background:${c.color}">${c.label}</span>
+  <div class="kv"><b>HQ:</b> ${d.hq}</div><div class="kv"><b>Controls:</b> ${d.sec}</div>
+  <div class="kv"><b>Share of world ad market:</b> ${d.share}</div>
+  ${d.note?`<div class="note">${d.note}</div>`:''}</div>`;
+}
+
+const CFG = {
+  cos:{
+    data:DATA_CO, cats:CATS_CO,
+    h:"The World's Largest Advertising Companies",
+    p:'Sized by share of the ~$1.1 trillion global ad market. These entries capture roughly 79% of all ad spend; the rest is a long tail of smaller publishers, regional broadcasters and print. <span class="mono">(2026)</span>',
+    note:"Marker size = share of the ~$1.1T global ad market (2024-25). Platforms, retail-media, TV/streaming and out-of-home CAPTURE ad spend as revenue; agency groups DIRECT client media spend (shown, but not added to the captured total); ad-tech enables it. Figures from WARC, GroupM, eMarketer and company reports.",
+    size:d=>adR(d.pct), popup:coPopup,
+    sub:d=>`${d.hq} &middot; ${d.role} &middot; <span class="mono">\u2248${d.pct}%</span>`
+  },
+  own:{
+    data:DATA_OWN, cats:CATS_OWN,
+    h:"Who Owns the World's Advertising",
+    p:'The founders, families, states, funds and public companies behind the ad money. Together they control most of the ~$1.1T market. Sized by breadth of advertising control. <span class="mono">(2026)</span>',
+    note:"Marker size = approximate breadth of advertising control. Founder-families control the dominant platforms; index funds are the largest shareholders of the listed ones; the Chinese state oversees its platforms; agency groups direct (not capture) media spend.",
+    size:d=>RADIUS[d.tier], popup:ownPopup,
+    sub:d=>`${d.hq} &middot; <span class="mono">${d.pl}</span>`
+  }
+};
+
+const listEl=document.getElementById('list'), legendEl=document.getElementById('legend');
+const searchEl=document.getElementById('search'), countEl=document.getElementById('count');
+let cur={items:[],active:new Set(),cfg:null,key:null};
+function clearCur(){cur.items.forEach(it=>map.removeLayer(it.marker));cur.items=[];listEl.innerHTML='';legendEl.innerHTML='';}
+
+function build(key){
+  clearCur();
+  const cfg=CFG[key]; cur.cfg=cfg; cur.key=key;
+  document.getElementById('title-h').innerHTML=cfg.h;
+  document.getElementById('title-p').innerHTML=cfg.p;
+  document.getElementById('sizenote').innerHTML=cfg.note;
+  cur.active=new Set(Object.keys(cfg.cats));
+  Object.entries(cfg.cats).forEach(([k,c])=>{
+    const el=document.createElement('div'); el.className='leg';
+    el.innerHTML=`<span class="dot" style="background:${c.color}"></span><span class="lab">${c.label}</span><span class="cnt" id="cnt-${k}"></span>`;
+    el.addEventListener('click',()=>{if(cur.active.has(k)){cur.active.delete(k);el.classList.add('off');}else{cur.active.add(k);el.classList.remove('off');}applyFilters();});
+    legendEl.appendChild(el);
+  });
+  const rows=[...cfg.data].sort((a,b)=>(cfg.size(b)-cfg.size(a))||((b.pct||0)-(a.pct||0)));
+  rows.forEach((d,i)=>{
+    const rank=i+1, c=cfg.cats[d.cat], base=cfg.size(d);
+    const marker=L.circleMarker([d.lat,d.lng],{radius:base,color:STROKE,weight:1,fillColor:c.color,fillOpacity:.82,className:'mk'}).bindPopup(cfg.popup(d,rank),{maxWidth:300});
+    marker.on('mouseover',()=>marker.setStyle({radius:base+2.5,weight:1.6,color:'rgba(255,255,255,.92)'}));
+    marker.on('mouseout',()=>marker.setStyle({radius:base,weight:1,color:STROKE}));
+    marker.addTo(map);
+    const row=document.createElement('div'); row.className='row';
+    row.innerHTML=`<div class="rk">${rank}</div><div class="bar" style="background:${c.color}"></div><div><div class="nm">${d.n}</div><div class="sub">${cfg.sub(d)}</div></div>`;
+    row.addEventListener('click',()=>{map.flyTo([d.lat,d.lng],Math.max(map.getZoom(),6),{duration:.8});marker.openPopup();});
+    listEl.appendChild(row);
+    cur.items.push({d,marker,row});
+  });
+  applyFilters();
+}
+function applyFilters(){
+  const q=searchEl.value.trim().toLowerCase(); let shown=0; const per={};
+  Object.keys(cur.cfg.cats).forEach(k=>per[k]=0);
+  cur.items.forEach(({d,marker,row})=>{
+    const ok=cur.active.has(d.cat)&&(!q||(d.n+' '+d.hq+' '+(d.role||d.sec||'')+' '+(d.own||'')).toLowerCase().includes(q));
+    if(ok){if(!map.hasLayer(marker))marker.addTo(map);row.style.display='';shown++;per[d.cat]++;}
+    else{if(map.hasLayer(marker))map.removeLayer(marker);row.style.display='none';}
+  });
+  countEl.textContent=shown+' / '+cur.items.length+' shown';
+  Object.keys(cur.cfg.cats).forEach(k=>{const e=document.getElementById('cnt-'+k);if(e)e.textContent=per[k];});
+}
+searchEl.addEventListener('input',applyFilters);
+document.getElementById('reset').addEventListener('click',()=>{searchEl.value='';build(cur.key);map.setView([30,-20],2.5);});
+const tC=document.getElementById('tab-cos'), tW=document.getElementById('tab-own');
+tC.addEventListener('click',()=>{tC.classList.add('on');tW.classList.remove('on');build('cos');});
+tW.addEventListener('click',()=>{tW.classList.add('on');tC.classList.remove('on');build('own');});
+build('cos');
+</script>
+</body>
+</html>

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0" />
+<title>The Insentient 2026</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<style>
+  :root{--bg:#0b0e13;--panel:#10151d;--panel2:#171e28;--line:#262f3b;--ink:#e6ebf1;--ink-dim:#8d99a8;--accent:#7fa8d0}
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+  #map{position:absolute;inset:0;height:100vh;background:#0b0e13}
+  .tabs{position:absolute;top:14px;left:50%;transform:translateX(-50%);z-index:700;display:flex;gap:2px;background:rgba(9,12,17,.9);border:1px solid var(--line);border-radius:8px;padding:3px;box-shadow:0 2px 14px rgba(0,0,0,.4)}
+  .tab{background:transparent;border:0;color:var(--ink-dim);font:inherit;font-size:12px;font-weight:600;letter-spacing:.03em;padding:7px 14px;border-radius:6px;cursor:pointer;transition:color .15s,background .15s;white-space:nowrap}
+  .tab:hover{color:var(--ink)}
+  .tab.on{background:var(--panel2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+  .title{position:absolute;top:60px;left:14px;z-index:600;background:rgba(9,12,17,.78);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:10px;padding:12px 15px;max-width:402px;box-shadow:0 2px 18px rgba(0,0,0,.35)}
+  .title h1{margin:0;font-size:13.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;line-height:1.3}
+  .title p{margin:6px 0 0;font-size:11px;color:var(--ink-dim);line-height:1.5}
+  .title .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:0}
+  .panel{position:absolute;top:14px;right:14px;z-index:600;width:316px;max-width:calc(100vw - 28px);background:rgba(16,21,29,.93);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:10px;display:flex;flex-direction:column;max-height:calc(100vh - 28px);box-shadow:0 2px 18px rgba(0,0,0,.4)}
+  .panel .pad{padding:13px 13px 11px}
+  .search{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:7px;color:var(--ink);padding:9px 11px;font-size:13px;outline:none;transition:border-color .15s}
+  .search::placeholder{color:#5e6b7a}
+  .search:focus{border-color:#3f5a76}
+  .legend{margin-top:11px;display:flex;flex-direction:column;gap:3px}
+  .leg{display:flex;align-items:center;gap:9px;cursor:pointer;user-select:none;font-size:12px;padding:5px 6px;border-radius:6px;transition:background .12s}
+  .leg:hover{background:var(--panel2)}
+  .leg.off{opacity:.38}
+  .leg .dot{width:10px;height:10px;border-radius:2px;flex:0 0 auto;box-shadow:0 0 0 1px rgba(255,255,255,.18)}
+  .leg .lab{flex:1;color:var(--ink)}
+  .leg .cnt{font-family:ui-monospace,monospace;color:var(--ink-dim);font-size:11px}
+  .sizenote{font-size:10.5px;color:#5f6b79;margin-top:10px;line-height:1.5}
+  .meta{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--ink-dim);margin-top:10px;padding-top:9px;border-top:1px solid var(--line)}
+  .meta a{color:var(--accent);text-decoration:none;cursor:pointer}
+  .meta a:hover{color:#a9c8e6}
+  .listwrap{overflow:auto;border-top:1px solid var(--line);padding:6px 6px 9px}
+  .listwrap::-webkit-scrollbar{width:8px}
+  .listwrap::-webkit-scrollbar-thumb{background:#2a3543;border-radius:8px}
+  .row{display:flex;gap:9px;align-items:flex-start;padding:7px 8px;border-radius:7px;cursor:pointer;transition:background .12s}
+  .row:hover{background:var(--panel2)}
+  .row .rk{font-family:ui-monospace,monospace;font-size:11px;color:var(--ink-dim);min-width:22px;text-align:right;margin-top:1px}
+  .row .bar{width:3px;align-self:stretch;border-radius:2px;flex:0 0 auto;margin-top:1px}
+  .row .nm{font-size:12.5px;line-height:1.3;font-weight:600}
+  .row .sub{font-size:10.5px;color:var(--ink-dim);margin-top:2px;line-height:1.35}
+  .row .sub .mono{font-family:ui-monospace,monospace}
+  .leaflet-pane path.mk{filter:drop-shadow(0 1px 2px rgba(0,0,0,.55))}
+  .leaflet-popup-content-wrapper{background:var(--panel);color:var(--ink);border-radius:10px;border:1px solid var(--line);box-shadow:0 6px 26px rgba(0,0,0,.5)}
+  .leaflet-popup-tip{background:var(--panel);border:1px solid var(--line)}
+  .leaflet-popup-content{margin:12px 14px;font-size:12.5px;line-height:1.5;min-width:238px}
+  .pop h3{margin:0 0 2px;font-size:14px;line-height:1.3;font-weight:700}
+  .pop .rkbig{font-family:ui-monospace,monospace;font-size:10.5px;color:var(--ink-dim);letter-spacing:.04em;text-transform:uppercase}
+  .pop .tag{display:inline-block;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:4px;margin:7px 0 8px;font-weight:700;color:#0b0e13}
+  .pop .kv{margin:3px 0}
+  .pop .kv b{color:var(--ink-dim);font-weight:600}
+  .pop .note{margin-top:8px;padding-top:7px;border-top:1px solid var(--line);color:#c4cedb;font-size:11.5px}
+  .leaflet-bar a{background:#171e28;color:#e6ebf1;border-bottom:1px solid var(--line)}
+  .leaflet-bar a:hover{background:#222c39}
+  .leaflet-control-attribution{background:rgba(9,12,17,.72)!important;color:#6c7785!important;font-size:10px!important}
+  .leaflet-control-attribution a{color:#8fa9c2!important}
+  .leaflet-control-layers{background:rgba(16,21,29,.96)!important;color:var(--ink)!important;border:1px solid var(--line)!important;border-radius:8px!important}
+  .leaflet-control-layers-expanded{padding:9px 11px!important}
+  @media (max-width:640px){
+    .title{max-width:calc(100vw - 28px);left:8px;padding:9px 11px}
+    .title h1{font-size:12px}
+    .panel{width:calc(100vw - 28px);top:auto;bottom:14px;right:14px;max-height:44vh}
+    .tabs{top:8px;font-size:11px}
+    .tab{padding:7px 9px}
+  }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div class="tabs">
+  <button class="tab on" id="tab-cos">Biggest culprits</button>
+  <button class="tab" id="tab-own">Who owns them</button>
+  <button class="tab" id="tab-scale">Scale of the problem</button>
+</div>
+<div class="title">
+  <h1 id="title-h"></h1>
+  <p id="title-p"></p>
+</div>
+<div class="panel">
+  <div class="pad">
+    <input id="search" class="search" type="text" placeholder="Search…" autocomplete="off" />
+    <div class="legend" id="legend"></div>
+    <div class="sizenote" id="sizenote"></div>
+    <div class="meta"><span id="count" class="mono">--</span><a id="reset">Reset view</a></div>
+  </div>
+  <div class="listwrap" id="list"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+const CATS_CO = {
+  gems_precious:{label:"Gemstones & precious metals",color:"#cf6a5e"},
+  luxury_fashion:{label:"Luxury & fast fashion",color:"#c98aa8"},
+  bottled_water:{label:"Bottled & decorative water",color:"#6699c9"},
+  gas_light_pyro:{label:"Party gases, light & pyrotechnics",color:"#c7a35a"},
+  prestige_xp:{label:"Prestige experiences & objects",color:"#a986c2"},
+  digital_goods:{label:"Digital, virtual goods & crypto",color:"#5fa98a"},
+  spectacle_art:{label:"Entertainment, art & spectacle",color:"#7e5a3c"},
+  collectibles:{label:"Collectibles & novelty",color:"#8aa0b2"}
+};
+const CATS_OWN = {
+  state:{label:"Government / state",color:"#cf6a5e"},
+  family:{label:"Family / founder-controlled",color:"#5fa98a"},
+  institutional:{label:"Fund / foundation / VC",color:"#6699c9"},
+  public:{label:"Public company",color:"#c7a35a"}
+};
+const CATS_SCALE = {
+  shown:{label:"Shown on this map",color:"#cf6a5e"},
+  excluded:{label:"Not included",color:"#6699c9"}
+};
+const RADIUS = {1:12,2:9.5,3:7.5,4:5.5};
+const STROKE = 'rgba(7,11,16,.9)';
+
+const DATA_CO    = [
+{n:"De Beers (Anglo American)",hq:"London, GB",lat:51.5072,lng:-0.1276,cat:"gems_precious",tier:1,mag:100,scale:"Dominant global diamond miner",detail:"Mines and markets diamonds — ancient rock blasted, dug and cut purely for luxury adornment; its ‘a diamond is forever’ built the market.",own:"Anglo American",note:""},
+{n:"Richemont",hq:"Geneva, CH",lat:46.2044,lng:6.1432,cat:"gems_precious",tier:1,mag:88,scale:"Largest jewellery & watch luxury group",detail:"Cartier and Van Cleef turn mined gold, platinum and gems into high jewellery.",own:"Rupert family",note:""},
+{n:"Newmont",hq:"Denver, US",lat:39.7392,lng:-104.9903,cat:"gems_precious",tier:2,mag:72,scale:"World’s largest gold miner",detail:"Digs and processes gold ore, much of it ending as jewellery and ornament.",own:"Public",note:""},
+{n:"Chow Tai Fook",hq:"Hong Kong, HK",lat:22.2796,lng:114.1745,cat:"gems_precious",tier:2,mag:70,scale:"World’s largest jewellery retailer",detail:"Vast gold and jade jewellery retail.",own:"Cheng family",note:""},
+{n:"Signet Jewelers",hq:"Akron, US",lat:41.0814,lng:-81.519,cat:"gems_precious",tier:2,mag:68,scale:"Largest diamond-jewellery retailer",detail:"Sells diamond jewellery at scale (Kay, Zales, Jared).",own:"Public",note:""},
+{n:"Pandora",hq:"Copenhagen, DK",lat:55.6761,lng:12.5683,cat:"gems_precious",tier:2,mag:66,scale:"Largest jewellery maker by volume",detail:"Mass-produces silver and gem charms and rings.",own:"Public",note:""},
+{n:"Rolex",hq:"Geneva, CH",lat:46.205,lng:6.137,cat:"gems_precious",tier:2,mag:64,scale:"Iconic luxury watches",detail:"Gold and platinum mined and machined into status timepieces.",own:"Hans Wilsdorf Foundation",note:""},
+{n:"LVMH",hq:"Paris, FR",lat:48.8721,lng:2.3068,cat:"luxury_fashion",tier:1,mag:98,scale:"World’s largest luxury company",detail:"75 houses (Louis Vuitton, Dior, Tiffany) turn raw materials into desire-driven luxury goods.",own:"Arnault family",note:""},
+{n:"Inditex (Zara)",hq:"Arteixo, ES",lat:43.31,lng:-8.49,cat:"luxury_fashion",tier:1,mag:90,scale:"World’s largest fashion retailer",detail:"Produces and sells billions of fast-fashion garments on relentless cycles.",own:"Ortega family",note:""},
+{n:"Kering",hq:"Paris, FR",lat:48.855,lng:2.318,cat:"luxury_fashion",tier:1,mag:84,scale:"Luxury group (Gucci, Saint Laurent)",detail:"Turns leather, metal and textiles into luxury fashion.",own:"Pinault family / Artémis",note:""},
+{n:"Shein",hq:"Singapore, SG",lat:1.3521,lng:103.8198,cat:"luxury_fashion",tier:2,mag:78,scale:"Ultra-fast fashion",detail:"Churns out tens of thousands of new styles a day for near-disposable wear.",own:"Private (Xu Yangtian)",note:""},
+{n:"Hermès",hq:"Paris, FR",lat:48.87,lng:2.321,cat:"luxury_fashion",tier:2,mag:76,scale:"Ultra-luxury house",detail:"Hand-made luxury leather and silk at extreme prices.",own:"Hermès family",note:""},
+{n:"H&M",hq:"Stockholm, SE",lat:59.3326,lng:18.0649,cat:"luxury_fashion",tier:2,mag:74,scale:"Fast-fashion giant",detail:"Mass fast fashion sold and discarded at speed.",own:"Persson family",note:""},
+{n:"Nike",hq:"Beaverton, US",lat:45.5152,lng:-122.6784,cat:"luxury_fashion",tier:2,mag:70,scale:"Largest sportswear brand",detail:"Sneakers and apparel marketed as hype collectibles.",own:"Public (Knight family)",note:""},
+{n:"Nestlé / Perrier",hq:"Vevey, CH",lat:46.46,lng:6.84,cat:"bottled_water",tier:1,mag:82,scale:"Major bottled-water giant",detail:"Bottles spring and premium water (Perrier, San Pellegrino) and ships it worldwide.",own:"Public",note:""},
+{n:"Danone (Evian)",hq:"Paris, FR",lat:48.858,lng:2.334,cat:"bottled_water",tier:1,mag:80,scale:"Premium bottled water",detail:"Evian and Volvic — aquifer water packaged and flown as a lifestyle product.",own:"Public",note:""},
+{n:"The Wonderful Company (Fiji)",hq:"Los Angeles, US",lat:34.056,lng:-118.411,cat:"bottled_water",tier:2,mag:72,scale:"Luxury bottled water",detail:"Fiji Water is drawn from a Pacific aquifer and shipped across the planet as a luxury.",own:"Resnick family (private)",note:""},
+{n:"Coca-Cola (Smartwater)",hq:"Atlanta, US",lat:33.763,lng:-84.392,cat:"bottled_water",tier:2,mag:70,scale:"Major bottled water",detail:"Packages municipal and spring water as premium brands.",own:"Public",note:""},
+{n:"PepsiCo (Aquafina)",hq:"Purchase, US",lat:41.027,lng:-73.714,cat:"bottled_water",tier:2,mag:68,scale:"Major bottled water",detail:"Bottles and brands water at industrial scale.",own:"Public",note:""},
+{n:"Linde",hq:"Woking, GB",lat:51.319,lng:-0.558,cat:"gas_light_pyro",tier:1,mag:80,scale:"World’s largest industrial-gas company",detail:"Supplies helium — a finite, non-renewable gas — including for party balloons and novelty uses.",own:"Public",note:""},
+{n:"Air Liquide",hq:"Paris, FR",lat:48.877,lng:2.31,cat:"gas_light_pyro",tier:2,mag:68,scale:"Major industrial gases",detail:"Helium and specialty gases for signs, lasers and effects.",own:"Public",note:""},
+{n:"Air Products",hq:"Allentown, US",lat:40.608,lng:-75.49,cat:"gas_light_pyro",tier:2,mag:64,scale:"Major gas/helium supplier",detail:"Helium and gases, including non-essential novelty uses.",own:"Public",note:""},
+{n:"Signify (Philips)",hq:"Eindhoven, NL",lat:51.4416,lng:5.4697,cat:"gas_light_pyro",tier:2,mag:66,scale:"World’s largest lighting company",detail:"Architectural and decorative lighting burning power for ambience and signage.",own:"Public",note:""},
+{n:"Fireworks by Grucci",hq:"Bellport, US",lat:40.757,lng:-72.943,cat:"gas_light_pyro",tier:4,mag:30,scale:"Famed pyrotechnics house",detail:"Burns chemical compounds for fireworks spectacle.",own:"Grucci family (private)",note:""},
+{n:"Carnival Corporation",hq:"Miami, US",lat:25.778,lng:-80.186,cat:"prestige_xp",tier:1,mag:80,scale:"World’s largest cruise company",detail:"Floats fuel-burning megaships for leisure cruising.",own:"Public (Arison family)",note:""},
+{n:"Royal Caribbean",hq:"Miami, US",lat:25.772,lng:-80.176,cat:"prestige_xp",tier:2,mag:72,scale:"Major cruise line",detail:"Mega-cruise ships built for leisure.",own:"Public",note:""},
+{n:"Ferrari",hq:"Maranello, IT",lat:44.532,lng:10.864,cat:"prestige_xp",tier:2,mag:70,scale:"Luxury supercars",detail:"Forges metal into prestige sports cars.",own:"Exor / Ferrari family",note:""},
+{n:"Lürssen",hq:"Bremen, DE",lat:53.17,lng:8.65,cat:"prestige_xp",tier:3,mag:56,scale:"Top superyacht builder",detail:"Builds the world’s largest superyachts for billionaires.",own:"Lürssen family (private)",note:""},
+{n:"Lamborghini (VW)",hq:"Sant’Agata, IT",lat:44.665,lng:11.13,cat:"prestige_xp",tier:3,mag:54,scale:"Luxury supercars",detail:"Prestige supercars.",own:"Volkswagen (Porsche/Piëch family)",note:""},
+{n:"Blue Origin",hq:"Kent, US",lat:47.381,lng:-122.235,cat:"prestige_xp",tier:3,mag:52,scale:"Space tourism",detail:"Burns vast energy to fly tourists briefly to space.",own:"Jeff Bezos (private)",note:""},
+{n:"Virgin Galactic",hq:"Las Cruces, US",lat:32.312,lng:-106.774,cat:"prestige_xp",tier:3,mag:50,scale:"Space tourism",detail:"Suborbital joyrides for the wealthy.",own:"Public (Branson)",note:""},
+{n:"Netflix",hq:"Los Gatos, US",lat:37.233,lng:-121.963,cat:"digital_goods",tier:1,mag:68,scale:"Largest streaming service",detail:"Streams entertainment from energy-hungry data centres — vast computing and electricity for leisure viewing.",own:"Public",note:""},
+{n:"Marathon Digital",hq:"Fort Lauderdale, US",lat:26.122,lng:-80.137,cat:"digital_goods",tier:2,mag:62,scale:"Largest US Bitcoin miner",detail:"Runs warehouses of computers burning electricity to mine Bitcoin — pure computation for speculative tokens.",own:"Public",note:""},
+{n:"Roblox",hq:"San Mateo, US",lat:37.563,lng:-122.3255,cat:"digital_goods",tier:2,mag:60,scale:"Virtual-goods platform",detail:"Sells virtual items and currency — digital objects that exist only on company servers.",own:"Public (Baszucki)",note:""},
+{n:"Epic Games (Fortnite)",hq:"Cary, US",lat:35.84,lng:-78.78,cat:"digital_goods",tier:2,mag:58,scale:"Virtual cosmetics giant",detail:"Sells Fortnite skins — purely cosmetic digital files rendered on networked hardware.",own:"Private (Sweeney) + Tencent",note:""},
+{n:"Spotify",hq:"Stockholm, SE",lat:59.332,lng:18.064,cat:"digital_goods",tier:2,mag:54,scale:"Largest music streaming",detail:"Streams music as digital files from data centres.",own:"Public (Ek)",note:""},
+{n:"Yuga Labs (Bored Ape)",hq:"Miami, US",lat:25.762,lng:-80.192,cat:"digital_goods",tier:3,mag:48,scale:"Leading NFT maker",detail:"Mints NFTs (Bored Apes, CryptoPunks) — speculative tokens recorded on energy-hungry blockchains.",own:"Private / VC",note:""},
+{n:"Walt Disney (Experiences)",hq:"Orlando, US",lat:28.385,lng:-81.5639,cat:"spectacle_art",tier:1,mag:84,scale:"World’s largest theme-park operator",detail:"Builds energy-intensive immersive parks and spectacle.",own:"Public",note:""},
+{n:"Live Nation",hq:"Beverly Hills, US",lat:34.07,lng:-118.4,cat:"spectacle_art",tier:1,mag:80,scale:"World’s largest live-entertainment co",detail:"Stages concerts and festivals (Coachella) — vast energy, sound and staging for leisure.",own:"Public (Liberty Media)",note:""},
+{n:"Christie’s",hq:"London, GB",lat:51.5085,lng:-0.14,cat:"spectacle_art",tier:2,mag:68,scale:"Top art auction house",detail:"Auctions paintings and sculpture for record luxury sums.",own:"Pinault family / Artémis",note:""},
+{n:"Sotheby’s",hq:"New York, US",lat:40.769,lng:-73.963,cat:"spectacle_art",tier:2,mag:66,scale:"Top art auction house",detail:"Auctions fine art as ultra-luxury assets.",own:"Patrick Drahi (private)",note:""},
+{n:"Cirque du Soleil",hq:"Montreal, CA",lat:45.556,lng:-73.556,cat:"spectacle_art",tier:3,mag:52,scale:"Largest live circus producer",detail:"Energy- and effect-heavy spectacle.",own:"Private",note:""},
+{n:"teamLab",hq:"Tokyo, JP",lat:35.625,lng:139.777,cat:"spectacle_art",tier:3,mag:48,scale:"Immersive digital-art studio",detail:"Builds light, projection and sensor spectacle.",own:"Private",note:""},
+{n:"The LEGO Group",hq:"Billund, DK",lat:55.732,lng:9.127,cat:"collectibles",tier:1,mag:78,scale:"World’s largest toy maker",detail:"Moulds plastic into sets, many sold as limited-edition collectibles.",own:"Kirk Kristiansen family",note:""},
+{n:"Mattel",hq:"El Segundo, US",lat:33.92,lng:-118.416,cat:"collectibles",tier:2,mag:66,scale:"Toy & collectibles giant",detail:"Barbie, Hot Wheels — plastic collectibles at scale.",own:"Public",note:""},
+{n:"Pop Mart",hq:"Beijing, CN",lat:39.99,lng:116.48,cat:"collectibles",tier:2,mag:64,scale:"Blind-box collectibles giant",detail:"Sells blind-box figures (Labubu) as compulsive collectibles.",own:"Wang Ning (control)",note:""},
+{n:"Funko",hq:"Everett, US",lat:47.979,lng:-122.202,cat:"collectibles",tier:3,mag:50,scale:"Pop-culture figurines",detail:"Funko Pop vinyl figures as mass collectibles.",own:"Public",note:""},
+{n:"Hasbro",hq:"Pawtucket, US",lat:41.877,lng:-71.382,cat:"collectibles",tier:3,mag:48,scale:"Toy & collectibles maker",detail:"Plastic toys and collectibles.",own:"Public",note:""}
+];
+const DATA_OWN   = [
+{n:"Arnault family / LVMH",hq:"Paris, FR",lat:48.8721,lng:2.3068,cat:"family",tier:1,mag:98,scale:"World’s largest luxury group",sec:"Louis Vuitton, Dior, Tiffany, Bulgari",note:"Bernard Arnault’s family controls the luxury universe."},
+{n:"Anglo American / De Beers",hq:"London, GB",lat:51.5072,lng:-0.1276,cat:"public",tier:1,mag:90,scale:"Dominant diamond miner",sec:"De Beers",note:"Controls the diamond giant."},
+{n:"Ortega family",hq:"Arteixo, ES",lat:43.31,lng:-8.49,cat:"family",tier:1,mag:90,scale:"World’s largest fashion retailer",sec:"Inditex (Zara)",note:"Amancio Ortega, among the world’s richest."},
+{n:"Pinault family / Artémis",hq:"Paris, FR",lat:48.855,lng:2.318,cat:"family",tier:1,mag:84,scale:"Luxury + art auctions",sec:"Kering (Gucci) + Christie’s",note:"Controls a luxury group and a top art-auction house."},
+{n:"Rupert family",hq:"Geneva, CH",lat:46.2044,lng:6.1432,cat:"family",tier:2,mag:82,scale:"Jewellery & watch luxury",sec:"Richemont (Cartier)",note:"Family controls the jeweller."},
+{n:"Kirk Kristiansen family",hq:"Billund, DK",lat:55.732,lng:9.127,cat:"family",tier:2,mag:78,scale:"World’s largest toy maker",sec:"LEGO",note:"Founding family owns LEGO."},
+{n:"Hermès family",hq:"Paris, FR",lat:48.87,lng:2.321,cat:"family",tier:2,mag:78,scale:"Ultra-luxury house",sec:"Hermès",note:"Family fiercely guards control."},
+{n:"Persson family",hq:"Stockholm, SE",lat:59.3326,lng:18.0649,cat:"family",tier:2,mag:74,scale:"Fast fashion",sec:"H&M",note:"Founding family control."},
+{n:"Resnick family",hq:"Los Angeles, US",lat:34.056,lng:-118.411,cat:"family",tier:2,mag:72,scale:"Luxury bottled water",sec:"Fiji Water, Wonderful",note:"Private agribusiness dynasty."},
+{n:"Arison family",hq:"Miami, US",lat:25.778,lng:-80.186,cat:"family",tier:2,mag:72,scale:"World’s largest cruise line",sec:"Carnival",note:"Founding family large stake."},
+{n:"Cheng family",hq:"Hong Kong, HK",lat:22.2796,lng:114.1745,cat:"family",tier:2,mag:70,scale:"Largest jewellery retailer",sec:"Chow Tai Fook",note:"Family dynasty."},
+{n:"Exor / Agnelli family",hq:"Turin, IT",lat:45.07,lng:7.686,cat:"family",tier:2,mag:70,scale:"Supercars",sec:"Ferrari",note:"Agnelli holding controls Ferrari."},
+{n:"Liberty Media",hq:"Englewood, US",lat:39.648,lng:-104.987,cat:"institutional",tier:2,mag:64,scale:"Largest live-entertainment co",sec:"Live Nation",note:"Malone’s group is the largest shareholder."},
+{n:"Tencent",hq:"Shenzhen, CN",lat:22.54,lng:113.934,cat:"institutional",tier:2,mag:60,scale:"Games & virtual goods",sec:"Epic (40%), gaming stakes",note:"Owns big stakes in virtual-goods platforms."},
+{n:"Patrick Drahi",hq:"New York, US",lat:40.769,lng:-73.963,cat:"family",tier:2,mag:58,scale:"Art auctions",sec:"Sotheby’s",note:"Billionaire owner of the auction house."},
+{n:"Knight family",hq:"Beaverton, US",lat:45.5152,lng:-122.6784,cat:"family",tier:3,mag:56,scale:"Sportswear",sec:"Nike",note:"Founder family voting control."},
+{n:"Hans Wilsdorf Foundation",hq:"Geneva, CH",lat:46.205,lng:6.137,cat:"institutional",tier:3,mag:54,scale:"Luxury watches",sec:"Rolex",note:"A foundation owns Rolex."},
+{n:"Wang Ning",hq:"Beijing, CN",lat:39.99,lng:116.48,cat:"family",tier:3,mag:52,scale:"Blind-box collectibles",sec:"Pop Mart",note:"Founder controls the collectibles giant."},
+{n:"Jeff Bezos",hq:"Kent, US",lat:47.381,lng:-122.235,cat:"family",tier:3,mag:52,scale:"Space tourism",sec:"Blue Origin",note:"Self-funds space joyrides."},
+{n:"Index-fund Big Three",hq:"New York, US",lat:40.7531,lng:-74.001,cat:"institutional",tier:1,mag:40,scale:"Largest shareholders",sec:"LVMH, Nike, Carnival, Disney, Linde, Netflix…",note:"BlackRock, Vanguard, State Street — shareholders, not controllers."}
+];
+const DATA_SCALE = [
+{n:"Construction sand & aggregate",hq:"China",lat:34.0,lng:108.0,cat:"excluded",tier:1,mag:100,scale:"~5×10^10 t/yr · continuous",detail:"Sand, gravel and crushed stone mined by the tens of billions of tonnes for concrete and roads — the largest solid-material flow on earth.",note:"China, the biggest consumer of construction materials."},
+{n:"Water (drinking, sanitation, farming)",hq:"(global)",lat:2.0,lng:18.0,cat:"excluded",tier:1,mag:98,scale:"~4×10^12 m³/yr · continuous",detail:"Fresh water withdrawn for survival, hygiene and crops — vast but necessity-defensible.",note:"Placed near the equator as a global stand-in."},
+{n:"Fossil fuel & essential energy",hq:"Saudi Arabia",lat:24.0,lng:45.0,cat:"excluded",tier:1,mag:96,scale:"~10^11 GJ/yr · continuous",detail:"Oil, gas and coal extracted to power industry, heating and transport.",note:"A major energy-exporting region."},
+{n:"Structural steel & cement",hq:"China",lat:31.0,lng:114.0,cat:"excluded",tier:1,mag:94,scale:"~2×10^9 t steel/yr · continuous",detail:"Iron ore and limestone smelted into the steel and cement that build cities.",note:"China makes over half the world’s steel and cement."},
+{n:"Essential clothing & textiles",hq:"Bangladesh",lat:23.9,lng:90.4,cat:"excluded",tier:2,mag:72,scale:"~10^11 garments/yr · continuous",detail:"Fibres spun and woven for basic clothing (necessity-defensible share).",note:"Bangladesh, a garment-manufacturing hub."},
+{n:"Medical & industrial gases",hq:"(global)",lat:51.3,lng:-0.6,cat:"excluded",tier:2,mag:66,scale:"~10^8 t/yr · continuous",detail:"Oxygen, nitrogen and CO2 for medicine and industry.",note:"Placed at a major industrial-gas centre."},
+{n:"Money / currency (medium of exchange)",hq:"(global)",lat:40.71,lng:-74.01,cat:"excluded",tier:3,mag:40,scale:"small material · continuous",detail:"Paper, cotton and metal turned into the everyday currency that runs the economy.",note:"A global financial centre."},
+{n:"Premium & decorative bottled water",hq:"France",lat:46.4,lng:6.2,cat:"shown",tier:2,mag:76,scale:"~4×10^11 L/yr · continuous",detail:"Aquifer and spring water bottled and shipped worldwide as a branded luxury.",note:"France, home of the great premium-water brands."},
+{n:"Fast fashion",hq:"Bangladesh",lat:23.7,lng:90.3,cat:"shown",tier:2,mag:74,scale:"~10^11 garments/yr · continuous",detail:"Cheap garments mass-produced for fleeting trends and quickly discarded.",note:"A major fast-fashion manufacturing centre."},
+{n:"Luxury goods manufacturing",hq:"France",lat:48.87,lng:2.33,cat:"shown",tier:2,mag:72,scale:"~$1.5T market · continuous",detail:"Leather, metal, silk and gems turned into desire-driven luxury goods.",note:"Paris, the capital of the luxury industry."},
+{n:"Gold jewellery",hq:"India",lat:28.6,lng:77.2,cat:"shown",tier:2,mag:70,scale:"~10^3 t gold/yr · continuous",detail:"Mined gold cast into jewellery and ornament, much for status.",note:"India, the world’s largest gold-jewellery market."},
+{n:"Diamonds & gemstones",hq:"Botswana",lat:-24.6,lng:25.9,cat:"shown",tier:2,mag:68,scale:"~10^8 carats/yr · continuous",detail:"Diamonds and coloured gems mined and cut purely for adornment.",note:"Botswana, a leading diamond producer."},
+{n:"Cryptocurrency mining",hq:"West Texas, US",lat:31.5,lng:-99.5,cat:"shown",tier:2,mag:60,scale:"~10^2 TWh/yr · continuous",detail:"Warehouses of computers burn national-scale electricity to mint speculative crypto tokens.",note:"Texas, a major Bitcoin-mining hub."},
+{n:"Streaming & data centres",hq:"California, US",lat:37.3,lng:-121.9,cat:"shown",tier:2,mag:58,scale:"TWh/yr · continuous",detail:"Entertainment streamed from energy-hungry data centres — computing and power for leisure.",note:"California, a streaming-industry hub."},
+{n:"Cruise tourism",hq:"Miami, US",lat:25.778,lng:-80.186,cat:"shown",tier:3,mag:55,scale:"~3×10^7 passengers/yr · continuous",detail:"Fuel-burning megaships floated for leisure.",note:"Miami, the cruise capital of the world."},
+{n:"Decorative lighting & neon",hq:"Las Vegas, US",lat:36.1147,lng:-115.1728,cat:"shown",tier:3,mag:54,scale:"TWh/yr · continuous",detail:"Electricity burned for signage, displays and ambience.",note:"Las Vegas, a capital of decorative light."},
+{n:"Live concerts & festivals",hq:"(global)",lat:33.68,lng:-116.24,cat:"shown",tier:3,mag:53,scale:"energy + spectacle · seasonal",detail:"Huge energy, sound and staging for leisure events.",note:"A major festival site (Coachella)."},
+{n:"Fireworks & pyrotechnics",hq:"Liuyang, CN",lat:28.162,lng:113.633,cat:"shown",tier:3,mag:52,scale:"~10^6 t/yr · seasonal",detail:"Chemical compounds manufactured to be burned for spectacle.",note:"Liuyang, China, the fireworks capital of the world."},
+{n:"Theme parks",hq:"Orlando, US",lat:28.385,lng:-81.5639,cat:"shown",tier:3,mag:51,scale:"TWh/yr · continuous",detail:"Energy-intensive immersive parks built for leisure.",note:"Orlando, the theme-park capital."},
+{n:"Supercars & superyachts",hq:"Maranello, IT",lat:44.532,lng:10.864,cat:"shown",tier:3,mag:50,scale:"small · continuous",detail:"Metal forged into prestige cars and billionaire yachts.",note:"Maranello, Italy, home of the supercar."},
+{n:"Art market",hq:"New York, US",lat:40.769,lng:-73.963,cat:"shown",tier:3,mag:49,scale:"~$65B/yr · continuous",detail:"Paintings and sculpture traded as ultra-luxury assets.",note:"New York, a centre of the global art trade."},
+{n:"Collectibles & novelty toys",hq:"Billund, DK",lat:55.732,lng:9.127,cat:"shown",tier:3,mag:47,scale:"~10^9 units/yr · continuous",detail:"Plastic and resin moulded into figures sold as collectibles.",note:"Billund, Denmark, home of the largest toy maker."},
+{n:"Space tourism",hq:"West Texas, US",lat:31.423,lng:-104.757,cat:"shown",tier:3,mag:46,scale:"tiny volume · extreme energy/person",detail:"Vast energy burned to fly a few tourists briefly above the atmosphere.",note:"West Texas, a private-spaceflight launch site."},
+{n:"Party helium",hq:"Amarillo, US",lat:35.222,lng:-101.831,cat:"shown",tier:3,mag:45,scale:"finite gas · continuous",detail:"A finite, non-renewable element vented into balloons and novelties.",note:"Amarillo, Texas, historic helium capital."},
+{n:"NFTs & crypto collectibles",hq:"(global)",lat:25.76,lng:-80.19,cat:"shown",tier:3,mag:44,scale:"speculative · energy-intensive",detail:"Digital tokens minted and traded as speculative collectibles.",note:"A crypto-conference hub."},
+{n:"Decorative water features & fountains",hq:"Las Vegas, US",lat:36.1126,lng:-115.1767,cat:"shown",tier:4,mag:30,scale:"water + energy · continuous",detail:"Water and power cycled for fountains and artificial lakes.",note:"Las Vegas, home of the Bellagio fountains."},
+{n:"Luxury ice & ice sculptures",hq:"(global)",lat:35.6,lng:139.7,cat:"shown",tier:4,mag:24,scale:"small · batch",detail:"Water frozen and carved for luxury bars and events.",note:"A luxury-hospitality hub."}
+];
+
+const map = L.map('map',{zoomControl:true,worldCopyJump:true,minZoom:2,maxZoom:19}).setView([25,12],2.1);
+const gHyb=L.tileLayer('https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',{subdomains:['mt0','mt1','mt2','mt3'],maxZoom:20,attribution:'Imagery &copy; Google'});
+const gSat=L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{subdomains:['mt0','mt1','mt2','mt3'],maxZoom:20,attribution:'Imagery &copy; Google'});
+const esri=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Imagery &copy; Esri, Maxar'});
+gHyb.addTo(map);
+L.control.layers({"Satellite + labels":gHyb,"Satellite":gSat,"Esri imagery":esri},{},{position:'bottomleft',collapsed:true}).addTo(map);
+
+function coPopup(d,r){
+  const c=CATS_CO[d.cat];
+  return `<div class="pop"><div class="rkbig">Rank #${r} &middot; scale: tier ${d.tier}</div>
+  <h3>${d.n}</h3><span class="tag" style="background:${c.color}">${c.label}</span>
+  <div class="kv"><b>Based:</b> ${d.hq}</div>
+  <div class="kv"><b>Scale:</b> ${d.scale}</div>
+  <div class="kv"><b>How it uses the insentient:</b> ${d.detail}</div>
+  <div class="kv"><b>Owner:</b> ${d.own}</div>
+  ${d.note?`<div class="note">${d.note}</div>`:''}</div>`;
+}
+function ownPopup(d,r){
+  const c=CATS_OWN[d.cat];
+  return `<div class="pop"><div class="rkbig">Rank #${r} &middot; control weight: tier ${d.tier}</div>
+  <h3>${d.n}</h3><span class="tag" style="background:${c.color}">${c.label}</span>
+  <div class="kv"><b>Based:</b> ${d.hq}</div>
+  <div class="kv"><b>Controls:</b> ${d.sec}</div>
+  <div class="kv"><b>Scale:</b> ${d.scale}</div>
+  ${d.note?`<div class="note">${d.note}</div>`:''}</div>`;
+}
+function scalePopup(d,r){
+  const c=CATS_SCALE[d.cat];
+  return `<div class="pop"><div class="rkbig">Magnitude rank #${r} &middot; tier ${d.tier}</div>
+  <h3>${d.n}</h3><span class="tag" style="background:${c.color}">${d.cat==='shown'?'On this map':'Not included'}</span>
+  <div class="kv"><b>Representative site:</b> ${d.hq}</div>
+  <div class="kv"><b>Est. scale &amp; frequency:</b> ${d.scale}</div>
+  <div class="kv"><b>How the insentient is used:</b> ${d.detail}</div>
+  ${d.note?`<div class="note"><b>Why here:</b> ${d.note}</div>`:''}</div>`;
+}
+
+const CFG = {
+  cos:{
+    data:DATA_CO, cats:CATS_CO, popup:coPopup,
+    h:"The Insentient",
+    p:'This map documents the largest across gemstones and precious metals, luxury and fast fashion, bottled and decorative water, party gases and decorative light, prestige experiences, digital and virtual goods, spectacle and art, and collectibles. <span class="mono">(2026)</span>',
+    note:"Marker size = scale of insentient use (extraction, output, energy or revenue). Company facts are real and sourced (industry data, company filings). The \u2018Scale of the problem\u2019 tab maps the wider universe of insentient-using industries for comparison.",
+    sub:d=>`${d.hq} &middot; <span class="mono">${d.scale}</span>`
+  },
+  own:{
+    data:DATA_OWN, cats:CATS_OWN, popup:ownPopup,
+    h:"Who Owns Them",
+    p:'The families, founders, funds and states that control the largest of these industries. <span class="mono">(2026)</span>',
+    note:"A handful of dynastic families and founders control the luxury, fashion, digital and collectibles giants; index funds are the largest shareholders of the listed firms \u2014 shareholders, not controllers.",
+    sub:d=>`${d.hq} &middot; <span class="mono">${d.scale}</span>`
+  },
+  scale:{
+    data:DATA_SCALE, cats:CATS_SCALE, popup:scalePopup,
+    h:"Scale of the Problem \u2014 Industries that Use the Insentient",
+    p:'Most industries that use insentient matter, sized by rough magnitude and placed at a representative site. <span class="mono">(2026)</span>',
+    note:"IMPORTANT: the mass, volume and energy figures are illustrative ORDER-OF-MAGNITUDE estimates only \u2014 production volume \u00d7 typical density. The true numbers are unknowable and could be off by powers of ten; they are shown to compare relative scale, not as measured figures.",
+    sub:d=>`${d.scale} &middot; <span class="mono">${d.cat==='shown'?'on map':'not incl'}</span>`
+  }
+};
+
+const listEl=document.getElementById('list'), legendEl=document.getElementById('legend');
+const searchEl=document.getElementById('search'), countEl=document.getElementById('count');
+let cur={items:[],active:new Set(),cfg:null,key:null};
+function clearCur(){cur.items.forEach(it=>map.removeLayer(it.marker));cur.items=[];listEl.innerHTML='';legendEl.innerHTML='';}
+
+function build(key){
+  clearCur();
+  const cfg=CFG[key]; cur.cfg=cfg; cur.key=key;
+  document.getElementById('title-h').innerHTML=cfg.h;
+  document.getElementById('title-p').innerHTML=cfg.p;
+  document.getElementById('sizenote').innerHTML=cfg.note;
+  cur.active=new Set(Object.keys(cfg.cats));
+  Object.entries(cfg.cats).forEach(([k,c])=>{
+    const el=document.createElement('div'); el.className='leg';
+    el.innerHTML=`<span class="dot" style="background:${c.color}"></span><span class="lab">${c.label}</span><span class="cnt" id="cnt-${k}"></span>`;
+    el.addEventListener('click',()=>{if(cur.active.has(k)){cur.active.delete(k);el.classList.add('off');}else{cur.active.add(k);el.classList.remove('off');}applyFilters();});
+    legendEl.appendChild(el);
+  });
+  const rows=[...cfg.data].sort((a,b)=>(a.tier-b.tier)||(b.mag-a.mag));
+  rows.forEach((d,i)=>{
+    const rank=i+1, c=cfg.cats[d.cat], base=RADIUS[d.tier];
+    const marker=L.circleMarker([d.lat,d.lng],{radius:base,color:STROKE,weight:1,fillColor:c.color,fillOpacity:.82,className:'mk'}).bindPopup(cfg.popup(d,rank),{maxWidth:300});
+    marker.on('mouseover',()=>marker.setStyle({radius:base+2.5,weight:1.6,color:'rgba(255,255,255,.92)'}));
+    marker.on('mouseout',()=>marker.setStyle({radius:base,weight:1,color:STROKE}));
+    marker.addTo(map);
+    const row=document.createElement('div'); row.className='row';
+    row.innerHTML=`<div class="rk">${rank}</div><div class="bar" style="background:${c.color}"></div><div><div class="nm">${d.n}</div><div class="sub">${cfg.sub(d)}</div></div>`;
+    row.addEventListener('click',()=>{map.flyTo([d.lat,d.lng],Math.max(map.getZoom(),5),{duration:.8});marker.openPopup();});
+    listEl.appendChild(row);
+    cur.items.push({d,marker,row});
+  });
+  applyFilters();
+}
+function applyFilters(){
+  const q=searchEl.value.trim().toLowerCase(); let shown=0; const per={};
+  Object.keys(cur.cfg.cats).forEach(k=>per[k]=0);
+  cur.items.forEach(({d,marker,row})=>{
+    const ok=cur.active.has(d.cat)&&(!q||(d.n+' '+d.hq+' '+d.scale+' '+(d.detail||d.sec||'')+' '+(d.own||'')).toLowerCase().includes(q));
+    if(ok){if(!map.hasLayer(marker))marker.addTo(map);row.style.display='';shown++;per[d.cat]++;}
+    else{if(map.hasLayer(marker))map.removeLayer(marker);row.style.display='none';}
+  });
+  countEl.textContent=shown+' / '+cur.items.length+' shown';
+  Object.keys(cur.cfg.cats).forEach(k=>{const e=document.getElementById('cnt-'+k);if(e)e.textContent=per[k];});
+}
+searchEl.addEventListener('input',applyFilters);
+document.getElementById('reset').addEventListener('click',()=>{searchEl.value='';build(cur.key);map.setView([25,12],2.1);});
+const tabs={cos:document.getElementById('tab-cos'),own:document.getElementById('tab-own'),scale:document.getElementById('tab-scale')};
+function setTab(k){Object.entries(tabs).forEach(([kk,el])=>el.classList.toggle('on',kk===k));build(k);}
+tabs.cos.addEventListener('click',()=>setTab('cos'));
+tabs.own.addEventListener('click',()=>setTab('own'));
+tabs.scale.addEventListener('click',()=>setTab('scale'));
+build('cos');
+</script>
+</body>
+</html>

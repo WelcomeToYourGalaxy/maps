@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="en">
+<head><script src="gdpr/gdprscript.js?buildTime=1234"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Global Wealth Atlas</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<style>
+  :root{
+    --bg:#0b0e12; --panel:rgba(11,14,18,.90); --line:#222b35;
+    --ink:#eef2f6; --dim:#8e9aa6; --faint:#5d6873;
+    --gold:#d8b772; --gold-soft:#caa24f; --plat:#cfdae6; --plat-soft:#9fb0c2;
+  }
+  html,body{margin:0;padding:0;} *{box-sizing:border-box;}
+  #wrap{position:relative;width:100%;height:770px;overflow:hidden;background:var(--bg);
+    border:1px solid var(--line);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  #map{position:absolute;inset:0;}
+  .sat-dim .leaflet-tile{filter:grayscale(.42) brightness(.60) contrast(1.10) saturate(.80);}
+  .ui{position:absolute;z-index:1000;background:var(--panel);color:var(--ink);
+    border:1px solid var(--line);border-radius:8px;
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+    box-shadow:0 10px 30px rgba(0,0,0,.55);}
+  #title{top:16px;left:16px;max-width:320px;padding:13px 16px;}
+  #title .ey{font:600 9.5px/1 ui-monospace,Menlo,monospace;letter-spacing:2.4px;
+    text-transform:uppercase;color:var(--gold);}
+  #title h1{margin:6px 0 4px;font-size:17px;font-weight:650;letter-spacing:-.2px;}
+  #title p{margin:0;font-size:11px;line-height:1.55;color:var(--dim);}
+  #controls{top:16px;right:16px;width:236px;padding:13px 14px;}
+  .lbl{font:600 8.5px/1 ui-monospace,Menlo,monospace;letter-spacing:1.8px;
+    text-transform:uppercase;color:var(--faint);margin:0 0 8px;}
+  .chips{display:flex;flex-direction:column;gap:6px;margin-bottom:13px;}
+  .chip{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:6px;
+    padding:7px 10px;cursor:pointer;transition:.15s;font-size:11.5px;color:var(--dim);user-select:none;}
+  .chip:hover{background:rgba(255,255,255,.04);color:var(--ink);}
+  .chip.on{border-color:var(--gold);color:var(--ink);background:rgba(216,183,114,.07);}
+  .chip .sw{width:11px;height:11px;border-radius:50%;flex:0 0 auto;}
+  .chip .ct{margin-left:auto;font:9px ui-monospace,Menlo,monospace;color:var(--faint);}
+  .sw-g{background:rgba(202,162,79,.30);border:1.5px solid var(--gold);}
+  .sw-i{background:rgba(159,176,194,.28);border:1.5px solid var(--plat);}
+  .sw-u{background:rgba(202,162,79,.05);border:1.5px solid var(--gold);}
+  select{width:100%;background:#0e131a;color:var(--ink);border:1px solid var(--line);
+    border-radius:6px;padding:8px 9px;font:13px inherit;cursor:pointer;
+    -webkit-appearance:none;appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%238e9aa6'/></svg>");
+    background-repeat:no-repeat;background-position:right 10px center;}
+  #stat{margin-top:13px;padding-top:12px;border-top:1px solid var(--line);
+    font-size:11px;color:var(--dim);line-height:1.5;}
+  #stat .big{font-size:18px;font-weight:700;color:var(--gold);letter-spacing:-.3px;
+    display:block;margin:3px 0 1px;font-variant-numeric:tabular-nums;}
+  #info-toggle{margin-top:11px;font:600 10.5px/1 inherit;color:var(--gold);cursor:pointer;}
+  #info-toggle:hover{text-decoration:underline;}
+  #about{bottom:16px;right:16px;max-width:320px;padding:14px 16px;display:none;
+    font-size:11px;line-height:1.6;color:var(--dim);}
+  #about.open{display:block;}
+  #about .h{color:var(--gold);font-weight:600;} #about strong{color:var(--ink);}
+  #about p{margin:0 0 9px;} #about p:last-child{margin:0;}
+  #legend{bottom:16px;left:16px;padding:13px 15px;width:228px;}
+  .lg-row{display:flex;align-items:center;gap:9px;margin:6px 0;font-size:11px;color:var(--dim);}
+  .lg-mk{width:14px;height:14px;border-radius:50%;flex:0 0 auto;}
+  .mk-fam{background:rgba(202,162,79,.22);border:1.5px solid var(--gold);}
+  .mk-ind{background:rgba(159,176,194,.20);border:1.25px solid var(--plat);}
+  .mk-na{background:transparent;border:1.5px dashed var(--gold);}
+  .lg-line{width:14px;height:0;border-top:1px solid var(--gold);opacity:.5;flex:0 0 auto;}
+  .lg-scale{display:flex;align-items:flex-end;gap:13px;margin:11px 0 3px;padding-top:11px;
+    border-top:1px solid var(--line);}
+  .lg-scale .u{display:flex;flex-direction:column;align-items:center;gap:5px;}
+  .lg-scale svg circle{fill:rgba(216,183,114,.12);stroke:var(--gold);stroke-width:1.25;}
+  .lg-scale .cap{font:9px ui-monospace,Menlo,monospace;color:var(--faint);}
+  #legend .src{margin-top:10px;padding-top:9px;border-top:1px solid var(--line);
+    font:9px/1.55 ui-monospace,Menlo,monospace;color:var(--faint);}
+  .leaflet-popup-content-wrapper{background:#0b0e12;color:var(--ink);border:1px solid var(--line);
+    border-radius:9px;box-shadow:0 12px 34px rgba(0,0,0,.6);}
+  .leaflet-popup-tip{background:#0b0e12;border:1px solid var(--line);}
+  .leaflet-popup-content{margin:13px 16px;font-family:inherit;min-width:190px;}
+  .pp-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;}
+  .pp-rank{font:600 9px/1 ui-monospace,Menlo,monospace;letter-spacing:1.3px;color:var(--faint);}
+  .pp-tier{font:600 8px/1 ui-monospace,Menlo,monospace;letter-spacing:.8px;text-transform:uppercase;}
+  .pp-tier.fam{color:var(--gold);} .pp-tier.ind{color:var(--plat);}
+  .pp-name{font-size:15px;font-weight:680;margin:5px 0 1px;letter-spacing:-.2px;}
+  .pp-amt{font-size:21px;font-weight:800;letter-spacing:-.5px;margin:4px 0 2px;font-variant-numeric:tabular-nums;}
+  .pp-amt small{font-size:10px;font-weight:500;color:var(--dim);letter-spacing:0;}
+  .pp-na{font:11px ui-monospace,Menlo,monospace;color:var(--gold);margin:5px 0;}
+  .pp-meta{font-size:11px;color:var(--dim);line-height:1.55;margin-top:3px;}
+  .pp-meta b{color:var(--ink);font-weight:600;}
+  .leaflet-tooltip.tt{background:#0b0e12;border:1px solid var(--line);color:var(--ink);
+    font:600 11px/1 inherit;border-radius:5px;box-shadow:0 6px 18px rgba(0,0,0,.5);}
+  .leaflet-tooltip.tt:before{display:none;}
+  .leaflet-tooltip.tt .v{color:var(--gold);font-variant-numeric:tabular-nums;}
+  .leaflet-control-attribution{font-size:9px;background:rgba(11,14,18,.7)!important;color:var(--faint)!important;}
+  .leaflet-control-attribution a{color:var(--dim)!important;}
+  .leaflet-bar a{background:#0e131a;color:var(--ink);border-color:var(--line);}
+  .leaflet-bar a:hover{background:#172029;}
+  @media (max-width:620px){
+    #title{max-width:52%;} #controls{width:172px;} #legend{display:none;} #about{max-width:78%;}
+  }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div id="map"></div>
+
+  <div id="title" class="ui">
+    <div class="ey">Global Wealth Atlas</div>
+    <h1>The World's Richest Dynasties &amp; Individuals</h1>
+    <p>Every entry shown individually. Marker area scales with net worth; overlapping
+       points fan apart (hairline marks their shared location). Hover for the figure, click for detail.</p>
+  </div>
+
+  <div id="controls" class="ui">
+    <div class="lbl">Data layers</div>
+    <div class="chips" id="chips">
+      <div class="chip on" data-key="global"><span class="sw sw-g"></span> Global families <span class="ct" id="ct-global"></span></div>
+      <div class="chip on" data-key="individuals"><span class="sw sw-i"></span> Individuals <span class="ct" id="ct-individuals"></span></div>
+      <div class="chip on" data-key="us"><span class="sw sw-u"></span> US families <span class="ct" id="ct-us"></span></div>
+    </div>
+    <div class="lbl">Country / region</div>
+    <select id="country"></select>
+    <div id="stat"></div>
+    <div id="info-toggle">About the data &#9432;</div>
+  </div>
+
+  <div id="about" class="ui">
+    <p><span class="h">Three layers, three sources.</span>
+      <strong>Global families</strong> — Bloomberg <em>World's Richest Families 2025</em> (Dec 9 2025).
+      <strong>Individuals</strong> — Forbes <em>World's Billionaires 2026</em> (Mar 1 2026), top 50.
+      <strong>US families</strong> — Forbes <em>America's Richest Families 2024</em>, all 25.</p>
+    <p><span class="h">On national depth.</span> The US is the only country with a true deep
+      <em>family</em> ranking. Other big economies (China, India, Germany…) publish deep
+      <em>individual</em> lists, which already appear in the Individuals layer.</p>
+    <p><span class="h">Honesty flags.</span> A dynasty can recur across layers with different
+      figures (Walton is $513B in Bloomberg's global aggregate vs $267B in Forbes US) — different
+      methods, both labelled with their source. Four global new-entrants carry no figure (≥$46.4B
+      threshold). Markers sit at principal base/HQ; Forbes "country" is nationality.</p>
+    <p class="src" style="color:var(--faint);font:9px/1.5 ui-monospace,Menlo,monospace">
+      Imagery © Google / Esri · figures are point-in-time snapshots and drift with markets.</p>
+  </div>
+
+  <div id="legend" class="ui">
+    <div class="lbl">Legend</div>
+    <div class="lg-row"><span class="lg-mk mk-fam"></span> Family fortune (gold)</div>
+    <div class="lg-row"><span class="lg-mk mk-ind"></span> Individual (platinum)</div>
+    <div class="lg-row"><span class="lg-mk mk-na"></span> Figure not public · ≥ $46.4B</div>
+    <div class="lg-row"><span class="lg-line"></span> Shared location (spread to show all)</div>
+    <div class="lg-scale">
+      <div class="u"><svg width="20" height="20"><circle cx="10" cy="14" r="5"/></svg><span class="cap">$20B</span></div>
+      <div class="u"><svg width="38" height="38"><circle cx="19" cy="26" r="11"/></svg><span class="cap">$150B</span></div>
+      <div class="u"><svg width="56" height="56"><circle cx="28" cy="40" r="17"/></svg><span class="cap">$500B+</span></div>
+    </div>
+    <div class="src" id="legend-src">SOURCE — Bloomberg, Forbes</div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+/* ===== DATA ===== */
+const FAM_GLOBAL = [
+ {rank:1,name:"Walton family",nw:513.4,country:"United States",biz:"Walmart (44% stake)",base:"Bentonville, USA",lat:36.3729,lon:-94.2088},
+ {rank:2,name:"Al Nahyan family",nw:335.9,country:"United Arab Emirates",biz:"Ruling family of Abu Dhabi -- oil, sovereign assets",base:"Abu Dhabi, UAE",lat:24.4539,lon:54.3773},
+ {rank:3,name:"Al Saud family",nw:213.6,country:"Saudi Arabia",biz:"Saudi royal family -- oil, state assets",base:"Riyadh, Saudi Arabia",lat:24.7136,lon:46.6753},
+ {rank:4,name:"Al Thani family",nw:199.5,country:"Qatar",biz:"Ruling family of Qatar -- gas, real estate",base:"Doha, Qatar",lat:25.2854,lon:51.5310},
+ {rank:5,name:"Hermès (Dumas) family",nw:184.5,country:"France",biz:"Hermès International -- luxury goods",base:"Paris, France",lat:48.8606,lon:2.3376},
+ {rank:6,name:"Koch family",nw:150.5,country:"United States",biz:"Koch Industries -- energy, chemicals",base:"Wichita, USA",lat:37.6872,lon:-97.3301},
+ {rank:7,name:"Mars family",nw:143.4,country:"United States",biz:"Mars Inc. -- confectionery & pet food",base:"McLean, USA",lat:38.9339,lon:-77.1773},
+ {rank:8,name:"Ambani family",nw:105.6,country:"India",biz:"Reliance Industries -- energy, retail, telecom",base:"Mumbai, India",lat:19.0760,lon:72.8777},
+ {rank:9,name:"Wertheimer family",nw:85.6,country:"France",biz:"Chanel -- luxury fashion",base:"Paris, France",lat:48.8650,lon:2.3050},
+ {rank:10,name:"Thomson family",nw:82.1,country:"Canada",biz:"Thomson Reuters (~70% via Woodbridge)",base:"Toronto, Canada",lat:43.6532,lon:-79.3832},
+ {rank:null,name:"Larrea Mota Velasco family",nw:null,country:"Mexico",biz:"Grupo México -- mining, rail",base:"Mexico City, Mexico",lat:19.4326,lon:-99.1332},
+ {rank:null,name:"Luksic family",nw:null,country:"Chile",biz:"Antofagasta / Quiñenco -- copper, banking",base:"Santiago, Chile",lat:-33.4489,lon:-70.6693},
+ {rank:null,name:"Del Vecchio family",nw:null,country:"Italy",biz:"EssilorLuxottica -- eyewear",base:"Milan, Italy",lat:45.4642,lon:9.1900},
+ {rank:null,name:"Olayan family",nw:null,country:"Saudi Arabia",biz:"Olayan Group -- diversified, finance",base:"Riyadh, Saudi Arabia",lat:24.7536,lon:46.7300}
+];
+const INDIV = [
+ {rank:1,name:"Elon Musk",nw:839,country:"United States",biz:"Tesla, SpaceX",base:"Austin, USA",lat:30.2672,lon:-97.7431},
+ {rank:2,name:"Larry Page",nw:257,country:"United States",biz:"Google / Alphabet",base:"Palo Alto, USA",lat:37.4419,lon:-122.1430},
+ {rank:3,name:"Sergey Brin",nw:237,country:"United States",biz:"Google / Alphabet",base:"Los Altos, USA",lat:37.3852,lon:-122.1141},
+ {rank:4,name:"Jeff Bezos",nw:224,country:"United States",biz:"Amazon",base:"Miami, USA",lat:25.7617,lon:-80.1918},
+ {rank:5,name:"Mark Zuckerberg",nw:222,country:"United States",biz:"Meta",base:"Menlo Park, USA",lat:37.4530,lon:-122.1817},
+ {rank:6,name:"Larry Ellison",nw:190,country:"United States",biz:"Oracle",base:"Lanai, Hawaii, USA",lat:20.8283,lon:-156.9197},
+ {rank:7,name:"Bernard Arnault & family",nw:171,country:"France",biz:"LVMH",base:"Paris, France",lat:48.8566,lon:2.3522},
+ {rank:8,name:"Jensen Huang",nw:154,country:"United States",biz:"Nvidia -- semiconductors",base:"Santa Clara, USA",lat:37.3541,lon:-121.9552},
+ {rank:9,name:"Warren Buffett",nw:149,country:"United States",biz:"Berkshire Hathaway",base:"Omaha, USA",lat:41.2565,lon:-95.9345},
+ {rank:10,name:"Amancio Ortega",nw:148,country:"Spain",biz:"Inditex / Zara",base:"A Coruña, Spain",lat:43.3623,lon:-8.4115},
+ {rank:11,name:"Rob Walton & family",nw:146,country:"United States",biz:"Walmart",base:"Bentonville, USA",lat:36.3650,lon:-94.2200},
+ {rank:12,name:"Jim Walton & family",nw:143,country:"United States",biz:"Walmart",base:"Bentonville, USA",lat:36.3810,lon:-94.1980},
+ {rank:13,name:"Michael Dell",nw:141,country:"United States",biz:"Dell Technologies",base:"Austin, USA",lat:30.3050,lon:-97.7100},
+ {rank:14,name:"Alice Walton",nw:134,country:"United States",biz:"Walmart",base:"Fort Worth, USA",lat:32.7555,lon:-97.3308},
+ {rank:15,name:"Steve Ballmer",nw:126,country:"United States",biz:"Microsoft",base:"Hunts Point, USA",lat:47.6360,lon:-122.2300},
+ {rank:16,name:"Carlos Slim Helú & family",nw:125,country:"Mexico",biz:"Telecom -- América Móvil",base:"Mexico City, Mexico",lat:19.4326,lon:-99.1332},
+ {rank:17,name:"Changpeng Zhao",nw:110,country:"Canada",biz:"Binance -- crypto exchange",base:"Dubai, UAE",lat:25.2048,lon:55.2708},
+ {rank:18,name:"Michael Bloomberg",nw:109,country:"United States",biz:"Bloomberg LP",base:"New York, USA",lat:40.7128,lon:-74.0060},
+ {rank:19,name:"Bill Gates",nw:108,country:"United States",biz:"Microsoft",base:"Medina, USA",lat:47.6101,lon:-122.2015},
+ {rank:20,name:"Françoise Bettencourt Meyers & family",nw:100,country:"France",biz:"L'Oréal",base:"Paris, France",lat:48.8700,lon:2.3300},
+ {rank:21,name:"Mukesh Ambani",nw:99.7,country:"India",biz:"Reliance Industries",base:"Mumbai, India",lat:19.0820,lon:72.8260},
+ {rank:22,name:"Giancarlo Devasini",nw:89.3,country:"Italy",biz:"Tether -- crypto",base:"Lugano, Switzerland",lat:46.0037,lon:8.9511},
+ {rank:23,name:"Thomas Peterffy",nw:82.9,country:"United States",biz:"Interactive Brokers",base:"Palm Beach, USA",lat:26.7056,lon:-80.0364},
+ {rank:24,name:"Julia Koch & family",nw:81.2,country:"United States",biz:"Koch, Inc.",base:"New York, USA",lat:40.7400,lon:-73.9900},
+ {rank:25,name:"Charles Koch & family",nw:73.8,country:"United States",biz:"Koch, Inc.",base:"Wichita, USA",lat:37.6950,lon:-97.3450},
+ {rank:26,name:"Zhang Yiming",nw:69.3,country:"China",biz:"ByteDance / TikTok",base:"Beijing, China",lat:39.9042,lon:116.4074},
+ {rank:27,name:"Zhong Shanshan",nw:68.1,country:"China",biz:"Nongfu Spring -- beverages",base:"Hangzhou, China",lat:30.2741,lon:120.1551},
+ {rank:28,name:"Jeff Yass",nw:67.4,country:"United States",biz:"Susquehanna -- trading",base:"Bala Cynwyd, USA",lat:40.0046,lon:-75.2349},
+ {rank:29,name:"Dieter Schwarz",nw:67.2,country:"Germany",biz:"Schwarz Group / Lidl",base:"Neckarsulm, Germany",lat:49.1916,lon:9.2240},
+ {rank:30,name:"Germán Larrea Mota Velasco & family",nw:67.1,country:"Mexico",biz:"Grupo México -- mining",base:"Mexico City, Mexico",lat:19.4200,lon:-99.1500},
+ {rank:31,name:"Gautam Adani",nw:63.8,country:"India",biz:"Adani Group -- infrastructure",base:"Ahmedabad, India",lat:23.0225,lon:72.5714},
+ {rank:32,name:"Tadashi Yanai & family",nw:61.8,country:"Japan",biz:"Fast Retailing / Uniqlo",base:"Tokyo, Japan",lat:35.6762,lon:139.6503},
+ {rank:33,name:"Ma Huateng",nw:53.8,country:"China",biz:"Tencent",base:"Shenzhen, China",lat:22.5431,lon:114.0579},
+ {rank:34,name:"Robin Zeng",nw:53.2,country:"Hong Kong",biz:"CATL -- batteries",base:"Ningde, China",lat:26.6617,lon:119.5479},
+ {rank:35,name:"Iris Fontbona & family",nw:52.6,country:"Chile",biz:"Antofagasta -- mining",base:"Santiago, Chile",lat:-33.4400,lon:-70.6500},
+ {rank:36,name:"Masayoshi Son",nw:51.5,country:"Japan",biz:"SoftBank",base:"Tokyo, Japan",lat:35.6586,lon:139.7454},
+ {rank:37,name:"Ken Griffin",nw:49.8,country:"United States",biz:"Citadel -- hedge funds",base:"Miami, USA",lat:25.7700,lon:-80.1300},
+ {rank:38,name:"Jacqueline Mars",nw:49.1,country:"United States",biz:"Mars Inc.",base:"The Plains, USA",lat:38.8640,lon:-77.7700},
+ {rank:38,name:"John Mars",nw:49.1,country:"United States",biz:"Mars Inc.",base:"McLean, USA",lat:38.9300,lon:-77.1600},
+ {rank:40,name:"Lukas Walton",nw:48.9,country:"United States",biz:"Walmart",base:"Chicago, USA",lat:41.8781,lon:-87.6298},
+ {rank:41,name:"Giovanni Ferrero",nw:48.8,country:"Italy",biz:"Ferrero -- chocolates",base:"Alba, Italy",lat:44.7000,lon:8.0353},
+ {rank:42,name:"Li Ka-shing",nw:47,country:"Hong Kong",biz:"CK Hutchison -- diversified",base:"Hong Kong",lat:22.3193,lon:114.1694},
+ {rank:43,name:"Mark Mateschitz",nw:45.8,country:"Austria",biz:"Red Bull",base:"Salzburg, Austria",lat:47.8095,lon:13.0550},
+ {rank:44,name:"Gianluigi Aponte",nw:44.5,country:"Switzerland",biz:"MSC -- shipping",base:"Geneva, Switzerland",lat:46.2044,lon:6.1432},
+ {rank:44,name:"Rafaela Aponte-Diamant",nw:44.5,country:"Switzerland",biz:"MSC -- shipping",base:"Geneva, Switzerland",lat:46.2120,lon:6.1530},
+ {rank:46,name:"Andrea Pignataro",nw:42.6,country:"Italy",biz:"ION Group -- financial software",base:"Bologna, Italy",lat:44.4949,lon:11.3426},
+ {rank:47,name:"Klaus-Michael Kühne",nw:41.9,country:"Germany",biz:"Kühne+Nagel -- shipping",base:"Hamburg, Germany",lat:53.5511,lon:9.9937},
+ {rank:48,name:"Thomas Frist Jr. & family",nw:41.1,country:"United States",biz:"HCA -- hospitals",base:"Nashville, USA",lat:36.1627,lon:-86.7816},
+ {rank:49,name:"Alain Wertheimer",nw:39.4,country:"France",biz:"Chanel",base:"Paris, France",lat:48.8520,lon:2.3100},
+ {rank:49,name:"Gerard Wertheimer",nw:39.4,country:"France",biz:"Chanel",base:"Paris, France",lat:48.8480,lon:2.3260}
+];
+const FAM_US = [
+ {rank:1,name:"Walton family",nw:267,country:"United States",biz:"Walmart",base:"Bentonville, USA",lat:36.3729,lon:-94.2088},
+ {rank:2,name:"Mars family",nw:117,country:"United States",biz:"Mars Inc. -- candy",base:"McLean, USA",lat:38.9339,lon:-77.1773},
+ {rank:3,name:"Koch family",nw:116,country:"United States",biz:"Koch Industries -- diversified",base:"Wichita, USA",lat:37.6872,lon:-97.3301},
+ {rank:4,name:"Cargill-MacMillan family",nw:60.6,country:"United States",biz:"Cargill -- agribusiness",base:"Minneapolis, USA",lat:44.9778,lon:-93.2650},
+ {rank:5,name:"Edward Johnson family",nw:44.8,country:"United States",biz:"Fidelity -- money management",base:"Boston, USA",lat:42.3601,lon:-71.0589},
+ {rank:6,name:"Pritzker family",nw:41.6,country:"United States",biz:"Hyatt -- hotels, investments",base:"Chicago, USA",lat:41.8781,lon:-87.6298},
+ {rank:7,name:"S.C. Johnson family",nw:38.5,country:"United States",biz:"SC Johnson -- cleaning products",base:"Racine, USA",lat:42.7261,lon:-87.7829},
+ {rank:8,name:"Cathy family",nw:33.6,country:"United States",biz:"Chick-fil-A",base:"Atlanta, USA",lat:33.7490,lon:-84.3880},
+ {rank:9,name:"Duncan family",nw:30,country:"United States",biz:"Enterprise Products -- pipelines",base:"Houston, USA",lat:29.7604,lon:-95.3698},
+ {rank:10,name:"Cox family",nw:26.8,country:"United States",biz:"Cox Enterprises -- media",base:"Atlanta, USA",lat:33.7600,lon:-84.3700},
+ {rank:11,name:"Lauder family",nw:25.9,country:"United States",biz:"Estée Lauder -- cosmetics",base:"New York, USA",lat:40.7128,lon:-74.0060},
+ {rank:12,name:"Hunt family",nw:24.8,country:"United States",biz:"Hunt Oil -- oil",base:"Dallas, USA",lat:32.7767,lon:-96.7970},
+ {rank:13,name:"Newhouse family",nw:24.1,country:"United States",biz:"Advance Publications -- media",base:"New York, USA",lat:40.7200,lon:-74.0100},
+ {rank:14,name:"Hearst family",nw:22.4,country:"United States",biz:"Hearst Corp. -- media",base:"New York, USA",lat:40.7250,lon:-73.9950},
+ {rank:15,name:"Busch family",nw:20,country:"United States",biz:"Anheuser-Busch -- brewing",base:"St. Louis, USA",lat:38.6270,lon:-90.1994},
+ {rank:16,name:"Reyes family",nw:19.9,country:"United States",biz:"Reyes Holdings -- food & beverage distribution",base:"Chicago, USA",lat:41.8850,lon:-87.6250},
+ {rank:17,name:"Smith family",nw:19.8,country:"United States",biz:"Northern Trust / Illinois Tool Works",base:"Chicago, USA",lat:41.8700,lon:-87.6350},
+ {rank:18,name:"Millstone-Winter-Heyman families",nw:19.2,country:"United States",biz:"Standard Industries -- roofing, chemicals",base:"New York, USA (HQ not disclosed in source)",lat:40.7150,lon:-74.0050},
+ {rank:19,name:"Taylor family",nw:19,country:"United States",biz:"Enterprise Mobility -- car rental",base:"St. Louis, USA",lat:38.6300,lon:-90.2050},
+ {rank:20,name:"Butt family",nw:18.8,country:"United States",biz:"H-E-B -- supermarkets",base:"San Antonio, USA",lat:29.4241,lon:-98.4936},
+ {rank:21,name:"Ziff family",nw:18.5,country:"United States",biz:"Ziff -- publishing, hedge funds",base:"New York, USA",lat:40.7080,lon:-74.0120},
+ {rank:22,name:"Du Pont family",nw:18.1,country:"United States",biz:"DuPont -- chemicals",base:"Wilmington, USA",lat:39.7459,lon:-75.5466},
+ {rank:23,name:"Dorrance family",nw:17,country:"United States",biz:"Campbell Soup Co.",base:"Camden, USA",lat:39.9259,lon:-75.1196},
+ {rank:24,name:"Brown family",nw:16.5,country:"United States",biz:"Brown-Forman -- liquor (Jack Daniel's)",base:"Louisville, USA",lat:38.2527,lon:-85.7585},
+ {rank:25,name:"Kohler family",nw:16.2,country:"United States",biz:"Kohler Co. -- plumbing products",base:"Kohler, USA",lat:43.7392,lon:-87.7831}
+];
+
+/* ===== MAP ===== */
+const map = L.map("map",{worldCopyJump:true,minZoom:2,maxZoom:18,zoomControl:false}).setView([30,8],2.4);
+L.control.zoom({position:"bottomright"}).addTo(map);
+const satDim=L.tileLayer("https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",{subdomains:["mt0","mt1","mt2","mt3"],maxZoom:20,className:"sat-dim",attribution:"Imagery © Google"});
+const satFull=L.tileLayer("https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",{subdomains:["mt0","mt1","mt2","mt3"],maxZoom:20,attribution:"Imagery © Google"});
+const esri=L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{maxZoom:19,attribution:"Imagery © Esri, Maxar"});
+satDim.addTo(map);
+L.control.layers({"Satellite -- dimmed":satDim,"Satellite -- full":satFull,"Esri imagery":esri},null,{position:"bottomright",collapsed:true}).addTo(map);
+
+const pointGroup=L.layerGroup().addTo(map);
+const leaderLines=L.layerGroup().addTo(map);
+
+/* ===== MARKERS ===== */
+const GOLD={s:"#d8b772",f:"#caa24f"}, PLAT={s:"#cfdae6",f:"#9fb0c2"};
+const fmtAmt = n => "$"+(n>=100?n.toFixed(0):n.toFixed(1))+"B";
+const radius = n => n==null ? 7 : 4 + Math.sqrt(n)*1.35;
+
+function makeMarker(d, layer, list, tier){
+  const pal = tier==="ind" ? PLAT : GOLD, known = d.nw!=null;
+  const m = L.circleMarker([d.lat,d.lon],{
+    radius:radius(d.nw), color:pal.s,
+    weight: known?(tier==="ind"?1.25:1.5):1.5,
+    fillColor:pal.f, fillOpacity: known?(tier==="ind"?0.20:0.22):0.05,
+    dashArray: known?null:"3 3", opacity:0.95
+  });
+  const rankTxt = d.rank!=null ? "#"+d.rank : "—";
+  const amtHtml = known ? '<div class="pp-amt">'+fmtAmt(d.nw)+' <small>USD</small></div>'
+                        : '<div class="pp-na">Figure not public · ≥ $46.4B</div>';
+  m.bindPopup(
+    '<div class="pp-top"><span class="pp-rank">'+list+' · '+rankTxt+'</span>'+
+    '<span class="pp-tier '+(tier==="ind"?"ind":"fam")+'">'+(tier==="ind"?"Individual":"Family")+'</span></div>'+
+    '<div class="pp-name">'+d.name+'</div>'+amtHtml+
+    '<div class="pp-meta">'+d.biz+'<br><b>Base:</b> '+d.base+' &nbsp;·&nbsp; <b>'+d.country+'</b></div>'
+  );
+  m.bindTooltip(d.name+' · <span class="v">'+(known?fmtAmt(d.nw):"n/a")+'</span>',{className:"tt",direction:"top",offset:[0,-4]});
+  const baseW=m.options.weight, baseO=m.options.fillOpacity;
+  m.on("mouseover",function(){this.setStyle({weight:2.5,fillOpacity:known?0.45:0.12});this.bringToFront();});
+  m.on("mouseout",function(){this.setStyle({weight:baseW,fillOpacity:baseO});});
+  m._meta={layer:layer,country:d.country,nw:d.nw};
+  m._true=L.latLng(d.lat,d.lon);
+  m._baseR=radius(d.nw);
+  return m;
+}
+const M = {
+  global: FAM_GLOBAL.map(d=>makeMarker(d,"global","Bloomberg ’25","fam")),
+  individuals: INDIV.map(d=>makeMarker(d,"individuals","Forbes ’26","ind")),
+  us: FAM_US.map(d=>makeMarker(d,"us","Forbes US ’24","fam"))
+};
+const ALL=[].concat(M.global,M.individuals,M.us);
+
+/* ===== DECLUTTER (spread overlapping markers; no clustering) ===== */
+function declutter(){
+  leaderLines.clearLayers();
+  const vis = ALL.filter(visible);
+  vis.forEach(m=>m.setLatLng(m._true));
+  if(!vis.length) return;
+  const zf = Math.max(0.38, Math.min(1.25, map.getZoom()/7));  // smaller when zoomed out
+  vis.forEach(m=>m.setRadius(m._baseR*zf));
+  const pts = vis.map(m=>{const p=map.latLngToLayerPoint(m._true);
+    return {m, x:p.x, y:p.y, tx:p.x, ty:p.y, r:m.options.radius};});
+  const ITER=90;
+  for(let it=0; it<ITER; it++){
+    for(let i=0;i<pts.length;i++){            // spring toward true position (limits drift)
+      pts[i].x += (pts[i].tx-pts[i].x)*0.06;
+      pts[i].y += (pts[i].ty-pts[i].y)*0.06;
+    }
+    for(let i=0;i<pts.length;i++){            // pairwise separation
+      for(let j=i+1;j<pts.length;j++){
+        let dx=pts[j].x-pts[i].x, dy=pts[j].y-pts[i].y;
+        let dist=Math.sqrt(dx*dx+dy*dy)||0.01;
+        const min=(pts[i].r+pts[j].r)*0.92+4;
+        if(dist<min){
+          const push=(min-dist)/2, ux=dx/dist, uy=dy/dist;
+          pts[i].x-=ux*push; pts[i].y-=uy*push;
+          pts[j].x+=ux*push; pts[j].y+=uy*push;
+        }
+      }
+    }
+  }
+  pts.forEach(pt=>{
+    const ll=map.layerPointToLatLng(L.point(pt.x,pt.y));
+    pt.m.setLatLng(ll);
+    if(Math.abs(pt.x-pt.tx)+Math.abs(pt.y-pt.ty) > 6){
+      leaderLines.addLayer(L.polyline([pt.m._true, ll],
+        {weight:0.7,color:"#d8b772",opacity:0.30,interactive:false}));
+    }
+  });
+}
+
+/* ===== STATE + RENDER ===== */
+const state = {layers:{global:true,individuals:true,us:true}, country:"ALL"};
+const sel=document.getElementById("country");
+const countries=[...new Set(ALL.map(m=>m._meta.country))].sort();
+sel.innerHTML='<option value="ALL">All countries · global</option>'+countries.map(c=>'<option value="'+c+'">'+c+'</option>').join("");
+["global","individuals","us"].forEach(k=>{document.getElementById("ct-"+k).textContent=M[k].length;});
+
+function visible(m){
+  if(!state.layers[m._meta.layer]) return false;
+  if(state.country!=="ALL" && m._meta.country!==state.country) return false;
+  return true;
+}
+function render(){
+  pointGroup.clearLayers();
+  const show=ALL.filter(visible).slice().sort((a,b)=>(b._meta.nw||0)-(a._meta.nw||0)); // big first => small on top
+  show.forEach(m=>pointGroup.addLayer(m));
+  let fam=0,ind=0,sum=0;
+  show.forEach(m=>{ if(m._meta.layer==="individuals")ind++; else fam++; if(m._meta.nw!=null)sum+=m._meta.nw; });
+  const tn = sum>=1000 ? "$"+(sum/1000).toFixed(2)+"T" : "$"+sum.toFixed(0)+"B";
+  const layersOn=Object.values(state.layers).filter(Boolean).length;
+  const note = layersOn>1 ? '<span style="font-size:10px;color:var(--faint)">across layers — may overlap</span>'
+                          : '<span style="font-size:10px;color:var(--faint)">combined net worth shown</span>';
+  document.getElementById("stat").innerHTML='<b style="color:var(--ink)">'+fam+'</b> family · <b style="color:var(--ink)">'+ind+'</b> individual entries<span class="big">'+tn+'</span>'+note;
+  if(state.country!=="ALL" && show.length){
+    map.fitBounds(show.map(m=>m._true),{padding:[80,80],maxZoom:7}); // triggers zoomend -> declutter
+  } else {
+    declutter();
+  }
+}
+map.on("zoomend", declutter);
+
+document.getElementById("chips").addEventListener("click",e=>{
+  const chip=e.target.closest(".chip"); if(!chip)return;
+  const k=chip.dataset.key; state.layers[k]=!state.layers[k];
+  chip.classList.toggle("on",state.layers[k]); render();
+});
+sel.addEventListener("change",()=>{ state.country=sel.value; if(state.country==="ALL")map.setView([30,8],2.4); render(); });
+document.getElementById("info-toggle").addEventListener("click",()=>document.getElementById("about").classList.toggle("open"));
+
+render();
+</script>
+</body>
+</html></div>
+
+
+
+</div>
+
+<div class="paragraph" style="text-align:left;">&nbsp;</div>
+
+
+					
+				</td>			</tr>
+		</tbody>
+	</table>
+</div></div></div>
+
+<div class="paragraph" style="text-align:center;"><em style="color:rgb(255, 255, 255)"><br />&#8203;&#8203;End Part v:&nbsp;"Globalization."</em></div>
+
+<div><div class="wsite-multicol"><div class="wsite-multicol-table-wrap" style="margin:0 -15px;">
+	<table class="wsite-multicol-table">
+		<tbody class="wsite-multicol-tbody">
+			<tr class="wsite-multicol-tr">
+				<td class="wsite-multicol-col" style="width:50%; padding:0 15px;">
+					
+						
+
+<div class="paragraph" style="text-align:left;"><span><em>Before moving on to the next section, I intentionally covered only the two formal financial international organizations for simplicity's sake (the International Monetary Fund (IMF) and World Bank (WB)), but t</em></span><span style="color:rgb(255, 255, 255)"><em>here&nbsp;</em></span><span style="color:rgb(234, 236, 255)"><em>are a number of other more&nbsp;</em></span><span style="color:rgb(255, 255, 255)"><em>regional formal financial organizations that play similar roles locally. These&nbsp;have faced similar criticisms.&nbsp;</em></span><span><em>There are also a number of informal global&nbsp;institutions and authorities, like clubs and forums for bankers and regulators below them, the most popular being the Bank of International Settlements, an international bank that&nbsp;holds 10-15% of all&nbsp;central banks' monetary reserves (footnote 6.1) and that's&nbsp;owned by 60 central banks of countries that together account for about 95% of world GDP (gross-domestic product). This is the same organization that you read about on my Invasion of Countries section on my On-Planet Invasion page. It provides banking services to central banks and international financial institutions; monitors currency stability, exchange rate fluctuations, and other risks; and sets standards that tighten and loosen economies&rsquo; money creation and supplies. Even though it's referred to as the &ldquo;central bank of central banks,&rdquo; it does not itself create money.&nbsp;Like many&nbsp;international organizations, it also doesn't fall under the direct control of any government,&nbsp;keeps its inner workings secret to one extent or another, and&nbsp;enjoys a degree of legal immunity&nbsp;to ensure that it operates without interference from individual countries (footnote 6.1). Below the informal institutions and authorities are a number of private and hybrid actors, including associations, think tanks, academic groups, societies, etc. There would be no point in trying to list all of them though, as The&nbsp;Yearbook of International Organizations (https://uia.org/yearbook ), the authoritative resource on international orgs,&nbsp;lists over 75,000 internationals alone from 300 countries and territories, about 42,000 of which are active and to which 1,200 new ones are added every year. That's larger than the populations of some of the countries that they oversee.</em></span></div>
+
+<div class="paragraph"><em style="color:rgb(255, 255, 255)">The visual below displays the growth in international organizations from 1950 to 2002 (footnote 6.3).</em></div>
+
+<div><div class="wsite-image wsite-image-border-medium " style="padding-top:5px;padding-bottom:10px;margin-left:0px;margin-right:10px;text-align:center">
+<a>
+<img src="uploads/1/5/0/4/150434778/editor/growth-in-international-organizations-source-union-of-international-associations.png?1738208612" alt="Picture" style="width:auto;max-width:100%" />
+</a>
+<div style="display:block;font-size:90%"></div>
+</div></div>
+
+<div class="paragraph" style="text-align:left;"><em style="color:rgb(255, 255, 255)">The visual to the right displays the country headquarter counts of 6,687&nbsp;international non-governmental organizations (INGOs/NGOs) founded between 1900 and 2014. (</em><em style="color:rgb(255, 255, 255)">INGO/NGO is</em><em style="color:rgb(255, 255, 255)">&nbsp;one of the two categories of international organizations, the other being international governmental organizations/IGOs. The second consists of only &gt;300 though (footnote 6.3).)</em><br /><br /><em style="color:rgb(255, 255, 255)">Below is a global sample of those that make up the corporate and governmental social spheres behind the scenes:</em></div>
+
+
+					
+				</td>				<td class="wsite-multicol-col" style="width:50%; padding:0 15px;">
+					
+						
+
+<div class="paragraph" style="text-align:left;"><em><font color="#fefefe">What's the BIS up to these days? As countries worldwide transition more from physical cash to digital currencies,</font><font color="#fefefe">&nbsp;the</font><em style="color:rgb(254, 254, 254)">&nbsp;Bank of International Settlements (BIS)</em><font color="#fefefe">&nbsp;is pushing for global electronic currency that will be owned and operated by them under absolute technological control</font>&nbsp;<font color="#fefefe">(footnote 11.2).</font><span style="color:rgb(254, 254, 254)">&nbsp;</span><font color="#fefefe">This is the greatest concentration of central banking power that has ever occurred. </font><font color="#fefefe">Because it will erase any and all transaction privacy, any citizens deemed counter to the government's preferences (which, clearly, are anything but immune to crossing the line themselves) can be easily cut off from their money supply. Some central banks are even in the process of introducing under-the-skin RFID&nbsp;microchips for transactions. If it at all follows in the steps of contactless credit cards, which have made cash essentially obsolete in Sweden already (where only less than 1% of all payments are now made physically), who's to say that they won't eventually make it the default, or worse, a requirement (footnote 11.3)? And, l</font><span style="color:rgb(255, 255, 255)">ike fingerprinting, eye scanning, location tracking, facial recognition, and others, these technologies n</span>aturally come with an increased potential for&nbsp;exploitation, whether it be by criminals or by (a criminal) government. *As long as there remains a push for centralized currency with centralized accessibility like this within a system parasitic to the Body, it should be considered nothing other than a Trojan, an evil between you and your body,* regardless of any claims of increased efficiency, scale, and security that might come with it (footnote 11.4).</em></div>
+
+<div class="paragraph"><em>Below is a global map of these digital currencies, i.e. Central Bank Digital Currencies (CBDCs)(footnote 11.5).&nbsp;<span style="color:rgb(255, 255, 255)">(Note, these are different than tokenized currencies and cryptocurrencies. </span></em><em style="color:rgb(255, 255, 255)">Central Bank Digital Currencies</em><em style="color:rgb(255, 255, 255)">&nbsp;are a country's official currency gone digital, t</em><em><span style="color:rgb(255, 255, 255)">okenized currencies are simply representations of their physical counterpart, and cryptocurrencies are separate digital currencies in and of themselves&nbsp;not reliant upon any central authority, like governments or banks (footnote 11.6).)</span></em></div>
+
+<div><div class="wsite-image wsite-image-border-none " style="padding-top:10px;padding-bottom:10px;margin-left:0;margin-right:0;text-align:inherit">
+<a>
+<img src="uploads/1/5/0/4/150434778/editor/cbdcs-global-map.png?1766006619" alt="Picture" style="width:1200;max-width:100%" />
+</a>
+<div style="display:block;font-size:90%"></div>
+</div></div>
+
+<div><div class="wsite-image wsite-image-border-none " style="padding-top:10px;padding-bottom:10px;margin-left:0px;margin-right:10px;text-align:inherit">
+<a>
+<img src="uploads/1/5/0/4/150434778/editor/map-of-intl-orgs-2.png?1766561511" alt="Picture" style="width:1190;max-width:100%" />
+</a>
+<div style="display:block;font-size:90%"></div>
+</div></div>
+
+
+					
+				</td>			</tr>
+		</tbody>
+	</table>
+</div></div></div>
+
+<div><div id="559826445556563040" align="inherit" style="width: 100%; overflow-y: hidden;" 
+</body>
+</html>
