@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Who corporatized holidays</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      onerror="this.onerror=null;this.href='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css'">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --deep:#0d1a24; --panel:#132430; --line:#24404f; --bone:#dfe6e4;
+  --mist:#93a9b0; --teal:#3fa7a0; --cobalt:#3a5fb8; --ring:#cfe3e6;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--deep);color:var(--bone);
+  font-family:Figtree,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:15px;line-height:1.45}
+#wrap{display:flex;height:100%;min-height:520px}
+#panel{width:360px;flex:none;display:flex;flex-direction:column;background:var(--panel);border-right:1px solid var(--line)}
+#head{padding:22px 22px 14px}
+h1{font-family:Spectral,Georgia,serif;font-weight:600;font-size:26px;line-height:1.15;margin-bottom:8px}
+#head p{color:var(--mist);font-size:14px}
+#key{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:12px;color:var(--mist)}
+#key span.bar{flex:1;height:6px;border-radius:3px}
+#list{list-style:none;overflow-y:auto;flex:1;border-top:1px solid var(--line)}
+#list li{display:grid;grid-template-columns:52px 1fr;gap:10px;padding:11px 22px 11px 16px;cursor:pointer;border-bottom:1px solid #1b3341}
+#list li:hover,#list li:focus{background:#183040;outline:none}
+#list li.on{background:#1c3a4c}
+#list li:focus-visible{box-shadow:inset 3px 0 0 var(--ring)}
+.yr{font-family:Spectral,Georgia,serif;font-size:19px;font-weight:600;text-align:right}
+.nm{font-weight:500}
+.hd{color:var(--mist);font-size:13px}
+#foot{padding:10px 22px;font-size:11.5px;color:var(--mist);border-top:1px solid var(--line)}
+#foot a{color:var(--mist)}
+#map{flex:1;background:var(--deep)}
+.leaflet-container{background:var(--deep);font-family:inherit}
+.base{filter:saturate(.5) hue-rotate(-8deg) brightness(1.15)}
+.orb{border-radius:50%;background:var(--c);box-shadow:0 0 0 1.5px rgba(8,16,24,.7),0 0 10px 3px var(--g)}
+.orb.on{box-shadow:0 0 0 2px var(--ring),0 0 14px 5px var(--g)}
+.leaflet-popup-content-wrapper{background:var(--panel);color:var(--bone);border-radius:6px;border:1px solid var(--line)}
+.leaflet-popup-tip{background:var(--panel)}
+.leaflet-popup-content{margin:14px 16px;font-size:14px;line-height:1.5;max-width:330px}
+.pop h2{font-family:Spectral,Georgia,serif;font-size:18px;font-weight:600;line-height:1.2;margin-bottom:6px}
+.pop .what{font-family:Spectral,Georgia,serif;font-size:15px;margin:8px 0}
+.pop dl{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;font-size:12.5px}
+.pop dt{color:var(--mist)}
+.pop a{color:#8fc3d6;word-break:break-all}
+.leaflet-container a.leaflet-popup-close-button{color:var(--mist)}
+.leaflet-control-attribution{background:rgba(13,26,36,.8)!important;color:var(--mist)}
+.leaflet-control-attribution a{color:var(--mist)}
+.leaflet-bar a{background:var(--panel);color:var(--bone);border-color:var(--line)}
+@media (max-width:760px){
+  #wrap{flex-direction:column-reverse}
+  #panel{width:auto;height:46%;border-right:0;border-top:1px solid var(--line)}
+  #head{padding:14px 16px 10px} h1{font-size:21px} #head p{font-size:13px}
+  #map{min-height:280px}
+}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <aside id="panel">
+    <div id="head">
+      <h1>Who corporatized holidays</h1>
+      <p>Companies and trade bodies that made a holiday a company's own custom, or invented one to sell. Listed by the year they began. Pick one to see it on the map.</p>
+      <div id="key"><span id="k0"></span><span class="bar" id="kbar"></span><span id="k1"></span></div>
+    </div>
+    <ul id="list"></ul>
+    <div id="foot">Compiled for the Culprits map from the sources in each box (Wikipedia, histories and reporting). Each point is placed where its box says.</div>
+  </aside>
+  <div id="map" role="region" aria-label="Map of who corporatized holidays"></div>
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>window.L||document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"><\/script>')</script>
+<script>
+const DATA = {"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[-84.3963,33.771]},"properties":{"name":"The Coca-Cola Company","group":"Corporatized a holiday","holiday":"Christmas","what they did":"From the 1930s its Christmas advertising, painted by Haddon Sundblom, spread the red-suited Santa Claus now seen worldwide (it was not the first drink company to use him: White Rock did from 1915).","when":"1931 on","placed at":"headquarters, Atlanta","source":"https://en.wikipedia.org/wiki/Santa_Claus","_year":1931}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-73.989,40.7508]},"properties":{"name":"Macy's","group":"Corporatized a holiday","holiday":"Thanksgiving and Christmas shopping","what they did":"Its Thanksgiving Day Parade began in 1924 as a store promotion: employees marched to its Herald Square store, ending with Santa Claus, to open the Christmas shopping season.","when":"1924","placed at":"flagship store, Herald Square, New York","source":"https://en.wikipedia.org/wiki/Macy%27s_Thanksgiving_Day_Parade","_year":1924}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-87.6437,41.8966]},"properties":{"name":"Montgomery Ward","group":"Corporatized a holiday","holiday":"Christmas","what they did":"Had its copywriter Robert L. May write Rudolph the Red-Nosed Reindeer in 1939 as its own Christmas giveaway booklet; 2.4 million copies went out the first year.","when":"1939","placed at":"its former head office, Chicago","source":"https://en.wikipedia.org/wiki/Rudolph_the_Red-Nosed_Reindeer","_year":1939}},{"type":"Feature","geometry":{"type":"Point","coordinates":[120.026,30.281]},"properties":{"name":"Alibaba Group","group":"Corporatized a holiday","holiday":"Singles' Day (11 November)","what they did":"From 2009 turned Singles' Day into a 24-hour online sales event; with JD.com it took a record US$139 billion in 2021.","when":"2009","placed at":"headquarters, Hangzhou","source":"https://en.wikipedia.org/wiki/Singles%27_Day","_year":2009}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-122.3395,47.6156]},"properties":{"name":"Amazon","group":"Corporatized a holiday","holiday":"Prime Day","what they did":"Invented Prime Day, a sales day for its members, first held on 15 July 2015 for the website's 20th anniversary.","when":"2015","placed at":"headquarters, Seattle","source":"https://en.wikipedia.org/wiki/Prime_Day","_year":2015}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-77.028,38.9008]},"properties":{"name":"National Retail Federation (Shop.org)","group":"Corporatized a holiday","holiday":"Cyber Monday","what they did":"Ellen Davis of Shop.org, part of the National Retail Federation, coined \"Cyber Monday\" in a press release on 28 November 2005.","when":"2005","placed at":"headquarters, Washington, D.C.","source":"https://en.wikipedia.org/wiki/Cyber_Monday","_year":2005}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-74.006,40.7128]},"properties":{"name":"Father's Day Council (New York Associated Men's Wear Retailers)","group":"Corporatized a holiday","holiday":"Father's Day","what they did":"Founded in 1938 by New York's men's wear retailers to \"consolidate and systematize the commercial promotion\" of Father's Day, with makers of ties, pipes and other gifts.","when":"1938","placed at":"New York (the city; no address given)","source":"https://en.wikipedia.org/wiki/Father%27s_Day_(United_States)","_year":1938}},{"type":"Feature","geometry":{"type":"Point","coordinates":[130.4017,33.59]},"properties":{"name":"Ishimuramanseido","group":"Corporatized a holiday","holiday":"White Day (14 March, Japan)","what they did":"The Fukuoka confectioner sold marshmallows to men on 14 March 1977 as \"Marshmallow Day\"; Japan's National Confectionery Industry Association made it White Day, an \"answer day\" to Valentine's Day, in 1978.","when":"1977","placed at":"Fukuoka (the city)","source":"https://en.wikipedia.org/wiki/White_Day","_year":1977}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-81.6944,41.4993]},"properties":{"name":"Cleveland confectioners' committee (C. C. Hartzell)","group":"Corporatized a holiday","holiday":"Sweetest Day","what they did":"Twelve Cleveland confectioners chaired by candymaker C. C. Hartzell planned the first Sweetest Day in 1921.","when":"1921","placed at":"Cleveland (the city)","source":"https://en.wikipedia.org/wiki/Sweetest_Day","_year":1921}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-77.059,38.905]},"properties":{"name":"National Confectioners Association","group":"Corporatized a holiday","holiday":"Sweetest Day","what they did":"In 1937 launched a movement across the candy industry to rank Sweetest Day with Mother's Day, Father's Day and Valentine's Day.","when":"1937","placed at":"headquarters, Washington, D.C.","source":"https://en.wikipedia.org/wiki/Sweetest_Day","_year":1937}},{"type":"Feature","geometry":{"type":"Point","coordinates":[126.978,37.5665]},"properties":{"name":"Lotte","group":"Corporatized a holiday","holiday":"Pepero Day (11 November, South Korea)","what they did":"Promoted Pepero Day from 1997; by 2012 half its yearly Pepero revenue came from that day.","when":"1997","placed at":"Seoul (the city)","source":"https://en.wikipedia.org/wiki/Pepero_Day","_year":1997}},{"type":"Feature","geometry":{"type":"Point","coordinates":[139.622,35.466]},"properties":{"name":"KFC Japan","group":"Corporatized a holiday","holiday":"Christmas (Japan)","what they did":"Its 1974 campaign \"Kentucky for Christmas\" made a KFC meal at Christmas a national custom; stores take orders months ahead.","when":"1974","placed at":"headquarters, Nishi-ku, Yokohama","source":"https://en.wikipedia.org/wiki/KFC_in_Japan","_year":1974}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-82.991956,39.98192]},"properties":{"name":"Federated Department Stores (Fred Lazarus Jr.; now Macy's, Inc.)","group":"Corporatized a holiday","holiday":"Thanksgiving (United States)","what they did":"Its head, Fred Lazarus Jr., urged President Roosevelt to move Thanksgiving a week earlier so the Christmas shopping season would be longer. Roosevelt did so in 1939 ('Franksgiving'), and Congress fixed it on the fourth Thursday in 1941.","when":"1939 to 1941","placed at":"Columbus, Ohio, home of the Lazarus store and where Federated was organized (city point: Natural Earth populated places)","source":"https://en.wikipedia.org/wiki/Franksgiving","_year":1939}},{"type":"Feature","geometry":{"type":"Point","coordinates":[135.169982,34.679988]},"properties":{"name":"Morozoff","group":"Corporatized a holiday","holiday":"Valentine's Day (Japan)","what they did":"This Kobe confectioner brought Valentine's Day to Japan as a chocolate-giving day, with a 1936 advertisement in the English-language Japan Advertiser telling readers to give its boxed chocolates to their Valentine.","when":"1936","placed at":"Kobe, its headquarters (city point: Natural Earth populated places)","source":"https://en.wikipedia.org/wiki/Morozoff_Ltd.","_year":1936}},{"type":"Feature","geometry":{"type":"Point","coordinates":[139.749462,35.686963]},"properties":{"name":"Mary's Chocolate","group":"Corporatized a holiday","holiday":"Valentine's Day (Japan)","what they did":"Held Japan's first Valentine's sale of chocolates, at a Tokyo department store in February 1958, and the next year began writing names on heart-shaped chocolates; chocolate makers' campaigns fixed the custom of women giving chocolate to men.","when":"1958 on","placed at":"Tokyo (city point: Natural Earth populated places)","source":"https://www.nippon.com/en/features/jg00025","_year":1958}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-71.0377,42.08]},"properties":{"name":"Edgar's Department Store (James Edgar)","group":"Corporatized a holiday","holiday":"Christmas","what they did":"Its owner, James Edgar, dressed as Santa Claus in his Brockton store from December 1890 to draw shoppers' children, the first department store Santa; trains brought families from Boston and Providence to see him, and by about 1900 shop Santas were everywhere.","when":"1890 on","placed at":"Brockton, Massachusetts (city point: US-Cities-Database, github.com/kelvins/US-Cities-Database)","source":"https://en.wikipedia.org/wiki/Edgar_Department_Stores","_year":1890}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-73.201907,41.181925]},"properties":{"name":"Dictaphone Corporation (C. King Woodbridge)","group":"Corporatized a holiday","holiday":"Secretaries Day (now Administrative Professionals Day)","what they did":"Its president, C. King Woodbridge, with the National Secretaries Association's president and a Young & Rubicam publicist, devised National Secretaries Week, first held in June 1952 with backing from office equipment makers; Dictaphone was its first sponsor.","when":"1952 on","placed at":"Bridgeport, Connecticut, where Dictaphone made its machines (city point: Natural Earth populated places)","source":"https://en.wikipedia.org/wiki/Administrative_Professionals_Day","source 2":"https://corporate.hallmark.com/holidays-occasions/administrative-professionals-day/","_year":1952}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-73.981963,40.751925]},"properties":{"name":"Young & Rubicam (Harry F. Klemfuss)","group":"Corporatized a holiday","holiday":"Secretaries Day (now Administrative Professionals Day)","what they did":"Harry F. Klemfuss, a public relations account executive at this advertising agency, was one of the three who devised the secretaries week campaign that became National Secretaries Week in 1952.","when":"1952 on","placed at":"New York, the agency's headquarters (city point: Natural Earth populated places)","source":"https://corporate.hallmark.com/holidays-occasions/administrative-professionals-day/","_year":1952}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-98.509251,29.489279]},"properties":{"name":"The Gambrinus Company","group":"Corporatized a holiday","holiday":"Cinco de Mayo (United States)","what they did":"As regional importer of Corona and other Grupo Modelo beers, it launched a Cinco de Mayo advertising campaign in 1989 urging people to celebrate with Mexican beer; by 1996 its marketing manager said Corona was the first thing customers thought of for the day.","when":"1989 on","placed at":"San Antonio, Texas, its headquarters (city point: Natural Earth populated places)","source":"https://vinepair.com/wine-blog/how-corona-made-cinco-de-mayo-an-american-holiday/","source 2":"https://www.foxnews.com/lifestyle/cinco-de-mayo-beer-sales-outpace-st-patricks-day-and-super-bowl","_year":1989}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-99.132934,19.444388]},"properties":{"name":"Grupo Modelo (maker of Corona)","group":"Corporatized a holiday","holiday":"Cinco de Mayo (United States)","what they did":"Named by historians as one of the leading promoters and beneficiaries of Cinco de Mayo in the United States, a minor holiday in Mexico that became a major beer-selling day north of the border from the 1980s.","when":"1980s on","placed at":"Mexico City, its headquarters (city point: Natural Earth populated places)","source":"https://www.historynewsnetwork.org/article/126189","_year":1980}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-83.082002,42.331906]},"properties":{"name":"Florists' Telegraph Delivery (FTD)","group":"Corporatized a holiday","holiday":"Mother's Day","what they did":"From 1910 this florists' association urged people to wire flowers to distant mothers, and from 1917 the flower trade ran national Mother's Day promotions; when the day's founder, Anna Jarvis, threatened legal action over the carnation trade, FTD offered her a commission on sales, which she refused.","when":"1910 on","placed at":"Detroit, Michigan, where FTD was based (city point: Natural Earth populated places)","source":"https://www.encyclopedia.com/media/encyclopedias-almanacs-transcripts-and-maps/mothers-day","source 2":"https://www.mentalfloss.com/holidays/founder-mothers-day-later-fought-have-it-abolished","_year":1910}}]};
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const feats = DATA.features.slice().sort((a,b)=>(a.properties._year||9999)-(b.properties._year||9999));
+const years = feats.map(f=>f.properties._year).filter(Boolean);
+const y0 = Math.min(...years), y1 = Math.max(...years);
+// earliest teal (hue 172) to latest cobalt (hue 222)
+const tone = (y, l=52, s=55) => { const t = y==null ? .5 : (y-y0)/((y1-y0)||1); return `hsl(${172+t*50} ${s}% ${l}%)`; };
+document.getElementById('k0').textContent = y0;
+document.getElementById('k1').textContent = y1;
+document.getElementById('kbar').style.background = `linear-gradient(90deg,${tone(y0)},${tone(y1)})`;
+
+const map = L.map('map',{worldCopyJump:true,minZoom:2,zoomSnap:.5}).setView([30,-20],2);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png',
+  {className:'base',subdomains:'abcd',maxZoom:19,
+   attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'}).addTo(map);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png',
+  {subdomains:'abcd',maxZoom:19,opacity:.7,pane:'overlayPane'}).addTo(map);
+
+const LABELS = {"group":"Group","holiday":"Holiday","when":"When","placed at":"Placed at","source":"Source","source 2":"Source"};
+function popupHtml(p){
+  let rows = '';
+  for (const k of Object.keys(p)) {
+    if (k==='name' || k==='what they did' || k.startsWith('_')) continue;
+    const v = p[k];
+    const val = /^https?:\/\//.test(v) ? `<a href="${esc(v)}" target="_blank" rel="noopener">${esc(v)}</a>` : esc(v);
+    rows += `<dt>${esc(LABELS[k]||k)}</dt><dd>${val}</dd>`;
+  }
+  return `<div class="pop"><h2>${esc(p.name)}</h2><div class="what">${esc(p['what they did'])}</div><dl>${rows}</dl></div>`;
+}
+
+const list = document.getElementById('list');
+const entries = feats.map((f,i)=>{
+  const p = f.properties, [lng,lat] = f.geometry.coordinates;
+  const icon = L.divIcon({className:'',iconSize:[13,13],iconAnchor:[6.5,6.5],
+    html:`<div class="orb" style="width:13px;height:13px;--c:${tone(p._year,58)};--g:${tone(p._year,50,60).replace(')',' / .55)')}"></div>`});
+  const m = L.marker([lat,lng],{icon,title:p.name,riseOnHover:true,keyboard:false})
+    .bindPopup(popupHtml(p),{maxWidth:340,autoPanPadding:[30,30]}).addTo(map);
+  const li = document.createElement('li');
+  li.tabIndex = 0;
+  li.innerHTML = `<div class="yr" style="color:${tone(p._year,66)}">${esc(p._year??'')}</div><div><div class="nm">${esc(p.name)}</div><div class="hd">${esc(p.holiday)}</div></div>`;
+  const open = () => { map.flyTo([lat,lng],Math.max(map.getZoom(),9),{duration:1.1}); map.once('moveend',()=>m.openPopup()); };
+  li.addEventListener('click',open);
+  li.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();open();} });
+  list.appendChild(li);
+  return {m,li};
+});
+entries.forEach(({m,li})=>{
+  m.on('popupopen',()=>{ entries.forEach(e=>e.li.classList.remove('on')); li.classList.add('on');
+    m.getElement()?.firstChild.classList.add('on'); li.scrollIntoView({block:'nearest'}); });
+  m.on('popupclose',()=>{ li.classList.remove('on'); m.getElement()?.firstChild.classList.remove('on'); });
+});
+map.fitBounds(L.latLngBounds(feats.map(f=>[f.geometry.coordinates[1],f.geometry.coordinates[0]])),{padding:[30,30]});
+</script>
+</body>
+</html>
