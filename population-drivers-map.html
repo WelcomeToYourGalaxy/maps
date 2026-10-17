@@ -72,7 +72,12 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--focus);outline-
 .layers .cols .npkrow{grid-column:1/-1}
 .lyr{grid-template-columns:auto minmax(0,1fr) auto}
 .lyr.crop{grid-template-columns:auto minmax(0,1fr) auto auto}
-.layers .tg{cursor:pointer}.layers .tg:before{content:'▸ ';font-size:9px}.layers .tg.open:before{content:'▾ '}
+.layers .tg{cursor:pointer;user-select:none}
+.layers .tg.lv1{font-size:10.5px;color:var(--c);margin-top:8px;padding-top:6px;border-top:1px solid var(--rule)}
+.layers .tg.lv2{margin-left:10px;font-size:9.5px}
+.layers .body.lv2{margin-left:10px}
+.layers .links a.reset{grid-column:1/-1;background:transparent;color:var(--muted)}
+.layers .links a.reset:hover{color:var(--c)}.layers .tg:before{content:'▸ ';font-size:9px}.layers .tg.open:before{content:'▾ '}
 .layers .sub{font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:5px 0 1px}
 .layers .blk{display:none}
 .layers .blk.on{display:block}
@@ -102,16 +107,18 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--focus);outline-
 .drawer{position:absolute;top:64px;right:12px;max-height:calc(100% - 92px);z-index:1000;width:400px;max-width:calc(100% - 300px);background:rgba(17,26,48,.96);border:1px solid var(--rule);border-radius:3px;display:none;flex-direction:column;min-height:0}
 .drawer.open{display:flex}
 .drawer.wide{left:324px;right:12px;width:auto;max-width:none;top:64px;bottom:28px;max-height:none}
-.drawer.wide .bd{columns:2;column-gap:28px;column-rule:1px solid var(--rule)}
+.drawer.wide .bd>.inner{columns:2;column-gap:28px;column-rule:1px solid var(--rule)}
 .drawer.wide .bd h4,.drawer.wide .bd .stat,.drawer.wide .bd .bars,.drawer.wide .bd .kv{break-inside:avoid}
 .drawer.wide .bd .spark{break-inside:avoid}
-@media (max-width:900px){.drawer.wide .bd{columns:1}}
+@media (max-width:900px){.drawer.wide .bd>.inner{columns:1}}
 .drawer .hd{padding:10px 12px 8px;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:1fr auto;gap:8px;align-items:start}
 .drawer h3{margin:0;font-size:15px;font-weight:500;color:var(--fg)}
 .drawer .hd .sub{font-size:11.5px;color:var(--muted);margin-top:2px}
 .drawer .x{font:inherit;background:transparent;border:1px solid var(--rule);color:var(--muted);border-radius:2px;width:24px;height:24px;cursor:pointer;line-height:1}
 .drawer .x:hover{color:var(--accent);border-color:var(--accent)}
-.drawer .bd{overflow:auto;padding:10px 12px 14px;font-size:12.5px;min-height:0}
+.drawer .bd{overflow-y:auto;overflow-x:hidden;padding:10px 12px 14px;font-size:12.5px;min-height:0;overflow-wrap:anywhere}
+.drawer .bd .bars span{overflow-wrap:anywhere;white-space:normal}
+.drawer .bd .kv span{overflow-wrap:anywhere}
 .drawer h4{margin:12px 0 4px;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;color:var(--muted)}
 .drawer h4:first-child{margin-top:0}
 .drawer p{margin:0 0 7px}
@@ -207,7 +214,7 @@ const SHARES={
 
 /* ===== map ===== */
 const map=L.map('map',{zoomControl:false,worldCopyJump:false,minZoom:1.5,maxZoom:17,zoomSnap:.25,zoomDelta:.5,attributionControl:true});
-map.fitBounds([[-56,-170],[80,180]],{paddingTopLeft:[0,60],paddingBottomRight:[0,30]});map.setMinZoom(Math.floor(map.getZoom()*4)/4);map.setMaxBounds([[-85,-240],[85,240]]);
+map.fitBounds([[-56,-180],[80,180]],{paddingTopLeft:[0,60],paddingBottomRight:[0,30]});map.setMinZoom(Math.floor(map.getZoom()*4)/4);map.setMaxBounds([[-85.05,-180],[85.05,180]]);map.options.maxBoundsViscosity=1;
 window.addEventListener('resize',()=>{map.invalidateSize();});L.control.zoom({position:'topright'}).addTo(map);
 const WB=[[-85.05,-180],[85.05,180]];
 const atlas=L.layerGroup([
@@ -245,8 +252,8 @@ const AB_SHORT={'On request':'On request','Broad social or economic grounds':'Br
 const US_COL={'Legal (no gestational limit)':'#8fb0ea','Legal (to viability or ~24 weeks)':'#7a9fe0','Restricted (15-22 week)':'#5577b8','Restricted (12-week)':'#4a6098','Restricted (6-week)':'#2f3f6b','Banned':'#1b2440'};
 
 let WIDE=false;
-function drawer(title,sub,html){$('dTitle').textContent=title;$('dSub').innerHTML=sub||'';$('dBody').innerHTML=html;$('drawer').classList.add('open');$('drawer').classList.toggle('wide',WIDE);WIDE=false;$('dBody').scrollTop=0;}
-const HOME={b:[[-56,-170],[80,180]],o:{paddingTopLeft:[0,60],paddingBottomRight:[0,30]}};
+function drawer(title,sub,html){$('dTitle').textContent=title;$('dSub').innerHTML=sub||'';$('dBody').innerHTML=WIDE?'<div class="inner">'+html+'</div>':html;$('drawer').classList.add('open');$('drawer').classList.toggle('wide',WIDE);WIDE=false;$('dBody').scrollTop=0;}
+const HOME={b:[[-56,-180],[80,180]],o:{paddingTopLeft:[0,60],paddingBottomRight:[0,30]}};
 function home(){$('drawer').classList.remove('open');map.flyToBounds(HOME.b,Object.assign({duration:.9},HOME.o));}
 $('dClose').onclick=home;
 const HomeCtl=L.Control.extend({onAdd:function(){const d=L.DomUtil.create('div','leaflet-bar leaflet-control-home');const a=L.DomUtil.create('a','',d);a.href='#';a.title='Zoom back out';a.setAttribute('aria-label','Zoom back out');a.innerHTML='Zoom out';L.DomEvent.on(a,'click',e=>{L.DomEvent.stop(e);home();});return d;}});
@@ -308,9 +315,9 @@ Promise.all([
   countries.features.forEach(f=>{const polys=f.geometry.type==='Polygon'?[f.geometry.coordinates]:f.geometry.coordinates;
     polys.forEach(poly=>poly.forEach(ring=>{let lo=1e9,hi=-1e9;ring.forEach(q=>{if(q[0]<lo)lo=q[0];if(q[0]>hi)hi=q[0];});
       const polar=ring.some(q=>q[1]<=-85);
-      ring.forEach(q=>{if(hi-lo>300&&!polar&&q[0]<0)q[0]+=360;if(q[1]<-85)q[1]=-85;});}));});
+      ring.forEach(q=>{if(hi-lo>300&&!polar&&q[0]<0)q[0]=180;if(q[1]<-85)q[1]=-85;if(q[0]>180)q[0]=180;});}));});
   countries.features.forEach(f=>{const a=a3of(f); if(a) centroid[a]=largestPolyCentroid(f.geometry);});
-  buildLayers(us);
+  buildLayers(us);snapshotDefaults();
   $('status').textContent='';
   setChapter('fert');
 }).catch(e=>{$('status').textContent='Boundaries failed to load: '+e.message;});
@@ -352,7 +359,7 @@ function rasterInfo(){const rs=Object.values(RASTERS);if(!rs.length)return '';re
 function fertContext(){
   let html='<p>Nitrogen fertilizer is made by pulling nitrogen from the air and forcing it to bond with hydrogen, nearly always hydrogen taken from natural gas (coal in much of China). Phosphate and potash are mined rock, treated with sulfuric acid or refined from brines. The three are the N, P and K on every bag.</p>';
   const facts=(FERT_CTX.facts||[]).filter(x=>!/human tissues|population grew/i.test(x.text||''));if(facts.length)html+='<h4>The world picture</h4><ul>'+facts.map(x=>'<li>'+esc(x.text)+(x.source?' <a href="'+esc(x.source)+'" target="_blank" rel="noopener">source</a>':'')+'</li>').join('')+'</ul>';
-  html+='<h4>Country layers</h4><p>Shading: kg of nutrient per hectare of cropland (FAO, latest year). Who makes it: FAO production by nutrient, sized by tonnes, labelled with the share of the world total. Who exports it: top five exporters by share of world export value (customs data, 2023); Russia and Belarus do not report to that dataset since 2022, so the layer notes carry IFPRI\'s trade-share figures for them.</p>';
+  html+='<h4>Country layers</h4><p>Shading: kg of nutrient per hectare of cropland (FAO, latest year). Who makes it: FAO production by nutrient, sized by tonnes, labelled with the share of the world total. Who exports it: top five exporters by share of world export value (customs data, 2023). Russia and Belarus have not reported to that dataset since 2022, so they are absent from the potash figures; by traded volume IFPRI puts Canada at 42% and Russia at 20% of potash trade in 2023, Russia at about 12% of nitrogen trade in 2023 and 12% of phosphate trade in 2020 <a href="https://www.ifpri.org/?p=146920" target="_blank" rel="noopener">(IFPRI)</a>.</p>';
   html+='<h4>Companies and sites</h4><p>'+COVERAGE.companies+' companies and '+COVERAGE.plants+' sites compiled from company reports, filings and public registers; every company panel lists its own sources. Site points are mostly town-centre locations, flagged as such.</p>';
   const rs=Object.entries(RASTERS).filter(([k])=>!k.startsWith('__')).map(([,v])=>v);const fr=rs.filter(isFert),cr=rs.filter(l=>!isFert(l));
   if(fr.length)html+='<h4>Where it lands</h4><ul>'+fr.map(l=>'<li><b>'+esc(l.label||l.key)+'</b>: '+esc(l.what||'')+(l.units?' '+esc(l.units)+'.':'')+(l.global_sum&&l.global_sum.value_Mt!=null?' Grid total '+l.global_sum.value_Mt+' Mt.':'')+' '+esc(l.citation||'')+(l.url?' <a href="'+esc(l.url)+'" target="_blank" rel="noopener">source</a>':'')+'</li>').join('')+'</ul>';
@@ -461,21 +468,15 @@ function buildLayers(us){
     LAYERS['fert_prod_'+k]={chapter:'fert',layer:grp,on:k==='all',label:name,sw:'',col:colr,radio:'prod',ord:2,radioLabel:'Who makes it (FAO '+(W.prodN_y||'')+', % of world)'};});
   /* exporters: customs-reported top five, plus IFPRI trade-share figures for the countries missing from the customs data */
   const EXP=(FERT_CTX.raw&&FERT_CTX.raw.top_exporters)||{};const EXPN={nitrogen_urea:['Urea (N)','#6fae80'],phosphate_DAP:['DAP (P)','#a08a6a'],potash_KCl:['Potassium chloride (K)','#a07aa8']};
-  const IFPRI='https://www.ifpri.org/?p=146920';
-  const EXP_EXTRA={nitrogen_urea:[{a3:'RUS',country:'Russia',share_pct:12,year:2023,what:'share of global nitrogen fertilizer trade'}],phosphate_DAP:[{a3:'RUS',country:'Russia',share_pct:12,year:2020,what:'share of global phosphate fertilizer trade'}],potash_KCl:[{a3:'CAN',country:'Canada',share_pct:42,year:2023,what:'share of global potash trade'},{a3:'RUS',country:'Russia',share_pct:20,year:2023,what:'share of global potash trade'},{a3:'BLR',country:'Belarus',share_pct:null,year:2023,what:'share of global potash trade roughly halved since 2020 sanctions (Russia and Belarus together held 40% in 2020)'}]};
-  const allExp=L.layerGroup();const allLbl={};
+    const allExp=L.layerGroup();const allLbl={};
   Object.entries(EXPN).forEach(([k,[name,colr]])=>{const d=EXP[k];if(!d)return;const grp=L.layerGroup();
     (d.top5||[]).forEach(r=>{if(!r.a3||!centroid[r.a3])return;const rad=6+30*Math.sqrt(r.share_pct/100);const c=L.circleMarker(centroid[r.a3],{pane:'bubbles',radius:rad,color:colr,weight:1.5,fillColor:colr,fillOpacity:.3,dashArray:'3 3'});
       c.bindTooltip(r.country+' · '+r.share_pct+'% of world '+name+' export value, 2023'+(r.usd_bn?' · US$'+r.usd_bn+' bn':'')+' (customs data)');c.on('click',e=>{stop(e);fertCountry(r.a3);});grp.addLayer(c);
       allExp.addLayer(c);(allLbl[r.a3]=allLbl[r.a3]||[]).push(name.split(' ')[0]+' '+r.share_pct+'%');
       grp.addLayer(L.marker(centroid[r.a3],{pane:'bubbles',interactive:false,icon:L.divIcon({className:'pctlbl',html:r.share_pct+'%',iconSize:[44,12],iconAnchor:[22,6]})}));});
-    (EXP_EXTRA[k]||[]).forEach(r=>{if(!centroid[r.a3])return;const rad=r.share_pct?6+30*Math.sqrt(r.share_pct/100):8;const c=L.circleMarker(centroid[r.a3],{pane:'bubbles',radius:rad,color:'#eef2fa',weight:1.2,fillColor:colr,fillOpacity:.18,dashArray:'1 4'});
-      c.bindTooltip(r.country+' · '+(r.share_pct!=null?r.share_pct+'% ':'')+r.what+', '+r.year+' (IFPRI, trade volume — not in the customs dataset)');c.on('click',e=>{stop(e);fertCountry(r.a3);});grp.addLayer(c);
-      allExp.addLayer(c);(allLbl[r.a3]=allLbl[r.a3]||[]).push(name.split(' ')[0]+' '+(r.share_pct!=null?r.share_pct+'%':'?')+' IFPRI');
-      grp.addLayer(L.marker(centroid[r.a3],{pane:'bubbles',interactive:false,icon:L.divIcon({className:'pctlbl',html:(r.share_pct!=null?r.share_pct+'%':'?')+'<span style="font-size:8px"> IFPRI</span>',iconSize:[60,12],iconAnchor:[30,-rad+2]})}));});
-    LAYERS['fert_exp_'+k]={chapter:'fert',layer:grp,on:false,label:name,sw:'',col:colr,radio:'exp',radioLabel:'Who exports it (share of export value 2023; dotted white = IFPRI trade share)',note:d.note||d.caveat,src:d.source,commodity:d.commodity,ord:3};});
+    LAYERS['fert_exp_'+k]={chapter:'fert',layer:grp,on:false,label:name,sw:'',col:colr,radio:'exp',radioLabel:'Top five exporters, share of world export value 2023 (customs data)',note:k==='potash_KCl'?'Russia and Belarus stopped reporting to this customs dataset after the 2022 sanctions, so their exports are missing here.':'',src:d.source,commodity:d.commodity,ord:3};});
   Object.entries(allLbl).forEach(([a,lines])=>allExp.addLayer(L.marker(centroid[a],{pane:'bubbles',interactive:false,icon:L.divIcon({className:'pctlbl',html:lines.join('<br>'),iconSize:[90,12*lines.length],iconAnchor:[45,6*lines.length]})})));
-  LAYERS.fert_exp_all={chapter:'fert',layer:allExp,on:false,label:'All three',sw:'',col:'#b7d9b4',radio:'exp',ord:3,note:'Customs-reported top five for urea, DAP and potassium chloride together, with IFPRI trade shares for Russia, Belarus and Canada where customs data miss them.',src:IFPRI,commodity:''};
+  LAYERS.fert_exp_all={chapter:'fert',layer:allExp,on:false,label:'All three',sw:'',col:'#b7d9b4',radio:'exp',ord:3,note:'Top five customs-reported exporters of urea, DAP and potassium chloride together, 2023. Russia and Belarus are absent from the potash figures (not reporting since 2022).',src:'https://trendeconomy.com/data/commodity_h2/310420',commodity:''};
   LAYERS.fert_exp_off={chapter:'fert',layer:L.layerGroup(),on:true,label:'off',sw:'none',col:'transparent',radio:'exp',ord:3};
   LAYERS.fert_prod_off={chapter:'fert',layer:L.layerGroup(),on:false,label:'off',sw:'none',col:'transparent',radio:'prod',ord:2};
   /* feedstocks: what the nutrients are made from */
@@ -495,10 +496,10 @@ function buildLayers(us){
       const m=L.circleMarker([p.lat,p.lon],{pane:'plants',radius:4.5,color:'#0a1020',weight:1,fillColor:col,fillOpacity:.95});
       m.bindTooltip(p.name+' · '+c.name+(p.product?' · '+p.product:''));m.on('click',e=>{stop(e);company(c);m.bindPopup('<b>'+esc(p.name)+'</b><br>'+esc(c.name)+'<br><span class="m">'+esc([p.city,p.country].filter(Boolean).join(', '))+(p.capacity?' · '+esc(p.capacity):'')+'</span>').openPopup();});
       ({N:plN,P:plP,K:plK}[k]).addLayer(m);});});
-  LAYERS.fert_plN={chapter:'fert',layer:plN,on:true,label:'Nitrogen plants (ammonia, urea, nitrates)',sw:'',col:'#6fae80',group:'Mines and plants',ord:5};
-  LAYERS.fert_plP={chapter:'fert',layer:plP,on:true,label:'Phosphate mines and plants',sw:'',col:'#a08a6a',group:'Mines and plants',ord:5};
-  LAYERS.fert_plK={chapter:'fert',layer:plK,on:true,label:'Potash mines and plants',sw:'',col:'#a07aa8',group:'Mines and plants',ord:5};
-  LAYERS.fert_hq={chapter:'fert',layer:hq,on:true,label:'Headquarters of the '+FERT_CO.length+' fertilizer companies (click for sources, sites, ownership)',sw:'dia',col:'#b7d9b4',group:'Companies',ord:6};
+  LAYERS.fert_plN={chapter:'fert',layer:plN,on:true,label:'Nitrogen plants (ammonia, urea, nitrates)',sw:'',col:'#6fae80',group:'Mines and plants'};
+  LAYERS.fert_plP={chapter:'fert',layer:plP,on:true,label:'Phosphate mines and plants',sw:'',col:'#a08a6a',group:'Mines and plants'};
+  LAYERS.fert_plK={chapter:'fert',layer:plK,on:true,label:'Potash mines and plants',sw:'',col:'#a07aa8',group:'Mines and plants'};
+  LAYERS.fert_hq={chapter:'fert',layer:hq,on:true,label:'Headquarters of the '+FERT_CO.length+' fertilizer companies (click for sources, sites, ownership)',sw:'dia',col:'#b7d9b4',group:'Companies'};
   /* gridded layers */
   Object.entries(RASTERS).forEach(([k,lay])=>{if(k.startsWith('__')||!GRID[k])return;lay.key=k;const isF=isFert(lay);
     const gl=new RasterLayer({key:k,color:rasterColor(lay),tileSize:256,pane:'grid',bounds:WB,opacity:1,updateWhenZooming:false,keepBuffer:1});
@@ -540,7 +541,10 @@ const USE_KEY={N:'ammonia_nitrogen',P:'phosphate',K:'potash'};
 function useLine(k){const u=USES[USE_KEY[k]];if(!u)return '';const f=u.fertilizer_share||{};const nonf=(u.end_uses||[]).filter(x=>x.share_pct!=null&&!/^fertilizer$|urea production|direct application/i.test(x.use.trim()));
   const parts=nonf.map(x=>esc(x.use.replace(/ \(all non-fertilizer\)/,''))+' '+x.share_pct+'%: '+esc(String(x.products||'').split(/;|\(/)[0].trim().slice(0,80)));
   const dep=(u.depends_entirely||[]).slice(1,3).map(x=>esc(x.product.split(',')[0].replace(/^[A-Z]/,c=>c.toLowerCase())));
-  return '<div><b>'+({N:'Nitrogen (ammonia)',P:'Phosphate',K:'Potash'})[k]+'</b> '+(f.value_pct!=null?f.value_pct+'% to fertilizer':'')+(parts.length?'; '+parts.join('; '):'')+(dep.length?'. Without it: no '+dep.join(', '):'')+'.</div>';}
+  const APPS={N:'Those are the blasting agents of nearly all mining, quarrying and tunnelling (USGS: no practical substitute), the fibre of carpets, ropes and engineering plastics, the foam in insulation and furniture, and the fluid that cuts diesel exhaust; and nitrogen itself has no substitute as a plant nutrient (USGS).',
+    P:'Phosphoric acid is the only route to phosphate fertilizer and to the feed phosphates livestock and poultry are raised on; elemental phosphorus goes mainly to glyphosate, the most-used herbicide (USGS), and about a fifth of flame retardants are phosphorus-based (ESPP); phosphorus has no substitute in agriculture (USGS).',
+    K:'Potassium hydroxide is the base of soaps, detergents and most other potassium chemicals (IHS); potassium nitrate is the heat-storage salt of solar-thermal plants and goes into specialty glass; and potassium has no substitute as a nutrient for plants, animals or humans (USGS).'};
+  return '<div><b>'+({N:'Nitrogen (ammonia)',P:'Phosphate',K:'Potash'})[k]+'</b> '+(f.value_pct!=null?f.value_pct+'% to fertilizer':'')+(parts.length?'; '+parts.join('; '):'')+(dep.length?'. Without it: no '+dep.join(', ')+'. '+APPS[k]:'')+'</div>';}
 function sharesBlock(){const sh=nutrShares();const row=(l,a)=>'<div class="mini"><span>'+l+'</span><div class="b">'+a.map((v,i)=>'<i style="width:'+v+'%;background:var(--'+'NPK'[i]+')" title="'+'NPK'[i]+' '+v+'%"></i>').join('')+'</div><span>'+a.map((v,i)=>'NPK'[i]+' '+v+'%').join(' · ')+'</span></div>';
   const e=(USES.ammonia_nitrogen&&USES.ammonia_nitrogen.energy)||null;
   return '<div class="shares"><div class="h">World, '+sh.year+' (FAO)</div>'+row('Made '+Math.round(sh.madeT/1e6)+' Mt',sh.made)+row('Spread '+Math.round(sh.usedT/1e6)+' Mt',sh.used)+'<div class="mini"><span>Per hectare</span><div></div><span>'+fmt(sh.perHa)+' kg on cropland</span></div>'+
@@ -548,7 +552,7 @@ function sharesBlock(){const sh=nutrShares();const row=(l,a)=>'<div class="mini"
 function sharesPanel(){const sh=nutrShares();let html='<h4>What synthetic fertilizer is made of</h4><p>Of the '+fmt(sh.madeT/1e6)+' Mt of nutrients the world made in '+sh.year+', nitrogen was '+sh.made[0]+'%, phosphate '+sh.made[1]+'% and potash '+sh.made[2]+'% (FAO, tonnes of N, P₂O₅ and K₂O). Of the '+fmt(sh.usedT/1e6)+' Mt spread on cropland the split was '+sh.used[0]+' / '+sh.used[1]+' / '+sh.used[2]+'%, an average of '+fmt(sh.perHa)+' kg per hectare.</p>';
   for(const k of ['N','P','K']){const u=USES[USE_KEY[k]];if(!u)continue;const f=u.fertilizer_share||{};html+='<h4>'+({N:'Nitrogen (ammonia)',P:'Phosphate',K:'Potash'})[k]+' — where it goes</h4>'+(f.value_pct!=null?'<p>'+f.value_pct+'% to fertilizer ('+esc(f.scope||'')+(f.year?', '+f.year:'')+')'+(f.source?' <a href="'+esc(f.source)+'" target="_blank" rel="noopener">source</a>':'')+'.</p>':'');
     if(u.end_uses&&u.end_uses.length)html+='<div class="bars">'+u.end_uses.map(x=>'<span>'+esc(x.use)+'</span><div class="b"><i style="width:'+(x.share_pct!=null?Math.min(100,x.share_pct):0)+'%;background:var(--'+k+')"></i></div><span>'+(x.share_pct!=null?x.share_pct+'%':'—')+'</span>').join('')+'</div><ul>'+u.end_uses.filter(x=>x.products).map(x=>'<li><b>'+esc(x.use)+'</b>: '+esc(x.products)+(x.source?' <a href="'+esc(x.source)+'" target="_blank" rel="noopener">source</a>':'')+'</li>').join('')+'</ul>';
-    if(u.depends_entirely&&u.depends_entirely.length)html+='<p><b>Cannot be made without it:</b> '+u.depends_entirely.map(x=>esc(x.product)+(x.why?' ('+esc(x.why)+')':'')+(x.source?' <a href="'+esc(x.source)+'" target="_blank" rel="noopener">source</a>':'')).join('; ')+'.</p>';
+    if(u.depends_entirely&&u.depends_entirely.length)html+='<p><b>Cannot be made without it:</b> '+u.depends_entirely.map(x=>esc(x.product)+(x.why?' ('+esc(x.why)+')':'')+(x.source?' <a href="'+esc(x.source)+'" target="_blank" rel="noopener">source</a>':'')).join('; ')+'.</p><p><b>What those are for:</b> '+esc({N:'Ammonium-nitrate blasting agents are what mining, quarrying and tunnelling run on (USGS: no practical substitute); nylon 6 and 66 are the fibre of carpets, ropes, tyre cord and engineering parts; polyurethane isocyanates make the foam in insulation, mattresses and furniture; ABS is the housing of appliances and electronics; diesel-exhaust fluid is what cuts nitrogen-oxide emissions from diesel engines. Nitrogen itself is an essential plant nutrient with no substitute (USGS).',P:'Phosphoric acid is the only route to DAP/MAP/TSP fertilizer and to the feed phosphates (dicalcium and monocalcium phosphate) that livestock and poultry are raised on; elemental phosphorus goes mainly to glyphosate, the most-used herbicide (USGS); about a fifth of flame retardants are phosphorus-based (ESPP), and lithium-iron-phosphate batteries now take about 100,000 t of P a year (ESPP). Phosphorus has no substitute in agriculture (USGS).',K:'Potassium hydroxide is the base of soaps, liquid detergents, alkaline batteries and most other potassium chemicals (IHS); potassium nitrate is the heat-storage salt of solar-thermal power plants and an ingredient of specialty glass and ceramic frits; potassium carbonate goes into specialty glass and fracking fluids; potassium bicarbonate into fire extinguishers. Potassium has no substitute as a nutrient for plants, animals or humans (USGS).'}[k])+'</p>';
     if(u.energy){const e=u.energy;html+='<p><b>Energy:</b> '+(e.share_of_world_final_energy_pct!=null?esc(e.share_of_world_final_energy_pct)+'% of world final energy use':'')+(e.share_of_natural_gas_pct!=null?', '+esc(e.share_of_natural_gas_pct.value_pct!=null?e.share_of_natural_gas_pct.value_pct:e.share_of_natural_gas_pct)+'% of natural gas':'')+(e.share_of_world_CO2_pct!=null?', '+esc(e.share_of_world_CO2_pct)+'% of world CO₂':'')+(e.feedstock_split?'; hydrogen comes from natural gas '+(e.feedstock_split.natural_gas_pct||'?')+'%, coal '+(e.feedstock_split.coal_pct||'?')+'%'+(e.feedstock_split.oil_pct?', oil '+e.feedstock_split.oil_pct+'%':'')+(e.feedstock_split.electrolysis_pct?', electrolysis '+e.feedstock_split.electrolysis_pct+'%':''):'')+(e.year?' ('+esc(e.year)+')':'')+(e.source?' <a href="'+esc(e.source)+'" target="_blank" rel="noopener">source</a>':'')+'.</p>';}}
   const R=FERT_CTX.raw||{};const mk=(d,fld,lab)=>d?'<h4>'+lab+' ('+esc(d.publisher||'')+')</h4><div class="bars">'+(d.top10||d.ranking||[]).map(r=>'<span>'+esc(r.country)+'</span><div class="b"><i style="width:'+Math.round(r.share_pct/((d.top10||d.ranking)[0].share_pct)*100)+'%;background:var(--'+fld+')"></i></div><span>'+r.share_pct+'%</span>').join('')+'</div>'+(d.source?'<p style="color:var(--muted)">'+esc(d.unit||'')+' <a href="'+esc(d.source)+'" target="_blank" rel="noopener">source</a></p>':''):'';
   html+=mk(R.ammonia_production_by_country,'N','Who makes the ammonia')+mk(R.phosphate_rock_production_by_country,'P','Who mines the phosphate rock')+mk(R.potash_production_by_country,'K','Who mines the potash');
@@ -575,25 +579,39 @@ const GOPEN={};
 const LINKS={fert:[['fertContext','What is here, with sources'],['sharesPanel','Shares, uses & crops'],['coveragePanel','How much is mapped']],ab:[['abContext','What is here, with sources']],con:[['conContext','What is here, with sources'],['methods','Every method & its effects']]};
 function lyrRow(k,L_,type,name){const npk=L_.npk;return '<div class="lyr'+(L_.indent?' ind':'')+(npk||L_.partof?' crop':'')+'"><input type="'+(type||'checkbox')+'" '+(name?'name="'+name+'"':'')+' id="l_'+k+'" '+(L_.on?'checked':'')+'><label for="l_'+k+'">'+esc(L_.label)+(L_.pct!=null?'<span class="pct">'+L_.pct+'%</span>':'')+(L_.partof?'<span class="pct">'+esc(L_.partof)+'</span>':'')+'</label>'+(npk?'<button class="npk" data-k="'+k+'" title="Share of each nutrient">▾</button>':'')+'<i class="sw '+(L_.sw||'')+'" style="background:'+L_.col+'"></i></div>'+(npk?'<div class="npkrow hid" id="npk_'+k+'">share of world use of each: N '+npk[0]+'% · P '+npk[1]+'% · K '+npk[2]+'%</div>':'');}
 
+const isOpen=id=>GOPEN[id]!==false;
+function head(id,label,level){return '<div class="sub tg lv'+level+(isOpen(id)?' open':'')+'" data-g="'+id+'">'+esc(label)+'</div>';}
+function radioRows(group){const opts=Object.entries(LAYERS).filter(([,x])=>x.radio===group);let h=opts.map(([kk,x])=>lyrRow(kk,x,'radio','r_'+group)).join('');const cur=opts.find(([,x])=>x.on&&(x.note||x.commodity));if(cur)h+='<div class="note" style="margin:2px 0 4px 20px">'+esc(cur[1].commodity||'')+' '+esc(cur[1].note||'')+(cur[1].src?' <a href="'+esc(cur[1].src)+'" target="_blank" rel="noopener">source</a>':'')+'</div>';return h;}
+function rows(filter){return Object.entries(LAYERS).filter(([k,x])=>filter(k,x)).map(([k,x])=>lyrRow(k,x)).join('');}
+function fertTree(){let h='';
+  const sec=(id,label,body,level)=>{h+=head(id,label,level||1);if(isOpen(id))h+='<div class="body lv'+(level||1)+'">'+body()+'</div>';};
+  sec('made_from','What it is made from (producers, % of world; biggest companies as diamonds)',()=>radioRows('feed'));
+  sec('makes','Who makes it',()=>{let b='';const sub=(id,label,body)=>{b+=head(id,label,2);if(isOpen(id))b+='<div class="body lv2">'+body()+'</div>';};
+    sub('makes_c','Countries (FAO '+(FERT_C.OWID_WRL.prodN_y||'')+', % of world)',()=>radioRows('prod'));
+    sub('makes_p','Mines and plants',()=>rows((k,x)=>x.group==='Mines and plants'));
+    sub('makes_co','Companies',()=>rows((k,x)=>x.group==='Companies'));return b;});
+  sec('goes','Where each nutrient goes',()=>'<div class="uses">'+useLine('N')+useLine('P')+useLine('K')+energyLine()+'</div>');
+  sec('exports','Who exports it (top five, share of world export value 2023, customs data)',()=>radioRows('exp'));
+  sec('lands','Where it lands',()=>{let b='';const sub=(id,label,body)=>{b+=head(id,label,2);if(isOpen(id))b+='<div class="body lv2">'+body()+'</div>';};
+    sub('lands_c','By country',()=>rows((k,x)=>k==='fert_choro'));
+    sub('lands_d','Direct application (gridded, kg per hectare)',()=>rows((k,x)=>x.raster&&isFert(x.raster)));
+    sub('lands_k','By crop (harvested area; % = share of world fertilizer use, IFA 2014/15)',()=>rows((k,x)=>x.raster&&!isFert(x.raster)));
+    sub('lands_x','Combine the ticked grid layers',()=>'<div class="lyr"><input type="checkbox" id="ovl" '+(OVERLAP.on?'checked':'')+'><label for="ovl">Overlap only: paint just the cells where every ticked grid layer is present</label><i class="sw sq" style="background:#3a7d5a"></i></div><div class="lyr"><input type="checkbox" id="ovs" '+(OVERLAP.strongOn?'checked':'')+'><label for="ovs">Strongest overlap: only cells where every ticked layer is in its own top quarter (dark = just inside, pale = near the top of all)</label><i class="sw sq" style="background:linear-gradient(90deg,#2f6b52,#c6eccb)"></i></div>');
+    return b;});
+  return h;}
+function energyLine(){const e=(USES.ammonia_nitrogen&&USES.ammonia_nitrogen.energy)||null;if(!e||e.share_of_world_final_energy_pct==null)return '';const g=e.share_of_natural_gas_pct;const gp=g&&g.value_pct!=null?g.value_pct:g;return '<div><b>Energy</b>: making ammonia takes '+esc(e.share_of_world_final_energy_pct)+'% of world final energy'+(gp!=null?' and '+esc(gp)+'% of natural gas':'')+(e.feedstock_split&&e.feedstock_split.natural_gas_pct!=null?'; hydrogen from gas '+e.feedstock_split.natural_gas_pct+'%, coal '+(e.feedstock_split.coal_pct||0)+'%':'')+'</div>';}
+function worldBlock(){const sh=nutrShares();const row=(l,a)=>'<div class="mini"><span>'+l+'</span><div class="b">'+a.map((v,i)=>'<i style="width:'+v+'%;background:var(--'+'NPK'[i]+')" title="'+'NPK'[i]+' '+v+'%"></i>').join('')+'</div><span>'+a.map((v,i)=>'NPK'[i]+' '+v+'%').join(' · ')+'</span></div>';
+  return '<div class="shares" style="margin:2px 0 6px"><div class="h">World, '+sh.year+' (FAO)</div>'+row('Made '+Math.round(sh.madeT/1e6)+' Mt',sh.made)+row('Spread '+Math.round(sh.usedT/1e6)+' Mt',sh.used)+'<div class="mini"><span>Per hectare</span><div></div><span>'+fmt(sh.perHa)+' kg on cropland</span></div></div>';}
+function genericTree(ch){let h='';const entries=Object.entries(LAYERS).filter(([k,L_])=>L_.chapter===ch);let lastGroup=null;
+  for(const [k,L_] of entries){if(L_.metric){h+=lyrRow(k,L_,'radio','conm');continue;}
+    if(L_.group!==lastGroup){lastGroup=L_.group;if(L_.group)h+=head('g_'+L_.group.replace(/\W+/g,'_'),L_.group,1);}
+    if(L_.group&&!isOpen('g_'+L_.group.replace(/\W+/g,'_')))continue;h+=lyrRow(k,L_);}
+  return h;}
 function renderLayers(){
-  const el=$('layers');
-  let html='';
-  for(const ch of ['fert','ab','con']){html+='<div class="blk'+(ch===CH?' on':'')+'" style="--c:var(--'+ch+')"><div class="links">'+LINKS[ch].map(([f,t])=>'<a href="#" data-ctx="'+f+'">'+t+'</a>').join('')+'</div>';
-    const entries=Object.entries(LAYERS).filter(([k,L_])=>L_.chapter===ch).map((e,i)=>[e[0],e[1],i]).sort((x,y)=>((x[1].ord||50)-(y[1].ord||50))||(x[2]-y[2]));
-    const doneRadio=new Set();let lastGroup=null,openCols=false;
-    const closeGroup=()=>{if(openCols){html+='</div>';openCols=false;}};
-    for(const [k,L_] of entries){
-      if(L_.metric){closeGroup();html+=lyrRow(k,L_,'radio','conm');continue;}
-      if(L_.radio){if(doneRadio.has(L_.radio))continue;doneRadio.add(L_.radio);closeGroup();const opts=entries.filter(([,x])=>x.radio===L_.radio);const lab=(opts.find(([,x])=>x.radioLabel)||[null,{}])[1].radioLabel||'';
-        html+='<div class="sub">'+esc(lab)+'</div>'+opts.map(([kk,x])=>lyrRow(kk,x,'radio','r_'+L_.radio)).join('');
-        const cur=opts.find(([,x])=>x.on&&x.note);if(cur)html+='<div class="note" style="margin:2px 0 4px 20px">'+esc(cur[1].commodity||'')+' '+esc(cur[1].note||'')+(cur[1].src?' <a href="'+esc(cur[1].src)+'" target="_blank" rel="noopener">source</a>':'')+'</div>';
-        lastGroup=null;continue;}
-      if(L_.group!==lastGroup){closeGroup();lastGroup=L_.group;if(L_.group){const gid='g_'+L_.group.replace(/\W+/g,'_');const open=GOPEN[gid]!==false;html+='<div class="sub tg'+(open?' open':'')+'" data-g="'+gid+'">'+esc(L_.group)+'</div>';if(/Crops/.test(L_.group)&&open){html+='<div class="cols">';openCols=true;}}}
-      if(L_.group&&GOPEN['g_'+L_.group.replace(/\W+/g,'_')]===false)continue;
-      html+=lyrRow(k,L_);}
-    closeGroup();
-    if(ch==='fert'&&OVERLAP.layer)html+='<div class="sub">Combine the ticked grid layers</div><div class="lyr"><input type="checkbox" id="ovl" '+(OVERLAP.on?'checked':'')+'><label for="ovl">Overlap only: paint just the cells where every ticked grid layer is present</label><i class="sw sq" style="background:#3a7d5a"></i></div><div class="lyr"><input type="checkbox" id="ovs" '+(OVERLAP.strongOn?'checked':'')+'><label for="ovs">Strongest overlap: only cells where every ticked layer is in its own top quarter (dark = just inside, pale = near the top of all)</label><i class="sw sq" style="background:linear-gradient(90deg,#2f6b52,#c6eccb)"></i></div>';
-    html+=legend(ch)+(ch==='fert'?sharesBlock():'')+'</div>';}
+  const el=$('layers');let html='';
+  for(const ch of ['fert','ab','con']){html+='<div class="blk'+(ch===CH?' on':'')+'" style="--c:var(--'+ch+')"><div class="links">'+LINKS[ch].map(([f,t])=>'<a href="#" data-ctx="'+f+'">'+t+'</a>').join('')+'<a href="#" class="reset" data-reset="'+ch+'">Reset all layers</a></div>';
+    if(ch==='fert')html+=worldBlock()+fertTree();else html+=genericTree(ch);
+    html+=legend(ch)+'</div>';}
   el.innerHTML=html;
   el.querySelectorAll('input[id^=l_]').forEach(inp=>inp.addEventListener('change',()=>{const k=inp.id.slice(2);const L_=LAYERS[k];
     if(L_.metric){conMetric=L_.metric;for(const [kk,LL] of Object.entries(LAYERS)){if(LL.metric){LL.on=(kk===k);if(LL.on){LL.layer.setStyle(conStyle);LL.layer.addTo(map);}else map.removeLayer(LL.layer);}}renderLayers();return;}
@@ -603,8 +621,12 @@ function renderLayers(){
   const os=$('ovs');if(os)os.addEventListener('change',()=>{OVERLAP.strongOn=os.checked;apply();});
   el.querySelectorAll('.npk').forEach(b=>b.addEventListener('click',()=>{$('npk_'+b.dataset.k).classList.toggle('hid');}));
   el.querySelectorAll('.tg').forEach(h=>h.addEventListener('click',()=>{GOPEN[h.dataset.g]=GOPEN[h.dataset.g]===false?true:false;renderLayers();}));
+  el.querySelectorAll('[data-reset]').forEach(a=>a.addEventListener('click',ev=>{ev.preventDefault();resetLayers(a.dataset.reset);}));
   el.querySelectorAll('[data-ctx]').forEach(a=>a.addEventListener('click',ev=>{ev.preventDefault();WIDE=true;window[a.dataset.ctx]();}));
 }
+const DEFAULTS={};
+function snapshotDefaults(){for(const [k,L_] of Object.entries(LAYERS))DEFAULTS[k]=L_.on;}
+function resetLayers(ch){for(const [k,L_] of Object.entries(LAYERS))if(L_.chapter===ch&&k in DEFAULTS)L_.on=DEFAULTS[k];if(ch==='fert'){OVERLAP.on=false;OVERLAP.strongOn=false;}if(ch==='con'){conMetric='cpr_modern';LAYERS.con_choro.layer.setStyle(conStyle);}map.closePopup();apply();renderLayers();home();}
 function apply(){const ovl=(OVERLAP.on||OVERLAP.strongOn)&&CH==='fert';
   for(const [k,L_] of Object.entries(LAYERS)){let want=L_.on&&L_.chapter===CH&&!(L_.zoomGate&&map.getZoom()<L_.zoomGate);if(ovl&&L_.raster)want=false;if(want&&!map.hasLayer(L_.layer))L_.layer.addTo(map);if(!want&&map.hasLayer(L_.layer))map.removeLayer(L_.layer);}
   const setOv=(lyr,on)=>{if(!lyr)return;if(on){if(map.hasLayer(lyr))lyr.redraw();else lyr.addTo(map);}else if(map.hasLayer(lyr))map.removeLayer(lyr);};
