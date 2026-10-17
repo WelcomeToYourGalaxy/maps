@@ -431,7 +431,7 @@ function drawChart(base,run){
   ctx.textAlign='left'; ctx.fillStyle='#ffffff'; ctx.fillText('— — UN baseline',L+8,T-10); ctx.fillText('—— your scenario',L+150,T-10);
   // one-Earth reference lines
   ctx.strokeStyle=muted; ctx.fillStyle=muted; ctx.setLineDash([2,4]);
-  const cross=v=>{ const r=run.find(r=>r.y>=2026&&r.pop<v); return r?` · reached ${r.y}`:` · not reached by 2100`; };
+  const cross=v=>{ const r=run.find(r=>r.y>=2026&&r.pop<v); return r?` · reached ${r.y}`:''; };
   const EL=[['3.7',3.7e9,'3.7 B · 1970 population, one Earth then'+cross(3.7e9)],['4.8',4.84e9,'4.8 B · one Earth, today\'s way'+cross(4.84e9)],['1.6',1.61e9,'1.6 B · one Earth, the way the US does'+cross(1.61e9)]];
   // Adjusted one-Earth lines, only where a sourced figure exists
   const HEALTH=['Vaccines','Oral rehydration for diarrhea','Antibiotics','Basic hospital and birth care','Malaria control (bed nets, spraying, treatment)','IVF and other lab-assisted conception','Fertility pills and injections (clomiphene, gonadotropins)','Erectile-dysfunction pills'];
