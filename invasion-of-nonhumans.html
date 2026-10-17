@@ -1430,6 +1430,16 @@
         });
         keyBox(p).innerHTML = keyFor();
         stateOf(p, `${num(Object.keys(p.ids).length)} areas measured`);
+        // What was not measured, from the build's own counts.
+        json(NH + "pa_pressure.build.json").then((b) => {
+          const pts = b["areas given only as a point (not measured)"];
+          if (!pts) return;
+          const l = document.createElement("div");
+          l.className = "nh-list";
+          l.textContent = `Not measured: ${num(pts)} areas the database gives only as a point, with no outline to measure inside. ` +
+            `${num(b["areas with a boundary"])} outlines were read; the Human Modification map covers land only, so outlines wholly at sea get no figure.`;
+          bodyOf(p).appendChild(l);
+        }).catch(() => {});
         join();
       },
       box(f) {
