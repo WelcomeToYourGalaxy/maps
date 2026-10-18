@@ -49,7 +49,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--focus);outline-
 .leftcol{position:absolute;left:12px;top:76px;bottom:40px;z-index:1000;width:300px;display:flex;flex-direction:column;gap:8px;pointer-events:none}
 .leftcol>*{pointer-events:auto}
 .layers{position:relative;flex:0 1 auto;min-height:0;width:300px;overflow:auto;background:rgba(17,26,48,.94);border:1px solid var(--rule);border-radius:3px;padding:7px 10px 8px;font-size:11.5px;line-height:1.3}
-.layers .links{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin:0 0 6px}
+.layers .links{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:0 0 6px}
 .layers .links a{display:block;text-align:center;font-size:11px;line-height:1.2;padding:5px 4px;border:1px solid var(--rule);border-radius:2px;color:var(--fg);text-decoration:none;background:var(--panel2)}
 .layers .links a:hover{border-color:var(--c);color:var(--c)}
 .layers .cols{display:block}
@@ -515,7 +515,7 @@ function buildLayers(us){
   /* gridded layers */
   Object.entries(RASTERS).forEach(([k,lay])=>{if(k.startsWith('__')||!GRID[k])return;lay.key=k;const isF=isFert(lay);
     const gl=new RasterLayer({key:k,color:rasterColor(lay),tileSize:256,pane:'grid',bounds:WB,opacity:1,updateWhenZooming:false,keepBuffer:1});
-    LAYERS['grid_'+k]={chapter:'fert',layer:gl,on:isF,label:lay.label||lay.what||k,sw:'sq',col:isF?'#7fb88a':(CROP_HUES[lay.crop||k.replace(/^crop_/,'')]||'#9bb0a0'),group:isF?'Where it lands':'Crops that take it (% = share of world fertilizer use, IFA 2014/15)',raster:lay,indent:false,ord:isF?1.5:7,pct:isF?null:CROP_PCT[k.replace(/^crop_/,'')],npk:isF?null:CROP_NPK[k.replace(/^crop_/,'')],partof:isF?null:CROP_PART[k.replace(/^crop_/,'')]};});
+    LAYERS['grid_'+k]={chapter:'fert',layer:gl,on:/earthstat/.test(k),label:lay.label||lay.what||k,sw:'sq',col:isF?'#7fb88a':(CROP_HUES[lay.crop||k.replace(/^crop_/,'')]||'#9bb0a0'),group:isF?'Where it lands':'Crops that take it (% = share of world fertilizer use, IFA 2014/15)',raster:lay,indent:false,ord:isF?1.5:7,pct:isF?null:CROP_PCT[k.replace(/^crop_/,'')],npk:isF?null:CROP_NPK[k.replace(/^crop_/,'')],partof:isF?null:CROP_PART[k.replace(/^crop_/,'')]};});
   /* overlap: paints only cells where two or more of the selected grid layers are present */
   const selKeys=()=>Object.entries(LAYERS).filter(([k,L_])=>L_.raster&&L_.on).map(([k])=>k.replace(/^grid_/,''));
   OVERLAP.layer=new RasterLayer({keys:selKeys,mode:'all',tileSize:256,pane:'grid',bounds:WB,updateWhenZooming:false,keepBuffer:1});
@@ -600,7 +600,7 @@ function legend(ch){
   const un=conMetric==='unmet_need';return '<div class="legend"><div class="ramp">'+(un?RAMP_U:RAMP_C).map(c=>'<i style="background:'+c+'"></i>').join('')+'</div><div class="ends"><span>0%</span><span>'+(un?'20%':'45%')+'</span><span>'+(un?'40%+':'90%')+'</span></div></div>';
 }
 const GOPEN={};
-const LINKS={fert:[['fertContext','What is here, with sources'],['sharesPanel','Shares, uses & crops'],['coveragePanel','How much is mapped']],ab:[['abContext','What is here, with sources']],con:[['conContext','What is here, with sources'],['methods','Every method & its effects']]};
+const LINKS={fert:[['fertContext','Sources'],['coveragePanel','How much is mapped']],ab:[['abContext','What is here, with sources']],con:[['conContext','What is here, with sources'],['methods','Every method & its effects']]};
 function lyrRow(k,L_,type,name){const npk=L_.npk;return '<div class="lyr'+(L_.indent?' ind':'')+(npk||L_.partof?' crop':'')+'"><input type="'+(type||'checkbox')+'" '+(name?'name="'+name+'"':'')+' id="l_'+k+'" '+(L_.on?'checked':'')+'><label for="l_'+k+'">'+esc(L_.label)+(L_.pct!=null?'<span class="pct">'+L_.pct+'%</span>':'')+(L_.partof?'<span class="pct">'+esc(L_.partof)+'</span>':'')+'</label>'+(npk?'<button class="npk" data-k="'+k+'" title="Share of each nutrient">▾</button>':'')+'<i class="sw '+(L_.sw||'')+'" style="background:'+L_.col+'"></i></div>'+(npk?'<div class="npkrow hid" id="npk_'+k+'">share of world use of each: N '+npk[0]+'% · P '+npk[1]+'% · K '+npk[2]+'%</div>':'');}
 
 const isOpen=id=>GOPEN[id]!==false;
@@ -618,6 +618,7 @@ function fertTree(){let h='';
   sec('goes','Where each nutrient goes',()=>'<div class="uses">'+['N','P','K'].map(k=>'<div class="nrow"><a href="#" data-nut="'+k+'"><b>'+({N:'Nitrogen (ammonia)',P:'Phosphate',K:'Potash'})[k]+'</b> — '+esc(useShort(k))+' <span class="more">open →</span></a></div>').join('')+'</div>');
   sec('exports','Who exports it (top five, share of world export value 2023, customs data)',()=>radioRows('exp'));
   sec('lands','Where it lands',()=>{let b='';const sub=(id,label,body)=>{b+=head(id,label,2);if(isOpen(id))b+='<div class="body lv2">'+body()+'</div>';};
+    b+='<div class="note" style="margin:2px 0 4px">'+(function(){const sh=nutrShares();return Math.round(sh.usedT/1e6)+' Mt of nutrients spread on cropland in '+sh.year+', '+sh.used[0]+' / '+sh.used[1]+' / '+sh.used[2]+'% N / P / K, an average of '+fmt(sh.perHa)+' kg per hectare <a href="https://ourworldindata.org/grapher/fertilizer-per-hectare" target="_blank" rel="noopener">(FAO)</a>.';})()+'</div>';
     sub('lands_c','By country',()=>rows((k,x)=>k==='fert_choro')+legend('fert'));
     sub('lands_d','Direct application (gridded, kg per hectare)',()=>rows((k,x)=>x.raster&&isFert(x.raster))+'<div class="legend"><div class="ramp">'+RAMP_F.map(c=>'<i style="background:'+c+'"></i>').join('')+'</div><div class="ends"><span>0 kg/ha</span><span>log scale</span><span>'+(Object.values(LAYERS).filter(L_=>L_.raster&&L_.on&&isFert(L_.raster)).length>=2?SUMCAP+'+ (combined)':FCAP+'+')+'</span></div></div>');
     sub('lands_k','By crop (harvested area; % = share of world fertilizer use, IFA 2014/15)',()=>rows((k,x)=>x.raster&&!isFert(x.raster)));
