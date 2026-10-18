@@ -26,12 +26,12 @@ body{background:var(--bg);color:var(--fg);font-family:var(--display);line-height
 .leaflet-control-attribution a{color:var(--accent)!important}
 .leaflet-control-zoom a{background:var(--panel)!important;color:var(--fg)!important;border-color:var(--rule)!important}
 .leaflet-bar{border:1px solid var(--rule)!important;box-shadow:none!important}
-.leaflet-right .leaflet-control-zoom{margin-right:12px;margin-top:70px}
+.leaflet-right .leaflet-control-zoom{margin-right:12px;margin-top:82px}
 
 /* top band: title + three driver chapters */
 .band{position:absolute;top:0;left:0;right:0;z-index:1000;display:flex;align-items:stretch;gap:0;background:linear-gradient(180deg,rgba(10,16,32,.96),rgba(10,16,32,.82));border-bottom:1px solid var(--rule);backdrop-filter:blur(4px)}
 .band .ttl{padding:9px 14px 7px;border-right:1px solid var(--rule);min-width:0}
-.band h1{margin:0;font-size:15px;font-weight:500;color:var(--accent);letter-spacing:.01em;white-space:nowrap}
+.band h1{margin:0;font-size:15px;font-weight:500;color:#ffffff;letter-spacing:.01em;white-space:nowrap}
 .band .ttl p{margin:1px 0 0;font-size:11px;color:var(--muted);white-space:nowrap}
 .chapters{display:flex;flex:1;min-width:0}
 .chap{flex:1;min-width:0;border:0;border-right:1px solid var(--rule);background:transparent;color:var(--muted);font:inherit;font-size:13px;padding:6px 10px;cursor:pointer;text-align:left;display:grid;grid-template-columns:auto 1fr;gap:3px 8px;align-items:center}
@@ -46,7 +46,9 @@ body{background:var(--bg);color:var(--fg);font-family:var(--display);line-height
 button:focus-visible,input:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
 
 /* layer panel: floats bottom-left, one block per chapter */
-.layers{position:absolute;left:12px;top:64px;max-height:calc(100% - 92px);z-index:1000;width:300px;overflow:auto;background:rgba(17,26,48,.94);border:1px solid var(--rule);border-radius:3px;padding:7px 10px 8px;font-size:11.5px;line-height:1.3}
+.leftcol{position:absolute;left:12px;top:76px;bottom:40px;z-index:1000;width:300px;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.leftcol>*{pointer-events:auto}
+.layers{position:relative;flex:0 1 auto;min-height:0;width:300px;overflow:auto;background:rgba(17,26,48,.94);border:1px solid var(--rule);border-radius:3px;padding:7px 10px 8px;font-size:11.5px;line-height:1.3}
 .layers .links{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin:0 0 6px}
 .layers .links a{display:block;text-align:center;font-size:11px;line-height:1.2;padding:5px 4px;border:1px solid var(--rule);border-radius:2px;color:var(--fg);text-decoration:none;background:var(--panel2)}
 .layers .links a:hover{border-color:var(--c);color:var(--c)}
@@ -65,6 +67,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--focus);outline-
 .leaflet-control-home a{width:auto!important;padding:0 9px;font-size:11.5px;font-family:var(--display);line-height:30px;white-space:nowrap}
 .layers h2{display:none;margin:0 0 4px;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;color:var(--c)}
 .layers .hid{display:none}
+.legbox{flex:0 0 auto;max-height:45%;padding:7px 10px 8px}
+.legbox .h{font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 3px}
 .layers .lyr.ind{margin-left:16px}
 .layers .lyr.crop .sw{width:11px;height:11px}
 .layers .npk{font:inherit;font-size:10px;background:transparent;border:1px solid var(--rule);color:var(--muted);border-radius:2px;width:16px;height:16px;line-height:1;padding:0;cursor:pointer;margin-right:4px}
@@ -78,6 +82,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--focus);outline-
 .layers .body.lv2{margin-left:10px}
 .layers .links a.reset{grid-column:1/-1;background:transparent;color:var(--muted)}
 .layers .links a.reset:hover{color:var(--c)}.layers .tg:before{content:'▸ ';font-size:9px}.layers .tg.open:before{content:'▾ '}
+.views{border:1px dashed var(--rule);border-radius:3px;padding:5px 7px 4px;margin:0 0 4px;background:rgba(10,16,32,.35)}
+.views .h{font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 3px}
 .layers .sub{font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:5px 0 1px}
 .layers .blk{display:none}
 .layers .blk.on{display:block}
@@ -104,14 +110,15 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--focus);outline-
 .layers .note a:hover,.drawer a:hover{border-bottom-color:var(--accent)}
 
 /* drawer: right side, holds country detail / company detail / method reference */
-.drawer{position:absolute;top:64px;right:12px;max-height:calc(100% - 92px);z-index:1000;width:400px;max-width:calc(100% - 300px);background:rgba(17,26,48,.96);border:1px solid var(--rule);border-radius:3px;display:none;flex-direction:column;min-height:0}
+.drawer{position:absolute;top:76px;right:12px;max-height:calc(100% - 116px);z-index:1000;width:400px;max-width:calc(100% - 300px);background:rgba(17,26,48,.96);border:1px solid var(--rule);border-radius:3px;display:none;flex-direction:column;min-height:0}
 .drawer.open{display:flex}
-.drawer.wide{left:324px;right:12px;width:auto;max-width:none;top:64px;bottom:28px;max-height:none}
+.drawer.wide{left:324px;right:12px;width:auto;max-width:none;top:76px;bottom:40px;max-height:none;z-index:1001}
+body.wideopen .leaflet-top.leaflet-right{display:none}
 .drawer.wide .bd>.inner{columns:2;column-gap:28px;column-rule:1px solid var(--rule)}
 .drawer.wide .bd h4,.drawer.wide .bd .stat,.drawer.wide .bd .bars,.drawer.wide .bd .kv{break-inside:avoid}
 .drawer.wide .bd .spark{break-inside:avoid}
 @media (max-width:900px){.drawer.wide .bd>.inner{columns:1}}
-.drawer .hd{padding:10px 12px 8px;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:1fr auto;gap:8px;align-items:start}
+.drawer .hd{padding:12px 12px 10px;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:1fr auto;gap:8px;align-items:start}
 .drawer h3{margin:0;font-size:15px;font-weight:500;color:var(--fg)}
 .drawer .hd .sub{font-size:11.5px;color:var(--muted);margin-top:2px}
 .drawer .x{font:inherit;background:transparent;border:1px solid var(--rule);color:var(--muted);border-radius:2px;width:24px;height:24px;cursor:pointer;line-height:1}
@@ -164,7 +171,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--focus);outline-
 .foot a{color:var(--accent);text-decoration:none}
 @media (max-width:760px){
   .band .ttl p{display:none} .chap small{display:none} .band .ttl{padding:8px 10px}
-  .layers{width:220px;bottom:24px;max-height:40%}
+  .leftcol{width:220px;bottom:auto;max-height:45%} .layers{width:220px}
   .drawer{left:12px;right:12px;width:auto;max-width:none;top:auto;height:52%;bottom:24px}
 }
 </style>
@@ -182,7 +189,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--focus);outline-
   <div class="tools"><button class="btn" id="bAtlas">Atlas</button><button class="btn on" id="bSat">Satellite</button><button class="btn" id="bAbout">About</button></div>
 </div>
 
-<div class="layers" id="layers"></div>
+<div class="leftcol" id="leftcol"><div class="layers" id="layers"></div>
+<div class="layers legbox" id="legbox" style="display:none"></div></div>
 
 <div class="drawer" id="drawer"><div class="hd"><div><h3 id="dTitle"></h3><div class="sub" id="dSub"></div></div><button class="x" id="dClose" aria-label="Close">×</button></div><div class="bd" id="dBody"></div></div>
 
@@ -252,11 +260,11 @@ const AB_SHORT={'On request':'On request','Broad social or economic grounds':'Br
 const US_COL={'Legal (no gestational limit)':'#8fb0ea','Legal (to viability or ~24 weeks)':'#7a9fe0','Restricted (15-22 week)':'#5577b8','Restricted (12-week)':'#4a6098','Restricted (6-week)':'#2f3f6b','Banned':'#1b2440'};
 
 let WIDE=false;
-function drawer(title,sub,html){$('dTitle').textContent=title;$('dSub').innerHTML=sub||'';$('dBody').innerHTML=WIDE?'<div class="inner">'+html+'</div>':html;$('drawer').classList.add('open');$('drawer').classList.toggle('wide',WIDE);WIDE=false;$('dBody').scrollTop=0;}
+function drawer(title,sub,html){$('dTitle').textContent=title;$('dSub').innerHTML=sub||'';$('dBody').innerHTML=WIDE?'<div class="inner">'+html+'</div>':html;$('drawer').classList.add('open');$('drawer').classList.toggle('wide',WIDE);document.body.classList.toggle('wideopen',WIDE);WIDE=false;$('dBody').scrollTop=0;}
 const HOME={b:[[-56,-180],[80,180]],o:{paddingTopLeft:[0,60],paddingBottomRight:[0,30]}};
-function home(){$('drawer').classList.remove('open');map.flyToBounds(HOME.b,Object.assign({duration:.9},HOME.o));}
+function home(){$('drawer').classList.remove('open');document.body.classList.remove('wideopen');map.flyToBounds(HOME.b,Object.assign({duration:.9},HOME.o));}
 $('dClose').onclick=home;
-const HomeCtl=L.Control.extend({onAdd:function(){const d=L.DomUtil.create('div','leaflet-bar leaflet-control-home');const a=L.DomUtil.create('a','',d);a.href='#';a.title='Zoom back out';a.setAttribute('aria-label','Zoom back out');a.innerHTML='Zoom out';L.DomEvent.on(a,'click',e=>{L.DomEvent.stop(e);home();});return d;}});
+const HomeCtl=L.Control.extend({onAdd:function(){const d=L.DomUtil.create('div','leaflet-bar leaflet-control-home');const a=L.DomUtil.create('a','',d);a.href='#';a.title='Zoom back out to the whole world and close panels';a.setAttribute('aria-label','Back to whole world');a.innerHTML='Back to whole world';L.DomEvent.on(a,'click',e=>{L.DomEvent.stop(e);home();});return d;}});
 new HomeCtl({position:'topright'}).addTo(map);
 map.on('click',()=>{if($('drawer').classList.contains('open'))home();});
 const stop=e=>{if(e&&e.originalEvent)L.DomEvent.stopPropagation(e.originalEvent);};
@@ -407,7 +415,7 @@ function abContext(){const f=AB.global_facts||[];let html='<p>This layer is draw
   drawer('Abortion access, worldwide','What the layer shows',html);}
 
 /* ===== contraception chapter ===== */
-let conMetric='cpr_modern';
+let conMetric='unmet_need';
 function conVal(a){const d=CON.countries&&CON.countries[a];return d?d[conMetric]:null;}
 function conStyle(f){const a=a3of(f),v=conVal(a);const r=conMetric==='unmet_need'?RAMP_U:RAMP_C;const mx=conMetric==='unmet_need'?40:90;
   return {pane:'choro',weight:.6,color:'rgba(170,182,211,.35)',fillColor:v==null?'#0f1626':ramp(r,v/mx),fillOpacity:v==null?.35:.8};}
@@ -503,7 +511,7 @@ function buildLayers(us){
   /* gridded layers */
   Object.entries(RASTERS).forEach(([k,lay])=>{if(k.startsWith('__')||!GRID[k])return;lay.key=k;const isF=isFert(lay);
     const gl=new RasterLayer({key:k,color:rasterColor(lay),tileSize:256,pane:'grid',bounds:WB,opacity:1,updateWhenZooming:false,keepBuffer:1});
-    LAYERS['grid_'+k]={chapter:'fert',layer:gl,on:false,label:lay.label||lay.what||k,sw:'sq',col:isF?'#7fb88a':(CROP_HUES[lay.crop||k.replace(/^crop_/,'')]||'#9bb0a0'),group:isF?'Where it lands':'Crops that take it (% = share of world fertilizer use, IFA 2014/15)',raster:lay,indent:isF,ord:isF?1.5:7,pct:isF?null:CROP_PCT[k.replace(/^crop_/,'')],npk:isF?null:CROP_NPK[k.replace(/^crop_/,'')],partof:isF?null:CROP_PART[k.replace(/^crop_/,'')]};});
+    LAYERS['grid_'+k]={chapter:'fert',layer:gl,on:false,label:lay.label||lay.what||k,sw:'sq',col:isF?'#7fb88a':(CROP_HUES[lay.crop||k.replace(/^crop_/,'')]||'#9bb0a0'),group:isF?'Where it lands':'Crops that take it (% = share of world fertilizer use, IFA 2014/15)',raster:lay,indent:false,ord:isF?1.5:7,pct:isF?null:CROP_PCT[k.replace(/^crop_/,'')],npk:isF?null:CROP_NPK[k.replace(/^crop_/,'')],partof:isF?null:CROP_PART[k.replace(/^crop_/,'')]};});
   /* overlap: paints only cells where two or more of the selected grid layers are present */
   const selKeys=()=>Object.entries(LAYERS).filter(([k,L_])=>L_.raster&&L_.on).map(([k])=>k.replace(/^grid_/,''));
   OVERLAP.layer=new RasterLayer({keys:selKeys,mode:'all',tileSize:256,pane:'grid',bounds:WB,updateWhenZooming:false,keepBuffer:1});
@@ -521,8 +529,8 @@ function buildLayers(us){
     m.bindTooltip(p.name+' · '+p.type);m.bindPopup('<b>'+esc(p.name)+'</b> <span class="tag">'+esc(p.type)+'</span><br><span class="m">'+esc(Array.isArray(p.coverage)?p.coverage.join(', '):p.coverage||'')+'</span>'+(p.notes?'<br>'+esc(p.notes.length>200?p.notes.slice(0,198)+'…':p.notes):'')+'<br><a href="'+esc(p.url)+'" target="_blank" rel="noopener">'+esc(host(p.url))+'</a>',{maxWidth:300});m.on('click',e=>stop(e));apg.addLayer(m);});
   LAYERS.ab_help={chapter:'ab',layer:apg,on:true,label:'Organisations that help people reach abortion (click for links)',sw:'',col:'#7a9fe0'};
   /* contraception */
-  LAYERS.con_choro={chapter:'con',layer:mk(conStyle,conCountry,conPop),on:true,label:'Coverage: women using a modern method (%)',sw:'sq',col:'var(--con)',metric:'cpr_modern'};
-  LAYERS.con_unmet={chapter:'con',layer:mk(conStyle,conCountry,conPop),on:false,label:'Unmet need: want to avoid pregnancy, using nothing (%)',sw:'sq',col:'#9a76ad',metric:'unmet_need',radio:'con_choro'};
+  LAYERS.con_unmet={chapter:'con',layer:mk(conStyle,conCountry,conPop),on:true,label:'Unmet need: want to avoid pregnancy, using nothing (%)',sw:'sq',col:'#9a76ad',metric:'unmet_need'};
+  LAYERS.con_choro={chapter:'con',layer:mk(conStyle,conCountry,conPop),on:false,label:'Coverage: women using a modern method (%)',sw:'sq',col:'var(--con)',metric:'cpr_modern'};
   const prv=L.layerGroup();(CON.providers||[]).forEach(p=>{if(p.lat==null)return;const m=L.circleMarker([p.lat,p.lon],{pane:'points',radius:6,color:'#eef2fa',weight:1,fillColor:'#5fb3b3',fillOpacity:.95});m.bindTooltip(p.name);m.bindPopup('<b>'+esc(p.name)+'</b> <span class="tag">supplier</span>'+(p.notes?'<br>'+esc(p.notes.length>200?p.notes.slice(0,198)+'…':p.notes):'')+'<br><a href="'+esc(p.url)+'" target="_blank" rel="noopener">'+esc(host(p.url))+'</a>',{maxWidth:300});m.on('click',e=>stop(e));prv.addLayer(m);});
   LAYERS.con_prov={chapter:'con',layer:prv,on:true,label:'Organisations that supply contraception worldwide',sw:'',col:'#5fb3b3'};
   /* provider points (clinics, member associations, hotlines, offices) shared by both chapters */
@@ -541,9 +549,9 @@ const USE_KEY={N:'ammonia_nitrogen',P:'phosphate',K:'potash'};
 function useLine(k){const u=USES[USE_KEY[k]];if(!u)return '';const f=u.fertilizer_share||{};const nonf=(u.end_uses||[]).filter(x=>x.share_pct!=null&&!/^fertilizer$|urea production|direct application/i.test(x.use.trim()));
   const parts=nonf.map(x=>esc(x.use.replace(/ \(all non-fertilizer\)/,''))+' '+x.share_pct+'%: '+esc(String(x.products||'').split(/;|\(/)[0].trim().slice(0,80)));
   const dep=(u.depends_entirely||[]).slice(1,3).map(x=>esc(x.product.split(',')[0].replace(/^[A-Z]/,c=>c.toLowerCase())));
-  const APPS={N:'Those are the blasting agents of nearly all mining, quarrying and tunnelling (USGS: no practical substitute), the fibre of carpets, ropes and engineering plastics, the foam in insulation and furniture, and the fluid that cuts diesel exhaust; and nitrogen itself has no substitute as a plant nutrient (USGS).',
-    P:'Phosphoric acid is the only route to phosphate fertilizer and to the feed phosphates livestock and poultry are raised on; elemental phosphorus goes mainly to glyphosate, the most-used herbicide (USGS), and about a fifth of flame retardants are phosphorus-based (ESPP); phosphorus has no substitute in agriculture (USGS).',
-    K:'Potassium hydroxide is the base of soaps, detergents and most other potassium chemicals (IHS); potassium nitrate is the heat-storage salt of solar-thermal plants and goes into specialty glass; and potassium has no substitute as a nutrient for plants, animals or humans (USGS).'};
+  const APPS={N:'Nitrogen fertilizer — no substitute (USGS: nitrogen is an essential plant nutrient with none). Ammonium-nitrate blasting agents, which nearly all mining, quarrying and tunnelling run on — no practical substitute (USGS). Nylon fibre for carpets, ropes and engineering plastics, polyurethane foam for insulation and furniture, diesel-exhaust fluid — all made only via ammonia, though other materials can stand in for the end products.',
+    P:'Phosphate fertilizer — no substitute (USGS: none for phosphorus in agriculture). Feed phosphates that livestock and poultry are raised on — no substitute (same USGS statement; phosphorus is an essential animal nutrient). Glyphosate, the main use of elemental phosphorus (USGS) — other herbicides exist. Phosphorus-based flame retardants, about a fifth of the total (ESPP) — other chemistries exist.',
+    K:'Potassium fertilizer — no substitute (USGS: none for potassium as a nutrient of plants, animals or humans). Potassium hydroxide, the base of soaps, liquid detergents and most other potassium chemicals (IHS) — sodium hydroxide can replace it in many uses but not where the potassium ion itself is wanted. Potassium nitrate as solar-thermal heat-storage salt and in specialty glass — alternatives exist.'};
   return '<div><b>'+({N:'Nitrogen (ammonia)',P:'Phosphate',K:'Potash'})[k]+'</b> '+(f.value_pct!=null?f.value_pct+'% to fertilizer':'')+(parts.length?'; '+parts.join('; '):'')+(dep.length?'. Without it: no '+dep.join(', ')+'. '+APPS[k]:'')+'</div>';}
 function sharesBlock(){const sh=nutrShares();const row=(l,a)=>'<div class="mini"><span>'+l+'</span><div class="b">'+a.map((v,i)=>'<i style="width:'+v+'%;background:var(--'+'NPK'[i]+')" title="'+'NPK'[i]+' '+v+'%"></i>').join('')+'</div><span>'+a.map((v,i)=>'NPK'[i]+' '+v+'%').join(' · ')+'</span></div>';
   const e=(USES.ammonia_nitrogen&&USES.ammonia_nitrogen.energy)||null;
@@ -583,6 +591,7 @@ const isOpen=id=>GOPEN[id]!==false;
 function head(id,label,level){return '<div class="sub tg lv'+level+(isOpen(id)?' open':'')+'" data-g="'+id+'">'+esc(label)+'</div>';}
 function radioRows(group){const opts=Object.entries(LAYERS).filter(([,x])=>x.radio===group);let h=opts.map(([kk,x])=>lyrRow(kk,x,'radio','r_'+group)).join('');const cur=opts.find(([,x])=>x.on&&(x.note||x.commodity));if(cur)h+='<div class="note" style="margin:2px 0 4px 20px">'+esc(cur[1].commodity||'')+' '+esc(cur[1].note||'')+(cur[1].src?' <a href="'+esc(cur[1].src)+'" target="_blank" rel="noopener">source</a>':'')+'</div>';return h;}
 function rows(filter){return Object.entries(LAYERS).filter(([k,x])=>filter(k,x)).map(([k,x])=>lyrRow(k,x)).join('');}
+function viewsBlock(){return '<div class="views"><div class="h">View options (how the ticked gridded layers are drawn, not data)</div><div class="lyr"><input type="checkbox" id="ovl" '+(OVERLAP.on?'checked':'')+'><label for="ovl">Overlap only: paint just the cells where every ticked grid layer is present</label><i class="sw sq" style="background:#3a7d5a"></i></div><div class="lyr"><input type="checkbox" id="ovs" '+(OVERLAP.strongOn?'checked':'')+'><label for="ovs">Strongest overlap: only cells where every ticked layer is in its own top quarter (dark = just inside, pale = near the top of all)</label><i class="sw sq" style="background:linear-gradient(90deg,#2f6b52,#c6eccb)"></i></div></div>';}
 function fertTree(){let h='';
   const sec=(id,label,body,level)=>{h+=head(id,label,level||1);if(isOpen(id))h+='<div class="body lv'+(level||1)+'">'+body()+'</div>';};
   sec('made_from','What it is made from (producers, % of world; biggest companies as diamonds)',()=>radioRows('feed'));
@@ -596,13 +605,12 @@ function fertTree(){let h='';
     sub('lands_c','By country',()=>rows((k,x)=>k==='fert_choro'));
     sub('lands_d','Direct application (gridded, kg per hectare)',()=>rows((k,x)=>x.raster&&isFert(x.raster)));
     sub('lands_k','By crop (harvested area; % = share of world fertilizer use, IFA 2014/15)',()=>rows((k,x)=>x.raster&&!isFert(x.raster)));
-    sub('lands_x','Combine the ticked grid layers',()=>'<div class="lyr"><input type="checkbox" id="ovl" '+(OVERLAP.on?'checked':'')+'><label for="ovl">Overlap only: paint just the cells where every ticked grid layer is present</label><i class="sw sq" style="background:#3a7d5a"></i></div><div class="lyr"><input type="checkbox" id="ovs" '+(OVERLAP.strongOn?'checked':'')+'><label for="ovs">Strongest overlap: only cells where every ticked layer is in its own top quarter (dark = just inside, pale = near the top of all)</label><i class="sw sq" style="background:linear-gradient(90deg,#2f6b52,#c6eccb)"></i></div>');
     return b;});
   return h;}
 function energyLine(){const e=(USES.ammonia_nitrogen&&USES.ammonia_nitrogen.energy)||null;if(!e||e.share_of_world_final_energy_pct==null)return '';const g=e.share_of_natural_gas_pct;const gp=g&&g.value_pct!=null?g.value_pct:g;return '<div><b>Energy</b>: making ammonia takes '+esc(e.share_of_world_final_energy_pct)+'% of world final energy'+(gp!=null?' and '+esc(gp)+'% of natural gas':'')+(e.feedstock_split&&e.feedstock_split.natural_gas_pct!=null?'; hydrogen from gas '+e.feedstock_split.natural_gas_pct+'%, coal '+(e.feedstock_split.coal_pct||0)+'%':'')+'</div>';}
 function worldBlock(){const sh=nutrShares();const row=(l,a)=>'<div class="mini"><span>'+l+'</span><div class="b">'+a.map((v,i)=>'<i style="width:'+v+'%;background:var(--'+'NPK'[i]+')" title="'+'NPK'[i]+' '+v+'%"></i>').join('')+'</div><span>'+a.map((v,i)=>'NPK'[i]+' '+v+'%').join(' · ')+'</span></div>';
   return '<div class="shares" style="margin:2px 0 6px"><div class="h">World, '+sh.year+' (FAO)</div>'+row('Made '+Math.round(sh.madeT/1e6)+' Mt',sh.made)+row('Spread '+Math.round(sh.usedT/1e6)+' Mt',sh.used)+'<div class="mini"><span>Per hectare</span><div></div><span>'+fmt(sh.perHa)+' kg on cropland</span></div></div>';}
-function genericTree(ch){let h='';const entries=Object.entries(LAYERS).filter(([k,L_])=>L_.chapter===ch);let lastGroup=null;
+function genericTree(ch,pred){let h='';const entries=Object.entries(LAYERS).filter(([k,L_])=>L_.chapter===ch&&(!pred||pred(L_)));let lastGroup=null;
   for(const [k,L_] of entries){if(L_.metric){h+=lyrRow(k,L_,'radio','conm');continue;}
     if(L_.group!==lastGroup){lastGroup=L_.group;if(L_.group)h+=head('g_'+L_.group.replace(/\W+/g,'_'),L_.group,1);}
     if(L_.group&&!isOpen('g_'+L_.group.replace(/\W+/g,'_')))continue;h+=lyrRow(k,L_);}
@@ -610,13 +618,16 @@ function genericTree(ch){let h='';const entries=Object.entries(LAYERS).filter(([
 function renderLayers(){
   const el=$('layers');let html='';
   for(const ch of ['fert','ab','con']){html+='<div class="blk'+(ch===CH?' on':'')+'" style="--c:var(--'+ch+')"><div class="links">'+LINKS[ch].map(([f,t])=>'<a href="#" data-ctx="'+f+'">'+t+'</a>').join('')+'<a href="#" class="reset" data-reset="'+ch+'">Reset all layers</a></div>';
-    if(ch==='fert')html+=worldBlock()+fertTree();else html+=genericTree(ch);
-    html+=legend(ch)+'</div>';}
+    if(ch==='fert')html+=worldBlock()+viewsBlock()+fertTree()+legend(ch);
+    else if(ch==='con'){html+=genericTree(ch,x=>x.metric)+legend(ch)+genericTree(ch,x=>!x.metric);}
+    else html+=genericTree(ch);
+    html+='</div>';}
   el.innerHTML=html;
+  const lb=$('legbox');if(CH==='ab'){lb.style.display='block';lb.innerHTML='<div class="h">Colour key</div>'+legend('ab');}else lb.style.display='none';
   el.querySelectorAll('input[id^=l_]').forEach(inp=>inp.addEventListener('change',()=>{const k=inp.id.slice(2);const L_=LAYERS[k];
     if(L_.metric){conMetric=L_.metric;for(const [kk,LL] of Object.entries(LAYERS)){if(LL.metric){LL.on=(kk===k);if(LL.on){LL.layer.setStyle(conStyle);LL.layer.addTo(map);}else map.removeLayer(LL.layer);}}renderLayers();return;}
     if(L_.radio){for(const [kk,LL] of Object.entries(LAYERS))if(LL.radio===L_.radio)LL.on=(kk===k);const offs={prod:'fert_prod_off',exp:'fert_exp_off',feed:'feed_off'};if(!/_off$/.test(k)){for(const [g,o] of Object.entries(offs))if(g!==L_.radio){for(const [kk,LL] of Object.entries(LAYERS))if(LL.radio===g)LL.on=(kk===o);}}apply();renderLayers();return;}
-    L_.on=inp.checked;if(inp.checked&&L_.raster&&LAYERS.fert_choro.on){LAYERS.fert_choro.on=false;const o=$('l_fert_choro');if(o)o.checked=false;}apply();}));
+    L_.on=inp.checked;if(inp.checked&&L_.raster&&LAYERS.fert_choro&&LAYERS.fert_choro.on){LAYERS.fert_choro.on=false;const o=$('l_fert_choro');if(o)o.checked=false;}apply();}));
   const ov=$('ovl');if(ov)ov.addEventListener('change',()=>{OVERLAP.on=ov.checked;apply();});
   const os=$('ovs');if(os)os.addEventListener('change',()=>{OVERLAP.strongOn=os.checked;apply();});
   el.querySelectorAll('.npk').forEach(b=>b.addEventListener('click',()=>{$('npk_'+b.dataset.k).classList.toggle('hid');}));
@@ -626,7 +637,7 @@ function renderLayers(){
 }
 const DEFAULTS={};
 function snapshotDefaults(){for(const [k,L_] of Object.entries(LAYERS))DEFAULTS[k]=L_.on;}
-function resetLayers(ch){for(const [k,L_] of Object.entries(LAYERS))if(L_.chapter===ch&&k in DEFAULTS)L_.on=DEFAULTS[k];if(ch==='fert'){OVERLAP.on=false;OVERLAP.strongOn=false;}if(ch==='con'){conMetric='cpr_modern';LAYERS.con_choro.layer.setStyle(conStyle);}map.closePopup();apply();renderLayers();home();}
+function resetLayers(ch){for(const [k,L_] of Object.entries(LAYERS))if(L_.chapter===ch&&k in DEFAULTS)L_.on=DEFAULTS[k];if(ch==='fert'){OVERLAP.on=false;OVERLAP.strongOn=false;}if(ch==='con'){conMetric='unmet_need';LAYERS.con_unmet.layer.setStyle(conStyle);}map.closePopup();apply();renderLayers();home();}
 function apply(){const ovl=(OVERLAP.on||OVERLAP.strongOn)&&CH==='fert';
   for(const [k,L_] of Object.entries(LAYERS)){let want=L_.on&&L_.chapter===CH&&!(L_.zoomGate&&map.getZoom()<L_.zoomGate);if(ovl&&L_.raster)want=false;if(want&&!map.hasLayer(L_.layer))L_.layer.addTo(map);if(!want&&map.hasLayer(L_.layer))map.removeLayer(L_.layer);}
   const setOv=(lyr,on)=>{if(!lyr)return;if(on){if(map.hasLayer(lyr))lyr.redraw();else lyr.addTo(map);}else if(map.hasLayer(lyr))map.removeLayer(lyr);};
