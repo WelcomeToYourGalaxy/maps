@@ -55,6 +55,7 @@
   <button type="button" data-base="atlas">Atlas</button>
   <button type="button" data-base="jurassic">Jurassic</button>
   <button type="button" data-base="sat">Satellite</button>
+  <button type="button" data-base="hell">Hell</button>
 </div>
 <button type="button" id="world" title="Zoom back out to see the whole world">Whole world</button>
 <aside id="side">
@@ -689,7 +690,11 @@
       { sec: "inv", t: "Invasive species", items: ["firsts", "griis",
         { sub: "seen", t: "Where non-native and invasive species have been recorded and photographed (GBIF and iNaturalist)", items: ["gbif", "inat"] },
         "invacost"] },
-      { sec: "pest", t: "Pesticides", items: ["pestuse", "pestgrid", "pestrisk", "pestsea",
+      { sec: "pest", t: "Pesticides", items: [
+        // Round nh13 (asked 19 October): the four maps in three subsections.
+        { sub: "sprayed", t: "Where pesticides are sprayed", items: ["pestuse", "pestgrid"] },
+        { sub: "runoff", t: "Pesticides running off into the ocean", items: ["pestsea"] },
+        { sub: "pollution", t: "Pesticide pollution", items: ["pestrisk"] },
         { sub: "makers", t: "Who makes pesticides, and where", items: ["pestco", "plants_us", "plants_eu"] },
         { sub: "trade", t: "Pesticides traded between countries", items: ["pesttrade"] },
         { sub: "bans", t: "Pesticide bans, and banned pesticides sold abroad", items: ["panbans", "bannedexp"] },
@@ -697,7 +702,7 @@
       { sec: "pa", t: "Protected areas, their undoing and extraction around them", items: [
         { sub: "areas", t: "Protected areas", items: ["pa", "gsn"] },
         { sub: "changed", t: "How much people have changed them, and protection taken away", items: ["papress", "paddd"] },
-        { sub: "threats", t: "Threats inside and near protected areas", items: ["mines", "oilgas", "conc"] },
+        { sub: "threats", t: "Threats inside and near protected areas", items: ["mines", "oilgas", "paxin", "conc"] },
       ] },
     ];
     const root = document.createElement("div");
@@ -2180,6 +2185,69 @@
       },
     });
 
+    // Round nh13 (asked 19 October: a live layer of extraction inside
+    // protected areas). The Protected Carbon project's map (Leave it in the
+    // Ground Initiative and partners) is served openly as an ArcGIS layer: oil
+    // and gas projects and coal mines inside protected areas of the WDPA, and
+    // which areas they are in. The projects are read live as points; the
+    // areas are lit up on the protected-area outlines from Global Forest
+    // Watch, by their WDPA id, so their 11 MB of outlines are not downloaded.
+    const PAX = "https://services6.arcgis.com/FLnwvNwPS3S50WFV/arcgis/rest/services/PAX_v10_Public_WFL1/FeatureServer";
+    part({
+      id: "paxin", sec: "pa", title: "Oil, gas and coal projects inside protected areas, and the areas they are in (Protected Carbon)", live: true,
+      about: `<p>Every oil and gas project and coal mine the Protected Carbon project found inside a protected area of the World Database on Protected Areas, with its stage (producing, being developed, discovered, expected but not yet found, abandoned, or for coal mines operating, proposed, shelved and so on) and the protected area it is in; and the protected areas themselves, outlined. Tick the kinds and stages to show. Click a dot for everything the source records about it.</p>
+<p>Unlike the oil and gas row above (OGIM, measured here by distance), this lists only projects inside protected areas, from industry data: Rystad Energy's upstream database for oil and gas, and Global Energy Monitor's coal mine tracker.</p>
+<p>Source: Protected Carbon (Leave it in the Ground Initiative, Oil Change International and partners), "Fossil fuels in protected areas" map, PAX version 10, read live from its public ArcGIS layer; protected areas from UNEP-WCMC and IUCN, Protected Planet (October 2023). No licence is stated.</p>`,
+      async build(p) {
+        const [og, coal, areas] = await Promise.all([arcgisAll(`${PAX}/1`), arcgisAll(`${PAX}/0`),
+          json(`${PAX}/2/query?where=1%3D1&outFields=WDPAID,NAME&returnGeometry=false&f=json&resultRecordCount=4000`)]);
+        const feats = [];
+        for (const f of og.features) feats.push(Object.assign({}, f, { properties: Object.assign({ _kind: f.properties.Field_Type || "Oil or gas field", _stage: f.properties.Life_Cycle || "not given", _src: "og" }, f.properties) }));
+        for (const f of coal.features) feats.push(Object.assign({}, f, { properties: Object.assign({ _kind: "Coal mine", _stage: f.properties.Status || "not given", _src: "coal" }, f.properties) }));
+        if (!feats.length) throw new Error("the Protected Carbon layer returned nothing");
+        const ids = ((areas && areas.features) || []).map((f) => Number(f.attributes.WDPAID)).filter((x) => isFinite(x));
+        // The areas, lit up on Global Forest Watch's protected-area outlines.
+        try {
+          const a = await gfwVector("wdpa_licensed_protected_areas");
+          addSource("paxin-pa", { type: "vector", tiles: [a.uri], minzoom: a.minzoom, maxzoom: a.maxzoom, attribution: "UNEP-WCMC and IUCN (WDPA), via Global Forest Watch" });
+          for (const sl of ["wdpa_licensed_protected_areas", "default"]) {
+            const f = ["in", ["to-number", ["coalesce", ["get", "wdpaid"], ["get", "WDPAID"], -1]], ["literal", ids]];
+            addLayer(p, { id: `paxin-pa-fill-${sl}`, type: "fill", source: "paxin-pa", "source-layer": sl, filter: f, paint: { "fill-color": "#5600DC", "fill-opacity": 0.28 } }, firstAbove());
+            addLayer(p, { id: `paxin-pa-edge-${sl}`, type: "line", source: "paxin-pa", "source-layer": sl, filter: f, paint: { "line-color": pale("#5600DC", 0.45), "line-width": ["interpolate", ["linear"], ["zoom"], 2, 0.6, 8, 1.6] } });
+          }
+        } catch (e) { stateOf(p, `the protected areas could not be outlined (${e.message})`, true); }
+        addSource("paxin", { type: "geojson", data: { type: "FeatureCollection", features: feats }, attribution: "Protected Carbon (LINGO, Oil Change International); Rystad Energy; Global Energy Monitor; WDPA" });
+        const kinds = [...new Set(feats.map((f) => f.properties._kind))].sort();
+        const stages = [...new Set(feats.map((f) => f.properties._stage))].sort();
+        const colour = ["match", ["get", "_kind"]];
+        kinds.forEach((k, i) => colour.push(k, POINT[i % POINT.length]));
+        colour.push(POINT[0]);
+        dots(p, id("paxin"), colour);
+        p.kinds = new Set(kinds);
+        p.stages = new Set(stages);
+        const apply = () => {
+          const f = ["all", ["in", ["get", "_kind"], ["literal", [...p.kinds]]], ["in", ["get", "_stage"], ["literal", [...p.stages]]]];
+          for (const l of layersOf.get(p.id) || []) if (/paxin-pt/.test(l) && map.getLayer(l)) map.setFilter(l, f);
+        };
+        const count = (key, v) => feats.filter((f) => f.properties[key] === v).length;
+        const box = bodyOf(p);
+        const h1 = document.createElement("div"); h1.className = "nh-note"; h1.textContent = "Kinds"; box.appendChild(h1);
+        checks(box, kinds.map((k, i) => [k, `${k} (${num(count("_kind", k))})`, POINT[i % POINT.length]]), (sel) => { p.kinds = sel; apply(); });
+        const h2 = document.createElement("div"); h2.className = "nh-note"; h2.textContent = "Stage, as the source gives it"; box.appendChild(h2);
+        checks(box, stages.map((s2) => [s2, `${s2} (${num(count("_stage", s2))})`]), (sel) => { p.stages = sel; apply(); });
+        keyBox(p).innerHTML = keyHtml([["#5600DC", "a protected area with oil, gas or coal projects inside it"]]);
+        stateOf(p, `${num(og.features.length)} oil and gas projects and ${num(coal.features.length)} coal mines in ${num(ids.length)} protected areas, read just now`);
+      },
+      box(f) {
+        const q = f.properties;
+        if (!q._src) return `<h3>${esc(q.name || q.NAME || "Protected area")}</h3><div class="src">A protected area with oil, gas or coal projects inside it (Protected Carbon); click its dots for each project</div>`;
+        const name = q._src === "coal" ? (q.Mine_Name || "Coal mine") : (q.Project || "Oil or gas project");
+        return `<h3>${esc(name)}</h3><div class="src">${esc(q._kind)} · ${esc(q._stage)}${q._src === "og" && q.NAME ? ` · inside ${esc(q.NAME)}` : ""} (Protected Carbon, live)</div>` +
+          (q.WDPAID ? `<div class="more"><a href="https://www.protectedplanet.net/${esc(q.WDPAID)}" target="_blank" rel="noopener">The protected area on Protected Planet</a></div>` : "") +
+          `<div class="more">${allProps(q, /^(_|OBJECTID$)/)}</div>`;
+      },
+    });
+
     // A concession dataset's map squares: the fixed squares Global Forest
     // Watch makes when it says which zooms they cover, else the squares it
     // draws on request (round nh11: some fixed sets have zooms missing, such
@@ -2198,7 +2266,8 @@
       id: "conc", sec: "pa", title: "Land licensed to companies for mining, logging, oil, gas and plantations, beside protected areas (Global Forest Watch)", live: true,
       about: `<p>The concession maps Global Forest Watch publishes, read live: the land governments have licensed or granted to companies for mining, logging, oil and gas, wood fibre and oil palm, drawn so it can be seen against the protected areas. Tick the ones to draw. Most cover only some countries; each says which in its box.</p>
 <p>How this differs from the mines and the oil and gas rows above: those show what is physically there, the mines traced from satellite pictures and mapped in OpenStreetMap, and the wells, pipelines and plants in the OGIM database, each measured by its distance from the nearest protected area. This row shows the land handed out on paper, where companies are allowed to work, whether or not anything has been dug, drilled or cut there yet, and it is drawn as the source gives it, without measuring.</p>
-<p>Where Global Forest Watch's catalogue holds two copies of the same map (one marked downloadable) or an older copy under the same name, only one is offered, and the others are named under the list. Datasets in the catalogue with no map squares to draw are named there too.</p>
+<p>Every map is drawn when the row is ticked; untick the ones you do not want. Where Global Forest Watch's catalogue holds two copies of the same map (one marked downloadable) or an older copy under the same name, the newest is drawn. One map is not of licences: the mining land traced from satellite pictures (the pits, waste heaps, ponds and buildings mines have already made, whether or not the land was licensed); it says so under its name. Maps the catalogue lists with no map squares to draw (such as the Congo Basin's logging roads) are named under the list.</p>
+<p>For extraction inside protected areas, the row "Oil, gas and coal projects inside protected areas" reads the Protected Carbon project's map live. No live map of concessions inside protected areas was found: Global Forest Watch publishes the concessions and the protected areas separately, and the other overlap maps (WWF-SIGHT, Earth Insight) need a login or are pictures only.</p>
 <p>Source: Global Forest Watch (World Resources Institute and partners), each dataset with its own source in its box.</p>`,
       async build(p) {
         const all = [];
@@ -2213,7 +2282,15 @@
         const cand = all.filter((d) => re.test(`${d.dataset} ${(d.metadata || {}).title || ""}`) && !/alert|loss|emission|deforest/i.test(`${d.dataset} ${(d.metadata || {}).title || ""}`));
         if (!cand.length) throw new Error("Global Forest Watch's catalogue lists no concession maps just now");
         const ver = (d) => (d.versions || []).slice().sort((a, b) => String(a).localeCompare(String(b), "en", { numeric: true })).pop();
-        const title = (d) => String((d.metadata || {}).title || d.dataset).trim();
+        // Round nh13: plainer names for the maps whose catalogue names are
+        // missing or unclear, each with a line on what it is.
+        const NAMES = {
+          pangaea_global_mining: ["Land already dug up by mines, traced from satellite pictures (Maus et al. 2022, PANGAEA)",
+            "Not licences: the pits, waste heaps, tailings ponds and buildings mines have already made, traced from satellite pictures, whether or not the land was licensed. The mining concessions map shows the land licensed on paper. The mines row above uses the same tracing, measured against protected areas."],
+          osm_congo_basin_logging_roads: ["Logging roads in the Congo Basin (OpenStreetMap)", "Not licences: the roads cut into the forest to reach logging sites, as mapped in OpenStreetMap."],
+          gfw_mining_concessions: ["Mining concessions: land licensed for mining", "Land a government has granted for mining, whether or not it has been dug yet."],
+        };
+        const title = (d) => (NAMES[d.dataset] || [])[0] || String((d.metadata || {}).title || d.dataset).trim();
         // One of each map: the newest version of each name, "(downloadable)" copies folded in.
         const groups = new Map();
         for (const d of cand) {
@@ -2232,19 +2309,20 @@
         if (!usable.length) throw new Error("none of Global Forest Watch's concession maps has map squares just now");
         usable.sort((a, b) => title(a.d).localeCompare(title(b.d)));
         p.list = usable.map((x) => x.d);
+        p.titleOf = title;
         const box = bodyOf(p);
         const el = document.createElement("div");
         el.className = "nh-checks";
         el.style.display = "block";
         const yr = (v) => (String(v).match(/\d{4}/) || [""])[0];
-        el.innerHTML = usable.map(({ d, t }, i) => `<label><input type="checkbox" value="${i}"><i style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${POINT[(i + 1) % POINT.length]}"></i> ${esc(title(d) === d.dataset ? d.dataset.replace(/_/g, " ") : title(d))}` +
-          `<span style="color:#7E8994"> (${esc(yr(t.version) || t.version)}${(d.metadata || {}).geographic_coverage ? `; ${esc(String(d.metadata.geographic_coverage).slice(0, 90))}` : ""})</span></label>`).join("");
+        el.innerHTML = usable.map(({ d, t }, i) => `<label style="display:block;margin:3px 0"><input type="checkbox" value="${i}"><i style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${POINT[(i + 1) % POINT.length]}"></i> ${esc(title(d) === d.dataset ? d.dataset.replace(/_/g, " ") : title(d))}` +
+          `<span style="color:#7E8994"> (${esc(yr(t.version) || t.version)}${(d.metadata || {}).geographic_coverage ? `; ${esc(String(d.metadata.geographic_coverage).slice(0, 90))}` : ""})</span>` +
+          (NAMES[d.dataset] ? `<span style="display:block;margin-left:19px;font-size:10.5px;color:#8A939D">${esc(NAMES[d.dataset][1])}</span>` : "") + `</label>`).join("");
         box.appendChild(el);
-        if (hidden.length || none.length) {
+        if (none.length) {
           const n = document.createElement("div");
           n.className = "nh-list";
-          n.innerHTML = (hidden.length ? `<b>Not offered, as copies of a map above:</b><br>${hidden.map(esc).join("<br>")}` : "") +
-            (none.length ? `${hidden.length ? "<br>" : ""}<b>In the catalogue with no map squares to draw:</b> ${none.map(esc).join(", ")}` : "");
+          n.innerHTML = `<b>In the catalogue with no map squares to draw:</b> ${none.map(esc).join(", ")}`;
           box.appendChild(n);
         }
         p.off = new Set();
@@ -2262,12 +2340,14 @@
             addLayer(p, { id: `${sid}-edge-${sl}`, type: "line", source: sid, "source-layer": sl, paint: { "line-color": c, "line-width": 1, "line-opacity": 0.9 } });
           }
         });
-        stateOf(p, `${usable.length} concession maps from Global Forest Watch's catalogue`);
+        // Round nh13: every map drawn when the row is ticked.
+        for (const cb of el.querySelectorAll("input")) { cb.checked = true; cb.dispatchEvent(new Event("change", { bubbles: true })); }
+        stateOf(p, `${usable.length} maps from Global Forest Watch's catalogue, all drawn`);
       },
       box(f) {
         const sid = (f.layer.id.match(/conc-(\d+)/) || [])[1];
         const d = sid != null ? this.list[Number(sid)] : null;
-        return `<h3>${esc(f.properties.name || f.properties.company || f.properties.Name || "Concession")}</h3><div class="src">${esc(d ? ((d.metadata || {}).title || d.dataset) : "Global Forest Watch")}${d && (d.metadata || {}).source ? `; ${esc(d.metadata.source)}` : ""}</div>` + allProps(f.properties);
+        return `<h3>${esc(f.properties.name || f.properties.company || f.properties.Name || "Concession")}</h3><div class="src">${esc(d ? this.titleOf(d) : "Global Forest Watch")}${d && (d.metadata || {}).source ? `; ${esc(d.metadata.source)}` : ""}</div>` + allProps(f.properties);
       },
     });
 
@@ -2318,6 +2398,32 @@
       -3, "rgba(74,154,182,0.85)", 0, "rgba(74,154,182,0)", 9000, "rgba(74,154,182,0)"],
     border: "rgba(120,140,196,0.32)",
   };
+  // Hell: the Culprits map's basemap of that name (map/app.js, HELL and
+  // hellLayers, round 144h), copied: an oxblood sea, darker in the deeps;
+  // basalt-black land darkening into scorched oxblood up the slopes; cold
+  // blue-grey relief light; lakes as dark blood, rivers as thin red veins
+  // with a faint glow, graveyards in dull red close in; towns in dark ash,
+  // roads in maroon, borders faint red; place names in EB Garamond from the
+  // Culprits map's letter files (round nh13, asked 19 October).
+  const HELL = {
+    sheet: "#1E080B",
+    ground: ["interpolate", ["linear"], ["elevation"],
+      -8000, "#110407", -5000, "#18060A", -3000, "#20070C", -1500, "#2A0A0F", -500, "#360C11",
+      -120, "#481116", -20, "#57151A", -1, "#5F181D",
+      0, "#131215", 200, "#151215", 600, "#1A1214", 1200, "#1F1416", 2000, "#241418",
+      3000, "#2B151A", 4200, "#33161C", 5600, "#3B171E"],
+    shade: { "hillshade-method": "multidirectional", "hillshade-illumination-direction": [315, 270, 0, 225], "hillshade-illumination-altitude": [40, 35, 35, 50],
+      "hillshade-highlight-color": ["rgba(150,164,186,0.2)", "rgba(150,164,186,0.08)", "rgba(150,164,186,0.08)", "rgba(150,164,186,0.04)"],
+      "hillshade-shadow-color": ["rgba(0,0,0,0.8)", "rgba(0,0,0,0.45)", "rgba(0,0,0,0.45)", "rgba(0,0,0,0.25)"],
+      "hillshade-accent-color": "rgba(0,0,0,0.3)", "hillshade-exaggeration": 1, "hillshade-illumination-anchor": "map" },
+    coast: "#521419", lake: "#3A0C11", lakeEdge: "#5E171C", river: "#9C252B", riverGlow: "#6A1318",
+    grave: "#561519", graveEdge: "#74202A", town: "#1C1719", townWork: "#221C1E",
+    road: ["#2B1C1E", "#3A2124", "#4C2529"], rail: "#3A3034", building: "#201B1D", border: "rgba(170,58,62,0.32)",
+    font: { regular: ["EBGaramond-Regular"], bold: ["EBGaramond-SemiBold"], italic: ["EBGaramond-Italic"] },
+    name: { country: "#A9504C", state: "#8C4A47", city: "#CDBDB4", town: "#B4A39B", minor: "#9A8B85", water: "#B0605F", peak: "#958680",
+      halo: "rgba(8,4,5,0.85)", haloWater: "rgba(24,6,9,0.8)" },
+    glyphs: "https://welcometoyourgalaxy.github.io/culprits/glyphs/{fontstack}/{range}.pbf",
+  };
   // The Jurassic basemap's relief, as the Culprits map has it (SAT_RELIEF).
   const JURASSIC = {
     colour: ["interpolate", ["linear"], ["elevation"],
@@ -2339,7 +2445,12 @@
     depth: { "hillshade-method": "standard", "hillshade-illumination-direction": 315, "hillshade-illumination-anchor": "map",
       "hillshade-highlight-color": "rgba(240,236,222,0.04)", "hillshade-shadow-color": "rgba(12,18,10,0.55)", "hillshade-accent-color": "rgba(12,18,10,0)", "hillshade-exaggeration": 0.6 },
   };
-  const PLATE = { url: "https://welcometoyourgalaxy.github.io/culprits/atlas-plate.webp?v=207", top: 85.05112877980659, bottom: -80.55, fadeIn: 3, fadeOut: 5 };
+  // Round nh13: this map's own copy of the Culprits map's painted plate, its
+  // cartouche repainted to read "Invasion of Non-Humans Map" (it read
+  // "Compilation Map"); kept beside this page in the maps repo. Until that
+  // file is there, the Culprits map's plate is used.
+  const PLATE = { url: "https://welcometoyourgalaxy.github.io/maps/invasion-of-nonhumans-atlas-plate.webp?v=1",
+    fallback: "https://welcometoyourgalaxy.github.io/culprits/atlas-plate.webp?v=207", top: 85.05112877980659, bottom: -80.55, fadeIn: 3, fadeOut: 5 };
   const toPng = async (cv) => (cv.convertToBlob ? await cv.convertToBlob({ type: "image/png" }) : await new Promise((r) => cv.toBlob(r, "image/png"))).arrayBuffer();
   const canvas = (w, h) => (typeof OffscreenCanvas !== "undefined" ? new OffscreenCanvas(w, h) : Object.assign(document.createElement("canvas"), { width: w, height: h }));
   // Black Marble's sodium-orange lights redrawn by brightness in navy, cobalt, ice and bone.
@@ -2373,7 +2484,11 @@
   const merc = (lat) => (1 - Math.log(Math.tan(Math.PI / 4 + lat * Math.PI / 360)) / Math.PI) / 2;
   maplibregl.addProtocol("nhplate", async (params) => {
     const [z, x, y] = params.url.replace("nhplate://", "").split("/").map(Number);
-    if (!plateImg) { plateImg = fetch(PLATE.url).then((r) => { if (!r.ok) throw new Error(String(r.status)); return r.blob(); }).then((b) => createImageBitmap(b)); plateImg.catch(() => { plateImg = null; }); }
+    if (!plateImg) {
+      const get = (u) => fetch(u).then((r) => { if (!r.ok) throw new Error(String(r.status)); return r.blob(); }).then((b) => createImageBitmap(b));
+      plateImg = get(PLATE.url).catch(() => get(PLATE.fallback));
+      plateImg.catch(() => { plateImg = null; });
+    }
     const img = await plateImg;
     const n = 2 ** z, top = merc(PLATE.top), bot = merc(PLATE.bottom), y0 = y / n, y1 = (y + 1) / n;
     const cv = canvas(256, 256), cx = cv.getContext("2d");
@@ -2474,6 +2589,72 @@
         { id: "b-jur-calm", type: "color-relief", source: "b-sea", paint: { "color-relief-color": JURASSIC.sea, "color-relief-opacity": 1 } },
         { id: "b-jur-labels", type: "raster", source: "b-labels", paint: { "raster-opacity": 0.8, "raster-saturation": -1 } },
       ] }),
+    hell: () => {
+      const road = (w) => ["interpolate", ["exponential", 1.4], ["zoom"], 4, w * .25, 10, w, 16, w * 6];
+      const kind = (list) => ["match", ["get", "class"], list, true, false];
+      const fade = (z0, z1, a) => ["interpolate", ["linear"], ["zoom"], z0, 0, z1, a];
+      const nm = ["coalesce", ["get", "name_en"], ["get", "name:latin"], ["get", "name"]];
+      const zs = (...a) => ["interpolate", ["linear"], ["zoom"], ...a];
+      const halo = (c, w) => ({ "text-halo-color": c, "text-halo-width": w, "text-halo-blur": 0.6 });
+      const N = HELL.name, F = HELL.font;
+      return { sources: { "b-relief": RELIEF, "b-sea": SEA, "b-osm": OFM },
+        layers: [
+          { id: "b-hell-sheet", type: "background", paint: { "background-color": HELL.sheet } },
+          { id: "b-hell-ground", type: "color-relief", source: "b-sea", paint: { "color-relief-color": HELL.ground, "color-relief-opacity": 1 } },
+          { id: "b-hell-shade", type: "hillshade", source: "b-relief", paint: HELL.shade },
+          { id: "b-hell-coast", type: "fill", source: "b-osm", "source-layer": "water", minzoom: 7, filter: ["==", ["get", "class"], "ocean"],
+            paint: { "fill-color": HELL.coast, "fill-opacity": fade(7, 9, 1) } },
+          { id: "b-hell-lake", type: "fill", source: "b-osm", "source-layer": "water", filter: ["!=", ["get", "class"], "ocean"],
+            paint: { "fill-color": HELL.lake, "fill-outline-color": HELL.lakeEdge } },
+          { id: "b-hell-town", type: "fill", source: "b-osm", "source-layer": "landuse", minzoom: 6, filter: kind(["residential", "commercial", "industrial", "retail", "suburb", "neighbourhood"]),
+            paint: { "fill-color": ["match", ["get", "class"], "industrial", HELL.townWork, HELL.town], "fill-opacity": fade(6, 8, .9) } },
+          { id: "b-hell-grave", type: "fill", source: "b-osm", "source-layer": "landuse", minzoom: 9, filter: ["==", ["get", "class"], "cemetery"],
+            paint: { "fill-color": HELL.grave, "fill-outline-color": HELL.graveEdge, "fill-opacity": fade(9, 11, .8) } },
+          { id: "b-hell-river-glow", type: "line", source: "b-osm", "source-layer": "waterway", minzoom: 3, filter: ["==", ["get", "class"], "river"],
+            layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": HELL.riverGlow, "line-width": road(4), "line-blur": road(3), "line-opacity": .45 } },
+          { id: "b-hell-river", type: "line", source: "b-osm", "source-layer": "waterway", minzoom: 3, layout: { "line-cap": "round", "line-join": "round" },
+            paint: { "line-color": HELL.river,
+              "line-width": ["interpolate", ["exponential", 1.4], ["zoom"], 4, ["match", ["get", "class"], "river", .25, .11], 10, ["match", ["get", "class"], "river", 1, .45], 16, ["match", ["get", "class"], "river", 6, 2.7]],
+              "line-opacity": ["interpolate", ["linear"], ["zoom"], 8, ["match", ["get", "class"], "river", .9, 0], 11, ["match", ["get", "class"], "river", .9, .7]] } },
+          { id: "b-hell-rail", type: "line", source: "b-osm", "source-layer": "transportation", minzoom: 9, filter: kind(["rail", "transit"]),
+            paint: { "line-color": HELL.rail, "line-width": 1, "line-dasharray": [3, 2] } },
+          { id: "b-hell-road-minor", type: "line", source: "b-osm", "source-layer": "transportation", minzoom: 11, filter: kind(["minor", "service", "track", "street", "street_limited"]),
+            paint: { "line-color": HELL.road[0], "line-width": road(.45) } },
+          { id: "b-hell-road", type: "line", source: "b-osm", "source-layer": "transportation", minzoom: 7, filter: kind(["secondary", "tertiary"]),
+            paint: { "line-color": HELL.road[1], "line-width": road(.6) } },
+          { id: "b-hell-road-major", type: "line", source: "b-osm", "source-layer": "transportation", minzoom: 4, filter: kind(["motorway", "trunk", "primary"]),
+            paint: { "line-color": HELL.road[2], "line-width": road(.8), "line-opacity": fade(4, 6, 1) } },
+          { id: "b-hell-buildings", type: "fill", source: "b-osm", "source-layer": "building", minzoom: 13, paint: { "fill-color": HELL.building, "fill-opacity": .9 } },
+          { id: "b-hell-border", type: "line", source: "land", paint: { "line-color": HELL.border, "line-width": ["interpolate", ["linear"], ["zoom"], 2, .5, 5, .9] } },
+          { id: "b-hell-name-ocean", type: "symbol", source: "b-osm", "source-layer": "water_name", filter: kind(["ocean", "sea"]),
+            layout: { "text-field": nm, "text-font": F.italic, "text-size": zs(1, 11, 6, 16), "text-letter-spacing": 0.22, "text-max-width": 6 },
+            paint: Object.assign({ "text-color": N.water }, halo(N.haloWater, 1)) },
+          { id: "b-hell-name-water", type: "symbol", source: "b-osm", "source-layer": "water_name", minzoom: 5, filter: ["!", kind(["ocean", "sea"])],
+            layout: { "text-field": nm, "text-font": F.italic, "text-size": zs(5, 11, 14, 14), "text-letter-spacing": 0.08, "text-max-width": 7 },
+            paint: Object.assign({ "text-color": N.water }, halo(N.haloWater, 1)) },
+          { id: "b-hell-name-river", type: "symbol", source: "b-osm", "source-layer": "waterway", minzoom: 9,
+            layout: { "text-field": nm, "text-font": F.italic, "text-size": zs(9, 11, 15, 14), "symbol-placement": "line", "text-letter-spacing": 0.1 },
+            paint: Object.assign({ "text-color": N.water }, halo(N.haloWater, 1)) },
+          { id: "b-hell-name-peak", type: "symbol", source: "b-osm", "source-layer": "mountain_peak", minzoom: 9,
+            layout: { "text-field": nm, "text-font": F.italic, "text-size": 12, "text-max-width": 7 },
+            paint: Object.assign({ "text-color": N.peak }, halo(N.halo, 1.1)) },
+          { id: "b-hell-name-village", type: "symbol", source: "b-osm", "source-layer": "place", minzoom: 11, filter: kind(["village", "hamlet", "suburb", "neighbourhood", "quarter"]),
+            layout: { "text-field": nm, "text-font": F.regular, "text-size": zs(11, 11, 16, 14), "text-max-width": 7 },
+            paint: Object.assign({ "text-color": N.minor }, halo(N.halo, 1.2)) },
+          { id: "b-hell-name-town", type: "symbol", source: "b-osm", "source-layer": "place", minzoom: 7, filter: kind(["town"]),
+            layout: { "text-field": nm, "text-font": F.regular, "text-size": zs(7, 11, 14, 16), "text-max-width": 7 },
+            paint: Object.assign({ "text-color": N.town }, halo(N.halo, 1.2)) },
+          { id: "b-hell-name-state", type: "symbol", source: "b-osm", "source-layer": "place", minzoom: 4, maxzoom: 9, filter: kind(["state", "province"]),
+            layout: { "text-field": nm, "text-font": F.italic, "text-size": zs(4, 10, 8, 13), "text-transform": "uppercase", "text-letter-spacing": 0.15, "text-max-width": 8 },
+            paint: Object.assign({ "text-color": N.state, "text-opacity": 0.9 }, halo(N.halo, 1)) },
+          { id: "b-hell-name-city", type: "symbol", source: "b-osm", "source-layer": "place", minzoom: 3, filter: kind(["city"]),
+            layout: { "text-field": nm, "text-font": F.bold, "text-size": zs(3, 11, 8, 15, 14, 20), "text-max-width": 7 },
+            paint: Object.assign({ "text-color": N.city }, halo(N.halo, 1.3)) },
+          { id: "b-hell-name-country", type: "symbol", source: "b-osm", "source-layer": "place", maxzoom: 8, filter: kind(["country"]),
+            layout: { "text-field": nm, "text-font": F.bold, "text-size": zs(1, 10, 3, 13, 6, 17), "text-transform": "uppercase", "text-letter-spacing": 0.26, "text-max-width": 7 },
+            paint: Object.assign({ "text-color": N.country }, halo(N.halo, 1.3)) },
+        ] };
+    },
     sat: () => ({
       sources: { "b-s2": { type: "raster", tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2024_3857/default/g/{z}/{y}/{x}.jpg"], tileSize: 256, maxzoom: 14,
           attribution: '<a href="https://s2maps.eu" target="_blank" rel="noopener">Sentinel-2 cloudless - https://s2maps.eu</a> by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2024)' }, "b-esri": ESRI },
@@ -2488,8 +2669,10 @@
   function setBase(kind) {
     if (BASES[kind] && !added.has(kind)) {
       const b = BASES[kind]();
+      if (kind === "hell" && map.setGlyphs && !map.getGlyphs()) map.setGlyphs(HELL.glyphs);
       for (const [k, v] of Object.entries(b.sources)) if (!map.getSource(k)) map.addSource(k, v);
-      for (const l of b.layers) map.addLayer(Object.assign({}, l, { layout: Object.assign({}, l.layout || {}, { visibility: "none" }) }), map.getLayer("land-edge") ? "land-edge" : firstRow());
+      // Names go above the rows (as on the Culprits map); everything else under them.
+      for (const l of b.layers) map.addLayer(Object.assign({}, l, { layout: Object.assign({}, l.layout || {}, { visibility: "none" }) }), l.type === "symbol" ? undefined : map.getLayer("land-edge") ? "land-edge" : firstRow());
       added.add(kind);
     }
     for (const k of added) for (const l of BASES[k]().layers) if (map.getLayer(l.id)) map.setLayoutProperty(l.id, "visibility", k === kind ? "visible" : "none");

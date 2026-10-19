@@ -12,7 +12,7 @@
 <style>
 :root{
   --ink:#0d0f12;--sheet:#14171b;--sheet2:#191d22;--rule:#262b31;--rule2:#1f2328;
-  --text:#e6e3dd;--dim:#9aa0a6;--faint:#6c737a;--accent:#a99cf5;
+  --text:#e6e3dd;--dim:#9aa0a6;--faint:#6c737a;--accent:#8fa9c9;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden;background:var(--ink);color:var(--text);
@@ -109,7 +109,7 @@ input[type=search]{width:100%;background:#101317;border:1px solid var(--rule);co
 .rc-src b{font-weight:500;color:var(--dim)}
 .rc-src ol{margin:3px 0 4px 18px}
 .rc-pt{margin-top:7px;font-size:11px;color:var(--faint)}
-.rc-un{margin-top:8px;padding:8px 10px;border-left:2px solid #5600DC;background:#18161f;font-size:12.5px}
+.rc-un{margin-top:8px;padding:8px 10px;border-left:2px solid #4a7c80;background:#1c2025;font-size:12.5px}
 .rc-sec{margin-top:8px;border-top:1px solid var(--rule);padding-top:6px}
 .rc-sec summary{cursor:pointer;font-family:"Marcellus","Georgia",serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
 .rc-box .rc-sec dl{grid-template-columns:1fr minmax(84px,40%);border-top:0;padding-top:6px}
@@ -159,29 +159,25 @@ var PLATE = "data:image/webp;base64,UklGRpy2BABXRUJQVlA4WAoAAAAQAAAAPwYAmgUAQUxQ
 // is the line under it.
 var LAYERS = [
   { id: "un", short: "Government birth policies (UN, 2019)",
-    about: "What 197 governments reported on births, family planning and abortion; shade by any question", colour: "#7800CF" },
+    about: "What 197 governments reported on births, family planning and abortion; shade by any question", colour: "#7a5f73" },
   { id: "sterilization", short: "Forced sterilization",
-    about: "Sterilization forced on people or done without their free and informed consent", colour: "#9B00C1" },
+    about: "Sterilization forced on people or done without their free and informed consent", colour: "#8f3f4c" },
   { id: "forcedbirth", short: "Forced births and birth control",
-    about: "Abortion bans to force births, forced abortion and contraception, birth quotas and fines, breeding and child removal", colour: "#C566DA" },
+    about: "Abortion bans to force births, forced abortion and contraception, birth quotas and fines, breeding and child removal", colour: "#b5838d" },
   { id: "incentive", short: "Birth incentives",
-    about: "Bonuses, tax breaks, loans and other perks to raise or lower births", colour: "#5600DC" },
+    about: "Bonuses, tax breaks, loans and other perks to raise or lower births", colour: "#4a7c80" },
   { id: "ads", short: "Advertising and propaganda",
-    about: "Campaigns, slogans, posters and awards urging more or fewer births", colour: "#3300EA" },
+    about: "Campaigns, slogans, posters and awards urging more or fewer births", colour: "#6f6489" },
   { id: "influence", short: "Influence abroad",
-    about: "Foreign funding and its cuts, international networks, surrogacy markets and fertility companies", colour: "#1000F7" }
+    about: "Foreign funding and its cuts, international networks, surrogacy markets and fertility companies", colour: "#4f6f99" }
 ];
-// Colours: the five colours of the Biodiversity Intactness Index 51 to 100%
-// layer of the Invasion of non-humans map (violet to electric blue), and paler
-// mixes of them; greys for "none" and "not given", as that map has it.
-var BII5 = ["#9B00C1", "#7800CF", "#5600DC", "#3300EA", "#1000F7"];
 var UN_COLOURS = {
-  "Raise": "#9B00C1", "Lower": "#1000F7", "Maintain at Current Levels": "#B9A6EE", "No Official Policy": "#5e5c66",
-  "Yes": "#3300EA", "No": "#9B00C1", "Major Concern": "#9B00C1", "Minor Concern": "#5600DC", "Not a Concern": "#1000F7",
-  "Not Applicable": "#4a4952", "Varies by Jurisdiction": "#C9B8F2", "..": "#3a3940"
+  "Raise": "#7a5f73", "Lower": "#4a7c80", "Maintain at Current Levels": "#9a9184", "No Official Policy": "#5d5b63",
+  "Yes": "#4a7c80", "No": "#7a5f73", "Major Concern": "#8f3f4c", "Minor Concern": "#6f6489", "Not a Concern": "#4f6f99",
+  "Not Applicable": "#4d4a52", "Varies by Jurisdiction": "#8a8378", "..": "#3d3b42"
 };
-var UN_EXTRA = ["#5600DC", "#C566DA", "#7800CF", "#8C7DF8", "#3300EA", "#D5B0E8", "#A88CF2", "#1000F7"];
-var UN_SEQ = ["#9B00C1", "#8300CC", "#6A00D6", "#4600E3", "#2A00ED", "#1000F7"];
+var UN_EXTRA = ["#4f6f99", "#8a6c78", "#5f7f7c", "#7c7392", "#7d7266", "#a39aa8", "#4c5f78", "#7a5e56"];
+var UN_SEQ = ["#c9d3e6", "#9fb1d4", "#7891c0", "#5873a8", "#3e5a8c", "#2b4475"];
 var UN_SAY = { "—": "— (no answer: not among the 107 governments that answered)", "..": ".." };
 var KIND_LABEL = { sterilization: "Forced sterilization", forcedbirth: "Forced births and birth control", incentive: "Incentive", ads: "Advertising or propaganda", influence: "Influence abroad" };
 
@@ -315,7 +311,7 @@ function start() {
   window.__rcUn = unPick;
   unIsos.forEach(function (iso) {
     var c0 = unPick.scale.colour(unVal(iso, "2.1"));
-    var lyr = L.polygon(latlngs(RC.countries[iso].geom), { pane: "countries", fillColor: c0 || "#000", fillOpacity: c0 ? 0.38 : 0,
+    var lyr = L.polygon(latlngs(RC.countries[iso].geom), { pane: "countries", fillColor: c0 || "#000", fillOpacity: c0 ? 0.42 : 0,
       color: "#0b0a12", weight: 0.4, opacity: c0 ? 0.6 : 0, bubblingMouseEvents: false });
     lyr._rcIso = iso;
     lyr.bindPopup(unBox(iso), { maxWidth: 400, maxHeight: 460 });
@@ -330,7 +326,7 @@ function start() {
     if (e.layer !== "influence") return;
     (e.target_countries || []).forEach(function (t) {
       if (t === e.iso || !RC.countries[t]) return;
-      var line = L.polyline(arc([e.plat, e.plon], RC.countries[t].pt), { color: "#8C7DF8", weight: 0.6, opacity: 0.35, bubblingMouseEvents: false });
+      var line = L.polyline(arc([e.plat, e.plon], RC.countries[t].pt), { color: "#b9c4d6", weight: 0.6, opacity: 0.32, bubblingMouseEvents: false });
       line.bindPopup(entryBox(e, "Line to " + cname(t) + ", one of the countries it is aimed at."), { maxWidth: 380, maxHeight: 440 });
       line.bindTooltip(esc(e.title) + " → " + esc(cname(t)), { sticky: true });
       groups.influence.addLayer(line);
@@ -699,7 +695,7 @@ function panel(map, groups, counts, markers) {
         groups.un.eachLayer(function (lyr) {
           var v = unVal(lyr._rcIso, id);
           var c1 = window.__rcUn.scale.colour(v);
-          lyr.setStyle({ fillColor: c1 || "#000", fillOpacity: c1 ? 0.38 : 0, opacity: c1 ? 0.6 : 0 });
+          lyr.setStyle({ fillColor: c1 || "#000", fillOpacity: c1 ? 0.42 : 0, opacity: c1 ? 0.6 : 0 });
           lyr.setTooltipContent(esc(RC.countries[lyr._rcIso].name) + ": " + esc(UN_SAY[v] || (v == null ? "" : v)));
         });
         legend();
