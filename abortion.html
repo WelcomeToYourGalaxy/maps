@@ -39,6 +39,8 @@ table.grid th{color:#9aa3a8;background:#1d2326}
 .hits{font-size:12px;margin-top:4px;max-height:170px;overflow:auto}.hits div{cursor:pointer;padding:2px 0;border-bottom:1px solid #22292c}.hits div:hover{color:#fff}
 .leaflet-control-layers{background:rgba(19,23,25,.95)!important;color:#e4e0d8;border:1px solid #2d3438!important;max-height:calc(100vh - 150px);overflow:auto;max-width:330px;font-size:12.5px}
 .leaflet-control-layers label{margin:3px 0}
+.leaflet-control-layers label.parentlayer{font-weight:600;margin-top:6px}.leaflet-control-layers label.sublayer{margin-left:18px}
+.setbox label.inbox{display:flex;align-items:center;gap:6px;font-weight:400;margin:4px 0;cursor:pointer}.setbox label.inbox input{width:auto;margin:0;flex:none}
 .leaflet-control-layers-overlays .sw{display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 5px 0 2px;vertical-align:-1px}
 .leaflet-control-attribution{background:rgba(16,19,21,.8)!important;color:#7d868b}.leaflet-control-attribution a{color:#8fb0b8}
 #frame{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(1100px,94vw);height:88vh;z-index:3000;display:none;flex-direction:column;background:#151a1c;border:1px solid #33404a;border-radius:4px;box-shadow:0 8px 30px rgba(0,0,0,.6)}
@@ -161,10 +163,107 @@ D.points.forEach(function(p){
 });
 
 D.overlays.forEach(function(o, i){ if (o.on) groups[i].addTo(map); });
-L.control.layers({'Dark map': dark, 'Satellite': topo}, overlays, {collapsed: window.innerWidth < 700, position: 'topright'}).addTo(map);
-try { var spans = document.querySelectorAll('.leaflet-control-layers-overlays label span span');
-  for (var si = 0; si < spans.length; si++) { var nm = spans[si].textContent.trim();
-    D.overlays.forEach(function(o){ if (o.name === nm) { var w = document.createElement('i'); w.className = 'sw'; w.style.background = o.colour; spans[si].insertBefore(w, spans[si].firstChild); } }); } } catch (e) {}
+var bases = {'Dark map': dark, 'Satellite': topo};
+if (D.basemaps === 'full') {
+  // Bioluminescent: NASA's Black Marble night lights, each pixel recoloured by
+  // its brightness on the culprits atlas's night ramp (NIGHT.ramp there).
+  var NR = [[0,'#02040C'],[14,'#050918'],[34,'#0B1430'],[62,'#17295A'],[100,'#2E5390'],[145,'#5E8DC2'],[190,'#A5C7E2'],[230,'#DCE8F0'],[255,'#F1F4F6']];
+  var NT = (function(){ var t = new Uint8Array(768); function hx(h){ return [1,3,5].map(function(i){ return parseInt(h.slice(i, i+2), 16); }); }
+    for (var v = 0; v < 256; v++) { var k = 0; while (k < NR.length - 2 && v > NR[k+1][0]) k++;
+      var a = hx(NR[k][1]), b = hx(NR[k+1][1]), f = Math.max(0, Math.min(1, (v - NR[k][0]) / (NR[k+1][0] - NR[k][0])));
+      for (var i = 0; i < 3; i++) t[v*3+i] = Math.round(a[i] + (b[i] - a[i]) * f); } return t; })();
+  var Night = L.GridLayer.extend({ createTile: function(c, done){
+    var cv = document.createElement('canvas'); cv.width = cv.height = 256;
+    var z = Math.min(c.z, 8), sc = Math.pow(2, c.z - z), x = Math.floor(c.x / sc), y = Math.floor(c.y / sc), n = Math.pow(2, z);
+    var img = new Image(); img.crossOrigin = 'anonymous';
+    img.onload = function(){ try { var ctx = cv.getContext('2d'); ctx.imageSmoothingEnabled = true;
+        var sx = (c.x % sc) * 256 / sc, sy = (c.y % sc) * 256 / sc;
+        ctx.drawImage(img, sx, sy, 256 / sc, 256 / sc, 0, 0, 256, 256);
+        var d = ctx.getImageData(0, 0, 256, 256), p = d.data;
+        for (var i = 0; i < p.length; i += 4) { var r = p[i], g = p[i+1], b = p[i+2];
+          var v = Math.round(0.5 * Math.max(r, g, b) + 0.5 * (0.3*r + 0.59*g + 0.11*b));
+          p[i] = NT[v*3]; p[i+1] = NT[v*3+1]; p[i+2] = NT[v*3+2]; p[i+3] = 255; }
+        ctx.putImageData(d, 0, 0); } catch (e) {} done(null, cv); };
+    img.onerror = function(){ done(null, cv); };
+    img.src = 'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/VIIRS_Black_Marble/default/2016-01-01/GoogleMapsCompatible_Level8/' + z + '/' + (((y % n) + n) % n) + '/' + (((x % n) + n) % n) + '.png';
+    return cv; } });
+  var night = new Night({maxZoom: 19, attribution: 'NASA Black Marble 2016 via GIBS'});
+  var nightBorders = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}', {maxZoom: 16, opacity: 0.55});
+  var bio = L.layerGroup([night]);
+  // Atlas: the owner's painted world plate at the world view, fading into
+  // Esri imagery as you zoom in, with the culprits atlas's colour grading and
+  // washes (sea, green, warm) and multiplied hillshade.
+  map.createPane('atlasImg'); map.getPane('atlasImg').style.zIndex = 200;
+  map.getPane('atlasImg').style.filter = 'saturate(1.15) contrast(1.05) brightness(1.06) hue-rotate(-6deg)';
+  function fillPane(name, z, blend, colour, op){ map.createPane(name); var el = map.getPane(name); el.style.zIndex = z; el.style.pointerEvents = 'none'; el.style.mixBlendMode = blend; el.style.display = 'none';
+    var d = document.createElement('div'); d.style.cssText = 'position:absolute;background:' + colour + ';opacity:' + op; el.appendChild(d); return {el: el, d: d}; }
+  var washes = [fillPane('atlasSea', 205, 'screen', '#0f3b52', .55), fillPane('atlasGreen', 210, 'soft-light', '#5f8f3a', .30), fillPane('atlasWarm', 214, 'overlay', '#f0c073', .22)];
+  function cover(){ var o = L.DomUtil.getPosition(map.getPanes().mapPane) || {x: 0, y: 0}, sz = map.getSize(), m = 400;
+    washes.forEach(function(w){ w.d.style.left = (-o.x - m) + 'px'; w.d.style.top = (-o.y - m) + 'px'; w.d.style.width = (sz.x + 2*m) + 'px'; w.d.style.height = (sz.y + 2*m) + 'px'; }); }
+  map.createPane('atlasShade'); map.getPane('atlasShade').style.zIndex = 220; map.getPane('atlasShade').style.mixBlendMode = 'multiply'; map.getPane('atlasShade').style.pointerEvents = 'none';
+  map.createPane('atlasPlate'); map.getPane('atlasPlate').style.zIndex = 250; map.getPane('atlasPlate').style.pointerEvents = 'none';
+  var aImg = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {pane: 'atlasImg', maxZoom: 19, attribution: 'Imagery &copy; Esri, Maxar'});
+  var aShade = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}', {pane: 'atlasShade', opacity: .45, maxZoom: 19, maxNativeZoom: 16, attribution: 'Hillshade &copy; Esri'});
+  var plates = [-360, 0, 360].map(function(dx){ return L.imageOverlay(D.plate, [[-80.55, -180 + dx], [85.05112877980659, 180 + dx]], {pane: 'atlasPlate', interactive: false}); });
+  var aPlate = {setOpacity: function(o){ plates.forEach(function(p){ p.setOpacity(o); }); }};
+  var atlas = L.layerGroup([aImg, aShade].concat(plates));
+  function atlasOn(){ return map.hasLayer(atlas); }
+  function blend(){ var z = map.getZoom(), t = Math.max(0, Math.min(1, (z - 3) / 2.6));
+    aPlate.setOpacity(1 - t); var r = z <= 6 ? 1 : z >= 13 ? .45 : 1 - (z - 6) * (.55 / 7);
+    washes[1].d.style.opacity = .30 * r; washes[2].d.style.opacity = .22 * r; washes[0].d.style.opacity = .55 * (z <= 6 ? 1 : .7); }
+  function look(){ var a = atlasOn(), b = map.hasLayer(bio);
+    washes.forEach(function(w){ w.el.style.display = a ? '' : 'none'; });
+    map.getContainer().style.background = b ? '#02040C' : '';
+    if (b) { if (map.hasLayer(labels)) map.removeLayer(labels); nightBorders.addTo(map); }
+    else { if (map.hasLayer(nightBorders)) map.removeLayer(nightBorders); if (!map.hasLayer(labels)) labels.addTo(map); }
+    if (a) { cover(); blend(); } }
+  map.on('move zoom viewreset resize', function(){ if (atlasOn()) cover(); });
+  map.on('zoomend', function(){ if (atlasOn()) blend(); });
+  map.on('baselayerchange', look);
+  nightBorders.options.pane = 'labels';
+  bases = {'Dark map': dark, 'Satellite': topo, 'Atlas': atlas, 'Bioluminescent': bio};
+}
+L.control.layers(bases, overlays, {collapsed: window.innerWidth < 700, position: 'topright'}).addTo(map);
+// The layers list is redrawn by Leaflet whenever a layer is switched from
+// outside it, so its extras (swatches, sub-layers under one switch, overlays
+// kept in a panel box instead) are put back each time.
+var parentKids = {};
+D.overlays.forEach(function(o, i){ if (o.parent && !o.inbox) (parentKids[o.parent] = parentKids[o.parent] || []).push(i); });
+function syncParents(){ var cbs = document.querySelectorAll('.leaflet-control-layers .parentlayer input');
+  for (var j = 0; j < cbs.length; j++) { var kids = parentKids[cbs[j].getAttribute('data-parent')] || [];
+    var on = kids.filter(function(i){ return map.hasLayer(groups[i]); }).length;
+    cbs[j].checked = on === kids.length; cbs[j].indeterminate = on > 0 && on < kids.length; } }
+function decorate(){
+  try {
+    var olist = document.querySelector('.leaflet-control-layers-overlays'); if (!olist) return;
+    if (olist.getAttribute('data-done') === '1' && olist.querySelector('.sw, .parentlayer')) { syncParents(); return; }
+    olist.setAttribute('data-done', '1');
+    var labs = olist.querySelectorAll('label'), byName = {};
+    for (var li = 0; li < labs.length; li++) byName[labs[li].textContent.trim()] = labs[li];
+    var done = {};
+    D.overlays.forEach(function(o){
+      var lab = byName[o.name]; if (!lab) return;
+      if (o.inbox) { lab.style.display = 'none'; return; }
+      var sp = lab.querySelector('span span');
+      if (sp && !sp.querySelector('.sw')) { var w = document.createElement('i'); w.className = 'sw'; w.style.background = o.colour; sp.insertBefore(w, sp.firstChild); }
+      if (o.display && sp) sp.lastChild.textContent = ' ' + o.display;
+      if (!o.parent) return;
+      lab.classList.add('sublayer');
+      if (!done[o.parent]) {
+        done[o.parent] = 1;
+        var pl = document.createElement('label'); pl.className = 'parentlayer';
+        var cb = document.createElement('input'); cb.type = 'checkbox'; cb.setAttribute('data-parent', o.parent);
+        var tx = document.createElement('span'); tx.textContent = ' ' + o.parent;
+        pl.appendChild(cb); pl.appendChild(tx); olist.insertBefore(pl, lab);
+        cb.addEventListener('change', function(){ var want = cb.checked;
+          (parentKids[o.parent] || []).forEach(function(k){ if (want) { if (!map.hasLayer(groups[k])) groups[k].addTo(map); } else if (map.hasLayer(groups[k])) map.removeLayer(groups[k]); }); });
+      }
+    });
+    syncParents();
+  } catch (e) {}
+}
+decorate();
+map.on('overlayadd overlayremove baselayerchange', function(){ setTimeout(decorate, 0); });
 
 // ---- shading: the countries from the panel's first menu; any other set of
 // areas (US states, DR Congo provinces) from its own menu, shown with its layer
@@ -223,12 +322,20 @@ var extra = document.getElementById('extra');
   var lab = document.createElement('label'); lab.textContent = set.label || ('Shade ' + D.overlays[set.overlay].short);
   var s2 = document.createElement('select'); fill(s2, list);
   var lg = document.createElement('div'); lg.className = 'legend';
-  box.appendChild(lab); box.appendChild(s2); box.appendChild(lg); extra.appendChild(box);
+  var ib = null;
+  if (D.overlays[set.overlay].inbox) {
+    ib = document.createElement('label'); ib.className = 'inbox';
+    var icb = document.createElement('input'); icb.type = 'checkbox'; icb.checked = map.hasLayer(groups[set.overlay]);
+    ib.appendChild(icb); ib.appendChild(document.createTextNode(' ' + (D.overlays[set.overlay].display || D.overlays[set.overlay].name)));
+    icb.addEventListener('change', function(){ if (icb.checked) groups[set.overlay].addTo(map); else map.removeLayer(groups[set.overlay]);
+      s2.disabled = !icb.checked; lg.style.opacity = icb.checked ? 1 : .45; });
+  }
+  box.appendChild(lab); if (ib) box.appendChild(ib); box.appendChild(s2); box.appendChild(lg); extra.appendChild(box);
   setLegend[set.id] = lg;
   s2.value = set.defaultMeasure || list[0].id;
   s2.addEventListener('change', function(){ shade(s2.value); });
   shade(s2.value);
-  function vis(){ box.style.display = map.hasLayer(groups[set.overlay]) ? '' : 'none'; }
+  function vis(){ box.style.display = (ib || map.hasLayer(groups[set.overlay])) ? '' : 'none'; }
   map.on('overlayadd overlayremove', vis); vis();
 });
 
@@ -238,9 +345,9 @@ var pt = document.getElementById('ptoggle');
 if (pt) pt.addEventListener('click', function(){ panel.classList.toggle('folded'); pt.textContent = panel.classList.contains('folded') ? 'show ▾' : 'hide ▴'; });
 try {
   var lc = document.querySelector('.leaflet-control-layers');
-  var lt = document.createElement('button'); lt.className = 'ltoggle'; lt.type = 'button'; lt.textContent = 'Layers ▴';
+  var lt = document.createElement('button'); lt.className = 'ltoggle'; lt.type = 'button'; lt.textContent = 'Layers · hide ▴';
   lc.insertBefore(lt, lc.firstChild);
-  lt.addEventListener('click', function(ev){ ev.stopPropagation(); lc.classList.toggle('folded'); lt.textContent = lc.classList.contains('folded') ? 'Layers ▾' : 'Layers ▴'; });
+  lt.addEventListener('click', function(ev){ ev.stopPropagation(); lc.classList.toggle('folded'); lt.textContent = lc.classList.contains('folded') ? 'Layers · show ▾' : 'Layers · hide ▴'; });
   L.DomEvent.disableClickPropagation(lc);
 } catch (e) {}
 map.zoomControl.setPosition('bottomright');
