@@ -75,7 +75,23 @@ input[type=search]{width:100%;background:#101317;border:1px solid var(--rule);co
 #list li .tt{font-size:13px;line-height:1.35}
 #list li .m{font-size:11.5px;color:var(--faint);margin-top:1px}
 #credit{font-size:11px;color:var(--faint);padding:14px 18px 18px}
-#map{flex:1;min-width:0;height:100%;background:#0b0d10}
+#view{position:relative;flex:1;min-width:0;height:100%}
+#map,#globe{position:absolute;inset:0;background:#0b0d10}
+#globe[hidden],#map[hidden]{display:none}
+#globe{background:radial-gradient(ellipse at center,#0b0f16 0%,#05070a 70%)}
+.maplibregl-popup-content{background:#15181c;color:var(--text);border:1px solid var(--rule);border-radius:4px;box-shadow:0 10px 30px rgba(0,0,0,.5);padding:14px 16px 12px}
+.maplibregl-popup-tip{border-top-color:#15181c!important;border-bottom-color:#15181c!important}
+.maplibregl-popup-close-button{color:var(--faint);font-size:18px;padding:2px 7px}
+.rc-gpop .maplibregl-popup-content{max-height:440px;overflow-y:auto;width:380px;max-width:86vw}
+.rc-gtip .maplibregl-popup-content{padding:3px 7px;font-size:12px;border-radius:3px}
+.rc-gtip .maplibregl-popup-tip{display:none}
+.maplibregl-ctrl-group{background:rgba(20,23,27,.92)!important;border:1px solid var(--rule);box-shadow:none!important;border-radius:4px!important}
+.maplibregl-ctrl-group button{width:30px;height:30px}
+.maplibregl-ctrl-group button+button{border-top:1px solid var(--rule)!important}
+.maplibregl-ctrl-icon{filter:invert(1) brightness(.9)}
+.rc-ghome{display:flex!important;align-items:center;justify-content:center;color:var(--text)}
+.maplibregl-ctrl-attrib{background:rgba(13,15,18,.72)!important;color:#7d858d}
+.maplibregl-ctrl-attrib a{color:#9aa0a6!important}
 .leaflet-container{font-family:inherit;background:#0b0d10;outline:none}
 .leaflet-interactive:focus{outline:none}
 .leaflet-bar{border:1px solid var(--rule)!important;box-shadow:none!important;border-radius:4px!important;overflow:hidden}
@@ -89,6 +105,7 @@ input[type=search]{width:100%;background:#101317;border:1px solid var(--rule);co
 #bases button:hover{color:var(--text)}
 #bases button[aria-pressed=true]{background:#262c33;color:var(--text)}
 #bases button.sep{border-left:1px solid #39414a}
+#bases button.sep2{border-right:1px solid #39414a}
 .rc-home a{display:flex!important;align-items:center;justify-content:center}
 .leaflet-popup-content-wrapper{background:#15181c;color:var(--text);border:1px solid var(--rule);border-radius:4px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
 .leaflet-popup-tip{background:#15181c;border:1px solid var(--rule);box-shadow:none}
@@ -119,7 +136,7 @@ input[type=search]{width:100%;background:#101317;border:1px solid var(--rule);co
 @media (max-width:760px){
   #rc{flex-direction:column-reverse}
   #side{width:100%;height:45%;border-right:0;border-top:1px solid var(--rule)}
-  #map{height:55%;flex:none}
+  #view{height:55%;flex:none}
   .leaflet-popup-content{width:270px}
   .rc-box dl{grid-template-columns:78px 1fr}
   #bases button{padding:5px 8px;font-size:11px}
@@ -146,7 +163,7 @@ input[type=search]{width:100%;background:#101317;border:1px solid var(--rule);co
     <ul id="list" aria-label="Entries"></ul>
     <div id="credit">Every entry names its sources in its box. Positions are the place most associated with each entry, or the capital where a programme was national; entries at the same place are spread slightly so each can be clicked. Country shapes: Natural Earth.</div>
   </aside>
-  <div id="map"></div>
+  <div id="view"><div id="map"></div><div id="globe" hidden></div></div>
 </div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
@@ -370,6 +387,12 @@ function start() {
     } });
     new Home().addTo(map);
     map.on("click", function () { if (map.getZoom() > map.getMinZoom() + 0.75) world(); });
+    // A click anywhere while a box is open, zoomed in, closes it and goes back out.
+    map.on("preclick", function () { window.__rcWasOpen = !!(map._popup && map.hasLayer(map._popup)) && map.getZoom() > map.getMinZoom() + 0.75; });
+    map.eachLayer(function (lyr) {
+      if (!lyr.getPopup || !lyr.getPopup()) return;
+      lyr.on("click", function () { if (window.__rcWasOpen) { window.__rcWasOpen = false; lyr.closePopup(); world(); } });
+    });
   } catch (err) { /* needs a page */ }
   try { basemaps(map); } catch (err) { /* the basemaps need a browser */ }
   try { panel(map, groups, counts, markers); } catch (err) { /* the panel needs a page */ }
@@ -585,6 +608,7 @@ function basemaps(map) {
     else if (k === "atlas") { atlas.addTo(map); washes.forEach(function (w) { w.el.style.display = ""; }); cover(); blend(); }
     else { var g = glLayer(k); if (g) g.addTo(map); else dark.addTo(map); }
     names();
+    if (window.__rcGlobeBase) window.__rcGlobeBase(k);
     var bar = document.getElementById("bases");
     if (bar) [].forEach.call(bar.querySelectorAll("button[data-k]"), function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-k") === k ? "true" : "false"); });
   }
@@ -600,21 +624,27 @@ function basemaps(map) {
       var apply = function () { try { mm.setLayoutProperty("names", "visibility", namesOn ? "visible" : "none"); } catch (e) { /* not loaded yet */ } };
       if (mm.isStyleLoaded && mm.isStyleLoaded()) apply(); else mm.once("load", apply);
     });
+    if (window.__rcGlobeNames) window.__rcGlobeNames(namesOn);
     var nb = document.getElementById("names-btn");
     if (nb) nb.setAttribute("aria-pressed", namesOn ? "true" : "false");
   }
   window.__rcSetBase = setBase;
+  window.__rcStyles = { night: nightStyle, jurassic: jurassicStyle };
+  window.__rcBaseNow = function () { return current; };
+  window.__rcNamesOn = function () { return namesOn; };
   map.on("move zoom zoomanim viewreset resize zoomend moveend", function () { if (current === "atlas") cover(); });
   map.on("zoom zoomend", function () { if (current === "atlas") blend(); });
 
-  var bar = L.DomUtil.create("div", "", map.getContainer());
+  var bar = L.DomUtil.create("div", "", document.getElementById("view") || map.getContainer());
   bar.id = "bases";
-  bar.innerHTML = BASES.map(function (b) { return '<button type="button" data-k="' + b[0] + '">' + b[1] + "</button>"; }).join("") +
+  bar.innerHTML = '<button type="button" data-mode="globe" aria-pressed="true">Globe</button><button type="button" data-mode="flat" class="sep2" aria-pressed="false">Flat</button>' +
+    BASES.map(function (b) { return '<button type="button" data-k="' + b[0] + '">' + b[1] + "</button>"; }).join("") +
     '<button type="button" id="names-btn" class="sep" aria-pressed="true" title="Show or hide place names">Names</button>';
   L.DomEvent.disableClickPropagation(bar);
   L.DomEvent.disableScrollPropagation(bar);
   bar.addEventListener("click", function (ev) {
     if (ev.target.id === "names-btn") { namesOn = !namesOn; names(); return; }
+    var md = ev.target.getAttribute && ev.target.getAttribute("data-mode"); if (md) { if (window.__rcMode) window.__rcMode(md); return; }
     var k = ev.target.getAttribute && ev.target.getAttribute("data-k"); if (k) setBase(k);
   });
   setBase("atlas");
@@ -646,6 +676,7 @@ function panel(map, groups, counts, markers) {
       on[l.id] = ev.target.checked;
       d.classList.toggle("on", on[l.id]);
       if (on[l.id]) groups[l.id].addTo(map); else map.removeLayer(groups[l.id]);
+      if (window.__rcGlobeVis) window.__rcGlobeVis(l.id, on[l.id]);
       if (l.id === "un") document.getElementById("unopts").style.display = on.un ? "" : "none";
       draw();
     });
@@ -692,6 +723,7 @@ function panel(map, groups, counts, markers) {
         var id = b.getAttribute("data-id");
         showPick(id);
         window.__rcUn.id = id; window.__rcUn.scale = unScale(id);
+        if (window.__rcGlobeUn) window.__rcGlobeUn();
         groups.un.eachLayer(function (lyr) {
           var v = unVal(lyr._rcIso, id);
           var c1 = window.__rcUn.scale.colour(v);
@@ -721,7 +753,10 @@ function panel(map, groups, counts, markers) {
       var where = x.e.layer === "influence" ? x.e.actor_country : x.e.country;
       li.innerHTML = '<span class="k" style="background:' + layerOf(x.e.layer).colour + '"></span><div><div class="tt">' + esc(x.e.title) +
         '</div><div class="m">' + esc([x.e.years, where].filter(Boolean).join(" · ")) + "</div></div>";
-      var go = function () { map.flyTo(x.m.getLatLng(), Math.max(map.getZoom(), 5), { duration: 0.8 }); setTimeout(function () { x.m.openPopup(); }, 850); };
+      var go = function () {
+        if (window.__rcGlobeGo && window.__rcGlobeGo(x.e)) return;
+        map.flyTo(x.m.getLatLng(), Math.max(map.getZoom(), 5), { duration: 0.8 }); setTimeout(function () { x.m.openPopup(); }, 850);
+      };
       li.addEventListener("click", go);
       li.addEventListener("keydown", function (ev) { if (ev.key === "Enter") go(); });
       list.appendChild(li);
@@ -731,7 +766,178 @@ function panel(map, groups, counts, markers) {
   draw();
 }
 
+/* ---------- the globe (the default view), as the Invasion of non-humans map has it ----------
+   MapLibre with a globe projection: one Earth that turns when dragged and
+   floats in the dark when zoomed out; zoomed in it reads as a flat map. It
+   shows the same layers, boxes and basemaps as the flat map, which stays one
+   click away (Flat). */
+function globe() {
+  if (typeof maplibregl === "undefined" || !document.getElementById("globe") || !window.__rcStyles) return;
+  var flat = window.__rcMap, el = document.getElementById("globe"), fl = document.getElementById("map");
+  var ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services/";
+  var HOME = { center: [10, 18], zoom: 2.1 };
+  var vis = {}; LAYERS.forEach(function (l) { vis[l.id] = true; });
+
+  // The painted plate cut into squares, so it lies on the globe.
+  var plateImg = null;
+  function merc(lat) { var r = lat * Math.PI / 180; return (1 - Math.log(Math.tan(r) + 1 / Math.cos(r)) / Math.PI) / 2; }
+  if (maplibregl.addProtocol && !window.__rcPlateProto) {
+    window.__rcPlateProto = true;
+    maplibregl.addProtocol("rcplate", function (params) {
+      var m = params.url.match(/^rcplate:\/\/(\d+)\/(\d+)\/(\d+)$/), z = +m[1], y = +m[2], x = +m[3];
+      var ready = plateImg ? Promise.resolve(plateImg) : new Promise(function (res, rej) { var im = new Image(); im.onload = function () { plateImg = im; res(im); }; im.onerror = rej; im.src = PLATE; });
+      return ready.then(function (img) {
+        var n = Math.pow(2, z), top = merc(85.05112877980659), bot = merc(-80.55), y0 = y / n, y1 = (y + 1) / n;
+        var cv = document.createElement("canvas"); cv.width = cv.height = 256; var cx = cv.getContext("2d");
+        var a = Math.max(y0, top), b = Math.min(y1, bot);
+        if (b > a) { cx.imageSmoothingQuality = "high"; cx.drawImage(img, x / n * img.width, (a - top) / (bot - top) * img.height, img.width / n, (b - a) / (bot - top) * img.height, 0, (a - y0) * n * 256, 256, (b - a) * n * 256); }
+        return new Promise(function (res) { cv.toBlob(res, "image/png"); });
+      }).then(function (blob) { return blob.arrayBuffer(); }).then(function (buf) { return { data: buf }; });
+    });
+  }
+  var NAMES_SRC = function (url, att) { return { type: "raster", tiles: [url], tileSize: 256, attribution: att || "" }; };
+  function baseStyle(k) {
+    if (k === "night" || k === "jurassic") { var st = JSON.parse(JSON.stringify(window.__rcStyles[k])); return st; }
+    var st2 = { version: 8, sources: {}, layers: [] };
+    var img = { type: "raster", tiles: [ESRI + "World_Imagery/MapServer/tile/{z}/{y}/{x}"], tileSize: 256, maxzoom: 18, attribution: "Imagery &copy; Esri, Maxar" };
+    var refNames = NAMES_SRC(ESRI + "Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}");
+    if (k === "atlas") {
+      st2.sources = { img: img, shade: { type: "raster", tiles: [ESRI + "Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}"], tileSize: 256, maxzoom: 16, attribution: "Hillshade &copy; Esri" },
+        plate: { type: "raster", tiles: ["rcplate://{z}/{y}/{x}"], tileSize: 256, maxzoom: 6 }, names: refNames };
+      st2.layers = [
+        { id: "bg", type: "background", paint: { "background-color": "#0a0f12" } },
+        { id: "img", type: "raster", source: "img", paint: { "raster-saturation": 0.15, "raster-contrast": 0.05, "raster-brightness-min": 0.03, "raster-hue-rotate": -6 } },
+        { id: "shade", type: "raster", source: "shade", paint: { "raster-opacity": ["interpolate", ["linear"], ["zoom"], 4, .18, 9, .34, 13, .46] } },
+        { id: "plate", type: "raster", source: "plate", paint: { "raster-opacity": ["interpolate", ["linear"], ["zoom"], 3, 1, 5.6, 0], "raster-fade-duration": 0 } },
+        { id: "names", type: "raster", source: "names", minzoom: 3, paint: { "raster-opacity": .9 } }
+      ];
+    } else if (k === "sat") {
+      st2.sources = { img: img, names: refNames };
+      st2.layers = [{ id: "bg", type: "background", paint: { "background-color": "#0a0f12" } }, { id: "img", type: "raster", source: "img" }, { id: "names", type: "raster", source: "names", paint: { "raster-opacity": .95 } }];
+    } else {
+      st2.sources = { img: { type: "raster", tiles: [ESRI + "Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"], tileSize: 256, maxzoom: 16, attribution: "Basemap &copy; Esri, HERE, Garmin, &copy; OpenStreetMap contributors" },
+        names: NAMES_SRC(ESRI + "Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}") };
+      st2.layers = [{ id: "bg", type: "background", paint: { "background-color": "#0b0d10" } }, { id: "img", type: "raster", source: "img" }, { id: "names", type: "raster", source: "names" }];
+    }
+    return st2;
+  }
+
+  // The data, as on the flat map.
+  function unData() {
+    var id = window.__rcUn.id, sc = window.__rcUn.scale;
+    return { type: "FeatureCollection", features: Object.keys(RC.un.countries).filter(function (i) { return RC.countries[i]; }).map(function (iso) {
+      var c = sc.colour(unVal(iso, id));
+      return { type: "Feature", properties: { iso: iso, c: c || "", n: RC.countries[iso].name }, geometry: RC.countries[iso].geom };
+    }) };
+  }
+  var lineData = { type: "FeatureCollection", features: [] }, pointData = { type: "FeatureCollection", features: [] };
+  RC.entries.forEach(function (e, i) {
+    pointData.features.push({ type: "Feature", properties: { i: i, layer: e.layer, c: layerOf(e.layer).colour }, geometry: { type: "Point", coordinates: [e.plon, e.plat] } });
+    if (e.layer === "influence") (e.target_countries || []).forEach(function (t) {
+      if (t === e.iso || !RC.countries[t]) return;
+      lineData.features.push({ type: "Feature", properties: { i: i, t: t }, geometry: { type: "LineString", coordinates: arc([e.plat, e.plon], RC.countries[t].pt).map(function (p) { return [p[1], p[0]]; }) } });
+    });
+  });
+  var POINT_IDS = LAYERS.filter(function (l) { return l.id !== "un"; }).map(function (l) { return "p-" + l.id; });
+  function dataLayers(st) {
+    st.sources["d-un"] = { type: "geojson", data: unData() };
+    st.sources["d-lines"] = { type: "geojson", data: lineData };
+    st.sources["d-points"] = { type: "geojson", data: pointData };
+    var v = function (id) { return { visibility: vis[id] ? "visible" : "none" }; };
+    st.layers.push(
+      { id: "un-fill", type: "fill", source: "d-un", layout: v("un"), paint: { "fill-color": ["case", ["==", ["get", "c"], ""], "#000000", ["get", "c"]], "fill-opacity": ["case", ["==", ["get", "c"], ""], 0, 0.42] } },
+      { id: "un-edge", type: "line", source: "d-un", layout: v("un"), filter: ["!=", ["get", "c"], ""], paint: { "line-color": "#0d0f12", "line-width": 0.5, "line-opacity": 0.6 } },
+      { id: "lines", type: "line", source: "d-lines", layout: v("influence"), paint: { "line-color": "#b9c4d6", "line-width": 0.6, "line-opacity": 0.32 } }
+    );
+    LAYERS.forEach(function (l) {
+      if (l.id === "un") return;
+      st.layers.push({ id: "p-" + l.id, type: "circle", source: "d-points", filter: ["==", ["get", "layer"], l.id], layout: v(l.id),
+        paint: { "circle-color": ["get", "c"], "circle-radius": ["interpolate", ["linear"], ["zoom"], 1, 2.4, 5, 3.2, 10, 4.6],
+          "circle-stroke-color": "#07060d", "circle-stroke-width": 0.6, "circle-stroke-opacity": 0.9, "circle-pitch-alignment": "map" } });
+    });
+    st.layers.push({ id: "p-hover", type: "circle", source: "d-points", filter: ["==", ["get", "i"], -1],
+      paint: { "circle-color": "rgba(0,0,0,0)", "circle-radius": 6, "circle-stroke-color": "#ffffff", "circle-stroke-width": 1 } });
+    return st;
+  }
+  function fullStyle(k) {
+    var st = dataLayers(baseStyle(k));
+    st.projection = { type: "globe" };
+    if (!st.glyphs) delete st.glyphs;
+    st.layers.forEach(function (l) { if (l.id === "names") { l.layout = Object.assign({}, l.layout || {}, { visibility: window.__rcNamesOn() ? "visible" : "none" }); } });
+    // names above the shading, under the dots
+    var ni = st.layers.findIndex(function (l) { return l.id === "names"; });
+    if (ni >= 0) { var nl = st.layers.splice(ni, 1)[0]; var at = st.layers.findIndex(function (l) { return l.id === "lines"; }); st.layers.splice(at, 0, nl); }
+    return st;
+  }
+
+  var gmap = new maplibregl.Map({ container: el, style: fullStyle(window.__rcBaseNow() || "atlas"), center: HOME.center, zoom: HOME.zoom, minZoom: 0, maxZoom: 16,
+    attributionControl: false, renderWorldCopies: false });
+  window.__rcGlobe = gmap;
+  gmap.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-right");
+  gmap.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-left");
+  function home() { gmap.easeTo({ center: HOME.center, zoom: HOME.zoom, bearing: 0, pitch: 0, duration: 900 }); }
+  var HomeCtl = { onAdd: function () { var d = document.createElement("div"); d.className = "maplibregl-ctrl maplibregl-ctrl-group";
+      d.innerHTML = '<button type="button" class="rc-ghome" title="Back to the whole world" aria-label="Back to the whole world"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="8" cy="8" r="6.2"/><ellipse cx="8" cy="8" rx="2.7" ry="6.2"/><path d="M1.8 8h12.4"/></svg></button>';
+      d.querySelector("button").addEventListener("click", home); return d; }, onRemove: function () {} };
+  gmap.addControl(HomeCtl, "top-left");
+
+  var pop = new maplibregl.Popup({ maxWidth: "400px", className: "rc-gpop", focusAfterOpen: false });
+  var tip = new maplibregl.Popup({ closeButton: false, closeOnClick: false, className: "rc-gtip", offset: 8 });
+  function openEntry(i, lngLat, extra) { pop.setLngLat(lngLat).setHTML(entryBox(RC.entries[i], extra)).addTo(gmap); }
+  function goEntry(i) {
+    var e = RC.entries[i], ll = [e.plon, e.plat];
+    pop.remove();
+    if (gmap.getZoom() < 4.5) { gmap.flyTo({ center: ll, zoom: 5, duration: 900 }); gmap.once("moveend", function () { openEntry(i, ll); }); }
+    else { gmap.easeTo({ center: ll, duration: 500 }); openEntry(i, ll); }
+  }
+  var HIT = POINT_IDS.concat(["lines", "un-fill"]);
+  gmap.on("click", function (ev) {
+    if (pop.isOpen() && gmap.getZoom() > HOME.zoom + 0.75) { pop.remove(); home(); return; }
+    var f = gmap.queryRenderedFeatures(ev.point, { layers: HIT.filter(function (id) { return gmap.getLayer(id); }) });
+    var pt = f.filter(function (x) { return x.layer.id.indexOf("p-") === 0; })[0];
+    if (pt) { goEntry(pt.properties.i); return; }
+    var ln = f.filter(function (x) { return x.layer.id === "lines"; })[0];
+    if (ln) { openEntry(ln.properties.i, ev.lngLat, "Line to " + cname(ln.properties.t) + ", one of the countries it is aimed at."); return; }
+    var un = f.filter(function (x) { return x.layer.id === "un-fill"; })[0];
+    if (un) { pop.setLngLat(ev.lngLat).setHTML(unBox(un.properties.iso)).addTo(gmap); return; }
+    if (gmap.getZoom() > HOME.zoom + 0.75) { pop.remove(); home(); }
+  });
+  gmap.on("mousemove", function (ev) {
+    var f = gmap.queryRenderedFeatures(ev.point, { layers: HIT.filter(function (id) { return gmap.getLayer(id); }) });
+    gmap.getCanvas().style.cursor = f.length ? "pointer" : "";
+    var pt = f.filter(function (x) { return x.layer.id.indexOf("p-") === 0; })[0];
+    if (gmap.getLayer("p-hover")) gmap.setFilter("p-hover", ["==", ["get", "i"], pt ? pt.properties.i : -1]);
+    var txt = "";
+    if (pt) txt = RC.entries[pt.properties.i].title;
+    else if (f[0] && f[0].layer.id === "lines") txt = RC.entries[f[0].properties.i].title + " → " + cname(f[0].properties.t);
+    else if (f[0] && f[0].layer.id === "un-fill") { var v = unVal(f[0].properties.iso, window.__rcUn.id); txt = f[0].properties.n + ": " + (UN_SAY[v] || (v == null ? "" : v)); }
+    if (txt) tip.setLngLat(ev.lngLat).setHTML(esc(txt)).addTo(gmap); else tip.remove();
+  });
+  gmap.getCanvas().addEventListener("mouseleave", function () { tip.remove(); });
+
+  // Hooks the panel and the basemap bar call.
+  window.__rcGlobeBase = function (k) { if (gmap) { pop.remove(); gmap.setStyle(fullStyle(k), { diff: false }); } };
+  window.__rcGlobeNames = function (onN) { try { if (gmap.getLayer("names")) gmap.setLayoutProperty("names", "visibility", onN ? "visible" : "none"); } catch (e) { /* loading */ } };
+  window.__rcGlobeVis = function (id, onV) {
+    vis[id] = onV;
+    var ids = id === "un" ? ["un-fill", "un-edge"] : ["p-" + id].concat(id === "influence" ? ["lines"] : []);
+    ids.forEach(function (x) { if (gmap.getLayer(x)) gmap.setLayoutProperty(x, "visibility", onV ? "visible" : "none"); });
+  };
+  window.__rcGlobeUn = function () { var src = gmap.getSource("d-un"); if (src) src.setData(unData()); };
+  window.__rcGlobeGo = function (e) { if (el.hidden) return false; goEntry(RC.entries.indexOf(e)); return true; };
+
+  // Globe or flat.
+  window.__rcMode = function (md) {
+    var g = md === "globe";
+    el.hidden = !g; fl.hidden = g;
+    if (g) gmap.resize(); else { flat.invalidateSize(); flat.fire("resize"); }
+    [].forEach.call(document.querySelectorAll("#bases button[data-mode]"), function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-mode") === md ? "true" : "false"); });
+  };
+  window.__rcMode("globe");
+}
+
 start();
+try { globe(); } catch (err) { /* the globe needs a browser with WebGL; the flat map stays */ }
 </script>
 </body>
 </html>
