@@ -88,47 +88,32 @@
   const GSN = "https://api.gsn.naturedatalab.org/geo-analysis/layers";
   const BOUNDARIES = "https://raw.githubusercontent.com/WelcomeToYourGalaxy/culprits/main/map/data/boundaries.geojson";
 
-  // Colours (round nh12, asked 19 October): the five colours of the
-  // Biodiversity Intactness Index 51 to 100% layer, violet to electric blue,
-  // are the map's colours throughout. Amounts run from the violet (least) to
-  // the blue (most); a map with more steps takes colours in between. Things
-  // that are not amounts take the same five and paler mixes of them. Greys
-  // stay for "none" and "not given".
-  const BII5 = ["#9B00C1", "#7800CF", "#5600DC", "#3300EA", "#1000F7"];
+  // Colours: teal to cobalt for amounts, plum, rose and bone for points. No
+  // green, yellow or orange anywhere. (Round nh12 tried the Biodiversity
+  // Intactness Index's violet to blue throughout; round nh13 went back to
+  // these, asked 19 October.)
+  const RAMP7 = ["#D6EEF6", "#9CD6E6", "#5FB8D2", "#2E8FBA", "#1E6FA8", "#13447A", "#0C2E5E"];
+  const RAMP10 = ["#E4F3F8", "#C6E7F0", "#9CD6E6", "#6FC2DA", "#46AACB", "#2E8FBA", "#2275A8", "#1A5C92", "#13447A", "#0C2E5E"];
   const hex3 = (h) => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
-  const toHex = (c) => "#" + c.map((v) => Math.round(Math.max(0, Math.min(255, v))).toString(16).padStart(2, "0")).join("").toUpperCase();
-  // n colours from the violet to the blue, evenly along the five.
-  function biiRamp(n) {
-    if (n <= 1) return [BII5[4]];
-    const out = [];
-    for (let i = 0; i < n; i++) {
-      const t = i * (BII5.length - 1) / (n - 1), k = Math.min(BII5.length - 2, Math.floor(t)), f = t - k;
-      const a = hex3(BII5[k]), b = hex3(BII5[k + 1]);
-      out.push(toHex(a.map((v, j) => v + (b[j] - v) * f)));
-    }
-    return out;
-  }
-  // A paler mix of a colour (k of white).
-  const pale = (h, k) => toHex(hex3(h).map((v) => v + (255 - v) * k));
-  const RAMP7 = biiRamp(7);
-  const EDGE = "#1A0E3A";
+  // n colours of the ten-step ramp, light to dark (as the copies are made).
+  const tealRamp = (n) => n <= 1 ? [RAMP10[5]] : Array.from({ length: n }, (_, i) => RAMP10[Math.round(i * 9 / (n - 1))]);
+  const EDGE = "#08203F";
   const IUCN = [
-    ["Ia", RAMP7[6], "Ia: strict nature reserve"],
-    ["Ib", RAMP7[5], "Ib: wilderness area"],
-    ["II", RAMP7[4], "II: national park"],
-    ["III", RAMP7[3], "III: natural monument or feature"],
-    ["IV", RAMP7[2], "IV: habitat or species management area"],
-    ["V", RAMP7[1], "V: protected landscape or seascape"],
-    ["VI", RAMP7[0], "VI: protected area with sustainable use of natural resources"],
+    ["Ia", "#0C2E5E", "Ia: strict nature reserve"],
+    ["Ib", "#13447A", "Ib: wilderness area"],
+    ["II", "#1E6FA8", "II: national park"],
+    ["III", "#2E8FBA", "III: natural monument or feature"],
+    ["IV", "#46AACB", "IV: habitat or species management area"],
+    ["V", "#7DC6DC", "V: protected landscape or seascape"],
+    ["VI", "#B4DFEC", "VI: protected area with sustainable use of natural resources"],
     ["Not Reported", "#8A8F98", "Not reported"],
     ["Not Applicable", "#6E737B", "Not applicable"],
     ["Not Assigned", "#A3A7AD", "Not assigned"],
   ];
   const IUCN_OTHER = "#5E6470";
-  // Colours for kinds of things (not amounts): the five, then paler mixes.
-  const POINT = ["#1000F7", "#9B00C1", "#5600DC", pale("#9B00C1", 0.55), pale("#1000F7", 0.5), "#7800CF", "#3300EA", pale("#5600DC", 0.6), pale("#3300EA", 0.75), pale("#7800CF", 0.35)];
-  // Distance from a protected area, inside the deepest blue to further the palest.
-  const BANDCOL = ["#1000F7", "#3300EA", "#7800CF", "#9B00C1", pale("#9B00C1", 0.6)];
+  const POINT = ["#E9E1D3", "#D08A9C", "#9A5878", "#B9A6C9", "#C7B49A", "#7E92B8", "#E2B8C4", "#8E6C8A", "#A9C4D2", "#C99A8E"];
+  // Distance from a protected area, inside to further.
+  const BANDCOL = ["#E2B8C4", "#D08A9C", "#9A5878", "#7A4A6E", "#6E6A66"];
 
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const num = (v, d = 0) => (v == null || v === "" || !isFinite(Number(v))) ? "—" : Number(v).toLocaleString("en", { maximumFractionDigits: d });
@@ -222,20 +207,20 @@
     return pmCache.get(u);
   }
 
-  // An archive's key in this map's colours: each class, in the key's order
-  // (least to most), takes the next of the Biodiversity Intactness colours.
-  // Returns { key, url(archive, hidden) } (round nh12).
+  // An archive's picture with some classes hidden, and, when o.cols is given,
+  // its classes given other colours (o.alpha: how solid each). With neither,
+  // the archive is drawn as it was made. Returns { key, url(archive, hidden) }.
   function bii(key, o = {}) {
     const rows = (key || []).filter((r) => r[2] !== "h" && /^#[0-9a-f]{6}$/i.test(r[0] || ""));
-    const cols = o.cols || biiRamp(rows.length);
-    // The least is drawn faintest and the most solid, so on dark ground the
-    // low values stay quiet and the high ones stand out.
-    const alpha = o.alpha || rows.map((_, i) => rows.length > 2 ? 0.4 + 0.6 * i / (rows.length - 1) : 1);
+    const swapping = !!(o.cols || o.alpha);
+    const cols = o.cols || rows.map((r) => r[0]);
+    const alpha = o.alpha || rows.map(() => 1);
     const map = new Map(rows.map((r, i) => [r[0].toUpperCase(), [cols[i], alpha[i]]]));
     const swap = rows.map((r) => { const [c, a] = map.get(r[0].toUpperCase()); return `${r[0].slice(1)}-${c.slice(1)}${a !== 1 ? `-${Math.round(a * 100)}` : ""}`; }).join(",");
     return {
       key: (key || []).map((r) => { const m = r[2] !== "h" && map.get(String(r[0]).toUpperCase()); return m ? [m[1] === 1 ? m[0] : `rgba(${hex3(m[0]).join(",")},${m[1].toFixed(2)})`, r[1]] : r; }),
-      url: (archive, hidden) => `nhpm://h/${hidden && hidden.length ? hidden.map((c) => c.slice(1)).join(",") : "-"}/{z}/{x}/{y}?m=${swap}&a=${encodeURIComponent(archive)}`,
+      url: (archive, hidden) => (!swapping && !(hidden && hidden.length)) ? archive
+        : `nhpm://h/${hidden && hidden.length ? hidden.map((c) => c.slice(1)).join(",") : "-"}/{z}/{x}/{y}?${swapping ? `m=${swap}&` : ""}a=${encodeURIComponent(archive)}`,
       colourOf: (c) => (map.get(String(c).toUpperCase()) || [c])[0],
     };
   }
@@ -297,10 +282,10 @@
 .nh .nh-sub.open>.nh-parts{display:block}
 .nh .nh-part{padding:5px 0 6px;border-bottom:1px solid rgba(255,255,255,.05)}
 .nh .nh-row{display:flex;align-items:flex-start;gap:7px;cursor:pointer}
-.nh .nh-row input{margin:3px 0 0;accent-color:#5600DC;flex:0 0 auto}
+.nh .nh-row input{margin:3px 0 0;accent-color:#2E8FBA;flex:0 0 auto}
 .nh .nh-t{flex:1;color:#E9E4D8}
 .nh .nh-mark{flex:0 0 auto;font-size:9px;font-weight:700;letter-spacing:.06em;padding:1px 5px;border-radius:3px;margin-top:2px;white-space:nowrap}
-.nh .nh-mark.live{background:rgba(86,0,220,.32);color:#D9CCFF}
+.nh .nh-mark.live{background:rgba(46,143,186,.22);color:#9CD6E6}
 .nh .nh-mark.copy{background:rgba(255,255,255,.06);color:#9AA3AD}
 .nh .nh-fold{all:unset;cursor:pointer;flex:0 0 auto;font-size:10px;line-height:15px;color:#9AA3AD;width:15px;text-align:center;margin-top:2px;border-radius:3px}
 .nh .nh-fold:hover{color:#F2EEE4;background:rgba(255,255,255,.08)}
@@ -325,9 +310,9 @@
 .nh .nh-groups label{display:flex;align-items:center;gap:6px;font-size:11px;color:#C9CFD6;margin:1px 0;cursor:pointer}
 .nh .nh-groups label.nh-g{margin-top:6px;color:#E9E4D8}
 .nh .nh-groups label.nh-k{padding-left:16px}
-.nh .nh-groups input{margin:0;accent-color:#5600DC}
+.nh .nh-groups input{margin:0;accent-color:#2E8FBA}
 .nh .nh-time{display:flex;align-items:center;gap:6px;margin:5px 0}
-.nh .nh-time input[type=range]{flex:1;accent-color:#5600DC;min-width:0}
+.nh .nh-time input[type=range]{flex:1;accent-color:#2E8FBA;min-width:0}
 .nh .nh-time button{font:inherit;font-size:11px;background:#151B23;color:#C9CFD6;border:1px solid #333D49;border-radius:3px;padding:1px 7px;cursor:pointer}
 .nh .nh-time output{font-size:12px;color:#F2EEE4;min-width:74px;text-align:right}
 .nh .nh-time select{font-size:11px;padding:1px 2px}
@@ -651,7 +636,7 @@
         paint: { "circle-color": colour, "circle-radius": scaled(r, 2.6), "circle-blur": 1, "circle-opacity": 0.28 } }, base));
       return addLayer(part, Object.assign({ id: `${part.id}-${o.name || "pt"}`, type: "circle",
         paint: { "circle-color": colour, "circle-radius": r, "circle-blur": 0.35, "circle-opacity": 0.95,
-                 "circle-stroke-width": 0.7, "circle-stroke-color": "rgba(240,236,255,.55)" } }, base));
+                 "circle-stroke-width": 0.5, "circle-stroke-color": "rgba(11,15,20,.6)" } }, base));
     }
 
     // The class of a picture at a place: the archive's own square at its
@@ -905,27 +890,22 @@
         p.key = d.key || [];
         p.hidden = new Set();
         const head = await archiveOf(steps[steps.length - 1].archive).getHeader();
-        // Round nh12: in the Biodiversity Intactness colours, the land used and
-        // lived on from the deepest blue (cities) to violet, the remote and
-        // wild land in the same colours, faint.
         const usedK = p.key.filter(([, t]) => ANTHRO_USED.test(t)), wildK = p.key.filter(([, t]) => !ANTHRO_USED.test(t));
-        const uc = biiRamp(usedK.length).reverse(), wc = biiRamp(wildK.length).reverse();
-        const order = usedK.concat(wildK);
-        const B = bii(order, { cols: uc.concat(wc), alpha: usedK.map(() => 1).concat(wildK.map(() => 0.42)) });
+        const B = bii(p.key);
         const url = (st) => B.url(st.archive, [...p.hidden]);
         const show = (i) => { p.cur = steps[i]; return raster(p, url(steps[i]), { nearest: true, opacity: 0.88, maxzoom: head.maxZoom, attribution: "Ellis et al. 2021 (Anthromes 12K)" }); };
         p.warm = (i) => warm(url(steps[i]), head.maxZoom);
         const box = bodyOf(p);
         p.tl = timeline(p, box, steps.map((_, i) => i), steps.length - 1, show, (i) => steps[i].label);
         // The groups and the kinds, each kind's box its colour in the key.
-        const swatch = (c, k) => k >= usedK.length ? `background:${esc(B.colourOf(c))};opacity:.5` : `background:${esc(B.colourOf(c))}`;
+        const swatch = (c) => `background:${esc(c)}`;
         const used = usedK.map((r, i) => [r[0], r[1], swatch(r[0], i)]), wild = wildK.map((r, i) => [r[0], r[1], swatch(r[0], usedK.length + i)]);
         const el = document.createElement("div");
         el.className = "nh-key nh-groups";
         const grp = (g, title, list) => `<label class="nh-g"><input type="checkbox" data-g="${g}" checked> <b>${esc(title)}</b></label>` +
           list.map(([c, t, st]) => `<label class="nh-k"><input type="checkbox" data-c="${esc(c)}" data-in="${g}" checked><i style="${st}"></i>${esc(t)}</label>`).join("");
         el.innerHTML = grp("used", "Used and lived on: cities, settlements, villages, and populated croplands, rangelands, woodlands and drylands", used) +
-          grp("wild", "Remote, wild and ice (drawn faint)", wild);
+          grp("wild", "Remote, wild and ice", wild);
         box.appendChild(el);
         const sync = () => {
           for (const g of ["used", "wild"]) {
@@ -1039,9 +1019,7 @@
         const d = await json(NH + "urban2100.json");
         p.choices = d.choices || [];
         if (!p.choices.length) throw new Error("not built yet");
-        // Round nh12: 2015's towns in the deepest blue, each later step a
-        // little more violet, so the newest growth reads against the old.
-        const Bof = (c) => bii(c.key || [], { cols: biiRamp((c.key || []).length).reverse() });
+        const Bof = (c) => bii(c.key || []);
         const show = (i) => {
           p.cur = p.choices[Number(i)];
           const B = Bof(p.cur);
@@ -1234,11 +1212,11 @@
         p.playMs = 1200;
         yr.querySelector("input").addEventListener("change", (e) => { tbox.hidden = !e.target.checked; p.years = e.target.checked ? span() : null; refresh(); });
         const q = () => `introduced=true&${p.grade}` + (p.years ? `&d1=${p.years[0]}-01-01&d2=${p.years[1]}-12-31` : "");
-        keyBox(p).innerHTML = keyHtml([["", "observations in each square: the deeper the colour, the more", "h"], [pale("#5600DC", 0.6), "few"], ["#5600DC", "many"]]);
+        keyBox(p).innerHTML = keyHtml([["", "observations in each square: the deeper the colour, the more", "h"], ["#E2B8C4", "few"], ["#9A5878", "many"]]);
         let seq = 0;
         async function refresh() {
           const mine = ++seq;
-          const done = raster(p, `nhretry://${INAT}/grid/{z}/{x}/{y}.png?${q()}&color=%235600DC`, { maxzoom: 14, opacity: 0.95, attribution: "iNaturalist", fade: 200 });
+          const done = raster(p, `nhretry://${INAT}/grid/{z}/{x}/{y}.png?${q()}&color=%239A5878`, { maxzoom: 14, opacity: 0.9, attribution: "iNaturalist", fade: 200 });
           stateOf(p, "counting…");
           try {
             const j = await (await fetch(`${INAT}/observations?${q()}&per_page=0`)).json();
@@ -1514,7 +1492,17 @@
         if (!ready) stateOf(p, "the copy is being remade with the sea clear and the key in words", true);
         const show = (i) => {
           p.cur = p.choices[Number(i)];
-          if (ready) { raster(p, p.cur.archive, { nearest: true, attribution: "Tang et al. 2021, CC BY 4.0" }); keyBox(p).innerHTML = keyHtml(p.cur.key || []); return; }
+          if (ready) {
+            // The copy was made in round nh12's violet-to-blue; shown in this
+            // map's teal-to-cobalt, class by class, grey kept for land that is not farmland.
+            const rows = (p.cur.key || []).filter((r) => r[2] !== "h" && /^#/.test(r[0]));
+            const classes = rows.filter((r) => !/not farmland/.test(r[1]));
+            const tc = tealRamp(classes.length);
+            const B = bii(p.cur.key, { cols: rows.map((r) => classes.includes(r) ? tc[classes.indexOf(r)] : r[0]) });
+            rasterBii(p, p.cur.archive, B, { nearest: true, attribution: "Tang et al. 2021, CC BY 4.0" });
+            keyBox(p).innerHTML = keyHtml(B.key);
+            return;
+          }
           const B = bii(p.cur.key);
           rasterBii(p, p.cur.archive, B, { nearest: true, attribution: "Tang et al. 2021, CC BY 4.0" });
           keyBox(p).innerHTML = keyHtml(B.key);
@@ -1708,7 +1696,7 @@
           geometry: { type: "LineString", coordinates: [d.points[e.from], d.points[e.to]] } })) };
         addSource("bannedexp", { type: "geojson", data: lines, attribution: "Unearthed and Public Eye" });
         addLayer(p, { id: "bannedexp-line", type: "line", source: "bannedexp", layout: { "line-cap": "round" },
-          paint: { "line-color": pale("#9B00C1", 0.25), "line-opacity": 0.6, "line-width": ["interpolate", ["linear"], ["ln", ["+", 1, ["get", "n"]]], 0, 0.6, 5, 4] } });
+          paint: { "line-color": "#D08A9C", "line-opacity": 0.55, "line-width": ["interpolate", ["linear"], ["ln", ["+", 1, ["get", "n"]]], 0, 0.6, 5, 4] } });
         const draw = () => {
           const vals = {};
           for (const r of rows) {
@@ -1717,7 +1705,7 @@
             vals[iso] = (vals[iso] || 0) + (p.by === "n" ? 1 : (r._amount || 0));
           }
           keyBox(p).innerHTML = shade(p, vals, (v) => num(v), p.by === "n" ? "notifications" : unit || "amount") +
-            keyHtml([[pale("#9B00C1", 0.25), "line: from the exporting country to the destination, wider for more notifications"]]);
+            keyHtml([["#D08A9C", "line: from the exporting country to the destination, wider for more notifications"]]);
         };
         draw();
         const un = [...new Set(rows.flatMap((r) => [!r._from && r._cols && r[r._cols["exporting country"]], !r._to && r._cols && r[r._cols.destination]]).filter(Boolean))];
@@ -1813,10 +1801,10 @@
       iucn: { words: "IUCN management category", field: ["coalesce", ["get", "iucn_cat"], ["get", "IUCN_CAT"], ""],
         rows: IUCN.map(([k, c, t]) => [k, c, k === "Not Applicable" ? "Not applicable: international designations (World Heritage sites, Ramsar wetlands, UNESCO biosphere reserves) and other conserved areas (OECMs), which the categories do not cover" : t]) },
       desig: { words: "Kind of designation", field: ["coalesce", ["get", "desig_type"], ["get", "DESIG_TYPE"], ""],
-        rows: [["National", "#1000F7", "National: designated by the country's own laws"], ["Regional", "#5600DC", "Regional: under a regional agreement (such as the EU's Natura 2000)"],
-               ["International", "#9B00C1", "International: under an international convention (World Heritage, Ramsar, UNESCO Man and the Biosphere)"], ["Not Applicable", "#6E737B", "Not applicable"]] },
+        rows: [["National", "#1E6FA8", "National: designated by the country's own laws"], ["Regional", "#7DC6DC", "Regional: under a regional agreement (such as the EU's Natura 2000)"],
+               ["International", "#D08A9C", "International: under an international convention (World Heritage, Ramsar, UNESCO Man and the Biosphere)"], ["Not Applicable", "#6E737B", "Not applicable"]] },
       site: { words: "Protected area or other conserved area", field: ["coalesce", ["get", "site_type"], ["get", "pa_def"], ""],
-        rows: [["PA", "#1000F7", "Protected area"], ["OECM", "#9B00C1", "Other effective area-based conservation measure (OECM): conserved, but not designated as protected"]] },
+        rows: [["PA", "#1E6FA8", "Protected area"], ["OECM", "#D08A9C", "Other effective area-based conservation measure (OECM): conserved, but not designated as protected"]] },
     };
     part({
       id: "pa", sec: "pa", title: "Protected areas, by IUCN management category or by kind (World Database on Protected Areas)", live: true,
@@ -1872,17 +1860,17 @@
     // trees to ice, are left out). Each is one colour where it covers, so it
     // is drawn in one colour of this map's, named in words.
     const GSN_PICK = [
-      ["Protection", "#1000F7", [[1, "Strictly protected areas (IUCN categories Ia and Ib)"], [2, "Other protected areas (IUCN categories II to VI)"],
+      ["Protection", "#1E6FA8", [[1, "Strictly protected areas (IUCN categories Ia and Ib)"], [2, "Other protected areas (IUCN categories II to VI)"],
         [3, "Other effective area-based conservation measures (OECMs)"], [4, "Recognised Indigenous and traditional territories"],
         [5, "Documented conservation areas not in the official databases"], [93, "Every protected area and OECM together"]]],
-      ["Important for nature", "#9B00C1", [[44, "Every area important for biodiversity or for nature's services to people"], [45, "Important for biodiversity"], [46, "Important for nature's services to people (such as carbon and water)"],
+      ["Important for nature", "#D08A9C", [[44, "Every area important for biodiversity or for nature's services to people"], [45, "Important for biodiversity"], [46, "Important for nature's services to people (such as carbon and water)"],
         [7, "Important areas left unprotected"], [8, "Habitat of rare and threatened species"], [9, "High biodiversity areas (hotspots and high beta diversity)"],
         [10, "Large mammal assemblages and migrations"], [11, "Wild and intact areas"], [12, "Climate stabilisation areas (intact land holding over 50 tonnes of carbon a hectare)"],
         [98, "Top 10% conservation priorities"], [71, "Important areas inside protected areas and OECMs"],
         [70, "Important areas inside conserved but not formally protected land (Indigenous territories and documented conservation areas)"]]],
-      ["Changed by people", "#5600DC", [[27, "Land changed by people, at 90 m (Global Safety Net's cut of the Human Modification index)"],
+      ["Changed by people", "#C7B49A", [[27, "Land changed by people, at 90 m (Global Safety Net's cut of the Human Modification index)"],
         [72, "Land changed by people inside protected areas and OECMs"]]],
-      ["Critical habitat", "#7800CF", [[96, "Critical habitat on land (as the International Finance Corporation defines it)"], [97, "Critical habitat at sea (as the International Finance Corporation defines it)"]]],
+      ["Critical habitat", "#B9A6C9", [[96, "Critical habitat on land (as the International Finance Corporation defines it)"], [97, "Critical habitat at sea (as the International Finance Corporation defines it)"]]],
       ["Biodiversity intactness (its own colours)", null, [[94, "Biodiversity Intactness Index, 0 to 50%"], [95, "Biodiversity Intactness Index, 51 to 100%"]]],
     ];
     part({
@@ -1949,7 +1937,7 @@
         const layers = ["wdpa_licensed_protected_areas", "default"];
         addSource("papress", { type: "vector", tiles: [a.uri], minzoom: a.minzoom, maxzoom: a.maxzoom, promoteId: Object.fromEntries(layers.map((l) => [l, "wdpaid"])),
           attribution: "Kennedy et al. 2019 (gHM); UNEP-WCMC and IUCN (WDPA) via Global Forest Watch" });
-        const MCOL = biiRamp(4);
+        const MCOL = ["#C6E7F0", "#5FB8D2", "#1E6FA8", "#0C2E5E"];
         const fillFor = () => p.measure === "m"
           ? ["case", ["==", ["feature-state", "m"], null], "rgba(0,0,0,0)", ["step", ["feature-state", "m"], MCOL[0], 0.1, MCOL[1], 0.4, MCOL[2], 0.7, MCOL[3]]]
           : ["case", ["==", ["feature-state", "h"], null], "rgba(0,0,0,0)", ["step", ["feature-state", "h"], RAMP7[0], 10, RAMP7[2], 25, RAMP7[3], 50, RAMP7[5], 75, RAMP7[6]]];
@@ -2020,7 +2008,7 @@
           addSource("paddd-areas", { type: "vector", url: "pmtiles://" + NH + meta.areas, attribution: "PADDDtracker v2.1 (CI and WWF 2021)" });
         }
         const types = meta.types || [];
-        const TCOL = { downgrade: pale("#9B00C1", 0.5), downsize: "#9B00C1", degazette: "#1000F7" };
+        const TCOL = { downgrade: "#E9E1D3", downsize: "#D08A9C", degazette: "#9A5878" };
         const tcol = (t) => TCOL[Object.keys(TCOL).find((k) => String(t).toLowerCase().includes(k))] || POINT[3 + types.indexOf(t) % 5];
         const typed = !!(tf && types.length);
         const colour = typed ? ["match", ["to-string", ["get", tf]]] : POINT[1];
@@ -2212,8 +2200,8 @@
           addSource("paxin-pa", { type: "vector", tiles: [a.uri], minzoom: a.minzoom, maxzoom: a.maxzoom, attribution: "UNEP-WCMC and IUCN (WDPA), via Global Forest Watch" });
           for (const sl of ["wdpa_licensed_protected_areas", "default"]) {
             const f = ["in", ["to-number", ["coalesce", ["get", "wdpaid"], ["get", "WDPAID"], -1]], ["literal", ids]];
-            addLayer(p, { id: `paxin-pa-fill-${sl}`, type: "fill", source: "paxin-pa", "source-layer": sl, filter: f, paint: { "fill-color": "#5600DC", "fill-opacity": 0.28 } }, firstAbove());
-            addLayer(p, { id: `paxin-pa-edge-${sl}`, type: "line", source: "paxin-pa", "source-layer": sl, filter: f, paint: { "line-color": pale("#5600DC", 0.45), "line-width": ["interpolate", ["linear"], ["zoom"], 2, 0.6, 8, 1.6] } });
+            addLayer(p, { id: `paxin-pa-fill-${sl}`, type: "fill", source: "paxin-pa", "source-layer": sl, filter: f, paint: { "fill-color": "#9A5878", "fill-opacity": 0.3 } }, firstAbove());
+            addLayer(p, { id: `paxin-pa-edge-${sl}`, type: "line", source: "paxin-pa", "source-layer": sl, filter: f, paint: { "line-color": "#D08A9C", "line-width": ["interpolate", ["linear"], ["zoom"], 2, 0.6, 8, 1.6] } });
           }
         } catch (e) { stateOf(p, `the protected areas could not be outlined (${e.message})`, true); }
         addSource("paxin", { type: "geojson", data: { type: "FeatureCollection", features: feats }, attribution: "Protected Carbon (LINGO, Oil Change International); Rystad Energy; Global Energy Monitor; WDPA" });
@@ -2235,7 +2223,7 @@
         checks(box, kinds.map((k, i) => [k, `${k} (${num(count("_kind", k))})`, POINT[i % POINT.length]]), (sel) => { p.kinds = sel; apply(); });
         const h2 = document.createElement("div"); h2.className = "nh-note"; h2.textContent = "Stage, as the source gives it"; box.appendChild(h2);
         checks(box, stages.map((s2) => [s2, `${s2} (${num(count("_stage", s2))})`]), (sel) => { p.stages = sel; apply(); });
-        keyBox(p).innerHTML = keyHtml([["#5600DC", "a protected area with oil, gas or coal projects inside it"]]);
+        keyBox(p).innerHTML = keyHtml([["#9A5878", "a protected area with oil, gas or coal projects inside it"]]);
         stateOf(p, `${num(og.features.length)} oil and gas projects and ${num(coal.features.length)} coal mines in ${num(ids.length)} protected areas, read just now`);
       },
       box(f) {
@@ -2508,13 +2496,25 @@
       { id: "land-edge", type: "line", source: "land", paint: { "line-color": "#4A4F55", "line-width": ["interpolate", ["linear"], ["zoom"], 1, 0.35, 6, 0.9], "line-opacity": 0.75 } },
     ],
   };
-  // One world only (round nh12): no copies of the map repeated past its edges.
-  const map = new maplibregl.Map({ container: "map", style, center: [10, 18], zoom: 1.6, minZoom: 0.6, maxZoom: 15, attributionControl: false, renderWorldCopies: false });
+  // One world only, as a globe (round nh13, asked 19 October). Round nh12
+  // stopped the flat map repeating past its edges, but a flat map that does
+  // not repeat cannot be dragged past its edges or zoomed out beyond the
+  // whole world (MapLibre holds it in place). As a globe there is one Earth,
+  // it turns when dragged from anywhere, and it can be zoomed out until the
+  // whole globe floats in the dark; zoomed in, it reads as a flat map.
+  style.projection = { type: "globe" };
+  const map = new maplibregl.Map({ container: "map", style, center: [10, 18], zoom: 2.3, minZoom: 0, maxZoom: 15, attributionControl: false, renderWorldCopies: false });
   map.addControl(new maplibregl.AttributionControl({ compact: true }), window.innerWidth > 720 ? "bottom-right" : "top-left");
+  // The credits start folded into their ⓘ button: with several rows on, the
+  // open list covered the bottom of the map (round nh13).
+  const foldCredits = () => { const a = document.querySelector(".maplibregl-ctrl-attrib"); if (a) { a.classList.remove("maplibregl-compact-show"); a.removeAttribute("open"); } };
+  let creditsAsked = false;
+  document.addEventListener("click", (e) => { if (e.target.closest && e.target.closest(".maplibregl-ctrl-attrib-button")) creditsAsked = true; }, true);
+  for (const ev of ["idle", "sourcedata"]) map.on(ev, () => { if (!creditsAsked) foldCredits(); });
   map.addControl(new maplibregl.NavigationControl({ visualizePitch: false }), "top-right");
   // The "Whole world" button (round nh12: words, not a symbol) takes the
   // map back out to the whole world.
-  const HOME = { center: [10, 18], zoom: 1.6 };
+  const HOME = { center: [10, 18], zoom: 2.3 };
   document.getElementById("world").addEventListener("click", () => map.easeTo(Object.assign({ bearing: 0, pitch: 0, duration: 900 }, HOME)));
   const pad = () => map.setPadding({ left: window.innerWidth > 720 ? 396 : 0, top: 0, right: 0, bottom: window.innerWidth > 720 ? 0 : Math.round(window.innerHeight * 0.5) });
   pad();
@@ -2525,6 +2525,10 @@
     const atlas = NonHumanAtlas.create({ map, maplibregl, pmtiles, panel: document.getElementById("nh-panel") });
     window.nonHumanAtlas = atlas;
     window.nonHumanMap = map;
+    // Drawn when the map opens (round nh13, asked 19 October); each can be
+    // unticked. Only on this page: inside the Culprits map nothing is drawn
+    // until it is ticked there.
+    for (const pid of ["ghm", "ocean", "papress", "conc", "paxin"]) atlas.open(pid, true);
   });
 
   // Each basemap's layers, added the first time it is chosen, under every
