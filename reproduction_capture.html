@@ -12,7 +12,7 @@
 <style>
 :root{
   --ink:#0d0f12;--sheet:#14171b;--sheet2:#191d22;--rule:#262b31;--rule2:#1f2328;
-  --text:#e6e3dd;--dim:#9aa0a6;--faint:#6c737a;--accent:#8fa9c9;
+  --text:#e6e3dd;--dim:#9aa0a6;--faint:#6c737a;--accent:#a99cf5;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden;background:var(--ink);color:var(--text);
@@ -34,19 +34,19 @@ h1{font-family:"Uncial Antiqua","Marcellus","Georgia",serif;font-size:21px;font-
 .un-line a,.rc-src a{color:var(--accent);text-decoration:none}
 .un-line a:hover,.rc-src a:hover{text-decoration:underline}
 .sec{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
-.lyr{display:grid;grid-template-columns:28px 1fr auto;column-gap:10px;align-items:center;padding:6px 0;cursor:pointer;user-select:none}
+.lyr{display:grid;grid-template-columns:16px 1fr auto;column-gap:10px;align-items:center;padding:6px 0;cursor:pointer;user-select:none}
 .lyr+.lyr,#unopts+.lyr{border-top:1px solid var(--rule2)}
-.sw{position:relative;width:26px;height:14px;border-radius:7px;background:#262b31;border:1px solid #333a42;transition:background .15s}
-.sw::after{content:"";position:absolute;top:1px;left:1px;width:10px;height:10px;border-radius:50%;background:#7d858d;transition:transform .15s,background .15s}
-.lyr.on .sw{background:#5d6873;border-color:#6c7884}
-.lyr.on .sw::after{transform:translateX(12px);background:#f2f0ec}
-.lk{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;vertical-align:1px;box-shadow:0 0 0 1px rgba(239,233,223,.55)}
+.sw{position:relative;width:13px;height:13px;border-radius:2px;background:transparent;border:1px solid #4a525b;transition:background .12s,border-color .12s}
+.sw::after{content:"";position:absolute;left:3.5px;top:0.5px;width:3.5px;height:7.5px;border:solid #0d0f12;border-width:0 1.6px 1.6px 0;transform:rotate(45deg);opacity:0}
+.lyr.on .sw{background:#d8d4cc;border-color:#d8d4cc}
+.lyr.on .sw::after{opacity:1}
+.lk{display:inline-block;width:9px;height:3px;margin-right:9px;vertical-align:3px}
 .lyr input{position:absolute;opacity:0;pointer-events:none}
 .lyr .t{font-weight:500;font-size:13.5px;line-height:1.3}
 .lyr .d{display:block;font-size:12px;color:var(--faint);line-height:1.35;margin-top:1px}
 .lyr .n{font-size:12px;color:var(--faint);font-variant-numeric:tabular-nums;padding-top:1px}
 .lyr:not(.on) .t{color:var(--dim)}
-#unopts{padding:0 0 8px 38px}
+#unopts{padding:0 0 8px 26px}
 #unopts label{display:block;font-size:11.5px;color:var(--faint);margin-bottom:4px}
 .pk-l{font-size:11.5px;color:var(--faint);margin-bottom:4px}
 .pk-b{position:relative;display:block;width:100%;text-align:left;background:#101317;border:1px solid var(--rule);color:var(--text);border-radius:4px;padding:6px 24px 6px 8px;font:inherit;font-size:12.5px;line-height:1.35;cursor:pointer;white-space:normal}
@@ -64,14 +64,14 @@ select:focus,input[type=search]:focus{outline:none;border-color:#3d4650}
 #unleg{display:grid;grid-template-columns:1fr 1fr;gap:1px 12px;margin-top:6px;font-size:11.5px;line-height:1.35;color:var(--dim)}
 #unleg span{display:flex;align-items:flex-start;gap:6px;min-width:0}
 #unleg i{margin-top:3px}
-#unleg i{flex:none;width:10px;height:10px;border-radius:2px}
+#unleg i{flex:none;width:10px;height:10px;border-radius:1px}
 #unleg em{font-style:normal;color:var(--faint);margin-left:auto;font-variant-numeric:tabular-nums}
 input[type=search]{width:100%;background:#101317;border:1px solid var(--rule);color:var(--text);border-radius:4px;padding:7px 9px;font:inherit;font-size:13px}
 #count{font-size:11.5px;color:var(--faint);margin-top:6px}
 #list{list-style:none}
 #list li{display:grid;grid-template-columns:8px 1fr;gap:10px;padding:8px 18px;border-bottom:1px solid var(--rule2);cursor:pointer}
 #list li:hover,#list li:focus{background:var(--sheet2);outline:none}
-#list li .k{width:7px;height:7px;border-radius:50%;margin-top:6px}
+#list li .k{width:8px;height:3px;margin-top:8px}
 #list li .tt{font-size:13px;line-height:1.35}
 #list li .m{font-size:11.5px;color:var(--faint);margin-top:1px}
 #credit{font-size:11px;color:var(--faint);padding:14px 18px 18px}
@@ -98,7 +98,7 @@ input[type=search]{width:100%;background:#101317;border:1px solid var(--rule);co
 .leaflet-tooltip:before{display:none}
 .rc-box{font-size:13px;line-height:1.5}
 .rc-kind{font-family:"Marcellus","Georgia",serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);display:flex;align-items:center;gap:7px}
-.rc-kind i{width:8px;height:8px;border-radius:50%;display:inline-block}
+.rc-kind i{width:10px;height:3px;display:inline-block}
 .rc-box h3{font-weight:600;font-size:16px;line-height:1.3;margin:6px 0 3px;color:var(--text)}
 .rc-meta{font-size:12px;color:var(--dim)}
 .rc-what{margin:9px 0 8px;color:#d9d6d0}
@@ -109,7 +109,7 @@ input[type=search]{width:100%;background:#101317;border:1px solid var(--rule);co
 .rc-src b{font-weight:500;color:var(--dim)}
 .rc-src ol{margin:3px 0 4px 18px}
 .rc-pt{margin-top:7px;font-size:11px;color:var(--faint)}
-.rc-un{margin-top:8px;padding:8px 10px;border-radius:3px;background:#1c2025;font-size:12.5px}
+.rc-un{margin-top:8px;padding:8px 10px;border-left:2px solid #5600DC;background:#18161f;font-size:12.5px}
 .rc-sec{margin-top:8px;border-top:1px solid var(--rule);padding-top:6px}
 .rc-sec summary{cursor:pointer;font-family:"Marcellus","Georgia",serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
 .rc-box .rc-sec dl{grid-template-columns:1fr minmax(84px,40%);border-top:0;padding-top:6px}
@@ -159,25 +159,29 @@ var PLATE = "data:image/webp;base64,UklGRpy2BABXRUJQVlA4WAoAAAAQAAAAPwYAmgUAQUxQ
 // is the line under it.
 var LAYERS = [
   { id: "un", short: "Government birth policies (UN, 2019)",
-    about: "What 197 governments reported on births, family planning and abortion; shade by any question", colour: "#7a5f73" },
+    about: "What 197 governments reported on births, family planning and abortion; shade by any question", colour: "#7800CF" },
   { id: "sterilization", short: "Forced sterilization",
-    about: "Sterilization forced on people or done without their free and informed consent", colour: "#8f3f4c" },
+    about: "Sterilization forced on people or done without their free and informed consent", colour: "#9B00C1" },
   { id: "forcedbirth", short: "Forced births and birth control",
-    about: "Abortion bans to force births, forced abortion and contraception, birth quotas and fines, breeding and child removal", colour: "#b5838d" },
+    about: "Abortion bans to force births, forced abortion and contraception, birth quotas and fines, breeding and child removal", colour: "#C566DA" },
   { id: "incentive", short: "Birth incentives",
-    about: "Bonuses, tax breaks, loans and other perks to raise or lower births", colour: "#4a7c80" },
+    about: "Bonuses, tax breaks, loans and other perks to raise or lower births", colour: "#5600DC" },
   { id: "ads", short: "Advertising and propaganda",
-    about: "Campaigns, slogans, posters and awards urging more or fewer births", colour: "#6f6489" },
+    about: "Campaigns, slogans, posters and awards urging more or fewer births", colour: "#3300EA" },
   { id: "influence", short: "Influence abroad",
-    about: "Foreign funding and its cuts, international networks, surrogacy markets and fertility companies", colour: "#4f6f99" }
+    about: "Foreign funding and its cuts, international networks, surrogacy markets and fertility companies", colour: "#1000F7" }
 ];
+// Colours: the five colours of the Biodiversity Intactness Index 51 to 100%
+// layer of the Invasion of non-humans map (violet to electric blue), and paler
+// mixes of them; greys for "none" and "not given", as that map has it.
+var BII5 = ["#9B00C1", "#7800CF", "#5600DC", "#3300EA", "#1000F7"];
 var UN_COLOURS = {
-  "Raise": "#7a5f73", "Lower": "#4a7c80", "Maintain at Current Levels": "#9a9184", "No Official Policy": "#5d5b63",
-  "Yes": "#4a7c80", "No": "#7a5f73", "Major Concern": "#8f3f4c", "Minor Concern": "#6f6489", "Not a Concern": "#4f6f99",
-  "Not Applicable": "#4d4a52", "Varies by Jurisdiction": "#8a8378", "..": "#3d3b42"
+  "Raise": "#9B00C1", "Lower": "#1000F7", "Maintain at Current Levels": "#B9A6EE", "No Official Policy": "#5e5c66",
+  "Yes": "#3300EA", "No": "#9B00C1", "Major Concern": "#9B00C1", "Minor Concern": "#5600DC", "Not a Concern": "#1000F7",
+  "Not Applicable": "#4a4952", "Varies by Jurisdiction": "#C9B8F2", "..": "#3a3940"
 };
-var UN_EXTRA = ["#4f6f99", "#8a6c78", "#5f7f7c", "#7c7392", "#7d7266", "#a39aa8", "#4c5f78", "#7a5e56"];
-var UN_SEQ = ["#c9d3e6", "#9fb1d4", "#7891c0", "#5873a8", "#3e5a8c", "#2b4475"];
+var UN_EXTRA = ["#5600DC", "#C566DA", "#7800CF", "#8C7DF8", "#3300EA", "#D5B0E8", "#A88CF2", "#1000F7"];
+var UN_SEQ = ["#9B00C1", "#8300CC", "#6A00D6", "#4600E3", "#2A00ED", "#1000F7"];
 var UN_SAY = { "—": "— (no answer: not among the 107 governments that answered)", "..": ".." };
 var KIND_LABEL = { sterilization: "Forced sterilization", forcedbirth: "Forced births and birth control", incentive: "Incentive", ads: "Advertising or propaganda", influence: "Influence abroad" };
 
@@ -311,8 +315,8 @@ function start() {
   window.__rcUn = unPick;
   unIsos.forEach(function (iso) {
     var c0 = unPick.scale.colour(unVal(iso, "2.1"));
-    var lyr = L.polygon(latlngs(RC.countries[iso].geom), { pane: "countries", fillColor: c0 || "#000", fillOpacity: c0 ? 0.42 : 0,
-      color: "#0d0f12", weight: 0.5, opacity: c0 ? 0.6 : 0, bubblingMouseEvents: false });
+    var lyr = L.polygon(latlngs(RC.countries[iso].geom), { pane: "countries", fillColor: c0 || "#000", fillOpacity: c0 ? 0.38 : 0,
+      color: "#0b0a12", weight: 0.4, opacity: c0 ? 0.6 : 0, bubblingMouseEvents: false });
     lyr._rcIso = iso;
     lyr.bindPopup(unBox(iso), { maxWidth: 400, maxHeight: 460 });
     var v = unVal(iso, "2.1");
@@ -326,7 +330,7 @@ function start() {
     if (e.layer !== "influence") return;
     (e.target_countries || []).forEach(function (t) {
       if (t === e.iso || !RC.countries[t]) return;
-      var line = L.polyline(arc([e.plat, e.plon], RC.countries[t].pt), { color: "#b9c4d6", weight: 0.7, opacity: 0.32, bubblingMouseEvents: false });
+      var line = L.polyline(arc([e.plat, e.plon], RC.countries[t].pt), { color: "#8C7DF8", weight: 0.6, opacity: 0.35, bubblingMouseEvents: false });
       line.bindPopup(entryBox(e, "Line to " + cname(t) + ", one of the countries it is aimed at."), { maxWidth: 380, maxHeight: 440 });
       line.bindTooltip(esc(e.title) + " → " + esc(cname(t)), { sticky: true });
       groups.influence.addLayer(line);
@@ -336,12 +340,12 @@ function start() {
   // ---- one small dot per entry ----
   RC.entries.forEach(function (e) {
     var L0 = layerOf(e.layer);
-    var m = L.circleMarker([e.plat, e.plon], { radius: 3.6, fillColor: L0.colour, fillOpacity: 1, color: "#efe9df", weight: 0.9, opacity: 0.9,
+    var m = L.circleMarker([e.plat, e.plon], { radius: 2.8, fillColor: L0.colour, fillOpacity: 1, color: "#07060d", weight: 0.6, opacity: 0.9,
       bubblingMouseEvents: false });
     m.bindPopup(entryBox(e), { maxWidth: 380, maxHeight: 440, autoPanPadding: [40, 40] });
     m.bindTooltip(esc(e.title), { direction: "top", offset: [0, -5] });
-    m.on("mouseover", function () { m.setRadius(5.4); });
-    m.on("mouseout", function () { m.setRadius(3.6); });
+    m.on("mouseover", function () { m.setRadius(4.2); m.setStyle({ color: "#ffffff", weight: 1 }); });
+    m.on("mouseout", function () { m.setRadius(2.8); m.setStyle({ color: "#07060d", weight: 0.6 }); });
     m.on("click", function () {
       if (map.getZoom() < 4.5) {
         m.closePopup();
@@ -375,7 +379,7 @@ function start() {
   try { panel(map, groups, counts, markers); } catch (err) { /* the panel needs a page */ }
 }
 
-/* ---------- basemaps: Atlas and Bioluminescent from the Culprits map, and Dark ----------
+/* ---------- basemaps: Atlas, Jurassic and Bioluminescent from the Culprits map, Satellite and Dark ----------
    Atlas: the painted world plate (its cartouche reads "Reproduction capture")
    fading into Esri imagery from zoom 3 to 5.6, with the Culprits atlas's
    grading, sea, green and warm washes and multiplied hillshade.
@@ -525,16 +529,49 @@ function basemaps(map) {
     ]
   };
 
+  // Jurassic (the Culprits map's Satellite basemap, shown there as Jurassic):
+  // Esri imagery graded sunlit, a see-through terrain palette by height,
+  // Swiss-style shading from four directions and a calm navy sea (SAT_RELIEF).
+  var jurassicStyle = {
+    version: 8,
+    sources: Object.assign(src(["outline-dem", "sea-dem"]), {
+      base: { type: "raster", tiles: [ESRI + "World_Imagery/MapServer/tile/{z}/{y}/{x}"], tileSize: 256, maxzoom: 18, attribution: "Imagery &copy; Esri, Maxar" },
+      names: { type: "raster", tiles: ["https://a.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}@2x.png?key=cb1_494p_1_eebbbfcb65bc573e54783d42"], tileSize: 256,
+        attribution: '&copy; <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>, &copy; OpenStreetMap' }
+    }),
+    layers: [
+      { id: "bg", type: "background", paint: { "background-color": "#0B1017" } },
+      { id: "base", type: "raster", source: "base", paint: { "raster-brightness-min": 0.02, "raster-brightness-max": 0.92, "raster-saturation": 0.12, "raster-contrast": 0.06, "raster-hue-rotate": 0 } },
+      { id: "relief-colour", type: "color-relief", source: "outline-dem", paint: { "color-relief-opacity": 1, "color-relief-color": ["interpolate", ["linear"], ["elevation"],
+        -8000, "rgba(10,22,42,0.8)", -3500, "rgba(12,28,50,0.72)", -1200, "rgba(16,40,60,0.6)", -200, "rgba(26,70,86,0.38)", -40, "rgba(40,96,102,0.22)", 0, "rgba(40,90,90,0.1)",
+        1, "rgba(46,52,34,0.32)", 400, "rgba(48,54,36,0.3)", 1000, "rgba(64,70,44,0.28)", 1700, "rgba(108,100,66,0.26)", 2500, "rgba(118,90,60,0.3)", 3300, "rgba(110,80,62,0.32)",
+        4300, "rgba(102,92,84,0.3)", 5500, "rgba(132,128,122,0.2)"] } },
+      { id: "relief-seabed", type: "color-relief", source: "sea-dem", paint: { "color-relief-opacity": 1, "color-relief-color": ["interpolate", ["linear"], ["elevation"],
+        -8000, "rgba(10,22,42,0.8)", -3500, "rgba(12,28,50,0.72)", -1200, "rgba(16,40,60,0.6)", -200, "rgba(26,70,86,0.38)", -40, "rgba(40,96,102,0.22)", -1, "rgba(40,90,90,0.1)", 0, "rgba(0,0,0,0)"] } },
+      { id: "relief-shade", type: "hillshade", source: "outline-dem", paint: {
+        "hillshade-method": "multidirectional", "hillshade-illumination-direction": [315, 270, 0, 225], "hillshade-illumination-altitude": [40, 35, 35, 50],
+        "hillshade-highlight-color": ["rgba(240,236,222,0.1)", "rgba(240,236,222,0.04)", "rgba(240,236,222,0.04)", "rgba(240,236,222,0.02)"],
+        "hillshade-shadow-color": ["rgba(18,24,14,0.78)", "rgba(18,24,14,0.42)", "rgba(18,24,14,0.42)", "rgba(18,24,14,0.2)"],
+        "hillshade-accent-color": "rgba(18,24,14,0.3)", "hillshade-exaggeration": 1, "hillshade-illumination-anchor": "map" } },
+      { id: "relief-depth", type: "hillshade", source: "outline-dem", paint: {
+        "hillshade-method": "standard", "hillshade-illumination-direction": 315, "hillshade-illumination-anchor": "map",
+        "hillshade-highlight-color": "rgba(240,236,222,0.04)", "hillshade-shadow-color": "rgba(12,18,10,0.55)", "hillshade-accent-color": "rgba(12,18,10,0)", "hillshade-exaggeration": 0.6 } },
+      { id: "relief-sea", type: "color-relief", source: "sea-dem", paint: { "color-relief-opacity": 1, "color-relief-color": ["interpolate", ["linear"], ["elevation"],
+        -8000, "rgba(10,22,42,0.6)", -3000, "rgba(12,26,46,0.55)", -1500, "rgba(14,32,52,0.42)", -400, "rgba(20,48,64,0.2)", -80, "rgba(20,48,64,0)", 0, "rgba(0,0,0,0)"] } },
+      { id: "names", type: "raster", source: "names", paint: { "raster-opacity": 0.95 } }
+    ]
+  };
+
   var gl = {};
   function glLayer(kindName) {
     if (!gl[kindName] && L.maplibreGL) {
-      gl[kindName] = L.maplibreGL({ style: nightStyle, renderWorldCopies: false, interactive: false,
+      gl[kindName] = L.maplibreGL({ style: kindName === "jurassic" ? jurassicStyle : nightStyle, renderWorldCopies: false, interactive: false,
         attributionControl: false, noWrap: true });
     }
     return gl[kindName];
   }
 
-  var BASES = [["atlas", "Atlas"], ["sat", "Satellite"], ["night", "Bioluminescent"], ["dark", "Dark"]];
+  var BASES = [["atlas", "Atlas"], ["jurassic", "Jurassic"], ["sat", "Satellite"], ["night", "Bioluminescent"], ["dark", "Dark"]];
   var current = null;
   function hideAll() {
     [dark, atlas, satImg].forEach(function (l) { if (map.hasLayer(l)) map.removeLayer(l); });
@@ -545,7 +582,7 @@ function basemaps(map) {
   function setBase(k) {
     if (k === current) return;
     hideAll(); current = k;
-    var bg = { atlas: "#0a0f12", sat: "#0a0f12", night: "#02040C", dark: "#0b0d10" }[k];
+    var bg = { atlas: "#0a0f12", jurassic: "#0B1017", sat: "#0a0f12", night: "#02040C", dark: "#0b0d10" }[k];
     map.getContainer().style.background = bg;
     if (k === "dark") dark.addTo(map);
     else if (k === "sat") satImg.addTo(map);
@@ -561,11 +598,12 @@ function basemaps(map) {
       if (want && !map.hasLayer(NAMES[k])) NAMES[k].addTo(map);
       if (!want && map.hasLayer(NAMES[k])) map.removeLayer(NAMES[k]);
     });
-    var g = gl.night, mm = g && g.getMaplibreMap && g.getMaplibreMap();
-    if (mm) {
+    Object.keys(gl).forEach(function (k) {
+      var g = gl[k], mm = g && g.getMaplibreMap && g.getMaplibreMap();
+      if (!mm) return;
       var apply = function () { try { mm.setLayoutProperty("names", "visibility", namesOn ? "visible" : "none"); } catch (e) { /* not loaded yet */ } };
       if (mm.isStyleLoaded && mm.isStyleLoaded()) apply(); else mm.once("load", apply);
-    }
+    });
     var nb = document.getElementById("names-btn");
     if (nb) nb.setAttribute("aria-pressed", namesOn ? "true" : "false");
   }
@@ -661,7 +699,7 @@ function panel(map, groups, counts, markers) {
         groups.un.eachLayer(function (lyr) {
           var v = unVal(lyr._rcIso, id);
           var c1 = window.__rcUn.scale.colour(v);
-          lyr.setStyle({ fillColor: c1 || "#000", fillOpacity: c1 ? 0.42 : 0, opacity: c1 ? 0.6 : 0 });
+          lyr.setStyle({ fillColor: c1 || "#000", fillOpacity: c1 ? 0.38 : 0, opacity: c1 ? 0.6 : 0 });
           lyr.setTooltipContent(esc(RC.countries[lyr._rcIso].name) + ": " + esc(UN_SAY[v] || (v == null ? "" : v)));
         });
         legend();
