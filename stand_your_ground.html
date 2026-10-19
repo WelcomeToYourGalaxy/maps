@@ -72,13 +72,16 @@ const D = {"rows":[{"key":"ABW","name":"Aruba","cat":"retreat","shape":[[[[12.62
 <script>
 (function () {
 const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const map = window.sygMap = L.map("map", { worldCopyJump: true, minZoom: 2, maxZoom: 16, zoomControl: false, preferCanvas: true }).setView([25, 10], 2);
+const map = window.sygMap = L.map("map", { worldCopyJump: false, minZoom: 0, maxZoom: 16, zoomSnap: 0.5, zoomControl: false, preferCanvas: true, maxBounds: [[-85.06, -180], [85.06, 180]], maxBoundsViscosity: 1 }).setView([25, 10], 2);
+// the lowest zoom shows the whole world and no further
+function fitMinZoom() { try { const z = map.getBoundsZoom([[-85.06, -180], [85.06, 180]], false); if (isFinite(z)) map.setMinZoom(Math.max(0, Math.floor(z * 2) / 2)); } catch (e) {} }
+fitMinZoom(); try { map.on("resize", fitMinZoom); } catch (e) {}
 L.control.zoom({ position: "bottomright" }).addTo(map);
 L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
-  attribution: 'Basemap &copy; Esri, HERE, Garmin, &copy; OpenStreetMap contributors, and the GIS user community', maxZoom: 16
+  attribution: 'Basemap &copy; Esri, HERE, Garmin, &copy; OpenStreetMap contributors, and the GIS user community', maxZoom: 16, noWrap: true, bounds: [[-85.06, -180], [85.06, 180]]
 }).addTo(map);
 map.createPane("labels"); map.getPane("labels").style.zIndex = 450; map.getPane("labels").style.pointerEvents = "none";
-L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}", { pane: "labels", maxZoom: 16, opacity: 0.85 }).addTo(map);
+L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}", { pane: "labels", maxZoom: 16, opacity: 0.85, noWrap: true, bounds: [[-85.06, -180], [85.06, 180]] }).addTo(map);
 const cv = L.canvas({ padding: 0.3 });
 
 const CAT = {}; D.cats.forEach((c) => { CAT[c[0]] = { label: c[1], col: c[2], n: c[3] }; });
@@ -109,8 +112,6 @@ info.innerHTML =
   '<h2>What the map shows</h2>' +
   '<p>For every country and territory, and every part of a country with its own criminal law (every US state and territory, Mexico\'s 32 states, Australia\'s states and territories, Nigeria\'s states, Bosnia\'s three parts, Micronesia\'s states, Scotland, Northern Ireland, Iraqi Kurdistan and others): whether someone attacked must first retreat, or avoid the attack, before using force, including deadly force, in self-defense. Each box quotes the law itself (the criminal code, or the court decision or jury instruction where the rule comes from the courts), says what it allows at home, what happens when the force went too far, and lists every source read. Where the law found does not settle whether one must retreat, the box says so rather than guessing; where nothing usable was found, it says that too.</p>' +
   '<p class="mute">The kinds: no duty to retreat written in the law; no duty to retreat from the courts; no general duty to retreat, but the force must be necessary and proportionate (most countries with civil-law codes, where the chance to avoid the attack is weighed in judging necessity); a duty to retreat or avoid the attack where it can be done safely; law found that does not settle it; not yet found.</p>' +
-  '<h2>From the Destruction page</h2>' +
-  '<p>"You\'re not guilty of a crime if you use reasonable force against someone to resist or to aid in resisting an offense against somebody. The legal excuse of self defense though is only available if you\'re acting honestly and in good faith. This includes the duty to retreat or to avoid the danger if reasonably possible. If a defendant\'s use of deadly force or the amount of force is interpreted as unreasonable, the Doctrine of Imperfect Self-Defense may apply. “By negating the element of malice and reducing a murder charge to manslaughter in that way, imperfect self defense is a partial defense”" (footnote 1.12).</p>' +
   '<h2>What studies found</h2>' +
   '<p>A 2020 RAND Corporation review: "There is supportive evidence that stand-your-ground laws are associated with increases in firearm homicides and moderate evidence that they increase the total number of homicides." A 2013 Urban Institute paper on FBI data found that in stand-your-ground states, the defense was found justified 17 percent of the time when a white person shot a black person, and 1 percent of the time when a black person shot a white person. <span class="mute">(As Wikipedia\'s article "Stand-your-ground law" reports them.)</span></p>' +
   '<h2>Sources</h2>' +
