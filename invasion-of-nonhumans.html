@@ -6,29 +6,42 @@
 <title>Invasion of Non-Humans — worldwide</title>
 <meta name="description" content="How people have changed the land and sea, where invasive species spread, where pesticides are made and sprayed, and how protected areas are drawn, undone and mined around. Welcome to Your Galaxy.">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Uncial+Antiqua&display=swap">
 <style>
-  html, body { margin: 0; height: 100%; background: #0B0F14; color: #E9E4D8; font: 14px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  /* The lettering of the local map (WelcomeToYourGalaxy/local-map): Marcellus for
+     the text, Uncial Antiqua for the title (round nh12, asked 19 October). */
+  html, body { margin: 0; height: 100%; background: #0B0F14; color: #E9E4D8; font: 14px/1.45 'Marcellus', Georgia, serif; }
+  #nh-panel .nh, #nh-panel .nh *, .maplibregl-popup.nh-pop .maplibregl-popup-content, .maplibregl-popup.nh-pop .maplibregl-popup-content * { font-family: 'Marcellus', Georgia, serif !important; }
+  #nh-panel .nh .nh-i { font-style: normal; }
   #map { position: absolute; inset: 0; }
   #side { position: absolute; top: 12px; left: 12px; bottom: 12px; width: 372px; max-width: calc(100vw - 24px); display: flex; flex-direction: column;
           background: rgba(13,17,23,.94); border: 1px solid #28303A; border-radius: 6px; box-shadow: 0 8px 28px rgba(0,0,0,.45); z-index: 5; }
   #side header { padding: 14px 16px 10px; border-bottom: 1px solid #28303A; }
-  #side h1 { margin: 0; font: 600 21px/1.2 Georgia, "Times New Roman", serif; letter-spacing: .01em; color: #F2EEE4; }
+  #side h1 { margin: 0; padding-right: 64px; font: 400 22px/1.2 'Uncial Antiqua', 'Marcellus', Georgia, serif; letter-spacing: .5px; color: #F2EEE4; }
   #side .lede { margin: 7px 0 0; font-size: 12.5px; color: #A9B1BA; }
   #side .scroll { flex: 1; overflow: auto; padding: 4px 12px 14px; }
   #side .foot { padding: 8px 14px; border-top: 1px solid #28303A; font-size: 11px; color: #8A939D; }
   #side .foot a { color: #9CC9DA; }
-  #fold { display: none; }
+  /* The whole panel folds up to its title, on every screen (round nh12). */
+  #fold { position: absolute; right: 12px; top: 14px; font: inherit; font-size: 12px; background: #151B23; color: #C9CFD6; border: 1px solid #3A434E; border-radius: 3px; padding: 3px 9px; cursor: pointer; }
+  #fold:hover { color: #F2EEE4; border-color: #5A6572; }
+  #side.folded { bottom: auto; }
+  #side.folded .scroll, #side.folded .lede { display: none; }
+  #side.folded header { border-bottom: 0; }
   #basemap { position: absolute; top: 12px; right: 52px; z-index: 2; display: flex; gap: 0; border: 1px solid #28303A; border-radius: 4px; overflow: hidden; }
   #basemap button { font: inherit; font-size: 12px; padding: 5px 10px; background: rgba(13,17,23,.92); color: #C9CFD6; border: 0; cursor: pointer; }
   #basemap button + button { border-left: 1px solid #28303A; }
   #basemap button.on { background: #1E3A52; color: #F2EEE4; }
-  .nh-world { font: 600 15px/29px system-ui, sans-serif !important; color: #1B2430; }
+  /* Back out to the whole world: a button with words in it (round nh12). */
+  #world { position: absolute; top: 12px; right: 52px; z-index: 2; margin-top: 36px; font: inherit; font-size: 12.5px; padding: 5px 11px; background: rgba(13,17,23,.92); color: #E9E4D8;
+           border: 1px solid #3A6E92; border-radius: 4px; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,.35); }
+  #world:hover { background: #1E3A52; }
   @media (max-width: 720px) {
     #side { top: auto; left: 0; right: 0; bottom: 0; width: auto; max-width: none; height: 52vh; border-radius: 10px 10px 0 0; }
     #side.folded { height: 58px; }
-    #side.folded .scroll, #side.folded .lede { display: none; }
-    #fold { display: block; position: absolute; right: 12px; top: 12px; font: inherit; font-size: 12px; background: none; color: #C9CFD6; border: 1px solid #3A434E; border-radius: 3px; padding: 3px 8px; }
     #side h1 { font-size: 18px; padding-right: 70px; }
+    #world { top: 46px; right: 50px; margin-top: 0; font-size: 11.5px; padding: 4px 8px; }
     #basemap { top: 10px; right: 50px; flex-wrap: wrap; max-width: calc(100vw - 70px); }
     #basemap button { padding: 4px 7px; font-size: 11px; }
   }
@@ -40,12 +53,14 @@
   <button type="button" data-base="land" class="on">Plain</button>
   <button type="button" data-base="night">Bioluminescent</button>
   <button type="button" data-base="atlas">Atlas</button>
+  <button type="button" data-base="jurassic">Jurassic</button>
   <button type="button" data-base="sat">Satellite</button>
 </div>
+<button type="button" id="world" title="Zoom back out to see the whole world">Whole world</button>
 <aside id="side">
   <header>
     <h1>Invasion of non-humans</h1>
-    <button id="fold" type="button">Fold</button>
+    <button id="fold" type="button" title="Fold the list of layers up, or open it">Fold up ▴</button>
     <p class="lede">The ground and water people have taken over, the species they carried with them, the poisons sprayed against those species, and the protected places drawn, undone and mined around. Tick a row to draw it; click the map for what is there.</p>
   </header>
   <div class="scroll" id="nh-panel"></div>
@@ -72,24 +87,47 @@
   const GSN = "https://api.gsn.naturedatalab.org/geo-analysis/layers";
   const BOUNDARIES = "https://raw.githubusercontent.com/WelcomeToYourGalaxy/culprits/main/map/data/boundaries.geojson";
 
-  // Colours: teal to cobalt for amounts, plum, rose and bone for points. No
-  // green, yellow or orange anywhere.
-  const RAMP7 = ["#D6EEF6", "#9CD6E6", "#5FB8D2", "#2E8FBA", "#1E6FA8", "#13447A", "#0C2E5E"];
-  const EDGE = "#08203F";
+  // Colours (round nh12, asked 19 October): the five colours of the
+  // Biodiversity Intactness Index 51 to 100% layer, violet to electric blue,
+  // are the map's colours throughout. Amounts run from the violet (least) to
+  // the blue (most); a map with more steps takes colours in between. Things
+  // that are not amounts take the same five and paler mixes of them. Greys
+  // stay for "none" and "not given".
+  const BII5 = ["#9B00C1", "#7800CF", "#5600DC", "#3300EA", "#1000F7"];
+  const hex3 = (h) => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
+  const toHex = (c) => "#" + c.map((v) => Math.round(Math.max(0, Math.min(255, v))).toString(16).padStart(2, "0")).join("").toUpperCase();
+  // n colours from the violet to the blue, evenly along the five.
+  function biiRamp(n) {
+    if (n <= 1) return [BII5[4]];
+    const out = [];
+    for (let i = 0; i < n; i++) {
+      const t = i * (BII5.length - 1) / (n - 1), k = Math.min(BII5.length - 2, Math.floor(t)), f = t - k;
+      const a = hex3(BII5[k]), b = hex3(BII5[k + 1]);
+      out.push(toHex(a.map((v, j) => v + (b[j] - v) * f)));
+    }
+    return out;
+  }
+  // A paler mix of a colour (k of white).
+  const pale = (h, k) => toHex(hex3(h).map((v) => v + (255 - v) * k));
+  const RAMP7 = biiRamp(7);
+  const EDGE = "#1A0E3A";
   const IUCN = [
-    ["Ia", "#0C2E5E", "Ia: strict nature reserve"],
-    ["Ib", "#13447A", "Ib: wilderness area"],
-    ["II", "#1E6FA8", "II: national park"],
-    ["III", "#2E8FBA", "III: natural monument or feature"],
-    ["IV", "#46AACB", "IV: habitat or species management area"],
-    ["V", "#7DC6DC", "V: protected landscape or seascape"],
-    ["VI", "#B4DFEC", "VI: protected area with sustainable use of natural resources"],
+    ["Ia", RAMP7[6], "Ia: strict nature reserve"],
+    ["Ib", RAMP7[5], "Ib: wilderness area"],
+    ["II", RAMP7[4], "II: national park"],
+    ["III", RAMP7[3], "III: natural monument or feature"],
+    ["IV", RAMP7[2], "IV: habitat or species management area"],
+    ["V", RAMP7[1], "V: protected landscape or seascape"],
+    ["VI", RAMP7[0], "VI: protected area with sustainable use of natural resources"],
     ["Not Reported", "#8A8F98", "Not reported"],
     ["Not Applicable", "#6E737B", "Not applicable"],
     ["Not Assigned", "#A3A7AD", "Not assigned"],
   ];
   const IUCN_OTHER = "#5E6470";
-  const POINT = ["#E9E1D3", "#D08A9C", "#9A5878", "#B9A6C9", "#C7B49A", "#7E92B8", "#E2B8C4", "#8E6C8A", "#A9C4D2", "#C99A8E"];
+  // Colours for kinds of things (not amounts): the five, then paler mixes.
+  const POINT = ["#1000F7", "#9B00C1", "#5600DC", pale("#9B00C1", 0.55), pale("#1000F7", 0.5), "#7800CF", "#3300EA", pale("#5600DC", 0.6), pale("#3300EA", 0.75), pale("#7800CF", 0.35)];
+  // Distance from a protected area, inside the deepest blue to further the palest.
+  const BANDCOL = ["#1000F7", "#3300EA", "#7800CF", "#9B00C1", pale("#9B00C1", 0.6)];
 
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const num = (v, d = 0) => (v == null || v === "" || !isFinite(Number(v))) ? "—" : Number(v).toLocaleString("en", { maximumFractionDigits: d });
@@ -183,6 +221,65 @@
     return pmCache.get(u);
   }
 
+  // An archive's key in this map's colours: each class, in the key's order
+  // (least to most), takes the next of the Biodiversity Intactness colours.
+  // Returns { key, url(archive, hidden) } (round nh12).
+  function bii(key, o = {}) {
+    const rows = (key || []).filter((r) => r[2] !== "h" && /^#[0-9a-f]{6}$/i.test(r[0] || ""));
+    const cols = o.cols || biiRamp(rows.length);
+    // The least is drawn faintest and the most solid, so on dark ground the
+    // low values stay quiet and the high ones stand out.
+    const alpha = o.alpha || rows.map((_, i) => rows.length > 2 ? 0.4 + 0.6 * i / (rows.length - 1) : 1);
+    const map = new Map(rows.map((r, i) => [r[0].toUpperCase(), [cols[i], alpha[i]]]));
+    const swap = rows.map((r) => { const [c, a] = map.get(r[0].toUpperCase()); return `${r[0].slice(1)}-${c.slice(1)}${a !== 1 ? `-${Math.round(a * 100)}` : ""}`; }).join(",");
+    return {
+      key: (key || []).map((r) => { const m = r[2] !== "h" && map.get(String(r[0]).toUpperCase()); return m ? [m[1] === 1 ? m[0] : `rgba(${hex3(m[0]).join(",")},${m[1].toFixed(2)})`, r[1]] : r; }),
+      url: (archive, hidden) => `nhpm://h/${hidden && hidden.length ? hidden.map((c) => c.slice(1)).join(",") : "-"}/{z}/{x}/{y}?m=${swap}&a=${encodeURIComponent(archive)}`,
+      colourOf: (c) => (map.get(String(c).toUpperCase()) || [c])[0],
+    };
+  }
+
+  // The squares of an nhpm picture (see the protocol in create), each made
+  // once and kept, the last 600, so a timeline's next step can be made ahead
+  // while the current one shows (round nh12).
+  const nhpmCache = new Map();
+  function nhpmTile(url) {
+    if (nhpmCache.has(url)) { const v = nhpmCache.get(url); nhpmCache.delete(url); nhpmCache.set(url, v); return v; }
+    const p = (async () => {
+        const m = url.match(/^nhpm:\/\/h\/([^/]*)\/(\d+)\/(\d+)\/(\d+)\?(?:m=([^&]*)&)?a=(.+)$/);
+        if (!m) throw new Error("not a class picture");
+        const arch = archiveOf(decodeURIComponent(m[6]));
+        const got = await arch.getZxy(Number(m[2]), Number(m[3]), Number(m[4]));
+        if (!got || !got.data) return emptyPng();
+        const rgb = (h) => [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
+        const hidden = m[1] === "-" || !m[1] ? [] : m[1].split(",").map(rgb);
+        const swap = m[5] ? m[5].split(",").map((x) => { const [f, t, a] = x.split("-"); return [rgb(f), rgb(t), a ? Number(a) / 100 : 1]; }) : [];
+        if (!hidden.length && !swap.length) return got.data;
+        const bmp = await createImageBitmap(new Blob([got.data]));
+        const seen = new Map();
+        const near = (px, i, c) => Math.abs(px[i] - c[0]) + Math.abs(px[i + 1] - c[1]) + Math.abs(px[i + 2] - c[2]) < 14;
+        return repaint(bmp, (px) => {
+          for (let i = 0; i < px.length; i += 4) {
+            if (!px[i + 3]) continue;
+            const k = (px[i] << 16) | (px[i + 1] << 8) | px[i + 2];
+            let to = seen.get(k);
+            if (to === undefined) {
+              to = null;
+              if (hidden.some((h) => near(px, i, h))) to = 0;
+              else { const w = swap.find((x) => near(px, i, x[0])); if (w) to = w; }
+              seen.set(k, to);
+            }
+            if (to === 0) px[i + 3] = 0;
+            else if (to) { px[i] = to[1][0]; px[i + 1] = to[1][1]; px[i + 2] = to[1][2]; if (to[2] !== 1) px[i + 3] = Math.round(px[i + 3] * to[2]); }
+          }
+        });
+    })();
+    p.catch(() => nhpmCache.delete(url));
+    nhpmCache.set(url, p);
+    while (nhpmCache.size > 600) nhpmCache.delete(nhpmCache.keys().next().value);
+    return p;
+  }
+
   const CSS = `
 .nh{font:13px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#E9E4D8}
 .nh .nh-sec{margin:10px 0 2px;border-top:1px solid #28303A;padding-top:8px}
@@ -199,11 +296,14 @@
 .nh .nh-sub.open>.nh-parts{display:block}
 .nh .nh-part{padding:5px 0 6px;border-bottom:1px solid rgba(255,255,255,.05)}
 .nh .nh-row{display:flex;align-items:flex-start;gap:7px;cursor:pointer}
-.nh .nh-row input{margin:3px 0 0;accent-color:#2E8FBA;flex:0 0 auto}
+.nh .nh-row input{margin:3px 0 0;accent-color:#5600DC;flex:0 0 auto}
 .nh .nh-t{flex:1;color:#E9E4D8}
 .nh .nh-mark{flex:0 0 auto;font-size:9px;font-weight:700;letter-spacing:.06em;padding:1px 5px;border-radius:3px;margin-top:2px;white-space:nowrap}
-.nh .nh-mark.live{background:rgba(46,143,186,.22);color:#9CD6E6}
+.nh .nh-mark.live{background:rgba(86,0,220,.32);color:#D9CCFF}
 .nh .nh-mark.copy{background:rgba(255,255,255,.06);color:#9AA3AD}
+.nh .nh-fold{all:unset;cursor:pointer;flex:0 0 auto;font-size:10px;line-height:15px;color:#9AA3AD;width:15px;text-align:center;margin-top:2px;border-radius:3px}
+.nh .nh-fold:hover{color:#F2EEE4;background:rgba(255,255,255,.08)}
+.nh .nh-fold[hidden]{display:none}
 .nh .nh-i{all:unset;cursor:pointer;flex:0 0 auto;width:15px;height:15px;border-radius:50%;border:1px solid #4A5562;color:#9AA3AD;font:italic 600 10px/15px Georgia,serif;text-align:center;margin-top:2px}
 .nh .nh-about{margin:5px 0 2px 21px;font-size:11.5px;color:#A9B1BA}
 .nh .nh-about p{margin:0 0 5px}
@@ -224,9 +324,9 @@
 .nh .nh-groups label{display:flex;align-items:center;gap:6px;font-size:11px;color:#C9CFD6;margin:1px 0;cursor:pointer}
 .nh .nh-groups label.nh-g{margin-top:6px;color:#E9E4D8}
 .nh .nh-groups label.nh-k{padding-left:16px}
-.nh .nh-groups input{margin:0;accent-color:#2E8FBA}
+.nh .nh-groups input{margin:0;accent-color:#5600DC}
 .nh .nh-time{display:flex;align-items:center;gap:6px;margin:5px 0}
-.nh .nh-time input[type=range]{flex:1;accent-color:#2E8FBA;min-width:0}
+.nh .nh-time input[type=range]{flex:1;accent-color:#5600DC;min-width:0}
 .nh .nh-time button{font:inherit;font-size:11px;background:#151B23;color:#C9CFD6;border:1px solid #333D49;border-radius:3px;padding:1px 7px;cursor:pointer}
 .nh .nh-time output{font-size:12px;color:#F2EEE4;min-width:74px;text-align:right}
 .nh .nh-time select{font-size:11px;padding:1px 2px}
@@ -319,24 +419,35 @@
       });
     }
     // A picture archive with some of its classes taken out (their colours made
-    // clear): nhpm://h/<hidden colours, comma-separated, or ->/{z}/{x}/{y}?a=<archive>.
+    // clear) and its colours swapped for this map's:
+    // nhpm://h/<hidden colours, comma-separated, or ->/{z}/{x}/{y}?m=<from-to[-alpha%],...>&a=<archive>.
+    // Round nh12: the archives keep the colours they were made in, and are
+    // shown here in the Biodiversity Intactness colours, class by class.
     if (ml && pm && !G.__nhPmClasses) {
       G.__nhPmClasses = true;
-      ml.addProtocol("nhpm", async (params) => {
-        const m = params.url.match(/^nhpm:\/\/h\/([^/]*)\/(\d+)\/(\d+)\/(\d+)\?a=(.+)$/);
-        if (!m) throw new Error("not a class picture");
-        const arch = archiveOf(decodeURIComponent(m[5]));
-        const got = await arch.getZxy(Number(m[2]), Number(m[3]), Number(m[4]));
-        if (!got || !got.data) return { data: await emptyPng() };
-        const hidden = m[1] === "-" ? [] : m[1].split(",").map((h) => [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)]);
-        if (!hidden.length) return { data: got.data };
-        const bmp = await createImageBitmap(new Blob([got.data]));
-        return { data: await repaint(bmp, (px) => {
-          for (let i = 0; i < px.length; i += 4) {
-            if (!px[i + 3]) continue;
-            for (const h of hidden) if (Math.abs(px[i] - h[0]) + Math.abs(px[i + 1] - h[1]) + Math.abs(px[i + 2] - h[2]) < 14) { px[i + 3] = 0; break; }
-          }
-        }) };
+      ml.addProtocol("nhpm", (params) => nhpmTile(params.url).then((data) => ({ data: data.slice(0) })));
+    }
+
+    // Squares asked for again when the server fails or is slow: nhretry://<url>
+    // (round nh12: GBIF's squares for busy parts of the world, such as Europe
+    // and Asia at the widest views, sometimes fail the first time, and
+    // MapLibre does not ask again, so a quarter of the world stayed empty).
+    if (ml && !G.__nhRetry) {
+      G.__nhRetry = true;
+      ml.addProtocol("nhretry", async (params, ac) => {
+        const url = params.url.replace(/^nhretry:\/\//, "");
+        let last = null;
+        for (let i = 0; i < 4; i++) {
+          if (ac && ac.signal && ac.signal.aborted) throw new Error("aborted");
+          try {
+            const r = await fetch(url, { signal: ac && ac.signal });
+            if (r.ok) return { data: await r.arrayBuffer() };
+            if (r.status === 404 || r.status === 400) return { data: new ArrayBuffer(0) };
+            last = new Error(String(r.status));
+          } catch (e) { last = e; if (ac && ac.signal && ac.signal.aborted) throw e; }
+          await new Promise((res) => setTimeout(res, 1500 * (i + 1)));
+        }
+        throw last || new Error("no answer");
       });
     }
 
@@ -394,7 +505,7 @@
         : { type: "raster", tiles: [url], tileSize: 256, maxzoom: o.maxzoom || 12 };
       if (o.attribution) spec.attribution = o.attribution;
       addSource(sid, spec);
-      const target = o.opacity || 0.86, fade = o.fade == null ? 260 : o.fade;
+      const target = o.opacity || 0.86, fade = part._fastFade != null ? part._fastFade : o.fade == null ? 260 : o.fade;
       addLayer(part, { id: sid, type: "raster", source: sid,
         paint: Object.assign({ "raster-opacity": old.length ? 0 : target, "raster-opacity-transition": { duration: fade, delay: 0 }, "raster-fade-duration": old.length ? 0 : 200 },
           o.nearest ? { "raster-resampling": "nearest" } : {}) }, firstAbove());
@@ -407,21 +518,69 @@
       });
     }
     // Kept when the source's squares in view have arrived (or after ms).
+    // Round nh12: MapLibre's own "loaded" flag stayed false for these
+    // pictures even once every square had come, so each change waited the
+    // full six seconds (the slow switching and playing asked about on 19
+    // October). Now: kept once squares have come and none has come for a
+    // short spell, or at once if MapLibre says it is loaded.
     function loaded(sid, ms) {
       const full = id(sid);
       return new Promise((res) => {
-        let done = false, seen = false;
+        let done = false, last = 0;
+        const t0 = Date.now();
         const finish = () => { if (done) return; done = true; map.off("sourcedata", on); clearInterval(poll); clearTimeout(t); res(); };
-        const on = (e) => { if (e.sourceId === full && e.tile) seen = true; };
+        const on = (e) => { if (e.sourceId === full && e.tile) last = Date.now(); };
         map.on("sourcedata", on);
         const poll = setInterval(() => {
-          if (!map.getSource(full)) return finish();
+          if (!map.getSource(full) || !map.getLayer(full) || map.getLayoutProperty(full, "visibility") === "none") return finish();
+          const v = inView(full);
+          if (v === true) return finish();
+          if (v === false) return;
+          // Without MapLibre's own list of squares: its flag, or a quiet spell.
           let ok = false;
           try { ok = map.isSourceLoaded(full); } catch (e) { ok = true; }
-          if (ok && (seen || !map.getLayer(full) || map.getLayoutProperty(full, "visibility") === "none")) finish();
-        }, 80);
+          if ((ok && last) || (last && Date.now() - last > 400) || (!last && Date.now() - t0 > 3000)) finish();
+        }, 40);
         const t = setTimeout(finish, ms);
       });
+    }
+    // Whether every square of a source in view has arrived: true or false
+    // from MapLibre's own list of squares (MapLibre 5's tile manager; this
+    // page pins MapLibre 5.24), or null where that list cannot be read.
+    function inView(full) {
+      try {
+        const tm = map.style && (map.style.tileManagers || map.style.sourceCaches);
+        const c = tm && tm[full];
+        if (!c) return null;
+        const v = c._inViewTiles;
+        const tiles = v ? Object.values(v._tiles || v) : Object.values(c._tiles || {});
+        if (!tiles.length || !tiles.every((t) => t && typeof t.state === "string")) return null;
+        return tiles.every((t) => t.state === "loaded" || t.state === "errored" || t.state === "unloaded");
+      } catch (e) { return null; }
+    }
+    // Makes ahead the squares in view of a picture not yet shown (the next
+    // step of a timeline, another future), so it shows at once when chosen.
+    function warm(template, maxzoom = 8) {
+      if (!/^nhpm:/.test(template)) return;
+      // MapLibre's zooms count 512-pixel squares; these pictures are 256, so
+      // the squares it asks for are one zoom deeper.
+      const z = Math.max(0, Math.min(maxzoom, Math.round(map.getZoom() + 1)));
+      const b = map.getBounds(), n = 2 ** z;
+      const a = tileOf(Math.max(-180, b.getWest()), Math.min(85, b.getNorth()), z), c = tileOf(Math.min(179.999, b.getEast()), Math.max(-85, b.getSouth()), z);
+      let k = 0;
+      for (let x = Math.max(0, a.tx); x <= Math.min(n - 1, c.tx); x++) for (let y = Math.max(0, a.ty); y <= Math.min(n - 1, c.ty); y++) {
+        if (++k > 80) return;
+        nhpmTile(template.replace("{z}", z).replace("{x}", x).replace("{y}", y)).catch(() => {});
+      }
+    }
+    // A picture from an archive in this map's colours (bii above), drawn to
+    // the archive's own deepest zoom and enlarged beyond it.
+    async function rasterBii(part, archive, B, o = {}) {
+      const n = (part._bseq = (part._bseq || 0) + 1);
+      let head = null;
+      try { head = await archiveOf(archive).getHeader(); } catch (e) { /* drawn without it */ }
+      if (part._bseq !== n) return;            // a newer choice came first
+      return raster(part, B.url(archive, o.hidden), Object.assign({}, o, { maxzoom: head ? head.maxZoom : (o.maxzoom || 8) }));
     }
     // Pictures go under every line and point this map draws.
     function firstAbove() {
@@ -470,7 +629,7 @@
       return keyHtml((unitWords ? [["", unitWords, "h"]] : []).concat(key, zero ? [["#3A4350", "none recorded (0)"]] : []));
     }
     function keyHtml(rows, dots) {
-      return `<div class="nh-key">` + rows.map(([c, t, h]) => h ? `<div class="h">${esc(t)}</div>`
+      return `<div class="nh-key">` + rows.map(([c, t, h]) => h === "h" ? `<div class="h">${esc(t)}</div>`
         : `<div><i class="${dots ? "dot" : ""}" style="background:${esc(c)};color:${esc(c)}"></i>${esc(t)}</div>`).join("") + `</div>`;
     }
     // A zoom curve with every output multiplied by k (MapLibre allows "zoom"
@@ -491,7 +650,7 @@
         paint: { "circle-color": colour, "circle-radius": scaled(r, 2.6), "circle-blur": 1, "circle-opacity": 0.28 } }, base));
       return addLayer(part, Object.assign({ id: `${part.id}-${o.name || "pt"}`, type: "circle",
         paint: { "circle-color": colour, "circle-radius": r, "circle-blur": 0.35, "circle-opacity": 0.95,
-                 "circle-stroke-width": 0.5, "circle-stroke-color": "rgba(11,15,20,.6)" } }, base));
+                 "circle-stroke-width": 0.7, "circle-stroke-color": "rgba(240,236,255,.55)" } }, base));
     }
 
     // The class of a picture at a place: the archive's own square at its
@@ -523,11 +682,13 @@
     // section and subsection starts closed.
     const LAYOUT = [
       { sec: "land", t: "Land and sea taken over", items: [
-        { sub: "taken", t: "How people have taken over the land", items: ["anthromes", "ghm", "roads", "wetlands"] },
+        { sub: "taken", t: "How people have taken over the land", items: ["anthromes", "ghm"] },
         { sub: "sea", t: "How people have changed the ocean", items: ["ocean"] },
         { sub: "future", t: "Where people are projected to build, mine and farm next", items: ["urban", "devpot", "dti"] },
       ] },
-      { sec: "inv", t: "Invasive species", items: ["firsts", "griis", "gbif", "inat", "invacost"] },
+      { sec: "inv", t: "Invasive species", items: ["firsts", "griis",
+        { sub: "seen", t: "Where non-native and invasive species have been recorded and photographed (GBIF and iNaturalist)", items: ["gbif", "inat"] },
+        "invacost"] },
       { sec: "pest", t: "Pesticides", items: ["pestuse", "pestgrid", "pestrisk", "pestsea",
         { sub: "makers", t: "Who makes pesticides, and where", items: ["pestco", "plants_us", "plants_eu"] },
         { sub: "trade", t: "Pesticides traded between countries", items: ["pesttrade"] },
@@ -553,24 +714,27 @@
     // A year slider with a play button and a speed. Play waits for each
     // step's picture to arrive before moving on, so no step is skipped or
     // shown blank.
-    const SPEEDS = [["0.5", "slow"], ["1", "normal"], ["2", "fast"], ["4", "fastest"]];
+    // Speeds as multiples (round nh12): a quarter as fast up to sixteen times.
+    const SPEEDS = [["0.25", "×¼"], ["0.5", "×½"], ["1", "×1"], ["2", "×2"], ["4", "×4"], ["8", "×8"], ["16", "×16"]];
     function timeline(p, box, steps, start, onChange, labelOf = (v) => String(v)) {
       const el = document.createElement("div");
       el.className = "nh-time";
       el.innerHTML = `<button type="button">Play</button><input type="range" min="0" max="${steps.length - 1}" step="1" value="${Math.max(0, steps.indexOf(start))}"><output></output>` +
-        `<select title="Speed" aria-label="Speed">${SPEEDS.map(([v, t]) => `<option value="${v}"${v === "1" ? " selected" : ""}>${t}</option>`).join("")}</select>`;
+        `<select title="How fast Play goes" aria-label="Speed">${SPEEDS.map(([v, t]) => `<option value="${v}"${v === "1" ? " selected" : ""}>${t}</option>`).join("")}</select>`;
       box.appendChild(el);
       const [btn, range, out, speed] = el.children;
       let playing = false, timer = null;
       const fire = () => { const v = steps[Number(range.value)]; out.textContent = labelOf(v); return onChange(v); };
       range.addEventListener("input", () => { fire(); });
-      const stop = () => { playing = false; clearTimeout(timer); btn.textContent = "Play"; };
+      const stop = () => { playing = false; clearTimeout(timer); btn.textContent = "Play"; p._fastFade = null; };
       const tick = async () => {
         if (!playing) return;
         if (!on.has(p.id) || Number(range.value) >= steps.length - 1) return stop();
         range.value = String(Number(range.value) + 1);
         const t0 = Date.now();
+        p._fastFade = Number(speed.value) >= 4 ? 90 : Number(speed.value) >= 2 ? 160 : null;
         try { await Promise.race([Promise.resolve(fire()), new Promise((r) => setTimeout(r, 10000))]); } catch (e) { /* the next step still comes */ }
+        if (p.warm && Number(range.value) < steps.length - 1) p.warm(steps[Number(range.value) + 1]);
         if (!playing) return;
         const wait = (p.playMs || 900) / Number(speed.value) - (Date.now() - t0);
         timer = setTimeout(tick, Math.max(30, wait));
@@ -580,6 +744,7 @@
         if (Number(range.value) >= steps.length - 1) { range.value = "0"; fire(); }
         playing = true;
         btn.textContent = "Pause";
+        if (p.warm && Number(range.value) < steps.length - 1) p.warm(steps[Number(range.value) + 1]);
         timer = setTimeout(tick, (p.playMs || 900) / Number(speed.value));
       });
       out.textContent = labelOf(steps[Number(range.value)]);
@@ -609,6 +774,7 @@
       const row = (p) => `<div class="nh-part" data-part="${p.id}">` +
           `<label class="nh-row"><input type="checkbox"><span class="nh-t">${esc(p.title)}</span>` +
           `<span class="nh-mark ${p.live ? "live" : "copy"}" title="${p.live ? "Read from the source itself each time it is ticked" : esc(p.copy || "Drawn from a copy made from the source")}">${p.live ? "LIVE" : "NOT LIVE"}</span>` +
+          `<button type="button" class="nh-fold" hidden title="Fold this row's choices up" aria-label="Fold this row's choices up">▾</button>` +
           `<button type="button" class="nh-i" aria-label="About this row">i</button></label>` +
           `<div class="nh-about" hidden>${p.about}${p.live ? "" : `<p><i>${esc(p.copy || "")}</i></p>`}</div>` +
           `<div class="nh-body" hidden><div class="nh-ctl-box"></div><div class="nh-key-box"></div><div class="nh-state"></div></div></div>`;
@@ -624,6 +790,15 @@
       root.addEventListener("click", (e) => {
         const sec = e.target.closest(".nh-sec>button, .nh-sub>button");
         if (sec) { sec.parentElement.classList.toggle("open"); return; }
+        const fold = e.target.closest(".nh-fold");
+        if (fold) {
+          e.preventDefault();
+          const body = fold.closest(".nh-part").querySelector(".nh-body");
+          body.hidden = !body.hidden;
+          fold.textContent = body.hidden ? "▸" : "▾";
+          fold.title = fold.ariaLabel = body.hidden ? "Open this row's choices" : "Fold this row's choices up";
+          return;
+        }
         const info = e.target.closest(".nh-i");
         if (info) {
           e.preventDefault();
@@ -641,7 +816,12 @@
 
     async function toggle(p, want) {
       const el = root.querySelector(`[data-part="${p.id}"]`);
-      if (el) { el.querySelector(".nh-row input").checked = want; el.querySelector(".nh-body").hidden = !want; }
+      if (el) {
+        el.querySelector(".nh-row input").checked = want;
+        el.querySelector(".nh-body").hidden = !want;
+        const f = el.querySelector(".nh-fold");
+        if (f) { f.hidden = !want; f.textContent = "▾"; }
+      }
       if (want) on.add(p.id); else on.delete(p.id);
       if (want && !p._built) {
         p._built = true;
@@ -720,19 +900,27 @@
         p.key = d.key || [];
         p.hidden = new Set();
         const head = await archiveOf(steps[steps.length - 1].archive).getHeader();
-        const url = (st) => !p.hidden.size ? st.archive
-          : `nhpm://h/${[...p.hidden].map((c) => c.slice(1)).join(",")}/{z}/{x}/{y}?a=${encodeURIComponent(st.archive)}`;
+        // Round nh12: in the Biodiversity Intactness colours, the land used and
+        // lived on from the deepest blue (cities) to violet, the remote and
+        // wild land in the same colours, faint.
+        const usedK = p.key.filter(([, t]) => ANTHRO_USED.test(t)), wildK = p.key.filter(([, t]) => !ANTHRO_USED.test(t));
+        const uc = biiRamp(usedK.length).reverse(), wc = biiRamp(wildK.length).reverse();
+        const order = usedK.concat(wildK);
+        const B = bii(order, { cols: uc.concat(wc), alpha: usedK.map(() => 1).concat(wildK.map(() => 0.42)) });
+        const url = (st) => B.url(st.archive, [...p.hidden]);
         const show = (i) => { p.cur = steps[i]; return raster(p, url(steps[i]), { nearest: true, opacity: 0.88, maxzoom: head.maxZoom, attribution: "Ellis et al. 2021 (Anthromes 12K)" }); };
+        p.warm = (i) => warm(url(steps[i]), head.maxZoom);
         const box = bodyOf(p);
         p.tl = timeline(p, box, steps.map((_, i) => i), steps.length - 1, show, (i) => steps[i].label);
         // The groups and the kinds, each kind's box its colour in the key.
-        const used = p.key.filter(([, t]) => ANTHRO_USED.test(t)), wild = p.key.filter(([, t]) => !ANTHRO_USED.test(t));
+        const swatch = (c, k) => k >= usedK.length ? `background:${esc(B.colourOf(c))};opacity:.5` : `background:${esc(B.colourOf(c))}`;
+        const used = usedK.map((r, i) => [r[0], r[1], swatch(r[0], i)]), wild = wildK.map((r, i) => [r[0], r[1], swatch(r[0], usedK.length + i)]);
         const el = document.createElement("div");
         el.className = "nh-key nh-groups";
         const grp = (g, title, list) => `<label class="nh-g"><input type="checkbox" data-g="${g}" checked> <b>${esc(title)}</b></label>` +
-          list.map(([c, t]) => `<label class="nh-k"><input type="checkbox" data-c="${esc(c)}" data-in="${g}" checked><i style="background:${esc(c)}"></i>${esc(t)}</label>`).join("");
+          list.map(([c, t, st]) => `<label class="nh-k"><input type="checkbox" data-c="${esc(c)}" data-in="${g}" checked><i style="${st}"></i>${esc(t)}</label>`).join("");
         el.innerHTML = grp("used", "Used and lived on: cities, settlements, villages, and populated croplands, rangelands, woodlands and drylands", used) +
-          grp("wild", "Remote, wild and ice", wild);
+          grp("wild", "Remote, wild and ice (drawn faint)", wild);
         box.appendChild(el);
         const sync = () => {
           for (const g of ["used", "wild"]) {
@@ -763,24 +951,26 @@
       id: "ghm", sec: "land", title: "How much people have changed the land, 1990 to 2022, all threats together and each kind (Global Human Modification)",
       copy: "Made from the authors' files on Zenodo by culprits-tiles-more; fixed releases, made once.",
       about: `<p>How much each place has been changed by people, scored from 0 (untouched) to 1 (completely changed), for 1990, 1995, 2000, 2005, 2010, 2015, 2020 and 2022: all threats combined, or each of the eight kinds of threat the score is built from: agriculture; built-up land; energy production and mining; biological resource use (logging, hunting, fishing); human accessibility; natural system modification (dams, reservoirs and water taken); pollution; and transportation and service corridors (roads, railways and power lines). Choose a kind, then move the slider or press Play to watch it change.</p>
-<p>This one measure takes in the pressures the single-pressure rows also show (roads, cropland, towns, mines and more), so it can be read on its own or beside them. Every map is coloured in the same tenths of 0 to 1, so years and kinds can be compared; places scored 0 are left clear. The authors' files give no biological resource use before 2005 (every cell 0), so that kind starts in 2005. The study's own classes: under 0.1 low, 0.1 to 0.4 moderate, 0.4 to 0.7 high, 0.7 and over very high.</p>
+<p>This one measure takes in roads, cropland, towns, mines and the other single pressures, including the farms and towns that drained wetlands became, so it stands for them all; the map's separate roads and wetlands rows were taken out for that reason. Every map is coloured in the same tenths of 0 to 1, so years and kinds can be compared; places scored 0 are left clear. The authors' files give no biological resource use before 2005 (every cell 0), so that kind starts in 2005. The study's own classes: under 0.1 low, 0.1 to 0.4 moderate, 0.4 to 0.7 high, 0.7 and over very high.</p>
 <p>Source: Theobald, D.M., Oakleaf, J.R., Moncrieff, G., Voigt, M., Kiesecker, J. and Kennedy, C.M. 2025, "Global extent and change in human modification of terrestrial ecosystems from 1990 to 2022", <i>Scientific Data</i> 12: 489; Global Human Modification v3 on Zenodo (records 14449495 and 14502573), CC BY 4.0. Read from the authors' 300 m files at about 2.4 km for all threats combined and about 4.8 km for each kind, each pixel the average of the cells under it.</p>`,
       async build(p) {
         const d = await json(NH + "ghm3.json");
         const kinds = (d.kinds || []).filter((k) => (k.steps || []).length);
         if (!kinds.length) throw new Error("not built yet");
         p.key = d.key || [];
+        const B = bii(p.key);
         const box = bodyOf(p);
         let tl = null;
-        keyBox(p).innerHTML = keyHtml([["", "human modification, 0 untouched to 1 completely changed", "h"]].concat(p.key));
+        keyBox(p).innerHTML = keyHtml([["", "human modification, 0 untouched to 1 completely changed", "h"]].concat(B.key));
         const showKind = (i) => {
           p.kind = kinds[Number(i)];
           const steps = p.kind.steps;
           const at = tl ? Math.min(steps.length - 1, Math.max(0, steps.findIndex((x) => x.year === (p.cur || {}).year))) : steps.length - 1;
           if (tl) tl.el.remove();
-          tl = timeline(p, box, steps.map((_, k) => k), at < 0 ? steps.length - 1 : at, (k) => { p.cur = steps[k]; return raster(p, steps[k].archive, { attribution: "Global Human Modification v3 (Theobald et al. 2025), CC BY 4.0" }); }, (k) => steps[k].label);
+          tl = timeline(p, box, steps.map((_, k) => k), at < 0 ? steps.length - 1 : at, (k) => { p.cur = steps[k]; return rasterBii(p, steps[k].archive, B, { attribution: "Global Human Modification v3 (Theobald et al. 2025), CC BY 4.0" }); }, (k) => steps[k].label);
           p.cur = steps[at < 0 ? steps.length - 1 : at];
-          return raster(p, p.cur.archive, { attribution: "Global Human Modification v3 (Theobald et al. 2025), CC BY 4.0" });
+          p.warm = (k) => archiveOf(steps[k].archive).getHeader().then((h) => warm(B.url(steps[k].archive), h.maxZoom)).catch(() => {});
+          return rasterBii(p, p.cur.archive, B, { attribution: "Global Human Modification v3 (Theobald et al. 2025), CC BY 4.0" });
         };
         if (kinds.length > 1) select(box, "Show", kinds.map((k, i) => [i, k.label]), 0, showKind);
         showKind(0);
@@ -810,7 +1000,7 @@
             label: /^\d{4}$/.test(c.label) ? `${words}, ${c.label}` : `${words}: ${c.label}`, archive: c.archive, key: c.key || [] }))).catch(() => [])));
           p.choices = [].concat(...got);
           if (!p.choices.length) throw new Error("the ocean copies are not built yet");
-          const show = (i) => { p.cur = p.choices[Number(i)]; raster(p, p.cur.archive, { nearest: true, attribution: "Halpern et al. 2019 (CC0)" }); keyBox(p).innerHTML = keyHtml(p.cur.key); };
+          const show = (i) => { p.cur = p.choices[Number(i)]; const B = bii(p.cur.key); rasterBii(p, p.cur.archive, B, { nearest: true, attribution: "Halpern et al. 2019 (CC0)" }); keyBox(p).innerHTML = keyHtml(B.key); };
           if (p.choices.length > 1) select(bodyOf(p), "Show", p.choices.map((c, i) => [i, c.label]), 0, show);
           show(0);
           stateOf(p, `${p.choices.length} picture${p.choices.length === 1 ? "" : "s"}, 2003 and 2013`);
@@ -829,75 +1019,11 @@
 <p>Source: Halpern, B.S. et al. 2019, "Recent pace of change in human impact on the world's ocean", <i>Scientific Reports</i> 9: 11609; data on the KNB repository, CC0.</p>`,
     }, OCEAN);
 
-    part({
-      id: "roads", sec: "land", title: "Roads cutting into the land, by kind of road (GRIP4)",
-      copy: "Made from the authors' files on Zenodo by culprits-tiles-more; a fixed release, made once.",
-      about: `<p>How many metres of road there are in each square kilometre, at about 10 km: all roads together, and each kind (highways, primary, secondary, tertiary and local roads). Roads open land to settlement, logging, hunting, mining and the spread of invasive species, and split the places animals live into pieces.</p>
-<p>Source: Meijer, J.R. et al. 2018, "Global patterns of current and future road infrastructure", <i>Environmental Research Letters</i> 13: 064006; the Global Roads Inventory Project (GRIP4) density maps, PBL Netherlands Environmental Assessment Agency, on Zenodo (record 6420961). Coloured in tenths of each map's own values.</p>`,
-      async build(p) {
-        const d = await json(NH + "roads.json");
-        p.choices = d.choices || [];
-        if (!p.choices.length) throw new Error("not built yet");
-        const show = (i) => { p.cur = p.choices[Number(i)]; raster(p, p.cur.archive, { nearest: true, attribution: "GRIP4 (Meijer et al. 2018, PBL)" }); keyBox(p).innerHTML = keyHtml(p.cur.key || []); };
-        if (p.choices.length > 1) select(bodyOf(p), "Show", p.choices.map((c, i) => [i, c.label]), 0, show);
-        show(0);
-        stateOf(p, `${p.choices.length} maps${d.licence ? `, licence ${d.licence}` : ""}`);
-      },
-      async pictureBox(ll) {
-        if (!this.cur) return "";
-        const w = await pictureAt(this.cur.archive, ll.lng, ll.lat, this.cur.key);
-        return w ? `<h3>${esc(this.cur.label)}</h3><div class="src">GRIP4 (Meijer et al. 2018)</div>${table([["Here", esc(w)]])}` : "";
-      },
-    });
-
-    const WETLAND_WORDS = {
-      "wetland loss": "All wetland lost since 1700, every cause together",
-      "cropland": "Wetland drained for cropland",
-      "pasture": "Wetland drained for pasture",
-      "ir rice": "Wetland turned into irrigated rice paddies",
-      "wetcultiv": "Wetland farmed where it lies (wetland cultivation)",
-      "forestry": "Wetland drained for forestry",
-      "peatextr": "Wetland drained to dig out peat",
-      "urban": "Wetland drained for towns and cities",
-      "wetland area": "Natural wetland still remaining",
-    };
-    part({
-      id: "wetlands", sec: "land", title: "Wetlands drained since 1700, decade by decade (Fluet-Chouinard et al. 2023)",
-      copy: "Made from the authors' files on Zenodo by culprits-tiles-more; a fixed release, made once.",
-      about: `<p>How much wetland in each place has been drained or turned over to other uses since 1700, every ten years to 2020: all of it together, or each use it was lost to (cropland, pasture, irrigated rice, farming the wetland where it lies, forestry, digging out peat, towns and cities), and the natural wetland still remaining. Choose one, then move the slider or press Play. The study finds about a fifth of the world's wetlands lost since 1700, most of it to farming.</p>
-<p>Source: Fluet-Chouinard, E. et al. 2023, "Extensive global wetland loss over the past three centuries", <i>Nature</i> 614: 281 to 286; data on Zenodo (record 7616651). All dates are drawn in the same tenths, so they can be compared; the units are the authors'.</p>`,
-      async build(p) {
-        const d = await json(NH + "wetlands.json");
-        // The authors' nine variables, named in words, the total first.
-        const ORDER = ["wetland loss", "cropland", "pasture", "ir rice", "wetcultiv", "forestry", "peatextr", "urban", "wetland area"];
-        const ch = (d.choices || []).filter((c) => (c.steps || []).length)
-          .map((c) => Object.assign({}, c, { label: WETLAND_WORDS[c.label] || c.label, raw: c.label }))
-          .sort((a, b) => (ORDER.indexOf(a.raw) + 99) % 99 - (ORDER.indexOf(b.raw) + 99) % 99);
-        if (!ch.length) throw new Error("not built yet");
-        const box = bodyOf(p);
-        let tl = null;
-        const showChoice = (i) => {
-          p.ch = ch[Number(i)];
-          const steps = p.ch.steps;
-          keyBox(p).innerHTML = keyHtml([["", `${p.ch.label}: square kilometres in each cell of the authors' grid`, "h"]].concat(p.ch.key || []));
-          if (tl) tl.el.remove();
-          const holder = document.createElement("div");
-          box.appendChild(holder);
-          const t = timeline(p, holder, steps.map((_, k) => k), steps.length - 1, (k) => { p.cur = steps[k]; return raster(p, steps[k].archive || null, { nearest: true, attribution: "Fluet-Chouinard et al. 2023" }); }, (k) => steps[k].label);
-          tl = { el: holder, t };
-          p.cur = steps[steps.length - 1];
-          raster(p, p.cur.archive || null, { nearest: true, attribution: "Fluet-Chouinard et al. 2023" });
-        };
-        if (ch.length > 1) select(box, "Show", ch.map((c, i) => [i, c.label]), 0, showChoice);
-        showChoice(0);
-        stateOf(p, `${ch[0].steps.length} dates, ${ch[0].steps[0].label} to ${ch[0].steps[ch[0].steps.length - 1].label}`);
-      },
-      async pictureBox(ll) {
-        if (!this.cur || !this.ch || !this.cur.archive) return "";
-        const w = await pictureAt(this.cur.archive, ll.lng, ll.lat, this.ch.key);
-        return w ? `<h3>${esc(this.ch.label)}, by ${esc(this.cur.label)}</h3><div class="src">Fluet-Chouinard et al. 2023</div>${table([["Here", esc(w) + " km² in the cell"]])}` : "";
-      },
-    });
+    // Roads (GRIP4) and wetlands drained since 1700 (Fluet-Chouinard et al.
+    // 2023) left the map in round nh12 (asked 19 October): the Human
+    // Modification row above takes in roads (its transportation layer) and
+    // the farms and towns drained wetlands became, and Anthromes shows those
+    // too. Their copies stay in culprits-tiles-more.
 
     part({
       id: "urban", sec: "land", title: "Where towns and cities are projected to spread, 2015 to 2100, under five futures (Chen et al. 2020)",
@@ -908,7 +1034,19 @@
         const d = await json(NH + "urban2100.json");
         p.choices = d.choices || [];
         if (!p.choices.length) throw new Error("not built yet");
-        const show = (i) => { p.cur = p.choices[Number(i)]; raster(p, p.cur.archive, { nearest: true, attribution: "Chen et al. 2020 (CC BY-NC-SA 4.0)" }); keyBox(p).innerHTML = keyHtml(p.cur.key || []); };
+        // Round nh12: 2015's towns in the deepest blue, each later step a
+        // little more violet, so the newest growth reads against the old.
+        const Bof = (c) => bii(c.key || [], { cols: biiRamp((c.key || []).length).reverse() });
+        const show = (i) => {
+          p.cur = p.choices[Number(i)];
+          const B = Bof(p.cur);
+          keyBox(p).innerHTML = keyHtml(B.key);
+          return Promise.resolve(rasterBii(p, p.cur.archive, B, { nearest: true, attribution: "Chen et al. 2020 (CC BY-NC-SA 4.0)" })).then(() => {
+            for (const c of p.choices) if (c !== p.cur) archiveOf(c.archive).getHeader().then((h) => warm(Bof(c).url(c.archive), h.maxZoom)).catch(() => {});
+          });
+        };
+        // Every future's archive is opened at once, so switching is quick.
+        for (const c of p.choices) archiveOf(c.archive).getHeader().catch(() => {});
         select(bodyOf(p), "Future", p.choices.map((c, i) => [i, c.label]), Math.max(0, p.choices.findIndex((c) => c.label === "SSP2")), show);
         show(Math.max(0, p.choices.findIndex((c) => c.label === "SSP2")));
         stateOf(p, `${p.choices.length} futures`);
@@ -930,7 +1068,7 @@
         const d = await json(NH + "devpotential.json");
         p.choices = d.choices || [];
         if (!p.choices.length) throw new Error("not built yet");
-        const show = (i) => { p.cur = p.choices[Number(i)]; raster(p, p.cur.archive, { nearest: true, attribution: "Oakleaf et al. 2019" }); keyBox(p).innerHTML = keyHtml([["", "development potential, low to high", "h"]].concat(p.cur.key || [])); };
+        const show = (i) => { p.cur = p.choices[Number(i)]; const B = bii(p.cur.key); rasterBii(p, p.cur.archive, B, { nearest: true, attribution: "Oakleaf et al. 2019" }); keyBox(p).innerHTML = keyHtml([["", "development potential, low to high", "h"]].concat(B.key)); };
         select(bodyOf(p), "Sector", p.choices.map((c, i) => [i, c.label]), 0, show);
         show(0);
         stateOf(p, `${p.choices.length} sectors`);
@@ -951,7 +1089,7 @@
         const d = await json(NH + "devpotential.json");
         p.choices = (d.dti && d.dti.choices) || [];
         if (!p.choices.length) throw new Error("not built yet");
-        const show = (i) => { p.cur = p.choices[Number(i)]; raster(p, p.cur.archive, { nearest: true, attribution: "Oakleaf et al. 2019, Development Threat Index (NASA SEDAC)" }); keyBox(p).innerHTML = keyHtml([["", "threat score, 0 to 100", "h"]].concat(p.cur.key || [])); };
+        const show = (i) => { p.cur = p.choices[Number(i)]; const B = bii(p.cur.key); rasterBii(p, p.cur.archive, B, { nearest: true, attribution: "Oakleaf et al. 2019, Development Threat Index (NASA SEDAC)" }); keyBox(p).innerHTML = keyHtml([["", "threat score, 0 to 100", "h"]].concat(B.key)); };
         const all = Math.max(0, p.choices.findIndex((c) => /cumulative|combined|all|total/i.test(c.label)));
         select(bodyOf(p), "Kind", p.choices.map((c, i) => [i, c.label]), all, show);
         show(all);
@@ -971,16 +1109,19 @@
     // degree of establishment, and establishment means). Round nh11: the old
     // "INVASIVE" value of establishment means no longer exists in GBIF (no
     // record carries it), so that choice is gone.
+    // Round nh12: "introduced" first, as it is the mark most records carry
+    // (about 13.5 million with a place, against about half a million marked
+    // invasive), so the map opens on the fullest picture.
     const GBIF_KINDS = [
+      ["intro", "Recorded as introduced (not native): the most records", "establishmentMeans=introduced&establishmentMeans=introducedAssistedColonisation"],
       ["inv", "Recorded as invasive or widespread invasive", "degreeOfEstablishment=invasive&degreeOfEstablishment=widespreadInvasive"],
       ["spread", "Recorded as spreading on its own (colonising)", "degreeOfEstablishment=spreading&degreeOfEstablishment=colonising"],
       ["est", "Recorded as established or naturalised (living wild without help)", "degreeOfEstablishment=established&degreeOfEstablishment=naturalized"],
-      ["intro", "Recorded as introduced (not native)", "establishmentMeans=introduced&establishmentMeans=introducedAssistedColonisation"],
     ];
     part({
-      id: "gbif", sec: "inv", title: "Where non-native and invasive species have been recorded, any year or a range of years (GBIF)", live: true,
-      about: `<p>Every record in the Global Biodiversity Information Facility (GBIF) that its publisher marked as invasive, spreading, established or naturalised, or introduced, counted in hexagons. Choose the kind of record and, if you want, a range of years; Play steps through it decade by decade. Click a hexagon for the species recorded there.</p>
-<p>These are records people made and shared, so they show where invasive species were looked for and written down as much as where they are. Most records carry no such mark at all, so these are far fewer than the species actually present. Records with no year drop out when a range of years is set.</p>
+      id: "gbif", sec: "inv", title: "Records shared with GBIF, any year or a range of years", live: true,
+      about: `<p>Every record in the Global Biodiversity Information Facility (GBIF) that its publisher marked as introduced, invasive, spreading, or established or naturalised, counted in hexagons. Choose the kind of record and, if you want, a range of years; Play steps through it decade by decade. Click a hexagon for the species recorded there.</p>
+<p>Why there are fewer places than there are invasive species: of GBIF's 3.8 billion records with a place, only about 13.5 million say whether the organism was native or brought in, and only about half a million call it invasive. The rest are records of the same species with no such mark, which this map cannot tell apart from native ones. So this shows where people wrote down that a species was not native, not everywhere it lives. The iNaturalist row below fills much of the gap, as iNaturalist marks every observation from its own lists of where each species is native. Records with no year drop out when a range of years is set.</p>
 <p>Source: GBIF.org occurrence data and maps API, read live. Each record keeps its own publisher's licence (CC0, CC BY or CC BY-NC).</p>`,
       async build(p) {
         p.kind = GBIF_KINDS[0];
@@ -1008,7 +1149,7 @@
           p.years = e.target.checked ? span() : null;
           refresh();
         });
-        const tiles = () => `${GBIF}/v2/map/occurrence/adhoc/{z}/{x}/{y}.mvt?srs=EPSG:3857&bin=hex&hexPerTile=56&${p.kind[2]}` + (p.years ? `&year=${p.years[0]},${p.years[1]}` : "");
+        const tiles = () => `nhretry://${GBIF}/v2/map/occurrence/adhoc/{z}/{x}/{y}.mvt?srs=EPSG:3857&bin=hex&hexPerTile=56&${p.kind[2]}` + (p.years ? `&year=${p.years[0]},${p.years[1]}` : "");
         addSource("gbif", { type: "vector", tiles: [tiles()], minzoom: 0, maxzoom: 14, attribution: "GBIF.org" });
         const steps = [1, 10, 100, 1000, 10000, 100000];
         const fill = ["step", ["get", "total"], RAMP7[0]];
@@ -1063,9 +1204,9 @@
 
     const INAT = "https://api.inaturalist.org/v1";
     part({
-      id: "inat", sec: "inv", title: "Where people have photographed introduced species, any year or a range of years (iNaturalist)", live: true,
+      id: "inat", sec: "inv", title: "Photographs of introduced species on iNaturalist, any year or a range of years", live: true,
       about: `<p>Every iNaturalist observation of a species that iNaturalist lists as introduced (not native) where it was seen, counted in squares: photographs and sound recordings people upload, identified by the community. Choose all verifiable observations or only research-grade ones (where the community agrees on the species), and, if you want, a range of years. Click a square for the species seen there.</p>
-<p>This adds to the GBIF row above rather than repeating it: GBIF's marks come from each dataset's publisher, while here iNaturalist's own list of where each species is native or introduced decides, for every observation, including the many that are not passed on to GBIF (only research-grade ones with open licences are). Like GBIF, it shows where people looked and photographed, not every place a species lives.</p>
+<p>This adds to the GBIF row beside it rather than repeating it: GBIF's marks come from each dataset's publisher, while here iNaturalist's own list of where each species is native or introduced decides, for every observation, including the many that are not passed on to GBIF (only research-grade ones with open licences are). Like GBIF, it shows where people looked and photographed, not every place a species lives.</p>
 <p>Source: iNaturalist (California Academy of Sciences and National Geographic Society), observations API, read live. Each observation keeps its observer's licence.</p>`,
       async build(p) {
         p.grade = "verifiable=true";
@@ -1088,11 +1229,11 @@
         p.playMs = 1200;
         yr.querySelector("input").addEventListener("change", (e) => { tbox.hidden = !e.target.checked; p.years = e.target.checked ? span() : null; refresh(); });
         const q = () => `introduced=true&${p.grade}` + (p.years ? `&d1=${p.years[0]}-01-01&d2=${p.years[1]}-12-31` : "");
-        keyBox(p).innerHTML = keyHtml([["", "observations in each square: the deeper the colour, the more", "h"], ["#E2B8C4", "few"], ["#9A5878", "many"]]);
+        keyBox(p).innerHTML = keyHtml([["", "observations in each square: the deeper the colour, the more", "h"], [pale("#5600DC", 0.6), "few"], ["#5600DC", "many"]]);
         let seq = 0;
         async function refresh() {
           const mine = ++seq;
-          const done = raster(p, `${INAT}/grid/{z}/{x}/{y}.png?${q()}&color=%239A5878`, { maxzoom: 14, opacity: 0.9, attribution: "iNaturalist", fade: 200 });
+          const done = raster(p, `nhretry://${INAT}/grid/{z}/{x}/{y}.png?${q()}&color=%235600DC`, { maxzoom: 14, opacity: 0.95, attribution: "iNaturalist", fade: 200 });
           stateOf(p, "counting…");
           try {
             const j = await (await fetch(`${INAT}/observations?${q()}&per_page=0`)).json();
@@ -1184,7 +1325,7 @@
     part({
       id: "firsts", sec: "inv", title: "When alien species were first recorded in each country, 1500 to today (First Records database)",
       copy: "Made from the authors' file on Zenodo by culprits-tiles-more, checked weekly for a new version.",
-      about: `<p>The year each alien species was first recorded in each country or island, gathered from the published record. Shade by how many had arrived by the year on the slider, or by how many arrived in the ten years before it, and press Play to watch the count climb. Click a country for its figures and every species with its year.</p>
+      about: `<p>The year each alien species was first recorded in each country or island, gathered from the published record. Shade by the running total (every alien species recorded there up to the year on the slider) or by new arrivals (only those first recorded in the ten years up to it), and press Play to watch the count climb. Click a country for its figures and every species with its year.</p>
 <p>Source: Seebens, H. et al. 2017, "No saturation in the accumulation of alien species worldwide", <i>Nature Communications</i> 8: 14435, and the Alien Species First Records Database on Zenodo (newest version). Places the database names that have no country shape here (islands, states and other parts of countries) are listed under the row with their totals; they are not added into any country.</p>`,
       async build(p) {
         const [d] = await Promise.all([json(NH + "first_records.json"), countries()]);
@@ -1208,7 +1349,13 @@
         if (steps[steps.length - 1] !== to) steps.push(to);
         p.year = to;
         const box = bodyOf(p);
-        select(box, "Shade by", [["cum", "Alien species recorded by this year"], ["dec", "First recorded in the ten years to this year"]], p.measure, (v) => { p.measure = v; draw(); });
+        // Round nh12: the two choices in plainer words, with a line saying how
+        // they differ.
+        select(box, "Shade by", [["cum", "Running total: every alien species recorded there up to this year"], ["dec", "New arrivals: species first recorded there in the ten years up to this year"]], p.measure, (v) => { p.measure = v; draw(); });
+        const how = document.createElement("div");
+        how.className = "nh-note";
+        how.textContent = "The running total only grows: a species counted once stays counted. New arrivals counts only the species first found in the ten years before the year on the slider (for 1950, those first found 1941 to 1950), so it shows when arrivals sped up or slowed down.";
+        box.appendChild(how);
         timeline(p, box, steps, to, (y) => { p.year = y; draw(); }, (y) => (y < 0 ? `${-y} BCE` : String(y)));
         p.playMs = 450;
         p.byIso = {};
@@ -1223,7 +1370,7 @@
             }
             vals[iso] = n;
           }
-          keyBox(p).innerHTML = shade(p, vals, (v) => num(v), p.measure === "cum" ? `alien species recorded by ${p.year}` : `first recorded ${p.year - 9} to ${p.year}`);
+          keyBox(p).innerHTML = shade(p, vals, (v) => num(v), p.measure === "cum" ? `running total: alien species recorded up to ${p.year}` : `new arrivals: first recorded ${p.year - 9} to ${p.year}`);
         };
         draw();
         if (later.length) {
@@ -1328,8 +1475,9 @@
         const show = () => {
           p.cur = pick();
           if (!p.cur) return;
-          raster(p, p.cur.archive, { nearest: true, attribution: "PEST-CHEMGRIDS (Maggi et al. 2019), CC BY 4.0" });
-          keyBox(p).innerHTML = keyHtml([["", `${p.ing.name}, ${p.cur.year}, ${p.cur.est === "H" ? "high" : "low"} estimate, kg per hectare a year`, "h"]].concat(p.cur.key || []));
+          const B = bii(p.cur.key);
+          rasterBii(p, p.cur.archive, B, { nearest: true, attribution: "PEST-CHEMGRIDS (Maggi et al. 2019), CC BY 4.0" });
+          keyBox(p).innerHTML = keyHtml([["", `${p.ing.name}, ${p.cur.year}, ${p.cur.est === "H" ? "high" : "low"} estimate, kg per hectare a year`, "h"]].concat(B.key));
           stateOf(p, `${ings.length} choices of ingredient`);
         };
         select(box, "Ingredient", ings.map((g, i) => [i, g.name]), 0, (v) => { p.ing = ings[Number(v)]; show(); });
@@ -1349,15 +1497,26 @@
       id: "pestrisk", sec: "pest", title: "Risk of pesticide pollution on farmland, worldwide (Tang et al. 2021)",
       copy: "Made from the authors' files on figshare by culprits-tiles-more; a fixed release, made once.",
       about: `<p>The study behind your page's figures that about 64% of farmland is at risk of pesticide pollution and 31% at high risk. For each place it scores the risk from 92 active ingredients to soil, surface water and groundwater, and also maps how many of those ingredients are used there and the regions it flags as of concern. Choose which of its maps to show.</p>
-<p>Source: Tang, F.H.M., Lenzen, M., McBratney, A. and Maggi, F. 2021, "Risk of pesticide pollution at the global scale", <i>Nature Geoscience</i> 14: 206 to 210 (your footnote 20); data: Global pesticide pollution risk data sets, figshare doi:10.6084/m9.figshare.10302218, CC BY 4.0. The authors' values are shown as they are, in tenths; their meaning is set out in the authors' metadata on figshare.</p>`,
+<p>How to read the three maps. <b>Risk score</b>: how far the pesticides' estimated concentrations in soil, water and air exceed the level judged safe, as a power of ten (the authors' code takes the logarithm of the summed ratios), so 0 means at the safe level, 1 ten times over it and 3 a thousand times over. The study counts land scoring over 1 as at risk and over 3 as at high risk, which is where its 64% and 31% come from. <b>Active ingredients</b>: how many of the 92 ingredients exceed their safe level there. <b>Regions of concern</b>: the authors' four levels, 1 the highest concern and 4 no concern. In all three, farmland only is scored; other land is drawn grey, and the sea is left clear.</p>
+<p>Source: Tang, F.H.M., Lenzen, M., McBratney, A. and Maggi, F. 2021, "Risk of pesticide pollution at the global scale", <i>Nature Geoscience</i> 14: 206 to 210 (your footnote 20); data: Global pesticide pollution risk data sets, figshare doi:10.6084/m9.figshare.10302218, CC BY 4.0, read with the authors' metadata (Metadata.pdf: −1 marks land that is not farmland, −2 water and no data).</p>`,
       async build(p) {
         const d = await json(NH + "pest_risk.json");
         p.choices = d.choices || [];
         if (!p.choices.length) throw new Error("not built yet");
-        const show = (i) => { p.cur = p.choices[Number(i)]; raster(p, p.cur.archive, { nearest: true, attribution: "Tang et al. 2021, CC BY 4.0" }); keyBox(p).innerHTML = keyHtml(p.cur.key || []); };
+        // Copies made from round nh12 on are already in this map's colours,
+        // with the sea clear and words in the key (palette "bii").
+        const ready = d.palette === "bii";
+        if (!ready) stateOf(p, "the copy is being remade with the sea clear and the key in words", true);
+        const show = (i) => {
+          p.cur = p.choices[Number(i)];
+          if (ready) { raster(p, p.cur.archive, { nearest: true, attribution: "Tang et al. 2021, CC BY 4.0" }); keyBox(p).innerHTML = keyHtml(p.cur.key || []); return; }
+          const B = bii(p.cur.key);
+          rasterBii(p, p.cur.archive, B, { nearest: true, attribution: "Tang et al. 2021, CC BY 4.0" });
+          keyBox(p).innerHTML = keyHtml(B.key);
+        };
         select(bodyOf(p), "Show", p.choices.map((c, i) => [i, c.label]), 0, show);
         show(0);
-        stateOf(p, `${p.choices.length} maps`);
+        if (ready) stateOf(p, `${p.choices.length} maps`);
       },
       async pictureBox(ll) {
         if (!this.cur) return "";
@@ -1544,7 +1703,7 @@
           geometry: { type: "LineString", coordinates: [d.points[e.from], d.points[e.to]] } })) };
         addSource("bannedexp", { type: "geojson", data: lines, attribution: "Unearthed and Public Eye" });
         addLayer(p, { id: "bannedexp-line", type: "line", source: "bannedexp", layout: { "line-cap": "round" },
-          paint: { "line-color": "#D08A9C", "line-opacity": 0.55, "line-width": ["interpolate", ["linear"], ["ln", ["+", 1, ["get", "n"]]], 0, 0.6, 5, 4] } });
+          paint: { "line-color": pale("#9B00C1", 0.25), "line-opacity": 0.6, "line-width": ["interpolate", ["linear"], ["ln", ["+", 1, ["get", "n"]]], 0, 0.6, 5, 4] } });
         const draw = () => {
           const vals = {};
           for (const r of rows) {
@@ -1553,7 +1712,7 @@
             vals[iso] = (vals[iso] || 0) + (p.by === "n" ? 1 : (r._amount || 0));
           }
           keyBox(p).innerHTML = shade(p, vals, (v) => num(v), p.by === "n" ? "notifications" : unit || "amount") +
-            keyHtml([["#D08A9C", "line: from the exporting country to the destination, wider for more notifications"]]);
+            keyHtml([[pale("#9B00C1", 0.25), "line: from the exporting country to the destination, wider for more notifications"]]);
         };
         draw();
         const un = [...new Set(rows.flatMap((r) => [!r._from && r._cols && r[r._cols["exporting country"]], !r._to && r._cols && r[r._cols.destination]]).filter(Boolean))];
@@ -1649,16 +1808,14 @@
       iucn: { words: "IUCN management category", field: ["coalesce", ["get", "iucn_cat"], ["get", "IUCN_CAT"], ""],
         rows: IUCN.map(([k, c, t]) => [k, c, k === "Not Applicable" ? "Not applicable: international designations (World Heritage sites, Ramsar wetlands, UNESCO biosphere reserves) and other conserved areas (OECMs), which the categories do not cover" : t]) },
       desig: { words: "Kind of designation", field: ["coalesce", ["get", "desig_type"], ["get", "DESIG_TYPE"], ""],
-        rows: [["National", "#1E6FA8", "National: designated by the country's own laws"], ["Regional", "#7DC6DC", "Regional: under a regional agreement (such as the EU's Natura 2000)"],
-               ["International", "#D08A9C", "International: under an international convention (World Heritage, Ramsar, UNESCO Man and the Biosphere)"], ["Not Applicable", "#6E737B", "Not applicable"]] },
+        rows: [["National", "#1000F7", "National: designated by the country's own laws"], ["Regional", "#5600DC", "Regional: under a regional agreement (such as the EU's Natura 2000)"],
+               ["International", "#9B00C1", "International: under an international convention (World Heritage, Ramsar, UNESCO Man and the Biosphere)"], ["Not Applicable", "#6E737B", "Not applicable"]] },
       site: { words: "Protected area or other conserved area", field: ["coalesce", ["get", "site_type"], ["get", "pa_def"], ""],
-        rows: [["PA", "#1E6FA8", "Protected area"], ["OECM", "#D08A9C", "Other effective area-based conservation measure (OECM): conserved, but not designated as protected"]] },
-      realm: { words: "Land or sea", field: ["coalesce", ["get", "realm"], ""],
-        rows: [["Terrestrial", "#7DC6DC", "On land"], ["Coastal", "#2E8FBA", "Coastal: land and sea"], ["Marine", "#0C2E5E", "At sea"]] },
+        rows: [["PA", "#1000F7", "Protected area"], ["OECM", "#9B00C1", "Other effective area-based conservation measure (OECM): conserved, but not designated as protected"]] },
     };
     part({
       id: "pa", sec: "pa", title: "Protected areas, by IUCN management category or by kind (World Database on Protected Areas)", live: true,
-      about: `<p>Every protected area and other conserved area in the World Database on Protected Areas. Colour them by their IUCN management category (Ia and Ib the strictest, then II, national parks, to VI, where resources may be taken under rules; categories III to VI allow some extraction, farming, forestry, fishing or living there), by the kind of designation (national, regional or international), by whether each is a protected area or another conserved area (OECM), or by land and sea. Untick a colour in the key to hide those areas. Click an area for everything the database records about it.</p>
+      about: `<p>Every protected area and other conserved area in the World Database on Protected Areas. Colour them by their IUCN management category (Ia and Ib the strictest, then II, national parks, to VI, where resources may be taken under rules; categories III to VI allow some extraction, farming, forestry, fishing or living there), by the kind of designation (national, regional or international), or by whether each is a protected area or another conserved area (OECM). Untick a colour in the key to hide those areas. Click an area for everything the database records about it.</p>
 <p>Source: UNEP-WCMC and IUCN, Protected Planet: the World Database on Protected Areas, as licensed to and served by Global Forest Watch (the same source the Culprits map's protected areas row reads), read live. Non-commercial use; see protectedplanet.net for the terms.</p>`,
       async build(p) {
         const a = await gfwVector("wdpa_licensed_protected_areas");
@@ -1710,17 +1867,17 @@
     // trees to ice, are left out). Each is one colour where it covers, so it
     // is drawn in one colour of this map's, named in words.
     const GSN_PICK = [
-      ["Protection", "#1E6FA8", [[1, "Strictly protected areas (IUCN categories Ia and Ib)"], [2, "Other protected areas (IUCN categories II to VI)"],
+      ["Protection", "#1000F7", [[1, "Strictly protected areas (IUCN categories Ia and Ib)"], [2, "Other protected areas (IUCN categories II to VI)"],
         [3, "Other effective area-based conservation measures (OECMs)"], [4, "Recognised Indigenous and traditional territories"],
         [5, "Documented conservation areas not in the official databases"], [93, "Every protected area and OECM together"]]],
-      ["Important for nature", "#D08A9C", [[44, "Every area important for biodiversity or for nature's services to people"], [45, "Important for biodiversity"], [46, "Important for nature's services to people (such as carbon and water)"],
+      ["Important for nature", "#9B00C1", [[44, "Every area important for biodiversity or for nature's services to people"], [45, "Important for biodiversity"], [46, "Important for nature's services to people (such as carbon and water)"],
         [7, "Important areas left unprotected"], [8, "Habitat of rare and threatened species"], [9, "High biodiversity areas (hotspots and high beta diversity)"],
         [10, "Large mammal assemblages and migrations"], [11, "Wild and intact areas"], [12, "Climate stabilisation areas (intact land holding over 50 tonnes of carbon a hectare)"],
         [98, "Top 10% conservation priorities"], [71, "Important areas inside protected areas and OECMs"],
         [70, "Important areas inside conserved but not formally protected land (Indigenous territories and documented conservation areas)"]]],
-      ["Changed by people", "#C7B49A", [[27, "Land changed by people, at 90 m (Global Safety Net's cut of the Human Modification index)"],
+      ["Changed by people", "#5600DC", [[27, "Land changed by people, at 90 m (Global Safety Net's cut of the Human Modification index)"],
         [72, "Land changed by people inside protected areas and OECMs"]]],
-      ["Critical habitat", "#B9A6C9", [[96, "Critical habitat on land (as the International Finance Corporation defines it)"], [97, "Critical habitat at sea (as the International Finance Corporation defines it)"]]],
+      ["Critical habitat", "#7800CF", [[96, "Critical habitat on land (as the International Finance Corporation defines it)"], [97, "Critical habitat at sea (as the International Finance Corporation defines it)"]]],
       ["Biodiversity intactness (its own colours)", null, [[94, "Biodiversity Intactness Index, 0 to 50%"], [95, "Biodiversity Intactness Index, 51 to 100%"]]],
     ];
     part({
@@ -1787,7 +1944,7 @@
         const layers = ["wdpa_licensed_protected_areas", "default"];
         addSource("papress", { type: "vector", tiles: [a.uri], minzoom: a.minzoom, maxzoom: a.maxzoom, promoteId: Object.fromEntries(layers.map((l) => [l, "wdpaid"])),
           attribution: "Kennedy et al. 2019 (gHM); UNEP-WCMC and IUCN (WDPA) via Global Forest Watch" });
-        const MCOL = ["#C6E7F0", "#5FB8D2", "#1E6FA8", "#0C2E5E"];
+        const MCOL = biiRamp(4);
         const fillFor = () => p.measure === "m"
           ? ["case", ["==", ["feature-state", "m"], null], "rgba(0,0,0,0)", ["step", ["feature-state", "m"], MCOL[0], 0.1, MCOL[1], 0.4, MCOL[2], 0.7, MCOL[3]]]
           : ["case", ["==", ["feature-state", "h"], null], "rgba(0,0,0,0)", ["step", ["feature-state", "h"], RAMP7[0], 10, RAMP7[2], 25, RAMP7[3], 50, RAMP7[5], 75, RAMP7[6]]];
@@ -1858,7 +2015,7 @@
           addSource("paddd-areas", { type: "vector", url: "pmtiles://" + NH + meta.areas, attribution: "PADDDtracker v2.1 (CI and WWF 2021)" });
         }
         const types = meta.types || [];
-        const TCOL = { downgrade: "#E9E1D3", downsize: "#D08A9C", degazette: "#9A5878" };
+        const TCOL = { downgrade: pale("#9B00C1", 0.5), downsize: "#9B00C1", degazette: "#1000F7" };
         const tcol = (t) => TCOL[Object.keys(TCOL).find((k) => String(t).toLowerCase().includes(k))] || POINT[3 + types.indexOf(t) % 5];
         const typed = !!(tf && types.length);
         const colour = typed ? ["match", ["to-string", ["get", tf]]] : POINT[1];
@@ -1908,8 +2065,7 @@
         const meta = await json(NH + "extraction.json");
         p.meta = meta;
         const BANDS = meta.bands || [];
-        const BCOL = ["#E2B8C4", "#D08A9C", "#9A5878", "#7A4A6E", "#6E6A66"];
-        const col = (i) => BCOL[Math.min(i, BCOL.length - 1)];
+        const col = (i) => BANDCOL[Math.min(i, BANDCOL.length - 1)];
         p.off = new Set();
         p.byBand = {};
         BANDS.forEach((band, bi) => {
@@ -1917,12 +2073,15 @@
           (((meta.sets || {})[band]) || []).forEach((pt, i) => {
             const sid = `mines-${bi}-${i}`;
             addSource(sid, { type: "vector", url: "pmtiles://" + NH + pt.file, attribution: "Maus et al. 2022; OpenStreetMap contributors (ODbL); WDPA (UNEP-WCMC and IUCN)" });
-            const rad = ["interpolate", ["linear"], ["zoom"], 1, ["min", 9, ["+", 1.6, ["*", 0.9, ["ln", ["+", 1, ["coalesce", ["get", "_count"], 1]]]]]], 9, 4, 13, 7];
+            // Round nh12: larger and ringed in white close in, where each dot
+            // is one mine and they had grown hard to see.
+            const rad = ["interpolate", ["linear"], ["zoom"], 1, ["min", 9, ["+", 1.6, ["*", 0.9, ["ln", ["+", 1, ["coalesce", ["get", "_count"], 1]]]]]], 8, 4.5, 11, 7, 15, 10];
             const z = pt.from >= (meta.detail || 8) ? { minzoom: pt.from } : { minzoom: pt.from, maxzoom: pt.to + 1 };
             ids.push(addLayer(p, Object.assign({ id: `${sid}-halo`, type: "circle", source: sid, "source-layer": meta.layer || "mines",
               paint: { "circle-color": col(bi), "circle-radius": scaled(rad, 2.4), "circle-blur": 1, "circle-opacity": 0.25 } }, z)));
             ids.push(addLayer(p, Object.assign({ id: `${sid}-pt`, type: "circle", source: sid, "source-layer": meta.layer || "mines",
-              paint: { "circle-color": col(bi), "circle-radius": rad, "circle-blur": 0.3, "circle-opacity": 0.92 } }, z)));
+              paint: { "circle-color": col(bi), "circle-radius": rad, "circle-blur": 0.15, "circle-opacity": 0.95,
+                "circle-stroke-color": "rgba(240,236,255,.75)", "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 6, 0, 8, 0.8, 12, 1.4] } }, z)));
           });
           p.byBand[band] = ids;
         });
@@ -1957,8 +2116,7 @@
         const L = meta.layers || [];
         if (!L.length) throw new Error("not built yet");
         const BANDS = meta.bands || [];
-        const BCOL = ["#E2B8C4", "#D08A9C", "#9A5878", "#7A4A6E", "#6E6A66"];
-        const col = (i) => BCOL[Math.min(i, BCOL.length - 1)];
+        const col = (i) => BANDCOL[Math.min(i, BANDCOL.length - 1)];
         p.byLayer = {};
         p.byBand = {};
         L.forEach((ly, li) => {
@@ -1973,7 +2131,8 @@
                 ids.push(addLayer(p, Object.assign({ id: `${sid}-halo`, type: "circle", source: sid, "source-layer": "oilgas",
                   paint: { "circle-color": col(bi), "circle-radius": scaled(rad, 2.4), "circle-blur": 1, "circle-opacity": 0.22 } }, z)));
                 ids.push(addLayer(p, Object.assign({ id: `${sid}-pt`, type: "circle", source: sid, "source-layer": "oilgas",
-                  paint: { "circle-color": col(bi), "circle-radius": rad, "circle-blur": 0.3, "circle-opacity": 0.9 } }, z)));
+                  paint: { "circle-color": col(bi), "circle-radius": rad, "circle-blur": 0.15, "circle-opacity": 0.95,
+                    "circle-stroke-color": "rgba(240,236,255,.7)", "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 6, 0, 8, 0.7, 12, 1.2] } }, z)));
               } else {
                 if (ly.kind === "shape") ids.push(addLayer(p, { id: `${sid}-fill`, type: "fill", source: sid, "source-layer": "oilgas", paint: { "fill-color": col(bi), "fill-opacity": 0.25 } }, firstAbove()));
                 ids.push(addLayer(p, { id: `${sid}-line`, type: "line", source: sid, "source-layer": "oilgas", paint: { "line-color": col(bi), "line-width": ["interpolate", ["linear"], ["zoom"], 2, 0.5, 10, 2], "line-opacity": 0.85 } }));
@@ -2159,6 +2318,27 @@
       -3, "rgba(74,154,182,0.85)", 0, "rgba(74,154,182,0)", 9000, "rgba(74,154,182,0)"],
     border: "rgba(120,140,196,0.32)",
   };
+  // The Jurassic basemap's relief, as the Culprits map has it (SAT_RELIEF).
+  const JURASSIC = {
+    colour: ["interpolate", ["linear"], ["elevation"],
+      -8000, "rgba(10,22,42,0.8)", -3500, "rgba(12,28,50,0.72)", -1200, "rgba(16,40,60,0.6)",
+      -200, "rgba(26,70,86,0.38)", -40, "rgba(40,96,102,0.22)", 0, "rgba(40,90,90,0.1)",
+      1, "rgba(46,52,34,0.32)", 400, "rgba(48,54,36,0.3)", 1000, "rgba(64,70,44,0.28)",
+      1700, "rgba(108,100,66,0.26)", 2500, "rgba(118,90,60,0.3)", 3300, "rgba(110,80,62,0.32)",
+      4300, "rgba(102,92,84,0.3)", 5500, "rgba(132,128,122,0.2)"],
+    seabed: ["interpolate", ["linear"], ["elevation"],
+      -8000, "rgba(10,22,42,0.8)", -3500, "rgba(12,28,50,0.72)", -1200, "rgba(16,40,60,0.6)",
+      -200, "rgba(26,70,86,0.38)", -40, "rgba(40,96,102,0.22)", -1, "rgba(40,90,90,0.1)", 0, "rgba(0,0,0,0)"],
+    sea: ["interpolate", ["linear"], ["elevation"],
+      -8000, "rgba(10,22,42,0.6)", -3000, "rgba(12,26,46,0.55)", -1500, "rgba(14,32,52,0.42)",
+      -400, "rgba(20,48,64,0.2)", -80, "rgba(20,48,64,0)", 0, "rgba(0,0,0,0)"],
+    shade: { "hillshade-method": "multidirectional", "hillshade-illumination-direction": [315, 270, 0, 225], "hillshade-illumination-altitude": [40, 35, 35, 50],
+      "hillshade-highlight-color": ["rgba(240,236,222,0.1)", "rgba(240,236,222,0.04)", "rgba(240,236,222,0.04)", "rgba(240,236,222,0.02)"],
+      "hillshade-shadow-color": ["rgba(18,24,14,0.78)", "rgba(18,24,14,0.42)", "rgba(18,24,14,0.42)", "rgba(18,24,14,0.2)"],
+      "hillshade-accent-color": "rgba(18,24,14,0.3)", "hillshade-exaggeration": 1, "hillshade-illumination-anchor": "map" },
+    depth: { "hillshade-method": "standard", "hillshade-illumination-direction": 315, "hillshade-illumination-anchor": "map",
+      "hillshade-highlight-color": "rgba(240,236,222,0.04)", "hillshade-shadow-color": "rgba(12,18,10,0.55)", "hillshade-accent-color": "rgba(12,18,10,0)", "hillshade-exaggeration": 0.6 },
+  };
   const PLATE = { url: "https://welcometoyourgalaxy.github.io/culprits/atlas-plate.webp?v=207", top: 85.05112877980659, bottom: -80.55, fadeIn: 3, fadeOut: 5 };
   const toPng = async (cv) => (cv.convertToBlob ? await cv.convertToBlob({ type: "image/png" }) : await new Promise((r) => cv.toBlob(r, "image/png"))).arrayBuffer();
   const canvas = (w, h) => (typeof OffscreenCanvas !== "undefined" ? new OffscreenCanvas(w, h) : Object.assign(document.createElement("canvas"), { width: w, height: h }));
@@ -2213,25 +2393,20 @@
       { id: "land-edge", type: "line", source: "land", paint: { "line-color": "#4A4F55", "line-width": ["interpolate", ["linear"], ["zoom"], 1, 0.35, 6, 0.9], "line-opacity": 0.75 } },
     ],
   };
-  const map = new maplibregl.Map({ container: "map", style, center: [10, 18], zoom: 1.6, minZoom: 0.6, maxZoom: 15, attributionControl: false, renderWorldCopies: true });
+  // One world only (round nh12): no copies of the map repeated past its edges.
+  const map = new maplibregl.Map({ container: "map", style, center: [10, 18], zoom: 1.6, minZoom: 0.6, maxZoom: 15, attributionControl: false, renderWorldCopies: false });
   map.addControl(new maplibregl.AttributionControl({ compact: true }), window.innerWidth > 720 ? "bottom-right" : "top-left");
   map.addControl(new maplibregl.NavigationControl({ visualizePitch: false }), "top-right");
-  // A button back out to the whole world.
+  // The "Whole world" button (round nh12: words, not a symbol) takes the
+  // map back out to the whole world.
   const HOME = { center: [10, 18], zoom: 1.6 };
-  map.addControl({
-    onAdd() {
-      const el = document.createElement("div");
-      el.className = "maplibregl-ctrl maplibregl-ctrl-group";
-      el.innerHTML = `<button type="button" class="nh-world" title="Back out to the whole world" aria-label="Back out to the whole world">◎</button>`;
-      el.querySelector("button").addEventListener("click", () => map.easeTo(Object.assign({ bearing: 0, pitch: 0, duration: 900 }, HOME)));
-      return el;
-    },
-    onRemove() {},
-  }, "top-right");
+  document.getElementById("world").addEventListener("click", () => map.easeTo(Object.assign({ bearing: 0, pitch: 0, duration: 900 }, HOME)));
   const pad = () => map.setPadding({ left: window.innerWidth > 720 ? 396 : 0, top: 0, right: 0, bottom: window.innerWidth > 720 ? 0 : Math.round(window.innerHeight * 0.5) });
   pad();
   window.addEventListener("resize", pad);
+  let ready = false;
   map.on("load", () => {
+    ready = true;
     const atlas = NonHumanAtlas.create({ map, maplibregl, pmtiles, panel: document.getElementById("nh-panel") });
     window.nonHumanAtlas = atlas;
     window.nonHumanMap = map;
@@ -2278,6 +2453,27 @@
         { id: "b-atlas-plate", type: "raster", source: "b-plate", paint: { "raster-opacity": ["interpolate", ["linear"], ["zoom"], PLATE.fadeIn, 1, PLATE.fadeOut, 0], "raster-fade-duration": 0 } },
         { id: "b-atlas-labels", type: "raster", source: "b-labels", paint: { "raster-opacity": ["interpolate", ["linear"], ["zoom"], PLATE.fadeIn, 0, PLATE.fadeOut, .92] } },
       ] }),
+    // Jurassic: the Culprits map's basemap of that name (its Satellite
+    // imagery basemap, map/app.js BASE_GRADE.satellite, SAT_RELIEF and
+    // addSatelliteRelief): Esri's photographs lightly muted, a see-through
+    // palette by height (deep green lowlands, olive, ochre and sienna slopes,
+    // grey-brown rock; navy deeps and blue-green shelves at sea), Swiss-style
+    // shading from four lights and a second north-west light, a calm navy
+    // over the deep sea, and grey place names (round nh12, asked 19 October).
+    // Its 3D terrain, grain and frame are not copied.
+    jurassic: () => ({
+      sources: { "b-esri": ESRI, "b-relief": RELIEF, "b-sea": SEA,
+        "b-labels": { type: "raster", tiles: ["https://a.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}@2x.png?key=cb1_494p_1_eebbbfcb65bc573e54783d42"], tileSize: 256, attribution: "Labels © CARTO, © OpenStreetMap" } },
+      layers: [
+        { id: "b-jur-sea", type: "background", paint: { "background-color": "#0B1017" } },
+        { id: "b-jur-img", type: "raster", source: "b-esri", paint: { "raster-brightness-min": 0.02, "raster-brightness-max": 0.92, "raster-saturation": 0.12, "raster-contrast": 0.06, "raster-hue-rotate": 0 } },
+        { id: "b-jur-colour", type: "color-relief", source: "b-relief", paint: { "color-relief-color": JURASSIC.colour, "color-relief-opacity": 1 } },
+        { id: "b-jur-seabed", type: "color-relief", source: "b-sea", paint: { "color-relief-color": JURASSIC.seabed, "color-relief-opacity": 1 } },
+        { id: "b-jur-shade", type: "hillshade", source: "b-relief", paint: JURASSIC.shade },
+        { id: "b-jur-depth", type: "hillshade", source: "b-relief", paint: JURASSIC.depth },
+        { id: "b-jur-calm", type: "color-relief", source: "b-sea", paint: { "color-relief-color": JURASSIC.sea, "color-relief-opacity": 1 } },
+        { id: "b-jur-labels", type: "raster", source: "b-labels", paint: { "raster-opacity": 0.8, "raster-saturation": -1 } },
+      ] }),
     sat: () => ({
       sources: { "b-s2": { type: "raster", tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2024_3857/default/g/{z}/{y}/{x}.jpg"], tileSize: 256, maxzoom: 14,
           attribution: '<a href="https://s2maps.eu" target="_blank" rel="noopener">Sentinel-2 cloudless - https://s2maps.eu</a> by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2024)' }, "b-esri": ESRI },
@@ -2303,14 +2499,18 @@
   document.getElementById("basemap").addEventListener("click", (e) => {
     const b = e.target.closest("button[data-base]");
     if (!b) return;
+    // Round nh12: the basemap changes as soon as the map has loaded once.
+    // isStyleLoaded() is false whenever any row's squares are still coming
+    // (the sea runoff row's never all settle), and waiting for "load" then
+    // waited for ever, so the buttons did nothing while such a row was on.
     const go = () => setBase(b.dataset.base);
-    if (map.isStyleLoaded()) go(); else map.once("load", go);
+    if (ready) go(); else map.once("load", go);
     for (const x of document.querySelectorAll("#basemap button")) x.classList.toggle("on", x === b);
   });
   document.getElementById("fold").addEventListener("click", (e) => {
     const s = document.getElementById("side");
     s.classList.toggle("folded");
-    e.target.textContent = s.classList.contains("folded") ? "Open" : "Fold";
+    e.target.textContent = s.classList.contains("folded") ? "Open ▾" : "Fold up ▴";
   });
 })();
 </script>
