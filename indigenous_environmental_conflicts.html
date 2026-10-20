@@ -1199,7 +1199,7 @@ function box(r) {
     (r.ring ? '<p class="note">The copy gives no province, region or site for this conflict, only the country, so it is drawn as a ring.</p>' : "") +
     (r.stack > 1 ? '<p class="note">One of ' + r.stack + ' conflicts at this spot in the copy; they are drawn slightly apart in a small spiral so each can be clicked.</p>' : "") +
     '<p class="note"><a href="' + find + '" target="_blank" rel="noopener">Search ejatlas.org for this conflict’s full page ↗</a></p>' +
-    '<div class="hp-src">Source: <a href="https://ejatlas.org/" target="_blank" rel="noopener">Environmental Justice Atlas (EJAtlas)</a>, as copied onto the compilation map’s Indigenous Environmental Conflicts layer (v1, January 2024).</div></div>';
+    '<div class="hp-src">Source: <a href="https://ejatlas.org/" target="_blank" rel="noopener">Environmental Justice Atlas (EJAtlas)</a>.</div></div>';
 }
 function listBox(rs) {
   return '<div class="hp"><div class="hp-k">' + rs.length + ' here</div><h3>These overlap at this zoom</h3><p class="note">Choose one, or zoom in to separate them.</p><ol>' +
@@ -1244,8 +1244,6 @@ function buildKey() {
     rowsHtml(INTENS, S.i, "i", NI, (s) => s[3], (s) => s[2]) +
     '<div class="psec">Project status<span class="sp"></span><button type="button" class="btn" data-allg="t">All on / off</button></div>' +
     rowsHtml(STATUS, S.t, "t", NT, (s) => s[2]) +
-    '<div class="psec">Country</div>' +
-    '<select id="cty"><option value="">Every country (' + countries.length + ')</option>' + countries.map(([c, n]) => '<option value="' + esc(c) + '">' + esc(c) + ' (' + n + ')</option>').join("") + '</select>' +
     '<div class="psec">How dots are drawn</div>' +
     '<div class="dkey"><i style="background:#c0606f;box-shadow:0 0 0 1px rgba(246,240,236,.7)"></i><span>Filled dot: at the coordinates the copy gives</span>' +
     '<i style="border:1.4px solid #c0606f;background:rgba(192,96,111,.14)"></i><span>Ring: the copy names only the country (' + NRING + ' conflicts)</span></div>' +
@@ -1263,7 +1261,6 @@ function buildKey() {
   }));
   let qt; $("#q").addEventListener("input", (e) => { clearTimeout(qt); qt = setTimeout(() => { S.q = e.target.value.trim().toLowerCase(); update(); }, 200); });
   $("#by").addEventListener("change", (e) => { S.by = e.target.value; update(); });
-  $("#cty").addEventListener("change", (e) => { S.c = e.target.value; update(); });
   const y0 = $("#y0"), y1 = $("#y1");
   const chipsOff = () => body.querySelectorAll("[data-t]").forEach((x) => x.classList.remove("on"));
   body.querySelectorAll("[data-t]").forEach((b) => b.addEventListener("click", () => {
