@@ -66,13 +66,14 @@ button.btn:hover,#infoBtn:hover,#worldBtn:hover{border-color:var(--accent-hi);co
 .rng input::-webkit-slider-thumb{-webkit-appearance:none;pointer-events:auto;width:14px;height:14px;border-radius:50%;background:#f0ece4;border:2px solid var(--accent);cursor:pointer}
 .rng input::-moz-range-thumb{pointer-events:auto;width:12px;height:12px;border-radius:50%;background:#f0ece4;border:2px solid var(--accent);cursor:pointer}
 .yrs{display:flex;justify-content:space-between;font-size:13px;color:#f0ece4}
+.let{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:rgba(255,255,255,.1);color:#f0ece4;font:700 9.5px Helvetica,Arial,sans-serif;margin:0 7px 0 0;vertical-align:1px}
 .shp{flex:none;display:inline-block;width:11px;height:11px;margin-top:4px;line-height:0}
 .tags{display:flex;gap:4px;flex-wrap:wrap;margin:4px 0 6px}
 .tags span{font-size:10px;letter-spacing:1px;text-transform:uppercase;border:1px solid var(--line);border-radius:3px;padding:0 6px;color:var(--mute)}
 .hp-read{margin:8px 0;padding:6px 0 6px 10px;border-left:2px solid var(--accent-hi);color:#e4e0ea;font-style:italic;font-size:13px}
 .hp-edge{margin:8px 0;padding:6px 8px;border:1px solid var(--line);border-radius:4px;font-size:12px;color:#dedbe6}
 .hp-src{color:var(--mute);font-size:11.5px;margin-top:10px;border-top:1px solid var(--line2);padding-top:6px}
-#net{display:none;position:absolute;z-index:790;top:12px;bottom:34px;left:364px;width:min(560px,calc(100% - 740px));min-width:320px;padding:0;overflow:hidden}
+#net{display:none;position:absolute;z-index:790;left:364px;right:374px;bottom:34px;height:40%;min-height:250px;padding:0;overflow:hidden}
 #net.open{display:block}
 #net svg{display:block;width:100%;height:100%;cursor:grab}
 #netX{position:absolute;top:6px;right:8px;background:none;border:0;color:#bbb;font-size:20px;cursor:pointer;line-height:1;z-index:2}
@@ -132,7 +133,7 @@ body.detopen #worldBtn{right:372px}
 .maplibregl-ctrl-bottom-right{bottom:24px}
 body.detopen .maplibregl-ctrl-bottom-right{right:360px}
 @media (max-width:820px){
-  #net{left:12px;right:12px;width:auto;top:110px;bottom:auto;height:46%}
+  #net{left:12px;right:12px;top:auto;bottom:34px;height:38%;min-height:0}
   #key{width:auto;right:12px;max-height:42%}
   #rcol{top:auto;bottom:34px;left:12px;right:12px;width:auto;max-height:46%}
   #infoBtn{align-self:flex-start}
@@ -174,7 +175,7 @@ window.ARCH_INTRO = "The actors that <b style=\"color:#f0ece4\">write and uphold
 </script>
 <script>
 /* Culprits basemaps (MapLibre) — as used by the Welcome to Your Galaxy maps,
- * with the flat map's world copies added so the Pacific edges meet.
+ * with the Atlas plate cut into map squares so its two ends meet at 180 degrees.
  * Originally: Culprits basemaps for Leaflet 1.9.4 — the six basemaps of the Culprits map
  * (https://welcometoyourgalaxy.github.io/culprits/), ported from its map/app.js.
  * Needs, loaded before this script: Leaflet 1.9.4, maplibre-gl@5.24.0 (JS + CSS)
@@ -1089,7 +1090,8 @@ function create(container, opts) {
     set(k) { if (!build[k]) throw new Error("unknown basemap " + k); state.want = k; if (state.ready) apply(k); },
     current() { return state.ready ? state.kind : state.want; },
     // Flat map: the world repeats east and west, so panning across the Pacific is seamless.
-    setFlat(on) { state.flat = !!on; try { map.setRenderWorldCopies(!!on); } catch (e) {} map.triggerRepaint(); },
+    // The flat map shows the world once; it does not repeat east and west.
+    setFlat(on) { state.flat = false; try { map.setRenderWorldCopies(false); } catch (e) {} map.triggerRepaint(); },
     maplibre: map,
   };
 }
@@ -1168,7 +1170,12 @@ function frame(o) {
   function sky() { if (proj !== "globe") return; const k = BM.current(); try { map.setSky(k === "night" ? SKY.night : k === "hell" ? SKY.hell : SKY.day); } catch (e) {} }
   function freeFlat() {
     try {
-      if (proj === "mercator") map.setTransformConstrain((ll, z) => ({ center: new maplibregl.LngLat(ll.lng, Math.max(-84, Math.min(84, ll.lat))), zoom: Math.max(0, z) }));
+      if (proj === "mercator") map.setTransformConstrain((ll, z) => {
+        // One world: when it is wider than the screen its edges stay at the screen's edges; when narrower it stays centred.
+        const W = map.getContainer().clientWidth || 1200, ww = 512 * Math.pow(2, Math.max(0, z)), hw = W / 2 / ww * 360;
+        const lng = ww > W ? Math.max(-180 + hw, Math.min(180 - hw, ll.lng)) : 0;
+        return { center: new maplibregl.LngLat(lng, Math.max(-84, Math.min(84, ll.lat))), zoom: Math.max(0, z) };
+      });
       else map.setTransformConstrain(null);
     } catch (e) {}
   }
@@ -1180,11 +1187,13 @@ function frame(o) {
   };
   const panelRight = () => { try { const r = $("#key").getBoundingClientRect(), w = map.getContainer().clientWidth; if (r.width && r.right < w * 0.6) return r.right + 10; } catch (e) {} return 0; };
   const rightBox = () => { try { const r = $("#rcol").getBoundingClientRect(), w = map.getContainer().clientWidth; if (r.width && r.left > w * 0.5) return w - r.left + 10; } catch (e) {} return 0; };
-  F.pad = () => ({ left: panelRight(), right: rightBox(), top: 20, bottom: 30 });
-  const freeBox = () => { const el = map.getContainer(), W = el.clientWidth || 1200, Hh = el.clientHeight || 800; let L = panelRight(), R = rightBox(); if (W - L - R < 240) { L = 0; R = 0; } return { W, H: Hh, L, R, fw: W - L - R }; };
+  // A panel docked along the bottom (the network) takes space from the map's view.
+  const bottomBox = () => { try { const n = document.getElementById("net"); if (n && n.classList.contains("open")) { const r = n.getBoundingClientRect(), c = map.getContainer().getBoundingClientRect(); return Math.max(0, c.bottom - r.top + 8); } } catch (e) {} return 0; };
+  F.pad = () => ({ left: panelRight(), right: rightBox(), top: 20, bottom: 30 + bottomBox() });
+  const freeBox = () => { const el = map.getContainer(), W = el.clientWidth || 1200, Hh = el.clientHeight || 800; let L = panelRight(), R = rightBox(); if (W - L - R < 240) { L = 0; R = 0; } const B = bottomBox(); return { W, H: Hh - B, B, L, R, fw: W - L - R }; };
   const startZoom = () => { const fb = freeBox(); return Math.max(0.2, Math.log2(0.86 * Math.max(220, Math.min(fb.H - 40, fb.fw - 20)) * Math.PI / 512)); };
   F.wholeWorld = () => {
-    const fb = freeBox(), padding = { left: fb.L, right: fb.R, top: 0, bottom: 0 };
+    const fb = freeBox(), padding = { left: fb.L, right: fb.R, top: 0, bottom: fb.B };
     if (proj === "globe") map.flyTo({ center: [12, 25], zoom: startZoom(), padding, duration: 1200 });
     else map.flyTo({ center: [10, 22], zoom: Math.max(0, Math.log2(Math.min(fb.fw - 20, (fb.H - 40) * 1.55) / 512)), padding, duration: 1200 });
   };
@@ -1302,15 +1311,16 @@ function frame(o) {
 
   /* ---------- grouped entry list ---------- */
   // groups: [[title, [{i, name, sub, color}]]]; all open by default.
-  const CLOSED = {};
+  // Groups start closed; a group's title opens it, and the group holding the chosen entry opens.
+  const OPEN = {};
   F.drawGroups = (el, mode, groups, sel, onPick) => {
     el.innerHTML = groups.length ? groups.map(([t, rows]) => {
-      const k = mode + "|" + t, shut = CLOSED[k];
+      const k = mode + "|" + t, shut = !(OPEN[k] || rows.some((r) => r.i === sel));
       return '<div class="grp' + (shut ? " shut" : "") + '" data-k="' + esc(k) + '"><button type="button" class="gh"><span class="caret">▾</span>' + esc(t) + '</button><div class="gb">' +
         rows.map((r) => '<div class="oi' + (sel === r.i ? " sel" : "") + '" data-i="' + r.i + '"><span class="dot" style="background:' + r.color + '"></span><span>' + esc(r.name) + (r.sub ? '<span class="n">' + esc(r.sub) + '</span>' : "") + '</span></div>').join("") + '</div></div>';
     }).join("") : '<div class="sub">Nothing matches.</div>';
     el.onclick = (e) => {
-      const h = e.target.closest(".gh"); if (h) { const g = h.parentNode; g.classList.toggle("shut"); CLOSED[g.dataset.k] = g.classList.contains("shut"); return; }
+      const h = e.target.closest(".gh"); if (h) { const g = h.parentNode; g.classList.toggle("shut"); OPEN[g.dataset.k] = !g.classList.contains("shut"); return; }
       const d = e.target.closest(".oi"); if (d) onPick(+d.dataset.i);
     };
     const s = el.querySelector(".oi.sel"); if (s) s.scrollIntoView({ block: "nearest" });
@@ -1430,9 +1440,9 @@ function recolour(kind) {
 
 /* ---------- the instrument marks: one small shape per type ---------- */
 const SZ = 22, PR = 2;
-function iconId(type, col, pending, ring) { return "lm|" + type + "|" + col + "|" + (pending ? "p" : "a") + "|" + ring; }
-function ensureIcon(type, col, pending, ring) {
-  const id = iconId(type, col, pending, ring); if (map.hasImage(id)) return id;
+function iconId(type, col, pending, ring, letter) { return "lm|" + type + "|" + col + "|" + (pending ? "p" : "a") + "|" + ring + "|" + letter; }
+function ensureIcon(type, col, pending, ring, letter) {
+  const id = iconId(type, col, pending, ring, letter); if (map.hasImage(id)) return id;
   const c = document.createElement("canvas"); c.width = c.height = SZ * PR; const g = c.getContext("2d");
   g.scale(SZ * PR / 24, SZ * PR / 24);
   const p = new Path2D(PATHS[type] || PATHS.statute);
@@ -1441,6 +1451,15 @@ function ensureIcon(type, col, pending, ring) {
     g.setLineDash([3, 2.2]); g.lineWidth = 1.6; g.strokeStyle = col; g.stroke(p);
   } else {
     g.fillStyle = col; g.fill(p); g.lineWidth = 1.3; g.strokeStyle = ring; g.stroke(p);
+  }
+  // The field's letter in the centre (L, S, E, C, I), in the outline's colour on a solid mark
+  // and in the mark's colour on a hollow one.
+  if (letter) {
+    g.setLineDash([]); g.font = "700 10.5px Helvetica, Arial, sans-serif"; g.textAlign = "center"; g.textBaseline = "middle";
+    const y = type === "treaty" ? 14.2 : 12.4;
+    if (pending) { g.lineWidth = 2.4; g.strokeStyle = ring; g.strokeText(letter, 12, y); g.fillStyle = col; }
+    else g.fillStyle = ring;
+    g.fillText(letter, 12, y);
   }
   map.addImage(id, g.getImageData(0, 0, SZ * PR, SZ * PR), { pixelRatio: PR });
   return id;
@@ -1453,7 +1472,7 @@ function shapeSwatch(type, col, pending) {
 function addLayers() {
   F.mine.push("law-lead", "law-hub", "law-mark", "law-ring", "act-tie", "act-lead", "act-hub", "act-core", "act-ring");
   ["lawpts", "lawleads", "lawhubs", "actpts", "actleads", "acthubs", "acties"].forEach((s) => map.addSource(s, { type: "geojson", data: F.fc([]) }));
-  const z = (k) => ["interpolate", ["linear"], ["zoom"], 0, 0.6 * k, 3, 0.72 * k, 6, 0.9 * k, 10, 1.05 * k];
+  const z = (k) => ["interpolate", ["linear"], ["zoom"], 0, 0.74 * k, 3, 0.84 * k, 6, 0.96 * k, 10, 1.1 * k];
   map.addLayer({ id: "law-lead", type: "line", source: "lawleads", paint: { "line-color": ["get", "c"], "line-opacity": 0.45, "line-width": 0.7 } });
   map.addLayer({ id: "law-hub", type: "circle", source: "lawhubs", paint: { "circle-radius": 1.6, "circle-color": "#f0ece4", "circle-opacity": 0.7 } });
   map.addLayer({ id: "law-mark", type: "symbol", source: "lawpts", layout: { "icon-image": ["get", "icon"], "icon-size": z(1), "icon-allow-overlap": true, "icon-ignore-placement": true } });
@@ -1474,7 +1493,7 @@ function showView() {
 }
 function drawLaw() {
   const t = tone(F.BM.current());
-  const out = F.spread(D.filter(passLaw).map((d) => ({ key: d.i, lng: d.lon, lat: d.lat, props: { i: d.i, c: BC[d.branch], w: t.sel, icon: ensureIcon(d.type, BC[d.branch], d.st === "pending", t.ring) } })));
+  const out = F.spread(D.filter(passLaw).map((d) => ({ key: d.i, lng: d.lon, lat: d.lat, props: { i: d.i, c: BC[d.branch], w: t.sel, icon: ensureIcon(d.type, BC[d.branch], d.st === "pending", t.ring, L.FIELDLETTER[d.field] || "") } })));
   map.getSource("lawpts").setData(F.fc(out.pts)); map.getSource("lawleads").setData(F.fc(out.leads)); map.getSource("lawhubs").setData(F.fc(out.hubs));
   map.setPaintProperty("law-hub", "circle-color", t.sel);
 }
@@ -1498,7 +1517,7 @@ function buildKey() {
     '<div id="cnt"></div>' +
     '<div id="lawKey">' +
       '<div class="psec">Find</div><input id="lq" class="wf" type="search" placeholder="Name, place or word in the entry">' +
-      '<div class="psec">Field / subject</div><div id="lfields"></div>' +
+      '<div class="psec">Field / subject — its centre letter</div><div id="lfields"></div>' +
       '<div class="psec">Type of instrument — its shape</div><div id="ltypes"></div>' +
       '<div class="psec">Branch of power — its colour</div><div id="lbranches"></div>' +
       '<div class="psec">Tier</div><div class="seg2" id="ltier"><button type="button" class="btn" data-v="all">All</button><button type="button" class="btn" data-v="international">International</button><button type="button" class="btn" data-v="national">National</button></div>' +
@@ -1516,7 +1535,7 @@ function buildKey() {
       '<div class="psec">Entries shown</div><div class="lsort">Group by <select id="agroup"><option value="role">role</option><option value="field">field of law</option><option value="hq">headquarters</option><option value="az">A to Z</option></select></div><div id="alist" class="scroll olist"></div>' +
     '</div>';
   $("#archIntro").innerHTML = window.ARCH_INTRO;
-  $("#keyBody").querySelectorAll("[data-view]").forEach((b) => b.addEventListener("click", () => setView(b.dataset.view)));
+  $("#keyBody").querySelectorAll("[data-view]").forEach((b) => b.addEventListener("click", () => { setView(b.dataset.view); refit(); }));
   $("#lq").value = S.q; $("#aq").value = R.q;
   $("#lq").addEventListener("input", (e) => { S.q = e.target.value.trim(); updateLaw(); });
   $("#aq").addEventListener("input", (e) => { R.q = e.target.value.trim(); updateArch(); });
@@ -1533,11 +1552,11 @@ function buildKey() {
   $("#lgroup").value = S.group; $("#agroup").value = R.group;
   $("#lgroup").addEventListener("change", (e) => { S.group = e.target.value; listLaw(); F.writeHash(); });
   $("#agroup").addEventListener("change", (e) => { R.group = e.target.value; listArch(); F.writeHash(); });
-  $("#netBtn").addEventListener("click", () => { R.net = !R.net; netShow(); });
+  $("#netBtn").addEventListener("click", () => { R.net = !R.net; netShow(); refit(); F.writeHash(); });
 }
 function drawLawKey() {
   const ui = paletteUI(F.BM.current(), 1)[0];
-  $("#lfields").innerHTML = FIELDS.map((f) => togRow("field", f, "", flab(f), FIELD_DESC[f], S.fields.has(f))).join("");
+  $("#lfields").innerHTML = FIELDS.map((f) => togRow("field", f, '<span class="let">' + (L.FIELDLETTER[f] || "") + '</span>', flab(f), FIELD_DESC[f], S.fields.has(f))).join("");
   $("#ltypes").innerHTML = TYPES_USED.map((t) => togRow("type", t[0], shapeSwatch(t[0], "#d9d6e2", false) + " ", t[1], t[2], S.types.has(t[0]))).join("");
   $("#lbranches").innerHTML = BRANCHES.map((b) => togRow("branch", b, '<span class="dot" style="background:' + BCU[b] + ';margin:0 7px 0 0"></span>', L.BRANCHMETA[b].label, BRANCH_DESC[b], S.branches.has(b))).join("");
   $("#ltier").querySelectorAll("button").forEach((b) => b.classList.toggle("on", b.dataset.v === S.tier));
@@ -1630,6 +1649,8 @@ function deselect() {
 /* ---------- the network panel (architecture) ---------- */
 let NET = null;
 function netShow() { const on = VIEW === "arch" && R.net; $("#net").classList.toggle("open", on); $("#netBtn") && $("#netBtn").classList.toggle("on", R.net); if (on) netDraw(); }
+// The map makes room for the network: it fits the world into the space above it.
+function refit() { setTimeout(() => F.wholeWorld(), 30); }
 function netDraw() {
   if (VIEW !== "arch" || !R.net || typeof d3 === "undefined") return;
   const el = $("#net"), svgEl = $("#netsvg"), W = el.clientWidth, Hh = el.clientHeight; if (!W || !Hh) return;
@@ -1639,7 +1660,7 @@ function netDraw() {
     svg.call(d3.zoom().scaleExtent([0.4, 3]).on("zoom", (e) => g.attr("transform", e.transform)));
     svg.on("click", (e) => { if (e.target === svgEl) deselect(); });
   }
-  const cx = W / 2, cy = Hh / 2 + 14, maxR = Math.max(80, Math.min((W - 300) / 2, Hh / 2 - 60));
+  const cx = W / 2, cy = Hh / 2 + 12, maxR = Math.max(70, Math.min((W - 320) / 2, Hh / 2 - 34));
   const order = ["identity", "rule", "land", "extraction"].filter((f) => AFIELDS.includes(f));
   const base = order.length > 1 ? maxR * 0.24 : 0, gap = order.length > 1 ? (maxR - base) / (order.length - 1) : 0, rad = {};
   order.forEach((f, i) => { rad[f] = base + i * gap; });
@@ -1685,7 +1706,7 @@ F = MapCore.frame({
     F.onPick = (f) => { if (VIEW === "law") selectLaw(f.properties.i, false); else selectAct(f.properties.i, false); };
     F.onEscape = deselect;
     $("#detX").addEventListener("click", deselect);
-    $("#netX").addEventListener("click", () => { R.net = false; netShow(); F.writeHash(); });
+    $("#netX").addEventListener("click", () => { R.net = false; netShow(); refit(); F.writeHash(); });
     window.addEventListener("resize", netDraw);
     setView(VIEW);
   },
