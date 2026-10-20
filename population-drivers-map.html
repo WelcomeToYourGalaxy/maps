@@ -12,7 +12,7 @@
 :root{
   --bg:#0a1020; --panel:#111a30; --panel2:#182440; --fg:#eef2fa; --muted:#aab6d3; --rule:#243352;
   --accent:#5b9cf6; --accent-soft:#17304f; --focus:#9cc3ff;
-  --fert:#6fae80; --fert-deep:#2f6b52; --ab:#7a9fe0; --ab-deep:#3c5fb8; --con:#5fb3b3; --con-deep:#2c6b6b;
+  --fert:#6fae80; --fert-deep:#2f6b52; --ab:#6fae80; --ab-deep:#2f6b52; --con:#6fae80; --con-deep:#2f6b52;
   --N:#6fae80; --P:#a08a6a; --K:#a07aa8;
   --display:"Marcellus",Georgia,serif; --title:"Uncial Antiqua","Marcellus",Georgia,serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
   color-scheme:dark;
@@ -29,13 +29,13 @@ body{background:var(--bg);color:var(--fg);font-family:var(--display);line-height
 .maplibregl-ctrl-group button{background:transparent!important}
 .maplibregl-ctrl-group button+button{border-top:1px solid var(--rule)!important}
 .maplibregl-ctrl-zoom-in .maplibregl-ctrl-icon,.maplibregl-ctrl-zoom-out .maplibregl-ctrl-icon{filter:invert(1) brightness(1.4)}
-.maplibregl-ctrl-top-right{top:82px;right:12px}
-.maplibregl-ctrl-top-right .maplibregl-ctrl{margin:0 0 8px 0}
-.homebtn{font:inherit;font-family:var(--display);font-size:11.5px;padding:0 9px;height:30px;line-height:30px;background:var(--panel);color:var(--fg);border:1px solid var(--rule);border-radius:4px;cursor:pointer;white-space:nowrap}
+.maplibregl-ctrl-top-right{top:calc(var(--bandh,76px) + 6px);right:12px;display:flex;flex-direction:row-reverse;align-items:flex-start;gap:6px}
+.maplibregl-ctrl-top-right .maplibregl-ctrl{margin:0}
+.homebtn{font:inherit;font-family:var(--display);font-size:11.5px;padding:0 9px;height:29px;line-height:29px;background:var(--panel);color:var(--fg);border:1px solid var(--rule);border-radius:4px;cursor:pointer;white-space:nowrap}
 .homebtn:hover{color:var(--accent);border-color:var(--accent)}
 
 /* top band: title + three driver chapters */
-.band{position:absolute;top:0;left:0;right:0;z-index:1000;display:flex;align-items:stretch;gap:0;background:linear-gradient(180deg,rgba(10,16,32,.96),rgba(10,16,32,.82));border-bottom:1px solid var(--rule);backdrop-filter:blur(4px)}
+.band{position:absolute;top:0;left:0;right:0;z-index:1000;display:flex;align-items:stretch;gap:0;flex-wrap:wrap;background:linear-gradient(180deg,rgba(10,16,32,.96),rgba(10,16,32,.82));border-bottom:1px solid var(--rule);backdrop-filter:blur(4px)}
 .band .ttl{padding:9px 14px 7px;border-right:1px solid var(--rule);min-width:0}
 .band h1{margin:0;font-family:var(--title);font-size:17px;font-weight:800;letter-spacing:.5px;color:#f0ece4;text-shadow:0 2px 12px rgba(0,0,0,.5);letter-spacing:.01em;white-space:nowrap}
 .band .ttl p{margin:1px 0 0;font-size:11px;color:var(--muted);white-space:nowrap}
@@ -43,16 +43,18 @@ body{background:var(--bg);color:var(--fg);font-family:var(--display);line-height
 .chap{flex:1;min-width:0;border:0;border-right:1px solid var(--rule);background:transparent;color:var(--muted);font:inherit;font-size:13px;padding:6px 10px;cursor:pointer;text-align:left;display:grid;grid-template-columns:auto 1fr;gap:3px 8px;align-items:center}
 .chap i{width:10px;height:10px;border-radius:2px;display:inline-block}
 .chap b{font-weight:500;color:var(--fg);font-size:12.5px;line-height:1.15}
+.chapters{min-width:420px}
 .chap small{grid-column:2;font-size:10.5px;color:var(--muted);line-height:1.2}
 .chap.on{background:var(--panel2);color:var(--fg);box-shadow:inset 0 -2px 0 var(--c)}
 .chap:hover{color:var(--fg)}
-.band .tools{display:flex;align-items:center;gap:6px;padding:0 10px;border-left:1px solid var(--rule)}
+.band .tools{display:flex;align-items:center;gap:5px;padding:6px 10px;border-left:1px solid var(--rule);flex-wrap:wrap;max-width:430px}
+.band .tools .sep{width:1px;height:18px;background:var(--rule);margin:0 2px}
 .btn{font:inherit;font-size:11.5px;padding:4px 9px;border:1px solid var(--rule);background:transparent;color:var(--fg);border-radius:2px;cursor:pointer;letter-spacing:.02em;white-space:nowrap}
 .btn:hover,.btn.on{border-color:var(--accent);color:var(--accent)}
 button:focus-visible,input:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
 
 /* layer panel: floats bottom-left, one block per chapter */
-.leftcol{position:absolute;left:12px;top:76px;bottom:40px;z-index:1000;width:300px;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.leftcol{position:absolute;left:12px;top:var(--bandh,76px);bottom:40px;z-index:1000;width:300px;display:flex;flex-direction:column;gap:8px;pointer-events:none}
 .leftcol>*{pointer-events:auto}
 .layers{position:relative;flex:1 1 auto;min-height:120px;width:300px;overflow:auto;background:rgba(17,26,48,.94);border:1px solid var(--rule);border-radius:3px;padding:7px 10px 8px;font-size:11.5px;line-height:1.3}
 .layers .links{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:0 0 6px}
@@ -121,9 +123,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--focus);outline-
 .layers .note a:hover,.drawer a:hover{border-bottom-color:var(--accent)}
 
 /* drawer: right side, holds country detail / company detail / method reference */
-.drawer{position:absolute;top:76px;right:12px;max-height:calc(100% - 116px);z-index:1000;width:400px;max-width:calc(100% - 300px);background:rgba(17,26,48,.96);border:1px solid var(--rule);border-radius:3px;display:none;flex-direction:column;min-height:0}
+.drawer{position:absolute;top:var(--bandh,76px);right:12px;max-height:calc(100% - var(--bandh,76px) - 40px);z-index:1000;width:400px;max-width:calc(100% - 300px);background:rgba(17,26,48,.96);border:1px solid var(--rule);border-radius:3px;display:none;flex-direction:column;min-height:0}
 .drawer.open{display:flex}
-.drawer.wide{left:324px;right:12px;width:auto;max-width:none;top:76px;bottom:40px;max-height:none;z-index:1001}
+.drawer.wide{left:324px;right:12px;width:auto;max-width:none;top:var(--bandh,76px);bottom:40px;max-height:none;z-index:1001}
 body.wideopen .maplibregl-ctrl-top-right{display:none}
 .drawer.wide .bd>.inner{max-width:760px;margin:0 auto}
 .drawer.wide .bd h4,.drawer.wide .bd .stat,.drawer.wide .bd .bars,.drawer.wide .bd .kv{break-inside:avoid}
@@ -196,7 +198,7 @@ body.wideopen .maplibregl-ctrl-top-right{display:none}
     <button class="chap" data-ch="ab" style="--c:var(--ab)"><i style="background:var(--ab)"></i><b>Every unintended pregnancy ends in abortion</b><small>Where it is legal, and who provides it</small></button>
     <button class="chap" data-ch="con" style="--c:var(--con)"><i style="background:var(--con)"></i><b>Everyone who wants contraception gets it</b><small>Coverage, unmet need, every method, who supplies it</small></button>
   </div>
-  <div class="tools"><button class="btn on" data-base="atlas">Atlas</button><button class="btn" data-base="jurassic">Jurassic</button><button class="btn" data-base="standard">Standard</button><button class="btn" data-base="night">Bioluminescent</button><button class="btn" data-base="hell">Hell</button><button class="btn" id="bGlobe" title="Globe or flat map">Globe</button><button class="btn" id="bAbout">About</button></div>
+  <div class="tools"><button class="btn on" data-base="atlas">Atlas</button><button class="btn" data-base="jurassic">Jurassic</button><button class="btn" data-base="standard">Standard</button><button class="btn" data-base="night">Bioluminescent</button><button class="btn" data-base="hell">Hell</button><span class="sep"></span><button class="btn on" id="bGlobe">Globe</button><button class="btn" id="bFlat">Flat</button><span class="sep"></span><button class="btn" id="bAbout">About</button></div>
 </div>
 
 <div class="leftcol" id="leftcol"><div class="layers" id="layers"></div>
@@ -350,8 +352,10 @@ function setBase(k){curBase=k;const on=new Set(BASEMAP_LAYERS[k]||[]);Object.val
   try{map.setSky(k==='night'?NIGHT.sky:DAY_SKY);}catch(e){}
   document.querySelectorAll('[data-base]').forEach(b=>b.classList.toggle('on',b.dataset.base===k));}
 document.querySelectorAll('[data-base]').forEach(b=>b.onclick=()=>setBase(b.dataset.base));
-$('bGlobe').onclick=()=>{GLOBE=!GLOBE;map.setProjection({type:GLOBE?'globe':'mercator'});$('bGlobe').classList.toggle('on',GLOBE);$('bGlobe').textContent=GLOBE?'Globe':'Flat';};
-$('bGlobe').classList.add('on');
+function fitBand(){const h=document.querySelector('.band').offsetHeight+12;document.documentElement.style.setProperty('--bandh',h+'px');}
+fitBand();window.addEventListener('resize',fitBand);
+function setProj(g){GLOBE=g;map.setProjection({type:g?'globe':'mercator'});$('bGlobe').classList.toggle('on',g);$('bFlat').classList.toggle('on',!g);}
+$('bGlobe').onclick=()=>setProj(true);$('bFlat').onclick=()=>setProj(false);
 
 /* ===== helpers ===== */
 const fmt=n=>n==null?'—':(Math.abs(n)>=1e9?(n/1e9).toFixed(2)+' B':Math.abs(n)>=1e6?(n/1e6).toFixed(1)+' M':Math.abs(n)>=1e3?Math.round(n).toLocaleString('en-US'):(Math.round(n*10)/10).toLocaleString('en-US'));
