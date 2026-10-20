@@ -359,9 +359,11 @@ document.querySelectorAll('[data-base]').forEach(b=>b.onclick=()=>setBase(b.data
 function fitBand(){const h=document.querySelector('.band').offsetHeight+12;document.documentElement.style.setProperty('--bandh',h+'px');}
 fitBand();window.addEventListener('resize',fitBand);
 function setProj(g){GLOBE=g;map.setProjection({type:g?'globe':'mercator'});$('bGlobe').classList.toggle('on',g);$('bFlat').classList.toggle('on',!g);}
-/* flat map: the world may be dragged past its edges once it is wider than the screen (so edge points can be centred), but never duplicated while it is smaller than the screen */
-function copiesSync(){const w=map.getContainer().clientWidth;const world=512*Math.pow(2,map.getZoom());const want=!GLOBE&&world>w*1.05;if(map.getRenderWorldCopies()!==want)map.setRenderWorldCopies(want);}
-map.on('zoom',copiesSync);map.on('resize',copiesSync);map.on('projectiontransition',copiesSync);
+/* flat map: drag anywhere. The default rule keeps the world pinned to the screen edges; this one lets the centre go anywhere
+   (to 85° N/S and one world-width past either side), so a point at any edge can be brought to the middle. No world copies are drawn. */
+const FREE_PAN=(lngLat,zoom)=>({center:new maplibregl.LngLat(Math.max(-540,Math.min(540,lngLat.lng)),Math.max(-85,Math.min(85,lngLat.lat))),zoom:zoom??0});
+function copiesSync(){try{map.setTransformConstrain(GLOBE?null:FREE_PAN);if(map.getRenderWorldCopies())map.setRenderWorldCopies(false);}catch(e){}}
+map.on('projectiontransition',copiesSync);
 $('bGlobe').onclick=()=>{setProj(true);copiesSync();};$('bFlat').onclick=()=>{setProj(false);copiesSync();};
 
 /* ===== helpers ===== */
