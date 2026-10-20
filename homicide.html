@@ -101,8 +101,8 @@ a{color:var(--accent-hi)}
 .wh{margin-bottom:4px}
 .wall{display:flex;gap:6px;align-items:center;margin:2px 0 6px;flex-wrap:wrap}
 .wall .n{font-size:11.5px}
-#wfilter{width:100%;box-sizing:border-box;background:rgba(255,255,255,.05);color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:4px 7px;font:inherit;font-size:12.5px;margin:2px 0 6px}
-#wlist{max-height:300px;overflow:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.18) transparent}
+#wfilter,.lfilter{width:100%;box-sizing:border-box;background:rgba(255,255,255,.05);color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:4px 7px;font:inherit;font-size:12.5px;margin:2px 0 6px}
+#wlist,.llist{max-height:300px;overflow:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.18) transparent}
 .witem{padding:4px 0;border-top:1px solid var(--line2);font-size:12.8px}
 .witem label{cursor:pointer}
 .witem .n{color:var(--mute);font-size:11.5px}
@@ -1299,9 +1299,90 @@ function buildTerritories() {
   });
   (D.terr || []).forEach((tt) => { TERR.push(Object.assign({ id: "terr" + TERR.length, kind: "file", loaded: false, on: false }, tt)); });
 }
+// ---------------------------------------------------------------- territory boxes: plain titles for each source's field names
+const LANGS = { EN: "English", FR: "French", HT: "Haitian Creole", AR: "Arabic", ES: "Spanish", MY: "Burmese" };
+const FIELD = {
+  GANG_NAME: "Gang", year: "Year", NAME: "Name", Name: "Name", name: "Name", NAMN: "Name", namn: "Name", nom: "Name", NOME: "Municipality",
+  ETHNICITY: "Ethnicity (as the source records it)", Type: "Kind of hold (control or influence)", Status: "Status", Leader: "Leader", Alliance: "Alliance (gang coalition)",
+  area_sqkm: "Area (km²)", AREA_SQKM: "Area (km²)", PERIMETER: "Perimeter", source_layer: "Layer of the source map", layer: "Layer of the source map", map_layer: "Layer of the source map",
+  KATEGORI: "Category", kategori: "Category", ORT: "Town", ort: "Town", LOKALPOLISOMRADE: "Local police area", lokalpolisomrade: "Local police area",
+  OMRADESKOD: "Area code", omradeskod: "Area code", POLISOMRADE: "Police area", polisomrade: "Police area", POLISOMRADESKOD: "Police area code", polisomradeskod: "Police area code",
+  REGIONKOD: "Police region code", regionkod: "Police region code", region: "Police region", SPECIALOMRADES_ID: "Special area number", AKTUALITET_START: "On the list from", AKTUALITET_SLUT: "On the list until",
+  Faction: "Group", Country: "Country", id_qrr: "Zone number", dep: "Département (number)", service: "Police service in charge", vague: "Wave (round of designation)", code_qrr: "Zone code",
+  COD_ISTAT: "ISTAT code", COD_REG: "Region code", COD_PRO: "Province code", PRO_COM: "Municipality code", M52_COMUNI_SCIOLTI_PER_MAFIA_E_: "Council dissolved for mafia (or financial collapse)",
+  M58_COMUNI_SCIOLTI_PER_MAPPARE: "Dissolved for mafia (1 = yes)", M52_COMUNI_SCIOLTI_SIMBOLOGIA: "Map symbol class", NOME_PRO: "Province", NOME_REG: "Region", SIGLA_PROVINCE: "Province abbreviation",
+  M23_PRESENZA_MAFIOSA: "Mafia presence index (Transcrime)", PARISH: "Parish", LOCATION: "Place", DURATION: "In force",
+  CVEGEO: "INEGI geographic code", CVE_ENT: "State code", CVE_MUN: "Municipality code", NOM_MUN: "Municipality", coscia_rios_years_covered: "Years the study covers",
+  Confidence: "Confidence", NAME__EN_: "Name (English)", "NAME__MY___comma_separated_": "Name (Burmese)", Public_Description: "Description", REGION: "State or region", Township: "Township",
+  Coords: "Coordinates", Latitude: "Latitude", Longitude: "Longitude", Latitud: "Latitude", Longitud: "Longitude", Public_Image_URL: "Image", Zone: "Zone",
+  fac_name: "Faction", description: "Description", DENOMINAZI: "Municipio", CITTA: "City", RIONI: "Rioni (historic districts)", QUARTIERI: "Quartieri (districts)", SUBURBI: "Suburbs", ZONE: "Zones",
+  SEDE_MUNIC: "Municipio office", POP2001: "Population, 2001", POP2011: "Population, 2011", NOTE: "Note", Alloggi_ATER: "Public housing (ATER) homes", Alloggi_del_Comune: "City-owned homes",
+  Alloggi_in_fitto_passivo: "Homes the city rents", Totale_alloggi_ERP: "Public housing homes, total", Abitazioni_al_censimento_2011: "Homes at the 2011 census",
+  F__alloggi_ERP_sulle_abitazioni: "Public housing as a share of homes (%)", municipio_1762270404862: "Municipio", beni_confiscati: "Confiscated mafia assets", fonte: "Source",
+  post_id: "Entry number", profile_url: "Profile page", listing_excerpt: "Summary",
+  areas_of_c: "Controlled by", date_: "Date", validOn: "Boundaries valid on",
+  Código: "Early-warning number", Grupos_Armados_Ilegales: "Illegal armed group", Facciones_Del_GAO: "Faction of the armed group", Municipios: "Municipality", MunDpto: "Municipality and department",
+  Divipola_Mpio: "Municipality code (DIVIPOLA)", Veredas: "Veredas (rural districts)", Macrorregión: "Macro-region", Tema_clave: "Key issue", Link_emisión_alerta: "The early warning (PDF)",
+  Fecha_Emisión: "Date issued", Economías_Ileagales_Y_Otros_Fac: "Illegal economies and other factors", Combates_entre_grupos_armados_y: "Fighting between armed groups and the security forces",
+  Afectación_de_DDHH: "Harm to human rights", PDET: "In a PDET (post-conflict development) area", Bloques_o_Frentes: "Blocs or fronts", Control_hegemónico: "Dominant control",
+  Enfrentamiento_entre_grupos: "Fighting between groups", Eventos_del_conflicto_armado: "Armed-conflict events", Alianza: "Alliance", Bandas_Criminales: "Criminal gangs", Grupos_internacionales: "International groups",
+  NIVEL_DE__RIESGO: "Risk level", ELN: "ELN present", AGC: "AGC (Clan del Golfo) present", GRUPOS_DEL_CRIMEN_ORGANIZADO___: "Organized crime groups present",
+  DESCRIPCION_GRUPOS_DEL_CRIMEN_O: "Organized crime groups described", DISIDENCIA__FARC___Facciones_Iv: "FARC dissidents (Iván Mordisco factions) present",
+  DISIDENCIA__FARC___Facciones_Se: "FARC dissidents (Segunda Marquetalia factions) present", DISIDENCIA__FARC___Facciones_Co: "FARC dissidents (Comandos de la Frontera factions) present",
+  DISIDENCIAS_FARC___Otras_Faccio: "FARC dissidents (other factions) present", GRUPO_ARMADO_SIN_IDENTIFICAR: "Unidentified armed group present", observaciones: "Observations",
+  ACOTACIONES_SEGUNDA_ACTUALIZACI: "Notes from the second update", Otras_observaciones: "Other observations", ENTIDAD_TE: "Kind of place", NOM_DEPART: "Department", NOM_MUNICI: "Municipality",
+  Nom_Propio: "Municipality", DEPARTAMENTO: "Department", MUNICIPIO: "Municipality", codane: "Municipality code (DANE)", COD_DEPTO: "Department code", Depto_Muni: "Department and municipality",
+  RES_676_2021: "Department (Resolution 676 of 2021)", Macro_2021: "Macro-region (2021)", Macroregión: "Macro-region", Número: "Number", Vias: "Roads", AETCR: "Former FARC reincorporation camp (AETCR)",
+  Analista_NAL: "National analyst", Analista_REG: "Regional analyst", No_AT: "Early-warning number", defensor: "Ombudsman's visits", No_personas_x_macro: "Staff in the macro-region", No_personas_Regional: "Staff in the region",
+  Región_G: "Region", Macro: "Macro-region", Codigo_Reg: "Region code", codigo: "Code",
+  Frentes_Segunda_Marquetalia: "Segunda Marquetalia fronts", Disidencias_EstadoMayor: "Estado Mayor Central dissident fronts",
+  FolderPath: "Folder in the source file", Snippet: "Note", PopupInfo: "Note",
+};
+const HIDE = /^(id|ID|Id|Id_puntos|ObjectId|UID__automated_|extrude|tessellate|visibility|fac_id|MI_STYLE|MI_PRINX|borrasr|Included_in_ArcGIS|Image_Display_URL|ID_ESPACIA|ID_ESPACIA_1|ENTIDAD_TE_1|NOM_DEPART_1|COD_DEPTO_1|COD_DEPTO1|N_Regional|AD2OLDCODE|adm2_pco_1|ADM1_FR_UP|orden|Orden|capa|DBO\..*)$/;
+const WORDS = { nombre: "name", municipio: "municipality", muncipio: "municipality", departamento: "department", cod: "code", código: "code", codigo: "code", fecha: "date", cantidad: "number",
+  victimas: "victims", víctimas: "victims", presencia: "presence", menciones: "mentions", frente: "front", frentes: "fronts", tipo: "kind", descripcion: "description", descripción: "description", fuente: "source",
+  año: "year", periodo: "period", actualizacion: "update", estructura: "structure", sub: "sub", lugar: "place", grupo: "group", escenario: "setting", general: "overall", incidencia: "influence", icidencia: "influence",
+  sitio: "site", comandancia: "command post", nivel: "level", actividad: "activity", numero: "number", comuna: "comuna (city district)", barrio: "neighbourhood", localidad: "locality", comandantes: "commanders",
+  brigada: "brigade", influencia: "influence", batallon: "battalion", ejercito: "army", masacre: "massacre", específico: "specific", hecho: "event", actor: "actor", homicidios: "homicides", subregion: "subregion",
+  subregiones: "subregions", regionalizacion: "regional grouping", zona: "zone", estudio: "study", sur: "south", norte: "north", incursion: "incursion", consolidacion: "consolidation", hom: "(homicides)", des: "(disappearances)",
+  reconfiguracion: "reorganisation", territorial: "territorial", mun: "municipality", cambio: "change", nuevo: "new", control: "control", rutas: "routes", ruta: "route", cerco: "encirclement", referencia: "reference",
+  regiones: "regions", nacimiento: "birth", reclutamiento: "recruitment", provincias: "provinces", guerrilla: "guerrilla", restitucion: "land restitution", pedidos: "claims", coca: "coca (ha)", escuela: "school",
+  mecanismo: "mechanism", identificacion: "identification", observaciones: "observations", informes: "reports", mando: "commander", temporal: "period", denominacion: "name", responsables: "responsible",
+  responsable: "responsible", corregimiento: "corregimiento", vereda: "vereda (rural district)", centropobl: "village", sector: "sector", poblacional: "of the population", judicializado: "prosecuted",
+  corredor: "corridor", minero: "mining", distribucion: "distribution", identificado: "identified", antecedentes: "background", paramilitares: "paramilitary", accionar: "actions", total: "total",
+  poblado: "village", acciones: "actions", expansión: "expansion", acción: "action", punto: "site", desmov: "demobilisation", proyecto: "project", politico: "political", avance: "advance", bloque: "bloc",
+  macro: "macro", estructura2023: "structure, 2023", antes: "before", despues: "after", gini: "Gini", indice: "index", veredas: "veredas", gao: "armed group", eln: "ELN", farc: "FARC", del: "of", de: "of", y: "and", la: "the", el: "the" };
+function fieldLabel(k) {
+  if (FIELD[k]) return FIELD[k];
+  let m = k.match(/^ADM(\d)_(EN|FR|HT|AR)$/); if (m) return ["Country", "Department or governorate", "District"][+m[1]] + " (" + LANGS[m[2]] + ")";
+  m = k.match(/^ADM(\d)(REF)?_?(PCODE|EN|AR)$/i); if (m) return ["Country", "Department or governorate", "District"][+m[1]] + (m[3].toUpperCase() === "PCODE" ? " code" : " (" + (LANGS[m[3].toUpperCase()] || m[3]) + ")");
+  m = k.match(/^years_(.+)$/); if (m) return "Years " + m[1].replace(/_/g, " ") + " is recorded present";
+  m = k.match(/^Macro_Estructura(\d{4})$/); if (m) return "Dissident structure, " + m[1];
+  m = k.match(/^Cantidad_(\d{4})$/); if (m) return "Number of dissident structures, " + m[1];
+  m = k.match(/^Presencia_?(\d{2,4})(?:_(\d{2,4}))?$/); if (m) return "Presence, " + m[1] + (m[2] ? "–" + m[2] : "");
+  m = k.match(/^F(\d{4})(?:_(\d{4}))?$/); if (m) return "Fronts, " + m[1] + (m[2] ? "–" + m[2] : "");
+  m = k.match(/^Coca_(\d{4})$/); if (m) return "Coca grown, " + m[1] + " (hectares)";
+  m = k.match(/^(ELN|FARC)_(\d{2})$/); if (m) return m[1] + " in the 19" + m[2] + "s";
+  const parts = k.replace(/([a-z])([A-Z])/g, "$1 $2").split(/[_\s]+/).filter(Boolean);
+  const out = parts.map((w) => { const t = WORDS[w.toLowerCase()]; return t != null ? t : w; }).join(" ").replace(/\s+/g, " ").trim();
+  return out ? out.charAt(0).toUpperCase() + out.slice(1) : k;
+}
+function fieldValue(k, v) {
+  const s = String(v);
+  if (/^(<Null>|<Nulo>|null|NULL|NO APLICA|-)$/.test(s.trim())) return null;
+  if (/fecha|date/i.test(k) && /^-?\d{11,13}$/.test(s)) { const d = new Date(+s); if (!isNaN(d)) return d.toISOString().slice(0, 10); }
+  if (s === "X") return "yes";
+  if (/<\/?[a-z!][^>]*>/i.test(s)) { // markup left in a field by the source's export: keep its words only
+    const t = s.replace(/<(style|script|head)[\s\S]*?<\/\1>/gi, " ").replace(/<[^>]+>/g, " ").replace(/<[^>]*$/, " ").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/\s+/g, " ").trim();
+    return t ? (t.length > 500 ? t.slice(0, 497) + "…" : t) : null;
+  }
+  return s;
+}
+
 function tPopup(t, m, p) {
   const nm = (m.name || []).map((k) => p[k]).find((v) => v != null && v !== "") || t.title;
-  const rows = Object.keys(p).filter((k) => k !== "_g" && k !== "_s").map((k) => { const v = String(p[k]); return '<tr><th>' + esc(k) + '</th><td>' + (/^https?:\/\//.test(v) ? '<a href="' + esc(v) + '" target="_blank" rel="noopener">' + esc(v) + '</a>' : esc(v)) + '</td></tr>'; }).join("");
+  const rows = Object.keys(p).filter((k) => k !== "_g" && k !== "_s" && !HIDE.test(k)).map((k) => { const v = fieldValue(k, p[k]); if (v == null || v.trim() === "") return "";
+    return '<tr><th title="' + esc(k) + '">' + esc(fieldLabel(k)) + '</th><td>' + (/^https?:\/\//.test(v) ? '<a href="' + esc(v) + '" target="_blank" rel="noopener">' + esc(v.length > 60 ? v.slice(0, 57) + "…" : v) + '</a>' : esc(v)) + '</td></tr>'; }).join("");
   return '<div class="hp"><div class="hp-k">Territory map · ' + esc(t.where) + '</div><h3>' + esc(nm) + '</h3><table class="kv">' + rows + '</table>' +
     '<div class="hp-src">From <a href="' + esc(m.url) + '" target="_blank" rel="noopener">' + esc(m.title) + '</a> (' + esc(m.maker) + '; ' + esc(m.licence) + '), read ' + esc(m.read_on) + '. ' + esc(m.note) + '</div></div>';
 }
@@ -1582,14 +1663,16 @@ function buildPanel() {
   let h = '<div class="psec">Homicide</div>' + partRow("countries",
     '<div class="sub">Shade by <select id="shadeBy"><option value="rate">homicides per 100,000 people</option><option value="count">number of people killed</option></select>, the latest year each gives' +
     '<div class="ramp" data-ramp="1"></div><div class="rampl" id="rampl"></div><div class="keys"><span><span class="sw sq" id="nodataSw"></span>no victim count, other figures in the box</span></div></div>') +
-    cultBlock() +
     '<div class="part wsec"><div style="flex:1"><div class="wh"><b>Homicide within countries</b> <span class="n">' + D.within.filter((w) => w.key !== "EUR_NUTS3").length + ' countries and Europe\'s regions; tick one to load it</span></div>' +
     '<div class="wall"><button type="button" class="btn" id="wAllOn">Show all</button><button type="button" class="btn" id="wAllOff">Hide all</button><span class="n" id="wAllMsg"></span></div>' +
     '<input id="wfilter" type="search" placeholder="Find a country" aria-label="Find a country"><div id="wlist"></div></div></div>';
+  h += '<div class="psec">Cult killings</div>' + cultBlock();
   h += '<div class="psec">Crime groups</div>' + partRow("oc", '<div class="sub">Shaded by the 2025 criminality score (1 to 10)<div class="ramp" data-ramp="1"></div><div class="rampl"><span>&lt;4</span><span>4.5</span><span>5</span><span>5.5</span><span>6</span><span>6.5</span><span>more</span></div></div>') +
     partRow("groups", '<div class="sub">Each at the town or city its sources give.</div>');
-  h += '<div class="psec">Territories</div><div class="sub" style="margin-bottom:4px">' + TERR.length + ' maps of gang, crime-group and armed-group territories; each loads when ticked.</div>' +
-    TERR.map((t, i) => '<div class="witem"><label><input type="checkbox" id="tc_' + i + '"' + (t.on ? " checked" : "") + '> <span class="sw sq" data-sw="terr' + i + '"></span>' + esc(t.title) + ' <span class="n">' + esc(t.where) + ' · ' + t.n.toLocaleString("en-US") + ' places · ' + esc(t.maker) + '</span></label><div class="wleg" id="tl_' + i + '"></div></div>').join("");
+  h += '<div class="psec">Territories</div><div class="part wsec"><div style="flex:1"><div class="wh"><span class="n">' + TERR.length + ' maps of gang, crime-group and armed-group territories; each loads when ticked</span></div>' +
+    '<div class="wall"><button type="button" class="btn" id="tAllOn">Show all</button><button type="button" class="btn" id="tAllOff">Hide all</button><span class="n" id="tAllMsg"></span></div>' +
+    '<input id="tfilter" class="lfilter" type="search" placeholder="Find a place or map" aria-label="Find a territory map"><div id="tlist" class="llist">' +
+    TERR.map((t, i) => '<div class="witem" data-c="' + esc((t.title + " " + t.where + " " + t.maker).toLowerCase()) + '"><label><input type="checkbox" id="tc_' + i + '"' + (t.on ? " checked" : "") + '> <span class="sw sq" data-sw="terr' + i + '"></span>' + esc(t.title) + ' <span class="n">' + esc(t.where) + ' · ' + t.n.toLocaleString("en-US") + ' places · ' + esc(t.maker) + '</span></label><div class="wleg" id="tl_' + i + '"></div></div>').join("") + '</div></div></div>';
   document.getElementById("partsBody").innerHTML = h;
 
   // the box on the right
@@ -1610,24 +1693,37 @@ function buildPanel() {
   document.getElementById("shadeBy").addEventListener("change", (e) => { shadeBy = e.target.value; RESTYLE[0](); rampLabels(); });
 
   // territories
+  const tToggle = async (i, on, jump) => {
+    const t = TERR[i], el = document.getElementById("tl_" + i);
+    t.on = on;
+    if (!on) { (t.layers || []).forEach((l) => vis(l, false)); el.innerHTML = ""; return; }
+    if (!t.loaded) el.innerHTML = '<div class="sub">Loading…</div>';
+    await tLoad(i);
+    if (!t.on) return;
+    t.layers.forEach((l) => vis(l, true));
+    if (t.kind === "file") {
+      if (jump) jumpTo(t.bounds, 12);
+      el.innerHTML = (t.splits.length > 1 ? '<div class="sub">Show <select id="ts_' + i + '"><option value="">every one (' + t.splits.length + ')</option>' + t.splits.map((k) => '<option value="' + esc(k) + '"' + (t.pick === k ? " selected" : "") + '>' + esc(k) + '</option>').join("") + '</select></div>' : "") +
+        '<div class="sub">' + esc(t.meta.note) + ' <a href="' + esc(t.meta.url) + '" target="_blank" rel="noopener">Source</a> (' + esc(t.meta.licence) + ').</div>';
+      const sel = document.getElementById("ts_" + i);
+      if (sel) sel.addEventListener("change", () => { t.pick = sel.value; tFilter(t); });
+    } else el.innerHTML = "";
+  };
+  let tRun = 0;
+  document.getElementById("tAllOn").addEventListener("click", async () => {
+    const run = ++tRun, msg = document.getElementById("tAllMsg"), todo = TERR.map((t, i) => i);
+    let done = 0, failed = 0;
+    const next = async () => { while (todo.length && run === tRun) { const i = todo.shift(); document.getElementById("tc_" + i).checked = true;
+      try { await tToggle(i, true, false); } catch (err) { failed++; document.getElementById("tl_" + i).innerHTML = '<div class="sub">Could not load (' + esc(err.message) + ').</div>'; }
+      done++; if (run === tRun) msg.textContent = (done < TERR.length ? "Loading " : "Loaded ") + done + " of " + TERR.length + (failed ? " (" + failed + " could not load)" : "") + (done < TERR.length ? "…" : ""); } };
+    msg.textContent = "Loading 0 of " + TERR.length + "…";
+    await Promise.all([next(), next(), next()]);
+  });
+  document.getElementById("tAllOff").addEventListener("click", () => { tRun++; TERR.forEach((t, i) => { document.getElementById("tc_" + i).checked = false; tToggle(i, false); }); document.getElementById("tAllMsg").textContent = ""; });
+  document.getElementById("tfilter").addEventListener("input", (e) => { const q = e.target.value.trim().toLowerCase(); document.querySelectorAll("#tlist .witem").forEach((it) => { it.style.display = !q || it.dataset.c.includes(q) ? "" : "none"; }); });
   TERR.forEach((t, i) => {
     document.getElementById("tc_" + i).addEventListener("change", async (e) => {
-      const el = document.getElementById("tl_" + i);
-      t.on = e.target.checked;
-      if (!t.on) { (t.layers || []).forEach((l) => vis(l, false)); el.innerHTML = ""; return; }
-      if (!t.loaded) el.innerHTML = '<div class="sub">Loading…</div>';
-      try {
-        await tLoad(i);
-        if (!t.on) return;
-        t.layers.forEach((l) => vis(l, true));
-        if (t.kind === "file") {
-          jumpTo(t.bounds, 12);
-          el.innerHTML = (t.splits.length > 1 ? '<div class="sub">Show <select id="ts_' + i + '"><option value="">every one (' + t.splits.length + ')</option>' + t.splits.map((k) => '<option value="' + esc(k) + '"' + (t.pick === k ? " selected" : "") + '>' + esc(k) + '</option>').join("") + '</select></div>' : "") +
-            '<div class="sub">' + esc(t.meta.note) + ' <a href="' + esc(t.meta.url) + '" target="_blank" rel="noopener">Source</a> (' + esc(t.meta.licence) + ').</div>';
-          const sel = document.getElementById("ts_" + i);
-          if (sel) sel.addEventListener("change", () => { t.pick = sel.value; tFilter(t); });
-        }
-      } catch (err) { el.innerHTML = '<div class="sub">Could not load (' + esc(err.message) + ').</div>'; }
+      try { await tToggle(i, e.target.checked, true); } catch (err) { document.getElementById("tl_" + i).innerHTML = '<div class="sub">Could not load (' + esc(err.message) + ').</div>'; }
     });
   });
 
