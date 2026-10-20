@@ -359,7 +359,10 @@ document.querySelectorAll('[data-base]').forEach(b=>b.onclick=()=>setBase(b.data
 function fitBand(){const h=document.querySelector('.band').offsetHeight+12;document.documentElement.style.setProperty('--bandh',h+'px');}
 fitBand();window.addEventListener('resize',fitBand);
 function setProj(g){GLOBE=g;map.setProjection({type:g?'globe':'mercator'});$('bGlobe').classList.toggle('on',g);$('bFlat').classList.toggle('on',!g);}
-$('bGlobe').onclick=()=>setProj(true);$('bFlat').onclick=()=>setProj(false);
+/* flat map: the world may be dragged past its edges once it is wider than the screen (so edge points can be centred), but never duplicated while it is smaller than the screen */
+function copiesSync(){const w=map.getContainer().clientWidth;const world=512*Math.pow(2,map.getZoom());const want=!GLOBE&&world>w*1.05;if(map.getRenderWorldCopies()!==want)map.setRenderWorldCopies(want);}
+map.on('zoom',copiesSync);map.on('resize',copiesSync);map.on('projectiontransition',copiesSync);
+$('bGlobe').onclick=()=>{setProj(true);copiesSync();};$('bFlat').onclick=()=>{setProj(false);copiesSync();};
 
 /* ===== helpers ===== */
 const fmt=n=>n==null?'—':(Math.abs(n)>=1e9?(n/1e9).toFixed(2)+' B':Math.abs(n)>=1e6?(n/1e6).toFixed(1)+' M':Math.abs(n)>=1e3?Math.round(n).toLocaleString('en-US'):(Math.round(n*10)/10).toLocaleString('en-US'));
