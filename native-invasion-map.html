@@ -1170,12 +1170,8 @@ function frame(o) {
   function sky() { if (proj !== "globe") return; const k = BM.current(); try { map.setSky(k === "night" ? SKY.night : k === "hell" ? SKY.hell : SKY.day); } catch (e) {} }
   function freeFlat() {
     try {
-      if (proj === "mercator") map.setTransformConstrain((ll, z) => {
-        // One world: when it is wider than the screen its edges stay at the screen's edges; when narrower it stays centred.
-        const W = map.getContainer().clientWidth || 1200, ww = 512 * Math.pow(2, Math.max(0, z)), hw = W / 2 / ww * 360;
-        const lng = ww > W ? Math.max(-180 + hw, Math.min(180 - hw, ll.lng)) : 0;
-        return { center: new maplibregl.LngLat(lng, Math.max(-84, Math.min(84, ll.lat))), zoom: Math.max(0, z) };
-      });
+      // One world, free to drag past its edges into open space (as on the GMO map); it does not repeat.
+      if (proj === "mercator") map.setTransformConstrain((ll, z) => ({ center: new maplibregl.LngLat(Math.max(-540, Math.min(540, ll.lng)), Math.max(-89.9, Math.min(89.9, ll.lat))), zoom: Math.max(0, z) }));
       else map.setTransformConstrain(null);
     } catch (e) {}
   }
@@ -1191,10 +1187,10 @@ function frame(o) {
   const bottomBox = () => { try { const n = document.getElementById("net"); if (n && n.classList.contains("open")) { const r = n.getBoundingClientRect(), c = map.getContainer().getBoundingClientRect(); return Math.max(0, c.bottom - r.top + 8); } } catch (e) {} return 0; };
   F.pad = () => ({ left: panelRight(), right: rightBox(), top: 20, bottom: 30 + bottomBox() });
   const freeBox = () => { const el = map.getContainer(), W = el.clientWidth || 1200, Hh = el.clientHeight || 800; let L = panelRight(), R = rightBox(); if (W - L - R < 240) { L = 0; R = 0; } const B = bottomBox(); return { W, H: Hh - B, B, L, R, fw: W - L - R }; };
-  const startZoom = () => { const fb = freeBox(); return Math.max(0.2, Math.log2(0.86 * Math.max(220, Math.min(fb.H - 40, fb.fw - 20)) * Math.PI / 512)); };
+  const startZoom = () => { const fb = freeBox(); return Math.max(0.2, Math.log2(0.86 * Math.max(200, Math.min(fb.H - (fb.B ? 60 : 40), fb.fw - 20)) * Math.PI / 512)); };
   F.wholeWorld = () => {
     const fb = freeBox(), padding = { left: fb.L, right: fb.R, top: 0, bottom: fb.B };
-    if (proj === "globe") map.flyTo({ center: [12, 25], zoom: startZoom(), padding, duration: 1200 });
+    if (proj === "globe") map.flyTo({ center: [12, fb.B ? 20 : 25], zoom: startZoom(), padding: fb.B ? Object.assign(padding, { top: 16, bottom: fb.B + 16 }) : padding, duration: 1200 });
     else map.flyTo({ center: [10, 22], zoom: Math.max(0, Math.log2(Math.min(fb.fw - 20, (fb.H - 40) * 1.55) / 512)), padding, duration: 1200 });
   };
 
@@ -1527,14 +1523,12 @@ function buildKey() {
       '<div class="psec">Entries shown</div><div class="lsort">Group by <select id="lgroup"><option value="type">type of instrument</option><option value="branch">branch of power</option><option value="field">field / subject</option><option value="century">century</option><option value="az">A to Z</option></select></div><div id="llist" class="scroll olist"></div>' +
     '</div>' +
     '<div id="archKey">' +
-      '<div class="sub" id="archIntro"></div>' +
       '<div class="seg2" style="margin-top:8px"><button type="button" class="btn" id="netBtn">Network</button></div>' +
       '<div class="psec">Find</div><input id="aq" class="wf" type="search" placeholder="Name, role, place or word in the entry">' +
       '<div class="psec">Who — by role (colour)</div><div id="aroles"></div>' +
       '<div class="psec">Field of law it sustains</div><div id="afields"></div>' +
       '<div class="psec">Entries shown</div><div class="lsort">Group by <select id="agroup"><option value="role">role</option><option value="field">field of law</option><option value="hq">headquarters</option><option value="az">A to Z</option></select></div><div id="alist" class="scroll olist"></div>' +
     '</div>';
-  $("#archIntro").innerHTML = window.ARCH_INTRO;
   $("#keyBody").querySelectorAll("[data-view]").forEach((b) => b.addEventListener("click", () => { setView(b.dataset.view); refit(); }));
   $("#lq").value = S.q; $("#aq").value = R.q;
   $("#lq").addEventListener("input", (e) => { S.q = e.target.value.trim(); updateLaw(); });
@@ -1594,7 +1588,7 @@ function listArch() {
 
 /* ---------- views ---------- */
 const LEDE_LAW = $("#key .lede").textContent;
-const LEDE_ARCH = "The architecture of dispossession — the courts, legislatures, corporations, lobbies, owners and doctrines that write and uphold the law of land grabs.";
+const LEDE_ARCH = "The architecture of dispossession. The actors that write and uphold the law of land grabs — the courts and legislatures that issue the instruments, the corporations and financiers who profit, the lobbies that push them through, who holds the land now, and the doctrines that bless it. The network panel shows how they connect; the map shows where they sit. Click any actor to light up its connections; each one links to instruments on the Law map and carries a source.";
 function setView(v) {
   VIEW = v; F.closeCard(); S.sel = null; R.sel = null;
   $("#keyBody").querySelectorAll("[data-view]").forEach((b) => b.classList.toggle("on", b.dataset.view === v));
@@ -1643,14 +1637,14 @@ function selectAct(i, fly) {
 function deselect() {
   if (VIEW === "law") { if (S.sel == null) return; S.sel = null; map.setFilter("law-ring", ["==", ["get", "i"], -1]); F.closeCard(); listLaw(); }
   else { if (R.sel == null) return; R.sel = null; map.setFilter("act-ring", ["==", ["get", "i"], -1]); F.closeCard(); updateArch(); }
-  F.writeHash();
+  F.wholeWorld(); F.writeHash();
 }
 
 /* ---------- the network panel (architecture) ---------- */
 let NET = null;
 function netShow() { const on = VIEW === "arch" && R.net; $("#net").classList.toggle("open", on); $("#netBtn") && $("#netBtn").classList.toggle("on", R.net); if (on) netDraw(); }
 // The map makes room for the network: it fits the world into the space above it.
-function refit() { setTimeout(() => F.wholeWorld(), 30); }
+function refit() { setTimeout(() => { netDraw(); F.wholeWorld(); }, 80); }
 function netDraw() {
   if (VIEW !== "arch" || !R.net || typeof d3 === "undefined") return;
   const el = $("#net"), svgEl = $("#netsvg"), W = el.clientWidth, Hh = el.clientHeight; if (!W || !Hh) return;
@@ -1710,7 +1704,7 @@ F = MapCore.frame({
     window.addEventListener("resize", netDraw);
     setView(VIEW);
   },
-  after(Fr) { const s = parseInt(Fr.H.get("s"), 10); if (s >= 0) { if (VIEW === "law" && s < D.length) selectLaw(s, false); else if (VIEW === "arch" && s < ACT.length) selectAct(s, false); } },
+  after(Fr) { if (VIEW === "arch" && R.net && !Fr.H.get("c")) refit(); const s = parseInt(Fr.H.get("s"), 10); if (s >= 0) { if (VIEW === "law" && s < D.length) selectLaw(s, false); else if (VIEW === "arch" && s < ACT.length) selectAct(s, false); } },
 });
 
 /* ---------- about and sources ---------- */
