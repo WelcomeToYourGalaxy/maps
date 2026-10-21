@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Actors in the Invasion of Indigenous Lands</title>
+<title>Culprits in the Invasion of Indigenous Lands</title>
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -37,7 +37,7 @@ button.btn:hover,#infoBtn:hover,#worldBtn:hover{border-color:var(--accent-hi);co
 .chk{display:flex;gap:7px;align-items:center;font-size:12.8px;cursor:pointer;margin:2px 0}
 #cnt{font-size:11.5px;color:var(--mute);margin-top:3px}
 #wfilter{width:100%;box-sizing:border-box;background:rgba(255,255,255,.05);color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:4px 7px;font:inherit;font-size:12.5px;margin:2px 0 4px}
-#cfilter{width:100%;margin:2px 0 4px}
+
 .allrow{display:flex;gap:6px;margin:4px 0 2px}
 #olist{max-height:340px;overflow:auto}
 .olist{max-height:340px;overflow:auto}
@@ -150,7 +150,7 @@ body.detopen .maplibregl-ctrl-bottom-right{right:360px}
 
 <div id="key" class="card scroll">
   <button id="toggleKey" class="tog" type="button" title="Pull the key up or down">−</button>
-  <h1>Actors in the invasion of Indigenous lands</h1>
+  <h1>Culprits in the invasion of Indigenous lands</h1>
   <p class="lede">Governments, politicians, armed forces, companies, financiers, settler bodies and armed groups named as responsible for harm to Indigenous peoples and for upholding settler states, 2000 to the present.</p>
   <div class="body" id="keyBody"></div>
 </div>
@@ -1313,7 +1313,7 @@ function frame(o) {
     el.innerHTML = groups.length ? groups.map(([t, rows]) => {
       const k = mode + "|" + t, shut = !(OPEN[k] || rows.some((r) => r.i === sel));
       return '<div class="grp' + (shut ? " shut" : "") + '" data-k="' + esc(k) + '"><button type="button" class="gh"><span class="caret">▾</span>' + esc(t) + '</button><div class="gb">' +
-        rows.map((r) => '<div class="oi' + (sel === r.i ? " sel" : "") + '" data-i="' + r.i + '"><span class="dot" style="background:' + r.color + '"></span><span>' + esc(r.name) + (r.sub ? '<span class="n">' + esc(r.sub) + '</span>' : "") + '</span></div>').join("") + '</div></div>';
+        rows.map((r) => '<div class="oi' + (sel === r.i ? " sel" : "") + '" data-i="' + r.i + '"><span class="dot" style="' + (r.dot || ("background:" + r.color)) + '"></span><span>' + esc(r.name) + (r.sub ? '<span class="n">' + esc(r.sub) + '</span>' : "") + '</span></div>').join("") + '</div></div>';
     }).join("") : '<div class="sub">Nothing matches.</div>';
     el.onclick = (e) => {
       const h = e.target.closest(".gh"); if (h) { const g = h.parentNode; g.classList.toggle("shut"); OPEN[g.dataset.k] = !g.classList.contains("shut"); return; }
@@ -1367,7 +1367,7 @@ window.MapCore = { $, esc, fmt, palette, paletteUI, tone, hsl, frame };
 <script>
 (function () {
 "use strict";
-const { $, esc, fmt, palette, paletteUI, tone } = MapCore;
+const { $, esc, fmt, palette, paletteUI, tone, hsl } = MapCore;
 const A = window.ACTORS, CMAP = window.COUNTRY_MAP, TOTAL = A.length;
 const BOUNDS_URL = "https://welcometoyourgalaxy.github.io/culprits/data/boundaries.geojson";
 
@@ -1382,8 +1382,56 @@ const lab = (c) => LABEL[c] || c;
 const COUNT = {}; A.forEach((a) => { COUNT[a.category] = (COUNT[a.category] || 0) + 1; });
 // Order the kinds by how many entries they hold, so the most used get the most distinct colours.
 const CATS = Object.keys(COUNT).sort((x, y) => COUNT[y] - COUNT[x] || x.localeCompare(y));
+/* ---------- marks: one shape and one muted hue for each family of culprit ----------
+   States and politicians are circles, forces and armed groups diamonds, companies and
+   money squares, settlers triangles. Within a family the kinds differ only in lightness. */
+const FAMILY = { government: "state", political: "state", military: "force", armed: "force", criminal: "force", paramilitary: "force",
+  corporate: "capital", enabler: "capital", lobby: "capital", settler: "settler" };
+const SHAPE = { state: "circle", force: "diamond", capital: "square", settler: "triangle" };
+const HUE = { state: 212, force: 350, capital: 178, settler: 272 };
+const STEP = { government: 0, political: 9, military: 0, armed: 9, criminal: -9, paramilitary: -9, corporate: 0, enabler: 9, lobby: -9, settler: 0 };
+const shapeOf = (c) => SHAPE[FAMILY[c]] || "circle";
+const DOT = { circle: "", square: "border-radius:2px;", diamond: "width:11px;height:11px;border:0;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);", triangle: "width:11px;height:10px;border:0;clip-path:polygon(50% 0,100% 100%,0 100%);" };
 let COL = {}, UIC = {};
-function recolour(kind) { const p = palette(kind, CATS.length), q = paletteUI(kind, CATS.length); COL = {}; UIC = {}; CATS.forEach((c, i) => { COL[c] = p[i]; UIC[c] = q[i]; }); }
+const dotCss = (c) => "background:" + UIC[c] + ";" + DOT[shapeOf(c)];
+function recolour(kind) {
+  const t = tone(kind); COL = {}; UIC = {};
+  CATS.forEach((c) => {
+    const h = HUE[FAMILY[c]], st = STEP[c] || 0;
+    COL[c] = h == null ? hsl(220, 8, t.L) : hsl(h, Math.max(18, t.S - 2), Math.max(20, Math.min(84, t.L + st)));
+    UIC[c] = h == null ? hsl(220, 8, 72) : hsl(h, 32, 72 + st / 2);
+  });
+}
+
+/* Each shape is drawn once as a signed-distance image, so the map can colour and outline it. */
+function addShapes() {
+  const N = 40, C = 20, RAD = 8;
+  const polyD = (px, py, v) => { // signed distance to a polygon: negative inside
+    let d = 1e9, inside = false;
+    for (let i = 0, j = v.length - 1; i < v.length; j = i++) {
+      const [x1, y1] = v[j], [x2, y2] = v[i], ex = x2 - x1, ey = y2 - y1;
+      const t = Math.max(0, Math.min(1, ((px - x1) * ex + (py - y1) * ey) / (ex * ex + ey * ey)));
+      d = Math.min(d, Math.hypot(px - x1 - t * ex, py - y1 - t * ey));
+      if (((y1 > py) !== (y2 > py)) && (px < (x2 - x1) * (py - y1) / (y2 - y1) + x1)) inside = !inside;
+    }
+    return inside ? -d : d;
+  };
+  const tri = [[20, 12], [27.8, 25.5], [12.2, 25.5]];
+  const SH = {
+    circle: (x, y) => Math.hypot(x - C, y - C) - 10.5,
+    square: (x, y) => polyD(x, y, [[13, 13], [27, 13], [27, 27], [13, 27]]) - 1.5,
+    diamond: (x, y) => polyD(x, y, [[C, C - 9.4], [C + 9.4, C], [C, C + 9.4], [C - 9.4, C]]) - 1.5,
+    triangle: (x, y) => polyD(x, y, tri) - 3 };
+  Object.keys(SH).forEach((k) => {
+    if (map.hasImage("mk-" + k)) return;
+    const data = new Uint8Array(N * N * 4);
+    for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+      const d = SH[k](x + 0.5, y + 0.5);
+      data[(y * N + x) * 4 + 3] = Math.max(0, Math.min(255, Math.round(255 - 255 * (d / RAD + 0.25))));
+    }
+    map.addImage("mk-" + k, { width: N, height: N, data }, { sdf: true });
+  });
+}
 
 /* ---------- each entry's countries and search text ---------- */
 A.forEach((a, i) => {
@@ -1412,14 +1460,16 @@ function addLayers() {
   const r = (k) => ["interpolate", ["linear"], ["zoom"], 0, 2.8 * k, 3, 3.4 * k, 6, 4.4 * k, 10, 5.6 * k];
   map.addLayer({ id: "act-lead", type: "line", source: "leads", paint: { "line-color": ["get", "c"], "line-opacity": 0.45, "line-width": 0.7 } });
   map.addLayer({ id: "act-hub", type: "circle", source: "hubs", paint: { "circle-radius": 1.6, "circle-color": "#f0ece4", "circle-opacity": 0.7 } });
-  map.addLayer({ id: "act-core", type: "circle", source: "actors", paint: { "circle-color": ["get", "c"], "circle-opacity": 1, "circle-radius": r(1), "circle-stroke-color": ["get", "s"], "circle-stroke-width": 1 } });
-  map.addLayer({ id: "act-ring", type: "circle", source: "actors", filter: ["==", ["get", "i"], -1], paint: { "circle-color": "rgba(0,0,0,0)", "circle-radius": r(1.9), "circle-stroke-color": ["get", "w"], "circle-stroke-width": 1.4 } });
+  addShapes(); map.on("styleimagemissing", addShapes);
+  const sz = ["interpolate", ["linear"], ["zoom"], 0, 0.34, 3, 0.40, 6, 0.48, 10, 0.58];
+  map.addLayer({ id: "act-core", type: "symbol", source: "actors", layout: { "icon-image": ["concat", "mk-", ["get", "k"]], "icon-size": sz, "icon-allow-overlap": true, "icon-ignore-placement": true, "icon-padding": 0 }, paint: { "icon-color": ["get", "c"], "icon-halo-color": ["get", "s"], "icon-halo-width": 1, "icon-halo-blur": 0.2 } });
+  map.addLayer({ id: "act-ring", type: "circle", source: "actors", filter: ["==", ["get", "i"], -1], paint: { "circle-color": "rgba(0,0,0,0)", "circle-radius": r(1.9), "circle-stroke-color": ["get", "w"], "circle-stroke-width": 1.2 } });
   F.pickable = ["act-core"];
 }
 function spread() {
   if (!map.getSource("actors")) return;
   const t = tone(F.BM.current());
-  const out = F.spread(SHOWN.map((a) => ({ key: a.i, lng: a.lng, lat: a.lat, props: { i: a.i, c: COL[a.category], s: t.ring, w: t.sel } })));
+  const out = F.spread(SHOWN.map((a) => ({ key: a.i, lng: a.lng, lat: a.lat, props: { i: a.i, c: COL[a.category], k: shapeOf(a.category), s: t.ring, w: t.sel } })));
   map.getSource("actors").setData(F.fc(out.pts)); map.getSource("leads").setData(F.fc(out.leads)); map.getSource("hubs").setData(F.fc(out.hubs));
   map.setPaintProperty("act-hub", "circle-color", t.sel);
   map.setPaintProperty("ac-sel", "fill-color", t.sel); map.setPaintProperty("ac-sel-line", "line-color", t.sel);
@@ -1430,13 +1480,11 @@ function buildKey() {
   $("#keyBody").innerHTML =
     '<div id="cnt"></div>' +
     '<div class="psec">Find</div><input id="wfilter" type="search" placeholder="Name, country, place or word in the entry" value="' + esc(S.q) + '">' +
-    '<select id="cfilter"><option value="">Every country</option>' + PARTS.map((p) => '<option value="' + esc(p) + '"' + (p === S.country ? " selected" : "") + '>' + esc(p) + '</option>').join("") + '</select>' +
-    '<div class="psec">Kinds of actor</div><div class="allrow"><button type="button" class="btn" id="allOn">All on</button><button type="button" class="btn" id="allOff">All off</button></div>' +
+    '<div class="psec">Kinds of culprit</div><div class="allrow"><button type="button" class="btn" id="allOn">All on</button><button type="button" class="btn" id="allOff">All off</button></div>' +
     '<div id="cats"></div>' +
-    '<div class="psec">Entries shown</div><div class="lsort">Group by <select id="lgroup"><option value="kind">kind of actor</option><option value="country">country</option><option value="az">A to Z</option></select></div><div id="olist" class="scroll"></div>';
+    '<div class="psec">Entries shown</div><div class="lsort">Group by <select id="lgroup"><option value="kind">kind of culprit</option><option value="country">country</option><option value="az">A to Z</option></select></div><div id="olist" class="scroll"></div>';
   $("#lgroup").value = S.group;
   $("#wfilter").addEventListener("input", (e) => { S.q = e.target.value.trim(); update(); });
-  $("#cfilter").addEventListener("change", (e) => { S.country = e.target.value; update(); });
   $("#allOn").addEventListener("click", () => { CATS.forEach((c) => S.cats.add(c)); update(); });
   $("#allOff").addEventListener("click", () => { S.cats.clear(); update(); });
   $("#lgroup").addEventListener("change", (e) => { S.group = e.target.value; drawList(); F.writeHash(); });
@@ -1444,10 +1492,10 @@ function buildKey() {
 }
 function drawCats() {
   $("#cats").innerHTML = CATS.map((c) => '<div class="row"><input type="checkbox" id="c_' + c + '" data-c="' + c + '"' + (S.cats.has(c) ? " checked" : "") + '>' +
-    '<label for="c_' + c + '"><span class="dot" style="background:' + UIC[c] + ';margin:0 7px 0 0"></span>' + esc(lab(c)) + '</label></div>').join("");
+    '<label for="c_' + c + '"><span class="dot" style="' + dotCss(c) + 'margin:0 7px 0 0"></span>' + esc(lab(c)) + '</label></div>').join("");
 }
 function drawList() {
-  const row = (a, sub) => ({ i: a.i, name: a.name, sub, color: UIC[a.category] });
+  const row = (a, sub) => ({ i: a.i, name: a.name, sub, color: UIC[a.category], dot: dotCss(a.category) });
   let groups;
   if (S.group === "country") groups = F.groupBy(SHOWN, (a) => a.parts.length ? a.parts : ["(none given)"]).map(([k, l]) => [k, l.map((a) => row(a, lab(a.category)))]);
   else if (S.group === "az") groups = F.groupBy(SHOWN, (a) => F.letter(a.name)).map(([k, l]) => [k, l.map((a) => row(a, lab(a.category) + " · " + a.country))]);
@@ -1458,12 +1506,12 @@ function drawList() {
 /* ---------- the entry's card ---------- */
 function select(i, fly) {
   S.sel = i; const a = A[i];
-  if (!passes(a)) { S.cats.add(a.category); S.country = ""; S.q = ""; $("#wfilter").value = ""; $("#cfilter").value = ""; update(); }
+  if (!passes(a)) { S.cats.add(a.category); S.country = ""; S.q = ""; $("#wfilter").value = ""; update(); }
   const same = SAME[a.g].filter((j) => j !== i);
   F.openCard('<div class="hp-k" style="color:' + UIC[a.category] + '">' + esc(lab(a.category)) + '</div><h3>' + esc(a.name) + '</h3>' +
     '<div class="hp-sub">' + esc(a.region) + (a.region && a.country ? " · " : "") + esc(a.country) + '</div>' +
     '<div class="hp-desc">' + a.description + '</div>' + (a.sources && a.sources.length ? '<div class="hp-src"><div class="psec" style="margin-top:10px">Sources</div>' + a.sources.map((u) => { let h = u; try { h = new URL(u).hostname.replace(/^www\./, ''); } catch (e) {} return '<a href="' + esc(u) + '" target="_blank" rel="noopener">' + esc(h) + '</a>'; }).join(' · ') + '</div>' : '') +
-    (same.length ? '<div class="hp-near"><div class="psec" style="margin-top:2px">Also at this point</div>' + same.map((j) => '<span class="nn" data-i="' + j + '"><span class="dot" style="background:' + UIC[A[j].category] + ';margin:0 6px 0 0"></span>' + esc(A[j].name) + '</span>').join("") + '</div>' : ""));
+    (same.length ? '<div class="hp-near"><div class="psec" style="margin-top:2px">Also at this point</div>' + same.map((j) => '<span class="nn" data-i="' + j + '"><span class="dot" style="' + dotCss(A[j].category) + 'margin:0 6px 0 0"></span>' + esc(A[j].name) + '</span>').join("") + '</div>' : ""));
   $("#detBody").querySelectorAll(".nn").forEach((d) => d.addEventListener("click", () => select(+d.dataset.i, false)));
   const f = ["in", ["get", "name"], ["literal", a.bn]];
   map.setFilter("ac-sel", f); map.setFilter("ac-sel-line", f); map.setFilter("act-ring", ["==", ["get", "i"], i]);
@@ -1488,10 +1536,10 @@ F = MapCore.frame({
   ready(Fr) {
     F = Fr; map = F.map;
     const H = F.H;
-    S.q = H.get("q") || ""; S.country = H.get("k") || ""; if (["kind", "country", "az"].includes(H.get("g"))) S.group = H.get("g");
+    S.q = H.get("q") || ""; if (["kind", "country", "az"].includes(H.get("g"))) S.group = H.get("g");
     if (H.get("x")) H.get("x").split(",").forEach((c) => S.cats.delete(c));
     recolour(F.BM.current());
-    F.hashExtra = () => ({ s: S.sel, q: S.q, k: S.country, g: S.group === "kind" ? "" : S.group, x: CATS.filter((c) => !S.cats.has(c)).join(",") });
+    F.hashExtra = () => ({ s: S.sel, q: S.q, g: S.group === "kind" ? "" : S.group, x: CATS.filter((c) => !S.cats.has(c)).join(",") });
     addLayers(); buildKey();
     F.onBase.push((k) => { recolour(k); spread(); drawCats(); drawList(); if (S.sel != null) select(S.sel, false); });
     F.onProj.push(() => spread());
@@ -1508,25 +1556,25 @@ F = MapCore.frame({
 /* ---------- about and sources ---------- */
 F.setAbout(
   '<h2>What the map shows</h2>' +
-  '<p>' + fmt(TOTAL) + ' entries. Each one names a government, politician, armed force, company, financier, settler body, armed group or other actor, with a kind, a country, a region, a point on the map and a written entry. The entries are about harm to Indigenous peoples and the upholding of settler states, from 2000 to the present.</p>' +
+  '<p>' + fmt(TOTAL) + ' entries. Each one names a government, politician, armed force, company, financier, settler body, armed group or other culprit, with a kind, a country, a region, a point on the map and a written entry.</p>' +
   '<p>Choosing a mark or a line in the list opens that entry\'s card on the right and outlines the countries it names. Marks can be chosen on the map with a click, or a tap on a phone.</p>' +
   '<h2>How the entries were chosen</h2>' +
-  '<p>The map aims to show the actors most responsible since 2000 for keeping the invasion of Indigenous and native peoples running: the states and officials who make and enforce the laws that take land, the forces that kill, evict and detain, the companies that extract from Indigenous land against the people\'s wishes, and the banks, investors and traders that pay for it. Single incidents are folded into the actor responsible rather than shown on their own.</p>' +
+  '<p>The map aims to show the culprits most responsible since 2000 for the ongoing invasion of Indigenous and native peoples: the states and officials who make and enforce the laws that take land, the forces that kill, evict and detain, the companies that extract from Indigenous land against the people\'s wishes, and the banks, investors and traders that pay for it.</p>' +
   '<p>The number of entries in each world region was set to follow how much invasion happens there, judged from published evidence rather than from how much has been written about each place: the scale of killing, displacement and detention in each campaign since 2000 (UN bodies, Human Rights Watch, Amnesty and others); where the world\'s Indigenous peoples live (ILO, IWGIA); how much Indigenous and community land has no legal recognition (Rights and Resources Initiative); how many mining and energy projects sit on Indigenous land (Owen et al., 2023); and killings of land defenders (Global Witness, Business &amp; Human Rights Resource Centre). Africa and Asia carry the largest share of mass killing, displacement and detention; Latin America carries most targeted killings of individual defenders; settler states show up mainly through imprisonment, child removal and pipeline and mining fights. Global banks and traders are pinned at their headquarters.</p>' +
-  '<p>Some peoples are not treated as Indigenous by every source. Palestinians, Kurds, Rohingya, Uyghurs, Tibetans, Baloch, Tamils and Fulani pastoralists are included; wars between majority groups, such as the Tigray war, are not.</p>' +
-  '<h2>Kinds of actor</h2>' +
-  '<p>The kinds are the ones the entries themselves record: ' + CATS.map((c) => esc(lab(c))).join("; ") + '. Entries recorded as “settlers” are counted with “settler”, and entries recorded as “state” with “government”.</p>' +
-  '<p>The list under “Entries shown” can be grouped by kind of actor, by country, or A to Z. Every group opens by default; a group\'s title closes it. An entry naming several countries (“UAE/Tanzania”) is listed under each.</p>' +
+  '<p>Some peoples are not treated as Indigenous by every source. Palestinians, Kurds, Rohingya, Uyghurs, Tibetans, Baloch, Tamils and Fulani pastoralists are included; wars between majority groups are not.</p>' +
+  '<h2>Kinds of culprit</h2>' +
+  '<p>' + CATS.map((c) => esc(lab(c))).join("; ") + '.</p>' +
+  '<p>The list under “Entries shown” can be grouped by kind of culprit, by country, or A to Z. Every group opens by default; a group\'s title closes it. An entry naming several countries (“UAE/Tanzania”) is listed under each.</p>' +
   '<h2>Where the marks sit</h2>' +
   '<ul><li>Each mark sits on the point its entry gives. That is often a capital city or a headquarters, not the place where the harm happened; the card says where that is.</li>' +
   '<li>Where several entries share one point, their marks are spread round a small dot on the point, each tied to it by a thin line. The spread is measured on the screen, so it stays the same size as you zoom in.</li>' +
-  '<li>Each basemap has its own set of colours for the marks, taken from that basemap\'s own tones, with an outline that sets the marks off from it.</li></ul>' +
+  '<li>The shape of a mark shows the family of culprit: a circle for governments and political leaders, a diamond for military and police forces, armed groups and criminal networks, a square for companies, financiers and lobby groups, a triangle for settlers. Colours are muted and taken from each basemap\'s own tones, with a thin outline that sets the marks off from it.</li></ul>' +
   '<h2>The map itself</h2>' +
   '<ul><li>Five basemaps: Jurassic (satellite imagery with relief), Atlas (a painted world chart that gives way to imagery as you zoom in), Bioluminescent (night lights), Hell and Standard (outlines).</li>' +
   '<li>Globe or flat map. On the flat map the world repeats east and west, so the two edges meet in the Pacific and you can pan across it without a break.</li>' +
   '<li>Place names can be switched off in the basemap box. The link in the address bar keeps the basemap, view, filters and chosen entry, so it can be copied and shared.</li></ul>' +
   '<h2>Sources</h2>' +
-  '<p>Each entry\'s card gives the evidence its entry records, such as sanctions, convictions, court rulings and reports by named organizations. Every entry was checked claim by claim against web pages in October 2026: claims a source contradicted were corrected, claims no page could confirm were taken out, and each card lists the pages its facts rest on. Each country with Indigenous peoples was then checked against IWGIA\'s yearly report, The Indigenous World, so that every major actor named there is on the map.</p>' +
+  '<p>Each entry\'s card gives the evidence its entry records, such as sanctions, convictions, court rulings and reports by named organizations. Every entry was checked claim by claim against web pages in October 2026: claims a source contradicted were corrected, claims no page could confirm were taken out, and each card lists the pages its facts rest on. Each country with Indigenous peoples was then checked against IWGIA\'s yearly report, The Indigenous World, so that every major culprit named there is on the map.</p>' +
   '<p class="mute">Basemaps (Esri, Maxar, OpenFreeMap and OpenStreetMap, Mapterhorn, AWS Terrain Tiles, NASA Black Marble, CARTO), with credits in the map\'s corner.</p>');
 })();
 
