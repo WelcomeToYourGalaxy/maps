@@ -73,9 +73,9 @@ button.btn:hover,#infoBtn:hover,#worldBtn:hover{border-color:var(--accent-hi);co
 .hp-read{margin:8px 0;padding:6px 0 6px 10px;border-left:2px solid var(--accent-hi);color:#e4e0ea;font-style:italic;font-size:13px}
 .hp-edge{margin:8px 0;padding:6px 8px;border:1px solid var(--line);border-radius:4px;font-size:12px;color:#dedbe6}
 .hp-src{color:var(--mute);font-size:11.5px;margin-top:10px;border-top:1px solid var(--line2);padding-top:6px}
-#net{display:none;position:absolute;z-index:790;left:364px;right:374px;bottom:34px;height:46%;min-height:270px;padding:0;overflow:hidden}
+#net{display:none;position:absolute;z-index:790;left:364px;right:374px;bottom:34px;height:46%;min-height:270px;padding:0;overflow:hidden;cursor:move;touch-action:none}
 #net.open{display:block}
-#net svg{display:block;width:100%;height:100%;cursor:grab}
+#net svg{display:block;width:100%;height:100%;cursor:move}#net.moved{z-index:1200}#net.dragging{opacity:.92;box-shadow:0 8px 28px rgba(0,0,0,.5)}
 #netX{position:absolute;top:6px;right:8px;background:none;border:0;color:#bbb;font-size:20px;cursor:pointer;line-height:1;z-index:2}
 #netT{position:absolute;top:9px;left:13px;font:400 14px/1.2 'Uncial Antiqua','Marcellus','Georgia',serif;color:#f0ece4;z-index:2;pointer-events:none}
 .oi{display:flex;gap:8px;align-items:flex-start;padding:4px 2px;border-top:1px solid var(--line2);font-size:12.8px;cursor:pointer}
@@ -1658,8 +1658,8 @@ function deselect() {
 }
 
 /* ---------- the network panel (architecture) ---------- */
-let NET = null, NETK = "";
-const NFONT = "400 10px Marcellus, Georgia, serif", MCTX = document.createElement("canvas").getContext("2d");
+let NET = null;
+const NFONT = "400 9.5px Marcellus, Georgia, serif", MCTX = document.createElement("canvas").getContext("2d");
 const tw = (t) => { MCTX.font = NFONT; return MCTX.measureText(t).width; };
 const shortName = (a) => a.short || a.name;
 function netShow() { const on = VIEW === "arch" && R.net; $("#net").classList.toggle("open", on); $("#netBtn") && $("#netBtn").classList.toggle("on", R.net); if (on) netDraw(); }
@@ -1669,64 +1669,105 @@ const netFocus = () => R.hov || (R.sel != null ? ACT[R.sel].id : null);
 function netLight() {
   if (!NET) return;
   const f = netFocus(), lit = (id) => !f || id === f || NEI[f].has(id), hit = (d) => f && (d[0] === f || d[1] === f);
-  NET.links.selectAll("path").attr("stroke", (d) => hit(d) ? "#e8e6e1" : "#5a5e78")
-    .attr("stroke-opacity", (d) => !f ? 0.3 : hit(d) ? 0.95 : 0.04).attr("stroke-width", (d) => hit(d) ? 1.6 : 0.8);
-  NET.nodes.selectAll("g.chip").attr("opacity", (a) => lit(a.id) ? 1 : 0.2);
-  NET.nodes.selectAll("g.chip rect").attr("stroke", (a) => a.id === f ? "#ffffff" : RCU[a.cat]).attr("stroke-width", (a) => a.id === f ? 1.6 : 0.9);
+  NET.links.selectAll("line").attr("stroke", (d) => hit(d) ? "#e8e6e1" : "#4a4e66")
+    .attr("stroke-opacity", (d) => !f ? 0.5 : hit(d) ? 0.95 : 0.06).attr("stroke-width", (d) => hit(d) ? 1.8 : 0.9);
+  NET.nodes.selectAll("circle").attr("opacity", (a) => lit(a.id) ? 1 : 0.2)
+    .attr("stroke", (a) => a.id === f ? "#ffffff" : "#0b0c1e").attr("stroke-width", (a) => a.id === f ? 2 : 1.2);
+  NET.labs.selectAll("g.lab").attr("opacity", (a) => lit(a.id) ? 1 : 0.2);
 }
 function setHov(id) { if (R.hov === id) return; R.hov = id; netLight(); if (VIEW === "arch") drawActs(); }
-// Actors are drawn as labelled chips, grouped by the field of law they sustain and flowed into rows,
-// so labels never overlap; the ties run between chip centres. The whole panel is fitted to its box.
-function netLayout(shown, order, Wv) {
-  const PADX = 12, TOP = 36, CH = 19, GAP = 5, HEAD = 16, LANE = 8, maxW = Wv - 2 * PADX; let y = TOP; const heads = [];
+
+// The rings: one ellipse per field of law, from identity at the centre out to extraction.
+// Each actor sits on its ring; its label goes beside it, on the side away from the centre.
+// Labels are then placed one by one, each moved to the nearest free spot (with a thin
+// leader line back to its dot) if it would overlap another label or dot.
+function netLayout(shown, order, W, Hh) {
+  const LH = 13, NR = 7, cx = W / 2, cy = Hh / 2 + 14;
+  const widest = Math.max(60, ...shown.filter((a) => a.field === order[order.length - 1]).map((a) => tw(shortName(a))));
+  const RX = Math.max(80, W / 2 - widest * 0.6 - 16), RY = Math.max(60, Hh / 2 - 34);
+  const n = order.length, f0 = n > 1 ? 0.24 : 0, fr = {}; order.forEach((f, i) => { fr[f] = n > 1 ? f0 + (1 - f0) * i / (n - 1) : 1; });
+  // dots spaced evenly along each ellipse by arc length, so the sides are not crowded
   order.forEach((f) => {
     const ns = shown.filter((a) => a.field === f).sort((a, b) => ROLES.indexOf(a.cat) - ROLES.indexOf(b.cat) || shortName(a).localeCompare(shortName(b)));
-    if (!ns.length) return;
-    heads.push({ f, y, n: ns.length }); y += HEAD; let x = PADX;
-    ns.forEach((a) => { const w = Math.min(maxW, tw(shortName(a)) + 26);
-      if (x > PADX && x + w > PADX + maxW) { x = PADX; y += CH + GAP; }
-      a._x = x; a._y = y; a._w = w; x += w + GAP; });
-    y += CH + LANE;
+    const rx = RX * fr[f], ry = RY * fr[f], STEPS = 720, cum = [0];
+    for (let s = 1; s <= STEPS; s++) { const t0 = (s - 1) / STEPS * 2 * Math.PI, t1 = s / STEPS * 2 * Math.PI;
+      cum.push(cum[s - 1] + Math.hypot(rx * (Math.cos(t1) - Math.cos(t0)), ry * (Math.sin(t1) - Math.sin(t0)))); }
+    const P = cum[STEPS], off = ns.length ? P / ns.length / 2 : 0;
+    ns.forEach((a, i) => { const target = (off + i * P / ns.length + P * 0.75) % P; let s = 0; while (s < STEPS && cum[s] < target) s++;
+      const t = s / STEPS * 2 * Math.PI; a.x = cx + rx * Math.cos(t); a.y = cy + ry * Math.sin(t); a._right = Math.cos(t) >= -1e-6; });
   });
-  return { H: y, heads, CH, PADX };
+  // label placement
+  const boxes = [], hits = (b) => boxes.some((o) => b.x0 < o.x1 && b.x1 > o.x0 && b.y0 < o.y1 && b.y1 > o.y0);
+  shown.forEach((a) => boxes.push({ x0: a.x - NR, x1: a.x + NR, y0: a.y - NR, y1: a.y + NR }));
+  order.forEach((f) => { const w = tw(flab(f).toUpperCase()) * 1.05, y = cy - RY * fr[f] - 4; boxes.push({ x0: cx - w / 2, x1: cx + w / 2, y0: y - 6, y1: y + 4 }); });
+  let fails = 0;
+  const place = (a) => {
+    const w = tw(shortName(a)), mk = (right, dy) => { const x = right ? a.x + 10 : a.x - 10 - w; return { x0: x - 2, x1: x + w + 2, y0: a.y + dy - LH / 2, y1: a.y + dy + LH / 2, right, dy }; };
+    for (let k = 0; k <= 16; k++) for (const sgn of k ? [1, -1] : [1]) for (const right of [a._right, !a._right]) {
+      const b = mk(right, sgn * k * (LH - 1)); if (!hits(b)) { boxes.push(b); return b; } }
+    fails++; const b = mk(a._right, 0); boxes.push(b); return b;
+  };
+  [...shown].sort((p, q) => fr[q.field] - fr[p.field] || p.y - q.y).forEach((a) => { const b = place(a); a._lx = b.right ? b.x0 + 2 : b.x1 - 2; a._ly = (b.y0 + b.y1) / 2; a._anchor = b.right ? "start" : "end"; a._moved = Math.abs(b.dy) > 0.5 || b.right !== a._right; });
+  const bx = { x0: Math.min(...boxes.map((b) => b.x0)), x1: Math.max(...boxes.map((b) => b.x1)), y0: Math.min(...boxes.map((b) => b.y0)), y1: Math.max(...boxes.map((b) => b.y1)) };
+  return { cx, cy, RX, RY, fr, bx, fails };
 }
 function netDraw() {
   if (VIEW !== "arch" || !R.net || typeof d3 === "undefined") return;
   const el = $("#net"), svgEl = $("#netsvg"), W = el.clientWidth, Hh = el.clientHeight; if (!W || !Hh) return;
-  if (!NET) {
-    const svg = d3.select(svgEl), g = svg.append("g");
-    NET = { svg, g, heads: g.append("g"), links: g.append("g"), nodes: g.append("g") };
-    NET.zoom = d3.zoom().scaleExtent([0.35, 3]).on("zoom", (e) => g.attr("transform", e.transform));
-    svg.call(NET.zoom);
-    svg.on("click", (e) => { if (e.target === svgEl) deselect(); });
-  }
-  const order = ["land", "extraction", "rule", "identity"].filter((f) => AFIELDS.includes(f));
+  if (!NET) { const svg = d3.select(svgEl), g = svg.append("g");
+    NET = { svg, g, rings: g.append("g"), links: g.append("g"), nodes: g.append("g"), labs: g.append("g") }; }
+  const order = ["identity", "rule", "land", "extraction"].filter((f) => AFIELDS.includes(f));
   const shown = ACT.filter(passAct), on = new Set(shown.map((a) => a.id));
-  // the largest scale at which the flowed layout fits the panel
-  let k = 1, Ly = netLayout(shown, order, W);
-  while (Ly.H * k > Hh - 6 && k > 0.5) { k -= 0.04; Ly = netLayout(shown, order, W / k); }
-  const CH = Ly.CH;
-  NET.heads.selectAll("text").data(Ly.heads, (h) => h.f).join("text").attr("x", Ly.PADX).attr("y", (h) => h.y + 10)
-    .attr("font-size", "9px").attr("letter-spacing", "1.2px").attr("fill", "#8f8d9e").text((h) => flab(h.f).toUpperCase() + " · " + h.n);
+  // use the largest text size at which every label finds a free spot
+  let Ly = null;
+  for (const k0 of [1, 0.93, 0.87, 0.81, 0.76, 0.71, 0.66, 0.62]) { Ly = netLayout(shown, order, W / k0, Hh / k0); if (!Ly.fails) break; }
+  // fit everything inside the box (no panning or zooming of the contents)
+  const k = Math.min(1, (W - 8) / (Ly.bx.x1 - Ly.bx.x0), (Hh - 32) / (Ly.bx.y1 - Ly.bx.y0));
+  const tx = W / 2 - k * (Ly.bx.x0 + Ly.bx.x1) / 2, ty = 28 + (Hh - 28) / 2 - k * (Ly.bx.y0 + Ly.bx.y1) / 2;
+  NET.g.attr("transform", "translate(" + tx + "," + ty + ") scale(" + k + ")");
+  NET.rings.selectAll("ellipse").data(order).join("ellipse").attr("cx", Ly.cx).attr("cy", Ly.cy).attr("rx", (f) => Ly.RX * Ly.fr[f]).attr("ry", (f) => Ly.RY * Ly.fr[f])
+    .attr("fill", "none").attr("stroke", "rgba(255,255,255,.08)");
+  NET.rings.selectAll("text").data(order).join("text").attr("x", Ly.cx).attr("y", (f) => Ly.cy - Ly.RY * Ly.fr[f] - 4).attr("text-anchor", "middle")
+    .attr("font-size", "8.5px").attr("letter-spacing", "1.2px").attr("fill", "#8f8d9e").attr("paint-order", "stroke").attr("stroke", "#0b0c1e").attr("stroke-width", 3)
+    .text((f) => flab(f).toUpperCase());
   const ties = TIES.filter(([p, q]) => on.has(p) && on.has(q));
-  const cx = (a) => a._x + a._w / 2, cy = (a) => a._y + CH / 2;
-  NET.links.selectAll("path").data(ties, (d) => d.join("|")).join("path").attr("fill", "none")
-    .attr("d", (d) => { const a = BYID[d[0]], b = BYID[d[1]], x1 = cx(a), y1 = cy(a), x2 = cx(b), y2 = cy(b), same = Math.abs(y1 - y2) < 4, my = same ? y1 - 22 : (y1 + y2) / 2;
-      return "M" + x1 + "," + y1 + " C" + x1 + "," + my + " " + x2 + "," + my + " " + x2 + "," + y2; });
-  const chips = NET.nodes.selectAll("g.chip").data(shown, (a) => a.id).join((en) => { const g = en.append("g").attr("class", "chip").style("cursor", "pointer");
-    g.append("rect").attr("rx", 10).attr("ry", 10); g.append("circle").attr("r", 3.6); g.append("text").attr("dominant-baseline", "central").attr("font-size", "10px").attr("fill", "#e8e6e1"); return g; });
-  chips.attr("transform", (a) => "translate(" + a._x + "," + a._y + ")");
-  chips.select("rect").attr("width", (a) => a._w).attr("height", CH).attr("fill", "rgba(11,12,30,.94)");
-  chips.select("circle").attr("cx", 11).attr("cy", CH / 2).attr("fill", (a) => RCU[a.cat]).attr("fill-opacity", (a) => a.act === "dormant" ? 0.55 : 1);
-  chips.select("text").attr("x", 20).attr("y", CH / 2).text((a) => shortName(a));
-  chips.on("click", (e, a) => { e.stopPropagation(); selectAct(a.i, true); })
+  NET.links.selectAll("line").data(ties, (d) => d.join("|")).join("line").attr("x1", (d) => BYID[d[0]].x).attr("y1", (d) => BYID[d[0]].y).attr("x2", (d) => BYID[d[1]].x).attr("y2", (d) => BYID[d[1]].y);
+  NET.nodes.selectAll("circle").data(shown, (a) => a.id).join("circle").attr("cx", (a) => a.x).attr("cy", (a) => a.y).attr("r", (a) => a.cat === "lawcourt" ? 6 : 5)
+    .attr("fill", (a) => RCU[a.cat]).attr("fill-opacity", (a) => a.act === "dormant" ? 0.55 : 1).style("cursor", "pointer")
+    .on("click", (e, a) => { e.stopPropagation(); selectAct(a.i, true); })
     .on("mouseenter", (e, a) => setHov(a.id))
     .on("mousemove", (e, a) => F.tip("<b>" + esc(a.name) + '</b><br><span class="mute">' + esc(L.CATMETA[a.cat].label) + " · " + esc(a.hq) + "</span>", e.clientX, e.clientY))
     .on("mouseleave", () => { F.tip(null); setHov(null); });
-  const key = W + "x" + Hh + ":" + shown.map((a) => a.id).join(",");
-  if (key !== NETK) { NETK = key; NET.svg.call(NET.zoom.transform, d3.zoomIdentity.scale(k)); }
+  const labs = NET.labs.selectAll("g.lab").data(shown, (a) => a.id).join((en) => { const g = en.append("g").attr("class", "lab").style("cursor", "pointer");
+    g.append("line").attr("stroke", "#8f8d9e").attr("stroke-width", 0.6); g.append("text").attr("dominant-baseline", "central").attr("font-size", "9.5px").attr("fill", "#e8e6e1")
+      .attr("paint-order", "stroke").attr("stroke", "#0b0c1e").attr("stroke-width", 3); return g; });
+  labs.select("line").attr("x1", (a) => a.x).attr("y1", (a) => a.y).attr("x2", (a) => a._lx + (a._anchor === "start" ? -2 : 2)).attr("y2", (a) => a._ly).attr("opacity", (a) => a._moved ? 0.7 : 0);
+  labs.select("text").attr("x", (a) => a._lx).attr("y", (a) => a._ly).attr("text-anchor", (a) => a._anchor).text((a) => shortName(a));
+  labs.on("click", (e, a) => { e.stopPropagation(); selectAct(a.i, true); }).on("mouseenter", (e, a) => setHov(a.id)).on("mouseleave", () => setHov(null));
   netLight();
 }
+
+// The network box itself can be dragged by any empty part of it; its contents stay put.
+(function dragBox() {
+  const box = $("#net"); let st = null;
+  box.addEventListener("pointerdown", (e) => {
+    if (e.button !== 0 || e.target.closest("#netX") || e.target.closest("circle") || e.target.closest("g.lab")) return;
+    const r = box.getBoundingClientRect(), pr = box.offsetParent.getBoundingClientRect();
+    st = { x: e.clientX, y: e.clientY, l: r.left - pr.left, t: r.top - pr.top, w: r.width, h: r.height, pw: pr.width, ph: pr.height, moved: false, onBg: e.target === $("#netsvg") };
+    box.setPointerCapture(e.pointerId);
+  });
+  box.addEventListener("pointermove", (e) => {
+    if (!st) return; const dx = e.clientX - st.x, dy = e.clientY - st.y;
+    if (!st.moved && Math.hypot(dx, dy) < 4) return;
+    if (!st.moved) { st.moved = true; Object.assign(box.style, { width: st.w + "px", height: st.h + "px", right: "auto", bottom: "auto" }); box.classList.add("dragging", "moved"); }
+    const l = Math.max(0, Math.min(st.pw - st.w, st.l + dx)), t = Math.max(0, Math.min(st.ph - st.h, st.t + dy));
+    box.style.left = l + "px"; box.style.top = t + "px";
+  });
+  const end = (e) => { if (!st) return; const s = st; st = null; box.classList.remove("dragging");
+    try { box.releasePointerCapture(e.pointerId); } catch (x) {}
+    if (!s.moved && s.onBg) deselect(); };
+  box.addEventListener("pointerup", end); box.addEventListener("pointercancel", end);
+})();
 
 F = MapCore.frame({
   base: "night",
