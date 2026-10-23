@@ -305,18 +305,19 @@ function sdgRow(id, g, codes, title, sub, ramp) {
 
 /* UN treaties against discrimination: party, signed only, or no action */
 const TREATY_ORDER = ["no action (not listed by UNTC)", "signatory only", "party"];
-const TREATY_WORDS = { "no action (not listed by UNTC)": "Has not signed or joined", "signatory only": "Signed, not joined", party: "Party: has joined" };
+const TREATY_WORDS = { "no action (not listed by UNTC)": "Has not signed or joined", "signatory only": "Signed, not joined", party: "Party: has joined", "neither (not listed by depositary)": "Has not signed or joined", "signed only": "Signed, not joined", "neither (row listed for a footnote only, e.g. territorial application - see UNTC)": "Has not signed or joined", "neither (former party, denounced - see UNTC footnote)": "Has not signed or joined (left the treaty)" };
 const OPT = { CEDAW: "OP-CEDAW", CRPD: "OP-CRPD" };
-function treatyRow(id, g, code, title, sub, ramp) {
-  const r = { id, g, kind: "country", shape: "area", sw: RAMP[ramp][3], file: "treaties.json", ramp, order: TREATY_ORDER.map((x) => TREATY_WORDS[x]),
-    value: (x) => x.treaties && x.treaties[code] ? TREATY_WORDS[x.treaties[code].status] : null, title, sub, made: "copy taken 21 October 2026 from the UN Treaty Collection",
-    source: "United Nations Treaty Collection, Multilateral Treaties Deposited with the Secretary-General, Chapter IV, status as at 21 October 2026", link: "https://treaties.un.org/Pages/Treaties.aspx?id=4&subid=A&clang=_en" };
+function treatyRow(id, g, code, title, sub, ramp, o) {
+  o = o || {};
+  const r = { id, g, kind: "country", shape: "area", sw: RAMP[ramp][3], file: o.file || "treaties.json", ramp, order: [TREATY_WORDS[TREATY_ORDER[0]], "Has not signed or joined (left the treaty)", ...TREATY_ORDER.slice(1).map((x) => TREATY_WORDS[x])],
+    value: (x) => x.treaties && x.treaties[code] ? TREATY_WORDS[x.treaties[code].status] : null, title, sub, made: o.file ? "copy taken 22–23 October 2026" : "copy taken 21 October 2026 from the UN Treaty Collection",
+    source: o.source || "United Nations Treaty Collection, Multilateral Treaties Deposited with the Secretary-General, Chapter IV, status as at 21 October 2026", link: o.link || "https://treaties.un.org/Pages/Treaties.aspx?id=4&subid=A&clang=_en" };
   r.pick = (D) => { r._meta = D._meta && D._meta.treaties && D._meta.treaties[code]; return D; };
   r.box = (x, iso, v) => { const t = x.treaties[code], m = r._meta || {};
     return `<div class="ch-pop"><h3>${esc(x.name)}</h3><div class="meta">${esc(m.title || code)}</div><div class="big" style="font-size:16px">${esc(v)}</div>` +
       `<p>${t.signature ? `Signed ${esc(t.signature)}. ` : ""}${t.consent_to_be_bound_date ? `Joined ${esc(t.consent_to_be_bound_date)} (${esc(t.consent_type || "")}).` : ""}</p>` +
       (OPT[code] && x.treaties[OPT[code]] ? `<p>Its Optional Protocol, which lets people complain to the UN: ${esc(TREATY_WORDS[x.treaties[OPT[code]].status] || x.treaties[OPT[code]].status)}${x.treaties[OPT[code]].consent_to_be_bound_date ? ` (${esc(x.treaties[OPT[code]].consent_to_be_bound_date)})` : ""}.</p>` : "") +
-      `<p class="where">Reservations and declarations are not shown; see the treaty's page.</p>` + srcBlock({ link: m.url || r.link, source: `UN Treaty Collection, ${m.title || code}${m.status_as_at ? `, status as at ${m.status_as_at}` : ""}` }) + `</div>`; };
+      `<p class="where">Reservations and declarations are not shown; see the treaty's page.</p>` + srcBlock({ link: m.url || r.link, source: `${o.boxSource || "UN Treaty Collection"}, ${m.title || code}${m.status_as_at ? `, status as at ${m.status_as_at}` : ""}` }) + `</div>`; };
   return r;
 }
 
@@ -469,7 +470,7 @@ function plainPointBox(r) {
     const est = p.precision && !/^(exact|address)$/.test(p.precision);
     return `<div class="ch-pop"><h3>${esc(p.name)}</h3><div class="meta">${esc([p.date, p.area, p.country].filter(Boolean).join(" · "))}</div>` +
       (p.description && p.description !== p.name ? `<p>${esc(p.description)}</p>` : "") + (r.extraBox ? r.extraBox(p) : "") +
-      (est ? `<p class="est">Location estimated. The source gives only the ${esc(p.precision)}${p.area ? ` (${esc(p.area)})` : ""}, so the dot is placed there, not at the exact spot.</p>` : "") +
+      (p.spread_in ? `<p class="est">Location estimated. ${esc(p.spread_why || "The source gives only an area")}, so the dot is drawn at an evenly spread spot inside ${esc(p.spread_in)} (${esc(p.spread_src || "OpenStreetMap outline")}); the spot itself means nothing.</p>` : est ? `<p class="est">Location estimated. The source gives only the ${esc(p.precision)}${p.area ? ` (${esc(p.area)})` : ""}, so the dot is placed there, not at the exact spot.</p>` : "") +
       fields(p, ["name", "lat", "lon", "description", "precision"]) + srcBlock(r, p.source_url ? `<li>${A(p.source_url, "This record at the source")}</li>` : "") + `</div>`;
   };
 }
@@ -531,7 +532,7 @@ function ushmmBox(x, iso, v) {
 }
 const wdPts = (D) => D.records.filter((x) => x.lat != null).map((x) => ({ ...x, ring: x.precision && x.precision !== "exact" }));
 const wdExtra = (p) => [p.classes ? `<p class="where">Filed in Wikidata as: ${esc(p.classes.join("; "))}</p>` : "", p.perpetrators && p.perpetrators.length ? `<p>Perpetrators recorded: ${esc(p.perpetrators.join("; "))}</p>` : "",
-  p.targets && p.targets.length ? `<p>Targeted: ${esc(p.targets.join("; "))}</p>` : "", p.deaths ? `<p class="fig">Killed: ${esc([].concat(p.deaths).join(" / "))}</p>` : "", p.wikipedia ? `<p>${A(p.wikipedia, "Wikipedia")}</p>` : ""].join("");
+  p.targets && p.targets.length ? `<p>Targeted: ${esc(p.targets.join("; "))}</p>` : "", p.deaths ? `<p class="fig">Killed: ${esc([].concat(p.deaths).join(" / "))}</p>` : "", p.wikipedia ? `<p>${A(p.wikipedia, "Wikipedia")}</p>` : "", p.coord_source && !p.spread_in ? `<p class="where">Where the dot comes from: ${esc(p.coord_source)}.</p>` : "", p.country_note ? `<p class="where">${esc(p.country_note)}</p>` : ""].join("");
 
 /* answers given as lists of {answer, subgroup} */
 const ans = (a) => Array.isArray(a) ? a.map((q) => typeof q === "object" ? [q.answer, q.subgroup].filter(Boolean).join(": ") : q).join("; ") : a;
@@ -558,6 +559,26 @@ function workRow(id, g, ground, word, ramp) {
     title: `Whether the law bans discrimination at work for ${word} (WORLD Policy Analysis Center, 2023)`,
     sub: `For all 193 UN member states: no protection; only general wording that does not name this ground; the ground named for some parts of work; or named for hiring, promotion, training, pay, firing, harassment and indirect discrimination alike. Each part is in the box. Darker: less protection.`,
     source: WORLD_SRC, link: WORLD_LINK };
+}
+
+/* UN Universal Human Rights Index: how often UN bodies raised an issue about a country, with every matching record */
+const UHRI_SRC = "Office of the UN High Commissioner for Human Rights, Universal Human Rights Index, full dataset 2006–2026 (shared \"freely and without any restriction\"); records chosen here by keywords";
+const stripH = (t) => String(t || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+function uhriBox(r) {
+  return (x, iso, v) => {
+    const recs = (x._recs || []).slice().sort((a, b) => String(b.date).localeCompare(String(a.date)));
+    const body = Object.entries(x.by_body || {}).sort((a, b) => b[1] - a[1]).map(([k, n]) => [esc(k), n]);
+    const list = recs.map((q) => `<details class="rec"><summary>${esc(q.date || "")} · ${esc([].concat(q.body || []).join(", "))}${q.type && q.type.length ? ` · ${esc([].concat(q.type).join(", "))}` : ""}</summary><p>${esc(stripH(q.text))}</p><p class="where">${q.document_url ? A(q.document_url, q.symbol || "UN document") : esc(q.symbol || "")}${q.matched ? ` · matched: ${esc(Object.values(q.matched).join("; "))}` : ""}${q.upr_recommending_states && q.upr_recommending_states.length ? ` · recommended by ${esc(q.upr_recommending_states.join(", "))}${q.upr_position && q.upr_position.length ? ` (${esc(q.upr_position.join(", "))})` : ""}` : ""}</p></details>`).join("");
+    return `<div class="ch-pop"><h3>${esc(x.name || BOUNDS_NAME[iso] || iso)}</h3><div class="meta">${esc(r.boxTitle || r.title)}</div><div class="big">${esc(num(v))}</div><div class="meta">UN records, ${esc(x.first_year || "")}–${esc(x.year || "")}</div>` +
+      `<p class="where">This counts how often UN bodies raised the issue about this country, not how much discrimination there is: countries reviewed more often have more records.</p>` +
+      (body.length ? tbl(["UN body", "Records"], body) : "") + (list ? `<details><summary>Every record (${recs.length})</summary>${list}</details>` : "") + srcBlock(r) + `</div>`;
+  };
+}
+function uhriRow(id, g, file, ramp, title, sub, extraFile) {
+  return { id, g, kind: "country", shape: "area", sw: RAMP[ramp][3], file, extraFile, ramp, dir: "high", keyWord: "UN records", value: (x) => x.value,
+    pick: (D, E) => { const o = {}; for (const [k, x] of Object.entries(D)) { if (k.startsWith("_")) continue; o[k] = { ...x, _recs: x.records || (E ? (x.record_ids || []).map((i) => E.records[i]).filter(Boolean) : []) }; } return o; },
+    get box() { return uhriBox(this); }, made: "copy of the 22 October 2026 export",
+    title, sub: sub + " This counts UN attention, not the size of the problem. Darker: more UN records.", source: UHRI_SRC, link: "https://uhri.ohchr.org/" };
 }
 
 /* ---------- the groups and rows ----------
@@ -657,6 +678,9 @@ const ROWS = [
   { id: "land", g: "women", kind: "owid", shape: "area", sw: RAMP.rose[3], slug: "degree-to-which-the-legal-framework-guarantees-womens-equal-rights-to-land-ownership-andor-control", ramp: "rose", dir: "low", unit: "on a scale of 1 to 6",
     title: "How well the law, including customary law, guarantees women equal rights to own or control land (FAO, SDG indicator 5.a.2)",
     sub: "The UN Food and Agriculture Organization's score from 1 (no evidence of guarantees) to 6 (the highest guarantees). Darker: weaker guarantees.", source: OWID_SRC("the UN Food and Agriculture Organization (SDG indicator 5.a.2)") },
+  { id: "vdem_wcl", g: "women", kind: "owid", shape: "area", sw: RAMP.rose[3], slug: "women-civil-liberties-index", ramp: "rose", dir: "low", unit: "on a scale of 0 to 1",
+    title: "Women's civil liberties: moving freely, owning property, reaching the courts, free from forced labour (V-Dem expert survey)",
+    sub: "V-Dem's index from 0 to 1 for every year since 1789, from expert ratings of women's freedom of movement at home and abroad, freedom from forced labour, property rights and access to justice. Darker: fewer liberties.", source: OWID_SRC("the V-Dem Institute (V-Dem data are CC BY-SA 4.0)") },
   { id: "mxfem", g: "women", kind: "geo", shape: "area", sw: RAMP.rose[3], file: "mexico_feminicide.json", unitWord: "states", ramp: "rose", dir: "high", keyWord: "women killed", value: (p) => p.value,
     get box() { return (p, v) => genBox(this)(p, "MEX", v); },
     title: "Mexico: women killed for being women (feminicide), state by state, 2025 (Mexico's national public security system)",
@@ -669,6 +693,8 @@ const ROWS = [
     title: "Where mothers cannot pass their nationality to their children as fathers can (UNHCR)",
     sub: "The 24 countries UNHCR lists, from no exceptions to reform passed but not yet in force, and others that treat naturalised mothers or adoptive mothers worse, with UNHCR's description of each law in the box. Children can be left stateless. Darker: fewer exceptions.",
     source: "UNHCR, Background Note on Gender Equality, Nationality Laws and Statelessness 2025 (non-commercial use allowed)", link: "https://www.refworld.org/" },
+  workRow("work_preg", "women", "preg", "pregnancy", "rose"),
+  workRow("work_mat", "women", "matfam", "mothers (maternal status)", "rose"),
 
   { id: "wbl", g: "women", kind: "owid", shape: "area", sw: RAMP.rose[3], slug: "women-business-and-the-law-index", ramp: "rose", dir: "low", unit: "",
     title: "How far the law treats women and men equally in work, pay, marriage, parenthood, business, property and pension (Women, Business and the Law index, World Bank)",
@@ -745,6 +771,22 @@ const ROWS = [
     order: ["Not recognized", "Recognized"], neutral: ["Varies by region"],
     title: "Whether the law recognises a third gender or non-binary marker (Velasco)",
     sub: "Through 2025. Darker: not recognised.", source: OWID_SRC("Kristopher Velasco's LGBT+ policy data") },
+  { id: "lgbt_lgr", g: "lgbt", kind: "country", shape: "area", sw: RAMP.slate[3], file: "velasco_gender_recognition.json", ramp: "slate", value: (x) => ({ "No legal gender change coded": "No route in law", "No Legal Route": "No route in law", "Medical/Psychological": "Medical or psychological evaluation" })[x.value] || x.value,
+    order: ["No route in law", "Surgery+Sterilization", "Surgery", "Medical Diagnosis", "Medical or psychological evaluation", "Court Order", "Self-ID"], neutral: ["Legal (requirement not coded)"],
+    get box() { return genBox(this); },
+    title: "Whether trans people can change the sex on their official documents, and what the law demands first (Velasco, 2025)",
+    sub: "For 195 countries: no route in law, or a change allowed only after sterilisation, surgery, a medical diagnosis, an evaluation or a court order, or on a person's own declaration. Darker: harder or impossible.",
+    source: "Kristopher Velasco, LGBTI National Policy Dataset v2.2 (CC BY 4.0)", link: "https://osf.io/wta9p/" },
+  { ...workRow("work_inter", "lgbt", "sexchar", "intersex people (sex characteristics)", "slate"),
+    value: (x) => x["Any protection at work"] === "Prohibition based on gender" ? "Covered only through the ban on sex discrimination" : x.value,
+    order: ["No protection at work", "Covered only through the ban on sex discrimination", "Named for some parts of work", "Named for every part of work"],
+    sub: "For all 193 UN member states: no protection; covered only because the law bans sex discrimination, without naming sex characteristics; or sex characteristics named for some or every part of work (hiring, promotion, training, pay, firing, harassment, indirect discrimination). Darker: less protection." },
+  { id: "inter_surg", g: "lgbt", kind: "country", shape: "area", sw: RAMP.slate[3], file: "intersex_surgery_law.json", ramp: "slate", value: (x) => x.value,
+    order: ["No restriction coded", "Restricted in part of the country", "Restricted by national law"], get box() { return genBox(this); },
+    title: "Whether the law stops surgery on intersex children without their consent (Velasco, 2025)",
+    sub: "For 195 countries; 12 restrict such surgery, one only in part of the country. Darker: no restriction.",
+    source: "Kristopher Velasco, LGBTI National Policy Dataset v2.2 (CC BY 4.0)", link: "https://osf.io/wta9p/" },
+  uhriRow("un_inter", "lgbt", "un_intersex.json", "slate", "UN findings on intersex people, including surgery without consent, country by country (UN Universal Human Rights Index)", "Every UN record since 2006 that names intersex people or variations in sex characteristics together with surgery or other medical interventions, for 90 countries, each in full in the box."),
 
 
   /* ---- against ethnic groups, races and migrants ---- */
@@ -760,7 +802,7 @@ const ROWS = [
     source: "Ethnic Power Relations (EPR Core, 2023 release), ETH Zurich", link: "https://icr.ethz.ch/data/epr/" },
     sdgRow("sdg_eth", "ethnic", ["ETH", "ETHI", "ETHCOLLAN", "MIG", "COLR", "ETHIO", "LANDIA", "ORIGIN", "RACECOLR", "ETHCOLLANMIG", "ETHRACECOLLAN", "NATION", "ETHCOLLANNAL", "RACE", "ETHCUL", "FNAM", "LCOL"], "People who say they were discriminated against or harassed for their ethnic group, race, colour, language, origin or migration in the past year (UN SDG indicator 16.b.1)", "From national surveys reported to the UN; each survey names its own grounds (ethnicity, colour, language, migration status, place of origin and others), all given in the box.", "rose"),
   treatyRow("cerd", "ethnic", "ICERD", "Whether the state has joined the UN Convention on the Elimination of All Forms of Racial Discrimination (UN Treaty Collection)", "Party, signed only, or neither, with the dates. Darker: has not joined.", "rose"),
-  { id: "xeno", g: "ethnic", kind: "points", pc: "xeno", file: "xenowatch.json", unitWord: "incidents", pick: (D) => D.records.filter((x) => x.lat != null).map((x) => ({ ...x, name: x.name })),
+  { id: "xeno", g: "ethnic", kind: "points", pc: "xeno", file: "xenowatch.json", unitWord: "incidents", pick: (D) => D.records.filter((x) => x.lat != null).map((x) => ({ ...x, ring: !!x.spread_in })),
     get box() { return plainPointBox(this); }, nameOf: (p) => p.name, subOf: (x) => (x.incident_type || ["not given"]).map((t) => t.toLowerCase()).join("|"),
     chips: (D, recs) => [...new Set(recs.flatMap((x) => (x.incident_type || ["not given"]).map((t) => t.toLowerCase())))].map((t) => [t, t]), chipLabel: "Kind",
     text: (x) => [x.name, x.description, (x.incident_type || []).join(" "), (x.nature || []).join(" ")].join(" "),
@@ -830,7 +872,7 @@ const ROWS = [
     sub: "Shaded by the rule for unaccompanied migrant children; the rules for children with families and for asylum seekers, and the guarantees in detention, are in the box. Darker: detention more allowed.",
     source: "WORLD Policy Analysis Center (UCLA), child immigration detention laws, law as of 2018 (CC BY-NC 4.0)", link: "https://zenodo.org/records/14829532" },
   { id: "iom", g: "ethnic", kind: "points", pc: "mig", file: "iom_missing_migrants.json", unitWord: "incidents",
-    pick: (D) => D.rows.map((a) => { const x = {}; D.columns.forEach((c, i) => { if (a[i] != null && a[i] !== "") x[c] = a[i]; }); x.source_url = "https://missingmigrants.iom.int/downloads"; return x; }).filter((x) => x.lat != null && x.lon != null).map((x) => ({ ...x, ring: x.coord_check === "swapped_in_country" })),
+    pick: (D) => D.rows.map((a) => { const x = {}; D.columns.forEach((c, i) => { if (a[i] != null && a[i] !== "") x[c] = a[i]; }); x.source_url = "https://missingmigrants.iom.int/downloads"; return x; }).filter((x) => x.lat != null && x.lon != null).map((x) => ({ ...x, ring: x.coord_check === "swapped_in_country" || !!x.spread_in })),
     size: (x) => 2.6 + Math.min(4.4, Math.log10(1 + (x.dead_and_missing || 0)) * 1.8),
     subOf: (x) => (x.region || "").split(",")[0], chips: (D, recs) => [...new Set(recs.map((x) => (x.region || "").split(",")[0]))].sort().map((v) => [v, v || "no region"]), chipLabel: "Region",
     text: (x) => [x.name, x.country, x.country_of_origin, x.cause_of_death, x.migration_route].join(" "), nameOf: (p) => p.name,
@@ -838,7 +880,7 @@ const ROWS = [
     extraBox: (p) => `<p class="fig">${esc(num(p.dead || 0))} dead, ${esc(num(p.missing_min || 0))} missing${p.survivors ? `, ${esc(num(p.survivors))} survived` : ""}.</p><p>${esc([p.cause_of_death, p.migration_route, p.country_of_origin ? `from ${p.country_of_origin}` : ""].filter(Boolean).join(" · "))}</p>` +
       (p.coord_check === "swapped_in_country" ? `<p class="est">This dot is drawn where IOM's coordinates put it, which is outside ${esc(p.country || "the country it names")}; swapping latitude and longitude would put it inside, so the source probably has them the wrong way round. Drawn as a ring.</p>` : p.coord_check === "outside_country" ? `<p class="where">IOM's coordinates lie outside ${esc(p.country || "the country it names")}, often because a death at sea is credited to the nearest coast.</p>` : ""),
     title: "Migrants who died or went missing on migration routes, 2014 to October 2026 (IOM Missing Migrants Project)",
-    sub: "Every incident IOM has recorded: drownings, vehicle crashes, violence, heat, cold and lack of care, at borders and along routes. Bigger dots: more dead and missing. Counts are minimums. 286 dots where IOM seems to have swapped latitude and longitude are drawn as rings where published.",
+    sub: "Every incident IOM has recorded: drownings, vehicle crashes, violence, heat, cold and lack of care, at borders and along routes. Bigger dots: more dead and missing. Counts are minimums. Where IOM gives one point for many incidents it names only by district or province (most of all Afghans who died in Iran), they are spread as rings inside that area; 286 dots where IOM seems to have swapped latitude and longitude are rings where published.",
     source: "IOM's Missing Migrants Project (CC BY 4.0)", link: "https://missingmigrants.iom.int/" },
   { id: "langs", g: "ethnic", kind: "points", pc: "lang", file: "glottolog_languages.json", unitWord: "languages",
     pick: (D) => D.records.filter((x) => x.lat != null && x.lon != null).map((x) => ({ ...x, precision: undefined, ring: !x.endangerment || x.endangerment === "not endangered" })),
@@ -867,6 +909,22 @@ const ROWS = [
     title: "Whether ethnic, religious, language, caste and regional groups have equal civil liberties (V-Dem expert survey)",
     sub: "V-Dem's estimate of how equally social groups are free from forced labour, hold property, reach the courts and move freely, every year since 1789. 0 is roughly the average country; higher is more equal. Darker: less equal.",
     source: OWID_SRC("the V-Dem Institute (V-Dem data are CC BY-SA 4.0)") },
+  { id: "citizen", g: "ethnic", kind: "country", shape: "area", sw: RAMP.rose[3], file: "globalcit_citizenship.json", ramp: "rose", value: (x) => x.value,
+    order: ["Group (race, religion or ethnic group) and gender restrictions", "Group (race, religion or ethnic group) restrictions", "Gender restrictions", "No group or gender restriction coded"],
+    get box() { return genBox(this); },
+    title: "Citizenship laws that favour or exclude people by race, religion, ethnic group or sex (GLOBALCIT, 2024)",
+    sub: "For 191 countries, whether any of the 34 ways of getting citizenship (by descent, birth, marriage, naturalisation and others) is open only to a race, religion or ethnic group, or only to men or women, as in force on 1 January 2024. The restricting rules are named in the box. Darker: restricted by group.",
+    source: "GLOBALCIT Citizenship Law Dataset v3.1, European University Institute (CC BY 4.0)", link: "https://globalcit.eu/databases/globalcit-citizenship-law-dataset/" },
+  { id: "landmark", g: "ethnic", kind: "country", shape: "area", sw: RAMP.rose[3], file: "landmark_land_rights.json", ramp: "rose", linear: [1, 4], dir: "high", value: (x) => x.value,
+    get box() { return genBox(this, { note: "1 means the law addresses a question fully and 4 that it does not address it at all. Scores are from 2015, updated for Africa in 2025. Each question's score, comment and law are in the box." }); },
+    title: "How weakly national law protects Indigenous Peoples' land (LandMark)",
+    sub: "LandMark scored the laws of 109 countries on 10 questions, such as whether customary land counts as ownership and whether the state needs consent before taking it; the average, from 1 (fully protected) to 4 (not at all). Darker: weaker protection.",
+    source: "LandMark: The Global Platform of Indigenous and Community Lands, Indicators of Tenure Security in National Law, 2015 with 2025 Africa update (CC BY-SA 4.0; this layer is shared under the same licence)", link: "https://landmarkmap.org/" },
+  uhriRow("un_afro", "ethnic", "un_african_descent.json", "rose", "UN findings on discrimination against people of African descent, country by country (UN Universal Human Rights Index)", "Every UN record since 2006 tagged as concerning people of African descent, for 145 countries.", "un_african_descent_records.json"),
+  uhriRow("un_lang", "ethnic", "un_minority_language.json", "rose", "UN findings on minority and Indigenous language rights, country by country (UN Universal Human Rights Index)", "Every UN record since 2006 on the rights of linguistic minorities: schooling, courts, public services and media in their languages, for 161 countries.", "un_minority_language_records.json"),
+  treatyRow("cmw", "ethnic", "CMW", "Whether the state has joined the UN Convention on the Rights of All Migrant Workers and Their Families (UN Treaty Collection)", "60 parties, with dates in the box. Darker: has not joined.", "rose", { file: "treaties_more.json", source: "United Nations Treaty Collection, status as at 22–23 October 2026" }),
+  treatyRow("stl54", "ethnic", "STATELESS-1954", "Whether the state has joined the 1954 Convention on the Status of Stateless Persons (UN Treaty Collection)", "The treaty that gives stateless people basic rights; 99 parties. Darker: has not joined.", "rose", { file: "treaties_more.json", source: "United Nations Treaty Collection, status as at 22–23 October 2026" }),
+  treatyRow("stl61", "ethnic", "STATELESS-1961", "Whether the state has joined the 1961 Convention on the Reduction of Statelessness (UN Treaty Collection)", "The treaty that stops children being born stateless and people being stripped of nationality; 82 parties. Darker: has not joined.", "rose", { file: "treaties_more.json", source: "United Nations Treaty Collection, status as at 22–23 October 2026" }),
 
 
   /* ---- against religions and beliefs ---- */
@@ -936,6 +994,14 @@ const ROWS = [
     title: "Where people with mental or intellectual disabilities can be barred from voting (ACE Electoral Knowledge Network)",
     sub: "129 countries in ACE's comparative data. Many entries were last checked before 2010; the date is in the box. Darker: barred.",
     source: "ACE Electoral Knowledge Network, comparative data question VR003 (reuse allowed with full acknowledgement)", link: "https://aceproject.org/epic-en/CDTable?question=VR003&view=country&set_language=en" },
+  uhriRow("un_psych", "disability", "un_psychosocial_disability.json", "taupe", "UN findings on people with mental health conditions: forced detention, forced treatment, guardianship, country by country (UN Universal Human Rights Index)", "Every UN record since 2006 on psychosocial disability, involuntary psychiatric detention or treatment, and loss of legal capacity, for 189 countries.", "un_psychosocial_disability_records.json"),
+  uhriRow("un_intel", "disability", "un_intellectual_disability_autism.json", "taupe", "UN findings on people with intellectual disabilities and autistic people, country by country (UN Universal Human Rights Index)", "Every UN record since 2006 that names intellectual disability or autism, for 142 countries, each in full in the box."),
+  { id: "dementia", g: "disability", kind: "country", shape: "area", sw: RAMP.taupe[3], file: "who_dementia_discrimination_law.json", ramp: "taupe", value: (x) => x.value,
+    order: ["No", "Yes (universal law)"], neutral: ["Not available", "Not applicable"], get box() { return genBox(this); },
+    title: "Whether the law protects people with dementia from discrimination (WHO Global Dementia Observatory, 2017)",
+    sub: "Answers 61 governments gave WHO, with whether carers are also protected in the box. Darker: no law.",
+    source: "World Health Organization, Global Dementia Observatory, via the Global Health Observatory (WHO data terms: values shown unchanged)", link: "https://www.who.int/data/gho" },
+  treatyRow("marrakesh", "disability", "MARRAKESH", "Whether the state has joined the Marrakesh Treaty, which lets blind and print-disabled people get books in formats they can read (WIPO)", "106 contracting parties (the EU joins as one, with the dates in the box). Darker: has not joined.", "taupe", { file: "treaties_more.json", source: "World Intellectual Property Organization, WIPO Lex treaty status (CC BY 4.0)", link: "https://www.wipo.int/wipolex/en/treaties/ShowResults?search_what=C&treaty_id=843", boxSource: "WIPO Lex" }),
 
   { id: "dis_unemp", g: "disability", kind: "owid", shape: "area", sw: RAMP.taupe[3], slug: "unemployment-rate-by-disability", ramp: "taupe", dir: "high", unit: "",
     cols: ["_8_5_2__sl_tlf_uemdis__persons_with_disability__both_sexes", "_8_5_2__sl_tlf_uemdis__persons_without_disability__both_sexes"],
@@ -963,6 +1029,7 @@ const ROWS = [
     sub: "The link between children's and parents' years of schooling, from 0 (none) to 1 (children's schooling fully follows their parents'), for people born in the 1980s; the chance a child of the bottom half reaches the top quarter is in the box. Darker: class is more fixed.",
     source: "World Bank, Global Database on Intergenerational Mobility, version 3, 2023 (CC BY 4.0)", link: "https://datacatalog.worldbank.org/search/dataset/0050771" },
   workRow("work_class", "caste", "class", "social class", "plum"),
+  uhriRow("un_caste", "caste", "un_caste_descent.json", "plum", "UN findings on caste and descent-based discrimination, country by country (UN Universal Human Rights Index)", "Every UN treaty-body, special-rapporteur and Universal Periodic Review record since 2006 that mentions caste, descent-based discrimination, Dalits, Burakumin, Haratine or other descent-based groups, in 35 countries, each in full in the box."),
 
 
   /* ---- other grounds ---- */
@@ -1000,6 +1067,34 @@ const ROWS = [
     title: "Children hit or shouted at by their carers as punishment in the past month (UNICEF surveys, SDG indicator 16.2.1)",
     sub: "The share of children, mostly aged 1 to 14, who had physical punishment or psychological aggression from a caregiver in the last month, from household surveys in 105 countries. Darker: a larger share.",
     source: "UNICEF, from the UN SDG Global Database (UNdata terms: free to copy with citation)", link: "https://unstats.un.org/sdgs/dataportal" },
+  { id: "c189", g: "other", kind: "country", shape: "area", sw: RAMP.slate[3], file: "ilo_c189.json", ramp: "slate",
+    pick: (D) => { const o = {}; for (const s of STATES) o[s] = D[s] || { name: BOUNDS_NAME[s] || s, value: "not ratified" }; return o; }, value: (x) => x.value,
+    order: ["not ratified", "ratified"], get box() { return genBox(this); },
+    title: "Whether the state has ratified the ILO Domestic Workers Convention, C189 (UN Treaty Collection)",
+    sub: "The 2011 convention gives domestic workers, mostly women and often migrants, the same basic labour rights as other workers. 40 states have ratified it, with dates in the box. Darker: not ratified.",
+    source: "UN Treaty Series registrations by the ILO, plus Spain's ratification from the ILO (UN site terms; ILO data CC BY 4.0)", link: "https://treaties.un.org/" },
+  workRow("work_marital", "other", "marital", "marital status", "slate"),
+  workRow("work_pat", "other", "patfam", "fathers (paternal status)", "slate"),
+  { id: "sexwork", g: "other", kind: "country", shape: "area", sw: RAMP.taupe[3], file: "hiv_laws.json", ramp: "taupe", value: (x) => ({ Yes: "Sex work is a crime", No: "Not a crime" })[x.sex_work_criminalised] || null,
+    order: ["Sex work is a crime", "Not a crime"], box: hivBox,
+    title: "Where sex workers are treated as criminals (UNAIDS)",
+    sub: "What each government told UNAIDS: whether selling or buying sex, or related acts, are crimes, with which forms in the box. Darker: a crime.",
+    source: "UNAIDS, National Commitments and Policy Instrument, Laws and Policies (educational, non-commercial use allowed)", link: "https://lawsandpolicies.unaids.org/" },
+  { id: "druglaw", g: "other", kind: "country", shape: "area", sw: RAMP.taupe[3], file: "hiv_laws.json", ramp: "taupe", value: (x) => ({ Yes: "Possessing small amounts is a crime", No: "Not a crime" })[x.drug_possession_small_amounts_criminalised] || null,
+    order: ["Possessing small amounts is a crime", "Not a crime"], box: hivBox,
+    title: "Where people who use drugs are treated as criminals for small amounts (UNAIDS)",
+    sub: "What each government told UNAIDS: whether possessing drugs for personal use is a crime. Darker: a crime.",
+    source: "UNAIDS, National Commitments and Policy Instrument, Laws and Policies (educational, non-commercial use allowed)", link: "https://lawsandpolicies.unaids.org/" },
+  uhriRow("un_leprosy", "other", "un_leprosy.json", "slate", "UN findings on discrimination against people affected by leprosy, country by country (UN Universal Human Rights Index)", "Every UN record since 2006 on leprosy, including the Special Rapporteur on leprosy's findings, for 36 countries, each in full in the box."),
+  uhriRow("un_albinism", "other", "un_albinism.json", "slate", "UN findings on attacks on and discrimination against people with albinism, country by country (UN Universal Human Rights Index)", "Every UN record since 2006 tagged or worded about people with albinism, including killings and trade in body parts, for 46 countries, each in full in the box."),
+  uhriRow("un_homeless", "other", "un_homelessness.json", "slate", "UN findings on homeless people, including laws that punish homelessness or begging, country by country (UN Universal Human Rights Index)", "Every UN record since 2006 on homelessness, for 147 countries; 70 of them have a record on punishing homelessness or begging."),
+  uhriRow("un_hukou", "other", "un_residence_registration.json", "slate", "UN findings on discrimination by place of origin or residence registration (such as China's hukou), country by country (UN Universal Human Rights Index)", "Every UN record since 2006 on household or residence registration systems (hukou, propiska) or on internal and rural migrants, for 17 countries."),
+  { id: "appear", g: "other", kind: "points", pc: "spec", file: "appearance_laws.json", unitWord: "laws", pick: pts(), get box() { return plainPointBox(this); }, nameOf: (p) => p.name,
+    extraBox: (p) => `<p class="fig">${esc(p.ground || "")}: ${esc(p.instrument || "")}</p>${p.notes ? `<p>${esc(p.notes)}</p>` : ""}${(p.cited_sources || []).map((c) => `<p>${A(c.url, c.title || c.url)}</p>`).join("")}`,
+    subOf: (x) => x.ground || "other", chips: (D, recs) => [...new Set(recs.map((x) => x.ground || "other"))].map((t) => [t, t]), chipLabel: "Ground",
+    title: "Laws against discrimination for hair, height, weight or appearance (Wikipedia's lists)",
+    sub: "Every state, city or country Wikipedia lists with such a law, such as the CROWN Act on natural hair; almost all are in the United States, as no worldwide list exists. Drawn as rings at each state's or city's point.",
+    source: "Wikipedia, articles on the CROWN Act and on weight and height discrimination, with the sources they cite (CC BY-SA 4.0; this layer is shared under the same licence)", link: "https://en.wikipedia.org/wiki/CROWN_Act" },
 
 
   /* ---- hate crimes ---- */
@@ -1046,6 +1141,17 @@ const ROWS = [
     title: "Germany: every right-wing violent offence of 2025, town by town (Bundestag paper)",
     sub: "The 1,598 violent offences the police classed as right-wing politically motivated in 2025, listed in the annex to the Federal Government's answer with date, town and offence; 1,246 are flagged as hate crimes. Each is drawn as a ring at its town's point, since no address is given.",
     source: "Deutscher Bundestag, Drucksache 21/5639, annex (official work without copyright); town points from OpenStreetMap (ODbL)", link: "https://dserver.bundestag.de/btd/21/056/2105639.pdf" },
+  { id: "can_hate", g: "hate", kind: "geo", shape: "area", sw: RAMP.plum[3], file: "canada_hate_crime_provinces.json", unitWord: "provinces and territories", ramp: "plum", dir: "high", keyWord: "per 100,000", value: (p) => p.value,
+    get box() { return (p, v) => genBox(this, { note: "Statistics Canada splits hate crime by motivation only for 8 regions, so the motivations in the box are for the region this province belongs to; 'suppressed' means Statistics Canada withholds a small count for confidentiality." })(p, "CAN", v); },
+    title: "Canada: police-reported hate crimes per 100,000 people, province by province, 2025 (Statistics Canada)",
+    sub: "Hate crime incidents reported by police in each province and territory, every year since 2014, with the region's split by motivation (race, religion, sexual orientation and more) in the box. Darker: a higher rate.",
+    source: "Statistics Canada, tables 35-10-0191-01 and 35-10-0066-01 (Open Government Licence – Canada; adapted from Statistics Canada, which does not endorse this map); outlines geoBoundaries from Statistics Canada boundary files", link: "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3510019101" },
+  { id: "can_cma", g: "hate", kind: "points", pc: "fbi", file: "canada_hate_crime_cma.json", unitWord: "metropolitan areas", pick: (D) => D.records.filter((x) => x.lat != null).map((x) => ({ ...x, precision: undefined })),
+    size: (x) => 2.6 + Math.min(5, Math.sqrt(x.value || 0) * 0.9), text: (x) => [x.name, x.province].join(" "), nameOf: (p) => p.name, get box() { const b = genBox(this, { note: "The dot sits on the core city; the figure is for the whole metropolitan area." }); return (p) => b(p, "CAN", p.value); },
+    title: "Canada: police-reported hate crimes in each metropolitan area, 2025 (Statistics Canada)",
+    sub: "The rate per 100,000 people and the number of incidents for each of 41 census metropolitan areas, every year since 2014. Each dot sits on the area's core city; the figure is for the whole area. Bigger dots: a higher rate.",
+    source: "Statistics Canada, table 35-10-0191-01 (Open Government Licence – Canada); core-city points from Wikidata (CC0)", link: "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3510019101" },
+  uhriRow("un_hate", "hate", "un_hate_crime.json", "plum", "UN findings on hate crimes and racist violence, country by country (UN Universal Human Rights Index)", "Every UN record since 2006 that deals with hate crimes, bias-motivated or racially motivated violence, or racist attacks, for 141 countries, each in full in the box."),
 
 
   /* ---- racist policing and killings ---- */
@@ -1093,6 +1199,22 @@ const ROWS = [
     title: "Aboriginal and Torres Strait Islander adults in prison per 100,000, state by state, 2025 (Australian Bureau of Statistics)",
     sub: "The age-standardised imprisonment rate of Indigenous adults, with non-Indigenous rates and how many times higher, every year since 2016, in the box. Darker: a higher rate.",
     source: "Australian Bureau of Statistics, Prisoners in Australia 2025 (CC BY 4.0)", link: "https://www.abs.gov.au/statistics/people/crime-and-justice/prisoners-australia/latest-release" },
+  { id: "can_ind", g: "police", kind: "geo", shape: "area", sw: RAMP.slate[3], file: "canada_indigenous_custody.json", unitWord: "provinces and territories", ramp: "slate", dir: "high", keyWord: "%", value: (p) => p.value,
+    get box() { return (p, v) => genBox(this, { note: "The share is worked out here as Indigenous admissions divided by all admissions; admissions where identity is unknown count in the total." })(p, "CAN", v); },
+    title: "Canada: Indigenous people's share of admissions to adult custody, province by province, 2023/24 (Statistics Canada)",
+    sub: "First Nations, Métis and Inuit people as a share of everyone admitted to provincial and territorial custody, every year since 2000/01; from 91.6% in Nunavut to 7.8% in Quebec. Darker: a larger share.",
+    source: "Statistics Canada, table 35-10-0016-01 (Open Government Licence – Canada; adapted from Statistics Canada, which does not endorse this map); outlines geoBoundaries from Statistics Canada boundary files", link: "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3510001601" },
+  uhriRow("un_police", "police", "un_racism_policing.json", "slate", "UN findings on racism by police and in prisons, country by country (UN Universal Human Rights Index)", "Every UN record since 2006 on racial or ethnic profiling, police violence against minorities, migrants or Indigenous people, and their over-representation in prisons, for 145 countries, each in full in the box."),
+  { id: "polkill", g: "police", kind: "country", shape: "area", sw: RAMP.slate[3], file: "police_killings_wikipedia.json", ramp: "slate", dir: "high", keyWord: "per 10 million", value: (x) => x.value,
+    get box() { return genBox(this, { note: "A compilation of national figures of uneven quality (official counts, NGO and press tallies); each row's cited sources are in the box. The year differs by country." }); },
+    title: "People killed by police and other security forces, per 10 million people (Wikipedia's compilation of national sources)",
+    sub: "65 countries in Wikipedia's table, with the count, the rate, and other years and the sources each row cites in the box. Darker: a higher rate.",
+    source: "English Wikipedia, List of countries with annual rates and counts for killings by law enforcement officers, revision 1376855354, and the sources it cites (CC BY-SA 4.0; this layer is shared under the same licence)", link: "https://en.wikipedia.org/wiki/List_of_countries_with_annual_rates_and_counts_for_killings_by_law_enforcement_officers" },
+  { id: "forpris", g: "police", kind: "country", shape: "area", sw: RAMP.slate[3], file: "foreign_prisoners_europe.json", ramp: "slate", dir: "high", keyWord: "%", value: (x) => x.value,
+    get box() { return genBox(this, { note: "The share is worked out from the two published numbers." }); },
+    title: "Europe: prisoners who are foreign citizens, as a share of all prisoners (Council of Europe SPACE I and Eurostat)",
+    sub: "50 European countries and areas, latest year, with Eurostat's yearly figures since 2008 and SPACE I's since 2021 in the box. Darker: a larger share.",
+    source: "Council of Europe Annual Penal Statistics SPACE I, 2021–2025 (non-commercial reuse with credit); Eurostat crim_pris_ctz, 2008–2024 (CC BY 4.0)", link: "https://wp.unil.ch/space/space-i/annual-reports/" },
 
 
   /* ---- persecution and genocide ---- */
@@ -1104,13 +1226,13 @@ const ROWS = [
     text: (x) => [x.name, x.description, (x.countries || []).join(" "), (x.classes || []).join(" ")].join(" "), subOf: (x) => x.nazi_related ? (x.kind === "ghetto" ? "ghetto" : "nazi") : "other",
     chips: () => [["nazi", "Nazi camps"], ["ghetto", "Nazi ghettos"], ["other", "other concentration camps"]], chipLabel: "Show", size: () => 3,
     title: "Concentration and extermination camps and ghettos: the Nazi system, and others worldwide (Wikidata)",
-    sub: "Every concentration camp of any kind in Wikidata (death camps, sub-camps, labour camps, secret detention centres) and every Nazi ghetto that has a place, with dates and deaths where recorded. Camps of other states (Soviet, Argentine, colonial) are kept. 464 more have no place and are not drawn.",
+    sub: "Every concentration camp of any kind in Wikidata (death camps, sub-camps, labour camps, secret detention centres) and every Nazi ghetto that has a place, with dates and deaths where recorded. Camps of other states (Soviet, Argentine, colonial) are kept. 323 more have no place and are not drawn.",
     source: "Wikidata (CC0)", link: "https://www.wikidata.org/" },
   { id: "massacres", g: "history", kind: "points", pc: "geno", file: "wd_massacres_1933_1945.json", unitWord: "massacres and events", pick: wdPts, get box() { return plainPointBox(this); }, extraBox: wdExtra, nameOf: (p) => p.name,
     text: (x) => [x.name, x.description, (x.countries || []).join(" "), (x.perpetrators || []).join(" "), (x.targets || []).join(" ")].join(" "), subOf: (x) => x.holocaust_linked ? "holo" : "other",
     chips: () => [["holo", "part of the Holocaust"], ["other", "other massacres"]], chipLabel: "Show",
     title: "Massacres of 1933–1945 and the killings of the Holocaust (Wikidata)",
-    sub: "Every massacre Wikidata dates to these years, and every event it files as part of the Holocaust, the Holocaust by bullets, the genocide of the Roma or Operation Reinhard, with perpetrators and the dead where recorded. 29 more have no place.",
+    sub: "Every massacre Wikidata dates to these years, and every event it files as part of the Holocaust, the Holocaust by bullets, the genocide of the Roma or Operation Reinhard, with perpetrators and the dead where recorded. 27 more have no place.",
     source: "Wikidata (CC0)", link: "https://www.wikidata.org/" },
   { id: "genocides", g: "history", kind: "points", pc: "geno", file: "wd_genocides.json", unitWord: "genocides", pick: wdPts, get box() { return plainPointBox(this); }, extraBox: wdExtra, nameOf: (p) => p.name,
     text: (x) => [x.name, x.description, (x.countries || []).join(" "), (x.perpetrators || []).join(" ")].join(" "),
@@ -1132,6 +1254,8 @@ const ROWS = [
     title: "Camps, detention centres and prisons holding Uyghurs and other Muslims in Xinjiang, China (BuzzFeed News, from satellite images)",
     sub: "Every site BuzzFeed News found and checked against satellite images, government documents and witness accounts, with how well each is corroborated and the matching site number from the Australian Strategic Policy Institute where there is one.",
     source: "Alison Killing, Megha Rajagopalan and Christo Buschek, BuzzFeed News, Xinjiang camps data, 20 July 2021 (CC BY 4.0)", link: "https://github.com/critocrito/xinjiang-camps-data" },
+  treatyRow("genocide_c", "history", "GENOCIDE", "Whether the state has joined the UN Genocide Convention (UN Treaty Collection)", "The 1948 treaty that makes genocide a crime to prevent and punish; 154 parties. Darker: has not joined.", "taupe", { file: "treaties_more.json", source: "United Nations Treaty Collection, status as at 22–23 October 2026" }),
+  treatyRow("apartheid_c", "history", "APARTHEID", "Whether the state has joined the UN Convention against the Crime of Apartheid (UN Treaty Collection)", "The 1973 treaty that makes apartheid a crime against humanity; 110 parties. Darker: has not joined.", "taupe", { file: "treaties_more.json", source: "United Nations Treaty Collection, status as at 22–23 October 2026" }),
 
 
   /* ---- against other species ---- */
@@ -1152,6 +1276,15 @@ const ROWS = [
     title: "Whether the egg industry may kill male chicks at birth (Our World in Data)",
     sub: "Male chicks of egg-laying breeds are usually killed soon after hatching because they lay no eggs. Seven countries ban or partly ban it; Our World in Data treats a country with no known law as having no ban. Darker: not banned.",
     source: "Our World in Data, from national laws (CC BY 4.0)", link: "https://ourworldindata.org/grapher/banning-of-chick-culling" },
+  { id: "slaughter", g: "animals", kind: "owid", shape: "area", sw: RAMP.taupe[3], slug: "land-animals-slaughtered-for-meat", ramp: "taupe", dir: "high", unit: "land animals a year",
+    cols: ["n_animals_killed__animal_chickens", "n_animals_killed__animal_ducks", "n_animals_killed__animal_pigs", "n_animals_killed__animal_geese", "n_animals_killed__animal_sheep", "n_animals_killed__animal_rabbits", "n_animals_killed__animal_turkeys", "n_animals_killed__animal_goats", "n_animals_killed__animal_cattle", "n_animals_killed__animal_other_animals"],
+    calc: (v) => { let s = 0, any = false; for (const q of v) if (q !== "" && q != null) { s += Number(q); any = true; } return any ? s : null; },
+    extra: (x) => { const L = ["Chickens", "Ducks", "Pigs", "Geese", "Sheep", "Rabbits", "Turkeys", "Goats", "Cattle", "Other animals"]; return tbl(["Animal", "Killed"], x.vals.map((q, i) => [L[i], q === "" || q == null ? "–" : num(Number(q))])); },
+    title: "Land animals killed for meat each year, country by country (UN Food and Agriculture Organization)",
+    sub: "Chickens, ducks, pigs, geese, sheep, rabbits, turkeys, goats, cattle and other land animals slaughtered for meat, added up here, every year since 1961, with each species in the box. Fish are not counted. Darker: more animals killed.", source: OWID_SRC("the UN Food and Agriculture Organization") },
+  { id: "cagefree", g: "animals", kind: "owid", shape: "area", sw: RAMP.taupe[3], slug: "eggs-cage-free", ramp: "taupe", dir: "low", unit: "%",
+    title: "Egg-laying hens kept out of cages (European Commission, Defra, USDA and Welfare Footprint Institute)",
+    sub: "The share of egg-laying hens in cage-free systems, in 69 countries. Darker: more hens in cages.", source: OWID_SRC("the European Commission, Defra, USDA and the Welfare Footprint Institute") },
 
 ];
 const ROW = Object.fromEntries(ROWS.map((r) => [r.id, r]));
@@ -1159,13 +1292,14 @@ const ABOUT = `<p>This map takes the Discrimination rows of the Welcome to Your 
 <p>Every shaded country, area and dot is one record of a source, with that source in its box. Shadings are one at a time: ticking a second turns the first off. On every shading, darker is the more unequal end: the lower score, the harsher law, the larger share of people saying they were discriminated against.</p>
 <p><b>Where the companies are drawn.</b> The World Benchmarking Alliance gives only each company's headquarters country, and the Culprits map draws its companies at that country's capital, spread in a ring so each can be clicked. This map draws each at its own headquarters instead. The company's legal entity identifier (LEI, which WBA gives) leads to its headquarters address in GLEIF's global register of legal entities, and that address is looked up on OpenStreetMap: a filled dot when the building or address point is found. Where WBA gives no LEI, or the address is not found, the coordinates Wikidata gives for the company's headquarters are used (also a filled dot). Where only the street is found, the dot sits at OpenStreetMap's point for the street; where only the postal code, inside the postal code area; where only the town, at an evenly spread spot inside the town's outline. These are rings, and each box says which, so no company is drawn more precisely than its sources allow. Where GLEIF or Wikidata puts the headquarters in a different country from the one WBA names, or the address is a registered agent's office (such as Delaware's Corporation Trust Center), that address is not used. Companies at the very same spot are drawn on a small spiral, about 70 metres apart.</p>
 <p><b>Live and kept copies.</b> Rows read live from their source each time they are ticked: the Our World in Data charts. Rows read from the daily copies culprits-tiles-more keeps (the same files the Culprits map reads): the World Justice Project scores and the two company rows. The other rows are copies taken on the build date and kept beside this map in the discrimination_data folder; their boxes and the list of sources say when.</p>
+<p><b>UN findings layers.</b> Where no source measures a kind of discrimination across the world (caste, hate crimes, racism in policing, mental health, leprosy, albinism, homelessness, intersex people and others), a layer counts the records in the UN human rights office's Universal Human Rights Index (every recommendation and concern UN bodies raised about each country since 2006) that match that subject, with every record in full in the box. It measures UN attention, not the size of the problem, and the words used to pick the records are in each data file.</p>
 <p><b>Licences.</b> Layers from the WORLD Policy Analysis Center are CC BY-NC 4.0 (non-commercial use). The Atlas of Roma Communities (Slovakia) and the Freedom of Thought Report are CC BY-SA 4.0, and the layers made from them are shared under the same licence.</p>
-<p><b>Places a source names only as an area.</b> Where a record names only a town, county, state or country, it is drawn as a ring at a spot inside that area, spread evenly so that records of one area do not pile up; the box names the area and says the spot inside it means nothing.</p>
+<p><b>Places a source names only as an area.</b> Where a record names only a town, county, state or country, it is drawn as a ring at a spot inside that area, spread evenly so that records of one area do not pile up; the box names the area and says the spot inside it means nothing. Where a source gives the same point to many records that name only a district, town or country (IOM's reports of Afghans who died in Iran, towns in the German police list, Roma settlements, Xenowatch's town-centre points, Wikidata items placed only in a country), they are spread inside the OpenStreetMap outline of that area, kept on land and inside the record's own country, and the source's point stays in the box's fields. Wikidata items were first moved to a better place wherever Wikidata, the linked Wikipedia article, or a single unambiguous place named in the item gives one.</p>
 `;
 const NOT_FOUND = `<p><b>Held back for permission.</b> These rows appear on the map only once their copy is put beside it. Ethnic Power Relations and its ethnic armed conflict links (ETH Zurich): ETH's website terms forbid storing copies on other servers without written consent. OSCE ODIHR hate crime data: free for educational use on condition the OSCE is told and credited. World Animal Protection's Animal Protection Index: no licence stated, only a copyright notice. The PopuList's classification of far-right parties: no licence stated. United for Global Mental Health's list of countries that criminalise attempted suicide: no licence stated.</p>
-<p><b>Not allowed to copy.</b> The Global Initiative to End All Corporal Punishment of Children's table of where hitting children is legal, by setting: "All Rights Reserved" (a survey measure of violent discipline is used instead). The Global Detention Project's immigration detention data: no reuse terms and no download. The Global Animal Law database of animal-protection laws: no licence, and its map data contradicts itself. The Fur Free Alliance's fur-farming bans: no reuse terms. Ethnic Power Relations 2021 (ETH Zurich), groups the state discriminates against: no licence; covered by the permission request to ETH. TGEU's Trans Murder Monitoring (5,320 killings of trans and gender-diverse people, with places): "© TGEU" and no reuse terms. Equaldex (LGBTQ+ laws): its terms forbid copying for public display and tracking its index over time, so Velasco's data is used instead. ADL's H.E.A.T. map, its audit of antisemitic incidents (8,873 in the US in 2023) and its Global 100: written permission needed. The UK's Community Security Trust and Germany's RIAS (antisemitic incidents): permission needed. Mapping Police Violence: its footer forbids reproduction without permission. The Equal Justice Initiative's lynching counts: no reuse terms; Monroe Work Today's full data is private. Yahad-In Unum's map of Holocaust execution sites: written permission needed. Under the Same Sun's count of attacks on people with albinism (849 attacks, 264 killings, 31 countries): no licence stated. The European Parliamentary Forum's report on funding of anti-gender campaigns, and the Global Philanthropy Project's reports: permission needed. James Loewen's sundown towns database: copyrighted by his heirs. The SPLC's Hate Map (1,263 groups, including 96 anti-LGBTQ and 16 male-supremacist groups): all rights reserved. CEPAL's femicide figures for Latin America: written permission needed. ILEP's list of 116 laws that discriminate against people affected by leprosy: all rights reserved. ILGA World's and TGEU's maps of legal gender recognition for trans people: no reuse permission. New Zealand Corrections' figures on Māori prisoners: no-derivatives licence. MIPEX (migrants, including anti-discrimination law): "All rights reserved". Pew Research Center's religious restrictions indexes: download needs an account.</p>
-<p><b>Not reachable or not clear.</b> India's National Crime Records Bureau figures on crimes against Dalits (Scheduled Castes) and Adivasis (Scheduled Tribes), by state: NCRB's terms say they should not be copied without prior permission, data.gov.in could not be reached, and the only other copy (India Data Portal) states no licence and differs from NCRB's tables in places. The SPLC's Hate Map: its site blocked every request, so its terms could not be read. openDemocracy's data on US Christian-right spending abroad: behind an account wall. The ILO's conventions against discrimination at work (C100, C111): the ILO site blocked the request. Statistics Canada's police-reported hate crime and Indigenous imprisonment by province: open licence, but the site did not respond in two attempts on different days. The Australian Strategic Policy Institute's data on destroyed mosques and shrines in Xinjiang: every page is behind a block, so its terms could not be read. The WORLD Policy Analysis Center's constitutional protections by ground: only on Harvard Dataverse behind a sign-up form (its workplace, age, education and child detention data are on Zenodo and are used). The ILO's ratifications of the Domestic Workers Convention (C189): the ILO site blocked every request. The UN race committee's early-warning decisions and Minority Rights Group's Peoples under Threat: the sites blocked access. Germany's hate crime by motive other than right-wing and antisemitic (racist, anti-Muslim, anti-LGBTQ), Land by Land: not in any Bundestag paper found; the interior ministry's own tables cannot be reused without consent.</p>
-<p><b>No dataset found.</b> Ethnic and racial profiling by police across countries. The killing of disabled children in Uganda and the segregation of disabled people in institutions: reports only. Subnational homicide by race for the United States, Canada and Australia, and any homicide rate by population group for South Africa. Worldwide: discrimination against people of short stature, or against people for their intelligence (beyond the schooling ground in the UN surveys above).</p>
+<p><b>Not allowed to copy.</b> UNESCO's list of parties to the Convention against Discrimination in Education: its terms forbid copying its databases without written permission. The African Union's protocols on older persons and on disabled persons: written permission needed. The Global Terrorism Database (racist and religious attacks to 2020): no public posting without written permission. ACLED (attacks on minorities): its terms allow only figures that cannot be turned back into events. UNODC's counts of foreign citizens in prison: all rights reserved. The World Prison Brief's foreign-prisoner shares (224 places): no reuse licence. Walk Free's Global Slavery Index: all rights reserved, and no figure for descent-based slavery. The Comparative Constitutions Project (official religions, equality clauses and official languages in 200 constitutions): no licence, and its terms bar reuse beyond research. The Global Initiative to End All Corporal Punishment of Children's table of where hitting children is legal, by setting: "All Rights Reserved" (a survey measure of violent discipline is used instead). The Global Detention Project's immigration detention data: no reuse terms and no download. The Global Animal Law database of animal-protection laws: no licence, and its map data contradicts itself. The Fur Free Alliance's fur-farming bans: no reuse terms. Ethnic Power Relations 2021 (ETH Zurich), groups the state discriminates against: no licence; covered by the permission request to ETH. TGEU's Trans Murder Monitoring (5,320 killings of trans and gender-diverse people, with places): "© TGEU" and no reuse terms. Equaldex (LGBTQ+ laws): its terms forbid copying for public display and tracking its index over time, so Velasco's data is used instead. ADL's H.E.A.T. map, its audit of antisemitic incidents (8,873 in the US in 2023) and its Global 100: written permission needed. The UK's Community Security Trust and Germany's RIAS (antisemitic incidents): permission needed. Mapping Police Violence: its footer forbids reproduction without permission. The Equal Justice Initiative's lynching counts: no reuse terms; Monroe Work Today's full data is private. Yahad-In Unum's map of Holocaust execution sites: written permission needed. Under the Same Sun's count of attacks on people with albinism (849 attacks, 264 killings, 31 countries): no licence stated. The European Parliamentary Forum's report on funding of anti-gender campaigns, and the Global Philanthropy Project's reports: permission needed. James Loewen's sundown towns database: copyrighted by his heirs. The SPLC's Hate Map (1,263 groups, including 96 anti-LGBTQ and 16 male-supremacist groups): all rights reserved. CEPAL's femicide figures for Latin America: written permission needed. ILEP's list of 116 laws that discriminate against people affected by leprosy: all rights reserved. ILGA World's and TGEU's maps of legal gender recognition for trans people: no reuse permission. New Zealand Corrections' figures on Māori prisoners: no-derivatives licence. MIPEX (migrants, including anti-discrimination law): "All rights reserved". Pew Research Center's religious restrictions indexes: download needs an account.</p>
+<p><b>Not reachable or not clear.</b> The Organization of American States' conventions against racism and on older persons, and the Council of Europe's minority-language and national-minority treaties: their sites blocked requests from here. GDELT's live news on hate crimes: its current service refused requests from here, and the older feed cannot be read by a web page directly. India's National Crime Records Bureau figures on crimes against Dalits (Scheduled Castes) and Adivasis (Scheduled Tribes), by state: NCRB's terms say they should not be copied without prior permission, data.gov.in could not be reached, and the only other copy (India Data Portal) states no licence and differs from NCRB's tables in places. The SPLC's Hate Map: its site blocked every request, so its terms could not be read. openDemocracy's data on US Christian-right spending abroad: behind an account wall. The ILO's conventions against discrimination at work (C100, C111): the ILO site blocked the request. The Australian Strategic Policy Institute's data on destroyed mosques and shrines in Xinjiang: the data site blocks requests from here, and ASPI's reports forbid reproduction without written permission (asked for; its camp data is already almost all in the BuzzFeed News layer). The WORLD Policy Analysis Center's constitutional protections by ground: only on Harvard Dataverse behind a sign-up form (its workplace, age, education and child detention data are on Zenodo and are used). The UN race committee's early-warning decisions and Minority Rights Group's Peoples under Threat: the sites blocked access. Germany's hate crime by motive other than right-wing and antisemitic (racist, anti-Muslim, anti-LGBTQ), Land by Land: not in any Bundestag paper found; the interior ministry's own tables cannot be reused without consent.</p>
+<p><b>No dataset found.</b> Any open worldwide count of killings by police or of Indigenous people's over-imprisonment; WHO data on leprosy laws. The Global Project Against Hate and Extremism, the International Dalit Solidarity Network and UNESCO's World Atlas of Languages could not be reached. WHO's indicator on whether migrants and refugees can use public health care (listed, but its open data returns nothing), and any worldwide measure of mental health laws' protection of human rights. Worldwide hate speech laws on every ground, religious tests for public office, attacks on people with albinism under an open licence, and reserved seats for minorities in parliaments. Ethnic and racial profiling by police across countries. The killing of disabled children in Uganda and the segregation of disabled people in institutions: reports only. Subnational homicide by race for the United States, Canada and Australia, and any homicide rate by population group for South Africa. Worldwide: discrimination against people of short stature, or against people for their intelligence (beyond the schooling ground in the UN surveys above).</p>
 `;
 
 /* ---------- map and basemaps (as on the Wars, Militaries and Weapons map) ---------- */
@@ -1665,7 +1799,8 @@ function drawOwid(r, year) {
 /* copies kept beside this map: one record per country */
 async function loadCountry(r) {
   const D = await dataFile(r.file);
-  const recs = r.pick ? r.pick(D) : D;
+  const E = r.extraFile ? await dataFile(r.extraFile) : null;
+  const recs = r.pick ? r.pick(D, E) : D;
   const feats = [], vals = [];
   for (const [iso3, x] of Object.entries(recs)) { if (iso3.startsWith("_")) continue; const v = r.value(x); if ((v == null || v === "") && !r.keepNull) continue; vals.push([iso3, x, v]); }
   let rp;
