@@ -102,7 +102,7 @@ h3.sub{font:600 13px/1.3 "Marcellus",Georgia,serif;color:#ddd6de;margin:14px 0 4
 #legendhead .kn{margin-left:auto;color:var(--faint);font-size:12px}
 #legendbody{overflow:auto;padding:0 12px 10px;font-size:12px;color:var(--mute)}
 #legendbox.shut #legendbody{display:none}
-.lg-row{display:grid;grid-template-columns:16px 14px 1fr;gap:6px;align-items:start;margin:7px 0 2px;color:var(--ink);font-size:12.5px;line-height:1.3}
+.lg-row{display:grid;grid-template-columns:16px 14px 1fr 18px;gap:6px;align-items:start;margin:7px 0 2px;color:var(--ink);font-size:12.5px;line-height:1.3}
 .lg-row i{width:11px;height:11px;border-radius:50%;display:block;margin-top:2px;box-shadow:0 0 0 1px rgba(246,240,244,.35)}
 .lg-row i.sq{border-radius:2px}
 .lg-sub{display:grid;grid-template-columns:12px 1fr;gap:3px 6px;align-items:center;margin:2px 0 4px 20px;font-size:11.5px;color:var(--mute)}
@@ -187,6 +187,7 @@ h3.sub{font:600 13px/1.3 "Marcellus",Georgia,serif;color:#ddd6de;margin:14px 0 4
 .laybar{margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,.12);display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:11.5px;color:var(--faint)}.laybar span{flex-basis:100%}
 .laybar button{background:#2a2430;border:1px solid #4a4050;color:var(--ink);border-radius:999px;padding:3px 10px;font:12px "Marcellus",Georgia,serif;cursor:pointer}.laybar button:hover{background:#352d3a}
 label.row.flash{animation:flash 2.4s ease-out}@keyframes flash{0%,40%{background:rgba(185,163,196,.28)}100%{background:transparent}}
+.lgfold{background:none;border:0;color:var(--mute);cursor:pointer;font-size:12px;padding:0;line-height:1;align-self:start}.lgfold:hover{color:var(--ink)}
 </style>
 </head>
 <body>
@@ -274,10 +275,10 @@ const NEUTRAL = "#8d8892";   // varies by region, ambiguous, no provision
 let BASE = "atlas";
 /* a row's point colours: [main, then three more for the score bands where a row has them] per basemap */
 const PCOL = {
-  atlas:    { gea: ["#5e1f3f", "#86375d", "#ad6585", "#d3a3b9"], geb: ["#2c3e66", "#47608f", "#7690b8", "#b3c4de"], osce: "#4b2a63", fbi: "#23465e", wd: "#6a2333", tgeu: "#3d2f6e", epr: "#5b273b", xeno: "#2f4a57", spec: "#4a3a2a", pol: "#2a2f5e", fe: "#4a3346", dept: "#5e1a2a", lynch: "#3b1d1d", raid: "#55203f", camp: "#2b2b33", t4: "#3a2f4f", geno: "#4f1f2a", escape: "#2c3b4f" , mig: "#1f4a52", lang: "#4a3f2c" },
-  jurassic: { gea: ["#f0d3df", "#d9a6bd", "#b77a96", "#8d5470"], geb: ["#d6e2f2", "#a9bfdc", "#7e9bc4", "#5876a3"], osce: "#b48ad8", fbi: "#6aa9d6", wd: "#e47f95", tgeu: "#9a8be3", epr: "#c97f90", xeno: "#5fb3a6", spec: "#c7a47e", pol: "#8394e6", fe: "#d684c2", dept: "#e66f7c", lynch: "#c98a7c", raid: "#dc7fb4", camp: "#e2e2ea", t4: "#a284d9", geno: "#ea8389", escape: "#83a8de" , mig: "#5cc0c8", lang: "#8fae86" },
-  night:    { gea: ["#f3c9dc", "#dca0bf", "#bf7ea3", "#97627f"], geb: ["#cfe0f6", "#9fbde6", "#7a9bcc", "#5c7aa8"], osce: "#c9a6e8", fbi: "#8fc4e6", wd: "#ef9fb0", tgeu: "#b5a8f0", epr: "#d99aa8", xeno: "#86cbc0", spec: "#d6bfa0", pol: "#a3b1f2", fe: "#e3a1d3", dept: "#f08f99", lynch: "#d8a59a", raid: "#e89cc6", camp: "#c9c9d6", t4: "#bba0e6", geno: "#f2a0a6", escape: "#9fbfe8" , mig: "#7fcfd6", lang: "#a9c2a0" },
-  relief:   { gea: ["#4e1430", "#7a2c52", "#a65a7c", "#cc98b0"], geb: ["#1f3159", "#3d5786", "#6c87b0", "#a9bcd8"], osce: "#3f1f57", fbi: "#173b52", wd: "#5c1a29", tgeu: "#30235f", epr: "#5b273b", xeno: "#1f3a46", spec: "#3d2f22", pol: "#1d2250", fe: "#3a2638", dept: "#4e1222", lynch: "#2e1414", raid: "#461833", camp: "#202028", t4: "#2e2440", geno: "#40141e", escape: "#1f2e40" , mig: "#173f47", lang: "#3a3220" },
+  atlas:    { gea: ["#5e1f3f", "#86375d", "#ad6585", "#d3a3b9"], geb: ["#2c3e66", "#47608f", "#7690b8", "#b3c4de"], osce: "#4b2a63", fbi: "#23465e", wd: "#6a2333", tgeu: "#3d2f6e", epr: "#5b273b", xeno: "#2f4a57", spec: "#4a3a2a", pol: "#2a2f5e", fe: "#4a3346", dept: "#5e1a2a", lynch: "#3b1d1d", raid: "#55203f", camp: "#2b2b33", t4: "#3a2f4f", geno: "#4f1f2a", escape: "#2c3b4f" , mig: "#1f4a52", lang: "#4a3f2c" , wdg: "#4a2238", eeoc: ["#2a3d5c","#3f5a80","#6a85a8","#9fb2cc"], gpg: ["#cdb3c4","#a87d98","#7d4c6c","#4e1f40"], det: "#2d3f3a", rel: "#3d2a4f", polw: "#33284a", caste: "#4d2a2a" },
+  jurassic: { gea: ["#f0d3df", "#d9a6bd", "#b77a96", "#8d5470"], geb: ["#d6e2f2", "#a9bfdc", "#7e9bc4", "#5876a3"], osce: "#b48ad8", fbi: "#6aa9d6", wd: "#e47f95", tgeu: "#9a8be3", epr: "#c97f90", xeno: "#5fb3a6", spec: "#c7a47e", pol: "#8394e6", fe: "#d684c2", dept: "#e66f7c", lynch: "#c98a7c", raid: "#dc7fb4", camp: "#e2e2ea", t4: "#a284d9", geno: "#ea8389", escape: "#83a8de" , mig: "#5cc0c8", lang: "#8fae86" , wdg: "#e08fb0", eeoc: ["#d4e0f0","#a8bedc","#7f9cc6","#5d7aa6"], gpg: ["#f2dfe9","#dcb0c7","#c483a6","#a35a83"], det: "#8fc2b4", rel: "#b39ae0", polw: "#a99bdf", caste: "#e0a090" },
+  night:    { gea: ["#f3c9dc", "#dca0bf", "#bf7ea3", "#97627f"], geb: ["#cfe0f6", "#9fbde6", "#7a9bcc", "#5c7aa8"], osce: "#c9a6e8", fbi: "#8fc4e6", wd: "#ef9fb0", tgeu: "#b5a8f0", epr: "#d99aa8", xeno: "#86cbc0", spec: "#d6bfa0", pol: "#a3b1f2", fe: "#e3a1d3", dept: "#f08f99", lynch: "#d8a59a", raid: "#e89cc6", camp: "#c9c9d6", t4: "#bba0e6", geno: "#f2a0a6", escape: "#9fbfe8" , mig: "#7fcfd6", lang: "#a9c2a0" , wdg: "#eaa6c3", eeoc: ["#d6e4f6","#b0c7e6","#8eaad2","#6f8cb6"], gpg: ["#f5e2ec","#e2bad0","#cd95b5","#b07397"], det: "#9fd1c4", rel: "#c6b0ec", polw: "#bfb2ee", caste: "#eab3a6" },
+  relief:   { gea: ["#4e1430", "#7a2c52", "#a65a7c", "#cc98b0"], geb: ["#1f3159", "#3d5786", "#6c87b0", "#a9bcd8"], osce: "#3f1f57", fbi: "#173b52", wd: "#5c1a29", tgeu: "#30235f", epr: "#5b273b", xeno: "#1f3a46", spec: "#3d2f22", pol: "#1d2250", fe: "#3a2638", dept: "#4e1222", lynch: "#2e1414", raid: "#461833", camp: "#202028", t4: "#2e2440", geno: "#40141e", escape: "#1f2e40" , mig: "#173f47", lang: "#3a3220" , wdg: "#3e1a2e", eeoc: ["#1d3050","#344d73","#5c779c","#91a6c2"], gpg: ["#c0a2b6","#9a6c89","#6d3c5c","#3f1532"], det: "#22332f", rel: "#311f42", polw: "#271e3d", caste: "#3f1f1f" },
 };
 const pcol = (key, band) => { const c = PCOL[BASE][key]; return Array.isArray(c) ? c[band || 0] : c; };
 
@@ -612,6 +613,14 @@ function uhriRow(id, g, file, ramp, title, sub, extraFile) {
 }
 const hivBoxAs = (row) => (x, iso, v) => hivBox(x, iso, v).replace(/<div class="meta">[^<]*<\/div>/, `<div class="meta">${esc(row.title)}</div>`);
 
+/* box lines for a group placed from Wikidata */
+function wdGroupBox(p) {
+  return `<p class="where">Listed because Wikidata records: ${esc((p.why || []).join("; "))}.${(p.ideology || []).length ? ` Every ideology Wikidata gives it: ${esc(p.ideology.join(", "))}.` : ""}</p>` +
+    `<p>${esc([(p.kinds || []).join(", "), p.inception ? `founded ${p.inception.slice(0, 4)}` : "", p.dissolved ? `ended ${p.dissolved.slice(0, 4)}` : ""].filter(Boolean).join(" · "))}</p>` +
+    (p.spread_in ? "" : `<p class="where">Placed at ${esc(p.placed || "")}${p.area ? `: ${esc(p.area)}` : ""}.</p>`) +
+    (p.wikipedia ? `<p>${A(p.wikipedia, "Its Wikipedia article")}</p>` : "");
+}
+
 /* ---------- the groups and rows ----------
    Groups follow the kinds of discrimination the Suppression page names.
    A row's "sub" is the line under its title; "source" goes in the About
@@ -726,6 +735,40 @@ const ROWS = [
     source: "UNHCR, Background Note on Gender Equality, Nationality Laws and Statelessness 2025 (non-commercial use allowed)", link: "https://www.refworld.org/" },
   workRow("work_preg", "women", "preg", "pregnancy", "rose"),
   workRow("work_mat", "women", "matfam", "mothers (maternal status)", "rose"),
+  { id: "wdg_women", g: "women", kind: "points", pc: "wdg", file: "wikidata_culprit_groups.json", unitWord: "groups",
+    pick: (D) => pts()(D).filter((x) => (x.cats || []).includes("women")).map((x) => ({ ...x, ring: x.precision !== "exact" && x.precision !== "address", start: x.inception, end: x.inception ? (x.dissolved || "2026") : x.dissolved })),
+    get box() { return plainPointBox(this); }, nameOf: (p) => p.name, size: () => 4,
+    extraBox: (p) => wdGroupBox(p),
+    text: (x) => [x.name, x.description, x.country, (x.kinds || []).join(" "), (x.why || []).join(" ")].join(" "),
+    title: "Groups, parties and media Wikidata classes as misogynist, antifeminist, incel, anti-suffrage or anti-gender, worldwide (Wikidata)",
+    sub: "Every Wikidata item (not a person) whose recorded ideology is misogyny, antifeminism, incel, anti-suffragism or the anti-gender movement. At its headquarters town where Wikidata gives one; rings are placed only by town, or spread inside the country when Wikidata gives only that. Each box says why it is listed. This is how Wikidata's editors classify them, not a court finding; Wikidata is edited by anyone and covers some countries far better than others.",
+    source: "Wikidata (CC0)", link: "https://www.wikidata.org/" },
+  { id: "uk_gpg", g: "women", kind: "points", pc: "gpg", file: "uk_gender_pay_gap.json", unitWord: "employers",
+    pick: (D) => pts()(D).map((x) => ({ ...x, ring: false, start: x.history && x.history.length ? x.history[0].year : x.year, end: x.year })),
+    bandOf: (x) => x.gap_median_hourly == null ? 0 : x.gap_median_hourly <= 0 ? 0 : x.gap_median_hourly < 10 ? 1 : x.gap_median_hourly < 20 ? 2 : 3,
+    legendKey: () => [[pcol("gpg", 3), "women's median hourly pay 20% or more below men's"], [pcol("gpg", 2), "10% to under 20% below"], [pcol("gpg", 1), "under 10% below"], [pcol("gpg", 0), "no gap, or women paid more"]],
+    get box() { return plainPointBox(this); }, nameOf: (p) => p.name, size: () => 3,
+    subOf: (x) => x.size || "", chips: (D, recs) => [...new Set(recs.map((x) => x.size || ""))].sort().map((v) => [v, v || "size not given"]), chipLabel: "Staff",
+    extraBox: (p) => `<p class="fig">${p.gap_median_hourly == null ? "No figure" : `${esc(num(p.gap_median_hourly))}%`}</p><p>How far women's median hourly pay is below men's across the whole employer, ${esc(String(p.year))}/${esc(String((p.year + 1) % 100).padStart(2, "0"))} report${p.late ? " (sent late)" : ""}. Negative: women paid more. Mean gap ${esc(num(p.gap_mean_hourly))}%; bonus gap ${esc(num(p.gap_median_bonus))}% (median), ${esc(num(p.gap_mean_bonus))}% (mean). It compares all women with all men there, not pay for the same job.</p>` +
+      (p.quartiles ? tbl(["Pay quarter", "Men %", "Women %"], [["Top", ...p.quartiles.top], ["Upper middle", ...p.quartiles.upper_middle], ["Lower middle", ...p.quartiles.lower_middle], ["Lowest", ...p.quartiles.lower]].map((r) => r.map((v) => typeof v === "number" ? num(v) : v))) : "") +
+      (p.history && p.history.length > 1 ? det(`Every year it reported (${p.history.length})`, tbl(["Year", "Median gap %", "Mean gap %", "Late"], p.history.map((h) => [`${h.year}/${String((h.year + 1) % 100).padStart(2, "0")}`, num(h.gap_median_hourly), num(h.gap_mean_hourly), h.late ? "yes" : ""]))) : "") +
+      (p.same_postcode > 1 ? `<p class="where">${esc(String(p.same_postcode))} reporting employers share this postcode (${esc(p.area)}); the dot is the postcode's centre, so their dots are drawn on a small spiral.</p>` : `<p class="where">The dot is the centre of its postcode (${esc(p.area)}).</p>`),
+    text: (x) => [x.name, x.area, x.sic, x.company_number].join(" "),
+    title: "UK employers' gender pay gaps: every employer that reports, at its postcode, 2017/18–2026/27 (UK Government Equalities Office)",
+    sub: "15,752 employers with 250 or more staff (and some smaller ones that chose to report), each with its latest gap between women's and men's median hourly pay and every earlier year in the box. Darker: a larger gap against women. 134 employers with no usable UK postcode are not drawn.",
+    source: "UK Gender Pay Gap service (contains public sector information licensed under the Open Government Licence v3.0); postcodes placed with postcodes.io (Ordnance Survey, Royal Mail and ONS data, OGL)", link: "https://gender-pay-gap.service.gov.uk/" },
+  { id: "eeoc_women", g: "women", kind: "points", pc: "eeoc", file: "eeoc_cases.json", unitWord: "cases",
+    pick: (D) => pts()(D).filter((x) => (x.bases || []).some((b) => ["sex", "pregnancy", "sexual harassment", "equal pay"].includes(b))).map((x) => ({ ...x, ring: !/^text/.test(x.geo_source || "") })),
+    bandOf: (x) => x.amount_usd == null ? 0 : x.amount_usd < 100000 ? 1 : x.amount_usd < 1000000 ? 2 : 3,
+    legendKey: () => [[pcol("eeoc", 3), "paid $1 million or more"], [pcol("eeoc", 2), "$100,000 to under $1 million"], [pcol("eeoc", 1), "under $100,000"], [pcol("eeoc", 0), "no amount stated (lawsuit filed, or not given)"]],
+    get box() { return plainPointBox(this); }, nameOf: (p) => p.name || p.headline, size: () => 3.2,
+    subOf: (x) => x.action || "", chips: (D, recs) => [...new Set(recs.map((x) => x.action || ""))].sort().map((v) => [v, v || "not stated"]), chipLabel: "Outcome",
+    extraBox: (p) => `<p class="fig">${esc(p.amount_text || p.action || "")}</p><p>${esc(p.headline || "")}</p><p>${esc(["Grounds: " + (p.bases || []).join(", "), p.action, p.court].filter(Boolean).join(" · "))}</p>` +
+      (/^text/.test(p.geo_source || "") ? `<p class="where">Placed at the town the release names for the employer or workplace (${esc(p.area || "")}).</p>` : `<p class="est">Placed at ${esc(p.area || "")}, the city in the release's dateline (usually the EEOC office that brought the case), because the release names no town that could be matched. The workplace may be elsewhere; the release says where.</p>`),
+    text: (x) => [x.name, x.headline, x.area, (x.bases || []).join(" "), x.court].join(" "),
+    title: "US employers the EEOC sued or settled with for sex discrimination, pregnancy discrimination, sexual harassment or unequal pay (EEOC)",
+    sub: "Every case EEOC announced on these grounds, with the employer, outcome, money and court. Read from the 5,164 cases EEOC announced in press releases, 1994–2026 (few before 2009); grounds are taken from each release's headline and first paragraph, so some are missed. Darker: more money paid. Rings: placed at the EEOC office's city, not the workplace.",
+    source: "US Equal Employment Opportunity Commission press releases (US government work, public domain); towns placed with the US Census Bureau Gazetteer", link: "https://www.eeoc.gov/newsroom" },
 
   { id: "wbl", g: "women", kind: "owid", shape: "area", sw: RAMP.rose[3], slug: "women-business-and-the-law-index", ramp: "rose", dir: "low", unit: "",
     title: "How far the law treats women and men equally in work, pay, marriage, parenthood, business, property and pension (Women, Business and the Law index, World Bank)",
@@ -818,6 +861,26 @@ const ROWS = [
     sub: "For 195 countries; 12 restrict such surgery, one only in part of the country. Darker: no restriction.",
     source: "Kristopher Velasco, LGBTI National Policy Dataset v2.2 (CC BY 4.0)", link: "https://osf.io/wta9p/" },
   uhriRow("un_inter", "lgbt", "un_intersex.json", "slate", "UN findings on intersex people, including surgery without consent, country by country (UN Universal Human Rights Index)", "Every UN record since 2006 that names intersex people or variations in sex characteristics together with surgery or other medical interventions, for 90 countries, each in full in the box."),
+  { id: "wdg_lgbt", g: "lgbt", kind: "points", pc: "wdg", file: "wikidata_culprit_groups.json", unitWord: "groups",
+    pick: (D) => pts()(D).filter((x) => (x.cats || []).includes("lgbt")).map((x) => ({ ...x, ring: x.precision !== "exact" && x.precision !== "address", start: x.inception, end: x.inception ? (x.dissolved || "2026") : x.dissolved })),
+    get box() { return plainPointBox(this); }, nameOf: (p) => p.name, size: () => 4,
+    extraBox: (p) => wdGroupBox(p),
+    text: (x) => [x.name, x.description, x.country, (x.kinds || []).join(" "), (x.why || []).join(" ")].join(" "),
+    title: "Groups, parties and media Wikidata classes as homophobic, anti-LGBTQ, anti-transgender, anti-gender or trans-exclusionary, and conversion therapy groups, worldwide (Wikidata)",
+    sub: "Every Wikidata item (not a person) whose recorded ideology is homophobia, opposition to LGBTQ rights, anti-transgender activism, the anti-gender movement or trans-exclusionary radical feminism, or whose field of work is conversion therapy. At its headquarters town where Wikidata gives one; rings are placed only by town, or spread inside the country when Wikidata gives only that. Each box says why it is listed. This is how Wikidata's editors classify them, not a court finding; Wikidata is edited by anyone and covers some countries far better than others.",
+    source: "Wikidata (CC0)", link: "https://www.wikidata.org/" },
+  { id: "eeoc_lgbt", g: "lgbt", kind: "points", pc: "eeoc", file: "eeoc_cases.json", unitWord: "cases",
+    pick: (D) => pts()(D).filter((x) => (x.bases || []).some((b) => ["sexual orientation/gender identity"].includes(b))).map((x) => ({ ...x, ring: !/^text/.test(x.geo_source || "") })),
+    bandOf: (x) => x.amount_usd == null ? 0 : x.amount_usd < 100000 ? 1 : x.amount_usd < 1000000 ? 2 : 3,
+    legendKey: () => [[pcol("eeoc", 3), "paid $1 million or more"], [pcol("eeoc", 2), "$100,000 to under $1 million"], [pcol("eeoc", 1), "under $100,000"], [pcol("eeoc", 0), "no amount stated (lawsuit filed, or not given)"]],
+    get box() { return plainPointBox(this); }, nameOf: (p) => p.name || p.headline, size: () => 3.2,
+    subOf: (x) => x.action || "", chips: (D, recs) => [...new Set(recs.map((x) => x.action || ""))].sort().map((v) => [v, v || "not stated"]), chipLabel: "Outcome",
+    extraBox: (p) => `<p class="fig">${esc(p.amount_text || p.action || "")}</p><p>${esc(p.headline || "")}</p><p>${esc(["Grounds: " + (p.bases || []).join(", "), p.action, p.court].filter(Boolean).join(" · "))}</p>` +
+      (/^text/.test(p.geo_source || "") ? `<p class="where">Placed at the town the release names for the employer or workplace (${esc(p.area || "")}).</p>` : `<p class="est">Placed at ${esc(p.area || "")}, the city in the release's dateline (usually the EEOC office that brought the case), because the release names no town that could be matched. The workplace may be elsewhere; the release says where.</p>`),
+    text: (x) => [x.name, x.headline, x.area, (x.bases || []).join(" "), x.court].join(" "),
+    title: "US employers the EEOC sued or settled with for discrimination over sexual orientation or gender identity (EEOC)",
+    sub: "Every case EEOC announced on these grounds, with the employer, outcome, money and court. Read from the 5,164 cases EEOC announced in press releases, 1994–2026 (few before 2009); grounds are taken from each release's headline and first paragraph, so some are missed. Darker: more money paid. Rings: placed at the EEOC office's city, not the workplace.",
+    source: "US Equal Employment Opportunity Commission press releases (US government work, public domain); towns placed with the US Census Bureau Gazetteer", link: "https://www.eeoc.gov/newsroom" },
 
 
   /* ---- against ethnic groups, races and migrants ---- */
@@ -948,6 +1011,35 @@ const ROWS = [
   treatyRow("cmw", "ethnic", "CMW", "Whether the state has joined the UN Convention on the Rights of All Migrant Workers and Their Families (UN Treaty Collection)", "60 parties, with dates in the box. Darker: has not joined.", "rose", { file: "treaties_more.json", source: "United Nations Treaty Collection, status as at 22–23 October 2026" }),
   treatyRow("stl54", "ethnic", "STATELESS-1954", "Whether the state has joined the 1954 Convention on the Status of Stateless Persons (UN Treaty Collection)", "The treaty that gives stateless people basic rights; 99 parties. Darker: has not joined.", "rose", { file: "treaties_more.json", source: "United Nations Treaty Collection, status as at 22–23 October 2026" }),
   treatyRow("stl61", "ethnic", "STATELESS-1961", "Whether the state has joined the 1961 Convention on the Reduction of Statelessness (UN Treaty Collection)", "The treaty that stops children being born stateless and people being stripped of nationality; 82 parties. Darker: has not joined.", "rose", { file: "treaties_more.json", source: "United Nations Treaty Collection, status as at 22–23 October 2026" }),
+  { id: "wdg_ethnic", g: "ethnic", kind: "points", pc: "wdg", file: "wikidata_culprit_groups.json", unitWord: "groups",
+    pick: (D) => pts()(D).filter((x) => (x.cats || []).includes("ethnic")).map((x) => ({ ...x, ring: x.precision !== "exact" && x.precision !== "address", start: x.inception, end: x.inception ? (x.dissolved || "2026") : x.dissolved })),
+    get box() { return plainPointBox(this); }, nameOf: (p) => p.name, size: () => 4,
+    extraBox: (p) => wdGroupBox(p),
+    text: (x) => [x.name, x.description, x.country, (x.kinds || []).join(" "), (x.why || []).join(" ")].join(" "),
+    title: "Racist, white supremacist, neo-Nazi, segregationist, xenophobic and nativist groups, parties and media, worldwide (Wikidata)",
+    sub: "Every Wikidata item (not a person) whose recorded ideology is racism, white supremacy or white nationalism, Nazism or neo-Nazism, segregationism, xenophobia, nativism, anti-Romani racism or hostility to a named people, plus the parts of the Ku Klux Klan. Many are historical; the timeline uses their founding and end years. At its headquarters town where Wikidata gives one; rings are placed only by town, or spread inside the country when Wikidata gives only that. Each box says why it is listed. This is how Wikidata's editors classify them, not a court finding; Wikidata is edited by anyone and covers some countries far better than others.",
+    source: "Wikidata (CC0)", link: "https://www.wikidata.org/" },
+  { id: "detention", g: "ethnic", kind: "points", pc: "det", file: "immigration_detention.json", unitWord: "centres",
+    pick: (D) => pts()(D).map((x) => ({ ...x, start: x.inception, end: x.inception ? (x.dissolved || "2026") : x.dissolved })),
+    get box() { return plainPointBox(this); }, nameOf: (p) => p.name, size: () => 3.6,
+    subOf: (x) => x.source === "ice" ? "United States (ICE)" : "Elsewhere (Wikidata)", chips: () => [["United States (ICE)", "United States (ICE)"], ["Elsewhere (Wikidata)", "Elsewhere (Wikidata)"]], chipLabel: "Source",
+    extraBox: (p) => `<p>${esc([p.operator, p.type_detailed || p.type, p.holds ? `holds: ${p.holds}` : "", p.stay ? `stays: ${p.stay}` : "", p.field_office ? `ICE field office: ${p.field_office}` : ""].filter(Boolean).join(" · "))}</p>` + (p.address ? `<p class="where">Drawn at its address as geocoded by the Deportation Data Project: ${esc(p.address)}. Its authors say 133 facility locations are uncertain.</p>` : ""),
+    text: (x) => [x.name, x.area, x.country, x.type, x.operator].join(" "),
+    title: "Immigration detention centres: every place that has held people for ICE in the US, and those Wikidata records elsewhere",
+    sub: "878 US jails, prisons, hold rooms and dedicated centres that have held people for US Immigration and Customs Enforcement (Deportation Data Project), with their type and who they hold; and 79 immigration detention centres in other countries that Wikidata records. Other countries' centres are far from complete. 79 with no location are not drawn.",
+    source: "Deportation Data Project, ICE detention facilities (CC0); Wikidata (CC0)", link: "https://deportationdata.org/" },
+  { id: "eeoc_race", g: "ethnic", kind: "points", pc: "eeoc", file: "eeoc_cases.json", unitWord: "cases",
+    pick: (D) => pts()(D).filter((x) => (x.bases || []).some((b) => ["race", "color", "national origin"].includes(b))).map((x) => ({ ...x, ring: !/^text/.test(x.geo_source || "") })),
+    bandOf: (x) => x.amount_usd == null ? 0 : x.amount_usd < 100000 ? 1 : x.amount_usd < 1000000 ? 2 : 3,
+    legendKey: () => [[pcol("eeoc", 3), "paid $1 million or more"], [pcol("eeoc", 2), "$100,000 to under $1 million"], [pcol("eeoc", 1), "under $100,000"], [pcol("eeoc", 0), "no amount stated (lawsuit filed, or not given)"]],
+    get box() { return plainPointBox(this); }, nameOf: (p) => p.name || p.headline, size: () => 3.2,
+    subOf: (x) => x.action || "", chips: (D, recs) => [...new Set(recs.map((x) => x.action || ""))].sort().map((v) => [v, v || "not stated"]), chipLabel: "Outcome",
+    extraBox: (p) => `<p class="fig">${esc(p.amount_text || p.action || "")}</p><p>${esc(p.headline || "")}</p><p>${esc(["Grounds: " + (p.bases || []).join(", "), p.action, p.court].filter(Boolean).join(" · "))}</p>` +
+      (/^text/.test(p.geo_source || "") ? `<p class="where">Placed at the town the release names for the employer or workplace (${esc(p.area || "")}).</p>` : `<p class="est">Placed at ${esc(p.area || "")}, the city in the release's dateline (usually the EEOC office that brought the case), because the release names no town that could be matched. The workplace may be elsewhere; the release says where.</p>`),
+    text: (x) => [x.name, x.headline, x.area, (x.bases || []).join(" "), x.court].join(" "),
+    title: "US employers the EEOC sued or settled with for race, colour or national origin discrimination (EEOC)",
+    sub: "Every case EEOC announced on these grounds, with the employer, outcome, money and court. Read from the 5,164 cases EEOC announced in press releases, 1994–2026 (few before 2009); grounds are taken from each release's headline and first paragraph, so some are missed. Darker: more money paid. Rings: placed at the EEOC office's city, not the workplace.",
+    source: "US Equal Employment Opportunity Commission press releases (US government work, public domain); towns placed with the US Census Bureau Gazetteer", link: "https://www.eeoc.gov/newsroom" },
 
 
   /* ---- against religions and beliefs ---- */
@@ -983,6 +1075,26 @@ const ROWS = [
     sub: "Each country rated in four areas, from free and equal to grave violations, with the findings behind each rating (such as death for blasphemy or apostasy). Shaded by the worst of the four. Darker: worse.",
     source: "Humanists International, Freedom of Thought Report (CC BY-SA 4.0; this layer is shared under the same licence)", link: "https://fot.humanists.international/" },
   workRow("work_relig", "religion", "relig", "religion", "teal"),
+  { id: "wdg_religion", g: "religion", kind: "points", pc: "wdg", file: "wikidata_culprit_groups.json", unitWord: "groups",
+    pick: (D) => pts()(D).filter((x) => (x.cats || []).includes("religion")).map((x) => ({ ...x, ring: x.precision !== "exact" && x.precision !== "address", start: x.inception, end: x.inception ? (x.dissolved || "2026") : x.dissolved })),
+    get box() { return plainPointBox(this); }, nameOf: (p) => p.name, size: () => 4,
+    extraBox: (p) => wdGroupBox(p),
+    text: (x) => [x.name, x.description, x.country, (x.kinds || []).join(" "), (x.why || []).join(" ")].join(" "),
+    title: "Antisemitic, anti-Muslim, anti-Catholic, anti-Christian, anti-Hindu and anti-Shia groups, parties and media, worldwide (Wikidata)",
+    sub: "Every Wikidata item (not a person) whose recorded ideology is antisemitism, Islamophobia or anti-Islam, anti-Catholicism, anti-Christian or anti-Hindu sentiment, or anti-Shiism. At its headquarters town where Wikidata gives one; rings are placed only by town, or spread inside the country when Wikidata gives only that. Each box says why it is listed. This is how Wikidata's editors classify them, not a court finding; Wikidata is edited by anyone and covers some countries far better than others.",
+    source: "Wikidata (CC0)", link: "https://www.wikidata.org/" },
+  { id: "eeoc_relig", g: "religion", kind: "points", pc: "eeoc", file: "eeoc_cases.json", unitWord: "cases",
+    pick: (D) => pts()(D).filter((x) => (x.bases || []).some((b) => ["religion"].includes(b))).map((x) => ({ ...x, ring: !/^text/.test(x.geo_source || "") })),
+    bandOf: (x) => x.amount_usd == null ? 0 : x.amount_usd < 100000 ? 1 : x.amount_usd < 1000000 ? 2 : 3,
+    legendKey: () => [[pcol("eeoc", 3), "paid $1 million or more"], [pcol("eeoc", 2), "$100,000 to under $1 million"], [pcol("eeoc", 1), "under $100,000"], [pcol("eeoc", 0), "no amount stated (lawsuit filed, or not given)"]],
+    get box() { return plainPointBox(this); }, nameOf: (p) => p.name || p.headline, size: () => 3.2,
+    subOf: (x) => x.action || "", chips: (D, recs) => [...new Set(recs.map((x) => x.action || ""))].sort().map((v) => [v, v || "not stated"]), chipLabel: "Outcome",
+    extraBox: (p) => `<p class="fig">${esc(p.amount_text || p.action || "")}</p><p>${esc(p.headline || "")}</p><p>${esc(["Grounds: " + (p.bases || []).join(", "), p.action, p.court].filter(Boolean).join(" · "))}</p>` +
+      (/^text/.test(p.geo_source || "") ? `<p class="where">Placed at the town the release names for the employer or workplace (${esc(p.area || "")}).</p>` : `<p class="est">Placed at ${esc(p.area || "")}, the city in the release's dateline (usually the EEOC office that brought the case), because the release names no town that could be matched. The workplace may be elsewhere; the release says where.</p>`),
+    text: (x) => [x.name, x.headline, x.area, (x.bases || []).join(" "), x.court].join(" "),
+    title: "US employers the EEOC sued or settled with for religious discrimination (EEOC)",
+    sub: "Every case EEOC announced on this ground, with the employer, outcome, money and court. Read from the 5,164 cases EEOC announced in press releases, 1994–2026 (few before 2009); grounds are taken from each release's headline and first paragraph, so some are missed. Darker: more money paid. Rings: placed at the EEOC office's city, not the workplace.",
+    source: "US Equal Employment Opportunity Commission press releases (US government work, public domain); towns placed with the US Census Bureau Gazetteer", link: "https://www.eeoc.gov/newsroom" },
 
   { id: "rel_neigh", g: "religion", kind: "owid", shape: "area", sw: RAMP.teal[3], slug: "neighbors-different-religion", ramp: "teal", dir: "high", unit: "%",
     title: "People who would not want neighbours of a different religion (World Values Survey and European Values Study)",
@@ -1025,6 +1137,26 @@ const ROWS = [
     sub: "Answers 61 governments gave WHO, with whether carers are also protected in the box. Darker: no law.",
     source: "World Health Organization, Global Dementia Observatory, via the Global Health Observatory (WHO data terms: values shown unchanged)", link: "https://www.who.int/data/gho" },
   treatyRow("marrakesh", "disability", "MARRAKESH", "Whether the state has joined the Marrakesh Treaty, which lets blind and print-disabled people get books in formats they can read (WIPO)", "106 contracting parties; the European Union joined as one for its 27 members, which are shaded as bound through it. Darker: has not joined.", "taupe", { eu: true, file: "treaties_more.json", source: "World Intellectual Property Organization, WIPO Lex treaty status (CC BY 4.0)", link: "https://www.wipo.int/wipolex/en/treaties/ShowResults?search_what=C&treaty_id=843", boxSource: "WIPO Lex" }),
+  { id: "wdg_disability", g: "disability", kind: "points", pc: "wdg", file: "wikidata_culprit_groups.json", unitWord: "groups",
+    pick: (D) => pts()(D).filter((x) => (x.cats || []).includes("disability")).map((x) => ({ ...x, ring: x.precision !== "exact" && x.precision !== "address", start: x.inception, end: x.inception ? (x.dissolved || "2026") : x.dissolved })),
+    get box() { return plainPointBox(this); }, nameOf: (p) => p.name, size: () => 4,
+    extraBox: (p) => wdGroupBox(p),
+    text: (x) => [x.name, x.description, x.country, (x.kinds || []).join(" "), (x.why || []).join(" ")].join(" "),
+    title: "Eugenics organisations and programmes, as Wikidata classes them (Wikidata)",
+    sub: "Wikidata items (not people) whose recorded ideology is eugenics. Very few are recorded this way. At its headquarters town where Wikidata gives one; rings are placed only by town, or spread inside the country when Wikidata gives only that. Each box says why it is listed. This is how Wikidata's editors classify them, not a court finding; Wikidata is edited by anyone and covers some countries far better than others.",
+    source: "Wikidata (CC0)", link: "https://www.wikidata.org/" },
+  { id: "eeoc_dis", g: "disability", kind: "points", pc: "eeoc", file: "eeoc_cases.json", unitWord: "cases",
+    pick: (D) => pts()(D).filter((x) => (x.bases || []).some((b) => ["disability", "genetic information"].includes(b))).map((x) => ({ ...x, ring: !/^text/.test(x.geo_source || "") })),
+    bandOf: (x) => x.amount_usd == null ? 0 : x.amount_usd < 100000 ? 1 : x.amount_usd < 1000000 ? 2 : 3,
+    legendKey: () => [[pcol("eeoc", 3), "paid $1 million or more"], [pcol("eeoc", 2), "$100,000 to under $1 million"], [pcol("eeoc", 1), "under $100,000"], [pcol("eeoc", 0), "no amount stated (lawsuit filed, or not given)"]],
+    get box() { return plainPointBox(this); }, nameOf: (p) => p.name || p.headline, size: () => 3.2,
+    subOf: (x) => x.action || "", chips: (D, recs) => [...new Set(recs.map((x) => x.action || ""))].sort().map((v) => [v, v || "not stated"]), chipLabel: "Outcome",
+    extraBox: (p) => `<p class="fig">${esc(p.amount_text || p.action || "")}</p><p>${esc(p.headline || "")}</p><p>${esc(["Grounds: " + (p.bases || []).join(", "), p.action, p.court].filter(Boolean).join(" · "))}</p>` +
+      (/^text/.test(p.geo_source || "") ? `<p class="where">Placed at the town the release names for the employer or workplace (${esc(p.area || "")}).</p>` : `<p class="est">Placed at ${esc(p.area || "")}, the city in the release's dateline (usually the EEOC office that brought the case), because the release names no town that could be matched. The workplace may be elsewhere; the release says where.</p>`),
+    text: (x) => [x.name, x.headline, x.area, (x.bases || []).join(" "), x.court].join(" "),
+    title: "US employers the EEOC sued or settled with for disability or genetic discrimination (EEOC)",
+    sub: "Every case EEOC announced on these grounds, with the employer, outcome, money and court. Read from the 5,164 cases EEOC announced in press releases, 1994–2026 (few before 2009); grounds are taken from each release's headline and first paragraph, so some are missed. Darker: more money paid. Rings: placed at the EEOC office's city, not the workplace.",
+    source: "US Equal Employment Opportunity Commission press releases (US government work, public domain); towns placed with the US Census Bureau Gazetteer", link: "https://www.eeoc.gov/newsroom" },
 
   { id: "dis_unemp", g: "disability", kind: "owid", shape: "area", sw: RAMP.taupe[3], slug: "unemployment-rate-by-disability", ramp: "taupe", dir: "high", unit: "",
     cols: ["_8_5_2__sl_tlf_uemdis__persons_with_disability__both_sexes", "_8_5_2__sl_tlf_uemdis__persons_without_disability__both_sexes"],
@@ -1053,6 +1185,13 @@ const ROWS = [
     source: "World Bank, Global Database on Intergenerational Mobility, version 3, 2023 (CC BY 4.0)", link: "https://datacatalog.worldbank.org/search/dataset/0050771" },
   workRow("work_class", "caste", "class", "social class", "plum"),
   uhriRow("un_caste", "caste", "un_caste_descent.json", "plum", "UN findings on caste and descent-based discrimination, country by country (UN Universal Human Rights Index)", "Every UN treaty-body, special-rapporteur and Universal Periodic Review record since 2006 that mentions caste, descent-based discrimination, Dalits, Burakumin, Haratine or other descent-based groups, in 35 countries, each in full in the box."),
+  { id: "caste_violence", g: "caste", kind: "points", pc: "caste", file: "wikidata_caste_violence.json", unitWord: "events",
+    pick: pts(), get box() { return plainPointBox(this); }, nameOf: (p) => p.name, size: (x) => 3.4 + Math.min(4, Math.log10(1 + (+x.killed || 0)) * 1.6),
+    extraBox: (p) => `${p.killed ? `<p class="fig">${esc(num(p.killed))} killed</p>` : ""}<p>${esc([p.perpetrators ? `perpetrators: ${p.perpetrators}` : "", p.victims ? `victims: ${p.victims}` : ""].filter(Boolean).join(" · "))}</p>` + (p.precision === "town" ? `<p class="est">Placed at the place Wikidata names (${esc(p.area || "")}), not the exact spot.</p>` : "") + (p.wikipedia ? `<p>${A(p.wikipedia, "Its Wikipedia article")}</p>` : ""),
+    text: (x) => [x.name, x.description, x.area, x.perpetrators].join(" "),
+    title: "Massacres and attacks in India's caste-related violence, and the Ranvir Sena militia (Wikidata)",
+    sub: "Every event Wikidata files as part of caste-related violence in India, every one it says the Ranvir Sena (an upper-caste landlords' militia in Bihar) carried out, and the Ranvir Sena itself, with the dead where recorded. Bigger dots: more killed. Wikidata has entries for only the best-known events; India's police record tens of thousands of crimes against Dalits each year.",
+    source: "Wikidata (CC0)", link: "https://www.wikidata.org/wiki/Q5049637" },
 
 
   /* ---- other grounds ---- */
@@ -1113,6 +1252,18 @@ const ROWS = [
     title: "Laws against discrimination for hair, height, weight or appearance (Wikipedia's lists)",
     sub: "Every state, city or country Wikipedia lists with such a law, such as the CROWN Act on natural hair; almost all are in the United States, as no worldwide list exists. Drawn as rings at each state's or city's point.",
     source: "Wikipedia, articles on the CROWN Act and on weight and height discrimination, with the sources they cite (CC BY-SA 4.0; this layer is shared under the same licence)", link: "https://en.wikipedia.org/wiki/CROWN_Act" },
+  { id: "eeoc_age", g: "other", kind: "points", pc: "eeoc", file: "eeoc_cases.json", unitWord: "cases",
+    pick: (D) => pts()(D).filter((x) => (x.bases || []).some((b) => ["age", "retaliation"].includes(b))).map((x) => ({ ...x, ring: !/^text/.test(x.geo_source || "") })),
+    bandOf: (x) => x.amount_usd == null ? 0 : x.amount_usd < 100000 ? 1 : x.amount_usd < 1000000 ? 2 : 3,
+    legendKey: () => [[pcol("eeoc", 3), "paid $1 million or more"], [pcol("eeoc", 2), "$100,000 to under $1 million"], [pcol("eeoc", 1), "under $100,000"], [pcol("eeoc", 0), "no amount stated (lawsuit filed, or not given)"]],
+    get box() { return plainPointBox(this); }, nameOf: (p) => p.name || p.headline, size: () => 3.2,
+    subOf: (x) => x.action || "", chips: (D, recs) => [...new Set(recs.map((x) => x.action || ""))].sort().map((v) => [v, v || "not stated"]), chipLabel: "Outcome",
+    extraBox: (p) => `<p class="fig">${esc(p.amount_text || p.action || "")}</p><p>${esc(p.headline || "")}</p><p>${esc(["Grounds: " + (p.bases || []).join(", "), p.action, p.court].filter(Boolean).join(" · "))}</p>` +
+      (/^text/.test(p.geo_source || "") ? `<p class="where">Placed at the town the release names for the employer or workplace (${esc(p.area || "")}).</p>` : `<p class="est">Placed at ${esc(p.area || "")}, the city in the release's dateline (usually the EEOC office that brought the case), because the release names no town that could be matched. The workplace may be elsewhere; the release says where.</p>`),
+    text: (x) => [x.name, x.headline, x.area, (x.bases || []).join(" "), x.court].join(" "),
+    title: "US employers the EEOC sued or settled with for age discrimination, or for punishing workers who complained (EEOC)",
+    sub: "Every case EEOC announced on these grounds, with the employer, outcome, money and court. Retaliation cases often also involve another ground, shown in the box. Read from the 5,164 cases EEOC announced in press releases, 1994–2026 (few before 2009); grounds are taken from each release's headline and first paragraph, so some are missed. Darker: more money paid. Rings: placed at the EEOC office's city, not the workplace.",
+    source: "US Equal Employment Opportunity Commission press releases (US government work, public domain); towns placed with the US Census Bureau Gazetteer", link: "https://www.eeoc.gov/newsroom" },
 
 
   /* ---- hate crimes ---- */
@@ -1241,6 +1392,14 @@ const ROWS = [
     title: "France: racist crimes and offences recorded by the police and gendarmerie per 10,000 people, département by département, 2022–2024 (Ministry of the Interior)",
     sub: "All 101 départements, including overseas, in the three classes the ministry's map uses; the exact rates the note gives (Gers 0.4; Dordogne, Haute-Loire and Lozère 0.5) are in their boxes. Darker: a higher rate.",
     source: "SSMSI (Ministry of the Interior), Interstats Info Rapide no. 49, March 2025, Figure 3 (French public-sector information; no licence stated in the note); outlines IGN via geoBoundaries (Etalab Open Licence 2.0) and geoBoundaries (CC BY 4.0) overseas", link: "https://www.interieur.gouv.fr/content/download/137897/1089910/file/IR49.pdf" },
+  { id: "wdg_hate", g: "hate", kind: "points", pc: "wdg", file: "wikidata_culprit_groups.json", unitWord: "groups",
+    pick: (D) => pts()(D).filter((x) => (x.cats || []).includes("hate")).map((x) => ({ ...x, ring: x.precision !== "exact" && x.precision !== "address", start: x.inception, end: x.inception ? (x.dissolved || "2026") : x.dissolved })),
+    get box() { return plainPointBox(this); }, nameOf: (p) => p.name, size: () => 4,
+    extraBox: (p) => wdGroupBox(p),
+    text: (x) => [x.name, x.description, x.country, (x.kinds || []).join(" "), (x.why || []).join(" ")].join(" "),
+    title: "Hate groups, as Wikidata classes them (Wikidata)",
+    sub: "Items Wikidata files as hate groups that have none of the ideologies in the other Wikidata group layers (those appear there instead). Mostly US groups, where Wikidata often follows the Southern Poverty Law Center. At its headquarters town where Wikidata gives one; rings are placed only by town, or spread inside the country when Wikidata gives only that. Each box says why it is listed. This is how Wikidata's editors classify them, not a court finding; Wikidata is edited by anyone and covers some countries far better than others.",
+    source: "Wikidata (CC0)", link: "https://www.wikidata.org/" },
 
 
   /* ---- racist policing and killings ---- */
@@ -1412,6 +1571,7 @@ const ABOUT = `<p>This map takes the Discrimination rows of the Welcome to Your 
 <p><b>Where the companies are drawn.</b> The World Benchmarking Alliance gives only each company's headquarters country, and the Culprits map draws its companies at that country's capital, spread in a ring so each can be clicked. This map draws each at its own headquarters instead. The company's legal entity identifier (LEI, which WBA gives) leads to its headquarters address in GLEIF's global register of legal entities, and that address is looked up on OpenStreetMap: a filled dot when the building or address point is found. Where WBA gives no LEI, or the address is not found, the coordinates Wikidata gives for the company's headquarters are used (also a filled dot). Where only the street is found, the dot sits at OpenStreetMap's point for the street; where only the postal code, inside the postal code area; where only the town, at an evenly spread spot inside the town's outline. These are rings, and each box says which, so no company is drawn more precisely than its sources allow. Where GLEIF or Wikidata puts the headquarters in a different country from the one WBA names, or the address is a registered agent's office (such as Delaware's Corporation Trust Center), that address is not used. A town outline is cut to the part that holds the town itself and to dry land, so no company lands on an outlying island or at sea. Where no headquarters could be found at all, the company is drawn at an evenly spread spot inside its country. Companies at the very same spot are drawn on a small spiral, about 70 metres apart.</p>
 <p><b>Live and kept copies.</b> Rows read live from their source each time they are ticked: the Our World in Data charts. Rows read from the daily copies culprits-tiles-more keeps (the same files the Culprits map reads): the World Justice Project scores and the two company rows. The other rows are copies taken on the build date and kept beside this map in the discrimination_data folder; their boxes and the list of sources say when.</p>
 <p><b>UN findings layers.</b> Where no source measures a kind of discrimination across the world (caste, hate crimes, racism in policing, mental health, leprosy, albinism, homelessness, intersex people and others), a layer counts the records in the UN human rights office's Universal Human Rights Index (every recommendation and concern UN bodies raised about each country since 2006) that match that subject, with every record in full in the box. It measures UN attention, not the size of the problem, and the words used to pick the records are in each data file.</p>
+<p><b>Culprit layers from Wikidata.</b> For each kind of discrimination, a point layer shows the groups, parties, media and campaigns that Wikidata records with that ideology (for example racism, antisemitism, Islamophobia, homophobia, antifeminism, eugenics), or files as hate groups. Each is drawn at the headquarters town Wikidata gives; when it gives only a country, the dot is a ring at an evenly spread spot inside that country. Each box says exactly which Wikidata entry put it on the map. This is the classification of Wikidata's volunteer editors, not a court finding, and Wikidata covers some countries and languages far better than others.</p>
 <p><b>Licences.</b> Most layers are open (public domain, CC0, CC BY, open government licences). These are shared alike (CC BY-SA) and so are under that licence here too: the Atlas of Roma Communities (Slovakia), the Freedom of Thought Report, LandMark, the V-Dem rows, and the Wikipedia layer of hair, height and weight laws, and the Brazilian Forum on Public Security's crime records (non-commercial and share-alike). These allow only non-commercial use, which this site is: the WORLD Policy Analysis Center rows, Mapping Inequality's redlining maps (CC BY-NC 2.5), the Atlas da Violência, the Council of Europe's SPACE I prison statistics, UNHCR, UNAIDS, the UN website pages behind the caste and UNDRIP layers, Austria's interior ministry report, and the OSCE (held back until it is told). Each layer's source line gives its terms.</p>
 <p><b>Rings and solid dots.</b> A solid dot is where the source places the record. A ring marks a spot that is estimated or uncertain: a record spread inside the area its source names, coordinates that look wrong in the source. Each layer's description and each box say which.</p>
 <p><b>Places a source names only as an area.</b> Where a record names only a town, county, state or country, it is drawn as a ring at a spot inside that area, spread evenly so that records of one area do not pile up; the box names the area and says the spot inside it means nothing. Where a source gives the same point to many records that name only a district, town or country (IOM's reports of Afghans who died in Iran, towns in the German police list, Roma settlements, Xenowatch's town-centre points, Wikidata items placed only in a country), they are spread inside the OpenStreetMap outline of that area, kept on land and inside the record's own country, and the source's point stays in the box's fields. Wikidata items were first moved to a better place wherever Wikidata, the linked Wikipedia article, or a single unambiguous place named in the item gives one.</p>
@@ -2047,6 +2207,7 @@ function apply() {
 const LEGEND = document.getElementById("legendbox");
 document.getElementById("legendhead").addEventListener("click", () => { LEGEND.classList.toggle("shut"); const shut = LEGEND.classList.contains("shut"); document.getElementById("legendhead").setAttribute("aria-expanded", String(!shut)); LEGEND.querySelector(".ar").textContent = shut ? "▸" : "▾"; });
 if (window.matchMedia("(max-width:760px)").matches) { LEGEND.classList.add("shut"); LEGEND.querySelector(".ar").textContent = "▸"; }
+const LG_SHUT = new Set();
 function legendBox() {
   const on = ROWS.filter((r) => ON.has(r.id));
   LEGEND.hidden = !on.length; document.getElementById("legendn").textContent = on.length ? String(on.length) : "";
@@ -2058,7 +2219,7 @@ function legendBox() {
     else if (r.legendKey) extra = sub(r.legendKey());
     const sw = AREA(r) ? r.sw : r.pc ? pcol(r.pc, 0) : r.sw;
     const n = ROW_EL[r.id].n.textContent, st = LOADING[r.id] ? " (reading…)" : "";
-    return `<div class="lg-row"><input type="checkbox" checked data-lgoff="${r.id}" title="Turn this layer off" aria-label="Turn off ${esc(r.title)}"><i class="${AREA(r) ? "sq" : ""}" style="background:${sw}"></i><span><a href="#" class="lgfind" data-find="${r.id}" title="Show this layer in the menu">${esc(r.title)}</a>${n ? ` <span style="color:var(--faint)">${n}</span>` : ""}${st}</span></div>${extra}`;
+    return `<div class="lg-row"><input type="checkbox" checked data-lgoff="${r.id}" title="Turn this layer off" aria-label="Turn off ${esc(r.title)}"><i class="${AREA(r) ? "sq" : ""}" style="background:${sw}"></i><span><a href="#" class="lgfind" data-find="${r.id}" title="Show this layer in the menu">${esc(r.title)}</a>${n ? ` <span style="color:var(--faint)">${n}</span>` : ""}${st}</span>${extra ? `<button type="button" class="lgfold" data-lgfold="${r.id}" aria-expanded="${!LG_SHUT.has(r.id)}" title="${LG_SHUT.has(r.id) ? "Show" : "Hide"} this layer's key">${LG_SHUT.has(r.id) ? "▾" : "▴"}</button>` : ""}</div>${extra && !LG_SHUT.has(r.id) ? extra : ""}`;
   }).join("");
   for (const r of ROWS) if (r.pc) { const sw = ROW_EL[r.id].lab.querySelector(".sw"); if (sw) sw.style.background = pcol(r.pc, 0); }
 }
@@ -2117,6 +2278,8 @@ document.addEventListener("click", (e) => {
 });
 document.addEventListener("change", (e) => { const c = e.target.closest("[data-lgoff]"); if (c && !c.checked) turnOff(c.dataset.lgoff); });
 
+document.addEventListener("click", (e) => { const b = e.target.closest("[data-lgfold]"); if (!b) return; const id = b.dataset.lgfold; LG_SHUT.has(id) ? LG_SHUT.delete(id) : LG_SHUT.add(id); legendBox(); });
+
 /* ---------- ethnic groups' settlement areas (Ethnic Power Relations) ---------- */
 const EPR_ORDER = ["DISCRIMINATED", "POWERLESS", "SELF-EXCLUSION", "STATE COLLAPSE", "JUNIOR PARTNER", "SENIOR PARTNER", "DOMINANT", "MONOPOLY", "IRRELEVANT"];
 const EPR_WORDS = { DISCRIMINATED: "Discriminated: deliberately excluded from power by the state", POWERLESS: "Powerless: no say in national power, but not deliberately excluded",
@@ -2156,7 +2319,7 @@ function drawEpr(r) {
 async function loadPoints(r) {
   const D = await dataFile(r.file);
   const recs = r.pick ? r.pick(D) : D.records;
-  const list = recs.map((x) => x.p ? x : ({ lat: x.lat, lon: x.lon, ring: !!x.ring, band: 0, r: r.size ? r.size(x) : 3.6, text: r.text ? r.text(x) : x.name, sub: r.subOf ? r.subOf(x) : "", p: x }));
+  const list = recs.map((x) => x.p ? x : ({ lat: x.lat, lon: x.lon, ring: !!x.ring, band: r.bandOf ? r.bandOf(x) : 0, r: r.size ? r.size(x) : 3.6, text: r.text ? r.text(x) : x.name, sub: r.subOf ? r.subOf(x) : "", p: x }));
   const s = new Store(r); s.load(list); STORES[r.id] = s;
   if (r.chips) chips(r.id, r.chips(D, recs), r.chipLabel || "Show");
   return { n: list.length, made: r.made || `copy taken ${D._made || BUILT}` };
