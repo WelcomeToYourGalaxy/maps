@@ -46,7 +46,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--focus);outline-
 .milebar{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px;align-items:stretch}
 .btn.read{font-family:var(--display);font-size:14px;padding:6px 16px;background:linear-gradient(135deg,var(--violet),var(--gold));color:#fff;border-color:transparent;letter-spacing:.03em}
 .btn.read:hover{filter:brightness(1.1)}
-.miles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.miles{display:grid;grid-template-columns:repeat(var(--n,4),minmax(0,1fr));gap:6px}
 .mile{background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:6px 10px;min-width:0;cursor:pointer}.mile:hover{border-color:var(--gold)}
 .mile .k{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);line-height:1.3}
 .mile .v{font-family:var(--mono);font-size:14px;font-variant-numeric:tabular-nums;line-height:1.3;color:var(--gold)}
@@ -118,6 +118,8 @@ table.yrs th:first-child,table.yrs td:first-child{text-align:left}
     <div class="ctl">
       <label for="tfr">Children per woman from 2026: <output id="tfrOut" for="tfr">2.25 (world average, UN 2024)</output></label>
       <input type="range" id="tfr" min="0.5" max="6" step="0.05" value="2.25" aria-label="World fertility from 2026, children per woman">
+      <div id="fertCtl" hidden><label for="fertEnd">Synthetic fertilizer gone by: <output id="fertOut" for="fertEnd">2068 (Denmark's pace)</output></label>
+      <input type="range" id="fertEnd" min="2030" max="2150" step="1" value="2068" aria-label="Year synthetic fertilizer reaches zero"></div>
       <div class="btns"><button class="btn" id="reset">Reset</button><button class="btn" id="aboutBtn">About the model</button></div>
     </div>
   </aside>
@@ -174,8 +176,8 @@ const D = [
  {dir:'up', kind:'stock', val:4e9, show:'≈ 4 billion people alive today',
   name:'Synthetic fertilizer lifted the food ceiling', conf:3,
   reason:'Before 1910 the nitrogen that crops need came only from manure, legumes and guano, which capped how many people the land could feed. The Haber–Bosch process makes nitrogen fertilizer from air and natural gas. This is the "resource ease" driver: it did not make anyone have more children, it removed the limit on how many could be fed.',
-  math:'Erisman et al. (2008): 48% of the world population in 2008 fed by Haber–Bosch nitrogen; Our World in Data extends this at ≈ 50%.\n50% × 8.2 billion ≈ 4 billion people. This is a ceiling, not a yearly flow, so it sits apart from the per-year ranking.',
-  src:[['Erisman et al., "How a century of ammonia synthesis changed the world", Nature Geoscience 2008','https://www.nature.com/articles/ngeo325'],['Our World in Data, "How many people does synthetic fertilizer feed?"','https://ourworldindata.org/how-many-people-does-synthetic-fertilizer-feed']]},
+  math:'Erisman et al. (2008): 48% of the world population in 2008 fed by Haber–Bosch nitrogen; Our World in Data extends this at ≈ 50%.\n50% × 8.2 billion ≈ 4 billion people. This is a ceiling, not a yearly flow, so it sits apart from the per-year ranking.\nSwitch: nitrogen cut to zero by the slider year (default 2068 = Denmark\'s 1990–2011 pace, 394,000 → 204,000 t). Crop uptake of nitrogen raised from about 40% to the 70% target by 2050 (Zhang et al. 2015). Food grown = 4.1 B + 4.1 B × efficiency gain × share of nitrogen left. Shortfall split as in China 1959–61: 43% fewer births (capped at 44% below normal), 57% deaths from hunger. Sri Lanka\'s 2021 ban, reversed in seven months, shows what a sudden cut does.',
+  src:[['Erisman et al., "How a century of ammonia synthesis changed the world", Nature Geoscience 2008','https://www.nature.com/articles/ngeo325'],['Our World in Data, "How many people does synthetic fertilizer feed?"','https://ourworldindata.org/how-many-people-does-synthetic-fertilizer-feed'],['Denmark nitrogen fact sheet (IGES)','https://iges.or.jp/en/publication_documents/pub/issue/en/4362/Reductions_fact_sheets_DENMARK.pdf'],['Zhang et al., Managing nitrogen for sustainable development (Nature 2015, summary)','https://www.sciencedaily.com/releases/2015/11/151123202342.htm'],['China 1959–61 famine deaths and lost births (Population, INED)','https://shs.cairn.info/article/E_POPU_1202_0329?lang=en'],['Sri Lanka Grain and Feed Annual (USDA FAS)','https://www.fas.usda.gov/data/sri-lanka-grain-and-feed-annual-2']]},
  {dir:'up', kind:'flow', val:25e6, show:'≈ 25 M births / yr (rough)',
   name:'Women who want to avoid pregnancy but have no modern contraception', conf:2,
   reason:'About 218 million women in lower-income countries want to delay or stop childbearing but are not using a modern method, because of cost, distance, husbands or in-laws, side-effect fears or stock-outs. Their pregnancies are the biggest countable block of births that the mothers themselves did not plan.',
@@ -206,6 +208,36 @@ const D = [
   reason:'No demographic study has found a birth effect. The reason is who takes them: the typical user is in his mid-fifties, and births depend on a female partner of childbearing age who wants a child. Men under 40 with ED are a small minority of users. The drugs changed sex lives, not population.',
   math:'The attached notes reach 4.7–13.6 million births by assuming every user has a fertile partner trying to conceive. Removing that assumption (most partners are past 45) leaves a figure that is almost certainly below 100,000 a year and has never been measured. Shown as a placeholder, not a finding.',
   src:[['Ayta, McKinlay & Krane, "The likely worldwide increase in erectile dysfunction between 1995 and 2025", BJU International 1999','https://pubmed.ncbi.nlm.nih.gov/10444124/']]},
+ {dir:'down', kind:'na', val:null, show:'large where run; overlaps',
+  name:'Government family-planning programs', conf:3,
+  reason:'A national program puts contraception into every clinic, pays for it, and tells people small families are normal. Iran is the clearest case. When the government revived its program in late 1989, women averaged about 5 children; through the primary health network, which reached every region and income level, and with the backing of religious leaders, that fell to just under 3 by 1996 and to 2.0 by 2000. Abortion stayed illegal except to save the mother\'s life, so the fall came from contraception.',
+  math:'Iran children per woman: 6.6 (1977), about 5 (1989), just under 3 (1996), 2.0 (2000 survey). In 2000 the Ministry of Health supplied 75% of family-planning services.',
+  noswitch:'The countable part of a program is the contraception it hands out to women who want it, which is the switch "Everyone who wants contraception gets it". The rest (campaigns, small-family norms) works through family size, which the children-per-woman dial sets. A separate switch would count the same births twice.',
+  src:[['Population Reference Bureau, "Iran Achieves Replacement-Level Fertility"','https://www.prb.org/resources/iran-achieves-replacement-level-fertility/']]},
+ {dir:'down', kind:'na', val:null, show:'smaller than claimed; coercive',
+  name:'Government birth limits and forced sterilization', conf:3,
+  reason:'Some governments set limits by force. China\'s one-child rule began in 1980; in 1983 alone it recorded 14.4 million abortions, 20.7 million sterilizations and 17.8 million IUD insertions. India sterilized more than 8 million men during the 1975–77 Emergency, 6 million of them in 1976, with about 2,000 deaths from botched operations. Peru\'s government says more than 270,000 women were sterilized in its 1996–2000 campaign, later taken to court as forced. The measured effect is smaller than the official claims: Chinese women averaged close to six children around 1970 and 2.7–2.8 by the end of the 1970s, before the one-child rule, so at least 70% of China\'s fall came before it.',
+  math:'China: official claim 400 million births prevented, which Whyte, Feng and Cai trace to a 338 million estimate for 1970–1998, later restarted from 1980 and inflated; they call the figure "entirely bogus". India: >8 M men sterilized 1975–77, ~2,000 deaths. Peru: >270,000 women (government figure).',
+  noswitch:'A birth limit sets children per woman, so the children-per-woman dial is where to try one. No separate switch, because the cases show the limit itself moved births far less than claimed.',
+  src:[['Whyte, Feng & Cai, "Challenging Myths About China\'s One-Child Policy", The China Journal 2015','https://scholar.harvard.edu/files/martinwhyte/files/challenging_myths_published_version.pdf/'],['Al Jazeera, "India forcibly sterilised 8m men" (2025)','https://www.aljazeera.com/features/2025/6/25/india-forcibly-sterilised-eight-m-men-one-village-remembers-fifty-years-later'],['Latino Rebels, Peru sued for forced sterilizations','https://latinorebels.com/?p=170927']]},
+ {dir:'up', kind:'na', val:null, show:'large for a few years',
+  name:'Government bans on abortion and contraception', conf:3,
+  reason:'Romania banned abortion and contraception in 1966 with Decree 770. Between 1966 and 1967 births almost doubled and children per woman rose from 1.9 to 3.7. Women then turned to illegal abortion, births fell back through the 1970s, and Romania\'s maternal death rate became the highest in Europe, more than ten times its neighbors\' for deaths in childbirth. A ban raises births for a few years and costs women\'s lives after.',
+  math:'Romania, children per woman: 1.9 (1966) → 3.7 (1967). No global figure: the abortion switch already counts what a world without legal or illegal abortion would mean.',
+  noswitch:'Its lever is the abortion switch "Every unintended pregnancy ends in abortion"; a separate switch would count the same births twice.',
+  src:[['Decree 770 (Wikipedia, citing Romania\'s National Institute of Statistics)','https://en.wikipedia.org/wiki/Decree_770']]},
+ {dir:'up', kind:'na', val:null, show:'≈ 11% more children where common',
+  name:'Child marriage (laws not set or not enforced at 18)', conf:3,
+  reason:'More than 41,000 girls marry before 18 every day, about 15 million a year. A girl married at 13 has about 26% more children over her life than one married at 18 or later. A World Bank study of 25 countries found that ending child marriage would cut the number of children per woman by 11% on average, and make Niger\'s population 5% smaller by 2030.',
+  math:'World Bank / ICRW 2017: 41,000 girls a day × 365 ≈ 15 million a year; ending child marriage → about 11% fewer children per woman across the countries studied. No world births figure.',
+  noswitch:'No world births figure exists, and the effect works through family size, so the children-per-woman dial is the lever. It overlaps with girls\' schooling.',
+  src:[['World Bank / ICRW, "Economic Impacts of Child Marriage" (2017)','https://www.worldbank.org/en/news/press-release/2017/06/26/child-marriage-will-cost-developing-countries-trillions-of-dollars-by-2030-says-world-bankicrw-report']]},
+ {dir:'down', kind:'na', val:null, show:'large in the one measured case',
+  name:'Old-age pensions replacing children as security', conf:2,
+  reason:'Where there is no pension, children are how parents eat in old age. When Brazil extended pensions to rural workers, more than tripling what they could expect, women of childbearing age became about 8% less likely to have a child in the short run and had 1.3 fewer children within 20 years.',
+  math:'Danzer & Zyska (American Economic Association, 2023): rural pension wealth more than tripled; −8% chance of a birth short run; −1.3 children within 20 years. One country; no world figure.',
+  noswitch:'Measured in one country only, and it works through family size, so the children-per-woman dial is the lever.',
+  src:[['Danzer & Zyska, "Pensions and Fertility: Micro-Economic Evidence" (data and summary)','https://www.openicpsr.org/openicpsr/project/155501']]},
  {dir:'up', kind:'zero', val:0, show:'0 worldwide (moves people between countries)',
   name:'Immigration', conf:4,
   reason:'Migration adds people to one country and removes them from another; the world total is unchanged. It matters for national politics, which is why it is on most people\'s mental list, and it is the main source of growth in 52 countries including the US, Canada and Australia.',
@@ -248,6 +280,24 @@ const D = [
   reason:'About one adult in six has trouble conceiving at some point. Most are temporary or treatable, and the number has not clearly risen; what rose is the age at which people try. Sperm-count decline is reported in some studies and disputed in others, and no one has turned it into a birth count.',
   math:'WHO 2023: lifetime infertility prevalence ≈ 17.5% of adults, similar across rich and poor regions. No per-year births figure is possible because most affected people still have children.',
   src:[['WHO, "1 in 6 people globally affected by infertility" (2023)','https://www.who.int/news/item/04-04-2023-1-in-6-people-globally-affected-by-infertility']]},
+ {dir:'down', kind:'flow', val:8.7e6, show:'≈ 8.7 M deaths / yr',
+  name:'Tobacco', conf:4,
+  reason:'Smoking and other tobacco use kill more people every year than any war or epidemic of recent years: over 7 million users, and about 1.3 million non-smokers through other people\'s smoke.',
+  math:'WHO: more than 8.7 million deaths a year (over 7 million from direct use, about 1.3 million from second-hand smoke).',
+  noswitch:'Already built into the UN baseline. A switch that raised tobacco deaths would be a way to kill people, not a policy; it is listed so its size can be compared.',
+  src:[['WHO Europe, facts about tobacco','https://www.who.int/europe/multi-media/item/facts-about-tobacco']]},
+ {dir:'down', kind:'flow', val:8.1e6, show:'≈ 8.1 M deaths / yr (2021)',
+  name:'Air pollution', conf:4,
+  reason:'Fine particles from burning coal, oil, wood and crop waste, plus smoke from cooking fires indoors, raise heart disease, stroke, lung cancer and child pneumonia. It is the second-largest risk factor for death worldwide. Some of these deaths overlap with tobacco.',
+  math:'State of Global Air 2024: 8.1 million deaths in 2021.',
+  noswitch:'Already built into the UN baseline. Listed so its size can be compared; partly overlaps with tobacco.',
+  src:[['State of Global Air 2024 (Health Effects Institute)','https://www.stateofglobalair.org/news-events/2024/new-state-global-air-report-finds-air-pollution-second-leading-risk-factor-death']]},
+ {dir:'down', kind:'flow', val:1.19e6, show:'≈ 1.2 M deaths / yr',
+  name:'Road crashes', conf:4,
+  reason:'Cars, trucks and motorbikes kill about 1.2 million people a year.',
+  math:'WHO Global status report on road safety 2023: 1.19 million deaths a year (2021 data).',
+  noswitch:'Already built into the UN baseline. Listed so its size can be compared.',
+  src:[['WHO, Global status report on road safety 2023','https://www.who.int/news/item/13-12-2023-despite-notable-progress-road-safety-remains-urgent-global-issue']]},
  {dir:'down', kind:'flow', val:7e6, show:'≈ 7 M / yr in 2020–21; near 0 since',
   name:'Pandemics', conf:3,
   reason:'COVID-19 caused about 14.9 million more deaths than expected across 2020 and 2021. That is large for two years and small against a century: the 1918 flu killed perhaps 50 million when the world had 1.8 billion people. Between pandemics this driver is close to zero.',
@@ -295,7 +345,7 @@ const TOG = {
  'Better food (nutrition)':{label:'No better food',deaths:+2e6,eff:'+2 M deaths / yr (rough)'},
  'Basic hospital and birth care':{label:'No basic hospital and birth care',deaths:+3e6,eff:'+3 M deaths / yr (rough)'},
  'Malaria control (bed nets, spraying, treatment)':{label:'No malaria control',deaths:+5e5,eff:'+0.5 M deaths / yr'},
- 'Synthetic fertilizer lifted the food ceiling':{label:'No synthetic fertilizer (phased out as population falls)',cap:4.1e9,eff:'births paused worldwide; population falls by natural deaths to the 4.1 B the land feeds without it, reached in 2071, then held'},
+ 'Synthetic fertilizer lifted the food ceiling':{label:'No synthetic fertilizer (phased down)',fert:true,eff:'synthetic nitrogen cut in a straight line to zero by the year on the fertilizer slider (default 2068, Denmark\'s pace); crops first learn to use it better, then the food grown shrinks toward the 4.1 B the land feeds without it, and when people outnumber food the gap closes through fewer births and deaths from hunger, in the proportions of China\'s 1959–61 famine'},
  'Women who want to avoid pregnancy but have no modern contraception':{label:'Everyone who wants contraception gets it',births:-25e6,eff:'−25 M births / yr'},
  'Fertility pills and injections (clomiphene, gonadotropins)':{label:'No fertility drugs',births:-1.5e6,eff:'−1.5 M births / yr'},
  'IVF and other lab-assisted conception':{label:'No IVF',births:-1e6,eff:'−1 M births / yr'},
@@ -314,27 +364,35 @@ const BASE = {years:[2025,2040,2060,2080,2100], births:[132e6,130e6,125e6,122e6,
 function interp(arr, y){ const ys=BASE.years; if(y<=ys[0]) return arr[0]; for(let i=1;i<ys.length;i++){ if(y<=ys[i]){ const t=(y-ys[i-1])/(ys[i]-ys[i-1]); return arr[i-1]+(arr[i]-arr[i-1])*t; } } return arr[arr.length-1]; }
 const TFR0=2.25;
 // opts: {births, deaths, cap, tfr}. Births and deaths scale with the population: a smaller world has fewer parents and fewer deaths.
-const CTRL=[[2025, 8230, 61], [2026, 8169, 59], [2027, 8110, 60], [2028, 8050, 61], [2029, 7989, 62], [2030, 7928, 63], [2031, 7864, 65], [2032, 7800, 66], [2033, 7733, 68], [2034, 7665, 70], [2035, 7595, 72], [2036, 7523, 74], [2037, 7449, 76], [2038, 7373, 78], [2039, 7295, 80], [2040, 7216, 82], [2041, 7134, 84], [2042, 7050, 86], [2043, 6964, 87], [2044, 6877, 89], [2045, 6788, 91], [2046, 6697, 92], [2047, 6604, 94], [2048, 6510, 96], [2049, 6415, 97], [2050, 6318, 98], [2051, 6220, 100], [2052, 6120, 101], [2053, 6019, 102], [2054, 5917, 103], [2055, 5814, 104], [2056, 5710, 105], [2057, 5604, 106], [2058, 5498, 107], [2059, 5391, 108], [2060, 5283, 109], [2061, 5175, 109], [2062, 5066, 110], [2063, 4956, 111], [2064, 4845, 111], [2065, 4734, 112], [2066, 4622, 112], [2067, 4510, 112], [2068, 4398, 113], [2069, 4285, 113], [2070, 4172, 113], [2071, 4059, 113], [2072, 4056, 117], [2073, 4052, 117], [2074, 4049, 117], [2075, 4046, 117], [2076, 4043, 118], [2077, 4039, 117], [2078, 4036, 117], [2079, 4033, 117], [2080, 4030, 116], [2081, 4026, 116], [2082, 4023, 115], [2083, 4020, 114], [2084, 4017, 113], [2085, 4013, 112], [2086, 4010, 111], [2087, 4007, 110], [2088, 4004, 109], [2089, 4001, 107], [2090, 3998, 106], [2091, 3995, 104], [2092, 3992, 103], [2093, 3989, 101], [2094, 3986, 99], [2095, 3984, 97], [2096, 3981, 95], [2097, 3978, 92], [2098, 3976, 90], [2099, 3973, 88], [2100, 3971, 85]]; // [year, people M, deaths M] zero-birth path from an age-structured model (see fertilizer popup)
+// Synthetic fertilizer phase-down (see the 4.1 B line popup and the fertilizer driver popup).
+// Food grown, in people fed at today's diet and waste: 4.1 B from manure, legumes and soil (Erisman 2008) + 4.1 B from synthetic nitrogen.
+// The synthetic half shrinks as nitrogen is cut in a straight line to zero by the chosen year, and grows as crops use it better:
+// crop uptake ~40% today, 70% targeted by 2050 (Zhang et al. 2015) -> each tonne grows 0.7/0.4 = 1.75x as much food by 2050.
+const FERT_DEFAULT=2068;   // Denmark's pace: 394,000 t (1990) -> 204,000 t (2011), ~2.3% of the start a year -> zero in ~43 years
+function foodPeople(y,end){ const eff=1+0.75*Math.min(1,Math.max(0,(y-2025)/25)); const n=Math.max(0,1-(y-2025)/(end-2025)); return 4.1e9+4.1e9*eff*n; }
+// When people outnumber food, the gap closes as in China's 1959-61 famine: ~30 M excess deaths and 15-30 M lost births
+// (midpoints -> 57% deaths, 43% births), with births falling at most 44% below normal (40.3 -> 22.7 per 1,000).
+const SQ_BIRTH=0.43, SQ_BIRTH_MAX=0.44;
 let BASE_RUN=null;
 function simulate(o){
-  o=Object.assign({births:0,deaths:0,cap:Infinity,tfr:TFR0},o);
-  const out=[]; let pop=8.23e9;
+  o=Object.assign({births:0,deaths:0,fert:0,tfr:TFR0},o);
+  const out=[]; let pop=8.23e9, hungerTotal=0;
   for(let y=2025;y<=2100;y++){
     let b=interp(BASE.births,y), d=interp(BASE.deaths,y);
     if(y>=2026 && BASE_RUN){
       const ratio=pop/BASE_RUN[y-2025].popPrev;      // this scenario's people last year vs baseline's
       b=b*ratio*(o.tfr/TFR0)+o.births; d=d*ratio+o.deaths;
     }
-    if(o.cap<Infinity && y>=2026){
-      // controlled decline: fertilizer phased out as the population falls, no famine deaths.
-      const c=CTRL[y-2025]; const ratio=pop/(c[1]*1e6);
-      d=c[2]*1e6*ratio+o.deaths;                 // deaths of an ageing population, scaled to this scenario's size
-      b = pop>o.cap ? 0 : d;                     // no births until the land can feed everyone, then births match deaths
-    }
     b=Math.max(0,b); d=Math.max(0,d); d=Math.min(d,pop+b);
+    let hunger=0, food=null;
+    if(o.fert && y>=2026){
+      food=foodPeople(y,o.fert);
+      const gap=pop+b-d-food;
+      if(gap>0){ const lost=Math.min(SQ_BIRTH*gap, SQ_BIRTH_MAX*b); b-=lost; hunger=gap-lost; d+=hunger; hungerTotal+=hunger; }
+    }
     const popPrev=pop;
     if(y>=2026) pop=pop+b-d;
-    out.push({y,pop,b,d,popPrev});
+    out.push({y,pop,b,d,popPrev,hunger,hungerTotal,food:o.fert?foodPeople(y,o.fert):null});
   }
   return out;
 }
@@ -351,8 +409,9 @@ function milestones(run){
 const fmtB=n=>n>=1e9?(n/1e9).toFixed(2)+' B':n>=1e6?(n/1e6).toFixed(1)+' M':n>=1e3?(n/1e3).toFixed(0)+' k':Math.round(n);
 function yearsTable(run, cols){
   const picks=[2030,2040,2050,2060,2075,2100];
-  let h='<tr><th>Year</th><th>People</th><th>Births / yr</th><th>Deaths / yr</th></tr>';
-  picks.forEach(y=>{ const r=run[y-2025]; h+=`<tr><td>${y}</td><td>${fmtB(r.pop)}</td><td>${fmtB(r.b)}</td><td>${fmtB(r.d)}</td></tr>`; });
+  const hun=run[run.length-1].food!==null;
+  let h='<tr><th>Year</th><th>People</th><th>Births / yr</th><th>Deaths / yr</th>'+(hun?'<th>of which hunger</th><th>Food grown for</th>':'')+'</tr>';
+  picks.forEach(y=>{ const r=run[y-2025]; h+=`<tr><td>${y}</td><td>${fmtB(r.pop)}</td><td>${fmtB(r.b)}</td><td>${fmtB(r.d)}</td>${hun?`<td>${fmtB(r.hunger)}</td><td>${fmtB(r.food)}</td>`:''}</tr>`; });
   return h;
 }
 function milesPairs(m){
@@ -361,10 +420,10 @@ function milesPairs(m){
     ['In 2100', fmtB(m.end.pop)],
     ['Against the 1970 level (3.7 B)', m.back1970?`below it from ${m.back1970.y}`:`${fmtB(m.end.pop-3.7e9)} above it in 2100`],
     ['Births in 2100 vs today', `${fmtB(m.end.b)} (${(m.end.b/132e6*100).toFixed(1)}% of 132 M)`]
-  ];
+  ].concat(m.end.food!==null?[['Deaths from hunger, 2026–2100', fmtB(m.end.hungerTotal)]]:[]);
 }
 function milesText(m){ return milesPairs(m).map(p=>p[0]+': '+p[1]); }
-function singleScenario(tog){ return simulate({births:tog.births||0,deaths:tog.deaths||0,cap:tog.cap||Infinity}); }
+function singleScenario(tog){ return simulate({births:tog.births||0,deaths:tog.deaths||0,fert:tog.fert?state.fertEnd:0}); }
 
 
 
@@ -372,7 +431,7 @@ const confWord = {1:'very low',2:'low',3:'medium',4:'high'};
 const dirLabel = d=>d.kind==='zero'?'no effect':(d.dir==='up'?'pushes up':'pushes down');
 const dirClass = d=>d.kind==='zero'?'na':d.dir;
 
-const state={on:new Set(), tfr:TFR0};
+const state={on:new Set(), tfr:TFR0, fertEnd:FERT_DEFAULT};
 function row(d){
   const t=TOG[d.name]; const id='sw_'+d.name.replace(/\W+/g,'_');
   const el=document.createElement('div'); el.className='drv';
@@ -384,20 +443,22 @@ function row(d){
 }
 function buildSwitches(){
   const dn=document.getElementById('swDown'), na=document.getElementById('swNa');
-  const mag=n=>{ const t=TOG[n]; return t.cap?4.1e9:Math.abs(t.births||t.deaths||0); };
+  const mag=n=>{ const t=TOG[n]; return t.fert?4.1e9:Math.abs(t.births||t.deaths||0); };
   D.filter(d=>TOG[d.name]).sort((a,b)=>mag(b.name)-mag(a.name)).forEach(d=>dn.appendChild(row(d)));
   D.filter(d=>!TOG[d.name]).forEach(d=>na.appendChild(row(d)));
   document.querySelectorAll('input[type=checkbox][data-name]').forEach(c=>c.addEventListener('change',()=>{ c.checked?state.on.add(c.dataset.name):state.on.delete(c.dataset.name); runCombo(); }));
   document.body.addEventListener('click',e=>{ const b=e.target.closest('[data-open]'); if(b) openDlg(b.dataset.open); });
 }
 function comboOpts(){
-  let births=0,deaths=0,cap=Infinity;
-  state.on.forEach(n=>{ const t=TOG[n]; births+=t.births||0; deaths+=t.deaths||0; if(t.cap) cap=Math.min(cap,t.cap); });
-  return {births,deaths,cap,tfr:state.tfr};
+  let births=0,deaths=0,fert=0;
+  state.on.forEach(n=>{ const t=TOG[n]; births+=t.births||0; deaths+=t.deaths||0; if(t.fert) fert=state.fertEnd; });
+  return {births,deaths,fert,tfr:state.tfr};
 }
 let lastRun=null;
 function runCombo(){
   const base=simulate({}), run=simulate(comboOpts()), m=milestones(run); lastRun=run;
+  document.getElementById('miles').style.setProperty('--n',milesPairs(m).length);
+  document.getElementById('fertCtl').hidden=!state.on.has('Synthetic fertilizer lifted the food ceiling');
   document.getElementById('miles').innerHTML=milesPairs(m).map((p,i)=>`<div class="mile" data-mile="${i}" title="What this means"><div class="k">${p[0]}</div><div class="v">${p[1]}</div></div>`).join('');
   drawChart(base,run);
 }
@@ -417,18 +478,23 @@ function drawChart(base,run){
   for(let y=2025;y<=2100;y+=W>600?10:25){ ctx.beginPath(); ctx.moveTo(x(y),T); ctx.lineTo(x(y),H-B); ctx.stroke(); }
   ctx.textAlign='center'; ctx.fillStyle=muted; for(let y=2025;y<=2100;y+=W>600?10:25) ctx.fillText(y,x(y),H-12);
   // smooth path through points
-  const path=(data)=>{ ctx.beginPath(); data.forEach((r,i)=>{ const px=x(r.y), py=yy(r.pop); if(!i) ctx.moveTo(px,py); else { const pr=data[i-1]; const cx=(x(pr.y)+px)/2; ctx.bezierCurveTo(cx,yy(pr.pop),cx,py,px,py); } }); };
+  const path=(data)=>{ ctx.beginPath(); data.forEach((r,i)=>{ const px=x(r.y), py=yy(r.pop); if(!i) ctx.moveTo(px,py); else ctx.lineTo(px,py); }); };
   const area=(data,color,alphaTop,alphaBot)=>{ path(data); ctx.lineTo(x(2100),H-B); ctx.lineTo(x(2025),H-B); ctx.closePath(); const g=ctx.createLinearGradient(0,T,0,H-B); g.addColorStop(0,color+alphaTop); g.addColorStop(1,color+alphaBot); ctx.fillStyle=g; ctx.fill(); };
   const line=(data,color,dash,w,glow)=>{ path(data); ctx.setLineDash(dash); ctx.strokeStyle=color; ctx.lineWidth=w; ctx.shadowColor=glow?color:'transparent'; ctx.shadowBlur=glow?12:0; ctx.stroke(); ctx.shadowBlur=0; ctx.setLineDash([]); };
   area(base,base_c,'b0','10');   // baseline: violet fill
   area(run,accent,'90','08');    // scenario: cyan fill
   line(base,base_c,[6,5],2,false); line(run,accent,[],2.5,true);
+  if(run[0].food!==null || run[run.length-1].food!==null){
+    ctx.save(); ctx.strokeStyle=cssVar('--muted'); ctx.lineWidth=2; ctx.setLineDash([9,4,2,4]);
+    ctx.beginPath(); run.forEach((r,i)=>{ if(r.food===null) return; const px=x(r.y), py=yy(r.food); if(i<=1) ctx.moveTo(px,py); else ctx.lineTo(px,py); }); ctx.stroke(); ctx.restore();
+  }
+
   // endpoint labels
   const end=run[run.length-1], bend=base[base.length-1];
   const pill=(txt,py,color)=>{ ctx.font='600 12px IBM Plex Mono, monospace'; const w=ctx.measureText(txt).width+12; const px=x(2100)-w-2, top=py-20; ctx.fillStyle=color; ctx.beginPath(); ctx.roundRect(px,top,w,16,4); ctx.fill(); ctx.fillStyle='#ffffff'; ctx.textAlign='left'; ctx.fillText(txt,px+6,top+12); };
   pill('your scenario in 2100: '+fmtB(end.pop),yy(end.pop),accent);
   if(Math.abs(yy(end.pop)-yy(bend.pop))>22) pill('UN baseline in 2100: '+fmtB(bend.pop),yy(bend.pop),base_c);
-  ctx.textAlign='left'; ctx.fillStyle='#ffffff'; ctx.fillText('— — UN baseline',L+8,T-10); ctx.fillText('—— your scenario',L+150,T-10);
+  ctx.textAlign='left'; ctx.fillStyle='#ffffff'; ctx.fillText('— — UN baseline',L+8,T-10); ctx.fillText('—— your scenario',L+150,T-10); if(run[run.length-1].food!==null){ ctx.fillStyle=cssVar('--muted'); ctx.fillText('—·— people the food grown can feed',L+300,T-10); ctx.fillStyle='#ffffff'; }
   // one-Earth reference lines
   ctx.strokeStyle=muted; ctx.fillStyle=muted; ctx.setLineDash([2,4]);
   const cross=v=>{ const r=run.find(r=>r.y>=2026&&r.pop<v); return r?` · reached ${r.y}`:''; };
@@ -470,7 +536,7 @@ function openDlg(name){
   if(t){ const run=singleScenario(t), m=milestones(run);
     proj=`<h4>The switch: ${t.label}</h4><p class="small">From 2026 on: ${t.eff}. Next generation counted. Baseline for comparison: peak ${fmtB(base.peak.pop)} in ${base.peak.y}, ${fmtB(base.end.pop)} in 2100.</p><ul class="src">${milesText(m).map(x=>`<li>${x}</li>`).join('')}</ul><div class="tblwrap"><table class="yrs">${yearsTable(run)}</table></div>`;
   } else {
-    proj=`<h4>Why there is no switch</h4><p class="small">${d.kind==='na'?'Not separately countable. It overlaps with the other social drivers and acts through family size, so adding it separately would count the same births twice. Use the children-per-woman dial; that is where this driver acts.':d.kind==='zero'?'No measured effect, so switching it off would change nothing.':d.name==='Modern contraception in use'?'This driver is already at work in the baseline. Its lever is the switch "Everyone who wants contraception gets it", which is the unmet-need figure; a second switch here would count the same births twice.':'Already built into the UN baseline.'}</p>`;
+    proj=`<h4>Why there is no switch</h4><p class="small">${d.noswitch?d.noswitch:d.kind==='na'?'Not separately countable. It overlaps with the other social drivers and acts through family size, so adding it separately would count the same births twice. Use the children-per-woman dial; that is where this driver acts.':d.kind==='zero'?'No measured effect, so switching it off would change nothing.':d.name==='Modern contraception in use'?'This driver is already at work in the baseline. Its lever is the switch "Everyone who wants contraception gets it", which is the unmet-need figure; a second switch here would count the same births twice.':'Already built into the UN baseline.'}</p>`;
   }
   const dlg=showDlg(`
     <header><h3>${d.name}</h3><button class="x" id="dlgClose">Close</button></header>
@@ -489,15 +555,16 @@ document.getElementById('tableBtn').addEventListener('click',e=>{
 });
 function renderTable(){
   const picks=[]; for(let y=2025;y<=2100;y+=5) picks.push(y);
-  let t='<tr><th>Year</th><th>People</th><th>Births / yr</th><th>Deaths / yr</th></tr>';
-  picks.forEach(y=>{ const r=lastRun[y-2025]; t+=`<tr><td>${y}</td><td>${fmtB(r.pop)}</td><td>${fmtB(r.b)}</td><td>${fmtB(r.d)}</td></tr>`; });
+  const hun=lastRun[lastRun.length-1].food!==null;
+  let t='<tr><th>Year</th><th>People</th><th>Births / yr</th><th>Deaths / yr</th>'+(hun?'<th>of which hunger</th><th>Food grown for</th>':'')+'</tr>';
+  picks.forEach(y=>{ const r=lastRun[y-2025]; t+=`<tr><td>${y}</td><td>${fmtB(r.pop)}</td><td>${fmtB(r.b)}</td><td>${fmtB(r.d)}</td>${hun?`<td>${fmtB(r.hunger)}</td><td>${fmtB(r.food)}</td>`:''}</tr>`; });
   document.getElementById('tableView').innerHTML=`<table class="yrs">${t}</table>`;
 }
 document.getElementById('aboutBtn').addEventListener('click',()=>{
   showDlg(`<header><h3>How the model works</h3><button class="x" id="dlgClose">Close</button></header>
   <p>Population changes for only two reasons: people are born, and people die. Each year the model takes last year's people, adds births and subtracts deaths. Baseline births and deaths are read from the UN's 2024 medium projection (132 M births and 61 M deaths in 2025; deaths rise as the population ages), which reproduces the UN path within about 1%: peak 10.2 billion in the mid-2080s, 10.2 billion in 2100.</p>
   <p>Births and deaths scale with the population: a world with fewer people has fewer parents and fewer deaths, so a switch that raises deaths also lowers births in later years. Every switch lowers the population from 2026 on, with the amount and its arithmetic shown in the driver's popup. The children-per-woman dial scales births by (chosen value ÷ 2.25). It stands in for the social drivers (girls' schooling, city living, child survival, late marriage) for two reasons: they overlap, so separate switches would count the same births twice; and the only measurable thing they all change is family size, which the dial sets directly.</p>
-  <p>Limits: there is no age structure, so death rates do not respond to a changed age mix, and no feedback between population and food, climate or economy. It is a size-of-effect tool, not a forecast. All figures are rounded and each driver's popup shows its arithmetic and sources.</p>
+  <p>Limits: there is no age structure, so death rates do not respond to a changed age mix. The only feedback between population and food is the synthetic-fertilizer switch (its steps are in the popup on the 4.1 B line); there is none for climate or economy. It is a size-of-effect tool, not a forecast. All figures are rounded and each driver's popup shows its arithmetic and sources.</p>
   <h4>Main sources</h4><ul class="src"><li><a href="https://population.un.org/wpp/" target="_blank" rel="noopener">UN World Population Prospects 2024</a></li><li><a href="https://data.unicef.org/resources/levels-and-trends-in-child-mortality-2024/" target="_blank" rel="noopener">UN IGME, Levels & Trends in Child Mortality</a></li><li><a href="https://www.guttmacher.org/fact-sheet/adding-it-up-contraception-mnh-2017" target="_blank" rel="noopener">Guttmacher, Adding It Up</a></li><li><a href="https://www.guttmacher.org/fact-sheet/induced-abortion-worldwide" target="_blank" rel="noopener">Guttmacher, Induced Abortion Worldwide</a></li><li><a href="https://www.nature.com/articles/ngeo325" target="_blank" rel="noopener">Erisman et al. 2008, Nature Geoscience</a></li><li><a href="https://www.icmartivf.org/reports-publications/" target="_blank" rel="noopener">ICMART world reports</a></li><li><a href="https://overshoot.footprintnetwork.org/how-many-earths-or-countries-do-we-need/" target="_blank" rel="noopener">Global Footprint Network</a></li></ul>`);
 });
 
@@ -514,6 +581,10 @@ document.getElementById('summaryBtn').addEventListener('click',()=>{
   <p>Two things dwarf everything else. Synthetic fertilizer feeds about half of humanity, roughly 4 billion people, a ceiling rather than a yearly flow. Contraception already in use prevents about 308 million unintended pregnancies a year in lower-income countries alone, on the order of 100 million births, the largest lever in either direction. Abortion follows at about 73 million a year, 61% of the 121 million unintended pregnancies. Behind those sit the social drivers that together cut family size from 5 to 2.25: children surviving, girls' schooling, city living and late marriage, large but overlapping, which is why they share the children-per-woman dial. Still in the tens of millions is unmet need: 218 million women who want to avoid pregnancy and have no modern method, roughly 25 million births a year.</p>
   <p>The next tier is the medicine and sanitation that cut death rates, each in the low millions a year. Clean water and sewers account for about 1.4 million deaths a year among the quarter of humanity still without them, roughly 5 million if nobody had them; antibiotics have no agreed global count and carry a placeholder of 5 million, with 7.7 million deaths still linked to bacterial infection in 2019; vaccines prevent 3.5 to 5 million deaths a year; hospital and birth care about 3 million (maternal deaths 451,000 to 260,000 since 2000, newborn deaths 5 million to 2.3 million since 1990); better food about 2 million, since undernutrition underlies 45% of under-five deaths; oral rehydration about 1.5 million, after child diarrhea deaths fell from 4.6 million to 1.5 million between 1980 and 1999; malaria control about 0.5 million a year since 2000. Famine, once the main brake, killed millions a year in the mid-20th century and under 100,000 in most years since 1990.</p>
   <p>Below that the figures shrink fast. Fertility drugs produce 1 to 2 million births a year, IVF about 1 million, and pro-birth payments and leave 0.5 to 1.3 million, in countries that still average 1.3 to 1.8 children. On the death side, COVID-19 caused about 15 million excess deaths over 2020 and 2021 and near zero since; HIV kills 630,000 a year, down from 2 million at the 2004 peak; war 100,000 to 300,000 in battle, against 70 to 85 million in the Second World War; disasters about 50,000, with climate's larger effects running through crops, heat and conflict and not yet countable. Infertility touches 1 in 6 adults over a lifetime but most still have children, religious norms for large families show real gaps between groups but no global count separable from poverty and schooling, and immigration is zero worldwide, only moving people between countries. ED pills, pornography and awareness of overpopulation have no measured effect on births at all.</p>
+  <h4>Governments</h4>
+  <p>Governments push both ways. Voluntary family-planning programs took Iran from about 5 children per woman in 1989 to 2.0 in 2000. Forced limits did less than claimed: China's fell from close to six to under three in the 1970s, before the one-child rule, while India sterilized more than 8 million men in 1975–77 and Peru more than 270,000 women in 1996–2000. Child marriage adds about 11% more children where it is common, and Brazil's rural pensions cut 1.3 children per woman within 20 years. Pushing up, Romania's 1966 ban on abortion and contraception nearly doubled births in a year, and pro-birth payments add 0.5 to 1.3 million births a year. Most of these act through family size, which the children-per-woman dial sets.</p>
+  <h4>Deaths already counted in the baseline</h4>
+  <p>Tobacco kills about 8.7 million a year, air pollution 8.1 million (2021, partly overlapping), road crashes 1.2 million. They have no switch because a switch raising them would be a way of killing people, not a policy; they are listed to compare sizes.</p>
   <h4>The reference lines</h4>
   <p>In 1970 there were 3.7 billion people and humanity used about one Earth's worth of nature a year. Today 8.23 billion use 1.7 Earths' worth, so 8.23 ÷ 1.7 ≈ 4.8 billion could live today's way within one Earth, and 8.23 ÷ 5.1 ≈ 1.6 billion the way the US does. The one-Earth figure is higher now than in 1970 because the planet's measured capacity has grown with farm yields while use per person rose only a little.</p>
   <h4>Sources</h4><ul class="src"><li><a href="https://population.un.org/wpp/" target="_blank" rel="noopener">UN World Population Prospects 2024</a></li><li><a href="https://data.unicef.org/resources/levels-and-trends-in-child-mortality-2024/" target="_blank" rel="noopener">UN IGME, Levels & Trends in Child Mortality</a></li><li><a href="https://www.guttmacher.org/fact-sheet/adding-it-up-contraception-mnh-2017" target="_blank" rel="noopener">Guttmacher, Adding It Up</a></li><li><a href="https://www.guttmacher.org/fact-sheet/induced-abortion-worldwide" target="_blank" rel="noopener">Guttmacher, Induced Abortion Worldwide</a></li><li><a href="https://www.nature.com/articles/ngeo325" target="_blank" rel="noopener">Erisman et al. 2008, Nature Geoscience</a></li><li><a href="https://overshoot.footprintnetwork.org/how-many-earths-or-countries-do-we-need/" target="_blank" rel="noopener">Global Footprint Network, How many Earths?</a></li><li><a href="https://overshoot.footprintnetwork.org/newsroom/past-earth-overshoot-days/" target="_blank" rel="noopener">Global Footprint Network, past Earth Overshoot Days</a></li></ul>`,true);
@@ -524,8 +595,12 @@ const EARTH = {
   <p>This line appears only while "No synthetic fertilizer" is on. Overshoot alone caps today's way of living at about 4.8 billion. Fertilizer alone caps food at about 4.1 billion. Checked together: at 4.1 billion people with no synthetic nitrogen, cropland demand stays at today's level (half the people, twice the land each), while the carbon, forest, grazing and fishing parts of the footprint halve. Cropland is about a fifth of the global footprint, so total demand comes out at 0.2 × 1.7 + 0.8 × 1.7 ÷ 2 ≈ 1.0 Earth.</p>
   <p>So today's way of living minus synthetic fertilizer supports about 4 billion people, and at that number the planet is just in balance. Any more and it is back in overshoot; the two limits coincide within the error bars of the sources.</p>
   <h4>How the population line gets there</h4>
-  <p>The scenario assumes governments phase fertilizer out only as fast as the population falls, so nobody starves. The fastest famine-free path is for births to pause worldwide and the population to shrink by natural deaths alone. An age-structured model of the 2025 world (calibrated to 61 M deaths and 132 M births a year) puts that at 4.1 billion in 2071; from then on births match deaths and the line holds at the ceiling. For comparison, a one-child world (1.0 child per woman) would reach 4.1 billion only in 2093, and 0.5 per woman in 2080. This path is a calculation, not a forecast: it shows the least deadly way down, not a likely one.</p>
-  <h4>Sources</h4><ul class="src"><li><a href="https://www.nature.com/articles/ngeo325" target="_blank" rel="noopener">Erisman et al., Nature Geoscience 2008</a></li><li><a href="https://data.footprintnetwork.org/" target="_blank" rel="noopener">Global Footprint Network, footprint by land type</a></li></ul>`,
+  <p>The switch cuts synthetic nitrogen in a straight line from today's amount to zero by the year on the fertilizer slider. The default, 2068, is the fastest cut a country has made without losing food: Denmark's commercial nitrogen use fell from 394,000 tonnes in 1990 to 204,000 in 2011, about 2.3% of the starting amount a year.</p>
+  <p>Step 1, the early cuts come out of waste. Crops worldwide take up about 40% of the nitrogen spread on them; the rest runs off into water and air. Researchers set 70% as the target for 2050. The model raises that steadily to 70% by 2050, so each tonne grows 1.75 times as much food by then, and early cuts cost little or no food.</p>
+  <p>Step 2, once the cuts outrun those gains, the food grown (the dash-dot line) shrinks toward the 4.1 billion the land feeds without synthetic nitrogen, eating and wasting the way the world does now. Cutting food waste or meat would lift that line; neither is counted here.</p>
+  <p>Step 3, when there are more people than food, the gap closes the way it did in the largest famine on record. In China in 1959–61 about 30 million more people died than normal and 15 to 30 million births were lost or postponed. The model takes the midpoints: 43% of each year's gap is closed by fewer births, the rest by deaths from hunger, and births fall at most 44% below normal, the deepest drop measured then (from 40.3 to 22.7 births per 1,000 people a year). Going faster has a recent example: Sri Lanka banned fertilizer imports in April 2021, its rice harvest fell to 2.57 million tonnes in 2021/22, against 4.1 million forecast for the year after, and the ban was lifted in November 2021.</p>
+  <p>What it shows: at today's 2.25 children per woman the population keeps growing while the food stops growing, so the shortfall starts in 2026 and most of the fall comes from hunger. Switches that lower births, or a lower children-per-woman dial, shrink the hunger deaths because fewer people are born into the shortfall. The total is shown under the chart as "Deaths from hunger".</p>
+  <h4>Sources</h4><ul class="src"><li><a href="https://www.nature.com/articles/ngeo325" target="_blank" rel="noopener">Erisman et al., Nature Geoscience 2008</a></li><li><a href="https://data.footprintnetwork.org/" target="_blank" rel="noopener">Global Footprint Network, footprint by land type</a></li><li><a href="https://iges.or.jp/en/publication_documents/pub/issue/en/4362/Reductions_fact_sheets_DENMARK.pdf" target="_blank" rel="noopener">IGES, nitrogen reduction fact sheet: Denmark</a></li><li><a href="https://www.sciencedaily.com/releases/2015/11/151123202342.htm" target="_blank" rel="noopener">Zhang et al., "Managing nitrogen for sustainable development", Nature 2015 (summary)</a></li><li><a href="https://shs.cairn.info/article/E_POPU_1202_0329?lang=en" target="_blank" rel="noopener">Population (INED), China famine deaths and lost births, citing Ashton et al. 1984</a></li><li><a href="https://documents1.worldbank.org/curated/en/492811468771874832/pdf/Demographic-Trends-in-China-from-1950-to-1982.pdf" target="_blank" rel="noopener">World Bank, Demographic Trends in China 1950–1982 (birth rates)</a></li><li><a href="https://www.fas.usda.gov/data/sri-lanka-grain-and-feed-annual-2" target="_blank" rel="noopener">USDA FAS, Sri Lanka Grain and Feed Annual</a></li><li><a href="https://cgspace.cgiar.org/items/1b93d87d-d6b6-4acd-8d58-6a71a9606fb7" target="_blank" rel="noopener">IFPRI/CGIAR, Sri Lanka's ban of chemical fertilizers in 2021</a></li></ul>`,
   '5.0':`<header><h3>5.0 billion: one Earth, today's way without health care</h3><button class="x" id="dlgClose">Close</button></header>
   <p>How many people could live today's way, minus all health care, within one Earth: 8.23 B ÷ (1.7 × 0.974) ≈ 5.0 B.</p>
   <p>This line appears only while every medical switch is on (vaccines, oral rehydration, antibiotics, hospital and birth care, malaria control, IVF, fertility drugs, ED pills). Health care as a whole is about 4.4% of global emissions, and carbon is about 60% of the ecological footprint, so removing all of it lowers the average footprint by about 2.6%: 8.23 B ÷ (1.7 × 0.974) ≈ 5.0 B. No published figure splits that share between vaccines, antibiotics and the rest, so the line cannot be drawn for one medical switch alone.</p>
@@ -549,12 +624,15 @@ const MILES = [
   `<header><h3>Peak</h3><button class="x" id="dlgClose">Close</button></header><p>The largest the world population gets before 2100, and when. The UN baseline peaks near 10.2 billion in the mid-2080s.</p>`,
   `<header><h3>In 2100</h3><button class="x" id="dlgClose">Close</button></header><p>Where the line ends. The UN baseline ends near 10.2 billion.</p>`,
   `<header><h3>Against the 1970 level (3.7 B)</h3><button class="x" id="dlgClose">Close</button></header><p>In 1970, 3.7 billion people used about one Earth's worth of nature a year. If your scenario gets below 3.7 billion, this shows the year it does; if not, it shows how far above 3.7 billion the line still is in 2100.</p>`,
-  `<header><h3>Births in 2100 vs today</h3><button class="x" id="dlgClose">Close</button></header><p>Births in the year 2100 compared with today's 132 million a year. A share near 100% means the world is still producing a generation the size of today's; a share near zero means it has nearly stopped.</p>`
+  `<header><h3>Births in 2100 vs today</h3><button class="x" id="dlgClose">Close</button></header><p>Births in the year 2100 compared with today's 132 million a year. A share near 100% means the world is still producing a generation the size of today's; a share near zero means it has nearly stopped.</p>`,
+  `<header><h3>Deaths from hunger, 2026–2100</h3><button class="x" id="dlgClose">Close</button></header><p>Shown only while "No synthetic fertilizer" is on. It adds up, year by year, the deaths beyond normal that happen when there are more people than food: the part of each year's shortfall not covered by fewer births. The split comes from China's 1959–61 famine (about 30 million excess deaths against 15 to 30 million lost or postponed births). For scale: that famine, the largest on record, killed about 30 million people. Lowering births with the other switches or the children-per-woman dial shrinks this number, because fewer people are born into the shortfall.</p>`
 ];
 document.getElementById('miles').addEventListener('click',e=>{ const t=e.target.closest('[data-mile]'); if(t) showDlg(MILES[+t.dataset.mile]); });
 document.getElementById('dlg').addEventListener('click',e=>{ if(e.target.id==='dlg') e.target.close(); });
 document.getElementById('tfr').addEventListener('input',e=>{ state.tfr=+e.target.value; document.getElementById('tfrOut').textContent=state.tfr.toFixed(2)+(Math.abs(state.tfr-TFR0)<0.001?' (world average, UN 2024)':''); runCombo(); });
-document.getElementById('reset').addEventListener('click',()=>{ state.on.clear(); state.tfr=TFR0; document.querySelectorAll('input[type=checkbox][data-name]').forEach(c=>c.checked=false); document.getElementById('tfr').value=TFR0; document.getElementById('tfrOut').textContent='2.25 (world average, UN 2024)'; runCombo(); });
+document.getElementById('reset').addEventListener('click',()=>{ state.on.clear(); state.tfr=TFR0; state.fertEnd=FERT_DEFAULT; document.getElementById('fertEnd').value=FERT_DEFAULT; document.getElementById('fertOut').textContent=fertLbl(FERT_DEFAULT); document.querySelectorAll('input[type=checkbox][data-name]').forEach(c=>c.checked=false); document.getElementById('tfr').value=TFR0; document.getElementById('tfrOut').textContent='2.25 (world average, UN 2024)'; runCombo(); });
+const fertLbl=v=>v+(v===FERT_DEFAULT?' (Denmark\'s pace)':v>2100?' (still in use in 2100)':'');
+document.getElementById('fertEnd').addEventListener('input',e=>{ state.fertEnd=+e.target.value; document.getElementById('fertOut').textContent=fertLbl(state.fertEnd); runCombo(); });
 new ResizeObserver(()=>{ if(lastRun) drawChart(simulate({}),lastRun); }).observe(document.querySelector('.chartbox'));
 buildSwitches(); runCombo();
 </script>
