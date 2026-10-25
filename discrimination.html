@@ -188,6 +188,7 @@ h3.sub{font:600 13px/1.3 "Marcellus",Georgia,serif;color:#ddd6de;margin:14px 0 4
 .laybar button{background:#2a2430;border:1px solid #4a4050;color:var(--ink);border-radius:999px;padding:3px 10px;font:12px "Marcellus",Georgia,serif;cursor:pointer}.laybar button:hover{background:#352d3a}
 label.row.flash{animation:flash 2.4s ease-out}@keyframes flash{0%,40%{background:rgba(185,163,196,.28)}100%{background:transparent}}
 .lgfold{background:none;border:0;color:var(--mute);cursor:pointer;font-size:12px;padding:0;line-height:1;align-self:start}.lgfold:hover{color:var(--ink)}
+.glabel{pointer-events:none;text-align:center;font:11px/1.15 "Marcellus",Georgia,serif;color:#3a1420;text-shadow:0 0 3px rgba(250,246,240,.95),0 0 2px rgba(250,246,240,.95)}.glabel span{display:block;white-space:nowrap}.glabel .l1{font-size:12px;font-weight:600}.glabel.dk{color:#f3e6ec;text-shadow:0 0 3px rgba(10,8,14,.9),0 0 2px rgba(10,8,14,.9)}
 </style>
 </head>
 <body>
@@ -1523,6 +1524,15 @@ const ROWS = [
     title: "Genocides worldwide, as Wikidata classes them",
     sub: "Every item Wikidata files as a genocide, with the countries, years, perpetrators and dead where recorded. The label is Wikidata editors', not a court's. Many have no exact place and are drawn as rings inside their first country; 35 more cannot be placed.",
     source: "Wikidata (CC0)", link: "https://www.wikidata.org/" },
+  { id: "geno_est", g: "history", kind: "points", pc: "geno", soft: true, file: "genocide_estimates_1900_2005.json", unitWord: "countries",
+    pick: (D) => pts()(D).map((x) => ({ ...x, ring: false })), get box() { return plainPointBox(this); }, nameOf: (p) => p.name, size: (x) => 2.5 + Math.sqrt(x.killed) / 110,
+    labelOf: (p, z) => p.chart_number && z != null && z < 3.5 ? [`${p.chart_number}.`] : [p.name, Number(p.killed).toLocaleString("en")],
+    legendKey: () => [[pcol("geno", 0), "circle size: people killed; a number by a dot refers to this list (zoom in to see names)"], ...[["1", "Burma 5,000"], ["2", "Ethiopia 10,000"], ["3", "Yugoslavia 10,000"], ["4", "Iran 20,000"], ["5", "Syria 30,000"], ["6", "Somalia 50,000"], ["7", "Philippines 60,000"], ["8", "Iraq 240,000"], ["9", "Vietnam 500,000"], ["10", "India 1,000,000"], ["11", "Turkey 1,500,000"], ["12", "Cambodia 1,700,000"], ["13", "Afghanistan 1,800,000"], ["14", "Sudan 2,850,000"], ["15", "Pakistan 3,010,000"]].map(([n, t]) => [pcol("geno", 0), `${n}. ${t}`])],
+    extraBox: (p) => `<p class="fig">${esc(num(p.killed))}</p><p>people estimated killed in genocide in ${esc(p.name)}, 1900 to 2005, as the source map gives it.</p><p class="where">Drawn at the middle of the country${/Soviet|Yugoslavia|Zaire|Burma/.test(p.name) ? " that holds most of it today" : ""}; the source map gives no places, dates or breakdown within countries.</p>`,
+    text: (x) => x.name,
+    title: "Estimated genocide, 1900 to 2005: people killed, country by country (Woods, CSU Long Beach, from National Geographic)",
+    sub: "The 35 countries and figures on Jim Woods's map \"Estimated Genocide 1900 to 2005\" (Geography Department, California State University, Long Beach, January 2008), which cites National Geographic, January 2006: 90.8 million people in all. Bigger circles: more people killed, with the name and figure beside it as on the original. The map gives no method or dates within the period.",
+    source: "Woody (Jim Woods), CSU Long Beach Geography Department, Estimated Genocide 1900 to 2005 (January 2008), citing National Geographic (January 2006); figures copied from the map image the map owner supplied", link: "" },
   { id: "escaped", g: "history", kind: "points", pc: "escape", file: "wd_nazis_escaped_recruited.json", unitWord: "people", pick: wdPts, get box() { return plainPointBox(this); }, nameOf: (p) => p.name,
     extraBox: (p) => `<p>${esc(p.group || "")}${p.parties ? ` · ${esc([].concat(p.parties).join(", "))}` : ""}${p.member_of ? ` · ${esc([].concat(p.member_of).join(", "))}` : ""}</p>${p.placed_at ? `<p class="where">Drawn at: ${esc(p.placed_at)}</p>` : ""}${p.wikipedia ? `<p>${A(p.wikipedia, "Wikipedia")}</p>` : ""}`,
     text: (x) => [x.name, x.description, x.group, x.place_of_death, x.death_country].join(" "), subOf: (x) => x.group || "",
@@ -1829,7 +1839,7 @@ const PtCanvas = L.Layer.extend({
         if (!s.vis[i]) continue;
         const px = s.x[i] * scale - ox, py = s.y[i] * scale - oy;
         if (px < -10 || py < -10 || px > W + 10 || py > H + 10) continue;
-        const k = s.col[i] + (s.ring[i] ? "r" : "d");
+        const k = s.col[i] + (s.ring[i] ? "r" : row.soft ? "s" : "d");
         let a = byCol.get(k); if (!a) { a = []; byCol.set(k, a); }
         a.push(px, py, s.r[i] * zf);
       }
@@ -1838,8 +1848,29 @@ const PtCanvas = L.Layer.extend({
         g.beginPath();
         for (let j = 0; j < a.length; j += 3) { g.moveTo(a[j] + a[j + 2], a[j + 1]); g.arc(a[j], a[j + 1], a[j + 2], 0, 6.2832); }
         if (ring) { g.strokeStyle = col; g.lineWidth = 1.3; g.globalAlpha = 0.95; g.stroke(); g.fillStyle = col; g.globalAlpha = 0.14; g.fill(); }
+        else if (k.endsWith("s")) { g.fillStyle = col; g.globalAlpha = 0.62; g.fill(); g.globalAlpha = 0.95; g.strokeStyle = edge; g.lineWidth = 0.9; g.stroke(); }
         else { g.fillStyle = col; g.globalAlpha = 0.95; g.fill(); g.strokeStyle = edge; g.lineWidth = 0.7; g.stroke(); }
         g.globalAlpha = 1;
+      }
+      if (row.labelOf) {   // names and figures written beside the dots, as the source map shows them
+        const dark = BASE === "night" || BASE === "jurassic";
+        g.textAlign = "center"; g.lineJoin = "round";
+        const order = [...Array(s.n).keys()].sort((a, b) => s.r[b] - s.r[a]), taken = [];
+        for (const i of order) {
+          if (!s.vis[i]) continue;
+          const px = s.x[i] * scale - ox, py = s.y[i] * scale - oy;
+          if (px < -80 || py < -40 || px > W + 80 || py > H + 40) continue;
+          const lines = row.labelOf(s.p[i], z), r = s.r[i] * zf, y0 = py + r + 12;
+          g.font = "600 12px Marcellus, Georgia, serif";
+          const w = Math.max(...lines.map((t) => g.measureText(t).width)) + 4, box = [px - w / 2, y0 - 11, px + w / 2, y0 - 11 + lines.length * 13 + 2];
+          if (taken.some((t) => box[0] < t[2] && box[2] > t[0] && box[1] < t[3] && box[3] > t[1])) continue;
+          taken.push(box);
+          lines.forEach((t, j) => {
+            g.font = `${j ? "" : "600 "}${j ? 11 : 12}px Marcellus, Georgia, serif`;
+            g.strokeStyle = dark ? "rgba(10,8,14,.85)" : "rgba(250,246,240,.9)"; g.lineWidth = 3; g.strokeText(t, px, y0 + j * 13);
+            g.fillStyle = dark ? "#f3e6ec" : "#3a1420"; g.fillText(t, px, y0 + j * 13);
+          });
+        }
       }
     }
   },
@@ -2467,7 +2498,7 @@ function globeData() {
     for (let i = 0; i < s.n; i++) {
       if (!s.vis[i]) continue;
       const ring = !!s.ring[i];
-      pts.push({ type: "Feature", geometry: { type: "Point", coordinates: [s.lon[i], s.lat[i]] }, properties: { r: s.r[i] * zf, c: s.col[i], fo: ring ? 0.14 : 0.95, sc: ring ? s.col[i] : edge, sw: ring ? 1.3 : 0.7 } });
+      pts.push({ type: "Feature", geometry: { type: "Point", coordinates: [s.lon[i], s.lat[i]] }, properties: { r: s.r[i] * zf, c: s.col[i], fo: ring ? 0.14 : row.soft ? 0.62 : 0.95, sc: ring ? s.col[i] : edge, sw: ring ? 1.3 : 0.7 } });
     }
   }
   const shapeOf = {}; for (const f of BOUNDS.features) shapeOf[f.properties.iso3] = f.geometry;
@@ -2475,6 +2506,16 @@ function globeData() {
     const sh = SHADES[row.id]; if (!sh || !ON.has(row.id)) continue;
     if (sh.polys) for (const f of sh.polys) areas.push({ type: "Feature", geometry: f.geometry, properties: { c: f.col, lc: f.line ? f.col : f.op ? "#0f0d11" : f.col, o: f.line ? 0 : (f.op || (f.p.latest_status === "DISCRIMINATED" ? 0.62 : 0.42)) * SHADE_K } });
     else for (const f of sh.feats) if (shapeOf[f.iso3]) areas.push({ type: "Feature", geometry: shapeOf[f.iso3], properties: { c: f.col, lc: "#0f0d11", o: 0.7 * SHADE_K } });
+  }
+  (GLOBE.labels || []).forEach((mk) => mk.remove()); GLOBE.labels = [];
+  for (const row of drawOrder()) {
+    const s = STORES[row.id]; if (!s || !ON.has(row.id) || !row.labelOf) continue;
+    for (let i = 0; i < s.n; i++) {
+      if (!s.vis[i]) continue;
+      const el = document.createElement("div"); el.className = "glabel" + (BASE === "night" || BASE === "jurassic" ? " dk" : "");
+      el.innerHTML = row.labelOf(s.p[i], GLOBE.map.getZoom() + 1).map((t, j) => `<span class="${j ? "" : "l1"}">${esc(t)}</span>`).join("");
+      GLOBE.labels.push(new maplibregl.Marker({ element: el, anchor: "top", offset: [0, s.r[i] * zf + 3] }).setLngLat([s.lon[i], s.lat[i]]).addTo(GLOBE.map));
+    }
   }
   GLOBE.map.getSource("pts").setData({ type: "FeatureCollection", features: pts });
   GLOBE.map.getSource("areas").setData({ type: "FeatureCollection", features: areas });
@@ -2518,6 +2559,7 @@ function globeMake() {
   GLOBE.map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
   GLOBE.map.on("style.load", () => { GLOBE.ready = true; globeSetBase(globeBase); });
   GLOBE.map.on("click", globeClick);
+  GLOBE.map.on("zoomend", () => { if (ROWS.some((r) => r.labelOf && ON.has(r.id))) globeSoon(); });
   GLOBE.map.getCanvas().style.cursor = "pointer";
 }
 function setGlobe(on) {
