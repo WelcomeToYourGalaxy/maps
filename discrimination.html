@@ -1612,12 +1612,14 @@ if (MAP_KIND === "disc") {
   for (const r of ROWS) if (r.id === "apartheid_c") { r.g = "ethnic"; SUBG[r.id] = "Treaties the state has joined"; }
   for (const g of GROUPS) { if (g[0] === "hate") g[1] = "Hate groups"; if (g[0] === "police") g[1] = "Racism in policing, prisons and housing"; }
 } else {
-  for (const r of ROWS) r.on = r.id === "wjp" || r.id === "wd";
   const T = { women: "Violence against women and girls", ethnic: "Attacks on ethnic groups, races and migrants", disability: "Killings of disabled people", caste: "Caste violence", police: "Killings by police, lynchings and racial gaps in homicide", history: "Camps, massacres and genocide, past and present", all: "Discrimination, country by country" };
   for (const g of GROUPS) if (T[g[0]]) g[1] = T[g[0]];
   SUBG.wjp = "";
 }
 for (let i = GROUPS.length - 1; i >= 0; i--) if (!ROWS.some((r) => r.g === GROUPS[i][0])) GROUPS.splice(i, 1);
+
+/* on at first: the main country-by-country layer and every point layer */
+for (const r of ROWS) r.on = r.id === "wjp" || r.shape !== "area";
 
 /* ---------- map and basemaps (as on the Wars, Militaries and Weapons map) ---------- */
 const map = L.map("map", { preferCanvas: true, worldCopyJump: false, zoomControl: false, minZoom: 1, zoomSnap: 0.5,
