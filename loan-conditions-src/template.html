@@ -21,6 +21,13 @@
   #points .sub { padding-left: 16px; color: #AEB6C0; font-size: 12px; }
   #points .dot.ring { background: transparent !important; border-width: 2px; }
   #cs-kinds label { margin: 1px 0; }
+  #points select { font: inherit; font-size: 11.5px; background: #151B23; color: #C9CFD6; border: 1px solid #3A434E; border-radius: 3px; padding: 2px 4px; max-width: 100%; margin: 1px 0 4px; }
+  details.pat { margin: 6px 0; font-size: 12px; }
+  details.pat summary { cursor: pointer; color: #C9CFD6; }
+  .tl { padding: 4px 0; border-bottom: 1px solid #222A33; font-size: 11.5px; line-height: 1.45; color: #C9CFD6; }
+  .tl b { color: #F2EEE4; font-weight: 400; }
+  .tl a, .lc-pop a { color: #9CC9DA; }
+  .tl .m { color: #8A939D; }
   .lc-pop h4 { margin: 8px 0 2px; font: 400 11px/1.3 'Marcellus', Georgia, serif; letter-spacing: .06em; text-transform: uppercase; color: #8E9AAB; }
   .lc-pop p.cs { margin: 2px 0 4px; font-size: 12px; line-height: 1.45; }
   .lc-pop .flag { display: inline-block; font-size: 10.5px; padding: 1px 5px; border: 1px solid #3A434E; border-radius: 3px; color: #C9CFD6; margin: 2px 4px 2px 0; }
@@ -155,6 +162,15 @@
     <label class="sub"><input type="checkbox" id="pts-exact"><span>Only places pinned to an exact spot</span></label>
     <label><input type="checkbox" data-pts="cs"><span class="dot" id="dot-cs"></span><span>Where a loan condition led to harm</span><span class="q" tabindex="0" role="button" aria-label="What this means" data-tip="Cases where a source documents that an IMF or World Bank condition led to a sale, a price or tax rise, a pay or job cut, a tariff cut or a law change that hurt people or land. A ring instead of a dot means the link to the lender is disputed; both sides are on the card. Click a mark for the full card and its sources.">?</span><span class="n" id="n-cs"></span></label>
     <div class="sub" id="cs-kinds"></div>
+    <label><input type="checkbox" data-pts="mm"><span class="dot" id="dot-mm"></span><span>Protests against governments, 1990–2020</span><span class="q" tabindex="0" role="button" aria-label="What this means" data-tip="Every protest of 50 or more people against a government that the Mass Mobilization Project coded from newspapers, with what protesters demanded and how the state responded. It covers all protests, not only those over loan conditions; the menu below can narrow it. Each mark sits on the town the record names; protests with no town named sit on the capital. Click a mark for the record.">?</span><span class="n" id="n-mm"></span></label>
+    <div class="sub"><select id="mm-only" aria-label="Which protests to show">
+      <option value="all">Every protest</option>
+      <option value="price">Over price rises and taxes</option>
+      <option value="wage">Over wages and jobs</option>
+      <option value="land">Over land and farms</option>
+      <option value="imf">Where its record mentions the IMF or World Bank</option>
+      <option value="kill">Met with shootings or killings</option>
+    </select></div>
     <label><input type="checkbox" data-pts="pf"><span class="dot" id="dot-pf"></span><span>Services taken back into public hands, 2000 on</span><span class="q" tabindex="0" role="button" aria-label="What this means" data-tip="Water, power, transport, waste, health and other services that towns, regions or countries took back from private companies, or newly set up as public services, as logged by the Public Futures database (University of Glasgow and the Transnational Institute). Marks are placed from the place name and are approximate. Click a mark for the case.">?</span><span class="n" id="n-pf"></span></label>
   </div>
   <div class="scroll" id="panel"></div>
@@ -1208,13 +1224,115 @@ const LC_DATA_GZ = "/*__DATA__*/";
     return `<div class="item"><a href="https://projects.worldbank.org/en/projects-operations/project-detail/${esc(w.id)}" target="_blank" rel="noopener">${esc(w.name)}</a><br><span class="m">${esc(w.id)} · ${esc(w.ins)}${tip(/^Named/.test(w.ins) ? "named" : "policyloan")} · ${when}${w.st === "Pipeline" ? tip("pipeline") : w.st === "Dropped" ? tip("dropped") : ""} · ${esc(w.st || "")}</span><br>${usd(w.amt)}${D.wbown[w.id] != null ? ` · ${D.wbown[w.id]} condition${D.wbown[w.id] === 1 ? "" : "s"} counted by this map${tip("owncount")}` : ""}${txt}</div>`;
   }
 
+  /* ------------------------------------------------------------ patterns behind the scenes */
+  // Each pattern colours countries by their role in it and draws its documented links.
+  const ISONAME = (c) => GEO.get(c) || NAMEOF[c] || c;
+  for (const pt of D.pats || []) {
+    const roles = pt.roles || [...new Set(pt.countries.map((c) => c.role))];
+    const top = roles.slice(0, 4);
+    const RC = {}; for (const c of pt.countries) RC[c.iso3] = c;
+    const yrs = (pt.timeline || []).map((t) => +t.year).filter((y) => y > 0);
+    const linkYears = (x) => { const m = String(x.years || "").match(/\d{4}/g); return m ? [+m[0], +m[m.length - 1]] : null; };
+    const ser = pt.series && pt.series.length ? pt.series : null;
+    const det = (t, n, body) => (n ? `<details class="pat"><summary>${esc(t)} (${n})</summary>${body}</details>` : "");
+    LAYERS.push({
+      id: "pat_" + pt.id, lender: "Pat", ramp: "stone", cat: top, pat: pt,
+      span: ser ? [ser[0].year, ser[ser.length - 1].year] : yrs.length ? [Math.min(...yrs), Math.max(...yrs)] : [1947, 2030],
+      title: pt.title, short: "the pattern “" + pt.title + "”",
+      plain: pt.summary, lineNote: pt.links && pt.links.length ? "Documented connections (hover a line)" : "",
+      srcLine: { axis: "an axis of power", club: "a club", bloc: "a bloc", chain: "a chain of people or money", scheme: "a scheme", wave: "a wave over time" }[pt.kind] || pt.kind,
+      controls: () => (ser ? bars(ser.map((x) => [x.year, x.value]), "#9DB0CC", ser[0].label) + (pt.series_note ? `<p class="plain" style="font-size:11.5px">${esc(pt.series_note)}</p>` : "") : "") +
+        det("Dated timeline", (pt.timeline || []).length, (pt.timeline || []).slice().sort((a, b) => a.year - b.year).map((t) => `<div class="tl"><b>${esc(t.year)}</b> ${esc(t.event)}${t.source_url ? ` <a href="${esc(t.source_url)}" target="_blank" rel="noopener">source</a>` : ""}</div>`).join("")) +
+        det("Connections drawn on the map", (pt.links || []).length, (pt.links || []).map((x) => `<div class="tl">${esc(x.from)} → ${esc(x.to)}: ${esc(x.label)}${x.years ? ` <span class="m">(${esc(x.years)})</span>` : ""}</div>`).join("")) +
+        det("Statistical studies", (pt.statistical_studies || []).length, (pt.statistical_studies || []).map((x) => `<div class="tl"><b>${x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.study)}</a>` : esc(x.study)}</b><br><span class="m">Sample: ${esc(x.sample)}</span><br>${esc(x.finding)}</div>`).join("")) +
+        det("One author's claims, not confirmed by records", (pt.claims_per_author || []).length, (pt.claims_per_author || []).map((c) => `<div class="tl"><b>${esc(c.author)}</b>, <i>${esc(c.work)}</i>: ${esc(c.claim)}${c.status ? `<br><span class="m">What the record shows: ${esc(c.status)}</span>` : ""}</div>`).join("")) +
+        det("Still unproven or disputed", (pt.uncertain || []).length, (pt.uncertain || []).map((u) => `<div class="tl">${esc(u)}</div>`).join("")),
+      unit: (v) => (v === 5 ? "other role" : top[v - 1] || ""),
+      values() {
+        const out = new Map();
+        for (const c of pt.countries) if (GEO.has(c.iso3)) out.set(c.iso3, top.includes(c.role) ? top.indexOf(c.role) + 1 : 5);
+        return { values: out, unplaced: new Map() };
+      },
+      popup(c) {
+        const r = RC[c]; if (!r) return "";
+        const L = (pt.links || []).filter((x) => x.from_iso3 === c || x.to_iso3 === c);
+        return `<div class="big">${esc(r.role)}</div>${para(r.note)}` + (L.length ? `<h4>Connections</h4>` + L.map((x) => `<div class="item">${esc(x.from)} → ${esc(x.to)}<br><span class="m">${esc(x.label)}${x.years ? " · " + esc(x.years) : ""}</span></div>`).join("") : "") +
+          `<div class="note">The pattern's summary, timeline and sources are in its row on the left.</div>`;
+      },
+      lines: () => (pt.links || []).map((x) => ({ a: x.a, b: x.b, label: `${x.from} → ${x.to}: ${x.label}${x.years ? " (" + x.years + ")" : ""}` })),
+      about: `<p>${esc(pt.summary)}</p>` + ((pt.confirmed_by || []).length ? `<p><b>Confirmed by</b></p>` + pt.confirmed_by.map((c) => `<div class="tl">${c.url ? `<a href="${esc(c.url)}" target="_blank" rel="noopener">${esc(c.title)}</a>` : esc(c.title)}</div>`).join("") : "") +
+        (pt.method ? `<p>${esc(pt.method)}</p>` : "") + `<p>Researched for this map from the sources listed. Claims from one author that records have not confirmed are kept apart and labelled as that author's.</p>`,
+    });
+  }
+
+  // World Bank-financed contracts: whose firms won them.
+  const WC = (D.wbca && D.wbca.flows || []).map((r) => ({ b: r[0], s: r[1], y: r[2], cat: r[3], usd: r[4], n: r[5] }));
+  const wcCats = [...new Set(WC.map((x) => x.cat))];
+  const wcKeep = (x, o, from, to) => x.y >= from && x.y <= to && (!o.off || !o.off.has(x.cat));
+  const CAP = D.cap || {};
+  if (WC.length) LAYERS.push({
+    id: "wbca", lender: "Pat", ramp: "slate", span: D.wbca.fy, linesFollowClick: true, money: true,
+    title: "Who wins the contracts the World Bank pays for",
+    short: "World Bank-financed contracts",
+    plain: "When a World Bank loan pays for a road, a dam, medicines or advisers, the borrowing government signs contracts with firms. The World Bank publishes each contract and the home country of the firm that won it. This row shows where that money went: to firms from the borrowing country itself or to firms from abroad, and which countries' firms won the most. Lines run from the borrowing country to the countries whose firms won its contracts. Years are the World Bank's fiscal years.",
+    controls: () => `<select data-k="measure">
+        <option value="won">Money this country's firms won in other countries (US$)</option>
+        <option value="abroad">Money from this country's contracts that went to foreign firms (US$)</option>
+        <option value="share">Share of this country's contract money that went to foreign firms (%)</option>
+        <option value="home">Money from this country's contracts that went to its own firms (US$)</option>
+      </select>` + checks("cat", { "Kind of contract": wcCats }, (k) => k),
+    unit: (v, o) => (o.measure === "share" ? `${num(v, 1)}%` : usd(v)),
+    fmt: (v, o) => (o.measure === "share" ? `${num(v, 0)}%` : usd(v)),
+    values(from, to, o) {
+      const out = new Map(), unplaced = new Map(), tot = new Map(), fo = new Map();
+      for (const x of WC) {
+        if (!wcKeep(x, o, from, to)) continue;
+        const foreign = x.s !== x.b && x.s !== "UNK" && x.b !== "REG";
+        if (o.measure === "won") { if (foreign) out.set(x.s, (out.get(x.s) || 0) + x.usd); }
+        else if (o.measure === "abroad") { if (foreign) out.set(x.b, (out.get(x.b) || 0) + x.usd); }
+        else if (o.measure === "home") { if (x.s === x.b) out.set(x.b, (out.get(x.b) || 0) + x.usd); }
+        else if (x.b !== "REG" && x.s !== "UNK") { tot.set(x.b, (tot.get(x.b) || 0) + x.usd); if (foreign) fo.set(x.b, (fo.get(x.b) || 0) + x.usd); }
+      }
+      if (o.measure === "share") for (const [c, t] of tot) if (t > 0) out.set(c, (100 * (fo.get(c) || 0)) / t);
+      for (const c of [...out.keys()]) if (!GEO.has(c)) { unplaced.set(ISONAME(c), out.get(c)); out.delete(c); }
+      return { values: out, unplaced, noTotal: o.measure === "share" };
+    },
+    popup(c, from, to, o) {
+      const asB = WC.filter((x) => x.b === c && wcKeep(x, o, from, to)), asS = WC.filter((x) => x.s === c && x.b !== c && wcKeep(x, o, from, to));
+      const sum = (L) => L.reduce((s, x) => s + x.usd, 0), cnt = (L) => L.reduce((s, x) => s + x.n, 0);
+      const by = (L, k) => { const m = new Map(); for (const x of L) m.set(x[k], (m.get(x[k]) || 0) + x.usd); return [...m.entries()].sort((a, b) => b[1] - a[1]); };
+      const home = asB.filter((x) => x.s === c), fore = asB.filter((x) => x.s !== c && x.s !== "UNK"), unk = asB.filter((x) => x.s === "UNK");
+      let h = `<h4>As the borrower</h4><table><tr><td>All contracts</td><td class="n">${usd(sum(asB))} · ${num(cnt(asB))}</td></tr><tr><td>Won by its own firms</td><td class="n">${usd(sum(home))}</td></tr><tr><td>Won by foreign firms</td><td class="n">${usd(sum(fore))}</td></tr>${unk.length ? `<tr><td>Firm's country not given</td><td class="n">${usd(sum(unk))}</td></tr>` : ""}</table>`;
+      if (fore.length) h += `<h4>Foreign firms' home countries</h4><table>${by(fore, "s").slice(0, 15).map(([k, v]) => `<tr><td>${esc(ISONAME(k))}</td><td class="n">${usd(v)}</td></tr>`).join("")}</table>`;
+      h += `<h4>Its firms abroad</h4><table><tr><td>Won in other countries</td><td class="n">${usd(sum(asS))} · ${num(cnt(asS))} contracts</td></tr>${by(asS.filter((x) => x.b !== "REG"), "b").slice(0, 12).map(([k, v]) => `<tr><td>in ${esc(ISONAME(k))}</td><td class="n">${usd(v)}</td></tr>`).join("")}</table>`;
+      const F = (D.wbca.firms || []).filter((f) => f[1] === c).slice(0, 10);
+      if (F.length) h += `<h4>Its firms that won most abroad, all years</h4>` + F.map((f) => `<div class="item">${esc(f[0])}<br><span class="m">${usd(f[2])} · ${num(f[3])} contracts in ${num(f[4])} countr${f[4] === 1 ? "y" : "ies"}</span></div>`).join("");
+      return h + `<div class="note">Lines on the map now show this country's contract money going to foreign firms' home countries.</div>`;
+    },
+    lines(from, to, o, sel) {
+      const m = new Map();
+      for (const x of WC) {
+        if (!wcKeep(x, o, from, to) || x.s === x.b || x.s === "UNK" || x.b === "REG") continue;
+        if (sel && x.b !== sel && x.s !== sel) continue;
+        const k = x.b + ">" + x.s; m.set(k, (m.get(k) || 0) + x.usd);
+      }
+      return [...m.entries()].sort((a, b) => b[1] - a[1]).slice(0, sel ? 40 : 60).map(([k, v]) => { const [b, s2] = k.split(">"); return { a: CAP[b], b: CAP[s2], w: v, label: `${ISONAME(b)} → firms from ${ISONAME(s2)}: ${usd(v)}` }; });
+    },
+    lineNote: "",
+    srcLine: "World Bank, contract awards in project financing",
+    about: `<p>Every contract in the World Bank's three published files of contracts signed under its investment projects: fiscal years 2001 to 2016, 2017 to 2019, and 2020 on (${num(D.wbca.rows_in_files)} contracts, ${usd(D.wbca.usd_in_files)}). Each row gives the borrowing country, the firm, the firm's home country as the World Bank records it, the kind of contract and the amount. Firms' names are shown as written in the files, so one firm can appear under several spellings.</p>
+<p>${num(D.wbca.regional_rows)} contracts (${usd(D.wbca.regional_usd)}) belong to regional projects with no single borrowing country; they count toward the winning firms' totals but not toward any borrower. ${num(D.wbca.no_supplier_country_rows)} contracts (${usd(D.wbca.no_supplier_country_usd)}) give no home country for the firm; they count only in a borrower's total. With no country selected, the map draws the 60 largest flows to foreign firms in the chosen years; click a country to draw its own.</p>
+<p>These files start in fiscal 2001. Contracts from earlier decades, when the World Bank reported that most foreign contract money went to firms from its largest shareholders, are not in them.</p>
+<p>Sources: World Bank Finances One, <a href="https://financesone.worldbank.org/contract-awards-in-investment-project-financing-since-fy-2001-fy-2016/DS01004" target="_blank" rel="noopener">Contract Awards in Investment Project Financing, FY2001–FY2016</a>, <a href="https://financesone.worldbank.org/contract-awards-in-investment-project-financing-since-fy-2017-fy-2019/DS04691" target="_blank" rel="noopener">FY2017–FY2019</a> and <a href="https://financesone.worldbank.org/d/DS00005" target="_blank" rel="noopener">since FY2020</a>, read 25 October 2026. Map points for countries are their capitals (GeoNames).</p>`,
+  });
+
   /* ------------------------------------------------------------ the panel */
   const MINY = 1947, MAXY = 2030;
   const state = { active: "all", from: MINY, to: MAXY, opts: {}, base: "land" };
   for (const l of LAYERS) state.opts[l.id] = { measure: undefined, off: new Set() };
   const panel = $("#panel");
-  const SECS = { All: "Together", IMF: "International Monetary Fund", "World Bank": "World Bank", IDB: "Regional development banks", EU: "European Union and euro area", Gov: "Single governments", OECD: "Every lender reporting to the OECD", Flows: "Other money flowing in and out" };
-  const ORDER = ["All", "IMF", "World Bank", "IDB", "EU", "Gov", "OECD", "Flows"];
+  const SECS = { Pat: "Patterns behind the scenes", All: "Together", IMF: "International Monetary Fund", "World Bank": "World Bank", IDB: "Regional development banks", EU: "European Union and euro area", Gov: "Single governments", OECD: "Every lender reporting to the OECD", Flows: "Other money flowing in and out" };
+  const ORDER = ["All", "Pat", "IMF", "World Bank", "IDB", "EU", "Gov", "OECD", "Flows"];
   LAYERS.sort((a, b) => ORDER.indexOf(a.lender) - ORDER.indexOf(b.lender));
   let lastSec = "";
   panel.innerHTML = LAYERS.map((l) => {
@@ -1357,10 +1475,10 @@ const LC_DATA_GZ = "/*__DATA__*/";
 
   /* ------------------------------------------------------------ point layers: where the money was spent */
   // Dot colours follow the background map, so they read well on each one.
-  const PTCOL = { land: { wb: "#9DB4C8", cn: "#C28F9C", cs: "#ECE6DA", pf: "#93B39C", edge: "#0B0F14" }, night: { wb: "#7FB8B4", cn: "#B39BC9", cs: "#EDE4D6", pf: "#9DC0A8", edge: "#05080C" },
-    atlas: { wb: "#3E5C76", cn: "#83394A", cs: "#2A2730", pf: "#5A4466", edge: "#F2EAD8" }, jurassic: { wb: "#2E4A5E", cn: "#74303F", cs: "#2B2420", pf: "#523D5E", edge: "#E6E0C8" }, hell: { wb: "#D7CEC3", cn: "#9FB2C2", cs: "#F2EADF", pf: "#A9BBA2", edge: "#1A0606" } };
-  const PT = { wb: { on: false }, cn: { on: false }, cs: { on: false }, pf: { on: false } };
-  const PTK = ["wb", "cn", "cs", "pf"];
+  const PTCOL = { land: { wb: "#9DB4C8", cn: "#C28F9C", cs: "#ECE6DA", pf: "#93B39C", mm: "#B9A7D3", edge: "#0B0F14" }, night: { wb: "#7FB8B4", cn: "#B39BC9", cs: "#EDE4D6", pf: "#9DC0A8", mm: "#C2B2DA", edge: "#05080C" },
+    atlas: { wb: "#3E5C76", cn: "#83394A", cs: "#2A2730", pf: "#5A4466", mm: "#1F3B4D", edge: "#F2EAD8" }, jurassic: { wb: "#2E4A5E", cn: "#74303F", cs: "#2B2420", pf: "#523D5E", mm: "#1E3542", edge: "#E6E0C8" }, hell: { wb: "#D7CEC3", cn: "#9FB2C2", cs: "#F2EADF", pf: "#A9BBA2", mm: "#C9B9D9", edge: "#1A0606" } };
+  const PT = { wb: { on: false }, cn: { on: false }, cs: { on: false }, pf: { on: false }, mm: { on: false } };
+  const PTK = ["wb", "cn", "cs", "pf", "mm"];
   const CSKIND = { privatization: "Sale or handover of a public firm or service", austerity: "Price, tax, pay, job or spending cuts", trade: "Trade opening", law: "A required change in the law" };
   const csOff = new Set();
   function setupPoints() {
@@ -1391,6 +1509,18 @@ const LC_DATA_GZ = "/*__DATA__*/";
     map.addLayer({ id: "pt-pf", type: "circle", source: "pt-pf", layout: { visibility: "none" },
       paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 1, 1.8, 4, 3.2, 8, 6], "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 1, 0.2, 6, 0.5], "circle-opacity": 0.95, "circle-stroke-opacity": 0.8 } });
     $("#n-pf").textContent = num(pff.length);
+    // Mass Mobilization protests.
+    const MM = D.mm.rows;
+    const mmf = MM.map((r, i) => {
+      const dm = r[12].join("|"), rs = r[13].join("|");
+      const f = (/price increases/.test(dm) ? 1 : 0) | (/labor wage/.test(dm) ? 2 : 0) | (/land farm/.test(dm) ? 4 : 0) | (r[17] ? 8 : 0) | (/shootings|killings/.test(rs) ? 16 : 0);
+      return { type: "Feature", geometry: { type: "Point", coordinates: [r[0], r[1]] }, properties: { i, y: r[4] ?? -1, f } };
+    });
+    map.addSource("pt-mm", { type: "geojson", data: { type: "FeatureCollection", features: mmf } });
+    map.addLayer({ id: "pt-mm", type: "circle", source: "pt-mm", layout: { visibility: "none" },
+      paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 1, 1.5, 4, 2.8, 8, 5.5], "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 1, 0.2, 6, 0.5], "circle-opacity": 0.85, "circle-stroke-opacity": 0.7 } });
+    $("#n-mm").textContent = num(mmf.length);
+    $("#mm-only").addEventListener("change", updatePoints);
     $("#points").addEventListener("change", (e) => { const k = e.target.dataset.pts; if (k) PT[k].on = e.target.checked; updatePoints(); });
     const CN = Object.fromEntries(D.cnsites.rows.map((r) => [String(r[2]), r]));
     const PREC = { 1: "exact spot", 2: "within about 25 km", 3: "district", 4: "province or state", 5: "near a province", 6: "whole country", 7: "estimated", 8: "whole country (country-wide project)" };
@@ -1406,6 +1536,8 @@ const LC_DATA_GZ = "/*__DATA__*/";
           h = caseCard(D.cases[P.i]);
         } else if (k === "pf") {
           h = pfCard(D.pf.rows[P.i]);
+        } else if (k === "mm") {
+          h = mmCard(D.mm.rows[P.i]);
         } else {
           const r = CN[String(P.i)] || [];
           h = `<h3>${esc(r[4])}</h3><div class="src">Chinese state-financed project site</div><div class="item">${esc(r[6])}<br><span class="m">${r[5] || "–"} · ${esc(r[8])} · ${esc(r[9])} · ${r[7] != null ? usd(r[7]) + " (2021 dollars)" : "amount not given"}</span><br><span class="m">Located: ${esc(r[10])}${r[11] ? ` · <a href="${esc(String(r[11]).split("|")[0])}" target="_blank" rel="noopener">on OpenStreetMap</a>` : ""} · AidData id ${esc(r[2])}</span></div><div class="note">Source: AidData, Geospatial Global Chinese Development Finance Dataset 3.0.</div>`;
@@ -1441,10 +1573,26 @@ const LC_DATA_GZ = "/*__DATA__*/";
       (summary ? para(summary) : "") +
       `<div class="note">Source: Public Futures database, University of Glasgow and the Transnational Institute, <a href="https://publicfutures.org/" target="_blank" rel="noopener">publicfutures.org</a>.</div>`;
   }
+  const MMPC = { 1: "placed at the town or city the record names", 2: "the record names a region; shown at its largest town", 3: "no town named or matched; shown at the capital" };
+  function mmCard(r) {
+    const [x, y, iso, country, year, start, end, loc, pc, at, parts, who, dem, res, viol, notes, srcs, imf, id] = r;
+    const row = (t, v) => (v ? `<tr><td>${t}</td><td>${esc(v)}</td></tr>` : "");
+    return `<h3>${esc(loc || country)}</h3><div class="src">${esc(country)} · ${esc(start || year)}${end && end !== start ? " to " + esc(end) : ""} · ${esc(MMPC[pc])}${pc !== 1 ? " (" + esc(at) + ")" : ""}</div>` +
+      `<table>${row("Protesters", who)}${row("How many", parts)}${row("Demands", dem.join("; "))}${row("State response", res.join("; "))}${row("Protesters used violence", viol === 1 ? "yes" : viol === 0 ? "no" : "")}</table>` +
+      (notes ? para(notes) : "") + (srcs ? `<div class="note">Newspaper sources the coders used: ${esc(srcs)}</div>` : "") +
+      `<div class="note">Source: Mass Mobilization Project (Clark and Regan), record ${esc(id)}, <a href="https://doi.org/10.7910/DVN/HTTWYL" target="_blank" rel="noopener">Harvard Dataverse</a>.</div>`;
+  }
   function updatePoints() {
     if (!map.getLayer("pt-wb")) return;
     const c = PTCOL[state.base] || PTCOL.land, exact = $("#pts-exact").checked;
     const yr = ["any", ["==", ["get", "y"], -1], ["all", [">=", ["get", "y"], state.from], ["<=", ["get", "y"], state.to]]];
+    {
+      const m = { all: 0, price: 1, wage: 2, land: 4, imf: 8, kill: 16 }[$("#mm-only").value];
+      map.setLayoutProperty("pt-mm", "visibility", PT.mm.on ? "visible" : "none");
+      map.setPaintProperty("pt-mm", "circle-color", c.mm); map.setPaintProperty("pt-mm", "circle-stroke-color", c.edge);
+      $("#dot-mm").style.background = c.mm;
+      map.setFilter("pt-mm", m ? ["all", yr, [">", ["%", ["floor", ["/", ["get", "f"], m]], 2], 0]] : yr);
+    }
     for (const k of ["cs", "pf"]) {
       map.setLayoutProperty("pt-" + k, "visibility", PT[k].on ? "visible" : "none");
       map.setPaintProperty("pt-" + k, "circle-color", k === "cs" ? c.cs : c.pf);
@@ -1459,7 +1607,7 @@ const LC_DATA_GZ = "/*__DATA__*/";
       map.setFilter("pt-" + k, exact ? ["all", yr, k === "wb" ? ["==", ["get", "pc"], 1] : ["==", ["get", "exact"], 1]] : yr);
       map.moveLayer("pt-" + k);
     }
-    map.moveLayer("pt-pf"); map.moveLayer("pt-cs");
+    map.moveLayer("pt-mm"); map.moveLayer("pt-pf"); map.moveLayer("pt-cs");
   }
 
   // Breaks: seven classes from the spread of the non-zero values now shown,
@@ -1483,6 +1631,8 @@ const LC_DATA_GZ = "/*__DATA__*/";
     const radio = $(`.row[data-id="${l.id}"] input[type=radio]`); if (radio) radio.checked = true;
     const { values, unplaced, noTotal } = l.values(state.from, state.to, o);
     current = values;
+    drawLines(l, o);
+    if (l.cat) { drawCat(l, o, values); return; }
     const br = breaksOf([...values.values()]), ramp = rampFor(l);
     const cols = ramp.slice(ramp.length - (br.length + 1));
     for (const c of GEO.keys()) map.setFeatureState({ source: "lc", id: c }, { v: values.has(c) ? values.get(c) : null });
@@ -1496,7 +1646,7 @@ const LC_DATA_GZ = "/*__DATA__*/";
     const shown = [...values.entries()].filter(([c, v]) => v > 0 && GEO.has(c)).length;
     let leg = `<div class="tot">${state.from} to ${state.to}: ${noTotal ? "" : esc(l.unit(total, o)) + " in all, "}${shown} countr${shown === 1 ? "y" : "ies"} on the map</div>`;
     const edges = [1, ...br];
-    const money = l.cont || o.measure === "amt" || o.measure === "agreed" || o.measure === "usd";
+    const money = l.cont || l.money || o.measure === "amt" || o.measure === "agreed" || o.measure === "usd";
     leg += cols.map((col, i) => {
       const lo = edges[i], hi = br[i];
       let txt;
@@ -1516,6 +1666,54 @@ const LC_DATA_GZ = "/*__DATA__*/";
     updatePoints();
   }
 
+  // Pattern rows colour countries by their role in the pattern.
+  const CATCOL = { dark: ["#B9A6C9", "#8FB3B0", "#C79A9E", "#9DB0CC"], light: ["#5B476B", "#2F5E5A", "#7A3B45", "#3C5378"], hell: ["#CDB8D6", "#A9C4BE", "#E0C2B8", "#B7C6DA"] };
+  const LINECOL = { land: "#E9E4D8", night: "#E9E4D8", atlas: "#2A2730", jurassic: "#2B2420", hell: "#F2EADF" };
+  function drawCat(l, o, values) {
+    const pal = CATCOL[state.base === "atlas" || state.base === "jurassic" ? "light" : state.base === "hell" ? "hell" : "dark"];
+    for (const c of GEO.keys()) map.setFeatureState({ source: "lc", id: c }, { v: values.has(c) ? values.get(c) : null });
+    map.setPaintProperty("lc-fill", "fill-color", ["match", ["coalesce", ["feature-state", "v"], -1], 1, pal[0], 2, pal[1], 3, pal[2], 4, pal[3], 5, "#8A8F96", "rgba(0,0,0,0)"]);
+    map.setPaintProperty("lc-fill", "fill-opacity", state.base === "atlas" || state.base === "jurassic" ? 0.8 : 0.85);
+    const n = (k) => [...values.values()].filter((v) => v === k).length;
+    let leg = `<div class="tot">${values.size} countr${values.size === 1 ? "y" : "ies"} in this pattern</div>` + l.cat.map((t, i) => `<div class="k"><span class="sw" style="background:${pal[i]}"></span>${esc(t)} (${n(i + 1)})</div>`).join("");
+    if (n(5)) leg += `<div class="k"><span class="sw" style="background:#8A8F96"></span>Other role (${n(5)})</div>`;
+    if (l.lineNote) leg += `<div class="k"><span class="sw" style="background:transparent;border-top:2px solid ${LINECOL[state.base] || "#E9E4D8"};height:0;margin-top:6px"></span>${esc(l.lineNote)}</div>`;
+    $(`#leg-${l.id}`).innerHTML = leg;
+    for (const x of LAYERS) if (x.id !== l.id) { $(`#leg-${x.id}`).innerHTML = ""; $(`#un-${x.id}`).innerHTML = ""; }
+    $(`#un-${l.id}`).innerHTML = "";
+    $("#cover").textContent = `This pattern covers ${l.span[0]} to ${l.span[1]}. Its colours do not change with the years.`;
+    $("#now").textContent = `On the map now: ${l.short}.`;
+    if (popup && popup.isOpen() && popup._lc) openPopup(popup._lc, popup.getLngLat());
+    updatePoints();
+  }
+  // Lines: great-circle arcs between the places a pattern connects.
+  function arc(a, b) {
+    const R = Math.PI / 180, [x1, y1] = [a[0] * R, a[1] * R], [x2, y2] = [b[0] * R, b[1] * R];
+    const d = 2 * Math.asin(Math.sqrt(Math.sin((y2 - y1) / 2) ** 2 + Math.cos(y1) * Math.cos(y2) * Math.sin((x2 - x1) / 2) ** 2));
+    if (d < 1e-6) return [a, b];
+    const pts = [];
+    for (let i = 0; i <= 48; i++) {
+      const f = i / 48, A = Math.sin((1 - f) * d) / Math.sin(d), B = Math.sin(f * d) / Math.sin(d);
+      const x = A * Math.cos(y1) * Math.cos(x1) + B * Math.cos(y2) * Math.cos(x2), y = A * Math.cos(y1) * Math.sin(x1) + B * Math.cos(y2) * Math.sin(x2), z = A * Math.sin(y1) + B * Math.sin(y2);
+      pts.push([Math.atan2(y, x) / R, Math.atan2(z, Math.sqrt(x * x + y * y)) / R]);
+    }
+    for (let i = 1; i < pts.length; i++) { while (pts[i][0] - pts[i - 1][0] > 180) pts[i][0] -= 360; while (pts[i][0] - pts[i - 1][0] < -180) pts[i][0] += 360; }
+    return pts;
+  }
+  function drawLines(l, o) {
+    const src = map.getSource("pat-lines"); if (!src) return;
+    const L = l.lines ? l.lines(state.from, state.to, o, popup && popup.isOpen() ? popup._lc : null) : [];
+    const max = Math.max(1, ...L.map((x) => x.w || 1));
+    src.setData({ type: "FeatureCollection", features: L.filter((x) => x.a && x.b).map((x) => ({ type: "Feature", geometry: { type: "LineString", coordinates: arc(x.a, x.b) }, properties: { label: x.label || "", w: 0.6 + 2.4 * Math.sqrt((x.w || 1) / max) } })) });
+    map.setPaintProperty("pat-line", "line-color", LINECOL[state.base] || "#E9E4D8");
+    map.moveLayer("pat-line");
+  }
+  map.on("load", () => {
+    map.addSource("pat-lines", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+    map.addLayer({ id: "pat-line", type: "line", source: "pat-lines", layout: { "line-cap": "round" }, paint: { "line-color": "#E9E4D8", "line-width": ["*", 1.3, ["get", "w"]], "line-opacity": 0.85 } });
+    map.on("mousemove", "pat-line", (e) => { const f = e.features[0]; if (!f || !f.properties.label) return; hoverTip.textContent = f.properties.label; hoverTip.style.display = "block"; hoverTip.style.left = e.point.x + 14 + "px"; hoverTip.style.top = e.point.y + 10 + "px"; });
+  });
+
   // Click and hover
   let popup = null, hovered = null;
   const hoverTip = $("#tip");
@@ -1526,8 +1724,9 @@ const LC_DATA_GZ = "/*__DATA__*/";
       (v == null ? `<div class="note">This source has no record for this country.</div>` : l.popup(c, state.from, state.to, o));
     if (!popup) popup = new maplibregl.Popup({ className: "lc-pop", maxWidth: "360px", focusAfterOpen: false });
     popup.setLngLat(lngLat).setHTML(html).addTo(map); popup._lc = c;
+    if (l.linesFollowClick) drawLines(l, o);
   }
-  map.on("click", "lc-fill", (e) => { if (map.queryRenderedFeatures(e.point, { layers: ["pt-wb", "pt-cn", "pt-cs", "pt-pf"].filter((l) => map.getLayer(l)) }).length) return; const f = e.features && e.features[0]; if (f && f.properties.iso3 !== "-99") openPopup(f.properties.iso3, e.lngLat); });
+  map.on("click", "lc-fill", (e) => { if (map.queryRenderedFeatures(e.point, { layers: ["pt-wb", "pt-cn", "pt-cs", "pt-pf", "pt-mm"].filter((l) => map.getLayer(l)) }).length) return; const f = e.features && e.features[0]; if (f && f.properties.iso3 !== "-99") openPopup(f.properties.iso3, e.lngLat); });
   map.on("mousemove", "lc-fill", (e) => {
     const f = e.features && e.features[0]; if (!f) return;
     const c = f.properties.iso3;

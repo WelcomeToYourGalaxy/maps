@@ -28,3 +28,6 @@ Each case follows exactly the shape of `example_case.json` in this folder:
 Leave out the fields `lk`, `cp`, `rg`, `cx`.
 
 Aim for as many strong cases as you can document in your batch, up to about 15. Quality over count.
+
+## Search budget
+Web searches are shared with other researchers and capped. Use at most 25 web searches. Prefer WebFetch on pages you already know or find linked (IMF and World Bank document pages, Wikipedia pages to reach their cited primary sources, news archives). Stop searching when you hit 25 and write up what you have; list unresearched leads in "dropped" with the reason "not researched".
