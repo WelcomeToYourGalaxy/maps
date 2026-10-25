@@ -1,0 +1,1468 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loan Conditions Worldwide</title>
+<meta name="description" content="The strings attached to loans and debt deals for governments, from the IMF, World Bank, regional development banks, the EU, the Paris Club, China and every lender reporting to the OECD, country by country and year by year. Welcome to Your Galaxy.">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Uncial+Antiqua&display=swap">
+<style>
+  html, body { margin: 0; height: 100%; background: #0B0F14; color: #E9E4D8; font: 14px/1.45 'Marcellus', Georgia, serif; }
+  button, select, input { font-family: inherit; }
+  #stars { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  #map { position: absolute; inset: 0; }
+  #points { padding: 6px 14px 8px; border-bottom: 1px solid #222A33; font-size: 12.5px; }
+  #points .h { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #8E9AAB; margin: 2px 0 4px; }
+  #points label { display: flex; align-items: center; gap: 7px; margin: 3px 0; cursor: pointer; }
+  #points .dot { width: 9px; height: 9px; border-radius: 50%; border: 1px solid rgba(0,0,0,.6); flex: none; }
+  #points .n { color: #8E9AAB; font-size: 11.5px; margin-left: auto; }
+  #points .sub { padding-left: 16px; color: #AEB6C0; font-size: 12px; }
+  #side { position: absolute; top: 12px; left: 12px; bottom: 12px; width: 372px; max-width: calc(100vw - 24px); display: flex; flex-direction: column;
+          background: rgba(13,17,23,.94); border: 1px solid #28303A; border-radius: 6px; box-shadow: 0 8px 28px rgba(0,0,0,.45); z-index: 5; }
+  #side header { padding: 14px 16px 10px; border-bottom: 1px solid #28303A; }
+  #side h1 { margin: 0; padding-right: 64px; font: 400 22px/1.2 'Uncial Antiqua', 'Marcellus', Georgia, serif; letter-spacing: .5px; color: #F2EEE4; }
+  #side .lede { margin: 7px 0 0; font-size: 12.5px; color: #A9B1BA; }
+  #side .lede.now { font-size: 11.5px; color: #C9CFD6; border-left: 2px solid #7A8FA6; padding-left: 7px; }
+  #side .scroll { flex: 1; overflow: auto; padding: 4px 12px 14px; }
+  #side .foot { padding: 8px 14px; border-top: 1px solid #28303A; font-size: 11px; color: #8A939D; }
+  #side .foot a { color: #9CC9DA; }
+  #fold { position: absolute; right: 12px; top: 14px; font-size: 12px; background: #151B23; color: #C9CFD6; border: 1px solid #3A434E; border-radius: 3px; padding: 3px 9px; cursor: pointer; }
+  #fold:hover { color: #F2EEE4; border-color: #5A6572; }
+  #side.folded { bottom: auto; }
+  #side.folded .scroll, #side.folded .lede, #side.folded .foot, #side.folded #years { display: none; }
+  #side.folded header { border-bottom: 0; }
+  #basemap { position: absolute; top: 12px; right: 52px; z-index: 2; display: flex; border: 1px solid #28303A; border-radius: 4px; overflow: hidden; }
+  #basemap button { font-size: 12px; padding: 5px 10px; background: rgba(13,17,23,.92); color: #C9CFD6; border: 0; cursor: pointer; }
+  #basemap button + button { border-left: 1px solid #28303A; }
+  #basemap button.on { background: #2B3442; color: #F2EEE4; }
+  #world { position: absolute; top: 12px; right: 52px; z-index: 2; margin-top: 36px; font-size: 12.5px; padding: 5px 11px; background: rgba(13,17,23,.92); color: #E9E4D8;
+           border: 1px solid #56647A; border-radius: 4px; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,.35); }
+  #world:hover, #proj:hover { background: #2B3442; }
+  #proj { position: absolute; top: 12px; right: 52px; z-index: 2; margin-top: 72px; font-size: 12.5px; padding: 5px 11px; background: rgba(13,17,23,.92); color: #E9E4D8;
+          border: 1px solid #56647A; border-radius: 4px; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,.35); }
+
+  /* Years */
+  #years { padding: 9px 16px 10px; border-bottom: 1px solid #28303A; }
+  #years .lab { display: flex; justify-content: space-between; font-size: 12px; color: #C9CFD6; }
+  #years .lab b { color: #F2EEE4; font-weight: 400; font-size: 14px; }
+  #years .rng { position: relative; height: 26px; }
+  #years input[type=range] { position: absolute; left: 0; right: 0; width: 100%; top: 4px; margin: 0; pointer-events: none; background: none; -webkit-appearance: none; appearance: none; height: 18px; }
+  #years input[type=range]::-webkit-slider-thumb { pointer-events: auto; -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #D9D2C4; border: 2px solid #0D1117; cursor: pointer; }
+  #years input[type=range]::-moz-range-thumb { pointer-events: auto; width: 12px; height: 12px; border-radius: 50%; background: #D9D2C4; border: 2px solid #0D1117; cursor: pointer; }
+  #years .track { position: absolute; left: 7px; right: 7px; top: 12px; height: 3px; background: #2A323C; border-radius: 2px; }
+  #years .fill { position: absolute; top: 12px; height: 3px; background: #8E9AAB; border-radius: 2px; }
+  #years .cover { font-size: 11px; color: #8A939D; margin-top: 2px; }
+
+  /* Rows */
+  .sec { margin: 14px 2px 4px; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #8A939D; }
+  .row { border: 1px solid #222A33; border-radius: 5px; margin: 6px 0; background: rgba(20,26,34,.6); }
+  .row.on { border-color: #4A5566; background: rgba(28,35,45,.85); }
+  .row .head { display: flex; gap: 6px; align-items: flex-start; padding: 8px 10px; }
+  .row .head .pick { display: flex; gap: 9px; align-items: flex-start; cursor: pointer; flex: 1; }
+  .row .head input { margin-top: 3px; accent-color: #B8AFA0; }
+  .row .body p.plain { margin: 0 0 6px; font-size: 12px; line-height: 1.45; color: #D5D9DE; }
+  .q { display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; margin-left: 4px; border-radius: 50%; border: 1px solid #5A6572; color: #AEB6BF; font-size: 10px; line-height: 1; cursor: help; vertical-align: 1px; flex: none; font-family: Georgia, serif; }
+  .q:hover, .q:focus { color: #F2EEE4; border-color: #9AA4AE; outline: none; }
+  .q.big { width: 18px; height: 18px; font-size: 12px; margin-top: 1px; }
+  #qtip { position: fixed; z-index: 50; max-width: 280px; background: #1A212B; color: #E9E4D8; border: 1px solid #56647A; border-radius: 5px; padding: 7px 9px; font-size: 12px; line-height: 1.45; box-shadow: 0 6px 18px rgba(0,0,0,.5); display: none; pointer-events: none; font-family: 'Marcellus', Georgia, serif; }
+  .row .head .t { font-size: 13px; color: #E9E4D8; }
+  .row .head .span { display: block; font-size: 11px; color: #8A939D; margin-top: 1px; }
+  .row .body { display: none; padding: 0 10px 10px 32px; font-size: 12px; color: #B7BEC6; }
+  .row.on .body { display: block; }
+  .row .body select { width: 100%; background: #10151C; color: #E9E4D8; border: 1px solid #3A434E; border-radius: 3px; padding: 4px 6px; font-size: 12px; margin: 4px 0 6px; }
+  .row .body label.ck { display: flex; gap: 6px; align-items: flex-start; font-size: 11.5px; margin: 2px 0; color: #C9CFD6; cursor: pointer; }
+  .row .body label.ck input { margin-top: 2px; accent-color: #B8AFA0; }
+  .row .body .grp { font-size: 11px; color: #8A939D; margin: 6px 0 2px; }
+  .row .body details { margin-top: 6px; }
+  .row .body summary { cursor: pointer; color: #9CC9DA; font-size: 11.5px; }
+  .row .body details p { margin: 6px 0; font-size: 11.5px; line-height: 1.45; }
+  .row .body a { color: #9CC9DA; }
+  .legend { margin: 6px 0 4px; }
+  .legend .k { display: flex; align-items: center; gap: 7px; font-size: 11.5px; color: #C9CFD6; margin: 2px 0; }
+  .legend .sw { width: 22px; height: 11px; border-radius: 2px; border: 1px solid rgba(255,255,255,.12); flex: none; }
+  .legend .tot { font-size: 11.5px; color: #E9E4D8; margin-bottom: 4px; }
+  .unplaced { font-size: 11px; color: #8A939D; margin-top: 4px; }
+  .note { font-size: 11px; color: #8A939D; }
+
+  /* Popups */
+  .maplibregl-popup.lc-pop .maplibregl-popup-content { background: #11161D; color: #E9E4D8; border: 1px solid #3A434E; border-radius: 5px; padding: 10px 12px; font-family: 'Marcellus', Georgia, serif; font-size: 12.5px; max-height: 60vh; overflow: auto; }
+  .maplibregl-popup.lc-pop .maplibregl-popup-tip { border-top-color: #3A434E; border-bottom-color: #3A434E; }
+  .maplibregl-popup.lc-pop .maplibregl-popup-close-button { color: #C9CFD6; font-size: 18px; }
+  .lc-pop h3 { margin: 0 18px 2px 0; font: 400 16px/1.25 'Marcellus', Georgia, serif; color: #F2EEE4; }
+  .lc-pop .src { font-size: 11px; color: #8A939D; margin-bottom: 6px; }
+  .lc-pop .big { font-size: 15px; color: #F2EEE4; margin: 4px 0; }
+  .lc-pop table { border-collapse: collapse; width: 100%; font-size: 11.5px; margin: 4px 0 6px; }
+  .lc-pop td { padding: 2px 4px 2px 0; border-bottom: 1px solid #222A33; vertical-align: top; }
+  .lc-pop td.n { text-align: right; white-space: nowrap; color: #F2EEE4; }
+  .lc-pop .item { padding: 4px 0; border-bottom: 1px solid #222A33; font-size: 11.5px; }
+  .lc-pop .item .m { color: #8A939D; }
+  .lc-pop a { color: #9CC9DA; }
+  .lc-pop h4 { margin: 8px 0 2px; font: 400 12px 'Marcellus', Georgia, serif; color: #C9CFD6; letter-spacing: .06em; text-transform: uppercase; }
+  .lc-pop details.tx { margin-top: 3px; }
+  .lc-pop details.tx summary { cursor: pointer; color: #9CC9DA; font-size: 11px; }
+  .lc-pop .txt { white-space: pre-wrap; font-size: 11px; line-height: 1.4; color: #C9CFD6; max-height: 260px; overflow: auto; background: #0C1016; border: 1px solid #222A33; border-radius: 3px; padding: 6px; margin: 4px 0; }
+  #tip { position: absolute; z-index: 4; pointer-events: none; background: rgba(13,17,23,.95); border: 1px solid #3A434E; border-radius: 4px; padding: 4px 8px; font-size: 12px; color: #E9E4D8; display: none; white-space: nowrap; }
+
+  @media (max-width: 720px) {
+    #side { top: auto; left: 0; right: 0; bottom: 0; width: auto; max-width: none; height: 52vh; border-radius: 10px 10px 0 0; }
+    #side.folded { height: 58px; }
+    #side h1 { font-size: 18px; padding-right: 70px; }
+    #world { top: 46px; right: 50px; margin-top: 0; font-size: 11.5px; padding: 4px 8px; }
+    #proj { top: 78px; right: 50px; margin-top: 0; font-size: 11.5px; padding: 4px 8px; }
+    #basemap { top: 10px; right: 50px; flex-wrap: wrap; max-width: calc(100vw - 70px); }
+    #basemap button { padding: 4px 7px; font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+<canvas id="stars" aria-hidden="true"></canvas>
+<div id="map"></div>
+<div id="tip"></div>
+<div id="qtip" role="tooltip"></div>
+<div id="basemap" role="group" aria-label="Background map">
+  <button type="button" data-base="land" class="on">Plain</button>
+  <button type="button" data-base="night">Bioluminescent</button>
+  <button type="button" data-base="atlas">Atlas</button>
+  <button type="button" data-base="jurassic">Jurassic</button>
+  <button type="button" data-base="hell">Hell</button>
+</div>
+<button type="button" id="world" title="Zoom back out to see the whole world">Whole world</button>
+<button type="button" id="proj" title="Switch between a globe and a flat map">Flat map</button>
+<aside id="side">
+  <header>
+    <h1>Loan conditions worldwide</h1>
+    <button id="fold" type="button" title="Fold the panel up, or open it">Fold up ▴</button>
+    <p class="lede">The strings attached to loans and debt deals for governments: from the IMF, the World Bank, regional development banks, the EU, the Paris Club, China and every lender that reports to the OECD, plus the other money flowing in and out: foreign investment, aid, foundation grants, private and government loans, and money sent home. Pick a row, set the years, then click a country for its record. Hover over a <span class="q" style="cursor:default">?</span> for what a term means.</p>
+    <p class="lede now" id="now"></p>
+  </header>
+  <div id="years">
+    <div class="lab"><span>From <b id="yFromL"></b></span><span>to <b id="yToL"></b></span></div>
+    <div class="rng"><div class="track"></div><div class="fill" id="yFill"></div>
+      <input type="range" id="yFrom" aria-label="First year"><input type="range" id="yTo" aria-label="Last year"></div>
+    <div class="cover" id="cover"></div>
+  </div>
+  <div id="points">
+    <div class="h">Places on the map</div>
+    <label><input type="checkbox" data-pts="wb"><span class="dot" id="dot-wb"></span><span>World Bank project sites, 1995–2014</span><span class="q" tabindex="0" role="button" aria-label="What this means" data-tip="Where World Bank loans and grants were spent: towns, districts, roads, dams and so on, as AidData and the World Bank mapped them. Click a dot for the project.">?</span><span class="n" id="n-wb"></span></label>
+    <label><input type="checkbox" data-pts="cn"><span class="dot" id="dot-cn"></span><span>Chinese state-financed project sites, 2000–2021</span><span class="q" tabindex="0" role="button" aria-label="What this means" data-tip="Where loans and grants from Chinese state banks and agencies were spent, as AidData traced them on OpenStreetMap: ports, railways, power plants, hospitals and more. Click a dot for the project.">?</span><span class="n" id="n-cn"></span></label>
+    <label class="sub"><input type="checkbox" id="pts-exact"><span>Only places pinned to an exact spot</span></label>
+  </div>
+  <div class="scroll" id="panel"></div>
+  <div class="foot">Sources are named in each row. <a href="https://welcometoyourgalaxy.com" target="_blank" rel="noopener">Welcome to Your Galaxy</a></div>
+</aside>
+
+<script src="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
+<script>
+// The data, gzip-compressed and base64-encoded so the page stays one file.
+const LC_DATA_GZ = "/*__DATA__*/";
+</script>
+<script>
+(async function () {
+  "use strict";
+  const bin = Uint8Array.from(atob(LC_DATA_GZ), (c) => c.charCodeAt(0));
+  const D = JSON.parse(await new Response(new Blob([bin]).stream().pipeThrough(new DecompressionStream("gzip"))).text());
+  const $ = (s, r = document) => r.querySelector(s);
+  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const num = (n, d = 0) => (n == null ? "–" : Number(n).toLocaleString("en-US", { maximumFractionDigits: d, minimumFractionDigits: d }));
+  const usd = (n) => (n == null ? "amount not given" : Math.abs(n) >= 1e9 ? `US$${num(n / 1e9, 2)} billion` : Math.abs(n) >= 1e5 || n === 0 ? `US$${num(n / 1e6, 1)} million` : `US$${num(n / 1e3, 0)} thousand`);
+  const sdr = (k) => (k == null ? "amount not given" : k >= 1e6 ? `SDR ${num(k / 1e6, 2)} billion` : `SDR ${num(k / 1e3, 1)} million`);
+  const yr = (s) => (s ? +String(s).slice(0, 4) : null);
+
+  /* ------------------------------------------------------------ the rows */
+  const AREA = {
+    DEB: "External debt: debt management and arrears",
+    FIN: "Financial sector, monetary policy and central bank",
+    FP: "Fiscal: spending, budgets and the fiscal balance",
+    RTP: "Revenue and taxation",
+    EXT: "External sector: trade, exchange rates, capital flows",
+    SOE: "State-owned enterprises: reform, subsidies and prices",
+    PRI: "Privatization of state-owned enterprises",
+    LAB: "Labour: wages, jobs, pensions, social security",
+    INS: "Institutional reforms (courts, competition, business rules)",
+    ENV: "Environment and access to commons",
+    SP: "Social policies",
+    POV: "Poverty reduction (strategy papers, social spending floors, safety nets)",
+    OTH: "Other",
+  };
+  const KIND = {
+    QPCsTOT: "Quantitative performance criteria (binding numeric targets)",
+    PAsTOT: "Prior actions (binding: must be done before the loan is approved)",
+    SPCsTOT: "Structural performance criteria (binding reforms)",
+    IBsTOT: "Indicative benchmarks (numeric targets, not binding)",
+    SBsTOT: "Structural benchmarks (reforms, not binding)",
+  };
+  const IC = D.imfc.cols, ix = (c) => IC.indexOf(c);
+
+  // Ramps run from dim (few) to bright (many), so the heaviest countries
+  // stand out on the dark backgrounds. Each lender has its own hue; the
+  // Bioluminescent and Hell backgrounds get ramps in their own colours.
+  const RAMPS = {
+    rose:  ["#3B2329", "#55303A", "#71404C", "#8E5260", "#A96877", "#C38591", "#DBAAB2"],
+    plum:  ["#2B2436", "#3D3150", "#52436B", "#685887", "#8270A1", "#9F8EBB", "#C1B3D5"],
+    slate: ["#1E2937", "#28394D", "#344B65", "#43607F", "#587A99", "#7697B2", "#A2BCD0"],
+    teal:  ["#1C2E30", "#243F42", "#2F5256", "#3D676A", "#527E80", "#719A99", "#9CBDBA"],
+    sage:  ["#252C21", "#323C2C", "#435039", "#57654A", "#6E7D5E", "#8C9878", "#B2BB9F"],
+    stone: ["#2C2826", "#3E3835", "#544C47", "#6C625B", "#877C73", "#A69A90", "#CBC0B5"],
+    moss:  ["#1E2A1D", "#2A3A27", "#384C32", "#4A6040", "#5F7651", "#7A8F69", "#A0B38A"],
+    night: ["#0E1A36", "#16295A", "#22407E", "#3A5F9E", "#5E86BC", "#91B2D6", "#D2E2EE"],
+    hell:  ["#2A1B1C", "#3E2526", "#573233", "#734446", "#93605E", "#B78A84", "#DCC3B8"],
+  };
+  const NONE = "rgba(150,150,150,.13)";
+
+  const LAYERS = [];
+  const rowOf = (id) => LAYERS.find((l) => l.id === id);
+
+  // IMF conditions, from the IMF Monitor country-year file.
+  LAYERS.push({
+    id: "imfc", lender: "IMF", ramp: "rose", span: D.imfc.years,
+    title: "IMF: conditions written into its loans",
+    plain: "The IMF lends to governments in trouble only if they change policies it chooses: cut spending, raise taxes, sell state companies, free up trade and more. Each demand is a \"condition\". This counts them for each country.",
+    short: "IMF conditions",
+    controls: () => `<select data-k="measure">
+        <option value="BA1TOT">Every condition</option>
+        <option value="BA2TOT">Binding conditions only</option>
+        <optgroup label="By kind of condition">${Object.entries(KIND).map(([k, t]) => `<option value="${k}">${esc(t)}</option>`).join("")}</optgroup>
+        <optgroup label="By policy area, every condition">${Object.entries(AREA).map(([k, t]) => `<option value="BA1${k}">${esc(t)}</option>`).join("")}</optgroup>
+        <optgroup label="By policy area, binding only">${Object.entries(AREA).map(([k, t]) => `<option value="BA2${k}">${esc(t)} (binding)</option>`).join("")}</optgroup>
+      </select>`,
+    unit: (v) => `${num(v)} condition${v === 1 ? "" : "s"}`,
+    values(from, to, o) {
+      const k = ix(o.measure || "BA1TOT"), out = new Map();
+      for (const c of D.imfc.countries_in_dataset) out.set(c, 0);
+      for (const [c, ys] of Object.entries(D.imfc.data)) {
+        let s = 0; for (const [y, r] of Object.entries(ys)) if (+y >= from && +y <= to) s += r[k];
+        out.set(c, s);
+      }
+      return { values: out, unplaced: [] };
+    },
+    popup(c, from, to, o) {
+      const ys = D.imfc.data[c] || {}, k = ix(o.measure || "BA1TOT");
+      const sum = (col) => { let s = 0; for (const [y, r] of Object.entries(ys)) if (+y >= from && +y <= to) s += r[ix(col)]; return s; };
+      const series = []; for (let y = Math.max(from, D.imfc.years[0]); y <= Math.min(to, D.imfc.years[1]); y++) series.push([y, ys[y] ? ys[y][k] : 0]);
+      const tot = sum("BA1TOT");
+      let h = `<div class="big">${num(sum(o.measure || "BA1TOT"))} conditions</div><div class="note">Counting: ${esc(optionText("imfc", o.measure))}</div>`;
+      h += bars(series, "#C38591");
+      if (tot) {
+        h += `<h4>By kind</h4><table>${Object.entries(KIND).map(([kk, t]) => `<tr><td>${esc(t)}${tip(kk)}</td><td class="n">${num(sum(kk))}</td></tr>`).join("")}<tr><td>Every condition${tip("every")}</td><td class="n">${num(tot)}</td></tr></table>`;
+        h += `<h4>By policy area</h4><table><tr><td></td><td class="n">every${tip("every")}</td><td class="n">binding${tip("binding")}</td></tr>${Object.entries(AREA).map(([kk, t]) => `<tr><td>${esc(t)}${tip("BA1" + kk)}</td><td class="n">${num(sum("BA1" + kk))}</td><td class="n">${num(sum("BA2" + kk))}</td></tr>`).join("")}</table>`;
+      }
+      return h;
+    },
+    srcLine: "IMF Monitor conditionality dataset v2.0 (Kentikelenis and Stubbs)",
+    about: `<p>Every condition the IMF attached to its lending programs, counted for each country and year from the IMF's own loan documents (Letters of Intent, Memoranda of Economic and Financial Policies and staff reports). Binding conditions must be met for money to keep flowing: quantitative performance criteria (numeric targets such as limits on spending, borrowing or money supply), prior actions (done before a loan is approved) and structural performance criteria. Benchmarks are tracked but are not binding.</p>
+<p>Coverage: ${D.imfc.years[0]} to ${D.imfc.years[1]}, the years the dataset covers. Total in the file: ${num(D.meta.imfc_total)} conditions. The project's own site gives 65,894 for 1980 to 2019 and its book gives 65,707; this map uses the published country-year file, which sums to ${num(D.meta.imfc_total)}. The file gives policy areas as short codes; their names here follow the categories in the authors' book (for example its "fiscal issues, revenues and taxation" is the sum of the FP and RTP codes).</p>
+<p>Countries in the dataset with no condition in the chosen years are shaded grey.</p>
+<p>Source: Kentikelenis, A. and Stubbs, T. (2023), <i>A Thousand Cuts: Social Protection in the Age of Austerity</i>, Oxford University Press; replication data, IMF Monitor Dataverse, <a href="https://doi.org/10.7910/DVN/DPV99L" target="_blank" rel="noopener">doi:10.7910/DVN/DPV99L</a> (IMFBOOK_Dataset). Methods: Kentikelenis, Stubbs and King (2016), "IMF conditionality and development policy space, 1985–2014", <i>Review of International Political Economy</i> 23(4). Project site: <a href="https://www.imfmonitor.org/conditionality" target="_blank" rel="noopener">imfmonitor.org</a>.</p>
+<p>After 2019: the IMF publishes the conditions of programs from 2002 onward in its Monitoring of Fund Arrangements (MONA) database. It is not on this map yet; the IMF loan row below covers the arrangements themselves through 2026.</p>`,
+  });
+
+  // IMF arrangements, every one the IMF lists plus the additions the dataset documents.
+  const FAC_GROUP = {
+    "Extended Credit Facility": "Concessional (low-interest)", "Structural Adjustment Facility Commitment": "Concessional (low-interest)",
+    "Standby Credit Facility": "Concessional (low-interest)", "Exogenous Shock Facility": "Concessional (low-interest)",
+    "Standby Arrangement": "Non-concessional", "Extended Fund Facility": "Non-concessional", "Flexible Credit Line": "Non-concessional",
+    "Resilience and Sustainability Facility": "Non-concessional", "Precautionary and Liquidity Line": "Non-concessional", "Short-Term Liquidity Line": "Non-concessional",
+    "Rapid Credit Facility": "Rapid payouts and outright purchases", "Rapid Financing Instrument": "Rapid payouts and outright purchases",
+    "Systemic Transformation Facility": "Rapid payouts and outright purchases", "Emergency Natural Disaster Assistance": "Rapid payouts and outright purchases",
+    "Emergency Post-Conflict Assistance": "Rapid payouts and outright purchases",
+  };
+  const A = D.imfa.rows.map((r) => ({ c: r[0], cn: r[1], fac: r[2], ap: r[3], ex: r[4], agreed: r[5], drawn: r[6], out: r[7], src: r[8], note: r[9] }));
+  const facs = [...new Set(A.map((a) => a.fac))];
+  const imfaKeep = (a, o) => !o.off || !o.off.has(a.fac);
+  const inForce = (a, from, to) => yr(a.ap) <= to && (yr(a.ex) || yr(a.ap)) >= from;
+  LAYERS.push({
+    id: "imfa", lender: "IMF", ramp: "plum", span: [1952, Math.max(...A.map((a) => yr(a.ap)))],
+    title: "IMF: loan arrangements",
+    plain: "Every loan deal the IMF has signed with a country since 1952, with how much was agreed, how much was paid out and how much is still owed. Each one came with conditions.",
+    short: "IMF loan arrangements",
+    controls: () => `<select data-k="measure">
+        <option value="approved">Arrangements approved in these years</option>
+        <option value="force">Arrangements in force at any time in these years</option>
+        <option value="agreed">Amount agreed, approved in these years (SDR)</option>
+      </select>` + checks("fac", groupBy(facs, (f) => FAC_GROUP[f] || "Other"), (f) => `${f} (${A.filter((a) => a.fac === f).length})`),
+    unit: (v, o) => (o.measure === "agreed" ? sdr(v) : `${num(v)} arrangement${v === 1 ? "" : "s"}`),
+    values(from, to, o) {
+      const out = new Map(), unplaced = new Map();
+      for (const a of A) {
+        if (!imfaKeep(a, o)) continue;
+        const hit = o.measure === "force" ? inForce(a, from, to) : yr(a.ap) >= from && yr(a.ap) <= to;
+        if (!hit) continue;
+        const v = o.measure === "agreed" ? a.agreed || 0 : 1;
+        if (a.c && GEO.has(a.c)) out.set(a.c, (out.get(a.c) || 0) + v); else unplaced.set(a.cn, (unplaced.get(a.cn) || 0) + v);
+      }
+      for (const c of new Set(A.map((a) => a.c))) if (c && !out.has(c)) out.set(c, 0);
+      return { values: out, unplaced };
+    },
+    popup(c, from, to, o) {
+      const list = A.filter((a) => a.c === c && imfaKeep(a, o) && (o.measure === "force" ? inForce(a, from, to) : yr(a.ap) >= from && yr(a.ap) <= to))
+        .sort((a, b) => (b.ap || "").localeCompare(a.ap || ""));
+      const series = []; for (let y = Math.max(from, 1952); y <= Math.min(to, 2026); y++) series.push([y, A.filter((a) => a.c === c && imfaKeep(a, o) && yr(a.ap) === y).length]);
+      let h = `<div class="big">${list.length} arrangement${list.length === 1 ? "" : "s"} ${o.measure === "force" ? "in force" : "approved"}</div>` + bars(series, "#9F8EBB", "approved per year");
+      h += list.map((a) => `<div class="item"><b>${esc(a.fac)}</b>${tip("ck_" + a.fac.toLowerCase().replace(/[^a-z]/g, "")) || tip(FAC_GROUP[a.fac] === "Rapid payouts and outright purchases" ? "rapid" : /^Concessional/.test(FAC_GROUP[a.fac] || "") ? "concessional" : "nonconcessional")}<br><span class="m">Approved ${esc(a.ap || "–")}, ${a.ex ? "expires or expired " + esc(a.ex) : "no expiry given"}</span><br>Agreed ${sdr(a.agreed)}${tip("sdr")}; drawn ${sdr(a.drawn)}${a.out != null ? `; still owed ${sdr(a.out)} at ${esc(D.imfa.as_of)}` : ""}${a.note ? `<br><span class="m">${esc(a.note)}</span>` : ""}</div>`).join("");
+      return h;
+    },
+    srcLine: "IMF History of Lending Commitments, via the IMF Monitor Programs Dataset",
+    about: `<p>Every IMF lending arrangement since 1952: the facility, the date the IMF board approved it, when it expires, and the amounts agreed, drawn and still owed, in Special Drawing Rights (the IMF's unit of account). Each of these loans comes with conditions; the rapid payouts carry fewer. Untick a facility to leave it out.</p>
+<p>Coverage: arrangements approved from 1952 to ${esc(A.reduce((m, a) => (a.ap > m ? a.ap : m), ""))}, as listed by the IMF on ${esc(D.imfa.as_of)}. ${A.length} rows: the IMF's own list, plus 102 the dataset adds with evidence (outright purchases and one arrangement the IMF no longer lists).</p>
+<p>Source: Stubbs, T. (2026), IMF Programs Dataset, 1952–2025 (version October 2026), IMF Monitor, <a href="https://doi.org/10.7910/DVN/V4V1BA" target="_blank" rel="noopener">doi:10.7910/DVN/V4V1BA</a> (IMFMonitor_Programs_Raw), scraped from the IMF's History of Lending Commitments.</p>`,
+  });
+
+  // IMF Resilience and Sustainability Facility reform measures, 2022 onward (Kentikelenis and Stubbs).
+  const R = D.rsf.rows.map((r) => ({ c: r[0], cn: r[1], ad: r[2], dur: r[3], amt: r[4], doc: r[5], text: r[6], mon: r[7], y: r[8], arealong: r[9], area: r[10], mdoc: r[11], mtext: r[12], mmon: r[13], my: r[14] }));
+  const rAreas = [...new Set(R.map((x) => x.area))];
+  const rKeep = (x, o) => !o.off || !o.off.has(x.area);
+  const rYear = (x, o) => (o.measure === "approved" ? yr(x.ad) : x.y);
+  LAYERS.push({
+    id: "rsf", lender: "IMF", ramp: "rose", span: [Math.min(...R.map((x) => yr(x.ad))), Math.max(...R.map((x) => x.y))],
+    title: "IMF: conditions on its climate loans (Resilience and Sustainability Facility)",
+    plain: "Since 2022 the IMF has offered loans for climate and pandemic preparedness. These are the reforms it required in return, word for word.",
+    short: "IMF climate-loan conditions",
+    controls: () => `<select data-k="measure">
+        <option value="due">Reform measures due in these years</option>
+        <option value="approved">Reform measures on loans approved in these years</option>
+      </select>` + checks("area", { "Policy area, as the researchers group them": rAreas }, (k) => `${k.charAt(0) + k.slice(1).toLowerCase()} (${R.filter((x) => x.area === k).length})`),
+    unit: (v) => `${num(v)} reform measure${v === 1 ? "" : "s"}`,
+    values(from, to, o) {
+      const out = new Map(), unplaced = new Map();
+      for (const x of R) {
+        if (!rKeep(x, o)) continue;
+        const y = rYear(x, o); if (y < from || y > to) continue;
+        if (GEO.has(x.c)) out.set(x.c, (out.get(x.c) || 0) + 1); else unplaced.set(x.cn, (unplaced.get(x.cn) || 0) + 1);
+      }
+      return { values: out, unplaced };
+    },
+    popup(c, from, to, o) {
+      const list = R.filter((x) => x.c === c && rKeep(x, o) && rYear(x, o) >= from && rYear(x, o) <= to).sort((a, b) => a.y - b.y);
+      if (!list.length) return `<div class="note">No reform measures in these years.</div>`;
+      const a = list[0];
+      let h = `<div class="big">${list.length} reform measure${list.length === 1 ? "" : "s"}</div><div class="note">Climate loan approved ${esc(a.ad)}, ${a.dur} months, SDR ${num(a.amt, 1)} million.</div>`;
+      h += list.map((x) => `<div class="item">${esc(x.text)}<br><span class="m">Due ${esc(x.mon || "")} ${x.y} · ${esc(x.arealong || x.area)} · IMF document ${esc(x.doc || "–")}</span>${x.mtext ? `<br><span class="m">Changed later (${esc(x.mdoc || "")}, due ${esc(x.mmon || "")} ${esc(x.my || "")}):</span> ${esc(x.mtext)}` : ""}</div>`).join("");
+      return h;
+    },
+    srcLine: "Greening the IMF dataset (Kentikelenis and Stubbs)",
+    about: `<p>Every reform measure attached to the IMF's climate loans, the Resilience and Sustainability Facility the IMF started in 2022, with the wording from the IMF's own country reports, the date each was due, and the policy area. Where a later IMF review changed a measure, the changed wording is shown too. These are the only IMF conditions after 2019 on this map so far (see the first IMF row).</p>
+<p>Coverage: ${R.length} reform measures in ${new Set(R.map((x) => x.c)).size} countries, on climate loans approved from ${esc(R.reduce((m, x) => (x.ad < m ? x.ad : m), "9999"))} to ${esc(R.reduce((m, x) => (x.ad > m ? x.ad : m), ""))}, due from ${Math.min(...R.map((x) => x.y))} to ${Math.max(...R.map((x) => x.y))}. Choose whether a measure counts in the year it was due or the year its loan was approved.</p>
+<p>Source: Kentikelenis, A. and Stubbs, T., <i>Greening the International Monetary Fund</i>, replication data, IMF Monitor Dataverse, <a href="https://doi.org/10.7910/DVN/8BSKWO" target="_blank" rel="noopener">doi:10.7910/DVN/8BSKWO</a> (GREENBOOK_Ch2_RSFConditions).</p>`,
+  });
+
+  // IMF programs: whether conditions were met (Reinsberg, Stubbs and Kentikelenis).
+  const G = D.gove.rows.map((r) => ({ c: r[0], y: r[1], doc: r[2], fac: r[3], dur: r[4], bind: r[5], waiv: r[6], fb: r[7], fn: r[8], ip: r[9], it: r[10], iy: r[11], sdr: r[12], drawn: r[13] }));
+  const GM = {
+    waiv: ["Waivers: binding conditions missed that the IMF board excused", (x) => x.waiv],
+    perm: ["Programs stopped for good before they ended", (x) => (x.ip ? 1 : 0)],
+    temp: ["Programs held up for a time", (x) => (x.it ? 1 : 0)],
+    fn: ["Conditions not met, narrow count (programs the authors coded in detail)", (x) => x.fn],
+    fb: ["Conditions not met, broad count (programs the authors coded in detail)", (x) => x.fb],
+    bind: ["Binding conditions in these programs", (x) => x.bind],
+    progs: ["Programs", () => 1],
+  };
+  LAYERS.push({
+    id: "gove", lender: "IMF", ramp: "plum", span: [Math.min(...G.map((x) => x.y)), Math.max(...G.map((x) => x.y))],
+    title: "IMF: conditions missed, waived, and programs stopped",
+    plain: "What happened after the conditions were set: how often countries missed them, how often the IMF let it slide, and how often the money was cut off.",
+    short: "IMF programs: conditions missed and programs stopped",
+    controls: () => `<select data-k="measure">${Object.entries(GM).map(([k, [t]]) => `<option value="${k}">${esc(t)}</option>`).join("")}</select>`,
+    unit: (v, o) => `${num(v)} ${o.measure === "waiv" ? "waiver" + (v === 1 ? "" : "s") : o.measure === "fn" || o.measure === "fb" || o.measure === "bind" ? "condition" + (v === 1 ? "" : "s") : "program" + (v === 1 ? "" : "s")}`,
+    values(from, to, o) {
+      const f = GM[o.measure || "waiv"][1], out = new Map(), unplaced = new Map();
+      for (const x of G) {
+        if (x.y < from || x.y > to) continue;
+        const v = f(x); if (v == null) continue;
+        if (GEO.has(x.c)) out.set(x.c, (out.get(x.c) || 0) + v); else unplaced.set(NAMEOF[x.c] || x.c, (unplaced.get(NAMEOF[x.c] || x.c) || 0) + v);
+      }
+      for (const x of G) if (GEO.has(x.c) && !out.has(x.c) && x.y >= from && x.y <= to) out.set(x.c, 0);
+      return { values: out, unplaced };
+    },
+    popup(c, from, to, o) {
+      const list = G.filter((x) => x.c === c && x.y >= from && x.y <= to).sort((a, b) => b.y - a.y);
+      const v = (n) => (n == null ? "not coded" : num(n));
+      let h = `<div class="big">${list.length} program${list.length === 1 ? "" : "s"} approved in these years</div>`;
+      h += list.map((x) => `<div class="item"><b>${esc(x.fac || "Facility not given")}</b>, approved ${x.y} (IMF board meeting ${esc(x.doc)}), ${x.dur != null ? num(x.dur) + " months" : "length not given"}, SDR ${num(x.sdr, 1)} million agreed, ${num(x.drawn, 1)} million drawn<br>
+        <span class="m">Binding conditions${tip("binding")} ${v(x.bind)} · waivers${tip("waiver")} ${v(x.waiv)} · not met (narrow / broad)${tip("notmet")} ${v(x.fn)} / ${v(x.fb)}</span><br>
+        ${x.ip ? `Stopped for good${tip("stopped")}${x.iy ? " in " + x.iy : ""}` : x.it ? `Held up for a time${tip("held")}${x.iy ? " in " + x.iy : ""}` : "Not interrupted"}</div>`).join("");
+      return h;
+    },
+    srcLine: "Reinsberg, Stubbs and Kentikelenis, IMF compliance data",
+    about: `<p>For each IMF program, what happened to its conditions: how many binding conditions the IMF board waived after a country missed them, whether the program was stopped for good or held up for a time, and, for the programs the authors coded condition by condition, how many conditions were not met (counted narrowly and broadly).</p>
+<p>Coverage: ${G.length} programs approved from ${Math.min(...G.map((x) => x.y))} to ${Math.max(...G.map((x) => x.y))}. The condition-by-condition counts exist for ${G.filter((x) => x.fn != null).length} of them; elsewhere they show as "not coded". Counted in the year each program was approved.</p>
+<p>Source: Reinsberg, B., Stubbs, T. and Kentikelenis, A., "Unimplementable by design? Understanding (non-)compliance with International Monetary Fund policy conditionality", <i>Governance</i>; replication data, IMF Monitor Dataverse, <a href="https://doi.org/10.7910/DVN/QTFOGF" target="_blank" rel="noopener">doi:10.7910/DVN/QTFOGF</a>.</p>`,
+  });
+
+  // World Bank policy-based loans, from the World Bank projects database.
+  const W = D.wbp.rows.map((r) => ({ c: r[0], cn: r[1], id: r[2], name: r[3], ins: r[4], ap: r[5], amt: r[6], st: r[7] }));
+  const wins = [...new Set(W.map((w) => w.ins))];
+  const wKeep = (w, o) => !o.off || !o.off.has(w.ins);
+  const wDone = (w) => !!w.ap && w.st !== "Pipeline" && w.st !== "Dropped";
+  const wLast = W.reduce((m, w) => (wDone(w) && w.ap > m ? w.ap : m), "");
+  LAYERS.push({
+    id: "wbp", lender: "World Bank", ramp: "slate", span: [1947, yr(wLast)],
+    title: "World Bank: policy-based loans",
+    plain: "World Bank loans paid straight into a government\u2019s budget once it makes policy changes the Bank asks for, rather than paying for a road or a school.",
+    short: "World Bank policy-based loans",
+    controls: () => `<select data-k="measure">
+        <option value="count">Loans approved in these years</option>
+        <option value="amt">Amount committed (US$)</option>
+      </select>` + checks("ins", { "Lending instrument, as the World Bank names it": wins }, (i) => `${i} (${W.filter((w) => w.ins === i).length})`),
+    unit: (v, o) => (o.measure === "amt" ? usd(v) : `${num(v)} loan${v === 1 ? "" : "s"}`),
+    values(from, to, o) {
+      const out = new Map(), unplaced = new Map();
+      for (const w of W) {
+        if (!wKeep(w, o) || !wDone(w) || yr(w.ap) < from || yr(w.ap) > to) continue;
+        const v = o.measure === "amt" ? w.amt || 0 : 1;
+        if (w.c && GEO.has(w.c)) out.set(w.c, (out.get(w.c) || 0) + v); else unplaced.set(w.cn, (unplaced.get(w.cn) || 0) + v);
+      }
+      for (const c of new Set(W.map((w) => w.c))) if (c && !out.has(c)) out.set(c, 0);
+      return { values: out, unplaced };
+    },
+    popup(c, from, to, o) {
+      const mine = W.filter((w) => w.c === c && wKeep(w, o));
+      const list = mine.filter((w) => wDone(w) && yr(w.ap) >= from && yr(w.ap) <= to).sort((a, b) => b.ap.localeCompare(a.ap));
+      const undated = mine.filter((w) => !wDone(w));
+      const series = []; for (let y = Math.max(from, 1947); y <= Math.min(to, yr(wLast)); y++) series.push([y, mine.filter((w) => wDone(w) && yr(w.ap) === y).length]);
+      let h = `<div class="big">${list.length} loan${list.length === 1 ? "" : "s"}, ${usd(list.reduce((s, w) => s + (w.amt || 0), 0))}</div>` + bars(series, "#7697B2", "approved per year");
+      h += list.map(wItem).join("");
+      if (undated.length) h += `<h4>Not counted: dropped, still planned, or undated</h4>` + undated.map(wItem).join("");
+      return h;
+    },
+    srcLine: "World Bank projects database",
+    about: `<p>Every World Bank loan, credit or grant made as budget support in return for policy changes: structural and sector adjustment loans (1980s and 1990s), poverty reduction support credits, and development policy loans (from 2004). The conditions are the "prior actions" and earlier "tranche conditions" listed in each loan's program document, linked from each project's page.</p>
+<p>Coverage: ${W.length} operations, approved from 1947 to ${esc(wLast)}. Dropped loans and those still being prepared are not counted on the map but are listed in each country's box (a planned loan's date is only its target date).</p>
+<p>After ${esc(D.meta.wbp_v2_last)}: the version of the World Bank's projects index that names each loan's lending instrument stops at that date. Loans approved since then come from the World Bank's newer index, which has no instrument field, so they are included only when the World Bank's own project name calls them a development policy operation (DPF, DPO, DPL, DPC, Cat DDO, policy-based guarantee and so on); they are marked "Named as a development policy operation". Tested on 2005 to 2024, where the instrument is known, this rule picked up no loan that was not policy-based but missed about one in five that were, because their names do not say so. Counts for 2025 and 2026 are therefore low by roughly that much.</p>
+<p>The text of a loan's conditions, where the researchers below extracted it from the signed legal agreement, opens from the loan in each country's box (${num(Object.keys(D.wbtext).length)} loans). It is the agreement's wording as extracted, including some surrounding schedules.</p>
+<p>Counted by this map, not published by the World Bank: for ${num(Object.values(D.wbown).filter((v) => v != null).length)} of the ${num(Object.keys(D.wbown).length)} loans with agreement text, the box gives a count of conditions. The rule: find each heading of the required-actions list in the text ("Actions Taken", "Prior Actions", "Program Actions", "Conditions of Release", "Tranche Release Conditions" and similar), skip the ones that are only definitions, stop at the repayment and procurement schedules, and count the numbered items, or the lettered ones if there are more. The other loans' texts have no list this rule can read, and are left uncounted. Checked against the researchers' own counts for the ${num(473)} loans both cover: this rule counts fewer on average (8.5 against 10.9), is within two of theirs for ${num(204)} loans, and the two agree only loosely (correlation 0.33), so treat it as a rough guide, not a figure from the World Bank.</p>
+<p>Sources: World Bank projects database, <a href="https://search.worldbank.org/api/v2/projects" target="_blank" rel="noopener">projects index (with lending instrument)</a> and <a href="https://search.worldbank.org/api/v3/projects" target="_blank" rel="noopener">newer projects index</a>. Agreement texts: Winter, Cormier, Kramarz and Manger (2025), replication data <a href="https://doi.org/10.7910/DVN/AF3EZP" target="_blank" rel="noopener">doi:10.7910/DVN/AF3EZP</a> (conditions_to_share_full).</p>`,
+  });
+
+  // World Bank conditions counted in loan agreements (Winter, Cormier, Kramarz and Manger).
+  const C = D.wbc.rows.map((r) => ({ c: r[0], id: r[1], y: r[2], ins: r[3], pol: r[4], n: r[5], topic: r[6], dt: r[7], amt: r[8] }));
+  const TOPIC = { X1_Financial_Reform: "Financial reform", X2_Trade_and_Investment: "Trade and investment", X3_Fiscal_Reform: "Fiscal reform", X4_Governance: "Governance", X5_Social_Spending: "Social spending", X6_Borrower_Ownership: "Borrower ownership" };
+  const wName = Object.fromEntries(W.map((w) => [w.id, w.name]));
+  const cKeep = (x, o) => !o.off || !o.off.has(x.pol ? "Policy-based (adjustment) loans" : "Investment and other loans");
+  LAYERS.push({
+    id: "wbc", lender: "World Bank", ramp: "teal", span: [Math.min(...C.map((x) => x.y)), Math.max(...C.map((x) => x.y))],
+    title: "World Bank: conditions counted in loan agreements",
+    plain: "How many conditions were written into the signed contracts of World Bank loans, counted by university researchers.",
+    short: "World Bank loan-agreement conditions",
+    controls: () => `<select data-k="measure">
+        <option value="n">Conditions</option>
+        <option value="loans">Loans with conditions</option>
+      </select>` + checks("pol", { "Kind of loan": ["Policy-based (adjustment) loans", "Investment and other loans"] }, (k) => `${k} (${C.filter((x) => (x.pol ? "Policy-based (adjustment) loans" : "Investment and other loans") === k).length} loans)`),
+    unit: (v, o) => (o.measure === "loans" ? `${num(v)} loan${v === 1 ? "" : "s"}` : `${num(v)} condition${v === 1 ? "" : "s"}`),
+    values(from, to, o) {
+      const out = new Map(), unplaced = new Map();
+      for (const x of C) {
+        if (!cKeep(x, o) || x.y < from || x.y > to) continue;
+        const v = o.measure === "loans" ? 1 : x.n;
+        if (GEO.has(x.c)) out.set(x.c, (out.get(x.c) || 0) + v); else unplaced.set(NAMEOF[x.c] || x.c, (unplaced.get(NAMEOF[x.c] || x.c) || 0) + v);
+      }
+      return { values: out, unplaced };
+    },
+    popup(c, from, to, o) {
+      const list = C.filter((x) => x.c === c && cKeep(x, o) && x.y >= from && x.y <= to).sort((a, b) => b.dt.localeCompare(a.dt));
+      const series = []; for (let y = Math.max(from, this.span[0]); y <= Math.min(to, this.span[1]); y++) series.push([y, C.filter((x) => x.c === c && cKeep(x, o) && x.y === y).reduce((s, x) => s + x.n, 0)]);
+      let h = `<div class="big">${num(list.reduce((s, x) => s + x.n, 0))} conditions in ${list.length} loan${list.length === 1 ? "" : "s"}</div>` + bars(series, "#719A99", "conditions per year");
+      h += list.map((x) => `<div class="item"><a href="https://projects.worldbank.org/en/projects-operations/project-detail/${esc(x.id)}" target="_blank" rel="noopener">${esc(wName[x.id] || x.id)}</a><br><span class="m">${esc(x.id)} · ${esc(x.ins)} · document dated ${esc(x.dt)}</span><br>${num(x.n)} condition${x.n === 1 ? "" : "s"}${x.topic ? `; main topic as the authors classify it: ${esc(TOPIC[x.topic] || x.topic)}` : ""}</div>`).join("");
+      return h;
+    },
+    srcLine: "Winter, Cormier, Kramarz and Manger, loan-agreement conditions",
+    about: `<p>The number of loan-specific conditions written into the legal agreements of World Bank loans, read from the agreements by the researchers. This covers every kind of loan whose agreement they could obtain, not just policy-based ones; for investment loans the conditions are mostly about how the project is run. Untick a kind of loan to leave it out.</p>
+<p>Coverage: ${C.length} loans with ${num(C.reduce((s, x) => s + x.n, 0))} conditions, documents dated ${Math.min(...C.map((x) => x.y))} to ${Math.max(...C.map((x) => x.y))}. These are counts from the legal agreements; they are a different measure from the IMF counts above and should not be added to them.</p>
+<p>Source: Winter, Cormier, Kramarz and Manger (2025), "Reassessing World Bank conditionality: beyond count measures", <i>Political Science Research and Methods</i>, <a href="https://doi.org/10.1017/psrm.2025.19" target="_blank" rel="noopener">doi:10.1017/psrm.2025.19</a>; replication data <a href="https://doi.org/10.7910/DVN/AF3EZP" target="_blank" rel="noopener">doi:10.7910/DVN/AF3EZP</a> (data_wb_conditions). The texts of the conditions are published in the same files and in Cormier and Manger's <a href="https://doi.org/10.7910/DVN/60XKHH" target="_blank" rel="noopener">dataset of 1,242 agreements</a>.</p>`,
+  });
+
+  // IDB policy-based loans and guarantees.
+  const I = D.idb.rows.map((r) => ({ c: r[0], cn: r[1], id: r[2], name: r[3], ap: r[4], amt: r[5], st: r[6], mod: r[7], ins: r[8], sec: r[9] }));
+  const iKind = (x) => x.mod || x.ins || "Not given";
+  const iKinds = [...new Set(I.map(iKind))];
+  const iKeep = (x, o) => !o.off || !o.off.has(iKind(x));
+  const iLast = I.reduce((m, x) => (x.ap && x.ap > m ? x.ap : m), "");
+  LAYERS.push({
+    id: "idb", lender: "IDB", ramp: "sage", span: [yr(I.reduce((m, x) => (x.ap && x.ap < m ? x.ap : m), "9999")), yr(iLast)],
+    title: "Inter-American Development Bank: policy-based loans",
+    plain: "The Inter-American Development Bank\u2019s loans to Latin American and Caribbean governments, paid into the budget once agreed policy changes are made.",
+    short: "IDB policy-based loans",
+    controls: () => `<select data-k="measure">
+        <option value="count">Loans approved in these years</option>
+        <option value="amt">Amount approved (US$)</option>
+      </select>` + checks("mod", { "Kind, as the IDB names it": iKinds }, (k) => `${k} (${I.filter((x) => iKind(x) === k).length})`),
+    unit: (v, o) => (o.measure === "amt" ? usd(v) : `${num(v)} loan${v === 1 ? "" : "s"}`),
+    values(from, to, o) {
+      const out = new Map(), unplaced = new Map();
+      for (const x of I) {
+        if (!iKeep(x, o) || !x.ap || yr(x.ap) < from || yr(x.ap) > to) continue;
+        const v = o.measure === "amt" ? x.amt || 0 : 1;
+        if (x.c && GEO.has(x.c)) out.set(x.c, (out.get(x.c) || 0) + v); else unplaced.set(x.cn, (unplaced.get(x.cn) || 0) + v);
+      }
+      for (const c of new Set(I.map((x) => x.c))) if (c && !out.has(c)) out.set(c, 0);
+      return { values: out, unplaced };
+    },
+    popup(c, from, to, o) {
+      const mine = I.filter((x) => x.c === c && iKeep(x, o));
+      const list = mine.filter((x) => x.ap && yr(x.ap) >= from && yr(x.ap) <= to).sort((a, b) => b.ap.localeCompare(a.ap));
+      const series = []; for (let y = Math.max(from, this.span[0]); y <= Math.min(to, this.span[1]); y++) series.push([y, mine.filter((x) => yr(x.ap) === y).length]);
+      let h = `<div class="big">${list.length} loan${list.length === 1 ? "" : "s"}, ${usd(list.reduce((s, x) => s + (x.amt || 0), 0))}</div>` + bars(series, "#8C9878", "approved per year");
+      h += list.map((x) => `<div class="item"><a href="https://www.iadb.org/en/project/${esc(x.id)}" target="_blank" rel="noopener">${esc(x.name)}</a><br><span class="m">${esc(x.id)} · ${esc(iKind(x))} · ${esc(x.sec)} · approved ${esc(x.ap)} · ${esc(x.st)}</span><br>${usd(x.amt)}</div>`).join("");
+      return h;
+    },
+    srcLine: "IDB projects list (IDB open data)",
+    about: `<p>Every loan and guarantee the Inter-American Development Bank lists as policy-based: money paid to a government's budget once agreed policy reforms are made. Each project's page lists its policy conditions in the loan proposal. Untick a kind to leave it out.</p>
+<p>Coverage: ${I.length} operations approved from ${esc(I.reduce((m, x) => (x.ap && x.ap < m ? x.ap : m), "9999"))} to ${esc(iLast)}, in Latin America and the Caribbean (the IDB's borrowers), including those cancelled or still in preparation. Operations the IDB files under "Regional" have no single country and are listed under this row.</p>
+<p>Source: Inter-American Development Bank, <a href="https://data.iadb.org/dataset/idb-projects-dataset" target="_blank" rel="noopener">IDB Projects Dataset</a> (English list), every row whose lending instrument is "Policy-Based Loan" or whose modality is a policy-based loan, programmatic policy-based loan, deferred drawdown policy-based loan or policy-based guarantee.</p>`,
+  });
+
+  // ---------------------------------------------------------------- OECD: budget support from every lender that reports to the OECD
+  const O = D.crs.rows.map((r) => ({ c: r[0], dn: r[1], y: r[2], mod: r[3], kind: r[4], v: r[5], title: r[6], ag: r[7], id: r[8] }));
+  const ON = D.crs.names;
+  const oGroup = (code) => (/^5IMF/.test(code) ? "IMF" : /^5WB/.test(code) ? "World Bank" : /^5IDB/.test(code) ? "Inter-American Development Bank" : /^4EU/.test(code) ? "European Union institutions"
+    : /^(5|9OTH)/.test(code) ? "Other development banks and funds" : /^1UN/.test(code) ? "United Nations agencies" : /^9PRIV/.test(code) ? "Private foundations" : "Governments");
+  const oDonors = [...new Set(O.map((x) => x.dn))].sort((a, b) => (ON[a] || a).localeCompare(ON[b] || b));
+  const oKeep = (x, o) => !o.off || !o.off.has(ON[x.dn] || x.dn);
+  LAYERS.push({
+    id: "oecd", lender: "OECD", ramp: "slate", span: [Math.min(...O.map((x) => x.y)), Math.max(...O.map((x) => x.y))],
+    title: "Every lender: money paid straight into government budgets",
+    short: "budget support from every lender reporting to the OECD",
+    plain: `Money a lender pays straight into a government's budget, instead of paying for a set project. Lenders nearly always tie this kind of money to policy changes. This row covers ${oDonors.length} lenders that report to the OECD: governments such as Japan, the United States, Germany and Saudi Arabia, the EU, and the development banks of Asia, Africa, Latin America and the Middle East.`,
+    controls: () => `<select data-k="measure">
+        <option value="usd">Amount committed (US$)</option>
+        <option value="n">Number of payments</option>
+      </select>` + checks("donor", groupBy(oDonors, oGroup), (d) => `${ON[d] || d} (${O.filter((x) => x.dn === d).length})`, (d) => ON[d] || d),
+    unit: (v, o) => (o.measure === "n" ? `${num(v)} payment${v === 1 ? "" : "s"}` : usd(v * 1e6)),
+    fmt: (v, o) => (o.measure === "n" ? num(v) : usd(v * 1e6)),
+    values(from, to, o) {
+      const out = new Map(), unplaced = new Map();
+      for (const x of O) {
+        if (!oKeep(x, o) || x.y < from || x.y > to) continue;
+        const v = o.measure === "n" ? 1 : x.v;
+        if (GEO.has(x.c)) out.set(x.c, (out.get(x.c) || 0) + v); else unplaced.set(ON[x.c] || x.c, (unplaced.get(ON[x.c] || x.c) || 0) + v);
+      }
+      return { values: out, unplaced };
+    },
+    popup(c, from, to, o) {
+      const list = O.filter((x) => x.c === c && oKeep(x, o) && x.y >= from && x.y <= to);
+      const series = []; for (let y = Math.max(from, this.span[0]); y <= Math.min(to, this.span[1]); y++) series.push([y, list.filter((x) => x.y === y).reduce((s, x) => s + x.v, 0)]);
+      const by = groupBy(list, (x) => x.dn);
+      let h = `<div class="big">${usd(list.reduce((s, x) => s + x.v, 0) * 1e6)} in ${num(list.length)} payments</div>` + bars(series.map(([y, v]) => [y, Math.round(v)]), "#7697B2", "US$ million per year");
+      h += Object.entries(by).sort((a, b) => b[1].reduce((s, x) => s + x.v, 0) - a[1].reduce((s, x) => s + x.v, 0)).map(([dn, xs]) =>
+        `<details class="tx"><summary>${esc(ON[dn] || dn)}: ${usd(xs.reduce((s, x) => s + x.v, 0) * 1e6)}, ${xs.length} payment${xs.length === 1 ? "" : "s"}</summary>` +
+        xs.sort((a, b) => b.y - a.y).map((x) => `<div class="item">${esc(x.title || "No title given")}<br><span class="m">${x.y} · ${x.mod === "A01" ? "General budget support" + tip("general") : "Sector budget support" + tip("sector")} · ${esc(x.kind)} · ${usd(x.v * 1e6)}${x.ag ? " · " + esc(x.ag) : ""}${x.id ? " · OECD id " + esc(x.id) : ""}</span></div>`).join("") + `</details>`).join("");
+      return h;
+    },
+    srcLine: "OECD Creditor Reporting System",
+    about: `<p>Every activity that a lender reported to the OECD as budget support (general or for one sector), committed from ${Math.min(...O.map((x) => x.y))} to ${Math.max(...O.map((x) => x.y))}, in US dollars at the prices of each year. These are the records the lenders themselves report; the OECD does not record the conditions attached. Untick a lender to leave it out.</p>
+<p>Coverage: ${num(O.length)} activity-years from ${oDonors.length} lenders. Lenders that do not report to the OECD, or report no budget support, are not here: China (see the China rows), the Islamic Development Bank and the European Bank for Reconstruction and Development among them. Payments to a region rather than a country are listed under this row.</p>
+<p>Source: OECD, Creditor Reporting System (CRS), dataflow DSD_CRS@DF_CRS version 1.7, project-level commitments with aid type A01 (general budget support) or A02 (sector budget support), read through the <a href="https://sdmx.oecd.org/dcd-public/rest/" target="_blank" rel="noopener">OECD data API</a> on 23 October 2026.</p>`,
+  });
+
+  // ---------------------------------------------------------------- EU and euro-area rescue and assistance programmes
+  const E = D.eu.rows.map((r) => ({ c: r[0], cn: r[1], d: r[2], ins: r[3], form: r[4], amt: r[5], disb: r[6], ref: r[7], note: r[8], src: r[9], url: r[10] }));
+  const eKind = (x) => (/macro-financial/i.test(x.ins) ? "EU macro-financial assistance (neighbouring countries)" : /balance-of-payments/i.test(x.ins) ? "EU balance-of-payments loans (EU members outside the euro)" : "Euro-area rescue programmes (Greece, Ireland, Portugal, Spain, Cyprus)");
+  const eKinds = [...new Set(E.map(eKind))];
+  const eKeep = (x, o) => !o.off || !o.off.has(eKind(x));
+  const eur = (m) => (m == null ? "amount not given" : m >= 1000 ? `€${num(m / 1000, 2)} billion` : `€${num(m, 1)} million`);
+  LAYERS.push({
+    id: "eu", lender: "EU", ramp: "plum", span: [1990, Math.max(...E.map((x) => yr(x.d)))],
+    title: "EU and euro area: rescue loans paid in stages for reforms",
+    short: "EU and euro-area programmes",
+    plain: "Loans from the EU and euro-area countries to governments in crisis. The money comes in instalments, and each instalment is paid only after the government carries out reforms written into an agreement (a memorandum of understanding).",
+    controls: () => `<select data-k="measure">
+        <option value="n">Programmes agreed in these years</option>
+        <option value="amt">Amount made available (€)</option>
+      </select>` + checks("kind", { "Kind of programme": eKinds }, (k) => `${k} (${E.filter((x) => eKind(x) === k).length})`),
+    unit: (v, o) => (o.measure === "amt" ? eur(v) : `${num(v)} programme${v === 1 ? "" : "s"}`),
+    fmt: (v, o) => (o.measure === "amt" ? eur(v) : num(v)),
+    values(from, to, o) {
+      const out = new Map(), unplaced = new Map();
+      for (const x of E) {
+        if (!eKeep(x, o) || yr(x.d) < from || yr(x.d) > to) continue;
+        const v = o.measure === "amt" ? x.amt || 0 : 1;
+        if (GEO.has(x.c)) out.set(x.c, (out.get(x.c) || 0) + v); else unplaced.set(x.cn, (unplaced.get(x.cn) || 0) + v);
+      }
+      return { values: out, unplaced };
+    },
+    popup(c, from, to, o) {
+      const list = E.filter((x) => x.c === c && eKeep(x, o) && yr(x.d) >= from && yr(x.d) <= to).sort((a, b) => b.d.localeCompare(a.d));
+      return `<div class="big">${list.length} programme${list.length === 1 ? "" : "s"}</div>` + list.map((x) => `<div class="item"><b>${esc(x.ins)}</b>${tip(/macro/i.test(x.ins) ? "mfa" : /balance/i.test(x.ins) ? "bop" : /ESM|EFSF|EFSM|Greek Loan/i.test(x.ins) ? "esm" : "mou")}<br>
+        <span class="m">${esc(x.d)} · ${esc(x.form)}${x.ref ? " · decision " + esc(x.ref) : ""}</span><br>Made available ${eur(x.amt)}${x.disb != null ? `; paid out ${eur(x.disb)}` : ""}${x.note ? `<br><span class="m">${esc(x.note)}</span>` : ""}<br><a href="${esc(x.url)}" target="_blank" rel="noopener">Source</a></div>`).join("");
+    },
+    srcLine: "European Commission and EU Council documents",
+    about: `<p>Every EU macro-financial assistance decision since 1990 (loans and grants to neighbouring countries, paid in tranches against conditions in a memorandum of understanding and only alongside an IMF programme), the EU's balance-of-payments loans to Hungary, Latvia and Romania, and the euro-area rescue programmes for Greece, Ireland, Portugal, Spain and Cyprus. Amounts are the European part only; the IMF's share is in the IMF rows.</p>
+<p>Coverage: ${E.length} decisions and programmes, ${Math.min(...E.map((x) => yr(x.d)))} to ${Math.max(...E.map((x) => yr(x.d)))}. Some programmes were agreed in a named month with no day given; they show the month. Where one decision covered several countries, each country's share is listed under it.</p>
+<p>The European Stability Mechanism publishes each condition of its programmes, with whether it was met, in a <a href="https://www.esm.europa.eu/financial-assistance/programme-database/conditionality" target="_blank" rel="noopener">conditionality dashboard</a>; it cannot be read from here and is not yet on this map.</p>
+<p>Sources: European Commission, report on the implementation of macro-financial assistance in 2025, Annex 2 (<a href="https://data.consilium.europa.eu/doc/document/ST-11024-2026-ADD-1/en/pdf" target="_blank" rel="noopener">Council document ST 11024/26 ADD 1</a>); European Commission, <a href="https://economy-finance.ec.europa.eu/eu-financial-assistance_en" target="_blank" rel="noopener">EU financial assistance</a> country pages.</p>`,
+  });
+
+  // ---------------------------------------------------------------- Paris Club agreements
+  const PC = D.pc.rows.map((r) => ({ c: r[0], cn: r[1], d: r[2], tr: r[3], st: r[4] }));
+  const pcY = (x) => +x.d.slice(-4);
+  const pcTr = [...new Set(PC.map((x) => x.tr))].sort();
+  const pcKeep = (x, o) => !o.off || !o.off.has(x.tr);
+  LAYERS.push({
+    id: "pc", lender: "Gov", ramp: "stone", span: [Math.min(...PC.map(pcY)), Math.max(...PC.map(pcY))],
+    title: "Paris Club: debt deals with creditor governments",
+    short: "Paris Club debt agreements",
+    plain: "The Paris Club is a group of creditor governments (the United States, Japan, France, Germany and others) that renegotiate together when a country cannot pay them. They only make a deal if the country is under an IMF programme, so the IMF's conditions come with every agreement.",
+    controls: () => checks("tr", { "Kind of deal (“treatment”)": pcTr }, (k) => `${k} (${PC.filter((x) => x.tr === k).length})`),
+    unit: (v) => `${num(v)} agreement${v === 1 ? "" : "s"}`,
+    values(from, to, o) {
+      const out = new Map(), unplaced = new Map();
+      for (const x of PC) {
+        if (!pcKeep(x, o) || pcY(x) < from || pcY(x) > to) continue;
+        if (x.c && GEO.has(x.c)) out.set(x.c, (out.get(x.c) || 0) + 1); else unplaced.set(x.cn, (unplaced.get(x.cn) || 0) + 1);
+      }
+      return { values: out, unplaced };
+    },
+    popup(c, from, to, o) {
+      const list = PC.filter((x) => x.c === c && pcKeep(x, o) && pcY(x) >= from && pcY(x) <= to).sort((a, b) => pcY(b) - pcY(a));
+      return `<div class="big">${list.length} agreement${list.length === 1 ? "" : "s"}</div>` + list.map((x) => `<div class="item"><b>${esc(x.tr)}</b>${tip("pc_" + x.tr.toLowerCase().replace(/[^a-z]/g, ""))}<br><span class="m">${esc(x.d)} · ${esc(x.st)}</span></div>`).join("");
+    },
+    srcLine: "Paris Club Secretariat, agreements by debtor country",
+    about: `<p>Every agreement the Paris Club lists with each debtor country since 1956: the date, the kind of treatment (the terms, from plain rescheduling to cancelling most of the debt) and whether it has been repaid. The Paris Club's rule of conditionality means each deal is tied to an IMF programme.</p>
+<p>Coverage: ${PC.length} agreements with ${new Set(PC.map((x) => x.cn)).size} countries, ${Math.min(...PC.map(pcY))} to ${Math.max(...PC.map(pcY))}. Agreements with the former Yugoslavia are listed under this row.</p>
+<p>Source: Paris Club Secretariat (French Treasury), <a href="https://bercy1.applis.finances.gouv.fr/en/agreements-concluded-with-the-paris-club" target="_blank" rel="noopener">Agreements concluded with the Paris Club</a>, by debtor country, read 23 October 2026.</p>`,
+  });
+
+  // ---------------------------------------------------------------- China: AidData's record of Chinese official finance
+  const CN = D.cn.rows.map((r) => ({ c: r[0], cn: r[1], y: r[2], title: r[3], flow: r[4], cls: r[5], st: r[6], amt: r[7], agg: r[8], col: r[9], ins: r[10], gua: r[11], resc: r[12], bop: r[13], rate: r[14], mat: r[15], grace: r[16], ag: r[17], id: r[18] }));
+  const cnFlows = [...new Set(CN.map((x) => x.flow))];
+  const cnKeep = (x, o) => (!o.off || !o.off.has(x.flow)) && (!o.only || o.only === "all" || (o.only === "col" ? x.col === "Yes" : o.only === "resc" ? x.resc === "Yes" : o.only === "bop" ? x.bop === "Yes" : x.agg === "Yes"));
+  LAYERS.push({
+    id: "cn", lender: "Gov", ramp: "rose", span: [Math.min(...CN.filter((x) => x.y).map((x) => x.y)), Math.max(...CN.filter((x) => x.y).map((x) => x.y))],
+    title: "China: loans and grants from Chinese state lenders",
+    short: "Chinese official lending",
+    plain: "Loans and grants from Chinese government banks and agencies to other countries, tracked one by one by the research lab AidData. Chinese loans rarely come with policy conditions like the IMF's; instead many are secured on a country's oil, mining or other income. Use the menu to show only those secured loans, or rescue loans.",
+    controls: () => `<select data-k="measure">
+        <option value="n">Number of records</option>
+        <option value="usd">Amount (US$)</option>
+      </select><select data-k="only">
+        <option value="all">Every record AidData publishes</option>
+        <option value="agg">Only those AidData recommends for totals</option>
+        <option value="col">Only loans secured with collateral</option>
+        <option value="resc">Only rescue loans</option>
+        <option value="bop">Only foreign-exchange and balance-of-payments loans</option>
+      </select>` + checks("flow", { "Kind of finance": cnFlows }, (k) => `${k} (${CN.filter((x) => x.flow === k).length})`),
+    unit: (v, o) => (o.measure === "usd" ? usd(v) : `${num(v)} record${v === 1 ? "" : "s"}`),
+    fmt: (v, o) => (o.measure === "usd" ? usd(v) : num(v)),
+    values(from, to, o) {
+      const out = new Map(), unplaced = new Map();
+      for (const x of CN) {
+        if (!cnKeep(x, o) || !x.y || x.y < from || x.y > to) continue;
+        const v = o.measure === "usd" ? x.amt || 0 : 1;
+        if (x.c && GEO.has(x.c)) out.set(x.c, (out.get(x.c) || 0) + v); else unplaced.set(x.cn, (unplaced.get(x.cn) || 0) + v);
+      }
+      return { values: out, unplaced };
+    },
+    popup(c, from, to, o) {
+      const list = CN.filter((x) => x.c === c && cnKeep(x, o) && x.y && x.y >= from && x.y <= to).sort((a, b) => b.y - a.y || (b.amt || 0) - (a.amt || 0));
+      const series = []; for (let y = Math.max(from, this.span[0]); y <= Math.min(to, this.span[1]); y++) series.push([y, list.filter((x) => x.y === y).length]);
+      const yes = (v) => v === "Yes";
+      let h = `<div class="big">${num(list.length)} records, ${usd(list.reduce((s, x) => s + (x.amt || 0), 0))}</div>` + bars(series, "#C38591", "records per year");
+      h += `<table><tr><td>Secured with collateral${tip("collateral")}</td><td class="n">${list.filter((x) => yes(x.col)).length}</td></tr><tr><td>Rescue loans${tip("rescue")}</td><td class="n">${list.filter((x) => yes(x.resc)).length}</td></tr><tr><td>Insurance required${tip("insurance")}</td><td class="n">${list.filter((x) => yes(x.ins)).length}</td></tr></table>`;
+      h += list.map((x) => `<div class="item"><a href="https://china.aiddata.org/projects/${x.id}" target="_blank" rel="noopener">${esc(x.title)}</a><br><span class="m">${x.y} · ${esc(x.flow)} · ${esc(x.st)} · ${x.amt != null ? usd(x.amt) : "amount not given"}${x.rate != null ? ` · interest ${num(x.rate, 2)}%` : ""}${x.mat != null ? ` · ${num(x.mat, 1)} years to repay` : ""}${yes(x.col) ? " · secured with collateral" : ""}${yes(x.resc) ? " · rescue loan" : ""}${x.ag ? " · " + esc(x.ag) : ""}</span></div>`).join("");
+      return h;
+    },
+    srcLine: "AidData, Global Chinese Development Finance Dataset 3.0",
+    about: `<p>Every record in AidData's dataset of Chinese government-financed loans and grants to ${new Set(CN.map((x) => x.cn)).size} countries and regions, committed from ${Math.min(...CN.filter((x) => x.y).map((x) => x.y))} to ${Math.max(...CN.filter((x) => x.y).map((x) => x.y))}, with amount, status, lender, terms and whether the loan was secured with collateral or was a rescue loan. AidData marks some records as not for adding up (for example pledges and duplicates of umbrella agreements); the menu can show only the ones it recommends for totals. Amounts are in US dollars at the prices of each year (AidData's adjusted amount where given).</p>
+<p>Coverage: ${num(CN.length)} records. Each title links to its AidData page with the sources.</p>
+<p>Source: AidData's Global Chinese Development Finance Dataset, Version 3.0 (released 7 November 2023); Custer, S. et al. (2023), <i>Tracking Chinese Development Finance: An Application of AidData's TUFF 3.0 Methodology</i>, AidData at William &amp; Mary; <a href="https://www.aiddata.org/data/aiddatas-global-chinese-development-finance-dataset-version-3-0" target="_blank" rel="noopener">aiddata.org</a>.</p>`,
+  });
+
+  // ---------------------------------------------------------------- How China Lends 2.0: clauses in 371 contracts
+  const HC = D.hcl.rows.map((r) => Object.fromEntries(D.hcl.cols.map((k, i) => [k, r[i]])));
+  const HCM = {
+    n: ["Contracts", () => 1], collateral: ["Contracts secured with collateral", (x) => x.collateral === 1],
+    confidentiality_general: ["Contracts with a secrecy clause", (x) => x.confidentiality_general === 1],
+    paris_clause: ["Contracts that keep the loan out of group debt relief (“no Paris Club”)", (x) => x.paris_clause === 1],
+    cross_default: ["Contracts with a cross-default clause", (x) => x.cross_default === 1],
+    escrow_account: ["Contracts with an escrow account the lender controls", (x) => x.escrow_account === 1],
+  };
+  LAYERS.push({
+    id: "hcl", lender: "Gov", ramp: "rose", span: [Math.min(...HC.filter((x) => x.year).map((x) => +x.year)), Math.max(...HC.filter((x) => x.year).map((x) => +x.year))],
+    title: "China: what its loan contracts require (371 contracts)",
+    short: "clauses in Chinese loan contracts",
+    plain: "The fine print of 371 loan contracts between Chinese state lenders and borrowers in 60 countries, read clause by clause by researchers. Many require secrecy, let China demand repayment if the country falls out with China or defaults to anyone else, and keep the loan out of any group debt relief.",
+    controls: () => `<select data-k="measure">${Object.entries(HCM).map(([k, [t]]) => `<option value="${k}">${esc(t)}</option>`).join("")}</select>`,
+    unit: (v) => `${num(v)} contract${v === 1 ? "" : "s"}`,
+    values(from, to, o) {
+      const f = HCM[o.measure || "n"][1], out = new Map(), unplaced = new Map();
+      for (const x of HC) {
+        if (!x.year || +x.year < from || +x.year > to) continue;
+        const v = f(x) ? 1 : 0;
+        if (x.iso3 && GEO.has(x.iso3)) out.set(x.iso3, (out.get(x.iso3) || 0) + v); else unplaced.set(x.borrower_country, (unplaced.get(x.borrower_country) || 0) + v);
+      }
+      return { values: out, unplaced };
+    },
+    popup(c, from, to, o) {
+      const list = HC.filter((x) => x.iso3 === c && x.year && +x.year >= from && +x.year <= to).sort((a, b) => +b.year - +a.year);
+      const yn = (v) => (v === 1 ? "yes" : v === 0 ? "no" : "not known");
+      return `<div class="big">${list.length} contract${list.length === 1 ? "" : "s"}</div>` + list.map((x) => `<div class="item"><b>${esc(x.project_title || x.contract_category || x.contract_id)}</b><br>
+        <span class="m">${esc(x.year)} · ${esc(x.creditor_name)} to ${esc(x.borrower_name)} · ${x.commitment_USD != null ? usd(+x.commitment_USD) : "amount not given"}</span><br>
+        Collateral${tip("collateral")}: ${yn(x.collateral)} · Escrow account${tip("escrow")}: ${yn(x.escrow_account)} · Secrecy clause${tip("secrecy")}: ${yn(x.confidentiality_general)} · No Paris Club${tip("noparis")}: ${yn(x.paris_clause)} · Cross-default${tip("crossdefault")}: ${yn(x.cross_default)}${x.governing_law ? ` · Governing law: ${esc(x.governing_law)}` : ""}
+        ${x.paris_clause_des ? `<br><span class="m">No Paris Club clause: ${esc(x.paris_clause_des)}</span>` : ""}${x["cross-default_des"] ? `<br><span class="m">Cross-default: ${esc(x["cross-default_des"])}</span>` : ""}${x.confidentiality_des_borrower ? `<br><span class="m">Secrecy: ${esc(x.confidentiality_des_borrower)}</span>` : ""}
+        ${x.source ? `<br><a href="${esc(x.source)}" target="_blank" rel="noopener">The contract</a>` : ""}</div>`).join("");
+    },
+    srcLine: "AidData, How China Lends Dataset 2.0",
+    about: `<p>${HC.length} debt contracts between Chinese state-owned lenders and borrowers abroad, coded clause by clause: collateral and escrow accounts, secrecy (confidentiality) clauses, "no Paris Club" clauses, cross-default clauses, penalty interest, governing law and arbitration. Each links to the contract itself.</p>
+<p>Coverage: contracts signed from ${Math.min(...HC.filter((x) => x.year).map((x) => +x.year))} to ${Math.max(...HC.filter((x) => x.year).map((x) => +x.year))}. Counted in the year signed.</p>
+<p>Source: Gelpern, A., Haddad, O., Horn, S., Kintzinger, P., Parks, B.C. and Trebesch, C. (2025), <i>How China Lends 2.0: Introducing an extended dataset of 371 debt contracts</i>, AidData at William &amp; Mary; and Gelpern, A., Horn, S., Morris, S., Parks, B. and Trebesch, C. (2023), "How China Lends: A Rare Look into 100 Debt Contracts with Foreign Governments", <i>Economic Policy</i> 38(114): 345–416. Data: <a href="https://www.aiddata.org/data/how-china-lends-dataset-version-2-0" target="_blank" rel="noopener">aiddata.org</a>.</p>`,
+  });
+
+  // ---------------------------------------------------------------- Together: every conditional deal on this map, counted
+  const ALLK = ["IMF arrangements", "World Bank policy-based loans", "IDB policy-based loans", "EU and euro-area programmes", "Paris Club agreements", "Chinese state loans (AidData)", "Budget support from other lenders (OECD)"];
+  const OTHER = (x) => !/^(5IMF|5WB|5IDB|4EU)/.test(x.dn);
+  const SRC = [
+    (c, f, t) => A.filter((a) => (c === null || a.c === c) && yr(a.ap) >= f && yr(a.ap) <= t).map((a) => [a.c, a.cn]),
+    (c, f, t) => W.filter((w) => (c === null || w.c === c) && wDone(w) && yr(w.ap) >= f && yr(w.ap) <= t).map((w) => [w.c, w.cn]),
+    (c, f, t) => I.filter((x) => (c === null || x.c === c) && x.ap && yr(x.ap) >= f && yr(x.ap) <= t).map((x) => [x.c, x.cn]),
+    (c, f, t) => E.filter((x) => (c === null || x.c === c) && yr(x.d) >= f && yr(x.d) <= t).map((x) => [x.c, x.cn]),
+    (c, f, t) => PC.filter((x) => (c === null || x.c === c) && pcY(x) >= f && pcY(x) <= t).map((x) => [x.c, x.cn]),
+    (c, f, t) => CN.filter((x) => (c === null || x.c === c) && x.flow === "Loan" && x.y && x.y >= f && x.y <= t).map((x) => [x.c, x.cn]),
+    (c, f, t) => O.filter((x) => (c === null || x.c === c) && OTHER(x) && x.y >= f && x.y <= t).map((x) => [x.c, ON[x.c] || x.c]),
+  ];
+  LAYERS.push({
+    id: "all", lender: "All", ramp: "stone", span: [1947, 2026],
+    title: "Every lender: deals that came with strings attached",
+    short: "conditional deals from every lender",
+    plain: "Every loan, rescue or debt deal on this map that came with strings attached, from every lender, added up for each country. Lighter means more deals. Untick a lender to leave it out, and pick any other row for the details.",
+    controls: () => checks("lender", { "Count these": ALLK }, (k) => k),
+    unit: (v) => `${num(v)} deal${v === 1 ? "" : "s"}`,
+    values(from, to, o) {
+      const out = new Map(), unplaced = new Map(), on = (k) => !o.off || !o.off.has(k);
+      ALLK.forEach((k, i) => { if (!on(k)) return; for (const [c, cn] of SRC[i](null, from, to)) { if (c && GEO.has(c)) out.set(c, (out.get(c) || 0) + 1); else unplaced.set(cn, (unplaced.get(cn) || 0) + 1); } });
+      return { values: out, unplaced };
+    },
+    popup(c, from, to, o) {
+      const on = (k) => !o.off || !o.off.has(k);
+      const p = ALLK.map((k, i) => (on(k) ? SRC[i](c, from, to).length : 0));
+      return `<div class="big">${num(p.reduce((s, v) => s + v, 0))} deals</div><table>${ALLK.map((k, i) => `<tr><td>${k}${tip("all_" + i)}</td><td class="n">${num(p[i])}</td></tr>`).join("")}</table><div class="note">Pick a lender's own row for the list of deals and their conditions.</div>`;
+    },
+    srcLine: "every lender's row below, added together",
+    about: `<p>One count per deal: each IMF arrangement, World Bank policy-based loan, IDB policy-based loan, EU or euro-area programme, Paris Club agreement and Chinese state loan, plus each budget-support payment that other lenders reported to the OECD (Japan, the United States, Germany, Saudi Arabia, the Asian and African Development Banks and the rest; the IMF, World Bank, IDB and EU entries there are left out so they are not counted twice). Untick any of them.</p>
+<p>This adds up deals, not conditions: the lenders count conditions in different ways, and most do not publish them at all. The World Bank part ends in December 2024 for loans whose names do not say they are policy loans (see its row); the OECD part covers 2000 to 2025, the Chinese part 2000 to 2021.</p>`,
+  });
+
+  // ---------------------------------------------------------------- IMF before 1980: this map's own coding of the board papers
+  const EA = D.imfearly.rows.map((r) => Object.fromEntries(D.imfearly.cols.map((k, i) => [k, r[i]])));
+  const EKIND = { QPC: "Binding number to hit (a ceiling or floor)", SPC: "Binding policy step or rule", "IB/SB": "Watched target: missing it means talks, not a stop" };
+  const eaKeep = (c, o) => !o.off || (!o.off.has(EKIND[c[0]]) && !o.off.has(AREA[c[1]] || c[1]));
+  LAYERS.push({
+    id: "imfearly", lender: "IMF", ramp: "rose", span: [1952, 1981],
+    title: "IMF before 1980: conditions read from its board papers",
+    short: "IMF conditions before 1980 (this map's own count)",
+    plain: "No database lists the IMF's conditions before 1980, so this map read them from the IMF's own board papers: for each loan, the clause that says when the money stops, and the targets it points to. Counted by this map, not by the IMF.",
+    controls: () => checks("ek", { "Kind of condition": Object.values(EKIND), "Policy area": [...new Set(EA.flatMap((a) => a.conds.map((c) => AREA[c[1]] || c[1])))].sort() }, (k) => k),
+    unit: (v) => `${num(v)} condition${v === 1 ? "" : "s"}`,
+    values(from, to, o) {
+      const out = new Map(), unplaced = new Map();
+      for (const a of EA) {
+        const y = +a.approved.slice(0, 4); if (y < from || y > to) continue;
+        const n = a.conds.filter((c) => eaKeep(c, o)).length;
+        if (a.iso3 && GEO.has(a.iso3)) out.set(a.iso3, (out.get(a.iso3) || 0) + n); else unplaced.set(a.country, (unplaced.get(a.country) || 0) + n);
+      }
+      return { values: out, unplaced };
+    },
+    popup(c, from, to, o) {
+      const list = EA.filter((a) => a.iso3 === c && +a.approved.slice(0, 4) >= from && +a.approved.slice(0, 4) <= to).sort((a, b) => b.approved.localeCompare(a.approved));
+      const tot = list.reduce((s, a) => s + a.conds.filter((x) => eaKeep(x, o)).length, 0);
+      return `<div class="big">${num(tot)} conditions in ${list.length} loan${list.length === 1 ? "" : "s"}</div><div class="note">Counted by this map from the IMF's board papers${tip("early")}</div>` +
+        list.map((a) => `<div class="item"><b>${esc(a.facility)}</b>, approved ${esc(a.approved)}<br><span class="m">${esc(a.status === "Coded" ? "Conditions found in the papers" : a.status)}${a.conds.length ? ` · ${a.conds.filter((x) => eaKeep(x, o)).length} conditions` : ""}</span>` +
+          (a.conds.length ? `<table>${a.conds.filter((x) => eaKeep(x, o)).map((x) => `<tr><td>${esc(EKIND[x[0]] || x[0])}${tip("e_" + x[0].replace("/", ""))}<br><span class="m">${esc(AREA[x[1]] || x[1])}${x[2] != null ? ` · paragraph ${x[2]}` : ""}</span></td></tr><tr><td class="m">${esc(x[3])}</td></tr>`).join("")}</table>` : "") +
+          (a.clause ? `<details class="tx"><summary>The clause that stops the money, as written</summary><div class="txt">${esc(a.clause)}</div></details>` : "") +
+          a.docs.map((d) => `<a href="${esc(d[2])}" target="_blank" rel="noopener">${esc(d[0])}: ${esc(d[1])}</a>`).join("<br>") + `</div>`).join("");
+    },
+    srcLine: "IMF Archives, Executive Board papers; counted by this map",
+    about: `<p>The IMF's own condition records (the MONA database, and the IMF Monitor data on the other IMF row) start in 1980 or later. For the ${num(EA.length)} IMF loans approved from 1952 to 1979 that this row covers, this map found the IMF Executive Board papers in the IMF Archives (the request paper with the government's letter, and the final text of the arrangement) and read the conditions from them. This is the map's own coding, not the IMF's.</p>
+<p>The rule. Each arrangement's text has a clause saying when the government may not draw more money, or must first consult the IMF: "During any period of the stand-by arrangement in which (1) the ceilings on credit … are exceeded, or (2) … ". Each item in that clause, and each paragraph of the government's letter it points to, counts as one condition. Items in a clause that stops the money are binding: a number to hit (a ceiling, a floor, a target) or a policy rule (no new exchange restrictions, a reform carried out). Items in a clause that only calls for talks are counted as watched targets. Each condition's policy area comes from the words of the item, or from the opening of the paragraph it points to. Loans in the first credit tranche carried no such clause, by IMF policy then, and show none.</p>
+<p>How far to trust it. The papers are typewritten scans read by machine, so some wording is garbled, and the rule can miss or misplace items. Every loan lists the clause as written and links the papers, so each count can be checked. ${num(EA.filter((a) => /^Papers found/.test(a.status)).length)} loans have papers that set out no list this rule can count (they are listed, with their papers, for reading); ${num(EA.filter((a) => /^No board/.test(a.status)).length)} have no papers found in the archive.</p>
+<p>Source: International Monetary Fund Archives, Executive Board documents (EBS series), <a href="https://archivescatalog.imf.org/" target="_blank" rel="noopener">archivescatalog.imf.org</a>, read October 2026.</p>`,
+  });
+
+  // ---------------------------------------------------------------- IMF: MONA, every structural condition and prior action with whether it was met
+  const MO = D.mona.rows.map((r) => Object.fromEntries(D.mona.cols.map((k, i) => [k, r[i]])));
+  const MSTAT = { M: "Met", NM: "Not met", PM: "Partially met", DL: "Delayed", PC: "Still outstanding at the review", SB: "Still outstanding at the review", PA: "Still outstanding at the review", W: "Waived", MOD: "Modified" };
+  const mStat = (s) => (MSTAT[s] ? MSTAT[s] : /^W?MOD/.test(s) ? (s[0] === "W" ? "Waived and modified" : "Modified") : s);
+  const mGroup = (s) => (s === "M" ? "Met" : s === "NM" ? "Not met" : s === "PM" ? "Partially met" : s === "W" ? "Waived" : /MOD/.test(s) ? "Modified (date or type changed)" : ["SB", "PC", "PA"].includes(s) ? "Still outstanding" : "Other codes, as the IMF gives them (" + s + ")");
+  const mKinds = { SB: "Structural benchmark", PA: "Prior action", SPC: "Structural performance criterion", SAC: "SAC (code as the IMF gives it; not defined in its labels)" };
+  const mGroups = [...new Set(MO.map((x) => mGroup(x.status)))].sort();
+  const mAreas = [...new Set(MO.map((x) => x.area))].sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+  const mKeep = (x, o) => (!o.off || (!o.off.has(mKinds[x.kind] || x.kind) && !o.off.has(mGroup(x.status)))) && (!o.area || o.area === "all" || o.area === x.area);
+  LAYERS.push({
+    id: "mona", lender: "IMF", ramp: "rose", span: D.mona.years,
+    title: "IMF: every reform condition since 2000, and whether it was met",
+    short: "IMF reform conditions (MONA)",
+    plain: "Every reform the IMF required in its programs from 2000 to now, word for word, with what happened at each later check: met, not met, partly met, put off, waived or changed. These are the reform conditions (laws, privatizations, tax and budget changes), not the numeric targets.",
+    controls: () => `<select data-k="area"><option value="all">Every policy area</option>${mAreas.map((a) => `<option value="${esc(a)}">${esc(a)}</option>`).join("")}</select>` +
+      checks("kind", { "Kind of condition": Object.keys(mKinds).filter((k) => MO.some((x) => x.kind === k)) }, (k) => `${mKinds[k]} (${MO.filter((x) => x.kind === k).length})`, (k) => mKinds[k]) +
+      checks("status", { "What happened (last check)": mGroups }, (g) => `${g} (${MO.filter((x) => mGroup(x.status) === g).length})`),
+    unit: (v) => `${num(v)} condition${v === 1 ? "" : "s"}`,
+    values(from, to, o) {
+      const out = new Map(), unplaced = new Map();
+      for (const x of MO) {
+        if (!mKeep(x, o) || x.year < from || x.year > to) continue;
+        if (x.iso3 && GEO.has(x.iso3)) out.set(x.iso3, (out.get(x.iso3) || 0) + 1); else unplaced.set(x.country, (unplaced.get(x.country) || 0) + 1);
+      }
+      for (const x of MO) if (x.iso3 && GEO.has(x.iso3) && !out.has(x.iso3) && x.year >= from && x.year <= to) out.set(x.iso3, 0);
+      return { values: out, unplaced };
+    },
+    popup(c, from, to, o) {
+      const list = MO.filter((x) => x.iso3 === c && mKeep(x, o) && x.year >= from && x.year <= to).sort((a, b) => b.year - a.year);
+      const series = []; for (let y = Math.max(from, this.span[0]); y <= Math.min(to, this.span[1]); y++) series.push([y, list.filter((x) => x.year === y).length]);
+      const cnt = groupBy(list, (x) => mGroup(x.status));
+      let h = `<div class="big">${num(list.length)} conditions</div>` + bars(series, "#C38591", "conditions due per year");
+      h += `<table>${Object.entries(cnt).sort((a, b) => b[1].length - a[1].length).map(([g, xs]) => `<tr><td>${esc(g)}${tip("ms_" + g.slice(0, 6).toLowerCase().replace(/[^a-z]/g, ""))}</td><td class="n">${xs.length}</td></tr>`).join("")}</table>`;
+      h += list.map((x) => `<div class="item">${esc(x.text)}<br><span class="m">${esc(mKinds[x.kind] || x.kind)}${tip({ SB: "SBsTOT", PA: "PAsTOT", SPC: "SPCsTOT" }[x.kind])} · due ${esc(x.due)} · ${esc(x.area)} · ${esc(x.arrtype)} approved ${esc(x.approved)}</span><br>Last check: <b>${esc(mStat(x.status))}</b> <span class="m">(${esc(x.status)})</span><details class="tx"><summary>Status at each review</summary><div class="m">${esc(x.history)}</div>${x.comment ? `<div class="m">IMF comment: ${esc(x.comment)}</div>` : ""}</details></div>`).join("");
+      return h;
+    },
+    srcLine: "IMF, Monitoring of Fund Arrangements (MONA)",
+    about: `<p>Every structural performance criterion, prior action and structural benchmark in the IMF's MONA database, which covers arrangements approved from 2000 onward. MONA repeats each condition at every review, with its status then; this map shows each condition once, with its wording, its type, its due date as the IMF writes it, its status at the last review that lists it, and its status at every review (open "Status at each review"). Conditions whose type changed (for example a benchmark made a prior action) appear under each type.</p>
+<p>Coverage: ${num(MO.length)} conditions, from ${num(D.mona.rows_in_file)} rows in the file, due ${D.mona.years[0]} to ${D.mona.years[1]}. Counted in the year due; where there is no date (prior actions, "continuous") or the date is mistyped in the file (two rows), in the year of the IMF board meeting where the condition first appears.</p>
+<p>Status codes: the IMF defines M (met), NM (not met), PM (partially met), DL (delayed), and PC or SB (still outstanding at the review); for numeric targets it defines W (waived) and MOD (modified). Other codes in the file (such as MD, CAN, AC, WC) are not defined in the IMF's labels and are shown as given.</p>
+<p>Source: International Monetary Fund, Monitoring of Fund Arrangements (MONA) database, "Combined SPC PA SB" table, full dataset 2002 to current, <a href="https://www.imf.org/mona/arrangements" target="_blank" rel="noopener">imf.org/mona</a>, downloaded 24 October 2026; column definitions from the IMF's MONA labels and descriptions page.</p>`,
+  });
+
+  // ---------------------------------------------------------------- country-by-year series (World Bank, OECD)
+  const SER = D.ser;
+  function aggOf(s, from, to, agg) {
+    if (!s) return null;
+    let sum = 0, n = 0, last = null, ly = null;
+    for (const [y, v] of Object.entries(s)) { const yy = +y; if (yy < from || yy > to) continue; sum += v; n++; if (ly === null || yy > ly) { ly = yy; last = v; } }
+    if (!n) return null;
+    return agg === "sum" ? { v: sum, n } : agg === "mean" ? { v: sum / n, n } : { v: last, y: ly };
+  }
+  const fmtU = (u, v) => (u === "pct" ? `${num(v, 1)}%` : usd(v));
+  function seriesLayer(cfg) {
+    const M = Object.fromEntries(cfg.measures.map((m) => [m.key, m]));
+    return Object.assign({
+      span: cfg.span, cont: true,
+      controls: () => `<select data-k="measure">${cfg.measures.map((m) => `<option value="${m.key}">${esc(m.label)}</option>`).join("")}</select>` + (cfg.moreControls ? cfg.moreControls() : ""),
+      unit: (v, o) => fmtU(M[o.measure || cfg.measures[0].key].unit, v),
+      fmt: (v, o) => fmtU(M[o.measure || cfg.measures[0].key].unit, v),
+      values(from, to, o) {
+        const m = M[o.measure || cfg.measures[0].key], s = SER[m.key] || {}, out = new Map();
+        for (const [c, ys] of Object.entries(s)) { const a = aggOf(ys, from, to, m.agg); if (a && GEO.has(c)) out.set(c, a.v); }
+        return { values: out, unplaced: new Map(), noTotal: m.agg !== "sum" };
+      },
+      popup(c, from, to, o) {
+        const m = M[o.measure || cfg.measures[0].key], s = (SER[m.key] || {})[c] || {};
+        const series = []; for (let y = Math.max(from, cfg.span[0]); y <= Math.min(to, cfg.span[1]); y++) series.push([y, s[y] != null ? Math.max(0, s[y]) : 0]);
+        const a = aggOf(s, from, to, m.agg);
+        let h = `<div class="big">${a ? fmtU(m.unit, a.v) : "No figure in these years"}</div><div class="note">${esc(m.label)}${a ? (m.agg === "sum" ? `, added up over ${a.n} year${a.n === 1 ? "" : "s"}` : m.agg === "mean" ? `, average of ${a.n} year${a.n === 1 ? "" : "s"}` : `, in ${a.y}`) : ""}</div>`;
+        h += bars(series.map(([y, v]) => [y, Math.round(m.unit === "pct" ? v * 10 : v / 1e6) / (m.unit === "pct" ? 10 : 1)]), "#7697B2", m.unit === "pct" ? "% per year" : "US$ million per year");
+        h += `<table>${cfg.measures.map((mm) => { const aa = aggOf((SER[mm.key] || {})[c], from, to, mm.agg); return `<tr><td>${esc(mm.label)}${tip(mm.tip || "")}</td><td class="n">${aa ? fmtU(mm.unit, aa.v) + (mm.agg === "last" ? ` (${aa.y})` : "") : "–"}</td></tr>`; }).join("")}</table>`;
+        if (cfg.extraPopup) h += cfg.extraPopup(c, from, to, o);
+        return h;
+      },
+    }, cfg);
+  }
+  const wdiSrc = (codes) => `World Bank, World Development Indicators and International Debt Statistics, series ${codes.map((c) => `<a href="https://data.worldbank.org/indicator/${c}" target="_blank" rel="noopener">${c}</a>`).join(", ")}, read through the World Bank data API on 24 October 2026 (data last updated ${esc((D.ser_meta[codes[0]] || {}).updated || "")}).`;
+  const AGGNOTE = "Over a range of years, flows (money moving in a year) are added up, shares are averaged over the years with figures, and debts owed are shown for the latest year in the range.";
+
+  // Foreign direct investment
+  LAYERS.push(seriesLayer({
+    id: "fdi", lender: "Flows", ramp: "slate", span: [1970, 2025],
+    title: "Private investment: foreign companies buying in (FDI)",
+    short: "foreign direct investment",
+    plain: "Foreign direct investment is when a company from abroad buys at least a tenth of a business here, or builds one, and gets a say in running it. Your page puts it at about half of all money going into poorer countries.",
+    measures: [
+      { key: "BX.KLT.DINV.CD.WD", label: "Investment coming in from abroad (US$)", agg: "sum", unit: "usd", tip: "fdi_in" },
+      { key: "BX.KLT.DINV.WD.GD.ZS", label: "Investment coming in, as a share of the economy (% of GDP)", agg: "mean", unit: "pct", tip: "gdp" },
+      { key: "BM.KLT.DINV.CD.WD", label: "Investment going out: this country's companies buying abroad (US$)", agg: "sum", unit: "usd", tip: "fdi_out" },
+    ],
+    srcLine: "World Bank, World Development Indicators",
+    about: `<p>Net foreign direct investment coming into each country, and going out of it, by year, in US dollars at the prices of each year, from balance-of-payments figures. "Net" means new investment minus investment pulled out, so a year can be negative. ${AGGNOTE}</p>
+<p>Profits that foreign owners take back out are not shown here; the World Bank does not publish them by country in this series. For where investment is routed through tax havens, see the Offshore FDI atlas linked on your page.</p><p>Source: ${wdiSrc(["BX.KLT.DINV.CD.WD", "BX.KLT.DINV.WD.GD.ZS", "BM.KLT.DINV.CD.WD"])}</p>`,
+  }));
+
+  // Aid received, with grants by donor
+  const GD = D.grants.donors, GBR = D.grants.by_recipient;
+  LAYERS.push(seriesLayer({
+    id: "aid", lender: "Flows", ramp: "sage", span: [1960, 2024],
+    title: "Grants and gifts: aid received from governments and agencies",
+    short: "aid received",
+    plain: "Official aid a country received: grants that never have to be paid back, and cheap loans, from foreign governments, the EU, the UN and development banks. Click a country to see which donors gave it grants.",
+    measures: [
+      { key: "DT.ODA.ODAT.CD", label: "Aid received, after repayments (US$)", agg: "sum", unit: "usd", tip: "oda" },
+      { key: "DT.ODA.ODAT.GN.ZS", label: "Aid received as a share of national income (% of GNI)", agg: "mean", unit: "pct", tip: "gni" },
+      { key: "BX.GRT.EXTA.CD.WD", label: "Grants, not counting technical help (US$)", agg: "sum", unit: "usd" },
+      { key: "BX.GRT.TECH.CD.WD", label: "Grants paid as technical help and advisers (US$)", agg: "sum", unit: "usd", tip: "tc" },
+    ],
+    extraPopup(c, from, to) {
+      const rows = (GBR[c] || []).filter((r) => r[1] >= from && r[1] <= to);
+      if (!rows.length) return `<div class="note">No grants by donor recorded for these years (the OECD's donor-by-donor figures start in 2002).</div>`;
+      const by = {}; for (const [d, , v] of rows) by[d] = (by[d] || 0) + v;
+      return `<h4>Grants by donor, ${Math.max(from, 2002)} to ${Math.min(to, 2024)}${tip("grants_by_donor")}</h4><table>${Object.entries(by).sort((a, b) => b[1] - a[1]).map(([d, v]) => `<tr><td>${esc(GD[d][1])}</td><td class="n">${usd(v * 1e6)}</td></tr>`).join("")}</table>`;
+    },
+    srcLine: "World Bank, World Development Indicators; OECD Creditor Reporting System",
+    about: `<p>Net official development assistance received (grants plus cheap loans, minus loan repayments), and grants alone, by year. ${AGGNOTE} Each country's box lists the grants it received from each donor government and agency, from the OECD's records (2002 onward, grants paid out, US dollars at the prices of each year).</p>
+<p>Source: ${wdiSrc(["DT.ODA.ODAT.CD", "DT.ODA.ODAT.GN.ZS", "BX.GRT.EXTA.CD.WD", "BX.GRT.TECH.CD.WD"])} Grants by donor: OECD Creditor Reporting System, ODA grants (measure 11), gross disbursements, all sectors, read through the <a href="https://sdmx.oecd.org/dcd-public/rest/" target="_blank" rel="noopener">OECD data API</a> on 24 October 2026; groups of donors are left out so nothing is counted twice.</p>`,
+  }));
+
+  // Tied aid, by donor country
+  const TD = D.tied.by_donor, TN = D.tied.names;
+  const tiedSum = (d, from, to, k) => { let s = 0, n = 0; for (const [y, v] of Object.entries(TD[d] || {})) if (+y >= from && +y <= to && v[k] != null) { s += v[k]; n++; } return n ? s : null; };
+  LAYERS.push({
+    id: "tied", lender: "Flows", ramp: "plum", span: [1979, 2022], cont: true,
+    title: "Grants and gifts: aid tied to buying from the donor",
+    short: "tied aid, by donor country",
+    plain: "Tied aid must be spent on the donor country's own goods and services, so much of the money goes back home to its companies. This map colours the donor countries, by the share of their aid that came tied.",
+    controls: () => `<select data-k="measure"><option value="tied">Share tied (% of aid committed)</option><option value="partial">Share partly tied (% of aid committed)</option><option value="tiedusd">Amount tied (US$)</option></select>`,
+    unit: (v, o) => (o.measure === "tiedusd" ? usd(v * 1e6) : `${num(v, 1)}%`),
+    fmt: (v, o) => (o.measure === "tiedusd" ? usd(v * 1e6) : `${num(v, 1)}%`),
+    values(from, to, o) {
+      const out = new Map(), unplaced = new Map();
+      for (const d of Object.keys(TD)) {
+        const all = tiedSum(d, from, to, "74_500"), t = tiedSum(d, from, to, "74_530"), p = tiedSum(d, from, to, "74_520");
+        if (all == null) continue;
+        const v = o.measure === "tiedusd" ? t || 0 : o.measure === "partial" ? (all ? (100 * (p || 0)) / all : null) : (all ? (100 * (t || 0)) / all : null);
+        if (v == null) continue;
+        if (GEO.has(d)) out.set(d, v); else if (o.measure === "tiedusd") unplaced.set(TN[d] || d, v);
+      }
+      return { values: out, unplaced, noTotal: o.measure !== "tiedusd" };
+    },
+    popup(c, from, to) {
+      const ys = Object.entries(TD[c] || {}).filter(([y]) => +y >= from && +y <= to).sort((a, b) => b[0] - a[0]);
+      if (!ys.length) return `<div class="note">This country is not a donor in the OECD's tied-aid records for these years.</div>`;
+      return `<div class="note">Bilateral aid committed, US$ million, by whether it is tied${tip("tied")}</div><table><tr><td>Year</td><td class="n">All</td><td class="n">Untied</td><td class="n">Partly untied</td><td class="n">Tied</td></tr>${ys.map(([y, v]) => `<tr><td>${y}</td><td class="n">${num(v["74_500"], 1)}</td><td class="n">${num(v["74_510"], 1)}</td><td class="n">${num(v["74_520"], 1)}</td><td class="n">${num(v["74_530"], 1)}</td></tr>`).join("")}</table>`;
+    },
+    srcLine: "OECD, DAC7b: tying status of aid",
+    about: `<p>For each donor country that reports to the OECD, how much of the bilateral aid it committed was untied, partly untied or tied, by year. The shares are worked out here from the OECD's figures: tied (or partly untied) commitments divided by all bilateral commitments in the chosen years. ${"Technical co-operation and administrative costs are included or not as the OECD reports them."}</p>
+<p>Source: OECD, DAC7b, Aid (ODA) tying status (dataflow DSD_DAC1@DF_DAC7B 1.1), current prices, read through the <a href="https://sdmx.oecd.org/public/rest/" target="_blank" rel="noopener">OECD data API</a> on 24 October 2026.</p>`,
+  });
+
+  // Private foundations
+  const PD = D.ppfd.donors, PBR = D.ppfd.by_recipient;
+  const pKeep = (d, o) => !o.off || !o.off.has(PD[d][1]);
+  LAYERS.push({
+    id: "found", lender: "Flows", ramp: "sage", span: [2009, 2024], cont: true,
+    title: "Grants and gifts: private foundations",
+    short: "private foundations' grants",
+    plain: "Grants from private foundations, such as the Gates Foundation and the Mastercard Foundation, to each country, as the foundations report them to the OECD. Untick a foundation to leave it out.",
+    controls: () => checks("fd", { "Foundations": PD.map((p, i) => i) }, (i) => PD[i][1], (i) => PD[i][1]),
+    unit: (v) => usd(v * 1e6), fmt: (v) => usd(v * 1e6),
+    values(from, to, o) {
+      const out = new Map(), unplaced = new Map();
+      for (const [c, rows] of Object.entries(PBR)) { let s = 0; for (const [d, y, v] of rows) if (y >= from && y <= to && pKeep(d, o)) s += v; if (s && GEO.has(c)) out.set(c, s); }
+      for (const [n, rows] of Object.entries(D.ppfd.unplaced)) { let s = 0; for (const [d, y, v] of rows) if (y >= from && y <= to && pKeep(d, o)) s += v; if (s) unplaced.set(n, s); }
+      return { values: out, unplaced };
+    },
+    popup(c, from, to, o) {
+      const rows = (PBR[c] || []).filter((r) => r[1] >= from && r[1] <= to && pKeep(r[0], o));
+      const by = {}; for (const [d, , v] of rows) by[d] = (by[d] || 0) + v;
+      return `<div class="big">${usd(rows.reduce((s, r) => s + r[2], 0) * 1e6)}</div><table>${Object.entries(by).sort((a, b) => b[1] - a[1]).map(([d, v]) => `<tr><td>${esc(PD[d][1])}</td><td class="n">${usd(v * 1e6)}</td></tr>`).join("")}</table>`;
+    },
+    srcLine: "OECD, Private Philanthropy for Development",
+    about: `<p>Grants paid by the private foundations that report to the OECD, to each country, by year, in US dollars at the prices of each year. Grants to regions or to many countries at once are listed under this row.</p>
+<p>Source: OECD, Private Philanthropy for Development (dataflow DSD_PPFD@DF_PPFD 1.7), all sectors, total, disbursements, current prices, read through the <a href="https://sdmx.oecd.org/dcd-public/rest/" target="_blank" rel="noopener">OECD data API</a> on 24 October 2026.</p>`,
+  });
+
+  // Private loans and bilateral loans: debt by kind of lender
+  const DEBTM = [
+    { key: "DT.DOD.PRVT.CD", label: "Owed by the government to private lenders (US$)", agg: "last", unit: "usd", tip: "ppg" },
+    { key: "DT.DOD.PBND.CD", label: "… of which bonds (US$)", agg: "last", unit: "usd", tip: "bonds" },
+    { key: "DT.DOD.PCBK.CD", label: "… of which commercial banks (US$)", agg: "last", unit: "usd" },
+    { key: "DT.DOD.PROP.CD", label: "… of which other private lenders (US$)", agg: "last", unit: "usd" },
+    { key: "DT.DOD.DPNG.CD", label: "Owed by private companies abroad, without a government guarantee (US$)", agg: "last", unit: "usd", tip: "png" },
+    { key: "DT.TDS.PRVT.CD", label: "Paid to private lenders: repayments plus interest (US$)", agg: "sum", unit: "usd" },
+    { key: "DT.INT.PRVT.CD", label: "Interest paid to private lenders (US$)", agg: "sum", unit: "usd" },
+  ];
+  const BILM = [
+    { key: "DT.DOD.BLAT.CD", label: "Owed by the government to other governments (US$)", agg: "last", unit: "usd", tip: "bilateral" },
+    { key: "DT.TDS.BLAT.CD", label: "Paid to other governments: repayments plus interest (US$)", agg: "sum", unit: "usd" },
+    { key: "DT.INT.BLAT.CD", label: "Interest paid to other governments (US$)", agg: "sum", unit: "usd" },
+    { key: "DT.DOD.MLAT.CD", label: "For comparison: owed to the IMF, World Bank and other multilateral lenders (US$)", agg: "last", unit: "usd", tip: "multilateral" },
+    { key: "DT.TDS.MLAT.CD", label: "For comparison: paid to multilateral lenders (US$)", agg: "sum", unit: "usd" },
+    { key: "DT.TDS.DECT.GN.ZS", label: "All foreign debt payments as a share of national income (% of GNI)", agg: "mean", unit: "pct", tip: "gni" },
+  ];
+  LAYERS.push(seriesLayer({
+    id: "priv", lender: "Flows", ramp: "rose", span: [1970, 2024],
+    title: "Private loans: debt owed to banks and bondholders",
+    short: "debt owed to private lenders",
+    plain: "Money the government (and private companies) owe abroad to banks, investment funds and bondholders. These loans cost more than official ones, and are enforced in rich countries' courts. Covers the low- and middle-income countries the World Bank tracks.",
+    measures: DEBTM,
+    srcLine: "World Bank, International Debt Statistics",
+    about: `<p>Long-term foreign debt owed to private lenders by the government and the bodies it guarantees, split into bonds, commercial banks and other private lenders, plus debt owed by private companies without a government guarantee; and what was paid each year to private lenders. ${AGGNOTE} Only the low- and middle-income countries that report to the World Bank's Debtor Reporting System are covered.</p><p>Source: ${wdiSrc(DEBTM.map((m) => m.key))}</p>`,
+  }));
+  LAYERS.push(seriesLayer({
+    id: "bilat", lender: "Flows", ramp: "plum", span: [1970, 2024],
+    title: "Bilateral loans: debt owed to other governments",
+    short: "debt owed to other governments",
+    plain: "Loans from one government straight to another (from China, Japan, France, Saudi Arabia and so on), as opposed to loans through the IMF or World Bank. Click a country to see which governments it owes, where the World Bank publishes it.",
+    measures: BILM,
+    extraPopup(c, from, to) {
+      const B = D.bilat && D.bilat[c]; if (!B) return "";
+      let ly = null; for (const r of B) if (r[1] <= to && r[1] >= from && (ly === null || r[1] > ly)) ly = r[1];
+      if (ly === null) return "";
+      const rows = B.filter((r) => r[1] === ly).sort((a, b) => b[2] - a[2]);
+      return `<h4>Owed to each government, ${ly}</h4><table>${rows.map((r) => `<tr><td>${esc(D.bilatNames[r[0]] || r[0])}</td><td class="n">${usd(r[2])}</td></tr>`).join("")}</table>`;
+    },
+    srcLine: "World Bank, International Debt Statistics",
+    about: `<p>Long-term foreign debt the government and the bodies it guarantees owe to other governments and their agencies, and what was paid to them each year, with debt to multilateral lenders shown for comparison. ${AGGNOTE} Where the World Bank publishes it, each country's box lists how much is owed to each creditor government in the latest year of the range. Only the low- and middle-income countries in the World Bank's Debtor Reporting System are covered.</p><p>Source: ${wdiSrc(BILM.map((m) => m.key))}</p>`,
+  }));
+
+  // Interest compared with health and education
+  LAYERS.push(seriesLayer({
+    id: "interest", lender: "Flows", ramp: "rose", span: [1972, 2025],
+    title: "Debt payments against health and education",
+    short: "interest compared with health and education spending",
+    plain: "How much of the government's spending goes on interest, next to how much goes on health and on schools. Your page cites the UN finding that 3.4 billion people live in countries that spend more on interest than on health or education.",
+    measures: [
+      { key: "GC.XPN.INTP.ZS", label: "Interest, as a share of government spending (%)", agg: "mean", unit: "pct", tip: "interest_exp" },
+      { key: "SH.XPD.GHED.GE.ZS", label: "Health, as a share of government spending (%)", agg: "mean", unit: "pct" },
+      { key: "SE.XPD.TOTL.GB.ZS", label: "Education, as a share of government spending (%)", agg: "mean", unit: "pct" },
+    ],
+    srcLine: "World Bank, World Development Indicators",
+    about: `<p>Three shares of government spending, each averaged over the years with figures in the chosen range: interest payments (as a share of government expense), the government's own health spending (share of general government spending) and education spending (share of government spending). They come from different collections (the IMF, the WHO and UNESCO through the World Bank) and are measured slightly differently, so set them side by side, not to the decimal.</p><p>Source: ${wdiSrc(["GC.XPN.INTP.ZS", "SH.XPD.GHED.GE.ZS", "SE.XPD.TOTL.GB.ZS"])}</p>`,
+  }));
+
+  // Remittances
+  LAYERS.push(seriesLayer({
+    id: "remit", lender: "Flows", ramp: "sage", span: [1970, 2025],
+    title: "Money sent home by people working abroad",
+    short: "remittances received",
+    plain: "Money that people working in other countries send home to their families. For many poor countries it is bigger than aid and foreign investment together.",
+    measures: [
+      { key: "BX.TRF.PWKR.CD.DT", label: "Money sent home (US$)", agg: "sum", unit: "usd" },
+      { key: "BX.TRF.PWKR.DT.GD.ZS", label: "Money sent home, as a share of the economy (% of GDP)", agg: "mean", unit: "pct", tip: "gdp" },
+    ],
+    srcLine: "World Bank, World Development Indicators",
+    about: `<p>Personal remittances received: money sent home by workers abroad and by people who moved abroad, by year. ${AGGNOTE}</p><p>Source: ${wdiSrc(["BX.TRF.PWKR.CD.DT", "BX.TRF.PWKR.DT.GD.ZS"])}</p>`,
+  }));
+
+  // Saudi Arabia and Qatar
+  const TU = D.tuff.rows.map((r) => Object.fromEntries(D.tuff.cols.map((k, i) => [k, r[i]])));
+  const tuDon = [...new Set(TU.map((x) => x.donor))], tuFlow = [...new Set(TU.map((x) => x.flow))];
+  const tuKeep = (x, o) => !o.off || (!o.off.has(x.donor) && !o.off.has(x.flow));
+  LAYERS.push({
+    id: "tuff", lender: "Gov", ramp: "stone", span: [Math.min(...TU.filter((x) => x.year).map((x) => x.year)), Math.max(...TU.filter((x) => x.year).map((x) => x.year))],
+    title: "Saudi Arabia and Qatar: aid and loans tracked by AidData",
+    short: "Saudi and Qatari official finance",
+    plain: "Aid, loans and gifts from Saudi Arabia and Qatar, which report little to the OECD, pieced together one record at a time by AidData from news reports and government sources.",
+    controls: () => `<select data-k="measure"><option value="n">Number of records</option><option value="usd">Amount (US$)</option></select>` + checks("d", { Donor: tuDon, "Kind of finance": tuFlow }, (k) => `${k} (${TU.filter((x) => x.donor === k || x.flow === k).length})`),
+    unit: (v, o) => (o.measure === "usd" ? usd(v) : `${num(v)} record${v === 1 ? "" : "s"}`),
+    fmt: (v, o) => (o.measure === "usd" ? usd(v) : num(v)),
+    values(from, to, o) {
+      const out = new Map(), unplaced = new Map();
+      for (const x of TU) {
+        if (!tuKeep(x, o) || !x.year || x.year < from || x.year > to) continue;
+        const v = o.measure === "usd" ? x.usd || 0 : 1;
+        if (x.iso3 && GEO.has(x.iso3)) out.set(x.iso3, (out.get(x.iso3) || 0) + v); else unplaced.set(x.recipient, (unplaced.get(x.recipient) || 0) + v);
+      }
+      return { values: out, unplaced };
+    },
+    popup(c, from, to, o) {
+      const list = TU.filter((x) => x.iso3 === c && tuKeep(x, o) && x.year && x.year >= from && x.year <= to).sort((a, b) => b.year - a.year);
+      return `<div class="big">${list.length} record${list.length === 1 ? "" : "s"}</div>` + list.map((x) => `<div class="item">${esc(x.title)}<br><span class="m">${esc(x.donor)} · ${x.year}${x.year_uncertain ? " (year uncertain)" : ""} · ${esc(x.flow)} · ${esc(x.status)} · ${x.usd != null ? usd(x.usd) : "amount not given"} · ${esc(x.sector)} · AidData id ${esc(x.id)}</span></div>`).join("");
+    },
+    srcLine: "AidData, TUFF donor datasets (Saudi Arabia, Qatar)",
+    about: `<p>Every record in AidData's Saudi Arabia and Qatar donor datasets (Level 1, version 1.0), built with its Tracking Underreported Financial Flows (TUFF) method: title, year, kind of finance, status, amount where known, and sector. Records shared among several countries are listed under this row.</p>
+<p>Coverage: ${TU.length} records. Source: AidData at William &amp; Mary, <a href="https://www.aiddata.org/data/saudi-arabia-tuff-donor-dataset-level-1-v1-0" target="_blank" rel="noopener">Saudi Arabia TUFF Donor Dataset</a> and <a href="https://www.aiddata.org/data/qatar-tuff-donor-dataset-level-1-v1-0" target="_blank" rel="noopener">Qatar TUFF Donor Dataset</a>.</p>`,
+  });
+
+
+  /* ------------------------------------------------------------ plain-language explanations, shown on hover or tap */
+  const TERMS = {
+    QPCsTOT: "A number the government must hit by a set date, such as a cap on borrowing or a minimum level of reserves. If it is missed, the money stops unless the IMF board excuses it.",
+    PAsTOT: "A step the government must take before the IMF board will even approve the loan or the next payment, such as passing a law or raising a price.",
+    SPCsTOT: "A reform the government must finish by a set date for payments to continue. The IMF stopped using these in 2009.",
+    IBsTOT: "A number the IMF watches, such as a spending level, but missing it does not stop the money by itself.",
+    SBsTOT: "A reform the IMF watches, such as drafting a law, but missing it does not stop the money by itself.",
+    binding: "Binding conditions are the ones that stop the money if they are missed, unless the lender's board excuses them.",
+    every: "Every condition counts both kinds: the binding ones and the benchmarks the IMF only watches.",
+    BA1DEB: "Conditions on paying and managing the country's foreign debt, including clearing unpaid debts.", BA1FIN: "Conditions on banks, interest rates, the central bank and the amount of money in the economy.",
+    BA1FP: "Conditions on government spending, budgets and the budget deficit.", BA1RTP: "Conditions on taxes: what is taxed, how much, and how taxes are collected.",
+    BA1EXT: "Conditions on trade, the exchange rate, foreign reserves and money moving in and out of the country.", BA1SOE: "Conditions on companies the state owns: restructuring them, cutting their subsidies, raising the prices they charge.",
+    BA1PRI: "Conditions to sell state-owned companies to private owners, or close them.", BA1LAB: "Conditions on wages, public-sector jobs, pensions and social security.",
+    BA1INS: "Conditions on courts, competition rules, business rules, land titles and how government works.", BA1ENV: "Conditions touching the environment and access to shared land, water or forests.",
+    BA1SP: "Conditions on social policies such as health and education, other than poverty programmes.", BA1POV: "Conditions meant to protect the poor: minimum social spending, safety-net programmes, poverty plans.", BA1OTH: "Conditions that fit no other group.",
+    sdr: "The IMF's own unit of money, made from a basket of the world's main currencies (the dollar, euro, yuan, yen and pound).",
+    concessional: "Low-interest loans with long repayment times, for the poorest countries.", nonconcessional: "Loans at the IMF's regular interest rate, for middle- and high-income countries.",
+    rapid: "Quick one-off payouts for emergencies (disasters, pandemics, wars). They come with few or no conditions.",
+    waiver: "When a country misses a binding condition and the IMF board decides to keep paying anyway.",
+    stopped: "The program ended early and the remaining money was never paid, usually because conditions were not met.",
+    held: "Payments were delayed for a while, usually because a review found conditions had not been met, then started again.",
+    notmet: "Conditions the government did not carry out on time. The narrow count includes only clear failures; the broad count also includes ones only partly met.",
+    policyloan: "Money paid into the government's budget once it has made agreed policy changes, instead of paying for a building project.",
+    prior: "The World Bank's conditions: policy steps the government must take before the World Bank board approves the money.",
+    pipeline: "A loan still being prepared; the date shown is only its planned date.", dropped: "A loan that was planned but never approved.",
+    named: "Approved after the World Bank's labelled database stops (December 2024); included because the World Bank's own name for it says it is a policy loan.",
+    general: "Money for the government's whole budget, to spend as it decides within the agreed conditions.", sector: "Money for one area of the budget, such as health or education.",
+    mfa: "EU loans or grants to a neighbouring country in crisis. Each payment is released only when agreed reforms are done, and only if the country also has an IMF program.",
+    bop: "EU loans to an EU member outside the euro whose foreign payments are in crisis, released in stages as reforms are done.",
+    esm: "Euro-area rescue funds (the EFSM, EFSF and ESM, and the 2010 Greek Loan Facility). Money came in stages tied to reforms written into a memorandum of understanding.",
+    mou: "The memorandum of understanding: the written list of reforms a government agrees to in return for the money.",
+    collateral: "The loan is backed by something the lender can take, often the country's oil, mineral or other income paid into an account.",
+    escrow: "An account, often held abroad, where the borrower must keep money the lender can take if a payment is missed.",
+    secrecy: "A clause that forbids the borrowing government from revealing the terms, or even that the loan exists.",
+    noparis: "A clause that keeps this loan out of any group debt deal with other creditor governments (the Paris Club), so it must be paid in full.",
+    crossdefault: "If the country misses a payment to any other lender, or in some contracts takes action against Chinese interests, the Chinese lender can demand the whole loan back at once.",
+    rescue: "A loan to help a country in financial trouble pay its other debts or keep its currency stable.",
+    insurance: "The borrower had to buy insurance on the loan from China's state export insurer (Sinosure).",
+    pc_classic: "Payments due are postponed and spread over more years, at market interest rates. No debt is cancelled.",
+    pc_houston: "Terms from 1990 for lower-middle-income countries: longer repayment, and some debt can be swapped for other uses.",
+    pc_toronto: "Terms from 1988 for the poorest countries: the first deals that cancelled part of the debt (up to a third).",
+    pc_london: "Terms from 1991 for the poorest countries: up to half of the debt payments cancelled.",
+    pc_naples: "Terms from 1994 for the poorest countries: half to two-thirds of the debt cancelled.", pc_naples: "Terms from 1994 for the poorest countries: half to two-thirds of the debt cancelled.",
+    pc_lyon: "Terms from 1996 for the poorest, most indebted countries: up to 80% cancelled.", pc_cologne: "Terms from 1999 under the Heavily Indebted Poor Countries initiative: up to 90% or more cancelled.",
+    pc_hipcinitiativeexit: "The final deal when a country completes the Heavily Indebted Poor Countries initiative: most of the remaining debt cancelled.",
+    pc_adhoc: "A one-off deal on terms made for that country.", pc_dssi: "The 2020-21 pause on debt payments for the poorest countries during the pandemic (the Debt Service Suspension Initiative).",
+    pc_commonframework: "The 2020 G20 plan, including China, for treating the debts of the poorest countries together.",
+    all_0: "Each IMF lending arrangement since 1952.", all_1: "Each World Bank loan paid into a government's budget for policy changes.", all_2: "Each Inter-American Development Bank policy-based loan.",
+    all_3: "Each EU or euro-area rescue or assistance programme.", all_4: "Each Paris Club debt agreement; every one requires an IMF program.", all_5: "Each loan from a Chinese state lender in AidData's records (grants left out).",
+    all_6: "Each budget-support payment other lenders reported to the OECD (Japan, the United States, Saudi Arabia, the regional development banks and others).",
+  };
+  // Facility names and other labels used in the boxes
+  Object.assign(TERMS, {
+    "ck_extendedcreditfacility": "The IMF's main low-interest loan for poor countries, over three to five years.", "ck_standbyarrangement": "The IMF's standard loan for a short-term crisis, usually one to two years.",
+    "ck_extendedfundfacility": "An IMF loan over three to four years for deeper problems, with more reforms required.", "ck_structuraladjustmentfacilitycommitment": "The IMF's 1986-1995 low-interest loan for poor countries, the start of 'structural adjustment'.",
+    "ck_flexiblecreditline": "A credit line for countries the IMF judges sound; it has no conditions after approval.", "ck_resilienceandsustainabilityfacility": "The IMF's climate and pandemic-preparedness loans since 2022, with their own reform measures.",
+    "ck_rapidcreditfacility": "A quick low-interest emergency loan with few conditions.", "ck_rapidfinancinginstrument": "A quick emergency loan with few conditions.",
+  });
+  Object.assign(TERMS, {
+    ms_met: "The government did it, by the due date.", ms_notme: "The government did not do it.", ms_partia: "The government did part of it.",
+    ms_waived: "The government missed it, but the IMF board agreed to keep paying anyway.", ms_modifi: "The IMF changed the condition before it fell due: a new date, new wording, or a different type of condition.",
+    ms_stillo: "Not yet due, or not yet assessed, at the last review that lists it.", ms_otherc: "A code the IMF uses in this file without defining it in its labels; shown exactly as given.",
+    fdi_in: "Money foreign companies put into businesses here, minus what they pulled out that year, so it can be below zero.", fdi_out: "Money this country's companies put into businesses abroad.",
+    gdp: "GDP is the value of everything the country produces in a year.", gni: "GNI is the country's yearly income: what it produces plus income from abroad.",
+    oda: "Official development assistance: grants and cheap loans from governments and agencies, minus loan repayments.", tc: "Grants spent on paying advisers, experts and training, much of it to people and firms from the donor country.",
+    grants_by_donor: "Grants only, never loans, as each donor reported them to the OECD.", tied: "Untied: can be spent anywhere. Partly untied: in the donor country or other poor countries. Tied: only on the donor country's goods and services.",
+    ppg: "Debt owed by the government, or by others with the government promising to pay if they cannot.", bonds: "Loans raised by selling bonds to investors, such as investment funds.",
+    png: "Debt of private companies with no government promise behind it.", bilateral: "Loans from one government (or its state bank) straight to another.",
+    multilateral: "Loans from bodies owned by many governments, such as the IMF and the World Bank.", interest_exp: "Interest is what a borrower pays the lender on top of paying the loan back.",
+    early: "This map's own count, read from the IMF's board papers of the time. The IMF published no list of conditions for these years.",
+    e_QPC: "A number the government had to keep to, such as a ceiling on bank credit or a floor on reserves. Missing it stopped the money until the IMF agreed new terms.",
+    e_SPC: "A rule or step the government had to keep to, such as adding no new limits on paying for imports, or carrying out a promised measure. Breaking it stopped the money.",
+    e_IBSB: "A target the IMF watched. Missing it meant the government had to talk with the IMF about new measures, but the money did not stop by itself.",
+    owncount: "Counted by this map, not by the World Bank: the numbered items under the agreement's list of required actions. A rough guide; see the World Bank row's fine print.",
+  });
+  function tip(key) { const t = TERMS[key]; return t ? `<span class="q" tabindex="0" role="button" aria-label="What this means" data-tip="${esc(t)}">?</span>` : ""; }
+
+  /* ------------------------------------------------------------ helpers for the rows */
+  function groupBy(list, f) { const g = {}; for (const x of list) (g[f(x)] = g[f(x)] || []).push(x); return g; }
+  function checks(key, groups, label, value) {
+    return `<div data-checks="${key}">` + Object.entries(groups).map(([g, items]) => `<div class="grp">${esc(g)}</div>` +
+      items.map((it) => `<label class="ck"><input type="checkbox" checked data-v="${esc(value ? value(it) : it)}"> <span>${esc(label(it))}</span>${tip("ck_" + String(value ? value(it) : it).toLowerCase().replace(/[^a-z]/g, ""))}</label>`).join("")).join("") + `</div>`;
+  }
+  function optionText(id, v) {
+    const s = document.querySelector(`.row[data-id="${id}"] select[data-k="measure"]`);
+    const o = s && [...s.options].find((x) => x.value === v);
+    return o ? o.textContent.charAt(0).toLowerCase() + o.textContent.slice(1) : "";
+  }
+  function bars(series, colour, label) {
+    if (series.length < 2) return "";
+    const W_ = 300, H = 52, max = Math.max(1, ...series.map((s) => s[1])), bw = W_ / series.length;
+    const rects = series.map(([y, v], i) => `<rect x="${(i * bw).toFixed(1)}" y="${(H - (v / max) * H).toFixed(1)}" width="${Math.max(1, bw - 1).toFixed(1)}" height="${((v / max) * H).toFixed(1)}" fill="${colour}"><title>${y}: ${v}</title></rect>`).join("");
+    return `<svg viewBox="0 0 ${W_} ${H + 14}" width="100%" role="img" aria-label="Per year">${rects}<text x="0" y="${H + 12}" fill="#8A939D" font-size="10">${series[0][0]}</text><text x="${W_}" y="${H + 12}" fill="#8A939D" font-size="10" text-anchor="end">${series[series.length - 1][0]}</text><text x="${W_ / 2}" y="${H + 12}" fill="#8A939D" font-size="10" text-anchor="middle">${label || "per year"}, highest ${num(max)}</text></svg>`;
+  }
+  function wItem(w) {
+    const t = D.wbtext[w.id];
+    const txt = t ? t.map((d) => `<details class="tx"><summary>Text of its conditions: ${esc(d[0])}, ${esc(d[1])}</summary><div class="txt">${esc(d[3])}</div>${d[2] ? `<a href="${esc(d[2])}" target="_blank" rel="noopener">The signed agreement (PDF)</a>` : ""}</details>`).join("") : "";
+    const when = w.st === "Pipeline" ? `planned for ${esc(w.ap || "–")}` : w.st === "Dropped" ? `dropped${w.ap ? " (was set for " + esc(w.ap) + ")" : ""}` : w.ap ? "approved " + esc(w.ap) : "no approval date";
+    return `<div class="item"><a href="https://projects.worldbank.org/en/projects-operations/project-detail/${esc(w.id)}" target="_blank" rel="noopener">${esc(w.name)}</a><br><span class="m">${esc(w.id)} · ${esc(w.ins)}${tip(/^Named/.test(w.ins) ? "named" : "policyloan")} · ${when}${w.st === "Pipeline" ? tip("pipeline") : w.st === "Dropped" ? tip("dropped") : ""} · ${esc(w.st || "")}</span><br>${usd(w.amt)}${D.wbown[w.id] != null ? ` · ${D.wbown[w.id]} condition${D.wbown[w.id] === 1 ? "" : "s"} counted by this map${tip("owncount")}` : ""}${txt}</div>`;
+  }
+
+  /* ------------------------------------------------------------ the panel */
+  const MINY = 1947, MAXY = 2030;
+  const state = { active: "all", from: MINY, to: MAXY, opts: {}, base: "land" };
+  for (const l of LAYERS) state.opts[l.id] = { measure: undefined, off: new Set() };
+  const panel = $("#panel");
+  const SECS = { All: "Together", IMF: "International Monetary Fund", "World Bank": "World Bank", IDB: "Regional development banks", EU: "European Union and euro area", Gov: "Single governments", OECD: "Every lender reporting to the OECD", Flows: "Other money flowing in and out" };
+  const ORDER = ["All", "IMF", "World Bank", "IDB", "EU", "Gov", "OECD", "Flows"];
+  LAYERS.sort((a, b) => ORDER.indexOf(a.lender) - ORDER.indexOf(b.lender));
+  let lastSec = "";
+  panel.innerHTML = LAYERS.map((l) => {
+    const sec = l.lender !== lastSec ? `<div class="sec">${esc(SECS[l.lender])}</div>` : ""; lastSec = l.lender;
+    return sec + `<div class="row" data-id="${l.id}"><div class="head"><label class="pick"><input type="radio" name="row" value="${l.id}"><span><span class="t">${esc(l.title)}</span><span class="span">${l.span[0]} to ${l.span[1]} · ${esc(l.srcLine)}</span></span></label>${l.plain ? `<span class="q big" tabindex="0" role="button" aria-label="What this row shows" data-tip="${esc(l.plain)}">?</span>` : ""}</div>
+      <div class="body">${l.plain ? `<p class="plain">${esc(l.plain)}</p>` : ""}${l.controls()}<div class="legend" id="leg-${l.id}"></div><div class="unplaced" id="un-${l.id}"></div>
+      <details><summary>Sources and fine print</summary>${l.about}</details></div></div>`;
+  }).join("");
+  for (const l of LAYERS) for (const s of document.querySelectorAll(`.row[data-id="${l.id}"] select[data-k]`)) state.opts[l.id][s.dataset.k] = s.value;
+  panel.addEventListener("change", (e) => {
+    const row = e.target.closest(".row"); if (!row) return;
+    const id = row.dataset.id, o = state.opts[id];
+    if (e.target.name === "row") { state.active = id; }
+    else if (e.target.matches("select[data-k]")) o[e.target.dataset.k] = e.target.value;
+    else if (e.target.matches("[data-checks] input")) { e.target.checked ? o.off.delete(e.target.dataset.v) : o.off.add(e.target.dataset.v); }
+    redraw();
+  });
+
+  // Years
+  const yF = $("#yFrom"), yT = $("#yTo");
+  for (const s of [yF, yT]) { s.min = MINY; s.max = MAXY; s.step = 1; }
+  yF.value = state.from; yT.value = state.to;
+  const showYears = () => {
+    $("#yFromL").textContent = state.from; $("#yToL").textContent = state.to;
+    const p = (v) => ((v - MINY) / (MAXY - MINY)) * 100;
+    const f = $("#yFill"); f.style.left = `calc(7px + (100% - 14px) * ${p(state.from) / 100})`; f.style.width = `calc((100% - 14px) * ${(p(state.to) - p(state.from)) / 100})`;
+  };
+  let yTimer = null;
+  const onYears = (e) => {
+    let a = +yF.value, b = +yT.value;
+    if (a > b) { if (e.target === yF) b = a; else a = b; yF.value = a; yT.value = b; }
+    state.from = a; state.to = b; showYears();
+    clearTimeout(yTimer); yTimer = setTimeout(redraw, 60);
+  };
+  yF.addEventListener("input", onYears); yT.addEventListener("input", onYears);
+  showYears();
+
+  // Explanations: shown while hovering or focusing a "?" mark; a tap toggles them on touch screens.
+  const qtip = $("#qtip");
+  function showQ(el) {
+    qtip.textContent = el.dataset.tip; qtip.style.display = "block";
+    const r = el.getBoundingClientRect(), w = qtip.offsetWidth, h = qtip.offsetHeight;
+    let x = Math.min(window.innerWidth - w - 8, Math.max(8, r.left + r.width / 2 - w / 2)), y = r.bottom + 6;
+    if (y + h > window.innerHeight - 8) y = r.top - h - 6;
+    qtip.style.left = x + "px"; qtip.style.top = y + "px";
+  }
+  const hideQ = () => { qtip.style.display = "none"; };
+  document.addEventListener("mouseover", (e) => { const q = e.target.closest && e.target.closest(".q[data-tip]"); if (q) showQ(q); });
+  document.addEventListener("mouseout", (e) => { const q = e.target.closest && e.target.closest(".q[data-tip]"); if (q) hideQ(); });
+  document.addEventListener("focusin", (e) => { const q = e.target.closest && e.target.closest(".q[data-tip]"); if (q) showQ(q); });
+  document.addEventListener("focusout", hideQ);
+  document.addEventListener("click", (e) => { const q = e.target.closest && e.target.closest(".q[data-tip]"); if (q) { e.preventDefault(); e.stopPropagation(); qtip.style.display === "block" ? hideQ() : showQ(q); } else hideQ(); }, true);
+
+  /* ------------------------------------------------------------ the map */
+/*__BASEMAP_CONST__*/
+
+  const style = { version: 8, sources: { land: { type: "geojson", data: BOUND } },
+    layers: [
+      { id: "sea", type: "background", paint: { "background-color": "#0A1119" } },
+      { id: "land", type: "fill", source: "land", paint: { "fill-color": "#1B1D1F", "fill-opacity": 1 } },
+      { id: "land-edge", type: "line", source: "land", paint: { "line-color": "#4A4F55", "line-width": ["interpolate", ["linear"], ["zoom"], 1, 0.35, 6, 0.9], "line-opacity": 0.75 } },
+    ], projection: { type: "globe" } };
+  const HOME = { center: [10, 12], zoom: 1.9 };
+  const map = new maplibregl.Map({ container: "map", style, center: HOME.center, zoom: HOME.zoom, minZoom: 0, maxZoom: 12, attributionControl: false, renderWorldCopies: false });
+  map.addControl(new maplibregl.AttributionControl({ compact: true }), window.innerWidth > 720 ? "bottom-right" : "top-left");
+  const foldCredits = () => { const a = document.querySelector(".maplibregl-ctrl-attrib"); if (a) { a.classList.remove("maplibregl-compact-show"); a.removeAttribute("open"); } };
+  let creditsAsked = false;
+  document.addEventListener("click", (e) => { if (e.target.closest && e.target.closest(".maplibregl-ctrl-attrib-button")) creditsAsked = true; }, true);
+  for (const ev of ["idle", "sourcedata"]) map.on(ev, () => { if (!creditsAsked) foldCredits(); });
+  map.addControl(new maplibregl.NavigationControl({ visualizePitch: false }), "top-right");
+  $("#world").addEventListener("click", () => map.easeTo(Object.assign({ bearing: 0, pitch: 0, duration: 900 }, HOME)));
+  // Globe or flat map.
+  let flat = false;
+  $("#proj").addEventListener("click", (e) => {
+    flat = !flat;
+    map.setProjection({ type: flat ? "mercator" : "globe" });
+    e.target.textContent = flat ? "Globe" : "Flat map";
+    if (flat) map.once("render", flatLimits); else map.setMinZoom(0);
+  });
+  // Stars behind the globe: a fixed, seeded field so it looks the same on every visit.
+  function drawStars() {
+    const c = $("#stars"), dpr = Math.min(2, window.devicePixelRatio || 1), w = innerWidth, h = innerHeight;
+    c.width = w * dpr; c.height = h * dpr; const g = c.getContext("2d"); g.scale(dpr, dpr);
+    g.fillStyle = "#06090D"; g.fillRect(0, 0, w, h);
+    let s = 20261024; const rnd = () => ((s = (s * 1103515245 + 12345) % 2147483648) / 2147483648);
+    for (const [x, y, r, col] of [[0.72, 0.28, 0.42, "rgba(60,74,104,0.16)"], [0.25, 0.8, 0.38, "rgba(84,62,92,0.12)"], [0.9, 0.85, 0.3, "rgba(46,70,84,0.12)"]]) {
+      const gr = g.createRadialGradient(x * w, y * h, 0, x * w, y * h, r * Math.max(w, h)); gr.addColorStop(0, col); gr.addColorStop(1, "rgba(0,0,0,0)"); g.fillStyle = gr; g.fillRect(0, 0, w, h);
+    }
+    const cols = ["233,228,216", "201,211,224", "175,192,214", "214,204,222"];
+    const n = Math.round((w * h) / 1500);
+    for (let i = 0; i < n; i++) {
+      const big = rnd() > 0.985, r = big ? 0.9 + rnd() * 0.8 : 0.25 + rnd() * 0.6;
+      g.fillStyle = `rgba(${cols[Math.floor(rnd() * cols.length)]},${(big ? 0.75 : 0.2) + rnd() * 0.5})`;
+      g.beginPath(); g.arc(rnd() * w, rnd() * h, r, 0, Math.PI * 2); g.fill();
+    }
+  }
+  drawStars(); window.addEventListener("resize", drawStars);
+  // On the flat map, keep the world filling the screen so it cannot be dragged off the edge.
+  function flatLimits() {
+    if (!flat) return;
+    const p = map.getPadding(), cw = map.getContainer().clientWidth - (p.left || 0) - (p.right || 0), ch = map.getContainer().clientHeight - (p.top || 0) - (p.bottom || 0);
+    map.setMinZoom(Math.max(0, Math.log2(Math.max(cw, ch) / 512)));
+    keepWorldInView();
+  }
+  // Nudge the flat map back whenever an edge of the world comes into view.
+  let nudging = false;
+  function keepWorldInView() {
+    if (!flat || nudging) return;
+    const p = map.getPadding(), c = map.getContainer(), W = c.clientWidth, H = c.clientHeight;
+    const tl = map.project([-180, 85.05]), br = map.project([180, -85.05]);
+    const L = p.left || 0, R = W - (p.right || 0), T = p.top || 0, B = H - (p.bottom || 0);
+    let dx = 0, dy = 0;
+    if (br.x - tl.x <= R - L) dx = (tl.x + br.x) / 2 - (L + R) / 2; else if (tl.x > L) dx = tl.x - L; else if (br.x < R) dx = br.x - R;
+    if (br.y - tl.y <= B - T) dy = (tl.y + br.y) / 2 - (T + B) / 2; else if (tl.y > T) dy = tl.y - T; else if (br.y < B) dy = br.y - B;
+    if (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5) { nudging = true; map.panBy([dx, dy], { duration: 0 }); nudging = false; }
+  }
+  map.on("move", keepWorldInView);
+  const pad = () => map.setPadding({ left: window.innerWidth > 720 ? 396 : 0, top: 0, right: 0, bottom: window.innerWidth > 720 ? 0 : Math.round(window.innerHeight * 0.5) });
+  pad(); window.addEventListener("resize", () => { pad(); flatLimits(); });
+  window.loanConditionsMap = map;
+
+  const GEO = new Map(); // iso3 -> name, for every shape on the map
+  const NAMEOF = Object.assign({ CSK: "Czechoslovakia", YUG: "Yugoslavia" }, D.imfc.names, Object.fromEntries(D.wbp.rows.filter((r) => r[0]).map((r) => [r[0], r[1]])));
+  let ready = false, current = new Map();
+
+  map.on("load", async () => {
+    const g = await fetch(BOUND).then((r) => r.json());
+    for (const f of g.features) {
+      if (f.properties.iso3 === "-99" && f.properties.name === "Kosovo") f.properties.iso3 = "XKX";
+      if (f.properties.iso3 !== "-99") GEO.set(f.properties.iso3, f.properties.name);
+    }
+    map.addSource("lc", { type: "geojson", data: g, promoteId: "iso3" });
+    map.addLayer({ id: "lc-fill", type: "fill", source: "lc", paint: { "fill-color": "rgba(0,0,0,0)", "fill-opacity": 0.9 } });
+    map.addLayer({ id: "lc-line", type: "line", source: "lc", paint: { "line-color": ["case", ["boolean", ["feature-state", "hover"], false], "#F2EEE4", "rgba(12,14,18,.55)"],
+      "line-width": ["case", ["boolean", ["feature-state", "hover"], false], 1.6, 0.4] } });
+    setupPoints();
+    ready = true;
+    redraw();
+  });
+
+  /* ------------------------------------------------------------ point layers: where the money was spent */
+  // Dot colours follow the background map, so they read well on each one.
+  const PTCOL = { land: { wb: "#9DB4C8", cn: "#C28F9C", edge: "#0B0F14" }, night: { wb: "#7FB8B4", cn: "#B39BC9", edge: "#05080C" },
+    atlas: { wb: "#3E5C76", cn: "#83394A", edge: "#F2EAD8" }, jurassic: { wb: "#2E4A5E", cn: "#74303F", edge: "#E6E0C8" }, hell: { wb: "#D7CEC3", cn: "#9FB2C2", edge: "#1A0606" } };
+  const PT = { wb: { on: false }, cn: { on: false } };
+  function setupPoints() {
+    const WP = D.wbsites.projects;
+    const wbf = D.wbsites.points.map(([x, y, id, pc, place]) => ({ type: "Feature", geometry: { type: "Point", coordinates: [x, y] },
+      properties: { id, pc, place, y: (WP[id] || [])[5] ?? -1 } }));
+    const CC = D.cnsites.cols;
+    const cnf = D.cnsites.rows.map((r) => ({ type: "Feature", geometry: { type: "Point", coordinates: [r[0], r[1]] },
+      properties: { i: r[2], y: r[5] ?? -1, exact: /^precise(,precise)*$/.test(r[10] || "") ? 1 : 0 } }));
+    map.addSource("pt-wb", { type: "geojson", data: { type: "FeatureCollection", features: wbf } });
+    map.addSource("pt-cn", { type: "geojson", data: { type: "FeatureCollection", features: cnf } });
+    for (const k of ["wb", "cn"]) map.addLayer({ id: "pt-" + k, type: "circle", source: "pt-" + k, layout: { visibility: "none" },
+      paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 1, 1.1, 4, 2.6, 8, 5.5], "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 1, 0.3, 6, 0.8], "circle-opacity": 0.85, "circle-stroke-opacity": 0.8 } });
+    $("#n-wb").textContent = num(wbf.length); $("#n-cn").textContent = num(cnf.length);
+    $("#points").addEventListener("change", (e) => { const k = e.target.dataset.pts; if (k) PT[k].on = e.target.checked; updatePoints(); });
+    const CN = Object.fromEntries(D.cnsites.rows.map((r) => [String(r[2]), r]));
+    const PREC = { 1: "exact spot", 2: "within about 25 km", 3: "district", 4: "province or state", 5: "near a province", 6: "whole country", 7: "estimated", 8: "whole country (country-wide project)" };
+    for (const k of ["wb", "cn"]) {
+      map.on("mouseenter", "pt-" + k, () => (map.getCanvas().style.cursor = "pointer"));
+      map.on("mouseleave", "pt-" + k, () => (map.getCanvas().style.cursor = ""));
+      map.on("click", "pt-" + k, (e) => {
+        const f = e.features[0], P = f.properties; let h;
+        if (k === "wb") {
+          const p = WP[P.id] || [];
+          h = `<h3>${esc(P.place)}</h3><div class="src">World Bank project site · ${esc(PREC[P.pc] || "")}</div><div class="item"><a href="https://projects.worldbank.org/en/projects-operations/project-detail/${esc(P.id)}" target="_blank" rel="noopener">${esc(p[0])}</a><br><span class="m">${esc(P.id)} · ${esc(p[4])} · started ${p[5] || "–"} · ${esc(p[3])}</span><br>${usd(p[2])} committed to the whole project<br><span class="m">${esc(p[1])}</span></div><div class="note">Source: AidData and the World Bank, geocoded research release 1.4.2 (projects approved 1995–2014).</div>`;
+        } else {
+          const r = CN[String(P.i)] || [];
+          h = `<h3>${esc(r[4])}</h3><div class="src">Chinese state-financed project site</div><div class="item">${esc(r[6])}<br><span class="m">${r[5] || "–"} · ${esc(r[8])} · ${esc(r[9])} · ${r[7] != null ? usd(r[7]) + " (2021 dollars)" : "amount not given"}</span><br><span class="m">Located: ${esc(r[10])}${r[11] ? ` · <a href="${esc(String(r[11]).split("|")[0])}" target="_blank" rel="noopener">on OpenStreetMap</a>` : ""} · AidData id ${esc(r[2])}</span></div><div class="note">Source: AidData, Geospatial Global Chinese Development Finance Dataset 3.0.</div>`;
+        }
+        if (!popup) popup = new maplibregl.Popup({ className: "lc-pop", maxWidth: "360px", focusAfterOpen: false });
+        popup.setLngLat(f.geometry.coordinates).setHTML(h).addTo(map); popup._lc = null; popup._pt = true;
+      });
+    }
+  }
+  function updatePoints() {
+    if (!map.getLayer("pt-wb")) return;
+    const c = PTCOL[state.base] || PTCOL.land, exact = $("#pts-exact").checked;
+    const yr = ["any", ["==", ["get", "y"], -1], ["all", [">=", ["get", "y"], state.from], ["<=", ["get", "y"], state.to]]];
+    for (const k of ["wb", "cn"]) {
+      map.setLayoutProperty("pt-" + k, "visibility", PT[k].on ? "visible" : "none");
+      map.setPaintProperty("pt-" + k, "circle-color", c[k]); map.setPaintProperty("pt-" + k, "circle-stroke-color", c.edge);
+      $("#dot-" + k).style.background = c[k];
+      map.setFilter("pt-" + k, exact ? ["all", yr, k === "wb" ? ["==", ["get", "pc"], 1] : ["==", ["get", "exact"], 1]] : yr);
+      map.moveLayer("pt-" + k);
+    }
+  }
+
+  // Breaks: seven classes from the spread of the non-zero values now shown,
+  // rounded to plain numbers.
+  function nice(v) { if (v <= 10) return Math.ceil(v); const p = 10 ** Math.floor(Math.log10(v)); for (const m of [1, 1.5, 2, 2.5, 3, 4, 5, 6, 7.5, 8, 10]) if (m * p >= v) return m * p; return 10 * p; }
+  function breaksOf(vals) {
+    const v = vals.filter((x) => x > 0).sort((a, b) => a - b);
+    if (!v.length) return [];
+    const out = [];
+    for (let i = 1; i < 7; i++) { const q = v[Math.min(v.length - 1, Math.floor((i / 7) * v.length))]; const n = nice(q); if (!out.length || n > out[out.length - 1]) out.push(n); }
+    if (out[out.length - 1] >= v[v.length - 1]) out.pop();
+    return out;
+  }
+  // Each background has a ramp in its own colours: earthy greens on the Atlas and Jurassic.
+  const rampFor = (l) => RAMPS[state.base === "night" ? "night" : state.base === "hell" ? "hell" : state.base === "atlas" || state.base === "jurassic" ? "moss" : l.ramp];
+
+  function redraw() {
+    if (!ready) return;
+    const l = rowOf(state.active), o = state.opts[l.id];
+    for (const r of document.querySelectorAll(".row")) r.classList.toggle("on", r.dataset.id === l.id);
+    const radio = $(`.row[data-id="${l.id}"] input[type=radio]`); if (radio) radio.checked = true;
+    const { values, unplaced, noTotal } = l.values(state.from, state.to, o);
+    current = values;
+    const br = breaksOf([...values.values()]), ramp = rampFor(l);
+    const cols = ramp.slice(ramp.length - (br.length + 1));
+    for (const c of GEO.keys()) map.setFeatureState({ source: "lc", id: c }, { v: values.has(c) ? values.get(c) : null });
+    const step = br.length ? ["step", ["feature-state", "v"], cols[0], ...br.flatMap((b, i) => [b, cols[i + 1]])] : cols[0];
+    map.setPaintProperty("lc-fill", "fill-color", ["case", ["==", ["typeof", ["feature-state", "v"]], "number"],
+      ["case", ["<=", ["feature-state", "v"], 0], NONE, step], "rgba(0,0,0,0)"]);
+    map.setPaintProperty("lc-fill", "fill-opacity", state.base === "atlas" || state.base === "jurassic" ? 0.85 : 0.92);
+    // Key
+    const fmt = (v) => (l.fmt ? l.fmt(v, o) : o.measure === "agreed" ? sdr(v) : o.measure === "amt" ? usd(v) : num(v));
+    const total = [...values.values()].reduce((s, v) => s + v, 0) + [...unplaced.values()].reduce((s, v) => s + v, 0);
+    const shown = [...values.entries()].filter(([c, v]) => v > 0 && GEO.has(c)).length;
+    let leg = `<div class="tot">${state.from} to ${state.to}: ${noTotal ? "" : esc(l.unit(total, o)) + " in all, "}${shown} countr${shown === 1 ? "y" : "ies"} on the map</div>`;
+    const edges = [1, ...br];
+    const money = l.cont || o.measure === "amt" || o.measure === "agreed" || o.measure === "usd";
+    leg += cols.map((col, i) => {
+      const lo = edges[i], hi = br[i];
+      let txt;
+      if (!br.length) txt = "Any number above none";
+      else if (hi == null) txt = `${fmt(lo)} or more`;
+      else if (money) txt = i === 0 ? `Under ${fmt(hi)}` : `${fmt(lo)} to under ${fmt(hi)}`;
+      else txt = lo === hi - 1 ? fmt(lo) : `${fmt(lo)} to ${fmt(hi - 1)}`;
+      return `<div class="k"><span class="sw" style="background:${col}"></span>${esc(txt)}</div>`; }).join("");
+    leg += `<div class="k"><span class="sw" style="background:${NONE}"></span>${l.cont ? "Zero or less in these years" : "None recorded in these years"}</div>${l.cont ? `<div class="k"><span class="sw" style="background:transparent;border:1px solid #8A939D"></span>No figure published</div>` : ""}`;
+    $(`#leg-${l.id}`).innerHTML = leg;
+    for (const x of LAYERS) if (x.id !== l.id) { $(`#leg-${x.id}`).innerHTML = ""; $(`#un-${x.id}`).innerHTML = ""; }
+    $(`#un-${l.id}`).innerHTML = unplaced.size ? `Counted in the total but with no shape on this map: ${[...unplaced.entries()].map(([n, v]) => `${esc(n)} (${esc(fmt(v))})`).join("; ")}.` : "";
+    const outside = state.from > l.span[1] || state.to < l.span[0];
+    $("#cover").textContent = outside ? `This row covers ${l.span[0]} to ${l.span[1]}; move the years into that range.` : `This row covers ${l.span[0]} to ${l.span[1]}.`;
+    $("#now").textContent = `On the map now: ${l.short}${o.measure && l.id !== "all" ? ` (${optionText(l.id, o.measure)})` : ""}, ${state.from} to ${state.to}.`;
+    if (popup && popup.isOpen() && popup._lc) openPopup(popup._lc, popup.getLngLat());
+    updatePoints();
+  }
+
+  // Click and hover
+  let popup = null, hovered = null;
+  const hoverTip = $("#tip");
+  function openPopup(c, lngLat) {
+    const l = rowOf(state.active), o = state.opts[l.id];
+    const v = current.get(c);
+    const html = `<h3>${esc(GEO.get(c) || c)}</h3><div class="src">${esc(l.title)} · ${state.from} to ${state.to}</div>` +
+      (v == null ? `<div class="note">This source has no record for this country.</div>` : l.popup(c, state.from, state.to, o));
+    if (!popup) popup = new maplibregl.Popup({ className: "lc-pop", maxWidth: "360px", focusAfterOpen: false });
+    popup.setLngLat(lngLat).setHTML(html).addTo(map); popup._lc = c;
+  }
+  map.on("click", "lc-fill", (e) => { if (map.queryRenderedFeatures(e.point, { layers: ["pt-wb", "pt-cn"].filter((l) => map.getLayer(l)) }).length) return; const f = e.features && e.features[0]; if (f && f.properties.iso3 !== "-99") openPopup(f.properties.iso3, e.lngLat); });
+  map.on("mousemove", "lc-fill", (e) => {
+    const f = e.features && e.features[0]; if (!f) return;
+    const c = f.properties.iso3;
+    if (hovered !== c) { if (hovered) map.setFeatureState({ source: "lc", id: hovered }, { hover: false }); hovered = c !== "-99" ? c : null; if (hovered) map.setFeatureState({ source: "lc", id: hovered }, { hover: true }); }
+    map.getCanvas().style.cursor = "pointer";
+    const l = rowOf(state.active), v = current.get(c);
+    hoverTip.innerHTML = `${esc(f.properties.name)}: ${v == null ? "no record" : esc(l.unit(v, state.opts[l.id]))}`;
+    hoverTip.style.display = "block"; hoverTip.style.left = e.point.x + 14 + "px"; hoverTip.style.top = e.point.y + 10 + "px";
+  });
+  map.on("mouseleave", "lc-fill", () => { if (hovered) map.setFeatureState({ source: "lc", id: hovered }, { hover: false }); hovered = null; hoverTip.style.display = "none"; map.getCanvas().style.cursor = ""; });
+
+  /* ------------------------------------------------------------ backgrounds */
+/*__BASES__*/
+  const added = new Set();
+  function setBase(kind) {
+    if (BASES[kind] && !added.has(kind)) {
+      const b = BASES[kind]();
+      if (kind === "hell" && map.setGlyphs && !map.getGlyphs()) map.setGlyphs(HELL.glyphs);
+      for (const [k, v] of Object.entries(b.sources)) if (!map.getSource(k)) map.addSource(k, v);
+      for (const l of b.layers) map.addLayer(Object.assign({}, l, { layout: Object.assign({}, l.layout || {}, { visibility: "none" }) }), l.type === "symbol" ? undefined : "land-edge");
+      added.add(kind);
+    }
+    for (const k of added) for (const l of BASES[k]().layers) if (map.getLayer(l.id)) map.setLayoutProperty(l.id, "visibility", k === kind ? "visible" : "none");
+    map.setLayoutProperty("land", "visibility", kind === "land" ? "visible" : "none");
+    map.setLayoutProperty("land-edge", "visibility", kind === "land" ? "visible" : "none");
+    state.base = kind;
+    redraw();
+  }
+  $("#basemap").addEventListener("click", (e) => {
+    const b = e.target.closest("button[data-base]"); if (!b) return;
+    const go = () => setBase(b.dataset.base);
+    if (ready) go(); else map.once("load", go);
+    for (const x of document.querySelectorAll("#basemap button")) x.classList.toggle("on", x === b);
+  });
+  $("#fold").addEventListener("click", (e) => {
+    const s = $("#side"); s.classList.toggle("folded");
+    e.target.textContent = s.classList.contains("folded") ? "Open ▾" : "Fold up ▴";
+  });
+})();
+</script>
+</body>
+</html>
