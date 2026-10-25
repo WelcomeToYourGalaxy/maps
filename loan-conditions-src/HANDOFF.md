@@ -160,7 +160,7 @@ Still open:
 ### 6c. Added 25 Oct 2026 (second round)
 
 - **17 more condition-harm cases** (`cases/batchE.json`, `batchF.json` → checked to `cases/checked3.json`, `checked4.json`), 168 in all. Leads still not researched: Lagos and Nairobi water, Mongolia, Philippines rice tariffication, Nicaragua/Honduras coffee credit, Ecuador's 2025 public-job cuts (a possible contested case; source in `batchF.json` "dropped").
-- **Point layer "Protests against governments, 1990–2020"** (`D.mm`, `mm_build.py`): every one of the 15,239 protest events in the Mass Mobilization Project file `mmALL_073120` (Harvard Dataverse doi:10.7910/DVN/HTTWYL, v5.1). Placed by matching the free-text location to GeoNames (cities of 1,000+ and first-level regions) inside the event's country: 12,726 at a named town, 142 at a named region's largest town, 2,371 at the capital (no town named or matched). USSR events are searched in all 15 former republics. The menu filters by demand (prices and taxes, wages, land), by records whose notes mention the IMF or World Bank (49), and by shootings or killings. It is the largest part of the page (about 4 MB compressed).
+- **Point layer "Protests against governments, 1990–2020"** (`D.mm`, `mm_build.py`): every one of the 15,239 protest events in the Mass Mobilization Project file `mmALL_073120` (Harvard Dataverse doi:10.7910/DVN/HTTWYL, v5.1). Placed by matching the free-text location to GeoNames (cities of 1,000+ and first-level regions) inside the event's country: 12,726 at a named town, 142 at a named region's largest town, 2,371 at the capital (no town named or matched). USSR events are searched in all 15 former republics. The menu filters by demand (prices and taxes, wages, land), by records whose notes mention the IMF or World Bank (49), and by shootings or killings. Since 25 Oct 2026 it lives in its own file, `loan-conditions-protests.json.gz` (gzip JSON, about 4 MB) next to the page, written by `build_map.py` and fetched the first time the layer is switched on (`loadMM`). It must be uploaded with the page.
 - **Section "Patterns behind the scenes"** (lender `Pat`; `D.pats`; each row colours countries by role, draws arcs for documented links, and lists timeline, sources, statistical studies, one author's claims and unproven points):
   - Researched (`patterns/BRIEF.md`, researcher files `R1`–`R4.json`, checked to `patterns/checked1`–`4.json` per `patterns/CHECK.md`): Cold War reward and punishment; dictators' debts; inflated forecasts and insiders (Perkins kept in claims_per_author only); the economists' pipeline; Washington's hold on the IMF and World Bank; the revolving door; rescue loans that paid foreign lenders; investors suing after privatization.
   - Computed from the map's own data (`waves_build.py` → `waves.json`): waves of IMF lending; sold off then taken back; price protests in IMF program years; waves of IMF conditions.
@@ -171,7 +171,8 @@ Still open:
 
 ### 7. Map behaviour
 
-- Flat map: edge clamping is done by hand (`keepWorldInView`), because MapLibre 5.24's `setMaxBounds` throws after switching projection.
+- Flat map: free dragging, as on the central bank map (`freeFlat`, `setTransformConstrain` limits the centre to ±360° longitude and ±84° latitude). Background layers fill the whole screen in flat view, so `syncSheets` swaps each for a world-sized fill (`<id>-flat`) on the flat map, which leaves stars around the world.
+- Sidebar: the places list and the rows scroll together inside `#sidescroll`.
 - Stars: drawn on a seeded canvas (`#stars`) behind the map.
 - Dot colours: the dots change with each background (`PTCOL`).
 
