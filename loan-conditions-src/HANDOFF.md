@@ -143,7 +143,19 @@ Still open:
 - Not found yet:
   - World Bank project locations after 2014. The Projects API v2 no longer returns `locations`.
   - Other lenders' project sites, for example AidData's geocoded releases for the African Development Bank or Asian Development Bank, if any exist.
-  - Points for protests against austerity or IMF programmes. They need an open, citable, geocoded dataset. ACLED is licensed.
+  - Points for protests against austerity or IMF programmes. They need an open, citable, geocoded dataset that ties each protest to a condition. ACLED is licensed; general protest datasets (Mass Mobilization) were left out on purpose because they are not about conditions.
+
+### 6b. Added 25 Oct 2026
+
+- **Country row "Sales of state firms and services, as the World Bank recorded them"** (`D.wbpriv`): every row of the World Bank Privatization Database files `PrivatizationData88_99.xls` (8,339 rows) and `PrivatizationData00_08.xls` (1,858 rows), 10,197 in all. The originals are no longer on rru.worldbank.org; copies are in `github.com/pudo/dpkg-wb-privatization` (public, cloned with git). Country names matched to ISO3 from the map's own World Bank names plus a short manual list; "Serbia and Montenegro" has no shape. The 2000–2008 file is described as deals of US$1 million or more, but 5 rows are below that; the fine print says so.
+- **Point layer "Where a loan condition led to harm"** (`D.cases`, 151 cards, `cases/`):
+  - 105 from the globalization map (`globalization.html`, kinds privatization, trade, austerity), copied as published there (`cases/from_glob.json`).
+  - 46 new (`cases/checked*.json`), researched to `cases/BRIEF.md` and then fact-checked by separate agents to `cases/CHECK.md`. Eight researched cases were dropped on review, and the researchers' own drops are in `cases/dropped_all.json` with reasons.
+  - Leads not researched because the search allowance ran out: Nigeria NEPA, Dominican Republic power, Lagos/Nairobi/Maputo water, Ghana gold, Bolivia COMIBOL, Iraq 2019, Lebanon, Senegal, Burkina Faso 2008, Philippines, El Salvador, Brazil 1998–99, India farmer debt, Nicaragua/Honduras coffee, pension privatizations.
+  - Company head-office cities the checkers found no source for are blanked (`cases_build.py`, `NOHQ`).
+  - Contested cases are drawn as rings. Kinds can be switched off one by one.
+- **Point layer "Services taken back into public hands"** (`D.pf`): all 1,787 published cases of the Public Futures database (University of Glasgow / TNI), fetched from its site API (`https://publicfutures.org/api/cases/<id>`, plus `/api/classification-types`, `/api/classification-options`, `/api/economic/services`, `/api/economic/sectors`). Placed by `pf_build.py` and `pf_pass2.py`: 1,270 at the OpenStreetMap place the database links (Nominatim lookup), 490 by searching the place name (approximate), 27 at the middle of the country because no place matched. Four Argentine province links in the database pointed outside Argentina and were re-placed by province name.
+- Rebuilding without re-fetching: `data.json` can be decoded from the live page (the gzip/base64 string in `LC_DATA_GZ`); then run `cases_build.py` and add `pf_rows.json` as `D.pf`.
 
 ### 7. Map behaviour
 

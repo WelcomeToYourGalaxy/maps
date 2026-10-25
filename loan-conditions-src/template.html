@@ -19,6 +19,11 @@
   #points .dot { width: 9px; height: 9px; border-radius: 50%; border: 1px solid rgba(0,0,0,.6); flex: none; }
   #points .n { color: #8E9AAB; font-size: 11.5px; margin-left: auto; }
   #points .sub { padding-left: 16px; color: #AEB6C0; font-size: 12px; }
+  #points .dot.ring { background: transparent !important; border-width: 2px; }
+  #cs-kinds label { margin: 1px 0; }
+  .lc-pop h4 { margin: 8px 0 2px; font: 400 11px/1.3 'Marcellus', Georgia, serif; letter-spacing: .06em; text-transform: uppercase; color: #8E9AAB; }
+  .lc-pop p.cs { margin: 2px 0 4px; font-size: 12px; line-height: 1.45; }
+  .lc-pop .flag { display: inline-block; font-size: 10.5px; padding: 1px 5px; border: 1px solid #3A434E; border-radius: 3px; color: #C9CFD6; margin: 2px 4px 2px 0; }
   #side { position: absolute; top: 12px; left: 12px; bottom: 12px; width: 372px; max-width: calc(100vw - 24px); display: flex; flex-direction: column;
           background: rgba(13,17,23,.94); border: 1px solid #28303A; border-radius: 6px; box-shadow: 0 8px 28px rgba(0,0,0,.45); z-index: 5; }
   #side header { padding: 14px 16px 10px; border-bottom: 1px solid #28303A; }
@@ -134,7 +139,7 @@
   <header>
     <h1>Loan conditions worldwide</h1>
     <button id="fold" type="button" title="Fold the panel up, or open it">Fold up ▴</button>
-    <p class="lede">The strings attached to loans and debt deals for governments: from the IMF, the World Bank, regional development banks, the EU, the Paris Club, China and every lender that reports to the OECD, plus the other money flowing in and out: foreign investment, aid, foundation grants, private and government loans, and money sent home. Pick a row, set the years, then click a country for its record. Hover over a <span class="q" style="cursor:default">?</span> for what a term means.</p>
+    <p class="lede">The strings attached to loans and debt deals for governments: from the IMF, the World Bank, regional development banks, the EU, the Paris Club, China and every lender that reports to the OECD, plus the other money flowing in and out: foreign investment, aid, foundation grants, private and government loans, and money sent home; sales of state firms; and marked places where a loan condition led to harm. Pick a row, set the years, then click a country for its record. Hover over a <span class="q" style="cursor:default">?</span> for what a term means.</p>
     <p class="lede now" id="now"></p>
   </header>
   <div id="years">
@@ -148,6 +153,9 @@
     <label><input type="checkbox" data-pts="wb"><span class="dot" id="dot-wb"></span><span>World Bank project sites, 1995–2014</span><span class="q" tabindex="0" role="button" aria-label="What this means" data-tip="Where World Bank loans and grants were spent: towns, districts, roads, dams and so on, as AidData and the World Bank mapped them. Click a dot for the project.">?</span><span class="n" id="n-wb"></span></label>
     <label><input type="checkbox" data-pts="cn"><span class="dot" id="dot-cn"></span><span>Chinese state-financed project sites, 2000–2021</span><span class="q" tabindex="0" role="button" aria-label="What this means" data-tip="Where loans and grants from Chinese state banks and agencies were spent, as AidData traced them on OpenStreetMap: ports, railways, power plants, hospitals and more. Click a dot for the project.">?</span><span class="n" id="n-cn"></span></label>
     <label class="sub"><input type="checkbox" id="pts-exact"><span>Only places pinned to an exact spot</span></label>
+    <label><input type="checkbox" data-pts="cs"><span class="dot" id="dot-cs"></span><span>Where a loan condition led to harm</span><span class="q" tabindex="0" role="button" aria-label="What this means" data-tip="Cases where a source documents that an IMF or World Bank condition led to a sale, a price or tax rise, a pay or job cut, a tariff cut or a law change that hurt people or land. A ring instead of a dot means the link to the lender is disputed; both sides are on the card. Click a mark for the full card and its sources.">?</span><span class="n" id="n-cs"></span></label>
+    <div class="sub" id="cs-kinds"></div>
+    <label><input type="checkbox" data-pts="pf"><span class="dot" id="dot-pf"></span><span>Services taken back into public hands, 2000 on</span><span class="q" tabindex="0" role="button" aria-label="What this means" data-tip="Water, power, transport, waste, health and other services that towns, regions or countries took back from private companies, or newly set up as public services, as logged by the Public Futures database (University of Glasgow and the Transnational Institute). Marks are placed from the place name and are approximate. Click a mark for the case.">?</span><span class="n" id="n-pf"></span></label>
   </div>
   <div class="scroll" id="panel"></div>
   <div class="foot">Sources are named in each row. <a href="https://welcometoyourgalaxy.com" target="_blank" rel="noopener">Welcome to Your Galaxy</a></div>
@@ -470,6 +478,45 @@ const LC_DATA_GZ = "/*__DATA__*/";
     about: `<p>The number of loan-specific conditions written into the legal agreements of World Bank loans, read from the agreements by the researchers. This covers every kind of loan whose agreement they could obtain, not just policy-based ones; for investment loans the conditions are mostly about how the project is run. Untick a kind of loan to leave it out.</p>
 <p>Coverage: ${C.length} loans with ${num(C.reduce((s, x) => s + x.n, 0))} conditions, documents dated ${Math.min(...C.map((x) => x.y))} to ${Math.max(...C.map((x) => x.y))}. These are counts from the legal agreements; they are a different measure from the IMF counts above and should not be added to them.</p>
 <p>Source: Winter, Cormier, Kramarz and Manger (2025), "Reassessing World Bank conditionality: beyond count measures", <i>Political Science Research and Methods</i>, <a href="https://doi.org/10.1017/psrm.2025.19" target="_blank" rel="noopener">doi:10.1017/psrm.2025.19</a>; replication data <a href="https://doi.org/10.7910/DVN/AF3EZP" target="_blank" rel="noopener">doi:10.7910/DVN/AF3EZP</a> (data_wb_conditions). The texts of the conditions are published in the same files and in Cormier and Manger's <a href="https://doi.org/10.7910/DVN/60XKHH" target="_blank" rel="noopener">dataset of 1,242 agreements</a>.</p>`,
+  });
+
+  // World Bank Privatization Database: every sale it recorded, 1988-2008.
+  const PV = D.wbpriv.rows.map((r) => ({ c: r[0], cn: r[1], co: r[2], y: r[3], sec: r[4] || "Not given", deal: r[5], sub: r[6], amt: r[7], real: r[8], rel: r[9] }));
+  const pvSecs = [...new Set(PV.map((x) => x.sec))].sort((a, b) => PV.filter((x) => x.sec === b).length - PV.filter((x) => x.sec === a).length);
+  const pvKeep = (x, o) => !o.off || !o.off.has(x.sec);
+  const pvMil = (v) => (v == null ? "amount not given" : usd(v));
+  LAYERS.push({
+    id: "wbpriv", lender: "World Bank", ramp: "slate", span: [Math.min(...PV.map((x) => x.y)), Math.max(...PV.map((x) => x.y))],
+    title: "Sales of state firms and services, as the World Bank recorded them",
+    short: "sales of state firms and services",
+    plain: "Each time a government in a low- or middle-income country sold, leased or handed over a state company or public service (banks, power, phones, mines, factories, hotels and more), the World Bank logged it with the price paid. IMF and World Bank loans often required such sales (the IMF conditions row counts them under “Privatization”). This row shows the sales themselves, not which ones a condition required.",
+    controls: () => `<select data-k="measure">
+        <option value="n">Number of sales recorded</option>
+        <option value="amt">Money the government received (US$)</option>
+      </select>` + checks("sec", { "Sector, as the World Bank labelled it": pvSecs }, (k) => `${k} (${num(PV.filter((x) => x.sec === k).length)})`),
+    unit: (v, o) => (o.measure === "amt" ? usd(v) : `${num(v)} sale${v === 1 ? "" : "s"}`),
+    fmt: (v, o) => (o.measure === "amt" ? usd(v) : num(v)),
+    values(from, to, o) {
+      const out = new Map(), unplaced = new Map();
+      for (const x of PV) {
+        if (!pvKeep(x, o) || x.y < from || x.y > to) continue;
+        const v = o.measure === "amt" ? x.amt || 0 : 1;
+        if (x.c && GEO.has(x.c)) out.set(x.c, (out.get(x.c) || 0) + v); else unplaced.set(x.cn, (unplaced.get(x.cn) || 0) + v);
+      }
+      return { values: out, unplaced };
+    },
+    popup(c, from, to, o) {
+      const list = PV.filter((x) => x.c === c && pvKeep(x, o) && x.y >= from && x.y <= to).sort((a, b) => b.y - a.y || (b.amt || 0) - (a.amt || 0));
+      const series = []; for (let y = Math.max(from, this.span[0]); y <= Math.min(to, this.span[1]); y++) series.push([y, list.filter((x) => x.y === y).length]);
+      const tot = list.reduce((s, x) => s + (x.amt || 0), 0);
+      return `<div class="big">${num(list.length)} sale${list.length === 1 ? "" : "s"}, ${usd(tot)} received</div>` + bars(series, "#7697B2", "sales per year") +
+        list.map((x) => `<div class="item"><b>${esc(x.co || "Name not given")}</b><br><span class="m">${x.y} · ${esc(x.sec)}${x.real ? " · " + esc(x.real) : ""}${x.deal ? " · " + esc(x.deal) : ""}${x.sub ? " (" + esc(x.sub) + ")" : ""}</span><br>${pvMil(x.amt)}</div>`).join("");
+    },
+    srcLine: "World Bank Privatization Database",
+    about: `<p>Every record in the World Bank's two privatization files: ${num(PV.filter((x) => x.rel === 1).length)} for 1988 to 1999 and ${num(PV.filter((x) => x.rel === 2).length)} for 2000 to 2008. Each gives the company or asset, the year, the sector, how it was sold (auction, share offer, concession, management contract and so on, in the World Bank's own mixed wording) and what the government received. The files cover low- and middle-income countries only. The World Bank describes the 2000 to 2008 file as deals of at least US$1 million (5 rows in it are below that) and the earlier file as also including smaller deals and voucher sales. Two rows in the files read "No privatization"; they are shown as given.</p>
+<p>The two files label sectors differently ("Manufacturing & Services" in the first, "Competitive" in the second, for example); the labels are shown exactly as written. Sales listed under "Serbia and Montenegro" have no shape on this map and are counted under the key.</p>
+<p>Coverage: ${num(PV.length)} records, ${new Set(PV.map((x) => x.cn)).size} countries, ${usd(PV.reduce((s, x) => s + (x.amt || 0), 0))} in all.</p>
+<p>Source: World Bank, Privatization Database (files PrivatizationData88_99.xls and PrivatizationData00_08.xls, formerly at rru.worldbank.org/Privatization), as archived by OpenSpending at <a href="https://github.com/pudo/dpkg-wb-privatization" target="_blank" rel="noopener">github.com/pudo/dpkg-wb-privatization</a>. The World Bank's own summaries: <a href="https://documents.worldbank.org/curated/en/2007/02/7458990/privatization-trends" target="_blank" rel="noopener">Privatization Trends (2007)</a>.</p>`,
   });
 
   // IDB policy-based loans and guarantees.
@@ -1310,9 +1357,12 @@ const LC_DATA_GZ = "/*__DATA__*/";
 
   /* ------------------------------------------------------------ point layers: where the money was spent */
   // Dot colours follow the background map, so they read well on each one.
-  const PTCOL = { land: { wb: "#9DB4C8", cn: "#C28F9C", edge: "#0B0F14" }, night: { wb: "#7FB8B4", cn: "#B39BC9", edge: "#05080C" },
-    atlas: { wb: "#3E5C76", cn: "#83394A", edge: "#F2EAD8" }, jurassic: { wb: "#2E4A5E", cn: "#74303F", edge: "#E6E0C8" }, hell: { wb: "#D7CEC3", cn: "#9FB2C2", edge: "#1A0606" } };
-  const PT = { wb: { on: false }, cn: { on: false } };
+  const PTCOL = { land: { wb: "#9DB4C8", cn: "#C28F9C", cs: "#ECE6DA", pf: "#93B39C", edge: "#0B0F14" }, night: { wb: "#7FB8B4", cn: "#B39BC9", cs: "#EDE4D6", pf: "#9DC0A8", edge: "#05080C" },
+    atlas: { wb: "#3E5C76", cn: "#83394A", cs: "#2A2730", pf: "#5A4466", edge: "#F2EAD8" }, jurassic: { wb: "#2E4A5E", cn: "#74303F", cs: "#2B2420", pf: "#523D5E", edge: "#E6E0C8" }, hell: { wb: "#D7CEC3", cn: "#9FB2C2", cs: "#F2EADF", pf: "#A9BBA2", edge: "#1A0606" } };
+  const PT = { wb: { on: false }, cn: { on: false }, cs: { on: false }, pf: { on: false } };
+  const PTK = ["wb", "cn", "cs", "pf"];
+  const CSKIND = { privatization: "Sale or handover of a public firm or service", austerity: "Price, tax, pay, job or spending cuts", trade: "Trade opening", law: "A required change in the law" };
+  const csOff = new Set();
   function setupPoints() {
     const WP = D.wbsites.projects;
     const wbf = D.wbsites.points.map(([x, y, id, pc, place]) => ({ type: "Feature", geometry: { type: "Point", coordinates: [x, y] },
@@ -1325,10 +1375,26 @@ const LC_DATA_GZ = "/*__DATA__*/";
     for (const k of ["wb", "cn"]) map.addLayer({ id: "pt-" + k, type: "circle", source: "pt-" + k, layout: { visibility: "none" },
       paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 1, 1.1, 4, 2.6, 8, 5.5], "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 1, 0.3, 6, 0.8], "circle-opacity": 0.85, "circle-stroke-opacity": 0.8 } });
     $("#n-wb").textContent = num(wbf.length); $("#n-cn").textContent = num(cnf.length);
+    // Cases where a condition led to harm; contested ones are drawn as rings.
+    const csf = D.cases.map((c, i) => ({ type: "Feature", geometry: { type: "Point", coordinates: [c.lng, c.lat] },
+      properties: { i, k: c.mechanism, a: c.start ?? -1, b: c.end ?? 9999, ct: c.confidence === "contested" ? 1 : 0 } }));
+    map.addSource("pt-cs", { type: "geojson", data: { type: "FeatureCollection", features: csf } });
+    map.addLayer({ id: "pt-cs", type: "circle", source: "pt-cs", layout: { visibility: "none" },
+      paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 1, 3.4, 4, 5, 8, 8], "circle-stroke-width": ["case", ["==", ["get", "ct"], 1], 2, 1.1], "circle-opacity": ["case", ["==", ["get", "ct"], 1], 0, 0.95], "circle-stroke-opacity": 1 } });
+    $("#n-cs").textContent = num(csf.length);
+    $("#cs-kinds").innerHTML = Object.entries(CSKIND).map(([k, t]) => `<label><input type="checkbox" checked data-csk="${k}"><span>${esc(t)} (${D.cases.filter((c) => c.mechanism === k).length})</span></label>`).join("");
+    $("#cs-kinds").addEventListener("change", (e) => { const k = e.target.dataset.csk; if (!k) return; e.target.checked ? csOff.delete(k) : csOff.add(k); updatePoints(); });
+    // Public Futures cases.
+    const PF = D.pf.rows;
+    const pff = PF.map((r, i) => ({ type: "Feature", geometry: { type: "Point", coordinates: [r[0], r[1]] }, properties: { i, y: r[4] ?? r[5] ?? -1 } }));
+    map.addSource("pt-pf", { type: "geojson", data: { type: "FeatureCollection", features: pff } });
+    map.addLayer({ id: "pt-pf", type: "circle", source: "pt-pf", layout: { visibility: "none" },
+      paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 1, 1.8, 4, 3.2, 8, 6], "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 1, 0.2, 6, 0.5], "circle-opacity": 0.95, "circle-stroke-opacity": 0.8 } });
+    $("#n-pf").textContent = num(pff.length);
     $("#points").addEventListener("change", (e) => { const k = e.target.dataset.pts; if (k) PT[k].on = e.target.checked; updatePoints(); });
     const CN = Object.fromEntries(D.cnsites.rows.map((r) => [String(r[2]), r]));
     const PREC = { 1: "exact spot", 2: "within about 25 km", 3: "district", 4: "province or state", 5: "near a province", 6: "whole country", 7: "estimated", 8: "whole country (country-wide project)" };
-    for (const k of ["wb", "cn"]) {
+    for (const k of PTK) {
       map.on("mouseenter", "pt-" + k, () => (map.getCanvas().style.cursor = "pointer"));
       map.on("mouseleave", "pt-" + k, () => (map.getCanvas().style.cursor = ""));
       map.on("click", "pt-" + k, (e) => {
@@ -1336,19 +1402,56 @@ const LC_DATA_GZ = "/*__DATA__*/";
         if (k === "wb") {
           const p = WP[P.id] || [];
           h = `<h3>${esc(P.place)}</h3><div class="src">World Bank project site · ${esc(PREC[P.pc] || "")}</div><div class="item"><a href="https://projects.worldbank.org/en/projects-operations/project-detail/${esc(P.id)}" target="_blank" rel="noopener">${esc(p[0])}</a><br><span class="m">${esc(P.id)} · ${esc(p[4])} · started ${p[5] || "–"} · ${esc(p[3])}</span><br>${usd(p[2])} committed to the whole project<br><span class="m">${esc(p[1])}</span></div><div class="note">Source: AidData and the World Bank, geocoded research release 1.4.2 (projects approved 1995–2014).</div>`;
+        } else if (k === "cs") {
+          h = caseCard(D.cases[P.i]);
+        } else if (k === "pf") {
+          h = pfCard(D.pf.rows[P.i]);
         } else {
           const r = CN[String(P.i)] || [];
           h = `<h3>${esc(r[4])}</h3><div class="src">Chinese state-financed project site</div><div class="item">${esc(r[6])}<br><span class="m">${r[5] || "–"} · ${esc(r[8])} · ${esc(r[9])} · ${r[7] != null ? usd(r[7]) + " (2021 dollars)" : "amount not given"}</span><br><span class="m">Located: ${esc(r[10])}${r[11] ? ` · <a href="${esc(String(r[11]).split("|")[0])}" target="_blank" rel="noopener">on OpenStreetMap</a>` : ""} · AidData id ${esc(r[2])}</span></div><div class="note">Source: AidData, Geospatial Global Chinese Development Finance Dataset 3.0.</div>`;
         }
         if (!popup) popup = new maplibregl.Popup({ className: "lc-pop", maxWidth: "360px", focusAfterOpen: false });
+        popup.setMaxWidth(k === "cs" ? "420px" : "360px");
         popup.setLngLat(f.geometry.coordinates).setHTML(h).addTo(map); popup._lc = null; popup._pt = true;
       });
     }
+  }
+  const yrsOf = (c) => (c.start == null ? "" : c.start + (c.end == null ? " to now" : c.end !== c.start ? "–" + c.end : ""));
+  const para = (t) => (t ? `<p class="cs">${esc(t)}</p>` : "");
+  function caseCard(c) {
+    let h = `<h3>${esc(c.title)}</h3><div class="src">${esc(c.place)} · ${esc(yrsOf(c))}</div>`;
+    h += `<span class="flag">${esc(CSKIND[c.mechanism] || c.mechanism)}</span>${c.confidence === "contested" ? `<span class="flag">Link disputed</span>` : ""}${c.killed ? `<span class="flag">${num(c.killed)} killed</span>` : ""}`;
+    if (c.confidence === "contested" && c.confidence_note) h += `<h4>Why it is disputed</h4>${para(c.confidence_note)}`;
+    if (c.lenders && c.lenders.length) h += `<h4>The lenders and what they did</h4>` + c.lenders.map((l) => `<p class="cs"><b>${esc(l.name)}</b>: ${esc(l.role)}</p>`).join("");
+    if (c.conditions) h += `<h4>The condition</h4>${para(c.conditions)}`;
+    if (c.companies && c.companies.length) h += `<h4>Companies</h4>` + c.companies.map((x) => `<p class="cs"><b>${esc(x.name)}</b>${x.hq ? ` (${esc(x.hq)})` : ""}: ${esc(x.role)}</p>`).join("");
+    if (c.community) h += `<h4>What happened to people and land</h4>${para(c.community)}`;
+    if (c.suppression) h += `<h4>How resistance was put down</h4>${para(c.suppression)}`;
+    if (c.killed_note) h += `<h4>Deaths, and who counted them</h4>${para(c.killed_note)}`;
+    if (c.outcome) h += `<h4>What happened next</h4>${para(c.outcome)}`;
+    h += `<h4>Sources</h4>` + (c.sources || []).map((s) => `<div class="item">${s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title || s.url)}</a>` : esc(s.title)}<br><span class="m">${esc(s.publisher || "")}${s.year ? " · " + s.year : ""}</span></div>`).join("");
+    if (c.point) h += `<div class="note">The mark stands on: ${esc(c.point)}.</div>`;
+    return h;
+  }
+  function pfCard(r) {
+    const [x, y, cc, place, yImp, yDec, kind, svc, prev, cur, own, actors, actions, gov, org, motiv, approx, id, pop, summary, outc] = r;
+    const row = (t, v) => (v ? `<tr><td>${t}</td><td>${esc(v)}</td></tr>` : "");
+    return `<h3>${esc(place)}</h3><div class="src">Public Futures case ${esc(id)}${approx === 2 ? " · no matching place found, so placed at the middle of the country" : approx ? " · placed from the place name, approximate" : ""}</div>` +
+      `<table>${row("What happened", kind)}${row("Service", svc)}${row("Run before by", prev)}${row("Run now by", cur)}${row("Year decided", yDec)}${row("Year carried out", yImp)}${row("Ownership now", own)}${row("Who pushed for it", actors)}${row("How", actions)}${row("Why", motiv)}${row("Results reported", outc)}${row("How it is run", gov)}${row("Kind of public body", org)}${row("People served", pop ? num(pop) : "")}</table>` +
+      (summary ? para(summary) : "") +
+      `<div class="note">Source: Public Futures database, University of Glasgow and the Transnational Institute, <a href="https://publicfutures.org/" target="_blank" rel="noopener">publicfutures.org</a>.</div>`;
   }
   function updatePoints() {
     if (!map.getLayer("pt-wb")) return;
     const c = PTCOL[state.base] || PTCOL.land, exact = $("#pts-exact").checked;
     const yr = ["any", ["==", ["get", "y"], -1], ["all", [">=", ["get", "y"], state.from], ["<=", ["get", "y"], state.to]]];
+    for (const k of ["cs", "pf"]) {
+      map.setLayoutProperty("pt-" + k, "visibility", PT[k].on ? "visible" : "none");
+      map.setPaintProperty("pt-" + k, "circle-color", k === "cs" ? c.cs : c.pf);
+      map.setPaintProperty("pt-" + k, "circle-stroke-color", k === "cs" ? ["case", ["==", ["get", "ct"], 1], c.cs, c.edge] : c.edge);
+      $("#dot-" + k).style.background = c[k]; $("#dot-" + k).style.borderColor = k === "cs" ? c.edge : "";
+      map.setFilter("pt-" + k, k === "cs" ? ["all", ["<=", ["get", "a"], state.to], [">=", ["get", "b"], state.from], ["!", ["in", ["get", "k"], ["literal", [...csOff]]]]] : yr);
+    }
     for (const k of ["wb", "cn"]) {
       map.setLayoutProperty("pt-" + k, "visibility", PT[k].on ? "visible" : "none");
       map.setPaintProperty("pt-" + k, "circle-color", c[k]); map.setPaintProperty("pt-" + k, "circle-stroke-color", c.edge);
@@ -1356,6 +1459,7 @@ const LC_DATA_GZ = "/*__DATA__*/";
       map.setFilter("pt-" + k, exact ? ["all", yr, k === "wb" ? ["==", ["get", "pc"], 1] : ["==", ["get", "exact"], 1]] : yr);
       map.moveLayer("pt-" + k);
     }
+    map.moveLayer("pt-pf"); map.moveLayer("pt-cs");
   }
 
   // Breaks: seven classes from the spread of the non-zero values now shown,
@@ -1423,7 +1527,7 @@ const LC_DATA_GZ = "/*__DATA__*/";
     if (!popup) popup = new maplibregl.Popup({ className: "lc-pop", maxWidth: "360px", focusAfterOpen: false });
     popup.setLngLat(lngLat).setHTML(html).addTo(map); popup._lc = c;
   }
-  map.on("click", "lc-fill", (e) => { if (map.queryRenderedFeatures(e.point, { layers: ["pt-wb", "pt-cn"].filter((l) => map.getLayer(l)) }).length) return; const f = e.features && e.features[0]; if (f && f.properties.iso3 !== "-99") openPopup(f.properties.iso3, e.lngLat); });
+  map.on("click", "lc-fill", (e) => { if (map.queryRenderedFeatures(e.point, { layers: ["pt-wb", "pt-cn", "pt-cs", "pt-pf"].filter((l) => map.getLayer(l)) }).length) return; const f = e.features && e.features[0]; if (f && f.properties.iso3 !== "-99") openPopup(f.properties.iso3, e.lngLat); });
   map.on("mousemove", "lc-fill", (e) => {
     const f = e.features && e.features[0]; if (!f) return;
     const c = f.properties.iso3;
