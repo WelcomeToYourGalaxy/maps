@@ -59,8 +59,8 @@ h2{font:600 12px/1 "Marcellus",Georgia,serif;text-transform:uppercase;letter-spa
 .alltg{margin:14px 0 0}
 #alltg{width:100%;background:#211c25;border:1px solid #433a49;color:var(--ink);border-radius:8px;padding:7px 10px;font:13.5px "Marcellus",Georgia,serif;cursor:pointer}
 #alltg:hover{background:#2a2430}
-.alltg{display:flex;gap:8px}#alltg,#shadetg{flex:1}
-#shadetg{background:#211c25;border:1px solid #433a49;color:var(--ink);border-radius:8px;padding:7px 10px;font:13.5px "Marcellus",Georgia,serif;cursor:pointer}#shadetg:hover{background:#2a2430}
+.alltg{display:flex;gap:8px}#alltg,#shadetg,#pointtg{flex:1;padding:7px 4px!important;font-size:13px!important;white-space:nowrap}
+#shadetg,#pointtg{background:#211c25;border:1px solid #433a49;color:var(--ink);border-radius:8px;padding:7px 10px;font:13.5px "Marcellus",Georgia,serif;cursor:pointer}#shadetg:hover,#pointtg:hover{background:#2a2430}
 .tl{margin:10px 0 0;padding:8px 10px;border:1px solid #433a49;border-radius:8px;background:#1d1921}
 .tlh{display:flex;align-items:center;gap:8px;font-size:12.5px}.tlt{color:var(--mute)}#tlv{color:var(--ink);flex:1}
 #tlreset{background:none;border:1px solid var(--line);color:var(--mute);border-radius:999px;padding:1px 9px;font:11px "Marcellus",Georgia,serif;cursor:pointer}
@@ -201,7 +201,7 @@ label.row.flash{animation:flash 2.4s ease-out}@keyframes flash{0%,40%{background
     </header>
     <div id="scroll">
       <input id="q" type="search" placeholder="Search a name, place, company or country" aria-label="Search">
-      <div class="alltg"><button type="button" id="alltg" title="Turn every point layer on, or every layer off">All layers on / off</button><button type="button" id="shadetg" title="Turn the country shading off, or back on">Shading on / off</button></div>
+      <div class="alltg"><button type="button" id="alltg" title="Turn every point layer on, or every layer off">All on / off</button><button type="button" id="pointtg" title="Turn every point layer off, or back on">Points on / off</button><button type="button" id="shadetg" title="Turn the country shading off, or back on">Shading on / off</button></div>
       <div class="tl" id="tl"><div class="tlh"><span class="tlt">Years shown</span><span id="tlv">every year</span><button type="button" id="tlreset">All years</button></div>
         <div class="tlr"><input type="range" id="tla" aria-label="From year"><input type="range" id="tlb" aria-label="To year"></div>
         <label class="tlu"><input type="checkbox" id="tlund" checked> include records with no date</label>
@@ -1900,13 +1900,21 @@ function groupCounts() {
 }
 document.getElementById("scroll").addEventListener("change", (e) => { if (e.target.dataset.row) tick(); });
 document.getElementById("alltg").addEventListener("click", () => {
-  const inputs = [...document.querySelectorAll("input[data-row]")];
+  const inputs = [...document.querySelectorAll("input[data-row]")].filter((x) => !x.closest("label").hidden);
   const pts = inputs.filter((x) => !AREA(ROW[x.dataset.row])), to = !pts.every((x) => x.checked);
   pts.forEach((x) => (x.checked = to));
   if (!to) inputs.forEach((x) => (x.checked = false));
   tick();
 });
-/* Ticking a row reads it the first time; shadings are one at a time. */
+let LAST_PTS = [];
+document.getElementById("pointtg").addEventListener("click", () => {   // every point layer off, or back to the ones that were on
+  const pts = [...document.querySelectorAll("input[data-row]")].filter((x) => !x.closest("label").hidden && !AREA(ROW[x.dataset.row]));
+  const on = pts.filter((x) => x.checked);
+  if (on.length) { LAST_PTS = on.map((x) => x.dataset.row); on.forEach((x) => (x.checked = false)); }
+  else { const ids = LAST_PTS.length ? LAST_PTS : pts.map((x) => x.dataset.row); pts.forEach((x) => { if (ids.includes(x.dataset.row)) x.checked = true; }); if (!LAST_PTS.length) toast("Every point layer is on; some large ones take a few seconds to appear."); }
+  tick();
+});
+/* Ticking a row reads it the first time. */
 function tick() {
   const inputs = [...document.querySelectorAll("input[data-row]")];
   for (const inp of inputs) {
