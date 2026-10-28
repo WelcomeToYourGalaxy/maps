@@ -47,7 +47,7 @@ const STAT = D.STAT;                       // {status: [label, weight, plain]}
 
 /* ---------- state ---------- */
 const YMIN = D.META.ymin, YMAX = D.META.ymax;
-const S = { layer: "all", from: YMIN, to: YMAX, sets: new Set(SETK), pts: true, ring: true, nets: false, flows: new Set(D.FLOWT.map((f) => f[0])), patOnly: false,
+const S = { layer: "all", from: YMIN, to: YMAX, sets: new Set(SETK), pts: true, ring: true, nets: true, linesOn: true, flows: new Set(D.FLOWT.map((f) => f[0])), patOnly: false,
   sel: null, selCase: null, selNet: null, hov: null, q: "", names: true, unproven: true };
 
 /* ---------- which cases count ---------- */
@@ -95,17 +95,14 @@ function shieldParts(p) {
   return out;
 }
 const partScore = (ps) => ps.length ? 100 * avg(ps.map((x) => x[1])) : null;
-// The combined score: documented record 35%, the trade's likely size 40%, how little stops it 25%.
+// The combined score: the trade's likely size 60%, how little stops it 40%. Cases are not part of it.
 // Where nothing is documented in the chosen years the combined score rests on the indicators alone and is marked an estimate.
 function allScore(p) {
-  const m = partScore(marketParts(p)), s = partScore(shieldParts(p)), d = docScore(p.iso);
-  if (m == null && s == null) return p.proxy ? null : (d ? { v: d, est: false, only: "doc" } : null);
-  const parts = [], w = [];
-  parts.push(d); w.push(0.35);
-  if (m != null) { parts.push(m); w.push(0.40); }
-  if (s != null) { parts.push(s); w.push(0.25); }
-  const tw = w.reduce((a, b) => a + b, 0);
-  return { v: parts.reduce((a, x, i) => a + x * w[i], 0) / tw, est: d === 0, d, m, s };
+  const m = partScore(marketParts(p)), s = partScore(shieldParts(p));
+  if (m == null && s == null) return null;
+  if (m == null) return { v: s, m, s };
+  if (s == null) return { v: m, m, s };
+  return { v: 0.6 * m + 0.4 * s, m, s };
 }
 
 /* ---------- the layers the key offers ---------- */
@@ -113,14 +110,10 @@ const L = [];
 function seq(id, group, label, o) { L.push(Object.assign({ id, group, label, kind: "seq" }, o)); }
 function cat(id, group, label, o) { L.push(Object.assign({ id, group, label, kind: "cat" }, o)); }
 seq("none", "Plain", "No country colors", { dom: [0, 1], f: () => "", get: () => null, desc: "Countries are left uncolored so the basemap, the points and the lines show clearly. Click any country for its box.", src: "" });
-seq("all", "The big picture", "Likely scale and impunity (everything combined)", { f: (v) => fmt(v, 0) + " of 100",
-  get: (p) => { const r = allScore(p); return r ? { v: r.v, est: r.est } : null; },
-  desc: "How likely it is that children are being abused, sold or trafficked here by organised groups or inside institutions, and how little stands in the way. Thirty-five percent is the documented record, meaning the cases gathered for this map in the chosen years and no others; forty percent is how large the trade is estimated to be (trafficking market, modern slavery, reports of online abuse); twenty-five percent is how little stops it (officials working with criminals, weak resilience, weak help for victims, the US ranking). Where nothing is documented here in the chosen years, the score rests on the indicators alone and its box says it is an estimate. Darker means more.",
-  src: "This map's cases; GI-TOC Global Organized Crime Index 2025; Walk Free Global Slavery Index 2023; NCMEC CyberTipline 2024; US Trafficking in Persons Report 2025." });
-seq("doc", "The big picture", "Documented record (cases found by courts, inquiries and investigations)", { dom: [0, 100], f: (v) => fmt(v, 0) + " of 100",
-  get: (p) => { const n = casesOf(p.iso).length; return n ? { v: docScore(p.iso), n } : null; },
-  desc: "Counts only the cases gathered for this map — not every case that exists anywhere. Each case in the chosen years and kinds is weighted by how firmly it was established (a conviction or an official inquiry counts more than a press report; acquittals and disproved claims count nothing), by how many children it involved, and by whether officials took part or covered it up. A high score means much has been exposed here, which is also a measure of how much has been looked for: countries that held inquiries show up; countries that never did stay dark.",
-  src: "The cases on this map; each links its source." });
+seq("all", "The big picture", "Likely scale and impunity (combined)", { f: (v) => fmt(v, 0) + " of 100",
+  get: (p) => { const r = allScore(p); return r ? { v: r.v } : null; },
+  desc: "How large the trade in children is likely to be here and how little stands in the way of it, from figures published by others. Sixty percent is the likely size of the trade (the trafficking market, modern slavery, and reports of online abuse) and forty percent is how little stops it (officials working with criminals, weak resilience to organised crime, weak help for victims, and the US government's ranking). The cases on this map are not part of the score. Darker means more.",
+  src: "GI-TOC Global Organized Crime Index 2025; Walk Free Global Slavery Index 2023; NCMEC CyberTipline 2024; US Trafficking in Persons Report 2025." });
 seq("market", "The big picture", "Likely size of the trade (indicators only)", { f: (v) => fmt(v, 0) + " of 100",
   get: (p) => { const v = partScore(marketParts(p)); return v == null ? null : { v }; },
   desc: "The average of three estimates, each scaled 0 to 1: GI-TOC's score for the human trafficking market (2025), Walk Free's estimate of people in modern slavery per 1,000 (2023), and NCMEC's reports of suspected online child sexual abuse per 100,000 people (2024). None counts child sexual abuse alone; together they show where the trade is likely large. Darker means more.",
@@ -304,9 +297,8 @@ function plainRank(l, r) {
   return below >= 0.5 ? "higher than " + Math.round(100 * below) + "% of the " + vs.length + " places with a figure" : "lower than " + Math.round(100 * vs.filter((v) => v > r.v).length / vs.length) + "% of the " + vs.length + " places with a figure";
 }
 function valText(l, r, p) {
-  if (!r) return '<span class="m">' + (l.id === "doc" || l.id.startsWith("set_") || l.id === "offc" ? "Nothing documented on this map in the chosen years" : l.pat ? "No role in this pattern" : "No figure from this source") + '</span>';
+  if (!r) return '<span class="m">' + (l.id.startsWith("set_") || l.id === "offc" ? "Nothing documented on this map in the chosen years" : l.pat ? "No role in this pattern" : "No figure from this source") + '</span>';
   let s = l.kind === "cat" ? (r.v == null ? l.other : (l.classes.find((c) => c[0] === r.v) || [0, l.other])[1]) : l.f(r.v);
-  if (r.est) s += ' <span class="m">· estimate: nothing documented here in these years</span>';
   if (p.proxy && (l.id === "all" || l.id === "market" || l.id === "shield")) s += '<br><span class="m">' + esc(p.proxy) + '</span>';
   const pr = plainRank(l, r); if (pr) s += '<br><span class="m">' + pr + '</span>';
   if (r.note) s += '<br><span class="m">' + esc(r.note.length > 220 ? r.note.slice(0, 217) + "…" : r.note) + '</span>';
@@ -355,7 +347,7 @@ function drawLines() {
   };
   // flows
   F.forEach((f) => {
-    if (!S.flows.has(f.type) || !f.a || !f.b) return;
+    if (!S.linesOn || !S.flows.has(f.type) || !f.a || !f.b) return;
     if (!(f.y1 == null && f.y0 == null) && (Math.max(f.y0 || f.y1, f.y1 || f.y0) < S.from || Math.min(f.y0 || f.y1, f.y1 || f.y0) > S.to)) return;
     const on = S.sel && (f.iso_a === S.sel || f.iso_b === S.sel), dim = S.sel && !on;
     const ft = FLOWT.find((x) => x[0] === f.type) || [];
@@ -404,16 +396,15 @@ function buildKey() {
     '<div id="ldesc" class="ipop"></div><div id="legend"></div>' +
     '<div class="psec">Years</div><div class="yrs"><label>From <input type="number" id="yFrom" min="' + YMIN + '" max="' + YMAX + '" value="' + S.from + '"></label><label>to <input type="number" id="yTo" min="' + YMIN + '" max="' + YMAX + '" value="' + S.to + '"></label><button type="button" class="btn" id="yAll">All years</button></div>' +
     '<div class="seg" style="margin-top:4px">' + D.ERAS.map((e) => '<button type="button" class="btn era" data-a="' + e[1] + '" data-b="' + e[2] + '">' + esc(e[0]) + '</button>').join("") + '</div>' +
-    '<p class="lsrc">Cases, lines and the documented record follow the years chosen. A case counts if any part of it falls inside them; cases with no date always show.</p>' +
-    '<div class="psec">Documented cases <span class="mute" style="text-transform:none;letter-spacing:0">(' + C.length + ')</span></div>' +
-    '<label class="chk"><input type="checkbox" id="ptsOn" checked> Show the cases on the map</label>' +
+    '<p class="lsrc">Cases and lines follow the years chosen. A case counts if any part of it falls inside them; cases with no date always show.</p>' +
+    '<div class="psec tg"><label><input type="checkbox" id="ptsOn" checked title="Show or hide the cases on the map"> Documented cases <span class="mute">(' + C.length + ')</span></label></div>' +
     '<div id="setList">' + SETS.map((s) => '<label class="lg" style="cursor:pointer" title="' + esc(s[2]) + '"><input type="checkbox" data-set="' + s[0] + '" checked><span class="sw pt" data-sw="' + s[0] + '"></span>' + esc(s[1]) + '<span class="n">' + nset(s[0]) + '</span></label>').join("") + '</div>' +
     '<label class="chk"><input type="checkbox" id="unpOn" checked> Include press findings, charges and allegations not yet tried</label>' +
     '<label class="chk"><input type="checkbox" id="ringOn" checked> Include cases placed only at a country\'s center</label>' +
-    '<div class="lrow"><span class="lsrc" style="flex:1">Filled dot: the town or site. Ring: no town in the source. Grey ring: acquitted, disproved or unproven (not counted in any score). Size: number of children, where known.</span></div>' +
-    '<div class="psec">Lines</div>' +
+    '<div class="lrow"><span class="lsrc" style="flex:1">Filled dot: the town or site. Ring: no town in the source. Grey ring: acquitted, disproved or unproven. Size: number of children, where known.</span></div>' +
+    '<div class="psec tg"><label><input type="checkbox" id="linesOn" checked title="Show or hide all lines"> Lines <span class="mute">(' + F.length + ')</span></label></div>' +
     FLOWT.map((f) => '<div class="lrow"><label class="chk"><input type="checkbox" data-flow="' + f[0] + '" checked> ' + esc(f[1]) + ' <span class="mute">(' + F.filter((x) => x.type === f[0]).length + ')</span></label><button type="button" class="ib" data-i="fl_' + f[0] + '" title="What is this?" aria-label="About this line">i</button></div><div class="ipop" id="fl_' + f[0] + '">' + esc(f[2]) + '</div>').join("") +
-    '<div class="lrow"><label class="chk"><input type="checkbox" id="netOn"> Networks and institutions (headquarters)</label><button type="button" class="ib" data-i="netI" title="What is this?" aria-label="About networks">i</button></div>' +
+    '<div class="psec tg"><label><input type="checkbox" id="netOn" checked title="Show or hide networks and institutions"> Networks and institutions <span class="mute">(' + N.length + ')</span></label><button type="button" class="ib" data-i="netI" title="What is this?" aria-label="About networks">i</button></div>' +
     '<div class="ipop" id="netI">The organisations, institutions, platforms and armed groups that recur across the cases, each placed at its headquarters and sized by how many countries it is documented in. Click one to draw where it is documented (dotted lines) and where its presence is only likely (grey). Presence is not proof of abuse in that country; the box says which countries have a case.</div>' +
     '<div class="psec">Search</div><input id="find" type="search" placeholder="Country, case or network"><div id="plist" class="scroll"></div>';
   $("#layer").value = S.layer;
@@ -428,6 +419,7 @@ function buildKey() {
   $("#ringOn").addEventListener("change", (e) => { S.ring = e.target.checked; paint(); });
   $("#setList").querySelectorAll("[data-set]").forEach((cb) => cb.addEventListener("change", () => { if (cb.checked) S.sets.add(cb.dataset.set); else S.sets.delete(cb.dataset.set); update(); }));
   $("#keyBody").querySelectorAll("[data-flow]").forEach((cb) => cb.addEventListener("change", () => { if (cb.checked) S.flows.add(cb.dataset.flow); else S.flows.delete(cb.dataset.flow); drawLines(); drawLinesLegend(); }));
+  $("#linesOn").addEventListener("change", (e) => { S.linesOn = e.target.checked; $("#keyBody").querySelectorAll("[data-flow]").forEach((cb) => { cb.disabled = !S.linesOn; }); drawLines(); });
   $("#netOn").addEventListener("change", (e) => { S.nets = e.target.checked; if (!S.nets) S.selNet = null; paint(); });
   $("#keyBody").querySelectorAll(".ib[data-i]").forEach((b) => b.addEventListener("click", () => { const el = $("#" + b.dataset.i); el.classList.toggle("open"); b.classList.toggle("on", el.classList.contains("open")); }));
   $("#find").addEventListener("input", (e) => { S.q = e.target.value.toLowerCase(); drawList(); });
@@ -468,15 +460,14 @@ function drawLegend() {
     const d = dom(l), r = ramp();
     h += '<div class="ramp">' + r.map((c) => '<span style="background:' + c + '"></span>').join("") + '</div>' +
       '<div class="rampl"><span>' + l.f(d[0]) + (l.dom ? "" : " (lowest)") + '</span>' + (l.log ? '<span>spaced by powers of ten</span>' : '') + '<span>' + l.f(d[1]) + (l.dom ? "" : " (highest)") + '</span></div>';
-    if (l.id === "all") { const n = rs.filter(([, r]) => r && r.est).length; h += '<div class="lg"><span class="sw" style="background:transparent;outline:1px dashed #cfcbd8"></span>Estimate: nothing documented here in these years<span class="n">' + n + '</span></div>'; }
   } else {
     l.classes.forEach((c, i) => { const n = rs.filter(([, r]) => r && r.v === c[0]).length; h += '<div class="lg"><span class="sw" style="background:' + CATC[i] + '"></span>' + esc(c[1]) + '<span class="n">' + n + '</span></div>'; });
     const no = rs.filter(([, r]) => r && r.other).length;
     if (no) h += '<div class="lg"><span class="sw" style="background:' + OTHER + '"></span>' + esc(l.other) + '<span class="n">' + no + '</span></div>';
   }
   const nod = rs.filter(([, r]) => !r || (l.kind === "seq" && r.v == null)).length;
-  h += '<div class="lg"><span class="sw" style="background:' + NODATA + ';outline:1px solid #555"></span>' + (l.pat ? "No role in this pattern" : /^(doc|set_|offc|delay)/.test(l.id) ? "Nothing documented in these years" : "No figure from this source") + '<span class="n">' + nod + '</span></div>';
-  h += '<div id="cnt">' + (ISOS.length - nod) + ' of ' + ISOS.length + ' places have a value' + (/^(doc|set_|offc|delay|all)/.test(l.id) && (S.from !== YMIN || S.to !== YMAX) ? ' for ' + S.from + '–' + S.to : '') + '.</div>';
+  h += '<div class="lg"><span class="sw" style="background:' + NODATA + ';outline:1px solid #555"></span>' + (l.pat ? "No role in this pattern" : /^(set_|offc|delay)/.test(l.id) ? "Nothing documented in these years" : "No figure from this source") + '<span class="n">' + nod + '</span></div>';
+  h += '<div id="cnt">' + (ISOS.length - nod) + ' of ' + ISOS.length + ' places have a value' + (/^(set_|offc|delay)/.test(l.id) && (S.from !== YMIN || S.to !== YMAX) ? ' for ' + S.from + '–' + S.to : '') + '.</div>';
   if (l.pat) h += patExtra(l.pat);
   $("#legend").innerHTML = h;
   const po = $("#patOnly"); if (po) po.addEventListener("change", (e) => { S.patOnly = e.target.checked; drawCases(); });
@@ -488,7 +479,7 @@ function drawList() {
   const rows = q && q.length > 1 ? ISOS.map((k) => [k, l.get(P[k])]).filter(([k]) => P[k].n.toLowerCase().includes(q)) : [];
   if (l.kind === "seq") rows.sort((a, b) => ((b[1] && b[1].v != null ? b[1].v : -1e9) - (a[1] && a[1].v != null ? a[1].v : -1e9)) || P[a[0]].n.localeCompare(P[b[0]].n));
   const d = l.kind === "seq" ? dom(l) : null;
-  h += rows.map(([k, r]) => '<div class="pi' + (S.sel === k ? " sel" : "") + '" data-k="' + k + '"><span class="sw" style="background:' + colorOf(l, r, d) + '"></span>' + esc(P[k].n) + (r && r.est ? ' <span class="mute" title="Estimate: nothing documented in these years">·est</span>' : '') + '<span class="v">' + (r && r.v != null ? (l.kind === "seq" ? l.f(r.v) : "") : "") + '</span></div>').join("");
+  h += rows.map(([k, r]) => '<div class="pi' + (S.sel === k ? " sel" : "") + '" data-k="' + k + '"><span class="sw" style="background:' + colorOf(l, r, d) + '"></span>' + esc(P[k].n) + '<span class="v">' + (r && r.v != null ? (l.kind === "seq" ? l.f(r.v) : "") : "") + '</span></div>').join("");
   if (q && q.length > 1) {
     const cs = C.map((c, i) => [c, i]).filter(([c]) => (c.n + " " + (c.who || "") + " " + (c.place || "")).toLowerCase().includes(q)).slice(0, 30);
     const ns = N.map((n, i) => [n, i]).filter(([n]) => n.n.toLowerCase().includes(q)).slice(0, 10);
@@ -557,8 +548,7 @@ function detail(k) {
   h.push('<div class="hp-h">Likely scale and impunity</div>');
   if (a) {
     h.push('<p><span class="big">' + fmt(a.v, 0) + '</span> of 100' + rankOf("all", k) + '</p>');
-    if (a.est) h.push('<p class="flag"><b>Estimate.</b> Nothing on this map is documented here' + (S.from !== YMIN || S.to !== YMAX ? ' for ' + S.from + '–' + S.to : '') + ', so the score rests on the indicators below: how large the trade is likely to be and how little stops it. No record is not the same as no abuse; see the pattern "Where nobody is counting".</p>');
-    const rows = [["Documented record", (a.d || 0) / 100, fmt(a.d || 0, 0)]];
+    const rows = [];
     if (a.m != null) rows.push(["Likely size of the trade", a.m / 100, fmt(a.m, 0)]);
     if (a.s != null) rows.push(["How little stands in the way", a.s / 100, fmt(a.s, 0)]);
     h.push(bars(rows));
@@ -643,7 +633,7 @@ function closeWin(id) { const w = WINS[id]; if (!w) return; w.ro.disconnect(); w
 function drawCharts() { Object.keys(WINS).forEach(drawWin); }
 function drawWin(id) { const w = WINS[id]; if (!w) return; if (id === "table") drawTable(w); else if (id === "time") drawTime(w); else if (id === "delay") drawDelay(w); else drawNetWin(w); }
 
-const TCOLS = [["n", "Place"], ["all", "Combined (0–100)"], ["doc", "Documented (0–100)"], ["cases", "Cases"], ["offc", "Officials involved"], ["delay", "Median delay, years"], ["market", "Size of trade (0–100)"], ["shield", "Little in the way (0–100)"], ["ht25", "Trafficking (GI-TOC)"], ["tip", "US ranking"], ["prev", "Slavery /1,000"], ["ncm", "Online reports /100k"], ["sea", "Officials w/ criminals"], ["pats", "Patterns"]];
+const TCOLS = [["n", "Place"], ["all", "Combined (0–100)"], ["cases", "Cases"], ["offc", "Officials involved"], ["delay", "Median delay, years"], ["market", "Size of trade (0–100)"], ["shield", "Little in the way (0–100)"], ["ht25", "Trafficking (GI-TOC)"], ["tip", "US ranking"], ["prev", "Slavery /1,000"], ["ncm", "Online reports /100k"], ["sea", "Officials w/ criminals"], ["pats", "Patterns"]];
 function cellVal(id, k) {
   const p = P[k];
   if (id === "n") return p.n;
@@ -656,12 +646,12 @@ function cellVal(id, k) {
 function drawTable(w) {
   const keys = ISOS.slice(), s = w.sort;
   if (s) keys.sort((a, b) => { const x = cellVal(s, a), y = cellVal(s, b); if (x == null && y == null) return 0; if (x == null) return 1; if (y == null) return -1; return (typeof x === "number" ? x - y : String(x).localeCompare(String(y))) * w.dir; });
-  const cell = (id, k) => { const v = cellVal(id, k); if (v == null) return '<span class="mute">–</span>'; if (typeof v !== "number") return esc(v); const r = id === "all" ? allScore(P[k]) : null; return fmt(v, /^(all|doc|market|shield|delay|cases|offc|pats|ncm)$/.test(id) ? 0 : 1) + (r && r.est ? '<span class="mute">*</span>' : ''); };
+  const cell = (id, k) => { const v = cellVal(id, k); if (v == null) return '<span class="mute">–</span>'; if (typeof v !== "number") return esc(v); return fmt(v, /^(all|market|shield|delay|cases|offc|pats|ncm)$/.test(id) ? 0 : 1); };
   w.body.innerHTML = '<table class="all"><thead><tr>' + TCOLS.map((c) => '<th data-c="' + c[0] + '"' + (s === c[0] ? ' class="on"' : '') + '>' + esc(c[1]) + (s === c[0] ? (w.dir > 0 ? " ▲" : " ▼") : "") + '</th>').join("") + '</tr></thead><tbody>' +
     keys.map((k) => '<tr class="r' + (S.sel === k ? " sel" : "") + '" data-k="' + k + '">' + TCOLS.map((c) => '<td>' + cell(c[0], k) + '</td>').join("") + '</tr>').join("") + '</tbody></table>';
   w.body.querySelectorAll("th").forEach((th) => th.addEventListener("click", () => { const c = th.dataset.c; if (w.sort === c) w.dir = -w.dir; else { w.sort = c; w.dir = c === "n" ? 1 : -1; } drawTable(w); }));
   w.body.querySelectorAll("tr.r").forEach((tr) => tr.addEventListener("click", () => select(tr.dataset.k, true)));
-  w.foot.textContent = "Click a heading to sort, a row to open the place. * the combined score is an estimate: nothing documented there in the chosen years. Case counts follow the years and kinds ticked in the key.";
+  w.foot.textContent = "Click a heading to sort, a row to open the place. Case counts follow the years and kinds ticked in the key.";
 }
 function drawTime(w) {
   const Wd = w.body.clientWidth || 800, Ht = Math.max(220, (w.body.clientHeight || 400) - 44), m = { l: 40, r: 16, t: 14, b: 26 };
