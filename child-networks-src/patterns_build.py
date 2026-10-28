@@ -17,7 +17,7 @@ from names import iso as name_iso, PLACES
 R = json.load(open(os.path.join(HERE, 'research', 'patterns_research.json')))['topics']
 CASES, FLOWS, SER = {}, [], {}
 for f in sorted(glob.glob(os.path.join(HERE, 'research', '*.json'))):
-    if 'patterns' in f: continue
+    if 'patterns' in f or 'verify' in f: continue
     d = json.load(open(f)); n = os.path.basename(f)[:-5]
     for c in d.get('cases', []): CASES.setdefault(c['id'], dict(c, _src=n))
     for x in d.get('flows', []): FLOWS.append(dict(x, _src=n))
@@ -210,6 +210,10 @@ closed = defaultdict(list)
 for y, k, ev, u in cl:
     kk = iso(k)
     if kk: closed[kk].append('%s: %s' % (y, ev))
+for cid, c in CASES.items():
+    if c.get('setting') == 'adoption' and re.search(r'\b(ban|banned|suspend|suspended|moratorium|ended intercountry|halt)', c['n'] + ' ' + c['d'], re.I):
+        kk = iso(c['iso3'])
+        if kk and not closed.get(kk): closed[kk].append('%s: %s' % (c.get('yf') or c.get('y1') or '', c['n']))
 send_tot = {}
 for k, rs in (ic.get('rows') or {}).items():
     send_tot[iso(k) or k] = sum(v for _, v in rs if v)
