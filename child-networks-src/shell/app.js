@@ -132,10 +132,10 @@ seq("shield", "The big picture", "How little stands in the way (indicators only)
 SETS.forEach((s) => seq("set_" + s[0], "Documented cases, by setting", s[1], { log: true, f: (v) => fmt(v, 0) + (v === 1 ? " case" : " cases"),
   get: (p) => { const n = casesOf(p.iso).filter((c) => c.set === s[0]).length; return n ? { v: n } : null; }, desc: s[2] + " Count of cases on this map in the chosen years. Light means more.", src: "The cases on this map." }));
 seq("offc", "Documented cases, by setting", "Cases where officials took part or covered up", { log: true, f: (v) => fmt(v, 0) + (v === 1 ? " case" : " cases"),
-  get: (p) => { const n = casesOf(p.iso).filter((c) => c.offc).length; return n ? { v: n } : null; },
+  get: (p) => { const n = casesOf(p.iso).filter((c) => c.offc && COUNTS(c)).length; return n ? { v: n } : null; },
   desc: "Cases in which police, prosecutors, judges, politicians, civil servants, soldiers or intelligence officers took part, or were documented as having ignored, buried or obstructed it. Light means more.", src: "The cases on this map." });
 seq("delay", "Documented cases, by setting", "Years from the first complaint to the first action (median)", { f: (v) => fmt(v, 0) + (v === 1 ? " year" : " years"),
-  get: (p) => { const ds = casesOf(p.iso).filter((c) => c.fr && c.yf && c.yf >= c.fr).map((c) => c.yf - c.fr); return ds.length ? { v: median(ds), n: ds.length } : null; },
+  get: (p) => { const ds = casesOf(p.iso).filter((c) => COUNTS(c) && c.fr && c.yf && c.yf >= c.fr).map((c) => c.yf - c.fr); return ds.length ? { v: median(ds), n: ds.length } : null; },
   desc: "For cases whose sources date the first complaint to police, an employer, a church or officials, the years until the first conviction, charge or official finding. The middle value of this country's cases. Light means longer.", src: "The cases on this map." });
 seq("ht25", "Measured elsewhere", "Human trafficking market, 2025 (GI-TOC, 1–10)", { dom: [1, 10], f: (v) => fmt(v, 1), get: (p) => p.ind && p.ind.ht25 != null ? { v: p.ind.ht25 } : null,
   desc: "Expert-assessed scale and influence of the human trafficking market, all forms and ages, 1 (no market) to 10 (pervasive). Light means more.", src: "Global Initiative Against Transnational Organized Crime, Global Organized Crime Index 2025." });
@@ -386,7 +386,7 @@ function paint() {
   map.setPaintProperty("c-line", "line-opacity", plain ? 0.25 : 0.8);
   map.setFilter("c-est", ["in", ["get", "iso3"], ["literal", est]]);
   map.setFilter("c-sel", ["in", ["get", "iso3"], ["literal", S.sel ? [S.sel] : []]]);
-  drawCases(); drawNets(); drawLines();
+  drawCases(); drawNets(); drawLines(); map.triggerRepaint();
 }
 
 /* ---------- the key ---------- */
@@ -567,7 +567,7 @@ function detail(k) {
   const all = C.filter((c) => c.iso === k || (c.also || []).includes(k)).length;
   h.push('<div class="hp-h">Documented cases' + (cs.length ? ' — ' + cs.length : '') + (all > cs.length ? ' <span class="note" style="text-transform:none;letter-spacing:0">(' + (all - cs.length) + ' more outside the chosen years or kinds)</span>' : '') + '</div>');
   if (cs.length) {
-    const off = cs.filter(([c]) => c.offc).length, ds = cs.filter(([c]) => c.fr && c.yf && c.yf >= c.fr).map(([c]) => c.yf - c.fr);
+    const off = cs.filter(([c]) => c.offc && COUNTS(c)).length, ds = cs.filter(([c]) => COUNTS(c) && c.fr && c.yf && c.yf >= c.fr).map(([c]) => c.yf - c.fr);
     const sc = {}; cs.forEach(([c]) => { sc[c.set] = (sc[c.set] || 0) + 1; });
     h.push('<p class="note">' + Object.keys(sc).sort((x, y) => sc[y] - sc[x]).map((s) => sc[s] + ' ' + esc(setLabel(s).toLowerCase())).join(" · ") + (off ? ' · officials involved or covering up in ' + off : '') + (ds.length ? ' · median ' + fmt(median(ds), 0) + ' years from first complaint to action (' + ds.length + ' cases)' : '') + '</p>');
     cs.forEach(([c, ci]) => h.push(caseRow(c, ci, false)));
@@ -696,7 +696,7 @@ function drawTime(w) {
 }
 function wireSer(w) { const s = w.body.querySelector("#serSel"); if (s) { s.value = String(w.ser); s.addEventListener("change", (e) => { w.ser = e.target.value === "cases" ? "cases" : +e.target.value; drawTime(w); }); } }
 function drawDelay(w) {
-  const rows = C.map((c, i) => [c, i]).filter(([c]) => c.fr && c.yf && c.yf >= c.fr && S.sets.has(c.set)).sort((a, b) => (b[0].yf - b[0].fr) - (a[0].yf - a[0].fr));
+  const rows = C.map((c, i) => [c, i]).filter(([c]) => c.fr && c.yf && c.yf >= c.fr && S.sets.has(c.set) && COUNTS(c)).sort((a, b) => (b[0].yf - b[0].fr) - (a[0].yf - a[0].fr));
   if (!rows.length) { w.body.innerHTML = '<p class="mean" style="padding:12px">No case has both dates yet.</p>'; return; }
   const x0 = Math.min(...rows.map((r) => r[0].fr)), x1 = Math.max(...rows.map((r) => r[0].yf));
   const Wd = w.body.clientWidth || 800, rowH = 15, m = { l: 260, r: 50, t: 22 }, H = m.t + rows.length * rowH + 10;
@@ -708,7 +708,7 @@ function drawDelay(w) {
   const ds = rows.map((r) => r[0].yf - r[0].fr);
   w.body.innerHTML = '<div style="padding:8px 14px 0"><p class="mean" style="margin:0">' + rows.length + ' cases whose sources date both the first complaint and the first conviction, charge or official finding. Median wait: ' + fmt(median(ds), 0) + ' years; ' + ds.filter((d) => d >= 10).length + ' waited ten years or more. Hollow dot: first complaint. Filled dot: first action. Click a row to open the case.</p></div><svg style="display:block;width:100%;height:' + H + 'px" class="dsvg">' + g + '</svg>';
   w.body.querySelectorAll(".dr").forEach((el) => el.addEventListener("click", () => openCase(+el.dataset.i, true)));
-  w.foot.textContent = "Only the kinds ticked in the key. A complaint 'on record' means the sources say it reached police, an employer, a church, a school or officials, not that it was acted on.";
+  w.foot.textContent = "Only the kinds ticked in the key, and only cases a court, inquiry, admission, settlement, charge or press investigation established (no allegations, acquittals or disproved claims). A complaint 'on record' means the sources say it reached police, an employer, a church, a school or officials, not that it was acted on.";
 }
 function drawNetWin(w) {
   const rows = N.map((n, i) => [n, i, C.filter((c) => c.net === i)]).sort((a, b) => (b[0].reach || []).length - (a[0].reach || []).length || b[2].length - a[2].length);
