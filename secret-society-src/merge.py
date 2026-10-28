@@ -70,7 +70,9 @@ def capture_cases(seen):
            ('admitted taking more than .5 million in bribes; prosecutors put the laundered total at between .5 and .5 million over fourteen years.', 'admitted taking more than $3.5 million in bribes.'),
            ('already found .2 billion in cash-for-gold deals', 'already found more than $5.2 billion in cash-for-gold deals'),
            ('dealings with the Suncity junket operator, whose Sydney turnover it put above A0 million a week; it sought A00 million. The company argued a penalty above A00 million would render it insolvent, having A8 million in cash against more than A.1 billion in debt, and was rescued by a A00 million investment.',
-            'dealings with the Suncity junket operator, and sought a penalty of A$400 million. The company argued a penalty that size would render it insolvent, and it was rescued by a A$300 million investment.')]
+            'dealings with the Suncity junket operator, and sought a penalty of A$400 million. The company argued a penalty that size would render it insolvent, and it was rescued by a A$300 million investment.'),
+           ('convicted over a release order priced at 00,000.', 'convicted over a release order priced at $200,000.'),
+           ('spending over 00 million on security', 'spending over $100 million on security')]
     for x in cap['cases'] + cap['entities']:
         for a_, b_ in FIX:
             if a_ in x['d']: x['d'] = x['d'].replace(a_, b_)
