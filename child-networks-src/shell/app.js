@@ -31,9 +31,9 @@ const SETPAL = {
   hell:      ["#d8c4f0", "#a9c7e8", "#ffd0da", "#e8d3c8", "#a9ddd5", "#dfe4f4", "#ffffff", "#d6dcae"],
 };
 const CATC = ["#3a6db8", "#c97585", "#a9cfe6", "#4f8f5a"];
-const OTHER = "#8b8996", NODATA = "#3d3e4a";
+const OTHER = "#8b8996", NODATA = "#6c6d7a";
 let BASE = "night";
-const ramp = () => RAMPS[BASE] || RAMPS.night;
+const ramp = () => (RAMPS[BASE] || RAMPS.night).slice().reverse();   // dark means more
 const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
 function mix(a, b, t) { const A = hex(a), B = hex(b); return "#" + A.map((x, i) => Math.round(x + (B[i] - x) * t).toString(16).padStart(2, "0")).join(""); }
 function seqColor(t) { const r = ramp(); t = Math.max(0, Math.min(1, t)); const x = t * (r.length - 1), i = Math.min(r.length - 2, Math.floor(x)); return mix(r[i], r[i + 1], x - i); }
@@ -47,7 +47,7 @@ const STAT = D.STAT;                       // {status: [label, weight, plain]}
 
 /* ---------- state ---------- */
 const YMIN = D.META.ymin, YMAX = D.META.ymax;
-const S = { layer: "all", from: YMIN, to: YMAX, sets: new Set(SETK), pts: true, ring: true, nets: false, flows: new Set(), patOnly: false,
+const S = { layer: "all", from: YMIN, to: YMAX, sets: new Set(SETK), pts: true, ring: true, nets: false, flows: new Set(D.FLOWT.map((f) => f[0])), patOnly: false,
   sel: null, selCase: null, selNet: null, hov: null, q: "", names: true, unproven: true };
 
 /* ---------- which cases count ---------- */
@@ -115,7 +115,7 @@ function cat(id, group, label, o) { L.push(Object.assign({ id, group, label, kin
 seq("none", "Plain", "No country colors", { dom: [0, 1], f: () => "", get: () => null, desc: "Countries are left uncolored so the basemap, the points and the lines show clearly. Click any country for its box.", src: "" });
 seq("all", "The big picture", "Likely scale and impunity (everything combined)", { f: (v) => fmt(v, 0) + " of 100",
   get: (p) => { const r = allScore(p); return r ? { v: r.v, est: r.est } : null; },
-  desc: "How likely it is that children are being abused, sold or trafficked here by organised groups or inside institutions, and how little stands in the way. Thirty-five percent is the documented record on this map in the chosen years; forty percent is how large the trade is estimated to be (trafficking market, modern slavery, reports of online abuse); twenty-five percent is how little stops it (officials working with criminals, weak resilience, weak help for victims, the US ranking). Where nothing is documented here in the chosen years, the score rests on the indicators alone and its box says it is an estimate. Light means more.",
+  desc: "How likely it is that children are being abused, sold or trafficked here by organised groups or inside institutions, and how little stands in the way. Thirty-five percent is the documented record on this map in the chosen years; forty percent is how large the trade is estimated to be (trafficking market, modern slavery, reports of online abuse); twenty-five percent is how little stops it (officials working with criminals, weak resilience, weak help for victims, the US ranking). Where nothing is documented here in the chosen years, the score rests on the indicators alone and its box says it is an estimate. Darker means more.",
   src: "This map's cases; GI-TOC Global Organized Crime Index 2025; Walk Free Global Slavery Index 2023; NCMEC CyberTipline 2024; US Trafficking in Persons Report 2025." });
 seq("doc", "The big picture", "Documented record (cases found by courts, inquiries and investigations)", { dom: [0, 100], f: (v) => fmt(v, 0) + " of 100",
   get: (p) => { const n = casesOf(p.iso).length; return n ? { v: docScore(p.iso), n } : null; },
@@ -123,35 +123,35 @@ seq("doc", "The big picture", "Documented record (cases found by courts, inquiri
   src: "The cases on this map; each links its source." });
 seq("market", "The big picture", "Likely size of the trade (indicators only)", { f: (v) => fmt(v, 0) + " of 100",
   get: (p) => { const v = partScore(marketParts(p)); return v == null ? null : { v }; },
-  desc: "The average of three estimates, each scaled 0 to 1: GI-TOC's score for the human trafficking market (2025), Walk Free's estimate of people in modern slavery per 1,000 (2023), and NCMEC's reports of suspected online child sexual abuse per 100,000 people (2024). None counts child sexual abuse alone; together they show where the trade is likely large. Light means more.",
+  desc: "The average of three estimates, each scaled 0 to 1: GI-TOC's score for the human trafficking market (2025), Walk Free's estimate of people in modern slavery per 1,000 (2023), and NCMEC's reports of suspected online child sexual abuse per 100,000 people (2024). None counts child sexual abuse alone; together they show where the trade is likely large. Darker means more.",
   src: "GI-TOC 2025; Walk Free 2023; NCMEC 2024." });
 seq("shield", "The big picture", "How little stands in the way (indicators only)", { f: (v) => fmt(v, 0) + " of 100",
   get: (p) => { const v = partScore(shieldParts(p)); return v == null ? null : { v }; },
-  desc: "The average of: how far state officials work with criminal groups (GI-TOC state-embedded actors), the country's resilience to organised crime and its help for victims and witnesses (both inverted), and the US State Department's 2025 trafficking ranking. Light means less stands in the way.",
+  desc: "The average of: how far state officials work with criminal groups (GI-TOC state-embedded actors), the country's resilience to organised crime and its help for victims and witnesses (both inverted), and the US State Department's 2025 trafficking ranking. Darker means less stands in the way.",
   src: "GI-TOC 2025; US Trafficking in Persons Report 2025." });
 SETS.forEach((s) => seq("set_" + s[0], "Documented cases, by setting", s[1], { log: true, f: (v) => fmt(v, 0) + (v === 1 ? " case" : " cases"),
-  get: (p) => { const n = casesOf(p.iso).filter((c) => c.set === s[0]).length; return n ? { v: n } : null; }, desc: s[2] + " Count of cases on this map in the chosen years. Light means more.", src: "The cases on this map." }));
+  get: (p) => { const n = casesOf(p.iso).filter((c) => c.set === s[0]).length; return n ? { v: n } : null; }, desc: s[2] + " Count of cases on this map in the chosen years. Darker means more.", src: "The cases on this map." }));
 seq("offc", "Documented cases, by setting", "Cases where officials took part or covered up", { log: true, f: (v) => fmt(v, 0) + (v === 1 ? " case" : " cases"),
   get: (p) => { const n = casesOf(p.iso).filter((c) => c.offc && COUNTS(c)).length; return n ? { v: n } : null; },
-  desc: "Cases in which police, prosecutors, judges, politicians, civil servants, soldiers or intelligence officers took part, or were documented as having ignored, buried or obstructed it. Light means more.", src: "The cases on this map." });
+  desc: "Cases in which police, prosecutors, judges, politicians, civil servants, soldiers or intelligence officers took part, or were documented as having ignored, buried or obstructed it. Darker means more.", src: "The cases on this map." });
 seq("delay", "Documented cases, by setting", "Years from the first complaint to the first action (median)", { f: (v) => fmt(v, 0) + (v === 1 ? " year" : " years"),
   get: (p) => { const ds = casesOf(p.iso).filter((c) => COUNTS(c) && c.fr && c.yf && c.yf >= c.fr).map((c) => c.yf - c.fr); return ds.length ? { v: median(ds), n: ds.length } : null; },
-  desc: "For cases whose sources date the first complaint to police, an employer, a church or officials, the years until the first conviction, charge or official finding. The middle value of this country's cases. Light means longer.", src: "The cases on this map." });
+  desc: "For cases whose sources date the first complaint to police, an employer, a church or officials, the years until the first conviction, charge or official finding. The middle value of this country's cases. Darker means longer.", src: "The cases on this map." });
 seq("ht25", "Measured elsewhere", "Human trafficking market, 2025 (GI-TOC, 1–10)", { dom: [1, 10], f: (v) => fmt(v, 1), get: (p) => p.ind && p.ind.ht25 != null ? { v: p.ind.ht25 } : null,
-  desc: "Expert-assessed scale and influence of the human trafficking market, all forms and ages, 1 (no market) to 10 (pervasive). Light means more.", src: "Global Initiative Against Transnational Organized Crime, Global Organized Crime Index 2025." });
+  desc: "Expert-assessed scale and influence of the human trafficking market, all forms and ages, 1 (no market) to 10 (pervasive). Darker means more.", src: "Global Initiative Against Transnational Organized Crime, Global Organized Crime Index 2025." });
 seq("htchg", "Measured elsewhere", "Change in the trafficking market, 2021 to 2025", { dom: [-2.5, 2.5], f: (v) => (v > 0 ? "+" : "") + fmt(v, 1), get: (p) => p.ind && p.ind.ht25 != null && p.ind.ht21 != null ? { v: p.ind.ht25 - p.ind.ht21 } : null,
-  desc: "GI-TOC's human trafficking score in 2025 minus 2021. Light means it grew.", src: "GI-TOC Global Organized Crime Index 2021 and 2025." });
+  desc: "GI-TOC's human trafficking score in 2025 minus 2021. Darker means it grew.", src: "GI-TOC Global Organized Crime Index 2021 and 2025." });
 cat("tip", "Measured elsewhere", "US State Department trafficking ranking, 2025", { classes: [["1", "Tier 1: meets the minimum standards"], ["2", "Tier 2: does not, making significant efforts"], ["2W", "Tier 2 Watch List"], ["3", "Tier 3: does not, not making significant efforts"]],
   other: "Special case (not ranked)", get: (p) => p.ind && p.ind.tip ? (p.ind.tip === "SC" ? { v: null, other: true } : { v: p.ind.tip }) : null,
   desc: "How the US government ranks each government's efforts against trafficking. Tier 1 does not mean a country has no trafficking. The US ranks itself.", src: "US Department of State, Trafficking in Persons Report, June 2025." });
 seq("prev", "Measured elsewhere", "People in modern slavery per 1,000 (Walk Free 2023)", { log: true, f: (v) => fmt(v, 1), get: (p) => p.ind && p.ind.prev != null ? { v: p.ind.prev } : null,
-  desc: "Estimated people in forced labour, forced marriage and forced commercial sexual exploitation, all ages, per 1,000 population. Modelled from surveys; Walk Free warns that national estimates are not hard findings. Light means more.", src: "Walk Free, Global Slavery Index 2023, Table 26." });
+  desc: "Estimated people in forced labour, forced marriage and forced commercial sexual exploitation, all ages, per 1,000 population. Modelled from surveys; Walk Free warns that national estimates are not hard findings. Darker means more.", src: "Walk Free, Global Slavery Index 2023, Table 26." });
 seq("ncm", "Measured elsewhere", "Reports of suspected online child sexual abuse per 100,000 people (NCMEC 2024)", { log: true, f: (v) => fmt(v, 0), get: (p) => p.ind && p.ind.ncmpc != null ? { v: p.ind.ncmpc } : null,
-  desc: "Reports to the US National Center for Missing & Exploited Children's CyberTipline, sorted by where the uploader appeared to be, per 100,000 people. Mostly sent by US platforms; a country's count depends on how many people use those platforms. Light means more.", src: "NCMEC, CyberTipline reports by country, 2024." });
+  desc: "Reports to the US National Center for Missing & Exploited Children's CyberTipline, sorted by where the uploader appeared to be, per 100,000 people. Mostly sent by US platforms; a country's count depends on how many people use those platforms. Darker means more.", src: "NCMEC, CyberTipline reports by country, 2024." });
 seq("sea", "Measured elsewhere", "Officials working with criminals (GI-TOC, 1–10)", { dom: [1, 10], f: (v) => fmt(v, 1), get: (p) => p.ind && p.ind.sea != null ? { v: p.ind.sea } : null,
-  desc: "How far criminal actors are embedded in the state: officials who take part in or protect organised crime. Light means more.", src: "GI-TOC Global Organized Crime Index 2025." });
+  desc: "How far criminal actors are embedded in the state: officials who take part in or protect organised crime. Darker means more.", src: "GI-TOC Global Organized Crime Index 2025." });
 seq("res", "Measured elsewhere", "Resilience to organised crime (GI-TOC, inverted)", { dom: [0, 9], f: (v) => fmt(10 - v, 2) + " of 10", get: (p) => p.ind && p.ind.res != null ? { v: 10 - p.ind.res } : null,
-  desc: "Twelve measures of how well the state and society resist organised crime: leadership, transparency, courts, police, victim support, prevention and others. Shown inverted: light means weaker.", src: "GI-TOC Global Organized Crime Index 2025." });
+  desc: "Twelve measures of how well the state and society resist organised crime: leadership, transparency, courts, police, victim support, prevention and others. Shown inverted: darker means weaker.", src: "GI-TOC Global Organized Crime Index 2025." });
 PAT.forEach((pt) => {
   const roles = pt.roles && pt.roles.length ? pt.roles.slice(0, 4) : [...new Set(pt.countries.map((c) => c.role))].slice(0, 4);
   const RC = {}; pt.countries.forEach((c) => { RC[c.iso3] = c; });
@@ -262,28 +262,22 @@ function addLayers(geo) {
   map.addLayer({ id: "net-node", type: "symbol", source: "nets", layout: { "icon-image": "diamond", "icon-size": ["get", "s"], "icon-allow-overlap": true, "icon-ignore-placement": true },
     paint: { "icon-color": ["get", "col"], "icon-halo-color": "#05061a", "icon-halo-width": 1.4, "icon-opacity": ["get", "o"] } });
   // cases, clustered so a city with thirty cases is one number until you zoom in
-  map.addSource("cases", { type: "geojson", data: { type: "FeatureCollection", features: [] }, cluster: true, clusterRadius: 22, clusterMaxZoom: 7 });
-  map.addLayer({ id: "cs-cluster", type: "circle", source: "cases", filter: ["has", "point_count"], paint: { "circle-radius": ["interpolate", ["linear"], ["get", "point_count"], 2, 7, 20, 11, 150, 16], "circle-color": "rgba(10,11,28,.86)", "circle-stroke-color": "#d8d5e6", "circle-stroke-width": 1, "circle-pitch-alignment": "map" } });
-  map.addLayer({ id: "cs-cluster-n", type: "symbol", source: "cases", filter: ["has", "point_count"], layout: { "text-field": ["get", "point_count_abbreviated"], "text-font": ["Jost-Regular"], "text-size": 10.5, "text-allow-overlap": true, "text-ignore-placement": true }, paint: { "text-color": "#f0ece4" } });
+  map.addSource("cases", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
   map.addLayer({ id: "cs-pt", type: "circle", source: "cases", filter: ["!", ["has", "point_count"]], paint: {
     "circle-radius": ["interpolate", ["linear"], ["zoom"], 1, ["get", "r"], 8, ["*", 1.6, ["get", "r"]]],
     "circle-color": ["get", "col"], "circle-opacity": ["get", "fo"],
     "circle-stroke-color": ["case", ["==", ["get", "ring"], 1], ["get", "col"], "#05061a"], "circle-stroke-width": ["case", ["==", ["get", "ring"], 1], 1.4, 0.9], "circle-stroke-opacity": ["get", "so"],
     "circle-pitch-alignment": "map" } });
-  IDS.push("c-fill", "c-est", "c-line", "c-dots", "ln-dot", "ln-dash", "ln-solid", "ln-head", "ln-end", "net-node", "cs-cluster", "cs-cluster-n", "cs-pt", "c-sel", "c-hov"); order();
+  IDS.push("c-fill", "c-est", "c-line", "c-dots", "ln-dot", "ln-dash", "ln-solid", "ln-head", "ln-end", "net-node", "cs-pt", "c-sel", "c-hov"); order();
 
   const q = (pt, layers, r) => { r = r || 4; const ls = layers.filter((x) => map.getLayer(x)); return ls.length ? map.queryRenderedFeatures([[pt.x - r, pt.y - r], [pt.x + r, pt.y + r]], { layers: ls }) : []; };
   map.on("click", (e) => {
-    const cl = q(e.point, ["cs-cluster"], 5)[0];
-    if (cl) { map.getSource("cases").getClusterExpansionZoom(cl.properties.cluster_id).then((z) => map.easeTo({ center: cl.geometry.coordinates, zoom: Math.min(z + 0.3, 12), duration: 600 })).catch(() => {}); return; }
     const cp = q(e.point, ["cs-pt"], 5)[0]; if (cp) { openCase(cp.properties.i); return; }
     const np = q(e.point, ["net-node"], 6)[0]; if (np) { openNet(np.properties.i); return; }
     const k = (q(e.point, ["c-dots", "c-fill"], 3)[0] || {}).properties; if (k && P[k.iso3]) select(k.iso3, false);
   });
   map.on("mousemove", (e) => {
     const xy = [e.originalEvent.clientX, e.originalEvent.clientY];
-    const cl = q(e.point, ["cs-cluster"], 5)[0];
-    if (cl) { map.getCanvas().style.cursor = "pointer"; hov(null); tip("<b>" + cl.properties.point_count + " cases here</b><br><span class=m>Click to zoom in and separate them.</span>", ...xy); return; }
     const cp = q(e.point, ["cs-pt"], 5)[0];
     if (cp) { const c = C[cp.properties.i]; map.getCanvas().style.cursor = "pointer"; hov(null); tip("<b>" + esc(c.n) + "</b><br><span class=m>" + esc(setLabel(c.set)) + " · " + esc(STAT[c.st][0]) + (yrs(c) ? " · " + yrs(c) : "") + "</span>", ...xy); return; }
     const np = q(e.point, ["net-node"], 6)[0];
@@ -301,7 +295,7 @@ function addLayers(geo) {
 }
 function hov(k) { if (k === S.hov) return; S.hov = k; if (map.getLayer("c-hov")) map.setFilter("c-hov", ["in", ["get", "iso3"], ["literal", k ? [k] : []]]); }
 const setLabel = (k) => (SETS.find((s) => s[0] === k) || [k, k])[1];
-const yrs = (c) => { const a = c.y0, b = c.y1; if (!a && !b) return c.yf ? String(c.yf) : ""; if (!b || a === b) return String(a || b); return a + "–" + b; };
+const yrs = (c) => { const a = c.y0, b = c.y1; if (!a && !b) return c.yf ? String(c.yf) : ""; if (!a || !b || a === b) return String(a || b); return a + "–" + b; };
 function plainRank(l, r) {
   if (!r || r.v == null || l.kind !== "seq" || l.id === "none") return "";
   const vs = ISOS.map((k) => { const x = l.get(P[k]); return x && x.v != null ? x.v : null; }).filter((v) => v != null);
@@ -324,14 +318,24 @@ function patCids() { const l = layer(); return l.pat && S.patOnly ? new Set(l.pa
 function drawCases() {
   const src = map.getSource("cases"); if (!src) return;
   if (!S.pts) { src.setData({ type: "FeatureCollection", features: [] }); return; }
-  const only = patCids(), feats = [];
+  const only = patCids(), feats = [], shown = [];
   C.forEach((c, i) => {
     if (!caseOn(c) || !c.ll) return;
     if (only && !only.has(i)) return;
     if (c.llc && !S.ring) return;
+    shown.push(i);
+  });
+  // cases at the same spot are set on a small ring around it, so every case is its own dot
+  const grp = {}; shown.forEach((i) => { const k = C[i].ll[0].toFixed(2) + "," + C[i].ll[1].toFixed(2); (grp[k] = grp[k] || []).push(i); });
+  const at = {};
+  Object.values(grp).forEach((ids) => { const n = ids.length; ids.forEach((i, j) => { const ll = C[i].ll; if (n === 1) { at[i] = ll; return; }
+    const ring = j === 0 && n > 7 ? 0 : 1, m = n > 7 ? n - 1 : n, jj = n > 7 ? j - 1 : j, rad = 0.35 + 0.045 * m, ang = 2 * Math.PI * jj / m;
+    at[i] = ring ? [ll[0] + rad * Math.cos(ang) / Math.max(0.3, Math.cos(ll[1] * Math.PI / 180)), ll[1] + rad * Math.sin(ang)] : ll; }); });
+  shown.forEach((i) => {
+    const c = C[i];
     const weak = !COUNTS(c), sel = S.selCase === i || (S.sel && (c.iso === S.sel));
     feats.push({ type: "Feature", properties: { i, col: weak ? "#9a98a6" : setColor(c.set), r: c.v ? Math.min(7.5, 3 + Math.log10(1 + c.v) * 1.1) : 3.2,
-      ring: c.llc || weak ? 1 : 0, fo: c.llc || weak ? 0.12 : 0.92, so: sel ? 1 : 0.9 }, geometry: { type: "Point", coordinates: c.ll } });
+      ring: c.llc || weak ? 1 : 0, fo: c.llc || weak ? 0.12 : 0.92, so: sel ? 1 : 0.9 }, geometry: { type: "Point", coordinates: at[i] } });
   });
   src.setData({ type: "FeatureCollection", features: feats });
 }
@@ -407,10 +411,10 @@ function buildKey() {
     '<label class="chk"><input type="checkbox" id="ringOn" checked> Include cases placed only at a country\'s center</label>' +
     '<div class="lrow"><span class="lsrc" style="flex:1">Filled dot: the town or site. Ring: no town in the source. Grey ring: acquitted, disproved or unproven (not counted in any score). Size: number of children, where known.</span></div>' +
     '<div class="psec">Lines</div>' +
-    FLOWT.map((f) => '<div class="lrow"><label class="chk"><input type="checkbox" data-flow="' + f[0] + '"> ' + esc(f[1]) + ' <span class="mute">(' + F.filter((x) => x.type === f[0]).length + ')</span></label><button type="button" class="ib" data-i="fl_' + f[0] + '" title="What is this?" aria-label="About this line">i</button></div><div class="ipop" id="fl_' + f[0] + '">' + esc(f[2]) + '</div>').join("") +
+    FLOWT.map((f) => '<div class="lrow"><label class="chk"><input type="checkbox" data-flow="' + f[0] + '" checked> ' + esc(f[1]) + ' <span class="mute">(' + F.filter((x) => x.type === f[0]).length + ')</span></label><button type="button" class="ib" data-i="fl_' + f[0] + '" title="What is this?" aria-label="About this line">i</button></div><div class="ipop" id="fl_' + f[0] + '">' + esc(f[2]) + '</div>').join("") +
     '<div class="lrow"><label class="chk"><input type="checkbox" id="netOn"> Networks and institutions (headquarters)</label><button type="button" class="ib" data-i="netI" title="What is this?" aria-label="About networks">i</button></div>' +
     '<div class="ipop" id="netI">The organisations, institutions, platforms and armed groups that recur across the cases, each placed at its headquarters and sized by how many countries it is documented in. Click one to draw where it is documented (dotted lines) and where its presence is only likely (grey). Presence is not proof of abuse in that country; the box says which countries have a case.</div>' +
-    '<div class="psec">Find a place</div><input id="find" type="search" placeholder="Country, case or network"><div id="plist" class="scroll"></div>';
+    '<div class="psec">Search</div><input id="find" type="search" placeholder="Country, case or network"><div id="plist" class="scroll"></div>';
   $("#layer").value = S.layer;
   $("#layer").addEventListener("change", (e) => { S.layer = e.target.value; const l = layer(); if (l.pat && l.pat.view) fitView(l.pat.view); update(); });
   const setY = () => { let a = +$("#yFrom").value || YMIN, b = +$("#yTo").value || YMAX; a = Math.max(YMIN, Math.min(YMAX, a)); b = Math.max(YMIN, Math.min(YMAX, b)); if (a > b) [a, b] = [b, a]; S.from = a; S.to = b; update(); };
@@ -477,16 +481,16 @@ function drawLegend() {
 function drawList() {
   const l = layer(), q = S.q;
   let h = "";
+  const rows = q && q.length > 1 ? ISOS.map((k) => [k, l.get(P[k])]).filter(([k]) => P[k].n.toLowerCase().includes(q)) : [];
+  if (l.kind === "seq") rows.sort((a, b) => ((b[1] && b[1].v != null ? b[1].v : -1e9) - (a[1] && a[1].v != null ? a[1].v : -1e9)) || P[a[0]].n.localeCompare(P[b[0]].n));
+  const d = l.kind === "seq" ? dom(l) : null;
+  h += rows.map(([k, r]) => '<div class="pi' + (S.sel === k ? " sel" : "") + '" data-k="' + k + '"><span class="sw" style="background:' + colorOf(l, r, d) + '"></span>' + esc(P[k].n) + (r && r.est ? ' <span class="mute" title="Estimate: nothing documented in these years">·est</span>' : '') + '<span class="v">' + (r && r.v != null ? (l.kind === "seq" ? l.f(r.v) : "") : "") + '</span></div>').join("");
   if (q && q.length > 1) {
     const cs = C.map((c, i) => [c, i]).filter(([c]) => (c.n + " " + (c.who || "") + " " + (c.place || "")).toLowerCase().includes(q)).slice(0, 30);
     const ns = N.map((n, i) => [n, i]).filter(([n]) => n.n.toLowerCase().includes(q)).slice(0, 10);
     if (ns.length) h += ns.map(([n, i]) => '<div class="pi" data-net="' + i + '"><span class="sw" style="background:' + setColor(n.type === "state" ? "conflict" : n.type) + ';transform:rotate(45deg);width:9px;height:9px"></span>' + esc(n.n) + '<span class="v">network</span></div>').join("");
     if (cs.length) h += cs.map(([c, i]) => '<div class="pi" data-case="' + i + '"><span class="sw" style="background:' + setColor(c.set) + ';border-radius:50%;width:9px;height:9px"></span>' + esc(c.n) + '<span class="v">' + esc(yrs(c)) + '</span></div>').join("");
   }
-  const rows = ISOS.map((k) => [k, l.get(P[k])]).filter(([k]) => !q || P[k].n.toLowerCase().includes(q));
-  if (l.kind === "seq") rows.sort((a, b) => ((b[1] && b[1].v != null ? b[1].v : -1e9) - (a[1] && a[1].v != null ? a[1].v : -1e9)) || P[a[0]].n.localeCompare(P[b[0]].n));
-  const d = l.kind === "seq" ? dom(l) : null;
-  h += rows.map(([k, r]) => '<div class="pi' + (S.sel === k ? " sel" : "") + '" data-k="' + k + '"><span class="sw" style="background:' + colorOf(l, r, d) + '"></span>' + esc(P[k].n) + (r && r.est ? ' <span class="mute" title="Estimate: nothing documented in these years">·est</span>' : '') + '<span class="v">' + (r && r.v != null ? (l.kind === "seq" ? l.f(r.v) : "") : "") + '</span></div>').join("");
   $("#plist").innerHTML = h;
   $("#plist").querySelectorAll(".pi").forEach((el) => el.addEventListener("click", () => { if (el.dataset.case) openCase(+el.dataset.case, true); else if (el.dataset.net) openNet(+el.dataset.net, true); else select(el.dataset.k, true); }));
 }
@@ -558,23 +562,16 @@ function detail(k) {
   if (p.proxy) h.push('<p class="note">' + esc(p.proxy) + '</p>');
   const mp = marketParts(p), sp = shieldParts(p);
   if (mp.length || sp.length) h.push('<details><summary>The indicators</summary>' + (mp.length ? '<p class="note">Size of the trade</p>' + bars(mp) : '') + (sp.length ? '<p class="note">What stands in the way (more = less)</p>' + bars(sp) : '') + (i.ht21 != null && i.ht25 != null ? '<p class="note">GI-TOC trafficking score: ' + fmt(i.ht21, 1) + ' (2021), ' + fmt(i.ht23, 1) + ' (2023), ' + fmt(i.ht25, 1) + ' (2025).</p>' : '') + (i.ncm != null ? '<p class="note">NCMEC CyberTipline reports, 2024: ' + fmt(i.ncm, 0) + '.</p>' : '') + (i.gsin ? '<p class="note">Walk Free estimate: ' + fmt(i.gsin, 0) + ' people in modern slavery (2023).</p>' : '') + '</details>');
-  // behind the scenes
+  // behind the scenes: the country's story, then links to the pattern layers it belongs to
   const roles = PAT.map((pt) => [pt, pt.countries.find((c) => c.iso3 === k)]).filter((x) => x[1]);
-  if (roles.length) {
-    h.push('<div class="hp-h">Behind the scenes: patterns this country is part of</div>');
-    roles.forEach(([pt, c]) => h.push('<div class="bts"><a href="#" data-pat="' + pt.id + '">' + esc(pt.title) + '</a> <span class="note">· ' + esc(c.role) + '</span>' + (c.note ? '<p>' + esc(c.note) + '</p>' : '') + '</div>'));
+  const st = (D.STORY || {})[k];
+  if (st || roles.length) {
+    h.push('<div class="hp-h">Behind the scenes</div>');
+    if (st) h.push('<div class="story">' + st.story.split(/\n\n+/).map((x) => '<p>' + esc(x) + '</p>').join("") + '</div>');
+    if (roles.length) h.push('<p class="note">Patterns this country is part of: ' + roles.map(([pt, c]) => '<a href="#" data-pat="' + pt.id + '" title="' + esc(c.role) + '">' + esc(pt.title) + '</a>').join(" · ") + '</p>');
   }
-  const cs = casesOf(k).map((c) => [c, C.indexOf(c)]).sort((x, y) => ((y[0].y1 || y[0].yf || y[0].y0 || 0) - (x[0].y1 || x[0].yf || x[0].y0 || 0)));
-  const all = C.filter((c) => c.iso === k || (c.also || []).includes(k)).length;
-  h.push('<div class="hp-h">Documented cases' + (cs.length ? ' — ' + cs.length : '') + (all > cs.length ? ' <span class="note" style="text-transform:none;letter-spacing:0">(' + (all - cs.length) + ' more outside the chosen years or kinds)</span>' : '') + '</div>');
-  if (cs.length) {
-    const off = cs.filter(([c]) => c.offc && COUNTS(c)).length, ds = cs.filter(([c]) => COUNTS(c) && c.fr && c.yf && c.yf >= c.fr).map(([c]) => c.yf - c.fr);
-    const sc = {}; cs.forEach(([c]) => { sc[c.set] = (sc[c.set] || 0) + 1; });
-    h.push('<p class="note">' + Object.keys(sc).sort((x, y) => sc[y] - sc[x]).map((s) => sc[s] + ' ' + esc(setLabel(s).toLowerCase())).join(" · ") + (off ? ' · officials involved or covering up in ' + off : '') + (ds.length ? ' · median ' + fmt(median(ds), 0) + ' years from first complaint to action (' + ds.length + ' cases)' : '') + '</p>');
-    cs.forEach(([c, ci]) => h.push(caseRow(c, ci, false)));
-  } else h.push('<p class="note">None on this map' + (all ? ' in the chosen years or kinds' : '') + '.</p>');
-  const fl = F.filter((f) => f.iso_a === k || f.iso_b === k);
-  if (fl.length) h.push('<div class="hp-h">Movements in and out — ' + fl.length + '</div><ul>' + fl.map((f) => '<li><b>' + esc(f.n) + '</b> <span class="note">' + esc((FLOWT.find((x) => x[0] === f.type) || [0, f.type])[1]) + (f.y0 ? ', ' + f.y0 + (f.y1 && f.y1 !== f.y0 ? '–' + f.y1 : '') : '') + '</span>. ' + esc(f.d || "") + ' <span class="note">' + link(f.cite || "source", f.url) + '</span></li>').join("") + '</ul>');
+  const ncs = casesOf(k).length;
+  if (ncs) h.push('<p class="note">' + ncs + ' documented case' + (ncs === 1 ? '' : 's') + ' here on the map in the chosen years; click a dot to open one.</p>');
   const ns = N.map((n, ni) => [n, ni]).filter(([n]) => n.iso === k || (n.reach || []).includes(k) || (n.reach_est || []).includes(k));
   if (ns.length) h.push('<div class="hp-h">Networks and institutions here — ' + ns.length + '</div><p class="note">' + ns.map(([n, ni]) => '<a href="#" data-net="' + ni + '">' + esc(n.n) + '</a>' + (n.iso === k ? ' (headquarters)' : (n.reach || []).includes(k) ? '' : ' (likely, not documented)')).join(" · ") + '</p>');
   h.push('<p class="hp-src">Indicators: GI-TOC Global Organized Crime Index 2025; Walk Free Global Slavery Index 2023; NCMEC CyberTipline 2024; US Trafficking in Persons Report 2025. Each case links its own source.</p>');
@@ -600,7 +597,7 @@ function openNet(i, fly) {
   h.push('<p>' + esc(n.d) + '</p>');
   if ((n.reach || []).length) h.push('<p class="note"><b>Documented in ' + n.reach.length + ':</b> ' + n.reach.filter((k) => P[k]).map((k) => '<a href="#" data-k="' + k + '">' + esc(P[k].n) + '</a>').join(", ") + '</p>');
   if ((n.reach_est || []).length) h.push('<p class="note"><b>Likely, not documented (' + n.reach_est.length + '):</b> ' + n.reach_est.filter((k) => P[k]).map((k) => esc(P[k].n)).join(", ") + (n.reach_note ? '. ' + esc(n.reach_note) : '') + '</p>');
-  if (cs.length) { h.push('<div class="hp-h">Cases on this map — ' + cs.length + '</div>'); cs.forEach(([c, ci]) => h.push(caseRow(c, ci, false))); }
+  if (cs.length) h.push('<p class="note">' + cs.length + ' case' + (cs.length === 1 ? '' : 's') + ' on the map belong to this network.</p>');
   h.push('<p class="hp-src">' + esc(n.cite || "") + ' ' + link("source", n.url) + '</p>');
   $("#detBody").innerHTML = h.join(""); wireBox(); $("#det").classList.add("open"); $("#det").scrollTop = 0; paint(); drawCharts();
   if (fly && n.ll) { const fb = freeBox(); map.easeTo({ center: n.ll, padding: { left: fb.L, right: fb.R, top: 10, bottom: 10 }, duration: 800 }); }
