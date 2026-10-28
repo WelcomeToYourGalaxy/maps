@@ -419,7 +419,7 @@
   "bankruptcy_shield": {
    "title": "Bankruptcy and asset transfers as a shield against abuse claims",
    "summary_facts": [
-    "Since the Archdiocese of Portland's first filing on 6 July 2004, more than 40 US Catholic dioceses and religious orders have filed for Chapter 11; Rochester's 2019 filing was the 20th diocese — half of all filings came after the 2019 wave of revival windows (Wikipedia, diocesan articles).",
+    "This dataset lists 39 US Catholic dioceses and religious orders that filed for Chapter 11 between the Archdiocese of Portland's first filing (6 July 2004) and Fresno (July 2025), plus San Diego's second filing (2024); Rochester's 2019 filing was the 20th diocese, so more than half came after the 2019 wave of revival windows.",
     "Filings often came just before a trial or deposition: Portland (hours before two trials, 2004), San Diego (hours before the first of ~150 suits, 2007), Wilmington (the day before trial, 2009), Milwaukee (two days before the archbishop's deposition, 2011), Baltimore (two days before Maryland's Child Victims Act took effect, 2023).",
     "Boy Scouts of America: filed 18 February 2020; more than 82,000 abuse claims; $2.46 billion plan confirmed 8 September 2022 with third-party releases for local councils, insurers and churches; Third Circuit upheld May 2025; US Supreme Court denied review 12 January 2026.",
     "In Harrington v. Purdue Pharma (27 June 2024), the US Supreme Court held the Bankruptcy Code does not authorise releases of claims against non-debtor third parties without the claimants' consent. About 144 BSA survivors had argued the Scouts plan used a similar mechanism to shield local councils and churches; the BSA plan was nonetheless upheld by the Third Circuit (May 2025) and the Supreme Court declined review (12 January 2026).",
@@ -1307,14 +1307,14 @@
     },
     {
      "iso3": "CHE",
-     "year": 2014,
-     "body": "Federal reckoning on compulsory welfare measures and forced placements (Verdingkinder) before 1981",
+     "year": 2019,
+     "body": "Swiss federal reckoning on administrative detention and forced placements (incl. Verdingkinder)",
      "scope": "National; state care and forced placements",
-     "findings_headline": "See care.json record (justiceinfo.net)",
+     "findings_headline": "Independent expert commission findings on administrative detention made public (2019) — see colleague care.json record",
      "url": "https://www.justiceinfo.net/en/42559-raw-truth-swiss-administrative-detention-finally-made-public.html",
      "type": "inquiry",
      "level": "national",
-     "note": "from colleague file care.json; not re-verified here"
+     "note": "from colleague care.json (yf 2019); details not re-verified here"
     },
     {
      "iso3": "POL",
@@ -2990,6 +2990,361 @@
    ],
    "unproven": [],
    "notes": "Not covered with sources: US status-of-forces cases; Saudi/Gulf diplomats; Holy See refusal to give the Australian Royal Commission documents (Royal Commission held hearings with Pell by video link from Vatican City; refusal not verified). UN cumulative referrals-vs-prosecutions totals across years not compiled (only 2025 snapshot). French Sangaris case outcome not verified. Wojciech Gil sentence length from a citation title in the Wikipedia page — verify."
+  },
+  "money_trail": {
+   "title": "Money trail — financial flows behind child sexual exploitation",
+   "summary_facts": [
+    "Banks: JPMorgan paid $290m (Nov 2023) to Epstein accusers and $75m to the US Virgin Islands; Deutsche Bank paid $75m — both over keeping Epstein as a client.",
+    "Westpac agreed to an A$1.3 billion penalty (24 Sept 2020), Australia's largest corporate fine, for 23 million AML breaches including failure to vet payments that could be linked to child exploitation and live child sex shows in the Philippines.",
+    "FinCEN found 2,311 bank reports (2020-2021) tying cryptocurrency to child sexual exploitation and trafficking, worth over $412m; 95% concerned child sexual abuse material and most named bitcoin.",
+    "Payment cut-offs have repeatedly followed pressure: Visa and Mastercard dropped Backpage after a sheriff's letters (2015) and Pornhub after a newspaper column (Dec 2020); a federal judge in 2022 let a suit against Visa proceed on the theory it knowingly facilitated MindGeek's CSAM revenue."
+   ],
+   "rows": [
+    {
+     "entity": "JPMorgan Chase (Epstein accusers class action)",
+     "iso3": "USA",
+     "year": 2023,
+     "amount_usd": 290000000,
+     "finding": "Settled (Nov 2023) a class action alleging it enabled Epstein's abuse by continuing to bank him; no admission of liability; lawyers took 30%",
+     "url": "https://en.wikipedia.org/wiki/Jeffrey_Epstein"
+    },
+    {
+     "entity": "JPMorgan Chase (US Virgin Islands)",
+     "iso3": "USA",
+     "year": 2023,
+     "amount_usd": 75000000,
+     "finding": "Settled claims by the US Virgin Islands government that the bank facilitated Epstein's trafficking",
+     "url": "https://en.wikipedia.org/wiki/Jeffrey_Epstein"
+    },
+    {
+     "entity": "Deutsche Bank (Epstein accusers)",
+     "iso3": "DEU",
+     "year": 2023,
+     "amount_usd": 75000000,
+     "finding": "Settled a lawsuit concerning the period Epstein was its client (2013-2018), after JPMorgan dropped him in 2013",
+     "url": "https://en.wikipedia.org/wiki/Jeffrey_Epstein"
+    },
+    {
+     "entity": "Epstein's banks — US Treasury file",
+     "iso3": "USA",
+     "year": null,
+     "amount_usd": 1100000000,
+     "finding": "Senator Ron Wyden said the Treasury file showed 4,725 wire transfers totalling $1.1bn from one account; Forbes reported transfers through JPMorgan, Deutsche Bank, BNY Mellon and Bank of America exceeding $1.9bn",
+     "url": "https://en.wikipedia.org/wiki/Jeffrey_Epstein",
+     "amount_note": "Value of flagged transfers, not a fine"
+    },
+    {
+     "entity": "Epstein estate → US Virgin Islands",
+     "iso3": "USA",
+     "year": null,
+     "amount_usd": 105000000,
+     "finding": "Estate paid $105m plus a share of island sale proceeds to settle USVI claims the territory was used for trafficking",
+     "url": "https://en.wikipedia.org/wiki/Jeffrey_Epstein"
+    },
+    {
+     "entity": "Westpac Banking Corporation (AUSTRAC)",
+     "iso3": "AUS",
+     "year": 2020,
+     "amount_usd": null,
+     "finding": "Penalty of A$1.3 billion agreed 24 Sept 2020 for 23 million breaches of the AML/CTF Act covering A$11bn of transactions, including failure to properly vet transactions that could be linked to child exploitation and live child sex shows in the Philippines and south-east Asia; CEO Brian Hartzer resigned",
+     "url": "https://en.wikipedia.org/wiki/Westpac",
+     "url2": "https://en.wikipedia.org/wiki/AUSTRAC",
+     "amount_local": "AUD 1,300,000,000",
+     "note": "\"12 customers\" figure in the brief not verified in sources opened"
+    },
+    {
+     "entity": "Commonwealth Bank of Australia (AUSTRAC)",
+     "iso3": "AUS",
+     "year": 2018,
+     "amount_usd": null,
+     "finding": "A$700m fine (June 2018) for 53,700+ unreported cash deposits via intelligent deposit ATMs (drugs, firearms) — no child-exploitation finding in sources opened",
+     "url": "https://en.wikipedia.org/wiki/AUSTRAC",
+     "amount_local": "AUD 700,000,000",
+     "relevance": "not child-exploitation-specific"
+    },
+    {
+     "entity": "Backpage.com owners",
+     "iso3": "USA",
+     "year": 2024,
+     "amount_usd": 500000000,
+     "finding": "DOJ said the scheme earned more than $500 million from prostitution ads, used by traffickers to advertise children; CEO Carl Ferrer pleaded guilty to conspiracy and money laundering (2018); co-owners Spear and Brunst got 10 years and Lacey 5 years (Aug 2024)",
+     "url": "https://www.justice.gov/opa/pr/three-owners-notorious-prostitution-website-backpagecom-sentenced",
+     "from_file": "organized.json",
+     "amount_note": "Revenue, per DOJ"
+    },
+    {
+     "entity": "Visa and MasterCard → Backpage",
+     "iso3": "USA",
+     "year": 2015,
+     "amount_usd": null,
+     "finding": "After Cook County Sheriff Tom Dart's June 2015 \"cease and desist\" letters, both card companies stopped processing Backpage ads; Backpage later set up separate accounts to keep taking card payments (California AG)",
+     "url": "https://en.wikipedia.org/wiki/Backpage"
+    },
+    {
+     "entity": "Visa and Mastercard → Pornhub (MindGeek/Aylo)",
+     "iso3": "CAN",
+     "year": 2020,
+     "amount_usd": null,
+     "finding": "Cut card services to Pornhub in December 2020 after a New York Times column; Pornhub then removed unverified uploads, cutting content from 13 million to 4 million videos",
+     "url": "https://en.wikipedia.org/wiki/Pornhub"
+    },
+    {
+     "entity": "Visa (Fleites v. MindGeek)",
+     "iso3": "USA",
+     "year": 2022,
+     "amount_usd": null,
+     "finding": "US District Judge Cormac Carney ruled (29 July 2022) it was reasonable to conclude Visa knowingly facilitated MindGeek's monetisation of child sexual abuse material, denying Visa's motion to dismiss; Visa and Mastercard then suspended payments to MindGeek's ad arm TrafficJunky",
+     "url": "https://en.wikipedia.org/wiki/MindGeek"
+    },
+    {
+     "entity": "Aylo (Pornhub owner) — DOJ deferred prosecution",
+     "iso3": "CAN",
+     "year": 2023,
+     "amount_usd": 1800000,
+     "finding": "Deferred prosecution agreement (21 Dec 2023, Brooklyn) over unlawful monetary transactions involving sex-trafficking proceeds (GirlsDoPorn — adult victims); paid over $1.8m plus victim compensation",
+     "url": "https://techcrunch.com/2025/09/03/pornhub-owner-pays-5m-settlement-to-ftc-over-historic-failure-to-block-abusive-content",
+     "from_file": "organized.json"
+    },
+    {
+     "entity": "Aylo — FTC and Utah settlement",
+     "iso3": "CAN",
+     "year": 2025,
+     "amount_usd": 5000000,
+     "finding": "Agreed 3 Sept 2025 to pay $5m to the FTC and Utah, which alleged it knowingly profited from child sexual abuse material and its fingerprinting system was ineffective 2017-Aug 2021",
+     "url": "https://techcrunch.com/2025/09/03/pornhub-owner-pays-5m-settlement-to-ftc-over-historic-failure-to-block-abusive-content",
+     "from_file": "organized.json"
+    },
+    {
+     "entity": "Welcome to Video (Bitcoin tracing)",
+     "iso3": "KOR",
+     "year": 2019,
+     "amount_usd": null,
+     "finding": "IRS Criminal Investigation traced Bitcoin payments and found the server IP in the site source code, locating it in South Korea; 337 users arrested in 38 countries (Oct 2019). Fifth Circuit (US v. Gratkowski, 2020) held there is no reasonable expectation of privacy in public blockchain data",
+     "url": "https://en.wikipedia.org/wiki/Welcome_to_Video_case"
+    },
+    {
+     "entity": "FinCEN Financial Trend Analysis (Feb 2024)",
+     "iso3": "USA",
+     "year": 2024,
+     "amount_usd": 412000000,
+     "finding": "2,311 Bank Secrecy Act reports (Jan 2020 - Dec 2021) linked cryptocurrency to online child sexual exploitation and trafficking, totalling over $412m in suspicious activity; reports rose from 336 (2020) to 1,975 (2021); 95% (2,191) concerned CSAM; 2,157 named bitcoin; over 1,800 unique bitcoin wallets identified; typologies: darknet markets, P2P exchanges, mixers, crypto kiosks",
+     "url": "https://www.fincen.gov/system/files/shared/FTA_Human_Trafficking_FINAL508.pdf",
+     "amount_note": "Reported suspicious activity value"
+    },
+    {
+     "entity": "FinCEN Notice FIN-2021-NTC3",
+     "iso3": "USA",
+     "year": 2021,
+     "amount_usd": null,
+     "finding": "\"FinCEN Calls Attention to Online Child Sexual Exploitation Crimes\" issued 16 Sept 2021, asking banks to flag OCSE in SARs",
+     "url": "https://www.fincen.gov/system/files/shared/FTA_Human_Trafficking_FINAL508.pdf"
+    },
+    {
+     "entity": "FinCEN Advisory FIN-2020-A008",
+     "iso3": "USA",
+     "year": 2020,
+     "amount_usd": null,
+     "finding": "Supplemental Advisory on Identifying and Reporting Human Trafficking (15 Oct 2020), supplementing 2014 red-flag guidance (FIN-2014-A008)",
+     "url": "https://www.fincen.gov/sites/default/files/advisory/2020-10-15/Advisory%20Human%20Trafficking%20508%20FINAL_0.pdf"
+    },
+    {
+     "entity": "Childlight — \"multibillion-dollar industry\" review",
+     "iso3": "GBR",
+     "year": 2025,
+     "amount_usd": null,
+     "finding": "Review of 20 publications (April 2025): one on-demand abuse video can cost US$1,200; some abusers pay as little as 27 pence; payment platforms, advertising revenue and crypto carry the profits; estimated multiple billions a year",
+     "url": "https://www.childlight.org/newsroom/child-sexual-exploitation-and-abuse-is-a-multibillion-dollar-industry-our-new-report-shows-who-benefits"
+    },
+    {
+     "entity": "IJM — payments in Philippine livestreamed abuse",
+     "iso3": "PHL",
+     "year": 2020,
+     "amount_usd": null,
+     "finding": "Most facilitators had a financial motive; customers mainly older Western men paying family-member traffickers",
+     "url": "https://www.ijm.org/documents/studies/Final-Public-Full-Report-5_20_2020.pdf"
+    },
+    {
+     "entity": "Europol IOCTA 2019 — payment methods for live distant child abuse",
+     "iso3": "EU",
+     "year": 2019,
+     "amount_usd": null,
+     "finding": "Perpetrators of live distant child abuse generally pay via online payment methods; cryptocurrencies \"still rarely used\"; case of a British man who sent money to a Filipino mother in Cebu",
+     "url": "https://www.europol.europa.eu/cms/sites/default/files/documents/iocta_2019.pdf"
+    }
+   ],
+   "sources": [
+    {
+     "title": "FinCEN — Financial Trend Analysis on CVC and OCSE (Feb 2024)",
+     "url": "https://www.fincen.gov/system/files/shared/FTA_Human_Trafficking_FINAL508.pdf"
+    },
+    {
+     "title": "Wikipedia — Westpac / AUSTRAC",
+     "url": "https://en.wikipedia.org/wiki/Westpac"
+    },
+    {
+     "title": "Wikipedia — Jeffrey Epstein (bank lawsuits)",
+     "url": "https://en.wikipedia.org/wiki/Jeffrey_Epstein"
+    },
+    {
+     "title": "Wikipedia — MindGeek; Pornhub; Backpage",
+     "url": "https://en.wikipedia.org/wiki/MindGeek"
+    },
+    {
+     "title": "Childlight — multibillion-dollar industry (2025)",
+     "url": "https://www.childlight.org/newsroom/child-sexual-exploitation-and-abuse-is-a-multibillion-dollar-industry-our-new-report-shows-who-benefits"
+    }
+   ],
+   "unproven": [
+    "Western Union/MoneyGram AML settlements citing child exploitation — not verified in sources opened; MoneyGram's and Western Union's DOJ settlements concerned fraud and money laundering, any child-exploitation element unconfirmed."
+   ],
+   "notes": "FATF 2018 report on human-trafficking financial flows and AUSTRAC child-exploitation indicators could not be opened (fatf-gafi.org 403; austrac.gov.au connection errors). New York DFS $150m Deutsche Bank penalty (2020) over Epstein was not verified in a source opened — omitted. Westpac AUD amounts not converted to USD to avoid inventing an exchange rate."
+  },
+  "false_claims_effect": {
+   "title": "Effects of viral false trafficking claims on real anti-trafficking work",
+   "summary_facts": [
+    "In July 2020 the US National Human Trafficking Hotline received hundreds of reports about the false Wayfair claim in a few days; Polaris said the volume made it harder to help people actually in need, and none of the reports contained new information (Polaris, 20 July 2020).",
+    "Operation Midland, built on Carl Beech's false 'VIP ring' claims, cost the Metropolitan Police over £2 million plus £900,000 for the investigation of Beech; Beech was himself a child sex offender (18 years, 2019).",
+    "Pizzagate led to a rifle attack (2016) and an arson attack (2019) on a Washington pizzeria; no victims or evidence ever emerged."
+   ],
+   "rows": [
+    {
+     "claim": "Wayfair \"trafficking children in furniture listings\"",
+     "iso3": "USA",
+     "year": 2020,
+     "effect": "Flooded the US National Human Trafficking Hotline: \"hundreds of reports\" in several days; Polaris said the \"extreme volume of these contacts has made it more difficult for the Trafficking Hotline to provide support and attention to others who are in need of help\"",
+     "measure": "Hundreds of hotline reports (July 2020); none contained information beyond what was online, and none came from anyone connected to an alleged missing child",
+     "debunked_by": "Polaris Project (operator of the hotline), 20 July 2020",
+     "url": "https://polarisproject.org/press-releases/polaris-statement-on-wayfair-sex-trafficking-claims/"
+    },
+    {
+     "claim": "Summer 2020 viral trafficking rumours (furniture websites, text-message recruitment)",
+     "iso3": "USA",
+     "year": 2020,
+     "effect": "Polaris: the rumours \"flooded the Polaris-operated National Human Trafficking Hotline with calls and concerns that were simply not true. The barrage crowded out calls and contacts from people who truly needed help\"; Polaris built an online \"Human Trafficking 101\" training in response",
+     "measure": "Qualitative (Polaris, Oct 2021)",
+     "debunked_by": "Polaris Project",
+     "url": "https://polarisproject.org/blog/2021/10/human-trafficking-101-combating-misinformation-with-education/"
+    },
+    {
+     "claim": "#SaveTheChildren (QAnon co-option)",
+     "iso3": "USA",
+     "year": 2020,
+     "effect": "QAnon followers co-opted the trademarked name of the charity Save the Children, which issued a statement on 7 Aug 2020 against unauthorised use; Facebook/Instagram redirected the hashtag (Sept 2020) and limited its reach (Oct 2020)",
+     "measure": "Platform interventions; charity statement",
+     "debunked_by": "Save the Children; Facebook",
+     "url": "https://en.wikipedia.org/wiki/QAnon"
+    },
+    {
+     "claim": "Pizzagate (Comet Ping Pong, Washington DC)",
+     "iso3": "USA",
+     "year": 2016,
+     "effect": "Edgar Maddison Welch fired an AR-15-style rifle inside the restaurant on 4 Dec 2016 (4 years' prison, June 2017); owner and staff got death threats; arson attack 25 Jan 2019 by a man who had posted a QAnon video (4 years, April 2020)",
+     "measure": "1 shooting, 1 arson, death threats",
+     "debunked_by": "DC police (\"fictitious\"); Snopes; New York Times; Washington Post",
+     "url": "https://en.wikipedia.org/wiki/Pizzagate_conspiracy_theory"
+    },
+    {
+     "claim": "QAnon \"cabal\" child-trafficking narrative",
+     "iso3": "USA",
+     "year": 2019,
+     "effect": "An FBI Phoenix field office intelligence bulletin (May 2019) identified QAnon-driven extremists as a domestic terrorism threat",
+     "measure": "FBI bulletin",
+     "debunked_by": "FBI",
+     "url": "https://en.wikipedia.org/wiki/QAnon"
+    },
+    {
+     "claim": "Adrenochrome \"harvested from children\"",
+     "iso3": "USA",
+     "year": 2020,
+     "effect": "Central motif of QAnon and Pizzagate claims of child torture by a Satanist cabal",
+     "measure": "—",
+     "debunked_by": "Adrenochrome is a research chemical made by organic synthesis since at least 1952 (Wikipedia citing chemistry literature)",
+     "url": "https://en.wikipedia.org/wiki/Adrenochrome"
+    },
+    {
+     "claim": "Operation Midland (Carl Beech \"VIP ring\")",
+     "iso3": "GBR",
+     "year": 2014,
+     "effect": "Metropolitan Police spent over £2 million in 18 months (Nov 2014 - Mar 2016) on false claims naming Leon Brittan, Harvey Proctor, Lord Bramall and others; Northumbria Police's investigation of Beech cost a further £900,000; police compensated Lord Bramall and Lady Brittan. Beech was himself found to be a child sex offender and jailed for 18 years (July 2019)",
+     "measure": "£2m+ and £900,000 police costs",
+     "debunked_by": "Sir Richard Henriques review (Nov 2016); Newcastle Crown Court (2019)",
+     "url": "https://en.wikipedia.org/wiki/Operation_Midland"
+    },
+    {
+     "claim": "Elm Guest House \"VIP abuse\"",
+     "iso3": "GBR",
+     "year": 1990,
+     "effect": "Claims from 1990 onward investigated under Operation Fernbridge (2013-2015); at IICSA (2019) the Met said no credible victim had alleged an offence there apart from a child removed in the 1982 raid",
+     "measure": "Police operation",
+     "debunked_by": "Metropolitan Police evidence to IICSA (2019)",
+     "url": "https://en.wikipedia.org/wiki/Elm_Guest_House",
+     "from_file": "elite.json"
+    },
+    {
+     "claim": "Franklin credit union \"child prostitution ring\" (Nebraska)",
+     "iso3": "USA",
+     "year": 1990,
+     "effect": "A Douglas County grand jury called the claims a \"carefully crafted hoax\" (July 1990) and indicted two accusers for perjury; a federal grand jury also found them unfounded",
+     "measure": "Two grand juries",
+     "debunked_by": "Douglas County and federal grand juries, 1990",
+     "url": "https://en.wikipedia.org/wiki/Franklin_child_prostitution_ring_allegations",
+     "from_file": "elite.json"
+    },
+    {
+     "claim": "McMartin preschool / Satanic ritual abuse panic",
+     "iso3": "USA",
+     "year": 1983,
+     "effect": "Seven years and about $15m of prosecution ended with no convictions (1990); FBI expert Kenneth Lanning found \"little or no evidence for ... large-scale baby breeding, human sacrifice, and organized satanic conspiracies\"",
+     "measure": "~$15m, 0 convictions",
+     "debunked_by": "Juries (1990); FBI (Lanning); anthropologist Jean La Fontaine (UK)",
+     "url": "https://en.wikipedia.org/wiki/Satanic_panic",
+     "url2": "https://en.wikipedia.org/wiki/McMartin_preschool_trial"
+    },
+    {
+     "claim": "Operation Underground Railroad / \"Sound of Freedom\" narrative",
+     "iso3": "USA",
+     "year": 2023,
+     "effect": "The 2023 film (over $250m worldwide) drew attention for links to QAnon; O.U.R. has been accused of exaggerating its work; founder Tim Ballard left O.U.R. in July 2023 amid sexual-misconduct accusations by employees (he denies them; Salt Lake County (Nov 2025) and Utah County (Jan 2026) prosecutors declined to charge); a Davis County fundraising investigation closed without charges (2023)",
+     "measure": "Box office; investigations",
+     "debunked_by": "Media investigations; O.U.R.'s own law-firm review (Dec 2023)",
+     "url": "https://en.wikipedia.org/wiki/Tim_Ballard",
+     "url2": "https://en.wikipedia.org/wiki/Sound_of_Freedom"
+    },
+    {
+     "claim": "Dutroux \"X-dossiers\" elite-network claims",
+     "iso3": "BEL",
+     "year": 1996,
+     "effect": "Witness claims of an elite abuse network led to accusations that investigators led a witness; the Belgian parliamentary commission found no high-level protectors",
+     "measure": "Parliamentary commission",
+     "debunked_by": "Verwilghen parliamentary commission; prosecutors",
+     "url": "https://en.wikipedia.org/wiki/Marc_Dutroux",
+     "from_file": "elite.json",
+     "status": "alleged — not established"
+    }
+   ],
+   "sources": [
+    {
+     "title": "Polaris — Statement on Wayfair sex trafficking claims (20 July 2020)",
+     "url": "https://polarisproject.org/press-releases/polaris-statement-on-wayfair-sex-trafficking-claims/"
+    },
+    {
+     "title": "Polaris — Combating misinformation with education (Oct 2021)",
+     "url": "https://polarisproject.org/blog/2021/10/human-trafficking-101-combating-misinformation-with-education/"
+    },
+    {
+     "title": "Wikipedia — QAnon; Pizzagate; Operation Midland; Satanic panic",
+     "url": "https://en.wikipedia.org/wiki/QAnon"
+    }
+   ],
+   "unproven": [
+    "Wayfair sold trafficked children through overpriced furniture listings (2020, QAnon) — Polaris said none of the hundreds of hotline reports contained information beyond what circulated online.",
+    "'Pizzagate' (2016) — debunked by DC police, Snopes, New York Times and others.",
+    "Adrenochrome harvested from abused children (QAnon) — no factual basis; it is a laboratory chemical.",
+    "A worldwide Satanic cabal trafficking children (QAnon) — FBI called QAnon-driven extremism a domestic terrorism threat (2019).",
+    "Carl Beech's Westminster 'VIP murder ring' (Operation Midland) — false; Beech jailed for perverting the course of justice and child sex offences (2019).",
+    "Satanic ritual abuse rings (1980s-90s) — FBI's Kenneth Lanning and UK government researcher Jean La Fontaine found no material evidence."
+   ],
+   "notes": "AP and NYT pieces on QAnon swamping anti-trafficking groups (Aug-Nov 2020) were blocked; numbers on other hotlines (e.g. Childhelp, NCMEC) not obtained."
   }
  }
 }
