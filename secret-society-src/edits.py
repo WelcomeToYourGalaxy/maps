@@ -241,6 +241,10 @@ function countryHTML(k){
   if(r.est){
     h+='<div class="geo-n est-n"><b>No documented case on this map yet.</b> The score is a best-judgement estimate: it rises with the number of tracked organisations present here and with how freely officials act for hidden interests. The organisations below are the likely channels.</div>';
   }
+  if(r.cproxy){
+    h+='<div class="geo-n est-n"><b>Conditions borrowed.</b> '+r.cproxy+'</div>';
+  }
+  h+=patsHTML(k);
   var cn=CNOTES[k];
   if(cn){
     h+='<div class="cnote">';

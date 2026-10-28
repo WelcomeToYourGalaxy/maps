@@ -97,12 +97,19 @@ def main():
     od = load('orgs.json', {'orgs': [], 'channels': []})
     orgs, channels = od['orgs'], od['channels']
     cnotes = load('cnotes.json', {})
-    rows_c = cond['rows']
+    rows_c = dict(cond['rows'])
     alias = dict(cond['alias'])
+    # Taiwan and the Holy See are outside the GI-TOC score set. They are scored here with
+    # conditions borrowed from the nearest comparable jurisdiction, and the popup says so.
+    PROXY = {'Taiwan': ('Korea, Rep.', 'The Global Organized Crime Index does not score Taiwan. Its conditions figures are South Korea\'s, used as the closest comparable democracy in the region.'),
+             'Vatican City': ('Italy', 'The Global Organized Crime Index does not score the Holy See. Its conditions figures are Italy\'s, the state that surrounds it and whose banks and courts handled the IOR cases.')}
+    for k, (src, note) in PROXY.items():
+        rows_c[k] = dict(rows_c[src]); rows_c[k]['proxy'] = note
+    alias['Taiwan'] = 'Taiwan'; alias['Vatican'] = 'Vatican City'
     names = set(rows_c)
 
     # ---------------------------------------------------------------- checks
-    OFFSETS = {'Vatican City', 'Taiwan'}
+    OFFSETS = set()
     bad = [c for c in cases if c['c'] not in names and c['c'] not in OFFSETS]
     if bad:
         for b in bad:
@@ -150,6 +157,7 @@ def main():
                    'cond': round(cnd, 2), 'sea': r['sea'], 'res': r['res'],
                    'band': band_of(exp), 'est': doc[k] == 0, 'raw': round(doc_raw[k], 2),
                    'pres': [[p[0], 1 if p[1] else 0] for p in present[k]]}
+        if r.get('proxy'): rows[k]['cproxy'] = r['proxy']
 
     # ---------------------------------------------------------------- points
     case_out = []
@@ -202,6 +210,8 @@ def main():
     data = {'rows': rows, 'alias': alias, 'cases': case_out, 'lenses': LENSES, 'bands': BANDS,
             'sectors': TYPES, 'entities': ent, 'casebuckets': CASE_BUCKETS, 'groups': groups,
             'routes': routes, 'quarantine': [], 'dupes': [], 'qdup': [], 'notes': [], 'noted': 0,
+            'patterns': build_patterns(load('patterns.json', []), case_out, ent, channels),
+            'bts': load('bts.json', {}),
             'reloc': [], 'cnotes': cnotes, 'gtypes': TYPES, 'recovered': [],
             'orgnames': oname, 'orgtypes': otype,
             'offpres': {k: [[p[0], 1 if p[1] else 0] for p in present[k]] for k in OFFSETS if present.get(k)},
@@ -222,6 +232,72 @@ def main():
           len(case_out), 'cases,', len(ent), 'orgs,', len(groups), 'branches,', len(routes), 'channels')
 
 
+def build_patterns(pats, cases, ent, channels):
+    """Turn hand-written pattern records into what the page draws.
+
+    Hand fields: id, title, kind, summary, orgs, roles, countries [{c, role, note}],
+    links [{from,to,label,years,a,b}], timeline [{year,event,url}], confirmed_by,
+    uncertain, implications, presence (bool), view [[s,w],[n,e]].
+    Derived: every country holding a case of one of the pattern's organisations, every
+    headquarters, presence countries when asked, the cases as timeline entries, cases per
+    decade, and the organisations' channels as links.
+    """
+    E = {e['k']: e for e in ent}
+    out = []
+    for p in pats:
+        orgs = p.get('orgs', [])
+        pc = [c for c in cases if c.get('org') in orgs]
+        roles = list(p.get('roles', []))
+        cmap, cn = {}, {}
+        def role(name):
+            if name not in roles: roles.append(name)
+            return roles.index(name)
+        for x in p.get('countries', []):
+            cmap[x['c']] = role(x['role']); cn[x['c']] = x.get('note', '')
+        byc = {}
+        for c in pc: byc.setdefault(c['c'], []).append(c)
+        for k, cs in byc.items():
+            if k not in cmap:
+                cmap[k] = role(p.get('case_role', 'Documented case'))
+            if not cn.get(k):
+                cs = sorted(cs, key=lambda z: z.get('y') or 0)
+                cn[k] = '; '.join('%s (%s, %s)' % (z['n'], z.get('y', ''), z['status']) for z in cs[:6]) + \
+                        ('; and %d more' % (len(cs) - 6) if len(cs) > 6 else '') + '.'
+        for k in orgs:
+            e = E.get(k)
+            if e and e['c'] not in cmap:
+                cmap[e['c']] = role('Headquarters'); cn[e['c']] = 'Headquarters of ' + e['n'] + '.'
+        if p.get('presence'):
+            for k in orgs:
+                for c in (load('orgs.json', {'orgs': []}) and next((o.get('reach', []) for o in load('orgs.json')['orgs'] if o['k'] == k), [])):
+                    if c not in cmap:
+                        cmap[c] = role('Presence, no case'); cn[c] = ''
+        tl = [dict(t) for t in p.get('timeline', [])]
+        for c in pc:
+            if c.get('y'):
+                tl.append({'year': c['y'], 'event': c['n'] + ' \u2014 ' + c['c'] + ' (' + c['status'] + ')', 'url': c.get('url', '')})
+        tl.sort(key=lambda t: (t['year'], t['event']))
+        years = [t['year'] for t in tl if t.get('year')]
+        span = [min(years), max(years)] if years else ['', '']
+        dec = {}
+        for c in pc:
+            if c.get('y'): dec[c['y'] // 10 * 10] = dec.get(c['y'] // 10 * 10, 0) + 1
+        series = []
+        if dec:
+            for d in range(min(dec), max(dec) + 10, 10): series.append([d, dec.get(d, 0)])
+        links = [dict(l) for l in p.get('links', [])]
+        for ch in channels:
+            if ch.get('org') in orgs and len(ch.get('p', [])) >= 2:
+                pl = ch.get('places') or []
+                links.append({'from': pl[0] if pl else '', 'to': pl[-1] if pl else '', 'label': ch['n'], 'years': ch.get('years', ''), 'p': ch['p']})
+        out.append({'id': p['id'], 'title': p['title'], 'kind': p.get('kind', ''), 'summary': p['summary'],
+                    'orgs': orgs, 'roles': roles, 'cmap': cmap, 'cnotes': cn, 'links': links,
+                    'timeline': tl, 'series': series, 'span': span, 'ncases': len(pc),
+                    'confirmed_by': p.get('confirmed_by', []), 'uncertain': p.get('uncertain', ''),
+                    'implications': p.get('implications', ''), 'view': p.get('view')})
+    return out
+
+
 # ====================================================================== shell edits
 def rep(html, old, new, count=1):
     n = html.count(old)
@@ -240,7 +316,8 @@ def block(html, start, end, new):
 
 def apply_edits(h):
     from edits import EDITS_JS, edit_list
-    for kind, a, b, c in edit_list():
+    import patterns_ui
+    for kind, a, b, c in edit_list() + patterns_ui.edit_list():
         if kind == 'rep':
             h = rep(h, a, b, c or 1)
         else:
