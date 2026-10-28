@@ -314,7 +314,8 @@ def main():
                   ('{N_COUNTRIES}', len({c['iso'] for c in cases})), ('{NCMEC_YEAR}', NCMEC_YEAR or '')):
         about = about.replace(ph, str(v))
     STORY = {}
-    for f in sorted(glob.glob(os.path.join(HERE, 'research', 'stories_out_*.json'))):
+    _sf = sorted(glob.glob(os.path.join(HERE, 'research', 'stories2_out_*.json'))) or sorted(glob.glob(os.path.join(HERE, 'research', 'stories_out_*.json')))
+    for f in _sf:
         for k, v in json.load(open(f)).items():
             if k in P and v.get('story'): STORY[k] = {'story': v['story']}
     D = {'P': P, 'C': cases, 'STORY': STORY, 'N': nets, 'F': flows, 'PAT': pats, 'SER': SER, 'SETS': SETS, 'FLOWT': FLOWT, 'STAT': STAT,
