@@ -83,7 +83,7 @@ def load_research():
     cases, nets, flows, series, notes = [], [], [], {}, {}
     for f in sorted(glob.glob(os.path.join(HERE, 'research', '*.json'))):
         name = os.path.basename(f)[:-5]
-        if name.startswith(('patterns', 'verify', 'stories')): continue
+        if name.startswith(('patterns', 'verify', 'stories', 'classify')): continue
         d = json.load(open(f))
         for c in d.get('cases', []): c['_src'] = name; cases.append(c)
         for n in d.get('nets', []): n['_src'] = name; nets.append(n)
@@ -114,6 +114,8 @@ def main():
     import patches as _P
     _pt = _P.load()
     raw_cases = [_P.apply(c, _pt) for c in raw_cases]
+    _drop = _P.dropped()
+    raw_cases = [c for c in raw_cases if c.get('id') not in _drop]
     raw_flows = [f for f in raw_flows if f.get('id') not in SKIP_FLOWS and not (f.get('iso_a') == 'USA' and f.get('iso_b') == 'PER')]
     warn = []
 
@@ -239,7 +241,7 @@ def main():
         cids = set()
         for cid in p.get('case_ids', []):
             if cid in cidx: cids.add(cidx[cid])
-            elif cid not in SKIP_CASES: warn.append('pattern %s: unknown case %s' % (p['id'], cid))
+            elif cid not in SKIP_CASES and cid not in _P.dropped(): warn.append('pattern %s: unknown case %s' % (p['id'], cid))
         if p.get('case_match'):
             for i, c in enumerate(cases):
                 if re.search(p['case_match'], c['n'] + ' ' + c['d'] + ' ' + c['who'] + ' ' + (c['cover'] or ''), re.I):
@@ -314,7 +316,7 @@ def main():
                   ('{N_COUNTRIES}', len({c['iso'] for c in cases})), ('{NCMEC_YEAR}', NCMEC_YEAR or '')):
         about = about.replace(ph, str(v))
     STORY = {}
-    _sf = sorted(glob.glob(os.path.join(HERE, 'research', 'stories2_out_*.json'))) or sorted(glob.glob(os.path.join(HERE, 'research', 'stories_out_*.json')))
+    _sf = sorted(glob.glob(os.path.join(HERE, 'research', 'stories3_out_*.json'))) or sorted(glob.glob(os.path.join(HERE, 'research', 'stories2_out_*.json')))
     for f in _sf:
         for k, v in json.load(open(f)).items():
             if k in P and v.get('story'): STORY[k] = {'story': v['story']}

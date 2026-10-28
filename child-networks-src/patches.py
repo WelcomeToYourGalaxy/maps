@@ -26,3 +26,12 @@ def apply(c, patches):
     if isinstance(c.get('d'), str):
         c['d'] = c['d'].replace('The record also cites', 'Earlier sources not re-checked for this map also cite').replace('is cited by the record for', 'is cited, though it could not be opened for this map, for').replace('The record also cite ', 'Earlier sources not re-checked for this map also cite ').replace('(not re-confirmed in this pass)', '(not re-checked for this map)')
     return c
+
+
+def dropped():
+    """Case ids classified as one-time incidents not connected to a larger pattern (research/classify_out_*.json)."""
+    out = set()
+    for f in sorted(glob.glob(os.path.join(HERE, 'research', 'classify_out_*.json'))):
+        for r in json.load(open(f)):
+            if r.get('decision') == 'drop': out.add(r['id'])
+    return out
