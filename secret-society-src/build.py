@@ -49,10 +49,14 @@ TYPES = [
    'd': 'Clandestine networks run inside or alongside state services, and the banks built to move their money: Gladio, Condor, the Safari Club, BCCI, Nugan Hand.'},
   {'k': 'statenet','label': 'State-run influence networks', 'accent': '#94505a',
    'd': 'Organisations run by one government to recruit officials of another, such as China\'s United Front Work Department.'},
+  {'k': 'intl',    'label': 'International bodies & federations', 'accent': '#9a7f6a',
+   'd': 'Intergovernmental organisations and international federations — Interpol, the WHO, FIFA, the IOC — where member governments or industries reached inside, or whose officials were state officeholders.'},
+  {'k': 'ngo',     'label': 'Foundations, NGOs & intelligence fronts', 'accent': '#7f8f6e',
+   'd': 'Foundations, cultural, student and labour bodies, and development programmes, including those later shown to be funded by an intelligence service: the Congress for Cultural Freedom, the Asia Foundation, the National Endowment for Democracy, the Ford Foundation\'s and USAID\'s economist-training programmes.'},
   {'k': 'lawnet',  'label': 'Law-writing & ideological networks', 'accent': '#8a8070',
    'd': 'Networks that draft legislation or supply ministers: ALEC model bills, Atlas Network partners, Mont Pelerin members.'},
 ]
-TYPE_W = {'covert': 1.2, 'statenet': 1.2, 'lodge': 1.0, 'order': 1.0, 'forum': 0.8, 'lawnet': 0.8}
+TYPE_W = {'covert': 1.2, 'statenet': 1.2, 'lodge': 1.0, 'order': 1.0, 'forum': 0.8, 'lawnet': 0.8, 'intl': 0.6, 'ngo': 0.9}
 
 BANDS = [['Severe', '#8c2f3e'], ['High', '#a15a66'], ['Moderate', '#7a6b92'], ['Low', '#5b7f8a'], ['Minimal', '#66786a']]
 LENSES = [

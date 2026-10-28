@@ -7,7 +7,7 @@ change to the shell cannot silently drop an edit.
 """
 
 TITLE = 'Secret Society Infiltration Map'
-SUB = ('Where lodges, religious orders, policy clubs and covert networks reached inside '
+SUB = ('Where lodges, religious orders, policy clubs, international bodies and covert networks reached inside '
        'governments — 193 states scored, and the cases a court, inquiry or government confirmed')
 
 RUNDOWN = '''<div class="wire-lead">
@@ -15,7 +15,8 @@ RUNDOWN = '''<div class="wire-lead">
       So this map does not claim to count infiltration. It carries layers that can each be checked, and keeps them apart.<br><br>
       The first is a 193-country score. Half of it is the documented record below, weighted by how far each case got and how high it reached. Three-tenths is organisational reach: how many of the {N_ORGS} tracked organisations have a documented national presence in the country. One-fifth is conditions, from the Global Organized Crime Index 2025: how freely officials act for hidden principals and how little stops them. Where a country has no documented case the score is a best-judgement estimate of likelihood, and its popup is marked as one.<br><br>
       The second layer is the documented record: {N_CASES} cases in which a court, a parliamentary or official inquiry, a government designation, a regulator or the organisation itself established that it had members or agents inside a public institution. Each names the office reached and the forum that found it. Roberto Calvi is one: chairman of Banco Ambrosiano and a member of the P2 lodge, found hanging under Blackfriars Bridge in London in June 1982. Rome magistrates concluded in 2002 that he had been murdered; five people were tried for it and acquitted in 2007. Ambrosiano collapsed with about $1.3 billion missing, much of it lent to shell companies the Vatican Bank stood behind, and in 1984 the Vatican Bank paid $224 million to the creditors, citing "moral involvement" and admitting no liability.<br><br>
-      The third layer is the organisations: {N_ORGS} headquarters, {N_BRANCHES} national branches and chapters, and {N_ROUTES} documented channels along which members, money or orders moved between them. A branch dot marks presence in a country, not proof of infiltration there.
+      The third layer is the organisations: {N_ORGS} headquarters, {N_BRANCHES} national branches and chapters, and {N_ROUTES} documented channels along which members, money or orders moved between them. A branch dot marks presence in a country, not proof of infiltration there. The organisations are not only secret societies: they cover every kind of international body counted in the Union of International Associations' Yearbook of International Organizations that has reached inside a government — lodges, religious orders, policy clubs, covert and state-run networks, foundations, intelligence fronts, and intergovernmental bodies such as Interpol and the WHO.<br><br>
+      The fourth layer reads across all of these. The patterns panel below shows the arrangements that recur — the same people, banks and services appearing in different countries and decades — and each country box has a behind-the-scenes write-up that ends with what it means for someone without the time to piece it together.
       </div>
       '''
 
