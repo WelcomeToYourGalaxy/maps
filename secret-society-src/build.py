@@ -113,6 +113,7 @@ def main():
     # Taiwan and the Holy See are outside the GI-TOC score set. They are scored here with
     # conditions borrowed from the nearest comparable jurisdiction, and the popup says so.
     PROXY = {'Taiwan': ('Korea, Rep.', 'The Global Organized Crime Index does not score Taiwan. Its conditions figures are South Korea\'s, used as the closest comparable democracy in the region.'),
+             'Kosovo': ('North Macedonia', 'The Global Organized Crime Index does not score Kosovo. Its conditions figures are North Macedonia\'s, a neighbouring state of similar size and history, used as a stand-in.'),
              'Vatican City': ('Italy', 'The Global Organized Crime Index does not score the Holy See. Its conditions figures are Italy\'s, the state that surrounds it and whose banks and courts handled the IOR cases.')}
     for k, (src, note) in PROXY.items():
         rows_c[k] = dict(rows_c[src]); rows_c[k]['proxy'] = note
@@ -283,6 +284,9 @@ def build_patterns(pats, cases, ent, channels):
         if p.get('extra_cases'):
             ids = {id(c) for c in pc}
             pc += [c for c in cases if id(c) not in ids and re.search(p['extra_cases'], c['n'] + ' ' + c['d'])]
+        for ef in p.get('extra_from', []):
+            ids = {id(c) for c in pc}
+            pc += [c for c in cases if id(c) not in ids and c.get('org') == ef['org'] and re.search(ef['re'], c['n'] + ' ' + c['d'] + ' ' + c.get('cite', ''))]
         if p.get('case_exclude'): pc = [c for c in pc if not re.search(p['case_exclude'], c['n'] + ' ' + c['d'], re.I)]
         roles = list(p.get('roles', []))
         cmap, cn = {}, {}
@@ -337,7 +341,7 @@ def build_patterns(pats, cases, ent, channels):
                     'timeline': tl, 'series': series, 'span': span, 'ncases': len(pc),
                     'confirmed_by': p.get('confirmed_by', []), 'uncertain': p.get('uncertain', ''),
                     'implications': p.get('implications', ''), 'view': p.get('view'),
-                    'cids': [c['i'] for c in pc]})
+                    'cids': [c['i'] for c in pc], 'root': bool(p.get('root'))})
     return out
 
 

@@ -1,5 +1,755 @@
 [
  {
+  "id": "china_long_arm",
+  "title": "China's long arm abroad",
+  "kind": "interference",
+  "orgs": [
+   "ufwd",
+   "prc_state",
+   "prc_overseas_police",
+   "confucius_institute",
+   "caifc"
+  ],
+  "roles": [
+   "Sponsoring state",
+   "Target country"
+  ],
+  "countries": [
+   {
+    "c": "China",
+    "role": "Sponsoring state",
+    "note": ""
+   }
+  ],
+  "summary": "",
+  "implications": "",
+  "uncertain": "",
+  "confirmed_by": [],
+  "case_role": "Target country",
+  "extra_from": [
+   {
+    "org": "foreign_state",
+    "re": "China|Chinese"
+   },
+   {
+    "org": "huawei",
+    "re": "spy|espionage|intelligence"
+   }
+  ]
+ },
+ {
+  "id": "russia_networks",
+  "title": "Russia's networks in Europe and Africa",
+  "kind": "interference",
+  "orgs": [
+   "wagner",
+   "africa_corps",
+   "prigozhin_influence",
+   "voice_of_europe",
+   "united_russia",
+   "lombardia_russia",
+   "medvedchuk_network",
+   "shor_network",
+   "riss",
+   "russkiy_mir",
+   "roc_mp",
+   "russia_state_energy"
+  ],
+  "roles": [
+   "Sponsoring state",
+   "Target country"
+  ],
+  "countries": [
+   {
+    "c": "Russia",
+    "role": "Sponsoring state",
+    "note": ""
+   }
+  ],
+  "summary": "",
+  "implications": "",
+  "uncertain": "",
+  "confirmed_by": [],
+  "case_role": "Target country",
+  "extra_from": [
+   {
+    "org": "foreign_state",
+    "re": "Russia|Russian|Kremlin|FSB"
+   }
+  ]
+ },
+ {
+  "id": "foreign_state_nets",
+  "title": "Governments buying officials in other countries",
+  "kind": "interference",
+  "orgs": [
+   "foreign_state",
+   "koreagate",
+   "bishnoi_gang"
+  ],
+  "roles": [
+   "Sponsoring state",
+   "Target country"
+  ],
+  "case_role": "Target country",
+  "countries": [
+   {
+    "c": "China",
+    "role": "Sponsoring state",
+    "note": "The Chinese Communist Party's United Front Work Department directs 'united front' work among overseas Chinese and foreign elites."
+   },
+   {
+    "c": "Korea, Rep.",
+    "role": "Sponsoring state",
+    "note": "In the 1970s the Korean Central Intelligence Agency and businessman Tongsun Park paid US congressmen ('Koreagate'); the House Fraser subcommittee (1978) also examined the KCIA's use of Sun Myung Moon's organisations."
+   },
+   {
+    "c": "Russia",
+    "role": "Sponsoring state",
+    "note": "The Russkiy Mir Foundation (2007) and the Voice of Europe network, sanctioned by the Czech government in March 2024 for paying European politicians."
+   }
+  ],
+  "summary": "Some organisations on this map are run by one government to recruit officials of another. China's United Front Work Department appears in cases in Australia (Senator Sam Dastyari resigned in 2017; Di Sanh Duong was convicted of foreign interference in 2023), the United Kingdom (an MI5 alert on Christine Lee, 2022), Canada (the public inquiry into foreign interference, 2024–25), the United States (Linda Sun, an aide to New York's governor, indicted in 2024) and Taiwan, where courts convicted party leaders and candidates funded through Chinese 'united front' bodies. In the 1970s South Korea's intelligence agency paid US congressmen through Tongsun Park; in 2024 the Czech government sanctioned the Voice of Europe network for paying European politicians on Russia's behalf.",
+  "uncertain": "Several cases named here ended without conviction, and forums in Canada and the UK found some suspicions well-grounded but unproven. Not every contact with a Chinese or Russian organisation is interference; the cases are here because a forum examined them.",
+  "confirmed_by": [
+   {
+    "title": "Public Inquiry into Foreign Interference in Federal Electoral Processes and Democratic Institutions (Hogue), Canada, 2025"
+   },
+   {
+    "title": "MI5 interference alert, January 2022; Investigatory Powers Tribunal, 2024"
+   },
+   {
+    "title": "US House Subcommittee on International Organizations (Fraser), report, October 1978"
+   }
+  ],
+  "implications": "These networks work through ordinary-looking channels: donations, community associations, trips, business partners and help at election time. The official who accepts them may not know who is behind them, and voters usually cannot tell. That is why Australia (2018), the UK (2023) and Canada (2024) passed laws requiring people acting for foreign states to register. For a reader, the pattern is that influence over a government can now be bought from abroad through the same routes domestic lobbyists use, and only disclosure rules make it visible."
+ },
+ {
+  "id": "buying_parliaments",
+  "title": "Foreign money inside Europe's parliaments",
+  "kind": "interference",
+  "orgs": [
+   "fight_impunity",
+   "caviar_lobby"
+  ],
+  "roles": [
+   "Where the money went",
+   "Paying state"
+  ],
+  "countries": [],
+  "summary": "",
+  "implications": "",
+  "uncertain": "",
+  "confirmed_by": [],
+  "case_role": "Where the money went",
+  "extra_cases": "Qatargate|European Parliament|PACE|Parliamentary Assembly"
+ },
+ {
+  "id": "turkey_long_arm",
+  "title": "Turkey's long arm: chasing the Gülen movement",
+  "kind": "interference",
+  "orgs": [
+   "gulen",
+   "diyanet",
+   "grey_wolves"
+  ],
+  "roles": [
+   "Sponsoring state",
+   "Country that handed people over or closed schools",
+   "Country that pushed back"
+  ],
+  "countries": [
+   {
+    "c": "Turkiye",
+    "role": "Sponsoring state",
+    "note": ""
+   }
+  ],
+  "summary": "",
+  "implications": "",
+  "uncertain": "",
+  "confirmed_by": [],
+  "case_role": "Country that handed people over or closed schools",
+  "extra_from": [
+   {
+    "org": "interpol",
+    "re": "Turk|Gülen|Gulen"
+   }
+  ]
+ },
+ {
+  "id": "faith_placement",
+  "title": "Churches and movements placing members in the state",
+  "kind": "placement",
+  "orgs": [
+   "aum",
+   "boutchichiya",
+   "colonia_dignidad",
+   "comunione",
+   "el_yunque",
+   "family_watch",
+   "fellowship",
+   "fpe",
+   "gulen",
+   "hojjatieh",
+   "idmji",
+   "inc",
+   "jil",
+   "knights_columbus",
+   "kojc",
+   "legion_christ",
+   "luz_del_mundo",
+   "mourides",
+   "nahdlatul_ulama",
+   "nar",
+   "nippon_kaigi",
+   "opus_dei",
+   "ordo_iuris",
+   "osti",
+   "pentecostal_evangelical",
+   "rccg",
+   "rss",
+   "schoenstatt",
+   "scientology",
+   "shincheonji",
+   "shinseiren",
+   "smom",
+   "soka_gakkai",
+   "sufi_shrines",
+   "tfp",
+   "uckg",
+   "unification"
+  ],
+  "roles": [
+   "Members in government",
+   "Organisation banned or purged",
+   "Headquarters"
+  ],
+  "role_by_status": {
+   "designated": "Organisation banned or purged",
+   "convicted": "Members in government",
+   "inquiry": "Members in government",
+   "acknowledged": "Members in government",
+   "reported": "Members in government",
+   "indicted": "Members in government",
+   "settled": "Members in government",
+   "annulled": "Members in government",
+   "acquitted": "Members in government"
+  },
+  "summary": "Several religious movements treat placing members in public office as part of their mission. Opus Dei members ran Spain's economic ministries from 1957 and held eleven seats in Franco's 1969 cabinet. The Gülen movement spent decades placing graduates of its schools in Turkey's police and courts; after the 2016 coup attempt the state dismissed more than 150,000 people as members. The Unification Church built ties to Japan's ruling party from its founder's alliance with former prime minister Nobusuke Kishi; the party's own 2022 survey found 179 of its 379 lawmakers had dealings with it, and a Tokyo court ordered the church dissolved in 2025. In South Korea, Shincheonji's leader was indicted in 2026 over 56,472 followers signed up to the ruling party. Scientology's Operation Snow White placed agents inside the US tax service and Justice Department in the 1970s; eleven members were convicted.",
+  "uncertain": "Several of these placements rest on membership alone. Membership of Opus Dei or the RSS is not secret and is not misconduct; the cases count only where a forum or the organisation's own record ties the membership to an office. The scale of the Gülen network inside the Turkish state is documented mainly by Turkish government proceedings that critics say were also used against non-members.",
+  "confirmed_by": [
+   {
+    "title": "LDP internal survey on Unification Church ties, 8 September 2022"
+   },
+   {
+    "title": "Tokyo District Court dissolution order, 25 March 2025"
+   },
+   {
+    "title": "US v. Mary Sue Hubbard et al., D.D.C., 1979"
+   },
+   {
+    "title": "Turkish government decrees under the 2016 state of emergency"
+   }
+  ],
+  "implications": "A movement that tells its members to seek public office is not breaking any law; many democracies welcome religious citizens in government. The problem appears when the movement's own hierarchy, not the voters or the civil service, decides who rises and what they do there — when a minister's first loyalty is to an organisation the public cannot see into. The Turkish case shows the other side: once a government decides a movement has infiltrated it, it can dismiss tens of thousands on evidence such as a banking app or a newspaper subscription. For a reader, the pattern is that hidden placement and mass purges are two ends of the same problem: nobody outside knew who belonged."
+ },
+ {
+  "id": "religious_nationalism",
+  "title": "Religious nationalism in power",
+  "kind": "placement",
+  "orgs": [
+   "rss",
+   "nippon_kaigi",
+   "shinseiren",
+   "bbs",
+   "ma_ba_tha",
+   "hizb_tahrir"
+  ],
+  "roles": [
+   "Movement shapes the government"
+  ],
+  "countries": [],
+  "summary": "",
+  "implications": "",
+  "uncertain": "",
+  "confirmed_by": [],
+  "case_role": "Movement shapes the government"
+ },
+ {
+  "id": "state_religion_export",
+  "title": "Governments that export religion",
+  "kind": "interference",
+  "orgs": [
+   "diyanet",
+   "mwl",
+   "gulf_salafi_funding",
+   "roc_mp"
+  ],
+  "roles": [
+   "Sponsoring state",
+   "Where the mosques or churches are"
+  ],
+  "countries": [
+   {
+    "c": "Turkiye",
+    "role": "Sponsoring state",
+    "note": ""
+   },
+   {
+    "c": "Saudi Arabia",
+    "role": "Sponsoring state",
+    "note": ""
+   },
+   {
+    "c": "Russia",
+    "role": "Sponsoring state",
+    "note": ""
+   }
+  ],
+  "summary": "",
+  "implications": "",
+  "uncertain": "",
+  "confirmed_by": [],
+  "case_role": "Where the mosques or churches are"
+ },
+ {
+  "id": "consultants_inside",
+  "title": "Consultants and lobbyists inside the ministries",
+  "kind": "capture",
+  "orgs": [
+   "big_four",
+   "mckinsey",
+   "bain",
+   "bell_pottinger",
+   "tbi",
+   "greensill",
+   "uber",
+   "pfizer",
+   "swedish_match",
+   "snc_lavalin"
+  ],
+  "roles": [
+   "Where it happened"
+  ],
+  "countries": [],
+  "summary": "",
+  "implications": "",
+  "uncertain": "",
+  "confirmed_by": [],
+  "case_role": "Where it happened"
+ },
+ {
+  "id": "corporate_bribery",
+  "title": "Global firms buying governments",
+  "kind": "capture",
+  "orgs": [
+   "odebrecht",
+   "glencore",
+   "gunvor",
+   "trafigura",
+   "privinvest",
+   "goldman_sachs",
+   "adani",
+   "firstenergy",
+   "comed",
+   "pharmally",
+   "sun_kian_ip",
+   "gupta_network",
+   "prince_network",
+   "russia_state_energy"
+  ],
+  "roles": [
+   "Where officials were paid"
+  ],
+  "countries": [
+   {
+    "c": "Brazil",
+    "role": "Firm's home",
+    "note": ""
+   },
+   {
+    "c": "Switzerland",
+    "role": "Firm's home",
+    "note": ""
+   },
+   {
+    "c": "South Africa",
+    "role": "Where officials were paid",
+    "note": ""
+   }
+  ],
+  "summary": "",
+  "implications": "",
+  "uncertain": "",
+  "confirmed_by": [],
+  "case_role": "Where officials were paid"
+ },
+ {
+  "id": "spyware_elections",
+  "title": "Spyware and elections for hire",
+  "kind": "interference",
+  "orgs": [
+   "nso_group",
+   "team_jorge",
+   "cambridge_analytica",
+   "scl_cambridge",
+   "archimedes_group",
+   "prigozhin_influence"
+  ],
+  "roles": [
+   "Where it was used"
+  ],
+  "countries": [
+   {
+    "c": "Israel",
+    "role": "Firm's home",
+    "note": ""
+   },
+   {
+    "c": "United Kingdom",
+    "role": "Firm's home",
+    "note": ""
+   }
+  ],
+  "summary": "",
+  "implications": "",
+  "uncertain": "",
+  "confirmed_by": [],
+  "case_role": "Where it was used"
+ },
+ {
+  "id": "scam_states",
+  "title": "Scam compounds and casino money inside Asian states",
+  "kind": "capture",
+  "orgs": [
+   "pogo_network",
+   "prince_group",
+   "huione"
+  ],
+  "roles": [
+   "Where officials were drawn in"
+  ],
+  "countries": [],
+  "summary": "",
+  "implications": "",
+  "uncertain": "",
+  "confirmed_by": [],
+  "case_role": "Where officials were drawn in"
+ },
+ {
+  "id": "armed_allies",
+  "title": "Iran's armed allies inside governments",
+  "kind": "capture",
+  "orgs": [
+   "hezbollah",
+   "irgc_qf"
+  ],
+  "roles": [
+   "Sponsoring state",
+   "Where they sit in the state"
+  ],
+  "countries": [
+   {
+    "c": "Iran",
+    "role": "Sponsoring state",
+    "note": ""
+   }
+  ],
+  "summary": "",
+  "implications": "",
+  "uncertain": "",
+  "confirmed_by": [],
+  "case_role": "Where they sit in the state"
+ },
+ {
+  "id": "elite_forums",
+  "title": "Private forums where officials meet money",
+  "kind": "forum",
+  "orgs": [
+   "alec",
+   "atlas_network",
+   "bilderberg",
+   "bohemian",
+   "cap",
+   "cfr",
+   "club_rome",
+   "federalist_society",
+   "heritage_foundation",
+   "le_cercle",
+   "mont_pelerin",
+   "pilgrims",
+   "rhodes_trust",
+   "skull_bones",
+   "trilateral",
+   "wef"
+  ],
+  "roles": [
+   "Forum headquarters",
+   "Members placed in office"
+  ],
+  "case_role": "Members placed in office",
+  "summary": "A set of invitation-only bodies brings sitting officials together with bankers, executives and editors, usually without public minutes. The Bilderberg Meetings began in 1954; the Trilateral Commission was founded by David Rockefeller in 1973, and when its member Jimmy Carter became US president in 1977 he appointed fellow members as vice-president, secretary of state, defence secretary, treasury secretary and national security adviser. The Council on Foreign Relations' members filled much of the US foreign-policy establishment after 1945. Yale's Skull and Bones produced a CIA director and both 2004 presidential nominees. ALEC, founded in 1973, gives state legislators model bills drafted with corporate members; Florida's 2005 'stand your ground' law became an ALEC model. The World Economic Forum's Young Global Leaders programme counts several heads of government among its alumni.",
+  "uncertain": "Membership of these forums is mostly public and legal. That a forum decided a policy, rather than its members deciding it in office, is rarely documented; the cases here are placements and model bills, not secret decisions.",
+  "confirmed_by": [
+   {
+    "title": "Christian Science Monitor, 1980, on Trilateral Commission members in the Carter administration"
+   },
+   {
+    "title": "ALEC Exposed (Center for Media and Democracy), 2011"
+   }
+  ],
+  "implications": "Nothing here is hidden in the way a lodge list is hidden; the names are often printed. What is hidden is the conversation: officials who will later regulate banks or negotiate treaties spend days with the people affected, off the record, and the same people meet again in the next administration. Ordinary citizens and smaller businesses have no seat at these tables. For a reader, the pattern is that access, not secrecy, is the advantage — and that a government can be shaped without anyone breaking a rule."
+ },
+ {
+  "id": "capture_intl_bodies",
+  "title": "Governments and industries inside international bodies",
+  "kind": "capture",
+  "orgs": [
+   "cicig",
+   "fifa",
+   "gates_foundation",
+   "imf",
+   "interpol",
+   "ioc",
+   "who",
+   "world_bank"
+  ],
+  "roles": [
+   "Headquarters",
+   "Government or official involved"
+  ],
+  "case_role": "Government or official involved",
+  "timeline": [
+   {
+    "year": 1999,
+    "event": "IOC expels ten members and sanctions ten over Salt Lake City bid gifts",
+    "url": "https://en.wikipedia.org/wiki/2002_Winter_Olympic_bid_scandal"
+   },
+   {
+    "year": 2000,
+    "event": "Zeltner Committee report on tobacco-company efforts to undermine WHO",
+    "url": "https://iris.who.int/handle/10665/67429"
+   },
+   {
+    "year": 2003,
+    "event": "Salt Lake bid leaders Tom Welch and Dave Johnson acquitted of all federal charges",
+    "url": ""
+   },
+   {
+    "year": 2010,
+    "event": "Council of Europe Assembly criticises WHO H1N1 decisions for lack of transparency on industry ties",
+    "url": "https://www.cidrap.umn.edu/cidrap/content/influenza/swineflu/news/jun2410coe.html"
+   },
+   {
+    "year": 2014,
+    "event": "Garcia report on 2018/2022 World Cup bids delivered; FIFA's summary clears Russia and Qatar; Garcia resigns",
+    "url": "https://en.wikipedia.org/wiki/Garcia_Report"
+   },
+   {
+    "year": 2015,
+    "event": "US indicts FIFA officials; seven arrested in Zurich, including officials who held public office",
+    "url": "https://www.justice.gov/opa/pr/nine-fifa-officials-and-five-corporate-executives-indicted-racketeering-conspiracy-and"
+   },
+   {
+    "year": 2015,
+    "event": "Interpol adopts refugee policy barring Red Notices sought by the country a refugee fled",
+    "url": ""
+   },
+   {
+    "year": 2016,
+    "event": "China's Vice-Minister of Public Security Meng Hongwei elected Interpol president",
+    "url": ""
+   },
+   {
+    "year": 2017,
+    "event": "Rio 2016 bid chief Carlos Nuzman arrested over IOC vote-buying",
+    "url": "https://www.theguardian.com/world/2017/oct/05/brazilian-police-arrest-olympics-chief-carlos-arthur-nuzman-bribery-investigation"
+   },
+   {
+    "year": 2018,
+    "event": "Meng Hongwei detained in China; resigns as Interpol president",
+    "url": "https://www.bbc.co.uk/news/world-europe-45761466"
+   },
+   {
+    "year": 2019,
+    "event": "Ex-governor Sérgio Cabral testifies he paid $2 million for Rio Olympic votes",
+    "url": "https://www.bbc.com/news/world-latin-america-48881867"
+   },
+   {
+    "year": 2020,
+    "event": "US superseding indictment alleges bribes to FIFA executives for votes on the 2018 Russia and 2022 Qatar World Cups",
+    "url": "https://www.si.com/soccer/2020/04/06/world-cup-bribery-votes-2018-russia-2022-qatar-jack-warner"
+   },
+   {
+    "year": 2020,
+    "event": "Meng Hongwei sentenced to 13.5 years for bribery",
+    "url": "https://www.bbc.com/news/world-asia-china-51185838"
+   },
+   {
+    "year": 2021,
+    "event": "UAE Interior Ministry inspector general Ahmed Naser Al-Raisi elected Interpol president",
+    "url": "https://www.theguardian.com/world/2021/nov/25/interpol-appoints-emirati-general-accused-torture-president-ahmed-nasser-al-raisi"
+   },
+   {
+    "year": 2021,
+    "event": "Nuzman sentenced to 30 years for buying Rio 2016 votes",
+    "url": "https://www.theguardian.com/sport/2021/nov/26/rio-olympics-chief-sentenced-to-30-years-in-prison-for-buying-2016-votes"
+   },
+   {
+    "year": 2022,
+    "event": "French prosecutors open preliminary torture inquiry into Interpol president Al-Raisi",
+    "url": "https://www.theguardian.com/world/2022/mar/24/france-opens-inquiry-into-alleged-torture-by-interpols-emirati-head"
+   },
+   {
+    "year": 2025,
+    "event": "Trinidad High Court blocks Jack Warner's extradition to the US",
+    "url": "https://apnews.com/article/jack-warner-trinidad-us-extradition-court-judge-623782c790957808f438186f10edbd50"
+   }
+  ],
+  "summary": "International bodies are also infiltrated, by member governments and by industry. Interpol's president Meng Hongwei, a Chinese vice-minister of public security, disappeared on a trip home in 2018 and was later convicted in China of bribery; in 2021 Interpol elected Ahmed Naser Al-Raisi, a senior official of the United Arab Emirates, which had given the organisation about $54 million, as its president while torture complaints against him were pending in France. Turkey's own officials said Interpol refused 773 of its requests for notices on Gülen suspects. A WHO-commissioned expert committee led by Thomas Zeltner reported in 2000 that tobacco companies had worked for years to undermine WHO tobacco policy, including by placing consultants. In football and the Olympics, government officeholders were convicted or pleaded guilty in bribery cases: Brazil's former São Paulo governor José Maria Marin, Honduras's former president Rafael Callejas, and Carlos Nuzman, who led Rio's 2016 bid.",
+  "uncertain": "Interpol's rules forbid political notices and it has refused many; the abuse documented is attempted abuse and individual cases. The WHO tobacco report concerns industry, not a government.",
+  "confirmed_by": [
+   {
+    "title": "WHO Committee of Experts on Tobacco Industry Documents, Tobacco Company Strategies to Undermine Tobacco Control Activities at the World Health Organization, July 2000"
+   },
+   {
+    "title": "US v. Webb et al. (FIFA), E.D.N.Y."
+   }
+  ],
+  "implications": "Bodies like Interpol and the WHO exist so that countries can trust shared rules. When a member government uses Interpol to hunt critics abroad, or an industry shapes WHO policy from inside, the shared rule becomes one side's tool, and people far from the decision — a dissident arrested at a foreign airport, smokers in countries copying WHO advice — bear the cost. For a reader, the pattern is that 'international' does not mean neutral; it matters who funds, staffs and leads these bodies."
+ },
+ {
+  "id": "islamist_movements",
+  "title": "Movements that sought the state itself",
+  "kind": "capture",
+  "orgs": [
+   "muslim_brotherhood",
+   "hizb_tahrir"
+  ],
+  "roles": [
+   "Won government",
+   "Tried to take the army",
+   "Banned as terrorist"
+  ],
+  "role_by_status": {
+   "designated": "Banned as terrorist",
+   "acknowledged": "Won government",
+   "reported": "Won government",
+   "convicted": "Tried to take the army",
+   "inquiry": "Won government"
+  },
+  "countries": [
+   {
+    "c": "Pakistan",
+    "role": "Tried to take the army",
+    "note": "A military court convicted Brigadier Ali Khan and four majors in 2012 of links to Hizb ut-Tahrir."
+   },
+   {
+    "c": "Bangladesh",
+    "role": "Tried to take the army",
+    "note": "The army said in January 2012 it had stopped a coup by serving and retired officers linked to Hizb ut-Tahrir."
+   }
+  ],
+  "summary": "Two transnational Islamist movements on this map aimed not at placing members inside governments but at taking them over. The Muslim Brotherhood, founded in Egypt in 1928, won Egypt's presidency through Mohamed Morsi in 2012, led Tunisia's government through Ennahda from 2011 to 2014, held parliamentary seats and cabinet posts in Kuwait and Jordan, and, through Sudan's National Islamic Front, joined the 1989 coup that brought Omar al-Bashir to power. Egypt designated it a terrorist organisation in December 2013, Saudi Arabia and the UAE in 2014, and Jordan banned it in April 2025 while its party held 31 seats. Hizb ut-Tahrir, founded in Jerusalem in 1953, works openly for a caliphate and has repeatedly tried to recruit army officers; Pakistan and Bangladesh exposed cells in their armies in 2011–12, and Indonesia banned it in 2017.",
+  "uncertain": "Governments that ban these movements also use the bans against peaceful opponents, and some designations followed elections the movements won. Whether a given officeholder acted on the movement's instructions is rarely established in court.",
+  "confirmed_by": [
+   {
+    "title": "Egyptian cabinet designation, 25 December 2013"
+   },
+   {
+    "title": "Pakistan Army field general court martial, August 2012"
+   }
+  ],
+  "implications": "These movements show the line between infiltration and politics is not fixed. When the Brotherhood won elections it took office openly; its opponents then described its officials as infiltrators and removed them, in Egypt by a military coup. Hizb ut-Tahrir's approach of recruiting officers is closer to infiltration in the plain sense, and every country where it was found responded with arrests. For a reader, the pattern is that 'infiltration' is also a label governments use, and the facts underneath — elected office, army cells, mass bans — need to be read case by case."
+ },
+ {
+  "id": "lodges_police_courts",
+  "title": "Lodges inside police forces and courts",
+  "kind": "institution",
+  "orgs": [
+   "ugle",
+   "freemasonry",
+   "ndrangheta_masonry",
+   "p3",
+   "p4",
+   "kkk",
+   "grand_orient_it",
+   "p2"
+  ],
+  "case_bk": [
+   "security",
+   "court"
+  ],
+  "no_hq": true,
+  "roles": [
+   "Documented case"
+  ],
+  "summary": "In police forces and courts, lodge membership matters because officers and judges are supposed to owe loyalty only to the law. Stephen Knight's The Brotherhood (1983–84) described Masonic lodges inside London's Metropolitan Police; the House of Commons Home Affairs Committee reported on Freemasonry in the police and judiciary in 1997 and 1999, and from 1998 new judges and police officers in England and Wales had to declare membership, a rule repealed for judges in 2009 and restored for the Metropolitan Police in 2025. In Italy the P2 list of 1981 held the Carabinieri and Guardia di Finanza commanders and 195 officers, and the parliamentary Anti-Mafia Commission seized lodge membership lists in 2017 after finding 193 lodge members in mafia proceedings. In the United States the Klan of the 1920s enrolled police chiefs and judges in Denver, Indiana and Alabama.",
+  "uncertain": "How far lodge ties changed specific promotions or verdicts is rarely proven case by case; the UK committees found the belief that it did was widespread and damaging, but did not find a systematic conspiracy.",
+  "confirmed_by": [
+   {
+    "title": "House of Commons Home Affairs Committee, Freemasonry in the Police and the Judiciary, 1997; Freemasonry in Public Life, 1999"
+   },
+   {
+    "title": "Italian Parliamentary Anti-Mafia Commission, report on Freemasonry, December 2017"
+   }
+  ],
+  "implications": "A person arrested or taken to court cannot see whether the officer, prosecutor or judge shares a private oath with the other side. That is why, even where no case was fixed, governments in Britain and Italy decided the public had a right to know who belonged. The record here shows both problems: lists that took parliaments years to obtain, and individual cases — a false arrest settled for £170,000, a Calabrian lawyer convicted with the 'Ndrangheta — where a lodge connection was part of the story. The general lesson is that justice depends on loyalties being visible, and secret ones undermine trust even when they do not change outcomes."
+ },
+ {
+  "id": "francafrique",
+  "title": "French lodges and African presidencies",
+  "kind": "network",
+  "orgs": [
+   "freemasonry",
+   "grand_orient_fr",
+   "glnf",
+   "osti",
+   "sac_fr"
+  ],
+  "case_countries": [
+   "Gabon",
+   "Congo, Rep.",
+   "Chad",
+   "Niger",
+   "Central African Republic",
+   "Cameroon",
+   "Burkina Faso",
+   "Mali",
+   "Guinea",
+   "Senegal",
+   "Cote d'Ivoire",
+   "Benin",
+   "Togo",
+   "Liberia",
+   "France"
+  ],
+  "roles": [
+   "French lodge or network",
+   "Head of state or minister in a lodge"
+  ],
+  "case_role": "Head of state or minister in a lodge",
+  "countries": [
+   {
+    "c": "France",
+    "role": "French lodge or network",
+    "note": "The Grande Loge Nationale Française and the Grand Orient de France sponsored or chartered lodges in former colonies; the GLNF's grand master installed Ali Bongo as grand master of Gabon's lodge in 2009. Jacques Foccart's Service d'Action Civique ran France's African networks from the Élysée."
+   }
+  ],
+  "summary": "In former French colonies, Masonic lodges linked to Paris became a meeting place for presidents, ministers and French officials. Omar Bongo of Gabon was grand master of the Grande Loge du Gabon; his son Ali Bongo was installed as grand master in 2009 by the head of the Grande Loge Nationale Française. Denis Sassou-Nguesso of Congo, Idriss Déby of Chad, Mamadou Tandja of Niger and François Bozizé of the Central African Republic have been reported as lodge members, as have, in Jeune Afrique's 2012 survey, Blaise Compaoré, Amadou Toumani Touré, Alpha Condé and Abdoulaye Wade. Cameroon's president Paul Biya paid large sums to a French esoteric Templar order in the 1990s, as Le Monde reported in 1999.",
+  "uncertain": "Most memberships here are reported by journalists rather than confirmed by the lodges, which do not publish lists. Whether lodge ties decided French policy toward these governments is not documented.",
+  "confirmed_by": [
+   {
+    "title": "Jeune Afrique, investigation of Freemasonry in Africa, 2012"
+   },
+   {
+    "title": "Le Monde, 1999, on payments to the Ordre Souverain du Temple Initiatique"
+   }
+  ],
+  "implications": "Several of these presidents ruled for decades with French military and financial backing, and the lodges were one of the private spaces where that relationship was kept up — out of sight of parliaments in Paris and of citizens in Libreville or Brazzaville. A citizen of Gabon could not know that the head of state and the police chief were grand masters of lodges sponsored from France. For a reader, the pattern shows how a former colonial power's influence can continue through private networks after the flag is lowered."
+ },
+ {
   "id": "round_table",
   "title": "Rhodes, Milner and the Round Table network",
   "kind": "network",
@@ -189,7 +939,8 @@
     "event": "DCI Brian Woollard's petition on Masonic obstruction presented to the Commons",
     "url": "https://api.parliament.uk/historic-hansard/commons/1985/dec/20/chief-inspector-brian-woollard"
    }
-  ]
+  ],
+  "root": true
  },
  {
   "id": "coldwar_web",
@@ -249,7 +1000,8 @@
     "url": "https://nsarchive.gwu.edu"
    }
   ],
-  "implications": "These networks were built to resist a Soviet invasion that never came. With no invasion, their people, weapons and secrecy were turned on domestic opponents: Condor killed exiles in Buenos Aires and Washington and shot one in Rome; P2 members sat at the head of Italy's intelligence services during a decade of bombings and steered the inquiries into them. Voters in most of these countries learned the networks existed only in 1990 or later. For a reader, the pattern is that secret structures set up for an emergency rarely close when the emergency passes, and the bodies meant to oversee them are usually the last to find out."
+  "implications": "These networks were built to resist a Soviet invasion that never came. With no invasion, their people, weapons and secrecy were turned on domestic opponents: Condor killed exiles in Buenos Aires and Washington and shot one in Rome; P2 members sat at the head of Italy's intelligence services during a decade of bombings and steered the inquiries into them. Voters in most of these countries learned the networks existed only in 1990 or later. For a reader, the pattern is that secret structures set up for an emergency rarely close when the emergency passes, and the bodies meant to oversee them are usually the last to find out.",
+  "root": true
  },
  {
   "id": "covert_banks",
@@ -331,48 +1083,8 @@
     "title": "Royal Commission of Inquiry into Drug Trafficking (Stewart), 1983–85"
    }
   ],
-  "implications": "Each of these banks was licensed and supervised, and regulators saw warnings years before each collapse. They kept going because their customers included a church, intelligence services, a dictator and an oil state — institutions that publicly oppose crime but also need secret money channels. When the banks failed, depositors and small creditors took the losses and the officials who had used them were rarely charged. For a reader, the lesson is that banking secrecy is not only a tool of criminals; governments and institutions rely on it too, which is why they are slow to close the banks that serve them."
- },
- {
-  "id": "lodges_police_courts",
-  "title": "Lodges inside police forces and courts",
-  "kind": "institution",
-  "orgs": [
-   "ugle",
-   "freemasonry",
-   "ndrangheta_masonry",
-   "p3",
-   "p4",
-   "kkk",
-   "grand_orient_it",
-   "p2"
-  ],
-  "case_bk": [
-   "security",
-   "court"
-  ],
-  "case_countries": [
-   "United Kingdom",
-   "Italy",
-   "United States",
-   "Canada",
-   "Ireland"
-  ],
-  "no_hq": true,
-  "roles": [
-   "Documented case"
-  ],
-  "summary": "In police forces and courts, lodge membership matters because officers and judges are supposed to owe loyalty only to the law. Stephen Knight's The Brotherhood (1983–84) described Masonic lodges inside London's Metropolitan Police; the House of Commons Home Affairs Committee reported on Freemasonry in the police and judiciary in 1997 and 1999, and from 1998 new judges and police officers in England and Wales had to declare membership, a rule repealed for judges in 2009 and restored for the Metropolitan Police in 2025. In Italy the P2 list of 1981 held the Carabinieri and Guardia di Finanza commanders and 195 officers, and the parliamentary Anti-Mafia Commission seized lodge membership lists in 2017 after finding 193 lodge members in mafia proceedings. In the United States the Klan of the 1920s enrolled police chiefs and judges in Denver, Indiana and Alabama.",
-  "uncertain": "How far lodge ties changed specific promotions or verdicts is rarely proven case by case; the UK committees found the belief that it did was widespread and damaging, but did not find a systematic conspiracy.",
-  "confirmed_by": [
-   {
-    "title": "House of Commons Home Affairs Committee, Freemasonry in the Police and the Judiciary, 1997; Freemasonry in Public Life, 1999"
-   },
-   {
-    "title": "Italian Parliamentary Anti-Mafia Commission, report on Freemasonry, December 2017"
-   }
-  ],
-  "implications": "A person arrested or taken to court cannot see whether the officer, prosecutor or judge shares a private oath with the other side. That is why, even where no case was fixed, governments in Britain and Italy decided the public had a right to know who belonged. The record here shows both problems: lists that took parliaments years to obtain, and individual cases — a false arrest settled for £170,000, a Calabrian lawyer convicted with the 'Ndrangheta — where a lodge connection was part of the story. The general lesson is that justice depends on loyalties being visible, and secret ones undermine trust even when they do not change outcomes."
+  "implications": "Each of these banks was licensed and supervised, and regulators saw warnings years before each collapse. They kept going because their customers included a church, intelligence services, a dictator and an oil state — institutions that publicly oppose crime but also need secret money channels. When the banks failed, depositors and small creditors took the losses and the officials who had used them were rarely charged. For a reader, the lesson is that banking secrecy is not only a tool of criminals; governments and institutions rely on it too, which is why they are slow to close the banks that serve them.",
+  "root": true
  },
  {
   "id": "ruling_brotherhoods",
@@ -447,319 +1159,8 @@
     "title": "Indiana and Colorado Klan histories; Hugo Black's radio address, 1 October 1937"
    }
   ],
-  "implications": "Where one society chooses the leaders, an election only decides which of its members holds the job. South Africans who were not white Afrikaner men had no route into the Broederbond, so they had no route into the circle that picked their rulers for 46 years. The same mechanism appears in the other cases at smaller scale: a city run by a lodge, a state run by the Klan, an army run by a secret officers' society. For a reader, the pattern is that the most complete capture does not look like infiltration at all — it looks like ordinary government, because the society's members are the government."
- },
- {
-  "id": "faith_placement",
-  "title": "Faith movements placing members in the state",
-  "kind": "placement",
-  "orgs": [
-   "opus_dei",
-   "gulen",
-   "unification",
-   "shincheonji",
-   "scientology",
-   "soka_gakkai",
-   "nippon_kaigi",
-   "shinseiren",
-   "rss",
-   "el_yunque",
-   "tfp",
-   "ordo_iuris",
-   "legion_christ",
-   "comunione",
-   "fellowship",
-   "kojc",
-   "inc",
-   "hojjatieh",
-   "aum",
-   "colonia_dignidad",
-   "osti"
-  ],
-  "roles": [
-   "Members in government",
-   "Organisation banned or purged",
-   "Headquarters"
-  ],
-  "role_by_status": {
-   "designated": "Organisation banned or purged",
-   "convicted": "Members in government",
-   "inquiry": "Members in government",
-   "acknowledged": "Members in government",
-   "reported": "Members in government",
-   "indicted": "Members in government",
-   "settled": "Members in government",
-   "annulled": "Members in government",
-   "acquitted": "Members in government"
-  },
-  "summary": "Several religious movements treat placing members in public office as part of their mission. Opus Dei members ran Spain's economic ministries from 1957 and held eleven seats in Franco's 1969 cabinet. The Gülen movement spent decades placing graduates of its schools in Turkey's police and courts; after the 2016 coup attempt the state dismissed more than 150,000 people as members. The Unification Church built ties to Japan's ruling party from its founder's alliance with former prime minister Nobusuke Kishi; the party's own 2022 survey found 179 of its 379 lawmakers had dealings with it, and a Tokyo court ordered the church dissolved in 2025. In South Korea, Shincheonji's leader was indicted in 2026 over 56,472 followers signed up to the ruling party. Scientology's Operation Snow White placed agents inside the US tax service and Justice Department in the 1970s; eleven members were convicted.",
-  "uncertain": "Several of these placements rest on membership alone. Membership of Opus Dei or the RSS is not secret and is not misconduct; the cases count only where a forum or the organisation's own record ties the membership to an office. The scale of the Gülen network inside the Turkish state is documented mainly by Turkish government proceedings that critics say were also used against non-members.",
-  "confirmed_by": [
-   {
-    "title": "LDP internal survey on Unification Church ties, 8 September 2022"
-   },
-   {
-    "title": "Tokyo District Court dissolution order, 25 March 2025"
-   },
-   {
-    "title": "US v. Mary Sue Hubbard et al., D.D.C., 1979"
-   },
-   {
-    "title": "Turkish government decrees under the 2016 state of emergency"
-   }
-  ],
-  "implications": "A movement that tells its members to seek public office is not breaking any law; many democracies welcome religious citizens in government. The problem appears when the movement's own hierarchy, not the voters or the civil service, decides who rises and what they do there — when a minister's first loyalty is to an organisation the public cannot see into. The Turkish case shows the other side: once a government decides a movement has infiltrated it, it can dismiss tens of thousands on evidence such as a banking app or a newspaper subscription. For a reader, the pattern is that hidden placement and mass purges are two ends of the same problem: nobody outside knew who belonged."
- },
- {
-  "id": "islamist_movements",
-  "title": "Movements that sought the state itself",
-  "kind": "capture",
-  "orgs": [
-   "muslim_brotherhood",
-   "hizb_tahrir"
-  ],
-  "roles": [
-   "Won government",
-   "Tried to take the army",
-   "Banned as terrorist"
-  ],
-  "role_by_status": {
-   "designated": "Banned as terrorist",
-   "acknowledged": "Won government",
-   "reported": "Won government",
-   "convicted": "Tried to take the army",
-   "inquiry": "Won government"
-  },
-  "countries": [
-   {
-    "c": "Pakistan",
-    "role": "Tried to take the army",
-    "note": "A military court convicted Brigadier Ali Khan and four majors in 2012 of links to Hizb ut-Tahrir."
-   },
-   {
-    "c": "Bangladesh",
-    "role": "Tried to take the army",
-    "note": "The army said in January 2012 it had stopped a coup by serving and retired officers linked to Hizb ut-Tahrir."
-   }
-  ],
-  "summary": "Two transnational Islamist movements on this map aimed not at placing members inside governments but at taking them over. The Muslim Brotherhood, founded in Egypt in 1928, won Egypt's presidency through Mohamed Morsi in 2012, led Tunisia's government through Ennahda from 2011 to 2014, held parliamentary seats and cabinet posts in Kuwait and Jordan, and, through Sudan's National Islamic Front, joined the 1989 coup that brought Omar al-Bashir to power. Egypt designated it a terrorist organisation in December 2013, Saudi Arabia and the UAE in 2014, and Jordan banned it in April 2025 while its party held 31 seats. Hizb ut-Tahrir, founded in Jerusalem in 1953, works openly for a caliphate and has repeatedly tried to recruit army officers; Pakistan and Bangladesh exposed cells in their armies in 2011–12, and Indonesia banned it in 2017.",
-  "uncertain": "Governments that ban these movements also use the bans against peaceful opponents, and some designations followed elections the movements won. Whether a given officeholder acted on the movement's instructions is rarely established in court.",
-  "confirmed_by": [
-   {
-    "title": "Egyptian cabinet designation, 25 December 2013"
-   },
-   {
-    "title": "Pakistan Army field general court martial, August 2012"
-   }
-  ],
-  "implications": "These movements show the line between infiltration and politics is not fixed. When the Brotherhood won elections it took office openly; its opponents then described its officials as infiltrators and removed them, in Egypt by a military coup. Hizb ut-Tahrir's approach of recruiting officers is closer to infiltration in the plain sense, and every country where it was found responded with arrests. For a reader, the pattern is that 'infiltration' is also a label governments use, and the facts underneath — elected office, army cells, mass bans — need to be read case by case."
- },
- {
-  "id": "francafrique",
-  "title": "French lodges and African presidencies",
-  "kind": "network",
-  "orgs": [
-   "freemasonry",
-   "grand_orient_fr",
-   "glnf",
-   "osti",
-   "sac_fr"
-  ],
-  "case_countries": [
-   "Gabon",
-   "Congo, Rep.",
-   "Chad",
-   "Niger",
-   "Central African Republic",
-   "Cameroon",
-   "Burkina Faso",
-   "Mali",
-   "Guinea",
-   "Senegal",
-   "Cote d'Ivoire",
-   "Benin",
-   "Togo",
-   "Liberia",
-   "France"
-  ],
-  "roles": [
-   "French lodge or network",
-   "Head of state or minister in a lodge"
-  ],
-  "case_role": "Head of state or minister in a lodge",
-  "countries": [
-   {
-    "c": "France",
-    "role": "French lodge or network",
-    "note": "The Grande Loge Nationale Française and the Grand Orient de France sponsored or chartered lodges in former colonies; the GLNF's grand master installed Ali Bongo as grand master of Gabon's lodge in 2009. Jacques Foccart's Service d'Action Civique ran France's African networks from the Élysée."
-   }
-  ],
-  "summary": "In former French colonies, Masonic lodges linked to Paris became a meeting place for presidents, ministers and French officials. Omar Bongo of Gabon was grand master of the Grande Loge du Gabon; his son Ali Bongo was installed as grand master in 2009 by the head of the Grande Loge Nationale Française. Denis Sassou-Nguesso of Congo, Idriss Déby of Chad, Mamadou Tandja of Niger and François Bozizé of the Central African Republic have been reported as lodge members, as have, in Jeune Afrique's 2012 survey, Blaise Compaoré, Amadou Toumani Touré, Alpha Condé and Abdoulaye Wade. Cameroon's president Paul Biya paid large sums to a French esoteric Templar order in the 1990s, as Le Monde reported in 1999.",
-  "uncertain": "Most memberships here are reported by journalists rather than confirmed by the lodges, which do not publish lists. Whether lodge ties decided French policy toward these governments is not documented.",
-  "confirmed_by": [
-   {
-    "title": "Jeune Afrique, investigation of Freemasonry in Africa, 2012"
-   },
-   {
-    "title": "Le Monde, 1999, on payments to the Ordre Souverain du Temple Initiatique"
-   }
-  ],
-  "implications": "Several of these presidents ruled for decades with French military and financial backing, and the lodges were one of the private spaces where that relationship was kept up — out of sight of parliaments in Paris and of citizens in Libreville or Brazzaville. A citizen of Gabon could not know that the head of state and the police chief were grand masters of lodges sponsored from France. For a reader, the pattern shows how a former colonial power's influence can continue through private networks after the flag is lowered."
- },
- {
-  "id": "foreign_state_nets",
-  "title": "One state's networks inside another",
-  "kind": "interference",
-  "orgs": [
-   "ufwd",
-   "prc_state",
-   "foreign_state",
-   "koreagate",
-   "russkiy_mir",
-   "voice_of_europe"
-  ],
-  "roles": [
-   "Sponsoring state",
-   "Target country"
-  ],
-  "case_role": "Target country",
-  "countries": [
-   {
-    "c": "China",
-    "role": "Sponsoring state",
-    "note": "The Chinese Communist Party's United Front Work Department directs 'united front' work among overseas Chinese and foreign elites."
-   },
-   {
-    "c": "Korea, Rep.",
-    "role": "Sponsoring state",
-    "note": "In the 1970s the Korean Central Intelligence Agency and businessman Tongsun Park paid US congressmen ('Koreagate'); the House Fraser subcommittee (1978) also examined the KCIA's use of Sun Myung Moon's organisations."
-   },
-   {
-    "c": "Russia",
-    "role": "Sponsoring state",
-    "note": "The Russkiy Mir Foundation (2007) and the Voice of Europe network, sanctioned by the Czech government in March 2024 for paying European politicians."
-   }
-  ],
-  "summary": "Some organisations on this map are run by one government to recruit officials of another. China's United Front Work Department appears in cases in Australia (Senator Sam Dastyari resigned in 2017; Di Sanh Duong was convicted of foreign interference in 2023), the United Kingdom (an MI5 alert on Christine Lee, 2022), Canada (the public inquiry into foreign interference, 2024–25), the United States (Linda Sun, an aide to New York's governor, indicted in 2024) and Taiwan, where courts convicted party leaders and candidates funded through Chinese 'united front' bodies. In the 1970s South Korea's intelligence agency paid US congressmen through Tongsun Park; in 2024 the Czech government sanctioned the Voice of Europe network for paying European politicians on Russia's behalf.",
-  "uncertain": "Several cases named here ended without conviction, and forums in Canada and the UK found some suspicions well-grounded but unproven. Not every contact with a Chinese or Russian organisation is interference; the cases are here because a forum examined them.",
-  "confirmed_by": [
-   {
-    "title": "Public Inquiry into Foreign Interference in Federal Electoral Processes and Democratic Institutions (Hogue), Canada, 2025"
-   },
-   {
-    "title": "MI5 interference alert, January 2022; Investigatory Powers Tribunal, 2024"
-   },
-   {
-    "title": "US House Subcommittee on International Organizations (Fraser), report, October 1978"
-   }
-  ],
-  "implications": "These networks work through ordinary-looking channels: donations, community associations, trips, business partners and help at election time. The official who accepts them may not know who is behind them, and voters usually cannot tell. That is why Australia (2018), the UK (2023) and Canada (2024) passed laws requiring people acting for foreign states to register. For a reader, the pattern is that influence over a government can now be bought from abroad through the same routes domestic lobbyists use, and only disclosure rules make it visible."
- },
- {
-  "id": "elite_forums",
-  "title": "Private forums where officials meet money",
-  "kind": "forum",
-  "orgs": [
-   "bilderberg",
-   "trilateral",
-   "cfr",
-   "wef",
-   "le_cercle",
-   "bohemian",
-   "skull_bones",
-   "mont_pelerin",
-   "atlas_network",
-   "alec",
-   "club_rome",
-   "pilgrims",
-   "rhodes_trust"
-  ],
-  "roles": [
-   "Forum headquarters",
-   "Members placed in office"
-  ],
-  "case_role": "Members placed in office",
-  "summary": "A set of invitation-only bodies brings sitting officials together with bankers, executives and editors, usually without public minutes. The Bilderberg Meetings began in 1954; the Trilateral Commission was founded by David Rockefeller in 1973, and when its member Jimmy Carter became US president in 1977 he appointed fellow members as vice-president, secretary of state, defence secretary, treasury secretary and national security adviser. The Council on Foreign Relations' members filled much of the US foreign-policy establishment after 1945. Yale's Skull and Bones produced a CIA director and both 2004 presidential nominees. ALEC, founded in 1973, gives state legislators model bills drafted with corporate members; Florida's 2005 'stand your ground' law became an ALEC model. The World Economic Forum's Young Global Leaders programme counts several heads of government among its alumni.",
-  "uncertain": "Membership of these forums is mostly public and legal. That a forum decided a policy, rather than its members deciding it in office, is rarely documented; the cases here are placements and model bills, not secret decisions.",
-  "confirmed_by": [
-   {
-    "title": "Christian Science Monitor, 1980, on Trilateral Commission members in the Carter administration"
-   },
-   {
-    "title": "ALEC Exposed (Center for Media and Democracy), 2011"
-   }
-  ],
-  "implications": "Nothing here is hidden in the way a lodge list is hidden; the names are often printed. What is hidden is the conversation: officials who will later regulate banks or negotiate treaties spend days with the people affected, off the record, and the same people meet again in the next administration. Ordinary citizens and smaller businesses have no seat at these tables. For a reader, the pattern is that access, not secrecy, is the advantage — and that a government can be shaped without anyone breaking a rule."
- },
- {
-  "id": "exposure_cycle",
-  "title": "Exposure, purge and reversal",
-  "kind": "cycle",
-  "all_orgs": true,
-  "no_hq": true,
-  "case_status": [
-   "inquiry",
-   "designated",
-   "annulled",
-   "acquitted"
-  ],
-  "roles": [
-   "Parliament or commission exposed it",
-   "Government banned or purged it",
-   "Court reversed a finding"
-  ],
-  "role_by_status": {
-   "annulled": "Court reversed a finding",
-   "acquitted": "Court reversed a finding",
-   "designated": "Government banned or purged it",
-   "inquiry": "Parliament or commission exposed it"
-  },
-  "orgs": [],
-  "timeline": [
-   {
-    "year": 1975,
-    "event": "US Senate Church Committee begins hearings on intelligence abuses"
-   },
-   {
-    "year": 1981,
-    "event": "Italian police find the P2 list at Licio Gelli's villa (17 March)"
-   },
-   {
-    "year": 1990,
-    "event": "Andreotti discloses Gladio to the Italian parliament (24 October)"
-   },
-   {
-    "year": 1991,
-    "event": "Regulators in seven countries close BCCI (5 July)"
-   },
-   {
-    "year": 1992,
-    "event": "Paraguay's 'Archives of Terror' found in Lambaré (22 December)"
-   },
-   {
-    "year": 2016,
-    "event": "Turkey begins mass dismissals after the 15 July coup attempt"
-   },
-   {
-    "year": 2018,
-    "event": "Australia passes its foreign interference and foreign influence transparency laws"
-   },
-   {
-    "year": 2025,
-    "event": "Tokyo District Court orders the Unification Church dissolved (25 March)"
-   }
-  ],
-  "summary": "Across countries and decades the record moves in the same three steps. A raid, a defector, a change of government or a parliamentary inquiry exposes a network: the P2 list in 1981, Gladio in 1990, the Broederbond membership in 1978, BCCI in 1991, the Unification Church's ties to Japan's ruling party after 2022. A government then bans the organisation or purges its members, sometimes with a law written for the purpose — Italy's 1982 law dissolving P2, Turkey's post-2016 decrees, Egypt's 2013 terrorist designation of the Brotherhood. Years later courts often narrow or reverse the findings: the P2 conspiracy charges ended in acquittals in 1994–96, Turkey's Ergenekon and Sledgehammer convictions were annulled in 2015–16, and Cardinal Becciu's Vatican conviction was set aside in 2026.",
-  "uncertain": "The three steps are a pattern in this map's records, not a law; many exposures led to no purge, and many purges were never reviewed.",
-  "confirmed_by": [
-   {
-    "title": "Italian Law no. 17 of 25 January 1982"
-   },
-   {
-    "title": "Turkish Constitutional Court and Court of Cassation rulings on Ergenekon and Sledgehammer, 2015–16"
-   }
-  ],
-  "implications": "Exposure is usually an accident — a list found while searching for something else — and it rarely comes from the oversight bodies that should have found the network. What follows is often driven by politics as much as evidence: purges can sweep in people who were never members, and reversals can let real members return. The public is left unsure which version to believe. For a reader, the pattern is to ask, of any infiltration story, which stage it is at, who exposed it and why then, and whether a court has yet tested it."
+  "implications": "Where one society chooses the leaders, an election only decides which of its members holds the job. South Africans who were not white Afrikaner men had no route into the Broederbond, so they had no route into the circle that picked their rulers for 46 years. The same mechanism appears in the other cases at smaller scale: a city run by a lodge, a state run by the Klan, an army run by a secret officers' society. For a reader, the pattern is that the most complete capture does not look like infiltration at all — it looks like ordinary government, because the society's members are the government.",
+  "root": true
  },
  {
   "id": "intel_fronts",
@@ -883,7 +1284,8 @@
     "title": "Ramparts, March 1967"
    }
   ],
-  "implications": "Readers of the magazines, students at the conferences and union members in the elections thought they were dealing with independent civic groups. They were not told a foreign intelligence service was paying. That mattered because the same money supported particular parties and candidates in other countries' elections. Since 1983 much of this funding has been done openly through the NED, which is legal and published, but governments abroad now treat any foreign-funded group as suspect. For a reader, the pattern is that the source of an organisation's money tells you whose aims it may serve, and that disclosure is the only defence."
+  "implications": "Readers of the magazines, students at the conferences and union members in the elections thought they were dealing with independent civic groups. They were not told a foreign intelligence service was paying. That mattered because the same money supported particular parties and candidates in other countries' elections. Since 1983 much of this funding has been done openly through the NED, which is legal and published, but governments abroad now treat any foreign-funded group as suspect. For a reader, the pattern is that the source of an organisation's money tells you whose aims it may serve, and that disclosure is the only defence.",
+  "root": true
  },
  {
   "id": "lender_instruments",
@@ -939,120 +1341,78 @@
     "title": "New York Times, 'Economic Hit Man' review, 2005"
    }
   ],
-  "implications": "No secret oath is needed when a government's economic ministries are staffed by people trained, paid or advised by another country's institutions. The choices those ministers made — privatisation, open capital markets, large borrowing for infrastructure — shaped the lives of millions who never voted for them; in Indonesia and Chile they served military rulers. The loans had to be repaid by later governments. The Loan Conditions map on this site follows the same story through the lenders' own conditions. For a reader, the pattern is that influence over a country's economy can travel through scholarships, advisers and contracts as effectively as through a lodge."
+  "implications": "No secret oath is needed when a government's economic ministries are staffed by people trained, paid or advised by another country's institutions. The choices those ministers made — privatisation, open capital markets, large borrowing for infrastructure — shaped the lives of millions who never voted for them; in Indonesia and Chile they served military rulers. The loans had to be repaid by later governments. The Loan Conditions map on this site follows the same story through the lenders' own conditions. For a reader, the pattern is that influence over a country's economy can travel through scholarships, advisers and contracts as effectively as through a lodge.",
+  "root": true
  },
  {
-  "id": "capture_intl_bodies",
-  "title": "Governments and industries inside international bodies",
-  "kind": "capture",
-  "orgs": [
-   "interpol",
-   "who",
-   "fifa",
-   "ioc"
+  "id": "exposure_cycle",
+  "title": "Exposure, purge and reversal",
+  "kind": "cycle",
+  "all_orgs": true,
+  "no_hq": true,
+  "case_status": [
+   "inquiry",
+   "designated",
+   "annulled",
+   "acquitted"
   ],
   "roles": [
-   "Headquarters",
-   "Government or official involved"
+   "Parliament or commission exposed it",
+   "Government banned or purged it",
+   "Court reversed a finding"
   ],
-  "case_role": "Government or official involved",
+  "role_by_status": {
+   "annulled": "Court reversed a finding",
+   "acquitted": "Court reversed a finding",
+   "designated": "Government banned or purged it",
+   "inquiry": "Parliament or commission exposed it"
+  },
+  "orgs": [],
   "timeline": [
    {
-    "year": 1999,
-    "event": "IOC expels ten members and sanctions ten over Salt Lake City bid gifts",
-    "url": "https://en.wikipedia.org/wiki/2002_Winter_Olympic_bid_scandal"
+    "year": 1975,
+    "event": "US Senate Church Committee begins hearings on intelligence abuses"
    },
    {
-    "year": 2000,
-    "event": "Zeltner Committee report on tobacco-company efforts to undermine WHO",
-    "url": "https://iris.who.int/handle/10665/67429"
+    "year": 1981,
+    "event": "Italian police find the P2 list at Licio Gelli's villa (17 March)"
    },
    {
-    "year": 2003,
-    "event": "Salt Lake bid leaders Tom Welch and Dave Johnson acquitted of all federal charges",
-    "url": ""
+    "year": 1990,
+    "event": "Andreotti discloses Gladio to the Italian parliament (24 October)"
    },
    {
-    "year": 2010,
-    "event": "Council of Europe Assembly criticises WHO H1N1 decisions for lack of transparency on industry ties",
-    "url": "https://www.cidrap.umn.edu/cidrap/content/influenza/swineflu/news/jun2410coe.html"
+    "year": 1991,
+    "event": "Regulators in seven countries close BCCI (5 July)"
    },
    {
-    "year": 2014,
-    "event": "Garcia report on 2018/2022 World Cup bids delivered; FIFA's summary clears Russia and Qatar; Garcia resigns",
-    "url": "https://en.wikipedia.org/wiki/Garcia_Report"
-   },
-   {
-    "year": 2015,
-    "event": "US indicts FIFA officials; seven arrested in Zurich, including officials who held public office",
-    "url": "https://www.justice.gov/opa/pr/nine-fifa-officials-and-five-corporate-executives-indicted-racketeering-conspiracy-and"
-   },
-   {
-    "year": 2015,
-    "event": "Interpol adopts refugee policy barring Red Notices sought by the country a refugee fled",
-    "url": ""
+    "year": 1992,
+    "event": "Paraguay's 'Archives of Terror' found in Lambaré (22 December)"
    },
    {
     "year": 2016,
-    "event": "China's Vice-Minister of Public Security Meng Hongwei elected Interpol president",
-    "url": ""
-   },
-   {
-    "year": 2017,
-    "event": "Rio 2016 bid chief Carlos Nuzman arrested over IOC vote-buying",
-    "url": "https://www.theguardian.com/world/2017/oct/05/brazilian-police-arrest-olympics-chief-carlos-arthur-nuzman-bribery-investigation"
+    "event": "Turkey begins mass dismissals after the 15 July coup attempt"
    },
    {
     "year": 2018,
-    "event": "Meng Hongwei detained in China; resigns as Interpol president",
-    "url": "https://www.bbc.co.uk/news/world-europe-45761466"
-   },
-   {
-    "year": 2019,
-    "event": "Ex-governor Sérgio Cabral testifies he paid $2 million for Rio Olympic votes",
-    "url": "https://www.bbc.com/news/world-latin-america-48881867"
-   },
-   {
-    "year": 2020,
-    "event": "US superseding indictment alleges bribes to FIFA executives for votes on the 2018 Russia and 2022 Qatar World Cups",
-    "url": "https://www.si.com/soccer/2020/04/06/world-cup-bribery-votes-2018-russia-2022-qatar-jack-warner"
-   },
-   {
-    "year": 2020,
-    "event": "Meng Hongwei sentenced to 13.5 years for bribery",
-    "url": "https://www.bbc.com/news/world-asia-china-51185838"
-   },
-   {
-    "year": 2021,
-    "event": "UAE Interior Ministry inspector general Ahmed Naser Al-Raisi elected Interpol president",
-    "url": "https://www.theguardian.com/world/2021/nov/25/interpol-appoints-emirati-general-accused-torture-president-ahmed-nasser-al-raisi"
-   },
-   {
-    "year": 2021,
-    "event": "Nuzman sentenced to 30 years for buying Rio 2016 votes",
-    "url": "https://www.theguardian.com/sport/2021/nov/26/rio-olympics-chief-sentenced-to-30-years-in-prison-for-buying-2016-votes"
-   },
-   {
-    "year": 2022,
-    "event": "French prosecutors open preliminary torture inquiry into Interpol president Al-Raisi",
-    "url": "https://www.theguardian.com/world/2022/mar/24/france-opens-inquiry-into-alleged-torture-by-interpols-emirati-head"
+    "event": "Australia passes its foreign interference and foreign influence transparency laws"
    },
    {
     "year": 2025,
-    "event": "Trinidad High Court blocks Jack Warner's extradition to the US",
-    "url": "https://apnews.com/article/jack-warner-trinidad-us-extradition-court-judge-623782c790957808f438186f10edbd50"
+    "event": "Tokyo District Court orders the Unification Church dissolved (25 March)"
    }
   ],
-  "summary": "International bodies are also infiltrated, by member governments and by industry. Interpol's president Meng Hongwei, a Chinese vice-minister of public security, disappeared on a trip home in 2018 and was later convicted in China of bribery; in 2021 Interpol elected Ahmed Naser Al-Raisi, a senior official of the United Arab Emirates, which had given the organisation about $54 million, as its president while torture complaints against him were pending in France. Turkey's own officials said Interpol refused 773 of its requests for notices on Gülen suspects. A WHO-commissioned expert committee led by Thomas Zeltner reported in 2000 that tobacco companies had worked for years to undermine WHO tobacco policy, including by placing consultants. In football and the Olympics, government officeholders were convicted or pleaded guilty in bribery cases: Brazil's former São Paulo governor José Maria Marin, Honduras's former president Rafael Callejas, and Carlos Nuzman, who led Rio's 2016 bid.",
-  "uncertain": "Interpol's rules forbid political notices and it has refused many; the abuse documented is attempted abuse and individual cases. The WHO tobacco report concerns industry, not a government.",
+  "summary": "Across countries and decades the record moves in the same three steps. A raid, a defector, a change of government or a parliamentary inquiry exposes a network: the P2 list in 1981, Gladio in 1990, the Broederbond membership in 1978, BCCI in 1991, the Unification Church's ties to Japan's ruling party after 2022. A government then bans the organisation or purges its members, sometimes with a law written for the purpose — Italy's 1982 law dissolving P2, Turkey's post-2016 decrees, Egypt's 2013 terrorist designation of the Brotherhood. Years later courts often narrow or reverse the findings: the P2 conspiracy charges ended in acquittals in 1994–96, Turkey's Ergenekon and Sledgehammer convictions were annulled in 2015–16, and Cardinal Becciu's Vatican conviction was set aside in 2026.",
+  "uncertain": "The three steps are a pattern in this map's records, not a law; many exposures led to no purge, and many purges were never reviewed.",
   "confirmed_by": [
    {
-    "title": "WHO Committee of Experts on Tobacco Industry Documents, Tobacco Company Strategies to Undermine Tobacco Control Activities at the World Health Organization, July 2000"
+    "title": "Italian Law no. 17 of 25 January 1982"
    },
    {
-    "title": "US v. Webb et al. (FIFA), E.D.N.Y."
+    "title": "Turkish Constitutional Court and Court of Cassation rulings on Ergenekon and Sledgehammer, 2015–16"
    }
   ],
-  "implications": "Bodies like Interpol and the WHO exist so that countries can trust shared rules. When a member government uses Interpol to hunt critics abroad, or an industry shapes WHO policy from inside, the shared rule becomes one side's tool, and people far from the decision — a dissident arrested at a foreign airport, smokers in countries copying WHO advice — bear the cost. For a reader, the pattern is that 'international' does not mean neutral; it matters who funds, staffs and leads these bodies."
+  "implications": "Exposure is usually an accident — a list found while searching for something else — and it rarely comes from the oversight bodies that should have found the network. What follows is often driven by politics as much as evidence: purges can sweep in people who were never members, and reversals can let real members return. The public is left unsure which version to believe. For a reader, the pattern is to ask, of any infiltration story, which stage it is at, who exposed it and why then, and whether a court has yet tested it.",
+  "root": true
  }
 ]
