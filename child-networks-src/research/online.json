@@ -1,8 +1,2842 @@
 {
- "cases": [],
- "nets": [],
- "flows": [],
- "notes": "",
+ "cases": [
+  {
+   "id": "kor-welcome-to-video",
+   "n": "Welcome to Video — darknet CSAM site run from South Korea",
+   "iso3": "KOR",
+   "also": [
+    "USA",
+    "GBR",
+    "IRL",
+    "DEU",
+    "ESP",
+    "SAU",
+    "ARE",
+    "CZE",
+    "CAN"
+   ],
+   "place": "South Korea (site operator's home server)",
+   "ll": [
+    127.9,
+    36.5
+   ],
+   "llc": true,
+   "y1": 2018,
+   "yf": 2019,
+   "kind": "abuse material",
+   "status": "convicted",
+   "offenders": 337,
+   "who": "Welcome to Video (operator Son Jong-woo / Son Jung-woo)",
+   "net": "welcome-to-video",
+   "cover": "South Korean courts gave the operator 18 months on appeal (May 2019); Seoul High Court refused US extradition on 6 July 2020.",
+   "d": "A Korean-run darknet site that sold access to child sexual abuse videos for Bitcoin; about 1.2 million members, 4,000 of them paying. US IRS-CI traced Bitcoin payments and found the server in South Korea; the operator was arrested in March 2018. On 16 October 2019 US officials announced 337 arrests in 38 countries (Korean police counted 310 in 32 countries, 223 of them Koreans). A US indictment sought extradition; on 6 July 2020 the Seoul High Court refused it, and in July 2022 he received a further 24 months for concealing proceeds. Investigators said 45% of the site's videos had not been seen before.",
+   "cite": "Wikipedia, 'Welcome to Video case' (citing BBC 16 Oct 2019 and 6 Jul 2020, Reuters 5 Jul 2022, Yonhap, Wired)",
+   "url": "https://en.wikipedia.org/wiki/Welcome_to_Video_case",
+   "setting": "online"
+  },
+  {
+   "id": "usa-playpen-pacifier",
+   "n": "Playpen / Operation Pacifier — FBI ran the site for 13 days",
+   "iso3": "USA",
+   "place": "North Carolina (sentencing court); operator from Florida",
+   "ll": [
+    -80.8431,
+    35.2271
+   ],
+   "y0": 2014,
+   "y1": 2015,
+   "yf": 2017,
+   "kind": "abuse material",
+   "status": "convicted",
+   "offenders": 956,
+   "who": "Playpen (Tor site; administrator Steven W. Chase, convicted)",
+   "net": "playpen",
+   "cover": "After seizing the server the FBI kept Playpen running from 19 February to 4 March 2015 under a court warrant and used malware (a 'Network Investigative Technique') to unmask users; the EFF criticised the operation as continued distribution, and the 11th Circuit (2019) held the warrant invalid but did not exclude the evidence (good-faith exception). In 2017 the FBI dropped charges against one defendant rather than disclose the NIT.",
+   "d": "Playpen operated on Tor from August 2014 to March 2015 and had over 215,000 users (Europol: more than 150,000) at shutdown. The FBI arrested the administrator and ran the site itself for about two weeks, unmasking users with a hacking tool. The operation led to 956 arrests of users; Europol reported 368 suspects arrested or convicted in Europe alone by May 2017. The lead administrator was sentenced to 30 years in May 2017; two co-administrators got 20 years each.",
+   "cite": "Europol press release, 5 May 2017; Wikipedia, 'Playpen (website)'",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/major-online-child-sexual-abuse-operation-leads-to-368-arrests-in-europe",
+   "url2": "https://en.wikipedia.org/wiki/Playpen_(website)",
+   "setting": "online",
+   "officials": true
+  },
+  {
+   "id": "irl-freedom-hosting",
+   "n": "Freedom Hosting — Tor host for Lolita City and other abuse sites",
+   "iso3": "IRL",
+   "also": [
+    "USA",
+    "FRA"
+   ],
+   "place": "Dublin",
+   "ll": [
+    -6.2603,
+    53.3498
+   ],
+   "y0": 2008,
+   "y1": 2013,
+   "yf": 2021,
+   "kind": "abuse material",
+   "status": "convicted",
+   "offenders": 1,
+   "who": "Freedom Hosting (Eric Eoin Marques, convicted)",
+   "net": "freedom-hosting",
+   "cover": "Extradition from Ireland took from 2013 to 2019 through appeals.",
+   "d": "Freedom Hosting was the largest Tor web host by 2013 and hosted child-abuse sites including Lolita City (about 1.4 million images, 2013), which Anonymous had attacked and whose user list it leaked in 'Operation Darknet' in 2011. US agents obtained the server (hosted by OVH in France) by MLAT in July 2013 and the operator was arrested in Dublin on 1 August 2013 on a US warrant calling him 'the largest facilitator of child porn on the planet'. After the Irish Supreme Court dismissed his last appeal in March 2019 he was extradited, pleaded guilty in February 2020 to conspiracy to advertise child abuse images, and was sentenced to 27 years on 6 September 2021.",
+   "cite": "Wikipedia, 'Freedom Hosting' and 'Lolita City'",
+   "url": "https://en.wikipedia.org/wiki/Freedom_Hosting",
+   "url2": "https://en.wikipedia.org/wiki/Lolita_City",
+   "setting": "online"
+  },
+  {
+   "id": "usa-dreamboard-delego",
+   "n": "Dreamboard / Operation Delego",
+   "iso3": "USA",
+   "also": [
+    "CAN",
+    "DNK",
+    "ECU",
+    "FRA",
+    "DEU",
+    "HUN",
+    "KEN",
+    "NLD",
+    "PHL",
+    "QAT",
+    "SRB",
+    "SWE",
+    "CHE"
+   ],
+   "place": "Shreveport, Louisiana (servers)",
+   "ll": [
+    -93.7502,
+    32.5252
+   ],
+   "y0": 2009,
+   "y1": 2011,
+   "yf": 2011,
+   "kind": "abuse material + sexual abuse",
+   "status": "convicted",
+   "offenders": 72,
+   "who": "Dreamboard (invitation-only bulletin board, about 600 members)",
+   "net": "dreamboard",
+   "d": "An invitation-only board whose members had to upload new material, with incentives for imagery of the abuse of children under 12. Servers were in Shreveport, Louisiana; top administrators were in France and Canada. In August 2011 the US Attorney General announced 72 people charged and 52 arrested in 14 countries; by 2013, 57 had been arrested, 42 had pleaded guilty and sentences ranged from 10 years to life. Fifteen charged members were known only by online handles. DHS said up to 123 terabytes may have been distributed.",
+   "cite": "Wikipedia, 'Operation Delego' (citing US DOJ releases)",
+   "url": "https://en.wikipedia.org/wiki/Operation_Delego",
+   "setting": "online"
+  },
+  {
+   "id": "nld-operation-rescue-boylovers",
+   "n": "Operation Rescue — Boylover forum network",
+   "iso3": "NLD",
+   "also": [
+    "GBR",
+    "AUS",
+    "CAN",
+    "ITA",
+    "NZL",
+    "USA"
+   ],
+   "place": "Zaanstreek–Waterland, Netherlands (server)",
+   "ll": [
+    4.8264,
+    52.442
+   ],
+   "y0": 2008,
+   "y1": 2011,
+   "yf": 2011,
+   "kind": "abuse material + sexual abuse",
+   "status": "charged",
+   "offenders": 184,
+   "victims": 230,
+   "victims_note": "230 children safeguarded; 670 suspects identified worldwide",
+   "who": "Boylover forum (Netherlands-hosted)",
+   "net": "boylovers",
+   "d": "A forum presenting itself as 'discussion-only' where members made contact before moving to private channels to share abuse images. UK CEOP traced the owner and the server to the Netherlands in 2009; Europol rebuilt the forum offline and sent 4,202 intelligence reports to 25 EU states and 8 other countries. By March 2011, 670 suspects had been identified, 184 arrested and 230 children safeguarded, which Europol called the highest number for such an investigation.",
+   "cite": "Europol press release, 16 March 2011",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/more-200-children-identified-and-rescued-in-worldwide-police-operation",
+   "setting": "online"
+  },
+  {
+   "id": "usa-eu-operation-atlantic",
+   "n": "Operation Atlantic — FBI and EU follow-up to Boylover network",
+   "iso3": "USA",
+   "also": [
+    "FRA",
+    "ITA",
+    "NLD",
+    "ESP",
+    "GBR"
+   ],
+   "place": "United States / EU",
+   "ll": [
+    -98.5,
+    39.8
+   ],
+   "llc": true,
+   "y0": 2010,
+   "y1": 2012,
+   "yf": 2012,
+   "kind": "sexual abuse + abuse material",
+   "status": "charged",
+   "offenders": 37,
+   "victims": 8,
+   "who": "Online offender networks incl. members of the Boylover network",
+   "net": "boylovers",
+   "d": "A joint FBI–EU investigation coordinated by Europol from November 2010. By February 2012, 37 child sex offenders had been identified and 17 arrested for molestation and production of illegal content; 8 victims were identified. Two targets had been members of the Boylover network tackled in Operation Rescue.",
+   "cite": "Europol press release, 29 February 2012",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/european-police-and-fbi-dismantle-network-of-child-sex-offenders",
+   "setting": "online"
+  },
+  {
+   "id": "usa-operation-torpedo",
+   "n": "Operation Torpedo — FBI ran three Tor sites",
+   "iso3": "USA",
+   "also": [
+    "NLD"
+   ],
+   "place": "Nebraska",
+   "ll": [
+    -95.9345,
+    41.2565
+   ],
+   "y0": 2011,
+   "y1": 2012,
+   "yf": 2015,
+   "kind": "abuse material",
+   "status": "convicted",
+   "offenders": 19,
+   "who": "Three Tor-hidden abuse sites run by a Nebraska man",
+   "cover": "The FBI kept the three sites running for two weeks from November 2012 and served a browser exploit to visitors.",
+   "d": "Dutch police compromised one site and found it physically hosted at a Nebraska web host; the FBI found an employee running two sites at work and one at home. After a year of surveillance the FBI arrested him and operated the sites for two weeks, using a network investigative technique to reveal visitors' IP addresses. The US DOJ said in December 2015 that 18 US users had been convicted besides the operator; one was the acting cybersecurity director of the US Department of Health and Human Services.",
+   "officials": true,
+   "cite": "Wikipedia, 'Operation Torpedo' (citing US court filings and DOJ)",
+   "url": "https://en.wikipedia.org/wiki/Operation_Torpedo",
+   "setting": "online"
+  },
+  {
+   "id": "can-aus-childs-play",
+   "n": "Childs Play — run by Australia's Task Force Argos for 11 months",
+   "iso3": "CAN",
+   "also": [
+    "AUS",
+    "USA"
+   ],
+   "place": "North Bay, Ontario (owner)",
+   "ll": [
+    -79.4608,
+    46.3091
+   ],
+   "y0": 2016,
+   "y1": 2017,
+   "yf": 2017,
+   "kind": "abuse material + sexual abuse",
+   "status": "convicted",
+   "who": "Childs Play (Tor forum; owner Benjamin Faulkner, convicted)",
+   "net": "childs-play",
+   "cover": "Queensland Police Task Force Argos operated the site for about 11 months (2016–2017), impersonating the owner and posting abuse images to keep users' trust; a UNICEF Norway legal adviser and Amnesty International criticised this, ECPAT supported it, and a York University criminologist called the server move to Australia 'jurisdiction shopping'.",
+   "d": "Childs Play ran on Tor from April 2016 to September 2017 and was at its peak the largest site of its kind. US DHS arrested the Canadian owner in Virginia in October 2016; he and an associate were sentenced to life for the rape of a four-year-old and to 35 years for a child exploitation enterprise. Task Force Argos then ran the site until September 2017 as part of Operation Artemis, leading to further arrests and convictions, including a Canadian administrator sentenced to five years.",
+   "cite": "Wikipedia, 'Childs Play (website)' (citing US DOJ, VG, CBC 'Hunting Warhead')",
+   "url": "https://en.wikipedia.org/wiki/Childs_Play_(website)",
+   "setting": "online",
+   "officials": true
+  },
+  {
+   "id": "deu-elysium",
+   "n": "Elysium darknet platform",
+   "iso3": "DEU",
+   "also": [
+    "AUT"
+   ],
+   "place": "Bad Camberg, Hesse (servers); trial at Limburg",
+   "ll": [
+    8.2667,
+    50.3
+   ],
+   "y0": 2016,
+   "y1": 2017,
+   "yf": 2019,
+   "kind": "abuse material + sexual abuse",
+   "status": "convicted",
+   "offenders": 14,
+   "victims": 29,
+   "victims_note": "at least 29 victims identified by July 2017, 13 from Austria",
+   "who": "Elysium (darknet forum and chats, over 87,000 members)",
+   "net": "elysium",
+   "d": "Elysium existed from late 2016 and was used to exchange abuse material and to arrange the sexual abuse of children; it had German, French, Spanish and Italian chat groups. German prosecutors (ZIT Frankfurt) and the BKA shut it down in June 2017 after Australian police passed on a lead; 14 suspects were arrested, 12 suspected of abusing children themselves. On 7 March 2019 the Limburg court sentenced four men to between 3 years 10 months and 9 years 9 months, with preventive detention for the main administrator.",
+   "cite": "Europol press release, 7 July 2017; German Wikipedia, 'Elysium (Website)' (citing Spiegel, hessenschau)",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/14-arrests-in-takedown-of-massive-child-sexual-abuse-platform",
+   "url2": "https://de.wikipedia.org/wiki/Elysium_(Website)",
+   "setting": "online"
+  },
+  {
+   "id": "deu-boystown",
+   "n": "Boystown darknet platform",
+   "iso3": "DEU",
+   "also": [
+    "PRY",
+    "NLD",
+    "SWE",
+    "AUS",
+    "CAN",
+    "USA",
+    "MDA"
+   ],
+   "place": "Paderborn / Munich (administrators)",
+   "ll": [
+    8.7575,
+    51.7189
+   ],
+   "y0": 2019,
+   "y1": 2021,
+   "yf": 2022,
+   "kind": "abuse material",
+   "status": "convicted",
+   "offenders": 4,
+   "who": "Boystown (Tor platform, about 400,000 registered users)",
+   "net": "boystown",
+   "d": "Boystown launched in June 2019, focused on the abuse of boys, and had 400,000 registered users when a BKA-led taskforce with Europol, the Netherlands, Sweden, Australia, Canada and the US took it down in April 2021. Three German administrators were arrested in Germany and one German national in Paraguay. In December 2022 they were sentenced to between 7 and 12 years, two with preventive detention. Successor platforms with a common German administrator were shut down around Christmas 2022.",
+   "cite": "Europol press release, 3 May 2021; Wikipedia, 'Boystown (website)'",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/4-arrested-in-takedown-of-dark-web-child-abuse-platform-some-half-million-users",
+   "url2": "https://en.wikipedia.org/wiki/Boystown_(website)",
+   "setting": "online"
+  },
+  {
+   "id": "deu-kidflix-stream",
+   "n": "Kidflix / Operation Stream",
+   "iso3": "DEU",
+   "also": [
+    "ALB",
+    "AUS",
+    "AUT",
+    "BEL",
+    "BGR",
+    "CAN",
+    "COL",
+    "HRV",
+    "CYP",
+    "CZE",
+    "DNK",
+    "EST",
+    "FIN",
+    "FRA",
+    "GEO",
+    "GRC",
+    "HUN",
+    "ISL",
+    "IRL",
+    "ITA",
+    "LVA",
+    "LTU",
+    "LUX",
+    "MLT",
+    "NLD",
+    "NZL",
+    "NOR",
+    "POL",
+    "PRT",
+    "ROU",
+    "SRB",
+    "SVK",
+    "ESP",
+    "SWE",
+    "CHE",
+    "GBR",
+    "USA"
+   ],
+   "place": "Bavaria (Bavarian State Criminal Police and ZCB)",
+   "ll": [
+    11.582,
+    48.1351
+   ],
+   "y0": 2021,
+   "y1": 2025,
+   "yf": 2025,
+   "kind": "abuse material",
+   "status": "charged",
+   "offenders": 79,
+   "victims": 39,
+   "victims_note": "39 children protected; 1,393 suspects identified",
+   "who": "Kidflix (paid streaming platform, 1.8 million users 2022–2025)",
+   "net": "kidflix",
+   "d": "Kidflix, created in 2021, let users stream as well as download abuse videos, paying in cryptocurrency converted to tokens; 91,000 unique videos (6,288 hours) were uploaded. German and Dutch authorities seized the server on 11 March 2025, when it held about 72,000 videos. Operation Stream, led by Bavarian police with 38 countries and Europol, identified 1,393 suspects and arrested 79 during action weeks in March 2025; Europol called it the largest child sexual exploitation operation in its history.",
+   "cite": "Europol press release, 2 April 2025",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/global-crackdown-kidflix-major-child-sexual-exploitation-platform-almost-two-million-users",
+   "url2": "https://en.wikipedia.org/wiki/Kidflix",
+   "setting": "online"
+  },
+  {
+   "id": "dnk-operation-cumberland",
+   "n": "Operation Cumberland — AI-generated abuse material platform",
+   "iso3": "DNK",
+   "also": [
+    "AUS",
+    "AUT",
+    "BEL",
+    "BIH",
+    "CZE",
+    "FIN",
+    "FRA",
+    "DEU",
+    "HUN",
+    "ISL",
+    "NLD",
+    "NZL",
+    "NOR",
+    "POL",
+    "ESP",
+    "SWE",
+    "CHE",
+    "GBR"
+   ],
+   "place": "Denmark",
+   "ll": [
+    9.5,
+    56.0
+   ],
+   "llc": true,
+   "y1": 2025,
+   "yf": 2025,
+   "kind": "abuse material",
+   "status": "charged",
+   "offenders": 25,
+   "who": "Paid platform distributing AI-generated abuse material (Danish main suspect)",
+   "d": "A Danish national arrested in November 2024 ran a platform distributing AI-generated abuse material he produced; users paid a symbolic fee for a password. Most arrests came on 26 February 2025 in an operation led by Danish police with 18 other countries; 273 suspects were identified and 25 arrested. Europol called it one of the first cases involving AI-generated CSAM and noted the lack of national laws covering it.",
+   "cite": "Europol press release, February 2025",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/25-arrested-in-global-hit-against-ai-generated-child-sexual-abuse-material",
+   "setting": "online"
+  },
+  {
+   "id": "gbr-hugh-nelson-ai",
+   "n": "Hugh Nelson — first UK prosecution for AI-made abuse images",
+   "iso3": "GBR",
+   "also": [
+    "ITA",
+    "FRA",
+    "USA"
+   ],
+   "place": "Bolton",
+   "ll": [
+    -2.4282,
+    53.5769
+   ],
+   "y1": 2023,
+   "yf": 2024,
+   "kind": "abuse material + sexual exploitation",
+   "status": "convicted",
+   "offenders": 1,
+   "who": "Individual offender selling commissioned AI-transformed images",
+   "d": "Nelson, 27, used 3D software with an AI function to turn ordinary photos of real children, some supplied by people who knew them, into abuse imagery, selling it in chatrooms for about £5,000 over 18 months. Greater Manchester Police caught him after he told an undercover officer he charged £80 per 'character'. Convicted of 16 offences including encouraging the rape of a child under 13, he was sentenced at Bolton Crown Court on 28 October 2024 to 18 years. Police identified suspects and victims in Italy, France and the US.",
+   "cite": "The Guardian, 28 October 2024",
+   "url": "https://www.theguardian.com/uk-news/2024/oct/28/man-who-used-ai-to-create-child-abuse-images-jailed-for-18-years",
+   "setting": "online"
+  },
+  {
+   "id": "kor-nth-room",
+   "n": "Nth Room and Doctor's Room — Telegram sexual blackmail rings",
+   "iso3": "KOR",
+   "place": "South Korea",
+   "ll": [
+    126.978,
+    37.5665
+   ],
+   "y0": 2018,
+   "y1": 2020,
+   "yf": 2020,
+   "first_report": 2019,
+   "kind": "sexual exploitation + abuse material + trafficking",
+   "status": "convicted",
+   "victims": 103,
+   "victims_note": "at least 103 confirmed victims, including 26 minors",
+   "who": "Telegram chatrooms 'Nth Room' (Moon Hyung-wook) and 'Doctor's Room' (Cho Ju-bin)",
+   "net": "nth-room",
+   "cover": "A man's early 112 report was reportedly not treated as credible (Wikipedia, citation needed); two university students ('Team Flame') and journalists exposed it in 2019.",
+   "d": "Operators blackmailed women and girls into producing sexual images and videos and sold access to Telegram rooms paid in cryptocurrency; content reached about 260,000 IDs (about 60,000 users after removing overlaps). The 'Doctor's Room' operator Cho Ju-bin was publicly named by police in March 2020 — the first such disclosure for a sex offender — and sentenced to 40 years on 26 November 2020 (reported raised to 42 years in October 2021). Moon Hyung-wook, creator of the original rooms, was sentenced to 34 years in 2021. Over five million people signed a petition to name buyers; the law was changed to punish possessing and viewing such material.",
+   "cite": "Wikipedia, 'Nth Room case' (citing Yonhap, Hankyoreh, BBC)",
+   "url": "https://en.wikipedia.org/wiki/Nth_room_case",
+   "setting": "online"
+  },
+  {
+   "id": "kor-telegram-deepfake-2024",
+   "n": "South Korea school deepfake crisis on Telegram (2024)",
+   "iso3": "KOR",
+   "place": "South Korea",
+   "ll": [
+    127.9,
+    36.5
+   ],
+   "llc": true,
+   "y0": 2021,
+   "y1": 2024,
+   "yf": 2024,
+   "kind": "abuse material + sexual exploitation",
+   "status": "inquiry",
+   "who": "Telegram group chats creating sexual deepfakes of classmates and teachers",
+   "net": "telegram",
+   "d": "In August 2024 investigations revealed Telegram groups where mostly teenage users made and shared sexual deepfakes of female classmates, teachers and relatives; the Korean Teachers Union estimated more than 200 schools were affected. South Korean police reported over 800 deepfake sex crime cases by end of September 2024, up from 156 in 2021, with most victims and offenders teenagers. On 26 September 2024 the National Assembly passed a bill criminalising possession or viewing of sexual deepfakes; police opened a probe into whether Telegram abetted the crimes.",
+   "cite": "Wikipedia, 'Deepfake pornography' / 'Telegram deepfake scandal in South Korea' (citing Yonhap, Guardian, BBC)",
+   "url": "https://en.wikipedia.org/wiki/Telegram_deepfake_scandal_in_South_Korea",
+   "setting": "online"
+  },
+  {
+   "id": "phl-scale-of-harm-2023",
+   "n": "Scale of Harm — prevalence of livestreamed abuse in the Philippines (IJM / Rights Lab)",
+   "iso3": "PHL",
+   "place": "Philippines",
+   "ll": [
+    121.774,
+    12.8797
+   ],
+   "llc": true,
+   "y1": 2022,
+   "yf": 2023,
+   "kind": "trafficking + sexual exploitation + abuse material",
+   "status": "reported",
+   "victims_note": "IJM: 1 in every 100 children in the Philippines was a victim of OSEC in 2022 (study title: nearly half a million Filipino children trafficked to produce new material in 2022)",
+   "who": "Family members and neighbours paid by foreign buyers to livestream abuse",
+   "net": "osec-philippines",
+   "d": "IJM and the University of Nottingham Rights Lab estimated the prevalence of trafficking to produce child sexual exploitation material in the Philippines. IJM states that 1 in every 100 Filipino children was a victim of online sexual exploitation in 2022, that the median victim age in its earlier 2020 study was 11, average abuse lasted two years, and 9% of victims were 3 or younger. IJM UK says the UK is among the top three consumer countries.",
+   "cite": "IJM UK, 'Online Sexual Exploitation of Children' page citing IJM 2020 and IJM 2023 (Scale of Harm)",
+   "url": "https://www.ijmuk.org/our-work/cybersex-trafficking",
+   "setting": "online"
+  },
+  {
+   "id": "phl-hsi-europol-sprint-2024",
+   "n": "Europol sprint on buyers of live-distant abuse in the Philippines (2024)",
+   "iso3": "PHL",
+   "also": [
+    "AUT",
+    "BEL",
+    "FRA",
+    "DEU",
+    "NLD",
+    "ESP",
+    "SWE",
+    "DNK",
+    "NOR",
+    "GBR",
+    "USA"
+   ],
+   "place": "The Hague (sprint); victims in the Philippines",
+   "ll": [
+    4.3007,
+    52.0705
+   ],
+   "y1": 2024,
+   "yf": 2024,
+   "kind": "sexual exploitation + trafficking",
+   "status": "reported",
+   "offenders": 197,
+   "who": "Buyers worldwide directing livestreamed abuse by traffickers in the Philippines",
+   "net": "osec-philippines",
+   "d": "From 24 to 28 June 2024, 32 investigators at Europol processed leads from US HSI investigations into networks exploiting children in the Philippines: over 10 million lines of chat between about 12,000 customer accounts and 100 seller accounts, built up over 12 years. The sprint produced information packages that may lead authorities in 24 countries to 197 buyers. Europol notes buyers direct traffickers to abuse children in real time on webcam and some travel to the Philippines to abuse children in person.",
+   "cite": "Europol press release, 2 July 2024",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/operational-sprint-generates-197-new-leads-buyers-of-live-distant-child-abuse",
+   "setting": "online"
+  },
+  {
+   "id": "aus-westpac-austrac",
+   "n": "AUSTRAC v Westpac — payments linked to child exploitation in the Philippines",
+   "iso3": "AUS",
+   "also": [
+    "PHL"
+   ],
+   "place": "Sydney",
+   "ll": [
+    151.2093,
+    -33.8688
+   ],
+   "y1": 2019,
+   "yf": 2020,
+   "kind": "sexual exploitation",
+   "status": "settled",
+   "who": "Westpac Banking Corporation (failure to monitor transfers)",
+   "net": "osec-philippines",
+   "d": "In November 2019 AUSTRAC alleged Westpac breached anti-money-laundering law 23 million times, covering $11 billion of transactions, including failures to properly vet transactions that could be linked to child exploitation and live child sex shows in the Philippines and south-east Asia. On 24 September 2020 Westpac and AUSTRAC agreed a A$1.3 billion penalty.",
+   "cite": "Wikipedia, 'AUSTRAC' and 'Westpac' (citing AUSTRAC and Federal Court)",
+   "url": "https://en.wikipedia.org/wiki/AUSTRAC",
+   "url2": "https://en.wikipedia.org/wiki/Westpac",
+   "setting": "online"
+  },
+  {
+   "id": "aus-qps-argos-skype-2016",
+   "n": "Australian man directed abuse of two children in the Philippines over Skype",
+   "iso3": "PHL",
+   "also": [
+    "AUS"
+   ],
+   "place": "Philippines (victims); Queensland (offender)",
+   "ll": [
+    121.774,
+    12.8797
+   ],
+   "llc": true,
+   "y0": 2011,
+   "y1": 2016,
+   "yf": 2016,
+   "kind": "sexual exploitation + abuse material",
+   "status": "convicted",
+   "offenders": 1,
+   "victims": 2,
+   "who": "Australian offender paying the children's mother",
+   "net": "osec-philippines",
+   "d": "In 2016 Task Force Argos executed a warrant at a 58-year-old Australian man's home. Using Skype he conducted 'live remote' sexual abuse of two children in the Philippines, aged two and seven when it began, while paying their mother; it continued for nearly five years. He pleaded guilty to charges including having sex with a child under 16 outside Australia.",
+   "cite": "Wikipedia, 'Cybersex trafficking' (citing Queensland Police / AFP)",
+   "url": "https://en.wikipedia.org/wiki/Cybersex_trafficking",
+   "setting": "online"
+  },
+  {
+   "id": "phl-peter-scully",
+   "n": "Peter Scully — pay-per-view abuse streamed from Mindanao",
+   "iso3": "PHL",
+   "also": [
+    "AUS",
+    "NLD"
+   ],
+   "place": "Malaybalay, Bukidnon",
+   "ll": [
+    125.1276,
+    8.1575
+   ],
+   "y0": 2011,
+   "y1": 2015,
+   "yf": 2018,
+   "kind": "sexual abuse + abuse material + trafficking",
+   "status": "convicted",
+   "offenders": 3,
+   "who": "'No Limits Fun' dark web site (Peter Scully, Australian; Filipino accomplices)",
+   "d": "An Australian who moved to the Philippines in 2011 ran a dark web site selling pay-per-view streams and videos of the torture and sexual abuse of children, procured with promises to poor parents. Dutch police opened the first investigation; he was arrested in Malaybalay on 20 February 2015. In June 2018 he was sentenced to life for the murder of a 12-year-old girl, human trafficking and five counts of rape; in November 2022 he got another 129 years. Accomplices who were themselves formerly trafficked were also prosecuted.",
+   "cite": "Wikipedia, 'Peter Scully' (citing SMH, ABC, Philippine courts)",
+   "url": "https://en.wikipedia.org/wiki/Peter_Scully",
+   "setting": "online"
+  },
+  {
+   "id": "nld-sweetie-2013",
+   "n": "'Sweetie' sting — 20,000 offers to pay for webcam abuse",
+   "iso3": "NLD",
+   "also": [
+    "AUS",
+    "CAN",
+    "JAM",
+    "DEU",
+    "GHA",
+    "IND",
+    "ITA",
+    "MUS",
+    "ZAF",
+    "TUR",
+    "GBR",
+    "USA"
+   ],
+   "place": "Amsterdam",
+   "ll": [
+    4.9041,
+    52.3676
+   ],
+   "y1": 2013,
+   "yf": 2013,
+   "kind": "sexual exploitation",
+   "status": "reported",
+   "offenders": 1000,
+   "who": "Terre des hommes Netherlands (virtual 10-year-old 'Sweetie')",
+   "net": "osec-philippines",
+   "d": "In a 10-week investigation from an Amsterdam warehouse, Terre des hommes used a computer-generated 'Filipino' girl to show the scale of webcam child sex tourism: 20,000 internet users offered to pay for webcam sex performances. About 1,000 were identified, in Australia, Canada, Jamaica, Germany, Ghana, India, Italy, Mauritius, the Netherlands, South Africa, Turkey, the UK and the US; 110 were in the UK and 254 traced to US computers.",
+   "cite": "Wikipedia, 'Child sex tourism' (citing Terre des hommes)",
+   "url": "https://en.wikipedia.org/wiki/Child_sex_tourism",
+   "setting": "online"
+  },
+  {
+   "id": "usa-ngn-ogoshi-sextortion",
+   "n": "Ogoshi brothers — Nigeria-based sextortion of a Michigan teenager",
+   "iso3": "USA",
+   "also": [
+    "NGA"
+   ],
+   "place": "Marquette, Michigan",
+   "ll": [
+    -87.3956,
+    46.5436
+   ],
+   "y1": 2022,
+   "yf": 2024,
+   "kind": "sexual exploitation",
+   "status": "convicted",
+   "offenders": 3,
+   "who": "Samuel and Samson Ogoshi, Lagos (convicted); Ezekiel Ejehem Robert (charged)",
+   "net": "nigeria-sextortion",
+   "d": "Men in Lagos posed as a young woman on Instagram, obtained explicit images from a 17-year-old in Michigan and demanded money; he died by suicide on 25 March 2022. Indicted in May 2023, the brothers were arrested by Nigerian police and extradited in August 2023; prosecutors said they targeted hundreds of teenagers and adults in the US. They pleaded guilty in April 2024 and were each sentenced to 17.5 years on 4 September 2024; a third defendant contested extradition.",
+   "cite": "Wikipedia, 'Death of Jordan DeMay' / 'Sextortion' (citing US DOJ W.D. Michigan, 10 April 2024; CBS)",
+   "url": "https://en.wikipedia.org/wiki/Death_of_Jordan_DeMay",
+   "setting": "online"
+  },
+  {
+   "id": "rou-gbr-sextortion-2015",
+   "n": "Romanian man jailed for sextortion linked to a Northern Ireland teenager's suicide",
+   "iso3": "ROU",
+   "also": [
+    "GBR"
+   ],
+   "place": "Timișoara",
+   "ll": [
+    21.2087,
+    45.7489
+   ],
+   "y1": 2015,
+   "yf": 2017,
+   "kind": "sexual exploitation + abuse material",
+   "status": "convicted",
+   "offenders": 1,
+   "who": "Individual offender posing as a girl online",
+   "net": "sextortion-global",
+   "d": "A 17-year-old from Coalisland took his own life in June 2015 after a man posing as a girl tricked him into sharing intimate images and blackmailed him. After a joint PSNI–Romanian Police investigation supported by Europol and the NCA, a 31-year-old Romanian was sentenced in Timișoara in 2017 to four years for blackmail and producing and distributing indecent images of a child.",
+   "cite": "Europol press release, 5 September 2017",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/online-sexual-extortion-man-sentenced-in-romania-in-connection-death-of-british-teenager",
+   "setting": "online"
+  },
+  {
+   "id": "usa-764-cadenhead",
+   "n": "764 network — founder sentenced to 80 years",
+   "iso3": "USA",
+   "also": [
+    "CAN",
+    "NZL",
+    "DEU",
+    "ROU",
+    "SWE",
+    "GRC"
+   ],
+   "place": "Stephenville, Texas",
+   "ll": [
+    -98.2023,
+    32.2207
+   ],
+   "y0": 2021,
+   "y1": 2026,
+   "yf": 2023,
+   "kind": "sexual exploitation + abuse material",
+   "status": "convicted",
+   "who": "764 (online network on Discord/Telegram; founder Bradley Cadenhead)",
+   "net": "764",
+   "d": "764, named after the ZIP code prefix of Stephenville, Texas, extorted minors into producing abuse material, self-harm and animal cruelty. Its founder was arrested in August 2021 and in 2023 sentenced to 80 years after pleading guilty to possessing child sexual abuse material. The US DOJ describes 764 as a terror network; Canada (December 2025, the first country) and New Zealand list it as a terrorist entity. In April 2025 the DOJ announced arrests of two alleged leaders of a 764 subgroup, in North Carolina and in Greece. About 250 FBI investigations across all 55 field offices were reported in May 2025, and arrests in at least eight countries.",
+   "cite": "Wikipedia, '764 (organization)' (citing US DOJ 29 Apr 2025, CBC 11 Dec 2025, Washington Post, Der Spiegel)",
+   "url": "https://en.wikipedia.org/wiki/764_(organization)",
+   "setting": "online"
+  },
+  {
+   "id": "usa-cvlt-leaders-2025",
+   "n": "CVLT — neo-Nazi child exploitation group leaders arrested",
+   "iso3": "USA",
+   "also": [
+    "FRA",
+    "GBR",
+    "NZL"
+   ],
+   "place": "United States",
+   "ll": [
+    -98.5,
+    39.8
+   ],
+   "llc": true,
+   "y0": 2020,
+   "y1": 2025,
+   "yf": 2025,
+   "kind": "sexual exploitation + abuse material",
+   "status": "charged",
+   "offenders": 4,
+   "victims": 16,
+   "victims_note": "at least 16 minors worldwide",
+   "who": "CVLT (part of 'The Com')",
+   "net": "the-com",
+   "d": "On 30 January 2025 US HSI arrested two men for participating in CVLT, which groomed and coerced at least 16 minors worldwide into producing abuse material and self-harm imagery. Europol said earlier-arrested members included one in French custody since 2022 and one serving a 50-year US sentence. Europol describes these communities as part of 'The Com'.",
+   "cite": "Europol press release (2025), 'Law enforcement targets online cult communities dedicated to extremely violent child abuse'",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/law-enforcement-targets-online-cult-communities-dedicated-to-extremely-violent-child-abuse",
+   "setting": "online"
+  },
+  {
+   "id": "eu-project-compass-com",
+   "n": "Project COMPASS against 'The Com' network",
+   "iso3": "NLD",
+   "also": [
+    "NOR",
+    "CHE",
+    "GBR",
+    "USA",
+    "CAN",
+    "AUS",
+    "NZL"
+   ],
+   "place": "The Hague (Europol ECTC)",
+   "ll": [
+    4.3007,
+    52.0705
+   ],
+   "y0": 2025,
+   "y1": 2026,
+   "yf": 2026,
+   "kind": "sexual exploitation",
+   "status": "charged",
+   "offenders": 30,
+   "victims": 62,
+   "victims_note": "62 identified or partially identified victims; 4 safeguarded",
+   "who": "The Com (decentralised online network incl. 764, CVLT)",
+   "net": "the-com",
+   "d": "Coordinated by Europol's European Counter Terrorism Centre with EU states, Norway, Switzerland, the UK, US, Canada, Australia and New Zealand (28 countries). Since January 2025 it has contributed to 30 arrests, 179 identified or partially identified perpetrators, 62 identified or partially identified victims and 4 victims safeguarded. The FBI warned the public about The Com on 23 July 2025.",
+   "cite": "Europol press release, 26 February 2026; Wikipedia 'The Com'",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/project-compass-first-operational-results-against-com-network",
+   "url2": "https://en.wikipedia.org/wiki/The_Com",
+   "setting": "online"
+  },
+  {
+   "id": "usa-omegle-am",
+   "n": "A.M. v. Omegle — site shut after child exploitation lawsuit",
+   "iso3": "USA",
+   "place": "Oregon (plaintiff); Vermont (founder)",
+   "ll": [
+    -122.6765,
+    45.5231
+   ],
+   "y0": 2009,
+   "y1": 2023,
+   "yf": 2023,
+   "kind": "sexual exploitation + abuse material",
+   "status": "settled",
+   "who": "Omegle (random video chat)",
+   "d": "A plaintiff known as A.M. from Oregon, sexually exploited as a child after being paired with an adult on Omegle, filed a $22 million lawsuit in 2019 alleging the site knowingly paired minors with predators. On 8 November 2023 the founder announced the site's closure; under an out-of-court settlement the final message thanked A.M. 'for opening my eyes to the human cost of Omegle' and linked the lawsuit.",
+   "cite": "Wikipedia, 'Omegle' (citing BBC, court filings)",
+   "url": "https://en.wikipedia.org/wiki/Omegle",
+   "setting": "online"
+  },
+  {
+   "id": "fra-durov-telegram",
+   "n": "France charges Telegram founder Pavel Durov",
+   "iso3": "FRA",
+   "also": [
+    "ARE",
+    "RUS"
+   ],
+   "place": "Paris (Le Bourget)",
+   "ll": [
+    2.4405,
+    48.9694
+   ],
+   "y1": 2024,
+   "yf": 2024,
+   "kind": "abuse material",
+   "status": "charged",
+   "offenders": 1,
+   "who": "Telegram (messaging platform)",
+   "net": "telegram",
+   "d": "Durov was arrested at Le Bourget on 24 August 2024 and on 28 August indicted on twelve charges, including complicity in the distribution of child sexual abuse material and drug trafficking; he was placed under judicial supervision. A BBC investigation in August 2024 found Telegram had not answered requests to join NCMEC or the IWF. On 4 December 2024 the IWF announced Telegram had joined and would use its hash lists to block known abuse imagery in public parts of the platform; the IWF said it had confirmed thousands of reports of abuse imagery on Telegram since 2022.",
+   "cite": "Wikipedia, 'Arrest and indictment of Pavel Durov'; IWF news release, 4 December 2024",
+   "url": "https://en.wikipedia.org/wiki/Arrest_and_indictment_of_Pavel_Durov",
+   "url2": "https://www.iwf.org.uk/news-media/news/telegram-joins-iwf-in-child-sexual-abuse-imagery-crackdown/",
+   "setting": "online"
+  },
+  {
+   "id": "usa-roblox-ag-suits",
+   "n": "US state lawsuits against Roblox and Discord over child exploitation (alleged)",
+   "iso3": "USA",
+   "place": "Louisiana, Kentucky, Texas, Iowa, Tennessee, Indiana, Arkansas and others",
+   "ll": [
+    -91.1871,
+    30.4515
+   ],
+   "y0": 2022,
+   "y1": 2026,
+   "yf": 2025,
+   "kind": "sexual exploitation",
+   "status": "alleged",
+   "who": "Roblox Corporation; Discord Inc.",
+   "d": "Throughout 2025 state attorneys general sued Roblox alleging failures to protect children from predators: Louisiana (August), Kentucky (October), Texas (November), Iowa and Tennessee (December); Florida issued criminal subpoenas. In 2026 Nebraska and Los Angeles County sued, Indiana (May) and Arkansas (June) sued Roblox and Discord together, and Texas sued Discord. Roblox settled with Nevada ($10m+), Alabama and West Virginia (over $23m), Mississippi ($9m) and South Dakota ($8.6m), agreeing to age verification. These are allegations, not findings.",
+   "cite": "Wikipedia, 'Roblox and child safety' and 'Discord' (citing state AG releases)",
+   "url": "https://en.wikipedia.org/wiki/Roblox_and_child_safety",
+   "setting": "online"
+  },
+  {
+   "id": "usa-meta-e2ee-ncmec-drop",
+   "n": "NCMEC: 6.9 million fewer Facebook reports after Messenger encryption",
+   "iso3": "USA",
+   "place": "Menlo Park / Alexandria, Virginia (NCMEC)",
+   "ll": [
+    -77.0469,
+    38.8048
+   ],
+   "y0": 2023,
+   "y1": 2024,
+   "yf": 2025,
+   "kind": "abuse material",
+   "status": "reported",
+   "who": "Meta (Facebook Messenger default end-to-end encryption)",
+   "d": "NCMEC reported that CyberTipline reports fell from 36.2 million in 2023 to 20.5 million in 2024 (29.2 million incidents after adjusting for 'bundling'). It attributed part of the fall to Meta's default end-to-end encryption in Facebook Messenger (December 2023 to summer 2024), with 6.9 million fewer reports from Facebook, and to Google, X, Discord, Microsoft and Synchronoss reporting 20% fewer. NCMEC says the drop came even though the 2024 REPORT Act added mandatory reporting of enticement and child sex trafficking.",
+   "cite": "NCMEC, 2024 CyberTipline Report",
+   "url": "https://www.missingkids.org/content/dam/missingkids/pdfs/2024-cybertipline-report.pdf",
+   "setting": "online"
+  },
+  {
+   "id": "usa-apple-csam-withdrawn",
+   "n": "Apple cancels iCloud Photos CSAM scanning plan",
+   "iso3": "USA",
+   "place": "Cupertino",
+   "ll": [
+    -122.0322,
+    37.323
+   ],
+   "y0": 2021,
+   "y1": 2022,
+   "yf": 2022,
+   "kind": "abuse material",
+   "status": "reported",
+   "who": "Apple Inc.",
+   "d": "Apple had scanned iCloud Mail for abuse imagery since 2019. On 5 August 2021 it confirmed plans to scan iCloud Photos; after public backlash over scanning on users' devices it paused and in December 2022 cancelled the plan.",
+   "cite": "Wikipedia, 'iCloud' (citing Apple statements, Wired)",
+   "url": "https://en.wikipedia.org/wiki/ICloud",
+   "setting": "online"
+  },
+  {
+   "id": "eu-chat-control-csar",
+   "n": "EU Child Sexual Abuse Regulation ('chat control') and interim derogation",
+   "iso3": "BEL",
+   "place": "Brussels",
+   "ll": [
+    4.3517,
+    50.8503
+   ],
+   "y0": 2020,
+   "y1": 2026,
+   "yf": 2026,
+   "kind": "abuse material",
+   "status": "reported",
+   "who": "European Commission, Council and Parliament",
+   "d": "The Commission proposed the CSA Regulation (COM(2022) 209) to require platforms to assess risks and allow detection orders; it has been deadlocked over mandatory scanning. The interim derogation from the ePrivacy Directive (Regulation (EU) 2021/1232, in force 2 August 2021, extended in 2024) let providers voluntarily detect abuse material; with no agreement it lapsed on 3 April 2026. A new temporary derogation, Regulation (EU) 2026/1881, was adopted on 24 July 2026 and published 28 July 2026. As of October 2026 the permanent regulation has not been adopted.",
+   "cite": "Wikipedia, 'Regulation to Prevent and Combat Child Sexual Abuse' (citing EUR-Lex, Council documents)",
+   "url": "https://en.wikipedia.org/wiki/Regulation_to_Prevent_and_Combat_Child_Sexual_Abuse",
+   "setting": "online"
+  },
+  {
+   "id": "gbr-online-safety-act",
+   "n": "UK Online Safety Act 2023",
+   "iso3": "GBR",
+   "place": "London",
+   "ll": [
+    -0.1276,
+    51.5072
+   ],
+   "y0": 2023,
+   "y1": 2025,
+   "yf": 2023,
+   "kind": "abuse material",
+   "status": "reported",
+   "who": "UK Parliament / Ofcom",
+   "d": "The Online Safety Act received royal assent on 26 October 2023, giving Ofcom powers over platforms' handling of illegal content including child sexual abuse material and content harmful to children. Many sites introduced age verification ahead of Ofcom's 25 July 2025 deadline.",
+   "cite": "Wikipedia, 'Online Safety Act 2023'",
+   "url": "https://en.wikipedia.org/wiki/Online_Safety_Act_2023",
+   "setting": "online"
+  },
+  {
+   "id": "usa-kosa-earn-it",
+   "n": "US Kids Online Safety Act, EARN IT Act and REPORT Act",
+   "iso3": "USA",
+   "place": "Washington, D.C.",
+   "ll": [
+    -77.0369,
+    38.9072
+   ],
+   "y0": 2020,
+   "y1": 2026,
+   "yf": 2024,
+   "kind": "abuse material",
+   "status": "reported",
+   "who": "US Congress",
+   "d": "The EARN IT Act, which would condition platforms' liability shield on child-safety practices, was introduced in 2020, 2022 and 2023 and died in committee. KOSA passed the Senate 91–3 on 30 July 2024, was reintroduced in May 2025, and in June 2026 the House Energy and Commerce Committee agreed an updated version without a 'duty of care', to be folded into the KIDS Act. The REPORT Act (2024) became law, requiring platforms to report online enticement and child sex trafficking to NCMEC; the TAKE IT DOWN Act took effect 19 May 2025.",
+   "cite": "Wikipedia, 'Kids Online Safety Act', 'EARN IT Act', 'REPORT Act', 'TAKE IT DOWN Act'",
+   "url": "https://en.wikipedia.org/wiki/Kids_Online_Safety_Act",
+   "url2": "https://en.wikipedia.org/wiki/EARN_IT_Act",
+   "setting": "online"
+  },
+  {
+   "id": "aus-esafety-online-safety",
+   "n": "Australia: eSafety Commissioner, Online Safety Act 2021 and under-16 social media ban",
+   "iso3": "AUS",
+   "place": "Canberra",
+   "ll": [
+    149.13,
+    -35.2809
+   ],
+   "y0": 2015,
+   "y1": 2026,
+   "yf": 2024,
+   "kind": "abuse material",
+   "status": "reported",
+   "who": "Office of the eSafety Commissioner",
+   "d": "Australia enacted the Online Safety Act 2021 in June 2021, giving the eSafety Commissioner removal and transparency powers. In December 2024 parliament passed the Online Safety Amendment barring children under 16 from certain social media platforms; Roblox, initially excluded, was to be covered by protocols from March 2026. In June 2020 Australia also passed the Crimes Legislation Amendment (Sexual Crimes Against Children and Community Protection Measures) Act, which IJM said recognised Australians' role in demand for livestreamed abuse.",
+   "cite": "Wikipedia, 'ESafety Commissioner'; 'Cybersex trafficking'",
+   "url": "https://en.wikipedia.org/wiki/ESafety_Commissioner",
+   "setting": "online"
+  },
+  {
+   "id": "usa-laion-csam-2023",
+   "n": "Stanford finds abuse material links in LAION-5B AI training dataset",
+   "iso3": "USA",
+   "also": [
+    "DEU"
+   ],
+   "place": "Stanford, California",
+   "ll": [
+    -122.1697,
+    37.4275
+   ],
+   "y1": 2023,
+   "yf": 2023,
+   "kind": "abuse material",
+   "status": "reported",
+   "who": "LAION-5B dataset (German non-profit LAION)",
+   "d": "In December 2023 the Stanford Internet Observatory reported 3,226 suspected links to child sexual abuse material in LAION-5B, a dataset used to train image generators, with 1,008 externally validated; the dataset was taken down. NCMEC's 2025 data counted more than 12,000 reports involving CSAM found in AI training data.",
+   "cite": "Wikipedia, 'LAION'; NCMEC 'first look at 2025 data'",
+   "url": "https://en.wikipedia.org/wiki/LAION",
+   "url2": "https://www.missingkids.org/blog/2026/the-work-never-stops-first-look-at-ncmecs-2025-data",
+   "setting": "online"
+  },
+  {
+   "id": "usa-grok-undress-2025",
+   "n": "Grok image tool used to sexualise photos of minors (alleged)",
+   "iso3": "USA",
+   "place": "United States",
+   "ll": [
+    -98.5,
+    39.8
+   ],
+   "llc": true,
+   "y0": 2025,
+   "y1": 2026,
+   "yf": 2026,
+   "kind": "abuse material",
+   "status": "alleged",
+   "who": "X Corp / xAI (Grok)",
+   "d": "In December 2025 users reported that X's Grok chatbot let people alter photos of real individuals, including minors, to show them undressed. In August 2026 a plaintiff ('Jane Doe') sued, alleging Grok was trained on abuse material of her and that the Canadian Centre for Child Protection had found Grok-generated AI CSAM depicting her. NCMEC listed X.AI among companies whose 2025 reports often lacked enough information to locate offences. These are allegations.",
+   "cite": "Wikipedia, 'Grok (chatbot)'; NCMEC CyberTipline data 2025",
+   "url": "https://en.wikipedia.org/wiki/Grok_(chatbot)",
+   "url2": "https://www.missingkids.org/cybertiplinedata",
+   "setting": "online"
+  },
+  {
+   "id": "gbr-wonderland-cathedral",
+   "n": "Wonderland Club / Operation Cathedral",
+   "iso3": "GBR",
+   "also": [
+    "AUS",
+    "BEL",
+    "FIN",
+    "FRA",
+    "DEU",
+    "ITA",
+    "SWE",
+    "USA",
+    "PRT",
+    "ARG",
+    "CHL"
+   ],
+   "place": "United Kingdom (National Crime Squad)",
+   "ll": [
+    -1.5,
+    52.5
+   ],
+   "llc": true,
+   "y0": 1995,
+   "y1": 1998,
+   "yf": 1998,
+   "kind": "abuse material + sexual abuse",
+   "status": "convicted",
+   "offenders": 104,
+   "victims": 1263,
+   "victims_note": "1,263 children appeared in images; only 17 identified",
+   "who": "The Wonderland Club (encrypted online network)",
+   "d": "Created in 1995 and run over encrypted internet chat, the club required members to supply 10,000 new images; members held more than 750,000 images and 1,800 videos. Led by the UK National Crime Squad, 1,500 officers in 13 countries arrested 104 suspects simultaneously on 2 September 1998. Of 1,263 children in the images, 17 were identified (UK 6, US 7, and one each in Argentina, Chile and Portugal).",
+   "cite": "Wikipedia, 'Operation Cathedral' (citing BBC, Guardian)",
+   "url": "https://en.wikipedia.org/wiki/Operation_Cathedral",
+   "setting": "online"
+  },
+  {
+   "id": "usa-landslide-avalanche-ore",
+   "n": "Landslide Productions / Operations Avalanche and Ore",
+   "iso3": "USA",
+   "also": [
+    "GBR",
+    "AUS",
+    "CAN",
+    "DEU",
+    "IRL",
+    "CHE"
+   ],
+   "place": "Fort Worth, Texas",
+   "ll": [
+    -97.3308,
+    32.7555
+   ],
+   "y0": 1997,
+   "y1": 2002,
+   "yf": 2001,
+   "kind": "abuse material",
+   "status": "convicted",
+   "offenders": 2,
+   "who": "Landslide Productions (payment portal, Thomas and Janice Reedy)",
+   "cover": "Later reconstruction of the Landslide data found many listed names were victims of credit-card fraud, and the validity of UK Operation Ore procedures was questioned; an estimated 33 suicides followed in the UK.",
+   "d": "A Texas portal that processed payments for websites including child abuse sites; the operators were convicted in August 2001. US Operation Avalanche made 100 arrests from 144 suspects; the FBI passed 7,272 UK names to British police, starting Operation Ore: 7,250 suspects, 3,744 arrests, 1,848 charged, 1,451 convictions and 140 children removed from danger. Follow-ups included Operation Snowball (Canada), Pecunia (Germany), Amethyst (Ireland), Genesis (Switzerland) and Auxin (Australia, ~200 arrests in 2004, including police officers and teachers). In total 390,000 people in over 60 countries were found to have accessed material.",
+   "officials": true,
+   "cite": "Wikipedia, 'Operation Avalanche', 'Operation Ore', 'Operation Auxin'",
+   "url": "https://en.wikipedia.org/wiki/Operation_Ore",
+   "url2": "https://en.wikipedia.org/wiki/Operation_Avalanche_(child_pornography_investigation)",
+   "setting": "online"
+  },
+  {
+   "id": "blr-regpay-falcon",
+   "n": "Regpay — Minsk-based paid abuse sites / Operation Falcon",
+   "iso3": "BLR",
+   "also": [
+    "USA",
+    "FRA",
+    "ESP",
+    "LVA",
+    "GBR",
+    "DEU"
+   ],
+   "place": "Minsk",
+   "ll": [
+    27.5615,
+    53.9045
+   ],
+   "y1": 2003,
+   "yf": 2005,
+   "kind": "abuse material",
+   "status": "convicted",
+   "offenders": 3,
+   "who": "Regpay Co. Ltd (Belarus) with Florida payment firm Connections",
+   "d": "A Minsk company ran about 50 paid websites selling access to child abuse images by credit card, with payments routed through Latvian banks. New Jersey prosecutors began Operation Falcon in 2003; Regpay's head and marketing director were detained in France on 30 July 2003 and its technical director extradited from Spain in 2004. All three confessed in US court and were sentenced to 25 years; the CEO of Connections pleaded guilty to money laundering.",
+   "cite": "Wikipedia, 'Operation Falcon (child pornography investigation)'",
+   "url": "https://en.wikipedia.org/wiki/Operation_Falcon_(child_pornography_investigation)",
+   "setting": "online"
+  },
+  {
+   "id": "rus-blue-orchid",
+   "n": "Blue Orchid — Russian site selling abuse videos",
+   "iso3": "RUS",
+   "also": [
+    "USA"
+   ],
+   "place": "Moscow; victims from Novokuybyshevsk",
+   "ll": [
+    37.6173,
+    55.7558
+   ],
+   "y1": 2000,
+   "yf": 2001,
+   "kind": "abuse material + sexual abuse",
+   "status": "convicted",
+   "offenders": 9,
+   "who": "Blue Orchid website",
+   "d": "A website selling videos of the abuse of boys, mostly from Novokuybyshevsk, for about $300 each. A joint US Customs–Moscow City Police operation from May 2000 led to the arrest of four Americans and five Russians, including the site's creator.",
+   "cite": "Wikipedia, 'Operation Blue Orchid'",
+   "url": "https://en.wikipedia.org/wiki/Operation_Blue_Orchid",
+   "setting": "online"
+  },
+  {
+   "id": "ukr-ls-models-2004",
+   "n": "LS Models / 'Alex Model' raids, Ukraine",
+   "iso3": "UKR",
+   "also": [
+    "AUS"
+   ],
+   "place": "Kyiv, Kharkiv, Simferopol",
+   "ll": [
+    30.5234,
+    50.4501
+   ],
+   "y0": 2001,
+   "y1": 2004,
+   "yf": 2004,
+   "kind": "abuse material",
+   "status": "charged",
+   "who": "'Alex Model' agency (LS-Models brands)",
+   "cover": "Despite surveillance and arrests the legal outcome was described as lenient.",
+   "d": "A Kyiv modelling agency with branches in Kharkiv and Simferopol recruited children through TV, newspaper and radio adverts and produced sexualised images sold worldwide under 'LS' brands from 2001. Police raided it in July 2004; at the same time over 150 people were arrested in Australia for possession and distribution.",
+   "cite": "Wikipedia, '2004 Ukrainian child pornography raids'",
+   "url": "https://en.wikipedia.org/wiki/2004_Ukrainian_child_pornography_raids",
+   "setting": "online"
+  },
+  {
+   "id": "aut-2007-investigation",
+   "n": "Austria-led 2007 investigation — 2,360 suspects in 77 countries",
+   "iso3": "AUT",
+   "also": [
+    "USA",
+    "DEU",
+    "AUS",
+    "IRL"
+   ],
+   "place": "Austria",
+   "ll": [
+    14.55,
+    47.52
+   ],
+   "llc": true,
+   "y1": 2007,
+   "yf": 2007,
+   "kind": "abuse material",
+   "status": "charged",
+   "offenders": 2360,
+   "who": "Online distribution network uncovered by Austrian authorities",
+   "cover": "The two Irish suspects were not investigated by the Garda until six months after Austria notified them.",
+   "d": "Austrian authorities uncovered the network in July 2007 and investigated more than 2,360 suspects in 77 countries, about 600 in the US and 130 in Australia; Germany had the most European suspects.",
+   "cite": "Wikipedia, '2007 international child pornography investigation' (citing NBC News, 7 Feb 2007)",
+   "url": "https://en.wikipedia.org/wiki/2007_international_child_pornography_investigation",
+   "setting": "online"
+  },
+  {
+   "id": "gbr-kids-light-of-our-lives",
+   "n": "'Kids the Light of our Lives' forum",
+   "iso3": "GBR",
+   "place": "Buxhall, Suffolk",
+   "ll": [
+    0.9333,
+    52.1833
+   ],
+   "y0": 2006,
+   "y1": 2007,
+   "yf": 2007,
+   "kind": "abuse material + sexual abuse",
+   "status": "convicted",
+   "offenders": 700,
+   "victims": 31,
+   "victims_note": "31 children rescued; 700 arrests",
+   "who": "Online chat forum with live streaming of abuse",
+   "d": "A forum run from a farm in Suffolk hosting images and live streams of the abuse of children; the operator held 75,960 images and distributed up to 11,491. Acting on Virtual Global Taskforce information, a 10-month international operation arrested 700 men and rescued 31 children. The operator was convicted on 18 June 2007 at Ipswich Crown Court and given an indeterminate sentence.",
+   "cite": "Wikipedia, 'Kids the Light of our Lives'",
+   "url": "https://en.wikipedia.org/wiki/Kids_the_Light_of_our_Lives",
+   "setting": "online"
+  },
+  {
+   "id": "can-project-spade-azov",
+   "n": "Project Spade — Azov Films, Toronto",
+   "iso3": "CAN",
+   "also": [
+    "USA",
+    "AUS",
+    "UKR",
+    "ROU",
+    "DEU",
+    "ESP",
+    "SWE",
+    "ZAF",
+    "HKG",
+    "GRC",
+    "IRL",
+    "NZL",
+    "NOR"
+   ],
+   "place": "Toronto",
+   "ll": [
+    -79.3832,
+    43.6532
+   ],
+   "y0": 2010,
+   "y1": 2013,
+   "yf": 2013,
+   "kind": "abuse material",
+   "status": "charged",
+   "offenders": 348,
+   "victims": 386,
+   "victims_note": "386 children said rescued (US figure of 330+ questioned)",
+   "who": "Azov Films (Toronto distributor of 'naturist' films of children)",
+   "cover": "Germany's BKA received the customer list in October 2011 but began investigating only in October 2012; a German MP on the list later resigned, and information about the case was passed to his party leader.",
+   "officials": true,
+   "d": "After complaints to cybertip.ca, Toronto police contacted the owner of Azov Films in October 2010 and raided it in May 2011; he allegedly earned over $4 million. Customer records were shared via the RCMP and Interpol across more than 50 countries; 348 people were arrested and 386 children said rescued when it was made public in November 2013. Primary producers were in Ukraine, Romania and Germany.",
+   "cite": "Wikipedia, 'Project Spade' (citing Toronto Police, Globe and Mail, Spiegel)",
+   "url": "https://en.wikipedia.org/wiki/Project_Spade",
+   "setting": "online"
+  },
+  {
+   "id": "aus-tha-blackwrist",
+   "n": "Operation Blackwrist — Thai boys abused for Tor sites",
+   "iso3": "THA",
+   "also": [
+    "AUS",
+    "USA",
+    "BGR",
+    "NZL"
+   ],
+   "place": "Thailand",
+   "ll": [
+    100.9925,
+    15.87
+   ],
+   "llc": true,
+   "y0": 2017,
+   "y1": 2018,
+   "yf": 2018,
+   "kind": "sexual abuse + abuse material",
+   "status": "convicted",
+   "victims": 50,
+   "victims_note": "11 boys under 13 rescued in Thailand; about 50 children overall",
+   "who": "Tor site administrators in Thailand and Australia",
+   "d": "Interpol investigators in Asia found abuse material of children from Thailand on Tor sites in 2017; servers in Bulgaria were seized by Bulgarian cybercrime police. The main administrator in Thailand and another in Australia were arrested in early 2018; 11 boys under 13 were rescued in Thailand, about 50 children overall. Prosecutions followed in Thailand, Australia and the US (9 US arrests).",
+   "cite": "Wikipedia, 'Operation Blackwrist'",
+   "url": "https://en.wikipedia.org/wiki/Operation_Blackwrist",
+   "setting": "online"
+  },
+  {
+   "id": "bra-prt-operation-lobos",
+   "n": "Operation Lobos / Baby Heart (Brazil-led)",
+   "iso3": "BRA",
+   "also": [
+    "PRT",
+    "USA",
+    "GBR",
+    "AUS"
+   ],
+   "place": "Recife, Pernambuco",
+   "ll": [
+    -34.877,
+    -8.0476
+   ],
+   "y0": 2015,
+   "y1": 2019,
+   "yf": 2020,
+   "kind": "abuse material",
+   "status": "convicted",
+   "offenders": 96,
+   "who": "Baby Heart and other Tor boards",
+   "d": "A Brazilian-centred, 12-country operation against the Tor board Baby Heart (online from 2015) and related sites, with the FBI and NCA. Two administrators were arrested in Portugal on 20 June 2017 and sentenced in January 2020; another administrator in Recife became an informant. The March–June 2019 phase led to 96 arrests.",
+   "cite": "Wikipedia, 'Operation Lobos 1'",
+   "url": "https://en.wikipedia.org/wiki/Operation_Lobos_1",
+   "setting": "online"
+  },
+  {
+   "id": "nld-darkscandals",
+   "n": "DarkScandals site administrator arrested",
+   "iso3": "NLD",
+   "also": [
+    "USA",
+    "DEU"
+   ],
+   "place": "Barendrecht",
+   "ll": [
+    4.5347,
+    51.8567
+   ],
+   "y1": 2020,
+   "yf": 2020,
+   "kind": "abuse material",
+   "status": "charged",
+   "offenders": 1,
+   "who": "DarkScandals (dark and clear web site)",
+   "d": "A site on both the dark and clear web that advertised rape and blackmail videos of girls and included child abuse material (over 2,000 videos and images). After US IRS-CI, HSI and DOJ, Dutch police and FIOD, the BKA and Europol cooperated, Dutch police arrested the administrator at his home in Barendrecht on 9 March 2020 and the site was taken down.",
+   "cite": "Europol press release, 12 March 2020",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/dark-web-child-abuse-administrator-of-darkscandals-arrested-in-netherlands",
+   "setting": "online"
+  },
+  {
+   "id": "bel-operation-gargamel",
+   "n": "Operation Gargamel — Belgian-led investigation of 9 million files",
+   "iso3": "BEL",
+   "also": [
+    "AUS"
+   ],
+   "place": "East Flanders",
+   "ll": [
+    3.7174,
+    51.0543
+   ],
+   "y1": 2020,
+   "yf": 2020,
+   "kind": "abuse material + sexual abuse",
+   "status": "charged",
+   "offenders": 90,
+   "victims": 110,
+   "who": "Offenders producing their own abuse material",
+   "d": "Belgian federal judicial police found more than 9 million images and videos, mostly never seen before, in a house search. With Europol victim-identification taskforces, 90 suspects (24 in Belgium) and 110 victims were identified by March 2020; an Australian suspect was sentenced to 15 years. Police in over 40 countries received intelligence packages.",
+   "cite": "Europol press release, 31 March 2020",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/90-suspects-identified-in-major-online-child-sexual-abuse-operation",
+   "setting": "online"
+  },
+  {
+   "id": "nzl-dia-2022",
+   "n": "New Zealand DIA-led operation: 146 children safeguarded",
+   "iso3": "NZL",
+   "also": [
+    "AUS",
+    "AUT",
+    "CAN",
+    "HRV",
+    "CZE",
+    "GRC",
+    "HUN",
+    "SVN",
+    "ESP",
+    "GBR",
+    "USA"
+   ],
+   "place": "Wellington (Department of Internal Affairs)",
+   "ll": [
+    174.7762,
+    -41.2865
+   ],
+   "y0": 2019,
+   "y1": 2022,
+   "yf": 2022,
+   "kind": "abuse material + sexual abuse",
+   "status": "charged",
+   "offenders": 46,
+   "victims": 146,
+   "victims_note": "146 children safeguarded worldwide",
+   "who": "Tens of thousands of accounts sharing abuse material on an online service",
+   "d": "Begun in 2019 after an online service provider reported offenders exchanging imagery of the sadistic abuse of infants and children. By March 2022 it had opened 836 cases internationally, led to 46 arrests across New Zealand, identified more than 100 suspects in the EU and safeguarded 146 children; in Austria and Hungary suspects were abusing their own children.",
+   "cite": "Europol press release, 2 March 2022",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/146-children-worldwide-saved-in-operation-targeting-child-abuse-online",
+   "setting": "online"
+  },
+  {
+   "id": "nor-crypto-csam-2026",
+   "n": "Norway-led crypto-tracing operation: 28 arrests (2026)",
+   "iso3": "NOR",
+   "also": [
+    "CAN",
+    "CZE",
+    "DEU",
+    "POL",
+    "SWE",
+    "CHE"
+   ],
+   "place": "Norway",
+   "ll": [
+    8.4689,
+    60.472
+   ],
+   "llc": true,
+   "y1": 2026,
+   "yf": 2026,
+   "kind": "abuse material",
+   "status": "charged",
+   "offenders": 28,
+   "victims": 3,
+   "victims_note": "three children safeguarded",
+   "who": "Buyers paying cryptocurrency for dark web forum access",
+   "d": "From late May to mid-June 2026 police in Canada, Czechia, Germany, Norway, Poland, Sweden and Switzerland arrested 28 men aged 22–54 suspected of paying cryptocurrency to access dark web forums with abuse videos; one used AI to generate material and some victims were family members. Norwegian police used a crypto-tracing method developed in 2025, which also identified two sellers.",
+   "cite": "Europol press release, 8 July 2026",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/28-arrests-in-international-strike-against-child-sexual-exploitation",
+   "setting": "online"
+  },
+  {
+   "id": "esp-operation-tantalio",
+   "n": "Operation Tantalio — WhatsApp groups sharing abuse material",
+   "iso3": "ESP",
+   "place": "Madrid (Spanish National Police)",
+   "ll": [
+    -3.7038,
+    40.4168
+   ],
+   "y0": 2016,
+   "y1": 2017,
+   "yf": 2017,
+   "kind": "abuse material",
+   "status": "charged",
+   "offenders": 39,
+   "who": "25 invitation-only WhatsApp groups linked from Tor",
+   "d": "Spanish National Police found Tor users being directed to invitation-only WhatsApp groups (25 under investigation). Action days on 28–29 March 2017 with Europol and Interpol led to 39 arrests in Europe and South America; more than 100 targets in 13 Central and South American countries were pursued through Interpol.",
+   "cite": "Europol press release, 18 April 2017",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/global-action-tackles-distribution-of-child-sexual-exploitation-images-whatsapp-39-arrested-so-far",
+   "setting": "online"
+  },
+  {
+   "id": "esp-operation-chemosh",
+   "n": "Operation Chemosh — minors sharing abuse 'stickers' in WhatsApp groups",
+   "iso3": "ESP",
+   "also": [
+    "ITA",
+    "FRA"
+   ],
+   "place": "Spain",
+   "ll": [
+    -3.7038,
+    40.4168
+   ],
+   "y0": 2017,
+   "y1": 2019,
+   "yf": 2019,
+   "kind": "abuse material",
+   "status": "charged",
+   "who": "Encrypted chat groups, many members minors",
+   "d": "Begun in 2017 after a public report about children forming WhatsApp groups to create and exchange abuse material, including emoji 'stickers'. Thirty-three investigations were opened (26 in Spain) with arrests in Spain, Italy and France; the average age of those arrested in Spain was 22 because many were minors.",
+   "cite": "Europol press release, 11 December 2019",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/operation-chemosh-how-encrypted-chat-groups-exchanged-emoji-‘stickers’-of-child-sexual-abuse",
+   "setting": "online"
+  },
+  {
+   "id": "geo-tbilisi-studio-2019",
+   "n": "Tbilisi photo studio producing abuse material for foreign buyers",
+   "iso3": "GEO",
+   "also": [
+    "USA",
+    "AUS"
+   ],
+   "place": "Tbilisi",
+   "ll": [
+    44.7833,
+    41.7151
+   ],
+   "y1": 2019,
+   "yf": 2019,
+   "kind": "abuse material + sexual exploitation",
+   "status": "charged",
+   "offenders": 11,
+   "victims": 10,
+   "victims_note": "up to 10 girls aged 8–14",
+   "who": "Photo studio owners and foreign clients",
+   "d": "Georgian police, with Australian and US authorities and Europol, arrested 11 members of a group including studio owners and American and Australian citizens who arranged the production of sexual images of girls aged 8 to 14 in rented apartments in Tbilisi. Some girls were abused with parental consent in exchange for 500–3,000 GEL (about €150–900).",
+   "cite": "Europol press release, 20 September 2019",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/11-arrested-in-child-abuse-network-crackdown-in-georgia",
+   "setting": "online"
+  },
+  {
+   "id": "cze-operation-atelier",
+   "n": "Operation Atelier — network of abuse photographers",
+   "iso3": "CZE",
+   "also": [
+    "SWE",
+    "FRA",
+    "IRL",
+    "ESP",
+    "CAN"
+   ],
+   "place": "Czech Republic",
+   "ll": [
+    15.473,
+    49.8175
+   ],
+   "llc": true,
+   "y1": 2014,
+   "yf": 2014,
+   "kind": "abuse material + sexual exploitation",
+   "status": "charged",
+   "offenders": 10,
+   "victims": 70,
+   "victims_note": "close to 70 children",
+   "who": "Professional photographers producing abuse material",
+   "d": "Czech-initiated and supported by Europol and Eurojust: a Czech photographer exploited socially and financially disadvantaged children (close to 70) and, with a Swedish partner, distributed images to customers in the EU and Canada. In 2014 ten people were arrested in the Czech Republic (5), Sweden (2), France, Ireland and Spain; 30 TB of data were seized.",
+   "cite": "Europol press release, 8 September 2014",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/international-network-of-child-abuse-photographers-dismantled",
+   "setting": "online"
+  },
+  {
+   "id": "vgt-operation-atlas-2015",
+   "n": "Operation Atlas — Virtual Global Taskforce P2P sweep",
+   "iso3": "AUS",
+   "also": [
+    "COL",
+    "NLD",
+    "CHE",
+    "USA",
+    "KOR",
+    "NZL",
+    "CAN",
+    "ARE",
+    "GBR"
+   ],
+   "place": "Multinational (VGT)",
+   "ll": [
+    133.7751,
+    -25.2744
+   ],
+   "llc": true,
+   "y1": 2015,
+   "yf": 2015,
+   "kind": "abuse material",
+   "status": "charged",
+   "offenders": 303,
+   "victims": 106,
+   "who": "Peer-to-peer distributors and producers",
+   "d": "Ten Virtual Global Taskforce members (Australia, Colombia, Netherlands, Switzerland, US HSI, Korea, New Zealand, Canada, UAE, UK) arrested 303 people suspected of distributing and producing abuse material and identified 106 victims, announced November 2015.",
+   "cite": "Europol press release, 13 November 2015",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/global-initiative-to-combat-child-sexual-exploitation-leads-to-303-arrests",
+   "setting": "online"
+  },
+  {
+   "id": "esp-operation-sky",
+   "n": "Operation Sky — Skype group sharing abuse material",
+   "iso3": "ESP",
+   "also": [
+    "FRA",
+    "HUN",
+    "ITA",
+    "CAN"
+   ],
+   "place": "Spain",
+   "ll": [
+    -3.7038,
+    40.4168
+   ],
+   "y0": 2017,
+   "y1": 2018,
+   "yf": 2018,
+   "kind": "abuse material",
+   "status": "charged",
+   "offenders": 8,
+   "who": "Invitation-only Skype group with members from 14 countries",
+   "d": "Spanish police followed Tor links to a private Skype group whose members from 14 countries exchanged abuse material; by May 2018 eight people had been arrested in France, Hungary, Italy, Spain and Canada.",
+   "cite": "Europol press release, 8 May 2018",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/eight-arrested-for-distribution-of-child-sexual-abuse-material-through-skype-and-darknet",
+   "setting": "online"
+  },
+  {
+   "id": "deu-bergisch-gladbach",
+   "n": "Bergisch Gladbach abuse complex",
+   "iso3": "DEU",
+   "also": [
+    "AUT"
+   ],
+   "place": "Bergisch Gladbach, NRW",
+   "ll": [
+    7.1322,
+    50.9918
+   ],
+   "y1": 2019,
+   "yf": 2020,
+   "kind": "sexual abuse + abuse material",
+   "status": "convicted",
+   "offenders": 439,
+   "victims": 65,
+   "victims_note": "65 children freed by October 2021",
+   "who": "Chat groups of men sharing recordings of abuse of their own and other children",
+   "net": "nrw-complexes",
+   "d": "A house search in October 2019 found thousands of abuse images; the father had abused his daughter more than 60 times and shared recordings in chat groups. NRW's justice minister said in June 2020 that investigators had found 30,000 leads; by January 2022 the Cologne police unit had identified 439 suspects, reviewed over 130,000 photos and 12,000 videos and freed 65 children. The first suspect got 12 years plus preventive detention in October 2020; others got 14.5 and 13.5 years.",
+   "cite": "German Wikipedia, 'Missbrauchskomplex Bergisch Gladbach' (citing WDR, Spiegel, NRW justice ministry)",
+   "url": "https://de.wikipedia.org/wiki/Missbrauchskomplex_Bergisch_Gladbach",
+   "setting": "online"
+  },
+  {
+   "id": "deu-luegde",
+   "n": "Lügde campsite abuse case",
+   "iso3": "DEU",
+   "place": "Lügde (Eichwald campsite, Elbrinxen)",
+   "ll": [
+    9.2486,
+    51.9578
+   ],
+   "y0": 2008,
+   "y1": 2018,
+   "yf": 2019,
+   "first_report": 2016,
+   "kind": "sexual abuse + abuse material",
+   "status": "convicted",
+   "offenders": 3,
+   "victims": 40,
+   "victims_note": "at least 40 children by April 2019",
+   "who": "Three men; one directed the abuse via the internet from Stade",
+   "net": "nrw-complexes",
+   "officials": true,
+   "cover": "Police received two tips in 2016 and youth-office visits did not act; the youth office had placed a foster child with the main offender in 2016; in early 2019, 155 data carriers of evidence disappeared from a Lippe police office; the NRW parliament set up an inquiry committee.",
+   "d": "Children were abused at a campsite in Lügde about 1,000 times between 2008 and December 2018 and filmed; a third man in Stade commissioned and followed the abuse online. On 5 September 2019 the Detmold court sentenced two men to 13 and 12 years with preventive detention; the third got a suspended two years. The case became a police and youth-welfare scandal.",
+   "cite": "German Wikipedia, 'Missbrauchsfall Lügde' (citing NRW Landtag, Detmold court)",
+   "url": "https://de.wikipedia.org/wiki/Missbrauchsfall_L%C3%BCgde",
+   "setting": "online"
+  },
+  {
+   "id": "pan-operacion-roblox-2024",
+   "n": "Operación Roblox — extortion network in Panama",
+   "iso3": "PAN",
+   "also": [
+    "ESP"
+   ],
+   "place": "Puerto Caimito, La Chorrera",
+   "ll": [
+    -79.7794,
+    8.8667
+   ],
+   "y1": 2024,
+   "yf": 2024,
+   "kind": "sexual exploitation + abuse material",
+   "status": "charged",
+   "who": "Network extorting minors through Roblox social features",
+   "d": "In October 2024 Panamanian police, working with Spanish cybercrime intelligence, announced an operation to dismantle a network that produced abuse material by extorting minors through Roblox's social features.",
+   "cite": "Wikipedia, 'Roblox and child safety' (citing La Prensa Panamá)",
+   "url": "https://en.wikipedia.org/wiki/Roblox_and_child_safety",
+   "setting": "online"
+  },
+  {
+   "id": "gulf-roblox-bans-2025",
+   "n": "Gulf states block Roblox over child safety (2025)",
+   "iso3": "QAT",
+   "also": [
+    "KWT",
+    "OMN",
+    "PSE"
+   ],
+   "place": "Doha",
+   "ll": [
+    51.531,
+    25.2854
+   ],
+   "y1": 2025,
+   "yf": 2025,
+   "kind": "sexual exploitation",
+   "status": "reported",
+   "who": "Roblox Corporation",
+   "d": "In August 2025 Roblox was banned in Qatar and Kuwait over child-safety concerns; Oman's telecoms regulator blocked it after reports of inappropriate content reaching minors, and Bahraini MPs drafted a ban. Palestine announced a ban in November 2025. Elsewhere, Kazakhstan's and Kyrgyzstan's authorities warned parents about predators, and Buenos Aires and three Argentine provinces blocked it on school devices after grooming reports.",
+   "cite": "Wikipedia, 'Roblox and child safety'",
+   "url": "https://en.wikipedia.org/wiki/Roblox_and_child_safety",
+   "setting": "online"
+  },
+  {
+   "id": "bra-discord-livestream-2026",
+   "n": "Brazil orders Discord to suspend livestreaming (2026)",
+   "iso3": "BRA",
+   "place": "Brazil",
+   "ll": [
+    -51.9253,
+    -14.235
+   ],
+   "llc": true,
+   "y1": 2026,
+   "yf": 2026,
+   "kind": "sexual exploitation",
+   "status": "reported",
+   "who": "Discord Inc.",
+   "d": "On 12 August 2026 the Brazilian government ordered Discord to block livestreaming in Brazil after a 13-year-old girl died by suicide having been encouraged to do so by others over a livestream; Brazil said Discord failed to meet its child-safety laws and threatened fines. Those involved were charged.",
+   "cite": "Wikipedia, 'Discord' (citing Reuters)",
+   "url": "https://en.wikipedia.org/wiki/Discord",
+   "setting": "online"
+  },
+  {
+   "id": "usa-dnk-operation-hamlet",
+   "n": "Operation Hamlet — parents sharing abuse of their own children",
+   "iso3": "DNK",
+   "also": [
+    "USA"
+   ],
+   "place": "Denmark / United States",
+   "ll": [
+    10.0,
+    56.0
+   ],
+   "llc": true,
+   "y0": 2001,
+   "y1": 2002,
+   "yf": 2002,
+   "kind": "sexual abuse + abuse material",
+   "status": "convicted",
+   "victims": 45,
+   "victims_note": "45 children rescued, 37 in the US",
+   "offenders": 20,
+   "who": "International online network of offenders, many abusing their own children",
+   "d": "Begun in November 2001 when Danish police, acting on a Save the Children tip, arrested a couple posting images of the abuse of their nine-year-old daughter. US Customs coordinated with Danish police, Interpol and NCMEC; by August 2002 about 10 people had been arrested in the US and 10 in Europe and 45 children rescued.",
+   "cite": "Wikipedia, 'Operation Hamlet' (citing US Customs)",
+   "url": "https://en.wikipedia.org/wiki/Operation_Hamlet",
+   "setting": "online"
+  },
+  {
+   "id": "dnk-usa-operation-long-arm",
+   "n": "Operation Long Arm — 'Bamse' bulletin board (1992)",
+   "iso3": "DNK",
+   "also": [
+    "USA",
+    "AUS"
+   ],
+   "place": "Denmark",
+   "ll": [
+    10.0,
+    56.0
+   ],
+   "llc": true,
+   "y0": 1990,
+   "y1": 1993,
+   "yf": 1993,
+   "kind": "abuse material",
+   "status": "convicted",
+   "offenders": 36,
+   "who": "Bamse BBS (Danish bulletin board, ~900 users)",
+   "d": "The first recorded US crackdown on internet child abuse material. A 1992 Miami arrest led to a Danish subscription bulletin board with up to 900 users in the US, Denmark and Australia; US Customs and Danish police made 34 arrests and convictions in the US and two in Australia. Start year approximate.",
+   "cite": "Wikipedia, 'Operation Long Arm' (citing Akdeniz 2016)",
+   "url": "https://en.wikipedia.org/wiki/Operation_Long_Arm",
+   "setting": "online"
+  },
+  {
+   "id": "usa-soteria-shield",
+   "n": "Operation Soteria Shield (North Texas, 2025–2026)",
+   "iso3": "USA",
+   "place": "Dallas–Fort Worth",
+   "ll": [
+    -96.797,
+    32.7767
+   ],
+   "y0": 2025,
+   "y1": 2026,
+   "yf": 2026,
+   "kind": "abuse material + sexual exploitation",
+   "status": "charged",
+   "offenders": 520,
+   "victims": 198,
+   "victims_note": "109 children rescued in 2025 and 89 in 2026",
+   "who": "FBI Dallas, North Texas ICAC Task Force, over 70 agencies, NCMEC",
+   "d": "In April 2025 the operation arrested 244 suspects, rescued 109 children and seized 1,130 devices and 213 terabytes; in April 2026 it arrested 276 and rescued 89 children.",
+   "cite": "Wikipedia, 'Operation Soteria Shield' (citing FBI Dallas)",
+   "url": "https://en.wikipedia.org/wiki/Operation_Soteria_Shield",
+   "setting": "online"
+  },
+  {
+   "id": "gbr-matthew-falder",
+   "n": "Matthew Falder — dark web 'hurtcore' blackmailer",
+   "iso3": "GBR",
+   "also": [
+    "USA",
+    "AUS",
+    "NZL",
+    "ISR"
+   ],
+   "place": "Birmingham",
+   "ll": [
+    -1.8904,
+    52.4862
+   ],
+   "y0": 2009,
+   "y1": 2017,
+   "yf": 2018,
+   "kind": "sexual exploitation + abuse material",
+   "status": "convicted",
+   "offenders": 1,
+   "victims": 46,
+   "victims_note": "137 charges from 46 complainants",
+   "who": "Individual offender posting on hurtcore dark web sites",
+   "d": "A Birmingham university researcher posed as a woman online to coerce victims, many children, into sending degrading images, then used them as blackmail and posted them on hurtcore sites. The NCA, with GCHQ, US HSI, Europol and police in Australia, New Zealand and Israel, identified him after four years; he was arrested on 21 June 2017. He pleaded guilty to 137 charges and was jailed for 32 years in February 2018, reduced on appeal to 25 years.",
+   "cover": "The NCA said technology companies' limited cooperation may have delayed identifying victims.",
+   "cite": "Wikipedia, 'Matthew Falder' (citing NCA, BBC)",
+   "url": "https://en.wikipedia.org/wiki/Matthew_Falder",
+   "setting": "online"
+  },
+  {
+   "id": "usa-ncmec-gai-2025",
+   "n": "NCMEC 2025: generative AI in 1.5 million reports",
+   "iso3": "USA",
+   "place": "Alexandria, Virginia",
+   "ll": [
+    -77.0469,
+    38.8048
+   ],
+   "y0": 2023,
+   "y1": 2025,
+   "yf": 2026,
+   "kind": "abuse material",
+   "status": "reported",
+   "who": "NCMEC CyberTipline",
+   "d": "NCMEC's first look at 2025 data: over 1.5 million reports had a generative-AI connection, 1.1 million of them from Amazon AI Services with no actionable information. Excluding those: 12,000+ involved CSAM in AI training data, 7,000+ users generating or possessing AI CSAM, 30,000+ attempts to generate CSAM from uploaded images, 145,000+ altering CSAM files. NCMEC says more than 275 victims of AI-generated CSAM have been identified since 2023.",
+   "cite": "NCMEC blog 'The work never stops: first look at NCMEC's 2025 data' (2026); CyberTipline data page",
+   "url": "https://www.missingkids.org/blog/2026/the-work-never-stops-first-look-at-ncmecs-2025-data",
+   "url2": "https://www.missingkids.org/cybertiplinedata",
+   "setting": "online"
+  },
+  {
+   "id": "esp-almendralejo-deepfakes-2023",
+   "n": "Spanish town: boys made AI nude images of 20 girls",
+   "iso3": "ESP",
+   "place": "Southern Spain",
+   "ll": [
+    -3.7038,
+    40.4168
+   ],
+   "llc": true,
+   "y1": 2023,
+   "yf": 2023,
+   "kind": "abuse material",
+   "status": "reported",
+   "who": "Teenage boys using a 'nudify' website",
+   "d": "In 2023 boys in a town in southern Spain used a 'nudify' website to make sexual deepfakes depicting at least 20 local girls aged 11 to 17.",
+   "cite": "Wikipedia, 'Deepfake pornography'",
+   "url": "https://en.wikipedia.org/wiki/Deepfake_pornography",
+   "setting": "online"
+  },
+  {
+   "id": "usa-kik-groups-2016",
+   "n": "Kik Messenger — groups distributing abuse material",
+   "iso3": "CAN",
+   "also": [
+    "USA",
+    "GBR"
+   ],
+   "place": "Waterloo, Ontario (Kik Interactive)",
+   "ll": [
+    -80.5204,
+    43.4643
+   ],
+   "y0": 2015,
+   "y1": 2016,
+   "yf": 2016,
+   "kind": "abuse material",
+   "status": "reported",
+   "who": "Kik Messenger",
+   "d": "In March 2016 the arrest of a registered sex offender uncovered more than 200 Kik groups dedicated to distributing and selling child abuse material. A UK police investigator said delays in getting information from the company increased risk to children. Kik joined the Virtual Global Taskforce in 2015 and added image-detection in October 2016.",
+   "cite": "Wikipedia, 'Kik Messenger'",
+   "url": "https://en.wikipedia.org/wiki/Kik_Messenger",
+   "setting": "online"
+  },
+  {
+   "id": "usa-operation-protect-our-children",
+   "n": "Operation Protect Our Children — domain seizures (2011)",
+   "iso3": "USA",
+   "place": "United States (ICE Cyber Crimes Center)",
+   "ll": [
+    -77.0369,
+    38.9072
+   ],
+   "y1": 2011,
+   "yf": 2011,
+   "kind": "abuse material",
+   "status": "reported",
+   "who": "US ICE HSI",
+   "cover": "Seizure of one shared domain redirected about 84,000 unrelated subdomains to a seizure warning.",
+   "d": "In February 2011 ICE and the DOJ seized 10 domain names advertising and distributing child abuse material. One seized domain belonged to a shared DNS provider, so all 84,000 of its subdomains, mostly unrelated, briefly displayed the seizure notice.",
+   "cite": "Wikipedia, 'Operation Protect Our Children'",
+   "url": "https://en.wikipedia.org/wiki/Operation_Protect_Our_Children",
+   "setting": "online"
+  }
+ ],
+ "nets": [
+  {
+   "k": "welcome-to-video",
+   "n": "Welcome to Video",
+   "type": "online",
+   "iso3": "KOR",
+   "hq": "South Korea",
+   "ll": [
+    127.9,
+    36.5
+   ],
+   "y0": 2015,
+   "y1": 2018,
+   "status": "dismantled",
+   "reach": [
+    "KOR",
+    "USA",
+    "GBR",
+    "IRL",
+    "DEU",
+    "ESP",
+    "SAU",
+    "ARE",
+    "CZE",
+    "CAN",
+    "HUN"
+   ],
+   "reach_note": "US officials: arrests in 38 countries; only those listed are named in the source (Hungary via the case of its ambassador to Peru).",
+   "d": "Darknet video site paid in Bitcoin, about 1.2 million members; seized 2018. 337 arrests in 38 countries announced October 2019. Start year 2015 is not in the sources opened and is omitted from cases.",
+   "cite": "Wikipedia, 'Welcome to Video case'",
+   "url": "https://en.wikipedia.org/wiki/Welcome_to_Video_case"
+  },
+  {
+   "k": "playpen",
+   "n": "Playpen",
+   "type": "online",
+   "iso3": "USA",
+   "hq": "United States (Tor; Florida administrator)",
+   "ll": [
+    -81.0,
+    28.5
+   ],
+   "y0": 2014,
+   "y1": 2015,
+   "status": "dismantled",
+   "reach": [
+    "USA"
+   ],
+   "reach_est": [],
+   "reach_note": "Europol: 368 suspects arrested or convicted in Europe by May 2017 (countries not listed).",
+   "d": "Tor forum with over 215,000 users; FBI ran it 19 Feb–4 Mar 2015 (Operation Pacifier) and unmasked users with malware; 956 arrests.",
+   "cite": "Europol 5 May 2017; Wikipedia",
+   "url": "https://en.wikipedia.org/wiki/Playpen_(website)"
+  },
+  {
+   "k": "freedom-hosting",
+   "n": "Freedom Hosting",
+   "type": "online",
+   "iso3": "IRL",
+   "hq": "Dublin (operator)",
+   "ll": [
+    -6.2603,
+    53.3498
+   ],
+   "y0": 2008,
+   "y1": 2013,
+   "status": "dismantled",
+   "reach": [
+    "IRL",
+    "FRA",
+    "USA"
+   ],
+   "d": "Largest Tor web host in 2013, hosting Lolita City and other abuse sites; operator sentenced in the US to 27 years (2021).",
+   "cite": "Wikipedia, 'Freedom Hosting'",
+   "url": "https://en.wikipedia.org/wiki/Freedom_Hosting"
+  },
+  {
+   "k": "dreamboard",
+   "n": "Dreamboard",
+   "type": "online",
+   "iso3": "USA",
+   "hq": "Shreveport, Louisiana (servers)",
+   "ll": [
+    -93.7502,
+    32.5252
+   ],
+   "y0": 2008,
+   "y1": 2011,
+   "status": "dismantled",
+   "reach": [
+    "USA",
+    "CAN",
+    "DNK",
+    "ECU",
+    "FRA",
+    "DEU",
+    "HUN",
+    "KEN",
+    "NLD",
+    "PHL",
+    "QAT",
+    "SRB",
+    "SWE",
+    "CHE"
+   ],
+   "d": "Invitation-only board, about 600 members; 72 charged in Operation Delego (2011). Start year is approximate (investigation launched 2009).",
+   "cite": "Wikipedia, 'Operation Delego'",
+   "url": "https://en.wikipedia.org/wiki/Operation_Delego"
+  },
+  {
+   "k": "boylovers",
+   "n": "Boylover forum",
+   "type": "online",
+   "iso3": "NLD",
+   "hq": "Netherlands (server)",
+   "ll": [
+    4.8264,
+    52.442
+   ],
+   "y1": 2009,
+   "status": "dismantled",
+   "reach": [
+    "NLD",
+    "GBR",
+    "AUS",
+    "CAN",
+    "ITA",
+    "NZL",
+    "USA",
+    "FRA",
+    "ESP"
+   ],
+   "reach_note": "Europol sent intelligence to 25 EU states and 8 others; France and Spain from Operation Atlantic follow-up.",
+   "d": "'Discussion-only' forum used to make contact before sharing abuse material privately; 670 suspects, 184 arrests, 230 children safeguarded (Operation Rescue, 2011).",
+   "cite": "Europol, 16 Mar 2011",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/more-200-children-identified-and-rescued-in-worldwide-police-operation"
+  },
+  {
+   "k": "childs-play",
+   "n": "Childs Play",
+   "type": "online",
+   "iso3": "CAN",
+   "hq": "North Bay, Ontario (owner)",
+   "ll": [
+    -79.4608,
+    46.3091
+   ],
+   "y0": 2016,
+   "y1": 2017,
+   "status": "dismantled",
+   "reach": [
+    "CAN",
+    "USA",
+    "AUS"
+   ],
+   "d": "Tor forum; operated by Queensland Police Task Force Argos for about 11 months after the owner's arrest.",
+   "cite": "Wikipedia, 'Childs Play (website)'",
+   "url": "https://en.wikipedia.org/wiki/Childs_Play_(website)"
+  },
+  {
+   "k": "elysium",
+   "n": "Elysium",
+   "type": "online",
+   "iso3": "DEU",
+   "hq": "Bad Camberg, Hesse (servers)",
+   "ll": [
+    8.2667,
+    50.3
+   ],
+   "y0": 2016,
+   "y1": 2017,
+   "status": "convicted",
+   "reach": [
+    "DEU",
+    "AUT"
+   ],
+   "reach_note": "Chat groups in German, French, Spanish and Italian; Europol partners included New Zealand, Italy and Australia.",
+   "d": "Darknet forum with over 87,000 members used to share material and arrange abuse; four operators convicted 2019.",
+   "cite": "Europol, 7 Jul 2017",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/14-arrests-in-takedown-of-massive-child-sexual-abuse-platform"
+  },
+  {
+   "k": "boystown",
+   "n": "Boystown",
+   "type": "online",
+   "iso3": "DEU",
+   "hq": "Germany (administrators); server registered in Moldova",
+   "ll": [
+    8.7575,
+    51.7189
+   ],
+   "y0": 2019,
+   "y1": 2021,
+   "status": "convicted",
+   "reach": [
+    "DEU",
+    "PRY"
+   ],
+   "reach_note": "Taskforce members: Netherlands, Sweden, Australia, Canada, US; server registered in Moldova (Wikipedia).",
+   "d": "Tor platform with 400,000 registered users; four German administrators sentenced 7–12 years (2022).",
+   "cite": "Europol, 3 May 2021",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/4-arrested-in-takedown-of-dark-web-child-abuse-platform-some-half-million-users"
+  },
+  {
+   "k": "kidflix",
+   "n": "Kidflix",
+   "type": "online",
+   "iso3": "DEU",
+   "hq": "Germany (server seized by German and Dutch authorities)",
+   "ll": [
+    11.582,
+    48.1351
+   ],
+   "y0": 2021,
+   "y1": 2025,
+   "status": "dismantled",
+   "reach": [
+    "ALB",
+    "AUS",
+    "AUT",
+    "BEL",
+    "BGR",
+    "CAN",
+    "COL",
+    "HRV",
+    "CYP",
+    "CZE",
+    "DNK",
+    "EST",
+    "FIN",
+    "FRA",
+    "DEU",
+    "GEO",
+    "GRC",
+    "HUN",
+    "ISL",
+    "IRL",
+    "ITA",
+    "LVA",
+    "LTU",
+    "LUX",
+    "MLT",
+    "NLD",
+    "NZL",
+    "NOR",
+    "POL",
+    "PRT",
+    "ROU",
+    "SRB",
+    "SVK",
+    "ESP",
+    "SWE",
+    "CHE",
+    "GBR",
+    "USA"
+   ],
+   "reach_note": "The 38 countries whose authorities took part in Operation Stream.",
+   "d": "Paid streaming platform, 1.8 million users (2022–2025), 91,000 videos; 1,393 suspects identified, 79 arrested.",
+   "cite": "Europol, 2 Apr 2025",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/global-crackdown-kidflix-major-child-sexual-exploitation-platform-almost-two-million-users"
+  },
+  {
+   "k": "nth-room",
+   "n": "Nth Room / Doctor's Room",
+   "type": "online",
+   "iso3": "KOR",
+   "hq": "South Korea (Telegram)",
+   "ll": [
+    126.978,
+    37.5665
+   ],
+   "y0": 2018,
+   "y1": 2020,
+   "status": "convicted",
+   "reach": [
+    "KOR"
+   ],
+   "d": "Telegram blackmail rings selling coerced sexual material of women and girls; leaders sentenced to 42 and 34 years.",
+   "cite": "Wikipedia, 'Nth Room case'",
+   "url": "https://en.wikipedia.org/wiki/Nth_room_case"
+  },
+  {
+   "k": "telegram",
+   "n": "Telegram",
+   "type": "online",
+   "iso3": "ARE",
+   "hq": "Dubai",
+   "ll": [
+    55.2708,
+    25.2048
+   ],
+   "y0": 2013,
+   "status": "active",
+   "reach": [
+    "KOR",
+    "FRA"
+   ],
+   "reach_note": "Cases documented here: Nth Room and 2024 school deepfakes (South Korea), French charges against its founder. IWF says it confirmed thousands of abuse-imagery reports on Telegram since 2022.",
+   "d": "Messaging platform; founder charged in France in August 2024 incl. complicity in distribution of CSAM; joined IWF in December 2024. Legal domicile Tortola (BVI), operational centre Dubai (Wikipedia).",
+   "cite": "Wikipedia; IWF 4 Dec 2024",
+   "url": "https://www.iwf.org.uk/news-media/news/telegram-joins-iwf-in-child-sexual-abuse-imagery-crackdown/"
+  },
+  {
+   "k": "764",
+   "n": "764",
+   "type": "online",
+   "iso3": "USA",
+   "hq": "Stephenville, Texas (founded)",
+   "ll": [
+    -98.2023,
+    32.2207
+   ],
+   "y0": 2021,
+   "status": "active",
+   "reach": [
+    "USA",
+    "CAN",
+    "NZL",
+    "DEU",
+    "ROU",
+    "SWE",
+    "GRC"
+   ],
+   "reach_note": "Der Spiegel: 764-related arrests in at least eight countries. Listed as terrorist entity by Canada and New Zealand.",
+   "d": "Online network extorting minors into producing abuse material and self-harm; fragmented into subgroups (CVLT, 676, etc.) within 'The Com'.",
+   "cite": "Wikipedia, '764 (organization)'",
+   "url": "https://en.wikipedia.org/wiki/764_(organization)"
+  },
+  {
+   "k": "the-com",
+   "n": "The Com",
+   "type": "online",
+   "iso3": "USA",
+   "hq": "Decentralised",
+   "ll": [
+    -98.5,
+    39.8
+   ],
+   "y0": 2020,
+   "status": "active",
+   "reach": [
+    "USA",
+    "FRA",
+    "GBR",
+    "NZL",
+    "CAN",
+    "AUS"
+   ],
+   "reach_note": "Project COMPASS covers 28 countries.",
+   "d": "Transnational network of online groups (incl. 764, CVLT) involved in sextortion, child sexual exploitation, swatting and other crimes; FBI public warning 23 July 2025; Europol Project COMPASS since 2025. Start year approximate.",
+   "cite": "Europol, 26 Feb 2026; Wikipedia, 'The Com'",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/project-compass-first-operational-results-against-com-network"
+  },
+  {
+   "k": "osec-philippines",
+   "n": "Livestreamed abuse of children in the Philippines (OSEC)",
+   "type": "online",
+   "iso3": "PHL",
+   "hq": "Philippines (household-level traffickers)",
+   "ll": [
+    121.774,
+    12.8797
+   ],
+   "status": "active",
+   "reach": [
+    "PHL",
+    "AUS",
+    "GBR",
+    "USA",
+    "NLD"
+   ],
+   "reach_note": "Buyers documented from Australia, UK, US and (Sweetie sting) 13 countries; Europol 2024 sprint: buyers in 24 countries.",
+   "d": "Not one organisation: thousands of local traffickers, often parents or relatives, paid by foreign buyers to livestream abuse. IJM: 1 in 100 Filipino children affected in 2022.",
+   "cite": "IJM UK; Europol 2 Jul 2024",
+   "url": "https://www.ijmuk.org/our-work/cybersex-trafficking"
+  },
+  {
+   "k": "nigeria-sextortion",
+   "n": "Nigeria-based financial sextortion",
+   "type": "online",
+   "iso3": "NGA",
+   "hq": "Lagos",
+   "ll": [
+    3.3792,
+    6.5244
+   ],
+   "status": "active",
+   "reach": [
+    "NGA",
+    "USA"
+   ],
+   "d": "Offenders posing as young women on social media extort teenage boys for money; NCMEC counts at least three dozen US teenage boys who died by suicide after financial sextortion since 2021 (all offender nationalities).",
+   "cite": "Wikipedia 'Death of Jordan DeMay'; NCMEC 2025",
+   "url": "https://en.wikipedia.org/wiki/Death_of_Jordan_DeMay"
+  },
+  {
+   "k": "sextortion-global",
+   "n": "Sextortion targeting children (general)",
+   "type": "online",
+   "iso3": "ROU",
+   "hq": "various",
+   "ll": [
+    21.2087,
+    45.7489
+   ],
+   "status": "active",
+   "reach": [
+    "ROU",
+    "GBR",
+    "NGA",
+    "USA"
+   ],
+   "d": "Placeholder grouping for individual sextortion prosecutions; IWF: 92% of sextortion reports it assessed 2023–2025 involved boys.",
+   "cite": "Europol 5 Sep 2017; IWF 2025",
+   "url": "https://www.iwf.org.uk/annual-data-insights-report-2025/emerging-and-persistent-harms/sexually-coerced-extortion/"
+  },
+  {
+   "k": "nrw-complexes",
+   "n": "North Rhine-Westphalia abuse complexes (Lügde, Bergisch Gladbach)",
+   "type": "online",
+   "iso3": "DEU",
+   "hq": "North Rhine-Westphalia",
+   "ll": [
+    7.1322,
+    50.9918
+   ],
+   "y0": 2008,
+   "y1": 2021,
+   "status": "convicted",
+   "reach": [
+    "DEU",
+    "AUT"
+   ],
+   "d": "Linked series of investigations into men abusing children and sharing recordings in chat groups; Bergisch Gladbach alone produced 439 suspects. Münster complex (2020) not documented here — page not retrieved.",
+   "cite": "German Wikipedia",
+   "url": "https://de.wikipedia.org/wiki/Missbrauchskomplex_Bergisch_Gladbach"
+  }
+ ],
+ "flows": [
+  {
+   "id": "flow-money-aus-phl",
+   "n": "Australia → Philippines payments for livestreamed abuse",
+   "type": "money",
+   "to": "Philippines",
+   "a": [
+    151.2093,
+    -33.8688
+   ],
+   "b": [
+    121.774,
+    12.8797
+   ],
+   "iso_a": "AUS",
+   "iso_b": "PHL",
+   "y0": 2011,
+   "y1": 2020,
+   "net": "osec-philippines",
+   "d": "AUSTRAC alleged Westpac failed to vet transactions that could be linked to child exploitation and live child sex shows in the Philippines (A$1.3bn penalty, 2020); an Australian man paid a Filipino mother while directing abuse over Skype for nearly five years. IJM's 2020 study ranked Australians third among purchasers.",
+   "cite": "Wikipedia 'AUSTRAC'; 'Cybersex trafficking'",
+   "url": "https://en.wikipedia.org/wiki/AUSTRAC",
+   "from": "Australia"
+  },
+  {
+   "id": "flow-money-gbr-phl",
+   "n": "United Kingdom → Philippines demand for livestreamed abuse",
+   "type": "money",
+   "to": "Philippines",
+   "a": [
+    -0.1276,
+    51.5072
+   ],
+   "b": [
+    121.774,
+    12.8797
+   ],
+   "iso_a": "GBR",
+   "iso_b": "PHL",
+   "y1": 2023,
+   "net": "osec-philippines",
+   "d": "IJM UK states the UK is among the top three global consumers of livestreamed abuse of Filipino children.",
+   "cite": "IJM UK",
+   "url": "https://www.ijmuk.org/our-work/cybersex-trafficking",
+   "from": "United Kingdom"
+  },
+  {
+   "id": "flow-money-world-phl",
+   "n": "Buyers in 24 countries → Philippines (HSI data)",
+   "type": "money",
+   "to": "Philippines",
+   "a": [
+    4.3007,
+    52.0705
+   ],
+   "b": [
+    121.774,
+    12.8797
+   ],
+   "iso_a": "NLD",
+   "iso_b": "PHL",
+   "y0": 2012,
+   "y1": 2024,
+   "size": 12000,
+   "size_note": "about 12,000 customer accounts and 100 seller accounts over 12 years; 197 buyers identified",
+   "net": "osec-philippines",
+   "d": "Europol's 2024 sprint on US HSI data: chats between about 12,000 criminal customer accounts and 100 sellers in the Philippines; packages may lead 24 countries to 197 buyers. Origin point is The Hague (sprint host), not a buyer country.",
+   "cite": "Europol, 2 Jul 2024",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/operational-sprint-generates-197-new-leads-buyers-of-live-distant-child-abuse",
+   "from": "24 countries (Europe, North America)"
+  },
+  {
+   "id": "flow-money-usa-blr",
+   "n": "Buyers → Regpay, Minsk (via Latvian banks)",
+   "type": "money",
+   "to": "Minsk",
+   "a": [
+    -74.0,
+    40.7
+   ],
+   "b": [
+    27.5615,
+    53.9045
+   ],
+   "iso_a": "USA",
+   "iso_b": "BLR",
+   "y1": 2003,
+   "d": "Credit card payments for access to about 50 abuse websites run from Minsk were routed through Latvian banks; Florida firm Connections laundered money.",
+   "cite": "Wikipedia, 'Operation Falcon'",
+   "url": "https://en.wikipedia.org/wiki/Operation_Falcon_(child_pornography_investigation)",
+   "from": "Worldwide card buyers"
+  },
+  {
+   "id": "flow-money-world-kor",
+   "n": "Bitcoin payments → Welcome to Video, South Korea",
+   "type": "money",
+   "to": "South Korea",
+   "a": [
+    -77.0,
+    38.9
+   ],
+   "b": [
+    127.9,
+    36.5
+   ],
+   "iso_a": "USA",
+   "iso_b": "KOR",
+   "y1": 2018,
+   "size": 4000,
+   "size_note": "4,000 paying members; about ₩400 million (~US$360,000) received",
+   "net": "welcome-to-video",
+   "d": "Paying members in 38 countries bought points in Bitcoin; tracing these payments located the server and users.",
+   "cite": "Wikipedia, 'Welcome to Video case'",
+   "url": "https://en.wikipedia.org/wiki/Welcome_to_Video_case",
+   "from": "38 countries"
+  },
+  {
+   "id": "flow-money-nga-usa",
+   "n": "Sextortion: Nigeria-based offenders ← US teenage victims",
+   "type": "money",
+   "to": "Lagos",
+   "a": [
+    -87.3956,
+    46.5436
+   ],
+   "b": [
+    3.3792,
+    6.5244
+   ],
+   "iso_a": "USA",
+   "iso_b": "NGA",
+   "y1": 2022,
+   "net": "nigeria-sextortion",
+   "d": "Lagos-based offenders demanded money from US teenagers after obtaining images; the Ogoshi brothers targeted hundreds of US teenagers and adults (DOJ).",
+   "cite": "Wikipedia, 'Sextortion' / 'Death of Jordan DeMay'",
+   "url": "https://en.wikipedia.org/wiki/Death_of_Jordan_DeMay",
+   "from": "United States (victims)"
+  },
+  {
+   "id": "flow-material-bgr",
+   "n": "Abuse material hosted in Bulgaria (IWF 2025)",
+   "type": "material",
+   "to": "Reported to IWF (UK)",
+   "a": [
+    25.4858,
+    42.7339
+   ],
+   "b": [
+    0.1218,
+    52.2053
+   ],
+   "iso_a": "BGR",
+   "iso_b": "GBR",
+   "y1": 2025,
+   "size": 87959,
+   "size_note": "URLs actioned, 28% of world total",
+   "d": "Bulgaria hosted 87,959 URLs actioned by IWF in 2025, up from 9% share in 2024, driven by 'just a few particular sites'.",
+   "cite": "IWF 2025",
+   "url": "https://www.iwf.org.uk/annual-data-insights-report-2025/online-hosting/geographic-insights/",
+   "from": "Bulgaria (hosting)"
+  },
+  {
+   "id": "flow-material-usa",
+   "n": "Abuse material hosted in the United States (IWF 2025)",
+   "type": "material",
+   "to": "Reported to IWF (UK)",
+   "a": [
+    -98.5,
+    39.8
+   ],
+   "b": [
+    0.1218,
+    52.2053
+   ],
+   "iso_a": "USA",
+   "iso_b": "GBR",
+   "y1": 2025,
+   "size": 49021,
+   "size_note": "16% of URLs",
+   "d": "US hosting services held 49,021 URLs actioned by IWF in 2025.",
+   "cite": "IWF 2025",
+   "url": "https://www.iwf.org.uk/annual-data-insights-report-2025/online-hosting/geographic-insights/",
+   "from": "United States (hosting)"
+  },
+  {
+   "id": "flow-material-nld",
+   "n": "Abuse material hosted in the Netherlands (IWF 2025)",
+   "type": "material",
+   "to": "Reported to IWF (UK)",
+   "a": [
+    5.2913,
+    52.1326
+   ],
+   "b": [
+    0.1218,
+    52.2053
+   ],
+   "iso_a": "NLD",
+   "iso_b": "GBR",
+   "y0": 2018,
+   "y1": 2025,
+   "size": 33788,
+   "size_note": "11% of URLs in 2025; 29% in 2024 (83,037); 33% in 2023 (91,572); 41% in 2021",
+   "d": "The Netherlands was the largest host of IWF-actioned material for years (47% in 2018); its share fell to 11% in 2025. INHOPE 2025 still ranks it first for confirmed CSAM (36%).",
+   "cite": "IWF 2018–2025; INHOPE 2025",
+   "url": "https://www.iwf.org.uk/annual-data-insights-report-2025/online-hosting/geographic-insights/",
+   "from": "Netherlands (hosting)"
+  },
+  {
+   "id": "flow-material-rou",
+   "n": "Abuse material hosted in Romania (IWF/INHOPE 2025)",
+   "type": "material",
+   "to": "Reported to IWF / INHOPE",
+   "a": [
+    24.9668,
+    45.9432
+   ],
+   "b": [
+    0.1218,
+    52.2053
+   ],
+   "iso_a": "ROU",
+   "iso_b": "GBR",
+   "y1": 2025,
+   "size": 21188,
+   "size_note": "IWF URLs; INHOPE: 14% of confirmed CSAM",
+   "d": "Romania hosted 21,188 IWF-actioned URLs (7%) in 2025 and 14% of INHOPE-confirmed CSAM.",
+   "cite": "IWF 2025; INHOPE 2025",
+   "url": "https://inhope.org/EN/annual-report/2025",
+   "from": "Romania (hosting)"
+  },
+  {
+   "id": "flow-material-fra",
+   "n": "Abuse material hosted in France (IWF 2025)",
+   "type": "material",
+   "to": "Reported to IWF (UK)",
+   "a": [
+    2.2137,
+    46.2276
+   ],
+   "b": [
+    0.1218,
+    52.2053
+   ],
+   "iso_a": "FRA",
+   "iso_b": "GBR",
+   "y1": 2025,
+   "size": 20475,
+   "d": "France's share rose from 1% (2024) to 7% in 2025.",
+   "cite": "IWF 2025",
+   "url": "https://www.iwf.org.uk/annual-data-insights-report-2025/online-hosting/geographic-insights/",
+   "from": "France (hosting)"
+  },
+  {
+   "id": "flow-material-deu",
+   "n": "Abuse material hosted in Germany (IWF 2025)",
+   "type": "material",
+   "to": "Reported to IWF (UK)",
+   "a": [
+    10.4515,
+    51.1657
+   ],
+   "b": [
+    0.1218,
+    52.2053
+   ],
+   "iso_a": "DEU",
+   "iso_b": "GBR",
+   "y1": 2025,
+   "size": 18401,
+   "d": "6% of IWF-actioned URLs in 2025.",
+   "cite": "IWF 2025",
+   "url": "https://www.iwf.org.uk/annual-data-insights-report-2025/online-hosting/geographic-insights/",
+   "from": "Germany (hosting)"
+  },
+  {
+   "id": "flow-material-mys",
+   "n": "Abuse material hosted in Malaysia (IWF 2025)",
+   "type": "material",
+   "to": "Reported to IWF (UK)",
+   "a": [
+    101.9758,
+    4.2105
+   ],
+   "b": [
+    0.1218,
+    52.2053
+   ],
+   "iso_a": "MYS",
+   "iso_b": "GBR",
+   "y1": 2025,
+   "size": 17046,
+   "d": "5% of IWF-actioned URLs in both 2024 and 2025.",
+   "cite": "IWF 2025",
+   "url": "https://www.iwf.org.uk/annual-data-insights-report-2025/online-hosting/geographic-insights/",
+   "from": "Malaysia (hosting)"
+  },
+  {
+   "id": "flow-material-hkg",
+   "n": "Abuse material hosted in Hong Kong (IWF 2023–2024)",
+   "type": "material",
+   "to": "Reported to IWF (UK)",
+   "a": [
+    114.1694,
+    22.3193
+   ],
+   "b": [
+    0.1218,
+    52.2053
+   ],
+   "iso_a": "HKG",
+   "iso_b": "GBR",
+   "y0": 2023,
+   "y1": 2025,
+   "size": 24063,
+   "size_note": "2024 (8%); 25,576 in 2023 (9%); 1,959 in 2025",
+   "d": "Hong Kong was the third/fourth largest host in 2023–2024 before falling sharply in 2025.",
+   "cite": "IWF 2023, 2024, 2025",
+   "url": "https://www.iwf.org.uk/annual-data-insights-report-2024/data-and-insights/geographical-hosting-urls/",
+   "from": "Hong Kong (hosting)"
+  },
+  {
+   "id": "flow-offenders-kor-world",
+   "n": "Welcome to Video: operator in South Korea → arrests in 38 countries",
+   "type": "offenders",
+   "to": "Arrest countries incl. US, UK, Germany",
+   "a": [
+    127.9,
+    36.5
+   ],
+   "b": [
+    -77.0,
+    38.9
+   ],
+   "iso_a": "KOR",
+   "iso_b": "USA",
+   "y1": 2019,
+   "size": 337,
+   "net": "welcome-to-video",
+   "d": "337 users arrested in 38 countries (223 Koreans).",
+   "cite": "Wikipedia, 'Welcome to Video case'",
+   "url": "https://en.wikipedia.org/wiki/Welcome_to_Video_case",
+   "from": "South Korea (operator)"
+  },
+  {
+   "id": "flow-offenders-deu-world-kidflix",
+   "n": "Kidflix: platform seized in Germany → suspects in 38 countries",
+   "type": "offenders",
+   "to": "38 participating countries",
+   "a": [
+    11.582,
+    48.1351
+   ],
+   "b": [
+    -0.1276,
+    51.5072
+   ],
+   "iso_a": "DEU",
+   "iso_b": "GBR",
+   "y1": 2025,
+   "size": 1393,
+   "size_note": "suspects identified; 79 arrested",
+   "net": "kidflix",
+   "d": "Operation Stream intelligence went to 38 countries; Wikipedia reports 30 arrests in the UK from 60 identified.",
+   "cite": "Europol 2 Apr 2025; Wikipedia 'Kidflix'",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/global-crackdown-kidflix-major-child-sexual-exploitation-platform-almost-two-million-users",
+   "from": "Germany (platform)"
+  },
+  {
+   "id": "flow-offenders-usa-gbr-ore",
+   "n": "Landslide records: US → UK (Operation Ore)",
+   "type": "offenders",
+   "to": "United Kingdom",
+   "a": [
+    -97.3308,
+    32.7555
+   ],
+   "b": [
+    -1.5,
+    52.5
+   ],
+   "iso_a": "USA",
+   "iso_b": "GBR",
+   "y0": 1999,
+   "y1": 2002,
+   "size": 7272,
+   "size_note": "names passed by FBI to UK police",
+   "d": "FBI passed 7,272 UK names from the Landslide database, leading to 3,744 arrests and 1,451 convictions; some names were later found to be card-fraud victims.",
+   "cite": "Wikipedia, 'Operation Ore'",
+   "url": "https://en.wikipedia.org/wiki/Operation_Ore",
+   "from": "Fort Worth, Texas"
+  },
+  {
+   "id": "flow-offenders-aus-phl-scully",
+   "n": "Australian offender relocates to the Philippines",
+   "type": "offenders",
+   "to": "Mindanao",
+   "a": [
+    144.9631,
+    -37.8136
+   ],
+   "b": [
+    125.1276,
+    8.1575
+   ],
+   "iso_a": "AUS",
+   "iso_b": "PHL",
+   "y0": 2011,
+   "y1": 2015,
+   "size": 1,
+   "d": "Peter Scully fled Melbourne for the Philippines in 2011 and ran a pay-per-view abuse site there; life sentence 2018.",
+   "cite": "Wikipedia, 'Peter Scully'",
+   "url": "https://en.wikipedia.org/wiki/Peter_Scully",
+   "from": "Melbourne"
+  },
+  {
+   "id": "flow-offenders-usa-geo",
+   "n": "US and Australian buyers commission abuse material in Tbilisi",
+   "type": "offenders",
+   "to": "Tbilisi",
+   "a": [
+    -98.5,
+    39.8
+   ],
+   "b": [
+    44.7833,
+    41.7151
+   ],
+   "iso_a": "USA",
+   "iso_b": "GEO",
+   "y1": 2019,
+   "d": "American and Australian citizens were among 11 arrested for arranging production of sexual images of girls in Tbilisi.",
+   "cite": "Europol 20 Sep 2019",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/11-arrested-in-child-abuse-network-crackdown-in-georgia",
+   "from": "United States / Australia"
+  },
+  {
+   "id": "flow-offenders-nzl-pry-boystown",
+   "n": "Boystown administrator arrested in Paraguay",
+   "type": "offenders",
+   "to": "Paraguay",
+   "a": [
+    10.4515,
+    51.1657
+   ],
+   "b": [
+    -58.4438,
+    -23.4425
+   ],
+   "iso_a": "DEU",
+   "iso_b": "PRY",
+   "y1": 2021,
+   "size": 1,
+   "net": "boystown",
+   "d": "One of Boystown's German administrators was living in Paraguay and arrested there in April 2021.",
+   "cite": "Europol 3 May 2021",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/4-arrested-in-takedown-of-dark-web-child-abuse-platform-some-half-million-users",
+   "from": "Germany"
+  },
+  {
+   "id": "flow-material-czr-swe-atelier",
+   "n": "Czech-produced abuse images → buyers in the EU and Canada",
+   "type": "material",
+   "to": "EU and Canada",
+   "a": [
+    15.473,
+    49.8175
+   ],
+   "b": [
+    -79.3832,
+    43.6532
+   ],
+   "iso_a": "CZE",
+   "iso_b": "CAN",
+   "y1": 2014,
+   "d": "A Czech photographer and Swedish partner distributed images of about 70 children to customers abroad.",
+   "cite": "Europol 8 Sep 2014",
+   "url": "https://www.europol.europa.eu/media-press/newsroom/news/international-network-of-child-abuse-photographers-dismantled",
+   "from": "Czech Republic"
+  },
+  {
+   "id": "flow-material-ukr-can-azov",
+   "n": "Films made in Ukraine/Romania → distributed by Azov Films, Toronto",
+   "type": "material",
+   "to": "Toronto",
+   "a": [
+    34.1,
+    44.95
+   ],
+   "b": [
+    -79.3832,
+    43.6532
+   ],
+   "iso_a": "UKR",
+   "iso_b": "CAN",
+   "y0": 2005,
+   "y1": 2011,
+   "d": "Primary producers were in Crimea (Ukraine), Romania and Germany; the Toronto firm sold to customers in over 50 countries. Start year approximate.",
+   "cite": "Wikipedia, 'Project Spade'",
+   "url": "https://en.wikipedia.org/wiki/Project_Spade",
+   "from": "Crimea, Ukraine"
+  }
+ ],
+ "notes": "SOURCES & METHOD: The shared WebSearch budget ran out early in this task, and US federal sites (justice.gov, ice.gov, fbi.gov), AFP, AUSTRAC, BKA, IJM's study page and several news sites blocked automated fetches. Records therefore rest on: NCMEC (CyberTipline reports and country PDFs, downloaded and parsed in full), IWF annual data reports, INHOPE 2025, Europol press releases (full text read), the Guardian, and Wikipedia articles where the underlying DOJ/court/police sources could not be opened (cited as 'Wikipedia (citing ...)'). Where a case relies on Wikipedia, re-check it against the primary source before publishing. LAW ENFORCEMENT RUNNING SITES: Playpen (FBI, 19 Feb–4 Mar 2015), Operation Torpedo (FBI, 2 weeks, Nov 2012) and Childs Play (Task Force Argos, ~11 months, 2016–17) are recorded with officials=true and the details in 'cover'; Landslide was also briefly run as an FBI sting. GAPS / NOT VERIFIED: (1) DOJ Welcome to Video release (Oct 2019) not opened directly; figures come from Wikipedia citing BBC/DOJ. (2) Scale of Harm 2023 headline (~471,416 / 'nearly half a million' children) not opened; only IJM UK's '1 in 100 children in 2022' was read. (3) AUSTRAC 2019 financial-indicators report not opened. (4) Münster abuse complex (2020) — German Wikipedia page not found under tried titles; not recorded. (5) FBI sextortion figures (e.g. 13,000 reports, 20+ suicides) not opened; NCMEC figures used instead. (6) FBI 'nihilistic violent extremist' designation for 764 not verified — the record says DOJ calls 764 a terror network and Canada/New Zealand list it as terrorist (Wikipedia citing CBC 11 Dec 2025). (7) Romania/Cambodia livestream cases, Pampanga/Cebu specific prosecutions, Swedish/US/UK offenders paying for Philippines livestreams: no primary source opened, so only general flows recorded. (8) Kentucky/Texas Roblox suits verified only via Wikipedia. (9) Ofcom enforcement actions, eSafety transparency notices: not covered. (10) Operation Delego/Dreamboard and Torpedo rely on Wikipedia citing DOJ. (11) 'The Annex' not found in any source; omitted. (12) Africa, Middle East and Latin America are thin: NCMEC country table covers them statistically; specific cases only for Nigeria (sextortion), Panama, Brazil, Gulf Roblox bans, Georgia. SERIES: ncmec_reports_by_year 1998–2025 (1998–2023 exact from NCMEC appendix to OJJDP CY2023 transparency report; 2024 rounded 20.5m; 2025 exact 21,351,493); ncmec_by_country (2025, all 244 rows incl. Europol, Unknown, Grand total) plus 2024 and 2023 tables; ncmec_by_category 2019–2025; ncmec_gai; sextortion (NCMEC enticement 2019–2025, financial sextortion/day, IWF sextortion 2024–2025); iwf_actioned_by_year (2011, 2018–2025; 1996–2010 and 2012–2017 missing); iwf_hosting_by_country 2025 (70 rows) + 2024 full + 2023 top 10; iwf_ai; inhope (2024–2025). NCMEC country counts reflect where uploaders are located and are not a measure of abuse in a country (NCMEC's own caveat); IWF hosting shares move sharply when a few sites change host. PER-RECORD NOTES: phl-scale-of-harm-2023: The exact ~471,000/500,000 headline figure could not be opened directly (IJM study page returned 403); only the '1 in 100' figure was read. | esp-operation-tantalio: Europol says 5 European and 13 Central/South American countries were involved but does not list them, so 'also' is left empty.",
  "series": {
   "ncmec_reports_by_year": {
    "unit": "CyberTipline reports received",
