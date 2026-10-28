@@ -247,17 +247,26 @@ def main():
           len(case_out), 'cases,', len(ent), 'orgs,', len(groups), 'branches,', len(routes), 'channels')
 
 
+def para(t):
+    """Break a long write-up into paragraphs of about three sentences so it does not read as
+    one wall of text. Paragraph breaks the writer gave are kept. A sentence ends at a full stop
+    after a lower-case letter, digit or closing bracket/quote, followed by a capital."""
+    if not t:
+        return t
+    if '\n' in t:
+        return '<br><br>'.join(x.strip() for x in re.split(r'\n\s*\n|\n', t) if x.strip())
+    s = re.split(r'(?<=[a-z0-9\)\]\u2019\'"])\. (?=[A-Z\u00c0-\u00de])', t)
+    if len(t) > 650 and len(s) > 3:
+        s = [x if x.endswith('.') else x + '.' for x in s]
+        return '<br><br>'.join(' '.join(s[i:i + 3]) for i in range(0, len(s), 3))
+    return t
+
+
 def paragraphs(bts):
-    """Long write-ups read as one wall of text in a 300-pixel box. Break them into
-    paragraphs of three sentences. A sentence ends at a full stop after a lower-case letter,
-    digit or closing bracket/quote, followed by a capital, so initials such as 'J. P.' hold."""
     out = {}
     for k, v in bts.items():
         v = dict(v)
-        s = re.split(r'(?<=[a-z0-9\)\]\u2019\'"])\. (?=[A-Z\u00c0-\u00de])', v['d'])
-        if len(v['d']) > 650 and len(s) > 3:
-            s = [x if x.endswith('.') else x + '.' for x in s]
-            v['d'] = '<br><br>'.join(' '.join(s[i:i + 3]) for i in range(0, len(s), 3))
+        v['d'] = para(v['d'])
         out[k] = v
     return out
 
@@ -336,7 +345,7 @@ def build_patterns(pats, cases, ent, channels):
             if ch.get('org') in orgs and len(ch.get('p', [])) >= 2:
                 pl = ch.get('places') or []
                 links.append({'from': pl[0] if pl else '', 'to': pl[-1] if pl else '', 'label': ch['n'], 'years': ch.get('years', ''), 'p': ch['p']})
-        out.append({'id': p['id'], 'title': p['title'], 'kind': p.get('kind', ''), 'summary': p['summary'],
+        out.append({'id': p['id'], 'title': p['title'], 'kind': p.get('kind', ''), 'summary': para(p['summary']),
                     'orgs': orgs, 'roles': roles, 'cmap': cmap, 'cnotes': cn, 'links': links,
                     'timeline': tl, 'series': series, 'span': span, 'ncases': len(pc),
                     'confirmed_by': p.get('confirmed_by', []), 'uncertain': p.get('uncertain', ''),
