@@ -508,6 +508,7 @@ def edit_list():
     R("'<div class=\"wnote\">No archive reachable. This box reads <code>wire.json</code> '+",
       "'<div class=\"wnote\">No archive reachable. This box reads <code>secret_society_wire.json</code> '+")
     B('var W_ANCHOR = [', 'function _wireTopical(it){', JS_WIRE_VOCAB)
+    R("  return L.popup({maxWidth:w,", "  return L.popup({maxWidth:w, minWidth:Math.min(w,330),")
     B('function renderMethod(){', '/* One handler for every panel', JS_METHOD)
     return E
 
