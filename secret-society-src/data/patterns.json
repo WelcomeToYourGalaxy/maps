@@ -1,5 +1,35 @@
 [
  {
+  "id": "crime_inside_state",
+  "title": "Organised crime inside the state",
+  "kind": "capture",
+  "orgs": [],
+  "case_inf": [
+   "crime"
+  ],
+  "case_tgt": [
+   "gov"
+  ],
+  "role_by": {
+   "field": "lik",
+   "map": {
+    "established": "Proven",
+    "probable": "Charged or probable",
+    "possible": "Suspected",
+    "contested": "Disputed"
+   }
+  },
+  "no_hq": true,
+  "summary": "",
+  "implications": "",
+  "uncertain": "",
+  "roles": [],
+  "countries": [],
+  "links": [],
+  "timeline": [],
+  "confirmed_by": []
+ },
+ {
   "id": "china_long_arm",
   "title": "China's long arm abroad",
   "kind": "interference",
@@ -123,6 +153,36 @@
    }
   ],
   "implications": "Influence bought from abroad travels through the same doors as ordinary lobbying: consulting contracts, donations, community associations, paid trips and help at election time. The official who takes the money may not know who is really behind it, and voters almost never can. What makes it visible is registration. Australia (2018), the UK (2023) and Canada (2024) passed laws requiring people acting for foreign states to register, and most of the US cases here turned on someone failing to register. Things to watch for: consulting contracts with foreign state companies, sudden clusters of donations, and officials pressing one country's interests on arms, sanctions or extraditions. Watch too how cases end, since several here closed through pardons or dropped charges rather than a verdict."
+ },
+ {
+  "id": "states_inside_firms",
+  "title": "Governments inside companies",
+  "kind": "interference",
+  "orgs": [],
+  "case_inf": [
+   "state"
+  ],
+  "case_tgt": [
+   "company"
+  ],
+  "role_by": {
+   "field": "lik",
+   "map": {
+    "established": "Proven",
+    "probable": "Charged or probable",
+    "possible": "Suspected",
+    "contested": "Disputed"
+   }
+  },
+  "no_hq": true,
+  "summary": "",
+  "implications": "",
+  "uncertain": "",
+  "roles": [],
+  "countries": [],
+  "links": [],
+  "timeline": [],
+  "confirmed_by": []
  },
  {
   "id": "buying_parliaments",
@@ -386,6 +446,98 @@
   "case_role": "Where officials were paid"
  },
  {
+  "id": "industry_capture",
+  "title": "Industries inside their regulators",
+  "kind": "capture",
+  "orgs": [],
+  "case_inf": [
+   "corp"
+  ],
+  "case_tgt": [
+   "gov",
+   "intl"
+  ],
+  "case_match": "regulat|FDA|FAA|EPA|BaFin|inspector|safety|watchdog|revolving|lobby|model bill|COP2|climate talks|tobacco|Philip Morris|glyphosate|Monsanto|Fukushima|Grenfell|nuclear|Ombudsman|Agency|opioid|CDC|copy",
+  "role_by": {
+   "field": "lik",
+   "map": {
+    "established": "Proven",
+    "probable": "Charged or probable",
+    "possible": "Suspected",
+    "contested": "Disputed"
+   }
+  },
+  "no_hq": true,
+  "summary": "",
+  "implications": "",
+  "uncertain": "",
+  "roles": [],
+  "countries": [],
+  "links": [],
+  "timeline": [],
+  "confirmed_by": []
+ },
+ {
+  "id": "crime_inside_firms",
+  "title": "Criminal money inside banks and firms",
+  "kind": "capture",
+  "orgs": [],
+  "case_inf": [
+   "crime"
+  ],
+  "case_tgt": [
+   "company"
+  ],
+  "role_by": {
+   "field": "lik",
+   "map": {
+    "established": "Proven",
+    "probable": "Charged or probable",
+    "possible": "Suspected",
+    "contested": "Disputed"
+   }
+  },
+  "no_hq": true,
+  "summary": "",
+  "implications": "",
+  "uncertain": "",
+  "roles": [],
+  "countries": [],
+  "links": [],
+  "timeline": [],
+  "confirmed_by": []
+ },
+ {
+  "id": "company_inside_company",
+  "title": "Companies inside other companies",
+  "kind": "interference",
+  "orgs": [],
+  "case_inf": [
+   "corp"
+  ],
+  "case_tgt": [
+   "company"
+  ],
+  "role_by": {
+   "field": "lik",
+   "map": {
+    "established": "Proven",
+    "probable": "Charged or probable",
+    "possible": "Suspected",
+    "contested": "Disputed"
+   }
+  },
+  "no_hq": true,
+  "summary": "",
+  "implications": "",
+  "uncertain": "",
+  "roles": [],
+  "countries": [],
+  "links": [],
+  "timeline": [],
+  "confirmed_by": []
+ },
+ {
   "id": "spyware_elections",
   "title": "Spyware and elections for hire",
   "kind": "interference",
@@ -503,7 +655,7 @@
  },
  {
   "id": "capture_intl_bodies",
-  "title": "Governments and industries inside international bodies",
+  "title": "Inside the international bodies",
   "kind": "capture",
   "orgs": [
    "cicig",
@@ -617,7 +769,20 @@
     "title": "US v. Webb et al. (FIFA), E.D.N.Y."
    }
   ],
-  "implications": "These bodies exist so countries can trust shared rules: a wanted notice, a health warning, a country ranking. When a member government leads or funds the body, it can try to turn those tools on its critics, and the person affected may be a dissident stopped at a foreign airport who never learns why. When an industry or a private donor shapes priorities, the advice reaches health ministries that copy it. The checks that worked here came from inside rules and outside pressure: Interpol's refugee and political-notice rules, French prosecutors, US courts. Watch who funds, staffs and leads these bodies, and whether they publish their decisions."
+  "implications": "These bodies exist so countries can trust shared rules: a wanted notice, a health warning, a country ranking. When a member government leads or funds the body, it can try to turn those tools on its critics, and the person affected may be a dissident stopped at a foreign airport who never learns why. When an industry or a private donor shapes priorities, the advice reaches health ministries that copy it. The checks that worked here came from inside rules and outside pressure: Interpol's refugee and political-notice rules, French prosecutors, US courts. Watch who funds, staffs and leads these bodies, and whether they publish their decisions.",
+  "all_orgs": true,
+  "case_tgt": [
+   "intl"
+  ],
+  "role_by": {
+   "field": "lik",
+   "map": {
+    "established": "Proven",
+    "probable": "Charged or probable",
+    "possible": "Suspected",
+    "contested": "Disputed"
+   }
+  }
  },
  {
   "id": "islamist_movements",
@@ -748,6 +913,283 @@
    }
   ],
   "implications": "Lodges are lawful, and membership is not wrongdoing. What the record shows is a private meeting place shared by African presidents, their ministers and police chiefs, and French Masonic leaders, outside the view of parliaments in Paris or citizens in Libreville and Brazzaville. A Gabonese citizen could not easily know that the president and the police chief led lodges sponsored from France. Several of these presidents ruled for decades. Watch who meets new leaders after a coup or election, whether grand masterships still pass with the presidency, and whether any lodge publishes its officers."
+ },
+ {
+  "id": "banking_houses",
+  "title": "Banks and banking families",
+  "kind": "finance",
+  "orgs": [],
+  "case_inf": [
+   "money"
+  ],
+  "role_by": {
+   "field": "rel",
+   "map": {
+    "now": "Still going on",
+    "legacy": "Over, but still felt",
+    "past": "Historical"
+   }
+  },
+  "no_hq": true,
+  "summary": "",
+  "implications": "",
+  "uncertain": "",
+  "roles": [],
+  "countries": [],
+  "links": [],
+  "timeline": [
+   {
+    "year": 1803,
+    "event": "Barings and Hope & Co. finance the Louisiana Purchase",
+    "url": "https://en.wikipedia.org/wiki/Louisiana_Purchase"
+   },
+   {
+    "year": 1811,
+    "event": "Nathan Rothschild begins moving money to pay Wellington's army in the Peninsula",
+    "url": "https://en.wikipedia.org/wiki/Nathan_Mayer_Rothschild"
+   },
+   {
+    "year": 1825,
+    "event": "Rothschilds raise Brazil's independence-compensation loan; supply coin to the Bank of England in the panic",
+    "url": "https://en.wikipedia.org/wiki/Rothschild_family"
+   },
+   {
+    "year": 1835,
+    "event": "Rothschild and Montefiore arrange the £15m slave-owner compensation loan",
+    "url": "https://en.wikipedia.org/wiki/Slavery_Abolition_Act_1833"
+   },
+   {
+    "year": 1846,
+    "event": "Pamphlet by 'Satan' (Mathieu-Dairnvaell) launches the Waterloo myth about Nathan Rothschild",
+    "url": "https://en.wikipedia.org/wiki/Nathan_Mayer_Rothschild"
+   },
+   {
+    "year": 1875,
+    "event": "Disraeli buys the Khedive's Suez Canal shares with a £4m Rothschild loan",
+    "url": "https://en.wikipedia.org/wiki/Benjamin_Disraeli"
+   },
+   {
+    "year": 1879,
+    "event": "Evelyn Baring, as British controller, presses for the Khedive Ismail's removal",
+    "url": "https://en.wikipedia.org/wiki/Evelyn_Baring,_1st_Earl_of_Cromer"
+   },
+   {
+    "year": 1890,
+    "event": "Baring crisis: Bank of England organises rescue of Barings after Argentine losses",
+    "url": "https://en.wikipedia.org/wiki/Barings_Bank"
+   },
+   {
+    "year": 1895,
+    "event": "Morgan–Belmont syndicate sells 3.5m ounces of gold to the US Treasury",
+    "url": "https://en.wikipedia.org/wiki/Panic_of_1893"
+   },
+   {
+    "year": 1904,
+    "event": "Schiff and Takahashi agree Japanese war loans; about $200m raised on Wall Street",
+    "url": "https://en.wikipedia.org/wiki/Jacob_Schiff"
+   },
+   {
+    "year": 1907,
+    "event": "J.P. Morgan leads the private rescue in the Panic of 1907",
+    "url": "https://en.wikipedia.org/wiki/Panic_of_1907"
+   },
+   {
+    "year": 1910,
+    "event": "Jekyll Island meeting drafts the Aldrich Plan",
+    "url": "https://www.federalreservehistory.org/essays/jekyll-island-conference"
+   },
+   {
+    "year": 1913,
+    "event": "Pujo Committee report on the 'money trust'; Federal Reserve Act signed (23 Dec)",
+    "url": "https://en.wikipedia.org/wiki/Pujo_Committee"
+   },
+   {
+    "year": 1914,
+    "event": "Paul Warburg joins the first Federal Reserve Board; Morgan becomes Britain's US agent",
+    "url": "https://en.wikipedia.org/wiki/Paul_Warburg"
+   },
+   {
+    "year": 1915,
+    "event": "Morgan leads the $500m Anglo-French loan",
+    "url": "https://en.wikipedia.org/wiki/American_entry_into_World_War_I"
+   },
+   {
+    "year": 1919,
+    "event": "Lamont at the Paris Peace Conference for the US Treasury; Max Warburg and Carl Melchior advise the German delegation",
+    "url": "https://en.wikipedia.org/wiki/Thomas_W._Lamont"
+   },
+   {
+    "year": 1924,
+    "event": "Dawes Plan: Reichsbank put under a mixed creditor–German board; 800m-mark loan",
+    "url": "https://en.wikipedia.org/wiki/Dawes_Plan"
+   },
+   {
+    "year": 1927,
+    "event": "Morgan partner Dwight Morrow becomes US ambassador to Mexico",
+    "url": "https://en.wikipedia.org/wiki/Dwight_Morrow"
+   },
+   {
+    "year": 1930,
+    "event": "Bank for International Settlements opens in Basel",
+    "url": "https://en.wikipedia.org/wiki/Bank_for_International_Settlements"
+   },
+   {
+    "year": 1934,
+    "event": "Nye Committee begins hearings on bankers, munitions and US entry into WWI",
+    "url": "https://en.wikipedia.org/wiki/Nye_Committee"
+   },
+   {
+    "year": 1939,
+    "event": "BIS transfers Czechoslovakia's 23 tons of gold to the Reichsbank",
+    "url": "https://en.wikipedia.org/wiki/Bank_for_International_Settlements"
+   },
+   {
+    "year": 1943,
+    "event": "US seizes American Bosch as enemy property cloaked by the Wallenbergs' Enskilda Bank; Rockefeller Mexican Agriculture Program begins",
+    "url": "https://en.wikipedia.org/wiki/Stockholms_Enskilda_Bank"
+   },
+   {
+    "year": 1944,
+    "event": "Bretton Woods conference calls for the BIS to be liquidated (reversed 1948)",
+    "url": "https://en.wikipedia.org/wiki/Bank_for_International_Settlements"
+   },
+   {
+    "year": 1962,
+    "event": "Former Rothschild general manager Georges Pompidou becomes French Prime Minister",
+    "url": "https://en.wikipedia.org/wiki/Georges_Pompidou"
+   },
+   {
+    "year": 1966,
+    "event": "Quigley's Tragedy and Hope describes the Round Table 'network' and the BIS 'apex'",
+    "url": "http://www.carrollquigley.net/pdf/Tragedy_and_Hope.pdf"
+   },
+   {
+    "year": 1970,
+    "event": "Skousen's The Naked Capitalist recasts Quigley as proof of a world conspiracy",
+    "url": "https://en.wikipedia.org/wiki/Carroll_Quigley"
+   },
+   {
+    "year": 1973,
+    "event": "David Rockefeller founds the Trilateral Commission; Chase opens in Moscow",
+    "url": "https://en.wikipedia.org/wiki/David_Rockefeller"
+   },
+   {
+    "year": 1974,
+    "event": "G10 governors set up the Basel Committee on Banking Supervision",
+    "url": "https://en.wikipedia.org/wiki/Bank_for_International_Settlements"
+   },
+   {
+    "year": 1975,
+    "event": "Lazard's Felix Rohatyn heads New York City's Municipal Assistance Corporation",
+    "url": "https://en.wikipedia.org/wiki/Felix_Rohatyn"
+   },
+   {
+    "year": 1979,
+    "event": "Carter admits the Shah after Rockefeller's Chase campaign; US embassy in Tehran seized",
+    "url": "https://www.tpr.org/2020-01-02/carter-rockefeller-the-shah-what-1979-says-about-the-dangers-of-shadow-diplomacy"
+   },
+   {
+    "year": 1981,
+    "event": "Quigley's The Anglo-American Establishment (written c. 1949) published posthumously",
+    "url": "https://en.wikipedia.org/wiki/Carroll_Quigley"
+   },
+   {
+    "year": 1995,
+    "event": "Ex-Goldman co-chair Robert Rubin becomes Treasury Secretary; Barings collapses",
+    "url": "https://en.wikipedia.org/wiki/Robert_Rubin"
+   },
+   {
+    "year": 1999,
+    "event": "Glass–Steagall repealed; Rubin joins Citigroup",
+    "url": "https://en.wikipedia.org/wiki/Robert_Rubin"
+   },
+   {
+    "year": 2001,
+    "event": "Goldman Sachs swaps hide about €2.8bn of Greek debt",
+    "url": "https://thepressproject.gr/the-goldman-deal/"
+   },
+   {
+    "year": 2005,
+    "event": "Mensalão scandal: Banco Rural cash withdrawals for deputies",
+    "url": "https://en.wikipedia.org/wiki/Mensal%C3%A3o_scandal"
+   },
+   {
+    "year": 2006,
+    "event": "Paulson moves from Goldman CEO to Treasury; Draghi from Goldman to the Bank of Italy",
+    "url": "https://en.wikipedia.org/wiki/Henry_Paulson"
+   },
+   {
+    "year": 2008,
+    "event": "AIG rescue pays Goldman about $12.9bn; Citigroup's Froman sends Obama transition a cabinet list",
+    "url": "https://en.wikipedia.org/wiki/Henry_Paulson"
+   },
+   {
+    "year": 2010,
+    "event": "Kabul Bank collapses; Goldman's Greek swaps exposed",
+    "url": "https://www.rferl.org/a/24783476.html"
+   },
+   {
+    "year": 2011,
+    "event": "Monti and Papademos head unelected governments in Italy and Greece",
+    "url": "https://en.wikipedia.org/wiki/Mario_Monti"
+   },
+   {
+    "year": 2012,
+    "event": "Macron leaves Rothschild for the Élysée; Lazard advises Greece's bond swap; Kabul Bank inquiry report",
+    "url": "https://en.wikipedia.org/wiki/Emmanuel_Macron"
+   },
+   {
+    "year": 2013,
+    "event": "Royal Mail sale advised by Lazard; Credit Suisse tuna-bond loans to Mozambique",
+    "url": "https://www.nao.org.uk/reports/privatisation-of-royal-mail-plc/"
+   },
+   {
+    "year": 2014,
+    "event": "US sanctions Bank Rossiya as 'personal bank' of senior officials; Banco Espírito Santo collapses",
+    "url": "https://home.treasury.gov/news/press-releases/jl23331"
+   },
+   {
+    "year": 2016,
+    "event": "PrivatBank nationalised; Warburg cum-ex claim dropped after Olearius–Scholz meetings; JPMorgan settles 'Sons and Daughters'",
+    "url": "https://en.wikipedia.org/wiki/Ihor_Kolomoyskyi"
+   },
+   {
+    "year": 2017,
+    "event": "Macron, ex-Rothschild partner, elected President; Pérol acquittal upheld",
+    "url": "https://en.wikipedia.org/wiki/Emmanuel_Macron"
+   },
+   {
+    "year": 2020,
+    "event": "BlackRock manages Fed bond buying; Argentina hires Lazard for debt restructuring",
+    "url": "https://en.wikipedia.org/wiki/BlackRock"
+   },
+   {
+    "year": 2021,
+    "event": "Credit Suisse pleads guilty over Mozambique; US designates Kolomoisky",
+    "url": "https://en.wikipedia.org/wiki/Tuna_bonds"
+   },
+   {
+    "year": 2022,
+    "event": "BlackRock given role in Ukraine reconstruction; Scholz testifies to Hamburg cum-ex inquiry",
+    "url": "https://en.wikipedia.org/wiki/BlackRock"
+   },
+   {
+    "year": 2023,
+    "event": "Kolomoisky arrested; Caputo and Bausili (ex-JPMorgan) take over Argentina's economy and central bank",
+    "url": "https://en.wikipedia.org/wiki/Ihor_Kolomoyskyi"
+   },
+   {
+    "year": 2024,
+    "event": "Venezuela hires Rothschild on $154bn debt; Lisbon appeal court reinstates Operation Marquês charges; Salameh detained",
+    "url": "https://www.bloomberg.com/news/articles/2024-04-23/venezuela-hires-rothschild-as-adviser-on-defaulted-debt-pile"
+   },
+   {
+    "year": 2025,
+    "event": "Ex-Goldman Mark Carney and ex-BlackRock Friedrich Merz become heads of government; Sócrates–Salgado trial opens",
+    "url": "https://en.wikipedia.org/wiki/Mark_Carney"
+   }
+  ],
+  "confirmed_by": []
  },
  {
   "id": "round_table",

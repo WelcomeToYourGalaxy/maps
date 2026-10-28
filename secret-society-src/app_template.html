@@ -552,7 +552,9 @@ function wireFilters() {
 }
 function buildPat() {
   let h = '<div class="desc" style="margin-top:0">The cases are not isolated. The same people, banks, lodges and services keep turning up in different countries and decades. Choose one of these to colour the map by the part each country plays in it, and to read the story behind it.</div>';
-  h += PATS.map((p, i) => '<div class="pat' + (S.pat === p.id ? " on" : "") + '" data-pat="' + p.id + '" style="--pc:' + P.p[i % P.p.length] + '"><div class="pt">' + esc(p.title) + '</div><div class="pm">' + Object.keys(p.cmap).length + ' countries · ' + p.ncases + ' cases · ' + p.span[0] + '–' + p.span[1] + '</div></div>').join("");
+  const patRow = (p, i) => '<div class="pat' + (S.pat === p.id ? " on" : "") + '" data-pat="' + p.id + '" style="--pc:' + P.p[i % P.p.length] + '"><div class="pt">' + esc(p.title) + '</div><div class="pm">' + Object.keys(p.cmap).length + ' countries · ' + p.ncases + ' cases · ' + p.span[0] + '–' + p.span[1] + '</div></div>';
+  h += '<div class="flab">Going on today</div>' + PATS.map((p, i) => p.root ? "" : patRow(p, i)).join("") +
+       '<div class="flab">The background: where today\'s arrangements come from</div>' + PATS.map((p, i) => p.root ? patRow(p, i) : "").join("");
   if (S.pat) {
     const p = PAT_BY[S.pat];
     h = '<div class="leg">' + p.roles.map((r, i) => { const n = Object.values(p.cmap).filter((v) => v === i).length; return n ? '<div class="li"><span class="sw" style="background:' + P.p[i % P.p.length] + '"></span>' + esc(r) + '<span class="n">' + n + '</span></div>' : ""; }).join("") + '</div>' +
