@@ -74,8 +74,8 @@ BANDS = [['Severe', '#8c2f3e'], ['High', '#a15a66'], ['Moderate', '#7a6b92'], ['
 LENSES = [
   {'k': 'cond',  'label': 'How easily officials can be bent', 'accent': '#4f7d7a',
    'desc': 'The shading. From the Global Organized Crime Index: how often officials in a country use their posts for interests outside the state, and how weak the courts, police and watchdogs are that should stop them. It is scored the same way for every country, so the colours can be compared.'},
-  {'k': 'doc',   'label': 'What has come to light here', 'accent': '#8e4a5b',
-   'desc': 'Only what is on this map: a court verdict counts more than a news report, a leader more than a councillor, this decade more than the last century. It follows the filters. It is not a measure of how much infiltration a country has — it tracks how free its courts and press are to find any.'},
+  {'k': 'sea',   'label': 'Officials working for criminal networks', 'accent': '#8e4a5b',
+   'desc': 'The shading. The Global Organized Crime Index is an expert-led assessment of all 193 UN member states. One of its scores, "state-embedded actors", measures how far people inside the government, police, courts and army work with or for criminal groups, from 1 to 10. Because it covers every country with the same questions, it measures the whole field rather than the cases on this map. In its 2025 edition these insiders were the most widespread kind of criminal actor in the world, with severe influence (7.5 or more) in 80 countries.'},
 ]
 STATUS_W = {'investigation': 0.55, 'alleged': 0.3, 'convicted': 1.0, 'inquiry': 0.9, 'acknowledged': 0.9, 'designated': 0.8, 'settled': 0.8,
             'indicted': 0.7, 'reported': 0.45, 'annulled': 0.3, 'acquitted': 0.2}
@@ -246,7 +246,7 @@ def main():
     for ch in channels:
         routes.append({'n': ch['n'], 'p': ch['p'], 'org': ch.get('org', ''),
                        'note': {'d': ch['d'], 'cite': ch.get('cite', '') + (
-                           (' — <a href="' + ch['url'] + '" target="_blank" rel="noopener" style="color:#8fb8c9;">source</a>') if ch.get('url') else '')}})
+                           (' — <a href="' + ch['url'] + '" target="_blank" rel="noopener" style="color:var(--accent-hi);">source</a>') if ch.get('url') else '')}})
 
     spread(case_out); spread(ent)
 

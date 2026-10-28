@@ -97,6 +97,10 @@ button.btn:hover,#infoBtn:hover,#worldBtn:hover{border-color:var(--accent-hi);co
 .wi .wm{font-size:10.6px;color:var(--mute);margin-top:2px}
 #det{display:none;position:fixed;z-index:950;left:50%;top:50%;transform:translate(-50%,-50%);width:min(640px,calc(100% - 40px));max-height:min(80vh,820px);overflow:auto;padding:18px 22px 20px;box-sizing:border-box;box-shadow:0 24px 70px rgba(0,0,0,.75)}
 #det.open{display:block}
+#detGrip{position:sticky;top:-18px;margin:-18px -22px 6px;height:18px;cursor:grab;display:flex;justify-content:center;align-items:center;background:var(--card);z-index:2;touch-action:none}
+#detGrip::after{content:"";width:42px;height:4px;border-radius:2px;background:rgba(255,255,255,.22)}
+#det.dragging,#det.dragging #detGrip{cursor:grabbing;user-select:none}
+#det .hp-k,#det h3{cursor:grab}
 #det .hp-desc,#det .bts p{font-size:14px}
 #det h3{font-size:20px}
 #detX{position:absolute;top:6px;right:8px;background:none;border:0;color:#bbb;font-size:20px;cursor:pointer;line-height:1}
@@ -209,7 +213,7 @@ button.btn:hover,#infoBtn:hover,#worldBtn:hover{border-color:var(--accent-hi);co
   <div id="tr" class="card"><button id="toggleTr" class="tog" type="button" title="Pull the basemap box up or down">−</button><div class="body" id="trBody"></div></div>
   <div id="wire" class="card min"><div class="wh"><span class="psec" style="margin:0">Live wire <span class="n" id="wireN"></span></span><span class="n" id="wireTog">open +</span></div><div id="wireBody" class="scroll"></div></div>
 </div>
-<div id="det" class="card scroll hp"><button id="detX" type="button" title="Close">×</button><div id="detBody"></div></div>
+<div id="det" class="card scroll hp"><div id="detGrip" title="Drag to move"></div><button id="detX" type="button" title="Close">×</button><div id="detBody"></div></div>
 <div id="patBox" class="card"><div class="bh"><span class="psec">Patterns behind the scenes</span><button id="togglePat" class="tog" type="button">−</button></div><div id="patBody" class="scroll"></div></div>
 <div id="legBox" class="card"><div class="bh"><span class="psec">On the map</span><button id="toggleLeg" class="tog" type="button">−</button></div><div id="legBody" class="scroll"></div></div>
 <div id="story" class="card scroll"></div>
@@ -247,26 +251,36 @@ const STATUS = { investigation: "Under investigation", alleged: "Alleged", convi
 /* ---------- colours: each basemap has its own set, drawn from its own tones ---------- */
 // office buckets (6) · organisation types (8) · severity ramp, worst first (5) · pattern roles (8) · line
 const PAL = {
+  // Bioluminescent: the light blues
   night:     { b: ["#a4c3df", "#62bcda", "#3859c7", "#cedfe9", "#85d7e0", "#2d39a9", "#5782c7", "#b8d3e0"],
                t: { lodge: "#6480ce", order: "#a6c5de", forum: "#35a9d0", covert: "#c6e4e7", statenet: "#2f38b1", lawnet: "#8ba9d0", intl: "#52a3cb", ngo: "#dcebef", biz: "#2d449f", crime: "#94bfdb", bank: "#6ccada" },
-               r: ["#8bb6e4", "#689dcf", "#4b88b9", "#457292", "#405c6d"], p: ["#6cb2e5", "#b9e1e9", "#546dd4", "#a7a9dd", "#1ca7e3", "#dbe3f0", "#78dee3", "#293aae", "#b4c7da"], ln: "#dce8f2",
+               r: ["#8bb6e4", "#689dcf", "#4b88b9", "#457292", "#405c6d"], p: ["#6cb2e5", "#b9e1e9", "#546dd4", "#a7a9dd", "#1ca7e3", "#dbe3f0", "#78dee3", "#293aae", "#b4c7da"], ln: "#cfe2f0",
+               card: "rgba(8,16,26,.94)", edge: "#1d3147",
                ui: ["#326c9f", "#95c6e4", "#06101c"] },
-  outlines:  { b: ["#97b9d8", "#55b3d3", "#3754b4", "#c1d6e2", "#77d0da", "#2c3696", "#4a77bf", "#abcad9"],
-               t: { lodge: "#5775c6", order: "#98bbd7", forum: "#319bbe", covert: "#b9dcdf", statenet: "#2e359e", lawnet: "#7f9ec8", intl: "#469ac3", ngo: "#cfe3e8", biz: "#2b3e8d", crime: "#87b5d4", bank: "#5fc2d3" },
-               r: ["#7dacdd", "#5b93c8", "#467daa", "#406682", "#3a515f"], p: ["#5ea9df", "#abd9e3", "#4762cd", "#9a9cd5", "#1e98cc", "#ced9e9", "#6ad7dd", "#28379a", "#a7bdd2"], ln: "#dce8f2",
-               ui: ["#326795", "#95c6e4", "#06101c"] },
-  satellite: { b: ["#91b4d4", "#50aecd", "#3852a9", "#bbd1dd", "#72cbd5", "#2c358c", "#4672b9", "#a5c5d5"],
-               t: { lodge: "#5370c1", order: "#93b6d2", forum: "#3393b3", covert: "#b3d8db", statenet: "#2e3593", lawnet: "#7999c3", intl: "#4294bd", ngo: "#c9dfe3", biz: "#2b3c82", crime: "#81b0cf", bank: "#5abcce" },
-               r: ["#78a7d9", "#578ec2", "#4577a0", "#3e617a", "#374b58"], p: ["#59a4d9", "#a5d5de", "#435dc7", "#9496d1", "#2190bf", "#c8d3e5", "#65d2d8", "#29368f", "#a2b8cd"], ln: "#dce8f2",
-               ui: ["#34648e", "#95c6e4", "#06101c"] },
-  atlas:     { b: ["#4d86bc", "#287d9a", "#1f2f66", "#7ba7c1", "#32abb8", "#151a47", "#2b4978", "#649eb9"],
-               t: { lodge: "#2e4789", order: "#4f8aba", forum: "#1c596d", covert: "#72b9c0", statenet: "#171b4f", lawnet: "#436a9d", intl: "#28607b", ngo: "#8bbbc6", biz: "#131c3f", crime: "#4086b5", bank: "#2c8fa0" },
-               r: ["#3278c2", "#30608d", "#284862", "#1e313e", "#1b262d"], p: ["#2477b2", "#5fb7c9", "#253988", "#5155b8", "#115673", "#87a2c9", "#2ab0b7", "#131a49", "#648ab0"], ln: "#16283a",
-               ui: ["#254c6e", "#95c6e4", "#07121d"] },
-  hell:      { b: ["#afc8df", "#70bdd6", "#4764c2", "#d6e3eb", "#91d6de", "#3641ab", "#6489c4", "#c1d7e2"],
-               t: { lodge: "#7189cb", order: "#b0c9de", forum: "#44a9ca", covert: "#cee6e8", statenet: "#3840b3", lawnet: "#96afcf", intl: "#60a5c8", ngo: "#ddebee", biz: "#354ba1", crime: "#9fc3db", bank: "#79c9d7" },
-               r: ["#98bbe2", "#74a2cd", "#588cb7", "#4c7695", "#466171"], p: ["#7ab6e1", "#c3e3e9", "#6278d0", "#b1b2dd", "#2fa7db", "#dce4ef", "#85dbe0", "#3242af", "#bcccdc"], ln: "#dce8f2",
-               ui: ["#396e9d", "#95c6e4", "#06101c"] },
+  // Standard: a conventional categorical set, muted for the dark ground
+  outlines:  { b: ["#d0605e", "#a07cc4", "#6a9fd4", "#4fb0a8", "#7fae6a", "#a8806a", "#d487a8", "#9aa3ad"],
+               t: { lodge: "#a07cc4", order: "#d487a8", forum: "#6a9fd4", covert: "#4fb0a8", statenet: "#d0605e", lawnet: "#9aa3ad", intl: "#5d8fbf", ngo: "#8fc08a", biz: "#a8806a", crime: "#c24b56", bank: "#3f8f86" },
+               r: ["#c8464f", "#d98482", "#b9a6c2", "#7ea3c9", "#5b7fa6"], p: ["#d0605e", "#6a9fd4", "#a07cc4", "#4fb0a8", "#a8806a", "#b5577f", "#e09ab8", "#7fae6a", "#9aa3ad"], ln: "#e2e5e8",
+               card: "rgba(14,18,20,.94)", edge: "#2c3640",
+               ui: ["#4f6f8f", "#a9c4dc", "#0c1012"] },
+  // Jurassic: earthy greens over the imagery
+  satellite: { b: ["#a9c48f", "#7fae7a", "#5e8a5a", "#c9d9b4", "#8fbfa2", "#4f7a52", "#9aaa72", "#b7cfa9"],
+               t: { lodge: "#7fa36f", order: "#b5cc9c", forum: "#6fa58c", covert: "#cfe0c0", statenet: "#4d7448", lawnet: "#9bb489", intl: "#7fae96", ngo: "#dbe7cf", biz: "#5a7a4f", crime: "#a3c08a", bank: "#8cbfa4" },
+               r: ["#c2d8a8", "#9fbf86", "#7ea36a", "#617f52", "#4a5f42"], p: ["#8fbf7a", "#cfe0b8", "#5f8f5a", "#a9b88a", "#6fae92", "#e0ead6", "#b3d39a", "#3f6a40", "#bccaa8"], ln: "#e3ecd8",
+               card: "rgba(10,18,12,.94)", edge: "#2a3d2c",
+               ui: ["#4f7a52", "#b3d39a", "#0a120c"] },
+  // Atlas: deeper earthy greens on the paper map
+  atlas:     { b: ["#4f7a4a", "#2f5d3a", "#1f3a2a", "#7c9a5e", "#3f7262", "#26402f", "#5a6b3c", "#8aa57a"],
+               t: { lodge: "#3d5e3a", order: "#6f8f5a", forum: "#2e5a4a", covert: "#8fae86", statenet: "#1f3526", lawnet: "#5f7a52", intl: "#456b5a", ngo: "#a3b892", biz: "#2a3d2c", crime: "#4f7a44", bank: "#3a6a5c" },
+               r: ["#2c4a2a", "#3f6338", "#5c7d4c", "#7e9a6a", "#a2b694"], p: ["#3a6b3a", "#7fa06a", "#2c4d3e", "#5c7a52", "#1f5a4a", "#9db58a", "#4f8a6a", "#24361f", "#6f8a72"], ln: "#24361f", light: true,
+               card: "rgba(12,20,14,.94)", edge: "#2f4632",
+               ui: ["#3f6b45", "#a9c79a", "#0c140e"] },
+  // Hell: reds
+  hell:      { b: ["#e0a8a0", "#c46a62", "#8e2f34", "#efcfc8", "#d4868a", "#6e2228", "#a8484a", "#e8bdb4"],
+               t: { lodge: "#b85a58", order: "#e3b0a8", forum: "#c9727a", covert: "#f0d4cd", statenet: "#7a2a30", lawnet: "#d29a96", intl: "#b26a68", ngo: "#f5e2dc", biz: "#8a3a3c", crime: "#d9848a", bank: "#c46f6a" },
+               r: ["#e8a49a", "#cc7a72", "#a85a56", "#7f4644", "#5e3a3a"], p: ["#d9827a", "#f0c7bf", "#a63a3c", "#c99a94", "#d0565e", "#f7e1dc", "#e8a89e", "#7a2228", "#d4b0aa"], ln: "#f2dcd6",
+               card: "rgba(22,9,11,.94)", edge: "#4a2226",
+               ui: ["#8e3a3e", "#e8aaa4", "#14080a"] },
 };
 let P = PAL.night;
 function infCol(k) { return (k === "lender" || k === "intl_target") ? P.t.intl : P.p[INF_I[k] != null ? INF_I[k] : 6]; }
@@ -325,7 +339,7 @@ function freeFlat() {
   } catch (e) {}
 }
 const BM = CulpritsBasemaps.create("map", { initial: "night", projection: "globe", plate: window.PLATE_IMG, center: [12, 30], zoom: 1.4,
-  onApply: (k) => { P = PAL[k] || PAL.night; const u = P.ui, rs = document.documentElement.style; rs.setProperty("--accent", u[0]); rs.setProperty("--accent-hi", u[1]); rs.setProperty("--bg", u[2]); if (ready) { order(); paint(); buildKey(); if (S.sel) reopen(); } },
+  onApply: (k) => { P = PAL[k] || PAL.night; const u = P.ui, rs = document.documentElement.style; rs.setProperty("--accent", u[0]); rs.setProperty("--accent-hi", u[1]); rs.setProperty("--bg", u[2]); rs.setProperty("--card", P.card); rs.setProperty("--line", P.edge); if (ready) { order(); paint(); buildKey(); if (S.sel) reopen(); } },
   onReady: () => init() });
 map = window.societiesMap = BM.maplibre;
 map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
@@ -386,8 +400,8 @@ function addLayers() {
   map.addSource("small", { type: "geojson", data: FC(Object.keys(SMALL).filter((i) => ISO2K[i]).map((i) => ({ type: "Feature", properties: { iso3: i, k: ISO2K[i] }, geometry: { type: "Point", coordinates: SMALL[i] } }))) });
   T({ id: "small-ring", type: "circle", source: "small", paint: { "circle-radius": 7, "circle-color": "rgba(0,0,0,0)", "circle-stroke-width": 1.6, "circle-stroke-color": "#f0ece4" } });
   map.addSource("routes", { type: "geojson", data: FC([]) });
-  T({ id: "route-case", type: "line", source: "routes", layout: { "line-cap": "round" }, paint: { "line-color": "#05060c", "line-width": 3.2, "line-opacity": 0.45 } });
-  T({ id: "route-line", type: "line", source: "routes", layout: { "line-cap": "round" }, paint: { "line-color": "#e8dcf0", "line-width": 1.2, "line-opacity": 0.8, "line-dasharray": [3, 2] } });
+  T({ id: "route-case", type: "line", source: "routes", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#cfe2f0", "line-width": ["interpolate", ["linear"], ["zoom"], 1, 3, 6, 5], "line-blur": 3, "line-opacity": 0.16 } });
+  T({ id: "route-line", type: "line", source: "routes", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#cfe2f0", "line-width": ["interpolate", ["linear"], ["zoom"], 1, 0.8, 6, 1.4], "line-opacity": 0.78 } });
   map.addSource("orgs", { type: "geojson", data: FC([]) });
   T({ id: "org", type: "circle", source: "orgs", paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 1, 4.2, 6, 6.5], "circle-color": ["get", "c"], "circle-stroke-color": "#f0ece4", "circle-stroke-width": 1.1 } });
   map.addImage("dia", sdfIcon("dia"), { sdf: true });
@@ -396,8 +410,8 @@ function addLayers() {
       "symbol-sort-key": ["get", "k"] },
       paint: { "icon-color": ["get", "c"], "icon-halo-color": "#05060c", "icon-halo-width": 1.2, "icon-opacity": ["get", "o"] } });
   map.addSource("patlinks", { type: "geojson", data: FC([]) });
-  T({ id: "pat-case", type: "line", source: "patlinks", layout: { "line-cap": "round" }, paint: { "line-color": "#05060c", "line-width": 4, "line-opacity": 0.5 } });
-  T({ id: "pat-line", type: "line", source: "patlinks", layout: { "line-cap": "round" }, paint: { "line-color": "#f0ece4", "line-width": 1.7, "line-opacity": 0.95 } });
+  T({ id: "pat-case", type: "line", source: "patlinks", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#f0ece4", "line-width": ["interpolate", ["linear"], ["zoom"], 1, 4, 6, 6], "line-blur": 3.5, "line-opacity": 0.2 } });
+  T({ id: "pat-line", type: "line", source: "patlinks", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#f0ece4", "line-width": ["interpolate", ["linear"], ["zoom"], 1, 1.1, 6, 1.8], "line-opacity": 0.92 } });
   // interaction
   const hover = (id, html) => { map.on("mousemove", id, (e) => { map.getCanvas().style.cursor = "pointer"; tip(html(e.features[0].properties), e.originalEvent.clientX, e.originalEvent.clientY); });
                                 map.on("mouseleave", id, () => { map.getCanvas().style.cursor = ""; tip(null); }); };
@@ -444,9 +458,8 @@ function paint() {
   m.push("rgba(0,0,0,0)");
   map.setPaintProperty("cty-fill", "fill-color", m.length > 3 ? m : "rgba(0,0,0,0)");
   map.setPaintProperty("cty-fill", "fill-opacity", pt ? 0.66 : 0.58);
-  map.setPaintProperty("route-line", "line-color", P.ln); map.setPaintProperty("pat-line", "line-color", P.ln === "#2a1c24" ? "#2a1c24" : "#f6eef2");
-  map.setPaintProperty("route-case", "line-color", P.ln === "#2a1c24" ? "#f0e6dc" : "#05060c");
-  map.setPaintProperty("pat-case", "line-color", P.ln === "#2a1c24" ? "#f0e6dc" : "#05060c");
+  // solid lines in the basemap's own line colour, each with a faint glow of the same colour
+  ["route-line", "route-case", "pat-line", "pat-case"].forEach((id) => map.setPaintProperty(id, "line-color", P.ln));
   // cases
   const LO = { established: 1, probable: 0.88, possible: 0.55, contested: 0.4 };
   map.getSource("cases").setData(FC(S.cases ? CASES.filter((c) => S.bk[c.bk] && yrOK(c) && patCase(c) && fOK(c)).map((c) => ({ type: "Feature",
@@ -459,7 +472,7 @@ function paint() {
   map.getSource("patlinks").setData(FC(pt ? (pt.links || []).map((l) => { const pts = l.p || [l.a, l.b]; return { type: "Feature", properties: { t: (l.from || "") + " → " + (l.to || "") + (l.label ? ": " + l.label : "") }, geometry: { type: "LineString", coordinates: pathLine(pts.length > 1 ? pts : [pts[0], pts[0]]) } }; }) : []));
   map.setFilter("cty-sel", ["==", ["get", "iso3"], S.sel && S.sel[0] === "c" ? (ISO[S.sel[1]] || "") : ""]);
   map.setLayoutProperty("small-ring", "visibility", "visible");
-  map.setPaintProperty("small-ring", "circle-stroke-color", P.ln === "#2a1c24" ? "#2a1c24" : "#f0ece4");
+  map.setPaintProperty("small-ring", "circle-stroke-color", P.light ? P.ln : "#f0ece4");
 }
 
 /* ---------- the key ---------- */
@@ -490,8 +503,7 @@ function buildKey() {
   h += '<div class="psec">Shade the countries by</div><select id="lens"' + (S.pat ? ' disabled' : '') + '>' + LENSES.map((l) => '<option value="' + l.k + '"' + (S.lens === l.k ? " selected" : "") + '>' + esc(l.label) + '</option>').join("") + '<option value="none"' + (S.lens === "none" ? " selected" : "") + '>No shading</option></select>';
   const L_ = LENSES.find((l) => l.k === S.lens);
   if (L_ && !S.pat) h += '<div class="desc">' + esc(L_.desc) + '</div><div class="leg">' + BANDS.map((b, i) => '<div class="li' + (S.bandOn[i] ? "" : " off") + '" data-band="' + i + '"><span class="sw" style="background:' + P.r[i] + '"></span>' + b[0] + '<span class="n">' + counts[i] + '</span></div>').join("") + '</div>' +
-       (S.lens === "doc" ? '<div class="desc">' + est + ' of ' + nk + ' countries have no case here' + (filtered() ? ' that passes the filters' : '') + '. This view follows the filters, so it maps what has surfaced about one kind of infiltration — and a country with nothing on it may be one where nobody has been allowed to look.</div>'
-                      : '<div class="desc">Every country is scored the same way, so the colours can be compared. What has come to light in each country is a separate view, and the cases themselves are the diamonds.</div>');
+       '<div class="desc">Both views come from the Global Organized Crime Index, which scores every country the same way, so the colours can be compared. The cases on this map are the diamonds; they are what has surfaced, not a measure of how much there is.</div>';
   if (S.pat) h += '<div class="desc">Countries are coloured by the open pattern. Close it to shade them again.</div>';
   // find
   h += '<div class="psec">Find</div><input class="inp" id="find" style="width:100%" placeholder="A country, organisation, person or place" value="' + esc(S.q) + '"><div id="flist" class="scroll"></div>';
@@ -618,6 +630,23 @@ function buildTr() {
 }
 
 /* ---------- cards ---------- */
+/* the centre box can be dragged by its top strip, its kicker or its title; it keeps its place until the page is resized */
+(function () {
+  const box = document.getElementById("det"); let d = null;
+  const start = (e) => {
+    const t = e.target; if (!(t.id === "detGrip" || (t.closest && t.closest("#det .hp-k, #det h3")))) return;
+    if (t.closest && t.closest("a,button,input,select")) return;
+    const r = box.getBoundingClientRect();
+    box.style.transform = "none"; box.style.left = r.left + "px"; box.style.top = r.top + "px";
+    d = { x: e.clientX - r.left, y: e.clientY - r.top }; box.classList.add("dragging"); e.preventDefault();
+  };
+  const move = (e) => { if (!d) return; const r = box.getBoundingClientRect();
+    box.style.left = Math.min(window.innerWidth - 60, Math.max(60 - r.width, e.clientX - d.x)) + "px";
+    box.style.top = Math.min(window.innerHeight - 40, Math.max(0, e.clientY - d.y)) + "px"; };
+  const end = () => { if (d) { d = null; box.classList.remove("dragging"); } };
+  box.addEventListener("pointerdown", start); window.addEventListener("pointermove", move); window.addEventListener("pointerup", end);
+  window.addEventListener("resize", () => { box.style.transform = ""; box.style.left = ""; box.style.top = ""; });
+})();
 function show(html, sel) { S.sel = sel; $("#detBody").innerHTML = html; $("#det").classList.add("open"); document.body.classList.add("detopen"); $("#det").scrollTop = 0; paint(); wireCard(); }
 function deselect() { S.sel = null; $("#det").classList.remove("open"); document.body.classList.remove("detopen"); paint(); }
 function reopen() { const s = S.sel; if (!s) return; if (s[0] === "c") openCountry(s[1], false); else if (s[0] === "p") openPattern(s[1], false); }
@@ -655,8 +684,7 @@ function openCountry(k, fly) {
   const csAll = CASES.filter((c) => c.c === k);
   if (csAll.length) { const by = {}; csAll.forEach((c) => { by[c.inf] = (by[c.inf] || 0) + 1; });
     h += '<div class="hp-h">Who is reaching in here</div><div class="chips">' + INF.filter((x) => by[x.k]).map((x) => '<span data-only="' + x.k + '" title="Show only this kind on the map"><span class="sw dia" style="background:' + infCol(x.k) + '"></span>' + esc(x.label) + ' <span class="n">' + by[x.k] + '</span></span>').join("") + '</div>'; }
-  if (bts) h += '<div class="bts"><div class="hp-h" style="margin-top:0">Behind the scenes' + (bts.est ? '<span class="tag">Estimate</span>' : '') + '</div><p>' + bts.d.replace(/<br><br>/g, '</p><p>') + '</p>' +
-    (bts.imp ? '<div class="imp"><div class="hp-h" style="margin-top:0">What it means for people here</div><p>' + bts.imp + '</p></div>' : '') + '</div>';
+  if (bts) h += '<div class="bts"><div class="hp-h" style="margin-top:0">Behind the scenes' + (bts.est ? '<span class="tag">Estimate</span>' : '') + '</div><p>' + (bts.d + (bts.imp ? '<br><br>' + bts.imp : '')).replace(/<br><br>/g, '</p><p>') + '</p></div>';
   const ps = PATS.filter((p) => p.cmap[k] != null);
   if (ps.length) h += '<div class="hp-h">Patterns this country is part of — ' + ps.length + '</div>' + ps.map((p) => { const ri = p.cmap[k]; return '<div class="pc"><span class="pchip" data-pat="' + p.id + '"><span class="sw" style="background:' + P.p[ri % P.p.length] + ';margin:0"></span>' + esc(p.title) + '</span><span class="pr">' + esc(p.roles[ri]) + '</span>' + (p.cnotes[k] ? '<div class="pn">' + p.cnotes[k] + '</div>' : '') + '</div>'; }).join("");
   const doc = r.pres.filter((p) => !p[1]), est = r.pres.filter((p) => p[1]);
@@ -717,7 +745,7 @@ function openPattern(id) {
   const p = PAT_BY[id]; if (!p) return;
   let h = '<div class="hp-k">Pattern behind the scenes · ' + esc(p.kind) + '</div><h3>' + esc(p.title) + '</h3><div class="hp-sub">' + p.span[0] + '–' + p.span[1] + ' · ' + Object.keys(p.cmap).length + ' countries · ' + p.ncases + ' cases</div>' +
     '<p class="hp-desc">' + p.summary + '</p>';
-  if (p.implications) h += '<div class="hp-h">What it means in practice</div><div class="imp-box">' + p.implications + '</div>';
+  if (p.implications) h += '<p class="hp-desc">' + p.implications + '</p>';
   h += '<div class="hp-h">Countries by role</div>' + p.roles.map((r, i) => { const ks = Object.keys(p.cmap).filter((k) => p.cmap[k] === i).sort(); return ks.length ? '<div class="pc"><span class="sw" style="background:' + P.p[i % P.p.length] + '"></span>' + esc(r) + ' <span class="n">' + ks.length + '</span><div class="chips">' + ks.map((k) => '<span data-cty="' + esc(k) + '" title="' + esc((p.cnotes[k] || "").replace(/<[^>]+>/g, "")) + '">' + esc(k) + '</span>').join("") + '</div></div>' : ""; }).join("");
   h += '<div class="hp-h">Documented cases per decade — ' + p.ncases + '</div>' + spark(p);
   if (p.orgs.length) h += '<div class="hp-h">Organisations</div><div class="chips">' + p.orgs.filter((k) => ORG_BY[k]).map((k) => '<span data-org="' + k + '">' + esc(ORGN[k]) + '</span>').join("") + '</div>';
