@@ -1,0 +1,210 @@
+{
+ "_comment": "Sources for the Secret Society Infiltration Map wire. Same format as the Drug Underworld Map feeds.json: 'editions' are Google News country editions read with the query set for their language; 'searches' are global queries. Google News ANDs bare words, so each query is parenthesised OR groups: one organisation group, one institution group, one predicate group.",
+ "query_sets": {
+  "en": [
+   "(freemason OR masonic OR \"secret society\" OR \"Opus Dei\" OR \"Unification Church\" OR Scientology OR \"Gulen movement\" OR \"Muslim Brotherhood\") (minister OR parliament OR police OR judge OR lawmaker OR government OR official OR prosecutor) (infiltrated OR infiltration OR ban OR banned OR dissolution OR inquiry OR members OR ties OR interference OR purge)",
+   "(Bilderberg OR \"Trilateral Commission\" OR \"United Front\" OR Shincheonji OR \"Nippon Kaigi\" OR \"Soka Gakkai\" OR \"Order of Malta\" OR \"Vatican Bank\" OR \"Hizb ut-Tahrir\") (minister OR parliament OR police OR judge OR lawmaker OR government OR official OR prosecutor) (infiltrated OR infiltration OR ban OR banned OR dissolution OR inquiry OR members OR ties OR interference OR purge)"
+  ],
+  "es": [
+   "(masones OR masonería OR \"logia masónica\" OR \"Opus Dei\" OR \"El Yunque\" OR \"Iglesia de la Unificación\" OR Cienciología OR \"sociedad secreta\") (ministro OR gobierno OR diputado OR juez OR policía OR funcionario) (infiltración OR vínculos OR investigación OR miembros OR ilegalizado)"
+  ],
+  "pt": [
+   "(maçonaria OR maçom OR \"Opus Dei\" OR \"Tradição, Família e Propriedade\" OR \"Igreja da Unificação\" OR Cientologia) (ministro OR governo OR deputado OR juiz OR polícia) (infiltração OR vínculos OR investigação OR membros)"
+  ],
+  "fr": [
+   "(\"franc-maçonnerie\" OR \"franc-maçon\" OR \"loge maçonnique\" OR \"Grand Orient\" OR \"Opus Dei\" OR scientologie OR \"Frères musulmans\") (ministre OR gouvernement OR député OR juge OR police OR président) (infiltration OR ingérence OR liens OR enquête OR membres OR dissolution)"
+  ],
+  "it": [
+   "(massoneria OR \"loggia massonica\" OR \"loggia P2\" OR massoni OR \"Opus Dei\" OR \"IOR\") (ministro OR governo OR deputato OR magistrato OR carabinieri OR sindaco) (infiltrazione OR iscritti OR inchiesta OR legami OR scioglimento)"
+  ],
+  "de": [
+   "(Freimaurer OR Freimaurerloge OR \"Opus Dei\" OR Scientology OR \"Gülen-Bewegung\" OR Muslimbruderschaft) (Minister OR Regierung OR Abgeordneter OR Polizei OR Richter) (Unterwanderung OR Verbot OR Verbindungen OR Ermittlungen OR Mitglieder)"
+  ],
+  "tr": [
+   "(FETÖ OR Gülen OR \"Ülkü Ocakları\" OR masonluk OR \"mason locası\" OR tarikat OR cemaat) (bakan OR milletvekili OR hakim OR savcı OR emniyet OR asker) (sızma OR ihraç OR gözaltı OR soruşturma OR üyelik)"
+  ],
+  "ja": [
+   "(旧統一教会 OR 統一教会 OR 日本会議 OR 創価学会) (議員 OR 大臣 OR 自民党 OR 政府) (関係 OR 解散命令 OR 癒着)"
+  ],
+  "ko": [
+   "(통일교 OR 신천지 OR 가정연합) (의원 OR 장관 OR 정부 OR 대통령) (유착 OR 기소 OR 수사 OR 입당)"
+  ],
+  "ar": [
+   "(\"الإخوان المسلمين\" OR الماسونية OR \"حزب التحرير\") (وزير OR حكومة OR برلمان OR قضاء OR شرطة) (اختراق OR حظر OR حل OR تنظيم)"
+  ],
+  "ru": [
+   "(масоны OR масонская OR сайентология OR \"Церковь объединения\" OR \"Свидетели Иеговы\") (министр OR правительство OR депутат OR суд) (запрет OR проникновение OR ликвидация)"
+  ]
+ },
+ "editions": [
+  {
+   "gl": "US",
+   "hl": "en-US",
+   "ceid": "US:en",
+   "lang": "en",
+   "iso": "USA"
+  },
+  {
+   "gl": "GB",
+   "hl": "en-GB",
+   "ceid": "GB:en",
+   "lang": "en",
+   "iso": "GBR"
+  },
+  {
+   "gl": "AU",
+   "hl": "en-AU",
+   "ceid": "AU:en",
+   "lang": "en",
+   "iso": "AUS"
+  },
+  {
+   "gl": "ZA",
+   "hl": "en-ZA",
+   "ceid": "ZA:en",
+   "lang": "en",
+   "iso": "ZAF"
+  },
+  {
+   "gl": "IN",
+   "hl": "en-IN",
+   "ceid": "IN:en",
+   "lang": "en",
+   "iso": "IND"
+  },
+  {
+   "gl": "PH",
+   "hl": "en-PH",
+   "ceid": "PH:en",
+   "lang": "en",
+   "iso": "PHL"
+  },
+  {
+   "gl": "NG",
+   "hl": "en-NG",
+   "ceid": "NG:en",
+   "lang": "en",
+   "iso": "NGA"
+  },
+  {
+   "gl": "KE",
+   "hl": "en-KE",
+   "ceid": "KE:en",
+   "lang": "en",
+   "iso": "KEN"
+  },
+  {
+   "gl": "CA",
+   "hl": "en-CA",
+   "ceid": "CA:en",
+   "lang": "en",
+   "iso": "CAN"
+  },
+  {
+   "gl": "ES",
+   "hl": "es",
+   "ceid": "ES:es",
+   "lang": "es",
+   "iso": "ESP"
+  },
+  {
+   "gl": "MX",
+   "hl": "es-419",
+   "ceid": "MX:es-419",
+   "lang": "es",
+   "iso": "MEX"
+  },
+  {
+   "gl": "AR",
+   "hl": "es-419",
+   "ceid": "AR:es-419",
+   "lang": "es",
+   "iso": "ARG"
+  },
+  {
+   "gl": "BR",
+   "hl": "pt-BR",
+   "ceid": "BR:pt-419",
+   "lang": "pt",
+   "iso": "BRA"
+  },
+  {
+   "gl": "FR",
+   "hl": "fr",
+   "ceid": "FR:fr",
+   "lang": "fr",
+   "iso": "FRA"
+  },
+  {
+   "gl": "SN",
+   "hl": "fr",
+   "ceid": "SN:fr",
+   "lang": "fr",
+   "iso": "SEN"
+  },
+  {
+   "gl": "IT",
+   "hl": "it",
+   "ceid": "IT:it",
+   "lang": "it",
+   "iso": "ITA"
+  },
+  {
+   "gl": "DE",
+   "hl": "de",
+   "ceid": "DE:de",
+   "lang": "de",
+   "iso": "DEU"
+  },
+  {
+   "gl": "TR",
+   "hl": "tr",
+   "ceid": "TR:tr",
+   "lang": "tr",
+   "iso": "TUR"
+  },
+  {
+   "gl": "JP",
+   "hl": "ja",
+   "ceid": "JP:ja",
+   "lang": "ja",
+   "iso": "JPN"
+  },
+  {
+   "gl": "KR",
+   "hl": "ko",
+   "ceid": "KR:ko",
+   "lang": "ko",
+   "iso": "KOR"
+  },
+  {
+   "gl": "EG",
+   "hl": "ar",
+   "ceid": "EG:ar",
+   "lang": "ar",
+   "iso": "EGY"
+  },
+  {
+   "gl": "RU",
+   "hl": "ru",
+   "ceid": "RU:ru",
+   "lang": "ru",
+   "iso": "RUS"
+  }
+ ],
+ "searches": [
+  {
+   "q": "\"P2 lodge\" OR \"Licio Gelli\" OR \"Banco Ambrosiano\" OR \"Roberto Calvi\""
+  },
+  {
+   "q": "(\"Unification Church\" OR \"Family Federation\") (dissolution OR LDP OR indictment)"
+  },
+  {
+   "q": "(\"United Front Work Department\" OR \"united front\") (MP OR senator OR councillor OR staffer) (interference OR charged OR expelled)"
+  },
+  {
+   "q": "(freemasons OR freemasonry) (police OR judges OR \"declare membership\" OR lodge) (inquiry OR disclosure OR scandal)"
+  }
+ ],
+ "feeds": []
+}
