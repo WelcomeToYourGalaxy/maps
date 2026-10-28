@@ -15,13 +15,15 @@ sys.path.insert(0, HERE)
 from names import iso as name_iso, PLACES
 import patches as _P
 _PT = _P.load()
+_DROP = _P.dropped()
 
 R = json.load(open(os.path.join(HERE, 'research', 'patterns_research.json')))['topics']
 CASES, FLOWS, SER = {}, [], {}
 for f in sorted(glob.glob(os.path.join(HERE, 'research', '*.json'))):
-    if 'patterns' in f or 'verify' in f or 'stories' in f: continue
+    if 'patterns' in f or 'verify' in f or 'stories' in f or 'classify' in f: continue
     d = json.load(open(f)); n = os.path.basename(f)[:-5]
-    for c in d.get('cases', []): CASES.setdefault(c['id'], _P.apply(dict(c, _src=n), _PT))
+    for c in d.get('cases', []):
+        if c['id'] not in _DROP: CASES.setdefault(c['id'], _P.apply(dict(c, _src=n), _PT))
     for x in d.get('flows', []): FLOWS.append(dict(x, _src=n))
     for k, v in (d.get('series') or {}).items(): SER[n + ':' + k] = v
 
@@ -488,5 +490,19 @@ for p in PATS:
     for f in p.get('facts', []):
         if not f.get('url'): print('fact without url in', p['id'], f['t'][:60], file=sys.stderr)
 
+# plain narrative texts (pattern_texts.py) replace the summaries and readings written above
+from pattern_texts import TEXT
+_ctx = {
+    'moved': {'n': len(tf)},
+    'waiting': {'n': len(ps), 'median': ('%g' % ((sorted(ds)[len(ds) // 2] + sorted(ds)[(len(ds) - 1) // 2]) / 2)) if ds else '–'},
+    'law_money': {'n': sum(1 for r in bk if r.get('iso3') in ('USA', 'GUM') and not re.search('Boy Scouts|Gymnastics', r['name']))},
+    'adoption_pipeline': {'n': sum(1 for f in FLOWS if f['type'] == 'adoption')},
+    'officials': {'n': len(off)},
+}
+for p in PATS:
+    if p['id'] in TEXT:
+        sm, im = TEXT[p['id']]
+        p['summary'] = sm.format(**_ctx.get(p['id'], {}))
+        p['implications'] = im
 json.dump(PATS, open(os.path.join(HERE, 'data', 'patterns.json'), 'w'), ensure_ascii=False, indent=1)
 print(len(PATS), 'patterns:', ', '.join('%s (%d countries)' % (p['id'], len(p['countries'])) for p in PATS))
