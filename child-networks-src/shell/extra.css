@@ -24,3 +24,10 @@ details.pd summary{cursor:pointer;font-size:12.3px;color:#d6d3df}
 .lrow .ib{font-style:normal;font-size:12px;line-height:15px}
 #ldesc.ipop{margin-top:5px}
 #ldesc .ldesc{margin:0 0 4px}
+.psec.tg{display:flex;align-items:center;gap:6px}
+.psec.tg label{display:flex;align-items:center;gap:7px;cursor:pointer;flex:1}
+.psec.tg input{margin:0}
+.psec.tg .mute{text-transform:none;letter-spacing:0}
+.lrow input:disabled+span,.chk input:disabled{opacity:.45}
+#det{width:min(640px,calc(100vw - 24px)) !important;max-height:min(80vh,900px) !important;top:50% !important;padding:16px 20px !important}
+.hp h3{font-size:19px}
