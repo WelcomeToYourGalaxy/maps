@@ -88,6 +88,7 @@ function patStyle(f){
   return {fillColor:PAT_PAL[r%PAT_PAL.length],fillOpacity:0.58,color:'rgba(235,225,230,0.55)',weight:0.8};
 }
 function patOrgOn(o){ return !ACTIVE_PAT || ACTIVE_PAT.orgs.indexOf(o)>=0; }
+function patCaseOn(c){ return !ACTIVE_PAT || (ACTIVE_PAT._cs || (ACTIVE_PAT._cs = (function(){ var s={}; ACTIVE_PAT.cids.forEach(function(i){ s[i]=1; }); return s; })()))[c.i]===1; }
 function drawPatLinks(){
   if(patLayer){ map.removeLayer(patLayer); patLayer=null; }
   if(!ACTIVE_PAT) return;
@@ -211,7 +212,7 @@ function renderTime(){
   for(var d=d0; d<=d1; d+=10) dec.push(d);
   var cnt={}, pc={};
   CASES.forEach(function(c){ if(!c.y) return; var d=Math.floor(c.y/10)*10; cnt[d]=(cnt[d]||0)+1;
-    if(ACTIVE_PAT && ACTIVE_PAT.orgs.indexOf(c.org)>=0) pc[d]=(pc[d]||0)+1; });
+    if(ACTIVE_PAT && patCaseOn(c)) pc[d]=(pc[d]||0)+1; });
   var mx=Math.max.apply(null, dec.map(function(d){return cnt[d]||0;}).concat([1]));
   var W=270, H=64, bw=W/dec.length;
   var h='<svg viewBox="0 0 '+W+' '+(H+12)+'">';
@@ -222,7 +223,7 @@ function renderTime(){
     if(d%50===0 || i===0) h+='<text x="'+(i*bw).toFixed(1)+'" y="'+(H+10)+'">'+d+'</text>';
   });
   h+='</svg>';
-  var shown=CASES.filter(function(c){ return yrOK(c) && patOrgOn(c.org); }).length;
+  var shown=CASES.filter(function(c){ return yrOK(c) && patCaseOn(c); }).length;
   document.getElementById('timeChart').innerHTML=h;
   document.getElementById('timeCtl').innerHTML='From <input type="number" id="yr0" value="'+YR[0]+'"> to <input type="number" id="yr1" value="'+YR[1]+'">'+
     '<span class="tc-reset" id="yrReset">All years</span>'+
@@ -247,7 +248,7 @@ def edit_list():
     R("function styleC(f){\n  var k=keyOf(f);", "function styleC(f){\n  if(ACTIVE_PAT) return patStyle(f);\n  var k=keyOf(f);")
     # points obey the time filter and the open pattern
     R("  CASES.forEach(function(c){\n    if(!CBK_ON[c.bk]) return;",
-      "  CASES.forEach(function(c){\n    if(!CBK_ON[c.bk]) return;\n    if(!yrOK(c) || !patOrgOn(c.org)) return;")
+      "  CASES.forEach(function(c){\n    if(!CBK_ON[c.bk]) return;\n    if(!yrOK(c) || !patCaseOn(c)) return;")
     R("  ENTITIES.forEach(function(e){\n    if(!SON[e.s]) return;",
       "  ENTITIES.forEach(function(e){\n    if(!SON[e.s]) return;\n    if(!patOrgOn(e.k)) return;")
     R("  if(!NET_ON.groups){ declSoon(); return; }\n  groupLayer=L.layerGroup();",

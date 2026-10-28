@@ -166,6 +166,7 @@ def main():
         if c.get('url'): x['url'] = c['url']
         if c.get('undone'): x['undone'] = c['undone']
         x['org'] = c.get('org', '')
+        x['i'] = len(case_out)
         x['on'] = oname.get(c.get('org'), c.get('org_label', c.get('org', '')))
         if c.get('arch'): x['arch'] = c['arch']
         case_out.append(x)
@@ -176,7 +177,7 @@ def main():
                     'y': o.get('founded', ''), 'ended': o.get('ended'), 'status': o.get('status', 'active'),
                     'role': o.get('hq', ''), 'd': o['d'], 'cite': o.get('cite', ''), 'url': o.get('url', ''),
                     'nr': len(o.get('reach', [])), 'ne': len(o.get('reach_est', [])),
-                    'rsrc': o.get('reach_src', '')})
+                    'rsrc': o.get('reach_src', ''), 'reach_list': o.get('reach', [])})
 
     # branches: one dot per organisation per country of presence, set on a small fixed ring
     # around the capital so that a capital holding twenty organisations is still legible
@@ -246,7 +247,15 @@ def build_patterns(pats, cases, ent, channels):
     out = []
     for p in pats:
         orgs = p.get('orgs', [])
-        pc = [c for c in cases if c.get('org') in orgs]
+        pc = [c for c in cases if (c.get('org') in orgs or p.get('all_orgs'))]
+        if p.get('case_bk'): pc = [c for c in pc if c['bk'] in p['case_bk']]
+        if p.get('case_countries'): pc = [c for c in pc if c['c'] in p['case_countries']]
+        if p.get('case_status'): pc = [c for c in pc if c['status'] in p['case_status']]
+        if p.get('case_match'): pc = [c for c in pc if re.search(p['case_match'], c['n'] + ' ' + c['d'], re.I)]
+        if p.get('extra_cases'):
+            ids = {id(c) for c in pc}
+            pc += [c for c in cases if id(c) not in ids and re.search(p['extra_cases'], c['n'] + ' ' + c['d'])]
+        if p.get('case_exclude'): pc = [c for c in pc if not re.search(p['case_exclude'], c['n'] + ' ' + c['d'], re.I)]
         roles = list(p.get('roles', []))
         cmap, cn = {}, {}
         def role(name):
@@ -258,18 +267,23 @@ def build_patterns(pats, cases, ent, channels):
         for c in pc: byc.setdefault(c['c'], []).append(c)
         for k, cs in byc.items():
             if k not in cmap:
-                cmap[k] = role(p.get('case_role', 'Documented case'))
+                rbs = p.get('role_by_status')
+                if rbs:
+                    best = sorted(cs, key=lambda z: list(rbs).index(z['status']) if z['status'] in rbs else 99)[0]
+                    cmap[k] = role(rbs.get(best['status'], p.get('case_role', 'Documented case')))
+                else:
+                    cmap[k] = role(p.get('case_role', 'Documented case'))
             if not cn.get(k):
                 cs = sorted(cs, key=lambda z: z.get('y') or 0)
                 cn[k] = '; '.join('%s (%s, %s)' % (z['n'], z.get('y', ''), z['status']) for z in cs[:6]) + \
                         ('; and %d more' % (len(cs) - 6) if len(cs) > 6 else '') + '.'
-        for k in orgs:
+        for k in ([] if p.get('no_hq') else orgs):
             e = E.get(k)
             if e and e['c'] not in cmap:
                 cmap[e['c']] = role('Headquarters'); cn[e['c']] = 'Headquarters of ' + e['n'] + '.'
         if p.get('presence'):
             for k in orgs:
-                for c in (load('orgs.json', {'orgs': []}) and next((o.get('reach', []) for o in load('orgs.json')['orgs'] if o['k'] == k), [])):
+                for c in (E.get(k, {}).get('reach_list') or []):
                     if c not in cmap:
                         cmap[c] = role('Presence, no case'); cn[c] = ''
         tl = [dict(t) for t in p.get('timeline', [])]
@@ -294,7 +308,8 @@ def build_patterns(pats, cases, ent, channels):
                     'orgs': orgs, 'roles': roles, 'cmap': cmap, 'cnotes': cn, 'links': links,
                     'timeline': tl, 'series': series, 'span': span, 'ncases': len(pc),
                     'confirmed_by': p.get('confirmed_by', []), 'uncertain': p.get('uncertain', ''),
-                    'implications': p.get('implications', ''), 'view': p.get('view')})
+                    'implications': p.get('implications', ''), 'view': p.get('view'),
+                    'cids': [c['i'] for c in pc]})
     return out
 
 

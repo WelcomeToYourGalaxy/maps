@@ -93,6 +93,10 @@ def main(rdir, arch_path):
             if best:
                 r['arch'] = {'t': best['conspiracy'], 's': best['trust']}
             out.append(r)
+    OVERRIDE = {"Blackburn 'Victory' police lodge": {'status': 'reported'}}
+    for r in out:
+        for k, v in OVERRIDE.items():
+            if r['n'].startswith(k): r.update(v)
     up = os.path.join(rdir, 'r2', 'gaps_urls.json')
     if os.path.exists(up):
         for u in json.load(open(up)):
