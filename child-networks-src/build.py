@@ -103,7 +103,8 @@ def fix_iso(x):
 
 # The same case recorded by two research domains: keep one.
 SKIP_CASES = {'irl-ryan-industrial-schools', 'irl-mother-baby-homes', 'can-mount-cashel-hughes', 'chl-colonia-dignidad-schafer',
-              'phl-quiboloy', 'usa-nxivm', 'afg-bacha-bazi-officials', 'gbr-ni-hia-2017'}
+              'phl-quiboloy', 'usa-nxivm', 'afg-bacha-bazi-officials', 'gbr-ni-hia-2017',
+              'aus-scouts'}   # names individuals with sentences the fact-check could not confirm
 SKIP_FLOWS = set()
 
 
