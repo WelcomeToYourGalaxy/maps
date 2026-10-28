@@ -14,24 +14,24 @@ const median = (a) => { if (!a.length) return null; const s = a.slice().sort((x,
 
 /* ---------- colors ---------- */
 // Each basemap: [accent, accent-hi, page], a five-step ramp from its own tones, and the point colors for the eight settings.
-const UI = { night: ["#5600DC", "#a99cff", "#06071a"], satellite: ["#3f6e69", "#9fc9c1", "#0b1017"], atlas: ["#4b6075", "#b9c8d8", "#0b1017"], hell: ["#82303a", "#e0a3a5", "#1e080b"], outlines: ["#38586b", "#a9c2d6", "#0b1017"] };
+const UI = { night: ["#1f6397", "#8dc6ea", "#06071a"], satellite: ["#1f6397", "#8dc6ea", "#0b1017"], atlas: ["#1f6397", "#8dc6ea", "#0b1017"], hell: ["#2a6b9e", "#9ccdec", "#1e080b"], outlines: ["#1f6397", "#8dc6ea", "#0b1017"] };
 const RAMPS = {
-  night:     ["#2b2452", "#45398a", "#6d5fbb", "#a195e0", "#ddd6fa"],
-  outlines:  ["#20364a", "#31546f", "#4d7a9c", "#86aac8", "#cddfee"],
-  satellite: ["#1d3836", "#2c5753", "#477d77", "#7fafa7", "#c6e2dc"],
-  atlas:     ["#23304a", "#384c6f", "#587198", "#8fa6c6", "#d2ddec"],
-  hell:      ["#3a1519", "#5c2229", "#883a43", "#ba6f76", "#ecc3c5"],
+  night:     ["#132c47", "#1f5181", "#3f82b6", "#86bade", "#d6eafa"],
+  outlines:  ["#122a42", "#1d4d78", "#3d7dae", "#84b7d9", "#d2e7f7"],
+  satellite: ["#102a3a", "#1b4f72", "#3a81a8", "#82b8d6", "#d0e8f6"],
+  atlas:     ["#162f4c", "#245683", "#4a85b4", "#8fbcdb", "#d6e8f6"],
+  hell:      ["#182c42", "#255279", "#4a83ad", "#8ebcd8", "#d7eaf7"],
 };
 // Point colors per basemap, in setting order: religious, care, elite, organized, tourism, online, conflict, adoption.
 const SETPAL = {
-  night:     ["#c3a8ef", "#86b0e6", "#ef9db4", "#cfb2aa", "#86cdc4", "#b9c6ea", "#e0707f", "#b7bf8a"],
-  outlines:  ["#b9a4df", "#8db6dc", "#e3a0b2", "#c9b3a9", "#8fc8bf", "#bcc8e2", "#d87683", "#b5bc8e"],
-  satellite: ["#cbb6e6", "#a4c4e2", "#f0b4c0", "#e0c9bd", "#a6dbd2", "#d3dbef", "#f08e98", "#cfd6a2"],
-  atlas:     ["#5e4a86", "#3e6a96", "#a24a63", "#7c5c50", "#2f7a72", "#5a6688", "#86303e", "#5f6a32"],
-  hell:      ["#d8c4f0", "#a9c7e8", "#ffd0da", "#e8d3c8", "#a9ddd5", "#dfe4f4", "#ffffff", "#d6dcae"],
+  night:     ["#dceaf8", "#a4caea", "#6ea7db", "#3f7fb8", "#aedfec", "#64bdd9", "#2f8aaa", "#8fa6c6"],
+  outlines:  ["#d8e7f6", "#9fc6e7", "#699fd5", "#3b78ae", "#a6d9e9", "#5db5d2", "#2b84a3", "#8aa2c2"],
+  satellite: ["#e2eefa", "#abd0ee", "#75ace0", "#4585be", "#b4e3ef", "#6cc3de", "#3490b0", "#95abc9"],
+  atlas:     ["#7ba5c9", "#4f86b6", "#2c6a9c", "#17507d", "#62a6bd", "#3a8aa4", "#1c6b83", "#647e9e"],
+  hell:      ["#e8f2fb", "#b4d8f0", "#80b6e2", "#5290c3", "#bfe7f2", "#78cbe2", "#3f9bb8", "#9db3cf"],
 };
-const CATC = ["#3a6db8", "#c97585", "#a9cfe6", "#4f8f5a"];
-const OTHER = "#8b8996", NODATA = "#6c6d7a";
+const CATC = ["#cfe5f7", "#7fb0dc", "#3a79ad", "#19486e"];
+const OTHER = "#7f8794", NODATA = "#5f6672";
 let BASE = "night";
 const ramp = () => (RAMPS[BASE] || RAMPS.night).slice().reverse();   // dark means more
 const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
@@ -115,11 +115,11 @@ function cat(id, group, label, o) { L.push(Object.assign({ id, group, label, kin
 seq("none", "Plain", "No country colors", { dom: [0, 1], f: () => "", get: () => null, desc: "Countries are left uncolored so the basemap, the points and the lines show clearly. Click any country for its box.", src: "" });
 seq("all", "The big picture", "Likely scale and impunity (everything combined)", { f: (v) => fmt(v, 0) + " of 100",
   get: (p) => { const r = allScore(p); return r ? { v: r.v, est: r.est } : null; },
-  desc: "How likely it is that children are being abused, sold or trafficked here by organised groups or inside institutions, and how little stands in the way. Thirty-five percent is the documented record on this map in the chosen years; forty percent is how large the trade is estimated to be (trafficking market, modern slavery, reports of online abuse); twenty-five percent is how little stops it (officials working with criminals, weak resilience, weak help for victims, the US ranking). Where nothing is documented here in the chosen years, the score rests on the indicators alone and its box says it is an estimate. Darker means more.",
+  desc: "How likely it is that children are being abused, sold or trafficked here by organised groups or inside institutions, and how little stands in the way. Thirty-five percent is the documented record, meaning the cases gathered for this map in the chosen years and no others; forty percent is how large the trade is estimated to be (trafficking market, modern slavery, reports of online abuse); twenty-five percent is how little stops it (officials working with criminals, weak resilience, weak help for victims, the US ranking). Where nothing is documented here in the chosen years, the score rests on the indicators alone and its box says it is an estimate. Darker means more.",
   src: "This map's cases; GI-TOC Global Organized Crime Index 2025; Walk Free Global Slavery Index 2023; NCMEC CyberTipline 2024; US Trafficking in Persons Report 2025." });
 seq("doc", "The big picture", "Documented record (cases found by courts, inquiries and investigations)", { dom: [0, 100], f: (v) => fmt(v, 0) + " of 100",
   get: (p) => { const n = casesOf(p.iso).length; return n ? { v: docScore(p.iso), n } : null; },
-  desc: "Every case on this map in the chosen years and kinds, weighted by how firmly it was established (a conviction or an official inquiry counts more than a press report; acquittals and disproved claims count nothing), by how many children it involved, and by whether officials took part or covered it up. A high score means much has been exposed here, which is also a measure of how much has been looked for: countries that held inquiries show up; countries that never did stay dark.",
+  desc: "Counts only the cases gathered for this map — not every case that exists anywhere. Each case in the chosen years and kinds is weighted by how firmly it was established (a conviction or an official inquiry counts more than a press report; acquittals and disproved claims count nothing), by how many children it involved, and by whether officials took part or covered it up. A high score means much has been exposed here, which is also a measure of how much has been looked for: countries that held inquiries show up; countries that never did stay dark.",
   src: "The cases on this map; each links its source." });
 seq("market", "The big picture", "Likely size of the trade (indicators only)", { f: (v) => fmt(v, 0) + " of 100",
   get: (p) => { const v = partScore(marketParts(p)); return v == null ? null : { v }; },
@@ -399,8 +399,9 @@ function buildKey() {
   const nset = (k) => C.filter((c) => c.set === k).length;
   $("#keyBody").innerHTML =
     '<div class="psec" style="margin-top:0">Color the countries by</div>' +
-    '<select id="layer" aria-label="What to color the countries by">' + groups.map((g) => '<optgroup label="' + esc(g) + '">' + L.filter((l) => l.group === g).map((l) => '<option value="' + l.id + '">' + esc(l.label.trim()) + '</option>').join("") + '</optgroup>').join("") + '</select>' +
-    '<div id="ldesc"></div><div id="legend"></div>' +
+    '<div class="lrow"><select id="layer" aria-label="What to color the countries by">' + groups.map((g) => '<optgroup label="' + esc(g) + '">' + L.filter((l) => l.group === g).map((l) => '<option value="' + l.id + '">' + esc(l.label.trim()) + '</option>').join("") + '</optgroup>').join("") + '</select>' +
+    '<button type="button" class="ib" id="layerI" title="What this layer shows" aria-label="What this layer shows">?</button></div>' +
+    '<div id="ldesc" class="ipop"></div><div id="legend"></div>' +
     '<div class="psec">Years</div><div class="yrs"><label>From <input type="number" id="yFrom" min="' + YMIN + '" max="' + YMAX + '" value="' + S.from + '"></label><label>to <input type="number" id="yTo" min="' + YMIN + '" max="' + YMAX + '" value="' + S.to + '"></label><button type="button" class="btn" id="yAll">All years</button></div>' +
     '<div class="seg" style="margin-top:4px">' + D.ERAS.map((e) => '<button type="button" class="btn era" data-a="' + e[1] + '" data-b="' + e[2] + '">' + esc(e[0]) + '</button>').join("") + '</div>' +
     '<p class="lsrc">Cases, lines and the documented record follow the years chosen. A case counts if any part of it falls inside them; cases with no date always show.</p>' +
@@ -416,6 +417,7 @@ function buildKey() {
     '<div class="ipop" id="netI">The organisations, institutions, platforms and armed groups that recur across the cases, each placed at its headquarters and sized by how many countries it is documented in. Click one to draw where it is documented (dotted lines) and where its presence is only likely (grey). Presence is not proof of abuse in that country; the box says which countries have a case.</div>' +
     '<div class="psec">Search</div><input id="find" type="search" placeholder="Country, case or network"><div id="plist" class="scroll"></div>';
   $("#layer").value = S.layer;
+  $("#layerI").addEventListener("click", () => { OPEN_DESC = !OPEN_DESC; $("#ldesc").classList.toggle("open", OPEN_DESC); $("#layerI").classList.toggle("on", OPEN_DESC); });
   $("#layer").addEventListener("change", (e) => { S.layer = e.target.value; const l = layer(); if (l.pat && l.pat.view) fitView(l.pat.view); update(); });
   const setY = () => { let a = +$("#yFrom").value || YMIN, b = +$("#yTo").value || YMAX; a = Math.max(YMIN, Math.min(YMAX, a)); b = Math.max(YMIN, Math.min(YMAX, b)); if (a > b) [a, b] = [b, a]; S.from = a; S.to = b; update(); };
   $("#yFrom").addEventListener("change", setY); $("#yTo").addEventListener("change", setY);
@@ -427,7 +429,7 @@ function buildKey() {
   $("#setList").querySelectorAll("[data-set]").forEach((cb) => cb.addEventListener("change", () => { if (cb.checked) S.sets.add(cb.dataset.set); else S.sets.delete(cb.dataset.set); update(); }));
   $("#keyBody").querySelectorAll("[data-flow]").forEach((cb) => cb.addEventListener("change", () => { if (cb.checked) S.flows.add(cb.dataset.flow); else S.flows.delete(cb.dataset.flow); drawLines(); drawLinesLegend(); }));
   $("#netOn").addEventListener("change", (e) => { S.nets = e.target.checked; if (!S.nets) S.selNet = null; paint(); });
-  $("#keyBody").querySelectorAll(".ib").forEach((b) => b.addEventListener("click", () => { const el = $("#" + b.dataset.i); el.classList.toggle("open"); b.classList.toggle("on", el.classList.contains("open")); }));
+  $("#keyBody").querySelectorAll(".ib[data-i]").forEach((b) => b.addEventListener("click", () => { const el = $("#" + b.dataset.i); el.classList.toggle("open"); b.classList.toggle("on", el.classList.contains("open")); }));
   $("#find").addEventListener("input", (e) => { S.q = e.target.value.toLowerCase(); drawList(); });
 }
 function drawSwatches() {
@@ -454,9 +456,11 @@ function patExtra(pt) {
   if (pt.implications) h.push('<div class="psec">What this means</div><div class="means">' + esc(pt.implications).split(/\n\n+/).map((x) => '<p>' + x + '</p>').join("") + '</div>');
   return h.join("");
 }
+let OPEN_DESC = false;
 function drawLegend() {
   const l = layer();
   $("#ldesc").innerHTML = '<p class="ldesc">' + esc(l.desc) + '</p>' + (l.src ? '<p class="lsrc">Source: ' + esc(l.src) + '</p>' : "");
+  $("#ldesc").classList.toggle("open", OPEN_DESC);
   if (l.id === "none") { $("#legend").innerHTML = ""; return; }
   const rs = ISOS.map((k) => [k, l.get(P[k])]);
   let h = "";
