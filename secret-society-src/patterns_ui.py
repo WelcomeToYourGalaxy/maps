@@ -20,7 +20,8 @@ HTML_TIME = '''  <div id="timeBox">
 
   <div id="indexPanel">'''
 
-CSS = '''<style>
+CSS = '''</style>
+<style>
   .pat-row{padding:7px 8px;margin:0 0 5px;border-left:3px solid var(--pc,#7a2f40);border-radius:0 6px 6px 0;
     background:rgba(255,255,255,0.03);cursor:pointer;}
   .pat-row:hover{background:rgba(255,255,255,0.07);}
@@ -55,6 +56,7 @@ CSS = '''<style>
   .bts{border-left-color:#8c2f3e !important;background:rgba(140,47,62,0.07) !important;}
   .bts .cn-h{color:#c9a9b0 !important;}
   .bts .imp-h{margin-top:9px;}
+  .bts .cn-body{text-align:left;-webkit-hyphens:none;hyphens:none;}
   .bts .est-tag{font-size:9px;letter-spacing:.8px;text-transform:uppercase;color:#a99ab8;margin-left:6px;}
   #timeChart svg{display:block;width:100%;}
   #timeChart rect.b{fill:#6f5a68;cursor:pointer;} #timeChart rect.b:hover{fill:#a58594;}
