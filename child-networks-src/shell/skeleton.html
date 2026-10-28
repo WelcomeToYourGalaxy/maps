@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Child Abuse Networks Worldwide</title>
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Uncial+Antiqua&display=swap">
+<style>
+/*CSS*/
+</style>
+</head>
+<body>
+<div id="map"></div>
+
+<div id="key" class="card scroll">
+  <button id="toggleKey" class="tog" type="button" title="Pull the key up or down">−</button>
+  <h1>Child abuse networks worldwide</h1>
+  <p class="lede">Where children have been abused, sold and trafficked by organised groups and inside institutions, who shielded the people responsible, and the patterns that repeat across countries and decades.</p>
+  <div class="body" id="keyBody"></div>
+</div>
+
+<div id="rcol">
+  <div id="infoBtn" class="card" role="button" tabindex="0">About and sources</div>
+  <div id="tr" class="card"><button id="toggleTr" class="tog" type="button" title="Pull the basemap box up or down">−</button><div class="body" id="trBody"></div></div>
+  <div id="dock" class="card"><div class="psec" style="margin-top:0">Charts</div><div id="dockBtns"></div></div>
+</div>
+<div id="det" class="card scroll hp" role="dialog" aria-label="Details"><button id="detX" type="button" title="Close">×</button><div id="detBody"></div></div>
+
+<button id="worldBtn" type="button" title="Zoom back out to the whole world">Whole world</button>
+<div id="info" class="card scroll"></div>
+<button id="infoClose" class="btn" type="button">Close</button>
+<div id="ttip"></div>
+<script src="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
+<script id="plate">window.PLATE_IMG = "/*PLATE*/";</script>
+<script>const D = /*DATA*/;</script>
+<script>/*BASEMAPS*/</script>
+<script>/*APP*/</script>
+</body>
+</html>
