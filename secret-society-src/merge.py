@@ -54,7 +54,9 @@ def norm(t):
 def main(rdir, arch_path):
     arch = load_archive(arch_path)
     seen, out, per = set(), [], {}
-    for f in sorted(glob.glob(os.path.join(rdir, '*.json'))):
+    RENAME = {'hizb_ut_tahrir': 'hizb_tahrir'}
+    files = sorted(glob.glob(os.path.join(rdir, '*.json'))) + sorted(glob.glob(os.path.join(rdir, 'r2', '*_cases.json')))
+    for f in files:
         try:
             recs = json.load(open(f))
         except Exception as e:
@@ -69,6 +71,9 @@ def main(rdir, arch_path):
             if key in seen:
                 continue
             seen.add(key)
+            if r['c'] == 'China' and 'Taiwan' in (r.get('org_note', '') + r.get('city', '') + r['n']):
+                r['c'] = 'Taiwan'
+            r['org'] = RENAME.get(r.get('org', ''), r.get('org', ''))
             r.setdefault('rank', '')
             r.setdefault('cite', '')
             if isinstance(r['y'], str):
@@ -88,6 +93,13 @@ def main(rdir, arch_path):
             if best:
                 r['arch'] = {'t': best['conspiracy'], 's': best['trust']}
             out.append(r)
+    up = os.path.join(rdir, 'r2', 'gaps_urls.json')
+    if os.path.exists(up):
+        for u in json.load(open(up)):
+            for r in out:
+                if r['n'] == u.get('n') and r['c'] == u.get('c') and u.get('url'):
+                    r['url'] = u['url']
+                    if u.get('cite'): r['cite'] = u['cite']
     json.dump(out, open(os.path.join(HERE, 'data', 'cases.json'), 'w'), ensure_ascii=False, indent=1)
     print(per, '->', len(out), 'cases;', sum(1 for r in out if r.get('arch')), 'linked to the archive')
 
