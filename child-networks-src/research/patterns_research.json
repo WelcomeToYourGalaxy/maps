@@ -998,6 +998,486 @@
    ],
    "unproven": [],
    "notes": "Search budget ran out mid-task; rows come from Wikipedia diocesan articles (which cite NYT, AP, Reuters, Star Tribune, court filings). Coordinates are the see city, not the chancery. Not captured: Diocese of Rockville Centre plan confirmation date; dioceses filing 2025-2026 beyond Fresno (e.g. possible Buffalo/Albany plan outcomes, Archdiocese of New York has NOT filed as of sources); Harrington's direct effect on specific diocesan plans (sources not fetched — the Third Circuit's legal reasoning was not fetched). Claims counts are 'claims' or 'suits' as each source states. bishop-accountability.org bankruptcy tracker URL was blocked (permission prompt not answered)."
+  },
+  "inquiry_waves": {
+   "title": "Inquiry waves — when each country first investigated institutional child sexual abuse",
+   "summary_facts": [
+    "The first official national-level inquiries into institutional child sexual abuse came in Canada (Hughes Royal Commission, provincial, 1989) and Ireland (Commission to Inquire into Child Abuse, 1999-2009); most of Europe followed only after the 2010 wave (Germany, Belgium, Netherlands, Austria).",
+    "Many 'national' Catholic inquiries were commissioned by the Church itself rather than the state: John Jay (US, 2004), Deetman (Netherlands, 2011), MHG (Germany, 2018), CIASE (France, 2021), Strecht (Portugal, 2023), University of Zurich (Switzerland, 2023). Spain's 2023 Ombudsman report is a rare state inquiry.",
+    "Where inquiries used population surveys, estimates were far higher than church records: France 216,000 minors abused by clergy (330,000 incl. lay staff) versus 3,000 identified in 2020; Spain 0.6% of adults abused by a priest or religious (survey of 8,013); Netherlands 10,000-20,000.",
+    "New Zealand's Royal Commission (final report 24 July 2024) estimated 113,000-253,000 people abused in state and faith-based care 1950-1999.",
+    "Italy has no official national statistics or inquiry; the Italian Bishops' Conference said in 2012 its priests had no obligation to report to police under the Lateran concordat.",
+    "Poland's State Commission (2019 law) reported in August 2022 that church files sent to the Vatican were beyond its reach and canon law destroys files ten years after conviction."
+   ],
+   "rows": [
+    {
+     "iso3": "CAN",
+     "year": 1989,
+     "body": "Royal Commission of Inquiry into the Response of the Newfoundland Criminal Justice System (Hughes Inquiry), 1989-1992",
+     "scope": "Provincial (Newfoundland); Mount Cashel orphanage, Christian Brothers; police/justice response",
+     "findings_headline": "Officials had transferred offenders and covered up abuse; 11 Christian Brothers convicted; Newfoundland paid C$11.5m compensation in 1996",
+     "url": "https://en.wikipedia.org/wiki/Hughes_Inquiry",
+     "type": "inquiry",
+     "first_any": true,
+     "first_catholic": true,
+     "level": "provincial"
+    },
+    {
+     "iso3": "CAN",
+     "year": 1989,
+     "body": "Winter Commission (Archdiocesan Commission of Enquiry), 1989-1990",
+     "scope": "Church-appointed; clergy abuse in Archdiocese of St John's",
+     "findings_headline": "Assigned part of the blame for cover-up to Archbishop Penney, who resigned",
+     "url": "https://en.wikipedia.org/wiki/Winter_Commission",
+     "type": "inquiry",
+     "level": "church-commissioned"
+    },
+    {
+     "iso3": "CAN",
+     "year": 2008,
+     "body": "Truth and Reconciliation Commission of Canada, 2008-2015",
+     "scope": "National; Indian residential schools (church-run, state-funded)",
+     "findings_headline": "Final report Dec 2015 called the system cultural genocide; 31,970 sexual or serious sexual assault claims resolved by the Independent Assessment Process, 5,995 pending",
+     "url": "https://en.wikipedia.org/wiki/Truth_and_Reconciliation_Commission_of_Canada",
+     "type": "inquiry",
+     "level": "national"
+    },
+    {
+     "iso3": "IRL",
+     "year": 1999,
+     "body": "Commission to Inquire into Child Abuse (Laffoy, then Ryan Commission), 1999-2009",
+     "scope": "National; all child abuse in institutions since 1936, mostly 60 Catholic-run industrial and reformatory schools",
+     "findings_headline": "Ryan Report 20 May 2009: sexual abuse endemic in boys' institutions; religious authorities shielded orders amid a \"culture of self-serving secrecy\"; state inspectors failed to stop it",
+     "url": "https://en.wikipedia.org/wiki/Commission_to_Inquire_into_Child_Abuse",
+     "type": "inquiry",
+     "first_any": true,
+     "level": "national"
+    },
+    {
+     "iso3": "IRL",
+     "year": 2005,
+     "body": "Ferns Inquiry (state), report 25 Oct 2005",
+     "scope": "Diocese of Ferns; response of church and civil authorities",
+     "findings_headline": "First Irish state inquiry into a diocese's handling of clerical abuse; 100+ allegations against 21 priests 1962-2002",
+     "url": "https://en.wikipedia.org/wiki/Ferns_Report",
+     "type": "inquiry",
+     "first_catholic": true,
+     "level": "national (diocese-specific)"
+    },
+    {
+     "iso3": "IRL",
+     "year": 2009,
+     "body": "Commission of Investigation, Dublin Archdiocese (Murphy Report), Nov 2009",
+     "scope": "Archdiocese of Dublin 1975-2004; church and state (Garda) responses",
+     "findings_headline": "Complaints were effectively ignored by church and police; sample of 46 priests",
+     "url": "https://en.wikipedia.org/wiki/Murphy_Report",
+     "type": "inquiry",
+     "level": "national (diocese-specific)"
+    },
+    {
+     "iso3": "IRL",
+     "year": 2011,
+     "body": "Commission of Investigation, Diocese of Cloyne (Cloyne Report), July 2011",
+     "scope": "Diocese of Cloyne, complaints against 19 priests since 1996",
+     "findings_headline": "Bishop John Magee falsely told the government his diocese was reporting all allegations",
+     "url": "https://en.wikipedia.org/wiki/Cloyne_Report",
+     "type": "inquiry",
+     "level": "national (diocese-specific)"
+    },
+    {
+     "iso3": "USA",
+     "year": 2002,
+     "body": "USCCB National Review Board / John Jay College study, report Feb 2004",
+     "scope": "National, church-commissioned survey of all dioceses 1950-2002",
+     "findings_headline": "10,667 allegations; 4,392 clergy accused (about 4% of 109,694 clergy)",
+     "url": "https://en.wikipedia.org/wiki/John_Jay_Report",
+     "type": "inquiry",
+     "first_catholic": true,
+     "level": "church-commissioned national"
+    },
+    {
+     "iso3": "USA",
+     "year": 2018,
+     "body": "Pennsylvania statewide grand jury (Attorney General), report 14 Aug 2018",
+     "scope": "Six of eight Pennsylvania dioceses",
+     "findings_headline": "301 priests accused of abusing more than 1,000 children; priests routinely moved between parishes; \"likely thousands more\" victims",
+     "url": "https://en.wikipedia.org/wiki/Grand_jury_investigation_of_Catholic_Church_sexual_abuse_in_Pennsylvania",
+     "type": "inquiry",
+     "level": "state"
+    },
+    {
+     "iso3": "USA",
+     "year": null,
+     "body": "No federal (national) government inquiry into institutional child sexual abuse",
+     "scope": "—",
+     "findings_headline": "Investigations have been state-level (attorneys general, grand juries) and church-commissioned",
+     "url": "https://en.wikipedia.org/wiki/Catholic_Church_sex_abuse_cases_in_the_United_States",
+     "type": "no_inquiry",
+     "note": "No national US government commission found in sources consulted; inferred from the record of state-level reports — flag as inference"
+    },
+    {
+     "iso3": "AUS",
+     "year": 1999,
+     "body": "Commission of Inquiry into Abuse of Children in Queensland Institutions (Forde Inquiry), 1999",
+     "scope": "State (Queensland); 159 government and non-government institutions 1911-1999",
+     "findings_headline": "Found abuse had occurred; 42 recommendations",
+     "url": "https://en.wikipedia.org/wiki/Royal_Commission_into_Institutional_Responses_to_Child_Sexual_Abuse",
+     "type": "inquiry",
+     "level": "state"
+    },
+    {
+     "iso3": "AUS",
+     "year": 2013,
+     "body": "Royal Commission into Institutional Responses to Child Sexual Abuse, 13 Jan 2013 - 15 Dec 2017",
+     "scope": "National; all institutions (religious, state, sport, schools, youth groups)",
+     "findings_headline": "About 7% of Catholic priests who served 1950-2009 were alleged perpetrators; found religious institutions commonly used \"in-house\" responses",
+     "url": "https://en.wikipedia.org/wiki/Royal_Commission_into_Institutional_Responses_to_Child_Sexual_Abuse",
+     "type": "inquiry",
+     "first_any": true,
+     "first_catholic": true,
+     "level": "national"
+    },
+    {
+     "iso3": "BEL",
+     "year": 2000,
+     "body": "Commission for the handling of complaints of sexual abuse in a pastoral relationship (Halsberghe), 2000; second commission (Adriaenssens) 2009-2010",
+     "scope": "Church-established",
+     "findings_headline": "Halsberghe: 33 formal complaints, 32 upheld, most time-barred; Adriaenssens report Sept 2010: 475 complaints in six months, 13 suicides linked to clerical abuse, abusers in about 29 religious orders",
+     "url": "https://en.wikipedia.org/wiki/Catholic_Church_sexual_abuse_cases_in_Belgium",
+     "type": "inquiry",
+     "first_catholic": true,
+     "level": "church-established",
+     "url2": "https://www.rte.ie/news/2010/0910/135472-church_belgium"
+    },
+    {
+     "iso3": "BEL",
+     "year": 2010,
+     "body": "Belgian Parliament special committee on sexual abuse (set up after June 2010 police raids)",
+     "scope": "National parliamentary",
+     "findings_headline": "Set up after judicial police raided the Mechelen archbishop's palace on 24 June 2010",
+     "url": "https://de.wikipedia.org/wiki/Sexueller_Missbrauch_in_der_römisch-katholischen_Kirche_nach_Ländern",
+     "type": "inquiry",
+     "first_any": true,
+     "level": "national parliamentary"
+    },
+    {
+     "iso3": "NLD",
+     "year": 2010,
+     "body": "Deetman Commission (set up by the Church March 2010), report 16 Dec 2011",
+     "scope": "Catholic Church institutions 1945-2010",
+     "findings_headline": "At least 800 priests, monks and religious involved in abuse 1945-1985 (105 alive); estimated 10,000-20,000 minors abused; policy of \"not hanging out the dirty washing\"",
+     "url": "https://www.dutchnews.nl/news/2011/12/commission_identifies_800_prie/",
+     "type": "inquiry",
+     "first_catholic": true,
+     "level": "church-commissioned independent"
+    },
+    {
+     "iso3": "DEU",
+     "year": 2010,
+     "body": "Round Table on Sexual Child Abuse (Runder Tisch), federal government, 24 Mar 2010 - final report 30 Nov 2011; Independent Commissioner (UBSKM) from 2010",
+     "scope": "National; private and public institutions and families",
+     "findings_headline": "Set up after the January 2010 Canisius-Kolleg revelations; chaired by three federal ministers",
+     "url": "https://de.wikipedia.org/wiki/Runder_Tisch_Sexueller_Kindesmissbrauch",
+     "type": "inquiry",
+     "first_any": true,
+     "level": "national"
+    },
+    {
+     "iso3": "DEU",
+     "year": 2016,
+     "body": "Independent Commission for the Investigation of Child Sexual Abuse (UKASK), from 26 Jan 2016",
+     "scope": "National (incl. GDR); families, institutions, organised exploitation",
+     "findings_headline": "More than 2,800 people contacted the commission by end of 2023; mandate extended to end 2025",
+     "url": "https://de.wikipedia.org/wiki/Unabh%C3%A4ngige_Kommission_zur_Aufarbeitung_sexuellen_Kindesmissbrauchs",
+     "type": "inquiry",
+     "level": "national"
+    },
+    {
+     "iso3": "DEU",
+     "year": 2018,
+     "body": "MHG study (Mannheim, Heidelberg, Giessen), commissioned by German Bishops' Conference, published 25 Sept 2018",
+     "scope": "27 dioceses, personnel files 1946-2014",
+     "findings_headline": "1,670 accused clerics (4.4% of files examined), 3,677 child victims; 62.8% male",
+     "url": "https://de.wikipedia.org/wiki/MHG-Studie",
+     "type": "inquiry",
+     "first_catholic": true,
+     "level": "church-commissioned"
+    },
+    {
+     "iso3": "AUT",
+     "year": 2010,
+     "body": "Independent Victims' Protection Commission (Klasnic Commission), set up by bishops spring 2010",
+     "scope": "Catholic Church in Austria",
+     "findings_headline": "Set a four-tier compensation model (EUR 5,000 / 15,000 / 25,000 / more in extreme cases)",
+     "url": "https://de.wikipedia.org/wiki/Sexueller_Missbrauch_in_der_r%C3%B6misch-katholischen_Kirche",
+     "type": "inquiry",
+     "first_catholic": true,
+     "level": "church-established"
+    },
+    {
+     "iso3": "GBR",
+     "year": 2014,
+     "body": "Independent Inquiry into Child Sexual Abuse (IICSA), England and Wales; announced 7 July 2014, statutory from Feb 2015, final report 20 Oct 2022",
+     "scope": "National (England and Wales); all institutions incl. Westminster, churches, councils",
+     "findings_headline": "19 reports; Catholic Church report (Nov 2020) found it put reputation before children; first final recommendation fully implemented only in June 2026 (limitation reform)",
+     "url": "https://en.wikipedia.org/wiki/Independent_Inquiry_into_Child_Sexual_Abuse",
+     "type": "inquiry",
+     "first_any": true,
+     "first_catholic": true,
+     "level": "national"
+    },
+    {
+     "iso3": "GBR",
+     "year": 2015,
+     "body": "Scottish Child Abuse Inquiry, from Oct 2015",
+     "scope": "Scotland; children in care",
+     "findings_headline": "Original 2019 deadline dropped; no recommendations published as of Sept 2023",
+     "url": "https://en.wikipedia.org/wiki/Scottish_Child_Abuse_Inquiry",
+     "type": "inquiry",
+     "level": "national (Scotland)"
+    },
+    {
+     "iso3": "NZL",
+     "year": 2018,
+     "body": "Royal Commission of Inquiry into Abuse in Care, 2018 - final report 24 July 2024",
+     "scope": "National; state and faith-based care 1950-1999",
+     "findings_headline": "Between 113,000 and 253,000 children, young people and adults abused and neglected in care 1950-1999",
+     "url": "https://en.wikipedia.org/wiki/Royal_Commission_of_Inquiry_into_Abuse_in_Care",
+     "type": "inquiry",
+     "first_any": true,
+     "first_catholic": true,
+     "level": "national"
+    },
+    {
+     "iso3": "FRA",
+     "year": 2018,
+     "body": "Independent Commission on Sexual Abuse in the Church (CIASE, Sauvé), initiated by bishops Nov 2018, report 5 Oct 2021",
+     "scope": "Catholic Church in France since 1950",
+     "findings_headline": "About 216,000 minors abused by clergy and religious; 330,000 including lay church workers; 2,900-3,200 abusers",
+     "url": "https://en.wikipedia.org/wiki/Catholic_Church_sexual_abuse_cases_in_France",
+     "type": "inquiry",
+     "first_catholic": true,
+     "level": "church-commissioned independent"
+    },
+    {
+     "iso3": "FRA",
+     "year": 2021,
+     "body": "Independent Commission on Incest and Sexual Violence against Children (CIIVISE), report 17 Nov 2023",
+     "scope": "National; all settings",
+     "findings_headline": "755-page report; recommendation 60: make rape and sexual assault of children imprescriptible",
+     "url": "https://www.publicsenat.fr/actualites/societe/ciivise-peut-on-rendre-les-violences-sexuelles-sur-les-enfants-imprescriptibles",
+     "type": "inquiry",
+     "first_any": true,
+     "level": "national government"
+    },
+    {
+     "iso3": "PRT",
+     "year": 2022,
+     "body": "Independent Commission for the Study of Sexual Abuse of Children in the Portuguese Catholic Church (Strecht), Jan 2022 - report 13 Feb 2023",
+     "scope": "Catholic Church 1950-2022; invited by the bishops' conference",
+     "findings_headline": "512 validated testimonies; a minimum of 4,815 victims; archives \"the tip of the iceberg\"",
+     "url": "https://en.wikipedia.org/wiki/Independent_Commission_for_the_Study_of_Sexual_Abuse_against_Children_in_the_Portuguese_Catholic_Church",
+     "type": "inquiry",
+     "first_catholic": true,
+     "level": "church-commissioned independent"
+    },
+    {
+     "iso3": "ESP",
+     "year": 2022,
+     "body": "Ombudsman (Defensor del Pueblo) report on sexual abuse in the Catholic Church and the role of public authorities, presented to Congress 27 Oct 2023",
+     "scope": "National state inquiry; Catholic Church",
+     "findings_headline": "Survey of 8,013 adults: 11.7% abused before 18; 1.13% abused in religious settings; 0.6% by a Catholic priest or religious; 487 victim testimonies collected",
+     "url": "https://www.defensordelpueblo.es/informe-comision-abusos-sexuales/",
+     "type": "inquiry",
+     "first_any": true,
+     "first_catholic": true,
+     "level": "national state",
+     "url2": "https://www.defensordelpueblo.es/wp-content/uploads/2023/10/RESUMEN_INFORME_abusos_Iglesia_catolica.pdf"
+    },
+    {
+     "iso3": "CHE",
+     "year": 2022,
+     "body": "University of Zurich pilot study (Dommann and Meier), commissioned by Swiss Bishops' Conference, RKZ and KOVOS; report May/Sept 2023",
+     "scope": "Catholic Church in Switzerland since mid-20th century",
+     "findings_headline": "1,002 cases, 510 accused, 921 victims; superiors systematically transferred accused clerics, sometimes abroad, to avoid prosecution",
+     "url": "https://de.wikipedia.org/wiki/Sexueller_Missbrauch_in_der_r%C3%B6misch-katholischen_Kirche_nach_L%C3%A4ndern",
+     "type": "inquiry",
+     "first_catholic": true,
+     "level": "church-commissioned academic"
+    },
+    {
+     "iso3": "CHE",
+     "year": 2014,
+     "body": "Federal reckoning on compulsory welfare measures and forced placements (Verdingkinder) before 1981",
+     "scope": "National; state care and forced placements",
+     "findings_headline": "See care.json record (justiceinfo.net)",
+     "url": "https://www.justiceinfo.net/en/42559-raw-truth-swiss-administrative-detention-finally-made-public.html",
+     "type": "inquiry",
+     "level": "national",
+     "note": "from colleague file care.json; not re-verified here"
+    },
+    {
+     "iso3": "POL",
+     "year": 2019,
+     "body": "State Commission for investigating sexual abuse of children under 15 (Państwowa Komisja ds. Pedofilii), Act of 30 Aug 2019, full membership sworn 24 July 2020",
+     "scope": "National; all settings",
+     "findings_headline": "Criticised in Aug 2022 that church documents sent to the Vatican were out of its reach and church files are destroyed ten years after conviction under canon law",
+     "url": "https://pl.wikipedia.org/wiki/Pa%C5%84stwowa_Komisja_do_spraw_wyja%C5%9Bniania_przypadk%C3%B3w_czynno%C5%9Bci_skierowanych_przeciwko_wolno%C5%9Bci_seksualnej_i_obyczajno%C5%9Bci_wobec_ma%C5%82oletniego_poni%C5%BCej_lat_15",
+     "type": "inquiry",
+     "first_any": true,
+     "level": "national"
+    },
+    {
+     "iso3": "POL",
+     "year": 2019,
+     "body": "Polish Episcopal Conference data release, 14 April 2019",
+     "scope": "Church self-report from over 10,000 parishes, 1990 - mid-2018",
+     "findings_headline": "382 priests reported; 625 children abused; commentators called it an undercount",
+     "url": "https://en.wikipedia.org/wiki/Catholic_Church_sexual_abuse_cases_in_Poland",
+     "type": "inquiry",
+     "first_catholic": true,
+     "level": "church self-report"
+    },
+    {
+     "iso3": "CHL",
+     "year": 2018,
+     "body": "Vatican investigation (Scicluna and Bertomeu), Feb 2018",
+     "scope": "Chile's bishops and the Karadima/Barros cases",
+     "findings_headline": "Pope Francis admitted \"serious mistakes\"; all Chilean bishops offered resignation (May 2018); Chile removed limitation period for child sex abuse 11 July 2019",
+     "url": "https://en.wikipedia.org/wiki/Catholic_Church_sexual_abuse_cases_in_Chile",
+     "type": "inquiry",
+     "first_catholic": true,
+     "level": "Vatican (external)",
+     "note": "No Chilean state national commission found in sources consulted"
+    },
+    {
+     "iso3": "JPN",
+     "year": 2023,
+     "body": "Independent probe established by Johnny & Associates, report 29 Aug 2023; UN Human Rights Council working group visit July 2023",
+     "scope": "Entertainment industry (Johnny & Associates)",
+     "findings_headline": "Kitagawa repeatedly abused boys from the early 1970s to mid-2010s; 478 people claimed victimisation, 325 sought compensation (later 545 paid)",
+     "url": "https://en.wikipedia.org/wiki/Johnny_Kitagawa_sexual_abuse_scandal",
+     "type": "inquiry",
+     "level": "company-commissioned",
+     "note": "No Japanese government national inquiry found"
+    },
+    {
+     "iso3": "KOR",
+     "year": 2022,
+     "body": "Truth and Reconciliation Commission (South Korea) investigations of Brothers' Home, 2022-2024",
+     "scope": "State-backed internment \"welfare\" facility in Busan 1975-1988 holding children and adults",
+     "findings_headline": "657 deaths 1975-1988; of 3,975 inmates in 1986, 3,117 were brought in by police; AP found the facility organised adoption of 19 children 1979-1986",
+     "url": "https://en.wikipedia.org/wiki/Brothers_Home",
+     "type": "inquiry",
+     "level": "national",
+     "note": "Primarily forced detention/abuse rather than sexual abuse specifically"
+    },
+    {
+     "iso3": "PER",
+     "year": 2016,
+     "body": "Commission commissioned by Sodalitium Christianae Vitae (report Feb 2017)",
+     "scope": "Single lay society",
+     "findings_headline": "Founder Luis Figari sexually abused at least one minor and others",
+     "url": "https://de.wikipedia.org/wiki/Sexueller_Missbrauch_in_der_r%C3%B6misch-katholischen_Kirche_nach_L%C3%A4ndern",
+     "type": "inquiry",
+     "first_catholic": true,
+     "level": "organisation-commissioned",
+     "note": "No Peruvian national inquiry found in sources consulted"
+    },
+    {
+     "iso3": "MEX",
+     "year": 2020,
+     "body": "Mexican Episcopal Conference self-report, Jan 2020",
+     "scope": "Church self-report",
+     "findings_headline": "426 priests investigated over ten years, 217 removed; El Universal: only 6 of 156 alleged child abuse cases 2009-2019 ended in conviction",
+     "url": "https://en.wikipedia.org/wiki/Catholic_Church_sexual_abuse_cases_in_Mexico",
+     "type": "inquiry",
+     "first_catholic": true,
+     "level": "church self-report",
+     "note": "No national state inquiry found"
+    },
+    {
+     "iso3": "COL",
+     "year": 2020,
+     "body": "Constitutional Court order (Aug 2020) to the Archdiocese of Medellín to disclose files",
+     "scope": "Court-ordered disclosure, not an inquiry",
+     "findings_headline": "Archdiocese ordered to disclose files on 915 accused clergy cases to journalist Juan Pablo Barrientos within 48 hours; full compliance not achieved",
+     "url": "https://de.wikipedia.org/wiki/Sexueller_Missbrauch_in_der_r%C3%B6misch-katholischen_Kirche_nach_L%C3%A4ndern",
+     "type": "no_inquiry",
+     "level": "judicial"
+    },
+    {
+     "iso3": "ITA",
+     "year": null,
+     "body": "No national inquiry",
+     "scope": "—",
+     "findings_headline": "\"There are no official statistics\"; under the Lateran concordat the Italian Bishops' Conference said in May 2012 its priests have no obligation to report suspected abuse to police; victims group Rete l'Abuso has demanded an independent external inquiry for years",
+     "url": "https://en.wikipedia.org/wiki/Catholic_Church_sexual_abuse_cases_in_Italy",
+     "type": "no_inquiry"
+    },
+    {
+     "iso3": "BRA",
+     "year": null,
+     "body": "No national inquiry found",
+     "scope": "—",
+     "findings_headline": "Largest Catholic population in the world; cases surfaced through individual prosecutions and a 2010 parliamentary hearing on one priest",
+     "url": "https://en.wikipedia.org/wiki/Catholic_sexual_abuse_cases_in_Latin_America",
+     "type": "no_inquiry",
+     "note": "Absence inferred from sources consulted, not a sourced statement"
+    },
+    {
+     "iso3": "PHL",
+     "year": null,
+     "body": "No national inquiry found",
+     "scope": "—",
+     "findings_headline": "Bishops apologised 9 July 2002; said about 200 of 7,000 priests had sexual misconduct over two decades; at least 34 priests suspended in 2003",
+     "url": "https://de.wikipedia.org/wiki/Sexueller_Missbrauch_in_der_r%C3%B6misch-katholischen_Kirche_nach_L%C3%A4ndern",
+     "type": "no_inquiry",
+     "note": "Absence inferred"
+    },
+    {
+     "iso3": "IND",
+     "year": null,
+     "body": "No national inquiry into institutional abuse found",
+     "scope": "—",
+     "findings_headline": "Scholars note allegations \"often remain informal and rarely progress to formal charges\" (Matthew N. Schmalz)",
+     "url": "https://en.wikipedia.org/wiki/Catholic_Church_sexual_abuse_cases",
+     "type": "no_inquiry"
+    },
+    {
+     "iso3": "ESP",
+     "year": 2019,
+     "body": "(context) Justice Ministry questioned credibility of Church cooperation, Feb 2019",
+     "scope": "—",
+     "findings_headline": "Preceded the 2022 parliamentary mandate to the Ombudsman",
+     "url": "https://en.wikipedia.org/wiki/Catholic_Church_sexual_abuse_cases_in_Germany",
+     "type": "context"
+    }
+   ],
+   "sources": [
+    {
+     "title": "Wikipedia — Catholic Church sexual abuse cases (by country articles)",
+     "url": "https://en.wikipedia.org/wiki/Catholic_Church_sexual_abuse_cases"
+    },
+    {
+     "title": "de.wikipedia — Sexueller Missbrauch in der römisch-katholischen Kirche nach Ländern",
+     "url": "https://de.wikipedia.org/wiki/Sexueller_Missbrauch_in_der_r%C3%B6misch-katholischen_Kirche_nach_L%C3%A4ndern"
+    },
+    {
+     "title": "Defensor del Pueblo — Informe sobre los abusos sexuales en el ámbito de la Iglesia católica (2023)",
+     "url": "https://www.defensordelpueblo.es/informe-comision-abusos-sexuales/"
+    },
+    {
+     "title": "DutchNews — Deetman Commission (2011)",
+     "url": "https://www.dutchnews.nl/news/2011/12/commission_identifies_800_prie/"
+    },
+    {
+     "title": "RTÉ — Belgian church commission report (2010)",
+     "url": "https://www.rte.ie/news/2010/0910/135472-church_belgium"
+    }
+   ],
+   "unproven": [],
+   "notes": "type field: inquiry / no_inquiry / context. 'first_any' and 'first_catholic' flags mark the earliest national-level inquiry found for that country in sources consulted. Not covered for lack of opened sources (search budget exhausted): Kenya, South Africa, Nigeria, Argentina national bodies, Peru state, Malta, Slovakia, Lithuania, Hungary, Slovenia, Croatia, Norway (NOU 2004:23 children's homes is in care.json), Sweden/Denmark/Finland (in care.json), Northern Ireland HIA Inquiry 2014-2017 (in care.json), Jersey (care.json), Switzerland's 2023 national research programme. Australia royal commission headline figures (e.g. 8,000+ private sessions, 409 recommendations) not verified here. Italy 2022 CEI report on 2020-21 cases not verified."
   }
  }
 }
