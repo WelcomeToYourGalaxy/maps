@@ -28,14 +28,14 @@ NAME = {'freemasonry':'Freemasonry (other grand lodges)','prc_state':'PRC state 
 def main(rdir):
     base = json.load(open(os.path.join(rdir, 'orgs.json')))
     orgs, chans = base['orgs'], base['channels']
-    for f in sorted(glob.glob(os.path.join(rdir, 'r2', '*_orgs.json'))):
+    for f in sorted(glob.glob(os.path.join(rdir, 'r2', '*_orgs.json'))) + sorted(glob.glob(os.path.join(rdir, 'r3', '*_orgs.json'))):
         for o in json.load(open(f)):
             if o['k'] in {x['k'] for x in orgs}:
                 ex = next(x for x in orgs if x['k'] == o['k'])
                 ex['reach'] = sorted(set(ex.get('reach', [])) | set(o.get('reach', [])))
                 continue
             orgs.append(o)
-    for f in sorted(glob.glob(os.path.join(rdir, 'r2', '*_channels.json'))):
+    for f in sorted(glob.glob(os.path.join(rdir, 'r2', '*_channels.json'))) + sorted(glob.glob(os.path.join(rdir, 'r3', '*_channels.json'))):
         chans += json.load(open(f))
     for o in orgs:
         if o['k'] == 'wacl':

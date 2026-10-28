@@ -55,7 +55,7 @@ def main(rdir, arch_path):
     arch = load_archive(arch_path)
     seen, out, per = set(), [], {}
     RENAME = {'hizb_ut_tahrir': 'hizb_tahrir'}
-    files = sorted(glob.glob(os.path.join(rdir, '*.json'))) + sorted(glob.glob(os.path.join(rdir, 'r2', '*_cases.json')))
+    files = sorted(glob.glob(os.path.join(rdir, '*.json'))) + sorted(glob.glob(os.path.join(rdir, 'r2', '*_cases.json'))) + sorted(glob.glob(os.path.join(rdir, 'r3', '*_cases.json')))
     for f in files:
         try:
             recs = json.load(open(f))
