@@ -101,8 +101,16 @@ def fix_iso(x):
     return name_iso(x)
 
 
+# The same case recorded by two research domains: keep one.
+SKIP_CASES = {'irl-ryan-industrial-schools', 'irl-mother-baby-homes', 'can-mount-cashel-hughes', 'chl-colonia-dignidad-schafer',
+              'phl-quiboloy', 'usa-nxivm', 'afg-bacha-bazi-officials', 'gbr-ni-hia-2017'}
+SKIP_FLOWS = set()
+
+
 def main():
     raw_cases, raw_nets, raw_flows, series, notes = load_research()
+    raw_cases = [c for c in raw_cases if c.get('id') not in SKIP_CASES]
+    raw_flows = [f for f in raw_flows if f.get('id') not in SKIP_FLOWS and not (f.get('iso_a') == 'USA' and f.get('iso_b') == 'PER')]
     warn = []
 
     # ------------------------------------------------------------- networks
@@ -226,7 +234,7 @@ def main():
         cids = set()
         for cid in p.get('case_ids', []):
             if cid in cidx: cids.add(cidx[cid])
-            else: warn.append('pattern %s: unknown case %s' % (p['id'], cid))
+            elif cid not in SKIP_CASES: warn.append('pattern %s: unknown case %s' % (p['id'], cid))
         if p.get('case_match'):
             for i, c in enumerate(cases):
                 if re.search(p['case_match'], c['n'] + ' ' + c['d'] + ' ' + c['who'] + ' ' + (c['cover'] or ''), re.I):
@@ -237,7 +245,7 @@ def main():
         if p.get('case_filter') == 'offc':
             cids |= {i for i, c in enumerate(cases) if c['offc']}
         if p.get('case_filter') == 'delay10':
-            cids |= {i for i, c in enumerate(cases) if c['fr'] and c['yf'] and c['yf'] - c['fr'] >= 10}
+            cids |= {i for i, c in enumerate(cases) if c['fr'] and c['yf'] and c['yf'] - c['fr'] >= 10 and STAT[c['st']][1] > 0}
         if p.get('case_filter') == 'false':
             cids |= {i for i, c in enumerate(cases) if c['st'] in ('disproved',)}
         countries = [dict(x, iso3=fix_iso(x['iso3']) or x['iso3']) for x in p.get('countries', [])]
