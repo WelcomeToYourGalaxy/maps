@@ -1,0 +1,2407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drug Underworld Map — the drug underworld inside states and companies</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700&family=Playfair+Display:wght@700;800&family=Uncial+Antiqua&family=Marcellus&display=swap');
+  /* keep the ASCII success-rate charts and code blocks monospaced, not Uncial */
+  .pb-body pre, .pb-body pre code, .pb-body code, #guideBody pre, #guideBody code { font-family:'DejaVu Sans Mono','Consolas','Liberation Mono','Courier New',monospace !important; }
+  :root { --accent:#2e3e72; --accent-hi:#7889b5; --accent-soft:rgba(46,62,114,0.26); }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Marcellus','Georgia',serif; background:#040611; color:#e8e6e1; overflow:hidden; height:100vh; }
+  #header { position:fixed; top:0; left:0; right:0; z-index:1000; background:linear-gradient(180deg,rgba(10,14,23,0.97) 0%,rgba(10,14,23,0.85) 70%,rgba(10,14,23,0) 100%); padding:14px 24px 30px; pointer-events:none; }
+  #header h1 { font-family:'Uncial Antiqua','Marcellus','Georgia',serif; font-size:22px; font-weight:800; letter-spacing:0.5px; color:#f0ece4; pointer-events:auto; text-shadow:0 2px 12px rgba(0,0,0,0.5); }
+  #header .subtitle { font-size:12px; color:#969eb1; margin-top:3px; font-weight:400; letter-spacing:0.3px; pointer-events:auto; max-width:none; white-space:nowrap; }
+  #map { width:100%; height:100vh; background:#090a1e; }
+  /* backdrop-filter removed: the background above is fully opaque (#0c1122), so the blur
+     was never visible, but it forced the browser to re-rasterise and blur everything behind
+     the popup — satellite tiles, the hatched choropleth, ~1600 SVG marks — on every frame.
+     Cost scales with popup height, which is why big-record countries stalled and small ones
+     did not. contain/will-change keep the popup on its own layer so map moves don't repaint it. */
+  .leaflet-popup-content-wrapper { background:#0c1122 !important; border:1px solid var(--accent-soft) !important; border-radius:10px !important; box-shadow:0 8px 40px rgba(0,0,0,0.5) !important; color:#e0ddd5 !important; max-width:380px !important; contain:layout paint style; will-change:transform; }
+  .leaflet-popup-content { margin:14px 16px !important; font-family:'Marcellus','Georgia',serif !important; line-height:1.5 !important; font-size:13px !important; max-height:430px; overflow-y:auto; scrollbar-width:thin; }
+  .leaflet-popup-content::-webkit-scrollbar { width:5px; }
+  .leaflet-popup-content::-webkit-scrollbar-thumb { background:var(--accent-soft); border-radius:3px; }
+  .leaflet-popup-tip { background:#0c1122 !important; border:1px solid var(--accent-soft) !important; }
+  .leaflet-popup-close-button { color:#848cab !important; font-size:20px !important; padding:6px 8px 0 0 !important; }
+  .popup-country { font-family:'Marcellus','Georgia',serif; font-size:17px; font-weight:700; color:#f0ece4; margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid var(--accent-soft); }
+  .tracker-item { margin-bottom:10px; padding:10px 12px; background:rgba(255,255,255,0.03); border-radius:7px; border-left:3px solid var(--accent); transition:background .2s; }
+  .tracker-item:hover { background:rgba(255,255,255,0.06); }
+  .tracker-item:last-child { margin-bottom:0; }
+  .tracker-name { font-weight:700; font-size:13.5px; color:var(--accent-hi); margin-bottom:3px; }
+  .tracker-name a { color:var(--accent-hi); text-decoration:none; border-bottom:1px dotted var(--accent-soft); transition:all .2s; }
+  .tracker-name a:hover { color:#fff; }
+  .tracker-cat { display:inline-block; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; background:rgba(255,255,255,0.07); color:var(--accent-hi); padding:1px 6px; border-radius:3px; margin-left:6px; vertical-align:middle; }
+  .status-badge { display:inline-block; font-size:8.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.7px; padding:1px 6px; border-radius:3px; margin-left:6px; vertical-align:middle; }
+  .status-defunct { background:rgba(220,90,90,0.18); color:#cf9a8f; } .status-dormant { background:rgba(230,168,48,0.18); color:#315397; }
+  .tracker-desc { font-size:12px; color:#969eb1; line-height:1.55; }
+  .intl-badge { display:inline-block; font-size:9.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; background:rgba(45,50,121,0.16); color:#2b42a2; padding:2px 7px; border-radius:3px; margin-left:6px; vertical-align:middle; }
+  .fed-badge { background:rgba(0,86,233,0.16); color:#2e4cb1; }
+  .no-data { color:#6b7588; font-style:italic; font-size:12.5px; padding:4px 0; }
+  #controls { position:fixed; top:70px; right:16px; z-index:1001; background:rgba(8,12,27,0.95); border:1px solid var(--accent-soft); border-radius:10px; padding:11px 12px 12px; backdrop-filter:blur(12px); box-shadow:0 4px 22px rgba(0,0,0,0.45); width:252px; max-height:calc(100vh - 88px); overflow-y:auto; scrollbar-width:auto; }
+  #controls::-webkit-scrollbar{width:5px;} #controls::-webkit-scrollbar-thumb{background:var(--accent-soft);border-radius:3px;}
+  .ctl-title { font-size:9.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; color:#858d9f; margin:0 0 6px; }
+  .dpill { display:inline-block; font-size:10.5px; font-weight:700; padding:5px 9px; margin:0 4px 5px 0; border-radius:13px; cursor:pointer; border:1px solid rgba(255,255,255,0.14); color:#969eb1; user-select:none; transition:all .15s; }
+  .dpill:hover { border-color:#fff; }
+  .src-wrap { margin-top:11px; }
+  .voice-wrap { margin-top:11px; }
+  .trust-wrap { margin-top:11px; }
+  .skind-wrap { margin-top:11px; }
+  .media-wrap { margin-top:11px; }
+  .skpill.empty { opacity:.38; cursor:default; }
+  .ctl-note { font-size:10px; color:#838c99; line-height:1.45; margin:5px 3px 0; }
+  .ctl-note b { color:#a6aebb; font-weight:600; }
+  .filter-tip { font-size:10px; color:#868f9c; line-height:1.5; margin-top:10px; padding:7px 9px; background:rgba(255,255,255,.045); border-left:2px solid rgba(255,255,255,.2); border-radius:3px; }
+  .filter-tip .tl { display:block; color:#aeb6c2; font-weight:600; margin-bottom:3px; letter-spacing:.02em; }
+  .filter-tip b { color:#cfd5de; font-weight:600; }
+  .ctl-help { margin-top:6px; }
+  .ctl-help summary { font-size:10px; color:#8a93a0; cursor:pointer; list-style:none; padding:2px 0; user-select:none; }
+  .ctl-help summary::-webkit-details-marker { display:none; }
+  .ctl-help summary::before { content:'\25B8  '; }
+  .ctl-help[open] summary::before { content:'\25BE  '; }
+  .ctl-help .hgrp { font-size:9px; text-transform:uppercase; letter-spacing:.06em; color:#6f7886; margin:7px 0 2px; }
+  .ctl-help .hitem { display:block; font-size:10px; color:#9aa2ae; line-height:1.45; margin:3px 0 3px 4px; }
+  .ctl-help .hitem b { color:#c7cdd6; font-weight:600; }
+  .skpill { display:inline-block; font-size:10px; font-weight:700; padding:4px 9px; margin:0 4px 5px 0; border-radius:13px; cursor:pointer; border:1px solid rgba(255,255,255,0.14); color:#78809a; user-select:none; transition:all .15s; }
+  .skpill:hover { border-color:#fff; }
+  .skpill.on { background:#7fa8cc; color:#0b1220; border-color:#9dc0dd; }
+  .skpill .skn { opacity:0.6; font-weight:600; margin-left:4px; }
+  .domain-desc { font-size:11px; color:#c7cedb; margin:7px 0 9px; line-height:1.45; }
+  .sub-wrap { padding-top:9px; border-top:1px solid rgba(255,255,255,0.08); }
+  .subrow { display:flex; align-items:flex-start; gap:8px; margin:6px 0; }
+  .chip { flex:0 0 auto; display:inline-block; font-size:10px; font-weight:700; padding:3px 9px; border-radius:11px; cursor:pointer; border:1px solid var(--accent-soft); color:#969eb1; user-select:none; transition:all .15s; white-space:nowrap; }
+  .chip.on { background:#7fa8cc; color:#0b1220; border-color:#9dc0dd; }
+/* Selected state is set inline at render for the default-on pills, which beats
+   any class rule and left everything toggled afterwards a dimmer shade. One
+   declaration for every selected filter, whichever way it got selected. */
+.chip.on, .dpill.on, .ps-pill.on, .pt-pill.on, .psrc-row input:checked + .psrc-l{
+  background:#7fa8cc !important; color:#0b1220 !important; border-color:#9dc0dd !important; }
+.psrc-row input:checked + .psrc-l{ background:transparent !important; color:#eaf1ff !important; }
+
+  .chip:hover { border-color:var(--accent-hi); }
+  .sd { font-size:10px; color:#858d9f; line-height:1.4; padding-top:3px; }
+  .f-status { margin-top:11px; padding-top:9px; border-top:1px solid rgba(255,255,255,0.08); display:flex; align-items:center; gap:7px; font-size:11px; color:#969eb1; cursor:pointer; }
+  .f-status input { accent-color:#7fa8cc; width:14px; height:14px; cursor:pointer; }
+  #legend { pointer-events:none; position:fixed; bottom:20px; left:20px; z-index:1000; background:rgba(8,12,27,0.92); border:1px solid var(--accent-soft); border-radius:8px; padding:10px 14px; font-size:11px; backdrop-filter:blur(12px); box-shadow:0 4px 20px rgba(0,0,0,0.4); }
+  #legend .leg-title { font-weight:700; font-size:11px; color:#c0bfba; margin-bottom:6px; letter-spacing:0.5px; text-transform:uppercase; }
+  .leg-row { display:flex; align-items:center; gap:8px; margin-bottom:3px; color:#848cab; }
+  .leg-swatch { width:14px; height:14px; border-radius:3px; flex-shrink:0; }
+  #stats { position:fixed; bottom:20px; right:20px; z-index:1000; background:rgba(8,12,27,0.92); border:1px solid var(--accent-soft); border-radius:8px; padding:10px 14px; font-size:11px; backdrop-filter:blur(12px); box-shadow:0 4px 20px rgba(0,0,0,0.4); text-align:right; color:#848cab; }
+  #stats .stat-num { font-family:'Marcellus','Georgia',serif; font-size:26px; font-weight:700; color:var(--accent-hi); line-height:1; }
+  #stats .stat-label { font-size:10px; text-transform:uppercase; letter-spacing:0.6px; margin-top:2px; }
+  .leaflet-control-attribution { background:rgba(8,12,27,0.8) !important; color:#6b7588 !important; font-size:10px !important; }
+  .leaflet-control-attribution a { color:var(--accent-hi) !important; }
+  .leaflet-control-zoom a { background:rgba(8,12,27,0.92) !important; color:#c0bfba !important; border-color:var(--accent-soft) !important; }
+  @media (max-width:640px){ #header .subtitle{max-width:100%;white-space:normal;} #controls{width:200px; top:92px;} }
+.tier-tabs{display:flex;gap:4px;margin:7px 0 8px;border-bottom:1px solid var(--accent-soft);}
+.tier-tab{cursor:pointer;padding:4px 10px;font-size:11px;font-weight:600;color:#98a1b7;border-radius:6px 6px 0 0;user-select:none;}
+.tier-tab.active{color:#040611;background:var(--accent);}
+.tier-tab.empty{opacity:0.4;}
+.tier-tab:hover:not(.active){color:var(--accent-hi);}
+
+/* The painted plate dissolves into the imagery at its southern edge rather
+   than stopping at one. The band is deep enough to read as weather rather than
+   as a cut, and narrow enough to leave the border art intact. */
+.plate-img{
+  -webkit-mask-image: linear-gradient(to bottom,
+      #000 0%, #000 86%, rgba(0,0,0,0.75) 93%, rgba(0,0,0,0) 100%);
+  mask-image: linear-gradient(to bottom,
+      #000 0%, #000 86%, rgba(0,0,0,0.75) 93%, rgba(0,0,0,0) 100%);
+  -webkit-mask-size: 100% 100%; mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+}
+  #indexPanel{position:fixed;top:64px;left:12px;z-index:1001;width:254px;background:rgba(8,12,27,0.95);border:1px solid var(--accent-soft);border-radius:10px;backdrop-filter:blur(12px);box-shadow:0 4px 22px rgba(0,0,0,0.45);display:flex;flex-direction:column;max-height:calc(100vh - 200px);}
+  #idxHead{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 12px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.08);}
+  #idxTitle{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:#858d9f;white-space:nowrap;}
+  #idxTitle b{color:var(--accent-hi);font-size:11px;margin-left:5px;}
+  #idxToggle{flex:0 0 auto;width:22px;height:22px;line-height:20px;text-align:center;border:1px solid var(--accent-soft);border-radius:5px;color:#aab4c6;font-size:15px;font-weight:700;user-select:none;}
+  #idxToggle:hover{border-color:var(--accent-hi);color:#fff;}
+  #idxBody{display:flex;flex-direction:column;min-height:0;padding:9px 10px 10px;}
+  #indexPanel.collapsed #idxBody{display:none;}
+  #idxControls{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px;}
+  .idxSel{flex:1 1 46%;min-width:0;background:rgba(10,14,23,0.85);color:#cdd6e6;border:1px solid var(--accent-soft);border-radius:6px;font-size:10.5px;padding:4px 5px;font-family:inherit;cursor:pointer;}
+  #idxSearch{flex:1 1 100%;min-width:0;background:rgba(10,14,23,0.85);color:#cdd6e6;border:1px solid var(--accent-soft);border-radius:6px;font-size:11px;padding:4px 7px;font-family:inherit;}
+  #idxSearch:focus,.idxSel:focus{outline:none;border-color:var(--accent-hi);}
+  .idx-grp{margin-bottom:5px;}
+  .idx-grp-head{display:flex;justify-content:space-between;align-items:center;gap:8px;cursor:pointer;padding:4px 7px;background:rgba(255,255,255,0.06);border-radius:5px;font-size:10.5px;font-weight:700;color:var(--accent-hi);text-transform:uppercase;letter-spacing:0.4px;position:sticky;top:0;backdrop-filter:blur(4px);}
+  .idx-grp-head:hover{background:rgba(255,255,255,0.1);}
+  .idx-grp-head .gcount{flex:0 0 auto;color:#858d9f;font-weight:600;font-size:9px;}
+  .idx-grp-head .gtw{flex:1 1 auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .idx-grp.collapsed .idx-grp-body{display:none;}
+  .idx-grp-body{padding-left:3px;}
+  .idx-subgrp-head{font-size:8.5px;font-weight:700;color:#98a1b7;text-transform:uppercase;letter-spacing:0.5px;padding:5px 4px 2px;margin-top:2px;border-bottom:1px solid rgba(255,255,255,0.07);}
+  #idxList{flex:1 1 auto;overflow-y:auto;min-height:120px;scrollbar-width:thin;padding-right:2px;}
+  #idxList::-webkit-scrollbar{width:5px;}#idxList::-webkit-scrollbar-thumb{background:var(--accent-soft);border-radius:3px;}
+  .idx-row{padding:6px 40px 7px 4px;border-bottom:1px solid rgba(255,255,255,0.05);position:relative;}
+  .idx-row:last-child{border-bottom:none;}
+  .idx-name{display:inline;font-size:12px;font-weight:600;color:var(--accent-hi);text-decoration:none;line-height:1.3;}
+  .idx-name:hover{color:#fff;text-decoration:underline;}
+  .idx-loc{position:absolute;right:1px;top:6px;cursor:pointer;color:#7481ac;font-size:13px;line-height:1;padding:2px 3px;border-radius:4px;}
+  .idx-loc:hover{color:var(--accent-hi);background:rgba(255,255,255,0.07);}
+  .idx-dcar{position:absolute;right:20px;top:6px;cursor:pointer;color:#8a92ad;font-size:9px;line-height:1;padding:3px;opacity:.85;transition:transform .15s;}.idx-row.open .idx-dcar{transform:rotate(180deg);}.idx-visit-wrap{margin-top:6px;}.idx-visit{display:inline-block;font-size:10px;font-weight:600;color:#7fa6dd;text-decoration:none;border:1px solid #9dc0dd;border-radius:5px;padding:3px 8px;}.idx-visit:hover{background:#7fa8cc;color:#0b1220;}.idx-name{cursor:pointer;}.idx-desc{display:none;margin-top:5px;font-size:10px;color:#999fb4;line-height:1.45;padding-right:4px;}.idx-row.open .idx-desc{display:block;}.idx-cjump{cursor:pointer;color:#7481ac;font-size:12px;flex:0 0 auto;margin:0 5px;padding:0 2px;line-height:1;}.idx-meta{margin-top:3px;font-size:9.5px;color:#858d9f;display:flex;flex-wrap:wrap;gap:4px;align-items:center;}
+  .idx-country{color:#bfc5d5;font-weight:600;}
+  .idx-level{text-transform:uppercase;letter-spacing:0.5px;font-size:8.5px;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;}
+  .idx-lens{font-size:8.5px;background:var(--accent-soft);color:var(--accent-hi);padding:1px 5px;border-radius:3px;}
+  @media (max-width:640px){ #indexPanel{width:188px;max-height:calc(100vh - 170px);} }
+  /* move zoom +/- and reset to bottom-left so they never overlap the title */
+  .leaflet-top.leaflet-left{ top:16px; bottom:auto; left:auto; right:16px; transform:none; z-index:1200; display:flex; flex-direction:row; align-items:flex-start; gap:6px; }
+.leaflet-top.leaflet-left .leaflet-bar{ display:flex; flex-direction:row; gap:6px; border:none !important; box-shadow:none !important; margin:0 !important; background:transparent !important; }
+.leaflet-top.leaflet-left .leaflet-bar a{ width:36px !important; height:36px !important; line-height:34px !important; font-size:19px !important; font-weight:600; border-radius:9px !important; background:rgba(8,12,27,0.95) !important; color:#d6dae8 !important; border:1px solid var(--accent-soft) !important; box-shadow:0 3px 14px rgba(0,0,0,0.5); backdrop-filter:blur(10px); }
+.leaflet-top.leaflet-left .leaflet-bar a:hover{ background:rgba(20,27,56,0.98) !important; color:#1f44c4 !important; }
+@media (max-width:900px){ .leaflet-top.leaflet-left{ top:14px; right:12px; } }
+@media (max-width:640px){ .leaflet-top.leaflet-left{ top:12px; right:10px; gap:5px; } .leaflet-top.leaflet-left .leaflet-bar a{ width:40px !important; height:40px !important; line-height:38px !important; } } }
+  /* Coverage box: condensed, in the right column directly above the counts box, right edges aligned */
+  #legend{ left:20px !important; right:auto !important; bottom:20px !important; transform:none !important; padding:9px 12px !important; font-size:10px !important; max-width:230px; z-index:1000; }
+  #legend .leg-title{ margin-bottom:5px; }
+  #legend .leg-row{ margin:3px 0; line-height:1.3; display:flex; align-items:flex-start; gap:6px; }
+  #legend .leg-swatch{ width:11px; height:11px; flex:0 0 auto; margin-top:1px; }
+  @media (max-width:640px){ #legend{ bottom:150px !important; max-width:170px; } }
+  #gbLoad{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1200;display:none;background:rgba(16,21,31,0.95);border:1px solid var(--accent-soft);border-radius:10px;padding:12px 18px;font-size:13px;color:#dfe6f0;box-shadow:0 4px 16px rgba(0,0,0,0.5);}
+  #infoPanel{position:fixed;left:276px;top:70px;width:340px;max-height:calc(100vh - 150px);z-index:1100;display:flex;flex-direction:column;background:rgba(8,12,27,0.97);border:1px solid var(--accent-soft);border-radius:11px;box-shadow:0 10px 32px rgba(0,0,0,0.55);backdrop-filter:blur(12px);transform:translateX(-380px);opacity:0;transition:transform .22s ease,opacity .22s ease;}
+  #infoPanel.open{transform:translateX(0);opacity:1;}
+  #infoBody{flex:1 1 auto;min-height:0;overflow-y:auto;padding:30px 16px 16px;scrollbar-width:thin;}
+  #infoDrag{position:absolute;top:0;left:0;right:0;height:24px;cursor:move;display:flex;align-items:center;justify-content:center;z-index:1;}
+  #infoDrag::before{content:'';width:34px;height:4px;border-radius:2px;background:var(--accent-soft);}
+  #infoClose{position:absolute;top:7px;right:9px;z-index:2;cursor:pointer;background:rgba(255,255,255,0.08);border:1px solid var(--accent-soft);color:#dfe6f0;border-radius:6px;width:28px;height:28px;font-size:16px;line-height:25px;text-align:center;}
+  @media (max-width:640px){ #infoPanel{left:0;right:0;top:auto;bottom:0;width:auto;max-height:48vh;border-radius:12px 12px 0 0;transform:translateY(103%);} #infoPanel.open{transform:translateY(0);} }
+  #idxStatsBar{display:flex;flex-wrap:nowrap;gap:2px 14px;padding:6px 11px 7px;font-size:10px;line-height:1.6;color:#848cab;border-bottom:1px solid var(--accent-soft);white-space:nowrap;overflow:visible;flex:0 0 auto;}
+  #idxStatsBar b{color:var(--accent-hi);font-size:12px;font-family:'Marcellus','Georgia',serif;}
+.prison-dot{background:#41618c;border:1.6px solid #fff;border-radius:2px;box-shadow:0 0 4px rgba(0,0,0,.75);box-sizing:border-box;cursor:pointer;transition:transform .12s;} .prison-dot:hover{transform:scale(1.6);} .czoom-lo .prison-dot{transform:scale(.62);} .czoom-hi .prison-dot{transform:scale(1.4);} .court-dot{background:#374285;border:1.6px solid #fff;border-radius:50%;box-shadow:0 0 4px rgba(0,0,0,.75);box-sizing:border-box;cursor:pointer;transition:transform .12s;} .court-dot:hover{transform:scale(1.6);} .czoom-lo .court-dot{transform:scale(.62);} .czoom-hi .court-dot{transform:scale(1.4);}
+.fac-tip{position:absolute;z-index:1200;max-width:250px;background:#070d23;border:1px solid #232c4d;border-radius:8px;padding:8px 10px;font:12px/1.4 system-ui;color:#e6eefc;box-shadow:0 4px 16px rgba(0,0,0,.55);pointer-events:auto;} .fac-tip a{color:#26378a;word-break:break-all;} .fac-tip .ip-title{font-weight:600;margin-bottom:2px;}
+#sidebar{position:fixed;left:322px;top:70px;width:270px;z-index:1001;display:flex;flex-direction:column;gap:9px;max-height:calc(100vh - 84px);}
+#consPanel{flex:0 1 auto;background:rgba(8,12,27,0.96);border:1px solid var(--accent-soft);border-radius:10px;backdrop-filter:blur(12px);box-shadow:0 4px 22px rgba(0,0,0,0.45);font-size:11.5px;overflow:hidden;display:flex;flex-direction:column;min-height:0;}
+#consPanel .help-head{padding:9px 12px;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center;color:#e6eefc;font-size:12px;flex:0 0 auto;}
+#consPanel .help-body{padding:2px 12px 11px;line-height:1.5;color:#c3c9d9;max-height:34vh;overflow-y:auto;scrollbar-width:thin;flex:1 1 auto;min-height:0;}
+#consPanel.collapsed{flex:0 0 auto;}
+#consPanel .help-tog::before{content:"\2212";}
+#consPanel.collapsed .help-tog::before{content:"+";}
+#consPanel.collapsed .help-body{display:none;}
+.cons-note{font-size:10px;color:#8d97ad;font-style:italic;line-height:1.5;padding:4px 0;}
+.cons-lead{font-size:10px;color:#96a2ba;line-height:1.5;padding:2px 0 5px;}
+#indexPanel{position:static !important;left:auto !important;top:auto !important;width:auto !important;max-height:none !important;flex:1 1 auto;min-height:320px;}
+.tracker-item .tracker-name{cursor:pointer;}
+.tw-caret{display:inline-block;transition:transform .15s;color:#26378a;font-size:13px;margin-right:5px;vertical-align:-1px;} .tracker-name:hover .tw-caret{color:#2f47a0;}
+.tracker-item:not(.collapsed) .tw-caret{transform:rotate(90deg);}
+.tracker-item.collapsed .tracker-body{display:none;}
+.tw-checked{display:block;font-size:9.5px;color:#6f7d99;margin-top:6px;letter-spacing:.2px;}.tw-checked.stale{color:#c2913a;}.tw-checked.old{color:#c2603a;}.idx-checked{display:block;font-size:9.5px;color:#6f7d99;margin-top:5px;}.idx-checked.stale{color:#c2913a;}.idx-checked.old{color:#c2603a;}.tw-visit{display:inline-block;margin-top:5px;font-size:11px;color:#26378a;text-decoration:none;}
+.tw-visit:hover{text-decoration:underline;}.tw-nourl{display:inline-block;margin-top:5px;font-size:11px;color:#9ba0b4;font-style:italic;cursor:default;}.ts-nourl{color:#c6cad5;cursor:default;}.idx-name.idx-nourl{color:#c6cad5;text-decoration:none;cursor:default;}
+@media (max-width:640px){#sidebar{width:200px;}}
+#rightbar{position:fixed;right:16px;top:70px;width:266px;z-index:1001;display:flex;flex-direction:column;gap:9px;max-height:calc(100vh - 84px);}
+#controls{position:static !important;right:auto !important;top:auto !important;width:auto !important;max-height:none !important;flex:1 1 auto;min-height:80px;overflow-y:auto;}
+#legend{position:static !important;left:auto !important;right:auto !important;bottom:auto !important;top:auto !important;transform:none !important;flex:0 0 auto;max-width:none;}
+#sidebar{max-height:calc(100vh - 82px) !important;}
+@media (max-width:640px){#rightbar{width:200px;}}
+#consPanel{position:relative;}
+#consPanel .help-body::-webkit-scrollbar{width:8px;}
+#consPanel .help-body::-webkit-scrollbar-thumb{background:var(--accent-soft);border-radius:4px;}
+#consPanel .help-body::-webkit-scrollbar-track{background:rgba(255,255,255,0.04);}
+.fac-toggle{display:flex;align-items:center;gap:8px;font-size:11.5px;color:#c4cce6;cursor:pointer;margin:0 0 11px;padding:2px 0;}
+.fac-toggle input{cursor:pointer;width:14px;height:14px;flex:0 0 auto;}
+.ctl-title{text-decoration:none !important;}
+.media-group{margin:7px 0 3px;}
+.mg-head{cursor:pointer;font-size:10.5px;font-weight:700;color:#bac2da;text-transform:uppercase;letter-spacing:.4px;padding:4px 0;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--accent-soft);margin-bottom:4px;}
+.mg-caret{font-size:9px;transition:transform .15s;color:#818db9;}
+.media-group.collapsed .mg-caret{transform:rotate(-90deg);}
+.media-group.collapsed .mg-body{display:none;}
+.mg-count{margin-left:auto;font-weight:600;color:#98a1b7;background:rgba(255,255,255,.06);border-radius:8px;padding:0 6px;}
+#domainDesc{display:none;}
+.scope-head{font-size:10.5px;font-weight:700;color:#2a3879;text-transform:uppercase;letter-spacing:.5px;margin:11px 0 3px;padding-bottom:3px;border-bottom:1px solid rgba(230,178,90,0.32);}
+.gb-zoombar{display:flex;gap:6px;margin:6px 0 9px;}.gb-zoombtn{flex:1 1 0;cursor:pointer;font-size:11px;font-weight:600;color:#ccd2e6;background:rgba(47,67,161,.14);border:1px solid rgba(44,69,154,.34);border-radius:6px;padding:5px 6px;line-height:1.1;transition:background .12s,border-color .12s;}.gb-zoombtn:hover{background:rgba(38,55,138,.28);border-color:#26378a;color:#fff;}.gb-zoombtn:active{transform:translateY(1px);}
+.fac-row{padding:3px 0;font-size:12px;line-height:1.3;} .fac-row a{color:#c4cce6;text-decoration:none;} .fac-row a:hover{text-decoration:underline;color:#fff;}
+.kind-group{margin:3px 0 3px 2px;}
+.kg-head{cursor:pointer;font-size:10.5px;font-weight:600;color:#98a2c1;padding:3px 0;display:flex;align-items:center;gap:5px;}
+.kg-caret{font-size:9px;transition:transform .15s;color:#818db9;}
+.kind-group:not(.collapsed) .kg-caret{transform:rotate(90deg);}
+.kind-group.collapsed .kg-body{display:none;}
+.kg-body{padding-left:8px;border-left:1px solid var(--accent-soft);margin-left:3px;}
+.mg-head,.kg-head{flex-wrap:wrap;} .grp-def{flex-basis:100%;font-size:9.5px;font-weight:400;color:#7d87a6;margin-top:2px;line-height:1.35;}
+.facfilter-wrap{margin-top:10px;border-top:1px solid rgba(255,255,255,.08);padding-top:8px;}.facf-hint{font-size:10px;color:#7e88a6;margin:2px 0 6px;line-height:1.35;}#facFilter{display:flex;flex-direction:column;gap:3px;}.facf-row{display:flex;align-items:center;gap:6px;font-size:11px;color:#c3c9d9;cursor:pointer;}.facf-row input{margin:0;flex:0 0 auto;}.facf-sw{width:10px;height:10px;border-radius:50%;flex:0 0 auto;box-shadow:0 0 0 1px rgba(255,255,255,.35);}.facf-lb{flex:1 1 auto;} .facf-ct{color:#7e88a6;font-variant-numeric:tabular-nums;font-size:10px;}
+.best-wrap{margin:8px 0;} .best-hint{font-size:10px;color:#7e88a6;margin:2px 0 5px;line-height:1.35;}#bestPills{display:flex;gap:5px;flex-wrap:wrap;}.best-pill{font-size:11px;padding:3px 9px;border-radius:12px;border:1px solid var(--accent-soft);color:#c3c9d9;cursor:pointer;background:rgba(255,255,255,.03);user-select:none;}.best-pill:hover{border-color:#26378a;}.best-pill.on{background:#7fa8cc;color:#0b1220;border-color:#9dc0dd;font-weight:600;}
+.top-src{margin:6px 0 10px;padding:7px 9px;background:rgba(47,67,161,.10);border:1px solid rgba(47,67,161,.28);border-radius:8px;}.top-src-h{font-size:11px;font-weight:700;color:#2f47a0;margin-bottom:5px;letter-spacing:.02em;}.ts-row{font-size:12px;margin:3px 0;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}.ts-row a{color:#26378a;}.ts-b{font-size:9.5px;padding:1px 6px;border-radius:9px;font-weight:600;white-space:nowrap;}.ts-pop{background:#2d4d73;color:#1a1200;} .ts-help{background:#2a3875;color:#02081a;}
+
+
+/* Map rundown: the essay, split out of the wire so the two can be read and
+   collapsed separately. It inherits the wire's styling by sharing every rule
+   below, and sits above it. */
+#rundownPanel{position:fixed;left:14px;top:70px;width:var(--sidepanel-w);z-index:1000;
+  background:rgba(8,12,27,0.97);border:1px solid rgba(120,140,180,0.30);
+  border-radius:7px;box-shadow:0 6px 22px rgba(0,0,0,.5);overflow:hidden;
+  font-size:11.5px;color:#c3c9d9;}
+#rundownPanel .wire-body{padding:2px 12px 11px;line-height:1.5;max-height:38vh;
+  overflow:auto;}
+#rundownPanel.collapsed .wire-body{display:none;}
+#rundownPanel .wire-lead{font-size:11.5px;line-height:1.55;}
+/* The heading sat smaller than the text under it and hard against the edge.
+   Indented to the body's own left margin and set at the wire's size. */
+#rundownPanel .help-head{padding:9px 12px;font-size:12px;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center;color:#e6eefc;}
+#rundownPanel .help-head span:first-child{font-size:12px;font-weight:700;color:#e6eefc;}
+/* Same width as the How to use this map panel, which is 270px. */
+/* One width for both. They were set in different rules and drifted apart;
+   the wire's is also overwritten at runtime from the rundown's own box. */
+/* One number, in one place, for both. The rundown and the wire are a single
+   column read top to bottom, and a column whose two boxes are different widths
+   reads as two unrelated things stacked by accident. Previous attempts set the
+   width in four rules across two hundred lines - 300 here, 270 immediately
+   after it, 300 again in the wire's own block, and a fourth written at runtime
+   from whichever box happened to be measured first. They drifted, which is
+   what the comment above this one was already complaining about.
+   Everything now derives from --sidepanel-w, and the guard rule at the end of
+   the document holds it against anything that tries to write a width later. */
+:root{--sidepanel-w:300px;}
+#rundownPanel,#wirePanel{width:var(--sidepanel-w);}
+/* The two panels were put in one flex column so that collapsing the rundown
+   pulled the wire up. That closed a gap and bought a worse fault: the wire is
+   the panel being read, and it moved under the reader every time the rundown
+   above it was opened, closed or scrolled to a different length. A gap is
+   still: a feed that jumps while you are reading it is not.
+   So each panel is anchored on its own again. The wire holds its position
+   whatever the rundown does, and both stay draggable, which position:static
+   had also taken away. */
+#rundownPanel .help-head span:first-child,#wirePanel .help-head span:first-child{
+  font-size:12px;font-weight:700;color:#e6eefc;letter-spacing:.2px;}
+#rundownPanel .help-tog,#wirePanel .help-tog{font-size:15px;line-height:1;
+  color:#98a2c1;}
+#wirePanel{position:fixed;left:14px;top:70px;width:var(--sidepanel-w);z-index:1000;background:rgba(8,12,27,0.97);border:1px solid var(--accent-soft);border-radius:10px;box-shadow:0 4px 22px rgba(0,0,0,0.45);overflow:hidden;bottom:18px;max-height:none;display:flex;flex-direction:column;transition:bottom .22s ease,max-height .22s ease;}
+/* the wire owns the whole column until a unit is opened, then yields the lower half */
+body.info-open #wirePanel{bottom:auto;max-height:calc(50vh - 58px);}
+/* collapsed: shrink to the header instead of holding the full column open */
+#wirePanel.collapsed{bottom:auto !important;max-height:none !important;}
+#wirePanel .help-head{flex:0 0 auto;padding-left:11px;padding-top:12px;}
+#wirePanel .help-head .help-tog{position:absolute;top:8px;right:10px;margin:0;font-size:15px;line-height:1;color:#98a2c1;}
+#wirePanel.collapsed{max-height:none;}
+/* Placed AFTER the original #wirePanel rules on purpose. The first attempt put
+   this override above them, so `top:70px` from the original won and the wire sat
+   directly on top of the rundown panel - which is why the split looked like it
+   had not happened at all. */
+/* The wire's top has to clear the rundown at its FULL height, because the two
+   are anchored separately now and nothing moves out of the way. The rundown
+   starts at 70px, its header is about 34px, and its body is capped at 36vh
+   below - so 70 + 34 + 36vh, plus a 9px gap. 42vh was measured against a
+   layout where the panels shared a column and could push each other. */
+/* A STARTING top, not a fixed one. This used to carry !important, which is the
+   whole of both faults reported against this column.
+   First: 113px + 36vh is an ESTIMATE of where the rundown ends - 70px of offset
+   plus "about 34px" of header plus the body cap - and it is wrong by the
+   header's real height and by the panel's two borders. The sidebar on the other
+   side of the map puts a real 9px between the help panel and the index because
+   flex `gap` measures the box; this guessed at it and landed a few pixels out,
+   so the two columns did not match.
+   Second, and worse: !important beat the inline top that pjPlaceWire writes
+   after measuring the rundown, so the wire could not move at all. Collapsing
+   the rundown left the wire sitting where the full-height rundown used to end,
+   with a hole above it, while every other panel on this map closes up.
+   Without !important the measured value wins the moment the script runs, and
+   this stays as the pre-script fallback so nothing overlaps on first paint. */
+#wirePanel{top:calc(113px + 36vh);}
+#rundownPanel .wire-body{max-height:36vh;}
+@media (max-height:760px){
+  #rundownPanel .wire-body{max-height:28vh;}
+  #wirePanel{top:calc(113px + 28vh);} }
+@media (max-width:900px){ #wirePanel{display:none;} }
+#wirePanel.collapsed .wire-body{display:none;}
+#wirePanel .help-tog::before{content:"\25B4";}
+#wirePanel.collapsed .help-tog::before{content:"\25BE";}
+#wirePanel .help-head{cursor:pointer;}
+/* unit open: index leaves the sidebar and drops beneath the wire in the left column */
+body.info-open #indexPanel{position:fixed !important;left:14px !important;width:300px !important;top:calc(50vh + 20px) !important;bottom:18px !important;max-height:none !important;z-index:1000;}
+body.info-open #indexPanel.collapsed{bottom:auto !important;}
+body.info-open.wire-up #indexPanel{top:122px !important;}
+.wire-body{padding:9px 11px 10px;font-size:11.5px;flex:1 1 auto;min-height:0;overflow-y:auto;}
+.wire-lead{color:#acb4c8;line-height:1.4;margin-bottom:8px;}
+.wire-thread{background:rgba(8,12,27,0.55);border:1px solid rgba(44,69,154,0.22);border-radius:7px;padding:8px 10px;margin-bottom:9px;}
+.wire-thread-t{font-weight:800;font-size:13px;color:#33598f;letter-spacing:.2px;margin-bottom:4px;}
+.wire-thread-s{color:#d5def2;line-height:1.45;font-size:11px;}
+.wire-climate-static{padding-right:5px;font-size:10.5px;line-height:1.5;}
+.wire-sub{font-size:10.5px;font-weight:700;color:#8997ad;text-transform:uppercase;letter-spacing:.5px;margin:2px 0 5px;}
+.wire-item{display:block;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.06);text-decoration:none;}
+.wire-item:last-child{border-bottom:none;}
+.wire-h{display:block;color:#d9deec;font-size:11.5px;line-height:1.35;}
+.wire-item:hover .wire-h{color:#fff;text-decoration:underline;}
+.wire-m{display:block;color:#8997ad;font-size:10px;margin-top:2px;}
+.wire-tabs{display:flex;gap:6px;margin:2px 0 6px;} #wireRegionWrap{margin:0 0 6px;} #wireRegionWrap select{width:100%;background:#0b1127;color:#ccd2e6;border:1px solid rgba(44,69,154,.4);border-radius:6px;padding:4px 6px;font-size:11px;font-family:inherit;cursor:pointer;margin-top:5px;} #wireRegionWrap select:first-of-type{margin-top:0;} #wireRegionWrap select:focus{outline:none;border-color:#26378a;}
+.wire-tab{cursor:pointer;font-size:10px;font-weight:700;color:#8997ad;background:rgba(255,255,255,0.04);border:1px solid var(--accent-soft);border-radius:5px;padding:2px 8px;user-select:none;}
+.wire-tab.on{color:#eaf1ff;background:#7fa8cc;border-color:#9dc0dd;}
+.wire-cat{margin:4px 0;}
+.wire-cat-h{cursor:pointer;display:flex;align-items:center;gap:5px;font-size:10px;font-weight:800;color:#98a2c1;text-transform:uppercase;letter-spacing:.5px;padding:4px 2px;border-bottom:1px solid var(--accent-soft);user-select:none;}
+.wire-cat-caret{display:inline-block;transition:transform .12s;color:#8997ad;font-size:9px;}
+.wire-cat:not(.collapsed) .wire-cat-caret{transform:rotate(90deg);}
+.wire-cat.collapsed .wire-cat-body{display:none;}
+.wire-cat-lb{flex:1 1 auto;}
+.wire-cat-ct{color:#8997ad;font-size:9px;font-weight:600;}
+.wire-day{font-size:9.5px;font-weight:700;color:#7983a0;text-transform:uppercase;letter-spacing:.5px;margin:8px 0 2px;border-bottom:1px dashed var(--accent-soft);padding-bottom:2px;}
+.wire-mom{display:inline-block;margin-left:6px;font-size:9px;font-weight:700;color:#274572;background:rgba(255,140,40,0.14);border:1px solid rgba(255,140,40,0.35);border-radius:4px;padding:0 4px;vertical-align:middle;}
+.wire-load{color:#8997ad;font-style:italic;padding:6px 0;line-height:1.4;}
+.wire-foot{display:flex;justify-content:space-between;align-items:center;margin-top:7px;font-size:10px;color:#7983a0;}
+.wire-refresh{cursor:pointer;color:#8997ad;}
+.wire-refresh:hover{color:#cbcfdb;text-decoration:underline;}
+.wire-tab'); t.forEach(function(el){ el.classList.toggle('on', el.getAttribute('data-wm')===m); }
+.popup-endonym{font-size:11px;color:#8997ad;margin:-2px 0 6px;font-style:italic;}
+.facf-desc{margin:0 0 7px 24px;font-size:10px;color:#8997ad;line-height:1.4;} .ov-back{cursor:pointer;color:#26378a;font-size:11px;font-weight:600;margin-bottom:7px;display:inline-block;} .ov-back:hover{text-decoration:underline;}
+#legend{ max-height:calc(100vh - 40px); }#legHead{ display:flex; justify-content:space-between; align-items:center; cursor:pointer; font-weight:700; font-size:11px; color:#c0bfba; letter-spacing:.5px; text-transform:uppercase; margin-bottom:6px; }#legHead #legTog{ font-size:12px; transition:transform .15s; }#legBody{ max-height:calc(100vh - 92px); overflow-y:auto; scrollbar-width:thin; padding-right:3px; }#legBody::-webkit-scrollbar{width:5px;} #legBody::-webkit-scrollbar-thumb{background:var(--accent-soft);border-radius:3px;}#legend.collapsed #legBody{ display:none; } #legend.collapsed #legTog{ transform:rotate(-90deg); }#ctlHead{ display:flex; justify-content:space-between; align-items:center; cursor:pointer; font-weight:700; font-size:11px; color:#c0bfba; letter-spacing:.5px; text-transform:uppercase; margin-bottom:6px; }#ctlHead #ctlTog{ font-size:12px; transition:transform .15s; }#controls.collapsed #ctlBody{ display:none; } #controls.collapsed #ctlTog{ transform:rotate(-90deg); }.idx-ce{ display:flex; gap:14px; margin:5px 0 3px; font-size:10.5px; } .idx-ce span{ cursor:pointer; color:#7fa8cc; } .idx-ce span:hover{ text-decoration:underline; }
+#gbCrumb{ position:fixed; top:60px; left:50%; transform:translateX(-50%); z-index:1002; background:rgba(8,12,27,0.93); border:1px solid var(--accent-soft); border-radius:8px; padding:5px 12px; font-size:12px; color:#c3c9d9; backdrop-filter:blur(10px); box-shadow:0 3px 14px rgba(0,0,0,0.4); max-width:58vw; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; display:none; }.gb-crumb-seg{ cursor:pointer; color:#26378a; } .gb-crumb-seg:hover{ text-decoration:underline; }.gb-crumb-cur{ color:#e8eefc; font-weight:600; } .gb-crumb-sep{ color:#596380; margin:0 6px; }@media (max-width:900px){ #gbCrumb{ max-width:92vw; font-size:11px; top:56px; } }
+.memb-sec{margin-top:10px;padding-top:8px;border-top:1px solid rgba(200,210,230,.12);}.memb-h{font-size:11px;font-weight:700;color:#2f47a0;margin-bottom:5px;}.memb-row{font-size:12px;margin:7px 0;}.memb-link{color:#26378a;font-weight:600;text-decoration:none;} .memb-link:hover{text-decoration:underline;} .memb-name{color:#c8cedf;font-weight:600;} .fac-jump{font-size:12px;margin:2px 0;cursor:pointer;color:#26378a;} .fac-jump:hover{text-decoration:underline;color:#1738c2;} .fac-back-wrap{margin:0 0 8px;} .fac-back{cursor:pointer;color:#98a2c1;font-size:12px;} .fac-back:hover{color:#ccd2e6;text-decoration:underline;} .memb-note-inline{font-size:10.5px;color:#8997ad;line-height:1.42;margin:2px 0 0;}.memb-note{font-size:10px;color:#8997ad;font-style:italic;margin-top:6px;line-height:1.4;}
+#sidebar>#indexPanel:not(.collapsed){flex:1 1 50%!important;min-height:0!important;}#rightbar>#controls:not(.collapsed){flex:1 1 50%!important;min-height:0!important;overflow-y:auto;}#rightbar>#controls.collapsed{flex:0 0 auto!important;overflow:hidden;}#rightbar>#legend:not(.collapsed){flex:1 1 50%!important;min-height:0!important;display:flex;flex-direction:column;overflow:hidden;}#rightbar>#legend.collapsed{flex:0 0 auto!important;}#rightbar>#legend:not(.collapsed) #legBody{max-height:none!important;flex:1 1 auto;overflow-y:auto;}
+#sidebar,#rightbar{height:calc(100vh - 90px)!important;max-height:calc(100vh - 90px)!important;}#sidebar>#indexPanel:not(.collapsed),#rightbar>#controls,#rightbar>#legend:not(.collapsed){flex:1 1 50%!important;min-height:0!important;max-height:50%!important;overflow:hidden;display:flex;flex-direction:column;}#rightbar>#legend:not(.collapsed) #legBody,#rightbar>#controls{overflow-y:auto!important;max-height:none!important;flex:1 1 auto;}#sidebar>#indexPanel #idxBody{overflow-y:auto!important;flex:1 1 auto;min-height:0;}#sidebar>#indexPanel.collapsed{flex:0 0 auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;}
+/* PANEL LAYOUT
+ *
+ * The entries popup opens where the index used to be, on the left, because that
+ * is the widest clear space and the popup is the thing a reader has just asked
+ * for. The index moves into the right-hand rail, under the lens filters, since
+ * it is a way of browsing the same filters rather than a separate tool.
+ *
+ * Written as overrides at the end of the sheet rather than by editing the
+ * original rules, so the earlier layout is still readable and one line reverts
+ * any of it.
+ */
+#infoPanel{ left:12px !important; top:64px !important; width:300px !important;
+  max-height:calc(100vh - 96px) !important; }
+body.info-open #indexPanel{ position:static !important; left:auto !important;
+  top:auto !important; bottom:auto !important; width:auto !important;
+  max-height:none !important; }
+#rightbar #indexPanel{ position:static !important; left:auto !important;
+  top:auto !important; width:auto !important; flex:0 1 auto;
+  min-height:0 !important; max-height:46vh !important; }
+#rightbar #indexPanel .idx-body,#rightbar #indexPanel #idxList{
+  max-height:38vh; overflow:auto; }
+@media (max-width:640px){
+  #infoPanel{ left:0 !important; right:0 !important; top:auto !important;
+    bottom:0 !important; width:auto !important; }
+}
+/* The index lives inside Lens & filters, at the bottom of its body. It is a way
+   of browsing the same filters, so it belongs with them rather than floating as
+   a fourth box. */
+#controls #indexPanel{position:static !important;left:auto !important;
+  top:auto !important;width:auto !important;max-height:none !important;
+  min-height:0 !important;background:transparent !important;border:0 !important;
+  box-shadow:none !important;backdrop-filter:none !important;
+  margin-top:8px;border-top:1px solid rgba(120,140,180,.22) !important;
+  border-radius:0 !important;}
+#controls #indexPanel #idxList{max-height:30vh;}
+#controls #indexPanel #idxBody{padding:6px 0 2px;}
+body.info-open #controls #indexPanel{position:static !important;
+  left:auto !important;top:auto !important;bottom:auto !important;
+  width:auto !important;}
+/* THE UNIT PANEL
+ *
+ * Clicking a country or a sub-unit opens this, in the space the index used to
+ * occupy under How to use this map. It carries every resource for that unit,
+ * grouped by what a person is trying to do.
+ *
+ * It is not in the record popups any more. A resource belongs to a PLACE, not
+ * to a permit: putting the same eight categories on all 22,000 markers answered
+ * a question nobody had asked at that moment, and buried the record itself.
+ */
+/* Static, not fixed. Fixed at left:12px/top:64px it landed on top of the Map
+   rundown, which is the box a reader is most likely to have open when they
+   click a country. In the sidebar column it opens under Consultations open now
+   and clear of the wire, and it shrinks rather than covering anything. */
+#unitPanel{position:static;left:auto;top:auto;width:auto;z-index:1002;
+  flex:1 1 auto;min-height:0;max-height:none;display:flex;flex-direction:column;
+  background:rgba(8,12,27,0.96);border:1px solid rgba(120,140,180,.30);
+  border-radius:10px;backdrop-filter:blur(12px);
+  box-shadow:0 6px 22px rgba(0,0,0,.5);overflow:hidden;}
+#sidebar>#unitPanel{position:static!important;left:auto!important;
+  top:auto!important;width:auto!important;flex:1 1 auto!important;
+  min-height:0!important;max-height:none!important;}
+#unitPanel.closed{display:none;}
+#unitPanel.collapsed #unitBody{display:none;}
+#unitPanel.collapsed{flex:0 0 auto!important;}
+#unitPanel .unit-tog::before{content:"\25be";}
+#unitPanel.collapsed .unit-tog::before{content:"\25b8";}
+#unitClose{cursor:pointer;color:#98a2c1;font-size:15px;line-height:1;margin-left:8px;}
+#unitClose:hover{color:#e6eefc;}
+#unitHead{flex:0 0 auto;display:flex;justify-content:space-between;
+  align-items:center;padding:10px 12px;cursor:pointer;font-size:13px;
+  font-weight:700;color:#e6eefc;border-bottom:1px solid rgba(120,140,180,.22);}
+.unit-tog{font-size:11px;color:#98a2c1;}
+#unitBody{flex:1 1 auto;overflow-y:auto;padding:4px 12px 12px;
+  scrollbar-width:thin;}
+#unitBody .pj-act{margin-top:0;padding:0;background:none;border:0;}
+#unitBody .pj-act-h{display:none;}
+/* Guide buttons are a title and nothing else. The descriptions were a
+   paragraph each in a rail 266px wide, which made two guides fill the column
+   and pushed everything below them off screen. The guides themselves say what
+   they contain. */
+#guidesBody .guide-btn{display:block;padding:7px 10px;margin:4px 0;
+  border-radius:6px;background:rgba(74,93,47,.16);
+  border-left:2px solid rgba(122,150,80,.7);
+  color:#dfe7f5;text-decoration:none;font-size:11px;font-weight:600;
+  line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#guidesBody .guide-btn:hover{background:rgba(74,93,47,.28);color:#fff;}
+#guidesBody .gb-k,#guidesBody .gb-d{display:none;}
+</style>
+<style>
+.pjm-pin{ background:none!important; border:none!important; filter:drop-shadow(0 2px 3px rgba(0,0,0,0.55)); }
+.pjm-cl{ background:none!important; }
+.pjm-cl-inner{ width:100%; height:100%; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  background:radial-gradient(circle at 34% 30%, rgba(33,54,134,0.96), rgba(19,36,113,0.94));
+  border:2px solid rgba(255,255,255,0.9); box-shadow:0 2px 9px rgba(0,0,0,0.5); color:#fff;
+  font-weight:700; font-size:12.5px; letter-spacing:.2px; }
+.pjm-cl:hover .pjm-cl-inner{ transform:scale(1.06); transition:transform .12s ease; }
+</style>
+<style>.proj-note{font-size:10.5px;color:#8997ad;margin:3px 0 2px 22px;line-height:1.4;max-width:236px;}.proj-note b{color:#b8c0d4;} .pjm-approx{background:none!important;border:none!important;} .fac-why{margin-top:7px;padding:6px 9px;background:rgba(44,69,154,0.10);border-left:3px solid #324cb3;border-radius:0 6px 6px 0;font-size:11px;color:#b8c0dc;line-height:1.5;} .fac-why b{color:#2e4cb1;} .lp-detail{margin:8px 0 2px 22px;max-width:236px;}
+.hb-fold{margin:6px 0 3px;padding:2px 0 2px 8px;border-left:2px solid rgba(113,127,167,0.28);} .hb-fold-head{font-size:10px;font-weight:600;font-style:italic;color:#8a92ad;cursor:pointer;letter-spacing:.1px;} .hb-fold.collapsed .hb-car{display:inline-block;transform:rotate(-90deg);} .hb-car{display:inline-block;font-style:normal;font-size:8px;transition:transform .15s;opacity:.7;} .hb-fold.collapsed .hb-fold-body{display:none;} .hb-fold-body{margin-top:2px;font-size:10px;color:#999fb4;line-height:1.5;} .lp-detail-head{font-size:10.5px;font-weight:700;color:var(--accent-hi);cursor:pointer;letter-spacing:.3px;} .lp-detail-head .lp-car{font-size:9px;transition:transform .15s;display:inline-block;} .lp-detail.collapsed .lp-car{transform:rotate(-90deg);} .lp-detail.collapsed .lp-detail-body{display:none;} .lp-detail-body{margin-top:6px;font-size:10px;color:#999fb4;line-height:1.5;} .lp-detail-body a{color:#263f9d;} .lp-detail-body .hl-sec{color:#7fa8cc;font-size:10.5px;} .pj-dig{margin-top:6px;padding-top:5px;border-top:1px dashed rgba(44,69,154,0.35);font-size:11px;} .pj-dig a{color:#263f9d;} .pj-live .pjl-cap{margin-top:5px;font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#2e4cb1;} .pjl-row{font-size:10.5px;color:#cbcfdb;} .pjl-k{color:#8994b4;font-weight:700;margin-right:4px;} .ov-none{font-size:9px;color:#8a6a4a;font-style:italic;margin-left:4px;}
+.ov-status{font-size:9px;opacity:.7;margin-left:5px;font-style:italic;} .psrc-allrow{font-size:10px;margin:2px 0 4px;opacity:.85;} .psrc-allrow a{color:var(--accent-hi);text-decoration:none;} .psrc-allrow a:hover{text-decoration:underline;} .proj-src-box{margin:4px 0 2px 22px;max-width:236px;border:1px solid rgba(44,69,154,0.45);border-radius:6px;background:rgba(44,69,154,0.07);padding:3px 8px;}.proj-src-cap{font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--accent-hi);margin:9px 0 2px 22px;max-width:236px;display:flex;align-items:center;gap:5px;}.proj-src-cap::before{content:"\25BE";font-size:9px;opacity:.8;}.leaflet-tile-pane{filter:brightness(0.70) saturate(0.74) contrast(1.08);}
+.leaflet-lines-pane svg,.leaflet-pts-pane svg{filter:drop-shadow(0 0 1.5px rgba(6,9,20,0.75));}#vign{position:fixed;inset:0;pointer-events:none;z-index:900;background:radial-gradient(ellipse 132% 120% at 50% 42%, transparent 46%, rgba(4,8,28,0.40) 72%, rgba(2,4,15,0.74) 100%),radial-gradient(ellipse 120% 85% at 50% 108%, rgba(4,9,33,0.46), transparent 54%),radial-gradient(ellipse 120% 85% at 50% -8%, rgba(4,7,26,0.40), transparent 54%);}.proj-size{display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin:6px 0 2px 22px;max-width:236px;}.proj-size .ps-lab{font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--accent-hi);width:100%;}.ps-pill{font-size:10px;font-weight:700;padding:3px 8px;border-radius:11px;cursor:pointer;border:1px solid rgba(44,69,154,0.35);color:#9aa2bd;user-select:none;transition:all .15s;}.ps-pill.on{background:#7fa8cc;color:#0b1220;border-color:#9dc0dd;}.ps-pill i{font-style:normal;font-weight:600;opacity:.72;font-size:9px;margin-left:4px;}.ps-pill.on i{opacity:.85;}
+.proj-time{display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin:7px 0 2px 22px;max-width:236px;}
+.proj-time .ps-lab{font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--accent-hi);width:100%;}
+.pt-pill{font-size:10px;font-weight:700;padding:3px 8px;border-radius:11px;cursor:pointer;border:1px solid rgba(44,69,154,0.35);color:#9aa2bd;user-select:none;transition:all .15s;}
+.pt-pill.on{background:#7fa8cc;color:#0b1220;border-color:#9dc0dd;}
+.pt-und{width:100%;display:flex;align-items:center;gap:5px;font-size:9.5px;color:#8994b4;margin-top:2px;cursor:pointer;}
+.pt-und input{margin:0;}.pb-wrap{margin:12px 0 2px;}.pb-btn{width:100%;text-align:left;background:linear-gradient(180deg,rgba(34,54,155,0.22),rgba(15,24,65,0.28));border:1px solid rgba(44,69,154,0.5);color:#dde1f0;border-radius:9px;padding:9px 11px;cursor:pointer;font:700 12.5px 'Marcellus','Georgia',serif;display:flex;align-items:baseline;gap:7px;transition:all .15s;}.pb-btn:hover{background:linear-gradient(180deg,rgba(34,54,155,0.34),rgba(15,24,65,0.4));border-color:var(--accent);}.pb-btn .pb-car{font-size:10px;opacity:.85;}.pb-btn em{font-style:normal;font-weight:500;opacity:.72;font-size:10.5px;margin-left:2px;}.pb-body{margin-top:8px;max-height:340px;overflow-y:auto;padding:4px 10px 8px;border:1px solid rgba(44,69,154,0.22);border-radius:8px;background:rgba(4,7,22,0.55);font-size:12px;line-height:1.5;color:#d5d9e6;}.pb-body h1{font-size:15px;margin:12px 0 6px;color:#e9ecf6;border-bottom:1px solid rgba(44,69,154,0.25);padding-bottom:3px;}.pb-body h2{font-size:13.5px;margin:12px 0 5px;color:var(--accent-hi);}.pb-body h3{font-size:12.5px;margin:9px 0 4px;color:#b8c0dc;}.pb-body h4,.pb-body h5,.pb-body h6{font-size:12px;margin:7px 0 3px;color:#a4adcb;}.pb-body p{margin:5px 0;}.pb-body ul,.pb-body ol{margin:5px 0 5px 4px;padding-left:16px;}.pb-body li{margin:2px 0;}.pb-body code{background:rgba(44,69,154,0.14);padding:1px 4px;border-radius:4px;font-size:11px;}.pb-body pre{background:rgba(3,5,15,0.8);border:1px solid rgba(44,69,154,0.18);border-radius:6px;padding:8px 10px;overflow-x:auto;margin:6px 0;}.pb-body pre code{background:none;padding:0;white-space:pre;}.pb-body table{border-collapse:collapse;width:100%;margin:7px 0;font-size:11px;}.pb-body th,.pb-body td{border:1px solid rgba(44,69,154,0.22);padding:4px 6px;text-align:left;vertical-align:top;}.pb-body th{background:rgba(34,54,155,0.2);color:#e9ecf6;}.pb-body a{color:var(--accent-hi);}.pb-body hr{border:none;border-top:1px solid rgba(44,69,154,0.2);margin:9px 0;}.pb-dl{display:inline-block;margin:2px 0 8px;font-weight:700;font-size:11px;color:#060814;background:var(--accent);padding:5px 10px;border-radius:7px;text-decoration:none;}.pb-dl:hover{filter:brightness(1.08);}.pb-load{opacity:.7;font-size:11.5px;padding:6px 2px;}#guidePanel{position:fixed;top:70px;bottom:14px;left:296px;right:296px;z-index:1200;display:none;flex-direction:column;background:rgba(8,12,27,0.98);border:1px solid var(--accent-soft);border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,0.6);overflow:hidden;}#guidePanel.open{display:flex;}#guideHead{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 18px;border-bottom:1px solid var(--accent-soft);background:rgba(5,7,17,0.6);}#guideTitle{font-family:'Marcellus','Georgia',serif;font-size:16px;font-weight:700;color:#f0ece4;letter-spacing:.3px;}#guideClose{background:none;border:none;color:#848cab;font-size:20px;cursor:pointer;line-height:1;padding:2px 8px;border-radius:6px;}#guideClose:hover{color:#e8e6e1;background:rgba(255,255,255,0.06);}#guideBody{flex:1 1 auto;overflow-y:auto;padding:16px 26px 26px;scrollbar-width:thin;}#guideBody .pb-body{max-height:none;border:none;background:none;padding:0;margin:0 auto;max-width:760px;font-size:13.5px;line-height:1.62;color:#dadfe6;}#guideBody .pb-body h1{font-size:20px;margin:16px 0 8px;}#guideBody .pb-body h2{font-size:16px;margin:18px 0 7px;}#guideBody .pb-body h3{font-size:14px;}@media(max-width:900px){#guidePanel{left:14px;right:14px;}}
+.psrc-head{font-size:10.5px;color:#98a2c1;cursor:pointer;display:flex;justify-content:space-between;padding:2px 0;user-select:none;}
+.proj-src-box:not(.open) .psrc-body{display:none;}
+.proj-src-box.open .psrc-tog{transform:rotate(180deg);}
+.psrc-tog{transition:transform .15s;}
+.psrc-body{margin:2px 0 0;} .psrc-cat{font-size:10px;font-weight:700;color:#98a2c1;margin:6px 0 1px;letter-spacing:.2px;}
+.psrc-row{display:block;font-size:10px;color:#c3c9d9;margin:3px 0;line-height:1.3;cursor:pointer;}
+.psrc-empty{font-size:9.5px;color:#8994b4;line-height:1.4;padding:3px 0;}
+.psrc-l{font-weight:600;} .psrc-n{color:#7481ac;font-weight:400;}
+.psrc-item{margin:3px 0;}
+.psrc-line{display:flex;align-items:flex-start;gap:4px;}
+.psrc-line .psrc-row{flex:1;margin:0;}
+.psrc-car{cursor:pointer;color:#7481ac;font-size:9px;line-height:1.4;padding:0 2px;user-select:none;transition:transform .15s;flex:0 0 auto;}
+.psrc-item.open .psrc-car{transform:rotate(180deg);}
+.psrc-d{display:none;color:#8997ad;margin-left:18px;font-size:9.5px;line-height:1.45;padding:2px 0 3px;}
+.psrc-item.open .psrc-d{display:block;}
+.hl-sec{display:inline-block;margin-top:2px;color:#7fa8cc;}
+.proj-search{margin:5px 0 2px 22px;max-width:236px;display:flex;align-items:center;gap:6px;}
+.proj-search input{flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.16);border-radius:5px;color:#d9deec;font-size:10.5px;padding:3px 6px;outline:none;}
+.proj-search input:focus{border-color:rgba(44,69,154,0.6);}
+#projQn{font-size:9.5px;color:#8997ad;white-space:nowrap;}
+.pj-dl{font-size:10px;border-radius:4px;padding:2px 5px;margin:0 0 5px;display:inline-block;}
+.pj-dl.open{color:#253c91;background:rgba(28,52,145,0.12);border:1px solid rgba(28,52,145,0.45);}
+.pj-dl.shut{color:#959eb3;background:rgba(154,168,189,0.10);border:1px solid rgba(154,168,189,0.3);}
+.pj-date{color:#98a2c1;}
+.approx-badge{font-size:10px;color:#305488;background:rgba(230,192,121,0.12);border:1px dashed rgba(230,192,121,0.5);border-radius:4px;padding:2px 5px;margin:0 0 5px;display:inline-block;}</style>
+<style>
+  :root { --accent:#8e1420; --accent-hi:#c9a227; --accent-soft:rgba(201,162,39,0.30);
+          --bone:#d8cdb4; --ink:#0a0c14; --brass:#c9a227; }
+  .cap-num{font-family:'DejaVu Sans Mono',monospace;font-size:12px;color:#e8e6e1;}
+  .cap-grid{display:grid;grid-template-columns:1fr auto;gap:3px 10px;margin:8px 0 4px;font-size:12px;}
+  .cap-grid .lbl{color:#9aa2b4;}
+  .cap-grid .val{font-family:'DejaVu Sans Mono',monospace;color:#e8e6e1;text-align:right;}
+  .cap-band{display:inline-block;font-size:10px;letter-spacing:0.6px;text-transform:uppercase;
+            padding:2px 7px;border-radius:4px;margin-left:6px;vertical-align:middle;color:#0b0d16;font-weight:700;}
+  .cap-bar{height:5px;border-radius:3px;background:rgba(255,255,255,0.07);margin:2px 0 8px;overflow:hidden;}
+  .cap-bar i{display:block;height:100%;border-radius:3px;}
+  .case-item{margin-bottom:9px;padding:9px 11px;background:rgba(255,255,255,0.03);border-radius:7px;
+             border-left:3px solid var(--accent-soft);}
+  .case-item .ci-n{font-size:12.5px;color:#f0ece4;font-weight:600;line-height:1.35;}
+  .case-item .ci-m{font-size:10px;color:#8f97ab;margin:3px 0 5px;letter-spacing:0.3px;}
+  .case-item .ci-d{font-size:11.5px;color:#c3c8d6;line-height:1.5;}
+  .case-item .ci-c{font-size:10px;color:#7d859a;margin-top:5px;font-style:italic;}
+  .st-convicted{color:#d9a441;} .st-indicted{color:#a98cc4;} .st-settled{color:#6fa3bf;}
+  .st-alleged{color:#b3a375;} .st-investigation{color:#6fa88a;}
+  .st-acquitted{color:#8f9aa8;} .st-designated{color:#a8788f;} .st-inquiry{color:#7f9fb5;}
+  /* The shell CSS carries "#legend{pointer-events:none}"; the rule that restores it lives in a
+     later <style> block that isn't spliced here, so every control inside the legend was dead.
+     This is what stopped the lens pills responding. */
+  #keyBox, #keyBody, #legKeys, #indexPanel, #idxBody,
+  .bx-head, .bx-tog, .key-tog, .kt-car { pointer-events:auto !important; }
+  .ci-undone{margin-top:7px;padding:6px 8px;border-left:2px solid #a8763a;
+    background:rgba(168,118,58,0.10);font-size:10.5px;line-height:1.55;color:#c2a173;}
+  .ci-undone b{color:#d8b077;font-weight:600;letter-spacing:.04em;text-transform:uppercase;font-size:9px;}
+  .lens-row{cursor:pointer;}
+  .lens-pill{user-select:none;}
+
+  .wh-r{display:flex;gap:9px;align-items:center;}
+  .wh-n{font-family:'DejaVu Sans Mono',monospace;font-size:11px;color:#e0b088;letter-spacing:0;}
+  #wireRefresh{font-size:10px;color:#8fb8c9;text-transform:none;letter-spacing:0;cursor:pointer;}
+
+  .wi{padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.055);}
+  .wi:last-child{border-bottom:none;}
+  .wi a{color:#e8e4dc;font-size:11.5px;line-height:1.42;text-decoration:none;display:block;}
+  .wi a:hover{color:#fff;text-decoration:underline;}
+  .wi .wm{font-size:9.5px;color:#7d859a;margin-top:3px;letter-spacing:0.2px;}
+  .wi .wm b{color:#a89a7c;font-weight:400;}
+  #wireCtl{display:flex;flex-direction:column;gap:5px;margin-bottom:8px;}
+  #wireCtl .idxSel{width:100%;}
+  #wireStat{font-size:9.5px;color:#7d859a;font-style:italic;margin-bottom:7px;}
+  .wi .ws{font-size:10px;color:#9aa2b4;line-height:1.45;margin-top:3px;}
+  .wnote{font-size:10px;color:#7d859a;line-height:1.45;padding:6px 0 2px;font-style:italic;}
+  /* ---- one box chrome, one collapse behaviour, for every panel ---- */
+  #sidebar>div,#indexCol>div,#rightbar>div{
+    background:linear-gradient(180deg,#0b0e16 0%,#080a11 100%);
+    border:1px solid rgba(201,162,39,0.22);border-radius:2px;
+    box-shadow:0 14px 44px rgba(0,0,0,0.7), inset 0 0 0 1px rgba(0,0,0,0.6);
+    overflow:hidden;display:flex;flex-direction:column;min-height:0;}
+  .bx-head{padding:9px 13px;background:linear-gradient(180deg,#131725 0%,#0d1119 100%);
+    border-bottom:1px solid rgba(201,162,39,0.28);
+    font-family:'Marcellus',Georgia,serif;font-size:12px;letter-spacing:2.2px;
+    text-transform:uppercase;color:var(--bone);
+    display:flex;justify-content:space-between;align-items:center;
+    cursor:pointer !important;user-select:none;pointer-events:auto !important;flex:0 0 auto;}
+  .bx-head *{pointer-events:none;}
+  .bx-head .wh-r,.bx-head .wh-r *{pointer-events:auto;}
+  .bx-head:hover{background:#171c2c;}
+  .bx-tog{color:var(--brass);font-size:13px;line-height:1;opacity:0.8;}
+  .bx-body{padding:11px 14px 14px;overflow-y:auto;background:transparent;scrollbar-width:thin;min-height:0;}
+  .bx-body::-webkit-scrollbar{width:6px;}
+  .bx-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.14);border-radius:3px;}
+  .collapsed>.bx-body{display:none !important;}
+
+  /* The shell CSS forces a fixed height on #sidebar and a 50% flex-basis on its children,
+     which let the rundown eat the column and left the wire stacked behind it rather than
+     below it. Height auto + explicit per-box caps makes the column an honest vertical stack. */
+  #sidebar{position:fixed !important;left:14px !important;top:70px !important;bottom:auto !important;
+    width:312px !important;height:auto !important;z-index:1001;display:flex !important;
+    flex-direction:column !important;gap:9px;align-items:stretch;
+    max-height:calc(100vh - 84px) !important;pointer-events:none;overflow:visible;}
+  #sidebar>div{pointer-events:auto;min-height:0;
+    position:static !important;left:auto !important;top:auto !important;bottom:auto !important;
+    right:auto !important;float:none !important;flex:0 1 auto !important;
+    width:100% !important;max-width:100% !important;margin:0 !important;}
+  #rundownPanel,#wireBox{position:static !important;width:100% !important;
+    top:auto !important;left:auto !important;bottom:auto !important;max-height:none !important;}
+  /* Fallback caps only. fitPanels() measures the column at runtime and overrides these,
+     which is what lets a panel grow into the space a collapsed neighbour gave up. */
+  #rundownPanel>.bx-body{max-height:38vh;}
+  #wireBody{max-height:32vh;}
+  #sidebar>div,#rightbar>div{display:flex;flex-direction:column;}
+  #sidebar>div>.bx-head,#rightbar>div>.bx-head{flex:0 0 auto;}
+  #sidebar>div>.bx-body,#rightbar>div>.bx-body{flex:1 1 auto;min-height:0;}
+
+  #indexPanel{position:static !important;left:auto !important;top:auto !important;
+    right:auto !important;bottom:auto !important;width:100% !important;}
+  #idxBody{max-height:36vh;}
+  /* The columns used to be full-height boxes with pointer-events, so the strips of map
+     beside and beneath the panels swallowed drags. The containers are transparent to the
+     pointer now and only the panels themselves take events. */
+  #rightbar{position:fixed !important;right:14px !important;top:70px !important;
+    bottom:auto !important;left:auto !important;width:296px !important;z-index:1001;
+    display:flex !important;flex-direction:column !important;gap:10px !important;
+    height:auto !important;max-height:calc(100vh - 84px) !important;
+    overflow-y:auto !important;pointer-events:none !important;}
+  #rightbar>div{pointer-events:auto;flex:0 1 auto !important;position:static !important;
+    width:100% !important;max-height:none !important;}
+  #keyBody{max-height:54vh;}
+  #keyBox{margin-top:0;}
+  /* Layout containers must never take the pointer. The shell CSS pins #sidebar and
+     #header as full-width fixed elements, so the strips of map beside and below the
+     panels were absorbing every drag; only the panels themselves are interactive. */
+  #sidebar,#rightbar{pointer-events:none !important;}
+  #sidebar>*,#rightbar>*{pointer-events:auto;}
+  #header{pointer-events:none !important;}
+  #header *{pointer-events:auto;}
+  #vign{pointer-events:none !important;}
+  #keyBox.collapsed{margin-top:0;}   /* collapsed: ride up under the lens box */
+
+  @media (max-width:1240px){ #rightbar{width:262px !important;} }
+
+  /* methodology, now a subsection of the rundown */
+  .sub-h{margin-top:14px;padding:7px 9px;background:rgba(255,255,255,0.045);border-radius:6px;
+    border-left:3px solid var(--accent);font-size:10.5px;letter-spacing:1px;text-transform:uppercase;
+    color:var(--accent-hi);display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;}
+  .sub-h:hover{background:rgba(255,255,255,0.075);}
+  .sub-tog{font-size:13px;color:#8a8fa3;}
+  .sub-body{display:none;padding:9px 2px 2px;border-left:1px solid rgba(255,255,255,0.07);
+    margin:8px 0 0 4px;padding-left:10px;}
+  .sub-body.open{display:block;}
+
+  /* collapsible detail inside popups and panels */
+  /* Shape carries the layer, colour carries the category, and size is constant within a
+     layer — previously researched groups were drawn larger than unresearched ones, which
+     made size look like it meant importance when it only meant "has a writeup". */
+  .mk{width:11px;height:11px;display:block;box-sizing:border-box;}
+  /* Solid glyphs. These were hairline outlines over a near-black core, which made every
+     mark read as the same dark dot until you were close enough to see the rim — the shape
+     carried almost all the information and the colour carried almost none. They are filled
+     in the category's own colour now, with a dark hairline for edge definition against the
+     painted plate and a faint light rim so a dark hue does not disappear into it.
+     Shape still separates the three point layers: diamond for a public office, circle for
+     a firm, small disc for a group. */
+  .mk i{display:block;width:100%;height:100%;box-sizing:border-box;
+        background:var(--mkc,#c9a227);
+        border:1px solid rgba(10,12,22,0.85);
+        box-shadow:0 0 0 0.5px rgba(255,255,255,0.30);}
+  .mk-case i{transform:rotate(45deg);border-radius:1px;}
+  .mk-firm i{border-radius:50%;}
+  .mk-case,.mk-firm{cursor:pointer;}
+  .mk-ring i{outline:1px solid rgba(216,200,150,0.9);outline-offset:1px;}
+  .key-sw-diamond{transform:rotate(45deg);border-radius:1px;}
+  .key-sw-square{border-radius:3px;}
+  /* The circle swatch used to force a transparent centre, so every circle row in the key
+     read as an outline whatever its colour. It fills like the others now; the hollow ring
+     is reserved for the off state, where absence of fill is the point. */
+  .key-sw-circle{border-radius:50%;}
+  /* legend bars carry the same hatch density as the plate they describe */
+  .key-sw-band0{background-image:repeating-linear-gradient(45deg,rgba(0,0,0,0.75) 0 1.4px,transparent 1.4px 3.2px),
+                 repeating-linear-gradient(-45deg,rgba(0,0,0,0.6) 0 1.2px,transparent 1.2px 3.2px) !important;}
+  .key-sw-band1{background-image:repeating-linear-gradient(45deg,rgba(0,0,0,0.7) 0 1.2px,transparent 1.2px 4.5px),
+                 repeating-linear-gradient(-45deg,rgba(0,0,0,0.5) 0 1px,transparent 1px 4.5px) !important;}
+  .key-sw-band2{background-image:repeating-linear-gradient(45deg,rgba(0,0,0,0.65) 0 1px,transparent 1px 5.5px) !important;}
+  .key-sw-band3{background-image:repeating-linear-gradient(45deg,rgba(0,0,0,0.6) 0 0.9px,transparent 0.9px 7.5px) !important;}
+  .key-sw-band4{background-image:repeating-linear-gradient(45deg,rgba(0,0,0,0.55) 0 0.8px,transparent 0.8px 10px) !important;}
+  .geo-n{margin:8px 0 4px;padding:6px 9px;background:rgba(184,87,79,0.07);
+    border-left:3px solid #b8574f;border-radius:0 5px 5px 0;font-size:10.5px;
+    color:#c8b0ac;line-height:1.45;}
+  .geo-n b{color:#e0a89c;}
+  .leaflet-popup-content{overflow-y:auto;overscroll-behavior:contain;}
+  .leaflet-popup-content::-webkit-scrollbar{width:6px;}
+  .leaflet-popup-content::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.16);border-radius:3px;}
+  .cnote{margin:10px 0 4px;padding:9px 11px;background:rgba(143,184,201,0.055);
+    border-left:3px solid #8fb8c9;border-radius:0 6px 6px 0;}
+  .cnote .cn-h{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#8fb8c9;margin-bottom:4px;}
+  .cnote .cn-body{font-size:12px;line-height:1.62;color:#ccd1de;text-align:justify;
+    -webkit-hyphens:auto;hyphens:auto;}
+  .tier-badge{display:inline-block;margin:8px 0 2px;padding:2px 9px;border-radius:2px;
+    border:1px solid;font-size:9.5px;letter-spacing:1.4px;text-transform:uppercase;
+    background:rgba(0,0,0,0.35);}
+  .grp-note{margin-top:9px;padding:9px 11px;background:rgba(224,176,136,0.055);
+    border-left:3px solid #e0b088;border-radius:0 6px 6px 0;}
+  .grp-note .gn-h{font-size:11px;letter-spacing:0.6px;text-transform:uppercase;
+    color:#e0b088;margin-bottom:5px;}
+  /* content-visibility: rows scrolled outside the 430px popup viewport are skipped during
+     layout and paint. The US builds 48 of them; only ~10 are on screen at a time. */
+  .ent-item{margin-bottom:3px;content-visibility:auto;contain-intrinsic-size:auto 32px;}
+  .ent-row{display:flex;align-items:center;gap:7px;padding:5px 8px;cursor:pointer;
+    background:rgba(255,255,255,0.03);border-left:3px solid var(--accent-soft);border-radius:0 5px 5px 0;
+    white-space:nowrap;overflow:hidden;}
+  .ent-row:hover{background:rgba(255,255,255,0.075);}
+  .ent-name{flex:1 1 auto;min-width:0;font-size:11.5px;color:#f0ece4;font-weight:600;
+    overflow:hidden;text-overflow:ellipsis;}
+  .ent-st{flex:0 0 auto;font-size:9.5px;letter-spacing:0.4px;text-transform:uppercase;}
+  .ent-yr{flex:0 0 auto;font-family:'DejaVu Sans Mono',monospace;font-size:10px;color:#8f97ab;}
+  .ent-car{flex:0 0 auto;font-size:9px;color:#8f97ab;}
+  /* The two documented layers used to sit under separate headings, which read as though
+     one was documented and the other was not, and as though officials were not also a
+     sector. They are one list now, so each row carries a tag saying what kind of
+     institution it is — public office or private firm — in that institution's colour. */
+  .ent-kind{flex:0 0 auto;font-size:9px;letter-spacing:0.3px;text-transform:uppercase;
+            padding:1px 5px;border-radius:3px;background:rgba(255,255,255,0.06);opacity:0.92;}
+  .ent-item .ci-fold{padding:6px 9px 8px;background:rgba(255,255,255,0.018);
+    border-left:3px solid rgba(255,255,255,0.07);border-radius:0 0 5px 0;}
+  .ci-more{display:inline-block;margin-top:5px;font-size:9.5px;letter-spacing:0.5px;text-transform:uppercase;
+    color:#8fb8c9;background:rgba(143,184,201,0.10);border:1px solid rgba(143,184,201,0.28);
+    border-radius:5px;padding:2px 8px;cursor:pointer;user-select:none;}
+  .ci-more:hover{background:rgba(143,184,201,0.20);color:#dff0f7;}
+  .ci-fold{display:none;margin-top:6px;}
+  .ci-fold.open{display:block;}
+  .ci-out{font-size:10.5px;color:#a89a7c;margin-top:2px;}
+  .m-h{font-family:'Marcellus',Georgia,serif;font-size:11px;letter-spacing:2px;
+       text-transform:uppercase;color:var(--brass);margin:14px 0 6px;
+       padding-bottom:4px;border-bottom:1px solid rgba(201,162,39,0.20);}
+  .m-p{font-size:11.5px;color:#c3c8d6;line-height:1.6;margin-bottom:7px;}
+  .m-p b{color:#e8e6e1;} .m-p code{font-size:11px;color:#e0c088;}
+  .m-warn{border-left:3px solid #a8443c;padding:7px 10px;background:rgba(168,68,60,0.09);
+          border-radius:0 6px 6px 0;font-size:11px;color:#d8bcb8;line-height:1.55;margin:7px 0;}
+  .lens-row{display:flex;flex-direction:column;align-items:stretch;gap:4px;
+            margin-bottom:9px;cursor:pointer;}
+  .lens-pill{align-self:flex-start;font-size:11px;padding:3px 10px;border-radius:11px;
+             border:1px solid rgba(255,255,255,0.14);color:#aab0c0;white-space:nowrap;transition:all .15s;}
+  .lens-pill.on{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .lens-d{display:block;width:100%;font-size:10.5px;color:#858da0;line-height:1.5;
+          text-align:left;hyphens:none;}
+  .leg-key{display:flex;align-items:center;gap:7px;font-size:11px;color:#b4bacb;margin:3px 0;}
+  .key-tog{cursor:pointer;padding:2px 4px;border-radius:4px;user-select:none;}
+  .key-tog:hover{background:rgba(255,255,255,0.06);color:#fff;}
+  .key-tog.off{color:#6b7285;}
+  .key-tog .kt-l{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .key-tog .kt-n{flex:0 0 auto;font-family:'DejaVu Sans Mono',monospace;font-size:9.5px;color:#7d859a;}
+  .key-h{font-size:9px;letter-spacing:2.4px;text-transform:uppercase;color:var(--brass);
+         margin:6px 0 5px;padding-bottom:4px;
+         border-bottom:1px solid rgba(201,162,39,0.22);}
+  .key-sub{text-transform:none;letter-spacing:0;color:#7d859a;font-size:9px;}
+  .key-par{font-weight:600;color:#d6dae6;margin-top:2px;}
+  .key-tip{position:fixed;z-index:10000;pointer-events:none;max-width:260px;
+    padding:5px 8px;border-radius:4px;font-size:11px;line-height:1.35;color:#eef1f7;
+    background:rgba(14,17,26,0.96);border:1px solid rgba(201,162,39,0.45);
+    box-shadow:0 4px 14px rgba(0,0,0,0.5);}
+  .key-par.off{color:#6b7285;font-weight:400;}
+  .kt-car{flex:0 0 auto;width:9px;font-size:8px;color:#8f97ab;cursor:pointer;}
+  /* every level steps in from the one above it, so the tree is readable as a tree */
+  .leg-key.d1,.key-h.d1{padding-left:8px;}
+  .leg-key.d2,.key-h.d2{padding-left:24px;}
+  .key-desc.d1{padding-left:14px;} .key-desc.d2{padding-left:30px;} .key-desc.d3{padding-left:40px;}
+  .key-child{font-size:10.5px;}
+  .key-tier{font-size:10px;}
+  .key-desc{padding:1px 4px 7px 14px;font-size:9.5px;line-height:1.5;color:#8b93a6;}
+  .key-desc.off{color:#5f6675;}
+  .key-note-line{padding:4px 4px 8px;font-size:9.5px;line-height:1.55;color:#8b93a6;
+    border-bottom:1px solid rgba(201,162,39,0.14);margin-bottom:6px;}
+  .key-sel .leg-sw{box-shadow:none !important;}
+  .key-tog.key-sel{color:#f0e8d8;font-weight:600;}
+  .key-tier .kt-l{white-space:normal;}
+  .key-child .leg-sw{opacity:0.9;}
+  .key-note{font-style:italic;color:#8f97ab;}
+  .leg-sw{width:16px;height:11px;border-radius:2px;flex:none;}
+  #idxList .idx-row{padding:5px 8px;font-size:11.5px;color:#c3c8d6;cursor:pointer;border-radius:5px;
+                    display:flex;justify-content:space-between;gap:8px;}
+  #idxList .idx-row:hover{background:rgba(255,255,255,0.05);color:#fff;}
+  #idxList .idx-row b{font-family:'DejaVu Sans Mono',monospace;color:#e0b088;font-weight:400;flex:none;}
+  #idxList .idx-row>span{min-width:0;}
+  #idxList .idx-nm{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  #idxList .idx-sub{display:block;font-size:9.5px;color:#8b93ab;margin-top:1px;
+                    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  #idxList .idx-tag{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:5px;
+                    vertical-align:1px;flex:none;}
+  #idxList .idx-more{padding:6px 8px;font-size:10px;color:#8b93ab;font-style:italic;}
+  #idxList .idx-grp>.idx-gh{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--accent-hi);
+                            padding:8px 8px 4px;cursor:pointer;}
+  .ctl-read{font-size:9.5px;line-height:1.5;color:#8f97ab;padding-bottom:9px;margin-bottom:9px;
+            border-bottom:1px solid rgba(255,255,255,0.08);}
+  #idxList .idx-grp.collapsed .idx-row{display:none;}
+  #gbLoad{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:1200;background:rgba(12,17,34,0.94);
+          border:1px solid var(--accent-soft);border-radius:8px;padding:6px 14px;font-size:11px;color:#aab0c0;display:none;}
+  #vign{position:fixed;inset:0;pointer-events:none;z-index:400;
+        box-shadow:inset 0 0 150px 40px rgba(4,6,17,0.55);}
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div id="vign"></div>
+<div id="header">
+  <h1>Drug Underworld Map</h1>
+  <div class="subtitle">Where the drug underworld sits inside governments and companies — 193 states scored, and the cases that reached a court</div>
+</div>
+<div id="gbLoad"></div>
+
+<div id="sidebar">
+  <div id="rundownPanel">
+    <div class="bx-head"><span>Map rundown</span><span class="bx-tog">&minus;</span></div>
+    <div class="bx-body">
+      <div class="wire-lead">
+      There is no census of captured institutions. Nobody has counted them, and the reason is structural rather than clerical: UNODC's estimate is that around 0.2% of criminal proceeds laundered through the financial system are seized. What reaches a court is a small and non-random sample of what exists, biased toward the countries with independent prosecutors &mdash; which are the countries where capture is shallowest.<br><br>
+      So this map does not claim a percentage. It carries layers that can each be checked, and keeps them apart.<br><br>
+      The first is a 193-country score built from the Global Organized Crime Index 2025. Its state-embedded actors indicator measures officials, police and security personnel using state power for illicit advantage; 80 of 193 countries score 7.5 or higher, the band the Index calls severe. That indicator covers all organised crime, so on its own it is not a drug measure. It is combined here with all four drug-market indicators as a geometric mean, because capture by the drug underworld requires both a penetrable state and a drug economy large enough to be worth buying it. A country with severe state capture and no drug trade scores low, and so does a large drug economy inside a state nobody has managed to buy.<br><br>
+      The second layer is the documented record: convictions, indictments, designations and regulatory settlements where capture was established or formally charged. It holds 182 public-office records across 84 countries and 240 company records across 68, listed together for each country because both are documented and both are institutions &mdash; what differs is whether the institution is an office or a firm. A head of state convicted in New York. A cabinet minister who ran the federal police, convicted of taking cartel money and later ordered to repay his country $2.4 billion. A navy chief taken in a sting. Roughly 30% of one national legislature investigated. A sitting governor charged with letting a cartel deliver his election. A bank pleading guilty to conspiring to launder, with a branch manager paid in gift cards. A mayor who wrote the shipment a letter on municipal notepaper. The second layer's distribution measures where prosecution happens, not where capture does. Where the density is highest, the record is best; where the map is blank, the trade is documented and the names are not.<br><br>
+      The third layer is the trade itself: an inventory of 1,179 named criminal organisations, cells and factions worldwide, and the corridors along which product moves between them. Cartels and their regional cells, prison-born organisations that outgrew the prisons, mafias, confraternities, biker clubs, street and port networks, and armed groups that tax a route rather than run it. The corridors connect them &mdash; the Balkan route out of Afghanistan, the Atlantic crossing to West Africa, the Pacific littoral north to Mexico, the captagon line from the Levant to the Gulf. This layer answers a different question from the two above. It is not evidence of capture and feeds no score; it shows who is operating where, and along which lines, which is the context the first two layers sit inside.
+      </div>
+      <div class="sub-h" id="methodSubHead"><span>Methodology</span><span class="sub-tog">&plus;</span></div>
+      <div id="methodBody" class="sub-body"></div>
+    </div>
+  </div>
+
+  <div id="wireBox">
+    <div class="bx-head"><span>Live wire</span>
+      <span class="wh-r"><span class="wh-n" id="wireN">&mdash;</span><span id="wireRefresh">refresh</span></span></div>
+    <div id="wireBody" class="bx-body">
+      <div id="wireCtl">
+        <select id="wireIso" class="idxSel"><option value="">All jurisdictions</option></select>
+        <select id="wireLang" class="idxSel"><option value="">All languages</option></select>
+        <select id="wireAge" class="idxSel">
+          <option value="">Any date</option><option value="2">Last 48h</option>
+          <option value="7">Last week</option><option value="30">Last month</option>
+        </select>
+      </div>
+      <div id="wireStat"></div>
+      <div id="wireList"><div class="wnote">Loading&hellip;</div></div>
+    </div>
+  </div>
+</div>
+
+<div id="rightbar">
+  <div id="keyBox">
+    <div class="bx-head"><span>Map key</span><span class="bx-tog">&minus;</span></div>
+    <div id="keyBody" class="bx-body"><div id="legKeys"></div></div>
+  </div>
+
+  <div id="indexPanel">
+    <div class="bx-head"><span id="idxTitle">Index <b id="idxCount">0</b></span><span class="bx-tog">&minus;</span></div>
+    <div id="idxBody" class="bx-body">
+      <div id="idxStatsBar"><span><b id="cSevere">0</b> severe</span><span><b id="cCases">0</b> cases</span><span><b id="cEnt">0</b> firms</span></div>
+      <div id="idxControls">
+        <select id="idxMode" class="idxSel">
+          <option value="jur">List: jurisdictions</option>
+          <option value="off">List: officials &amp; state cases</option>
+          <option value="firm">List: companies &amp; firms</option>
+          <option value="grp">List: crime groups</option>
+        </select>
+        <select id="idxSort" class="idxSel"></select>
+        <select id="idxGroup" class="idxSel"></select>
+        <input id="idxSearch" type="text" placeholder="Filter&hellip;" autocomplete="off">
+      </div>
+      <div id="idxList"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const NUM2A3 = {"004":"AFG","008":"ALB","012":"DZA","020":"AND","024":"AGO","028":"ATG","031":"AZE","032":"ARG","036":"AUS","040":"AUT","044":"BHS","048":"BHR","050":"BGD","051":"ARM","052":"BRB","056":"BEL","060":"BMU","064":"BTN","068":"BOL","070":"BIH","072":"BWA","076":"BRA","084":"BLZ","090":"SLB","096":"BRN","100":"BGR","104":"MMR","108":"BDI","112":"BLR","116":"KHM","120":"CMR","124":"CAN","132":"CPV","140":"CAF","144":"LKA","148":"TCD","152":"CHL","156":"CHN","158":"TWN","170":"COL","174":"COM","178":"COG","180":"COD","188":"CRI","191":"HRV","192":"CUB","196":"CYP","203":"CZE","204":"BEN","208":"DNK","212":"DMA","214":"DOM","218":"ECU","222":"SLV","226":"GNQ","231":"ETH","232":"ERI","233":"EST","234":"FRO","242":"FJI","246":"FIN","250":"FRA","258":"PYF","262":"DJI","266":"GAB","268":"GEO","270":"GMB","275":"PSE","276":"DEU","288":"GHA","296":"KIR","300":"GRC","304":"GRL","308":"GRD","320":"GTM","324":"GIN","328":"GUY","332":"HTI","340":"HND","348":"HUN","352":"ISL","356":"IND","360":"IDN","364":"IRN","368":"IRQ","372":"IRL","376":"ISR","380":"ITA","384":"CIV","388":"JAM","392":"JPN","398":"KAZ","400":"JOR","404":"KEN","408":"PRK","410":"KOR","414":"KWT","417":"KGZ","418":"LAO","422":"LBN","426":"LSO","428":"LVA","430":"LBR","434":"LBY","438":"LIE","440":"LTU","442":"LUX","450":"MDG","454":"MWI","458":"MYS","462":"MDV","466":"MLI","470":"MLT","474":"MTQ","478":"MRT","480":"MUS","484":"MEX","492":"MCO","496":"MNG","498":"MDA","499":"MNE","504":"MAR","508":"MOZ","512":"OMN","516":"NAM","520":"NRU","524":"NPL","528":"NLD","540":"NCL","548":"VUT","554":"NZL","558":"NIC","562":"NER","566":"NGA","570":"NIU","578":"NOR","586":"PAK","591":"PAN","598":"PNG","600":"PRY","604":"PER","608":"PHL","616":"POL","620":"PRT","624":"GNB","626":"TLS","634":"QAT","642":"ROU","643":"RUS","646":"RWA","659":"KNA","662":"LCA","670":"VCT","674":"SMR","678":"STP","682":"SAU","686":"SEN","688":"SRB","690":"SYC","694":"SLE","702":"SGP","703":"SVK","704":"VNM","705":"SVN","706":"SOM","710":"ZAF","716":"ZWE","720":"YEM","724":"ESP","728":"SSD","729":"SDN","740":"SUR","748":"SWZ","752":"SWE","756":"CHE","760":"SYR","762":"TJK","764":"THA","768":"TGO","776":"TON","780":"TTO","784":"ARE","788":"TUN","792":"TUR","795":"TKM","798":"TUV","800":"UGA","804":"UKR","807":"MKD","818":"EGY","826":"GBR","834":"TZA","840":"USA","854":"BFA","858":"URY","860":"UZB","862":"VEN","882":"WSM","887":"YEM","894":"ZMB","-99":"XKX","010":"ATA","660":"AIA","248":"ALA","184":"COK","136":"CYM","583":"FSM","292":"GIB","344":"HKG","832":"JEY","446":"MAC","584":"MHL","500":"MSR","585":"PLW","630":"PRI","336":"VAT"};
+var DATA = __DATA__;
+var ROWS = DATA.rows, ALIAS = DATA.alias, CASES = DATA.cases, LENSES = DATA.lenses, BANDS = DATA.bands;
+var SECTORS = DATA.sectors, ENTITIES = DATA.entities, CASE_BUCKETS = DATA.casebuckets;
+var CBK_ON = {}; CASE_BUCKETS.forEach(function(p){ CBK_ON[p[0]]=true; });
+/* the five office buckets shared one gold, so the subcategories were indistinguishable */
+var BUCKET_COLOUR = ['#f6288f','#cc36f2','#633ff3','#168cf3','#12d9be'];
+var BUCKET_OF = {}; CASE_BUCKETS.forEach(function(p,i){ BUCKET_OF[p[0]]=BUCKET_COLOUR[i]; });
+var SMAP={}; SECTORS.forEach(function(s){SMAP[s.k]=s;});
+var SON={}; SECTORS.forEach(function(s){SON[s.k]=true;});
+var ENT_BY_C={}; ENTITIES.forEach(function(e){ (ENT_BY_C[e.c]=ENT_BY_C[e.c]||[]).push(e); });
+var GROUPS = DATA.groups, ROUTES = DATA.routes, QUARANTINE = DATA.quarantine, DUPES = DATA.dupes;
+/* The inventory arrived colour-coded by region, which duplicated what the map already
+   shows: a dot's position says where it is. Each entry is now typed by what the group is
+   — cartel, mafia, prison organisation, motorcycle club, armed group and so on — and the
+   colour carries the type. GT_ON holds the per-type filters. */
+var GTYPES = DATA.gtypes, GTMAP = {}, GT_ON = {};
+GTYPES.forEach(function(t){ GTMAP[t.k] = t; GT_ON[t.k] = true; });
+function gtCount(k){ var n=0; GROUPS.forEach(function(g){ if(g.ty===k) n++; }); return n; }
+var QDUP = DATA.qdup;
+/* The map now holds two rounds: the inventory as supplied, and a second research round
+   added afterwards to close the gaps a coverage audit found. Counts are kept separate so
+   the methodology can say which is which rather than presenting one total as one source. */
+var SUPPLIED_G = 947, SUPPLIED_R = 238;
+var ADDED_G = DATA.groups.length - SUPPLIED_G, ADDED_R = DATA.routes.length - 100;
+var RECOVERED = (DATA.recovered||[]).length;
+var NOTES = DATA.notes, NOTED = DATA.noted, CNOTES = DATA.cnotes, RELOC = DATA.reloc;
+/* The inventory's country strings are not all row keys: some are hyphenated
+   ("Hong Kong/China"), some are territories with no row of their own. This maps the ones
+   that resolve; the rest fall through to grey and are excluded from the ranking. */
+var ROUTES_NOTED = ROUTES.filter(function(r){ return r.note; }).length;
+var NET_ON = {groups:true, routes:true};
+var LENS = 'exp';
+var BAND_ON=[true,true,true,true,true];   /* severe .. minimal */
+var CASE_ON=true;
+var CASE_BY_C = {}; CASES.forEach(function(c){ (CASE_BY_C[c.c]=CASE_BY_C[c.c]||[]).push(c); });
+
+var WORLD_BOUNDS = L.latLngBounds([[-84,-179.5],[84,179.5]]);
+var map = L.map('map',{center:[18,-20],zoom:3,minZoom:2,maxZoom:14,
+                       worldCopyJump:false, maxBounds:WORLD_BOUNDS, maxBoundsViscosity:1.0,
+                       zoomControl:true,attributionControl:true});
+map.attributionControl.addAttribution('Scores: GI-TOC Organized Crime Index 2025 · Boundaries: Natural Earth / geoBoundaries');
+
+/* ---- basemap: painted plate, crossfading into satellite imagery on zoom ---- */
+var PLATE_IMG = "__PLATE__";
+/* Dedicated panes. Country polygons, corridors and points shared one SVG renderer, so a
+   dot could be painted underneath a choropleth fill and stop taking clicks entirely.
+   Three panes with explicit renderers puts every point on top of every fill. */
+map.createPane('choro'); map.getPane('choro').style.zIndex = 410;
+map.createPane('lines'); map.getPane('lines').style.zIndex = 440;
+map.createPane('pts');   map.getPane('pts').style.zIndex   = 470;
+var R_CHORO=L.svg({pane:'choro'});                 /* SVG: hatch patterns need it       */
+/* SVG, not canvas. A canvas element covers its entire pane, so the corridor and point
+   panes sitting above the choropleth intercepted every click before it reached a country
+   path — countries and marks alike stopped responding. SVG only takes events on the drawn
+   geometry. The load cost that pushed me to canvas is carried by the vertex reduction and
+   the lighter plate instead. */
+var R_LINES=L.svg({pane:'lines'});
+var R_PTS  =L.svg({pane:'pts'});
+map.createPane('leaders'); map.getPane('leaders').style.zIndex = 455;
+map.getPane('leaders').style.pointerEvents = 'none';
+var R_LEAD = L.svg({pane:'leaders'});
+map.createPane('plate'); map.getPane('plate').style.zIndex = 250;   /* ABOVE tilePane (200) —
+   at 190 the satellite tiles covered the plate in the centre world while the wrapped copies,
+   which the noWrap tiles never reached, still showed it. That was the "atlas only shows in the
+   surrounding maps" bug; the wrapped copies are gone now and the plate sits on top. */
+map.getPane('plate').style.pointerEvents = 'none';
+var PLATE_S=-80.55, PLATE_N=85.05112877980659, PLATE_FADE_IN=3, PLATE_FADE_OUT=5;
+var _plates=[L.imageOverlay(PLATE_IMG,[[PLATE_S,-180],[PLATE_N,180]],{pane:'plate',opacity:1}).addTo(map)];
+var sat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+  {noWrap:true,bounds:[[-85.05,-180],[85.05,180]],maxZoom:17,opacity:1,attribution:'Imagery: Esri'}).addTo(map);
+var satLabels = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+  {noWrap:true,bounds:[[-85.05,-180],[85.05,180]],maxZoom:17,opacity:0}).addTo(map);
+function plateFade(){
+  var z=map.getZoom();
+  var t=Math.max(0,Math.min(1,(z-PLATE_FADE_IN)/(PLATE_FADE_OUT-PLATE_FADE_IN)));
+  _plates.forEach(function(p){ p.setOpacity(1-t); });
+  satLabels.setOpacity(t*0.85);
+}
+map.on('zoomend',plateFade); plateFade();
+
+/* ---- colour ---- */
+function hexA(h,a){var n=parseInt(h.slice(1),16);return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')';}
+function lensVal(r){
+  if(LENS==='res') return 10-r.res;      /* inverted: darker = weaker resilience */
+  return r[LENS];
+}
+function shade(v){                        /* v on 1..10 -> band colour ramp */
+  var i = v>=7.5?0 : v>=6?1 : v>=4.5?2 : v>=3?3 : 4;
+  return BANDS[i][1];
+}
+function bandName(v){ return BANDS[v>=7.5?0:v>=6?1:v>=4.5?2:v>=3?3:4][0]; }
+
+/* ---- country layer ---- */
+var geoLayer=null, FEATBY={}, activeIso=null;
+function keyOf(f){
+  var n=f.properties.name;
+  var k=ALIAS[n]||n;
+  if(k==='__skip') return null;
+  return ROWS[k]?k:null;
+}
+function bandIdx(v){ return v>=7.5?0 : v>=6?1 : v>=4.5?2 : v>=3?3 : 4; }
+
+/* Engraved fills. Each band gets an SVG pattern whose line density falls with severity —
+   severe is close cross-hatch, minimal is a wide single rule. Ordering is then legible
+   in monochrome and at a glance, which flat colour bands never manage; the tone only
+   reinforces what the density already says. */
+var HATCH_READY=false;
+function buildHatches(){
+  if(HATCH_READY) return;
+  var svg = R_CHORO && R_CHORO._container;
+  if(!svg) return;
+  var ns='http://www.w3.org/2000/svg';
+  var defs=document.createElementNS(ns,'defs');
+  var SPEC=[ {p:3.2, w:1.5, cross:true,  a:0.55},   /* severe   */
+             {p:4.5, w:1.2, cross:true,  a:0.46},   /* high     */
+             {p:5.5, w:1.0, cross:false, a:0.42},   /* moderate */
+             {p:7.5, w:0.9, cross:false, a:0.34},   /* low      */
+             {p:10.0,w:0.8, cross:false, a:0.28} ]; /* minimal  */
+  BANDS.forEach(function(bd,i){
+    var s=SPEC[i];
+    var pat=document.createElementNS(ns,'pattern');
+    pat.setAttribute('id','hatch'+i);
+    pat.setAttribute('patternUnits','userSpaceOnUse');
+    pat.setAttribute('width',s.p); pat.setAttribute('height',s.p);
+    pat.setAttribute('patternTransform','rotate(45)');
+    var bg=document.createElementNS(ns,'rect');
+    bg.setAttribute('width',s.p); bg.setAttribute('height',s.p);
+    bg.setAttribute('fill',bd[1]); bg.setAttribute('fill-opacity',s.a*0.42);
+    pat.appendChild(bg);
+    var l=document.createElementNS(ns,'line');
+    l.setAttribute('x1',0); l.setAttribute('y1',0);
+    l.setAttribute('x2',0); l.setAttribute('y2',s.p);
+    l.setAttribute('stroke',bd[1]); l.setAttribute('stroke-width',s.w);
+    l.setAttribute('stroke-opacity',s.a);
+    pat.appendChild(l);
+    if(s.cross){
+      var l2=document.createElementNS(ns,'line');
+      l2.setAttribute('x1',0); l2.setAttribute('y1',0);
+      l2.setAttribute('x2',s.p); l2.setAttribute('y2',0);
+      l2.setAttribute('stroke',bd[1]); l2.setAttribute('stroke-width',s.w*0.8);
+      l2.setAttribute('stroke-opacity',s.a*0.85);
+      pat.appendChild(l2);
+    }
+    defs.appendChild(pat);
+  });
+  svg.insertBefore(defs, svg.firstChild);
+  HATCH_READY=true;
+}
+function styleC(f){
+  var k=keyOf(f);
+  if(!k) return {fillColor:'#1a1f30',fillOpacity:0.30,color:'rgba(255,255,255,0.10)',weight:0.5};
+  var v=lensVal(ROWS[k]), bi=bandIdx(v);
+  if(!BAND_ON[bi]) return {fillColor:'#0d1018',fillOpacity:0.14,color:'rgba(201,162,39,0.10)',weight:0.4};
+  return {fillColor: HATCH_READY ? ('url(#hatch'+bi+')') : shade(v),
+          fillOpacity:1, color:'rgba(201,162,39,0.30)', weight:0.6};
+}
+/* ---- dateline repair ----------------------------------------------------------
+   Russia, Fiji and the Aleutians wrap past 180°. Their rings hold longitudes at both
+   +179 and -179, and with the world no longer repeating, Leaflet joins those vertices
+   straight across the map — the horizontal band through the middle of the globe. Each
+   ring is unrolled so it runs continuously, then clipped to the -180..180 window and to
+   the windows either side of it; the pieces that survive become separate polygons. */
+function _unroll(ring){
+  var out=[ring[0].slice()];
+  for(var i=1;i<ring.length;i++){
+    var p=ring[i].slice(), prev=out[i-1];
+    while(p[0]-prev[0] >  180) p[0]-=360;
+    while(p[0]-prev[0] < -180) p[0]+=360;
+    out.push(p);
+  }
+  return out;
+}
+function _cross(a,b,x){ var t=(x-a[0])/(b[0]-a[0]); return [x, a[1]+t*(b[1]-a[1])]; }
+function _clipHalf(ring,x,keepAbove){
+  var out=[], n=ring.length;
+  if(!n) return out;
+  for(var i=0;i<n;i++){
+    var a=ring[(i+n-1)%n], b=ring[i];
+    var ain=keepAbove? a[0]>=x : a[0]<=x, bin=keepAbove? b[0]>=x : b[0]<=x;
+    if(bin){ if(!ain) out.push(_cross(a,b,x)); out.push(b.slice()); }
+    else if(ain){ out.push(_cross(a,b,x)); }
+  }
+  return out;
+}
+function _band(ring,lo,hi){ return _clipHalf(_clipHalf(ring,lo,true),hi,false); }
+function _needsSplit(ring){
+  for(var i=0;i<ring.length;i++){ if(ring[i][0]<-180.0001 || ring[i][0]>180.0001) return true; }
+  return false;
+}
+function fixDateline(geom){
+  if(!geom) return geom;
+  var polys = (geom.type==='Polygon') ? [geom.coordinates]
+            : (geom.type==='MultiPolygon') ? geom.coordinates : null;
+  if(!polys) return geom;
+  var out=[], touched=false;
+  polys.forEach(function(poly){
+    var outer=_unroll(poly[0]);
+    if(!_needsSplit(outer)){ out.push(poly); return; }
+    touched=true;
+    [-360,0,360].forEach(function(sh){
+      var rings=[];
+      poly.forEach(function(r,ri){
+        var u=_unroll(r).map(function(p){ return [p[0]+sh,p[1]]; });
+        var c=_band(u,-180,180);
+        if(c.length>2){ c.push(c[0].slice()); rings.push(c); }
+        else if(ri===0) rings.length=0;
+      });
+      if(rings.length) out.push(rings);
+    });
+  });
+  if(!touched) return geom;
+  return {type:'MultiPolygon', coordinates:out};
+}
+
+fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json')
+ .then(function(r){return r.json();})
+ .then(function(topo){
+   var fc = topojson.feature(topo, topo.objects.countries);
+   var unmatched=[];
+   fc.features.forEach(function(f){
+     try{ f.geometry = fixDateline(f.geometry); }catch(e){ console.warn('dateline',f.properties.name,e); }
+     var k=keyOf(f); if(k){ FEATBY[k]=f; f.__k=k; f.__iso=NUM2A3[String(f.id).padStart(3,'0')]||null; }
+     else if((ALIAS[f.properties.name]||'')!=='__skip') unmatched.push(f.properties.name);
+   });
+   if(unmatched.length) console.warn('[capture] unmatched geometry names:',unmatched);
+   var matched=Object.keys(FEATBY).length;
+   window.__matched = matched;
+   window.__COVERAGE = matched;
+   geoLayer=L.geoJSON(fc,{style:styleC,pane:'choro',renderer:R_CHORO,onEachFeature:function(f,l){
+     l.on('click',function(e){ onCountry(f,e.latlng); L.DomEvent.stop(e); });
+     l.on('mouseover',function(){ l.setStyle({weight:1.6,color:'#fff'}); });
+     l.on('mouseout',function(){ geoLayer.resetStyle(l); });
+   }}).addTo(map);
+   buildHatches();
+   if(HATCH_READY && geoLayer) geoLayer.setStyle(styleC);
+   drawCaseDots(); drawEntities(); buildIndex(); renderMethod();
+ })
+ .catch(function(e){ console.error('geometry load failed',e);
+   document.getElementById('gbLoad').style.display='block';
+   document.getElementById('gbLoad').textContent='Country geometry failed to load — check network access to cdn.jsdelivr.net'; });
+
+/* ---- case dots ---- */
+var caseMarkers=[];
+function drawCaseDots(){
+  caseMarkers.forEach(function(m){ map.removeLayer(m); }); caseMarkers=[]; declClear(0);
+  if(!CASE_ON){ declSoon(); return; }
+  CASES.forEach(function(c){
+    if(!CBK_ON[c.bk]) return;
+    var col = BUCKET_OF[c.bk] || '#c9a227';
+    var m=L.marker([c.lat,c.lng],{pane:'pts',keyboard:false,
+        icon:L.divIcon({className:'mk mk-case',iconSize:[11,11],iconAnchor:[5.5,5.5],
+          html:'<i style="--mkc:'+col+'"></i>'})}).addTo(map);
+    m.on('click',function(e){ openCase(c); L.DomEvent.stop(e); });
+    m.bindTooltip(c.n,{direction:'top',offset:[0,-6]});
+    caseMarkers.push(m); declRegister(m,c.lat,c.lng,9,0);
+  });
+  declSoon();
+}
+
+var entMarkers=[];
+function drawEntities(){
+  entMarkers.forEach(function(m){ map.removeLayer(m); }); entMarkers=[]; declClear(1);
+  ENTITIES.forEach(function(e){
+    if(!SON[e.s]) return;
+    var col=(SMAP[e.s]||{}).accent||'#8fb8c9';
+    var m=L.marker([e.lat,e.lng],{pane:'pts',keyboard:false,
+        icon:L.divIcon({className:'mk mk-firm',iconSize:[11,11],iconAnchor:[5.5,5.5],
+          html:'<i style="--mkc:'+col+'"></i>'})}).addTo(map);
+    m.on('click',function(ev){ openEntity(e); L.DomEvent.stop(ev); });
+    m.bindTooltip(e.n+' — '+(SMAP[e.s]||{}).label,{direction:'top',offset:[0,-7]});
+    entMarkers.push(m); declRegister(m,e.lat,e.lng,9,1);
+  });
+  var n=ENTITIES.filter(function(e){return SON[e.s];}).length;
+  var el=document.getElementById('cEnt'); if(el) el.textContent=n;
+  declSoon();
+}
+/* Four records on this map ended by executive act rather than by appeal — a pardon, a
+   dismissal at a diplomatic request, a prisoner exchange. The verdict stands and the
+   sentence does not, so the popup says so under the writeup instead of quietly
+   leaving the status field to imply the person is still serving it. */
+function undoneHTML(x){ return x.undone ? '<div class="ci-undone"><b>Outcome undone</b><br>'+x.undone+'</div>' : ''; }
+var OUTCOME={convicted:'Convicted',indicted:'Indicted',settled:'Settled',
+             investigation:'Investigating',alleged:'Alleged',acquitted:'Acquitted',
+             designated:'Designated',inquiry:'Inquiry'};
+/* One row per firm so a country's private-sector record reads as a comparable list:
+   name, outcome, year. Everything else — sector, role, the writeup, the citation —
+   is behind the row itself. */
+function entHTML(e, folded){
+  var s=SMAP[e.s]||{}, col=(s.accent||'#8fb8c9'), kt=kindTag(e);
+  var row='<div class="ent-row" style="border-left-color:'+col+';">'+
+    '<span class="ent-name">'+e.n+'</span>'+
+    '<span class="ent-kind" style="color:'+kt.c+'">'+kt.t+'</span>'+
+    '<span class="ent-st st-'+e.status+'">'+(OUTCOME[e.status]||e.status)+'</span>'+
+    '<span class="ent-yr">'+e.y+'</span>'+
+    '<span class="ent-car">\u25be</span></div>';
+  var body='<div class="ci-fold'+(folded===false?' open':'')+'">'+
+    '<div class="ci-m">'+e.role+' &middot; <span style="color:'+col+'">'+(s.label||e.s)+'</span></div>'+
+    '<div class="ci-d">'+e.d+'</div>'+
+    undoneHTML(e)+'<div class="ci-c">'+e.cite+(e.url?' — <a href="'+e.url+'" target="_blank" rel="noopener" style="color:#8fb8c9;">source</a>':'')+'</div></div>';
+  return '<div class="ent-item">'+row+body+'</div>';
+}
+/* delegated: Leaflet rebuilds popup DOM on every open */
+document.addEventListener('click',function(ev){
+  var r=ev.target && ev.target.closest ? ev.target.closest('.ent-row') : null;
+  if(!r) return;
+  var f=r.nextElementSibling;
+  if(f && f.classList.contains('ci-fold')){
+    var open=f.classList.toggle('open');
+    var c=r.querySelector('.ent-car'); if(c) c.innerHTML=open?'\u25b4':'\u25be';
+  }
+  ev.stopPropagation();
+},true);
+/* One group popup, called from the marker and from the index panel. It was written
+   inline inside drawGroups, which left the index unable to open a group at all. */
+function openGroup(g){
+  var gt = GTMAP[g.ty];
+  var nt = (typeof g.note === 'number') ? NOTES[g.note] : null;
+  ptPopup(nt?420:320).setLatLng([g.lat,g.lng]).setContent(
+    '<div class="popup-country">'+g.n+'</div>'+
+    '<div class="ci-m">'+((gt&&gt.label)||'Organised-crime group')+' &middot; '+g.c+'</div>'+
+    (nt ? ('<div class="grp-note"><div class="gn-h">'+nt.title+(nt.where?(' &middot; '+nt.where):'')+'</div>'+
+           '<div class="ci-d">'+nt.d+'</div>'+
+           '<div class="ci-c">'+nt.cite+'</div></div>') : '')+
+    (g.geo ? ('<div class="geo-n"><b>Placed at:</b> '+g.geo+
+              (g.c0?(' &middot; country label corrected from '+g.c0):'')+'</div>') : '')+
+    '').openOn(map);
+}
+
+function openEntity(e){
+  ptPopup(420).setLatLng([e.lat,e.lng]).setContent(
+    '<div class="popup-country">'+e.n+'</div>'+entHTML(e,false)).openOn(map);
+}
+
+/* ---- overlap resolution ------------------------------------------------------
+   Every point keeps its supplied coordinate. On each zoom the markers are projected to
+   screen space and placed greedily; anything that would collide spirals outward to the
+   nearest free slot and gets a hairline back to its true position, so the nudge is
+   visible rather than silent. Cases and firms are placed first, so a named prosecution
+   never gets pushed off its own city by an uncited group dot. */
+var LEADERS=null, DECL=[];
+function declRegister(m, lat, lng, r, pri){ DECL.push({m:m,lat:lat,lng:lng,r:r,pri:pri,on:true}); }
+function declClear(pri){ DECL=DECL.filter(function(o){ return o.pri!==pri; }); }
+var MAX_NUDGE_M = 25000;   /* a dot may never be moved more than 25 km on the ground */
+/* Marks no longer move. The declutterer used to spread colliding dots in screen space,
+   so a mark's position changed as you zoomed — for a jurisdictional centroid that is
+   actively misleading, because the point is already an abstraction and shifting it makes
+   it look like a measurement. Every mark now sits on its own coordinate at every zoom;
+   overlap at low zoom is the honest consequence and resolves on the way in. */
+function declutter(){
+  if(LEADERS){ map.removeLayer(LEADERS); LEADERS=null; }
+  DECL.forEach(function(o){ o.m.setLatLng(L.latLng(o.lat,o.lng)); });
+}
+var _declT=null;
+function declSoon(){ clearTimeout(_declT); _declT=setTimeout(declutter, 60); }
+/* nothing to recompute on zoom any more */
+
+/* ---- organised-crime groups + trafficking corridors ---- */
+var groupLayer=null, routeLayer=null;
+function drawGroups(){
+  if(groupLayer){ map.removeLayer(groupLayer); groupLayer=null; }
+  declClear(2);
+  if(!NET_ON.groups){ declSoon(); return; }
+  groupLayer=L.layerGroup();
+  GROUPS.forEach(function(g){
+    /* researched entries are drawn larger with a pale ring. This declaration was lost in
+       an earlier edit while the references below survived, so drawGroups threw on its
+       first iteration — and because drawRoutes() sits on the same init statement, the
+       corridors disappeared with the groups. */
+    var researched = (typeof g.note === 'number');
+    var gt = GTMAP[g.ty];
+    if(gt && !GT_ON[g.ty]) return;
+    var tc = (gt && gt.accent) || '#b3182f';
+    /* Half-opacity fill over the plate turned every disc into a muddy version of the
+       ground beneath it, so twelve distinct type colours arrived as one brown. Fully
+       opaque now, with a dark stroke doing the edge work the fill used to do badly. */
+    var m=L.circleMarker([g.lat,g.lng],{
+        radius: 3.6, color: '#0a0c16', weight: 0.9, opacity: 0.85,
+        fillColor: tc, fillOpacity: 1,
+        pane:'pts',renderer:R_PTS,bubblingMouseEvents:false});
+    m.bindTooltip(g.n+' \u2014 '+g.c+((gt&&gt.label)?(' \u00b7 '+gt.label):''),{direction:'top',offset:[0,-4]});
+    m.on('click',function(e){ openGroup(g); L.DomEvent.stop(e); });
+    groupLayer.addLayer(m); declRegister(m,g.lat,g.lng,5,2);
+  });
+  groupLayer.addTo(map); declSoon();
+}
+/* ---- geodesic shaping ---------------------------------------------------------
+   The supplied corridors are waypoint lists. Drawn as raw segments, Web Mercator renders
+   each leg as a straight line on screen, which is not the path between those two points —
+   a Tokyo-to-Anchorage leg is a wide northern arc on the ground and a flat horizontal
+   stroke on the map, and a leg crossing the dateline is drawn backwards across the entire
+   world. Each leg is resampled along its great circle and split where it crosses 180°.
+
+   This corrects the SHAPE of the line between the given points. It does not route it:
+   there is no public dataset of surveyed trafficking tracks, so nothing here snaps a
+   maritime leg to shipping lanes or a land leg to roads, and the map says so. */
+function _rad(d){ return d*Math.PI/180; }
+function _deg(r){ return r*180/Math.PI; }
+function gcLeg(a,b){
+  var f1=_rad(a[0]), l1=_rad(a[1]), f2=_rad(b[0]), l2=_rad(b[1]);
+  var dl=l2-l1, df=f2-f1;
+  var h=Math.sin(df/2)*Math.sin(df/2)+Math.cos(f1)*Math.cos(f2)*Math.sin(dl/2)*Math.sin(dl/2);
+  var d=2*Math.asin(Math.min(1,Math.sqrt(h)));
+  var km=d*6371;
+  if(d<1e-9) return [a.slice()];
+  /* 120 km steps gave ~13,000 vertices across the corridor layer for a curvature
+     difference invisible below about 250 km. Coarser sampling, same shape. */
+  if(km < 250) return [a.slice(), b.slice()];
+  var n=Math.max(2, Math.min(24, Math.round(km/320)));
+  var out=[], sd=Math.sin(d);
+  for(var i=0;i<=n;i++){
+    var t=i/n, A=Math.sin((1-t)*d)/sd, B=Math.sin(t*d)/sd;
+    var x=A*Math.cos(f1)*Math.cos(l1)+B*Math.cos(f2)*Math.cos(l2);
+    var y=A*Math.cos(f1)*Math.sin(l1)+B*Math.cos(f2)*Math.sin(l2);
+    var z=A*Math.sin(f1)+B*Math.sin(f2);
+    out.push([_deg(Math.atan2(z,Math.sqrt(x*x+y*y))), _deg(Math.atan2(y,x))]);
+  }
+  return out;
+}
+function geodesicPath(pts){
+  var dense=[];
+  for(var i=0;i<pts.length-1;i++){
+    var leg=gcLeg(pts[i],pts[i+1]);
+    if(i>0) leg.shift();
+    dense=dense.concat(leg);
+  }
+  if(!dense.length) return [];
+  /* cut into sub-paths at the dateline so nothing streaks across the map */
+  var parts=[], cur=[dense[0]];
+  for(var j=1;j<dense.length;j++){
+    if(Math.abs(dense[j][1]-dense[j-1][1])>180){ parts.push(cur); cur=[dense[j]]; }
+    else cur.push(dense[j]);
+  }
+  parts.push(cur);
+  return parts.filter(function(p){ return p.length>1; });
+}
+
+function drawRoutes(){
+  if(routeLayer){ map.removeLayer(routeLayer); routeLayer=null; }
+  if(!NET_ON.routes) return;
+  routeLayer=L.layerGroup();
+  /* A 0.9px stroke at 0.42 opacity disappeared into the satellite imagery. Each corridor is
+     now drawn twice: a dark casing underneath so the line reads over pale desert and bright
+     coastline alike, then the gold dash on top at a weight that survives a dark basemap. All
+     casings are laid down before any line, so one route's casing never covers another's
+     stroke. Casings are non-interactive, so hover and click behave exactly as before. */
+  var _keep=[];
+  ROUTES.forEach(function(r){
+    var parts=geodesicPath(r.p);
+    if(parts.length) _keep.push({r:r,parts:parts});
+  });
+  _keep.forEach(function(o){
+    routeLayer.addLayer(L.polyline(o.parts,{color:'#0a0c16',weight:3.6,opacity:0.5,
+        smoothFactor:1,lineCap:'butt',lineJoin:'miter',interactive:false,
+        pane:'lines',renderer:R_LINES}));
+  });
+  _keep.forEach(function(o){
+    var r=o.r, parts=o.parts;
+    var pl=L.polyline(parts,{color:'#f0cf6a',weight:1.7,opacity:0.92,smoothFactor:1,
+        dashArray:'7 5',lineCap:'butt',lineJoin:'miter',pane:'lines',renderer:R_LINES});
+    pl.on('mouseover',function(){ pl.setStyle({weight:3,opacity:1,dashArray:null,color:'#fff0b0'}); });
+    pl.on('mouseout',function(){ pl.setStyle({weight:1.7,opacity:0.92,dashArray:'7 5',color:'#f0cf6a'}); });
+    pl.bindTooltip(r.n,{sticky:true});
+    pl.on('click',function(e){
+      ptPopup(340).setLatLng(e.latlng).setContent(
+        '<div class="popup-country">'+r.n+'</div>'+
+        '<div class="ci-m">Trafficking corridor &middot; '+r.p.length+' waypoints'+
+        (r.trim?(' &middot; '+r.trim+' endpoint'+(r.trim>1?'s':'')+' trimmed'):'')+'</div>'+
+        (r.note ? ('<div class="grp-note"><div class="ci-d">'+r.note.d+'</div>'+
+                   '<div class="ci-c">'+r.note.cite+'</div></div>') : '')+
+        '<div class="ci-c">The curve is the true shortest path between the waypoints, not a straight '+
+        'line drawn on a flat map. It is not a surveyed track: it does not follow roads or shipping '+
+        'lanes.</div>').openOn(map);
+      L.DomEvent.stop(e);
+    });
+    routeLayer.addLayer(pl);
+  });
+  routeLayer.addTo(map);
+}
+
+/* ---- popups ---- */
+function statusHTML(c){
+  return '<span class="st-'+c.status+'">'+c.status.toUpperCase()+'</span> · '+c.rank+' · '+c.y;
+}
+function caseHTML(c, folded){
+  var kt=kindTag(c);
+  var row='<div class="ent-row" style="border-left-color:'+kt.c+';">'+
+    '<span class="ent-name">'+c.n+'</span>'+
+    '<span class="ent-kind" style="color:'+kt.c+'">'+kt.t+'</span>'+
+    '<span class="ent-st st-'+c.status+'">'+(OUTCOME[c.status]||c.status)+'</span>'+
+    '<span class="ent-yr">'+c.y+'</span>'+
+    '<span class="ent-car">\u25be</span></div>';
+  var body='<div class="ci-fold'+(folded===false?' open':'')+'">'+
+    '<div class="ci-m">'+c.rank+'</div><div class="ci-d">'+c.d+'</div>'+
+    '<div class="ci-c">'+c.cite+(c.url?' — <a href="'+c.url+'" target="_blank" rel="noopener" style="color:#8fb8c9;">source</a>':'')+'</div></div>';
+  return '<div class="ent-item">'+row+body+'</div>';
+}
+/* Short category tags for the merged record list. The full bucket and sector labels are
+   sentence-length and would swamp the row, so each gets a two-word form; the colour is
+   the one that category already carries elsewhere on the map. */
+var KIND_BK  = {exec:'Head of state', cabinet:'Minister', court:'Judiciary',
+                elected:'Elected office', enforce:'Enforcement'};
+var KIND_SEC = {finance:'Bank', crypto:'Crypto', shipping:'Shipping', chemicals:'Chemicals',
+                pharma:'Pharma', gambling:'Gambling', professional:'Professional',
+                comms:'Comms', commodities:'Commodities'};
+function kindTag(x){
+  if(x.bk) return {t:(KIND_BK[x.bk]||'Public office'), c:(BUCKET_OF[x.bk]||'#c9a227')};
+  var sc=SMAP[x.s]||{};
+  return {t:(KIND_SEC[x.s]||'Company'), c:(sc.accent||'#8fb8c9')};
+}
+/* One list, sorted newest first, mixing public and private. Both halves are documented
+   and both are sectors; what differs is whether the institution is an office or a firm,
+   and the row tag says which. */
+function recordList(cs, es){
+  var all=(cs||[]).concat(es||[]);
+  if(!all.length) return '';
+  all.sort(function(a,b){ return (b.y||0)-(a.y||0); });
+  var nOff=(cs||[]).length, nFirm=(es||[]).length;
+  var sub=[]; if(nOff) sub.push(nOff+' public'); if(nFirm) sub.push(nFirm+' private');
+  var h='<div class="m-h" style="margin-top:12px;">The documented record &mdash; '+all.length+
+        ' <span style="opacity:.6;font-weight:400;">('+sub.join(', ')+')</span></div>';
+  all.forEach(function(x){ h+= x.bk ? caseHTML(x) : entHTML(x); });
+  return h;
+}
+function bar(v,col){ return '<div class="cap-bar"><i style="width:'+(v*10)+'%;background:'+col+'"></i></div>'; }
+/* A jurisdiction holding records but carrying no GI-TOC score — a special
+   administrative region, a territory, an offshore registry. countryHTML opens on
+   ROWS[k] and would throw here, so these get their own panel: the records, and an
+   explicit line about why there is no score above them. */
+function offsetHTML(k){
+  var h='<div class="popup-country">'+k+'<span class="cap-band" style="background:#4a5570;color:#f4efe8;">Not scored</span></div>';
+  h+='<div class="no-data" style="margin-top:8px;">The score set covers UN member states. This jurisdiction is not one, so it carries records without a capture-exposure figure — which is itself worth noting, since registries and special administrative regions are chosen for that status.</div>';
+  var ocn=CNOTES[k];
+  if(ocn){
+    h+='<div class="cnote"><div class="cn-h">The record</div><div class="ci-d cn-body">'+ocn.d+'</div>'+
+       '<div class="ci-c">'+ocn.cite+'</div></div>';
+  }
+  h+=recordList(CASES.filter(function(c){return c.c===k;}),
+                ENTITIES.filter(function(e){return e.c===k;}));
+  return h;
+}
+function openOffset(k, lat, lng){
+  map.flyTo([lat,lng],5,{duration:0.9});
+  var p=visiblePad(), sz=map.getSize();
+  var maxH=Math.max(220, sz.y - p.tl[1] - p.br[1] - 70);
+  setTimeout(function(){
+    L.popup({maxWidth:420, maxHeight:maxH, autoPan:true, keepInView:true,
+             autoPanPaddingTopLeft:L.point(p.tl[0]+12, p.tl[1]+12),
+             autoPanPaddingBottomRight:L.point(p.br[0]+12, p.br[1]+12)})
+      .setLatLng(visibleCentre()).setContent(offsetHTML(k)).openOn(map);
+  }, 950);
+}
+function countryHTML(k){
+  var r=ROWS[k], col=shade(lensVal(r));
+  var h='<div class="popup-country">'+k+'<span class="cap-band" style="background:'+shade(r.exp)+';color:#f4efe8;">'+bandName(r.exp)+'</span></div>';
+  h+='<div class="cap-grid">'+
+     '<span class="lbl">Capture exposure</span><span class="val">'+r.exp.toFixed(2)+'</span></div>'+bar(r.exp,shade(r.exp));
+  h+='<div class="cap-grid">'+
+     '<span class="lbl">State-embedded actors</span><span class="val">'+r.sea.toFixed(2)+'</span>'+
+     '<span class="lbl">Cocaine trade</span><span class="val">'+r.coc.toFixed(2)+'</span>'+
+     '<span class="lbl">Synthetic drug trade</span><span class="val">'+r.syn.toFixed(2)+'</span>'+
+     '<span class="lbl">Heroin trade</span><span class="val">'+r.her.toFixed(2)+'</span>'+
+     '<span class="lbl">Cannabis trade</span><span class="val">'+r.can.toFixed(2)+'</span>'+
+     '<span class="lbl">Drug intensity (peak / mean)</span><span class="val">'+r.drug.toFixed(2)+' / '+r.dmean.toFixed(2)+'</span>'+
+     '<span class="lbl">Criminality (overall)</span><span class="val">'+r.crim.toFixed(2)+'</span>'+
+     '<span class="lbl">Resilience</span><span class="val">'+r.res.toFixed(2)+'</span>'+
+     '</div>';
+  var cn=CNOTES[k];
+  if(cn){
+    h+='<div class="cnote">';
+    h+='<div class="cn-h">The record</div><div class="ci-d cn-body">'+cn.d+'</div>';
+    h+='<div class="ci-c">'+cn.cite+'</div></div>';
+  }
+  var cs=CASE_BY_C[k]||[], es=ENT_BY_C[k]||[];
+  if(cs.length || es.length){ h+=recordList(cs,es); }
+  else { h+='<div class="no-data" style="margin-top:10px;">No case in this layer. That is an absence of documentation, not an absence of capture — see the methodology panel on detection bias.</div>'; }
+  h+='<div class="ci-c" style="margin-top:9px;">Scores: GI-TOC Organized Crime Index 2025. Exposure is this map\'s composite, not a GI-TOC figure.</div>';
+  return h;
+}
+/* Centre the country in the strip of map that is actually visible — the index column
+   masks the left, the lens and key boxes the right, the header the top — then open the
+   popup on the country itself, which now sits in the middle of that strip. */
+function visiblePad(){
+  var w=window.innerWidth;
+  var left  = (w>1240) ? 600 : 40;      // sidebar + index column
+  var right = (w>1240) ? 300 : 40;      // lens + map key
+  return {tl:[left,110], br:[right,60]};
+}
+/* Fitting to the raw feature bounds froze the map on any country whose territory
+   straddles the dateline. The United States runs from the Aleutians at +179.8 to Maine
+   at -67, so L.geoJSON().getBounds() returns a span of 359 degrees; fitBounds then asks
+   for a view wider than maxBounds allows, and with maxBoundsViscosity at 1.0 Leaflet
+   clamps, re-fires moveend, and clamps again. Russia, Fiji, New Zealand and Kiribati all
+   have the same shape of bounds. This builds the box from the largest landmass instead,
+   folds in any part of comparable size within 120 degrees of it, and drops the rest —
+   so the wrap-around fragment is excluded rather than stretching the box around the
+   globe. Remote territories far from the main landmass are excluded on the same test,
+   which also stops France zooming out to take in Réunion. */
+function countryBounds(f){
+  var g=f.geometry; if(!g) return null;
+  var polys = g.type==='Polygon' ? [g.coordinates]
+            : g.type==='MultiPolygon' ? g.coordinates : null;
+  if(!polys || !polys.length) return null;
+  var parts=[];
+  polys.forEach(function(poly){
+    var r=poly[0]; if(!r || !r.length) return;
+    /* A single ring can itself straddle 180 — Vanua Levu in Fiji has vertices at both
+       +179.9 and -179.9 — and then its own bbox is 360 degrees wide before any parts are
+       combined. Where that happens, keep only the vertices on whichever side of the
+       dateline holds more of the ring and measure that side. */
+    var hiE=false, loW=false, i;
+    for(i=0;i<r.length;i++){ if(r[i][0]>170) hiE=true; if(r[i][0]<-170) loW=true; }
+    var keepEast=null;
+    if(hiE && loW){
+      var ne=0, nw=0;
+      for(i=0;i<r.length;i++){ if(r[i][0]>=0) ne++; else nw++; }
+      keepEast = (ne>=nw);
+    }
+    var w=180,e=-180,s=90,n=-90, used=0;
+    for(i=0;i<r.length;i++){
+      var x=r[i][0], y=r[i][1];
+      if(keepEast!==null && ((keepEast && x<0) || (!keepEast && x>=0))) continue;
+      used++;
+      if(x<w)w=x; if(x>e)e=x; if(y<s)s=y; if(y>n)n=y;
+    }
+    if(!used) return;
+    parts.push({w:w,e:e,s:s,n:n,a:Math.max(e-w,0.01)*Math.max(n-s,0.01),c:(w+e)/2});
+  });
+  if(!parts.length) return null;
+  parts.sort(function(p,q){ return q.a-p.a; });
+  var main=parts[0], W=main.w, E=main.e, S=main.s, N=main.n;
+  parts.forEach(function(p){
+    if(p===main) return;
+    if(p.a < main.a*0.12) return;              /* an islet does not move the view */
+    if(Math.abs(p.c-main.c) > 120) return;     /* the wrap-around fragment */
+    if(p.w<W)W=p.w; if(p.e>E)E=p.e; if(p.s<S)S=p.s; if(p.n>N)N=p.n;
+  });
+  if(E-W > 200){ W=main.w; E=main.e; S=main.s; N=main.n; }   /* last resort */
+  W=Math.max(W,-179.2); E=Math.min(E,179.2);
+  S=Math.max(S,-83.0);  N=Math.min(N,83.0);
+  if(!(E>W) || !(N>S)) return null;
+  return L.latLngBounds([[S,W],[N,E]]);
+}
+function focusCountry(k, cb){
+  var f=FEATBY[k]; if(!f){ if(cb) cb(null); return; }
+  var bd=countryBounds(f);
+  if(!bd || !bd.isValid()){ if(cb) cb(null); return; }
+  var p=visiblePad();
+  map.once('moveend', function(){ if(cb){ var f1=cb; cb=null; f1(bd.getCenter()); } });
+  try{
+    map.fitBounds(bd,{paddingTopLeft:p.tl, paddingBottomRight:p.br, maxZoom:5, animate:true});
+  }catch(err){ /* never let a bad box take the popup down with it */ }
+  /* fitBounds is a no-op when the view already satisfies it, and then moveend never
+     fires and the popup never opens */
+  setTimeout(function(){ if(cb){ var f2=cb; cb=null; f2(bd.getCenter()); } }, 420);
+}
+/* Anchor the popup at the centre of the visible strip rather than at the country's own
+   centroid. For a northern country — Russia, Canada, Norway — the centroid sits high in
+   the frame and Leaflet opens the bubble upward from it, so the top of a long record ran
+   off the map edge. Anchoring at the strip's centre and capping the height keeps the
+   whole thing on screen whatever the latitude. */
+function visibleCentre(){
+  var sz=map.getSize(), p=visiblePad();
+  return map.containerPointToLatLng(
+    L.point(p.tl[0] + (sz.x - p.tl[0] - p.br[0]) / 2,
+            p.tl[1] + (sz.y - p.tl[1] - p.br[1]) / 2));
+}
+/* Point popups used to anchor on the marker, so Leaflet opened the bubble upward from
+   it. Anything in the northern half of the frame — and any tall box anywhere — ran off
+   the top edge with no way to scroll back to it. This opens every point popup with the
+   same height cap and pan padding the country popup already used, so the box is bounded
+   by the visible strip and Leaflet pans it into view instead of overflowing. */
+function ptPopup(w){
+  var p=visiblePad(), sz=map.getSize();
+  return L.popup({maxWidth:w,
+    maxHeight:Math.max(200, sz.y - p.tl[1] - p.br[1] - 70),
+    autoPan:true, keepInView:true, autoPanPadding:L.point(16,16),
+    autoPanPaddingTopLeft:L.point(p.tl[0]+12, p.tl[1]+12),
+    autoPanPaddingBottomRight:L.point(p.br[0]+12, p.br[1]+12)});
+}
+function openCountryPopup(k){
+  var p=visiblePad(), sz=map.getSize();
+  var maxH=Math.max(220, sz.y - p.tl[1] - p.br[1] - 70);
+  L.popup({maxWidth:420, maxHeight:maxH, autoPan:true, keepInView:true,
+           autoPanPaddingTopLeft:L.point(p.tl[0]+12, p.tl[1]+12),
+           autoPanPaddingBottomRight:L.point(p.br[0]+12, p.br[1]+12)})
+    .setLatLng(visibleCentre()).setContent(countryHTML(k)).openOn(map);
+}
+function onCountry(f,latlng){
+  var k=f.__k;
+  activeIso=k;
+  focusCountry(k, function(){ openCountryPopup(k); });
+}
+function openCase(c){
+  var h='<div class="popup-country">'+c.n+'</div><div class="ci-m" style="margin-bottom:8px;">'+statusHTML(c)+' · '+c.c+'</div>'+
+        '<div class="ci-d">'+c.d+'</div>'+undoneHTML(c)+'<div class="ci-c">'+c.cite+(c.url?' — <a href="'+c.url+'" target="_blank" rel="noopener" style="color:#8fb8c9;">source</a>':'')+'</div>';
+  ptPopup(400).setLatLng([c.lat,c.lng]).setContent(h).openOn(map);
+}
+
+/* The old #unitPanel repeated the country popup verbatim underneath the wire.
+   It is gone; its one unique line (the four market scores in prose) now lives in the
+   popup's own score grid, which carries them as figures instead. */
+
+/* The geoBoundaries drill-down was removed: this map holds no subnational measure, so
+   descending into administrative units only ever repeated the national figure inside a
+   smaller outline. A second click now just re-opens the country. */
+function clearDrill(){}
+
+/* ---- lens control ---- */
+/* Every swatch is a switch, and the point layers nest: a parent row toggles its whole
+   category, the caret opens the breakdown, and each child toggles on its own. Off is
+   shown by dimming the row and hollowing the swatch, so the key still reads as a key. */
+var KEY_OPEN = {sev:false, crit:false, office:false, firms:false, groups:false, routes:false};
+function swatch(colour, on, shape){
+  var cls = shape==='diamond'?'key-sw-diamond' : shape==='square'?'key-sw-square'
+          : shape==='circle'?'key-sw-circle' : /^band/.test(shape)?('key-sw-'+shape) : '';
+  var box = shape==='bar' ? ';width:18px;height:9px' : ';width:9px;height:9px';
+  return '<span class="leg-sw '+cls+'" style="'+
+    (on?('background:'+colour):('background:transparent;box-shadow:inset 0 0 0 1px '+colour))+
+    box+'"></span>';
+}
+/* Some rows say what the layer actually contains rather than naming it in one word, and
+   the key column is too narrow for that. The label is clipped with an ellipsis and the
+   full text is shown on hover, so nothing runs off the panel and nothing is lost. */
+function keyTip(el, label){
+  var l=el.querySelector('.kt-l'); if(!l) return;
+  l.addEventListener('mouseenter', function(){
+    if(l.scrollWidth <= l.clientWidth + 1) return;   /* it already fits */
+    var t=document.createElement('div');
+    t.className='key-tip'; t.textContent=label;
+    document.body.appendChild(t);
+    var r=l.getBoundingClientRect();
+    t.style.left=Math.max(6, Math.min(r.left, window.innerWidth-t.offsetWidth-6))+'px';
+    t.style.top=Math.max(6, r.top-t.offsetHeight-6)+'px';
+    l.__tip=t;
+  });
+  l.addEventListener('mouseleave', function(){
+    if(l.__tip){ l.__tip.remove(); l.__tip=null; }
+  });
+}
+function keyRow(parent, colour, label, on, shape, cb, count, cls){
+  var d=document.createElement('div');
+  d.className='leg-key key-tog'+(on?'':' off')+(cls?(' '+cls):'');
+  d.innerHTML=swatch(colour,on,shape)+'<span class="kt-l">'+label+'</span>'+
+    (count!=null?('<span class="kt-n">'+count+'</span>'):'');
+  keyTip(d, label);
+  d.onclick=function(e){ e.stopPropagation(); cb(); };
+  parent.appendChild(d);
+  return d;
+}
+function keyDesc(parent, text, on, depth){
+  var d=document.createElement('div');
+  d.className='key-desc d'+(depth||1)+(on?'':' off');
+  d.textContent=text;
+  parent.appendChild(d);
+}
+function keyHead(parent, text, depth, top){
+  var d=document.createElement('div');
+  d.className='key-h'+(depth?(' d'+depth):'');
+  if(top) d.style.marginTop='11px';
+  d.innerHTML=text; parent.appendChild(d); return d;
+}
+function keyParent(parent, colour, label, on, shape, key, count, toggle, depth){
+  var d=document.createElement('div');
+  d.className='leg-key key-tog key-par'+(on?'':' off')+(depth?(' d'+depth):'');
+  d.innerHTML='<span class="kt-car">'+(KEY_OPEN[key]?'\u25be':'\u25b8')+'</span>'+
+    swatch(colour,on,shape)+'<span class="kt-l">'+label+'</span>'+
+    (count!=null?('<span class="kt-n">'+count+'</span>'):'');
+  keyTip(d, label);
+  d.onclick=function(e){
+    e.stopPropagation();
+    if(e.target && e.target.className==='kt-car'){ KEY_OPEN[key]=!KEY_OPEN[key]; renderKeys(); }
+    else if(toggle) toggle(); else { KEY_OPEN[key]=!KEY_OPEN[key]; renderKeys(); }
+  };
+  parent.appendChild(d);
+  return d;
+}
+function setLens(k){
+  var L_=LENSES.filter(function(l){ return l.k===k; })[0]; if(!L_) return;
+  LENS=k; document.documentElement.style.setProperty('--accent', L_.accent);
+  renderKeys(); buildHatches(); if(geoLayer) geoLayer.setStyle(styleC); buildIndex();
+}
+function renderKeys(){
+  /* the key rebuilds on every toggle; a tooltip whose row is removed mid-hover would
+     never receive mouseleave, so clear any that are open before rebuilding */
+  Array.prototype.forEach.call(document.querySelectorAll('.key-tip'), function(t){ t.remove(); });
+  var b=document.getElementById('legKeys'); b.innerHTML='';
+  var counts=[0,0,0,0,0];
+  Object.keys(ROWS).forEach(function(k){ counts[bandIdx(lensVal(ROWS[k]))]++; });
+
+  /* ================= infiltration extent ================= */
+  keyHead(b, 'Country infiltration');
+  var note=document.createElement('div'); note.className='key-note-line';
+  note.textContent='Click a country for its scores and any documented cases. '+
+    'Click outside, or the name in the top-centre row, to come back up.';
+  b.appendChild(note);
+
+  /* severity — the five bands of whichever lens is active */
+  keyParent(b, BANDS[0][1], 'Severity', true, 'bar', 'sev', null, null, 0);
+  if(KEY_OPEN.sev){
+    BANDS.forEach(function(bd,i){
+      keyRow(b, bd[1], bd[0], BAND_ON[i], 'band'+i, function(){
+        BAND_ON[i]=!BAND_ON[i]; renderKeys(); buildHatches();
+        if(geoLayer) geoLayer.setStyle(styleC);
+      }, counts[i], 'key-child d2');
+    });
+  }
+
+  /* the five indicators the composite is built from, each selectable as a lens */
+  keyParent(b, '#c9a227', 'Show one indicator at a time', true, 'bar', 'crit', null, null, 0);
+  if(KEY_OPEN.crit){
+    LENSES.forEach(function(L_){
+      if(L_.k==='exp') return;                 /* the composite itself, not a criterion */
+      var on=(L_.k===LENS);
+      keyRow(b, L_.accent, L_.label, on, 'bar', function(){ setLens(L_.k); },
+             null, 'key-child d2'+(on?' key-sel':''));
+      keyDesc(b, L_.desc, on, 3);
+    });
+  }
+
+  /* ================= points ================= */
+  keyHead(b, 'Points <span class="key-sub">\u25c6 office &nbsp; \u25cf firm &nbsp; \u2022 group</span>',
+          0, true);
+
+  keyParent(b, '#c9a227', 'Officials caught working for traffickers', CASE_ON, 'diamond', 'office', CASES.length, function(){
+    CASE_ON=!CASE_ON; renderKeys(); drawCaseDots();
+  }, 1);
+  if(KEY_OPEN.office){
+    CASE_BUCKETS.forEach(function(p,i){
+      var n=CASES.filter(function(c){ return c.bk===p[0]; }).length;
+      if(!n) return;
+      var bon = CASE_ON && CBK_ON[p[0]];
+      keyRow(b, BUCKET_COLOUR[i], p[1], bon, 'diamond', function(){
+        CBK_ON[p[0]]=!CBK_ON[p[0]]; if(!CASE_ON) CASE_ON=true;
+        renderKeys(); drawCaseDots();
+      }, n, 'key-child d2');
+      if(p[2]) keyDesc(b, p[2], bon, 3);
+    });
+  }
+
+  var firmsOn = SECTORS.some(function(s){ return SON[s.k]; });
+  keyParent(b, '#4a86a8', 'Companies that moved the drugs or the money', firmsOn, 'circle', 'firms', ENTITIES.length, function(){
+    var turnOn=!firmsOn; SECTORS.forEach(function(s){ SON[s.k]=turnOn; });
+    renderKeys(); drawEntities(); buildIndex();
+  }, 1);
+  if(KEY_OPEN.firms){
+    SECTORS.forEach(function(s){
+      keyRow(b, s.accent, s.label, !!SON[s.k], 'circle', function(){
+        SON[s.k]=!SON[s.k]; renderKeys(); drawEntities(); buildIndex();
+      }, ENTITIES.filter(function(e){ return e.s===s.k; }).length, 'key-child d2');
+      keyDesc(b, s.d, !!SON[s.k], 3);
+    });
+  }
+
+  keyParent(b, '#d8cdb4', 'Crime groups (uncited)', NET_ON.groups, 'circle', 'groups',
+            GROUPS.length, function(){
+    NET_ON.groups=!NET_ON.groups; renderKeys(); drawGroups();
+  }, 1);
+  if(KEY_OPEN.groups){
+    GTYPES.forEach(function(t){
+      var on = NET_ON.groups && GT_ON[t.k];
+      keyRow(b, t.accent, t.label, on, 'circle', function(){
+        GT_ON[t.k] = !GT_ON[t.k];
+        if(!NET_ON.groups) NET_ON.groups = true;
+        renderKeys(); drawGroups();
+      }, gtCount(t.k), 'key-child d2');
+      keyDesc(b, t.d, on, 3);
+    });
+  }
+
+  /* ================= corridors, a layer in its own right ================= */
+  keyHead(b, 'Corridors', 0, true);
+  keyParent(b, '#f0cf6a', 'Trafficking corridors', NET_ON.routes, 'bar', 'routes',
+            ROUTES.length, function(){
+    NET_ON.routes=!NET_ON.routes; renderKeys(); drawRoutes();
+  }, 1);
+}
+/* ---- index -------------------------------------------------------------------
+   The index used to list one thing: the 193 scored jurisdictions, ranked by the lens.
+   Every other layer on this map is a list too — the documented state cases, the firms,
+   the group inventory — and each has an order that means something. So the panel now
+   holds four lists, and each carries its own sort and grouping.
+
+     jurisdictions   ranked by the lens in force, as before
+     officials       ranked by how high the capture reached, then by how far the case got
+     firms           ranked by outcome, then by year
+     groups          ranked by the exposure of the jurisdiction they sit in
+
+   Rankings across lists are not comparable. A conviction and an OFAC designation are
+   different kinds of finding, and a group's position here is the score of the country
+   under it, not a measure of the group. */
+
+var IDX_MODE = 'jur';
+var IDX_MODES = {
+  jur: {
+    title: 'Jurisdictions',
+    sorts:  [['score','Sort: lens score'],['az','Sort: A \u2192 Z'],['recs','Sort: records held']],
+    groups: [['band','Group: exposure band'],['cases','Group: has documented case'],['none','Group: none']]
+  },
+  off: {
+    title: 'Officials',
+    sorts:  [['rank','Sort: office reached'],['status','Sort: how far it got'],
+             ['year','Sort: newest first'],['az','Sort: A \u2192 Z'],['country','Sort: jurisdiction']],
+    groups: [['bk','Group: office'],['status','Group: outcome'],
+             ['country','Group: jurisdiction'],['none','Group: none']]
+  },
+  firm: {
+    title: 'Firms',
+    sorts:  [['status','Sort: how far it got'],['year','Sort: newest first'],
+             ['az','Sort: A \u2192 Z'],['country','Sort: jurisdiction']],
+    groups: [['sector','Group: sector'],['status','Group: outcome'],
+             ['country','Group: jurisdiction'],['none','Group: none']]
+  },
+  grp: {
+    title: 'Groups',
+    sorts:  [['exp','Sort: host exposure'],['az','Sort: A \u2192 Z'],
+             ['country','Sort: jurisdiction'],['noted','Sort: researched first']],
+    groups: [['ty','Group: type'],['country','Group: jurisdiction'],['none','Group: none']]
+  }
+};
+var IDX_SORT  = {jur:'score', off:'rank', firm:'status', grp:'exp'};
+var IDX_GROUP = {jur:'band',  off:'bk',   firm:'sector', grp:'ty'};
+var IDX_MAX = 1400;         /* the whole group inventory fits; the cap is a floor under
+                               a future list, not a limit on this one */
+
+/* How far a case actually got. A designation is an executive finding and a conviction is
+   a court's, so they are ordered rather than pooled — the map's methodology says the same
+   thing about the two layers. */
+var STATUS_RANK = {convicted:7, settled:6, indicted:5, designated:5, investigation:3,
+                   inquiry:3, alleged:2, acquitted:1};
+var STATUS_LABEL = {convicted:'convicted', settled:'settled', indicted:'indicted',
+                    designated:'designated', investigation:'investigation',
+                    inquiry:'inquiry', alleged:'alleged', acquitted:'acquitted'};
+/* CASE_BUCKETS is ordered from the presidency downward, so its own index is the seniority
+   of the office the capture reached. */
+var BK_ORDER = {}; CASE_BUCKETS.forEach(function(p,i){ BK_ORDER[p[0]] = CASE_BUCKETS.length - i; });
+var BK_LABEL = {}; CASE_BUCKETS.forEach(function(p){ BK_LABEL[p[0]] = p[1]; });
+
+function esc(t){ return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function statusOf(x){ return String(x&&x.status||'').toLowerCase(); }
+function statusVal(x){ return STATUS_RANK[statusOf(x)] || 0; }
+/* A group's country string is not always a row key — the inventory carries hyphenated and
+   territorial names. Unresolved ones rank last rather than being dropped. */
+function rowFor(name){ return ROWS[name] || ROWS[ALIAS[name]] || null; }
+function hostVal(name){ var r = rowFor(name); return r ? lensVal(r) : -1; }
+
+function _fillIdxSel(id, opts, current){
+  var el = document.getElementById(id); if(!el) return;
+  el.innerHTML = opts.map(function(o){
+    return '<option value="'+o[0]+'"'+(o[0]===current?' selected':'')+'>'+o[1]+'</option>';
+  }).join('');
+}
+function idxControls(){
+  var m = IDX_MODES[IDX_MODE];
+  _fillIdxSel('idxSort',  m.sorts,  IDX_SORT[IDX_MODE]);
+  _fillIdxSel('idxGroup', m.groups, IDX_GROUP[IDX_MODE]);
+}
+
+/* ---- rendering ---------------------------------------------------------------
+   Rows are written as one HTML string and clicks are taken by a single delegated
+   handler, because the group list is long enough that building a thousand elements and
+   binding a thousand handlers on every keystroke is felt. */
+var _idxRows = [];
+
+function idxSection(label, count, html){
+  return '<div class="idx-grp"><div class="idx-gh">'+esc(label)+' ('+count+')</div>'+html+'</div>';
+}
+function idxRow(i, tagColour, name, sub, fig){
+  return '<div class="idx-row" data-i="'+i+'">'+
+    '<span>'+
+      '<span class="idx-nm">'+(tagColour?('<span class="idx-tag" style="background:'+tagColour+'"></span>'):'')+esc(name)+'</span>'+
+      (sub?('<span class="idx-sub">'+esc(sub)+'</span>'):'')+
+    '</span><b>'+esc(fig)+'</b></div>';
+}
+
+function buildIndex(){
+  var q   = (document.getElementById('idxSearch').value||'').toLowerCase();
+  var el  = document.getElementById('idxList');
+  var sort = document.getElementById('idxSort').value;
+  var grp  = document.getElementById('idxGroup').value;
+  IDX_SORT[IDX_MODE] = sort; IDX_GROUP[IDX_MODE] = grp;
+  _idxRows = [];
+  var out = (IDX_MODE === 'jur') ? idxJurisdictions(q, sort, grp)
+          : (IDX_MODE === 'off') ? idxRecords(CASES,    q, sort, grp, 'off')
+          : (IDX_MODE === 'firm')? idxRecords(ENTITIES, q, sort, grp, 'firm')
+          :                        idxGroups(q, sort, grp);
+  el.innerHTML = out.html || '<div class="idx-more">Nothing matches that filter.</div>';
+  document.getElementById('idxCount').textContent = out.n;
+  document.getElementById('idxTitle').firstChild.nodeValue = IDX_MODES[IDX_MODE].title + ' ';
+  document.getElementById('cSevere').textContent =
+    Object.keys(ROWS).filter(function(k){ return ROWS[k].exp>=7.5; }).length;
+  document.getElementById('cCases').textContent = CASES.length;
+}
+
+/* ---- 1. jurisdictions (the original list) ---- */
+function idxJurisdictions(q, sort, grp){
+  var keys = Object.keys(ROWS).filter(function(k){ return !q || k.toLowerCase().indexOf(q)>=0; });
+  function recs(k){ return (CASE_BY_C[k]||[]).length + (ENT_BY_C[k]||[]).length; }
+  keys.sort(function(a,b){
+    if(sort==='az')   return a.localeCompare(b);
+    if(sort==='recs') return recs(b)-recs(a) || a.localeCompare(b);
+    return lensVal(ROWS[b])-lensVal(ROWS[a]) || a.localeCompare(b);
+  });
+  var groups={};
+  keys.forEach(function(k){
+    var g = grp==='none' ? 'All' :
+            grp==='cases' ? ((CASE_BY_C[k]||ENT_BY_C[k])?'With a documented case':'No case in this layer') :
+            bandName(ROWS[k].exp);
+    (groups[g]=groups[g]||[]).push(k);
+  });
+  var order = grp==='band' ? BANDS.map(function(b){return b[0];}) : Object.keys(groups);
+  var html='';
+  order.forEach(function(g){
+    if(!groups[g]) return;
+    var rows='';
+    groups[g].forEach(function(k){
+      var i=_idxRows.length; _idxRows.push({kind:'jur', k:k});
+      var dot=(CASE_BY_C[k]?' \u2022':'')+
+              (ENT_BY_C[k]&&ENTITIES.filter(function(e){return e.c===k&&SON[e.s];}).length?' \u25c6':'');
+      rows+=idxRow(i, '', k+dot, '', lensVal(ROWS[k]).toFixed(2));
+    });
+    html += idxSection(g, groups[g].length, rows);
+  });
+  /* jurisdictions carrying records but absent from the 193-state score set */
+  var OFF=[]; ENTITIES.concat(CASES).forEach(function(r){
+    if(!ROWS[r.c] && OFF.indexOf(r.c)<0) OFF.push(r.c);
+  });
+  OFF=OFF.filter(function(k){ return !q || k.toLowerCase().indexOf(q)>=0; }).sort();
+  if(OFF.length){
+    var rows='';
+    OFF.forEach(function(k){
+      var recs=ENTITIES.filter(function(e){return e.c===k;}).concat(CASES.filter(function(c){return c.c===k;}));
+      var i=_idxRows.length; _idxRows.push({kind:'off-set', k:k, lat:recs[0].lat, lng:recs[0].lng, recs:recs});
+      var dot=(CASES.filter(function(c){return c.c===k;}).length?' \u2022':'')+
+              (ENTITIES.filter(function(e){return e.c===k&&SON[e.s];}).length?' \u25c6':'');
+      rows+=idxRow(i, '', k+dot, '', '\u2014');
+    });
+    html += idxSection('Outside the score set', OFF.length, rows);
+  }
+  return {html:html, n:keys.length+OFF.length};
+}
+
+/* ---- 2 and 3. state cases and firms ---- */
+function idxRecords(list, q, sort, grp, kind){
+  var recs = list.filter(function(r){
+    if(!q) return true;
+    return (r.n+' '+r.c+' '+(r.rank||r.role||'')).toLowerCase().indexOf(q)>=0;
+  });
+  recs = recs.slice().sort(function(a,b){
+    if(sort==='az')      return a.n.localeCompare(b.n);
+    if(sort==='country') return a.c.localeCompare(b.c) || a.n.localeCompare(b.n);
+    if(sort==='year')    return (b.y||0)-(a.y||0) || a.n.localeCompare(b.n);
+    if(sort==='status')  return statusVal(b)-statusVal(a) || (b.y||0)-(a.y||0);
+    /* office reached, then how far the case got, then recency */
+    return (BK_ORDER[b.bk]||0)-(BK_ORDER[a.bk]||0) || statusVal(b)-statusVal(a) || (b.y||0)-(a.y||0);
+  });
+  var groups={}, order=[];
+  function bucket(r){
+    if(grp==='none')    return 'All';
+    if(grp==='status')  return STATUS_LABEL[statusOf(r)] || 'other';
+    if(grp==='country') return r.c;
+    return kind==='off' ? (BK_LABEL[r.bk]||'other') : ((SMAP[r.s]&&SMAP[r.s].label)||'other');
+  }
+  recs.forEach(function(r){
+    var g=bucket(r);
+    if(!groups[g]){ groups[g]=[]; order.push(g); }
+    groups[g].push(r);
+  });
+  if(grp==='bk')     order = CASE_BUCKETS.map(function(p){return p[1];}).filter(function(l){return groups[l];});
+  if(grp==='sector') order = SECTORS.map(function(s){return s.label;}).filter(function(l){return groups[l];});
+  if(grp==='status') order.sort(function(a,b){ return (STATUS_RANK[b]||0)-(STATUS_RANK[a]||0); });
+  if(grp==='country')order.sort();
+
+  var html='';
+  order.forEach(function(g){
+    var rows='';
+    groups[g].forEach(function(r){
+      var i=_idxRows.length; _idxRows.push({kind:kind, r:r});
+      var colour = kind==='off' ? (BUCKET_OF[r.bk]||'#f6288f')
+                                : ((SMAP[r.s]&&SMAP[r.s].accent)||'#f15622');
+      var sub = r.c + ' \u00b7 ' + (STATUS_LABEL[statusOf(r)]||statusOf(r)) +
+                (r.rank ? (' \u00b7 '+r.rank) : (r.role ? (' \u00b7 '+r.role) : ''));
+      rows += idxRow(i, colour, r.n, sub, r.y||'\u2014');
+    });
+    html += idxSection(g, groups[g].length, rows);
+  });
+  return {html:html, n:recs.length};
+}
+
+/* ---- 4. the group inventory ---- */
+function idxGroups(q, sort, grp){
+  var gs = GROUPS.filter(function(g){
+    if(!q) return true;
+    return (g.n+' '+g.c+' '+(g.geo||'')).toLowerCase().indexOf(q)>=0;
+  });
+  gs = gs.slice().sort(function(a,b){
+    if(sort==='az')      return a.n.localeCompare(b.n);
+    if(sort==='country') return a.c.localeCompare(b.c) || a.n.localeCompare(b.n);
+    if(sort==='noted')   return (typeof b.note==='number')-(typeof a.note==='number') ||
+                                hostVal(b.c)-hostVal(a.c) || a.n.localeCompare(b.n);
+    return hostVal(b.c)-hostVal(a.c) || a.n.localeCompare(b.n);
+  });
+  var groups={}, order=[];
+  gs.forEach(function(g){
+    var k = grp==='none' ? 'All'
+          : grp==='country' ? g.c
+          : ((GTMAP[g.ty]&&GTMAP[g.ty].label) || 'unclassified');
+    if(!groups[k]){ groups[k]=[]; order.push(k); }
+    groups[k].push(g);
+  });
+  if(grp==='ty')      order = GTYPES.map(function(t){return t.label;}).filter(function(l){return groups[l];})
+                                    .concat(groups['unclassified']?['unclassified']:[]);
+  if(grp==='country') order.sort();
+
+  var html='', drawn=0;
+  order.forEach(function(k){
+    var rows='', shown=0;
+    groups[k].forEach(function(g){
+      if(drawn>=IDX_MAX) return;
+      var i=_idxRows.length; _idxRows.push({kind:'grp', g:g});
+      var gt = GTMAP[g.ty];
+      var host = hostVal(g.c);
+      rows += idxRow(i, (gt&&gt.accent)||'#b3182f', g.n,
+                     g.c + (g.geo?(' \u00b7 '+g.geo):''),
+                     host>=0 ? host.toFixed(2) : '\u2014');
+      drawn++; shown++;
+    });
+    if(shown) html += idxSection(k, groups[k].length, rows);
+  });
+  if(drawn < gs.length){
+    html += '<div class="idx-more">'+(gs.length-drawn)+' more not drawn \u2014 filter to reach them. '+
+            'The figure is the exposure score of the jurisdiction the group sits in, not a measure of the group.</div>';
+  }
+  return {html:html, n:gs.length};
+}
+
+/* ---- opening a row ---- */
+function idxGoto(lat, lng, then){
+  var z = Math.max(map.getZoom(), 5);
+  map.once('moveend', function(){ then(); });
+  map.setView([lat,lng], z, {animate:true});
+}
+function flyTo(k){
+  activeIso=k;
+  focusCountry(k, function(){ openCountryPopup(k); });
+}
+document.getElementById('idxList').addEventListener('click', function(e){
+  var row = e.target.closest ? e.target.closest('.idx-row') : null;
+  if(!row) return;
+  var rec = _idxRows[parseInt(row.getAttribute('data-i'),10)];
+  if(!rec) return;
+  if(rec.kind==='jur')      flyTo(rec.k);
+  else if(rec.kind==='off-set') openOffset(rec.k, rec.lat, rec.lng);
+  else if(rec.kind==='off')  idxGoto(rec.r.lat, rec.r.lng, function(){ openCase(rec.r); });
+  else if(rec.kind==='firm') idxGoto(rec.r.lat, rec.r.lng, function(){ openEntity(rec.r); });
+  else if(rec.kind==='grp')  idxGoto(rec.g.lat, rec.g.lng, function(){ openGroup(rec.g); });
+});
+
+document.getElementById('idxMode').addEventListener('change', function(){
+  IDX_MODE = this.value; idxControls(); buildIndex();
+});
+/* The group list is 1,179 rows. Rebuilding it on every keystroke is visible, so the
+   filter box waits for a pause; the selects rebuild at once, since a click is a decision. */
+var _idxT=null;
+document.getElementById('idxSearch').addEventListener('input',function(){
+  clearTimeout(_idxT); _idxT=setTimeout(buildIndex, 130);
+});
+['idxSort','idxGroup'].forEach(function(id){
+  document.getElementById(id).addEventListener('change',buildIndex);
+});
+idxControls();
+
+
+/* ---- live wire ----------------------------------------------------------------
+   Same contract as the GMO map: a harvester runs on a schedule in a GitHub repo and
+   publishes wire.json next to this file; the page only reads it. In-browser RSS through
+   a public CORS proxy was the previous approach and it did not work — the proxies rate-
+   limit, Google News rejects some of them outright, and there is no way to geo-tag an
+   item client-side. Repo: WelcomeToYourGalaxy/capture-wire (see the harvester bundle).
+
+   Item contract, one object per story:
+     { title, link, date (ISO 8601), source, iso (ISO3), country, region, subs,
+       lang, sig (0-20), why (which gate path passed it), v (gate version), snippet }
+--------------------------------------------------------------------------------- */
+var WIRE_ARCHIVE_URL = 'wire.json';
+var WIRE_ARCHIVE_ALT = 'https://welcometoyourgalaxy.github.io/capture-wire/wire.json';
+var WIRE_LS = 'capture.wire.v1';
+var _wireAll=[], _wireIso='', _wireAge='', _wireLang='';
+
+/* A second net, applied in the page. The archive is produced by a harvester that can be
+   older than this file, and a stale or loosely-tuned wire.json used to put health-care
+   fraud indictments, routine seizures and a Miami Vice listing in a drug-underworld feed.
+
+   Items carrying v>=2 were written by the three-part gate in harvest_wire.py — illicit
+   economy, institutional actor, capture predicate — and are not second-guessed here, or
+   the page would silently drop the non-English items that gate is built to keep. Older
+   items still face the original anchor-plus-institution test. The veto list runs over
+   everything, whatever wrote it. */
+var W_ANCHOR = [
+ 'cartel','narco','traffick','cocaine','heroin','fentanyl','methamphetamine','captagon',
+ 'opium','opioid','precursor','money launder','launder','organised crime','organized crime',
+ 'mafia','kingpin','drug ring','drug network','drug gang','drug trade','drug lord','narcotic',
+ 'cártel','cartel de','narcotráfico','tráfico de drogas','blanqueo','lavado de dinero','cocaína',
+ 'trafic de drogue','blanchiment','stupéfiants','tráfico de droga','lavagem de dinheiro',
+ 'drogenhandel','drogenhändler','geldwäsche','kokain','traffico di droga','riciclaggio',
+ 'drugshandel','witwassen','наркотик','наркоторгов','отмывание','مخدرات','كبتاجون','تهريب',
+ 'uyuşturucu','kaçakçılık','narkoba','dawa za kulevya'
+];
+var W_INST = [
+ 'official','officer','police','customs','minister','mayor','governor','senator','congress',
+ 'judge','prosecutor','general','colonel','army','navy','border','bank','regulator','port',
+ 'airport','company','firm','executive','casino','exchange','indict','convict','sentenc',
+ 'plead','charged','arrest','extradit','sanction','fine','penalty','raid','seiz','forfeit',
+ 'bribe','briber','complicit','cartel','funcionario','policía','aduana','fiscal','juez',
+ 'ministro','banco','puerto','detenido','condenado','imputado','douane','procureur','juge',
+ 'ministre','banque','beamter','staatsanwalt','zoll','hafen','polizei','funzionario','procura',
+ 'dogana','porto','полиц','таможн','прокур','суд','ضابط','شرطة','جمارك','polis','gümrük',
+ 'savcı','banquier','mis en examen','gendarme','magistrat','entreprise','société','bancario',
+ 'empresa','aduanero','alfândega','delegado','beamten','unternehmen','bankier','ambtenaar',
+ 'haven','banca','impresa','poliziotto','банк','чиновник','مصرف','بنك','banka','memur',
+ 'pejabat','polisi','bea cukai'
+];
+var W_VETO = [
+ 'health care fraud','healthcare fraud','medicare','medicaid','excessive force','civil rights',
+ 'wire fraud scheme','ponzi','tax fraud','insider trading','identity theft','child support',
+ 'fda approves','clinical trial','drug shortage','drugmaker','pharma','prescription',
+ 'weight loss drug','opioid settlement','rehab centre','rehab center','addiction treatment',
+ 'corrupción en miami','miami vice','netflix','hbo','prime video','season','episode','trailer',
+ 'box office','biopic','streaming','starring','temporada','capítulo','estreno','película',
+ 'telenovela','episódio','saison','épisode','staffel','stagione','videojuego','video game',
+ 'leaving to join','joins as','appointed','named as','steps down','stepping down','sworn in',
+ 'nominated','obituary','transfer window','horoscope','recipe'
+];
+function _wireTopical(it){
+  var s=((it.title||'')+' '+(it.snippet||'')).toLowerCase();
+  for(var v=0;v<W_VETO.length;v++){ if(s.indexOf(W_VETO[v])>=0) return false; }
+  if((it.v||0)>=2) return true;              /* gated by the harvester already */
+  var a=false,i;
+  for(i=0;i<W_ANCHOR.length;i++){ if(s.indexOf(W_ANCHOR[i])>=0){ a=true; break; } }
+  if(!a) return false;
+  for(i=0;i<W_INST.length;i++){ if(s.indexOf(W_INST[i])>=0) return true; }
+  return false;
+}
+var LANGNAME={en:'English',es:'Spanish',fr:'French',pt:'Portuguese',de:'German',it:'Italian',
+              nl:'Dutch',ru:'Russian',ar:'Arabic',tr:'Turkish',id:'Indonesian',sw:'Swahili'};
+
+function _wireSave(items){ try{ localStorage.setItem(WIRE_LS, JSON.stringify(items.slice(0,600))); }catch(e){} }
+function _wireLoad(){ try{ var v=localStorage.getItem(WIRE_LS); return v?JSON.parse(v):[]; }catch(e){ return []; } }
+function _ts(it){ var d=Date.parse(it.date||''); return isFinite(d)?d:0; }
+function ago(ms){
+  if(!ms) return '';
+  var m=Math.max(0,(Date.now()-ms)/60000);
+  if(m<60) return Math.round(m)+'m ago';
+  if(m<1440) return Math.round(m/60)+'h ago';
+  return Math.round(m/1440)+'d ago';
+}
+function _ageOK(it){
+  if(!_wireAge) return true;
+  var t=_ts(it); if(!t) return true;
+  return (Date.now()-t) <= parseInt(_wireAge,10)*86400000;
+}
+function _wireOnTopic(){ return _wireAll.filter(_wireTopical); }
+function _wireFiltered(){
+  return _wireOnTopic().filter(function(it){
+    if(!_ageOK(it)) return false;
+    if(_wireIso && (it.iso||'')!==_wireIso) return false;
+    if(_wireLang && (it.lang||'en')!==_wireLang) return false;
+    return true;
+  });
+}
+function _fillSel(id, values, current, allLabel){
+  var s=document.getElementById(id); if(!s) return;
+  var opts='<option value="">'+allLabel+'</option>';
+  values.forEach(function(v){
+    opts+='<option value="'+v[0]+'"'+(current===v[0]?' selected':'')+'>'+v[1]+' ('+v[2]+')</option>';
+  });
+  s.innerHTML=opts;
+}
+function _wireBuildSelectors(){
+  var byI={}, byL={};
+  _wireOnTopic().filter(_ageOK).forEach(function(it){
+    if(it.iso){ byI[it.iso]=byI[it.iso]||{n:0,name:it.country||it.iso}; byI[it.iso].n++; }
+    var lg=it.lang||'en'; byL[lg]=(byL[lg]||0)+1;
+  });
+  /* One place filter. Region and jurisdiction were two menus over the same field, and
+     the region menu showed almost nothing because the harvester tags a continent only
+     when it has already resolved a country — so it was always the sparser of the two. */
+  /* alphabetical by displayed name, not by volume — a menu you scan should be sorted the
+     way you scan it */
+  _fillSel('wireIso', Object.keys(byI)
+           .sort(function(a,b){ return byI[a].name.localeCompare(byI[b].name); })
+           .map(function(k){ return [k, byI[k].name, byI[k].n]; }), _wireIso, 'All jurisdictions');
+  _fillSel('wireLang', Object.keys(byL)
+           .sort(function(a,b){ return (LANGNAME[a]||a).localeCompare(LANGNAME[b]||b); })
+           .map(function(k){ return [k, LANGNAME[k]||k, byL[k]]; }), _wireLang, 'All languages');
+}
+function _wireRender(){
+  var body=document.getElementById('wireList');
+  var items=_wireFiltered().sort(function(a,b){ return _ts(b)-_ts(a); });
+  document.getElementById('wireN').textContent=items.length;
+  if(!items.length){
+    body.innerHTML='<div class="wnote">Nothing in the archive for this filter. If the archive is '+
+      'large but this is empty, the harvester running in the repo is an older build — the page '+
+      'applies its own subject gate and will not render items that fail it.</div>'; return;
+  }
+  var h='';
+  items.slice(0,200).forEach(function(it){
+    var place=[it.subs,it.country].filter(Boolean).join(', ');
+    h+='<div class="wi"><a href="'+(it.link||'#')+'" target="_blank" rel="noopener">'+
+       String(it.title||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</a>'+
+       (it.snippet?('<div class="ws">'+String(it.snippet).replace(/&/g,'&amp;').replace(/</g,'&lt;').slice(0,190)+'</div>'):'')+
+       '<div class="wm"><b>'+(it.source||'source unknown')+'</b>'+
+       (place?(' &middot; '+place):'')+(_ts(it)?(' &middot; '+ago(_ts(it))):'')+
+       (typeof it.sig==='number'?(' &middot; sig '+it.sig):'')+
+       (it.why?(' &middot; '+String(it.why).replace(/</g,'&lt;')):'')+'</div></div>';
+  });
+  body.innerHTML=h;
+}
+async function loadWire(force){
+  var body=document.getElementById('wireList');
+  var st=document.getElementById('wireStat');
+  body.innerHTML='<div class="wnote">Reading the archive&hellip;</div>';
+  var got=null, from='';
+  for(var i=0;i<2;i++){
+    var url=(i===0?WIRE_ARCHIVE_URL:WIRE_ARCHIVE_ALT)+'?_='+Date.now();
+    try{
+      var ctl=('AbortController' in window)?new AbortController():null;
+      var to=setTimeout(function(){ if(ctl)ctl.abort(); }, 9000);
+      var r=await fetch(url, ctl?{signal:ctl.signal,cache:'no-store'}:{cache:'no-store'});
+      clearTimeout(to);
+      if(!r.ok) continue;
+      var j=await r.json();
+      var list=Array.isArray(j)?j:(j&&Array.isArray(j.items)?j.items:null);
+      if(list && list.length){ got=list; from=(i===0?'wire.json alongside this file':'capture-wire on GitHub Pages'); break; }
+    }catch(e){}
+  }
+  if(got){ _wireAll=got; _wireSave(got); }
+  else {
+    _wireAll=_wireLoad();
+    from=_wireAll.length?'last saved copy in this browser':'';
+  }
+  if(!_wireAll.length){
+    document.getElementById('wireN').textContent='0';
+    if(st) st.textContent='';
+    body.innerHTML='<div class="wnote">No archive reachable. This box reads <code>wire.json</code> '+
+      'published beside this file, or the same file on GitHub Pages. Until the harvester runs there is '+
+      'nothing to show &mdash; every other layer on this map is embedded and works offline.</div>';
+    return;
+  }
+  var kept=_wireOnTopic().length, drop=_wireAll.length-kept;
+  if(st) st.textContent=kept+' on topic \u00b7 '+from+(drop?(' \u00b7 '+drop+' filtered out'):'');
+  _wireBuildSelectors(); _wireRender();
+}
+['wireIso','wireAge','wireLang'].forEach(function(id){
+  var el=document.getElementById(id); if(!el) return;
+  el.addEventListener('click',function(e){ e.stopPropagation(); });
+  el.addEventListener('change',function(){
+    if(id==='wireIso')    _wireIso=el.value;
+    if(id==='wireLang')   _wireLang=el.value;
+    if(id==='wireAge'){ _wireAge=el.value; _wireBuildSelectors(); }
+    _wireRender();
+  });
+});
+document.getElementById('wireRefresh').onclick=function(e){ e.stopPropagation(); loadWire(true); };
+setTimeout(loadWire, 300);
+setInterval(loadWire, 15*60*1000);
+
+/* ---- methodology ---- */
+function renderMethod(){
+  var n=Object.keys(ROWS).length, sev=Object.keys(ROWS).filter(function(k){return ROWS[k].exp>=7.5;}).length;
+  var seaSev=Object.keys(ROWS).filter(function(k){return ROWS[k].sea>=7.5;}).length;
+  var h='';
+  h+='<div class="m-p">Five layers, different epistemic status. Keep them apart when citing. The index panel lists four of them separately &mdash; jurisdictions by the lens in force, state cases by the office the capture reached, firms by outcome, and the group inventory by the exposure of the jurisdiction each group sits in. Those orders are internal to each list: a conviction and a designation are different kinds of finding, and a group&rsquo;s position is the score of the country under it rather than a measure of the group.</div>';
+
+  h+='<div class="m-h">Layer 1 &mdash; exposure score, '+n+' countries</div>';
+  h+='<div class="m-p">Source: the Global Organized Crime Index 2025, published by the Global Initiative Against Transnational Organized Crime, covering 193 UN member states. Six indicators are transcribed from the public rankings tables at ocindex.net: <b>state-embedded actors</b>, and all four drug markets &mdash; <b>cocaine</b>, <b>synthetic drugs</b>, <b>heroin</b>, <b>cannabis</b> &mdash; plus overall <b>criminality</b> and <b>resilience</b> for context. All are 1&ndash;10, expert-assessed.</div>';
+  h+='<div class="m-p"><b>Drug-market intensity</b> = <code>max(cocaine, synthetic, heroin, cannabis)</code>. The peak rather than the mean, because a country sitting inside any one market at high intensity has a drug economy worth capturing an institution for; averaging Morocco\'s hashish economy against three near-zero markets would erase it.</div>';
+  h+='<div class="m-p"><b>Capture exposure</b> = <code>&radic;(state-embedded actors &times; drug-market intensity)</code>. A geometric mean, so a near-zero on either axis pulls the result down: capture by the drug underworld needs both a penetrable state and a drug economy large enough to pay for it. Severe state capture with no drug trade scores lower here by design. Bands: severe &ge;7.5, high &ge;6, moderate &ge;4.5, low &ge;3, minimal below.</div>';
+  h+='<div class="m-p">Result: <b>'+sev+' of '+n+'</b> countries at severe exposure, against <b>'+seaSev+'</b> at severe on state-embedded actors alone.</div>';
+  h+='<div class="m-p">The <b>Exposure (mean-based)</b> lens recomputes the composite against the average of the four markets instead of the peak. Where a country moves a long way between the two lenses, one market is doing the work.</div>';
+
+  h+='<div class="m-h">What the score is not</div>';
+  h+='<div class="m-warn">It is not a measurement of captured institutions. It is an estimate of conditions under which capture is likely, built from expert assessment. The composite is this map\'s construction &mdash; GI-TOC publishes the inputs, not this output, and should not be cited as the source of the exposure figure.</div>';
+  h+='<div class="m-p">The state-embedded actors indicator covers all organised crime, not drugs alone. Multiplying it by drug intensity is a proxy for the drug share, not a decomposition of it. A country can score high because its officials are captured by a non-drug economy that happens to coexist with a drug market.</div>';
+  h+='<div class="m-p"><b>No subnational series exists.</b> Capture is often provincial &mdash; a state police force, a port, a border district &mdash; and the Index is published per country. <b>Scores are expert assessment, not counted events</b>, so they carry the assessors\' information environment: a closed state with no press is scored on less.</div>';
+
+  h+='<div class="m-h">Layer 2 &mdash; documented state cases, '+CASES.length+' entries</div>';
+  h+='<div class="m-p">Convictions, indictments, settlements and formal investigations in which a specific <b>public</b> institution\'s capture was established or charged, each with a citation naming the court or authority. Sorted in the key by how high the capture reached: '+
+     CASE_BUCKETS.map(function(p){ return CASES.filter(function(c){return c.bk===p[0];}).length+' '+p[1].toLowerCase(); }).join(', ')+
+     '. A bought customs officer and a convicted head of state are both capture, and they are not the same finding.</div>';
+  h+='<div class="m-p">Each carries a status &mdash; <span class="st-convicted">convicted</span>, <span class="st-indicted">indicted</span>, <span class="st-settled">settled</span>, <span class="st-investigation">investigation</span>, <span class="st-alleged">alleged</span>. Status is not decoration: an indictment is an allegation, and several entries here have never been tried.</div>';
+
+  h+='<div class="m-h">Layer 3 &mdash; private-sector entities, '+ENTITIES.length+' across '+SECTORS.length+' sectors</div>';
+  h+='<div class="m-p">The same bar, applied to firms: a named institution and a named forum. Banks and money transmission, crypto rails, shipping and ports, chemicals and precursors, pharmaceutical supply, casinos and junkets, professional gatekeepers, encrypted communications, and gold, commodities and agribusiness.</div>';
+  h+='<div class="m-p">Three things this layer is careful about. <b>An acquittal is an entry</b> &mdash; Mossack Fonseca\'s founders were acquitted in Panama in 2024 and the card says so. <b>Regulatory settlement is not a finding of criminal intent</b>: most bank entries are deferred prosecutions or civil penalties in which the institution admitted control failures rather than participation, and the cards say which. <b>Diversion is not capture</b> &mdash; the pharmaceutical entries are licit product leaving a licensed chain, included because the harm arrives through the same doors and labelled so they are not counted as the same thing.</div>';
+  h+='<div class="m-warn">Selection bias runs harder here than anywhere else on the map. Enforcement against firms concentrates in the United States, the EU and Australia, because those are the jurisdictions with the statutes, the extraterritorial reach and the appetite. The map will therefore show clusters of firms in low-exposure countries and almost none in high-exposure ones. That pattern is about who prosecutes, not about where the money moves.</div>';
+  h+='<div class="m-p">Neither documented layer is a register. Both are samples, and neither claims to be exhaustive.</div>';
+
+  h+='<div class="m-h">Country writeups</div>';
+  h+='<div class="m-p">Every one of the '+Object.keys(ROWS).length+' scored countries carries a writeup, and '+(Object.keys(CNOTES).length-Object.keys(ROWS).length)+' unscored jurisdictions carry one too. Each states what has been established in a named forum &mdash; a court, a commission of inquiry, a sanctions designation, a regulator\'s finding &mdash; and says which kind it is, because a conviction and an executive designation are not the same claim. Where nothing has been established, the writeup says so and describes the country\'s structural position instead. It does not fill the gap with inference.</div>';
+  h+='<div class="m-p">Two things follow. A thin entry usually measures a small prosecuting apparatus rather than a clean country. And a country cannot reach a high exposure score on state weakness alone: Equatorial Guinea sits at 9.00 on state-embedded actors and 5.61 on exposure, South Sudan at 9.00 and 5.20.</div>';
+  h+='<div class="m-p">Where a writeup describes gold, oil, timber or minerals, that material is not counted in any score here and is not standing in for narcotics. It is evidence about the capture half of the composite only &mdash; how far a state can be bought. The drug half still has to be there on its own.</div>';
+
+  h+='<div class="m-h">Layer 4 &mdash; group inventory, '+GROUPS.length+' entries</div>';
+  h+='<div class="m-p">Named organised-crime groups, cells and factions plotted at their stated locations. This layer sits <b>deliberately outside the evidentiary scheme</b>: no forum, no citation, no status per entry. It orients the reader on where groups are said to operate; it is not evidence and it feeds no score. Every marker has been placed by hand and every popup states what its point is.</div>';
+  h+='<div class="m-warn">An organisation is not a point. A cartel with presence across a state has no coordinate, and inventing a street address for one would read as knowledge rather than the guess it is. Where an entry names a whole state it sits at that state\'s centroid; where it names a national organisation with no single seat it stays at settlement level.</div>';
+  h+='<div class="m-p"><b>'+NOTED+' of the '+GROUPS.length+' carry a researched writeup</b>, which opens with the marker. Those entries name what is established and by whom, and say where a claim is contested. The remaining '+(GROUPS.length-NOTED)+' are unannotated and stay orientation only.</div>';
+
+  h+='<div class="m-h">Layer 5 &mdash; trafficking corridors, '+ROUTES.length+' drawn</div>';
+  h+='<div class="m-p">Corridors carry no score and no status. Each carries a writeup naming what moves along it and the evidence base for the volume estimate. The China White entry carries an explicit caution that much of its literature is Cold War-era and has not been re-verified against current seizure data.</div>';
+  h+='<div class="m-p"><b>Line shape.</b> Each corridor is resampled along the great circle between its waypoints and cut where it crosses 180&deg;, because a straight stroke in Web Mercator is not the path between two points. What this does <b>not</b> do is route the line: no public dataset of surveyed trafficking tracks exists, so nothing snaps a maritime leg to a shipping lane or a land leg to a road.</div>';
+  h+='<div class="m-p"><b>Overlap is kept.</b> Separate corridors sharing the same water are not merged &mdash; each names a different cargo, a different set of operators or a different segment. Corridor count is therefore not a measure of distinct geography and should not be read as one.</div>';
+  h+='<div class="m-warn">'+QUARANTINE.length+' supplied routes are <b>not drawn</b>. Their coordinates were runs of the group-marker list rather than paths, or a single point that cannot describe a line. Drawn corridors that were redrawn from named crossing points say so on their own popup: that line is this map\'s, not the source\'s.</div>';
+
+  h+='<div class="m-h">The live wire</div>';
+  h+='<div class="m-p">Headlines are unverified leads. Nothing in the wire enters the score, the case layer or the entity layer &mdash; if something there matters, it has to earn a citation and a forum first. It is the only part of this file that needs the internet at read time.</div>';
+
+  h+='<div class="m-h">Why there is no percentage</div>';
+  h+='<div class="m-warn">UNODC\'s estimate is that much less than 1% &mdash; around 0.2% &mdash; of laundered criminal proceeds are seized, against roughly $1.6 trillion laundered in the reference year, with drugs about half of transnational organised crime proceeds. Detection at that rate makes the documented set a small, non-random sample, biased toward jurisdictions with independent prosecutors, which are the jurisdictions where capture is shallowest. Any percentage of "captured institutions" would be a percentage of what got caught.</div>';
+  h+='<div class="m-p">The second obstacle is definitional. Outright capture (a security ministry run for a cartel), individual compromise (bought officers inside a working institution), and negligent servicing (a bank whose controls fail) have different base rates and are not summable. This map separates them by <b>rank</b> &mdash; how high inside the institution the capture reached &mdash; rather than averaging them.</div>';
+
+  h+='<div class="m-h">Checking the record</div>';
+  h+='<div class="m-p"><b>Convicted, acquitted, settled</b>: a court or regulator reached an outcome. <b>Indicted</b>: charges filed, nothing tested. <b>Designated</b>: an executive finding by a treasury or a foreign ministry, made without a hearing and rarely subject to one &mdash; there is no verdict to lose and no acquittal available. <b>Investigation, inquiry, alleged</b>: an open file or a documented pattern with no charge.</div>';
+  h+='<div class="m-p">The distinction is not academic. This map holds designations built around principals who remain fugitives; one that national media reported as a clearance the designating treasury said had never happened; and one that a national police force says forced its own raid early and let the principal escape. It also holds a man sentenced to life and later to death in absentia by the same court that gave him four months once he stood in front of it. Read the status before reading the marker.</div>';
+
+  h+='<div class="m-h">Sources</div>';
+  h+='<div class="m-p">Scores: ocindex.net rankings tables, 2025 edition, one per indicator. Geometry: world-atlas 50m via jsDelivr, joined by country name through an alias table. Case citations resolve to court records and agency releases; where a stable public URL was verified it is linked, and where it was not, the citation is given without a link rather than a guessed one.</div>';
+  h+='<div class="m-p ci-c">Last built from Index data published November 2025.</div>';
+  document.getElementById('methodBody').innerHTML=h;
+}
+
+
+/* One handler for every panel, the whole header bar as the hit target. This block was
+   lost in an earlier edit to the key module, which is why no box would collapse. */
+document.querySelectorAll('.bx-head').forEach(function(hd){
+  hd.addEventListener('click',function(ev){
+    if(ev.target && ev.target.id==='wireRefresh') return;
+    var box=hd.parentNode, c=box.classList.toggle('collapsed');
+    var t=hd.querySelector('.bx-tog'); if(t) t.innerHTML=c?'+':'\u2212';
+    fitPanels();          /* the boxes below take the space this one just gave up */
+  });
+});
+/* ---- column fitting -----------------------------------------------------------
+   The two side columns are flex stacks, and each panel body carried a fixed cap in vh:
+   the rundown 38, the wire 32, the key 54, the index 36. Those caps are what made a
+   collapse look wrong. The boxes underneath moved up, because that is what a flex column
+   does, but they kept the height their cap gave them, so the space the collapsed box gave
+   up appeared as a gap at the bottom of the column instead of going to anyone.
+
+   The caps are replaced by a measurement. Each open panel asks for the height its content
+   actually wants; the column shares out what it has by filling the smallest request
+   first, so a short panel is never stretched past its content and the surplus goes to the
+   panels that can use it. Collapse a box and the rest grow into it; open it again and
+   they give the space back.
+
+   The split is done in one pure function so it can be tested without a browser. */
+
+/* Water-filling. Returns one allowance per request, summing to at most `avail`:
+   every panel gets what it asks for if everything fits, and otherwise the smallest
+   requests are satisfied first and the remainder is split evenly among the rest. */
+function _fitShare(avail, needs, floor){
+  floor = floor || 0;
+  var out = needs.slice(), left = avail, open = [];
+  needs.forEach(function(n,i){ if(n>0) open.push(i); else out[i]=0; });
+  if(!open.length) return out;
+  open.forEach(function(i){ out[i] = 0; });
+  var pool = open.slice();
+  while(pool.length){
+    var share = left / pool.length, done = false;
+    for(var j=0;j<pool.length;j++){
+      var i = pool[j];
+      if(needs[i] <= share){                 /* asks for less than its share: give it all */
+        out[i] = needs[i]; left -= needs[i];
+        pool.splice(j,1); done = true; break;
+      }
+    }
+    if(done) continue;
+    pool.forEach(function(i){ out[i] = Math.max(floor, left/pool.length); });
+    break;
+  }
+  return out;
+}
+
+/* The height a body would take with nothing clipped. A body can hold its own scroller —
+   #idxList is one — and that child's overflow has to be counted or the panel understates
+   what it wants and never grows. */
+function _naturalHeight(body){
+  var h = body.scrollHeight;
+  /* Only the first two levels are inspected. The index list holds over a thousand rows,
+     and reading a computed style for every one of them on each refit was slower than the
+     layout it was measuring; the scrollers that matter are always shallow. */
+  var lvl1 = [].slice.call(body.children);
+  var scan = lvl1.concat.apply(lvl1, lvl1.map(function(c){ return [].slice.call(c.children); }));
+  scan.forEach(function(el){
+    var ov = getComputedStyle(el).overflowY;
+    if((ov==='auto'||ov==='scroll') && el.scrollHeight > el.clientHeight)
+      h += el.scrollHeight - el.clientHeight;
+  });
+  return h;
+}
+
+var FIT_COLS = ['sidebar','rightbar'], FIT_MIN = 92;
+
+function fitColumn(col){
+  if(!col || !col.offsetParent && col.offsetHeight===0) return;
+  var panels = [].slice.call(col.children).filter(function(p){
+    return p.offsetParent !== null || p.offsetHeight > 0;
+  });
+  if(!panels.length) return;
+
+  var top = col.getBoundingClientRect().top;
+  var gap = parseFloat(getComputedStyle(col).rowGap || getComputedStyle(col).gap) || 9;
+  var avail = window.innerHeight - top - 16 - gap*(panels.length-1);
+
+  var bodies = [], heads = 0, needs = [];
+  panels.forEach(function(p){
+    var head = p.querySelector('.bx-head');
+    var body = p.querySelector('.bx-body');
+    heads += head ? head.offsetHeight : 0;
+    if(body) body.style.removeProperty('max-height');   /* measure unclipped, and never
+                                                          leave a collapsed box holding a
+                                                          cap it would reopen into */
+    if(!body || p.classList.contains('collapsed')){ bodies.push(null); needs.push(0); return; }
+    bodies.push(body);
+    needs.push(_naturalHeight(body));
+  });
+  var room = Math.max(0, avail - heads);
+  var give = _fitShare(room, needs, FIT_MIN);
+  bodies.forEach(function(b,i){
+    if(!b) return;
+    b.style.setProperty('max-height', Math.round(give[i])+'px', 'important');
+  });
+}
+
+var _fitT = null;
+function fitPanels(){
+  clearTimeout(_fitT);
+  _fitT = setTimeout(function(){
+    FIT_COLS.forEach(function(id){ fitColumn(document.getElementById(id)); });
+  }, 16);
+}
+
+/* Anything that changes what a panel holds changes what it wants, so the fit runs on
+   content as well as on collapse: the wire arriving, the index rebuilding, the key being
+   drawn, a group being folded open. One observer per column covers all of it. */
+(function(){
+  window.addEventListener('resize', fitPanels);
+  FIT_COLS.forEach(function(id){
+    var col = document.getElementById(id); if(!col) return;
+    col.addEventListener('click', fitPanels);          /* collapse, folds, list toggles */
+    if(window.MutationObserver){
+      new MutationObserver(fitPanels).observe(col, {childList:true, subtree:true});
+    }
+  });
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(fitPanels);
+  window.addEventListener('load', fitPanels);
+  fitPanels();
+})();
+
+(function(){
+  var h=document.getElementById('methodSubHead'), mb=document.getElementById('methodBody');
+  if(!h||!mb) return;
+  h.onclick=function(){ var o=mb.classList.toggle('open');
+    var t=h.querySelector('.sub-tog'); if(t) t.innerHTML=o?'\u2212':'+'; };
+})();
+
+[['key',renderKeys],['firms',drawEntities]].forEach(function(step){
+  try{ step[1](); }catch(err){ console.error('[capture] '+step[0]+' failed:',err); }
+});
+/* 850 group marks and ~7,700 corridor vertices are the two heaviest layers. Drawing them
+   in the same frame as everything else delayed first paint by seconds; deferring them
+   puts the map on screen immediately and fills them in a moment later. */
+var _idle = window.requestIdleCallback || function(f){ return setTimeout(f, 120); };
+_idle(function(){
+  [['groups',drawGroups],['corridors',drawRoutes]].forEach(function(step){
+    try{ step[1](); }catch(err){ console.error('[capture] '+step[0]+' failed:',err); }
+  });
+});
+</script>
+</body>
+</html>
