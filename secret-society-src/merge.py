@@ -31,8 +31,6 @@ ARCH_LINKS = [
     (r'Morgan affair|Anti-Masonic', r'Anti-Masonic Party'),
     (r'Bilderberg', r'Bilderberg Group . Coordinated'),
     (r'Council on Foreign Relations', r'Council on Foreign Relations . Submergence'),
-    (r'Gülen|Gulen|FETÖ', r'Turkey . Erdogan Wiretapping|FETÖ'),
-    (r'Opus Dei', r'Opus Dei Supernumerary Control|Opus Dei . Documented Systematic'),
     (r'Vatican Bank|\bIOR\b|Marcinkus|Sindona', r'Vatican Bank Scandal: IOR'),
 ]
 
