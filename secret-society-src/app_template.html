@@ -15,7 +15,7 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:14px/1
 #map{position:absolute;inset:0;background:#03040a}
 .card{position:absolute;z-index:800;background:var(--card);border:1px solid var(--line);border-radius:6px;box-shadow:0 10px 30px rgba(0,0,0,.5);backdrop-filter:blur(6px)}
 .scroll{scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.18) transparent}
-#key{top:12px;left:12px;width:346px;max-height:calc(100% - 34px);overflow:auto;padding:14px 16px;box-sizing:border-box}
+#key{top:12px;left:12px;width:346px;max-height:calc(100% - var(--patH,300px) - 46px);overflow:auto;padding:14px 16px;box-sizing:border-box}
 #key h1{font:800 22px/1.2 'Uncial Antiqua','Marcellus','Georgia',serif;margin:0 0 4px;letter-spacing:.5px;color:#f0ece4;text-shadow:0 2px 12px rgba(0,0,0,.5)}
 #key .lede{color:var(--mute);margin:0 0 4px;font-size:12.8px}
 #key .lede2{color:var(--mute);margin:0 0 10px;font-size:11.5px}
@@ -69,7 +69,7 @@ button.btn:hover,#infoBtn:hover,#worldBtn:hover{border-color:var(--accent-hi);co
 .fi:hover{background:rgba(255,255,255,.05)}
 .fi .n{display:block}
 /* right column */
-#rcol{position:absolute;z-index:800;top:12px;right:12px;bottom:46px;width:360px;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+#rcol{position:absolute;z-index:800;top:12px;right:12px;bottom:calc(var(--legH,200px) + 46px);width:340px;display:flex;flex-direction:column;gap:8px;pointer-events:none}
 #rcol>*{pointer-events:auto;position:relative;box-sizing:border-box}
 #infoBtn{position:relative;align-self:flex-end;padding:7px 14px;cursor:pointer;letter-spacing:.2px}
 #tr{padding:12px 14px;flex:none}
@@ -86,8 +86,10 @@ button.btn:hover,#infoBtn:hover,#worldBtn:hover{border-color:var(--accent-hi);co
 .wi{padding:6px 0;border-top:1px solid var(--line2);font-size:12.3px;line-height:1.38}
 .wi a{color:#e8e4dc;text-decoration:none}.wi a:hover{text-decoration:underline;color:#fff}
 .wi .wm{font-size:10.6px;color:var(--mute);margin-top:2px}
-#det{display:none;flex:0 1 auto;min-height:0;overflow:auto;padding:13px 15px}
+#det{display:none;position:fixed;z-index:950;left:50%;top:50%;transform:translate(-50%,-50%);width:min(640px,calc(100% - 40px));max-height:min(80vh,820px);overflow:auto;padding:18px 22px 20px;box-sizing:border-box;box-shadow:0 24px 70px rgba(0,0,0,.75)}
 #det.open{display:block}
+#det .hp-desc,#det .bts p{font-size:14px}
+#det h3{font-size:20px}
 #detX{position:absolute;top:6px;right:8px;background:none;border:0;color:#bbb;font-size:20px;cursor:pointer;line-height:1}
 #detX:hover{color:#fff}
 /* card contents */
@@ -129,7 +131,6 @@ button.btn:hover,#infoBtn:hover,#worldBtn:hover{border-color:var(--accent-hi);co
 .imp-box{margin:10px 0;padding:9px 11px;background:rgba(255,255,255,.045);border-left:3px solid var(--accent-hi);border-radius:0 5px 5px 0;font-size:13px;color:#e8e4ec;line-height:1.55}
 #ttip{position:fixed;z-index:2000;pointer-events:none;background:rgba(12,13,20,.97);border:1px solid var(--line);border-radius:3px;padding:4px 8px;font-size:12.5px;display:none;max-width:320px;box-shadow:0 6px 18px rgba(0,0,0,.5)}
 #worldBtn{position:absolute;z-index:800;right:52px;bottom:34px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:6px 11px;font:13px 'Marcellus','Georgia',serif;cursor:pointer}
-body.detopen #worldBtn{right:382px}
 #info{inset:0;z-index:1001;border-radius:0;border:0;display:none;overflow:auto;padding:60px max(28px,calc((100% - 1000px)/2)) 40px;background:rgba(5,6,16,.975)}
 #info.open{display:block}
 #infoClose{position:fixed;top:12px;right:12px;z-index:1002;display:none}
@@ -147,15 +148,39 @@ body.detopen #worldBtn{right:382px}
 .maplibregl-ctrl-group button+button{border-top:1px solid var(--line)!important}
 .maplibregl-ctrl-group button .maplibregl-ctrl-icon{filter:invert(1)}
 .maplibregl-ctrl-bottom-right{bottom:24px}
-body.detopen .maplibregl-ctrl-bottom-right{right:370px}
 @media (max-width:820px){
   #key{width:auto;right:12px;max-height:42%}
   #rcol{top:auto;bottom:34px;left:12px;right:12px;width:auto;max-height:46%}
   #infoBtn{align-self:flex-start}
-  body.detopen #worldBtn{right:52px}
-  body.detopen .maplibregl-ctrl-bottom-right{right:0}
   #info{padding:56px 16px 80px}
 }
+
+.btnrow{display:flex;gap:6px;align-self:flex-end}
+.btnrow .card{position:relative;padding:7px 14px;cursor:pointer;letter-spacing:.2px}
+.btnrow .card:hover{border-color:var(--accent-hi);color:#fff}
+#patBox{left:12px;bottom:34px;width:346px;max-height:40%;display:flex;flex-direction:column;padding:12px 14px;box-sizing:border-box}
+#patBox .bh{display:flex;justify-content:space-between;align-items:center}
+#patBox .psec{margin:0}
+#patBody{overflow:auto;min-height:0;margin-top:6px}
+#patBox.min #patBody{display:none}
+#legBox{right:12px;bottom:34px;width:340px;max-height:46%;display:flex;flex-direction:column;justify-content:flex-end;padding:10px 14px 12px;box-sizing:border-box}
+#legBody{overflow:auto;min-height:0}
+#legBox.min #legBody{display:none}
+#legBox .bh{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+#legBox .psec{margin:0}
+.up{border-left:1px solid var(--line2);margin-left:6px;padding-left:4px}
+.presets{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0}
+.presets .btn{font-size:11.8px;padding:2px 8px}
+#story{inset:0;z-index:1001;border-radius:0;border:0;display:none;overflow:auto;padding:60px max(28px,calc((100% - 760px)/2)) 50px;background:rgba(5,6,16,.975)}
+#story.open{display:block}
+#story p{font-size:15.5px;line-height:1.75;color:#e4e0e8;margin:0 0 16px}
+#story h2{font:400 22px/1.3 'Uncial Antiqua','Marcellus','Georgia',serif;margin:0 0 18px;color:#f0ece4}
+#story h3{font:400 15px/1.3 'Uncial Antiqua','Marcellus','Georgia',serif;margin:26px 0 10px;color:var(--accent-hi);letter-spacing:.3px}
+#storyClose{position:fixed;top:12px;right:12px;z-index:1002;display:none}
+#story.open+#storyClose{display:block}
+.maplibregl-ctrl-bottom-right{right:362px!important;bottom:30px!important}
+#worldBtn{right:410px!important;bottom:34px!important}
+@media (max-width:820px){#patBox,#legBox{position:absolute;width:auto;left:12px;right:12px;max-height:30%}#legBox{bottom:auto;top:46%}.maplibregl-ctrl-bottom-right{right:0!important}#worldBtn{right:52px!important}}
 </style>
 </head>
 <body>
@@ -170,11 +195,15 @@ body.detopen .maplibregl-ctrl-bottom-right{right:370px}
 </div>
 
 <div id="rcol">
-  <div id="infoBtn" class="card" role="button" tabindex="0">About and sources</div>
+  <div class="btnrow"><div id="storyBtn" class="card" role="button" tabindex="0">About this map</div><div id="infoBtn" class="card" role="button" tabindex="0">Method and sources</div></div>
   <div id="tr" class="card"><button id="toggleTr" class="tog" type="button" title="Pull the basemap box up or down">−</button><div class="body" id="trBody"></div></div>
   <div id="wire" class="card min"><div class="wh"><span class="psec" style="margin:0">Live wire <span class="n" id="wireN"></span></span><span class="n" id="wireTog">open +</span></div><div id="wireBody" class="scroll"></div></div>
-  <div id="det" class="card scroll hp"><button id="detX" type="button" title="Close">×</button><div id="detBody"></div></div>
 </div>
+<div id="det" class="card scroll hp"><button id="detX" type="button" title="Close">×</button><div id="detBody"></div></div>
+<div id="patBox" class="card"><div class="bh"><span class="psec">Patterns behind the scenes</span><button id="togglePat" class="tog" type="button">−</button></div><div id="patBody" class="scroll"></div></div>
+<div id="legBox" class="card"><div class="bh"><span class="psec">On the map</span><button id="toggleLeg" class="tog" type="button">−</button></div><div id="legBody" class="scroll"></div></div>
+<div id="story" class="card scroll"></div>
+<button id="storyClose" class="btn" type="button">Close</button>
 
 <button id="worldBtn" type="button" title="Zoom back out to the whole world">Whole world</button>
 <div id="info" class="card scroll"></div>
@@ -205,23 +234,23 @@ const STATUS = { convicted: "Convicted", inquiry: "Inquiry finding", acknowledge
 // office buckets (6) · organisation types (8) · severity ramp, worst first (5) · pattern roles (8) · line
 const PAL = {
   night:     { b: ["#c97f9c", "#a18bd4", "#7fa0d8", "#6db3b5", "#a3b48a", "#c79c92"],
-               t: { lodge: "#bf8fae", order: "#a294d6", forum: "#7fa7d8", covert: "#6cb5ae", statenet: "#c98f9a", lawnet: "#aaa7bd", intl: "#b9a596", ngo: "#97b096" },
+               t: { lodge: "#bf8fae", order: "#a294d6", forum: "#7fa7d8", covert: "#6cb5ae", statenet: "#c98f9a", lawnet: "#aaa7bd", intl: "#b9a596", ngo: "#97b096", biz: "#a3abc4" },
                r: ["#b14a76", "#8a56a6", "#5d61b0", "#3f6a96", "#3a4f6e"], p: ["#c45f86", "#7f8fd8", "#9f7fd0", "#5fb0ac", "#c09186", "#9fb488", "#b2a6c6", "#7ea6c4"], ln: "#e8dcf0",
                ui: ["#5a4a9c", "#b3a8e0", "#06071a"] },
   outlines:  { b: ["#c4839c", "#9f92d6", "#86a6d6", "#6eaeb4", "#a2ae8f", "#c39d98"],
-               t: { lodge: "#b98fab", order: "#9b93d0", forum: "#7ea2cf", covert: "#6aaaa6", statenet: "#c08f98", lawnet: "#a3a7b8", intl: "#b1a196", ngo: "#93a994" },
+               t: { lodge: "#b98fab", order: "#9b93d0", forum: "#7ea2cf", covert: "#6aaaa6", statenet: "#c08f98", lawnet: "#a3a7b8", intl: "#b1a196", ngo: "#93a994", biz: "#9ea6be" },
                r: ["#a84a70", "#7f5aa0", "#56659f", "#3e6688", "#34495c"], p: ["#c0648a", "#7f94d2", "#9a84cc", "#5ea8a8", "#bb9289", "#9cae8a", "#aaa2c0", "#7aa2bf"], ln: "#e2e6f0",
                ui: ["#38586b", "#a9c2d6", "#0b1017"] },
   satellite: { b: ["#b46a7e", "#8e80c0", "#6f92bf", "#5aa29a", "#9aa478", "#b48a80"],
-               t: { lodge: "#a87894", order: "#8a7fbf", forum: "#6c92bf", covert: "#579f97", statenet: "#ad7480", lawnet: "#9497a6", intl: "#a8907f", ngo: "#88a083" },
+               t: { lodge: "#a87894", order: "#8a7fbf", forum: "#6c92bf", covert: "#579f97", statenet: "#ad7480", lawnet: "#9497a6", intl: "#a8907f", ngo: "#88a083", biz: "#8f95a8" },
                r: ["#8e3a52", "#74487a", "#4c5c8e", "#3c6a76", "#56685e"], p: ["#b0556f", "#6f86c4", "#8a74c0", "#4f9c94", "#ad8274", "#8fa076", "#a096b6", "#6c94b4"], ln: "#f2ece6",
                ui: ["#3f6e69", "#9fc9c1", "#0b1017"] },
   atlas:     { b: ["#7a2f45", "#4f3f80", "#2f5a80", "#2f6a62", "#55603a", "#7a4a40"],
-               t: { lodge: "#6e3355", order: "#4e3f7c", forum: "#2f557c", covert: "#2a625b", statenet: "#7a3440", lawnet: "#4a5262", intl: "#6a4a3e", ngo: "#45603e" },
+               t: { lodge: "#6e3355", order: "#4e3f7c", forum: "#2f557c", covert: "#2a625b", statenet: "#7a3440", lawnet: "#4a5262", intl: "#6a4a3e", ngo: "#45603e", biz: "#3f4658" },
                r: ["#6e1f35", "#5e2f5c", "#3f3f72", "#30566a", "#4a5c55"], p: ["#7a2f45", "#2f5a80", "#4f3f80", "#2f6a62", "#7a4a40", "#55603a", "#5a4a6a", "#35607a"], ln: "#2a1c24",
                ui: ["#4b6075", "#b9c8d8", "#0b1017"] },
   hell:      { b: ["#d88f9c", "#b59cd8", "#9caad8", "#8fbfbc", "#bdb89c", "#d8a89e"],
-               t: { lodge: "#d39ab3", order: "#b5a2dc", forum: "#9cb0dc", covert: "#8cc0ba", statenet: "#dc9aa2", lawnet: "#bdb7c8", intl: "#cdb6a6", ngo: "#a9c0a3" },
+               t: { lodge: "#d39ab3", order: "#b5a2dc", forum: "#9cb0dc", covert: "#8cc0ba", statenet: "#dc9aa2", lawnet: "#bdb7c8", intl: "#cdb6a6", ngo: "#a9c0a3", biz: "#c2bccf" },
                r: ["#b23a4c", "#8e3a66", "#663f7c", "#4f4064", "#40384a"], p: ["#d07a8c", "#8ea0dc", "#ae8cd6", "#7cbcb6", "#d0a092", "#aec09a", "#c0b4d4", "#94b4d0"], ln: "#f4e2e6",
                ui: ["#82303a", "#e0a3a5", "#1e080b"] },
 };
@@ -229,7 +258,7 @@ let P = PAL.night;
 
 /* ---------- state ---------- */
 const YR = CASES.reduce((a, c) => c.y ? [Math.min(a[0], c.y), Math.max(a[1], c.y)] : a, [9999, 0]);
-const S = { lens: "exp", bandOn: [1, 1, 1, 1, 1], pat: null, y0: YR[0], y1: YR[1], cases: true, bk: {}, orgs: true, ty: {}, br: true, brEst: true, routes: true,
+const S = { lens: "exp", bandOn: [1, 1, 1, 1, 1], pat: null, y0: 2010, y1: 2026, cases: true, bk: {}, orgs: true, ty: {}, br: true, brEst: true, routes: true,
             open: { cases: false, orgs: false, br: false }, sel: null, q: "" };
 BUCKETS.forEach((b) => { S.bk[b[0]] = true; }); TYPES.forEach((t) => { S.ty[t.k] = true; });
 
@@ -408,62 +437,78 @@ function decadeChart() {
   });
   return s + '</svg>';
 }
+const ERAS = [["now", "Today", 2010, 2026], ["cold", "Cold War", 1945, 1991], ["early", "Before 1945", 1800, 1944], ["all", "All years", 0, 9999]];
 function buildKey() {
   const est = Object.keys(ROWS).filter((k) => ROWS[k].est).length, nk = Object.keys(ROWS).length;
-  $("#lede2").textContent = CASES.length + " documented cases · " + ORGS.length + " organisations · " + PATS.length + " patterns · " + nk + " countries scored";
+  $("#lede2").textContent = CASES.length + " documented cases · " + ORGS.length + " organisations · " + PATS.length + " patterns · " + nk + " countries";
   const counts = [0, 0, 0, 0, 0]; Object.keys(ROWS).forEach((k) => counts[bandOf(lensVal(ROWS[k]))]++);
   let h = '';
-  // patterns first: they are the reason to open the map
-  h += '<div class="psec">Patterns behind the scenes</div><div class="desc">The cases are not isolated. These arrangements recur across them: the same people, banks, lodges and services in different countries and decades. Choose one to colour the map by the role each country plays in it.</div>';
-  h += PATS.map((p, i) => '<div class="pat' + (S.pat === p.id ? " on" : "") + '" data-pat="' + p.id + '" style="--pc:' + P.p[i % P.p.length] + '"><div class="pt">' + esc(p.title) + '</div><div class="pm">' + Object.keys(p.cmap).length + ' countries · ' + p.ncases + ' cases · ' + p.span[0] + '–' + p.span[1] + '</div></div>').join("");
-  if (S.pat) {
-    const p = PAT_BY[S.pat];
-    h += '<div class="leg">' + p.roles.map((r, i) => { const n = Object.values(p.cmap).filter((v) => v === i).length; return n ? '<div class="li"><span class="sw" style="background:' + P.p[i % P.p.length] + '"></span>' + esc(r) + '<span class="n">' + n + '</span></div>' : ""; }).join("") + '</div>' +
-         '<button class="btn" type="button" id="patClear">Clear the pattern</button>';
-  }
   // shading
   h += '<div class="psec">Shade the countries by</div><select id="lens"' + (S.pat ? ' disabled' : '') + '>' + LENSES.map((l) => '<option value="' + l.k + '"' + (S.lens === l.k ? " selected" : "") + '>' + esc(l.label) + '</option>').join("") + '<option value="none"' + (S.lens === "none" ? " selected" : "") + '>No shading</option></select>';
   const L_ = LENSES.find((l) => l.k === S.lens);
   if (L_ && !S.pat) h += '<div class="desc">' + esc(L_.desc) + '</div><div class="leg">' + BANDS.map((b, i) => '<div class="li' + (S.bandOn[i] ? "" : " off") + '" data-band="' + i + '"><span class="sw" style="background:' + P.r[i] + '"></span>' + b[0] + '<span class="n">' + counts[i] + '</span></div>').join("") + '</div>' +
-       '<div class="desc">' + est + ' of ' + nk + ' countries have no documented case; their shade is a best-judgement estimate from organisational presence and conditions, and their boxes say so.</div>';
-  if (S.pat) h += '<div class="desc">Off while a pattern is open.</div>';
-  // time
-  h += '<div class="psec">Time</div><div id="tchart">' + decadeChart() + '</div>' +
-       '<div class="tline">From <input class="inp" id="y0" value="' + S.y0 + '"> to <input class="inp" id="y1" value="' + S.y1 + '"><span class="rst" id="yAll">All years</span></div>' +
-       '<div class="desc">Cases per decade. Click a bar to keep one decade' + (S.pat ? '; the pale part is the open pattern' : '') + '. ' + CASES.filter((c) => yrOK(c) && patCase(c) && S.bk[c.bk]).length + ' cases shown.</div>';
-  // points
-  h += '<div class="psec">On the map</div>';
-  h += row("cases", S.cases, '<span class="sw dia" style="background:' + P.b[0] + '"></span>Documented cases inside government', CASES.length);
-  if (S.open.cases) BUCKETS.forEach((b, i) => { h += row("bk:" + b[0], S.bk[b[0]], '<span class="sw dia" style="background:' + P.b[i] + '"></span>' + esc(b[1]), CASES.filter((c) => c.bk === b[0]).length, true) + '<div class="desc" style="padding-left:22px">' + esc(b[2]) + '</div>'; });
-  h += row("orgs", S.orgs, '<span class="sw dot" style="background:' + P.t.forum + ';border:1px solid #f0ece4"></span>Organisations, at their headquarters', ORGS.length);
-  h += row("br", S.br, '<span class="sw dot" style="background:' + P.t.order + ';width:7px;height:7px"></span>National branches and chapters', GROUPS.length);
-  if (S.open.orgs) {
-    TYPES.forEach((t) => { h += row("ty:" + t.k, S.ty[t.k], '<span class="sw dot" style="background:' + P.t[t.k] + '"></span>' + esc(t.label), ORGS.filter((o) => o.s === t.k).length, true) + '<div class="desc" style="padding-left:22px">' + esc(t.d) + '</div>'; });
-    h += row("brEst", S.brEst, '<span class="sw ring" style="border-color:' + P.t.order + '"></span>Branches where presence is only likely', GROUPS.filter((g) => g.est).length, true);
-  }
-  h += row("routes", S.routes, '<span class="sw bar" style="background:' + P.ln + '"></span>Documented channels between places', ROUTES.length);
-  h += '<div class="sub"><span class="car" id="openCases">' + (S.open.cases ? "▾" : "▸") + '</span>cases by office reached &nbsp; <span class="car" id="openOrgs">' + (S.open.orgs ? "▾" : "▸") + '</span>organisations by type</div>';
+       '<div class="desc">' + est + ' of ' + nk + ' countries have no documented case yet. Their shade is a best guess from which organisations are present and how easily officials there can be bent, and their cards say so.</div>';
+  if (S.pat) h += '<div class="desc">Countries are coloured by the open pattern. Close it to shade them again.</div>';
   // find
   h += '<div class="psec">Find</div><input class="inp" id="find" style="width:100%" placeholder="A country, organisation, person or place" value="' + esc(S.q) + '"><div id="flist" class="scroll"></div>';
+  // time
+  const era = (ERAS.find((e) => e[2] === S.y0 && e[3] === S.y1) || [""])[0];
+  h += '<div class="psec">When</div><div class="presets">' + ERAS.map((e) => '<button class="btn' + (era === e[0] ? " on" : "") + '" data-era="' + e[0] + '">' + e[1] + '</button>').join("") + '</div>' +
+       '<div id="tchart">' + decadeChart() + '</div>' +
+       '<div class="tline">From <input class="inp" id="y0" value="' + Math.max(S.y0, YR[0]) + '"> to <input class="inp" id="y1" value="' + Math.min(S.y1, YR[1]) + '"></div>' +
+       '<div class="desc">The map opens on today: cases from 2010 on, many still unfolding. Each bar counts the cases in one decade; click one to step back into it' + (S.pat ? ', and the pale part is the open pattern' : '') + '. ' + CASES.filter((c) => yrOK(c) && patCase(c) && S.bk[c.bk]).length + ' cases on the map now.</div>';
   $("#keyBody").innerHTML = h;
-  // wire it up
-  $("#keyBody").querySelectorAll("[data-pat]").forEach((d) => d.addEventListener("click", () => setPattern(S.pat === d.dataset.pat ? null : d.dataset.pat)));
-  const pc = $("#patClear"); if (pc) pc.addEventListener("click", () => setPattern(null));
   $("#lens").addEventListener("change", (e) => { S.lens = e.target.value; paint(); buildKey(); });
   $("#keyBody").querySelectorAll("[data-band]").forEach((d) => d.addEventListener("click", () => { const i = +d.dataset.band; S.bandOn[i] = S.bandOn[i] ? 0 : 1; paint(); buildKey(); }));
-  $("#tchart").querySelectorAll("rect.b").forEach((r) => r.addEventListener("click", () => { const d = +r.dataset.d; if (S.y0 === d && S.y1 === d + 9) { S.y0 = YR[0]; S.y1 = YR[1]; } else { S.y0 = d; S.y1 = d + 9; } paint(); buildKey(); }));
-  $("#y0").addEventListener("change", (e) => { S.y0 = +e.target.value || YR[0]; paint(); buildKey(); });
-  $("#y1").addEventListener("change", (e) => { S.y1 = +e.target.value || YR[1]; paint(); buildKey(); });
-  $("#yAll").addEventListener("click", () => { S.y0 = YR[0]; S.y1 = YR[1]; paint(); buildKey(); });
-  $("#keyBody").querySelectorAll("input[data-t]").forEach((c) => c.addEventListener("change", () => {
-    const t = c.dataset.t, v = c.checked;
-    if (t.startsWith("bk:")) { S.bk[t.slice(3)] = v; if (v) S.cases = true; } else if (t.startsWith("ty:")) S.ty[t.slice(3)] = v; else S[t] = v;
-    paint(); buildKey();
-  }));
-  $("#openCases").addEventListener("click", () => { S.open.cases = !S.open.cases; buildKey(); });
-  $("#openOrgs").addEventListener("click", () => { S.open.orgs = !S.open.orgs; buildKey(); });
+  $("#keyBody").querySelectorAll("[data-era]").forEach((b) => b.addEventListener("click", () => { const e = ERAS.find((x) => x[0] === b.dataset.era); S.y0 = e[2]; S.y1 = e[3]; paint(); buildKey(); buildLeg(); }));
+  $("#tchart").querySelectorAll("rect.b").forEach((r) => r.addEventListener("click", () => { const d = +r.dataset.d; if (S.y0 === d && S.y1 === d + 9) { S.y0 = 2010; S.y1 = 2026; } else { S.y0 = d; S.y1 = d + 9; } paint(); buildKey(); buildLeg(); }));
+  $("#y0").addEventListener("change", (e) => { S.y0 = +e.target.value || YR[0]; paint(); buildKey(); buildLeg(); });
+  $("#y1").addEventListener("change", (e) => { S.y1 = +e.target.value || YR[1]; paint(); buildKey(); buildLeg(); });
   $("#find").addEventListener("input", (e) => { S.q = e.target.value; drawFind(); });
   drawFind();
+  buildPat(); buildLeg();
+}
+function buildPat() {
+  let h = '<div class="desc" style="margin-top:0">The cases are not isolated. The same people, banks, lodges and services keep turning up in different countries and decades. Choose one of these to colour the map by the part each country plays in it, and to read the story behind it.</div>';
+  h += PATS.map((p, i) => '<div class="pat' + (S.pat === p.id ? " on" : "") + '" data-pat="' + p.id + '" style="--pc:' + P.p[i % P.p.length] + '"><div class="pt">' + esc(p.title) + '</div><div class="pm">' + Object.keys(p.cmap).length + ' countries · ' + p.ncases + ' cases · ' + p.span[0] + '–' + p.span[1] + '</div></div>').join("");
+  if (S.pat) {
+    const p = PAT_BY[S.pat];
+    h = '<div class="leg">' + p.roles.map((r, i) => { const n = Object.values(p.cmap).filter((v) => v === i).length; return n ? '<div class="li"><span class="sw" style="background:' + P.p[i % P.p.length] + '"></span>' + esc(r) + '<span class="n">' + n + '</span></div>' : ""; }).join("") + '</div>' +
+         '<div class="seg" style="margin-bottom:6px"><button class="btn" type="button" id="patRead">Read the story</button><button class="btn" type="button" id="patClear">Close the pattern</button></div>' + h;
+  }
+  $("#patBody").innerHTML = h;
+  $("#patBody").querySelectorAll("[data-pat]").forEach((d) => d.addEventListener("click", () => setPattern(S.pat === d.dataset.pat ? null : d.dataset.pat)));
+  const pc = $("#patClear"); if (pc) pc.addEventListener("click", () => setPattern(null));
+  const pr = $("#patRead"); if (pr) pr.addEventListener("click", () => openPattern(S.pat));
+  sizeBoxes();
+}
+function buildLeg() {
+  // Built bottom-up: the box is anchored at the bottom of the screen, so the breakdowns for cases
+  // and organisations open upward, above the row that opens them.
+  let h = '';
+  if (S.open.cases) h += '<div class="up">' + BUCKETS.map((b, i) => row("bk:" + b[0], S.bk[b[0]], '<span class="sw dia" style="background:' + P.b[i] + '"></span>' + esc(b[1]), CASES.filter((c) => c.bk === b[0]).length, true) + '<div class="desc" style="padding-left:22px">' + esc(b[2]) + '</div>').join("") + '</div>';
+  h += row("cases", S.cases, '<span class="car" data-open="cases">' + (S.open.cases ? "▾" : "▴") + '</span><span class="sw dia" style="background:' + P.b[0] + '"></span>Documented cases inside government', CASES.length);
+  if (S.open.orgs) h += '<div class="up">' + TYPES.map((t) => row("ty:" + t.k, S.ty[t.k], '<span class="sw dot" style="background:' + P.t[t.k] + '"></span>' + esc(t.label), ORGS.filter((o) => o.s === t.k).length, true) + '<div class="desc" style="padding-left:22px">' + esc(t.d) + '</div>').join("") +
+    row("brEst", S.brEst, '<span class="sw ring" style="border-color:' + P.t.order + '"></span>Branches where presence is only likely', GROUPS.filter((g) => g.est).length, true) + '</div>';
+  h += row("orgs", S.orgs, '<span class="car" data-open="orgs">' + (S.open.orgs ? "▾" : "▴") + '</span><span class="sw dot" style="background:' + P.t.forum + ';border:1px solid #f0ece4"></span>Organisations, at their headquarters', ORGS.length);
+  h += row("br", S.br, '<span class="sw dot" style="background:' + P.t.order + ';width:7px;height:7px;margin-left:12px"></span>National branches and chapters', GROUPS.length);
+  h += row("routes", S.routes, '<span class="sw bar" style="background:' + P.ln + ';margin-left:12px"></span>Documented channels between places', ROUTES.length);
+  h += '<div class="sub">Click ▴ to open a breakdown by office reached, or by type of organisation.</div>';
+  $("#legBody").innerHTML = h;
+  $("#legBody").querySelectorAll("[data-open]").forEach((c) => c.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); S.open[c.dataset.open] = !S.open[c.dataset.open]; buildLeg(); }));
+  $("#legBody").querySelectorAll("input[data-t]").forEach((c) => c.addEventListener("change", () => {
+    const t = c.dataset.t, v = c.checked;
+    if (t.startsWith("bk:")) { S.bk[t.slice(3)] = v; if (v) S.cases = true; } else if (t.startsWith("ty:")) S.ty[t.slice(3)] = v; else S[t] = v;
+    paint(); buildLeg();
+  }));
+  $("#legBody").scrollTop = $("#legBody").scrollHeight;
+  sizeBoxes();
+}
+function sizeBoxes() {
+  const rs = document.documentElement.style;
+  const pb = $("#patBox"), lb = $("#legBox");
+  if (pb) rs.setProperty("--patH", pb.getBoundingClientRect().height + "px");
+  if (lb) rs.setProperty("--legH", lb.getBoundingClientRect().height + "px");
 }
 function row(t, on, label, n, sub) { return '<div class="row' + (sub ? " sub2" : "") + '"><input type="checkbox" id="c_' + t.replace(/\W/g, "_") + '" data-t="' + t + '"' + (on ? " checked" : "") + '><label for="c_' + t.replace(/\W/g, "_") + '">' + label + ' <span class="n">' + n + '</span></label></div>'; }
 function drawFind() {
@@ -656,6 +701,9 @@ function init() {
   $("#worldBtn").addEventListener("click", wholeWorld);
   $("#toggleKey").addEventListener("click", () => { const p = $("#key"); p.classList.toggle("min"); $("#toggleKey").textContent = p.classList.contains("min") ? "+" : "−"; });
   $("#toggleTr").addEventListener("click", () => { const p = $("#tr"); p.classList.toggle("min"); $("#toggleTr").textContent = p.classList.contains("min") ? "Basemap +" : "−"; });
+  $("#togglePat").addEventListener("click", () => { const p = $("#patBox"); p.classList.toggle("min"); $("#togglePat").textContent = p.classList.contains("min") ? "+" : "−"; sizeBoxes(); });
+  $("#toggleLeg").addEventListener("click", () => { const p = $("#legBox"); p.classList.toggle("min"); $("#toggleLeg").textContent = p.classList.contains("min") ? "+" : "−"; sizeBoxes(); });
+  window.addEventListener("resize", sizeBoxes);
   $("#wire .wh").addEventListener("click", () => { const w = $("#wire"); w.classList.toggle("min"); $("#wireTog").textContent = w.classList.contains("min") ? "open +" : "close −"; });
   if (innerWidth <= 820) { $("#key").classList.add("min"); $("#toggleKey").textContent = "+"; $("#tr").classList.add("min"); $("#toggleTr").textContent = "Basemap +"; }
   ready = true; order(); paint();
@@ -668,7 +716,15 @@ window.societies = { setPattern, openCountry, openCase, openOrg, S };
 const info = $("#info");
 info.innerHTML = __ABOUT__;
 function openInfo(on) { info.classList.toggle("open", on); }
+const story = $("#story");
+story.innerHTML = __STORY__;
+function openStory(on) { story.classList.toggle("open", on); }
+$("#storyBtn").addEventListener("click", () => openStory(true));
+$("#storyBtn").addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openStory(true); } });
+$("#storyClose").addEventListener("click", () => openStory(false));
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") { openStory(false); openInfo(false); if (S.sel) deselect(); } });
 $("#infoBtn").addEventListener("click", () => openInfo(true));
+
 $("#infoBtn").addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openInfo(true); } });
 $("#infoClose").addEventListener("click", () => openInfo(false));
 })();
