@@ -387,11 +387,11 @@ function paint() {
 
 /* ---------- the key ---------- */
 function buildKey() {
-  const groups = [...new Set(L.map((l) => l.group))];
+  const groups = [...new Set(L.filter((l) => !l.pat).map((l) => l.group))];
   const nset = (k) => C.filter((c) => c.set === k).length;
   $("#keyBody").innerHTML =
     '<div class="psec" style="margin-top:0">Color the countries by</div>' +
-    '<div class="lrow"><select id="layer" aria-label="What to color the countries by">' + groups.map((g) => '<optgroup label="' + esc(g) + '">' + L.filter((l) => l.group === g).map((l) => '<option value="' + l.id + '">' + esc(l.label.trim()) + '</option>').join("") + '</optgroup>').join("") + '</select>' +
+    '<div class="lrow"><select id="layer" aria-label="What to color the countries by">' + groups.map((g) => '<optgroup label="' + esc(g) + '">' + L.filter((l) => l.group === g && !l.pat).map((l) => '<option value="' + l.id + '">' + esc(l.label.trim()) + '</option>').join("") + '</optgroup>').join("") + '</select>' +
     '<button type="button" class="ib" id="layerI" title="What this layer shows" aria-label="What this layer shows">?</button></div>' +
     '<div id="ldesc" class="ipop"></div><div id="legend"></div>' +
     '<div class="psec">Years</div><div class="yrs"><label>From <input type="number" id="yFrom" min="' + YMIN + '" max="' + YMAX + '" value="' + S.from + '"></label><label>to <input type="number" id="yTo" min="' + YMIN + '" max="' + YMAX + '" value="' + S.to + '"></label><button type="button" class="btn" id="yAll">All years</button></div>' +
@@ -406,10 +406,14 @@ function buildKey() {
     FLOWT.map((f) => '<div class="lrow"><label class="chk"><input type="checkbox" data-flow="' + f[0] + '" checked> ' + esc(f[1]) + ' <span class="mute">(' + F.filter((x) => x.type === f[0]).length + ')</span></label><button type="button" class="ib" data-i="fl_' + f[0] + '" title="What is this?" aria-label="About this line">i</button></div><div class="ipop" id="fl_' + f[0] + '">' + esc(f[2]) + '</div>').join("") +
     '<div class="psec tg"><label><input type="checkbox" id="netOn" checked title="Show or hide networks and institutions"> Networks and institutions <span class="mute">(' + N.length + ')</span></label><button type="button" class="ib" data-i="netI" title="What is this?" aria-label="About networks">i</button></div>' +
     '<div class="ipop" id="netI">The organisations, institutions, platforms and armed groups that recur across the cases, each placed at its headquarters and sized by how many countries it is documented in. Click one to draw where it is documented (dotted lines) and where its presence is only likely (grey). Presence is not proof of abuse in that country; the box says which countries have a case.</div>' +
-    '<div class="psec">Search</div><input id="find" type="search" placeholder="Country, case or network"><div id="plist" class="scroll"></div>';
+    '<div class="psec">Search</div><input id="find" type="search" placeholder="Country, case or network"><div id="plist" class="scroll"></div>' +
+    '<div class="psec tg"><span style="flex:1">Patterns behind the scenes <span class="mute">(' + PAT.length + ')</span></span><button type="button" class="ib" data-i="patI" title="What is this?" aria-label="About patterns">i</button></div>' +
+    '<div class="ipop" id="patI">Structures that repeat across many cases and countries. Choosing one colors the countries by their part in it, draws its documented connections and opens its writeup. Choose a layer above to go back.</div>' +
+    '<div id="patList">' + PAT.map((pt) => '<div class="pi" data-pid="' + pt.id + '"><span class="sw" style="background:var(--accent-hi);width:7px;height:7px;border-radius:50%"></span>' + esc(pt.title) + '</div>').join("") + '</div>';
   $("#layer").value = S.layer;
   $("#layerI").addEventListener("click", () => { OPEN_DESC = !OPEN_DESC; $("#ldesc").classList.toggle("open", OPEN_DESC); $("#layerI").classList.toggle("on", OPEN_DESC); });
-  $("#layer").addEventListener("change", (e) => { S.layer = e.target.value; const l = layer(); if (l.pat && l.pat.view) fitView(l.pat.view); update(); });
+  $("#layer").addEventListener("change", (e) => { S.layer = e.target.value; S.lastLayer = S.layer; closePat(); const l = layer(); if (l.pat && l.pat.view) fitView(l.pat.view); update(); });
+  $("#patList").querySelectorAll("[data-pid]").forEach((el) => el.addEventListener("click", () => { if (S.layer === "pat_" + el.dataset.pid && $("#patBox").classList.contains("open")) closePat(); else openPattern(el.dataset.pid); }));
   const setY = () => { let a = +$("#yFrom").value || YMIN, b = +$("#yTo").value || YMAX; a = Math.max(YMIN, Math.min(YMAX, a)); b = Math.max(YMIN, Math.min(YMAX, b)); if (a > b) [a, b] = [b, a]; S.from = a; S.to = b; update(); };
   $("#yFrom").addEventListener("change", setY); $("#yTo").addEventListener("change", setY);
   $("#yAll").addEventListener("click", () => { $("#yFrom").value = YMIN; $("#yTo").value = YMAX; setY(); });
@@ -468,9 +472,11 @@ function drawLegend() {
   const nod = rs.filter(([, r]) => !r || (l.kind === "seq" && r.v == null)).length;
   h += '<div class="lg"><span class="sw" style="background:' + NODATA + ';outline:1px solid #555"></span>' + (l.pat ? "No role in this pattern" : /^(set_|offc|delay)/.test(l.id) ? "Nothing documented in these years" : "No figure from this source") + '<span class="n">' + nod + '</span></div>';
   h += '<div id="cnt">' + (ISOS.length - nod) + ' of ' + ISOS.length + ' places have a value' + (/^(set_|offc|delay)/.test(l.id) && (S.from !== YMIN || S.to !== YMAX) ? ' for ' + S.from + '–' + S.to : '') + '.</div>';
-  if (l.pat) h += patExtra(l.pat);
+  if (l.pat) h += '<p class="lsrc">Pattern: <a href="#" id="patReopen">' + esc(l.pat.title) + '</a> · <a href="#" id="patClear">stop showing it</a></p>';
   $("#legend").innerHTML = h;
-  const po = $("#patOnly"); if (po) po.addEventListener("change", (e) => { S.patOnly = e.target.checked; drawCases(); });
+  const pr = $("#patReopen"); if (pr) pr.addEventListener("click", (e) => { e.preventDefault(); openPattern(l.pat.id, true); });
+  const pc = $("#patClear"); if (pc) pc.addEventListener("click", (e) => { e.preventDefault(); clearPattern(); });
+  syncLayerSelect();
   $("#legend").querySelectorAll("[data-case]").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); openCase(+a.dataset.case); }));
 }
 function drawList() {
@@ -538,7 +544,43 @@ function wireBox() {
   $("#detBody").querySelectorAll("[data-case]").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); openCase(+a.dataset.case, true); }));
 }
 function fitView(v) { try { const fb = freeBox(), pad = { left: fb.L + 20, right: fb.R + 20, top: 30, bottom: 30 }; const cam = map.cameraForBounds(v, { padding: pad }); if (cam && cam.center) map.easeTo(Object.assign(cam, { duration: 900 })); } catch (e) {} }
-function showPattern(id) { S.layer = "pat_" + id; $("#layer").value = S.layer; const l = layer(); if (l.pat && l.pat.view) fitView(l.pat.view); update(); const k = $("#key"); if (k.classList.contains("min")) $("#toggleKey").click(); $("#ldesc").scrollIntoView({ behavior: "smooth", block: "start" }); }
+function showPattern(id) { openPattern(id); }
+function syncLayerSelect() {
+  const sel = $("#layer"); if (!sel) return; let o = sel.querySelector("option[data-patopt]");
+  const l = layer();
+  if (l.pat) { if (!o) { o = document.createElement("option"); o.dataset.patopt = "1"; o.disabled = true; sel.insertBefore(o, sel.firstChild); } o.value = l.id; o.textContent = "Pattern: " + l.pat.title; sel.value = l.id; }
+  else { if (o) o.remove(); sel.value = S.layer; }
+  document.querySelectorAll("#patList [data-pid]").forEach((el) => el.classList.toggle("on", !!(l.pat && el.dataset.pid === l.pat.id)));
+}
+function openPattern(id, noFit) {
+  const pt = PAT.find((p) => p.id === id); if (!pt) return;
+  if (!/^pat_/.test(S.layer)) S.lastLayer = S.layer;
+  S.layer = "pat_" + id; S.patOnly = false;
+  if (!noFit && pt.view) fitView(pt.view);
+  update();
+  const b = $("#patBox");
+  $("#patBody").innerHTML = '<div class="hp-k">Pattern behind the scenes</div><h3>' + esc(pt.title) + '</h3>' +
+    '<div class="story">' + esc(pt.summary || "").split(/\n\n+/).map((x) => '<p>' + x + '</p>').join("") + '</div>' + patExtra(pt);
+  $("#patBody").querySelectorAll("[data-case]").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); openCase(+a.dataset.case, true); }));
+  const po = $("#patOnly"); if (po) po.addEventListener("change", (e) => { S.patOnly = e.target.checked; drawCases(); });
+  b.classList.add("open"); b.scrollTop = 0; raise(b);
+}
+function closePat() { $("#patBox").classList.remove("open"); }
+function clearPattern() { closePat(); S.layer = S.lastLayer && !/^pat_/.test(S.lastLayer) ? S.lastLayer : "all"; S.patOnly = false; update(); }
+let zBox = 960;
+function raise(el) { el.style.zIndex = ++zBox; }
+function dragBox(el) {
+  el.addEventListener("pointerdown", () => raise(el));
+  el.addEventListener("pointerdown", (e) => {
+    const h = e.target.closest(".grip, h3, .hp-k"); if (!h || !el.contains(h) || e.button !== 0) return;
+    e.preventDefault();
+    const r = el.getBoundingClientRect(), dx = e.clientX - r.left, dy = e.clientY - r.top;
+    el.classList.add("moved"); el.style.left = r.left + "px"; el.style.top = r.top + "px";
+    const mv = (ev) => { el.style.left = Math.max(-r.width + 90, Math.min(innerWidth - 90, ev.clientX - dx)) + "px"; el.style.top = Math.max(0, Math.min(innerHeight - 40, ev.clientY - dy)) + "px"; };
+    const up = () => { removeEventListener("pointermove", mv); removeEventListener("pointerup", up); };
+    addEventListener("pointermove", mv); addEventListener("pointerup", up);
+  });
+}
 function detail(k) {
   const p = P[k], h = [], i = p.ind || {};
   h.push('<div class="hp-k">Country</div><h3>' + esc(p.n) + '</h3>');
@@ -572,14 +614,14 @@ function detail(k) {
   $("#detBody").innerHTML = h.join(""); wireBox();
 }
 function select(k, fly) {
-  tip(null); S.sel = k; S.selCase = null; S.selNet = null; detail(k); $("#det").classList.add("open"); $("#det").scrollTop = 0;
+  tip(null); S.sel = k; S.selCase = null; S.selNet = null; detail(k); $("#det").classList.add("open"); raise($("#det")); $("#det").scrollTop = 0;
   paint(); drawList(); drawCharts();
   if (fly && P[k].pt) { const fb = freeBox(); map.easeTo({ center: P[k].pt, zoom: Math.max(map.getZoom(), proj === "globe" ? 2.2 : 3), padding: { left: fb.L, right: fb.R, top: 10, bottom: 10 }, duration: 800 }); }
 }
 function openCase(i, fly) {
   const c = C[i]; tip(null); S.selCase = i; S.selNet = null; S.sel = null;
   $("#detBody").innerHTML = '<div class="hp-k">' + esc(setLabel(c.set)) + '</div><h3>' + esc(c.n) + '</h3>' + caseBody(c, i) + (P[c.iso] ? '<p class="note"><a href="#" data-k="' + c.iso + '">Open ' + esc(P[c.iso].n) + '</a></p>' : '');
-  wireBox(); $("#det").classList.add("open"); $("#det").scrollTop = 0; paint(); drawCharts();
+  wireBox(); $("#det").classList.add("open"); raise($("#det")); $("#det").scrollTop = 0; paint(); drawCharts();
   if (fly && c.ll) { const fb = freeBox(); map.easeTo({ center: c.ll, zoom: Math.max(map.getZoom(), 3.2), padding: { left: fb.L, right: fb.R, top: 10, bottom: 10 }, duration: 800 }); }
 }
 function openNet(i, fly) {
@@ -593,7 +635,7 @@ function openNet(i, fly) {
   if ((n.reach_est || []).length) h.push('<p class="note"><b>Likely, not documented (' + n.reach_est.length + '):</b> ' + n.reach_est.filter((k) => P[k]).map((k) => esc(P[k].n)).join(", ") + (n.reach_note ? '. ' + esc(n.reach_note) : '') + '</p>');
   if (cs.length) h.push('<p class="note">' + cs.length + ' case' + (cs.length === 1 ? '' : 's') + ' on the map belong to this network.</p>');
   h.push('<p class="hp-src">' + esc(n.cite || "") + ' ' + link("source", n.url) + '</p>');
-  $("#detBody").innerHTML = h.join(""); wireBox(); $("#det").classList.add("open"); $("#det").scrollTop = 0; paint(); drawCharts();
+  $("#detBody").innerHTML = h.join(""); wireBox(); $("#det").classList.add("open"); raise($("#det")); $("#det").scrollTop = 0; paint(); drawCharts();
   if (fly && n.ll) { const fb = freeBox(); map.easeTo({ center: n.ll, padding: { left: fb.L, right: fb.R, top: 10, bottom: 10 }, duration: 800 }); }
 }
 function deselect() { S.sel = null; S.selCase = null; S.selNet = null; $("#det").classList.remove("open"); paint(); drawList(); drawCharts(); }
@@ -728,6 +770,8 @@ function init() {
   buildKey(); buildTr(); buildDock(); stars(); computeDoc(); drawSwatches();
   fetch(BOUND_URL).then((r) => r.json()).then((geo) => { addLayers(geo); ready = true; update(); }).catch((e) => { console.warn("boundaries", e); });
   $("#detX").addEventListener("click", deselect);
+  $("#patX").addEventListener("click", closePat);
+  dragBox($("#det")); dragBox($("#patBox"));
   $("#worldBtn").addEventListener("click", wholeWorld);
   $("#toggleKey").addEventListener("click", () => { const p = $("#key"); p.classList.toggle("min"); $("#toggleKey").textContent = p.classList.contains("min") ? "+" : "−"; });
   $("#toggleTr").addEventListener("click", () => { const p = $("#tr"); p.classList.toggle("min"); $("#toggleTr").textContent = p.classList.contains("min") ? "Basemap +" : "−"; });
@@ -741,7 +785,7 @@ const info = $("#info");
 info.innerHTML = D.ABOUT;
 const btn = $("#infoBtn");
 const toggle = (open) => { const on = info.classList.toggle("open", typeof open === "boolean" ? open : undefined); btn.textContent = on ? "Close" : "About and sources"; };
-document.addEventListener("keydown", (e) => { if (e.key !== "Escape") return; if (info.classList.contains("open")) toggle(false); else if (S.sel || S.selCase != null || S.selNet != null) deselect(); });
+document.addEventListener("keydown", (e) => { if (e.key !== "Escape") return; if (info.classList.contains("open")) toggle(false); else if ($("#patBox").classList.contains("open")) closePat(); else if (S.sel || S.selCase != null || S.selNet != null) deselect(); });
 btn.addEventListener("click", toggle);
 $("#infoClose").addEventListener("click", () => toggle(false));
 btn.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); } });
