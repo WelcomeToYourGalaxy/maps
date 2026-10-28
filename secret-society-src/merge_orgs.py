@@ -37,6 +37,14 @@ def main(rdir):
             orgs.append(o)
     for f in sorted(glob.glob(os.path.join(rdir, 'r2', '*_channels.json'))) + sorted(glob.glob(os.path.join(rdir, 'r3', '*_channels.json'))):
         chans += json.load(open(f))
+    DROP = {'iurd': 'uckg', 'mouride': 'mourides', 'bodu_bala_sena': 'bbs', 'bain_co': 'bain'}
+    keep = {o['k']: o for o in orgs}
+    for a, b in DROP.items():
+        if a in keep and b in keep:
+            keep[b]['reach'] = sorted(set(keep[b].get('reach', [])) | set(keep[a].get('reach', [])))
+    orgs = [o for o in orgs if not (o['k'] in DROP and DROP[o['k']] in keep)]
+    for ch in chans:
+        ch['org'] = DROP.get(ch.get('org'), ch.get('org'))
     for o in orgs:
         if o['k'] == 'wacl':
             o['c'], o['lat'], o['lng'] = 'Taiwan', 25.033, 121.565

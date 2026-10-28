@@ -54,7 +54,7 @@ def norm(t):
 def main(rdir, arch_path):
     arch = load_archive(arch_path)
     seen, out, per = set(), [], {}
-    RENAME = {'hizb_ut_tahrir': 'hizb_tahrir'}
+    RENAME = {'hizb_ut_tahrir': 'hizb_tahrir', 'iurd': 'uckg', 'mouride': 'mourides', 'bodu_bala_sena': 'bbs', 'bain_co': 'bain'}
     files = sorted(glob.glob(os.path.join(rdir, '*.json'))) + sorted(glob.glob(os.path.join(rdir, 'r2', '*_cases.json'))) + sorted(glob.glob(os.path.join(rdir, 'r3', '*_cases.json')))
     for f in files:
         try:
