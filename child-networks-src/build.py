@@ -83,7 +83,7 @@ def load_research():
     cases, nets, flows, series, notes = [], [], [], {}, {}
     for f in sorted(glob.glob(os.path.join(HERE, 'research', '*.json'))):
         name = os.path.basename(f)[:-5]
-        if name.startswith(('patterns', 'verify')): continue
+        if name.startswith(('patterns', 'verify', 'stories')): continue
         d = json.load(open(f))
         for c in d.get('cases', []): c['_src'] = name; cases.append(c)
         for n in d.get('nets', []): n['_src'] = name; nets.append(n)
@@ -313,7 +313,11 @@ def main():
     for ph, v in (('{N_CASES}', len(cases)), ('{N_NETS}', len(nets)), ('{N_FLOWS}', len(flows)), ('{N_PATS}', len(pats)),
                   ('{N_COUNTRIES}', len({c['iso'] for c in cases})), ('{NCMEC_YEAR}', NCMEC_YEAR or '')):
         about = about.replace(ph, str(v))
-    D = {'P': P, 'C': cases, 'N': nets, 'F': flows, 'PAT': pats, 'SER': SER, 'SETS': SETS, 'FLOWT': FLOWT, 'STAT': STAT,
+    STORY = {}
+    for f in sorted(glob.glob(os.path.join(HERE, 'research', 'stories_out_*.json'))):
+        for k, v in json.load(open(f)).items():
+            if k in P and v.get('story'): STORY[k] = {'story': v['story']}
+    D = {'P': P, 'C': cases, 'STORY': STORY, 'N': nets, 'F': flows, 'PAT': pats, 'SER': SER, 'SETS': SETS, 'FLOWT': FLOWT, 'STAT': STAT,
          'ERAS': ERAS, 'META': META, 'ABOUT': about}
 
     sh = lambda f: open(os.path.join(HERE, 'shell', f)).read()
