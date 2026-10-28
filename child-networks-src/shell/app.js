@@ -412,7 +412,7 @@ function buildKey() {
     '<div class="ipop" id="netI">The organisations, institutions, platforms and armed groups that recur across the cases, each placed at its headquarters and sized by how many countries it is documented in. Click one to draw where it is documented (dotted lines) and where its presence is only likely (grey). Presence is not proof of abuse in that country; the box says which countries have a case.</div>' +
     '<div class="psec">Find a place</div><input id="find" type="search" placeholder="Country, case or network"><div id="plist" class="scroll"></div>';
   $("#layer").value = S.layer;
-  $("#layer").addEventListener("change", (e) => { S.layer = e.target.value; const l = layer(); if (l.pat && l.pat.view) map.fitBounds(l.pat.view, { padding: { left: freeBox().L + 20, right: freeBox().R + 20, top: 30, bottom: 30 }, duration: 900 }); update(); });
+  $("#layer").addEventListener("change", (e) => { S.layer = e.target.value; const l = layer(); if (l.pat && l.pat.view) fitView(l.pat.view); update(); });
   const setY = () => { let a = +$("#yFrom").value || YMIN, b = +$("#yTo").value || YMAX; a = Math.max(YMIN, Math.min(YMAX, a)); b = Math.max(YMIN, Math.min(YMAX, b)); if (a > b) [a, b] = [b, a]; S.from = a; S.to = b; update(); };
   $("#yFrom").addEventListener("change", setY); $("#yTo").addEventListener("change", setY);
   $("#yAll").addEventListener("click", () => { $("#yFrom").value = YMIN; $("#yTo").value = YMAX; setY(); });
@@ -529,7 +529,7 @@ function caseBody(c, i) {
   const pats = PAT.filter((p) => (p.cids || []).includes(i));
   if (pats.length) h.push('<p class="note">Part of: ' + pats.map((p) => '<a href="#" data-pat="' + p.id + '">' + esc(p.title) + '</a>').join(" · ") + '</p>');
   if (c.net != null && N[c.net]) h.push('<p class="note">Network: <a href="#" data-net="' + c.net + '">' + esc(N[c.net].n) + '</a></p>');
-  h.push('<p class="hp-src">' + esc(c.cite || "") + ' ' + link("source", c.url) + (c.url2 ? ' · ' + link("second source", c.url2) : '') + '</p>');
+  h.push('<p class="hp-src">' + esc(c.cite || "") + ' ' + link("source", c.url) + (c.url2 ? ' · ' + link("second source", c.url2) : '') + (c.wk ? '<br>The link is an encyclopedia summary of the source named above; the original could not be opened for this map.' : '') + '</p>');
   return h.join("");
 }
 function wireBox() {
@@ -538,7 +538,8 @@ function wireBox() {
   $("#detBody").querySelectorAll("[data-k]").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); select(a.dataset.k, true); }));
   $("#detBody").querySelectorAll("[data-case]").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); openCase(+a.dataset.case, true); }));
 }
-function showPattern(id) { S.layer = "pat_" + id; $("#layer").value = S.layer; const l = layer(); if (l.pat && l.pat.view) map.fitBounds(l.pat.view, { padding: { left: freeBox().L + 20, right: freeBox().R + 20, top: 30, bottom: 30 }, duration: 900 }); update(); const k = $("#key"); if (k.classList.contains("min")) $("#toggleKey").click(); $("#ldesc").scrollIntoView({ behavior: "smooth", block: "start" }); }
+function fitView(v) { try { const fb = freeBox(), pad = { left: fb.L + 20, right: fb.R + 20, top: 30, bottom: 30 }; const cam = map.cameraForBounds(v, { padding: pad }); if (cam && cam.center) map.easeTo(Object.assign(cam, { duration: 900 })); } catch (e) {} }
+function showPattern(id) { S.layer = "pat_" + id; $("#layer").value = S.layer; const l = layer(); if (l.pat && l.pat.view) fitView(l.pat.view); update(); const k = $("#key"); if (k.classList.contains("min")) $("#toggleKey").click(); $("#ldesc").scrollIntoView({ behavior: "smooth", block: "start" }); }
 function detail(k) {
   const p = P[k], h = [], i = p.ind || {};
   h.push('<div class="hp-k">Country</div><h3>' + esc(p.n) + '</h3>');

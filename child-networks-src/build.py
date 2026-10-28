@@ -83,7 +83,7 @@ def load_research():
     cases, nets, flows, series, notes = [], [], [], {}, {}
     for f in sorted(glob.glob(os.path.join(HERE, 'research', '*.json'))):
         name = os.path.basename(f)[:-5]
-        if name.startswith('patterns'): continue
+        if name.startswith(('patterns', 'verify')): continue
         d = json.load(open(f))
         for c in d.get('cases', []): c['_src'] = name; cases.append(c)
         for n in d.get('nets', []): n['_src'] = name; nets.append(n)
@@ -110,6 +110,20 @@ SKIP_FLOWS = set()
 def main():
     raw_cases, raw_nets, raw_flows, series, notes = load_research()
     raw_cases = [c for c in raw_cases if c.get('id') not in SKIP_CASES]
+    # fact-check patches: a better source replaces the encyclopedia link, which is kept as the second link
+    patches = {}
+    for f in sorted(glob.glob(os.path.join(HERE, 'research', 'verify_[A-Z].json'))):
+        for pt in json.load(open(f)): patches[pt['id']] = pt
+    for c in raw_cases:
+        pt = patches.get(c.get('id'))
+        if not pt: continue
+        if pt.get('verified') and pt.get('url') and 'wikipedia.org' not in pt['url']:
+            if c.get('url') and c['url'] != pt['url'] and not c.get('url2'): c['url2'] = c['url']
+            c['url'] = pt['url']
+            if pt.get('cite'): c['cite'] = pt['cite']
+        for k, v in (pt.get('fixes') or {}).items():
+            k = {'st': 'status', 'v': 'victims', 'fr': 'first_report', 'iso': 'iso3'}.get(k, k)
+            c[k] = v
     raw_flows = [f for f in raw_flows if f.get('id') not in SKIP_FLOWS and not (f.get('iso_a') == 'USA' and f.get('iso_b') == 'PER')]
     warn = []
 
@@ -161,7 +175,8 @@ def main():
              'vn': c.get('victims_note', ''), 'off': int(num(c['offenders'])) if num(c.get('offenders')) else None,
              'who': c.get('who', ''), 'offc': bool(c.get('officials')), 'cover': c.get('cover', ''),
              'd': c.get('d', ''), 'cite': c.get('cite', ''), 'url': c.get('url', ''), 'url2': c.get('url2', ''),
-             'net': nkey.get(c.get('net')) if c.get('net') else None}
+             'net': nkey.get(c.get('net')) if c.get('net') else None,
+             'wk': 1 if 'wikipedia.org' in (c.get('url') or '') else 0}
         if c.get('net') and c['net'] not in nkey: warn.append('case %s: unknown net %r' % (cid, c['net']))
         if x['fr'] and x['yf'] and x['yf'] < x['fr']: x['fr'] = None
         if x['y0'] and x['y1'] and x['y1'] < x['y0']: x['y0'], x['y1'] = x['y1'], x['y0']
