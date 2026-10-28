@@ -1478,6 +1478,333 @@
    ],
    "unproven": [],
    "notes": "type field: inquiry / no_inquiry / context. 'first_any' and 'first_catholic' flags mark the earliest national-level inquiry found for that country in sources consulted. Not covered for lack of opened sources (search budget exhausted): Kenya, South Africa, Nigeria, Argentina national bodies, Peru state, Malta, Slovakia, Lithuania, Hungary, Slovenia, Croatia, Norway (NOU 2004:23 children's homes is in care.json), Sweden/Denmark/Finland (in care.json), Northern Ireland HIA Inquiry 2014-2017 (in care.json), Jersey (care.json), Switzerland's 2023 national research programme. Australia royal commission headline figures (e.g. 8,000+ private sessions, 409 recommendations) not verified here. Italy 2022 CEI report on 2020-21 cases not verified."
+  },
+  "tourism_displacement": {
+   "title": "Tourism displacement — how child sex tourism moved as enforcement rose",
+   "summary_facts": [
+    "Svay Pak, Cambodia: child prostitution there grew in the early 2000s 'after child prostitution in Thailand was cracked down upon'; the 22 January 2003 raid was advertised in advance and nearly all children were moved to Siem Reap and Sihanoukville; by 2011 the trade had gone underground (Wikipedia, citing Telegraph, AHRC, Dateline NBC, CNN).",
+    "Offender-country laws came in a wave in the 1990s-2000s: Germany 1993, Australia 1994, Canada 1997, Japan 1999, US PROTECT Act 2003, UK Sexual Offences Act 2003, NZ 2005, Ireland 2017; ECPAT counted 44 countries with extraterritorial laws in 2008.",
+    "In the Philippines IJM found establishment-based child sex trafficking fell 79-86% in target cities 2006-2016, while monthly Philippine IP addresses used for child sexual exploitation rose more than 12-fold from 2014 to 2017 (IJM, May 2020).",
+    "Europol (June 2020): travel restrictions 'likely prevented offenders from travelling and so have shifted their focus' online; IOCTA 2020: 'livestreaming is becoming mainstream'.",
+    "Displacement within countries is also documented: Manila's 1992 Ermita closure pushed businesses to Angeles City; Gambian traffickers moved child sex tourists into private residences outside tourist zones; Madagascar saw increases after Mozambique tightened laws."
+   ],
+   "rows": [
+    {
+     "year": 1992,
+     "iso3": "PHL",
+     "event": "Manila mayor Alfredo Lim closed the Ermita sex-industry district (from 1992); many businesses moved to Angeles City, finding a new customer base among sex tourists, after Clark Air Base closed in 1992",
+     "type": "shift",
+     "url": "https://en.wikipedia.org/wiki/Prostitution_in_the_Philippines",
+     "from_place": "Ermita, Manila",
+     "to_place": "Angeles City"
+    },
+    {
+     "year": 1993,
+     "iso3": "DEU",
+     "event": "Germany: extraterritorial jurisdiction for sexual abuse of children abroad (s.5 no.8 StGB), even where the act is legal at the place of the offence",
+     "type": "law",
+     "url": "https://de.wikipedia.org/wiki/Sextourismus"
+    },
+    {
+     "year": 1994,
+     "iso3": "AUS",
+     "event": "Crimes (Child Sex Tourism) Amendment Act 1994 in force 5 July 1994 — one of the first offender-country laws",
+     "type": "law",
+     "url": "https://en.wikipedia.org/wiki/Child_sex_tourism"
+    },
+    {
+     "year": 1996,
+     "iso3": "THA",
+     "event": "Thailand: an act passed in 1996 prohibits sex with a person under 18 in a prostitution establishment regardless of consent",
+     "type": "law",
+     "url": "https://en.wikipedia.org/wiki/Child_prostitution_in_Thailand"
+    },
+    {
+     "year": 1996,
+     "iso3": "KHM",
+     "event": "Cambodia: 1996 Law on Suppression of the Kidnapping, Trafficking and Exploitation of Human Persons",
+     "type": "law",
+     "url": "https://en.wikipedia.org/wiki/Child_sex_tourism"
+    },
+    {
+     "year": 1996,
+     "iso3": null,
+     "event": "First World Congress against Commercial Sexual Exploitation of Children (Stockholm) called it \"a crime against humanity\"; UNWTO, ECPAT and Nordic tour operators created the tourism Code of Conduct",
+     "type": "law",
+     "url": "https://en.wikipedia.org/wiki/Child_prostitution",
+     "scope": "international"
+    },
+    {
+     "year": 1997,
+     "iso3": "CAN",
+     "event": "Canada: Criminal Code extraterritorial child sex tourism provisions (Bill C-27 in force 26 May 1997; Bill C-15A 23 July 2002); up to 14 years",
+     "type": "law",
+     "url": "https://en.wikipedia.org/wiki/Child_sex_tourism"
+    },
+    {
+     "year": 1999,
+     "iso3": "JPN",
+     "event": "Japan: 1999 Law for Punishing Acts Related to Child Prostitution and Child Pornography applies to Japanese nationals abroad",
+     "type": "law",
+     "url": "https://en.wikipedia.org/wiki/Child_sex_tourism"
+    },
+    {
+     "year": 2000,
+     "iso3": null,
+     "event": "UN Optional Protocol on the Sale of Children, Child Prostitution and Child Pornography adopted; 173 states party by May 2016",
+     "type": "law",
+     "url": "https://en.wikipedia.org/wiki/Child_sex_tourism",
+     "scope": "international"
+    },
+    {
+     "year": 2000,
+     "iso3": "BRA",
+     "event": "Brazil: 2000 law punishing subjecting a child or adolescent to prostitution with 4-10 years",
+     "type": "law",
+     "url": "https://en.wikipedia.org/wiki/Child_sex_tourism"
+    },
+    {
+     "year": 2002,
+     "iso3": "KHM",
+     "event": "Svay Pak (Phnom Penh): child prostitution \"bustling\", driven by Western child-sex tourism after child prostitution in Thailand was cracked down upon",
+     "type": "shift",
+     "url": "https://en.wikipedia.org/wiki/Svay_Pak",
+     "from_place": "Thailand",
+     "to_place": "Svay Pak, Cambodia"
+    },
+    {
+     "year": 2003,
+     "iso3": "KHM",
+     "event": "22 January 2003 police raid on Svay Pak child brothels — widely advertised in advance; no arrests; nearly all children moved beforehand to Siem Reap and Sihanoukville. A Dateline NBC–IJM operation later in 2003 rescued 37 girls",
+     "type": "crackdown",
+     "url": "https://en.wikipedia.org/wiki/Svay_Pak",
+     "to_place": "Siem Reap; Sihanoukville"
+    },
+    {
+     "year": 2003,
+     "iso3": "USA",
+     "event": "PROTECT Act (30 April 2003): US citizens/residents prosecutable for illicit sexual conduct abroad with under-18s whether or not they intended it before travel; maximum raised to 30 years. ICE \"Operation Predator\" (2003) led to over 11,000 arrests incl. more than 1,100 outside the US",
+     "type": "law",
+     "url": "https://en.wikipedia.org/wiki/PROTECT_Act_of_2003",
+     "url2": "https://www.justice.gov/criminal/criminal-ceos/extraterritorial-sexual-exploitation-children"
+    },
+    {
+     "year": 2003,
+     "iso3": "GBR",
+     "event": "Sexual Offences Act 2003 allows prosecution in England, Wales and NI of offences against children abroad (Scotland: 1995 Act); used to convict Richard Huckle in 2016",
+     "type": "law",
+     "url": "https://en.wikipedia.org/wiki/Child_sex_tourism"
+    },
+    {
+     "year": 2003,
+     "iso3": "GMB",
+     "event": "The Gambia: Tourism Offences Act 2003 (child = under 18; hotel operators liable for knowingly allowing child prostitution)",
+     "type": "law",
+     "url": "https://en.wikipedia.org/wiki/Prostitution_in_the_Gambia"
+    },
+    {
+     "year": 2003,
+     "iso3": "HKG",
+     "event": "Hong Kong: Prevention of Child Pornography Ordinance (Dec 2003) gives extraterritorial effect to 24 sexual offences",
+     "type": "law",
+     "url": "https://en.wikipedia.org/wiki/Child_sex_tourism"
+    },
+    {
+     "year": 2005,
+     "iso3": "KHM",
+     "event": "Cambodian government shut down Svay Pak brothels (2005); by 2006 prostitutes \"no longer operate[d] with impunity\"; 2008 Dateline: brothels \"moved out of town\"; 2011 CNN: trade had gone underground",
+     "type": "crackdown",
+     "url": "https://en.wikipedia.org/wiki/Svay_Pak"
+    },
+    {
+     "year": 2005,
+     "iso3": "NZL",
+     "event": "New Zealand Crimes Amendment Act 2005 criminalises sexual conduct with children abroad by citizens and residents",
+     "type": "law",
+     "url": "https://en.wikipedia.org/wiki/Child_sex_tourism"
+    },
+    {
+     "year": 2007,
+     "iso3": "VNM",
+     "event": "Vietnam set up a child sex tourism investigative unit in the Ministry of Public Security (2007), the year an Australian NGO uncovered 80 commercial cases of child exploitation by foreigners in Sa Pa",
+     "type": "crackdown",
+     "url": "https://en.wikipedia.org/wiki/Prostitution_in_Vietnam"
+    },
+    {
+     "year": 2008,
+     "iso3": null,
+     "event": "ECPAT: 44 countries had extraterritorial child sex legislation",
+     "type": "finding",
+     "url": "https://en.wikipedia.org/wiki/Child_sex_tourism",
+     "scope": "international"
+    },
+    {
+     "year": 2008,
+     "iso3": "KHM",
+     "event": "Cambodia: Law on Suppression of Human Trafficking and Sexual Exploitation (2008)",
+     "type": "law",
+     "url": "https://en.wikipedia.org/wiki/Prostitution_in_Cambodia"
+    },
+    {
+     "year": 2008,
+     "iso3": "THA",
+     "event": "Thailand: Anti-Human Trafficking Act B.E. 2551 (2008)",
+     "type": "law",
+     "url": "https://en.wikipedia.org/wiki/Child_prostitution_in_Thailand"
+    },
+    {
+     "year": 2012,
+     "iso3": null,
+     "event": "UN Special Rapporteur: Australians were the largest group of sex tourists prosecuted in Thailand (31%); of 146 APLE cases in Cambodia 2003-Apr 2012, 32 American, 24 French, 20 Vietnamese; Kenya coast: 70% of abusers foreign",
+     "type": "finding",
+     "url": "https://en.wikipedia.org/wiki/Child_sex_tourism",
+     "scope": "international"
+    },
+    {
+     "year": 2013,
+     "iso3": "NLD",
+     "event": "Terre des Hommes \"Sweetie\" sting: 20,000 internet users in 10 weeks offered to pay for webcam sex with an apparent Filipino child; of 21,000 perpetrators, 1,000 were identified (from Australia, Canada, Germany, India, the Netherlands, the UK, the US and others), incl. 110 in the UK and 254 in the US — early evidence of \"webcam child sex tourism\"",
+     "type": "finding",
+     "url": "https://en.wikipedia.org/wiki/Child_sex_tourism"
+    },
+    {
+     "year": 2013,
+     "iso3": "KOR",
+     "event": "Korean Institute of Criminology (Jan 2013): South Korean men are the primary market for child sex tourism in Southeast Asia",
+     "type": "finding",
+     "url": "https://en.wikipedia.org/wiki/Child_sex_tourism"
+    },
+    {
+     "year": 2014,
+     "iso3": "PHL",
+     "event": "IJM/NCMEC data: Philippine IP addresses used for child sexual exploitation grew more than 12-fold per month from 2014 to 2017; Philippine anti-trafficking unit cases rose from 1 (2014) to 43 (2017); 64% initiated by foreign police referrals",
+     "type": "shift",
+     "url": "https://www.ijm.org/documents/studies/Final-Public-Full-Report-5_20_2020.pdf",
+     "source_note": "IJM, Online Sexual Exploitation of Children in the Philippines (May 2020)"
+    },
+    {
+     "year": 2016,
+     "iso3": "PHL",
+     "event": "IJM: prevalence of establishment-based child sex trafficking fell 79%-86% in target Philippine cities 2006-2016 — while online exploitation rose",
+     "type": "finding",
+     "url": "https://www.ijm.org/documents/studies/Final-Public-Full-Report-5_20_2020.pdf"
+    },
+    {
+     "year": 2016,
+     "iso3": null,
+     "event": "ECPAT Global Study \"Offenders on the Move\" launched 12 May 2016 with 67 partners — largest information bank on sexual exploitation of children in travel and tourism",
+     "type": "finding",
+     "url": "https://ecpat.org/linea-webinar-offenders-on-the-move-a-global-study-on-sexual-exploitation-of-children-in-travel-and-tourism/",
+     "scope": "international",
+     "note": "Findings text not opened (report PDF not reachable)"
+    },
+    {
+     "year": 2016,
+     "iso3": "USA",
+     "event": "International Megan's Law signed 8 Feb 2016; from 31 Oct 2017 passports of covered offenders carry a unique identifier; 21-day advance notice of foreign travel; Angel Watch notifies destination countries",
+     "type": "law",
+     "url": "https://en.wikipedia.org/wiki/International_Megan%27s_Law"
+    },
+    {
+     "year": 2017,
+     "iso3": "AUS",
+     "event": "Australia: laws from 13 Dec 2017 allow cancelling passports of up to 20,000 registered child sex offenders; about 800 registered offenders had travelled abroad the previous year",
+     "type": "law",
+     "url": "https://www.thejakartapost.com/news/2017/12/13/australia-introduces-tough-new-laws-on-child-sex-offenders.html",
+     "note": "from colleague organized.json"
+    },
+    {
+     "year": 2017,
+     "iso3": "IRL",
+     "event": "Ireland: Criminal Law (Sexual Offences) Act 2017 gives worldwide jurisdiction over Irish offenders",
+     "type": "law",
+     "url": "https://en.wikipedia.org/wiki/Child_sex_tourism"
+    },
+    {
+     "year": 2017,
+     "iso3": "THA",
+     "event": "Thailand denied entry to 74 known foreign sex offenders in 2017",
+     "type": "crackdown",
+     "url": "https://en.wikipedia.org/wiki/Prostitution_in_Thailand"
+    },
+    {
+     "year": 2017,
+     "iso3": "GMB",
+     "event": "US TIP: traffickers in The Gambia increasingly host child sex tourists in private residences outside the commercial tourist areas, making detection harder",
+     "type": "shift",
+     "url": "https://en.wikipedia.org/wiki/Prostitution_in_the_Gambia"
+    },
+    {
+     "year": null,
+     "iso3": "MDG",
+     "event": "Child sex tourism in Madagascar increased after Mozambique tightened its laws (mostly French and Italian offenders)",
+     "type": "shift",
+     "url": "https://en.wikipedia.org/wiki/Prostitution_in_Madagascar",
+     "from_place": "Mozambique",
+     "to_place": "Madagascar",
+     "note": "Year not given in source"
+    },
+    {
+     "year": 2019,
+     "iso3": "GBR",
+     "event": "Europol IOCTA 2019: live distant child abuse (LDCA) is the most common form of commercial child sexual exploitation; the Philippines remains the most prominent victim location; some offenders also travel; EU police urged to use PNR travel data",
+     "type": "finding",
+     "url": "https://www.europol.europa.eu/cms/sites/default/files/documents/iocta_2019.pdf",
+     "iso3_note": "Europol (EU)"
+    },
+    {
+     "year": 2020,
+     "iso3": null,
+     "event": "Europol (June 2020): COVID travel restrictions \"likely prevented offenders from travelling and so have shifted their focus to the exchange of CSAM online\"; offenders who previously travelled to risk countries were likely more active online",
+     "type": "shift",
+     "url": "https://www.europol.europa.eu/cms/sites/default/files/documents/europol_covid_report-cse_jun2020v.3_0.pdf",
+     "scope": "international"
+    },
+    {
+     "year": 2020,
+     "iso3": "PHL",
+     "event": "Europol IOCTA 2020: \"Livestreaming is becoming mainstream\"; the Philippines remains the main country for LDCA, cases surged in lockdown; a large Romanian operation showed it is not limited to Southeast Asia",
+     "type": "shift",
+     "url": "https://www.europol.europa.eu/cms/sites/default/files/documents/internet_organised_crime_threat_assessment_iocta_2020.pdf"
+    },
+    {
+     "year": 2022,
+     "iso3": "PHL",
+     "event": "IJM (2023, Scale of Harm): 1 in every 100 children in the Philippines was a victim of online sexual exploitation in 2022; IJM UK says the UK is among the top three consumer countries",
+     "type": "finding",
+     "url": "https://www.ijmuk.org/our-work/cybersex-trafficking"
+    }
+   ],
+   "sources": [
+    {
+     "title": "Wikipedia — Child sex tourism",
+     "url": "https://en.wikipedia.org/wiki/Child_sex_tourism"
+    },
+    {
+     "title": "Wikipedia — Svay Pak",
+     "url": "https://en.wikipedia.org/wiki/Svay_Pak"
+    },
+    {
+     "title": "IJM — Online Sexual Exploitation of Children in the Philippines (2020)",
+     "url": "https://www.ijm.org/documents/studies/Final-Public-Full-Report-5_20_2020.pdf"
+    },
+    {
+     "title": "Europol — Online child sexual abuse during COVID-19 (June 2020)",
+     "url": "https://www.europol.europa.eu/cms/sites/default/files/documents/europol_covid_report-cse_jun2020v.3_0.pdf"
+    },
+    {
+     "title": "Europol — IOCTA 2020",
+     "url": "https://www.europol.europa.eu/cms/sites/default/files/documents/internet_organised_crime_threat_assessment_iocta_2020.pdf"
+    },
+    {
+     "title": "Europol — IOCTA 2019",
+     "url": "https://www.europol.europa.eu/cms/sites/default/files/documents/iocta_2019.pdf"
+    }
+   ],
+   "unproven": [
+    "'Brazil is overtaking Thailand as the world's most popular sex-tourist destination' (BBC World's Chris Rogers, quoted in Wikipedia) — a journalistic characterisation, not a measured finding."
+   ],
+   "notes": "France's extraterritorial law (1994/1998) is mentioned by fr.wikipedia without a date — not given a row. Sri Lanka 1990s crackdown, Costa Rica, Dominican Republic, Kenya, Colombia 2010s-2020s crackdowns not verified with dated sources. ECPAT 2016 report text was not reachable (PDF 404) so its findings on displacement are not quoted. AFP/NCA travel data not reached."
   }
  }
 }
