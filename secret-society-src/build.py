@@ -342,7 +342,11 @@ def build_patterns(pats, cases, ent, channels):
     out = []
     for p in pats:
         orgs = p.get('orgs', [])
-        pc = [c for c in cases if (c.get('org') in orgs or p.get('all_orgs'))]
+        anyorg = p.get('all_orgs') or ((p.get('case_inf') or p.get('case_tgt')) and not orgs)
+        pc = [c for c in cases if (c.get('org') in orgs or anyorg)]
+        if p.get('case_inf'): pc = [c for c in pc if c.get('inf') in p['case_inf']]
+        if p.get('case_tgt'): pc = [c for c in pc if c.get('tgt') in p['case_tgt']]
+        if p.get('case_rel'): pc = [c for c in pc if c.get('rel') in p['case_rel']]
         if p.get('case_bk'): pc = [c for c in pc if c['bk'] in p['case_bk']]
         if p.get('case_countries'): pc = [c for c in pc if c['c'] in p['case_countries']]
         if p.get('case_status'): pc = [c for c in pc if c['status'] in p['case_status']]
@@ -366,7 +370,12 @@ def build_patterns(pats, cases, ent, channels):
         for k, cs in byc.items():
             if k not in cmap:
                 rbs = p.get('role_by_status')
-                if rbs:
+                rbf = p.get('role_by')
+                if rbf:
+                    order_ = list(rbf['map'])
+                    best = sorted(cs, key=lambda z: order_.index(z.get(rbf['field'])) if z.get(rbf['field']) in order_ else 99)[0]
+                    cmap[k] = role(rbf['map'].get(best.get(rbf['field']), p.get('case_role', 'Documented case')))
+                elif rbs:
                     best = sorted(cs, key=lambda z: list(rbs).index(z['status']) if z['status'] in rbs else 99)[0]
                     cmap[k] = role(rbs.get(best['status'], p.get('case_role', 'Documented case')))
                 else:
@@ -385,8 +394,9 @@ def build_patterns(pats, cases, ent, channels):
                     if c not in cmap:
                         cmap[c] = role('Presence, no case'); cn[c] = ''
         tl = [dict(t) for t in p.get('timeline', [])]
+        big = len(pc) > 60
         for c in pc:
-            if c.get('y'):
+            if c.get('y') and (not big or (c.get('int') or 3) >= 4):
                 tl.append({'year': c['y'], 'event': c['n'] + ' \u2014 ' + c['c'] + ' (' + c['status'] + ')', 'url': c.get('url', '')})
         tl.sort(key=lambda t: (t['year'], t['event']))
         years = [t['year'] for t in tl if t.get('year')]
