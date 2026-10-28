@@ -40,7 +40,7 @@ def main(out):
         cs = sorted([c for c in cases if c['c'] == k], key=lambda c: c.get('y') or 0)
         t = ['### ' + k,
              'scores: composite %.2f (%s), documented %.2f, reach %.2f, conditions %.2f (state-embedded actors %.1f, resilience %.1f)%s' % (
-                 r['exp'], ['Severe', 'High', 'Moderate', 'Low', 'Minimal'][r['band']], r['doc'], r['reach'], r['cond'], r['sea'], r['res'],
+                 r['cond'], ['Severe', 'High', 'Moderate', 'Low', 'Minimal'][r['band']], r['doc'], r['reach'], r['cond'], r['sea'], r['res'],
                  ' — NO DOCUMENTED CASE: write-up must be marked as an estimate' if r['est'] else '')]
         if r.get('cproxy'): t.append('conditions note: ' + r['cproxy'])
         doc = [on.get(p[0], p[0]) for p in r['pres'] if not p[1]]
