@@ -251,9 +251,9 @@ PATS.append({
 
 # =================================================================== 7. regimes that took children
 REG = {
-    'Dictatorship, occupation or war': ['arg-plan-sistematico-2012', 'arg-abuelas-140', 'esp-franco-children', 'esp-vela-2018', 'chl-illegal-adoptions', 'ury-gelman-2011', 'slv-probusqueda', 'gtm-adoption-trade', 'deu-pol-nazi-kidnapping-rusha', 'ukr-rus-child-deportation', 'ukr-rus-forced-adoption', 'vnm-operation-babylift-1975', 'grc-cold-war-adoptions'],
-    'Colonial or assimilation policy': ['can-sixties-scoop', 'aus-stolen-generations', 'usa-indian-adoption-project', 'can-indian-residential-schools', 'usa-indian-boarding-schools', 'dnk-grl-little-danes', 'fra-reunion-creuse', 'che-kinder-der-landstrasse', 'isr-yemenite-children', 'chn-xinjiang-boarding-schools', 'gbr-child-migration-iicsa'],
-    'Welfare state, church and unmarried mothers': ['irl-mbh-commission-2021', 'aus-forced-adoption-2013', 'gbr-jchr-forced-adoption', 'usa-baby-scoop-era', 'can-maternity-homes-baby-scoop', 'kor-trc-adoption-2025', 'che-administrative-detention'],
+    'Dictatorship or occupation: children given to other families under false identities': ['arg-plan-sistematico-2012', 'arg-abuelas-140', 'esp-franco-children', 'esp-vela-2018', 'chl-illegal-adoptions', 'ury-gelman-2011', 'slv-probusqueda', 'deu-pol-nazi-kidnapping-rusha'],
+    'State schools and programmes where removed children were sexually abused': ['can-indian-residential-schools', 'usa-indian-boarding-schools', 'gbr-child-migration-iicsa', 'che-administrative-detention'],
+    'State-backed adoption systems that falsified children\'s papers': ['irl-mbh-commission-2021', 'kor-trc-adoption-2025'],
 }
 countries, cids = [], []
 for role, ids in REG.items():
@@ -264,14 +264,14 @@ for role, ids in REG.items():
         for a in c.get('also', []) or []:
             if iso(a) and not any(x['iso3'] == iso(a) for x in countries): add(countries, a, role, c['n'] + ' (receiving or involved).')
 PATS.append({
-    'id': 'regimes', 'title': 'Governments that took children', 'kind': 'bloc',
+    'id': 'regimes', 'title': 'Children taken by governments, then abused or given false identities', 'kind': 'bloc',
     'roles': list(REG.keys()),
     'summary': 'Some of the largest removals of children were carried out by states, as policy. Argentina\'s junta took about 500 babies from detained mothers in 1976–83 (a 2012 court found a "systematic plan"; 140 grandchildren had been identified by July 2025). Under Franco, children were taken from Republican and later unmarried mothers. Canada, Australia and the United States removed Indigenous children into residential schools and non-Indigenous families; Denmark sent Greenlandic children to Danish families in 1951; France moved children from Réunion to rural France. Since 2022 Russia has deported Ukrainian children; the International Criminal Court issued arrest warrants in March 2023 for Vladimir Putin and Maria Lvova-Belova over it.',
     'countries': countries, 'case_ids': cids, 'flow_types': ['removal'],
-    'facts': [case_fact(i, limit=380) for i in ['arg-plan-sistematico-2012', 'ukr-rus-child-deportation', 'can-indian-residential-schools', 'dnk-grl-little-danes', 'esp-franco-children'] if i in CASES],
-    'uncertain': 'Numbers of children removed are estimates in most of these cases, and several differ by source (Ukraine\'s government counted 20,651 children deported or forcibly displaced; Russia disputes the framing). Spain\'s courts have not convicted anyone for the stolen babies; the one doctor tried (2018) was acquitted on the statute of limitations.',
+    'facts': [case_fact(i, limit=380) for i in ['arg-plan-sistematico-2012', 'can-indian-residential-schools', 'gbr-child-migration-iicsa', 'kor-trc-adoption-2025', 'esp-vela-2018'] if i in CASES],
+    'uncertain': 'Numbers of children taken are estimates in most of these cases and differ by source. Removals by governments where the records show no sexual abuse and no false identity or sale (for example Australia\'s Stolen Generations, Canada\'s Sixties Scoop, Denmark\'s 1951 Greenland experiment and Russia\'s deportation of Ukrainian children) are not on this map, because it covers abuse and trafficking. Spain\'s courts have convicted nobody for the stolen babies; the one doctor tried (2018) was acquitted on the statute of limitations.',
     'implications': 'These removals were not hidden crimes by outsiders; they were carried out by ministries, courts, churches under government contract and armies, with paperwork. The children taken were nearly always from the group the state was trying to suppress or absorb: political prisoners, Indigenous peoples, colonised islands, unmarried mothers, an occupied country.\n\nThis is the clearest case on the map of abuse and trafficking run from the top. For a reader, the pattern explains why denial lasted decades: the officials who would have investigated belonged to the same state, and recognition came only after a change of government (Argentina after 1983) or a later generation\'s inquiry and apology (Australia\'s apology in 2008, Canada\'s Truth and Reconciliation Commission in 2015, the Netherlands in 2021, South Korea in 2025).',
-    'confirmed_by': [{'title': CASES[i]['n'], 'url': CASES[i]['url']} for i in ['arg-plan-sistematico-2012', 'ukr-rus-child-deportation', 'aus-stolen-generations'] if i in CASES],
+    'confirmed_by': [{'title': CASES[i]['n'], 'url': CASES[i]['url']} for i in ['arg-plan-sistematico-2012', 'can-indian-residential-schools', 'gbr-child-migration-iicsa'] if i in CASES],
 })
 
 # =================================================================== 8. tourism: where offenders go, and where it moved

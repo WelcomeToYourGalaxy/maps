@@ -29,5 +29,20 @@ details.pd summary{cursor:pointer;font-size:12.3px;color:#d6d3df}
 .psec.tg input{margin:0}
 .psec.tg .mute{text-transform:none;letter-spacing:0}
 .lrow input:disabled+span,.chk input:disabled{opacity:.45}
-#det{width:min(640px,calc(100vw - 24px)) !important;max-height:min(80vh,900px) !important;top:50% !important;padding:16px 20px !important}
+#det,#patBox{width:min(640px,calc(100vw - 24px)) !important;max-height:min(80vh,900px) !important;padding:0 20px 16px !important}
+#det:not(.moved),#patBox:not(.moved){top:50% !important}
+#patBox{display:none;position:fixed;z-index:960;left:50%;transform:translate(-50%,-50%);overflow:auto;box-sizing:border-box;background:rgba(8,9,24,.97)}
+#patBox.open{display:block}
+.mbox.moved{transform:none !important}
+.mbox .grip{position:sticky;top:0;z-index:2;height:22px;margin:0 -20px 2px;cursor:move;background:inherit;touch-action:none}
+.mbox .grip::before{content:"";position:absolute;left:50%;top:9px;width:38px;height:4px;margin-left:-19px;border-top:1px solid rgba(255,255,255,.28);border-bottom:1px solid rgba(255,255,255,.28)}
+.mbox .grip:hover::before{border-color:rgba(255,255,255,.55)}
+#detX,#patX{z-index:3;top:2px !important}
+#patX{position:absolute;right:8px;background:none;border:0;color:#bbb;font-size:20px;cursor:pointer;line-height:1}
+#patX:hover{color:#fff}
+.mbox h3{cursor:move}
+#patList .pi{white-space:normal;line-height:1.35;padding-top:4px;padding-bottom:4px}
+#patList .pi.on{background:rgba(141,198,234,.14);color:#fff}
+#patList .pi .sw{flex:none}
+#patClear{font-size:11.5px;margin:4px 0 0}
 .hp h3{font-size:19px}

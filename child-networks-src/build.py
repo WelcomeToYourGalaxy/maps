@@ -105,7 +105,7 @@ def fix_iso(x):
 SKIP_CASES = {'irl-ryan-industrial-schools', 'irl-mother-baby-homes', 'can-mount-cashel-hughes', 'chl-colonia-dignidad-schafer',
               'phl-quiboloy', 'usa-nxivm', 'afg-bacha-bazi-officials', 'gbr-ni-hia-2017',
               'aus-scouts'}   # names individuals with sentences the fact-check could not confirm
-SKIP_FLOWS = set()
+SKIP_FLOWS = {'vnm-babylift', 'vnm-aus-babylift', 'reu-fra-creuse', 'grl-dnk-1951', 'ukr-rus-adoption', 'ukr-rus-deportation', 'ukr-blr-transfer'}   # state removals with no sexual abuse or sale in the record
 
 
 def main():
@@ -320,9 +320,14 @@ def main():
     for f in _sf:
         for k, v in json.load(open(f)).items():
             if k in P and v.get('story'): STORY[k] = {'story': v['story']}
+    _fx = os.path.join(HERE, 'research', 'stories3_fix.json')
+    if os.path.exists(_fx):
+        for k, v in json.load(open(_fx)).items():
+            if k in P and v.get('story'): STORY[k] = {'story': v['story']}
     D = {'P': P, 'C': cases, 'STORY': STORY, 'N': nets, 'F': flows, 'PAT': pats, 'SER': SER, 'SETS': SETS, 'FLOWT': FLOWT, 'STAT': STAT,
          'ERAS': ERAS, 'META': META, 'ABOUT': about}
 
+    json.dump(D, open(os.path.join(HERE, 'data', 'built.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
     sh = lambda f: open(os.path.join(HERE, 'shell', f)).read()
     html = sh('skeleton.html')
     css = sh('style_cb.css') + '\n' + sh('extra.css')
