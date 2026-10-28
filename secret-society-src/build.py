@@ -74,14 +74,10 @@ TYPE_W = {'crime': 1.2, 'bank': 1.0, 'covert': 1.2, 'statenet': 1.2, 'lodge': 1.
 
 BANDS = [['Severe', '#8c2f3e'], ['High', '#a15a66'], ['Moderate', '#7a6b92'], ['Low', '#5b7f8a'], ['Minimal', '#66786a']]
 LENSES = [
-  {'k': 'exp',   'label': 'How deep the hidden hands reach', 'accent': '#7a2f40',
-   'desc': 'A score out of 10. Half is the documented record (recent cases count most), three-tenths is how many tracked organisations have a footing in the country, one-fifth is how easily its officials can be bent. Where nothing is documented, the shade is a best guess and the card says so.'},
-  {'k': 'doc',   'label': 'What has been proven or exposed', 'accent': '#8e4a5b',
-   'desc': 'Only the documented cases: a court verdict counts more than a news report, a president more than a councillor, and this decade more than the last century. Zero means nothing has come to light here yet.'},
-  {'k': 'reach', 'label': 'How many networks have a footing', 'accent': '#5d6f9a',
-   'desc': 'How many of the tracked organisations have a branch, lodge, church, office or school in the country. A footing is not proof of wrongdoing; it is the door influence would come through.'},
   {'k': 'cond',  'label': 'How easily officials can be bent', 'accent': '#4f7d7a',
-   'desc': 'From the Global Organized Crime Index: how often officials use their posts for hidden interests, and how weak the courts, police and watchdogs are that should stop them.'},
+   'desc': 'The shading. From the Global Organized Crime Index: how often officials in a country use their posts for interests outside the state, and how weak the courts, police and watchdogs are that should stop them. It is scored the same way for every country, so the colours can be compared.'},
+  {'k': 'doc',   'label': 'What has come to light here', 'accent': '#8e4a5b',
+   'desc': 'Only what is on this map: a court verdict counts more than a news report, a leader more than a councillor, this decade more than the last century. It follows the filters. It is not a measure of how much infiltration a country has — it tracks how free its courts and press are to find any.'},
 ]
 STATUS_W = {'investigation': 0.55, 'alleged': 0.3, 'convicted': 1.0, 'inquiry': 0.9, 'acknowledged': 0.9, 'designated': 0.8, 'settled': 0.8,
             'indicted': 0.7, 'reported': 0.45, 'annulled': 0.3, 'acquitted': 0.2}
@@ -211,10 +207,9 @@ def main():
     for k in names:
         r = rows_c[k]
         cnd = (r['sea'] + (10 - r['res'])) / 2
-        exp = 0.5 * doc[k] + 0.3 * reach[k] + 0.2 * cnd
-        rows[k] = {'exp': round(exp, 2), 'doc': round(doc[k], 2), 'reach': round(reach[k], 2),
+        rows[k] = {'doc': round(doc[k], 2), 'reach': round(reach[k], 2),
                    'cond': round(cnd, 2), 'sea': r['sea'], 'res': r['res'],
-                   'band': band_of(exp), 'est': doc[k] == 0, 'raw': round(doc_raw[k], 2),
+                   'band': band_of(cnd), 'est': doc[k] == 0, 'raw': round(doc_raw[k], 2),
                    'pres': [[p[0], 1 if p[1] else 0, round(p[2], 3)] for p in present[k]]}
         if r.get('proxy'): rows[k]['cproxy'] = r['proxy']
 
@@ -247,34 +242,15 @@ def main():
         e['int'] = max([c['int'] for c in cs] or [1])
         e['rel'] = 'now' if e['active'] else ('legacy' if any(c.get('rel') in ('now', 'legacy') for c in cs) else 'past')
 
-    # branches: one dot per organisation per country of presence, set on a small fixed ring
-    # around the capital so that a capital holding twenty organisations is still legible
     groups = []
-    for cn in sorted(present):
-        ps = present[cn]
-        if not ps: continue
-        ll = caps.get(cn, {}).get('ll')
-        if not ll: continue
-        n = len(ps)
-        for i, (k, est, _w) in enumerate(sorted(ps)):
-            if n == 1:
-                lat, lng = ll
-            else:
-                ang = 2 * math.pi * i / n
-                rad = 0.28 + 0.02 * n
-                lat = ll[0] + rad * math.sin(ang)
-                lng = ll[1] + rad * math.cos(ang) / max(0.3, math.cos(math.radians(ll[0])))
-            groups.append({'n': oname.get(k, k), 'k': k, 'c': cn, 'lat': round(lat, 4), 'lng': round(lng, 4),
-                           'ty': otype.get(k, 'lodge'), 'est': 1 if est else 0,
-                           'geo': caps[cn].get('cap', '') + ' (national presence, placed at the capital)'})
-    if 'Vatican City' in [c['c'] for c in cases]:
-        pass
 
     routes = []
     for ch in channels:
         routes.append({'n': ch['n'], 'p': ch['p'], 'org': ch.get('org', ''),
                        'note': {'d': ch['d'], 'cite': ch.get('cite', '') + (
                            (' — <a href="' + ch['url'] + '" target="_blank" rel="noopener" style="color:#8fb8c9;">source</a>') if ch.get('url') else '')}})
+
+    spread(case_out); spread(ent)
 
     data = {'rows': rows, 'alias': alias, 'cases': case_out, 'lenses': LENSES, 'bands': BANDS,
             'sectors': TYPES, 'entities': ent, 'casebuckets': CASE_BUCKETS, 'groups': groups,
@@ -326,6 +302,26 @@ def paragraphs(bts):
         v['d'] = para(v['d'])
         out[k] = v
     return out
+
+
+def spread(items):
+    """Many records share one coordinate — 73 of them sit on Washington's. Stacked, only the
+    top one can be clicked. Each is nudged onto a sunflower spiral around its own point, a few
+    kilometres at most, so the cluster still reads as that city and every marker is reachable."""
+    by = {}
+    for x in items:
+        by.setdefault((round(x['lat'], 3), round(x['lng'], 3)), []).append(x)
+    for (lat, lng), xs in by.items():
+        n = len(xs)
+        if n < 2:
+            continue
+        rad = min(0.11, 0.02 + 0.012 * math.sqrt(n))
+        coslat = max(0.25, math.cos(math.radians(lat)))
+        for i, x in enumerate(sorted(xs, key=lambda z: z.get('n', ''))):
+            a = i * 2.39996323
+            d = rad * math.sqrt((i + 0.5) / n)
+            x['lat'] = round(lat + d * math.sin(a), 5)
+            x['lng'] = round(lng + d * math.cos(a) / coslat, 5)
 
 
 def build_patterns(pats, cases, ent, channels):
