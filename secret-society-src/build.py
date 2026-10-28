@@ -24,52 +24,53 @@ OUT = os.path.join(HERE, '..', 'secret_society_infiltration.html')
 # ------------------------------------------------------------------ vocabulary
 CASE_BUCKETS = [
   ['exec', 'Heads of state & government',
-   'Presidents, prime ministers, monarchs and the offices around them. Every South African prime minister and state president from 1948 to 1994 belonged to the Broederbond; here the society did not reach into the state, it chose who ran it.'],
+   'The top job. When a society reaches here it is no longer whispering in the ruler\'s ear; the ruler is one of its own. For 46 years every South African prime minister and president belonged to the same secret Afrikaner society.'],
   ['cabinet', 'Ministers & cabinet',
-   'Ministers and cabinet-level appointees. The 1981 P2 list held three serving ministers; Franco filled his economic ministries with Opus Dei members from 1957.'],
+   'The people who run the ministries and sign off the laws. Franco\'s Spain handed its economy to ministers from one Catholic lay order; in 2014, 15 of Japan\'s 19 cabinet ministers belonged to one nationalist lobby.'],
   ['legis', 'Legislators, parties & local office',
-   'Legislators, parties, governors and mayors. Japan\'s ruling party found that 179 of its 379 lawmakers had ties to the Unification Church after its own 2022 survey.'],
+   'Lawmakers, parties, governors and mayors. Here influence shows up in numbers: in 2022 Japan\'s ruling party found 179 of its 379 lawmakers had dealings with the Unification Church.'],
   ['court', 'Judges & prosecutors',
-   'Judges, prosecutors and the courts. Turkey removed more than 4,000 judges and prosecutors after 2016 as members of the Gülen network, which had spent years placing them.'],
+   'The people who decide which cases are brought and how they end. Turkey says one movement spent decades placing its members on the bench; it has since removed more than 4,000 judges and prosecutors.'],
   ['security', 'Military, intelligence & police',
-   'Armed forces, intelligence services, police and prisons. Both Italian intelligence chiefs in 1981 were on the P2 list; Gladio ran weapons caches inside NATO armies for four decades.'],
+   'Armies, spy services, police and prisons: the parts of the state that carry weapons and keep secrets. In 1981 the heads of all three Italian intelligence services were on one lodge\'s membership list.'],
   ['finance', 'Central banks, state banks & regulators',
-   'Central banks, state and church banks, treasuries and regulators. Banco Ambrosiano collapsed owing about $1.3 billion, much of it through companies the Vatican Bank controlled.'],
+   'Where the money is printed, lent and supervised. When a bank used by a lodge, a church and an intelligence service collapsed in 1982, about $1.3 billion went missing.'],
 ]
 BUCKET_COLOUR = ['#b05666', '#8e6aa6', '#6f8fb5', '#5f9b94', '#848a58', '#a67f74']
 
 TYPES = [
   {'k': 'lodge',   'label': 'Lodges & secret fraternities', 'accent': '#a0606f',
-   'd': 'Masonic lodges, irregular and "covered" lodges, student societies and sworn fraternities with initiation and hidden membership lists.'},
-  {'k': 'order',   'label': 'Religious-political orders & movements', 'accent': '#7d6da6',
-   'd': 'Churches, lay orders and religious movements that place members in public office as a strategy: Opus Dei, the Unification Church, Scientology, the Gülen movement, the Muslim Brotherhood.'},
-  {'k': 'forum',   'label': 'Elite policy forums & clubs', 'accent': '#5d81a8',
-   'd': 'Invitation-only meetings and membership clubs where sitting officials meet finance and industry in private: Bilderberg, the Trilateral Commission, Le Cercle.'},
-  {'k': 'covert',  'label': 'Covert, stay-behind & money networks', 'accent': '#4f8c85',
-   'd': 'Clandestine networks run inside or alongside state services, and the banks built to move their money: Gladio, Condor, the Safari Club, BCCI, Nugan Hand.'},
-  {'k': 'statenet','label': 'State-run influence networks', 'accent': '#94505a',
-   'd': 'Organisations run by one government to recruit officials of another, such as China\'s United Front Work Department.'},
-  {'k': 'intl',    'label': 'International bodies & federations', 'accent': '#9a7f6a',
-   'd': 'Intergovernmental organisations and international federations — Interpol, the WHO, FIFA, the IOC — where member governments or industries reached inside, or whose officials were state officeholders.'},
-  {'k': 'ngo',     'label': 'Foundations, NGOs & intelligence fronts', 'accent': '#7f8f6e',
-   'd': 'Foundations, cultural, student and labour bodies, and development programmes, including those later shown to be funded by an intelligence service: the Congress for Cultural Freedom, the Asia Foundation, the National Endowment for Democracy, the Ford Foundation\'s and USAID\'s economist-training programmes.'},
-  {'k': 'lawnet',  'label': 'Law-writing & ideological networks', 'accent': '#8a8070',
-   'd': 'Networks that draft legislation or supply ministers: ALEC model bills, Atlas Network partners, Mont Pelerin members.'},
+   'd': 'Freemasonry and its offshoots, student secret societies and sworn brotherhoods. Members swear oaths to each other and their membership lists are private.'},
+  {'k': 'order',   'label': 'Religious orders & movements', 'accent': '#7d6da6',
+   'd': 'Churches, lay orders and religious movements that treat getting members into public office as part of their mission: Opus Dei, the Unification Church, the Gülen movement, the Muslim Brotherhood.'},
+  {'k': 'forum',   'label': 'Elite clubs & policy forums', 'accent': '#5d81a8',
+   'd': 'Invitation-only meetings where ministers sit down with bankers and executives away from cameras: Bilderberg, the Trilateral Commission, the World Economic Forum.'},
+  {'k': 'covert',  'label': 'Covert networks & secret banks', 'accent': '#4f8c85',
+   'd': 'Hidden networks run inside or beside a state\'s security services, and the banks that moved their money: NATO\'s stay-behind armies, Operation Condor, BCCI.'},
+  {'k': 'statenet','label': 'One state\'s networks inside another', 'accent': '#94505a',
+   'd': 'Organisations a government runs to recruit or pressure officials of other countries: China\'s United Front, Russia\'s Wagner and Africa Corps, influence funds from the Gulf.'},
+  {'k': 'lawnet',  'label': 'Law-writing & idea networks', 'accent': '#8a8070',
+   'd': 'Think tanks and networks that draft laws or supply ministers: ALEC\'s model bills, Atlas Network partners, the Mont Pelerin Society.'},
+  {'k': 'intl',    'label': 'International bodies', 'accent': '#9a7f6a',
+   'd': 'Bodies meant to serve all their members equally — Interpol, the WHO, FIFA, the IOC — where one government or industry gets a hand on the controls.'},
+  {'k': 'ngo',     'label': 'Foundations & front groups', 'accent': '#7f8f6e',
+   'd': 'Foundations, student, labour and cultural groups, some of them later shown to be paid for by an intelligence service.'},
+  {'k': 'biz',     'label': 'Firms & business networks', 'accent': '#7a7f95',
+   'd': 'Consultancies, accountancies and companies that sit inside ministries or buy their way in: the Guptas in South Africa, McKinsey, PwC, Huawei.'},
 ]
-TYPE_W = {'covert': 1.2, 'statenet': 1.2, 'lodge': 1.0, 'order': 1.0, 'forum': 0.8, 'lawnet': 0.8, 'intl': 0.6, 'ngo': 0.9}
+TYPE_W = {'covert': 1.2, 'statenet': 1.2, 'lodge': 1.0, 'order': 1.0, 'forum': 0.8, 'lawnet': 0.8, 'intl': 0.6, 'ngo': 0.9, 'biz': 0.9}
 
 BANDS = [['Severe', '#8c2f3e'], ['High', '#a15a66'], ['Moderate', '#7a6b92'], ['Low', '#5b7f8a'], ['Minimal', '#66786a']]
 LENSES = [
-  {'k': 'exp',   'label': 'Infiltration (composite)', 'accent': '#7a2f40',
-   'desc': 'Half the documented record, three-tenths organisational reach, one-fifth conditions. Where nothing is documented the figure is an estimate of likelihood, and the popup says so.'},
-  {'k': 'doc',   'label': 'Documented record', 'accent': '#8e4a5b',
-   'desc': 'Every case on the map in this country, weighted by how far it got (a conviction over a press report) and how high it reached (a president over a councillor). Zero means nothing documented here yet.'},
-  {'k': 'reach', 'label': 'Organisational reach', 'accent': '#5d6f9a',
-   'desc': 'How many of the tracked organisations have a documented national presence here — lodges, churches, chapters, schools, member delegations — weighted by type. Presence is not infiltration; it is the channel infiltration would use.'},
-  {'k': 'cond',  'label': 'Conditions (GI-TOC)', 'accent': '#4f7d7a',
-   'desc': 'Mean of GI-TOC\'s state-embedded actors score and inverted resilience: how freely officials act for hidden principals and how little stops them. Says nothing about which network.'},
+  {'k': 'exp',   'label': 'How deep the hidden hands reach', 'accent': '#7a2f40',
+   'desc': 'A score out of 10. Half is the documented record (recent cases count most), three-tenths is how many tracked organisations have a footing in the country, one-fifth is how easily its officials can be bent. Where nothing is documented, the shade is a best guess and the card says so.'},
+  {'k': 'doc',   'label': 'What has been proven or exposed', 'accent': '#8e4a5b',
+   'desc': 'Only the documented cases: a court verdict counts more than a news report, a president more than a councillor, and this decade more than the last century. Zero means nothing has come to light here yet.'},
+  {'k': 'reach', 'label': 'How many networks have a footing', 'accent': '#5d6f9a',
+   'desc': 'How many of the tracked organisations have a branch, lodge, church, office or school in the country. A footing is not proof of wrongdoing; it is the door influence would come through.'},
+  {'k': 'cond',  'label': 'How easily officials can be bent', 'accent': '#4f7d7a',
+   'desc': 'From the Global Organized Crime Index: how often officials use their posts for hidden interests, and how weak the courts, police and watchdogs are that should stop them.'},
 ]
-
 STATUS_W = {'convicted': 1.0, 'inquiry': 0.9, 'acknowledged': 0.9, 'designated': 0.8, 'settled': 0.8,
             'indicted': 0.7, 'reported': 0.45, 'annulled': 0.3, 'acquitted': 0.2}
 OFFICE_W = {'exec': 1.0, 'cabinet': 0.85, 'security': 0.8, 'court': 0.8, 'finance': 0.75, 'legis': 0.65}
@@ -80,6 +81,12 @@ def load(name, default=None):
     if not os.path.exists(p):
         return default
     return json.load(open(p))
+
+
+def recency(y):
+    """A present-tense map: what is happening now counts most."""
+    y = y or 0
+    return 1.0 if y >= 2010 else 0.75 if y >= 1990 else 0.5 if y >= 1945 else 0.3
 
 
 def band_of(v):
@@ -127,7 +134,7 @@ def main():
     doc_raw = {k: 0.0 for k in names}
     for c in cases:
         if c['c'] in doc_raw:
-            doc_raw[c['c']] += STATUS_W.get(c['status'], 0.4) * OFFICE_W.get(c['bk'], 0.6)
+            doc_raw[c['c']] += STATUS_W.get(c['status'], 0.4) * OFFICE_W.get(c['bk'], 0.6) * recency(c.get('y'))
     nz = [v for v in doc_raw.values() if v > 0]
     DCAP = max(1.0, pctl(nz, 0.95))
     doc = {k: (0 if v <= 0 else min(10, 10 * math.log1p(v) / math.log1p(DCAP))) for k, v in doc_raw.items()}
@@ -230,6 +237,8 @@ def main():
     plate = base64.b64encode(open(os.path.join(HERE, 'plate.webp'), 'rb').read()).decode()
     html = html.replace('"__PLATE__"', '"data:image/webp;base64,' + plate + '"')
     html = html.replace('__BASEMAPS__', open(os.path.join(HERE, 'basemaps.js')).read())
+    import story
+    html = html.replace('__STORY__', json.dumps(story.story(data), ensure_ascii=False))
     html = html.replace('__ABOUT__', json.dumps(about.about(data), ensure_ascii=False))
     html = html.replace('var DATA = __DATA__;', 'var DATA = ' + json.dumps(data, ensure_ascii=False, separators=(',', ':')) + ';')
     open(OUT, 'w').write(html)

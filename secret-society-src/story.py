@@ -1,0 +1,27 @@
+"""'About this map': the story of the map, told plainly for a reader who is new to all of it.
+Present tense where things are still going on. Counts are filled in at build time."""
+
+
+def story(data):
+    n_cases = len(data['cases'])
+    n_orgs = len(data['entities'])
+    n_pats = len(data['patterns'])
+    n_now = sum(1 for c in data['cases'] if (c.get('y') or 0) >= 2010)
+    n_cty = len({c['c'] for c in data['cases']})
+    p = []
+    a = p.append
+    a('<h2>About this map</h2>')
+    a('<p>Every government has the part you can see: the elections, the ministers on television, the laws with their names on them. This map is about the part you usually cannot see. It follows organisations that sit inside governments without being part of them — lodges with private oaths, religious movements with a plan for public office, clubs where ministers meet bankers off the record, networks run by one country\'s intelligence service inside another, and international bodies that are meant to be neutral and sometimes are not.</p>')
+    a('<p>Most of the time none of this is visible. A minister does not announce that he answers to a lodge, and a foreign government does not sign the cheques it sends. So how does anyone know? Usually by accident. In March 1981 Italian police, looking into a banker\'s fraud, opened a safe at a businessman\'s factory near Arezzo and found a list of 962 names. On it were the heads of all three of Italy\'s intelligence services, the chief of the armed forces, three serving ministers and 44 members of parliament. They all belonged to one private Masonic lodge, called P2, run by the man who owned the factory, Licio Gelli. When the list was published two months later, the government fell.</p>')
+    a('<p>That is the kind of moment this map is built from: a list found in a raid, a parliament forcing an organisation to hand over its members, a court reading out a verdict, a government admitting what it had denied. Each diamond on the map is one of those moments — %d of them so far, in %d countries. %d of them come from 2010 or later, and many are still unfolding, which is why the map opens on today.</p>' % (n_cases, n_cty, n_now))
+    a('<h3>Why it matters now</h3>')
+    a('<p>It is tempting to treat this as history — the Cold War, the lodges of old Italy. It is not. In the last few years a Japanese court ordered a church dissolved after it emerged that nearly half of the ruling party\'s lawmakers had dealings with it. Members of the European Parliament were charged with taking money from foreign governments. China\'s Communist Party was found running unofficial "police stations" in cities across Europe and North America. Turkey still pursues people abroad for belonging to a movement it says once hollowed out its police and courts. The organisations change; the method stays much the same.</p>')
+    a('<p>The method is worth knowing because it is simple. An organisation does not need to win an election if it can place its people where decisions are prepared: in the ministry that drafts the law, the police unit that decides what to investigate, the court that decides how a case ends, the central bank that decides who gets money. It does not need to break the law if it can host the conversation where the decision is really made. And it does not need to stay hidden forever, only long enough.</p>')
+    a('<h3>How to read it</h3>')
+    a('<p>Start with a country. Click it and you get its story: who is known to have reached inside its government, through which organisation, and what it means for the people who live there. Some countries have a long record; others have none yet, and for those the map gives its best guess of where pressure would most likely come from, clearly marked as a guess.</p>')
+    a('<p>Then open a pattern, in the box at the bottom left. There are %d. Each one follows an arrangement that keeps repeating — the same banks carrying money for intelligence services, the same kind of lodge showing up inside police forces, the same playbook used by different governments to recruit officials abroad. Opening a pattern colours the whole map by the part each country plays in it, so you can see the shape of the thing rather than one piece at a time.</p>' % n_pats)
+    a('<p>The country colours are a score from 0 to 10. Half of it is the documented record, with recent cases counting most. Three-tenths is how many of the %d organisations tracked here have a footing in the country. The last fifth is how easily officials there can be bent, from an independent index of organised crime. Method and sources, in the button beside this one, explains every part.</p>' % n_orgs)
+    a('<h3>A word of caution</h3>')
+    a('<p>Belonging to a lodge, a church or a club is not a crime, and most members of every organisation here have done nothing wrong. A case is on the map because a court, an inquiry or a government found that the organisation, through particular people, reached into a public office — or, where it says so plainly, because serious reporting documented it and no forum has yet tested it. Some findings were later overturned; the map keeps them, with what happened next, because both are part of the story.</p>')
+    a('<p>And the record is lopsided. Countries with free courts and a nosy press find more, so they look worse. A country with no cases on this map may simply be one where nobody has been allowed to look.</p>')
+    return '\n'.join(p)
