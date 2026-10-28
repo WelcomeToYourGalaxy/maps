@@ -23,4 +23,6 @@ def apply(c, patches):
         if pt.get('cite'): c['cite'] = pt['cite']
     for k, v in (pt.get('fixes') or {}).items():
         c[KEYMAP.get(k, k)] = v
+    if isinstance(c.get('d'), str):
+        c['d'] = c['d'].replace('The record also cites', 'Earlier sources not re-checked for this map also cite').replace('is cited by the record for', 'is cited, though it could not be opened for this map, for').replace('The record also cite ', 'Earlier sources not re-checked for this map also cite ').replace('(not re-confirmed in this pass)', '(not re-checked for this map)')
     return c
