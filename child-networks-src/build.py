@@ -110,20 +110,9 @@ SKIP_FLOWS = set()
 def main():
     raw_cases, raw_nets, raw_flows, series, notes = load_research()
     raw_cases = [c for c in raw_cases if c.get('id') not in SKIP_CASES]
-    # fact-check patches: a better source replaces the encyclopedia link, which is kept as the second link
-    patches = {}
-    for f in sorted(glob.glob(os.path.join(HERE, 'research', 'verify_[A-Z].json'))):
-        for pt in json.load(open(f)): patches[pt['id']] = pt
-    for c in raw_cases:
-        pt = patches.get(c.get('id'))
-        if not pt: continue
-        if pt.get('verified') and pt.get('url') and 'wikipedia.org' not in pt['url']:
-            if c.get('url') and c['url'] != pt['url'] and not c.get('url2'): c['url2'] = c['url']
-            c['url'] = pt['url']
-            if pt.get('cite'): c['cite'] = pt['cite']
-        for k, v in (pt.get('fixes') or {}).items():
-            k = {'st': 'status', 'v': 'victims', 'fr': 'first_report', 'iso': 'iso3'}.get(k, k)
-            c[k] = v
+    import patches as _P
+    _pt = _P.load()
+    raw_cases = [_P.apply(c, _pt) for c in raw_cases]
     raw_flows = [f for f in raw_flows if f.get('id') not in SKIP_FLOWS and not (f.get('iso_a') == 'USA' and f.get('iso_b') == 'PER')]
     warn = []
 

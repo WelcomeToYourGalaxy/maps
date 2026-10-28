@@ -13,13 +13,15 @@ from collections import defaultdict, Counter
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 from names import iso as name_iso, PLACES
+import patches as _P
+_PT = _P.load()
 
 R = json.load(open(os.path.join(HERE, 'research', 'patterns_research.json')))['topics']
 CASES, FLOWS, SER = {}, [], {}
 for f in sorted(glob.glob(os.path.join(HERE, 'research', '*.json'))):
     if 'patterns' in f or 'verify' in f: continue
     d = json.load(open(f)); n = os.path.basename(f)[:-5]
-    for c in d.get('cases', []): CASES.setdefault(c['id'], dict(c, _src=n))
+    for c in d.get('cases', []): CASES.setdefault(c['id'], _P.apply(dict(c, _src=n), _PT))
     for x in d.get('flows', []): FLOWS.append(dict(x, _src=n))
     for k, v in (d.get('series') or {}).items(): SER[n + ':' + k] = v
 
@@ -91,7 +93,7 @@ PATS.append({
 })
 
 # =================================================================== 2. years of waiting
-ps = [r for r in rows('protected_status') if r.get('first_report_year') and r.get('first_action_year')]
+ps = [r for r in rows('protected_status') if r.get('first_report_year') and r.get('first_action_year') and "O'Grady" not in r['case']]
 countries = []
 for r in ps:
     dly = r['first_action_year'] - r['first_report_year']
@@ -352,7 +354,7 @@ SPY = [
     ('chl-colonia-dignidad-dina', 'Proven link to a state service'), ('chl-colonia-dignidad-schafer', 'Proven link to a state service'),
     ('deu-colonia-dignidad-acknowledgment', 'Proven link to a state service'), ('deu-kentler-experiment', 'Proven link to a state service'),
     ('afg-bacha-bazi-us-forces', 'Proven link to a state service'), ('bih-iptf-dyncorp-trafficking', 'Proven link to a state service'),
-    ('usa-playpen-pacifier', 'Police ran abuse sites to catch users'), ('usa-operation-torpedo', 'Police ran abuse sites to catch users'), ('can-aus-childs-play', 'Police ran abuse sites to catch users'),
+    ('usa-playpen-pacifier', 'Police ran abuse sites to catch users'), ('can-aus-childs-play', 'Police ran abuse sites to catch users'),
     ('gbr-kincora-intelligence-claims', 'Investigated and disproved'), ('gbr-elm-guest-house', 'Investigated and disproved'), ('gbr-operation-midland', 'Investigated and disproved'),
     ('usa-epstein-intelligence-claims', 'Claimed, not established'), ('bel-x-dossiers', 'Claimed, not established'), ('can-duplessis-orphans', 'Claimed, not established'),
 ]
@@ -370,13 +372,13 @@ if not any(x['iso3'] == 'AUS' for x in countries): add(countries, 'AUS', 'Police
 PATS.append({
     'id': 'spies', 'title': 'When spies, soldiers and police are named', 'kind': 'axis',
     'roles': ORDER,
-    'summary': 'Claims that intelligence services run or protect child-abuse networks are common. The records sort them into what was proven, what was disproved and what is still only claimed. Proven: Chile\'s secret police (DINA) used Colonia Dignidad, whose leader was convicted of abusing 25 children, as a detention and torture site, and Germany admitted its embassy looked away. West Berlin\'s youth authorities placed boys with men known to be paedophiles as foster fathers, from the late 1960s, on a psychologist\'s advice. US troops in Afghanistan were told not to intervene when allied commanders abused boys. UN police monitors and US contractors in Bosnia bought trafficked girls. The FBI and Australian police ran abuse sites for weeks to months to identify users. Disproved: the Kincora inquiry found no evidence MI5 used the home for blackmail; the Met\'s Operation Midland "VIP ring" was invented by a man later jailed for it. Claimed, not established: that Jeffrey Epstein worked for an intelligence agency.',
+    'summary': 'Claims that intelligence services run or protect child-abuse networks are common. The records sort them into what was proven, what was disproved and what is still only claimed. Proven: the founder of Colonia Dignidad in Chile was convicted of abusing children there and charged with aiding the Pinochet regime, which Chilean officials say used the colony to torture opponents, and Germany admitted its embassy looked away. West Berlin\'s youth authorities placed boys with men known to be paedophiles as foster fathers, from the late 1960s, on a psychologist\'s advice. US troops in Afghanistan were told not to intervene when allied commanders abused boys. UN police monitors and US contractors in Bosnia bought trafficked girls. The FBI and Australian police ran abuse sites for weeks to months to identify users. Disproved: the Kincora inquiry found no evidence MI5 used the home for blackmail; the Met\'s Operation Midland "VIP ring" was invented by a man later jailed for it. Claimed, not established: that Jeffrey Epstein worked for an intelligence agency.',
     'countries': countries, 'case_ids': cids,
     'facts': [case_fact(i, 'cover', 420) if CASES[i].get('cover') else case_fact(i, limit=420) for i in ['chl-colonia-dignidad-dina', 'afg-bacha-bazi-us-forces', 'usa-playpen-pacifier', 'gbr-kincora-intelligence-claims', 'usa-epstein-intelligence-claims'] if i in CASES],
     'claims_per_author': [{'claim': 'Jeffrey Epstein "belonged to intelligence", as Alexander Acosta was supposedly told.', 'author_work': 'Vicky Ward, Daily Beast (July 2019), citing an anonymous source; Acosta denied it and the DOJ Office of Professional Responsibility found no evidence', 'url': CASES.get('usa-epstein-intelligence-claims', {}).get('url')},
                           {'claim': 'MI5 or army intelligence used Kincora Boys\' Home to blackmail abusers.', 'author_work': 'Colin Wallace, Brian Gemmell and others; rejected by the Hart inquiry (2017)', 'url': CASES.get('gbr-kincora-intelligence-claims', {}).get('url')}],
     'uncertain': 'The proven cases show state services that used, tolerated or failed to stop abuse; none shows an intelligence service running a child-abuse network as policy. Individual accounts about Kincora and Epstein remain unresolved, and new document releases may change what is known.',
-    'implications': 'The documented record is less cinematic than the rumours and in some ways worse. States did not need secret rings: a dictatorship used a cult\'s compound because it was useful, an allied army\'s abuse of boys was tolerated because the alliance mattered more, a city youth office placed children with known paedophiles for decades, and police chose to keep abuse sites running for weeks to catch more users.\n\nFor a reader, the pattern is a way to sort claims. Ask what an inquiry, a court or the agency\'s own files established. Where that exists, the role of the state was real and named. Where only an anonymous source or a single witness supports it, it stays a claim, and spreading it can damage real cases, as Operation Midland did for survivors whose allegations were later doubted.',
+    'implications': 'The documented record is less cinematic than the rumours and in some ways worse. States did not need secret rings: a dictatorship relied on a cult\'s compound while its leader abused children there, an allied army\'s abuse of boys was tolerated because the alliance mattered more, a city youth office placed children with known paedophiles for decades, and police chose to keep abuse sites running for weeks to catch more users.\n\nFor a reader, the pattern is a way to sort claims. Ask what an inquiry, a court or the agency\'s own files established. Where that exists, the role of the state was real and named. Where only an anonymous source or a single witness supports it, it stays a claim, and spreading it can damage real cases, as Operation Midland did for survivors whose allegations were later doubted.',
     'confirmed_by': [{'title': CASES[i]['n'], 'url': CASES[i]['url']} for i in cids[:8]],
 })
 
