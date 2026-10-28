@@ -521,7 +521,7 @@ function filterBlock() {
     const n = CASES.filter((c) => c[g] === k && fOK(c, g) && yrOK(c) && S.bk[c.bk]).length;
     return '<span class="fc' + (f[g][k] !== false ? " on" : "") + '" data-fg="' + g + '" data-fk="' + k + '" title="' + esc(desc) + '">' + (col ? '<span class="sw dia" style="background:' + col + '"></span>' : '') + esc(label) + '<span class="n">' + n + '</span></span>'; }).join("") + '</div>';
   let h = '<div class="psec">Filter what is shown' + (filtered() ? ' <span class="frst" id="fReset" style="float:right;letter-spacing:0;text-transform:none">reset</span>' : '') + '</div>' +
-    '<div class="desc" style="margin-top:0">Click to switch a kind on or off; double-click to show only that kind. The country shading, the cases, the organisations and the counts all follow.</div>';
+    '<div class="desc" style="margin-top:0">Click to switch a kind on or off. Double-click to show only that kind. The cases, organisations, counts and pattern list all change with the filters.</div>';
   h += '<div class="flab">Who is reaching in</div>' + chips("inf", INF.map((x) => [x.k, x.label, x.d, infCol(x.k)]));
   h += '<div class="flab">Into what</div>' + chips("tgt", TGT.map((t) => [t[0], t[1], t[2]]));
   h += '<div class="flab">Does it still matter today?</div>' + chips("rel", REL.map((t) => [t[0], t[1], t[2]]));
@@ -545,7 +545,7 @@ function wireFilters() {
   const fr = $("#fReset"); if (fr) fr.addEventListener("click", () => { S.f = JSON.parse(F0); refilter(); });
 }
 function buildPat() {
-  let h = '<div class="desc" style="margin-top:0">The cases are not isolated. The same people, banks, lodges and services keep turning up in different countries and decades. Choose one of these to colour the map by the part each country plays in it, and to read the story behind it.</div>';
+  let h = '<div class="desc" style="margin-top:0">Each pattern is one arrangement that appears in many countries. Choose one to colour each country by its part in it and to read the account.</div>';
   // the list follows the filters: with one kind of infiltrator chosen, only its patterns are left
   const patN = (p) => p.cids.reduce((a, i) => { const c = CASES[i]; return a + (c && fOK(c) && yrOK(c) && S.bk[c.bk] ? 1 : 0); }, 0);
   const nOf = {}; PATS.forEach((p) => { nOf[p.id] = filtered() ? patN(p) : p.ncases; });
@@ -574,7 +574,7 @@ function buildLeg() {
       ? INF.map((x) => row("inf:" + x.k, S.f.inf[x.k] !== false, '<span class="sw dia" style="background:' + infCol(x.k) + '"></span>' + esc(x.label), CASES.filter((c) => c.inf === x.k && fOK(c, "inf") && yrOK(c)).length, true) + '<div class="desc" style="padding-left:22px">' + esc(x.d) + '</div>').join("")
       : BUCKETS.map((b, i) => row("bk:" + b[0], S.bk[b[0]], '<span class="sw dia" style="background:' + bcol(i) + '"></span>' + esc(b[1]), CASES.filter((c) => c.bk === b[0] && fOK(c) && yrOK(c)).length, true) + '<div class="desc" style="padding-left:22px">' + esc(b[2]) + '</div>').join("")) +
       '<div class="desc" style="padding-left:4px">Bigger diamonds are more severe cases. Faded ones are suspected or disputed, not proven.</div></div>';
-  h += row("cases", S.cases, '<span class="car" data-open="cases">' + (S.open.cases ? "▾" : "▴") + '</span><span class="sw dia" style="background:' + (S.colBy === "inf" ? infCol("state") : bcol(0)) + '"></span>Cases: someone else\'s people inside', CASES.filter((c) => fOK(c) && yrOK(c) && S.bk[c.bk]).length);
+  h += row("cases", S.cases, '<span class="car" data-open="cases">' + (S.open.cases ? "▾" : "▴") + '</span><span class="sw dia" style="background:' + (S.colBy === "inf" ? infCol("state") : bcol(0)) + '"></span>Cases', CASES.filter((c) => fOK(c) && yrOK(c) && S.bk[c.bk]).length);
   if (S.open.orgs) h += '<div class="up">' + TYPES.map((t) => row("ty:" + t.k, S.ty[t.k], '<span class="sw dot" style="background:' + tcol(t.k) + '"></span>' + esc(t.label), ORGS.filter((o) => o.s === t.k && orgOK(o)).length, true) + '<div class="desc" style="padding-left:22px">' + esc(t.d) + '</div>').join("") + '</div>';
   h += row("orgs", S.orgs, '<span class="car" data-open="orgs">' + (S.open.orgs ? "▾" : "▴") + '</span><span class="sw dot" style="background:' + P.t.forum + ';border:1px solid #f0ece4"></span>Organisations and networks, at their headquarters', ORGS.filter(orgOK).length);
   h += row("routes", S.routes, '<span class="sw bar" style="background:' + P.ln + ';margin-left:12px"></span>Documented channels between places', ROUTES.length);

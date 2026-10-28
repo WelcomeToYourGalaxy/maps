@@ -24,51 +24,49 @@ OUT = os.path.join(HERE, '..', 'secret_society_infiltration.html')
 # ------------------------------------------------------------------ vocabulary
 CASE_BUCKETS = [
   ['exec', 'Heads of state & government',
-   'The top job. When a society reaches here it is no longer whispering in the ruler\'s ear; the ruler is one of its own. For 46 years every South African prime minister and president belonged to the same secret Afrikaner society.'],
+   'Presidents, prime ministers, monarchs and their offices and families. Every South African prime minister and president from 1948 to 1994 belonged to the Afrikaner Broederbond, a secret society.'],
   ['cabinet', 'Ministers & cabinet',
-   'The people who run the ministries and sign off the laws. Franco\'s Spain handed its economy to ministers from one Catholic lay order; in 2014, 15 of Japan\'s 19 cabinet ministers belonged to one nationalist lobby.'],
+   'Ministers and officials of cabinet rank, who run ministries and sign off laws. In 2014, 15 of Japan\'s 19 cabinet ministers were members of Nippon Kaigi, a nationalist lobby.'],
   ['legis', 'Legislators, parties & local office',
-   'Lawmakers, parties, governors and mayors. Here influence shows up in numbers: in 2022 Japan\'s ruling party found 179 of its 379 lawmakers had dealings with the Unification Church.'],
+   'Members of parliament, parties, governors, mayors and town councils. In 2022 Japan\'s ruling party found that 179 of its 379 members of parliament had dealings with the Unification Church.'],
   ['court', 'Judges & prosecutors',
-   'The people who decide which cases are brought and how they end. Turkey says one movement spent decades placing its members on the bench; it has since removed more than 4,000 judges and prosecutors.'],
+   'The people who decide which cases are brought and how they end. Turkey has removed more than 4,000 judges and prosecutors it says belonged to the Gülen movement.'],
   ['security', 'Military, intelligence & police',
-   'Armies, spy services, police and prisons: the parts of the state that carry weapons and keep secrets. In 1981 the heads of all three Italian intelligence services were on one lodge\'s membership list.'],
+   'Armies, spy services, police forces and prisons. In 1981 the heads of all three Italian intelligence services were on the membership list of the P2 lodge.'],
   ['finance', 'Central banks, state banks & regulators',
-   'Where the money is printed, lent and supervised. When a bank used by a lodge, a church and an intelligence service collapsed in 1982, about $1.3 billion went missing.'],
-]
-CASE_BUCKETS += [
+   'Central banks, state-owned banks, finance ministries and the agencies that supervise banks. Banco Ambrosiano, whose chairman belonged to P2, collapsed in 1982 with about $1.3 billion unaccounted for.'],
   ['intl', 'International bodies',
-   'Bodies meant to serve all their members equally: UN agencies, Interpol, the World Bank, FIFA and the IOC, and the European Parliament. Interpol\'s red notices, meant for fugitives, have been used by governments to chase their critics abroad.'],
+   'UN agencies, Interpol, the World Bank, FIFA, the IOC and the European Parliament. Governments have used Interpol red notices, meant for fugitives, to pursue critics living abroad.'],
   ['company', 'Inside companies',
-   'Banks, shippers, tech firms and factories with someone else\'s people inside: a spy service owning a cipher-machine maker, cartels using a bank\'s branch staff, a government placing workers under false names.'],
+   'Banks, shipping lines, technology firms and other companies with an outside group\'s people on the staff. The CIA and West German intelligence secretly owned Crypto AG, a Swiss maker of encryption machines sold to about 120 governments.'],
 ]
 BUCKET_COLOUR = ['#b05666', '#8e6aa6', '#6f8fb5', '#5f9b94', '#848a58', '#a67f74']
 
 TYPES = [
   {'k': 'lodge',   'label': 'Lodges & secret fraternities', 'accent': '#a0606f',
-   'd': 'Freemasonry and its offshoots, student secret societies and sworn brotherhoods. Members swear oaths to each other and their membership lists are private.'},
+   'd': 'Freemasonry and its offshoots, student secret societies and sworn brotherhoods. Members take oaths to each other and keep their membership lists private.'},
   {'k': 'order',   'label': 'Religious orders & movements', 'accent': '#7d6da6',
-   'd': 'Churches, lay orders and religious movements that treat getting members into public office as part of their mission: Opus Dei, the Unification Church, the Gülen movement, the Muslim Brotherhood.'},
+   'd': 'Churches, lay orders and religious movements that work to get members into public office, such as Opus Dei, the Unification Church and the Gülen movement.'},
   {'k': 'forum',   'label': 'Elite clubs & policy forums', 'accent': '#5d81a8',
-   'd': 'Invitation-only meetings where ministers sit down with bankers and executives away from cameras: Bilderberg, the Trilateral Commission, the World Economic Forum.'},
+   'd': 'Invitation-only meetings of ministers, bankers and executives, held in private: Bilderberg, the Trilateral Commission, the World Economic Forum.'},
   {'k': 'covert',  'label': 'Covert networks & secret banks', 'accent': '#4f8c85',
-   'd': 'Hidden networks run inside or beside a state\'s security services, and the banks that moved their money: NATO\'s stay-behind armies, Operation Condor, BCCI.'},
+   'd': 'Secret networks run inside or alongside a state\'s security services, and the banks that moved their money: NATO\'s stay-behind networks, Operation Condor, BCCI.'},
   {'k': 'statenet','label': 'One state\'s networks inside another', 'accent': '#94505a',
-   'd': 'Organisations a government runs to recruit or pressure officials of other countries: China\'s United Front, Russia\'s Wagner and Africa Corps, influence funds from the Gulf.'},
+   'd': 'Organisations a government uses to recruit or pressure officials of other countries: China\'s United Front Work Department, Russia\'s Africa Corps, Gulf funding programmes.'},
   {'k': 'lawnet',  'label': 'Law-writing & idea networks', 'accent': '#8a8070',
    'd': 'Think tanks and networks that draft laws or supply ministers: ALEC\'s model bills, Atlas Network partners, the Mont Pelerin Society.'},
   {'k': 'intl',    'label': 'International bodies', 'accent': '#9a7f6a',
-   'd': 'Bodies meant to serve all their members equally — Interpol, the WHO, FIFA, the IOC — where one government or industry gets a hand on the controls.'},
+   'd': 'Bodies that are supposed to serve all their member countries equally, such as Interpol, the WHO, FIFA and the IOC, where one government or industry has gained control of decisions.'},
   {'k': 'ngo',     'label': 'Foundations & front groups', 'accent': '#7f8f6e',
-   'd': 'Foundations, student, labour and cultural groups, some of them later shown to be paid for by an intelligence service.'},
+   'd': 'Foundations and student, labour and cultural groups, including some later shown to have been paid for by an intelligence service.'},
   {'k': 'biz',     'label': 'Firms & business networks', 'accent': '#7a7f95',
-   'd': 'Consultancies, accountancies and companies that sit inside ministries or buy their way in: the Guptas in South Africa, McKinsey, PwC, Huawei.'},
+   'd': 'Consultancies, accountancies and companies that placed staff in ministries or paid officials: the Gupta family\'s firms in South Africa, McKinsey, PwC, Huawei.'},
 ]
 TYPES += [
   {'k': 'crime', 'label': 'Organised crime groups', 'accent': '#8e4a52',
-   'd': 'Mafias, cartels, gangs and clans that buy or place officials so their business can go on: the \'Ndrangheta, the Sinaloa Cartel, Brazil\'s PCC, Japan\'s yakuza.'},
+   'd': 'Mafias, cartels, gangs and clans that pay or place officials to protect their business: the \'Ndrangheta, the Sinaloa Cartel, Brazil\'s PCC, Japan\'s yakuza.'},
   {'k': 'bank', 'label': 'Banks & banking families', 'accent': '#5f7f86',
-   'd': 'Banks, financial houses and banking families whose loans, partners or private meetings shaped what governments did: J.P. Morgan, the Rothschilds, Goldman Sachs.'},
+   'd': 'Banks, financial houses and banking families whose loans, former staff or private meetings affected government decisions: J.P. Morgan, the Rothschilds, Goldman Sachs.'},
 ]
 TYPE_W = {'crime': 1.2, 'bank': 1.0, 'covert': 1.2, 'statenet': 1.2, 'lodge': 1.0, 'order': 1.0, 'forum': 0.8, 'lawnet': 0.8, 'intl': 0.6, 'ngo': 0.9, 'biz': 0.9}
 
@@ -85,21 +83,21 @@ OFFICE_W = {'company': 0.5, 'intl': 0.0, 'exec': 1.0, 'cabinet': 0.85, 'security
 
 
 INF = [
-  {'k': 'state', 'label': 'Governments & spy services', 'd': 'One country\'s government, intelligence service or ruling party reaching inside another country\'s government, an international body, or companies.'},
-  {'k': 'crime', 'label': 'Organised crime', 'd': 'Cartels, mafias, gangs and clans buying or placing officials and staff so their business can carry on.'},
-  {'k': 'corp', 'label': 'Companies & industries', 'd': 'Firms and whole industries reaching into the bodies meant to regulate them, buy from them, or tax them: bribes, lobbyists, consultants placed in ministries, the revolving door.'},
-  {'k': 'money', 'label': 'Banks & banking families', 'd': 'Banks, financial houses and banking families whose loans, partners and private meetings shaped what governments did.'},
+  {'k': 'state', 'label': 'Governments & spy services', 'd': 'A government, its intelligence service or its ruling party placing or paying people inside another country\'s government, an international body or a company.'},
+  {'k': 'crime', 'label': 'Organised crime', 'd': 'Cartels, mafias, gangs and clans that pay or place officials and company staff to protect their business.'},
+  {'k': 'corp', 'label': 'Companies & industries', 'd': 'Companies and industries that pay, lobby or place staff in the agencies that regulate them, buy from them or tax them, including officials who move between the two.'},
+  {'k': 'money', 'label': 'Banks & banking families', 'd': 'Banks, financial houses and banking families whose loans, former staff or private meetings affected government decisions.'},
   {'k': 'lodge', 'label': 'Secret societies & lodges', 'd': 'Freemasonry and its offshoots, sworn brotherhoods and student secret societies whose members hold office.'},
-  {'k': 'faith', 'label': 'Religious movements', 'd': 'Churches, orders and religious movements that work to place members in public office or bend it to their aims.'},
-  {'k': 'elite', 'label': 'Elite clubs & policy networks', 'd': 'Invitation-only forums, think tanks, foundations and legal networks that supply ministers, draft laws or host the private conversation.'},
-  {'k': 'movement', 'label': 'Political & armed movements', 'd': 'Political movements and armed groups that work inside the state: the Muslim Brotherhood, Hezbollah, the Grey Wolves, militias with seats in government.'},
+  {'k': 'faith', 'label': 'Religious movements', 'd': 'Churches, orders and religious movements that work to get members into public office or to win policies from those in it.'},
+  {'k': 'elite', 'label': 'Elite clubs & policy networks', 'd': 'Invitation-only forums, think tanks, foundations and legal networks that supply ministers, draft laws or host private meetings of officials.'},
+  {'k': 'movement', 'label': 'Political & armed movements', 'd': 'Political movements and armed groups with members in state posts: the Muslim Brotherhood, Hezbollah, the Grey Wolves, militias with seats in government.'},
   {'k': 'lender', 'label': 'Lenders & their conditions', 'd': 'The IMF, the World Bank and other lenders, when the conditions on their loans decide a country\'s laws and budgets.'},
 ]
 TGT = [['gov', 'Governments', 'National and local governments: leaders, ministers, parliaments, courts, police, armies, spy services, central banks.'],
        ['intl', 'International bodies', 'UN agencies, Interpol, the World Bank, sports federations, the European Parliament.'],
        ['company', 'Companies', 'Banks and firms with someone else\'s people inside.']]
 REL = [['now', 'Happening now', 'Still going on, still in force, still in court, or the people are still in office.'],
-       ['legacy', 'Over, but still felt', 'Finished, but it left a law, an institution, a debt, a captured agency or an unpunished crime that shapes things today.'],
+       ['legacy', 'Over, but still felt', 'Finished, but it left a law, an institution, a debt, an agency still run by the same people, or a crime nobody was punished for.'],
        ['past', 'Historical', 'Over, with little direct effect today.']]
 LIK = [['established', 'Proven', 'A court verdict, an official inquiry, a government designation, a settlement or an admission.'],
        ['probable', 'Probable', 'Charged, under official investigation, or documented by reporting with documents behind it.'],
