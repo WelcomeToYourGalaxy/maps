@@ -216,7 +216,7 @@ def main():
             'sectors': TYPES, 'entities': ent, 'casebuckets': CASE_BUCKETS, 'groups': groups,
             'routes': routes, 'quarantine': [], 'dupes': [], 'qdup': [], 'notes': [], 'noted': 0,
             'patterns': build_patterns(load('patterns.json', []), case_out, ent, channels),
-            'bts': load('bts.json', {}),
+            'bts': paragraphs(load('bts.json', {})),
             'reloc': [], 'cnotes': cnotes, 'gtypes': TYPES, 'recovered': [],
             'orgnames': oname, 'orgtypes': otype,
             'offpres': {k: [[p[0], 1 if p[1] else 0] for p in present[k]] for k in OFFSETS if present.get(k)},
@@ -235,6 +235,21 @@ def main():
     open(OUT, 'w').write(html)
     print('wrote', os.path.relpath(OUT), round(os.path.getsize(OUT) / 1e6, 2), 'MB;',
           len(case_out), 'cases,', len(ent), 'orgs,', len(groups), 'branches,', len(routes), 'channels')
+
+
+def paragraphs(bts):
+    """Long write-ups read as one wall of text in a 300-pixel box. Break them into
+    paragraphs of three sentences. A sentence ends at a full stop after a lower-case letter,
+    digit or closing bracket/quote, followed by a capital, so initials such as 'J. P.' hold."""
+    out = {}
+    for k, v in bts.items():
+        v = dict(v)
+        s = re.split(r'(?<=[a-z0-9\)\]\u2019\'"])\. (?=[A-Z\u00c0-\u00de])', v['d'])
+        if len(v['d']) > 650 and len(s) > 3:
+            s = [x if x.endswith('.') else x + '.' for x in s]
+            v['d'] = '<br><br>'.join(' '.join(s[i:i + 3]) for i in range(0, len(s), 3))
+        out[k] = v
+    return out
 
 
 def build_patterns(pats, cases, ent, channels):

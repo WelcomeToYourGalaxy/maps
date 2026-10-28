@@ -20,7 +20,8 @@ RUNDOWN = '''<div class="wire-lead">
       </div>
       '''
 
-EST_CSS = '''<style>
+EST_CSS = '''</style>
+<style>
   .est-band{background:#353a4c !important;color:#d6d0d6 !important;}
   .est-n{border-left-color:#7a6b92 !important;background:rgba(122,107,146,0.09) !important;color:#c9c2d2 !important;}
   .est-n b{color:#ddd3e6 !important;}
