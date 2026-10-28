@@ -39,8 +39,8 @@ def main(out):
         r = rows[k]
         cs = sorted([c for c in cases if c['c'] == k], key=lambda c: c.get('y') or 0)
         t = ['### ' + k,
-             'scores: composite %.2f (%s), documented %.2f, reach %.2f, conditions %.2f (state-embedded actors %.1f, resilience %.1f)%s' % (
-                 r['cond'], ['Severe', 'High', 'Moderate', 'Low', 'Minimal'][r['band']], r['doc'], r['reach'], r['cond'], r['sea'], r['res'],
+             'shading (Global Organized Crime Index): %.2f of 10, band %s (officials acting for outside interests %.1f; courts, police and watchdogs %.1f)%s' % (
+                 r['cond'], ['Severe', 'High', 'Moderate', 'Low', 'Minimal'][r['band']], r['sea'], r['res'],
                  ' — NO DOCUMENTED CASE: write-up must be marked as an estimate' if r['est'] else '')]
         if r.get('cproxy'): t.append('conditions note: ' + r['cproxy'])
         doc = [on.get(p[0], p[0]) for p in r['pres'] if not p[1]]
