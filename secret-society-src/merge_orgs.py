@@ -76,6 +76,7 @@ def main(rdir):
             o['inf'] = {'lodge': 'lodge', 'order': 'faith', 'forum': 'elite', 'lawnet': 'elite', 'ngo': 'elite', 'covert': 'state',
                         'statenet': 'state', 'biz': 'corp', 'crime': 'crime', 'bank': 'money', 'intl': 'intl_target'}.get(o['ty'], 'elite')
             print('  unclassified org, inf from type:', o['k'], o['inf'])
+        if o['k'] in ('wada', 'world_athletics', 'un', 'opcw', 'icc'): o['inf'] = 'intl_target'
         o.setdefault('active', o.get('status', 'active') in ('active', '') and not o.get('ended'))
         o.setdefault('wide', 2)
     json.dump({'orgs': orgs, 'channels': chans}, open(os.path.join(HERE, 'data', 'orgs.json'), 'w'), ensure_ascii=False, indent=1)

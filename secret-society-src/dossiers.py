@@ -55,7 +55,10 @@ def main(out):
         if cs:
             t.append('documented cases (%d):' % len(cs))
             for c in cs:
-                t.append('- [%s, %s, %s] %s — %s. %s Source: %s' % (c.get('y'), c['status'], c.get('on', ''), c['n'], c.get('rank', ''), c['d'], c.get('cite', '')))
+                t.append('- [%s; %s; how sure: %s; %s; severity %s/5; reach %s/5] %s → %s. %s — %s. %s Source: %s' % (
+                    c.get('y'), c['status'], c.get('lik'), {'now': 'happening now', 'legacy': 'over but still felt', 'past': 'historical'}.get(c.get('rel'), ''),
+                    c.get('int'), c.get('wide'), c.get('who') or c.get('on', ''), {'gov': 'government', 'intl': 'international body', 'company': 'company'}.get(c.get('tgt'), ''),
+                    c['n'], c.get('rank', ''), c['d'], c.get('cite', '')))
         groups.setdefault(region(k), []).append('\n'.join(t))
     os.makedirs(out, exist_ok=True)
     for g, items in groups.items():
