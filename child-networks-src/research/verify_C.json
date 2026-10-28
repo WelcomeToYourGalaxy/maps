@@ -307,7 +307,7 @@
   "fixes": {
    "d": "Aboriginal and Torres Strait Islander children were forcibly removed from their families under government policies roughly between 1910 and 1970 and placed in institutions, missions, foster or adoptive families. The Human Rights and Equal Opportunity Commission's 1997 report 'Bringing Them Home' estimated that between one in three and one in ten Indigenous children were forcibly removed in that period, and recommended a national apology; Prime Minister John Howard refused, and Prime Minister Kevin Rudd apologised on 13 February 2008. Redress schemes followed, including Tasmania (2006) and NSW (2017), and in August 2021 a A$378 million Commonwealth scheme paying A$75,000 to each eligible survivor removed in the Northern Territory, the ACT or the Jervis Bay Territory (about 3,600 people)."
   },
-  "note": "ABC confirms A$378m scheme, A$75,000 each, NT/ACT/Jervis Bay, ~3,600 survivors. Guardian confirms the apology was BTH recommendation 5, refused by Howard, delivered by Rudd 2008. 'One in three to one in ten' is the well-known BTH estimate but the HREOC/AustLII pages could not be opened (blocked/permission not granted). Record wrongly attached the NSW A$75,000 figure — that amount is the 2021 Commonwealth scheme payment; NSW and Tasmania amounts not checked, so dropped. Rephrased 'in some regions' to BTH's national estimate (from memory of the report — caller may wish to re-check against BTH ch.2)."
+  "note": "ABC confirms A$378m scheme, A$75,000 each, NT/ACT/Jervis Bay, ~3,600 survivors. Guardian confirms the apology was BTH recommendation 5, refused by Howard, delivered by Rudd 2008. 'One in three to one in ten' is the well-known BTH estimate but the HREOC/AustLII pages could not be opened (blocked/permission not granted). Record wrongly attached the NSW A$75,000 figure — that amount is the 2021 Commonwealth scheme payment; NSW and Tasmania amounts not checked, so dropped. Rephrased 'in some regions' to BTH's national estimate — this national-estimate wording is NOT confirmed in a source opened this session; re-check against Bringing Them Home ch.2 before publishing."
  },
  {
   "id": "can-sixties-scoop",
@@ -628,5 +628,178 @@
    "d": "An internal UN document revealed by The Guardian in April 2015 recorded interviews with six boys aged 9 to 13 who said French soldiers of Operation Sangaris had sexually abused them between December 2013 and June 2014 at the displaced persons' camp at Bangui's M'Poko airport, in exchange for food rations. The Paris prosecutor had opened a preliminary inquiry in July 2014; the investigation eventually covered accusations by fifteen children, most interviewed in Bangui in 2015 and 2016. In January 2018 French investigating judges dismissed the case (non-lieu) for lack of sufficient charges, citing inconsistencies in testimony; the prosecutor said 'it cannot be affirmed at the end of the investigation that no sexual abuse was committed'. No soldier was charged."
   },
   "note": "Le Figaro/AFP confirms six boys aged 9–13, Dec 2013–June 2014, M'Poko, food rations, July 2014 inquiry, 15 children in total, non-lieu and prosecutor quote. Corrected '16 French soldiers abused about ten children' (not in source). 'CAR authorities deplored the decision' not in text extracted; removed. Exact non-lieu date (Le Figaro says 'ce jeudi', i.e. 11 Jan 2018) consistent."
+ },
+ {
+  "id": "khm-untac-1992",
+  "verified": false,
+  "url": "https://documents.un.org/api/symbol/access?s=A/51/306&l=en&t=pdf",
+  "cite": "Graça Machel, Impact of Armed Conflict on Children, UN doc A/51/306, 26 August 1996",
+  "fixes": {},
+  "note": "Machel study (opened) confirms the general peacekeeping–child prostitution link, Cambodia–Thailand trafficking and Phnom Penh figure. The core UNTAC prostitution figures are only on Wikipedia — and Wikipedia says 'over 20,000', not 'more than 25,000' as the record had (suggested fix included). Marked unverified because the UNTAC-specific claim lacks a non-Wikipedia source. SUGGESTED d (not applied because unverified): The arrival of UNTAC's roughly 22,000 military and civilian personnel in 1992 was followed, according to figures cited by Wikipedia, by a rise in the number of sex workers in Cambodia from about 6,000 in 1991 to over 20,000, and by abuse of Cambodian women; the UN did not keep thorough records of allegations at the time. The 1996 Machel study for the UN found that in 6 of 12 country studies the arrival of peacekeeping troops was associated with a rapid rise in child prostitution, recorded children trafficked from Cambodia to brothels in Thailand, and estimated that about 100 children a month were being sold into prostitution in Phnom Penh. Child-specific findings against UNTAC personnel are not documented in the sources consulted."
+ },
+ {
+  "id": "usa-laion-csam-2023",
+  "verified": true,
+  "url": "https://www.404media.co/laion-datasets-removed-stanford-csam-child-abuse/",
+  "cite": "404 Media, 20 December 2023 (reporting Stanford Internet Observatory study)",
+  "fixes": {
+   "d": "In December 2023 a Stanford Internet Observatory study found 3,226 suspected instances of child sexual abuse material in LAION-5B, a dataset used to train Stable Diffusion and other image generators, 1,008 of them externally validated. LAION, the German non-profit that created it, temporarily took down LAION-5B and LAION-400M to check them before republishing. NCMEC has reported that its 2025 CyberTipline data included more than 12,000 reports involving CSAM found in AI training data."
+  },
+  "note": "404 Media confirms Stanford figures (3,226 / 1,008) and removal. The NCMEC 'first look at 2025 data' blog URL in url2 now returns 404; the 12,000 figure could not be re-confirmed — caller may want to drop that sentence or find the current NCMEC URL."
+ },
+ {
+  "id": "usa-grok-undress-2025",
+  "verified": true,
+  "url": "https://www.rnz.co.nz/news/top/583105/elon-musk-s-grok-under-fire-after-complaints-it-undressed-minors-in-photos",
+  "cite": "AFP via RNZ, 3 January 2026; NCMEC CyberTipline data page (2025 data)",
+  "fixes": {
+   "d": "After X rolled out an 'edit image' button for its Grok chatbot in late December 2025, users complained that it was being used to partially or completely remove clothing from pictures of women and children. On 2 January 2026 Grok posted that it had 'identified lapses in safeguards' and was 'urgently fixing them', adding that CSAM is illegal and prohibited; xAI replied to AFP with an automated message saying 'the mainstream media lies'. In August 2026 a plaintiff ('Jane Doe') sued, alleging Grok was trained on abuse material of her and that the Canadian Centre for Child Protection had found Grok-generated AI CSAM depicting her. NCMEC listed X.AI LLC among companies most of whose CyberTipline reports lacked enough information to locate offences, while noting improvements in early 2026. These are allegations."
+  },
+  "note": "AFP/RNZ confirms the edit-image rollout, complaints about minors, Grok's 'lapses in safeguards' statement. NCMEC CyberTipline data page confirms X.AI LLC listed (and notes 2026 improvements). The August 2026 'Jane Doe' lawsuit was not checked (Wikipedia only) — caller may want to verify or drop it."
+ },
+ {
+  "id": "usa-apple-csam-withdrawn",
+  "verified": true,
+  "url": "https://www.wired.com/story/apple-photo-scanning-csam-communication-safety-messages/",
+  "cite": "Wired, 7 December 2022",
+  "fixes": {
+   "d": "In August 2021 Apple announced a plan to scan photos stored in iCloud for known child sexual abuse material on users' devices. After criticism from privacy and security researchers it paused the plan, and on 7 December 2022 told Wired it had decided not to move forward with the CSAM detection tool for iCloud Photos, focusing instead on its opt-in 'Communication Safety' features for children's accounts. Wikipedia reports that Apple had scanned iCloud Mail attachments for abuse imagery since 2019."
+  },
+  "note": "Wired confirms Aug 2021 plan, Dec 2022 cancellation, Apple quote. 'Scanning iCloud Mail since 2019' is only via Wikipedia — attributed."
+ },
+ {
+  "id": "gbr-online-safety-act",
+  "verified": true,
+  "url": "https://www.legislation.gov.uk/ukpga/2023/50/introduction",
+  "cite": "Online Safety Act 2023 (c. 50), legislation.gov.uk; The Guardian, 28 July 2025",
+  "fixes": {
+   "d": "The Online Safety Act 2023 received royal assent on 26 October 2023. It provides for the regulation by Ofcom of certain internet services, including their handling of illegal content such as child sexual abuse material and content harmful to children. Its child-protection duties, including age checks for sites with certain adult content, came into force in late July 2025."
+  },
+  "note": "Legislation.gov.uk confirms royal assent 26 Oct 2023 and Ofcom role. Guardian (28 July 2025) confirms the child-safety/age-verification parts came into force 'last week' — consistent with Ofcom's 25 July 2025 deadline, but that exact date was not seen in a source opened."
+ },
+ {
+  "id": "usa-kosa-earn-it",
+  "verified": true,
+  "url": "https://www.nbcnews.com/politics/congress/senate-poised-pass-significant-child-online-safety-bills-decades-rcna164259",
+  "cite": "NBC News, 30 July 2024; NCMEC, 'Spike in online crimes against children', 2025",
+  "fixes": {
+   "d": "The EARN IT Act, which would condition platforms' liability shield on child-safety practices, was introduced in 2020, 2022 and 2023 and died in committee. The Kids Online Safety Act passed the Senate 91–3 on 30 July 2024 but did not pass the House that Congress; it was reintroduced in May 2025, and in June 2026 the House Energy and Commerce Committee reportedly agreed a revised version. The REPORT Act, passed in 2024, expanded platforms' mandatory reporting to NCMEC to include online enticement and child sex trafficking and raised fines for failing to report; NCMEC attributed a jump in child sex trafficking reports, from 5,976 in the first half of 2024 to 62,891 in the first half of 2025, to the law. The TAKE IT DOWN Act was signed in May 2025."
+  },
+  "note": "NBC confirms KOSA Senate vote 91–3 on 30 July 2024. NCMEC confirms REPORT Act passed 2024 and its effects. EARN IT history, May 2025 reintroduction, June 2026 committee deal (Reuters/Politico pages did not load) and TAKE IT DOWN details are via Wikipedia only — softened ('reportedly'); 'without a duty of care, folded into the KIDS Act' removed as unconfirmed. TAKE IT DOWN 'took effect 19 May 2025' changed to 'signed in May 2025' (not opened; caller may verify)."
+ },
+ {
+  "id": "aus-esafety-online-safety",
+  "verified": true,
+  "url": "https://www.bbc.com/news/articles/c89vjj0lxx9o",
+  "cite": "BBC News, 28 November 2024; Federal Register of Legislation, Online Safety Act 2021 (No. 76, 2021)",
+  "fixes": {
+   "d": "Australia's Online Safety Act 2021 (Act No. 76 of 2021) gives the eSafety Commissioner removal and transparency powers over online services. On 28 November 2024 parliament approved a ban on children under 16 using social media, to be enforced by the eSafety regulator with fines of up to A$50 million for non-compliant companies, taking effect at least 12 months later. Wikipedia reports that Roblox, initially excluded, was to be covered by protocols from March 2026, and that in June 2020 Australia passed the Crimes Legislation Amendment (Sexual Crimes Against Children and Community Protection Measures) Act, which IJM said recognised Australians' role in demand for livestreamed abuse."
+  },
+  "note": "BBC confirms Nov 2024 under-16 ban, A$50m fines, eSafety enforcement. Federal Register confirms the 2021 Act (No. 76). 'Enacted June 2021' not confirmed (assent was July 2021 per memory; dropped). Roblox protocols and 2020 Crimes Legislation Amendment/IJM statement are Wikipedia-only — attributed."
+ },
+ {
+  "id": "eu-chat-control-csar",
+  "verified": false,
+  "url": "",
+  "cite": "",
+  "fixes": {},
+  "note": "Primary sources (European Parliament press releases of 25 March and 29 June 2026, Council press release of 23 July 2026, EUR-Lex Regulation (EU) 2026/1881) are listed on Wikipedia but all were blocked (403 / browser check / permission not granted). The 2026 sequence (lapse on 3 April 2026, new derogation adopted 24 July and published 28 July 2026) is therefore unconfirmed outside Wikipedia. COM(2022) 209 and Regulation 2021/1232 are long-established facts but were not opened either."
+ },
+ {
+  "id": "pan-operacion-roblox-2024",
+  "verified": true,
+  "url": "https://www.prensa.com/judiciales/operacion-roblox-aprehenden-a-un-hombre-por-contacto-ilicito-con-menores-a-traves-de-la-plataforma-de-videojuegos/",
+  "cite": "La Prensa (Panamá), 23 October 2024",
+  "fixes": {
+   "who": "A man in Puerto Caimito, La Chorrera (Panamá Oeste), arrested in 'Operación Roblox'",
+   "d": "On 23 October 2024 Panama's National Police and Public Ministry carried out 'Operación Roblox' in Puerto Caimito, La Chorrera district, arresting a man accused of illicit contact with minors through the Roblox gaming platform and of threatening them to demand child sexual abuse material. The alert came from Spanish police investigating a child sexual abuse material network; phones and laptops were seized and investigations were continuing."
+  },
+  "note": "La Prensa confirms October 2024, Spanish police tip, coercion of minors for CSAM via Roblox. Correction: the operation arrested one man (not 'dismantled a network'); the 'network' was the Spanish investigation. Name of arrested man not given in source."
+ },
+ {
+  "id": "usa-roblox-ag-suits",
+  "verified": true,
+  "url": "https://www.nbcnews.com/tech/tech-news/louisiana-attorney-general-sues-roblox-calling-platform-perfect-place-rcna225144",
+  "cite": "NBC News, 14 August 2025; Reuters, 15 April 2026 (headline: 'Roblox agrees to pay $10 million, make platform changes in Nevada settlement'); Malwarebytes Labs, April 2026 (summarising state AG announcements)",
+  "fixes": {
+   "d": "From 2025 US state attorneys general sued Roblox alleging it failed to protect children from predators, starting with Louisiana on 14 August 2025, whose attorney general called the platform 'the perfect place for pedophiles'; Kentucky, Texas, Iowa, Tennessee, Florida and Nebraska pursued similar claims, and in 2026 some states also sued Discord. In April 2026 Roblox began settling: Nevada (about $10–12 million), then Alabama ($12.2 million) and West Virginia ($11 million) on 21 April, with Roblox agreeing to age checks for all users by facial age estimation or government ID and other chat restrictions. These are allegations, not findings."
+  },
+  "note": "NBC confirms Louisiana suit 14 Aug 2025. Reuters headline (from Wikipedia ref list) gives Nevada $10m; Malwarebytes (not a major outlet) says $12m and gives Alabama $12.2m and West Virginia $11m — record's 'Alabama and West Virginia (over $23m)' is consistent. Not confirmed and removed: Mississippi $9m, South Dakota $8.6m, Indiana/Arkansas joint suits, LA County suit, Texas v. Discord, Florida criminal subpoenas. Individual AG releases not opened."
+ },
+ {
+  "id": "gulf-roblox-bans-2025",
+  "verified": true,
+  "url": "https://www.thenationalnews.com/lifestyle/2025/08/27/is-roblox-safe-as-gulf-countries-ban-platform",
+  "cite": "The National (UAE), 27 August 2025",
+  "fixes": {
+   "d": "In August 2025 Qatar blocked access to Roblox (13 August) and Kuwait's telecoms regulator temporarily blocked it (21 August) after parents and community groups raised child-safety concerns; Turkey had blocked it on 7 August. Roblox had been banned in Oman and Jordan since 2020, and was banned in the UAE from 2018 to 2021. Wikipedia additionally reports that Bahraini MPs drafted a ban, Palestine announced a ban in November 2025, Kazakhstan's and Kyrgyzstan's authorities warned parents about predators, and Buenos Aires and three Argentine provinces blocked it on school devices after grooming reports."
+  },
+  "note": "The National confirms Qatar 13 Aug, Kuwait 21 Aug, Turkey 7 Aug 2025, Oman banned since 2020 (record said Oman's regulator blocked it in 2025 — corrected). Bahrain draft ban, Palestine Nov 2025, Central Asia warnings and Argentine school-device blocks are Wikipedia-only — attributed."
+ },
+ {
+  "id": "bra-discord-livestream-2026",
+  "verified": true,
+  "url": "https://www.aljazeera.com/news/2026/8/12/brazil-orders-discord-to-suspend-livestreams-after-teens-death",
+  "cite": "Al Jazeera (AFP/Reuters), 12 August 2026",
+  "fixes": {
+   "d": "On 12 August 2026 Brazil's National Data Protection Authority (ANPD) ordered Discord to suspend its livestreaming feature nationwide, saying it had found 'robust evidence' that Discord failed to take reasonable steps to stop minors being exposed to content promoting violence, self-harm and suicide. The order followed the death in July 2026 of a 13-year-old girl in central-western Brazil who, authorities said, was encouraged during a Discord livestream to take her own life. Five teenagers were arrested in connection with her death, and police said the investigation also led them to another girl at risk, whom they reached in time. A Justice Ministry cyber-intelligence official called the case 'a terrible failure in moderation'."
+  },
+  "note": "Al Jazeera (AFP/Reuters) confirms date, ANPD order, reasons, 13-year-old, five teenagers arrested. Correction: the order came from the data protection authority ANPD; 'threatened fines' and 'those involved were charged' replaced with 'five teenagers arrested'. Graphic details in the source deliberately left out."
+ },
+ {
+  "id": "esp-almendralejo-deepfakes-2023",
+  "verified": true,
+  "url": "https://english.elpais.com/international/2023-09-18/in-spain-dozens-of-girls-are-reporting-ai-generated-nude-photos-of-them-being-circulated-at-school-my-heart-skipped-a-beat.html",
+  "cite": "El País (English), 18 September 2023",
+  "fixes": {
+   "d": "In September 2023, at the start of the school year in Almendralejo (Extremadura), AI-generated nude images of schoolgirls made with an app circulated in at least four of the town's five middle schools; more than 20 girls were affected, including girls aged 12 and 14. Police received at least seven complaints and identified several of the alleged authors, and the case was referred to the Juvenile Prosecutor's Office."
+  },
+  "note": "El País confirms >20 girls, AI app, schools, police and juvenile prosecutor. 'Aged 11 to 17' not confirmed (El País cites victims aged 12 and 14); 'boys' as perpetrators is implied by juvenile prosecutor referral but not stated explicitly in text extracted. Town named because the source and record id do; no victims named."
+ },
+ {
+  "id": "ukr-ls-models-2004",
+  "verified": false,
+  "url": "https://www.cbc.ca/news/world/australian-police-arrest-more-than-150-in-child-porn-crackdown-1.485299",
+  "cite": "CBC News, 30 September 2004 (Australian arrests only)",
+  "fixes": {},
+  "note": "Only the related Australian figure is confirmed: CBC (30 Sept 2004) reports more than 150 arrests in Australia after US leads into websites operating out of Eastern Europe (it does not name LS Models or Ukraine). The Kyiv agency, branches in Kharkiv/Simferopol, recruitment via adverts, July 2004 raid are sourced on Wikipedia to Reuters (dead legacy URL), crime-research.org and Russian/Ukrainian outlets not opened. Suggest wording the Australia link as 'leads into websites operating out of Eastern Europe'."
+ },
+ {
+  "id": "nld-sweetie-2013",
+  "verified": true,
+  "url": "https://www.theguardian.com/world/2013/nov/04/dutch-sting-webcam-child-sex-abuse",
+  "cite": "The Guardian, 4 November 2013",
+  "fixes": {
+   "d": "In a 10-week investigation run from a warehouse in Amsterdam, Terre des hommes Netherlands posed in public chatrooms as 'Sweetie', a computer-generated 10-year-old Filipina girl, to show the scale of webcam child sex abuse: 20,000 internet users offered to pay for webcam sex performances. The researchers identified about 1,000 of them, from 65 countries, including 110 in the UK and 254 traced to computers in the US, and on 4 November 2013 handed their details to Interpol. They said online child exploitation had become a hardened criminal industry in the Philippines."
+  },
+  "note": "Guardian confirms 10 weeks, Amsterdam, 20,000 offers, 1,000 identified, 65 countries, 110 UK, 254 US, handed to Interpol. The 13-country list in the record was not in the Guardian text; replaced with '65 countries'."
+ },
+ {
+  "id": "dnk-usa-operation-long-arm",
+  "verified": true,
+  "url": "https://www.govtech.com/magazines/gt/International-Cooperation.html",
+  "cite": "Government Technology magazine, 'International Cooperation' (quoting US Customs Service supervising agent Don Huycke)",
+  "fixes": {
+   "d": "US Customs' first major case against internet child abuse material. In late 1992 a US Customs controlled delivery led to a suspect who said he had obtained images from a Europe-based bulletin board; agents found 'Bamse', a Danish bulletin board with child abuse rooms, and two other Danish boards using its images, where users paid a subscription or supplied images of their own. Working with Danish authorities, the operation led to about 35 arrests and convictions in the US. Start year approximate."
+  },
+  "note": "GovTech (trade magazine, not a major outlet) confirms 1992 origin, Bamse BBS in Denmark, subscription/image-trade model, '35 stateside arrests and convictions' (record said 34 US + 2 Australia). 'Miami arrest' and '~900 users' not confirmed; removed. Australian Institute of Criminology PDF failed to download. Treat as moderately confirmed."
+ },
+ {
+  "id": "aus-qps-argos-skype-2016",
+  "verified": false,
+  "url": "",
+  "cite": "",
+  "fixes": {},
+  "note": "Wikipedia ('Cybersex trafficking') cites Queensland Police/AFP sources that I could not find among its opened refs; the ABC 7.30 report of 7 Sept 2016 on the same trend describes a different offender (a 42-year-old Brisbane man jailed for five years). The 58-year-old man / two children aged 2 and 7 / nearly five years details are unconfirmed outside Wikipedia. Offender not named in record — fine."
+ },
+ {
+  "id": "deu-bergisch-gladbach",
+  "verified": true,
+  "url": "https://triblive.com/news/world/germany-65-children-freed-from-abusers-as-part-of-probe",
+  "cite": "Associated Press, 12 January 2022; Der Spiegel, 6 October 2020; Süddeutsche Zeitung / Spiegel on later verdicts",
+  "fixes": {
+   "d": "In October 2019 police found a large cache of child abuse images and videos at a house in Bergisch Gladbach; the man there had repeatedly abused his daughter, born in 2017, and shared recordings in chat groups. On 6 October 2020 Cologne Regional Court sentenced him to 12 years plus preventive detention. Investigators found more than 30,000 pseudonyms used in the network, many untraceable; by January 2022 Cologne police had identified 439 suspects, secured numerous convictions and rescued 65 children aged from three months to 17. Two other men, from Krefeld and Viersen, were sentenced to 14.5 and 13.5 years."
+  },
+  "note": "AP confirms 30,000 pseudonyms, 439 suspects, 65 children (3 months–17 years), Jan 2022. Spiegel confirms 12 years + preventive detention on 6 Oct 2020 and daughter born 2017. Spiegel/SZ confirm 13.5 and 14.5 years. 'More than 60 times' and '130,000 photos / 12,000 videos' not confirmed in sources opened; removed. Offender first names omitted (German press uses initials)."
  }
 ]
