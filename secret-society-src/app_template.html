@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Secret Society Infiltration Map</title>
+<title>World Infiltration Map</title>
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -49,6 +49,15 @@ button.btn:hover,#infoBtn:hover,#worldBtn:hover{border-color:var(--accent-hi);co
 .leg .li{display:flex;align-items:center;gap:6px;font-size:12.3px;padding:2px 0;cursor:pointer}
 .leg .li.off{opacity:.35}
 .leg .li .n{margin-left:auto}
+.fchips{display:flex;flex-wrap:wrap;gap:4px;margin:3px 0 2px}
+.fc{display:inline-flex;align-items:center;font-size:11.6px;border:1px solid var(--line);border-radius:3px;padding:1px 6px;cursor:pointer;opacity:.42;user-select:none}
+.fc.on{opacity:1;border-color:rgba(255,255,255,.22)}
+.fc:hover{border-color:var(--accent-hi)}
+.fc .n{margin-left:4px}
+.flab{font-size:11.5px;color:#d8d5e0;margin:8px 0 1px}
+.frow{display:flex;gap:6px;align-items:center;margin:4px 0}
+.frow select{flex:1}
+.frst{color:var(--accent-hi);cursor:pointer;font-size:12px}
 .desc{font-size:11.5px;color:var(--mute);line-height:1.45;margin:3px 0 6px}
 /* patterns */
 .pat{padding:6px 8px;margin:4px 0;border-left:3px solid var(--pc);border-radius:0 4px 4px 0;background:rgba(255,255,255,.03);cursor:pointer}
@@ -113,6 +122,7 @@ button.btn:hover,#infoBtn:hover,#worldBtn:hover{border-color:var(--accent-hi);co
 .chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:3px}
 .chips span{font-size:11.5px;border:1px solid var(--line);border-radius:3px;padding:0 6px;cursor:pointer}
 .chips span:hover{border-color:var(--accent-hi);color:#fff}
+.chips .sw{width:8px;height:8px;margin-right:4px}
 .chips span.est{border-style:dashed;color:var(--mute)}
 .rec{border-top:1px solid var(--line2);padding:5px 0}
 .rec .rh{display:flex;gap:7px;align-items:baseline;cursor:pointer;font-size:12.6px}
@@ -188,8 +198,8 @@ button.btn:hover,#infoBtn:hover,#worldBtn:hover{border-color:var(--accent-hi);co
 
 <div id="key" class="card scroll">
   <button id="toggleKey" class="tog" type="button" title="Pull the key up or down">−</button>
-  <h1>Secret Society Infiltration Map</h1>
-  <p class="lede">Where lodges, religious orders, policy clubs, international bodies and covert networks reached inside governments, and the patterns that connect them.</p>
+  <h1>World Infiltration Map</h1>
+  <p class="lede">Who reaches inside governments, international bodies and companies — other governments and their spy services, organised crime, companies, banks, secret societies, religious movements and elite networks — where it is proven, and where it is only suspected.</p>
   <p class="lede2" id="lede2"></p>
   <div class="body" id="keyBody"></div>
 </div>
@@ -228,7 +238,11 @@ const ORGN = D.orgnames || {}, ORG_BY = {}; ORGS.forEach((o) => { ORG_BY[o.k] = 
 const PAT_BY = {}; PATS.forEach((p) => { PAT_BY[p.id] = p; });
 const ISO2K = {}; Object.keys(ISO).forEach((k) => { ISO2K[ISO[k]] = k; });
 const SMALL = { MCO: [7.4246, 43.7384], NRU: [166.9315, -0.5228], TUV: [179.1983, -8.5211], VAT: [12.4534, 41.9029], XKX: [21.1655, 42.6629] };
-const STATUS = { convicted: "Convicted", inquiry: "Inquiry finding", acknowledged: "Acknowledged", settled: "Settled", designated: "Designated", indicted: "Indicted", reported: "Reported", annulled: "Annulled", acquitted: "Acquitted", active: "Active", dissolved: "Dissolved", banned: "Banned", dormant: "Dormant" };
+const INF = D.inf || [], TGT = D.tgt || [], REL = D.rel || [], LIK = D.lik || [], INTL = D.intl || [], WIDEL = D.widel || [];
+const INF_I = { crime: 0, state: 1, lodge: 2, money: 3, corp: 4, movement: 5, faith: 6, elite: 7 };
+const infLabel = (k) => (INF.find((x) => x.k === k) || { label: k === "intl_target" ? "International body" : (k || "") }).label;
+const lab = (arr, k) => (arr.find((x) => x[0] === k) || [k, k])[1];
+const STATUS = { investigation: "Under investigation", alleged: "Alleged", convicted: "Convicted", inquiry: "Inquiry finding", acknowledged: "Acknowledged", settled: "Settled", designated: "Designated", indicted: "Indicted", reported: "Reported", annulled: "Annulled", acquitted: "Acquitted", active: "Active", dissolved: "Dissolved", banned: "Banned", dormant: "Dormant" };
 
 /* ---------- colours: each basemap has its own set, drawn from its own tones ---------- */
 // office buckets (6) · organisation types (8) · severity ramp, worst first (5) · pattern roles (8) · line
@@ -255,12 +269,42 @@ const PAL = {
                ui: ["#82303a", "#e0a3a5", "#1e080b"] },
 };
 let P = PAL.night;
+function infCol(k) { return (k === "lender" || k === "intl_target") ? P.t.intl : P.p[INF_I[k] != null ? INF_I[k] : 6]; }
+function bcol(i) { return i < P.b.length ? P.b[i] : P.p[i === 6 ? 6 : 7]; }
+function tcol(k) { return P.t[k] || (k === "crime" ? P.p[0] : k === "bank" ? P.p[3] : "#aaa"); }
 
 /* ---------- state ---------- */
 const YR = CASES.reduce((a, c) => c.y ? [Math.min(a[0], c.y), Math.max(a[1], c.y)] : a, [9999, 0]);
-const S = { lens: "exp", bandOn: [1, 1, 1, 1, 1], pat: null, y0: 2010, y1: 2026, cases: true, bk: {}, orgs: true, ty: {}, br: true, brEst: true, routes: true,
+const S = { lens: "exp", bandOn: [1, 1, 1, 1, 1], pat: null, y0: 0, y1: 9999, colBy: "inf",
+            f: { inf: {}, tgt: {}, rel: { now: true, legacy: true, past: false }, lik: {}, int: 1, wide: 1 }, cases: true, bk: {}, orgs: true, ty: {}, br: true, brEst: true, routes: true,
             open: { cases: false, orgs: false, br: false }, sel: null, q: "" };
 BUCKETS.forEach((b) => { S.bk[b[0]] = true; }); TYPES.forEach((t) => { S.ty[t.k] = true; });
+INF.forEach((x) => { S.f.inf[x.k] = true; }); TGT.forEach((t) => { S.f.tgt[t[0]] = true; }); LIK.forEach((l) => { S.f.lik[l[0]] = true; });
+const F0 = JSON.stringify(S.f);
+/* filters: who reached in, into what, still relevant, how sure, how severe, how far */
+function fOK(c, skip) {
+  const f = S.f;
+  return (skip === "inf" || f.inf[c.inf] !== false) && (skip === "tgt" || f.tgt[c.tgt] !== false) && (skip === "rel" || f.rel[c.rel] !== false) &&
+         (skip === "lik" || f.lik[c.lik] !== false) && (skip === "int" || (c.int || 3) >= f.int) && (skip === "wide" || (c.wide || 2) >= f.wide);
+}
+function orgOK(o) {
+  const f = S.f, ok = o.inf === "intl_target" ? f.tgt.intl !== false : f.inf[o.inf] !== false;
+  return ok && f.rel[o.rel] !== false && (o.int || 1) >= f.int && (o.wide || 2) >= f.wide;
+}
+const filtered = () => JSON.stringify(S.f) !== F0;
+/* the country scores, recomputed from what the filters leave on the map */
+let RF = ROWS;
+function rescore() {
+  const dsum = {}, DC = D.meta.dcap, RC = D.meta.rcap;
+  CASES.forEach((c) => { if (yrOK(c) && fOK(c) && S.bk[c.bk]) dsum[c.c] = (dsum[c.c] || 0) + (c.w || 0); });
+  RF = {};
+  Object.keys(ROWS).forEach((k) => {
+    const r = ROWS[k]; let rs = 0;
+    r.pres.forEach((p) => { const o = ORG_BY[p[0]]; if (!o || orgOK(o)) rs += p[2] || 0; });
+    const v = dsum[k] || 0, doc = v <= 0 ? 0 : Math.min(10, 10 * Math.log1p(v) / Math.log1p(DC)), reach = Math.min(10, 10 * rs / RC);
+    RF[k] = Object.assign({}, r, { doc, reach, exp: 0.5 * doc + 0.3 * reach + 0.2 * r.cond, est: doc === 0 });
+  });
+}
 
 /* ---------- map ---------- */
 const UI0 = PAL.night.ui;
@@ -353,21 +397,22 @@ function addLayers() {
   T({ id: "org", type: "circle", source: "orgs", paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 1, 4.2, 6, 6.5], "circle-color": ["get", "c"], "circle-stroke-color": "#f0ece4", "circle-stroke-width": 1.1 } });
   map.addImage("dia", sdfIcon("dia"), { sdf: true });
   map.addSource("cases", { type: "geojson", data: FC([]) });
-  T({ id: "case", type: "symbol", source: "cases", layout: { "icon-image": "dia", "icon-size": ["interpolate", ["linear"], ["zoom"], 1, 0.36, 6, 0.55], "icon-allow-overlap": true, "icon-ignore-placement": true },
-      paint: { "icon-color": ["get", "c"], "icon-halo-color": "#05060c", "icon-halo-width": 1.2 } });
+  T({ id: "case", type: "symbol", source: "cases", layout: { "icon-image": "dia", "icon-size": ["interpolate", ["linear"], ["zoom"], 1, ["*", 0.36, ["get", "s"]], 6, ["*", 0.55, ["get", "s"]]], "icon-allow-overlap": true, "icon-ignore-placement": true,
+      "symbol-sort-key": ["get", "k"] },
+      paint: { "icon-color": ["get", "c"], "icon-halo-color": "#05060c", "icon-halo-width": 1.2, "icon-opacity": ["get", "o"] } });
   map.addSource("patlinks", { type: "geojson", data: FC([]) });
   T({ id: "pat-case", type: "line", source: "patlinks", layout: { "line-cap": "round" }, paint: { "line-color": "#05060c", "line-width": 4, "line-opacity": 0.5 } });
   T({ id: "pat-line", type: "line", source: "patlinks", layout: { "line-cap": "round" }, paint: { "line-color": "#f0ece4", "line-width": 1.7, "line-opacity": 0.95 } });
   // interaction
   const hover = (id, html) => { map.on("mousemove", id, (e) => { map.getCanvas().style.cursor = "pointer"; tip(html(e.features[0].properties), e.originalEvent.clientX, e.originalEvent.clientY); });
                                 map.on("mouseleave", id, () => { map.getCanvas().style.cursor = ""; tip(null); }); };
-  hover("case", (p) => { const c = CASES[p.i]; return "<b>" + esc(c.n) + "</b><br><span class=mute>" + esc(c.c) + " · " + c.y + " · " + esc(STATUS[c.status] || c.status) + "</span>"; });
-  hover("org", (p) => { const o = ORGS[p.i]; return "<b>" + esc(o.n) + "</b><br><span class=mute>" + esc(typeLabel(o.s)) + " · headquarters</span>"; });
+  hover("case", (p) => { const c = CASES[p.i]; return "<b>" + esc(c.n) + "</b><br><span class=mute>" + esc(c.who || infLabel(c.inf)) + " → " + esc(lab(TGT, c.tgt).toLowerCase()) + "<br>" + esc(c.c) + " · " + c.y + " · " + esc(lab(LIK, c.lik)) + " · " + esc(lab(REL, c.rel).toLowerCase()) + "</span>"; });
+  hover("org", (p) => { const o = ORGS[p.i]; return "<b>" + esc(o.n) + "</b><br><span class=mute>" + esc(typeLabel(o.s)) + " · headquarters" + (o.active ? "" : " · no longer active") + "</span>"; });
   hover("br", (p) => { const g = GROUPS[p.i]; return "<b>" + esc(g.n) + "</b><br><span class=mute>" + esc(g.c) + (g.est ? " · presence estimated" : " · documented presence") + "</span>"; });
   hover("route-line", (p) => "<b>" + esc(ROUTES[p.i].n) + "</b>");
   hover("pat-line", (p) => esc(p.t));
   hover("small-ring", (p) => "<b>" + esc(p.k) + "</b>");
-  map.on("mousemove", "cty-fill", (e) => { if (map.queryRenderedFeatures(e.point, { layers: ["case", "org", "br", "route-line", "pat-line", "small-ring"] }).length) return; const k = ISO2K[e.features[0].properties.iso3]; if (!k) { tip(null); return; } const r = ROWS[k]; map.getCanvas().style.cursor = "pointer";
+  map.on("mousemove", "cty-fill", (e) => { if (map.queryRenderedFeatures(e.point, { layers: ["case", "org", "br", "route-line", "pat-line", "small-ring"] }).length) return; const k = ISO2K[e.features[0].properties.iso3]; if (!k) { tip(null); return; } const r = RF[k]; map.getCanvas().style.cursor = "pointer";
     tip("<b>" + esc(k) + "</b><br><span class=mute>" + (S.pat ? esc(roleOf(S.pat, k) || "not in this pattern") : lensLabel() + " " + lensVal(r).toFixed(2) + (r.est ? " · estimate" : "")) + "</span>", e.originalEvent.clientX, e.originalEvent.clientY); });
   map.on("mouseleave", "cty-fill", () => { map.getCanvas().style.cursor = ""; tip(null); });
   map.on("click", (e) => {
@@ -384,13 +429,14 @@ const lensVal = (r) => r[S.lens];
 const lensLabel = () => (LENSES.find((l) => l.k === S.lens) || {}).label || "";
 const bandOf = (v) => v >= 7.5 ? 0 : v >= 6 ? 1 : v >= 4.5 ? 2 : v >= 3 ? 3 : 4;
 function roleOf(id, k) { const p = PAT_BY[id]; if (!p || p.cmap[k] == null) return null; return p.roles[p.cmap[k]]; }
-const yrOK = (c) => !c.y || (c.y >= S.y0 && c.y <= S.y1);
+function yrOK(c) { return !c.y || (c.y >= S.y0 && c.y <= S.y1); }
 const patCase = (c) => !S.pat || PAT_BY[S.pat]._cs[c.i];
 PATS.forEach((p) => { p._cs = {}; p.cids.forEach((i) => { p._cs[i] = 1; }); });
 
 /* ---------- drawing ---------- */
 function paint() {
   if (!map.getLayer("cty-fill")) return;
+  rescore();
   // countries
   const m = ["match", ["get", "iso3"]];
   const pt = S.pat ? PAT_BY[S.pat] : null;
@@ -398,7 +444,7 @@ function paint() {
     const iso = ISO[k]; if (!iso) return;
     let col = null;
     if (pt) { const ri = pt.cmap[k]; if (ri != null) col = P.p[ri % P.p.length]; }
-    else if (S.lens !== "none") { const b = bandOf(lensVal(ROWS[k])); if (S.bandOn[b]) col = P.r[b]; }
+    else if (S.lens !== "none") { const b = bandOf(lensVal(RF[k])); if (S.bandOn[b]) col = P.r[b]; }
     if (col) m.push(iso, col);
   });
   m.push("rgba(0,0,0,0)");
@@ -408,11 +454,14 @@ function paint() {
   map.setPaintProperty("route-case", "line-color", P.ln === "#2a1c24" ? "#f0e6dc" : "#05060c");
   map.setPaintProperty("pat-case", "line-color", P.ln === "#2a1c24" ? "#f0e6dc" : "#05060c");
   // cases
-  map.getSource("cases").setData(FC(S.cases ? CASES.filter((c) => S.bk[c.bk] && yrOK(c) && patCase(c)).map((c) => ({ type: "Feature", properties: { i: c.i, c: P.b[BUCKETS.findIndex((b) => b[0] === c.bk)] || "#ccc" }, geometry: { type: "Point", coordinates: [c.lng, c.lat] } })) : []));
+  const LO = { established: 1, probable: 0.88, possible: 0.55, contested: 0.4 };
+  map.getSource("cases").setData(FC(S.cases ? CASES.filter((c) => S.bk[c.bk] && yrOK(c) && patCase(c) && fOK(c)).map((c) => ({ type: "Feature",
+    properties: { i: c.i, c: (S.colBy === "inf" ? infCol(c.inf) : bcol(BUCKETS.findIndex((b) => b[0] === c.bk))) || "#ccc", s: 0.7 + 0.12 * (c.int || 3), o: LO[c.lik] || 0.9, k: (c.int || 3) },
+    geometry: { type: "Point", coordinates: [c.lng, c.lat] } })) : []));
   // organisations
-  map.getSource("orgs").setData(FC(S.orgs ? ORGS.map((o, i) => [o, i]).filter(([o]) => S.ty[o.s] && (!pt || pt.orgs.includes(o.k))).map(([o, i]) => ({ type: "Feature", properties: { i, c: P.t[o.s] || "#aaa" }, geometry: { type: "Point", coordinates: [o.lng, o.lat] } })) : []));
+  map.getSource("orgs").setData(FC(S.orgs ? ORGS.map((o, i) => [o, i]).filter(([o]) => S.ty[o.s] && orgOK(o) && (!pt || pt.orgs.includes(o.k))).map(([o, i]) => ({ type: "Feature", properties: { i, c: tcol(o.s) }, geometry: { type: "Point", coordinates: [o.lng, o.lat] } })) : []));
   // branches
-  map.getSource("branches").setData(FC(S.br && !pt ? GROUPS.map((g, i) => [g, i]).filter(([g]) => S.ty[g.ty] && (S.brEst || !g.est)).map(([g, i]) => ({ type: "Feature", properties: { i, est: g.est, c: P.t[g.ty] || "#aaa" }, geometry: { type: "Point", coordinates: [g.lng, g.lat] } })) : []));
+  map.getSource("branches").setData(FC(S.br && !pt ? GROUPS.map((g, i) => [g, i]).filter(([g]) => S.ty[g.ty] && (S.brEst || !g.est) && (!ORG_BY[g.k] || orgOK(ORG_BY[g.k]))).map(([g, i]) => ({ type: "Feature", properties: { i, est: g.est, c: tcol(g.ty) }, geometry: { type: "Point", coordinates: [g.lng, g.lat] } })) : []));
   // channels, or the open pattern's own links
   map.getSource("routes").setData(FC(S.routes && !pt ? ROUTES.map((r, i) => ({ type: "Feature", properties: { i }, geometry: { type: "LineString", coordinates: pathLine(r.p) } })) : []));
   map.getSource("patlinks").setData(FC(pt ? (pt.links || []).map((l) => { const pts = l.p || [l.a, l.b]; return { type: "Feature", properties: { t: (l.from || "") + " → " + (l.to || "") + (l.label ? ": " + l.label : "") }, geometry: { type: "LineString", coordinates: pathLine(pts.length > 1 ? pts : [pts[0], pts[0]]) } }; }) : []));
@@ -426,7 +475,7 @@ function decadeChart() {
   const d0 = Math.floor(YR[0] / 10) * 10, d1 = Math.floor(YR[1] / 10) * 10, dec = [];
   for (let d = d0; d <= d1; d += 10) dec.push(d);
   const all = {}, hl = {};
-  CASES.forEach((c) => { if (!c.y) return; const d = Math.floor(c.y / 10) * 10; all[d] = (all[d] || 0) + 1; if (S.pat && patCase(c)) hl[d] = (hl[d] || 0) + 1; });
+  CASES.forEach((c) => { if (!c.y || !fOK(c)) return; const d = Math.floor(c.y / 10) * 10; all[d] = (all[d] || 0) + 1; if (S.pat && patCase(c)) hl[d] = (hl[d] || 0) + 1; });
   const mx = Math.max(1, ...dec.map((d) => all[d] || 0)), W = 300, H = 58, bw = W / dec.length;
   let s = '<svg viewBox="0 0 ' + W + ' ' + (H + 12) + '">';
   dec.forEach((d, i) => {
@@ -437,36 +486,69 @@ function decadeChart() {
   });
   return s + '</svg>';
 }
-const ERAS = [["now", "Today", 2010, 2026], ["cold", "Cold War", 1945, 1991], ["early", "Before 1945", 1800, 1944], ["all", "All years", 0, 9999]];
+const ERAS = [["all", "Any year", 0, 9999], ["now", "Since 2010", 2010, 2026], ["cold", "Cold War", 1945, 1991], ["early", "Before 1945", 1800, 1944]];
 function buildKey() {
-  const est = Object.keys(ROWS).filter((k) => ROWS[k].est).length, nk = Object.keys(ROWS).length;
-  $("#lede2").textContent = CASES.length + " documented cases · " + ORGS.length + " organisations · " + PATS.length + " patterns · " + nk + " countries";
-  const counts = [0, 0, 0, 0, 0]; Object.keys(ROWS).forEach((k) => counts[bandOf(lensVal(ROWS[k]))]++);
+  rescore();
+  const est = Object.keys(RF).filter((k) => RF[k].est).length, nk = Object.keys(RF).length;
+  $("#lede2").textContent = CASES.length + " cases · " + ORGS.length + " organisations and networks · " + PATS.length + " patterns · " + nk + " countries";
+  const counts = [0, 0, 0, 0, 0]; Object.keys(RF).forEach((k) => counts[bandOf(lensVal(RF[k]))]++);
   let h = '';
   // shading
   h += '<div class="psec">Shade the countries by</div><select id="lens"' + (S.pat ? ' disabled' : '') + '>' + LENSES.map((l) => '<option value="' + l.k + '"' + (S.lens === l.k ? " selected" : "") + '>' + esc(l.label) + '</option>').join("") + '<option value="none"' + (S.lens === "none" ? " selected" : "") + '>No shading</option></select>';
   const L_ = LENSES.find((l) => l.k === S.lens);
   if (L_ && !S.pat) h += '<div class="desc">' + esc(L_.desc) + '</div><div class="leg">' + BANDS.map((b, i) => '<div class="li' + (S.bandOn[i] ? "" : " off") + '" data-band="' + i + '"><span class="sw" style="background:' + P.r[i] + '"></span>' + b[0] + '<span class="n">' + counts[i] + '</span></div>').join("") + '</div>' +
-       '<div class="desc">' + est + ' of ' + nk + ' countries have no documented case yet. Their shade is a best guess from which organisations are present and how easily officials there can be bent, and their cards say so.</div>';
+       '<div class="desc">' + est + ' of ' + nk + ' countries have no case ' + (filtered() ? 'that passes the filters below' : 'that is still current') + '. Their shade is a best guess from which networks are present and how easily officials there can be bent, and their cards say so.' + (filtered() ? ' The shading follows the filters, so it shows where this kind of infiltration reaches.' : '') + '</div>';
   if (S.pat) h += '<div class="desc">Countries are coloured by the open pattern. Close it to shade them again.</div>';
   // find
   h += '<div class="psec">Find</div><input class="inp" id="find" style="width:100%" placeholder="A country, organisation, person or place" value="' + esc(S.q) + '"><div id="flist" class="scroll"></div>';
+  // filters
+  h += filterBlock();
   // time
   const era = (ERAS.find((e) => e[2] === S.y0 && e[3] === S.y1) || [""])[0];
   h += '<div class="psec">When</div><div class="presets">' + ERAS.map((e) => '<button class="btn' + (era === e[0] ? " on" : "") + '" data-era="' + e[0] + '">' + e[1] + '</button>').join("") + '</div>' +
        '<div id="tchart">' + decadeChart() + '</div>' +
        '<div class="tline">From <input class="inp" id="y0" value="' + Math.max(S.y0, YR[0]) + '"> to <input class="inp" id="y1" value="' + Math.min(S.y1, YR[1]) + '"></div>' +
-       '<div class="desc">The map opens on today: cases from 2010 on, many still unfolding. Each bar counts the cases in one decade; click one to step back into it' + (S.pat ? ', and the pale part is the open pattern' : '') + '. ' + CASES.filter((c) => yrOK(c) && patCase(c) && S.bk[c.bk]).length + ' cases on the map now.</div>';
+       '<div class="desc">Each bar counts the cases in one decade that pass the filters; click one to keep only that decade' + (S.pat ? ', and the pale part is the open pattern' : '') + '. ' + CASES.filter((c) => yrOK(c) && patCase(c) && S.bk[c.bk] && fOK(c)).length + ' cases on the map now.</div>';
   $("#keyBody").innerHTML = h;
   $("#lens").addEventListener("change", (e) => { S.lens = e.target.value; paint(); buildKey(); });
   $("#keyBody").querySelectorAll("[data-band]").forEach((d) => d.addEventListener("click", () => { const i = +d.dataset.band; S.bandOn[i] = S.bandOn[i] ? 0 : 1; paint(); buildKey(); }));
   $("#keyBody").querySelectorAll("[data-era]").forEach((b) => b.addEventListener("click", () => { const e = ERAS.find((x) => x[0] === b.dataset.era); S.y0 = e[2]; S.y1 = e[3]; paint(); buildKey(); buildLeg(); }));
-  $("#tchart").querySelectorAll("rect.b").forEach((r) => r.addEventListener("click", () => { const d = +r.dataset.d; if (S.y0 === d && S.y1 === d + 9) { S.y0 = 2010; S.y1 = 2026; } else { S.y0 = d; S.y1 = d + 9; } paint(); buildKey(); buildLeg(); }));
+  $("#tchart").querySelectorAll("rect.b").forEach((r) => r.addEventListener("click", () => { const d = +r.dataset.d; if (S.y0 === d && S.y1 === d + 9) { S.y0 = 0; S.y1 = 9999; } else { S.y0 = d; S.y1 = d + 9; } paint(); buildKey(); buildLeg(); }));
   $("#y0").addEventListener("change", (e) => { S.y0 = +e.target.value || YR[0]; paint(); buildKey(); buildLeg(); });
   $("#y1").addEventListener("change", (e) => { S.y1 = +e.target.value || YR[1]; paint(); buildKey(); buildLeg(); });
   $("#find").addEventListener("input", (e) => { S.q = e.target.value; drawFind(); });
+  wireFilters();
   drawFind();
   buildPat(); buildLeg();
+}
+function filterBlock() {
+  const f = S.f;
+  const chips = (g, items) => '<div class="fchips">' + items.map(([k, label, desc, col]) => {
+    const n = CASES.filter((c) => c[g] === k && fOK(c, g) && yrOK(c) && S.bk[c.bk]).length;
+    return '<span class="fc' + (f[g][k] !== false ? " on" : "") + '" data-fg="' + g + '" data-fk="' + k + '" title="' + esc(desc) + '">' + (col ? '<span class="sw dia" style="background:' + col + '"></span>' : '') + esc(label) + '<span class="n">' + n + '</span></span>'; }).join("") + '</div>';
+  let h = '<div class="psec">Filter what is shown' + (filtered() ? ' <span class="frst" id="fReset" style="float:right;letter-spacing:0;text-transform:none">reset</span>' : '') + '</div>' +
+    '<div class="desc" style="margin-top:0">Click to switch a kind on or off; double-click to show only that kind. The country shading, the cases, the organisations and the counts all follow.</div>';
+  h += '<div class="flab">Who is reaching in</div>' + chips("inf", INF.map((x) => [x.k, x.label, x.d, infCol(x.k)]));
+  h += '<div class="flab">Into what</div>' + chips("tgt", TGT.map((t) => [t[0], t[1], t[2]]));
+  h += '<div class="flab">Does it still matter today?</div>' + chips("rel", REL.map((t) => [t[0], t[1], t[2]]));
+  h += '<div class="flab">How sure we are</div>' + chips("lik", LIK.map((t) => [t[0], t[1], t[2]]));
+  h += '<div class="frow"><span class="flab" style="margin:0;white-space:nowrap">How severe</span><select id="fInt">' + INTL.map((l, i) => '<option value="' + (i + 1) + '"' + (f.int === i + 1 ? " selected" : "") + '>' + (i ? esc(l) + ' or worse' : 'Any') + '</option>').join("") + '</select></div>';
+  h += '<div class="frow"><span class="flab" style="margin:0;white-space:nowrap">How far it reaches</span><select id="fWide">' + WIDEL.map((l, i) => '<option value="' + (i + 1) + '"' + (f.wide === i + 1 ? " selected" : "") + '>' + (i ? esc(l) + (i < 4 ? ' or wider' : '') : 'Any') + '</option>').join("") + '</select></div>';
+  h += '<div class="frow"><span class="flab" style="margin:0;white-space:nowrap">Colour the diamonds by</span><select id="fCol"><option value="inf"' + (S.colBy === "inf" ? " selected" : "") + '>Who is reaching in</option><option value="bk"' + (S.colBy === "bk" ? " selected" : "") + '>The office reached</option></select></div>';
+  return h;
+}
+function refilter() { paint(); buildKey(); if (S.sel && S.sel[0] === "c") reopen(); }
+function wireFilters() {
+  const kb = $("#keyBody");
+  kb.querySelectorAll(".fc").forEach((el) => {
+    let t = null;
+    el.addEventListener("click", () => { clearTimeout(t); t = setTimeout(() => { const g = el.dataset.fg, k = el.dataset.fk; S.f[g][k] = S.f[g][k] === false; refilter(); }, 220); });
+    el.addEventListener("dblclick", () => { clearTimeout(t); const g = el.dataset.fg, k = el.dataset.fk; Object.keys(S.f[g]).forEach((x) => { S.f[g][x] = x === k; }); refilter(); });
+  });
+  const fi = $("#fInt"); if (fi) fi.addEventListener("change", (e) => { S.f.int = +e.target.value; refilter(); });
+  const fw = $("#fWide"); if (fw) fw.addEventListener("change", (e) => { S.f.wide = +e.target.value; refilter(); });
+  const fc = $("#fCol"); if (fc) fc.addEventListener("change", (e) => { S.colBy = e.target.value; paint(); buildKey(); });
+  const fr = $("#fReset"); if (fr) fr.addEventListener("click", () => { S.f = JSON.parse(F0); refilter(); });
 }
 function buildPat() {
   let h = '<div class="desc" style="margin-top:0">The cases are not isolated. The same people, banks, lodges and services keep turning up in different countries and decades. Choose one of these to colour the map by the part each country plays in it, and to read the story behind it.</div>';
@@ -486,19 +568,23 @@ function buildLeg() {
   // Built bottom-up: the box is anchored at the bottom of the screen, so the breakdowns for cases
   // and organisations open upward, above the row that opens them.
   let h = '';
-  if (S.open.cases) h += '<div class="up">' + BUCKETS.map((b, i) => row("bk:" + b[0], S.bk[b[0]], '<span class="sw dia" style="background:' + P.b[i] + '"></span>' + esc(b[1]), CASES.filter((c) => c.bk === b[0]).length, true) + '<div class="desc" style="padding-left:22px">' + esc(b[2]) + '</div>').join("") + '</div>';
-  h += row("cases", S.cases, '<span class="car" data-open="cases">' + (S.open.cases ? "▾" : "▴") + '</span><span class="sw dia" style="background:' + P.b[0] + '"></span>Documented cases inside government', CASES.length);
-  if (S.open.orgs) h += '<div class="up">' + TYPES.map((t) => row("ty:" + t.k, S.ty[t.k], '<span class="sw dot" style="background:' + P.t[t.k] + '"></span>' + esc(t.label), ORGS.filter((o) => o.s === t.k).length, true) + '<div class="desc" style="padding-left:22px">' + esc(t.d) + '</div>').join("") +
+  if (S.open.cases) h += '<div class="up">' + (S.colBy === "inf"
+      ? INF.map((x) => row("inf:" + x.k, S.f.inf[x.k] !== false, '<span class="sw dia" style="background:' + infCol(x.k) + '"></span>' + esc(x.label), CASES.filter((c) => c.inf === x.k && fOK(c, "inf") && yrOK(c)).length, true) + '<div class="desc" style="padding-left:22px">' + esc(x.d) + '</div>').join("")
+      : BUCKETS.map((b, i) => row("bk:" + b[0], S.bk[b[0]], '<span class="sw dia" style="background:' + bcol(i) + '"></span>' + esc(b[1]), CASES.filter((c) => c.bk === b[0] && fOK(c) && yrOK(c)).length, true) + '<div class="desc" style="padding-left:22px">' + esc(b[2]) + '</div>').join("")) +
+      '<div class="desc" style="padding-left:4px">Bigger diamonds are more severe cases. Faded ones are suspected or disputed, not proven.</div></div>';
+  h += row("cases", S.cases, '<span class="car" data-open="cases">' + (S.open.cases ? "▾" : "▴") + '</span><span class="sw dia" style="background:' + (S.colBy === "inf" ? infCol("state") : bcol(0)) + '"></span>Cases: someone else\'s people inside', CASES.filter((c) => fOK(c) && yrOK(c) && S.bk[c.bk]).length);
+  if (S.open.orgs) h += '<div class="up">' + TYPES.map((t) => row("ty:" + t.k, S.ty[t.k], '<span class="sw dot" style="background:' + tcol(t.k) + '"></span>' + esc(t.label), ORGS.filter((o) => o.s === t.k && orgOK(o)).length, true) + '<div class="desc" style="padding-left:22px">' + esc(t.d) + '</div>').join("") +
     row("brEst", S.brEst, '<span class="sw ring" style="border-color:' + P.t.order + '"></span>Branches where presence is only likely', GROUPS.filter((g) => g.est).length, true) + '</div>';
-  h += row("orgs", S.orgs, '<span class="car" data-open="orgs">' + (S.open.orgs ? "▾" : "▴") + '</span><span class="sw dot" style="background:' + P.t.forum + ';border:1px solid #f0ece4"></span>Organisations, at their headquarters', ORGS.length);
+  h += row("orgs", S.orgs, '<span class="car" data-open="orgs">' + (S.open.orgs ? "▾" : "▴") + '</span><span class="sw dot" style="background:' + P.t.forum + ';border:1px solid #f0ece4"></span>Organisations and networks, at their headquarters', ORGS.filter(orgOK).length);
   h += row("br", S.br, '<span class="sw dot" style="background:' + P.t.order + ';width:7px;height:7px;margin-left:12px"></span>National branches and chapters', GROUPS.length);
   h += row("routes", S.routes, '<span class="sw bar" style="background:' + P.ln + ';margin-left:12px"></span>Documented channels between places', ROUTES.length);
-  h += '<div class="sub">Click ▴ to open a breakdown by office reached, or by type of organisation.</div>';
+  h += '<div class="sub">Click ▴ to open a breakdown of the cases (by who is reaching in, or by office, as set in the key) or of the organisations by type.</div>';
   $("#legBody").innerHTML = h;
   $("#legBody").querySelectorAll("[data-open]").forEach((c) => c.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); S.open[c.dataset.open] = !S.open[c.dataset.open]; buildLeg(); }));
   $("#legBody").querySelectorAll("input[data-t]").forEach((c) => c.addEventListener("change", () => {
     const t = c.dataset.t, v = c.checked;
-    if (t.startsWith("bk:")) { S.bk[t.slice(3)] = v; if (v) S.cases = true; } else if (t.startsWith("ty:")) S.ty[t.slice(3)] = v; else S[t] = v;
+    if (t.startsWith("bk:")) { S.bk[t.slice(3)] = v; if (v) S.cases = true; }
+    else if (t.startsWith("inf:")) { S.f.inf[t.slice(4)] = v; if (v) S.cases = true; paint(); buildKey(); return; } else if (t.startsWith("ty:")) S.ty[t.slice(3)] = v; else S[t] = v;
     paint(); buildLeg();
   }));
   $("#legBody").scrollTop = $("#legBody").scrollHeight;
@@ -515,9 +601,9 @@ function drawFind() {
   const q = S.q.trim().toLowerCase(), el = $("#flist"); if (!el) return;
   if (q.length < 2) { el.innerHTML = '<div class="sub">Type two letters or more.</div>'; return; }
   const out = [];
-  Object.keys(ROWS).forEach((k) => { if (k.toLowerCase().includes(q)) out.push(['c', k, k, "country · " + (LENSES[0].label) + " " + ROWS[k].exp.toFixed(2)]); });
+  Object.keys(ROWS).forEach((k) => { if (k.toLowerCase().includes(q)) out.push(['c', k, k, "country · score " + RF[k].exp.toFixed(2)]); });
   ORGS.forEach((o, i) => { if ((o.n + " " + o.role + " " + o.d).toLowerCase().includes(q)) out.push(['o', i, o.n, typeLabel(o.s)]); });
-  CASES.forEach((c) => { if ((c.n + " " + c.d + " " + c.c + " " + (c.on || "")).toLowerCase().includes(q)) out.push(['k', c.i, c.n, c.c + " · " + c.y + " · " + (STATUS[c.status] || c.status)]); });
+  CASES.forEach((c) => { if ((c.n + " " + c.d + " " + c.c + " " + (c.on || "") + " " + (c.who || "")).toLowerCase().includes(q)) out.push(['k', c.i, c.n, c.c + " · " + c.y + " · " + (c.who || infLabel(c.inf)) + " · " + lab(LIK, c.lik)]); });
   PATS.forEach((p) => { if ((p.title + " " + p.summary).toLowerCase().includes(q)) out.push(['p', p.id, p.title, "pattern"]); });
   el.innerHTML = out.slice(0, 150).map((r) => '<div class="fi" data-k="' + r[0] + '" data-v="' + esc(r[1]) + '"><div>' + esc(r[2]) + '<span class="n">' + esc(r[3]) + '</span></div></div>').join("") + (out.length > 150 ? '<div class="sub">' + (out.length - 150) + ' more — type more to narrow.</div>' : "") || '<div class="sub">Nothing matches.</div>';
   el.querySelectorAll(".fi").forEach((d) => d.addEventListener("click", () => { const k = d.dataset.k, v = d.dataset.v; if (k === "c") openCountry(v, true); else if (k === "o") openOrg(+v, true); else if (k === "k") openCase(+v, true); else setPattern(v); }));
@@ -538,39 +624,45 @@ function reopen() { const s = S.sel; if (!s) return; if (s[0] === "c") openCount
 function wireCard() {
   $("#detBody").querySelectorAll("[data-org]").forEach((d) => d.addEventListener("click", (e) => { e.stopPropagation(); const i = ORGS.findIndex((o) => o.k === d.dataset.org); if (i >= 0) openOrg(i, true); }));
   $("#detBody").querySelectorAll("[data-pat]").forEach((d) => d.addEventListener("click", (e) => { e.stopPropagation(); setPattern(d.dataset.pat); }));
+  $("#detBody").querySelectorAll("[data-only]").forEach((d) => d.addEventListener("click", (e) => { e.stopPropagation(); Object.keys(S.f.inf).forEach((x) => { S.f.inf[x] = x === d.dataset.only; }); refilter(); }));
   $("#detBody").querySelectorAll("[data-cty]").forEach((d) => d.addEventListener("click", (e) => { e.stopPropagation(); openCountry(d.dataset.cty, true); }));
   $("#detBody").querySelectorAll(".rec .rh").forEach((d) => d.addEventListener("click", () => d.parentNode.classList.toggle("open")));
 }
 const srcLink = (x) => x.url ? ' — <a href="' + esc(x.url) + '" target="_blank" rel="noopener">source</a>' : "";
-function stCol(s) { return { convicted: P.r[0], inquiry: P.p[1], acknowledged: P.p[1], settled: P.p[4], designated: P.p[2], indicted: P.p[3], reported: "var(--mute)", annulled: "var(--mute)", acquitted: "var(--mute)" }[s] || "var(--mute)"; }
+function stCol(s) { return { investigation: P.p[3], alleged: "var(--mute)",  convicted: P.r[0], inquiry: P.p[1], acknowledged: P.p[1], settled: P.p[4], designated: P.p[2], indicted: P.p[3], reported: "var(--mute)", annulled: "var(--mute)", acquitted: "var(--mute)" }[s] || "var(--mute)"; }
+function caseCol(c) { return S.colBy === "inf" ? infCol(c.inf) : bcol(BUCKETS.findIndex((b) => b[0] === c.bk)); }
 function recCase(c) {
-  const bi = BUCKETS.findIndex((b) => b[0] === c.bk);
-  return '<div class="rec"><div class="rh"><span class="sw dia" style="background:' + P.b[bi] + '"></span><b>' + esc(c.n) + '</b><span class="n">' + c.y + '</span></div>' +
-    '<div class="rb"><span class="st" style="color:' + stCol(c.status) + '">' + esc(STATUS[c.status] || c.status) + '</span> · ' + esc(c.rank) + (c.on ? ' · <a href="#" data-org="' + esc(c.org) + '">' + esc(c.on) + '</a>' : "") + '<br>' + c.d +
+  return '<div class="rec"><div class="rh"><span class="sw dia" style="background:' + caseCol(c) + (c.lik === "possible" || c.lik === "contested" ? ';opacity:.55' : '') + '"></span><b>' + esc(c.n) + '</b><span class="n">' + c.y + ' · ' + esc(lab(LIK, c.lik)) + '</span></div>' +
+    '<div class="rb"><span class="st" style="color:' + stCol(c.status) + '">' + esc(STATUS[c.status] || c.status) + '</span> · ' + esc(c.who || infLabel(c.inf)) + ' → ' + esc(c.rank) + (c.on && c.org ? ' · <a href="#" data-org="' + esc(c.org) + '">' + esc(c.on) + '</a>' : "") + ' · ' + esc(lab(REL, c.rel).toLowerCase()) + '<br>' + c.d +
     (c.undone ? '<div class="note"><b>What happened next:</b> ' + c.undone + '</div>' : "") +
-    '<div class="hp-src">' + c.cite + srcLink(c) + (c.arch ? '<br>Also in the Welcome to Your Galaxy conspiracy archive: “' + esc(c.arch.t) + '” — archive trust rating ' + c.arch.s + '/10' : "") + '</div></div></div>';
+    '<div class="hp-src">' + c.cite + srcLink(c) + (c.src === "drug map" ? '<br>From the Welcome to Your Galaxy drug-capture map.' : '') + (c.arch ? '<br>Also in the Welcome to Your Galaxy conspiracy archive: “' + esc(c.arch.t) + '” — archive trust rating ' + c.arch.s + '/10' : "") + '</div></div></div>';
 }
 function recOrg(o) {
-  return '<div class="rec"><div class="rh"><span class="sw dot" style="background:' + P.t[o.s] + '"></span><b>' + esc(o.n) + '</b><span class="n">' + esc(typeLabel(o.s)) + '</span></div>' +
+  return '<div class="rec"><div class="rh"><span class="sw dot" style="background:' + tcol(o.s) + '"></span><b>' + esc(o.n) + '</b><span class="n">' + esc(typeLabel(o.s)) + '</span></div>' +
     '<div class="rb">' + o.d + '<br><a href="#" data-org="' + esc(o.k) + '">Open the organisation</a></div></div>';
 }
 function bar(v, col) { return '<div class="bt"><i style="width:' + (v * 10) + '%;background:' + col + '"></i></div>'; }
 function openCountry(k, fly) {
-  const r = ROWS[k]; if (!r) return;
+  rescore();
+  const r = RF[k]; if (!r) return;
   const b = bandOf(r.exp), bts = BTS[k];
   let h = '<div class="hp-k">Country' + (r.est ? '<span class="tag">Estimate</span>' : '') + '</div><h3>' + esc(k) + '</h3>' +
     '<div class="hp-sub">' + BANDS[b][0] + ' · infiltration ' + r.exp.toFixed(2) + ' of 10</div>' + bar(r.exp, P.r[b]) +
     '<table class="kv"><tr><th>Documented record</th><td>' + r.doc.toFixed(2) + '</td></tr><tr><th>Organisational reach</th><td>' + r.reach.toFixed(2) + '</td></tr>' +
     '<tr><th>Conditions</th><td>' + r.cond.toFixed(2) + '</td></tr><tr><th class="mute">&nbsp; state-embedded actors</th><td>' + r.sea.toFixed(1) + '</td></tr><tr><th class="mute">&nbsp; resilience</th><td>' + r.res.toFixed(1) + '</td></tr></table>';
+  if (filtered()) h += '<div class="sub">These scores follow the filters set in the key. The full record scores ' + ROWS[k].exp.toFixed(2) + '.</div>';
   if (r.cproxy) h += '<div class="note">' + esc(r.cproxy) + '</div>';
+  const csAll = CASES.filter((c) => c.c === k);
+  if (csAll.length) { const by = {}; csAll.forEach((c) => { by[c.inf] = (by[c.inf] || 0) + 1; });
+    h += '<div class="hp-h">Who is reaching in here</div><div class="chips">' + INF.filter((x) => by[x.k]).map((x) => '<span data-only="' + x.k + '" title="Show only this kind on the map"><span class="sw dia" style="background:' + infCol(x.k) + '"></span>' + esc(x.label) + ' <span class="n">' + by[x.k] + '</span></span>').join("") + '</div>'; }
   if (bts) h += '<div class="bts"><div class="hp-h" style="margin-top:0">Behind the scenes' + (bts.est ? '<span class="tag">Estimate</span>' : '') + '</div><p>' + bts.d.replace(/<br><br>/g, '</p><p>') + '</p>' +
-    (bts.imp ? '<div class="imp"><div class="hp-h" style="margin-top:0">What this means</div><p>' + bts.imp + '</p></div>' : '') + '</div>';
+    (bts.imp ? '<div class="imp"><div class="hp-h" style="margin-top:0">Why it matters</div><p>' + bts.imp + '</p></div>' : '') + '</div>';
   const ps = PATS.filter((p) => p.cmap[k] != null);
   if (ps.length) h += '<div class="hp-h">Patterns this country is part of — ' + ps.length + '</div>' + ps.map((p) => { const ri = p.cmap[k]; return '<div class="pc"><span class="pchip" data-pat="' + p.id + '"><span class="sw" style="background:' + P.p[ri % P.p.length] + ';margin:0"></span>' + esc(p.title) + '</span><span class="pr">' + esc(p.roles[ri]) + '</span>' + (p.cnotes[k] ? '<div class="pn">' + p.cnotes[k] + '</div>' : '') + '</div>'; }).join("");
   const doc = r.pres.filter((p) => !p[1]), est = r.pres.filter((p) => p[1]);
   if (doc.length || est.length) h += '<div class="hp-h">Organisations present</div><div class="chips">' + doc.map((p) => '<span data-org="' + p[0] + '">' + esc(ORGN[p[0]] || p[0]) + '</span>').join("") + est.map((p) => '<span class="est" data-org="' + p[0] + '" title="Presence likely, not documented">' + esc(ORGN[p[0]] || p[0]) + '</span>').join("") + '</div>' + (est.length ? '<div class="sub">Dashed: presence likely but not documented.</div>' : '');
   const cs = CASES.filter((c) => c.c === k).sort((a, b2) => (b2.y || 0) - (a.y || 0));
-  if (cs.length) h += '<div class="hp-h">Documented cases — ' + cs.length + '</div>' + cs.map(recCase).join("");
+  if (cs.length) h += '<div class="hp-h">Cases — ' + cs.length + '</div><div class="sub" style="margin-top:-2px">Click a case to open it. Faded markers are suspected or disputed.</div>' + cs.map(recCase).join("");
   const hq = ORGS.filter((o) => o.c === k);
   if (hq.length) h += '<div class="hp-h">Headquartered here — ' + hq.length + '</div>' + hq.map(recOrg).join("");
   h += '<div class="hp-src">Conditions: Global Organized Crime Index 2025 (GI-TOC). The composite and reach scores are this map\'s own; see About and sources.</div>';
@@ -580,9 +672,15 @@ function openCountry(k, fly) {
 }
 function openCase(i, fly) {
   const c = CASES[i], bi = BUCKETS.findIndex((b) => b[0] === c.bk);
-  const h = '<div class="hp-k">Documented case · ' + esc(BUCKETS[bi][1]) + '</div><h3>' + esc(c.n) + '</h3>' +
+  const td = (x) => '<td style="text-align:left">' + x + '</td>';
+  const h = '<div class="hp-k">' + esc(infLabel(c.inf)) + ' → ' + esc(BUCKETS[bi][1]) + '</div><h3>' + esc(c.n) + '</h3>' +
     '<div class="hp-sub"><span class="st" style="color:' + stCol(c.status) + '">' + esc(STATUS[c.status] || c.status) + '</span> · ' + c.y + ' · <a href="#" data-cty="' + esc(c.c) + '">' + esc(c.c) + '</a></div>' +
-    '<table class="kv"><tr><th>Office reached</th><td style="text-align:left">' + esc(c.rank) + '</td></tr>' + (c.on ? '<tr><th>Organisation</th><td style="text-align:left"><a href="#" data-org="' + esc(c.org) + '">' + esc(c.on) + '</a></td></tr>' : '') + '</table>' +
+    '<table class="kv"><tr><th>Who reached in</th>' + td((c.on && c.org ? (c.who && c.who.split(" ")[0] !== c.on.split(" ")[0] ? esc(c.who) + ' · ' : '') + '<a href="#" data-org="' + esc(c.org) + '">' + esc(c.on) + '</a>' : esc(c.who || infLabel(c.inf)))) + '</tr>' +
+    '<tr><th>Into</th>' + td(esc(lab(TGT, c.tgt)) + ' · ' + esc(c.rank)) + '</tr>' +
+    '<tr><th>Does it still matter?</th>' + td(esc(lab(REL, c.rel))) + '</tr>' +
+    '<tr><th>How sure we are</th>' + td(esc(lab(LIK, c.lik)) + (c.why ? ' <span class="mute">— ' + esc(c.why) + '</span>' : '')) + '</tr>' +
+    '<tr><th>How severe</th>' + td((c.int || 3) + ' of 5 · ' + esc(INTL[(c.int || 3) - 1] || "")) + '</tr>' +
+    '<tr><th>How far it reaches</th>' + td((c.wide || 2) + ' of 5 · ' + esc(WIDEL[(c.wide || 2) - 1] || "")) + '</tr></table>' +
     '<p class="hp-desc">' + c.d + '</p>' + (c.undone ? '<div class="note"><b>What happened next:</b> ' + c.undone + '</div>' : '') +
     (PATS.filter((p) => p._cs[c.i]).length ? '<div class="hp-h">Part of these patterns</div><div class="chips">' + PATS.filter((p) => p._cs[c.i]).map((p) => '<span data-pat="' + p.id + '">' + esc(p.title) + '</span>').join("") + '</div>' : '') +
     '<div class="hp-src">' + c.cite + srcLink(c) + (c.arch ? '<br>Also in the Welcome to Your Galaxy conspiracy archive: “' + esc(c.arch.t) + '” — archive trust rating ' + c.arch.s + '/10' : '') + '</div>';
@@ -593,7 +691,7 @@ function openOrg(i, fly) {
   const o = ORGS[i], cs = CASES.filter((c) => c.org === o.k).sort((a, b) => (a.y || 0) - (b.y || 0));
   const cc = [...new Set(cs.map((c) => c.c))];
   let h = '<div class="hp-k">' + esc(typeLabel(o.s)) + '</div><h3>' + esc(o.n) + '</h3>' +
-    '<div class="hp-sub">' + esc(o.role || "") + (o.y ? ' · founded ' + o.y : '') + (o.ended ? '–' + o.ended : '') + (o.status ? ' · ' + esc(STATUS[o.status] || o.status) : '') + '</div>' +
+    '<div class="hp-sub">' + esc(o.role || "") + (o.y ? ' · founded ' + o.y : '') + (o.ended ? '–' + o.ended : '') + (o.status ? ' · ' + esc(STATUS[o.status] || o.status) : '') + ' · ' + esc(infLabel(o.inf)) + (o.active ? '' : ' · no longer active') + '</div>' +
     '<p class="hp-desc">' + o.d + '</p>' +
     '<table class="kv"><tr><th>Documented presence</th><td>' + o.nr + ' countries</td></tr>' + (o.ne ? '<tr><th>Likely, undocumented</th><td>' + o.ne + ' more</td></tr>' : '') + '<tr><th>Documented cases</th><td>' + cs.length + (cc.length ? ' in ' + cc.length + ' countries' : '') + '</td></tr></table>' +
     (o.rsrc ? '<div class="sub">Presence: ' + esc(o.rsrc) + '</div>' : '');
@@ -629,7 +727,7 @@ function openPattern(id) {
   const p = PAT_BY[id]; if (!p) return;
   let h = '<div class="hp-k">Pattern behind the scenes · ' + esc(p.kind) + '</div><h3>' + esc(p.title) + '</h3><div class="hp-sub">' + p.span[0] + '–' + p.span[1] + ' · ' + Object.keys(p.cmap).length + ' countries · ' + p.ncases + ' cases</div>' +
     '<p class="hp-desc">' + p.summary + '</p>';
-  if (p.implications) h += '<div class="hp-h">What this means</div><div class="imp-box">' + p.implications + '</div>';
+  if (p.implications) h += '<div class="hp-h">Why it matters</div><div class="imp-box">' + p.implications + '</div>';
   h += '<div class="hp-h">Countries by role</div>' + p.roles.map((r, i) => { const ks = Object.keys(p.cmap).filter((k) => p.cmap[k] === i).sort(); return ks.length ? '<div class="pc"><span class="sw" style="background:' + P.p[i % P.p.length] + '"></span>' + esc(r) + ' <span class="n">' + ks.length + '</span><div class="chips">' + ks.map((k) => '<span data-cty="' + esc(k) + '" title="' + esc((p.cnotes[k] || "").replace(/<[^>]+>/g, "")) + '">' + esc(k) + '</span>').join("") + '</div></div>' : ""; }).join("");
   h += '<div class="hp-h">Documented cases per decade — ' + p.ncases + '</div>' + spark(p);
   if (p.orgs.length) h += '<div class="hp-h">Organisations</div><div class="chips">' + p.orgs.filter((k) => ORG_BY[k]).map((k) => '<span data-org="' + k + '">' + esc(ORGN[k]) + '</span>').join("") + '</div>';
@@ -710,7 +808,7 @@ function init() {
   map.jumpTo({ center: [12, 25], zoom: startZoom(), padding: { left: freeBox().L, right: freeBox().R, top: 0, bottom: 0 } });
   loadWire(); setInterval(loadWire, 15 * 60 * 1000);
 }
-window.societies = { setPattern, openCountry, openCase, openOrg, S };
+window.societies = { setPattern, openCountry, openCase, openOrg, S, refilter };
 
 /* ---------- about and sources ---------- */
 const info = $("#info");

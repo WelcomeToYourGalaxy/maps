@@ -51,11 +51,69 @@ def norm(t):
     return re.sub(r'[^a-z0-9]+', ' ', t.lower()).strip()[:40]
 
 
+CAP_BK = {'enforce': 'security', 'elected': 'legis', 'cabinet': 'cabinet', 'exec': 'exec', 'court': 'court'}
+
+
+def capture_cases(seen):
+    """The drug-capture map's records: trafficking organisations inside governments, and the
+    banks, shippers, brokers and other firms they used or penetrated. Its own data, imported
+    as organised crime reaching into governments and companies."""
+    p = os.path.join(HERE, 'data', 'capture_import.json')
+    if not os.path.exists(p):
+        return []
+    cap = json.load(open(p))
+    sec = {s['k']: s['label'] for s in cap.get('sectors', [])}
+    out = []
+    for c in cap['cases']:
+        key = (c['c'], str(c['y']), norm(c['n']))
+        if key in seen: continue
+        seen.add(key)
+        r = {k: c[k] for k in ('n', 'c', 'lat', 'lng', 'y', 'status', 'rank', 'd', 'cite') if k in c}
+        r['bk'] = CAP_BK.get(c['bk'], 'security'); r['org'] = ''; r['src'] = 'drug map'
+        if c.get('undone'): r['undone'] = c['undone']
+        if c.get('url'): r['url'] = c['url']
+        out.append(r)
+    for e in cap['entities']:
+        key = (e['c'], str(e['y']), norm(e['n']))
+        if key in seen: continue
+        seen.add(key)
+        r = {k: e[k] for k in ('n', 'c', 'lat', 'lng', 'y', 'status', 'd', 'cite') if k in e}
+        r['rank'] = e['role'] + (' (' + sec[e['s']].lower() + ')' if e['s'] in sec else '')
+        r['bk'] = 'company'; r['org'] = ''; r['src'] = 'drug map'
+        if r['c'] in ('Macau', 'Hong Kong'):
+            r['c0'] = r['c']; r['rank'] += ', ' + r['c']; r['c'] = 'China'
+        if e.get('undone'): r['undone'] = e['undone']
+        if e.get('url'): r['url'] = e['url']
+        out.append(r)
+    return out
+
+
+FIELDS = ('inf', 'who', 'tgt', 'rel', 'int', 'wide', 'lik')
+
+
+def apply_classes(out):
+    """Who reached in, into what, whether it still matters, how sure, how severe, how wide.
+    Round-4 records carry these themselves; earlier ones were classified from their text."""
+    p = os.path.join(HERE, 'data', 'classify.json')
+    cls = json.load(open(p)) if os.path.exists(p) else {}
+    miss = 0
+    for r in out:
+        c = cls.get(r.pop('c0', r['c']) + '|' + r['n'])
+        if c:
+            for f in FIELDS:
+                if f in c and f not in r: r[f] = c[f]
+        if not all(f in r for f in FIELDS):
+            miss += 1
+        if r.get('tgt') == 'company': r['bk'] = 'company'
+        elif r.get('tgt') == 'intl': r['bk'] = 'intl'
+    print('records without a full classification:', miss)
+
+
 def main(rdir, arch_path):
     arch = load_archive(arch_path)
     seen, out, per = set(), [], {}
     RENAME = {'hizb_ut_tahrir': 'hizb_tahrir', 'iurd': 'uckg', 'mouride': 'mourides', 'bodu_bala_sena': 'bbs', 'bain_co': 'bain'}
-    files = sorted(glob.glob(os.path.join(rdir, '*.json'))) + sorted(glob.glob(os.path.join(rdir, 'r2', '*_cases.json'))) + sorted(glob.glob(os.path.join(rdir, 'r3', '*_cases.json')))
+    files = sorted(glob.glob(os.path.join(rdir, '*.json'))) + sorted(glob.glob(os.path.join(rdir, 'r2', '*_cases.json'))) + sorted(glob.glob(os.path.join(rdir, 'r3', '*_cases.json'))) + sorted(glob.glob(os.path.join(rdir, 'r4', '*_cases.json')))
     for f in files:
         try:
             recs = json.load(open(f))
@@ -93,6 +151,8 @@ def main(rdir, arch_path):
             if best:
                 r['arch'] = {'t': best['conspiracy'], 's': best['trust']}
             out.append(r)
+    out += capture_cases(seen)
+    apply_classes(out)
     OVERRIDE = {"Blackburn 'Victory' police lodge": {'status': 'reported'}}
     for r in out:
         for k, v in OVERRIDE.items():
