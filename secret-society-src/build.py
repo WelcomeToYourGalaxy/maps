@@ -36,6 +36,12 @@ CASE_BUCKETS = [
   ['finance', 'Central banks, state banks & regulators',
    'Where the money is printed, lent and supervised. When a bank used by a lodge, a church and an intelligence service collapsed in 1982, about $1.3 billion went missing.'],
 ]
+CASE_BUCKETS += [
+  ['intl', 'International bodies',
+   'Bodies meant to serve all their members equally: UN agencies, Interpol, the World Bank, FIFA and the IOC, and the European Parliament. Interpol\'s red notices, meant for fugitives, have been used by governments to chase their critics abroad.'],
+  ['company', 'Inside companies',
+   'Banks, shippers, tech firms and factories with someone else\'s people inside: a spy service owning a cipher-machine maker, cartels using a bank\'s branch staff, a government placing workers under false names.'],
+]
 BUCKET_COLOUR = ['#b05666', '#8e6aa6', '#6f8fb5', '#5f9b94', '#848a58', '#a67f74']
 
 TYPES = [
@@ -58,7 +64,13 @@ TYPES = [
   {'k': 'biz',     'label': 'Firms & business networks', 'accent': '#7a7f95',
    'd': 'Consultancies, accountancies and companies that sit inside ministries or buy their way in: the Guptas in South Africa, McKinsey, PwC, Huawei.'},
 ]
-TYPE_W = {'covert': 1.2, 'statenet': 1.2, 'lodge': 1.0, 'order': 1.0, 'forum': 0.8, 'lawnet': 0.8, 'intl': 0.6, 'ngo': 0.9, 'biz': 0.9}
+TYPES += [
+  {'k': 'crime', 'label': 'Organised crime groups', 'accent': '#8e4a52',
+   'd': 'Mafias, cartels, gangs and clans that buy or place officials so their business can go on: the \'Ndrangheta, the Sinaloa Cartel, Brazil\'s PCC, Japan\'s yakuza.'},
+  {'k': 'bank', 'label': 'Banks & banking families', 'accent': '#5f7f86',
+   'd': 'Banks, financial houses and banking families whose loans, partners or private meetings shaped what governments did: J.P. Morgan, the Rothschilds, Goldman Sachs.'},
+]
+TYPE_W = {'crime': 1.2, 'bank': 1.0, 'covert': 1.2, 'statenet': 1.2, 'lodge': 1.0, 'order': 1.0, 'forum': 0.8, 'lawnet': 0.8, 'intl': 0.6, 'ngo': 0.9, 'biz': 0.9}
 
 BANDS = [['Severe', '#8c2f3e'], ['High', '#a15a66'], ['Moderate', '#7a6b92'], ['Low', '#5b7f8a'], ['Minimal', '#66786a']]
 LENSES = [
@@ -71,9 +83,42 @@ LENSES = [
   {'k': 'cond',  'label': 'How easily officials can be bent', 'accent': '#4f7d7a',
    'desc': 'From the Global Organized Crime Index: how often officials use their posts for hidden interests, and how weak the courts, police and watchdogs are that should stop them.'},
 ]
-STATUS_W = {'convicted': 1.0, 'inquiry': 0.9, 'acknowledged': 0.9, 'designated': 0.8, 'settled': 0.8,
+STATUS_W = {'investigation': 0.55, 'alleged': 0.3, 'convicted': 1.0, 'inquiry': 0.9, 'acknowledged': 0.9, 'designated': 0.8, 'settled': 0.8,
             'indicted': 0.7, 'reported': 0.45, 'annulled': 0.3, 'acquitted': 0.2}
-OFFICE_W = {'exec': 1.0, 'cabinet': 0.85, 'security': 0.8, 'court': 0.8, 'finance': 0.75, 'legis': 0.65}
+OFFICE_W = {'company': 0.5, 'intl': 0.0, 'exec': 1.0, 'cabinet': 0.85, 'security': 0.8, 'court': 0.8, 'finance': 0.75, 'legis': 0.65}
+
+
+INF = [
+  {'k': 'state', 'label': 'Governments & spy services', 'd': 'One country\'s government, intelligence service or ruling party reaching inside another country\'s government, an international body, or companies.'},
+  {'k': 'crime', 'label': 'Organised crime', 'd': 'Cartels, mafias, gangs and clans buying or placing officials and staff so their business can carry on.'},
+  {'k': 'corp', 'label': 'Companies & industries', 'd': 'Firms and whole industries reaching into the bodies meant to regulate them, buy from them, or tax them: bribes, lobbyists, consultants placed in ministries, the revolving door.'},
+  {'k': 'money', 'label': 'Banks & banking families', 'd': 'Banks, financial houses and banking families whose loans, partners and private meetings shaped what governments did.'},
+  {'k': 'lodge', 'label': 'Secret societies & lodges', 'd': 'Freemasonry and its offshoots, sworn brotherhoods and student secret societies whose members hold office.'},
+  {'k': 'faith', 'label': 'Religious movements', 'd': 'Churches, orders and religious movements that work to place members in public office or bend it to their aims.'},
+  {'k': 'elite', 'label': 'Elite clubs & policy networks', 'd': 'Invitation-only forums, think tanks, foundations and legal networks that supply ministers, draft laws or host the private conversation.'},
+  {'k': 'movement', 'label': 'Political & armed movements', 'd': 'Political movements and armed groups that work inside the state: the Muslim Brotherhood, Hezbollah, the Grey Wolves, militias with seats in government.'},
+  {'k': 'lender', 'label': 'Lenders & their conditions', 'd': 'The IMF, the World Bank and other lenders, when the conditions on their loans decide a country\'s laws and budgets.'},
+]
+TGT = [['gov', 'Governments', 'National and local governments: leaders, ministers, parliaments, courts, police, armies, spy services, central banks.'],
+       ['intl', 'International bodies', 'UN agencies, Interpol, the World Bank, sports federations, the European Parliament.'],
+       ['company', 'Companies', 'Banks and firms with someone else\'s people inside.']]
+REL = [['now', 'Happening now', 'Still going on, still in force, still in court, or the people are still in office.'],
+       ['legacy', 'Over, but still felt', 'Finished, but it left a law, an institution, a debt, a captured agency or an unpunished crime that shapes things today.'],
+       ['past', 'Historical', 'Over, with little direct effect today.']]
+LIK = [['established', 'Proven', 'A court verdict, an official inquiry, a government designation, a settlement or an admission.'],
+       ['probable', 'Probable', 'Charged, under official investigation, or documented by reporting with documents behind it.'],
+       ['possible', 'Suspected', 'Suspected by a credible named source, not yet shown.'],
+       ['contested', 'Disputed', 'Acquitted, overturned, or claimed widely without the evidence to back it.']]
+INTL = ['An attempt or a single contact', 'One official bought or placed', 'A network of officials or one agency', 'A ministry, a branch of government or a leader', 'Steers the state or the body']
+WIDEL = ['One town or one firm', 'One country', 'Several countries or a region', 'A continent or a whole sector', 'Worldwide']
+LIK_CAP = {'possible': 0.3, 'contested': 0.2}
+
+
+def case_w(c):
+    """How much one case adds to its country's documented record."""
+    w = STATUS_W.get(c['status'], 0.4) * OFFICE_W.get(c['bk'], 0.6) * recency(c.get('y'))
+    if c.get('lik') in LIK_CAP: w = min(w, LIK_CAP[c['lik']] * OFFICE_W.get(c['bk'], 0.6) * recency(c.get('y')))
+    return w * (0.6 + 0.1 * int(c.get('int') or 3))
 
 
 def load(name, default=None):
@@ -135,27 +180,29 @@ def main():
     doc_raw = {k: 0.0 for k in names}
     for c in cases:
         if c['c'] in doc_raw:
-            doc_raw[c['c']] += STATUS_W.get(c['status'], 0.4) * OFFICE_W.get(c['bk'], 0.6) * recency(c.get('y'))
+            doc_raw[c['c']] += case_w(c)
     nz = [v for v in doc_raw.values() if v > 0]
     DCAP = max(1.0, pctl(nz, 0.95))
     doc = {k: (0 if v <= 0 else min(10, 10 * math.log1p(v) / math.log1p(DCAP))) for k, v in doc_raw.items()}
 
     # ---------------------------------------------------------------- reach
     reach_raw = {k: 0.0 for k in names}
-    present = {k: [] for k in names | OFFSETS}          # (org key, est?)
+    present = {k: [] for k in names | OFFSETS}          # (org key, est?, weight)
     for o in orgs:
         w = TYPE_W.get(o['ty'], 1.0)
         for cn in o.get('reach', []):
-            if cn in present and (o['k'], False) not in present[cn]:
-                reach_raw[cn] = reach_raw.get(cn, 0) + w; present[cn].append((o['k'], False))
+            if cn in present and not any(p[0] == o['k'] and not p[1] for p in present[cn]):
+                reach_raw[cn] = reach_raw.get(cn, 0) + w; present[cn].append((o['k'], False, w))
         for cn in o.get('reach_est', []):
             if cn in present and not any(p[0] == o['k'] for p in present[cn]):
-                reach_raw[cn] = reach_raw.get(cn, 0) + 0.5 * w; present[cn].append((o['k'], True))
+                reach_raw[cn] = reach_raw.get(cn, 0) + 0.5 * w; present[cn].append((o['k'], True, 0.5 * w))
     # an organisation's documented case in a country is proof of presence there too
     for c in cases:
         k = c.get('org')
         if k in okeys and c['c'] in present and not any(p[0] == k and not p[1] for p in present[c['c']]):
-            present[c['c']] = [p for p in present[c['c']] if p[0] != k] + [(k, False)]
+            old = sum(p[2] for p in present[c['c']] if p[0] == k)
+            neww = old + TYPE_W.get(otype[k], 1.0) * 0.5
+            present[c['c']] = [p for p in present[c['c']] if p[0] != k] + [(k, False, neww)]
             reach_raw[c['c']] = reach_raw.get(c['c'], 0) + TYPE_W.get(otype[k], 1.0) * 0.5
     RCAP = max(1.0, pctl([v for kk, v in reach_raw.items() if v > 0 and kk in names], 0.92))
     reach = {k: min(10, 10 * v / RCAP) for k, v in reach_raw.items()}
@@ -168,7 +215,7 @@ def main():
         rows[k] = {'exp': round(exp, 2), 'doc': round(doc[k], 2), 'reach': round(reach[k], 2),
                    'cond': round(cnd, 2), 'sea': r['sea'], 'res': r['res'],
                    'band': band_of(exp), 'est': doc[k] == 0, 'raw': round(doc_raw[k], 2),
-                   'pres': [[p[0], 1 if p[1] else 0] for p in present[k]]}
+                   'pres': [[p[0], 1 if p[1] else 0, round(p[2], 3)] for p in present[k]]}
         if r.get('proxy'): rows[k]['cproxy'] = r['proxy']
 
     # ---------------------------------------------------------------- points
@@ -181,6 +228,10 @@ def main():
         x['i'] = len(case_out)
         x['on'] = oname.get(c.get('org'), c.get('org_label', c.get('org', '')))
         if c.get('arch'): x['arch'] = c['arch']
+        for f in ('inf', 'who', 'tgt', 'rel', 'lik', 'why', 'src'):
+            if c.get(f): x[f] = c[f]
+        x['int'] = int(c.get('int') or 3); x['wide'] = int(c.get('wide') or 2)
+        x['w'] = round(case_w(c), 4)
         case_out.append(x)
 
     ent = []
@@ -189,7 +240,12 @@ def main():
                     'y': o.get('founded', ''), 'ended': o.get('ended'), 'status': o.get('status', 'active'),
                     'role': o.get('hq', ''), 'd': o['d'], 'cite': o.get('cite', ''), 'url': o.get('url', ''),
                     'nr': len(o.get('reach', [])), 'ne': len(o.get('reach_est', [])),
-                    'rsrc': o.get('reach_src', ''), 'reach_list': o.get('reach', [])})
+                    'rsrc': o.get('reach_src', ''), 'reach_list': o.get('reach', []),
+                    'inf': o.get('inf', 'elite'), 'active': bool(o.get('active', True)), 'wide': int(o.get('wide') or 2)})
+    for e in ent:
+        cs = [c for c in case_out if c['org'] == e['k']]
+        e['int'] = max([c['int'] for c in cs] or [1])
+        e['rel'] = 'now' if e['active'] else ('legacy' if any(c.get('rel') in ('now', 'legacy') for c in cs) else 'past')
 
     # branches: one dot per organisation per country of presence, set on a small fixed ring
     # around the capital so that a capital holding twenty organisations is still legible
@@ -200,7 +256,7 @@ def main():
         ll = caps.get(cn, {}).get('ll')
         if not ll: continue
         n = len(ps)
-        for i, (k, est) in enumerate(sorted(ps)):
+        for i, (k, est, _w) in enumerate(sorted(ps)):
             if n == 1:
                 lat, lng = ll
             else:
@@ -227,6 +283,7 @@ def main():
             'bts': paragraphs(load('bts.json', {})),
             'reloc': [], 'cnotes': cnotes, 'gtypes': TYPES, 'recovered': [],
             'orgnames': oname, 'orgtypes': otype,
+            'inf': INF, 'tgt': TGT, 'rel': REL, 'lik': LIK, 'intl': INTL, 'widel': WIDEL, 'typew': TYPE_W,
             'offpres': {k: [[p[0], 1 if p[1] else 0] for p in present[k]] for k in OFFSETS if present.get(k)},
             'meta': {'dcap': round(DCAP, 2), 'rcap': round(RCAP, 2), 'n_orgs': len(orgs),
                      'n_cases': len(case_out), 'n_branches': len(groups), 'n_routes': len(routes),

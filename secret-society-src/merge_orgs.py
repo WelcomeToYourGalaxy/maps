@@ -28,14 +28,14 @@ NAME = {'freemasonry':'Freemasonry (other grand lodges)','prc_state':'PRC state 
 def main(rdir):
     base = json.load(open(os.path.join(rdir, 'orgs.json')))
     orgs, chans = base['orgs'], base['channels']
-    for f in sorted(glob.glob(os.path.join(rdir, 'r2', '*_orgs.json'))) + sorted(glob.glob(os.path.join(rdir, 'r3', '*_orgs.json'))):
+    for f in sorted(glob.glob(os.path.join(rdir, 'r2', '*_orgs.json'))) + sorted(glob.glob(os.path.join(rdir, 'r3', '*_orgs.json'))) + sorted(glob.glob(os.path.join(rdir, 'r4', '*_orgs.json'))):
         for o in json.load(open(f)):
             if o['k'] in {x['k'] for x in orgs}:
                 ex = next(x for x in orgs if x['k'] == o['k'])
                 ex['reach'] = sorted(set(ex.get('reach', [])) | set(o.get('reach', [])))
                 continue
             orgs.append(o)
-    for f in sorted(glob.glob(os.path.join(rdir, 'r2', '*_channels.json'))) + sorted(glob.glob(os.path.join(rdir, 'r3', '*_channels.json'))):
+    for f in sorted(glob.glob(os.path.join(rdir, 'r2', '*_channels.json'))) + sorted(glob.glob(os.path.join(rdir, 'r3', '*_channels.json'))) + sorted(glob.glob(os.path.join(rdir, 'r4', '*_channels.json'))):
         chans += json.load(open(f))
     DROP = {'iurd': 'uckg', 'mouride': 'mourides', 'bodu_bala_sena': 'bbs', 'bain_co': 'bain'}
     keep = {o['k']: o for o in orgs}
@@ -52,7 +52,7 @@ def main(rdir):
     ok = {x['k'] for x in orgs}
     by = {}
     for x in cases:
-        if x['org'] not in ok: by.setdefault(x['org'], []).append(x)
+        if x.get('org') and x['org'] not in ok: by.setdefault(x['org'], []).append(x)
     for k, cs in by.items():
         first = sorted(cs, key=lambda z: z['y'])[0]
         note = next((z.get('org_note') for z in cs if z.get('org_note')), '') or ''
@@ -67,6 +67,17 @@ def main(rdir):
                      'cite': 'See the cases listed below.', 'reach': sorted({z['c'] for z in cs}),
                      'reach_src': 'countries where this map holds a documented case', 'reach_est': []})
         if k not in NAME: print('  check new org key:', k, '->', orgs[-1]['n'], orgs[-1]['ty'])
+    cl = json.load(open(os.path.join(HERE, 'data', 'orgs_classify.json')))
+    for o in orgs:
+        c = cl.get(o['k'], {})
+        for f in ('inf', 'active', 'wide'):
+            if f not in o and f in c: o[f] = c[f]
+        if 'inf' not in o:
+            o['inf'] = {'lodge': 'lodge', 'order': 'faith', 'forum': 'elite', 'lawnet': 'elite', 'ngo': 'elite', 'covert': 'state',
+                        'statenet': 'state', 'biz': 'corp', 'crime': 'crime', 'bank': 'money', 'intl': 'intl_target'}.get(o['ty'], 'elite')
+            print('  unclassified org, inf from type:', o['k'], o['inf'])
+        o.setdefault('active', o.get('status', 'active') in ('active', '') and not o.get('ended'))
+        o.setdefault('wide', 2)
     json.dump({'orgs': orgs, 'channels': chans}, open(os.path.join(HERE, 'data', 'orgs.json'), 'w'), ensure_ascii=False, indent=1)
     print(len(orgs), 'orgs,', len(chans), 'channels')
 
