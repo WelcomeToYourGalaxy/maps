@@ -12,9 +12,9 @@ Inputs (all in ./data):
     conditions.json  GI-TOC Organized Crime Index 2025 (state-embedded actors, resilience)
     capitals.json    capital coordinates used to place branch/chapter dots
 
-The page shell is template.html: the Drug Underworld Map with its data and plate removed.
-Every change made to that shell is a named replacement below, so the two maps can be
-compared line for line.
+The page is app_template.html: the MapLibre globe shell shared with the other Welcome to
+Your Galaxy maps (the Culprits basemaps in basemaps.js, the same cards, key and sky), with
+this map's data, plate and About page written in. about.py writes the About page.
 """
 import json, math, re, base64, os, sys, hashlib
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -224,14 +224,14 @@ def main():
                      'n_cases': len(case_out), 'n_branches': len(groups), 'n_routes': len(routes),
                      'n_est_branches': sum(g['est'] for g in groups)}}
 
-    html = open(os.path.join(HERE, 'template.html')).read()
+    data['iso'] = load('iso3.json', {})
+    import about
+    html = open(os.path.join(HERE, 'app_template.html')).read()
     plate = base64.b64encode(open(os.path.join(HERE, 'plate.webp'), 'rb').read()).decode()
-    html = html.replace('var PLATE_IMG = "__PLATE__";', 'var PLATE_IMG = "data:image/webp;base64,' + plate + '";')
+    html = html.replace('"__PLATE__"', '"data:image/webp;base64,' + plate + '"')
+    html = html.replace('__BASEMAPS__', open(os.path.join(HERE, 'basemaps.js')).read())
+    html = html.replace('__ABOUT__', json.dumps(about.about(data), ensure_ascii=False))
     html = html.replace('var DATA = __DATA__;', 'var DATA = ' + json.dumps(data, ensure_ascii=False, separators=(',', ':')) + ';')
-    html = apply_edits(html)
-    for ph, v in (('{N_CASES}', len(case_out)), ('{N_ORGS}', len(ent)), ('{N_BRANCHES}', '{:,}'.format(len(groups))),
-                  ('{N_ROUTES}', len(routes))):
-        html = html.replace(ph, str(v))
     open(OUT, 'w').write(html)
     print('wrote', os.path.relpath(OUT), round(os.path.getsize(OUT) / 1e6, 2), 'MB;',
           len(case_out), 'cases,', len(ent), 'orgs,', len(groups), 'branches,', len(routes), 'channels')
@@ -331,47 +331,6 @@ def build_patterns(pats, cases, ent, channels):
                     'cids': [c['i'] for c in pc]})
     return out
 
-
-# ====================================================================== shell edits
-def rep(html, old, new, count=1):
-    n = html.count(old)
-    if n != count:
-        sys.exit('edit expected %d match(es), found %d:\n%s' % (count, n, old[:160]))
-    return html.replace(old, new)
-
-
-def block(html, start, end, new):
-    i = html.find(start)
-    j = html.find(end, i + 1)
-    if i < 0 or j < 0:
-        sys.exit('block markers not found: %r .. %r' % (start[:60], end[:60]))
-    return html[:i] + new + html[j:]
-
-
-def apply_edits(h):
-    from edits import EDITS_JS, edit_list
-    import patterns_ui
-    for kind, a, b, c in edit_list() + patterns_ui.edit_list():
-        if kind == 'rep':
-            h = rep(h, a, b, c or 1)
-        else:
-            h = block(h, a, b, c)
-    # colour sweep: no yellow, no orange anywhere in the shell
-    for old, new in COLOUR_SWEEP:
-        h = h.replace(old, new)
-    return h
-
-
-COLOUR_SWEEP = [
-  ('rgba(201,162,39', 'rgba(170,140,150'), ('#c9a227', '#a88c96'), ('#e0b088', '#c9a9b0'),
-  ('#f0cf6a', '#d6c4cc'), ('#c2913a', '#a0707a'), ('#c2603a', '#9a4f5a'), ('#d8cdb4', '#d3cdc8'),
-  ('rgba(255,140,40', 'rgba(160,110,130'), ('rgba(230,192,121', 'rgba(190,160,170'),
-  ('#8a6a4a', '#7a6260'), ('#d9a441', '#c08a96'), ('#a8763a', '#8e5a66'), ('#c2a173', '#b49aa2'),
-  ('#d8b077', '#c9a3ad'), ('#e0c088', '#cbb3bb'), ('#f0e8d8', '#ece6e6'), ('#fff0b0', '#f3e6ec'),
-  ('#f15622', '#9b4f5a'), ('rgba(230,168,48', 'rgba(170,120,140'), ('rgba(230,178,90', 'rgba(170,130,150'),
-  ('rgba(168,118,58', 'rgba(142,90,102'), ('rgba(216,200,150', 'rgba(210,200,205'),
-  ('rgba(224,176,136', 'rgba(200,170,180'), ('#b3a375', '#a59a96'),
-]
 
 if __name__ == '__main__':
     sys.path.insert(0, HERE)
