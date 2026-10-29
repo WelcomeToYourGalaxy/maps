@@ -402,6 +402,49 @@ table.lvt th{color:var(--mute);font-weight:400;font-size:11px}
   .ledger .lg{grid-template-columns:12px minmax(0,1fr) 54px 64px}
   .ledger .lgh,.ledger .lgs{grid-template-columns:minmax(0,1fr) 54px 64px}
 }
+/* round 3 layout */
+#topRow{display:flex;gap:6px;justify-content:flex-end;align-items:stretch;flex:none}
+#topRow #worldBtn{position:static;box-shadow:none}
+#topRow .zbtn{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:4px;width:32px;font:18px/1 'Marcellus',Georgia,serif;cursor:pointer}
+#topRow .zbtn:hover{border-color:var(--accent-hi);color:#fff}
+#topRow #infoBtn{align-self:auto}
+.trrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:4px 0 2px}
+.trrow .seg{margin:0}
+.trrow .shade{display:flex;align-items:center;gap:6px;flex:1;min-width:120px;font-size:11.5px;color:var(--mute)}
+.trrow .shade input{flex:1;min-width:60px}
+.mrow{display:grid;grid-template-columns:1fr 1fr;gap:5px 8px}
+.mb{display:flex;align-items:center;gap:4px;min-width:0}
+.mb .btn{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11.8px;padding:3px 5px}
+.hleg{margin:8px 0 2px}
+.hleg .bar6{display:flex;height:10px;border-radius:2px;overflow:hidden;border:1px solid rgba(255,255,255,.12)}
+.hleg .bar6 i{flex:1}
+.hleg .ticks{position:relative;height:27px;font-size:10.5px;color:var(--mute);margin-top:2px}
+.hleg .ticks span{position:absolute;transform:translateX(-50%);white-space:nowrap}
+.hleg .ticks span:first-child{transform:none}
+.hleg .ticks span:last-child{transform:translateX(-100%)}
+.hleg .extra{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:11.3px;color:var(--mute);margin-top:4px}
+.hleg .extra span{display:inline-flex;align-items:center;gap:5px}
+.hleg .sw{width:16px;height:9px;border-radius:2px;border:1px solid rgba(255,255,255,.12)}
+.hleg .sw.part{background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.28) 0 2px,transparent 2px 5px)}
+.hleg .sw.none{background:#1b1c2a}
+#sList{max-height:240px;overflow:auto;margin-top:6px}
+#dos .scale .headline{font-size:19px;line-height:1.35;color:#f6f2ea;font-weight:700;letter-spacing:.2px}
+#dos .scale .headline b{font-size:22px;color:#fff;font-weight:700}
+#dos .stab tr.sr{cursor:pointer}
+#dos .stab tr.sr:hover td{background:rgba(255,255,255,.05)}
+#dos .stab tr.sr.open td{background:rgba(255,255,255,.07)}
+#dos .stab tr.sx td{padding:0 0 8px 0;border-top:0}
+#dos .stab tr.sx .fig{background:rgba(255,255,255,.03);border:1px solid var(--line2);border-radius:5px;padding:8px 12px}
+#dos .stab td.ch{color:var(--accent-hi);width:14px}
+table.lvt th.lvh{font-size:10.8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent-hi);text-align:left}
+table.all{table-layout:fixed;width:100%;font-size:10.6px}
+table.all th{white-space:normal;word-break:normal;hyphens:auto;font-size:10px;padding:3px 2px;line-height:1.15}
+table.all td{padding:2px 2px;overflow:hidden;text-overflow:ellipsis}
+table.all td:first-child,table.all td:nth-child(8),table.all td:last-child,table.all td:nth-child(3),table.all td:nth-child(7){min-width:0}
+table.all td.num{white-space:nowrap}
+
+.hleg .ticks span:first-child{transform:translateX(-50%)}
+.hleg .ticks span:last-child{transform:translateX(-50%)}
 
 </style>
 </head>
@@ -411,19 +454,16 @@ table.lvt th{color:var(--mute);font-weight:400;font-size:11px}
 <div id="key" class="card scroll">
   <button id="toggleKey" class="tog" type="button" title="Pull the key up or down">−</button>
   <h1>Where government money goes</h1>
-  <p class="lede">What every level of government in each country spends its money on, and where that money comes from: income taxes, property taxes, sales taxes, social contributions, other revenue and borrowing — and the money kept secret.</p>
-  <p class="lede2" id="keyCount"></p>
   <div class="body" id="keyBody"></div>
 </div>
 
 <div id="rcol">
-  <div id="infoBtn" class="card" role="button" tabindex="0">About and sources</div>
+  <div id="topRow"><button id="worldBtn" type="button" title="Zoom back out to the whole world">Whole world</button><button class="zbtn" id="zIn" type="button" title="Zoom in">+</button><button class="zbtn" id="zOut" type="button" title="Zoom out">−</button><div id="infoBtn" class="card" role="button" tabindex="0">About and sources</div></div>
   <div id="tr" class="card"><button id="toggleTr" class="tog" type="button" title="Pull the basemap box up or down">−</button><div class="body" id="trBody"></div></div>
-  <div id="sec" class="card scroll"><button id="toggleSec" class="tog" type="button" title="Pull the secret money box up or down">−</button><div class="psec" style="margin-top:0">Secret money</div><div class="body" id="secBody"></div></div>
   <div id="dock" class="card"><div class="psec" style="margin-top:0">Charts</div><div id="dockBtns"></div></div>
+  <div id="sec" class="card scroll"><button id="toggleSec" class="tog" type="button" title="Pull the secret money box up or down">−</button><div class="psec" style="margin-top:0">Secret money</div><div class="body" id="secBody"></div></div>
 </div>
 
-<button id="worldBtn" type="button" title="Zoom back out to the whole world">Whole world</button>
 <div id="info" class="card scroll"></div>
 <button id="infoClose" class="btn" type="button">Close</button>
 <div id="veil"></div>
@@ -1452,9 +1492,9 @@ const PAYER_TITLE = "Taxes split by who pays them: people, companies, or charged
 const FUND_MENU = [["Where the money comes from", [["fund:taxes", "All taxes"]].concat(FUND.filter((f) => f[0] !== "taxns").map((f) => ["fund:" + f[0], f[1]]))],
   [PAYER_TITLE, PAYERS.map((p) => ["payer:" + p[0], "Taxes paid by: " + p[1].toLowerCase()])]];
 const METNAME = {}; SPEND_MENU.concat(FUND_MENU).forEach((g) => g[1].forEach((m) => { METNAME[m[0]] = m[1]; }));
-const MEASURES = { spend: [["share", "Share of all spending"], ["gdp", "% of the economy (GDP)"], ["pp", "Dollars per person"], ["usd", "Total dollars"]],
-  fund: [["share", "Share of money coming in"], ["gdp", "% of the economy (GDP)"], ["pp", "Dollars per person"], ["usd", "Total dollars"]],
-  payer: [["share", "Share of all taxes"], ["gdp", "% of the economy (GDP)"], ["pp", "Dollars per person"], ["usd", "Total dollars"]] };
+const MEASURES = { spend: [["share", "Share of spending"], ["gdp", "% of the economy"], ["pp", "Dollars per person"], ["usd", "Total dollars"]],
+  fund: [["share", "Share of money in"], ["gdp", "% of the economy"], ["pp", "Dollars per person"], ["usd", "Total dollars"]],
+  payer: [["share", "Share of all taxes"], ["gdp", "% of the economy"], ["pp", "Dollars per person"], ["usd", "Total dollars"]] };
 const MHELP = {
   share_spend: "What part of the government's total spending goes to this. 15% means 15 of every 100 dollars the government spends. Good for comparing priorities between countries of very different sizes.",
   share_fund: "What part of all the money the government took in that year (taxes and other revenue, plus any borrowing) came from this source. 30% means 30 of every 100 dollars.",
@@ -1497,7 +1537,7 @@ function budgetRows(c) { const out = [];
 function latestPct(c) { const r = budgetRows(c).filter((x) => x.y <= 2026 && !/request/i.test(x.f.label || "")); if (!r.length) return null; const top = r[0].y; return r.filter((x) => x.y >= top - 2).sort((a, b) => b.p - a.p)[0]; }
 const GQ = SMG.questions || {};
 const SLAYERS = [
-  { id: "big", name: "Largest single figure (US dollars)", chips: true, log: true, fmt: money,
+  { id: "big", name: "Largest single figure (US dollars)", chips: true, log: true, fmt: money, leg: usdShort,
     what: "Each country's biggest published or alleged amount of secret, off-book or untraceable government money, among the kinds of evidence switched on below. Shaded on a log scale: each step is roughly 3× the one before.",
     val: (c) => { let m = null; for (const f of ((SMD[c] || {}).figures || [])) if (f.amount_usd != null && !f.regional && sOn.has(f.status) && (m == null || f.amount_usd > m)) m = f.amount_usd; return m; } },
   { id: "share", name: "Share of budget kept secret (%)", chips: true, fmt: (v) => v.toFixed(v < 10 ? 1 : 0) + "%",
@@ -1506,13 +1546,13 @@ const SLAYERS = [
   { id: "spct", name: "Secret budget as % of all government spending", log: true, fmt: (v) => pctTxt(v) + "% of government spending", leg: (v) => pctTxt(v) + "%",
     what: "The most recent yearly secret, classified, spy-agency or off-budget amount published for each country, divided by everything that country's governments (national, regional and local) spent that same year (IMF). Where several such amounts exist, the highest share within the three most recent years on record is used. Budget requests not yet approved, part-year figures, and one-off stocks of money (hidden assets, debts) are left out. Log scale.",
     val: (c) => { const r = latestPct(c); return r ? r.p : null; } },
-  { id: "ppl", name: "Insiders and whistleblowers on record", fmt: (v) => v + (v == 1 ? " person" : " people"),
+  { id: "ppl", name: "Insiders and whistleblowers on record", fmt: (v) => v + (v == 1 ? " person" : " people"), leg: (v) => String(Math.round(v)),
     what: "How many named people (insiders, auditors, investigators, researchers) have said where this country's secret money goes.",
     val: (c) => { const n = ((SMD[c] || {}).people || []).length; return n || null; } },
   { id: "best", name: "Strongest evidence on record", fixed: [1, 5], fmt: (v) => "Tier " + (6 - v) + " — " + TIERW[6 - v],
     what: "The highest evidence tier among the people on record for each country. Brighter shading means stronger backing (tier 1 = official records or authenticated documents).",
     val: (c) => { const p = (SMD[c] || {}).people || []; if (!p.length) return null; return 6 - Math.min(...p.map((x) => x.tier || 5)); } },
-  { id: "wealth", name: "National wealth (World Bank, for comparison)", log: true, fmt: money, all: SMW,
+  { id: "wealth", name: "National wealth (World Bank, for comparison)", log: true, fmt: money, leg: usdShort, all: SMW,
     what: "Total national wealth: the value of everything a country owns — buildings, machines and roads; land, forests, minerals and fuel; the lifetime earning power of its people; plus what other countries owe it minus what it owes them. World Bank, 2020, in US dollars. Log scale.",
     val: (c) => SMW[c] ? SMW[c][1] : null },
 ];
@@ -1594,7 +1634,7 @@ const BM = CulpritsBasemaps.create("map", { initial: "night", projection: "globe
   onApply: (k) => { const u = UI[k] || UI.night, rs = document.documentElement.style; rs.setProperty("--accent", u[0]); rs.setProperty("--accent-hi", u[1]); rs.setProperty("--bg", u[2]); if (ready) { order(); update(); } },
   onReady: () => init() });
 const map = window.moneyMap = BM.maplibre;
-map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
+$("#zIn").addEventListener("click", () => map.zoomIn()); $("#zOut").addEventListener("click", () => map.zoomOut());
 map.once("idle", () => { const a = map.getContainer().querySelector(".maplibregl-ctrl-attrib"); if (a) { a.classList.remove("maplibregl-compact-show"); a.removeAttribute("open"); } });
 function panelRight() { try { const r = $("#key").getBoundingClientRect(), w = map.getContainer().clientWidth; if (r.width && r.right < w * 0.6) return r.right + 10; } catch (e) {} return 0; }
 function rightBox() { try { const r = $("#rcol").getBoundingClientRect(), w = map.getContainer().clientWidth; if (r.width && r.left > w * 0.5) return w - r.left + 10; } catch (e) {} return 0; }
@@ -1666,13 +1706,12 @@ function menuHTML(id, groups, placeholder) {
 function buildKey() {
   $("#keyBody").innerHTML =
     '<p class="mdesc" style="margin-top:0">Click any country for its full picture: what its governments spend on and where the money comes from, as pie charts with every percentage, and its secret money.</p>' +
-    '<div class="psec">Spending ' + qm(SPEND_HELP) + '</div><div class="selrow">' + menuHTML("mSpend", SPEND_MENU, "Choose what to shade…") + '</div>' +
-    '<div class="psec">Money coming in ' + qm(FUND_HELP) + '</div><div class="selrow">' + menuHTML("mFund", FUND_MENU, "Choose what to shade…") + '</div>' +
+    '<div class="psec">Money coming in <span id="qFund">' + qm(FUND_HELP) + '</span></div><div class="selrow">' + menuHTML("mFund", FUND_MENU, "Choose what to shade…") + '</div>' +
+    '<div class="psec">Spending <span id="qSpend">' + qm(SPEND_HELP) + '</span></div><div class="selrow">' + menuHTML("mSpend", SPEND_MENU, "Choose what to shade…") + '</div>' +
     '<div id="measBox"><div class="psec">Measured as</div><div class="mrow" id="measures"></div></div>' +
-    '<p class="mdesc" id="mdesc"></p>' +
     '<label class="chk" id="centralRow" style="margin-top:6px"><input type="checkbox" id="central"' + (S.central ? " checked" : "") + '> Include countries where only central-government figures exist ' + qm(CENTRAL_HELP) + '</label>' +
     '<div class="legend" id="legend"></div>' +
-    '<div class="psec">Countries, ranked</div><input id="wfilter" type="search" placeholder="Find a country" autocomplete="off"><div id="clist" class="scroll"></div>';
+    '<div id="rankBox"><div class="psec">Countries, ranked</div><input id="wfilter" type="search" placeholder="Find a country" autocomplete="off"><div id="clist" class="scroll"></div></div>';
   $("#mSpend").addEventListener("change", (e) => setMetric(e.target.value));
   $("#mFund").addEventListener("change", (e) => setMetric(e.target.value));
   $("#central").addEventListener("change", (e) => { S.central = e.target.checked; update(); });
@@ -1710,38 +1749,36 @@ function drawMeasures() {
     d = code === "borrow" ? "The part of spending that revenue did not cover in that year, paid for by borrowing. Countries that took in more than they spent show none." : code === "taxes" ? "Every tax, as a share of all money coming in (revenue plus borrowing). Social security contributions are counted separately." : "One source of the money coming in (revenue plus any borrowing).";
   } else if (kind === "payer") d = "Taxes sorted by who the law makes pay them to the government: people and households (income tax on wages, their social security, home property tax), companies and employers (profit tax, employers' social security, payroll tax), or charged on purchases (VAT, sales taxes, excises, customs, collected by sellers and importers but paid in the price). Who finally bears the cost can differ: part of an employer's payroll tax may come out of wages. From the OECD's Revenue Statistics, which cover fewer countries.";
   else d = "";
-  $("#mdesc").textContent = d;
-  $("#mdesc").style.display = d ? "" : "none";
+  $("#qFund .qm").dataset.h = FUND_HELP + (kind === "fund" || kind === "payer" ? "  Now shown — " + METNAME[S.metric] + ": " + d : "");
+  $("#qSpend .qm").dataset.h = SPEND_HELP + (kind === "spend" ? "  Now shown — " + METNAME[S.metric] + ": " + d : "");
 }
 function drawLegend(vals, cls) {
   const R = ramp(), n = Object.keys(vals).length, nPart = Object.values(vals).filter((x) => x.part).length;
   const L = mkind() === "secret" ? SLAYER(S.metric.slice(7)) : null;
-  const f = L ? (L.id === "best" ? (v) => "tier " + (6 - Math.round(v)) : L.gdi ? (v) => "score " + Math.round(100 - v) : (v) => (L.leg || L.fmt)(v)) :
+  const f = L ? (L.gdi ? (v) => String(Math.round(100 - v)) : (v) => (L.leg || L.fmt)(v)) :
     (v) => S.measure === "share" || S.measure === "gdp" ? pc(v) : S.measure === "pp" ? perPerson(v) : usdShort(v);
-  const edges = [-Infinity].concat(BREAKS, [Infinity]);
-  let h = "";
+  let h = '<div class="hleg">';
   if (L && L.id === "best") {
-    for (let t = 1; t <= 5; t++) h += '<div class="lr"><span class="sw" style="background:' + cls(6 - t) + '"></span>Tier ' + t + ' — ' + TIERW[t] + '</div>';
-  } else {
-    for (let i = 0; i < edges.length - 1; i++) {
-      const lo = edges[i], hi = edges[i + 1], col = cls(lo === -Infinity ? (BREAKS[0] != null ? BREAKS[0] - 1e-9 : 0) : lo);
-      h += '<div class="lr"><span class="sw" style="background:' + col + '"></span>' + (lo === -Infinity ? (L && L.gdi ? "" : "under ") + f(hi) + (L && L.gdi ? " and over" : "") : hi === Infinity ? f(lo) + (L && L.gdi ? " and under" : " and over") : f(lo) + " to " + f(hi)) + '</div>';
-    }
-    if (!BREAKS.length && n) h = '<div class="lr"><span class="sw" style="background:' + R[3] + '"></span>All the same</div>';
-  }
-  h += (nPart ? '<div class="lr"><span class="sw part" style="background:' + R[2] + '"></span>Dashed outline: central government only (' + nPart + ')</div>' : "") +
-    '<div class="lr"><span class="sw none"></span>No figure in the sources</div>';
+    h += '<div class="bar6">' + [5, 4, 3, 2, 1].map((t) => '<i title="Tier ' + t + ' — ' + esc(TIERW[t]) + '" style="background:' + cls(6 - t) + '"></i>').join("") + '</div><div class="ticks"><span style="left:0">Tier 5 (weakest)</span><span style="left:100%">Tier 1 (strongest)</span></div>';
+  } else if (BREAKS.length) {
+    const nb = BREAKS.length + 1, cols = [cls(BREAKS[0] - 1e-9)].concat(BREAKS.map((b) => cls(b)));
+    h += '<div class="bar6">' + cols.map((c) => '<i style="background:' + c + '"></i>').join("") + '</div><div class="ticks">' +
+      BREAKS.map((b, k) => '<span style="left:' + ((k + 1) / nb * 100) + '%;top:' + (k % 2 ? 13 : 0) + 'px">' + esc(f(b)) + '</span>').join("") + '</div>';
+    if (L && L.gdi) h += '<div class="ticks" style="height:auto"><span style="left:0;position:static">Brighter = more hidden (lower score)</span></div>';
+  } else if (n) h += '<div class="bar6"><i style="background:' + R[3] + '"></i></div><div class="ticks"><span style="left:0">All the same</span></div>';
+  h += '<div class="extra">' + (nPart ? '<span><i class="sw part" style="background:' + R[2] + '"></i>dashed outline: central government only (' + nPart + ')</span>' : "") + '<span><i class="sw none"></i>no figure (' + (ISOS.length - n) + ')</span></div></div>';
   $("#legend").innerHTML = h;
-  $("#keyCount").textContent = "Shown: " + METNAME[S.metric] + ". " + n + " of " + ISOS.length + " countries and territories have a figure for this.";
 }
 function drawList(vals, cls) {
-  const q = ($("#wfilter").value || "").trim().toLowerCase();
+  const sec = mkind() === "secret", box = sec ? $("#sList") : $("#clist");
+  $("#rankBox").style.display = sec ? "none" : ""; $("#sRank").style.display = sec ? "" : "none";
+  const q = ((sec ? $("#sfilter") : $("#wfilter")).value || "").trim().toLowerCase();
   const L = ISOS.filter((i) => vals[i] && (!q || C[i].n.toLowerCase().includes(q))).sort((a, b) => vals[b].v - vals[a].v);
   const mx = Math.max(...L.map((i) => vals[i].v), 1e-9);
   const missing = ISOS.filter((i) => !vals[i] && (!q || C[i].n.toLowerCase().includes(q))).sort((a, b) => C[a].n.localeCompare(C[b].n));
-  $("#clist").innerHTML = L.map((i, k) => '<div class="ci' + (vals[i].part ? " part" : "") + (S.sel === i ? " sel" : "") + '" data-iso="' + i + '"><span class="rk">' + (k + 1) + '</span><span class="nmc">' + esc(C[i].n) + '</span><span class="v">' + fmtV(vals[i]) + '</span><span class="b"><i style="width:' + Math.max(0.5, vals[i].v / mx * 100) + '%;background:' + cls(vals[i].v) + '"></i></span></div>').join("") +
+  box.innerHTML = L.map((i, k) => '<div class="ci' + (vals[i].part ? " part" : "") + (S.sel === i ? " sel" : "") + '" data-iso="' + i + '"><span class="rk">' + (k + 1) + '</span><span class="nmc">' + esc(C[i].n) + '</span><span class="v">' + fmtV(vals[i]) + '</span><span class="b"><i style="width:' + Math.max(0.5, vals[i].v / mx * 100) + '%;background:' + cls(vals[i].v) + '"></i></span></div>').join("") +
     (missing.length ? '<div class="note" style="margin-top:8px">No figure for this: ' + missing.map((i) => '<a href="#" data-iso="' + i + '" class="nolink">' + esc(C[i].n) + '</a>').join(", ") + '</div>' : "");
-  $("#clist").querySelectorAll(".nolink").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); select(a.dataset.iso, true); }));
+  box.querySelectorAll(".nolink").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); select(a.dataset.iso, true); }));
 }
 
 /* ---------- the secret money box ---------- */
@@ -1749,6 +1786,7 @@ function buildSecret() {
   $("#secBody").innerHTML =
     '<p class="mdesc" style="margin-top:2px">Government money kept off the public books — classified budgets, secret funds, audits that cannot trace spending — and the people who say where it goes.</p>' +
     '<div class="selrow"><select id="mSecret"><option value="">Choose what to shade…</option>' + SLAYERS.map((l) => '<option value="' + l.id + '">' + esc(l.name) + '</option>').join("") + '</select></div>' +
+    '<div id="sRank" style="display:none"><div class="psec">Countries, ranked</div><input id="sfilter" type="search" placeholder="Find a country" autocomplete="off" style="width:100%;box-sizing:border-box;background:rgba(255,255,255,.05);color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:4px 7px;font:inherit;font-size:12.5px;margin:2px 0 4px"><div id="sList" class="scroll"></div></div>' +
     '<p class="mdesc" id="sWhat"></p>' +
     '<div id="sChipsWrap"><div class="psec">Count these kinds of evidence</div><div class="chips" id="sChips">' + Object.entries(STATUS).map(([k, v]) => '<button type="button" class="chip on" data-k="' + k + '">' + v + '</button>').join("") + '</div></div>' +
     '<div class="note"><a href="#" id="howBtn">How people are ranked, and what the numbers mean</a></div>' +
@@ -1761,7 +1799,12 @@ function buildSecret() {
     '<p>Within a tier, people are ordered by how much of their account has been confirmed and how direct their access was.</p>' +
     '<p><b>Numbers are never added together.</b> A classified budget (money approved in secret), an audit finding (money the books cannot account for) and an allegation are different things. The map colors each country by its single largest figure among the kinds of evidence you switch on.</p>' +
     '<p>Sources for every figure and person are linked inside each country.</p></div>';
-  $("#mSecret").addEventListener("change", (e) => { if (e.target.value) setMetric("secret:" + e.target.value); });
+  $("#mSecret").addEventListener("change", (e) => {
+    if (e.target.value) { if (mkind() !== "secret") S.prev = { metric: S.metric, measure: S.measure }; setMetric("secret:" + e.target.value); }
+    else { const p = S.prev || { metric: "spend:total", measure: "gdp" }; S.metric = p.metric; S.measure = p.measure; update(); }
+  });
+  $("#sfilter").addEventListener("input", () => drawMap());
+  $("#sList").addEventListener("click", (e) => { const r = e.target.closest(".ci"); if (r) select(r.dataset.iso, true); });
   $("#sChips").addEventListener("click", (e) => { const b = e.target.closest(".chip"); if (!b) return; const k = b.dataset.k;
     if (sOn.has(k)) { if (sOn.size > 1) { sOn.delete(k); b.classList.remove("on"); } } else { sOn.add(k); b.classList.add("on"); } update(); });
   $("#howBtn").addEventListener("click", (e) => { e.preventDefault(); $("#how").classList.toggle("open"); });
@@ -1776,8 +1819,7 @@ function drawSecret() {
 /* ---------- the right column: basemaps ---------- */
 function buildTr() {
   $("#trBody").innerHTML = '<div class="psec" style="margin-top:0">Basemap</div><div class="bases">' + CulpritsBasemaps.list.map((b) => '<label><input type="radio" name="basemap" value="' + b[0] + '"' + (b[0] === BM.current() ? " checked" : "") + '> ' + esc(b[1]) + '</label>').join("") + '</div>' +
-    '<div class="psec">View</div><div class="seg"><button type="button" class="btn on" data-proj="globe">Globe</button><button type="button" class="btn" data-proj="mercator">Flat map</button></div>' +
-    '<div class="psec">Shading</div><label class="chk"><input type="range" id="op" min="0.2" max="1" step="0.05" value="0.8" style="flex:1"> <span class="mute" style="font-size:12px">strength</span></label>';
+    '<div class="psec">View</div><div class="trrow"><div class="seg"><button type="button" class="btn on" data-proj="globe">Globe</button><button type="button" class="btn" data-proj="mercator">Flat map</button></div><label class="shade" title="How strongly the countries are shaded">Shading <input type="range" id="op" min="0.2" max="1" step="0.05" value="0.8"></label></div>';
   $("#trBody").querySelectorAll("input[name=basemap]").forEach((r) => r.addEventListener("change", () => BM.set(r.value)));
   $("#trBody").querySelectorAll("[data-proj]").forEach((b) => b.addEventListener("click", () => { proj = b.dataset.proj; map.setProjection({ type: proj }); freeFlat(); $("#trBody").querySelectorAll("[data-proj]").forEach((x) => x.classList.toggle("on", x === b)); }));
   $("#op").addEventListener("input", (e) => map.setPaintProperty("gw-fill", "fill-opacity", +e.target.value));
@@ -1854,7 +1896,7 @@ function spendTab(iso) {
   if (c.rv && c.rv.y === y && c.rv.sec === c.sp.sec && c.rv.v.G2M != null && Math.abs(c.rv.v.G2M - tot) > 0.5) h += '<p class="note">The areas add up to ' + pc(tot) + ' of the economy; the same source\'s separate total is ' + pc(c.rv.v.G2M) + '. The two are compiled from different tables and do not always match.</p>';
   if (c.lv && Object.keys(c.lv).length) {
     const LBL = { central: "Central government", state: "State or regional governments", local: "Local governments", ss: "Social security funds" };
-    h += '<h3>Spent by each level of government</h3><table class="lvt"><tr><th></th><th>Year</th><th>Of the economy</th><th>Dollars</th></tr>';
+    h += '<table class="lvt" style="margin-top:16px"><tr><th class="lvh">Spent by each level of government</th><th>Year</th><th>Of the economy</th><th>Dollars</th></tr>';
     Object.entries(c.lv).forEach(([k, L]) => {
       const t = DIVS.reduce((a, d) => a + n0(L.d[d[0]]), 0), gg = gdpOf(c, L.y), tr = L.d["01.8"];
       h += '<tr><td>' + LBL[k] + (k === "central" && L.sec !== "S1321" ? '<span class="mute" style="font-size:10.5px"> (' + (L.sec === "S1311B" ? "main budget" : "without social security") + ')</span>' : "") + '</td><td>' + L.y + '</td><td>' + pc(t) + '</td><td>' + usdShort(gg ? t / 100 * gg : null) + '</td></tr>';
@@ -1951,38 +1993,44 @@ function secretTab(c) {
   const figs = (d.figures || []).slice().sort((a, b) => (b.amount_usd ?? -1) - (a.amount_usd ?? -1));
   const ppl = (d.people || []).slice().sort((a, b) => (a.tier || 5) - (b.tier || 5) || (b.score || 0) - (a.score || 0));
   TIPC = c; USED = new Map();
-  let h = '<div class="sum">' + gx(d.summary || "No published figures or insider accounts found in this compilation.", c) + '</div>';
+  const figHTML = (f) => {
+    const amt = f.amount_usd != null ? money(f.amount_usd) : (f.share_pct != null ? f.share_pct + "%" : (f.amount_local || ""));
+    let pct = "";
+    if (isFlow(f) && f.amount_usd != null && !f.regional) {
+      if (isPartial(f)) pct = '<div class="pct">Covers only part of a year, so it isn’t compared with a full year of government spending.</div>';
+      else { const yy = yearOf(f.year), s2 = spendFor(c, yy); if (s2) pct = '<div class="pct">= ' + pctTxt(f.amount_usd / s2 * 100) + '% of all government spending in ' + yy + (yy > 2025 ? " (IMF estimate)" : "") + '</div>'; }
+    }
+    return '<div class="fig"><div class="top"><span class="amt">' + esc(amt) + '</span><span class="yr">' + esc(f.year || "") + '</span><span class="tag s-' + esc(f.status) + '">' + esc(STATUS[f.status] || f.status) + '</span></div>' +
+      '<div class="lbl">' + gx(f.label, c) + (f.amount_local && f.amount_usd != null ? ' <span class="yr">(' + esc(f.amount_local) + ')</span>' : "") + '</div><div class="tx">' + gx(f.note, c) + '</div>' +
+      (f.conv ? '<div class="src">' + esc(f.conv) + '</div>' : "") + (f.regional ? '<div class="src">This is a total for a whole region, so it is shown here but not used to shade this country.</div>' : "") + pct +
+      '<div class="src"><a href="' + esc(f.src_u) + '" target="_blank" rel="noopener">' + esc(f.src_t || "source") + '</a></div></div>';
+  };
   const w = SMW[c], rows = budgetRows(c), lp = latestPct(c);
-  h += '<div class="scale">';
+  let h = '<div class="scale">';
   if (lp) {
-    h += 'Secret budget compared with the whole government budget: <b>' + pctTxt(lp.p) + '%</b> in ' + lp.y + '<br><span class="yr">' + money(lp.f.amount_usd) + ' (' + gx(lp.f.label, c) + ') out of ' + money(lp.s) + ' spent by all levels of government that year.</span>';
+    h += '<div class="headline">Secret budget compared with the whole government budget: <b>' + pctTxt(lp.p) + '%</b> in ' + lp.y + '</div><span class="yr">' + money(lp.f.amount_usd) + ' (' + gx(lp.f.label, c) + ') out of ' + money(lp.s) + ' spent by all levels of government that year.</span>';
     const shares = (d.figures || []).filter((f) => f.share_pct != null && BUDGET_KINDS.has(f.kind) && yearOf(f.year) === lp.y);
     for (const f of shares) h += '<div class="src" style="margin-top:3px">The source\'s own figure for ' + lp.y + ': ' + f.share_pct + '% — ' + gx(f.label, c) + '. Sources often measure against the national (federal) budget only, so their share can be higher than the one above.</div>';
     if (rows.length > 1) {
-      h += '<table class="stab">' + rows.slice(0, 8).map((r) => '<tr><td>' + r.y + '</td><td>' + gx(r.f.label, c) + '</td><td class="n">' + money(r.f.amount_usd) + '</td><td class="n">' + pctTxt(r.p) + '%</td></tr>').join("") + '</table>' + (rows.length > 8 ? '<div class="src">' + (rows.length - 8) + ' more yearly budget figures are in the list below.</div>' : "");
+      h += '<table class="stab">' + rows.map((r, k) => { const open = S.fopen[c + "|" + k];
+        return '<tr class="sr' + (open ? " open" : "") + '" data-sr="' + k + '"><td class="ch">' + (open ? "▾" : "▸") + '</td><td>' + r.y + '</td><td>' + gx(r.f.label, c) + '</td><td class="n">' + money(r.f.amount_usd) + '</td><td class="n">' + pctTxt(r.p) + '%</td></tr>' +
+          (open ? '<tr class="sx"><td></td><td colspan="4">' + figHTML(r.f) + '</td></tr>' : ""); }).join("") + '</table><div class="src">Click a line for the full finding and its source.</div>';
     }
-  } else h += 'No yearly secret or spy-agency budget amount is published for this country, so its share of government spending can\'t be worked out. The figures below are cases, audits and estimates rather than a yearly budget.';
+  } else h += '<div class="headline" style="font-size:15px">No yearly secret or spy-agency budget amount is published for this country, so its share of government spending can\'t be worked out.</div><span class="yr">The figures below are cases, audits and estimates rather than a yearly budget.</span>';
   h += '<div class="src" style="margin-top:6px">Government spending = everything national, regional and local governments spent in that year, from the IMF (years after 2025 are IMF estimates).</div>';
   if (w) h += '<div class="src" style="margin-top:3px">For a sense of size, national wealth (everything the country owns of value: buildings, land, resources and its people\'s earning power) is ' + money(w[1]) + ' (World Bank, ' + esc(w[0]) + ').</div>';
   h += '</div>';
+  if (g) {
+    const gr = Object.entries(GQ).filter(([q]) => typeof g[q] === "number");
+    if (gr.length) h += '<h3>Transparency International defence secrecy scores</h3><div class="gdi">' + gr.map(([q, info]) => '<div><span>' + gx(info.title, c) + '</span><span>' + g[q] + ' / 100</span></div>').join("") + '</div><div class="src">0 = fully hidden, 100 = fully open. <a href="' + esc(g.url || SMG.source_url) + '" target="_blank" rel="noopener">Government Defence Integrity Index ' + esc(SMG.year || "") + '</a></div>';
+  }
+  h += '<h3>Summary</h3><div class="sum">' + gx(d.summary || "No published figures or insider accounts found in this compilation.", c) + '</div>';
   if (figs.length) {
     h += '<h3>The money — ' + figs.length + ' figure' + (figs.length > 1 ? "s" : "") + '</h3><div class="intro">Each number is a separate finding, grouped below by what kind of money it is. They are not parts of one total — many overlap or cover different years — so they should not be added up.</div>';
     for (const [gk, gn, gd] of SGROUPS) {
       const gf = figs.filter((f) => (SGROUPS.some((x) => x[0] === f.kind) ? f.kind : "diverted") === gk).sort((a, b) => firstYear(b.year) - firstYear(a.year) || (b.amount_usd ?? -1) - (a.amount_usd ?? -1));
       if (!gf.length) continue;
-      h += '<div class="grp"><div class="gn">' + esc(gn) + ' <span class="yr">· ' + gf.length + '</span></div><div class="gd">' + esc(gd) + '</div></div>';
-      for (const f of gf) {
-        const amt = f.amount_usd != null ? money(f.amount_usd) : (f.share_pct != null ? f.share_pct + "%" : (f.amount_local || ""));
-        let pct = "";
-        if (isFlow(f) && f.amount_usd != null && !f.regional) {
-          if (isPartial(f)) pct = '<div class="pct">Covers only part of a year, so it isn’t compared with a full year of government spending.</div>';
-          else { const yy = yearOf(f.year), s = spendFor(c, yy); if (s) pct = '<div class="pct">= ' + pctTxt(f.amount_usd / s * 100) + '% of all government spending in ' + yy + (yy > 2025 ? " (IMF estimate)" : "") + '</div>'; }
-        }
-        h += '<div class="fig"><div class="top"><span class="amt">' + esc(amt) + '</span><span class="yr">' + esc(f.year || "") + '</span><span class="tag s-' + esc(f.status) + '">' + esc(STATUS[f.status] || f.status) + '</span></div>' +
-          '<div class="lbl">' + gx(f.label, c) + (f.amount_local && f.amount_usd != null ? ' <span class="yr">(' + esc(f.amount_local) + ')</span>' : "") + '</div><div class="tx">' + gx(f.note, c) + '</div>' +
-          (f.conv ? '<div class="src">' + esc(f.conv) + '</div>' : "") + (f.regional ? '<div class="src">This is a total for a whole region, so it is shown here but not used to shade this country.</div>' : "") + pct +
-          '<div class="src"><a href="' + esc(f.src_u) + '" target="_blank" rel="noopener">' + esc(f.src_t || "source") + '</a></div></div>';
-      }
+      h += '<div class="grp"><div class="gn">' + esc(gn) + ' <span class="yr">· ' + gf.length + '</span></div><div class="gd">' + esc(gd) + '</div></div>' + gf.map(figHTML).join("");
     }
   }
   if (ppl.length) {
@@ -1995,21 +2043,12 @@ function secretTab(c) {
         '<div class="src"><a href="' + esc(p.src_u) + '" target="_blank" rel="noopener">' + esc(p.src_t || "source") + '</a>' + (p.src2_u ? ' · <a href="' + esc(p.src2_u) + '" target="_blank" rel="noopener">' + esc(p.src2_t || "second source") + '</a>' : "") + '</div></div>';
     }
   }
-  if (g) {
-    const gr = Object.entries(GQ).filter(([q]) => typeof g[q] === "number");
-    if (gr.length) h += '<h3>Transparency International defence secrecy scores</h3><div class="gdi">' + gr.map(([q, info]) => '<div><span>' + gx(info.title, c) + '</span><span>' + g[q] + ' / 100</span></div>').join("") + '</div><div class="src">0 = fully hidden, 100 = fully open. <a href="' + esc(g.url || SMG.source_url) + '" target="_blank" rel="noopener">Government Defence Integrity Index ' + esc(SMG.year || "") + '</a></div>';
-  }
-  if (USED.size) {
-    h += '<h3>Plain-language key — terms used above</h3><dl class="key">';
-    const seen = new Set(); for (const [k, v] of [...USED.entries()].sort((a, b) => a[0].localeCompare(b[0]))) { const lk = k.toLowerCase(); if (seen.has(lk)) continue; seen.add(lk); h += '<dt>' + esc(k) + '</dt><dd>' + esc(v) + '</dd>'; }
-    h += '</dl>';
-    h = '<div class="hint">Dotted-underlined words have a plain explanation — point at or tap them. All are also listed at the bottom.</div>' + h;
-  }
+  if (USED.size) h += '<div class="hint" style="margin-top:12px">Dotted-underlined words have a plain explanation — point at or tap them.</div>';
   USED = null;
   return h;
 }
 
-const TABS = [["spend", "What the money is spent on"], ["fund", "Where the money comes from"], ["secret", "Secret money"]];
+const TABS = [["fund", "Where the money comes from"], ["spend", "What the money is spent on"], ["secret", "Secret money"]];
 function detail(iso) {
   const c = C[iso];
   let h = '<h2>' + esc(c.n) + '</h2><div><span class="badge">' + COVER[c.cv] + '</span>' + (c.sp ? '<span class="badge">' + c.sp.y + '</span>' : "") + '</div>';
@@ -2018,6 +2057,7 @@ function detail(iso) {
   h += '<div class="src" style="margin-top:14px;border-top:1px solid var(--line2);padding-top:6px">Dollar figures: each year\'s share of the economy (GDP) times GDP in US dollars for that year (World Bank' + (c.gw ? "; the IMF where the World Bank has none" : "") + '). Every source is listed under About and sources.</div>';
   $("#dosB").innerHTML = h;
   $("#dosB").querySelectorAll(".tabb").forEach((b) => b.addEventListener("click", () => { S.tab = b.dataset.t; detail(iso); $("#dos").scrollTop = 0; }));
+  $("#dosB").querySelectorAll("tr[data-sr]").forEach((el) => el.addEventListener("click", (e) => { if (e.target.closest("a,.gt")) return; const k = iso + "|" + el.dataset.sr; S.fopen[k] = !S.fopen[k]; const st = $("#dos").scrollTop; detail(iso); $("#dos").scrollTop = st; }));
   $("#dosB").querySelectorAll("[data-div]").forEach((el) => el.addEventListener("click", () => { const k = el.dataset.div; S.open[k] = !S.open[k]; const st = $("#dos").scrollTop; detail(iso); $("#dos").scrollTop = st; }));
 }
 function select(iso, fly) {
@@ -2155,8 +2195,9 @@ function drawWin(id) {
   }
   if (id === "table") {
     const cols = [["n", "Country"], ["cv", "Covers"], ["y", "Year"], ["tot", "Spending, $"], ["pp", "Per person"], ["gdp", "% of GDP"]].concat(DIVS.map((d) => [d[0], d[1]])).concat([["tax", "From taxes"], ["soc", "From social contributions"], ["bor", "From borrowing"]]);
+    const COVS = { all: "All levels", central: "Central only", none: "No breakdown" };
     const R = ISOS.map((i) => {
-      const c = C[i], r = { i, n: c.n, cv: COVER[c.cv] };
+      const c = C[i], r = { i, n: c.n, cv: COVS[c.cv] };
       if (c.sp) { const t = spendTotal(c), g = gdpOf(c, c.sp.y), p = popOf(c, c.sp.y); r.y = c.sp.y; r.gdp = t; r.tot = g ? t / 100 * g : null; r.pp = r.tot && p ? r.tot / p : null; DIVS.forEach((d) => { r[d[0]] = c.sp.d[d[0]] != null ? c.sp.d[d[0]] / t * 100 : null; }); }
       else if (c.w) { const g = gdpOf(c, c.w.y), p = popOf(c, c.w.y); r.y = c.w.y; r.gdp = c.w.x; r.tot = g ? c.w.x / 100 * g : null; r.pp = r.tot && p ? r.tot / p : null; }
       const f = FCACHE[i]; if (f) { const t = moneyIn(f); r.tax = f.taxes / t * 100; r.soc = f.parts.social / t * 100; r.bor = f.parts.borrow / t * 100; }
