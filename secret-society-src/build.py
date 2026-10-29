@@ -263,6 +263,11 @@ def main():
                      'n_cases': len(case_out), 'n_branches': len(groups), 'n_routes': len(routes),
                      'n_est_branches': sum(g['est'] for g in groups)}}
 
+    bks = load('backers.json', [])
+    known = {o['k'] for o in orgs} | {x['k'] for x in bks}
+    for x in bks:
+        x['backs'] = [k for k in x.get('backs', []) if k in known]
+    data['backers'] = [x for x in bks if x['backs']]
     data['iso'] = load('iso3.json', {})
     import about
     html = open(os.path.join(HERE, 'app_template.html')).read()
