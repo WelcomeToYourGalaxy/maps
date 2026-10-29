@@ -244,7 +244,7 @@ def main():
 
     routes = []
     for ch in channels:
-        routes.append({'n': ch['n'], 'p': ch['p'], 'org': ch.get('org', ''),
+        routes.append({'n': ch['n'], 'p': ch['p'], 'e': ch.get('edges'), 'inf': ch.get('inf', ''), 'org': ch.get('org', ''),
                        'note': {'d': ch['d'], 'cite': ch.get('cite', '') + (
                            (' — <a href="' + ch['url'] + '" target="_blank" rel="noopener" style="color:var(--accent-hi);">source</a>') if ch.get('url') else '')}})
 
@@ -405,7 +405,7 @@ def build_patterns(pats, cases, ent, channels):
         for ch in channels:
             if ch.get('org') in orgs and len(ch.get('p', [])) >= 2:
                 pl = ch.get('places') or []
-                links.append({'from': pl[0] if pl else '', 'to': pl[-1] if pl else '', 'label': ch['n'], 'years': ch.get('years', ''), 'p': ch['p']})
+                links.append({'from': pl[0] if pl else '', 'to': pl[-1] if pl else '', 'label': ch['n'], 'years': ch.get('years', ''), 'p': ch['p'], 'e': ch.get('edges')})
         out.append({'id': p['id'], 'title': p['title'], 'kind': p.get('kind', ''), 'summary': para(p['summary']),
                     'orgs': orgs, 'roles': roles, 'cmap': cmap, 'cnotes': cn, 'links': links,
                     'timeline': tl, 'series': series, 'span': span, 'ncases': len(pc),

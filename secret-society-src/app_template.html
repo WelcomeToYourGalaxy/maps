@@ -129,6 +129,7 @@ button.btn:hover,#infoBtn:hover,#worldBtn:hover{border-color:var(--accent-hi);co
 .chips .sw{width:8px;height:8px;margin-right:4px}
 .chips span.est{border-style:dashed;color:var(--mute)}
 .rec{border-top:1px solid var(--line2);padding:5px 0}
+.rec.stk{cursor:pointer}.rec.stk:hover b{text-decoration:underline}
 .rec .rh{display:flex;gap:7px;align-items:baseline;cursor:pointer;font-size:12.6px}
 .rec .rh b{font-weight:400;color:#f0ece4;flex:1}
 .rec .rh .n{white-space:nowrap}
@@ -177,7 +178,7 @@ button.btn:hover,#infoBtn:hover,#worldBtn:hover{border-color:var(--accent-hi);co
 #patBox .psec{margin:0}
 #patBody{overflow:auto;min-height:0;margin-top:6px}
 #patBox.min #patBody{display:none}
-#legBox{right:12px;bottom:34px;width:340px;max-height:46%;display:flex;flex-direction:column;justify-content:flex-end;padding:10px 14px 12px;box-sizing:border-box}
+#legBox{right:12px;bottom:34px;width:340px;max-height:46%;display:flex;flex-direction:column;justify-content:flex-start;padding:10px 14px 12px;box-sizing:border-box}
 #legBody{overflow:auto;min-height:0}
 #legBox.min #legBody{display:none}
 #legBox .bh{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
@@ -264,9 +265,9 @@ const PAL = {
                card: "rgba(14,18,20,.94)", edge: "#2c3640",
                ui: ["#4f6f8f", "#a9c4dc", "#0c1012"] },
   // Jurassic: earthy greens over the imagery
-  satellite: { b: ["#a9c48f", "#7fae7a", "#5e8a5a", "#c9d9b4", "#8fbfa2", "#4f7a52", "#9aaa72", "#b7cfa9"],
-               t: { lodge: "#7fa36f", order: "#b5cc9c", forum: "#6fa58c", covert: "#cfe0c0", statenet: "#4d7448", lawnet: "#9bb489", intl: "#7fae96", ngo: "#dbe7cf", biz: "#5a7a4f", crime: "#a3c08a", bank: "#8cbfa4" },
-               r: ["#c2d8a8", "#9fbf86", "#7ea36a", "#617f52", "#4a5f42"], p: ["#8fbf7a", "#cfe0b8", "#5f8f5a", "#a9b88a", "#6fae92", "#e0ead6", "#b3d39a", "#3f6a40", "#bccaa8"], ln: "#e3ecd8",
+  satellite: { b: ["#2f6e3a", "#6f9a4a", "#9cc46a", "#d9e6b8", "#3f8f7a", "#7fbfae", "#a9c3a0", "#1f4a40"],
+               t: { lodge: "#3f8f7a", order: "#d9e6b8", forum: "#6f9a4a", covert: "#a9c3a0", statenet: "#2f6e3a", lawnet: "#8fa88a", intl: "#5fb08f", ngo: "#eef3e2", biz: "#1f4a40", crime: "#9cc46a", bank: "#7fbfae" },
+               r: ["#1e4a2a", "#3f7a3c", "#7aa85a", "#b8d18e", "#e6efcf"], p: ["#6f9a4a", "#d9e6b8", "#3f8f7a", "#a9c3a0", "#2f6e3a", "#eef3e2", "#5fb08f", "#1f4a40", "#8fa88a"], ln: "#e3ecd8",
                card: "rgba(10,18,12,.94)", edge: "#2a3d2c",
                ui: ["#4f7a52", "#b3d39a", "#0a120c"] },
   // Atlas: deeper earthy greens on the paper map
@@ -278,7 +279,7 @@ const PAL = {
   // Hell: reds
   hell:      { b: ["#e0a8a0", "#c46a62", "#8e2f34", "#efcfc8", "#d4868a", "#6e2228", "#a8484a", "#e8bdb4"],
                t: { lodge: "#b85a58", order: "#e3b0a8", forum: "#c9727a", covert: "#f0d4cd", statenet: "#7a2a30", lawnet: "#d29a96", intl: "#b26a68", ngo: "#f5e2dc", biz: "#8a3a3c", crime: "#d9848a", bank: "#c46f6a" },
-               r: ["#e8a49a", "#cc7a72", "#a85a56", "#7f4644", "#5e3a3a"], p: ["#d9827a", "#f0c7bf", "#a63a3c", "#c99a94", "#d0565e", "#f7e1dc", "#e8a89e", "#7a2228", "#d4b0aa"], ln: "#f2dcd6",
+               r: ["#7a1f26", "#a3393c", "#c4615f", "#dc928c", "#efc4bd"], p: ["#d9827a", "#f0c7bf", "#a63a3c", "#c99a94", "#d0565e", "#f7e1dc", "#e8a89e", "#7a2228", "#d4b0aa"], ln: "#f2dcd6",
                card: "rgba(22,9,11,.94)", edge: "#4a2226",
                ui: ["#8e3a3e", "#e8aaa4", "#14080a"] },
 };
@@ -302,9 +303,19 @@ function fOK(c, skip) {
   return (skip === "inf" || f.inf[c.inf] !== false) && (skip === "bk" || f.bk[c.bk] !== false) && (skip === "rel" || f.rel[c.rel] !== false) &&
          (skip === "lik" || f.lik[c.lik] !== false) && (skip === "int" || (c.int || 3) >= f.int) && (skip === "wide" || (c.wide || 2) >= f.wide);
 }
+const ORG_CASES = {}; CASES.forEach((c) => { if (c.org) (ORG_CASES[c.org] = ORG_CASES[c.org] || []).push(c); });
+const timeSet = () => S.y0 > YR[0] || S.y1 < YR[1];
+function routeOK(r) {
+  const o = ORG_BY[r.org];
+  if (!o) { const inf = r.inf; return (!inf || S.f.inf[inf] !== false) && !filtered() && !timeSet(); }
+  return orgOK(o) && S.ty[o.s] !== false && (!r.inf || S.f.inf[r.inf] !== false);
+}
 function orgOK(o) {
   const f = S.f, ok = o.inf === "intl_target" ? f.bk.intl !== false : f.inf[o.inf] !== false;
-  return ok && f.rel[o.rel] !== false && (o.int || 1) >= f.int && (o.wide || 2) >= f.wide;
+  if (!(ok && f.rel[o.rel] !== false && (o.int || 1) >= f.int && (o.wide || 2) >= f.wide)) return false;
+  // with a period or an office chosen, show an organisation only if one of its cases falls in it
+  if (timeSet() || Object.values(S.bk).some((v) => v === false)) return (ORG_CASES[o.k] || []).some((c) => yrOK(c) && fOK(c));
+  return true;
 }
 const filtered = () => JSON.stringify(S.f) !== F0;
 /* the country scores, recomputed from what the filters leave on the map */
@@ -361,16 +372,11 @@ const tt = $("#ttip");
 function tip(html, x, y) { if (!html) { tt.style.display = "none"; return; } tt.innerHTML = html; tt.style.display = "block"; const r = tt.getBoundingClientRect(); let L = x + 14, T = y + 12; if (L + r.width > innerWidth - 6) L = x - r.width - 12; if (T + r.height > innerHeight - 6) T = y - r.height - 10; tt.style.left = L + "px"; tt.style.top = T + "px"; }
 
 /* ---------- geometry helpers ---------- */
-function gc(a, b) {   // [lat,lng] pairs -> great-circle points as [lng,lat]
-  const r = Math.PI / 180, f1 = a[0] * r, l1 = a[1] * r, f2 = b[0] * r, l2 = b[1] * r;
-  const d = 2 * Math.asin(Math.min(1, Math.sqrt(Math.sin((f2 - f1) / 2) ** 2 + Math.cos(f1) * Math.cos(f2) * Math.sin((l2 - l1) / 2) ** 2)));
-  if (d < 1e-6) return [[a[1], a[0]]];
-  const n = Math.max(2, Math.min(48, Math.round(d * 6371 / 200))), out = [];
-  for (let i = 0; i <= n; i++) {
-    const t = i / n, A = Math.sin((1 - t) * d) / Math.sin(d), B = Math.sin(t * d) / Math.sin(d);
-    const x = A * Math.cos(f1) * Math.cos(l1) + B * Math.cos(f2) * Math.cos(l2), y = A * Math.cos(f1) * Math.sin(l1) + B * Math.cos(f2) * Math.sin(l2), z = A * Math.sin(f1) + B * Math.sin(f2);
-    out.push([Math.atan2(y, x) / r, Math.atan2(z, Math.sqrt(x * x + y * y)) / r]);
-  }
+function gc(a, b) {   // [lat,lng] pairs -> points as [lng,lat], straight in longitude and latitude so long lines do not swing towards the poles
+  let l1 = a[1], l2 = b[1]; while (l2 - l1 > 180) l2 -= 360; while (l2 - l1 < -180) l2 += 360;
+  const d = Math.hypot(l2 - l1, b[0] - a[0]); if (d < 1e-6) return [[a[1], a[0]]];
+  const n = Math.max(2, Math.min(90, Math.round(d / 2))), out = [];
+  for (let k = 0; k <= n; k++) { const s = k / n; out.push([l1 + (l2 - l1) * s, a[0] + (b[0] - a[0]) * s]); }
   return out;
 }
 function pathLine(pts) {   // unwrap so the line never jumps across the date line
@@ -380,6 +386,11 @@ function pathLine(pts) {   // unwrap so the line never jumps across the date lin
   return all;
 }
 const FC = (f) => ({ type: "FeatureCollection", features: f });
+function segLines(p, e) {
+  if (!p || p.length < 2) return [pathLine([p[0], p[0]])];
+  const ed = e && e.length ? e : p.slice(1).map((_, k) => [0, k + 1]);
+  return ed.filter(([a, b]) => p[a] && p[b] && (p[a][0] !== p[b][0] || p[a][1] !== p[b][1])).map(([a, b]) => pathLine([p[a], p[b]]));
+}
 
 /* ---------- icons: a diamond for a case, drawn as an SDF so its colour can change ---------- */
 function sdfIcon(kind) {
@@ -399,10 +410,11 @@ function addLayers() {
   T({ id: "cty-line", type: "line", source: "bounds", paint: { "line-color": "rgba(240,236,228,0.35)", "line-width": 0.5 } });
   T({ id: "cty-sel", type: "line", source: "bounds", filter: ["==", ["get", "iso3"], ""], paint: { "line-color": "#f0ece4", "line-width": 1.6 } });
   map.addSource("small", { type: "geojson", data: FC(Object.keys(SMALL).filter((i) => ISO2K[i]).map((i) => ({ type: "Feature", properties: { iso3: i, k: ISO2K[i] }, geometry: { type: "Point", coordinates: SMALL[i] } }))) });
-  T({ id: "small-ring", type: "circle", source: "small", paint: { "circle-radius": 7, "circle-color": "rgba(0,0,0,0)", "circle-stroke-width": 1.6, "circle-stroke-color": "#f0ece4" } });
+  T({ id: "small-ring", type: "circle", source: "small", paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 1, 3.2, 6, 7], "circle-color": "rgba(0,0,0,0)", "circle-opacity": 0.75, "circle-stroke-width": 0 } });
   map.addSource("routes", { type: "geojson", data: FC([]) });
   T({ id: "route-case", type: "line", source: "routes", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#cfe2f0", "line-width": ["interpolate", ["linear"], ["zoom"], 1, 3, 6, 5], "line-blur": 3, "line-opacity": 0.16 } });
   T({ id: "route-line", type: "line", source: "routes", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#cfe2f0", "line-width": ["interpolate", ["linear"], ["zoom"], 1, 0.8, 6, 1.4], "line-opacity": 0.78 } });
+  T({ id: "route-hit", type: "line", source: "routes", paint: { "line-color": "#000", "line-width": 16, "line-opacity": 0.001 } });
   map.addSource("orgs", { type: "geojson", data: FC([]) });
   T({ id: "org", type: "circle", source: "orgs", paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 1, 4.2, 6, 6.5], "circle-color": ["get", "c"], "circle-stroke-color": "#f0ece4", "circle-stroke-width": 1.1 } });
   map.addImage("dia", sdfIcon("dia"), { sdf: true });
@@ -413,23 +425,31 @@ function addLayers() {
   map.addSource("patlinks", { type: "geojson", data: FC([]) });
   T({ id: "pat-case", type: "line", source: "patlinks", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#f0ece4", "line-width": ["interpolate", ["linear"], ["zoom"], 1, 4, 6, 6], "line-blur": 3.5, "line-opacity": 0.2 } });
   T({ id: "pat-line", type: "line", source: "patlinks", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#f0ece4", "line-width": ["interpolate", ["linear"], ["zoom"], 1, 1.1, 6, 1.8], "line-opacity": 0.92 } });
+  T({ id: "pat-hit", type: "line", source: "patlinks", paint: { "line-color": "#000", "line-width": 16, "line-opacity": 0.001 } });
   // interaction
-  const hover = (id, html) => { map.on("mousemove", id, (e) => { map.getCanvas().style.cursor = "pointer"; tip(html(e.features[0].properties), e.originalEvent.clientX, e.originalEvent.clientY); });
+  const hover = (id, html) => { map.on("mousemove", id, (e) => { if (e.defaultPrevented) return; map.getCanvas().style.cursor = "pointer"; tip(html(e.features[0].properties), e.originalEvent.clientX, e.originalEvent.clientY); });
                                 map.on("mouseleave", id, () => { map.getCanvas().style.cursor = ""; tip(null); }); };
+  const under = (pt) => { const fs = map.queryRenderedFeatures([[pt.x - 5, pt.y - 5], [pt.x + 5, pt.y + 5]], { layers: ["case", "org"] }), seen = new Set(), out = [];
+    fs.forEach((f) => { const key = f.layer.id + ":" + f.properties.i; if (!seen.has(key)) { seen.add(key); out.push(f); } }); return out; };
+  const stackTip = (e) => { const fs = under(e.point); if (fs.length < 2) return false; map.getCanvas().style.cursor = "pointer";
+    tip("<b>" + fs.length + " entries here</b><br><span class=mute>" + fs.slice(0, 4).map((f) => esc(f.layer.id === "case" ? CASES[f.properties.i].n : ORGS[f.properties.i].n)).join("<br>") + (fs.length > 4 ? "<br>and " + (fs.length - 4) + " more" : "") + "<br>Click to list them all, or zoom in to separate them</span>", e.originalEvent.clientX, e.originalEvent.clientY); return true; };
+  ["case", "org"].forEach((id) => map.on("mousemove", id, (e) => { if (stackTip(e)) e.preventDefault(); }));
+  window.__under = under; window.__map = map;
   hover("case", (p) => { const c = CASES[p.i]; return "<b>" + esc(c.n) + "</b><br><span class=mute>" + esc(c.who || infLabel(c.inf)) + " → " + esc(lab(TGT, c.tgt).toLowerCase()) + "<br>" + esc(c.c) + " · " + c.y + " · " + esc(lab(LIK, c.lik)) + " · " + esc(lab(REL, c.rel).toLowerCase()) + "</span>"; });
   hover("org", (p) => { const o = ORGS[p.i]; return "<b>" + esc(o.n) + "</b><br><span class=mute>" + esc(typeLabel(o.s)) + " · headquarters" + (o.active ? "" : " · no longer active") + "</span>"; });
-  hover("route-line", (p) => "<b>" + esc(ROUTES[p.i].n) + "</b>");
-  hover("pat-line", (p) => esc(p.t));
+  hover("route-hit", (p) => "<b>" + esc(ROUTES[p.i].n) + "</b><br><span class=mute>Click for the account</span>");
+  hover("pat-hit", (p) => esc(p.t));
   hover("small-ring", (p) => "<b>" + esc(p.k) + "</b>");
-  map.on("mousemove", "cty-fill", (e) => { if (map.queryRenderedFeatures(e.point, { layers: ["case", "org", "route-line", "pat-line", "small-ring"] }).length) return; const k = ISO2K[e.features[0].properties.iso3]; if (!k) { tip(null); return; } const r = RF[k]; map.getCanvas().style.cursor = "pointer";
+  map.on("mousemove", "cty-fill", (e) => { if (map.queryRenderedFeatures(e.point, { layers: ["case", "org", "route-hit", "pat-hit", "small-ring"] }).length) return; const k = ISO2K[e.features[0].properties.iso3]; if (!k) { tip(null); return; } const r = RF[k]; map.getCanvas().style.cursor = "pointer";
     tip("<b>" + esc(k) + "</b><br><span class=mute>" + (S.pat ? esc(roleOf(S.pat, k) || "not in this pattern") : lensLabel() + " " + lensVal(r).toFixed(2) + (r.est ? " · estimate" : "")) + "</span>", e.originalEvent.clientX, e.originalEvent.clientY); });
   map.on("mouseleave", "cty-fill", () => { map.getCanvas().style.cursor = ""; tip(null); });
   map.on("click", (e) => {
-    const f = map.queryRenderedFeatures(e.point, { layers: ["case", "org", "small-ring", "route-line", "pat-line", "cty-fill"] })[0];
+    const f = map.queryRenderedFeatures(e.point, { layers: ["case", "org", "small-ring", "route-hit", "pat-hit", "cty-fill"] })[0];
     if (!f) return;
     const p = f.properties, id = f.layer.id;
+    if (id === "case" || id === "org") { const fs = window.__under(e.point); if (fs.length > 1) { openStack(fs); return; } }
     if (id === "case") openCase(p.i); else if (id === "org") openOrg(p.i);
-    else if (id === "route-line") openRoute(p.i); else if (id === "pat-line") openPattern(S.pat, false);
+    else if (id === "route-hit") openRoute(p.i); else if (id === "pat-hit") openPattern(S.pat, false);
     else if (id === "small-ring") openCountry(p.k, false); else if (id === "cty-fill") { const k = ISO2K[p.iso3]; if (k) openCountry(k, false); }
   });
 }
@@ -459,6 +479,7 @@ function paint() {
   m.push("rgba(0,0,0,0)");
   map.setPaintProperty("cty-fill", "fill-color", m.length > 3 ? m : "rgba(0,0,0,0)");
   map.setPaintProperty("cty-fill", "fill-opacity", pt ? 0.66 : 0.58);
+  map.setPaintProperty("small-ring", "circle-color", m.length > 3 ? m : "rgba(0,0,0,0)");
   // solid lines in the basemap's own line colour, each with a faint glow of the same colour
   ["route-line", "route-case", "pat-line", "pat-case"].forEach((id) => map.setPaintProperty(id, "line-color", P.ln));
   // cases
@@ -469,11 +490,10 @@ function paint() {
   // organisations
   map.getSource("orgs").setData(FC(S.orgs ? ORGS.map((o, i) => [o, i]).filter(([o]) => S.ty[o.s] && orgOK(o) && (!pt || pt.orgs.includes(o.k))).map(([o, i]) => ({ type: "Feature", properties: { i, c: tcol(o.s) }, geometry: { type: "Point", coordinates: [o.lng, o.lat] } })) : []));
   // channels, or the open pattern's own links
-  map.getSource("routes").setData(FC(S.routes && !pt ? ROUTES.map((r, i) => ({ type: "Feature", properties: { i }, geometry: { type: "LineString", coordinates: pathLine(r.p) } })) : []));
-  map.getSource("patlinks").setData(FC(pt ? (pt.links || []).map((l) => { const pts = l.p || [l.a, l.b]; return { type: "Feature", properties: { t: (l.from || "") + " → " + (l.to || "") + (l.label ? ": " + l.label : "") }, geometry: { type: "LineString", coordinates: pathLine(pts.length > 1 ? pts : [pts[0], pts[0]]) } }; }) : []));
+  map.getSource("routes").setData(FC(S.routes && !pt ? ROUTES.map((r, i) => [r, i]).filter(([r]) => routeOK(r)).map(([r, i]) => ({ type: "Feature", properties: { i }, geometry: { type: "MultiLineString", coordinates: segLines(r.p, r.e) } })) : []));
+  map.getSource("patlinks").setData(FC(pt ? (pt.links || []).map((l) => { const pts = l.p || [l.a, l.b]; return { type: "Feature", properties: { t: l.label || ((l.from || "") + " → " + (l.to || "")) }, geometry: { type: "MultiLineString", coordinates: segLines(pts, l.e) } }; }) : []));
   map.setFilter("cty-sel", ["==", ["get", "iso3"], S.sel && S.sel[0] === "c" ? (ISO[S.sel[1]] || "") : ""]);
   map.setLayoutProperty("small-ring", "visibility", "visible");
-  map.setPaintProperty("small-ring", "circle-stroke-color", P.light ? P.ln : "#f0ece4");
 }
 
 /* ---------- the key ---------- */
@@ -580,18 +600,17 @@ function buildPat() {
   sizeBoxes();
 }
 function buildLeg() {
-  // Built bottom-up: the box is anchored at the bottom of the screen, so the breakdowns for cases
-  // and organisations open upward, above the row that opens them.
+  // Each breakdown opens downward, under the row that opens it.
   let h = '';
+  h += row("cases", S.cases, '<span class="car" data-open="cases">' + (S.open.cases ? "▾" : "▸") + '</span><span class="sw dia" style="background:' + (S.colBy === "inf" ? infCol("state") : bcol(0)) + '"></span>Cases', CASES.filter((c) => fOK(c) && yrOK(c) && S.bk[c.bk]).length);
   if (S.open.cases) h += '<div class="up">' + (S.colBy === "inf"
       ? INF.map((x) => row("inf:" + x.k, S.f.inf[x.k] !== false, '<span class="sw dia" style="background:' + infCol(x.k) + '"></span>' + esc(x.label), CASES.filter((c) => c.inf === x.k && fOK(c, "inf") && yrOK(c)).length, true) + '<div class="desc" style="padding-left:22px">' + esc(x.d) + '</div>').join("")
       : BUCKETS.map((b, i) => row("bk:" + b[0], S.bk[b[0]], '<span class="sw dia" style="background:' + bcol(i) + '"></span>' + esc(b[1]), CASES.filter((c) => c.bk === b[0] && fOK(c) && yrOK(c)).length, true) + '<div class="desc" style="padding-left:22px">' + esc(b[2]) + '</div>').join("")) +
       '<div class="desc" style="padding-left:4px">Bigger diamonds are more severe cases. Faded ones are suspected or disputed, not proven.</div></div>';
-  h += row("cases", S.cases, '<span class="car" data-open="cases">' + (S.open.cases ? "▾" : "▴") + '</span><span class="sw dia" style="background:' + (S.colBy === "inf" ? infCol("state") : bcol(0)) + '"></span>Cases', CASES.filter((c) => fOK(c) && yrOK(c) && S.bk[c.bk]).length);
+  h += row("orgs", S.orgs, '<span class="car" data-open="orgs">' + (S.open.orgs ? "▾" : "▸") + '</span><span class="sw dot" style="background:' + P.t.forum + ';border:1px solid #f0ece4"></span>Organisations and networks, at their headquarters', ORGS.filter(orgOK).length);
   if (S.open.orgs) h += '<div class="up">' + TYPES.map((t) => row("ty:" + t.k, S.ty[t.k], '<span class="sw dot" style="background:' + tcol(t.k) + '"></span>' + esc(t.label), ORGS.filter((o) => o.s === t.k && orgOK(o)).length, true) + '<div class="desc" style="padding-left:22px">' + esc(t.d) + '</div>').join("") + '</div>';
-  h += row("orgs", S.orgs, '<span class="car" data-open="orgs">' + (S.open.orgs ? "▾" : "▴") + '</span><span class="sw dot" style="background:' + P.t.forum + ';border:1px solid #f0ece4"></span>Organisations and networks, at their headquarters', ORGS.filter(orgOK).length);
-  h += row("routes", S.routes, '<span class="sw bar" style="background:' + P.ln + ';margin-left:12px"></span>Documented channels between places', ROUTES.length);
-  h += '<div class="sub">Click ▴ to open a breakdown of the cases (by who is infiltrating, or by who is being infiltrated, as set in the key) or of the organisations by type.</div>';
+  h += row("routes", S.routes, '<span class="sw bar" style="background:' + P.ln + ';margin-left:12px"></span>Documented channels between places', ROUTES.filter(routeOK).length);
+  h += '<div class="sub">Click ▸ to open a breakdown of the cases (by who is infiltrating, or by who is being infiltrated, as set in the key) or of the organisations by type.</div>';
   $("#legBody").innerHTML = h;
   $("#legBody").querySelectorAll("[data-open]").forEach((c) => c.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); S.open[c.dataset.open] = !S.open[c.dataset.open]; buildLeg(); }));
   $("#legBody").querySelectorAll("input[data-t]").forEach((c) => c.addEventListener("change", () => {
@@ -600,14 +619,26 @@ function buildLeg() {
     else if (t.startsWith("inf:")) { S.f.inf[t.slice(4)] = v; if (v) S.cases = true; paint(); buildKey(); return; } else if (t.startsWith("ty:")) S.ty[t.slice(3)] = v; else S[t] = v;
     paint(); buildLeg();
   }));
-  $("#legBody").scrollTop = $("#legBody").scrollHeight;
   sizeBoxes();
+}
+function stackBoxes() {
+  if (innerWidth <= 820) return;
+  const H = innerHeight, gap = 10, foot = 34;
+  const k = $("#key").getBoundingClientRect(), pb = $("#patBox");
+  if (pb) { const top = k.bottom + gap, room = H - top - foot, cap = $("#key").classList.contains("min") ? room : Math.min(room, Math.max(160, 0.42 * H));
+    pb.style.top = top + "px"; pb.style.bottom = "auto"; pb.style.maxHeight = Math.max(80, cap) + "px"; }
+  const kids = [...$("#rcol").children].filter((e) => e.offsetParent !== null && e.getBoundingClientRect().height > 0);
+  const rb = kids.length ? Math.max(...kids.map((e) => e.getBoundingClientRect().bottom)) : 12, lb = $("#legBox");
+  const allMin = $("#tr").classList.contains("min") && (!$("#wire") || $("#wire").classList.contains("min"));
+  if (lb) { const top = rb + gap, room = H - top - foot, cap = allMin ? room : Math.min(room, Math.max(160, 0.46 * H));
+    lb.style.top = top + "px"; lb.style.bottom = "auto"; lb.style.maxHeight = Math.max(80, cap) + "px"; }
 }
 function sizeBoxes() {
   const rs = document.documentElement.style;
   const pb = $("#patBox"), lb = $("#legBox");
   if (pb) rs.setProperty("--patH", pb.getBoundingClientRect().height + "px");
   if (lb) rs.setProperty("--legH", lb.getBoundingClientRect().height + "px");
+  requestAnimationFrame(stackBoxes);
 }
 function row(t, on, label, n, sub) { return '<div class="row' + (sub ? " sub2" : "") + '"><input type="checkbox" id="c_' + t.replace(/\W/g, "_") + '" data-t="' + t + '"' + (on ? " checked" : "") + '><label for="c_' + t.replace(/\W/g, "_") + '">' + label + ' <span class="n">' + n + '</span></label></div>'; }
 function drawFind() {
@@ -732,10 +763,16 @@ function openOrg(i, fly) {
   show(h, ["o", i]);
   if (fly) map.flyTo({ center: [o.lng, o.lat], zoom: Math.max(map.getZoom(), 3.2), padding: pad(), duration: 900 });
 }
+function openStack(fs) {
+  const rows = fs.map((f) => { const isC = f.layer.id === "case", x = isC ? CASES[f.properties.i] : ORGS[f.properties.i];
+    return '<div class="rec stk" data-' + (isC ? 'c' : 'o') + '="' + f.properties.i + '"><div class="rh"><span class="sw ' + (isC ? 'dia' : 'dot') + '" style="background:' + (isC ? caseCol(x) : tcol(x.s)) + '"></span><b>' + esc(x.n) + '</b><span class="n">' + (isC ? esc(x.c) + ' · ' + x.y : esc(typeLabel(x.s))) + '</span></div></div>'; });
+  show('<div class="hp-k">' + fs.length + ' entries at this spot</div><h3>Several markers overlap here</h3><div class="sub">Zoom in to see them apart, or choose one below.</div>' + rows.join(""), ["s", 0]);
+  $("#detBody").querySelectorAll(".stk").forEach((d) => d.addEventListener("click", () => { if (d.dataset.c != null) openCase(+d.dataset.c); else openOrg(+d.dataset.o); }));
+}
 function openRoute(i) {
   const r = ROUTES[i];
   show('<div class="hp-k">Documented channel</div><h3>' + esc(r.n) + '</h3>' + (ORGN[r.org] ? '<div class="hp-sub"><a href="#" data-org="' + esc(r.org) + '">' + esc(ORGN[r.org]) + '</a></div>' : '') +
-    '<p class="hp-desc">' + r.note.d + '</p><div class="hp-src">' + r.note.cite + '</div><div class="sub">The line joins the places named in the record along the shortest path over the globe. It shows that something moved between them, not the route it took.</div>', ["r", i]);
+    '<p class="hp-desc">' + r.note.d + '</p><div class="hp-src">' + r.note.cite + '</div><div class="sub">The line joins the places named in the record. It shows that people, money or orders moved between them, not the route they took.</div>', ["r", i]);
 }
 function spark(p) {
   const s = p.series || []; if (!s.length) return "";
@@ -816,8 +853,10 @@ function init() {
   addLayers(); buildKey(); buildTr(); stars();
   $("#detX").addEventListener("click", deselect);
   $("#worldBtn").addEventListener("click", wholeWorld);
-  $("#toggleKey").addEventListener("click", () => { const p = $("#key"); p.classList.toggle("min"); $("#toggleKey").textContent = p.classList.contains("min") ? "+" : "−"; });
-  $("#toggleTr").addEventListener("click", () => { const p = $("#tr"); p.classList.toggle("min"); $("#toggleTr").textContent = p.classList.contains("min") ? "Basemap +" : "−"; });
+  $("#toggleKey").addEventListener("click", () => { const p = $("#key"); p.classList.toggle("min"); $("#toggleKey").textContent = p.classList.contains("min") ? "+" : "−"; sizeBoxes(); });
+  $("#toggleTr").addEventListener("click", () => { const p = $("#tr"); p.classList.toggle("min"); $("#toggleTr").textContent = p.classList.contains("min") ? "Basemap +" : "−"; sizeBoxes(); });
+  try { const ro = new ResizeObserver(() => stackBoxes()); ["#key", "#tr", "#wire"].forEach((s) => { if ($(s)) ro.observe($(s)); }); } catch (e) {}
+  addEventListener("resize", () => sizeBoxes());
   $("#togglePat").addEventListener("click", () => { const p = $("#patBox"); p.classList.toggle("min"); $("#togglePat").textContent = p.classList.contains("min") ? "+" : "−"; sizeBoxes(); });
   $("#toggleLeg").addEventListener("click", () => { const p = $("#legBox"); p.classList.toggle("min"); $("#toggleLeg").textContent = p.classList.contains("min") ? "+" : "−"; sizeBoxes(); });
   window.addEventListener("resize", sizeBoxes);
