@@ -322,10 +322,11 @@ def main():
         for k, v in json.load(open(f)).items():
             if k in P and v.get('story'): STORY[k] = {'story': v['story']}
     # later rewrites replace earlier ones: the 14-country fix, then the expansion's rewrites
-    for _fx in [os.path.join(HERE, 'research', 'stories3_fix.json')] + sorted(glob.glob(os.path.join(HERE, 'research', 'stories4_out_*.json'))):
+    for _fx in [os.path.join(HERE, 'research', 'stories3_fix.json')] + sorted(glob.glob(os.path.join(HERE, 'research', 'stories4_out_*.json'))) + sorted(glob.glob(os.path.join(HERE, 'research', 'stories5_out_*.json'))):
         if not os.path.exists(_fx): continue
         for k, v in json.load(open(_fx)).items():
             if k in P and v.get('story'): STORY[k] = {'story': v['story']}
+            elif k in STORY and 'stories5' in _fx and v.get('note'): del STORY[k]   # its whole story was about dropped cases
     # ------------------------------------------------------------- coverage: the two checklists (research/expand_*.json)
     ids = {c['id'] for c in cases}
     DROPWHY = {}
