@@ -22,6 +22,7 @@ CASES, FLOWS, SER = {}, [], {}
 for f in sorted(glob.glob(os.path.join(HERE, 'research', '*.json'))):
     if 'patterns' in f or 'verify' in f or 'stories' in f or 'classify' in f: continue
     d = json.load(open(f)); n = os.path.basename(f)[:-5]
+    if not isinstance(d, dict): continue
     for c in d.get('cases', []):
         if c['id'] not in _DROP: CASES.setdefault(c['id'], _P.apply(dict(c, _src=n), _PT))
     for x in d.get('flows', []): FLOWS.append(dict(x, _src=n))
@@ -158,12 +159,23 @@ for r in iw:
         continue
     if r.get('type') == 'context' or not r.get('year'): continue
     if k not in first or first[k][0] is None or r['year'] < first[k][0]: first[k] = (r['year'], r)
+# The findings checklist (research/expand_*.json) adds the official findings the researchers confirmed.
+_DROPPED_FINDINGS = set(_DROP)
+for _f in sorted(glob.glob(os.path.join(HERE, 'research', 'expand_*.json'))):
+    for it in json.load(open(_f)).get('checklist', []) or []:
+        if it.get('status') == 'excluded' or it.get('case_id') in _DROPPED_FINDINGS or not it.get('year'): continue
+        try: yy = int(str(it['year'])[:4])
+        except Exception: continue
+        k = iso(it.get('iso3'))
+        if not k: continue
+        if k not in first or first[k][0] is None or yy < first[k][0]:
+            first[k] = (yy, {'body': it.get('name', ''), 'findings_headline': '', 'url': it.get('url', '')})
 for k, (y, r) in first.items():
     if y is None: role = 'No national inquiry found'
     elif y < 2005: role = 'First inquiry before 2005'
     elif y < 2015: role = 'First inquiry 2005–2014'
     else: role = 'First inquiry 2015 on'
-    add(countries, k, role, '%s%s. %s' % ((str(y) + ': ') if y else '', r['body'], r.get('findings_headline', '')))
+    add(countries, k, role, ('%s%s. %s' % ((str(y) + ': ') if y else '', r['body'], r.get('findings_headline', ''))).strip())
 yc = Counter(r['year'] for r in iw if r.get('year') and r.get('type') == 'inquiry')
 PATS.append({
     'id': 'reckoning', 'title': 'Waves of reckoning, and the countries that never looked', 'kind': 'wave',
