@@ -356,6 +356,9 @@ def build_patterns(pats, cases, ent, channels):
         for ef in p.get('extra_from', []):
             ids = {id(c) for c in pc}
             pc += [c for c in cases if id(c) not in ids and c.get('org') == ef['org'] and re.search(ef['re'], c['n'] + ' ' + c['d'] + ' ' + c.get('cite', ''))]
+        if p.get('case_titles'):
+            ids = {id(c) for c in pc}; want = set(p['case_titles'])
+            pc += [c for c in cases if id(c) not in ids and c['n'] in want]
         if p.get('case_exclude'): pc = [c for c in pc if not re.search(p['case_exclude'], c['n'] + ' ' + c['d'], re.I)]
         roles = list(p.get('roles', []))
         cmap, cn = {}, {}
