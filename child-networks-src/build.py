@@ -83,8 +83,9 @@ def load_research():
     cases, nets, flows, series, notes = [], [], [], {}, {}
     for f in sorted(glob.glob(os.path.join(HERE, 'research', '*.json'))):
         name = os.path.basename(f)[:-5]
-        if name.startswith(('patterns', 'verify', 'stories', 'classify')): continue
+        if name.startswith(('patterns', 'verify', 'stories', 'classify', 'existing_index')): continue
         d = json.load(open(f))
+        if not isinstance(d, dict): continue
         for c in d.get('cases', []): c['_src'] = name; cases.append(c)
         for n in d.get('nets', []): n['_src'] = name; nets.append(n)
         for x in d.get('flows', []): x['_src'] = name; flows.append(x)
@@ -320,11 +321,30 @@ def main():
     for f in _sf:
         for k, v in json.load(open(f)).items():
             if k in P and v.get('story'): STORY[k] = {'story': v['story']}
-    _fx = os.path.join(HERE, 'research', 'stories3_fix.json')
-    if os.path.exists(_fx):
+    # later rewrites replace earlier ones: the 14-country fix, then the expansion's rewrites
+    for _fx in [os.path.join(HERE, 'research', 'stories3_fix.json')] + sorted(glob.glob(os.path.join(HERE, 'research', 'stories4_out_*.json'))):
+        if not os.path.exists(_fx): continue
         for k, v in json.load(open(_fx)).items():
             if k in P and v.get('story'): STORY[k] = {'story': v['story']}
-    D = {'P': P, 'C': cases, 'STORY': STORY, 'N': nets, 'F': flows, 'PAT': pats, 'SER': SER, 'SETS': SETS, 'FLOWT': FLOWT, 'STAT': STAT,
+    # ------------------------------------------------------------- coverage: the two checklists (research/expand_*.json)
+    ids = {c['id'] for c in cases}
+    COV = {'findings': [], 'kinds': []}
+    seenf = set()
+    for f in sorted(glob.glob(os.path.join(HERE, 'research', 'expand_*.json'))):
+        d = json.load(open(f))
+        for it in d.get('checklist', []) or []:
+            key = (it.get('case_id') or '') + '|' + (it.get('name') or '')
+            if it.get('case_id') and it['case_id'] in ids: key = it['case_id']
+            if key in seenf: continue
+            seenf.add(key)
+            st = it.get('status') or ''
+            COV['findings'].append({'n': it.get('name', ''), 'iso': fix_iso(it.get('iso3')), 'body': it.get('body', ''), 'y': it.get('year'),
+                                    'reach': it.get('reach', ''), 'url': it.get('url', ''), 'cid': it.get('case_id') if it.get('case_id') in ids else None,
+                                    'ex': st == 'excluded', 'why': it.get('why_excluded', '')})
+        for k in d.get('kinds', []) or []:
+            COV['kinds'].append({'k': k.get('k'), 'label': k.get('label', ''), 'def': k.get('definition', ''), 'src': k.get('source', ''),
+                                 'url': k.get('url', ''), 'cids': [i for i in (k.get('case_ids') or []) if i in ids]})
+    D = {'COV': COV, 'P': P, 'C': cases, 'STORY': STORY, 'N': nets, 'F': flows, 'PAT': pats, 'SER': SER, 'SETS': SETS, 'FLOWT': FLOWT, 'STAT': STAT,
          'ERAS': ERAS, 'META': META, 'ABOUT': about}
 
     json.dump(D, open(os.path.join(HERE, 'data', 'built.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
