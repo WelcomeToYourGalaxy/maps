@@ -30,12 +30,18 @@ def packet(k):
     cases = [{'title': c['n'], 'years': yrs(c.get('y0'), c.get('y1')), 'finding_year': c.get('yf'), 'first_complaint': c.get('fr'),
               'status': STAT.get(c.get('st'), [c.get('st')])[0], 'children': c.get('v'), 'who': c.get('who'), 'what': c.get('d'),
               'cover_up': c.get('cover') or None, 'officials_involved': bool(c.get('offc')), 'this_country': 'main' if c['iso'] == k else 'also involved',
-              'source': c.get('url')} for c in cs[:16]]
+              'source': c.get('url')} for c in cs[:24]]
     fl = [{'title': f['n'], 'type': f['type'], 'years': yrs(f.get('y0'), f.get('y1')), 'size': f.get('size'), 'what': f.get('d'), 'source': f.get('url')}
           for f in F if f.get('iso_a') == k or f.get('iso_b') == k][:10]
     nets = [{'name': n['n'], 'what': n.get('d'), 'headquartered_here': n.get('iso') == k}
             for n in N if n.get('iso') == k or k in (n.get('reach') or [])][:8]
-    return {'iso3': k, 'country': P[k]['n'], 'patterns': pats, 'cases': cases, 'flows': fl, 'networks': nets}
+    ind = P[k].get('ind') or {}
+    IND = {'ht25': 'GI-TOC 2025 human trafficking market score, 1 (none) to 10 (pervasive)', 'sea': 'GI-TOC 2025 state-embedded criminal actors, 1-10',
+           'res': 'GI-TOC 2025 resilience to organised crime, 1-10 (higher is stronger)', 'tip': 'US State Department 2025 Trafficking in Persons tier',
+           'prev': 'Walk Free 2023 people in modern slavery per 1,000 (all ages, all forms)', 'gsin': 'Walk Free 2023 estimated people in modern slavery',
+           'ncm': 'NCMEC CyberTipline 2024 reports of suspected online child sexual abuse geolocated to this country', 'ncmpc': 'the same per 100,000 people'}
+    indicators = {IND[x]: ind[x] for x in IND if ind.get(x) is not None}
+    return {'iso3': k, 'country': P[k]['n'], 'indicators': indicators, 'patterns': pats, 'cases': cases, 'flows': fl, 'networks': nets}
 
 
 if __name__ == '__main__':

@@ -52,13 +52,12 @@ mountUI();
 
 # ---------------------------------------------------------------- colors: the anti-slavery map's earth tones
 cut('/* ---------- colors ---------- */', 'const ramp = ', '''/* ---------- colors ---------- */
-// One set for every basemap, from the host map's own tones: its olive, dark to pale, for the countries,
-// and muted earth colors for the eight settings (no yellow, no orange, no neon).
-const EARTH = ["#23271a", "#41472e", "#666d4c", "#989d80", "#d1d4c1"];
-const RAMPS = { night: EARTH, outlines: EARTH, satellite: EARTH, atlas: EARTH, hell: EARTH };
-const PAL8 = ["#e4d4ad", "#9fb6cc", "#b99ad0", "#c98ac0", "#7fb3d0", "#8fc1a9", "#c98f7a", "#b9bf86"];
-const SETPAL = { night: PAL8, outlines: PAL8, satellite: PAL8, atlas: PAL8, hell: PAL8 };
-const CATC = ["#d1d4c1", "#989d80", "#5f6646", "#33381f"];
+// The host map's palettes (engine/ui.js, window.SS_PAL), one per basemap: the same sets as the secret
+// society infiltration map. r is the five-step ramp (strongest = most), p the point colours.
+const SSP = window.SS_PAL || {};
+const RAMPS = {}, SETPAL = {}, CATS = {};
+Object.keys(SSP).forEach((k) => { RAMPS[k] = SSP[k].r; SETPAL[k] = SSP[k].p.slice(0, 8); CATS[k] = SSP[k].b.slice(0, 4); });
+const CATC = new Proxy([], { get: (t, i) => ((CATS[BASE] || CATS.atlas || [])[i]) });   // follows the basemap
 const OTHER = "#8b8578", NODATA = "rgba(0,0,0,0)";
 let BASE = "atlas";
 ''', keep_end=True)
