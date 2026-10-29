@@ -294,15 +294,16 @@ const S = { lens: "cond", bandOn: [1, 1, 1, 1, 1], pat: null, y0: 0, y1: 9999, c
             open: { cases: false, orgs: false }, sel: null, q: "" };
 BUCKETS.forEach((b) => { S.bk[b[0]] = true; }); TYPES.forEach((t) => { S.ty[t.k] = true; });
 INF.forEach((x) => { S.f.inf[x.k] = true; }); TGT.forEach((t) => { S.f.tgt[t[0]] = true; }); LIK.forEach((l) => { S.f.lik[l[0]] = true; });
+S.f.bk = S.bk;
 const F0 = JSON.stringify(S.f);
 /* filters: who reached in, into what, still relevant, how sure, how severe, how far */
 function fOK(c, skip) {
   const f = S.f;
-  return (skip === "inf" || f.inf[c.inf] !== false) && (skip === "tgt" || f.tgt[c.tgt] !== false) && (skip === "rel" || f.rel[c.rel] !== false) &&
+  return (skip === "inf" || f.inf[c.inf] !== false) && (skip === "bk" || f.bk[c.bk] !== false) && (skip === "rel" || f.rel[c.rel] !== false) &&
          (skip === "lik" || f.lik[c.lik] !== false) && (skip === "int" || (c.int || 3) >= f.int) && (skip === "wide" || (c.wide || 2) >= f.wide);
 }
 function orgOK(o) {
-  const f = S.f, ok = o.inf === "intl_target" ? f.tgt.intl !== false : f.inf[o.inf] !== false;
+  const f = S.f, ok = o.inf === "intl_target" ? f.bk.intl !== false : f.inf[o.inf] !== false;
   return ok && f.rel[o.rel] !== false && (o.int || 1) >= f.int && (o.wide || 2) >= f.wide;
 }
 const filtered = () => JSON.stringify(S.f) !== F0;
@@ -530,17 +531,17 @@ function buildKey() {
 function filterBlock() {
   const f = S.f;
   const chips = (g, items) => '<div class="fchips">' + items.map(([k, label, desc, col]) => {
-    const n = CASES.filter((c) => c[g] === k && fOK(c, g) && yrOK(c) && S.bk[c.bk]).length;
+    const n = CASES.filter((c) => c[g] === k && fOK(c, g) && yrOK(c)).length;
     return '<span class="fc' + (f[g][k] !== false ? " on" : "") + '" data-fg="' + g + '" data-fk="' + k + '" title="' + esc(desc) + '">' + (col ? '<span class="sw dia" style="background:' + col + '"></span>' : '') + esc(label) + '<span class="n">' + n + '</span></span>'; }).join("") + '</div>';
   let h = '<div class="psec">Filter what is shown' + (filtered() ? ' <span class="frst" id="fReset" style="float:right;letter-spacing:0;text-transform:none">reset</span>' : '') + '</div>' +
     '<div class="desc" style="margin-top:0">Click to switch a kind on or off. Double-click to show only that kind. The cases, organisations, counts and pattern list all change with the filters.</div>';
-  h += '<div class="flab">Who is reaching in</div>' + chips("inf", INF.map((x) => [x.k, x.label, x.d, infCol(x.k)]));
-  h += '<div class="flab">Into what</div>' + chips("tgt", TGT.map((t) => [t[0], t[1], t[2]]));
+  h += '<div class="flab">Who is infiltrating</div>' + chips("inf", INF.map((x) => [x.k, x.label, x.d, infCol(x.k)]));
+  h += '<div class="flab">Who is being infiltrated</div><div class="desc" style="margin-top:0">Any combination of the two lists can be set: "Governments & spy services" with "Companies", for example, shows governments inside companies.</div>' + chips("bk", BUCKETS.map((b, i) => [b[0], b[1], b[2], bcol(i)]));
   h += '<div class="flab">Does it still matter today?</div>' + chips("rel", REL.map((t) => [t[0], t[1], t[2]]));
   h += '<div class="flab">How sure we are</div>' + chips("lik", LIK.map((t) => [t[0], t[1], t[2]]));
   h += '<div class="frow"><span class="flab" style="margin:0;white-space:nowrap">How severe</span><select id="fInt">' + INTL.map((l, i) => '<option value="' + (i + 1) + '"' + (f.int === i + 1 ? " selected" : "") + '>' + (i ? esc(l) + ' or worse' : 'Any') + '</option>').join("") + '</select></div>';
   h += '<div class="frow"><span class="flab" style="margin:0;white-space:nowrap">How far it reaches</span><select id="fWide">' + WIDEL.map((l, i) => '<option value="' + (i + 1) + '"' + (f.wide === i + 1 ? " selected" : "") + '>' + (i ? esc(l) + (i < 4 ? ' or wider' : '') : 'Any') + '</option>').join("") + '</select></div>';
-  h += '<div class="frow"><span class="flab" style="margin:0;white-space:nowrap">Colour the diamonds by</span><select id="fCol"><option value="inf"' + (S.colBy === "inf" ? " selected" : "") + '>Who is reaching in</option><option value="bk"' + (S.colBy === "bk" ? " selected" : "") + '>The office reached</option></select></div>';
+  h += '<div class="frow"><span class="flab" style="margin:0;white-space:nowrap">Colour the diamonds by</span><select id="fCol"><option value="inf"' + (S.colBy === "inf" ? " selected" : "") + '>Who is infiltrating</option><option value="bk"' + (S.colBy === "bk" ? " selected" : "") + '>The office reached</option></select></div>';
   return h;
 }
 function refilter() { paint(); buildKey(); if (S.sel && S.sel[0] === "c") reopen(); }
@@ -554,7 +555,7 @@ function wireFilters() {
   const fi = $("#fInt"); if (fi) fi.addEventListener("change", (e) => { S.f.int = +e.target.value; refilter(); });
   const fw = $("#fWide"); if (fw) fw.addEventListener("change", (e) => { S.f.wide = +e.target.value; refilter(); });
   const fc = $("#fCol"); if (fc) fc.addEventListener("change", (e) => { S.colBy = e.target.value; paint(); buildKey(); });
-  const fr = $("#fReset"); if (fr) fr.addEventListener("click", () => { S.f = JSON.parse(F0); refilter(); });
+  const fr = $("#fReset"); if (fr) fr.addEventListener("click", () => { S.f = JSON.parse(F0); S.bk = S.f.bk; refilter(); });
 }
 function buildPat() {
   let h = '<div class="desc" style="margin-top:0">Each pattern is one arrangement that appears in many countries. Choose one to colour each country by its part in it and to read the account.</div>';
@@ -590,7 +591,7 @@ function buildLeg() {
   if (S.open.orgs) h += '<div class="up">' + TYPES.map((t) => row("ty:" + t.k, S.ty[t.k], '<span class="sw dot" style="background:' + tcol(t.k) + '"></span>' + esc(t.label), ORGS.filter((o) => o.s === t.k && orgOK(o)).length, true) + '<div class="desc" style="padding-left:22px">' + esc(t.d) + '</div>').join("") + '</div>';
   h += row("orgs", S.orgs, '<span class="car" data-open="orgs">' + (S.open.orgs ? "▾" : "▴") + '</span><span class="sw dot" style="background:' + P.t.forum + ';border:1px solid #f0ece4"></span>Organisations and networks, at their headquarters', ORGS.filter(orgOK).length);
   h += row("routes", S.routes, '<span class="sw bar" style="background:' + P.ln + ';margin-left:12px"></span>Documented channels between places', ROUTES.length);
-  h += '<div class="sub">Click ▴ to open a breakdown of the cases (by who is reaching in, or by office, as set in the key) or of the organisations by type.</div>';
+  h += '<div class="sub">Click ▴ to open a breakdown of the cases (by who is infiltrating, or by who is being infiltrated, as set in the key) or of the organisations by type.</div>';
   $("#legBody").innerHTML = h;
   $("#legBody").querySelectorAll("[data-open]").forEach((c) => c.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); S.open[c.dataset.open] = !S.open[c.dataset.open]; buildLeg(); }));
   $("#legBody").querySelectorAll("input[data-t]").forEach((c) => c.addEventListener("change", () => {
@@ -683,7 +684,7 @@ function openCountry(k, fly) {
   if (r.cproxy) h += '<div class="note">' + esc(r.cproxy) + '</div>';
   const csAll = CASES.filter((c) => c.c === k);
   if (csAll.length) { const by = {}; csAll.forEach((c) => { by[c.inf] = (by[c.inf] || 0) + 1; });
-    h += '<div class="hp-h">Who is reaching in here</div><div class="chips">' + INF.filter((x) => by[x.k]).map((x) => '<span data-only="' + x.k + '" title="Show only this kind on the map"><span class="sw dia" style="background:' + infCol(x.k) + '"></span>' + esc(x.label) + ' <span class="n">' + by[x.k] + '</span></span>').join("") + '</div>'; }
+    h += '<div class="hp-h">Who is infiltrating here</div><div class="chips">' + INF.filter((x) => by[x.k]).map((x) => '<span data-only="' + x.k + '" title="Show only this kind on the map"><span class="sw dia" style="background:' + infCol(x.k) + '"></span>' + esc(x.label) + ' <span class="n">' + by[x.k] + '</span></span>').join("") + '</div>'; }
   if (bts) h += '<div class="bts"><div class="hp-h" style="margin-top:0">Behind the scenes' + (bts.est ? '<span class="tag">Estimate</span>' : '') + '</div><p>' + (bts.d + (bts.imp ? '<br><br>' + bts.imp : '')).replace(/<br><br>/g, '</p><p>') + '</p></div>';
   const ps = PATS.filter((p) => p.cmap[k] != null);
   if (ps.length) h += '<div class="hp-h">Patterns this country is part of — ' + ps.length + '</div>' + ps.map((p) => { const ri = p.cmap[k]; return '<div class="pc"><span class="pchip" data-pat="' + p.id + '"><span class="sw" style="background:' + P.p[ri % P.p.length] + ';margin:0"></span>' + esc(p.title) + '</span><span class="pr">' + esc(p.roles[ri]) + '</span>' + (p.cnotes[k] ? '<div class="pn">' + p.cnotes[k] + '</div>' : '') + '</div>'; }).join("");
@@ -703,8 +704,8 @@ function openCase(i, fly) {
   const td = (x) => '<td style="text-align:left">' + x + '</td>';
   const h = '<div class="hp-k">' + esc(infLabel(c.inf)) + ' → ' + esc(BUCKETS[bi][1]) + '</div><h3>' + esc(c.n) + '</h3>' +
     '<div class="hp-sub"><span class="st" style="color:' + stCol(c.status) + '">' + esc(STATUS[c.status] || c.status) + '</span> · ' + c.y + ' · <a href="#" data-cty="' + esc(c.c) + '">' + esc(c.c) + '</a></div>' +
-    '<table class="kv"><tr><th>Who reached in</th>' + td((c.on && c.org ? (c.who && c.who.split(" ")[0] !== c.on.split(" ")[0] ? esc(c.who) + ' · ' : '') + '<a href="#" data-org="' + esc(c.org) + '">' + esc(c.on) + '</a>' : esc(c.who || infLabel(c.inf)))) + '</tr>' +
-    '<tr><th>Into</th>' + td(esc(lab(TGT, c.tgt)) + ' · ' + esc(c.rank)) + '</tr>' +
+    '<table class="kv"><tr><th>Who infiltrated</th>' + td((c.on && c.org ? (c.who && c.who.split(" ")[0] !== c.on.split(" ")[0] ? esc(c.who) + ' · ' : '') + '<a href="#" data-org="' + esc(c.org) + '">' + esc(c.on) + '</a>' : esc(c.who || infLabel(c.inf)))) + '</tr>' +
+    '<tr><th>Who was infiltrated</th>' + td(esc((BUCKETS.find((b) => b[0] === c.bk) || [0, ''])[1]) + ' · ' + esc(c.rank)) + '</tr>' +
     '<tr><th>Does it still matter?</th>' + td(esc(lab(REL, c.rel))) + '</tr>' +
     '<tr><th>How sure we are</th>' + td(esc(lab(LIK, c.lik)) + (c.why ? ' <span class="mute">— ' + esc(c.why) + '</span>' : '')) + '</tr>' +
     '<tr><th>How severe</th>' + td((c.int || 3) + ' of 5 · ' + esc(INTL[(c.int || 3) - 1] || "")) + '</tr>' +
