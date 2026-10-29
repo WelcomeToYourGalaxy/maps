@@ -176,8 +176,8 @@ function caseLink(id) { const i = CIDX[id]; return i == null ? '' : '<a href="#"
 function findingsHTML() {
   const s = covStats(), rows = s.fs.slice().sort((a, b) => ((P[a.iso] || {}).n || "").localeCompare((P[b.iso] || {}).n || "") || (a.y || 0) - (b.y || 0));
   return '<p>' + s.fOn.length + ' of ' + s.fs.length + ' major official findings on the checklist are on the map. Each row names the body, its year, how far it reached and its report.</p>' +
-    '<table class="all"><thead><tr><th>Country</th><th>Finding</th><th>Body</th><th>Year</th><th>Reach</th><th>Report</th><th>Map</th></tr></thead><tbody>' +
-    rows.map((f) => '<tr><td>' + esc((P[f.iso] || {}).n || f.iso || "International") + '</td><td style="white-space:normal;min-width:220px">' + esc(f.n) + '</td><td style="white-space:normal">' + esc(f.body) + '</td><td>' + esc(f.y || "") + '</td><td>' + esc(f.reach) + '</td><td>' + (f.url ? link("report", f.url) : "") + '</td><td>' + (f.cid ? caseLink(f.cid) : "not yet") + '</td></tr>').join("") + '</tbody></table>' +
+    '<table class="all cklist"><thead><tr><th>Country</th><th>Finding</th><th>Year</th><th></th></tr></thead><tbody>' +
+    rows.map((f) => '<tr><td>' + esc((P[f.iso] || {}).n || f.iso || "International") + '</td><td>' + esc(f.n) + '<br><span class="note">' + esc([f.body, f.reach].filter(Boolean).join(" · ")) + '</span></td><td>' + esc(f.y || "") + '</td><td>' + (f.url ? link("report", f.url) : "") + (f.cid ? '<br>' + caseLink(f.cid) : "<br>not yet") + '</td></tr>').join("") + '</tbody></table>' +
     (s.ex.length ? '<p class="lsrc" style="margin-top:12px">Considered and left out (' + s.ex.length + '): ' + s.ex.map((f) => esc(f.n) + (f.why ? ' (' + esc(f.why) + ')' : '')).join("; ") + '.</p>' : '');
 }
 function kindsHTML() {
