@@ -34,4 +34,8 @@ def dropped():
     for f in sorted(glob.glob(os.path.join(HERE, 'research', 'classify_out_*.json'))):
         for r in json.load(open(f)):
             if r.get('decision') == 'drop': out.add(r['id'])
+    # a fact-check that could not confirm a record at all drops it
+    for f in sorted(glob.glob(os.path.join(HERE, 'research', 'verify_[A-Z].json'))):
+        for pt in json.load(open(f)):
+            if pt.get('drop'): out.add(pt['id'])
     return out
