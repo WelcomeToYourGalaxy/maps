@@ -22,6 +22,7 @@ CASES, FLOWS, SER = {}, [], {}
 for f in sorted(glob.glob(os.path.join(HERE, 'research', '*.json'))):
     if 'patterns' in f or 'verify' in f or 'stories' in f or 'classify' in f: continue
     d = json.load(open(f)); n = os.path.basename(f)[:-5]
+    if not isinstance(d, dict): continue
     for c in d.get('cases', []):
         if c['id'] not in _DROP: CASES.setdefault(c['id'], _P.apply(dict(c, _src=n), _PT))
     for x in d.get('flows', []): FLOWS.append(dict(x, _src=n))

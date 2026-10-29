@@ -328,6 +328,13 @@ def main():
             if k in P and v.get('story'): STORY[k] = {'story': v['story']}
     # ------------------------------------------------------------- coverage: the two checklists (research/expand_*.json)
     ids = {c['id'] for c in cases}
+    DROPWHY = {}
+    for f in sorted(glob.glob(os.path.join(HERE, 'research', 'classify_out_*.json'))):
+        for r in json.load(open(f)):
+            if r.get('decision') == 'drop': DROPWHY[r['id']] = r.get('reason', '')
+    for f in sorted(glob.glob(os.path.join(HERE, 'research', 'verify_[A-Z].json'))):
+        for r in json.load(open(f)):
+            if r.get('drop'): DROPWHY[r['id']] = r.get('note', '')
     COV = {'findings': [], 'kinds': []}
     seenf = set()
     for f in sorted(glob.glob(os.path.join(HERE, 'research', 'expand_*.json'))):
@@ -338,6 +345,8 @@ def main():
             if key in seenf: continue
             seenf.add(key)
             st = it.get('status') or ''
+            if it.get('case_id') in DROPWHY and it.get('case_id') not in ids:
+                st = 'excluded'; it = dict(it, why_excluded=DROPWHY[it['case_id']])
             COV['findings'].append({'n': it.get('name', ''), 'iso': fix_iso(it.get('iso3')), 'body': it.get('body', ''), 'y': it.get('year'),
                                     'reach': it.get('reach', ''), 'url': it.get('url', ''), 'cid': it.get('case_id') if it.get('case_id') in ids else None,
                                     'ex': st == 'excluded', 'why': it.get('why_excluded', '')})
