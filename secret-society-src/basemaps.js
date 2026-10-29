@@ -13,7 +13,7 @@ var LIST = [["satellite", "Jurassic"], ["atlas", "Atlas"],
 
 /* ---------- settings, as in Culprits ---------- */
 var PLATE = { url: ROOT + "atlas-plate.webp?v=207",
-  top: 85.05112877980659, bottom: -80.55, fadeIn: 3, fadeOut: 5 };
+  top: 85.05112877980659, bottom: -85.05112877980659, fadeIn: 3, fadeOut: 5 };
 var ATLAS_TUNE = { sat: .15, con: .05, lift: .03, hue: -6, sea: .55, green: .30, warm: .22 };
 var BASE_GRADE = {
   atlas: { "raster-brightness-min": ATLAS_TUNE.lift, "raster-brightness-max": 1,
