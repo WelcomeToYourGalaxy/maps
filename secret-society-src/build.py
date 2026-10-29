@@ -37,7 +37,7 @@ CASE_BUCKETS = [
    'Central banks, state-owned banks, finance ministries and the agencies that supervise banks. Banco Ambrosiano, whose chairman belonged to P2, collapsed in 1982 with about $1.3 billion unaccounted for.'],
   ['intl', 'International bodies',
    'UN agencies, Interpol, the World Bank, FIFA, the IOC and the European Parliament. Governments have used Interpol red notices, meant for fugitives, to pursue critics living abroad.'],
-  ['company', 'Inside companies',
+  ['company', 'Companies',
    'Banks, shipping lines, technology firms and other companies with an outside group\'s people on the staff. The CIA and West German intelligence secretly owned Crypto AG, a Swiss maker of encryption machines sold to about 120 governments.'],
 ]
 BUCKET_COLOUR = ['#b05666', '#8e6aa6', '#6f8fb5', '#5f9b94', '#848a58', '#a67f74']
