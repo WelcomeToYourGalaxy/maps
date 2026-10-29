@@ -681,8 +681,9 @@ function drawFind() {
   ORGS.forEach((o, i) => { if ((o.n + " " + o.role + " " + o.d).toLowerCase().includes(q)) out.push(['o', i, o.n, typeLabel(o.s)]); });
   CASES.forEach((c) => { if ((c.n + " " + c.d + " " + c.c + " " + (c.on || "") + " " + (c.who || "")).toLowerCase().includes(q)) out.push(['k', c.i, c.n, c.c + " · " + c.y + " · " + (c.who || infLabel(c.inf)) + " · " + lab(LIK, c.lik)]); });
   PATS.forEach((p) => { if ((p.title + " " + p.summary).toLowerCase().includes(q)) out.push(['p', p.id, p.title, "pattern"]); });
+  BACK.forEach((b) => { if ((b.n + " " + b.d + " " + b.c).toLowerCase().includes(q)) out.push(['b', b.i, b.n, "behind the infiltrators · " + b.c]); });
   el.innerHTML = out.slice(0, 150).map((r) => '<div class="fi" data-k="' + r[0] + '" data-v="' + esc(r[1]) + '"><div>' + esc(r[2]) + '<span class="n">' + esc(r[3]) + '</span></div></div>').join("") + (out.length > 150 ? '<div class="sub">' + (out.length - 150) + ' more — type more to narrow.</div>' : "") || '<div class="sub">Nothing matches.</div>';
-  el.querySelectorAll(".fi").forEach((d) => d.addEventListener("click", () => { const k = d.dataset.k, v = d.dataset.v; if (k === "c") openCountry(v, true); else if (k === "o") openOrg(+v, true); else if (k === "k") openCase(+v, true); else setPattern(v); }));
+  el.querySelectorAll(".fi").forEach((d) => d.addEventListener("click", () => { const k = d.dataset.k, v = d.dataset.v; if (k === "c") openCountry(v, true); else if (k === "o") openOrg(+v, true); else if (k === "k") openCase(+v, true); else if (k === "b") openBacker(+v, true); else setPattern(v); }));
 }
 
 /* ---------- the right column ---------- */
