@@ -46,6 +46,12 @@ button.btn:hover,#infoBtn:hover,#worldBtn:hover{border-color:var(--accent-hi);co
 .sw.dot{border-radius:50%}
 .sw.ring{border-radius:50%;background:transparent!important;border:1.4px solid}
 .sw.bar{width:16px;height:3px;border-radius:1px;vertical-align:3px}
+.qm{display:inline-flex;align-items:center;justify-content:center;width:13px;height:13px;margin-left:5px;border:1px solid var(--line);border-radius:50%;font:10px/1 Georgia,serif;color:var(--mute);cursor:help;vertical-align:1px;text-transform:none;letter-spacing:0;flex:none}
+.qm:hover{color:#fff;border-color:var(--accent-hi)}
+.hbar{display:flex;height:12px;border-radius:2px;overflow:hidden;margin:7px 0 2px;border:1px solid var(--line2)}
+.hbar span{flex:1;cursor:pointer}.hbar span.off{opacity:.18}
+.hlab{display:flex;font-size:10.6px;color:var(--mute);margin-bottom:4px}.hlab span{flex:1;text-align:center;cursor:pointer;white-space:nowrap}.hlab span.off{opacity:.4}
+.ordrow{display:flex;flex-wrap:wrap;gap:4px;margin:2px 0 6px;align-items:center}.ordrow .flab{margin:0 4px 0 0}
 .leg{margin:6px 0 2px}
 .leg .li{display:flex;align-items:center;gap:6px;font-size:12.3px;padding:2px 0;cursor:pointer}
 .leg .li.off{opacity:.35}
@@ -205,7 +211,7 @@ button.btn:hover,#infoBtn:hover,#worldBtn:hover{border-color:var(--accent-hi);co
 <div id="key" class="card scroll">
   <button id="toggleKey" class="tog" type="button" title="Pull the key up or down">−</button>
   <h1>Infiltration Map</h1>
-  <p class="lede">Who reaches inside governments, international bodies and companies — other governments and their spy services, organised crime, companies, banks, secret societies, religious movements and elite networks — where it is proven, and where it is only suspected.</p>
+  <p class="lede">Who has infiltrated governments, international bodies and companies for external interests.</p>
   <p class="lede2" id="lede2"></p>
   <div class="body" id="keyBody"></div>
 </div>
@@ -374,6 +380,10 @@ function order() { const st = map.getStyle(); if (!st) return; const mine = new 
 
 /* ---------- tooltip ---------- */
 const tt = $("#ttip");
+const QM = (txt) => txt ? '<span class="qm" data-tip="' + esc(txt) + '">?</span>' : '';
+document.addEventListener("mouseover", (e) => { const q = e.target.closest && e.target.closest(".qm"); if (q) tip('<span class=mute>' + q.dataset.tip + '</span>', e.clientX, e.clientY); });
+document.addEventListener("click", (e) => { if (e.target.closest && e.target.closest(".qm")) { e.preventDefault(); e.stopPropagation(); } }, true);
+document.addEventListener("mouseout", (e) => { if (e.target.closest && e.target.closest(".qm")) tip(null); });
 function tip(html, x, y) { if (!html) { tt.style.display = "none"; return; } tt.innerHTML = html; tt.style.display = "block"; const r = tt.getBoundingClientRect(); let L = x + 14, T = y + 12; if (L + r.width > innerWidth - 6) L = x - r.width - 12; if (T + r.height > innerHeight - 6) T = y - r.height - 10; tt.style.left = L + "px"; tt.style.top = T + "px"; }
 
 /* ---------- geometry helpers ---------- */
@@ -543,10 +553,10 @@ function buildKey() {
   const ncase = CASES.filter((c) => fOK(c) && yrOK(c) && S.bk[c.bk]).length;
   let h = '';
   // shading
-  h += '<div class="psec">Shade the countries by</div><select id="lens"' + (S.pat ? ' disabled' : '') + '>' + LENSES.map((l) => '<option value="' + l.k + '"' + (S.lens === l.k ? " selected" : "") + '>' + esc(l.label) + '</option>').join("") + '<option value="none"' + (S.lens === "none" ? " selected" : "") + '>No shading</option></select>';
   const L_ = LENSES.find((l) => l.k === S.lens);
-  if (L_ && !S.pat) h += '<div class="desc">' + esc(L_.desc) + '</div><div class="leg">' + BANDS.map((b, i) => '<div class="li' + (S.bandOn[i] ? "" : " off") + '" data-band="' + i + '"><span class="sw" style="background:' + P.r[i] + '"></span>' + b[0] + '<span class="n">' + counts[i] + '</span></div>').join("") + '</div>' +
-       '<div class="desc">Both views come from the Global Organized Crime Index, which scores every country the same way, so the colours can be compared. The cases on this map are the diamonds; they are what has surfaced, not a measure of how much there is.</div>';
+  h += '<div class="psec">Shade the countries by' + QM((L_ ? L_.desc + " " : "") + "Both views come from the Global Organized Crime Index, which scores every country the same way, so the colours can be compared. The cases on this map are the diamonds: they are what has surfaced, not a measure of how much there is.") + '</div><select id="lens"' + (S.pat ? ' disabled' : '') + '>' + LENSES.map((l) => '<option value="' + l.k + '"' + (S.lens === l.k ? " selected" : "") + '>' + esc(l.label) + '</option>').join("") + '<option value="none"' + (S.lens === "none" ? " selected" : "") + '>No shading</option></select>';
+  if (L_ && !S.pat) h += '<div class="hbar">' + BANDS.map((b, i) => '<span data-band="' + i + '" class="' + (S.bandOn[i] ? "" : "off") + '" style="background:' + P.r[i] + '" title="' + b[0] + ': ' + counts[i] + ' countries"></span>').join("") + '</div>' +
+       '<div class="hlab">' + BANDS.map((b, i) => '<span data-band="' + i + '" class="' + (S.bandOn[i] ? "" : "off") + '">' + b[0] + ' ' + counts[i] + '</span>').join("") + '</div>';
   if (S.pat) h += '<div class="desc">Countries are coloured by the open pattern. Close it to shade them again.</div>';
   // find
   h += '<div class="psec">Find</div><input class="inp" id="find" style="width:100%" placeholder="A country, organisation, person or place" value="' + esc(S.q) + '"><div id="flist" class="scroll"></div>';
@@ -557,7 +567,7 @@ function buildKey() {
   h += '<div class="psec">When</div><div class="presets">' + ERAS.map((e) => '<button class="btn' + (era === e[0] ? " on" : "") + '" data-era="' + e[0] + '">' + e[1] + '</button>').join("") + '</div>' +
        '<div id="tchart">' + decadeChart() + '</div>' +
        '<div class="tline">From <input class="inp" id="y0" value="' + Math.max(S.y0, YR[0]) + '"> to <input class="inp" id="y1" value="' + Math.min(S.y1, YR[1]) + '"></div>' +
-       '<div class="desc">Each bar counts the cases in one decade that pass the filters; click one to keep only that decade' + (S.pat ? ', and the pale part is the open pattern' : '') + '. ' + CASES.filter((c) => yrOK(c) && patCase(c) && S.bk[c.bk] && fOK(c)).length + ' cases on the map now.</div>';
+       '<div class="desc">Click a bar to keep only that decade' + (S.pat ? '; the pale part is the open pattern' : '') + '. ' + CASES.filter((c) => yrOK(c) && patCase(c) && S.bk[c.bk] && fOK(c)).length + ' cases on the map now.</div>';
   $("#keyBody").innerHTML = h;
   $("#lens").addEventListener("change", (e) => { S.lens = e.target.value; paint(); buildKey(); });
   $("#keyBody").querySelectorAll("[data-band]").forEach((d) => d.addEventListener("click", () => { const i = +d.dataset.band; S.bandOn[i] = S.bandOn[i] ? 0 : 1; paint(); buildKey(); }));
@@ -576,11 +586,14 @@ function filterBlock() {
     const n = CASES.filter((c) => c[g] === k && fOK(c, g) && yrOK(c)).length;
     return '<span class="fc' + (f[g][k] !== false ? " on" : "") + '" data-fg="' + g + '" data-fk="' + k + '" title="' + esc(desc) + '">' + (col ? '<span class="sw dia" style="background:' + col + '"></span>' : '') + esc(label) + '<span class="n">' + n + '</span></span>'; }).join("") + '</div>';
   let h = '<div class="psec">Filter what is shown' + (filtered() ? ' <span class="frst" id="fReset" style="float:right;letter-spacing:0;text-transform:none">reset</span>' : '') + '</div>' +
-    '<div class="desc" style="margin-top:0">Click to switch a kind on or off. Double-click to show only that kind. The cases, organisations, counts and pattern list all change with the filters.</div>';
+    '<div class="desc" style="margin-top:0">Click to switch on or off. Double-click to show only that kind.</div>';
   h += '<div class="flab">Who is infiltrating</div>' + chips("inf", INF.map((x) => [x.k, x.label, x.d, infCol(x.k)]));
-  h += '<div class="flab">Who is being infiltrated</div><div class="desc" style="margin-top:0">Any combination of the two lists can be set: "Governments & spy services" with "Companies", for example, shows governments inside companies.</div>' + chips("bk", BUCKETS.map((b, i) => [b[0], b[1], b[2], bcol(i)]));
-  h += '<div class="flab">Does it still matter today?</div>' + chips("rel", REL.map((t) => [t[0], t[1], t[2]]));
-  h += '<div class="flab">How sure we are</div>' + chips("lik", LIK.map((t) => [t[0], t[1], t[2]]));
+  h += '<div class="flab">Who is being infiltrated</div>' + chips("bk", BUCKETS.map((b, i) => [b[0], b[1], b[2], bcol(i)]));
+  const relKey = ["now", "legacy", "past"].filter((k) => f.rel[k] !== false).join(",");
+  const likKey = ["established", "probable", "possible", "contested"].filter((k) => f.lik[k] !== false).join(",");
+  const sel = (id, label, help, opts, cur) => '<div class="frow"><span class="flab" style="margin:0;white-space:nowrap">' + label + QM(help) + '</span><select id="' + id + '">' + opts.map(([v, l]) => '<option value="' + v + '"' + (v === cur ? " selected" : "") + '>' + l + '</option>').join("") + (opts.some(([v]) => v === cur) ? '' : '<option value="' + cur + '" selected>Custom</option>') + '</select></div>';
+  h += sel("fRel", "Does it still matter today?", REL.map((r) => r[1] + ": " + r[2]).join(" "), [["now,legacy,past", "Any time"], ["now", "Happening now"], ["now,legacy", "Now, or over but still felt"], ["legacy", "Over but still felt"], ["past", "Historical"]], relKey);
+  h += sel("fLik", "How sure we are", LIK.map((r) => r[1] + ": " + r[2]).join(" "), [["established,probable,possible,contested", "Any"], ["established", "Proven"], ["established,probable", "Proven or probable"], ["established,probable,possible", "Proven, probable or suspected"], ["possible,contested", "Only suspected or disputed"]], likKey);
   h += '<div class="frow"><span class="flab" style="margin:0;white-space:nowrap">How severe</span><select id="fInt">' + INTL.map((l, i) => '<option value="' + (i + 1) + '"' + (f.int === i + 1 ? " selected" : "") + '>' + (i ? esc(l) + ' or worse' : 'Any') + '</option>').join("") + '</select></div>';
   h += '<div class="frow"><span class="flab" style="margin:0;white-space:nowrap">How far it reaches</span><select id="fWide">' + WIDEL.map((l, i) => '<option value="' + (i + 1) + '"' + (f.wide === i + 1 ? " selected" : "") + '>' + (i ? esc(l) + (i < 4 ? ' or wider' : '') : 'Any') + '</option>').join("") + '</select></div>';
   h += '<div class="frow"><span class="flab" style="margin:0;white-space:nowrap">Colour the diamonds by</span><select id="fCol"><option value="inf"' + (S.colBy === "inf" ? " selected" : "") + '>Who is infiltrating</option><option value="bk"' + (S.colBy === "bk" ? " selected" : "") + '>The office reached</option></select></div>';
@@ -594,44 +607,116 @@ function wireFilters() {
     el.addEventListener("click", () => { clearTimeout(t); t = setTimeout(() => { const g = el.dataset.fg, k = el.dataset.fk; S.f[g][k] = S.f[g][k] === false; refilter(); }, 220); });
     el.addEventListener("dblclick", () => { clearTimeout(t); const g = el.dataset.fg, k = el.dataset.fk; Object.keys(S.f[g]).forEach((x) => { S.f[g][x] = x === k; }); refilter(); });
   });
+  const setGroup = (g, keys, v) => { const on = v.split(","); keys.forEach((k) => { S.f[g][k] = on.includes(k); }); refilter(); };
+  const fr_ = $("#fRel"); if (fr_) fr_.addEventListener("change", (e) => setGroup("rel", ["now", "legacy", "past"], e.target.value));
+  const fl_ = $("#fLik"); if (fl_) fl_.addEventListener("change", (e) => setGroup("lik", ["established", "probable", "possible", "contested"], e.target.value));
   const fi = $("#fInt"); if (fi) fi.addEventListener("change", (e) => { S.f.int = +e.target.value; refilter(); });
   const fw = $("#fWide"); if (fw) fw.addEventListener("change", (e) => { S.f.wide = +e.target.value; refilter(); });
   const fc = $("#fCol"); if (fc) fc.addEventListener("change", (e) => { S.colBy = e.target.value; paint(); buildKey(); });
   const fr = $("#fReset"); if (fr) fr.addEventListener("click", () => { S.f = JSON.parse(F0); S.bk = S.f.bk; refilter(); });
 }
+const ROLE_HELP = {
+  "Proven": "A court verdict, an official inquiry, a government designation, a settlement or an admission shows it happened here.",
+  "Charged or probable": "Charged, under official investigation, or documented by reporting with documents behind it.",
+  "Suspected": "Suspected by a credible named source, not yet shown.",
+  "Disputed": "Acquitted, overturned, or claimed without the evidence to back it.",
+  "Documented case": "At least one documented case of this pattern took place here.",
+  "Headquarters": "Where an organisation in this pattern has its headquarters.",
+  "Sponsoring state": "The state whose government or services reached into other countries.",
+  "Paying state": "The state whose money reached officials elsewhere.",
+  "Target country": "A country whose institutions were reached.",
+  "Target of operations": "A country where the operations were carried out.",
+  "Where officials were paid": "Where officials took the money.",
+  "Where officials were paid or deposits lost": "Where officials were paid, or savers lost their deposits.",
+  "Where officials were drawn in": "Where officials were recruited or drawn into the network.",
+  "Where the money went": "Where the money was sent or hidden.",
+  "Where it happened": "Where the documented events took place.",
+  "Where they sit in the state": "Where members of the movement hold posts in the state.",
+  "Members in government": "Members of the group held posts in government here.",
+  "Members placed in office": "The group got its members into office here.",
+  "Movement shapes the government": "The movement is shown steering government decisions here.",
+  "Won government": "The movement won control of the government here.",
+  "Brotherhood ran the government": "The Muslim Brotherhood or its party led the government here.",
+  "Brotherhood held key offices": "The Brotherhood or its party held key offices here.",
+  "Tried to take the army": "The movement tried to get its members inside the army here.",
+  "Banned as terrorist": "The government banned the movement as a terrorist organisation.",
+  "Government banned or purged it": "The government banned the group or removed its members from office.",
+  "Organisation banned or purged": "The group was banned or its members purged here.",
+  "Country that pushed back": "A country that resisted or reversed the reach.",
+  "Country that handed people over or closed schools": "A country that handed over people or closed schools at the reaching state's request.",
+  "Head of state or minister in a lodge": "A head of state or minister here belonged to a lodge in this pattern.",
+  "French lodge or network": "Where the French lodge or political network was based.",
+  "Bank headquarters": "Where the bank had its headquarters.",
+  "Subsidiary or booking centre": "Where the bank had a branch or booked its business.",
+  "Firm's home": "The home country of the firm involved.",
+  "Forum headquarters": "Where the forum or network has its headquarters.",
+  "Founding ground": "Where the network was founded.",
+  "Coordinating centre": "Where the network was coordinated from.",
+  "Funding centre": "Where the money came from.",
+  "London centre": "The network's centre in London.",
+  "Dominion group": "A branch of the network in a British dominion.",
+  "American counterpart": "The network's sister body in the United States.",
+  "Member service or network": "A national service or network that belonged to the wider network.",
+  "Programme sponsor": "The country that paid for the training or aid programme.",
+  "Country whose economy was run by the trainees or advisers": "A country whose economic posts were filled by the trained people or advisers.",
+  "Court reversed a finding": "A court here later overturned an earlier finding.",
+  "Parliament or commission exposed it": "A parliament or official commission here brought it to light."
+};
+const ORD = [["now", "Happening now", "Share of the pattern's cases that are still going on."],
+             ["cases", "Most cases", "Number of documented cases."],
+             ["countries", "Most countries", "Number of countries involved."],
+             ["sev", "Severity", "Average severity of its cases, from an attempt to steering the state."],
+             ["reach", "Scale", "Average reach of its cases, from one town to worldwide."],
+             ["proven", "Proven", "Share of its cases that are proven."],
+             ["recent", "Most recent", "Year of its latest case."]];
+S.ord = S.ord || {};
+function patStats(p) {
+  const cs = p.cids.map((i) => CASES[i]).filter((c) => c && fOK(c) && yrOK(c) && S.bk[c.bk]);
+  const n = cs.length || 1, cty = new Set(cs.map((c) => c.c));
+  return { cases: cs.length, countries: cty.size, now: cs.filter((c) => c.rel === "now").length / n, sev: cs.reduce((a, c) => a + (c.int || 3), 0) / n,
+           reach: cs.reduce((a, c) => a + (c.wide || 2), 0) / n, proven: cs.filter((c) => c.lik === "established").length / n, recent: Math.max(0, ...cs.map((c) => c.y || 0)) };
+}
 function buildPat() {
-  let h = '<div class="desc" style="margin-top:0">Each pattern is one arrangement that appears in many countries. Choose one to colour each country by its part in it and to read the account.</div>';
-  // the list follows the filters: with one kind of infiltrator chosen, only its patterns are left
-  const patN = (p) => p.cids.reduce((a, i) => { const c = CASES[i]; return a + (c && fOK(c) && yrOK(c) && S.bk[c.bk] ? 1 : 0); }, 0);
-  const nOf = {}; PATS.forEach((p) => { nOf[p.id] = filtered() ? patN(p) : p.ncases; });
-  const patRow = (p, i) => '<div class="pat' + (S.pat === p.id ? " on" : "") + '" data-pat="' + p.id + '" style="--pc:' + P.p[i % P.p.length] + '"><div class="pt">' + esc(p.title) + '</div><div class="pm">' + Object.keys(p.cmap).length + ' countries · ' + nOf[p.id] + ' cases · ' + p.span[0] + '–' + p.span[1] + '</div></div>';
-  const rows_ = (root) => PATS.map((p, i) => (!!p.root === root && (nOf[p.id] || S.pat === p.id)) ? patRow(p, i) : "").join("");
-  const now_ = rows_(false), back_ = rows_(true), hid = PATS.filter((p) => !nOf[p.id] && S.pat !== p.id).length;
-  h += (now_ ? '<div class="flab">Going on today</div>' + now_ : '') +
-       (back_ ? '<div class="flab">The background: where today\'s arrangements come from</div>' + back_ : '') +
-       (hid ? '<div class="sub">' + hid + ' more ' + (hid === 1 ? 'pattern has' : 'patterns have') + ' nothing left under the filters you have set.</div>' : '');
+  let h = '';
+  const st = {}; PATS.forEach((p) => { st[p.id] = patStats(p); });
+  const nOf = {}; PATS.forEach((p) => { nOf[p.id] = st[p.id].cases; });
+  const keys = ORD.map((o) => o[0]).filter((k) => S.ord[k]);
+  h += '<div class="ordrow"><span class="flab">Order by' + QM("Choose one or more. With several chosen, the patterns are ranked on all of them together, each counting equally.") + '</span>' +
+       ORD.map((o) => '<span class="fc' + (S.ord[o[0]] ? " on" : "") + '" data-ord="' + o[0] + '" title="' + esc(o[2]) + '">' + o[1] + '</span>').join("") + '</div>';
+  const patRow = (p, i) => '<div class="pat' + (S.pat === p.id ? " on" : "") + '" data-pat="' + p.id + '" style="--pc:' + P.p[i % P.p.length] + '"><div class="pt">' + esc(p.title) + '</div><div class="pm">' + st[p.id].countries + ' countries · ' + nOf[p.id] + ' cases · ' + p.span[0] + '–' + p.span[1] + (keys.includes("now") ? ' · ' + Math.round(st[p.id].now * 100) + '% now' : '') + '</div></div>';
+  const live = PATS.map((p, i) => [p, i]).filter(([p]) => nOf[p.id] || S.pat === p.id);
+  const hid = PATS.length - live.length;
+  if (keys.length) {
+    const rank = {}; keys.forEach((k) => { const vals = live.map(([p]) => st[p.id][k]), lo = Math.min(...vals), hi = Math.max(...vals);
+      live.forEach(([p]) => { rank[p.id] = (rank[p.id] || 0) + (hi > lo ? (st[p.id][k] - lo) / (hi - lo) : 0); }); });
+    live.sort((a, b) => rank[b[0].id] - rank[a[0].id]);
+    h += live.map(([p, i]) => patRow(p, i)).join("");
+  } else {
+    const rows_ = (root) => live.filter(([p]) => !!p.root === root).map(([p, i]) => patRow(p, i)).join("");
+    const now_ = rows_(false), back_ = rows_(true);
+    h += (now_ ? '<div class="flab">Going on today</div>' + now_ : '') + (back_ ? '<div class="flab">The background: where today\'s arrangements come from</div>' + back_ : '');
+  }
+  if (hid) h += '<div class="sub">' + hid + ' more ' + (hid === 1 ? 'pattern has' : 'patterns have') + ' nothing left under the filters you have set.</div>';
   if (S.pat) {
     const p = PAT_BY[S.pat];
-    h = '<div class="leg">' + p.roles.map((r, i) => { const n = Object.values(p.cmap).filter((v) => v === i).length; return n ? '<div class="li"><span class="sw" style="background:' + P.p[i % P.p.length] + '"></span>' + esc(r) + '<span class="n">' + n + '</span></div>' : ""; }).join("") + '</div>' +
-         '<div class="seg" style="margin-bottom:6px"><button class="btn" type="button" id="patRead">Read the story</button><button class="btn" type="button" id="patClear">Close the pattern</button></div>' + h;
+    h = '<div class="leg">' + p.roles.map((r, i) => { const n = Object.values(p.cmap).filter((v) => v === i).length; return n ? '<div class="li"><span class="sw" style="background:' + P.p[i % P.p.length] + '"></span>' + esc(r) + QM(ROLE_HELP[r] || "") + '<span class="n">' + n + '</span></div>' : ""; }).join("") + '</div>' + h;
   }
   $("#patBody").innerHTML = h;
   $("#patBody").querySelectorAll("[data-pat]").forEach((d) => d.addEventListener("click", () => setPattern(S.pat === d.dataset.pat ? null : d.dataset.pat)));
-  const pc = $("#patClear"); if (pc) pc.addEventListener("click", () => setPattern(null));
-  const pr = $("#patRead"); if (pr) pr.addEventListener("click", () => openPattern(S.pat));
+  $("#patBody").querySelectorAll("[data-ord]").forEach((d) => d.addEventListener("click", () => { S.ord[d.dataset.ord] = !S.ord[d.dataset.ord]; buildPat(); }));
   sizeBoxes();
 }
 function buildLeg() {
   // Each breakdown opens downward, under the row that opens it.
   let h = '';
-  h += row("cases", S.cases, '<span class="car" data-open="cases">' + (S.open.cases ? "▾" : "▸") + '</span><span class="sw dia" style="background:' + (S.colBy === "inf" ? infCol("state") : bcol(0)) + '"></span>Cases', CASES.filter((c) => fOK(c) && yrOK(c) && S.bk[c.bk]).length);
+  h += row("cases", S.cases, '<span class="car" data-open="cases">' + (S.open.cases ? "▾" : "▸") + '</span><span class="sw dia" style="background:' + (S.colBy === "inf" ? infCol("state") : bcol(0)) + '"></span>Cases' + QM("Each diamond is one documented case of an outside party getting its people, money or control inside a government, an international body or a company. Bigger diamonds are more severe cases. Faded ones are suspected or disputed, not proven."), CASES.filter((c) => fOK(c) && yrOK(c) && S.bk[c.bk]).length);
   if (S.open.cases) h += '<div class="up">' + (S.colBy === "inf"
-      ? INF.map((x) => row("inf:" + x.k, S.f.inf[x.k] !== false, '<span class="sw dia" style="background:' + infCol(x.k) + '"></span>' + esc(x.label), CASES.filter((c) => c.inf === x.k && fOK(c, "inf") && yrOK(c)).length, true) + '<div class="desc" style="padding-left:22px">' + esc(x.d) + '</div>').join("")
-      : BUCKETS.map((b, i) => row("bk:" + b[0], S.bk[b[0]], '<span class="sw dia" style="background:' + bcol(i) + '"></span>' + esc(b[1]), CASES.filter((c) => c.bk === b[0] && fOK(c) && yrOK(c)).length, true) + '<div class="desc" style="padding-left:22px">' + esc(b[2]) + '</div>').join("")) +
-      '<div class="desc" style="padding-left:4px">Bigger diamonds are more severe cases. Faded ones are suspected or disputed, not proven.</div></div>';
-  h += row("orgs", S.orgs, '<span class="car" data-open="orgs">' + (S.open.orgs ? "▾" : "▸") + '</span><span class="sw dot" style="background:' + P.t.forum + ';border:1px solid #f0ece4"></span>Organisations and networks, at their headquarters', ORGS.filter(orgOK).length);
-  if (S.open.orgs) h += '<div class="up">' + TYPES.map((t) => row("ty:" + t.k, S.ty[t.k], '<span class="sw dot" style="background:' + tcol(t.k) + '"></span>' + esc(t.label), ORGS.filter((o) => o.s === t.k && orgOK(o)).length, true) + '<div class="desc" style="padding-left:22px">' + esc(t.d) + '</div>').join("") + '</div>';
-  if (BACK.length) h += row("backers", S.backers, '<span class="sw sq" style="background:' + backCol() + ';margin-left:12px"></span>Who stands behind them: the states, services, families, donors and firms that fund, own or direct the organisations', BACK.length);
+      ? INF.map((x) => row("inf:" + x.k, S.f.inf[x.k] !== false, '<span class="sw dia" style="background:' + infCol(x.k) + '"></span>' + esc(x.label) + QM(x.d), CASES.filter((c) => c.inf === x.k && fOK(c, "inf") && yrOK(c)).length, true)).join("")
+      : BUCKETS.map((b, i) => row("bk:" + b[0], S.bk[b[0]], '<span class="sw dia" style="background:' + bcol(i) + '"></span>' + esc(b[1]) + QM(b[2]), CASES.filter((c) => c.bk === b[0] && fOK(c) && yrOK(c)).length, true)).join("")) +
+      '</div>';
+  h += row("orgs", S.orgs, '<span class="car" data-open="orgs">' + (S.open.orgs ? "▾" : "▸") + '</span><span class="sw dot" style="background:' + P.t.forum + ';border:1px solid #f0ece4"></span>Organisations and networks' + QM("Each circle is an organisation or network that reaches inside institutions, placed at its headquarters."), ORGS.filter(orgOK).length);
+  if (S.open.orgs) h += '<div class="up">' + TYPES.map((t) => row("ty:" + t.k, S.ty[t.k], '<span class="sw dot" style="background:' + tcol(t.k) + '"></span>' + esc(t.label) + QM(t.d), ORGS.filter((o) => o.s === t.k && orgOK(o)).length, true)).join("") + '</div>';
+  if (BACK.length) h += row("backers", S.backers, '<span class="sw sq" style="background:' + backCol() + ';margin-left:12px"></span>Who stands behind them' + QM("The states, intelligence services, ruling parties, families, donor networks, firms, funds and criminal leaderships that fund, own, direct or created the organisations. Each is a small square; thin lines run to what it stands behind."), BACK.length);
   h += row("routes", S.routes, '<span class="sw bar" style="background:' + P.ln + ';margin-left:12px"></span>Documented channels between places', ROUTES.filter(routeOK).length);
   h += '<div class="sub">Click ▸ to open a breakdown of the cases (by who is infiltrating, or by who is being infiltrated, as set in the key) or of the organisations by type.</div>';
   $("#legBody").innerHTML = h;
@@ -836,7 +921,7 @@ function openPattern(id) {
   let h = '<div class="hp-k">Pattern behind the scenes · ' + esc(p.kind) + '</div><h3>' + esc(p.title) + '</h3><div class="hp-sub">' + p.span[0] + '–' + p.span[1] + ' · ' + Object.keys(p.cmap).length + ' countries · ' + p.ncases + ' cases</div>' +
     '<p class="hp-desc">' + p.summary + '</p>';
   if (p.implications) h += '<p class="hp-desc">' + p.implications + '</p>';
-  h += '<div class="hp-h">Countries by role</div>' + p.roles.map((r, i) => { const ks = Object.keys(p.cmap).filter((k) => p.cmap[k] === i).sort(); return ks.length ? '<div class="pc"><span class="sw" style="background:' + P.p[i % P.p.length] + '"></span>' + esc(r) + ' <span class="n">' + ks.length + '</span><div class="chips">' + ks.map((k) => '<span data-cty="' + esc(k) + '" title="' + esc((p.cnotes[k] || "").replace(/<[^>]+>/g, "")) + '">' + esc(k) + '</span>').join("") + '</div></div>' : ""; }).join("");
+  h += '<div class="hp-h">Countries by role</div>' + p.roles.map((r, i) => { const ks = Object.keys(p.cmap).filter((k) => p.cmap[k] === i).sort(); return ks.length ? '<div class="pc"><span class="sw" style="background:' + P.p[i % P.p.length] + '"></span>' + esc(r) + QM(ROLE_HELP[r] || "") + ' <span class="n">' + ks.length + '</span><div class="chips">' + ks.map((k) => '<span data-cty="' + esc(k) + '" title="' + esc((p.cnotes[k] || "").replace(/<[^>]+>/g, "")) + '">' + esc(k) + '</span>').join("") + '</div></div>' : ""; }).join("");
   h += '<div class="hp-h">Documented cases per decade — ' + p.ncases + '</div>' + spark(p);
   if (p.orgs.length) h += '<div class="hp-h">Organisations</div><div class="chips">' + p.orgs.filter((k) => ORG_BY[k]).map((k) => '<span data-org="' + k + '">' + esc(ORGN[k]) + '</span>').join("") + '</div>';
   if (p.links && p.links.length) h += '<div class="hp-h">Connections drawn — ' + p.links.length + '</div>' + p.links.map((l) => '<div class="tl">' + esc(l.from) + ' → ' + esc(l.to) + (l.label ? ': ' + esc(l.label) : '') + (l.years ? ' <span class="n">' + esc(l.years) + '</span>' : '') + '</div>').join("");
