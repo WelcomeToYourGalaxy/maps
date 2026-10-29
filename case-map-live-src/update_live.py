@@ -1,5 +1,6 @@
 """Case Map live layer: World Bank projects under way now, their own environmental and social
-documents, and satellite fire detections near the map's case sites. Run daily by
+documents, and flags for projects of concern (a complaint to the Inspection Panel, a case on the map,
+the Bank's own High risk rating, or Category A). Run daily by
 .github/workflows/case-map-live.yml; writes case_map_live.json next to globalization.html."""
 import csv, io, json, math, os, re, sys, time, urllib.request
 from datetime import datetime, timezone
@@ -125,14 +126,24 @@ def main():
             if la is None or ln is None or (la, ln) in seen: continue
             seen.add((la, ln))
             pts.append([round(ln, 4), round(la, 4), idx, g.get('geo_loc_name') or ''])
-    try:
-        fires = fires_near(cases_from_map())
-    except Exception as e:
-        print('fires failed', e, file=sys.stderr); fires = prev.get('fires', [])
-    out = {'updated': now.strftime('%Y-%m-%d %H:%M UTC'), 'wb': wb, 'wbpts': pts, 'fires': fires,
-           'cols': ['id', 'name', 'country', 'approved', 'closing', 'usd', 'instrument', 'sector', 'esrisk', 'envcat', 'agency', 'pdo', 'region', 'docs', 'isr', 'docs_read']}
+    # projects of concern
+    ipmap = json.load(open(os.path.join(ROOT, 'case-map-live-src', 'ip_projects.json')))
+    byp_ip = {}
+    for k, ps in ipmap.items():
+        for q in ps: byp_ip.setdefault(q, []).append(k)
+    s = open(os.path.join(ROOT, 'globalization.html'), encoding='utf-8').read()
+    i = s.index('window.CASES = ') + len('window.CASES = ')
+    C, _ = json.JSONDecoder().raw_decode(s[i:])
+    byp_case = {}
+    for c in C:
+        for q in set(re.findall(r'\bP\d{6}\b', json.dumps(c))): byp_case.setdefault(q, []).append(c['id'])
+    for row in wb:
+        pid = row[0]
+        row.append({'ip': byp_ip.get(pid, []), 'cases': byp_case.get(pid, []), 'high': row[8] == 'H', 'catA': row[9] == 'A'})
+    out = {'updated': now.strftime('%Y-%m-%d %H:%M UTC'), 'wb': wb, 'wbpts': pts,
+           'cols': ['id', 'name', 'country', 'approved', 'closing', 'usd', 'instrument', 'sector', 'esrisk', 'envcat', 'agency', 'pdo', 'region', 'docs', 'isr', 'docs_read', 'concern']}
     json.dump(out, open(OUT, 'w'), ensure_ascii=False, separators=(',', ':'))
-    print('projects', len(wb), 'points', len(pts), 'fires near sites', len(fires), 'docs fetched', fetched)
+    print('projects', len(wb), 'points', len(pts), 'docs fetched', fetched, 'complaint', sum(1 for r in wb if r[16]['ip']), 'case', sum(1 for r in wb if r[16]['cases']), 'high', sum(1 for r in wb if r[16]['high']), 'catA', sum(1 for r in wb if r[16]['catA']))
 
 if __name__ == '__main__':
     main()
