@@ -271,6 +271,7 @@ def main():
         x['backs'] = [k for k in x.get('backs', []) if k in known]
     data['backers'] = [x for x in bks if x['backs']]
     data['iso'] = load('iso3.json', {})
+    data['gloss'] = load('glossary.json', {})
     import about
     html = open(os.path.join(HERE, 'app_template.html')).read()
     plate = base64.b64encode(open(os.path.join(HERE, 'plate.webp'), 'rb').read()).decode()

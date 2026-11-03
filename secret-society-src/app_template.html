@@ -48,6 +48,8 @@ button.btn:hover,#infoBtn:hover,#worldBtn:hover{border-color:var(--accent-hi);co
 .sw.bar{width:16px;height:3px;border-radius:1px;vertical-align:3px}
 .qm{display:inline-flex;align-items:center;justify-content:center;width:13px;height:13px;margin-left:5px;border:1px solid var(--line);border-radius:50%;font:10px/1 Georgia,serif;color:var(--mute);cursor:help;vertical-align:1px;text-transform:none;letter-spacing:0;flex:none}
 .qm:hover{color:#fff;border-color:var(--accent-hi)}
+.gl{text-decoration:underline dotted;text-decoration-color:var(--accent-hi);text-underline-offset:3px;text-decoration-thickness:1px;cursor:help}
+.gl:hover{color:#fff}
 .hbar{display:flex;height:12px;border-radius:2px;overflow:hidden;margin:7px 0 2px;border:1px solid var(--line2)}
 .hbar span{flex:1;cursor:pointer}.hbar span.off{opacity:.18}
 .hlab{display:flex;font-size:10.6px;color:var(--mute);margin-bottom:4px}.hlab span{flex:1;text-align:center;cursor:pointer;white-space:nowrap}.hlab span.off{opacity:.4}
@@ -261,10 +263,10 @@ const STATUS = { investigation: "Under investigation", alleged: "Alleged", convi
 /* ---------- colours: each basemap has its own set, drawn from its own tones ---------- */
 // office buckets (6) · organisation types (8) · severity ramp, worst first (5) · pattern roles (8) · line
 const PAL = {
-  // Bioluminescent: the light blues
-  night:     { b: ["#a4c3df", "#62bcda", "#3859c7", "#cedfe9", "#85d7e0", "#2d39a9", "#5782c7", "#b8d3e0"],
-               t: { lodge: "#6480ce", order: "#a6c5de", forum: "#35a9d0", covert: "#c6e4e7", statenet: "#2f38b1", lawnet: "#8ba9d0", intl: "#52a3cb", ngo: "#dcebef", biz: "#2d449f", crime: "#94bfdb", bank: "#6ccada" },
-               r: ["#8bb6e4", "#689dcf", "#4b88b9", "#457292", "#405c6d"], p: ["#6cb2e5", "#b9e1e9", "#546dd4", "#a7a9dd", "#1ca7e3", "#dbe3f0", "#78dee3", "#293aae", "#b4c7da"], ln: "#cfe2f0",
+  // Bioluminescent: moonlit steel, slate and ice tones, low saturation
+  night:     { b: ["#d6dfe8", "#7fa3c6", "#9493c4", "#b4d4e4", "#5b8fa6", "#8fb9b3", "#bfb0cf", "#7c8ea3"],
+               t: { lodge: "#9493c4", order: "#bfb0cf", forum: "#7fa3c6", covert: "#c9d3d9", statenet: "#6e8fc0", lawnet: "#a7b4c4", intl: "#8fb9b3", ngo: "#e2e8ee", biz: "#5b8fa6", crime: "#b4d4e4", bank: "#7aa9a3" },
+               r: ["#6d8bb8", "#56719b", "#42597c", "#31435d", "#233142"], fo: 0.62, p: ["#6e8fc0", "#d6dfe8", "#9493c4", "#8fb9b3", "#5b8fa6", "#bfb0cf", "#b4d4e4", "#7c8ea3", "#c9d3d9"], ln: "#a9bdd0",
                card: "rgba(8,16,26,.94)", edge: "#1d3147",
                ui: ["#326c9f", "#95c6e4", "#06101c"] },
   // Standard: a conventional categorical set, muted for the dark ground
@@ -382,9 +384,31 @@ function order() { const st = map.getStyle(); if (!st) return; const mine = new 
 /* ---------- tooltip ---------- */
 const tt = $("#ttip");
 const QM = (txt) => txt ? '<span class="qm" data-tip="' + esc(txt) + '">?</span>' : '';
-document.addEventListener("mouseover", (e) => { const q = e.target.closest && e.target.closest(".qm"); if (q) tip('<span class=mute>' + q.dataset.tip + '</span>', e.clientX, e.clientY); });
+document.addEventListener("mouseover", (e) => { const q = e.target.closest && e.target.closest(".qm, .gl"); if (q) tip((q.classList.contains("gl") ? '<b>' + esc(q.textContent) + '</b><br>' : '') + '<span class=mute>' + esc(q.dataset.tip) + '</span>', e.clientX, e.clientY); });
 document.addEventListener("click", (e) => { if (e.target.closest && e.target.closest(".qm")) { e.preventDefault(); e.stopPropagation(); } }, true);
-document.addEventListener("mouseout", (e) => { if (e.target.closest && e.target.closest(".qm")) tip(null); });
+document.addEventListener("mouseout", (e) => { if (e.target.closest && e.target.closest(".qm, .gl")) tip(null); });
+/* glossary: underline the first use of each specialty term or abbreviation in a box; hover shows its definition */
+const GLOSS = D.gloss || {};
+const GL_RE = (() => {
+  const ks = Object.keys(GLOSS).sort((a, b) => b.length - a.length).map((k) => k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  return ks.length ? new RegExp("(?<![\\p{L}\\p{N}])(" + ks.join("|") + ")(?![\\p{L}\\p{N}])", "gu") : null;
+})();
+function glossify(root) {
+  if (!GL_RE || !root) return;
+  const seen = new Set(), walk = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: (n) => n.parentNode.closest("a, button, h3, .qm, .gl, .hp-k, .hp-src, select, option, label, input") ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT });
+  const nodes = []; while (walk.nextNode()) nodes.push(walk.currentNode);
+  for (const n of nodes) {
+    const t = n.nodeValue; GL_RE.lastIndex = 0; let m, last = 0, frag = null;
+    while ((m = GL_RE.exec(t))) {
+      const k = m[1]; if (seen.has(k)) continue; seen.add(k);
+      frag = frag || document.createDocumentFragment();
+      frag.appendChild(document.createTextNode(t.slice(last, m.index)));
+      const sp = document.createElement("span"); sp.className = "gl"; sp.dataset.tip = GLOSS[k]; sp.textContent = k; frag.appendChild(sp);
+      last = m.index + k.length;
+    }
+    if (frag) { frag.appendChild(document.createTextNode(t.slice(last))); n.parentNode.replaceChild(frag, n); }
+  }
+}
 function tip(html, x, y) { if (!html) { tt.style.display = "none"; return; } tt.innerHTML = html; tt.style.display = "block"; const r = tt.getBoundingClientRect(); let L = x + 14, T = y + 12; if (L + r.width > innerWidth - 6) L = x - r.width - 12; if (T + r.height > innerHeight - 6) T = y - r.height - 10; tt.style.left = L + "px"; tt.style.top = T + "px"; }
 
 /* ---------- geometry helpers ---------- */
@@ -505,7 +529,7 @@ function paint() {
   });
   m.push("rgba(0,0,0,0)");
   map.setPaintProperty("cty-fill", "fill-color", m.length > 3 ? m : "rgba(0,0,0,0)");
-  map.setPaintProperty("cty-fill", "fill-opacity", pt ? 0.66 : 0.58);
+  map.setPaintProperty("cty-fill", "fill-opacity", (pt ? 0.08 : 0) + (P.fo || 0.58));
   map.setPaintProperty("small-ring", "circle-color", m.length > 3 ? m : "rgba(0,0,0,0)");
   // solid lines in the basemap's own line colour, each with a faint glow of the same colour
   ["route-line", "route-case", "pat-line", "pat-case"].forEach((id) => map.setPaintProperty(id, "line-color", P.ln));
@@ -798,7 +822,7 @@ function buildTr() {
   box.addEventListener("pointerdown", start); window.addEventListener("pointermove", move); window.addEventListener("pointerup", end);
   window.addEventListener("resize", () => { box.style.transform = ""; box.style.left = ""; box.style.top = ""; });
 })();
-function show(html, sel) { S.sel = sel; $("#detBody").innerHTML = html; $("#det").classList.add("open"); document.body.classList.add("detopen"); $("#det").scrollTop = 0; paint(); wireCard(); }
+function show(html, sel) { S.sel = sel; $("#detBody").innerHTML = html; glossify($("#detBody")); $("#det").classList.add("open"); document.body.classList.add("detopen"); $("#det").scrollTop = 0; paint(); wireCard(); }
 function deselect() { S.sel = null; $("#det").classList.remove("open"); document.body.classList.remove("detopen"); paint(); }
 function reopen() { const s = S.sel; if (!s) return; if (s[0] === "c") openCountry(s[1], false); else if (s[0] === "p") openPattern(s[1], false); }
 function wireCard() {
