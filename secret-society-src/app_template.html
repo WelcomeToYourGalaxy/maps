@@ -458,7 +458,7 @@ function addLayers() {
   const stackTip = (e) => { const fs = under(e.point); if (fs.length < 2) return false; map.getCanvas().style.cursor = "pointer";
     tip("<b>" + fs.length + " entries here</b><br><span class=mute>" + fs.slice(0, 4).map((f) => esc(f.layer.id === "case" ? CASES[f.properties.i].n : f.layer.id === "backer" ? BACK[f.properties.i].n : ORGS[f.properties.i].n)).join("<br>") + (fs.length > 4 ? "<br>and " + (fs.length - 4) + " more" : "") + "<br>Click to list them all, or zoom in to separate them</span>", e.originalEvent.clientX, e.originalEvent.clientY); return true; };
   ["case", "org", "backer"].forEach((id) => map.on("mousemove", id, (e) => { if (stackTip(e)) e.preventDefault(); }));
-  window.__under = under; window.__map = map;
+  window.__under = under; window.__map = map; window.__openCase = (i) => openCase(i, false);
   hover("case", (p) => { const c = CASES[p.i]; return "<b>" + esc(c.n) + "</b><br><span class=mute>" + esc(c.who || infLabel(c.inf)) + " → " + esc(lab(TGT, c.tgt).toLowerCase()) + "<br>" + esc(c.c) + " · " + c.y + " · " + esc(lab(LIK, c.lik)) + " · " + esc(lab(REL, c.rel).toLowerCase()) + "</span>"; });
   hover("org", (p) => { const o = ORGS[p.i]; return "<b>" + esc(o.n) + "</b><br><span class=mute>" + esc(typeLabel(o.s)) + " · headquarters" + (o.active ? "" : " · no longer active") + "</span>"; });
   hover("route-hit", (p) => "<b>" + esc(ROUTES[p.i].n) + "</b><br><span class=mute>Click for the account</span>");
