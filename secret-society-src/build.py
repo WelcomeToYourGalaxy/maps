@@ -72,6 +72,8 @@ TYPE_W = {'crime': 1.2, 'bank': 1.0, 'covert': 1.2, 'statenet': 1.2, 'lodge': 1.
 
 BANDS = [['Severe', '#8c2f3e'], ['High', '#a15a66'], ['Moderate', '#7a6b92'], ['Low', '#5b7f8a'], ['Minimal', '#66786a']]
 LENSES = [
+  {'k': 'meta',  'label': 'Overall: officials open to outside control', 'accent': '#6b5a78',
+   'desc': 'The shading. The average of the two views below, both from the Global Organized Crime Index: how easily officials can be bent (insiders working for outside interests, plus weak courts, police and watchdogs) and how far officials work for criminal networks. Because insiders count in both, they carry three quarters of the weight and weak watchdogs one quarter. It is scored the same way for every country, so the colours can be compared.'},
   {'k': 'cond',  'label': 'How easily officials can be bent', 'accent': '#4f7d7a',
    'desc': 'The shading. From the Global Organized Crime Index: how often officials in a country use their posts for interests outside the state, and how weak the courts, police and watchdogs are that should stop them. It is scored the same way for every country, so the colours can be compared.'},
   {'k': 'sea',   'label': 'Officials working for criminal networks', 'accent': '#8e4a5b',
@@ -206,7 +208,7 @@ def main():
         r = rows_c[k]
         cnd = (r['sea'] + (10 - r['res'])) / 2
         rows[k] = {'doc': round(doc[k], 2), 'reach': round(reach[k], 2),
-                   'cond': round(cnd, 2), 'sea': r['sea'], 'res': r['res'],
+                   'meta': round((cnd + r['sea']) / 2, 2), 'cond': round(cnd, 2), 'sea': r['sea'], 'res': r['res'],
                    'band': band_of(cnd), 'est': doc[k] == 0, 'raw': round(doc_raw[k], 2),
                    'pres': [[p[0], 1 if p[1] else 0, round(p[2], 3)] for p in present[k]]}
         if r.get('proxy'): rows[k]['cproxy'] = r['proxy']
@@ -221,7 +223,7 @@ def main():
         x['i'] = len(case_out)
         x['on'] = oname.get(c.get('org'), c.get('org_label', c.get('org', '')))
         if c.get('arch'): x['arch'] = c['arch']
-        for f in ('inf', 'who', 'tgt', 'rel', 'lik', 'why', 'src'):
+        for f in ('inf', 'who', 'tgt', 'rel', 'lik', 'why', 'src', 'inside'):
             if c.get(f): x[f] = c[f]
         x['int'] = int(c.get('int') or 3); x['wide'] = int(c.get('wide') or 2)
         x['w'] = round(case_w(c), 4)
