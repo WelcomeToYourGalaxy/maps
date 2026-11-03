@@ -8,6 +8,7 @@ async def main():
         pg.on("pageerror", lambda e: errs.append(f"PAGEERROR: {e}"))
         pg.on("console", lambda m: errs.append(f"{m.type}: {m.text}") if m.type=="error" else None)
         await pg.goto("file:///home/claude/work/loan-conditions.html"); await pg.wait_for_timeout(9000)
+        await pg.evaluate("document.querySelectorAll(\'details.secd\').forEach(d=>d.open=true)")
         print("now:", await pg.inner_text("#now"))
         print("order:", await pg.evaluate("[...document.querySelectorAll('.sec')].map(s=>s.textContent).join(' | ')"))
         await pg.screenshot(path="/home/claude/work/n_all.png")

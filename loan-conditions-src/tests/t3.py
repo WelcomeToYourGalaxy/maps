@@ -7,5 +7,6 @@ async def main():
         pg.on("pageerror", lambda e: print("PAGEERROR", e.name, e.message, str(e.stack)[:500]))
         pg.on("console", lambda m: print("CONSOLE", m.type, m.text[:300]) if m.type in ("error",) else None)
         await pg.goto("file:///home/claude/work/loan-conditions.html"); await pg.wait_for_timeout(6000)
+        await pg.evaluate("document.querySelectorAll(\'details.secd\').forEach(d=>d.open=true)")
         await b.close()
 asyncio.run(main())

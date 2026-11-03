@@ -69,6 +69,13 @@
 
   /* Rows */
   .sec { margin: 14px 2px 4px; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #8A939D; }
+  details.secd { margin: 6px 0; border: 1px solid #222A33; border-radius: 5px; }
+  details.secd > summary.sec { margin: 0; padding: 8px 10px; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; color: #C9CFD6; }
+  details.secd > summary.sec::-webkit-details-marker { display: none; }
+  details.secd > summary.sec::after { content: "▾"; font-size: 12px; color: #8A939D; transition: transform .15s; }
+  details.secd:not([open]) > summary.sec::after { transform: rotate(-90deg); }
+  details.secd > summary.sec .n { margin-left: auto; margin-right: 8px; color: #8A939D; letter-spacing: 0; text-transform: none; }
+  details.secd > .rows { padding: 0 8px 6px; }
   .row { border: 1px solid #222A33; border-radius: 5px; margin: 6px 0; background: rgba(20,26,34,.6); }
   .row.on { border-color: #4A5566; background: rgba(28,35,45,.85); }
   .row .head { display: flex; gap: 6px; align-items: flex-start; padding: 8px 10px; }
@@ -146,7 +153,7 @@
   <header>
     <h1>Loan conditions worldwide</h1>
     <button id="fold" type="button" title="Fold the panel up, or open it">Fold up ▴</button>
-    <p class="lede">The strings attached to loans and debt deals for governments: from the IMF, the World Bank, regional development banks, the EU, the Paris Club, China and every lender that reports to the OECD, plus the other money flowing in and out: foreign investment, aid, foundation grants, private and government loans, and money sent home; sales of state firms; and marked places where a loan condition led to harm. Pick a row, set the years, then click a country for its record. Hover over a <span class="q" style="cursor:default">?</span> for what a term means.</p>
+    <p class="lede">The strings attached to loans and debt deals for governments. Pick a row, set the years, then click a country for its record.</p>
     <p class="lede now" id="now"></p>
   </header>
   <div id="years">
@@ -176,7 +183,6 @@
   </div>
   <div id="panel"></div>
   </div>
-  <div class="foot">Sources are named in each row. <a href="https://welcometoyourgalaxy.com" target="_blank" rel="noopener">Welcome to Your Galaxy</a></div>
 </aside>
 
 <script src="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
@@ -1336,12 +1342,15 @@ const LC_DATA_GZ = "/*__DATA__*/";
   const SECS = { Pat: "Patterns behind the scenes", All: "Together", IMF: "International Monetary Fund", "World Bank": "World Bank", IDB: "Regional development banks", EU: "European Union and euro area", Gov: "Single governments", OECD: "Every lender reporting to the OECD", Flows: "Other money flowing in and out" };
   const ORDER = ["All", "Pat", "IMF", "World Bank", "IDB", "EU", "Gov", "OECD", "Flows"];
   LAYERS.sort((a, b) => ORDER.indexOf(a.lender) - ORDER.indexOf(b.lender));
-  let lastSec = "";
-  panel.innerHTML = LAYERS.map((l) => {
-    const sec = l.lender !== lastSec ? `<div class="sec">${esc(SECS[l.lender])}</div>` : ""; lastSec = l.lender;
-    return sec + `<div class="row" data-id="${l.id}"><div class="head"><label class="pick"><input type="radio" name="row" value="${l.id}"><span><span class="t">${esc(l.title)}</span><span class="span">${l.span[0]} to ${l.span[1]} · ${esc(l.srcLine)}</span></span></label>${l.plain ? `<span class="q big" tabindex="0" role="button" aria-label="What this row shows" data-tip="${esc(l.plain)}">?</span>` : ""}</div>
+  const rowHtml = (l) => {
+    return `<div class="row" data-id="${l.id}"><div class="head"><label class="pick"><input type="radio" name="row" value="${l.id}"><span><span class="t">${esc(l.title)}</span><span class="span">${l.span[0]} to ${l.span[1]} · ${esc(l.srcLine)}</span></span></label>${l.plain ? `<span class="q big" tabindex="0" role="button" aria-label="What this row shows" data-tip="${esc(l.plain)}">?</span>` : ""}</div>
       <div class="body">${l.plain ? `<p class="plain">${esc(l.plain)}</p>` : ""}${l.controls()}<div class="legend" id="leg-${l.id}"></div><div class="unplaced" id="un-${l.id}"></div>
       <details><summary>Sources and fine print</summary>${l.about}</details></div></div>`;
+  };
+  // Each group of rows is its own drop-down; the group holding the row shown first starts open.
+  panel.innerHTML = ORDER.filter((g) => LAYERS.some((l) => l.lender === g)).map((g) => {
+    const rows = LAYERS.filter((l) => l.lender === g);
+    return `<details class="secd" data-sec="${esc(g)}"${rows.some((l) => l.id === state.active) ? " open" : ""}><summary class="sec"><span>${esc(SECS[g])}</span><span class="n">${rows.length}</span></summary><div class="rows">${rows.map(rowHtml).join("")}</div></details>`;
   }).join("");
   for (const l of LAYERS) for (const s of document.querySelectorAll(`.row[data-id="${l.id}"] select[data-k]`)) state.opts[l.id][s.dataset.k] = s.value;
   panel.addEventListener("change", (e) => {
