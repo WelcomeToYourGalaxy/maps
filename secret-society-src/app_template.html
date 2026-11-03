@@ -101,6 +101,7 @@ button.btn:hover,#infoBtn:hover,#worldBtn:hover{border-color:var(--accent-hi);co
 #wire .wh{display:flex;justify-content:space-between;align-items:center;cursor:pointer}
 #wireBody{overflow:auto;min-height:0;margin-top:6px}
 #wireBody select{margin:2px 0}
+#wireBody.more{-webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 70px),rgba(0,0,0,.35) calc(100% - 22px),transparent);mask-image:linear-gradient(to bottom,#000 calc(100% - 70px),rgba(0,0,0,.35) calc(100% - 22px),transparent)}
 .wi{padding:6px 0;border-top:1px solid var(--line2);font-size:12.3px;line-height:1.38}
 .wi a{color:#e8e4dc;text-decoration:none}.wi a:hover{text-decoration:underline;color:#fff}
 .wi .wm{font-size:10.6px;color:var(--mute);margin-top:2px}
@@ -837,7 +838,7 @@ function stCol(s) { return { investigation: P.p[3], alleged: "var(--mute)",  con
 function caseCol(c) { return S.colBy === "inf" ? infCol(c.inf) : bcol(BUCKETS.findIndex((b) => b[0] === c.bk)); }
 function recCase(c) {
   return '<div class="rec"><div class="rh"><span class="sw dia" style="background:' + caseCol(c) + (c.lik === "possible" || c.lik === "contested" ? ';opacity:.55' : '') + '"></span><b>' + esc(c.n) + '</b><span class="n">' + c.y + ' · ' + esc(lab(LIK, c.lik)) + '</span></div>' +
-    '<div class="rb"><span class="st" style="color:' + stCol(c.status) + '">' + esc(STATUS[c.status] || c.status) + '</span> · ' + esc(c.who || infLabel(c.inf)) + ' → ' + esc(c.rank) + (c.on && c.org ? ' · <a href="#" data-org="' + esc(c.org) + '">' + esc(c.on) + '</a>' : "") + ' · ' + esc(lab(REL, c.rel).toLowerCase()) + '<br>' + c.d + (c.inside ? ' <b class="whyc">Why it counts:</b> ' + esc(c.inside) : '') +
+    '<div class="rb"><span class="st" style="color:' + stCol(c.status) + '">' + esc(STATUS[c.status] || c.status) + '</span> · ' + esc(c.who || infLabel(c.inf)) + ' → ' + esc(c.rank) + (c.on && c.org ? ' · <a href="#" data-org="' + esc(c.org) + '">' + esc(c.on) + '</a>' : "") + ' · ' + esc(lab(REL, c.rel).toLowerCase()) + '<br>' + c.d + (c.inside ? ' <b class="whyc">Put simply:</b> ' + esc(c.inside) : '') +
     (c.undone ? '<div class="note"><b>What happened next:</b> ' + c.undone + '</div>' : "") +
     '<div class="hp-src">' + c.cite + srcLink(c) + (c.src === "drug map" ? '<br>From the Welcome to Your Galaxy drug-capture map.' : '') + (c.arch ? '<br>Also in the Welcome to Your Galaxy conspiracy archive: “' + esc(c.arch.t) + '” — archive trust rating ' + c.arch.s + '/10' : "") + '</div></div></div>';
 }
@@ -884,7 +885,7 @@ function openCase(i, fly) {
     '<tr><th>How sure we are</th>' + td(esc(lab(LIK, c.lik)) + (c.why ? ' <span class="mute">— ' + esc(c.why) + '</span>' : '')) + '</tr>' +
     '<tr><th>How severe</th>' + td((c.int || 3) + ' of 5 · ' + esc(INTL[(c.int || 3) - 1] || "")) + '</tr>' +
     '<tr><th>How far it reaches</th>' + td((c.wide || 2) + ' of 5 · ' + esc(WIDEL[(c.wide || 2) - 1] || "")) + '</tr></table>' +
-    '<p class="hp-desc">' + c.d + (c.inside ? ' <b class="whyc">Why it counts:</b> ' + esc(c.inside) : '') + '</p>' + (c.undone ? '<div class="note"><b>What happened next:</b> ' + c.undone + '</div>' : '') +
+    '<p class="hp-desc">' + c.d + (c.inside ? ' <b class="whyc">Put simply:</b> ' + esc(c.inside) : '') + '</p>' + (c.undone ? '<div class="note"><b>What happened next:</b> ' + c.undone + '</div>' : '') +
     (PATS.filter((p) => p._cs[c.i]).length ? '<div class="hp-h">Part of these patterns</div><div class="chips">' + PATS.filter((p) => p._cs[c.i]).map((p) => '<span data-pat="' + p.id + '">' + esc(p.title) + '</span>').join("") + '</div>' : '') +
     '<div class="hp-src">' + c.cite + srcLink(c) + (c.arch ? '<br>Also in the Welcome to Your Galaxy conspiracy archive: “' + esc(c.arch.t) + '” — archive trust rating ' + c.arch.s + '/10' : '') + '</div>';
   show(h, ["k", i]);
@@ -1018,6 +1019,8 @@ function init() {
   $("#toggleKey").addEventListener("click", () => { const p = $("#key"); p.classList.toggle("min"); $("#toggleKey").textContent = p.classList.contains("min") ? "+" : "−"; sizeBoxes(); });
   $("#toggleTr").addEventListener("click", () => { const p = $("#tr"); p.classList.toggle("min"); $("#toggleTr").textContent = p.classList.contains("min") ? "Basemap +" : "−"; sizeBoxes(); });
   try { const ro = new ResizeObserver(() => stackBoxes()); ["#key", "#tr", "#wire"].forEach((s) => { if ($(s)) ro.observe($(s)); }); } catch (e) {}
+  const wireMore = () => { const b = $("#wireBody"); if (b) b.classList.toggle("more", b.scrollHeight - b.scrollTop - b.clientHeight > 6); };
+  if ($("#wireBody")) { $("#wireBody").addEventListener("scroll", wireMore, { passive: true }); try { new ResizeObserver(wireMore).observe($("#wireBody")); } catch (e) {} setInterval(wireMore, 1500); }
   addEventListener("resize", () => sizeBoxes());
   $("#togglePat").addEventListener("click", () => { const p = $("#patBox"); p.classList.toggle("min"); $("#togglePat").textContent = p.classList.contains("min") ? "+" : "−"; sizeBoxes(); });
   $("#toggleLeg").addEventListener("click", () => { const p = $("#legBox"); p.classList.toggle("min"); $("#toggleLeg").textContent = p.classList.contains("min") ? "+" : "−"; sizeBoxes(); });
