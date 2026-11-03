@@ -7,6 +7,7 @@ async def main():
         pg=await b.new_page(viewport={"width":1400,"height":860}); errs=[]
         pg.on("pageerror",lambda e:errs.append(str(e)))
         await pg.goto("file:///home/claude/work/loan-conditions.html"); await pg.wait_for_timeout(9000)
+        await pg.evaluate("document.querySelectorAll(\'details.secd\').forEach(d=>d.open=true)")
         await pg.screenshot(path=S+"p_globe.png")
         await pg.check('input[data-pts="wb"]'); await pg.check('input[data-pts="cn"]'); await pg.wait_for_timeout(2500)
         await pg.screenshot(path=S+"p_points.png")
