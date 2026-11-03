@@ -336,8 +336,6 @@ ANCHOR = [
     "foreign bribery",
     "bribed officials",
     "bribing officials",
-    "kickback",
-    "kickbacks",
     "odebrecht",
     "lava jato",
     "car wash",
@@ -1099,7 +1097,28 @@ def main():
         for k in keys:
             seen[k] = it
     uniq = {id(v): v for v in seen.values()}.values()
-    out = sorted(uniq, key=lambda x: x["date"], reverse=True)[:MAX_ITEMS]
+    # A second pass for the same story told by several outlets in different words:
+    # same country, within four days, and most of the headline's content words shared.
+    STOP = {"the","a","an","of","in","on","for","to","and","with","by","after","over","from","is","was","as","at","de","la","el","los","las","del","en","y","que","por","con","un","una","do","da","dos","das","no","na","em","le","les","des","du","et","il","di","der","die","und"}
+    def words(t):
+        t = re.sub(r"\s+-\s+[^-]{2,40}$", "", t).lower()
+        return {w for w in re.findall(r"[^\W\d_]{3,}", t) if w not in STOP}
+    kept = []
+    for it in sorted(uniq, key=lambda x: -x["sig"]):
+        w, d = words(it["title"]), it["date"][:10]
+        dup = False
+        for k in kept:
+            if k["iso"] != it["iso"] or not w or not k["_w"]:
+                continue
+            if abs((datetime.fromisoformat(k["date"][:10]) - datetime.fromisoformat(d)).days) > 4:
+                continue
+            if len(w & k["_w"]) / min(len(w), len(k["_w"])) >= 0.5:
+                dup = True; break
+        if not dup:
+            it["_w"] = w; kept.append(it)
+    for k in kept:
+        k.pop("_w", None)
+    out = sorted(kept, key=lambda x: x["date"], reverse=True)[:MAX_ITEMS]
 
     json.dump(out, open(__import__("os").path.join(HERE, "..", "secret_society_wire.json"), "w"), ensure_ascii=False, indent=1)
 
