@@ -75,7 +75,7 @@ The research file also carries `levers` and `lvwhy` per case; merge.py moves the
 |---|---|
 | Brief | `briefHTML()` |
 | Cases section | `buildKey()`, `lchHTML()`, `pastHTML()` |
-| Layer menu | `buildLayers()`, `wireLayers()`, `liveHTML()`, `officesHTML()` |
+| Layer menu | `buildLayers()`, `wireLayers()`, `liveHTML()`, `officesHTML()`, `infraSec()` (infrastructure layers, under The Companies) |
 | Category switches | `SECT` |
 | Cards | `detailCase()`, `detailLiveWB()`, `detailOffice()` |
 | Card shrink, move-aside and resize | `dragDet()` |
