@@ -87,3 +87,9 @@ Patch with exact-string replacements (Python `str.replace`, asserting each match
 ## Web fetch limit
 
 WebFetch has an hourly limit shared across agents. Running several agents at once hits it; they should wait for the next UTC hour and use no other route.
+
+## People and contract data (round 18)
+
+- People on the record: 135. New people come from `rounds/r18f_co.json` and `rounds/r18f_off.json`, added straight into `window.ENT.people` (merge.py does not handle people). Each needs an own act in a case, the exact legal status and an office anchor. Dropped lists in those files hold open leads.
+- `infra_wb.py` and `infra_lenders.py` add the contract and tied-aid measures to `window.INFRA`; `docs/r18_contracts_slim.json` holds the IDB, EBRD, AIIB and OECD tied data.
+- Contract data gaps: ADB (its Procurement by Nationality XLSX at data.adb.org/node/1081 is refused; can be processed if downloaded by hand), AfDB (afdb.org refused), EIB (no such data), export credit agencies.
