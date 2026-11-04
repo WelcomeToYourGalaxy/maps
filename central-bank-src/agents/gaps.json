@@ -1,0 +1,486 @@
+{
+ "zaf_holders": [],
+ "zaf_note": "The SARB itself publishes no named list of holders on its current site. Its Shareholder Information page (https://www.resbank.co.za/en/home/about-us/shareholder-information) says it has 'just over 800 shareholders', 2,000,000 issued shares, a 10,000-share cap per holder with associates, one vote per 200 shares for South African residents, and that the 'Shareholders Index Report is a shortened version of the electronic register'; a printed register can be inspected by prior arrangement (otcstf@resbank.co.za). The SARB publication index still lists a 'Shareholder Index Report' published 4 Aug 2022 at /en/home/publications/publication-detail-pages/shareholders-index-report/2022/shareholder_indexreport30april2022 (note: dated 30 April 2022, not 30 June), but that page now returns 'Page not found', so it could not be opened. The SARB Annual Report 2025/26 (https://www.resbank.co.za/content/dam/sarb/publications/reports/annual-reports/2026/sarb-2025-26.pdf, p.24) gives 855 shareholders at 31 March 2026 and names no holders; its 2025 AGM minutes record 46 shareholders present and 7 by proxy. The only SARB-published document naming holders is the 2014 court application on its 'Regularisation of Shareholding' page (https://www.resbank.co.za/content/dam/sarb/publications/shares-correspondence/2015/6633/SARB-Notice-of-motion--Part-1-.pdf): 29 respondents, mostly private individuals and a family trust, each said to hold 5,000-10,000 shares and to exceed the cap together with associates; it states 508,910 shares were held in contravention of the Act and 297,810 by the respondents. On 4 Nov 2016 the High Court (case 88570/2014) ordered respondents 1-11 and 17-28 to sell shares above 10,000 through Investec Securities within two years at not less than R1.55 (https://www.resbank.co.za/content/dam/sarb/publications/shares-correspondence/2015/6633/Judgement-4-November-2016.pdf). These individuals were not added as holders because the holdings are from 2014 and were ordered sold. The named institutional holders already in owners.json (Daily Investor / BusinessTech, citing the 30 June 2022 index) remain unverified against a primary source.",
+ "fed_holders": [
+  {
+   "district": "Federal Reserve Bank of Atlanta",
+   "holder": "Regions Bank (Regions Financial Corp.)",
+   "hq_city": "Birmingham",
+   "hq_iso3": "USA",
+   "shares": null,
+   "stock_usd": 492000000.0,
+   "pct": null,
+   "as_of": "2025-12-31",
+   "source_title": "Regions Financial Corp. Form 10-K 2025 (Note 7; 'required to hold stock in the Federal Reserve Bank of Atlanta')",
+   "source_url": "https://www.sec.gov/Archives/edgar/data/1281761/000128176126000019/rf-20251231.htm",
+   "note": "Bank location from FDIC BankFind."
+  },
+  {
+   "district": "Federal Reserve Bank of Atlanta",
+   "holder": "Synovus Bank (Synovus Financial Corp.)",
+   "hq_city": "Columbus",
+   "hq_iso3": "USA",
+   "shares": null,
+   "stock_usd": 146300000.0,
+   "pct": null,
+   "as_of": "2024-12-31",
+   "source_title": "Synovus Financial Corp. Form 10-K 2024 ('capital stock in the Federal Reserve Bank of Atlanta ... $146.3 million')",
+   "source_url": "https://www.sec.gov/Archives/edgar/data/18349/000001834925000049/syn-20241231.htm",
+   "note": "FDIC BankFind lists Synovus Bank as inactive from 2 Jan 2026 (merger with Pinnacle); figure is end-2024."
+  },
+  {
+   "district": "Federal Reserve Bank of Atlanta",
+   "holder": "BankUnited, N.A. (BankUnited, Inc.)",
+   "hq_city": null,
+   "hq_iso3": "USA",
+   "shares": null,
+   "stock_usd": null,
+   "pct": null,
+   "as_of": "2025-12-31",
+   "source_title": "BankUnited, Inc. Form 10-K 2025 ('BankUnited holds capital stock in the Federal Reserve Bank of Atlanta')",
+   "source_url": "https://www.sec.gov/Archives/edgar/data/1504008/000150400826000011/bku-20251231.htm",
+   "note": "Amount not found in the filing text."
+  },
+  {
+   "district": "Federal Reserve Bank of Richmond",
+   "holder": "Atlantic Union Bank (Atlantic Union Bankshares Corp.)",
+   "hq_city": "Richmond",
+   "hq_iso3": "USA",
+   "shares": null,
+   "stock_usd": 141225000.0,
+   "pct": null,
+   "as_of": "2025-12-31",
+   "source_title": "Atlantic Union Bankshares Corp. Form 10-K 2025 (restricted stock: 'Federal Reserve Bank of Richmond (FRB)' stock $141.2 million)",
+   "source_url": "https://www.sec.gov/Archives/edgar/data/883948/000088394826000021/aub-20251231x10k.htm",
+   "note": "Bank location from FDIC BankFind."
+  },
+  {
+   "district": "Federal Reserve Bank of Richmond",
+   "holder": "CoastalSouth Bancshares, Inc. (bank subsidiary)",
+   "hq_city": null,
+   "hq_iso3": "USA",
+   "shares": null,
+   "stock_usd": 5900000.0,
+   "pct": null,
+   "as_of": "2025-12-31",
+   "source_title": "CoastalSouth Bancshares, Inc. Form 10-K 2025 (FRB stock $5.9 million)",
+   "source_url": "https://www.sec.gov/Archives/edgar/data/1297107/000119312526104114/coso-20251231.htm",
+   "note": "Matched to Richmond by EDGAR full-text search for a Richmond Fed stock phrase in this filing."
+  },
+  {
+   "district": "Federal Reserve Bank of Richmond",
+   "holder": "FVCbank (FVCBankcorp, Inc.)",
+   "hq_city": "Fairfax",
+   "hq_iso3": "USA",
+   "shares": null,
+   "stock_usd": 3586000.0,
+   "pct": null,
+   "as_of": "2025-12-31",
+   "source_title": "FVCBankcorp, Inc. Form 10-K 2025 ('member of the Federal Reserve Bank of Richmond'; Federal Reserve stock $3,586 thousand)",
+   "source_url": "https://www.sec.gov/Archives/edgar/data/1675644/000167564426000017/fvcb-20251231.htm"
+  },
+  {
+   "district": "Federal Reserve Bank of Chicago",
+   "holder": "The Northern Trust Company (Northern Trust Corp.)",
+   "hq_city": "Chicago",
+   "hq_iso3": "USA",
+   "shares": null,
+   "stock_usd": 70000000.0,
+   "pct": null,
+   "as_of": "2025 average balance",
+   "source_title": "Northern Trust Corp. Form 10-K 2025 (nonmarketable securities 'primarily consist of Federal Reserve Bank of Chicago and Federal Home Loan Bank stock'; average Federal Reserve stock $70.0 million)",
+   "source_url": "https://www.sec.gov/Archives/edgar/data/73124/000007312426000016/ntrs-20251231.htm",
+   "note": "The $70.0 million is the 2025 average balance, not a year-end figure."
+  },
+  {
+   "district": "Federal Reserve Bank of Boston",
+   "holder": "Beacon Financial Corp. (bank subsidiary)",
+   "hq_city": null,
+   "hq_iso3": "USA",
+   "shares": null,
+   "stock_usd": 57407000.0,
+   "pct": null,
+   "as_of": "2025-12-31",
+   "source_title": "Beacon Financial Corp. Form 10-K 2025 ('invests in the stock of the Federal Reserve Bank of Boston'; FRB stock $57,407 thousand)",
+   "source_url": "https://www.sec.gov/Archives/edgar/data/1108134/000162828026013247/brkl-20251231.htm"
+  },
+  {
+   "district": "Federal Reserve Bank of Philadelphia",
+   "holder": "Citizens & Northern Bank (Citizens & Northern Corp.)",
+   "hq_city": "Wellsboro",
+   "hq_iso3": "USA",
+   "shares": null,
+   "stock_usd": 7637000.0,
+   "pct": null,
+   "as_of": "2025-12-31",
+   "source_title": "Citizens & Northern Corp. Form 10-K 2025 (stock in the Federal Reserve Bank of Philadelphia, $7,637,000)",
+   "source_url": "https://www.sec.gov/Archives/edgar/data/810958/000110465926024613/cznc-20251231x10k.htm"
+  },
+  {
+   "district": "Federal Reserve Bank of Cleveland",
+   "holder": "The Park National Bank (Park National Corp.)",
+   "hq_city": "Newark",
+   "hq_iso3": "USA",
+   "shares": null,
+   "stock_usd": 14653000.0,
+   "pct": null,
+   "as_of": "2025-12-31",
+   "source_title": "Park National Corp. Form 10-K 2025 ('Federal Reserve Bank of Cleveland Stock'; FRB stock $14,653 thousand)",
+   "source_url": "https://www.sec.gov/Archives/edgar/data/805676/000080567626000017/prk-20251231.htm"
+  },
+  {
+   "district": "Federal Reserve Bank of St. Louis",
+   "holder": "Southern Bank (Southern Missouri Bancorp, Inc.)",
+   "hq_city": "Poplar Bluff",
+   "hq_iso3": "USA",
+   "shares": null,
+   "stock_usd": 9139000.0,
+   "pct": null,
+   "as_of": "2025-06-30",
+   "source_title": "Southern Missouri Bancorp, Inc. Form 10-K FY2025 ('Stock in Federal Reserve Bank of St. Louis' $9,139 thousand)",
+   "source_url": "https://www.sec.gov/Archives/edgar/data/916907/000155837025012001/smbc-20250630x10k.htm"
+  },
+  {
+   "district": "Federal Reserve Bank of Kansas City",
+   "holder": "Landmark National Bank (Landmark Bancorp, Inc.)",
+   "hq_city": "Manhattan",
+   "hq_iso3": "USA",
+   "shares": null,
+   "stock_usd": 3000000.0,
+   "pct": null,
+   "as_of": "2025-12-31",
+   "source_title": "Landmark Bancorp, Inc. Form 10-K 2025 ('member of the Federal Reserve Bank of Kansas City'; FRB stock $3.0 million)",
+   "source_url": "https://www.sec.gov/Archives/edgar/data/1141688/000149315226016495/form10-k.htm"
+  },
+  {
+   "district": "Federal Reserve Bank of San Francisco",
+   "holder": "Plumas Bank (Plumas Bancorp)",
+   "hq_city": "Quincy",
+   "hq_iso3": "USA",
+   "shares": null,
+   "stock_usd": 3565000.0,
+   "pct": null,
+   "as_of": "2025-12-31",
+   "source_title": "Plumas Bancorp Form 10-K 2025 (stock of the Federal Reserve Bank of San Francisco; $3,565,000)",
+   "source_url": "https://www.sec.gov/Archives/edgar/data/1168455/000143774926008956/plbc20251231_10k.htm"
+  }
+ ],
+ "fed_note": "These are NOT the top holders of each Reserve Bank. They are the holders found whose own SEC 10-K names the Reserve Bank they hold stock in, with the dollar amount where printed. Per-bank Federal Reserve Bank stock is not available from FFIEC/FDIC: the Call Report puts Federal Reserve Bank stock inside Schedule RC-F item 4 ('Equity investments without readily determinable fair values') together with Federal Home Loan Bank stock and other equities (FFIEC 051 instructions, RC-F, 3-18: https://www.fdic.gov/resources/bankers/call-reports/crinst-051/2018/2018-03-051-rc-f.pdf). FDIC BankFind gives each bank a 'FED' district field, but it cannot be used to assign stock: JPMorgan Chase Bank (FED 04, Columbus OH), Citibank (FED 09, Sioux Falls SD), HSBC Bank USA (FED 05, Tysons VA) and Morgan Stanley Bank (FED 12, Salt Lake City UT) all appear in the NY Fed's own 2018 holder list. Large holding companies report Fed stock in 10-Ks without naming the Reserve Bank, e.g. SEC XBRL tag FederalReserveBankStock: Bank of America $5.4bn (2025-12-31), Wells Fargo $3.5bn (2024-12-31), Charles Schwab $655m, Ally $452m, HSBC USA $437m, Huntington FRB stock $616m (10-K table); these cannot be placed in a district from what was opened. Some XBRL values are clearly mis-tagged (e.g. Southern First Bancshares $181.2m, The Bancorp $1.99bn) and were not used. Dallas and Minneapolis: no filing found that names the Reserve Bank and gives an amount. No FOIA release of a 'Capital Stock Master Report' for any Reserve Bank other than New York was found. Shares and pct are left null because no source states them (Fed stock has $100 par with half paid in, but share counts were not computed).",
+ "grc": {
+  "holder": "e-EFKA (Electronic National Social Security Fund)",
+  "pct": 12.4402,
+  "shares": 2471238,
+  "as_of": "2020-08-07",
+  "verified": true,
+  "note": "Bank of Greece announcement under Law 3556/2007 dated 13 Aug 2020: e-EFKA holds 2,471,238 shares (12.4402% of capital and voting rights) via three divisions: Main Insurance 1,264,099 (6.3635%), Supplementary Insurance 474,318 (2.3877%), Lump-Sum Benefits 732,821 (3.6890%), after absorbing ETEAEP on 1 Mar 2020. No later change found.",
+  "source_title": "Bank of Greece, Disclosure of Regulated Information under Law 3556/2007 (13 August 2020), via Athens Exchange",
+  "source_url": "https://athexgroup.gr/documents/10180/5960228/53_6858_2020_English_1.pdf/9cd2fbdb-9879-4cca-ae09-ea71b8ae4be7"
+ },
+ "tur_classes": [
+  {
+   "holder": "Ministry of Treasury and Finance",
+   "class": "A",
+   "basis": "stated: 'Class (A) shares belong exclusively to the Turkish Treasury'",
+   "source_url": "https://www3.tcmb.gov.tr/yillikrapor/2025/en/m-1-0/"
+  },
+  {
+   "holder": "T.C. Ziraat Bankası",
+   "class": "B",
+   "basis": "Inferred, not stated per holder: the CBRT assigns classes by holder type (B = national banks operating in Türkiye; C = non-national banks; D = Turkish commercial enterprises and persons). The holder percentages in AR 2025 Table 3.4.2.16.2 add up exactly to the class totals (B 23.25 = Ziraat 19.22 + İş 2.33 + Halk 1.11 + Yapı Kredi 0.56 + Akbank 0.03; C 2.51 = Garanti 2.48 + ING 0.02 + TEB 0.01; D 19.12 ≈ Mervak 5.12 + Other 13.99).",
+   "source_url": "https://www3.tcmb.gov.tr/yillikrapor/2025/en/m-1-0/"
+  },
+  {
+   "holder": "Türkiye İş Bankası",
+   "class": "B",
+   "basis": "Inferred, not stated per holder: the CBRT assigns classes by holder type (B = national banks operating in Türkiye; C = non-national banks; D = Turkish commercial enterprises and persons). The holder percentages in AR 2025 Table 3.4.2.16.2 add up exactly to the class totals (B 23.25 = Ziraat 19.22 + İş 2.33 + Halk 1.11 + Yapı Kredi 0.56 + Akbank 0.03; C 2.51 = Garanti 2.48 + ING 0.02 + TEB 0.01; D 19.12 ≈ Mervak 5.12 + Other 13.99).",
+   "source_url": "https://www3.tcmb.gov.tr/yillikrapor/2025/en/m-1-0/"
+  },
+  {
+   "holder": "Türkiye Halk Bankası",
+   "class": "B",
+   "basis": "Inferred, not stated per holder: the CBRT assigns classes by holder type (B = national banks operating in Türkiye; C = non-national banks; D = Turkish commercial enterprises and persons). The holder percentages in AR 2025 Table 3.4.2.16.2 add up exactly to the class totals (B 23.25 = Ziraat 19.22 + İş 2.33 + Halk 1.11 + Yapı Kredi 0.56 + Akbank 0.03; C 2.51 = Garanti 2.48 + ING 0.02 + TEB 0.01; D 19.12 ≈ Mervak 5.12 + Other 13.99).",
+   "source_url": "https://www3.tcmb.gov.tr/yillikrapor/2025/en/m-1-0/"
+  },
+  {
+   "holder": "Yapı ve Kredi Bankası",
+   "class": "B",
+   "basis": "Inferred, not stated per holder: the CBRT assigns classes by holder type (B = national banks operating in Türkiye; C = non-national banks; D = Turkish commercial enterprises and persons). The holder percentages in AR 2025 Table 3.4.2.16.2 add up exactly to the class totals (B 23.25 = Ziraat 19.22 + İş 2.33 + Halk 1.11 + Yapı Kredi 0.56 + Akbank 0.03; C 2.51 = Garanti 2.48 + ING 0.02 + TEB 0.01; D 19.12 ≈ Mervak 5.12 + Other 13.99).",
+   "source_url": "https://www3.tcmb.gov.tr/yillikrapor/2025/en/m-1-0/"
+  },
+  {
+   "holder": "Akbank",
+   "class": "B",
+   "basis": "Inferred, not stated per holder: the CBRT assigns classes by holder type (B = national banks operating in Türkiye; C = non-national banks; D = Turkish commercial enterprises and persons). The holder percentages in AR 2025 Table 3.4.2.16.2 add up exactly to the class totals (B 23.25 = Ziraat 19.22 + İş 2.33 + Halk 1.11 + Yapı Kredi 0.56 + Akbank 0.03; C 2.51 = Garanti 2.48 + ING 0.02 + TEB 0.01; D 19.12 ≈ Mervak 5.12 + Other 13.99).",
+   "source_url": "https://www3.tcmb.gov.tr/yillikrapor/2025/en/m-1-0/"
+  },
+  {
+   "holder": "Türkiye Garanti Bankası",
+   "class": "C",
+   "basis": "Inferred, not stated per holder: the CBRT assigns classes by holder type (B = national banks operating in Türkiye; C = non-national banks; D = Turkish commercial enterprises and persons). The holder percentages in AR 2025 Table 3.4.2.16.2 add up exactly to the class totals (B 23.25 = Ziraat 19.22 + İş 2.33 + Halk 1.11 + Yapı Kredi 0.56 + Akbank 0.03; C 2.51 = Garanti 2.48 + ING 0.02 + TEB 0.01; D 19.12 ≈ Mervak 5.12 + Other 13.99).",
+   "source_url": "https://www3.tcmb.gov.tr/yillikrapor/2025/en/m-1-0/"
+  },
+  {
+   "holder": "ING Bank (Türkiye)",
+   "class": "C",
+   "basis": "Inferred, not stated per holder: the CBRT assigns classes by holder type (B = national banks operating in Türkiye; C = non-national banks; D = Turkish commercial enterprises and persons). The holder percentages in AR 2025 Table 3.4.2.16.2 add up exactly to the class totals (B 23.25 = Ziraat 19.22 + İş 2.33 + Halk 1.11 + Yapı Kredi 0.56 + Akbank 0.03; C 2.51 = Garanti 2.48 + ING 0.02 + TEB 0.01; D 19.12 ≈ Mervak 5.12 + Other 13.99).",
+   "source_url": "https://www3.tcmb.gov.tr/yillikrapor/2025/en/m-1-0/"
+  },
+  {
+   "holder": "Türk Ekonomi Bankası",
+   "class": "C",
+   "basis": "Inferred, not stated per holder: the CBRT assigns classes by holder type (B = national banks operating in Türkiye; C = non-national banks; D = Turkish commercial enterprises and persons). The holder percentages in AR 2025 Table 3.4.2.16.2 add up exactly to the class totals (B 23.25 = Ziraat 19.22 + İş 2.33 + Halk 1.11 + Yapı Kredi 0.56 + Akbank 0.03; C 2.51 = Garanti 2.48 + ING 0.02 + TEB 0.01; D 19.12 ≈ Mervak 5.12 + Other 13.99).",
+   "source_url": "https://www3.tcmb.gov.tr/yillikrapor/2025/en/m-1-0/"
+  },
+  {
+   "holder": "Mervak İç ve Dış Ticaret A.Ş.",
+   "class": "D",
+   "basis": "Inferred, not stated per holder: the CBRT assigns classes by holder type (B = national banks operating in Türkiye; C = non-national banks; D = Turkish commercial enterprises and persons). The holder percentages in AR 2025 Table 3.4.2.16.2 add up exactly to the class totals (B 23.25 = Ziraat 19.22 + İş 2.33 + Halk 1.11 + Yapı Kredi 0.56 + Akbank 0.03; C 2.51 = Garanti 2.48 + ING 0.02 + TEB 0.01; D 19.12 ≈ Mervak 5.12 + Other 13.99).",
+   "source_url": "https://www3.tcmb.gov.tr/yillikrapor/2025/en/m-1-0/"
+  },
+  {
+   "holder": "Other shareholders (aggregate)",
+   "class": "D",
+   "basis": "Inferred, not stated per holder: the CBRT assigns classes by holder type (B = national banks operating in Türkiye; C = non-national banks; D = Turkish commercial enterprises and persons). The holder percentages in AR 2025 Table 3.4.2.16.2 add up exactly to the class totals (B 23.25 = Ziraat 19.22 + İş 2.33 + Halk 1.11 + Yapı Kredi 0.56 + Akbank 0.03; C 2.51 = Garanti 2.48 + ING 0.02 + TEB 0.01; D 19.12 ≈ Mervak 5.12 + Other 13.99).",
+   "source_url": "https://www3.tcmb.gov.tr/yillikrapor/2025/en/m-1-0/"
+  }
+ ],
+ "auditors": [
+  {
+   "cb_iso3": "ITA",
+   "auditor": "Deloitte & Touche S.p.A.",
+   "auditor_hq_city": null,
+   "auditor_hq_iso3": null,
+   "year": "2025 (engaged for 2023-27)",
+   "source_title": "Banca d'Italia, Bilancio dell'esercizio 2025",
+   "source_url": "https://www.bancaditalia.it/pubblicazioni/bilancio-esercizio/2026-bilancio-esercizio/bil-eserc-2026.pdf"
+  },
+  {
+   "cb_iso3": "BEL",
+   "auditor": "KPMG Réviseurs d'entreprises",
+   "auditor_hq_city": null,
+   "auditor_hq_iso3": null,
+   "year": "2025",
+   "source_title": "National Bank of Belgium, Corporate Report 2025 (p.89)",
+   "source_url": "https://www.nbb.be/doc/ts/publications/nbbreport/2025/en/t2/report2025_t2.pdf",
+   "note": "Represented by Olivier Macq; selected at the general meeting of 15 May 2023 for three years."
+  },
+  {
+   "cb_iso3": "IRL",
+   "auditor": "Grant Thornton",
+   "auditor_hq_city": null,
+   "auditor_hq_iso3": null,
+   "year": "2025",
+   "source_title": "Central Bank of Ireland, Annual Report 2025 & Annual Performance Statement 2025-2026 (auditors' fees note, p.139)",
+   "source_url": "https://www.centralbank.ie/docs/default-source/publications/corporate-reports/annual-reports/annual-report-2025-and-annual-performance-statement-2025-2026.pdf?sfvrsn=db3a701a_5",
+   "note": "Fees for audit of individual accounts: Grant Thornton €363k; the C&AG also audits."
+  },
+  {
+   "cb_iso3": "IRL",
+   "auditor": "Comptroller and Auditor General",
+   "auditor_hq_city": null,
+   "auditor_hq_iso3": "IRL",
+   "year": "2025",
+   "source_title": "Central Bank of Ireland, Annual Report 2025 & Annual Performance Statement 2025-2026",
+   "source_url": "https://www.centralbank.ie/docs/default-source/publications/corporate-reports/annual-reports/annual-report-2025-and-annual-performance-statement-2025-2026.pdf?sfvrsn=db3a701a_5",
+   "note": "State auditor; audits and certifies the Statement of Accounts under s.32J of the Central Bank Act."
+  },
+  {
+   "cb_iso3": "CZE",
+   "auditor": "Ernst & Young Audit, s.r.o.",
+   "auditor_hq_city": "Prague",
+   "auditor_hq_iso3": "CZE",
+   "year": "2025",
+   "source_title": "Czech National Bank, Annual Report 2025 (independent auditor's report)",
+   "source_url": "https://www.cnb.cz/export/sites/cnb/en/about_cnb/.galleries/performance/annual_reports/download/vz_2025_en.pdf",
+   "note": "Signed by Roman Hauptfleisch; registered office Na Florenci 2116/15, Prague 1."
+  },
+  {
+   "cb_iso3": "CHL",
+   "auditor": "KPMG Auditores Consultores Limitada",
+   "auditor_hq_city": "Santiago",
+   "auditor_hq_iso3": "CHL",
+   "year": "2025",
+   "source_title": "Banco Central de Chile, Estados Financieros 2025 (Informe de los Auditores Independientes)",
+   "source_url": "https://www.bcentral.cl/documents/33528/133480/estados_financieros_2025.pdf"
+  },
+  {
+   "cb_iso3": "POL",
+   "auditor": "KPMG Audyt Spółka z ograniczoną odpowiedzialnością sp.k.",
+   "auditor_hq_city": "Warsaw",
+   "auditor_hq_iso3": "POL",
+   "year": "2025",
+   "source_title": "Narodowy Bank Polski, Sprawozdanie niezależnego biegłego rewidenta z badania (2025)",
+   "source_url": "https://static.nbp.pl/bip/majatek/Opinia_rewidenta_2025.pdf",
+   "note": "Signed 30 Mar 2026 by Marcin Józef Podsiadły; address ul. Inflancka 4A, Warsaw."
+  },
+  {
+   "cb_iso3": "RUS",
+   "auditor": "B1 - Audit LLC (OOO «Б1 - Аудит»)",
+   "auditor_hq_city": null,
+   "auditor_hq_iso3": null,
+   "year": "2025",
+   "source_title": "Bank of Russia, Annual Report 2025 (National Financial Council decisions)",
+   "source_url": "https://www.cbr.ru/Collection/Collection/File/59752/ar_2025.pdf",
+   "note": "The National Financial Council found B1-Audit independent for the mandatory audit of the Bank of Russia's 2025 annual financial statements; the Accounts Chamber also reviews specified accounts."
+  },
+  {
+   "cb_iso3": "RUS",
+   "auditor": "Accounts Chamber of the Russian Federation",
+   "auditor_hq_city": null,
+   "auditor_hq_iso3": "RUS",
+   "year": "2025",
+   "source_title": "Bank of Russia, Annual Report 2025",
+   "source_url": "https://www.cbr.ru/Collection/Collection/File/59752/ar_2025.pdf",
+   "note": "State body; issues a conclusion on the annual report alongside the audit report."
+  },
+  {
+   "cb_iso3": "CHN",
+   "auditor": "National Audit Office (audit authority under the State Council)",
+   "auditor_hq_city": null,
+   "auditor_hq_iso3": "CHN",
+   "year": "law (2003 amendment)",
+   "source_title": "Law of the People's Republic of China on the People's Bank of China, Article 40 (PBOC English text)",
+   "source_url": "https://www.pbc.gov.cn/english/fileDir/resource/cms/2015/08/2015082610501049304.pdf",
+   "note": "Art. 40: revenue, expenditure and accounting are 'subject to the auditing and supervision conducted respectively by the audit authority and the fiscal department under the State Council'. No private audit firm or published audit opinion found."
+  },
+  {
+   "cb_iso3": "NZL",
+   "auditor": "PricewaterhouseCoopers (on behalf of the Auditor-General)",
+   "auditor_hq_city": "Wellington",
+   "auditor_hq_iso3": "NZL",
+   "year": "2022/23",
+   "source_title": "RBNZ Annual Report 2023 (copy hosted by interest.co.nz)",
+   "source_url": "https://www.interest.co.nz/sites/default/files/2023-10/RBNZ-annual-report-2023.pdf",
+   "note": "Christopher Barber, using the staff and resources of PwC, appointed by the Auditor-General. The 2025 report PDF (rbnz.govt.nz) was opened but the auditor's report was not in the readable text, so later years are unconfirmed."
+  },
+  {
+   "cb_iso3": "ISR",
+   "auditor": "Kost Forer Gabbay & Kasierer (Ernst & Young Israel)",
+   "auditor_hq_city": "Tel Aviv",
+   "auditor_hq_iso3": "ISR",
+   "year": "2019",
+   "source_title": "Bank of Israel, Auditors' report 2019",
+   "source_url": "https://boi.org.il/media/uevlqajd/auditors-report-2019.pdf",
+   "note": "Signed 19 Mar 2020. Appointed by the Supervisory Council on 20 Aug 2012 (one-year terms, up to five years). Auditor for 2020-2025 not confirmed; the BOI site blocked automated access."
+  },
+  {
+   "cb_iso3": "NGA",
+   "auditor": "KPMG Professional Services",
+   "auditor_hq_city": null,
+   "auditor_hq_iso3": null,
+   "year": "2024",
+   "source_title": "The Sun (Nigeria), 'CBN records N38.8bn profit in 2024' (May 2025)",
+   "source_url": "https://thesun.ng/cbn-rebounds-n38-8bn-profit-2024-after-n1-15trn-loss/",
+   "note": "Secondary source; Tekedia gives the same. The CBN's own 2022 financial statements list the auditors as Ernst & Young and KPMG Professional Services (https://www.cbn.gov.ng/Out/2023/CCD/2022%20CBN%20FINANCIAL%20STATEMENT.pdf)."
+  },
+  {
+   "cb_iso3": "NGA",
+   "auditor": "Ernst & Young",
+   "auditor_hq_city": null,
+   "auditor_hq_iso3": null,
+   "year": "2024",
+   "source_title": "The Sun (Nigeria), 'CBN records N38.8bn profit in 2024' (May 2025)",
+   "source_url": "https://thesun.ng/cbn-rebounds-n38-8bn-profit-2024-after-n1-15trn-loss/",
+   "note": "Joint auditor with KPMG Professional Services; secondary source."
+  }
+ ],
+ "auditors_unavailable": {
+  "KOR": "Bank of Korea annual report / financial statements could not be located with an auditor named.",
+  "MEX": "Banco de México 2025 audited statements not reachable (banxico.org.mx pages 404); auditor not confirmed.",
+  "SAU": "Saudi Central Bank Law Art. 18(1) requires 'an external auditor, or more' reporting to the Board (https://www.sama.gov.sa/en-US/Documents/SCB-EN.pdf); the firm was not found because SAMA annual report PDFs were not reachable.",
+  "PHL": "BSP site returned 403; no BSP or COA audit report opened. Not confirmed."
+ },
+ "case_updates": [
+  {
+   "match": "Olteanu",
+   "status": "conviction annulled (time-barred)",
+   "summary_addition": "Olteanu was convicted of influence peddling and the Bucharest Court of Appeal set a final five-year sentence in October 2020, but on 31 March 2023 the same court confirmed that the case was closed as time-barred and his conviction annulled, while ordering confiscation of the €1 million.",
+   "source_title": "Agerpres, 'Bogdan Olteanu scapă definitiv de condamnare pe motiv că faptele s-au prescris' (31 Mar 2023)",
+   "source_url": "https://agerpres.ro/justitie/2023/03/31/bogdan-olteanu-scapa-definitiv-de-condamnare-pe-motiv-ca-faptele-s-au-prescris--1085547",
+   "extra_source": "https://newsweek.ro/justitie/bogdan-olteanu-condamnat-la-5-ani-de-inchisoare-decizia-este-definitiva"
+  },
+  {
+   "match": "Simić",
+   "status": "outcome not found",
+   "summary_addition": "Simić was arrested on 11 January 2006 with Vladimir Zagrađanin, an investigation was ordered, and the NBS Council removed him as vice-governor on 16 January 2006; no indictment, verdict or acquittal was found.",
+   "source_title": "Central Banking, 'Serbian central bank deputy fired' (17 Jan 2006); Vreme (18 Jan 2006)",
+   "source_url": "https://www.centralbanking.com/node/1408705",
+   "extra_source": "https://vreme.com/?p=4520933"
+  },
+  {
+   "match": "Mullei",
+   "status": "outcome not found",
+   "summary_addition": "No court outcome for the 2006 abuse-of-office charges against Mullei was found in the sources opened.",
+   "source_title": "Central Banking, 'CBK governor charged with abuse of office'",
+   "source_url": "https://www.centralbanking.com/node/1411525"
+  },
+  {
+   "match": "Sarbanov",
+   "status": "acquitted",
+   "summary_addition": "On 26 April 2006 Judge Esenjan Abylkasymov acquitted Sarbanov and four other former finance officials, ruling there was no crime because they 'acted in the interests of state'; the prosecutor's office said it would appeal, and no appeal outcome was found.",
+   "source_title": "Central Banking, 'Kyrgyz's Sarbanov acted in interests of state' (28 Apr 2006)",
+   "source_url": "https://www.centralbanking.com/central-banking/news/1421931/kyrgyz-sarbanov-acted",
+   "extra_source": "https://www.euromoney.com/article/b1321z6jnx4jw0/kyrgyzstan-government-pursues-former-central-banker"
+  },
+  {
+   "match": "Orazov",
+   "status": "convicted in absentia",
+   "summary_addition": "On 29 December 2002 Turkmenistan's Supreme Court sentenced Orazov in absentia to 25 years over alleged involvement in the 25 November 2002 armed attack on President Niyazov, and the People's Council raised it to life imprisonment the next day; Amnesty International called the trial grossly unfair. This conviction is for the alleged attack, not the loan-embezzlement accusation.",
+   "source_title": "Amnesty International, Turkmenistan report EUR 46/041/2003",
+   "source_url": "https://www.amnesty.org/ar/wp-content/uploads/2021/06/eur460412003en.pdf"
+  },
+  {
+   "match": "Gounev and Simeonov",
+   "status": "indicted",
+   "summary_addition": "On 22 February 2017 prosecutors indicted 18 people in the Corpbank case, including former deputy governors Tsvetan Gounev and Roumen Simeonov for malfeasance in office over failing to exercise control over Corpbank; no verdict was found.",
+   "source_title": "BTA, '18 Persons Charged in Corpbank Case' (22 Feb 2017)",
+   "source_url": "https://www.bta.bg/en/news/132154-18-Persons-Charged-in-Corpbank-Case"
+  },
+  {
+   "match": "Fazio/Antonveneta",
+   "status": "convicted (final)",
+   "summary_addition": "The Milan Court of Appeal cut Fazio's Antonveneta sentence from four years to two years and six months on 28 May 2012, and on 28 November 2012 the Court of Cassation (judgment no. 12989, filed 21 March 2013) upheld the appeal ruling, making the conviction final.",
+   "source_title": "FISAC-CGIL, 'Confermata la condanna di Fazio'; Diritto Penale Contemporaneo on Cass. sez. II n. 12989/2013",
+   "source_url": "https://www.fisac-cgil.it/3510/confermata-la-condanna-di-fazio?pdf=3510",
+   "extra_source": "https://archiviodpc.dirittopenaleuomo.org/d/2213-la-cassazione-chiude-il-caso-della-scalata-antonveneta-e-perde-una-preziosa-occasione-per-fare-un-p"
+  },
+  {
+   "match": "Asiama",
+   "status": "charges withdrawn",
+   "summary_addition": "Around 30 January 2025 Ghana's Attorney-General filed notice to withdraw all charges against Asiama in both the uniBank and UT Bank trials; on 22 July 2025 the A-G also filed a nolle prosequi ending the uniBank case against Duffuor and others after recovering over 60% of the funds allegedly lost.",
+   "source_title": "Graphic Online, 'Attorney-General withdraws charges against former Deputy BoG Governor Johnson Asiama' (30 Jan 2025)",
+   "source_url": "https://www.graphic.com.gh/news/general-news/attorney-general-withdraws-charges-against-former-deputy-bog-governor-johnson-asiama.html",
+   "extra_source": "https://www.graphic.com.gh/news/general-news/attorney-general-drops-charges-against-dr-kwabena-duffuor-after-partial-recovery-of-state-funds.html"
+  },
+  {
+   "match": "Mishin",
+   "status": "tried (verdict not found)",
+   "summary_addition": "At the Moscow City Court on 17 April 2007 prosecutors asked for 15 years in a strict-regime colony for Mishin, plus a fraud conviction over an apartment, and 12 years for tax official Oleg Alekseev; the verdict was not found.",
+   "source_title": "Gazeta.ru news item (17 Apr 2007)",
+   "source_url": "https://www.gazeta.press/news/social/2007/04/17/n_1058487.shtml"
+  },
+  {
+   "match": "Shabibi",
+   "status": "died; outcome not found",
+   "summary_addition": "No court outcome for the 2012 arrest warrant was found; Shabibi died on 8 January 2022, when the Central Bank of Iraq issued a statement mourning him as a distinguished former governor.",
+   "source_title": "Central Bank of Iraq news release (8 Jan 2022)",
+   "source_url": "https://cbi.iq/news/print_news/1913"
+  },
+  {
+   "match": "Glapiński",
+   "status": "Sejm vote pending",
+   "summary_addition": "As of 21 October 2026 the full Sejm vote on bringing Glapiński before the State Tribunal had not taken place; the Sejm Marshal said it would be taken up in the second half of November 2026 (sittings set for 5-6 and 17-19 November).",
+   "source_title": "Super Biznes, 'Trybunał Stanu dla prezesa NBP? Wiemy, kiedy kluczowe głosowanie' (21 Oct 2026)",
+   "source_url": "https://superbiz.se.pl/wiadomosci/trybunal-stanu-dla-prezesa-nbp-wiemy-kiedy-kluczowe-glosowanie-aa-jwij-A6N8-9mvf.html",
+   "extra_source": "https://www.eska.pl/news/biznes/kiedy-glosowanie-nad-trybunalem-stanu-dla-adama-glapinskiego-znamy-wstepny-termin-aa-z4r8-D5sp-dLpD.html"
+  },
+  {
+   "match": "Hungary 2024 MNB law proposal",
+   "status": "not passed (sent back)",
+   "summary_addition": "On 13 March 2024 the Hungarian government sent the draft amendment to the central bank act back for further consultation instead of submitting it to parliament, setting it aside 'at least for now'; a separate 2025 amendment package was proposed, and whether it passed was not checked.",
+   "source_title": "Telex, 'A kormány visszadobta a törvény módosítását...' (14 Mar 2024)",
+   "source_url": "https://telex.hu/gazdasag/2024/03/14/mnb-jegybanktorveny-modositas-tovabbi-konzultacio",
+   "extra_source": "https://intellinews.com/hungarian-government-may-reconsider-amendments-to-central-bank-act-317049"
+  }
+ ]
+}
