@@ -162,7 +162,7 @@ for u in load("gaps.json", {}).get("case_updates", []):
             break
 RD = [c for c in CCJ.get("revolving_door", []) if c.get("iso3")]
 for i, c in enumerate(CC):
-    for t in (UM["ECB"] if c["iso3"] == "EMU" else [c["iso3"]]):
+    for t in (UM["ECB"] if c["iso3"] == "EMU" else UM.get(c["iso3"], [c["iso3"]])):
         if t in P: P[t].setdefault("cc", []).append(i)
 for i, c in enumerate(RD):
     for t in (UM["ECB"] if c["iso3"] == "EMU" else [c["iso3"]]):

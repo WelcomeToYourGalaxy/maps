@@ -63,9 +63,9 @@ const latestOr = (p, k, sk, y, pick) => { const r = own(p, k); if (!r) return nu
 // "other" event records (appointments, court rulings) are shown in the box but not counted as moves against the bank
 const evN = (p) => (p.ev || []).filter((i) => D.EV[i].kind !== "other").length;
 const MAXEV = Math.max(1, ...Object.values(P).map(evN));
-const ccN = (p) => (p.cc || []).filter((i) => D.CC[i].status !== "acquitted").length;
+const ccN = (p) => (p.cc || []).filter((i) => D.CC[i].status !== "acquitted" && D.CC[i].status !== "case dismissed").length;
 const MAXCC = Math.max(1, ...Object.values(P).map(ccN));
-const rdN = (p) => (p.rd || []).length;
+const rdN = (p) => (p.rd || []).filter((i) => !D.RD[i].public_move).length;
 const MAXRD = Math.max(1, ...Object.values(P).map(rdN));
 const avg = (a) => a.reduce((x, y) => x + y, 0) / a.length;
 const via = (r) => r.via ? " (" + CB_NAMES[r.via] + ")" : "";
@@ -851,6 +851,7 @@ function detail(k) {
   if (crow.length) h.push('<table class="kv">' + crow.map((x) => '<tr><th>' + x[0] + '</th><td>' + x[1] + '</td></tr>').join("") + '</table>');
   if (p.cpi) h.push(spark([{ s: p.cpi.s, c: "#c9c3ee" }], 0, 100, "Corruption Perceptions Index, 2012–2025, 0 to 100"));
   if (ccs.length) h.push('<p style="margin-top:8px"><b>' + ccs.length + '</b> documented case' + (ccs.length > 1 ? 's' : '') + ' at the central bank' + (p.u === "ECB" && ccs.some((c) => c.iso3 === "EMU") ? ' (including the ECB)' : '') + ':</p><ul>' + ccs.map((c) => '<li><b>' + esc(c.years) + '</b> · ' + esc(c.category) + ' · <i>' + esc(c.status) + '</i>. ' + esc(c.summary) + ' <span class="note">' + link(c.source_title, c.source_url) + (c.weak_source ? ' (Wikipedia)' : '') + (c.update_url ? ' · ' + link(c.update_title, c.update_url) : '') + '</span></li>').join("") + '</ul>');
+  if (rds.length) h.push('<p style="margin-top:8px"><b>' + rds.length + '</b> documented career move' + (rds.length > 1 ? 's' : '') + ' between the bank and private finance, the IMF or the World Bank' + (p.u === "ECB" ? ' (including the ECB)' : '') + ':</p><ul>' + rds.slice().sort((a, b) => String(a.people).localeCompare(String(b.people))).map((c) => '<li><b>' + esc(c.people) + '</b>: ' + esc(c.move || '') + '. ' + esc(c.summary) + ' <span class="note">' + link(c.source_title, c.source_url) + (c.weak_source ? ' (Wikipedia)' : '') + '</span></li>').join("") + '</ul>');
   else h.push('<p class="note">No documented case at the central bank was found. That is not proof none happened.</p>');
   if (rds.length) h.push('<details><summary>' + rds.length + ' move' + (rds.length > 1 ? 's' : '') + ' between the bank and private finance or politics</summary><ul>' + rds.map((c) => '<li>' + esc(c.people || "") + ': ' + esc(c.move || "") + '. ' + esc(c.summary || "") + ' <span class="note">' + link(c.source_title, c.source_url) + '</span></li>').join("") + '</ul></details>');
   const cr = (p.crises || []).slice().sort((a, b) => b.start - a.start);
