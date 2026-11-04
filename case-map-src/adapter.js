@@ -165,7 +165,7 @@ __WBCA__
   }
   function wirePts() {
     document.querySelectorAll("#key [data-lcex]").forEach((i) => i.addEventListener("change", () => { S.lcex = i.checked; drawPts(); }));
-    document.querySelectorAll("#key [data-lcpt]").forEach((i) => i.addEventListener("change", () => { const k = i.dataset.lcpt; S.lcpt[k] = i.checked; if (k === "mm" && i.checked) loadMM(); drawPts(); syncSw(); }));
+    document.querySelectorAll("#key [data-lcpt]").forEach((i) => i.addEventListener("change", () => { const k = i.dataset.lcpt; S.lcpt[k] = i.checked; if (i.checked && typeof leaveStory === "function") leaveStory(); if (k === "mm" && i.checked) loadMM(); drawPts(); syncSw(); }));
     document.querySelectorAll("#key [data-lcf]").forEach((x) => x.addEventListener("change", () => { S.lcf[x.dataset.lcf] = x.value; drawPts(); }));
   }
   function ptHits(pt) {
