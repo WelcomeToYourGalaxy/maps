@@ -1,0 +1,17 @@
+# Round 9: every lender, not only the World Bank and IMF
+
+The map ("Case Map", welcometoyourgalaxy) now covers harm tied to every kind of outside money reaching poorer countries, not only the World Bank Group and IMF. Read /tmp/claude-0/-home-claude/e2ccd99e-7ec4-5ac8-a52a-ceacb7081fb1/scratchpad/w/BRIEF.md first: its three tests (link, harm, timing), writing rules and JSON shape all still apply, with the changes below. Existing cases: /tmp/claude-0/-home-claude/e2ccd99e-7ec4-5ac8-a52a-ceacb7081fb1/scratchpad/w/cases.json (495). Do not repeat one; if a case there already covers the episode and your lender was a co-lender, put it in "extend" instead: {"id": <existing id>, "lenders_add": [{name, role}], "lk_add": [...], "sources_add": [...], "note": what this adds}.
+
+## Changes to the rules
+- **Link test** now accepts any outside lender, funder or investor: regional development banks, Chinese state banks and agencies, other governments' aid agencies and export credit agencies, the EU and euro-area funds, commercial banks, bondholders and funds, private foundations, and foreign companies investing. The link must be documented by the lender's own records, a contract, a court, a complaint office finding, or an independent second source.
+- **lk keys** (use all that apply): wb, ifc, miga, icsid, imf, idb (Inter-American Development Bank group incl. IDB Invest), adb (Asian Development Bank), afdb (African Development Bank), ebrd, eib, aiib, reg (any other development bank or fund, e.g. Islamic Development Bank, CAF, Arab funds), cn (Chinese state banks, agencies and state firms financed by them), bil (another government's aid agency or export credit agency, e.g. USAID, JICA, JBIC, US EXIM, UKEF, Euler Hermes), eu (EU or euro-area lending), priv (commercial banks, bondholders, funds, including vulture funds), fdn (private foundations), fdi (a foreign company investing, with no lender above).
+- **cp** may now include complaint offices: ip, cao, mici (IDB), am (ADB), irm (AfDB), ipam (EBRD; also its older PCM), eibcm (EIB), ppm (AIIB).
+- **rg**: same six regions; add "Europe and Central Asia" for Europe as now, and "North America" or "High income" only if a case sits there.
+
+## Complaint registries (where your task names one)
+Go through the office's public case register in full, every complaint ever filed, as was done for the World Bank's 457. For each complaint give one complaint record:
+{"k": "<office>:<case name or number>", "o": "<office key>", "t": "short title", "y": year filed, "lat", "lng", "place", "pt": "what the point marks, and if approximate why", "ap": true if approximate, "al": "what the complainants said, one or two plain sentences", "fi": "what the office found or did, one or two plain sentences", "st": "status", "u": "case page url", "h": true only if the office's own report or another source records harm on the ground (not just a breach of procedure), "cs": [ids of cases this complaint belongs to, existing or new]}
+Then make full cases (the BRIEF.md shape) for the complaints where harm on the ground is documented and sources allow a full card. Put the complaint records in "complaints": [...] in your output alongside "cases", "extend" and "dropped".
+
+## Output
+{"cases": [...], "complaints": [...], "extend": [...], "dropped": [...]} to the file you are given. Validate JSON with python. Reply with counts, cases kept one line each, main drop reasons, anything contested. Searches are shared with other workers and limited: prefer opening registry pages and documents directly.

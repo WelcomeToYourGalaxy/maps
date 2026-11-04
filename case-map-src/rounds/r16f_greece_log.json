@@ -1,0 +1,47 @@
+[
+ {
+  "id": "greece-pension-cuts",
+  "change": "Sources re-opened: ECSR decision on the merits (HUDOC PDF), Greek government submissions (rm.coe.int ...fc, via WebFetch), ETUC observations (...fd), CoE processed-complaints page, IMF PR 10/176.",
+  "why": "Earlier check could not open them; all now opened and facts checked against them."
+ },
+ {
+  "id": "greece-pension-cuts",
+  "change": "Removed the Time article (still 404); suicide details now from AP (Fox News), Al Jazeera and RNZ, which report the note tied to his pension.",
+  "why": "Time page dead; replacement mainstream sources opened."
+ },
+ {
+  "id": "greece-pension-cuts",
+  "change": "Holiday bonus wording corrected: fixed €400/€200/€200, paid only to pensioners 60+ with pensions up to €2,500; added that the Committee found the bonus cuts not in themselves a breach.",
+  "why": "Input said bonuses were reduced for over-60s; government submission and decision say eligibility was limited to 60+ and ≤€2,500."
+ },
+ {
+  "id": "greece-pension-cuts",
+  "change": "Outcome: decision adopted 7 December 2012 (unanimous), notified 20 December 2012; finding based on cumulative effect of twelve laws; added the Committee's point that loan obligations to EU institutions and IMF do not remove the laws from the Charter.",
+  "why": "Dates and wording as in the decision PDF header and paras 50, 77-83."
+ },
+ {
+  "id": "greece-pension-cuts",
+  "change": "Lenders: added euro-area countries (€80 billion of €110 billion, PR 10/176) and corrected Act 4046/2012 (EFSF loan agreements; MoU parties Greece, Commission, Bank of Greece); IMF role and share from PR 10/176.",
+  "why": "Lender shares must be stated; input placed the EC as MoU party without EFSF."
+ },
+ {
+  "id": "greece-pension-cuts",
+  "change": "Added harm figures from the decision (six cuts, auxiliary pensions ~30%, early retirees ~50%, 20,000-50,000 lost solidarity benefit; not contested by the government) and the Committee's 'significant degradation' finding.",
+  "why": "Actual harm test; figures in decision paras 58-61, 78, 81."
+ },
+ {
+  "id": "greece-pension-cuts",
+  "change": "killed set to 0 (was null) with killed_note; suppression figures from AP (1,500 protesters, no injuries or arrests).",
+  "why": "Schema requires integer; suicide is not a counted death."
+ },
+ {
+  "id": "greece-pension-cuts",
+  "change": "Added ap, lk [eu, imf], cp, rg, cx, ecosystem, levers [cuts], lvwhy.",
+  "why": "Match case shape in cases.json and new-case files."
+ },
+ {
+  "id": "greece-pension-cuts",
+  "change": "Overlap check: kept as a new case, not an extend.",
+  "why": "greece-may-2010-strike-marfin and greece-2012-bailout-austerity cover protest episodes and the 2010/2012 packages (wages, minimum wage); greece-esm-third-programme-pensions covers 2015-18; greece-health-spending-cap covers health. None covers the 2010-2012 pension laws, the ECSR ruling or the Christoulas death."
+ }
+]
