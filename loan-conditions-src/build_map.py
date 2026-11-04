@@ -12,8 +12,9 @@ def _c(x):
 DD=_c(json.load(open('/home/claude/work/data.json')))
 MMF='loan-conditions-protests.json.gz'
 mm=DD.pop('mm')
-open('/home/claude/work/'+MMF,'wb').write(gzip.compress(json.dumps(mm,separators=(',',':'),allow_nan=False).encode(),9))
-DD['mm_meta']={'n':len(mm['rows']),'file':MMF}
+for k in ('wbsites','cnsites','cases','pf'): DD.pop(k,None)  # place layers removed from the page on 3 Nov 2026; data kept in data.json
+
+
 raw=json.dumps(DD,separators=(',',':'),allow_nan=False).encode()
 data=base64.b64encode(gzip.compress(raw,9)).decode()
 for k,v in [('/*__BASEMAP_CONST__*/',consts),('/*__BASES__*/',bases),('"/*__DATA__*/"','"'+data+'"')]:

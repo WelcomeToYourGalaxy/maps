@@ -170,6 +170,10 @@ Still open:
 - Research note: in these sessions WebFetch only opens pages a web search returned, and the searches are capped per turn across all agents. IMF and World Bank PDFs download fine with curl.
 - Ideas for more pattern layers not yet done: arms and military aid alongside lending; tied aid (OECD tying status is already a row); the IMF's gold and SDR allocations by quota; debt service as a share of revenue over time.
 
+### 6d. 3 Nov 2026: place layers taken off the page
+
+At the user's request the "Places on the map" box (World Bank project sites, Chinese project sites, condition-harm cases, Mass Mobilization protests, Public Futures) was removed from the page. `build_map.py` drops `wbsites`, `cnsites`, `cases`, `pf` and `mm` from the embedded data; they stay in `data.json`, and the point-layer code in `template.html` returns early when `#points` is absent. To restore: put the `#points` markup back (see git history before this date) and stop dropping those keys. `loan-conditions-protests.json.gz` is no longer loaded by the page. The patterns box now starts open.
+
 ### 7. Map behaviour
 
 - Flat map: free dragging, as on the central bank map (`freeFlat`, `setTransformConstrain` limits the centre to ±360° longitude and ±84° latitude). Background layers fill the whole screen in flat view, so `syncSheets` swaps each for a world-sized fill (`<id>-flat`) on the flat map, which leaves stars around the world.
