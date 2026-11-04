@@ -63,6 +63,10 @@ for r in cases:
     out.append(r)
 for c in out:
     if c['id']=='rose-island' and c.get('challenge'):c['challenge']=c['challenge'].replace('after 55 days','after eight weeks')
+MAN={'kingdom-of-sedang':{'end':1890},'republic-of-madawaska':{'end':1827},'republic-of-lakotah':{'inhabited':True},'kingdom-of-elleore':{'currency':'Stamps and coins issued'}}
+for c in out:
+    c.update(MAN.get(c['id'],{}))
+    if c['id']=='republic-of-indian-stream':c['mechanism']=c['mechanism'].replace('without a shot','without a shot that August, though a deputy was shot that October')
 # hardware sites on the Moon and Mars
 p=os.path.join(R,'sites.json')
 if os.path.exists(p):
