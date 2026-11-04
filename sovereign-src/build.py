@@ -16,6 +16,10 @@ def fix(recs,fname):
     for x in json.load(open(p,encoding='utf8')):
         for r in by.get(x['id'],[]):
             f=x['field']
+            if f=='sources':
+                n_=x.get('new') or x.get('source')
+                if isinstance(n_,dict) and n_.get('u') and not any(q['u']==n_['u'] for q in r['sources']): r['sources'].append(n_)
+                continue
             if f not in r:continue
             v=r[f]
             if isinstance(v,str) and isinstance(x.get('old'),str) and x['old'] and x['old'] in v:
@@ -47,6 +51,7 @@ space=[r for r in space if r['id'] not in DROP['space']]
 fix(extra,'fix_routes');fix(extra,'fix_other')
 for c in extra:
     c['status']=c.get('status') or 'dormant'
+    if c['id']=='migingo-island':c['status']='operating';c['end']=None;c['stopped_by']=None
 cases=ocean+land+space
 # zone assignment
 ZMAP={'high-seas':'high-seas','territorial-eez':'eez-shelf','reef-seamount':'reefs-low-tide-elevations','platform':'abandoned-platforms','ship-flag':'ships-flag','seabed-undersea':'deep-seabed-area','disputed-islands':'disputed-islands','terra-nullius':'terra-nullius-land','antarctica-unclaimed':'antarctica-unclaimed','antarctica-claimed':'antarctica-claimed','arctic':'central-arctic-ocean-and-svalbard','inside-state':'inside-state','carve-out':'host-state-carve-outs','unrecognised-state':'unrecognised-state','non-territorial':'digital-no-territory','airspace':'airspace-over-states','stratosphere':'stratosphere-near-space','leo':'leo','geo':'geo','moon':'moon','mars':'mars-and-beyond','asteroids':'asteroids','lagrange':'lagrange-cislunar','digital':'digital-no-territory'}
@@ -124,6 +129,10 @@ for x in pf+pf2:
     m=re.match(r'zone:(\w+)(?:\[(\d+)\])?(?:\.(\w+))?$',f)
     if not m:continue
     a,i,sub=m.groups();cont=o;key=a
+    if a=='sources':
+        n_=x.get('new') or x.get('source')
+        if isinstance(n_,dict) and n_.get('u') and not any(q['u']==n_['u'] for q in o['sources']):o['sources'].append(n_)
+        continue
     if i is not None:
         cont=o[a];key=int(i)
         if sub:cont=cont[key];key=sub
