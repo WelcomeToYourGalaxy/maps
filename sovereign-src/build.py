@@ -31,14 +31,28 @@ print('fixes',fix(ocean,'fix_ocean'),fix(land,'fix_land'),fix(land,'fix_land2'),
 for r in ocean:r['_f']='o'
 for r in land:r['_f']='l'
 for r in space:r['_f']='s'
+def jl(n):
+    p=os.path.join(R,n+'.json');return json.load(open(p,encoding='utf8')) if os.path.exists(p) else None
+extra_zones=[];extra=[]
+for n in('water','routes','beyond'):
+    d=jl(n);extra_zones+=d['zones'];extra+=d['cases']
+extra=[c for c in extra if c['id'] not in('bakov-russian-empire',)]
+_seen=set();_e=[]
+for c in extra:
+    if c['id'] in _seen:continue
+    _seen.add(c['id']);_e.append(c)
+extra=_e+(jl('routes2') or [])
 DROP={'space':{'dominion-of-melchizedek','aerican-empire','praxis','zuzalu','sovereign-order-of-malta','talossa'}}
 space=[r for r in space if r['id'] not in DROP['space']]
+fix(extra,'fix_routes');fix(extra,'fix_other')
+for c in extra:
+    c['status']=c.get('status') or 'dormant'
 cases=ocean+land+space
 # zone assignment
 ZMAP={'high-seas':'high-seas','territorial-eez':'eez-shelf','reef-seamount':'reefs-low-tide-elevations','platform':'abandoned-platforms','ship-flag':'ships-flag','seabed-undersea':'deep-seabed-area','disputed-islands':'disputed-islands','terra-nullius':'terra-nullius-land','antarctica-unclaimed':'antarctica-unclaimed','antarctica-claimed':'antarctica-claimed','arctic':'central-arctic-ocean-and-svalbard','inside-state':'inside-state','carve-out':'host-state-carve-outs','unrecognised-state':'unrecognised-state','non-territorial':'digital-no-territory','airspace':'airspace-over-states','stratosphere':'stratosphere-near-space','leo':'leo','geo':'geo','moon':'moon','mars':'mars-and-beyond','asteroids':'asteroids','lagrange':'lagrange-cislunar','digital':'digital-no-territory'}
 ZOVER={'floating-island-french-polynesia':'territorial-sea','seapods-panama':'territorial-sea','oceanix-busan':'territorial-sea','aquarius-reef-base':'undersea-water-column','deep-vanguard-sentinel':'undersea-water-column','proteus-curacao':'undersea-water-column','ocean-spiral':'undersea-water-column','abaco':'inside-state','vemerana':'inside-state','coral-sea-kingdom':'inside-state','minerva-1982-and-fiji-tonga':'reefs-low-tide-elevations','kingdom-of-araucania-patagonia':'inside-state','kingdom-of-sedang':'inside-state','republic-of-madawaska':'inside-state','adiz-high-seas':'airspace-over-high-seas','tokyo-convention-aircraft-flag':'airspace-over-high-seas','dominion-of-melchizedek':'digital-no-territory','zuzalu':'inside-state'}
-SKY={'mars-and-beyond','asteroids','moon','lagrange-cislunar','geo','leo','stratosphere-near-space','airspace-over-high-seas','airspace-over-states'}
-SEA={'ships-flag','high-seas','central-arctic-ocean-and-svalbard','eez-shelf','territorial-sea','reefs-low-tide-elevations','abandoned-platforms','disputed-islands','undersea-water-column','deep-seabed-area'}
+SKY={'venus-clouds','outer-moons','the-sun','interstellar-ships','orbital-megastructures','airborne-habitats','mars-and-beyond','asteroids','moon','lagrange-cislunar','geo','leo','stratosphere-near-space','airspace-over-high-seas','airspace-over-states'}
+SEA={'inland-waters','new-land','floating-ice','ships-flag','high-seas','central-arctic-ocean-and-svalbard','eez-shelf','territorial-sea','reefs-low-tide-elevations','abandoned-platforms','disputed-islands','undersea-water-column','deep-seabed-area'}
 LAW=set("clipperton-arbitration island-of-palmas sapodilla-cayes antarctic-claims-article-iv svalbard-treaty arktika-2007-flag hans-island eastern-greenland-case us-v-causby chicago-convention tokyo-convention-aircraft-flag adiz-high-seas china-balloon-2023 karman-line-debate loon-stratosphere iss-intergovernmental-agreement flags-of-convenience-space fcc-starlink-licensing swarm-spacebees-fcc kessler-limits artemis-accords ilrs moon-agreement for-all-moonkind unreal-estate-pop us-space-act-2015 luxembourg-space-resources-2017 uae-japan-space-resources international-seabed-authority sea-shepherd-piracy aquarius-reef-base deep-vanguard-sentinel proteus-curacao nansen-passport barlow-declaration tuvalu-digital-nation estonia-e-residency estonia-data-embassy second-life-embassies orbis-lease-salter moon-express-faa mcclean-rockall villa-las-estrellas esperanza-base-births arctic-sanctuary-greenpeace-flag t3-ice-island-escamilla ms-the-world starlink-mars-free-planet yemeni-mars-suit lonestar-lunar-data metals-company ocean-spiral bogota-declaration tongasat ss-rex-gambling-ships moon-agreement vast-haven-1 nasa-commercial-stations voyager-station".split())
 ATTEMPT_KEEP={'bogota-declaration','tongasat','vast-haven-1','voyager-station','nasa-commercial-stations','ss-rex-gambling-ships'}
 LAW-=ATTEMPT_KEEP
@@ -55,6 +69,7 @@ for r in cases:
     r['out']='law' if r['kind']=='law' else OOVER.get(r['id'],OUT[r['status']])
     r['held']=r['id'] in HELD;r['recd']=r['id'] in RECD
     r['body']='earth'
+    r.setdefault('aka',[])
     if r['id'] in('moon-express-faa',):pass
     for k in('currency','passports','laws','stopped_by','pop','challenge','recognition','cost'):
         if r.get(k) in('None','none','-'):r[k]=None
@@ -81,8 +96,43 @@ for c in out:
     import math
     a=n*2.4;d=.09*math.sqrt(n)
     c['plat']=round(c['lat']+d*math.sin(a),4);c['plon']=round(c['lon']+d*math.cos(a),4)
+# new records keep their own zid, kind and flags
+for c in extra:
+    c.pop('band',None)
+    c['group']='sky' if c['zid'] in SKY else 'sea' if c['zid'] in SEA else 'none' if c['zid'] in('digital-no-territory','no-territory-conceptual','exile-and-landless-authority') else 'land'
+    c['out']='law' if c['kind']=='law' else OUT[c['status']]
+    c['held']=bool(c.get('held'));c['recd']=bool(c.get('recd'));c['body']='earth';c['built']=bool(c.get('built'));c['inhabited']=bool(c.get('inhabited'))
+    for k in('currency','passports','laws','stopped_by','pop','challenge','recognition','cost'):
+        if c.get(k) in('None','none','-'):c[k]=None
+    if c['id'] not in seen:
+        seen.add(c['id']);out.append(c)
+for c in out:
+    if c.get('lat') is None or 'plat' in c:continue
+    k=(c['body'],round(c['lat'],1),round(c['lon'],1));n=pos.get(k,0);pos[k]=n+1
+    a=n*2.4;d=.09*math.sqrt(n)
+    c['plat']=round(c['lat']+d*math.sin(a),4);c['plon']=round(c['lon']+d*math.cos(a),4)
 # zones
 zs={z['id']:z for z in J('zones')}
+for z in extra_zones:
+    z.pop('band',None);zs[z['id']]=z
+pf=jl('fix_routes') or [];pf2=jl('fix_other') or []
+for x in pf+pf2:
+    f=x.get('field','')
+    if not f.startswith('zone:'):continue
+    o=zs.get(x['id'])
+    if not o:continue
+    m=re.match(r'zone:(\w+)(?:\[(\d+)\])?(?:\.(\w+))?$',f)
+    if not m:continue
+    a,i,sub=m.groups();cont=o;key=a
+    if i is not None:
+        cont=o[a];key=int(i)
+        if sub:cont=cont[key];key=sub
+    try:
+        if x['old'] in cont[key]:cont[key]=cont[key].replace(x['old'],x['new'])
+        else:print('ZFIX MISS',x['id'],f)
+    except Exception as e:print('ZFIX ERR',x['id'],f,e)
+    s_=x.get('source')
+    if s_ and s_.get('u') and not any(q['u']==s_['u'] for q in o['sources']):o['sources'].append(s_)
 for e in EXTRA_ZONES:zs[e['id']]=e
 class _:pass
 ent=J('entails')
@@ -121,12 +171,12 @@ for p_ in PATTERNS:
     p_['cases']=[i for i in p_['cases'] if i in ids]
 # charts
 att=[c for c in out if c['kind']=='attempt']
-open_z=SEA|SKY|{'terra-nullius-land','antarctica-unclaimed','antarctica-claimed'}
+open_z=(SEA|SKY|{'terra-nullius-land','antarctica-unclaimed','antarctica-claimed'})-{'inland-waters'}
 own=[c for c in att if c['zid'] in open_z]
 assert not [c for c in own if c['recd']]
 ST={
- 'Navy, troops or police':"rose-island rem-island minerva minerva-1982-and-fiji-tonga operation-atlantis xlii-seastead-phuket vemerana liberland free-republic-of-verdis kingdom-of-sedang kingdom-of-araucania-patagonia wrangel-island-expedition republic-of-indian-stream freedomland-kalayaan principality-of-trinidad republic-of-artsakh rojava occupation-of-alcatraz capitol-hill-occupied-protest republic-of-texas-group republic-of-madawaska",
- 'Court ruling':"knock-john-radio-essex radio-390-red-sands grand-capri-atlantis-isle-of-gold forvik nemitz-eros tongasat prospera-zede",
+ 'Navy, troops or police':"migingo-island denard-comoros seychelles-1981-coup wonga-coup-equatorial-guinea operation-red-dog-dominica biafra-1967 assange-ecuador-embassy rose-island rem-island minerva minerva-1982-and-fiji-tonga operation-atlantis xlii-seastead-phuket vemerana liberland free-republic-of-verdis kingdom-of-sedang kingdom-of-araucania-patagonia wrangel-island-expedition republic-of-indian-stream freedomland-kalayaan principality-of-trinidad republic-of-artsakh rojava occupation-of-alcatraz capitol-hill-occupied-protest republic-of-texas-group republic-of-madawaska",
+ 'Court ruling':"catalonia-2017 cyberbunker knock-john-radio-essex radio-390-red-sands grand-capri-atlantis-isle-of-gold forvik nemitz-eros tongasat prospera-zede",
  'New law aimed at them':"radio-caroline rem-island ss-rex-gambling-ships",
  'Regulator or fraud case':"new-utopia kingdom-of-enenkio dominion-of-melchizedek network-state-school",
  'Host government withdrew':"floating-island-french-polynesia akon-city bitcoin-city prospera-zede",
@@ -144,8 +194,8 @@ def m(v):
 costs=[("Freedom Ship, reported",16e9,"Freedom Ship reported cost"),("Pangeos floating city, estimate",8e9,"Pangeos estimated cost"),("ISS, per year",3e9,"ISS annual cost"),("Shuttle, per launch",1.5e9,"Shuttle cost per launch"),("Haven-1, spent so far",1e9,"Haven-1 committed spending"),("Oceanix Busan, higher figure",627e6,"Oceanix Busan, at $10,000 per m²"),("Launch insurance cap",5e8,"Launch third-party insurance cap"),("Starship launch, as reported",9e7,"Starship dedicated launch for Starlab"),("Falcon 9 launch, 2026",74e6,"Falcon 9 dedicated launch, early 2026"),("Seat on a trip to the ISS",55e6,"Axiom seat price to ISS"),("Small deep-sea platform",5e7,"Small deep-sea platform"),("New Utopia actually raised",24000,"New Utopia raised"),("US renunciation fee",450,"US renunciation fee, current")]
 for c in costs:assert c[2] in fv,c[2]
 hr=sum(1 for c in own)
-charts=dict(cover=dict(n='0 of %d'%hr,t="attempts on open sea, reefs, seabed, unclaimed land, Antarctica, in the air or in space have been recognised as a state by any UN member. The governments recognised on this map hold land by force or long standing: Somaliland (Israel, December 2025), Northern Cyprus (Turkey), Taiwan, plus the Vatican and the Order of Malta."),
- farcap="Own money and own laws appear on paper far more often than people live on the ground. Recognition counts only the Vatican, the Order of Malta, Taiwan, Somaliland and Northern Cyprus, none of them started as a private founding.",
+charts=dict(cover=dict(n='0 of %d'%hr,t="attempts on open sea, ice, reefs, seabed, unclaimed land, in the air or in space have been recognised as a state by any UN member. Recognition on this map went to %d others, nearly all peoples on land they already held, through secession or war, or to old bodies such as the Vatican and the Order of Malta."%sum(1 for c in att if c['recd'])),
+ farcap="Laws and courts appear on paper more often than people live on the ground. Recognition means by at least one UN member. None of those recognised began as a private founding on open ground.",
  endcap="Laws, treaties and court tests on this map are left out of this count.",
  stoppers=[dict(l=k,ids=[i for i in v.split() if i in ids]) for k,v in ST.items()],
  treaties=[dict(label=a,value=F(b)['value'],note=F(b)['note']+'.') for a,b in treat],
