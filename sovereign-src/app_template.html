@@ -87,8 +87,11 @@ input[type=radio],input[type=checkbox]{accent-color:var(--accent);margin:0 4px 0
 .maplibregl-ctrl-group{background:var(--card)!important;border:1px solid var(--line);box-shadow:none!important}
 .maplibregl-ctrl-group button .maplibregl-ctrl-icon{filter:invert(1)}
 .maplibregl-ctrl-group button+button{border-top:1px solid var(--line)!important}
-.maplibregl-ctrl-attrib{background:rgba(6,9,11,.7)!important;color:#7f8c8b;font-size:9.5px}
-.maplibregl-ctrl-attrib a{color:#a3aead!important}
+.maplibregl-ctrl-attrib{background:rgba(6,9,11,.7)!important;color:#8d9a99;font-size:9.5px}
+.maplibregl-ctrl-bottom-right .maplibregl-ctrl-attrib{display:none}
+.maplibregl-ctrl-bottom-left{left:346px!important;bottom:18px!important;max-width:calc(100% - 900px)}
+.maplibregl-ctrl-attrib,.maplibregl-ctrl-attrib *{color:#9aa7a6!important}
+.maplibregl-ctrl-attrib-button{filter:invert(1)}
 #credit{position:absolute;z-index:700;left:352px;bottom:6px;right:352px;text-align:center;font-size:9.6px;color:#7c8987;pointer-events:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #credit a{color:#93a09e;pointer-events:auto}
 #ttip{position:fixed;z-index:5000;pointer-events:none;background:#0e171a;border:1px solid var(--line);border-radius:3px;padding:5px 8px;font-size:12px;line-height:1.35;display:none;max-width:300px}
@@ -176,7 +179,7 @@ table.heat tr:hover td.nm{color:#fff;text-decoration:underline}
 .cols{display:flex;align-items:flex-end;gap:2px;height:calc(100% - 34px);min-height:70px}
 .cols>div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:1px;height:100%}
 .cols i{display:block;border-radius:1px}
-.cax{display:flex;gap:2px;font-size:9.4px;color:var(--faint);margin-top:2px}.cax span{flex:1;text-align:center;overflow:hidden}
+.cax{display:flex;gap:2px;font-size:9.4px;color:var(--faint);margin-top:2px}.cax span{flex:1;text-align:center;white-space:nowrap;width:0;overflow:visible;display:flex;justify-content:center}
 .lg{display:flex;flex-wrap:wrap;gap:3px 10px;font-size:10.8px;color:var(--mute);margin-top:3px}.lg i{display:inline-block;width:8px;height:8px;border-radius:1px;margin-right:4px}
 @media (max-width:1180px){#rgrid{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:none;grid-auto-rows:300px;overflow:auto}.slot.h2{grid-row:span 2}#room{overflow:auto}}
 @media (max-width:820px){
@@ -186,6 +189,8 @@ table.heat tr:hover td.nm{color:#fff;text-decoration:underline}
  #worldBtn{right:56px;bottom:22px}
  .maplibregl-ctrl-bottom-right{right:0!important;bottom:14px!important}
  #credit{display:none}
+ .maplibregl-ctrl-bottom-left{left:0!important;bottom:4px!important;max-width:60%}
+ table.heat td.nm{max-width:112px;font-size:10.6px}table.heat th{font-size:9px}table.heat td{font-size:9.8px}table.heat{border-spacing:1px}
  #rgrid{grid-template-columns:1fr;overflow:visible}
  .slot.w2,.slot.h2{grid-column:auto;grid-row:auto}
  #rgrid{grid-auto-rows:auto}.slot{min-height:280px}.stage{max-height:440px}
@@ -247,14 +252,14 @@ const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": 
 /* ---------- vocab ---------- */
 const GROUPS = { sea: ["Sea and seabed", "c"], land: ["Land and ice", "d"], sky: ["Air and space", "t"], none: ["No territory", "s"] };
 const OUTS = {
-  going: "Still running", stopped: "Stopped by a state", faded: "Faded or collapsed", never: "Never built", fraud: "Fraud finding"
+  going: "Still running", stopped: "Stopped or absorbed by a state", faded: "Faded or collapsed", never: "Never built, or not yet", fraud: "Fraud finding", law: "Law, treaty or legal test"
 };
 const OUTCOL = {
-  night: { going: "#8cc5a8", stopped: "#c9707c", faded: "#ddd6c8", never: "#7d9fdb", fraud: "#a877bd" },
-  atlas: { going: "#c6dcc4", stopped: "#7c2f3a", faded: "#efe7d2", never: "#27466f", fraud: "#54305f" },
-  satellite: { going: "#a6d8bc", stopped: "#d97f8a", faded: "#ece6d8", never: "#92b2e6", fraud: "#bf8fd2" },
-  hell: { going: "#a8bfae", stopped: "#d36b6e", faded: "#d6cbc3", never: "#8a94b8", fraud: "#a884a8" },
-  outlines: { going: "#8cc5a8", stopped: "#c9707c", faded: "#ddd6c8", never: "#7d9fdb", fraud: "#a877bd" },
+  night: { going: "#8cc5a8", stopped: "#c9707c", faded: "#ddd6c8", never: "#7d9fdb", fraud: "#8f5aa6", law: "#8b9aa0" },
+  atlas: { going: "#c6dcc4", stopped: "#7c2f3a", faded: "#efe7d2", never: "#27466f", fraud: "#54305f", law: "#5d6668" },
+  satellite: { going: "#a6d8bc", stopped: "#d97f8a", faded: "#ece6d8", never: "#92b2e6", fraud: "#a56fbd", law: "#a3b1b6" },
+  hell: { going: "#a8bfae", stopped: "#d36b6e", faded: "#d6cbc3", never: "#8a94b8", fraud: "#946a96", law: "#8f8b8e" },
+  outlines: { going: "#8cc5a8", stopped: "#c9707c", faded: "#ddd6c8", never: "#7d9fdb", fraud: "#8f5aa6", law: "#8b9aa0" },
 };
 const PAL = {
   night: { a: "#4f7f79", h: "#a3c7bd", card: "rgba(9,17,21,.95)", solid: "#0d171b", line: "#26373c" },
@@ -263,20 +268,20 @@ const PAL = {
   hell: { a: "#7a3a40", h: "#d3a5a1", card: "rgba(20,9,11,.95)", solid: "#1a0c0e", line: "#40201f" },
   outlines: { a: "#5b6b6a", h: "#b9c6c3", card: "rgba(16,20,20,.95)", solid: "#141919", line: "#303a3a" },
 };
-const RAMP = [[5, "#7d3f4b", "under 5%"], [20, "#a8737a", "5–20%"], [50, "#8b8d88", "20–50%"], [80, "#7a9e88", "50–80%"], [101, "#558a70", "over 80%"]];
+const RAMP = [[5, "#7d3f4b", "under 5%"], [20, "#a8737a", "5–20%"], [50, "#7f8483", "20–50%"], [80, "#5f9a7c", "50–80%"], [101, "#3f7f60", "over 80%"]];
 const rampCol = (v) => { for (const r of RAMP) if (v < r[0]) return r[1]; return RAMP[4][1]; };
 const SHADES = {
   overall: ["Overall: found it and keep it", "Chance of building or occupying the place and keeping it free of outside enforcement for ten years. It is the first odds multiplied by the fourth."],
   build: ["Physically get there and stay", "Chance a serious private group, with no state backing, gets people living there within 25 years."],
-  law: ["Run your own internal rules", "Chance that the residents' own charter and dispute courts actually govern day-to-day life."],
-  money: ["Use your own currency", "Chance a private token or scrip is used by the residents. This is an internal currency, not one other states treat as legal tender."],
-  hold: ["Hold off outside states", "Chance no state boards, arrests, shuts or absorbs it for ten years."],
+  law: ["Run your own internal rules", "If people are there, the chance that the residents' own charter and dispute courts actually govern day-to-day life."],
+  money: ["Use your own currency", "If people are there, the chance a private token or scrip is used by the residents. This is an internal currency, not one other states treat as legal tender."],
+  hold: ["Hold off outside states", "If people are there, the chance no state boards, arrests, shuts or absorbs it for ten years."],
   recog: ["Recognition as a state", "Chance at least one UN member formally recognises it as a state within 25 years."],
 };
 const fmtPct = (v) => v < 1 ? "<1%" : v > 99 ? ">99%" : Math.round(v) + "%";
 const Z = {}; D.zones.forEach((z) => { Z[z.id] = z; const r = z.odds; r.overall = r.build * r.hold / 100; });
 const C = {}; D.cases.forEach((c) => { C[c.id] = c; });
-const S = { shade: "overall", g: { sea: 1, land: 1, sky: 1, none: 1 }, o: { going: 1, stopped: 1, faded: 1, never: 1, fraud: 1 }, y0: null, y1: null, pat: null, zone: null, world: "earth", showCases: 1, showZones: 1, showBelt: 1, showNames: 1, sel: null };
+const S = { shade: "overall", g: { sea: 1, land: 1, sky: 1, none: 1 }, o: { going: 1, stopped: 1, faded: 1, never: 1, fraud: 1, law: 1 }, y0: null, y1: null, pat: null, zone: null, world: "earth", showCases: 1, showZones: 1, showBelt: 1, showNames: 1, sel: null };
 const MINY = Math.min(...D.cases.map((c) => c.start || 2026));
 const passes = (c) => S.g[c.group] && S.o[c.out] && (S.y0 == null || ((c.end || 2026) >= S.y0 && (c.start || 0) <= S.y1)) && (!S.pat || S.pat.cases.includes(c.id)) && (!S.zone || c.zid === S.zone);
 
@@ -307,8 +312,8 @@ function addLayers() {
   map.addLayer({ id: "moon", type: "raster", source: "moonimg", layout: { visibility: "none" }, paint: { "raster-fade-duration": 0 } });
   map.addLayer({ id: "mars", type: "raster", source: "marsimg", layout: { visibility: "none" }, paint: { "raster-fade-duration": 0 } });
   map.addSource("zones", { type: "geojson", data: D.geo });
-  map.addLayer({ id: "z-fill", type: "fill", source: "zones", filter: ["==", ["geometry-type"], "Polygon"], paint: { "fill-color": "#888", "fill-opacity": .34 } });
-  map.addLayer({ id: "z-fill2", type: "fill", source: "zones", filter: ["==", ["geometry-type"], "MultiPolygon"], paint: { "fill-color": "#888", "fill-opacity": .34 } });
+  map.addLayer({ id: "z-fill", type: "fill", source: "zones", filter: ["==", ["geometry-type"], "Polygon"], paint: { "fill-color": "#888", "fill-opacity": .27 } });
+  map.addLayer({ id: "z-fill2", type: "fill", source: "zones", filter: ["==", ["geometry-type"], "MultiPolygon"], paint: { "fill-color": "#888", "fill-opacity": .27 } });
   map.addLayer({ id: "z-line", type: "line", source: "zones", filter: ["!=", ["get", "zone"], "geo"], paint: { "line-color": "rgba(240,240,232,.2)", "line-width": .5 } });
   map.addLayer({ id: "belt", type: "line", source: "zones", filter: ["==", ["get", "zone"], "geo"], paint: { "line-color": "#d7d2c4", "line-width": 1.3, "line-dasharray": [2, 2] } });
   map.addSource("cases", { type: "geojson", data: fc() });
@@ -346,8 +351,8 @@ document.addEventListener("mousemove", (e) => { const q = e.target.closest && e.
 /* ---------- panels ---------- */
 const yrs = (c) => (c.start || "?") + (c.end ? (c.end === c.start ? "" : "–" + c.end) : "–now");
 function buildKey() {
-  const base = D.cases, cnt = (f) => base.filter(f).length;
-  $("#lede2").textContent = D.cases.length + " attempts · " + D.zones.length + " kinds of place · " + D.patterns.length + " patterns · " + D.entails.length + " requirements";
+  const base = D.cases, ATT = base.filter((c) => c.kind === "attempt"), cnt = (f) => base.filter(f).length;
+  $("#lede2").textContent = ATT.length + " attempts · " + (base.length - ATT.length) + " laws and legal tests · " + D.zones.length + " kinds of place · " + D.patterns.length + " patterns · " + D.entails.length + " requirements";
   const r = SHADES[S.shade];
   let h = '<div class="psec">Shade the places by<span class="qm" data-tip="These are editorial estimates, reasoned from the law and the record, since no study measures them. Open any place to read the reasoning. Method and sources explains the scale.">?</span></div><select id="shade">' + Object.keys(SHADES).map((k) => '<option value="' + k + '"' + (k === S.shade ? " selected" : "") + ">" + esc(SHADES[k][0]) + "</option>").join("") + '</select><div style="font-size:11.2px;color:var(--mute);margin-top:4px;line-height:1.35">' + esc(r[1]) + '</div><div class="ramp">' + RAMP.map((x) => '<i style="background:' + x[1] + '"></i>').join("") + '</div><div class="rlab">' + RAMP.map((x) => "<span>" + x[2] + "</span>").join("") + "</div>";
   h += '<div class="psec">Find</div><input id="find" class="inp" type="search" placeholder="An attempt, founder, place or treaty" autocomplete="off" value="' + esc(S.q || "") + '"><div id="flist" class="scroll"></div>';
@@ -359,7 +364,7 @@ function buildKey() {
   const fi = $("#find"); fi.addEventListener("input", () => { S.q = fi.value; find(); }); find();
   $$("[data-g]", $("#keyBody")).forEach((n) => n.addEventListener("click", () => { S.g[n.dataset.g] = !S.g[n.dataset.g]; paint(); buildKey(); }));
   $$("[data-o]", $("#keyBody")).forEach((n) => n.addEventListener("click", () => { S.o[n.dataset.o] = !S.o[n.dataset.o]; paint(); buildKey(); }));
-  const dec = {}; D.cases.forEach((c) => { if (c.start) { const d = Math.max(1830, Math.floor(c.start / 10) * 10); dec[d] = (dec[d] || 0) + 1; } });
+  const dec = {}; ATT.forEach((c) => { if (c.start) { const d = Math.max(1830, Math.floor(c.start / 10) * 10); dec[d] = (dec[d] || 0) + 1; } });
   const ks = []; for (let d = 1830; d <= 2020; d += 10) ks.push(d); const mx = Math.max(...ks.map((k) => dec[k] || 0));
   $("#tbars").innerHTML = ks.map((k) => '<i data-d="' + k + '" data-tip="' + (k === 1830 ? "1830s and before" : k + "s") + ": " + (dec[k] || 0) + ' begun" style="height:' + Math.max(3, (dec[k] || 0) / mx * 100) + '%" class="' + (S.y0 != null && !(k === S.y0) ? "off" : "") + '"></i>').join("");
   $("#tmin").textContent = "1830s"; if (S.y0 != null) $("#trst").style.display = "inline";
@@ -373,7 +378,7 @@ function find() { const l = $("#flist"), q = S.q || ""; if (q.trim().length < 2)
 const openAny = (k, id) => k === "c" ? openCase(id) : k === "z" ? openZone(id) : openNeed(id);
 function buildTr() {
   const w = S.world;
-  $("#trBody").innerHTML = '<div class="psec">Which world</div><div class="seg">' + [["earth", "Earth"], ["moon", "Moon"], ["mars", "Mars"]].map((x) => '<button class="btn small' + (w === x[0] ? " on" : "") + '" data-w="' + x[0] + '">' + x[1] + "</button>").join("") + "</div>" + (w === "earth" ? '<div class="psec" style="margin-top:7px">Basemap</div><div class="bases">' + CulpritsBasemaps.list.map((b) => '<label><input type="radio" name="bm" value="' + b[0] + '"' + (curBase === b[0] ? " checked" : "") + ">" + b[1] + "</label>").join("") + "</div>" : '<div style="font-size:11.4px;color:var(--mute);margin-top:6px;line-height:1.35">' + (w === "moon" ? "Attempts with no spot on the Moon stay in the list under their place in the stack." : "No one has been there; the marks are landing sites whose country keeps legal control.") + "</div>") + '<div class="psec" style="margin-top:7px">View</div><div class="seg"><button class="btn small' + (proj === "globe" ? " on" : "") + '" data-p="globe">Globe</button><button class="btn small' + (proj === "mercator" ? " on" : "") + '" data-p="mercator">Flat map</button></div>';
+  $("#trBody").innerHTML = '<div class="psec">Which world</div><div class="seg">' + [["earth", "Earth"], ["moon", "Moon"], ["mars", "Mars"]].map((x) => '<button class="btn small' + (w === x[0] ? " on" : "") + '" data-w="' + x[0] + '">' + x[1] + "</button>").join("") + "</div>" + (w === "earth" ? '<div class="psec" style="margin-top:7px">Basemap</div><div class="bases">' + CulpritsBasemaps.list.map((b) => '<label><input type="radio" name="bm" value="' + b[0] + '"' + (curBase === b[0] ? " checked" : "") + ">" + b[1] + "</label>").join("") + "</div>" : '<div style="font-size:11.4px;color:var(--mute);margin-top:6px;line-height:1.35">' + (w === "moon" ? "These are the hardware sites states keep control of. Claims to the Moon as a whole have no spot, so they sit at the founder's base on Earth." : "No one has been there. These are landers and rovers whose state keeps control of them. Claims to Mars as a whole sit at the founder's base on Earth.") + "</div>") + '<div class="psec" style="margin-top:7px">View</div><div class="seg"><button class="btn small' + (proj === "globe" ? " on" : "") + '" data-p="globe">Globe</button><button class="btn small' + (proj === "mercator" ? " on" : "") + '" data-p="mercator">Flat map</button></div>';
   $$("[data-w]", $("#trBody")).forEach((b) => b.addEventListener("click", () => setWorld(b.dataset.w)));
   $$("input[name=bm]", $("#trBody")).forEach((b) => b.addEventListener("change", () => { BM.set(b.value); buildTr(); }));
   $$("[data-p]", $("#trBody")).forEach((b) => b.addEventListener("click", () => { proj = b.dataset.p; map.setProjection({ type: proj }); buildTr(); map.jumpTo(home()); }));
@@ -386,7 +391,7 @@ function buildStack() {
 }
 function buildLeg() {
   const w = (k, t) => '<label class="lrow"><input type="checkbox" data-t="' + k + '"' + (S[k] ? " checked" : "") + ">" + t + "</label>";
-  $("#legBody").innerHTML = w("showCases", "Attempts") + w("showZones", "Legal zones, shaded by the odds") + w("showBelt", "Geostationary belt (claimed in 1976)") + w("showNames", "Names when zoomed in") + '<div style="font-size:10.6px;color:var(--mute);line-height:1.35;margin-top:3px">Shape shows where an attempt sits, colour how it turned out. Space attempts with no spot appear at the founder\'s base on Earth.</div>';
+  $("#legBody").innerHTML = w("showCases", "Attempts and legal tests") + w("showZones", "Legal zones, shaded by the odds") + w("showBelt", "Geostationary belt (claimed in 1976)") + w("showNames", "Names when zoomed in") + '<div style="font-size:10.6px;color:var(--mute);line-height:1.35;margin-top:3px">Shape shows where an attempt sits, colour how it turned out. Space attempts with no spot appear at the founder\'s base on Earth.</div>';
   $$("[data-t]", $("#legBody")).forEach((c) => c.addEventListener("change", () => { S[c.dataset.t] = c.checked ? 1 : 0; paint(); }));
 }
 function buildPat() {
@@ -403,7 +408,7 @@ const STEPS = [["Announced", () => 1], ["Built or occupied", (c) => c.built], ["
 function openCase(id) {
   const c = C[id], z = Z[c.zid]; S.sel = id; if (S.world === (c.body || "earth") && c.lat != null) { map.flyTo({ center: [c.plon, c.plat], duration: 700 }); paint(); }
   const row = (k, v) => v ? "<tr><th>" + k + "</th><td>" + esc(v) + "</td></tr>" : "";
-  show('<div class="k">' + mkSvg(c.group, c.out, 10) + " " + esc(z.name) + " · " + OUTS[c.out] + "</div><h3>" + esc(c.name) + '</h3><p class="sub">' + esc(yrs(c)) + (c.aka && c.aka.length ? " · also " + esc(c.aka.join(", ")) : "") + '</p><div class="steps">' + STEPS.map((s) => '<div class="' + (s[1](c) ? "y" : "") + '">' + s[0] + "</div>").join("") + "</div>" + String(c.story || "").split(/\n+/).map((p) => '<p class="para" style="margin-top:10px">' + esc(p) + "</p>").join("") + (c.mechanism ? '<div class="note"><b style="font-weight:500">Legal point: </b>' + esc(c.mechanism) + "</div>" : "") + '<table class="kv">' + row("Founder", c.founder) + row("Stopped by", c.stopped_by) + row("Population", c.pop) + row("Money", c.currency) + row("Papers", c.passports) + row("Laws", c.laws) + row("State challenge", c.challenge) + row("Recognition", c.recognition) + row("Cost", c.cost) + row(c.body && c.body !== "earth" ? "Location" : (c.anchor ? "Marked at" : "Location"), c.anchor || (c.lat != null ? (c.loc === "approx" ? "Approximate position" : "") : "No single place")) + '</table><p style="margin:10px 0 0"><a href="#" class="lk" data-open="z:' + z.id + '">Rules and odds for this kind of place: ' + esc(z.name) + "</a></p>" + srcs(c.sources));
+  show('<div class="k">' + mkSvg(c.group, c.out, 10) + " " + esc(z.name) + " · " + OUTS[c.out] + "</div><h3>" + esc(c.name) + '</h3><p class="sub">' + esc(yrs(c)) + (c.aka && c.aka.length ? " · also " + esc(c.aka.join(", ")) : "") + "</p>" + (c.kind === "attempt" ? '<div class="steps">' + STEPS.map((s) => '<div class="' + (s[1](c) ? "y" : "") + '">' + s[0] + "</div>").join("") + "</div>" : "") + String(c.story || "").split(/\n+/).map((p) => '<p class="para" style="margin-top:10px">' + esc(p) + "</p>").join("") + (c.mechanism ? '<div class="note"><b style="font-weight:500">Legal point: </b>' + esc(c.mechanism) + "</div>" : "") + '<table class="kv">' + row("Founder", c.founder) + row("Stopped by", c.stopped_by) + row("Population", c.pop) + row("Money", c.currency) + row("Papers", c.passports) + row("Laws", c.laws) + row("State challenge", c.challenge) + row("Recognition", c.recognition) + row("Cost", c.cost) + row(c.body && c.body !== "earth" ? "Location" : (c.anchor ? "Marked at" : "Location"), c.anchor || (c.lat != null ? (c.loc === "approx" ? "Approximate position" : "") : "No single place")) + '</table><p style="margin:10px 0 0"><a href="#" class="lk" data-open="z:' + z.id + '">Rules and odds for this kind of place: ' + esc(z.name) + "</a></p>" + srcs(c.sources));
 }
 function openNear(ids) { const u = [...new Set(ids)]; if (u.length === 1) return openCase(u[0]); show('<div class="k">' + u.length + " attempts at this spot</div><h3>Choose one</h3>" + u.map((i) => '<div class="cl" data-open="c:' + i + '">' + mkSvg(C[i].group, C[i].out) + esc(C[i].name) + "<small>" + esc(yrs(C[i])) + "</small></div>").join("")); }
 function openZone(id, label) {
@@ -426,7 +431,7 @@ function heat() {
 function slot(id, title, unit, slides, cls) { return '<section class="slot ' + (cls || "") + '" data-slot="' + id + '"><div class="sh"><h4>' + esc(title) + '</h4><span class="u">' + esc(unit || "") + "</span>" + (slides > 1 ? '<span class="dots">' + Array.from({ length: slides }, (_, i) => '<button data-sl="' + i + '" class="' + (i ? "" : "on") + '" aria-label="View ' + (i + 1) + '"></button>').join("") + "</span>" : "") + '</div><div class="stage scroll"></div></section>'; }
 const SL = {};
 function buildRoom() {
-  const cs = D.cases, N = cs.length, rec = cs.filter((c) => c.recd && c.ownterr), ch = D.charts;
+  const cs = D.cases.filter((c) => c.kind === "attempt"), N = cs.length, ch = D.charts;
   $("#roomsub").textContent = N + " attempts · " + D.zones.length + " kinds of place · estimates marked as estimates";
   $("#cover").innerHTML = '<b class="n">' + ch.cover.n + "</b><span>" + esc(ch.cover.t) + "</span>";
   const tk = cs.filter((c) => c.mechanism).map((c) => '<span class="tki" data-c="' + c.id + '"><b>' + esc(c.name) + "</b>" + esc(c.mechanism) + "</span>").join("");
@@ -439,10 +444,10 @@ function buildRoom() {
   dr();
   set("far", barRows(STEPS.map((s) => ({ l: s[0], v: cs.filter((c) => s[1](c)).length }))) + '<p class="cap">' + esc(ch.farcap) + "</p>");
   const views = {
-    end: [() => barRows(Object.keys(OUTS).map((o) => ({ l: OUTS[o], v: cs.filter((c) => c.out === o).length, c: (OUTCOL.night)[o] }))) + '<p class="cap">' + esc(ch.endcap) + "</p>", () => barRows(ch.stoppers.map((x) => ({ l: x.l, v: x.ids.length, tip: x.ids.map((i) => C[i] ? C[i].name : i).join(", ") }))) + '<p class="cap">Who ended the attempts stopped from outside. Hover for the names.</p>'],
+    end: [() => barRows(Object.keys(OUTS).filter((o) => o !== "law").map((o) => ({ l: OUTS[o], v: cs.filter((c) => c.out === o).length, c: (OUTCOL.night)[o] }))) + '<p class="cap">' + esc(ch.endcap) + "</p>", () => barRows(ch.stoppers.map((x) => ({ l: x.l, v: x.ids.length, tip: x.ids.map((i) => C[i] ? C[i].name : i).join(", ") }))) + '<p class="cap">Who ended the attempts stopped from outside. Hover for the names.</p>'],
     life: [() => barRows([...cs].filter((c) => c.start && c.built).map((c) => ({ c, y: (c.end || 2026) - c.start })).sort((a, b) => b.y - a.y).slice(0, 10).map((x) => ({ l: x.c.name, v: Math.max(x.y, .5), s: x.y + (x.c.end ? "" : "+"), open: "c:" + x.c.id }))) + '<p class="cap">Longest-lived of those physically built or occupied.</p>', () => barRows([...cs].filter((c) => c.start && c.end && c.built && c.out === "stopped").map((c) => ({ c, y: c.end - c.start })).sort((a, b) => a.y - b.y).slice(0, 10).map((x) => ({ l: x.c.name, v: Math.max(x.y, .5), s: x.y < 1 ? "<1" : x.y, open: "c:" + x.c.id }))) + '<p class="cap">Quickest ends among those a state stopped.</p>'],
     law: [() => barRows(ch.treaties.map((t) => ({ l: t.label, v: t.value, tip: t.note }))) + '<p class="cap">Parties or signatories. Hover for the date.</p>', () => barRows(ch.orbit.map((t) => ({ l: t.label, v: t.value, s: "$" + t.value.toLocaleString(), tip: t.note }))) + '<p class="cap">Price to reach low orbit, per kilogram.</p>'],
-    takes: groups.map((g) => () => D.entails.filter((e) => e.group === g).map((e) => '<div class="bar" style="grid-template-columns:minmax(0,1fr) auto" data-open="e:' + e.id + '"><span class="bl">' + esc(e.need) + '</span><span class="bv" style="font-weight:400;color:var(--mute);max-width:60%;overflow:hidden;text-overflow:ellipsis">' + esc(e.figure || "") + "</span></div>").join("") + '<p class="cap">' + esc(g) + ". Use the dots for the other groups.</p>"),
+    takes: groups.map((g) => () => D.entails.filter((e) => e.group === g).map((e) => '<div class="bar" style="grid-template-columns:minmax(0,46%) minmax(0,1fr)" data-open="e:' + e.id + '"><span class="bl">' + esc(e.need) + '</span><span class="bv" style="font-weight:400;color:var(--mute);overflow:hidden;text-overflow:ellipsis;text-align:right">' + esc(e.figure || "") + "</span></div>").join("") + '<p class="cap">' + esc(g) + ". Use the dots for the other groups.</p>"),
   };
   const dc = {}; cs.forEach((c) => { if (c.start) { const d = Math.max(1890, Math.floor(c.start / 10) * 10); (dc[d] = dc[d] || { sea: 0, land: 0, sky: 0, none: 0 })[c.group]++; } });
   const dk = []; for (let d = 1890; d <= 2020; d += 10) dk.push(d); const GC = { sea: "#6d9bb4", land: "#b9a68e", sky: "#a68fc0", none: "#7fb09a" };
