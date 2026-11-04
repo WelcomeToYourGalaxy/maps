@@ -1733,18 +1733,19 @@ const LC_DATA_GZ = "/*__DATA__*/";
     if (popup && popup.isOpen() && popup._lc) openPopup(popup._lc, popup.getLngLat());
     updatePoints();
   }
-  // Lines: great-circle arcs between the places a pattern connects.
+  // Lines: gentle curves between the places a pattern connects. They follow the shortest way
+  // east or west and bow slightly to one side, instead of a great circle, which on long
+  // east-west links swings up toward the pole.
   function arc(a, b) {
-    const R = Math.PI / 180, [x1, y1] = [a[0] * R, a[1] * R], [x2, y2] = [b[0] * R, b[1] * R];
-    const d = 2 * Math.asin(Math.sqrt(Math.sin((y2 - y1) / 2) ** 2 + Math.cos(y1) * Math.cos(y2) * Math.sin((x2 - x1) / 2) ** 2));
-    if (d < 1e-6) return [a, b];
+    let dx = b[0] - a[0]; if (dx > 180) dx -= 360; if (dx < -180) dx += 360;
+    const dy = b[1] - a[1], len = Math.hypot(dx, dy);
+    if (len < 1e-6) return [a, b];
+    const bow = Math.min(12, len * 0.12), nx = -dy / len, ny = dx / len, side = ny < 0 ? -1 : 1; // bow toward the equator side kept small
     const pts = [];
     for (let i = 0; i <= 48; i++) {
-      const f = i / 48, A = Math.sin((1 - f) * d) / Math.sin(d), B = Math.sin(f * d) / Math.sin(d);
-      const x = A * Math.cos(y1) * Math.cos(x1) + B * Math.cos(y2) * Math.cos(x2), y = A * Math.cos(y1) * Math.sin(x1) + B * Math.cos(y2) * Math.sin(x2), z = A * Math.sin(y1) + B * Math.sin(y2);
-      pts.push([Math.atan2(y, x) / R, Math.atan2(z, Math.sqrt(x * x + y * y)) / R]);
+      const t = i / 48, k = 4 * t * (1 - t) * bow * side;
+      pts.push([a[0] + dx * t + nx * k, Math.max(-75, Math.min(75, a[1] + dy * t + ny * k))]);
     }
-    for (let i = 1; i < pts.length; i++) { while (pts[i][0] - pts[i - 1][0] > 180) pts[i][0] -= 360; while (pts[i][0] - pts[i - 1][0] < -180) pts[i][0] += 360; }
     return pts;
   }
   function drawLines(l, o) {
