@@ -173,7 +173,8 @@ Still open:
 ### 7. Map behaviour
 
 - Flat map: free dragging, as on the central bank map (`freeFlat`, `setTransformConstrain` limits the centre to ±360° longitude and ±84° latitude). Background layers fill the whole screen in flat view, so `syncSheets` swaps each for a world-sized fill (`<id>-flat`) on the flat map, which leaves stars around the world.
-- Sidebar: the places list and the rows scroll together inside `#sidescroll`.
+- Sidebar: the places list and the rows scroll together inside `#sidescroll`. Lender groups are drop-downs nested inside "All together"; the patterns section is its own drop-down box on the right (`#patbox`), and the globe shifts left while it is open (`pad`). Clicking the chosen row again clears it (`state.active = null`, no shading).
+- Pattern lines: hairlines (0.8 px, or 0.5–2 px by amount on the contracts row) with small dots at each end (`pat-end`).
 - Stars: drawn on a seeded canvas (`#stars`) behind the map.
 - Dot colours: the dots change with each background (`PTCOL`).
 

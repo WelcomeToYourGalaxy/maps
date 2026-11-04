@@ -76,6 +76,14 @@
   details.secd:not([open]) > summary.sec::after { transform: rotate(-90deg); }
   details.secd > summary.sec .n { margin-left: auto; margin-right: 8px; color: #8A939D; letter-spacing: 0; text-transform: none; }
   details.secd > .rows { padding: 0 8px 6px; }
+  details.secd details.secd { margin: 6px 0 6px 10px; }
+  details.secd details.secd > summary.sec { padding: 7px 9px; font-size: 10.5px; }
+  #patbox { position: absolute; right: 12px; top: 122px; bottom: 40px; width: 340px; max-width: calc(100vw - 24px); z-index: 4; overflow: auto; pointer-events: none; }
+  #patbox > * { pointer-events: auto; }
+  #patbox details.secd { background: rgba(13,17,23,.94); box-shadow: 0 8px 28px rgba(0,0,0,.45); border-color: #28303A; margin: 0; }
+  #patbox details.secd:not([open]) { display: inline-block; float: right; }
+  #patbox details.secd > .rows { max-height: none; }
+  @media (max-width: 720px) { #patbox { top: auto; bottom: 8px; width: auto; left: 12px; max-height: 40vh; } }
   .row { border: 1px solid #222A33; border-radius: 5px; margin: 6px 0; background: rgba(20,26,34,.6); }
   .row.on { border-color: #4A5566; background: rgba(28,35,45,.85); }
   .row .head { display: flex; gap: 6px; align-items: flex-start; padding: 8px 10px; }
@@ -149,6 +157,7 @@
 </div>
 <button type="button" id="world" title="Zoom back out to see the whole world">Whole world</button>
 <button type="button" id="proj" title="Switch between a globe and a flat map">Flat map</button>
+<aside id="patbox" aria-label="Patterns behind the scenes"><div id="patpanel"></div></aside>
 <aside id="side">
   <header>
     <h1>Loan conditions worldwide</h1>
@@ -795,8 +804,8 @@ const LC_DATA_GZ = "/*__DATA__*/";
     id: "all", lender: "All", ramp: "stone", span: [1947, 2026],
     title: "Every lender: deals that came with strings attached",
     short: "conditional deals from every lender",
-    plain: "Every loan, rescue or debt deal on this map that came with strings attached, from every lender, added up for each country. Lighter means more deals. Untick a lender to leave it out, and pick any other row for the details.",
-    controls: () => checks("lender", { "Count these": ALLK }, (k) => k),
+    plain: "Every loan, rescue or debt deal on this map that came with strings attached, from every lender, added up for each country. The lenders ticked below are added together: a country's figure is the sum of all their deals. Untick a lender to take its deals out of the total, and pick any other row for the details.",
+    controls: () => `<div class="grp" style="margin-top:2px">Added together: each country's figure is the sum of every lender ticked here. Untick one to take it out of the total.</div>` + checks("lender", { "Lenders in the total": ALLK }, (k) => k),
     unit: (v) => `${num(v)} deal${v === 1 ? "" : "s"}`,
     values(from, to, o) {
       const out = new Map(), unplaced = new Map(), on = (k) => !o.off || !o.off.has(k);
@@ -806,7 +815,7 @@ const LC_DATA_GZ = "/*__DATA__*/";
     popup(c, from, to, o) {
       const on = (k) => !o.off || !o.off.has(k);
       const p = ALLK.map((k, i) => (on(k) ? SRC[i](c, from, to).length : 0));
-      return `<div class="big">${num(p.reduce((s, v) => s + v, 0))} deals</div><table>${ALLK.map((k, i) => `<tr><td>${k}${tip("all_" + i)}</td><td class="n">${num(p[i])}</td></tr>`).join("")}</table><div class="note">Pick a lender's own row for the list of deals and their conditions.</div>`;
+      return `<div class="big">${num(p.reduce((s, v) => s + v, 0))} deals in all</div><div class="note">The sum of the lenders below.</div><table>${ALLK.map((k, i) => `<tr><td>${k}${tip("all_" + i)}</td><td class="n">${num(p[i])}</td></tr>`).join("")}<tr><td><b>Total</b></td><td class="n"><b>${num(p.reduce((s, v) => s + v, 0))}</b></td></tr></table><div class="note">Pick a lender's own row for the list of deals and their conditions.</div>`;
     },
     srcLine: "every lender's row below, added together",
     about: `<p>One count per deal: each IMF arrangement, World Bank policy-based loan, IDB policy-based loan, EU or euro-area programme, Paris Club agreement and Chinese state loan, plus each budget-support payment that other lenders reported to the OECD (Japan, the United States, Germany, Saudi Arabia, the Asian and African Development Banks and the rest; the IMF, World Bank, IDB and EU entries there are left out so they are not counted twice). Untick any of them.</p>
@@ -1339,7 +1348,7 @@ const LC_DATA_GZ = "/*__DATA__*/";
   const state = { active: "all", from: MINY, to: MAXY, opts: {}, base: "land" };
   for (const l of LAYERS) state.opts[l.id] = { measure: undefined, off: new Set() };
   const panel = $("#panel");
-  const SECS = { Pat: "Patterns behind the scenes", All: "Together", IMF: "International Monetary Fund", "World Bank": "World Bank", IDB: "Regional development banks", EU: "European Union and euro area", Gov: "Single governments", OECD: "Every lender reporting to the OECD", Flows: "Other money flowing in and out" };
+  const SECS = { Pat: "Patterns behind the scenes", All: "All together", IMF: "International Monetary Fund", "World Bank": "World Bank", IDB: "Regional development banks", EU: "European Union and euro area", Gov: "Single governments", OECD: "Every lender reporting to the OECD", Flows: "Other money flowing in and out" };
   const ORDER = ["All", "Pat", "IMF", "World Bank", "IDB", "EU", "Gov", "OECD", "Flows"];
   LAYERS.sort((a, b) => ORDER.indexOf(a.lender) - ORDER.indexOf(b.lender));
   const rowHtml = (l) => {
@@ -1347,20 +1356,34 @@ const LC_DATA_GZ = "/*__DATA__*/";
       <div class="body">${l.plain ? `<p class="plain">${esc(l.plain)}</p>` : ""}${l.controls()}<div class="legend" id="leg-${l.id}"></div><div class="unplaced" id="un-${l.id}"></div>
       <details><summary>Sources and fine print</summary>${l.about}</details></div></div>`;
   };
-  // Each group of rows is its own drop-down; the group holding the row shown first starts open.
-  panel.innerHTML = ORDER.filter((g) => LAYERS.some((l) => l.lender === g)).map((g) => {
+  // Each group of rows is its own drop-down. The lender groups sit inside "All together";
+  // the patterns sit in their own box on the right.
+  const group = (g, inner = "") => {
     const rows = LAYERS.filter((l) => l.lender === g);
-    return `<details class="secd" data-sec="${esc(g)}"${rows.some((l) => l.id === state.active) ? " open" : ""}><summary class="sec"><span>${esc(SECS[g])}</span><span class="n">${rows.length}</span></summary><div class="rows">${rows.map(rowHtml).join("")}</div></details>`;
-  }).join("");
+    if (!rows.length && !inner) return "";
+    return `<details class="secd" data-sec="${esc(g)}"${rows.some((l) => l.id === state.active) ? " open" : ""}><summary class="sec"><span>${esc(SECS[g])}</span><span class="n">${rows.length || ""}</span></summary><div class="rows">${rows.map(rowHtml).join("")}${inner}</div></details>`;
+  };
+  panel.innerHTML = group("All", ORDER.filter((g) => g !== "All" && g !== "Pat").map((g) => group(g)).join(""));
+  $("#patpanel").innerHTML = group("Pat");
   for (const l of LAYERS) for (const s of document.querySelectorAll(`.row[data-id="${l.id}"] select[data-k]`)) state.opts[l.id][s.dataset.k] = s.value;
-  panel.addEventListener("change", (e) => {
+  // Clicking the row that is already chosen clears it, leaving the map unshaded.
+  const onPress = (e) => { const r = e.target.closest && e.target.closest("label.pick"); if (r) { const i = r.querySelector("input[name=row]"); r._was = i && i.checked; } };
+  const onPick = (e) => {
+    const r = e.target.closest && e.target.closest("label.pick"); if (!r || !r._was) return;
+    const i = r.querySelector("input[name=row]"); r._was = false;
+    if (e.target !== i) return;
+    i.checked = false; state.active = null; redraw();
+  };
+  const onChange = (e) => {
     const row = e.target.closest(".row"); if (!row) return;
     const id = row.dataset.id, o = state.opts[id];
     if (e.target.name === "row") { state.active = id; }
     else if (e.target.matches("select[data-k]")) o[e.target.dataset.k] = e.target.value;
     else if (e.target.matches("[data-checks] input")) { e.target.checked ? o.off.delete(e.target.dataset.v) : o.off.add(e.target.dataset.v); }
     redraw();
-  });
+  };
+  $("#patpanel").addEventListener("toggle", (e) => { if (e.target.matches("details.secd")) { try { pad(); } catch (err) {} } }, true);
+  for (const box of [panel, $("#patpanel")]) { box.addEventListener("change", onChange); box.addEventListener("pointerdown", onPress); box.addEventListener("click", onPick); }
 
   // Years
   const yF = $("#yFrom"), yT = $("#yTo");
@@ -1469,7 +1492,8 @@ const LC_DATA_GZ = "/*__DATA__*/";
     }
   }
   drawStars(); window.addEventListener("resize", drawStars);
-  const pad = () => map.setPadding({ left: window.innerWidth > 720 ? 396 : 0, top: 0, right: 0, bottom: window.innerWidth > 720 ? 0 : Math.round(window.innerHeight * 0.5) });
+  const patOpen = () => !!document.querySelector("#patbox details.secd[open]");
+  const pad = () => map.setPadding({ left: window.innerWidth > 720 ? 396 : 0, top: 0, right: window.innerWidth > 720 && patOpen() ? 360 : 0, bottom: window.innerWidth > 720 ? 0 : Math.round(window.innerHeight * 0.5) });
   pad(); window.addEventListener("resize", pad);
   window.loanConditionsMap = map;
 
@@ -1655,6 +1679,17 @@ const LC_DATA_GZ = "/*__DATA__*/";
 
   function redraw() {
     if (!ready) return;
+    if (!state.active) {
+      for (const r of document.querySelectorAll(".row")) r.classList.remove("on");
+      for (const x of LAYERS) { $(`#leg-${x.id}`).innerHTML = ""; $(`#un-${x.id}`).innerHTML = ""; }
+      map.setPaintProperty("lc-fill", "fill-color", "rgba(0,0,0,0)");
+      for (const k of ["pat-lines", "pat-ends"]) { const src = map.getSource(k); if (src) src.setData({ type: "FeatureCollection", features: [] }); }
+      current = new Map();
+      $("#now").textContent = "No row chosen: the countries are not shaded. Pick a row to shade them.";
+      $("#cover").textContent = "";
+      if (popup && popup.isOpen() && popup._lc) popup.remove();
+      updatePoints(); return;
+    }
     const l = rowOf(state.active), o = state.opts[l.id];
     for (const r of document.querySelectorAll(".row")) r.classList.toggle("on", r.dataset.id === l.id);
     const radio = $(`.row[data-id="${l.id}"] input[type=radio]`); if (radio) radio.checked = true;
@@ -1730,16 +1765,24 @@ const LC_DATA_GZ = "/*__DATA__*/";
     return pts;
   }
   function drawLines(l, o) {
-    const src = map.getSource("pat-lines"); if (!src) return;
+    const src = map.getSource("pat-lines"); if (!src || !map.getSource("pat-ends")) return;
     const L = l.lines ? l.lines(state.from, state.to, o, popup && popup.isOpen() ? popup._lc : null) : [];
     const max = Math.max(1, ...L.map((x) => x.w || 1));
-    src.setData({ type: "FeatureCollection", features: L.filter((x) => x.a && x.b).map((x) => ({ type: "Feature", geometry: { type: "LineString", coordinates: arc(x.a, x.b) }, properties: { label: x.label || "", w: 0.6 + 2.4 * Math.sqrt((x.w || 1) / max) } })) });
-    map.setPaintProperty("pat-line", "line-color", LINECOL[state.base] || "#E9E4D8");
-    map.moveLayer("pat-line");
+    const LL = L.filter((x) => x.a && x.b && !(x.a[0] === x.b[0] && x.a[1] === x.b[1]));
+    src.setData({ type: "FeatureCollection", features: LL.map((x) => ({ type: "Feature", geometry: { type: "LineString", coordinates: arc(x.a, x.b) }, properties: { label: x.label || "", w: x.w ? 0.5 + 1.5 * Math.sqrt(x.w / max) : 0.8 } })) });
+    const ends = new Map(); for (const x of LL) for (const p of [x.a, x.b]) ends.set(p.join(","), p);
+    map.getSource("pat-ends").setData({ type: "FeatureCollection", features: [...ends.values()].map((p) => ({ type: "Feature", geometry: { type: "Point", coordinates: p }, properties: {} })) });
+    const lc = LINECOL[state.base] || "#E9E4D8", edge = (PTCOL[state.base] || PTCOL.land).edge;
+    map.setPaintProperty("pat-line", "line-color", lc);
+    map.setPaintProperty("pat-line", "line-opacity", state.base === "atlas" || state.base === "jurassic" ? 0.8 : 0.6);
+    map.setPaintProperty("pat-end", "circle-color", lc); map.setPaintProperty("pat-end", "circle-stroke-color", edge);
+    map.moveLayer("pat-line"); map.moveLayer("pat-end");
   }
   map.on("load", () => {
     map.addSource("pat-lines", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
-    map.addLayer({ id: "pat-line", type: "line", source: "pat-lines", layout: { "line-cap": "round" }, paint: { "line-color": "#E9E4D8", "line-width": ["*", 1.3, ["get", "w"]], "line-opacity": 0.85 } });
+    map.addLayer({ id: "pat-line", type: "line", source: "pat-lines", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#E9E4D8", "line-width": ["get", "w"], "line-opacity": 0.6 } });
+    map.addSource("pat-ends", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+    map.addLayer({ id: "pat-end", type: "circle", source: "pat-ends", paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 1, 1.8, 6, 3], "circle-color": "#E9E4D8", "circle-stroke-width": 0.8, "circle-stroke-color": "#0B0F14", "circle-opacity": 0.9 } });
     map.on("mousemove", "pat-line", (e) => { const f = e.features[0]; if (!f || !f.properties.label) return; hoverTip.textContent = f.properties.label; hoverTip.style.display = "block"; hoverTip.style.left = e.point.x + 14 + "px"; hoverTip.style.top = e.point.y + 10 + "px"; });
   });
 
@@ -1747,7 +1790,8 @@ const LC_DATA_GZ = "/*__DATA__*/";
   let popup = null, hovered = null;
   const hoverTip = $("#tip");
   function openPopup(c, lngLat) {
-    const l = rowOf(state.active), o = state.opts[l.id];
+    const l = rowOf(state.active); if (!l) return;
+    const o = state.opts[l.id];
     const v = current.get(c);
     const html = `<h3>${esc(GEO.get(c) || c)}</h3><div class="src">${esc(l.title)} · ${state.from} to ${state.to}</div>` +
       (v == null ? `<div class="note">This source has no record for this country.</div>` : l.popup(c, state.from, state.to, o));
@@ -1762,7 +1806,7 @@ const LC_DATA_GZ = "/*__DATA__*/";
     if (hovered !== c) { if (hovered) map.setFeatureState({ source: "lc", id: hovered }, { hover: false }); hovered = c !== "-99" ? c : null; if (hovered) map.setFeatureState({ source: "lc", id: hovered }, { hover: true }); }
     map.getCanvas().style.cursor = "pointer";
     const l = rowOf(state.active), v = current.get(c);
-    hoverTip.innerHTML = `${esc(f.properties.name)}: ${v == null ? "no record" : esc(l.unit(v, state.opts[l.id]))}`;
+    hoverTip.innerHTML = l ? `${esc(f.properties.name)}: ${v == null ? "no record" : esc(l.unit(v, state.opts[l.id]))}` : esc(f.properties.name);
     hoverTip.style.display = "block"; hoverTip.style.left = e.point.x + 14 + "px"; hoverTip.style.top = e.point.y + 10 + "px";
   });
   map.on("mouseleave", "lc-fill", () => { if (hovered) map.setFeatureState({ source: "lc", id: hovered }, { hover: false }); hovered = null; hoverTip.style.display = "none"; map.getCanvas().style.cursor = ""; });
