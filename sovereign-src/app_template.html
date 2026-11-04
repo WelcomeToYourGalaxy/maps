@@ -220,7 +220,7 @@ table.heat tr:hover td.nm{color:#fff;text-decoration:underline}
 <div id="rcol" class="col">
   <div class="btnrow"><button class="btn pri" data-act="room">Command room</button><button class="btn" data-act="about">About</button><button class="btn" data-act="method">Method and sources</button></div>
   <div id="tr" class="card"><div id="trBody"></div></div>
-  <div id="stack" class="card"><div class="bh"><span class="psec">Every place, top to bottom<span class="qm" data-tip="Each legal location, ordered by height from Mars down to the deep seabed. The number is the estimated chance chosen in the shading menu. Click one for the rules, the odds and the attempts made there.">?</span></span><button id="toggleSt" class="tog" type="button">−</button></div><div id="stBody" class="scroll"></div></div>
+  <div id="stack" class="card"><div class="bh"><span class="psec">Every place, top to bottom<span class="qm" data-tip="Each kind of place, from interstellar space down to the deep seabed, then land and the other routes to it. The number is the estimated chance chosen in the shading menu. Click one for the rules, the odds and the attempts made there.">?</span></span><button id="toggleSt" class="tog" type="button">−</button></div><div id="stBody" class="scroll"></div></div>
   <div id="legBox" class="card"><div class="bh"><span class="psec">On the map</span><button id="toggleLeg" class="tog" type="button">−</button></div><div id="legBody"></div></div>
 </div>
 <button id="worldBtn" type="button">Whole world</button>
@@ -250,7 +250,7 @@ const $ = (s, r) => (r || document).querySelector(s), $$ = (s, r) => [...(r || d
 const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
 /* ---------- vocab ---------- */
-const GROUPS = { sea: ["Sea and seabed", "c"], land: ["Land and ice", "d"], sky: ["Air and space", "t"], none: ["No territory", "s"] };
+const GROUPS = { sea: ["Water and seabed", "c"], land: ["Land and routes", "d"], sky: ["Air and space", "t"], none: ["No territory", "s"] };
 const OUTS = {
   going: "Still running", stopped: "Stopped or absorbed by a state", faded: "Faded or collapsed", never: "Never built, or not yet", fraud: "Fraud finding", law: "Law, treaty or legal test"
 };
