@@ -172,24 +172,6 @@
     <div class="cover" id="cover"></div>
   </div>
   <div class="scroll" id="sidescroll">
-  <div id="points">
-    <div class="h">Places on the map</div>
-    <label><input type="checkbox" data-pts="wb"><span class="dot" id="dot-wb"></span><span>World Bank project sites, 1995–2014</span><span class="q" tabindex="0" role="button" aria-label="What this means" data-tip="Where World Bank loans and grants were spent: towns, districts, roads, dams and so on, as AidData and the World Bank mapped them. Click a dot for the project.">?</span><span class="n" id="n-wb"></span></label>
-    <label><input type="checkbox" data-pts="cn"><span class="dot" id="dot-cn"></span><span>Chinese state-financed project sites, 2000–2021</span><span class="q" tabindex="0" role="button" aria-label="What this means" data-tip="Where loans and grants from Chinese state banks and agencies were spent, as AidData traced them on OpenStreetMap: ports, railways, power plants, hospitals and more. Click a dot for the project.">?</span><span class="n" id="n-cn"></span></label>
-    <label class="sub"><input type="checkbox" id="pts-exact"><span>Only places pinned to an exact spot</span></label>
-    <label><input type="checkbox" data-pts="cs"><span class="dot" id="dot-cs"></span><span>Where a loan condition led to harm</span><span class="q" tabindex="0" role="button" aria-label="What this means" data-tip="Cases where a source documents that an IMF or World Bank condition led to a sale, a price or tax rise, a pay or job cut, a tariff cut or a law change that hurt people or land. A ring instead of a dot means the link to the lender is disputed; both sides are on the card. Click a mark for the full card and its sources.">?</span><span class="n" id="n-cs"></span></label>
-    <div class="sub" id="cs-kinds"></div>
-    <label><input type="checkbox" data-pts="mm"><span class="dot" id="dot-mm"></span><span>Protests against governments, 1990–2020</span><span class="q" tabindex="0" role="button" aria-label="What this means" data-tip="Every protest of 50 or more people against a government that the Mass Mobilization Project coded from newspapers, with what protesters demanded and how the state responded. It covers all protests, not only those over loan conditions; the menu below can narrow it. Each mark sits on the town the record names; protests with no town named sit on the capital. Click a mark for the record.">?</span><span class="n" id="n-mm"></span></label>
-    <div class="sub"><select id="mm-only" aria-label="Which protests to show">
-      <option value="all">Every protest</option>
-      <option value="price">Over price rises and taxes</option>
-      <option value="wage">Over wages and jobs</option>
-      <option value="land">Over land and farms</option>
-      <option value="imf">Where its record mentions the IMF or World Bank</option>
-      <option value="kill">Met with shootings or killings</option>
-    </select></div>
-    <label><input type="checkbox" data-pts="pf"><span class="dot" id="dot-pf"></span><span>Services taken back into public hands, 2000 on</span><span class="q" tabindex="0" role="button" aria-label="What this means" data-tip="Water, power, transport, waste, health and other services that towns, regions or countries took back from private companies, or newly set up as public services, as logged by the Public Futures database (University of Glasgow and the Transnational Institute). Marks are placed from the place name and are approximate. Click a mark for the case.">?</span><span class="n" id="n-pf"></span></label>
-  </div>
   <div id="panel"></div>
   </div>
 </aside>
@@ -1364,7 +1346,7 @@ const LC_DATA_GZ = "/*__DATA__*/";
     return `<details class="secd" data-sec="${esc(g)}"${rows.some((l) => l.id === state.active) ? " open" : ""}><summary class="sec"><span>${esc(SECS[g])}</span><span class="n">${rows.length || ""}</span></summary><div class="rows">${rows.map(rowHtml).join("")}${inner}</div></details>`;
   };
   panel.innerHTML = group("All", ORDER.filter((g) => g !== "All" && g !== "Pat").map((g) => group(g)).join(""));
-  $("#patpanel").innerHTML = group("Pat");
+  $("#patpanel").innerHTML = group("Pat").replace('<details class="secd"', '<details class="secd" open');
   for (const l of LAYERS) for (const s of document.querySelectorAll(`.row[data-id="${l.id}"] select[data-k]`)) state.opts[l.id][s.dataset.k] = s.value;
   // Clicking the row that is already chosen clears it, leaving the map unshaded.
   const onPress = (e) => { const r = e.target.closest && e.target.closest("label.pick"); if (r) { const i = r.querySelector("input[name=row]"); r._was = i && i.checked; } };
@@ -1525,6 +1507,7 @@ const LC_DATA_GZ = "/*__DATA__*/";
   const CSKIND = { privatization: "Sale or handover of a public firm or service", austerity: "Price, tax, pay, job or spending cuts", trade: "Trade opening", law: "A required change in the law" };
   const csOff = new Set();
   function setupPoints() {
+    if (!$("#points")) return; // the place layers were taken off the page on 3 Nov 2026
     const WP = D.wbsites.projects;
     const wbf = D.wbsites.points.map(([x, y, id, pc, place]) => ({ type: "Feature", geometry: { type: "Point", coordinates: [x, y] },
       properties: { id, pc, place, y: (WP[id] || [])[5] ?? -1 } }));
@@ -1636,7 +1619,7 @@ const LC_DATA_GZ = "/*__DATA__*/";
       `<div class="note">Source: Mass Mobilization Project (Clark and Regan), record ${esc(id)}, <a href="https://doi.org/10.7910/DVN/HTTWYL" target="_blank" rel="noopener">Harvard Dataverse</a>.</div>`;
   }
   function updatePoints() {
-    if (!map.getLayer("pt-wb")) return;
+    if (!map.getLayer("pt-wb") || !$("#points")) return;
     const c = PTCOL[state.base] || PTCOL.land, exact = $("#pts-exact").checked;
     const yr = ["any", ["==", ["get", "y"], -1], ["all", [">=", ["get", "y"], state.from], ["<=", ["get", "y"], state.to]]];
     {
