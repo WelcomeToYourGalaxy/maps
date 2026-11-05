@@ -277,10 +277,15 @@ for i,r in _rev.get('essays',{}).items():
         zs[i]['essay']=r['essay']
         for q in r.get('add_sources',[]):
             if q.get('u') and not any(x['u']==q['u'] for x in zs[i]['sources']):zs[i]['sources'].append(q)
-for _n in('review1','review2','cr1','cr2','cr3','cr4'):
+_cons=jl('consistency') or {}
+for _n in('review1','review2','CONS','cr1','cr2','cr3','cr4'):
+    if _n=='CONS':
+        for i,e_ in _cons.get('essays',{}).items():
+            if i in zs:zs[i]['essay']=e_
+        continue
     for i,r in (jl(_n) or {}).get('essays',{}).items():
         if i in zs:
-            zs[i]['essay']=r['essay']
+            if r.get('essay'):zs[i]['essay']=r['essay']
             for q in r.get('add_sources',[]):
                 if q.get('u') and not any(x['u']==q['u'] for x in zs[i]['sources']):zs[i]['sources'].append(q)
 _e2=dict(jl('entails2') or {})
@@ -292,12 +297,9 @@ for e in ent:
         e['what']=r['what']
         for q in r.get('add_sources',[]):
             if q.get('u') and not any(x['u']==q['u'] for x in e['sources']):e['sources'].append(q)
-_cons=jl('consistency') or {}
 OWN=jl('own') or {}
 COV=jl('coverage') or {}
 SHORT=open(os.path.join(HERE,'content','short.html')).read() if os.path.exists(os.path.join(HERE,'content','short.html')) else ''
-for i,e_ in _cons.get('essays',{}).items():
-    if i in zs:zs[i]['essay']=e_
 zones=[]
 for b,ids in BANDS:
     for i in ids:
