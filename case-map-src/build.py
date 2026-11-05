@@ -78,6 +78,7 @@ rep("    paras(p.summary) +\n    (p.implications", "    paras(p.summary) +\n    
 i = s.index('window.PATS = ') + len('window.PATS = ')
 P, n = json.JSONDecoder().raw_decode(s[i:])
 have = {p['id'] for p in P}
+_PX = json.load(open(os.path.dirname(os.path.abspath(__file__)) + '/docs/r19_pats.json')) if os.path.exists(os.path.dirname(os.path.abspath(__file__)) + '/docs/r19_pats.json') else {}
 for p in LCP:
     if p['id'] in have: continue
     q = dict(p)
@@ -86,6 +87,7 @@ for p in LCP:
     q['claims_per_author'] = [{'claim': c.get('claim', '') + (' What the record shows: ' + c['status'] if c.get('status') else ''), 'author_work': ', '.join(x for x in [c.get('author'), c.get('work')] if x)} for c in p.get('claims_per_author', [])]
     if isinstance(p.get('uncertain'), list): q['uncertain'] = ' '.join(p['uncertain'])
     q.pop('roles', None)
+    q.update({k: _PX.get(p['id'], {}).get(k) for k in ('implications', 'case_ids') if _PX.get(p['id'], {}).get(k) is not None})
     P.append(q)
 s = s[:i] + json.dumps(P, ensure_ascii=False, separators=(',', ':')) + s[i + n:]
 
