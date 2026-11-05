@@ -28,6 +28,7 @@ def fix(recs,fname):
             elif str(v)==str(x.get('old')): r[f]=x['new'];n+=1
             else: print('FIX MISS',x['id'],f,str(x.get('old'))[:60])
             s=x.get('source')
+            if isinstance(s,str):s={'t':s,'u':s} if s.startswith('http') else None
             if s and s.get('u') and not any(q['u']==s['u'] for q in r['sources']): r['sources'].append(s)
     return n
 ocean,land,space=J('ocean'),J('land'),J('space')
@@ -45,10 +46,10 @@ _seen=set();_e=[]
 for c in extra:
     if c['id'] in _seen:continue
     _seen.add(c['id']);_e.append(c)
-extra=_e+(jl('routes2') or [])+(jl('purchase') or [])
+extra=_e+(jl('routes2') or [])+(jl('purchase') or [])+(jl('purchase2') or [])
 DROP={'space':{'dominion-of-melchizedek','aerican-empire','praxis','zuzalu','sovereign-order-of-malta','talossa'}}
 space=[r for r in space if r['id'] not in DROP['space']]
-fix(extra,'fix_routes');fix(extra,'fix_other')
+fix(extra,'fix_routes');fix(extra,'fix_other');fix(extra,'fix_purchase')
 for c in extra:
     c['status']=c.get('status') or 'dormant'
     if c['id']=='migingo-island':c['status']='operating';c['end']=None;c['stopped_by']=None
