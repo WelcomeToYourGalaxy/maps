@@ -119,7 +119,7 @@ for c in out:
     c['plat']=round(c['lat']+d*math.sin(a),4);c['plon']=round(c['lon']+d*math.cos(a),4)
 # plain-language rewrites
 _by={c['id']:c for c in out}
-for n in range(1,8):
+for n in range(1,15):
     rw=jl('rw%d'%n) or {}
     for i,r in rw.items():
         c=_by.get(i)
@@ -148,6 +148,7 @@ def cleansrc(l):
     return o
 for c in out:c['sources']=cleansrc(c.get('sources'))
 def paras(t,n=65):
+    if '\n\n' in str(t or ''):return '\n'.join(x.strip() for x in str(t).split('\n\n') if x.strip())
     t=' '.join(str(t or '').split());out_=[];cur=[];w=0
     parts=re.split(r'(?<=[.!])\s+(?=[A-Z0-9])',t);merged=[]
     for x in parts:
@@ -220,6 +221,19 @@ for i,r in rwz['zones'].items():
 for e in ent:
     for k,v in rwz['entails'].get(e['id'],{}).items():
         if k=='figure' or v not in(None,''):e[k]=v
+for n in range(1,6):
+    for i,r in (jl('essays%d'%n) or {}).items():
+        if i in zs:
+            zs[i]['essay']=r['essay']
+            for q in r.get('add_sources',[]):
+                if q.get('u') and not any(x['u']==q['u'] for x in zs[i]['sources']):zs[i]['sources'].append(q)
+_e2=jl('entails2') or {}
+for e in ent:
+    r=_e2.get(e['id'])
+    if r:
+        e['what']=r['what']
+        for q in r.get('add_sources',[]):
+            if q.get('u') and not any(x['u']==q['u'] for x in e['sources']):e['sources'].append(q)
 zones=[]
 for b,ids in BANDS:
     for i in ids:
