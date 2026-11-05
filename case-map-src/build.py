@@ -79,8 +79,9 @@ i = s.index('window.PATS = ') + len('window.PATS = ')
 P, n = json.JSONDecoder().raw_decode(s[i:])
 have = {p['id'] for p in P}
 _PX = json.load(open(os.path.dirname(os.path.abspath(__file__)) + '/docs/r19_pats.json')) if os.path.exists(os.path.dirname(os.path.abspath(__file__)) + '/docs/r19_pats.json') else {}
+_MERGED = {'investors-sue-after-privatization'}  # folded into company-sued-the-state in base.html; originals in docs/r20_merged_pattern_originals.json
 for p in LCP:
-    if p['id'] in have: continue
+    if p['id'] in have or p['id'] in _MERGED: continue
     q = dict(p)
     yrs = [int(t['year']) for t in p.get('timeline', []) if str(t.get('year', '')).isdigit()] + [x['year'] for x in p.get('series', []) or []]
     if yrs: q['years'] = [min(yrs), max(yrs)]
