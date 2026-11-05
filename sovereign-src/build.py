@@ -47,6 +47,10 @@ for c in extra:
     if c['id'] in _seen:continue
     _seen.add(c['id']);_e.append(c)
 extra=_e+(jl('routes2') or [])+(jl('purchase') or [])+(jl('purchase2') or [])
+combo_zones=[]
+for n in('combo_sea','combo_space','combo_land','combo_people'):
+    d=jl(n)
+    if d:combo_zones+=d['zones'];extra+=d['cases']
 DROP={'space':{'dominion-of-melchizedek','aerican-empire','praxis','zuzalu','sovereign-order-of-malta','talossa'}}
 space=[r for r in space if r['id'] not in DROP['space']]
 fix(extra,'fix_routes');fix(extra,'fix_other');fix(extra,'fix_purchase')
@@ -105,7 +109,8 @@ for c in out:
 # new records keep their own zid, kind and flags
 for c in extra:
     c.pop('band',None)
-    c['group']='sky' if c['zid'] in SKY else 'sea' if c['zid'] in SEA else 'none' if c['zid'] in('digital-no-territory','no-territory-conceptual','exile-and-landless-authority') else 'land'
+    _g=c.get('group')
+    c['group']=_g if _g in('sea','land','sky','none') else 'sky' if c['zid'] in SKY else 'sea' if c['zid'] in SEA else 'none' if c['zid'] in('digital-no-territory','no-territory-conceptual','exile-and-landless-authority') else 'land'
     c['out']='law' if c['kind']=='law' else OUT[c['status']]
     c['held']=bool(c.get('held'));c['recd']=bool(c.get('recd'));c['body']='earth';c['built']=bool(c.get('built'));c['inhabited']=bool(c.get('inhabited'))
     for k in('currency','passports','laws','stopped_by','pop','challenge','recognition','cost'):
@@ -168,6 +173,7 @@ def paras(t,n=65):
 for c in out:c['story']=paras(c.get('story'))
 # zones
 zs={z['id']:z for z in J('zones')}
+for z in combo_zones:zs[z['id']]=z
 for z in extra_zones:
     z.pop('band',None);zs[z['id']]=z
 pf=jl('fix_routes') or [];pf2=jl('fix_other') or []
@@ -250,6 +256,8 @@ zones=[]
 for b,ids in BANDS:
     for i in ids:
         z=zs[i];a=ODDS[i];z['band']=b;z['odds']=dict(build=a[0],law=a[1],money=a[2],hold=a[3],recog=a[4],why=(jl('odds_new') or {}).get(i,a[5]));zones.append(z)
+for z in combo_zones:
+    o=z['odds'];z['band']='Combinations and open questions';z.setdefault('who_owns','');z.setdefault('hook','');z.setdefault('can_you_build','');z.setdefault('facts',[]);zones.append(z)
 assert len(zones)==len(zs),set(zs)-{z['id'] for z in zones}
 for c in out:assert c['zid'] in zs,c['id']
 ZID={z['id'] for z in zones};ids={c['id'] for c in out}
