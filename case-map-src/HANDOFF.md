@@ -100,3 +100,12 @@ WebFetch has an hourly limit shared across agents. Running several agents at onc
 - The 12 loan-conditions patterns now carry implications and case_ids from `docs/r19_pats.json`, applied in `build.py`; the list sorts by start year.
 - `infra_adb.py` and `docs/r19_adb.json` add the Asian Development Bank from its two procurement files. Contract data gaps now: AfDB, EIB, export credit agencies.
 - People on the record: 139.
+
+## Round 20
+
+- **Project sites** (`pastHTML()`) now open the Cases section as "Every project site on record", followed by "The cases: where harm is documented". Only the World Bank (1995–2014) and Chinese state lenders (2000–2021) are mapped this way.
+- **Company lines and headquarters** draw whatever the Cases switch says.
+- **Card under the basemap box:** `fitUnderTr()` runs from a ResizeObserver on `#tr`.
+- **Company-funded deals** left the layer list and became the chart window `ppi` (`drawPpiWin()`), from `window.PPID`, built by `infra_ppi.py` from the World Bank PPI file. Rich countries are not in that database by design; the chart's footnote lists the gaps. The ppi_* numbers stay in `window.INFRA` because the chart's table reads them.
+- **Contracts explainer:** `contractsHTML()`, at the top of "Companies in roads, ports, power and water".
+- **Merged pattern:** `investors-sue-after-privatization` was folded into `company-sued-the-state` (`_MERGED` in `build.py`). Both originals are in `docs/r20_merged_pattern_originals.json`. 15 patterns now.
