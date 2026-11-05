@@ -117,3 +117,5 @@ WebFetch has an hourly limit shared across agents. Running several agents at onc
 - Briefs: `off` and `all` use `briefHTML()`; others use `kindBriefHTML()`, with `window.MK_BRIEF[k] = {items:[[question, html]], sources:[[title,url]]}` for sourced figures. Any figure from the owner's own text must be re-sourced on an opened page; unconfirmed ones stay off. The "Claude AI estimates 20–40%" line stays out for good.
 - Products are not split by kind yet. Thin kinds say so in their sections (`MK_THIN`).
 - Research order: grants and private loans first, then government loans, then private investment.
+
+- State after round 21: 901 cases, 44 profiled entities. Grant cases: `window.MK_GRANT_MORE`, also added by hand with their `kind:"gra"` field. Round 21 entities were added straight into `window.ENT.companies`; merge.py does not handle them. Dropped lists in `rounds/r20f_*.json` and `r21f_gp.json` hold open leads. Next: government loans, then private investment, plus patterns for grants and products split by kind.
