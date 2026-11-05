@@ -73,7 +73,9 @@ __WBCA__
   function row(id) {
     const l = byId(id); if (!l) return "";
     const cur = active() === l, t = l.title.replace(STRIP, ""), title = t.charAt(0).toUpperCase() + t.slice(1);
-    return '<label><input type="radio" name="layer" value="lc:' + l.id + '"' + (cur ? " checked" : "") + '><span>' + esc(title) + ' <span class="n">' + l.span[0] + '–' + l.span[1] + '</span>' + qm(l.plain || String(l.about || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().split(/(?<=\.)\s/).slice(0, 2).join(" ")) + '</span></label>' +
+    const CUM = new Set(["all", "imfc", "imfa", "rsf", "gove", "wbp", "wbc", "wbpriv", "idb", "oecd", "eu", "pc", "cn", "hcl", "imfearly", "mona", "tuff", "found", "wbca"]), MIX = new Set(["fdi", "aid", "remit"]), DEBT = new Set(["priv", "bilat"]);
+    const how = CUM.has(l.id) ? "Cumulative: adds up every year chosen." : MIX.has(l.id) ? "Money amounts are cumulative over the years chosen; shares are averaged." : DEBT.has(l.id) ? "Debts owed show the latest year chosen, not a total; yearly money amounts add up." : l.id === "interest" ? "Not cumulative: an average over the years chosen." : l.id === "tied" ? "Not cumulative: a share across the years chosen." : "";
+    return '<label><input type="radio" name="layer" value="lc:' + l.id + '"' + (cur ? " checked" : "") + '><span>' + esc(title) + ' <span class="n">' + l.span[0] + '–' + l.span[1] + '</span>' + (how ? '<span class="sub" style="display:block;margin:0">' + how + '</span>' : "") + qm(l.plain || String(l.about || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().split(/(?<=\.)\s/).slice(0, 2).join(" ")) + '</span></label>' +
       (cur ? '<div class="row lcrow" data-id="' + l.id + '">' + (l.plain ? '<div class="sub">' + esc(l.plain) + '</div>' : "") + l.controls() + legendSlot() + '<details class="lcfine"><summary>Sources and fine print</summary>' + l.about + '</details></div>' : "");
   }
   function wireTr() {
