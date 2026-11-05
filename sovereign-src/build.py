@@ -346,6 +346,7 @@ for z in zones:
         if r['cite']=="Italy's 2011 austerity package":r['says']='This package was reported at first as making towns under 1,000 people merge with neighbours. The Constitutional Court (44/2014) said the law required them to form a union of towns, not to merge. Either way, a state decides how towns are organised.'
         if r['cite']=='Starlink terms (2020 beta)':r['says']=r['says'].replace('Whether the current text still says this has not been confirmed.','Articles from June and July 2025 still quote it from the terms then in use, and whether the terms in force now contain it is not known.')
     if z['id'] in (jl('why4') or {}):z['odds']['why']=jl('why4')[z['id']]
+    z['facts']=[f.replace('and 59 to a no vote.','and 59 to a no vote. The other 5 are votes in Niue, Tokelau (twice), Bougainville and Alberta.') if isinstance(f,str) else f for f in (z.get('facts') or [])]
     z['odds']['why']=z['odds']['why'].replace('Taiwan later burned buildings there, and','Taiwanese forces later moved against his men, and')
 assert len(zones)==len(zs),set(zs)-{z['id'] for z in zones}
 for c in out:assert c['zid'] in zs,c['id']
