@@ -136,6 +136,10 @@ for n in range(1,15):
             else:c[k]=v
 for c in out:
     if c.get('lat') is not None and 'plat' not in c:c['plat'],c['plon']=c['lat'],c['lon']
+for i,r in (jl('review') or {}).get('cases',{}).items():
+    if i in _by:_by[i]['story']=r['story']
+for c in out:
+    if c['id']=='state-to-state-purchases':c['story']=c['story'].replace('on this list since 1958','in that list since 1958')
 def cleansrc(l):
     o=[]
     for q in l or []:
@@ -227,7 +231,15 @@ for n in range(1,6):
             zs[i]['essay']=r['essay']
             for q in r.get('add_sources',[]):
                 if q.get('u') and not any(x['u']==q['u'] for x in zs[i]['sources']):zs[i]['sources'].append(q)
-_e2=jl('entails2') or {}
+_rev=jl('review') or {}
+for i,r in _rev.get('essays',{}).items():
+    if i in zs:
+        zs[i]['essay']=r['essay']
+        for q in r.get('add_sources',[]):
+            if q.get('u') and not any(x['u']==q['u'] for x in zs[i]['sources']):zs[i]['sources'].append(q)
+_e2=dict(jl('entails2') or {})
+for i,r in _rev.get('entails',{}).items():
+    _e2[i]={'what':r['what'],'add_sources':(_e2.get(i,{}).get('add_sources',[])+r.get('add_sources',[]))}
 for e in ent:
     r=_e2.get(e['id'])
     if r:
