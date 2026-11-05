@@ -20,7 +20,10 @@ a{color:var(--accent-hi)}
 .col{position:absolute;z-index:800;top:12px;bottom:30px;width:330px;display:flex;flex-direction:column;gap:8px;pointer-events:none}
 .col>*{pointer-events:auto}
 #lcol{left:12px}#rcol{right:12px}
-#key{flex:1 1 auto;min-height:150px;overflow:auto;padding:13px 15px 12px}
+#key{flex:1 1 auto;min-height:0;overflow:auto;padding:13px 15px 12px}
+#key.min{flex:0 0 auto;overflow:visible}
+#key.min .lede,#key.min .lede2{display:none}
+#key.min h1{margin:0}
 #key h1{font:400 22px/1.2 var(--serif);margin:0 0 3px;color:#f2f4f1;letter-spacing:.1px}
 .lede{margin:0 0 3px;color:#c5cfcc;font-size:12.6px;line-height:1.42}
 .lede2{margin:0 0 3px;color:var(--mute);font-size:11.4px}
@@ -52,6 +55,10 @@ select:focus,input.inp:focus{outline:none;border-color:var(--accent-hi)}
 .tax{display:flex;justify-content:space-between;font-size:10px;color:var(--faint);margin-top:1px}
 .lk{color:var(--accent-hi);cursor:pointer;font-size:11.4px;background:none;border:0;padding:0}
 #patBox{flex:0 1 38%;min-height:42px;display:flex;flex-direction:column;padding:10px 13px}
+#key.min~#patBox{flex:1 1 auto}
+#patBox.min{flex:0 0 auto}
+#patBox.min{margin-top:auto}
+#key.min~#patBox.min{margin-top:0}
 #patBox .bh,#stack .bh,#legBox .bh{display:flex;justify-content:space-between;align-items:center}
 #patBox .psec,#stack .psec,#legBox .psec{margin:0}
 #patBody{overflow:auto;min-height:0;margin-top:5px}
@@ -73,6 +80,13 @@ input[type=radio],input[type=checkbox]{accent-color:var(--accent);margin:0 4px 0
 .seg{display:flex;gap:4px;flex-wrap:wrap;margin:2px 0}
 .gridseg{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px}
 #stack{flex:1 1 auto;min-height:60px;display:flex;flex-direction:column;padding:9px 11px 8px}
+#stack.min{flex:0 0 auto;min-height:0}
+#tr.min .tbody{display:none}
+.trl{display:none;font-size:10.2px;letter-spacing:1.3px;text-transform:uppercase;color:var(--accent-hi)}#tr.min .trl{display:inline}
+#tr .bh{display:flex;justify-content:space-between;align-items:center}
+#tr .bh .psec{margin:0}
+#legBox{margin-top:auto}
+#stack:not(.min)~#legBox{margin-top:0}
 #stBody{overflow:auto;min-height:0;margin-top:3px}
 .stg{font-size:9.6px;letter-spacing:1.1px;text-transform:uppercase;color:var(--faint);margin:7px 0 1px}
 .st{display:flex;gap:7px;align-items:center;padding:2px 3px;font-size:12.2px;line-height:1.25;cursor:pointer;border-top:1px solid var(--line2)}
@@ -96,11 +110,16 @@ input[type=radio],input[type=checkbox]{accent-color:var(--accent);margin:0 4px 0
 #credit a{color:#93a09e;pointer-events:auto}
 #ttip{position:fixed;z-index:5000;pointer-events:none;background:#0e171a;border:1px solid var(--line);border-radius:3px;padding:5px 8px;font-size:12px;line-height:1.35;display:none;max-width:300px}
 #ttip small{color:var(--mute);display:block}
-#veil{position:fixed;inset:0;background:rgba(2,6,8,.55);z-index:940;display:none}
-#veil.open{display:block}
-#det{display:none;position:fixed;z-index:950;left:50%;top:50%;transform:translate(-50%,-50%);width:min(660px,calc(100% - 28px));max-height:min(84vh,840px);overflow:auto;padding:16px 22px 20px;background:var(--solid);border:1px solid var(--line);border-radius:6px;box-shadow:0 18px 50px rgba(0,0,0,.6)}
-#det.open{display:block}
-#detX{position:sticky;float:right;top:-6px;background:none;border:0;color:var(--mute);font-size:22px;line-height:1;cursor:pointer;margin:-6px -10px 0 0}
+#det{display:none;position:fixed;z-index:950;left:12px;top:12px;width:min(600px,calc(100% - 24px));height:min(84vh,820px);min-width:300px;min-height:180px;max-width:calc(100vw - 8px);max-height:calc(100vh - 8px);flex-direction:column;background:var(--solid);border:1px solid var(--line);border-radius:6px;box-shadow:0 18px 50px rgba(0,0,0,.6);overflow:hidden;resize:both}
+#det.open{display:flex}
+#detHead{flex:none;display:flex;align-items:center;gap:5px;padding:6px 9px;border-bottom:1px solid var(--line);cursor:grab;user-select:none;touch-action:none;background:rgba(255,255,255,.03)}
+#det.dragging #detHead{cursor:grabbing}
+#detHead .hbtn{background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:3px;padding:1px 9px;font-size:12px;cursor:pointer;color:var(--ink)}
+#detHead .hbtn:hover:not(:disabled){border-color:var(--accent-hi)}
+#detHead .hbtn:disabled{opacity:.32;cursor:default}
+#detHead .sp{flex:1;font-size:10.6px;color:var(--faint);text-align:center;white-space:nowrap;overflow:hidden}
+#detBody{flex:1;min-height:0;overflow:auto;padding:12px 22px 20px;scrollbar-width:thin}
+#detX{background:none;border:0;color:var(--mute);font-size:21px;line-height:1;cursor:pointer;padding:0 3px}
 #detX:hover{color:#fff}
 .k{font-size:10.2px;letter-spacing:1.2px;text-transform:uppercase;color:var(--accent-hi)}
 #det h3{font:500 20px/1.25 var(--serif);margin:3px 0 3px;color:#f4f6f3;padding-right:20px}
@@ -135,7 +154,8 @@ ul.fx{margin:3px 0;padding-left:16px;font-size:13px;color:#d6dedb}ul.fx li{margi
 .page h3{font:500 16px/1.3 var(--serif);margin:26px 0 8px;color:var(--accent-hi)}
 .page p{font-size:15px;line-height:1.72;margin:0 0 13px;color:#dee4e1}
 .page li{font-size:14px;line-height:1.6;color:#dee4e1;margin:4px 0}
-.pclose{position:fixed;top:12px;right:14px;z-index:970}
+.doc h2{font:500 20px/1.25 var(--serif);margin:3px 0 10px;color:#f4f6f3}.doc h3{font:500 15px/1.3 var(--serif)!important;margin:18px 0 6px!important;color:var(--accent-hi)!important;padding:0!important}.doc p,.doc li{font-size:14px;line-height:1.62;color:#dbe2df}.doc p{margin:0 0 10px}.doc ul{padding-left:18px}
+.dt{margin-top:13px;border-top:1px solid var(--line2);padding-top:6px}.dt summary{cursor:pointer;font-size:10.2px;letter-spacing:1.2px;text-transform:uppercase;color:var(--accent-hi)}
 /* command room */
 #room{position:fixed;inset:0;z-index:900;display:none;flex-direction:column;padding:0 12px 12px;color:var(--ink);background:
  radial-gradient(900px 520px at 18% 12%,rgba(70,108,104,.2),transparent 70%),radial-gradient(800px 600px at 85% 85%,rgba(84,76,110,.14),transparent 70%),#080f12}
@@ -199,6 +219,8 @@ table.heat tr:hover td.nm{color:#fff;text-decoration:underline}
  #cover{align-items:flex-start}
  .page{padding:54px 16px 50px}
  .rate{grid-template-columns:112px 1fr 40px}
+ #det{left:6px!important;right:6px;top:auto!important;width:auto!important;height:62vh!important;bottom:6px;resize:none}
+ #detHead .sp{visibility:hidden}
 }
 #phonebar{position:absolute;z-index:890;top:8px;left:8px;right:8px;display:none;gap:4px;justify-content:space-between}
 #phonebar .btn{flex:1;padding:7px 2px;text-align:center;font-size:12px}
@@ -219,14 +241,13 @@ table.heat tr:hover td.nm{color:#fff;text-decoration:underline}
 </div>
 <div id="rcol" class="col">
   <div class="btnrow"><button class="btn pri" data-act="room">Compare every place</button><button class="btn" data-act="about">About</button><button class="btn" data-act="method">Method and sources</button></div>
-  <div id="tr" class="card"><div id="trBody"></div></div>
+  <div id="tr" class="card"><button id="toggleTr" class="tog" type="button">−</button><span class="trl">Basemap and view</span><div id="trBody" class="tbody"></div></div>
   <div id="stack" class="card"><div class="bh"><span class="psec">Every place, top to bottom<span class="qm" data-tip="Each kind of place, from interstellar space down to the deep seabed, then land and the other routes to it. The number is the estimated chance chosen in the shading menu. Click one for the rules, the odds and the attempts made there.">?</span></span><button id="toggleSt" class="tog" type="button">−</button></div><div id="stBody" class="scroll"></div></div>
   <div id="legBox" class="card"><div class="bh"><span class="psec">On the map</span><button id="toggleLeg" class="tog" type="button">−</button></div><div id="legBody"></div></div>
 </div>
 <button id="worldBtn" type="button">Whole world</button>
 <div id="credit"></div>
-<div id="veil"></div>
-<div id="det"><button id="detX" type="button" aria-label="Close">×</button><div id="detBody"></div></div>
+<div id="det"><div id="detHead"><button id="detBack" class="hbtn" type="button" title="Back">‹ Back</button><button id="detFwd" class="hbtn" type="button" title="Forward">Forward ›</button><span class="sp">drag here to move · drag the corner to resize</span><button id="detX" type="button" aria-label="Close">×</button></div><div id="detBody"></div></div>
 <div id="ttip"></div>
 
 <div id="room">
@@ -235,9 +256,6 @@ table.heat tr:hover td.nm{color:#fff;text-decoration:underline}
   <div id="ticker" title="The legal rule each case shows. Hover to pause, click to open."></div>
   <div id="rgrid"></div>
 </div>
-<div id="about" class="page scroll"></div>
-<div id="method" class="page scroll"></div>
-<button id="pageX" class="btn pclose" type="button" style="display:none">Close</button>
 
 <script src="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
 <script>window.PLATE_IMG="__PLATE__";window.MOON_IMG="__MOON__";window.MARS_IMG="__MARS__";</script>
@@ -316,12 +334,13 @@ function addLayers() {
   map.addLayer({ id: "z-fill", type: "fill", source: "zones", filter: ["==", ["geometry-type"], "Polygon"], paint: { "fill-color": "#888", "fill-opacity": .27 } });
   map.addLayer({ id: "z-fill2", type: "fill", source: "zones", filter: ["==", ["geometry-type"], "MultiPolygon"], paint: { "fill-color": "#888", "fill-opacity": .27 } });
   map.addLayer({ id: "z-line", type: "line", source: "zones", filter: ["!=", ["get", "zone"], "geo"], paint: { "line-color": "rgba(240,240,232,.2)", "line-width": .5 } });
+  map.addLayer({ id: "z-hl", type: "line", source: "zones", filter: ["==", ["get", "zone"], "__none"], paint: { "line-color": "#f2efe4", "line-width": 2 } });
   map.addLayer({ id: "belt", type: "line", source: "zones", filter: ["==", ["get", "zone"], "geo"], paint: { "line-color": "#d7d2c4", "line-width": 1.3, "line-dasharray": [2, 2] } });
   map.addSource("cases", { type: "geojson", data: fc() });
   map.addLayer({ id: "c-ring", type: "circle", source: "cases", filter: ["==", ["get", "id"], ""], paint: { "circle-radius": 10, "circle-color": "rgba(0,0,0,0)", "circle-stroke-color": "#fff", "circle-stroke-width": 1.5, "circle-pitch-alignment": "map" } });
   map.addLayer({ id: "c-pts", type: "symbol", source: "cases", layout: { "icon-image": ["get", "icon"], "icon-size": ["interpolate", ["linear"], ["zoom"], 1, .62, 4, .8, 8, 1], "icon-allow-overlap": true, "icon-ignore-placement": true } });
   map.addLayer({ id: "c-name", type: "symbol", source: "cases", minzoom: 3.2, layout: { "text-field": ["get", "name"], "text-font": ["EBGaramond-Regular"], "text-size": 12.5, "text-offset": [0, 1], "text-anchor": "top", "text-optional": true, "text-max-width": 10 }, paint: { "text-color": "#eef0ea", "text-halo-color": "rgba(5,9,11,.9)", "text-halo-width": 1.3 } });
-  IDS.push("moon", "mars", "z-fill", "z-fill2", "z-line", "belt", "c-ring", "c-pts", "c-name");
+  IDS.push("moon", "mars", "z-fill", "z-fill2", "z-line", "z-hl", "belt", "c-ring", "c-pts", "c-name");
   map.on("mousemove", "c-pts", (e) => { map.getCanvas().style.cursor = "pointer"; const c = C[e.features[0].properties.id]; tip("<b>" + esc(c.name) + "</b><small>" + esc(Z[c.zid].name) + " · " + esc(yrs(c)) + " · " + OUTS[c.out] + "</small>", e.originalEvent); });
   map.on("mouseleave", "c-pts", () => { map.getCanvas().style.cursor = ""; untip(); });
   const zh = (e) => { if (map.queryRenderedFeatures(e.point, { layers: ["c-pts"] }).length) return; const p = e.features[0].properties, z = Z[p.zone]; if (!z) return; map.getCanvas().style.cursor = "pointer"; const v = z.odds[S.shade]; tip("<b>" + esc(z.name) + "</b>" + (p.label ? "<small>" + esc(p.label) + "</small>" : "") + "<small>" + esc(SHADES[S.shade][0]) + ": " + fmtPct(v) + "</small>", e.originalEvent); };
@@ -338,7 +357,11 @@ function paint() {
   map.setLayoutProperty("moon", "visibility", v(S.world === "moon")); map.setLayoutProperty("mars", "visibility", v(S.world === "mars"));
   map.setLayoutProperty("c-name", "visibility", v(S.showNames));
   map.getSource("cases").setData(fc());
-  map.setFilter("c-ring", ["==", ["get", "id"], S.sel || ""]);
+  const hl = S.hl && S.hl.length ? ["literal", S.hl] : null;
+  map.setFilter("c-ring", hl ? ["in", ["get", "id"], hl] : ["==", ["get", "id"], S.sel || ""]);
+  map.setPaintProperty("c-ring", "circle-radius", hl ? 7.5 : 10);
+  map.setPaintProperty("c-pts", "icon-opacity", hl ? ["case", ["in", ["get", "id"], hl], 1, .22] : (S.sel ? ["case", ["==", ["get", "id"], S.sel], 1, .55] : 1));
+  map.setFilter("z-hl", S.hlz && S.hlz.length ? ["in", ["get", "zone"], ["literal", S.hlz]] : ["==", ["get", "zone"], "__none"]);
 }
 function setWorld(w) { S.world = w; S.zone = null; buildTr(); paint(); buildStack(); $("#credit").innerHTML = CRED[w]; map.jumpTo(home()); }
 const CRED = { earth: 'Zones: <a href="https://www.marineregions.org/" target="_blank" rel="noopener">Marine Regions (Flanders Marine Institute)</a>; <a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener">Natural Earth</a>. Antarctic wedges drawn from the claimants\' longitudes.', moon: 'Moon imagery: <a href="https://svs.gsfc.nasa.gov/4720" target="_blank" rel="noopener">NASA SVS CGI Moon Kit (LRO LROC)</a>', mars: 'Mars imagery: <a href="https://trek.nasa.gov/mars/" target="_blank" rel="noopener">NASA Mars Trek, Viking MDIM 2.1 colour mosaic</a>' };
@@ -374,9 +397,9 @@ function buildKey() {
   buildLeg();
 }
 function norm(s) { return String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); }
-function searchAll(q) { const w = norm(q); if (w.length < 2) return []; const out = []; D.cases.forEach((c) => { if (norm([c.name, (c.aka || []).join(" "), c.founder, c.story].join(" ")).includes(w)) out.push({ k: "c", id: c.id, n: c.name, s: Z[c.zid].name + " · " + yrs(c), t: norm(c.name).includes(w) ? 0 : 1 }); }); D.zones.forEach((z) => { if (norm(z.name + " " + z.who_owns + " " + (z.rules || []).map((r) => r.cite + " " + r.says).join(" ")).includes(w)) out.push({ k: "z", id: z.id, n: z.name, s: "Kind of place", t: norm(z.name).includes(w) ? 0 : 2 }); }); D.entails.forEach((e) => { if (norm(e.need + " " + e.what).includes(w)) out.push({ k: "e", id: e.id, n: e.need, s: "What it takes · " + e.group, t: norm(e.need).includes(w) ? 0 : 2 }); }); return out.sort((a, b) => a.t - b.t).slice(0, 40); }
+function searchAll(q) { const w = norm(q); if (w.length < 2) return []; const out = []; D.cases.forEach((c) => { if (norm([c.name, (c.aka || []).join(" "), c.founder, c.story].join(" ")).includes(w)) out.push({ k: "c", id: c.id, n: c.name, s: Z[c.zid].name + " · " + yrs(c), t: norm(c.name).includes(w) ? 0 : 1 }); }); D.zones.forEach((z) => { if (norm(z.name + " " + (z.essay || "") + " " + z.who_owns + " " + (z.rules || []).map((r) => r.cite + " " + r.says).join(" ")).includes(w)) out.push({ k: "z", id: z.id, n: z.name, s: "Kind of place", t: norm(z.name).includes(w) ? 0 : 2 }); }); D.entails.forEach((e) => { if (norm(e.need + " " + e.what).includes(w)) out.push({ k: "e", id: e.id, n: e.need, s: "What it takes · " + e.group, t: norm(e.need).includes(w) ? 0 : 2 }); }); return out.sort((a, b) => a.t - b.t).slice(0, 40); }
 function find() { const l = $("#flist"), q = S.q || ""; if (q.trim().length < 2) { l.innerHTML = ""; return; } const r = searchAll(q); l.innerHTML = r.length ? r.map((x) => '<div class="fi" data-k="' + x.k + '" data-id="' + x.id + '">' + esc(x.n) + "<small>" + esc(x.s) + "</small></div>").join("") : '<div class="fi" style="cursor:default;color:var(--mute)">Nothing matches.</div>'; $$(".fi[data-id]", l).forEach((n) => n.addEventListener("click", () => openAny(n.dataset.k, n.dataset.id))); }
-const openAny = (k, id) => k === "c" ? openCase(id) : k === "z" ? openZone(id) : openNeed(id);
+const openAny = (k, id, l) => k === "c" ? openCase(id) : k === "z" ? openZone(id, l) : k === "e" ? openNeed(id) : k === "p" ? openPat(id) : openDoc(id);
 function buildTr() {
   const w = S.world;
   $("#trBody").innerHTML = '<div class="psec">Which world</div><div class="seg">' + [["earth", "Earth"], ["moon", "Moon"], ["mars", "Mars"]].map((x) => '<button class="btn small' + (w === x[0] ? " on" : "") + '" data-w="' + x[0] + '">' + x[1] + "</button>").join("") + "</div>" + (w === "earth" ? '<div class="psec" style="margin-top:7px">Basemap</div><div class="bases">' + CulpritsBasemaps.list.map((b) => '<label><input type="radio" name="bm" value="' + b[0] + '"' + (curBase === b[0] ? " checked" : "") + ">" + b[1] + "</label>").join("") + "</div>" : '<div style="font-size:11.4px;color:var(--mute);margin-top:6px;line-height:1.35">' + (w === "moon" ? "These are the hardware sites states keep control of. Claims to the Moon as a whole have no spot, so they sit at the founder's base on Earth." : "No one has been there. These are landers and rovers whose state keeps control of them. Claims to Mars as a whole sit at the founder's base on Earth.") + "</div>") + '<div class="psec" style="margin-top:7px">View</div><div class="seg"><button class="btn small' + (proj === "globe" ? " on" : "") + '" data-p="globe">Globe</button><button class="btn small' + (proj === "mercator" ? " on" : "") + '" data-p="mercator">Flat map</button></div>';
@@ -401,24 +424,41 @@ function buildPat() {
 }
 
 /* ---------- centre boxes ---------- */
-function show(html) { $("#detBody").innerHTML = html; $("#det").classList.add("open"); $("#veil").classList.add("open"); $("#det").scrollTop = 0; wire(); }
-function close() { $("#det").classList.remove("open"); $("#veil").classList.remove("open"); S.sel = null; if (ready) paint(); }
+const H = { list: [], i: -1, nav: false };
+function pushH(k, id, label) { if (H.nav) return; H.list = H.list.slice(0, H.i + 1); const c = H.list[H.i]; if (c && c.k === k && c.id === id) return; H.list.push({ k, id, label }); H.i = H.list.length - 1; }
+function goH(d) { const n = H.i + d; if (n < 0 || n >= H.list.length) return; H.i = n; H.nav = true; const e = H.list[n]; openAny(e.k, e.id, e.label); H.nav = false; syncH(); }
+function syncH() { $("#detBack").disabled = H.i <= 0; $("#detFwd").disabled = H.i >= H.list.length - 1; }
+function show(html) { $("#detBody").innerHTML = html; $("#det").classList.add("open"); $("#detBody").scrollTop = 0; wire(); syncH(); }
+function close() { $("#det").classList.remove("open"); S.sel = null; S.hl = null; S.hlz = null; if (ready) paint(); }
 function wire() { $$("[data-open]", $("#detBody")).forEach((n) => n.addEventListener("click", (e) => { e.preventDefault(); const [k, id] = n.dataset.open.split(":"); openAny(k, id); })); $$("[data-do]", $("#detBody")).forEach((n) => n.addEventListener("click", () => { const a = n.dataset.do; if (a === "onlyzone") { S.zone = n.dataset.z; S.pat = null; close(); toMap(); paint(); buildStack(); fitCases(); } else if (a === "clearzone") { S.zone = null; close(); paint(); buildStack(); } else if (a === "patshow") { const p = D.patterns.find((x) => x.id === n.dataset.p); S.pat = S.pat === p ? null : p; close(); toMap(); paint(); buildPat(); if (S.pat) fitCases(); else map.flyTo(home()); } })); }
 const srcs = (l) => (l && l.length) ? '<div class="src"><b style="font-weight:500">Sources</b><ol>' + l.map((s) => '<li><a href="' + esc(s.u) + '" target="_blank" rel="noopener">' + esc(s.t) + "</a></li>").join("") + "</ol></div>" : "";
 const STEPS = [["Announced", () => 1], ["Built or occupied", (c) => c.built], ["People lived there", (c) => c.inhabited], ["Own money", (c) => c.currency], ["Own laws or courts", (c) => c.laws], ["Outlasted a state's challenge", (c) => c.held], ["Recognised by a UN member", (c) => c.recd]];
+function detPad() { const f = freeBox(), d = $("#det"); if (isPhone() || !d.classList.contains("open") && !H.list.length) return { left: f.L, right: f.R, top: 0, bottom: 0 }; const r = d.getBoundingClientRect(), W = innerWidth; if (!r.width) return { left: Math.min(612, W / 2), right: f.R, top: 0, bottom: 0 }; return (r.left + r.width / 2) < W / 2 ? { left: Math.min(r.right + 8, W * .6), right: f.R, top: 0, bottom: 0 } : { left: f.L, right: Math.min(W - r.left + 8, W * .6), top: 0, bottom: 0 }; }
+function focusIds(ids) { const pts = ids.map((i) => C[i]).filter((c) => c && c.lat != null && (c.body || "earth") === S.world).map((c) => [c.plon, c.plat]); if (!pts.length || $("#room").classList.contains("open")) return; const padding = detPad(); if (pts.length === 1) return map.flyTo({ center: pts[0], zoom: Math.max(map.getZoom(), 3), padding, duration: 800 }); const lon = pts.map((p) => p[0]), lat = pts.map((p) => p[1]); const spanx = Math.max(...lon) - Math.min(...lon), spany = Math.max(...lat) - Math.min(...lat); const ct = [(Math.max(...lon) + Math.min(...lon)) / 2, (Math.max(...lat) + Math.min(...lat)) / 2]; const zoom = proj === "globe" ? Math.max(startZoom() * .8, Math.min(3.4, Math.log2(300 / Math.max(spanx, spany * 1.6, 25)) + .3)) : Math.max(.6, Math.min(4, Math.log2(300 / Math.max(spanx, spany * 1.6, 25)))); map.flyTo({ center: ct, zoom, padding, duration: 900 }); }
 function openCase(id) {
-  const c = C[id], z = Z[c.zid]; S.sel = id; if (S.world === (c.body || "earth") && c.lat != null) { map.flyTo({ center: [c.plon, c.plat], duration: 700 }); paint(); }
+  const c = C[id], z = Z[c.zid]; pushH("c", id); S.sel = id; S.hl = null; S.hlz = null; const body = c.body || "earth"; if (S.world !== body) setWorld(body); paint();
   const row = (k, v) => v ? "<tr><th>" + k + "</th><td>" + esc(v) + "</td></tr>" : "";
-  show('<div class="k">' + mkSvg(c.group, c.out, 10) + " " + esc(z.name) + " · " + OUTS[c.out] + "</div><h3>" + esc(c.name) + '</h3><p class="sub">' + esc(yrs(c)) + (c.aka && c.aka.length ? " · also " + esc(c.aka.join(", ")) : "") + "</p>" + (c.kind === "attempt" ? '<div class="steps">' + STEPS.map((s) => '<div class="' + (s[1](c) ? "y" : "") + '">' + s[0] + "</div>").join("") + "</div>" : "") + String(c.story || "").split(/\n+/).map((p) => '<p class="para" style="margin-top:10px">' + esc(p) + "</p>").join("") + (c.mechanism ? '<div class="note"><b style="font-weight:500">Legal point: </b>' + esc(c.mechanism) + "</div>" : "") + '<table class="kv">' + row("Founder", c.founder) + row("Stopped by", c.stopped_by) + row("Population", c.pop) + row("Money", c.currency) + row("Papers", c.passports) + row("Laws", c.laws) + row("State challenge", c.challenge) + row("Recognition", c.recognition) + row("Cost", c.cost) + row(c.body && c.body !== "earth" ? "Location" : (c.anchor ? "Marked at" : "Location"), c.anchor || (c.lat != null ? (c.loc === "approx" ? "Approximate position" : "") : "No single place")) + '</table><p style="margin:10px 0 0"><a href="#" class="lk" data-open="z:' + z.id + '">Rules and odds for this kind of place: ' + esc(z.name) + "</a></p>" + srcs(c.sources));
+  show('<div class="k">' + mkSvg(c.group, c.out, 10) + " " + esc(z.name) + " · " + OUTS[c.out] + "</div><h3>" + esc(c.name) + '</h3><p class="sub">' + esc(yrs(c)) + (c.aka && c.aka.length ? " · also " + esc(c.aka.join(", ")) : "") + "</p>" + (c.kind === "attempt" ? '<div class="steps">' + STEPS.map((s) => '<div class="' + (s[1](c) ? "y" : "") + '">' + s[0] + "</div>").join("") + "</div>" : "") + String(c.story || "").split(/\n+/).map((p) => '<p class="para" style="margin-top:10px">' + esc(p) + "</p>").join("") + (c.mechanism ? '<div class="note"><b style="font-weight:500">Legal point: </b>' + esc(c.mechanism) + "</div>" : "") + '<table class="kv">' + row("Founder", c.founder) + row("Stopped by", c.stopped_by) + row("Population", c.pop) + row("Money", c.currency) + row("Papers", c.passports) + row("Laws", c.laws) + row("State challenge", c.challenge) + row("Recognition", c.recognition) + row("Cost", c.cost) + row(c.body && c.body !== "earth" ? "Location" : (c.anchor ? "Marked at" : "Location"), c.anchor || (c.lat != null ? (c.loc === "approx" ? "Approximate position" : "") : "No single place")) + '</table><p style="margin:10px 0 0"><a href="#" class="lk" data-open="z:' + z.id + '">How this kind of place works: ' + esc(z.name) + "</a></p>" + srcs(c.sources)); if (c.lat != null) focusIds([id]);
 }
 function openNear(ids) { const u = [...new Set(ids)]; if (u.length === 1) return openCase(u[0]); show('<div class="k">' + u.length + " attempts at this spot</div><h3>Choose one</h3>" + u.map((i) => '<div class="cl" data-open="c:' + i + '">' + mkSvg(C[i].group, C[i].out) + esc(C[i].name) + "<small>" + esc(yrs(C[i])) + "</small></div>").join("")); }
+const paras = (s, st) => String(s || "").split(/\n\s*\n|\n/).filter((x) => x.trim()).map((p) => '<p class="para"' + (st || "") + ">" + esc(p.trim()) + "</p>").join("");
 function openZone(id, label) {
-  const z = Z[id]; if (!z) return; const o = z.odds, list = D.cases.filter((c) => c.zid === id).sort((a, b) => (a.start || 0) - (b.start || 0));
+  const z = Z[id]; if (!z) return; pushH("z", id, label); const o = z.odds, list = D.cases.filter((c) => c.zid === id).sort((a, b) => (a.start || 0) - (b.start || 0));
+  S.sel = null; S.hl = list.map((c) => c.id); S.hlz = [id]; if (S.world !== "earth" && id !== "moon" && id !== "mars-and-beyond") setWorld("earth"); paint();
   const rate = (k) => '<div class="rate"><span>' + esc(SHADES[k][0].replace("Overall: ", "")) + '</span><span class="t"><i style="width:' + Math.max(1, o[k]) + "%;background:" + rampCol(o[k]) + '"></i></span><b>' + fmtPct(o[k]) + "</b></div>";
-  show('<div class="k">' + esc(z.band) + "</div><h3>" + esc(z.name) + "</h3>" + (label ? '<p class="sub">' + esc(label) + "</p>" : "") + '<div class="big2"><div><b>' + fmtPct(o.overall) + '</b><span>Chance a serious private group founds it and keeps it free of outside enforcement for ten years</span></div><div><b>' + fmtPct(o.recog) + '</b><span>Chance any UN member recognises it as a state within 25 years</span></div></div><div class="hh">Estimated chances</div>' + ["build", "law", "money", "hold", "recog"].map(rate).join("") + '<p class="para" style="margin-top:9px">' + esc(o.why) + '</p><div class="hh">Who has authority</div><p class="para">' + esc(z.who_owns) + "</p>" + (z.hook ? '<div class="note"><b style="font-weight:500">How a state reaches you here: </b>' + esc(z.hook) + "</div>" : "") + (z.can_you_build ? '<div class="hh">Getting there</div><p class="para">' + esc(z.can_you_build) + "</p>" : "") + (z.rules && z.rules.length ? '<div class="hh">The rules</div>' + z.rules.map((r) => '<div class="rule"><b>' + esc(r.cite) + "</b>" + esc(r.says) + "</div>").join("") : "") + (z.facts && z.facts.length ? '<div class="hh">Figures</div><ul class="fx">' + z.facts.map((f) => "<li>" + esc(f) + "</li>").join("") + "</ul>" : "") + '<div class="hh">Attempts here (' + list.length + ")</div>" + (list.length ? list.map((c) => '<div class="cl" data-open="c:' + c.id + '">' + mkSvg(c.group, c.out) + esc(c.name) + "<small>" + esc(yrs(c)) + "</small></div>").join("") : '<p class="sub">None found.</p>') + (list.length ? '<p style="margin:9px 0 0"><button class="btn small" data-do="' + (S.zone === id ? "clearzone" : "onlyzone") + '" data-z="' + id + '">' + (S.zone === id ? "Show every place again" : "Show only these on the map") + "</button></p>" : "") + srcs(z.sources));
+  const fallback = paras(z.who_owns) + paras(z.hook) + paras(z.can_you_build);
+  show('<div class="k">' + esc(z.band) + "</div><h3>" + esc(z.name) + "</h3>" + (label ? '<p class="sub">' + esc(label) + "</p>" : "") + (z.essay ? paras(z.essay, ' style="margin-top:10px"') : fallback) + '<div class="hh">Estimated chances</div><div class="big2"><div><b>' + fmtPct(o.overall) + '</b><span>A serious private group sets it up and keeps it free of outside enforcement for ten years</span></div><div><b>' + fmtPct(o.recog) + '</b><span>Any UN member recognises it as a country within 25 years</span></div></div>' + ["build", "law", "money", "hold", "recog"].map(rate).join("") + paras(o.why, ' style="margin-top:9px"') + (z.rules && z.rules.length ? '<details class="dt"><summary>The treaties and laws cited</summary>' + z.rules.map((r) => '<div class="rule"><b>' + esc(r.cite) + "</b>" + esc(r.says) + "</div>").join("") + "</details>" : "") + '<div class="hh">Attempts and cases here (' + list.length + ")</div>" + (list.length ? list.map((c) => '<div class="cl" data-open="c:' + c.id + '">' + mkSvg(c.group, c.out) + esc(c.name) + "<small>" + esc(yrs(c)) + "</small></div>").join("") : '<p class="sub">None found.</p>') + (list.length ? '<p style="margin:9px 0 0"><button class="btn small" data-do="' + (S.zone === id ? "clearzone" : "onlyzone") + '" data-z="' + id + '">' + (S.zone === id ? "Show every place again" : "Show only these on the map") + "</button></p>" : "") + srcs(z.sources));
+  focusIds(S.hl);
 }
-function openNeed(id) { const e = D.entails.find((x) => x.id === id); const bl = (e.blocks || []).filter((b) => Z[b]); show('<div class="k">What it takes · ' + esc(e.group) + "</div><h3>" + esc(e.need) + "</h3>" + (e.figure ? '<div class="note" style="font-size:13.6px">' + esc(e.figure) + "</div>" : "") + '<p class="para">' + esc(e.what) + "</p>" + (bl.length ? '<div class="hh">Hits hardest at</div>' + bl.map((b) => '<div class="cl" data-open="z:' + b + '">' + esc(Z[b].name) + "</div>").join("") : "") + srcs(e.sources)); }
-function openPat(id) { const p = D.patterns.find((x) => x.id === id); show('<div class="k">Pattern behind the attempts</div><h3>' + esc(p.t) + "</h3>" + p.body.map((x) => '<p class="para">' + esc(x) + "</p>").join("") + '<p><button class="btn small" data-do="patshow" data-p="' + p.id + '">' + (S.pat === p ? "Show every attempt again" : "Show only these on the map") + '</button></p><div class="hh">The attempts in this pattern</div>' + p.cases.filter((i) => C[i]).map((i) => '<div class="cl" data-open="c:' + i + '">' + mkSvg(C[i].group, C[i].out) + esc(C[i].name) + "<small>" + esc(yrs(C[i])) + "</small></div>").join("")); }
+function openNeed(id) { pushH("e", id); const e = D.entails.find((x) => x.id === id); const bl = (e.blocks || []).filter((b) => Z[b]); S.sel = null; S.hl = null; S.hlz = bl; paint(); show('<div class="k">What it takes · ' + esc(e.group) + "</div><h3>" + esc(e.need) + "</h3>" + (e.figure ? '<div class="note" style="font-size:13.6px">' + esc(e.figure) + "</div>" : "") + paras(e.what) + (bl.length ? '<div class="hh">Hits hardest at</div>' + bl.map((b) => '<div class="cl" data-open="z:' + b + '">' + esc(Z[b].name) + "</div>").join("") : "") + srcs(e.sources)); }
+function openPat(id) { pushH("p", id); const p = D.patterns.find((x) => x.id === id); S.sel = null; S.hl = p.cases.filter((i) => C[i]); S.hlz = null; if (S.world !== "earth") setWorld("earth"); paint(); show('<div class="k">Pattern behind the attempts</div><h3>' + esc(p.t) + "</h3>" + p.body.map((x) => '<p class="para">' + esc(x) + "</p>").join("") + '<p><button class="btn small" data-do="patshow" data-p="' + p.id + '">' + (S.pat === p ? "Show every attempt again" : "Show only these on the map") + '</button></p><div class="hh">The attempts in this pattern</div>' + p.cases.filter((i) => C[i]).map((i) => '<div class="cl" data-open="c:' + i + '">' + mkSvg(C[i].group, C[i].out) + esc(C[i].name) + "<small>" + esc(yrs(C[i])) + "</small></div>").join("")); focusIds(S.hl); }
+function openDoc(id) { pushH("d", id); show('<div class="doc">' + (id === "about" ? D.about : D.method) + "</div>"); }
+function dragBox() {
+  const d = $("#det"), h = $("#detHead"); let sx, sy, ox, oy, on = false;
+  h.addEventListener("pointerdown", (e) => { if (e.target.closest("button") || isPhone()) return; const r = d.getBoundingClientRect(); sx = e.clientX; sy = e.clientY; ox = r.left; oy = r.top; on = true; d.classList.add("dragging"); h.setPointerCapture(e.pointerId); });
+  h.addEventListener("pointermove", (e) => { if (!on) return; const r = d.getBoundingClientRect(); d.style.left = Math.max(-r.width + 90, Math.min(innerWidth - 90, ox + e.clientX - sx)) + "px"; d.style.top = Math.max(0, Math.min(innerHeight - 40, oy + e.clientY - sy)) + "px"; });
+  const end = () => { on = false; d.classList.remove("dragging"); }; h.addEventListener("pointerup", end); h.addEventListener("pointercancel", end);
+}
 function fitCases() { const pts = fc().features.map((f) => f.geometry.coordinates); if (!pts.length) return; const f = freeBox(); if (pts.length === 1) return map.flyTo({ center: pts[0], zoom: 3.5, padding: { left: f.L, right: f.R, top: 0, bottom: 0 } }); const b = new maplibregl.LngLatBounds(pts[0], pts[0]); pts.forEach((p) => b.extend(p)); if (proj === "globe") { const ct = b.getCenter(); map.flyTo({ center: ct, zoom: Math.max(startZoom(), Math.min(4, Math.log2(360 / Math.max(b.getEast() - b.getWest(), 18)) - 0.3)), padding: { left: f.L, right: f.R, top: 0, bottom: 0 } }); } else map.fitBounds(b, { padding: { left: f.L + 30, right: f.R + 30, top: 40, bottom: 40 }, maxZoom: 5 }); }
 
 /* ---------- command room ---------- */
@@ -459,7 +499,6 @@ function buildRoom() {
   const q = $("#rq"), qr = $("#rqres"); q.addEventListener("input", () => { const r = searchAll(q.value); qr.style.display = r.length ? "block" : "none"; qr.innerHTML = r.map((x) => '<div class="fi" style="padding:5px 8px" data-k="' + x.k + '" data-id="' + x.id + '">' + esc(x.n) + "<small>" + esc(x.s) + "</small></div>").join(""); $$(".fi", qr).forEach((n) => n.addEventListener("click", () => { qr.style.display = "none"; openAny(n.dataset.k, n.dataset.id); })); });
 }
 const toMap = () => { $("#room").classList.remove("open"); };
-function page(id) { $$(".page").forEach((p) => p.classList.toggle("open", p.id === id)); $("#pageX").style.display = id ? "block" : "none"; }
 
 function stars() {
   let seed = 2717; const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
@@ -472,14 +511,13 @@ function stars() {
 }
 function init() {
   addLayers(); buildKey(); buildTr(); buildStack(); buildPat(); buildRoom(); stars();
-  $("#about").innerHTML = D.about; $("#method").innerHTML = D.method; $("#credit").innerHTML = CRED.earth;
-  $("#detX").addEventListener("click", close); $("#veil").addEventListener("click", close);
-  addEventListener("keydown", (e) => { if (e.key === "Escape") { if ($("#det").classList.contains("open")) close(); else page(null); } });
-  $("#worldBtn").addEventListener("click", () => { S.pat = null; S.zone = null; buildPat(); buildStack(); paint(); map.flyTo(home()); });
+  $("#credit").innerHTML = CRED.earth;
+  $("#detX").addEventListener("click", close); $("#detBack").addEventListener("click", () => goH(-1)); $("#detFwd").addEventListener("click", () => goH(1)); dragBox();
+  addEventListener("keydown", (e) => { if (e.key === "Escape") { if ($("#det").classList.contains("open")) close(); } });
+  $("#worldBtn").addEventListener("click", () => { S.pat = null; S.zone = null; S.hl = null; S.hlz = null; buildPat(); buildStack(); paint(); map.flyTo(home()); });
   const tg = (b, p) => $(b).addEventListener("click", () => { $(p).classList.toggle("min"); $(b).textContent = $(p).classList.contains("min") ? "+" : "−"; });
-  tg("#toggleKey", "#key"); tg("#togglePat", "#patBox"); tg("#toggleSt", "#stack"); tg("#toggleLeg", "#legBox");
-  $$("[data-act]").forEach((b) => b.addEventListener("click", () => { const a = b.dataset.act; if (a === "room") { $("#room").classList.add("open"); } else if (a === "map") toMap(); else page(a); }));
-  $("#pageX").addEventListener("click", () => page(null));
+  tg("#toggleTr", "#tr"); tg("#toggleKey", "#key"); tg("#togglePat", "#patBox"); tg("#toggleSt", "#stack"); tg("#toggleLeg", "#legBox");
+  $$("[data-act]").forEach((b) => b.addEventListener("click", () => { const a = b.dataset.act; if (a === "room") { $("#room").classList.add("open"); } else if (a === "map") toMap(); else openDoc(a); }));
   $$("[data-ph]").forEach((b) => b.addEventListener("click", () => { const c = $("#" + b.dataset.ph), on = c.classList.contains("show"); $$(".col").forEach((x) => x.classList.remove("show")); if (!on) c.classList.add("show"); }));
   addEventListener("resize", () => { if (ready) map.jumpTo(home()); });
   ready = true; order(); paint(); map.jumpTo(home());
