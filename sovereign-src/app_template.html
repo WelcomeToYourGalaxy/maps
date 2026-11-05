@@ -206,19 +206,19 @@ table.heat tr:hover td.nm{color:#fff;text-decoration:underline}
 </head>
 <body>
 <div id="map"></div>
-<div id="phonebar"><button class="btn" data-ph="lcol">Filters</button><button class="btn" data-ph="rcol">Places</button><button class="btn" data-act="room">Room</button><button class="btn" data-act="about">About</button></div>
+<div id="phonebar"><button class="btn" data-ph="lcol">Filters</button><button class="btn" data-ph="rcol">Places</button><button class="btn" data-act="room">Compare</button><button class="btn" data-act="about">About</button></div>
 <div id="lcol" class="col">
   <div id="key" class="card scroll">
     <button id="toggleKey" class="tog" type="button">−</button>
     <h1>Outside Every Country</h1>
-    <p class="lede">Attempts to found a territory beyond the reach of existing states, in the sea, in the air, in orbit, on ice and on other worlds, with the odds at each place.</p>
+    <p class="lede">Attempts to set up a territory outside the control of existing countries, at sea, in the air, in orbit, on ice and on other worlds, with the estimated chance of success at each kind of place.</p>
     <p class="lede2" id="lede2"></p>
     <div class="body" id="keyBody"></div>
   </div>
   <div id="patBox" class="card"><div class="bh"><span class="psec">Patterns behind the attempts</span><button id="togglePat" class="tog" type="button">−</button></div><div id="patBody" class="scroll"></div></div>
 </div>
 <div id="rcol" class="col">
-  <div class="btnrow"><button class="btn pri" data-act="room">Command room</button><button class="btn" data-act="about">About</button><button class="btn" data-act="method">Method and sources</button></div>
+  <div class="btnrow"><button class="btn pri" data-act="room">Compare every place</button><button class="btn" data-act="about">About</button><button class="btn" data-act="method">Method and sources</button></div>
   <div id="tr" class="card"><div id="trBody"></div></div>
   <div id="stack" class="card"><div class="bh"><span class="psec">Every place, top to bottom<span class="qm" data-tip="Each kind of place, from interstellar space down to the deep seabed, then land and the other routes to it. The number is the estimated chance chosen in the shading menu. Click one for the rules, the odds and the attempts made there.">?</span></span><button id="toggleSt" class="tog" type="button">−</button></div><div id="stBody" class="scroll"></div></div>
   <div id="legBox" class="card"><div class="bh"><span class="psec">On the map</span><button id="toggleLeg" class="tog" type="button">−</button></div><div id="legBody"></div></div>
@@ -230,9 +230,9 @@ table.heat tr:hover td.nm{color:#fff;text-decoration:underline}
 <div id="ttip"></div>
 
 <div id="room">
-  <div class="rh"><div><input id="rq" class="inp" type="search" placeholder="Search any attempt, place or requirement" autocomplete="off"><div id="rqres" class="card scroll" style="display:none;position:absolute;z-index:30;width:320px;max-height:60vh;overflow:auto"></div></div><div><h2>Command room</h2><p id="roomsub"></p></div><div class="r"><button class="btn" data-act="about">About</button><button class="btn" data-act="method">Method and sources</button><button class="btn pri" data-act="map">Back to the map</button></div></div>
+  <div class="rh"><div><input id="rq" class="inp" type="search" placeholder="Search any attempt, place or requirement" autocomplete="off"><div id="rqres" class="card scroll" style="display:none;position:absolute;z-index:30;width:320px;max-height:60vh;overflow:auto"></div></div><div><h2>Compare every place</h2><p id="roomsub"></p></div><div class="r"><button class="btn" data-act="about">About</button><button class="btn" data-act="method">Method and sources</button><button class="btn pri" data-act="map">Back to the map</button></div></div>
   <div id="cover"></div>
-  <div id="ticker" title="Legal points each attempt tested. Hover to pause, click to open."></div>
+  <div id="ticker" title="The legal rule each case shows. Hover to pause, click to open."></div>
   <div id="rgrid"></div>
 </div>
 <div id="about" class="page scroll"></div>
@@ -286,8 +286,8 @@ const MINY = Math.min(...D.cases.map((c) => c.start || 2026));
 const passes = (c) => S.g[c.group] && S.o[c.out] && (S.y0 == null || ((c.end || 2026) >= S.y0 && (c.start || 0) <= S.y1)) && (!S.pat || S.pat.cases.includes(c.id)) && (!S.zone || c.zid === S.zone);
 
 /* ---------- map ---------- */
-let curBase = "night", proj = "globe", map, P = PAL.night, ready = false;
-const BM = CulpritsBasemaps.create("map", { initial: "night", projection: "globe", plate: window.PLATE_IMG, center: [-20, 20], zoom: 1.4,
+let curBase = "atlas", proj = "globe", map, P = PAL.atlas, ready = false;
+const BM = CulpritsBasemaps.create("map", { initial: "atlas", projection: "globe", plate: window.PLATE_IMG, center: [-20, 20], zoom: 1.4,
   onApply: (k) => { curBase = k; P = PAL[k] || PAL.night; const rs = document.documentElement.style; rs.setProperty("--accent", P.a); rs.setProperty("--accent-hi", P.h); rs.setProperty("--card", P.card); rs.setProperty("--solid", P.solid); rs.setProperty("--line", P.line); if (ready) { makeIcons(); order(); paint(); buildKey(); } },
   onReady: () => init() });
 map = BM.maplibre;
@@ -354,7 +354,7 @@ function buildKey() {
   const base = D.cases, ATT = base.filter((c) => c.kind === "attempt"), cnt = (f) => base.filter(f).length;
   $("#lede2").textContent = ATT.length + " attempts · " + (base.length - ATT.length) + " laws and legal tests · " + D.zones.length + " kinds of place · " + D.patterns.length + " patterns · " + D.entails.length + " requirements";
   const r = SHADES[S.shade];
-  let h = '<div class="psec">Shade the places by<span class="qm" data-tip="These are editorial estimates, reasoned from the law and the record, since no study measures them. Open any place to read the reasoning. Method and sources explains the scale.">?</span></div><select id="shade">' + Object.keys(SHADES).map((k) => '<option value="' + k + '"' + (k === S.shade ? " selected" : "") + ">" + esc(SHADES[k][0]) + "</option>").join("") + '</select><div style="font-size:11.2px;color:var(--mute);margin-top:4px;line-height:1.35">' + esc(r[1]) + '</div><div class="ramp">' + RAMP.map((x) => '<i style="background:' + x[1] + '"></i>').join("") + '</div><div class="rlab">' + RAMP.map((x) => "<span>" + x[2] + "</span>").join("") + "</div>";
+  let h = '<div class="psec">Shade the places by<span class="qm" data-tip="No study measures these chances, so they are estimates based on the law and on what happened in past attempts. Open any place to read the reasoning. Method and sources explains the scale.">?</span></div><select id="shade">' + Object.keys(SHADES).map((k) => '<option value="' + k + '"' + (k === S.shade ? " selected" : "") + ">" + esc(SHADES[k][0]) + "</option>").join("") + '</select><div style="font-size:11.2px;color:var(--mute);margin-top:4px;line-height:1.35">' + esc(r[1]) + '</div><div class="ramp">' + RAMP.map((x) => '<i style="background:' + x[1] + '"></i>').join("") + '</div><div class="rlab">' + RAMP.map((x) => "<span>" + x[2] + "</span>").join("") + "</div>";
   h += '<div class="psec">Find</div><input id="find" class="inp" type="search" placeholder="An attempt, founder, place or treaty" autocomplete="off" value="' + esc(S.q || "") + '"><div id="flist" class="scroll"></div>';
   h += '<div class="psec">Filter what is shown</div><div class="flab">Where</div><div class="chips">' + Object.keys(GROUPS).map((g) => '<span class="fc' + (S.g[g] ? " on" : "") + '" data-g="' + g + '">' + mkSvg(g, null) + esc(GROUPS[g][0]) + ' <span class="n">' + cnt((c) => c.group === g) + "</span></span>").join("") + "</div>";
   h += '<div class="flab">How it turned out</div><div class="chips">' + Object.keys(OUTS).map((o) => '<span class="fc' + (S.o[o] ? " on" : "") + '" data-o="' + o + '"><i class="mk" style="background:' + (OUTCOL[curBase] || OUTCOL.night)[o] + ';border-radius:50%"></i>' + esc(OUTS[o]) + ' <span class="n">' + cnt((c) => c.out === o) + "</span></span>").join("") + "</div>";
@@ -391,7 +391,7 @@ function buildStack() {
 }
 function buildLeg() {
   const w = (k, t) => '<label class="lrow"><input type="checkbox" data-t="' + k + '"' + (S[k] ? " checked" : "") + ">" + t + "</label>";
-  $("#legBody").innerHTML = w("showCases", "Attempts and legal tests") + w("showZones", "Legal zones, shaded by the odds") + w("showBelt", "Geostationary belt (claimed in 1976)") + w("showNames", "Names when zoomed in") + '<div style="font-size:10.6px;color:var(--mute);line-height:1.35;margin-top:3px">Shape shows where an attempt sits, colour how it turned out. Space attempts with no spot appear at the founder\'s base on Earth.</div>';
+  $("#legBody").innerHTML = w("showCases", "Attempts and legal tests") + w("showZones", "Legal zones, shaded by the odds") + w("showBelt", "Geostationary belt (claimed in 1976)") + w("showNames", "Names when zoomed in") + '<div style="font-size:10.6px;color:var(--mute);line-height:1.35;margin-top:3px">Shape shows the kind of place. Colour shows how the attempt turned out. Space attempts with no location on the map are placed at the founder\'s base on Earth.</div>';
   $$("[data-t]", $("#legBody")).forEach((c) => c.addEventListener("change", () => { S[c.dataset.t] = c.checked ? 1 : 0; paint(); }));
 }
 function buildPat() {
@@ -414,7 +414,7 @@ function openNear(ids) { const u = [...new Set(ids)]; if (u.length === 1) return
 function openZone(id, label) {
   const z = Z[id]; if (!z) return; const o = z.odds, list = D.cases.filter((c) => c.zid === id).sort((a, b) => (a.start || 0) - (b.start || 0));
   const rate = (k) => '<div class="rate"><span>' + esc(SHADES[k][0].replace("Overall: ", "")) + '</span><span class="t"><i style="width:' + Math.max(1, o[k]) + "%;background:" + rampCol(o[k]) + '"></i></span><b>' + fmtPct(o[k]) + "</b></div>";
-  show('<div class="k">' + esc(z.band) + "</div><h3>" + esc(z.name) + "</h3>" + (label ? '<p class="sub">' + esc(label) + "</p>" : "") + '<div class="big2"><div><b>' + fmtPct(o.overall) + '</b><span>Chance a serious private group founds it and keeps it free of outside enforcement for ten years</span></div><div><b>' + fmtPct(o.recog) + '</b><span>Chance any UN member recognises it as a state within 25 years</span></div></div><div class="hh">Odds by ambition (editorial estimates)</div>' + ["build", "law", "money", "hold", "recog"].map(rate).join("") + '<p class="para" style="margin-top:9px">' + esc(o.why) + '</p><div class="hh">Who has authority</div><p class="para">' + esc(z.who_owns) + "</p>" + (z.hook ? '<div class="note"><b style="font-weight:500">How a state reaches you here: </b>' + esc(z.hook) + "</div>" : "") + (z.can_you_build ? '<div class="hh">Getting there</div><p class="para">' + esc(z.can_you_build) + "</p>" : "") + (z.rules && z.rules.length ? '<div class="hh">The rules</div>' + z.rules.map((r) => '<div class="rule"><b>' + esc(r.cite) + "</b>" + esc(r.says) + "</div>").join("") : "") + (z.facts && z.facts.length ? '<div class="hh">Figures</div><ul class="fx">' + z.facts.map((f) => "<li>" + esc(f) + "</li>").join("") + "</ul>" : "") + '<div class="hh">Attempts here (' + list.length + ")</div>" + (list.length ? list.map((c) => '<div class="cl" data-open="c:' + c.id + '">' + mkSvg(c.group, c.out) + esc(c.name) + "<small>" + esc(yrs(c)) + "</small></div>").join("") : '<p class="sub">None found.</p>') + (list.length ? '<p style="margin:9px 0 0"><button class="btn small" data-do="' + (S.zone === id ? "clearzone" : "onlyzone") + '" data-z="' + id + '">' + (S.zone === id ? "Show every place again" : "Show only these on the map") + "</button></p>" : "") + srcs(z.sources));
+  show('<div class="k">' + esc(z.band) + "</div><h3>" + esc(z.name) + "</h3>" + (label ? '<p class="sub">' + esc(label) + "</p>" : "") + '<div class="big2"><div><b>' + fmtPct(o.overall) + '</b><span>Chance a serious private group founds it and keeps it free of outside enforcement for ten years</span></div><div><b>' + fmtPct(o.recog) + '</b><span>Chance any UN member recognises it as a state within 25 years</span></div></div><div class="hh">Estimated chances</div>' + ["build", "law", "money", "hold", "recog"].map(rate).join("") + '<p class="para" style="margin-top:9px">' + esc(o.why) + '</p><div class="hh">Who has authority</div><p class="para">' + esc(z.who_owns) + "</p>" + (z.hook ? '<div class="note"><b style="font-weight:500">How a state reaches you here: </b>' + esc(z.hook) + "</div>" : "") + (z.can_you_build ? '<div class="hh">Getting there</div><p class="para">' + esc(z.can_you_build) + "</p>" : "") + (z.rules && z.rules.length ? '<div class="hh">The rules</div>' + z.rules.map((r) => '<div class="rule"><b>' + esc(r.cite) + "</b>" + esc(r.says) + "</div>").join("") : "") + (z.facts && z.facts.length ? '<div class="hh">Figures</div><ul class="fx">' + z.facts.map((f) => "<li>" + esc(f) + "</li>").join("") + "</ul>" : "") + '<div class="hh">Attempts here (' + list.length + ")</div>" + (list.length ? list.map((c) => '<div class="cl" data-open="c:' + c.id + '">' + mkSvg(c.group, c.out) + esc(c.name) + "<small>" + esc(yrs(c)) + "</small></div>").join("") : '<p class="sub">None found.</p>') + (list.length ? '<p style="margin:9px 0 0"><button class="btn small" data-do="' + (S.zone === id ? "clearzone" : "onlyzone") + '" data-z="' + id + '">' + (S.zone === id ? "Show every place again" : "Show only these on the map") + "</button></p>" : "") + srcs(z.sources));
 }
 function openNeed(id) { const e = D.entails.find((x) => x.id === id); const bl = (e.blocks || []).filter((b) => Z[b]); show('<div class="k">What it takes · ' + esc(e.group) + "</div><h3>" + esc(e.need) + "</h3>" + (e.figure ? '<div class="note" style="font-size:13.6px">' + esc(e.figure) + "</div>" : "") + '<p class="para">' + esc(e.what) + "</p>" + (bl.length ? '<div class="hh">Hits hardest at</div>' + bl.map((b) => '<div class="cl" data-open="z:' + b + '">' + esc(Z[b].name) + "</div>").join("") : "") + srcs(e.sources)); }
 function openPat(id) { const p = D.patterns.find((x) => x.id === id); show('<div class="k">Pattern behind the attempts</div><h3>' + esc(p.t) + "</h3>" + p.body.map((x) => '<p class="para">' + esc(x) + "</p>").join("") + '<p><button class="btn small" data-do="patshow" data-p="' + p.id + '">' + (S.pat === p ? "Show every attempt again" : "Show only these on the map") + '</button></p><div class="hh">The attempts in this pattern</div>' + p.cases.filter((i) => C[i]).map((i) => '<div class="cl" data-open="c:' + i + '">' + mkSvg(C[i].group, C[i].out) + esc(C[i].name) + "<small>" + esc(yrs(C[i])) + "</small></div>").join("")); }
@@ -432,13 +432,13 @@ function slot(id, title, unit, slides, cls) { return '<section class="slot ' + (
 const SL = {};
 function buildRoom() {
   const cs = D.cases.filter((c) => c.kind === "attempt"), N = cs.length, ch = D.charts;
-  $("#roomsub").textContent = N + " attempts · " + D.zones.length + " kinds of place · estimates marked as estimates";
+  $("#roomsub").textContent = N + " attempts · " + D.zones.length + " kinds of place · the chances shown are estimates";
   $("#cover").innerHTML = '<b class="n">' + ch.cover.n + "</b><span>" + esc(ch.cover.t) + "</span>";
   const tk = cs.filter((c) => c.mechanism).map((c) => '<span class="tki" data-c="' + c.id + '"><b>' + esc(c.name) + "</b>" + esc(c.mechanism) + "</span>").join("");
   $("#ticker").innerHTML = '<div class="tk">' + tk + tk + "</div>"; $$(".tki").forEach((n) => n.addEventListener("click", () => openCase(n.dataset.c)));
   const groups = [...new Set(D.entails.map((e) => e.group))];
   SL.takes = groups;
-  $("#rgrid").innerHTML = slot("heat", "Odds at each place", "editorial estimates", 1, "w2 h2") + slot("far", "How far attempts got", "of " + N, 1) + slot("end", "How they ended", "", 2) + slot("dec", "Attempts by decade", "begun", 1) + slot("life", "How long they lasted", "years", 2) + slot("takes", "What it takes", "", groups.length, "w2") + slot("cost", "What things cost", "US$, log scale", 1) + slot("law", "Who has signed what", "", 2);
+  $("#rgrid").innerHTML = slot("heat", "Odds at each place", "estimates", 1, "w2 h2") + slot("far", "How far attempts got", "of " + N, 1) + slot("end", "How they ended", "", 2) + slot("dec", "Attempts by decade", "begun", 1) + slot("life", "How long they lasted", "years", 2) + slot("takes", "What it takes", "", groups.length, "w2") + slot("cost", "What things cost", "US$, log scale", 1) + slot("law", "Who has signed what", "", 2);
   const set = (id, h) => { const s = $('[data-slot="' + id + '"] .stage'); s.innerHTML = h; $$("[data-open]", s).forEach((n) => n.addEventListener("click", () => { const [k, i] = n.dataset.open.split(":"); openAny(k, i); })); };
   const dr = () => { set("heat", heat()); $$("[data-hs]").forEach((t) => t.addEventListener("click", () => { heatSort = t.dataset.hs; dr(); })); };
   dr();

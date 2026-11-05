@@ -205,7 +205,7 @@ for c in costs:assert c[2] in fv,c[2]
 hr=sum(1 for c in own)
 charts=dict(cover=dict(n='0 of %d'%hr,t="attempts on open sea, ice, reefs, seabed, unclaimed land, in the air or in space have been recognised as a state by any UN member. Recognition on this map went to %d others, nearly all peoples on land they already held, through secession or war, or to old bodies such as the Vatican and the Order of Malta."%sum(1 for c in att if c['recd'])),
  farcap="Laws and courts appear on paper more often than people live on the ground. Recognition means by at least one UN member. None of those recognised began as a private founding on open ground.",
- endcap="Laws, treaties and court tests on this map are left out of this count.",
+ endcap="Laws, treaties and court tests are left out of this count.",
  stoppers=[dict(l=k,ids=[i for i in v.split() if i in ids]) for k,v in ST.items()],
  treaties=[dict(label=a,value=F(b)['value'],note=F(b)['note']+'.') for a,b in treat],
  orbit=sorted([dict(label=a,value=int(F(b)['value']*k),note='In 2018 dollars, at full payload (Jones).') for a,b,k in orb],key=lambda x:-x['value']),
@@ -213,9 +213,11 @@ charts=dict(cover=dict(n='0 of %d'%hr,t="attempts on open sea, ice, reefs, seabe
 data=dict(cases=out,zones=zones,entails=ent,patterns=PATTERNS,geo=json.load(open(os.path.join(HERE,'data','zones.geojson'))),charts=charts,about=ABOUT,method=METHOD.replace('__NA__',str(len(att))).replace('__NL__',str(len(out)-len(att))).replace('__NS__',str(len({s['u'] for c in out for s in c['sources']}|{s['u'] for z in zones for s in z['sources']}|{s['u'] for e in ent for s in e['sources']}))))
 for f in data['geo']['features']:
     if f['properties']['zone']=='central-arctic':f['properties']['zone']='central-arctic-ocean-and-svalbard'
+if os.environ.get('DUMP_ALL'):
+    json.dump({'cases':out,'zones':zones,'entails':ent},open(os.environ['DUMP_ALL'],'w',encoding='utf8'),ensure_ascii=False,indent=0)
 def b64(p):return 'data:image/webp;base64,'+base64.b64encode(open(p,'rb').read()).decode()
 t=open(os.path.join(HERE,'app_template.html'),encoding='utf8').read()
-t=t.replace('__PLATE__',b64(os.path.join(HERE,'..','secret-society-src','plate.webp'))).replace('__MOON__',b64(os.path.join(HERE,'data','moon.webp'))).replace('__MARS__',b64(os.path.join(HERE,'data','mars.webp')))
+t=t.replace('__PLATE__',b64(os.path.join(HERE,'data','plate.webp'))).replace('__MOON__',b64(os.path.join(HERE,'data','moon.webp'))).replace('__MARS__',b64(os.path.join(HERE,'data','mars.webp')))
 t=t.replace('__BASEMAPS__',open(os.path.join(HERE,'basemaps.js'),encoding='utf8').read())
 t=t.replace('__DATA__',json.dumps(data,ensure_ascii=False,separators=(',',':')).replace('</','<\\/'))
 o=os.path.join(HERE,'..','outside_every_country.html');open(o,'w',encoding='utf8').write(t)
