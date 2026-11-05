@@ -155,6 +155,10 @@ for c in out:
     if c['id']=='peanut-hole-okhotsk' and c.get('recognition'):c['recognition']=c['recognition'].replace('ruled for Russia','recommended in favour of Russia')
     if c['id']=='tiran-sanafir':c['end']=None
     if c['id'] in('peanut-hole-okhotsk','viking-1','province-of-bumbunga','zaqistan'):c.update(MAN.get(c['id'],{}))
+    if c['id']=='rose-island':
+        for k in('story','challenge','mechanism'):
+            if c.get(k):c[k]=c[k].replace('55 days','about eight weeks')
+    if c['id']=='hans-island' and not any('British_Arctic' in q['u'] for q in c['sources']):c['sources'].append({'t':'British Arctic Territories (Wikipedia)','u':'https://en.wikipedia.org/wiki/British_Arctic_Territories'})
     if c['id']=='hans-island':c['story']=c['story'].replace("the 1880 transfer of the Hudson's Bay Company's lands to Canada","the transfer of Britain's Arctic islands to Canada in 1880")
 def cleansrc(l):
     o=[]
@@ -269,16 +273,21 @@ for e in ent:
         e['what']=r['what']
         for q in r.get('add_sources',[]):
             if q.get('u') and not any(x['u']==q['u'] for x in e['sources']):e['sources'].append(q)
+_cons=jl('consistency') or {}
+for i,e_ in _cons.get('essays',{}).items():
+    if i in zs:zs[i]['essay']=e_
 zones=[]
 for b,ids in BANDS:
     for i in ids:
         z=zs[i];a=ODDS[i];z['band']=b;z['odds']=dict(build=a[0],law=a[1],money=a[2],hold=a[3],recog=a[4],why=(jl('odds_new') or {}).get(i,a[5]));zones.append(z)
 for z in combo_zones:
     o=z['odds'];z['band']=z.pop('_band');z.setdefault('who_owns','');z.setdefault('hook','');z.setdefault('can_you_build','');z.setdefault('facts',[]);zones.append(z)
+for z in zones:
+    if z['id'] in _cons.get('odds_why',{}):z['odds']['why']=_cons['odds_why'][z['id']]
 assert len(zones)==len(zs),set(zs)-{z['id'] for z in zones}
 for c in out:assert c['zid'] in zs,c['id']
 ZID={z['id'] for z in zones};ids={c['id'] for c in out}
-PATTERNS=jl('patterns_new') or PATTERNS
+PATTERNS=jl('patterns_final') or jl('patterns_new') or PATTERNS
 for p_ in PATTERNS:
     miss=[i for i in p_['cases'] if i not in ids]
     if miss:print('pattern missing',p_['id'],miss)
