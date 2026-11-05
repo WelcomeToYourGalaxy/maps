@@ -92,4 +92,11 @@ WebFetch has an hourly limit shared across agents. Running several agents at onc
 
 - People on the record: 135. New people come from `rounds/r18f_co.json` and `rounds/r18f_off.json`, added straight into `window.ENT.people` (merge.py does not handle people). Each needs an own act in a case, the exact legal status and an office anchor. Dropped lists in those files hold open leads.
 - `infra_wb.py` and `infra_lenders.py` add the contract and tied-aid measures to `window.INFRA`; `docs/r18_contracts_slim.json` holds the IDB, EBRD, AIIB and OECD tied data.
-- Contract data gaps: ADB (its Procurement by Nationality XLSX at data.adb.org/node/1081 is refused; can be processed if downloaded by hand), AfDB (afdb.org refused), EIB (no such data), export credit agencies.
+- Contract data gaps: AfDB (afdb.org refused), EIB (no such data), export credit agencies.
+
+## Round 19
+
+- The Conditionalities category holds every layer from the old loan-conditions page (`condsHTML()`, `COND_GROUPS`). They no longer sit under Each Lender. `All lenders together` is gone.
+- The 12 loan-conditions patterns now carry implications and case_ids from `docs/r19_pats.json`, applied in `build.py`; the list sorts by start year.
+- `infra_adb.py` and `docs/r19_adb.json` add the Asian Development Bank from its two procurement files. Contract data gaps now: AfDB, EIB, export credit agencies.
+- People on the record: 139.
