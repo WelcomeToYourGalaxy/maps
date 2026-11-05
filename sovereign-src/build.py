@@ -274,6 +274,9 @@ for e in ent:
         for q in r.get('add_sources',[]):
             if q.get('u') and not any(x['u']==q['u'] for x in e['sources']):e['sources'].append(q)
 _cons=jl('consistency') or {}
+OWN=jl('own') or {}
+COV=jl('coverage') or {}
+SHORT=open(os.path.join(HERE,'content','short.html')).read() if os.path.exists(os.path.join(HERE,'content','short.html')) else ''
 for i,e_ in _cons.get('essays',{}).items():
     if i in zs:zs[i]['essay']=e_
 zones=[]
@@ -284,6 +287,9 @@ for z in combo_zones:
     o=z['odds'];z['band']=z.pop('_band');z.setdefault('who_owns','');z.setdefault('hook','');z.setdefault('can_you_build','');z.setdefault('facts',[]);zones.append(z)
 for z in zones:
     if z['id'] in _cons.get('odds_why',{}):z['odds']['why']=_cons['odds_why'][z['id']]
+    _o=OWN.get(z['id']);
+    if _o:z['odds'].update(own=_o['own'],own_people=_o.get('own_people'),own_why=_o['own_why'])
+    else:z['odds'].update(own=0,own_people=None,own_why='');print('NO OWN',z['id'])
 assert len(zones)==len(zs),set(zs)-{z['id'] for z in zones}
 for c in out:assert c['zid'] in zs,c['id']
 ZID={z['id'] for z in zones};ids={c['id'] for c in out}
@@ -324,7 +330,7 @@ charts=dict(cover=dict(n='0 of %d'%hr,t="attempts on open sea, ice, reefs, seabe
  treaties=[dict(label=a,value=F(b)['value'],note=F(b)['note']+'.') for a,b in treat],
  orbit=sorted([dict(label=a,value=int(F(b)['value']*k),note='In 2018 dollars, at full payload (Jones).') for a,b,k in orb],key=lambda x:-x['value']),
  costs=[dict(label=a,value=b,s=m(b),note=F(c)['note']+'. '+F(c)['source']['t']) for a,b,c in costs])
-data=dict(cases=out,zones=zones,entails=ent,patterns=PATTERNS,geo=json.load(open(os.path.join(HERE,'data','zones.geojson'))),charts=charts,about=ABOUT,method=METHOD.replace('__NA__',str(len(att))).replace('__NL__',str(len(out)-len(att))).replace('__NS__',str(len({s['u'] for c in out for s in c['sources']}|{s['u'] for z in zones for s in z['sources']}|{s['u'] for e in ent for s in e['sources']}))))
+data=dict(cases=out,zones=zones,entails=ent,patterns=PATTERNS,geo=json.load(open(os.path.join(HERE,'data','zones.geojson'))),charts=charts,short=SHORT,coverage=COV,about=ABOUT,method=METHOD.replace('__NA__',str(len(att))).replace('__NL__',str(len(out)-len(att))).replace('__NS__',str(len({s['u'] for c in out for s in c['sources']}|{s['u'] for z in zones for s in z['sources']}|{s['u'] for e in ent for s in e['sources']}))))
 for f in data['geo']['features']:
     if f['properties']['zone']=='central-arctic':f['properties']['zone']='central-arctic-ocean-and-svalbard'
 if os.environ.get('DUMP_ALL'):
