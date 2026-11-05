@@ -46,7 +46,7 @@ _seen=set();_e=[]
 for c in extra:
     if c['id'] in _seen:continue
     _seen.add(c['id']);_e.append(c)
-extra=_e+(jl('routes2') or [])+(jl('purchase') or [])+(jl('purchase2') or [])
+extra=_e+(jl('routes2') or [])+(jl('purchase') or [])+(jl('purchase2') or [])+(jl('gap1') or [])+(jl('gap2') or [])
 combo_zones=[]
 for n in('combo_sea','combo_space','combo_land','combo_people'):
     d=jl(n)
@@ -149,6 +149,20 @@ for c in out:
     if c.get('lat') is not None and 'plat' not in c:c['plat'],c['plon']=c['lat'],c['lon']
 for i,r in (jl('review') or {}).get('cases',{}).items():
     if i in _by:_by[i]['story']=r['story']
+for _n in('left','close'):
+    for i,r in (jl(_n) or {}).get('entries',{}).items():
+        c=_by.get(i)
+        if not c:print('NO ENTRY',_n,i);continue
+        for k,v in r.items():
+            if k=='add_sources':
+                for q in v:
+                    if q.get('u') and not any(x['u']==q['u'] for x in c['sources']):c['sources'].append(q)
+            elif k=='drop_sources':c['sources']=[x for x in c['sources'] if x['u'] not in v]
+            elif k=='set':
+                c.update(v)
+                if 'status' in v and c['kind']!='law':c['out']=OOVER.get(i,OUT[v['status']])
+                if 'lat' in v or 'lon' in v:c['plat'],c['plon']=c['lat'],c['lon']
+            else:c[k]=v
 for c in out:
     if c['id']=='state-to-state-purchases':c['story']=c['story'].replace('on this list since 1958','in that list since 1958')
 for c in out:
@@ -258,7 +272,7 @@ for i,r in _rev.get('essays',{}).items():
         zs[i]['essay']=r['essay']
         for q in r.get('add_sources',[]):
             if q.get('u') and not any(x['u']==q['u'] for x in zs[i]['sources']):zs[i]['sources'].append(q)
-for _n in('review1','review2'):
+for _n in('review1','review2','cr1','cr2','cr3'):
     for i,r in (jl(_n) or {}).get('essays',{}).items():
         if i in zs:
             zs[i]['essay']=r['essay']
