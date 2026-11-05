@@ -448,6 +448,8 @@ table.all td.num{white-space:nowrap}
 
 .dhead{cursor:move;user-select:none;touch-action:none}
 #dos.dragging{opacity:.96}
+#dos .stab td.yy{white-space:nowrap;color:var(--mute);font-size:11.8px;padding-right:10px}
+#dos .stab .kd{display:block;font-size:10.6px;color:var(--mute);letter-spacing:.3px}
 
 </style>
 </head>
@@ -2014,28 +2016,29 @@ function secretTab(c) {
     h += '<div class="headline">Secret budget compared with the whole government budget: <b>' + pctTxt(lp.p) + '%</b> in ' + lp.y + '</div><span class="yr">' + money(lp.f.amount_usd) + ' (' + gx(lp.f.label, c) + ') out of ' + money(lp.s) + ' spent by all levels of government that year.</span>';
     const shares = (d.figures || []).filter((f) => f.share_pct != null && BUDGET_KINDS.has(f.kind) && yearOf(f.year) === lp.y);
     for (const f of shares) h += '<div class="src" style="margin-top:3px">The source\'s own figure for ' + lp.y + ': ' + f.share_pct + '% — ' + gx(f.label, c) + '. Sources often measure against the national (federal) budget only, so their share can be higher than the one above.</div>';
-    if (rows.length > 1) {
-      h += '<table class="stab">' + rows.map((r, k) => { const open = S.fopen[c + "|" + k];
-        return '<tr class="sr' + (open ? " open" : "") + '" data-sr="' + k + '"><td class="ch">' + (open ? "▾" : "▸") + '</td><td>' + r.y + '</td><td>' + gx(r.f.label, c) + '</td><td class="n">' + money(r.f.amount_usd) + '</td><td class="n">' + pctTxt(r.p) + '%</td></tr>' +
-          (open ? '<tr class="sx"><td></td><td colspan="4">' + figHTML(r.f) + '</td></tr>' : ""); }).join("") + '</table><div class="src">Click a line for the full finding and its source.</div>';
-    }
   } else h += '<div class="headline" style="font-size:15px">No yearly secret or spy-agency budget amount is published for this country, so its share of government spending can\'t be worked out.</div><span class="yr">The figures below are cases, audits and estimates rather than a yearly budget.</span>';
   h += '<div class="src" style="margin-top:6px">Government spending = everything national, regional and local governments spent in that year, from the IMF (years after 2025 are IMF estimates).</div>';
   if (w) h += '<div class="src" style="margin-top:3px">For a sense of size, national wealth (everything the country owns of value: buildings, land, resources and its people\'s earning power) is ' + money(w[1]) + ' (World Bank, ' + esc(w[0]) + ').</div>';
   h += '</div>';
+  if (figs.length) {
+    const KN = Object.fromEntries(SGROUPS.map((x) => [x[0], x[1]]));
+    const all = figs.map((f, k) => ({ f, k, y: firstYear(f.year), flow: isFlow(f) && f.amount_usd != null && !f.regional && !isPartial(f) }))
+      .sort((a, b) => b.y - a.y || (b.f.amount_usd ?? -1) - (a.f.amount_usd ?? -1));
+    h += '<h3>Every figure on record · ' + figs.length + '</h3><table class="stab">' + all.map((r) => {
+      const f = r.f, open = S.fopen[c + "|f" + r.k];
+      const amt = f.amount_usd != null ? money(f.amount_usd) : (f.share_pct != null ? f.share_pct + "%" : (f.amount_local || "—"));
+      let pv = "";
+      if (r.flow) { const yy = yearOf(f.year), s2 = spendFor(c, yy); if (s2) pv = pctTxt(f.amount_usd / s2 * 100) + "%"; }
+      const kind = KN[f.kind] || KN.diverted;
+      return '<tr class="sr' + (open ? " open" : "") + '" data-sr="f' + r.k + '"><td class="ch">' + (open ? "▾" : "▸") + '</td><td class="yy">' + esc(f.year || "") + '</td><td>' + gx(f.label, c) + ' <span class="kd">' + esc(kind) + ' · ' + esc(STATUS[f.status] || f.status) + '</span></td><td class="n">' + esc(amt) + '</td><td class="n">' + (pv || '<span class="mute">—</span>') + '</td></tr>' +
+        (open ? '<tr class="sx"><td></td><td colspan="4">' + figHTML(f) + '</td></tr>' : "");
+    }).join("") + '</table><div class="src">Click a line for the full finding and its source. The last column is the amount as a share of all government spending that year, where it is a yearly budget figure. The figures are separate findings — many overlap or cover different years — so they should not be added up.</div>';
+  }
   if (g) {
     const gr = Object.entries(GQ).filter(([q]) => typeof g[q] === "number");
     if (gr.length) h += '<h3>Transparency International defence secrecy scores</h3><div class="gdi">' + gr.map(([q, info]) => '<div><span>' + gx(info.title, c) + '</span><span>' + g[q] + ' / 100</span></div>').join("") + '</div><div class="src">0 = fully hidden, 100 = fully open. <a href="' + esc(g.url || SMG.source_url) + '" target="_blank" rel="noopener">Government Defence Integrity Index ' + esc(SMG.year || "") + '</a></div>';
   }
   h += '<h3>Summary</h3><div class="sum">' + gx(d.summary || "No published figures or insider accounts found in this compilation.", c) + '</div>';
-  if (figs.length) {
-    h += '<h3>The money — ' + figs.length + ' figure' + (figs.length > 1 ? "s" : "") + '</h3><div class="intro">Each number is a separate finding, grouped below by what kind of money it is. They are not parts of one total — many overlap or cover different years — so they should not be added up.</div>';
-    for (const [gk, gn, gd] of SGROUPS) {
-      const gf = figs.filter((f) => (SGROUPS.some((x) => x[0] === f.kind) ? f.kind : "diverted") === gk).sort((a, b) => firstYear(b.year) - firstYear(a.year) || (b.amount_usd ?? -1) - (a.amount_usd ?? -1));
-      if (!gf.length) continue;
-      h += '<div class="grp"><div class="gn">' + esc(gn) + ' <span class="yr">· ' + gf.length + '</span></div><div class="gd">' + esc(gd) + '</div></div>' + gf.map(figHTML).join("");
-    }
-  }
   if (ppl.length) {
     h += '<h3>Where insiders say it goes — most to least trustworthy</h3>';
     for (const p of ppl) {
