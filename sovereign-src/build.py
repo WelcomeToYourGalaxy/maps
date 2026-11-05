@@ -84,7 +84,7 @@ for r in cases:
     out.append(r)
 for c in out:
     if c['id']=='rose-island' and c.get('challenge'):c['challenge']=c['challenge'].replace('after 55 days','after eight weeks')
-MAN={'kingdom-of-sedang':{'end':1890},'republic-of-madawaska':{'end':1827},'republic-of-lakotah':{'inhabited':True},'kingdom-of-elleore':{'currency':'Stamps and coins issued'}}
+MAN={'global-country-of-world-peace':{'lat':41.01,'lon':-91.96,'loc':'approx','plat':41.01,'plon':-91.96},'kingdom-of-sedang':{'end':1890},'republic-of-madawaska':{'end':1827},'republic-of-lakotah':{'inhabited':True},'kingdom-of-elleore':{'currency':'Stamps and coins issued'}}
 for c in out:
     c.update(MAN.get(c['id'],{}))
     if c['id']=='republic-of-indian-stream':c['mechanism']=c['mechanism'].replace('without a shot','without a shot that August, though a deputy was shot that October')
@@ -119,7 +119,7 @@ for c in out:
     c['plat']=round(c['lat']+d*math.sin(a),4);c['plon']=round(c['lon']+d*math.cos(a),4)
 # plain-language rewrites
 _by={c['id']:c for c in out}
-for n in range(1,7):
+for n in range(1,8):
     rw=jl('rw%d'%n) or {}
     for i,r in rw.items():
         c=_by.get(i)
@@ -208,10 +208,11 @@ for e in ent:
 zones=[]
 for b,ids in BANDS:
     for i in ids:
-        z=zs[i];a=ODDS[i];z['band']=b;z['odds']=dict(build=a[0],law=a[1],money=a[2],hold=a[3],recog=a[4],why=a[5]);zones.append(z)
+        z=zs[i];a=ODDS[i];z['band']=b;z['odds']=dict(build=a[0],law=a[1],money=a[2],hold=a[3],recog=a[4],why=(jl('odds_new') or {}).get(i,a[5]));zones.append(z)
 assert len(zones)==len(zs),set(zs)-{z['id'] for z in zones}
 for c in out:assert c['zid'] in zs,c['id']
 ZID={z['id'] for z in zones};ids={c['id'] for c in out}
+PATTERNS=jl('patterns_new') or PATTERNS
 for p_ in PATTERNS:
     miss=[i for i in p_['cases'] if i not in ids]
     if miss:print('pattern missing',p_['id'],miss)
@@ -241,8 +242,8 @@ def m(v):
 costs=[("Freedom Ship, reported",16e9,"Freedom Ship reported cost"),("Pangeos floating city, estimate",8e9,"Pangeos estimated cost"),("ISS, per year",3e9,"ISS annual cost"),("Shuttle, per launch",1.5e9,"Shuttle cost per launch"),("Haven-1, spent so far",1e9,"Haven-1 committed spending"),("Oceanix Busan, higher figure",627e6,"Oceanix Busan, at $10,000 per m²"),("Launch insurance cap",5e8,"Launch third-party insurance cap"),("Starship launch, as reported",9e7,"Starship dedicated launch for Starlab"),("Falcon 9 launch, 2026",74e6,"Falcon 9 dedicated launch, early 2026"),("Seat on a trip to the ISS",55e6,"Axiom seat price to ISS"),("Small deep-sea platform",5e7,"Small deep-sea platform"),("New Utopia actually raised",24000,"New Utopia raised"),("US renunciation fee",450,"US renunciation fee, current")]
 for c in costs:assert c[2] in fv,c[2]
 hr=sum(1 for c in own)
-charts=dict(cover=dict(n='0 of %d'%hr,t="attempts on open sea, ice, reefs, seabed, unclaimed land, in the air or in space have been recognised as a state by any UN member. Recognition on this map went to %d others, nearly all peoples on land they already held, through secession or war, or to old bodies such as the Vatican and the Order of Malta."%sum(1 for c in att if c['recd'])),
- farcap="Laws and courts appear on paper more often than people live on the ground. Recognition means by at least one UN member. None of those recognised began as a private founding on open ground.",
+charts=dict(cover=dict(n='0 of %d'%hr,t="attempts on open sea, ice, reefs, seabed, unclaimed land, in the air or in space have been recognised as a state by any UN member. Recognition went to %d others: mostly peoples on land they already held, through secession or war, older bodies such as the Vatican and the Order of Malta, and three private land deals made before 1900."%sum(1 for c in att if c['recd'])),
+ farcap="Laws and courts appear on paper more often than people live on the ground. Recognition means by at least one UN member. None of those recognised began on open sea, ice or in space.",
  endcap="Laws, treaties and court tests are left out of this count.",
  stoppers=[dict(l=k,ids=[i for i in v.split() if i in ids]) for k,v in ST.items()],
  treaties=[dict(label=a,value=F(b)['value'],note=F(b)['note']+'.') for a,b in treat],
