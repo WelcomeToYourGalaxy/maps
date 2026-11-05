@@ -1,0 +1,220 @@
+{
+"checked": "2026-11-05 UTC. Every source URL in the brief opened through WebFetch; no other route used. figures[] copied unchanged, as the brief object was the assignment.",
+"unopened": [],
+"partly_read": [
+"wir2026_ch01_en.pdf: last 18,745 of 118,745 chars not read",
+"wir2017ch1.pdf: last 7,607 chars not read",
+"ACB-WEMA-Studie.pdf: last 5,528 chars not read. None of the cited facts depended on those parts."
+],
+"open_flags": [
+{
+"source": "Dreher et al. 2018, Table 1",
+"issue": "Two text figures do not reconcile with the coefficients as read from Table 1: grants on UN voting 8.643 gives exp(0.8643)-1=137%, not 51% (4.068 in the total-finance column, p=0.235, gives 50%); Taiwan recognition -9.797 does not give 2,763% under exp(b)-1. The paper's table note does not explain the method. Both figures are the authors' printed text, in the published journal version, so kept and worded 'the text of'/'the paper's text says'. Direction and significance for grants and Taiwan hold in the table. Table read through WebFetch text extraction. Owner may prefer to drop the two percentages."
+},
+{
+"source": "World Bank blog",
+"issue": "$15B, $4.5B and <$2B sit in a paragraph opening with net debt inflows but are not themselves labelled net. 'After repayments' removed. IDR table PDF has no creditor net-flow rows to check them against."
+},
+{
+"source": "Debt Justice BlackRock",
+"issue": "Body says '64% more than it lent', bullet says '64% more than if it had lent to the US'. Used the bullet wording, consistent with the methodology. 2,137/3,321=64.3% suggests profit as a share of bonds held, profit being measured over US lending."
+}
+],
+"arithmetic": {
+"LDC share of world FDI 2025": {
+"inputs": "$43B / $1,624B (WIR 2026 table values)",
+"calc": 2.65,
+"result": "2.65% from rounded inputs. UNCTAD's press page itself states 2.7%, so the public text attributes 2.7% to UNCTAD. Not re-derived on the page."
+},
+"OECD not fully untied 2020": {
+"inputs": "Table A.7 total 82.3% untied",
+"calc": 17.7,
+"result": "17.7, but the report states no tied figure and groups 'tied, or not fully untied', so the public text says 'not fully untied', not 'tied'."
+},
+"OECD grants 2025": {
+"inputs": "Table 1 TOTAL DAC row: bilateral grants 109,428 + multilateral grants and capital subscriptions 47,764",
+"calc": 157192,
+"result": "157,192 USD million = $157.2B, 90.2% of 174,262. Only true if capital subscriptions to multilateral bodies are counted, so the public text names both parts."
+},
+"OECD row check": {
+"inputs": "109,428+11,515+845+4,601+47,764+109",
+"calc": 174262,
+"result": "= 174,262, the row total, confirming the column reading."
+},
+"Debt Justice table": {
+"inputs": "117+125+354+304; 354/900; 117/900; 125/900; 304/900",
+"calc": [
+900,
+39.3,
+13.0,
+13.9,
+33.8
+],
+"result": "900; 39.3, 13.0, 13.9, 33.8, matching 39/13/14/34."
+},
+"BlackRock": {
+"inputs": "$2,137M profit / $3,321M bonds owned",
+"calc": 64.3,
+"result": "64.3%, consistent with Debt Justice's 64%. Division is mine; the page does not print the formula."
+},
+"World Bank stock": {
+"inputs": "987+475; 1,463+2,097",
+"calc": [
+1462,
+3560
+],
+"result": "1,462 (table 1,463, rounding); 3,560 matches the table's public and publicly guaranteed line."
+},
+"WIR regions": {
+"inputs": "644+188+70",
+"calc": 902,
+"result": "902 against 901 (rounding; Africa is 'about $70B')."
+}
+},
+"corrections": [
+{
+"id": "gra.0",
+"was": "Grants made up about $157 billion",
+"now": "Named as bilateral grants $109.4B + multilateral grants and capital subscriptions $47.8B",
+"why": "Figure is my sum of two Table 1 columns; includes capital subscriptions",
+"url": "https://one.oecd.org/document/DCD%282026%298/en/pdf"
+},
+{
+"id": "gra.0",
+"was": "EU institutions ranked among largest givers; 'does not include donors outside that group'",
+"now": "EU institutions stated as memo item outside total; twelve non-DAC providers $13.3B added; 'after inflation' now prices and exchange rates (Table 2 is at 2024 prices and exchange rates); associates included",
+"why": "EU row sits under Memo items outside TOTAL DAC",
+"url": "https://one.oecd.org/document/DCD%282026%298/en/pdf"
+},
+{
+"id": "gra.1",
+"was": "2020 tied share of 17.7%",
+"now": "82.3% untied, 17.7% tied or not fully untied",
+"why": "Report states no tied percent; base is bilateral ODA commitments with reported status ($149B), excl. in-donor and admin costs",
+"url": "https://one.oecd.org/document/DCD/DAC%282022%2934/FINAL/en/pdf"
+},
+{
+"id": "gra.1",
+"was": "54% of contract value going to donor-country suppliers in 2019-20",
+"now": "54% for Recommendation recipients only; all recipients 52% by value, 37% by number",
+"why": "Scope error",
+"url": "https://one.oecd.org/document/DCD/DAC%282022%2934/FINAL/en/pdf"
+},
+{
+"id": "gra.1",
+"was": "returns to its earlier level almost immediately",
+"now": "soon after the term ends, within about two years; developing countries, 1946-2001 added",
+"why": "Paper says both 'almost immediately' and 'within two years of departure'",
+"url": "https://kuziemko.scholar.princeton.edu/document/25"
+},
+{
+"id": "gra.1",
+"was": "Dreher 51% as finding",
+"now": "'The text of' Dreher; committed, 2000-2012 added",
+"why": "See open_flags",
+"url": "https://scispace.com/pdf/apples-and-dragon-fruits-the-determinants-of-aid-and-other-19o7mx8qzj.pdf"
+},
+{
+"id": "gra.2",
+"was": "'A BMJ Global Health paper ... says'; 'The same paper says'",
+"now": "Attributed to the BMJ Group press release",
+"why": "Only the press release was opened, and it states nine-tenths in its own voice",
+"url": "https://bmjgroup.com/world-health-organizations-priorities-shaped-by-its-reliance-on-grants-from-donor-organisations-such-as-the-gates-foundation/"
+},
+{
+"id": "gra.3",
+"was": "Title 'What does the record show'; 'chosen by AGRA's funders'; 'African farm programme'; unattributed evaluation finding; 'must buy ... because replanting loses yield'; 'the project's director has said'",
+"now": "Each claim attributed: AGRA's 'partners selected' in its own words, AGRA's 10.1M reach and accepted recommendations given, Gates non-response stated, 'for best yields', Edge via EcoWatch citing Bloomberg Businessweek",
+"why": "Attribution; AGRA does not name PIATA partners; USRTK says Gates funded the evaluation on behalf of lead donors.",
+"url": "https://usrtk.org/bill-gates/gates-foundation-agriculture-project-in-africa-flunks-review/"
+},
+{
+"id": "prv.2",
+"was": "'stands to gain an average of 64% more than it lent, for itself and its clients'",
+"now": "BlackRock and clients, $2.1B on $3.3B of bonds, 64% more than if lent to the US government, 15 countries, 23% coverage, no reply",
+"why": "Baseline and scope",
+"url": "https://debtjustice.org.uk/news/blackrock-and-clients-stand-to-make-2-1-billion-out-of-the-global-debt-crisis"
+},
+{
+"id": "prv.0, gov.0",
+"was": "'new money ... after repayments'; 'governments owed'",
+"now": "'flows'; 'owed or guaranteed'; $2.611T unguaranteed debt stated; bondholder sentence added so $15B is not read as all private lending",
+"why": "Page does not label these net; table line is public and publicly guaranteed; $15B excludes bondholder flows as written on the blog",
+"url": "https://blogs.worldbank.org/en/opendata/international-debt-report-2025--when-relief-isn-t-enough---lmics"
+},
+{
+"id": "prv.1",
+"was": "'How much harsher'; rates two to four times; $995B",
+"now": "Neutral question; 'average rates'; developing countries, net interest on public debt",
+"why": "Opinion word; source wording",
+"url": "https://unctad.org/publication/world-of-debt?lang=en"
+},
+{
+"id": "prv.2, gov.1",
+"was": "scheduled payments",
+"now": "Kept, with 'on debts contracted by the end of 2023, not payments made'",
+"why": "Debt Justice table note",
+"url": "https://debtjustice.org.uk/wp-content/uploads/2025/08/Debt-payments-by-creditor-grouping_08.25.pdf"
+},
+{
+"id": "fdi.0",
+"was": "rose 6%",
+"now": "Adds 4% excluding conduit flows in major European financial centres; 2.7% attributed to UNCTAD; LDC overlap noted",
+"why": "WIR 2026 ch.1. The 6% depends on conduit flows",
+"url": "https://unctad.org/system/files/official-document/wir2026_ch01_en.pdf"
+},
+{
+"id": "fdi.1",
+"was": "2002 stock set beside later flows with a note",
+"now": "Separated by stock and flow; adds UNCTAD's about three-quarters of outward stock as the like-for-like comparison",
+"why": "Stock vs flow",
+"url": "https://unctad.org/system/files/official-document/wir2026_ch01_en.pdf"
+},
+{
+"id": "fdi.2",
+"was": "share sent home 63.2%",
+"now": "share of equity income sent home as dividends, paper says this understates",
+"why": "Definition in paper; Russia/Brazil/Nigeria now clearly shares of worldwide net outflows",
+"url": "https://www.degruyterbrill.com/document/doi/10.1515/zfw-2024-0065/pdf?licenseType=open-access"
+},
+{
+"id": "fdi.3",
+"was": "30% 'corporate investment' labelled 2012; 'this costs developing countries about $100 billion'",
+"now": "Chart of investment stock labelled 2012; loss limited to tax on investment directly linked to hubs",
+"why": "Chart title 'Share of corporate investment stock from offshore hubs, 2012'; revenue-loss scope",
+"url": "https://unctad.org/press-material/united-nations-report-urges-greater-coherence-between-international-tax-and"
+},
+{
+"id": "gov.2",
+"was": "2,763% as finding",
+"now": "'The paper's text also says'; 50 countries added",
+"why": "See open_flags",
+"url": "https://scispace.com/pdf/apples-and-dragon-fruits-the-determinants-of-aid-and-other-19o7mx8qzj.pdf"
+},
+{
+"id": "sources",
+"was": "OECD, AGRA, ACB, EcoWatch titles",
+"now": "OECD title corrected; AGRA dated Feb 2022; ACB full title; EcoWatch marked no byline and inferred date",
+"why": "Title pages",
+"url": ""
+}
+],
+"removed": [
+{
+"text": "Wording removed because no opened page supports it as written: 'after repayments' (World Bank flows), 'chosen by AGRA's funders', 'formally' as OECD's 17.7% tied label, 'What does the record show'. No figure was removed: each was found on an opened page, and no source failed to open."
+}
+],
+"confirmed_unchanged": [
+"fdi.0 $1.6T, $901B, $644B, $188B, about $70B, $43B, top 20 over 80%",
+"fdi.2 $1.5T, one-third/two-thirds, 40%, 63.2, 87.6, 41.2, 84.0, 44.1, 8.8, 7.3, 4.5",
+"fdi.3 almost 40% from about 30%",
+"gra.0 $174.3B, 23.1%, donor amounts",
+"gra.1 21%, 52%, 59%",
+"gra.2 9.5%, $5.5B, 60%, <1%, 87%",
+"prv.0 $2.097T, $1.463T, 75%, $15B",
+"prv.1 2-4x, 3.4B, 3.7B, $995B",
+"prv.2 39/34/14/13, $354B, $117B, $2.1B, 23%",
+"gov.0 $475B, $987B, $4.5B, under $2B",
+"gov.1 $125B"
+]
+}
