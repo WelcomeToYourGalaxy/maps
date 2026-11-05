@@ -17,6 +17,9 @@ The remaining work is to keep adding, most relevant today and most widespread fi
 - Kinds: US FCPA records read directly (justice.gov, sec.gov and fcpa.stanford.edu were blocked last round, so few 2020-26 cases); UK SFO, Germany, Netherlands, Norway and Canada enforcement; spy recruitment in Japan, the Philippines, Finland, Norway, Denmark, Czech Republic, Hungary.
 - Leads named by last round's agents but not confirmed are not stored; run the scopes again.
 
+## Worldwide estimate on the filter buttons
+Percentages on the "who is infiltrating" and "who is being infiltrated" buttons estimate all cases that came to light since 2000, not this map's sample. `python3 field_estimate.py` writes data/field_estimate.json; build.py embeds it; About explains the method and sources. It is an estimate: anchors are real but ranges and coverage figures are judgement, and the split of what crime gets into still rests on the map's own mix.
+
 ## Research limits (learned 3 Nov 2026)
 - WebSearch: about 200 calls per turn, shared by all agents. Sixteen agents at once used it up within minutes, so several saved almost nothing. Run 4-6 agents at a time, and ration searches per agent.
 - WebFetch: an hourly limit, also shared. Five checkers at once reached it. It resets on the hour.
