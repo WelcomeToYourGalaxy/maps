@@ -259,7 +259,7 @@ def main():
             'bts': paragraphs(load('bts.json', {})),
             'reloc': [], 'cnotes': cnotes, 'gtypes': TYPES, 'recovered': [],
             'orgnames': oname, 'orgtypes': otype,
-            'field': {},
+            'field': load('field_estimate.json', {}),
             'inf': INF, 'tgt': TGT, 'rel': REL, 'lik': LIK, 'intl': INTL, 'widel': WIDEL, 'typew': TYPE_W,
             'offpres': {k: [[p[0], 1 if p[1] else 0] for p in present[k]] for k in OFFSETS if present.get(k)},
             'meta': {'dcap': round(DCAP, 2), 'rcap': round(RCAP, 2), 'n_orgs': len(orgs),

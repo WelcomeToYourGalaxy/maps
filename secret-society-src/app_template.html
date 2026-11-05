@@ -611,8 +611,9 @@ function buildKey() {
 const FIELD = D.field || {};
 const fieldPct = (v) => v >= 5 ? (Math.round(v / 5) * 5) + "%" : v >= 1 ? Math.round(v) + "%" : "<1%";
 const fieldOrder = (g, items) => items.filter(([k]) => FIELD[g] && FIELD[g][k]).sort((a, b) => FIELD[g][b[0]].mid - FIELD[g][a[0]].mid);
-const fieldNote = FIELD.inf ? '<div class="fest">Number: cases on this map. Percentage: estimated share of all cases worldwide since 2000.</div>' : '';
-function fieldTip(g, items) { const r = fieldOrder(g, items); return r.length ? QM("No one has counted this field, so the percentages are an estimate, not a measurement. They cover all cases that came to light since 2000, not only those on this map. Likely ranges: " + r.filter(([k]) => FIELD[g][k].mid >= 1).map(([k, l]) => l + " " + Math.round(FIELD[g][k].lo) + "–" + Math.round(FIELD[g][k].hi) + "%").join("; ") + ". The About page gives the method and sources.") : ''; }
+const fieldNote = FIELD.inf ? '<div class="fest">Number: cases on this map. Percentage: estimated share of all infiltration worldwide today, whether or not it is on this map.</div>' : '';
+const fieldR = (v) => v < 1 ? "under 1" : String(Math.round(v));
+function fieldTip(g, items) { const r = fieldOrder(g, items); return r.length ? QM("No one has counted this, so these percentages are an estimate, not a measurement. They count each instance of an insider or institution serving an outside party once, including low-level ones, and do not use this map's cases. Counted by power, the order changes: " + (g === "inf" ? "foreign governments and companies come first." : "heads of state and ministers come first.") + " Likely ranges: " + r.map(([k, l]) => l + " " + fieldR(FIELD[g][k].lo) + "–" + fieldR(FIELD[g][k].hi) + "%").join("; ") + "." + (g === "bk" ? " Ministers & cabinet includes ministry staff and procurement officials." : "") + " The About page gives the reasoning and sources.") : ''; }
 function filterBlock() {
   const f = S.f;
   const chips = (g, items) => '<div class="fchips">' + items.map(([k, label, desc, col]) => {
