@@ -136,9 +136,24 @@ for n in range(1,8):
             else:c[k]=v
 for c in out:
     if c.get('lat') is not None and 'plat' not in c:c['plat'],c['plon']=c['lat'],c['lon']
+def cleansrc(l):
+    o=[]
+    for q in l or []:
+        for u in str(q.get('u','')).split(' ; '):
+            u=u.strip()
+            if not u:continue
+            t=q.get('t') or u
+            if t.startswith('http'):t=re.sub(r'^https?://(www\.)?','',t).split('/')[0]
+            if not any(x['u']==u for x in o):o.append({'t':t,'u':u})
+    return o
+for c in out:c['sources']=cleansrc(c.get('sources'))
 def paras(t,n=65):
     t=' '.join(str(t or '').split());out_=[];cur=[];w=0
-    for x in re.split(r'(?<=[.!])\s+(?=[A-Z0-9])',t):
+    parts=re.split(r'(?<=[.!])\s+(?=[A-Z0-9])',t);merged=[]
+    for x in parts:
+        if merged and re.search(r"(\b(Art|Arts|St|Mr|Mrs|Ms|Dr|Prof|Sgt|Capt|Gen|Col|Lt|No|vs|v|Inc|Co|Ltd|Jr|Sr|Rev|Hon|Mt|Ft|c|ca|U\.S|e\.g|i\.e)\.|\b[A-Z]\.)$",merged[-1]):merged[-1]+=' '+x
+        else:merged.append(x)
+    for x in merged:
         cur.append(x);w+=len(x.split())
         if w>=n:out_.append(' '.join(cur));cur=[];w=0
     if cur:
