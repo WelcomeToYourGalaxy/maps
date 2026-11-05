@@ -271,6 +271,13 @@ details.bq{border-top:1px solid var(--line2);padding:3px 0}details.bq>summary{cu
 #detHead .dbtn{font-size:14px}#detHead #detMin{margin-left:auto}
 #detGrip{position:absolute;right:0;bottom:0;width:16px;height:16px;cursor:nwse-resize;background:linear-gradient(135deg,transparent 50%,rgba(255,255,255,.28) 50%,rgba(255,255,255,.28) 60%,transparent 60%,transparent 70%,rgba(255,255,255,.28) 70%,rgba(255,255,255,.28) 80%,transparent 80%);touch-action:none}
 @media (max-width:820px){#detGrip,#detSide{display:none}}
+
+#kindBar .mkb{display:flex;flex-direction:column;gap:3px;margin:4px 0 2px}
+#kindBar .mk{display:flex;justify-content:space-between;gap:10px;text-align:left;font:inherit;font-size:12.5px;line-height:1.25;color:var(--ink);background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:3px;padding:4px 8px;cursor:pointer}
+#kindBar .mk:hover{border-color:var(--accent-hi)}
+#kindBar .mk.on{background:rgba(255,255,255,.12);border-color:var(--ink)}
+#kindBar .mk .n{opacity:.7;flex:none}
+#key.min #kindBar{display:none}
 </style>
 </head>
 <body>
@@ -281,6 +288,7 @@ details.bq{border-top:1px solid var(--line2);padding:3px 0}details.bq>summary{cu
   <h1>Globalization Case Map</h1>
   <p class="lede">Places where outside lending, the conditions attached to it, and the companies that came in with it met local communities.</p>
   <p class="lede2" id="lede2"></p>
+  <div class="body" id="kindBar"></div>
   <div class="body" id="brief"></div>
   <div class="body" id="keyBody"></div>
   <div class="body" id="layersBody"></div>
@@ -1350,7 +1358,28 @@ const FG = [
 FG.forEach((g) => { S.f[g.id] = new Set(); });
 const gPass = (c, g) => { const s = S.f[g.id]; if (!s.size) return true; if (s.has("__none")) return false; for (const v of s) if (g.test(c, v)) return true; return false; };
 const qPass = (c) => !S.q || hay(c).includes(S.q);
-const passes = (c, skip) => FG.every((g) => g.id === skip || gPass(c, g)) && qPass(c);
+/* ----- kinds of money: one full set of categories per kind ----- */
+const MK_THIN = "Only partly filled so far; more research is under way.";
+const MONK = [["all", "Every kind together"], ["off", "Loans from the IMF, World Bank and development banks"], ["fdi", "Private investment by foreign companies"], ["gra", "Grants and gifts"], ["prv", "Private loans from banks and bondholders"], ["gov", "Loans from one government to another"]];
+const MK_OFF = new Set(["wb", "ifc", "miga", "imf", "icsid", "idb", "adb", "afdb", "ebrd", "eib", "aiib", "reg", "eu"]);
+const MK_GRANT = new Set(["caracol-industrial-park-haiti", "cambodia-railway-resettlement", "bishkek-torugart-road-shops", "peru-sterilization-campaigns", "karachi-brt-red-line-university-road", "maritsa-east-beli-bryag", "messok-dja-baka-ecoguards", "lawpita-baluchaung-karenni"].concat(window.MK_GRANT_MORE || []));
+const MK_NOTGRANT = new Set(["harvard-caracol-campo-largo-bahia"]);
+const mkCache = new Map();
+function kindsOf(c) {
+  let k = mkCache.get(c.id); if (k) return k; k = [];
+  const l = c.lk || [];
+  if (l.some((x) => MK_OFF.has(x))) k.push("off");
+  if (l.includes("fdi") || MK_NOTGRANT.has(c.id)) k.push("fdi");
+  if ((l.includes("fdn") && !MK_NOTGRANT.has(c.id)) || MK_GRANT.has(c.id)) k.push("gra");
+  if (l.includes("priv")) k.push("prv");
+  if (l.includes("cn") || l.includes("bil")) k.push("gov");
+  mkCache.set(c.id, k); return k;
+}
+S.kind = "all";
+const kPass = (c) => S.kind === "all" || kindsOf(c).includes(S.kind);
+const inK = (...ks) => S.kind === "all" || ks.includes(S.kind);
+const hid = (on) => on ? "" : ' style="display:none"';
+const passes = (c, skip) => kPass(c) && FG.every((g) => g.id === skip || gPass(c, g)) && qPass(c);
 const nFilters = () => FG.reduce((a, g) => a + S.f[g.id].size, 0) + (S.q ? 1 : 0);
 const alive = (c, y) => c.start <= y && y <= endY(c);
 const inWin = (c) => c.start <= S.y1 && endY(c) >= S.y0;
@@ -1884,8 +1913,10 @@ function detailLiveWB(i) {
 
 /* ----- whole categories on and off, and a reset ----- */
 const SAVE = {};
-const isCompLayer = (id) => id.startsWith("inf_") && id !== "inf_cn_official_infra_usd21m" && id !== "inf_cn_official_infra_projects";
-const isLenderLayer = (id) => id !== "none" && id !== "prod" && !id.startsWith("lc:") && !isCompLayer(id);
+const MK_FLOW = { fdi: ["fdi"], gra: ["aid", "tied", "found"], prv: ["priv", "interest"], gov: ["bilat", "interest"], off: ["interest"] };
+const FLOWS = new Set(["fdi", "aid", "tied", "found", "priv", "bilat", "interest", "remit"].map((x) => "lc:" + x));
+const isCompLayer = (id) => id === "lc:wbca" || (id.startsWith("inf_") && id !== "inf_cn_official_infra_usd21m" && id !== "inf_cn_official_infra_projects");
+const isLenderLayer = (id) => FLOWS.has(id) || (id !== "none" && id !== "prod" && !id.startsWith("lc:") && !isCompLayer(id));
 const SECT = {
   cases: { on: () => S.cz !== false, set: (v) => { S.cz = v; refreshFocus(); } },
   live: { on: () => !!(S.live.wb || S.live.pl), set: (v) => {
@@ -1896,8 +1927,8 @@ const SECT = {
     if (v) { const s = SAVE.lenders; if (s && (s.layer !== "none" || s.f.length || s.ppl || (s.o || []).length)) { S.layer = s.layer; s.f.forEach((x) => S.f.lender.add(x)); S.ppl = !!s.ppl; S.off2 = new Set(s.o || []); } else { S.ppl = true; } OPEN.lenders = true; }
     else { SAVE.lenders = { layer: isLenderLayer(S.layer) ? S.layer : "none", f: [...S.f.lender], ppl: S.ppl, o: [...(S.off2 || [])] }; if (isLenderLayer(S.layer)) S.layer = "none"; S.f.lender.clear(); S.ppl = false; if (S.off2) S.off2.clear(); if (S.ent && S.ent.t === "person") { S.ent = null; deselect(); } }
     update(); if (typeof drawOffices === "function") drawOffices(); } },
-  conds: { on: () => S.layer.startsWith("lc:") && !S.layer.startsWith("lc:pat_"), set: (v) => {
-    if (v) { S.layer = SAVE.conds || "lc:all"; OPEN.conds = true; }
+  conds: { on: () => S.layer.startsWith("lc:") && !S.layer.startsWith("lc:pat_") && !FLOWS.has(S.layer) && S.layer !== "lc:wbca", set: (v) => {
+    if (v) { S.layer = SAVE.conds || (S.kind === "gov" ? "lc:pc" : "lc:all"); OPEN.conds = true; }
     else { SAVE.conds = S.layer; S.layer = "none"; }
     drawCountries(); } },
   pats: { on: () => !!(S.pat || S.layer.startsWith("lc:pat_")), set: (v) => {
@@ -1953,7 +1984,8 @@ const LCHK = { privatization: ["Sale or handover of a public firm or service", "
 const LCHID = new Map(); (window.LCH || []).forEach(([id, k]) => { if (!LCHID.has(id) && CASES.some((c) => c.id === id)) LCHID.set(id, k); });
 const lchOn = (c) => { const k = S.lch && LCHID.get(c.id); return k && !S.lchOff.has(k) ? k : null; };
 function pastHTML() {
-  return '<div class="lsub" style="margin-top:2px">Every project site on record' + qm("Places where money was spent, with or without harm: every World Bank project approved in 1995–2014, and the Chinese state-financed projects that AidData traced for 2000–2021. These are the only two lenders mapped this way, so other lenders' sites are not here. The dots are not cases, and most have no documented harm. Many cases are also not among these dots: IMF loan conditions, foreign company deals, other lenders and later years.") + '</div><div class="sub" style="margin-top:0">All the places the money went, harm or no harm. The cases further down are a small selection of projects and loans: those with documented harm.</div>' + (LCM ? LCM.ptRow("wb") + LCM.ptRow("cn") + LCM.exactRow() : '<div class="sub">Loading…</div>') + '<div class="lys" style="margin:6px 0 0 22px">' + radioHTML("inf_cn_official_infra_projects") + '</div>';
+  if (!inK("off", "gov")) return "";
+  return '<div class="lsub" style="margin-top:2px">Every project site on record' + qm("Places where money was spent, with or without harm: every World Bank project approved in 1995–2014, and the Chinese state-financed projects that AidData traced for 2000–2021. These are the only two lenders mapped this way, so other lenders' sites are not here. The dots are not cases, and most have no documented harm. Many cases are also not among these dots: IMF loan conditions, foreign company deals, other lenders and later years.") + '</div><div class="sub" style="margin-top:0">All the places the money went, harm or no harm. The cases further down are a small selection of projects and loans: those with documented harm.</div>' + (LCM ? (inK("off") ? LCM.ptRow("wb") : "") + (inK("gov") ? LCM.ptRow("cn") : "") + LCM.exactRow() : '<div class="sub">Loading…</div>') + (inK("gov") ? '<div class="lys" style="margin:6px 0 0 22px">' + radioHTML("inf_cn_official_infra_projects") + '</div>' : "");
 }
 function fillPast() { const el = $("#pastSites"); if (!el) return; el.innerHTML = pastHTML(); if (LCM) LCM.wirePts(); el.querySelectorAll("input[name=layer]").forEach((r) => r.addEventListener("click", () => { S.layer = S.layer === r.value ? "none" : r.value; buildLayers(); drawCountries(); if (S.sel && S.sel.t === "country") detailCountry(S.sel.iso); })); }
 function lchHTML() {
@@ -1975,6 +2007,8 @@ const LOFF = window.LOFF || [];
 const LOFN = { wb: "World Bank", ifc: "IFC", miga: "MIGA", imf: "IMF", idb: "Inter-American Development Bank", adb: "Asian Development Bank", afdb: "African Development Bank", ebrd: "EBRD", eib: "European Investment Bank", aiib: "AIIB", ndb: "New Development Bank", cdb: "China Development Bank", cexim: "Export-Import Bank of China", jica: "JICA (Japan)", jbic: "JBIC (Japan)", kfw: "KfW and DEG (Germany)", afd: "AFD (France)", proparco: "Proparco (France)", fmo: "FMO (Netherlands)", dfc: "DFC (United States)" };
 const LOFK = { h: "Headquarters", r: "Regional office", c: "Country office" };
 S.off2 = new Set();
+const MK_LOF = { off: ["wb", "ifc", "miga", "imf", "idb", "adb", "afdb", "ebrd", "eib", "aiib", "ndb"], gov: ["cdb", "cexim", "jica", "jbic", "kfw", "afd", "proparco", "fmo", "dfc"], fdi: [], gra: [], prv: [] };
+const loffInK = (k) => S.kind === "all" || (MK_LOF[S.kind] || []).includes(k);
 function addOffices() {
   map.addSource("loff", { type: "geojson", data: { type: "FeatureCollection", features: LOFF.map((o, i) => ({ type: "Feature", properties: { i, l: o[0], k: o[1] }, geometry: { type: "Point", coordinates: [o[6], o[5]] } })) } });
   map.addLayer({ id: "loff", type: "circle", source: "loff", layout: { visibility: "none" }, filter: ["in", ["get", "l"], ["literal", []]], paint: {
@@ -1987,15 +2021,15 @@ function addOffices() {
 function drawOffices() {
   if (!map.getLayer("loff")) return;
   map.setLayoutProperty("loff", "visibility", S.off2.size && !(S.pat || S.ent) ? "visible" : "none");
-  map.setFilter("loff", ["in", ["get", "l"], ["literal", [...S.off2]]]);
+  map.setFilter("loff", ["in", ["get", "l"], ["literal", [...S.off2].filter(loffInK)]]);
 }
 function officesHTML() {
-  const keys = Object.keys(LOFN).filter((k) => LOFF.some((o) => o[0] === k)), n = (k) => LOFF.filter((o) => o[0] === k).length;
+  const keys = Object.keys(LOFN).filter((k) => loffInK(k) && LOFF.some((o) => o[0] === k)), n = (k) => LOFF.filter((o) => o[0] === k).length;
   return '<label class="chk"><input type="checkbox" id="loffAll"' + (S.off2.size ? " checked" : "") + '> Every lender\'s offices <span class="n">' + LOFF.length + '</span>' + qm("Headquarters (large light dots), regional offices (medium) and country offices (small), from each lender's own office directory, read in November 2026. Dots stand at the city, not the building. Missing or incomplete: the Inter-American and African Development Banks and the IMF (only headquarters, plus four IMF regional offices), the IFC and China Development Bank, whose directories would not open; and offices the lenders list without a city. Click a dot for its source.") + '</label>' +
     '<div class="sub" style="margin:0 0 4px 22px">' + keys.map((k) => '<label class="chk" style="margin:2px 0"><input type="checkbox" data-loff="' + k + '"' + (S.off2.has(k) ? " checked" : "") + '> ' + esc(LOFN[k]) + ' <span class="n">' + n(k) + '</span></label>').join("") + '</div>';
 }
 function wireOffices() {
-  const keys = Object.keys(LOFN).filter((k) => LOFF.some((o) => o[0] === k));
+  const keys = Object.keys(LOFN).filter((k) => loffInK(k) && LOFF.some((o) => o[0] === k));
   const all = $("#loffAll"); if (!all) return;
   all.indeterminate = S.off2.size > 0 && S.off2.size < keys.length;
   all.addEventListener("change", () => { S.off2 = all.checked ? new Set(keys) : new Set(); if (all.checked) leaveStory(); buildLayers(); drawOffices(); syncSw(); });
@@ -2008,15 +2042,54 @@ function detailOffice(i) {
     '<div class="hp-src"><a href="' + esc(o[7]) + '" target="_blank" rel="noopener">The lender\'s own office directory</a></div>';
   wireCard();
 }
+const MK_LAYER_OK = (id) => {
+  if (S.kind === "all" || id === "none" || id === "prod") return true;
+  if (FLOWS.has(id)) return (MK_FLOW[S.kind] || []).includes(id.slice(3));
+  if (id === "lc:wbca") return S.kind === "off";
+  if (id.startsWith("lc:pat_")) return true;
+  if (id.startsWith("lc:")) { const l = LCM && LCM.layers.find((x) => x.id === id.slice(3)); return !!l && (MK_CG[S.kind] || []).includes(l.lender); }
+  if (id.startsWith("inf_")) return infK(id.slice(4));
+  return true;
+};
+function setKind(k) {
+  if (S.kind === k) return;
+  S.kind = k;
+  if (S.sel || S.pat || S.ent) deselect();
+  S.f.lender.clear();
+  if (!MK_LAYER_OK(S.layer)) S.layer = "none";
+  if (S.lcpt) { if (!inK("off")) S.lcpt.wb = false; if (!inK("gov")) S.lcpt.cn = false; if (!inK("off", "fdi")) { S.lcpt.mm = false; S.lcpt.pf = false; } }
+  OPEN.cases = true;
+  buildKey(); buildLayers(); update(); refreshFocus(); drawCharts(); syncSw();
+}
+const MK_DEF = {
+  fdi: "A company from abroad buys at least a tenth of a business in a country, or builds one, and gets a say in running it. No government borrows anything. The company keeps the profits, and what it can do is often protected by investment treaties and by the loan conditions that opened the sector to it.",
+  gra: "Money that does not have to be paid back, from other governments, UN bodies and private foundations. It can still carry strings: tied aid must be spent on the donor's own goods and services, and a donor can choose what the money is spent on.",
+  prv: "Loans from banks and investment funds, often made by buying a government's bonds. These lenders do not attach policy conditions the way the IMF does. Their tools are the price of the loan and the courts where the debt can be enforced.",
+  gov: "Loans straight from one government to another, usually through a state bank or aid agency, such as China's Export-Import Bank or Japan's JICA. Terms can be cheap or commercial, and contracts are often secret.",
+};
+function kindBriefHTML(k) {
+  const C = CASES.filter((c) => kindsOf(c).includes(k)), kc = C.filter((c) => c.killed > 0), kn = kc.reduce((a, c) => a + (c.killed || 0), 0);
+  const q = (t, body) => '<details class="bq"><summary>' + t + '</summary><p class="bp">' + body + '</p></details>';
+  const extra = (window.MK_BRIEF || {})[k] || {};
+  return '<details class="sec brief" data-sec="brief"' + (OPEN.brief ? " open" : "") + '><summary class="psec">The whole picture, in brief</summary><div class="secb">' +
+    q("What is this kind of money?", esc(MK_DEF[k])) +
+    (extra.items || []).map(([t, b]) => q(esc(t), b)).join("") +
+    q("How much of it does this map cover?", 'This map has ' + C.length + ' cases with this kind of money, in ' + new Set(C.map((c) => c.iso3)).size + ' countries' + (kn ? ', recording ' + fmt(kn) + ' people killed by a project, a company or forces acting for them in ' + kc.length + ' cases' : '') + '. That counts cases with documented harm, not the share of this money that did harm, which no one has measured. A case with several kinds of money counts under each.' + (C.length < 100 ? ' This kind is still thin here: more research is under way.' : '')) +
+    ((extra.sources || []).length ? '<details class="bsrc"><summary>Sources for these figures</summary><ol>' + extra.sources.map(([t, u]) => '<li><a href="' + esc(u) + '" target="_blank" rel="noopener">' + esc(t) + '</a></li>').join("") + '</ol></details>' : "") +
+    '</div></details>';
+}
 function buildKey() {
-  $("#lede2").textContent = CASES.length + " cases in " + new Set(CASES.map((c) => c.iso3)).size + " countries · " + new Set(CASES.flatMap((c) => (c.companies || []).map((x) => x.name))).size + " companies · every figure sourced";
-  $("#brief").innerHTML = briefHTML();
+  const KC_ = CASES.filter(kPass);
+  $("#lede2").textContent = KC_.length + " cases in " + new Set(KC_.map((c) => c.iso3)).size + " countries · " + new Set(KC_.flatMap((c) => (c.companies || []).map((x) => x.name))).size + " companies · every figure sourced";
+  $("#kindBar").innerHTML = '<div class="psec" style="margin-top:8px">Kind of money' + qm("Each kind has its own full set of categories below: the brief, the cases, who put up the money, conditions, patterns, companies, complaints and products. A case with several kinds of money appears under each. Some kinds are much thinner than others, and each says so.") + '</div><div class="mkb">' + MONK.map(([k, t]) => '<button type="button" class="mk' + (S.kind === k ? " on" : "") + '" data-mk="' + k + '">' + esc(t) + '<span class="n">' + (k === "all" ? CASES.length : CASES.filter((c) => kindsOf(c).includes(k)).length) + '</span></button>').join("") + '</div>';
+  $("#kindBar").querySelectorAll("[data-mk]").forEach((b) => b.addEventListener("click", () => setKind(b.dataset.mk)));
+  $("#brief").innerHTML = (S.kind === "all" || S.kind === "off") ? briefHTML() : kindBriefHTML(S.kind);
   document.querySelectorAll("#brief .bp").forEach(glossify);
   const LSORT = [["start", "Year it began"], ["recent", "Most recent first"], ["az", "A to Z"], ["kind", "Kind of case"], ["country", "Country"], ["region", "Region"], ["killed", "Most people killed"]];
   $("#keyBody").innerHTML =
     sec("cases", "Cases",
       '<div id="pastSites"></div>' +
-      '<div class="lsub" style="margin-top:12px;padding-top:8px;border-top:1px solid var(--line2)">The cases: where harm is documented' + qm("Each case has a full write-up and sources, and shows on the map as a ringed mark. To be a case, an outside lender, public fund or foreign owner must be tied to what happened, the harm must have actually happened, and the money or company must have been involved at the time.") + '</div>' +
+      '<div class="lsub" style="margin-top:' + (inK("off", "gov") ? '12px;padding-top:8px;border-top:1px solid var(--line2)' : '2px') + '">The cases: where harm is documented' + qm("Each case has a full write-up and sources, and shows on the map as a ringed mark. To be a case, an outside lender, public fund or foreign owner must be tied to what happened, the harm must have actually happened, and the money or company must have been involved at the time.") + '</div>' +
       '<div class="fgl" style="margin-top:6px">Time</div>' +
       '<label class="chk"><input type="checkbox" id="allY"' + (S.all ? " checked" : "") + '> Every year (cases ' + Math.min(...CASES.map((c) => c.start)) + '–' + NOW + ')</label>' +
       '<div class="tline"><button type="button" class="btn" id="play" title="Play through the years">▶</button><div class="dual"><div class="dtrack"><i id="dsel"></i></div><input type="range" id="yr0" min="' + YMIN + '" max="' + YMAX + '" step="1" value="' + S.y0 + '" aria-label="From year"><input type="range" id="yr1" min="' + YMIN + '" max="' + YMAX + '" step="1" value="' + S.y1 + '" aria-label="To year"></div><b id="yrv">all</b><select id="speed" class="spd" aria-label="Playing speed" title="Playing speed">' + [1, 2, 4, 8].map((v) => '<option value="' + v + '"' + (S.speed === v ? " selected" : "") + '>' + v + '×</option>').join("") + '</select></div>' +
@@ -2122,20 +2195,32 @@ function contractsHTML() {
     '<p style="margin:5px 0 0">Two other arrangements appear below. With tied aid, the donor says the money must go to its own firms. In a company-funded deal, the contract lets a company build, buy or run the thing itself and earn its money back from tolls and bills.</p>' +
     '<p style="margin:5px 0 0">A contract alone does not make a case on this map: a firm that only built or supplied something is not enough. A case needs an outside lender, funder or owner tied to documented harm. These figures show who got the money, not who caused harm.</p></div>';
 }
+const infK = (k) => S.kind === "all" || (/^cn_/.test(k) ? S.kind === "gov" : /^(bil|eu)_tied/.test(k) ? S.kind === "gra" : /^ppi/.test(k) ? S.kind === "fdi" : S.kind === "off");
 function infraSec() {
-  if (!INFL.length) return "";
+  if (!INFL.length || S.kind === "prv") return "";
   return sec2("infra", "Companies in roads, ports, power and water" + qm("No dataset gives the share of a country's infrastructure that is foreign-built or foreign-owned; these are the partial measures that exist. They overlap, so do not add them together. Not shown because their data could not be read or does not exist in a usable form: the African Development Bank, the European Investment Bank and export credit agencies."),
     contractsHTML() +
-    INF_GROUPS.map(([t, why, keys]) => { const rows = keys.filter((k) => INF.m[k]).map((k) => radioHTML("inf_" + k)).join(""); return rows ? '<div class="lsub">' + t + qm(why) + '</div><div class="lys">' + rows + '</div>' : ""; }).join("") +
-    '<div class="lsub">Deals where a company puts up the money' + qm("Here the government does not borrow to build. A company pays to build, buy or run the road, port, power plant, water system or phone network, using its own and borrowed money, and earns it back from tolls and bills under a contract with the government. These deals connect to the loans in two ways: development banks and foreign governments backed 22.3% of this money in 1990–2024, and some loans on this map required selling state firms.") + '</div><div class="cbrow">' + cbtn("ppi", "Open the chart: company-funded deals, by year and country") + '</div>');
+    INF_GROUPS.map(([t, why, keys], gi) => { const rows = (gi === 0 && inK("off") && LCM ? LCM.row("wbca") : "") + keys.filter((k) => INF.m[k] && infK(k)).map((k) => radioHTML("inf_" + k)).join(""); return rows ? '<div class="lsub">' + t + qm(why) + '</div><div class="lys">' + rows + '</div>' : ""; }).join("") +
+    (inK("fdi") ? '<div class="lsub">Deals where a company puts up the money' + qm("Here the government does not borrow to build. A company pays to build, buy or run the road, port, power plant, water system or phone network, using its own and borrowed money, and earns it back from tolls and bills under a contract with the government. These deals connect to the loans in two ways: development banks and foreign governments backed 22.3% of this money in 1990–2024, and some loans on this map required selling state firms.") + '</div><div class="cbrow">' + cbtn("ppi", "Open the chart: company-funded deals, by year and country") + '</div>' : ""));
 }
 const COND_GROUPS = [["All", "Every lender together"], ["IMF", "International Monetary Fund"], ["World Bank", "World Bank"], ["IDB", "Inter-American Development Bank"], ["EU", "European Union and euro area"], ["Gov", "Single governments: China, the Paris Club and others"], ["OECD", "Other lenders reporting to the OECD"], ["Pat", "Who wins the contracts"], ["Flows", "Other money, for comparison"]];
+const MK_CG = { off: ["All", "IMF", "World Bank", "IDB", "EU"], gov: ["Gov", "OECD"], fdi: [], gra: [], prv: [] };
+const MK_NOCOND = { fdi: "No country-by-country layer of investors' terms exists on this map yet. Their terms sit in investment treaties and contracts; see the pattern on companies suing the state. " + MK_THIN, gra: "No country-by-country layer of donors' conditions exists on this map yet. The closest is aid tied to buying from the donor, under Each Kind of Donor. " + MK_THIN, prv: "No country-by-country layer of private lenders' terms exists on this map yet. " + MK_THIN };
 function condsHTML() {
   if (!LCM) return "";
+  if (MK_NOCOND[S.kind]) return '<div class="sub" style="margin-top:0">' + esc(MK_NOCOND[S.kind]) + '</div>';
   return '<div class="sub" style="margin-top:0">The conditions and terms lenders attached to their money, country by country. Pick one to shade the map; only one shows at a time.</div>' +
-    COND_GROUPS.map(([k, t]) => { const L = LCM.layers.filter((l) => l.lender === k && !l.id.startsWith("pat_")); if (!L.length) return ""; if (L.some((l) => S.layer === "lc:" + l.id)) OPEN["c" + k] = true; return sec2("c" + k, esc(t), '<div class="lys">' + L.map((l) => LCM.row(l.id)).join("") + '</div>'); }).join("");
+    COND_GROUPS.filter(([k]) => k !== "Pat" && k !== "Flows" && (S.kind === "all" || MK_CG[S.kind].includes(k))).map(([k, t]) => { const L = LCM.layers.filter((l) => l.lender === k && !l.id.startsWith("pat_")); if (!L.length) return ""; if (L.some((l) => S.layer === "lc:" + l.id)) OPEN["c" + k] = true; const h = sec2("c" + k, esc(t), '<div class="lys">' + L.map((l) => LCM.row(l.id)).join("") + '</div>'); return k === "All" ? h : '<div style="margin-left:14px">' + h + '</div>'; }).join("");
 }
 const NOT_LENDER = ["miga", "icsid", "fdn", "fdi"];
+const MK_PAT = { "company-sued-the-state": ["off", "fdi"], "companies-come-from": ["off", "fdi"], "cold-war-loans-reward-punish": ["off", "gov"], "odious-debt-dictators": ["off", "gov", "prv"], "revolving-door-wall-street-lenders": ["off", "prv"], "rescue-loans-paid-foreign-lenders": ["off", "prv"], "sold-then-taken-back": ["off", "fdi"] };
+const MK_LK = { fdi: ["fdi"], gra: ["fdn"], prv: ["priv"], gov: ["cn", "bil"] };
+function flowsHTML() {
+  if (!LCM) return "";
+  if (S.kind === "all") return '<div class="lsub">Other money, for comparison' + qm("Money that is not a loan from these lenders, shown to compare with the loans. Each also sits under its own kind of money, in the switch at the top.") + '</div><div class="lys">' + [...FLOWS].map(radioHTML).join("") + '</div>';
+  const L = (MK_FLOW[S.kind] || []).map((x) => "lc:" + x);
+  return L.length ? '<div class="lsub">Country by country</div><div class="lys">' + L.map(radioHTML).join("") + '</div>' : "";
+}
 function lenderRow(k) {
   const cfg = LGRP[k] || {};
   const radios = (cfg.base || []).concat((cfg.lc || []).filter(lcHas).map((x) => "lc:" + x));
@@ -2190,28 +2275,29 @@ function buildLayers() {
   const ents = (arr) => (arr || []).slice().sort((a, b) => (b.case_ids || []).length - (a.case_ids || []).length || a.name.localeCompare(b.name));
   const wait = LCM ? "" : '<div class="sub">Loading the money layers…</div>';
   el.innerHTML =
-    sec("live", "Projects: under way and planned", liveHTML(), swHTML("live")) +
-    sec("lenders", "Lenders",
-      sec2("each", "Each Lender", '<div class="cbrow" style="margin-top:0">' + cbtn("money", "How much each kind of lender sends poorer countries, compared") + '</div><div class="sub">Click a name for its cases, <b>?</b> for who it is, <b>▸</b> for its layers.' + qm("Clicking a lender's name shows only the cases it took part in; several can be chosen. The ? opens a short profile: who owns it, how its money and conditions work, its complaint office and its record. The ▸ opens its own layers: country shading, its complaint office's points, project sites and charts. Click a checked shading layer again to turn it off.") + '</div>' + Object.keys(LKN).filter((k) => !NOT_LENDER.includes(k)).map(lenderRow).join("") +
-        '<div class="lsub">Not lenders, but part of the same money' + qm("MIGA insures foreign investors against political risk. ICSID is the World Bank Group's court where foreign companies sue governments. Private foundations give grants. Foreign companies invest their own money. None of them lends to governments, but each is tied to harm in cases on this map, so their cases can be picked here too.") + '</div>' + NOT_LENDER.map(lenderRow).join("") + wait) +
-      sec2("loffs", "Their Offices", officesHTML()) +
-      sec2("people", "People on the record",       '<label class="chk"><input type="checkbox" id="pplOn"' + (S.ppl ? " checked" : "") + '> People on the record, placed where they held their posts <span class="n">' + (ENT.people || []).filter((e) => e.anchor).length + '</span>' + qm("Officials, executives and others with a documented part in the cases, each placed at the building where they held the post through which they acted. Click one for their record and lines to the cases they are documented in.") + '</label>' +
-      '<div class="fgl" style="margin-top:6px">Person' + qm("Choosing a person moves the map to where they held their post and opens their record.") + '</div><select id="selPe"><option value="">Choose one</option>' + ents(ENT.people).map((e) => '<option value="' + esc(e.id) + '"' + (S.ent && S.ent.t === "person" && S.ent.id === e.id ? " selected" : "") + '>' + esc(e.name) + '</option>').join("") + '</select>'), swHTML("lenders")) +
+    (inK("off") ? sec("live", "Projects: under way and planned", liveHTML(), swHTML("live")) : "") +
+    sec("lenders", { all: "Lenders", off: "Lenders", fdi: "Investors", gra: "Donors", prv: "Private Lenders", gov: "Lender Governments" }[S.kind],
+      sec2("each", { all: "Each Lender", off: "Each Lender", fdi: "Each Kind of Investor", gra: "Each Kind of Donor", prv: "Each Kind of Private Lender", gov: "Each Lender Government" }[S.kind], (inK("off") ? '<div class="cbrow" style="margin-top:0">' + cbtn("money", "How much each kind of lender sends poorer countries, compared") + '</div>' : "") + flowsHTML() + '<div class="sub">Click a name for its cases, <b>?</b> for who it is, <b>▸</b> for its layers.' + qm("Clicking a lender's name shows only the cases it took part in; several can be chosen. The ? opens a short profile: who owns it, how its money and conditions work, its complaint office and its record. The ▸ opens its own layers: country shading, its complaint office's points, project sites and charts. Click a checked shading layer again to turn it off.") + '</div>' + Object.keys(LKN).filter((k) => S.kind === "all" ? !NOT_LENDER.includes(k) : S.kind === "off" ? MK_OFF.has(k) && !NOT_LENDER.includes(k) : (MK_LK[S.kind] || []).includes(k)).map(lenderRow).join("") +
+        (!inK("off") ? "" : '<div class="lsub">Not lenders, but part of the same money' + qm("MIGA insures foreign investors against political risk. ICSID is the World Bank Group's court where foreign companies sue governments. Private foundations give grants. Foreign companies invest their own money. None of them lends to governments, but each is tied to harm in cases on this map, so their cases can be picked here too.") + '</div>' + NOT_LENDER.filter((k) => S.kind === "all" || MK_OFF.has(k)).map(lenderRow).join("")) + wait) +
+      (inK("off", "gov") ? sec2("loffs", "Their Offices", officesHTML()) : '<input type="checkbox" id="loffAll" style="display:none">') +
+      sec2("people", "People on the record",       '<label class="chk"><input type="checkbox" id="pplOn"' + (S.ppl ? " checked" : "") + '> People on the record, placed where they held their posts <span class="n">' + (ENT.people || []).filter((e) => e.anchor && entInK(e)).length + '</span>' + qm("Officials, executives and others with a documented part in the cases, each placed at the building where they held the post through which they acted. Click one for their record and lines to the cases they are documented in.") + '</label>' +
+      '<div class="fgl" style="margin-top:6px">Person' + qm("Choosing a person moves the map to where they held their post and opens their record.") + '</div><select id="selPe"><option value="">Choose one</option>' + ents(ENT.people).filter(entInK).map((e) => '<option value="' + esc(e.id) + '"' + (S.ent && S.ent.t === "person" && S.ent.id === e.id ? " selected" : "") + '>' + esc(e.name) + '</option>').join("") + '</select>'), swHTML("lenders")) +
     sec("conds", "Conditionalities", condsHTML() + wait, swHTML("conds")) +
     sec("pats", "Patterns Behind the Scenes",
       (S.layer === "none" ? '<div id="lyLeg"></div>' : "") +
       '<div class="lsub">Patterns' + qm("Each pattern is a write-up of something that runs across many cases or countries, with what it means and its sources. While it is open the map shows only that story; click it again, or close the write-up, to bring everything back.") + '</div><div class="lys">' +
-      PATS.slice().sort((a, b) => (a.years ? a.years[0] : 9999) - (b.years ? b.years[0] : 9999)).map((p) => '<label><input type="radio" name="pat" value="' + esc(p.id) + '"' + (S.pat === p.id ? " checked" : "") + '><span>' + esc(p.title) + ' <span class="n">' + (p.years ? p.years[0] + "–" + p.years[1] : "") + '</span></span></label>').join("") + '</div>', swHTML("pats")) +
+      PATS.filter((p) => S.kind === "all" || (MK_PAT[p.id] || ["off"]).includes(S.kind)).sort((a, b) => (a.years ? a.years[0] : 9999) - (b.years ? b.years[0] : 9999)).map((p) => '<label><input type="radio" name="pat" value="' + esc(p.id) + '"' + (S.pat === p.id ? " checked" : "") + '><span>' + esc(p.title) + ' <span class="n">' + (p.years ? p.years[0] + "–" + p.years[1] : "") + '</span></span></label>').join("") + '</div>', swHTML("pats")) +
     sec("comps", "The Companies",
       '<label class="chk"><input type="checkbox" id="hqOn"' + (S.hq ? " checked" : "") + '> Each company\'s headquarters' + qm("A dot at the headquarters of each company named in a case. Click one for that company and its cases.") + '</label>' +
       '<label class="chk"><input type="checkbox" id="links2"' + (S.links ? " checked" : "") + '> Lines from each company\'s headquarters to its cases' + qm("Works on its own, even with the Cases switch off. Choosing a case always draws its companies (solid lines) and its lenders (dashed).") + '</label>' +
-      '<div class="fgl" style="margin-top:6px">Company, adviser or fund' + qm("The number is how many cases on this map each one is documented in. Choosing one moves the map to its headquarters and shows only its story until its write-up is closed.") + '</div><select id="selCo"><option value="">Choose one</option>' + ents(ENT.companies).map((e) => '<option value="' + esc(e.id) + '"' + (S.ent && S.ent.t === "company" && S.ent.id === e.id ? " selected" : "") + '>' + esc(e.name) + ((e.case_ids || []).length ? ' (' + e.case_ids.length + ')' : "") + '</option>').join("") + '</select><div class="cbrow">' + cbtn("comp", "Every company in the cases, in a table") + '</div>' + infraSec(), swHTML("comps")) +
+      '<div class="fgl" style="margin-top:6px">Company, adviser or fund' + qm("The number is how many cases on this map each one is documented in. Choosing one moves the map to its headquarters and shows only its story until its write-up is closed.") + '</div><select id="selCo"><option value="">Choose one</option>' + ents(ENT.companies).filter(entInK).map((e) => '<option value="' + esc(e.id) + '"' + (S.ent && S.ent.t === "company" && S.ent.id === e.id ? " selected" : "") + '>' + esc(e.name) + ((e.case_ids || []).length ? ' (' + e.case_ids.length + ')' : "") + '</option>').join("") + '</select><div class="cbrow">' + cbtn("comp", "Every company in the cases, in a table") + '</div>' + infraSec(), swHTML("comps")) +
     sec("pts", "Complaints, Protests and Public Take-backs",
-      '<label class="chk"><input type="checkbox" id="cmpAll"' + (S.offs.size ? " checked" : "") + '> <i class="dot" style="background:#9fb6d8"></i>Complaints to every lender\'s complaint office <span class="n">' + fmt(CMP.length) + '</span>' + qm("Every complaint published by fourteen complaint offices, from the World Bank's Inspection Panel to the OECD's contact points for complaints about companies, each office in its own colour. Each lender's own office can be turned on alone under its name in Lenders. A filled dot means the office or another source recorded harm on the ground; a smaller dot, that the complaint is part of a case here (" + nTied + "). While a case filter is on, only complaints tied to the cases shown stay.") + '</label>' +
-      (S.offs.size && S.offs.size < offsAll.length ? '<div class="sub" style="margin:0 0 4px 22px">Showing ' + S.offs.size + ' of ' + offsAll.length + ' offices.</div>' : '') +
-      '<label class="chk"><input type="checkbox" id="protOn"' + (S.prot ? " checked" : "") + '> <i class="dot" style="background:#d8c9c0"></i>Protests whose news record names the IMF or World Bank, 1990–2020 <span class="n">' + PROT.length + '</span>' + qm("Protests of 50 or more people against a government whose coded news record mentions the IMF or World Bank (Mass Mobilization Project). A filled dot means the state's response was coded as shootings or killings.") + '</label>' +
-      (LCM ? LCM.ptRow("mm") + LCM.ptRow("pf") : ""), swHTML("pts")) +
-    sec("prod", "The Products – What Not To Buy", '<button type="button" class="chipb hlb" id="openProd">Open the table: products and where they come from</button><div class="lys">' + radioHTML("prod") + '</div>', swHTML("prod"));
+      (inK("off", "gov", "fdi") ? "" : '<div class="sub" style="margin-top:0">No complaint office takes complaints about this kind of money, so these points stay off. ' + MK_THIN + '</div>') +
+      '<label class="chk"' + hid(inK("off", "gov", "fdi")) + '><input type="checkbox" id="cmpAll"' + (S.offs.size ? " checked" : "") + '> <i class="dot" style="background:#9fb6d8"></i>Complaints to ' + (S.kind === "all" ? 'every lender\'s complaint office' : S.kind === "fdi" ? 'OECD contact points, about companies' : 'the complaint offices for this money') + ' <span class="n">' + fmt(CMP.filter((c) => cmpInK(c.o)).length) + '</span>' + qm("Every complaint published by fourteen complaint offices, from the World Bank's Inspection Panel to the OECD's contact points for complaints about companies, each office in its own colour. Each lender's own office can be turned on alone under its name in Lenders. A filled dot means the office or another source recorded harm on the ground; a smaller dot, that the complaint is part of a case here (" + nTied + "). While a case filter is on, only complaints tied to the cases shown stay.") + '</label>' +
+      (S.kind === "all" && S.offs.size && S.offs.size < offsAll.length ? '<div class="sub" style="margin:0 0 4px 22px">Showing ' + S.offs.size + ' of ' + offsAll.length + ' offices.</div>' : '') +
+      '<label class="chk"' + hid(inK("off")) + '><input type="checkbox" id="protOn"' + (S.prot ? " checked" : "") + '> <i class="dot" style="background:#d8c9c0"></i>Protests whose news record names the IMF or World Bank, 1990–2020 <span class="n">' + PROT.length + '</span>' + qm("Protests of 50 or more people against a government whose coded news record mentions the IMF or World Bank (Mass Mobilization Project). A filled dot means the state's response was coded as shootings or killings.") + '</label>' +
+      (LCM && inK("off", "fdi") ? LCM.ptRow("mm") + LCM.ptRow("pf") : ""), swHTML("pts")) +
+    sec("prod", "The Products – What Not To Buy", (inK("off") ? "" : '<div class="sub" style="margin-top:0">The product figures are not split by kind of money yet, so this shows the same figures for every kind. ' + MK_THIN + '</div>') + '<button type="button" class="chipb hlb" id="openProd">Open the table: products and where they come from</button><div class="lys">' + radioHTML("prod") + '</div>', swHTML("prod"));
   wireLayers();
   drawFilters();
   fillPast();
@@ -2696,7 +2782,7 @@ function drawTable(w) {
 function drawComp(w) {
   w.el.querySelector(".wr").innerHTML = "";
   const M = new Map();
-  CASES.forEach((c, i) => (c.companies || []).forEach((x) => { if (!M.has(x.name)) M.set(x.name, { n: x.name, hq: x.hq || "", cases: [] }); M.get(x.name).cases.push(i); }));
+  CASES.forEach((c, i) => { if (!kPass(c)) return; (c.companies || []).forEach((x) => { if (!M.has(x.name)) M.set(x.name, { n: x.name, hq: x.hq || "", cases: [] }); M.get(x.name).cases.push(i); }); });
   const rows = [...M.values()], [sk, dir] = S.csort;
   rows.sort((a, b) => (sk === "n" ? (a.cases.length - b.cases.length) || b.n.localeCompare(a.n) : sk === "name" ? b.n.localeCompare(a.n) : b.hq.localeCompare(a.hq)) * dir);
   const ctry = new Map(); rows.forEach((r) => { const k = (r.hq.split(",").pop() || "").trim() || "not given"; ctry.set(k, (ctry.get(k) || 0) + 1); });
@@ -2842,14 +2928,16 @@ function detailLender(k) {
   const lb = $("#lfLay"); if (lb) lb.addEventListener("click", () => { S.lopen.add(k); OPEN.lenders = true; buildLayers(); const r = document.querySelector('#layersBody [data-more="' + k + '"]'); if (r) r.scrollIntoView({ block: "center", behavior: "smooth" }); });
   wireCard();
 }
+const MK_CMP = { off: ["ip", "cao", "mici", "am", "irm", "ipam", "eibcm", "ppm", "icm"], gov: ["aiddata", "jica", "dfc", "afd"], fdi: ["ncp"], gra: [], prv: [] };
+const cmpInK = (o) => S.kind === "all" || (MK_CMP[S.kind] || []).includes(o);
 function drawPoints() {
   if (!map.getLayer("cmp-dot")) return;
   const story = !!(S.pat || S.ent);
   map.setLayoutProperty("cmp-dot", "visibility", S.offs.size && !story ? "visible" : "none");
   const F = nFilters() ? new Set(CASES.filter(onMap).map((c) => c.id)) : null;
-  const offF = ["in", ["get", "o"], ["literal", [...S.offs]]];
+  const offF = ["in", ["get", "o"], ["literal", [...S.offs].filter(cmpInK)]];
   map.setFilter("cmp-dot", F ? ["all", offF, ["in", ["get", "i"], ["literal", CMP.map((c, i) => (c.cs || []).some((x) => F.has(x)) ? i : -1).filter((i) => i >= 0)]]] : offF);
-  map.setLayoutProperty("prot-dot", "visibility", S.prot && !story && !F ? "visible" : "none");
+  map.setLayoutProperty("prot-dot", "visibility", S.prot && !story && !F && inK("off") ? "visible" : "none");
   if (LCM) LCM.drawPts();
   drawLive(); drawOffices();
 }
@@ -2902,11 +2990,18 @@ function groupMarker(k, list) {
   }
   return g;
 }
+const MK_NOCASE = { blackrock: ["prv"], elliott: ["prv"], "fg-hemisphere": ["prv"], donegal: ["prv"] };
+function entInK(e) {
+  if (S.kind === "all") return true;
+  const ids = e.case_ids || [];
+  if (!ids.length) return (MK_NOCASE[e.id] || ["off"]).includes(S.kind);
+  return ids.some((id) => CASEIX[id] != null && kindsOf(CASES[CASEIX[id]]).includes(S.kind));
+}
 function drawPeople() {
   const selP = S.ent && S.ent.t === "person" ? S.ent.id : null, story = !!(S.pat || S.ent);
   const groups = new Map();
   const F = nFilters() ? new Set(CASES.filter(onMap).map((c) => c.id)) : null;
-  PM.forEach((p) => { p.show = selP ? p.e.id === selP : (S.ppl && !story); if (p.show) { const k = pKey(p.e); if (!groups.has(k)) groups.set(k, []); groups.get(k).push(p); } });
+  PM.forEach((p) => { p.show = selP ? p.e.id === selP : (S.ppl && !story && entInK(p.e)); if (p.show) { const k = pKey(p.e); if (!groups.has(k)) groups.set(k, []); groups.get(k).push(p); } });
   PM.forEach((p) => {
     const single = p.show && groups.get(pKey(p.e)).length === 1;
     if (single && !p.on) { p.m.addTo(map); p.on = true; } else if (!single && p.on) { p.m.remove(); p.on = false; }

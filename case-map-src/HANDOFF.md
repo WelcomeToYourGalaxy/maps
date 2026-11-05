@@ -109,3 +109,11 @@ WebFetch has an hourly limit shared across agents. Running several agents at onc
 - **Company-funded deals** left the layer list and became the chart window `ppi` (`drawPpiWin()`), from `window.PPID`, built by `infra_ppi.py` from the World Bank PPI file. Rich countries are not in that database by design; the chart's footnote lists the gaps. The ppi_* numbers stay in `window.INFRA` because the chart's table reads them.
 - **Contracts explainer:** `contractsHTML()`, at the top of "Companies in roads, ports, power and water".
 - **Merged pattern:** `investors-sue-after-privatization` was folded into `company-sued-the-state` (`_MERGED` in `build.py`). Both originals are in `docs/r20_merged_pattern_originals.json`. 15 patterns now.
+
+## Kinds of money (round 21 on)
+
+- The owner asked for one full set of categories per kind of money, all on this page: official loans (`off`), private investment (`fdi`), grants and gifts (`gra`), private loans (`prv`), government-to-government loans (`gov`). `MONK`, `S.kind`, `kindsOf()`, `setKind()` in `base.html`. A case with several kinds shows under each. `kindsOf` reads `lk`; `MK_GRANT` adds cases by id; add more with `window.MK_GRANT_MORE`.
+- Each section filters by kind: `kPass` in `passes`, `MK_CMP`, `MK_LOF`, `MK_CG`, `MK_FLOW`, `MK_PAT`, `MK_LK`, `infK`, `entInK`.
+- Briefs: `off` and `all` use `briefHTML()`; others use `kindBriefHTML()`, with `window.MK_BRIEF[k] = {items:[[question, html]], sources:[[title,url]]}` for sourced figures. Any figure from the owner's own text must be re-sourced on an opened page; unconfirmed ones stay off. The "Claude AI estimates 20–40%" line stays out for good.
+- Products are not split by kind yet. Thin kinds say so in their sections (`MK_THIN`).
+- Research order: grants and private loans first, then government loans, then private investment.
