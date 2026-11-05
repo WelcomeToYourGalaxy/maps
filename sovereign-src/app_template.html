@@ -242,7 +242,7 @@ table.heat tr:hover td.nm{color:#fff;text-decoration:underline}
 <div id="rcol" class="col">
   <div class="btnrow"><button class="btn pri" data-act="room">Compare every place</button><button class="btn" data-act="about">About</button><button class="btn" data-act="method">Method and sources</button></div>
   <div id="tr" class="card"><button id="toggleTr" class="tog" type="button">−</button><span class="trl">Basemap and view</span><div id="trBody" class="tbody"></div></div>
-  <div id="stack" class="card"><div class="bh"><span class="psec">Every place, top to bottom<span class="qm" data-tip="Each kind of place, from interstellar space down to the deep seabed, then land and the other routes to it. The number is the estimated chance chosen in the shading menu. Click one for the rules, the odds and the attempts made there.">?</span></span><button id="toggleSt" class="tog" type="button">−</button></div><div id="stBody" class="scroll"></div></div>
+  <div id="stack" class="card"><div class="bh"><span class="psec">Every place, top to bottom<span class="qm" data-tip="Each kind of place, from interstellar space down to the deep seabed, then land and the other routes to it, then combinations of these. Click a heading to fold that group. The number is the estimated chance chosen in the shading menu. Click one for the rules, the odds and the attempts made there.">?</span></span><button id="toggleSt" class="tog" type="button">−</button></div><div id="stBody" class="scroll"></div></div>
   <div id="legBox" class="card"><div class="bh"><span class="psec">On the map</span><button id="toggleLeg" class="tog" type="button">−</button></div><div id="legBody"></div></div>
 </div>
 <button id="worldBtn" type="button">Whole world</button>
@@ -376,7 +376,7 @@ document.addEventListener("mousemove", (e) => { const q = e.target.closest && e.
 const yrs = (c) => (c.start || "?") + (c.end ? (c.end === c.start ? "" : "–" + c.end) : "–now");
 function buildKey() {
   const base = D.cases, ATT = base.filter((c) => c.kind === "attempt"), cnt = (f) => base.filter(f).length;
-  $("#lede2").textContent = ATT.length + " attempts · " + (base.length - ATT.length) + " laws and legal tests · " + D.zones.length + " kinds of place · " + D.patterns.length + " patterns · " + D.entails.length + " requirements";
+  $("#lede2").textContent = ATT.length + " attempts · " + (base.length - ATT.length) + " laws and legal tests · " + D.zones.length + " places, routes and combinations · " + D.patterns.length + " patterns · " + D.entails.length + " requirements";
   const r = SHADES[S.shade];
   let h = '<div class="psec">Shade the places by<span class="qm" data-tip="No study measures these chances, so they are estimates based on the law and on what happened in past attempts. Open any place to read the reasoning. Method and sources explains the scale.">?</span></div><select id="shade">' + Object.keys(SHADES).map((k) => '<option value="' + k + '"' + (k === S.shade ? " selected" : "") + ">" + esc(SHADES[k][0]) + "</option>").join("") + '</select><div style="font-size:11.2px;color:var(--mute);margin-top:4px;line-height:1.35">' + esc(r[1]) + '</div><div class="ramp">' + RAMP.map((x) => '<i style="background:' + x[1] + '"></i>').join("") + '</div><div class="rlab">' + RAMP.map((x) => "<span>" + x[2] + "</span>").join("") + "</div>";
   h += '<div class="psec">Find</div><input id="find" class="inp" type="search" placeholder="An attempt, founder, place or treaty" autocomplete="off" value="' + esc(S.q || "") + '"><div id="flist" class="scroll"></div>';
@@ -409,9 +409,10 @@ function buildTr() {
 }
 function buildStack() {
   let h = "", g = null;
-  D.zones.forEach((z) => { if (z.band !== g) { g = z.band; h += '<div class="stg">' + esc(g) + "</div>"; } const v = z.odds[S.shade], n = D.cases.filter((c) => c.zid === z.id).length; h += '<div class="st' + (S.zone === z.id ? " on" : "") + '" data-z="' + z.id + '"><span class="pct" style="background:' + rampCol(v) + '">' + fmtPct(v) + '</span><span class="nm">' + esc(z.name) + '</span><span class="n">' + n + "</span></div>"; });
+  const shut = S.shut || (S.shut = {}); D.zones.forEach((z) => { if (z.band !== g) { g = z.band; h += '<div class="stg" data-band="' + esc(g) + '" style="cursor:pointer"><span style="display:inline-block;width:11px">' + (shut[g] ? "▸" : "▾") + "</span>" + esc(g) + "</div>"; } if (shut[g]) return; const v = z.odds[S.shade], n = D.cases.filter((c) => c.zid === z.id).length; h += '<div class="st' + (S.zone === z.id ? " on" : "") + '" data-z="' + z.id + '"><span class="pct" style="background:' + rampCol(v) + '">' + fmtPct(v) + '</span><span class="nm">' + esc(z.name) + '</span><span class="n">' + n + "</span></div>"; });
   $("#stBody").innerHTML = h;
   $$(".st", $("#stBody")).forEach((n) => n.addEventListener("click", () => openZone(n.dataset.z)));
+  $$(".stg", $("#stBody")).forEach((n) => n.addEventListener("click", () => { const k = n.dataset.band; S.shut[k] = !S.shut[k]; const top = $("#stBody").scrollTop; buildStack(); $("#stBody").scrollTop = top; }));
 }
 function buildLeg() {
   const w = (k, t) => '<label class="lrow"><input type="checkbox" data-t="' + k + '"' + (S[k] ? " checked" : "") + ">" + t + "</label>";
@@ -474,7 +475,7 @@ function slot(id, title, unit, slides, cls) { return '<section class="slot ' + (
 const SL = {};
 function buildRoom() {
   const cs = D.cases.filter((c) => c.kind === "attempt"), N = cs.length, ch = D.charts;
-  $("#roomsub").textContent = N + " attempts · " + D.zones.length + " kinds of place · the chances shown are estimates";
+  $("#roomsub").textContent = N + " attempts · " + D.zones.length + " places, routes and combinations · the chances shown are estimates";
   $("#cover").innerHTML = '<b class="n">' + ch.cover.n + "</b><span>" + esc(ch.cover.t) + "</span>";
   const tk = cs.filter((c) => c.mechanism).map((c) => '<span class="tki" data-c="' + c.id + '"><b>' + esc(c.name) + "</b>" + esc(c.mechanism) + "</span>").join("");
   $("#ticker").innerHTML = '<div class="tk">' + tk + tk + "</div>"; $$(".tki").forEach((n) => n.addEventListener("click", () => openCase(n.dataset.c)));

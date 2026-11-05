@@ -50,10 +50,16 @@ extra=_e+(jl('routes2') or [])+(jl('purchase') or [])+(jl('purchase2') or [])
 combo_zones=[]
 for n in('combo_sea','combo_space','combo_land','combo_people'):
     d=jl(n)
-    if d:combo_zones+=d['zones'];extra+=d['cases']
+    if d:
+        _seenz={z['id'] for z in combo_zones}
+        for z in d['zones']:
+            z['_band']={'combo_sea':'Combinations: sea and ice','combo_space':'Combinations: air and space','combo_land':'Combinations: land and legal status','combo_people':'Combinations: people, money and paper'}[n]
+            if z['id'] not in _seenz:combo_zones.append(z)
+        extra+=d['cases']
 DROP={'space':{'dominion-of-melchizedek','aerican-empire','praxis','zuzalu','sovereign-order-of-malta','talossa'}}
 space=[r for r in space if r['id'] not in DROP['space']]
 fix(extra,'fix_routes');fix(extra,'fix_other');fix(extra,'fix_purchase')
+_seen_c=set();extra=[c for c in extra if not (c['id'] in _seen_c or _seen_c.add(c['id']))]
 for c in extra:
     c['status']=c.get('status') or 'dormant'
     if c['id']=='migingo-island':c['status']='operating';c['end']=None;c['stopped_by']=None
@@ -257,7 +263,7 @@ for b,ids in BANDS:
     for i in ids:
         z=zs[i];a=ODDS[i];z['band']=b;z['odds']=dict(build=a[0],law=a[1],money=a[2],hold=a[3],recog=a[4],why=(jl('odds_new') or {}).get(i,a[5]));zones.append(z)
 for z in combo_zones:
-    o=z['odds'];z['band']='Combinations and open questions';z.setdefault('who_owns','');z.setdefault('hook','');z.setdefault('can_you_build','');z.setdefault('facts',[]);zones.append(z)
+    o=z['odds'];z['band']=z.pop('_band');z.setdefault('who_owns','');z.setdefault('hook','');z.setdefault('can_you_build','');z.setdefault('facts',[]);zones.append(z)
 assert len(zones)==len(zs),set(zs)-{z['id'] for z in zones}
 for c in out:assert c['zid'] in zs,c['id']
 ZID={z['id'] for z in zones};ids={c['id'] for c in out}
