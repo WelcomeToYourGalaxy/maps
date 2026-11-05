@@ -94,7 +94,7 @@ for r in cases:
     out.append(r)
 for c in out:
     if c['id']=='rose-island' and c.get('challenge'):c['challenge']=c['challenge'].replace('after 55 days','after eight weeks')
-MAN={'global-country-of-world-peace':{'lat':41.01,'lon':-91.96,'loc':'approx','plat':41.01,'plon':-91.96},'kingdom-of-sedang':{'end':1890},'republic-of-madawaska':{'end':1827},'republic-of-lakotah':{'inhabited':True},'kingdom-of-elleore':{'currency':'Stamps and coins issued'}}
+MAN={'province-of-bumbunga':{'founder':'Alec Brackstone'},'zaqistan':{'founder':'Zaq Landsberg'},'viking-1':{'loc':'approx'},'global-country-of-world-peace':{'lat':41.01,'lon':-91.96,'loc':'approx','plat':41.01,'plon':-91.96},'kingdom-of-sedang':{'end':1890},'republic-of-madawaska':{'end':1827},'republic-of-lakotah':{'inhabited':True},'kingdom-of-elleore':{'currency':'Stamps and coins issued'}}
 for c in out:
     c.update(MAN.get(c['id'],{}))
     if c['id']=='republic-of-indian-stream':c['mechanism']=c['mechanism'].replace('without a shot','without a shot that August, though a deputy was shot that October')
@@ -151,6 +151,11 @@ for i,r in (jl('review') or {}).get('cases',{}).items():
     if i in _by:_by[i]['story']=r['story']
 for c in out:
     if c['id']=='state-to-state-purchases':c['story']=c['story'].replace('on this list since 1958','in that list since 1958')
+for c in out:
+    if c['id']=='peanut-hole-okhotsk' and c.get('recognition'):c['recognition']=c['recognition'].replace('ruled for Russia','recommended in favour of Russia')
+    if c['id']=='tiran-sanafir':c['end']=None
+    if c['id'] in('peanut-hole-okhotsk','viking-1','province-of-bumbunga','zaqistan'):c.update(MAN.get(c['id'],{}))
+    if c['id']=='hans-island':c['story']=c['story'].replace("the 1880 transfer of the Hudson's Bay Company's lands to Canada","the transfer of Britain's Arctic islands to Canada in 1880")
 def cleansrc(l):
     o=[]
     for q in l or []:
