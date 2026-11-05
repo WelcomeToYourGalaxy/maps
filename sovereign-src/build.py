@@ -149,7 +149,7 @@ for c in out:
     if c.get('lat') is not None and 'plat' not in c:c['plat'],c['plon']=c['lat'],c['lon']
 for i,r in (jl('review') or {}).get('cases',{}).items():
     if i in _by:_by[i]['story']=r['story']
-for _n in('left','close'):
+for _n in('left','close','close2'):
     for i,r in (jl(_n) or {}).get('entries',{}).items():
         c=_by.get(i)
         if not c:print('NO ENTRY',_n,i);continue
@@ -165,6 +165,7 @@ for _n in('left','close'):
             else:c[k]=v
 for c in out:
     if c['id']=='world-service-authority':c['story']=c['story'].replace('Davis travelled on it for 65 years','Davis travelled on it for decades')
+    if c['id']=='liberian-registry':c['recd']=False
     if c['id']=='rudd-concession':
         for q in c['sources']:
             if q['t']=='en.wikipedia.org':q['t']='Rudd Concession (Wikipedia)'
@@ -357,6 +358,28 @@ charts=dict(cover=dict(n='0 of %d'%hr,t="attempts on open sea, ice, reefs, seabe
  treaties=[dict(label=a,value=F(b)['value'],note=F(b)['note']+'.') for a,b in treat],
  orbit=sorted([dict(label=a,value=int(F(b)['value']*k),note='In 2018 dollars, at full payload (Jones).') for a,b,k in orb],key=lambda x:-x['value']),
  costs=[dict(label=a,value=b,s=m(b),note=F(c)['note']+'. '+F(c)['source']['t']) for a,b,c in costs])
+def _covhtml():
+    if not COV:return ''
+    def tot(r):
+        if r['world_high']:return '%s to %s'%(format(r['world_low'],','),format(r['world_high'],','))
+        return format(r['world_low'],',')+' or more'
+    def sh(r):
+        if r['world_high'] and r['world_high']!=r['world_low']:
+            a=r['on_map']/r['world_high']*100;c=r['on_map']/r['world_low']*100
+            f=lambda v:('%.1f'%v if v<10 else '%.0f'%v)
+            return f(a)+' to '+f(c)+'%'
+        if r['world_high']:return '%.1f%%'%(r['on_map']/r['world_high']*100)
+        if r['on_map']>=r['world_low']:return 'unknown'
+        v=r['on_map']/r['world_low']*100
+        return 'at most '+('%.1f'%v if v<10 else '%.0f'%v)+'%'
+    kinds={'documented':'published count','estimate':'estimate','documented floor':'published count, as a minimum'}
+    rows=[r for r in COV['rows'] if r['kind']!='unknown']
+    rows.sort(key=lambda r:-r['on_map'])
+    h='<table style="width:100%;border-collapse:collapse;font-size:12px"><tr style="text-align:left"><th>Type</th><th>On the map</th><th>Real-world total</th><th>Share included</th></tr>'
+    for r in rows:
+        h+='<tr style="border-top:1px solid var(--line2)"><td style="padding:3px 6px 3px 0">%s<br><small style="color:var(--mute)">%s. %s</small></td><td>%d</td><td>%s</td><td>%s</td></tr>'%(r['type'],kinds.get(r['kind'],r['kind']).capitalize(),r['basis'].replace('<','&lt;'),r['on_map'],tot(r),sh(r))
+    return h+'</table>'
+METHOD=METHOD.replace('__COV__',_covhtml())
 data=dict(cases=out,zones=zones,entails=ent,patterns=PATTERNS,geo=json.load(open(os.path.join(HERE,'data','zones.geojson'))),charts=charts,short=SHORT,coverage=COV,about=ABOUT,method=METHOD.replace('__NA__',str(len(att))).replace('__NL__',str(len(out)-len(att))).replace('__NS__',str(len({s['u'] for c in out for s in c['sources']}|{s['u'] for z in zones for s in z['sources']}|{s['u'] for e in ent for s in e['sources']}))))
 for f in data['geo']['features']:
     if f['properties']['zone']=='central-arctic':f['properties']['zone']='central-arctic-ocean-and-svalbard'
