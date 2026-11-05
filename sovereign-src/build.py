@@ -45,7 +45,7 @@ _seen=set();_e=[]
 for c in extra:
     if c['id'] in _seen:continue
     _seen.add(c['id']);_e.append(c)
-extra=_e+(jl('routes2') or [])
+extra=_e+(jl('routes2') or [])+(jl('purchase') or [])
 DROP={'space':{'dominion-of-melchizedek','aerican-empire','praxis','zuzalu','sovereign-order-of-malta','talossa'}}
 space=[r for r in space if r['id'] not in DROP['space']]
 fix(extra,'fix_routes');fix(extra,'fix_other')
@@ -116,6 +116,35 @@ for c in out:
     k=(c['body'],round(c['lat'],1),round(c['lon'],1));n=pos.get(k,0);pos[k]=n+1
     a=n*2.4;d=.09*math.sqrt(n)
     c['plat']=round(c['lat']+d*math.sin(a),4);c['plon']=round(c['lon']+d*math.cos(a),4)
+# plain-language rewrites
+_by={c['id']:c for c in out}
+for n in range(1,7):
+    rw=jl('rw%d'%n) or {}
+    for i,r in rw.items():
+        c=_by.get(i)
+        if not c:continue
+        for k,v in r.items():
+            if k in('why',):continue
+            if k=='add_sources':
+                for q in v:
+                    if q.get('u') and not any(x['u']==q['u'] for x in c['sources']):c['sources'].append(q)
+            elif k=='set':
+                c.update(v)
+                if 'status' in v and c['kind']!='law':c['out']=OOVER.get(i,OUT[v['status']])
+                if 'lat' in v or 'lon' in v:c['plat'],c['plon']=c['lat'],c['lon']
+            else:c[k]=v
+for c in out:
+    if c.get('lat') is not None and 'plat' not in c:c['plat'],c['plon']=c['lat'],c['lon']
+def paras(t,n=65):
+    t=' '.join(str(t or '').split());out_=[];cur=[];w=0
+    for x in re.split(r'(?<=[.!])\s+(?=[A-Z0-9])',t):
+        cur.append(x);w+=len(x.split())
+        if w>=n:out_.append(' '.join(cur));cur=[];w=0
+    if cur:
+        if out_ and w<20:out_[-1]+=' '+' '.join(cur)
+        else:out_.append(' '.join(cur))
+    return '\n'.join(out_)
+for c in out:c['story']=paras(c.get('story'))
 # zones
 zs={z['id']:z for z in J('zones')}
 for z in extra_zones:
@@ -167,6 +196,14 @@ if os.path.exists(pz):
     print('zone fixes',n)
 for z in zs.values():
     z['facts']=[f.replace('What the AI claim omitted: (1)','Common summaries say the country below owns the air. That leaves out: (1)') for f in z.get('facts',[]) if not f.startswith('Note on the AI')]
+rwz=jl('rw_zones') or {'zones':{},'entails':{}}
+for i,r in rwz['zones'].items():
+    if i in zs:
+        for k,v in r.items():
+            if v not in(None,''):zs[i][k]=v
+for e in ent:
+    for k,v in rwz['entails'].get(e['id'],{}).items():
+        if k=='figure' or v not in(None,''):e[k]=v
 zones=[]
 for b,ids in BANDS:
     for i in ids:
