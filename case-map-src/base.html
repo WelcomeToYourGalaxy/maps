@@ -3066,7 +3066,7 @@ function detailLever(k) {
 }
 function detailEntity(t, id) {
   const e = ENTITY(t, id); if (!e) return;
-  $("#detBody").innerHTML = '<div class="hp-k">' + (t === "company" ? (e.type === "fund" ? "Fund" : e.type === "adviser" ? "Adviser" : "Company") : "Person") + '</div><h3>' + esc(e.name) + '</h3>' +
+  $("#detBody").innerHTML = '<div class="hp-k">' + (t === "company" ? (({ fund: "Fund", adviser: "Adviser", bank: "Bank", "government donor": "Government donor", "UN body": "UN body", "conservation funder": "Conservation funder", "private foundation": "Private foundation" })[e.type] || "Company") : "Person") + '</div><h3>' + esc(e.name) + '</h3>' +
     (e.hq ? '<div class="hp-sub">' + esc(e.hq) + '</div>' : "") + (t === "person" && e.anchor ? '<div class="hp-sub">Placed at: ' + esc(e.anchor[2]) + (e.placed_basis ? ' <span class="mute">(' + esc(e.placed_basis) + ')</span>' : '') + ((e.also || []).length ? '<br>Also: ' + e.also.map((a) => esc(a[2])).join('; ') : '') + '</div>' : '') + '<p>' + esc(e.summary) + '</p>' +
     ((e.posts || []).length ? '<div class="hp-h">Posts held</div><table class="rec">' + e.posts.map((p) => '<tr><td>' + esc(p.years || "") + '</td><td class="l"><b>' + esc(p.role || "") + '</b>, ' + esc(p.org || "") + '</td></tr>').join("") + '</table>' : "") +
     ((e.records || []).length ? '<div class="hp-h">On the record</div>' + e.records.slice().sort((a, b) => (a.year || 0) - (b.year || 0)).map((r) => '<div class="ent"><b>' + esc(r.year || "") + '</b> ' + esc(r.what) + (r.url ? ' <a href="' + esc(r.url) + '" target="_blank" rel="noopener">source</a>' : "") + '</div>').join("") : "") +
