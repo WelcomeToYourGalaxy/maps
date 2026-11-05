@@ -46,7 +46,7 @@ _seen=set();_e=[]
 for c in extra:
     if c['id'] in _seen:continue
     _seen.add(c['id']);_e.append(c)
-extra=_e+(jl('routes2') or [])+(jl('purchase') or [])+(jl('purchase2') or [])+(jl('gap1') or [])+(jl('gap2') or [])
+extra=_e+(jl('routes2') or [])+(jl('purchase') or [])+(jl('purchase2') or [])+(jl('gap1') or [])+(jl('gap2') or [])+[e for _f in sorted(__import__('glob').glob(os.path.join(R,'patch_*.json'))) for e in json.load(open(_f,encoding='utf8')).get('entries_new',[])]
 combo_zones=[]
 for n in('combo_sea','combo_space','combo_land','combo_people'):
     d=jl(n)
@@ -163,6 +163,21 @@ for _n in('left','close','close2'):
                 if 'status' in v and c['kind']!='law':c['out']=OOVER.get(i,OUT[v['status']])
                 if 'lat' in v or 'lon' in v:c['plat'],c['plon']=c['lat'],c['lon']
             else:c[k]=v
+import glob as _g
+for _pf in sorted(_g.glob(os.path.join(R,'patch_*.json'))):
+    _pd=json.load(open(_pf,encoding='utf8'))
+    for i,r in _pd.get('entries',{}).items():
+        c=_by.get(i)
+        if not c:print('NO ENTRY',_pf,i);continue
+        for fld,prs in r.get('replace',{}).items():
+            for o,n in prs:
+                if (c.get(fld) or '').count(o)<1:print('MISS',i,fld,o[:70]);continue
+                c[fld]=c[fld].replace(o,n,1)
+        c.update(r.get('set',{}))
+        if 'status' in r.get('set',{}) and c['kind']!='law':c['out']=OOVER.get(i,OUT[r['set']['status']])
+        for q in r.get('add_sources',[]):
+            if q.get('u') and not any(x['u']==q['u'] for x in c['sources']):c['sources'].append(q)
+        if r.get('drop_sources'):c['sources']=[x for x in c['sources'] if x['u'] not in r['drop_sources']]
 for c in out:
     if c['id']=='world-service-authority':c['story']=c['story'].replace('Davis travelled on it for 65 years','Davis travelled on it for decades')
     if c['id']=='liberian-registry':c['recd']=False
@@ -301,6 +316,18 @@ for e in ent:
 OWN=jl('own') or {}
 COV=jl('coverage') or {}
 SHORT=open(os.path.join(HERE,'content','short.html')).read() if os.path.exists(os.path.join(HERE,'content','short.html')) else ''
+import glob as _g
+for _pf in sorted(_g.glob(os.path.join(R,'patch_*.json'))):
+    _pd=json.load(open(_pf,encoding='utf8'))
+    for i,r in _pd.get('zones',{}).items():
+        z=zs.get(i)
+        if not z:print('NO ZONE',_pf,i);continue
+        for o,n in r.get('essay_replace',[]):
+            if z.get('essay','').count(o)<1:print('MISS',i,'essay',o[:70]);continue
+            z['essay']=z['essay'].replace(o,n,1)
+        for q in r.get('add_sources',[]):
+            if q.get('u') and not any(x['u']==q['u'] for x in z['sources']):z['sources'].append(q)
+        if r.get('drop_sources'):z['sources']=[x for x in z['sources'] if x['u'] not in r['drop_sources']]
 zones=[]
 for b,ids in BANDS:
     for i in ids:
@@ -387,7 +414,7 @@ if os.environ.get('DUMP_ALL'):
     json.dump({'cases':out,'zones':zones,'entails':ent},open(os.environ['DUMP_ALL'],'w',encoding='utf8'),ensure_ascii=False,indent=0)
 def b64(p):return 'data:image/webp;base64,'+base64.b64encode(open(p,'rb').read()).decode()
 t=open(os.path.join(HERE,'app_template.html'),encoding='utf8').read()
-t=t.replace('__PLATE__',b64(os.path.join(HERE,'data','plate.webp'))).replace('__MOON__',b64(os.path.join(HERE,'data','moon.webp'))).replace('__MARS__',b64(os.path.join(HERE,'data','mars.webp')))
+t=t.replace('__PLATE__',b64(os.path.join(HERE,'data','plate.webp'))).replace('__MOON__',b64(os.path.join(HERE,'data','moon.webp')))
 t=t.replace('__BASEMAPS__',open(os.path.join(HERE,'basemaps.js'),encoding='utf8').read())
 t=t.replace('__DATA__',json.dumps(data,ensure_ascii=False,separators=(',',':')).replace('</','<\\/'))
 o=os.path.join(HERE,'..','outside_every_country.html');open(o,'w',encoding='utf8').write(t)
