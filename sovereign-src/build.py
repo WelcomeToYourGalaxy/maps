@@ -164,6 +164,11 @@ for _n in('left','close'):
                 if 'lat' in v or 'lon' in v:c['plat'],c['plon']=c['lat'],c['lon']
             else:c[k]=v
 for c in out:
+    if c['id']=='world-service-authority':c['story']=c['story'].replace('Davis travelled on it for 65 years','Davis travelled on it for decades')
+    if c['id']=='rudd-concession':
+        for q in c['sources']:
+            if q['t']=='en.wikipedia.org':q['t']='Rudd Concession (Wikipedia)'
+for c in out:
     if c['id']=='state-to-state-purchases':c['story']=c['story'].replace('on this list since 1958','in that list since 1958')
 for c in out:
     if c['id']=='peanut-hole-okhotsk' and c.get('recognition'):c['recognition']=c['recognition'].replace('ruled for Russia','recommended in favour of Russia')
@@ -272,7 +277,7 @@ for i,r in _rev.get('essays',{}).items():
         zs[i]['essay']=r['essay']
         for q in r.get('add_sources',[]):
             if q.get('u') and not any(x['u']==q['u'] for x in zs[i]['sources']):zs[i]['sources'].append(q)
-for _n in('review1','review2','cr1','cr2','cr3'):
+for _n in('review1','review2','cr1','cr2','cr3','cr4'):
     for i,r in (jl(_n) or {}).get('essays',{}).items():
         if i in zs:
             zs[i]['essay']=r['essay']
@@ -304,6 +309,12 @@ for z in zones:
     _o=OWN.get(z['id']);
     if _o:z['odds'].update(own=_o['own'],own_people=_o.get('own_people'),own_why=_o['own_why'])
     else:z['odds'].update(own=0,own_people=None,own_why='');print('NO OWN',z['id'])
+for z in zones:
+    for r in z.get('rules') or []:
+        if r['cite']=='Treaty on the Paraná River, 13 August 1973':r['cite']='Treaty on the Paraná River, signed 26 April 1973'
+        if r['cite']=='Treaty of 1946 on Basel Mulhouse airport':r['cite']='Convention of 1949 on Basel Mulhouse airport'
+        if r['cite']=="Italy's 2011 austerity package":r['says']='A plan in this package would have made towns under 1,000 people merge with neighbours, which shows that a state decides how towns are organised.'
+    if z['id'] in (jl('why4') or {}):z['odds']['why']=jl('why4')[z['id']]
 assert len(zones)==len(zs),set(zs)-{z['id'] for z in zones}
 for c in out:assert c['zid'] in zs,c['id']
 ZID={z['id'] for z in zones};ids={c['id'] for c in out}
