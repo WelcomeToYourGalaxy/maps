@@ -249,6 +249,12 @@ for i,r in _rev.get('essays',{}).items():
         zs[i]['essay']=r['essay']
         for q in r.get('add_sources',[]):
             if q.get('u') and not any(x['u']==q['u'] for x in zs[i]['sources']):zs[i]['sources'].append(q)
+for _n in('review1','review2'):
+    for i,r in (jl(_n) or {}).get('essays',{}).items():
+        if i in zs:
+            zs[i]['essay']=r['essay']
+            for q in r.get('add_sources',[]):
+                if q.get('u') and not any(x['u']==q['u'] for x in zs[i]['sources']):zs[i]['sources'].append(q)
 _e2=dict(jl('entails2') or {})
 for i,r in _rev.get('entails',{}).items():
     _e2[i]={'what':r['what'],'add_sources':(_e2.get(i,{}).get('add_sources',[])+r.get('add_sources',[]))}
