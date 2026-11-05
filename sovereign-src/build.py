@@ -130,7 +130,7 @@ for c in out:
     c['plat']=round(c['lat']+d*math.sin(a),4);c['plon']=round(c['lon']+d*math.cos(a),4)
 # plain-language rewrites
 _by={c['id']:c for c in out}
-for n in range(1,15):
+for n in range(1,30):
     rw=jl('rw%d'%n) or {}
     for i,r in rw.items():
         c=_by.get(i)
