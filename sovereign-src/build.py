@@ -343,8 +343,10 @@ for z in zones:
     for r in z.get('rules') or []:
         if r['cite']=='Treaty on the Paraná River, 13 August 1973':r['cite']='Treaty on the Paraná River, signed 26 April 1973'
         if r['cite']=='Treaty of 1946 on Basel Mulhouse airport':r['cite']='Convention of 1949 on Basel Mulhouse airport'
-        if r['cite']=="Italy's 2011 austerity package":r['says']='A plan in this package would have made towns under 1,000 people merge with neighbours, which shows that a state decides how towns are organised.'
+        if r['cite']=="Italy's 2011 austerity package":r['says']='This package was reported at first as making towns under 1,000 people merge with neighbours. The Constitutional Court (44/2014) said the law required them to form a union of towns, not to merge. Either way, a state decides how towns are organised.'
+        if r['cite']=='Starlink terms (2020 beta)':r['says']=r['says'].replace('Whether the current text still says this has not been confirmed.','Articles from June and July 2025 still quote it from the terms then in use, and whether the terms in force now contain it is not known.')
     if z['id'] in (jl('why4') or {}):z['odds']['why']=jl('why4')[z['id']]
+    z['odds']['why']=z['odds']['why'].replace('Taiwan later burned buildings there, and','Taiwanese forces later moved against his men, and')
 assert len(zones)==len(zs),set(zs)-{z['id'] for z in zones}
 for c in out:assert c['zid'] in zs,c['id']
 ZID={z['id'] for z in zones};ids={c['id'] for c in out}
