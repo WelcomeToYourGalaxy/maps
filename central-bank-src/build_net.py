@@ -67,7 +67,7 @@ def locate(city, iso):
 REL = {"paid or bribed the bank's officials": "corrupt", "received money, favors or contracts from the bank": "corrupt", "received leaked information": "corrupt",
        "owned or ran an asset officials held": "service", "employed an official before or after (revolving door)": "people", "paid a former official for speeches or advice": "people",
        "pressured, dismissed or prosecuted bank officials": "control", "froze or seized the bank's reserves": "control", "audited or investigated": "service", "other": "service",
-       "member of the same forum": "people", "sits on the board": "people", "prints its banknotes": "service", "audits its accounts": "service",
+       "member of the same forum": "people", "sits on the board": "people", "prints its banknotes": "service", "makes its banknote paper": "service", "supplies its banknote substrate": "service", "audits its accounts": "service",
        "manages its reserves or programmes": "service", "bribery or misconduct with the bank": "corrupt"}
 # Head offices for firms and bodies whose sources did not state one (used only to place the marker).
 HQ = {"Citi": ("New York", "USA"), "BlackRock": ("New York", "USA"), "UBS Group AG": ("Zurich", "CHE"), "Standard Chartered": ("London", "GBR"),
@@ -83,7 +83,7 @@ HQ.update({"Bank of Credit and Commerce International (BCCI)": ("London", "GBR")
 HQ_APPROX = set()
 nodes, idx, links = [], {}, []
 def node(name, typ, city, iso, parent=None):
-    name = {"Ernst & Young": "EY", "Ernst and Young": "EY", "Citigroup": "Citi", "Securency International (now CCL Secure)": "Securency", "Oesterreichische Banknoten- und Sicherheitsdruck (OeBS)": "OeBS", "Pallas Athéné Domus Meriti Foundation": "Pallas Athéné foundations", "Citibank": "Citi", "Mazars S.A.": "Forvis Mazars", "Deloitte & Associés S.A.S.": "Deloitte", "Deloitte & Touche S.p.A.": "Deloitte", "KPMG Auditores S.L.": "KPMG", "KPMG LLP": "KPMG", "KPMG Taseer Hadi & Co.": "KPMG", "EY Accountants B.V.": "EY", "Ernst and Young LLP (EY)": "EY", "Ernst & Young LLP": "EY", "Ernst & Young AS": "EY", "PricewaterhouseCoopers LLP": "PwC", "Price Waterhouse & Co. S.R.L.": "PwC", "BDO Ebrahim & Co.": "BDO", "Credit Suisse First Boston": "Credit Suisse"}.get(name, name)
+    name = {"Ernst & Young": "EY", "Ernst and Young": "EY", "Citigroup": "Citi", "Securency International (now CCL Secure)": "Securency", "Oesterreichische Banknoten- und Sicherheitsdruck (OeBS)": "OeBS", "Pallas Athéné Domus Meriti Foundation": "Pallas Athéné foundations", "Citibank": "Citi", "Giesecke & Devrient GmbH": "Giesecke+Devrient", "Giesecke+Devrient Currency Technologies GmbH": "Giesecke+Devrient", "Oberthur Technologies S.A.": "Oberthur Fiduciaire", "Securency International": "Securency", "PricewaterhouseCoopers Oy": "PwC", "PricewaterhouseCoopers Inc.": "PwC", "KPMG Ltd": "KPMG", "Forvis Mazars GmbH & Co. KG Wirtschaftsprüfungsgesellschaft Steuerberatungsgesellschaft": "Forvis Mazars", "Mazars S.A.": "Forvis Mazars", "Deloitte & Associés S.A.S.": "Deloitte", "Deloitte & Touche S.p.A.": "Deloitte", "KPMG Auditores S.L.": "KPMG", "KPMG LLP": "KPMG", "KPMG Taseer Hadi & Co.": "KPMG", "EY Accountants B.V.": "EY", "Ernst and Young LLP (EY)": "EY", "Ernst & Young LLP": "EY", "Ernst & Young AS": "EY", "PricewaterhouseCoopers LLP": "PwC", "Price Waterhouse & Co. S.R.L.": "PwC", "BDO Ebrahim & Co.": "BDO", "Credit Suisse First Boston": "Credit Suisse"}.get(name, name)
     if name in HQ: city, iso = HQ[name]; HQ_APPROX.add(name)
     key = norm(name)
     if key not in idx:
@@ -213,11 +213,6 @@ def end_pt(name, city, iso):
     if k in idx and nodes[idx[k]].get("ll"): return nodes[idx[k]]["ll"]
     ll, _ = locate(city, iso)
     return [round(ll[0], 3), round(ll[1], 3)] if ll else None
-import meta_patterns, cbnames
-_names = {k: v["n"] if isinstance(v, dict) and "n" in v else k for k, v in core.items()}
-import pycountry as _pc
-for _c in _pc.countries: _names.setdefault(_c.alpha_3, getattr(_c, "common_name", _c.name))
-PATS = PATS + meta_patterns.build(corr["cases"], evg["events"], load("parties.json", {"links": []})["links"], _names, {**cbnames.UNION})
 ROLEINFO = load("role_info.json", {})
 for p in PATS:
     if p["id"] in ROLEINFO: p["role_info"] = ROLEINFO[p["id"]]
@@ -230,17 +225,16 @@ for p in PATS:
     for c in p.get("countries", []):
         if c.get("iso3") == "EUU": c["iso3"] = "EMU"
 for nd in nodes: nd["approx"] = not nd.get("exact")
-# Fan-out for parties sharing one place: screen-pixel offsets at five zooms, keeping each marker over land. The true point never moves.
+# Parties placed at one point get their own fixed spot a few kilometers around it, over land. A spot never moves with zoom; the city point itself goes to the most connected party.
 from shapely.geometry import shape as _shape, Point as _Pt
 from shapely.strtree import STRtree as _Tree
 import math as _m
 _land = [_shape(f["geometry"]).buffer(0) for f in ne]; _tree = _Tree(_land)
-def _on_land(lon, lat, tol):
+def _on_land(lon, lat, tol=0.004):
     p = _Pt(lon, lat)
     for i in _tree.query(p.buffer(tol)):
         if _land[i].distance(p) <= tol: return True
     return False
-_STOPS = [(1, 2.2), (3, 3.6), (5, 5.5), (8, 7.5), (12, 9.0)]
 _deg = {}
 for l in links:
     for m in (l["n"], l.get("tn")):
@@ -251,26 +245,20 @@ for i, nd in enumerate(nodes):
 for key, ids in _groups.items():
     if len(ids) < 2: continue
     ids.sort(key=lambda i: -_deg.get(i, 0))
-    lon, lat = nodes[ids[0]]["ll"]; c = max(0.2, _m.cos(_m.radians(lat)))
-    for i in ids: nodes[i]["fan"] = []
-    for z, gap in _STOPS:
-        dpx = 360.0 / (512 * 2 ** z)
-        j = 0
-        nodes[ids[0]]["fan"].append([0, 0])
-        for i in ids[1:]:
-            placed = None
-            for _try in range(4000):
-                j += 1
-                r, th = gap * _m.sqrt(j), j * 2.39996
-                x, y = r * _m.cos(th), r * _m.sin(th)
-                if _on_land(lon + x * dpx, lat - y * dpx * c, 1.5 * dpx):
-                    placed = [round(x, 1), round(y, 1)]; break
-                if r > 90: break
-            if placed is None:
-                # a small island: stay close to it, overlapping if need be
-                j2 = ids.index(i); r, th = min(4.0, 0.8 * _m.sqrt(j2)), j2 * 2.39996
-                placed = [round(r * _m.cos(th), 1), round(r * _m.sin(th), 1)]
-            nodes[i]["fan"].append(placed)
+    lon, lat = nodes[ids[0]]["ll"]; c = max(0.25, _m.cos(_m.radians(lat)))
+    j = 0
+    for i in ids[1:]:
+        placed = None
+        for _try in range(3000):
+            j += 1
+            r, th = 0.011 * _m.sqrt(j), j * 2.39996
+            x, y = lon + r * _m.cos(th) / c, lat + r * _m.sin(th)
+            if _on_land(x, y): placed = [round(x, 5), round(y, 5)]; break
+            if r > 0.35: break
+        if placed is None:
+            j2 = ids.index(i); r, th = 0.004 * _m.sqrt(j2), j2 * 2.39996
+            placed = [round(lon + r * _m.cos(th) / c, 5), round(lat + r * _m.sin(th), 5)]
+        nodes[i]["ll"] = placed
 json.dump({"nodes": nodes, "links": links, "hist": owners.get("history", []), "pats": PATS}, open("/root/cb/out/net.json", "w"), ensure_ascii=False)
 from collections import Counter
 print("nodes", len(nodes), "links", len(links), Counter(l["rel"] for l in links), "unplaced", [n["name"] for n in nodes if "ll" not in n][:20])
