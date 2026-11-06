@@ -30,7 +30,7 @@ cp dist/central_bank_independence.html ~/maps/   # then git add, commit, push to
 - **Top-left dropdown:** the compilation layers (the default is "Ulterior influence, all around"), corruption, independence, reach, "Whose money it is" and the exchange-rate regime.
 - **Bottom-right box** (`SIDE_GROUPS`) has two sections:
   - **"Who central banks answer to":** multi-select checkboxes for 7 kinds of tie (`REL`: own, corrupt, people, inst, control, service, account) plus a "What the map shows now" key.
-  - **"Patterns behind the scenes":** 14 patterns from `agents/patterns.json`, each with a "What this means" text from `agents/implications.json`.
+  - **"Patterns behind the scenes":** 17 patterns: 14 from `agents/patterns.json` with "What this means" text from `agents/implications.json`, and 3 worked out at build time from the records by `meta_patterns.py`. Each opens as a dropdown under its row. `agents/role_info.json` holds the info text for each key row.
 - **Network** (`build_net.py` → `out/net.json`):
   - Nodes are parties placed at their true head office, using `agents/hq.json` and GeoNames.
   - Parties sharing an address fan out by a pixel offset only, so true positions never move.
@@ -40,17 +40,17 @@ cp dist/central_bank_independence.html ~/maps/   # then git add, commit, push to
 ## Data files to add to (`agents/`)
 | File | Holds | Records now |
 |---|---|---|
-| `corruption.json` | `cases` (iso3, central_bank, category, years, people, summary, status, source_title, source_url, weak_source) and `revolving_door` | 176 cases at 116 banks; 54 revolving-door records |
-| `events_gold.json` | `events`: governor firings, pressure and moves against banks, 2019–Oct 2026; plus gold storage | 41 events |
+| `corruption.json` | `cases` (iso3, central_bank, category, years, people, summary, status, source_title, source_url, weak_source) and `revolving_door` | 187 cases at 124 banks; 76 revolving-door records |
+| `events_gold.json` | `events`: governor firings, pressure and moves against banks, 1990s–Oct 2026; plus gold storage | 64 events |
 | `owners.json` | `holdings` (named shareholders with shares, %, as_of, source), `bis_members`, `history` | 228 holdings; all 63 BIS members |
 | `networks.json` | `links` (entity, type, hq, cb_iso3, relation, detail, source) and `g30` members | 277 links; 56 G30 members |
-| `parties.json` | Parties named in cases and events, with head offices | 561 links |
-| `swaps.json` | Swap lines (provider, counterparty, amount, dates, status, source) | 104 |
-| `gaps.json` | Fed and South Africa holders, Greece, Türkiye share classes, auditors, case updates | 14 auditors |
+| `parties.json` | Parties named in cases and events, with head offices | 661 links |
+| `swaps.json` | Swap lines (provider, counterparty, amount, dates, status, source) | 228 |
+| `gaps.json` | Fed and South Africa holders, Greece, Türkiye share classes, auditors, case updates | 30 auditors at 23 banks |
 | `hq.json` | Head-office city and country for each party | – |
-| `patterns.json`, `implications.json` | The 14 patterns and their plain-language meanings | 14 |
+| `patterns.json`, `implications.json` | The 14 hand-written patterns and their plain-language meanings | 14 |
 
-Altogether the map has 907 parties and 1172 ties. `agents/work/research_log_2026-11.json` lists what was searched with no result, unopened leads, and records dropped after review.
+Altogether the map has 977 parties and 1302 ties. `agents/work/research_log_2026-11.json` lists what was searched with no result, unopened leads, and records dropped after review.
 
 ## Rules the user holds to
 - **No fabrication.** Every record needs a readable source URL that states the fact. Mark Wikipedia-only items `weak_source: true`. List acquittals but don't count them. Claims resting on one author go in as "claim, not confirmed."
@@ -61,6 +61,9 @@ Altogether the map has 907 parties and 1172 ties. `agents/work/research_log_2026
 
 ## Rules added Nov 2026
 - WebFetch has a shared hourly limit. Eight research agents at once used it up in minutes. Run a few at a time, each capped at about 25 fetches.
+- `charge withdrawn` is also listed and not counted.
+- Hover uses small sources of its own (`hot-lines`, `hot-nodes`); never re-filter the country layer on hover. `setP`/`setF` skip repeated paint and filter calls. Marker fan-out is computed in `build_net.py` to stay over land.
+- For tests, the hook must use getters for consts: `get ALLREL(){return ALLREL}`, and never push it.
 - Status `case dismissed` means a civil claim thrown out or a trial ended without a verdict. Like `acquitted`, it is listed and not counted.
 - A record with `public_move: true` (IMF or World Bank) is listed but not counted as a move to or from private finance.
 - Union banks use iso3 BEAC, BCEAO or ECCB in cases, which show on every member country. Their party links use the head-office country (CMR, SEN, KNA).
@@ -74,17 +77,17 @@ These are rough estimates. No complete count exists for any of these categories.
 |---|---|---|
 | Datasets and indices (independence law, CPI, WGI, Basel, FSI, crises, BIS, COFER, Swift, gold, regimes) | Everything each source publishes | ~100% |
 | Named shareholders | Every list a bank publishes. The other 11 Fed Reserve Banks don't publish one, and the SARB names none of its roughly 800 holders. | ~90% of what is published |
-| Swap lines | 104 | ~50–60% |
-| Governor firings and pressure, 2019–2026 | 41 | ~30–40% |
-| Corruption cases at central banks, 1990–2026 | 176 at 116 banks | ~30–40% |
-| Banknote printers and their clients | 16 ties | ~10% |
-| External auditors | 14 banks | ~10% |
-| Revolving door (officials to or from private finance) | 54 records | ~5–10% |
+| Swap lines | 228 records (only lines known to be in force are drawn) | ~70–80% |
+| Governor firings and pressure | 64 | ~30–40% since 2019, less before |
+| Corruption cases at central banks, 1990–2026 | 187 at 124 banks | ~30–40% |
+| Banknote printers and their clients | 30 ties | ~15% |
+| External auditors | 23 banks | ~15% |
+| Revolving door (officials to or from private finance) | 76 records | ~10% |
 | Outside reserve and fund managers | 107, mostly Norway's fund | ~5% outside Norway |
 
 Next steps, in order:
 1. Corruption cases: open the unopened leads in the research log, then the banks searched by title only (Bahrain, Oman, Palestine, Qatar, Saudi Arabia, Singapore, Taiwan, Brunei, Macao, Samoa, Cambodia, Fiji and others).
 2. Revolving-door moves still missing: see `later_todo` in the research log, and past Fed governors and Reserve Bank presidents.
-3. Governor dismissals before 2019 and outside Türkiye and the US.
-4. Auditors and banknote printers for every bank that names them in its annual report.
-5. Chinese and regional swap lines.
+3. Governor dismissals: open `round2.events_leads` in the research log (Ghana, Pakistan, Kyrgyzstan, Prat-Gay, Serbia, Bangladesh 2016, Malaysia 1998, Russia).
+4. Auditors and printers: `round2.service_not_found` in the research log lists banks tried.
+5. Swap lines: `round2.swap_leads` (RBA, Thai, Turkish and Gulf lines). Status `unknown` lines are listed in boxes, not drawn.
