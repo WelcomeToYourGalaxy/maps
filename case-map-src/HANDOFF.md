@@ -125,3 +125,10 @@ WebFetch has an hourly limit shared across agents. Running several agents at onc
 
 - Payment services kind (`pay`), set by `MK_PAY`. Named funders per kind: `window.MK_FUND`, from `docs/r24_funders.json`; rerun or extend when cases are added. Three cases removed, kept in `docs/r24_removed_cases.json`.
 - Private-loan condition layers: `rounds/r24f_conds.json`, added to `window.INFRA` as `prv_*`. Investor-claim layers (`fdi_*` in the scratchpad's r24_conds.json) were held: 42 country pages failed and rows came through a summarising tool. The owner was asked for UNCTAD's Excel file from investmentpolicy.unctad.org/publications/1303.
+
+## Round 25: owner's review
+
+- Cases now carry `whole`: one to three sentences on what the project achieved and who says so, shown first under "What happened to people". Add with `merge_whole.py rounds/r25f_whole_x.json` after a separate fact-check. Done: grants, payment services, private loans. Next: government loans (scratchpad batches), private investment, official loans. A blank means no credible information was found, not that no one looked.
+- Rule from the owner: do not include an element for uniformity's sake; each kind shows only what belongs to it. Every toggle should act on that kind only.
+- `window.MK_RING`: each kind's ring toggle (`docs/r25_ring_tags.json`). `window.MK_SHARE`: percent beside each kind, this map's sum of World Bank net flows, 2014-2023. The owner's 52/27/10/0.7% split could not be sourced and is not used.
+- Investor claims: `inf_fdi_isds_cases` is partial (rounds/r25f_isds.json). Money layers held: mixed bases. UNCTAD's Excel link: investmentpolicy.unctad.org/publications/1303/investment-dispute-settlement-navigator-full-isds-data-release-as-of-31-12-2023-in-excel-format-
