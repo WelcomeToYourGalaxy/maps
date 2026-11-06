@@ -47,17 +47,25 @@ LBL = {}
 for f in ne:
     p = f["properties"]; k = p["ISO_A3"] if p["ISO_A3"] != "-99" else p["ADM0_A3"]
     LBL.setdefault(k, (p["LABEL_X"], p["LABEL_Y"]))
+CAPITAL = {}
+for line in open("/root/cb/geo/cities1000.txt", encoding="utf-8"):
+    f = line.rstrip("\n").split("\t")
+    if f[7] in ("PPLC", "PPLG") and A2.get(f[8]) and (A2[f[8]] not in CAPITAL or f[7] == "PPLC"): CAPITAL[A2[f[8]]] = (float(f[5]), float(f[4]))
+CAPITAL.update({"KOS": CAPITAL.get("XKX", (21.17, 42.67))})
+TINY = {norm(k): v for k, v in {"Appiano sulla strada del vino": (11.25, 46.46), "Selva di Val Gardena": (11.76, 46.56), "Ultimo": (11.0, 46.55), "Salorno sulla strada del vino": (11.21, 46.24), "Monguelfo-Tesido": (12.1, 46.76), "Vandoies": (11.72, 46.81), "Funes": (11.7, 46.64), "Cattaraugus": (-78.87, 42.33), "Falciano": (12.49, 43.96)}.items()}
 def locate(city, iso):
     c = ALIAS.get(norm(city), norm(city)) if city else ""
+    if c in TINY: return TINY[c], True
     iso2 = {"EMU": "DEU", "XKX": "KOS"}.get(iso, iso)
     if c:
         if (c, iso2) in CITY: return CITY[(c, iso2)][:2], True
         if not iso and c in CITY_ANY: return CITY_ANY[c][:2], True
+    if iso2 in CAPITAL: return CAPITAL[iso2], False
     if iso2 in LBL: return LBL[iso2], False
     return None, False
 
 REL = {"paid or bribed the bank's officials": "corrupt", "received money, favors or contracts from the bank": "corrupt", "received leaked information": "corrupt",
-       "owned or ran an asset officials held": "service", "employed an official before or after (revolving door)": "people",
+       "owned or ran an asset officials held": "service", "employed an official before or after (revolving door)": "people", "paid a former official for speeches or advice": "people",
        "pressured, dismissed or prosecuted bank officials": "control", "froze or seized the bank's reserves": "control", "audited or investigated": "service", "other": "service",
        "member of the same forum": "people", "sits on the board": "people", "prints its banknotes": "service", "audits its accounts": "service",
        "manages its reserves or programmes": "service", "bribery or misconduct with the bank": "corrupt"}
@@ -71,10 +79,11 @@ HQ = {"Citi": ("New York", "USA"), "BlackRock": ("New York", "USA"), "UBS Group 
       "Deloitte": ("London", "GBR"), "PwC": ("London", "GBR"), "EY": ("London", "GBR"), "De La Rue": ("Basingstoke", "GBR"), "Giesecke+Devrient": ("Munich", "DEU"),
       "Oberthur Fiduciaire": ("Paris", "FRA"), "BDO": ("Zaventem", "BEL"), "Gramercy Funds Management": ("Greenwich", "USA"), "BDT & MSD": ("Chicago", "USA"),
       "Andersen Tax": ("San Francisco", "USA"), "Ualá": ("Buenos Aires", "ARG"), "William R. Rhodes Global Advisors": ("New York", "USA"), "RLUSD": ("New York", "USA"), "Crane Currency": ("Boston", "USA"), "Goznak": ("Moscow", "RUS"), "Forvis Mazars": ("Paris", "FRA"), "Mazars": ("Paris", "FRA")}
+HQ.update({"Bank of Credit and Commerce International (BCCI)": ("London", "GBR"), "Global Witness": ("London", "GBR"), "BlueMountain Capital Management": ("New York", "USA"), "Bozano Simonsen": ("Rio de Janeiro", "BRA"), "BankUnited, N.A. (BankUnited, Inc.)": ("Miami", "USA"), "Infrastructure Development Finance Company": ("Chennai", "IND"), "Giesecke+Devrient Currency Technologies GmbH": ("Munich", "DEU"), "Official Stanford Investors Committee": ("Dallas", "USA"), "Claritas Investments": ("Sao Paulo", "BRA"), "Autonomous Research": ("London", "GBR"), "Nambib Resources": ("Windhoek", "NAM"), "DSB Bank": ("Amsterdam", "NLD"), "Commissie Scheltema": ("The Hague", "NLD"), "Baker Tilly GmbH & Co. KG Wirtschaftsprüfungsgesellschaft": ("Munich", "DEU"), "Credit Suisse": ("Zurich", "CHE"), "Forry Associates": ("Road Town", "VGB"), "UN Monitoring Group for Somalia and Eritrea": ("New York", "USA"), "UN Commission on Human Rights in South Sudan": ("Geneva", "CHE"), "UN Panel of Experts on Yemen": ("New York", "USA"), "Bank of Antigua": ("Saint John's", "ATG")})
 HQ_APPROX = set()
 nodes, idx, links = [], {}, []
 def node(name, typ, city, iso, parent=None):
-    name = {"Ernst & Young": "EY", "Ernst and Young": "EY", "Citigroup": "Citi"}.get(name, name)
+    name = {"Ernst & Young": "EY", "Ernst and Young": "EY", "Citigroup": "Citi", "Securency International (now CCL Secure)": "Securency", "Oesterreichische Banknoten- und Sicherheitsdruck (OeBS)": "OeBS", "Pallas Athéné Domus Meriti Foundation": "Pallas Athéné foundations", "Citibank": "Citi", "Mazars S.A.": "Forvis Mazars", "Deloitte & Associés S.A.S.": "Deloitte", "Deloitte & Touche S.p.A.": "Deloitte", "KPMG Auditores S.L.": "KPMG", "KPMG LLP": "KPMG", "KPMG Taseer Hadi & Co.": "KPMG", "EY Accountants B.V.": "EY", "Ernst and Young LLP (EY)": "EY", "Ernst & Young LLP": "EY", "Ernst & Young AS": "EY", "PricewaterhouseCoopers LLP": "PwC", "Price Waterhouse & Co. S.R.L.": "PwC", "BDO Ebrahim & Co.": "BDO", "Credit Suisse First Boston": "Credit Suisse"}.get(name, name)
     if name in HQ: city, iso = HQ[name]; HQ_APPROX.add(name)
     key = norm(name)
     if key not in idx:
@@ -204,6 +213,14 @@ def end_pt(name, city, iso):
     if k in idx and nodes[idx[k]].get("ll"): return nodes[idx[k]]["ll"]
     ll, _ = locate(city, iso)
     return [round(ll[0], 3), round(ll[1], 3)] if ll else None
+import meta_patterns, cbnames
+_names = {k: v["n"] if isinstance(v, dict) and "n" in v else k for k, v in core.items()}
+import pycountry as _pc
+for _c in _pc.countries: _names.setdefault(_c.alpha_3, getattr(_c, "common_name", _c.name))
+PATS = PATS + meta_patterns.build(corr["cases"], evg["events"], load("parties.json", {"links": []})["links"], _names, {**cbnames.UNION})
+ROLEINFO = load("role_info.json", {})
+for p in PATS:
+    if p["id"] in ROLEINFO: p["role_info"] = ROLEINFO[p["id"]]
 IMPL = load("implications.json", {})
 for p in PATS:
     if p["id"] in IMPL: p["implications"] = IMPL[p["id"]]
@@ -212,7 +229,48 @@ for p in PATS:
         l["b"] = end_pt(l.get("to"), l.get("to_city"), l.get("to_iso3"))
     for c in p.get("countries", []):
         if c.get("iso3") == "EUU": c["iso3"] = "EMU"
-for nd in nodes: nd["approx"] = nd["name"] in HQ_APPROX or not nd.get("exact")
+for nd in nodes: nd["approx"] = not nd.get("exact")
+# Fan-out for parties sharing one place: screen-pixel offsets at five zooms, keeping each marker over land. The true point never moves.
+from shapely.geometry import shape as _shape, Point as _Pt
+from shapely.strtree import STRtree as _Tree
+import math as _m
+_land = [_shape(f["geometry"]).buffer(0) for f in ne]; _tree = _Tree(_land)
+def _on_land(lon, lat, tol):
+    p = _Pt(lon, lat)
+    for i in _tree.query(p.buffer(tol)):
+        if _land[i].distance(p) <= tol: return True
+    return False
+_STOPS = [(1, 2.2), (3, 3.6), (5, 5.5), (8, 7.5), (12, 9.0)]
+_deg = {}
+for l in links:
+    for m in (l["n"], l.get("tn")):
+        if m is not None: _deg[m] = _deg.get(m, 0) + 1
+_groups = {}
+for i, nd in enumerate(nodes):
+    if nd.get("ll"): _groups.setdefault((round(nd["ll"][0], 2), round(nd["ll"][1], 2)), []).append(i)
+for key, ids in _groups.items():
+    if len(ids) < 2: continue
+    ids.sort(key=lambda i: -_deg.get(i, 0))
+    lon, lat = nodes[ids[0]]["ll"]; c = max(0.2, _m.cos(_m.radians(lat)))
+    for i in ids: nodes[i]["fan"] = []
+    for z, gap in _STOPS:
+        dpx = 360.0 / (512 * 2 ** z)
+        j = 0
+        nodes[ids[0]]["fan"].append([0, 0])
+        for i in ids[1:]:
+            placed = None
+            for _try in range(4000):
+                j += 1
+                r, th = gap * _m.sqrt(j), j * 2.39996
+                x, y = r * _m.cos(th), r * _m.sin(th)
+                if _on_land(lon + x * dpx, lat - y * dpx * c, 1.5 * dpx):
+                    placed = [round(x, 1), round(y, 1)]; break
+                if r > 90: break
+            if placed is None:
+                # a small island: stay close to it, overlapping if need be
+                j2 = ids.index(i); r, th = min(4.0, 0.8 * _m.sqrt(j2)), j2 * 2.39996
+                placed = [round(r * _m.cos(th), 1), round(r * _m.sin(th), 1)]
+            nodes[i]["fan"].append(placed)
 json.dump({"nodes": nodes, "links": links, "hist": owners.get("history", []), "pats": PATS}, open("/root/cb/out/net.json", "w"), ensure_ascii=False)
 from collections import Counter
 print("nodes", len(nodes), "links", len(links), Counter(l["rel"] for l in links), "unplaced", [n["name"] for n in nodes if "ll" not in n][:20])
