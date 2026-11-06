@@ -1305,7 +1305,7 @@
    "start": 1956,
    "end": null,
    "founder": "Fidel Castro and the 26th of July Movement",
-   "stopped_by": "Batista's forces ambushed the landing party at Alegría de Pío; the survivors reached the Sierra Maestra",
+   "stopped_by": "Not finally stopped: Batista's forces ambushed the landing party at Alegría de Pío, and the survivors reached the Sierra Maestra",
    "pop": "82 fighters",
    "built": true,
    "inhabited": true,
@@ -1316,7 +1316,7 @@
    "recognition": null,
    "cost": null,
    "mechanism": "Exiles trained abroad sailed a yacht to Cuba to start an armed revolt timed with a rising in Santiago, then fought on as guerrillas after the landing went wrong.",
-   "story": "Castro and 81 others left Tuxpan, Mexico, on the yacht Granma shortly after midnight on 25 November 1956, aiming to overthrow Fulgencio Batista. Wikipedia's filibuster article names Castro among Cuban filibusters. The rising planned in Santiago went ahead on 30 November, but the boat reached Playa las Coloradas only on 2 December, stuck on a sandbar in a mangrove swamp, and the reception party had already left. Aircraft attacked them, and an ambush at Alegría de Pío caused many casualties. Survivors went to the Sierra Maestra mountains to wage guerrilla war.",
+   "story": "Castro and 81 others left Tuxpan, Mexico, on the yacht Granma shortly after midnight on 25 November 1956, aiming to overthrow Fulgencio Batista. Wikipedia's filibuster article names Castro among Cuban filibusters. The rising planned in Santiago went ahead on 30 November, but the boat reached Playa las Coloradas only on 2 December, stuck on a sandbar in a mangrove swamp, and the reception party had already left. Aircraft attacked them, and an ambush at Alegría de Pío caused many casualties. Survivors went to the Sierra Maestra mountains to wage guerrilla war, and the revolution overthrew Batista, who ruled until 1959. Cuba was an existing state, so the result was a change of government and no new territory.",
    "lat": 19.88,
    "lon": -77.68,
    "loc": "approx",
@@ -1327,13 +1327,17 @@
      "u": "https://en.wikipedia.org/wiki/Landing_of_the_Granma"
     },
     {
+     "t": "Cuban Revolution (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Cuban_Revolution"
+    },
+    {
      "t": "Filibuster (military) (Wikipedia)",
      "u": "https://en.wikipedia.org/wiki/Filibuster_(military)"
     }
    ],
    "cov_type": "Private conquest and filibusters",
-   "held": false,
-   "recd": false
+   "held": true,
+   "recd": true
   },
   {
    "id": "knights-golden-circle",
@@ -2067,7 +2071,7 @@
    "recognition": null,
    "cost": null,
    "mechanism": "A General Assembly declaration that land gained by force is not recognised, and that states may not organise armed bands against each other.",
-   "story": "General Assembly Resolution 2625 (XXV), known as the Friendly Relations Declaration, restates the Charter's rules on force. It says that a state's territory may not be occupied militarily as a result of force used against the Charter, or acquired by another state through threat or force, and that no such gain will be recognised as legal. It also says every state must refrain from organising or encouraging irregular forces or armed bands, including mercenaries, for incursions into another state. That second rule is the one that speaks to private expeditions.",
+   "story": "General Assembly Resolution 2625 (XXV), the Friendly Relations Declaration adopted on 24 October 1970, restates the Charter's rules on force. It says that a state's territory may not be occupied militarily as a result of force used against the Charter, or acquired by another state through threat or force, and that no such gain will be recognised as legal. It also says every state must refrain from organising or encouraging irregular forces or armed bands, including mercenaries, for incursions into another state. That second rule is the one that speaks to private expeditions.",
    "lat": 40.75,
    "lon": -73.97,
    "loc": "approx",
@@ -2076,6 +2080,10 @@
     {
      "t": "UN General Assembly Resolution 2625 (XXV), German Foreign Office copy",
      "u": "https://www.auswaertiges-amt.de/resource/blob/2165236/b03d8c5c0c74fc7c9947bee51cd27163/un-gv-res-freundschaftliche-beziehungen-data.pdf"
+    },
+    {
+     "t": "United Nations General Assembly Resolution 2625 (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/United_Nations_General_Assembly_Resolution_2625_%28XXV%29"
     }
    ],
    "cov_type": "Conquest and annexation by states",
@@ -2403,6 +2411,82 @@
    "recd": false
   },
   {
+   "id": "uk-foreign-enlistment-act-1870",
+   "name": "UK Foreign Enlistment Act 1870",
+   "aka": [
+    "Foreign Enlistment Act 1819"
+   ],
+   "zid": "war-private-conquest",
+   "kind": "law",
+   "status": "operating",
+   "start": 1870,
+   "end": null,
+   "founder": "UK Parliament",
+   "stopped_by": null,
+   "pop": null,
+   "built": false,
+   "inhabited": false,
+   "currency": null,
+   "passports": null,
+   "laws": null,
+   "challenge": null,
+   "recognition": null,
+   "cost": null,
+   "mechanism": "A British law against preparing military expeditions during wars in which Britain is neutral.",
+   "story": "The Foreign Enlistment Act 1870 is a UK law regulating mercenary activity by British citizens. It replaced an 1819 Act passed to keep Britain neutral in the Spanish American wars of independence, which was rarely enforced, and more than 5,000 Britons served with Simón Bolívar. The 1870 Act applies to wars between states in which Britain is neutral. It limits prison terms to two years and makes it a crime to prepare for or conduct military expeditions. Wikipedia says that authorities generally did not enforce it except where foreign military activity threatened British neutrality.",
+   "lat": 51.5,
+   "lon": -0.12,
+   "loc": "approx",
+   "anchor": "London, UK (the law's seat)",
+   "sources": [
+    {
+     "t": "Foreign Enlistment Act 1870 (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Foreign_Enlistment_Act_1870"
+    }
+   ],
+   "cov_type": "Private conquest and filibusters",
+   "held": false,
+   "recd": false
+  },
+  {
+   "id": "un-mercenary-convention",
+   "name": "UN Mercenary Convention",
+   "aka": [
+    "International Convention against the Recruitment, Use, Financing and Training of Mercenaries"
+   ],
+   "zid": "war-private-conquest",
+   "kind": "law",
+   "status": "operating",
+   "start": 2001,
+   "end": null,
+   "founder": "UN General Assembly, resolution 44/34 of 4 December 1989",
+   "stopped_by": null,
+   "pop": "Ratified by 38 states",
+   "built": false,
+   "inhabited": false,
+   "currency": null,
+   "passports": null,
+   "laws": null,
+   "challenge": null,
+   "recognition": null,
+   "cost": null,
+   "mechanism": "A treaty making it an offence to recruit, use, finance or train mercenaries.",
+   "story": "The International Convention against the Recruitment, Use, Financing and Training of Mercenaries was concluded by the UN General Assembly on 4 December 1989 and entered into force on 20 October 2001. Any person who recruits, uses, finances or trains mercenaries commits an offence under it, and states parties must cooperate to prevent these offences and share information. It has been ratified by 38 states, so it binds only part of the world. It builds on Article 47 of the first Additional Protocol to the Geneva Conventions, under which a mercenary cannot be a lawful combatant or prisoner of war.",
+   "lat": 40.75,
+   "lon": -73.97,
+   "loc": "approx",
+   "anchor": "UN Headquarters, New York",
+   "sources": [
+    {
+     "t": "United Nations Mercenary Convention (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/United_Nations_Mercenary_Convention"
+    }
+   ],
+   "cov_type": "Private conquest and filibusters",
+   "held": false,
+   "recd": false
+  },
+  {
    "id": "baltic-states-soviet-annexation",
    "name": "Soviet annexation of the Baltic states",
    "aka": [
@@ -2506,10 +2590,10 @@
    "passports": null,
    "laws": null,
    "challenge": "Portugal; US, UK and others criticised it at the Security Council",
-   "recognition": null,
+   "recognition": "Portugal, by treaty of 31 December 1974",
    "cost": null,
    "mechanism": "A two-day military operation ended a colonial exclave's rule after pressure and negotiation had failed.",
-   "story": "India took Goa, Daman and Diu from Portugal by force in December 1961 in Operation Vijay, ending 451 years of Portuguese rule. The fighting lasted two days, with 22 Indians and 30 Portuguese killed. India calls this the Liberation of Goa, and Portugal calls it the Invasion of Goa. Portugal asked the Security Council for a debate on 18 December, and seven members agreed. The US delegate, Adlai Stevenson, said the use of force was against the UN Charter, and the Soviet delegate opposed that view. Military rule was replaced by civilian government on 8 June 1962.",
+   "story": "India took Goa, Daman and Diu from Portugal by force in December 1961 in Operation Vijay, ending 451 years of Portuguese rule. The fighting lasted two days, with 22 Indians and 30 Portuguese killed. India calls this the Liberation of Goa, and Portugal calls it the Invasion of Goa. Portugal asked the Security Council for a debate on 18 December, and seven members agreed. The US delegate, Adlai Stevenson, said the use of force was against the UN Charter. A resolution won seven votes and fell to a Soviet veto. Military rule gave way to civilian government in 1962, and in a treaty of 31 December 1974 Portugal recognised India's full sovereignty.",
    "lat": 15.5,
    "lon": 73.83,
    "loc": "approx",
@@ -2521,8 +2605,8 @@
     }
    ],
    "cov_type": "Conquest and annexation by states",
-   "held": false,
-   "recd": false
+   "held": true,
+   "recd": true
   }
  ],
  "zones_new": [
@@ -2546,7 +2630,11 @@
     },
     {
      "cite": "UK Foreign Enlistment Act 1870",
-     "says": "PENDING"
+     "says": "It makes it a crime to prepare for or conduct military expeditions against a state at peace with Britain during wars in which Britain is neutral, with prison terms limited to two years."
+    },
+    {
+     "cite": "UN Mercenary Convention (in force 2001, 38 states have ratified)",
+     "says": "Any person who recruits, uses, finances or trains mercenaries commits an offence under the Convention, and states parties must cooperate to prevent these offences."
     }
    ],
    "hook": "Private armies have seized towns, islands and once a whole country, then lost them to the state whose land it was, usually within three years.",
@@ -2582,6 +2670,14 @@
     {
      "t": "Neutrality Act of 1794 (Wikipedia)",
      "u": "https://en.wikipedia.org/wiki/Neutrality_Act_of_1794"
+    },
+    {
+     "t": "Foreign Enlistment Act 1870 (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Foreign_Enlistment_Act_1870"
+    },
+    {
+     "t": "United Nations Mercenary Convention (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/United_Nations_Mercenary_Convention"
     },
     {
      "t": "Long Expedition (Wikipedia)",
