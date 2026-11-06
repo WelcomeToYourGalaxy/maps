@@ -70,7 +70,7 @@ const latestOr = (p, k, sk, y, pick) => { const r = own(p, k); if (!r) return nu
 // "other" event records (appointments, court rulings) are shown in the box but not counted as moves against the bank
 const evN = (p) => (p.ev || []).filter((i) => D.EV[i].kind !== "other").length;
 const MAXEV = Math.max(1, ...Object.values(P).map(evN));
-const ccN = (p) => (p.cc || []).filter((i) => !["acquitted", "case dismissed", "charge withdrawn"].includes(D.CC[i].status)).length;
+const ccN = (p) => (p.cc || []).filter((i) => !["acquitted", "case dismissed", "charge withdrawn", "investigation closed"].includes(D.CC[i].status)).length;
 const MAXCC = Math.max(1, ...Object.values(P).map(ccN));
 const rdN = (p) => (p.rd || []).filter((i) => !D.RD[i].public_move).length;
 const MAXRD = Math.max(1, ...Object.values(P).map(rdN));
@@ -188,7 +188,7 @@ const REL_DESC = { own: "How many outside holders own shares in the central bank
     service: "How many firms print its banknotes, audit it or manage its money, plus other parties named in its cases.",
     account: "How many courts, prosecutors, inspectors and inquiries investigated, charged or tried its officials. This measures accountability, not outside control." };
 seq("tiesSel", "Who central banks answer to", "Number of ties of the kinds ticked at right", {
-  log: true, f: (v) => fmt(v, 0) + (v === 1 ? " tie" : " ties"), get: (p) => { const n = linksOfCountry(p.iso).filter((l) => S.netRel.has(l.rel)).length; return n ? { v: n } : null; },
+  log: true, f: (v) => fmt(v, 0) + (v === 1 ? " tie" : " ties"), get: (p) => { const n = linksOfCountry(p.iso).filter(linkOK).length; return n ? { v: n } : null; },
   desc: "Each country is shaded by how many documented ties its central bank has to outside parties of the kinds ticked in the box at right (euro-area members include the ECB's). Light means more ties; dark grey means none of those kinds were found.",
   src: "Cases, ownership records, memberships, contracts and reports linked in each box." });
 (D.PAT || []).forEach((pt) => {
@@ -251,7 +251,7 @@ seq("swaps", "Reach beyond its borders", "Swap lines with other central banks", 
   src: "Central bank announcements and reports (links in each box)." });
 
 /* ---------- state ---------- */
-const S = { sideOpen: {}, mainLayer: "all", hov: null, names: true, net: false, netRel: new Set(), ent: null, layer: "all", year: 2023, latest: true, sel: null, swaps: false, anchors: false, q: "" };
+const S = { netMin: 1, netCb: "", sideOpen: {}, mainLayer: "all", hov: null, names: true, net: false, netRel: new Set(), ent: null, layer: "all", year: 2023, latest: true, sel: null, swaps: false, anchors: false, q: "" };
 const layer = () => L.find((l) => l.id === S.layer);
 function val(p) { const l = layer(); return l.get(p, S.year); }
 // Values and ranges are cached per layer, year and "latest" setting; nothing else changes them.
@@ -373,7 +373,7 @@ function addLayers(geo) {
   const under = (pt) => {
     if (S.net && map.getLayer("net-node")) {
       const f = map.queryRenderedFeatures([[pt.x - 8, pt.y - 8], [pt.x + 8, pt.y + 8]], { layers: ["net-node"] });
-      if (f.length) { let best = f[0], bd = 1e9; f.forEach((x) => { const p = map.project(x.geometry.coordinates), d = Math.hypot(p.x - pt.x, p.y - pt.y); if (d < bd) { bd = d; best = x; } }); return { node: best.properties.i }; }
+      if (f.length) { let best = f[0], bd = 1e9; f.forEach((x) => { const p = map.project(x.geometry.coordinates), d = Math.hypot(p.x - pt.x, p.y - pt.y); if (d < bd) { bd = d; best = x; } }); return { node: best.properties.i, stack: [...new Set(f.map((x) => x.properties.i))] }; }
       const g = map.queryRenderedFeatures([[pt.x - 6, pt.y - 6], [pt.x + 6, pt.y + 6]], { layers: ["net-line", "net-dash", "net-dot"] });
       if (g.length) return { line: g[0].properties };
     }
@@ -381,6 +381,7 @@ function addLayers(geo) {
   };
   map.on("click", (e) => {
     const u = under(e.point);
+    if (u.stack && u.stack.length > 1) { stackBox(u.stack); return; }
     if (u.node != null) { selectEntity(u.node); return; }
     if (u.line) { selectEntity(u.line.n); return; }
     if (u.ctry) select(u.ctry, false);
@@ -391,6 +392,11 @@ function addLayers(geo) {
     const u = under(e.point), x = e.originalEvent.clientX, y = e.originalEvent.clientY;
     const n = u.node != null ? u.node : u.line ? u.line.n : null;
     if (n !== S.hov) { S.hov = n; setHot(n); }
+    if (u.stack && u.stack.length > 1) {
+      map.getCanvas().style.cursor = "pointer";
+      const names = u.stack.slice(0, 6).map((i) => esc(NET.nodes[i].name)).join("<br>");
+      tip("<b>" + u.stack.length + " parties here</b><br><span class=m>" + names + (u.stack.length > 6 ? "<br>and " + (u.stack.length - 6) + " more" : "") + "<br>Click to pick one, or zoom in.</span>", x, y); return;
+    }
     if (u.node != null) {
       const nd = NET.nodes[u.node], ls = linksOfNode(u.node).filter((l) => S.netRel.has(l.rel)), c = new Set(ls.filter((l) => l.cb).map((l) => l.cb)).size;
       const top = Object.entries(ls.reduce((o, l) => (o[l.rel] = (o[l.rel] || 0) + 1, o), {})).sort((p, q) => q[1] - p[1])[0];
@@ -503,6 +509,8 @@ const SAY = {
   "Manages its reserves or programmes": "{P} manages reserves or funds for {B}",
   "Owned or ran an asset officials held": "{P} owned or ran an asset held by officials of {B}",
   "Prints its banknotes": "{P} prints banknotes for {B}",
+  "Makes its banknote paper": "{P} makes banknote paper for {B}",
+  "Supplies its banknote substrate": "{P} supplies banknote material for {B}",
   "Other": "{P} has another documented tie to {B}" };
 function sayLink(l) {
   const the = (x) => /^(Bank of|Bank for|Central|Reserve|National|Federal|European|Monetary|Swiss|People's|Eastern|Royal|State|Saudi|Qatar|Hong Kong|Maldives|Czech|Prudential|Group of|Financial Stability|International Monetary|World Bank|French Treasury|Serious Fraud)/.test(x) ? "the " + x : x;
@@ -529,17 +537,28 @@ function addNetLayers() {
   // the lit-up ties of the party or line under the pointer, in a small source of their own
   map.addSource("hot-lines", { type: "geojson", data: { type: "FeatureCollection", features: [] }, maxzoom: 6, tolerance: 0.8, buffer: 24 });
   map.addLayer({ id: "net-hot", type: "line", source: "hot-lines", layout: { "line-cap": "round" }, paint: { "line-color": ["get", "col"], "line-width": 2.2, "line-opacity": 0.95 } });
-  map.addSource("net-nodes", { type: "geojson", data: { type: "FeatureCollection", features: [] }, maxzoom: 6, buffer: 64 });
-  map.addSource("hot-nodes", { type: "geojson", data: { type: "FeatureCollection", features: [] }, maxzoom: 6, buffer: 64 });
-  // parties at one address fan out a few screen pixels around it; the point itself stays at the true place at every zoom
-  const offs = (o) => ["interpolate", ["linear"], ["zoom"], 1, ["get", o + "0"], 3, ["get", o + "1"], 5, ["get", o + "2"], 8, ["get", o + "3"], 12, ["get", o + "4"]];
-  map.addLayer({ id: "net-node", type: "symbol", source: "net-nodes", layout: { "icon-image": "diamond", "icon-size": ["get", "s"], "icon-offset": offs("z"), "icon-allow-overlap": true, "icon-ignore-placement": true, "symbol-sort-key": ["get", "k"] },
+  map.addSource("net-nodes", { type: "geojson", data: { type: "FeatureCollection", features: [] }, maxzoom: 12, buffer: 32 });
+  map.addSource("hot-nodes", { type: "geojson", data: { type: "FeatureCollection", features: [] }, maxzoom: 12, buffer: 32 });
+  map.addLayer({ id: "net-node", type: "symbol", source: "net-nodes", layout: { "icon-image": "diamond", "icon-size": ["get", "s"], "icon-allow-overlap": true, "icon-ignore-placement": true, "symbol-sort-key": ["get", "k"] },
     paint: { "icon-color": ["get", "col"], "icon-opacity": ["get", "o"], "icon-halo-color": "#05061a", "icon-halo-width": 0.7 } });
-  map.addLayer({ id: "net-node-hot", type: "symbol", source: "hot-nodes", layout: { "icon-image": "diamond", "icon-size": ["*", 1.35, ["get", "s"]], "icon-offset": offs("h"), "icon-allow-overlap": true, "icon-ignore-placement": true },
+  map.addLayer({ id: "net-node-hot", type: "symbol", source: "hot-nodes", layout: { "icon-image": "diamond", "icon-size": ["*", 1.35, ["get", "s"]], "icon-allow-overlap": true, "icon-ignore-placement": true },
     paint: { "icon-color": ["get", "col"], "icon-halo-color": "#f0ece4", "icon-halo-width": 1.2 } });
   IDS.push("net-dot", "net-line", "net-dash", "net-hot", "net-node", "net-node-hot"); order();
 }
-function netFilterOk(l) { return S.netRel.has(l.rel); }
+// Which parties pass the filter by connections with central banks. Recomputed when the ticks or the filter change.
+let NETVIS = null;
+function netVis() {
+  if (NETVIS) return NETVIS;
+  const cbs = new Map();
+  NET.links.forEach((l) => { if (!S.netRel.has(l.rel) || !l.cb) return; if (!cbs.has(l.n)) cbs.set(l.n, new Set()); cbs.get(l.n).add(l.cb); });
+  const vis = new Set(), all = new Set(NET.links.filter((l) => S.netRel.has(l.rel)).map((l) => l.n));
+  all.forEach((n) => { const c = cbs.get(n) || new Set(); if (c.size >= S.netMin && (!S.netCb || c.has(S.netCb))) vis.add(n); });
+  let max = 1; cbs.forEach((c) => { if (c.size > max) max = c.size; });
+  NETVIS = { vis, max, total: all.size };
+  return NETVIS;
+}
+const linkOK = (l) => S.netRel.has(l.rel) && netVis().vis.has(l.n);
+function netFilterOk(l) { return linkOK(l); }
 function drawPattern() {
   if (!map.getSource("pat-lines")) {
     map.addSource("pat-lines", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
@@ -565,7 +584,7 @@ function drawNet() {
   // one line per party and far end, colored by the main kind of tie between them
   const pairs = new Map(), per = new Map();
   NET.links.forEach((l) => {
-    if (!S.netRel.has(l.rel)) return;
+    if (!linkOK(l)) return;
     const nd = NET.nodes[l.n], b = l.tn != null ? NET.nodes[l.tn].ll : cbPt(l.cb); if (!nd.ll || !b) return;
     const key = l.n + "|" + linkKey(l);
     const e = pairs.get(key) || { n: l.n, tn: l.tn, cb: l.cb, a: nd.ll, b, rel: {}, cnt: 0, hot: false }; e.cnt++; e.rel[l.rel] = (e.rel[l.rel] || 0) + 1; e.hot = e.hot || hot(l); pairs.set(key, e);
@@ -582,9 +601,8 @@ function drawNet() {
   const nf = []; HOT = { lines: new Map(), nodes: new Map() };
   lf.forEach((f) => { [f.properties.n, f.properties.tn].forEach((m) => { if (m == null || m < 0) return; if (!HOT.lines.has(m)) HOT.lines.set(m, []); HOT.lines.get(m).push(f); }); });
   per.forEach((q, n) => {
-    const nd = NET.nodes[n], s = q.cbs.size <= 1 ? 0.36 : Math.min(0.95, 0.36 + 0.1 * Math.sqrt(q.cbs.size)), f = nd.fan || [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0]];
+    const nd = NET.nodes[n], s = q.cbs.size <= 1 ? 0.36 : Math.min(0.95, 0.36 + 0.1 * Math.sqrt(q.cbs.size));
     const pr = { i: n, col: RELC(main(q.rel)), s, o: focus ? (q.hot ? 1 : 0.3) : 0.95, k: q.cbs.size };
-    f.forEach((x, j) => { pr["z" + j] = [x[0] / s, x[1] / s]; pr["h" + j] = [x[0] / (s * 1.35), x[1] / (s * 1.35)]; });
     const ft = { type: "Feature", properties: pr, geometry: { type: "Point", coordinates: nd.ll } }; nf.push(ft); HOT.nodes.set(n, ft);
   });
   map.getSource("net-lines").setData({ type: "FeatureCollection", features: lf });
@@ -615,8 +633,35 @@ function entityBox(n) {
   });
   $("#detBody").innerHTML = h.join("");
 }
+// The details box: opens centered, can be dragged by its top edge and resized from its corner, and keeps what you set.
+const DET = { moved: false, sized: false };
+function openDet() {
+  const el = $("#det"); el.classList.add("open");
+  if (!DET.sized) { el.style.height = "auto"; el.style.maxHeight = "min(58vh, 620px)"; }
+  if (!DET.moved) { const r = el.getBoundingClientRect(); el.style.left = Math.max(8, (innerWidth - r.width) / 2) + "px"; el.style.top = Math.max(8, Math.min(innerHeight - r.height - 8, innerHeight / 2 + 70 - r.height / 2)) + "px"; }
+}
+function wireDet() {
+  const el = $("#det");
+  el.addEventListener("pointerdown", (e) => {
+    const r = el.getBoundingClientRect();
+    if (e.clientX > r.right - 22 && e.clientY > r.bottom - 22) { el.style.height = r.height + "px"; el.style.maxHeight = "calc(100vh - 16px)"; DET.sized = true; DET.moved = true; return; }
+    if (e.target.closest("a,button,input,select,summary,li,p,td,th") || e.clientY > r.top + 56 || e.clientX > r.right - 16) return;
+    const dx = e.clientX - r.left, dy = e.clientY - r.top; DET.moved = true; e.preventDefault();
+    const mv = (m) => { el.style.left = Math.max(0, Math.min(innerWidth - 80, m.clientX - dx)) + "px"; el.style.top = Math.max(0, Math.min(innerHeight - 40, m.clientY - dy)) + "px"; };
+    const up = () => { window.removeEventListener("pointermove", mv); window.removeEventListener("pointerup", up); };
+    window.addEventListener("pointermove", mv); window.addEventListener("pointerup", up);
+  });
+}
+setTimeout(wireDet, 0);
+function stackBox(ids) {
+  tip(null); S.sel = null;
+  const rows = ids.slice().sort((a, b) => NET.nodes[a].name.localeCompare(NET.nodes[b].name));
+  $("#detBody").innerHTML = '<div class="hp-k">Parties at this spot</div><h3>' + rows.length + ' parties</h3><p class="note">Pick one to see its ties.</p><ul class="says">' + rows.map((n) => '<li><a href="#" class="ent" data-n="' + n + '">' + esc(NET.nodes[n].name) + '</a>' + (NET.nodes[n].city ? ' <span class="note">' + esc(NET.nodes[n].city) + '</span>' : '') + '</li>').join("") + '</ul>';
+  openDet(); wireEnt();
+}
+function wireEnt() { $("#detBody").querySelectorAll(".ent").forEach((a) => { if (a.dataset.w) return; a.dataset.w = "1"; a.addEventListener("click", (e) => { e.preventDefault(); if (!S.net) showAllTies(); selectEntity(+a.dataset.n); }); }); }
 function selectEntity(n) {
-  tip(null); S.ent = n; S.sel = null; entityBox(n); $("#det").classList.add("open"); $("#det").scrollTop = 0;
+  tip(null); S.ent = n; S.sel = null; entityBox(n); openDet(); $("#det").scrollTop = 0;
   paint(); drawList(); drawCharts();
   const nd = NET.nodes[n]; if (nd.ll) { const r = $("#det").getBoundingClientRect(), H = map.getContainer().clientHeight, fb = freeBox(); map.easeTo({ center: nd.ll, padding: { left: fb.L, right: fb.R, top: 10, bottom: Math.max(0, Math.min(H - 120, H - r.top + 10)) }, duration: 700 }); }
 }
@@ -671,7 +716,7 @@ const SIDE_GROUPS = ["Who central banks answer to", "Patterns behind the scenes"
 const sideLayer = (id) => { const l = L.find((x) => x.id === id); return !!l && SIDE_GROUPS.includes(l.group); };
 const ALLREL = () => new Set(REL.map((r) => r[0]));
 const REL_SHORT = { own: "Who owns it: shareholders and governance seats", corrupt: "Paid, bribed, or got money, favors or leaks from it", people: "Shares its people: revolving door, board seats, forum members", inst: "Belongs to the same institutions: BIS, Financial Stability Board", control: "Pressured, fired, prosecuted or froze its money", service: "Other ties: named in a case, prints its money, audits or manages funds", account: "Investigated, charged or tried its officials" };
-function clearCache() { CACHE_V.clear(); CACHE_D.clear(); }
+function clearCache() { CACHE_V.clear(); CACHE_D.clear(); NETVIS = null; }
 function setNet(on) { S.net = !!on; if (!S.net && S.ent != null) { S.ent = null; $("#det").classList.remove("open"); } }
 // What colors the countries while kinds are ticked: the owner type when only ownership is ticked, otherwise the count of ticked ties.
 function netColorLayer() { return S.netRel.size === 1 && S.netRel.has("own") ? "own" : "tiesSel"; }
@@ -683,8 +728,8 @@ function applyNet() {
 }
 let netTimer = 0;
 function applySoon() { markSide(); clearTimeout(netTimer); netTimer = setTimeout(applyNet, 30); }
-function toggleKind(k) { if (S.netRel.has(k)) S.netRel.delete(k); else S.netRel.add(k); applySoon(); }
-function setKinds(set) { S.netRel = set; applySoon(); }
+function toggleKind(k) { if (S.netRel.has(k)) S.netRel.delete(k); else S.netRel.add(k); NETVIS = null; applySoon(); }
+function setKinds(set) { S.netRel = set; if (!set.size) { S.netMin = 1; S.netCb = ""; } NETVIS = null; applySoon(); }
 function choosePattern(id) {
   S.netRel = new Set(); setNet(false); clearCache();
   S.layer = S.layer === id ? (S.mainLayer || "all") : id;
@@ -700,7 +745,7 @@ function sideKey() {
   let h = '<div class="skey"><div class="psec" style="margin-top:2px">What the map shows</div>';
   if (own) h += '<p class="ldesc"><b>Countries</b> are colored by the type of owners their central bank has (key at left).</p>';
   else { const d = dom(l), r = ramp(); h += '<p class="ldesc"><b>Countries</b> are shaded by how many ties of the ticked kinds their central bank has: from ' + fmt(d[0], 0) + ' (dark) to ' + fmt(d[1], 0) + ' (light). Dark grey: none found.</p><div class="ramp">' + r.map((c) => '<span style="background:' + c + '"></span>').join("") + '</div>'; }
-  h += '<p class="ldesc" style="margin-top:6px"><b>Diamonds</b> are the outside parties at their head offices, colored by their main kind of tie; larger ones are tied to more central banks. Several at one address fan out around it.</p>';
+  h += '<p class="ldesc" style="margin-top:6px"><b>Diamonds</b> are the outside parties at their head offices, colored by their main kind of tie; larger ones are tied to more central banks. Each stays on its spot at every zoom. Parties in one city sit a few kilometers apart, so zoom in to separate them, or click a stack to pick from a list.</p>';
   h += '<p class="ldesc"><b>Lines</b> join each party to each central bank it is tied to, one line per pair, colored by the main kind of tie between them. Point at a diamond or line to light up its ties; click for what they mean.</p></div>';
   return h;
 }
@@ -710,6 +755,10 @@ function buildSide() {
   const ans = '<p class="ldesc">The outside people, companies, governments and bodies that central banks have answered to or dealt with: their shareholders, those who bribed them or were paid by them, firms that hired their officials, governments that pressured them or froze their money, and others. Tick one or more kinds of tie. The countries are colored by them and the parties and ties are drawn on the map. A tie is not by itself an accusation.</p>' +
     '<div id="sideKey">' + sideKey() + '</div>' +
     '<div class="sbtns" style="margin-top:8px"><button type="button" class="btn" data-k="all">Tick all</button><button type="button" class="btn" data-k="none">Clear</button></div>' +
+    '<div class="psec">Filter by connections with central banks</div>' +
+    '<label class="flt"><span>Tied to at least <b id="netMinV">' + S.netMin + '</b> central bank<span id="netMinS">' + (S.netMin === 1 ? '' : 's') + '</span></span><input type="range" id="netMin" min="1" max="1" step="1" value="' + S.netMin + '"></label>' +
+    '<label class="flt"><span>Tied to this central bank</span><select id="netCb"><option value="">Any central bank</option>' + cbChoices() + '</select></label>' +
+    '<p class="note" id="netCnt" style="margin:4px 0 8px"></p>' +
     REL.map((r) => '<label class="srow' + (S.netRel.has(r[0]) ? ' on' : '') + '" title="' + esc(REL_DESC[r[0]]) + '"><input type="checkbox" data-kind="' + r[0] + '"' + (S.netRel.has(r[0]) ? ' checked' : '') + '>' + relSw(r[0]) + '<span>' + esc(REL_SHORT[r[0]]) + '</span><span class="n">' + (counts[r[0]] || 0) + '</span></label>').join("");
   const pats = '<p class="ldesc">Pick one to color the countries by their role in it and draw its connections. What it shows opens under its row. Click it again to close it and turn it off.</p>' +
     L.filter((l) => l.group === "Patterns behind the scenes").map((l) => '<button type="button" class="srow' + (S.layer === l.id ? ' on' : '') + '" data-pat="' + l.id + '"><span class="sw" style="background:var(--accent-hi);opacity:.75"></span><span>' + esc(l.label) + '</span><span class="arr">' + (S.layer === l.id ? "▴" : "▾") + '</span></button>' + (S.layer === l.id ? '<div class="pdrop"><p class="ldesc">' + esc(l.desc) + '</p>' + patExtra(l.pat) + '</div>' : '')).join("");
@@ -717,13 +766,60 @@ function buildSide() {
   $("#sideBody").innerHTML = SIDE_GROUPS.map((g) => '<div class="sgrp' + (open(g) ? '' : ' min') + '" data-g="' + esc(g) + '"><button type="button" class="shead" aria-expanded="' + open(g) + '">' + esc(g) + '<span class="arr">' + (open(g) ? "▴" : "▾") + '</span></button><div class="sbody">' + body[g] + '</div></div>').join("");
   $("#sideBody").querySelectorAll(".shead").forEach((b) => b.addEventListener("click", () => { const g = b.parentNode.dataset.g; S.sideOpen[g] = !S.sideOpen[g]; buildSide(); }));
   $("#sideBody").querySelectorAll("[data-kind]").forEach((c) => c.addEventListener("change", () => toggleKind(c.dataset.kind)));
+  const nm = $("#netMin"), nc = $("#netCb");
+  if (nm) nm.addEventListener("input", () => { if (!S.netRel.size) S.netRel = ALLREL(); S.netMin = +nm.value; NETVIS = null; applySoon(); });
+  if (nc) { nc.value = S.netCb; nc.addEventListener("change", () => { if (!S.netRel.size) S.netRel = ALLREL(); S.netCb = nc.value; NETVIS = null; applySoon(); }); }
+  syncNetFilter();
   $("#sideBody").querySelectorAll("[data-k]").forEach((b) => b.addEventListener("click", () => setKinds(b.dataset.k === "all" ? ALLREL() : new Set())));
   $("#sideBody").querySelectorAll("[data-pat]").forEach((b) => b.addEventListener("click", () => choosePattern(b.dataset.pat)));
 }
+function cbChoices() {
+  const keys = [...new Set(NET.links.filter((l) => l.cb).map((l) => l.cb))];
+  return keys.map((k) => [k, cbName(k)]).sort((a, b) => (P[a[0]] ? P[a[0]].n : a[1]).localeCompare(P[b[0]] ? P[b[0]].n : b[1])).map(([k, n]) => '<option value="' + esc(k) + '">' + esc(P[k] ? P[k].n + ": " + (P[k].cb || n) : n) + '</option>').join("");
+}
+function syncNetFilter() {
+  const nm = $("#netMin"); if (!nm) return;
+  const on = S.netRel.size > 0, v = on ? netVis() : { vis: new Set(), max: 1, total: 0 };
+  nm.max = Math.max(v.max, S.netMin); nm.value = S.netMin;
+  $("#netMinV").textContent = S.netMin; $("#netMinS").textContent = S.netMin === 1 ? "" : "s";
+  const nc = $("#netCb"); if (nc) nc.value = S.netCb;
+  const c = $("#netCnt"); if (c) c.textContent = on ? v.vis.size + " of " + v.total + " parties shown. The most connected is tied to " + v.max + " central banks." : "Moving this ticks every kind of tie above.";
+}
 function markSide() {
+  syncNetFilter();
   $("#sideBody").querySelectorAll("[data-kind]").forEach((c) => { c.checked = S.netRel.has(c.dataset.kind); c.parentNode.classList.toggle("on", c.checked); });
   $("#sideBody").querySelectorAll("[data-pat]").forEach((b) => b.classList.toggle("on", b.dataset.pat === S.layer));
   const k = $("#sideKey"); if (k) k.innerHTML = sideKey();
+}
+// The index: every party, person, case, event, pattern, layer and chart on the map.
+let IDX = null, IDXL = "";
+const fold = (s) => String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+function indexItems() {
+  if (IDX) return IDX;
+  const o = [], where = (k) => P[k] ? P[k].n : (k === "EMU" ? "Euro area" : (D.UM[k] ? k : k));
+  const firstPlace = (k) => P[k] ? k : (D.UM[k] && D.UM[k][0]) || (k === "EMU" ? D.UM.ECB[0] : null);
+  L.forEach((l) => { if (l.group === "Patterns behind the scenes") o.push({ n: l.label, t: "Pattern", s: l.desc, go: () => openPattern(l.id) }); else if (l.id !== "tiesSel" && !SIDE_GROUPS.includes(l.group)) o.push({ n: l.label.trim(), t: "Map color", s: l.desc, go: () => { S.layer = S.mainLayer = l.id; S.netRel = new Set(); setNet(false); clearCache(); syncSelect(); update(); } }); });
+  CHARTS.forEach((c) => o.push({ n: c[1], t: "Chart", s: "", go: () => openWin(c[0]) }));
+  ISOS.forEach((k) => { if (P[k].cb) o.push({ n: P[k].cb, t: "Central bank", s: P[k].n, sub: P[k].n, go: () => select(k, true) }); });
+  NET.nodes.forEach((nd, i) => { o.push({ n: nd.name, t: "Party", sub: [nd.city, P[nd.iso3] ? P[nd.iso3].n : ""].filter(Boolean).join(", "), s: nd.type || "", go: () => { if (!S.net) showAllTies(); setTimeout(() => selectEntity(i), 60); } }); });
+  const seen = new Set();
+  const person = (rec, tag, k) => String(rec.people || "").replace(/\([^)]*\)/g, "").split(";").forEach((pc) => { const nm = pc.trim(); if (nm.length < 4 || nm.split(" ").length < 2 || /\b(staff|none|unnamed|named in|board|members|officials?|officer|manager|directors?)\b/i.test(nm)) return; const key = nm + "|" + k; if (seen.has(key)) return; seen.add(key); const pl = firstPlace(k); o.push({ n: nm, t: "Person", sub: tag + ", " + where(k), s: rec.summary, go: () => { if (pl) select(pl, true); } }); });
+  D.CC.forEach((c) => { const pl = firstPlace(c.iso3); o.push({ n: c.central_bank + ": " + c.category + ", " + c.years, t: "Case", sub: c.status, s: c.summary + " " + c.people, go: () => { if (pl) select(pl, true); } }); person(c, "case", c.iso3); });
+  D.RD.forEach((c) => person(c, "career move", c.iso3));
+  D.EV.forEach((e) => { const pl = firstPlace(e.iso3); o.push({ n: where(e.iso3) + ": " + e.kind + ", " + e.date, t: "Event", s: e.summary, go: () => { if (pl) select(pl, true); } }); });
+  o.forEach((x) => { x.f = fold(x.n); x.a = fold(x.n + " " + (x.sub || "") + " " + (x.s || "")); });
+  o.sort((a, b) => a.f.localeCompare(b.f));
+  IDX = o; return o;
+}
+function openPattern(id) { S.sideOpen["Patterns behind the scenes"] = true; if (S.layer === id) { buildSide(); return; } choosePattern(id); }
+function drawIndex() {
+  const box = $("#ilist"); if (!box) return;
+  const q = fold($("#idxq").value).trim(), items = indexItems();
+  const hit = q ? items.filter((x) => q.split(/\s+/).every((w) => x.a.includes(w))).sort((a, b) => (b.f.includes(q) - a.f.includes(q))) : IDXL ? items.filter((x) => x.f.charAt(0) === IDXL.toLowerCase()) : items;
+  const cap = 200, show = hit.slice(0, cap);
+  box.innerHTML = '<p class="note" style="margin:4px 0">' + hit.length + ' entr' + (hit.length === 1 ? 'y' : 'ies') + (hit.length > cap ? '. Showing the first ' + cap + '; type or pick a letter to narrow it.' : '.') + '</p>' + show.map((x, i) => '<div class="ii" data-i="' + i + '"><span class="iin">' + esc(x.n) + (x.sub ? ' <span class="iis">' + esc(x.sub) + '</span>' : '') + '</span><span class="iit">' + esc(x.t) + '</span></div>').join("");
+  box.querySelectorAll(".ii").forEach((el) => el.addEventListener("click", () => show[+el.dataset.i].go()));
+  document.querySelectorAll("#ibar .ib2").forEach((b) => b.classList.toggle("on", b.dataset.l === IDXL));
 }
 function buildKey() {
   const groups = [...new Set(L.map((l) => l.group))].filter((g) => !SIDE_GROUPS.includes(g));
@@ -736,13 +832,18 @@ function buildKey() {
     '<div class="ipop" id="swI">A swap line lets one central bank borrow another\'s currency on demand, handing over its own as security, and swap back later. The lending bank picks who gets one. The Federal Reserve keeps standing lines with five central banks (Canada, England, Japan, the ECB, Switzerland); in a dollar shortage they can get dollars and others cannot. Lines in force are drawn; lapsed ones are listed in each country\'s box.</div><div id="swLeg"></div>' +
     '<div class="lrow"><label class="chk"><input type="checkbox" id="anOn"> Ties to anchor currencies</label><button type="button" class="ib" data-i="anI" title="What is this?" aria-label="About anchor ties">i</button></div>' +
     '<div class="ipop" id="anI">Many countries hold their currency fixed to, or within a band of, another one. To keep it there, their central bank has to follow the interest-rate moves of the bank that issues the anchor, so a decision in Washington or Frankfurt changes borrowing costs in their country. Solid lines: pegged or held in a band. Dashed: the country floats, but its rate is measured against that currency.</div><div id="anLeg"></div>' +
-    '<div class="psec">Find a place</div><input id="find" type="search" placeholder="Country or central bank"><div id="plist" class="scroll"></div>';
+    '<div class="psec">Find a place</div><input id="find" type="search" placeholder="Country or central bank"><div id="plist" class="scroll"></div>' +
+    '<div class="psec">Index</div><input id="idxq" type="search" placeholder="Search parties, people, cases, patterns"><div id="ibar"></div><div id="ilist" class="scroll"></div>';
   $("#layer").value = sideLayer(S.layer) ? "" : S.layer;
   $("#layer").addEventListener("change", (e) => { S.layer = S.mainLayer = e.target.value; S.netRel = new Set(); setNet(false); clearCache(); update(); });
   $("#swOn").addEventListener("change", (e) => { S.swaps = e.target.checked; update(); });
   $("#anOn").addEventListener("change", (e) => { S.anchors = e.target.checked; update(); });
   $("#keyBody").querySelectorAll(".ib").forEach((b) => b.addEventListener("click", () => { const el = $("#" + b.dataset.i); el.classList.toggle("open"); b.classList.toggle("on", el.classList.contains("open")); }));
   $("#find").addEventListener("input", (e) => { S.q = e.target.value.toLowerCase(); drawList(); });
+  $("#idxq").addEventListener("input", () => { IDXL = ""; drawIndex(); });
+  $("#ibar").innerHTML = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map((c) => '<button type="button" class="ib2" data-l="' + c + '">' + c + '</button>').join("");
+  $("#ibar").querySelectorAll("[data-l]").forEach((b) => b.addEventListener("click", () => { IDXL = IDXL === b.dataset.l ? "" : b.dataset.l; $("#idxq").value = ""; drawIndex(); }));
+  drawIndex();
 }
 function patExtra(pt) {
   const h = [];
@@ -945,7 +1046,7 @@ function detail(k) {
   $("#detBody").querySelectorAll("a.ent").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); if (!S.net) showAllTies(); selectEntity(+a.dataset.n); }));
 }
 function select(k, fly) {
-  S.ent = null; S.sel = k; detail(k); $("#det").classList.add("open"); $("#det").scrollTop = 0;
+  S.ent = null; S.sel = k; detail(k); openDet(); $("#det").scrollTop = 0;
   paint(); drawList(); drawCharts();
   const pi = $('#plist .pi[data-k="' + k + '"]'); if (pi && fly) { const pl = $("#plist"); pl.scrollTop = pi.offsetTop - pl.offsetTop - pl.clientHeight / 2; }
   // the box sits in the middle of the map, so the country is moved into the open space above it

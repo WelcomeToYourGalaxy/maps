@@ -5841,6 +5841,902 @@
    ],
    "claims_per_author": [],
    "uncertain": "The sample covers only the 28 institutions traced in networks.json; auditors of the Bank of Italy, Bank of Korea, Banco de México, Saudi Central Bank, Bank of Russia, PBoC and others were not found. Concentration among four firms is a feature of the whole audit market and is not proof of influence over central banks."
+  },
+  {
+   "id": "money-routes",
+   "title": "How money and favors reach the connected",
+   "kind": "chain",
+   "summary": "Research traces favors to connected people through a few recurring channels, most of which do not start inside a central bank. Loans: in Mexico, 20% of bank loans at end-1995 went to people and firms tied to the banks' controllers, at rates 4 points lower, and 77% defaulted against 32% of other loans (La Porta et al., 2003). In Pakistan, 1996-2002, connected firms borrowed 45% more, from state banks only (Khwaja and Mian, 2005). Rescues: across 35 countries, 1997-2002, connected firms were likelier to be bailed out (Faccio et al., 2006), as were connected US firms under TARP, the 2008 crisis program (Duchin and Sosyura, 2012). Cheap dollars: holders of official-rate allocations gain the gap with the market rate, about tenfold in Venezuela in 2013. Direct payments: a Vietnamese central bank inspector got life in 2024 over $5.2 million in bribes. Early information is the least proven channel: leaks are documented, but who profited is not.",
+   "implications": "For an ordinary person, the cost usually arrives later and looks unrelated: a failed bank's losses covered by public money, or imports priced at a black market rate. A central bank does not need to hand over cash for insiders to gain. Its choices about whom to inspect, rescue, or sell dollars to carry a money value, and that value attracts people who want it. This is why the rules on who gets those decisions, and who can see them, matter as much as the interest rate. Public records of these decisions make favoritism easier to detect.",
+   "countries": [
+    {
+     "iso3": "MEX",
+     "role": "favored borrowers studied",
+     "note": "Loans to parties related to bank controllers were 20% of loans at end-1995, posted collateral less often (53% against 84%), and defaulted at 77.4% against 32.1%."
+    },
+    {
+     "iso3": "PAK",
+     "role": "favored borrowers studied",
+     "note": "Among more than 90,000 firms, 1996-2002, political firms borrowed 45% more and defaulted 50% more often, and the favor appeared only at government banks."
+    },
+    {
+     "iso3": "USA",
+     "role": "rescues and early information",
+     "note": "A press summary of the Duchin-Sosyura study tied a Federal Reserve Bank board seat to a 31% higher chance of receiving TARP funds; separately, a Richmond Fed president resigned in 2017 over a 2012 disclosure to a newsletter analyst."
+    },
+    {
+     "iso3": "VEN",
+     "role": "dollars or commissions",
+     "note": "Venezuela's interior minister estimated in 2013 that over 40% of buyers of official-rate dollars were shell companies, in a system that sold about $33 billion that year at 6.3 bolivars when the black market was about ten times that."
+    },
+    {
+     "iso3": "NGA",
+     "role": "dollars or commissions",
+     "note": "Former central bank governor Godwin Emefiele pleaded not guilty to 26 counts, including allocating $2.14 billion in foreign exchange without bid and receiving payments connected to forex."
+    },
+    {
+     "iso3": "LBN",
+     "role": "dollars or commissions",
+     "note": "Investigators in several European countries allege about $330 million moved from the central bank to Forry Associates, the governor's brother's offshore company, in 2002-2015; Riad Salameh denies wrongdoing."
+    },
+    {
+     "iso3": "VNM",
+     "role": "bribery case",
+     "note": "Do Thi Nhan, head of State Bank of Vietnam inspection, got life in April 2024 after receiving $5.2 million and telling inspectors to adjust data on Saigon Commercial Bank."
+    },
+    {
+     "iso3": "LVA",
+     "role": "bribery case",
+     "note": "Former central bank governor Ilmars Rimsevics was given six years in December 2023 over EUR 250,000 tied to regulatory help for Trasta Komercbanka and a Kamchatka trip; he denies guilt and said he would appeal."
+    },
+    {
+     "iso3": "IDN",
+     "role": "bribery case",
+     "note": "Former Bank Indonesia governor Burhanuddin Abdullah got five years in 2008, cut to three by the Supreme Court in 2009, over Rp 100 billion from a central bank foundation; prosecutors said Rp 31.5 billion bribed lawmakers amending the central bank law, and he was not found to have personally received any of it."
+    }
+   ],
+   "role_info": {
+    "favored borrowers studied": "A loan-level study measured how much better insiders or political allies were treated than other borrowers.",
+    "rescues and early information": "Research or official findings concern who received rescue money or who heard policy decisions before the public.",
+    "dollars or commissions": "The case or evidence concerns central bank dollars sold below market value, or fees paid out of a central bank; charges are not convictions.",
+    "bribery case": "A court convicted a central bank official over bribes taken or paid in connection with the bank's work."
+   },
+   "links": [
+    {
+     "from": "Banque du Liban",
+     "from_city": "Beirut",
+     "from_iso3": "LBN",
+     "to": "Forry Associates (Raja Salameh)",
+     "to_city": null,
+     "to_iso3": "VGB",
+     "label": "about $330m alleged, in about 300 transfers",
+     "years": "2002-2015"
+    },
+    {
+     "from": "Saigon Commercial Bank",
+     "from_city": "Ho Chi Minh City",
+     "from_iso3": "VNM",
+     "to": "State Bank of Vietnam inspection chief",
+     "to_city": "Hanoi",
+     "to_iso3": "VNM",
+     "label": "$5.2m bribe, court finding",
+     "years": "verdict 2024"
+    },
+    {
+     "from": "Trasta Komercbanka side",
+     "from_city": "Riga",
+     "from_iso3": "LVA",
+     "to": "Bank of Latvia governor",
+     "to_city": "Riga",
+     "to_iso3": "LVA",
+     "label": "EUR 250,000, verdict open to appeal",
+     "years": "verdict 2023"
+    },
+    {
+     "from": "Bank Indonesia foundation",
+     "from_city": "Jakarta",
+     "from_iso3": "IDN",
+     "to": "Indonesian lawmakers",
+     "to_city": "Jakarta",
+     "to_iso3": "IDN",
+     "label": "Rp 31.5bn, per prosecutors",
+     "years": "verdict 2008"
+    }
+   ],
+   "timeline": [
+    {
+     "year": 1971,
+     "event": "George Stigler argued that \"regulation is acquired by the industry and is designed and operated primarily for its benefit\", the starting point of regulatory capture theory.",
+     "source_url": "https://promarket.org/2021/07/22/george-stigler-theory-economic-regulation-interest-group-politics-industry/"
+    },
+    {
+     "year": 1995,
+     "event": "At year-end, 20% of outstanding Mexican bank loans in the La Porta study had gone to parties related to the banks' controllers.",
+     "source_url": "https://nber.org/digest/jul02/w8848.html"
+    },
+    {
+     "year": 2002,
+     "event": "The roughly 300 transfers alleged from Lebanon's central bank to Forry Associates began, running to 2015.",
+     "source_url": "https://timep.org/2025/11/20/breaking-down-the-cases-against-riad-salameh-in-foreign-jurisdictions/"
+    },
+    {
+     "year": 2008,
+     "event": "Former Bank Indonesia governor Burhanuddin Abdullah was sentenced to five years (the Supreme Court cut it to three in 2009) over Rp 100 billion disbursed from a central bank foundation.",
+     "source_url": "https://www.thejakartapost.com/news/2008/10/30/exbi-chief-jailed-aulia-a-suspect.html"
+    },
+    {
+     "year": 2009,
+     "event": "The New York Fed's chairman, who needed a waiver after Goldman Sachs became a bank holding company and who bought more Goldman shares, resigned in May, according to a later US audit.",
+     "source_url": "https://gao.gov/assets/a585808.html"
+    },
+    {
+     "year": 2012,
+     "event": "In October a Medley Global Advisors report disclosed confidential Fed policy deliberations.",
+     "source_url": "https://www.americanbanker.com/news/feds-lacker-resigns-immediately-after-disclosure-of-confidential-information"
+    },
+    {
+     "year": 2013,
+     "event": "Venezuela's interior minister estimated that more than 40% of buyers in the official dollar system were shell companies.",
+     "source_url": "https://stabroeknews.com/2013/12/13/news/regional/venezuela-says-40-pct-dollar-buyers-shell-companies"
+    },
+    {
+     "year": 2014,
+     "event": "The OECD reviewed 427 foreign bribery cases across all sectors: 57% involved public procurement, about three in four used intermediaries, and bribes averaged 10.9% of the deal's value.",
+     "source_url": "https://www.globalcompliancenews.com/2014/12/07/oecds-foreign-bribery-report-released-three-fourths-of-cases-involved-intermediaries/"
+    },
+    {
+     "year": 2017,
+     "event": "Richmond Fed President Jeffrey Lacker resigned, saying he should have declined to comment when the Medley analyst raised confidential details in 2012.",
+     "source_url": "https://www.americanbanker.com/news/feds-lacker-resigns-immediately-after-disclosure-of-confidential-information"
+    },
+    {
+     "year": 2023,
+     "event": "A Latvian court sentenced former governor Ilmars Rimsevics to six years for bribery; the verdict could be appealed.",
+     "source_url": "https://www.baltictimes.com/first_instance_court_slaps_real_jail_term_on_former_central_bank_president_rimsevics"
+    },
+    {
+     "year": 2023,
+     "event": "World Bank President David Malpass wrote that about 24 developing economies had active parallel currency markets, and that official-rate access benefits those who get it, \"paid for by everyone else\".",
+     "source_url": "https://blogs.worldbank.org/en/voices/parallel-exchange-rate-problem-world-banks-approach-helping-people-developing-countries"
+    },
+    {
+     "year": 2024,
+     "event": "A Ho Chi Minh City court gave State Bank of Vietnam inspection chief Do Thi Nhan a life sentence on 11 April.",
+     "source_url": "https://theinvestor.vn/former-state-bank-of-vietnam-inspection-chief-receives-life-sentence-in-van-thinh-phat-scandal-d9509.html"
+    },
+    {
+     "year": 2026,
+     "event": "Riad Salameh was arrested on 31 July after missing questioning on a complaint from Lebanon's current central bank governor.",
+     "source_url": "https://thenationalnews.com/news/mena/2026/08/01/former-lebanese-central-bank-governor-riad-salameh-arrested"
+    }
+   ],
+   "claims_per_author": [
+    {
+     "claim": "Rents to politically connected borrowers in Pakistan cost the economy 0.3 to 1.9 percent of GDP every year.",
+     "author_work": "Khwaja and Mian, Do Lenders Favor Politically Connected Firms? (2005)",
+     "url": "https://ideas.repec.org/a/oup/qjecon/v120y2005i4p1371-1411..html"
+    },
+    {
+     "claim": "In TARP data, a Federal Reserve Bank board seat was associated with a 31% higher chance of funding, and a tie to a House member on key finance committees with 26%; the effect was strongest for poorly performing banks. Investments in connected firms underperformed.",
+     "author_work": "Duchin and Sosyura, The Politics of Government Investment (2012), figures as reported by the University of Michigan for the working paper",
+     "url": "https://news.umich.edu/?p=7465"
+    },
+    {
+     "claim": "US stocks earned about 49 basis points (0.49%) on average ahead of scheduled Fed announcements, 1994-2011, about 80% of the post-1994 stock return premium; the authors reject leaks as the explanation and call it a puzzle.",
+     "author_work": "Lucca and Moench, The Pre-FOMC Announcement Drift (2015; New York Fed staff report)",
+     "url": "https://www.newyorkfed.org/medialibrary/media/research/staff_reports/sr512.html"
+    },
+    {
+     "claim": "Stock gains arrive in a two-week rhythm tied to Fed meetings, and informal communication between Fed officials and the media and financial sector is a plausible carrier; the authors list eight public leak examples and call the link a conjecture.",
+     "author_work": "Cieslak, Morse and Vissing-Jorgensen, Stock Returns over the FOMC Cycle (2019)",
+     "url": "https://stern.nyu.edu/sites/default/files/assets/documents/cycle_paper_cieslak_morse_vissingjorgensen.pdf"
+    },
+    {
+     "claim": "Staff movement between US bank regulators and banks looks inconsistent with a quid-pro-quo explanation and more consistent with regulatory work serving as training.",
+     "author_work": "Lucca, Seru and Trebbi, The Revolving Door and Worker Flows in Banking Regulation (2014)",
+     "url": "https://www.nber.org/papers/w20241"
+    },
+    {
+     "claim": "Parallel exchange rates show a strong correlation, if not causation, with corruption.",
+     "author_work": "David Malpass, World Bank Blogs (2023)",
+     "url": "https://blogs.worldbank.org/en/voices/parallel-exchange-rate-problem-world-banks-approach-helping-people-developing-countries"
+    }
+   ],
+   "uncertain": "The studies show that connections are associated with better treatment, not that a central bank arranged it, and the money often leaves commercial banks, state banks or treasuries; a US audit found no evidence that Reserve Bank boards took part directly in emergency lending decisions, and one study of bank regulators' staff moves does not support a quid pro quo. The leak channel rests on documented incidents plus a conjecture, since Lucca and Moench reject leaks for their pattern, and the Salameh and Emefiele matters are allegations with no conviction in the sources read.",
+   "confirmed_by": [
+    {
+     "title": "NBER Digest, Looting Mexican Banks (2002), on La Porta, Lopez-de-Silanes and Zamarripa, Related Lending",
+     "url": "https://nber.org/digest/jul02/w8848.html"
+    },
+    {
+     "title": "Khwaja and Mian, Do Lenders Favor Politically Connected Firms? QJE (2005), abstract",
+     "url": "https://ideas.repec.org/a/oup/qjecon/v120y2005i4p1371-1411..html"
+    },
+    {
+     "title": "Faccio, Masulis and McConnell, Political Connections and Corporate Bailouts, Journal of Finance (2006), abstract",
+     "url": "https://ideas.repec.org/a/bla/jfinan/v61y2006i6p2597-2635.html"
+    },
+    {
+     "title": "Duchin and Sosyura, The Politics of Government Investment, JFE (2012), abstract",
+     "url": "https://econpapers.repec.org/RePEc:eee:jfinec:v:106:y:2012:i:1:p:24-48"
+    },
+    {
+     "title": "University of Michigan News, Banks and bailouts: Playing politics?",
+     "url": "https://news.umich.edu/?p=7465"
+    },
+    {
+     "title": "Lucca and Moench, The Pre-FOMC Announcement Drift, New York Fed Staff Report 512",
+     "url": "https://www.newyorkfed.org/medialibrary/media/research/staff_reports/sr512.html"
+    },
+    {
+     "title": "Cieslak, Morse and Vissing-Jorgensen, Stock Returns over the FOMC Cycle, Journal of Finance (2019), abstract",
+     "url": "https://econpapers.repec.org/RePEc:bla:jfinan:v:74:y:2019:i:5:p:2201-2248"
+    },
+    {
+     "title": "Cieslak, Morse and Vissing-Jorgensen, Stock Returns over the FOMC Cycle, paper",
+     "url": "https://stern.nyu.edu/sites/default/files/assets/documents/cycle_paper_cieslak_morse_vissingjorgensen.pdf"
+    },
+    {
+     "title": "Lucca, Seru and Trebbi, The Revolving Door and Worker Flows in Banking Regulation, NBER (2014)",
+     "url": "https://www.nber.org/papers/w20241"
+    },
+    {
+     "title": "ProMarket, Richard Epstein on Stigler's Theory of Economic Regulation (2021)",
+     "url": "https://promarket.org/2021/07/22/george-stigler-theory-economic-regulation-interest-group-politics-industry/"
+    },
+    {
+     "title": "US GAO, Federal Reserve Bank Governance, GAO-12-18 (2011)",
+     "url": "https://gao.gov/assets/a585808.html"
+    },
+    {
+     "title": "Global Compliance News, OECD Foreign Bribery Report (2014)",
+     "url": "https://www.globalcompliancenews.com/2014/12/07/oecds-foreign-bribery-report-released-three-fourths-of-cases-involved-intermediaries/"
+    },
+    {
+     "title": "David Malpass, The Parallel Exchange Rate Problem, World Bank Blogs (2023)",
+     "url": "https://blogs.worldbank.org/en/voices/parallel-exchange-rate-problem-world-banks-approach-helping-people-developing-countries"
+    },
+    {
+     "title": "Stabroek News / Reuters, Venezuela says 40 pct dollar buyers shell companies (2013)",
+     "url": "https://stabroeknews.com/2013/12/13/news/regional/venezuela-says-40-pct-dollar-buyers-shell-companies"
+    },
+    {
+     "title": "TheCable, The fresh 26-count charges filed against Emefiele by EFCC",
+     "url": "https://thecable.ng/at-a-glance-the-fresh-26-count-charges-filed-against-emefiele-by-efcc"
+    },
+    {
+     "title": "TIMEP, Breaking down the cases against Riad Salameh in foreign jurisdictions (2025)",
+     "url": "https://timep.org/2025/11/20/breaking-down-the-cases-against-riad-salameh-in-foreign-jurisdictions/"
+    },
+    {
+     "title": "The National, Former Lebanese central bank governor Riad Salameh arrested (2026)",
+     "url": "https://thenationalnews.com/news/mena/2026/08/01/former-lebanese-central-bank-governor-riad-salameh-arrested"
+    },
+    {
+     "title": "VnExpress, Central bank inspector at $12B fraud trial (2024)",
+     "url": "https://e.vnexpress.net/news/business/companies/because-of-wrongdoing-cowardice-i-lost-everything-central-bank-inspector-at-12b-fraud-trial-4730822.html"
+    },
+    {
+     "title": "The Investor (Vietnam), Former State Bank of Vietnam inspection chief receives life sentence (2024)",
+     "url": "https://theinvestor.vn/former-state-bank-of-vietnam-inspection-chief-receives-life-sentence-in-van-thinh-phat-scandal-d9509.html"
+    },
+    {
+     "title": "LSM, Former Latvian central bank governor Rimsevics sentenced to 6 years (2023)",
+     "url": "https://eng.lsm.lv/article/society/crime/20.12.2023-former-latvian-central-bank-governor-rimsevics-sentenced-to-6-years-in-prison.a536158/"
+    },
+    {
+     "title": "Baltic Times, First instance court slaps real jail term on Rimsevics (2023)",
+     "url": "https://www.baltictimes.com/first_instance_court_slaps_real_jail_term_on_former_central_bank_president_rimsevics"
+    },
+    {
+     "title": "Central Banking, Latvian ex-governor Rimsevics sentenced to six years (2023)",
+     "url": "https://www.centralbanking.com/central-banks/governance/7960512/latvian-ex-governor-rimsevics-sentenced-to-six-years-in-prison"
+    },
+    {
+     "title": "Jakarta Post, Ex-BI chief jailed, Aulia a suspect (2008)",
+     "url": "https://www.thejakartapost.com/news/2008/10/30/exbi-chief-jailed-aulia-a-suspect.html"
+    },
+    {
+     "title": "American Banker, Fed's Lacker abruptly resigns over disclosure of confidential information (2017)",
+     "url": "https://www.americanbanker.com/news/feds-lacker-resigns-immediately-after-disclosure-of-confidential-information"
+    },
+    {
+     "title": "MA Korting Hukuman Mantan Gubernur Bank Indonesia (Hukumonline, 2009)",
+     "url": "https://www.hukumonline.com/berita/a/ma-korting-hukuman-mantan-gubernur-bank-indonesia-hol22896/?page=all"
+    }
+   ]
+  },
+  {
+   "id": "pressure-routes",
+   "title": "Why and how central banks get leaned on",
+   "kind": "chain",
+   "summary": "Governments usually press central banks for cheaper money; documented motives include elections and covering state bills. Nordhaus (1975) modelled leaders stimulating the economy before votes; Alesina and Roubini (1990), testing 18 OECD democracies, rejected that cycle for output and unemployment but found inflation rising just after elections. In Binder's 2021 dataset of 118 central banks (2010-2018), about 10% faced reported pressure in an average year, nearly always for looser policy, even where the law gave strong independence. Domestic tools include private appeals (Nixon to Fed chair Burns, 1971-72), rarely used legal powers (India, 2018), dismissal after refusing to release reserves for debt (Argentina, 2010), redrafting the bank's law (Hungary, 2011) and criminal charges (Italy, 1979; acquitted 1981). Foreign pressure runs through access to the financial system: EU rules cut sanctioned Iranian banks from SWIFT, the global bank messaging network, in 2012, and the US reportedly warned Iraq in 2020 it could lose access to its central bank's New York Fed account.",
+   "implications": "Most of this pressure asks for cheaper money now, some for the bank's reserves to cover state bills, and studies tie it to higher inflation afterward, which reaches anyone paying prices or holding savings. Legal protection does not settle the matter, since banks with strong independence laws still report pressure. Pressure from abroad does not need a vote or a court at all: a country whose earnings or payments pass through another power's system can be warned about losing access. The public can learn of such pressure decades late, as with the Nixon tapes, so a central bank's decisions are hard to judge at the time.",
+   "countries": [
+    {
+     "iso3": "USA",
+     "role": "pressed at home, presses abroad",
+     "note": "On tape in October 1971 Nixon pressed Fed chair Burns on money before his re-election, and in January 2020 the US reportedly warned Iraq it could lose access to its central bank's New York Fed account."
+    },
+    {
+     "iso3": "ITA",
+     "role": "pressed at home",
+     "note": "In 1979 Bank of Italy governor Paolo Baffi was charged and supervision head Mario Sarcinelli arrested over an unforwarded inspection report; both were fully acquitted in 1981, and many saw the case as political revenge."
+    },
+    {
+     "iso3": "IND",
+     "role": "pressed at home",
+     "note": "The government used rarely used powers to send at least three letters to governor Urjit Patel, seeking easier lending rules and access to excess reserves; he resigned on 10 December 2018, citing personal reasons."
+    },
+    {
+     "iso3": "ARG",
+     "role": "pressed at home",
+     "note": "President Cristina Kirchner dismissed central bank chief Martin Redrado in January 2010 after he refused to release about $6.6 billion in reserves for debt payments; a judge ordered him reinstated, and he resigned at the end of the month, saying she had tried to remove him unconstitutionally."
+    },
+    {
+     "iso3": "HUN",
+     "role": "pressed at home",
+     "note": "The ECB warned in December 2011 that Hungary's draft law added Monetary Council members and placed a new president over the governor, which it said would impair the governor's personal independence."
+    },
+    {
+     "iso3": "IRQ",
+     "role": "pressed from abroad",
+     "note": "Iraq's oil revenue has sat in a Central Bank of Iraq account at the New York Fed since the 2003 invasion arrangement; Iraq ended its dollar auctions at the start of 2025 after significant US pressure, Reuters reported."
+    },
+    {
+     "iso3": "IRN",
+     "role": "pressed from abroad",
+     "note": "EU-sanctioned Iranian financial institutions were cut off from SWIFT messaging on 17 March 2012."
+    },
+    {
+     "iso3": "BEL",
+     "role": "controls a chokepoint",
+     "note": "SWIFT is incorporated under Belgian law, so it had to obey the 2012 EU decision on Iranian banks, confirmed by the Belgian Treasury."
+    }
+   ],
+   "role_info": {
+    "pressed at home": "The central bank faced pressure from its own government, prosecutors or lawmakers.",
+    "pressed from abroad": "The central bank or banking system faced pressure from another government through access to money or payment networks.",
+    "controls a chokepoint": "A payment network based here falls under this country's law, so its authorities can order customers cut off.",
+    "pressed at home, presses abroad": "This country's central bank has faced pressure from its own leaders, and its government also uses access to its financial system against others."
+   },
+   "links": [
+    {
+     "from": "Nixon White House",
+     "from_city": "Washington",
+     "from_iso3": "USA",
+     "to": "Federal Reserve (Arthur Burns)",
+     "to_city": "Washington",
+     "to_iso3": "USA",
+     "label": "pressed for more money before the election",
+     "years": "1971-1972"
+    },
+    {
+     "from": "US government",
+     "from_city": "Washington",
+     "from_iso3": "USA",
+     "to": "Central Bank of Iraq",
+     "to_city": "Baghdad",
+     "to_iso3": "IRQ",
+     "label": "reported warning over New York Fed account",
+     "years": "2020"
+    },
+    {
+     "from": "European Union",
+     "from_city": "Brussels",
+     "from_iso3": "BEL",
+     "to": "SWIFT",
+     "to_city": null,
+     "to_iso3": "BEL",
+     "label": "ordered to end service to sanctioned banks",
+     "years": "2012"
+    },
+    {
+     "from": "SWIFT",
+     "from_city": null,
+     "from_iso3": "BEL",
+     "to": "Sanctioned Iranian banks",
+     "to_city": null,
+     "to_iso3": "IRN",
+     "label": "disconnected",
+     "years": "2012"
+    },
+    {
+     "from": "Argentine presidency",
+     "from_city": "Buenos Aires",
+     "from_iso3": "ARG",
+     "to": "Central Bank of Argentina (Martin Redrado)",
+     "to_city": "Buenos Aires",
+     "to_iso3": "ARG",
+     "label": "dismissed over $6.6bn of reserves",
+     "years": "2010"
+    },
+    {
+     "from": "Government of India",
+     "from_city": "New Delhi",
+     "from_iso3": "IND",
+     "to": "Reserve Bank of India (Urjit Patel)",
+     "to_city": "Mumbai",
+     "to_iso3": "IND",
+     "label": "letters under rarely used powers",
+     "years": "2018"
+    }
+   ],
+   "timeline": [
+    {
+     "year": 1971,
+     "event": "On 10 October 1971 Nixon told Burns in the Oval Office he did not want to 'go out of town fast' and called the 'liquidity problem' 'just bullshit'.",
+     "source_url": "https://fraser.stlouisfed.org/files/docs/meltzer/jep_2006_abrams_how_richard_nixon.pdf"
+    },
+    {
+     "year": 1973,
+     "event": "After M2 money growth of 13.38% in 1971, US consumer price inflation rose from 3.6% in 1972 to 9.6% in 1973 and 11.8% in 1974.",
+     "source_url": "https://fraser.stlouisfed.org/files/docs/meltzer/jep_2006_abrams_how_richard_nixon.pdf"
+    },
+    {
+     "year": 1979,
+     "event": "Mario Sarcinelli of the Bank of Italy was arrested on 24 March 1979; governor Baffi was charged with aiding and abetting and with private interest in official acts.",
+     "source_url": "https://www.ilfoglio.it/politica/2016/09/20/news/ciampi-e-il-metodo-baffi-alla-prova-dellattacco-affaristico-giudiziario--268063"
+    },
+    {
+     "year": 1981,
+     "event": "Baffi and Sarcinelli were fully acquitted, after 147 economists had signed an appeal in their support.",
+     "source_url": "https://quifinanza.it/economia/paolo-baffi-politica-monetaria/749090/amp/"
+    },
+    {
+     "year": 2003,
+     "event": "The US-led Coalition Provisional Authority set up the Development Fund for Iraq at the New York Fed to collect oil revenue, under a US executive order renewed by each later president.",
+     "source_url": "https://www.streetinsider.com/Reuters/Explainer-How+the+U.S.+controls+Iraq%27s+oil+revenues/25885864.html"
+    },
+    {
+     "year": 2010,
+     "event": "Argentina's president dismissed the central bank chief after he refused to release about $6.6 billion in reserves toward nearly $13 billion of debt payments; a judge ordered him reinstated, and he resigned at the end of the month.",
+     "source_url": "https://www.aljazeera.com/news/2010/1/9/argentinas-debt-dispute-escalates"
+    },
+    {
+     "year": 2011,
+     "event": "The ECB's Governing Council said on 22 December 2011 that Hungary's draft central bank law would impair the governor's personal independence.",
+     "source_url": "https://www.ecb.europa.eu/press/pr/date/2011/html/pr111222.en.html"
+    },
+    {
+     "year": 2012,
+     "event": "SWIFT said on 15 March 2012 that an EU decision forced it to disconnect sanctioned Iranian banks, and called the move 'extraordinary and unprecedented'.",
+     "source_url": "https://mondovisione.com/media-and-resources/news/swift-instructed-to-disconnect-sanctioned-iranian-banks-following-eu-council-dec-2012315/"
+    },
+    {
+     "year": 2018,
+     "event": "India's central bank governor Urjit Patel resigned on 10 December 2018 after government letters seeking easier lending rules and access to reserves.",
+     "source_url": "https://www.aljazeera.com/economy/2018/12/10/india-central-bank-chief-urjit-patel-resigns-amid-government-spat"
+    },
+    {
+     "year": 2020,
+     "event": "The Wall Street Journal reported that the State Department warned Iraq, after its parliament's 5 January vote to expel foreign troops, that it could lose access to its central bank's New York Fed account.",
+     "source_url": "https://www.aljazeera.com/ajimpact/iraq-warned-troops-risk-financial-blow-wsj-200111164246245.html"
+    },
+    {
+     "year": 2025,
+     "event": "Iraq formally ended its central bank's dollar auctions at the start of 2025 after significant US pressure, according to Reuters.",
+     "source_url": "https://www.streetinsider.com/Reuters/Explainer-How+the+U.S.+controls+Iraq%27s+oil+revenues/25885864.html"
+    }
+   ],
+   "claims_per_author": [
+    {
+     "claim": "Raising political pressure to half of Nixon's level for six months raises the US price level by more than 8%, against no more than about 1% for a standard monetary easing; the data hold over 800 personal contacts between presidents and Fed officials, 1933-2016, 160 of them under Nixon.",
+     "author_work": "Thomas Drechsel, Estimating the Effects of Political Pressure on the Fed (NBER working paper, 2024)",
+     "url": "https://www.nber.org/papers/w32461"
+    },
+    {
+     "claim": "39% of 118 central banks faced at least one report of pressure since 2010, and in over 90% of cases the pressure was for easier policy; pressure, rather than legal independence, is associated with higher inflation.",
+     "author_work": "Carola Binder, guest post on Political Pressure on Central Banks (Econbrowser, 2019)",
+     "url": "https://econbrowser.com/?p=36742"
+    },
+    {
+     "claim": "Trump's tweets about the Fed lowered market expectations of the federal funds rate on average, a statistically significant effect.",
+     "author_work": "Bianchi, Gómez-Cram, Kind and Kung, Threats to Central Bank Independence (Journal of Monetary Economics, 2023)",
+     "url": "https://econpapers.repec.org/RePEc:eee:moneco:v:135:y:2023:i:c:p:37-54"
+    },
+    {
+     "claim": "Across up to 72 countries, 1950-1989, legal independence went with lower inflation in industrial countries but not in developing ones, where governor turnover was the better measure; independence declines seriously above about 0.2-0.25 governor changes a year. Argentina's governors lasted about a year on average.",
+     "author_work": "Cukierman, Webb and Neyapti, Measuring the Independence of Central Banks (World Bank Economic Review, 1992)",
+     "url": "https://documents1.worldbank.org/curated/ar/797831468739529187/pdf/multi-page.pdf"
+    },
+    {
+     "claim": "Only premature governor exits and replacement by government allies raise inflation; other turnover does not.",
+     "author_work": "Vuletin and Zhu, Replacing a 'Disobedient' Central Bank Governor with a 'Docile' One (Journal of Money, Credit and Banking, 2011)",
+     "url": "https://econpapers.repec.org/RePEc:wly:jmoncb:v:43:y:2011:i:6:p:1185-1215"
+    },
+    {
+     "claim": "Early replacement of a governor, 1970-2005, is more likely with political and regime instability and with elections.",
+     "author_work": "Dreher, Sturm and de Haan, When Is a Central Bank Governor Replaced? (Journal of Macroeconomics, 2010)",
+     "url": "https://econpapers.repec.org/RePEc:eee:jmacro:v:32:y:2010:i:3:p:766-781"
+    },
+    {
+     "claim": "States that control central nodes of global networks can use a 'panopticon effect' to gather information and a 'chokepoint effect' to deny adversaries access, if they have jurisdiction and suitable domestic institutions; SWIFT is one of the two test cases.",
+     "author_work": "Farrell and Newman, Weaponized Interdependence (International Security, 2019)",
+     "url": "https://henryfarrell.net/weaponized-interdependence-how-global-economic-networks-shape-state-coercion/"
+    },
+    {
+     "claim": "Modern financial sanctions grew from the First World War blockades; the League of Nations covenant then threatened 'the severance of all trade or financial relations', and 52 of 58 members applied sanctions against Italy over Ethiopia, which did not make it withdraw.",
+     "author_work": "Nicholas Mulder, The Economic Weapon (2022), as reviewed by Henry Farrell in Lawfare",
+     "url": "https://www.lawfaremedia.org/article/modern-history-economic-sanctions"
+    }
+   ],
+   "uncertain": "Whether turnover itself drives inflation is disputed: in 137 countries, 1970-2004, Dreher, Sturm and de Haan (2008) found the effect vanished once they allowed for reverse causation, and Abrams says it may never be known whether Burns yielded to Nixon or acted on his own views. Binder counts reported pressure, so quiet pressure goes uncounted, and the Iraq warning rests on press reports citing an Iraqi official.",
+   "confirmed_by": [
+    {
+     "title": "Binder, Political Pressure on Central Banks, JMCB (2021), abstract",
+     "url": "https://econpapers.repec.org/RePEc:wly:jmoncb:v:53:y:2021:i:4:p:715-744"
+    },
+    {
+     "title": "Binder, guest post, Econbrowser (29 Jul 2019)",
+     "url": "https://econbrowser.com/?p=36742"
+    },
+    {
+     "title": "Abrams, How Richard Nixon Pressured Arthur Burns, JEP (2006)",
+     "url": "https://fraser.stlouisfed.org/files/docs/meltzer/jep_2006_abrams_how_richard_nixon.pdf"
+    },
+    {
+     "title": "Abrams (2006), EconPapers abstract",
+     "url": "https://econpapers.repec.org/RePEc:aea:jecper:v:20:y:2006:i:4:p:177-188"
+    },
+    {
+     "title": "Drechsel, NBER working paper 32461 (2024), abstract",
+     "url": "https://www.nber.org/papers/w32461"
+    },
+    {
+     "title": "Drechsel, NBER conference version of the paper",
+     "url": "https://conference.nber.org/conf_papers/f194076/f194076.pdf"
+    },
+    {
+     "title": "Alesina and Roubini, Political Cycles in OECD Economies, NBER WP 3478 (1990), which sets out and tests Nordhaus (1975)",
+     "url": "https://www.nber.org/papers/w3478.pdf"
+    },
+    {
+     "title": "Cukierman, Webb and Neyapti, World Bank Economic Review (1992)",
+     "url": "https://documents1.worldbank.org/curated/ar/797831468739529187/pdf/multi-page.pdf"
+    },
+    {
+     "title": "Dreher, Sturm and de Haan, European Journal of Political Economy (2008), abstract",
+     "url": "https://econpapers.repec.org/RePEc:eee:poleco:v:24:y:2008:i:4:p:778-787"
+    },
+    {
+     "title": "Dreher, Sturm and de Haan, Journal of Macroeconomics (2010), abstract",
+     "url": "https://econpapers.repec.org/RePEc:eee:jmacro:v:32:y:2010:i:3:p:766-781"
+    },
+    {
+     "title": "Vuletin and Zhu, JMCB (2011), abstract",
+     "url": "https://econpapers.repec.org/RePEc:wly:jmoncb:v:43:y:2011:i:6:p:1185-1215"
+    },
+    {
+     "title": "Bianchi, Gómez-Cram, Kind and Kung, Journal of Monetary Economics (2023), abstract",
+     "url": "https://econpapers.repec.org/RePEc:eee:moneco:v:135:y:2023:i:c:p:37-54"
+    },
+    {
+     "title": "Johns Hopkins research highlight on Bianchi et al.",
+     "url": "https://econ.jhu.edu/research-highlights/threats-to-central-bank-independence-high-frequency-identification-with-twitter/"
+    },
+    {
+     "title": "Farrell and Newman, Weaponized Interdependence (2019), abstract on author's site",
+     "url": "https://henryfarrell.net/weaponized-interdependence-how-global-economic-networks-shape-state-coercion/"
+    },
+    {
+     "title": "Farrell, review of Mulder's The Economic Weapon, Lawfare (2022)",
+     "url": "https://www.lawfaremedia.org/article/modern-history-economic-sanctions"
+    },
+    {
+     "title": "SWIFT statement on Iranian banks (15 Mar 2012), via Mondo Visione",
+     "url": "https://mondovisione.com/media-and-resources/news/swift-instructed-to-disconnect-sanctioned-iranian-banks-following-eu-council-dec-2012315/"
+    },
+    {
+     "title": "Al Jazeera, citing WSJ: Iraq warned to keep US troops (11 Jan 2020)",
+     "url": "https://www.aljazeera.com/ajimpact/iraq-warned-troops-risk-financial-blow-wsj-200111164246245.html"
+    },
+    {
+     "title": "Reuters explainer: How the US controls Iraq's oil revenues (23 Jan 2026), via StreetInsider",
+     "url": "https://www.streetinsider.com/Reuters/Explainer-How+the+U.S.+controls+Iraq%27s+oil+revenues/25885864.html"
+    },
+    {
+     "title": "Al Jazeera: Urjit Patel resigns (10 Dec 2018)",
+     "url": "https://www.aljazeera.com/economy/2018/12/10/india-central-bank-chief-urjit-patel-resigns-amid-government-spat"
+    },
+    {
+     "title": "Al Jazeera: Argentina's debt dispute escalates (9 Jan 2010)",
+     "url": "https://www.aljazeera.com/news/2010/1/9/argentinas-debt-dispute-escalates"
+    },
+    {
+     "title": "ECB press release on Opinion CON/2011/106 (22 Dec 2011)",
+     "url": "https://www.ecb.europa.eu/press/pr/date/2011/html/pr111222.en.html"
+    },
+    {
+     "title": "Il Foglio: Ciampi and the Baffi affair (20 Sep 2016)",
+     "url": "https://www.ilfoglio.it/politica/2016/09/20/news/ciampi-e-il-metodo-baffi-alla-prova-dellattacco-affaristico-giudiziario--268063"
+    },
+    {
+     "title": "QuiFinanza: Paolo Baffi and monetary policy",
+     "url": "https://quifinanza.it/economia/paolo-baffi-politica-monetaria/749090/amp/"
+    },
+    {
+     "title": "Argentine bank chief resigns (Al Jazeera, 30 Jan 2010)",
+     "url": "https://www.aljazeera.com/news/2010/1/30/argentine-bank-chief-resigns"
+    }
+   ]
+  },
+  {
+   "id": "money-meets-pressure",
+   "title": "Corruption charges as weapon and as shield",
+   "kind": "chain",
+   "summary": "A corruption charge can be well founded, can be aimed at an opponent, or can be well founded and still be answered by calling it an attack. In China, Zhu and Zhang (2016) found that when a provincial leader replaced a leader from a rival faction, investigations of senior officials rose by 13 to 17 a year, about 15-20% above average (1996-2012). Lorentzen and Lu (2018) found Xi Jinping's 2012-15 campaign did hit cities with more reported corruption, yet no top provincial official with possible ties to Xi was indicted. For central bankers the evidence is case by case. Italy's governor Paolo Baffi and supervision chief Mario Sarcinelli were charged in March 1979 and fully acquitted in June 1981. Latvia's Ilmārs Rimšēvičs said in 2018 that commercial banks were targeting him. The EU's top court annulled his suspension in 2019 because Latvia offered no evidence, ruled in 2021 that immunity does not cover corruption, and a Latvian court sentenced him to six years in 2023.",
+   "implications": "Central bank officials can cost powerful people money, by refusing a loan, closing a bank or holding interest rates up. If an accusation alone can remove them, accusations become a way to control them, and the public loses a supervisor willing to act. If they can stop a case by calling it political, public money can be taken without penalty. EU law tries to allow both: prosecutors may proceed against a governor over private acts, while a governor's removal needs evidence a court can check. For a reader, a charge says little until the outcome, the accuser and the timing are known.",
+   "countries": [
+    {
+     "iso3": "ITA",
+     "role": "accused, not convicted",
+     "note": "Rome prosecutors charged governor Baffi and Sarcinelli on 24 March 1979 over not passing on an inspection report on Credito Industriale Sardo, a lender to Nino Rovelli's SIR group; both were acquitted of all charges on 11 June 1981."
+    },
+    {
+     "iso3": "USA",
+     "role": "accused, not convicted",
+     "note": "A judge quashed grand-jury subpoenas to the Fed in March 2026, and prosecutors closed the Powell probe in April without charges; Lisa Cook, accused of mortgage fraud in a 2025 referral, denies it, and as of 7 October 2026 had not been charged or removed."
+    },
+    {
+     "iso3": "NGA",
+     "role": "accused, not convicted",
+     "note": "Governor Lamido Sanusi was suspended in 2014 for alleged financial recklessness and misconduct, days after telling legislators that $20 billion in oil revenue was missing; President Jonathan denied any money was missing and any link."
+    },
+    {
+     "iso3": "LVA",
+     "role": "charged or convicted, contesting it",
+     "note": "Rimšēvičs, suspected of taking at least €100,000 in bribes, said in 2018 that commercial banks were targeting him to destroy Latvia's reputation; he was sentenced to six years in prison in 2023."
+    },
+    {
+     "iso3": "SVK",
+     "role": "charged or convicted, contesting it",
+     "note": "A court convicted governor Peter Kažimír in May 2025 of bribery as finance minister and fined him €200,000; he denies wrongdoing and said he would appeal, and politicians of the governing Smer party attacked the judge."
+    },
+    {
+     "iso3": "MLT",
+     "role": "charged or convicted, contesting it",
+     "note": "Governor Edward Scicluna pleaded not guilty on 29 May 2024 to fraud and other financial crimes over a hospital deal from his time as finance minister, and refused calls to resign, citing EU treaty rules on his post. He stepped aside that July and returned in July 2025 after the ECB raised no objection."
+    },
+    {
+     "iso3": "CHN",
+     "role": "studied evidence",
+     "note": "Studies of provincial investigations (1996-2012) and of Xi Jinping's campaign (2012-15) found both targeting of rivals' networks or exemption of allies, and action against places with more reported corruption."
+    },
+    {
+     "iso3": "BRA",
+     "role": "studied evidence",
+     "note": "Weitz-Shapiro and Winters (2017) found Brazilian voters, especially politically informed ones, can tell more credible corruption accusations from less credible ones."
+    },
+    {
+     "iso3": "UKR",
+     "role": "studied evidence",
+     "note": "A 2013 Council of Europe committee opinion on keeping political and criminal responsibility separate named the cases of former prime minister Yulia Tymoshenko and former interior minister Yuri Lutsenko."
+    },
+    {
+     "iso3": "DEU",
+     "role": "legal safeguard",
+     "note": "From Frankfurt, the European Central Bank took Latvia to the EU's top court in April 2018 over the measures barring its governor from office, and said this was not meant to interfere with the criminal investigation."
+    },
+    {
+     "iso3": "LUX",
+     "role": "legal safeguard",
+     "note": "The EU Court of Justice annulled the ban on Rimšēvičs in 2019, then held in 2021 that immunity does not apply to acts such as corruption that are manifestly outside a governor's official role."
+    },
+    {
+     "iso3": "CHE",
+     "role": "legal safeguard",
+     "note": "The Basel Committee's banking supervision standard, in force from April 2024, names legal protection for supervisors in its Principle 2."
+    }
+   ],
+   "role_info": {
+    "accused, not convicted": "An official faced an accusation, investigation or suspension that ended without a conviction or has not produced a charge, and pressure on the official is alleged or was found.",
+    "charged or convicted, contesting it": "An official was charged or convicted and contests the case, sometimes by blaming outside interests or by citing the protections of the post.",
+    "studied evidence": "Research or an official body has examined how corruption or criminal charges are used or received in this country.",
+    "legal safeguard": "A body here applies or sets a rule that protects officials from arbitrary removal or suits, or limits that protection."
+   },
+   "links": [
+    {
+     "from": "European Central Bank",
+     "from_city": "Frankfurt",
+     "from_iso3": "DEU",
+     "to": "Latvia",
+     "to_city": "Riga",
+     "to_iso3": "LVA",
+     "label": "challenged ban on governor in EU court",
+     "years": "2018-2019"
+    },
+    {
+     "from": "Latvian prosecutors",
+     "from_city": "Riga",
+     "from_iso3": "LVA",
+     "to": "EU Court of Justice",
+     "to_city": "Luxembourg",
+     "to_iso3": "LUX",
+     "label": "immunity question decided: no cover for corruption",
+     "years": "2021"
+    }
+   ],
+   "timeline": [
+    {
+     "year": 1979,
+     "event": "On 24 March, Rome prosecutors charged Bank of Italy governor Paolo Baffi and deputy director general Mario Sarcinelli, who said officers had come to arrest him.",
+     "source_url": "https://www.ilfoglio.it/politica/2016/09/20/news/ciampi-e-il-metodo-baffi-alla-prova-dellattacco-affaristico-giudiziario--268063"
+    },
+    {
+     "year": 1981,
+     "event": "On 11 June, Baffi and Sarcinelli were acquitted of all charges.",
+     "source_url": "https://www.bancadipiacenza.it/sites/default/files/documents/%C2%ABBaffi%2C%20grande%20economista%20e%20grande%20persona%20colpito%20dalla%20politica%20perch%C3%A9%20lontano%20dalla%20politica%C2%BB.pdf"
+    },
+    {
+     "year": 2014,
+     "event": "Nigeria's president suspended central bank governor Lamido Sanusi for alleged financial recklessness and misconduct, days after Sanusi told legislators $20 billion in oil revenue was missing.",
+     "source_url": "https://japantimes.co.jp/opinion/2014/03/04/editorials/nigeria-shoots-the-messenger"
+    },
+    {
+     "year": 2018,
+     "event": "Latvia's governor Ilmārs Rimšēvičs, detained and suspected of taking at least €100,000 in bribes, refused to resign and said commercial banks were targeting him.",
+     "source_url": "https://www.rferl.org/amp/latvia-central-bank-governer-denies-corruption-won-t-resign/29051206.html"
+    },
+    {
+     "year": 2018,
+     "event": "The European Central Bank asked the EU's top court to rule on the measures barring Rimšēvičs from office.",
+     "source_url": "https://www.ecb.europa.eu//press/pr/date/2018/html/ecb.pr180406.en.html"
+    },
+    {
+     "year": 2019,
+     "event": "The EU Court of Justice annulled the ban on Rimšēvičs because Latvia gave no evidence supporting the corruption accusations, and did not rule on his guilt.",
+     "source_url": "https://curia.europa.eu/jcms/upload/docs/application/pdf/2019-02/cp190018fr.pdf"
+    },
+    {
+     "year": 2021,
+     "event": "On 30 November, the same court held that a governor's immunity does not apply to acts manifestly outside the official role, giving corruption as an example.",
+     "source_url": "https://curia.europa.eu/jcms/upload/docs/application/pdf/2021-11/cp210214it.pdf"
+    },
+    {
+     "year": 2023,
+     "event": "A Latvian court sentenced Rimšēvičs to six years in prison for bribery.",
+     "source_url": "https://eng.lsm.lv/article/society/crime/17.06.2026-former-latvian-central-banker-has-conviction-for-buying-a-bogus-covid-certificate-upheld.a651904/"
+    },
+    {
+     "year": 2025,
+     "event": "A Slovak court convicted governor Peter Kažimír of bribery and fined him €200,000, with one year in prison if unpaid; he said he would appeal.",
+     "source_url": "https://www.irishtimes.com/business/2025/05/29/ecb-governing-council-member-convicted-of-bribery"
+    },
+    {
+     "year": 2026,
+     "event": "A US judge cancelled subpoenas to the Fed in March, finding them a pretext to pressure Jerome Powell, according to CBS; prosecutors closed the probe in April without charges but said they could reopen it.",
+     "source_url": "https://www.cbsnews.com/news/justice-department-drops-probe-into-fed-chair-jerome-powell/"
+    },
+    {
+     "year": 2026,
+     "event": "On 29 June, the US Supreme Court ruled Lisa Cook was entitled to notice and a chance to respond before any removal over mortgage fraud allegations she disputes.",
+     "source_url": "https://www.scotusblog.com/2026/08/trump-informs-lisa-cook-that-he-is-considering-her-removal/"
+    },
+    {
+     "year": 2026,
+     "event": "On 7 October, President Trump ordered a closed White House hearing on Cook for 5 November before a three-member panel; she has not been charged or removed.",
+     "source_url": "https://thegrio.com/2026/10/10/lisa-cook-investigation-trump-fed-hearing/"
+    }
+   ],
+   "claims_per_author": [
+    {
+     "claim": "When a provincial leader succeeded a leader from a competing strong faction, investigations of officials rose by 13 to 17 a year, and anticorruption articles in the party press also rose; the campaigns were selective and factionally biased.",
+     "author_work": "Jiangnan Zhu and Dong Zhang, Weapons of the Powerful: Authoritarian Elite Competition and Politicized Anticorruption in China (2016)",
+     "url": "https://core.ac.uk/download/80966501.pdf"
+    },
+    {
+     "claim": "Xi Jinping's 2012-15 campaign targeted real corruption and departures from promotion on merit, and also helped consolidate his power; officials with possible personal ties to Xi appear to have been exempt.",
+     "author_work": "Peter Lorentzen and Xi Lu, Personal Ties, Meritocracy, and China's Anti-Corruption Campaign (2018)",
+     "url": "https://aeaweb.org/conference/2019/preliminary/paper/hSA5ri6d"
+    },
+    {
+     "claim": "Baffi described the attack on the Bank of Italy as the work of a 'politico-business-judicial complex'.",
+     "author_work": "Il Foglio, Ciampi e il 'metodo Baffi' alla prova dell'attacco affaristico-giudiziario (2016)",
+     "url": "https://www.ilfoglio.it/politica/2016/09/20/news/ciampi-e-il-metodo-baffi-alla-prova-dellattacco-affaristico-giudiziario--268063"
+    },
+    {
+     "claim": "The 1979 case was a reaction to the Bank of Italy starting to examine Banco Ambrosiano.",
+     "author_work": "Legnanonews, L'attacco alla Banca d'Italia che cambiò il Paese (2026)",
+     "url": "https://www.legnanonews.com/altri/2026/06/12/lattacco-alla-banca-ditalia-che-cambio-il-paese/1450033/?output=pdf"
+    },
+    {
+     "claim": "President Jonathan's statement that Sanusi's suspension was unrelated to his whistleblowing was not convincing.",
+     "author_work": "The Japan Times editorial, Nigeria shoots the messenger (2014)",
+     "url": "https://japantimes.co.jp/opinion/2014/03/04/editorials/nigeria-shoots-the-messenger"
+    }
+   ],
+   "uncertain": "Measured evidence of politically aimed anticorruption comes mainly from China, and even there studies find real corruption was also targeted; for central bankers there is no count, only cases, and motive is usually inferred from timing. The Rimšēvičs verdict's finality was not confirmed, Kažimír's appeal outcome was not found, and few governors were found on record calling a case political: Rimšēvičs blamed commercial banks rather than politicians.",
+   "confirmed_by": [
+    {
+     "title": "Jiangnan Zhu and Dong Zhang, Weapons of the Powerful, Comparative Political Studies (2016)",
+     "url": "https://core.ac.uk/download/80966501.pdf"
+    },
+    {
+     "title": "Peter Lorentzen and Xi Lu, Personal Ties, Meritocracy, and China's Anti-Corruption Campaign (2018)",
+     "url": "https://aeaweb.org/conference/2019/preliminary/paper/hSA5ri6d"
+    },
+    {
+     "title": "Rebecca Weitz-Shapiro and Matthew S. Winters, Can Citizens Discern?, Journal of Politics (2017), bibliography entry",
+     "url": "https://corruptionlab.lessig.org/bibliography/JE7W9S59"
+    },
+    {
+     "title": "Court of Justice of the EU, press release on Cases C-202/18 and C-238/18 (2019)",
+     "url": "https://curia.europa.eu/jcms/upload/docs/application/pdf/2019-02/cp190018fr.pdf"
+    },
+    {
+     "title": "Court of Justice of the EU, press release on Case C-3/20 (2021)",
+     "url": "https://curia.europa.eu/jcms/upload/docs/application/pdf/2021-11/cp210214it.pdf"
+    },
+    {
+     "title": "European Central Bank, press release on referral to the Court of Justice (2018)",
+     "url": "https://www.ecb.europa.eu//press/pr/date/2018/html/ecb.pr180406.en.html"
+    },
+    {
+     "title": "Basel Committee on Banking Supervision, Core Principles, BCP table of contents (2024)",
+     "url": "https://www.bis.org/committees/bcbs/basel-framework/standard/bcp?allChapters=true"
+    },
+    {
+     "title": "Council of Europe PACE, Keeping political and criminal responsibility separate, Doc. 13251 (2013)",
+     "url": "https://pace.coe.int/files/19829/html"
+    },
+    {
+     "title": "Banca di Piacenza, Baffi, grande economista e grande persona, colpito dalla politica",
+     "url": "https://www.bancadipiacenza.it/sites/default/files/documents/%C2%ABBaffi%2C%20grande%20economista%20e%20grande%20persona%20colpito%20dalla%20politica%20perch%C3%A9%20lontano%20dalla%20politica%C2%BB.pdf"
+    },
+    {
+     "title": "Il Foglio, Ciampi e il 'metodo Baffi' (2016)",
+     "url": "https://www.ilfoglio.it/politica/2016/09/20/news/ciampi-e-il-metodo-baffi-alla-prova-dellattacco-affaristico-giudiziario--268063"
+    },
+    {
+     "title": "Legnanonews, L'attacco alla Banca d'Italia che cambiò il Paese (2026)",
+     "url": "https://www.legnanonews.com/altri/2026/06/12/lattacco-alla-banca-ditalia-che-cambio-il-paese/1450033/?output=pdf"
+    },
+    {
+     "title": "RFE/RL, Latvia's top banker rejects corruption charges, says won't resign (2018)",
+     "url": "https://www.rferl.org/amp/latvia-central-bank-governer-denies-corruption-won-t-resign/29051206.html"
+    },
+    {
+     "title": "LSM, Former Latvian central banker has conviction for buying a bogus Covid certificate upheld (2026)",
+     "url": "https://eng.lsm.lv/article/society/crime/17.06.2026-former-latvian-central-banker-has-conviction-for-buying-a-bogus-covid-certificate-upheld.a651904/"
+    },
+    {
+     "title": "Irish Times, ECB governing council member convicted of bribery (2025)",
+     "url": "https://www.irishtimes.com/business/2025/05/29/ecb-governing-council-member-convicted-of-bribery"
+    },
+    {
+     "title": "The Slovak Spectator, Last week: central bank governor found guilty, but Fico accuses the judge (2025)",
+     "url": "https://spectator.sme.sk/opinion/c/last-week-central-bank-governor-found-guilty-but-fico-accuses-the-judge"
+    },
+    {
+     "title": "BusinessNow Malta, Edward Scicluna in good company in list of other European central bankers facing criminal charges (2024)",
+     "url": "https://businessnow.mt/edward-scicluna-in-good-company-in-list-of-other-european-central-bankers-facing-criminal-charges/"
+    },
+    {
+     "title": "The Japan Times, Nigeria shoots the messenger (2014)",
+     "url": "https://japantimes.co.jp/opinion/2014/03/04/editorials/nigeria-shoots-the-messenger"
+    },
+    {
+     "title": "CBS News, Justice Department drops probe into Fed chair Jerome Powell (2026)",
+     "url": "https://www.cbsnews.com/news/justice-department-drops-probe-into-fed-chair-jerome-powell/"
+    },
+    {
+     "title": "SCOTUSblog, Trump informs Lisa Cook that he is considering her removal (2026)",
+     "url": "https://www.scotusblog.com/2026/08/trump-informs-lisa-cook-that-he-is-considering-her-removal/"
+    },
+    {
+     "title": "TheGrio, Lisa Cook investigation and White House hearing (2026)",
+     "url": "https://thegrio.com/2026/10/10/lisa-cook-investigation-trump-fed-hearing/"
+    },
+    {
+     "title": "Maltese governor pleads not guilty to fraud (Central Banking, 2024)",
+     "url": "https://www.centralbanking.com/central-banks/governance/7961399/maltese-governor-pleads-not-guilty-to-fraud"
+    },
+    {
+     "title": "Malta, ex Finance Minister Scicluna reinstated as Central Bank Governor (Italpress)",
+     "url": "https://www.italpress.com/?p=562836"
+    }
+   ]
   }
  ]
 }
