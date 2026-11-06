@@ -235,7 +235,16 @@ ABOUT = open("/root/cb/about.html").read()
 import subprocess; subprocess.run(["python3", "/root/cb/build_net.py"], check=True)
 NET = json.load(open("/root/cb/out/net.json"))
 PAT = NET.pop("pats", [])
-D = {"PAT": PAT, "NET": NET, "CC": CC, "RD": RD, "P": P, "U": U, "UM": UM, "CUR": CUR, "SW": SW, "EV": EV, "ARR": ARR, "REG": REG, "QL": QL, "HUB": HUB, "META": META, "ABOUT": ABOUT}
+# real outlines for small places the boundaries file lacks
+_shaped = set(f["properties"].get("iso3") for f in bnd["features"]) | {"XKX", "SOL", "CYN"}
+_ne = json.load(open("/root/cb/geo/ne10.geojson"))["features"]
+XSHAPE = []
+for _f in _ne:
+    _p = _f["properties"]; _k = _p["ISO_A3"] if _p["ISO_A3"] != "-99" else _p["ADM0_A3"]
+    if _k in P and _k not in _shaped: XSHAPE.append({"type": "Feature", "properties": {"iso3": _k, "name": P[_k]["n"]}, "geometry": _f["geometry"]})
+print("shapes added:", [x["properties"]["iso3"] for x in XSHAPE])
+WR = load("writeups.json", {})
+D = {"XSHAPE": XSHAPE, "WR": WR, "PAT": PAT, "NET": NET, "CC": CC, "RD": RD, "P": P, "U": U, "UM": UM, "CUR": CUR, "SW": SW, "EV": EV, "ARR": ARR, "REG": REG, "QL": QL, "HUB": HUB, "META": META, "ABOUT": ABOUT}
 data_js = "const D = " + json.dumps(D, ensure_ascii=False, separators=(",", ":")) + ";"
 tpl = open("/root/cb/template.html").read()
 out = tpl.replace("/*__PLATE__*/", open("/root/cb/plate.js").read()).replace("/*__DATA__*/", data_js) \

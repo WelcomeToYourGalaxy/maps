@@ -187,7 +187,7 @@ const REL_DESC = { own: "How many outside holders own shares in the central bank
     control: "How many outside powers pressured, fired or prosecuted the bank's leaders (courts and prosecutors are counted separately), froze or seized its reserves, or guarantee its currency under a foreign agreement.",
     service: "How many firms print its banknotes, audit it or manage its money, plus other parties named in its cases.",
     account: "How many courts, prosecutors, inspectors and inquiries investigated, charged or tried its officials. This measures accountability, not outside control." };
-seq("tiesSel", "Who central banks answer to", "Number of ties of the kinds ticked at right", {
+seq("tiesSel", "Who owns, pays and pressures central banks", "Number of ties of the kinds ticked at right", {
   log: true, f: (v) => fmt(v, 0) + (v === 1 ? " tie" : " ties"), get: (p) => { const n = linksOfCountry(p.iso).filter(linkOK).length; return n ? { v: n } : null; },
   desc: "Each country is shaded by how many documented ties its central bank has to outside parties of the kinds ticked in the box at right (euro-area members include the ECB's). Light means more ties; dark grey means none of those kinds were found.",
   src: "Cases, ownership records, memberships, contracts and reports linked in each box." });
@@ -198,7 +198,7 @@ seq("tiesSel", "Who central banks answer to", "Number of ties of the kinds ticke
     classes: roles.map((r) => [r, r]), other: "Other role", get: (p) => { const c = RC[p.iso] || (p.u && RC[p.u === "ECB" ? "EMU" : p.u]); return c ? (roles.includes(c.role) ? { v: c.role, note: c.note } : { v: null, other: true, note: c.note }) : null; },
     desc: pt.summary, src: "" });
 });
-cat("own", "Who central banks answer to", "Who owns the central bank (type of owners)", {
+cat("own", "Who owns, pays and pressures central banks", "Who owns the central bank (type of owners)", {
   classes: [["listed", "Private shareholders, shares traded on an exchange"], ["private", "Private shareholders, shares not traded"], ["mixed", "Shareholders other than the state named, terms in the box"]],
   other: "No private shareholders found", get: (p) => p.own ? { v: p.own.k } : { v: null, other: true },
   desc: "Shown while only 'Who owns it' is ticked at right. Most central banks belong wholly to the state; these are the ones whose statutes or reports name other owners. Each outside shareholder is drawn as a diamond at its head office.",
@@ -215,7 +215,7 @@ cat("reg", "Ownership and outside control", "Exchange-rate regime, December 2025
   src: "Ilzetzki, Reinhart and Rogoff, monthly classification to December 2025 (October 2026 release)." });
 cat("anc", "Reach beyond its borders", "Which currency each country follows", {
   classes: [["USD", "US dollar (Federal Reserve)"], ["EUR", "Euro (European Central Bank)"], ["one", "Another single currency"], ["two", "Two currencies or a basket"]],
-  other: "No anchor found, or its own", get: (p) => { const a = p.a; if (!a) return null; if (a === "USD" || a === "EUR") return { v: a }; if (/^(AUD|ZAR|INR|CNY|SGD|CHF)$/.test(a)) return { v: "one" }; if (a.includes("-") || a.includes("+") || a === "SDR") return { v: "two" }; return { v: null, other: true }; },
+  other: "No anchor found, or its own", get: (p) => { const a = p.a; if (!a) return null; if (a === "USD" || a === "EUR") return { v: a }; if (/^(AUD|ZAR|INR|CNY|SGD|CHF|NOK|MEX)$/.test(a)) return { v: "one" }; if (a.includes("-") || a.includes("+") || a === "SDR") return { v: "two" }; return { v: null, other: true }; },
   desc: "The anchor or reference currency each country's exchange rate is measured against, December 2025. Turn on the anchor lines to see the ties; dashed lines are countries that float against their reference.",
   src: "Ilzetzki, Reinhart and Rogoff, anchor currency, December 2025 (October 2026 release)." });
 const curv = (k) => (p) => { const c = curOf(p); if (!c || c[k] == null) return null; return { v: c[k], via: c.iss !== p.iso ? c.code : null }; };
@@ -305,6 +305,8 @@ function hideNames() {
   const st = map.getStyle(); if (!st) return; const mine = new Set(IDS);
   st.layers.forEach((l) => { if (!mine.has(l.id) && (l.type === "symbol" || l.id === "labels")) map.setLayoutProperty(l.id, "visibility", "none"); });
 }
+function homePadding() { const fb = freeBox(); return { left: fb.L, right: fb.R, top: 0, bottom: 0 }; }
+function recenter() { map.easeTo({ padding: homePadding(), bearing: 0, pitch: 0, duration: 600 }); }
 function wholeWorld() {
   const fb = freeBox(), padding = { left: fb.L, right: fb.R, top: 0, bottom: 0 };
   if (proj === "globe") map.flyTo({ center: [12, 25], zoom: startZoom(), padding, duration: 1200 });
@@ -330,7 +332,7 @@ function tip(html, x, y) { if (!html) { tt.style.display = "none"; return; } tt.
 // Country shapes: the Culprits map's boundaries file, as on the other maps. Kosovo, Somaliland and Northern Cyprus carry no code there and are matched by name.
 const BOUND_URL = "https://welcometoyourgalaxy.github.io/culprits/data/boundaries.geojson";
 const BYNAME = { "Kosovo": "XKX", "Somaliland": "SOL", "Northern Cyprus": "CYN" };
-let SHAPED = new Set();
+let SHAPED = new Set(); const GEOBY = new Map();
 // Straight lines in longitude and latitude, never crossing the 180° edge; densified so the globe draws them as paths, not chords.
 function straight(a, b, n) { n = n || 24; const o = []; for (let i = 0; i <= n; i++) { const t = i / n; o.push([a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t]); } return o; }
 function gc(a, b, n) { return straight(a, b, n); }
@@ -351,11 +353,15 @@ function gcOld(a, b, n) {   // points along the great circle from a to b (no lon
 }
 function addLayers(geo) {
   geo.features.forEach((f) => { const p = f.properties; if (!p.iso3 || p.iso3 === "-99") p.iso3 = BYNAME[p.name] || ""; });
+  (D.XSHAPE || []).forEach((f) => geo.features.push(f));
   SHAPED = new Set(geo.features.map((f) => f.properties.iso3).filter(Boolean));
+  geo.features.forEach((f) => { const k = f.properties.iso3; if (!k) return; if (!GEOBY.has(k)) GEOBY.set(k, []); GEOBY.get(k).push(f); });
   map.addSource("ctry", { type: "geojson", data: geo });
   map.addLayer({ id: "c-fill", type: "fill", source: "ctry", filter: ["!=", ["get", "iso3"], ""], paint: { "fill-color": NODATA, "fill-opacity": ["interpolate", ["linear"], ["zoom"], 0, 0.82, 5, 0.7, 8, 0.45] } });
   map.addLayer({ id: "c-line", type: "line", source: "ctry", paint: { "line-color": "#05061a", "line-width": 0.5, "line-opacity": 0.8 } });
   map.addLayer({ id: "c-grp", type: "line", source: "ctry", filter: ["in", ["get", "iso3"], ["literal", []]], paint: { "line-color": "#f0ece4", "line-width": 0.8, "line-opacity": 0.55, "line-dasharray": [2, 2] } });
+  map.addSource("hov-ctry", { type: "geojson", data: { type: "FeatureCollection", features: [] }, maxzoom: 6, tolerance: 1, buffer: 8 });
+  map.addLayer({ id: "c-hovto", type: "line", source: "hov-ctry", paint: { "line-color": "#f0ece4", "line-width": 1.3, "line-opacity": 0.85 } });
   map.addLayer({ id: "c-sel", type: "line", source: "ctry", filter: ["in", ["get", "iso3"], ["literal", []]], paint: { "line-color": "#f0ece4", "line-width": 1.6, "line-opacity": 0.95 } });
   // places too small for the shapes file get a dot
   const dots = ISOS.filter((k) => !SHAPED.has(k) && P[k].pt).map((k) => ({ type: "Feature", properties: { iso3: k }, geometry: { type: "Point", coordinates: P[k].pt } }));
@@ -366,32 +372,40 @@ function addLayers(geo) {
   map.addLayer({ id: "l-dash", type: "line", source: "links", filter: ["get", "dash"], paint: { "line-color": ["get", "col"], "line-width": 0.9, "line-opacity": 0.6, "line-dasharray": [2, 2] } });
   map.addSource("hubs", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
   map.addLayer({ id: "l-hub", type: "circle", source: "hubs", paint: { "circle-radius": 4.5, "circle-color": ["get", "col"], "circle-stroke-color": "#f0ece4", "circle-stroke-width": 1.2, "circle-pitch-alignment": "map" } });
-  IDS.push("c-fill", "c-line", "c-grp", "c-dots", "l-dash", "l-solid", "l-hub", "c-sel"); order();
+  IDS.push("c-fill", "c-line", "c-grp", "c-dots", "l-dash", "l-solid", "l-hub", "c-hovto", "c-sel"); order();
   addNetLayers();
   const hit = (pt) => { const f = map.queryRenderedFeatures([[pt.x - 3, pt.y - 3], [pt.x + 3, pt.y + 3]], { layers: ["c-dots", "c-fill"] }); return f.length ? f[0].properties.iso3 : null; };
   // What is under the pointer: a party's diamond first (8 px around it), then a tie line (6 px band), then a country.
   const under = (pt) => {
+    if (layer().pat && map.getLayer("pat-end")) {
+      const f = map.queryRenderedFeatures([[pt.x - 6, pt.y - 6], [pt.x + 6, pt.y + 6]], { layers: ["pat-end"] });
+      if (f.length) return { pat: f[0].properties.name };
+    }
     if (S.net && map.getLayer("net-node")) {
       const f = map.queryRenderedFeatures([[pt.x - 8, pt.y - 8], [pt.x + 8, pt.y + 8]], { layers: ["net-node"] });
       if (f.length) { let best = f[0], bd = 1e9; f.forEach((x) => { const p = map.project(x.geometry.coordinates), d = Math.hypot(p.x - pt.x, p.y - pt.y); if (d < bd) { bd = d; best = x; } }); return { node: best.properties.i, stack: [...new Set(f.map((x) => x.properties.i))] }; }
-      const g = map.queryRenderedFeatures([[pt.x - 6, pt.y - 6], [pt.x + 6, pt.y + 6]], { layers: ["net-line", "net-dash", "net-dot"] });
-      if (g.length) return { line: g[0].properties };
     }
     const k = hit(pt); return k && P[k] ? { ctry: k } : {};
   };
   map.on("click", (e) => {
     const u = under(e.point);
+    if (u.pat) { patPointBox(u.pat); return; }
     if (u.stack && u.stack.length > 1) { stackBox(u.stack); return; }
     if (u.node != null) { selectEntity(u.node); return; }
-    if (u.line) { selectEntity(u.line.n); return; }
     if (u.ctry) select(u.ctry, false);
   });
   let rafPending = null;
   const kindNames = (s) => String(s || "").split(",").filter(Boolean).map((k) => (REL_SHORT[k] || k).split(":")[0].toLowerCase()).join(", ");
   const onMove = (e) => {
     const u = under(e.point), x = e.originalEvent.clientX, y = e.originalEvent.clientY;
-    const n = u.node != null ? u.node : u.line ? u.line.n : null;
-    if (n !== S.hov) { S.hov = n; setHot(n); }
+    const n = u.node != null ? u.node : null;
+    if (n !== S.hov) { S.hov = n; HC = undefined; setHot(n); }
+    hoverCountry(n == null ? (u.ctry || null) : null);
+    if (u.pat) {
+      map.getCanvas().style.cursor = "pointer";
+      const ls = (layer().pat.links || []).filter((k) => k.from === u.pat || k.to === u.pat);
+      tip("<b>" + esc(u.pat) + "</b><br><span class=m>" + ls.length + " connection" + (ls.length === 1 ? "" : "s") + " in this pattern. Click for details.</span>", x, y); return;
+    }
     if (u.stack && u.stack.length > 1) {
       map.getCanvas().style.cursor = "pointer";
       const names = u.stack.slice(0, 6).map((i) => esc(NET.nodes[i].name)).join("<br>");
@@ -403,18 +417,13 @@ function addLayers(geo) {
       map.getCanvas().style.cursor = "pointer";
       tip("<b>" + esc(nd.name) + "</b> · tied to " + c + " central bank" + (c === 1 ? "" : "s") + (top ? "<br><span class=m>" + esc(RELMEAN[top[0]].split(". ")[0]) + ".</span>" : "") + "<br><span class=m>Click for details.</span>", x, y); return;
     }
-    if (u.line) {
-      const L2 = u.line, far = L2.tn >= 0 ? NET.nodes[L2.tn].name : cbName(L2.cb);
-      map.getCanvas().style.cursor = "pointer";
-      tip("<b>" + esc(NET.nodes[L2.n].name) + "</b> → " + esc(far) + "<br><span class=m>" + L2.cnt + " tie" + (L2.cnt > 1 ? "s" : "") + ": " + esc(kindNames(L2.kinds)) + ". Click for details.</span>", x, y); return;
-    }
     map.getCanvas().style.cursor = u.ctry ? "pointer" : "";
     if (!u.ctry) { tip(null); return; }
     const l = layer(), r = l.get(P[u.ctry], S.year);
     tip("<b>" + esc(P[u.ctry].n) + "</b><br>" + valText(l, r, P[u.ctry]), x, y);
   };
   map.on("mousemove", (e) => { rafPending = e; requestAnimationFrame(() => { if (rafPending) { const ev = rafPending; rafPending = null; onMove(ev); } }); });
-  map.on("mouseout", () => { rafPending = null; tip(null); if (S.hov != null) { S.hov = null; setHot(null); } });
+  map.on("mouseout", () => { rafPending = null; tip(null); if (S.hov != null) { S.hov = null; setHot(null); } hoverCountry(null); });
 }
 // Where a value sits among all places, in plain words.
 const HIGH_GOOD = new Set(["cbie", "cwn", "ti", "cpi", "wgi"].concat([0, 1, 2, 3, 4, 5].map((i) => "cbie" + i), [0, 1, 2, 3].map((i) => "cwn" + i), [0, 1, 2, 3, 4].map((i) => "ti" + i)));
@@ -446,28 +455,36 @@ function valText(l, r, p) {
 const PROV = [["USA", "Federal Reserve"], ["ECB", "European Central Bank"], ["CHN", "People's Bank of China"]];
 function provColor(iso) { const i = PROV.findIndex((x) => x[0] === iso); return i < 0 ? CATC[3] : CATC[i]; }
 const ptOf = (k) => (D.HUB[k]) || (P[k] && P[k].pt) || (U[k] && U[k].pt);
+// Lines by country, so pointing at a country can light up its lines and the countries at their far ends.
+let LK = new Map(), LKREADY = false;
+function lk(k, ft, far) { if (!k) return; if (!LK.has(k)) LK.set(k, { f: [], to: new Set() }); const e = LK.get(k); e.f.push(ft); if (far) e.to.add(far); }
+const HUB2 = { RUB: [37.62, 55.75], NOK: [10.75, 59.91], MEX: [-99.13, 19.43] }, ISSUER2 = { RUB: "RUS", NOK: "NOR", MEX: "MEX", USD: "USA", EUR: "EMU", AUD: "AUS", ZAR: "ZAF", INR: "IND", CNY: "CHN", SGD: "SGP", CHF: "CHE" };
+// "USD", "USD-EUR" or "0.2EUR+0.5RUB+0.3USD" to a list of currencies
+function anchorsOf(a) { if (a === "n.a." || a === "Freely_falling" || a === "SDR") return []; return String(a).split(/[-+]/).map((x) => x.replace(/^[0-9.]+/, "")).filter(Boolean); }
 function drawLinks() {
-  const feats = [], hubs = new Map();
+  const feats = [], hubs = new Map(); LK = new Map();
   if (S.swaps) D.SW.forEach((s) => {
     if (!swLive(s)) return;
     const a = ptOf(s.provider_iso3 === "EMU" ? "ECB" : s.provider_iso3), b = ptOf(s.counterparty_iso3 === "EMU" ? "ECB" : s.counterparty_iso3);
     if (!a || !b) return;
     const col = provColor(s.provider_iso3 === "EMU" ? "ECB" : s.provider_iso3);
     const on = S.sel && (S.sel === s.provider_iso3 || S.sel === s.counterparty_iso3 || (P[S.sel] && P[S.sel].u === "ECB" && (s.provider_iso3 === "EMU" || s.counterparty_iso3 === "EMU")));
-    feats.push({ type: "Feature", properties: { col, w: on ? 2.2 : 1.1, dash: false }, geometry: { type: "LineString", coordinates: gc(a, b, 48) } });
+    const ft = { type: "Feature", properties: { col, w: on ? 2.2 : 1.1, dash: false }, geometry: { type: "LineString", coordinates: gc(a, b, 48) } };
+    feats.push(ft); lk(s.provider_iso3, ft, s.counterparty_iso3); lk(s.counterparty_iso3, ft, s.provider_iso3);
     hubs.set(s.provider_iso3, col);
   });
   if (S.anchors) ISOS.forEach((k) => {
-    const p = P[k], a = p.a; if (!a || !p.pt) return;
-    const iss = { USD: "USD", EUR: "EUR", AUD: "AUD", ZAR: "ZAR", INR: "INR", CNY: "CNY", SGD: "SGD", CHF: "CHF" }[a];
-    if (!iss) return;
-    const h = D.HUB[iss]; if (!h) return;
-    const issIso = CUR[iss] && CUR[iss].iss; if (issIso === k || (iss === "EUR" && p.u === "ECB")) return;
-    const col = iss === "USD" ? CATC[0] : iss === "EUR" ? CATC[1] : CATC[2];
-    const floats = p.f != null && p.f >= 12;
-    feats.push({ type: "Feature", properties: { col, w: S.sel === k ? 2.2 : 1, dash: floats }, geometry: { type: "LineString", coordinates: gc(h, p.pt, 40) } });
-    hubs.set(iss, col);
+    const p = P[k]; if (!p.a || !p.pt) return;
+    anchorsOf(p.a).forEach((iss) => {
+      const h = HUB2[iss] || D.HUB[iss]; if (!h) return;
+      const issIso = ISSUER2[iss] || (CUR[iss] && CUR[iss].iss); if (issIso === k || (iss === "EUR" && p.u === "ECB")) return;
+      const col = iss === "USD" ? CATC[0] : iss === "EUR" ? CATC[1] : CATC[2];
+      const floats = p.f != null && p.f >= 12;
+      const ft = { type: "Feature", properties: { col, w: S.sel === k ? 2.2 : 1, dash: floats }, geometry: { type: "LineString", coordinates: gc(h, p.pt, 40) } };
+      feats.push(ft); hubs.set(iss, col); lk(k, ft, issIso); if (issIso) lk(issIso, ft, k);
+    });
   });
+  LKREADY = true;
   map.getSource("links").setData({ type: "FeatureCollection", features: feats });
   map.getSource("hubs").setData({ type: "FeatureCollection", features: [...hubs].map(([k, col]) => ({ type: "Feature", properties: { col }, geometry: { type: "Point", coordinates: ptOf(k === "EMU" ? "ECB" : k) || D.HUB[k] } })).filter((f) => f.geometry.coordinates) });
 }
@@ -543,7 +560,9 @@ function addNetLayers() {
     paint: { "icon-color": ["get", "col"], "icon-opacity": ["get", "o"], "icon-halo-color": "#05061a", "icon-halo-width": 0.7 } });
   map.addLayer({ id: "net-node-hot", type: "symbol", source: "hot-nodes", layout: { "icon-image": "diamond", "icon-size": ["*", 1.35, ["get", "s"]], "icon-allow-overlap": true, "icon-ignore-placement": true },
     paint: { "icon-color": ["get", "col"], "icon-halo-color": "#f0ece4", "icon-halo-width": 1.2 } });
-  IDS.push("net-dot", "net-line", "net-dash", "net-hot", "net-node", "net-node-hot"); order();
+  map.addSource("sel-node", { type: "geojson", data: { type: "FeatureCollection", features: [] }, maxzoom: 12 });
+  map.addLayer({ id: "sel-ring", type: "circle", source: "sel-node", paint: { "circle-radius": 8, "circle-color": "rgba(0,0,0,0)", "circle-stroke-color": "#f0ece4", "circle-stroke-width": 1.6, "circle-pitch-alignment": "map" } });
+  IDS.push("net-dot", "net-line", "net-dash", "net-hot", "net-node", "net-node-hot", "sel-ring"); order();
 }
 // Which parties pass the filter by connections with central banks. Recomputed when the ticks or the filter change.
 let NETVIS = null;
@@ -568,13 +587,13 @@ function drawPattern() {
     IDS.push("pat-line", "pat-end"); order();
   }
   const l = layer(), pt = l.pat, lf = [], ef = [];
-  if (pt) (pt.links || []).forEach((k) => { if (k.a && k.b) { lf.push({ type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: straight(k.a, k.b, 24) } }); ef.push({ type: "Feature", properties: {}, geometry: { type: "Point", coordinates: k.a } }, { type: "Feature", properties: {}, geometry: { type: "Point", coordinates: k.b } }); } });
+  if (pt) (pt.links || []).forEach((k, i) => { if (k.a && k.b) { lf.push({ type: "Feature", properties: { i }, geometry: { type: "LineString", coordinates: straight(k.a, k.b, 24) } }); ef.push({ type: "Feature", properties: { name: k.from, i }, geometry: { type: "Point", coordinates: k.a } }, { type: "Feature", properties: { name: k.to, i }, geometry: { type: "Point", coordinates: k.b } }); } });
   map.getSource("pat-lines").setData({ type: "FeatureCollection", features: lf });
   map.getSource("pat-ends").setData({ type: "FeatureCollection", features: ef });
 }
 const cbOfLink = (l) => l.cb === "EMU" ? D.UM.ECB : l.cb === "BIS" || !l.cb ? [] : [l.cb];
 const linkKey = (l) => l.tn != null ? "n" + l.tn : l.cb;
-let HOT = { lines: new Map(), nodes: new Map() };
+let HOT = { lines: new Map(), nodes: new Map(), cb: new Map() };
 const LINEGEO = new Map();
 function drawNet() {
   if (!map.getSource("net-lines")) return;
@@ -598,8 +617,8 @@ function drawNet() {
     const r = main(e.rel), kinds = Object.keys(e.rel), st = kinds.length === 1 && RELDASH[r] ? RELDASH[r] : "solid";
     lf.push({ type: "Feature", properties: { n: e.n, tn: e.tn == null ? -1 : e.tn, cb: e.cb || "", st, col: RELC(r), w: (e.hot ? 1.8 : 0.8) + Math.min(1.4, Math.log2(e.cnt) * 0.45), o: focus ? (e.hot ? 0.95 : 0.06) : base, kinds: kinds.join(","), cnt: e.cnt }, geometry: { type: "LineString", coordinates: (LINEGEO.get(e.n + "|" + (e.tn == null ? e.cb : "n" + e.tn)) || (LINEGEO.set(e.n + "|" + (e.tn == null ? e.cb : "n" + e.tn), straight(e.a, e.b, 20)), LINEGEO.get(e.n + "|" + (e.tn == null ? e.cb : "n" + e.tn)))) } });
   });
-  const nf = []; HOT = { lines: new Map(), nodes: new Map() };
-  lf.forEach((f) => { [f.properties.n, f.properties.tn].forEach((m) => { if (m == null || m < 0) return; if (!HOT.lines.has(m)) HOT.lines.set(m, []); HOT.lines.get(m).push(f); }); });
+  const nf = []; HOT = { lines: new Map(), nodes: new Map(), cb: new Map() };
+  lf.forEach((f) => { if (f.properties.cb) { if (!HOT.cb.has(f.properties.cb)) HOT.cb.set(f.properties.cb, []); HOT.cb.get(f.properties.cb).push(f); } [f.properties.n, f.properties.tn].forEach((m) => { if (m == null || m < 0) return; if (!HOT.lines.has(m)) HOT.lines.set(m, []); HOT.lines.get(m).push(f); }); });
   per.forEach((q, n) => {
     const nd = NET.nodes[n], s = q.cbs.size <= 1 ? 0.36 : Math.min(0.95, 0.36 + 0.1 * Math.sqrt(q.cbs.size));
     const pr = { i: n, col: RELC(main(q.rel)), s, o: focus ? (q.hot ? 1 : 0.3) : 0.95, k: q.cbs.size };
@@ -610,6 +629,22 @@ function drawNet() {
   setHot(S.hov);
 }
 // Light up one party's ties and diamond. Only those few features are redrawn; the countries stay as they are.
+let HC = null;
+function hoverCountry(k) {
+  if (k === HC) return; HC = k;
+  const so = map.getSource("hov-ctry"), sl = map.getSource("hot-lines"); if (!so || !sl) return;
+  const to = new Set(), lines = [];
+  if (k) {
+    const e = LK.get(k) || (P[k] && P[k].u === "ECB" ? LK.get("EMU") : null);
+    if (e) { e.to.forEach((x) => to.add(x)); lines.push(...e.f); }
+    const l = layer();
+    if (l.pat) (l.pat.links || []).forEach((x) => { if (x.from_iso3 === k && x.to_iso3 && x.to_iso3 !== k) to.add(x.to_iso3); if (x.to_iso3 === k && x.from_iso3 && x.from_iso3 !== k) to.add(x.from_iso3); });
+    if (S.net) { linksOfCountry(k).filter(linkOK).forEach((x) => { const nd = NET.nodes[x.n]; if (nd.iso3 && nd.iso3 !== k) to.add(nd.iso3); }); (HOT.cb.get(k) || []).forEach((f) => lines.push(f)); if (P[k] && P[k].u === "ECB") (HOT.cb.get("EMU") || []).forEach((f) => lines.push(f)); }
+  }
+  const isos = new Set(); to.forEach((x) => { if (x === "EMU") D.UM.ECB.forEach((m) => isos.add(m)); else if (D.UM[x]) D.UM[x].forEach((m) => isos.add(m)); else isos.add(x); });
+  so.setData({ type: "FeatureCollection", features: to.size ? [...isos].flatMap((x) => GEOBY.get(x) || []) : [] });
+  sl.setData({ type: "FeatureCollection", features: lines });
+}
 function setHot(n) {
   const sl = map.getSource("hot-lines"), sn = map.getSource("hot-nodes"); if (!sl || !sn) return;
   const on = n != null && S.net;
@@ -622,6 +657,7 @@ function entityBox(n) {
   const kinds = REL.filter((r) => ls.some((l) => l.rel === r[0]));
   h.push('<div class="hp-k">' + esc(nd.type || "") + (nd.parent ? " · part of " + esc(nd.parent) : "") + '</div><h3>' + esc(nd.name) + '</h3>');
   h.push('<p class="hp-sub">' + (nd.city ? esc(nd.city) + ", " : "") + esc(P[nd.iso3] ? P[nd.iso3].n : (nd.iso3 || "place not stated")) + (nd.approx ? ' <span class="note">(marker placed at the country, not the exact office)</span>' : '') + '</p>');
+  if (D.WR && D.WR["n:" + nd.name]) h.push('<div class="wr">' + esc(D.WR["n:" + nd.name]) + '</div>');
   const others = [...new Set(ls.filter((l) => l.tn != null).map((l) => otherName(l, n)))];
   h.push('<p><span class="big">' + cbs.length + '</span> central bank' + (cbs.length === 1 ? '' : 's') + (others.length ? ' and ' + others.length + ' other part' + (others.length === 1 ? 'y' : 'ies') : '') + ' tied to it.</p>');
   kinds.forEach((r) => {
@@ -640,12 +676,32 @@ function openDet() {
   if (!DET.sized) { el.style.height = "auto"; el.style.maxHeight = "min(58vh, 620px)"; }
   if (!DET.moved) { const r = el.getBoundingClientRect(); el.style.left = Math.max(8, (innerWidth - r.width) / 2) + "px"; el.style.top = Math.max(8, Math.min(innerHeight - r.height - 8, innerHeight / 2 + 70 - r.height / 2)) + "px"; }
 }
+function makeResizable(el, onStart) {
+  ["n", "e", "s", "w", "ne", "nw", "se", "sw"].forEach((d) => {
+    const h = document.createElement("i"); h.className = "rz rz-" + d; el.appendChild(h);
+    h.addEventListener("pointerdown", (e) => {
+      e.preventDefault(); e.stopPropagation(); if (onStart) onStart();
+      const r = el.getBoundingClientRect(), x0 = e.clientX, y0 = e.clientY, mw = 260, mh = 120;
+      Object.assign(el.style, { left: r.left + "px", top: r.top + "px", width: r.width + "px", height: r.height + "px", maxHeight: "none", maxWidth: "none" });
+      const mv = (m) => {
+        const dx = m.clientX - x0, dy = m.clientY - y0; let L = r.left, T = r.top, W = r.width, H = r.height;
+        if (d.includes("e")) W = Math.max(mw, r.width + dx);
+        if (d.includes("s")) H = Math.max(mh, r.height + dy);
+        if (d.includes("w")) { W = Math.max(mw, r.width - dx); L = r.right - W; }
+        if (d.includes("n")) { H = Math.max(mh, r.height - dy); T = r.bottom - H; }
+        Object.assign(el.style, { left: L + "px", top: T + "px", width: W + "px", height: H + "px" });
+      };
+      const up = () => { window.removeEventListener("pointermove", mv); window.removeEventListener("pointerup", up); };
+      window.addEventListener("pointermove", mv); window.addEventListener("pointerup", up);
+    });
+  });
+}
 function wireDet() {
   const el = $("#det");
+  makeResizable(el, () => { DET.sized = true; DET.moved = true; });
   el.addEventListener("pointerdown", (e) => {
     const r = el.getBoundingClientRect();
-    if (e.clientX > r.right - 22 && e.clientY > r.bottom - 22) { el.style.height = r.height + "px"; el.style.maxHeight = "calc(100vh - 16px)"; DET.sized = true; DET.moved = true; return; }
-    if (e.target.closest("a,button,input,select,summary,li,p,td,th") || e.clientY > r.top + 56 || e.clientX > r.right - 16) return;
+    if (e.target.closest("a,button,input,select,summary,li,p,td,th,.wr,.rz") || e.clientY > r.top + 56) return;
     const dx = e.clientX - r.left, dy = e.clientY - r.top; DET.moved = true; e.preventDefault();
     const mv = (m) => { el.style.left = Math.max(0, Math.min(innerWidth - 80, m.clientX - dx)) + "px"; el.style.top = Math.max(0, Math.min(innerHeight - 40, m.clientY - dy)) + "px"; };
     const up = () => { window.removeEventListener("pointermove", mv); window.removeEventListener("pointerup", up); };
@@ -653,17 +709,34 @@ function wireDet() {
   });
 }
 setTimeout(wireDet, 0);
+function patPointBox(name) {
+  tip(null); S.sel = null; const pt = layer().pat, ls = (pt.links || []).filter((k) => k.from === name || k.to === name);
+  const i = NET.nodes.findIndex((x) => x.name === name);
+  $("#detBody").innerHTML = '<div class="hp-k">' + esc(pt.title) + '</div><h3>' + esc(name) + '</h3><div class="hp-h hp-rel">Its connections in this pattern</div><ul class="says">' + ls.map((k) => '<li>' + esc(k.from) + ' → ' + esc(k.to) + (k.label ? ': ' + esc(k.label) : '') + (k.years ? ' <span class="note">' + esc(k.years) + '</span>' : '') + '</li>').join("") + '</ul>' + (i >= 0 ? '<p><a href="#" class="ent" data-n="' + i + '">See everything tied to ' + esc(name) + ' on the map</a></p>' : '') + '<p class="note">The full text of this pattern is open under its row in the box at right.</p>';
+  openDet(); wireEnt();
+}
 function stackBox(ids) {
   tip(null); S.sel = null;
   const rows = ids.slice().sort((a, b) => NET.nodes[a].name.localeCompare(NET.nodes[b].name));
   $("#detBody").innerHTML = '<div class="hp-k">Parties at this spot</div><h3>' + rows.length + ' parties</h3><p class="note">Pick one to see its ties.</p><ul class="says">' + rows.map((n) => '<li><a href="#" class="ent" data-n="' + n + '">' + esc(NET.nodes[n].name) + '</a>' + (NET.nodes[n].city ? ' <span class="note">' + esc(NET.nodes[n].city) + '</span>' : '') + '</li>').join("") + '</ul>';
   openDet(); wireEnt();
 }
-function wireEnt() { $("#detBody").querySelectorAll(".ent").forEach((a) => { if (a.dataset.w) return; a.dataset.w = "1"; a.addEventListener("click", (e) => { e.preventDefault(); if (!S.net) showAllTies(); selectEntity(+a.dataset.n); }); }); }
+function wireEnt() { $("#detBody").querySelectorAll(".ent").forEach((a) => { if (a.dataset.w) return; a.dataset.w = "1"; a.addEventListener("click", (e) => { e.preventDefault(); selectEntity(+a.dataset.n); }); }); }
+function drawSel() {
+  const s = map.getSource("sel-node"); if (!s) return;
+  const nd = S.ent != null ? NET.nodes[S.ent] : null;
+  s.setData({ type: "FeatureCollection", features: nd && nd.ll ? [{ type: "Feature", properties: {}, geometry: { type: "Point", coordinates: nd.ll } }] : [] });
+}
 function selectEntity(n) {
-  tip(null); S.ent = n; S.sel = null; entityBox(n); openDet(); $("#det").scrollTop = 0;
+  // if its ties aren't on the map yet, turn them on: what is opened must be shown
+  S.netMin = S.netMin || 1;
+  if (!S.net || !netVis().vis.has(n)) {
+    const rels = new Set(S.net ? S.netRel : []); linksOfNode(n).forEach((l) => rels.add(l.rel));
+    S.netRel = rels; S.netMin = 1; S.netCb = ""; NETVIS = null; setNet(true); clearCache(); S.layer = netColorLayer(); syncSelect(); markSide(); drawLegend();
+  }
+  tip(null); S.ent = n; S.sel = null; entityBox(n); drawSel(); openDet(); $("#detBody").scrollTop = 0;
   paint(); drawList(); drawCharts();
-  const nd = NET.nodes[n]; if (nd.ll) { const r = $("#det").getBoundingClientRect(), H = map.getContainer().clientHeight, fb = freeBox(); map.easeTo({ center: nd.ll, padding: { left: fb.L, right: fb.R, top: 10, bottom: Math.max(0, Math.min(H - 120, H - r.top + 10)) }, duration: 700 }); }
+  const nd = NET.nodes[n]; if (nd.ll) { if (map.getZoom() < 2) map.setZoom(2); const r = $("#det").getBoundingClientRect(), H = map.getContainer().clientHeight, fb = freeBox(); map.easeTo({ center: nd.ll, padding: { left: fb.L, right: fb.R, top: 10, bottom: Math.max(0, Math.min(H - 120, H - r.top + 10)) }, duration: 700 }); }
 }
 function countryNet(k) {
   const ls = linksOfCountry(k); if (!ls.length && k !== "USA") return "";
@@ -685,8 +758,8 @@ function drawNetWin(w) {
   w.body.innerHTML = '<div style="padding:10px 14px"><p class="mean" style="margin:0 0 8px">' + rows.length + ' parties tied to central banks. ' + multi.length + ' are tied to more than one central bank; ' + mixed.length + ' are tied in more than one way (for example owning shares and also employing former officials). Sorted by how many central banks each is tied to. Click a row to see its ties on the map.</p>' +
     '<table class="all"><colgroup><col style="width:26%"><col style="width:12%"><col style="width:7%">' + REL.map(() => '<col>').join("") + '</colgroup><thead><tr><th>Party</th><th>Based in</th><th>Central banks</th>' + REL.map((r) => '<th title="' + esc(r[1]) + '"><span class="sw" style="display:inline-block;background:' + RELC(r[0]) + '"></span> ' + esc(r[1].split(/[,:]/)[0]) + '</th>').join("") + '</tr></thead><tbody>' +
     rows.map((r) => '<tr class="r' + (S.ent === r.n ? " sel" : "") + '" data-n="' + r.n + '"><td style="white-space:normal;min-width:180px;max-width:340px">' + esc(r.nd.name) + '</td><td style="white-space:normal">' + esc(P[r.nd.iso3] ? P[r.nd.iso3].n : (r.nd.iso3 || "")) + '</td><td>' + r.cbs + '</td>' + REL.map((x) => { const c = r.ls.filter((l) => l.rel === x[0]).length; return '<td>' + (c || '<span class="mute">–</span>') + '</td>'; }).join("") + '</tr>').join("") + '</tbody></table></div>';
-  w.body.querySelectorAll("tr.r").forEach((tr) => tr.addEventListener("click", () => { if (!S.net) showAllTies(); selectEntity(+tr.dataset.n); }));
-  w.foot.textContent = "Counts only the kinds ticked under 'Who central banks answer to' (all kinds when none are ticked). Ties come from the sources linked in each party's box.";
+  w.body.querySelectorAll("tr.r").forEach((tr) => tr.addEventListener("click", () => selectEntity(+tr.dataset.n)));
+  w.foot.textContent = "Counts only the kinds ticked under 'Who owns, pays and pressures central banks' (all kinds when none are ticked). Ties come from the sources linked in each party's box.";
 }
 
 /* ---------- paint ---------- */
@@ -712,7 +785,7 @@ function paint() {
 
 /* ---------- the key ---------- */
 /* ---------- the box at right: who each bank answers to, and the patterns behind the scenes ---------- */
-const SIDE_GROUPS = ["Who central banks answer to", "Patterns behind the scenes"];
+const SIDE_GROUPS = ["Who owns, pays and pressures central banks", "Patterns behind the scenes"];
 const sideLayer = (id) => { const l = L.find((x) => x.id === id); return !!l && SIDE_GROUPS.includes(l.group); };
 const ALLREL = () => new Set(REL.map((r) => r[0]));
 const REL_SHORT = { own: "Who owns it: shareholders and governance seats", corrupt: "Paid, bribed, or got money, favors or leaks from it", people: "Shares its people: revolving door, board seats, forum members", inst: "Belongs to the same institutions: BIS, Financial Stability Board", control: "Pressured, fired, prosecuted or froze its money", service: "Other ties: named in a case, prints its money, audits or manages funds", account: "Investigated, charged or tried its officials" };
@@ -742,11 +815,11 @@ const relSw = (kind) => '<span class="sw ' + (RELDASH[kind] ? 'dash" style="bord
 function sideKey() {
   if (!S.netRel.size) return '<p class="note" style="margin:4px 0 2px">Nothing ticked: no parties are drawn.</p>';
   const l = L.find((x) => x.id === S.layer), own = S.layer === "own";
-  let h = '<div class="skey"><div class="psec" style="margin-top:2px">What the map shows</div>';
+  let h = '<div class="skey">';
   if (own) h += '<p class="ldesc"><b>Countries</b> are colored by the type of owners their central bank has (key at left).</p>';
   else { const d = dom(l), r = ramp(); h += '<p class="ldesc"><b>Countries</b> are shaded by how many ties of the ticked kinds their central bank has: from ' + fmt(d[0], 0) + ' (dark) to ' + fmt(d[1], 0) + ' (light). Dark grey: none found.</p><div class="ramp">' + r.map((c) => '<span style="background:' + c + '"></span>').join("") + '</div>'; }
   h += '<p class="ldesc" style="margin-top:6px"><b>Diamonds</b> are the outside parties at their head offices, colored by their main kind of tie; larger ones are tied to more central banks. Each stays on its spot at every zoom. Parties in one city sit a few kilometers apart, so zoom in to separate them, or click a stack to pick from a list.</p>';
-  h += '<p class="ldesc"><b>Lines</b> join each party to each central bank it is tied to, one line per pair, colored by the main kind of tie between them. Point at a diamond or line to light up its ties; click for what they mean.</p></div>';
+  h += '<p class="ldesc"><b>Lines</b> join each party to each central bank it is tied to, one line per pair, colored by the main kind of tie between them. Point at a diamond to light up its ties, and at a country to light up where its lines go. Click for what they mean.</p></div>';
   return h;
 }
 function buildSide() {
@@ -755,14 +828,14 @@ function buildSide() {
   const ans = '<p class="ldesc">The outside people, companies, governments and bodies that central banks have answered to or dealt with: their shareholders, those who bribed them or were paid by them, firms that hired their officials, governments that pressured them or froze their money, and others. Tick one or more kinds of tie. The countries are colored by them and the parties and ties are drawn on the map. A tie is not by itself an accusation.</p>' +
     '<div id="sideKey">' + sideKey() + '</div>' +
     '<div class="sbtns" style="margin-top:8px"><button type="button" class="btn" data-k="all">Tick all</button><button type="button" class="btn" data-k="none">Clear</button></div>' +
+    REL.map((r) => '<label class="srow' + (S.netRel.has(r[0]) ? ' on' : '') + '" title="' + esc(REL_DESC[r[0]]) + '"><input type="checkbox" data-kind="' + r[0] + '"' + (S.netRel.has(r[0]) ? ' checked' : '') + '>' + relSw(r[0]) + '<span>' + esc(REL_SHORT[r[0]]) + '</span><span class="n">' + (counts[r[0]] || 0) + '</span></label>').join("") +
     '<div class="psec">Filter by connections with central banks</div>' +
     '<label class="flt"><span>Tied to at least <b id="netMinV">' + S.netMin + '</b> central bank<span id="netMinS">' + (S.netMin === 1 ? '' : 's') + '</span></span><input type="range" id="netMin" min="1" max="1" step="1" value="' + S.netMin + '"></label>' +
     '<label class="flt"><span>Tied to this central bank</span><select id="netCb"><option value="">Any central bank</option>' + cbChoices() + '</select></label>' +
-    '<p class="note" id="netCnt" style="margin:4px 0 8px"></p>' +
-    REL.map((r) => '<label class="srow' + (S.netRel.has(r[0]) ? ' on' : '') + '" title="' + esc(REL_DESC[r[0]]) + '"><input type="checkbox" data-kind="' + r[0] + '"' + (S.netRel.has(r[0]) ? ' checked' : '') + '>' + relSw(r[0]) + '<span>' + esc(REL_SHORT[r[0]]) + '</span><span class="n">' + (counts[r[0]] || 0) + '</span></label>').join("");
+    '<p class="note" id="netCnt" style="margin:4px 0 8px"></p>';
   const pats = '<p class="ldesc">Pick one to color the countries by their role in it and draw its connections. What it shows opens under its row. Click it again to close it and turn it off.</p>' +
     L.filter((l) => l.group === "Patterns behind the scenes").map((l) => '<button type="button" class="srow' + (S.layer === l.id ? ' on' : '') + '" data-pat="' + l.id + '"><span class="sw" style="background:var(--accent-hi);opacity:.75"></span><span>' + esc(l.label) + '</span><span class="arr">' + (S.layer === l.id ? "▴" : "▾") + '</span></button>' + (S.layer === l.id ? '<div class="pdrop"><p class="ldesc">' + esc(l.desc) + '</p>' + patExtra(l.pat) + '</div>' : '')).join("");
-  const body = { "Who central banks answer to": ans, "Patterns behind the scenes": pats };
+  const body = { "Who owns, pays and pressures central banks": ans, "Patterns behind the scenes": pats };
   $("#sideBody").innerHTML = SIDE_GROUPS.map((g) => '<div class="sgrp' + (open(g) ? '' : ' min') + '" data-g="' + esc(g) + '"><button type="button" class="shead" aria-expanded="' + open(g) + '">' + esc(g) + '<span class="arr">' + (open(g) ? "▴" : "▾") + '</span></button><div class="sbody">' + body[g] + '</div></div>').join("");
   $("#sideBody").querySelectorAll(".shead").forEach((b) => b.addEventListener("click", () => { const g = b.parentNode.dataset.g; S.sideOpen[g] = !S.sideOpen[g]; buildSide(); }));
   $("#sideBody").querySelectorAll("[data-kind]").forEach((c) => c.addEventListener("change", () => toggleKind(c.dataset.kind)));
@@ -801,9 +874,9 @@ function indexItems() {
   L.forEach((l) => { if (l.group === "Patterns behind the scenes") o.push({ n: l.label, t: "Pattern", s: l.desc, go: () => openPattern(l.id) }); else if (l.id !== "tiesSel" && !SIDE_GROUPS.includes(l.group)) o.push({ n: l.label.trim(), t: "Map color", s: l.desc, go: () => { S.layer = S.mainLayer = l.id; S.netRel = new Set(); setNet(false); clearCache(); syncSelect(); update(); } }); });
   CHARTS.forEach((c) => o.push({ n: c[1], t: "Chart", s: "", go: () => openWin(c[0]) }));
   ISOS.forEach((k) => { if (P[k].cb) o.push({ n: P[k].cb, t: "Central bank", s: P[k].n, sub: P[k].n, go: () => select(k, true) }); });
-  NET.nodes.forEach((nd, i) => { o.push({ n: nd.name, t: "Party", sub: [nd.city, P[nd.iso3] ? P[nd.iso3].n : ""].filter(Boolean).join(", "), s: nd.type || "", go: () => { if (!S.net) showAllTies(); setTimeout(() => selectEntity(i), 60); } }); });
+  NET.nodes.forEach((nd, i) => { o.push({ n: nd.name, t: "Party", sub: [nd.city, P[nd.iso3] ? P[nd.iso3].n : ""].filter(Boolean).join(", "), s: nd.type || "", go: () => selectEntity(i) }); });
   const seen = new Set();
-  const person = (rec, tag, k) => String(rec.people || "").replace(/\([^)]*\)/g, "").split(";").forEach((pc) => { const nm = pc.trim(); if (nm.length < 4 || nm.split(" ").length < 2 || /\b(staff|none|unnamed|named in|board|members|officials?|officer|manager|directors?)\b/i.test(nm)) return; const key = nm + "|" + k; if (seen.has(key)) return; seen.add(key); const pl = firstPlace(k); o.push({ n: nm, t: "Person", sub: tag + ", " + where(k), s: rec.summary, go: () => { if (pl) select(pl, true); } }); });
+  const person = (rec, tag, k) => String(rec.people || "").replace(/\([^)]*\)/g, "").split(";").forEach((pc) => { const nm = pc.trim(); if (nm.length < 4 || nm.split(" ").length < 2 || /\b(staff|none|unnamed|named in|board|members|officials?|officer|manager|directors?)\b/i.test(nm)) return; const key = nm + "|" + k; if (seen.has(key)) return; seen.add(key); const pl = firstPlace(k); o.push({ n: nm, t: "Person", sub: tag + ", " + where(k), s: rec.summary, go: () => { const j = NET.nodes.findIndex((x) => x.name === nm); if (j >= 0 && NET.nodes[j].ll) selectEntity(j); else if (pl) select(pl, true); } }); });
   D.CC.forEach((c) => { const pl = firstPlace(c.iso3); o.push({ n: c.central_bank + ": " + c.category + ", " + c.years, t: "Case", sub: c.status, s: c.summary + " " + c.people, go: () => { if (pl) select(pl, true); } }); person(c, "case", c.iso3); });
   D.RD.forEach((c) => person(c, "career move", c.iso3));
   D.EV.forEach((e) => { const pl = firstPlace(e.iso3); o.push({ n: where(e.iso3) + ": " + e.kind + ", " + e.date, t: "Event", s: e.summary, go: () => { if (pl) select(pl, true); } }); });
@@ -863,7 +936,7 @@ const KEYINFO = {
   own: { listed: "Private investors hold shares in the central bank, and those shares trade on a stock exchange.", private: "Private banks or people hold shares in the central bank, but the shares do not trade on an exchange.", mixed: "The statute or annual report names shareholders other than the state. The box gives the terms.", __other: "Every owner found is the state. No private shareholder was found in the bank's statute or reports." },
   arr: { union: "Several countries share one central bank and one currency.", guarantee: "A foreign treasury promises that the currency can be converted at a set rate, under an agreement.", foreign: "The country uses another country's currency as its own money.", board: "By law, money issued must be backed by a foreign currency at a fixed rate, which leaves the bank little room to set policy.", __other: "The country has its own currency and its own central bank." },
   reg: { 1: "The currency is fixed to another, or run by a currency board, or the country has no currency of its own.", 2: "The rate moves slowly along a set path, or stays in a band of up to 2%.", 3: "The rate moves in a wider band, or the central bank steers a float by buying and selling.", 4: "The market sets the rate, with little central bank action.", __other: "Inflation above 40% a year makes the rate fall freely, or an official rate and a street rate exist side by side, so the regime cannot be placed." },
-  anc: { USD: "The exchange rate is held to, or measured against, the US dollar.", EUR: "The exchange rate is held to, or measured against, the euro.", one: "The exchange rate is held to, or measured against, one other currency: the rand, rupee, Australian or Singapore dollar, renminbi or Swiss franc.", two: "The exchange rate is measured against two currencies or a basket.", __other: "No anchor currency was found, or the currency is an anchor itself." } };
+  anc: { USD: "The exchange rate is held to, or measured against, the US dollar.", EUR: "The exchange rate is held to, or measured against, the euro.", one: "The exchange rate is held to, or measured against, one other currency, such as the rand, rupee, Australian or Singapore dollar, renminbi or Swiss franc.", two: "The exchange rate is measured against two currencies or a basket.", __other: "The source lists no anchor for this currency. For Russia and 19 others it prints n.a. These countries have no anchor line, though others may anchor to them." } };
 function infoOf(l, c) {
   if (l.pat) return c[0] === "__other" ? "In this pattern, in a role other than the ones named above. Its box says which." : ((l.pat.role_info || {})[c[0]] || "");
   return (KEYINFO[l.id] || {})[c[0]] || "";
@@ -951,6 +1024,7 @@ function rankOf0(id, k) {
 function detail(k) {
   const p = P[k], u = uni(p), A = D.ARR, h = [];
   h.push('<div class="hp-k">' + esc(p.cb || "Central bank") + '</div><h3>' + esc(p.n) + '</h3>');
+  if (D.WR && D.WR["p:" + k]) h.push('<div class="wr">' + esc(D.WR["p:" + k]) + '</div>');
   const cu = (p.cur || []).map((c) => esc(c) + (CUR[c] ? " (" + esc(CUR[c].name) + ")" : "")).join(", ");
   h.push('<p class="hp-sub">' + (cu ? "Currency: " + cu : "No currency listed") + (u ? '<br>Monetary policy set by ' + esc(CB_NAMES[p.u]) + ' for ' + (D.UM[p.u] || []).length + ' members (outlined).' : '') + '</p>');
   const as = allScore(p), G = groups(p);
@@ -1043,10 +1117,10 @@ function detail(k) {
   h.push(countryNet(k));
   h.push('<div class="hp-src">Sources are listed under About and sources. Figures are as each source publishes them; nothing has been dropped or adjusted.</div>');
   $("#detBody").innerHTML = h.join("");
-  $("#detBody").querySelectorAll("a.ent").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); if (!S.net) showAllTies(); selectEntity(+a.dataset.n); }));
+  $("#detBody").querySelectorAll("a.ent").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); selectEntity(+a.dataset.n); }));
 }
 function select(k, fly) {
-  S.ent = null; S.sel = k; detail(k); openDet(); $("#det").scrollTop = 0;
+  S.ent = null; S.sel = k; drawSel(); detail(k); openDet(); $("#detBody").scrollTop = 0;
   paint(); drawList(); drawCharts();
   const pi = $('#plist .pi[data-k="' + k + '"]'); if (pi && fly) { const pl = $("#plist"); pl.scrollTop = pi.offsetTop - pl.offsetTop - pl.clientHeight / 2; }
   // the box sits in the middle of the map, so the country is moved into the open space above it
@@ -1055,7 +1129,7 @@ function select(k, fly) {
     if (fly) map.flyTo({ center: P[k].pt, zoom: Math.max(map.getZoom(), proj === "globe" ? 2.4 : 3), padding, duration: 1000 });
     else map.easeTo({ center: P[k].pt, padding, duration: 700 }); }
 }
-function deselect() { S.sel = null; S.ent = null; $("#det").classList.remove("open"); paint(); drawList(); drawCharts(); }
+function deselect() { S.sel = null; S.ent = null; $("#det").classList.remove("open"); drawSel(); paint(); drawList(); drawCharts(); map.easeTo({ padding: homePadding(), duration: 500 }); }
 
 /* ---------- chart windows ---------- */
 const CHARTS = [["table", "Every place"], ["reach", "Reach compared"], ["time", "Independence in law, 1970–2023"], ["net", "Networks"]];
@@ -1068,7 +1142,7 @@ function openWin(id) {
   const def = CHARTS.find((c) => c[0] === id), el = document.createElement("div");
   el.className = "win card";
   el.innerHTML = '<div class="wh"><span class="wt">' + esc(def[1]) + '</span><button type="button" class="wm" title="Fill the screen">⤢</button><button type="button" class="wx" title="Close">×</button></div><div class="wb scroll"></div><div class="wfoot"></div>';
-  document.body.appendChild(el);
+  document.body.appendChild(el); makeResizable(el);
   // every chart window opens in the middle of the screen
   const small = innerWidth < 760, W = small ? innerWidth - 16 : Math.min(id === "table" || id === "net" ? 1400 : 1000, innerWidth - 40), H = small ? Math.min(560, innerHeight - 70) : Math.min(id === "table" || id === "net" ? 760 : 660, innerHeight - 60);
   Object.assign(el.style, { width: W + "px", height: H + "px", left: Math.max(8, (innerWidth - W) / 2) + "px", top: Math.max(8, (innerHeight - H) / 2) + "px", zIndex: ++zTop });
@@ -1183,6 +1257,7 @@ function init() {
   fetch(BOUND_URL).then((r) => r.json()).then((geo) => { addLayers(geo); ready = true; update(); }).catch((e) => { console.warn("boundaries", e); });
   $("#detX").addEventListener("click", deselect);
   $("#worldBtn").addEventListener("click", wholeWorld);
+  $("#centerBtn").addEventListener("click", recenter);
   $("#zIn").addEventListener("click", () => map.zoomIn({ duration: 300 }));
   $("#zOut").addEventListener("click", () => map.zoomOut({ duration: 300 }));
   $("#toggleKey").addEventListener("click", () => { const p = $("#key"); p.classList.toggle("min"); $("#toggleKey").textContent = p.classList.contains("min") ? "+" : "−"; });

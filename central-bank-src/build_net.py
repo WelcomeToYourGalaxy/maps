@@ -107,6 +107,7 @@ for l in parties:
     n = node(l["party"], l.get("party_type"), l.get("hq_city"), l.get("hq_iso3"), l.get("parent"))
     detail = r.get("summary") or r.get("move") or ""
     if l["record_type"] == "revolving_door" and r.get("people"): detail = (r.get("people") or "") + ": " + (r.get("move") or "")
+    if l["record_type"] == "revolving_door" and r.get("summary") and l["party"].lower() not in detail.lower() and (l.get("name_as_stated") or l["party"]).lower() not in detail.lower(): detail += ". " + r["summary"]
     rel = REL.get(l["role"], "service")
     pt = (l.get("party_type") or "").lower(); nm = l["party"].lower()
     # courts, prosecutors, inspectors and inquiries holding officials to account are kept apart from political pressure

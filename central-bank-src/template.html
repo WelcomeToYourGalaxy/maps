@@ -24,7 +24,7 @@ input[type=checkbox],input[type=radio],input[type=range]{accent-color:var(--acce
 select,button.btn{background:rgba(255,255,255,.05);color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:3px 8px;font:inherit;font-size:12.5px;cursor:pointer}
 select option,select optgroup{background:#14161c;color:var(--ink)}
 button.btn.on{border-color:var(--accent-hi);background:var(--accent);color:#fff}
-button.btn:hover,#infoBtn:hover,#worldBtn:hover{border-color:var(--accent-hi);color:#fff}
+button.btn:hover,#infoBtn:hover,#worldBtn:hover,#centerBtn:hover{border-color:var(--accent-hi);color:#fff}
 #layer{width:100%;font-size:13px;padding:5px 6px;margin:2px 0 4px}
 .ldesc{font-size:12.3px;color:#d6d3df;margin:4px 0 6px}
 .lsrc{font-size:11.2px;color:var(--mute)}
@@ -87,7 +87,7 @@ ul.says li{margin:0 0 6px}
 #key{resize:both}
 #side{resize:vertical}
 .flt{display:block;font-size:12.4px;margin:4px 0 6px;color:var(--ink)}
-.flt span{display:block}
+.flt>span{display:block}
 .flt input[type=range],.flt select{width:100%;margin-top:3px;box-sizing:border-box}
 .flt select{background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:3px;font:inherit;font-size:12px}
 .flt select option{background:#111322}
@@ -113,8 +113,15 @@ label.srow input{margin:0;flex:none}
 .tab{text-align:left;background:rgba(255,255,255,.03);border:1px solid var(--line);color:var(--mute);font:inherit;font-size:12.3px;padding:3px 8px;border-radius:4px;cursor:pointer;line-height:1.25}
 .tab:hover{color:var(--ink)}
 .tab.on{color:#f0ece4;border-color:var(--accent-hi);background:rgba(255,255,255,.08)}
-#det{display:none;position:fixed;z-index:950;left:50%;top:40%;resize:both;min-width:260px;min-height:120px;width:min(440px,calc(100vw - 24px));max-height:min(58vh,620px);overflow:auto;padding:13px 15px;box-sizing:border-box;background:rgba(8,9,24,.97)}
-#det.open{display:block}
+#det{display:none;flex-direction:column;position:fixed;z-index:950;left:50%;top:40%;min-width:260px;min-height:120px;width:min(440px,calc(100vw - 24px));max-height:min(58vh,620px);overflow:hidden;padding:0;box-sizing:border-box;background:rgba(8,9,24,.97)}
+#det.open{display:flex}
+#detBody{flex:1 1 auto;min-height:0;overflow:auto;padding:13px 15px}
+.rz{position:absolute;display:block;z-index:5;touch-action:none}
+.rz-n{top:0;left:12px;right:12px;height:6px;cursor:ns-resize}.rz-s{bottom:0;left:12px;right:12px;height:6px;cursor:ns-resize}
+.rz-e{right:0;top:12px;bottom:12px;width:6px;cursor:ew-resize}.rz-w{left:0;top:12px;bottom:12px;width:6px;cursor:ew-resize}
+.rz-nw{left:0;top:0;width:12px;height:12px;cursor:nwse-resize}.rz-ne{right:0;top:0;width:12px;height:12px;cursor:nesw-resize}
+.rz-sw{left:0;bottom:0;width:12px;height:12px;cursor:nesw-resize}.rz-se{right:0;bottom:0;width:16px;height:16px;cursor:nwse-resize;background:linear-gradient(135deg,transparent 55%,rgba(255,255,255,.4) 55%,rgba(255,255,255,.4) 62%,transparent 62%,transparent 72%,rgba(255,255,255,.4) 72%,rgba(255,255,255,.4) 79%,transparent 79%)}
+.wr{font-size:13.6px;line-height:1.5;color:var(--ink);margin:8px 0 12px;padding:0 0 10px;border-bottom:1px solid var(--line2)}
 #detX{position:absolute;top:6px;right:8px;background:none;border:0;color:#bbb;font-size:20px;cursor:pointer;line-height:1}
 #detX:hover{color:#fff}
 
@@ -140,7 +147,7 @@ label.srow input{margin:0;flex:none}
 .hp-src{color:var(--mute);font-size:11.2px;margin-top:12px;border-top:1px solid var(--line2);padding-top:6px}
 .hp-src a{word-break:break-word}
 
-.win{position:fixed;z-index:900;display:flex;flex-direction:column;resize:both;overflow:hidden;min-width:300px;min-height:200px;background:rgba(8,9,22,.97);box-shadow:0 18px 50px rgba(0,0,0,.65)}
+.win{position:fixed;z-index:900;display:flex;flex-direction:column;overflow:hidden;min-width:300px;min-height:200px;background:rgba(8,9,22,.97);box-shadow:0 18px 50px rgba(0,0,0,.65)}
 .wh{display:flex;align-items:center;gap:8px;padding:7px 8px 7px 13px;border-bottom:1px solid var(--line2);cursor:move;user-select:none;flex:none;touch-action:none}
 .wt{font:400 14px/1.2 'Uncial Antiqua','Marcellus','Georgia',serif;color:#f0ece4;letter-spacing:.3px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .wx,.wm{background:none;border:0;color:#bbb;font-size:18px;line-height:1;cursor:pointer;padding:0 4px}
@@ -173,7 +180,9 @@ table.all tr.sel td{background:rgba(255,255,255,.09)}
 
 #topbar{display:flex;gap:6px;justify-content:flex-end;align-items:stretch;flex:none}
 #topbar #infoBtn{position:relative;align-self:auto}
-#worldBtn,.zbtn{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:6px 11px;font:13px 'Marcellus','Georgia',serif;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.4);backdrop-filter:blur(6px)}
+#topbar button,#topbar #infoBtn{white-space:nowrap;padding:6px 7px;font-size:12.5px;display:flex;align-items:center}
+#topbar .zbtn{padding:6px 9px}
+#centerBtn,#worldBtn,.zbtn{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:6px 11px;font:13px 'Marcellus','Georgia',serif;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.4);backdrop-filter:blur(6px)}
 .zbtn{width:34px;padding:0;font-size:17px;line-height:1}
 .zbtn:hover{border-color:var(--accent-hi);color:#fff}
 #info{inset:0;z-index:1001;border-radius:0;border:0;display:none;overflow:auto;padding:60px max(28px,calc((100% - 1000px)/2)) 40px;background:rgba(5,6,16,.975)}
@@ -214,7 +223,7 @@ a{color:var(--accent-hi)}
 </div>
 
 <div id="rcol">
-  <div id="topbar"><button id="worldBtn" type="button" title="Zoom back out to the whole world">Whole world</button><button id="zIn" class="zbtn" type="button" title="Zoom in" aria-label="Zoom in">+</button><button id="zOut" class="zbtn" type="button" title="Zoom out" aria-label="Zoom out">−</button><div id="infoBtn" class="card" role="button" tabindex="0">About and sources</div></div>
+  <div id="topbar"><button id="worldBtn" type="button" title="Zoom back out to the whole world">Whole world</button><button id="centerBtn" type="button" title="Move the globe back to the middle of the screen, at this zoom">Recenter</button><button id="zIn" class="zbtn" type="button" title="Zoom in" aria-label="Zoom in">+</button><button id="zOut" class="zbtn" type="button" title="Zoom out" aria-label="Zoom out">−</button><div id="infoBtn" class="card" role="button" tabindex="0">About &amp; sources</div></div>
   <div id="tr" class="card"><button id="toggleTr" class="tog" type="button" title="Pull the basemap box up or down">−</button><div class="body" id="trBody"></div></div>
   <div id="dock" class="card"><div class="psec" style="margin-top:0">Charts</div><div id="dockBtns"></div></div>
   <div id="side" class="card scroll"><div id="sideBody"></div></div>

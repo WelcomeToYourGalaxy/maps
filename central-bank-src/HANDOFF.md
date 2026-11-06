@@ -29,7 +29,7 @@ cp dist/central_bank_independence.html ~/maps/   # then git add, commit, push to
 - **Layers:** `seq()` / `cat()` in `app.js` push objects onto `L` (`id, group, label, get(p,y), desc, src`). Values are cached; call `clearCache()` after changing what a layer depends on.
 - **Top-left dropdown:** the compilation layers (the default is "Ulterior influence, all around"), corruption, independence, reach, "Whose money it is" and the exchange-rate regime.
 - **Bottom-right box** (`SIDE_GROUPS`) has two sections:
-  - **"Who central banks answer to":** multi-select checkboxes for 7 kinds of tie (`REL`: own, corrupt, people, inst, control, service, account) plus a "What the map shows now" key.
+  - **"Who owns, pays and pressures central banks":** multi-select checkboxes for 7 kinds of tie (`REL`: own, corrupt, people, inst, control, service, account) plus the "Filter by connections with central banks" block under the rows and a key with no title.
   - **"Patterns behind the scenes":** 17 patterns from `agents/patterns.json`. They explain the pattern as the field describes it, from studies and inquiries; the map's records are a sample of it, and the writeup must not count or describe them. "What this means" comes from `agents/implications.json` or the pattern's own `implications`. Each opens as a dropdown under its row. `agents/role_info.json`, or a pattern's own `role_info`, holds the info text for each key row.
 - **Network** (`build_net.py` → `out/net.json`):
   - Nodes are parties placed at their true head office, using `agents/hq.json` and GeoNames.
@@ -93,3 +93,14 @@ Next steps, in order:
 3. Governor dismissals: open `round3.events_leads` in the research log.
 4. Auditors and printers: `round2.service_not_found` and `round3.service_not_found` list banks tried.
 5. Swap lines: `round2.swap_leads` were opened; look for new sources. Status `unknown` lines are listed in boxes, not drawn.
+
+## Added in the latest round
+- **Writeups:** `agents/writeups.json` holds a plain-language paragraph for every country box (`p:ISO`) and every party box (`n:<node name>`), injected as `D.WR` and shown at the top of the box (`.wr`). They were written from each box's records and checked by script for numbers and outcomes, not re-checked against web sources. **When a record changes or a party is added, refresh that entry by hand.** A country or party with no entry just shows the lists.
+- **Hover:** only diamonds light their ties; lines take no hover or click. `hoverCountry(k)` lights a country's lines (`LK`, `lk()`) and the countries at the far ends (source `hov-ctry`, layer `c-hovto`).
+- **Anchors:** `anchorsOf` reads multi-currency anchors, so Belarus (0.2 EUR + 0.5 RUB + 0.3 USD) draws to Moscow. Ilzetzki-Reinhart-Rogoff give "n.a." for Russia and 19 others, which is why they have no outgoing line.
+- **Recenter:** `#centerBtn` runs `recenter()`; `homePadding()` removes the padding a box adds.
+- **Pattern points:** `pat-end` features carry a name, `under()` returns `{pat}`, `patPointBox(name)` opens the box.
+- **Index:** `selectEntity` turns ties on if the party is hidden and draws a ring (`drawSel`, source `sel-node`, layer `sel-ring`).
+- **Resize:** `makeResizable(el, onStart)` adds 8 handles (`.rz-*`) to `#det` and `.win`. `#det` no longer scrolls; `#detBody` does.
+- **Small places:** `build_final.py` adds real outlines from `ne10` (`D.XSHAPE`) for places missing from the boundaries file: Monaco, Tuvalu, Nauru.
+- **Career-move boxes:** in `build_net.py`, when the move line doesn't name the party, the box also shows the record's summary.
