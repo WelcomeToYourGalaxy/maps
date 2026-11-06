@@ -964,7 +964,7 @@
    "recognition": "United Provinces of the Río de la Plata in 1825; independence settled by the Preliminary Peace Convention of 1828",
    "cost": "Backed by Buenos Aires ranchers and beef-curers, with Juan Manuel de Rosas a key financier",
    "mechanism": "A small party landed by boat, raised the countryside, formed an assembly, and pulled a neighbouring state and then a mediator into the dispute.",
-   "story": "Brazil annexed the Oriental Province, today's Uruguay, in February 1824. Lavalleja organised an expedition from Buenos Aires, paid for in part by ranchers and meat-curers who saw Brazilian rule as a threat to their business. The group crossed the Uruguay River and landed at Agraciada Beach at dawn on 19 April 1825. It raised rural support, and on 25 August an assembly declared independence from Brazil and allegiance to the United Provinces.\nBrazil declared war in December. After British mediation, the Preliminary Peace Convention of August 1828 set up a state independent of both. It is one of the few private landings here that ended in a lasting state, though only with neighbouring states in the war.",
+   "story": "Brazil annexed the Oriental Province, today's Uruguay, in February 1824. Lavalleja organised an expedition from Buenos Aires, paid for in part by ranchers and meat-curers who saw Brazilian rule as a threat to their business. The group crossed the Uruguay River and landed at Agraciada Beach at dawn on 19 April 1825. It raised rural support, and on 25 August an assembly declared independence from Brazil and allegiance to the United Provinces.\nBrazil declared war in December. After British mediation, the Preliminary Peace Convention of August 1828 set up a state independent of both. Modern Uruguay descends from that accord.",
    "lat": -33.75,
    "lon": -58.4,
    "loc": "approx",
@@ -1508,7 +1508,7 @@
    "currency": null,
    "passports": null,
    "laws": null,
-   "challenge": "Duke Walter V of Brienne, killed at Halmyros; the Pope and rival claimants objected",
+   "challenge": "Duke Walter V of Brienne, defeated at Halmyros; the Company refused to return the duchies to their heirs",
    "recognition": "Accepted the overlordship of the Aragonese crown of Sicily in 1312",
    "cost": null,
    "mechanism": "Unpaid mercenaries beat their employer in battle, took his duchy, and then secured themselves by accepting a distant king as overlord.",
@@ -1537,7 +1537,7 @@
    "kind": "attempt",
    "status": "absorbed",
    "start": 1450,
-   "end": 1535,
+   "end": null,
    "founder": "Francesco I Sforza, an Italian mercenary captain (condottiere)",
    "stopped_by": "Not stopped by force in his lifetime",
    "pop": null,
@@ -1549,7 +1549,7 @@
    "challenge": "Ambrosian Republic; formal title lagged for decades",
    "recognition": "City senate handed him the duchy; formal investiture by the Emperor came only for his son Ludovico in 1494",
    "cost": null,
-   "mechanism": "A hired general married the ruling family, blockaded the city that had declared a republic, and accepted its surrender as duke.",
+   "mechanism": "A hired general married into the ruling family, planned the conquest of the republic that replaced it, and took the title when the city senate entrusted him with the duchy.",
    "story": "Francesco Sforza was an Italian condottiere, a commander who sold his army's services by contract. He served the Papal States and Milan, and married Bianca Maria Visconti, daughter of the Duke of Milan. When the duke died without a male heir in 1447, Milan declared the Ambrosian Republic. Sforza gained other cities and planned its conquest. In 1450, after years of famine and riots, the senate entrusted the duchy to him, and he entered as duke on 26 February. Wikipedia calls him one of the few condottieri to turn battle success into stable dynastic rule. Formal imperial investiture came only in 1494, for his son.",
    "lat": 45.46,
    "lon": 9.19,
@@ -1586,7 +1586,7 @@
    "recognition": "Duke Sergius IV of Naples gave him Aversa; Emperor Conrad II recognised his title in 1037",
    "cost": null,
    "mechanism": "Exiled warriors sold their services to whichever local lord paid most until one paid in land and a title.",
-   "story": "Rainulf Drengot was exiled from Normandy and came to southern Italy with brothers and 250 fighters around 1017. Amatus of Montecassino, a chronicler, says they sold their services to whoever offered most and never let any Lombard lord win outright. In 1030 Duke Sergius IV of Naples gave Rainulf the stronghold of Aversa, the title of count, and his sister in marriage. Emperor Conrad II recognised the title in 1037. After beating the Byzantines in 1038, Rainulf declared himself prince and independent of Naples, and took a neighbouring principality. This was the start of Norman rule in southern Italy, according to the sequence given by the article.",
+   "story": "Rainulf Drengot was exiled from Normandy and came to southern Italy with brothers and 250 fighters around 1017. Amatus of Montecassino, a chronicler, says they sold their services to whoever offered most and never let any Lombard lord win outright. In 1030 Duke Sergius IV of Naples gave Rainulf the stronghold of Aversa, the title of count, and his sister in marriage. Emperor Conrad II recognised the title in 1037. After beating the Byzantines in 1038, Rainulf declared himself prince and independent of Naples, and took a neighbouring principality.",
    "lat": 40.97,
    "lon": 14.21,
    "loc": "approx",
@@ -1624,7 +1624,7 @@
    "recognition": null,
    "cost": null,
    "mechanism": "An exiled knight who fought for both Christian and Muslim rulers took a city with his own followers and ruled it himself.",
-   "story": "Rodrigo Díaz de Vivar, known as El Cid, was a Castilian knight exiled by King Alfonso VI in 1081. He found work with Muslim as well as Christian rulers and, at the head of his own knights, came to dominate the eastern Iberian coast. He ruled the Principality of Valencia from 17 June 1094 until his death in 1099. His wife, Jimena Díaz, inherited the city and held it until the Moors retook it in 1102.",
+   "story": "Rodrigo Díaz de Vivar, known as El Cid, was a Castilian knight sent into exile in 1081. He found work with Muslim as well as Christian rulers and, at the head of his own knights, came to dominate the eastern Iberian coast. He ruled the Principality of Valencia from 17 June 1094 until his death in 1099. His wife, Jimena Díaz, inherited the city and held it until the Moors retook it in 1102.",
    "lat": 39.47,
    "lon": -0.38,
    "loc": "approx",
@@ -1674,7 +1674,986 @@
    "cov_type": "Private conquest and filibusters",
    "held": false,
    "recd": false
+  },
+  {
+   "id": "neutrality-act-1794",
+   "name": "Neutrality Act of 1794",
+   "aka": [
+    "18 U.S.C. 960",
+    "Neutrality Act of 1818"
+   ],
+   "zid": "war-private-conquest",
+   "kind": "law",
+   "status": "operating",
+   "start": 1794,
+   "end": null,
+   "founder": "US Congress",
+   "stopped_by": "Replaced by the Neutrality Act of 1818; successor in force as 18 U.S.C. 960",
+   "pop": null,
+   "built": false,
+   "inhabited": false,
+   "currency": null,
+   "passports": null,
+   "laws": "Forbids beginning or preparing a military expedition from US territory against a state at peace with the US",
+   "challenge": null,
+   "recognition": null,
+   "cost": null,
+   "mechanism": "A US law making it a crime to prepare a military expedition from US soil against a country at peace with the US.",
+   "story": "The Neutrality Act of 1794 made it illegal for a US citizen to wage war against any country at peace with the United States, including to begin or prepare the means for a military expedition from US territory. It followed Citizen Genêt's recruiting of American privateers. Vice President John Adams broke a Senate tie to pass it. It was used in the trials of Aaron Burr and William S. Smith, among others. The 1817 Act extended it to unrecognised governments, with penalties up to three years and $3,000, and the 1818 Act replaced both. Its successor is 18 U.S.C. 960, which still applies, with a penalty of up to three years in prison.",
+   "lat": 38.9,
+   "lon": -77.04,
+   "loc": "approx",
+   "anchor": "Washington, DC (the law's seat; it applies across US territory)",
+   "sources": [
+    {
+     "t": "Neutrality Act of 1794 (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Neutrality_Act_of_1794"
+    },
+    {
+     "t": "18 U.S. Code 960: Expedition against friendly nation",
+     "u": "https://law.cornell.edu/uscode/text/18/960"
+    }
+   ],
+   "cov_type": "Private conquest and filibusters",
+   "held": false,
+   "recd": false
+  },
+  {
+   "id": "right-of-conquest",
+   "name": "Right of conquest",
+   "aka": [
+    "Conquest in international law"
+   ],
+   "zid": "war-between-states",
+   "kind": "law",
+   "status": "court-defeated",
+   "start": null,
+   "end": null,
+   "founder": null,
+   "stopped_by": "UN Charter and post-1945 practice",
+   "pop": null,
+   "built": false,
+   "inhabited": false,
+   "currency": null,
+   "passports": null,
+   "laws": null,
+   "challenge": null,
+   "recognition": null,
+   "cost": null,
+   "mechanism": "The older doctrine that taking land by force, followed by settled occupation, gave legal title to it.",
+   "story": "The right of conquest was a claimed right to own land taken by force. Until 1945 it worked through the law of war: military occupation, then a peace settlement or no reasonable chance that the defeated ruler would return. A treaty was not strictly required, and the loser's consent was not needed. It lost recognition during the 20th century, through the Kellogg-Briand Pact, the Nuremberg and Tokyo trials, the UN Charter and decolonisation. States using force now usually claim self-defence instead. Wikipedia notes debate over whether weak enforcement in the 21st century is bringing it back.",
+   "lat": 48.85,
+   "lon": 2.35,
+   "loc": "approx",
+   "anchor": "No fixed place; pin marks Paris, where the 1928 pact was signed",
+   "sources": [
+    {
+     "t": "Right of conquest (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Right_of_conquest"
+    }
+   ],
+   "cov_type": "Conquest and annexation by states",
+   "held": false,
+   "recd": false
+  },
+  {
+   "id": "kellogg-briand-pact",
+   "name": "Kellogg-Briand Pact",
+   "aka": [
+    "Pact of Paris",
+    "General Treaty for Renunciation of War"
+   ],
+   "zid": "war-between-states",
+   "kind": "law",
+   "status": "operating",
+   "start": 1928,
+   "end": null,
+   "founder": "Frank B. Kellogg and Aristide Briand",
+   "stopped_by": null,
+   "pop": null,
+   "built": false,
+   "inhabited": false,
+   "currency": null,
+   "passports": null,
+   "laws": null,
+   "challenge": null,
+   "recognition": "Signed by Germany, France and the US on 27 August 1928, and by most other states soon after",
+   "cost": null,
+   "mechanism": "A treaty in which states renounced war as a tool of national policy.",
+   "story": "The Kellogg-Briand Pact, or Pact of Paris, was signed on 27 August 1928. Its first article condemns war as a means of settling international disputes and renounces it as an instrument of national policy, and its second says disputes may be settled only by peaceful means. It has no enforcement mechanism and did not prevent the Second World War, and many historians call it ineffective. It remains in effect, and it served as the legal basis for the charge of crimes against peace at the Nuremberg and Tokyo tribunals. Similar provisions later went into the UN Charter.",
+   "lat": 48.86,
+   "lon": 2.31,
+   "loc": "approx",
+   "anchor": "Paris, France",
+   "sources": [
+    {
+     "t": "Kellogg–Briand Pact (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Kellogg%E2%80%93Briand_Pact"
+    },
+    {
+     "t": "Kellogg-Briand Pact text, Avalon Project",
+     "u": "https://avalon.law.yale.edu/20th_century/kbpact.asp"
+    }
+   ],
+   "cov_type": "Conquest and annexation by states",
+   "held": false,
+   "recd": true
+  },
+  {
+   "id": "stimson-doctrine",
+   "name": "Stimson Doctrine",
+   "aka": [
+    "Hoover-Stimson Doctrine",
+    "Non-recognition of conquest"
+   ],
+   "zid": "war-between-states",
+   "kind": "law",
+   "status": "operating",
+   "start": 1932,
+   "end": null,
+   "founder": "Henry L. Stimson, US Secretary of State",
+   "stopped_by": null,
+   "pop": null,
+   "built": false,
+   "inhabited": false,
+   "currency": null,
+   "passports": null,
+   "laws": null,
+   "challenge": "Japan, over Manchuria",
+   "recognition": null,
+   "cost": null,
+   "mechanism": "A US refusal to recognise territorial changes made by force, resting on the Kellogg-Briand Pact.",
+   "story": "After Japan seized Manchuria in 1931, US Secretary of State Stimson sent notes to Japan and China on 7 January 1932. They said the US would not recognise any situation, treaty or agreement brought about by means contrary to the Pact of Paris. Stimson told Japan that the League of Nations Assembly had approved the policy. In 1940 the Welles Declaration applied it to the Soviet annexation of the Baltic states. Scholars have argued that non-recognition is now a legal duty, but Wikipedia says this is controversial where no Security Council resolution requires it, on charges of inconsistent application.",
+   "lat": 38.9,
+   "lon": -77.04,
+   "loc": "approx",
+   "anchor": "Washington, DC",
+   "sources": [
+    {
+     "t": "Stimson Doctrine (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Stimson_Doctrine"
+    },
+    {
+     "t": "Telegram from Stimson to Grew, 27 October 1932, Foreign Relations of the United States",
+     "u": "https://history.state.gov/historicaldocuments/frus1932v04/d330"
+    }
+   ],
+   "cov_type": "Conquest and annexation by states",
+   "held": false,
+   "recd": false
+  },
+  {
+   "id": "lytton-report",
+   "name": "Lytton Report",
+   "aka": [
+    "Lytton Commission"
+   ],
+   "zid": "war-between-states",
+   "kind": "law",
+   "status": "court-defeated",
+   "start": 1932,
+   "end": 1932,
+   "founder": "League of Nations commission under the Earl of Lytton",
+   "stopped_by": null,
+   "pop": null,
+   "built": false,
+   "inhabited": false,
+   "currency": null,
+   "passports": null,
+   "laws": null,
+   "challenge": "Japan rejected it and left the League",
+   "recognition": null,
+   "cost": null,
+   "mechanism": "A League of Nations fact-finding report on Japan's seizure of Manchuria.",
+   "story": "The League of Nations sent a five-member commission under the Earl of Lytton to examine the 1931 Mukden Incident, which Japan used to justify taking Manchuria. It spent six weeks there in spring 1932. Its report of October 1932 said Japan must withdraw, recognised Chinese sovereignty, and refused to recognise the puppet state of Manchukuo. Japan had already recognised Manchukuo in September 1932. The League's assembly adopted the report, and Japan quit the League. Wikipedia says the recommendations took effect only after Japan's surrender in 1945.",
+   "lat": 41.8,
+   "lon": 123.43,
+   "loc": "approx",
+   "anchor": "Mukden (Shenyang), China",
+   "sources": [
+    {
+     "t": "Lytton Report (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Lytton_Report"
+    }
+   ],
+   "cov_type": "Conquest and annexation by states",
+   "held": false,
+   "recd": false
+  },
+  {
+   "id": "montevideo-convention-article-11",
+   "name": "Montevideo Convention, Article 11",
+   "aka": [
+    "Convention on the Rights and Duties of States"
+   ],
+   "zid": "war-between-states",
+   "kind": "law",
+   "status": "operating",
+   "start": 1933,
+   "end": null,
+   "founder": "American states at Montevideo",
+   "stopped_by": null,
+   "pop": null,
+   "built": false,
+   "inhabited": false,
+   "currency": null,
+   "passports": null,
+   "laws": null,
+   "challenge": null,
+   "recognition": null,
+   "cost": null,
+   "mechanism": "A treaty among American states defining a state and promising not to recognise land gained by force.",
+   "story": "The Montevideo Convention was signed on 26 December 1933 and took effect a year later. Article 1 sets out the four features of a state: a permanent population, a defined territory, a government, and the capacity to deal with other states. Article 3 says a state's political existence does not depend on recognition. Under Article 11, parties agree not to recognise territorial acquisitions obtained by force, and a state's territory may not be occupied by force even temporarily.",
+   "lat": -34.9,
+   "lon": -56.19,
+   "loc": "approx",
+   "anchor": "Montevideo, Uruguay",
+   "sources": [
+    {
+     "t": "Montevideo Convention text, Avalon Project",
+     "u": "https://avalon.law.yale.edu/20th_century/intam03.asp"
+    }
+   ],
+   "cov_type": "Conquest and annexation by states",
+   "held": false,
+   "recd": true
+  },
+  {
+   "id": "un-charter-article-2-4",
+   "name": "UN Charter, Article 2(4)",
+   "aka": [
+    "Prohibition of the use of force"
+   ],
+   "zid": "war-between-states",
+   "kind": "law",
+   "status": "operating",
+   "start": 1945,
+   "end": null,
+   "founder": "Founding UN member states",
+   "stopped_by": null,
+   "pop": null,
+   "built": false,
+   "inhabited": false,
+   "currency": null,
+   "passports": null,
+   "laws": null,
+   "challenge": null,
+   "recognition": null,
+   "cost": null,
+   "mechanism": "The Charter rule that bars member states from threatening or using force against another state's territory.",
+   "story": "Article 2(4) of the UN Charter requires every member to refrain, in its international dealings, from threatening or using force against the territorial integrity or political independence of any state. Wikipedia lists the Charter among the causes of the old right of conquest losing recognition. States that use force now usually justify it as self-defence or collective defence. The Article binds member states, which leaves private groups to national criminal law. Wikipedia reports debate over whether weak enforcement is reviving conquest.",
+   "lat": 40.75,
+   "lon": -73.97,
+   "loc": "approx",
+   "anchor": "UN Headquarters, New York",
+   "sources": [
+    {
+     "t": "UN Charter, Chapter I",
+     "u": "https://www.un.org/about-us/un-charter/chapter-1"
+    },
+    {
+     "t": "Right of conquest (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Right_of_conquest"
+    }
+   ],
+   "cov_type": "Conquest and annexation by states",
+   "held": false,
+   "recd": true
+  },
+  {
+   "id": "hague-regulations-occupation",
+   "name": "Hague Regulations on occupation",
+   "aka": [
+    "Hague Convention IV, 1907"
+   ],
+   "zid": "war-between-states",
+   "kind": "law",
+   "status": "operating",
+   "start": 1907,
+   "end": null,
+   "founder": null,
+   "stopped_by": null,
+   "pop": null,
+   "built": false,
+   "inhabited": false,
+   "currency": null,
+   "passports": null,
+   "laws": null,
+   "challenge": null,
+   "recognition": null,
+   "cost": null,
+   "mechanism": "Rules that treat an occupier as a temporary administrator of the land, without ownership.",
+   "story": "The Hague Regulations of 1907 set out rules for occupation in Articles 42 to 56. Under Article 42, land is occupied when it is actually placed under the authority of a hostile army, whatever the occupier calls it. The International Committee of the Red Cross (ICRC) explains that the occupier gains no sovereignty, and its rights last only during the occupation. It must generally respect local laws and restore public order. Under Article 55, it does not own public land and resources, but may use them while keeping their capital value.",
+   "lat": 52.08,
+   "lon": 4.31,
+   "loc": "approx",
+   "anchor": "The Hague, Netherlands",
+   "sources": [
+    {
+     "t": "Occupation and international humanitarian law: questions and answers, ICRC",
+     "u": "https://www.icrc.org/en/article/occupation-international-humanitarian-law-questions"
+    },
+    {
+     "t": "Hague Conventions of 1899 and 1907 (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Hague_Conventions_of_1899_and_1907"
+    }
+   ],
+   "cov_type": "Conquest and annexation by states",
+   "held": false,
+   "recd": true
+  },
+  {
+   "id": "geneva-iv-occupation",
+   "name": "Fourth Geneva Convention on occupation",
+   "aka": [
+    "Geneva Convention IV"
+   ],
+   "zid": "war-between-states",
+   "kind": "law",
+   "status": "operating",
+   "start": 1949,
+   "end": null,
+   "founder": null,
+   "stopped_by": null,
+   "pop": null,
+   "built": false,
+   "inhabited": false,
+   "currency": null,
+   "passports": null,
+   "laws": null,
+   "challenge": null,
+   "recognition": null,
+   "cost": null,
+   "mechanism": "A treaty protecting civilians in occupied land and limiting what an occupier may change or move.",
+   "story": "The Fourth Geneva Convention of 1949 protects civilians, and Articles 47 to 78 cover occupied land. Article 47 says that agreements with local authorities cannot strip the population of protection, and Article 8 says that protected people cannot give up their rights. According to the ICRC, an occupier may not forcibly transfer the population or move its own civilians into the land, and collective punishment and hostage taking are banned. Article 55 limits requisitions of food and medicine. These rules hold whatever the occupier calls its presence.",
+   "lat": 46.2,
+   "lon": 6.15,
+   "loc": "approx",
+   "anchor": "Geneva, Switzerland",
+   "sources": [
+    {
+     "t": "Occupation and international humanitarian law: questions and answers, ICRC",
+     "u": "https://www.icrc.org/en/article/occupation-international-humanitarian-law-questions"
+    },
+    {
+     "t": "Fourth Geneva Convention (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Fourth_Geneva_Convention"
+    }
+   ],
+   "cov_type": "Conquest and annexation by states",
+   "held": false,
+   "recd": true
+  },
+  {
+   "id": "friendly-relations-declaration",
+   "name": "UN Friendly Relations Declaration",
+   "aka": [
+    "Resolution 2625"
+   ],
+   "zid": "war-between-states",
+   "kind": "law",
+   "status": "operating",
+   "start": 1970,
+   "end": null,
+   "founder": "UN General Assembly",
+   "stopped_by": null,
+   "pop": null,
+   "built": false,
+   "inhabited": false,
+   "currency": null,
+   "passports": null,
+   "laws": null,
+   "challenge": null,
+   "recognition": null,
+   "cost": null,
+   "mechanism": "A General Assembly declaration that land gained by force is not recognised, and that states may not organise armed bands against each other.",
+   "story": "General Assembly Resolution 2625 (XXV), known as the Friendly Relations Declaration, restates the Charter's rules on force. It says that a state's territory may not be occupied militarily as a result of force used against the Charter, or acquired by another state through threat or force, and that no such gain will be recognised as legal. It also says every state must refrain from organising or encouraging irregular forces or armed bands, including mercenaries, for incursions into another state. That second rule is the one that speaks to private expeditions.",
+   "lat": 40.75,
+   "lon": -73.97,
+   "loc": "approx",
+   "anchor": "UN Headquarters, New York",
+   "sources": [
+    {
+     "t": "UN General Assembly Resolution 2625 (XXV), German Foreign Office copy",
+     "u": "https://www.auswaertiges-amt.de/resource/blob/2165236/b03d8c5c0c74fc7c9947bee51cd27163/un-gv-res-freundschaftliche-beziehungen-data.pdf"
+    }
+   ],
+   "cov_type": "Conquest and annexation by states",
+   "held": false,
+   "recd": true
+  },
+  {
+   "id": "unsc-resolution-662",
+   "name": "Security Council Resolution 662",
+   "aka": [
+    "Resolution 662"
+   ],
+   "zid": "war-between-states",
+   "kind": "law",
+   "status": "operating",
+   "start": 1990,
+   "end": null,
+   "founder": "UN Security Council",
+   "stopped_by": null,
+   "pop": null,
+   "built": false,
+   "inhabited": false,
+   "currency": null,
+   "passports": null,
+   "laws": null,
+   "challenge": "Iraq, which kept up the annexation until forced out",
+   "recognition": null,
+   "cost": null,
+   "mechanism": "A binding decision that Iraq's annexation of Kuwait had no legal effect and that no state should recognise it.",
+   "story": "Resolution 662, adopted unanimously on 9 August 1990, decided that Iraq's annexation of Kuwait under any form and whatever pretext had no legal validity and was considered null and void. It called on all states and international organisations not to recognise the annexation, and it demanded that Iraq rescind its actions. Iraq nevertheless annexed the country formally later that month. In November Resolution 678 set a 15 January 1991 deadline and authorised all necessary means, and a coalition expelled Iraqi troops by 28 February.",
+   "lat": 29.37,
+   "lon": 47.98,
+   "loc": "approx",
+   "anchor": "Kuwait City, Kuwait",
+   "sources": [
+    {
+     "t": "Security Council resolution 662 (1990), Refworld",
+     "u": "https://www.refworld.org/node/8107"
+    },
+    {
+     "t": "Iraqi invasion of Kuwait (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Iraqi_invasion_of_Kuwait"
+    }
+   ],
+   "cov_type": "Conquest and annexation by states",
+   "held": false,
+   "recd": false
+  },
+  {
+   "id": "iraq-kuwait-annexation-1990",
+   "name": "Iraqi annexation of Kuwait",
+   "aka": [
+    "Project 17",
+    "Gulf War"
+   ],
+   "zid": "war-between-states",
+   "kind": "attempt",
+   "status": "forced-out",
+   "start": 1990,
+   "end": 1991,
+   "founder": "Iraq under Saddam Hussein",
+   "stopped_by": "US-led coalition authorised by the Security Council",
+   "pop": null,
+   "built": true,
+   "inhabited": true,
+   "currency": null,
+   "passports": null,
+   "laws": null,
+   "challenge": "UN Security Council; coalition forces",
+   "recognition": null,
+   "cost": null,
+   "mechanism": "Invasion, a short-lived puppet Republic of Kuwait, then outright annexation split into Iraqi administrative districts.",
+   "story": "Iraq invaded Kuwait on 2 August 1990 and defeated it by 4 August. The Security Council demanded withdrawal the next day in Resolution 660. Iraq first set up a puppet Republic of Kuwait, then annexed the whole country on 28 August: northern Kuwait joined Basra Governorate, and the south became a new Kuwait Governorate. Resolution 662 had already declared annexation null and void. After a deadline set by Resolution 678 passed, a US-led coalition began bombing on 17 January 1991 and a ground invasion on 23 February. Iraqi troops set fire to over 700 oil wells on retreat. Kuwaiti independence was restored by 28 February 1991.",
+   "lat": 29.37,
+   "lon": 47.98,
+   "loc": "approx",
+   "anchor": "Kuwait City, Kuwait",
+   "sources": [
+    {
+     "t": "Iraqi invasion of Kuwait (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Iraqi_invasion_of_Kuwait"
+    },
+    {
+     "t": "Security Council resolution 662 (1990), Refworld",
+     "u": "https://www.refworld.org/node/8107"
+    }
+   ],
+   "cov_type": "Conquest and annexation by states",
+   "held": false,
+   "recd": false
+  },
+  {
+   "id": "unga-resolution-68-262",
+   "name": "General Assembly Resolution 68/262 on Crimea",
+   "aka": [
+    "Territorial integrity of Ukraine"
+   ],
+   "zid": "war-between-states",
+   "kind": "law",
+   "status": "operating",
+   "start": 2014,
+   "end": null,
+   "founder": "UN General Assembly; introduced by Canada, Costa Rica, Germany, Lithuania, Poland and Ukraine",
+   "stopped_by": null,
+   "pop": null,
+   "built": false,
+   "inhabited": false,
+   "currency": null,
+   "passports": null,
+   "laws": null,
+   "challenge": "Russia called it counterproductive, after vetoing a draft at the Security Council",
+   "recognition": null,
+   "cost": null,
+   "mechanism": "A non-binding General Assembly vote affirming Ukraine's borders and calling the Crimean referendum invalid.",
+   "story": "On 27 March 2014 the UN General Assembly adopted Resolution 68/262, entitled Territorial integrity of Ukraine, in response to Russia's annexation of Crimea. One hundred states voted in favour, 11 against, and 58 abstained, with 24 absent. It is non-binding. It affirmed Ukraine's internationally recognised borders and underscored the invalidity of the Crimean referendum. It came to the Assembly after Russia vetoed a Security Council draft sponsored by 42 countries. Russia said the vote was counterproductive and accused Western states of blackmail and threats.",
+   "lat": 44.95,
+   "lon": 34.1,
+   "loc": "approx",
+   "anchor": "Simferopol, Crimea",
+   "sources": [
+    {
+     "t": "United Nations General Assembly Resolution 68/262 (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/United_Nations_General_Assembly_Resolution_68/262"
+    }
+   ],
+   "cov_type": "Conquest and annexation by states",
+   "held": false,
+   "recd": false
+  },
+  {
+   "id": "unga-resolution-es-11-4",
+   "name": "General Assembly Resolution ES-11/4 on Ukraine's four regions",
+   "aka": [
+    "Territorial integrity of Ukraine: defending the principles of the Charter"
+   ],
+   "zid": "war-between-states",
+   "kind": "law",
+   "status": "operating",
+   "start": 2022,
+   "end": null,
+   "founder": "UN General Assembly",
+   "stopped_by": null,
+   "pop": null,
+   "built": false,
+   "inhabited": false,
+   "currency": null,
+   "passports": null,
+   "laws": null,
+   "challenge": "Russia, Belarus, North Korea, Nicaragua and Syria voted against",
+   "recognition": null,
+   "cost": null,
+   "mechanism": "A General Assembly vote against Russia's claimed annexation of Donetsk, Kherson, Luhansk and Zaporizhzhia.",
+   "story": "In October 2022 the UN General Assembly voted 143 to 5, with 35 abstentions, on Russia's declared annexation of four Ukrainian regions: Donetsk, Kherson, Luhansk and Zaporizhzhia. Belarus, North Korea, Nicaragua, Russia and Syria voted against. The resolution calls on all states and international bodies not to recognise the claims, demands that Russia immediately reverse its declaration, and describes the regions as temporarily occupied through aggression.",
+   "lat": 48.02,
+   "lon": 37.8,
+   "loc": "approx",
+   "anchor": "Donetsk, Ukraine",
+   "sources": [
+    {
+     "t": "UN News: General Assembly demands Russia reverse course",
+     "u": "https://news.un.org/story/2022/10/1129492"
+    }
+   ],
+   "cov_type": "Conquest and annexation by states",
+   "held": false,
+   "recd": false
+  },
+  {
+   "id": "golan-heights-annexation",
+   "name": "Israeli annexation of the Golan Heights",
+   "aka": [
+    "Golan Heights Law",
+    "Resolution 497"
+   ],
+   "zid": "war-between-states",
+   "kind": "attempt",
+   "status": "operating",
+   "start": 1981,
+   "end": null,
+   "founder": "Israel",
+   "stopped_by": "Not reversed",
+   "pop": null,
+   "built": true,
+   "inhabited": true,
+   "currency": null,
+   "passports": null,
+   "laws": null,
+   "challenge": "Syria; UN Security Council Resolution 497, adopted unanimously",
+   "recognition": "United States, in 2019; one Syrian opinion article says no other state has followed",
+   "cost": null,
+   "mechanism": "A state captured land in war and later applied its own law to it, without a treaty with the former ruler.",
+   "story": "Israel occupied the Golan Heights in the June 1967 war, and in December 1981 passed the Golan Heights Law, extending Israeli law and administration there. On 17 December 1981 the Security Council unanimously adopted Resolution 497, declaring the law null and void and without international legal effect. Israel did not comply, and the US vetoed a follow-up resolution in January 1982. A General Assembly session voted 86 to 21 for a boycott of Israel in February. In 2019 the US recognised Israeli sovereignty. A Syrian opinion article says no other state has done so.",
+   "lat": 33.0,
+   "lon": 35.75,
+   "loc": "approx",
+   "anchor": "Golan Heights",
+   "sources": [
+    {
+     "t": "United Nations Security Council Resolution 497 (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/United_Nations_Security_Council_Resolution_497"
+    },
+    {
+     "t": "The legal status of the Golan Heights, Syrian Network for Human Rights (opinion article)",
+     "u": "https://snhr.org/blog/2026/01/05/the-legal-status-of-the-golan-heights-established-sovereignty-and-the-impermissibility-of-acquisition-by-force/"
+    }
+   ],
+   "cov_type": "Conquest and annexation by states",
+   "held": false,
+   "recd": true
+  },
+  {
+   "id": "green-march-western-sahara",
+   "name": "Green March and Moroccan control of Western Sahara",
+   "aka": [
+    "ICJ Western Sahara opinion",
+    "Moroccan annexation of Western Sahara"
+   ],
+   "zid": "war-between-states",
+   "kind": "attempt",
+   "status": "operating",
+   "start": 1975,
+   "end": null,
+   "founder": "Morocco under King Hassan II",
+   "stopped_by": "Not reversed; the Western Sahara conflict is unresolved",
+   "pop": "About 350,000 marchers",
+   "built": true,
+   "inhabited": true,
+   "currency": null,
+   "passports": null,
+   "laws": null,
+   "challenge": "Sahrawi people and the Polisario Front; UN Security Council Resolution 380",
+   "recognition": null,
+   "cost": null,
+   "mechanism": "A mass civilian march, days after a court opinion, pressed a departing colonial power to hand over disputed land.",
+   "story": "Spain was leaving Spanish Sahara in 1975, and most Sahrawi people, according to a 1974 UN mission, wanted independence. On 16 October 1975 the International Court of Justice found the land was not terra nullius (nobody's land) at colonisation, and that historical ties with Morocco and Mauritania did not amount to sovereignty. King Hassan II cited part of the ruling and announced a march of 350,000 unarmed Moroccans. It entered the territory in November, and Security Council Resolution 380 condemned it. Morocco still holds most of the former Spanish Sahara. Morocco claims the land by historical ties; the Sahrawi Arab Democratic Republic disputes that.",
+   "lat": 27.15,
+   "lon": -13.2,
+   "loc": "approx",
+   "anchor": "Laayoune, Western Sahara",
+   "sources": [
+    {
+     "t": "Green March (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Green_March"
+    }
+   ],
+   "cov_type": "Conquest and annexation by states",
+   "held": false,
+   "recd": false
+  },
+  {
+   "id": "indonesian-occupation-east-timor",
+   "name": "Indonesian occupation of East Timor",
+   "aka": [
+    "Operation Lotus",
+    "Operasi Seroja"
+   ],
+   "zid": "war-between-states",
+   "kind": "attempt",
+   "status": "forced-out",
+   "start": 1975,
+   "end": 1999,
+   "founder": "Indonesia under Suharto",
+   "stopped_by": "1999 vote for independence; UN missions; independence on 20 May 2002",
+   "pop": "About 100,000 to 180,000 estimated deaths; a truth commission gives a minimum of 102,000",
+   "built": true,
+   "inhabited": true,
+   "currency": null,
+   "passports": null,
+   "laws": null,
+   "challenge": "Fretilin insurgency; Portugal as prior ruler",
+   "recognition": null,
+   "cost": null,
+   "mechanism": "Military invasion, then a selected People's Assembly endorsing integration, then treatment as an Indonesian province.",
+   "story": "Indonesia invaded East Timor on 7 December 1975 to overthrow the Fretilin government, saying it was acting against colonialism and communism. The General Assembly and, on 22 December, the Security Council called for withdrawal. On 31 May 1976 a People's Assembly in Dili, selected by Indonesian intelligence, endorsed an Act of Integration, and on 17 July East Timor became Indonesia's 27th province. The UN never recognised the annexation. The East Timor truth commission gives a minimum of 102,000 conflict deaths from 1974 to 1999, and attributes 70% of killings to Indonesian forces and auxiliaries. In 1999 a majority of voters chose independence over autonomy, and it took effect on 20 May 2002.",
+   "lat": -8.56,
+   "lon": 125.57,
+   "loc": "approx",
+   "anchor": "Dili, Timor-Leste",
+   "sources": [
+    {
+     "t": "Indonesian invasion of East Timor (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Indonesian_invasion_of_East_Timor"
+    }
+   ],
+   "cov_type": "Conquest and annexation by states",
+   "held": false,
+   "recd": false
+  },
+  {
+   "id": "icj-occupied-palestinian-territory-2024",
+   "name": "ICJ advisory opinion on the Occupied Palestinian Territory, 2024",
+   "aka": [
+    "Legal Consequences of Israel's Policies"
+   ],
+   "zid": "war-between-states",
+   "kind": "law",
+   "status": "court-defeated",
+   "start": 2024,
+   "end": null,
+   "founder": "International Court of Justice",
+   "stopped_by": null,
+   "pop": null,
+   "built": false,
+   "inhabited": false,
+   "currency": null,
+   "passports": null,
+   "laws": null,
+   "challenge": "Vice-President Sebutinde is identified as dissenting; other judges appended declarations and separate opinions",
+   "recognition": null,
+   "cost": null,
+   "mechanism": "A court opinion applying the ban on taking land by force to a long occupation.",
+   "story": "On 19 July 2024 the International Court of Justice gave an advisory opinion, which is not a judgment between parties, requested by the UN General Assembly. It said that occupation is temporary and cannot transfer title of sovereignty to the occupier, and that assertion of sovereignty and annexation of parts of the land violate the ban on acquiring territory by force. It found Israel's continued presence in the territory occupied in 1967 unlawful and said states should not recognise it as legal. Vice-President Sebutinde dissented, and other judges appended separate opinions and declarations.",
+   "lat": 52.09,
+   "lon": 4.3,
+   "loc": "approx",
+   "anchor": "Peace Palace, The Hague, Netherlands",
+   "sources": [
+    {
+     "t": "ICJ press release, 19 July 2024",
+     "u": "https://www.un.org/unispal/document/icj-pressrelease-19jul24"
+    }
+   ],
+   "cov_type": "Conquest and annexation by states",
+   "held": false,
+   "recd": false
   }
  ],
- "zones_new": []
+ "zones_new": [
+  {
+   "id": "war-private-conquest",
+   "name": "Private conquest and filibusters",
+   "band": "War and force",
+   "who_owns": "Whatever state already holds the land. A private army gains no legal title by capturing it, and the country it sails from can treat the expedition as a crime.",
+   "rules": [
+    {
+     "cite": "US Neutrality Act of 1794, now 18 U.S.C. 960",
+     "says": "It is a crime, within the United States, to begin, prepare or provide means for a military expedition against a country at peace with the United States. The current penalty is a fine, up to three years in prison, or both."
+    },
+    {
+     "cite": "UN General Assembly Resolution 2625 (Friendly Relations Declaration)",
+     "says": "Every state must refrain from organising or encouraging irregular forces or armed bands, including mercenaries, for incursions into another state's territory."
+    },
+    {
+     "cite": "Montevideo Convention, Article 11",
+     "says": "Parties agree not to recognise territory or special advantages obtained by force."
+    },
+    {
+     "cite": "UK Foreign Enlistment Act 1870",
+     "says": "PENDING"
+    }
+   ],
+   "hook": "Private armies have seized towns, islands and once a whole country, then lost them to the state whose land it was, usually within three years.",
+   "can_you_build": "Not lawfully, because the country you leave from can prosecute you and the country you land in can kill or jail you. Filibusters of the 1800s held ground for months to about two years, and nearly all were captured, shot, or handed back.",
+   "facts": [
+    "Walker in Nicaragua: 58 men on arrival in June 1855, surrendered on 1 May 1857, executed in Honduras in 1860.",
+    "Walker's San Francisco jury took eight minutes to acquit him of illegal war in 1854.",
+    "Crabb at Caborca, 1857: about 100 recruited against 1,000 authorised, and most shot after surrender.",
+    "Sagallo, 1889: about 150 people, shelled out by a French squadron within about a month.",
+    "Catalan Company: held the Duchy of Athens from 1311 to about 1390, after taking the Aragonese crown of Sicily as overlord."
+   ],
+   "sources": [
+    {
+     "t": "Filibuster (military) (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Filibuster_(military)"
+    },
+    {
+     "t": "Filibuster War (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Filibuster_War"
+    },
+    {
+     "t": "Republic of Sonora (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Republic_of_Sonora"
+    },
+    {
+     "t": "Narciso López (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Narciso_L%C3%B3pez"
+    },
+    {
+     "t": "Crabb massacre (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Crabb_massacre"
+    },
+    {
+     "t": "Neutrality Act of 1794 (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Neutrality_Act_of_1794"
+    },
+    {
+     "t": "Long Expedition (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Long_Expedition"
+    },
+    {
+     "t": "Nikolay Ashinov (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Nikolay_Ivanovich_Ashinov"
+    },
+    {
+     "t": "Catalan Company (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Catalan_Company"
+    },
+    {
+     "t": "Francesco I Sforza (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Francesco_I_Sforza"
+    },
+    {
+     "t": "Thirty-Three Orientals (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Thirty-Three_Orientals"
+    },
+    {
+     "t": "Expedition of the Thousand (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Expedition_of_the_Thousand"
+    },
+    {
+     "t": "Roman von Ungern-Sternberg (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Roman_von_Ungern-Sternberg"
+    },
+    {
+     "t": "George Thomas (soldier) (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/George_Thomas_%28soldier%29"
+    },
+    {
+     "t": "18 U.S. Code 960: Expedition against friendly nation",
+     "u": "https://law.cornell.edu/uscode/text/18/960"
+    },
+    {
+     "t": "UN General Assembly Resolution 2625 (XXV), German Foreign Office copy",
+     "u": "https://www.auswaertiges-amt.de/resource/blob/2165236/b03d8c5c0c74fc7c9947bee51cd27163/un-gv-res-freundschaftliche-beziehungen-data.pdf"
+    },
+    {
+     "t": "Montevideo Convention text, Avalon Project",
+     "u": "https://avalon.law.yale.edu/20th_century/intam03.asp"
+    },
+    {
+     "t": "Purdue News: Robert May on filibustering",
+     "u": "https://www.purdue.edu/uns/html4ever/021122.May.filibuster.html"
+    }
+   ],
+   "essay": "A filibuster, from the Spanish filibustero and the Dutch word for a freebooter, is a person who leads an unauthorised military expedition into a foreign country to start a revolution or a breakaway. Wikipedia separates filibusters from mercenaries: mercenaries fight for someone else, and filibusters act for themselves. The word is mostly used for Americans who invaded Latin America and the Caribbean in the mid-1800s, often hoping the land would join the United States as slave territory. English speakers later applied the word to delaying speeches in the US Senate.\n\nThe most successful filibuster is William Walker. A Nicaraguan faction invited him into its civil war, and he arrived in June 1855 with 58 men. By October he had captured the rival capital, Granada, and was running the government through a president he chose. A Purdue summary of the historian Robert May's work says more than 2,500 filibusters helped him. US diplomats and, according to Wikipedia, President Pierce recognised his government. Costa Rica declared war in March 1856 and neighbouring states joined it. He surrendered in May 1857 and was executed in Honduras in 1860, having held Nicaragua for under two years.\n\nMost expeditions were smaller and shorter. Purdue quotes May saying many had 20 to 40 men. Walker's first republic in Baja California began with 45. James Long's Texas government in 1819 had about 300 at its peak, and a Spanish force of 500 drove it out within months. Narciso López landed about 600 men in Cuba in 1850, and locals sided with Spain. In 1851 Spain captured and executed most of his force. Henry Crabb reached Sonora in 1857 with about 100 men, and most were shot after surrender.\n\nLaw at home was the second obstacle. The US Neutrality Act of 1794 made it a crime to prepare a military expedition against a country at peace with the United States, and a similar rule is in force today as 18 U.S.C. 960, with up to three years in prison. It was enforced unevenly. President Taylor blockaded López's ships in 1849, and the US Navy arrested Walker in 1857. Yet Walker's jury in San Francisco acquitted him in eight minutes in 1854, and Governor Quitman of Mississippi escaped conviction after three hung juries.\n\nOlder cases lasted longer, and each depended on an outside authority. The Catalan Company, unpaid mercenaries, won the Duchy of Athens in 1311, then accepted the Aragonese crown of Sicily as overlord in 1312 and held the duchy for over 70 years. The hired general Francesco Sforza became Duke of Milan in 1450 when the city's senate gave him the title. George Thomas, an Irish deserter, ran his own mint at Hansi in India from about 1798 to 1801, until Sikh forces drove him out.\n\nThe private landings that did produce lasting change handed the result to someone else or drew in neighbouring states. Garibaldi conquered the Kingdom of the Two Sicilies in 1860 and gave it to Piedmont-Sardinia. The Thirty-Three Orientals landed in Uruguay in 1825, and independence came only after a war between Brazil and Argentina's forerunner and British mediation in 1828.\n\nToday a private conqueror also faces the modern law on recognition. The 1933 Montevideo Convention binds parties not to recognise land obtained by force, and a 1970s General Assembly declaration tells states not to organise armed bands, mercenaries included. The odds and own-law figures on this page are estimates, not measured rates.",
+   "odds": {
+    "build": 5,
+    "law": 4,
+    "money": 10,
+    "hold": 3,
+    "recog": 0.3,
+    "why": "These are judgments from the record, not measurements. People can reach a place by force, as in Baja California, Nicaragua, Sagallo and Mongolia, so build is above zero. Few held long enough to run working courts, and money comes from backers who risk prosecution. Hold is low because a state or its neighbours came back in nearly every modern case. Recognition is near zero since Walker's brief US recognition, because modern treaties tell states to refuse it."
+   },
+   "own": {
+    "own": 0.1,
+    "own_people": null,
+    "own_why": "You get a captured town or island for months, and at most about two years in the modern record, as Walker did in Nicaragua. That falls short because a state returned each time and recognition is now refused by treaty. The medieval cases held longer only under an overlord or a local grant. Sits below holding land with private soldiers because this route starts by invading a state's land instead of holding quiet ground."
+   }
+  },
+  {
+   "id": "war-between-states",
+   "name": "War between states: conquest, occupation and annexation",
+   "band": "War and force",
+   "who_owns": "The state that held the land before the war, in law. An occupying army runs the land for a time and gains no title. The occupier often rules in practice for decades.",
+   "rules": [
+    {
+     "cite": "UN Charter, Article 2(4)",
+     "says": "Members must refrain from the threat or use of force against the territorial integrity or political independence of any state."
+    },
+    {
+     "cite": "UN General Assembly Resolution 2625 (Friendly Relations Declaration)",
+     "says": "A state's territory may not be occupied or acquired through force used against the Charter, and no such gain will be recognised as legal."
+    },
+    {
+     "cite": "Hague Regulations of 1907, Articles 42 to 56",
+     "says": "Land is occupied when placed under a hostile army's authority. According to the ICRC, the occupier gains no sovereignty, must generally respect local law, and may use public land and resources only while safeguarding their capital value."
+    },
+    {
+     "cite": "Fourth Geneva Convention, Articles 47 to 78",
+     "says": "Protections for civilians continue under occupation. According to the ICRC, an occupier may not forcibly transfer the population or move its own civilians in."
+    },
+    {
+     "cite": "Security Council Resolution 662 (1990)",
+     "says": "Iraq's annexation of Kuwait under any form and whatever pretext has no legal validity and is null and void, and states must not recognise it."
+    },
+    {
+     "cite": "Montevideo Convention, Article 11",
+     "says": "Parties agree not to recognise territorial acquisitions obtained by force, and a state's territory may not be occupied by force even temporarily."
+    }
+   ],
+   "hook": "States still take land by war, and the rules since 1945 deny them legal title, with results that range from forced withdrawal in Kuwait to decades of rule in the Golan and Western Sahara.",
+   "can_you_build": "Not as a private founder, because this route needs a state's army and its legal treatment only concerns states. The rules give an occupier no title, and they give an outsider no way in.",
+   "facts": [
+    "Dan Altman's data covers 175 conquest attempts between 1918 and 2024.",
+    "Kuwait 1990: annexed on 28 August and freed by 28 February 1991 under UN authority.",
+    "Golan Heights: annexed in 1981; Resolution 497 was unanimous, and Israel did not comply.",
+    "East Timor: annexed in 1976, never recognised by the UN, independent on 20 May 2002.",
+    "Crimea 2014: General Assembly vote of 100 to 11, with 58 abstaining.",
+    "Four Ukrainian regions, 2022: General Assembly vote of 143 to 5, with 35 abstaining."
+   ],
+   "sources": [
+    {
+     "t": "Right of conquest (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Right_of_conquest"
+    },
+    {
+     "t": "Kellogg–Briand Pact (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Kellogg%E2%80%93Briand_Pact"
+    },
+    {
+     "t": "Stimson Doctrine (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Stimson_Doctrine"
+    },
+    {
+     "t": "Lytton Report (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Lytton_Report"
+    },
+    {
+     "t": "Iraqi invasion of Kuwait (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Iraqi_invasion_of_Kuwait"
+    },
+    {
+     "t": "United Nations Security Council Resolution 497 (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/United_Nations_Security_Council_Resolution_497"
+    },
+    {
+     "t": "United Nations General Assembly Resolution 68/262 (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/United_Nations_General_Assembly_Resolution_68/262"
+    },
+    {
+     "t": "Green March (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Green_March"
+    },
+    {
+     "t": "Indonesian invasion of East Timor (Wikipedia)",
+     "u": "https://en.wikipedia.org/wiki/Indonesian_invasion_of_East_Timor"
+    },
+    {
+     "t": "UN Charter, Chapter I",
+     "u": "https://www.un.org/about-us/un-charter/chapter-1"
+    },
+    {
+     "t": "Security Council resolution 662 (1990), Refworld",
+     "u": "https://www.refworld.org/node/8107"
+    },
+    {
+     "t": "Occupation and international humanitarian law: questions and answers, ICRC",
+     "u": "https://www.icrc.org/en/article/occupation-international-humanitarian-law-questions"
+    },
+    {
+     "t": "Montevideo Convention text, Avalon Project",
+     "u": "https://avalon.law.yale.edu/20th_century/intam03.asp"
+    },
+    {
+     "t": "ICJ press release, 19 July 2024",
+     "u": "https://www.un.org/unispal/document/icj-pressrelease-19jul24"
+    },
+    {
+     "t": "UN News: General Assembly demands Russia reverse course",
+     "u": "https://news.un.org/story/2022/10/1129492"
+    },
+    {
+     "t": "Taking Territory: The Persistence of Conquest Since 1945, MIT Press Bookstore listing",
+     "u": "https://mitpressbookstore.mit.edu/book/9781501786624"
+    },
+    {
+     "t": "Altman, The evolution of territorial conquest after 1945, International Organization",
+     "u": "https://www.cambridge.org/core/journals/international-organization/article/abs/evolution-of-territorial-conquest-after-1945-and-the-limits-of-the-territorial-integrity-norm/E81D1E3F2C34CB00D8501BFDB363A1AD"
+    },
+    {
+     "t": "UN General Assembly Resolution 2625 (XXV), German Foreign Office copy",
+     "u": "https://www.auswaertiges-amt.de/resource/blob/2165236/b03d8c5c0c74fc7c9947bee51cd27163/un-gv-res-freundschaftliche-beziehungen-data.pdf"
+    }
+   ],
+   "essay": "For most of history, winning a war could give a state legal title to land. Wikipedia describes this as the right of conquest: a military occupation, followed by a peace settlement or the loser's having no reasonable chance of return, made the land the winner's. The loser's consent was not required. Conquest outside war was illegal, and that left states holding this tool and private adventurers without it.\n\nThe rule changed in steps during the 20th century. The Kellogg-Briand Pact of 1928 condemned war as an instrument of national policy, though it had no enforcement mechanism. When Japan took Manchuria in 1931, US Secretary of State Henry Stimson told Japan and China in January 1932 that the US would not recognise any situation brought about against that pact. The League of Nations' Lytton Report refused to recognise the puppet state of Manchukuo, and Japan left the League. Article 11 of the 1933 Montevideo Convention bound its parties not to recognise land obtained by force. Article 2(4) of the UN Charter then barred members from using force against a state's territorial integrity.\n\nOccupation has its own rules, in the Hague Regulations of 1907 and the Fourth Geneva Convention. Land is occupied when it is under the authority of a hostile army. The International Committee of the Red Cross explains that the occupier gains no sovereignty, must generally respect local law, may not move its own civilians in, and may use public resources only while safeguarding their capital value. In 2024 the International Court of Justice said occupation cannot transfer title of sovereignty, and that annexing occupied land violates the ban on acquiring territory by force.\n\nActual outcomes vary. Iraq annexed Kuwait on 28 August 1990. Security Council Resolution 662 had already called the annexation null and void, and a coalition authorised by the Council restored Kuwait by 28 February 1991. Indonesia invaded East Timor in 1975 and made it a province in 1976. The UN never recognised this, and independence followed a 1999 vote. Israel extended its law to the Golan Heights in 1981. Resolution 497 called this null and void, Israel did not comply, and the US recognised Israeli sovereignty in 2019. Morocco has held most of Western Sahara since the 1975 Green March, despite a Court opinion that historical ties gave it no sovereignty. Russia's annexations of Crimea and four other Ukrainian regions drew General Assembly votes of 100 to 11 and 143 to 5, while Russia vetoed action in the Security Council.\n\nConquest has not ended. The political scientist Dan Altman reports that attempts to seize parts of states remained far more common than earlier studies recognised, that challengers now tend to seize small regions and try to avoid war, and that the limit appears to be on war-prone aggression. His book draws on 175 conquest attempts between 1918 and 2024. Wikipedia reports debate over whether weak enforcement is bringing the right of conquest back.\n\nNone of this helps a private founder. These treaties speak to states, and the old doctrine gave title to states. A private group that took land would fall under ordinary criminal law at home and abroad, as filibusters did under the US Neutrality Act of 1794, and its landing would count as an armed band under the 1970 General Assembly declaration on friendly relations if a state organised it. Non-recognition would still apply. The own-law figure here is an estimate, not a measured rate.",
+   "odds": {
+    "build": 1,
+    "law": 1,
+    "money": 2,
+    "hold": 1,
+    "recog": 0.1,
+    "why": "These are judgments, and they rate this route for a private founder, who has no army and no state. A state fares much better on the ground: Israel has ruled the Golan since 1967 and Morocco most of Western Sahara since 1975. Recognition stays thin even for them, and Kuwait shows that a Security Council majority can end an annexation by force."
+   },
+   "own": {
+    "own": 0.01,
+    "own_people": null,
+    "own_why": "You get nothing as a private group, because this route belongs to states with armies. A state can get decades of control, which falls short of the test since occupation gives no title and other states are told not to recognise it. A group that used this path would first have to become a state, by a different route."
+   }
+  }
+ ]
 }

@@ -307,7 +307,7 @@
    "recognition": null,
    "cost": "Promoted as US$15 billion",
    "mechanism": "A militia on a remote border sold protection and land rights to casino and scam operators and taxed the business.",
-   "story": "Shwe Kokko is a town in Myanmar's Kayin State, on the river border with Thailand, and the headquarters of the Kayin Border Guard Force led by Saw Chit Thu, a militia of about 6,000 troops formally under the army since 2010. A company it owns took 30% of the profits of Yatai New City, a casino and housing project promoted as a 15 billion US dollar special economic zone by Yatai, a firm owned by She Zhijiang.\nMyanmar had approved 59 villas on 22.5 acres and never approved a zone. A 2020 government tribunal halted work, and the 2021 coup let it resume. Scam centres there held trafficked workers. The force later broke with the army, renamed itself the Karen National Army and taxed gambling and scam businesses. The army raided the town on 18 November 2025 and detained 346 foreigners. The force denies involvement.",
+   "story": "Shwe Kokko is a town in Myanmar's Kayin State, on the river border with Thailand, and the headquarters of the Kayin Border Guard Force led by Saw Chit Thu, a militia of about 6,000 troops formally under the army since 2010. A company it owns was due 30% of the profits of Yatai New City, a casino and housing project promoted as a 15 billion US dollar special economic zone by Yatai, a firm owned by She Zhijiang.\nMyanmar had approved 59 villas on 22.5 acres and never approved a zone. A 2020 government tribunal halted work, and the 2021 coup let it resume. Scam centres there held trafficked workers. The force later broke with the army, renamed itself the Karen National Army and taxed gambling and scam businesses. The army raided the town on 18 November 2025 and detained 346 foreigners. The force denies involvement.",
    "lat": 16.82047222,
    "lon": 98.53091667,
    "loc": "exact",
@@ -1574,42 +1574,236 @@
  "zones_new": [
   {
    "id": "rebel-held-territory",
-   "name": "x",
+   "name": "Rebel-run territory during a war",
    "band": "War and force",
-   "essay": "",
-   "sources": [],
-   "rules": [],
+   "who_owns": "The land stays, in law, with the country it sits in. An armed movement can hold it, tax it and judge people on it, and treaties that bind the movement in the war say this changes nobody's legal status.",
+   "rules": [
+    {
+     "cite": "Geneva Conventions, Common Art. 3",
+     "says": "In a war inside one country, no one may be sentenced or executed without judgment by a 'regularly constituted court'. Applying the article 'shall not affect the legal status of the Parties to the conflict'."
+    },
+    {
+     "cite": "Additional Protocol II (1977), Art. 1(1)",
+     "says": "Covers wars between a state's forces and organised armed groups that control part of its territory, under responsible command."
+    },
+    {
+     "cite": "Additional Protocol II, Art. 1(2)",
+     "says": "Does not apply to riots and isolated or sporadic violence."
+    },
+    {
+     "cite": "Additional Protocol II, Art. 3(1)",
+     "says": "Nothing in the Protocol may be used to affect the sovereignty of a state or its right to restore order by lawful means."
+    },
+    {
+     "cite": "Additional Protocol II, Art. 6(2)",
+     "says": "A sentence may follow only a conviction by a court offering essential guarantees of independence and impartiality."
+    },
+    {
+     "cite": "Rome Statute Art. 8(2)(c)(iv), 8(2)(e)(v)",
+     "says": "Sentencing without a regularly constituted court, and pillaging a town or place, are war crimes in internal armed conflicts. Art. 8(2)(f) covers protracted conflict between governments and organised armed groups, or between such groups."
+    }
+   ],
+   "hook": "Article 3 of the Geneva Conventions lets a war's rules bind a rebel movement while saying they do not change its legal status, so holding the land and running courts on it gives no title to it.",
+   "can_you_build": "Physically, armed movements have built schools, clinics, courts and tax offices on land they held, as the Karen National Union did in eastern Myanmar in the 1990s. Legally, there is no permit for this: the country whose land it is treats it as rebellion, and foreign states need not give the movement's court rulings any legal effect.",
+   "facts": [
+    "Karen Albert's Rebel Quasi-State Institutions dataset covers 235 rebel groups from 1945 to 2012 and codes 25 kinds of institution. Nearly 64% created at least one governing institution.",
+    "A Wikipedia list of rebel groups that control territory, tagged as needing more citations, ran to about 43 rows when read in November 2026, 16 of them in Myanmar.",
+    "Colombia's president gave FARC a 42,000 square kilometre safe haven in 1998 and ordered it retaken in 2002.",
+    "Chinese Soviet Republic, 1931 to 1934: more than 3.4 million people across about 70,000 square kilometres.",
+    "Al-Shabaab runs named departments for tax, local administration, courts and police."
+   ],
+   "essay": "Rebel-run territory is land where an armed movement fighting a government also acts as a government, while the war is still going on. It differs from a settled unrecognised state such as Somaliland or Wa State, listed elsewhere, because the fighting has not stopped and the line can move in any month. The owner on paper does not change. The people there pay tax to one authority, and the law of the wider world names another.\n\nThis is common. Karen Albert's dataset in the Journal of Peace Research covers 235 rebel groups from 1945 to 2012, codes 25 kinds of institution for every year, and finds that nearly 64% created at least one governing institution. Her abstract reports that rebel strength does not predict all institutions in the same direction, and that the pattern changed after the Cold War.\n\nThe forms vary. In Ireland the Dáil, the rebel parliament, decreed a court system on 29 June 1920 to undermine British rule, with local IRA men, clergy and Sinn Féin figures sitting as judges and women eligible. In Nepal, by May 1998 Maoists controlled 51 village development committees (the local government unit) and ran a parallel People's Government. In the Philippines the New People's Army reported 735 organising committees and 60 revolutionary committees by 1972, covering an estimated 400,000 people, and collected what it called revolutionary taxes. In Somalia, al-Shabaab has named departments for tax, local administration, courts and police. The researcher Ana Arjona, studying Colombia, uses the word rebelocracy for cases where an armed group regulates many parts of local life, and finds that communities with strong local institutions can limit that control.\n\nInternational law addresses all this without granting anything. Common Article 3 of the Geneva Conventions binds both sides of an internal war, forbids sentences without a regularly constituted court, and says its application does not affect the legal status of the parties. Additional Protocol II covers groups that control part of a state's territory, and says nothing in it may be used to affect that state's sovereignty. An ICRC blog post records a live argument: one view, associated with a scholar named Bhuta and Justice Alito's dissent in the US case Hamdan, reads a regular court as one set up under a state's domestic law, leaving rebels no basis for courts at all. The author argues that equality between the two sides should let an armed group rely on its own legislation, and notes that the 2016 ICRC commentary says states need not give such trials legal effect.\n\nEndings show how the land is lost or kept. Colombia gave FARC 42,000 square kilometres in 1998 and ordered the army to retake it on 21 February 2002. The Chinese Soviet Republic governed over 3.4 million people until encirclement forced its leaders out in October 1934, and those leaders won China in 1949. Nepal's Maoists signed a peace accord in 2006 and went on to lead governments. Free Derry's barricades came down on 31 July 1972 before thousands of British troops. Each of these movements rested on a people or a party with a claim of its own, and none of them was a private venture. Where such a movement won, the result was an ordinary state or a seat in an existing government, under ordinary law.",
+   "sources": [
+    {
+     "t": "Albert, What is rebel governance? (Journal of Peace Research, 2022), abstract via IDEAS/RePEc",
+     "u": "https://ideas.repec.org/a/sae/joupea/v59y2022i4p622-630.html"
+    },
+    {
+     "t": "Common Article 3 of the Geneva Conventions, text at Crimes of War",
+     "u": "https://www.crimesofwar.org/misc/article3"
+    },
+    {
+     "t": "Additional Protocol II (1977), text at Latvian Laws (likumi.lv)",
+     "u": "https://likumi.lv/ta/lv/en/starptautiskie-ligumi/id/1101-protocol-additional-to-the-geneva-conventions-of-12-august-1949-and-relating-to-the-protection-of-victims-of-non-international-armed"
+    },
+    {
+     "t": "ICRC: Article 8 of the Rome Statute",
+     "u": "https://icrc.org/en/document/article-8-statute-international-criminal-court"
+    },
+    {
+     "t": "ICRC Law and Policy blog: Courts of armed groups, legal basis (2016)",
+     "u": "https://blogs.icrc.org/law-and-policy/2016/10/11/courts-armed-groups-legal-basis/"
+    },
+    {
+     "t": "Northwestern IPR: Arjona on rebelocracy in Colombia (2017)",
+     "u": "https://www.ipr.northwestern.edu/news/2017/arjona-rebelocracy-colombia-civil-war.html"
+    },
+    {
+     "t": "Wikipedia: List of rebel groups that control territory",
+     "u": "https://en.wikipedia.org/wiki/List_of_rebel_groups_that_control_territory"
+    },
+    {
+     "t": "Wikipedia: Revolutionary Armed Forces of Colombia",
+     "u": "https://en.wikipedia.org/wiki/Revolutionary_Armed_Forces_of_Colombia"
+    },
+    {
+     "t": "Wikipedia: Chinese Soviet Republic",
+     "u": "https://en.wikipedia.org/wiki/Chinese_Soviet_Republic"
+    },
+    {
+     "t": "Wikipedia: Dáil Courts",
+     "u": "https://en.wikipedia.org/wiki/Dáil_Courts"
+    },
+    {
+     "t": "Wikipedia: New People's Army",
+     "u": "https://en.wikipedia.org/wiki/New_People's_Army"
+    },
+    {
+     "t": "Wikipedia: Communist Party of Nepal (Maoist Centre)",
+     "u": "https://en.wikipedia.org/wiki/Communist_Party_of_Nepal_(Maoist_Centre)"
+    },
+    {
+     "t": "Wikipedia: Al-Shabaab (militant group)",
+     "u": "https://en.wikipedia.org/wiki/Al-Shabaab_(militant_group)"
+    },
+    {
+     "t": "Wikipedia: Free Derry",
+     "u": "https://en.wikipedia.org/wiki/Free_Derry"
+    },
+    {
+     "t": "Wikipedia: Kawthoolei",
+     "u": "https://en.wikipedia.org/wiki/Kawthoolei"
+    }
+   ],
    "odds": {
-    "build": 0,
-    "law": 0,
-    "money": 0,
-    "hold": 0,
-    "recog": 0,
-    "why": ""
+    "build": 25,
+    "law": 1,
+    "money": 10,
+    "hold": 5,
+    "recog": 1,
+    "why": "Estimates. Holding ground is possible with fighters and a local population, and 64% of the groups in one dataset built some institution. Law gives nothing: Common Article 3 leaves legal status unchanged. Money comes from taxing people and trade, which requires the land first. Most holdings end through defeat or a peace deal, and recognition by another state is rare."
    },
    "own": {
-    "own": 0,
-    "own_why": ""
+    "own": 0.3,
+    "own_people": 4,
+    "own_why": "You get courts, taxes and police on land while you hold it, which fails the test because the state still claims it and attacks when able. Caguán lasted about 3 years and the Chinese Soviet Republic 3. Hamas, the Houthis and al-Shabaab have passed 10 years under attack, and all of them rest on an existing people or movement, so a private group has far less to stand on."
    }
   },
   {
    "id": "warlords-and-armed-crime",
-   "name": "x",
+   "name": "Warlords and armed crime running territory",
    "band": "War and force",
-   "essay": "",
-   "sources": [],
-   "rules": [],
+   "who_owns": "The country it sits in. A warlord or armed criminal group holds the land by force and makes money from it, and may have a deal with the state's officers, but no law transfers it to them.",
+   "rules": [
+    {
+     "cite": "UN Convention against Transnational Organized Crime, Art. 2(a)",
+     "says": "An organised criminal group is a structured group of three or more persons, existing for a period of time and acting together to commit serious crimes for financial or other material benefit."
+    },
+    {
+     "cite": "UN Convention against Transnational Organized Crime, Art. 5",
+     "says": "Each party must make it a crime to knowingly take part in such a group's criminal activities, or to organise, direct or assist serious crime involving one."
+    },
+    {
+     "cite": "Rome Statute Art. 8(2)(e)(v)",
+     "says": "Pillaging a town or place, even when taken by assault, is a war crime in an internal armed conflict."
+    },
+    {
+     "cite": "UN Security Council Resolution 1306 (2000), para. 1",
+     "says": "Required all states to prohibit the direct or indirect import of all rough diamonds from Sierra Leone."
+    }
+   ],
+   "hook": "Crime laws under a UN treaty apply to everyone who takes part in the group, so running a territory this way leaves its leaders open to arrest, sanctions, extradition or trial whenever they lose control or leave.",
+   "can_you_build": "Physically, yes while the guns and local deals hold: KK Park in Myanmar had its own supermarkets, hospital and hotels, and Greater Liberia had its own currency and airfields. Legally, nothing built this way has any standing, and Myanmar approved only 59 villas at Shwe Kokko against a project promoted as a 15 billion US dollar zone.",
+   "facts": [
+    "Rio de Janeiro, 2020 study: militias held 57.5% of the city's territory and about 2.2 million residents; Comando Vermelho 11.4%.",
+    "OHCHR, 2023: at least 120,000 people in Myanmar may be held in forced online scam work, with estimates around 100,000 in Cambodia.",
+    "Kokang, Myanmar: about 1,895 square kilometres and about 150,000 people in 2009.",
+    "China's Warlord Era ran from 1916 to 1928, by the usual count.",
+    "Charles Taylor was sentenced to 50 years by the Special Court for Sierra Leone on 11 counts."
+   ],
+   "essay": "A warlord or armed criminal group runs territory for what it pays. The aim is income from diamonds, opium, casinos, extortion or scam compounds, and any courts and services serve that income. Some of these groups also have political programmes, and the line with rebel movements is not clean. The land stays, in law, with the country around it.\n\nThe largest cases grew where a state had collapsed. After Yuan Shikai died in 1916, China split among military cliques, with Zhang Zuolin holding Manchuria and rival groups holding northern and southeastern provinces, and whoever held Beijing claimed the national government. Reunification in 1928 was partial: Yan Xishan of Shanxi rebelled in 1929 and several warlords kept influence into the 1940s. In Liberia, Charles Taylor's National Patriotic Front held up to 90% of the country, ran a capital at Gbarnga with its own currency, banks and radio, and exported diamonds, timber and gold. He then won election as president. A UN-backed court later sentenced him to 50 years for aiding Sierra Leone's RUF rebels. The RUF held diamond fields and bought arms with the money, and the UN Security Council banned imports of Sierra Leone's rough diamonds on 5 July 2000.\n\nThe scam towns of Myanmar show the modern form. Shwe Kokko, on the Thai border, is the headquarters of a militia of about 6,000 troops whose company was due 30% of the profits of Yatai New City. Yatai promoted it as a 15 billion US dollar special economic zone, and Myanmar never approved one. KK Park nearby had its own hospital and hotels, and a 2024 Deutsche Welle investigation reported confiscated passports, 17-hour days and torture. The UN human rights office reported in 2023 that at least 120,000 people across Myanmar might be held in forced scam work. Pressure came from outside: Thailand cut power and fuel in February 2025 after pressure from China, and Myanmar's army raided KK Park in October 2025 and Shwe Kokko in November. Critics quoted by AP say the masterminds carry on elsewhere. The Karen groups accused of involvement deny it.\n\nInside working countries, armed groups can hold neighbourhoods with no claim to independence. A 2020 study of Rio de Janeiro, built from 37,883 tip-line reports, gave militias 57.5% of the city's territory and Comando Vermelho 11.4%. In Medellín, the Oficina de Envigado acted as chief mediator and debt collector in drug disputes, and its leader Diego Murillo struck a deal with authorities from prison to keep violence down before he was extradited in 2008. In Michoacán the Knights Templar Cartel fought rivals and armed residents until federal police arrested its leader in 2015; it is believed to have ended by 2017.\n\nThe record on duration is mixed. Kokang's MNDAA got a ceasefire and a self-run special region in 1989, lost it to the army after refusing to become a border guard force in 2009, and retook its capital in December 2023. In September 2025 China sentenced 16 members of a Kokang crime family to death. Holding depends on a state's attention and on neighbouring states' tolerance, and the people at the top carry personal legal risk that outlasts the territory.",
+   "sources": [
+    {
+     "t": "UN Convention against Transnational Organized Crime, text at University of Oslo",
+     "u": "https://jus.uio.no/english/services/library/treaties/04/4-05/un-transnational-organized.html"
+    },
+    {
+     "t": "ICRC: Article 8 of the Rome Statute",
+     "u": "https://icrc.org/en/document/article-8-statute-international-criminal-court"
+    },
+    {
+     "t": "UN Security Council Resolution 1306 (2000)",
+     "u": "https://humanrts.umn.edu/resolutions/SC00/1306SC00.html"
+    },
+    {
+     "t": "Business and Human Rights Centre: OHCHR report on online scam operations (2023)",
+     "u": "https://business-humanrights.org/en/latest-news/southeast-asia-ohchrs-report-reveals-hundreds-of-thousands-of-victims-held-in-online-scam-operations-in-southeast-asia-with-cambodia-myanmar-as-main-hubs"
+    },
+    {
+     "t": "Correio Braziliense: Militias control 57% of Rio, study says (2020)",
+     "u": "https://www.correiobraziliense.com.br/brasil/2020/10/4883182-milicias-controlam-57--do-territorio-do-rio-de-janeiro-informa-estudo.html"
+    },
+    {
+     "t": "SBS News: Liberia's Charles Taylor sentenced to 50 years",
+     "u": "https://www.sbs.com.au/news/article/liberias-charles-taylor-sentenced-to-50-years/gdwmwfnuz"
+    },
+    {
+     "t": "AP via KSAT: Myanmar military raids major cybercrime center (2025)",
+     "u": "https://www.ksat.com/news/world/2025/10/20/myanmar-military-raids-major-cybercrime-center-detains-over-2000-people/"
+    },
+    {
+     "t": "AP via News4Jax: Myanmar military raids second scam center (2025)",
+     "u": "https://www.news4jax.com/news/world/2025/11/19/myanmars-military-says-it-detained-foreigners-in-raid-on-a-second-major-online-scam-center/"
+    },
+    {
+     "t": "Wikipedia: Warlord Era",
+     "u": "https://en.wikipedia.org/wiki/Warlord_Era"
+    },
+    {
+     "t": "Wikipedia: Greater Liberia",
+     "u": "https://en.wikipedia.org/wiki/Greater_Liberia"
+    },
+    {
+     "t": "Wikipedia: Revolutionary United Front",
+     "u": "https://en.wikipedia.org/wiki/Revolutionary_United_Front"
+    },
+    {
+     "t": "Wikipedia: Shwe Kokko",
+     "u": "https://en.wikipedia.org/wiki/Shwe_Kokko"
+    },
+    {
+     "t": "Wikipedia: KK Park",
+     "u": "https://en.wikipedia.org/wiki/KK_Park"
+    },
+    {
+     "t": "Wikipedia: Kokang",
+     "u": "https://en.wikipedia.org/wiki/Kokang"
+    },
+    {
+     "t": "Wikipedia: Comando Vermelho",
+     "u": "https://en.wikipedia.org/wiki/Comando_Vermelho"
+    },
+    {
+     "t": "Wikipedia: Oficina de Envigado",
+     "u": "https://en.wikipedia.org/wiki/Oficina_de_Envigado"
+    },
+    {
+     "t": "Wikipedia: Knights Templar Cartel",
+     "u": "https://en.wikipedia.org/wiki/Knights_Templar_Cartel"
+    }
+   ],
    "odds": {
-    "build": 0,
+    "build": 30,
     "law": 0,
-    "money": 0,
-    "hold": 0,
+    "money": 30,
+    "hold": 4,
     "recog": 0,
-    "why": ""
+    "why": "Estimates. Force and illegal income can build a compound or hold a town, and KK Park went up in about two years. Law offers nothing, and organised crime treaties make taking part an offence. Money is the strongest element, since these groups exist for it. Holding depends on neighbouring states; Thailand's power cut and Myanmar's raids ended the visible phase of KK Park in about 6 years. No recognition by another state was found for these cases."
    },
    "own": {
-    "own": 0,
-    "own_why": ""
+    "own": 0.15,
+    "own_people": null,
+    "own_why": "You get armed control and income, and rules enforced by your own men, while a state looks away. It fails the test because the state's law still applies and can return, as at Kokang in 2009 and KK Park in 2025, and leaders face arrest abroad. Figure sits below holding land with private soldiers because the income itself draws outside enforcement."
    }
   }
  ]
