@@ -1328,7 +1328,7 @@ INFL.forEach(([k, t]) => {
   LAYERS.push({ id: "inf_" + k, grp: "infra", label: m.title, fixed: true, unit: t === "n" ? "" : "",
     val: (c) => { const v = (INF.by[c.iso] || {})[k]; return v == null ? 0 : t === "money" ? v * 1e6 : t === "pct" ? v * 100 : t === "pct100" ? Math.max(0, v) : v; },
     fmtv: (v) => t === "money" || t === "usd" ? money(v) : t === "pct" || t === "pct100" ? trim1(v) + "%" : t === "pctgdp" ? (v < 1 ? v.toFixed(2) : trim1(v)) + "% of GDP" : fmt(Math.round(v)),
-    note: m.title + " (" + m.years + "). " + m.how + " Source: " + m.src + "." });
+    note: m.plain ? m.plain + " Source: " + m.src + "." : m.title + " (" + m.years + "). " + m.how + " Source: " + m.src + "." });
   LY["inf_" + k] = LAYERS[LAYERS.length - 1];
 });
 function infraTrHTML() {
