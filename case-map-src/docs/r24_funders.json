@@ -346,7 +346,8 @@
 "mozambique-lng-afungi",
 "xe-pian-xe-namnoy-collapse",
 "xayaburi-dam-thai-banks",
-"theun-hinboun-expansion"
+"theun-hinboun-expansion",
+"hongsa-lignite-thai-banks"
 ],
 "also": [
 "Thai Exim Bank"
@@ -1036,7 +1037,8 @@
 "salonga-wwf-ecoguards-usaid-kfw",
 "northern-rangelands-isiolo-conservancies",
 "bolivia-chapare-us-funded-eradication",
-"haiti-creole-pig-eradication"
+"haiti-creole-pig-eradication",
+"con-son-tiger-cages-us-aid"
 ],
 "also": []
 },
@@ -1048,7 +1050,30 @@
 "wwf-cameroon-baka-ecoguards",
 "chitwan-wwf-ranger-custody-death",
 "messok-dja-baka-ecoguards",
-"salonga-wwf-ecoguards-usaid-kfw"
+"salonga-wwf-ecoguards-usaid-kfw",
+"kaziranga-wwf-guards-shootings"
+],
+"also": []
+},
+{
+"name": "KfW",
+"type": "state bank",
+"hq": null,
+"case_ids": [
+"salonga-wwf-ecoguards-usaid-kfw",
+"limpopo-national-park-kfw-resettlement",
+"loliondo-obc-maasai-evictions"
+],
+"also": []
+},
+{
+"name": "European Union",
+"type": "donor agency",
+"hq": null,
+"case_ids": [
+"libya-coast-guard-eu-italy-detention",
+"desert-dumps-eu-north-africa",
+"virunga-eu-rangers-residents"
 ],
 "also": []
 },
@@ -1059,6 +1084,76 @@
 "case_ids": [
 "plan-colombia-aerial-spraying",
 "bolivia-chapare-us-funded-eradication"
+],
+"also": []
+},
+{
+"name": "African Parks",
+"type": "conservation funder",
+"hq": null,
+"case_ids": [
+"african-parks-odzala-baka",
+"nech-sar-african-parks-guji"
+],
+"also": []
+},
+{
+"name": "Global Environment Facility",
+"type": "donor agency",
+"hq": null,
+"case_ids": [
+"messok-dja-baka-ecoguards",
+"komodo-tnc-gef-fishers-shot"
+],
+"also": []
+},
+{
+"name": "Germany",
+"type": "government",
+"hq": null,
+"case_ids": [
+"somsanga-drug-detention-laos",
+"desert-dumps-eu-north-africa"
+],
+"also": []
+},
+{
+"name": "UN Office on Drugs and Crime",
+"type": "UN body",
+"hq": null,
+"case_ids": [
+"somsanga-drug-detention-laos",
+"unodc-iran-counter-narcotics-executions"
+],
+"also": []
+},
+{
+"name": "UNICEF",
+"type": "UN body",
+"hq": null,
+"case_ids": [
+"choam-chao-unicef-youth-centre",
+"unicef-tube-wells-bangladesh-arsenic"
+],
+"also": []
+},
+{
+"name": "The Nature Conservancy",
+"type": "conservation funder",
+"hq": null,
+"case_ids": [
+"guaraquecaba-carbon-reserves",
+"komodo-tnc-gef-fishers-shot"
+],
+"also": []
+},
+{
+"name": "Italy",
+"type": "government",
+"hq": null,
+"case_ids": [
+"libya-coast-guard-eu-italy-detention",
+"desert-dumps-eu-north-africa"
 ],
 "also": []
 },
@@ -1099,15 +1194,6 @@
 "also": []
 },
 {
-"name": "KfW",
-"type": "state bank",
-"hq": null,
-"case_ids": [
-"salonga-wwf-ecoguards-usaid-kfw"
-],
-"also": []
-},
-{
 "name": "FACE Foundation",
 "type": "conservation funder",
 "hq": null,
@@ -1131,15 +1217,6 @@
 "hq": null,
 "case_ids": [
 "karachi-brt-red-line-university-road"
-],
-"also": []
-},
-{
-"name": "African Parks",
-"type": "conservation funder",
-"hq": null,
-"case_ids": [
-"african-parks-odzala-baka"
 ],
 "also": []
 },
@@ -1180,15 +1257,6 @@
 "also": []
 },
 {
-"name": "Global Environment Facility",
-"type": "donor agency",
-"hq": null,
-"case_ids": [
-"messok-dja-baka-ecoguards"
-],
-"also": []
-},
-{
 "name": "UNDP",
 "type": "UN body",
 "hq": null,
@@ -1225,38 +1293,11 @@
 "also": []
 },
 {
-"name": "Germany",
-"type": "government",
-"hq": null,
-"case_ids": [
-"somsanga-drug-detention-laos"
-],
-"also": []
-},
-{
 "name": "Australia",
 "type": "government",
 "hq": null,
 "case_ids": [
 "somsanga-drug-detention-laos"
-],
-"also": []
-},
-{
-"name": "UN Office on Drugs and Crime",
-"type": "UN body",
-"hq": null,
-"case_ids": [
-"somsanga-drug-detention-laos"
-],
-"also": []
-},
-{
-"name": "UNICEF",
-"type": "UN body",
-"hq": null,
-"case_ids": [
-"choam-chao-unicef-youth-centre"
 ],
 "also": []
 },
@@ -1281,15 +1322,6 @@
 {
 "name": "American Electric Power",
 "type": "company",
-"hq": null,
-"case_ids": [
-"guaraquecaba-carbon-reserves"
-],
-"also": []
-},
-{
-"name": "The Nature Conservancy",
-"type": "conservation funder",
 "hq": null,
 "case_ids": [
 "guaraquecaba-carbon-reserves"
@@ -1338,6 +1370,33 @@
 "hq": null,
 "case_ids": [
 "caracol-industrial-park-haiti"
+],
+"also": []
+},
+{
+"name": "Peace Parks Foundation",
+"type": "foundation",
+"hq": null,
+"case_ids": [
+"limpopo-national-park-kfw-resettlement"
+],
+"also": []
+},
+{
+"name": "Virunga Foundation",
+"type": "foundation",
+"hq": null,
+"case_ids": [
+"virunga-eu-rangers-residents"
+],
+"also": []
+},
+{
+"name": "Frankfurt Zoological Society",
+"type": "conservation funder",
+"hq": null,
+"case_ids": [
+"loliondo-obc-maasai-evictions"
 ],
 "also": []
 }
@@ -1569,7 +1628,8 @@
 "btc-pipeline-georgia",
 "btc-pipeline-ardahan-turkey",
 "rapu-rapu-cyanide-spills-2005",
-"dabhol-enron-guhagar"
+"dabhol-enron-guhagar",
+"golden-veroleum-sinoe-palm"
 ],
 "also": [
 "ABN Amro"
@@ -1600,6 +1660,18 @@
 "also": [
 "Standard Bank Group"
 ]
+},
+{
+"name": "MUFG",
+"type": "bank",
+"hq": null,
+"case_ids": [
+"nam-theun-2",
+"mozambique-lng-afungi",
+"cirebon-1-coal-kanci",
+"tbla-dgs-mufg-danamon-peat"
+],
+"also": []
 },
 {
 "name": "Bank of Ayudhya",
@@ -1684,17 +1756,6 @@
 "also": []
 },
 {
-"name": "MUFG",
-"type": "bank",
-"hq": null,
-"case_ids": [
-"nam-theun-2",
-"mozambique-lng-afungi",
-"cirebon-1-coal-kanci"
-],
-"also": []
-},
-{
 "name": "Natixis",
 "type": "bank",
 "hq": null,
@@ -1728,6 +1789,17 @@
 "also": [
 "HVB/UniCredit"
 ]
+},
+{
+"name": "Maybank",
+"type": "bank",
+"hq": null,
+"case_ids": [
+"obi-kawasi-nickel-hpal",
+"enb-tobar-maybank-watwat",
+"pomio-rimbunan-hijau-police"
+],
+"also": []
 },
 {
 "name": "Bangkok Bank",
@@ -1868,6 +1940,26 @@
 "case_ids": [
 "btc-pipeline-georgia",
 "ocp-pipeline-westlb-spills"
+],
+"also": []
+},
+{
+"name": "OCBC",
+"type": "bank",
+"hq": null,
+"case_ids": [
+"obi-kawasi-nickel-hpal",
+"pomio-rimbunan-hijau-police"
+],
+"also": []
+},
+{
+"name": "Rabobank",
+"type": "bank",
+"hq": null,
+"case_ids": [
+"indofood-lonsum-bank-financing",
+"golden-veroleum-sinoe-palm"
 ],
 "also": []
 },
@@ -2198,15 +2290,6 @@
 "also": []
 },
 {
-"name": "Maybank",
-"type": "bank",
-"hq": null,
-"case_ids": [
-"obi-kawasi-nickel-hpal"
-],
-"also": []
-},
-{
 "name": "NM Rothschild & Sons",
 "type": "bank",
 "hq": null,
@@ -2234,29 +2317,11 @@
 "also": []
 },
 {
-"name": "OCBC",
-"type": "bank",
-"hq": null,
-"case_ids": [
-"obi-kawasi-nickel-hpal"
-],
-"also": []
-},
-{
 "name": "OCBC NISP",
 "type": "bank",
 "hq": null,
 "case_ids": [
 "obi-kawasi-nickel-hpal"
-],
-"also": []
-},
-{
-"name": "Rabobank",
-"type": "bank",
-"hq": null,
-"case_ids": [
-"indofood-lonsum-bank-financing"
 ],
 "also": []
 },
@@ -2378,6 +2443,24 @@
 "also": [
 "Westpac Bank PNG"
 ]
+},
+{
+"name": "RHB",
+"type": "bank",
+"hq": null,
+"case_ids": [
+"pomio-rimbunan-hijau-police"
+],
+"also": []
+},
+{
+"name": "SMBC Group",
+"type": "bank",
+"hq": null,
+"case_ids": [
+"korindo-papua-forest-clearing"
+],
+"also": []
 }
 ],
 "pay": [
@@ -2401,6 +2484,33 @@
 "myanmar-junta-foreign-banks"
 ],
 "also": []
+},
+{
+"name": "Banque de commerce, du développement et d'industrie (BCDI)",
+"type": "bank",
+"hq": null,
+"case_ids": [
+"drc-war-economy-bank-channels"
+],
+"also": []
+},
+{
+"name": "Citibank New York",
+"type": "bank",
+"hq": null,
+"case_ids": [
+"drc-war-economy-bank-channels"
+],
+"also": []
+},
+{
+"name": "Arab Bank",
+"type": "bank",
+"hq": null,
+"case_ids": [
+"arab-bank-hamas-transfers-verdict"
+],
+"also": []
 }
 ],
 "fdi": [
@@ -2417,7 +2527,8 @@
 "shell-vila-carioca-contamination",
 "shell-bonga-spill-2011",
 "shell-ogbodo-isiokpo-spill",
-"sakhalin-2-aniva-bay"
+"sakhalin-2-aniva-bay",
+"shell-basf-paulinia-pesticide-plant"
 ],
 "also": [
 "Royal Dutch Shell"
@@ -5215,6 +5326,69 @@
 "hq": "Prague, Czech Republic",
 "case_ids": [
 "bulgaria-2013-electricity-bills"
+],
+"also": []
+},
+{
+"name": "Wintek",
+"type": "company",
+"hq": null,
+"case_ids": [
+"wintek-suzhou-n-hexane"
+],
+"also": []
+},
+{
+"name": "Thor Chemical Holdings",
+"type": "company",
+"hq": null,
+"case_ids": [
+"thor-chemicals-cato-ridge-mercury"
+],
+"also": []
+},
+{
+"name": "Mitsubishi Chemical",
+"type": "company",
+"hq": null,
+"case_ids": [
+"asian-rare-earth-bukit-merah"
+],
+"also": []
+},
+{
+"name": "BASF",
+"type": "company",
+"hq": null,
+"case_ids": [
+"shell-basf-paulinia-pesticide-plant"
+],
+"also": []
+},
+{
+"name": "American Cyanamid",
+"type": "company",
+"hq": null,
+"case_ids": [
+"shell-basf-paulinia-pesticide-plant"
+],
+"also": []
+},
+{
+"name": "Gold Peak Industries",
+"type": "company",
+"hq": null,
+"case_ids": [
+"gold-peak-huizhou-cadmium"
+],
+"also": []
+},
+{
+"name": "New Frontier Trading Corporation",
+"type": "company",
+"hq": null,
+"case_ids": [
+"metales-y-derivados-tijuana-lead"
 ],
 "also": []
 }
