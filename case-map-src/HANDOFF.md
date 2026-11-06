@@ -120,3 +120,8 @@ WebFetch has an hourly limit shared across agents. Running several agents at onc
 
 - State after round 21: 901 cases, 44 profiled entities. Grant cases: `window.MK_GRANT_MORE`, also added by hand with their `kind:"gra"` field. Round 21 entities were added straight into `window.ENT.companies`; merge.py does not handle them. Dropped lists in `rounds/r20f_*.json` and `r21f_gp.json` hold open leads. Next: government loans, then private investment, plus patterns for grants and products split by kind.
 - Round 23: government loans beyond China and foreign-owned companies in thin regions. The Wintek poisoning case (China) passed the researcher's tests and was left out only because of the cap, so it is ready for a later round. Open leads are in `rounds/r23f_gi.json` dropped. Patterns for the new kinds are in `rounds/r22f_pats.json`, with their kinds in each pattern's `mk` field.
+
+## Round 24
+
+- Payment services kind (`pay`), set by `MK_PAY`. Named funders per kind: `window.MK_FUND`, from `docs/r24_funders.json`; rerun or extend when cases are added. Three cases removed, kept in `docs/r24_removed_cases.json`.
+- Private-loan condition layers: `rounds/r24f_conds.json`, added to `window.INFRA` as `prv_*`. Investor-claim layers (`fdi_*` in the scratchpad's r24_conds.json) were held: 42 country pages failed and rows came through a summarising tool. The owner was asked for UNCTAD's Excel file from investmentpolicy.unctad.org/publications/1303.
