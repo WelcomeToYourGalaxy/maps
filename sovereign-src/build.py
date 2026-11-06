@@ -56,6 +56,11 @@ for n in('combo_sea','combo_space','combo_land','combo_people'):
             z['_band']={'combo_sea':'Combinations: sea and ice','combo_space':'Combinations: air and space','combo_land':'Combinations: land and legal status','combo_people':'Combinations: people, money and paper'}[n]
             if z['id'] not in _seenz:combo_zones.append(z)
         extra+=d['cases']
+# new routes and combinations carried in patch files
+_NEWOWN={}
+for _f in sorted(__import__('glob').glob(os.path.join(R,'patch_*.json'))):
+    for z in json.load(open(_f,encoding='utf8')).get('zones_new',[]):
+        z['_band']=z.pop('band');_NEWOWN[z['id']]=z.pop('own');combo_zones.append(z)
 DROP={'space':{'dominion-of-melchizedek','aerican-empire','praxis','zuzalu','sovereign-order-of-malta','talossa'}}
 space=[r for r in space if r['id'] not in DROP['space']]
 fix(extra,'fix_routes');fix(extra,'fix_other');fix(extra,'fix_purchase')
@@ -313,7 +318,7 @@ for e in ent:
         e['what']=r['what']
         for q in r.get('add_sources',[]):
             if q.get('u') and not any(x['u']==q['u'] for x in e['sources']):e['sources'].append(q)
-OWN=jl('own') or {}
+OWN=dict(jl('own') or {});OWN.update(_NEWOWN)
 COV=jl('coverage') or {}
 SHORT=open(os.path.join(HERE,'content','short.html')).read() if os.path.exists(os.path.join(HERE,'content','short.html')) else ''
 import glob as _g
@@ -348,6 +353,9 @@ for z in zones:
     if z['id'] in (jl('why4') or {}):z['odds']['why']=jl('why4')[z['id']]
     z['facts']=[f.replace('and 59 to a no vote.','and 59 to a no vote. The other 5 are votes in Niue, Tokelau (twice), Bougainville and Alberta.') if isinstance(f,str) else f for f in (z.get('facts') or [])]
     z['odds']['why']=z['odds']['why'].replace('Taiwan later burned buildings there, and','Taiwanese forces later moved against his men, and')
+_BO=['Beyond Earth','Orbit','Air','Sea surface','Under the sea and underground','Land, lakes and ice','Routes to get land','War and force','Leaving and settling','Rulers by title or treaty','No place','Combinations: sea and ice','Combinations: air and space','Combinations: land and legal status','Combinations: war and force','Combinations: people, money and paper']
+_bset=set(_BO);assert not {z['band'] for z in zones}-_bset,{z['band'] for z in zones}-_bset
+zones.sort(key=lambda z:_BO.index(z['band']))
 assert len(zones)==len(zs),set(zs)-{z['id'] for z in zones}
 for c in out:assert c['zid'] in zs,c['id']
 ZID={z['id'] for z in zones};ids={c['id'] for c in out}
