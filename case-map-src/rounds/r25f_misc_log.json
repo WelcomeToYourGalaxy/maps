@@ -1,0 +1,562 @@
+{
+ "part1": {
+  "table1": {
+   "source": "https://mptf.undp.org/sites/default/files/documents/2025-09/_financing_the_unds_report_2025.pdf",
+   "also_read": "https://www.daghammarskjold.se/wp-content/uploads/2025/09/dhf-financial-report-executive-summary-2025.pdf",
+   "columns": "Assessed, voluntary core, earmarked, other, total, US$ million",
+   "total_row": "13848 5737 40980 7057 67621; 40980/67621 = 60.6%",
+   "arithmetic": [
+    {
+     "org": "WFP",
+     "earmarked_m": 8150,
+     "total_m": 9124,
+     "row_check": "624 + 8150 + 350 = 9124",
+     "share_pct": 89.32,
+     "draft_pct": 89,
+     "match": true
+    },
+    {
+     "org": "UNICEF",
+     "earmarked_m": 7144,
+     "total_m": 8932,
+     "row_check": "1350 + 7144 + 438 = 8932",
+     "share_pct": 79.98,
+     "draft_pct": 80,
+     "match": true
+    },
+    {
+     "org": "UNDP",
+     "earmarked_m": 4822,
+     "total_m": 5934,
+     "row_check": "548 + 4822 + 565 = 5935, printed 5934, rounding",
+     "share_pct": 81.26,
+     "draft_pct": 81,
+     "match": true
+    },
+    {
+     "org": "UNHCR",
+     "earmarked_m": 3947,
+     "total_m": 4707,
+     "row_check": "50 + 587 + 3947 + 123 = 4707",
+     "share_pct": 83.85,
+     "draft_pct": 84,
+     "match": true
+    },
+    {
+     "org": "IOM",
+     "earmarked_m": 3158,
+     "total_m": 3528,
+     "row_check": "71 + 46 + 3158 + 253 = 3528",
+     "share_pct": 89.51,
+     "draft_pct": 90,
+     "match": true
+    },
+    {
+     "org": "WHO",
+     "earmarked_m": 2564,
+     "total_m": 3341,
+     "row_check": "494 + 237 + 2564 + 46 = 3341",
+     "share_pct": 76.74,
+     "draft_pct": 77,
+     "match": true
+    },
+    {
+     "org": "FAO",
+     "earmarked_m": 1814,
+     "total_m": 2399,
+     "row_check": "530 + 44 + 1814 + 11 = 2399",
+     "share_pct": 75.61,
+     "draft_pct": 76,
+     "match": true
+    },
+    {
+     "org": "UNFPA",
+     "earmarked_m": 1091,
+     "total_m": 1678,
+     "row_check": "364 + 1091 + 223 = 1678",
+     "share_pct": 65.02,
+     "draft_pct": 65,
+     "match": true
+    },
+    {
+     "org": "UNEP",
+     "earmarked_m": 557,
+     "total_m": 951,
+     "row_check": "218 + 79 + 557 + 96 = 950, printed 951, rounding",
+     "share_pct": 58.57,
+     "draft_pct": 59,
+     "match": true
+    }
+   ],
+   "note": "WFP, UNICEF, UNDP and UNFPA show three values before the total; the first is voluntary core, assessed blank. Earmarked is unaffected: each row adds to its total within 1."
+  },
+  "confirmed": [
+   "51% to 61% (report: \"grew from 51% to 61%\"); $20.3bn; $41bn; $49.6bn; $5.7bn",
+   "12.7% and 18.8% (SG summary); 81% (para 7); 44% and 13% (para 5); 57% (para 8); para 53 quote; seven states and 30% (paras 6, 24)",
+   "20.6% in 2017, from 22.4% in 2016, all-time low (para 4, share of OAD); 2003 (para 7)",
+   "OECD 11%, 21%, 18% and 27% to 23%, all shares of DAC total ODA; three quotes",
+   "42% and 6% (Development Matters)",
+   "342,812; nearly 50; over 340; $33.0bn; 49.2%",
+   "UNHCR 36%, $420.8m, $394.8m, $80m, Hyde quote",
+   "WFP roughly 80% and constraints",
+   "WHO 87% and 50%",
+   "CIDRAP 640, $5.5bn, $3.2bn, spokesperson quote",
+   "Devex quote and date",
+   "US 19.2%, $18.1bn, $13bn; France, Netherlands over 30%; UK, Norway, Japan over 20%; China close to $600m; EU"
+  ],
+  "corrections": [
+   {
+    "what": "Noudéhou removed (two-thirds, unforeseen needs, pooled funds more than tripled 2010-2022)",
+    "why": "No source was listed for it. Not in the 2025 report or summary, the 2026 report, the MPTF 2024 annual report, or Linnér and Reinsberg, where he appears only as production lead or in an unrelated foreword; two searches found nothing. The reports say pooled funds doubled 2016-2021.",
+    "replaced_with": "MPTF 2024 annual report: 67% of $74.3bn in 2022, \"a significant barrier to flexibility and responsiveness\"; DHF: $1.7bn to $3.4bn, $2.8bn in 2023.",
+    "url": "https://mptf.undp.org/sites/default/files/documents/2025-06/mptfo_2024_annual_report.pdf"
+   },
+   {
+    "what": "11.1% reworded",
+    "why": "It is the share of earmarked development contributions sent through inter-agency pooled funds, 2027 target 30%, from the DHF report, not the SG report. Draft read as development money generally.",
+    "url": "https://mptf.undp.org/sites/default/files/documents/2025-09/_financing_the_unds_report_2025.pdf"
+   },
+   {
+    "what": "UNHCR 52%, 29%: \"of contributions\" to \"of its available resources\", text and timeline",
+    "why": "UNHCR: \"as a proportion of UNHCR's available resources.\"",
+    "url": "https://www.unhcr.org/sites/default/files/2022-07/UNHCR%20Flexible%20Funding%20Report%202021.pdf"
+   },
+   {
+    "what": "Germany: year 2021 to labelled 2020; role \"Heavy earmarker\" replaced",
+    "why": "CGD Figure 3 is labelled 2020; the sentence has no year. \"Heavy\" is an opinion word.",
+    "url": "https://www.cgdev.org/blog/resuscitating-multilateral-system-europe-rescue"
+   },
+   {
+    "what": "OECD: \"heavy\" to \"extensive\"; \"warns\" dropped; subject changed",
+    "why": "Source says \"extensive reliance\" and \"multilateralism risks\", not multilateral bodies.",
+    "url": "https://www.donorplatform.org/wp-content/uploads/2026/04/0720370a-en.pdf"
+   },
+   {
+    "what": "42% line attributed to the OECD article, base stated, comparison year noted as unstated",
+    "why": "The article does not name the base year.",
+    "url": "https://oecd-development-matters.org/2024/11/24/reforming-multilateral-development-co-operation-in-a-changing-world/"
+   },
+   {
+    "what": "Reinsberg: $33.0bn scoped to DAC donors and operational bodies; \"reward\" dropped; margin 2.6% to 116.8% added",
+    "why": "Paper wording.",
+    "url": "https://link.springer.com/10.1007/s11558-024-09548-1"
+   },
+   {
+    "what": "Linnér and Reinsberg: \"measurable fall\" to \"statistically significant fall\"; UNDP wording to Human Development Index, within-country comparison",
+    "why": "Article wording. It gives no size for the fall.",
+    "url": "https://globalgovernanceforum.org/earmarked-funding-united-nations-matters/"
+   },
+   {
+    "what": "Linnér: \"pays for\" to \"helps pay for\"; \"rise sharply\" to \"multi-fold\"",
+    "why": "His word; the sentence names oversight functions, tied to core earlier in the piece.",
+    "url": "https://www.daghammarskjold.se/wp-content/uploads/2025/09/dhf-financial-report-executive-summary-2025.pdf"
+   },
+   {
+    "what": "Queen Mary: \"put part of the blame\" removed; \"endorsed\" to \"approved\"; university attributed to CIDRAP",
+    "why": "Opinion wording; WHO says approved; BMJ release does not name the university.",
+    "url": "https://who.int/mega-menu/about-us/who-funding"
+   },
+   {
+    "what": "Diaz-Herrera: the question she answered stated; \"told CIDRAP\" to \"quoted by CIDRAP\"",
+    "why": "Devex: \"Are they influencing the agenda of WHO?\" CIDRAP does not say who received the statement.",
+    "url": "https://www.devex.com/news/big-concerns-over-gates-foundation-s-potential-to-become-largest-who-donor-97377"
+   },
+   {
+    "what": "Roles: China \"outside the OECD group\" to donor committee; 30% and 20% roles scoped to development and humanitarian money; 57% scoped to UN bodies",
+    "why": "Report wording.",
+    "url": "https://mptf.undp.org/sites/default/files/documents/2025-09/_financing_the_unds_report_2025.pdf"
+   },
+   {
+    "what": "Added 2024 from the 2026 edition: $41.4bn, 61%, of $68.3bn",
+    "why": "A newer edition exists. Flag: the 2023 organisation table was not updated to 2024.",
+    "url": "https://www.daghammarskjold.se/wp-content/uploads/2026/09/dhf-financial-report-2026-web.pdf"
+   }
+  ],
+  "not_resolved": [
+   "SG advance copy shows two symbols on the cover; A/80/74/Add.1 kept.",
+   "2026 edition has newer figures that were not carried beyond the one line."
+  ]
+ },
+ "part2": {
+  "spot_check": {
+   "sample_method": "5 largest; 10 evenly spaced from the middle half of ranks; 10 by random.Random(20251105) from the rest. Cambodia drew in the sample but its country page refused at every address tried, so Bolivia, next draw, replaced it; Cambodia's one case confirmed at /cases/1186.",
+   "count_match": "25 of 25",
+   "outcomes": "Compared on 21 (19 tabulated plus Venezuela, Bolivia): all match except one unreturned outcome (Belize).",
+   "rows": [
+    {
+     "iso3": "VEN",
+     "group": "largest",
+     "draft_n": 67,
+     "page_n": 67,
+     "outcome_diff": {},
+     "note": "Five largest claims printed in USD; draft leaves money blank.",
+     "url": "https://investmentpolicy.unctad.org/investment-dispute-settlement/country/228/venezuela-bolivarian-republic-of/respondent"
+    },
+    {
+     "iso3": "ARG",
+     "group": "largest",
+     "draft_n": 65,
+     "page_n": 65,
+     "url": "https://investmentpolicy.unctad.org/investment-dispute-settlement/country/8/argentina/respondent"
+    },
+    {
+     "iso3": "MEX",
+     "group": "largest",
+     "draft_n": 61,
+     "page_n": 61,
+     "url": "https://investmentpolicy.unctad.org/investment-dispute-settlement/country/136/mexico"
+    },
+    {
+     "iso3": "ESP",
+     "group": "largest",
+     "draft_n": 57,
+     "page_n": 57,
+     "url": "https://investmentpolicy.unctad.org/investment-dispute-settlement/country/197/spain/respondent"
+    },
+    {
+     "iso3": "EGY",
+     "group": "largest",
+     "draft_n": 46,
+     "page_n": 46,
+     "url": "https://investmentpolicy.unctad.org/investment-dispute-settlement/country/62/egypt/respondent"
+    },
+    {
+     "iso3": "BOL",
+     "group": "random, replaces Cambodia",
+     "draft_n": 19,
+     "page_n": 19,
+     "outcome_diff": {},
+     "claimed_draft_m": 6286.8,
+     "claimed_page_all_printed_usd_m": 6286.8,
+     "awarded_draft_m": 1152.19,
+     "awarded_page_all_printed_usd_m": 1152.19,
+     "url": "https://investmentpolicy.unctad.org/investment-dispute-settlement/country/24/bolivia-plurinational-state-of/investor"
+    },
+    {
+     "iso3": "KOR",
+     "draft_n": 10,
+     "page_n": 10,
+     "outcome_diff": {},
+     "claimed_draft_m": 7435.9,
+     "claimed_page_usd_labelled_m": 7349.1,
+     "claimed_page_all_printed_usd_m": 7435.9,
+     "awarded_draft_m": 349.7,
+     "awarded_page_all_printed_usd_m": 349.7,
+     "group": "middling"
+    },
+    {
+     "iso3": "LTU",
+     "draft_n": 8,
+     "page_n": 8,
+     "outcome_diff": {},
+     "claimed_draft_m": 312.1,
+     "claimed_page_usd_labelled_m": 312.1,
+     "claimed_page_all_printed_usd_m": 725.7,
+     "awarded_draft_m": 0.0,
+     "awarded_page_all_printed_usd_m": 0,
+     "group": "middling"
+    },
+    {
+     "iso3": "IDN",
+     "draft_n": 7,
+     "page_n": 7,
+     "outcome_diff": {},
+     "claimed_draft_m": 1908.9,
+     "claimed_page_usd_labelled_m": 1908.9,
+     "claimed_page_all_printed_usd_m": 1908.9,
+     "awarded_draft_m": 337.0,
+     "awarded_page_all_printed_usd_m": 337,
+     "group": "middling"
+    },
+    {
+     "iso3": "MUS",
+     "draft_n": 4,
+     "page_n": 4,
+     "outcome_diff": {},
+     "claimed_draft_m": 1000.0,
+     "claimed_page_usd_labelled_m": 1000,
+     "claimed_page_all_printed_usd_m": 1040.0,
+     "awarded_draft_m": null,
+     "awarded_page_all_printed_usd_m": 0,
+     "group": "middling"
+    },
+    {
+     "iso3": "CMR",
+     "draft_n": 3,
+     "page_n": 3,
+     "outcome_diff": {},
+     "claimed_draft_m": null,
+     "claimed_page_usd_labelled_m": 1000,
+     "claimed_page_all_printed_usd_m": 1112,
+     "awarded_draft_m": null,
+     "awarded_page_all_printed_usd_m": 0,
+     "group": "middling"
+    },
+    {
+     "iso3": "NIC",
+     "draft_n": 3,
+     "page_n": 3,
+     "outcome_diff": {},
+     "claimed_draft_m": 484.0,
+     "claimed_page_usd_labelled_m": 484,
+     "claimed_page_all_printed_usd_m": 484,
+     "awarded_draft_m": null,
+     "awarded_page_all_printed_usd_m": 0,
+     "group": "middling"
+    },
+    {
+     "iso3": "BLR",
+     "draft_n": 5,
+     "page_n": 5,
+     "outcome_diff": {},
+     "claimed_draft_m": 185.3,
+     "claimed_page_usd_labelled_m": 185.3,
+     "claimed_page_all_printed_usd_m": 185.3,
+     "awarded_draft_m": 20.4,
+     "awarded_page_all_printed_usd_m": 20.4,
+     "group": "middling"
+    },
+    {
+     "iso3": "ZWE",
+     "draft_n": 3,
+     "page_n": 3,
+     "outcome_diff": {},
+     "claimed_draft_m": 345.4,
+     "claimed_page_usd_labelled_m": 345.4,
+     "claimed_page_all_printed_usd_m": 361.0,
+     "awarded_draft_m": 189.9,
+     "awarded_page_all_printed_usd_m": 200.5,
+     "group": "random"
+    },
+    {
+     "iso3": "TKM",
+     "draft_n": 18,
+     "page_n": 18,
+     "outcome_diff": {},
+     "claimed_draft_m": 3017.8,
+     "claimed_page_usd_labelled_m": 3017.8,
+     "claimed_page_all_printed_usd_m": 3139.8,
+     "awarded_draft_m": 2.5,
+     "awarded_page_all_printed_usd_m": 5.2,
+     "group": "random"
+    },
+    {
+     "iso3": "BLZ",
+     "draft_n": 4,
+     "page_n": 4,
+     "outcome_diff": {
+      "settled": [
+       3,
+       2
+      ],
+      "?": [
+       0,
+       1
+      ]
+     },
+     "claimed_draft_m": 518.9,
+     "claimed_page_usd_labelled_m": 220.2,
+     "claimed_page_all_printed_usd_m": 518.9,
+     "awarded_draft_m": 146.7,
+     "awarded_page_all_printed_usd_m": 146.7,
+     "note": "Tool returned no outcome word for Dunkeld v. Belize (I), only its award date; draft has settled. Not resolved.",
+     "group": "random"
+    },
+    {
+     "iso3": "ALB",
+     "draft_n": 14,
+     "page_n": 14,
+     "outcome_diff": {},
+     "claimed_draft_m": 90.4,
+     "claimed_page_usd_labelled_m": 90.4,
+     "claimed_page_all_printed_usd_m": 1260.7,
+     "awarded_draft_m": 0.0,
+     "awarded_page_all_printed_usd_m": 247.8,
+     "group": "random"
+    },
+    {
+     "iso3": "ARE",
+     "draft_n": 7,
+     "page_n": 7,
+     "outcome_diff": {},
+     "claimed_draft_m": 690.8,
+     "claimed_page_usd_labelled_m": 690.8,
+     "claimed_page_all_printed_usd_m": 706.3,
+     "awarded_draft_m": null,
+     "awarded_page_all_printed_usd_m": 0,
+     "group": "random"
+    },
+    {
+     "iso3": "BGR",
+     "draft_n": 12,
+     "page_n": 12,
+     "outcome_diff": {},
+     "claimed_draft_m": 1206.0,
+     "claimed_page_usd_labelled_m": 1206,
+     "claimed_page_all_printed_usd_m": 2253.4,
+     "awarded_draft_m": null,
+     "awarded_page_all_printed_usd_m": 0,
+     "group": "middling"
+    },
+    {
+     "iso3": "BDI",
+     "draft_n": 4,
+     "page_n": 4,
+     "outcome_diff": {},
+     "claimed_draft_m": 187.0,
+     "claimed_page_usd_labelled_m": 187.0,
+     "claimed_page_all_printed_usd_m": 187.0,
+     "awarded_draft_m": 4.4,
+     "awarded_page_all_printed_usd_m": 4.4,
+     "group": "middling"
+    },
+    {
+     "iso3": "ETH",
+     "draft_n": 6,
+     "page_n": 6,
+     "outcome_diff": {},
+     "claimed_draft_m": 200.0,
+     "claimed_page_usd_labelled_m": 200,
+     "claimed_page_all_printed_usd_m": 201,
+     "awarded_draft_m": null,
+     "awarded_page_all_printed_usd_m": 0,
+     "group": "middling"
+    },
+    {
+     "iso3": "PRY",
+     "draft_n": 4,
+     "page_n": 4,
+     "outcome_diff": {},
+     "claimed_draft_m": 97.6,
+     "claimed_page_usd_labelled_m": 97.6,
+     "claimed_page_all_printed_usd_m": 98.9,
+     "awarded_draft_m": 60.0,
+     "awarded_page_all_printed_usd_m": 60,
+     "group": "random"
+    },
+    {
+     "iso3": "CYP",
+     "draft_n": 6,
+     "page_n": 6,
+     "outcome_diff": {},
+     "claimed_draft_m": 1792.2,
+     "claimed_page_usd_labelled_m": 500,
+     "claimed_page_all_printed_usd_m": 1792.2,
+     "awarded_draft_m": null,
+     "awarded_page_all_printed_usd_m": 0,
+     "group": "random"
+    },
+    {
+     "iso3": "OMN",
+     "draft_n": 4,
+     "page_n": 4,
+     "outcome_diff": {},
+     "claimed_draft_m": null,
+     "claimed_page_usd_labelled_m": 0,
+     "claimed_page_all_printed_usd_m": 0,
+     "awarded_draft_m": null,
+     "awarded_page_all_printed_usd_m": 0,
+     "group": "random"
+    },
+    {
+     "iso3": "COG",
+     "draft_n": 3,
+     "page_n": 3,
+     "outcome_diff": {},
+     "claimed_draft_m": null,
+     "claimed_page_usd_labelled_m": 1584,
+     "claimed_page_all_printed_usd_m": 1584,
+     "awarded_draft_m": null,
+     "awarded_page_all_printed_usd_m": 0,
+     "group": "random"
+    }
+   ]
+  },
+  "zeros": {
+   "checked": {
+    "JPN": [
+     "false zero",
+     "UNCTAD lists Shift Energy v. Japan (2020, decided for the State); the Japan page opened showed 6 home-state rows only.",
+     "https://investmentpolicy.unctad.org/investment-dispute-settlement/cases/1194/shift-energy-v-japan"
+    ],
+    "LUX": [
+     "false zero",
+     "UNCTAD lists Fridman v. Luxembourg (2024, pending); the Luxembourg page opened showed 46 home-state rows only.",
+     "https://investmentpolicy.unctad.org/investment-dispute-settlement/cases/1412/fridman-v-luxembourg"
+    ],
+    "GBR": [
+     "false zero",
+     "UNCTAD lists Sancheti v. UK (2006); the UK page opened showed home-state rows only, and it is longer than the reading tool returns.",
+     "https://investmentpolicy.unctad.org/investment-dispute-settlement/cases/234/sancheti-v-uk"
+    ],
+    "ISR": [
+     "not shown",
+     "Page opened at /investor shows 10 rows, all other respondents. /respondent and the plain address refused. No table of cases against Israel seen.",
+     "https://investmentpolicy.unctad.org/investment-dispute-settlement/country/102/israel/investor"
+    ],
+    "IRL": [
+     "not shown",
+     "Page opened at /investor shows 2 rows, Germany and Spain. /respondent and the plain address refused.",
+     "https://investmentpolicy.unctad.org/investment-dispute-settlement/country/100/ireland/investor"
+    ],
+    "SGP": [
+     "not shown",
+     "Plain address shows 12 rows, all other respondents. No \"No cases available\" text.",
+     "https://investmentpolicy.unctad.org/investment-dispute-settlement/country/190/singapore"
+    ],
+    "BHS": [
+     "not shown",
+     "Page opened at /investor shows 2 rows, Ecuador and Venezuela.",
+     "https://investmentpolicy.unctad.org/investment-dispute-settlement/country/14/bahamas/investor"
+    ],
+    "LIE": [
+     "not shown",
+     "Page opened at /investor shows 1 row, Moldova.",
+     "https://investmentpolicy.unctad.org/investment-dispute-settlement/country/120/liechtenstein/investor"
+    ],
+    "AUT": [
+     "not shown",
+     "Not in the flagged list, but the same fault: /respondent shows 32 rows, none against Austria, and no \"No cases available\" text. Japan shows such a page can miss a real case.",
+     "https://investmentpolicy.unctad.org/investment-dispute-settlement/country/12/austria/respondent"
+    ]
+   },
+   "kept": {
+    "MLI": "Page says \"No cases available.\"",
+    "TGO": "Page says \"No cases available.\""
+   }
+  },
+  "panama": "n 24 to 23: page lists Enel Fortuna twice (once in the second table). Rows file already holds 23.",
+  "money_zero_fix": "Money entries with n 0 but only other-currency amounts now have n null.",
+  "totals": {
+   "draft_rows": 1384,
+   "final_rows": 1383,
+   "unctad": "1,440 at 31 July 2025; 1,463 at 31 December 2025 on country pages",
+   "respondents": "127 countries plus EU vs 136 plus EU"
+  },
+  "zeph": "Zeph v. Australia (I) $198,202.4m confirmed on the Australia page; 27.3% of claimed layer as drafted.",
+  "page_ids_found": {
+   "Venezuela": 228,
+   "Mexico": 136,
+   "Spain": 197,
+   "Egypt": 62,
+   "Bulgaria": 30,
+   "Burundi": 32,
+   "Ethiopia": 67,
+   "Paraguay": 164,
+   "Congo": 47,
+   "Bolivia": 24,
+   "Hong Kong": 93,
+   "Korea": 111,
+   "Zimbabwe": 233,
+   "Turkmenistan": 215,
+   "UAE": 220
+  },
+  "address_note": "The same page often opens at one form (plain, /respondent, /investor) and refuses another.",
+  "recommendation": {
+   "fdi_isds_cases": "publish as partial",
+   "fdi_isds_claimed_usd": "do not publish",
+   "fdi_isds_awarded_usd": "do not publish"
+  }
+ },
+ "method": "WebFetch only for sources; WebSearch to find page addresses. Hit the hourly limit at about 04:39 UTC and waited until 05:01 UTC. All pages were read through the summarising tool, not as raw tables."
+}
