@@ -7,8 +7,8 @@ Live page: `globalization.html` in WelcomeToYourGalaxy/maps (published from `mai
 ## Current state (7 Nov 2026)
 
 - **946 cases** in the page data.
-- **479 cases have rounded "what happened to people" text** (`whole`), fact-checked and merged. The owner chose order 3: **largest harms first**. Rounds r26f_whole_h1 and h2 covered every case with recorded deaths or displacement (159 cases): 146 got text, 13 are blank (listed in `docs/r26_whole_order.json` via the case data; most failed because search ran out or EJAtlas pages would not render; retry them).
-- **Batch h3 (7 Nov)** retried the 13 harm-ranked blanks (12 filled; Malawi still blank) and did the first 62 of `rest`. **Next:** `rest` from item 63 on (453 cases) in `docs/r26_whole_order.json` (no death or displacement count, so no harm ranking). Briefs: `docs/WHOLE.md` (researcher) and `docs/CHECKW.md` (checker). Merge with `merge_whole.py`.
+- **538 cases have rounded "what happened to people" text** (`whole`), fact-checked and merged. The owner chose order 3: **largest harms first**. Rounds r26f_whole_h1 and h2 covered every case with recorded deaths or displacement (159 cases): 146 got text, 13 are blank (listed in `docs/r26_whole_order.json` via the case data; most failed because search ran out or EJAtlas pages would not render; retry them).
+- **Batch h3 (7 Nov)** retried the 13 harm-ranked blanks (12 filled; Malawi still blank) and did the first 62 of `rest`. **Batch h4 (7 Nov)** did the next 60 unfilled `rest` cases (59 filled; Bastar pine blank). Campo Ma'an text rests only on FEDEC's own figures (owner may blank). **Next:** the remaining unfilled `rest` cases (about 400) in `docs/r26_whole_order.json` (no death or displacement count, so no harm ranking). Briefs: `docs/WHOLE.md` (researcher) and `docs/CHECKW.md` (checker). Merge with `merge_whole.py`.
 - **7 older blanks** (no credible information): Morelos, Batang, Java 7, Pacitan, Tanjung Kasam, Cilacap, IPP4 Al-Manakher.
 - **Company descriptions:** cards now show a one-line "what this company is" (`desc` on each case company), then "In this case:" and its role. 93 names checked and merged (`rounds/r26f_companies_1.json`, merged with `merge_codesc.py`). About 899 names still lack one. Batch 1 inputs came from the 250 most-used names; 78 of its entries were blanked only because company sites refused to load and can be re-checked. Brief: `docs/COMP.md`.
 - **Condition types:** every case has `ct` (types of condition attached to the money), read from its own sourced text and independently checked (`rounds/r26_cond_types.json`, log `_log.json`; brief `docs/COND.md`). 344 cases are tagged `research`: a lender is named but the write-up does not say what it required. These need real research next; the filter shows them under "Lender named, but its conditions are not yet found".
@@ -70,6 +70,10 @@ Keys in every case: `id, title, place, iso3, lat, lng, point, start, end, mechan
 - **Private-loan layers:** `rounds/r24f_conds.json` (`prv_*`); lawsuits now show under Lawsuits, debt deals under Conditionalities.
 - **Contracts, tied aid, company-funded deals, offices, live projects, loan-conditions layers:** unchanged (see `infra_*.py`, `docs/offices_notes.md`, `case-map-live-src/`, `loan-conditions-src/`).
 
+## Push status
+
+- h4a and h4b are pushed (7 Nov): the 59 texts were taken from the owner's attached build of that chat and merged as `rounds/r26f_whole_h4.json`. The rebuilt page matches that build.
+
 ## Pending case-text fixes (flagged by checkers, not yet applied)
 
 - Peru 1977 inflation measure; Theun-Hinboun 7,500 vs 4,800; Peru / Elliott $11.3M vs $11.4M and $58.45M vs $58M; Jirau, Lake Turkana, Vedanta still credit Wikipedia; Gezhouba dates; Upper Atbara Abu Dhabi fund $90M missing from lenders; Buchanan $77m vs $62m; Barishal dates; Caculo Cabaça MW; Celukan Bawang MW; Green Resources dates; Kompas 2013 Batam figure; ICC Njeem press release.
@@ -84,7 +88,7 @@ Keys in every case: `id, title, place, iso3, lat, lng, point, start, end, mechan
 
 ## Where coverage is thin
 
-- People: project totals per person not yet added; more people wanted.
+- People: 18 have totals; more people and more totals wanted.
 - Lender offices: IDB, AfDB and BII directories blocked; IMF per-country pages not read; IFC and China Development Bank lists not reachable.
 - Buyers of case output: 49 cases.
 - Lender-financed projects; IMF and World Bank policy-loan conditions since 2015; Chinese state finance (AidData); Middle East and North Africa, Europe and Central Asia. Leads: `docs/backlog.json`; Payra, Mattala and Kyaukphyu not researched.
