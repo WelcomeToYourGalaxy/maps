@@ -2415,7 +2415,6 @@ function buildLayers() {
       secIf((ENT.people || []).some(entInK), sec2("people", "People on the record",       '<label class="chk"><input type="checkbox" id="pplOn"' + (S.ppl ? " checked" : "") + '> People on the record, placed where they held their posts <span class="n">' + (ENT.people || []).filter((e) => e.anchor && entInK(e)).length + '</span>' + qm("Officials, executives and others with a documented part in the cases, each placed at the building where they held the post through which they acted. Click one for their record and lines to the cases they are documented in.") + '</label>' +
       '<div class="fgl" style="margin-top:6px">Person' + qm("Choosing a person moves the map to where they held their post and opens their record.") + '</div><select id="selPe"><option value="">Choose one</option>' + ents(ENT.people).filter(entInK).map((e) => '<option value="' + esc(e.id) + '"' + (S.ent && S.ent.t === "person" && S.ent.id === e.id ? " selected" : "") + '>' + esc(e.name) + '</option>').join("") + '</select>')), swHTML("lenders")) +
     secIf(inK("off", "gov", "prv", "gra", "fdi"), sec("conds", "Conditionalities", condsHTML() + wait, swHTML("conds"))) +
-    secIf(inK("prv", "fdi"), sec("suits", "Lawsuits", suitsHTML(), swHTML("suits"))) +
     sec("pats", "Patterns Behind the Scenes",
       (S.layer === "none" ? '<div id="lyLeg"></div>' : "") +
       (S.kind !== "all" && !PATS.some((p) => (p.mk || MK_PAT[p.id] || ["off"]).includes(S.kind)) ? '<div class="sub" style="margin-top:0">No pattern written for this kind of money yet. ' + MK_THIN + '</div>' : "") +
@@ -2430,6 +2429,7 @@ function buildLayers() {
       (S.kind === "all" && S.offs.size && S.offs.size < offsAll.length ? '<div class="sub" style="margin:0 0 4px 22px">Showing ' + S.offs.size + ' of ' + offsAll.length + ' offices.</div>' : '') +
       '<label class="chk"' + hid(inK("off")) + '><input type="checkbox" id="protOn"' + (S.prot ? " checked" : "") + '> <i class="dot" style="background:#d8c9c0"></i>Protests whose news record names the IMF or World Bank, 1990–2020 <span class="n">' + PROT.length + '</span>' + qm("Protests of 50 or more people against a government whose coded news record mentions the IMF or World Bank (Mass Mobilization Project). A filled dot means the state's response was coded as shootings or killings.") + '</label>' +
       (LCM && inK("off", "fdi") ? LCM.ptRow("mm") + LCM.ptRow("pf") : ""), swHTML("pts"))) +
+    secIf(inK("prv", "fdi"), sec("suits", "Lawsuits", suitsHTML(), swHTML("suits"))) +
     secIf(inK("off", "gov", "fdi", "prv"), sec("prod", "The Products – What Not To Buy", '<button type="button" class="chipb hlb" id="openProd">Open the table: products and where they come from</button><div class="lys">' + radioHTML("prod") + '</div>', swHTML("prod")));
   wireLayers();
   drawFilters();
