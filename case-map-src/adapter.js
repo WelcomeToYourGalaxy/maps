@@ -162,8 +162,9 @@ __WBCA__
     return '<label class="chk"><input type="checkbox" data-lcpt="' + k + '"' + (S.lcpt[k] ? " checked" : "") + '> <i id="lcd-' + k + '" style="display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:3px;background:' + c[k] + '"></i>' + esc(PTN[k][0]) + ' <span class="n" id="lcn-' + k + '">' + num(k === "wb" ? D.wbsites.points.length : k === "cn" ? D.cnsites.rows.length : k === "pf" ? D.pf.rows.length : D.mm_meta.n) + '</span>' + qm(PTN[k][1]) + '</label>' +
       (FOPT[k] ? '<div style="margin:0 0 4px 22px"><select data-lcf="' + k + '">' + FOPT[k].map(([v, t]) => '<option value="' + v + '"' + (S.lcf[k] === v ? " selected" : "") + '>' + esc(t) + '</option>').join("") + '</select></div>' : "");
   }
-  function exactRow() {
-    return '<label class="chk" style="margin-left:22px"><input type="checkbox" data-lcex' + (S.lcex ? " checked" : "") + '> Only sites pinned to an exact spot' + qm("World Bank sites the mappers placed at the exact location, and Chinese-financed sites traced to a precise spot on OpenStreetMap. Without this, sites placed only at a district, a province or the whole country are shown too, at the middle of that area.") + '</label>';
+  function exactRow(m) {
+    const t = m === "both" ? "For both layers above: show only sites pinned to an exact spot" : "For the layer above: show only sites pinned to an exact spot";
+    return '<label class="chk" style="margin-top:4px;padding-top:4px;border-top:1px dashed rgba(255,255,255,.12)"><input type="checkbox" data-lcex' + (S.lcex ? " checked" : "") + '> ' + t + qm("World Bank sites the mappers placed at the exact location, and Chinese-financed sites traced to a precise spot on OpenStreetMap. Without this, sites placed only at a district, a province or the whole country are shown too, at the middle of that area.") + '</label>';
   }
   function wirePts() {
     document.querySelectorAll("#key [data-lcex]").forEach((i) => i.addEventListener("change", () => { S.lcex = i.checked; drawPts(); }));

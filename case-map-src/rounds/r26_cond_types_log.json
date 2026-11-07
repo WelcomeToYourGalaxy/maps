@@ -1,0 +1,889 @@
+{
+ "entries": [
+  {
+   "id": "brazil-general-strike-july-1983",
+   "change": "tags changed",
+   "why": "Labour removed: the text says the IMF required spending cuts; the 80% wage-adjustment decree is not stated as an IMF requirement. Before: ['cuts', 'labour']; after: ['cuts']."
+  },
+  {
+   "id": "malawi-november-2023-devaluation",
+   "change": "tags changed",
+   "why": "Deval removed: the only support is IMF staff saying the move was 'in line with staff advice' - advice, not a stated requirement. Prices and tax stay (the programme 'called for' them). Before: ['prices', 'tax', 'deval']; after: ['prices', 'tax']."
+  },
+  {
+   "id": "ghana-tarkwa-mine-sale",
+   "change": "tags changed",
+   "why": "Invest removed: the credit 'helped draft regulations' for the mining law - a funded activity, not a requirement attached to the money. Before: ['priv', 'cuts', 'invest']; after: ['priv', 'cuts']."
+  },
+  {
+   "id": "guinea-2006-fuel-price-strikes",
+   "change": "tags changed",
+   "why": "Prices removed: IMF directors 'advised' fuel prices follow world prices and IRIN says rises were 'in line with IMF policy' - advice, not a requirement. Wage-bill and exchange-rate commitments in the letter of intent stay. Before: ['prices', 'cuts', 'deval']; after: ['cuts', 'deval']."
+  },
+  {
+   "id": "manaus-prosamim-evictions",
+   "change": "tags changed",
+   "why": "Repay removed: 'sovereign-guaranteed loan' is the IDB lending window's label, not a repayment term the text says was attached. Safeguard stays. Before: ['repay', 'safeguard']; after: ['safeguard']."
+  },
+  {
+   "id": "asuncion-metrobus-frentistas",
+   "change": "tags changed",
+   "why": "Repay removed: 'sovereign-guaranteed loan' is only the IDB product label for a loan to the state; no condition is described, so need_research. Before: ['repay']; after: ['need_research']."
+  },
+  {
+   "id": "mannar-thambapavani-wind-adb",
+   "change": "tags changed",
+   "why": "Repay removed: 'sovereign-guaranteed loan' is only the ADB product label; no condition is described, so need_research. Before: ['repay']; after: ['need_research']."
+  },
+  {
+   "id": "senegal-senelec-privatisation",
+   "change": "tags changed",
+   "why": "Law added (missed): the second tranche also depended on setting up a power regulator. Before: ['priv']; after: ['priv', 'law']."
+  },
+  {
+   "id": "pakistan-2024-power-rebasing-trader-taxes",
+   "change": "tags changed",
+   "why": "Tax quote replaced: the budget-approval quote did not show a tax; the memorandum's Tajir Doost revenue measure does. The budget prior action is a budget target, so cuts added with that quote. Before: ['prices', 'tax']; after: ['prices', 'tax', 'cuts']."
+  },
+  {
+   "id": "apex-sumitomo-san-cristobal-relocation",
+   "change": "tags changed",
+   "why": "none -> land (missed): the deal with the company required the town to move, i.e. land made available for the project (same reading the tagger used for afobaka-dam-alcoa-saamaka). Before: ['none']; after: ['land']. [also in none spot-check sample]"
+  },
+  {
+   "id": "guaraquecaba-carbon-reserves",
+   "change": "tags changed",
+   "why": "none -> land (missed): the companies' money bought land on the term that it be closed to use for their carbon credits. The old 'none' quote ('US companies, not grant-makers') did not say there was no condition. Before: ['none']; after: ['land']. [also in none spot-check sample]"
+  },
+  {
+   "id": "comilog-moanda",
+   "change": "tags changed",
+   "why": "need_research -> repay (missed): state guarantees on the loan to the company, read the same way as the tagger's other guaranteed-loan cases. Before: ['need_research']; after: ['repay']. [also in need_research spot-check sample]"
+  },
+  {
+   "id": "lesotho-highlands",
+   "change": "tags changed",
+   "why": "need_research -> repay (missed): South Africa stood surety for the loan, same reading as other guaranteed-loan cases. Before: ['need_research']; after: ['repay']. [also in need_research spot-check sample]"
+  },
+  {
+   "id": "peru-sterilization-campaigns",
+   "change": "tags changed",
+   "why": "Empty, not flagged -> safeguard: USAID attached a use restriction (no funds for sterilization campaigns), the funder's own project rule. The case had ct [] with need_research false, which the rules do not allow. Before: []; after: ['safeguard']."
+  },
+  {
+   "id": "banja-luka-doboj-motorway-villages",
+   "change": "tags changed",
+   "why": "Empty, not flagged -> safeguard: EIB disbursement conditions on the project (permit, design). The resettlement plan was only a 'possible condition' and is not counted. Before: []; after: ['safeguard']."
+  },
+  {
+   "id": "rca-taoyuan-solvent-cancers",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "tampakan-capion-killings",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "golden-lead-gunjur-fishmeal",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "socapalm-cameroon-palm",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "pluspetrol-lot-108-pichanaki",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "boliden-aznalcollar-donana",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "kwale-titanium-maumba-resettlement",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "chevron-lago-agrio-arbitration",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "jisco-alpart-nain-red-mud",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "pinpet-iron-mine-pa-o-land",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "porgera-mine-security-abuses",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "fenix-nickel-el-estor",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "nankints-shuar-eviction-panantza",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "shell-ogbodo-isiokpo-spill",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "amayapampa-capasirca-1996",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "sudcam-rubber-dja",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "blackfire-chicomuselo-abarca",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "montepuez-ruby-gemfields-security",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "brumadinho-dam-tuv-sud",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "alpha-cement-aung-thabyay",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "cwe-three-gorges-rucalhue",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "samarco-fundao-dam-mariana",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "kyaukphyu-sez-citic-land",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "cgc-block-23-sarayaku",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "nidera-san-pedro-seed-workers",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "eni-naoc-aggah-flooding",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "delta-pine-rincon-i-seed-dump",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "solomon-trader-rennell-spill",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "kaweri-coffee-mubende-evictions",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "smurfit-kappa-cajibio-misak",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "bnp-rwanda-1994-arms-transfer",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "hatgyi-dam-karen-displacement",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "la-oroya-doe-run-renco",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "penarroya-cobrac-santo-amaro-lead",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "ecuador-2020-bond-payment-guayaquil",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "chemaf-mutoshi-mukumbi-burning",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "southern-tia-maria-islay",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "marcopper-boac-spill",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "marange-diamond-joint-ventures",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "drummond-la-loma-union-killings",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "rp-global-tranguil-macarena-valdes",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "vedan-thi-vai-river",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "tocopilla-electroandina-norgener-pm10",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "chevron-ks-endeavor-koluama",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "perenco-blocks-7-21-coca",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "nordgold-bissa-relocation",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "senhuile-ndiael-tampieri",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "del-monte-kenya-guards",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "bear-creek-santa-ana-aymarazo",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "nova-atlantida-tremembe-itapipoca",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "tangier-amendis-veolia-2015",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "tilenga-eacop-land-acquisition",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "wintek-suzhou-n-hexane",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "annobon-somagec-blasting-arrests",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "asian-rare-earth-bukit-merah",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "sempra-ienova-gasoducto-loma-de-bacum",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "tormin-mineral-sands-west-coast",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "repsol-ventanilla-oil-spill",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "yakjin-veng-sreng-2014",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "sks-microfinance-andhra-suicides",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "kawama-luiswishi-demolitions",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "aes-chan-75-charco-la-pava",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "boliden-promel-arica-waste",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "armenia-electric-yerevan-2015",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "el-quimbo-emgesa-endesa",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "wing-star-shoes-collapse",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "golden-veroleum-sinoe-palm",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "collum-coal-sinazongwe",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "iwip-weda-bay-halmahera",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "bnp-paribas-sudan-letters-of-credit",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "bohai-penglai-oil-spill",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "goi-oruma-ikot-ada-udo-shell",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "koidu-kimberlite-shootings",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "nemagon-dbcp-chinandega",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "williamson-diamond-mine-petra-security",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "stora-enso-guangxi-land",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "vinci-khimki-forest-motorway",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "panguna-mine-bougainville",
+   "change": "none",
+   "why": "Spot-check of a 'none' case: confirmed. Only the foreign company's own money, or no lender, and no requirement in the text."
+  },
+  {
+   "id": "conakry-water-lease",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "kamchay-dam-bokor-forest",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "proyecto-integral-morelos-samir-flores",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "chashma-right-bank-irrigation",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "indonesia-regional-cities-transport",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "metolong-dam",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "mahenge-graphite-ulanga-faru",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "mahaweli-third",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "giza-north-groundwater",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "chitwan-wwf-ranger-custody-death",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "wadelai-irrigation-paten",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "canbalam-barillas",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "ndayane-port",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "omkareshwar-reservoir-raising",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "leaf-ii-lakes-edward-albert",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "oyu-tolgoi",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "enb-tobar-maybank-watwat",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "santa-rita-hydro",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "obi-kawasi-nickel-hpal",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "novi-sad-station-canopy-collapse",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "mali-office-du-niger-hamlets",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "southern-expressway-sri-lanka",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "kvesheti-kobi-road",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "amulsar-gndevaz-jermuk",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "ocp-pipeline-westlb-spills",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "nam-ou-cascade-resettlement",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "antananarivo-plain-enterprises",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "jakarta-water-1997",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "nachtigal-sanaga",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "indorama-agro-uzbekistan",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "karuturi-gambella",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "con-son-tiger-cages-us-aid",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "hagl-ratanakiri",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "kalangala-oil-palm",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "andhra-telangana-roads-displacement",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "upper-atbara-setit-arab-funds",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "sahiwal-coal-plant-qadirabad",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "nangbeto-dam-resettlement",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "colombo-st-sebastian-canal-mcudp",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "letpadaung-copper-mine",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "tanahu-hydropower-belbas",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "transmigration-indonesia",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "theun-hinboun-expansion",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "sendou-bargny-coal",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "appl-assam-tea",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "ipp4-al-manakher-easep-detention",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "vishnugad-pipalkoti-haat",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "jirau-dam-esbr-madeira",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "regrow-ruaha",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "mai-ndombe-redd",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "ijora-oloye-lagos-1998",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "tagaung-taung-nickel",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "bisha-mine-forced-labour",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "wilmar-asiatic-persada",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "danosha-pig-farms",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "hambantota-port-zone-clashes",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "la-chorrera-pan-am-generating",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "chenguang-kargilik-xinjiang",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "baynouna-solar-herders",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "african-parks-odzala-baka",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "el-dorado-fontibon-noise",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "nyamagasani-hydro",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "morowali-imip-smelter-deaths",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "kainji-dam",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "msimbazi-basin-dar",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "eco-oro-santurban",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "virunga-eu-rangers-residents",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "mangla-dam-mirpur",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "eacop-bank-protest-arrests",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "cairo-metro-3-zamalek",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "gmr-kamalanga",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "addax-makeni",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "andhra-pradesh-community-forest",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "chixoy-rio-negro",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "agilis-kiryandongo",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "scatec-los-prados-namasigue",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "merowe-dam-amri-manasir",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "green-resources-uganda-evictions",
+   "change": "none",
+   "why": "Spot-check of a need_research case: confirmed. An outside lender is named but the text does not say what it required (no clear missed condition)."
+  },
+  {
+   "id": "swaziland-2011-smp-protests",
+   "change": "none",
+   "why": "Kept, borderline: Staff-Monitored Program 'gave no money'; tags kept as programme commitments."
+  },
+  {
+   "id": "maputo-september-2010-riots",
+   "change": "none",
+   "why": "Kept, borderline: Policy Support Instrument is a non-financing instrument; prices kept as a programme commitment."
+  },
+  {
+   "id": "mopani-mufulira",
+   "change": "none",
+   "why": "Kept, borderline: privatization and investment laws were 'under pressure' of the IMF/World Bank, not stated as a formal condition."
+  },
+  {
+   "id": "nigeria-ports-concession",
+   "change": "none",
+   "why": "Kept, borderline: the credit financed the privatization programme (purpose of the money) rather than setting it as a stated condition. Same reading kept for nigeria-phcn-power-privatization, russia-mass-privatization-mortality."
+  },
+  {
+   "id": "kosovo-hade-shala",
+   "change": "none",
+   "why": "Kept, borderline: safeguard rests on the Bank paying for the resettlement framework and plan, not on a stated requirement. Same lenient reading kept for mes-aynak-resettlement, caracol-industrial-park-haiti, jamuna-bridge-chars, ghazi-barotha-affectees, dasu-hydropower-affectees."
+  },
+  {
+   "id": "gwadar-port-eastbay-fishers",
+   "change": "none",
+   "why": "Kept, borderline: tied quote only says a Chinese firm built the road; the loan text does not say it had to. Same pattern in several Chinese buyer's-credit cases, kept because buyer's credits finance the Chinese contractor's contract."
+  }
+ ]
+}
