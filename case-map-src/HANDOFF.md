@@ -1,134 +1,94 @@
-# Globalization Case Map — handoff for adding more cases
+# Globalization Case Map: handoff for a new chat
 
-Live page: `globalization.html` in WelcomeToYourGalaxy/maps (published straight from `main`).
-This folder (`case-map-src/`) is everything needed to keep adding cases and rebuild the page.
-State at handoff (4 Nov 2026, after round 17): **855 cases** in 116 countries, 3,001 complaint records, 579 lender offices.
+Last updated: 7 Nov 2026. Replaces the 6 Nov handoff.
+
+Live page: `globalization.html` in WelcomeToYourGalaxy/maps (published from `main`). Source folder: `case-map-src/`. Rebuild with `python3 case-map-src/build.py`.
+
+## Current state (7 Nov 2026)
+
+- **946 cases** in the page data.
+- **411 cases have rounded "what happened to people" text** (`whole`), fact-checked and merged. The owner chose order 3: **largest harms first**. Rounds r26f_whole_h1 and h2 covered every case with recorded deaths or displacement (159 cases): 146 got text, 13 are blank (listed in `docs/r26_whole_order.json` via the case data; most failed because search ran out or EJAtlas pages would not render; retry them).
+- **Next:** the 515 remaining cases in `docs/r26_whole_order.json` → `rest` (no death or displacement count, so no harm ranking). Briefs: `docs/WHOLE.md` (researcher) and `docs/CHECKW.md` (checker). Merge with `merge_whole.py`.
+- **7 older blanks** (no credible information): Morelos, Batang, Java 7, Pacitan, Tanjung Kasam, Cilacap, IPP4 Al-Manakher.
+- **Company descriptions:** cards now show a one-line "what this company is" (`desc` on each case company), then "In this case:" and its role. 93 names checked and merged (`rounds/r26f_companies_1.json`, merged with `merge_codesc.py`). About 899 names still lack one. Batch 1 inputs came from the 250 most-used names; 78 of its entries were blanked only because company sites refused to load and can be re-checked. Brief: `docs/COMP.md`.
+- **Condition types:** every case has `ct` (types of condition attached to the money), read from its own sourced text and independently checked (`rounds/r26_cond_types.json`, log `_log.json`; brief `docs/COND.md`). 344 cases are tagged `research`: a lender is named but the write-up does not say what it required. These need real research next; the filter shows them under "Lender named, but its conditions are not yet found".
+- **Still to do from the owner's 7 Nov list:** people: add how many projects/loans each person oversaw in total (context for critiques); add more people and lender offices (gaps below); extend the buyers list (only 49 cases have documented buyers).
+
+## Page changes made 7 Nov 2026
+
+- **Lawsuits** is a new top-level section (`suitsHTML()`, switch `SECT.suits`, `isSuitLayer`): investor-treaty layers and creditor lawsuits moved here from Conditionalities, plus a button for the "company sued the state" pattern.
+- **Investor-claims data is complete:** rebuilt from UNCTAD's full Excel release (1,332 cases, 1987–2023; `rounds/r26_isds_unctad.json`): cases, decided for investor, for state, settled, pending, US-dollar claims, US-dollar awards/settlements (other currencies not converted, so floors), and investors' home countries.
+- **Conditionalities:** new "The cases, by type of condition" chips (FG group `ct`, `CTN` labels); private-lender block is now debt deals only; China (`lc:cn`) and Saudi/Qatar (`lc:tuff`) money layers moved to their lender rows (`LENDER_LC`).
+- **"Other money, for comparison"** removed: FDI → Foreign companies row, foundations → Private foundations row, private debt → Banks row, bilateral debt → Other governments row; new rows for aid, money sent home, and debt payments (`FLOWROW`) under "Not lenders, but part of the same money".
+- Chinese infrastructure count layer moved to the Chinese lender row; the exact-spot toggle now says which layers it applies to.
+- **Contracts and Earnings** (was "Companies in roads, ports, power and water"): contracts, earnings by lender, Chinese firms' earnings, and company-funded deal layers (`ppi_*`).
+- Coverage text for each kind of money compares case counts with sourced totals (`MK_COVER`; figures in `docs/r26_denoms.json`).
+- Share-of-money text explains share buying vs foreign company investment (World Bank's 10% line) and why each is left out.
+- Deaths/displacement notes moved to the end of "What happened to people". Timeline window has search and ordering. Year bar no longer runs off the edge (`S.y0` starts at `YMIN`). People marks follow case filters. Flat map repeats the world (`setRenderWorldCopies`) so Pacific cases such as Banaba sit on land.
 
 ## The owner's standards (non-negotiable)
 
-- **No fabrication.** Every figure, date, name and quote must come from a page the researcher actually opened. If a source won't open, the fact is removed or the case dropped. Disputed figures give who says what.
+- **No fabrication.** Every figure, date, name and quote must come from a page the researcher actually opened. If a source won't open, the fact is removed or the case is dropped. Disputed figures give who says what.
+- **Don't make editorial choices for the owner in data work.** Include everything the source publishes.
 - **Three tests for a case:**
-  1. **Link:** documented outside lender, development financier, public fund or foreign investor/owner tied to what happened. The tie can come from the lender's own records, a contract, a court, a complaint office or an independent source. A foreign company that was only a contractor, supplier or buyer does **not** pass.
+  1. **Link:** a documented outside lender, development financier, public fund or foreign investor/owner tied to what happened. A foreign company that was only a contractor, supplier or buyer does **not** pass.
   2. **Actual harm:** people displaced, land or income lost, poisoned, jailed or killed, or land and water damaged. Feared or "at risk" harm does not count.
   3. **Timing:** the outside money or company was involved when the harm happened.
 - **Contested:** if the lender or other sources dispute the link, set `confidence: "contested"` and give both sides. If the core harm rests on EJAtlas alone, drop the case.
-- **Deaths:** count in `killed` only deaths caused by the project, the company, or forces acting for them. Put everything else in `killed_note`, uncounted, with who reported it. Settlements without admission of liability leave deaths uncounted.
+- **Deaths:** count in `killed` only deaths caused by the project, the company, or forces acting for them. Everything else goes in `killed_note`, uncounted, with who reported it. Settlements without admission of liability leave deaths uncounted.
 - **Workplace pay or dismissal disputes alone are not cases.**
-- **Writing:** plain, novice-friendly wording, no purple prose, show figures. No orange, yellow or neon colours anywhere.
+- **Whole-picture text rules:** what the programme achieved where documented; lender-, company- or government-produced figures flagged as such ("no independent check was found"); plain figures; each kind of money gets its own full set of categories.
+- **Writing:** plain, novice-friendly wording, short sentences, no purple prose, show figures rather than characterising them. No orange, yellow or neon colours; earthy and muted palettes.
 - **Every batch is fact-checked by a separate agent before merging.**
+- **Repo updates** are committed and pushed directly from chat.
 
-## Workflow that has worked (rounds 9–17)
+## Workflow
 
-1. **Research agent** (general-purpose, background). Give it a brief modelled on `docs/BRIEF17.md`; the brief points to `docs/BRIEF13.md`, `BRIEF.md` and `BRIEF2.md` for rules and case shape. Have it dedupe against the current case list: extract it with `python3 -c "import json;s=open('case-map-src/base.html').read();i=s.index('window.CASES = ')+15;json.dump(json.JSONDecoder().raw_decode(s[i:])[0],open('cases.json','w'))"`. Output `{"cases": [...], "extend": [...], "dropped": [...]}`.
-2. **Before checking, dedupe again yourself.** Search the existing cases by iso3, nearby coordinates and key words. Earlier rounds often re-found Rempang, Okomu, Sino-Metals and similar.
-3. **Fact-check agent** (separate, background), following `docs/CHECK13.md`. It writes `rXXf.json` and `rXXf_log.json`. Tell it the specific weak points to check: timing, owner at the time of harm, single-source facts, Wikipedia-only facts, and coordinates.
-4. **Merge:** copy the checked file into `case-map-src/rounds/`, back up `base.html`, then run `python3 case-map-src/merge.py rounds/rXXf.json`. The merge appends cases, applies `extend` (lenders_add, lk_add/lk_remove, cp_add, sources_add, fields_add appended), `complaint_links`, `complaint_fixes`, and back-links complaints onto cases.
-5. **Build:** `python3 case-map-src/build.py`. This writes `../globalization.html` (about 19 MB) and prints "loan-condition cases matched 173 of 173".
-6. **Test** in headless Chromium with Playwright: serve the repo with `python3 -m http.server 8766`, load the page, and wait about 16 seconds. Look for page errors and check the case count in the left panel.
-7. **Push:** `git add globalization.html case-map-src && git commit -m "..." && git pull --rebase && git push`. Two bots commit daily (live data, other maps), so always pull with rebase first. If the rebase conflicts on `case_map_live.json`, keep the newer data.
+1. **Research agent** (general-purpose, background) with a brief from `docs/` (`BRIEF17.md` for new cases; `WHOLE.md`, `COMP.md`, `COND.md` for the add-on texts). Extract current cases first: `python3 -c "import json;s=open('case-map-src/base.html').read();i=s.index('window.CASES = ')+15;json.dump(json.JSONDecoder().raw_decode(s[i:])[0],open('cases.json','w'))"`.
+2. **Dedupe yourself before checking** (iso3, nearby coordinates, keywords).
+3. **Fact-check agent** (separate, background): `docs/CHECK13.md` for cases, `docs/CHECKW.md` for whole text. Name the weak points.
+4. **Merge:** back up `base.html`, copy the checked file into `rounds/`, then `merge.py` (cases), `merge_whole.py` (whole text) or `merge_codesc.py` (company descriptions). merge.py does not handle people; add those directly to `window.ENT`.
+5. **Build:** `python3 case-map-src/build.py` (should print "loan-condition cases matched 173 of 173").
+6. **Test** headless Chromium via Playwright (`NODE_PATH=$(npm root -g)`), served with `python3 -m http.server 8766` in the repo. Re-rendering menus can make Playwright's own clicks hang; clicking through `page.evaluate(() => el.click())` is reliable. Check for page errors and the case count.
+7. **Push:** `git add globalization.html case-map-src && git commit` (attribution trailers from the session reminder), then `git pull --rebase -q && git push -q`. If the push is refused by the git proxy, attach the repo to the session first (add_repo, push access).
 
-## Case shape (keys in every case)
+## Case shape
 
-`id, title, place, iso3, lat, lng, point, start, end, mechanism, lenders[{name, role}], conditions, companies[{name, role, hq, hq_lat, hq_lng}], community, suppression, killed, killed_note, outcome, sources[{title, publisher, year, url}], confidence (documented|contested), confidence_note, lk[], cp[], rg, cx[], ecosystem`. Optional keys: `ap` (point approximate), `displaced`, `displaced_note`, `displaced_label`, `iso3_more`.
-
-The research file also carries `levers` and `lvwhy` per case; merge.py moves them into the separate lever store.
+Keys in every case: `id, title, place, iso3, lat, lng, point, start, end, mechanism, lenders[{name, role}], conditions, companies[{name, role, hq, hq_lat, hq_lng, desc?}], community, suppression, killed, killed_note, outcome, sources[{title, publisher, year, url}], confidence, confidence_note, lk[], cp[], rg, cx[], ecosystem, whole, ct[]`, and `kind` for newer cases. Optional: `ap`, `displaced`, `displaced_note`, `displaced_label`, `iso3_more`.
 
 - `mechanism`: project, austerity, land, privatization, debt, trade
-- `lk` (lender keys): wb, ifc, miga, imf, icsid, idb, adb, afdb, ebrd, eib, aiib, reg, cn, bil, eu, priv, fdn, fdi
-- `rg`: Africa south of the Sahara / East Asia and the Pacific / Europe and Central Asia / Latin America and the Caribbean / Middle East and North Africa / South Asia
-- `levers`: deval, prices, cuts, tax, priv, trade, land, fees, labour, project, finance
-- `cp` (complaint offices): ip, cao, mici, am, irm, ipam, eibcm, ppm, icm, aiddata, ncp, jica, dfc, afd
+- `lk`: wb, ifc, miga, imf, icsid, idb, adb, afdb, ebrd, eib, aiib, reg, cn, bil, eu, priv, fdn, fdi
+- `kind`: off, fdi, gra, prv, pay, gov
+- `ct`: priv, prices, tax, cuts, deval, trade, labour, land, fees, invest, law, repay, tied, safeguard, none, research
+- `rg`, `levers`, `cp`: as before (see BRIEF17.md).
 
-## Where coverage is thin (best targets next)
+## Money data
 
-- **IMF and World Bank policy-loan conditions since 2015** (price, tax, pay and job cuts; privatizations; required law changes) with the condition shown in the lender's own documents. Round 15 found none because imf.org blocked the researcher. Round 17 kept 6 of 15 (3 more became extends): most well-known episodes are already mapped, and IMF letter-of-intent PDFs still fail to open, though press releases do. Try WebFetch on imf.org country-report pages, the IMF's Monitoring of Fund Arrangements (MONA) data, or copies on eurodad.org and brettonwoodsproject.org.
-- **Lender-financed projects rather than foreign-company cases.** Round 15 found 14 of its 20 new cases were foreign investment only, because almost every complaint-office case with documented harm is already mapped. Sources that worked:
-  - Accountability Counsel's case list
-  - Inclusive Development International (IFC lending through banks and funds)
-  - Bank Information Center
-  - Human Rights Watch and Amnesty reports since 2015
-  - Global Witness, Forest Peoples Programme, Urgewald, Recourse
-  - Coalition for Human Rights in Development ("Uncalculated Risks")
-- **Chinese state finance.** Use AidData's Global Chinese Development Finance records, court rulings and the reporting AidData cites. The certificate bundle for AidData pages from an earlier session may be needed.
-- **Regions with few cases:** Middle East and North Africa (37), Europe and Central Asia (84).
-- **Leads that earlier rounds left open:** see `docs/backlog.json`, and the `dropped` lists in past rounds marked "not yet researched". From round 17: Accountability Counsel's list was never read (page refused); Human Rights Watch, Amnesty, Global Witness, Forest Peoples Programme, Both ENDS and "Uncalculated Risks" were not gone through one by one; Payra, Mattala and Kyaukphyu not researched; Aché Finca 470 report would not open; Bangladesh 2023–25 power and VAT could return with a measure of household loss.
-- **Leads waiting on events:**
-  - Bishoftu airport, Ethiopia: revisit if the African Development Bank board approves its US$500m loan.
-  - Kerio Valley (CAO complaint): harm only preliminary so far.
-  - Thar Block-1, Nam Ngiep 1, Kaliwa dam: harm only expected so far.
+- **Share of money:** `window.MK_SHARE` from World Bank WDI net flows 2014–2023. Share buying and remittances excluded; the brief now explains why.
+- **Investor claims:** complete, from UNCTAD's 31 Dec 2023 Excel file (`rounds/r26_isds_unctad.json`). The owner's copy of the file was attached in chat on 7 Nov 2026.
+- **Private-loan layers:** `rounds/r24f_conds.json` (`prv_*`); lawsuits now show under Lawsuits, debt deals under Conditionalities.
+- **Contracts, tied aid, company-funded deals, offices, live projects, loan-conditions layers:** unchanged (see `infra_*.py`, `docs/offices_notes.md`, `case-map-live-src/`, `loan-conditions-src/`).
 
-## Other data on the page and how it updates
+## Pending case-text fixes (flagged by checkers, not yet applied)
 
-- **Projects under way and planned (World Bank):**
-  - `case-map-live-src/update_live.py` runs daily via `.github/workflows/case-map-live.yml` and writes `case_map_live.json`.
-  - It covers active and pipeline projects, risk ratings, documents, borrower, team leaders, listed places, and contract awards (individual consultants left out).
-  - It flags concern from `case-map-live-src/ip_projects.json`, and from P-codes named in cases.
-- **Lender offices:**
-  - These are embedded in `base.html` as `window.LOFF`; `docs/offices_notes.md` has sources and gaps.
-  - **Gaps:** the IDB, AfDB and BII directories were blocked. The IMF's 86 resident offices need its per-country pages (`imf.org/en/countries/resrep/<iso3>`). The IFC and China Development Bank office lists were not reachable.
-- **Loan-conditions layers:** they come from `D.json.gz`, built by `loan-conditions-src/`; `lc.js` and `adapter.js` draw them. The "loan condition led to harm" rings match the loan-conditions map's 173 records to cases, using the `_DUP` table in `build.py`.
-- **The Atlas cartouche** is in `base.html` as `window.PLATE_IMG` (webp). It was repainted with "CASE MAP" in Cinzel.
+- Peru 1977 inflation measure; Theun-Hinboun 7,500 vs 4,800; Peru / Elliott $11.3M vs $11.4M and $58.45M vs $58M; Jirau, Lake Turkana, Vedanta still credit Wikipedia; Gezhouba dates; Upper Atbara Abu Dhabi fund $90M missing from lenders; Buchanan $77m vs $62m; Barishal dates; Caculo Cabaça MW; Celukan Bawang MW; Green Resources dates; Kompas 2013 Batam figure; ICC Njeem press release.
+- Nathpa Jhakri whole text: the income study was paid for by the operating company; self_reported could be set true.
+- Tractebel: card may mean the 1990s Suez-owned energy group, not today's engineering firm; description left blank.
 
-## UI pieces most often edited (all in `base.html`)
+## Open decisions for the owner
 
-| What | Where |
-|---|---|
-| Brief | `briefHTML()` |
-| Cases section | `buildKey()`, `lchHTML()`, `pastHTML()` |
-| Layer menu | `buildLayers()`, `wireLayers()`, `liveHTML()`, `officesHTML()`, `infraSec()` (infrastructure layers, under The Companies) |
-| Category switches | `SECT` |
-| Cards | `detailCase()`, `detailLiveWB()`, `detailOffice()` |
-| Card shrink, move-aside and resize | `dragDet()` |
-| Hiding markers at the globe's edge | `limbHide()` |
-| About page | `window.ABOUT_HTML` |
+- Keep al-Serraj (weakest Libya person)? Keep Arab Bank and UNICEF wells as contested? Payment services vs loans: how to present? Keep the nine `documents1.worldbank.org` links? Drop Kaziranga and Virunga-type cases if death counts are questionable?
+- Decided: `loan-conditions.html` stays online. Decided 7 Nov: whole text runs largest harms first.
 
-Patch with exact-string replacements (Python `str.replace`, asserting each match is unique), then rebuild.
+## Where coverage is thin
 
-## Web fetch limit
+- People: project totals per person not yet added; more people wanted.
+- Lender offices: IDB, AfDB and BII directories blocked; IMF per-country pages not read; IFC and China Development Bank lists not reachable.
+- Buyers of case output: 49 cases.
+- Lender-financed projects; IMF and World Bank policy-loan conditions since 2015; Chinese state finance (AidData); Middle East and North Africa, Europe and Central Asia. Leads: `docs/backlog.json`; Payra, Mattala and Kyaukphyu not researched.
+- Waiting on events: Bishoftu airport; Kerio Valley; Thar Block-1, Nam Ngiep 1, Kaliwa dam.
 
-WebFetch has an hourly limit shared across agents. Running several agents at once hits it; they should wait for the next UTC hour and use no other route.
+## Tool limits
 
-## People and contract data (round 18)
-
-- People on the record: 135. New people come from `rounds/r18f_co.json` and `rounds/r18f_off.json`, added straight into `window.ENT.people` (merge.py does not handle people). Each needs an own act in a case, the exact legal status and an office anchor. Dropped lists in those files hold open leads.
-- `infra_wb.py` and `infra_lenders.py` add the contract and tied-aid measures to `window.INFRA`; `docs/r18_contracts_slim.json` holds the IDB, EBRD, AIIB and OECD tied data.
-- Contract data gaps: AfDB (afdb.org refused), EIB (no such data), export credit agencies.
-
-## Round 19
-
-- The Conditionalities category holds every layer from the old loan-conditions page (`condsHTML()`, `COND_GROUPS`). They no longer sit under Each Lender. `All lenders together` is gone.
-- The 12 loan-conditions patterns now carry implications and case_ids from `docs/r19_pats.json`, applied in `build.py`; the list sorts by start year.
-- `infra_adb.py` and `docs/r19_adb.json` add the Asian Development Bank from its two procurement files. Contract data gaps now: AfDB, EIB, export credit agencies.
-- People on the record: 139.
-
-## Round 20
-
-- **Project sites** (`pastHTML()`) now open the Cases section as "Every project site on record", followed by "The cases: where harm is documented". Only the World Bank (1995–2014) and Chinese state lenders (2000–2021) are mapped this way.
-- **Company lines and headquarters** draw whatever the Cases switch says.
-- **Card under the basemap box:** `fitUnderTr()` runs from a ResizeObserver on `#tr`.
-- **Company-funded deals** left the layer list and became the chart window `ppi` (`drawPpiWin()`), from `window.PPID`, built by `infra_ppi.py` from the World Bank PPI file. Rich countries are not in that database by design; the chart's footnote lists the gaps. The ppi_* numbers stay in `window.INFRA` because the chart's table reads them.
-- **Contracts explainer:** `contractsHTML()`, at the top of "Companies in roads, ports, power and water".
-- **Merged pattern:** `investors-sue-after-privatization` was folded into `company-sued-the-state` (`_MERGED` in `build.py`). Both originals are in `docs/r20_merged_pattern_originals.json`. 15 patterns now.
-
-## Kinds of money (round 21 on)
-
-- The owner asked for one full set of categories per kind of money, all on this page: official loans (`off`), private investment (`fdi`), grants and gifts (`gra`), private loans (`prv`), government-to-government loans (`gov`). `MONK`, `S.kind`, `kindsOf()`, `setKind()` in `base.html`. A case with several kinds shows under each. `kindsOf` reads `lk`; `MK_GRANT` adds cases by id; add more with `window.MK_GRANT_MORE`.
-- Each section filters by kind: `kPass` in `passes`, `MK_CMP`, `MK_LOF`, `MK_CG`, `MK_FLOW`, `MK_PAT`, `MK_LK`, `infK`, `entInK`.
-- Briefs: `off` and `all` use `briefHTML()`; others use `kindBriefHTML()`, with `window.MK_BRIEF[k] = {items:[[question, html]], sources:[[title,url]]}` for sourced figures. Any figure from the owner's own text must be re-sourced on an opened page; unconfirmed ones stay off. The "Claude AI estimates 20–40%" line stays out for good.
-- Products are not split by kind yet. Thin kinds say so in their sections (`MK_THIN`).
-- Research order: grants and private loans first, then government loans, then private investment.
-
-- State after round 21: 901 cases, 44 profiled entities. Grant cases: `window.MK_GRANT_MORE`, also added by hand with their `kind:"gra"` field. Round 21 entities were added straight into `window.ENT.companies`; merge.py does not handle them. Dropped lists in `rounds/r20f_*.json` and `r21f_gp.json` hold open leads. Next: government loans, then private investment, plus patterns for grants and products split by kind.
-- Round 23: government loans beyond China and foreign-owned companies in thin regions. The Wintek poisoning case (China) passed the researcher's tests and was left out only because of the cap, so it is ready for a later round. Open leads are in `rounds/r23f_gi.json` dropped. Patterns for the new kinds are in `rounds/r22f_pats.json`, with their kinds in each pattern's `mk` field.
-
-## Round 24
-
-- Payment services kind (`pay`), set by `MK_PAY`. Named funders per kind: `window.MK_FUND`, from `docs/r24_funders.json`; rerun or extend when cases are added. Three cases removed, kept in `docs/r24_removed_cases.json`.
-- Private-loan condition layers: `rounds/r24f_conds.json`, added to `window.INFRA` as `prv_*`. Investor-claim layers (`fdi_*` in the scratchpad's r24_conds.json) were held: 42 country pages failed and rows came through a summarising tool. The owner was asked for UNCTAD's Excel file from investmentpolicy.unctad.org/publications/1303.
-
-## Round 25: owner's review
-
-- Cases now carry `whole`: one to three sentences on what the project achieved and who says so, shown first under "What happened to people". Add with `merge_whole.py rounds/r25f_whole_x.json` after a separate fact-check. Done: grants, payment services, private loans. Next: government loans (scratchpad batches), private investment, official loans. A blank means no credible information was found, not that no one looked.
-- Rule from the owner: do not include an element for uniformity's sake; each kind shows only what belongs to it. Every toggle should act on that kind only.
-- `window.MK_RING`: each kind's ring toggle (`docs/r25_ring_tags.json`). `window.MK_SHARE`: percent beside each kind, this map's sum of World Bank net flows, 2014-2023. The owner's 52/27/10/0.7% split could not be sourced and is not used.
-- Investor claims: `inf_fdi_isds_cases` is partial (rounds/r25f_isds.json). Money layers held: mixed bases. UNCTAD's Excel link: investmentpolicy.unctad.org/publications/1303/investment-dispute-settlement-navigator-full-isds-data-release-as-of-31-12-2023-in-excel-format-
+- WebSearch is capped at about 200 calls per turn, shared by every agent in that turn. Run at most two or three research agents per turn, or they run out partway (this happened on 7 Nov).
+- WebFetch has an hourly limit shared across agents, and some company sites refuse fetches; checkers then blank the facts, which can be re-checked later.
