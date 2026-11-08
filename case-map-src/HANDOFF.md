@@ -83,7 +83,7 @@ Keys in every case: `id, title, place, iso3, lat, lng, point, start, end, mechan
 
 ## Open decisions for the owner
 
-- Lender-conditions round 2: Komodo is tagged "fees" (the binding term was that commercial income had to start soon; the entrance fee was how it was raised). Keep the tag? Metolong rests on the US MCC compact's resettlement requirement, not the World Bank's. Keep? CBG Sangaredi terms come from an IFC action plan updated 2020-21, after the 2016 loan. Keep or blank? Teresina and Dakar rest on planning documents (city assessment; 2017 World Bank project document), not signed loan agreements. Keep?
+- Decided 7 Nov (owner left it to Claude): Komodo keeps "fees"; Metolong kept (MCC is a listed co-funder); CBG kept (IFC loan active during the harm, plan dates given); Teresina and Dakar kept, credited to their planning documents.
 - Keep al-Serraj (weakest Libya person)? Keep Arab Bank and UNICEF wells as contested? Payment services vs loans: how to present? Keep the nine `documents1.worldbank.org` links? Drop Kaziranga and Virunga-type cases if death counts are questionable?
 - Decided: `loan-conditions.html` stays online. Decided 7 Nov: whole text runs largest harms first.
 
