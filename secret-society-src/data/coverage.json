@@ -1,9 +1,411 @@
 {
-  "overall": {
-    "lo": 10,
-    "hi": 20,
-    "asof": "2026-11-10",
-    "basis": "It is set against what has been written down somewhere checkable, not against everything that has happened. Three things hold it down: whole scopes have had no research round yet, several of them large ones; countries whose courts and press do not publish leave almost nothing to find, so the thinnest parts of the map are the places where the most is likely going on; and the registers below, where someone has counted, show how much sits behind a single surfaced case."
+ "overall": {
+  "lo": 10,
+  "hi": 20,
+  "asof": "2026-11-10",
+  "basis": "It is set against what has been written down somewhere a reader can check, not against everything that has happened. Three things hold it down. Whole scopes have had no research round yet. Countries whose courts and press do not publish leave almost nothing to find, so the thinnest parts of the map are often the places where the most is going on. And where someone has counted, as in the registers below, a single case on this map usually stands for many episodes underneath it."
+ },
+ "registers": [
+  {
+   "name": "Italian local administrations dissolved for mafia infiltration",
+   "scope": "Dissolutions of councils and local health authorities under art. 143 TUEL, 1991 to February 2018",
+   "counts": "dissolutions (230 distinct bodies once repeats are netted out)",
+   "total": 298,
+   "asof": "February 2018",
+   "pub": "Chamber of Deputies research service, quoting the parliamentary Antimafia Commission's final report",
+   "url": "https://documenti.camera.it/Leg18/Dossier/Pdf/AC0273.Pdf",
+   "note": "an executive finding that a council was conditioned by a mafia, not a criminal conviction",
+   "match": "Italian cases naming a dissolution",
+   "filter": {
+    "c": [
+     "Italy"
+    ],
+    "kw": [
+     "dissolv"
+    ]
+   }
   },
-  "registers": []
+  {
+   "name": "Colombian members of Congress found criminally responsible for paramilitary ties",
+   "scope": "Rulings of the Supreme Court's Criminal Cassation Chamber in the parapolitica proceedings, to 2010",
+   "counts": "people",
+   "total": 18,
+   "asof": "2010",
+   "pub": "ICTJ, compiling Supreme Court rulings; hosted on the Court's own site",
+   "url": "https://cortesuprema.gov.co/corte/wp-content/uploads/publicaciones/procesoaforados.pdf",
+   "note": "116 members were under investigation and at least 95 investigations were still open",
+   "match": "Colombian cases naming paramilitaries reaching into office",
+   "filter": {
+    "c": [
+     "Colombia"
+    ],
+    "kw": [
+     "paramilitar",
+     "parapol",
+     "auc ",
+     "self-defence"
+    ]
+   }
+  },
+  {
+   "name": "Defendants charged by the US Justice Department over FIFA",
+   "scope": "People and companies charged in the FIFA racketeering case, to 3 December 2015",
+   "counts": "people and companies charged",
+   "total": 41,
+   "asof": "December 2015",
+   "pub": "US Department of Justice",
+   "url": "https://www.justice.gov/opa/pr/sixteen-additional-fifa-officials-indicted-racketeering-conspiracy-and-corruption",
+   "note": "charges, not convictions, and a snapshot: the case continued after 2015",
+   "match": "cases naming FIFA or a FIFA confederation",
+   "filter": {
+    "kw": [
+     "fifa",
+     "concacaf",
+     "conmebol"
+    ]
+   }
+  },
+  {
+   "name": "IOC members who lost their position over the Salt Lake City 2002 bid",
+   "scope": "Expulsions and resignations following the IOC commission's 1999 report",
+   "counts": "people",
+   "total": 10,
+   "asof": "1999",
+   "pub": "Olympedia, reporting the commission's recommendations and the IOC Session votes",
+   "url": "https://www.olympedia.org/definitions/111",
+   "note": "mixes expulsions with resignations; no IOC page carrying a stated total was reachable",
+   "match": "cases naming the Salt Lake City bid or the IOC",
+   "filter": {
+    "kw": [
+     "salt lake",
+     "international olympic"
+    ]
+   }
+  },
+  {
+   "name": "Companies paying kickbacks on UN Oil-for-Food contracts",
+   "scope": "Companies listed in the Independent Inquiry Committee's final report, October 2005",
+   "counts": "companies",
+   "total": 2253,
+   "asof": "October 2005",
+   "pub": "Independent Inquiry Committee into the Oil-for-Food Programme; number read on a law-firm summary of the report",
+   "url": "https://www.millerchevalier.com/publication/final-report-un-oil-food-program-cites-more-2000-companies-connection-18-billion",
+   "note": "humanitarian-goods kickbacks only, not oil surcharges; the inquiry's own pages were unreachable",
+   "match": "cases naming Oil-for-Food",
+   "filter": {
+    "kw": [
+     "oil-for-food",
+     "oil for food"
+    ]
+   }
+  },
+  {
+   "name": "UN staff found to have committed misconduct on Procurement Task Force findings",
+   "scope": "Staff the UN Administration concluded were involved in misconduct, acting on the Task Force's disciplinary recommendations",
+   "counts": "people",
+   "total": 17,
+   "asof": "July 2008",
+   "pub": "UN Board of Auditors, A/63/167",
+   "url": "https://digitallibrary.un.org/record/634830/files/A_63_167-EN.pdf",
+   "note": "seven had been dismissed at the time of the audit; some cases were still on appeal",
+   "match": "cases naming UN procurement or the Procurement Task Force",
+   "filter": {
+    "kw": [
+     "procurement task force",
+     "un procurement",
+     "united nations procurement"
+    ]
+   }
+  },
+  {
+   "name": "FCPA enforcement actions",
+   "scope": "Every action brought by the US Justice Department and the SEC under the Foreign Corrupt Practices Act since 1977",
+   "counts": "enforcement actions",
+   "total": 772,
+   "asof": "30 July 2025",
+   "pub": "Stanford Law School FCPA Clearinghouse",
+   "url": "https://fcpa.stanford.edu/enforcement-actions.html",
+   "note": "one bribery scheme usually produces several actions, so the number of distinct episodes is smaller",
+   "match": "cases on this map whose source is an FCPA action",
+   "filter": {
+    "inf": [
+     "corp"
+    ],
+    "kw": [
+     "foreign corrupt practices",
+     "fcpa",
+     "securities and exchange commission"
+    ]
+   }
+  },
+  {
+   "name": "Concluded foreign bribery cases in the OECD Convention countries",
+   "scope": "Foreign bribery enforcement actions concluded in the Parties to the Convention between 1999 and 2014",
+   "counts": "actions against people and companies",
+   "total": 427,
+   "asof": "2014",
+   "pub": "OECD Foreign Bribery Report 2014; figures read on a law-firm commentary, the OECD page being unreachable",
+   "url": "https://www.legal500.com/intelligence/united-states/criminal-law/foreign-bribery-report-issued-by-oecd",
+   "note": "27 per cent involved officials of state-owned or state-controlled companies",
+   "match": "company cases on this map from those years naming bribery",
+   "filter": {
+    "inf": [
+     "corp"
+    ],
+    "y0": 1999,
+    "y1": 2014,
+    "kw": [
+     "brib"
+    ]
+   }
+  },
+  {
+   "name": "Chinese espionage incidents in the United States",
+   "scope": "Publicly reported instances of espionage directed at the US by China since January 2000",
+   "counts": "incidents",
+   "total": 224,
+   "asof": "2023",
+   "pub": "Center for Strategic and International Studies",
+   "url": "https://www.csis.org/programs/strategic-technologies-program/survey-chinese-espionage-united-states-2000",
+   "note": "compiled from public reporting, so sealed and unprosecuted cases are absent",
+   "match": "US cases from 2000 on where a foreign state reached in and China is named",
+   "filter": {
+    "c": [
+     "United States"
+    ],
+    "inf": [
+     "state"
+    ],
+    "y0": 2000,
+    "kw": [
+     "china",
+     "chinese",
+     "beijing"
+    ]
+   }
+  },
+  {
+   "name": "Americans convicted of espionage",
+   "scope": "American citizens convicted of espionage or related offences against the United States, 1947 to 2015",
+   "counts": "people",
+   "total": 209,
+   "asof": "2015",
+   "pub": "Defense Personnel and Security Research Center, US Department of Defense",
+   "url": "https://irp.fas.org/eprint/spectrum.pdf",
+   "note": "citizens only: foreign nationals operating inside the US are excluded",
+   "match": "US cases from those years where a foreign state reached in",
+   "filter": {
+    "c": [
+     "United States"
+    ],
+    "inf": [
+     "state"
+    ],
+    "y0": 1947,
+    "y1": 2015
+   }
+  },
+  {
+   "name": "People prosecuted in Taiwan for spying for China",
+   "scope": "Prosecutions in Taiwan for espionage on behalf of China, in 2024",
+   "counts": "people prosecuted",
+   "total": 64,
+   "asof": "2024",
+   "pub": "Taiwan's National Security Bureau, reported by the Taipei Times",
+   "url": "https://www.taipeitimes.com/News/front/archives/2025/01/13/2003830100",
+   "note": "2024 alone; the same report gives 16 for 2021 and 10 for 2022, so there is no multi-year total",
+   "match": "Taiwanese cases from 2024 where a foreign state reached in",
+   "filter": {
+    "c": [
+     "Taiwan"
+    ],
+    "inf": [
+     "state"
+    ],
+    "y0": 2024,
+    "y1": 2024
+   }
+  },
+  {
+   "name": "West German citizens who spied for East Germany",
+   "scope": "Sources run inside West Germany by East German intelligence in the late 1980s",
+   "counts": "people",
+   "total": 3000,
+   "asof": "late 1980s",
+   "pub": "Bundesarchiv, Stasi Records Archive",
+   "url": "https://www.bundesarchiv.de/themen-entdecken/online-entdecken/staatssicherheit/stasi-im-westen/",
+   "note": "the archive's own figure is approximate, and many sources were in industry rather than state bodies",
+   "match": "German cases naming the Stasi",
+   "filter": {
+    "c": [
+     "Germany"
+    ],
+    "kw": [
+     "stasi",
+     "ministry for state security"
+    ]
+   }
+  },
+  {
+   "name": "Convictions for spying for Russia in Estonia",
+   "scope": "People convicted by Estonian courts of espionage or treason for Russian services since 2009",
+   "counts": "people",
+   "total": 20,
+   "asof": "November 2019",
+   "pub": "International Centre for Defence and Security, Tallinn",
+   "url": "https://icds.ee/en/russias-espionage-in-estonia-a-quantitative-analysis-of-convictions/",
+   "note": "court verdicts only: recruits expelled, turned or never charged are absent",
+   "match": "Estonian cases from 2009 on naming a Russian service",
+   "filter": {
+    "c": [
+     "Estonia"
+    ],
+    "inf": [
+     "state"
+    ],
+    "y0": 2009,
+    "kw": [
+     "russia",
+     "gru",
+     "fsb",
+     "svr"
+    ]
+   }
+  },
+  {
+   "name": "Espionage investigations opened in Poland",
+   "scope": "Investigations opened by Poland's Internal Security Agency in 2025",
+   "counts": "investigations opened",
+   "total": 48,
+   "asof": "2025",
+   "pub": "ABW activity report, reported by Notes from Poland",
+   "url": "https://notesfrompoland.com/2026/05/07/espionage-investigations-doubled-in-poland-last-year-amid-growing-russia-threat/",
+   "note": "investigations, not proven cases; 82 people were charged across 2024 and 2025 together",
+   "match": "Polish cases from 2024 on where a foreign state reached in",
+   "filter": {
+    "c": [
+     "Poland"
+    ],
+    "inf": [
+     "state"
+    ],
+    "y0": 2024
+   }
+  },
+  {
+   "name": "Names on the P2 lodge list seized at Castiglion Fibocchi",
+   "scope": "The single Propaganda Due membership list seized by Milan magistrates in March 1981",
+   "counts": "people on a membership list",
+   "total": 962,
+   "asof": "1981",
+   "pub": "Il Post, reporting the seized list and the Anselmi commission's work",
+   "url": "https://www.ilpost.it/2021/03/17/loggia-p2/",
+   "note": "membership, not a finding of influence: the list held 59 MPs, 119 senior officers, 5 undersecretaries and 1 constitutional judge",
+   "match": "Italian cases naming P2",
+   "filter": {
+    "c": [
+     "Italy"
+    ],
+    "kw": [
+     "propaganda due",
+     "p2 ",
+     "p2,",
+     "p2."
+    ]
+   }
+  },
+  {
+   "name": "Police officers in England and Wales who declared freemason membership",
+   "scope": "Voluntary returns from 26 forces after the Home Affairs Committee inquiry, out of 38,875 returns",
+   "counts": "people who self-declared",
+   "total": 417,
+   "asof": "February 2000",
+   "pub": "UK Home Office, written answer to Parliament",
+   "url": "https://api.parliament.uk/historic-hansard/written-answers/2000/feb/14/freemasons",
+   "note": "declaration was voluntary and covers 26 forces only; no figure was given for judges or magistrates",
+   "match": "UK cases naming freemasonry",
+   "filter": {
+    "c": [
+     "United Kingdom"
+    ],
+    "kw": [
+     "freemason",
+     "masonic"
+    ]
+   }
+  },
+  {
+   "name": "Turkish public officials dismissed by emergency decree after the 2016 coup attempt",
+   "scope": "People removed from public service by decree, as counted by the commission set up to hear appeals",
+   "counts": "people dismissed",
+   "total": 125678,
+   "asof": "January 2022",
+   "pub": "OHAL Commission annual report, reported by Hurriyet Daily News",
+   "url": "https://hurriyetdailynews.com/some-95-percent-of-ohal-applications-concluded-report-170532",
+   "note": "an executive act, not a finding about any individual: the Venice Commission said the dismissals cited no verifiable evidence per person",
+   "match": "Turkish cases naming the Gulen movement",
+   "filter": {
+    "c": [
+     "Turkiye"
+    ],
+    "kw": [
+     "gulen",
+     "hizmet"
+    ]
+   }
+  },
+  {
+   "name": "LDP Diet members reporting dealings with the Unification Church",
+   "scope": "The Liberal Democratic Party's own survey of its 379 members of the Diet, 2022",
+   "counts": "people self-reporting",
+   "total": 179,
+   "asof": "September 2022",
+   "pub": "The Japan Times, reporting the party's survey",
+   "url": "https://www.japantimes.co.jp/news/2022/09/08/national/ldp-unification-church-survey",
+   "note": "self-reported contact, not a finding of influence; only 17 were recorded as taking the church's campaign help",
+   "match": "Japanese cases naming the Unification Church",
+   "filter": {
+    "c": [
+     "Japan"
+    ],
+    "kw": [
+     "unification church",
+     "family federation"
+    ]
+   }
+  },
+  {
+   "name": "People and businesses the Zondo commission recommended for prosecution",
+   "scope": "Prosecution recommendations in the South African state capture inquiry's reports to May 2022",
+   "counts": "people and companies",
+   "total": 130,
+   "asof": "May 2022",
+   "pub": "Daily Maverick, tallying the commission's own recommendations",
+   "url": "https://www.dailymaverick.co.za/article/2022-05-03-the-people-and-businesses-the-state-capture-commission-recommends-for-prosecution.md",
+   "note": "the published figure is “just over 130”, so it is a floor; recommendations, not convictions",
+   "match": "South African cases naming the Guptas or state capture",
+   "filter": {
+    "c": [
+     "South Africa"
+    ],
+    "kw": [
+     "gupta",
+     "state capture",
+     "zondo"
+    ]
+   }
+  },
+  {
+   "name": "Criminal networks in the EU that use corruption",
+   "scope": "Europol's list of the 821 most threatening criminal networks in the EU, of which 71 per cent use corruption and 86 per cent misuse legal businesses",
+   "counts": "networks",
+   "total": 821,
+   "asof": "April 2024",
+   "pub": "Europol",
+   "url": "https://www.europol.europa.eu/publication-events/main-reports/decoding-eu-s-most-threatening-criminal-networks",
+   "note": "a network is not an episode, and there is no way to tell which of the 821 this map carries, so no share is shown; the 2026 refresh lists 731 and must not be added to this",
+   "match": null,
+   "filter": null
+  }
+ ]
 }
