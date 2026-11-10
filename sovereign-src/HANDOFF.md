@@ -16,3 +16,11 @@ Not reached: about 130 Dutch protectorate rows, British protectorates, Danzig Na
 Secondary copies of texts used because the primary refused: UNCLOS Part VII (whales.org.au), Protocol II (likumi.lv), Outer Space Treaty (NASA copy), Montevideo (Avalon and others), Saramaka (Cultural Survival).
 Finismund, Lostisland and St. Charlie rest on MicroWiki only; TorHavn on its own site; directory figures are self-reported.
 Wikipedia limits request rate: long read jobs hit 429s and the two-hour background limit, so read in small batches.
+
+## Round of Nov 2026 (second): coverage against named lists
+Page: 8,844 attempts, 265 laws, 159 places, 22 patterns, about 17 MB (3 MB gzipped).
+Coverage is now measured item by item against every example a published list NAMES, not against estimates. build.py prints it. coverage.json rows carry `named` (how many a list names), `unread` (named but unreachable) and `named_basis`. Narrow types about 99.8%; all types about 87.7%; the gap is 1,201 items: PEZA's ~345 zones, New Cities Map's 353, Albert's rebel dataset, Altman's conquest list, ~210 princely states no list read names.
+New batches: patch_n_h1..h7 (UN members, US tribes, Alaska entities, princely states, protectorates, datasets, SDM match) and patch_n_z1..z6 (special economic zones by region). About 6,600 entries, mostly script-written from one list row each.
+Pins: $SP/geo.py looks up any GeoNames place offline (full country files, built on first use by $SP/gnprep.py CC). Never pin to a country centre when the source names no place: leave lat/lon null.
+Markers now cluster (clusterRadius 30, clusterMinPoints 4, clusterMaxZoom 8) so dense regions show a numbered circle; without it the globe was a solid mass of icons.
+Unreached and refused: PEZA and New Cities Map refused permission prompts; Albert and Altman datasets paywalled or robots-blocked; Iran's 34 SEZs, Philippine zones beyond 38, most Vietnamese zones, Curaçao/Aruba, Madagascar, New Zealand, Dakhla.
