@@ -40,17 +40,17 @@ cp dist/central_bank_independence.html ~/maps/   # then git add, commit, push to
 ## Data files to add to (`agents/`)
 | File | Holds | Records now |
 |---|---|---|
-| `corruption.json` | `cases` (iso3, central_bank, category, years, people, summary, status, source_title, source_url, weak_source) and `revolving_door` | 194 cases at 128 banks; 97 revolving-door records |
-| `events_gold.json` | `events`: governor firings, pressure and moves against banks, 1990s–Oct 2026; plus gold storage | 88 events |
+| `corruption.json` | `cases` (iso3, central_bank, category, years, people, summary, status, source_title, source_url, weak_source) and `revolving_door` | 232 cases at 135 banks; 111 revolving-door records |
+| `events_gold.json` | `events`: governor firings, pressure and moves against banks, 1990s–Nov 2026; plus gold storage | 102 events in 52 countries |
 | `owners.json` | `holdings` (named shareholders with shares, %, as_of, source), `bis_members`, `history` | 228 holdings; all 63 BIS members |
-| `networks.json` | `links` (entity, type, hq, cb_iso3, relation, detail, source) and `g30` members | 277 links; 56 G30 members |
-| `parties.json` | Parties named in cases and events, with head offices | 740 links |
-| `swaps.json` | Swap lines (provider, counterparty, amount, dates, status, source) | 229 |
-| `gaps.json` | Fed and South Africa holders, Greece, Türkiye share classes, auditors, case updates | 41 auditors at 32 banks |
+| `networks.json` | `links` (entity, type, hq, cb_iso3, relation, detail, source) and `g30` members | 307 links (45 printer ties, 107 reserve-manager ties); 56 G30 members |
+| `parties.json` | Parties named in cases and events, with head offices | 891 links |
+| `swaps.json` | Swap lines (provider, counterparty, amount, dates, status, source) | 240 (100 in force) |
+| `gaps.json` | Fed and South Africa holders, Greece, Türkiye share classes, auditors, case updates | 47 auditors at 38 banks |
 | `hq.json` | Head-office city and country for each party | – |
 | `patterns.json`, `implications.json` | The patterns and their plain-language meanings | 17 |
 
-Altogether the map has 977 parties and 1302 ties. `agents/work/research_log_2026-11.json` lists what was searched with no result, unopened leads, and records dropped after review.
+Altogether the map has 1,164 parties and 1,565 ties, and `agents/writeups.json` holds 1,393 plain-language paragraphs, one for every box. `agents/work/research_log_2026-11.json` lists what was searched with no result, unopened leads, and records dropped after review.
 
 ## Rules the user holds to
 - **No fabrication.** Every record needs a readable source URL that states the fact. Mark Wikipedia-only items `weak_source: true`. List acquittals but don't count them. Claims resting on one author go in as "claim, not confirmed."
@@ -79,22 +79,23 @@ These are rough estimates. No complete count exists for any of these categories.
 |---|---|---|
 | Datasets and indices (independence law, CPI, WGI, Basel, FSI, crises, BIS, COFER, Swift, gold, regimes) | Everything each source publishes | ~100% |
 | Named shareholders | Every list a bank publishes. The other 11 Fed Reserve Banks don't publish one, and the SARB names none of its roughly 800 holders. | ~90% of what is published |
-| Swap lines | 229 records (only lines known to be in force are drawn) | ~70–80% |
-| Governor firings and pressure | 88 | ~30–40% since 2019, less before |
-| Corruption cases at central banks, 1990–2026 | 194 at 128 banks | ~30–40% |
-| Banknote printers and their clients | 43 ties | ~20% |
-| External auditors | 32 banks | ~20% |
-| Revolving door (officials to or from private finance) | 97 records | ~15% |
+| Swap lines | 240 records, 100 in force (only those are drawn) | ~70–80% |
+| Governor firings and pressure | 102 in 52 countries | ~35–45% since 2019, less before |
+| Corruption cases at central banks, 1990–2026 | 232 at 135 banks | ~35–45% |
+| Banknote printers and their clients | 45 ties | ~20% |
+| External auditors | 47 records at 38 banks | ~25% |
+| Revolving door (officials to or from private finance) | 111 records in 26 countries | ~15–20% |
 | Outside reserve and fund managers | 107, mostly Norway's fund | ~5% outside Norway |
 
 Next steps, in order:
-1. Corruption cases: open `round3.cases.leads_not_opened` in the research log, then the banks searched by title only (Bahrain, Oman, Palestine, Qatar, Saudi Arabia, Singapore, Taiwan, Brunei, Macao, Samoa, Cambodia, Fiji and others).
-2. Revolving-door moves still missing: see `later_todo` in the research log, and past Fed governors and Reserve Bank presidents.
-3. Governor dismissals: open `round3.events_leads` in the research log.
-4. Auditors and printers: `round2.service_not_found` and `round3.service_not_found` list banks tried.
-5. Swap lines: `round2.swap_leads` were opened; look for new sources. Status `unknown` lines are listed in boxes, not drawn.
+1. **Corruption cases.** Round 4 opened almost every lead that earlier rounds left. What is left: `round4.cases_*.searched_none` names banks searched with nothing found (Bahrain, Oman, Qatar, Saudi Arabia, Singapore, Taiwan, Brunei, Macao, Samoa, Fiji and others), usually from result titles alone, so they are worth a second try in the local language. San Marino's Confuorti and Buriani rulings need a court or news source; only a councillor's speech was found.
+2. **Revolving door.** `round4.rd.leads_not_opened` (11) and `round4.rd.checked_none` (names whose biographies name no private employer). Still unchecked: Reserve Bank presidents before 2000, and non-US central banks other than the ECB, Bank of Japan and Bank of England.
+3. **Governor dismissals.** `round4.events.leads_not_opened` (17). Several Central Banking pages are paywalled after the first paragraph.
+4. **Auditors and printers.** `round4.service.not_found` (9): Egypt, Saudi Arabia, Vietnam, Bangladesh, the Philippines, Japan, Peru, Denmark and Indonesia. The Philippine and Peruvian sites block automated readers; Brazil's row is from the 2018 statements, the only ones that would open.
+5. **Swap lines.** `round4.swaps.leads_not_opened` (13). The PBoC's own current table (30 September 2025) lists 32 counterparties and omits exactly the 11 lines the map marks "unknown" (Albania, Armenia, Belarus, Georgia, Kazakhstan, Morocco, Nepal, Suriname, Tajikistan, Ukraine, Uzbekistan). That is evidence they lapsed, but the table says nothing in words, so the records were left alone. A source that says so plainly would settle them.
+6. **Open question for the user:** 22 cases have status `alleged` and currently count toward the scores. Acquittals, dismissals, withdrawn charges and closed investigations do not count. Ask whether unproven allegations should count.
 
-## Added in the latest round
+## Added in earlier rounds (UI)
 - **Writeups:** `agents/writeups.json` holds a plain-language paragraph for every country box (`p:ISO`) and every party box (`n:<node name>`), injected as `D.WR` and shown at the top of the box (`.wr`). They were written from each box's records and checked by script for numbers and outcomes, not re-checked against web sources. **When a record changes or a party is added, refresh that entry by hand.** A country or party with no entry just shows the lists.
 - **Hover:** only diamonds light their ties; lines take no hover or click. `hoverCountry(k)` lights a country's lines (`LK`, `lk()`) and the countries at the far ends (source `hov-ctry`, layer `c-hovto`).
 - **Anchors:** `anchorsOf` reads multi-currency anchors, so Belarus (0.2 EUR + 0.5 RUB + 0.3 USD) draws to Moscow. Ilzetzki-Reinhart-Rogoff give "n.a." for Russia and 19 others, which is why they have no outgoing line.
@@ -104,3 +105,20 @@ Next steps, in order:
 - **Resize:** `makeResizable(el, onStart)` adds 8 handles (`.rz-*`) to `#det` and `.win`. `#det` no longer scrolls; `#detBody` does.
 - **Small places:** `build_final.py` adds real outlines from `ne10` (`D.XSHAPE`) for places missing from the boundaries file: Monaco, Tuvalu, Nauru.
 - **Career-move boxes:** in `build_net.py`, when the move line doesn't name the party, the box also shows the record's summary.
+
+## How to refresh the writeups after adding records (do this every round)
+A writeup never updates itself, and two things make old ones wrong:
+1. New records for that place or party.
+2. **Scores shift across the whole map.** The inside-influence score counts documented cases against the highest count anywhere (`MAXCC` in `app.js`), so adding cases in one country moves the headline score of others by a point or two. After round 4, 55 paragraphs quoted a number that had moved.
+
+The routine, after merging new records and rebuilding:
+```bash
+S=<scratchpad>   # mk_t3.py, t_dump.py and t_sc.py are kept in agents/work/
+python3 $S/mk_t3.py /root/cb/dist/central_bank_independence.html $S/t/dump.html   # injects window.T and window.T3={detail,entityBox,L}
+python3 $S/t_dump.py $S                 # writes $S/boxes.json: every box's text, keyed p:ISO and n:<name>
+python3 $S/t_sc.py <old build> $S/sc_old.json && python3 $S/t_sc.py <new build> $S/sc_new.json
+```
+Then compare: keys in `boxes.json` with no entry in `writeups.json` are new, and any place whose rounded score changed and whose paragraph quotes the old number is stale. Give those box texts to writer agents with `scratchpad/r4/brief_writeups.md`, about 25 keys each, and merge the results into `agents/writeups.json`. Check the drafts by script for: numbers that do not appear in the box text, the phrases "the box", "the record", "does not say", "on the map", and the word "our".
+
+## Round 4 (10 November 2026), what it added
+38 corruption cases, 14 career moves, 14 governor-removal or pressure events, 6 auditors, 3 state printers and 11 swap lines, from the leads earlier rounds had left unopened. New countries on the case list: São Tomé and Príncipe, Eswatini, the Cayman Islands, the Dominican Republic, the Gambia, Libya, Madagascar, Slovenia, Trinidad and Tobago, Cambodia, Israel, South Korea and Uruguay. 185 writeups were rewritten or written fresh.
