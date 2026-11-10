@@ -9,11 +9,14 @@ against, for discrimination.html (country shading) and hate_violence.html (event
 WHICH CONFLICTS COUNT
 ETH Zurich's ACD2EPR 2021 links UCDP's rebel groups to the ethnic groups of its
 Ethnic Power Relations dataset. A pair is kept when ACD2EPR records, for the same
-rebels and group, BOTH of:
+rebels and group, a claim AND recruitment, at either grade of evidence it uses:
   claim = 1         direct evidence the rebels claim to fight on behalf of the group
+  claim = 2         indirect evidence for the claim, e.g. the rebels' own name
   recruitment = 1   the rebels recruit from the group
-(ACD2EPR's 2 means indirect evidence, e.g. the rebels' own name; -1 no information.
-Those are not counted, and the number they would add is printed at the end.)
+  recruitment = 2   the group is recruited by both the rebels and the government
+A pair where either is coded -1, no information, is left out. Every pair carries
+the grade it rests on, so a reader can see which ones rest on the weaker evidence:
+the map says so in each pair's own box, and marks it beside the rebels' name.
 The pair is then kept only if EPR Core 2021 codes that group DISCRIMINATED -
 actively and deliberately kept from power - in at least one year UCDP records the
 pair as fighting. Every other armed conflict is left out, which is what makes
@@ -63,15 +66,13 @@ def main(src, out):
         active[r["dyad_id"]].add(int(r["year"]))
         dyad[r["dyad_id"]] = r
 
-    # 3. ACD2EPR 2021: rebels tied to a group by direct claim AND recruitment.
-    links, indirect = collections.defaultdict(list), set()
+    # 3. ACD2EPR 2021: rebels tied to a group by a claim AND recruitment.
+    links = collections.defaultdict(list)
     for r in load(src, "ACD2EPR-2021.csv"):
         if not r["gwgroupid"]:
             continue
-        if r["claim"] == "1" and r["recruitment"] == "1":
+        if r["claim"] in ("1", "2") and r["recruitment"] in ("1", "2"):
             links[r["dyadid"]].append(r)
-        elif r["claim"] in ("1", "2") and r["recruitment"] in ("1", "2"):
-            indirect.add(r["dyadid"])
 
     # 4. Keep a pair only where a linked group was discriminated against while it fought.
     kept, no_ucdp = {}, []
@@ -108,6 +109,8 @@ def main(src, out):
             "side_a": d["side_a"], "side_b": d["side_b"],
             "discriminated": [f"{group_name[r['gwgroupid']]} ({span(ov)})" for r, ov in hit],
             "active_years_ucdp": yrs,
+            "evidence": grade([r for r, _ in hit]),
+            "what_acd2epr_records": [evidence_of(r) for r, _ in hit],
         })
     for rec in by_country.values():
         rec["dyads"].sort(key=lambda x: x["active_years_ucdp"][0])
@@ -118,7 +121,9 @@ def main(src, out):
     # 6. The events of fighting in those same wars (UCDP GED 26.1, 1989 onwards).
     keys = {did: str(i) for i, did in enumerate(sorted(kept))}
     dyads = {keys[did]: [dyad[did]["side_a"], dyad[did]["side_b"],
-                         "; ".join(dict.fromkeys(group_name[r["gwgroupid"]] for r, _ in hit))]
+                         "; ".join(dict.fromkeys(group_name[r["gwgroupid"]] for r, _ in hit)),
+                         grade([r for r, _ in hit]),
+                         " ".join(dict.fromkeys(evidence_of(r) for r, _ in hit))]
              for did, hit in kept.items()}
     rows, dead, ev_countries, ev_dyads = [], 0, set(), set()
     with open(pathlib.Path(src) / "GEDEvent_v26_1.csv", encoding="utf-8") as f:
@@ -144,15 +149,34 @@ def main(src, out):
         {"_made": MADE, "_meta": meta("Every event of fighting UCDP records in those wars (GED 26.1)"),
          "dyads": dyads, "rows": rows}, ensure_ascii=False, separators=(",", ":")))
 
-    print(f"pairs kept: {len(kept)} of {len(links)} with direct claim and recruitment, in {sum(1 for k in by_country if not k.startswith('_'))} countries")
-    print(f"events: {len(rows):,} with {dead:,} dead, {len(ev_dyads)} of the {len(kept)} pairs, {len(ev_countries)} countries")
-    print(f"pairs that indirect evidence (ACD2EPR's code 2) would add, before the discrimination test: {len(indirect)}")
+    grades = collections.Counter(grade([r for r, _ in hit]) for hit in kept.values())
+    ev_grades = collections.Counter(dyads[keys[k]][3] for k in ev_dyads)
+    print(f"pairs kept: {len(kept)} of {len(links)} with a claim and recruitment, in {sum(1 for k in by_country if not k.startswith('_'))} countries"
+          f" ({grades['direct']} on direct evidence of the claim, {grades['indirect']} on indirect)")
+    print(f"events: {len(rows):,} with {dead:,} dead, {len(ev_dyads)} of the {len(kept)} pairs, {len(ev_countries)} countries"
+          f" ({ev_grades['direct']} wars on direct evidence, {ev_grades['indirect']} on indirect)")
     if no_ucdp:
         print(f"pairs ACD2EPR names that UCDP 26.1 no longer lists: {len(no_ucdp)}")
     if unmapped:
         print("country codes with no ISO3:", sorted(unmapped))
     for p in ("ethnic_conflict.json", "ucdp_ethnic_conflict_events.json"):
         print(f"  {p}: {(out / p).stat().st_size / 1e6:.1f} MB")
+
+
+CLAIM = {"1": "direct evidence that the rebels claimed to fight for the group",
+         "2": "indirect evidence of that claim, such as the rebels' own name"}
+RECRUIT = {"1": "the rebels recruit from it",
+           "2": "the group is recruited by both the rebels and the government"}
+
+
+def evidence_of(r):
+    """What ACD2EPR records for one link, in its own terms."""
+    return f"ACD2EPR records {CLAIM[r['claim']]}, and that {RECRUIT[r['recruitment']]}."
+
+
+def grade(rows):
+    """direct, if any kept link rests on direct evidence of the claim; else indirect."""
+    return "direct" if any(r["claim"] == "1" for r in rows) else "indirect"
 
 
 def span(years):
