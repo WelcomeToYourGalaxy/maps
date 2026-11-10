@@ -139,38 +139,39 @@ def coverage(cases):
         return {}
     regs = []
     for r in cov.get('registers', []):
-        f = r.get('filter') or {}
+        out = {k: v for k, v in r.items() if k != 'filter'}
+        f = r.get('filter')
+        if not f:
+            out['on_map'] = None
+            regs.append(out)
+            continue
         n = 0
         for c in cases:
             if f.get('c') and c.get('c') not in f['c']:
                 continue
+            bad = False
             for k in ('inf', 'bk', 'tgt', 'lik', 'status'):
                 if f.get(k) and c.get(k) not in f[k]:
+                    bad = True
                     break
-            else:
-                y = c.get('y') or 0
-                if f.get('y0') and y < f['y0']:
+            if bad:
+                continue
+            y = c.get('y') or 0
+            if f.get('y0') and y < f['y0']:
+                continue
+            if f.get('y1') and y > f['y1']:
+                continue
+            if f.get('kw'):
+                hay = ' '.join(str(c.get(x) or '') for x in ('n', 'd', 'rank', 'who', 'org', 'city')).lower()
+                if not any(w.lower() in hay for w in f['kw']):
                     continue
-                if f.get('y1') and y > f['y1']:
-                    continue
-                kw = f.get('kw')
-                if kw:
-                    hay = ' '.join(str(c.get(x) or '') for x in ('n', 'd', 'rank', 'who', 'org', 'city')).lower()
-                    if not any(w.lower() in hay for w in kw):
-                        continue
-                n += 1
-        out = dict(r)
-        out.pop('filter', None)
+            n += 1
         out['on_map'] = n
         if r.get('total'):
             out['share'] = round(100.0 * n / r['total'], 1)
         regs.append(out)
     regs.sort(key=lambda r: -(r.get('total') or 0))
-    tot = sum(r['total'] for r in regs if r.get('total'))
-    onm = sum(r['on_map'] for r in regs)
-    return {'overall': cov.get('overall', {}), 'registers': regs,
-            'measured': {'total': tot, 'on_map': onm,
-                         'share': round(100.0 * onm / tot, 1) if tot else 0, 'n': len(regs)}}
+    return {'overall': cov.get('overall', {}), 'registers': regs, 'n': len(regs)}
 
 
 def recency(y):

@@ -71,20 +71,28 @@ def about(data):
       '<p>Missing: world survey totals by type of official, anything on steering by banks or elite networks, and most of Asia, the Middle East and the former Soviet states, where most cases never reach a court or survey.</p>')
     cov = data.get('coverage') or {}
     if cov.get('overall'):
-        o, m = cov['overall'], cov.get('measured') or {}
+        o = cov['overall']
         a('<h2>How much of the subject this map shows</h2>')
-        a('<p>Roughly <b>%s to %s per cent</b>. That is a judgement, not a measurement, and it will stay a judgement. %s</p>' % (o.get('lo'), o.get('hi'), H.escape(o.get('basis') or '')))
-        if m.get('n'):
-            a('<p>Part of it can be measured. Some pieces of the subject have been counted by the body that dealt with them: a ministry publishes how many councils it dissolved for mafia infiltration, a prosecutor says how many people were charged with spying, an inquiry names everyone it found. Each of those is a register below, with the total its publisher states. Across the %d registers, %s episodes or people have been counted by someone, and this map carries <b>%d of them, %s per cent</b>. These are the best-recorded corners of the field — a court or a ministry has already done the work — so the share outside them is lower, which is why the figure above is a range and why its low end is where it is.</p>'
-              % (m['n'], format(m['total'], ','), m['on_map'], m['share']))
-            a('<table class="cov"><tr><th>Counted by someone</th><th>Their total</th><th>On this map</th><th>Share</th></tr>')
+        a('<p>Roughly <b>%s to %s per cent</b>. That is a judgement, not a measurement, and it will stay one. %s</p>' % (o.get('lo'), o.get('hi'), H.escape(o.get('basis') or '')))
+        if cov.get('registers'):
+            a('<p>Parts of the subject have been counted, though, by the body that dealt with them: a parliament counts the councils dissolved for mafia infiltration, a security agency counts the people it prosecuted for spying, an inquiry counts everyone it told prosecutors to charge. Each row below is one of those counts, with the total its publisher states and a link to the page it was read on. Beside it is the number of cases this map carries inside the same scope, worked out from the case file each time the map is built, and the share that makes.</p>')
+            a('<p class="warn">The share is not a score to drive up. Most of these registers count people, companies or decrees rather than episodes: Turkey dismissed 125,678 public servants by decree, and one case on this map covers the purge; Italy has dissolved 298 local administrations, and one case covers 402 of them. A low share can mean the map is thin there, or it can mean one case stands for the whole register. The scope and what each one counts are given so the two can be told apart. Nothing is calculated across the rows: a count of people and a count of enforcement actions do not add up to anything.</p>')
+            a('<table class="cov"><tr><th>Counted by someone else</th><th>Their total</th><th>On this map</th><th>Share</th></tr>')
             for r in cov['registers']:
-                a('<tr><td><a href="%s" target="_blank" rel="noopener">%s</a><br><span class="mute">%s %s</span></td><td>%s</td><td>%d</td><td>%s%%</td></tr>'
-                  % (H.escape(r.get('url') or '#'), H.escape(r.get('name') or ''), H.escape(r.get('scope') or ''),
-                     H.escape(('Counts ' + r['note']) if r.get('note') else ''),
-                     format(r['total'], ','), r['on_map'], r.get('share')))
+                sub = H.escape(r.get('scope') or '')
+                if r.get('counts'):
+                    sub += ' Counts %s.' % H.escape(r['counts'])
+                if r.get('note'):
+                    sub += ' Note: %s.' % H.escape(r['note'])
+                sub += ' Published by %s.' % H.escape(r.get('pub') or 'the source linked')
+                if r.get('on_map') is None:
+                    onm, sh = '&mdash;', '&mdash;'
+                else:
+                    onm, sh = str(r['on_map']), ('%s%%' % r.get('share'))
+                a('<tr><td><a href="%s" target="_blank" rel="noopener">%s</a><br><span class="mute">%s</span></td><td>%s</td><td>%s</td><td>%s</td></tr>'
+                  % (H.escape(r.get('url') or '#'), H.escape(r.get('name') or ''), sub,
+                     format(r['total'], ',') if isinstance(r.get('total'), int) else H.escape(str(r.get('total'))), onm, sh))
             a('</table>')
-            a('<p class="warn">A register is not a target. Several of them count people rather than episodes — officials dismissed, lawmakers convicted — and this map carries one case for an episode that may have involved hundreds of them, so the share understates what is covered there. Others count firms penalised for paying bribes, where one case on the map stands for one company. The registers are a floor under the estimate, not a scoreboard to fill.</p>')
-        a('<p>Nothing here will reach 100 per cent, and no version of this map should ever report that it has. Membership lists surface by accident: a police raid, a parliament that orders files handed over, a government that falls and opens the archive, an accountant who turns witness. What is on the map is what has surfaced and been written down somewhere a reader can check.</p>')
+        a('<p>Nothing here will reach 100 per cent, and no version of this map should report that it has. These arrangements are built so that no register can be compiled. What is on the map is what surfaced — through a raid, a parliament that ordered the files handed over, a government that fell and opened the archive, an accountant who turned witness, a leak that landed at a newsroom — and was then written down somewhere a reader can check.</p>')
     a('<h2>Sources</h2><p>Conditions: Global Organized Crime Index 2025, Global Initiative Against Transnational Organized Crime. Boundaries: a shared boundary file. Capitals: countryinfo. Basemaps: five shared basemaps (Esri World Imagery, NASA Black Marble, Mapterhorn and AWS terrain tiles, OpenMapTiles, CARTO labels) and a painted Atlas plate. Case, organisation and pattern sources are on each card. Research covered court judgments, parliamentary and official inquiries (the Anselmi Commission, the Belgian and Swiss stay-behind inquiries, the US Church Committee, the Fraser subcommittee, the Kerry–Brown BCCI report, the UK Home Affairs Committee, Canada\'s Hogue inquiry), the organisations\' own published lists, Carroll Quigley\'s two books, the Council on Foreign Relations\' centennial history, and major newspapers.</p>')
     return '\n'.join(p)
