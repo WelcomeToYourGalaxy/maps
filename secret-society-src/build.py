@@ -124,6 +124,55 @@ def load(name, default=None):
     return json.load(open(p))
 
 
+def coverage(cases):
+    """How much of the subject this map shows.
+
+    The whole field cannot be counted — that is the point of the About page. But parts of
+    it have been counted by someone else: a ministry that publishes how many councils it
+    dissolved, a prosecutor who states how many officials were charged, an inquiry that
+    names everyone it found. Each of those is a register in data/coverage.json, with the
+    total its publisher states and a filter saying which of our cases fall inside its
+    scope. The filter is applied here, so the figures follow the case file as it grows.
+    """
+    cov = load('coverage.json', {})
+    if not cov:
+        return {}
+    regs = []
+    for r in cov.get('registers', []):
+        f = r.get('filter') or {}
+        n = 0
+        for c in cases:
+            if f.get('c') and c.get('c') not in f['c']:
+                continue
+            for k in ('inf', 'bk', 'tgt', 'lik', 'status'):
+                if f.get(k) and c.get(k) not in f[k]:
+                    break
+            else:
+                y = c.get('y') or 0
+                if f.get('y0') and y < f['y0']:
+                    continue
+                if f.get('y1') and y > f['y1']:
+                    continue
+                kw = f.get('kw')
+                if kw:
+                    hay = ' '.join(str(c.get(x) or '') for x in ('n', 'd', 'rank', 'who', 'org', 'city')).lower()
+                    if not any(w.lower() in hay for w in kw):
+                        continue
+                n += 1
+        out = dict(r)
+        out.pop('filter', None)
+        out['on_map'] = n
+        if r.get('total'):
+            out['share'] = round(100.0 * n / r['total'], 1)
+        regs.append(out)
+    regs.sort(key=lambda r: -(r.get('total') or 0))
+    tot = sum(r['total'] for r in regs if r.get('total'))
+    onm = sum(r['on_map'] for r in regs)
+    return {'overall': cov.get('overall', {}), 'registers': regs,
+            'measured': {'total': tot, 'on_map': onm,
+                         'share': round(100.0 * onm / tot, 1) if tot else 0, 'n': len(regs)}}
+
+
 def recency(y):
     """A present-tense map: what is happening now counts most."""
     y = y or 0
@@ -260,6 +309,7 @@ def main():
             'reloc': [], 'cnotes': cnotes, 'gtypes': TYPES, 'recovered': [],
             'orgnames': oname, 'orgtypes': otype,
             'field': load('field_estimate.json', {}),
+            'coverage': coverage(case_out),
             'inf': INF, 'tgt': TGT, 'rel': REL, 'lik': LIK, 'intl': INTL, 'widel': WIDEL, 'typew': TYPE_W,
             'offpres': {k: [[p[0], 1 if p[1] else 0] for p in present[k]] for k in OFFSETS if present.get(k)},
             'meta': {'dcap': round(DCAP, 2), 'rcap': round(RCAP, 2), 'n_orgs': len(orgs),

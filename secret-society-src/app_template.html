@@ -167,6 +167,11 @@ button.btn:hover,#infoBtn:hover,#worldBtn:hover{border-color:var(--accent-hi);co
 #info p,#info li{font-size:14px}
 #info ul{padding-left:20px;margin:4px 0}
 #info .warn{border-left:2px solid var(--accent);padding:4px 0 4px 12px;color:#d8d5e0}
+#info table.cov{border-collapse:collapse;width:100%;font-size:13px;margin:10px 0 4px}
+#info table.cov th{text-align:left;font-weight:600;color:var(--mute);border-bottom:1px solid var(--line);padding:4px 10px 5px 0}
+#info table.cov td{vertical-align:top;padding:7px 10px 7px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+#info table.cov td:nth-child(n+2){text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+#info table.cov .mute{color:var(--mute);font-size:12px}
 .maplibregl-map{font-family:'Marcellus','Georgia',serif}
 .maplibregl-ctrl-attrib{background:rgba(6,7,16,.8)!important;color:#8f8d9e;font-family:'Marcellus','Georgia',serif}
 .maplibregl-ctrl-attrib a{color:#b0aec0!important}
@@ -209,6 +214,7 @@ button.btn:hover,#infoBtn:hover,#worldBtn:hover{border-color:var(--accent-hi);co
 #worldBtn{right:410px!important;bottom:34px!important}
 @media (max-width:820px){#patBox,#legBox{position:absolute;width:auto;left:12px;right:12px;max-height:30%}#legBox{bottom:auto;top:46%}.maplibregl-ctrl-bottom-right{right:0!important}#worldBtn{right:52px!important}}
 .whyc{font-weight:600;opacity:.85}
+.cov{color:var(--mute)}
 </style>
 </head>
 <body>
@@ -576,7 +582,7 @@ const ERAS = [["all", "Any year", 0, 9999], ["now", "Since 2010", 2010, 2026], [
 function buildKey() {
   rescore();
   const est = Object.keys(RF).filter((k) => RF[k].est).length, nk = Object.keys(RF).length;
-  $("#lede2").textContent = CASES.length + " cases · " + ORGS.length + " organisations and networks · " + PATS.length + " patterns · " + nk + " countries";
+  $("#lede2").innerHTML = esc(CASES.length + " cases · " + ORGS.length + " organisations and networks · " + PATS.length + " patterns · " + nk + " countries") + covLine();
   const counts = [0, 0, 0, 0, 0]; Object.keys(RF).forEach((k) => counts[bandOf(lensVal(RF[k]))]++);
   const ncase = CASES.filter((c) => fOK(c) && yrOK(c) && S.bk[c.bk]).length;
   let h = '';
@@ -607,6 +613,14 @@ function buildKey() {
   wireFilters();
   drawFind();
   buildPat(); buildLeg();
+}
+const COV = D.coverage || {};
+function covLine() {
+  const o = COV.overall, m = COV.measured;
+  if (!o || !o.hi) return "";
+  let t = "No one has counted all infiltration, and no one can: these arrangements exist so that no register can be compiled. This share is a judgement. " + (o.basis || "");
+  if (m && m.n) t += " The measured part: " + m.n + " published registers do state a total for a bounded piece of the subject — " + m.total.toLocaleString() + " episodes or people in all — and this map carries " + m.on_map + " of them, " + m.share + "%. Those registers cover the parts that courts, ministries and inquiries have already counted, which is where the record is fullest, so the figure for the rest of the field is lower. The About page lists every register with its source.";
+  return '<br><span class="cov">Shows roughly ' + o.lo + '–' + o.hi + '% of the subject</span>' + QM(t);
 }
 const FIELD = D.field || {};
 const fieldPct = (v) => v >= 5 ? (Math.round(v / 5) * 5) + "%" : v >= 1 ? Math.round(v) + "%" : "<1%";
