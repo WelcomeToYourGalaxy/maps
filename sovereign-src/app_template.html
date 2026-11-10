@@ -240,6 +240,7 @@ table.heat tr:hover td.nm{color:#fff;text-decoration:underline}
     <h1>Outside Every Country</h1>
     <p class="lede">Attempts to set up a territory outside the control of existing countries, at sea, in the air, in orbit, on ice and on other worlds, with the estimated chance of success at each kind of place.</p>
     <p class="lede2" id="lede2"></p>
+    <p class="lede2" id="lede3"></p>
     <div class="body" id="keyBody"></div>
   </div>
   <div id="patBox" class="card"><div class="bh"><span class="psec">Patterns behind the attempts</span><button id="togglePat" class="tog" type="button">−</button></div><div id="patBody" class="scroll"></div></div>
@@ -387,6 +388,8 @@ const yrs = (c) => (c.start || "?") + (c.end ? (c.end === c.start ? "" : "–" +
 function buildKey() {
   const base = D.cases, ATT = base.filter((c) => c.kind === "attempt"), cnt = (f) => base.filter(f).length;
   $("#lede2").textContent = ATT.length + " attempts · " + (base.length - ATT.length) + " laws and legal tests · " + D.zones.length + " places, routes and combinations · " + D.patterns.length + " patterns · " + D.entails.length + " requirements";
+  const CV = D.coverage || {};
+  $("#lede3").textContent = "Holds " + CV.overall_high_pct + "% of every example named by the published lists read for the kinds of place closest to founding one, and " + CV.all_pct + "% across all kinds, including trade zones, Indigenous self-government, new states, rebel rule and conquest. A further " + (CV.unread_total || 0).toLocaleString() + " are named in lists that refused access or were not reached. Published counts and estimates, named or not, run to about " + (CV.est_total || 0).toLocaleString() + ".";
   const r = SHADES[S.shade];
   let h = '<div class="psec">Shade the places by<span class="qm" data-tip="No study measures these chances, so they are estimates based on the law and on what happened in past attempts. Open any place to read the reasoning. Method and sources explains the scale.">?</span></div><select id="shade">' + Object.keys(SHADES).map((k) => '<option value="' + k + '"' + (k === S.shade ? " selected" : "") + ">" + esc(SHADES[k][0]) + "</option>").join("") + '</select><div style="font-size:11.2px;color:var(--mute);margin-top:4px;line-height:1.35">' + esc(r[1]) + '</div><div class="ramp">' + rampOf(S.shade).map((x) => '<i style="background:' + x[1] + '"></i>').join("") + '</div><div class="rlab">' + rampOf(S.shade).map((x) => "<span>" + x[2] + "</span>").join("") + "</div>";
   h += '<div class="psec">Find</div><input id="find" class="inp" type="search" placeholder="An attempt, founder, place or treaty" autocomplete="off" value="' + esc(S.q || "") + '"><div id="flist" class="scroll"></div>';
