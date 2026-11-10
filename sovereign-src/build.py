@@ -419,46 +419,41 @@ for c in out:
 for r in COV['rows']:
     r['on_map']=len(r['case_ids'])+r.get('also_covered',0)
     if r['kind'] in('unknown','no total'):r['world_low']=r['on_map']
-# overall: types closest to founding a place, then everything with a total
+# overall: share of every item that published lists name, including named lists that could not be read
 _OUTSIDE={'Special economic zones and charter cities','Indigenous self-government arrangements','Flag registers','New states since 1945','Private and proprietary cities'}
 _NOTNARROW=_OUTSIDE|{'Rebel-run territory','Conquest and annexation by states','Beyond state reach','Protected states','Maroon and runaway communities'}
+for r in COV['rows']:
+    r['named_total']=max(r['on_map'],r.get('named') or 0)+r.get('unread',0)
 _rt=[r for r in COV['rows'] if r['kind'] not in('unknown','no total')]
 _nr=[r for r in _rt if r['type'] not in _NOTNARROW]
-def _share(rows,ceil):
-    t=0;h=0
-    for r in rows:
-        d=(r['world_high'] or r['world_low']) if ceil else r['world_low']
-        d=max(d,1);t+=d;h+=min(r['on_map'],d)
+def _share(rows):
+    t=sum(r['named_total'] for r in rows);h=sum(min(r['on_map'],r['named_total']) for r in rows)
     return h*100/t,h,t
-_hi,_hin,_hit=_share(_nr,False);_lo,_lon,_lot=_share(_nr,True);_al,_aln,_alt=_share(_rt,True)
-COV['overall_high_pct']=round(_hi);COV['overall_low_pct']=round(_lo);COV['all_pct']=round(_al)
-print('coverage narrow %d/%d=%.1f%% against low totals; %d/%d=%.1f%% against high totals; all %d/%d=%.1f%%'%(_hin,_hit,_hi,_lon,_lot,_lo,_aln,_alt,_al))
-for r in COV['rows']:print('  ',r['type'],r['on_map'],r['world_low'],r['world_high'],r['kind'])
-_pct=lambda s:s.replace('__COV_HI__',str(COV['overall_high_pct'])).replace('__COV_LO__',str(COV['overall_low_pct'])).replace('__COV_ALL__',str(COV['all_pct'])).replace('__COV_NT__',str(sum(r['on_map'] for r in COV['rows'] if r['kind']=='no total'))).replace('__COV_OTHER__',str(next(r['on_map'] for r in COV['rows'] if r['kind']=='unknown')))
+_n,_nn,_nt=_share(_nr);_a,_an,_at=_share(_rt)
+_fl=lambda v:int(v*10)/10 if v<100 else 100
+COV['overall_high_pct']=_fl(_n);COV['all_pct']=_fl(_a);COV['unread_total']=sum(r.get('unread',0) for r in COV['rows'])
+COV['est_total']=sum(max(r['world_high'] or 0,r['world_low'] or 0,r['on_map']) for r in _rt);COV['on_map_total']=sum(r['on_map'] for r in _rt)
+print('coverage of named items: narrow %d/%d=%.1f%%; all %d/%d=%.1f%%; unread %d; estimates %d'%(_nn,_nt,_n,_an,_at,_a,COV['unread_total'],COV['est_total']))
+for r in COV['rows']:print('  ',r['type'],r['on_map'],r.get('named'),r.get('unread'),r['world_low'],r['world_high'],r['kind'])
+_pct=lambda s:s.replace('__COV_HI__',str(COV['overall_high_pct'])).replace('__COV_ALL__',str(COV['all_pct'])).replace('__COV_UNREAD__',format(COV['unread_total'],',')).replace('__COV_EST__',format(COV['est_total'],',')).replace('__COV_ONMAP__',format(COV['on_map_total'],',')).replace('__COV_NT__',str(sum(r['on_map'] for r in COV['rows'] if r['kind']=='no total'))).replace('__COV_OTHER__',str(next(r['on_map'] for r in COV['rows'] if r['kind']=='unknown')))
 SHORT=_pct(SHORT);METHOD=_pct(METHOD)
 def _covhtml():
     if not COV:return ''
-    def tot(r):
-        if r['kind']=='no total':return 'No total published'
-        if r['world_high'] and r['world_high']!=r['world_low']:return '%s to %s'%(format(r['world_low'],','),format(r['world_high'],','))
-        if r['world_high']:return format(r['world_high'],',')
-        return format(r['world_low'],',')+' or more'
+    f=lambda v:('%.1f'%v if v<99.95 else '100')
+    def est(r):
+        if r['kind']=='no total':return 'None published'
+        hi=r['world_high'];lo=r['world_low']
+        if hi and hi!=lo:return '%s to %s'%(format(lo,','),format(hi,','))
+        return format(hi or lo,',')+('' if hi else ' or more')
     def sh(r):
-        f=lambda v:('%.1f'%v if v<10 else '%.0f'%v)
-        if r['kind']=='no total':return 'Unknown'
-        if r['world_high'] and r['world_high']!=r['world_low']:
-            if r['on_map']>=r['world_high']:return 'All counted'
-            a=r['on_map']/r['world_high']*100;c=min(r['on_map']/r['world_low']*100,100)
-            return f(a)+' to '+f(c)+'%'
-        if r['world_high']:return 'All counted' if r['on_map']>=r['world_high'] else f(r['on_map']/r['world_high']*100)+'%'
-        if r['on_map']>=r['world_low']:return 'All listed; true total unknown'
-        return 'at most '+f(r['on_map']/r['world_low']*100)+'%'
-    kinds={'documented':'published count','estimate':'estimate','documented floor':'published count, as a minimum','no total':'no total'}
-    rows=[r for r in COV['rows'] if r['kind']!='unknown']
-    rows.sort(key=lambda r:-r['on_map'])
-    h='<table style="width:100%;border-collapse:collapse;font-size:12px"><tr style="text-align:left"><th>Type</th><th>On the map</th><th>Real-world total</th><th>Share included</th></tr>'
+        if r['kind']=='no total':return '100% of those named'
+        return f(min(r['on_map'],r['named_total'])*100/r['named_total'])+'%'
+    rows=[r for r in COV['rows'] if r['kind']!='unknown'];rows.sort(key=lambda r:-r['on_map'])
+    h='<table style="width:100%;border-collapse:collapse;font-size:12px"><tr style="text-align:left"><th>Type</th><th>On the map</th><th>Named in published lists</th><th>Share of those named</th><th>Published counts and estimates, named or not</th></tr>'
     for r in rows:
-        h+='<tr style="border-top:1px solid var(--line2)"><td style="padding:3px 6px 3px 0">%s<br><small style="color:var(--mute)">%s. %s</small></td><td>%s</td><td>%s</td><td>%s</td></tr>'%(r['type'],kinds.get(r['kind'],r['kind']).capitalize(),r['basis'].replace('<','&lt;'),format(r['on_map'],','),tot(r),sh(r))
+        nb=r.get('named_basis') or ('No published total; these are the cases named in the sources read.' if r['kind']=='no total' else 'Every item named in the lists read is here.')
+        un=(' %s more are in named lists that could not be read.'%format(r['unread'],',')) if r.get('unread') else ''
+        h+='<tr style="border-top:1px solid var(--line2)"><td style="padding:3px 6px 3px 0">%s<br><small style="color:var(--mute)">%s%s Counts and estimates: %s</small></td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>'%(r['type'],nb.replace('<','&lt;'),un,r['basis'].replace('<','&lt;'),format(r['on_map'],','),format(r['named_total'],','),sh(r),est(r))
     return h+'</table>'
 METHOD=METHOD.replace('__COV__',_covhtml())
 data=dict(cases=out,zones=zones,entails=ent,patterns=PATTERNS,geo=json.load(open(os.path.join(HERE,'data','zones.geojson'))),charts=charts,short=SHORT,coverage=COV,about=ABOUT,method=METHOD.replace('__NA__',str(len(att))).replace('__NL__',str(len(out)-len(att))).replace('__NS__',str(len({s['u'] for c in out for s in c['sources']}|{s['u'] for z in zones for s in z['sources']}|{s['u'] for e in ent for s in e['sources']}))))
