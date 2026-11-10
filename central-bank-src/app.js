@@ -70,8 +70,15 @@ const latestOr = (p, k, sk, y, pick) => { const r = own(p, k); if (!r) return nu
 // "other" event records (appointments, court rulings) are shown in the box but not counted as moves against the bank
 const evN = (p) => (p.ev || []).filter((i) => D.EV[i].kind !== "other").length;
 const MAXEV = Math.max(1, ...Object.values(P).map(evN));
-const ccN = (p) => (p.cc || []).filter((i) => !["acquitted", "case dismissed", "charge withdrawn", "investigation closed"].includes(D.CC[i].status)).length;
-const MAXCC = Math.max(1, ...Object.values(P).map(ccN));
+// Cases with an outcome that cleared the official, or that ended without one, are listed in the box and not counted.
+const CC_OUT = ["acquitted", "case dismissed", "charge withdrawn", "investigation closed"];
+// "alleged" = publicly accused in a readable source, with no charge filed, no inquiry reported and no court ruling.
+// S.alleged decides whether those count. The tick box in the legend switches it; the default counts them.
+const ccAlleged = (p) => (p.cc || []).filter((i) => D.CC[i].status === "alleged").length;
+const ccN = (p) => (p.cc || []).filter((i) => { const st = D.CC[i].status; return !CC_OUT.includes(st) && (S.alleged || st !== "alleged"); }).length;
+const ALLEG_N = D.CC.filter((c) => c.status === "alleged").length;
+const MAXCC_C = {};
+const MAXCC = () => { const k = S.alleged ? "y" : "n"; if (MAXCC_C[k] == null) MAXCC_C[k] = Math.max(1, ...Object.values(P).map(ccN)); return MAXCC_C[k]; };
 const rdN = (p) => (p.rd || []).filter((i) => !D.RD[i].public_move).length;
 const MAXRD = Math.max(1, ...Object.values(P).map(rdN));
 const avg = (a) => a.reduce((x, y) => x + y, 0) / a.length;
@@ -91,8 +98,10 @@ function outsideParts(p) {
 // INSIDE: the people and owners inside the bank, and the cover its secrecy gives them
 function insideParts(p) {
   const out = [], t = own(p, "t"), n = ccN(p), m = rdN(p);
-  if (!t && !n && !m && !p.own) return out;
-  out.push(["Corruption cases inside the bank since 1990", n / MAXCC, n + " (most anywhere: " + MAXCC + ")"]);
+  // With allegations switched off, a bank whose only cases are allegations stays scored (at nothing for cases) rather than dropping off the layer.
+  if (!t && !n && !m && !p.own && !(!S.alleged && ccAlleged(p))) return out;
+  const al = ccAlleged(p);
+  out.push(["Corruption cases inside the bank since 1990", n / MAXCC(), n + " (most anywhere: " + MAXCC() + ")" + (!S.alleged && al ? ", " + al + " unproven allegation" + (al > 1 ? "s" : "") + " left out" : "")]);
   out.push(["Officials moving to or from private finance", m / MAXRD, m + " documented (most anywhere: " + MAXRD + ")"]);
   out.push(["Private shareholders inside its governance", p.own ? 1 : 0, p.own ? "yes" : "none found"]);
   if (t) out.push(["Bank keeps the public uninformed", 1 - t.o.ti / 15, "1 − transparency " + fmt(t.o.ti, 1) + "/15" + via(t)]);
@@ -115,7 +124,7 @@ function groups(p) { return [["Outside influence", outsideParts(p)], ["Inside in
 function allScore(p) { const G = groups(p); if (G.length < 2) return null; return { v: 100 * avg(G.map((x) => avg(x[1].map((y) => y[1])))), n: G.length }; }
 seq("none", "Plain", "No country colors", { dom: [0, 1], f: (v) => "", get: () => null, desc: "Countries are left uncolored so the basemap and the lines show clearly. Click any country for its box.", src: "" });
 seq("all", "The big picture", "Ulterior influence, all around (everything combined)", {
-  dom: "max", f: (v) => fmt(v, 0) + " of 100", get: (p) => allScore(p),
+  alleg: true, dom: "max", f: (v) => fmt(v, 0) + " of 100", get: (p) => allScore(p),
   desc: "How exposed each central bank is to influence serving someone other than the public: the average of the outside-influence and inside-influence scores below and a third for the corruption and secrecy around the bank (corruption in the country, money-laundering risk in its banks, and laws that hide who owns money). Scored where at least two of the three have data. Light means more exposed.",
   src: "All sources on this map; see About and sources." });
 seq("comp", "The big picture", "Outside influence (governments and foreign powers)", {
@@ -123,8 +132,8 @@ seq("comp", "The big picture", "Outside influence (governments and foreign power
   desc: "How far governments and foreign powers can steer the bank: what its law allows the government, reported government pressure 2010–18, documented moves against it 2019–26 (firings, prosecutions, frozen reserves), and money issued, backed or fixed from abroad. Averaged, 0 to 100. Scored where the law or pressure studies cover the bank. Light means more exposed.",
   src: "Romelli; Garriga; Binder; documented events; currency arrangements (see About and sources)." });
 seq("inside", "The big picture", "Inside influence (its own officials and owners)", {
-  dom: "max", f: (v) => fmt(v, 0) + " of 100", get: (p) => inScore(p),
-  desc: "How far people inside the bank have used it, or could use it, for others' ends: documented corruption cases inside the bank since 1990, officials moving between the bank and private finance, private shareholders sitting inside its governance, and how little it tells the public. Averaged, 0 to 100. Scored where the transparency study covers the bank or any case, move or private owner is documented. No documented case means none was found, not that none happened. Light means more exposed.",
+  alleg: true, dom: "max", f: (v) => fmt(v, 0) + " of 100", get: (p) => inScore(p),
+  desc: "How far people inside the bank have used it, or could use it, for others' ends: documented corruption cases inside the bank since 1990, officials moving between the bank and private finance, private shareholders sitting inside its governance, and how little it tells the public. Averaged, 0 to 100. Scored where the transparency study covers the bank or any case, move or private owner is documented. No documented case means none was found, not that none happened. The tick box below drops cases that are allegations alone from the count. Light means more exposed.",
   src: "Documented cases and moves; ownership records; Dincer, Eichengreen and Geraats (see About and sources)." });
 seq("cbie", "Independence written into law", "Overall independence, 42 rules (Romelli)", {
   years: [1970, 2023], dom: [0, 1], f: (v) => fmt(v, 3), get: (p, y) => latestOr(p, "r", "rs", y, (o) => o.i),
@@ -156,8 +165,8 @@ seq("ev", "Pressure in practice", "Documented moves against the bank, 2019–202
   desc: "Firings, forced resignations, attempted dismissals, laws cutting independence, prosecutions, frozen reserves and open pressure campaigns, each with its source. Appointments and court rulings appear in the country box but are not counted.",
   src: "Compiled for this map from central bank, court, government and news-agency reports." });
 seq("cc", "Corruption inside and around the bank", "Documented corruption cases at the central bank, since 1990", {
-  dom: "max", f: (v) => fmt(v, 0), get: (p) => { const n = ccN(p); return n ? { v: n } : null; },
-  desc: "Embezzlement, budget or election financing, leaked decisions, payments through foundations, sham contracts, officials trading on their own policies, bribery (including banknote-printing contracts), cheap foreign currency for insiders, hidden losses or rigged rescues, thefts tied to insiders, and money laundering, each with its source. Acquittals are listed in the box but not counted. Euro-area countries include ECB cases.",
+  alleg: true, dom: "max", f: (v) => fmt(v, 0), get: (p) => { const n = ccN(p); return n ? { v: n } : null; },
+  desc: "Embezzlement, budget or election financing, leaked decisions, payments through foundations, sham contracts, officials trading on their own policies, bribery (including banknote-printing contracts), cheap foreign currency for insiders, hidden losses or rigged rescues, thefts tied to insiders, and money laundering, each with its source. Acquittals, dismissed cases, withdrawn charges and closed investigations are listed in the box but not counted. Unproven allegations are counted unless the tick box below is cleared. Euro-area countries include ECB cases.",
   src: "Compiled for this map from courts, prosecutors, official inquiries and news reports (links in each box)." });
 seq("cpi", "Corruption inside and around the bank", "Corruption in the country (Transparency International, 0–100)", {
   years: [2012, 2025], dom: [0, 100], f: (v) => fmt(v, 0), get: (p, y) => { if (!p.cpi) return null; if (S.latest) return { v: p.cpi.v, y: 2025 }; const v = atYear(p.cpi.s, y); return v == null ? null : { v, y }; },
@@ -251,13 +260,13 @@ seq("swaps", "Reach beyond its borders", "Swap lines with other central banks", 
   src: "Central bank announcements and reports (links in each box)." });
 
 /* ---------- state ---------- */
-const S = { netMin: 1, netCb: "", sideOpen: {}, mainLayer: "all", hov: null, names: true, net: false, netRel: new Set(), ent: null, layer: "all", year: 2023, latest: true, sel: null, swaps: false, anchors: false, q: "" };
+const S = { netMin: 1, netCb: "", sideOpen: {}, mainLayer: "all", hov: null, names: true, net: false, netRel: new Set(), ent: null, layer: "all", year: 2023, latest: true, alleged: true, sel: null, swaps: false, anchors: false, q: "" };
 const layer = () => L.find((l) => l.id === S.layer);
 function val(p) { const l = layer(); return l.get(p, S.year); }
 // Values and ranges are cached per layer, year and "latest" setting; nothing else changes them.
 const CACHE_V = new Map(), CACHE_D = new Map();
-L.forEach((l) => { const g = l.get; l.get = (p, y) => { const key = l.id + "|" + (S.latest ? "L" : y) + "|" + (p && p.iso); if (CACHE_V.has(key)) return CACHE_V.get(key); const r = g(p, y); CACHE_V.set(key, r); return r; }; });
-function dom(l) { const key = l.id + "|" + (S.latest ? "L" : S.year); if (!CACHE_D.has(key)) CACHE_D.set(key, dom0(l)); return CACHE_D.get(key); }
+L.forEach((l) => { const g = l.get; l.get = (p, y) => { const key = l.id + "|" + (S.latest ? "L" : y) + "|" + (S.alleged ? "A" : "a") + "|" + (p && p.iso); if (CACHE_V.has(key)) return CACHE_V.get(key); const r = g(p, y); CACHE_V.set(key, r); return r; }; });
+function dom(l) { const key = l.id + "|" + (S.latest ? "L" : S.year) + "|" + (S.alleged ? "A" : "a"); if (!CACHE_D.has(key)) CACHE_D.set(key, dom0(l)); return CACHE_D.get(key); }
 function dom0(l) {
   if (l.dom && l.dom !== "max") return l.dom;
   if (l.dom === "max") { const vs = ISOS.map((k) => { const r = l.get(P[k], S.year); return r ? r.v : null; }).filter((v) => v != null); return [0, Math.max(1, ...vs)]; }
@@ -963,11 +972,14 @@ function drawLegend() {
   if (rs.some(([, r]) => r && r.via)) h += '<p class="lsrc" style="margin-top:5px">Places in a currency union, or using another country\'s currency, show the figure of the bank or currency they rely on; their boxes say so.</p>';
   $("#legend").innerHTML = h;
   $("#legend").querySelectorAll(".ib").forEach((b) => b.addEventListener("click", (e) => { e.preventDefault(); const el = b.parentNode.nextElementSibling; el.classList.toggle("open"); b.classList.toggle("on", el.classList.contains("open")); }));
-  $("#yrs").innerHTML = l.years ? '<div class="tline"><input type="range" id="yr" min="' + l.years[0] + '" max="' + l.years[1] + '" step="1" value="' + Math.min(Math.max(S.year, l.years[0]), l.years[1]) + '" aria-label="Year"' + (S.latest ? " disabled" : "") + '><b id="yrv">' + (S.latest ? "latest" : S.year) + '</b></div><label class="chk"><input type="checkbox" id="lat"' + (S.latest ? " checked" : "") + '> Each place\'s latest year</label>' : "";
+  const yrsH = l.years ? '<div class="tline"><input type="range" id="yr" min="' + l.years[0] + '" max="' + l.years[1] + '" step="1" value="' + Math.min(Math.max(S.year, l.years[0]), l.years[1]) + '" aria-label="Year"' + (S.latest ? " disabled" : "") + '><b id="yrv">' + (S.latest ? "latest" : S.year) + '</b></div><label class="chk"><input type="checkbox" id="lat"' + (S.latest ? " checked" : "") + '> Each place\'s latest year</label>' : "";
+  const allegH = l.alleg ? '<label class="chk"><input type="checkbox" id="alg"' + (S.alleged ? " checked" : "") + '> Count cases that are allegations alone</label><p class="lsrc" style="margin-top:4px">' + ALLEG_N + ' of the ' + D.CC.length + ' cases are allegations: someone was publicly accused, but no charge was filed, no inquiry has reported and no court has ruled. Clear the box to leave them out of the count, the way acquittals and dismissed cases already are. They stay listed in every box either way.</p>' : "";
+  $("#yrs").innerHTML = yrsH + allegH;
   if (l.years) {
     $("#yr").addEventListener("input", (e) => { S.year = +e.target.value; $("#yrv").textContent = S.year; paint(); drawList(); drawLegendCounts(); drawCharts(); });
     $("#lat").addEventListener("change", (e) => { S.latest = e.target.checked; if (!S.latest) S.year = Math.min(Math.max(S.year, l.years[0]), l.years[1]); update(); });
   }
+  if (l.alleg) $("#alg").addEventListener("change", (e) => { S.alleged = e.target.checked; clearCache(); update(); });
   drawLinesLegend();
   drawLegendCounts();
 }
@@ -1024,7 +1036,7 @@ function rankOf0(id, k) {
 function detail(k) {
   const p = P[k], u = uni(p), A = D.ARR, h = [];
   h.push('<div class="hp-k">' + esc(p.cb || "Central bank") + '</div><h3>' + esc(p.n) + '</h3>');
-  if (D.WR && D.WR["p:" + k]) h.push('<div class="wr">' + esc(D.WR["p:" + k]) + '</div>');
+  if (D.WR && D.WR["p:" + k]) h.push('<div class="wr">' + esc(D.WR["p:" + k]) + (!S.alleged && ccAlleged(p) ? '<p class="note" style="margin:6px 0 0">Any score in this paragraph was written with cases that are allegations alone counted. The score below leaves them out.</p>' : '') + '</div>');
   const cu = (p.cur || []).map((c) => esc(c) + (CUR[c] ? " (" + esc(CUR[c].name) + ")" : "")).join(", ");
   h.push('<p class="hp-sub">' + (cu ? "Currency: " + cu : "No currency listed") + (u ? '<br>Monetary policy set by ' + esc(CB_NAMES[p.u]) + ' for ' + (D.UM[p.u] || []).length + ' members (outlined).' : '') + '</p>');
   const as = allScore(p), G = groups(p);

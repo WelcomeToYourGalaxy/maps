@@ -70,10 +70,12 @@ Altogether the map has 1,164 parties and 1,565 ties, and `agents/writeups.json` 
 - A record with `public_move: true` (IMF or World Bank) is listed but not counted as a move to or from private finance.
 - Union banks use iso3 BEAC, BCEAO or ECCB in cases, which show on every member country. Their party links use the head-office country (CMR, SEN, KNA).
 - Staff below senior management: the role instead of the name, unless the name matters to the case.
+- `alleged` means publicly accused with no charge filed, no inquiry reported and no court ruling. `S.alleged` decides whether those count; `ccN` and `MAXCC()` both read it, and the two score caches are keyed on it. `MAXCC` is now a function, not a constant.
+- With the tick box cleared, a bank whose only cases are allegations stays on the inside layer, scored at nothing for cases, rather than dropping off it. Its writeup then carries a line saying any score in the paragraph was written with allegations counted.
 - An outsider's failed attempt against a bank is not a case. Check `events_gold.json` for firings and political prosecutions before filing them as corruption.
 
 ## Where coverage is thinnest (what to add next)
-These are rough estimates. No complete count exists for any of these categories.
+These are rough estimates. No complete count exists for any of these categories. The same table, written for a reader, is now in `about.html` under "How much of the subject is here"; **change both together.**
 
 | Area | On the map | Rough share of what is documented |
 |---|---|---|
@@ -93,7 +95,8 @@ Next steps, in order:
 3. **Governor dismissals.** `round4.events.leads_not_opened` (17). Several Central Banking pages are paywalled after the first paragraph.
 4. **Auditors and printers.** `round4.service.not_found` (9): Egypt, Saudi Arabia, Vietnam, Bangladesh, the Philippines, Japan, Peru, Denmark and Indonesia. The Philippine and Peruvian sites block automated readers; Brazil's row is from the 2018 statements, the only ones that would open.
 5. **Swap lines.** `round4.swaps.leads_not_opened` (13). The PBoC's own current table (30 September 2025) lists 32 counterparties and omits exactly the 11 lines the map marks "unknown" (Albania, Armenia, Belarus, Georgia, Kazakhstan, Morocco, Nepal, Suriname, Tajikistan, Ukraine, Uzbekistan). That is evidence they lapsed, but the table says nothing in words, so the records were left alone. A source that says so plainly would settle them.
-6. **Open question for the user:** 22 cases have status `alleged` and currently count toward the scores. Acquittals, dismissals, withdrawn charges and closed investigations do not count. Ask whether unproven allegations should count.
+6. **Open question for the user — settled 10 November 2026.** The user chose to show both and let the reader switch. A tick box, "Count cases that are allegations alone", now sits under the legend on the three case layers (`all`, `inside`, `cc`, marked `alleg: true`). It is ticked by default, so every score and every writeup written so far still reads as before; clearing it recomputes without the allegations.
+7. **Statuses that slip past the not-counted list.** `agents/gaps.json` `case_updates` can overwrite a case's status with a string the counting rule has never heard of, and that string then counts. One was found and fixed (Ghana, `charges withdrawn` → `charge withdrawn`). Six more are still counted and the user has not ruled on them: `outcome not found` (Kenya, Serbia), `died; outcome not found` (Iraq), `tried (verdict not found)` (Russia), `conviction annulled (time-barred)` (Romania), `Sejm vote pending` (Poland). Ask before changing any of them. Worth adding a build-time check that every status is either in the counted or the not-counted list.
 
 ## Added in earlier rounds (UI)
 - **Writeups:** `agents/writeups.json` holds a plain-language paragraph for every country box (`p:ISO`) and every party box (`n:<node name>`), injected as `D.WR` and shown at the top of the box (`.wr`). They were written from each box's records and checked by script for numbers and outcomes, not re-checked against web sources. **When a record changes or a party is added, refresh that entry by hand.** A country or party with no entry just shows the lists.
@@ -122,3 +125,6 @@ Then compare: keys in `boxes.json` with no entry in `writeups.json` are new, and
 
 ## Round 4 (10 November 2026), what it added
 38 corruption cases, 14 career moves, 14 governor-removal or pressure events, 6 auditors, 3 state printers and 11 swap lines, from the leads earlier rounds had left unopened. New countries on the case list: São Tomé and Príncipe, Eswatini, the Cayman Islands, the Dominican Republic, the Gambia, Libya, Madagascar, Slovenia, Trinidad and Tobago, Cambodia, Israel, South Korea and Uruguay. 185 writeups were rewritten or written fresh.
+
+## Round 5 (10 November 2026), what it added
+No new records. The allegations question was settled (above), the Ghana status bug was fixed, and `about.html` gained a "How much of the subject is here" section: the coverage table written for a reader, plus the map's totals (1,164 parties, 1,565 ties) and the record counts for each compiled category. Its table styling is `#info table.cov` in `template.html`, which stacks into blocks below 620px so it never scrolls sideways. Only Ghana's scores moved (all 33 → 32, inside 21 → 17); its writeup was corrected by hand and no other paragraph went stale.
