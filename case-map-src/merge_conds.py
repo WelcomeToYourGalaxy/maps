@@ -5,10 +5,13 @@ i=s.index('window.CASES = ')+15;C,n=d.raw_decode(s[i:]);B={c['id']:c for c in C}
 R=json.load(open(sys.argv[1]));a=0
 for k,v in R.items():
   c=B.get(k)
-  if not c or not v.get('conditions_add') or not v.get('ct'): continue
+  if not c or not v.get('conditions_add'): continue
   t=(c.get('conditions') or '').strip()
+  if v['conditions_add'].strip() in t: continue
   c['conditions']=(t+' ' if t else '')+v['conditions_add'].strip()
-  c['ct']=[x for x in (c.get('ct') or []) if x!='research']+[x for x in v['ct'] if x not in (c.get('ct') or [])]
+  # a checked text with no type that fits keeps the research tag, so the case stays on the to-do list
+  if v.get('ct'):
+    c['ct']=[x for x in (c.get('ct') or []) if x!='research']+[x for x in v['ct'] if x not in (c.get('ct') or [])]
   for x in v.get('sources_add',[]):
     if not any(y.get('url')==x.get('url') for y in c.get('sources',[])): c.setdefault('sources',[]).append(x)
   a+=1
