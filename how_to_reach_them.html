@@ -67,9 +67,21 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   opacity:0;pointer-events:none;transition:opacity .22s}
 #scrim.on{opacity:1;pointer-events:auto}
 #mtop{padding:17px 20px 0;border-bottom:1px solid var(--line);flex:none;position:relative}
-#mtitle{font-family:'Marcellus',serif;font-size:21px;line-height:1.22;padding-right:150px}
+#mtitle{font-family:'Marcellus',serif;font-size:22px;line-height:1.22;padding-right:190px}
+#msub{max-width:none}
 #msub{font-size:11.5px;color:var(--faint);margin-top:4px}
-#mup{position:absolute;top:14px;right:52px;height:28px;padding:0 10px;border-radius:7px;
+#mabout{position:absolute;top:14px;right:52px;width:28px;height:28px;border-radius:7px;
+  border:1px solid var(--line);background:var(--panel2);color:var(--dim);cursor:pointer;font-size:13px;font-family:inherit}
+#mabout:hover{color:var(--ink);border-color:var(--accent-soft)}
+#about{display:none;position:absolute;inset:auto 0 0 0;max-height:62%;overflow-y:auto;
+  background:var(--panel2);border-top:1px solid var(--line);padding:16px 20px 20px;
+  border-radius:0 0 13px 13px;z-index:3}
+#about.on{display:block}
+#about h4{font-family:'Marcellus',serif;font-size:14px;margin-bottom:9px}
+#about p{font-size:12.5px;line-height:1.6;color:var(--dim)}
+#about p+p{margin-top:9px}
+#about a{color:var(--accent-hi);text-decoration:none}
+#mup{position:absolute;top:14px;right:88px;height:28px;padding:0 10px;border-radius:7px;
   border:1px solid var(--line);background:var(--panel2);color:var(--dim);cursor:pointer;font-size:11px;font-family:inherit}
 #mup:hover{color:var(--ink);border-color:var(--accent-soft)}
 #mclose{position:absolute;top:14px;right:16px;width:28px;height:28px;border-radius:7px;border:1px solid var(--line);
@@ -142,8 +154,8 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 #levels .lv i{width:9px;height:9px;border-radius:2px;display:inline-block}
 #pincount{font-size:10.5px;color:var(--faint);margin-top:5px}
 /* ---------- modal: draggable, resizable, parked to the right ---------- */
-#modal{position:fixed;z-index:100;left:auto;right:24px;top:72px;transform:none;
-  width:min(620px,46vw);height:calc(100vh - 112px);min-width:340px;min-height:260px;
+#modal{position:fixed;z-index:100;left:auto;right:20px;top:60px;transform:none;
+  width:min(780px,54vw);height:calc(100vh - 96px);min-width:340px;min-height:260px;
   display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:13px;
   box-shadow:0 24px 70px rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:opacity .2s}
 #modal.on{opacity:1;pointer-events:auto}
@@ -191,10 +203,26 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   <div id="mtop">
     <button id="mclose" onclick="closeModal()">&times;</button>
     <button id="mup" style="display:none" onclick="goUp()">&uarr; Up a level</button>
+    <button id="mabout" onclick="toggleAbout()" title="About this map">?</button>
     <div id="mtitle">&nbsp;</div>
     <div id="msub"></div>
   </div>
   <div id="mbody"></div>
+  <div id="about">
+    <h4>About what you are reading</h4>
+    <p>What each office can do is read from its title and its Wikidata class. It is a good guess, not a
+       constitutional ruling: powers differ from country to country, and a title that means one thing in one
+       place means another elsewhere. Confirm on the official site before acting on it.</p>
+    <p>Office titles are stable; the people holding them are not. Wikidata records of who holds an office go
+       out of date, sometimes by years. Treat a name here as a lead to check, never as current fact.</p>
+    <p>Offices come from Wikidata, which is also what <a href="https://www.govdirectory.org/" target="_blank"
+       rel="noopener">govdirectory.org</a> is built on. Boundaries come from the
+       <a href="https://github.com/WelcomeToYourGalaxy/cgaz-boundaries" target="_blank" rel="noopener">cgaz-boundaries</a>
+       repository. Success figures are reproduced from the leverage chart in this repository, each with the
+       dataset behind it; where nobody has measured a route, it says so rather than guessing.</p>
+    <p>Coverage is deep for some countries and thin for others, and thins further at local level. A blank here
+       means Wikidata has no record, not that no office exists.</p>
+  </div>
   <div id="mgrip" title="Drag to resize"></div>
 </div>
 <script>
@@ -1509,9 +1537,8 @@ function addOverlays(){
   map.addLayer({id:'adm-l',type:'line',source:SRC_A,
     paint:{'line-color':tone.line,'line-width':1.1,'line-opacity':0.9}});
   addChainLayers();
-  map.on('moveend', ()=>{ try{ autoLowest(); }catch(e){} });
   wireHover('ctry-f', SRC_C, f=>f.properties.name, onCountry);
-  wireHover('adm-f',  SRC_A, f=>f.properties.shapeName, onUnit);
+  wireHover('adm-f',  SRC_A, f=>f.properties.shapeName || f.properties.n || '', onUnit);
 }
 function retint(){
   if(!map.getLayer || !map.getLayer('ctry-f')) return;
@@ -1559,7 +1586,7 @@ function hideTip(){ if(tipEl) tipEl.style.display='none'; }
    here: a unit belongs to the one you clicked if its centre falls
    inside it.
    ==================================================================== */
-let ISO2Q={}, ISO2ISO3={}, admCache={};
+let ISO2Q={}, ISO2ISO3={}, ISO3NUM={}, WORLD=[], admCache={};
 let STACK=[];                 /* [{q,label,iso3,level,feature}] */
 
 function ringArea(r){ let a=0; for(let i=0,j=r.length-1;i<r.length;j=i++) a+=(r[j][0]*r[i][1]-r[i][0]*r[j][1]); return a/2; }
@@ -1597,9 +1624,18 @@ function bboxOf(geom){
   polys.forEach(p=>p[0].forEach(c=>{ if(c[0]<x0)x0=c[0]; if(c[0]>x1)x1=c[0]; if(c[1]<y0)y0=c[1]; if(c[1]>y1)y1=c[1]; }));
   return [x0,y0,x1,y1];
 }
+/* The selected jurisdiction is fitted into the strip of map left
+   uncovered by the box, so both are in view at once. */
 function fitTo(geom){
   const b=bboxOf(geom);
-  try{ map.fitBounds([[b[0],b[1]],[b[2],b[3]]], {padding:{top:90,left:60,right:60,bottom:140}, duration:900, maxZoom:9}); }catch(e){}
+  let right=60;
+  try{
+    const m=document.getElementById('modal');
+    if(m && m.classList.contains('on') && innerWidth>760)
+      right = Math.round(innerWidth - m.getBoundingClientRect().left) + 30;
+  }catch(e){}
+  try{ map.fitBounds([[b[0],b[1]],[b[2],b[3]]],
+    {padding:{top:90,left:60,right:right,bottom:120}, duration:900, maxZoom:9}); }catch(e){}
 }
 
 async function fetchAdm(iso3, level){
@@ -1676,25 +1712,21 @@ async function onCountry(f){
 }
 
 async function onUnit(f){
-  const nm = f.properties.shapeName || 'Unnamed unit';
-  /* the level may have been drawn automatically, before any country was
-     chosen; in that case the country goes on the trail first */
-  if(!STACK.length && CGAZ_ROOT && CGAZ_ROOT.q){
-    const isoKey = Object.keys(ISO2Q).find(k=>ISO2Q[k]===CGAZ_ROOT.q);
-    const cf = CTRY_FEATURES.find(x=>String(x.properties.iso_n3)===isoKey);
-    STACK.push({q:CGAZ_ROOT.q, label:CGAZ_ROOT.name, iso3:CGAZ_ROOT.iso3, level:0, feature:cf||null});
-    loadPins(CGAZ_ROOT.q, true);
-  }
+  const nm = f.properties.shapeName || f.properties.n || 'Unnamed unit';
+  /* a unit from the worldwide layer carries its country code, so the
+     whole chain it sits inside can be built from scratch */
+  if(f.properties.c && !STACK.length) return fromWorld(f);
   const top = STACK[STACK.length-1];
-  const iso3 = top ? top.iso3 : (CGAZ_ROOT&&CGAZ_ROOT.iso3) || null;
-  const level = top ? top.level + 1 : (typeof AUTO_LEVEL!=='undefined'?AUTO_LEVEL:1);
-  openModal(nm, 'Matching it to Wikidata…');
+  const iso3 = top ? top.iso3 : null;
+  const level = top ? top.level + 1 : 1;
+  openModal(nm, 'Matching it to Wikidata\u2026');
   $('#mbody').innerHTML = '<div class="spin">Looking this unit up&hellip;</div>';
   const hit = await resolveUnit(nm);
   if(hit){
     STACK.push({q:hit.id, label:hit.label, iso3:iso3, level:level, feature:f});
     openJuris(hit.id, hit.label);
     setTimeout(()=>fitTo(f.geometry), 60);
+    loadPins(hit.id, false);
   }else{
     STACK.push({q:null, label:nm, iso3:iso3, level:level, feature:f});
     openModal(nm, 'Drawn from the boundary files');
@@ -1702,12 +1734,59 @@ async function onUnit(f){
   }
   drawAdm(iso3, level+1, f);
   paintTrail(); paintChain(); setPins();
-  if(hit) loadPins(hit.id, false);
+}
+
+/* country, then the region inside it, then the unit itself */
+async function fromWorld(f){
+  const iso3 = f.properties.c;
+  const nm   = f.properties.n || 'Unnamed unit';
+  const isoN = ISO3NUM[iso3];
+  const cf   = CTRY_FEATURES.find(x=>String(x.properties.iso_n3)===String(isoN));
+  const cq   = ISO2Q[isoN];
+  CGAZ_ISO3=iso3; CGAZ_ROOT={iso3:iso3, name:(cf&&cf.properties.name)||iso3, q:cq};
+  STACK=[];
+  if(cq) STACK.push({q:cq, label:CGAZ_ROOT.name, iso3:iso3, level:0, feature:cf||null});
+
+  openModal(nm, 'Working out which jurisdictions this sits inside\u2026');
+  $('#mbody').innerHTML='<div class="spin">Resolving the levels above '+esc(nm)+'&hellip;</div>';
+  paintTrail(); paintChain();
+
+  /* the region between country and unit, found by containment */
+  const c = centroid(f.geometry);
+  let mid = null;
+  if(f.properties.l === 2){
+    try{
+      const a1 = await fetchAdm(iso3, 1);
+      mid = a1.features.find(x=>{
+        const b=bboxOf(x.geometry);
+        if(c[0]<b[0]||c[0]>b[2]||c[1]<b[1]||c[1]>b[3]) return false;
+        return inGeom(c, x.geometry);
+      }) || null;
+    }catch(e){}
+  }
+  if(mid){
+    const mn = mid.properties.shapeName || mid.properties.n;
+    const hit = await resolveUnitIn(mn, cq);
+    STACK.push({q:hit?hit.id:null, label:hit?hit.label:mn, iso3:iso3, level:1, feature:mid});
+    if(hit) loadPins(hit.id, false);
+    paintTrail(); paintChain();
+  }
+  const lvl = STACK.length;
+  const hit2 = await resolveUnitIn(nm, cq);
+  STACK.push({q:hit2?hit2.id:null, label:hit2?hit2.label:nm, iso3:iso3, level:lvl, feature:f});
+  if(cq) loadPins(cq, true);
+  if(hit2){ openJuris(hit2.id, hit2.label); loadPins(hit2.id, false); }
+  else { openModal(nm,'Drawn from the boundary files'); renderNoEntity(nm, true); }
+  setTimeout(()=>fitTo(f.geometry), 60);
+  drawAdm(iso3, (f.properties.l||2)+1, f);
+  paintTrail(); paintChain(); setPins();
 }
 
 function goUp(){
   if(STACK.length<=1){
-    STACK=[]; setAdmData([]); closeModal(); paintTrail(); paintChain(); setPins();
+    STACK=[]; closeModal(); paintTrail(); paintChain(); setPins();
+    if(WORLD.length) map.getSource(SRC_A).setData({type:'FeatureCollection',features:WORLD});
+    else setAdmData([]);
     map.flyTo({center:[10,18], zoom:2.1, duration:900});
     return;
   }
@@ -1854,9 +1933,10 @@ function mmText(s){ return String(s).replace(/"/g,'').replace(/[\[\]\(\)\{\}]/g,
 
 function branchDiagram(b){
   NODE={}; nodeSeq=0;
-  /* The diagram stops at the kind of office. Drawing every office as a
-     node makes a chart thousands of pixels wide and unreadable; the
-     offices are one click away on the kind. */
+  /* One tree: the three branches, then the agencies grouped by what
+     they are for. The diagram stops at the group; the offices inside
+     are one click away, because drawing each one makes a chart
+     thousands of pixels wide. */
   let L=['flowchart TB'];
   const root=nid({t:'root'});
   L.push('  '+root+'(["'+mmText(CUR.label)+'"])');
@@ -1873,24 +1953,19 @@ function branchDiagram(b){
       L.push('  '+bn+' --> '+kn);
     });
   });
+  if(b.ag.length){
+    const an=nid({t:'branch',br:'ag'});
+    L.push('  '+an+'["Agencies and public bodies"]');
+    L.push('  '+root+' --> '+an);
+    const themes={};
+    b.ag.forEach(o=>(themes[o.theme||'Everything else']=themes[o.theme||'Everything else']||[]).push(o));
+    Object.keys(themes).sort((x,y)=>themes[y].length-themes[x].length).forEach(t=>{
+      const tn=nid({t:'theme',theme:t});
+      L.push('  '+tn+'["'+mmText(t)+' '+themes[t].length+'"]');
+      L.push('  '+an+' --> '+tn);
+    });
+  }
   Object.keys(NODE).forEach(k=>L.push('  click '+k+' call mmPick("'+k+'")'));
-  return L.join('\n');
-}
-function agencyDiagram(b){
-  let L=['flowchart TB'];
-  const rows=b.ag; if(!rows.length) return null;
-  const root=nid({t:'agroot'});
-  L.push('  '+root+'(["Agencies and public bodies"])');
-  const themes={};
-  rows.forEach(o=>(themes[o.theme||'Everything else']=themes[o.theme||'Everything else']||[]).push(o));
-  Object.keys(themes).sort((x,y)=>themes[y].length-themes[x].length).forEach(t=>{
-    const tn=nid({t:'theme',theme:t});
-    L.push('  '+tn+'["'+mmText(t)+' '+themes[t].length+'"]');
-    L.push('  '+root+' --> '+tn);
-  });
-  const body=L.join('\n');
-  Object.keys(NODE).forEach(k=>{ if(body.indexOf('  '+k+'[')>=0 || body.indexOf('  '+k+'(')>=0)
-    L.push('  click '+k+' call mmPick("'+k+'")'); });
   return L.join('\n');
 }
 
@@ -1902,8 +1977,10 @@ function render(){
   if(SEL) return renderOffice(SEL);
   const b=BK.out;
   const total=b.leg.length+b.exec.length+b.jud.length+b.ag.length;
-  let h='<div class="bhead">Every office below can be contacted. Click one to see what it can do about a law, how to reach it, and what gets in the way. '+
-    (CUR.state==='loading'?'<i>Still resolving &mdash; more will appear.</i>':'')+'</div>';
+  $('#msub').textContent = CUR.state==='loading'
+    ? 'Click a group, then an office \u2014 still resolving, more will appear'
+    : 'Click a group, then an office, for what it can do about a law, how to reach it, and what gets in the way';
+  let h='';
   if(!total && CUR.state!=='loading'){
     h+='<div class="note">Wikidata records no offices for '+esc(CUR.label)+
        '. Coverage is deep for some countries and thin for others, and thins further at local level.</div>';
@@ -1915,18 +1992,13 @@ function render(){
     h+='<div class="off" style="padding-top:0"><div class="nm">Official channel</div><div class="meta">';
     [...sites].forEach(s=>h+='<a href="'+esc(s)+'" target="_blank" rel="noopener">'+esc(s)+'</a>');
     [...emails].forEach(e=>h+='<a href="mailto:'+esc(e)+'">'+esc(e)+'</a>');
-    [...phones].forEach(p=>h+='<span>'+esc(p)+'</span>');
+    [...phones].forEach(p2=>h+='<span>'+esc(p2)+'</span>');
     h+='</div></div>';
   }
-  /* branchDiagram resets the node registry, so it is built first and
-     the agency diagram adds to it */
-  const br=branchDiagram(b), ag=agencyDiagram(b);
+  const br=branchDiagram(b);
   h+='<div class="dgwrap"><div class="mm" id="mmBranch"></div></div>';
-  if(ag) h+='<div class="dglabel">Agencies and public bodies, by what they are for</div><div class="dgwrap"><div class="mm" id="mmAg"></div></div>';
-  h+='<div class="note">What each office can do is read from its title and its Wikidata class. It is a good guess, not a constitutional ruling: powers differ by country and a title that means one thing in one place means another elsewhere. Confirm on the official site.</div>';
   $('#mbody').innerHTML=h;
   drawMermaid('mmBranch', br);
-  if(ag) drawMermaid('mmAg', ag);
 }
 
 function drawMermaid(id, src){
@@ -1935,8 +2007,21 @@ function drawMermaid(id, src){
   try{
     mermaid.render(id+'_svg', src).then(({svg,bindFunctions})=>{
       el.innerHTML=svg; if(bindFunctions) bindFunctions(el);
+      centreOnRoot(el);
     }).catch(e=>{ el.innerHTML='<div class="note">Could not draw the diagram: '+esc(e.message)+'</div>'; });
   }catch(e){ el.innerHTML='<div class="note">Could not draw the diagram: '+esc(e.message)+'</div>'; }
+}
+
+/* the root sits in the middle of a wide chart; scroll so it is the
+   thing you see first rather than the far left edge */
+function centreOnRoot(el){
+  const wrap=el.closest('.dgwrap'); if(!wrap) return;
+  const nodes=el.querySelectorAll('.node');
+  if(!nodes.length) return;
+  let top=nodes[0], ty=Infinity;
+  nodes.forEach(n=>{ const b=n.getBoundingClientRect(); if(b.top<ty){ ty=b.top; top=n; } });
+  const nb=top.getBoundingClientRect(), wb=wrap.getBoundingClientRect();
+  wrap.scrollLeft += (nb.left - wb.left) - (wb.width/2 - nb.width/2);
 }
 
 function mmPick(key){
@@ -1995,8 +2080,8 @@ function renderOffice(o){
              esc(R.means||'')+(R.caveat?' <em>'+esc(R.caveat)+'</em>':'')+
              '<div class="srcline">'+esc(R.src||'')+(R.y0?' ('+R.y0+(R.y1&&R.y1!==R.y0?'&ndash;'+R.y1:'')+')':'')+'</div></dd></div>' : '')+
         (rt.own ? '<div class="fld"><dt>Observed on this site\u2019s own campaign</dt><dd>'+esc(rt.own.note)+'</dd></div>' : '')+
-        (!R && rt.nomeasure ? '<div class="fld"><dt>Why there is no figure</dt><dd>'+esc(rt.nomeasure)+'</dd></div>' : '')+
-        '<div class="fld fail"><dt>Where it falls down</dt><dd>'+esc(rt.fail)+'</dd></div>'+
+        (!R && rt.nomeasure ? '<div class="fld"><dt>Why no one has measured how often this works</dt><dd>'+esc(rt.nomeasure)+'</dd></div>' : '')+
+        '<div class="fld fail"><dt>What usually stops it</dt><dd>'+esc(rt.fail)+'</dd></div>'+
         '</div></div>';
     });
   }
@@ -2108,56 +2193,9 @@ async function loadPins(q, isCountry){
   }catch(e){}
 }
 
-/* ====================================================================
-   THE LOWEST LEVEL, WITHOUT BEING ASKED
-   Drawing every local jurisdiction on Earth at once is not possible
-   from these files: the boundary repository is 1.65 GB across 789
-   files, one per country per level. So the map loads them as you
-   approach — once you are zoomed in on a country, its district level
-   is drawn without waiting for a click, and clicking one of those
-   still goes deeper.
-   ==================================================================== */
-let autoISO3=null, autoBusy=false;
-const AUTO_ZOOM = 3.6;
-
-/* queryRenderedFeatures does not answer reliably under the globe
-   projection, so the country under the centre is found from the data
-   itself with the same point-in-polygon test the drill-down uses */
-let CTRY_FEATURES=[];
-function countryAtCentre(){
-  const c=map.getCenter();
-  const pt=[((c.lng+540)%360)-180, c.lat];
-  for(const f of CTRY_FEATURES){
-    const b=bboxOf(f.geometry);
-    if(pt[0]<b[0]||pt[0]>b[2]||pt[1]<b[1]||pt[1]>b[3]) continue;
-    if(inGeom(pt, f.geometry)) return f;
-  }
-  return null;
-}
-
-async function autoLowest(){
-  if(autoBusy) return;
-  if(STACK.length) return;                 /* a jurisdiction is already chosen */
-  if(map.getZoom() < AUTO_ZOOM){
-    if(autoISO3){ autoISO3=null; setAdmData([]); }
-    return;
-  }
-  const f=countryAtCentre(); if(!f) return;
-  const iso=String(f.properties.iso_n3 || f.id);
-  const iso3=ISO2ISO3[iso]; if(!iso3 || iso3===autoISO3) return;
-  autoBusy=true; autoISO3=iso3;
-  try{
-    let gj=null;
-    for(const lvl of [2,1]){
-      try{ gj = await fetchAdm(iso3, lvl); CGAZ_ISO3=iso3;
-           CGAZ_ROOT={iso3:iso3, name:f.properties.name, q:ISO2Q[iso]};
-           AUTO_LEVEL=lvl; break; }
-      catch(e){ if(e.message!=='notfound') throw e; }
-    }
-    if(gj) setAdmData(gj.features);
-  }catch(e){ /* leave the map as it is */ }
-  finally{ autoBusy=false; }
-}
+/* The worldwide lowest-level layer is loaded once at boot, so there is
+   nothing to fetch on zoom. CGAZ_ROOT and AUTO_LEVEL are kept because
+   the drill-down still fetches precise geometry per country. */
 let AUTO_LEVEL=1;
 
 /* ====================================================================
@@ -2192,14 +2230,34 @@ async function boot(){
   const cfeat = geo.features.map((f,i)=>({...f, id:i+1}));
   CTRY_FEATURES = cfeat;
   map.getSource(SRC_C).setData({type:'FeatureCollection', features: cfeat});
+  /* national and regional outlines stay off until a local jurisdiction
+     is picked; then they come back as the chain it belongs to */
+  map.setLayoutProperty('ctry-l','visibility','none');
+  map.setLayoutProperty('ctry-f','visibility','none');
 
   try{
     const rows = await sparql(
       'SELECT ?c ?iso ?iso3 WHERE { ?c wdt:P31 wd:Q6256 ; wdt:P299 ?iso . OPTIONAL{?c wdt:P298 ?iso3} }', 'iso2q3');
     rows.forEach(r=>{ ISO2Q[r.iso.value]=qid(r.c.value);
-      if(r.iso3) ISO2ISO3[r.iso.value]=r.iso3.value; });
+      if(r.iso3){ ISO2ISO3[r.iso.value]=r.iso3.value; ISO3NUM[r.iso3.value]=r.iso.value; } });
     setDot('wd','ok','Wikidata live');
   }catch(e){ setDot('wd','bad','Wikidata unreachable'); }
+
+  /* Every lowest-level jurisdiction on Earth, in one file.
+     The boundary repository holds 789 files and 1.65 GB, far too much
+     to load; this is the deepest level each country has — ADM2 where it
+     exists, ADM1 otherwise — simplified to about a kilometre and
+     quantised, 48,263 units in roughly four megabytes over the wire.
+     Precise geometry for a country is still fetched when you drill. */
+  setDot('bd','busy','Boundaries loading');
+  try{
+    const topo = await (await fetch('world_lowest.topojson')).json();
+    const key = Object.keys(topo.objects)[0];
+    const gj = topojson.feature(topo, topo.objects[key]);
+    WORLD = gj.features.map((f,i)=>({...f, id:i+1}));
+    map.getSource(SRC_A).setData({type:'FeatureCollection', features:WORLD});
+    setDot('bd','ok', WORLD.length.toLocaleString()+' jurisdictions');
+  }catch(e){ setDot('bd','bad','Boundaries unreachable'); }
 }
 
 /* ---------- resolving a drawn unit to a Wikidata entity ---------- */
@@ -2210,6 +2268,26 @@ const SUFFIXES = ['', ' County', ' Province', ' District', ' Region', ' Municipa
   ' Department', ' Governorate', ' Prefecture', ' State', ' Parish', ' Borough', ' Canton',
   ' Oblast', ' District Council', ' Metropolitan Municipality'];
 const RX_ADMIN = /\b(county|province|district|region|state|municipality|commune|department|governorate|prefecture|parish|borough|canton|oblast|voivodeship|territor|administrative|subdivision|city|town|village|ward|constituency)\b/i;
+
+async function resolveUnitIn(nm, countryQ){
+  if(!countryQ) return null;
+  const vals = SUFFIXES.map(s=>'"'+(nm+s).replace(/"/g,'\\"')+'"@en').join(' ');
+  try{
+    const rows = await sparql('SELECT ?x ?xLabel ?tLabel WHERE { VALUES ?l { '+vals+
+      ' } ?x rdfs:label ?l ; wdt:P17 wd:'+countryQ+' . OPTIONAL{?x wdt:P31 ?t} '+
+      'SERVICE wikibase:label{bd:serviceParam wikibase:language "en"} } LIMIT 10', 'unit:'+countryQ+':'+nm);
+    const cand={};
+    rows.forEach(r=>{ const id=qid(r.x.value);
+      if(!cand[id]) cand[id]={id:id, label:(r.xLabel&&r.xLabel.value)||nm, types:[]};
+      if(r.tLabel) cand[id].types.push(r.tLabel.value); });
+    const ranked=Object.values(cand).sort((a,b)=>{
+      const ad=a.types.some(t=>RX_ADMIN.test(t))?0:1, bd=b.types.some(t=>RX_ADMIN.test(t))?0:1;
+      if(ad!==bd) return ad-bd;
+      return (a.label.toLowerCase()===nm.toLowerCase()?1:0)-(b.label.toLowerCase()===nm.toLowerCase()?1:0);
+    });
+    return ranked[0]||null;
+  }catch(e){ return null; }
+}
 
 async function resolveUnit(nm){
   const parent = STACK[STACK.length-1];
@@ -2278,6 +2356,8 @@ async function resolveUnit(nm){
   });
   addEventListener('mouseup',()=>{ drag=false; rs=false; top.classList.remove('grabbing'); });
 })();
+
+function toggleAbout(){ document.getElementById('about').classList.toggle('on'); }
 
 /* keep the globe clear of the box: MapLibre's padding moves what the
    camera centres on, so the planet sits in the space left of it */
