@@ -1,37 +1,227 @@
 {
- "olam-palm-gabon": {
-  "edits": [{"field": "companies[0].role", "old": "on a 300,000-hectare land bank granted in 2010", "new": "IFC's disclosure dates the company to 2011 and gives six plantations covering 63,330 hectares, and says about 106,000 hectares, half of the concessions awarded to it, are set aside for voluntary protection of high conservation value areas, which implies about 212,000 hectares of concessions"}],
-  "sources_add": [{"title": "Olam Palm Gabon, project disclosure", "publisher": "International Finance Corporation", "year": 2021, "url": "https://disclosures.ifc.org/project-detail/SII/39310/olam-palm-gabon"}],
-  "status": "fixed"
- },
- "okomu-socfin-edo": {
-  "edits": [{"field": "companies[0].role", "old": "Majority owner", "new": "Parent group. The 66.38% holding in Okomu, 633,172,832 shares, is held by Socfinaf, part of the Socfin group"}],
-  "sources_add": [{"title": "Socfin: shareholding in Okomu Oil Palm Company Plc", "publisher": "Socfin", "year": 2024, "url": "https://socfin.com/?p=9408"}],
-  "status": "fixed"
- },
- "ban-chaung-coal": {
-  "edits": [{"field": "companies[3].role", "old": "Holds the 2,100-acre mining concessions granted in 2010-2011", "new": "Holds the 2,100-acre mining concessions: a March 2010 permit for 1,500 acres in three areas of 500 acres each, and permission in March 2012 for a further 600 acres in three more"}],
-  "status": "fixed"
- },
- "bisha-mine-forced-labour": {
-  "edits": [{"field": "companies[0].role", "old": "60% owner and operator (bought by Zijin Mining in 2018)", "new": "60% owner and operator. Zijin Mining took up 276,820,575 shares on 28 December 2018 and a further 3.07% on 8 January 2019, reaching about 92.44%, with compulsory acquisition of the rest to follow"}],
-  "sources_add": [{"title": "Zijin acquires an additional 3.07% of Nevsun shares", "publisher": "Zijin Mining Group", "year": 2019, "url": "https://newswire.ca/news-releases/zijin-acquires-an-additional-3-07-of-nevsun-shares-898679906.html"}],
-  "status": "fixed"
- },
- "namtha-1-dam-resettled-villages": {
-  "edits": [{"field": "companies[0].role", "old": "Dam company, China Southern Power Grid International 80%", "new": "Dam company. China Southern Power Grid says the station was co-founded with Electricite du Laos; the release gives no shareholdings, so the 80% is not sourced here"}],
-  "sources_add": [{"title": "CSG's Nam Tha 1 hydropower station starts commercial operations", "publisher": "China Southern Power Grid", "year": 2019, "url": "https://landmatrix.org/media/uploads/csgs-nam-tha-1-hydropower-station-starts-commercial-operations-news-2019-welcome-to-china-southern-power-grid.pdf"}],
-  "status": "fixed"
- },
- "letpadaung-copper-mine": {
+ "san-roque-dam-agno": {
   "edits": [
-   {"field": "companies[0].hq", "old": "Beijing, China", "new": "Not stated in the sources (the parent, Wanbao Mining Ltd, is incorporated in Beijing)"},
-   {"field": "companies[0].role", "old": "Operator", "new": "Operator. Amnesty records that Wanbao Mining Ltd, a NORINCO subsidiary incorporated in Beijing, wholly owns Myanmar Wanbao through Hong Kong Wanbao Mining Copper Ltd"}
-  ],
-  "status": "fixed"
+   {
+    "field": "companies[0].role",
+    "old": "Builder and operator under a 25-year power purchase agreement",
+    "new": "Builder and operator under a 25-year power purchase agreement. The shareholdings in the name here are those at the time of the loan: by July 2006 Marubeni held 92.5%, having bought 51% from Sithe Energies, with Kansai Electric holding 7.5%."
+   }
+  ]
  },
- "heinda-tin-mine-myaung-pyo": {
-  "edits": [{"field": "companies[0].hq", "old": "Bangkok, Thailand", "new": "Not stated in the sources (described only as Thai-owned)"}],
-  "status": "fixed"
+ "sadiola-gold-mine": {
+  "edits": [
+   {
+    "field": "companies[0].role",
+    "old": "Mine owner and operator",
+    "new": "Mine owner and operator. Before the sale the mine company was 41% AngloGold Ashanti, 41% IAMGOLD and 18% the government of Mali; both miners agreed in December 2019 to sell their interests to Allied Gold, and the government took a further 2%, one point from each."
+   }
+  ]
+ },
+ "interagua-guayaquil": {
+  "edits": [
+   {
+    "field": "companies[4].role",
+    "old": "Majority owner of Interagua from mid-2008 (CAO)",
+    "new": "Majority owner of Interagua from mid-2008 (CAO). Proactiva was a 50:50 joint venture of Veolia Environnement and FCC from 1999; FCC sold its half to Veolia in June 2013 for 150 million euros, and Veolia has held all of it since."
+   }
+  ]
+ },
+ "allain-duhangan": {
+  "edits": [
+   {
+    "field": "companies[2].role",
+    "old": "Held 43% through Malana Power",
+    "new": "Held 43% through Malana Power. Norfund agreed on 16 October 2020 to sell all the shares in SN Power AS to Scatec at an equity value of about US$1,166 million, completing in the first half of 2021."
+   }
+  ]
+ },
+ "antamina-huarmey": {
+  "edits": [
+   {
+    "field": "companies[1].role",
+    "old": "Sponsor with a MIGA equity guarantee",
+    "new": "Sponsor with a MIGA equity guarantee. Billiton acquired 95% of Rio Algom's shares on 6 October 2000 and the rest that November; by the year to 30 June 2002 it was an indirect wholly owned subsidiary of BHP Billiton."
+   }
+  ]
+ },
+ "sonae-white-river-emissions": {
+  "edits": [
+   {
+    "field": "companies[0].role",
+    "old": "Owner of the White River panel board factory",
+    "new": "Owner of the White River panel board factory. Sonae Novobord was described in 2006 as part of Sonae Industria; since 2016 Sonae Industria's wood-panel operations in Europe and South Africa have been held by Sonae Arauco, owned equally by Sonae Industria and Arauco."
+   }
+  ]
+ },
+ "feronia-phc-palm-oil": {
+  "edits": [
+   {
+    "field": "companies[0].role",
+    "old": "Operator of three plantations over more than 100,000 hectares; Feronia was listed in Toronto",
+    "new": "Operator of three plantations over more than 100,000 hectares; Feronia was listed in Toronto. The concession is about 107,000 hectares, of which about 20,000 were under cultivation, with 6,462 workers in November 2021; Feronia went through a financial restructuring from July 2020."
+   }
+  ]
+ },
+ "cambodia-railway-resettlement": {
+  "edits": [
+   {
+    "field": "companies[0].role",
+    "old": "Australian company granted the railway concession in 2008; it then asked for the southern line to be finished first (CRP final report)",
+    "new": "Australian company granted the railway concession in 2008; it then asked for the southern line to be finished first (CRP final report). Toll's board accepted Japan Post's proposal on 18 February 2015 and the company became a division of Japan Post on 28 May 2015, keeping its Melbourne headquarters and its name."
+   }
+  ]
+ },
+ "simandou-rio-tinto": {
+  "edits": [
+   {
+    "field": "companies[0].role",
+    "old": "Holder and developer of Simandou blocks 3 and 4",
+    "new": "Holder and developer of Simandou blocks 3 and 4. SimFer, which holds the concession over blocks 3 and 4, is 15% the Guinean State and 85% SimFer Jersey Limited, itself 53% Rio Tinto and 47% CIOH, so Rio Tinto's interest in the concession is indirect and partial."
+   }
+  ]
+ },
+ "senegal-sonagraines-groundnut-2001": {
+  "edits": [
+   {
+    "field": "companies[0].role",
+    "old": "State oil-mill company; funded the private operators who replaced SONAGRAINES; slated for privatisation",
+    "new": "State oil-mill company; funded the private operators who replaced SONAGRAINES; slated for privatisation. It was privatised in 2005 and bought by Advens of France, and changed its name to SUNEOR SA in early 2007."
+   }
+  ]
+ },
+ "zambia-camdex-copper-revenue": {
+  "edits": [
+   {
+    "field": "companies[0].role",
+    "old": "State mining company whose payments to the central bank were attached; described by the UK court as the main source of Zambia's foreign exchange (ECB working paper)",
+    "new": "State mining company whose payments to the central bank were attached; described by the UK court as the main source of Zambia's foreign exchange (ECB working paper). It was formed in 1982 from Roan Consolidated Mines and Nchanga Consolidated Copper Mines, in which the state had taken 51% stakes in 1969; privatisation of its mines started in 1996, ZCCM Investments Holdings was incorporated in 2000, and in August 2015 the government transferred its 60.3% holding to the Industrial Development Corporation."
+   }
+  ]
+ },
+ "nicaragua-enel-union-fenosa": {
+  "edits": [
+   {
+    "field": "companies[0].role",
+    "old": "Spanish company; bought the whole distribution system for US$115 million, slightly more than half the government's valuation (John Perry, via Specht 2015).",
+    "new": "Spanish company; bought the whole distribution system for US$115 million, slightly more than half the government's valuation (John Perry, via Specht 2015). Gas Natural completed its acquisition of Union Fenosa in April 2009 and the combined company was named Gas Natural Fenosa, so Union Fenosa no longer exists as a separate company."
+   }
+  ]
+ },
+ "bataan-nuclear-plant-debt": {
+  "edits": [
+   {
+    "field": "companies[0].role",
+    "old": "Built the plant; a Marcos associate was charged with taking US$17 million from it to broker the deal (Philippine Star); settled with the government for US$100 million in 1995 (Inquirer)",
+    "new": "Built the plant; a Marcos associate was charged with taking US$17 million from it to broker the deal (Philippine Star); settled with the government for US$100 million in 1995 (Inquirer). Westinghouse Electric Corporation bought CBS in 1995 and in 1997 dropped its own name for CBS Corporation, so the company no longer exists under the name given here."
+   }
+  ]
+ },
+ "kpone-landfill-tema": {
+  "edits": [
+   {
+    "field": "companies[1].role",
+    "old": "Named by EJAtlas as the landfill operator, linked to the same group as Zoomlion",
+    "new": "Named by EJAtlas as the landfill operator, linked to the same group as Zoomlion. A report listing Jospong subsidiaries names a Waste Landfills Company Limited that received funds for landfill sites across Ghana, without saying who owns it or what it does."
+   }
+  ]
+ },
+ "wilmar-sambas-riau": {
+  "edits": [
+   {
+    "field": "companies[1].role",
+    "old": "Wilmar subsidiaries in the Sambas disputes",
+    "new": "Wilmar subsidiaries in the Sambas disputes. The RSPO certification report names PT Agronusa Investama, taken over by Wilmar International Plantation from the Sinar Mas group in 2004 and renamed; it names no company called PT Wilmar Sambas Plantation."
+   }
+  ]
+ },
+ "mozambique-lng-afungi": {
+  "edits": [
+   {
+    "field": "companies[0].role",
+    "old": "Lead sponsor and operator of Mozambique LNG and leader of the shared resettlement programme",
+    "new": "Lead sponsor and operator of Mozambique LNG and leader of the shared resettlement programme. The operator is named Total E&P Mozambique Area 1 Limitada, a wholly owned TotalEnergies subsidiary holding 26.5% of Area 1 alongside six other interest holders."
+   }
+  ]
+ },
+ "pando-monte-lirio": {
+  "edits": [
+   {
+    "field": "companies[1].role",
+    "old": "Tunnel contractor whose tunnel discharges into the Quebrada La Mina failed national water standards",
+    "new": "Tunnel contractor whose tunnel discharges into the Quebrada La Mina failed national water standards. In a restructuring reported in May 2015, Seli SpA passed its tunnel contracting arm, Seli Overseas SpA, to Grandi Lavori Fincosit, keeping the tunnel-boring machine design and supply business."
+   }
+  ]
+ },
+ "portucel-mozambique-plantations": {
+  "edits": [
+   {
+    "field": "companies[0].role",
+    "old": "Owns about 80% of Portucel Moçambique",
+    "new": "Owns about 80% of Portucel Moçambique. The company profile records the change of name from Portucel, S.A. to The Navigator Company, S.A. in February 2016, and says nothing about a holding in Portucel Mocambique."
+   }
+  ]
+ },
+ "kaltim-prima-coal-dayak-basap": {
+  "edits": [
+   {
+    "field": "companies[0].role",
+    "old": "Operator of the 90,000-hectare open-pit mine",
+    "new": "Operator of the 90,000-hectare open-pit mine. The parent's subsidiary page gives a Special Mining Business Licence held from 1 January 2022 over 61,543 hectares at Sangatta and Bengalon, and does not mention a 90,000-hectare area; the larger figure may be the earlier contract-of-work area."
+   }
+  ]
+ },
+ "theun-hinboun-expansion": {
+  "edits": [
+   {
+    "field": "companies[0].role",
+    "old": "Project company, owned by the Lao government, Statkraft (Norway) and GMS Power (Thailand)",
+    "new": "Project company, owned by the Lao government, Statkraft (Norway) and GMS Power (Thailand). Share transfers closing on 24 September 2014 moved GMS Lao's 20% to GMS Power International Pte Ltd of Singapore, and the Statkraft and Asian Power Invest interests in Nordic Hydropower AB, which holds 20%, to SN Power AS; the shareholders listed since are EDL-Generation (60%), GMS Power International (20%) and Nordic Hydropower (20%)."
+   }
+  ]
+ },
+ "bodo-shell-oil-spills": {
+  "edits": [
+   {
+    "field": "companies[0].role",
+    "old": "Pipeline operator",
+    "new": "Pipeline operator. Shell completed the sale of the company to Renaissance in a US$2.4 billion transaction, reported on 18 March 2025."
+   }
+  ]
+ },
+ "exxon-arun-aceh-abuses": {
+  "edits": [
+   {
+    "field": "companies[1].role",
+    "old": "LNG plant operator (Pertamina 55%, ExxonMobil 30%, Jilco 15%)",
+    "new": "LNG plant operator (Pertamina 55%, ExxonMobil 30%, Jilco 15%). A 2015 report names only ExxonMobil and state-owned PT Pertamina as shareholders and gives no percentages, so the split here is neither confirmed nor contradicted by it."
+   }
+  ]
+ },
+ "smb-boke-bauxite": {
+  "edits": [
+   {
+    "field": "companies[2].role",
+    "old": "Singapore-based consortium member",
+    "new": "Singapore-based consortium member. The project description names Winning Shipping, a Singapore-based shipping company, as the consortium member, and refers separately to the Winning Group; it does not say either is the same entity as Winning International Group."
+   }
+  ]
+ },
+ "zijin-bor-sulfur-dioxide": {
+  "edits": [
+   {
+    "field": "companies[0].role",
+    "old": "Mine and smelter operator",
+    "new": "Mine and smelter operator. Zijin was selected in September 2018 as strategic partner for RTB Bor, then 99.99996% held by the Republic of Serbia Development Fund with nine minority shareholders."
+   }
+  ]
+ },
+ "luanshya-ramcoz-sale": {
+  "edits": [
+   {
+    "field": "companies[0].role",
+    "old": "Bought the Luanshya mines in 1997; owned by a group based in India; went bankrupt in late 2000 (Wikipedia).",
+    "new": "Bought the Luanshya mines in 1997 for US$35 million; owned by the Binani Group of India. The source naming it Roan Antelope Copper Mines Limited says the Zambia National Commercial Bank placed it under receivership rather than bankruptcy, and gives conflicting dates for when the receiver was appointed."
+   }
+  ]
  }
 }
