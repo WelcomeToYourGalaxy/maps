@@ -52,6 +52,28 @@ cp dist/central_bank_independence.html ~/maps/   # then git add, commit, push to
 
 Altogether the map has 1,232 parties and 1,654 ties, and `agents/writeups.json` holds 1,460 plain-language paragraphs, one for every box. `agents/work/research_log_2026-11.json` lists what was searched with no result, unopened leads, and records dropped after review.
 
+## Run the audit every round
+
+`agents/work/audit_data.py` checks the classes of error the build does not catch
+and that are invisible in the rendered map. Run it with the box dump:
+
+```bash
+python3 agents/work/audit_data.py <scratchpad>/boxes.json
+```
+
+Thirteen checks: party links resolve inside their array and to the right country;
+every case, career move and event has a source URL; every case status is on one of
+the two counted/not-counted lists; every writeup still has a box and every box has
+a writeup; no exact duplicate records in any file; no bank both holding an auditor
+and listed as unavailable. It exits non-zero on failure, and prints the parties
+with no head office as information rather than as an error.
+
+One figure worth knowing when judging a round's writeup work: **157 of the 229
+country paragraphs quote a headline score in words**, and 8 state a count of career
+moves. Those are the paragraphs a score shift can silently falsify, which is why
+the stale check compares the old and new `all` value and searches for that exact
+figure before anything is rewritten.
+
 ## A data bug to re-check every round
 
 `record_index` in `agents/parties.json` is a **positional** pointer into
@@ -170,6 +192,16 @@ Round 4 opened almost every lead earlier rounds left. Round 5 retried Bahrain, S
 - **Career-move boxes:** in `build_net.py`, when the move line doesn't name the party, the box also shows the record's summary.
 
 ## How to refresh the writeups after adding records (do this every round)
+**Build the excerpt from whole records, never a character window.** Each box
+splits cleanly on `Source says: ` — split on that and include the WHOLE block
+containing each new record. Round 17 used a fixed window instead, and all four
+writer agents reported the same thing: ties arrived with a name but no
+description, so they left them out and the paragraphs silently omitted the very
+records the round had added. Two further traps: a record whose employers are
+unnamed has no party block at all and lives in the box head, past any head cap
+(Kuwait's Al-Rumaih sits at character 3,866), so extend the head to reach it; and
+assert that no input string ends mid-sentence before dispatching.
+
 **Check the excerpt before dispatching.** The box text handed to writer agents is
 excerpted, and country boxes are large — the United States box is over 190,000
 characters. In round 16 eight refreshed paragraphs were written from excerpts that
