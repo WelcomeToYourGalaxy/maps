@@ -1978,32 +1978,38 @@
    }
   ],
   "open_for_user": {
-   "statuses_counted_but_undecided": [
-    {
-     "iso3": "KEN",
-     "status": "outcome not found"
-    },
-    {
-     "iso3": "SRB",
-     "status": "outcome not found"
-    },
-    {
-     "iso3": "IRQ",
-     "status": "died; outcome not found"
-    },
-    {
-     "iso3": "RUS",
-     "status": "tried (verdict not found)"
-    },
-    {
-     "iso3": "ROU",
-     "status": "conviction annulled (time-barred)"
-    },
-    {
-     "iso3": "POL",
-     "status": "Sejm vote pending"
-    }
-   ]
+   "statuses_settled_2026_11_10": {
+    "rule": "A case stops counting only when the official was cleared, or when the charge is gone and no finding is left standing. A case still running counts; so does one whose ending no source states.",
+    "counted": [
+     {
+      "iso3": "KEN",
+      "status": "outcome not found"
+     },
+     {
+      "iso3": "SRB",
+      "status": "outcome not found"
+     },
+     {
+      "iso3": "IRQ",
+      "status": "died; outcome not found"
+     },
+     {
+      "iso3": "RUS",
+      "status": "tried (verdict not found)"
+     },
+     {
+      "iso3": "POL",
+      "status": "Sejm vote pending"
+     }
+    ],
+    "not_counted": [
+     {
+      "iso3": "ROU",
+      "status": "conviction annulled (time-barred)",
+      "note": "Olteanu convicted, final five-year sentence Oct 2020, annulled as time-barred 31 Mar 2023, EUR 1m still confiscated. Left out because no conviction stands. ROU all 23->21, inside 11->7, cc 1->none; writeup rewritten."
+     }
+    ]
+   }
   }
  }
 }

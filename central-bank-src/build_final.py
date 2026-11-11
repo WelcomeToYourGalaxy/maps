@@ -163,12 +163,16 @@ for u in load("gaps.json", {}).get("case_updates", []):
 # Every case status must be on one of these two lists, or app.js silently counts it.
 # A gaps.json update that invents a new wording (e.g. "charges withdrawn" for "charge withdrawn")
 # would otherwise count a case the rules say not to count. Add a status here only once the
-# user has said which way it goes.
+# user has said which way it goes. Keep both lists identical to CC_OUT and its complement in app.js.
+# The dividing line: a case stops counting only when the official was cleared, or the charge is gone
+# with no finding left standing. A case still running counts, and so does one whose ending no source
+# states -- an outcome nobody can find is not a clearing.
 CC_COUNTED = {"official finding", "charged", "under investigation", "convicted", "convicted (final)",
               "convicted in absentia", "resigned", "fined or settled", "alleged",
               "outcome not found", "died; outcome not found", "tried (verdict not found)",
-              "conviction annulled (time-barred)", "Sejm vote pending"}
-CC_NOT_COUNTED = {"acquitted", "case dismissed", "charge withdrawn", "investigation closed"}
+              "Sejm vote pending"}
+CC_NOT_COUNTED = {"acquitted", "case dismissed", "charge withdrawn", "investigation closed",
+                  "conviction annulled (time-barred)"}
 unknown = sorted({c["status"] for c in CC if c.get("status") not in CC_COUNTED | CC_NOT_COUNTED})
 if unknown:
     raise SystemExit("unknown case status, counted by default -- decide and add to CC_COUNTED or "
