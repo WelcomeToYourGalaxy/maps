@@ -172,7 +172,9 @@ const ROUTES = [{"id": "email", "nm": "Email to an office holder", "fam": "Direc
    ==================================================================== */
 const WDQS = 'https://query.wikidata.org/sparql';
 const OVERPASS = ['https://overpass-api.de/api/interpreter',
-                  'https://overpass.kumi.systems/api/interpreter'];
+                  'https://overpass.kumi.systems/api/interpreter',
+                  'https://overpass.private.coffee/api/interpreter',
+                  'https://overpass.osm.jp/api/interpreter'];
 const EVNAME = {rct:'Randomised / natural experiment', quasi:'Quasi-experimental',
   coded:'Large-N coded dataset', percep:'Survey of perceived influence',
   case:'Case study / expert synthesis', none:'No systematic measurement', dir:'Direction only'};
@@ -773,13 +775,15 @@ async function pickUnit(nm){
    Wikidata holds offices; OSM holds buildings, street addresses and
    front-desk phone numbers. Fails visibly rather than silently.
    ==================================================================== */
+/* GET with no custom headers, so the request stays a CORS "simple
+   request" and never needs a preflight. Endpoints are tried in order;
+   they are volunteer-run and refuse requests when loaded. */
 async function overpass(q){
   let lastErr;
   for(const ep of OVERPASS){
     try{
-      const r = await fetch(ep, {method:'POST', body:'data='+encodeURIComponent(q),
-        headers:{'Content-Type':'application/x-www-form-urlencoded'}});
-      if(!r.ok) throw new Error(ep.split('/')[2]+' returned '+r.status);
+      const r = await fetch(ep + '?data=' + encodeURIComponent(q));
+      if(!r.ok) throw new Error(ep.split('/')[2] + ' returned ' + r.status);
       return await r.json();
     }catch(e){ lastErr = e; }
   }
