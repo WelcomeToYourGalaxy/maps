@@ -98,6 +98,68 @@ def about(data):
                   % (H.escape(r.get('url') or '#'), H.escape(r.get('name') or ''), sub,
                      format(r['total'], ',') if isinstance(r.get('total'), int) else H.escape(str(r.get('total'))), onm, sh))
             a('</table>')
+        bms = cov.get('benchmarks') or []
+        for kind, head, intro in (
+            ('case', 'Checked case by case against other people\'s lists',
+             'A register counts things without naming them, so its share says nothing about which ones are missing. '
+             'Some published lists do name them, one by one. Every item on each list below was looked for in the case '
+             'file, and the item carries the title of the case that covers it or nothing at all. The check is run '
+             'again each time the map is built, so if a case is later dropped the share falls with it. What the map '
+             'does not cover is written out under each table, because that is the part worth reading.'),
+            ('mech', 'Checked against published lists of the mechanisms',
+             'Researchers have also set out the ways an outside party gets inside an institution, as numbered lists '
+             'of mechanisms. Those lists are shorter and they are about kinds of behaviour rather than episodes, so a '
+             'share here means something different: not how many cases the map holds, but how many of the mechanisms '
+             'other people have described it shows at least one case of.')):
+            rows = [r for r in bms if (r.get('kind') or 'case') == kind]
+            if not rows:
+                continue
+            a('<h3>%s</h3><p>%s</p>' % (head, intro))
+            a('<table class="cov"><tr><th>The list</th><th>Items</th><th>Outside the test</th>'
+              '<th>Shown here</th><th>Share of the rest</th></tr>')
+            for r in rows:
+                sub = H.escape(r.get('scope') or '')
+                if r.get('limits'):
+                    sub += ' Limits: %s' % H.escape(r['limits'])
+                sub += ' Published by %s, read at %s.' % (H.escape(r.get('publisher') or 'the source linked'),
+                                                          H.escape(str(r.get('asof') or 'the date linked')))
+                a('<tr><td><a href="%s" target="_blank" rel="noopener">%s</a><br><span class="mute">%s</span></td>'
+                  '<td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>'
+                  % (H.escape(r.get('url') or '#'), H.escape(r.get('name') or ''), sub,
+                     r.get('total'), r.get('oos') or '&mdash;', r.get('on_map'),
+                     ('%s%%' % r['share']) if r.get('share') is not None else '&mdash;'))
+            a('</table>')
+            a('<p class="mute">Items outside the test are not gaps. They are things the list counts and this map '
+              'does not: open lobbying and public campaigning, a ruler enriching himself from his own state, a bank '
+              'with weak money-laundering checks, a company-registration regime. The share in the last column is '
+              'taken over the remaining items only.</p>')
+            for r in rows:
+                miss = r.get('miss') or []
+                gaps = [m for m in miss if not m.get('oos')]
+                outs = [m for m in miss if m.get('oos')]
+
+                def lab(m):
+                    s = H.escape(m.get('label') or '')
+                    note = (m.get('note') or '')
+                    if m.get('oos'):
+                        note = note.split(': ', 1)[-1] if ': ' in note else note
+                    if note:
+                        s += ' <span class="mute">(%s)</span>' % H.escape(note)
+                    return s
+                if not gaps:
+                    a('<p><b>%s</b> &mdash; every item inside the test is on the map.</p>'
+                      % H.escape(r.get('name') or ''))
+                else:
+                    a('<p><b>%s</b> &mdash; %d of the %d items inside the test are not on the map: %s</p>'
+                      % (H.escape(r.get('name') or ''), len(gaps), r.get('tested'),
+                         '; '.join(lab(m) for m in gaps)))
+                if outs:
+                    a('<p class="mute">Outside the test, and so not counted either way: %s</p>'
+                      % '; '.join(lab(m) for m in outs))
+                if r.get('stale'):
+                    a('<p class="warn">%d item(s) on this list point at cases that are no longer in the file: %s. '
+                      'They count as not shown until a replacement is matched.</p>'
+                      % (len(r['stale']), '; '.join(H.escape(s) for s in r['stale'])))
         a('<p>Nothing here will reach 100 per cent, and no version of this map should report that it has. These arrangements are built so that no register can be compiled. What is on the map is what surfaced — through a raid, a parliament that ordered the files handed over, a government that fell and opened the archive, an accountant who turned witness, a leak that landed at a newsroom — and was then written down somewhere a reader can check.</p>')
     a('<h2>Sources</h2><p>Conditions: Global Organized Crime Index 2025, Global Initiative Against Transnational Organized Crime. Boundaries: a shared boundary file. Capitals: countryinfo. Basemaps: five shared basemaps (Esri World Imagery, NASA Black Marble, Mapterhorn and AWS terrain tiles, OpenMapTiles, CARTO labels) and a painted Atlas plate. Case, organisation and pattern sources are on each card. Research covered court judgments, parliamentary and official inquiries (the Anselmi Commission, the Belgian and Swiss stay-behind inquiries, the US Church Committee, the Fraser subcommittee, the Kerry–Brown BCCI report, the UK Home Affairs Committee, Canada\'s Hogue inquiry), the organisations\' own published lists, Carroll Quigley\'s two books, the Council on Foreign Relations\' centennial history, and major newspapers.</p>')
     return '\n'.join(p)
