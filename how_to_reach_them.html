@@ -14,6 +14,9 @@
   --panel:#111815; --panel2:#171f1b; --line:rgba(125,142,130,.22);
   --accent:#4a7c59; --accent-hi:#8cbd9a; --accent-soft:rgba(74,124,89,.22);
   --stone:#8a7d6d;
+  /* the three ranking bands, plus unmeasured. Muted on purpose: these
+     rank routes against each other, they are not a traffic light. */
+  --r-high:#5f8f6c; --r-mid:#6e8694; --r-low:#8a7d6d; --r-none:#4a524c;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%}
@@ -34,7 +37,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .tbtn{font-size:11.5px;padding:6px 11px;border-radius:8px;border:1px solid var(--line);
   background:rgba(17,24,21,.93);color:var(--dim);cursor:pointer;font-family:inherit;white-space:nowrap}
 .tbtn:hover{color:var(--ink);border-color:var(--accent-soft)}
-#bmbox{display:none;flex-direction:column;gap:2px;background:rgba(17,24,21,.96);border:1px solid var(--line);
+#bmbox_unused{display:none;flex-direction:column;gap:2px;background:rgba(17,24,21,.96);border:1px solid var(--line);
   border-radius:9px;padding:6px}
 #bmbox.open{display:flex}
 #bmbox button{font-size:11.5px;padding:5px 12px;border:0;border-radius:6px;background:none;color:var(--dim);
@@ -50,10 +53,28 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 #trail a:hover{text-decoration:underline}
 #trail .sep{opacity:.45;margin:0 5px}
 #trail .now{color:var(--ink)}
-#levels{display:none;flex-wrap:wrap;gap:4px 12px;margin-top:7px;padding-top:7px;border-top:1px solid var(--line)}
-#levels.on{display:flex}
-#levels .lv{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--dim)}
-#levels .lv i{width:9px;height:9px;border-radius:2px;display:inline-block}
+
+/* ---------- the slim row above the panel ----------
+   Basemaps, the projection toggle and the level key share one line so
+   the panel below keeps its full width. It is sized to the panel and
+   right-aligned with it. */
+#toprow{position:fixed;z-index:60;right:18px;top:18px;height:34px;
+  width:min(980px,58vw);min-width:340px;box-sizing:border-box;
+  display:flex;align-items:center;gap:7px;overflow:hidden;
+  background:rgba(17,24,21,.93);border:1px solid var(--line);border-radius:9px;padding:0 9px}
+#bmrow,#projrow{display:flex;align-items:center;gap:2px;flex:none}
+#toprow button{font-size:10.8px;padding:4px 8px;border:0;border-radius:6px;background:none;
+  color:var(--faint);cursor:pointer;font-family:inherit;white-space:nowrap}
+#toprow button:hover{color:var(--ink);background:rgba(74,124,89,.14)}
+#toprow button.on{color:var(--ink);background:var(--accent-soft)}
+#projrow{border-left:1px solid var(--line);padding-left:6px}
+#levels{display:none;flex:1;min-width:0;gap:3px 11px;overflow:hidden;
+  border-left:1px solid var(--line);padding-left:9px;margin-left:2px}
+#levels.on{display:flex;align-items:center}
+#levels .lv{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;color:var(--dim);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#levels .lv i{width:8px;height:8px;border-radius:2px;display:inline-block;flex:none}
+
 #pincount{font-size:10.5px;color:var(--faint);margin-top:5px}
 #trail .hint{color:var(--faint);font-size:11.5px}
 #status{margin-top:6px;font-size:11px;color:var(--faint);display:flex;gap:10px;align-items:center}
@@ -80,9 +101,11 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 #about p{font-size:12.5px;line-height:1.6;color:var(--dim)}
 #about p+p{margin-top:9px}
 #about a{color:var(--accent-hi);text-decoration:none}
-#mup{position:absolute;top:14px;right:88px;height:28px;padding:0 10px;border-radius:7px;
+#mup,#mback{position:absolute;top:14px;height:28px;padding:0 10px;border-radius:7px;
   border:1px solid var(--line);background:var(--panel2);color:var(--dim);cursor:pointer;font-size:11px;font-family:inherit}
-#mup:hover{color:var(--ink);border-color:var(--accent-soft)}
+#mup{right:88px}
+#mback{right:88px}                 /* moved left by script when both are shown */
+#mup:hover,#mback:hover{color:var(--ink);border-color:var(--accent-soft)}
 #mclose{position:absolute;top:14px;right:16px;width:28px;height:28px;border-radius:7px;border:1px solid var(--line);
   background:var(--panel2);color:var(--dim);cursor:pointer;font-size:15px;line-height:1}
 #mclose:hover{color:var(--ink)}
@@ -150,14 +173,11 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 #trail a:hover{text-decoration:underline}
 #trail .sep{opacity:.45;margin:0 5px}
 #trail .now{color:var(--ink)}
-#levels{display:none;flex-wrap:wrap;gap:4px 12px;margin-top:7px;padding-top:7px;border-top:1px solid var(--line)}
-#levels.on{display:flex}
-#levels .lv{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--dim)}
-#levels .lv i{width:9px;height:9px;border-radius:2px;display:inline-block}
+
 #pincount{font-size:10.5px;color:var(--faint);margin-top:5px}
 /* ---------- modal: draggable, resizable, parked to the right ---------- */
-#modal{position:fixed;z-index:100;left:auto;right:18px;top:38px;transform:none;
-  width:min(980px,58vw);height:calc(100vh - 58px);min-width:340px;min-height:260px;
+#modal{position:fixed;z-index:100;left:auto;right:18px;top:62px;transform:none;
+  width:min(980px,58vw);height:calc(100vh - 82px);min-width:340px;min-height:260px;
   display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:13px;
   box-shadow:0 24px 70px rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:opacity .2s}
 #modal.on{opacity:1;pointer-events:auto}
@@ -171,6 +191,16 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
    themselves. Nothing needs a click to be seen, and a click is only
    ever a request for the full detail of one office. */
 .dgwrap{margin:4px 0 0;width:100%;overflow:auto;border:1px solid var(--line);border-radius:9px;background:var(--panel2);padding:10px}
+.mm svg{max-width:none!important}
+.mm .node{cursor:pointer}
+/* the definition card that follows the pointer over a diagram box */
+#mmcard{position:fixed;z-index:400;width:340px;max-width:70vw;pointer-events:none;
+  background:var(--panel);border:1px solid var(--accent-hi);border-radius:9px;
+  padding:11px 13px;box-shadow:0 16px 42px rgba(0,0,0,.55);opacity:0;transition:opacity .12s}
+#mmcard.on{opacity:1}
+#mmcard h5{font-family:'Marcellus',serif;font-size:13.5px;margin:0 0 5px;color:var(--text);font-weight:400}
+#mmcard p{font-size:12px;line-height:1.6;color:var(--dim);margin:0}
+#mmcard p.w{color:var(--accent-hi);margin-bottom:6px}
 .dglabel{font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:var(--stone);margin-top:18px}
 .tree{width:100%}
 
@@ -260,15 +290,17 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   <h1>How To Reach Them</h1>
   <div class="sub">Who you can contact to make a law &mdash; in every country, at every level down to the municipality &mdash; what each office can actually do about it, and how often any of it works.</div>
 </div>
-<div id="tools">
-  <button class="tbtn" onclick="document.getElementById('bmbox').classList.toggle('open')">Basemap</button>
-  <div id="bmbox"></div>
+<div id="toprow">
+  <div id="bmrow"></div>
+  <div id="projrow"><button id="projbtn" onclick="toggleProjection()">Flat map</button></div>
+  <div id="levels"></div>
 </div>
-<div id="trail"><div id="crumbs"></div><div id="levels"></div><div id="pincount"></div></div>
+<div id="trail"><div id="crumbs"></div><div id="pincount"></div></div>
 <div id="modal">
   <div id="mtop">
     <button id="mclose" onclick="closeModal()">&times;</button>
     <button id="mup" style="display:none" onclick="goUp()">&uarr; Up a level</button>
+    <button id="mback" style="display:none" onclick="backToDiagram()">&larr; Back to the diagram</button>
     <button id="mabout" onclick="toggleAbout()" title="About this map">?</button>
     <div id="mtitle">&nbsp;</div>
     <div id="msub"></div>
@@ -1503,16 +1535,37 @@ SELECT ?item ?itemLabel ?clsLabel ?site ?email ?phone ?coord WHERE {
 
 /* Where each office physically sits. Only a minority carry a coordinate
    of their own, so the headquarters is used as a fallback. */
+/* The name comes back with the coordinate. Without it a marker that is
+   not in the resolved office list has nothing to show but its Wikidata
+   id, which is what used to appear on the map. */
 function qCoords(q){ return `
-SELECT ?item ?coord WHERE {
+SELECT ?item ?itemLabel ?coord WHERE {
  ?item wdt:P1001 wd:${q} .
  { ?item wdt:P625 ?coord } UNION { ?item wdt:P159/wdt:P625 ?coord }
+ SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" }
 } LIMIT 600`; }
 function qCoordsCountry(q){ return `
-SELECT ?item ?coord WHERE {
+SELECT ?item ?itemLabel ?coord WHERE {
  ?item wdt:P17 wd:${q} ; wdt:P31 ?cls . ?cls wdt:P279* wd:Q327333 .
  { ?item wdt:P625 ?coord } UNION { ?item wdt:P159/wdt:P625 ?coord }
+ SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" }
 } LIMIT 600`; }
+
+/* Municipalities inside a unit. The boundary files stop at the district
+   for most countries and at the county for the United States, so below
+   that there are no polygons to draw. Wikidata still knows the towns and
+   cities, and those are where a mayor and a council sit. Two ways in:
+   a settlement class, or the plain fact that the place has a head of
+   government or a legislature of its own. The second catches the ones
+   whose class is unusual — Pasadena is a "charter city", not a
+   "city in the United States". */
+function qSettle(q){ return `
+SELECT DISTINCT ?item ?itemLabel ?clsLabel ?coord WHERE {
+ ?item wdt:P131 wd:${q} ; wdt:P625 ?coord ; wdt:P31 ?cls .
+ { VALUES ?cls { wd:Q515 wd:Q3957 wd:Q532 wd:Q15284 wd:Q1093829 wd:Q3788231 wd:Q1637706 wd:Q956318 } }
+ UNION { ?item wdt:P1313 ?hg } UNION { ?item wdt:P194 ?lb }
+ SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" }
+} LIMIT 500`; }
 
 function qSubdiv(q){ return `
 SELECT ?d ?dLabel WHERE { wd:${q} wdt:P150 ?d .
@@ -1548,16 +1601,29 @@ BM = CulpritsBasemaps.create('map', {
 });
 const map = BM.maplibre;
 
-/* basemap switcher */
+/* basemap switcher, now a row rather than a drop-down */
 (function(){
-  const box = document.getElementById('bmbox');
+  const box = document.getElementById('bmrow');
   box.innerHTML = CulpritsBasemaps.list.map(b =>
     '<button data-k="'+b[0]+'" onclick="pickBase(\''+b[0]+'\')">'+b[1]+'</button>').join('');
   markBase('atlas');
 })();
-function pickBase(k){ BM.set(k); markBase(k); document.getElementById('bmbox').classList.remove('open'); }
-function markBase(k){ document.querySelectorAll('#bmbox button')
+let BASEKEY='atlas';
+function pickBase(k){ BM.set(k); markBase(k); BASEKEY=k; setPins(); }
+function markBase(k){ document.querySelectorAll('#bmrow button')
   .forEach(b=>b.classList.toggle('on', b.dataset.k===k)); }
+
+/* Flat or globe. The world draws on a sphere by default, which is the
+   honest shape but hides half the planet; flat shows every country at
+   once, at the cost of stretching the poles. */
+let FLAT=false;
+function toggleProjection(){
+  FLAT=!FLAT;
+  try{ map.setProjection({type: FLAT?'mercator':'globe'}); }catch(e){}
+  const b=document.getElementById('projbtn');
+  b.textContent = FLAT?'Globe':'Flat map';
+  b.classList.toggle('on', FLAT);
+}
 
 /* A field of stars behind the globe. MapLibre paints the space around
    a globe with the style's sky, so the stars go there rather than into
@@ -1725,12 +1791,15 @@ async function drawAdm(iso3, level, parentFeature){
   try{ gj = await fetchAdm(iso3, level); }
   catch(e){
     setAdmData([]);
-    noteBelow(e.message==='notfound'
-      ? 'The boundary files go no deeper than this for this country. Most countries have two administrative levels in them, some have three or four.'
-      : 'Could not load the boundary file: '+e.message);
+    if(e.message==='notfound'){
+      noteBelow('The boundary files go no deeper than this for this country.');
+      const top=STACK[STACK.length-1];
+      if(top&&top.q) loadSettlements(top.q, STACK.length-1);
+    }else noteBelow('Could not load the boundary file: '+e.message);
     return;
   }
   let feats = gj.features;
+  setSubs([]);                 /* polygons exist at this level, so the rings are not needed */
   if(parentFeature){
     const pg = parentFeature.geometry;
     const pb = bboxOf(pg);
@@ -1869,8 +1938,8 @@ function goUp(){
 
 function paintTrail(){
   const el=$('#crumbs'), up=$('#mup'), tr=$('#trail');
-  if(!STACK.length){ el.innerHTML=''; tr.classList.remove('on'); up.style.display='none'; return; }
-  tr.classList.add('on'); up.style.display='';
+  if(!STACK.length){ el.innerHTML=''; tr.classList.remove('on'); up.style.display='none'; showBack(false); return; }
+  tr.classList.add('on'); up.style.display=''; showBack($('#mback').style.display!=='none');
   el.innerHTML = STACK.map((s,i)=> i===STACK.length-1
     ? '<span class="now">'+esc(s.label)+'</span>'
     : '<a onclick="jumpTo('+i+')">'+esc(s.label)+'</a>'
@@ -1892,25 +1961,34 @@ function jumpTo(i){ while(STACK.length-1>i) STACK.pop();
    ==================================================================== */
 let CUR=null, VIEW='map', SEL=null;
 
-/* A percentage-point effect and a base success rate are different
-   quantities, so they do not share a scale. */
-function rateColor(r){
-  if(!r || r.val==null) return 'var(--r-none)';
+/* How well a route works, as a rank rather than a figure.
+   The bands come from the measured data already carried with each route
+   — the same thresholds the colours always used — so the ordering is
+   the datasets' own. A percentage-point effect and a base success rate
+   are different quantities and do not share a scale, so each is banded
+   against its own kind. Routes nobody has measured say so rather than
+   being ranked low by default: no measurement is not a low score. */
+const BANDS={
+  high:{ord:0, label:'Works more often than most', note:'Among the better-evidenced routes in the measured data.'},
+  mid :{ord:1, label:'Works some of the time',     note:'Measured as working in a useful minority of attempts.'},
+  low :{ord:2, label:'Rarely works on its own',    note:'Measured as working seldom without something else behind it.'},
+  none:{ord:3, label:'Not measured',               note:'No one has counted attempts against outcomes for this route.'}
+};
+function rateBand(r){
+  if(!r || r.val==null) return 'none';
   const v=r.val;
-  if(r.kind==='effect') return v>=10?'var(--r-high)':v>=3?'var(--r-mid)':'var(--r-low)';
-  return v>=40?'var(--r-high)':v>=15?'var(--r-mid)':'var(--r-low)';
+  if(r.kind==='effect') return v>=10?'high':v>=3?'mid':'low';
+  return v>=40?'high':v>=15?'mid':'low';
 }
-function rateText(r, own){
-  if(!r || r.val==null) return '&mdash;<small>unmeasured</small>';
-  return r.val+(r.kind==='effect'?'':'%')+'<small>'+(r.kind==='effect'?'pt effect':'worked')+'</small>';
-}
+function rateColor(r){ return 'var(--r-'+(rateBand(r)==='none'?'none':rateBand(r))+')'; }
+function rateText(r){ return '<small>'+BANDS[rateBand(r)].label+'</small>'; }
 
 function openModal(title, sub){
   $('#mtitle').textContent = title; $('#msub').textContent = sub||'';
   $('#modal').classList.add('on');
   shiftForBox(true);
 }
-function closeModal(){ $('#modal').classList.remove('on'); SEL=null; shiftForBox(false); }
+function closeModal(){ $('#modal').classList.remove('on'); SEL=null; showBack(false); hideCard(); shiftForBox(false); }
 document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
 
 async function openJuris(q, label){
@@ -2041,6 +2119,9 @@ function officeDiagram(b){
   const total=b.leg.length+b.exec.length+b.jud.length+b.ag.length;
   const root=nid({t:'root'});
   L.push('  '+root+'(["'+mmText(CUR.label)+' — '+total+' offices"])');
+  NODE[root].tip={nm:CUR.label, what:'Everyone below holds office inside this jurisdiction.',
+    how:'The four branches below are the whole of who there is to approach about a law here. Each is drawn whether or not Wikidata holds a record of it, so a branch with nothing under it means the record is missing, not that the office does not exist.'};
+  L.push('  click '+root+' call mmPick("'+root+'")');
 
   ['leg','exec','jud','ag'].forEach(br=>{
     const rows=b[br]||[];
@@ -2049,7 +2130,8 @@ function officeDiagram(b){
     const folded=!!COLL[bkey];
     L.push('  '+bn+'["'+mmText(BRANCH[br].nm)+' ('+rows.length+')'+(folded?' ▸':'')+'"]');
     L.push('  '+root+' --> '+bn);
-    L.push('  click '+bn+' call mmPick("'+bn+'") "'+mmTip(BRANCHINFO[br].what)+'"');
+    NODE[bn].tip={nm:BRANCH[br].nm, what:BRANCHINFO[br].what, how:BRANCHINFO[br].how};
+    L.push('  click '+bn+' call mmPick("'+bn+'")');
     if(folded) return;
 
     (KINDORDER[br]||[]).forEach(k=>{
@@ -2060,7 +2142,8 @@ function officeDiagram(b){
       const ki=KINDINFO[k]||{what:'',how:''};
       L.push('  '+kn+'["'+mmText(KINDLABEL[k]||k)+' ('+kr.length+')'+(kfold?' ▸':'')+'"]');
       L.push('  '+bn+' --> '+kn);
-      L.push('  click '+kn+' call mmPick("'+kn+'") "'+mmTip(ki.what)+'"');
+      NODE[kn].tip={nm:KINDLABEL[k]||k, what:ki.what, how:ki.how};
+      L.push('  click '+kn+' call mmPick("'+kn+'")');
       if(kfold || !kr.length) return;
 
       const all=!!SHOWALL[kkey];
@@ -2074,7 +2157,8 @@ function officeDiagram(b){
         const on=nid({t:'office', id:o.id});
         L.push('  '+on+'["'+mmText(o.label)+'"]');
         L.push('  '+prev+(i===0?' --> ':' ~~~ ')+on);
-        L.push('  click '+on+' call mmPick("'+on+'") "'+mmTip(o.what)+'"');
+        NODE[on].tip={nm:o.label, what:o.what, how:o.how};
+        L.push('  click '+on+' call mmPick("'+on+'")');
         prev=on;
       });
       if(!all && sorted.length>CAP){
@@ -2095,7 +2179,58 @@ function mmPick(key){
   if(n.t==='office'){ const o=BK&&BK.byId&&BK.byId[n.id]; if(o){ SEL=o; renderOffice(o); } }
 }
 
+/* The definition card. It follows the pointer over a box and goes when
+   the pointer leaves, so nothing has to be clicked to find out what a
+   box is. Mermaid's own tooltip is not used: it is plain text, one
+   line, and unstyled. */
+let HOVERCARD=null;
+function hoverCard(){
+  if(!HOVERCARD){
+    HOVERCARD=document.createElement('div');
+    HOVERCARD.id='mmcard';
+    document.body.appendChild(HOVERCARD);
+  }
+  return HOVERCARD;
+}
+function hideCard(){ if(HOVERCARD) HOVERCARD.classList.remove('on'); }
+function bindCards(el){
+  el.querySelectorAll('.node').forEach(node=>{
+    const id=node.id||'';
+    /* mermaid prefixes the node id it was given; recover ours */
+    const key=(id.match(/(?:^|-)(n\d+)(?:-|$)/)||[])[1];
+    const n=key&&NODE[key]; if(!n||!n.tip) return;
+    node.addEventListener('mouseenter', ()=>{
+      const c=hoverCard();
+      c.innerHTML='<h5>'+esc(n.tip.nm)+'</h5>'+
+        (n.tip.what?'<p class="w">'+esc(n.tip.what)+'</p>':'')+
+        (n.tip.how?'<p>'+esc(n.tip.how)+'</p>':'');
+      c.classList.add('on');
+    });
+    node.addEventListener('mousemove', e=>{
+      const c=hoverCard(); if(!c.classList.contains('on')) return;
+      const w=c.offsetWidth, h=c.offsetHeight;
+      let x=e.clientX+16, y=e.clientY+16;
+      if(x+w>innerWidth-10) x=e.clientX-w-16;
+      if(y+h>innerHeight-10) y=Math.max(10, e.clientY-h-16);
+      c.style.left=x+'px'; c.style.top=y+'px';
+    });
+    node.addEventListener('mouseleave', hideCard);
+  });
+}
+
 function openOffice(id){ const o=BK&&BK.byId&&BK.byId[id]; if(o){ SEL=o; renderOffice(o); } }
+
+/* the way back out of an office, sitting beside Up a level rather than
+   inside the scrolling body where it used to scroll away */
+function backToDiagram(){ SEL=null; render(); }
+function showBack(on){
+  const b=$('#mback'), up=$('#mup');
+  if(!b) return;
+  b.style.display = on ? '' : 'none';
+  /* the two share the right edge: shift Back left when Up is showing */
+  const upOn = up && up.style.display!=='none';
+  b.style.right = upOn ? '186px' : '88px';
+}
 
 /* ---------- rendering ---------- */
 let BK=null;
@@ -2127,6 +2262,7 @@ function render(){
   const keep=$('#mbody').scrollTop;
   $('#mbody').innerHTML=h;
   $('#mbody').scrollTop=keep;
+  showBack(false);
   drawMermaid('mmOffices', officeDiagram(b));
 }
 
@@ -2141,6 +2277,7 @@ function drawMermaid(id, src){
         const wrap=el.closest('.dgwrap');
         if(wrap) wrap.scrollLeft=Math.max(0,(s.getBoundingClientRect().width-wrap.clientWidth)/2); }
       if(bindFunctions) bindFunctions(el);
+      hideCard(); bindCards(el);
     }).catch(e=>{ el.innerHTML='<div class="note">Could not draw the diagram: '+esc(e.message)+'</div>'; });
   }catch(e){ el.innerHTML='<div class="note">Could not draw the diagram: '+esc(e.message)+'</div>'; }
 }
@@ -2148,11 +2285,12 @@ function drawMermaid(id, src){
 
 function renderOffice(o){
   if(!o) return render();
-  SEL=o;
+  SEL=o; hideCard();
+  $('#msub').textContent='What this office can do about a law, every route that reaches it, and what gets in the way';
   const r=o.row;
   const holder=r.holderLabel&&r.holderLabel.value;
   const site=r.site&&r.site.value, email=r.email&&r.email.value, phone=r.phone&&r.phone.value;
-  let h='<div class="crumb"><a onclick="SEL=null;render()">&larr; back to the diagram</a></div>';
+  let h='';
   h+='<div class="off" style="border:0;padding-top:0"><div class="nm" style="font-size:19px">'+esc(o.label)+'</div>'+
      '<div class="what">'+esc(o.what)+'</div><div class="how">'+esc(o.how)+'</div><div class="meta">';
   if(o.cls) h+='<span class="chip">'+esc(o.cls)+'</span>';
@@ -2164,9 +2302,15 @@ function renderOffice(o){
   h+='<a href="https://www.wikidata.org/wiki/'+esc(o.id)+'" target="_blank" rel="noopener" style="opacity:.5">wikidata</a>';
   h+='</div></div>';
 
-  const rts=(KIND_ROUTES[o.kind]||[]).map(id=>ROUTES.find(x=>x.id===id)).filter(Boolean);
+  /* best-ranked first, so the order of the list is itself the answer to
+     which route is worth trying before the others */
+  const rts=(KIND_ROUTES[o.kind]||[]).map(id=>ROUTES.find(x=>x.id===id)).filter(Boolean)
+    .sort((a,b)=>BANDS[rateBand(a.rate)].ord-BANDS[rateBand(b.rate)].ord);
   if(rts.length){
     h+='<div class="sec">How to reach it</div>';
+    h+='<div class="bhead">Ordered by how often each has been measured to work, best first. '+
+       'The ranking comes from the datasets carried with each route; routes nobody has counted '+
+       'are marked unmeasured rather than ranked last.</div>';
     rts.forEach((rt,i)=>{
       const R=rt.rate;
       h+='<div class="route" id="rr'+i+'"><div class="rhead" onclick="document.getElementById(\'rr'+i+'\').classList.toggle(\'open\')">'+
@@ -2177,9 +2321,9 @@ function renderOffice(o){
         (rt.def ? '<div class="fld"><dt>What this is</dt><dd>'+esc(rt.def)+'</dd></div>' : '')+
         fld('What it costs', rt.costn)+fld('Who can use it', rt.elig)+
         fld('How long', rt.time)+fld('How it is done', rt.how)+
-        (R ? '<div class="fld"><dt>How often it has worked'+(R.ev?'<span class="ev">'+esc(EVNAME[R.ev]||R.ev)+'</span>':'')+'</dt><dd>'+
-             esc(R.means||'')+(R.caveat?' <em>'+esc(R.caveat)+'</em>':'')+
-             '<div class="srcline">'+esc(R.src||'')+(R.y0?' ('+R.y0+(R.y1&&R.y1!==R.y0?'&ndash;'+R.y1:'')+')':'')+'</div></dd></div>' : '')+
+        (R ? '<div class="fld"><dt>How it ranks'+(R.ev?'<span class="ev">'+esc(EVNAME[R.ev]||R.ev)+'</span>':'')+'</dt><dd>'+
+             esc(BANDS[rateBand(R)].label)+'. '+esc(BANDS[rateBand(R)].note)+
+             '<div class="srcline">Measured by: '+esc(R.src||'')+(R.y0?' ('+R.y0+(R.y1&&R.y1!==R.y0?'&ndash;'+R.y1:'')+')':'')+'</div></dd></div>' : '')+
         (rt.own ? '<div class="fld"><dt>Observed on this site\u2019s own campaign</dt><dd>'+esc(rt.own.note)+'</dd></div>' : '')+
         (!R && rt.nomeasure ? '<div class="fld"><dt>Why no one has measured how often this works</dt><dd>'+esc(rt.nomeasure)+'</dd></div>' : '')+
         '<div class="fld fail"><dt>What usually stops it</dt><dd>'+esc(rt.fail)+'</dd></div>'+
@@ -2193,6 +2337,7 @@ function renderOffice(o){
   }
   $('#mbody').innerHTML=h;
   $('#mbody').scrollTop=0;
+  showBack(true);
 }
 function fld(t,v){ return v ? '<div class="fld"><dt>'+t+'</dt><dd>'+esc(v)+'</dd></div>' : ''; }
 
@@ -2209,35 +2354,84 @@ function renderNoEntity(nm, drawn){
    to those levels are pinned in the same colour. Everything else stays
    on the map, dimmed.
    ==================================================================== */
-const LEVELC = ['#5b7f93','#4a7c59','#8a6f63','#7d7498','#6f8f86'];
+/* One palette per basemap. A marker has to carry its level's colour and
+   still sit legibly on what is underneath it: the painted Atlas is pale,
+   the satellite imagery is busy and mid-toned, Hell is dark red. The
+   hues stay the same across the five so a level keeps its identity; only
+   the lightness moves. */
+const LEVELSETS = {
+  atlas    : ['#355f78','#376043','#6e5346','#584d6f','#45706a'],
+  satellite: ['#9dbdd2','#9ac5a6','#c6a996','#afa7cd','#9bbdb3'],
+  night    : ['#83abc6','#8abb9d','#bfa292','#a9a1c6','#93b5ad'],
+  hell     : ['#cfc6bb','#b3c7b8','#d6c0b0','#c2bad3','#b2c8c0'],
+  outlines : ['#355f78','#376043','#6e5346','#584d6f','#45706a'],
+};
 const LEVELN = ['Country','Region','District','Local','Below that'];
-const SRC_CHAIN='chain', SRC_PIN='pins';
+function levelColours(){ return LEVELSETS[BASEKEY] || LEVELSETS.atlas; }
+function levelColour(i){ const p=levelColours(); return p[Math.min(Math.max(i,0),p.length-1)]; }
+const SRC_CHAIN='chain', SRC_PIN='pins', SRC_SUB='subunits';
 
 function addChainLayers(){
   if(map.getSource(SRC_CHAIN)) return;
   map.addSource(SRC_CHAIN,{type:'geojson',data:{type:'FeatureCollection',features:[]}});
   map.addSource(SRC_PIN,{type:'geojson',data:{type:'FeatureCollection',features:[]}});
+  map.addSource(SRC_SUB,{type:'geojson',data:{type:'FeatureCollection',features:[]}});
   map.addLayer({id:'chain-f',type:'fill',source:SRC_CHAIN,
     paint:{'fill-color':['get','col'],'fill-opacity':0.10}});
   map.addLayer({id:'chain-l',type:'line',source:SRC_CHAIN,
     paint:{'line-color':['get','col'],'line-width':['interpolate',['linear'],['get','lvl'],0,3.4,4,1.4],'line-opacity':0.95}});
+  /* A marker is three layers: a soft halo that lifts it off whatever is
+     underneath, a small crisp core, and an invisible disc wide enough to
+     click comfortably. Radii grow gently with zoom rather than jumping. */
+  const R = ['interpolate',['linear'],['zoom'], 2,2.2, 6,3.4, 11,4.6];
+  const RH= ['interpolate',['linear'],['zoom'], 2,6.5, 6,9, 11,12];
   map.addLayer({id:'pin-dim',type:'circle',source:SRC_PIN,
     filter:['!',['get','on']],
-    paint:{'circle-radius':3,'circle-color':'#8d9a92','circle-opacity':0.45,
-           'circle-stroke-width':0.6,'circle-stroke-color':'rgba(10,16,13,.8)'}});
+    paint:{'circle-radius':['interpolate',['linear'],['zoom'],2,1.6,11,3],
+           'circle-color':'#8d9a92','circle-opacity':0.38,
+           'circle-stroke-width':0.5,'circle-stroke-color':'rgba(10,16,13,.55)'}});
+  map.addLayer({id:'pin-halo',type:'circle',source:SRC_PIN,
+    filter:['get','on'],
+    paint:{'circle-radius':RH,'circle-color':['get','col'],'circle-opacity':0.16,
+           'circle-blur':0.45}});
   map.addLayer({id:'pin-on',type:'circle',source:SRC_PIN,
     filter:['get','on'],
-    paint:{'circle-radius':6,'circle-color':['get','col'],'circle-opacity':0.95,
-           'circle-stroke-width':1.4,'circle-stroke-color':'rgba(10,16,13,.9)'}});
-  map.on('mousemove','pin-on', e=>{ map.getCanvas().style.cursor='pointer';
-    const f=e.features[0]; if(f) tip(e.lngLat, f.properties.label); });
-  map.on('mouseleave','pin-on', ()=>{ map.getCanvas().style.cursor=''; hideTip(); });
-  map.on('click','pin-on', e=>{ const f=e.features[0]; if(!f) return;
-    const o=BK && BK.byId && BK.byId[f.properties.id];
-    if(o){ openModal(CUR?CUR.label:'', 'Offices resolved live from Wikidata'); SEL=o; renderOffice(o); } });
-  map.on('mousemove','pin-dim', e=>{ map.getCanvas().style.cursor='pointer';
-    const f=e.features[0]; if(f) tip(e.lngLat, f.properties.label + ' — not in the jurisdiction you picked'); });
-  map.on('mouseleave','pin-dim', ()=>{ map.getCanvas().style.cursor=''; hideTip(); });
+    paint:{'circle-radius':R,'circle-color':['get','col'],'circle-opacity':1,
+           'circle-stroke-width':1.1,'circle-stroke-color':'rgba(12,18,15,.78)'}});
+  /* the name, once there is room for it */
+  map.addLayer({id:'pin-label',type:'symbol',source:SRC_PIN,
+    filter:['get','on'], minzoom:6.5,
+    layout:{'text-field':['get','label'],'text-size':10.5,'text-offset':[0,0.95],
+            'text-anchor':'top','text-max-width':11,'text-padding':4,
+            'text-allow-overlap':false,'text-optional':true},
+    paint:{'text-color':'#e7e4dc','text-halo-color':'rgba(10,16,13,.92)','text-halo-width':1.4}});
+  /* Municipalities: open rings, so they read as somewhere to go into
+     rather than as an office to contact. */
+  map.addLayer({id:'sub-dot',type:'circle',source:SRC_SUB,
+    paint:{'circle-radius':['interpolate',['linear'],['zoom'],4,3,11,5.5],
+           'circle-color':'rgba(0,0,0,0)',
+           'circle-stroke-width':1.5,'circle-stroke-color':['get','col'],'circle-stroke-opacity':0.9}});
+  map.addLayer({id:'sub-label',type:'symbol',source:SRC_SUB, minzoom:6,
+    layout:{'text-field':['get','label'],'text-size':10.5,'text-offset':[0,1],
+            'text-anchor':'top','text-max-width':11,'text-padding':4,'text-optional':true},
+    paint:{'text-color':'#e7e4dc','text-halo-color':'rgba(10,16,13,.92)','text-halo-width':1.4}});
+  map.addLayer({id:'sub-hit',type:'circle',source:SRC_SUB,
+    paint:{'circle-radius':['interpolate',['linear'],['zoom'],4,9,11,15],
+           'circle-color':'#000','circle-opacity':0}});
+  map.on('mousemove','sub-hit', e=>{ map.getCanvas().style.cursor='pointer';
+    const f=e.features[0]; if(f) tip(e.lngLat, f.properties.label+(f.properties.cls?' \u2014 '+f.properties.cls:'')); });
+  map.on('mouseleave','sub-hit', ()=>{ map.getCanvas().style.cursor=''; hideTip(); });
+  map.on('click','sub-hit', e=>{ const f=e.features[0]; if(f) enterSettlement(f.properties.q, f.properties.label); });
+
+  map.addLayer({id:'pin-hit',type:'circle',source:SRC_PIN,
+    paint:{'circle-radius':['interpolate',['linear'],['zoom'],2,8,11,14],
+           'circle-color':'#000','circle-opacity':0}});
+  map.on('mousemove','pin-hit', e=>{ map.getCanvas().style.cursor='pointer';
+    const f=e.features[0]; if(!f) return;
+    tip(e.lngLat, f.properties.on ? f.properties.label
+      : f.properties.label + ' \u2014 not in the jurisdiction you picked'); });
+  map.on('mouseleave','pin-hit', ()=>{ map.getCanvas().style.cursor=''; hideTip(); });
+  map.on('click','pin-hit', e=>{ const f=e.features[0]; if(!f) return; openPin(f.properties.id); });
 }
 
 /* draw the nesting of jurisdictions the clicked unit sits inside */
@@ -2247,7 +2441,7 @@ function paintChain(){
   STACK.forEach((s,i)=>{
     if(!s.feature) return;
     feats.push({type:'Feature', geometry:s.feature.geometry,
-      properties:{col:LEVELC[Math.min(i,LEVELC.length-1)], lvl:i, name:s.label}});
+      properties:{col:levelColour(i), lvl:i, name:s.label}});
   });
   src.setData({type:'FeatureCollection',features:feats});
   const el=$('#levels');
@@ -2255,7 +2449,7 @@ function paintChain(){
   if(!STACK.length){ el.innerHTML=''; el.classList.remove('on'); return; }
   el.classList.add('on');
   el.innerHTML = STACK.map((s,i)=>
-    '<span class="lv"><i style="background:'+LEVELC[Math.min(i,LEVELC.length-1)]+'"></i>'+
+    '<span class="lv"><i style="background:'+levelColour(i)+'"></i>'+
     esc(s.label)+'</span>').join('');
 }
 
@@ -2268,7 +2462,7 @@ function setPins(){
     const i=STACK.findIndex(s=>s.q===p.lvlQ);
     return {type:'Feature', geometry:{type:'Point',coordinates:[p.lng,p.lat]},
       properties:{id:p.id, label:p.label, on:i>=0, lvl:i<0?9:i,
-        col:LEVELC[Math.min(i<0?0:i,LEVELC.length-1)]}};
+        col:levelColour(i<0?0:i)}};
   });
   src.setData({type:'FeatureCollection',features:feats});
   const n=feats.filter(f=>f.properties.on).length;
@@ -2278,6 +2472,66 @@ function setPins(){
     : '';
 }
 
+/* The municipalities inside the unit you have open. Drawn only when the
+   boundary files have run out, which is where the levels of government
+   the public deals with most — a city hall, a town council — would
+   otherwise disappear from the map. */
+let SUBS=[];
+function setSubs(feats){
+  SUBS=feats||[];
+  const src=map.getSource(SRC_SUB); if(!src) return;
+  src.setData({type:'FeatureCollection', features:SUBS});
+}
+async function loadSettlements(q, level){
+  if(!q) return setSubs([]);
+  try{
+    const rows = await sparql(qSettle(q), 'set:'+q);
+    const col = levelColour(level);
+    const seen={}, feats=[];
+    rows.forEach(r=>{
+      const m=/Point\(([-\d.]+) ([-\d.]+)\)/.exec(r.coord.value); if(!m) return;
+      const id=qid(r.item.value); if(seen[id]) return; seen[id]=1;
+      const nm=(r.itemLabel&&r.itemLabel.value)||''; if(!nm||isQ(nm)) return;
+      feats.push({type:'Feature', geometry:{type:'Point',coordinates:[+m[1],+m[2]]},
+        properties:{q:id, label:nm, cls:(r.clsLabel&&r.clsLabel.value)||'', col:col}});
+    });
+    setSubs(feats);
+    if(feats.length) noteBelow('The boundary files stop here, so the '+feats.length+
+      ' towns and cities Wikidata places inside this unit are drawn as rings. Click one for its own offices.');
+  }catch(e){ setSubs([]); }
+}
+
+/* stepping into a municipality: it has no polygon, so the chain keeps
+   the parent's outline and the offices resolve for the place itself */
+function enterSettlement(q, label){
+  const top=STACK[STACK.length-1];
+  STACK.push({q:q, label:label, iso3:top?top.iso3:null,
+              level:(top?top.level:0)+1, feature:null});
+  setSubs([]);
+  openJuris(q, label);
+  paintTrail(); paintChain(); setPins();
+  loadPins(q, false);
+  loadSettlements(q, STACK.length-1);
+}
+
+/* Clicking a marker. If the office is in the resolved list it opens in
+   full. If it belongs to a level you are not inside, there is nothing
+   resolved to show, so the marker says what it is and offers the record
+   rather than failing silently. */
+function openPin(id){
+  const o = BK && BK.byId && BK.byId[id];
+  if(o){ openModal(CUR?CUR.label:'', 'Offices resolved live from Wikidata'); SEL=o; renderOffice(o); return; }
+  const p = PINS[id]; if(!p) return;
+  openModal(p.label, 'An office outside the jurisdiction you picked');
+  $('#mbody').innerHTML =
+    '<div class="note"><b>'+esc(p.label)+'</b> is on the map but sits outside the jurisdiction you have open, '+
+    'so its routes and hurdles have not been worked out. Pick the jurisdiction it belongs to and it will resolve '+
+    'in full.</div><div class="off"><div class="meta">'+
+    '<a href="https://www.wikidata.org/wiki/'+esc(id)+'" target="_blank" rel="noopener">wikidata record</a>'+
+    '</div></div>';
+  $('#mback').style.display='none';
+}
+
 /* pull coordinates for a jurisdiction and merge them into the pin set */
 async function loadPins(q, isCountry){
   try{
@@ -2285,10 +2539,13 @@ async function loadPins(q, isCountry){
     rows.forEach(r=>{
       const m=/Point\(([-\d.]+) ([-\d.]+)\)/.exec(r.coord.value); if(!m) return;
       const id=qid(r.item.value);
-      if(!PINS[id]) PINS[id]={id:id, lng:+m[1], lat:+m[2], label:id, lvlQ:q};
-      else PINS[id].lvlQ=q;
+      const nm=(r.itemLabel&&r.itemLabel.value)||'';
+      if(isQ(nm)||!nm) return;        /* unnamed records are not offices anyone can contact */
+      if(!PINS[id]) PINS[id]={id:id, lng:+m[1], lat:+m[2], label:nm, lvlQ:q};
+      else { PINS[id].lvlQ=q; if(isQ(PINS[id].label)) PINS[id].label=nm; }
     });
-    /* give each pin the office's name once the office list has arrived */
+    /* prefer the office list's name where there is one, since it has
+       already been cleaned of tenures and records */
     if(BK && BK.byId) Object.values(PINS).forEach(p=>{ const o=BK.byId[p.id]; if(o) p.label=o.label; });
     setPins();
   }catch(e){}
