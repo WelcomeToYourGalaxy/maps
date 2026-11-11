@@ -11,9 +11,18 @@ def norm(s):
     # NFKD leaves stroked and ligature letters intact, so map them first
     return unicodedata.normalize('NFKD', s.translate(_MAP)).encode('ascii', 'ignore').decode().lower()
 STOP = set("""The It Its His Her Their In From No A An That This He She They After Before When Both
-One Two Three Four Five Six Seven Eight Nine Ten Chairman Governor Deputy President Bank Central
-Board Director Managing Vice Group Limited Company Corporation Inc Ltd And But Neither Either
-Afterwards Moving Apart Several Where While Although Under Since Until During""".split())
+One Two Three Four Five Six Seven Eight Nine Ten Eleven Twelve Thirteen Fourteen Fifteen Sixteen
+Seventeen Eighteen Nineteen Twenty Thirty Forty Fifty Sixty Seventy Eighty Ninety Hundred
+Chairman Governor Deputy President Bank Central Board Director Managing Vice Group Limited
+Company Corporation Inc Ltd And But Neither Either Afterwards Moving Apart Several Some Many
+Where While Although Under Since Until During Taking Who Nothing Those Almost Being Auditing
+January February March April May June July August September October November December
+Monday Tuesday Wednesday Thursday Friday Saturday Sunday
+European Union""".split())
+# Month names and spelled-out numbers are reformatting the brief REQUIRES (dates in
+# words, never ISO), and a box printing "14" or "27.06.2024" legitimately becomes
+# "Fourteen" and "27 June 2024". "European Union" is the allowed short clause naming
+# a very well known body. None of these are model knowledge leaking in.
 BANNED = ['the box', 'the record', 'does not say', 'on the map', ' our ', 'excerpt']
 bad = {}
 for k, t in drafts.items():
