@@ -164,6 +164,7 @@ button.btn:hover,#infoBtn:hover,#worldBtn:hover{border-color:var(--accent-hi);co
 #info.open+#infoClose{display:block}
 #info h2{font:400 17px/1.3 'Uncial Antiqua','Marcellus','Georgia',serif;margin:26px 0 8px;color:#f0ece4;letter-spacing:.3px}
 #info h2:first-child{margin-top:0}
+#info h3{font:600 14px/1.35 'Marcellus','Georgia',serif;margin:20px 0 6px;color:#e4ded2;letter-spacing:.2px}
 #info p,#info li{font-size:14px}
 #info ul{padding-left:20px;margin:4px 0}
 #info .warn{border-left:2px solid var(--accent);padding:4px 0 4px 12px;color:#d8d5e0}
@@ -616,10 +617,10 @@ function buildKey() {
 }
 const COV = D.coverage || {};
 function covLine() {
-  const o = COV.overall, m = COV.measured;
+  const o = COV.overall, h = COV.head, b = COV.benchmarks;
   if (!o || !o.hi) return "";
   let t = "No one has counted all infiltration, and no one can: these arrangements exist so that no register can be compiled. This share is a judgement. " + (o.basis || "");
-  if (m && m.n) t += " The measured part: " + m.n + " published registers do state a total for a bounded piece of the subject — " + m.total.toLocaleString() + " episodes or people in all — and this map carries " + m.on_map + " of them, " + m.share + "%. Those registers cover the parts that courts, ministries and inquiries have already counted, which is where the record is fullest, so the figure for the rest of the field is lower. The About page lists every register with its source.";
+  if (h && b) t += " Where someone else has published a list of cases and named them one by one, every item on it has been looked for here. On " + h.name.replace(/ \(page.*$/, "") + ", a ranked list of the largest foreign-bribery enforcement actions, this map holds " + h.on_map + " of " + h.total + ". The About page gives all " + b.length + " lists, each with what it covers, what the map shows of it, and which items it does not.";
   return '<br><span class="cov">Shows roughly ' + o.lo + '–' + o.hi + '% of the subject</span>' + QM(t);
 }
 const FIELD = D.field || {};

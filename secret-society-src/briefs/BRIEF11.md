@@ -29,3 +29,26 @@ Use only facts in the record. British spelling.
 ## Output
 
 JSON array, one object per input case, same order: {"i": <i>, "verdict": "keep"|"drop", "why": "<keep only>", "reason": "<drop only, one sentence>"}. Write it to the output path given, validate with python3 json.load, and confirm every input i appears. No web search needed. Reply with counts kept and dropped and every dropped title with its reason in a few words.
+
+
+## Settled rulings (10 November 2026) — apply these, do not re-argue them
+
+These were open questions put to the owner, who asked for the most defensible reading. Each is written so a later round can reverse it knowingly.
+
+1. **An insider of the same institution is not an outside party.** Mohamed bin Hammam's $40,000 envelopes for Caribbean Football Union delegates stay off the map: he was himself president of Asian football and a candidate in FIFA's own presidential election, so this is vote-buying inside football's own governance. The confederation question is not what decides it — the outside/inside structure is. The same rule disposes of the seven near-identical FIFA guilty pleas.
+
+2. **A named ruling house in an absolute monarchy counts as a named office.** Strukton's payment for a "high-ranking member of the ruling family" in Riyadh stays. But where a prosecutor says money was paid to an agent *in order to* bribe and does not say it reached anyone, the record is `probable`, not `established`, and the "why" line must use the prosecutor's wording. Strukton has been moved to `probable` on that ground. Congo/Petronor was already `probable` and is unaffected.
+
+3. **Buying the outcome of your own case is in scope.** A defendant, litigant or applicant who pays a judge, prosecutor or official so that their own matter is decided their way is an outside party whose money got inside the body that decided it. The Kyiv judge Chaus record, the NABU prosecutor record and the immigration-officer records stay. The payer may be identified by role rather than by name ("a defendant seeking a suspended sentence") as long as the record says so. What remains out is an institution's own staff defrauding that institution, with no outside party — the reason national anti-corruption agencies' own procurement-fraud bulletins are not a source for this map.
+
+4. **An official paid to issue documents is infiltration; a state-run passport programme is not.** Both Samoa records stay. REVIEW's exclusion has been reworded to say so.
+
+5. **A sanctions designation's own assertion caps a record at `probable`.** Where the only evidence that the outside party got inside is an executive designation saying so — no court finding, no independent reporting, no documented appointment or seat — the record is `probable`. Nine records were moved down on this ground. Designations stay `established` where the placement is a matter of public record anyway (a seat held, a post appointed to, a commission's finding) or where independent sources are cited alongside. A multilateral debarment after the lender's own sanctions process (African Development Bank, World Bank) is an adjudication, not an assertion, and stays `established`.
+
+6. **A designation that names no payer still counts if it names a class of payer and the decision.** The Treasury finding that Zimbabwe's president shields gold and diamond smugglers and takes bribes from them stays, at `probable`, because the record says in its own text that the release names no payer. Dropping a US government finding about a head of state would be filtering the data, not applying the test.
+
+7. **Open, declared arrangements are still out.** The Djibouti drop stands: Chinese loans and a declared military base are open arrangements, and a warning about leverage is not a finding of control inside the government. The second Djibouti drop — budget ministry officials arrested with traders — stands too, as the ministry's own officials with no outside party identified.
+
+8. **Herbalife/China is closed, not a lead.** The SEC order was read in full; it anonymises every body. See `data/removed_records.json`.
+
+9. **Alexion/Turkey and Alexion/Russia are recovered.** The SEC order (34-89214) names commissions in Turkey's Ministry of Health and chief non-staff specialist advisers to Russia's Ministry of Health. Both are now on the map, placed at the seat of the national ministry. This is the template for the other city-inference drops: go to the underlying order, not the press release.

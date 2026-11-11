@@ -171,7 +171,57 @@ def coverage(cases):
             out['share'] = round(100.0 * n / r['total'], 1)
         regs.append(out)
     regs.sort(key=lambda r: -(r.get('total') or 0))
-    return {'overall': cov.get('overall', {}), 'registers': regs, 'n': len(regs)}
+    out = {'overall': cov.get('overall', {}), 'registers': regs, 'n': len(regs)}
+    bm = benchmarks(cov, cases)
+    if bm:
+        out['benchmarks'] = bm
+        head = next((b for b in bm if b.get('headline')), None)
+        if head:
+            out['head'] = {'on_map': head['on_map'], 'total': head['tested'], 'name': head['name']}
+    return out
+
+
+def benchmarks(cov, cases):
+    """Check the map against lists other people published.
+
+    A register says how many things its publisher counted. A benchmark goes further: it
+    names them one by one, so each item can be looked for on the map. Every item carries
+    either the title of the case that covers it or nothing, and the title is checked
+    against the live case file here. If a case is later dropped, its benchmark item falls
+    back to missing and the title is reported as stale, so the figure cannot drift away
+    from the data behind it.
+    """
+    live = {c['n'] for c in cases if c.get('n')}
+    out = []
+    for b in cov.get('benchmarks', []):
+        items = b.get('items', [])
+        if not items:
+            continue
+        on, oos, miss, stale = 0, 0, [], []
+        for it in items:
+            if it.get('oos'):
+                oos += 1
+                miss.append({'label': it.get('label', ''), 'note': it.get('note', ''), 'oos': True})
+                continue
+            ttl = it.get('case')
+            if ttl and ttl in live:
+                on += 1
+                continue
+            if ttl:
+                stale.append(ttl)
+            miss.append({'label': it.get('label', ''), 'note': it.get('note', '')})
+        r = {k: v for k, v in b.items() if k != 'items'}
+        r['total'] = len(items)
+        r['oos'] = oos
+        r['tested'] = len(items) - oos
+        r['on_map'] = on
+        r['share'] = round(100.0 * on / r['tested'], 1) if r['tested'] else None
+        r['miss'] = miss
+        if stale:
+            r['stale'] = stale
+        out.append(r)
+    out.sort(key=lambda r: (r.get('kind') or '', -(r.get('tested') or 0), -(r.get('share') or 0)))
+    return out
 
 
 def recency(y):
