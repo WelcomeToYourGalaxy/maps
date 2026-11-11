@@ -2370,5 +2370,57 @@
    "when_to_run": "After ANY round that removes, replaces or reorders a record.",
    "false_positives": "A link whose source_url matches no record at all is usually correct: it means the record's source was later replaced by a better one. Round 11 replaced Bini Smaghi's Irish Times source with Societe Generale's own biography, so the TAGES Holding link still carries the old URL while pointing at the right record. The script leaves these alone rather than guessing. Eleven of the thirteen unresolved links were this case; only Chile's two were genuinely wrong."
   }
+ },
+ "round17": {
+  "date": "2026-11-11",
+  "added": {
+   "revolving_door": 3,
+   "auditors": 10,
+   "printers": 20
+  },
+  "biggest_find": "Most central banks print their own money. Twelve of this round's twenty printer records are state works run by the bank or the government: Mexico's Fabrica de Billetes, Colombia's Imprenta de Billetes, Turkey's Banknote Printing Plant, Morocco's Dar As-Sikkah, Korea's KOMSCO, Thailand's Note Printing Works, Vietnam's National Banknote Printing Factory, Egypt's Banknote Printing House, the Philippine Security Plant Complex, Serbia's Topcider Institute, Kazakhstan's Banknote Factory, Argentina's Casa de Moneda. That is a tie, not a gap, and the category was thin partly because nobody had recorded them.",
+  "closed_as_blank": {
+   "BCEAO_BEAC_boards": "Neither West African (BCEAO) nor Central African (BEAC) union bank publishes board biographies at all. The BCEAO Board page names only the Governor; beac.int carries statutes, regulations and communiques only. This kills the 'eight countries in one fetch' lead that round 16 rated highest. Do not retry without a different document type.",
+   "euro_area_printers": "The ECB's own banknote production page says eleven high-security works print euro notes and names NONE of them, and gives no per-denomination allocation. The documents that would settle it are the Eurosystem production and procurement decisions on EUR-Lex and the ECB accredited-manufacturer register; neither was located this round."
+  },
+  "declined_under_the_peru_rule": {
+   "SLB": "Solomon Islands had the most detailed Pacific board page found, with full careers for every director, and still yielded nothing because no employer is characterised. David Quan's former Deputy Chairmanship of the National Bank of Solomon Islands is the Anguilla situation exactly; the Development Bank of Solomon Islands is public by the stated rule.",
+   "TWN_Mega": "The same CBC table shows standing director Dong Jui-pin concurrently chairing Mega Financial Holding and Mega International Commercial Bank. NOT filed: Mega is likely Ministry of Finance-controlled and the CBC states no ownership. Settling document: Mega's major-shareholders table.",
+   "KWT_governor": "Governor Basel Al-Haroon has genuine crossings (an investment company after 2006, vice chairman of a Kuwaiti bank 2016-2018) but the CBK never calls any of them commercial or private, and Kuwait has state-linked investment companies.",
+   "NER": "BCEAO Vice Governor Mamadou Diop began at 'l'ancienne BIAO'; ownership unstated."
+  },
+  "records_of_note": {
+   "KWT": "Deputy Governor Sahar A. Al-Rumaih: the CBK gives a full dated career in commercial banking while withholding every employer name. Valid record, no party node - the Al-Haroon pattern.",
+   "TWN": "Chen Szu-kuan sits on the CBC board while chairing SinoPac Financial Holdings. A CONCURRENT SEAT, not a move. Marked weak_source because the fact that makes it a record - that SinoPac is private - rests on one trade publication (Caproasia), not on the central bank or the group's own pages.",
+   "MYS": "Azman Yahya left AIA Group's board on 28 May 2020 and joined Bank Negara's on 1 June 2020, four days later. AIA's own HKEX filings give the dates and the 'publicly listed pan-Asian life insurance group' characterisation."
+  },
+  "bugs_found_and_fixed": {
+   "auditor_node_type": "build_net.py hardcoded every auditor from gaps.json as entity type 'firm', ignoring auditor_kind. Vietnam's State Audit, the Philippines' Commission on Audit and the Auditors General of Uganda, Tanzania and Zambia all rendered as private firms - which inverts the finding, since those records exist precisely because no private auditor does. Patched to read auditor_kind.",
+   "union_keying": "Party-link style records (auditors, printers) must key to the HEAD-OFFICE country, not the union code. There are no boxes for BCEAO/BEAC/ECCB, so a record keyed to the union is invisible. Cases expand across union members; party links do not. The BCEAO auditor was repointed to SEN and the ECCB substrate record to KNA.",
+   "near_duplicate_printers": "Exact-match dedup missed two works already on the map under another name: 'Security Plant Complex, Bangko Sentral ng Pilipinas' vs 'BSP Security Plant Complex', and 'Casa da Moeda do Brasil' vs 'Casa da Moeda'. Check near-matches by country, not just exact strings.",
+   "entity_type_vocabulary": "The merge introduced 'state_body' alongside the existing 'state body' and 'state printing works'. Normalised: printing works -> 'state printing works', others -> 'state body'.",
+   "writeup_extraction": "THIRD variant of the same pipeline fault. A fixed CHARACTER WINDOW around each new record cut records mid-sentence, and all four writer agents independently reported ties arriving named but undescribed, which they correctly left out - so the paragraphs would have omitted the very records the round added. Fixed by splitting each box on 'Source says: ' and including WHOLE blocks. Second trap: a record with unnamed employers has no party block and lives in the box head past any head cap (Kuwait's Al-Rumaih at character 3,866), so the head now extends to reach it. All four batches were rewritten."
+  },
+  "checker_improvement": "check_drafts.py now maps stroked and ligature letters (d-stroke, o-slash, l-stroke, ae, oe) before NFKD, which does not decompose them. Without that, Serbia's Zagradjanin read as an invented name. Three real leaks were caught in the redone batch: 'in Belgrade' added to Serbia from no source, Luxembourg's Coeure missing its diacritics, and a party paragraph referring to the map itself.",
+  "still_untried_rd": [
+   "Cambodia",
+   "Laos",
+   "Myanmar",
+   "Brunei",
+   "Tonga (no board page on the bank's own site)"
+  ],
+  "still_untried_auditors": [
+   "Jordan",
+   "Rwanda",
+   "Ethiopia",
+   "Oman (Banking Law Art 18(c) names no firm; annual reports robots-disallowed)",
+   "BEAC (all documents on beac.int, robots-disallowed; target 'BEAC Etats financiers IFRS certifies')",
+   "Bahrain (Law 2006 Art 35(a) requires an external auditor, names none)"
+  ],
+  "high_yield_next": [
+   "The BCEAO publishes per-country national-directorate auditors separately - an August 2024 notice selected Mazars Niger as titulaire and KMC S.A. as suppleant for the Niger directorate, FY2024-2029. That could become eight sub-records if wanted.",
+   "Brunei: BDCB annual report PDFs under cms.bdcb.gov.bn, and Baiduri Bank's own corporate governance disclosure, which does print director biographies.",
+   "Cyprus and Luxembourg mandates have run past their stated end years; later amending Council decisions (candidates seen in search: 2023/670, 2024/2001, 2025/1917) probably name current auditors. Croatia is absent from the consolidated text entirely, having joined the euro in 2023."
+  ]
  }
 }

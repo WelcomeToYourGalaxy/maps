@@ -159,7 +159,10 @@ for h in GAPS.get("fed_holders", []):
     add(n, "USA", "own", "Owns shares", (h.get("district") or "") + ": " + (", ".join(amt) or "holding size not stated") + (" (" + h["as_of"] + ")" if h.get("as_of") else ""), h.get("source_title"), h.get("source_url"), "holding")
 for a_ in GAPS.get("auditors", []):
     if not a_.get("auditor"): continue
-    n = node(a_["auditor"], "firm", a_.get("auditor_hq_city"), a_.get("auditor_hq_iso3"))
+    # a bank with no private auditor is audited by a state body named in its law.
+    # That is the finding, so the node must not be typed as a firm.
+    kind = "state body" if a_.get("auditor_kind") == "public body" else "firm"
+    n = node(a_["auditor"], kind, a_.get("auditor_hq_city"), a_.get("auditor_hq_iso3"))
     add(n, a_.get("cb_iso3"), "service", "Audits its accounts", (a_.get("auditor") or "") + " audits the accounts" + (" (" + str(a_["year"]) + ")" if a_.get("year") else ""), a_.get("source_title"), a_.get("source_url"), "network")
 # the central banks' own bank: the BIS, owned by its member central banks
 bis = node("Bank for International Settlements", "international body", "Basel", "CHE")

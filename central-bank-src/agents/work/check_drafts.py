@@ -5,7 +5,11 @@ which is how model knowledge leaks past the no-fabrication rule.
 Usage: check_drafts.py <drafts.json> <boxes.json>"""
 import json, re, sys, unicodedata
 drafts = json.load(open(sys.argv[1])); boxes = json.load(open(sys.argv[2]))
-norm = lambda s: unicodedata.normalize('NFKD', s).encode('ascii', 'ignore').decode().lower()
+_MAP = str.maketrans({'đ': 'dj', 'Đ': 'Dj', 'ø': 'o', 'Ø': 'O', 'ł': 'l', 'Ł': 'L',
+                      'ı': 'i', 'ß': 'ss', 'æ': 'ae', 'œ': 'oe', 'Æ': 'Ae', 'Œ': 'Oe'})
+def norm(s):
+    # NFKD leaves stroked and ligature letters intact, so map them first
+    return unicodedata.normalize('NFKD', s.translate(_MAP)).encode('ascii', 'ignore').decode().lower()
 STOP = set("""The It Its His Her Their In From No A An That This He She They After Before When Both
 One Two Three Four Five Six Seven Eight Nine Ten Chairman Governor Deputy President Bank Central
 Board Director Managing Vice Group Limited Company Corporation Inc Ltd And But Neither Either
