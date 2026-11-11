@@ -40,7 +40,7 @@ cp dist/central_bank_independence.html ~/maps/   # then git add, commit, push to
 ## Data files to add to (`agents/`)
 | File | Holds | Records now |
 |---|---|---|
-| `corruption.json` | `cases` (iso3, central_bank, category, years, people, summary, status, source_title, source_url, weak_source) and `revolving_door` | 232 cases in 135 countries and territories; 123 revolving-door records in 38 |
+| `corruption.json` | `cases` (iso3, central_bank, category, years, people, summary, status, source_title, source_url, weak_source) and `revolving_door` | 232 cases in 135 countries and territories; 128 revolving-door records in 42 |
 | `events_gold.json` | `events`: governor firings, pressure and moves against banks, 1990s–Nov 2026; plus gold storage | 102 events in 52 countries |
 | `owners.json` | `holdings` (named shareholders with shares, %, as_of, source), `bis_members`, `history` | 228 holdings; all 63 BIS members |
 | `networks.json` | `links` (entity, type, hq, cb_iso3, relation, detail, source) and `g30` members | 307 links (45 printer ties, 107 reserve-manager ties); 56 G30 members |
@@ -50,7 +50,7 @@ cp dist/central_bank_independence.html ~/maps/   # then git add, commit, push to
 | `hq.json` | Head-office city and country for each party | – |
 | `patterns.json`, `implications.json` | The patterns and their plain-language meanings | 17 |
 
-Altogether the map has 1,176 parties and 1,582 ties, and `agents/writeups.json` holds 1,405 plain-language paragraphs, one for every box. `agents/work/research_log_2026-11.json` lists what was searched with no result, unopened leads, and records dropped after review.
+Altogether the map has 1,183 parties and 1,591 ties, and `agents/writeups.json` holds 1,412 plain-language paragraphs, one for every box. `agents/work/research_log_2026-11.json` lists what was searched with no result, unopened leads, and records dropped after review.
 
 ## Rules the user holds to
 - **No fabrication.** Every record needs a readable source URL that states the fact. Mark Wikipedia-only items `weak_source: true`. List acquittals but don't count them. Claims resting on one author go in as "claim, not confirmed."
@@ -86,7 +86,7 @@ These are rough estimates. No complete count exists for any of these categories.
 | Corruption cases at central banks, 1990-2026 | 232 in 135 countries and territories | ~35-45% |
 | External auditors | 49 records at 39 banks in `gaps.json`, plus more in `networks.json` | ~25% |
 | Banknote printers and their clients | 44 printing contracts, 1 paper maker, 1 substrate supplier | ~20% |
-| Revolving door (officials to or from private finance) | 123 records in 38 countries | ~15-20% |
+| Revolving door (officials to or from private finance) | 128 records in 42 countries | ~15-20% |
 | Outside reserve and fund managers | 107, mostly Norway's fund | ~5% outside Norway |
 
 ## What is left, and how to finish it
@@ -176,3 +176,24 @@ Checked and left out: **Stephen Poloz** (Enbridge, CGI and a Bay Street law firm
 
 ### Where round 7 should start on the revolving door
 Banks still with no record and with published board bios: **Ireland, Belgium, Poland, Singapore, the United Arab Emirates, Peru, Malaysia beyond the two held, Switzerland beyond Hildebrand**. Named leads: **Veerathai Santiprabhob** (Bank of Thailand governor 2015-2020, reported Siam Commercial Bank chief strategy officer before the post — his BOT governor page should state it, same as Sethaput's did), **Guillermo Ortiz to Banorte** (the Expansion page returns a server error; another source needed), and the four round-4 URLs still unopened (two Fed president appointments, the WHYY piece on a Comcast executive named to the Fed board, Escriva's Banco de Espana CV, Joaquin Vial's farewell at the Banco Central de Chile). **US Reserve Bank presidents before 2000** remains a closed, listable set on the Federal Reserve History site and should finish in one round.
+
+
+## Round 7 (10 November 2026), what it added
+Five more revolving-door records, four of them the first at that bank, plus dates added to one existing record.
+
+- **United Arab Emirates** — Abdulhamid Saeed, former board member and group chief executive of First Abu Dhabi Bank, governor by federal decree on 2 April 2020 (Gulf News). First for the Central Bank of the UAE.
+- **Greece** — Georgios Provopoulos: economic adviser to Alpha Bank from 1993, a management role at Emporiki Bank from 2004 through its sale to Credit Agricole, vice president and chief executive of Piraeus Bank 2006-2008, governor June 2008 to 2014 (Protothema). First for the Bank of Greece.
+- **Ukraine** — Valeria Gontareva: Societe Generale, ING Bank and Investment Capital Ukraine, from her LSE profile, which names the firms but gives no roles or years. First for the National Bank of Ukraine.
+- **Serbia** — Radovan Jelasic, named chairman and chief executive of Erste Bank Hungary on 10 May 2011 (Budapest Business Journal). First for the National Bank of Serbia.
+- **Thailand** — Veerathai Santiprabhob, Siam Commercial Bank PCL 2000-2008, ending as executive vice president and head of the business bank, strategic planning division, from the bank's own governor page. Note the correction: his chief strategy officer title was at the **Stock Exchange of Thailand**, 2009-2013, not at SCB.
+- **Mexico** — the existing Ortiz record gained the Banorte dates it was missing (board approval October 2010, effective 1 March 2011, ratified April 2013; governor 1998-2009), from Expansion.
+
+Seven new party boxes with writeups, five country writeups extended. Rounded figures that moved: Serbia all-around 27 to 28 and inside 6 to 7, Thailand all-around 37 to 38 and inside 12 to 13, Ukraine inside 11 to 12. The UAE and Greece moved by a quarter point without changing a rounded figure. Serbia's writeup was the only one quoting a number that had to change.
+
+### The round 4 leads list is unreliable — check before opening
+Four of its eleven revolving-door entries were already recorded: **Philip Lowe to Barrenjoey, Ian Macfarlane to the ANZ board, Escriva's BBVA years and Ortiz's Banorte chairmanship.** Search `corruption.json` for the person's name before spending a fetch on a lead.
+
+Checked and yielded nothing: **Patrick Harker** (the Philadelphia Fed's own announcement names Wharton, the University of Delaware and board seats at Pepco Holdings and Huntsman Corp, no financial firm) and **Joaquin Vial** (the Banco Central de Chile farewell page covers only his time at the bank; his reported BBVA years need another source).
+
+### Where round 8 should start
+Still with no revolving-door record and worth a governor-profile pass each: **Ireland, Belgium, Poland, Singapore, Peru, Denmark, Norway, Finland, Slovakia, Croatia, Bulgaria**, Malaysia beyond the two held and Switzerland beyond Hildebrand. **US Reserve Bank presidents before 2000** is still untouched and is still the one closed, listable set here. Two Fed appointment URLs remain unopened.
