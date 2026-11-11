@@ -1,0 +1,19 @@
+{
+ "nankints-shuar-eviction-panantza": {
+  "edits": [
+   {"field": "companies[0].hq", "old": "Ecuador; Chinese owners not named in these sources (marker at Beijing)", "new": "Ecuador (no source opened gives the Chinese owners' address)"},
+   {"field": "companies[0].role", "old": "Chinese-owned holder of the San Carlos-Panantza copper concession", "new": "Holder of the San Carlos-Panantza copper concession. The owner is the CRCC-Tongguan Investment consortium of two Chinese state-owned companies: ExplorCobres is named as Tongguan Nonferrous Metals Group's subsidiary for this project, and EcuaCorriente SA is a joint venture of Tongling Nonferrous Metals, 70%, and China Railway Construction Corporation, 30%"}
+  ],
+  "sources_add": [{"title": "San Carlos Panantza copper mining project", "publisher": "Business & Human Rights Resource Centre", "year": 2019, "url": "https://www.business-humanrights.org/en/latest-news/san-carlos-panantza-copper-mining-project/"}],
+  "status": "fixed"
+ },
+ "nyamagasani-hydro": {
+  "edits": [{"field": "companies[0].role", "old": "Danish private equity fund that majority-owns and manages both plants", "new": "Fund investing in renewable energy projects in East Africa. Proparco describes Frontier Energy II Alpha K/S as a fund with its headquarters in Denmark, managed by Frontier Investment Management; no source opened says it owns or manages these plants"}],
+  "sources_add": [{"title": "Frontier Energy II", "publisher": "Proparco", "year": 2026, "url": "https://www.proparco.fr/en/carte-des-projets/frontier-ii"}],
+  "status": "fixed"
+ },
+ "omai-cyanide-spill": {
+  "edits": [{"field": "companies[1].hq", "old": "Denver, United States", "new": "Not stated in the sources opened"}],
+  "status": "fixed"
+ }
+}
