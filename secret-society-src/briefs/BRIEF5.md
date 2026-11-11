@@ -21,8 +21,9 @@ These are not hypothetical. Every one cost a record in the November 2026 rounds.
 4. **Keep the source's qualifiers.** "Originally", "allegedly", "in some cases", "as many as", "some payments", "helped secure". If the source hedged, the record hedges. Stripping a hedge is as wrong as adding a claim.
 5. **Check for the later outcome before you write.** Convictions get overturned, defendants acquitted, charges dropped, sentences handed down, extraditions halted, amnesties granted, defendants die before sentencing. A record that stops at the charge misleads about where the case stands.
 6. **Take the year from the page text, never from the URL path.** A `/2026/02/` path on a page dating the event to January 2025 has produced wrong years more than once.
-7. **Read the currency and the unit.** "About 250,000 colones" where the source said US$250,000 is an error of roughly 500 times.
-8. **Cite the page that carries the facts.** Wikipedia footnoting a DOJ release is not the source; the release is. A staging mirror, a content farm, an aggregator copy and an unlinked second citation are all failures — and one record attributed its central claims to an article that did not contain them.
+7. **Never invent the city.** This one is specific to a map and cost four records in one batch: releases that said only "Turkish government officials" or "Chinese government officials" were written up as Ankara and Beijing, and those cities became coordinates and a marker on the globe. If the source names no city, you have no placement. Say so and let the merge decide, or leave the case out — do not reach for the capital.
+8. **Read the currency and the unit.** "About 250,000 colones" where the source said US$250,000 is an error of roughly 500 times.
+9. **Cite the page that carries the facts.** Wikipedia footnoting a DOJ release is not the source; the release is. A staging mirror, a content farm, an aggregator copy and an unlinked second citation are all failures — and one record attributed its central claims to an article that did not contain them.
 
 If a fact matters enough to write, it is on a page you opened. If it is not, leave it out and say so in your report.
 
