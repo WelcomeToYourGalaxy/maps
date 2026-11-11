@@ -40,17 +40,17 @@ cp dist/central_bank_independence.html ~/maps/   # then git add, commit, push to
 ## Data files to add to (`agents/`)
 | File | Holds | Records now |
 |---|---|---|
-| `corruption.json` | `cases` (iso3, central_bank, category, years, people, summary, status, source_title, source_url, weak_source) and `revolving_door` | 232 cases at 135 banks; 111 revolving-door records |
+| `corruption.json` | `cases` (iso3, central_bank, category, years, people, summary, status, source_title, source_url, weak_source) and `revolving_door` | 232 cases in 135 countries and territories; 114 revolving-door records in 29 |
 | `events_gold.json` | `events`: governor firings, pressure and moves against banks, 1990s–Nov 2026; plus gold storage | 102 events in 52 countries |
 | `owners.json` | `holdings` (named shareholders with shares, %, as_of, source), `bis_members`, `history` | 228 holdings; all 63 BIS members |
 | `networks.json` | `links` (entity, type, hq, cb_iso3, relation, detail, source) and `g30` members | 307 links (45 printer ties, 107 reserve-manager ties); 56 G30 members |
 | `parties.json` | Parties named in cases and events, with head offices | 891 links |
 | `swaps.json` | Swap lines (provider, counterparty, amount, dates, status, source) | 240 (100 in force) |
-| `gaps.json` | Fed and South Africa holders, Greece, Türkiye share classes, auditors, case updates | 47 auditors at 38 banks |
+| `gaps.json` | Fed and South Africa holders, Greece, Türkiye share classes, auditors, case updates | 49 auditors at 39 banks. More audit ties live in `networks.json` — check both. |
 | `hq.json` | Head-office city and country for each party | – |
 | `patterns.json`, `implications.json` | The patterns and their plain-language meanings | 17 |
 
-Altogether the map has 1,164 parties and 1,565 ties, and `agents/writeups.json` holds 1,393 plain-language paragraphs, one for every box. `agents/work/research_log_2026-11.json` lists what was searched with no result, unopened leads, and records dropped after review.
+Altogether the map has 1,166 parties and 1,567 ties, and `agents/writeups.json` holds 1,393 plain-language paragraphs, one for every box. `agents/work/research_log_2026-11.json` lists what was searched with no result, unopened leads, and records dropped after review.
 
 ## Rules the user holds to
 - **No fabrication.** Every record needs a readable source URL that states the fact. Mark Wikipedia-only items `weak_source: true`. List acquittals but don't count them. Claims resting on one author go in as "claim, not confirmed."
@@ -74,29 +74,51 @@ Altogether the map has 1,164 parties and 1,565 ties, and `agents/writeups.json` 
 - With the tick box cleared, a bank whose only cases are allegations stays on the inside layer, scored at nothing for cases, rather than dropping off it. Its writeup then carries a line saying any score in the paragraph was written with allegations counted.
 - An outsider's failed attempt against a bank is not a case. Check `events_gold.json` for firings and political prosecutions before filing them as corruption.
 
-## Where coverage is thinnest (what to add next)
-These are rough estimates. No complete count exists for any of these categories. The same table, written for a reader, is now in `about.html` under "How much of the subject is here"; **change both together.**
+## Where coverage is thinnest
+These are rough estimates. No complete count exists for any of these categories. The same table, written for a reader, is in `about.html` under "How much of the subject is here"; **change both together.**
 
 | Area | On the map | Rough share of what is documented |
 |---|---|---|
 | Datasets and indices (independence law, CPI, WGI, Basel, FSI, crises, BIS, COFER, Swift, gold, regimes) | Everything each source publishes | ~100% |
 | Named shareholders | Every list a bank publishes. The other 11 Fed Reserve Banks don't publish one, and the SARB names none of its roughly 800 holders. | ~90% of what is published |
-| Swap lines | 240 records, 100 in force (only those are drawn) | ~70–80% |
-| Governor firings and pressure | 102 in 52 countries | ~35–45% since 2019, less before |
-| Corruption cases at central banks, 1990–2026 | 232 at 135 banks | ~35–45% |
-| Banknote printers and their clients | 45 ties | ~20% |
-| External auditors | 47 records at 38 banks | ~25% |
-| Revolving door (officials to or from private finance) | 111 records in 26 countries | ~15–20% |
+| Swap lines | 240 records, 100 in force (only those are drawn) | ~70-80% |
+| Governor firings and pressure | 102 in 52 countries | ~35-45% since 2019, less before |
+| Corruption cases at central banks, 1990-2026 | 232 in 135 countries and territories | ~35-45% |
+| External auditors | 49 records at 39 banks in `gaps.json`, plus more in `networks.json` | ~25% |
+| Banknote printers and their clients | 44 printing contracts, 1 paper maker, 1 substrate supplier | ~20% |
+| Revolving door (officials to or from private finance) | 114 records in 29 countries | ~15-20% |
 | Outside reserve and fund managers | 107, mostly Norway's fund | ~5% outside Norway |
 
-Next steps, in order:
-1. **Corruption cases.** Round 4 opened almost every lead that earlier rounds left. Round 5 retried Bahrain, Saudi Arabia, Oman, Taiwan and Singapore in Arabic, Chinese and English and found nothing on any central bank official — the hits were commercial-bank staff, unrelated political cases, or the central bank acting as supervisor or investigator. **The local-language theory looks exhausted for the Gulf and East Asia**; don't spend another round on it without a new kind of source (court bulletins, audit-office reports, parliamentary questions). Still with no case and not yet retried: UAE, Qatar, Jordan, Brunei, Macao, Samoa, Fiji. San Marino's Confuorti and Buriani rulings need a court or news source; only a councillor's speech was found.
-2. **Revolving door.** `round4.rd.leads_not_opened` (11) and `round4.rd.checked_none` (names whose biographies name no private employer). Still unchecked: Reserve Bank presidents before 2000, and non-US central banks other than the ECB, Bank of Japan and Bank of England.
-3. **Governor dismissals.** `round4.events.leads_not_opened` (17). Several Central Banking pages are paywalled after the first paragraph.
-4. **Auditors and printers.** `round4.service.not_found` lists 9, but it is **out of date** — Japan, Denmark and Indonesia were filled in afterwards, in `networks.json` rather than in `gaps.json`, and Korea was added in round 5. Check both files before searching. Still with no auditor on the map: **Egypt, Saudi Arabia, Vietnam, Bangladesh, the Philippines, Peru.** The Philippine and Peruvian sites block automated readers; Brazil's row is from the 2018 statements, the only ones that would open. Where a bank has no private auditor, its law usually names who does audit it, and that is a record in its own right (China, Korea, Japan).
-5. **Swap lines.** `round4.swaps.leads_not_opened` (13). The PBoC's own current table (30 September 2025) lists 32 counterparties and omits exactly the 11 lines the map marks "unknown" (Albania, Armenia, Belarus, Georgia, Kazakhstan, Morocco, Nepal, Suriname, Tajikistan, Ukraine, Uzbekistan). That is evidence they lapsed, but the table says nothing in words, so the records were left alone. A source that says so plainly would settle them.
-6. **Open question for the user — settled 10 November 2026.** The user chose to show both and let the reader switch. A tick box, "Count cases that are allegations alone", now sits under the legend on the three case layers (`all`, `inside`, `cc`, marked `alleg: true`). It is ticked by default, so every score and every writeup written so far still reads as before; clearing it recomputes without the allegations.
-7. **Statuses that slip past the not-counted list — settled 10 November 2026.** `agents/gaps.json` `case_updates` can overwrite a case's status with a string the counting rule has never heard of, and that string then counts. `build_final.py` now refuses to build on an unknown status (`CC_COUNTED` / `CC_NOT_COUNTED`), so this cannot recur silently. The six that were undecided were settled on one rule: **a case stops counting only when the official was cleared, or when the charge is gone and no finding is left standing.** A case still running counts, and so does one whose ending no source states, because an outcome nobody can find is not a clearing. So `outcome not found` (Kenya, Serbia), `died; outcome not found` (Iraq), `tried (verdict not found)` (Russia) and `Sejm vote pending` (Poland) count, and `conviction annulled (time-barred)` (Romania) does not. Romania's record is the one genuine edge: Olteanu was convicted with a final five-year sentence in October 2020, the conviction was annulled as time-barred on 31 March 2023, and the court still confiscated the €1 million. It is left out of the score because no conviction stands, and its writeup says so and gives the confiscation. **If that call is wrong, it is one string to move between the two lists in `app.js` and `build_final.py`.**
+## What is left, and how to finish it
+In the order worth doing. The first is where most of the undiscovered material is; the last two are nearly done.
+
+### 1. Revolving door — the thinnest category, and the most findable
+Round 5 found that **the best source is the central bank's own appointment release or governor profile.** They state the private employer, often with exact years, and almost every bank publishes them. Round 5 added Canada (Carney, thirteen years at Goldman Sachs, from the Bank of Canada's own profile), New Zealand (Orr, Westpac chief economist 2000-2003 then deputy governor, exact years from the RBNZ release) and Nigeria (Cardoso, former head of Citibank in Nigeria, Reuters). Each took one search and one fetch.
+
+**So work bank by bank through governor and board-member profiles, not by searching for scandal.** Start from the banks with no record at all: everything outside the 29 in the table above. The obvious next tier is the large banks with published bios — Switzerland beyond Hildebrand, Canada's other governors, Ireland, Austria, Belgium, Poland, Czechia, Hungary, Chile, Colombia, Peru, the Philippines, Thailand, Malaysia beyond the two held, Singapore, Saudi Arabia, the UAE. Also still unchecked from round 4: `round4.rd.leads_not_opened` (11), `round4.rd.checked_none` (biographies naming no private employer), and **US Reserve Bank presidents before 2000**, which is a closed, listable set and should be finishable in one round.
+
+Watch for: a move to or from the IMF or World Bank needs `public_move: true`, which lists it without counting it. A sovereign wealth fund is a public body too, so say which side of a career is private (Orr's Westpac years are the private side, not the NZ Super Fund). Staff below senior management go in by role, not name.
+
+### 2. Governor dismissals
+`round4.events.leads_not_opened` (17) is still the live list. Several Central Banking pages are paywalled after the first paragraph, so prefer the bank's own release, the government gazette or a wire agency. Before filing anything here as corruption, check `events_gold.json` — a political prosecution of a governor is an event, not a case.
+
+### 3. Auditors and printers
+Still with no auditor anywhere on the map: **Egypt, Saudi Arabia, Vietnam, Bangladesh, the Philippines, Peru.** The Philippine and Peruvian sites block automated readers; Brazil's row is from the 2018 statements, the only ones that would open. **Check both `gaps.json` and `networks.json` before searching** — the two files both feed the audit ties and the old gap list only tracked one, which is why Japan, Denmark and Indonesia sat on a to-do list while already being on the map.
+
+Where a bank has no private auditor, its law names who does audit it, and that is a record in its own right: China's National Audit Office, Korea's Board of Audit and Inspection and presidentially appointed auditor, Japan's Cabinet-appointed Auditors. Korea's Bank Act also requires an outside accounting-firm audit without naming the firm; that stays in `auditors_unavailable` until a firm is found.
+
+### 4. Swap lines
+`round4.swaps.leads_not_opened` (13). The PBoC's own current table (30 September 2025) lists 32 counterparties and omits exactly the 11 lines the map marks "unknown" (Albania, Armenia, Belarus, Georgia, Kazakhstan, Morocco, Nepal, Suriname, Tajikistan, Ukraine, Uzbekistan). That is evidence they lapsed, but the table says nothing in words, so the records were left alone. A source that says so plainly would settle all 11 at once.
+
+### 5. Corruption cases — treat as near-exhausted by ordinary search
+Round 4 opened almost every lead earlier rounds left. Round 5 retried Bahrain, Saudi Arabia, Oman, Taiwan and Singapore in Arabic, Chinese and English and found nothing on any central bank official: every hit was a commercial-bank employee, an unrelated political case, or the central bank acting as supervisor or investigator. Saudi Arabia is the clearest example — Nazaha publishes its cases and names SAMA repeatedly as the authority it cooperates with, never as the body investigated.
+
+**Don't spend another round on local-language retries.** If this category is taken further, it needs a different kind of source: court bulletins, supreme audit institution reports, parliamentary questions, central bank annual reports' own disciplinary notes. Still with no case and not yet retried at all: UAE, Qatar, Jordan, Brunei, Macao, Samoa, Fiji. San Marino's Confuorti and Buriani rulings still need a court or news source; only a councillor's speech was found.
+
+## Questions the user has settled (don't reopen)
+- **Unproven allegations** (10 November 2026). Show both and let the reader switch. A tick box, "Count cases that are allegations alone", sits under the legend on the three case layers (`all`, `inside`, `cc`, marked `alleg: true`). It is ticked by default, so every score and writeup reads as it did before; clearing it recomputes without them. With it cleared, a bank whose only cases are allegations stays on the inside layer scored at nothing for cases rather than dropping off, and its box carries a line saying any score in the paragraph above was written with allegations counted.
+- **Which statuses count** (10 November 2026). One rule: **a case stops counting only when the official was cleared, or when the charge is gone and no finding is left standing.** Anything still running counts, and so does a case whose ending no source states, because an outcome nobody can find is not a clearing. So `outcome not found` (Kenya, Serbia), `died; outcome not found` (Iraq), `tried (verdict not found)` (Russia) and `Sejm vote pending` (Poland) count; `acquitted`, `case dismissed`, `charge withdrawn`, `investigation closed` and `conviction annulled (time-barred)` (Romania) do not. Romania is the one genuine edge — Olteanu was convicted with a final five-year sentence in October 2020, the conviction was annulled as time-barred on 31 March 2023, and the court still confiscated the €1 million. It is left out because no conviction stands, and its writeup gives all three facts. **If that call is ever reversed, it is one string to move between the two lists in `app.js` (`CC_OUT`) and `build_final.py` (`CC_COUNTED` / `CC_NOT_COUNTED`).**
+- `build_final.py` now refuses to build on a case status that is on neither list, so a `gaps.json` update can no longer invent a wording that counts by accident. That is what let Ghana's "charges withdrawn" count. Adding a status means deciding which list it belongs on and changing both files.
 
 ## Added in earlier rounds (UI)
 - **Writeups:** `agents/writeups.json` holds a plain-language paragraph for every country box (`p:ISO`) and every party box (`n:<node name>`), injected as `D.WR` and shown at the top of the box (`.wr`). They were written from each box's records and checked by script for numbers and outcomes, not re-checked against web sources. **When a record changes or a party is added, refresh that entry by hand.** A country or party with no entry just shows the lists.
@@ -127,13 +149,6 @@ Then compare: keys in `boxes.json` with no entry in `writeups.json` are new, and
 38 corruption cases, 14 career moves, 14 governor-removal or pressure events, 6 auditors, 3 state printers and 11 swap lines, from the leads earlier rounds had left unopened. New countries on the case list: São Tomé and Príncipe, Eswatini, the Cayman Islands, the Dominican Republic, the Gambia, Libya, Madagascar, Slovenia, Trinidad and Tobago, Cambodia, Israel, South Korea and Uruguay. 185 writeups were rewritten or written fresh.
 
 ## Round 5 (10 November 2026), what it added
-No new records. The allegations question was settled (above), the Ghana status bug was fixed, and `about.html` gained a "How much of the subject is here" section: the coverage table written for a reader, plus the map's totals (1,164 parties, 1,565 ties) and the record counts for each compiled category. Its table styling is `#info table.cov` in `template.html`, which stacks into blocks below 620px so it never scrolls sideways. Only Ghana's scores moved (all 33 → 32, inside 21 → 17); its writeup was corrected by hand and no other paragraph went stale.
+No new corruption cases. Settled the allegations question and the undecided statuses (both above). Fixed the Ghana status bug: `gaps.json` had set it to "charges withdrawn", which the not-counted list did not match, so a withdrawn case was being counted — Ghana fell from 33 to 32 all-around and 21 to 17 inside. Added `build_final.py`'s status guard. Added Korea's two statutory audits from the Bank of Korea Act, and three revolving-door records (Canada, New Zealand, Nigeria). Added "How much of the subject is here" to `about.html`: the coverage table written for a reader, plus the map's totals and the record count behind each row; its styling is `#info table.cov` in `template.html`, which stacks into blocks below 620px so it never scrolls sideways.
 
-## Round 5, second part
-- `build_final.py` now refuses to build on a case status that is on neither `CC_COUNTED` nor `CC_NOT_COUNTED`. That is what let Ghana's "charges withdrawn" count. Adding a status means deciding which list it goes on and adding it in `app.js` too. The six undecided statuses are parked in `CC_COUNTED` so the build passes; they are still counted and the user has not ruled on them (see step 7).
-- Korea gained two audit records (Board of Audit and Inspection, and the auditor the President appoints), from the Bank of Korea Act. Its writeup gained a sentence on them. No score moved.
-- Japan and Denmark were already covered in `networks.json`, with 2026 sources better than anything a fresh search turned up. **Check `networks.json` as well as `gaps.json` before filling an auditor gap** — the two files both feed the audit ties, and the gap lists only track one of them.
-
-## Round 5, third part
-- The six undecided statuses were settled (step 7). Only Romania moved: all 23 → 21, inside 11 → 7, and its case layer value went from 1 to no figure. Its writeup was rewritten by hand, with the score, the rank, the conviction and annulment, and the confiscation.
-- `about.html` now states the counting rule in full instead of listing four outcomes, so a reader can see why a case with no findable ending still counts.
+Scores that moved, all checked against a clean build of the previous code: Ghana (the bug fix), Romania (23 to 21 all-around, 11 to 7 inside, and off the case layer), and Canada, New Zealand and Nigeria by under half a point each, too little to change any rounded figure. Writeups rewritten by hand: Ghana, Romania, Korea, Canada, New Zealand, Nigeria.
