@@ -110,7 +110,7 @@ def about(data):
              'Researchers have also set out the ways an outside party gets inside an institution, as numbered lists '
              'of mechanisms. Those lists are shorter and they are about kinds of behaviour rather than episodes, so a '
              'share here means something different: not how many cases the map holds, but how many of the mechanisms '
-             'other people have described it shows at least one case of.')):
+             'other people have described it shows at least one case of. A mechanism counts as shown when a single case turns on it, which says nothing about how many such cases exist in the world, so a full score here is not a measure of coverage.')):
             rows = [r for r in bms if (r.get('kind') or 'case') == kind]
             if not rows:
                 continue
