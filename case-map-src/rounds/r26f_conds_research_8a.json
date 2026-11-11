@@ -1,0 +1,824 @@
+{
+ "gambella-villagization": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "Used the World Bank documents search API for PBS II Additional Financing and PBS III: it returns project information documents, safeguards data sheets, audits and the Inspection Panel material, but no Financing Agreement for the PBS credits. Opened the Inspection Panel investigation/progress report PDF on documents1.worldbank.org, which describes the block grants as financing recurrent expenditure at woreda level with discretion over how it was split, and states that the disbursement-linked indicators belong to the separate ESPES operation, not the PBS credit. documents.worldbank.org refuses direct PDF fetches and must be swapped to documents1."
+ },
+ "chixoy-rio-negro": {
+  "conditions_add": "The Bank's appraisal of the Chixoy Power Project sets out what the Government and the state electricity utility INDE had to do for Loan 1605-GU. They had to compensate and, where necessary, resettle the roughly 1,500 people affected by the reservoir, and INDE had to submit that programme to the Bank by 31 December 1979, together with an erosion control programme the Government was to start carrying out by 30 June 1980. The loan also turned on electricity prices: it could not become effective until the Government confirmed tariff increases large enough to give the sector a 13 percent internal contribution to investment in 1978, from 1980 retail tariffs had to earn an 8 percent return on revalued net fixed assets, fuel price rises passed automatically to consumers, and tariffs could not be cut before the project was finished without the Bank's agreement (World Bank, Staff Appraisal Report, 1978).",
+  "ct": [
+   "safeguard",
+   "prices",
+   "fincov"
+  ],
+  "why": {
+   "safeguard": "compensate and, where necessary, resettle the roughly 1,500 people affected by the reservoir",
+   "prices": "fuel price rises passed automatically to consumers",
+   "fincov": "retail tariffs had to earn an 8 percent return on revalued net fixed assets"
+  },
+  "sources_add": [
+   {
+    "title": "Guatemala - Chixoy Power Project, Staff Appraisal Report",
+    "publisher": "World Bank",
+    "year": 1978,
+    "url": "https://documents1.worldbank.org/curated/en/880831468749366169/pdf/multi-page.pdf"
+   }
+  ],
+  "searched": "World Bank documents search API found the 1978 Staff Appraisal Report, the Memorandum of the President and the conformed Loan 1605 agreement; the loan agreement PDF is an unsearchable scan, so the appraisal report PDF on documents1.worldbank.org was used."
+ },
+ "kainji-dam": {
+  "conditions_add": "The Bank's 1964 appraisal records that the loan would not become effective until agreements for the equivalent of US$45 million of other foreign loans had been signed on terms acceptable to the Bank. The Niger Dams Authority had to earn revenues giving at least an 8 percent return on its average net fixed assets in operation, could take on no long-term debt during construction without the Bank's agreement and from 1969 only if net revenues covered debt service 1.5 times, had to be audited each year by accountants acceptable to the Bank, and could not have a chief executive whose qualifications the Bank had not accepted. No new generating plant for the interconnected system could be built before Kainji was fully developed without the Bank's approval, and the Federal Government had to provide any further funds needed to finish the works on terms satisfactory to the Bank (World Bank, Staff Appraisal Report, Kainji Multipurpose Project, 1964). The appraisal sets out no Bank covenant on the resettlement of the roughly 40,000-140,000 people the reservoir displaced, only a budget line for compensation and resettlement.",
+  "ct": [
+   "fincov",
+   "admin"
+  ],
+  "why": {
+   "fincov": "revenues giving at least an 8 percent return on its average net fixed assets in operation",
+   "admin": "could not have a chief executive whose qualifications the Bank had not accepted"
+  },
+  "sources_add": [
+   {
+    "title": "Nigeria - Kainji Multipurpose Project, Staff Appraisal Report",
+    "publisher": "World Bank",
+    "year": 1964,
+    "url": "https://documents1.worldbank.org/curated/en/235441468292246999/pdf/multi-page.pdf"
+   }
+  ],
+  "searched": "World Bank documents search API located the 1964 Staff Appraisal Report and Memorandum of the President; opened the appraisal PDF on documents1.worldbank.org (the archives folder route that failed before was not used)."
+ },
+ "sudan-2013-fuel-subsidy": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "No IMF lending arrangement was in place for this episode, as the earlier round established from IMF documents; there is therefore no loan condition to find, and nothing new was reachable this round."
+ },
+ "da-nang-quang-ngai-expressway": {
+  "conditions_add": "The credit could not take effect until subsidiary loan agreements had been signed on behalf of the Ministry of Finance and the Vietnam Expressway Corporation and until the co-financing agreement with JICA was signed and effective. Dated covenants required the government to give the Expressway Corporation a \"sustainability guarantee\" in the form of an annual payment covering any shortfall between revenue and debt service, the corporation to supply annual consolidated financial statements from the year ending 31 December 2016, and its procurement staff to be trained within three months of the effective date (World Bank, Project Appraisal Document, 2011). The same document records that the resettlement action plans were to be updated after detailed design and the updated plans submitted to the Bank.",
+  "ct": [
+   "fincov",
+   "admin",
+   "safeguard"
+  ],
+  "why": {
+   "fincov": "a \"sustainability guarantee\" in the form of an annual payment covering any shortfall between revenue and debt service",
+   "admin": "procurement staff to be trained within three months of the effective date",
+   "safeguard": "the resettlement action plans were to be updated after detailed design and the updated plans submitted to the Bank"
+  },
+  "sources_add": [
+   {
+    "title": "Vietnam - Da Nang-Quang Ngai Expressway Development Project, Project Appraisal Document",
+    "publisher": "World Bank",
+    "year": 2011,
+    "url": "https://documents1.worldbank.org/curated/en/364661468136778211/pdf/581780PAD0repl01100110020BOX358352B.pdf"
+   }
+  ],
+  "searched": "Used the World Bank documents search API to find the 2011 Project Appraisal Document and opened its PDF on documents1.worldbank.org; the project's own document links on documents.worldbank.org refuse direct fetches."
+ },
+ "kyrgyz-tariffs-2010": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "Searched the World Bank documents search API for a Kyrgyz Republic development policy operation or programme document covering the 2008-2010 tariff rise; the only hit is the FY09 Status of Projects in Execution report, and no programme document setting a tariff condition exists in the index."
+ },
+ "sudan-bread-protests-2018": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "No IMF lending arrangement was in place for this episode, as the earlier round established from IMF documents; there is therefore no loan condition to find, and nothing new was reachable this round."
+ },
+ "grasberg-freeport": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "MIGA does not publish the terms of its guarantee contracts; its project briefs give only cover type, amount and risk category, and no other reachable document states a condition attached to this guarantee."
+ },
+ "pak-mun": {
+  "conditions_add": "The Bank's 1991 appraisal of the Third Power System Development Project, which financed Pak Mun, lists the agreements reached with the Electricity Generating Authority of Thailand. EGAT was to carry out a resettlement and rehabilitation plan satisfactory to the Bank, offering affected families either at least 0.08 hectares for a house plot and 1.6 hectares of farmland or houses rebuilt on backfilled ground; a fisheries development plan satisfactory to the Bank, with a fisheries conservation unit, fish migration studies and the construction and monitoring of a fish ladder for migratory fish; a plan satisfactory to the Bank for preventing and monitoring endemic disease; and a site management plan satisfactory to the Bank covering construction runoff, spoil areas, archaeological sites and farmland. EGAT also agreed to appoint a board of three consultants to review design and construction and to keep the environmental, mitigation and resettlement reports open for public inspection at its offices (World Bank, Staff Appraisal Report, 1991).",
+  "ct": [
+   "safeguard",
+   "admin"
+  ],
+  "why": {
+   "safeguard": "a resettlement and rehabilitation plan satisfactory to the Bank",
+   "admin": "appoint a board of three consultants to review design and construction"
+  },
+  "sources_add": [
+   {
+    "title": "Thailand - Third Power System Development Project, Staff Appraisal Report",
+    "publisher": "World Bank",
+    "year": 1991,
+    "url": "https://documents1.worldbank.org/curated/en/547211468304801692/pdf/multi-page.pdf"
+   }
+  ],
+  "searched": "World Bank documents search API located the 1991 Staff Appraisal Report for the Third Power System Development Project (the loan that financed Pak Mun) and its PDF opened on documents1.worldbank.org; the archives-folder route that failed before was not used."
+ },
+ "brasilia-vila-estrutural-resettlement": {
+  "conditions_add": "The loan could not take effect until the Federal District had adopted an Operational Manual, set up a Project Management Unit \"in form and substance satisfactory to the Bank\", put in place a financial management system satisfactory to the Bank, and signed the Governor's decree delegating execution to ADASA along with the agreements with the executing agencies (World Bank, Project Appraisal Document, 2005). The appraisal estimated that about 1,000 families would be removed and resettled within the Estrutural perimeter, covered by a resettlement framework prepared before appraisal, and made the development of a Resettlement Plan part of the technical design work the loan financed; it also records that every investment step depended on the approval of the Brazilian environmental agency IBAMA.",
+  "ct": [
+   "admin",
+   "safeguard"
+  ],
+  "why": {
+   "admin": "adopted an Operational Manual, set up a Project Management Unit \"in form and substance satisfactory to the Bank\"",
+   "safeguard": "made the development of a Resettlement Plan part of the technical design work the loan financed"
+  },
+  "sources_add": [
+   {
+    "title": "Brazil - Brasilia Environmentally Sustainable Project, Project Appraisal Document",
+    "publisher": "World Bank",
+    "year": 2005,
+    "url": "https://documents1.worldbank.org/curated/en/241791468005391791/pdf/32941.pdf"
+   }
+  ],
+  "searched": "World Bank documents search API found the 2005 Project Appraisal Document and its PDF opened on documents1.worldbank.org; the implementation completion report route that was refused before was not needed."
+ },
+ "taunsa-barrage-relocation": {
+  "conditions_add": "The Project Agreement for Loan 7277-PK required the Province of Punjab to carry out the project's Environment Management Plan \"in a manner satisfactory to the Bank\", to hire monitoring agencies acceptable to the Bank, and to get the Bank's prior agreement before changing the plan. It also required Punjab to keep a Project Steering Committee, a Panel of Experts and a Project Management Office, to complete an Operation, Maintenance and Surveillance Manual for the barrage by 31 December 2007, and to send annual work plans for the Bank's concurrence by 28 February each year (World Bank, Project Agreement L7277-PK, 24 March 2005). The agreement sets no resettlement covenant.",
+  "ct": [
+   "safeguard",
+   "admin"
+  ],
+  "why": {
+   "safeguard": "carry out the project's Environment Management Plan \"in a manner satisfactory to the Bank\"",
+   "admin": "keep a Project Steering Committee, a Panel of Experts and a Project Management Office"
+  },
+  "sources_add": [
+   {
+    "title": "Project Agreement L7277-PK (Conformed), Taunsa Barrages Emergency Rehabilitation and Modernization Project",
+    "publisher": "World Bank",
+    "year": 2005,
+    "url": "https://documents1.worldbank.org/curated/en/298631468332392116/pdf/PA0LN1072771PAK01CONFORMED1.pdf"
+   },
+   {
+    "title": "Loan Agreement L7277-PK (Conformed), Taunsa Barrages Emergency Rehabilitation and Modernization Project",
+    "publisher": "World Bank",
+    "year": 2005,
+    "url": "https://documents1.worldbank.org/curated/en/145501468288590635/pdf/LA0727701PAK01CONFORMED1.pdf"
+   }
+  ],
+  "searched": "Found the conformed Loan Agreement and Project Agreement through the World Bank documents search API and opened both on documents1.worldbank.org (documents.worldbank.org itself refuses direct PDF fetches and must be swapped to documents1)."
+ },
+ "ixquisis-hydro-guatemala": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "iadb.org and mici.iadb.org refuse direct fetches, and the Early Warning System mirror record for this IDB/IDB Invest investment gives amount, date and risk category only, with no environmental and social action plan or loan conditions."
+ },
+ "barkagaon-ntpc-firing-2016": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "IFC's disclosure portal (disclosures.ifc.org) was probed again this round and the fetch was refused before any of the page was retrieved, and no loan or subscription agreement for this investment is published on a reachable host; the earlier CAO and Inclusive Development International route was not repeated."
+ },
+ "siguiri-area-one": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "IFC's disclosure portal (disclosures.ifc.org) was probed again this round and the fetch was refused before any of the page was retrieved, and no loan or subscription agreement for this investment is published on a reachable host; the earlier CAO and Inclusive Development International route was not repeated."
+ },
+ "agua-zarca-berta-caceres": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "IFC's disclosure portal (disclosures.ifc.org) was probed again this round and the fetch was refused before any of the page was retrieved, and no loan or subscription agreement for this investment is published on a reachable host; the earlier CAO and Inclusive Development International route was not repeated."
+ },
+ "chico-river-dam": {
+  "conditions_add": "The Bank's appraisal of the Fifth Power Project confirms that the loan and IDA credit financed feasibility studies of possible hydroelectric schemes of about 450 MW on the Chico River in northern Luzon, and that the National Power Corporation agreed to appoint engineering consultants satisfactory to the Bank to carry the studies out. The same loan required NPC to set tariffs giving a return of at least 8 percent on average net assets in service from the 1974 financial year, barred it from taking on new debt without the Bank's prior approval unless net revenues covered debt service 1.3 times in the peak year, required its fixed assets to be revalued as of 30 June 1972 and every four years after, and required overdue customer accounts to be cut to no more than three months' billings from 30 June 1973. The Government had to make local-currency funds for 1973-76 available on terms satisfactory to the Bank (World Bank, Staff Appraisal Report, Philippines - Fifth Power Project, 1972).",
+  "ct": [
+   "fincov",
+   "admin"
+  ],
+  "why": {
+   "fincov": "set tariffs giving a return of at least 8 percent on average net assets in service from the 1974 financial year",
+   "admin": "agreed to appoint engineering consultants satisfactory to the Bank to carry the studies out"
+  },
+  "sources_add": [
+   {
+    "title": "Philippines - Fifth Power Project, Staff Appraisal Report",
+    "publisher": "World Bank",
+    "year": 1972,
+    "url": "https://documents1.worldbank.org/curated/en/919261468146716359/pdf/multi-page.pdf"
+   }
+  ],
+  "searched": "World Bank documents search API located the 1972 Staff Appraisal Report, the Memorandum of the President and the conformed Loan 0809 and Credit 0296 agreements for the Fifth Power Project; opened the appraisal report on documents1.worldbank.org, which the 1980 PSSC case study only referred to."
+ },
+ "sihanoukville-airport": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "IFC's disclosure portal (disclosures.ifc.org) was probed again this round and the fetch was refused before any of the page was retrieved, and no loan or subscription agreement for this investment is published on a reachable host; the earlier CAO and Inclusive Development International route was not repeated."
+ },
+ "transmigration-indonesia": {
+  "conditions_add": "For the Third Transmigration Project the directorate in charge of settlement planning had to give the Bank a list of the sites to be investigated under the loan by 30 June 1983 and could not alter that list, or divert the staff and money needed for the standard planning programme, without the Bank's approval; site selection and evaluation had to follow the procedures set out in the appraisal report. The government also had to appoint a full-time monitoring and evaluation officer at Baturaja, engage environmental consultants by 30 June 1983, and submit research inception reports to the Bank for review and approval, and money for rubber processing could not be disbursed until a subsidiary loan agreement satisfactory to the Bank was signed with the state plantation company (World Bank, Staff Appraisal Report, Indonesia - Third Transmigration Project, 1983). The appraisal attaches no covenant protecting the land claims of people already living in the receiving areas.",
+  "ct": [
+   "admin",
+   "safeguard"
+  ],
+  "why": {
+   "admin": "had to give the Bank a list of the sites to be investigated under the loan by 30 June 1983",
+   "safeguard": "engage environmental consultants by 30 June 1983"
+  },
+  "sources_add": [
+   {
+    "title": "Indonesia - Third Transmigration Project, Staff Appraisal Report",
+    "publisher": "World Bank",
+    "year": 1983,
+    "url": "https://documents1.worldbank.org/curated/en/214031468260654854/pdf/multi-page.pdf"
+   }
+  ],
+  "searched": "World Bank documents search API listed the appraisal reports for the First to Fifth Transmigration projects; opened the Third Transmigration Project appraisal (1983) on documents1.worldbank.org, instead of the archive folders that failed before."
+ },
+ "kalangala-oil-palm": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "The World Bank documents search index holds no appraisal or financing document for the Uganda vegetable oil / Kalangala oil palm operation (searched this round); the IFAD validation report read earlier mentions loan covenants without stating any."
+ },
+ "hagl-ratanakiri": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "IFC's disclosure portal (disclosures.ifc.org) was probed again this round and the fetch was refused before any of the page was retrieved, and no loan or subscription agreement for this investment is published on a reachable host; the earlier CAO and Inclusive Development International route was not repeated."
+ },
+ "jakarta-water-1997": {
+  "conditions_add": "The appraisal of the Second Jabotabek Urban Development Project, which carried the loan to PAM Jaya, made two things conditions of loan effectiveness: satisfactory subsidiary loan agreements between the central government and PDAM Jaya, DKI Jakarta and PDAM Tangerang, and the appointment of key staff (division manager, financial accountant and monitoring officer) to the project coordination office. The project's financial arrangements included a cash flow covenant requiring a contribution towards capital expenditure, a review and adjustment of water tariffs at least every three years rather than every five, and agreement by the Jakarta and Tangerang authorities to let their water utilities keep and reinvest their share of profits; the utility also agreed to let all households sell water on to neighbours and water vendors (World Bank, Staff Appraisal Report, 1990). Nothing in the appraisal required the utility to be privatised.",
+  "ct": [
+   "admin",
+   "fincov"
+  ],
+  "why": {
+   "admin": "the appointment of key staff (division manager, financial accountant and monitoring officer) to the project coordination office",
+   "fincov": "a cash flow covenant requiring a contribution towards capital expenditure"
+  },
+  "sources_add": [
+   {
+    "title": "Indonesia - Second Jabotabek Urban Development Project, Staff Appraisal Report",
+    "publisher": "World Bank",
+    "year": 1990,
+    "url": "https://documents1.worldbank.org/curated/en/893051468044100943/pdf/multi-page.pdf"
+   }
+  ],
+  "searched": "World Bank documents search API found the 1990 Staff Appraisal Report for the Second Jabotabek Urban Development Project and it opened on documents1.worldbank.org; this is the loan the TNI chapter named, and the appraisal sets no privatisation condition."
+ },
+ "wilmar-asiatic-persada": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "IFC's disclosure portal (disclosures.ifc.org) was probed again this round and the fetch was refused before any of the page was retrieved, and no loan or subscription agreement for this investment is published on a reachable host; the earlier CAO and Inclusive Development International route was not repeated."
+ },
+ "amaravati-land-pooling": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "The proposed World Bank loan was withdrawn in July 2019 and never approved, so no money was lent under it and no condition could attach; no ADB or AIIB financing agreement for the capital city project is published on a reachable host."
+ },
+ "agilis-kiryandongo": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "IFC's disclosure portal (disclosures.ifc.org) was probed again this round and the fetch was refused before any of the page was retrieved, and no loan or subscription agreement for this investment is published on a reachable host; the earlier CAO and Inclusive Development International route was not repeated."
+ },
+ "bankers-patos-marinza": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "IFC's disclosure portal (disclosures.ifc.org) was probed again this round and the fetch was refused before any of the page was retrieved, and no loan or subscription agreement for this investment is published on a reachable host; the earlier CAO and Inclusive Development International route was not repeated."
+ },
+ "agrokasa-ica-aquifer": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "IFC's disclosure portal (disclosures.ifc.org) was probed again this round and the fetch was refused before any of the page was retrieved, and no loan or subscription agreement for this investment is published on a reachable host; the earlier CAO and Inclusive Development International route was not repeated."
+ },
+ "wilmar-sambas-riau": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "IFC's disclosure portal (disclosures.ifc.org) was probed again this round and the fetch was refused before any of the page was retrieved, and no loan or subscription agreement for this investment is published on a reachable host; the earlier CAO and Inclusive Development International route was not repeated."
+ },
+ "antamina-huarmey": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "MIGA does not publish the terms of its guarantee contracts; its project briefs give only cover type, amount and risk category, and no other reachable document states a condition attached to this guarantee."
+ },
+ "interagua-guayaquil": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "MIGA does not publish the terms of its guarantee contracts; its project briefs give only cover type, amount and risk category, and no other reachable document states a condition attached to this guarantee."
+ },
+ "mozal-bypass": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "IFC's disclosure portal (disclosures.ifc.org) was probed again this round and the fetch was refused before any of the page was retrieved, and no loan or subscription agreement for this investment is published on a reachable host; the earlier CAO and Inclusive Development International route was not repeated."
+ },
+ "simandou-rio-tinto": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "IFC's disclosure portal (disclosures.ifc.org) was probed again this round and the fetch was refused before any of the page was retrieved, and no loan or subscription agreement for this investment is published on a reachable host; the earlier CAO and Inclusive Development International route was not repeated."
+ },
+ "plantar-minas-gerais": {
+  "conditions_add": "The World Bank's project information document for the Prototype Carbon Fund's Plantar project says the Fund buys emission reductions under a purchase agreement with Plantar S.A. that sets the quantity, price and other delivery conditions together with the monitoring and verification protocols, and that \"payments will only be effected on an annual basis after monitoring and verification\" of the reductions achieved; the Fund buys only certified reductions and does not finance project components. To qualify, Plantar had to define the planting area at least one year before planting and show that the land had been pasture since December 1989, and the document states that environmental due diligence of the plantation activities, including Forest Stewardship Council certification, had to be guaranteed before planting, with a chemical management plan and water quality monitoring every four months (World Bank, Project Information Document, PCF Minas Gerais Plantar Project, 2002).",
+  "ct": [
+   "fincov",
+   "safeguard",
+   "admin"
+  ],
+  "why": {
+   "fincov": "\"payments will only be effected on an annual basis after monitoring and verification\" of the reductions achieved",
+   "safeguard": "environmental due diligence of the plantation activities, including Forest Stewardship Council certification, had to be guaranteed before planting",
+   "admin": "define the planting area at least one year before planting"
+  },
+  "sources_add": [
+   {
+    "title": "Brazil - PCF Minas Gerais Plantar Project, Project Information Document",
+    "publisher": "World Bank",
+    "year": 2002,
+    "url": "https://documents1.worldbank.org/curated/en/753371468741910490/pdf/multi0page.pdf"
+   }
+  ],
+  "searched": "World Bank documents search API found the 2002 Project Information Document for the PCF Minas Gerais Plantar Project and it opened on documents1.worldbank.org; the carbon purchase agreement itself is still not published, and the WRM page is still blocked."
+ },
+ "kpone-landfill-tema": {
+  "conditions_add": "The credit set conditions before work could start on the waste sites. Before building the Tema sanitary landfill or improving, closing or rehabilitating the dumps at Mallam, Oblogo, Kpone and Essipon, the borrower had to prepare and carry out a Resettlement Action Plan satisfactory to the Bank under the project's Resettlement Policy Framework and acquire all the land needed, and the appraisal states that \"the acquisition of land for the sanitary landfills is a condition of disbursement\". The same works also required an Environmental Management Plan satisfactory to the Bank beforehand. The credit itself could not take effect until an external auditor had been appointed and a Project Implementation Manual adopted, and the ministry had to appoint a project manager, engineer, training specialist and accountant by 30 November 2004 (World Bank, Project Appraisal Document, 2004).",
+  "ct": [
+   "safeguard",
+   "admin"
+  ],
+  "why": {
+   "safeguard": "prepare and carry out a Resettlement Action Plan satisfactory to the Bank",
+   "admin": "until an external auditor had been appointed and a Project Implementation Manual adopted"
+  },
+  "sources_add": [
+   {
+    "title": "Ghana - Second Urban Environmental Sanitation Project, Project Appraisal Document",
+    "publisher": "World Bank",
+    "year": 2004,
+    "url": "https://documents1.worldbank.org/curated/en/430081468774858089/pdf/27884.pdf"
+   }
+  ],
+  "searched": "World Bank documents search API found the 2004 Project Appraisal Document (not the Project Information Document read before) and its PDF opened on documents1.worldbank.org."
+ },
+ "chandil-subernarekha": {
+  "conditions_add": "The IDA credit's agreements, listed in the appraisal report, required the Government of Bihar to begin an evaluation of its rehabilitation work for displaced people by 31 December 1983 under terms of reference agreed with IDA, and, at least two years before any land was flooded, to prepare a rehabilitation plan with an implementation schedule agreed with IDA; Orissa had to set up a Rehabilitation Committee and prepare its own area plan on the same two-year timetable. Bihar also had to set up a Dam Review Panel by 31 December 1982 and have the dams inspected periodically after construction, establish a Subernarekha Project Unit, a Research Cell and a Planning and Monitoring Cell by the same date, and deny project water to any industry without pollution-control clearance (World Bank, Staff Appraisal Report, India - Subernarekha Irrigation Project, 1982).",
+  "ct": [
+   "safeguard",
+   "admin"
+  ],
+  "why": {
+   "safeguard": "at least two years before any land was flooded, to prepare a rehabilitation plan with an implementation schedule agreed with IDA",
+   "admin": "establish a Subernarekha Project Unit, a Research Cell and a Planning and Monitoring Cell by the same date"
+  },
+  "sources_add": [
+   {
+    "title": "India - Subernarekha Irrigation Project, Staff Appraisal Report",
+    "publisher": "World Bank",
+    "year": 1982,
+    "url": "https://documents1.worldbank.org/curated/en/563821468260105984/pdf/multi-page.pdf"
+   }
+  ],
+  "searched": "World Bank documents search API found the 1982 Staff Appraisal Report; read its agreements section (Section IX) and resettlement section on documents1.worldbank.org, which the earlier Lok Sabha and NGO sources did not carry."
+ },
+ "qmm-fort-dauphin": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "MIGA does not publish the terms of its guarantee contracts; its project briefs give only cover type, amount and risk category, and no other reachable document states a condition attached to this guarantee."
+ },
+ "lihir-gold-mine": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "MIGA does not publish the terms of its guarantee contracts; its project briefs give only cover type, amount and risk category, and no other reachable document states a condition attached to this guarantee."
+ },
+ "ban-chaung-coal": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "IFC's disclosure portal (disclosures.ifc.org) was probed again this round and the fetch was refused before any of the page was retrieved, and no loan or subscription agreement for this investment is published on a reachable host; the earlier CAO and Inclusive Development International route was not repeated."
+ },
+ "poland-nowa-huta-1988": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "No IMF or World Bank lending operation for Poland in 1987-88 is indexed in the World Bank documents search; the price rises belonged to the government's own reform programme, so there is no loan whose terms could be quoted."
+ },
+ "rio-sala-san-pablo": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "IFC's disclosure portal (disclosures.ifc.org) was probed again this round and the fetch was refused before any of the page was retrieved, and no loan or subscription agreement for this investment is published on a reachable host; the earlier CAO and Inclusive Development International route was not repeated."
+ },
+ "olam-palm-gabon": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "IFC's disclosure portal (disclosures.ifc.org) was probed again this round and the fetch was refused before any of the page was retrieved, and no loan or subscription agreement for this investment is published on a reachable host; the earlier CAO and Inclusive Development International route was not repeated."
+ },
+ "kumtor-barskoon-cyanide": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "IFC's disclosure portal (disclosures.ifc.org) was probed again this round and the fetch was refused before any of the page was retrieved, and no loan or subscription agreement for this investment is published on a reachable host; the earlier CAO and Inclusive Development International route was not repeated."
+ },
+ "aracruz-tupinikim-eviction-2006": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "IFC's disclosure portal (disclosures.ifc.org) was probed again this round and the fetch was refused before any of the page was retrieved, and no loan or subscription agreement for this investment is published on a reachable host; the earlier CAO and Inclusive Development International route was not repeated."
+ },
+ "omai-cyanide-spill": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "MIGA does not publish the terms of its guarantee contracts; its project briefs give only cover type, amount and risk category, and no other reachable document states a condition attached to this guarantee."
+ },
+ "sadiola-gold-mine": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "IFC's disclosure portal (disclosures.ifc.org) was probed again this round and the fetch was refused before any of the page was retrieved, and no loan or subscription agreement for this investment is published on a reachable host; the earlier CAO and Inclusive Development International route was not repeated."
+ },
+ "escondida-punta-negra": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "IFC's disclosure portal (disclosures.ifc.org) was probed again this round and the fetch was refused before any of the page was retrieved, and no loan or subscription agreement for this investment is published on a reachable host; the earlier CAO and Inclusive Development International route was not repeated."
+ },
+ "sao-jose-tatetuba-eviction": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "iadb.org and mici.iadb.org refuse direct fetches, and the Early Warning System mirror record for this IDB/IDB Invest investment gives amount, date and risk category only, with no environmental and social action plan or loan conditions."
+ },
+ "marrakech-agadir-motorway-blasting": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "afdb.org returns client errors on appraisal-report paths, and the Early Warning System and Accountability Console mirrors for this AfDB project hold no appraisal report or loan agreement (both probed this round for AfDB projects in this batch)."
+ },
+ "samut-prakarn-klong-dan": {
+  "conditions_add": "ADB's first semiannual report to its Board on the project states that the Government of Thailand must arrange compensation for affected people \"by virtue of the loan documents for the project and ADB's resettlement policy\", and that \"as required under the loan, a benefit monitoring and evaluation program has been built into the Project\". The same report records that a share of the wastewater tariff collected once the system operated was to go to a community enhancement fund (ADB, First Semiannual Report to the Board, 2002). The loan agreements for Loans 1410 and 1646-THA are not published, and the 1995 approval report on adb.org is a scan with no readable text.",
+  "ct": [
+   "safeguard",
+   "admin"
+  ],
+  "why": {
+   "safeguard": "must arrange compensation for affected people \"by virtue of the loan documents for the project and ADB's resettlement policy\"",
+   "admin": "\"as required under the loan, a benefit monitoring and evaluation program has been built into the Project\""
+  },
+  "sources_add": [
+   {
+    "title": "Samut Prakarn Wastewater Management Project - First Semiannual Report to the Board",
+    "publisher": "Asian Development Bank",
+    "year": 2002,
+    "url": "https://www.adb.org/sites/default/files/project-documents//in251-02.pdf"
+   }
+  ],
+  "searched": "Opened the ADB project pages for Loan 1410 (ln1410) and the 1995 Report and Recommendation of the President PDF (rrp-r23095.pdf, a scan with only the cover page readable), then the First Semiannual Report to the Board; the loan agreements are not on adb.org."
+ },
+ "jawa-1-lng-power-fishers": {
+  "conditions_add": "ADB's Report and Recommendation of the President for the project sets out what the borrower had to do. The project's environmental and social work had to include \"an environmental and social management plan to manage and monitor impacts of the project\", the sponsors had to recruit experienced safeguards staff, the clearance of 0.33 hectares of mangroves had to be offset by protecting and restoring remaining coastal vegetation with the aim of no net loss of biodiversity, and the sponsor agreed to pre-bore piles, use dampers during impact piling, keep noisy work to daytime and build a noise wall. The borrower also had to prepare a resettlement plan to guide land acquisition on a willing seller-willing buyer basis, set up a community grievance mechanism, and send ADB quarterly and annual financial statements together with environmental and social monitoring reports and reports on labour and gender measures. The report's sections on the loan's own terms and conditions precedent are marked confidential information deleted (ADB, Report and Recommendation of the President, 2018).",
+  "ct": [
+   "safeguard",
+   "admin"
+  ],
+  "why": {
+   "safeguard": "the clearance of 0.33 hectares of mangroves had to be offset by protecting and restoring remaining coastal vegetation with the aim of no net loss of biodiversity",
+   "admin": "send ADB quarterly and annual financial statements together with environmental and social monitoring reports"
+  },
+  "sources_add": [
+   {
+    "title": "Jawa-1 Liquefied Natural Gas-to-Power Project: Report and Recommendation of the President (ADB project 51112-001)",
+    "publisher": "Asian Development Bank (copy held by the Early Warning System)",
+    "year": 2018,
+    "url": "https://ewsdata.rightsindevelopment.org/files/documents/01/ADB-51112-001_ifVX50f.pdf"
+   }
+  ],
+  "searched": "Found the ADB project number (51112-001) through search, then opened the Early Warning System mirror of ADB's Report and Recommendation of the President, which the earlier round did not reach; the loan agreement itself is not published and the report's conditions-precedent section is redacted."
+ },
+ "sendou-bargny-coal": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "afdb.org returns client errors on appraisal-report paths, and the Early Warning System and Accountability Console mirrors for this AfDB project hold no appraisal report or loan agreement (both probed this round for AfDB projects in this batch)."
+ },
+ "ruta-del-cacao-santander": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "iadb.org and mici.iadb.org refuse direct fetches, and the Early Warning System mirror record for this IDB/IDB Invest investment gives amount, date and risk category only, with no environmental and social action plan or loan conditions."
+ },
+ "el-dorado-fontibon-noise": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "iadb.org and mici.iadb.org refuse direct fetches, and the Early Warning System mirror record for this IDB/IDB Invest investment gives amount, date and risk category only, with no environmental and social action plan or loan conditions."
+ },
+ "leaf-ii-lakes-edward-albert": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "afdb.org returns client errors on appraisal-report paths, and the Early Warning System and Accountability Console mirrors for this AfDB project hold no appraisal report or loan agreement (both probed this round for AfDB projects in this batch)."
+ },
+ "dakar-ter-phase1": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "afdb.org returns client errors on appraisal-report paths, and the Early Warning System and Accountability Console mirrors for this AfDB project hold no appraisal report or loan agreement (both probed this round for AfDB projects in this batch)."
+ },
+ "kariobangi-north-evictions": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "afdb.org returns client errors on appraisal-report paths, and the Early Warning System and Accountability Console mirrors for this AfDB project hold no appraisal report or loan agreement (both probed this round for AfDB projects in this batch)."
+ },
+ "smb-boke-bauxite": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "IFC's disclosure portal (disclosures.ifc.org) was probed again this round and the fetch was refused before any of the page was retrieved, and no loan or subscription agreement for this investment is published on a reachable host; the earlier CAO and Inclusive Development International route was not repeated."
+ },
+ "karuturi-gambella": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "IFC's disclosure portal (disclosures.ifc.org) was probed again this round and the fetch was refused before any of the page was retrieved, and no loan or subscription agreement for this investment is published on a reachable host; the earlier CAO and Inclusive Development International route was not repeated."
+ },
+ "trident-kalumbila-resettlement": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "IFC's disclosure portal (disclosures.ifc.org) was probed again this round and the fetch was refused before any of the page was retrieved, and no loan or subscription agreement for this investment is published on a reachable host; the earlier CAO and Inclusive Development International route was not repeated."
+ },
+ "vrg-rubber-cambodia": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "IFC's disclosure portal (disclosures.ifc.org) was probed again this round and the fetch was refused before any of the page was retrieved, and no loan or subscription agreement for this investment is published on a reachable host; the earlier CAO and Inclusive Development International route was not repeated."
+ },
+ "hagl-rubber-attapeu-laos": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "IFC's disclosure portal (disclosures.ifc.org) was probed again this round and the fetch was refused before any of the page was retrieved, and no loan or subscription agreement for this investment is published on a reachable host; the earlier CAO and Inclusive Development International route was not repeated."
+ },
+ "adani-mundra-mangroves-fishers": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "IFC's disclosure portal (disclosures.ifc.org) was probed again this round and the fetch was refused before any of the page was retrieved, and no loan or subscription agreement for this investment is published on a reachable host; the earlier CAO and Inclusive Development International route was not repeated."
+ },
+ "eacop-bank-protest-arrests": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "The March 2025 EACOP tranche is a private syndicated loan; the lenders disclose neither the amount nor the terms, as BankTrack's statement records, and nothing further was reachable this round."
+ },
+ "essar-mahan-singrauli": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "IFC's disclosure portal (disclosures.ifc.org) was probed again this round and the fetch was refused before any of the page was retrieved, and no loan or subscription agreement for this investment is published on a reachable host; the earlier CAO and Inclusive Development International route was not repeated."
+ },
+ "omkareshwar-reservoir-raising": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "IFC's disclosure portal (disclosures.ifc.org) was probed again this round and the fetch was refused before any of the page was retrieved, and no loan or subscription agreement for this investment is published on a reachable host; the earlier CAO and Inclusive Development International route was not repeated."
+ },
+ "zuari-cottonseed-child-labour": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "IFC's disclosure portal (disclosures.ifc.org) was probed again this round and the fetch was refused before any of the page was retrieved, and no loan or subscription agreement for this investment is published on a reachable host; the earlier CAO and Inclusive Development International route was not repeated."
+ },
+ "bhabadah-waterlogging-kjdrp": {
+  "conditions_add": "The ADB loan carried 43 covenants. Three of them required the government to coordinate project activities at divisional and district level through meetings chaired by the commissioner, to obtain the agreement of at least 90 percent of farmers in a polder area before shrimp culture there, and to implement, operate and maintain the project in a way consistent with the country’s own environmental standards (ADB Project Performance Evaluation Report, Loan 1289-BAN(SF), 2007). The evaluation found all three were not met.",
+  "ct": [
+   "safeguard",
+   "admin"
+  ],
+  "why": {
+   "safeguard": "implement, operate and maintain the project in a way consistent with the country’s own environmental standards",
+   "admin": "coordinate project activities at divisional and district level through meetings chaired by the commissioner"
+  },
+  "sources_add": [
+   {
+    "title": "Khulna-Jessore Drainage Rehabilitation Project (Loan 1289-BAN[SF]) – Project Performance Evaluation Report",
+    "publisher": "Asian Development Bank Operations Evaluation Department",
+    "year": 2007,
+    "url": "https://www.adb.org/sites/default/files/evaluation-document/35104/files/21087-ban-pper_6.pdf"
+   }
+  ],
+  "searched": "Opened the ADB PPER PDF for Loan 1289-BAN(SF) (evaluation-document path), which quotes three of the loan’s 43 special covenants; the loan agreement itself is not published on adb.org."
+ },
+ "naga-cebu-kepco-coal-dust": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "Searched for a reachable financing agreement or appraisal document for this lender's money and found none published; the lender does not disclose the terms of this facility."
+ },
+ "malicounda-power-plant-land": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "afdb.org returns client errors on appraisal-report paths, and the Early Warning System and Accountability Console mirrors for this AfDB project hold no appraisal report or loan agreement (both probed this round for AfDB projects in this batch)."
+ },
+ "abidjan-fourth-bridge-boribana": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "afdb.org returns client errors on appraisal-report paths, and the Early Warning System and Accountability Console mirrors for this AfDB project hold no appraisal report or loan agreement (both probed this round for AfDB projects in this batch)."
+ },
+ "la-chorrera-pan-am-generating": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "iadb.org and mici.iadb.org refuse direct fetches, and the Early Warning System mirror record for this IDB/IDB Invest investment gives amount, date and risk category only, with no environmental and social action plan or loan conditions."
+ },
+ "green-resources-uganda-evictions": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "IFC's disclosure portal (disclosures.ifc.org) was probed again this round and the fetch was refused before any of the page was retrieved, and no loan or subscription agreement for this investment is published on a reachable host; the earlier CAO and Inclusive Development International route was not repeated."
+ },
+ "messok-dja-baka-ecoguards": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "The GEF grant agreement for TRIDOM II is not published; UNDP's SECU report sets out UNDP's own social and environmental standards rather than terms of the grant, and nothing new was reachable this round."
+ },
+ "cairo-metro-3-zamalek": {
+  "conditions_add": "The EIB's own page for Cairo Metro Line 3 Phase 3 (project 20100613, EUR 600 million signed in 2012, 2015 and 2016) states that the project has to meet the Bank's environmental and social requirements based on EU policy, that the Bank had to satisfy itself that the environmental impact assessment, including public consultation, met its standards and that mitigation and compensation measures were set out in an Environmental and Social Management Plan, and that acceptable progress required a resettlement framework and a resettlement action plan. On procurement, the promoter had to follow the EU procurement directives 2004/17 and 2004/18 and the Bank's Guide to Procurement, and the page states that a procurement clause would be included in the finance contract (European Investment Bank, project page).",
+  "ct": [
+   "safeguard",
+   "admin"
+  ],
+  "why": {
+   "safeguard": "acceptable progress required a resettlement framework and a resettlement action plan",
+   "admin": "a procurement clause would be included in the finance contract"
+  },
+  "sources_add": [
+   {
+    "title": "Cairo Metro Line 3 (Phase 3) - project summary and loan list, project 20100613",
+    "publisher": "European Investment Bank",
+    "year": 2016,
+    "url": "https://www.eib.org/en/projects/all/20100613"
+   }
+  ],
+  "searched": "Opened the EIB project page and loan list for project 20100613 after confirming it is Phase 3 and the signature dates (2012, 2015, 2016); the finance contract itself is not published, and the EIB complaints-mechanism page read before carries no terms."
+ },
+ "vares-adriatic-metals": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "EBRD project summary pages on ebrd.com refuse direct fetching (probed this round), and the Early Warning System mirror record for the EBRD investment gives amount, date and purpose only, with no action plan or conditions."
+ },
+ "shah-deniz-sangachal": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "EBRD project summary pages on ebrd.com refuse direct fetching (probed this round), and the Early Warning System mirror record for the EBRD investment gives amount, date and purpose only, with no action plan or conditions."
+ },
+ "tap-albania-land-compensation": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "EBRD project summary pages on ebrd.com refuse direct fetching (probed this round), and the Early Warning System mirror record for the EBRD investment gives amount, date and purpose only, with no action plan or conditions."
+ },
+ "thwake-dam-makueni": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "Opened the only AfDB document the Early Warning System mirror holds for P-KE-E00-017, which is the project's Stakeholder Engagement Plan; it cites AfDB's own safeguard operational standards but carries no loan conditions. AfDB's own site (afdb.org) returns client errors on the appraisal report path."
+ },
+ "ipp4-al-manakher-easep-detention": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "EBRD project summary pages on ebrd.com refuse direct fetching (probed this round), and the Early Warning System mirror record for the EBRD investment gives amount, date and purpose only, with no action plan or conditions."
+ },
+ "guatemala-std-inoculation-1946": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "The money was a US Public Health Service research grant, not a loan, and no grant instrument stating a condition is published on a reachable host."
+ },
+ "somsanga-drug-detention-laos": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "The donor money was grant aid rather than a loan; no grant agreement for the Somsanga centre is published on a reachable host."
+ },
+ "choam-chao-unicef-youth-centre": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "UNICEF funding for the centre was grant aid, not a loan; no agreement stating a condition is published on a reachable host."
+ },
+ "upper-atbara-setit-arab-funds": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "The Arab and Gulf funds (Kuwait Fund, Abu Dhabi Fund, Saudi Fund, Arab Fund, BADEA) publish no loan agreements or appraisal documents for the Upper Atbara and Setit complex, and no reachable document states a term of their loans."
+ },
+ "libya-coast-guard-eu-italy-detention": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "The money came as EU grant or trust-fund support rather than a loan, and no reachable EU action document or agreement states a condition the money depended on."
+ },
+ "desert-dumps-eu-north-africa": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "The money came as EU grant or trust-fund support rather than a loan, and no reachable EU action document or agreement states a condition the money depended on."
+ },
+ "unicef-tube-wells-bangladesh-arsenic": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "UNICEF's tube-well programme was grant aid, not a loan; no agreement stating a condition is published on a reachable host."
+ },
+ "virunga-eu-rangers-residents": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "The money came as EU grant or trust-fund support rather than a loan, and no reachable EU action document or agreement states a condition the money depended on."
+ }
+}
