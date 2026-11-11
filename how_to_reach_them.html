@@ -4,85 +4,102 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>How To Reach Them</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css">
+<script src="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Marcellus&family=Playfair+Display:wght@700;800&display=swap');
 :root{
-  --bg:#0a100d; --ink:#e7e4dc; --dim:#95a09a; --faint:#6b746f;
-  --panel:#111815; --panel2:#161e1a; --line:rgba(120,140,128,.20);
-  --accent:#4a7c59; --accent-hi:#79a988; --accent-soft:rgba(74,124,89,.22);
+  --bg:#0a100d; --ink:#e7e4dc; --dim:#9aa39b; --faint:#6d766f;
+  --panel:#111815; --panel2:#171f1b; --line:rgba(125,142,130,.22);
+  --accent:#4a7c59; --accent-hi:#8cbd9a; --accent-soft:rgba(74,124,89,.22);
   --stone:#8a7d6d;
   --r-low:#6f5f59; --r-mid:#5c6f6c; --r-high:#4a7c59; --r-none:#4a4f4c;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%}
 body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink);overflow:hidden}
-#map{position:absolute;inset:0;background:#070b09}
-.leaflet-container{background:#070b09;font-family:'DM Sans',sans-serif}
+#map{position:absolute;inset:0}
+.maplibregl-ctrl-attrib{background:rgba(17,24,21,.9)!important;color:var(--faint)!important;font-size:10px!important}
+.maplibregl-ctrl-attrib a{color:var(--dim)!important}
 
 /* ---------- header ---------- */
-#hdr{position:fixed;top:0;left:0;right:0;z-index:900;pointer-events:none;
-  padding:14px 20px 34px;background:linear-gradient(180deg,rgba(10,16,13,.96),rgba(10,16,13,.72) 62%,rgba(10,16,13,0))}
-#hdr h1{font-family:'Playfair Display',serif;font-size:21px;font-weight:800;letter-spacing:.2px;pointer-events:auto}
-#hdr .sub{font-size:12px;color:var(--dim);margin-top:3px;pointer-events:auto;max-width:640px;line-height:1.45}
-#srcbar{position:fixed;top:14px;right:20px;z-index:901;display:flex;gap:7px;pointer-events:auto}
-.srcpill{font-size:10.5px;letter-spacing:.3px;padding:5px 9px;border-radius:999px;border:1px solid var(--line);
-  background:rgba(17,24,21,.9);color:var(--faint);display:flex;align-items:center;gap:5px;white-space:nowrap}
-.dot{width:6px;height:6px;border-radius:50%;background:var(--faint);flex:none}
-.dot.ok{background:var(--accent-hi)} .dot.bad{background:#9a6b63} .dot.busy{background:var(--stone);animation:pulse 1s infinite}
-@keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
+#hdr{position:fixed;top:0;left:0;right:0;z-index:40;pointer-events:none;
+  padding:13px 20px 32px;background:linear-gradient(180deg,rgba(10,16,13,.94),rgba(10,16,13,.6) 60%,rgba(10,16,13,0))}
+#hdr h1{font-family:'Playfair Display',serif;font-size:20px;font-weight:800;pointer-events:auto}
+#hdr .sub{font-size:12px;color:var(--dim);margin-top:3px;pointer-events:auto;max-width:600px;line-height:1.45}
 
-/* ---------- panel ---------- */
-#panel{position:fixed;top:0;right:0;bottom:0;width:min(470px,100%);z-index:950;
-  background:var(--panel);border-left:1px solid var(--line);display:flex;flex-direction:column;
-  transform:translateX(102%);transition:transform .28s cubic-bezier(.4,0,.2,1);box-shadow:-18px 0 50px rgba(0,0,0,.5)}
-#panel.open{transform:none}
-#ptop{padding:16px 18px 0;border-bottom:1px solid var(--line);flex:none}
-#ptitle{font-family:'Marcellus',serif;font-size:19px;line-height:1.25;padding-right:34px}
-#psub{font-size:11.5px;color:var(--faint);margin-top:4px}
-#pclose{position:absolute;top:13px;right:14px;width:28px;height:28px;border-radius:7px;border:1px solid var(--line);
+/* ---------- controls ---------- */
+#tools{position:fixed;top:13px;right:18px;z-index:45;display:flex;flex-direction:column;align-items:flex-end;gap:7px}
+.tbtn{font-size:11.5px;padding:6px 11px;border-radius:8px;border:1px solid var(--line);
+  background:rgba(17,24,21,.93);color:var(--dim);cursor:pointer;font-family:inherit;white-space:nowrap}
+.tbtn:hover{color:var(--ink);border-color:var(--accent-soft)}
+#bmbox{display:none;flex-direction:column;gap:2px;background:rgba(17,24,21,.96);border:1px solid var(--line);
+  border-radius:9px;padding:6px}
+#bmbox.open{display:flex}
+#bmbox button{font-size:11.5px;padding:5px 12px;border:0;border-radius:6px;background:none;color:var(--dim);
+  cursor:pointer;font-family:inherit;text-align:right}
+#bmbox button:hover{color:var(--ink);background:rgba(74,124,89,.14)}
+#bmbox button.on{color:var(--ink);background:var(--accent-soft)}
+
+/* ---------- trail / status, bottom-left ---------- */
+#trail{position:fixed;left:20px;bottom:18px;z-index:40;max-width:min(560px,52vw);
+  background:rgba(17,24,21,.93);border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:12px;line-height:1.6}
+#trail .lbl{font-size:10px;letter-spacing:.9px;text-transform:uppercase;color:var(--stone);display:block;margin-bottom:4px}
+#trail a{color:var(--accent-hi);cursor:pointer;text-decoration:none}
+#trail a:hover{text-decoration:underline}
+#trail .sep{opacity:.45;margin:0 5px}
+#trail .now{color:var(--ink)}
+#trail .hint{color:var(--faint);font-size:11.5px}
+#status{margin-top:6px;font-size:11px;color:var(--faint);display:flex;gap:10px;align-items:center}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--faint);display:inline-block;margin-right:4px}
+.dot.ok{background:var(--accent-hi)} .dot.bad{background:#9a6b63} .dot.busy{background:var(--stone);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
+
+/* ---------- centred modal ---------- */
+#scrim{position:fixed;inset:0;z-index:90;background:rgba(5,9,7,.55);backdrop-filter:blur(2px);
+  opacity:0;pointer-events:none;transition:opacity .22s}
+#scrim.on{opacity:1;pointer-events:auto}
+#modal{position:fixed;z-index:100;top:50%;left:50%;transform:translate(-50%,-50%) scale(.97);
+  width:min(760px,92vw);height:min(80vh,760px);display:flex;flex-direction:column;
+  background:var(--panel);border:1px solid var(--line);border-radius:14px;
+  box-shadow:0 30px 90px rgba(0,0,0,.6);opacity:0;pointer-events:none;transition:opacity .22s,transform .22s}
+#modal.on{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
+#mtop{padding:17px 20px 0;border-bottom:1px solid var(--line);flex:none;position:relative}
+#mtitle{font-family:'Marcellus',serif;font-size:21px;line-height:1.22;padding-right:40px}
+#msub{font-size:11.5px;color:var(--faint);margin-top:4px}
+#mclose{position:absolute;top:14px;right:16px;width:28px;height:28px;border-radius:7px;border:1px solid var(--line);
   background:var(--panel2);color:var(--dim);cursor:pointer;font-size:15px;line-height:1}
-#pclose:hover{color:var(--ink);border-color:var(--accent-soft)}
-#tabs{display:flex;gap:2px;margin-top:13px}
-.tab{flex:1;padding:9px 4px;font-size:11.5px;font-weight:500;letter-spacing:.2px;text-align:center;cursor:pointer;
-  color:var(--faint);border-bottom:2px solid transparent;background:none;border-top:0;border-left:0;border-right:0;font-family:inherit}
+#mclose:hover{color:var(--ink)}
+#mtabs{display:flex;gap:1px;margin-top:14px;overflow-x:auto;scrollbar-width:none}
+#mtabs::-webkit-scrollbar{display:none}
+.tab{padding:9px 13px;font-size:11.5px;font-weight:500;white-space:nowrap;cursor:pointer;color:var(--faint);
+  border:0;border-bottom:2px solid transparent;background:none;font-family:inherit}
 .tab:hover{color:var(--dim)}
 .tab.on{color:var(--ink);border-bottom-color:var(--accent)}
-#pbody{flex:1;overflow-y:auto;padding:16px 18px 40px}
-#pbody::-webkit-scrollbar{width:9px}
-#pbody::-webkit-scrollbar-thumb{background:rgba(120,140,128,.2);border-radius:9px}
+.tab .n{font-size:10px;opacity:.6;margin-left:4px}
+#mbody{flex:1;overflow-y:auto;padding:16px 20px 30px}
+#mbody::-webkit-scrollbar{width:9px}
+#mbody::-webkit-scrollbar-thumb{background:rgba(125,142,130,.22);border-radius:9px}
 
-/* ---------- jurisdiction ladder ---------- */
-#crumbs{font-size:11px;color:var(--faint);margin-bottom:12px;line-height:1.6}
-#crumbs a{color:var(--accent-hi);cursor:pointer;text-decoration:none}
-#crumbs a:hover{text-decoration:underline}
-#crumbs .sep{opacity:.45;margin:0 5px}
-.grp{margin-bottom:20px}
-.grp h3{font-family:'Marcellus',serif;font-size:12px;letter-spacing:1.1px;text-transform:uppercase;
-  color:var(--stone);margin-bottom:9px;padding-bottom:5px;border-bottom:1px solid var(--line)}
-.off{padding:9px 0;border-bottom:1px solid rgba(120,140,128,.09)}
+/* ---------- office entries ---------- */
+.bhead{font-size:12.5px;color:var(--dim);line-height:1.6;margin-bottom:16px;
+  padding:10px 13px;background:var(--panel2);border-left:2px solid var(--accent);border-radius:0 6px 6px 0}
+.off{padding:13px 0;border-bottom:1px solid rgba(125,142,130,.1)}
 .off:last-child{border-bottom:0}
-.off .nm{font-size:13.5px;line-height:1.35}
-.off .meta{font-size:11px;color:var(--faint);margin-top:3px;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}
+.off .nm{font-size:14.5px;line-height:1.3;font-family:'Marcellus',serif}
+.off .what{font-size:12px;color:var(--accent-hi);margin-top:3px}
+.off .how{font-size:12.5px;color:var(--dim);line-height:1.6;margin-top:7px}
+.off .meta{font-size:11px;color:var(--faint);margin-top:7px;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}
 .off a{color:var(--accent-hi);text-decoration:none;word-break:break-all}
 .off a:hover{text-decoration:underline}
-.holder{color:var(--dim)}
-.stale{font-size:9.5px;letter-spacing:.3px;text-transform:uppercase;color:var(--faint);
+.chip{font-size:9.5px;letter-spacing:.3px;text-transform:uppercase;color:var(--faint);
   border:1px solid var(--line);border-radius:4px;padding:1px 5px}
-.grp.shut .gbody{display:none!important}
-.subdiv{display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:5px 10px;margin:0 6px 6px 0;
-  border:1px solid var(--line);border-radius:7px;background:var(--panel2);color:var(--dim);cursor:pointer;
-  font-family:inherit;text-align:left}
-.subdiv.on{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
-.subdiv:hover{color:var(--ink);border-color:var(--accent-soft);background:rgba(74,124,89,.1)}
-.subdiv .chev{color:var(--faint);font-size:10px}
-.note{font-size:11.5px;color:var(--faint);line-height:1.55;margin-top:8px;padding:9px 11px;
+.note{font-size:11.5px;color:var(--faint);line-height:1.55;margin-top:10px;padding:10px 12px;
   background:var(--panel2);border-left:2px solid var(--line);border-radius:0 5px 5px 0}
-.spin{font-size:12px;color:var(--faint);padding:16px 0}
+.spin{font-size:12px;color:var(--faint);padding:18px 0}
 
-/* ---------- routes ---------- */
+/* ---------- routes (unchanged shape) ---------- */
 #rfilter{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
 .fchip{font-size:10.5px;padding:4px 9px;border-radius:999px;border:1px solid var(--line);
   background:var(--panel2);color:var(--faint);cursor:pointer;font-family:inherit}
@@ -96,38 +113,25 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .rnm{font-size:13.5px;line-height:1.3}
 .rmeta{font-size:11px;color:var(--faint);margin-top:3px}
 .rrate{font-family:ui-monospace,'DejaVu Sans Mono',monospace;font-size:14px;flex:none;text-align:right;line-height:1.1}
-.rrate small{display:block;font-family:'DM Sans',sans-serif;font-size:9.5px;letter-spacing:.3px;color:var(--faint);margin-top:2px}
+.rrate small{display:block;font-family:'DM Sans',sans-serif;font-size:9.5px;color:var(--faint);margin-top:2px}
 .rbody{display:none;padding:0 13px 13px;border-top:1px solid var(--line)}
 .route.open .rbody{display:block}
 .fld{margin-top:11px}
 .fld dt{font-size:10px;letter-spacing:.9px;text-transform:uppercase;color:var(--stone);margin-bottom:3px}
 .fld dd{font-size:12.5px;line-height:1.55;color:var(--dim)}
 .fld.fail dd{color:#c9bfb4}
-.ev{display:inline-block;font-size:9.5px;letter-spacing:.3px;padding:1px 6px;border-radius:4px;
-  border:1px solid var(--line);color:var(--faint);margin-left:6px;vertical-align:middle}
+.ev{display:inline-block;font-size:9.5px;padding:1px 6px;border-radius:4px;border:1px solid var(--line);
+  color:var(--faint);margin-left:6px;vertical-align:middle}
 .srcline{font-size:11px;color:var(--faint);font-style:italic;margin-top:5px}
-
-/* ---------- barriers ---------- */
 .bar{border-left:2px solid var(--stone);padding:2px 0 2px 13px;margin-bottom:18px}
 .bar h4{font-family:'Marcellus',serif;font-size:14px;margin-bottom:5px}
 .bar p{font-size:12.5px;line-height:1.6;color:var(--dim)}
 .bar p+p{margin-top:7px}
-
-.leaflet-control-attribution{background:rgba(17,24,21,.92)!important;color:var(--faint)!important;
-  font-size:10px!important;border:1px solid var(--line);border-right:0;border-bottom:0;border-radius:0 6px 0 0;padding:3px 8px!important;border-left:0}
-.leaflet-control-attribution a{color:var(--dim)!important}
-.leaflet-control-zoom a{background:rgba(17,24,21,.94)!important;color:var(--dim)!important;border-color:var(--line)!important}
-.leaflet-control-zoom a:hover{color:var(--ink)!important;background:rgba(30,46,37,.98)!important}
-#legend{position:fixed;left:20px;bottom:44px;z-index:880;font-size:10.5px;color:var(--faint);
-  background:rgba(17,24,21,.92);border:1px solid var(--line);border-radius:8px;padding:9px 12px;max-width:260px;line-height:1.6}
-#legend b{color:var(--dim);font-weight:500}
-#hint{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:880;font-size:12px;color:var(--dim);
-  background:rgba(17,24,21,.94);border:1px solid var(--line);border-radius:999px;padding:8px 16px;pointer-events:none;
-  transition:opacity .4s}
-.ttip{background:rgba(17,24,21,.96)!important;border:1px solid rgba(120,140,128,.3)!important;color:#e7e4dc!important;font-size:12px!important;box-shadow:none!important;border-radius:6px!important}
-.ttip:before{display:none!important}
 @media(max-width:760px){
-  #panel{width:100%} #legend{display:none} .leaflet-control-zoom{display:none} #hdr .sub{display:none} #srcbar{position:static;padding:8px 20px 0;flex-wrap:wrap}
+  #modal{width:100%;height:100%;max-height:100%;border-radius:0;top:0;left:0;transform:none}
+  #modal.on{transform:none}
+  #trail{max-width:calc(100vw - 40px);left:20px;right:20px}
+  #hdr .sub{display:none}
 }
 </style>
 </head>
@@ -135,81 +139,1095 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 <div id="map"></div>
 <div id="hdr">
   <h1>How To Reach Them</h1>
-  <div class="sub">Every office you can contact, in every country, down to the local level &mdash; resolved live from Wikidata &mdash; with what each route of contact costs, how often it has actually worked, and the reasons it does not.</div>
+  <div class="sub">Who you can contact to make a law &mdash; in every country, at every level down to the municipality &mdash; what each office can actually do about it, and how often any of it works.</div>
 </div>
-<div id="srcbar">
-  <div class="srcpill"><span class="dot" id="d-wd"></span><span id="t-wd">Wikidata</span></div>
-  <div class="srcpill"><span class="dot" id="d-ov"></span><span id="t-ov">OpenStreetMap</span></div>
-  <div class="srcpill" style="cursor:pointer" onclick="openRoutes()"><span class="dot ok"></span>34 routes</div>
+<div id="tools">
+  <button class="tbtn" onclick="document.getElementById('bmbox').classList.toggle('open')">Basemap</button>
+  <div id="bmbox"></div>
+  <button class="tbtn" onclick="openTab('routes')">Routes of contact</button>
+  <button class="tbtn" onclick="openTab('why')">Why it fails</button>
+  <button class="tbtn" id="upbtn" style="display:none" onclick="goUp()">&uarr; Back up a level</button>
 </div>
-<div id="legend">
-  <b>Click any country</b> to open its offices, then drill down through states, counties and municipalities. Office lists come from Wikidata and are as complete as Wikidata is &mdash; always confirm against the official site.
-</div>
-<div id="hint">Click a country to begin</div>
-
-<div id="panel">
-  <div id="ptop">
-    <button id="pclose" onclick="closePanel()">&times;</button>
-    <div id="ptitle">&nbsp;</div>
-    <div id="psub"></div>
-    <div id="tabs">
-      <button class="tab on" data-t="juris" onclick="setTab('juris')">Who to contact</button>
-      <button class="tab" data-t="routes" onclick="setTab('routes')">How to reach them</button>
-      <button class="tab" data-t="why" onclick="setTab('why')">Why it fails</button>
-    </div>
+<div id="trail">
+  <span class="lbl">Where you are</span>
+  <div id="crumbs"><span class="hint">Click any country to begin. Its states or provinces are drawn on the map; click one of those for its districts, and so on down.</span></div>
+  <div id="status">
+    <span><span class="dot" id="d-wd"></span><span id="t-wd">Wikidata</span></span>
+    <span><span class="dot" id="d-bd"></span><span id="t-bd">Boundaries</span></span>
   </div>
-  <div id="pbody"></div>
+</div>
+<div id="scrim" onclick="closeModal()"></div>
+<div id="modal">
+  <div id="mtop">
+    <button id="mclose" onclick="closeModal()">&times;</button>
+    <div id="mtitle">&nbsp;</div>
+    <div id="msub"></div>
+    <div id="mtabs"></div>
+  </div>
+  <div id="mbody"></div>
 </div>
 <script>
+/* --- shared basemaps, ported verbatim from the Culprits map --- */
+
+/* Culprits basemaps for Leaflet 1.9.4 — the six basemaps of the Culprits map
+ * (https://welcometoyourgalaxy.github.io/culprits/), ported from its map/app.js.
+ * Needs, loaded before this script: Leaflet 1.9.4, maplibre-gl@5.24.0 (JS + CSS)
+ * and @maplibre/maplibre-gl-leaflet@0.1.4.
+ * Use: var bm = CulpritsBasemaps.attach(leafletMap, { initial: "night" }); bm.set("atlas"); bm.current();
+ * Left out from Culprits: its data layers, 3D terrain, globe, sky/atmosphere
+ * and UI (the hologram, menus, notes, the click ring). */
+(function () {
+"use strict";
+var ROOT = "https://welcometoyourgalaxy.github.io/culprits/";
+var LIST = [["satellite", "Jurassic"], ["atlas", "Atlas"],
+  ["night", "Bioluminescent"], ["hell", "Hell"], ["outlines", "Standard"]];
+
+/* ---------- settings, as in Culprits ---------- */
+var PLATE = { url: ROOT + "atlas-plate.webp?v=207",
+  top: 85.05112877980659, bottom: -85.05112877980659, fadeIn: 3, fadeOut: 5 };
+var ATLAS_TUNE = { sat: .15, con: .05, lift: .03, hue: -6, sea: .55, green: .30, warm: .22 };
+var BASE_GRADE = {
+  atlas: { "raster-brightness-min": ATLAS_TUNE.lift, "raster-brightness-max": 1,
+           "raster-saturation": ATLAS_TUNE.sat, "raster-contrast": ATLAS_TUNE.con, "raster-hue-rotate": ATLAS_TUNE.hue },
+  satellite: { "raster-brightness-min": 0.02, "raster-brightness-max": 0.92,
+               "raster-saturation": 0.12, "raster-contrast": 0.06, "raster-hue-rotate": 0 },
+};
+var SAT_RELIEF = {
+  colour: ["interpolate", ["linear"], ["elevation"],
+    -8000, "rgba(10,22,42,0.8)", -3500, "rgba(12,28,50,0.72)", -1200, "rgba(16,40,60,0.6)",
+    -200, "rgba(26,70,86,0.38)", -40, "rgba(40,96,102,0.22)", 0, "rgba(40,90,90,0.1)",
+    1, "rgba(46,52,34,0.32)", 400, "rgba(48,54,36,0.3)", 1000, "rgba(64,70,44,0.28)",
+    1700, "rgba(108,100,66,0.26)", 2500, "rgba(118,90,60,0.3)", 3300, "rgba(110,80,62,0.32)",
+    4300, "rgba(102,92,84,0.3)", 5500, "rgba(132,128,122,0.2)"],
+  seabed: ["interpolate", ["linear"], ["elevation"],
+    -8000, "rgba(10,22,42,0.8)", -3500, "rgba(12,28,50,0.72)", -1200, "rgba(16,40,60,0.6)",
+    -200, "rgba(26,70,86,0.38)", -40, "rgba(40,96,102,0.22)", -1, "rgba(40,90,90,0.1)", 0, "rgba(0,0,0,0)"],
+  sea: ["interpolate", ["linear"], ["elevation"],
+    -8000, "rgba(10,22,42,0.6)", -3000, "rgba(12,26,46,0.55)", -1500, "rgba(14,32,52,0.42)",
+    -400, "rgba(20,48,64,0.2)", -80, "rgba(20,48,64,0)", 0, "rgba(0,0,0,0)"],
+  shade: { "hillshade-method": "multidirectional",
+    "hillshade-illumination-direction": [315, 270, 0, 225], "hillshade-illumination-altitude": [40, 35, 35, 50],
+    "hillshade-highlight-color": ["rgba(240,236,222,0.1)", "rgba(240,236,222,0.04)", "rgba(240,236,222,0.04)", "rgba(240,236,222,0.02)"],
+    "hillshade-shadow-color": ["rgba(18,24,14,0.78)", "rgba(18,24,14,0.42)", "rgba(18,24,14,0.42)", "rgba(18,24,14,0.2)"],
+    "hillshade-accent-color": "rgba(18,24,14,0.3)", "hillshade-exaggeration": 1, "hillshade-illumination-anchor": "map" },
+  depth: { "hillshade-method": "standard", "hillshade-illumination-direction": 315, "hillshade-illumination-anchor": "map",
+    "hillshade-highlight-color": "rgba(240,236,222,0.04)", "hillshade-shadow-color": "rgba(12,18,10,0.55)",
+    "hillshade-accent-color": "rgba(12,18,10,0)", "hillshade-exaggeration": 0.6 },
+};
+var OSM_SOURCE = { type: "vector", url: "https://tiles.openfreemap.org/planet",
+  attribution: '<a href="https://openfreemap.org" target="_blank" rel="noopener">OpenFreeMap</a> © OpenStreetMap contributors' };
+var TERRAIN_SOURCE = { type: "raster-dem", tiles: ["https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"],
+  encoding: "terrarium", tileSize: 256, maxzoom: 12,
+  attribution: '<a href="https://registry.opendata.aws/terrain-tiles/" target="_blank" rel="noopener">AWS Terrain Tiles</a>' };
+var RELIEF_SOURCE = { type: "raster-dem", tiles: ["https://tiles.mapterhorn.com/{z}/{x}/{y}.webp"],
+  encoding: "terrarium", tileSize: 512, maxzoom: 12,
+  attribution: '<a href="https://mapterhorn.com/attribution" target="_blank" rel="noopener">© Mapterhorn</a>' };
+var BOUNDARIES = { type: "geojson", data: ROOT + "data/boundaries.geojson", promoteId: "iso3" };
+var WORLD = { type: "geojson", data: { type: "Feature", properties: {},
+  geometry: { type: "Polygon", coordinates: [[[-180, -85.06], [180, -85.06], [180, 85.06], [-180, 85.06], [-180, -85.06]]] } } };
+
+var HELL = {
+  sheet: "#1E080B",
+  ground: ["interpolate", ["linear"], ["elevation"],
+    -8000, "#110407", -5000, "#18060A", -3000, "#20070C", -1500, "#2A0A0F", -500, "#360C11",
+    -120, "#481116", -20, "#57151A", -1, "#5F181D",
+    0, "#131215", 200, "#151215", 600, "#1A1214", 1200, "#1F1416", 2000, "#241418",
+    3000, "#2B151A", 4200, "#33161C", 5600, "#3B171E"],
+  shade: { "hillshade-method": "multidirectional",
+    "hillshade-illumination-direction": [315, 270, 0, 225], "hillshade-illumination-altitude": [40, 35, 35, 50],
+    "hillshade-highlight-color": ["rgba(150,164,186,0.2)", "rgba(150,164,186,0.08)", "rgba(150,164,186,0.08)", "rgba(150,164,186,0.04)"],
+    "hillshade-shadow-color": ["rgba(0,0,0,0.8)", "rgba(0,0,0,0.45)", "rgba(0,0,0,0.45)", "rgba(0,0,0,0.25)"],
+    "hillshade-accent-color": "rgba(0,0,0,0.3)", "hillshade-exaggeration": 1, "hillshade-illumination-anchor": "map" },
+  coast: "#521419", lake: "#3A0C11", lakeEdge: "#5E171C", river: "#9C252B", riverGlow: "#6A1318",
+  grave: "#561519", graveEdge: "#74202A", town: "#1C1719", townWork: "#221C1E",
+  road: ["#2B1C1E", "#3A2124", "#4C2529"], rail: "#3A3034", building: "#201B1D",
+  border: "rgba(170,58,62,0.32)",
+};
+var WOOD = {
+  sheet: "#1E3326",
+  source: "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2024_3857/default/g/{z}/{y}/{x}.jpg",
+  sourceMaxzoom: 14,
+  attribution: '<a href="https://s2maps.eu" target="_blank" rel="noopener">Sentinel-2 cloudless - https://s2maps.eu</a> by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2024)',
+  greens: [[0, "#10221A"], [0.2, "#183320"], [0.4, "#25482A"], [0.6, "#3D6230"], [0.78, "#6B8638"], [0.9, "#A2A253"], [1, "#D6C67E"]],
+  earths: [[0, "#2E2116"], [0.25, "#5A4027"], [0.5, "#8A6639"], [0.75, "#B38C53"], [1, "#DCC08A"]],
+  waters: [[0, "#24414A"], [0.35, "#2F5054"], [0.65, "#4C7068"], [1, "#93A88A"]],
+  snow: "#EDE4CC", paper: "#F1E6C8",
+  sea: ["interpolate", ["linear"], ["elevation"],
+    -8000, "#1C3A46", -4000, "#24464E", -1500, "#2C5254", -400, "#3A6260", -60, "#4F7568", -1, "#5E806C", 0, "rgba(0,0,0,0)"],
+  seaOpacity: 0.35,
+  mist: ["interpolate", ["linear"], ["elevation"],
+    -1, "rgba(234,220,170,0)", 0, "rgba(234,220,170,0.16)", 300, "rgba(234,220,170,0.1)", 1000, "rgba(234,220,170,0)"],
+  shade: { "hillshade-method": "multidirectional",
+    "hillshade-illumination-direction": [225, 270, 180, 0], "hillshade-illumination-altitude": [24, 32, 32, 55],
+    "hillshade-highlight-color": ["rgba(250,222,150,0.36)", "rgba(250,222,150,0.14)", "rgba(250,222,150,0.1)", "rgba(250,222,150,0.04)"],
+    "hillshade-shadow-color": ["rgba(10,30,28,0.46)", "rgba(10,30,28,0.24)", "rgba(10,30,28,0.18)", "rgba(10,30,28,0.1)"],
+    "hillshade-accent-color": "rgba(10,30,28,0.22)", "hillshade-exaggeration": 1, "hillshade-illumination-anchor": "map" },
+  lake: "#2F5054", lakeOpacity: 0.35, river: "#6E8C7C", town: "#8A7556", townWork: "#7A684D",
+  road: ["#6A5840", "#5C4C37", "#4E402E"], rail: "#3A3024", building: "#8A7558",
+  border: "rgba(30,22,12,0.45)",
+  brushes: [
+    { sp: 9, len: [15, 25], w: [6, 9], a: [0.5, 0.78], detail: 0, often: 1 },
+    { sp: 6, len: [8, 14], w: [3, 5], a: [0.5, 0.8], detail: 2.5, often: 0.35 },
+    { sp: 4, len: [4, 7], w: [1.6, 2.6], a: [0.5, 0.85], detail: 5, often: 0.08 },
+  ],
+  margin: 32, lightReach: 10, lift: 0.1,
+  photo: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+  photoAttribution: "Imagery © Esri, Maxar",
+  photoFrom: 15.5, photoFull: 16.5, photoGrade: 0.35,
+};
+var NIGHT = {
+  tiles: "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/VIIRS_Black_Marble/default/2016-01-01/GoogleMapsCompatible_Level8/{z}/{y}/{x}.png",
+  ramp: [[0, "#02040C"], [14, "#050918"], [34, "#0B1430"], [62, "#17295A"], [100, "#2E5390"],
+         [145, "#5E8DC2"], [190, "#A5C7E2"], [230, "#DCE8F0"], [255, "#F1F4F6"]],
+  sheet: "#02040C",
+  shade: { "hillshade-method": "multidirectional",
+    "hillshade-illumination-direction": [315, 270, 0, 225], "hillshade-illumination-altitude": [35, 30, 30, 45],
+    "hillshade-highlight-color": ["rgba(170,196,230,0.12)", "rgba(170,196,230,0.05)", "rgba(170,196,230,0.05)", "rgba(170,196,230,0.03)"],
+    "hillshade-shadow-color": ["rgba(0,1,6,0.45)", "rgba(0,1,6,0.25)", "rgba(0,1,6,0.25)", "rgba(0,1,6,0.15)"],
+    "hillshade-accent-color": "rgba(0,1,6,0.15)", "hillshade-exaggeration": 0.8, "hillshade-illumination-anchor": "map" },
+  road: ["rgba(150,186,222,0.30)", "rgba(170,202,232,0.45)", "rgba(206,226,240,0.70)"], roadGlow: "#2D5C96",
+  seaGlow: ["interpolate", ["linear"], ["elevation"],
+    -9000, "rgba(31,79,126,0)", -150, "rgba(31,79,126,0)", -60, "rgba(31,79,126,0.28)", -15, "rgba(31,79,126,0.55)",
+    -3, "rgba(74,154,182,0.85)", 0, "rgba(74,154,182,0)", 9000, "rgba(74,154,182,0)"],
+  border: "rgba(120,140,196,0.32)",
+  attribution: '<a href="https://earthobservatory.nasa.gov/features/NightLights" target="_blank" rel="noopener">NASA Black Marble 2016</a> via GIBS',
+};
+// Place names in each basemap's own type (Culprits rounds 163h, 165b, 167p).
+var NAMES = {
+  atlas: { font: { caps: ["IMFellEnglishSC-Regular"], regular: ["IMFellEnglish-Regular"], italic: ["IMFellEnglish-Italic"], bold: ["IMFellEnglish-Regular"] },
+    colour: { country: "#E6DAC0", state: "#CFC3A8", city: "#EEE5D0", town: "#DCD2BC", minor: "#C9C0AC", water: "#A8CFCB", peak: "#C9C0AC" },
+    halo: "rgba(14,22,22,0.82)", haloWater: "rgba(10,26,30,0.8)", blur: 0.6, hw: function () { return 1.3; },
+    sp: { ocean: 0.18, water: 0.06, river: 0.08, state: 0.12, country: 0.24 },
+    op: function () { return ["interpolate", ["linear"], ["zoom"], PLATE.fadeIn, 0, PLATE.fadeOut, 1]; } },
+  satellite: { font: { caps: ["BarlowSemiCondensed-Medium"], regular: ["BarlowSemiCondensed-Regular"], italic: ["BarlowSemiCondensed-Italic"], bold: ["BarlowSemiCondensed-Medium"] },
+    colour: { country: "#E2E5E4", state: "#C4CACB", city: "#E8EAE8", town: "#CDD1D0", minor: "#B5BBBC", water: "#A9C4D2", peak: "#B5BBBC" },
+    halo: "rgba(10,12,14,0.8)", haloWater: "rgba(8,16,24,0.78)", blur: 0.6, hw: function () { return 1.2; },
+    sp: { ocean: 0.3, water: 0.06, river: 0.08, state: 0.12, country: 0.36 }, op: function () { return 0.95; } },
+};
+var HW_OWN = { ocean: 1, water: 1, river: 1, road: 1.2, peak: 1.1, village: 1.2, town: 1.2, state: 1, city: 1.3, country: 1.3 };
+var SP_OWN = { ocean: 0.22, water: 0.08, river: 0.1, state: 0.15, country: 0.26 };
+var OP_OWN = function (p) { return p === "state" ? 0.9 : undefined; };
+var GARAMOND = { regular: ["EBGaramond-Regular"], bold: ["EBGaramond-SemiBold"], italic: ["EBGaramond-Italic"], caps: ["EBGaramond-SemiBold"] };
+NAMES.hell = { font: GARAMOND, blur: 0.6, hw: function (p) { return HW_OWN[p]; }, sp: SP_OWN, op: OP_OWN,
+  colour: { country: "#A9504C", state: "#8C4A47", city: "#CDBDB4", town: "#B4A39B", minor: "#9A8B85", water: "#B0605F", peak: "#958680" },
+  halo: "rgba(8,4,5,0.85)", haloWater: "rgba(24,6,9,0.8)" };
+NAMES.wood = { font: GARAMOND, blur: 0.8, hw: function (p) { return HW_OWN[p]; }, sp: SP_OWN, op: OP_OWN,
+  colour: { country: "#E6D8AE", state: "#D2C49C", city: "#F0E6C8", town: "#E0D4B2", minor: "#CBBF9E", water: "#C3D4C4", peak: "#D4C8A2" },
+  halo: "rgba(14,30,18,0.78)", haloWater: "rgba(12,34,36,0.78)" };
+
+/* ---------- PNG writer (stored, uncompressed), as in Culprits ---------- */
+var PNG_CRC = (function () {
+  var t = new Uint32Array(256);
+  for (var n = 0; n < 256; n++) { var c = n; for (var k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; }
+  return t;
+})();
+function pngCrc(b, a, e) { let c = 0xFFFFFFFF; for (let i = a; i < e; i++) c = PNG_CRC[(c ^ b[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+function rawPng(rgba, w, h) {
+  const row = w * 4 + 1, raw = row * h, blocks = Math.ceil(raw / 65535);
+  const zlen = 2 + raw + blocks * 5 + 4;
+  const out = new Uint8Array(8 + 25 + (12 + zlen) + 12);
+  const dv = new DataView(out.buffer);
+  out.set([137, 80, 78, 71, 13, 10, 26, 10], 0);
+  let o = 8;
+  const chunk = (type, len, fill) => {
+    dv.setUint32(o, len); o += 4;
+    const start = o;
+    for (let i = 0; i < 4; i++) out[start + i] = type.charCodeAt(i);
+    fill(start + 4); o = start + 4 + len;
+    dv.setUint32(o, pngCrc(out, start, o)); o += 4;
+  };
+  chunk("IHDR", 13, (at) => { dv.setUint32(at, w); dv.setUint32(at + 4, h); out.set([8, 6, 0, 0, 0], at + 8); });
+  chunk("IDAT", zlen, (at) => {
+    let q = at;
+    out[q++] = 0x78; out[q++] = 0x01;
+    let a1 = 1, a2 = 0, left = raw, i = 0;
+    while (left > 0) {
+      const n = Math.min(65535, left);
+      left -= n;
+      out[q++] = left === 0 ? 1 : 0; out[q++] = n & 255; out[q++] = n >> 8; out[q++] = ~n & 255; out[q++] = (~n >> 8) & 255;
+      for (let k = 0; k < n; k++, i++) {
+        const y = (i / row) | 0, x = i - y * row;
+        const v = x === 0 ? 0 : rgba[y * w * 4 + x - 1];
+        out[q++] = v;
+        a1 = (a1 + v) % 65521; a2 = (a2 + a1) % 65521;
+      }
+    }
+    dv.setUint32(q, ((a2 << 16) | a1) >>> 0);
+  });
+  chunk("IEND", 0, () => {});
+  return out.buffer;
+}
+function canvas2d(w, h) {
+  const cv = typeof OffscreenCanvas !== "undefined" ? new OffscreenCanvas(w, h) : Object.assign(document.createElement("canvas"), { width: w, height: h });
+  return cv.getContext("2d", { willReadFrequently: true });
+}
+
+/* ---------- the painted plate (Atlas), cut into map squares ---------- */
+let plateBitmap = null;
+const plateMerc = (lat) => (1 - Math.log(Math.tan(Math.PI / 4 + lat * Math.PI / 360)) / Math.PI) / 2;
+async function platePiece(z, x, y) {
+  if (!plateBitmap) {
+    plateBitmap = fetch(PLATE.url).then((r) => { if (!r.ok) throw new Error(`${r.status}`); return r.blob(); }).then((b) => createImageBitmap(b));
+    plateBitmap.catch(() => { plateBitmap = null; });
+  }
+  const img = await plateBitmap;
+  const n = Math.pow(2, z), top = plateMerc(PLATE.top), bot = plateMerc(PLATE.bottom);
+  const ctx = canvas2d(256, 256);
+  const y0 = y / n, y1 = (y + 1) / n;
+  const a = Math.max(y0, top), b = Math.min(y1, bot);
+  if (b > a) {
+    const sy = (a - top) / (bot - top) * img.height, sh = (b - a) / (bot - top) * img.height;
+    const dy = (a - y0) * n * 256, dh = (b - a) * n * 256;
+    ctx.imageSmoothingQuality = "high";
+    ctx.drawImage(img, x / n * img.width, sy, img.width / n, sh, 0, dy, 256, dh);
+  }
+  return rawPng(ctx.getImageData(0, 0, 256, 256).data, 256, 256);
+}
+
+/* ---------- the Atlas's colour washes, a WebGL layer (Culprits atlasWashes) ---------- */
+function hexRgb(h) { const n = parseInt(h.slice(1), 16); return [(n >> 16 & 255) / 255, (n >> 8 & 255) / 255, (n & 255) / 255]; }
+function atlasWashPasses(z) {
+  const t = z <= 6 ? 1 : z >= 13 ? 0.45 : 1 - (z - 6) * (0.55 / 7), sea = z <= 6 ? 1 : 0.7;
+  const passes = [];
+  const aSea = ATLAS_TUNE.sea * sea;
+  passes.push({ mode: "screen", rgb: hexRgb("#0f3b52").map((c) => c * aSea) });
+  const aG = ATLAS_TUNE.green * t;
+  passes.push({ mode: "multiply", rgb: hexRgb("#5f8f3a").map((c) => 1 - aG * (1 - (c < .5 ? .5 + c : 1))) });
+  const aW = ATLAS_TUNE.warm * t, warm = hexRgb("#f0c073");
+  passes.push({ mode: "gain", rgb: warm.map((c) => c > .5 ? aW * (2 * c - 1) : 0) });
+  passes.push({ mode: "multiply", rgb: warm.map((c) => c < .5 ? 1 - aW * (1 - 2 * c) : 1) });
+  return passes;
+}
+function washLayer(state) {
+  return {
+    id: "atlas-washes", type: "custom", renderingMode: "2d",
+    onAdd(m, gl) {
+      this.map = m; this.programs = new Map();
+      const v = [], cols = 96, rows = 64;
+      for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
+        const x0 = i / cols, x1 = (i + 1) / cols, y0 = j / rows, y1 = (j + 1) / rows;
+        v.push(x0, y0, x1, y0, x0, y1, x1, y0, x1, y1, x0, y1);
+      }
+      this.mesh = new Float32Array(v);
+      this.buf = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.buf);
+      gl.bufferData(gl.ARRAY_BUFFER, this.mesh, gl.STATIC_DRAW);
+    },
+    program(gl, sd) {
+      if (this.programs.has(sd.variantName)) return this.programs.get(sd.variantName);
+      const sh = (type, src) => { const o = gl.createShader(type); gl.shaderSource(o, src); gl.compileShader(o);
+        if (!gl.getShaderParameter(o, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(o)); return o; };
+      const p = gl.createProgram();
+      gl.attachShader(p, sh(gl.VERTEX_SHADER, `#version 300 es\n${sd.vertexShaderPrelude}\n${sd.define}\nin vec2 a_pos;\nvoid main() { gl_Position = projectTile(a_pos); }`));
+      gl.attachShader(p, sh(gl.FRAGMENT_SHADER, "#version 300 es\nprecision mediump float;\nuniform vec3 c;\nout vec4 colour;\nvoid main() { colour = vec4(c, 1.0); }"));
+      gl.linkProgram(p);
+      if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p));
+      const u = (n) => gl.getUniformLocation(p, n);
+      const prog = { p, aPos: gl.getAttribLocation(p, "a_pos"), uCol: u("c"), uMatrix: u("u_projection_matrix"),
+        uFallback: u("u_projection_fallback_matrix"), uTile: u("u_projection_tile_mercator_coords"),
+        uClip: u("u_projection_clipping_plane"), uTransition: u("u_projection_transition") };
+      this.programs.set(sd.variantName, prog);
+      return prog;
+    },
+    render(gl, o) {
+      // Culprits draws these on every imagery basemap; only on the Atlas do they
+      // show (Jurassic has no passes, the others cover them with an opaque sheet).
+      if (this.failed || state.kind !== "atlas" || !o || !o.shaderData) return;
+      let prog;
+      try { prog = this.program(gl, o.shaderData); } catch (e) { this.failed = true; console.warn("[basemaps] atlas washes unavailable:", e.message || e); return; }
+      if (gl.bindVertexArray) gl.bindVertexArray(null);
+      gl.disable(gl.DEPTH_TEST); gl.disable(gl.STENCIL_TEST); gl.disable(gl.CULL_FACE);
+      gl.useProgram(prog.p);
+      const d = o.defaultProjectionData;
+      if (prog.uMatrix) gl.uniformMatrix4fv(prog.uMatrix, false, d.mainMatrix);
+      if (prog.uFallback) gl.uniformMatrix4fv(prog.uFallback, false, d.fallbackMatrix);
+      if (prog.uTile) gl.uniform4f(prog.uTile, ...d.tileMercatorCoords);
+      if (prog.uClip) gl.uniform4f(prog.uClip, ...d.clippingPlane);
+      if (prog.uTransition) gl.uniform1f(prog.uTransition, d.projectionTransition);
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.buf);
+      gl.enableVertexAttribArray(prog.aPos);
+      gl.vertexAttribPointer(prog.aPos, 2, gl.FLOAT, false, 0, 0);
+      gl.enable(gl.BLEND);
+      const func = { screen: [gl.ONE, gl.ONE_MINUS_SRC_COLOR], multiply: [gl.ZERO, gl.SRC_COLOR], gain: [gl.DST_COLOR, gl.ONE] };
+      for (const pass of atlasWashPasses(this.map.getZoom())) {
+        const f = func[pass.mode];
+        gl.blendFuncSeparate(f[0], f[1], gl.ZERO, gl.ONE);
+        gl.uniform3f(prog.uCol, pass.rgb[0], pass.rgb[1], pass.rgb[2]);
+        gl.drawArrays(gl.TRIANGLES, 0, this.mesh.length / 2);
+      }
+    },
+  };
+}
+
+/* ---------- Woodlands: the Earth re-painted in watercolour and brushstrokes ---------- */
+function woodHex(h) { return [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16)); }
+function woodRamp(stops) {
+  const s = stops.map(([t, c]) => [t, woodHex(c)]);
+  return (t) => {
+    if (t <= s[0][0]) return s[0][1];
+    for (let i = 1; i < s.length; i++) if (t <= s[i][0]) {
+      const u = (t - s[i - 1][0]) / (s[i][0] - s[i - 1][0]), a = s[i - 1][1], b = s[i][1];
+      return [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u, a[2] + (b[2] - a[2]) * u];
+    }
+    return s[s.length - 1][1];
+  };
+}
+function woodGrain(x, y) {
+  const h = (i, j) => (Math.imul(Math.imul(i, 374761393) ^ Math.imul(j, 668265263), 1274126177) >>> 0) / 4294967296;
+  const i = Math.floor(x), j = Math.floor(y), fx = x - i, fy = y - j;
+  const a = h(i, j) + (h(i + 1, j) - h(i, j)) * fx, b = h(i, j + 1) + (h(i + 1, j + 1) - h(i, j + 1)) * fx;
+  return a + (b - a) * fy;
+}
+function woodPaintPixels(data, w, h, gx0, gy0, soft) {
+  gx0 = gx0 || 0; gy0 = gy0 || 0; soft = Math.max(1, Math.min(4, soft || 1));
+  const greens = woodRamp(WOOD.greens), earths = woodRamp(WOOD.earths), waters = woodRamp(WOOD.waters), snow = woodHex(WOOD.snow), paper = woodHex(WOOD.paper);
+  const n = w * h, W = w + 1;
+  const sat = (A) => { const S = new Float64Array(W * (h + 1)); for (let y = 0; y < h; y++) { let row = 0; for (let x = 0; x < w; x++) { row += A[y * w + x]; S[(y + 1) * W + x + 1] = S[y * W + x + 1] + row; } } return S; };
+  const blur = (A, r) => {
+    r = Math.round(r);
+    if (r < 1) return A;
+    let cur = A;
+    for (let pass = 0; pass < 2; pass++) {
+      const S = sat(cur), out = new Float32Array(n);
+      for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+        const x0 = Math.max(0, x - r), x1 = Math.min(w - 1, x + r), y0 = Math.max(0, y - r), y1 = Math.min(h - 1, y + r);
+        out[y * w + x] = (S[(y1 + 1) * W + x1 + 1] - S[y0 * W + x1 + 1] - S[(y1 + 1) * W + x0] + S[y0 * W + x0]) / ((x1 - x0 + 1) * (y1 - y0 + 1));
+      }
+      cur = out;
+    }
+    return cur;
+  };
+  const V = new Float32Array(n), T = new Float32Array(n), K = new Uint8Array(n);
+  for (let p = 0; p < n; p++) {
+    const r = data[p * 4], g = data[p * 4 + 1], b = data[p * 4 + 2];
+    const lum = (0.3 * r + 0.59 * g + 0.11 * b) / 255, mx = Math.max(r, g, b), mn = Math.min(r, g, b);
+    if ((b > g + 6 && b > r + 10 && lum < 0.45) || (lum < 0.07 && b >= r)) K[p] = 1;
+    else if (lum > 0.72 && mx - mn < 28) K[p] = 2;
+    V[p] = Math.max(0, Math.min(1, ((2 * g - r - b) / 255 + 0.01) / 0.1));
+    if (K[p] === 1) T[p] = Math.max(0, Math.min(1, (lum - 0.02) / 0.35));
+    else {
+      const t = Math.min(1, Math.pow(Math.max(0, lum - 0.015) / 0.45, 0.75));
+      T[p] = Math.max(0, Math.min(1, 0.5 + (t - 0.5) * 1.15));
+    }
+  }
+  const Vs = blur(V, 3 * soft), Tp = blur(T, soft - 0.5);
+  const Tw = blur(T, WOOD.lightReach * soft), Ts = new Float32Array(n);
+  for (let p = 0; p < n; p++) Ts[p] = Math.min(Tp[p], Tw[p] + WOOD.lift);
+  const R = new Float32Array(n), G = new Float32Array(n), B = new Float32Array(n);
+  for (let p = 0; p < n; p++) {
+    let c;
+    if (K[p] === 1) c = waters(Ts[p]);
+    else if (K[p] === 2) c = snow;
+    else {
+      const v = 0.92 * Vs[p], a = greens(Ts[p]), e = earths(Ts[p]);
+      c = [e[0] + (a[0] - e[0]) * v, e[1] + (a[1] - e[1]) * v, e[2] + (a[2] - e[2]) * v];
+    }
+    R[p] = c[0]; G[p] = c[1]; B[p] = c[2];
+  }
+  const Rb = blur(R, 3 * soft), Gb = blur(G, 3 * soft), Bb = blur(B, 3 * soft);
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+    const p = y * w + x, q = p * 4;
+    let r = R[p] * 0.45 + Rb[p] * 0.55, g = G[p] * 0.45 + Gb[p] * 0.55, b = B[p] * 0.45 + Bb[p] * 0.55;
+    const L = 0.3 * r + 0.59 * g + 0.11 * b;
+    const grain = 0.6 * woodGrain((gx0 + x) / 1.7, (gy0 + y) / 1.7) + 0.4 * woodGrain((gx0 + x) / 6 + 11, (gy0 + y) / 6 + 7) - 0.5;
+    const k = 1 + grain * (0.04 + 0.05 * (1 - L / 255));
+    const show = 0.03 + 0.08 * (L / 255);
+    data[q] = (r * k) + (paper[0] - r * k) * show; data[q + 1] = (g * k) + (paper[1] - g * k) * show;
+    data[q + 2] = (b * k) + (paper[2] - b * k) * show; data[q + 3] = 255;
+  }
+  return data;
+}
+function woodStrokes(painted, N, M, z, gx0, gy0) {
+  const S = 256, out = new Uint8ClampedArray(S * S * 4), n = N * N;
+  for (let y = 0; y < S; y++) for (let x = 0; x < S; x++) {
+    const p = ((y + M) * N + x + M) * 4, q = (y * S + x) * 4;
+    out[q] = painted[p]; out[q + 1] = painted[p + 1]; out[q + 2] = painted[p + 2]; out[q + 3] = 255;
+  }
+  const L = new Float32Array(n);
+  for (let p = 0; p < n; p++) L[p] = 0.3 * painted[p * 4] + 0.59 * painted[p * 4 + 1] + 0.11 * painted[p * 4 + 2];
+  const XX = new Float32Array(n), YY = new Float32Array(n), XY = new Float32Array(n);
+  for (let y = 1; y < N - 1; y++) for (let x = 1; x < N - 1; x++) {
+    const i = y * N + x;
+    const gx = (L[i - N + 1] + 2 * L[i + 1] + L[i + N + 1] - L[i - N - 1] - 2 * L[i - 1] - L[i + N - 1]) / 8;
+    const gy = (L[i + N - 1] + 2 * L[i + N] + L[i + N + 1] - L[i - N - 1] - 2 * L[i - N] - L[i - N + 1]) / 8;
+    XX[i] = gx * gx; YY[i] = gy * gy; XY[i] = gx * gy;
+  }
+  const W = N + 1, sum = (A) => { const T = new Float64Array(W * W); for (let y = 0; y < N; y++) { let row = 0; for (let x = 0; x < N; x++) { row += A[y * N + x]; T[(y + 1) * W + x + 1] = T[y * W + x + 1] + row; } } return T; };
+  const SXX = sum(XX), SYY = sum(YY), SXY = sum(XY);
+  const near = (T, x, y, r) => { const x0 = Math.max(0, x - r), x1 = Math.min(N - 1, x + r), y0 = Math.max(0, y - r), y1 = Math.min(N - 1, y + r); return (T[(y1 + 1) * W + x1 + 1] - T[y0 * W + x1 + 1] - T[(y1 + 1) * W + x0] + T[y0 * W + x0]) / ((x1 - x0 + 1) * (y1 - y0 + 1)); };
+  const rand = (seed) => { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; };
+  const CELL = 72, world = 256 * Math.pow(2, z);
+  const sx0 = gx0 + M, sy0 = gy0 + M;
+  const reach = 30;
+  const c0 = Math.floor((sx0 - reach) / CELL), c1 = Math.floor((sx0 + S + reach) / CELL);
+  const r0 = Math.floor((sy0 - reach) / CELL), r1 = Math.floor((sy0 + S + reach) / CELL);
+  WOOD.brushes.forEach((br, li) => {
+    for (let cr = r0; cr <= r1; cr++) for (let cc = c0; cc <= c1; cc++) {
+      const wc = ((cc % Math.ceil(world / CELL)) + Math.ceil(world / CELL)) % Math.ceil(world / CELL);
+      const rnd = rand(Math.imul(z + 1, 73856093) ^ Math.imul(li + 1, 2654435761) ^ Math.imul(wc + 7, 19349663) ^ Math.imul(cr + 7, 83492791));
+      for (let oy = 0; oy < CELL; oy += br.sp) for (let ox = 0; ox < CELL; ox += br.sp) {
+        const wx = cc * CELL + ox + rnd() * br.sp, wy = cr * CELL + oy + rnd() * br.sp;
+        const len = br.len[0] + rnd() * (br.len[1] - br.len[0]), wd = br.w[0] + rnd() * (br.w[1] - br.w[0]);
+        const alpha = br.a[0] + rnd() * (br.a[1] - br.a[0]), chance = rnd(), jit = rnd() - 0.5, slant = rnd() - 0.5, bend = (rnd() - 0.5) * 4;
+        const id = (rnd() * 1e9) | 0, f1 = 2 + rnd() * 1.5, ph = rnd() * 6.28, warm = rnd() - 0.5;
+        const px = Math.floor(wx - gx0), py = Math.floor(wy - gy0);
+        if (px < 1 || py < 1 || px >= N - 1 || py >= N - 1) continue;
+        const cx = wx - sx0, cy = wy - sy0;
+        const ext = len / 2 + wd / 2 + 3;
+        if (cx < -ext || cx > S + ext || cy < -ext || cy > S + ext) continue;
+        const jxx = near(SXX, px, py, 4), jyy = near(SYY, px, py, 4), jxy = near(SXY, px, py, 4);
+        const tr = jxx + jyy, detail = Math.sqrt(tr);
+        if (br.detail > 0 && detail < br.detail && chance > br.often) continue;
+        const coh = tr > 1e-6 ? Math.sqrt((jxx - jyy) * (jxx - jyy) + 4 * jxy * jxy) / tr : 0;
+        const along = 0.5 * Math.atan2(2 * jxy, jxx - jyy) + Math.PI / 2;
+        const hand = -0.55 + 0.35 * slant;
+        const k = Math.min(1, coh * Math.min(1, detail / 2));
+        const ang = Math.atan2(k * Math.sin(2 * along) + (1 - k) * Math.sin(2 * hand), k * Math.cos(2 * along) + (1 - k) * Math.cos(2 * hand)) / 2 + jit * 0.2;
+        const pi = (py * N + px) * 4, f = 1 + jit * 0.1;
+        const col = [painted[pi] * f * (1 + warm * 0.04), painted[pi + 1] * f, painted[pi + 2] * f * (1 - warm * 0.05)];
+        const ux = Math.cos(ang), uy = Math.sin(ang), h = len / 2, hw = wd / 2;
+        const i0 = Math.max(0, Math.floor(cx - ext)), i1 = Math.min(S - 1, Math.ceil(cx + ext));
+        const j0 = Math.max(0, Math.floor(cy - ext)), j1 = Math.min(S - 1, Math.ceil(cy + ext));
+        for (let j = j0; j <= j1; j++) for (let i = i0; i <= i1; i++) {
+          const qx = i + 0.5 - cx, qy = j + 0.5 - cy, t = qx * ux + qy * uy;
+          if (t < -h || t > h) continue;
+          const tt = t / h, u = (-qx * uy + qy * ux) - bend * (tt * tt - 0.33);
+          const half = hw * (0.55 + 0.45 * Math.sqrt(1 - tt * tt));
+          if (Math.abs(u) > half) continue;
+          const bi = Math.floor((u + half) / 1.2);
+          const hb = (Math.imul(id ^ Math.imul(bi + 7, 0x9E3779B1), 0x85EBCA6B) >>> 0) / 4294967296;
+          if (Math.abs(tt) > 0.62 + 0.38 * hb) continue;
+          const edge = Math.min(1, (half - Math.abs(u)) / 1.5);
+          const bristle = 0.5 + 0.5 * hb + 0.08 * Math.sin(u * f1 + ph);
+          const a = Math.min(1, alpha * edge * bristle * (0.65 + 0.35 * (1 - Math.abs(tt))));
+          const ridge = 1 + 0.07 * (-u / (half || 1));
+          const q = (j * S + i) * 4;
+          out[q] = out[q] + (col[0] * ridge - out[q]) * a;
+          out[q + 1] = out[q + 1] + (col[1] * ridge - out[q + 1]) * a;
+          out[q + 2] = out[q + 2] + (col[2] * ridge - out[q + 2]) * a;
+        }
+      }
+    }
+  });
+  return out;
+}
+function woodWork(d) { const px = new Uint8ClampedArray(d.data); woodPaintPixels(px, d.N, d.N, d.gx0, d.gy0, d.soft); return rawPng(woodStrokes(px, d.N, d.M, d.z, d.gx0, d.gy0), 256, 256); }
+// Two helpers off the page's thread, made from a Blob; on the page if they cannot start.
+var WOOD_HELPERS = null, WOOD_JOBS = new Map(), WOOD_JOB = 0;
+function woodHelpers() {
+  if (WOOD_HELPERS !== null) return WOOD_HELPERS;
+  WOOD_HELPERS = [];
+  try {
+    const code = "var WOOD = " + JSON.stringify(WOOD) + ";\nvar PNG_CRC = new Uint32Array([" + Array.from(PNG_CRC).join(",") + "]);\n" +
+      [woodHex, woodRamp, woodGrain, woodPaintPixels, woodStrokes, pngCrc, rawPng, woodWork].map(String).join("\n") +
+      "\nonmessage = (e) => { try { const png = woodWork(e.data); postMessage({ id: e.data.id, png }, [png]); } catch (err) { postMessage({ id: e.data.id, error: String(err) }); } };";
+    const url = URL.createObjectURL(new Blob([code], { type: "text/javascript" }));
+    for (let i = 0; i < 2; i++) {
+      const wk = new Worker(url);
+      wk.onmessage = (e) => { const job = WOOD_JOBS.get(e.data.id); if (!job) return; WOOD_JOBS.delete(e.data.id); if (e.data.error) job.no(new Error(e.data.error)); else job.yes(e.data.png); };
+      WOOD_HELPERS.push(wk);
+    }
+  } catch (e) { WOOD_HELPERS = []; }
+  return WOOD_HELPERS;
+}
+function woodPaintJob(d) {
+  const hs = woodHelpers();
+  if (!hs.length) return Promise.resolve(woodWork(d));
+  const id = ++WOOD_JOB;
+  return new Promise((yes, no) => { WOOD_JOBS.set(id, { yes, no }); hs[id % hs.length].postMessage(Object.assign({ id }, d), [d.data]); });
+}
+var WOOD_SRC = new Map();
+function woodSourceSquare(z, x, y) {
+  const n = Math.pow(2, z);
+  if (y < 0 || y >= n) return Promise.resolve(null);
+  x = ((x % n) + n) % n;
+  const key = z + "/" + x + "/" + y;
+  let p = WOOD_SRC.get(key);
+  if (!p) {
+    const url = WOOD.source.replace("{z}", z).replace("{x}", x).replace("{y}", y);
+    p = fetch(url).then((r) => (r.ok ? r.blob() : null)).then((b) => (b ? createImageBitmap(b) : null)).then((bm) => {
+      if (!bm) return null;
+      const g = canvas2d(256, 256);
+      g.drawImage(bm, 0, 0, 256, 256);
+      return g.getImageData(0, 0, 256, 256).data;
+    }).catch(() => null);
+    WOOD_SRC.set(key, p);
+    if (WOOD_SRC.size > 96) WOOD_SRC.delete(WOOD_SRC.keys().next().value);
+  }
+  return p;
+}
+async function woodComposite(z, x, y, M) {
+  const zz = Math.min(z, WOOD.sourceMaxzoom), k = Math.pow(2, z - zz), N = 256 + 2 * M;
+  const gx0 = x * 256 - M, gy0 = y * 256 - M;
+  const a0 = Math.floor((gx0 / k - 1) / 256), a1 = Math.floor(((gx0 + N) / k + 1) / 256);
+  const b0 = Math.floor((gy0 / k - 1) / 256), b1 = Math.floor(((gy0 + N) / k + 1) / 256);
+  const got = new Map(), wait = [];
+  for (let b = b0; b <= b1; b++) for (let a = a0; a <= a1; a++) wait.push(woodSourceSquare(zz, a, b).then((d) => got.set(a + "/" + b, d)));
+  await Promise.all(wait);
+  const lim = Math.pow(2, zz) * 256 - 1;
+  const px = (sx, sy, c) => {
+    sy = Math.max(0, Math.min(lim, sy));
+    const a = Math.floor(sx / 256), b = Math.floor(sy / 256), d = got.get(a + "/" + b);
+    if (!d) return [42, 70, 46][c];
+    return d[((sy - b * 256) * 256 + (sx - a * 256)) * 4 + c];
+  };
+  const out = new Uint8ClampedArray(N * N * 4);
+  for (let v = 0; v < N; v++) for (let u = 0; u < N; u++) {
+    const fx = (gx0 + u + 0.5) / k - 0.5, fy = (gy0 + v + 0.5) / k - 0.5;
+    const ax = Math.floor(fx), ay = Math.floor(fy), tx = fx - ax, ty = fy - ay, q = (v * N + u) * 4;
+    for (let c = 0; c < 3; c++) {
+      const top = px(ax, ay, c) * (1 - tx) + px(ax + 1, ay, c) * tx, bot = px(ax, ay + 1, c) * (1 - tx) + px(ax + 1, ay + 1, c) * tx;
+      out[q + c] = top * (1 - ty) + bot * ty;
+    }
+    out[q + 3] = 255;
+  }
+  return { data: out.buffer, N, M, z, gx0, gy0, soft: k };
+}
+function woodGradePixels(data, w, h) {
+  const greens = woodRamp(WOOD.greens), earths = woodRamp(WOOD.earths), waters = woodRamp(WOOD.waters), snow = woodHex(WOOD.snow), g0 = WOOD.photoGrade;
+  for (let p = 0, n = w * h; p < n; p++) {
+    const q = p * 4, r = data[q], g = data[q + 1], b = data[q + 2];
+    const lum = (0.3 * r + 0.59 * g + 0.11 * b) / 255, mx = Math.max(r, g, b), mn = Math.min(r, g, b);
+    let c;
+    if ((b > g + 6 && b > r + 10 && lum < 0.45) || (lum < 0.07 && b >= r)) c = waters(Math.max(0, Math.min(1, (lum - 0.02) / 0.35)));
+    else if (lum > 0.72 && mx - mn < 28) c = snow;
+    else {
+      const v = 0.92 * Math.max(0, Math.min(1, ((2 * g - r - b) / 255 + 0.01) / 0.1));
+      const t0 = Math.min(1, Math.pow(Math.max(0, lum - 0.015) / 0.45, 0.75)), t = Math.max(0, Math.min(1, 0.5 + (t0 - 0.5) * 1.15));
+      const a = greens(t), e = earths(t);
+      c = [e[0] + (a[0] - e[0]) * v, e[1] + (a[1] - e[1]) * v, e[2] + (a[2] - e[2]) * v];
+    }
+    data[q] = r + (c[0] - r) * g0; data[q + 1] = g + (c[1] - g) * g0; data[q + 2] = b + (c[2] - b) * g0; data[q + 3] = 255;
+  }
+  return data;
+}
+
+/* ---------- Bioluminescent: NASA Black Marble re-coloured ---------- */
+var NIGHT_TABLE = null;
+function nightTable() {
+  const t = new Uint8Array(256 * 3), R = NIGHT.ramp;
+  for (let v = 0; v < 256; v++) {
+    let k = 0; while (k < R.length - 2 && v > R[k + 1][0]) k++;
+    const f = Math.max(0, Math.min(1, (v - R[k][0]) / (R[k + 1][0] - R[k][0]))), a = woodHex(R[k][1]), b = woodHex(R[k + 1][1]);
+    for (let i = 0; i < 3; i++) t[v * 3 + i] = Math.round(a[i] + (b[i] - a[i]) * f);
+  }
+  return t;
+}
+function nightRecolour(px, table) {
+  for (let i = 0; i < px.length; i += 4) {
+    const r = px[i], g = px[i + 1], b = px[i + 2];
+    const v = Math.round(0.5 * Math.max(r, g, b) + 0.5 * (0.3 * r + 0.59 * g + 0.11 * b));
+    px[i] = table[v * 3]; px[i + 1] = table[v * 3 + 1]; px[i + 2] = table[v * 3 + 2]; px[i + 3] = 255;
+  }
+  return px;
+}
+
+/* ---------- the custom protocols (global to MapLibre; added once) ---------- */
+function zxy(url, re) { const m = url.match(re); if (!m) throw new Error("bad square " + url); return [Number(m[1]), Number(m[2]), Number(m[3])]; }
+async function imageData(url, signal) {
+  const r = await fetch(url, signal ? { signal } : undefined);
+  if (!r.ok) throw new Error(String(r.status));
+  const bm = await createImageBitmap(await r.blob());
+  const g = canvas2d(bm.width, bm.height);
+  g.drawImage(bm, 0, 0);
+  return g.getImageData(0, 0, bm.width, bm.height);
+}
+function addProtocols() {
+  if (addProtocols.done) return;
+  addProtocols.done = true;
+  maplibregl.addProtocol("plate", async (p) => { const [z, x, y] = zxy(p.url, /^plate:\/\/(\d+)\/(\d+)\/(\d+)/); return { data: await platePiece(z, x, y) }; });
+  maplibregl.addProtocol("woodpaint", async (p) => {
+    const [z, x, y] = zxy(p.url, /^woodpaint:\/\/(\d+)\/(\d+)\/(\d+)/);
+    return { data: await woodPaintJob(await woodComposite(z, x, y, WOOD.margin)) };
+  });
+  maplibregl.addProtocol("woodphoto", async (p, ac) => {
+    const [z, x, y] = zxy(p.url, /^woodphoto:\/\/(\d+)\/(\d+)\/(\d+)/);
+    const img = await imageData(WOOD.photo.replace("{z}", z).replace("{x}", x).replace("{y}", y), ac && ac.signal);
+    return { data: rawPng(woodGradePixels(img.data, img.width, img.height), img.width, img.height) };
+  });
+  maplibregl.addProtocol("nightlights", async (p, ac) => {
+    const [z, y, x] = zxy(p.url, /^nightlights:\/\/(\d+)\/(\d+)\/(\d+)$/);
+    const img = await imageData(NIGHT.tiles.replace("{z}", z).replace("{y}", y).replace("{x}", x), ac && ac.signal);
+    if (!NIGHT_TABLE) NIGHT_TABLE = nightTable();
+    return { data: rawPng(nightRecolour(img.data, NIGHT_TABLE), img.width, img.height) };
+  });
+}
+
+/* ---------- layer stacks, as in Culprits ---------- */
+const kind = (list) => ["match", ["get", "class"], list, true, false];
+const zs = (...a) => ["interpolate", ["linear"], ["zoom"], ...a];
+const fade = (z0, z1, a) => zs(z0, 0, z1, a);
+const roadW = (z0, k0, k2) => (w) => ["interpolate", ["exponential", 1.4], ["zoom"], z0, w * k0, 10, w, 16, w * k2];
+const TOWNS = ["residential", "commercial", "industrial", "retail", "suburb", "neighbourhood"];
+const building = (c) => ({ type: "fill-extrusion", source: "osm", "source-layer": "building", minzoom: 13,
+  paint: { "fill-extrusion-color": c, "fill-extrusion-height": ["coalesce", ["get", "render_height"], 6],
+           "fill-extrusion-base": ["coalesce", ["get", "render_min_height"], 0], "fill-extrusion-opacity": zs(13, 0, 14, .9) } });
+const T = (id, o) => Object.assign({ id }, o);
+
+function outlineLayers() {      // Standard (Culprits "outlines")
+  const road = roadW(5, .3, 6), fd = (a) => zs(3.5, 0, 6, a);
+  return [
+    T("outline-ocean", { type: "fill", source: "outline-ocean", paint: { "fill-color": "#141C1F", "fill-antialias": false } }),
+    T("outline-land", { type: "fill", source: "boundaries", paint: { "fill-color": "#202825" } }),
+    T("outline-relief", { type: "hillshade", source: "outline-dem", minzoom: 3.5,
+      paint: { "hillshade-exaggeration": .45, "hillshade-shadow-color": "#050504", "hillshade-highlight-color": "#4A4A40", "hillshade-accent-color": "#15150F" } }),
+    T("outline-water", { type: "fill", source: "osm", "source-layer": "water", minzoom: 3.5, paint: { "fill-color": "#0B1017", "fill-opacity": 1 } }),
+    T("outline-green", { type: "fill", source: "osm", "source-layer": "landcover", minzoom: 5, filter: kind(["wood", "forest", "grass", "wetland", "farmland"]),
+      paint: { "fill-color": ["match", ["get", "class"], ["wood", "forest"], "#1C2A20", "wetland", "#1B2624", "#212720"], "fill-opacity": fd(.8) } }),
+    T("outline-town", { type: "fill", source: "osm", "source-layer": "landuse", minzoom: 6, filter: kind(TOWNS),
+      paint: { "fill-color": ["match", ["get", "class"], "industrial", "#2A2826", "#262625"], "fill-opacity": fd(.9) } }),
+    T("outline-waterway", { type: "line", source: "osm", "source-layer": "waterway", minzoom: 6, paint: { "line-color": "#22323C", "line-width": road(.9) } }),
+    T("outline-rail", { type: "line", source: "osm", "source-layer": "transportation", minzoom: 9, filter: kind(["rail", "transit"]),
+      paint: { "line-color": "#46494A", "line-width": 1, "line-dasharray": [3, 2] } }),
+    T("outline-road-minor", { type: "line", source: "osm", "source-layer": "transportation", minzoom: 11, filter: kind(["minor", "service", "track", "street", "street_limited"]),
+      paint: { "line-color": "#34373A", "line-width": road(.45) } }),
+    T("outline-road", { type: "line", source: "osm", "source-layer": "transportation", minzoom: 7, filter: kind(["secondary", "tertiary"]),
+      paint: { "line-color": "#44484A", "line-width": road(.6) } }),
+    T("outline-road-major", { type: "line", source: "osm", "source-layer": "transportation", minzoom: 4, filter: kind(["motorway", "trunk", "primary"]),
+      paint: { "line-color": "#5E6264", "line-width": road(.8), "line-opacity": fd(1) } }),
+    T("outline-buildings", building("#34383A")),
+    T("outline-line", { type: "line", source: "boundaries", paint: { "line-color": "rgba(214,211,200,.17)", "line-width": zs(3, .6, 4, .9) } }),
+  ];
+}
+function satLayers() {          // Jurassic (Culprits "satellite") relief over the imagery
+  return [
+    T("sat-relief-colour", { type: "color-relief", source: "outline-dem", paint: { "color-relief-color": SAT_RELIEF.colour, "color-relief-opacity": 1 } }),
+    T("sat-relief-seabed", { type: "color-relief", source: "sea-dem", paint: { "color-relief-color": SAT_RELIEF.seabed, "color-relief-opacity": 1 } }),
+    T("sat-relief-shade", { type: "hillshade", source: "outline-dem", paint: SAT_RELIEF.shade }),
+    T("sat-relief-depth", { type: "hillshade", source: "outline-dem", paint: SAT_RELIEF.depth }),
+    T("sat-relief-sea", { type: "color-relief", source: "sea-dem", paint: { "color-relief-color": SAT_RELIEF.sea, "color-relief-opacity": 1 } }),
+  ];
+}
+function hellLayers() {
+  const road = roadW(4, .25, 6);
+  return [
+    T("outline-hell-sheet", { type: "fill", source: "world", paint: { "fill-color": HELL.sheet, "fill-antialias": false } }),
+    T("outline-hell-ground", { type: "color-relief", source: "sea-dem", paint: { "color-relief-color": HELL.ground, "color-relief-opacity": 1 } }),
+    T("outline-hell-shade", { type: "hillshade", source: "outline-dem", paint: HELL.shade }),
+    T("outline-hell-coast", { type: "fill", source: "osm", "source-layer": "water", minzoom: 7, filter: ["==", ["get", "class"], "ocean"],
+      paint: { "fill-color": HELL.coast, "fill-opacity": fade(7, 9, 1) } }),
+    T("outline-hell-lake", { type: "fill", source: "osm", "source-layer": "water", filter: ["!=", ["get", "class"], "ocean"],
+      paint: { "fill-color": HELL.lake, "fill-outline-color": HELL.lakeEdge } }),
+    T("outline-hell-town", { type: "fill", source: "osm", "source-layer": "landuse", minzoom: 6, filter: kind(TOWNS),
+      paint: { "fill-color": ["match", ["get", "class"], "industrial", HELL.townWork, HELL.town], "fill-opacity": fade(6, 8, .9) } }),
+    T("outline-hell-grave", { type: "fill", source: "osm", "source-layer": "landuse", minzoom: 9, filter: ["==", ["get", "class"], "cemetery"],
+      paint: { "fill-color": HELL.grave, "fill-outline-color": HELL.graveEdge, "fill-opacity": fade(9, 11, .8) } }),
+    T("outline-hell-river-glow", { type: "line", source: "osm", "source-layer": "waterway", minzoom: 3, filter: ["==", ["get", "class"], "river"],
+      layout: { "line-cap": "round", "line-join": "round" },
+      paint: { "line-color": HELL.riverGlow, "line-width": road(4), "line-blur": road(3), "line-opacity": .45 } }),
+    T("outline-hell-river", { type: "line", source: "osm", "source-layer": "waterway", minzoom: 3, layout: { "line-cap": "round", "line-join": "round" },
+      paint: { "line-color": HELL.river,
+        "line-width": ["interpolate", ["exponential", 1.4], ["zoom"], 4, ["match", ["get", "class"], "river", .25, .11],
+          10, ["match", ["get", "class"], "river", 1, .45], 16, ["match", ["get", "class"], "river", 6, 2.7]],
+        "line-opacity": zs(8, ["match", ["get", "class"], "river", .9, 0], 11, ["match", ["get", "class"], "river", .9, .7]) } }),
+    T("outline-hell-rail", { type: "line", source: "osm", "source-layer": "transportation", minzoom: 9, filter: kind(["rail", "transit"]),
+      paint: { "line-color": HELL.rail, "line-width": 1, "line-dasharray": [3, 2] } }),
+    T("outline-hell-road-minor", { type: "line", source: "osm", "source-layer": "transportation", minzoom: 11, filter: kind(["minor", "service", "track", "street", "street_limited"]),
+      paint: { "line-color": HELL.road[0], "line-width": road(.45) } }),
+    T("outline-hell-road", { type: "line", source: "osm", "source-layer": "transportation", minzoom: 7, filter: kind(["secondary", "tertiary"]),
+      paint: { "line-color": HELL.road[1], "line-width": road(.6) } }),
+    T("outline-hell-road-major", { type: "line", source: "osm", "source-layer": "transportation", minzoom: 4, filter: kind(["motorway", "trunk", "primary"]),
+      paint: { "line-color": HELL.road[2], "line-width": road(.8), "line-opacity": fade(4, 6, 1) } }),
+    T("outline-hell-buildings", building(HELL.building)),
+    T("outline-hell-border", { type: "line", source: "boundaries", paint: { "line-color": HELL.border, "line-width": zs(2, .5, 5, .9) } }),
+  ];
+}
+function woodLayers() {
+  const road = roadW(4, .25, 6);
+  return [
+    T("outline-wood-sheet", { type: "fill", source: "world", paint: { "fill-color": WOOD.sheet, "fill-antialias": false } }),
+    T("outline-wood-paint", { type: "raster", source: "outline-wood-paint", maxzoom: WOOD.photoFull + 0.5,
+      paint: { "raster-opacity": 1, "raster-fade-duration": 200, "raster-resampling": "linear" } }),
+    T("outline-wood-photo", { type: "raster", source: "outline-wood-photo", minzoom: WOOD.photoFrom,
+      paint: { "raster-opacity": zs(WOOD.photoFrom, 0, WOOD.photoFull, 1), "raster-fade-duration": 200, "raster-resampling": "linear" } }),
+    T("outline-wood-sea", { type: "color-relief", source: "sea-dem", paint: { "color-relief-color": WOOD.sea, "color-relief-opacity": WOOD.seaOpacity } }),
+    T("outline-wood-shade", { type: "hillshade", source: "outline-dem", paint: WOOD.shade }),
+    T("outline-wood-mist", { type: "color-relief", source: "sea-dem", paint: { "color-relief-color": WOOD.mist, "color-relief-opacity": 1 } }),
+    T("outline-wood-lake", { type: "fill", source: "osm", "source-layer": "water", filter: ["!=", ["get", "class"], "ocean"],
+      paint: { "fill-color": WOOD.lake, "fill-opacity": WOOD.lakeOpacity } }),
+    T("outline-wood-town", { type: "fill", source: "osm", "source-layer": "landuse", minzoom: 6, filter: kind(TOWNS),
+      paint: { "fill-color": ["match", ["get", "class"], "industrial", WOOD.townWork, WOOD.town], "fill-opacity": fade(6, 8, .55) } }),
+    T("outline-wood-river", { type: "line", source: "osm", "source-layer": "waterway", minzoom: 3, layout: { "line-cap": "round", "line-join": "round" },
+      paint: { "line-color": WOOD.river, "line-blur": .6,
+        "line-width": ["interpolate", ["exponential", 1.4], ["zoom"], 4, ["match", ["get", "class"], "river", .35, .12],
+          10, ["match", ["get", "class"], "river", 1.2, .5], 16, ["match", ["get", "class"], "river", 6, 2.7]],
+        "line-opacity": zs(8, ["match", ["get", "class"], "river", .85, 0], 11, ["match", ["get", "class"], "river", .85, .65]) } }),
+    T("outline-wood-rail", { type: "line", source: "osm", "source-layer": "transportation", minzoom: 9, filter: kind(["rail", "transit"]),
+      paint: { "line-color": WOOD.rail, "line-width": 1, "line-dasharray": [3, 2] } }),
+    T("outline-wood-road-minor", { type: "line", source: "osm", "source-layer": "transportation", minzoom: 11, filter: kind(["minor", "service", "track", "street", "street_limited"]),
+      paint: { "line-color": WOOD.road[0], "line-width": road(.45) } }),
+    T("outline-wood-road", { type: "line", source: "osm", "source-layer": "transportation", minzoom: 7, filter: kind(["secondary", "tertiary"]),
+      paint: { "line-color": WOOD.road[1], "line-width": road(.6) } }),
+    T("outline-wood-road-major", { type: "line", source: "osm", "source-layer": "transportation", minzoom: 4, filter: kind(["motorway", "trunk", "primary"]),
+      paint: { "line-color": WOOD.road[2], "line-width": road(.8), "line-opacity": fade(4, 6, .8) } }),
+    T("outline-wood-buildings", building(WOOD.building)),
+    T("outline-wood-border", { type: "line", source: "boundaries", paint: { "line-color": WOOD.border, "line-width": zs(2, .5, 5, .9) } }),
+  ];
+}
+function nightLayers() {
+  const road = roadW(6, .3, 5);
+  return [
+    T("outline-night-sheet", { type: "fill", source: "world", paint: { "fill-color": NIGHT.sheet, "fill-antialias": false } }),
+    T("outline-night-lights", { type: "raster", source: "outline-night-lights", paint: { "raster-fade-duration": 200, "raster-resampling": "linear" } }),
+    T("outline-night-shade", { type: "hillshade", source: "outline-dem", paint: NIGHT.shade }),
+    T("outline-night-sea-glow", { type: "color-relief", source: "sea-dem", paint: { "color-relief-color": NIGHT.seaGlow, "color-relief-opacity": 1 } }),
+    T("outline-night-road-glow", { type: "line", source: "osm", "source-layer": "transportation", minzoom: 7, filter: kind(["motorway", "trunk", "primary"]),
+      layout: { "line-cap": "round", "line-join": "round" },
+      paint: { "line-color": NIGHT.roadGlow, "line-width": road(3), "line-blur": road(2.5), "line-opacity": fade(7, 10, .35) } }),
+    T("outline-night-road-minor", { type: "line", source: "osm", "source-layer": "transportation", minzoom: 11, filter: kind(["minor", "service", "street", "street_limited"]),
+      paint: { "line-color": NIGHT.road[0], "line-width": road(.4), "line-opacity": fade(11, 13, 1) } }),
+    T("outline-night-road", { type: "line", source: "osm", "source-layer": "transportation", minzoom: 9, filter: kind(["secondary", "tertiary"]),
+      paint: { "line-color": NIGHT.road[1], "line-width": road(.5), "line-opacity": fade(9, 11, 1) } }),
+    T("outline-night-road-major", { type: "line", source: "osm", "source-layer": "transportation", minzoom: 7, filter: kind(["motorway", "trunk", "primary"]),
+      layout: { "line-cap": "round", "line-join": "round" },
+      paint: { "line-color": NIGHT.road[2], "line-width": road(.6), "line-opacity": fade(7, 9, 1) } }),
+    T("outline-night-border", { type: "line", source: "boundaries", paint: { "line-color": NIGHT.border, "line-width": zs(2, .4, 6, .8) } }),
+  ];
+}
+// OpenFreeMap's place, water, river, road and peak names in a basemap's own type.
+function nameLayers(k) {
+  const t = NAMES[k], nm = ["coalesce", ["get", "name_en"], ["get", "name:latin"], ["get", "name"]];
+  const L = (p, o, c, water, layout) => {
+    const paint = { "text-color": t.colour[c], "text-halo-color": water ? t.haloWater : t.halo, "text-halo-width": t.hw(p), "text-halo-blur": t.blur };
+    if (t.op(p) !== undefined) paint["text-opacity"] = t.op(p);
+    return Object.assign({ id: `outline-${k}-name-${p}`, type: "symbol", source: "osm", paint,
+      layout: Object.assign({ "text-field": nm }, layout) }, o);
+  };
+  const f = t.font, sp = t.sp;
+  return [
+    L("ocean", { "source-layer": "water_name", filter: kind(["ocean", "sea"]) }, "water", true,
+      { "text-font": f.italic, "text-size": zs(1, 11, 6, 16), "text-letter-spacing": sp.ocean, "text-max-width": 6 }),
+    L("water", { "source-layer": "water_name", minzoom: 5, filter: ["!", kind(["ocean", "sea"])] }, "water", true,
+      { "text-font": f.italic, "text-size": zs(5, 11, 14, 14), "text-letter-spacing": sp.water, "text-max-width": 7 }),
+    L("river", { "source-layer": "waterway", minzoom: 9 }, "water", true,
+      { "text-font": f.italic, "text-size": zs(9, 11, 15, 14), "symbol-placement": "line", "text-letter-spacing": sp.river }),
+    L("road", { "source-layer": "transportation_name", minzoom: 13 }, "minor", false,
+      { "text-font": f.regular, "text-size": zs(13, 11, 17, 14), "symbol-placement": "line" }),
+    L("peak", { "source-layer": "mountain_peak", minzoom: 9 }, "peak", false, { "text-font": f.italic, "text-size": 12, "text-max-width": 7 }),
+    L("village", { "source-layer": "place", minzoom: 11, filter: kind(["village", "hamlet", "suburb", "neighbourhood", "quarter"]) }, "minor", false,
+      { "text-font": f.regular, "text-size": zs(11, 11, 16, 14), "text-max-width": 7 }),
+    L("town", { "source-layer": "place", minzoom: 7, filter: kind(["town"]) }, "town", false,
+      { "text-font": f.regular, "text-size": zs(7, 11, 14, 16), "text-max-width": 7 }),
+    L("state", { "source-layer": "place", minzoom: 4, maxzoom: 9, filter: kind(["state", "province"]) }, "state", false,
+      { "text-font": f.italic, "text-size": zs(4, 10, 8, 13), "text-transform": "uppercase", "text-letter-spacing": sp.state, "text-max-width": 8 }),
+    L("city", { "source-layer": "place", minzoom: 3, filter: kind(["city"]) }, "city", false,
+      { "text-font": f.bold, "text-size": zs(3, 11, 8, 15, 14, 20), "text-max-width": 7 }),
+    L("country", { "source-layer": "place", maxzoom: 8, filter: kind(["country"]) }, "country", false,
+      { "text-font": f.caps, "text-size": zs(1, 10, 3, 13, 6, 17), "text-transform": "uppercase", "text-letter-spacing": sp.country, "text-max-width": 7 }),
+  ];
+}
+// OpenStreetMap's points of interest, on every basemap, from zoom 14 (Culprits round 166p).
+function placeLayers() {
+  const colour = ["match", ["get", "class"],
+    ["restaurant", "fast_food", "cafe", "bar", "beer", "ice_cream", "bakery", "alcohol_shop"], "#5FA8B4",
+    ["shop", "grocery", "clothing_store", "convenience", "supermarket", "jewelry", "hairdresser", "laundry", "furniture", "hardware", "mobile_phone",
+     "books", "music", "gift", "shoe", "florist", "butcher", "car", "bicycle", "electronics", "toys", "pet", "optician", "art_gallery"], "#6F93C8",
+    ["hospital", "doctors", "dentist", "pharmacy", "veterinary"], "#8FC3D6",
+    ["school", "college", "kindergarten", "library", "music_school"], "#4E8FAE",
+    ["place_of_worship", "cemetery", "grave_yard"], "#7A86B8",
+    ["bus", "railway", "fuel", "parking", "ferry_terminal", "harbor", "airport", "aerialway", "entrance", "bicycle_rental", "car_rental"], "#5B7DA6",
+    ["town_hall", "police", "fire_station", "post", "prison", "office", "embassy", "townhall", "court"], "#3F6E9A",
+    ["park", "garden", "playground", "pitch", "stadium", "swimming", "sports", "golf", "zoo", "museum", "attraction", "theatre", "cinema",
+     "monument", "castle", "viewpoint", "campsite", "information"], "#78B0A8", "#8A9AAE"];
+  return [
+    T("outline-places-dot", { type: "circle", source: "osm", "source-layer": "poi", minzoom: 14,
+      paint: { "circle-color": colour, "circle-radius": zs(14, 2.2, 18, 4.5), "circle-stroke-color": "#0B1620",
+               "circle-stroke-width": 0.8, "circle-opacity": 0.92, "circle-pitch-alignment": "map" } }),
+    T("outline-places-name", { type: "symbol", source: "osm", "source-layer": "poi", minzoom: 15.5,
+      layout: { "text-field": ["coalesce", ["get", "name_en"], ["get", "name:latin"], ["get", "name"]], "text-font": ["Jost-Regular"],
+                "text-size": zs(15.5, 10, 19, 12.5), "text-variable-anchor": ["left", "right", "top", "bottom"], "text-radial-offset": 0.7,
+                "text-justify": "auto", "text-max-width": 8, "text-optional": true },
+      paint: { "text-color": "#C9D3D8", "text-halo-color": "#0B1620", "text-halo-width": 1.1, "text-halo-blur": 0.6 } }),
+  ];
+}
+
+/* ---------- attach to a Leaflet map ---------- */
+function create(container, opts) {
+  opts = opts || {};
+  if (opts.plate) PLATE.url = opts.plate;
+  addProtocols();
+  const state = { kind: null, want: opts.initial || "night", ready: false, stacks: {}, attribution: "" };
+  const map = new maplibregl.Map({
+    container: container, center: opts.center || [10, 18], zoom: opts.zoom == null ? 1.6 : opts.zoom, minZoom: 0, maxZoom: 16,
+    attributionControl: false, renderWorldCopies: false, fadeDuration: 0, dragRotate: false, pitchWithRotate: false, touchPitch: false,
+    pixelRatio: Math.min(window.devicePixelRatio || 1, 1.5),
+    style: {
+      version: 8, glyphs: ROOT + "glyphs/{fontstack}/{range}.pbf", projection: { type: opts.projection || "globe" },
+      sources: {
+        world: WORLD,
+        base: { type: "raster", tiles: ["https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"],
+                tileSize: 256, maxzoom: 18, attribution: "Imagery © Esri, Maxar" },
+        hillshade: { type: "raster", tiles: ["https://services.arcgisonline.com/arcgis/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}"],
+                     tileSize: 256, maxzoom: 16, attribution: "Hillshade © Esri" },
+        labels: { type: "raster", tiles: ["https://a.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}@2x.png?key=cb1_494p_1_eebbbfcb65bc573e54783d42"],
+                  tileSize: 256, attribution: "Labels © CARTO, © OpenStreetMap" },
+        "plate-base": { type: "raster", tiles: ["plate://{z}/{x}/{y}"], tileSize: 256, maxzoom: 3,
+                        bounds: [-180, PLATE.bottom, 180, PLATE.top] },
+      },
+      layers: [
+        // The flat Culprits map's world-sized sheet (its "world-fill").
+        { id: "world-fill", type: "fill", source: "world", paint: { "fill-color": "#0B1017" } },
+        { id: "base", type: "raster", source: "base", layout: { visibility: "none" }, paint: Object.assign({ "raster-opacity": 1 }, BASE_GRADE.atlas) },
+        { id: "hillshade", type: "raster", source: "hillshade", layout: { visibility: "none" },
+          paint: { "raster-opacity": zs(4, .18, 9, .34, 13, .46) } },
+      ],
+    },
+  });
+  map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-right");
+
+  // Jurassic's faint vignette (Culprits #defence-hud), over the basemap's own picture.
+  const vig = document.createElement("div");
+  vig.style.cssText = "position:absolute;inset:0;pointer-events:none;display:none;z-index:1;background:radial-gradient(ellipse at center, rgba(0,0,0,0) 62%, rgba(8,7,10,.18) 100%)";
+  map.getCanvasContainer().appendChild(vig);
+  const share = (id, spec) => { if (!map.getSource(id)) map.addSource(id, Object.assign({}, spec)); };
+  const add = (layers, before) => layers.forEach((l) => map.addLayer(Object.assign({}, l, { layout: Object.assign({}, l.layout || {}, { visibility: "none" }) }), before));
+  const afterPlate = () => { const all = map.getStyle().layers, at = all.findIndex((l) => l.id === "plate-base"); return all[at + 1] && all[at + 1].id; };
+  // Each stack is added the first time it is chosen, where Culprits puts it.
+  const build = {
+    outlines() { share("boundaries", BOUNDARIES); share("osm", OSM_SOURCE); share("outline-dem", RELIEF_SOURCE); share("outline-ocean", WORLD);
+      return add(outlineLayers(), "atlas-washes"), outlineLayers(); },
+    satellite() { share("outline-dem", RELIEF_SOURCE); share("sea-dem", TERRAIN_SOURCE); return add(satLayers(), "atlas-washes"), satLayers(); },
+    hell() { share("boundaries", BOUNDARIES); share("osm", OSM_SOURCE); share("outline-dem", RELIEF_SOURCE); share("sea-dem", TERRAIN_SOURCE);
+      add(hellLayers(), afterPlate()); add(nameLayers("hell")); return hellLayers().concat(nameLayers("hell")); },
+    wood() { share("boundaries", BOUNDARIES); share("osm", OSM_SOURCE); share("outline-dem", RELIEF_SOURCE); share("sea-dem", TERRAIN_SOURCE);
+      share("outline-wood-paint", { type: "raster", tiles: ["woodpaint://{z}/{x}/{y}"], tileSize: 256, maxzoom: 18, attribution: WOOD.attribution });
+      share("outline-wood-photo", { type: "raster", tiles: ["woodphoto://{z}/{x}/{y}"], tileSize: 256, minzoom: 15, maxzoom: 18, attribution: WOOD.photoAttribution });
+      add(woodLayers(), afterPlate()); add(nameLayers("wood")); return woodLayers().concat(nameLayers("wood")); },
+    night() { share("boundaries", BOUNDARIES); share("osm", OSM_SOURCE); share("outline-dem", RELIEF_SOURCE); share("sea-dem", TERRAIN_SOURCE);
+      share("outline-night-lights", { type: "raster", tiles: ["nightlights://{z}/{y}/{x}"], tileSize: 256, maxzoom: 8, attribution: NIGHT.attribution });
+      add(nightLayers(), afterPlate()); return nightLayers(); },
+    atlas() { return []; },
+  };
+  const ids = (k) => (state.stacks[k] || (state.stacks[k] = build[k]())).map((l) => l.id);
+  const show = (id, on) => { if (map.getLayer(id)) map.setLayoutProperty(id, "visibility", on ? "visible" : "none"); };
+
+  function apply(k) {
+    if (!build[k]) throw new Error("unknown basemap " + k);
+    ids(k);
+    state.kind = k;
+    for (const o of Object.keys(state.stacks)) for (const id of state.stacks[o].map((l) => l.id)) show(id, o === k);
+    show("base", k === "atlas" || k === "satellite");
+    if (k === "atlas" || k === "satellite") for (const p in BASE_GRADE[k]) map.setPaintProperty("base", p, BASE_GRADE[k][p]);
+    show("hillshade", k === "atlas");
+    show("plate-base", k === "atlas");
+    // CARTO's picture of names only where the basemap has no names of its own.
+    show("labels", k === "night" || k === "outlines");
+    for (const n of ["atlas", "satellite"]) for (const l of nameLayers(n)) show(l.id, n === k);
+    vig.style.display = k === "satellite" ? "block" : "none";
+    map.triggerRepaint();
+    attribution();
+    if (opts.onApply) opts.onApply(k);
+  }
+  function attribution() {}
+  map.on("load", () => {
+    map.addLayer(washLayer(state));
+    map.addLayer({ id: "plate-base", type: "raster", source: "plate-base", layout: { visibility: "none" },
+      paint: { "raster-opacity": zs(PLATE.fadeIn, 1, PLATE.fadeOut, 0), "raster-fade-duration": 0 } });
+    share("osm", OSM_SOURCE);
+    add(placeLayers());
+    for (const id of ["outline-places-dot", "outline-places-name"]) show(id, true);
+    map.addLayer({ id: "labels", type: "raster", source: "labels", layout: { visibility: "none" }, paint: { "raster-opacity": .92 } });
+    add(nameLayers("atlas")); add(nameLayers("satellite"));
+    state.ready = true;
+    apply(state.want);
+    if (opts.onReady) opts.onReady();
+  });
+  return {
+    set(k) { if (!build[k]) throw new Error("unknown basemap " + k); state.want = k; if (state.ready) apply(k); },
+    current() { return state.ready ? state.kind : state.want; },
+    maplibre: map,
+  };
+}
+
+
+window.CulpritsBasemaps = { list: LIST.map((x) => x.slice()), create };
+})();
+
+
 const ROUTES = [{"id": "email", "nm": "Email to an office holder", "fam": "Direct contact", "sc": "Any level", "cost": "Free", "costn": "Nothing but time. Bulk sending costs nothing and is worth nothing.", "elig": "Anyone", "time": "Minutes to send; weeks to never for a reply", "how": "Office website contact form, or the published address. Form submissions are logged and counted; direct addresses are often filtered.", "own": {"val": "~2%", "note": "Response rate across the author's own global campaign of several thousand emails, demand letters and calls to officials and industry over roughly five years. Of those that replied, almost all replied to disagree or to disclaim responsibility."}, "fail": "Volume handling. Offices tally positions by issue and report counts, so an individual message is processed as one unit of a tally rather than as an argument. Form letters and unsolicited attachments are weighted lowest. Nothing about the message's quality changes how it is counted.", "rate": null}, {"id": "call", "nm": "Phone call to the office", "fam": "Direct contact", "sc": "Any level", "cost": "Free", "costn": "Free on most plans; international calls vary.", "elig": "Anyone; constituents prioritised", "time": "5–15 minutes", "how": "Ask for the legislative assistant covering the subject, by title, rather than the member. Staff log the call to a position tally.", "own": null, "fail": "Same tally mechanism as email, with one difference: a call reaches a human who can route you, so it is the cheapest way to learn which staffer owns an issue. As persuasion it is one tally mark.", "rate": null}, {"id": "letter", "nm": "Physical letter", "fam": "Direct contact", "sc": "Any level", "cost": "≈$0.73 US postage", "costn": "One first-class stamp. Certified mail with return receipt runs roughly $10 and produces proof of delivery.", "elig": "Anyone", "time": "Days to weeks in transit", "how": "District or constituency office, not the capital building — mail to legislative capitals is often irradiated and delayed by weeks.", "own": null, "fail": "Weighted slightly above email because it costs something, which is the only signal of effort the system reads. Still tallied.", "rate": null}, {"id": "visit", "nm": "In-person meeting at a district office", "fam": "Direct contact", "sc": "Any level", "cost": "Free + travel", "costn": "The meeting is free. Cost is travel and a working day.", "elig": "Constituents", "time": "2–6 weeks to schedule; 15–30 minutes", "how": "Request the staffer who covers the subject. Bring one page. Ask for a specific action, not for agreement.", "own": null, "fail": "The only direct-contact route with a measured causal effect, and the effect is on a specific bill already in play. It does not create an agenda item; it moves an existing one.", "rate": {"val": 12, "kind": "effect", "ev": "rct", "src": "Randomised trial, Michigan state legislators", "means": "Legislators randomly assigned to constituent contact were ~12 percentage points more likely to support the bill.", "caveat": "12 points is a change in probability, not a win rate. Under deflation the floor is ~1.9 points.", "y0": 2013, "y1": 2015, "name": "Organised constituent contact (experimental)"}}, {"id": "townhall", "nm": "Public comment at a council or board meeting", "fam": "Direct contact", "sc": "Local", "cost": "Free", "costn": "Free. Usually a 2–3 minute speaking slot.", "elig": "Residents; sometimes anyone", "time": "Sign up same day or days ahead", "how": "Agendas are published in advance by law in most jurisdictions. Comment on an agenda item, not in general.", "own": null, "fail": "On the record and minuted, which is its value. Boards are required to hear it and not required to act on it.", "rate": null}, {"id": "rulemaking", "nm": "Petition for rulemaking", "fam": "Formal process", "sc": "National", "cost": "Free", "costn": "Free to file. A lawyer-drafted petition costs $2,000–$20,000 and markedly raises the odds of a substantive answer.", "elig": "Any person (US: Administrative Procedure Act §553(e))", "time": "Agency response can take months to years", "how": "File directly with the agency. Unlike a comment, this is a petition the agency must formally grant or deny, and a denial is reviewable in court.", "own": null, "fail": "The most underused route on this list. It forces a written agency position where email cannot. Agencies deny most petitions, but a denial is a reviewable document, which a tally mark never is.", "rate": null}, {"id": "comment", "nm": "Regulatory comment on an open docket", "fam": "Formal process", "sc": "National", "cost": "Free", "costn": "Free. US dockets at regulations.gov; most countries run an equivalent consultation portal.", "elig": "Anyone, including non-citizens", "time": "Comment windows run 30–90 days", "how": "Comment on a specific docket number inside its window. Agencies must respond to significant comments in the final rule.", "own": null, "fail": "Measured asymmetry: across 40 rulemakings at four agencies, business commenters held significant influence over final rule content and non-business commenters had no detectable influence in the same models. Over 57% of comments came from business. The docket is open to everyone and weighted by who dominates it.", "rate": {"val": null, "kind": "dir", "ev": "coded", "src": "Same 40 rulemakings", "means": "No detectable influence on final rule content in the same models that found business influence.", "caveat": "— no figure published: A null result. No magnitude to place. — Null result, listed with the directional findings. Twelve detailed submissions can dominate a docket; ten thousand identical ones cannot.", "y0": 1994, "y1": 2001, "name": "Regulatory comment — non-business commenter"}}, {"id": "foia", "nm": "Freedom of information request", "fam": "Formal process", "sc": "Any level", "cost": "Free–$25", "costn": "Usually free for the first hours of search; fee waivers available for public-interest requests.", "elig": "Anyone; many countries accept foreign requesters", "time": "20 working days statutory, often far longer", "how": "Specific documents, named custodian, narrow date range. Broad requests get denied on burden.", "own": null, "fail": "Produces documents, not decisions. Its use is building the record that every other route needs.", "rate": null}, {"id": "sfr", "nm": "Statement for the record at a hearing", "fam": "Formal process", "sc": "National", "cost": "Free", "costn": "Free. Ask the subcommittee clerk for format and the window.", "elig": "Anyone, in most committees", "time": "Window usually closes days after the hearing", "how": "Submit to the clerk in the stated format before the deadline. It is printed in the hearing record.", "own": null, "fail": "Enters a permanent published record that staff and researchers cite later. Nobody is required to read it.", "rate": null}, {"id": "ig", "nm": "Inspector General or audit office complaint", "fam": "Formal process", "sc": "National", "cost": "Free", "costn": "Free.", "elig": "Anyone", "time": "Months to years", "how": "Allege a specific failure against a specific statutory or policy obligation. Vague complaints are closed.", "own": null, "fail": "An IG audit is one of the few things that forces an agency to concede a gap in writing and commit to a dated fix. It needs a concrete, auditable failure, not a disagreement about priorities.", "rate": null}, {"id": "ombud", "nm": "Ombudsman or national human rights institution", "fam": "Formal process", "sc": "National", "cost": "Free", "costn": "Free.", "elig": "Usually anyone affected", "time": "Months", "how": "Most countries have one; mandates vary widely.", "own": null, "fail": "Offices publish their own caseload and compliance figures, but nothing comparable exists across them, so there is no rate to quote. Findings are usually non-binding.", "rate": {"val": null, "kind": "none", "ev": "none", "src": "individual offices publish caseload and compliance figures; nothing comparable across them", "means": "National ombudsman offices report complaints received and recommendations accepted. Comparability is nil: some report compliance with suggestions, some report cases closed, some report neither, and the powers behind the recommendation differ in every country.", "caveat": "A per-jurisdiction extraction here would be straightforward and has never been done.", "y0": 1970, "y1": 2026, "name": "Ombudsman and human rights institution complaint"}}, {"id": "citizensuit", "nm": "Citizen-suit enforcement of a statute", "fam": "Courts", "sc": "National", "cost": "$0–$100k+", "costn": "Many environmental statutes shift fees to the loser, so a winning public-interest plaintiff can recover costs. Losing is expensive.", "elig": "Standing required: a concrete, particularised injury", "time": "Years; most statutes require 60 days notice first", "how": "Serve the statutory notice, then file if the violation continues.", "own": null, "fail": "Filings are recorded; outcomes are not coded as a rate. Standing is the usual wall — a generalised injury shared by everyone is, in US doctrine, an injury to no one for these purposes.", "rate": {"val": null, "kind": "none", "ev": "none", "src": "filings are recorded; outcomes are not coded as a rate", "means": "Where the law lets private parties sue to enforce it, notice letters and filings are recorded and settlements are frequently public. No dataset carries filings against outcomes, and a large share settle before judgment, which is where the wins mostly are.", "caveat": "Availability is the whole story: this exists in a handful of legal systems and nowhere else, so a global figure would be measuring which country you are in rather than what the method does.", "y0": 1970, "y1": 2026, "name": "Citizen-suit enforcement of a statute"}}, {"id": "climatelit", "nm": "Climate litigation", "fam": "Courts", "sc": "National / international", "cost": "$50k–$1m+", "costn": "Usually carried by a public-interest firm or clinic rather than the plaintiff.", "elig": "Standing required", "time": "Years", "how": "Most cases are brought with an established climate litigation organisation rather than alone.", "own": null, "fail": "Across 3,600+ cases in 62 countries, outcomes favourable to climate action in a bit over half. Climate-washing cases — suing over false environmental claims rather than over emissions — run considerably higher, because a false statement is far easier to prove than a causal chain.", "rate": {"val": 52, "kind": "base", "ev": "coded", "src": "3,600+ cases across 62 countries (Grantham/Sabin databases)", "means": "More than half of direct judicial outcomes were favourable to climate action.", "caveat": "[Source reports 'more than half'. Taken as 52, the nearest defensible floor.] \"Favourable\" is a broad coding. Applies to concluded direct outcomes.", "y0": 1986, "y1": 2025, "name": "Climate litigation — all cases"}}, {"id": "amicus", "nm": "Amicus brief", "fam": "Courts", "sc": "National", "cost": "$5k–$50k", "costn": "Pro bono filing is common for an organisation with a distinctive factual record.", "elig": "Anyone with leave of the court", "time": "Tied to the case calendar", "how": "Bring facts the parties cannot. Courts read briefs that add a record, not briefs that add a voice.", "own": null, "fail": "Filings are counted; influence is contested and not coded as a rate.", "rate": {"val": null, "kind": "none", "ev": "none", "src": "filings are counted; influence is contested and not coded as a rate", "means": "Filing counts are published and have risen sharply in several supreme courts. Studies of whether briefs change outcomes disagree, and the ones that find influence generally find it in citation and reasoning rather than in who won.", "caveat": "The outcome variable is the problem. A brief that shapes a footnote has done something real and no coding scheme records it.", "y0": 1950, "y1": 2026, "name": "Amicus brief"}}, {"id": "personhood", "nm": "Rights of nature / legal personhood for an ecosystem", "fam": "Courts", "sc": "Local to national", "cost": "Varies", "costn": "A municipal ordinance campaign is the cheap end; a constitutional provision is the expensive end.", "elig": "Varies by jurisdiction", "time": "Years", "how": "Roughly 700 initiatives counted across 66 countries. Municipal ordinances are where novel instruments actually pass first.", "own": null, "fail": "No coded outcomes exist. Adoption is documented; what adoption changes on the ground is not.", "rate": {"val": null, "kind": "none", "ev": "none", "src": "roughly 700 initiatives counted across 66 countries; no coded outcomes", "means": "Six countries have national rights-of-nature provisions — Ecuador, Bolivia, Panama, Spain, Uganda and New Zealand — and courts in Colombia, India, Peru, Bangladesh and Nepal have recognised particular rivers, forests or regions as rights-holders. About 80% of the counted initiatives are in the Americas. Whether the recognised entity then won anything is not tracked.", "caveat": "This chart already mentions the count in passing under climate litigation. It belongs here as its own row, because the count of laws passed says nothing about the count of cases won.", "y0": 2008, "y1": 2026, "name": "Rights of nature and legal personhood for an ecosystem"}}, {"id": "shareprop", "nm": "Shareholder proposal", "fam": "Companies", "sc": "Corporate", "cost": "$2,000 of stock", "costn": "US Rule 14a-8 eligibility: $2,000 held 3 years, or $15,000 held 2 years, or $25,000 held 1 year. The cheapest formal route that compels a company to respond in writing.", "elig": "Qualifying shareholders", "time": "Annual proxy cycle", "how": "Submit before the company's deadline. The company must print it and respond, or win exclusion from the SEC.", "own": null, "fail": "Resubmission thresholds bite: a proposal voted on once must clear 5% to come back, twice 15%, three or more times 25%. Below that it is excludable for five years. Low votes lock the subject out rather than building toward a win.", "rate": {"val": 16, "kind": "base", "ev": "coded", "src": "US proxy seasons through 2025", "means": "Environmental and social proposals averaged 16% support in 2025, down from 20% in 2024. Governance proposals averaged 35%. The share of E&S resolutions drawing under 5% rose from 8% to 27% over five years.", "caveat": "Average support, not a pass rate. Treat this as an upper bound on visible influence.", "y0": 2020, "y1": 2025, "name": "Shareholder resolution (E&S)"}}, {"id": "engage", "nm": "Private engagement with a company", "fam": "Companies", "sc": "Corporate", "cost": "Free–high", "costn": "Free to request; effective at scale only with assets behind it.", "elig": "Shareholders, mostly institutional", "time": "Months to years", "how": "Sequences of private meetings rather than public filings.", "own": null, "fail": "The measured rate comes from one large institutional investor's own records across 2,152 engagement sequences. An individual holder is not the actor that rate describes.", "rate": {"val": 18, "kind": "base", "ev": "coded", "src": "2,152 engagement sequences with 613 US-listed companies, from one large institutional investor's own records", "means": "18% of engagement sequences succeeded. Environmental and social asks succeeded 13% of the time against 24% for governance asks, and the environmental ones needed 3.7 approaches each against 2.2. Median time from first approach to success was one year. Collaboration with other investors raised the success rate; so did the target having a reputation to lose and the headroom to change. A later international study of the same channel put the rate at 19.9%.", "caveat": "Success is coded by the investor who did the engaging, which is the obvious weakness. The 13-versus-24 split is the useful part: the same investor, the same firms, the same year, and environmental asks converted at half the rate of governance asks.", "y0": 1999, "y1": 2009, "name": "Private shareholder engagement"}}, {"id": "boycott", "nm": "Consumer boycott", "fam": "Companies", "sc": "Corporate", "cost": "Free", "costn": "Free to join; organising at scale costs staff time and media.", "elig": "Anyone", "time": "Months to years", "how": "Works through media attention and reputation rather than through lost revenue.", "own": null, "fail": "Standalone boycotts land near a quarter; boycotts inside a broader campaign do considerably better. The mechanism is reputational damage, so a boycott nobody reports is a boycott that does nothing.", "rate": {"val": 25, "kind": "base", "ev": "coded", "src": "133 boycotts, 1990–2005, covering 177 firms", "means": "~25% produced a concession. Top predictor of effectiveness was media coverage generated, not sales lost — typical boycotts barely dent revenue.", "caveat": "Broader synthesis puts it at 25–40%, with selection bias: boycotts only get studied once they gain traction.", "y0": 1990, "y1": 2005, "name": "Consumer boycott"}}, {"id": "oecdncp", "nm": "OECD National Contact Point complaint", "fam": "Companies", "sc": "International", "cost": "Free", "costn": "No filing fee. Legal help is optional and usually unpaid.", "elig": "Any individual or NGO with an interest — not only those directly harmed", "time": "Initial assessment 3+ months; mediation 6–12 months; final statement ~3 months after", "how": "File against a multinational headquartered in or operating in an adhering country, on any topic in the OECD Guidelines.", "own": null, "fail": "The two codings of the same mechanism disagree sharply — NGOs coding 250 complaints over fifteen years got a far lower figure than the OECD's own reporting on 2011–2016 cases. Participation is voluntary, NCPs cannot compel a company, and remedy of past harm is rare. It produces a published finding, not an enforceable order.", "rate": {"val": 14, "kind": "base", "ev": "coded", "src": "250 complaints filed with OECD National Contact Points over the mechanism's first fifteen years, coded by OECD Watch", "means": "35 of 250 complaints — 14% — produced any beneficial result that amounted to some measure of remedy, and most of those were forward-looking policy commitments rather than anything done for the people who filed. Of 18 NGO and community cases concluded in 2017, one produced compensation and a concrete improvement; five produced any element of remedy at all.", "caveat": "Read this with the row directly below. Two organisations counted the same mechanism and got 14% and 47%, because one asked whether the complainant got anything and the other asked whether the parties reached an agreement.", "y0": 2000, "y1": 2015, "name": "OECD complaint against a company (NGO coding)"}}, {"id": "devbank", "nm": "Development bank accountability mechanism", "fam": "Companies", "sc": "International", "cost": "Free", "costn": "Free. The World Bank Inspection Panel, the IFC's CAO and nine similar bodies.", "elig": "People affected by a financed project; usually two or more", "time": "Years", "how": "Complain about a project financed by the institution, alleging it broke its own policies.", "own": null, "fail": "758 complaints over 21 years across 11 mechanisms. The institution investigates whether it broke its own rules; it does not compel the borrower or the company. Directly relevant to lending conditionality work.", "rate": {"val": 20, "kind": "base", "ev": "coded", "src": "758 complaints filed over 21 years with the 11 independent accountability mechanisms of development finance institutions, coded by eleven civil-society organisations", "means": "Just under 20% of concluded complaints produced either a negotiated settlement (8%) or a publicly disclosed compliance report (11.5%). Bank management produced an action plan in 7% of concluded cases. A large share of complaints were never found eligible at all.", "caveat": "The authors' own conclusion is that the outcome rarely provides adequate remedy. Counting a published compliance report as a success is generous: one documented case is a finding of non-compliance the institution then ignored. The 8% settlement figure is the strict reading, and the 7% action-plan figure is what the delivery toggle drops to.", "y0": 1994, "y1": 2015, "name": "Complaint to a development bank's accountability mechanism"}}, {"id": "upr", "nm": "UN Universal Periodic Review submission", "fam": "International", "sc": "International", "cost": "Free", "costn": "Free. NGOs file written submissions on any state under review.", "elig": "Any organisation; individuals via a coalition", "time": "Review cycles run years", "how": "File into the cycle for the state you are addressing.", "own": null, "fail": "Assessed at mid-term across 11,527 first-cycle recommendations. States accept recommendations readily and implement partially; acceptance is not compliance.", "rate": {"val": 48, "kind": "base", "ev": "coded", "src": "11,527 recommendations from the first review cycle, assessed at mid-term against submissions from states, national human rights institutions, NGOs and UN agencies", "means": "48% had triggered some action about three years after the review — 18% fully implemented, 30% partially. 48% produced nothing, and 4% could not be assessed. Even recommendations a state formally noted rather than accepted moved 19% of the time. Africa ran at 50% and one state reached 55%; where no stakeholder took part in follow-up, no assessment was possible at all.", "caveat": "The denominator is recommendations, not campaigns, and a recommendation can be as thin as 'continue efforts' — only about 30% were specific enough to assess cleanly. Assessment leans on the state's own reporting alongside NGO submissions. Read 48% as 'something moved in the direction of the text', not as compliance; the delivery toggle drops it to the 18% that were fully implemented.", "y0": 2008, "y1": 2014, "name": "UN Universal Periodic Review recommendation"}}, {"id": "echr", "nm": "Regional human rights court", "fam": "International", "sc": "International", "cost": "Free to file", "costn": "Free; representation needed in practice.", "elig": "Domestic remedies must be exhausted first", "time": "Years", "how": "European Court of Human Rights and its regional equivalents.", "own": null, "fail": "The admissibility filter is the whole story: the overwhelming majority of applications never reach a merits judgment.", "rate": {"val": 1.5, "kind": "base", "ev": "coded", "src": "European Court of Human Rights annual statistics; Committee of Ministers execution reporting", "means": "The Court rejects around 90% of applications as inadmissible without examining them. Counting every application filed, roughly 1–2% end in a judgment finding a violation. Conditional on reaching judgment the odds invert: against the United Kingdom, 329 judgments found at least one violation and 146 found none between 1975 and 2022.", "caveat": "Winning is not the end of it. Pending leading cases before the Committee of Ministers rose from 120 in 2011 to about 1,300 in 2021, and 44% of those had been pending more than five years — the delivery gap this chart flags everywhere, in the one forum that publishes enough to measure it.", "y0": 1998, "y1": 2024, "name": "European Court of Human Rights — filing to a violation finding"}}, {"id": "ilo", "nm": "ILO freedom-of-association complaint", "fam": "International", "sc": "International", "cost": "Free", "costn": "Free. Filed by workers' or employers' organisations.", "elig": "Organisations, not individuals", "time": "Years", "how": "Committee on Freedom of Association, 3,300+ cases examined since 1951.", "own": null, "fail": "Findings are recommendations to the state. The ILO's own long review counts 'cases of progress' rather than compliance.", "rate": {"val": 29, "kind": "base", "ev": "coded", "src": "3,300+ cases examined since 1951; 2018 caseload used for the rate", "means": "Of 92 cases examined in 2018 (70 active, 22 in follow-up), the Committee closed 27 — 29%. Cases close when resolved by the parties, handled nationally, or inactive for 18 months. More than 60 countries have acted on its recommendations and reported positive developments. Regional distribution of complaints since 1952: roughly 44% Central and South America, 25% Europe, 13% Africa, 12% Asia, 6% North America.", "caveat": "\"Closed\" bundles resolution with abandonment, so 29% is an upper bound on success and a poor one. The full 3,300-case record has never been coded for outcome, which is the single largest unextracted dataset named on this chart.", "y0": 1951, "y1": 2024, "name": "ILO freedom-of-association complaint"}}, {"id": "copuos", "nm": "UN COPUOS observer status", "fam": "International", "sc": "International", "cost": "Free", "costn": "Free, but requires an organisation with a track record.", "elig": "NGOs, by Committee decision", "time": "Years to obtain", "how": "Permanent observer status confers the right to attend sessions and make statements.", "own": null, "fail": "No rate exists. The route in for an argument rather than an organisation is scholarship: delegations cite papers, not websites.", "rate": null}, {"id": "lobby", "nm": "Registered lobbyist retainer", "fam": "Money & representation", "sc": "National", "cost": "Mid five figures / month", "costn": "Check comparable clients in the public lobbying disclosure database before accepting any quote.", "elig": "Anyone who can pay; the engagement is public record", "time": "Quarterly cycles", "how": "Needs a vehicle — a bill, a docket, an appropriations line — not a thesis.", "own": null, "fail": "The finding that matters: across 98 randomly selected issues tracked 1999–2002, 60% of lobbying campaigns failed to move policy, and resources explained under 5% of the difference between winners and losers. Paying more does not buy the outcome; the status quo wins most contests regardless of spending.", "rate": {"val": 40, "kind": "base", "ev": "coded", "src": "98 randomly selected issues tracked 1999–2002", "means": "40% saw policy change; 60% of campaigns failed to move policy. Resources explained under 5% of the difference between winners and losers.", "caveat": "Random issue selection is what makes this figure trustworthy.", "y0": 1999, "y1": 2002, "name": "Federal lobbying campaign"}}, {"id": "scoping", "nm": "Scoping memo from a former staffer", "fam": "Money & representation", "sc": "National", "cost": "$2k–$10k", "costn": "Ten to twenty hours of one practitioner's time.", "elig": "Anyone who can pay", "time": "2–4 weeks", "how": "Buy the answer to which committee, which vehicle, which staffer, and what the ask should literally say.", "own": null, "fail": "No measured rate. Listed because it is the cheapest way to find out whether a retainer would be wasted.", "rate": null}, {"id": "office", "nm": "Running for office", "fam": "Money & representation", "sc": "Any level", "cost": "$0–$2m+", "costn": "Local filing fees are often under $100 or a signature petition. Precinct and party committee seats frequently go uncontested.", "elig": "Residency and age requirements", "time": "Election cycles", "how": "The lowest offices have the least competition and the most direct jurisdiction over local decisions.", "own": null, "fail": "Randomised evidence from 265 Indian village councils where head positions were reserved: holding office changed spending priorities measurably, but not uniformly for the better. Office changes what gets decided, not whether deciding is hard.", "rate": {"val": null, "kind": "dir", "ev": "rct", "src": "265 Indian village councils; one third of head positions randomly reserved", "means": "Reserved councils invested in 2.62 more drinking-water facilities on average and made fewer road improvements, an 8% deterioration. Inexperience, re-election prospects and background were ruled out.", "caveat": "Direction and mechanism, not a percentage. Non-Western, randomised, and rare on both counts.", "y0": 1995, "y1": 2004, "name": "Holding the office (randomised)"}}, {"id": "ballot", "nm": "Ballot initiative", "fam": "Money & representation", "sc": "State / local", "cost": "$1–$10 per signature", "costn": "Signature gathering is the dominant cost and scales with the jurisdiction's threshold.", "elig": "Available in some jurisdictions only", "time": "A full election cycle", "how": "Qualify by signature, then campaign.", "own": null, "fail": "Qualifying and winning are different problems, and a measure that passes can still be repealed, amended or struck down.", "rate": null}, {"id": "quitam", "nm": "Whistleblowing under a reward statute", "fam": "Insider", "sc": "National", "cost": "Lawyer, contingency", "costn": "Qui tam counsel works on contingency; filing costs the whistleblower little up front.", "elig": "Someone with original, non-public evidence of fraud against the government", "time": "Years under seal", "how": "Filed under seal; the government decides whether to intervene.", "own": null, "fail": "Everything turns on intervention. Recovery runs near 95% in cases the government joins and drops sharply in cases it declines. The whistleblower does not control that decision.", "rate": {"val": 27, "kind": "base", "ev": "coded", "src": "DOJ annual False Claims Act statistics", "means": "1,297 qui tam suits filed in FY2025, a record. $5.3bn of $6.8bn recovered came from qui tam matters; ~43% of that from cases the government declined and the relator pursued alone. Relators received ~$330m, about 6%.", "caveat": "Intervention is the inflection point. Retaliation: 22% in earlier surveys, rising to 44% and above in later waves.", "y0": 2015, "y1": 2025, "name": "Whistleblowing — at filing (qui tam)"}}, {"id": "observer", "nm": "Independent election observation", "fam": "Insider", "sc": "Any level", "cost": "Free", "costn": "Volunteer.", "elig": "Varies; often requires accreditation", "time": "Election days", "how": "Randomised evidence from Russian polling stations.", "own": null, "fail": "One of the largest measured effects available to an unpaid individual, and it only works where the problem is at the count.", "rate": {"val": 11, "kind": "effect", "ev": "rct", "src": "Randomly assigned independent observers, Russian polling stations", "means": "The presence of a randomly assigned independent observer cut the ruling party's result by 11% on average, from 47% to 36%.", "caveat": "Also the trigger for what followed: documented fraud with no official acknowledgement is what put thousands into the streets in December 2011.", "y0": 2011, "y1": 2012, "name": "Independent election observers (randomised)"}}, {"id": "facarole", "nm": "Federal advisory committee seat", "fam": "Insider", "sc": "National", "cost": "Free", "costn": "Unpaid or per-diem.", "elig": "Appointed; nominations often open publicly", "time": "Months to appoint; multi-year terms", "how": "Agencies must publish vacancies and solicit nominations. Seats on technical committees are frequently undersubscribed.", "own": null, "fail": "No measured rate. An unusual route: it places a person inside the body that drafts the recommendation, rather than outside writing to it.", "rate": null}, {"id": "oped", "nm": "Newspaper op-ed", "fam": "Information", "sc": "Public", "cost": "Free", "costn": "Free to submit; most are rejected.", "elig": "Anyone", "time": "Days to weeks", "how": "Two randomised panel experiments on five op-eds, tested on a mass sample and on policy elites.", "own": null, "fail": "Moved policy attitudes about half a point on a seven-point scale, still present a month later. It moves opinion, which is not the same as moving a decision.", "rate": {"val": 7, "kind": "effect", "ev": "rct", "src": "two randomised panel experiments on five op-eds, run on a mass sample and on a sample of policy elites", "means": "Reading an op-ed moved policy attitudes about half a point on a seven-point scale — roughly 7% of the scale — and the shift was still there a month later, having closed by about half in the first ten days and then held. Attitudes on non-target issues did not move, which is the check that people read the argument rather than shifting generally. Democrats and Republicans moved in the direction of the piece in roughly equal measure, and elites moved slightly less than the public. Costed against readership, between about 50 cents and $3 per mind changed.", "caveat": "Convenience samples, forced exposure and an attitude scale rather than behaviour. The real-world version has to survive the fact that hardly anybody reads any given piece — the effect is per reader, not per publication, and the cost-per-mind figure carries every assumption in that chain.", "y0": 2016, "y1": 2018, "name": "Newspaper op-ed"}}, {"id": "deepcanvass", "nm": "Deep canvassing", "fam": "Information", "sc": "Public", "cost": "Free", "costn": "Volunteer time; ten minutes per conversation.", "elig": "Anyone", "time": "Ongoing", "how": "A ten-minute non-judgemental exchange of personal stories, not an argument.", "own": null, "fail": "The largest durable persuasion effect measured, and the least scalable thing on this list. Ordinary partisan canvassing measures approximately zero.", "rate": {"val": 13.8, "kind": "effect", "ev": "rct", "src": "Randomised field experiment on immigration attitudes", "means": "Support moved from 29% to 33% — a 13.8% relative increase — durable at three months or more.", "caveat": "Four points absolute. Deflated floor ~2.2% relative.", "y0": 2016, "y1": 2020, "name": "Deep canvassing (10-min story exchange)"}}, {"id": "petition", "nm": "Online petition", "fam": "Information", "sc": "Any level", "cost": "Free", "costn": "Free.", "elig": "Anyone", "time": "Weeks", "how": "Official government petition sites carry response thresholds; commercial petition sites carry none.", "own": null, "fail": "Across all 20,000 petitions on the UK government site, 0.7% reached the threshold for an official response and 0.1% reached a debate. End to end the figure is about 0.15%. Petitions defending an existing policy did considerably better than those demanding change, and signature count was not decisive.", "rate": {"val": 0.7, "kind": "base", "ev": "coded", "src": "All 20,000 petitions on the UK government site", "means": "5% reached 500 signatures; 0.7% reached the 10,000 needed for an official response; 0.1% reached 100,000 for a debate. US White House site: 15% and 0.7%.", "caveat": "Crossing the threshold is not winning. See the compound row.", "y0": 2011, "y1": 2019, "name": "Petition — reaching an official response"}}];
 /* ====================================================================
-   HOW TO REACH THEM
-   Office data: Wikidata Query Service (live, CORS). Local offices:
-   OpenStreetMap via Overpass (live, secondary).
-   Success rates: the author's own leverage chart dataset
-   (leverage-chart.html in this repo), reproduced per route with its
-   original source and evidence tier. Rates are not invented here.
+   WHAT EACH OFFICE CAN DO ABOUT A LAW
+
+   This map is about making law, so every office is sorted into the
+   branch it sits in and given a plain description of what a member of
+   the public can actually ask of it. The sorting reads the office's
+   title and its Wikidata class, because no global register of office
+   powers exists. It is a good guess, not a constitutional ruling:
+   powers differ by country, and a title that means one thing in one
+   place means another elsewhere. Confirm against the official site.
+   ==================================================================== */
+
+/* Entities that are a period of time rather than an office — Wikidata
+   files "presidency of Barack Obama" (class: presidential term) and
+   "117th Congress" (legislative term) under the same jurisdiction
+   property as real offices. They are not contactable. */
+const RX_TENURE_CLS = /\b(term|tenure|presidency|premiership|mayoralty|governorship|chancellorship|incumbency|period)\b/i;
+const RX_TENURE_LBL = /^(presidency|premiership|mayoralty|governorship|chancellorship|administration|cabinet|government)\s+of\s+/i;
+const RX_ORDINAL    = /^\d+(st|nd|rd|th)\s/i;
+
+function isTenure(label, classes){
+  label = String(label||'').replace(/[\u2010-\u2015\-_]/g,' ');
+  if(RX_TENURE_LBL.test(label)) return true;
+  if(RX_ORDINAL.test(label) && /\b(congress|parliament|assembly|legislature)\b/i.test(label)) return true;
+  return (classes||[]).some(c => RX_TENURE_CLS.test(c));
+}
+
+/* A class label that identifies the thing as a document, a case or an
+   election. Deliberately narrow: "federal law enforcement agency" must
+   not match, or the FBI is filed as a law. */
+const RX_DOC_CLS = /\b(act of|decision of|ruling|judg(e)?ment|court case|legal case|legislation|statute|amendment to|bill|constitution|treaty|election|referendum|plebiscite|ordinance|resolution|proclamation|case law|doctrine|protocol|convention|accord|executive order|list article)\b/i;
+
+/* Records that are not offices at all */
+const RX_DOC = /\b(act|amendment|decision|ruling|case|treaty|bill|constitution|statute|ordinance|regulation|directive|protocol|referendum|election|proposition|initiative|proclamation|resolution|charter|code|legislation|plebiscite)\b/i;
+const RX_DIPLO = /\b(embassy|consulate|high commission|diplomatic|legation|nunciature|ambassador|envoy|chargé)\b/i;
+
+/* Symbols, boundaries, reference articles and other things Wikidata
+   files under the same jurisdiction property. Not offices, and not
+   laws either, so they are shown under Records rather than hidden. */
+const RX_SYMBOL = /\b(flag|coat of arms|seal|emblem|anthem|currency|banknote|coin|border|boundary|list of|list article|ideology|declaration|agreement|treaty|warning|legal form|motto|holiday|passport|citizenship|demograph|econom|geography|histor|culture|military of|armed forces of)\b/i;
+
+/* ---- branch tests, applied to title first, then class ---- */
+/* Order is precedence: the first pattern that matches wins, so the
+   narrow titles are tested before the broad ones. "Speaker of the
+   National Assembly" is a presiding officer, not a chamber; a
+   sheriff's department is a police force, not a generic agency. */
+ const B_HEAD = null;
+const B = [
+ {br:'exec', k:'envoy',
+  rx:/\b(trade representative|special representative|permanent representative|special envoy|special adviser|chief of protocol)\b/i,
+  what:'Represents the government outward, not the public inward.',
+  how:'Negotiates on the government\u2019s behalf rather than taking proposals from the public. Named here so it is not mistaken for a legislator: the word representative in this title means representing the state abroad or at an international body, not representing you. Whatever they agree still has to pass the legislature, which is where to put your effort.'},
+
+ {br:'leg', k:'presiding',
+  rx:/\b(speaker|president of the (senate|assembly)|presiding officer|chair(man|woman|person)? of the (house|senate|council|committee|assembly|board|commission)|majority leader|minority leader|whip|leader of the house|deputy speaker)\b/i,
+  what:'Controls what reaches a vote.',
+  how:'Holds the calendar. A bill with support can still never be voted on if this office does not schedule it, so once a bill exists and has backers, this is the office that decides whether it moves. Approaching it is worth doing only when you already have a bill and sponsors; before that there is nothing to schedule.'},
+
+ {br:'leg', k:'member',
+  rx:/\b(member of (parliament|congress|the assembly)|senator|representative|congress(wo)?man|assembly ?(member|man|woman)|councill?or|council ?member|alderman|alderwoman|supervisor|legislator|delegate|MP|MLA|TD)\b/i,
+  what:'An individual lawmaker.',
+  how:'The only person who can turn your proposal into an actual bill. One member introducing it is the single step that nothing else substitutes for. Ask for a meeting with the staffer who covers your subject rather than with the member — staff decide what reaches the member, and a staffer who takes up your idea becomes the person who carries it. If you live in their district you have a claim on that meeting that nobody else does.'},
+
+ {br:'leg', k:'committee',
+  rx:/\b(committee|subcommittee|select committee|standing committee|joint committee)\b/i,
+  what:'Where bills are examined, rewritten or killed.',
+  how:'Most bills end here rather than on the floor. Committees take written submissions and hold hearings, and both are open to the public — the clerk of the committee will tell you the format and the deadline. A written submission is published in the record and costs nothing, which makes it the cheapest way to put an argument somewhere permanent.'},
+
+ {br:'leg', k:'chamber',
+  rx:/\b(parliament|congress|legislature|legislative assembly|national assembly|general assembly|senate|house of (representatives|commons|delegates|assembly)|chamber of deputies|diet|duma|knesset|bundestag|riksdag|storting|folketing|cortes|sejm|rada|majlis|state assembly|city council|county council|town council|municipal council|board of supervisors|board of commissioners|county commission|borough assembly|quorum court|police jury)\b/i,
+  what:'The body that writes and passes the law here.',
+  how:'This is where a law is actually made. You cannot introduce a bill yourself — a member has to do it for you. What you can do directly: submit written evidence to one of its committees, speak during a public comment period, ask for an item to be placed on the agenda, and read the published calendar to find out when your subject is being heard. Committee stage is where most bills die, so that is where attention is worth spending.'},
+
+ {br:'exec', k:'legal',
+  rx:/\b(attorney general|solicitor general|public prosecutor|procurator|state attorney|district attorney|crown prosecutor|law officer|counsel|legal adviser|advocate general)\b/i,
+  what:'Decides how the law is enforced.',
+  how:'Chooses which cases to bring and which to leave, which can matter as much as the wording of a law. Many of these offices also issue formal legal opinions interpreting a statute, and some will do so on request from an official or a member of the public. A law that is never enforced and a law that does not exist look much the same from the ground.'},
+
+ {br:'exec', k:'clerk',
+  rx:/\b(clerk|registrar|recorder|secretary of state|election|returning officer|notary)\b/i,
+  what:'Where petitions and ballot measures are filed.',
+  how:'If your jurisdiction allows citizens to put a measure on the ballot directly, this is the office that takes the filing, tells you how many signatures you need and by when, and verifies them. It is the one route on the map where the public can make law without any elected official agreeing to help. Ask them for the current signature threshold and deadline before anything else.'},
+
+ {br:'exec', k:'head',
+  rx:/\b(president|prime minister|chancellor|governor|mayor|premier|taoiseach|chief minister|first minister|head of (state|government)|monarch|king|queen|emir|sultan)\b/i,
+  what:'Signs laws, or refuses to.',
+  how:'Can sign or veto what the legislature passes, and in most systems can propose legislation of their own. Can also act alone by decree or executive order, which is faster than a law but can be undone by the next holder just as quickly. Correspondence here is counted rather than read, so the realistic route is through the department that handles your subject, not the office itself.'},
+
+ {br:'exec', k:'minister',
+  rx:/\b(minister|secretary of|cabinet secretary|department of|ministry|secretary for|commissioner of|director of|administrator of|chief executive officer|city manager|administrator|town administrator|village manager)\b/i,
+  what:'Runs the department that writes the detailed rules.',
+  how:'Laws are usually short and the rules underneath them are long. Those rules — regulations — are written here, and they decide what the law does in practice. Two things are open to you: comment on a proposed rule while its window is open, and petition for a new rule, which the department must formally grant or deny in writing. The second is far less used than it deserves to be, because a refusal is a document you can challenge, where an ignored letter is not.'},
+
+ {br:'jud', k:'defender',
+  rx:/\b(public defender|legal aid|ombuds)/i,
+  what:'Represents people against the state.',
+  how:'An ombudsman investigates complaints about how government behaved and publishes findings, usually without the power to compel anything. The findings are still useful: a published finding is something a court, a journalist or a legislator can cite, which an unanswered complaint is not.'},
+
+ {br:'jud', k:'judge',
+  rx:/\b(judge|justice|magistrate|chief justice|adjudicator)\b/i,
+  what:'Decides what the law means in practice.',
+  how:'Not contactable about any matter that might come before them. In jurisdictions where judges are elected, the election itself is the public route. Otherwise the way in is through a case, not through correspondence.'},
+
+ {br:'jud', k:'court',
+  rx:/\b(court|tribunal|judiciary|bench|judicial)\b/i,
+  what:'Can strike down or reinterpret a law.',
+  how:'Cannot be lobbied, and contacting a judge about a live case is improper. You reach a court in one of two ways: as a party, which requires a concrete injury to you specifically, or by filing an amicus brief in someone else\'s case, which courts accept when it brings facts the parties do not have. A ruling can undo a law that a legislature will not touch, which is why this branch is slow but final.'},
+
+ {br:'ag', k:'audit',
+  rx:/\b(inspector general|auditor|comptroller|treasurer|audit office|accountability office|anti-corruption|integrity|tax collector|revenue)\b/i,
+  what:'Investigates whether government followed its own rules.',
+  how:'Takes complaints that a body broke a specific legal or policy obligation, and publishes what it finds. An audit finding is one of the few things that makes an agency concede a failure in writing and commit to a dated fix, which then becomes something a legislator can act on. Vague complaints are closed; name the obligation and the failure.'},
+
+ {br:'ag', k:'police',
+  rx:/\b(police|sheriff|constabulary|law enforcement|marshal|guard)\b/i,
+  what:'Enforces law on the ground.',
+  how:'Cannot change a law. Most forces have a civilian oversight board or complaints body, and those bodies usually report to the council or legislature that funds them — which is where a policy change is actually made. If your concern is about practice rather than an incident, the funding body is the more useful address.'},
+
+ {br:'ag', k:'agency',
+  rx:/\b(agency|bureau|authority|board|commission|administration|service|directorate|office of|institute|council on|corporation|district|trust|fund|inspectorate|command|federal government|government of|executive branch|archivist|librarian of)\b/i,
+  what:'Writes and enforces the rules under a law.',
+  how:'Agencies turn a short law into the detailed rules that actually bind people, and most are required to publish proposed rules and accept comment before they take effect. Comment while the window is open, on the specific docket, and the agency has to address substantive comments when it issues the final rule. Outside a window, a petition for rulemaking is the way to make it respond.'}
+];
+
+function classifyOffice(label, classes){
+  /* hyphens and non-breaking punctuation are normalised away so that
+     "Solicitor-General" matches the same pattern as "Solicitor General" */
+  const hay = (label + ' ' + (classes||[]).join(' ')).replace(/[\u2010-\u2015\-_]/g,' ');
+  for(const r of B){ if(r.rx.test(hay)) return r; }
+  return {br:'other', k:'other', what:'Role not identified.',
+    how:'This map could not work out what this office does from its title, so it may or may not have a part in making law. The official site is the place to check. If it turns out to be an agency it will take public comment on its rules; if it is an elected post, the holder can usually introduce or sponsor a measure.'};
+}
+
+const BRANCH = {
+  leg:  {nm:'Legislative', sub:'Writes and passes the law'},
+  exec: {nm:'Executive',   sub:'Signs it, and writes the rules under it'},
+  jud:  {nm:'Judicial',    sub:'Decides what it means and whether it stands'},
+  ag:   {nm:'Agencies',    sub:'Turn the law into the rules that bind people'},
+  other:{nm:'Unsorted',    sub:'Title did not identify a role'},
+  doc:  {nm:'Records',     sub:'Laws, rulings and elections, not offices'},
+};
+/* ====================================================================
+   SOURCES
+   Offices: Wikidata Query Service, live.
+   Boundaries: the cgaz-boundaries repository (geoBoundaries CGAZ),
+   one file per country per administrative level.
+   Success rates: leverage-chart.html in this repository, reproduced
+   per route with its original dataset and evidence tier.
    ==================================================================== */
 const WDQS = 'https://query.wikidata.org/sparql';
+const CGAZ = 'https://welcometoyourgalaxy.github.io/cgaz-boundaries/';
 const OVERPASS = ['https://overpass-api.de/api/interpreter',
                   'https://overpass.kumi.systems/api/interpreter',
-                  'https://overpass.private.coffee/api/interpreter',
-                  'https://overpass.osm.jp/api/interpreter'];
+                  'https://overpass.private.coffee/api/interpreter'];
 const EVNAME = {rct:'Randomised / natural experiment', quasi:'Quasi-experimental',
   coded:'Large-N coded dataset', percep:'Survey of perceived influence',
   case:'Case study / expert synthesis', none:'No systematic measurement', dir:'Direction only'};
 
-/* ---------- small helpers ---------- */
 const $ = s => document.querySelector(s);
 const esc = s => String(s==null?'':s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const qid = u => (u||'').split('/').pop();
 const isQ = s => /^Q\d+$/.test(s||'');
-function setDot(id, cls, txt){ const d=$('#d-'+id); d.className='dot'+(cls?' '+cls:''); if(txt) $('#t-'+id).textContent=txt; }
+function setDot(id, cls, txt){ const d=$('#d-'+id); if(!d) return; d.className='dot'+(cls?' '+cls:''); if(txt) $('#t-'+id).textContent=txt; }
 
-/* localStorage cache, best effort — never load-bearing */
-const CACHE_V='htrt1';
+const CACHE_V='htrt2';
 function cget(k){ try{ const r=localStorage.getItem(CACHE_V+':'+k); if(!r) return null;
   const o=JSON.parse(r); if(Date.now()-o.t > 6048e5) return null; return o.v; }catch(e){ return null; } }
 function cset(k,v){ try{ localStorage.setItem(CACHE_V+':'+k, JSON.stringify({t:Date.now(),v:v})); }catch(e){} }
 
 async function sparql(query, cacheKey){
   if(cacheKey){ const c=cget(cacheKey); if(c) return c; }
-  const url = WDQS+'?query='+encodeURIComponent(query)+'&format=json';
-  const ac = new AbortController();
-  const killer = setTimeout(()=>ac.abort(), 58000);
+  const ac=new AbortController(), killer=setTimeout(()=>ac.abort(), 58000);
   let r;
-  try{ r = await fetch(url, {headers:{'Accept':'application/sparql-results+json'}, signal:ac.signal}); }
+  try{ r = await fetch(WDQS+'?query='+encodeURIComponent(query)+'&format=json',
+      {headers:{'Accept':'application/sparql-results+json'}, signal:ac.signal}); }
   finally{ clearTimeout(killer); }
   if(!r.ok) throw new Error(r.status===504?'the query timed out at Wikidata':'Wikidata returned '+r.status);
-  const j = await r.json();
-  const rows = j.results.bindings;
+  const rows = (await r.json()).results.bindings;
   if(cacheKey) cset(cacheKey, rows);
   return rows;
 }
 
-/* ====================================================================
-   JURISDICTION QUERIES
-   ==================================================================== */
+/* the jurisdiction's own channel, its legislature and its head of government */
 function qCore(q){ return `
 SELECT ?kind ?item ?itemLabel ?site ?email ?phone ?holder ?holderLabel WHERE {
  { BIND("legislature" AS ?kind) wd:${q} wdt:P194 ?item . OPTIONAL{?item wdt:P856 ?site} }
@@ -222,249 +1240,497 @@ SELECT ?kind ?item ?itemLabel ?site ?email ?phone ?holder ?holderLabel WHERE {
  SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" }
 } LIMIT 60`; }
 
-/* Everything Wikidata records as having this jurisdiction. Deliberately
-   unfiltered at the server: the class comes back with each item and the
-   grouping happens in the browser, so nothing is dropped on your behalf
-   and the query returns in about a second instead of twenty. */
+/* everything with this jurisdiction; classed in the browser, which is
+   both faster and keeps the full result set visible */
 function qJuris(q){ return `
 SELECT ?item ?itemLabel ?cls ?clsLabel ?site ?email ?phone ?holder ?holderLabel WHERE {
  ?item wdt:P1001 wd:${q} .
- OPTIONAL{?item wdt:P31 ?cls}
- OPTIONAL{?item wdt:P856 ?site} OPTIONAL{?item wdt:P968 ?email}
+ OPTIONAL{?item wdt:P31 ?cls} OPTIONAL{?item wdt:P856 ?site} OPTIONAL{?item wdt:P968 ?email}
  OPTIONAL{?item wdt:P1329 ?phone} OPTIONAL{?item wdt:P1308 ?holder}
  SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" }
 } LIMIT 600`; }
 
-function qSubdiv(q){ return `
-SELECT ?d ?dLabel ?typeLabel ?site WHERE {
- wd:${q} wdt:P150 ?d .
- OPTIONAL{ ?d wdt:P856 ?site }
- OPTIONAL{ ?d wdt:P31 ?type }
+/* The generic query above samples whatever Wikidata returns first, and
+   for a large country there are thousands of records, so the offices
+   themselves can be missed entirely. These two ask for offices and for
+   public bodies specifically. They walk the class tree, which is slow
+   — about half a minute for the United States, a second or two for
+   most places — so they run behind the fast pair and are cached for a
+   week once they land. */
+function qPositions(q){ return `
+SELECT ?item ?itemLabel ?clsLabel ?site ?email ?phone ?holder ?holderLabel WHERE {
+ ?item wdt:P1001 wd:${q} ; wdt:P31 ?cls . ?cls wdt:P279* wd:Q4164871 .
+ OPTIONAL{?item wdt:P856 ?site} OPTIONAL{?item wdt:P968 ?email}
+ OPTIONAL{?item wdt:P1329 ?phone} OPTIONAL{?item wdt:P1308 ?holder}
  SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" }
-} LIMIT 500`; }
+} LIMIT 400`; }
+function qBodies(q){ return `
+SELECT ?item ?itemLabel ?clsLabel ?site ?email ?phone WHERE {
+ ?item wdt:P1001 wd:${q} ; wdt:P31 ?cls . ?cls wdt:P279* wd:Q327333 .
+ OPTIONAL{?item wdt:P856 ?site} OPTIONAL{?item wdt:P968 ?email} OPTIONAL{?item wdt:P1329 ?phone}
+ SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" }
+} LIMIT 400`; }
 
+function qSubdiv(q){ return `
+SELECT ?d ?dLabel WHERE { wd:${q} wdt:P150 ?d .
+ SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" } } LIMIT 600`; }
 /* ====================================================================
-   PANEL STATE
+   THE MAP
+   MapLibre, with the five basemaps shared from the Culprits map.
+   Overlay colours are redrawn for each basemap so the boundaries stay
+   readable on a photograph, a painted atlas and a night earth alike.
    ==================================================================== */
-let TAB='juris', TRAIL=[], CURRENT=null;
-
-function openPanel(){ $('#panel').classList.add('open'); const h=$('#hint'); if(h) h.style.opacity=0; }
-function closePanel(){ $('#panel').classList.remove('open'); }
-const TAB_TITLE = {
-  routes:['Routes of contact','What each one costs, how often it has worked, and why it fails'],
-  why:['Why it fails','The mechanisms behind the rates']
+const TONES = {
+  satellite:{line:'#cfe0d2', fill:'#7fa88c', hi:'#eaf3ec'},
+  atlas:    {line:'#3c5a46', fill:'#6d8c76', hi:'#1f3328'},
+  night:    {line:'#8cd0ae', fill:'#2f6b4f', hi:'#c9f0da'},
+  hell:     {line:'#c4b1a6', fill:'#8a6f63', hi:'#e6d7cd'},
+  outlines: {line:'#44664f', fill:'#7f9c88', hi:'#23362a'},
 };
-function setTab(t){
-  TAB=t;
-  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on', b.dataset.t===t));
-  if(TAB_TITLE[t]){ $('#ptitle').textContent=TAB_TITLE[t][0]; $('#psub').textContent=TAB_TITLE[t][1]; }
-  else if(CURRENT && CURRENT.q){ $('#ptitle').textContent=CURRENT.label; $('#psub').textContent='Offices resolved live from Wikidata'; }
-  render();
+let BM=null, tone=TONES.night, mapReady=false;
+
+BM = CulpritsBasemaps.create('map', {
+  initial:'night', center:[10,18], zoom:2.1,
+  onApply(kind){ tone = TONES[kind] || TONES.night; retint(); },
+  onReady(){ mapReady = true; boot(); }
+});
+const map = BM.maplibre;
+
+/* basemap switcher */
+(function(){
+  const box = document.getElementById('bmbox');
+  box.innerHTML = CulpritsBasemaps.list.map(b =>
+    '<button data-k="'+b[0]+'" onclick="pickBase(\''+b[0]+'\')">'+b[1]+'</button>').join('');
+  markBase('night');
+})();
+function pickBase(k){ BM.set(k); markBase(k); }
+function markBase(k){ document.querySelectorAll('#bmbox button')
+  .forEach(b=>b.classList.toggle('on', b.dataset.k===k)); }
+
+/* ---------- overlay layers ----------
+   Two sources only: the countries, and whatever administrative level
+   is currently drawn beneath the one you clicked. */
+const SRC_C='ctry', SRC_A='adm';
+function addOverlays(){
+  if(map.getSource(SRC_C)) return;
+  map.addSource(SRC_C,{type:'geojson',data:{type:'FeatureCollection',features:[]}});
+  map.addSource(SRC_A,{type:'geojson',data:{type:'FeatureCollection',features:[]}});
+  map.addLayer({id:'ctry-f',type:'fill',source:SRC_C,
+    paint:{'fill-color':tone.fill,'fill-opacity':['case',['boolean',['feature-state','hover'],false],0.42,0.16]}});
+  map.addLayer({id:'ctry-l',type:'line',source:SRC_C,
+    paint:{'line-color':tone.line,'line-width':0.7,'line-opacity':0.75}});
+  map.addLayer({id:'adm-f',type:'fill',source:SRC_A,
+    paint:{'fill-color':tone.fill,'fill-opacity':['case',['boolean',['feature-state','hover'],false],0.55,0.28]}});
+  map.addLayer({id:'adm-l',type:'line',source:SRC_A,
+    paint:{'line-color':tone.line,'line-width':1.1,'line-opacity':0.9}});
+  wireHover('ctry-f', SRC_C, f=>f.properties.name, onCountry);
+  wireHover('adm-f',  SRC_A, f=>f.properties.shapeName, onUnit);
 }
-function openRoutes(){ openPanel(); setTab('routes'); }
+function retint(){
+  if(!map.getLayer || !map.getLayer('ctry-f')) return;
+  map.setPaintProperty('ctry-f','fill-color',tone.fill);
+  map.setPaintProperty('ctry-l','line-color',tone.line);
+  map.setPaintProperty('adm-f','fill-color',tone.fill);
+  map.setPaintProperty('adm-l','line-color',tone.line);
+}
 
-async function goJuris(q, label, push){
-  CURRENT = {q:q, label:label, offs:null, subs:[], pos:null, posState:'loading'};
-  if(push!==false){ const i=TRAIL.findIndex(x=>x.q===q);
-    if(i>=0) TRAIL=TRAIL.slice(0,i+1); else TRAIL.push({q:q,label:label}); }
-  $('#ptitle').textContent = label;
-  $('#psub').textContent = 'Offices resolved live from Wikidata';
-  openPanel(); TAB='juris';
-  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on', b.dataset.t==='juris'));
-  $('#pbody').innerHTML = crumbHTML() + '<div class="spin">Resolving offices and subdivisions&hellip;</div>';
-  setDot('wd','busy','Wikidata');
-  const token = q + ':' + Date.now(); CURRENT.token = token;
+let hoverId=null, hoverSrc=null;
+function wireHover(layer, src, nameOf, onClick){
+  map.on('mousemove', layer, e=>{
+    map.getCanvas().style.cursor='pointer';
+    const f=e.features[0]; if(!f) return;
+    if(hoverId!==null) map.setFeatureState({source:hoverSrc,id:hoverId},{hover:false});
+    hoverId=f.id; hoverSrc=src;
+    map.setFeatureState({source:src,id:f.id},{hover:true});
+    tip(e.lngLat, nameOf(f));
+  });
+  map.on('mouseleave', layer, ()=>{
+    map.getCanvas().style.cursor='';
+    if(hoverId!==null) map.setFeatureState({source:hoverSrc,id:hoverId},{hover:false});
+    hoverId=null; hideTip();
+  });
+  map.on('click', layer, e=>{ const f=e.features[0]; if(f) onClick(f); });
+}
 
-  /* fast pair first so the panel fills immediately */
-  try{
-    const [core, subs] = await Promise.all([
-      sparql(qCore(q), 'core:'+q),
-      sparql(qSubdiv(q), 'sub:'+q)
-    ]);
-    if(CURRENT.token !== token) return;
-    setDot('wd','ok','Wikidata live');
-    CURRENT.offs = core; CURRENT.subs = subs;
-    if(TAB==='juris') render();
-  }catch(e){
-    if(CURRENT.token !== token) return;
-    setDot('wd','bad','Wikidata unreachable');
-    $('#pbody').innerHTML = crumbHTML() +
-      '<div class="note">Could not reach the Wikidata query service: '+esc(e.message)+
-      '. It rate-limits heavy use and goes down for maintenance from time to time. Try again in a minute.</div>';
+/* a tooltip that follows the pointer */
+let tipEl=null;
+function tip(lngLat, text){
+  if(!tipEl){ tipEl=document.createElement('div');
+    tipEl.style.cssText='position:fixed;z-index:60;pointer-events:none;background:rgba(17,24,21,.96);'+
+      'border:1px solid rgba(125,142,130,.3);border-radius:6px;padding:4px 9px;font-size:12px;color:#e7e4dc';
+    document.body.appendChild(tipEl); }
+  const p=map.project(lngLat);
+  tipEl.textContent=text; tipEl.style.display='block';
+  tipEl.style.left=(p.x+14)+'px'; tipEl.style.top=(p.y+14)+'px';
+}
+function hideTip(){ if(tipEl) tipEl.style.display='none'; }
+/* ====================================================================
+   DRILLING DOWN ON THE MAP
+   Click a country and its first administrative level is drawn. Click
+   one of those and the next level down is drawn, cut to the unit you
+   clicked. The boundary files are per country, so the cut is done
+   here: a unit belongs to the one you clicked if its centre falls
+   inside it.
+   ==================================================================== */
+let ISO2Q={}, ISO2ISO3={}, admCache={};
+let STACK=[];                 /* [{q,label,iso3,level,feature}] */
+
+function ringArea(r){ let a=0; for(let i=0,j=r.length-1;i<r.length;j=i++) a+=(r[j][0]*r[i][1]-r[i][0]*r[j][1]); return a/2; }
+function centroid(geom){
+  const polys = geom.type==='Polygon' ? [geom.coordinates] : geom.coordinates;
+  let bx=0,by=0,ba=0;
+  polys.forEach(p=>{ const r=p[0]; const a=Math.abs(ringArea(r));
+    let cx=0,cy=0; for(const pt of r){ cx+=pt[0]; cy+=pt[1]; }
+    cx/=r.length; cy/=r.length;
+    if(a>ba){ ba=a; bx=cx; by=cy; } });
+  return [bx,by];
+}
+function inRing(pt, ring){
+  let inside=false;
+  for(let i=0,j=ring.length-1;i<ring.length;j=i++){
+    const xi=ring[i][0], yi=ring[i][1], xj=ring[j][0], yj=ring[j][1];
+    if(((yi>pt[1])!==(yj>pt[1])) && (pt[0] < (xj-xi)*(pt[1]-yi)/(yj-yi)+xi)) inside=!inside;
+  }
+  return inside;
+}
+function inGeom(pt, geom){
+  const polys = geom.type==='Polygon' ? [geom.coordinates] : geom.coordinates;
+  for(const p of polys){
+    if(inRing(pt,p[0])){
+      let hole=false;
+      for(let h=1;h<p.length;h++) if(inRing(pt,p[h])) { hole=true; break; }
+      if(!hole) return true;
+    }
+  }
+  return false;
+}
+function bboxOf(geom){
+  let x0=180,y0=90,x1=-180,y1=-90;
+  const polys = geom.type==='Polygon' ? [geom.coordinates] : geom.coordinates;
+  polys.forEach(p=>p[0].forEach(c=>{ if(c[0]<x0)x0=c[0]; if(c[0]>x1)x1=c[0]; if(c[1]<y0)y0=c[1]; if(c[1]>y1)y1=c[1]; }));
+  return [x0,y0,x1,y1];
+}
+function fitTo(geom){
+  const b=bboxOf(geom);
+  try{ map.fitBounds([[b[0],b[1]],[b[2],b[3]]], {padding:{top:90,left:60,right:60,bottom:140}, duration:900, maxZoom:9}); }catch(e){}
+}
+
+async function fetchAdm(iso3, level){
+  const file = iso3 + (level>1 ? String(level) : '') + '.geojson';
+  if(admCache[file]) return admCache[file];
+  setDot('bd','busy','Boundaries loading');
+  const r = await fetch(CGAZ + file);
+  if(r.status===404){ setDot('bd','','Boundaries'); const e=new Error('notfound'); e.level=level; throw e; }
+  if(!r.ok){ setDot('bd','bad','Boundaries unreachable'); throw new Error('boundary file returned '+r.status); }
+  const gj = await r.json();
+  admCache[file]=gj; setDot('bd','ok','Boundaries live');
+  return gj;
+}
+
+/* draw `level` for a country, optionally cut to one parent feature */
+async function drawAdm(iso3, level, parentFeature){
+  if(!iso3) return setAdmData([]);
+  let gj;
+  try{ gj = await fetchAdm(iso3, level); }
+  catch(e){
+    setAdmData([]);
+    noteBelow(e.message==='notfound'
+      ? 'The boundary files go no deeper than this for this country. Most countries have two administrative levels in them, some have three or four.'
+      : 'Could not load the boundary file: '+e.message);
     return;
   }
-
-  /* the expensive one streams in behind it */
-  try{
-    const pos = await sparql(qJuris(q), 'juris:'+q);
-    if(CURRENT.token !== token) return;
-    CURRENT.pos = pos; CURRENT.posState = 'done';
-  }catch(e){
-    if(CURRENT.token !== token) return;
-    CURRENT.pos = []; CURRENT.posState = 'failed';
+  let feats = gj.features;
+  if(parentFeature){
+    const pg = parentFeature.geometry;
+    const pb = bboxOf(pg);
+    feats = feats.filter(f=>{
+      const c = centroid(f.geometry);
+      if(c[0]<pb[0]-0.01||c[0]>pb[2]+0.01||c[1]<pb[1]-0.01||c[1]>pb[3]+0.01) return false;
+      return inGeom(c, pg);
+    });
+    /* a level that does not nest inside the one above is worse than
+       nothing, so fall back to the parent rather than draw the country */
+    if(!feats.length){
+      setAdmData([]);
+      noteBelow('No units of the next level down sit inside this one in the boundary files. That usually means this is already the lowest level the files carry here.');
+      return;
+    }
   }
-  if(TAB==='juris') render();
+  setAdmData(feats);
+  if(parentFeature) fitTo(parentFeature.geometry);
+  noteBelow('');
+}
+function setAdmData(features){
+  const src = map.getSource(SRC_A); if(!src) return;
+  src.setData({type:'FeatureCollection',
+    features: features.map((f,i)=>({...f, id:i+1}))});
+}
+function noteBelow(msg){ const el=$('#admnote'); if(el) el.textContent=msg||''; }
+
+/* ---------- clicks ---------- */
+async function onCountry(f){
+  const iso = String(f.properties.iso_n3 || f.id);
+  const q = ISO2Q[iso], name = f.properties.name;
+  STACK = [];
+  if(!q){
+    openModal(name, 'No Wikidata country entity matched');
+    renderNoEntity(name);
+    return;
+  }
+  const iso3 = ISO2ISO3[iso] || null;
+  STACK.push({q:q, label:name, iso3:iso3, level:0, feature:f});
+  fitTo(f.geometry);
+  openJuris(q, name);
+  drawAdm(iso3, 1, null);
+  paintTrail();
 }
 
-function crumbHTML(){
-  if(!TRAIL.length) return '';
-  const parts = TRAIL.map((t,i)=> i===TRAIL.length-1
-    ? '<span>'+esc(t.label)+'</span>'
-    : '<a onclick="goJuris(\''+t.q+'\',\''+esc(t.label).replace(/'/g,"\\'")+'\',false);TRAIL=TRAIL.slice(0,'+(i+1)+')">'+esc(t.label)+'</a>');
-  return '<div id="crumbs">'+parts.join('<span class="sep">&rsaquo;</span>')+'</div>';
+async function onUnit(f){
+  const nm = f.properties.shapeName || 'Unnamed unit';
+  const top = STACK[STACK.length-1];
+  const iso3 = top ? top.iso3 : null;
+  const level = top ? top.level + 1 : 1;
+  openModal(nm, 'Matching it to Wikidata…');
+  $('#mbody').innerHTML = '<div class="spin">Looking this unit up&hellip;</div>';
+  const hit = await resolveUnit(nm);
+  if(hit){
+    STACK.push({q:hit.id, label:hit.label, iso3:iso3, level:level, feature:f});
+    openJuris(hit.id, hit.label);
+  }else{
+    STACK.push({q:null, label:nm, iso3:iso3, level:level, feature:f});
+    openModal(nm, 'Drawn from the boundary files');
+    renderNoEntity(nm, true);
+  }
+  drawAdm(iso3, level+1, f);
+  paintTrail();
 }
 
+function goUp(){
+  if(STACK.length<=1){
+    STACK=[]; setAdmData([]); closeModal(); paintTrail();
+    map.flyTo({center:[10,18], zoom:1.5, duration:900});
+    return;
+  }
+  STACK.pop();
+  const top = STACK[STACK.length-1];
+  setAdmData([]);
+  if(top.feature) fitTo(top.feature.geometry);
+  if(top.q) openJuris(top.q, top.label); else { openModal(top.label,'Drawn from the boundary files'); renderNoEntity(top.label,true); }
+  drawAdm(top.iso3, top.level+1, top.level===0 ? null : top.feature);
+  paintTrail();
+}
+
+function paintTrail(){
+  const el=$('#crumbs'), up=$('#upbtn');
+  if(!STACK.length){
+    el.innerHTML='<span class="hint">Click any country to begin. Its states or provinces are drawn on the map; click one of those for its districts, and so on down.</span>';
+    up.style.display='none'; return;
+  }
+  up.style.display='';
+  el.innerHTML = STACK.map((s,i)=> i===STACK.length-1
+    ? '<span class="now">'+esc(s.label)+'</span>'
+    : '<a onclick="jumpTo('+i+')">'+esc(s.label)+'</a>'
+  ).join('<span class="sep">&rsaquo;</span>');
+}
+function jumpTo(i){ while(STACK.length-1>i) STACK.pop();
+  const top=STACK[i]; setAdmData([]);
+  if(top.feature) fitTo(top.feature.geometry);
+  if(top.q) openJuris(top.q, top.label);
+  drawAdm(top.iso3, top.level+1, top.level===0?null:top.feature);
+  paintTrail();
+}
 /* ====================================================================
-   RENDERING
+   THE PANEL — branch by branch
    ==================================================================== */
+let CUR=null, TAB='leg';
+
+function openModal(title, sub){
+  $('#mtitle').textContent = title; $('#msub').textContent = sub||'';
+  $('#modal').classList.add('on'); $('#scrim').classList.add('on');
+}
+function closeModal(){ $('#modal').classList.remove('on'); $('#scrim').classList.remove('on'); }
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+
+function openTab(t){
+  TAB=t;
+  if(t==='routes'){ openModal('Routes of contact','What each one costs, how often it has worked, and why it fails'); }
+  else if(t==='why'){ openModal('Why it fails','The mechanisms behind the rates'); }
+  render();
+}
+
+function renderNoEntity(nm, drawn){
+  $('#mtabs').innerHTML = tabBtn('routes','Routes of contact') + tabBtn('why','Why it fails');
+  $('#mbody').innerHTML = '<div class="note">'+(drawn
+    ? '<b>'+esc(nm)+'</b> is drawn on the map, but Wikidata holds no entity by that name inside this country, so there are no offices to list for it. The two sources name places differently more often than you would expect &mdash; a unit may be recorded under a local-language name, an older name, or one level up or down. The levels above it still work, and the next level down is drawn.'
+    : 'No Wikidata country entity is matched to this territory, usually because it is disputed, a dependency, or not a sovereign state.')+'</div>'+
+    '<div style="margin-top:14px"><button class="fchip on" onclick="openTab(\'routes\')">Routes of contact &rsaquo;</button> '+
+    '<a class="fchip" style="text-decoration:none" target="_blank" rel="noopener" href="https://www.wikidata.org/w/index.php?search='+
+    encodeURIComponent(nm)+'">Search Wikidata &rsaquo;</a></div>';
+}
+
+async function openJuris(q, label){
+  CUR = {q:q, label:label, core:null, items:null, state:'loading'};
+  openModal(label, 'Offices resolved live from Wikidata');
+  $('#mtabs').innerHTML='';
+  $('#mbody').innerHTML = '<div class="spin">Resolving the offices for '+esc(label)+'&hellip;</div>';
+  setDot('wd','busy','Wikidata');
+  const token = q+':'+Date.now(); CUR.token=token;
+  try{
+    CUR.core = await sparql(qCore(q), 'core:'+q);
+    if(CUR.token!==token) return;
+    setDot('wd','ok','Wikidata live');
+    render();
+  }catch(e){
+    if(CUR.token!==token) return;
+    setDot('wd','bad','Wikidata unreachable');
+    $('#mbody').innerHTML='<div class="note">Could not reach Wikidata: '+esc(e.message)+
+      '. The service rate-limits heavy use and goes down for maintenance from time to time.</div>';
+    return;
+  }
+  /* breadth first, then the two targeted office queries; each lands
+     into the panel as it arrives */
+  try{
+    const items = await sparql(qJuris(q), 'juris:'+q);
+    if(CUR.token!==token) return;
+    CUR.items = items; render();
+  }catch(e){ if(CUR.token!==token) return; CUR.items=[]; }
+
+  const [pos, bod] = await Promise.all([
+    sparql(qPositions(q), 'pos:'+q).catch(()=>[]),
+    sparql(qBodies(q),    'bod:'+q).catch(()=>[])
+  ]);
+  if(CUR.token!==token) return;
+  CUR.items = (CUR.items||[]).concat(pos, bod);
+  CUR.state='done';
+  render();
+}
+
+/* merge rows per entity, drop tenures, sort into branches */
+function buckets(){
+  const out = {leg:[], exec:[], jud:[], ag:[], other:[], doc:[]};
+  if(!CUR) return out;
+  const merged = {};
+  (CUR.core||[]).forEach(r=>{
+    if(r.kind.value==='self') return;
+    const id=qid(r.item.value);
+    if(!merged[id]) merged[id]={row:r, classes:[r.kind.value==='legislature'?'legislature':'public office']};
+  });
+  (CUR.items||[]).forEach(r=>{
+    const id=qid(r.item.value);
+    if(!merged[id]) merged[id]={row:r, classes:[]};
+    const cl=r.clsLabel && r.clsLabel.value; if(cl) merged[id].classes.push(cl);
+    ['site','email','phone','holder','holderLabel'].forEach(f=>{ if(r[f] && !merged[id].row[f]) merged[id].row[f]=r[f]; });
+  });
+  Object.values(merged).forEach(m=>{
+    const label=(m.row.itemLabel && m.row.itemLabel.value) || qid(m.row.item.value);
+    if(isTenure(label, m.classes)) return;              /* a period, not an office */
+    const hay = label+' '+m.classes.join(' ');
+    const cls = m.classes.join(' ');
+    m.row.__cls = m.classes[0]||'';
+    if(RX_DIPLO.test(hay)) return;      /* foreign missions are not a route into this law */
+
+    /* Documents, cases and elections are identified from the class,
+       which is reliable, before anything reads the title. An Act is
+       classed "Act of Congress" and a ruling "decision of the Supreme
+       Court", and both would otherwise be read as the body that made
+       them. The class test is kept narrow so that an agency whose
+       class says "law enforcement" is not filed as a law. */
+    if(RX_DOC_CLS.test(cls) || RX_SYMBOL.test(cls) || RX_SYMBOL.test(label)){
+      out.doc.push(m.row); return;
+    }
+
+    const c = classifyOffice(label, m.classes);
+    if(c.br !== 'other'){
+      m.row.__what=c.what; m.row.__how=c.how;
+      out[c.br].push(m.row); return;
+    }
+    if(RX_DOC.test(label)){ out.doc.push(m.row); return; }
+    m.row.__what=c.what; m.row.__how=c.how;
+    out.other.push(m.row);
+  });
+  return out;
+}
+
+function tabBtn(id, label, n){
+  return '<button class="tab'+(TAB===id?' on':'')+'" onclick="TAB=\''+id+'\';render()">'+esc(label)+
+    (n!=null?'<span class="n">'+n+'</span>':'')+'</button>';
+}
+
 function render(){
   if(TAB==='routes') return renderRoutes();
   if(TAB==='why')    return renderWhy();
-  return renderJuris();
-}
-
-/* Group what Wikidata returns by what kind of thing it is. Nothing is
-   discarded — anything unrecognised lands in "Other records" so the full
-   result set stays visible and the selection stays yours. */
-const CLS_OFFICE = /\b(office|position|minister|secretary|mayor|governor|president|chair|speaker|commissioner|sheriff|attorney|treasurer|auditor|clerk|judge|justice|councillor|councilor|alderman|supervisor|magistrate|prosecutor|ombuds)/i;
-const CLS_BODY   = /\b(agency|department|ministry|bureau|commission|authority|board|council|assembly|parliament|legislature|senate|house|court|tribunal|directorate|secretariat|service|administration|cabinet|committee|corporation|district|constituency)/i;
-const CLS_DIPLO  = /\b(embassy|consulate|high commission|diplomatic|mission)\b/i;
-const CLS_DOC    = /\b(law|act|amendment|decision|ruling|case|treaty|bill|constitution|statute|ordinance|regulation|directive|protocol|referendum|election|proposition|initiative|order|proclamation|resolution|charter|code)\b/i;
-function classify(label){
-  const c = label || '';
-  if(CLS_DIPLO.test(c)) return 'diplo';
-  if(CLS_DOC.test(c))   return 'doc';
-  if(CLS_OFFICE.test(c))return 'position';
-  if(CLS_BODY.test(c))  return 'body';
-  return 'other';
-}
-
-function renderJuris(){
-  if(!CURRENT || !CURRENT.offs){ $('#pbody').innerHTML = crumbHTML()+'<div class="spin">Resolving offices and subdivisions&hellip;</div>'; return; }
-  const core = CURRENT.offs || [], subs = CURRENT.subs || [];
-  const by = {legislature:[], executive:[], self:[]};
-  const seen = new Set();
-  core.forEach(r=>{
-    const k = r.kind.value, id = k+'|'+qid(r.item && r.item.value);
-    if(k!=='self' && seen.has(id)) return; seen.add(id);
-    (by[k] = by[k]||[]).push(r);
-  });
-
-  /* jurisdiction items, grouped by class, deduplicated across P31 values */
-  const buckets = {position:[], body:[], diplo:[], doc:[], other:[]};
-  if(CURRENT.pos){
-    const merged = {};
-    CURRENT.pos.forEach(r=>{
-      const id = qid(r.item.value);
-      if(!merged[id]) merged[id] = {row:r, classes:[]};
-      const cl = r.clsLabel && r.clsLabel.value; if(cl) merged[id].classes.push(cl);
-      ['site','email','phone','holder','holderLabel'].forEach(f=>{ if(r[f] && !merged[id].row[f]) merged[id].row[f]=r[f]; });
-    });
-    Object.values(merged).forEach(m=>{
-      const kinds = m.classes.map(classify);
-      /* a document class wins over an office class: an election named
-         "presidential primaries" carries a class mentioning president,
-         which would otherwise file it among the offices */
-      const k = kinds.includes('diplo') ? 'diplo'
-              : kinds.includes('doc') ? 'doc'
-              : kinds.includes('position') ? 'position'
-              : kinds.includes('body') ? 'body'
-              : (kinds[0] || 'other');
-      m.row.__cls = m.classes[0] || '';
-      buckets[k].push(m.row);
-    });
+  if(!CUR) return;
+  const b = buckets();
+  const order = ['leg','exec','jud','ag','other','doc'];
+  $('#mtabs').innerHTML = order.filter(k=>b[k].length).map(k=>tabBtn(k, BRANCH[k].nm, b[k].length)).join('')
+    + tabBtn('routes','Routes') + tabBtn('why','Why it fails');
+  if(!b[TAB] || !b[TAB].length){
+    const first = order.find(k=>b[k].length);
+    if(first) TAB=first;
   }
+  const rows = b[TAB]||[];
+  let h='';
+  if(CUR.state==='loading') h += '<div class="spin">Still resolving the full list of offices&hellip;</div>';
+  if(BRANCH[TAB]) h += '<div class="bhead"><b>'+esc(BRANCH[TAB].nm)+'.</b> '+esc(BRANCH[TAB].sub)+'. '+branchIntro(TAB)+'</div>';
 
-  let h = crumbHTML();
-
-  const self = core.filter(r=>r.kind.value==='self');
-  if(self.length){
+  /* the jurisdiction's own channel sits above the first branch */
+  if(TAB==='leg'){
+    const self=(CUR.core||[]).filter(r=>r.kind.value==='self');
     const sites=new Set(), emails=new Set(), phones=new Set();
     self.forEach(r=>{ if(r.site)sites.add(r.site.value); if(r.email)emails.add(r.email.value); if(r.phone)phones.add(r.phone.value); });
-    h += '<div class="grp"><h3>Official channel</h3>';
-    [...sites].forEach(s=> h += '<div class="off"><div class="nm"><a href="'+esc(s)+'" target="_blank" rel="noopener">'+esc(s)+'</a></div><div class="meta">Authoritative source &mdash; trust this over anything below</div></div>');
-    [...emails].forEach(e=> h += '<div class="off"><div class="nm"><a href="mailto:'+esc(e)+'">'+esc(e)+'</a></div></div>');
-    [...phones].forEach(p=> h += '<div class="off"><div class="nm">'+esc(p)+'</div></div>');
-    h += '</div>';
+    if(sites.size||emails.size||phones.size){
+      h += '<div class="off"><div class="nm">Official channel</div><div class="what">The authoritative source for everything below.</div><div class="meta">';
+      [...sites].forEach(s=>h+='<a href="'+esc(s)+'" target="_blank" rel="noopener">'+esc(s)+'</a>');
+      [...emails].forEach(e=>h+='<a href="mailto:'+esc(e)+'">'+esc(e)+'</a>');
+      [...phones].forEach(p=>h+='<span>'+esc(p)+'</span>');
+      h += '</div></div>';
+    }
   }
 
-  h += offGroup('Legislature — writes the law', by.legislature);
-  h += offGroup('Executive — head of government and state', by.executive);
-
-  if(CURRENT.posState==='loading'){
-    h += '<div class="grp"><h3>Offices with jurisdiction here</h3><div class="spin">Resolving&hellip;</div></div>';
-  } else if(CURRENT.posState==='failed'){
-    h += '<div class="note">The query for individual offices did not return. The legislature and executive above came through; re-opening this jurisdiction usually gets the rest.</div>';
-  } else {
-    h += offGroup('Offices held by a person', buckets.position);
-    h += offGroup('Agencies and public bodies', buckets.body);
-    h += offGroup('Diplomatic missions', buckets.diplo, true);
-    h += offGroup('Laws, rulings and elections recorded for this jurisdiction', buckets.doc, true);
-    h += offGroup('Other records', buckets.other, true);
+  if(!rows.length && CUR.state!=='loading'){
+    h += '<div class="note">Wikidata records no offices of this kind for '+esc(CUR.label)+
+      '. Coverage is deep for some countries and thin for others, and thins further at local level. The official channel above is the place to look.</div>';
   }
-
-  const total = by.legislature.length + by.executive.length +
-    buckets.position.length + buckets.body.length + buckets.diplo.length + buckets.other.length;
-  if(!total && CURRENT.posState!=='loading'){
-    h += '<div class="note">Wikidata holds no office records for this jurisdiction yet. That is a gap in Wikidata, not evidence that no offices exist &mdash; coverage is deep for some countries and thin for others, and thins further at local level. Use the official channel above, and the subdivisions below.</div>';
-  }
-
-  if(subs.length){
-    const uniq = {};
-    subs.forEach(r=>{ const id=qid(r.d.value);
-      if(!uniq[id]) uniq[id]={id:id,label:(r.dLabel&&r.dLabel.value)||id,type:(r.typeLabel&&r.typeLabel.value)||''}; });
-    const list = Object.values(uniq).sort((a,b)=>a.label.localeCompare(b.label));
-    h += '<div class="grp"><h3>Go deeper &mdash; '+list.length+' subdivision'+(list.length===1?'':'s')+'</h3>';
-    list.forEach(d=>{
-      h += '<button class="subdiv" onclick="goJuris(\''+d.id+'\',\''+esc(d.label).replace(/'/g,"\\'")+'\')">'+
-           esc(d.label)+(d.type?' <span class="chev">'+esc(d.type)+'</span>':'')+' <span class="chev">&rsaquo;</span></button>';
-    });
-    h += '</div>';
-  } else {
-    h += '<div class="note">No subdivisions recorded in Wikidata below this level. For a municipality that is usually the end of the ladder; for a country or region it more often means the data has not been entered.</div>';
-  }
-
-  if(CGAZ_ISO3){
-    h += '<div class="grp"><h3>Draw the jurisdictions on the map</h3>'+
-      '<div style="font-size:11.5px;color:var(--faint);line-height:1.5;margin-bottom:8px">Boundary files from the cgaz-boundaries repository. Draw a level, then click any unit on the map to open its offices.</div>';
-    [1,2,3,4].forEach(l=>{
-      h += '<button class="subdiv'+(CGAZ_LEVEL===l?' on':'')+'" onclick="loadAdm('+l+')">ADM'+l+'</button>';
-    });
-    h += '<div id="admbox"></div></div>';
-  }
-  h += '<div class="grp"><h3>Physical offices you can walk into</h3>'+
-       '<button class="subdiv" onclick="findLocal()">Search the visible map area &mdash; OpenStreetMap &rsaquo;</button>'+
-       '<div id="localbox"></div></div>';
-  h += '<div class="note"><b>On the names.</b> Office titles are stable; the people in them are not. Wikidata holder records go stale, sometimes by years. Treat a name here as a lead to verify on the official site, never as current fact. The office is what you contact.</div>';
-  h += '<div style="margin-top:14px"><button class="fchip on" onclick="setTab(\'routes\')">See the routes into these offices &rsaquo;</button></div>';
-  $('#pbody').innerHTML = h;
-}
-
-function offGroup(title, rows, collapsed){
-  if(!rows || !rows.length) return '';
-  const gid = 'g'+Math.random().toString(36).slice(2,8);
-  let h = '<div class="grp" id="'+gid+'"><h3'+(collapsed?' style="cursor:pointer" onclick="this.parentNode.classList.toggle(\'shut\')"':'')+'>'+
-          esc(title)+' <span style="color:var(--faint);font-weight:400">'+rows.length+'</span>'+
-          (collapsed?' <span style="float:right;color:var(--faint)">show</span>':'')+'</h3>'+
-          '<div class="gbody"'+(collapsed?' style="display:none"':'')+'>';
-  rows.sort((a,b)=> ((a.itemLabel&&a.itemLabel.value)||'').localeCompare((b.itemLabel&&b.itemLabel.value)||''));
-  rows.slice(0,120).forEach(r=>{
-    const label = (r.itemLabel&&r.itemLabel.value) || qid(r.item.value);
-    const holder = r.holderLabel && r.holderLabel.value;
-    const site = r.site && r.site.value, email = r.email && r.email.value, phone = r.phone && r.phone.value;
-    h += '<div class="off"><div class="nm">'+esc(label)+'</div><div class="meta">';
-    if(r.__cls) h += '<span class="stale">'+esc(r.__cls)+'</span>';
-    if(holder) h += isQ(holder)
-      ? '<span class="holder">holder recorded, name missing from Wikidata</span>'
-      : '<span class="holder">'+esc(holder)+'</span> <span class="stale">verify</span>';
-    if(site)  h += '<a href="'+esc(site)+'" target="_blank" rel="noopener">'+esc(site.replace(/^https?:\/\//,'').slice(0,46))+'</a>';
+  rows.sort((a,b2)=>((a.itemLabel&&a.itemLabel.value)||'').localeCompare((b2.itemLabel&&b2.itemLabel.value)||''));
+  rows.slice(0,100).forEach(r=>{
+    const label=(r.itemLabel&&r.itemLabel.value)||qid(r.item.value);
+    const holder=r.holderLabel&&r.holderLabel.value;
+    const site=r.site&&r.site.value, email=r.email&&r.email.value, phone=r.phone&&r.phone.value;
+    h += '<div class="off"><div class="nm">'+esc(label)+'</div>';
+    if(r.__what) h += '<div class="what">'+esc(r.__what)+'</div>';
+    if(r.__how)  h += '<div class="how">'+esc(r.__how)+'</div>';
+    h += '<div class="meta">';
+    if(r.__cls) h += '<span class="chip">'+esc(r.__cls)+'</span>';
+    if(holder) h += isQ(holder) ? '<span>holder recorded, name missing</span>'
+      : '<span>'+esc(holder)+'</span> <span class="chip">verify</span>';
+    if(site)  h += '<a href="'+esc(site)+'" target="_blank" rel="noopener">'+esc(site.replace(/^https?:\/\//,'').slice(0,44))+'</a>';
     if(email) h += '<a href="mailto:'+esc(email)+'">'+esc(email)+'</a>';
     if(phone) h += '<span>'+esc(phone)+'</span>';
-    h += '<a href="https://www.wikidata.org/wiki/'+esc(qid(r.item.value))+'" target="_blank" rel="noopener" style="opacity:.55">wikidata</a>';
+    h += '<a href="https://www.wikidata.org/wiki/'+esc(qid(r.item.value))+'" target="_blank" rel="noopener" style="opacity:.5">wikidata</a>';
     h += '</div></div>';
   });
-  if(rows.length>120) h += '<div class="note">'+(rows.length-120)+' further records in this group are not shown, to keep the panel usable. They are in the Wikidata query behind this panel.</div>';
-  return h + '</div></div>';
+  if(rows.length>100) h += '<div class="note">'+(rows.length-100)+' further entries in this branch are not shown here.</div>';
+  if(TAB!=='doc') h += '<div class="note"><b>On the names.</b> Office titles are stable; the people in them are not. Wikidata holder records go stale, sometimes by years, so treat a name as a lead to verify on the official site. The office is what you contact. What each office can do is worked out from its title and will not fit every country exactly.</div>';
+  h += '<div id="admnote" class="note" style="background:none;border:0;padding-left:0"></div>';
+  $('#mbody').innerHTML = h;
+}
+
+function branchIntro(k){
+  return ({
+   leg:'This is the only branch that can create a law from nothing. Everything else responds to what it passes.',
+   exec:'Cannot pass a law, but decides whether one takes effect and writes the detailed rules that make it bite.',
+   jud:'Cannot be lobbied. It is reached through a case, and it is the branch that can undo a law outright.',
+   ag:'Where most of the rules people actually live under are written, and the branch most open to an ordinary comment.',
+   other:'Titles this map could not place. Check the official site before assuming a role.',
+   doc:'Not offices. Wikidata files these under the same jurisdiction property, so they are kept here rather than dropped.'
+  })[k]||'';
+}
+/* when a jurisdiction is open, its branch tabs stay beside Routes */
+function jurisTabs(){
+  if(!CUR || !CUR.core) return '';
+  const b = buckets();
+  return ['leg','exec','jud','ag','other','doc'].filter(k=>b[k].length)
+    .map(k=>tabBtn(k, BRANCH[k].nm, b[k].length)).join('');
 }
 
 let RFILTER = 'All';
@@ -490,6 +1756,7 @@ function rateText(r, own){
   return r.val+(r.kind==='effect'?'':'%')+unit;
 }
 function renderRoutes(){
+  $('#mtabs').innerHTML = jurisTabs() + tabBtn('routes','Routes') + tabBtn('why','Why it fails');
   const fams = ['All', ...new Set(ROUTES.map(r=>r.fam))];
   let h = '<div id="rfilter">' + fams.map(f=>
     '<button class="fchip'+(f===RFILTER?' on':'')+'" onclick="RFILTER=\''+f.replace(/'/g,"\\'")+'\';renderRoutes()">'+esc(f)+'</button>').join('') + '</div>';
@@ -516,13 +1783,10 @@ function renderRoutes(){
         '<div class="fld fail"><dt>Why it fails</dt><dd>'+esc(r.fail)+'</dd></div>'+
       '</div></div>';
   });
-  $('#pbody').innerHTML = h;
+  $('#mbody').innerHTML = h;
 }
 function fld(t,v){ return v ? '<div class="fld"><dt>'+t+'</dt><dd>'+esc(v)+'</dd></div>' : ''; }
 
-/* ====================================================================
-   WHY IT FAILS — the structural barriers
-   ==================================================================== */
 const BARRIERS = [
 {h:'A company is not forbidden from acting against profit — it is protected when it does not',
  p:["The common belief is that directors are legally required to maximise shareholder returns, so a company that sacrificed profit for a distant public good could be sued. The law is narrower and, in practice, looser than that. The line usually cited comes from <i>Dodge v. Ford Motor Co.</i> (Michigan, 1919), where the court ordered Ford to pay a special dividend and said directors' discretion does not extend to withholding profits from shareholders for other purposes. The famous sentence about a corporation being organised primarily for stockholder profit was <i>obiter dictum</i> — commentary, not binding holding.",
@@ -553,279 +1817,98 @@ const BARRIERS = [
  p:["Regulatory capture and movement between agencies and the industries they regulate have an extensive theoretical and case literature and no success denominator — there is no population of attempts against which to compute a rate. It is listed here because leaving it out would imply it does not operate, and including a number would imply someone has counted."]}
 ];
 function renderWhy(){
+  $('#mtabs').innerHTML = jurisTabs() + tabBtn('routes','Routes') + tabBtn('why','Why it fails');
   let h = '<div class="note">These are the mechanisms that make the rates on the previous tab what they are. Each one is a reason a route underperforms, not a reason to skip it &mdash; several of the routes exist specifically to defeat one of these.</div><div style="height:16px"></div>';
   BARRIERS.forEach(b=>{
     h += '<div class="bar"><h4>'+esc(b.h)+'</h4>'+b.p.map(p=>'<p>'+p+'</p>').join('')+'</div>';
   });
   h += '<div class="note">Sources for the measured figures above are given per route on the previous tab. The corporate-law discussion summarises the holding in <i>Dodge v. Ford Motor Co.</i> and the scholarly readings of it; it is a description of how the rule operates, not legal advice.</div>';
-  $('#pbody').innerHTML = h;
+  $('#mbody').innerHTML = h;
 }
 
+
 /* ====================================================================
-   MAP
+   BOOT
    ==================================================================== */
-let ISO2Q = {}, ISO2ISO3 = {};
-/* Administrative boundaries, fetched per country from the companion
-   repo. ADM1 is states/provinces, ADM2 districts/counties, ADM3/4 below
-   that. One file per country per level, so nothing loads until asked. */
-const CGAZ = 'https://welcometoyourgalaxy.github.io/cgaz-boundaries/';
-let admLayer = null, admCache = {};
-const ADMNAME = {1:'ADM1 — states, provinces, regions', 2:'ADM2 — counties, districts',
-                 3:'ADM3 — municipalities, wards', 4:'ADM4 — the level below that'};
-const map = L.map('map', {center:[22,8], zoom:2, minZoom:2, maxZoom:10,
-  worldCopyJump:true, zoomControl:false, attributionControl:false});
-L.control.zoom({position:'bottomright'}).addTo(map);
-L.control.attribution({position:'bottomleft', prefix:''}).addTo(map).addAttribution(
-  'Boundaries <a href="https://github.com/topojson/world-atlas">Natural Earth</a> &middot; Offices <a href="https://www.wikidata.org">Wikidata</a> &middot; Local offices <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>');
-
-const BASE = {color:'#3d5e4c', weight:.8, fillColor:'#1b2c23', fillOpacity:.95};
-const HOVER = {color:'#8cbd9a', weight:1.4, fillColor:'#2b4a36', fillOpacity:1};
-
 async function boot(){
+  addOverlays();
   setDot('wd','busy','Wikidata');
-  let topo;
+
+  /* countries, and the codes that join them to Wikidata and to the
+     boundary files */
+  let geo;
   try{
-    topo = await (await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json')).json();
+    const topo = await (await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json')).json();
+    geo = topojson.feature(topo, topo.objects.countries);
   }catch(e){
-    $('#hint').textContent='Could not load the world boundaries file.'; return;
+    $('#crumbs').innerHTML='<span class="hint">Could not load the world boundaries file.</span>'; return;
   }
-  const geo = topojson.feature(topo, topo.objects.countries);
-  /* Fiji, Russia and Chukotka have rings that touch both -180 and +180.
-     Drawn as-is they streak a band right across the map. Shifting the
-     negative side by +360 makes each ring contiguous again; Antarctica
-     genuinely encircles the pole, so it is left alone. */
+  /* Fiji, Russia and Chukotka have rings touching both -180 and +180;
+     drawn as they stand they streak a band across the map */
   geo.features.forEach(f=>{
     const polys = f.geometry.type==='Polygon' ? [f.geometry.coordinates] : f.geometry.coordinates;
-    polys.forEach(poly=> poly.forEach(ring=>{
+    polys.forEach(poly=>poly.forEach(ring=>{
       let lo=180, hi=-180, south=90;
       ring.forEach(p=>{ if(p[0]<lo)lo=p[0]; if(p[0]>hi)hi=p[0]; if(p[1]<south)south=p[1]; });
-      if(hi-lo > 180 && south > -60) ring.forEach(p=>{ if(p[0] < 0) p[0] += 360; });
+      if(hi-lo>180 && south>-60) ring.forEach(p=>{ if(p[0]<0) p[0]+=360; });
     }));
+    f.properties.iso_n3 = String(f.id);
   });
+  map.getSource(SRC_C).setData({type:'FeatureCollection',
+    features: geo.features.map((f,i)=>({...f, id:i+1}))});
 
-  /* ISO numeric -> Wikidata QID, one query, cached a week */
   try{
     const rows = await sparql(
       'SELECT ?c ?iso ?iso3 WHERE { ?c wdt:P31 wd:Q6256 ; wdt:P299 ?iso . OPTIONAL{?c wdt:P298 ?iso3} }', 'iso2q3');
-    rows.forEach(r=>{ ISO2Q[r.iso.value] = qid(r.c.value);
-      if(r.iso3) ISO2ISO3[r.iso.value] = r.iso3.value; });
+    rows.forEach(r=>{ ISO2Q[r.iso.value]=qid(r.c.value);
+      if(r.iso3) ISO2ISO3[r.iso.value]=r.iso3.value; });
     setDot('wd','ok','Wikidata live');
   }catch(e){ setDot('wd','bad','Wikidata unreachable'); }
-
-  L.geoJSON(geo, {
-    style: ()=>BASE,
-    onEachFeature: (f, lyr)=>{
-      const name = (f.properties && f.properties.name) || 'Unknown';
-      lyr.bindTooltip(name, {sticky:true, className:'ttip'});
-      lyr.on('mouseover', ()=> lyr.setStyle(HOVER));
-      lyr.on('mouseout',  ()=> lyr.setStyle(BASE));
-      lyr.on('click', ()=>{
-        const q = ISO2Q[String(f.id)];
-        TRAIL = [];
-        if(!q){
-          CURRENT={q:null,label:name};
-          $('#ptitle').textContent=name; $('#psub').textContent='';
-          openPanel(); TAB='juris';
-          $('#pbody').innerHTML='<div class="note">This territory has no ISO country code matched to a Wikidata entity, usually because it is disputed, a dependency, or not a sovereign state. The routes tab still applies.</div>'+
-            '<div style="margin-top:12px"><button class="fchip on" onclick="setTab(\'routes\')">Go to routes &rsaquo;</button></div>';
-          return;
-        }
-        CGAZ_ISO3 = ISO2ISO3[String(f.id)] || null;
-        CGAZ_ROOT = {iso3:CGAZ_ISO3, name:name, q:q};
-        goJuris(q, name);
-      });
-    }
-  }).addTo(map);
-  $('#hint').textContent = 'Click a country to begin';
 }
-boot();
 
-/* ====================================================================
-   ADMINISTRATIVE BOUNDARIES  (cgaz-boundaries, geoBoundaries CGAZ)
-   Wikidata says who holds office; these files say where the
-   jurisdiction physically is. Clicking a drawn unit looks its name up
-   in the Wikidata subdivision list for the parent and opens it.
-   ==================================================================== */
-let CGAZ_ISO3 = null, CGAZ_ROOT = null, CGAZ_LEVEL = 0;
-
-const normName = s => String(s||'').toLowerCase()
-  .normalize('NFD').replace(/[̀-ͯ]/g,'')
+/* ---------- resolving a drawn unit to a Wikidata entity ---------- */
+const normName = s => String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')
   .replace(/\b(county|parish|borough|district|province|region|state|city|municipality|prefecture|department|governorate|oblast|canton|voivodeship)\b/g,'')
   .replace(/[^a-z0-9]/g,'');
+const SUFFIXES = ['', ' County', ' Province', ' District', ' Region', ' Municipality', ' City',
+  ' Department', ' Governorate', ' Prefecture', ' State', ' Parish', ' Borough', ' Canton',
+  ' Oblast', ' District Council', ' Metropolitan Municipality'];
+const RX_ADMIN = /\b(county|province|district|region|state|municipality|commune|department|governorate|prefecture|parish|borough|canton|oblast|voivodeship|territor|administrative|subdivision|city|town|village|ward|constituency)\b/i;
 
-async function loadAdm(level){
-  if(!CGAZ_ISO3){ return; }
-  const box = document.getElementById('admbox');
-  const file = CGAZ_ISO3 + (level>1 ? String(level) : '') + '.geojson';
-  if(box) box.innerHTML = '<div class="spin">Loading '+esc(ADMNAME[level]||('ADM'+level))+'&hellip; large countries can take a moment.</div>';
-  try{
-    let gj = admCache[file];
-    if(!gj){
-      const r = await fetch(CGAZ + file);
-      if(r.status === 404) throw new Error('notfound');
-      if(!r.ok) throw new Error('the boundary file returned '+r.status);
-      gj = await r.json(); admCache[file] = gj;
-    }
-    if(admLayer){ map.removeLayer(admLayer); admLayer = null; }
-    CGAZ_LEVEL = level;
-    admLayer = L.geoJSON(gj, {
-      style: {color:'#8cbd9a', weight:.9, fillColor:'#24402f', fillOpacity:.55},
-      onEachFeature: (f, lyr)=>{
-        const nm = (f.properties && f.properties.shapeName) || 'Unnamed unit';
-        lyr.bindTooltip(nm, {sticky:true, className:'ttip'});
-        lyr.on('mouseover', ()=>lyr.setStyle({fillColor:'#365a42', fillOpacity:.8, weight:1.5}));
-        lyr.on('mouseout',  ()=>lyr.setStyle({fillColor:'#24402f', fillOpacity:.55, weight:.9}));
-        lyr.on('click', (e)=>{ L.DomEvent.stopPropagation(e); pickUnit(nm); });
-      }
-    }).addTo(map);
-    try{ map.fitBounds(admLayer.getBounds(), {paddingTopLeft:[20,80], paddingBottomRight:[500,40]}); }catch(e){}
-    if(box) box.innerHTML = '<div class="note">'+gj.features.length+' units drawn on the map for '+
-      esc(ADMNAME[level]||('ADM'+level))+'. Click any one of them to open its offices. '+
-      '<a onclick="clearAdm()" style="color:var(--accent-hi);cursor:pointer">Clear</a></div>';
-  }catch(e){
-    if(box) box.innerHTML = e.message==='notfound'
-      ? '<div class="note">The boundary repository has no '+esc(ADMNAME[level]||('ADM'+level))+
-        ' file for this country. Coverage varies: most countries have ADM1 and ADM2, fewer have ADM3 or ADM4. The subdivision list above still works.</div>'
-      : '<div class="note">Could not load the boundary file: '+esc(e.message)+'</div>';
-  }
-}
-function clearAdm(){ if(admLayer){ map.removeLayer(admLayer); admLayer=null; } CGAZ_LEVEL=0;
-  const box=document.getElementById('admbox'); if(box) box.innerHTML=''; }
-
-/* Match a drawn unit to a Wikidata entity. First against the
-   subdivision list already in hand; failing that, a live label lookup
-   scoped to the country, because the two sources disagree constantly —
-   Wikidata still lists Kenya's eight old provinces under the country,
-   while the boundary files draw its current 47 counties. */
-const SUFFIXES = ['', ' County', ' Province', ' District', ' Region', ' Municipality',
-  ' City', ' Department', ' Governorate', ' Prefecture', ' State', ' Parish',
-  ' Borough', ' Canton', ' Oblast', ' District Council', ' Metropolitan Municipality'];
-
-function localMatch(nm){
-  const subs = (CURRENT && CURRENT.subs) || [];
-  const target = normName(nm);
-  if(!target) return null;
-  for(const r of subs){
-    const lbl = (r.dLabel && r.dLabel.value) || '';
-    if(normName(lbl) === target) return {id:qid(r.d.value), label:lbl};
-  }
-  for(const r of subs){
-    const lbl = (r.dLabel && r.dLabel.value) || '';
-    const n = normName(lbl);
-    if(n && (n.startsWith(target) || target.startsWith(n))) return {id:qid(r.d.value), label:lbl};
-  }
-  return null;
-}
-
-async function pickUnit(nm){
-  const hit = localMatch(nm);
-  if(hit) return goJuris(hit.id, hit.label);
-
-  openPanel();
-  $('#ptitle').textContent = nm;
-  $('#psub').textContent = 'Looking it up in Wikidata';
-  $('#pbody').innerHTML = '<div class="spin">No match in the subdivision list for '+
-    esc((CURRENT&&CURRENT.label)||'this jurisdiction')+'. Searching Wikidata directly&hellip;</div>';
-
-  const country = (CGAZ_ROOT && CGAZ_ROOT.q) || (TRAIL[0] && TRAIL[0].q);
-  if(country){
-    const vals = SUFFIXES.map(s=>'"'+ (nm+s).replace(/"/g,'\\"') +'"@en').join(' ');
-    const q = 'SELECT ?x ?xLabel ?tLabel WHERE { VALUES ?l { '+vals+' } ?x rdfs:label ?l ; wdt:P17 wd:'+
-      country+' . OPTIONAL{?x wdt:P31 ?t} SERVICE wikibase:label{bd:serviceParam wikibase:language "en"} } LIMIT 8';
+async function resolveUnit(nm){
+  const parent = STACK[STACK.length-1];
+  /* first: the subdivision list of the level above, if we have it */
+  if(parent && parent.q){
     try{
-      const rows = await sparql(q, 'unit:'+country+':'+nm);
-      /* A bare place name matches the people, the language and the lake
-         as readily as the county, so rank by what the thing actually is
-         before following it. */
-      const cand = {};
-      rows.forEach(r=>{
-        const id = qid(r.x.value);
-        if(!cand[id]) cand[id] = {id:id, label:(r.xLabel&&r.xLabel.value)||nm, types:[]};
-        if(r.tLabel) cand[id].types.push(r.tLabel.value);
-      });
-      const ADMIN = /\b(county|province|district|region|state|municipality|commune|department|governorate|prefecture|parish|borough|canton|oblast|voivodeship|territor|administrative|subdivision|city|town|village|ward|constituency)\b/i;
-      const ranked = Object.values(cand).sort((a,b)=>{
-        const ad = a.types.some(t=>ADMIN.test(t)) ? 0 : 1;
-        const bd = b.types.some(t=>ADMIN.test(t)) ? 0 : 1;
-        if(ad !== bd) return ad - bd;
-        const as = a.label.toLowerCase() === nm.toLowerCase() ? 1 : 0;
-        const bs = b.label.toLowerCase() === nm.toLowerCase() ? 1 : 0;
-        return as - bs;
-      });
-      if(ranked.length && ranked[0].types.some(t=>ADMIN.test(t))){
-        return goJuris(ranked[0].id, ranked[0].label);
-      }
-      if(ranked.length){
-        return goJuris(ranked[0].id, ranked[0].label);
-      }
-    }catch(e){ /* fall through to the honest dead end below */ }
+      const subs = await sparql(qSubdiv(parent.q), 'sub:'+parent.q);
+      const t = normName(nm);
+      for(const r of subs){ const l=(r.dLabel&&r.dLabel.value)||'';
+        if(normName(l)===t) return {id:qid(r.d.value), label:l}; }
+      for(const r of subs){ const l=(r.dLabel&&r.dLabel.value)||''; const n=normName(l);
+        if(n && t && (n.startsWith(t)||t.startsWith(n))) return {id:qid(r.d.value), label:l}; }
+    }catch(e){}
   }
-
-  $('#psub').textContent = 'Drawn from the boundary files';
-  $('#pbody').innerHTML = '<div class="note"><b>'+esc(nm)+'</b> is drawn on the map, but Wikidata has no entity by that name inside '+
-    esc((CGAZ_ROOT&&CGAZ_ROOT.name)||'this country')+
-    ', so there are no offices to show for it here. The two sources name places differently more often than you would expect &mdash; a unit may appear under a local-language name, an older name, or one level up or down. The country and its parent levels still work.</div>'+
-    '<div style="margin-top:12px"><a class="fchip on" style="text-decoration:none" target="_blank" rel="noopener" href="https://www.wikidata.org/w/index.php?search='+
-    encodeURIComponent(nm)+'">Search Wikidata for it &rsaquo;</a>'+
-    '<button class="fchip" onclick="setTab(\'routes\')">Routes of contact &rsaquo;</button></div>';
-}
-
-/* ====================================================================
-   LOCAL PHYSICAL OFFICES — OpenStreetMap via Overpass (secondary).
-   Wikidata holds offices; OSM holds buildings, street addresses and
-   front-desk phone numbers. Fails visibly rather than silently.
-   ==================================================================== */
-/* GET with no custom headers, so the request stays a CORS "simple
-   request" and never needs a preflight. Endpoints are tried in order;
-   they are volunteer-run and refuse requests when loaded. */
-async function overpass(q){
-  let lastErr;
-  for(const ep of OVERPASS){
-    try{
-      const r = await fetch(ep + '?data=' + encodeURIComponent(q));
-      if(!r.ok) throw new Error(ep.split('/')[2] + ' returned ' + r.status);
-      return await r.json();
-    }catch(e){ lastErr = e; }
-  }
-  throw lastErr || new Error('no endpoint responded');
-}
-
-async function findLocal(){
-  const z = map.getZoom();
-  const box = $('#localbox');
-  if(z < 9){ box.innerHTML = '<div class="note">Zoom the map in further first &mdash; this searches the visible area, and at this zoom the area is too large for the service to answer.</div>'; return; }
-  box.innerHTML = '<div class="spin">Searching OpenStreetMap for physical offices in view&hellip;</div>';
-  setDot('ov','busy','OpenStreetMap');
-  const b = map.getBounds();
-  const bbox = [b.getSouth(), b.getWest(), b.getNorth(), b.getEast()].map(n=>n.toFixed(4)).join(',');
-  const q = `[out:json][timeout:25];(nwr["amenity"="townhall"](${bbox});nwr["office"="government"](${bbox});nwr["amenity"="courthouse"](${bbox}););out center tags 120;`;
+  /* then: a label lookup scoped to the country, ranked by what the
+     entity is — a bare place name matches the people and the language
+     as readily as the administrative unit */
+  const country = STACK[0] && STACK[0].q;
+  if(!country) return null;
+  const vals = SUFFIXES.map(s=>'"'+(nm+s).replace(/"/g,'\\"')+'"@en').join(' ');
   try{
-    const j = await overpass(q);
-    const els = (j.elements||[]).filter(e=>e.tags && (e.tags.name||e.tags.operator));
-    setDot('ov','ok','OpenStreetMap live');
-    if(!els.length){ box.innerHTML='<div class="note">No town halls, government offices or courthouses are tagged in OpenStreetMap inside the visible area. That is a gap in the map data, not an absence of offices.</div>'; return; }
-    let h = '<div class="grp"><h3>'+els.length+' physical office'+(els.length===1?'':'s')+' in view &mdash; OpenStreetMap</h3>';
-    els.slice(0,60).forEach(e=>{
-      const t=e.tags, nm=t.name||t.operator;
-      const addr=[t['addr:housenumber'],t['addr:street'],t['addr:city']].filter(Boolean).join(' ');
-      const site=t.website||t['contact:website'], ph=t.phone||t['contact:phone'], em=t.email||t['contact:email'];
-      const lat=e.lat!=null?e.lat:(e.center&&e.center.lat), lon=e.lon!=null?e.lon:(e.center&&e.center.lon);
-      h += '<div class="off"><div class="nm">'+esc(nm)+'</div><div class="meta">';
-      if(t.amenity==='courthouse') h+='<span class="stale">court</span>';
-      if(addr) h += '<span>'+esc(addr)+'</span>';
-      if(ph)   h += '<a href="tel:'+esc(ph.replace(/\s/g,''))+'">'+esc(ph)+'</a>';
-      if(em)   h += '<a href="mailto:'+esc(em)+'">'+esc(em)+'</a>';
-      if(site) h += '<a href="'+esc(site)+'" target="_blank" rel="noopener">'+esc(site.replace(/^https?:\/\//,'').slice(0,40))+'</a>';
-      if(lat!=null) h += '<a onclick="map.setView(['+lat+','+lon+'],16)" style="cursor:pointer">show on map</a>';
-      h += '</div></div>';
+    const rows = await sparql('SELECT ?x ?xLabel ?tLabel WHERE { VALUES ?l { '+vals+
+      ' } ?x rdfs:label ?l ; wdt:P17 wd:'+country+' . OPTIONAL{?x wdt:P31 ?t} '+
+      'SERVICE wikibase:label{bd:serviceParam wikibase:language "en"} } LIMIT 10', 'unit:'+country+':'+nm);
+    const cand={};
+    rows.forEach(r=>{ const id=qid(r.x.value);
+      if(!cand[id]) cand[id]={id:id, label:(r.xLabel&&r.xLabel.value)||nm, types:[]};
+      if(r.tLabel) cand[id].types.push(r.tLabel.value); });
+    const ranked=Object.values(cand).sort((a,b)=>{
+      const ad=a.types.some(t=>RX_ADMIN.test(t))?0:1, bd=b.types.some(t=>RX_ADMIN.test(t))?0:1;
+      if(ad!==bd) return ad-bd;
+      return (a.label.toLowerCase()===nm.toLowerCase()?1:0)-(b.label.toLowerCase()===nm.toLowerCase()?1:0);
     });
-    if(els.length>60) h += '<div class="note">'+(els.length-60)+' more in view; zoom in to narrow.</div>';
-    box.innerHTML = h+'</div>';
-  }catch(e){
-    setDot('ov','bad','OpenStreetMap unreachable');
-    box.innerHTML = '<div class="note">Could not reach an Overpass endpoint: '+esc(e.message)+
-      '. Overpass is a free volunteer-run service and refuses requests when busy. Waiting a minute and trying again usually works; the Wikidata offices above are unaffected.</div>';
-  }
+    return ranked[0] || null;
+  }catch(e){ return null; }
 }
 
 </script>
