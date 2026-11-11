@@ -146,6 +146,21 @@ Round 4 opened almost every lead earlier rounds left. Round 5 retried Bahrain, S
 - **Career-move boxes:** in `build_net.py`, when the move line doesn't name the party, the box also shows the record's summary.
 
 ## How to refresh the writeups after adding records (do this every round)
+**Check the excerpt before dispatching.** The box text handed to writer agents is
+excerpted, and country boxes are large — the United States box is over 190,000
+characters. In round 16 eight refreshed paragraphs were written from excerpts that
+did not contain the new record at all, so the refresh could not have mentioned it,
+and nothing about the output looked wrong. Before sending a batch, take a
+distinctive token from each new record (a surname, a firm) and assert it appears in
+that key's excerpt. Where it does not, send the box head for context plus the
+specific sections holding the new records instead of a flat character cap.
+
+**Check drafts for names, not only numbers.** The old script checked that every
+number in a draft appeared in its box. Round 15 showed that is not enough: six
+paragraphs carried a city, a parent company and a set of ministerial roles that
+appeared nowhere in the source. Check every capitalised word in a draft against its
+box text, and treat an unexplained one as model knowledge leaking in.
+
 A writeup never updates itself, and two things make old ones wrong:
 1. New records for that place or party.
 2. **Scores shift across the whole map.** The inside-influence score counts documented cases against the highest count anywhere (`MAXCC` in `app.js`), so adding cases in one country moves the headline score of others by a point or two. After round 4, 55 paragraphs quoted a number that had moved.
