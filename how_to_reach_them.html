@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How To Reach Them</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Marcellus&family=Playfair+Display:wght@700;800&display=swap');
+:root{
+  --bg:#0a100d; --ink:#e7e4dc; --dim:#95a09a; --faint:#6b746f;
+  --panel:#111815; --panel2:#161e1a; --line:rgba(120,140,128,.20);
+  --accent:#4a7c59; --accent-hi:#79a988; --accent-soft:rgba(74,124,89,.22);
+  --stone:#8a7d6d;
+  --r-low:#6f5f59; --r-mid:#5c6f6c; --r-high:#4a7c59; --r-none:#4a4f4c;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink);overflow:hidden}
+#map{position:absolute;inset:0;background:#070b09}
+.leaflet-container{background:#070b09;font-family:'DM Sans',sans-serif}
+
+/* ---------- header ---------- */
+#hdr{position:fixed;top:0;left:0;right:0;z-index:900;pointer-events:none;
+  padding:14px 20px 34px;background:linear-gradient(180deg,rgba(10,16,13,.96),rgba(10,16,13,.72) 62%,rgba(10,16,13,0))}
+#hdr h1{font-family:'Playfair Display',serif;font-size:21px;font-weight:800;letter-spacing:.2px;pointer-events:auto}
+#hdr .sub{font-size:12px;color:var(--dim);margin-top:3px;pointer-events:auto;max-width:640px;line-height:1.45}
+#srcbar{position:fixed;top:14px;right:20px;z-index:901;display:flex;gap:7px;pointer-events:auto}
+.srcpill{font-size:10.5px;letter-spacing:.3px;padding:5px 9px;border-radius:999px;border:1px solid var(--line);
+  background:rgba(17,24,21,.9);color:var(--faint);display:flex;align-items:center;gap:5px;white-space:nowrap}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--faint);flex:none}
+.dot.ok{background:var(--accent-hi)} .dot.bad{background:#9a6b63} .dot.busy{background:var(--stone);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
+
+/* ---------- panel ---------- */
+#panel{position:fixed;top:0;right:0;bottom:0;width:min(470px,100%);z-index:950;
+  background:var(--panel);border-left:1px solid var(--line);display:flex;flex-direction:column;
+  transform:translateX(102%);transition:transform .28s cubic-bezier(.4,0,.2,1);box-shadow:-18px 0 50px rgba(0,0,0,.5)}
+#panel.open{transform:none}
+#ptop{padding:16px 18px 0;border-bottom:1px solid var(--line);flex:none}
+#ptitle{font-family:'Marcellus',serif;font-size:19px;line-height:1.25;padding-right:34px}
+#psub{font-size:11.5px;color:var(--faint);margin-top:4px}
+#pclose{position:absolute;top:13px;right:14px;width:28px;height:28px;border-radius:7px;border:1px solid var(--line);
+  background:var(--panel2);color:var(--dim);cursor:pointer;font-size:15px;line-height:1}
+#pclose:hover{color:var(--ink);border-color:var(--accent-soft)}
+#tabs{display:flex;gap:2px;margin-top:13px}
+.tab{flex:1;padding:9px 4px;font-size:11.5px;font-weight:500;letter-spacing:.2px;text-align:center;cursor:pointer;
+  color:var(--faint);border-bottom:2px solid transparent;background:none;border-top:0;border-left:0;border-right:0;font-family:inherit}
+.tab:hover{color:var(--dim)}
+.tab.on{color:var(--ink);border-bottom-color:var(--accent)}
+#pbody{flex:1;overflow-y:auto;padding:16px 18px 40px}
+#pbody::-webkit-scrollbar{width:9px}
+#pbody::-webkit-scrollbar-thumb{background:rgba(120,140,128,.2);border-radius:9px}
+
+/* ---------- jurisdiction ladder ---------- */
+#crumbs{font-size:11px;color:var(--faint);margin-bottom:12px;line-height:1.6}
+#crumbs a{color:var(--accent-hi);cursor:pointer;text-decoration:none}
+#crumbs a:hover{text-decoration:underline}
+#crumbs .sep{opacity:.45;margin:0 5px}
+.grp{margin-bottom:20px}
+.grp h3{font-family:'Marcellus',serif;font-size:12px;letter-spacing:1.1px;text-transform:uppercase;
+  color:var(--stone);margin-bottom:9px;padding-bottom:5px;border-bottom:1px solid var(--line)}
+.off{padding:9px 0;border-bottom:1px solid rgba(120,140,128,.09)}
+.off:last-child{border-bottom:0}
+.off .nm{font-size:13.5px;line-height:1.35}
+.off .meta{font-size:11px;color:var(--faint);margin-top:3px;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}
+.off a{color:var(--accent-hi);text-decoration:none;word-break:break-all}
+.off a:hover{text-decoration:underline}
+.holder{color:var(--dim)}
+.stale{font-size:9.5px;letter-spacing:.3px;text-transform:uppercase;color:var(--faint);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+.grp.shut .gbody{display:none!important}
+.subdiv{display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:5px 10px;margin:0 6px 6px 0;
+  border:1px solid var(--line);border-radius:7px;background:var(--panel2);color:var(--dim);cursor:pointer;
+  font-family:inherit;text-align:left}
+.subdiv.on{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
+.subdiv:hover{color:var(--ink);border-color:var(--accent-soft);background:rgba(74,124,89,.1)}
+.subdiv .chev{color:var(--faint);font-size:10px}
+.note{font-size:11.5px;color:var(--faint);line-height:1.55;margin-top:8px;padding:9px 11px;
+  background:var(--panel2);border-left:2px solid var(--line);border-radius:0 5px 5px 0}
+.spin{font-size:12px;color:var(--faint);padding:16px 0}
+
+/* ---------- routes ---------- */
+#rfilter{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
+.fchip{font-size:10.5px;padding:4px 9px;border-radius:999px;border:1px solid var(--line);
+  background:var(--panel2);color:var(--faint);cursor:pointer;font-family:inherit}
+.fchip:hover{color:var(--dim)}
+.fchip.on{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
+.route{border:1px solid var(--line);border-radius:9px;margin-bottom:8px;background:var(--panel2);overflow:hidden}
+.rhead{padding:11px 13px;cursor:pointer;display:flex;align-items:flex-start;gap:10px}
+.rhead:hover{background:rgba(74,124,89,.07)}
+.rbar{width:3px;align-self:stretch;border-radius:3px;flex:none;background:var(--r-none)}
+.rmain{flex:1;min-width:0}
+.rnm{font-size:13.5px;line-height:1.3}
+.rmeta{font-size:11px;color:var(--faint);margin-top:3px}
+.rrate{font-family:ui-monospace,'DejaVu Sans Mono',monospace;font-size:14px;flex:none;text-align:right;line-height:1.1}
+.rrate small{display:block;font-family:'DM Sans',sans-serif;font-size:9.5px;letter-spacing:.3px;color:var(--faint);margin-top:2px}
+.rbody{display:none;padding:0 13px 13px;border-top:1px solid var(--line)}
+.route.open .rbody{display:block}
+.fld{margin-top:11px}
+.fld dt{font-size:10px;letter-spacing:.9px;text-transform:uppercase;color:var(--stone);margin-bottom:3px}
+.fld dd{font-size:12.5px;line-height:1.55;color:var(--dim)}
+.fld.fail dd{color:#c9bfb4}
+.ev{display:inline-block;font-size:9.5px;letter-spacing:.3px;padding:1px 6px;border-radius:4px;
+  border:1px solid var(--line);color:var(--faint);margin-left:6px;vertical-align:middle}
+.srcline{font-size:11px;color:var(--faint);font-style:italic;margin-top:5px}
+
+/* ---------- barriers ---------- */
+.bar{border-left:2px solid var(--stone);padding:2px 0 2px 13px;margin-bottom:18px}
+.bar h4{font-family:'Marcellus',serif;font-size:14px;margin-bottom:5px}
+.bar p{font-size:12.5px;line-height:1.6;color:var(--dim)}
+.bar p+p{margin-top:7px}
+
+.leaflet-control-attribution{background:rgba(17,24,21,.92)!important;color:var(--faint)!important;
+  font-size:10px!important;border:1px solid var(--line);border-right:0;border-bottom:0;border-radius:0 6px 0 0;padding:3px 8px!important;border-left:0}
+.leaflet-control-attribution a{color:var(--dim)!important}
+.leaflet-control-zoom a{background:rgba(17,24,21,.94)!important;color:var(--dim)!important;border-color:var(--line)!important}
+.leaflet-control-zoom a:hover{color:var(--ink)!important;background:rgba(30,46,37,.98)!important}
+#legend{position:fixed;left:20px;bottom:44px;z-index:880;font-size:10.5px;color:var(--faint);
+  background:rgba(17,24,21,.92);border:1px solid var(--line);border-radius:8px;padding:9px 12px;max-width:260px;line-height:1.6}
+#legend b{color:var(--dim);font-weight:500}
+#hint{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:880;font-size:12px;color:var(--dim);
+  background:rgba(17,24,21,.94);border:1px solid var(--line);border-radius:999px;padding:8px 16px;pointer-events:none;
+  transition:opacity .4s}
+.ttip{background:rgba(17,24,21,.96)!important;border:1px solid rgba(120,140,128,.3)!important;color:#e7e4dc!important;font-size:12px!important;box-shadow:none!important;border-radius:6px!important}
+.ttip:before{display:none!important}
+@media(max-width:760px){
+  #panel{width:100%} #legend{display:none} .leaflet-control-zoom{display:none} #hdr .sub{display:none} #srcbar{position:static;padding:8px 20px 0;flex-wrap:wrap}
+}
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div id="hdr">
+  <h1>How To Reach Them</h1>
+  <div class="sub">Every office you can contact, in every country, down to the local level &mdash; resolved live from Wikidata &mdash; with what each route of contact costs, how often it has actually worked, and the reasons it does not.</div>
+</div>
+<div id="srcbar">
+  <div class="srcpill"><span class="dot" id="d-wd"></span><span id="t-wd">Wikidata</span></div>
+  <div class="srcpill"><span class="dot" id="d-ov"></span><span id="t-ov">OpenStreetMap</span></div>
+  <div class="srcpill" style="cursor:pointer" onclick="openRoutes()"><span class="dot ok"></span>34 routes</div>
+</div>
+<div id="legend">
+  <b>Click any country</b> to open its offices, then drill down through states, counties and municipalities. Office lists come from Wikidata and are as complete as Wikidata is &mdash; always confirm against the official site.
+</div>
+<div id="hint">Click a country to begin</div>
+
+<div id="panel">
+  <div id="ptop">
+    <button id="pclose" onclick="closePanel()">&times;</button>
+    <div id="ptitle">&nbsp;</div>
+    <div id="psub"></div>
+    <div id="tabs">
+      <button class="tab on" data-t="juris" onclick="setTab('juris')">Who to contact</button>
+      <button class="tab" data-t="routes" onclick="setTab('routes')">How to reach them</button>
+      <button class="tab" data-t="why" onclick="setTab('why')">Why it fails</button>
+    </div>
+  </div>
+  <div id="pbody"></div>
+</div>
+<script>
+const ROUTES = [{"id": "email", "nm": "Email to an office holder", "fam": "Direct contact", "sc": "Any level", "cost": "Free", "costn": "Nothing but time. Bulk sending costs nothing and is worth nothing.", "elig": "Anyone", "time": "Minutes to send; weeks to never for a reply", "how": "Office website contact form, or the published address. Form submissions are logged and counted; direct addresses are often filtered.", "own": {"val": "~2%", "note": "Response rate across the author's own global campaign of several thousand emails, demand letters and calls to officials and industry over roughly five years. Of those that replied, almost all replied to disagree or to disclaim responsibility."}, "fail": "Volume handling. Offices tally positions by issue and report counts, so an individual message is processed as one unit of a tally rather than as an argument. Form letters and unsolicited attachments are weighted lowest. Nothing about the message's quality changes how it is counted.", "rate": null}, {"id": "call", "nm": "Phone call to the office", "fam": "Direct contact", "sc": "Any level", "cost": "Free", "costn": "Free on most plans; international calls vary.", "elig": "Anyone; constituents prioritised", "time": "5–15 minutes", "how": "Ask for the legislative assistant covering the subject, by title, rather than the member. Staff log the call to a position tally.", "own": null, "fail": "Same tally mechanism as email, with one difference: a call reaches a human who can route you, so it is the cheapest way to learn which staffer owns an issue. As persuasion it is one tally mark.", "rate": null}, {"id": "letter", "nm": "Physical letter", "fam": "Direct contact", "sc": "Any level", "cost": "≈$0.73 US postage", "costn": "One first-class stamp. Certified mail with return receipt runs roughly $10 and produces proof of delivery.", "elig": "Anyone", "time": "Days to weeks in transit", "how": "District or constituency office, not the capital building — mail to legislative capitals is often irradiated and delayed by weeks.", "own": null, "fail": "Weighted slightly above email because it costs something, which is the only signal of effort the system reads. Still tallied.", "rate": null}, {"id": "visit", "nm": "In-person meeting at a district office", "fam": "Direct contact", "sc": "Any level", "cost": "Free + travel", "costn": "The meeting is free. Cost is travel and a working day.", "elig": "Constituents", "time": "2–6 weeks to schedule; 15–30 minutes", "how": "Request the staffer who covers the subject. Bring one page. Ask for a specific action, not for agreement.", "own": null, "fail": "The only direct-contact route with a measured causal effect, and the effect is on a specific bill already in play. It does not create an agenda item; it moves an existing one.", "rate": {"val": 12, "kind": "effect", "ev": "rct", "src": "Randomised trial, Michigan state legislators", "means": "Legislators randomly assigned to constituent contact were ~12 percentage points more likely to support the bill.", "caveat": "12 points is a change in probability, not a win rate. Under deflation the floor is ~1.9 points.", "y0": 2013, "y1": 2015, "name": "Organised constituent contact (experimental)"}}, {"id": "townhall", "nm": "Public comment at a council or board meeting", "fam": "Direct contact", "sc": "Local", "cost": "Free", "costn": "Free. Usually a 2–3 minute speaking slot.", "elig": "Residents; sometimes anyone", "time": "Sign up same day or days ahead", "how": "Agendas are published in advance by law in most jurisdictions. Comment on an agenda item, not in general.", "own": null, "fail": "On the record and minuted, which is its value. Boards are required to hear it and not required to act on it.", "rate": null}, {"id": "rulemaking", "nm": "Petition for rulemaking", "fam": "Formal process", "sc": "National", "cost": "Free", "costn": "Free to file. A lawyer-drafted petition costs $2,000–$20,000 and markedly raises the odds of a substantive answer.", "elig": "Any person (US: Administrative Procedure Act §553(e))", "time": "Agency response can take months to years", "how": "File directly with the agency. Unlike a comment, this is a petition the agency must formally grant or deny, and a denial is reviewable in court.", "own": null, "fail": "The most underused route on this list. It forces a written agency position where email cannot. Agencies deny most petitions, but a denial is a reviewable document, which a tally mark never is.", "rate": null}, {"id": "comment", "nm": "Regulatory comment on an open docket", "fam": "Formal process", "sc": "National", "cost": "Free", "costn": "Free. US dockets at regulations.gov; most countries run an equivalent consultation portal.", "elig": "Anyone, including non-citizens", "time": "Comment windows run 30–90 days", "how": "Comment on a specific docket number inside its window. Agencies must respond to significant comments in the final rule.", "own": null, "fail": "Measured asymmetry: across 40 rulemakings at four agencies, business commenters held significant influence over final rule content and non-business commenters had no detectable influence in the same models. Over 57% of comments came from business. The docket is open to everyone and weighted by who dominates it.", "rate": {"val": null, "kind": "dir", "ev": "coded", "src": "Same 40 rulemakings", "means": "No detectable influence on final rule content in the same models that found business influence.", "caveat": "— no figure published: A null result. No magnitude to place. — Null result, listed with the directional findings. Twelve detailed submissions can dominate a docket; ten thousand identical ones cannot.", "y0": 1994, "y1": 2001, "name": "Regulatory comment — non-business commenter"}}, {"id": "foia", "nm": "Freedom of information request", "fam": "Formal process", "sc": "Any level", "cost": "Free–$25", "costn": "Usually free for the first hours of search; fee waivers available for public-interest requests.", "elig": "Anyone; many countries accept foreign requesters", "time": "20 working days statutory, often far longer", "how": "Specific documents, named custodian, narrow date range. Broad requests get denied on burden.", "own": null, "fail": "Produces documents, not decisions. Its use is building the record that every other route needs.", "rate": null}, {"id": "sfr", "nm": "Statement for the record at a hearing", "fam": "Formal process", "sc": "National", "cost": "Free", "costn": "Free. Ask the subcommittee clerk for format and the window.", "elig": "Anyone, in most committees", "time": "Window usually closes days after the hearing", "how": "Submit to the clerk in the stated format before the deadline. It is printed in the hearing record.", "own": null, "fail": "Enters a permanent published record that staff and researchers cite later. Nobody is required to read it.", "rate": null}, {"id": "ig", "nm": "Inspector General or audit office complaint", "fam": "Formal process", "sc": "National", "cost": "Free", "costn": "Free.", "elig": "Anyone", "time": "Months to years", "how": "Allege a specific failure against a specific statutory or policy obligation. Vague complaints are closed.", "own": null, "fail": "An IG audit is one of the few things that forces an agency to concede a gap in writing and commit to a dated fix. It needs a concrete, auditable failure, not a disagreement about priorities.", "rate": null}, {"id": "ombud", "nm": "Ombudsman or national human rights institution", "fam": "Formal process", "sc": "National", "cost": "Free", "costn": "Free.", "elig": "Usually anyone affected", "time": "Months", "how": "Most countries have one; mandates vary widely.", "own": null, "fail": "Offices publish their own caseload and compliance figures, but nothing comparable exists across them, so there is no rate to quote. Findings are usually non-binding.", "rate": {"val": null, "kind": "none", "ev": "none", "src": "individual offices publish caseload and compliance figures; nothing comparable across them", "means": "National ombudsman offices report complaints received and recommendations accepted. Comparability is nil: some report compliance with suggestions, some report cases closed, some report neither, and the powers behind the recommendation differ in every country.", "caveat": "A per-jurisdiction extraction here would be straightforward and has never been done.", "y0": 1970, "y1": 2026, "name": "Ombudsman and human rights institution complaint"}}, {"id": "citizensuit", "nm": "Citizen-suit enforcement of a statute", "fam": "Courts", "sc": "National", "cost": "$0–$100k+", "costn": "Many environmental statutes shift fees to the loser, so a winning public-interest plaintiff can recover costs. Losing is expensive.", "elig": "Standing required: a concrete, particularised injury", "time": "Years; most statutes require 60 days notice first", "how": "Serve the statutory notice, then file if the violation continues.", "own": null, "fail": "Filings are recorded; outcomes are not coded as a rate. Standing is the usual wall — a generalised injury shared by everyone is, in US doctrine, an injury to no one for these purposes.", "rate": {"val": null, "kind": "none", "ev": "none", "src": "filings are recorded; outcomes are not coded as a rate", "means": "Where the law lets private parties sue to enforce it, notice letters and filings are recorded and settlements are frequently public. No dataset carries filings against outcomes, and a large share settle before judgment, which is where the wins mostly are.", "caveat": "Availability is the whole story: this exists in a handful of legal systems and nowhere else, so a global figure would be measuring which country you are in rather than what the method does.", "y0": 1970, "y1": 2026, "name": "Citizen-suit enforcement of a statute"}}, {"id": "climatelit", "nm": "Climate litigation", "fam": "Courts", "sc": "National / international", "cost": "$50k–$1m+", "costn": "Usually carried by a public-interest firm or clinic rather than the plaintiff.", "elig": "Standing required", "time": "Years", "how": "Most cases are brought with an established climate litigation organisation rather than alone.", "own": null, "fail": "Across 3,600+ cases in 62 countries, outcomes favourable to climate action in a bit over half. Climate-washing cases — suing over false environmental claims rather than over emissions — run considerably higher, because a false statement is far easier to prove than a causal chain.", "rate": {"val": 52, "kind": "base", "ev": "coded", "src": "3,600+ cases across 62 countries (Grantham/Sabin databases)", "means": "More than half of direct judicial outcomes were favourable to climate action.", "caveat": "[Source reports 'more than half'. Taken as 52, the nearest defensible floor.] \"Favourable\" is a broad coding. Applies to concluded direct outcomes.", "y0": 1986, "y1": 2025, "name": "Climate litigation — all cases"}}, {"id": "amicus", "nm": "Amicus brief", "fam": "Courts", "sc": "National", "cost": "$5k–$50k", "costn": "Pro bono filing is common for an organisation with a distinctive factual record.", "elig": "Anyone with leave of the court", "time": "Tied to the case calendar", "how": "Bring facts the parties cannot. Courts read briefs that add a record, not briefs that add a voice.", "own": null, "fail": "Filings are counted; influence is contested and not coded as a rate.", "rate": {"val": null, "kind": "none", "ev": "none", "src": "filings are counted; influence is contested and not coded as a rate", "means": "Filing counts are published and have risen sharply in several supreme courts. Studies of whether briefs change outcomes disagree, and the ones that find influence generally find it in citation and reasoning rather than in who won.", "caveat": "The outcome variable is the problem. A brief that shapes a footnote has done something real and no coding scheme records it.", "y0": 1950, "y1": 2026, "name": "Amicus brief"}}, {"id": "personhood", "nm": "Rights of nature / legal personhood for an ecosystem", "fam": "Courts", "sc": "Local to national", "cost": "Varies", "costn": "A municipal ordinance campaign is the cheap end; a constitutional provision is the expensive end.", "elig": "Varies by jurisdiction", "time": "Years", "how": "Roughly 700 initiatives counted across 66 countries. Municipal ordinances are where novel instruments actually pass first.", "own": null, "fail": "No coded outcomes exist. Adoption is documented; what adoption changes on the ground is not.", "rate": {"val": null, "kind": "none", "ev": "none", "src": "roughly 700 initiatives counted across 66 countries; no coded outcomes", "means": "Six countries have national rights-of-nature provisions — Ecuador, Bolivia, Panama, Spain, Uganda and New Zealand — and courts in Colombia, India, Peru, Bangladesh and Nepal have recognised particular rivers, forests or regions as rights-holders. About 80% of the counted initiatives are in the Americas. Whether the recognised entity then won anything is not tracked.", "caveat": "This chart already mentions the count in passing under climate litigation. It belongs here as its own row, because the count of laws passed says nothing about the count of cases won.", "y0": 2008, "y1": 2026, "name": "Rights of nature and legal personhood for an ecosystem"}}, {"id": "shareprop", "nm": "Shareholder proposal", "fam": "Companies", "sc": "Corporate", "cost": "$2,000 of stock", "costn": "US Rule 14a-8 eligibility: $2,000 held 3 years, or $15,000 held 2 years, or $25,000 held 1 year. The cheapest formal route that compels a company to respond in writing.", "elig": "Qualifying shareholders", "time": "Annual proxy cycle", "how": "Submit before the company's deadline. The company must print it and respond, or win exclusion from the SEC.", "own": null, "fail": "Resubmission thresholds bite: a proposal voted on once must clear 5% to come back, twice 15%, three or more times 25%. Below that it is excludable for five years. Low votes lock the subject out rather than building toward a win.", "rate": {"val": 16, "kind": "base", "ev": "coded", "src": "US proxy seasons through 2025", "means": "Environmental and social proposals averaged 16% support in 2025, down from 20% in 2024. Governance proposals averaged 35%. The share of E&S resolutions drawing under 5% rose from 8% to 27% over five years.", "caveat": "Average support, not a pass rate. Treat this as an upper bound on visible influence.", "y0": 2020, "y1": 2025, "name": "Shareholder resolution (E&S)"}}, {"id": "engage", "nm": "Private engagement with a company", "fam": "Companies", "sc": "Corporate", "cost": "Free–high", "costn": "Free to request; effective at scale only with assets behind it.", "elig": "Shareholders, mostly institutional", "time": "Months to years", "how": "Sequences of private meetings rather than public filings.", "own": null, "fail": "The measured rate comes from one large institutional investor's own records across 2,152 engagement sequences. An individual holder is not the actor that rate describes.", "rate": {"val": 18, "kind": "base", "ev": "coded", "src": "2,152 engagement sequences with 613 US-listed companies, from one large institutional investor's own records", "means": "18% of engagement sequences succeeded. Environmental and social asks succeeded 13% of the time against 24% for governance asks, and the environmental ones needed 3.7 approaches each against 2.2. Median time from first approach to success was one year. Collaboration with other investors raised the success rate; so did the target having a reputation to lose and the headroom to change. A later international study of the same channel put the rate at 19.9%.", "caveat": "Success is coded by the investor who did the engaging, which is the obvious weakness. The 13-versus-24 split is the useful part: the same investor, the same firms, the same year, and environmental asks converted at half the rate of governance asks.", "y0": 1999, "y1": 2009, "name": "Private shareholder engagement"}}, {"id": "boycott", "nm": "Consumer boycott", "fam": "Companies", "sc": "Corporate", "cost": "Free", "costn": "Free to join; organising at scale costs staff time and media.", "elig": "Anyone", "time": "Months to years", "how": "Works through media attention and reputation rather than through lost revenue.", "own": null, "fail": "Standalone boycotts land near a quarter; boycotts inside a broader campaign do considerably better. The mechanism is reputational damage, so a boycott nobody reports is a boycott that does nothing.", "rate": {"val": 25, "kind": "base", "ev": "coded", "src": "133 boycotts, 1990–2005, covering 177 firms", "means": "~25% produced a concession. Top predictor of effectiveness was media coverage generated, not sales lost — typical boycotts barely dent revenue.", "caveat": "Broader synthesis puts it at 25–40%, with selection bias: boycotts only get studied once they gain traction.", "y0": 1990, "y1": 2005, "name": "Consumer boycott"}}, {"id": "oecdncp", "nm": "OECD National Contact Point complaint", "fam": "Companies", "sc": "International", "cost": "Free", "costn": "No filing fee. Legal help is optional and usually unpaid.", "elig": "Any individual or NGO with an interest — not only those directly harmed", "time": "Initial assessment 3+ months; mediation 6–12 months; final statement ~3 months after", "how": "File against a multinational headquartered in or operating in an adhering country, on any topic in the OECD Guidelines.", "own": null, "fail": "The two codings of the same mechanism disagree sharply — NGOs coding 250 complaints over fifteen years got a far lower figure than the OECD's own reporting on 2011–2016 cases. Participation is voluntary, NCPs cannot compel a company, and remedy of past harm is rare. It produces a published finding, not an enforceable order.", "rate": {"val": 14, "kind": "base", "ev": "coded", "src": "250 complaints filed with OECD National Contact Points over the mechanism's first fifteen years, coded by OECD Watch", "means": "35 of 250 complaints — 14% — produced any beneficial result that amounted to some measure of remedy, and most of those were forward-looking policy commitments rather than anything done for the people who filed. Of 18 NGO and community cases concluded in 2017, one produced compensation and a concrete improvement; five produced any element of remedy at all.", "caveat": "Read this with the row directly below. Two organisations counted the same mechanism and got 14% and 47%, because one asked whether the complainant got anything and the other asked whether the parties reached an agreement.", "y0": 2000, "y1": 2015, "name": "OECD complaint against a company (NGO coding)"}}, {"id": "devbank", "nm": "Development bank accountability mechanism", "fam": "Companies", "sc": "International", "cost": "Free", "costn": "Free. The World Bank Inspection Panel, the IFC's CAO and nine similar bodies.", "elig": "People affected by a financed project; usually two or more", "time": "Years", "how": "Complain about a project financed by the institution, alleging it broke its own policies.", "own": null, "fail": "758 complaints over 21 years across 11 mechanisms. The institution investigates whether it broke its own rules; it does not compel the borrower or the company. Directly relevant to lending conditionality work.", "rate": {"val": 20, "kind": "base", "ev": "coded", "src": "758 complaints filed over 21 years with the 11 independent accountability mechanisms of development finance institutions, coded by eleven civil-society organisations", "means": "Just under 20% of concluded complaints produced either a negotiated settlement (8%) or a publicly disclosed compliance report (11.5%). Bank management produced an action plan in 7% of concluded cases. A large share of complaints were never found eligible at all.", "caveat": "The authors' own conclusion is that the outcome rarely provides adequate remedy. Counting a published compliance report as a success is generous: one documented case is a finding of non-compliance the institution then ignored. The 8% settlement figure is the strict reading, and the 7% action-plan figure is what the delivery toggle drops to.", "y0": 1994, "y1": 2015, "name": "Complaint to a development bank's accountability mechanism"}}, {"id": "upr", "nm": "UN Universal Periodic Review submission", "fam": "International", "sc": "International", "cost": "Free", "costn": "Free. NGOs file written submissions on any state under review.", "elig": "Any organisation; individuals via a coalition", "time": "Review cycles run years", "how": "File into the cycle for the state you are addressing.", "own": null, "fail": "Assessed at mid-term across 11,527 first-cycle recommendations. States accept recommendations readily and implement partially; acceptance is not compliance.", "rate": {"val": 48, "kind": "base", "ev": "coded", "src": "11,527 recommendations from the first review cycle, assessed at mid-term against submissions from states, national human rights institutions, NGOs and UN agencies", "means": "48% had triggered some action about three years after the review — 18% fully implemented, 30% partially. 48% produced nothing, and 4% could not be assessed. Even recommendations a state formally noted rather than accepted moved 19% of the time. Africa ran at 50% and one state reached 55%; where no stakeholder took part in follow-up, no assessment was possible at all.", "caveat": "The denominator is recommendations, not campaigns, and a recommendation can be as thin as 'continue efforts' — only about 30% were specific enough to assess cleanly. Assessment leans on the state's own reporting alongside NGO submissions. Read 48% as 'something moved in the direction of the text', not as compliance; the delivery toggle drops it to the 18% that were fully implemented.", "y0": 2008, "y1": 2014, "name": "UN Universal Periodic Review recommendation"}}, {"id": "echr", "nm": "Regional human rights court", "fam": "International", "sc": "International", "cost": "Free to file", "costn": "Free; representation needed in practice.", "elig": "Domestic remedies must be exhausted first", "time": "Years", "how": "European Court of Human Rights and its regional equivalents.", "own": null, "fail": "The admissibility filter is the whole story: the overwhelming majority of applications never reach a merits judgment.", "rate": {"val": 1.5, "kind": "base", "ev": "coded", "src": "European Court of Human Rights annual statistics; Committee of Ministers execution reporting", "means": "The Court rejects around 90% of applications as inadmissible without examining them. Counting every application filed, roughly 1–2% end in a judgment finding a violation. Conditional on reaching judgment the odds invert: against the United Kingdom, 329 judgments found at least one violation and 146 found none between 1975 and 2022.", "caveat": "Winning is not the end of it. Pending leading cases before the Committee of Ministers rose from 120 in 2011 to about 1,300 in 2021, and 44% of those had been pending more than five years — the delivery gap this chart flags everywhere, in the one forum that publishes enough to measure it.", "y0": 1998, "y1": 2024, "name": "European Court of Human Rights — filing to a violation finding"}}, {"id": "ilo", "nm": "ILO freedom-of-association complaint", "fam": "International", "sc": "International", "cost": "Free", "costn": "Free. Filed by workers' or employers' organisations.", "elig": "Organisations, not individuals", "time": "Years", "how": "Committee on Freedom of Association, 3,300+ cases examined since 1951.", "own": null, "fail": "Findings are recommendations to the state. The ILO's own long review counts 'cases of progress' rather than compliance.", "rate": {"val": 29, "kind": "base", "ev": "coded", "src": "3,300+ cases examined since 1951; 2018 caseload used for the rate", "means": "Of 92 cases examined in 2018 (70 active, 22 in follow-up), the Committee closed 27 — 29%. Cases close when resolved by the parties, handled nationally, or inactive for 18 months. More than 60 countries have acted on its recommendations and reported positive developments. Regional distribution of complaints since 1952: roughly 44% Central and South America, 25% Europe, 13% Africa, 12% Asia, 6% North America.", "caveat": "\"Closed\" bundles resolution with abandonment, so 29% is an upper bound on success and a poor one. The full 3,300-case record has never been coded for outcome, which is the single largest unextracted dataset named on this chart.", "y0": 1951, "y1": 2024, "name": "ILO freedom-of-association complaint"}}, {"id": "copuos", "nm": "UN COPUOS observer status", "fam": "International", "sc": "International", "cost": "Free", "costn": "Free, but requires an organisation with a track record.", "elig": "NGOs, by Committee decision", "time": "Years to obtain", "how": "Permanent observer status confers the right to attend sessions and make statements.", "own": null, "fail": "No rate exists. The route in for an argument rather than an organisation is scholarship: delegations cite papers, not websites.", "rate": null}, {"id": "lobby", "nm": "Registered lobbyist retainer", "fam": "Money & representation", "sc": "National", "cost": "Mid five figures / month", "costn": "Check comparable clients in the public lobbying disclosure database before accepting any quote.", "elig": "Anyone who can pay; the engagement is public record", "time": "Quarterly cycles", "how": "Needs a vehicle — a bill, a docket, an appropriations line — not a thesis.", "own": null, "fail": "The finding that matters: across 98 randomly selected issues tracked 1999–2002, 60% of lobbying campaigns failed to move policy, and resources explained under 5% of the difference between winners and losers. Paying more does not buy the outcome; the status quo wins most contests regardless of spending.", "rate": {"val": 40, "kind": "base", "ev": "coded", "src": "98 randomly selected issues tracked 1999–2002", "means": "40% saw policy change; 60% of campaigns failed to move policy. Resources explained under 5% of the difference between winners and losers.", "caveat": "Random issue selection is what makes this figure trustworthy.", "y0": 1999, "y1": 2002, "name": "Federal lobbying campaign"}}, {"id": "scoping", "nm": "Scoping memo from a former staffer", "fam": "Money & representation", "sc": "National", "cost": "$2k–$10k", "costn": "Ten to twenty hours of one practitioner's time.", "elig": "Anyone who can pay", "time": "2–4 weeks", "how": "Buy the answer to which committee, which vehicle, which staffer, and what the ask should literally say.", "own": null, "fail": "No measured rate. Listed because it is the cheapest way to find out whether a retainer would be wasted.", "rate": null}, {"id": "office", "nm": "Running for office", "fam": "Money & representation", "sc": "Any level", "cost": "$0–$2m+", "costn": "Local filing fees are often under $100 or a signature petition. Precinct and party committee seats frequently go uncontested.", "elig": "Residency and age requirements", "time": "Election cycles", "how": "The lowest offices have the least competition and the most direct jurisdiction over local decisions.", "own": null, "fail": "Randomised evidence from 265 Indian village councils where head positions were reserved: holding office changed spending priorities measurably, but not uniformly for the better. Office changes what gets decided, not whether deciding is hard.", "rate": {"val": null, "kind": "dir", "ev": "rct", "src": "265 Indian village councils; one third of head positions randomly reserved", "means": "Reserved councils invested in 2.62 more drinking-water facilities on average and made fewer road improvements, an 8% deterioration. Inexperience, re-election prospects and background were ruled out.", "caveat": "Direction and mechanism, not a percentage. Non-Western, randomised, and rare on both counts.", "y0": 1995, "y1": 2004, "name": "Holding the office (randomised)"}}, {"id": "ballot", "nm": "Ballot initiative", "fam": "Money & representation", "sc": "State / local", "cost": "$1–$10 per signature", "costn": "Signature gathering is the dominant cost and scales with the jurisdiction's threshold.", "elig": "Available in some jurisdictions only", "time": "A full election cycle", "how": "Qualify by signature, then campaign.", "own": null, "fail": "Qualifying and winning are different problems, and a measure that passes can still be repealed, amended or struck down.", "rate": null}, {"id": "quitam", "nm": "Whistleblowing under a reward statute", "fam": "Insider", "sc": "National", "cost": "Lawyer, contingency", "costn": "Qui tam counsel works on contingency; filing costs the whistleblower little up front.", "elig": "Someone with original, non-public evidence of fraud against the government", "time": "Years under seal", "how": "Filed under seal; the government decides whether to intervene.", "own": null, "fail": "Everything turns on intervention. Recovery runs near 95% in cases the government joins and drops sharply in cases it declines. The whistleblower does not control that decision.", "rate": {"val": 27, "kind": "base", "ev": "coded", "src": "DOJ annual False Claims Act statistics", "means": "1,297 qui tam suits filed in FY2025, a record. $5.3bn of $6.8bn recovered came from qui tam matters; ~43% of that from cases the government declined and the relator pursued alone. Relators received ~$330m, about 6%.", "caveat": "Intervention is the inflection point. Retaliation: 22% in earlier surveys, rising to 44% and above in later waves.", "y0": 2015, "y1": 2025, "name": "Whistleblowing — at filing (qui tam)"}}, {"id": "observer", "nm": "Independent election observation", "fam": "Insider", "sc": "Any level", "cost": "Free", "costn": "Volunteer.", "elig": "Varies; often requires accreditation", "time": "Election days", "how": "Randomised evidence from Russian polling stations.", "own": null, "fail": "One of the largest measured effects available to an unpaid individual, and it only works where the problem is at the count.", "rate": {"val": 11, "kind": "effect", "ev": "rct", "src": "Randomly assigned independent observers, Russian polling stations", "means": "The presence of a randomly assigned independent observer cut the ruling party's result by 11% on average, from 47% to 36%.", "caveat": "Also the trigger for what followed: documented fraud with no official acknowledgement is what put thousands into the streets in December 2011.", "y0": 2011, "y1": 2012, "name": "Independent election observers (randomised)"}}, {"id": "facarole", "nm": "Federal advisory committee seat", "fam": "Insider", "sc": "National", "cost": "Free", "costn": "Unpaid or per-diem.", "elig": "Appointed; nominations often open publicly", "time": "Months to appoint; multi-year terms", "how": "Agencies must publish vacancies and solicit nominations. Seats on technical committees are frequently undersubscribed.", "own": null, "fail": "No measured rate. An unusual route: it places a person inside the body that drafts the recommendation, rather than outside writing to it.", "rate": null}, {"id": "oped", "nm": "Newspaper op-ed", "fam": "Information", "sc": "Public", "cost": "Free", "costn": "Free to submit; most are rejected.", "elig": "Anyone", "time": "Days to weeks", "how": "Two randomised panel experiments on five op-eds, tested on a mass sample and on policy elites.", "own": null, "fail": "Moved policy attitudes about half a point on a seven-point scale, still present a month later. It moves opinion, which is not the same as moving a decision.", "rate": {"val": 7, "kind": "effect", "ev": "rct", "src": "two randomised panel experiments on five op-eds, run on a mass sample and on a sample of policy elites", "means": "Reading an op-ed moved policy attitudes about half a point on a seven-point scale — roughly 7% of the scale — and the shift was still there a month later, having closed by about half in the first ten days and then held. Attitudes on non-target issues did not move, which is the check that people read the argument rather than shifting generally. Democrats and Republicans moved in the direction of the piece in roughly equal measure, and elites moved slightly less than the public. Costed against readership, between about 50 cents and $3 per mind changed.", "caveat": "Convenience samples, forced exposure and an attitude scale rather than behaviour. The real-world version has to survive the fact that hardly anybody reads any given piece — the effect is per reader, not per publication, and the cost-per-mind figure carries every assumption in that chain.", "y0": 2016, "y1": 2018, "name": "Newspaper op-ed"}}, {"id": "deepcanvass", "nm": "Deep canvassing", "fam": "Information", "sc": "Public", "cost": "Free", "costn": "Volunteer time; ten minutes per conversation.", "elig": "Anyone", "time": "Ongoing", "how": "A ten-minute non-judgemental exchange of personal stories, not an argument.", "own": null, "fail": "The largest durable persuasion effect measured, and the least scalable thing on this list. Ordinary partisan canvassing measures approximately zero.", "rate": {"val": 13.8, "kind": "effect", "ev": "rct", "src": "Randomised field experiment on immigration attitudes", "means": "Support moved from 29% to 33% — a 13.8% relative increase — durable at three months or more.", "caveat": "Four points absolute. Deflated floor ~2.2% relative.", "y0": 2016, "y1": 2020, "name": "Deep canvassing (10-min story exchange)"}}, {"id": "petition", "nm": "Online petition", "fam": "Information", "sc": "Any level", "cost": "Free", "costn": "Free.", "elig": "Anyone", "time": "Weeks", "how": "Official government petition sites carry response thresholds; commercial petition sites carry none.", "own": null, "fail": "Across all 20,000 petitions on the UK government site, 0.7% reached the threshold for an official response and 0.1% reached a debate. End to end the figure is about 0.15%. Petitions defending an existing policy did considerably better than those demanding change, and signature count was not decisive.", "rate": {"val": 0.7, "kind": "base", "ev": "coded", "src": "All 20,000 petitions on the UK government site", "means": "5% reached 500 signatures; 0.7% reached the 10,000 needed for an official response; 0.1% reached 100,000 for a debate. US White House site: 15% and 0.7%.", "caveat": "Crossing the threshold is not winning. See the compound row.", "y0": 2011, "y1": 2019, "name": "Petition — reaching an official response"}}];
+/* ====================================================================
+   HOW TO REACH THEM
+   Office data: Wikidata Query Service (live, CORS). Local offices:
+   OpenStreetMap via Overpass (live, secondary).
+   Success rates: the author's own leverage chart dataset
+   (leverage-chart.html in this repo), reproduced per route with its
+   original source and evidence tier. Rates are not invented here.
+   ==================================================================== */
+const WDQS = 'https://query.wikidata.org/sparql';
+const OVERPASS = ['https://overpass-api.de/api/interpreter',
+                  'https://overpass.kumi.systems/api/interpreter'];
+const EVNAME = {rct:'Randomised / natural experiment', quasi:'Quasi-experimental',
+  coded:'Large-N coded dataset', percep:'Survey of perceived influence',
+  case:'Case study / expert synthesis', none:'No systematic measurement', dir:'Direction only'};
+
+/* ---------- small helpers ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s==null?'':s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const qid = u => (u||'').split('/').pop();
+const isQ = s => /^Q\d+$/.test(s||'');
+function setDot(id, cls, txt){ const d=$('#d-'+id); d.className='dot'+(cls?' '+cls:''); if(txt) $('#t-'+id).textContent=txt; }
+
+/* localStorage cache, best effort — never load-bearing */
+const CACHE_V='htrt1';
+function cget(k){ try{ const r=localStorage.getItem(CACHE_V+':'+k); if(!r) return null;
+  const o=JSON.parse(r); if(Date.now()-o.t > 6048e5) return null; return o.v; }catch(e){ return null; } }
+function cset(k,v){ try{ localStorage.setItem(CACHE_V+':'+k, JSON.stringify({t:Date.now(),v:v})); }catch(e){} }
+
+async function sparql(query, cacheKey){
+  if(cacheKey){ const c=cget(cacheKey); if(c) return c; }
+  const url = WDQS+'?query='+encodeURIComponent(query)+'&format=json';
+  const ac = new AbortController();
+  const killer = setTimeout(()=>ac.abort(), 58000);
+  let r;
+  try{ r = await fetch(url, {headers:{'Accept':'application/sparql-results+json'}, signal:ac.signal}); }
+  finally{ clearTimeout(killer); }
+  if(!r.ok) throw new Error(r.status===504?'the query timed out at Wikidata':'Wikidata returned '+r.status);
+  const j = await r.json();
+  const rows = j.results.bindings;
+  if(cacheKey) cset(cacheKey, rows);
+  return rows;
+}
+
+/* ====================================================================
+   JURISDICTION QUERIES
+   ==================================================================== */
+function qCore(q){ return `
+SELECT ?kind ?item ?itemLabel ?site ?email ?phone ?holder ?holderLabel WHERE {
+ { BIND("legislature" AS ?kind) wd:${q} wdt:P194 ?item . OPTIONAL{?item wdt:P856 ?site} }
+ UNION { BIND("executive" AS ?kind) wd:${q} wdt:P1313 ?item .
+         OPTIONAL{?item wdt:P856 ?site} OPTIONAL{?item wdt:P1308 ?holder} }
+ UNION { BIND("executive" AS ?kind) wd:${q} wdt:P1906 ?item .
+         OPTIONAL{?item wdt:P856 ?site} OPTIONAL{?item wdt:P1308 ?holder} }
+ UNION { BIND("self" AS ?kind) BIND(wd:${q} AS ?item)
+         { ?item wdt:P856 ?site } UNION { ?item wdt:P968 ?email } UNION { ?item wdt:P1329 ?phone } }
+ SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" }
+} LIMIT 60`; }
+
+/* Everything Wikidata records as having this jurisdiction. Deliberately
+   unfiltered at the server: the class comes back with each item and the
+   grouping happens in the browser, so nothing is dropped on your behalf
+   and the query returns in about a second instead of twenty. */
+function qJuris(q){ return `
+SELECT ?item ?itemLabel ?cls ?clsLabel ?site ?email ?phone ?holder ?holderLabel WHERE {
+ ?item wdt:P1001 wd:${q} .
+ OPTIONAL{?item wdt:P31 ?cls}
+ OPTIONAL{?item wdt:P856 ?site} OPTIONAL{?item wdt:P968 ?email}
+ OPTIONAL{?item wdt:P1329 ?phone} OPTIONAL{?item wdt:P1308 ?holder}
+ SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" }
+} LIMIT 600`; }
+
+function qSubdiv(q){ return `
+SELECT ?d ?dLabel ?typeLabel ?site WHERE {
+ wd:${q} wdt:P150 ?d .
+ OPTIONAL{ ?d wdt:P856 ?site }
+ OPTIONAL{ ?d wdt:P31 ?type }
+ SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" }
+} LIMIT 500`; }
+
+/* ====================================================================
+   PANEL STATE
+   ==================================================================== */
+let TAB='juris', TRAIL=[], CURRENT=null;
+
+function openPanel(){ $('#panel').classList.add('open'); const h=$('#hint'); if(h) h.style.opacity=0; }
+function closePanel(){ $('#panel').classList.remove('open'); }
+const TAB_TITLE = {
+  routes:['Routes of contact','What each one costs, how often it has worked, and why it fails'],
+  why:['Why it fails','The mechanisms behind the rates']
+};
+function setTab(t){
+  TAB=t;
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on', b.dataset.t===t));
+  if(TAB_TITLE[t]){ $('#ptitle').textContent=TAB_TITLE[t][0]; $('#psub').textContent=TAB_TITLE[t][1]; }
+  else if(CURRENT && CURRENT.q){ $('#ptitle').textContent=CURRENT.label; $('#psub').textContent='Offices resolved live from Wikidata'; }
+  render();
+}
+function openRoutes(){ openPanel(); setTab('routes'); }
+
+async function goJuris(q, label, push){
+  CURRENT = {q:q, label:label, offs:null, subs:[], pos:null, posState:'loading'};
+  if(push!==false){ const i=TRAIL.findIndex(x=>x.q===q);
+    if(i>=0) TRAIL=TRAIL.slice(0,i+1); else TRAIL.push({q:q,label:label}); }
+  $('#ptitle').textContent = label;
+  $('#psub').textContent = 'Offices resolved live from Wikidata';
+  openPanel(); TAB='juris';
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on', b.dataset.t==='juris'));
+  $('#pbody').innerHTML = crumbHTML() + '<div class="spin">Resolving offices and subdivisions&hellip;</div>';
+  setDot('wd','busy','Wikidata');
+  const token = q + ':' + Date.now(); CURRENT.token = token;
+
+  /* fast pair first so the panel fills immediately */
+  try{
+    const [core, subs] = await Promise.all([
+      sparql(qCore(q), 'core:'+q),
+      sparql(qSubdiv(q), 'sub:'+q)
+    ]);
+    if(CURRENT.token !== token) return;
+    setDot('wd','ok','Wikidata live');
+    CURRENT.offs = core; CURRENT.subs = subs;
+    if(TAB==='juris') render();
+  }catch(e){
+    if(CURRENT.token !== token) return;
+    setDot('wd','bad','Wikidata unreachable');
+    $('#pbody').innerHTML = crumbHTML() +
+      '<div class="note">Could not reach the Wikidata query service: '+esc(e.message)+
+      '. It rate-limits heavy use and goes down for maintenance from time to time. Try again in a minute.</div>';
+    return;
+  }
+
+  /* the expensive one streams in behind it */
+  try{
+    const pos = await sparql(qJuris(q), 'juris:'+q);
+    if(CURRENT.token !== token) return;
+    CURRENT.pos = pos; CURRENT.posState = 'done';
+  }catch(e){
+    if(CURRENT.token !== token) return;
+    CURRENT.pos = []; CURRENT.posState = 'failed';
+  }
+  if(TAB==='juris') render();
+}
+
+function crumbHTML(){
+  if(!TRAIL.length) return '';
+  const parts = TRAIL.map((t,i)=> i===TRAIL.length-1
+    ? '<span>'+esc(t.label)+'</span>'
+    : '<a onclick="goJuris(\''+t.q+'\',\''+esc(t.label).replace(/'/g,"\\'")+'\',false);TRAIL=TRAIL.slice(0,'+(i+1)+')">'+esc(t.label)+'</a>');
+  return '<div id="crumbs">'+parts.join('<span class="sep">&rsaquo;</span>')+'</div>';
+}
+
+/* ====================================================================
+   RENDERING
+   ==================================================================== */
+function render(){
+  if(TAB==='routes') return renderRoutes();
+  if(TAB==='why')    return renderWhy();
+  return renderJuris();
+}
+
+/* Group what Wikidata returns by what kind of thing it is. Nothing is
+   discarded — anything unrecognised lands in "Other records" so the full
+   result set stays visible and the selection stays yours. */
+const CLS_OFFICE = /\b(office|position|minister|secretary|mayor|governor|president|chair|speaker|commissioner|sheriff|attorney|treasurer|auditor|clerk|judge|justice|councillor|councilor|alderman|supervisor|magistrate|prosecutor|ombuds)/i;
+const CLS_BODY   = /\b(agency|department|ministry|bureau|commission|authority|board|council|assembly|parliament|legislature|senate|house|court|tribunal|directorate|secretariat|service|administration|cabinet|committee|corporation|district|constituency)/i;
+const CLS_DIPLO  = /\b(embassy|consulate|high commission|diplomatic|mission)\b/i;
+const CLS_DOC    = /\b(law|act|amendment|decision|ruling|case|treaty|bill|constitution|statute|ordinance|regulation|directive|protocol|referendum|election|proposition|initiative|order|proclamation|resolution|charter|code)\b/i;
+function classify(label){
+  const c = label || '';
+  if(CLS_DIPLO.test(c)) return 'diplo';
+  if(CLS_DOC.test(c))   return 'doc';
+  if(CLS_OFFICE.test(c))return 'position';
+  if(CLS_BODY.test(c))  return 'body';
+  return 'other';
+}
+
+function renderJuris(){
+  if(!CURRENT || !CURRENT.offs){ $('#pbody').innerHTML = crumbHTML()+'<div class="spin">Resolving offices and subdivisions&hellip;</div>'; return; }
+  const core = CURRENT.offs || [], subs = CURRENT.subs || [];
+  const by = {legislature:[], executive:[], self:[]};
+  const seen = new Set();
+  core.forEach(r=>{
+    const k = r.kind.value, id = k+'|'+qid(r.item && r.item.value);
+    if(k!=='self' && seen.has(id)) return; seen.add(id);
+    (by[k] = by[k]||[]).push(r);
+  });
+
+  /* jurisdiction items, grouped by class, deduplicated across P31 values */
+  const buckets = {position:[], body:[], diplo:[], doc:[], other:[]};
+  if(CURRENT.pos){
+    const merged = {};
+    CURRENT.pos.forEach(r=>{
+      const id = qid(r.item.value);
+      if(!merged[id]) merged[id] = {row:r, classes:[]};
+      const cl = r.clsLabel && r.clsLabel.value; if(cl) merged[id].classes.push(cl);
+      ['site','email','phone','holder','holderLabel'].forEach(f=>{ if(r[f] && !merged[id].row[f]) merged[id].row[f]=r[f]; });
+    });
+    Object.values(merged).forEach(m=>{
+      const kinds = m.classes.map(classify);
+      /* a document class wins over an office class: an election named
+         "presidential primaries" carries a class mentioning president,
+         which would otherwise file it among the offices */
+      const k = kinds.includes('diplo') ? 'diplo'
+              : kinds.includes('doc') ? 'doc'
+              : kinds.includes('position') ? 'position'
+              : kinds.includes('body') ? 'body'
+              : (kinds[0] || 'other');
+      m.row.__cls = m.classes[0] || '';
+      buckets[k].push(m.row);
+    });
+  }
+
+  let h = crumbHTML();
+
+  const self = core.filter(r=>r.kind.value==='self');
+  if(self.length){
+    const sites=new Set(), emails=new Set(), phones=new Set();
+    self.forEach(r=>{ if(r.site)sites.add(r.site.value); if(r.email)emails.add(r.email.value); if(r.phone)phones.add(r.phone.value); });
+    h += '<div class="grp"><h3>Official channel</h3>';
+    [...sites].forEach(s=> h += '<div class="off"><div class="nm"><a href="'+esc(s)+'" target="_blank" rel="noopener">'+esc(s)+'</a></div><div class="meta">Authoritative source &mdash; trust this over anything below</div></div>');
+    [...emails].forEach(e=> h += '<div class="off"><div class="nm"><a href="mailto:'+esc(e)+'">'+esc(e)+'</a></div></div>');
+    [...phones].forEach(p=> h += '<div class="off"><div class="nm">'+esc(p)+'</div></div>');
+    h += '</div>';
+  }
+
+  h += offGroup('Legislature — writes the law', by.legislature);
+  h += offGroup('Executive — head of government and state', by.executive);
+
+  if(CURRENT.posState==='loading'){
+    h += '<div class="grp"><h3>Offices with jurisdiction here</h3><div class="spin">Resolving&hellip;</div></div>';
+  } else if(CURRENT.posState==='failed'){
+    h += '<div class="note">The query for individual offices did not return. The legislature and executive above came through; re-opening this jurisdiction usually gets the rest.</div>';
+  } else {
+    h += offGroup('Offices held by a person', buckets.position);
+    h += offGroup('Agencies and public bodies', buckets.body);
+    h += offGroup('Diplomatic missions', buckets.diplo, true);
+    h += offGroup('Laws, rulings and elections recorded for this jurisdiction', buckets.doc, true);
+    h += offGroup('Other records', buckets.other, true);
+  }
+
+  const total = by.legislature.length + by.executive.length +
+    buckets.position.length + buckets.body.length + buckets.diplo.length + buckets.other.length;
+  if(!total && CURRENT.posState!=='loading'){
+    h += '<div class="note">Wikidata holds no office records for this jurisdiction yet. That is a gap in Wikidata, not evidence that no offices exist &mdash; coverage is deep for some countries and thin for others, and thins further at local level. Use the official channel above, and the subdivisions below.</div>';
+  }
+
+  if(subs.length){
+    const uniq = {};
+    subs.forEach(r=>{ const id=qid(r.d.value);
+      if(!uniq[id]) uniq[id]={id:id,label:(r.dLabel&&r.dLabel.value)||id,type:(r.typeLabel&&r.typeLabel.value)||''}; });
+    const list = Object.values(uniq).sort((a,b)=>a.label.localeCompare(b.label));
+    h += '<div class="grp"><h3>Go deeper &mdash; '+list.length+' subdivision'+(list.length===1?'':'s')+'</h3>';
+    list.forEach(d=>{
+      h += '<button class="subdiv" onclick="goJuris(\''+d.id+'\',\''+esc(d.label).replace(/'/g,"\\'")+'\')">'+
+           esc(d.label)+(d.type?' <span class="chev">'+esc(d.type)+'</span>':'')+' <span class="chev">&rsaquo;</span></button>';
+    });
+    h += '</div>';
+  } else {
+    h += '<div class="note">No subdivisions recorded in Wikidata below this level. For a municipality that is usually the end of the ladder; for a country or region it more often means the data has not been entered.</div>';
+  }
+
+  if(CGAZ_ISO3){
+    h += '<div class="grp"><h3>Draw the jurisdictions on the map</h3>'+
+      '<div style="font-size:11.5px;color:var(--faint);line-height:1.5;margin-bottom:8px">Boundary files from the cgaz-boundaries repository. Draw a level, then click any unit on the map to open its offices.</div>';
+    [1,2,3,4].forEach(l=>{
+      h += '<button class="subdiv'+(CGAZ_LEVEL===l?' on':'')+'" onclick="loadAdm('+l+')">ADM'+l+'</button>';
+    });
+    h += '<div id="admbox"></div></div>';
+  }
+  h += '<div class="grp"><h3>Physical offices you can walk into</h3>'+
+       '<button class="subdiv" onclick="findLocal()">Search the visible map area &mdash; OpenStreetMap &rsaquo;</button>'+
+       '<div id="localbox"></div></div>';
+  h += '<div class="note"><b>On the names.</b> Office titles are stable; the people in them are not. Wikidata holder records go stale, sometimes by years. Treat a name here as a lead to verify on the official site, never as current fact. The office is what you contact.</div>';
+  h += '<div style="margin-top:14px"><button class="fchip on" onclick="setTab(\'routes\')">See the routes into these offices &rsaquo;</button></div>';
+  $('#pbody').innerHTML = h;
+}
+
+function offGroup(title, rows, collapsed){
+  if(!rows || !rows.length) return '';
+  const gid = 'g'+Math.random().toString(36).slice(2,8);
+  let h = '<div class="grp" id="'+gid+'"><h3'+(collapsed?' style="cursor:pointer" onclick="this.parentNode.classList.toggle(\'shut\')"':'')+'>'+
+          esc(title)+' <span style="color:var(--faint);font-weight:400">'+rows.length+'</span>'+
+          (collapsed?' <span style="float:right;color:var(--faint)">show</span>':'')+'</h3>'+
+          '<div class="gbody"'+(collapsed?' style="display:none"':'')+'>';
+  rows.sort((a,b)=> ((a.itemLabel&&a.itemLabel.value)||'').localeCompare((b.itemLabel&&b.itemLabel.value)||''));
+  rows.slice(0,120).forEach(r=>{
+    const label = (r.itemLabel&&r.itemLabel.value) || qid(r.item.value);
+    const holder = r.holderLabel && r.holderLabel.value;
+    const site = r.site && r.site.value, email = r.email && r.email.value, phone = r.phone && r.phone.value;
+    h += '<div class="off"><div class="nm">'+esc(label)+'</div><div class="meta">';
+    if(r.__cls) h += '<span class="stale">'+esc(r.__cls)+'</span>';
+    if(holder) h += isQ(holder)
+      ? '<span class="holder">holder recorded, name missing from Wikidata</span>'
+      : '<span class="holder">'+esc(holder)+'</span> <span class="stale">verify</span>';
+    if(site)  h += '<a href="'+esc(site)+'" target="_blank" rel="noopener">'+esc(site.replace(/^https?:\/\//,'').slice(0,46))+'</a>';
+    if(email) h += '<a href="mailto:'+esc(email)+'">'+esc(email)+'</a>';
+    if(phone) h += '<span>'+esc(phone)+'</span>';
+    h += '<a href="https://www.wikidata.org/wiki/'+esc(qid(r.item.value))+'" target="_blank" rel="noopener" style="opacity:.55">wikidata</a>';
+    h += '</div></div>';
+  });
+  if(rows.length>120) h += '<div class="note">'+(rows.length-120)+' further records in this group are not shown, to keep the panel usable. They are in the Wikidata query behind this panel.</div>';
+  return h + '</div></div>';
+}
+
+let RFILTER = 'All';
+/* A percentage-point effect and a base success rate are not the same
+   quantity, so they do not share a scale. A 12-point causal shift is
+   large; a 12% success rate is not. */
+function rateColor(r){
+  if(!r || r.val==null) return 'var(--r-none)';
+  const v = r.val;
+  if(r.kind === 'effect'){
+    if(v >= 10) return 'var(--r-high)';
+    if(v >= 3)  return 'var(--r-mid)';
+    return 'var(--r-low)';
+  }
+  if(v >= 40) return 'var(--r-high)';
+  if(v >= 15) return 'var(--r-mid)';
+  return 'var(--r-low)';
+}
+function rateText(r, own){
+  if(own) return own.val+'<small>observed</small>';
+  if(!r || r.val==null) return '&mdash;<small>unmeasured</small>';
+  const unit = r.kind==='effect' ? '<small>pt effect</small>' : '<small>success</small>';
+  return r.val+(r.kind==='effect'?'':'%')+unit;
+}
+function renderRoutes(){
+  const fams = ['All', ...new Set(ROUTES.map(r=>r.fam))];
+  let h = '<div id="rfilter">' + fams.map(f=>
+    '<button class="fchip'+(f===RFILTER?' on':'')+'" onclick="RFILTER=\''+f.replace(/'/g,"\\'")+'\';renderRoutes()">'+esc(f)+'</button>').join('') + '</div>';
+  h += '<div class="note">Success figures are reproduced from the leverage chart in this repository, each with the dataset it came from. Where no one has measured a route, it says so rather than guessing. A percentage is a base rate across many attempts, not a forecast for yours.</div><div style="height:12px"></div>';
+
+  const list = ROUTES.filter(r=> RFILTER==='All' || r.fam===RFILTER);
+  list.forEach((r,i)=>{
+    const rt = r.rate;
+    h += '<div class="route" id="rt'+i+'">'+
+      '<div class="rhead" onclick="document.getElementById(\'rt'+i+'\').classList.toggle(\'open\')">'+
+        '<div class="rbar" style="background:'+(r.own?'var(--r-low)':rateColor(rt))+'"></div>'+
+        '<div class="rmain"><div class="rnm">'+esc(r.nm)+'</div>'+
+        '<div class="rmeta">'+esc(r.cost)+' &middot; '+esc(r.sc)+'</div></div>'+
+        '<div class="rrate">'+rateText(rt, r.own)+'</div>'+
+      '</div><div class="rbody">'+
+        fld('What it costs', r.costn) +
+        fld('Who can use it', r.elig) +
+        fld('How long', r.time) +
+        fld('How it is done', r.how) +
+        (r.own ? fld('Observed on this site&rsquo;s own campaign', r.own.note) : '') +
+        (rt ? '<div class="fld"><dt>Measured rate'+(rt.ev?'<span class="ev">'+esc(EVNAME[rt.ev]||rt.ev)+'</span>':'')+'</dt><dd>'+
+              esc(rt.means||'')+(rt.caveat?' <em>'+esc(rt.caveat)+'</em>':'')+
+              '<div class="srcline">'+esc(rt.src||'')+(rt.y0?' ('+rt.y0+'&ndash;'+rt.y1+')':'')+'</div></dd></div>' : '') +
+        '<div class="fld fail"><dt>Why it fails</dt><dd>'+esc(r.fail)+'</dd></div>'+
+      '</div></div>';
+  });
+  $('#pbody').innerHTML = h;
+}
+function fld(t,v){ return v ? '<div class="fld"><dt>'+t+'</dt><dd>'+esc(v)+'</dd></div>' : ''; }
+
+/* ====================================================================
+   WHY IT FAILS — the structural barriers
+   ==================================================================== */
+const BARRIERS = [
+{h:'A company is not forbidden from acting against profit — it is protected when it does not',
+ p:["The common belief is that directors are legally required to maximise shareholder returns, so a company that sacrificed profit for a distant public good could be sued. The law is narrower and, in practice, looser than that. The line usually cited comes from <i>Dodge v. Ford Motor Co.</i> (Michigan, 1919), where the court ordered Ford to pay a special dividend and said directors' discretion does not extend to withholding profits from shareholders for other purposes. The famous sentence about a corporation being organised primarily for stockholder profit was <i>obiter dictum</i> — commentary, not binding holding.",
+    "What actually governs is the business judgment rule. Scholars reading the same case describe profit maximisation as a standard of conduct rather than a legal mandate, and as a default rule courts rarely enforce, because the rule makes a director's stated business rationale close to impossible to disprove. A board that can articulate a rational link to the corporation's benefit — reputation, recruitment, regulatory risk, long-term licence to operate — has wide latitude.",
+    "So the barrier is real but it is not the legal wall it is usually described as. It is the combination of litigation risk, quarterly reporting, executive compensation tied to share price, and competitive pressure from firms that do not act. The practical consequence for anyone approaching a company: the argument that works is not <i>you are permitted to do this</i>, it is a rational business case the board could state out loud if sued. That is precisely the form a shareholder proposal takes, which is why it is on the routes list at a $2,000 entry price."]},
+{h:'Concentrated costs now, diffuse benefits later',
+ p:["Every route on this list asks an institution to accept a specific, immediate, attributable cost in exchange for a benefit that is distributed, delayed, and credited to no one in particular. Institutions are built to resist exactly that trade. Nobody inside is rewarded for taking it, and the person who proposes it carries the downside alone if it goes badly.",
+    "This is why the routes with measured success are overwhelmingly those where the ask is narrow and the cost to the decider is near zero — a comment on an open docket, a vote already scheduled, a bill already moving — and why the routes asking an institution to reverse its direction have no measured success at all."]},
+{h:'You are processed as a tally, not as an argument',
+ p:["Legislative offices log incoming contact by issue and position and report the counts upward. An email is one unit in that count. So is a call, so is a letter. The quality of the reasoning does not change the arithmetic, which is why several thousand carefully argued messages can produce a form reply about an unrelated policy, and why the author's own global campaign returned roughly a 2% response rate, almost all of it disagreement or disclaimer.",
+    "The routes that escape the tally are the ones that create an obligation: a petition for rulemaking the agency must grant or deny, a comment the agency must address in the final rule, a statement entered in a hearing record, a complaint an inspector general must close in writing. The difference is not effort. It is whether anyone is required to write something back."]},
+{h:'The docket is open to everyone and weighted by who fills it',
+ p:["Across 40 rulemakings at four US federal agencies and some 1,700 comments, business commenters held significant influence over final rule content and non-business commenters showed no detectable influence in the same models. Over 57% of comments came from business. Agencies tend to move toward whichever side dominates the docket.",
+    "The route is genuinely free and genuinely open. The asymmetry is in who turns up, repeatedly, with counsel, on every docket, for years."]},
+{h:'Money buys access, and access does not buy the outcome',
+ p:["Across 98 randomly selected policy issues tracked from 1999 to 2002, 60% of lobbying campaigns failed to move policy at all, and the resources behind a campaign explained under 5% of the difference between the winners and the losers. The dominant predictor of an outcome was whether the campaign was defending the status quo or trying to change it.",
+    "This cuts both ways. It means a well-funded opponent is not guaranteed to beat you. It also means hiring representation does not convert an argument into a result, and anyone selling a retainer on the promise that it will is selling something they cannot deliver."]},
+{h:'Nobody owns the whole problem',
+ p:["An argument spanning several domains at once has no single office with jurisdiction over it. Each office can truthfully say the part it governs is not the part being complained about, and route it elsewhere. This is not evasion by any individual; it is what happens when a claim is wider than any mandate.",
+    "The practical answer is not to narrow the claim but to choose which existing proceeding it enters. A proceeding has a deadline, a record, and someone obliged to respond — which is the one thing an unsolicited approach never has."]},
+{h:'Voluntary mechanisms produce findings, not orders',
+ p:["The international complaint routes — OECD National Contact Points, development bank accountability mechanisms, UN treaty-body and review processes, ILO complaints — share a design. They investigate, publish, and recommend. None can compel the company or the state. Remedy of past harm through them is rare, and the bodies' own outcome codings differ sharply from the codings produced by the NGOs that file with them.",
+    "Their value is documentary. A published finding is citable by courts, lenders, insurers and journalists in a way a website is not, which is why they appear on the routes list despite low direct success."]},
+{h:'Standing',
+ p:["Courts in most common-law jurisdictions require a concrete, particularised injury to the person bringing the case. An injury shared equally by everyone is, under that doctrine, treated as an injury to no one for the purpose of who may sue. The broader and more universal the harm, the harder it is to find a plaintiff the court will hear.",
+    "This is the single most common reason a well-founded claim about planetary-scale harm never reaches a merits decision. It is also the reason the rights-of-nature route matters: granting an ecosystem legal personhood is, mechanically, a way of manufacturing a plaintiff the court must hear."]},
+{h:'The revolving door, which nobody has measured',
+ p:["Regulatory capture and movement between agencies and the industries they regulate have an extensive theoretical and case literature and no success denominator — there is no population of attempts against which to compute a rate. It is listed here because leaving it out would imply it does not operate, and including a number would imply someone has counted."]}
+];
+function renderWhy(){
+  let h = '<div class="note">These are the mechanisms that make the rates on the previous tab what they are. Each one is a reason a route underperforms, not a reason to skip it &mdash; several of the routes exist specifically to defeat one of these.</div><div style="height:16px"></div>';
+  BARRIERS.forEach(b=>{
+    h += '<div class="bar"><h4>'+esc(b.h)+'</h4>'+b.p.map(p=>'<p>'+p+'</p>').join('')+'</div>';
+  });
+  h += '<div class="note">Sources for the measured figures above are given per route on the previous tab. The corporate-law discussion summarises the holding in <i>Dodge v. Ford Motor Co.</i> and the scholarly readings of it; it is a description of how the rule operates, not legal advice.</div>';
+  $('#pbody').innerHTML = h;
+}
+
+/* ====================================================================
+   MAP
+   ==================================================================== */
+let ISO2Q = {}, ISO2ISO3 = {};
+/* Administrative boundaries, fetched per country from the companion
+   repo. ADM1 is states/provinces, ADM2 districts/counties, ADM3/4 below
+   that. One file per country per level, so nothing loads until asked. */
+const CGAZ = 'https://welcometoyourgalaxy.github.io/cgaz-boundaries/';
+let admLayer = null, admCache = {};
+const ADMNAME = {1:'ADM1 — states, provinces, regions', 2:'ADM2 — counties, districts',
+                 3:'ADM3 — municipalities, wards', 4:'ADM4 — the level below that'};
+const map = L.map('map', {center:[22,8], zoom:2, minZoom:2, maxZoom:10,
+  worldCopyJump:true, zoomControl:false, attributionControl:false});
+L.control.zoom({position:'bottomright'}).addTo(map);
+L.control.attribution({position:'bottomleft', prefix:''}).addTo(map).addAttribution(
+  'Boundaries <a href="https://github.com/topojson/world-atlas">Natural Earth</a> &middot; Offices <a href="https://www.wikidata.org">Wikidata</a> &middot; Local offices <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>');
+
+const BASE = {color:'#3d5e4c', weight:.8, fillColor:'#1b2c23', fillOpacity:.95};
+const HOVER = {color:'#8cbd9a', weight:1.4, fillColor:'#2b4a36', fillOpacity:1};
+
+async function boot(){
+  setDot('wd','busy','Wikidata');
+  let topo;
+  try{
+    topo = await (await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json')).json();
+  }catch(e){
+    $('#hint').textContent='Could not load the world boundaries file.'; return;
+  }
+  const geo = topojson.feature(topo, topo.objects.countries);
+  /* Fiji, Russia and Chukotka have rings that touch both -180 and +180.
+     Drawn as-is they streak a band right across the map. Shifting the
+     negative side by +360 makes each ring contiguous again; Antarctica
+     genuinely encircles the pole, so it is left alone. */
+  geo.features.forEach(f=>{
+    const polys = f.geometry.type==='Polygon' ? [f.geometry.coordinates] : f.geometry.coordinates;
+    polys.forEach(poly=> poly.forEach(ring=>{
+      let lo=180, hi=-180, south=90;
+      ring.forEach(p=>{ if(p[0]<lo)lo=p[0]; if(p[0]>hi)hi=p[0]; if(p[1]<south)south=p[1]; });
+      if(hi-lo > 180 && south > -60) ring.forEach(p=>{ if(p[0] < 0) p[0] += 360; });
+    }));
+  });
+
+  /* ISO numeric -> Wikidata QID, one query, cached a week */
+  try{
+    const rows = await sparql(
+      'SELECT ?c ?iso ?iso3 WHERE { ?c wdt:P31 wd:Q6256 ; wdt:P299 ?iso . OPTIONAL{?c wdt:P298 ?iso3} }', 'iso2q3');
+    rows.forEach(r=>{ ISO2Q[r.iso.value] = qid(r.c.value);
+      if(r.iso3) ISO2ISO3[r.iso.value] = r.iso3.value; });
+    setDot('wd','ok','Wikidata live');
+  }catch(e){ setDot('wd','bad','Wikidata unreachable'); }
+
+  L.geoJSON(geo, {
+    style: ()=>BASE,
+    onEachFeature: (f, lyr)=>{
+      const name = (f.properties && f.properties.name) || 'Unknown';
+      lyr.bindTooltip(name, {sticky:true, className:'ttip'});
+      lyr.on('mouseover', ()=> lyr.setStyle(HOVER));
+      lyr.on('mouseout',  ()=> lyr.setStyle(BASE));
+      lyr.on('click', ()=>{
+        const q = ISO2Q[String(f.id)];
+        TRAIL = [];
+        if(!q){
+          CURRENT={q:null,label:name};
+          $('#ptitle').textContent=name; $('#psub').textContent='';
+          openPanel(); TAB='juris';
+          $('#pbody').innerHTML='<div class="note">This territory has no ISO country code matched to a Wikidata entity, usually because it is disputed, a dependency, or not a sovereign state. The routes tab still applies.</div>'+
+            '<div style="margin-top:12px"><button class="fchip on" onclick="setTab(\'routes\')">Go to routes &rsaquo;</button></div>';
+          return;
+        }
+        CGAZ_ISO3 = ISO2ISO3[String(f.id)] || null;
+        CGAZ_ROOT = {iso3:CGAZ_ISO3, name:name, q:q};
+        goJuris(q, name);
+      });
+    }
+  }).addTo(map);
+  $('#hint').textContent = 'Click a country to begin';
+}
+boot();
+
+/* ====================================================================
+   ADMINISTRATIVE BOUNDARIES  (cgaz-boundaries, geoBoundaries CGAZ)
+   Wikidata says who holds office; these files say where the
+   jurisdiction physically is. Clicking a drawn unit looks its name up
+   in the Wikidata subdivision list for the parent and opens it.
+   ==================================================================== */
+let CGAZ_ISO3 = null, CGAZ_ROOT = null, CGAZ_LEVEL = 0;
+
+const normName = s => String(s||'').toLowerCase()
+  .normalize('NFD').replace(/[̀-ͯ]/g,'')
+  .replace(/\b(county|parish|borough|district|province|region|state|city|municipality|prefecture|department|governorate|oblast|canton|voivodeship)\b/g,'')
+  .replace(/[^a-z0-9]/g,'');
+
+async function loadAdm(level){
+  if(!CGAZ_ISO3){ return; }
+  const box = document.getElementById('admbox');
+  const file = CGAZ_ISO3 + (level>1 ? String(level) : '') + '.geojson';
+  if(box) box.innerHTML = '<div class="spin">Loading '+esc(ADMNAME[level]||('ADM'+level))+'&hellip; large countries can take a moment.</div>';
+  try{
+    let gj = admCache[file];
+    if(!gj){
+      const r = await fetch(CGAZ + file);
+      if(r.status === 404) throw new Error('notfound');
+      if(!r.ok) throw new Error('the boundary file returned '+r.status);
+      gj = await r.json(); admCache[file] = gj;
+    }
+    if(admLayer){ map.removeLayer(admLayer); admLayer = null; }
+    CGAZ_LEVEL = level;
+    admLayer = L.geoJSON(gj, {
+      style: {color:'#8cbd9a', weight:.9, fillColor:'#24402f', fillOpacity:.55},
+      onEachFeature: (f, lyr)=>{
+        const nm = (f.properties && f.properties.shapeName) || 'Unnamed unit';
+        lyr.bindTooltip(nm, {sticky:true, className:'ttip'});
+        lyr.on('mouseover', ()=>lyr.setStyle({fillColor:'#365a42', fillOpacity:.8, weight:1.5}));
+        lyr.on('mouseout',  ()=>lyr.setStyle({fillColor:'#24402f', fillOpacity:.55, weight:.9}));
+        lyr.on('click', (e)=>{ L.DomEvent.stopPropagation(e); pickUnit(nm); });
+      }
+    }).addTo(map);
+    try{ map.fitBounds(admLayer.getBounds(), {paddingTopLeft:[20,80], paddingBottomRight:[500,40]}); }catch(e){}
+    if(box) box.innerHTML = '<div class="note">'+gj.features.length+' units drawn on the map for '+
+      esc(ADMNAME[level]||('ADM'+level))+'. Click any one of them to open its offices. '+
+      '<a onclick="clearAdm()" style="color:var(--accent-hi);cursor:pointer">Clear</a></div>';
+  }catch(e){
+    if(box) box.innerHTML = e.message==='notfound'
+      ? '<div class="note">The boundary repository has no '+esc(ADMNAME[level]||('ADM'+level))+
+        ' file for this country. Coverage varies: most countries have ADM1 and ADM2, fewer have ADM3 or ADM4. The subdivision list above still works.</div>'
+      : '<div class="note">Could not load the boundary file: '+esc(e.message)+'</div>';
+  }
+}
+function clearAdm(){ if(admLayer){ map.removeLayer(admLayer); admLayer=null; } CGAZ_LEVEL=0;
+  const box=document.getElementById('admbox'); if(box) box.innerHTML=''; }
+
+/* Match a drawn unit to a Wikidata entity. First against the
+   subdivision list already in hand; failing that, a live label lookup
+   scoped to the country, because the two sources disagree constantly —
+   Wikidata still lists Kenya's eight old provinces under the country,
+   while the boundary files draw its current 47 counties. */
+const SUFFIXES = ['', ' County', ' Province', ' District', ' Region', ' Municipality',
+  ' City', ' Department', ' Governorate', ' Prefecture', ' State', ' Parish',
+  ' Borough', ' Canton', ' Oblast', ' District Council', ' Metropolitan Municipality'];
+
+function localMatch(nm){
+  const subs = (CURRENT && CURRENT.subs) || [];
+  const target = normName(nm);
+  if(!target) return null;
+  for(const r of subs){
+    const lbl = (r.dLabel && r.dLabel.value) || '';
+    if(normName(lbl) === target) return {id:qid(r.d.value), label:lbl};
+  }
+  for(const r of subs){
+    const lbl = (r.dLabel && r.dLabel.value) || '';
+    const n = normName(lbl);
+    if(n && (n.startsWith(target) || target.startsWith(n))) return {id:qid(r.d.value), label:lbl};
+  }
+  return null;
+}
+
+async function pickUnit(nm){
+  const hit = localMatch(nm);
+  if(hit) return goJuris(hit.id, hit.label);
+
+  openPanel();
+  $('#ptitle').textContent = nm;
+  $('#psub').textContent = 'Looking it up in Wikidata';
+  $('#pbody').innerHTML = '<div class="spin">No match in the subdivision list for '+
+    esc((CURRENT&&CURRENT.label)||'this jurisdiction')+'. Searching Wikidata directly&hellip;</div>';
+
+  const country = (CGAZ_ROOT && CGAZ_ROOT.q) || (TRAIL[0] && TRAIL[0].q);
+  if(country){
+    const vals = SUFFIXES.map(s=>'"'+ (nm+s).replace(/"/g,'\\"') +'"@en').join(' ');
+    const q = 'SELECT ?x ?xLabel ?tLabel WHERE { VALUES ?l { '+vals+' } ?x rdfs:label ?l ; wdt:P17 wd:'+
+      country+' . OPTIONAL{?x wdt:P31 ?t} SERVICE wikibase:label{bd:serviceParam wikibase:language "en"} } LIMIT 8';
+    try{
+      const rows = await sparql(q, 'unit:'+country+':'+nm);
+      /* A bare place name matches the people, the language and the lake
+         as readily as the county, so rank by what the thing actually is
+         before following it. */
+      const cand = {};
+      rows.forEach(r=>{
+        const id = qid(r.x.value);
+        if(!cand[id]) cand[id] = {id:id, label:(r.xLabel&&r.xLabel.value)||nm, types:[]};
+        if(r.tLabel) cand[id].types.push(r.tLabel.value);
+      });
+      const ADMIN = /\b(county|province|district|region|state|municipality|commune|department|governorate|prefecture|parish|borough|canton|oblast|voivodeship|territor|administrative|subdivision|city|town|village|ward|constituency)\b/i;
+      const ranked = Object.values(cand).sort((a,b)=>{
+        const ad = a.types.some(t=>ADMIN.test(t)) ? 0 : 1;
+        const bd = b.types.some(t=>ADMIN.test(t)) ? 0 : 1;
+        if(ad !== bd) return ad - bd;
+        const as = a.label.toLowerCase() === nm.toLowerCase() ? 1 : 0;
+        const bs = b.label.toLowerCase() === nm.toLowerCase() ? 1 : 0;
+        return as - bs;
+      });
+      if(ranked.length && ranked[0].types.some(t=>ADMIN.test(t))){
+        return goJuris(ranked[0].id, ranked[0].label);
+      }
+      if(ranked.length){
+        return goJuris(ranked[0].id, ranked[0].label);
+      }
+    }catch(e){ /* fall through to the honest dead end below */ }
+  }
+
+  $('#psub').textContent = 'Drawn from the boundary files';
+  $('#pbody').innerHTML = '<div class="note"><b>'+esc(nm)+'</b> is drawn on the map, but Wikidata has no entity by that name inside '+
+    esc((CGAZ_ROOT&&CGAZ_ROOT.name)||'this country')+
+    ', so there are no offices to show for it here. The two sources name places differently more often than you would expect &mdash; a unit may appear under a local-language name, an older name, or one level up or down. The country and its parent levels still work.</div>'+
+    '<div style="margin-top:12px"><a class="fchip on" style="text-decoration:none" target="_blank" rel="noopener" href="https://www.wikidata.org/w/index.php?search='+
+    encodeURIComponent(nm)+'">Search Wikidata for it &rsaquo;</a>'+
+    '<button class="fchip" onclick="setTab(\'routes\')">Routes of contact &rsaquo;</button></div>';
+}
+
+/* ====================================================================
+   LOCAL PHYSICAL OFFICES — OpenStreetMap via Overpass (secondary).
+   Wikidata holds offices; OSM holds buildings, street addresses and
+   front-desk phone numbers. Fails visibly rather than silently.
+   ==================================================================== */
+async function overpass(q){
+  let lastErr;
+  for(const ep of OVERPASS){
+    try{
+      const r = await fetch(ep, {method:'POST', body:'data='+encodeURIComponent(q),
+        headers:{'Content-Type':'application/x-www-form-urlencoded'}});
+      if(!r.ok) throw new Error(ep.split('/')[2]+' returned '+r.status);
+      return await r.json();
+    }catch(e){ lastErr = e; }
+  }
+  throw lastErr || new Error('no endpoint responded');
+}
+
+async function findLocal(){
+  const z = map.getZoom();
+  const box = $('#localbox');
+  if(z < 9){ box.innerHTML = '<div class="note">Zoom the map in further first &mdash; this searches the visible area, and at this zoom the area is too large for the service to answer.</div>'; return; }
+  box.innerHTML = '<div class="spin">Searching OpenStreetMap for physical offices in view&hellip;</div>';
+  setDot('ov','busy','OpenStreetMap');
+  const b = map.getBounds();
+  const bbox = [b.getSouth(), b.getWest(), b.getNorth(), b.getEast()].map(n=>n.toFixed(4)).join(',');
+  const q = `[out:json][timeout:25];(nwr["amenity"="townhall"](${bbox});nwr["office"="government"](${bbox});nwr["amenity"="courthouse"](${bbox}););out center tags 120;`;
+  try{
+    const j = await overpass(q);
+    const els = (j.elements||[]).filter(e=>e.tags && (e.tags.name||e.tags.operator));
+    setDot('ov','ok','OpenStreetMap live');
+    if(!els.length){ box.innerHTML='<div class="note">No town halls, government offices or courthouses are tagged in OpenStreetMap inside the visible area. That is a gap in the map data, not an absence of offices.</div>'; return; }
+    let h = '<div class="grp"><h3>'+els.length+' physical office'+(els.length===1?'':'s')+' in view &mdash; OpenStreetMap</h3>';
+    els.slice(0,60).forEach(e=>{
+      const t=e.tags, nm=t.name||t.operator;
+      const addr=[t['addr:housenumber'],t['addr:street'],t['addr:city']].filter(Boolean).join(' ');
+      const site=t.website||t['contact:website'], ph=t.phone||t['contact:phone'], em=t.email||t['contact:email'];
+      const lat=e.lat!=null?e.lat:(e.center&&e.center.lat), lon=e.lon!=null?e.lon:(e.center&&e.center.lon);
+      h += '<div class="off"><div class="nm">'+esc(nm)+'</div><div class="meta">';
+      if(t.amenity==='courthouse') h+='<span class="stale">court</span>';
+      if(addr) h += '<span>'+esc(addr)+'</span>';
+      if(ph)   h += '<a href="tel:'+esc(ph.replace(/\s/g,''))+'">'+esc(ph)+'</a>';
+      if(em)   h += '<a href="mailto:'+esc(em)+'">'+esc(em)+'</a>';
+      if(site) h += '<a href="'+esc(site)+'" target="_blank" rel="noopener">'+esc(site.replace(/^https?:\/\//,'').slice(0,40))+'</a>';
+      if(lat!=null) h += '<a onclick="map.setView(['+lat+','+lon+'],16)" style="cursor:pointer">show on map</a>';
+      h += '</div></div>';
+    });
+    if(els.length>60) h += '<div class="note">'+(els.length-60)+' more in view; zoom in to narrow.</div>';
+    box.innerHTML = h+'</div>';
+  }catch(e){
+    setDot('ov','bad','OpenStreetMap unreachable');
+    box.innerHTML = '<div class="note">Could not reach an Overpass endpoint: '+esc(e.message)+
+      '. Overpass is a free volunteer-run service and refuses requests when busy. Waiting a minute and trying again usually works; the Wikidata offices above are unaffected.</div>';
+  }
+}
+
+</script>
+</body>
+</html>
