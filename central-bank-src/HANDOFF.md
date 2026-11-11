@@ -40,7 +40,7 @@ cp dist/central_bank_independence.html ~/maps/   # then git add, commit, push to
 ## Data files to add to (`agents/`)
 | File | Holds | Records now |
 |---|---|---|
-| `corruption.json` | `cases` (iso3, central_bank, category, years, people, summary, status, source_title, source_url, weak_source) and `revolving_door` | 232 cases in 135 countries and territories; 138 revolving-door records in 48 |
+| `corruption.json` | `cases` (iso3, central_bank, category, years, people, summary, status, source_title, source_url, weak_source) and `revolving_door` | 232 cases in 135 countries and territories; 144 revolving-door records in 54 |
 | `events_gold.json` | `events`: governor firings, pressure and moves against banks, 1990s–Nov 2026; plus gold storage | 102 events in 52 countries |
 | `owners.json` | `holdings` (named shareholders with shares, %, as_of, source), `bis_members`, `history` | 228 holdings; all 63 BIS members |
 | `networks.json` | `links` (entity, type, hq, cb_iso3, relation, detail, source) and `g30` members | 307 links (45 printer ties, 107 reserve-manager ties); 56 G30 members |
@@ -50,7 +50,7 @@ cp dist/central_bank_independence.html ~/maps/   # then git add, commit, push to
 | `hq.json` | Head-office city and country for each party | – |
 | `patterns.json`, `implications.json` | The patterns and their plain-language meanings | 17 |
 
-Altogether the map has 1,191 parties and 1,606 ties, and `agents/writeups.json` holds 1,420 plain-language paragraphs, one for every box. `agents/work/research_log_2026-11.json` lists what was searched with no result, unopened leads, and records dropped after review.
+Altogether the map has 1,202 parties and 1,623 ties, and `agents/writeups.json` holds 1,431 plain-language paragraphs, one for every box. `agents/work/research_log_2026-11.json` lists what was searched with no result, unopened leads, and records dropped after review.
 
 ## Rules the user holds to
 - **No fabrication.** Every record needs a readable source URL that states the fact. Mark Wikipedia-only items `weak_source: true`. List acquittals but don't count them. Claims resting on one author go in as "claim, not confirmed."
@@ -86,20 +86,24 @@ These are rough estimates. No complete count exists for any of these categories.
 | Corruption cases at central banks, 1990-2026 | 232 in 135 countries and territories | ~35-45% |
 | External auditors | 49 records at 39 banks in `gaps.json`, plus more in `networks.json` | ~25% |
 | Banknote printers and their clients | 44 printing contracts, 1 paper maker, 1 substrate supplier | ~20% |
-| Revolving door (officials to or from private finance) | 138 records in 48 countries | ~15-20% |
+| Revolving door (officials to or from private finance) | 144 records in 54 countries | ~15-20% |
 | Outside reserve and fund managers | 107, mostly Norway's fund | ~5% outside Norway |
 
 ## What is left, and how to finish it
 In the order worth doing. The first is where most of the undiscovered material is; the last two are nearly done.
 
-### 1. Revolving door — worked hard in rounds 5 to 10, and now the shallowest it has been
+### 1. Revolving door — worked hard in rounds 5 to 11, and now the shallowest it has been
 **The method that works:** go to the central bank's own governor or board page, or to the private firm's own board page, and read the career list. Do not search for scandal. Almost every record added in rounds 6 to 10 came from one search and one fetch of an official page. Where a bank publishes nothing, the firm the official joined usually does: Nordea, Swiss Re, DSK Bank and Erste Bank Hungary each supplied a record this way.
 
-Rounds 6 to 10 took the category from 117 records in 32 countries to **138 in 48**, adding a first record at Saudi Arabia, Thailand, the Philippines, Austria, Hungary, Colombia, the UAE, Greece, Ukraine, Serbia, Norway, Ireland, Belgium, Denmark, Poland and Bulgaria.
+Rounds 6 to 11 took the category from 117 records in 32 countries to **144 in 54**, adding a first record at Saudi Arabia, Thailand, the Philippines, Austria, Hungary, Colombia, the UAE, Greece, Ukraine, Serbia, Norway, Ireland, Belgium, Denmark, Poland, Bulgaria, Italy, Sri Lanka, Lebanon, Singapore, Peru and Russia.
+
+**Round 11's method, which is the one to repeat:** pick a country with no record, name its best-known governor, and read one official page — the central bank's own history page, the hiring firm's board page, or an industry body's published CV. Five of the six came from a single search and a single fetch. Three were hiding in plain sight: the people were already on the map in `corruption.json` as case subjects, and nobody had recorded the career that put them there.
 
 **Before opening any lead, search `corruption.json` for the person's name.** Round 4's leads list was stale: four of its eleven entries were facts already recorded.
 
-Still with no record at all: **Singapore, Peru, Finland, Slovakia, Croatia**, Malaysia beyond the two held. Croatia and Finland were both tried in round 10 and yielded nothing usable — the HNB's vicegovernor page names no private firm, and the only source for Sirkka Hamalainen's later board seats is Wikipedia. **US Reserve Bank presidents before 2000** is the one closed set left; three were added in round 8 by name, but the Federal Reserve History people index returns only its filter controls to an automated reader, so the rest have to be reached through each Reserve Bank's own history page.
+Still with no record at all: **Finland, Slovakia, Croatia**, Malaysia beyond the two held. All three have now been tried twice and should be left alone for a round or two. Croatia's HNB vicegovernor page names no private firm; the only source for Sirkka Hamalainen's later board seats is Wikipedia, and Sampo's own 2015 board page does not list her. Slovakia's Marian Jusko joined the board of **Slovnaft**, an oil refiner, at the end of February 2005, which the Slovak Spectator reported on 7 March 2005 — a private company but not finance, so it was logged and not filed. The financnykompas encyclopedia entry stops at 2004 and names nothing after it.
+
+Still worth trying, never attempted: Slovenia, Romania, Vietnam, Taiwan, Ghana, Jamaica, Qatar, Kuwait. China looks like a genuine blank rather than a gap: the senior PBoC careers run between state bodies (China Construction Bank, the Export-Import Bank, the IMF), so there may be no private move to find. **US Reserve Bank presidents before 2000** is the one closed set left; three were added in round 8 by name, but the Federal Reserve History people index returns only its filter controls to an automated reader, so the rest have to be reached through each Reserve Bank's own history page.
 
 Watch for: a move to or from the IMF or World Bank needs `public_move: true`, which lists it without counting it. Sovereign wealth funds, statutory pension bodies (Denmark's ATP) and cantonal or state-owned banks (the Geneva Cantonal Bank) are public too, so the record should say which side of a career is private. Staff below senior management go in by role, not name.
 
@@ -160,6 +164,7 @@ Then compare: keys in `boxes.json` with no entry in `writeups.json` are new, and
 - **Round 8**: Norway (Tangen, AKO Capital to NBIM, with the conditions the bank attached), Ireland (Elderfield to Lloyds) and the first three pre-2000 Fed moves (Corrigan to Goldman Sachs, McDonough from First Chicago and later to Merrill Lynch, Melzer from Morgan Stanley). This is the round that moved scores map-wide.
 - **Round 9**: Belgium (Dechaene, Bank Brussel Lambert, Morgan Grenfell, Deutsche Bank London), Denmark (Rohde, Realkredit Danmark and later the Nordea board), Poland (Filar, Bank Pekao).
 - **Round 10**: Switzerland (Roth to the Swiss Re board in 2010) and Bulgaria (Hristov to the DSK Bank supervisory board in August 2025).
+- **Round 11** (10 Nov 2026): six revolving-door records at banks with none — Italy (Draghi: Goldman Sachs International 2002-2005 into the Bank of Italy governorship in 2006, plus the World Bank 1984-1990 as a `public_move`), Sri Lanka (Mahendran: CBSL staff 1983-1995, then SG Securities, Credit Suisse Private Bank, Emirates NBD and HSBC Private Bank, back as Governor January 2015), Lebanon (Salameh: Merrill Lynch 1973-1993, where he ran Rafic Hariri's personal portfolio before Hariri appointed him governor), Singapore (Ong Chong Tee, MAS Deputy Managing Director, onto the United Overseas Bank board on 1 January 2023), Peru (Torres-Llosa: 21 years at BBVA in Peru to June 2019, then general manager of the BCRP in March 2022) and Russia (Vyugin: Bank of Russia First Deputy Chairman alongside Troika Dialog, Morgan Stanley Bank, MDM Bank, Binbank and Safmar, with no dates in the source). One duplicate removed (see below). 30 writeups rewritten; 11 new party boxes.
 
 ## Hard-won notes, so they are not learned twice
 
@@ -170,3 +175,6 @@ Then compare: keys in `boxes.json` with no entry in `writeups.json` are new, and
 - **"In talks" is not an appointment.** RTE had Lloyds only in talks over Elderfield with all parties declining to comment; the Irish Times report two weeks later is the one cited.
 - **Where a bank publishes no bio, the firm usually does.** Nordea, Swiss Re, DSK Bank and Erste Bank Hungary each supplied a record their central bank's own site did not.
 - **Refresh the writeups every round.** The routine is under "How to refresh the writeups after adding records". Check each changed country's paragraph for a quoted score, and check the United States paragraph's count of recorded moves, which is written out as a number.
+- **The stale-writeup check throws false positives.** It flags any paragraph containing a digit string that matches a score that moved. In round 11 that caught Cyprus ("29 unproven charges") and Croatia, whose quoted figure was the headline `all` score while the one that moved was `inside`. Only the headline `all` score is normally quoted in a paragraph, so check which layer actually moved before rewriting.
+- **A record can already be on the map under the wrong country.** Draghi's Goldman Sachs move was filed under EMU, so Italy read as having no revolving door at all. The move was into the Bank of Italy, so it now sits at ITA, and the Goldman party tie was re-pointed with it. Before concluding a country is blank, search `corruption.json` for its best-known governor's name, not just its iso3.
+- **And a record can already be on the map under a different source.** Bini Smaghi's move to Societe Generale was held at index 39 from an Irish Times report. Round 11 found Societe Generale's own biography of him, which adds the TAGES Holding directorship (2014-2019) and the exact ECB dates, so the existing record's source was replaced with the primary one and the duplicate dropped. That is why the euro-area case count fell by one and thirteen euro-country scores moved a point.
