@@ -1210,6 +1210,7 @@ function makeIcons() { const cols = OUTCOL[curBase] || OUTCOL.night; for (const 
 const mkSvg = (g, o, px = 11) => { const cols = OUTCOL[curBase] || OUTCOL.night, k = GROUPS[g][1], col = o ? cols[o] : "currentColor"; const sh = k === "c" ? '<circle cx="6" cy="6" r="4.4"/>' : k === "d" ? '<path d="M6 .6 11.4 6 6 11.4 .6 6z"/>' : k === "t" ? '<path d="M6 .8 11.4 10.6H.6z"/>' : '<rect x="1.6" y="1.6" width="8.8" height="8.8"/>'; return '<svg class="mk" viewBox="0 0 12 12" width="' + px + '" height="' + px + '" fill="' + col + '">' + sh + '</svg>'; };
 
 function fc() { return { type: "FeatureCollection", features: D.cases.filter((c) => (c.body || "earth") === S.world && c.lat != null && S.showCases && passes(c)).map((c) => ({ type: "Feature", properties: { id: c.id, name: c.name, icon: "m-" + c.group + "-" + c.out }, geometry: { type: "Point", coordinates: [c.plon, c.plat] } })) }; }
+const ISZ = (m) => ["interpolate", ["linear"], ["zoom"], 1, .62 * m, 4, .8 * m, 8, 1 * m];
 function addLayers() {
   makeIcons();
   map.addSource("moonimg", { type: "image", url: window.MOON_IMG, coordinates: [[-180, 85.051], [180, 85.051], [180, -85.051], [-180, -85.051]] });
@@ -1221,15 +1222,32 @@ function addLayers() {
   map.addLayer({ id: "z-hl", type: "line", source: "zones", filter: ["==", ["get", "zone"], "__none"], paint: { "line-color": "#f2efe4", "line-width": 2 } });
   map.addLayer({ id: "belt", type: "line", source: "zones", filter: ["==", ["get", "zone"], "geo"], paint: { "line-color": "#d7d2c4", "line-width": 1.3, "line-dasharray": [2, 2] } });
   map.addSource("cases", { type: "geojson", data: fc() });
-  map.addLayer({ id: "c-ring", type: "circle", source: "cases", filter: ["==", ["get", "id"], ""], paint: { "circle-radius": 10, "circle-color": "rgba(0,0,0,0)", "circle-stroke-color": "#fff", "circle-stroke-width": 1.5, "circle-pitch-alignment": "map" } });
-  map.addLayer({ id: "c-pts", type: "symbol", source: "cases", layout: { "icon-image": ["get", "icon"], "icon-size": ["interpolate", ["linear"], ["zoom"], 1, .62, 4, .8, 8, 1], "icon-allow-overlap": true, "icon-ignore-placement": true } });
+  map.addLayer({ id: "c-glow", type: "circle", source: "cases", filter: ["==", ["get", "id"], ""], paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 1, 11, 4, 15, 8, 21], "circle-color": P.h, "circle-opacity": .3, "circle-blur": .85, "circle-pitch-alignment": "map" } });
+  map.addLayer({ id: "c-halo", type: "circle", source: "cases", filter: ["==", ["get", "id"], ""], paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 1, 7.5, 4, 9.5, 8, 12], "circle-color": "rgba(0,0,0,0)", "circle-stroke-color": "rgba(8,12,14,.75)", "circle-stroke-width": 3.4, "circle-pitch-alignment": "map" } });
+  map.addLayer({ id: "c-ring", type: "circle", source: "cases", filter: ["==", ["get", "id"], ""], paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 1, 7.5, 4, 9.5, 8, 12], "circle-color": "rgba(0,0,0,0)", "circle-stroke-color": "#f4f1e8", "circle-stroke-width": 1.7, "circle-pitch-alignment": "map" } });
+  map.addLayer({ id: "c-pts", type: "symbol", source: "cases", layout: { "icon-image": ["get", "icon"], "icon-size": ISZ(1), "icon-allow-overlap": true, "icon-ignore-placement": true } });
+  map.addLayer({ id: "c-hl", type: "symbol", source: "cases", filter: ["==", ["get", "id"], ""], layout: { "icon-image": ["get", "icon"], "icon-size": ISZ(1.55), "icon-allow-overlap": true, "icon-ignore-placement": true } });
   map.addLayer({ id: "c-name", type: "symbol", source: "cases", minzoom: 3.2, layout: { "text-field": ["get", "name"], "text-font": ["EBGaramond-Regular"], "text-size": 12.5, "text-offset": [0, 1], "text-anchor": "top", "text-optional": true, "text-max-width": 10 }, paint: { "text-color": "#eef0ea", "text-halo-color": "rgba(5,9,11,.9)", "text-halo-width": 1.3 } });
-  IDS.push("moon", "z-fill", "z-fill2", "z-line", "z-hl", "belt", "c-ring", "c-pts", "c-name");
+  map.addLayer({ id: "c-hlname", type: "symbol", source: "cases", filter: ["==", ["get", "id"], ""], layout: { "text-field": ["get", "name"], "text-font": ["EBGaramond-Regular"], "text-size": 12.5, "text-offset": [0, 1.15], "text-anchor": "top", "text-optional": true, "text-max-width": 10 }, paint: { "text-color": "#f4f1e8", "text-halo-color": "rgba(5,9,11,.92)", "text-halo-width": 1.5 } });
+  IDS.push("moon", "z-fill", "z-fill2", "z-line", "z-hl", "belt", "c-glow", "c-halo", "c-ring", "c-pts", "c-hl", "c-name", "c-hlname");
   map.on("mousemove", "c-pts", (e) => { map.getCanvas().style.cursor = "pointer"; const c = C[e.features[0].properties.id]; tip("<b>" + esc(c.name) + "</b><small>" + esc(Z[c.zid].name) + " · " + esc(yrs(c)) + " · " + OUTS[c.out] + "</small>", e.originalEvent); });
   map.on("mouseleave", "c-pts", () => { map.getCanvas().style.cursor = ""; untip(); });
   const zh = (e) => { if (map.queryRenderedFeatures(e.point, { layers: ["c-pts"] }).length) return; const p = e.features[0].properties, z = Z[p.zone]; if (!z) return; map.getCanvas().style.cursor = "pointer"; const v = z.odds[S.shade]; tip("<b>" + esc(z.name) + "</b>" + (p.label ? "<small>" + esc(p.label) + "</small>" : "") + "<small>" + esc(SHADES[S.shade][0]) + ": " + fmtPct(v) + "</small>", e.originalEvent); };
   ["z-fill", "z-fill2"].forEach((l) => { map.on("mousemove", l, zh); map.on("mouseleave", l, () => { map.getCanvas().style.cursor = ""; untip(); }); });
   map.on("click", (e) => { const hit = map.queryRenderedFeatures([[e.point.x - 5, e.point.y - 5], [e.point.x + 5, e.point.y + 5]], { layers: ["c-pts"] }); if (hit.length) { if (hit.length > 1) return openNear(hit.map((f) => f.properties.id)); return openCase(hit[0].properties.id); } if (S.world !== "earth") return; const z = map.queryRenderedFeatures(e.point, { layers: ["z-fill", "z-fill2"] }); if (z.length) openZone(z[0].properties.zone, z[0].properties.label); });
+}
+let pulseKey = "", pulseRAF = 0;
+function pulse(big, base) {
+  if (pulseRAF) cancelAnimationFrame(pulseRAF);
+  const t0 = performance.now(), dur = 950;
+  const step = (now) => {
+    if (!map.getLayer("c-glow")) return;
+    const t = Math.min(1, (now - t0) / dur), e = (1 - t) * (1 - t), m = big * (1 + 1.1 * e);
+    map.setPaintProperty("c-glow", "circle-radius", ["interpolate", ["linear"], ["zoom"], 1, 11 * m, 4, 15 * m, 8, 21 * m]);
+    map.setPaintProperty("c-glow", "circle-opacity", base + (.3 * e));
+    pulseRAF = t < 1 ? requestAnimationFrame(step) : 0;
+  };
+  pulseRAF = requestAnimationFrame(step);
 }
 function paint() {
   if (!map.getLayer("z-fill")) return;
@@ -1239,13 +1257,28 @@ function paint() {
   map.setLayoutProperty("z-fill", "visibility", v(e && S.showZones)); map.setLayoutProperty("z-fill2", "visibility", v(e && S.showZones)); map.setLayoutProperty("z-line", "visibility", v(e && S.showZones));
   map.setLayoutProperty("belt", "visibility", v(e && S.showBelt));
   map.setLayoutProperty("moon", "visibility", v(S.world === "moon"));
-  map.setLayoutProperty("c-name", "visibility", v(S.showNames));
   map.getSource("cases").setData(fc());
   const hl = S.hl && S.hl.length ? ["literal", S.hl] : null;
-  map.setFilter("c-ring", hl ? ["in", ["get", "id"], hl] : ["==", ["get", "id"], S.sel || ""]);
-  map.setPaintProperty("c-ring", "circle-radius", hl ? 7.5 : 10);
-  map.setPaintProperty("c-pts", "icon-opacity", hl ? ["case", ["in", ["get", "id"], hl], 1, .22] : (S.sel ? ["case", ["==", ["get", "id"], S.sel], 1, .55] : 1));
+  const pick = hl ? ["in", ["get", "id"], hl] : (S.sel ? ["==", ["get", "id"], S.sel] : null);
+  const lit = pick || ["==", ["get", "id"], ""];
+  const n = hl ? S.hl.length : (S.sel ? 1 : 0);
+  ["c-glow", "c-halo", "c-ring", "c-hl"].forEach((l) => map.setFilter(l, lit));
+  map.setFilter("c-hlname", n && n <= 90 ? lit : ["==", ["get", "id"], ""]);
+  map.setPaintProperty("c-glow", "circle-color", P.h);
+  map.setPaintProperty("c-glow", "circle-opacity", n ? (n > 400 ? .2 : .32) : 0);
+  const big = n === 1 ? 1.25 : 1;
+  map.setPaintProperty("c-glow", "circle-radius", ["interpolate", ["linear"], ["zoom"], 1, 11 * big, 4, 15 * big, 8, 21 * big]);
+  ["c-halo", "c-ring"].forEach((l) => map.setPaintProperty(l, "circle-radius", ["interpolate", ["linear"], ["zoom"], 1, 7.5 * big, 4, 9.5 * big, 8, 12 * big]));
+  map.setLayoutProperty("c-hl", "icon-size", ISZ(n === 1 ? 1.8 : 1.55));
+  map.setFilter("c-pts", pick ? ["!", pick] : null);
+  map.setLayoutProperty("c-name", "visibility", v(S.showNames && !pick));
+  map.setPaintProperty("c-pts", "icon-opacity", pick ? .12 : 1);
+  map.setLayoutProperty("c-pts", "icon-size", ISZ(pick ? .62 : 1));
+  map.setPaintProperty("z-fill", "fill-opacity", pick ? .12 : .27);
+  map.setPaintProperty("z-fill2", "fill-opacity", pick ? .12 : .27);
   map.setFilter("z-hl", S.hlz && S.hlz.length ? ["in", ["get", "zone"], ["literal", S.hlz]] : ["==", ["get", "zone"], "__none"]);
+  const pk = n ? (S.sel || "") + "|" + (hl ? S.hl.length + ":" + S.hl[0] : "") : "";
+  if (pk !== pulseKey) { pulseKey = pk; if (pk) pulse(big, n > 400 ? .2 : .32); }
 }
 function setWorld(w) { S.world = w; S.zone = null; buildTr(); paint(); buildStack(); $("#credit").innerHTML = CRED[w]; map.jumpTo(home()); }
 const CRED = { earth: 'Zones: <a href="https://www.marineregions.org/" target="_blank" rel="noopener">Marine Regions (Flanders Marine Institute)</a>; <a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener">Natural Earth</a>. Antarctic wedges drawn from the claimants\' longitudes.', moon: 'Moon imagery: <a href="https://svs.gsfc.nasa.gov/4720" target="_blank" rel="noopener">NASA SVS CGI Moon Kit (LRO LROC)</a>', mars: 'Mars imagery: <a href="https://trek.nasa.gov/mars/" target="_blank" rel="noopener">NASA Mars Trek, Viking MDIM 2.1 colour mosaic</a>' };
