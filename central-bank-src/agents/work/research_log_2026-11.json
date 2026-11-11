@@ -2219,5 +2219,25 @@
   "ui": {
    "added": "Parties excluded by the tie-kind ticks or the connection filter are drawn as faint grey diamonds in a new net-ghosts source and net-ghost layer, below net-node. under() queries net-ghost after net-node and returns off: true, so a lit diamond always wins a click. Clicking a faint one runs selectEntity, which already switches its kinds of tie back on. The hover tip and the key both say so."
   }
+ },
+ "round14": {
+  "rd": {
+   "added": [
+    "USA Karen N. Horn, Banc One Corp., First National Bank of Boston, Bell Telephone Company of Pennsylvania, Diamond State Telephone Company",
+    "USA W. Lee Hoskins, PNC Financial Corp. and Huntington National Bank",
+    "USA Frank E. Morris, Loomis Sayles and Co., Investment Bankers Association, Leigh Fisher and Associates",
+    "USA John J. Balles, Mellon National Bank"
+   ],
+   "checked_none": [
+    "USA Robert H. Boykin (Dallas): the page lists only Dallas Fed posts from 1953 to 1991 and nothing outside",
+    "USA Edward G. Boehne (Philadelphia): the page lists only Philadelphia Fed posts from 1968 to 2000",
+    "USA Anthony M. Solomon (New York): his private work was a Mexican food company, not finance; the page does not mention S.G. Warburg",
+    "USA Gary H. Stern (Minneapolis): a partner in an unnamed New York consulting firm and unnamed corporate boards, nothing specific enough to record"
+   ],
+   "fetch_failed": [
+    "federalreservehistory.org/people/roger-guffey returns Content Not Found; the slug probably carries a middle initial"
+   ],
+   "all_sources": "federalreservehistory.org individual people pages"
+  }
  }
 }
