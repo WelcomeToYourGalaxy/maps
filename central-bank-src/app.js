@@ -70,8 +70,10 @@ const latestOr = (p, k, sk, y, pick) => { const r = own(p, k); if (!r) return nu
 // "other" event records (appointments, court rulings) are shown in the box but not counted as moves against the bank
 const evN = (p) => (p.ev || []).filter((i) => D.EV[i].kind !== "other").length;
 const MAXEV = Math.max(1, ...Object.values(P).map(evN));
-// Cases with an outcome that cleared the official, or that ended without one, are listed in the box and not counted.
-const CC_OUT = ["acquitted", "case dismissed", "charge withdrawn", "investigation closed"];
+// Not counted: a case that ended with the official cleared, or with the charge gone and no finding left standing.
+// Counted: a case still running, and a case whose outcome no source states -- the charge or finding stands
+// until something says otherwise, so an unfindable ending is not treated as a clearing.
+const CC_OUT = ["acquitted", "case dismissed", "charge withdrawn", "investigation closed", "conviction annulled (time-barred)"];
 // "alleged" = publicly accused in a readable source, with no charge filed, no inquiry reported and no court ruling.
 // S.alleged decides whether those count. The tick box in the legend switches it; the default counts them.
 const ccAlleged = (p) => (p.cc || []).filter((i) => D.CC[i].status === "alleged").length;
