@@ -19,8 +19,10 @@ cd /root/cb && python3 build_final.py           # also runs build_net.py; writes
 cp dist/central_bank_independence.html ~/maps/   # then git add, commit, push to main
 ```
 
+Another session of the user's commits to this repo often. **Always `git fetch origin main` and rebase before pushing**; central-bank files have never conflicted, but the push will be rejected without it.
+
 - `out/core.json` and `out/extra.json` are already built from the downloaded datasets. Only rerun `build_core.py` / `build_extra.py` when refreshing those datasets. Their raw downloads (about 200 MB: Romelli, Garriga, CPI, WGI, Basel, FSI, Laeven–Valencia, BIS, COFER, Swift, Ilzetzki–Reinhart–Rogoff) are not in the repo. Each source and its URL is listed in `about.html`.
-- **Testing:** `python3 shot2.py "<js step>" "<js step>"` takes a screenshot after each step, saved to `shots/s{i}.png`, and prints page errors. It uses headless Chromium with swiftshader. App functions are scoped, so for tests temporarily inject `window.T={selectEntity,select,openWin,NET}` into the built file, and never push that version.
+- **Testing:** `python3 shot2.py "<js step>" "<js step>"` takes a screenshot after each step, saved to `shots/s{i}.png`, and prints page errors. Headless Chromium with swiftshader. App functions are scoped, so for tests inject the hook with `agents/work/mk_t3.py`, and never push a hooked build.
 - **Commits** end with the attribution lines the session supplies.
 
 ## How it is built
@@ -29,243 +31,198 @@ cp dist/central_bank_independence.html ~/maps/   # then git add, commit, push to
 - **Layers:** `seq()` / `cat()` in `app.js` push objects onto `L` (`id, group, label, get(p,y), desc, src`). Values are cached; call `clearCache()` after changing what a layer depends on.
 - **Top-left dropdown:** the compilation layers (the default is "Ulterior influence, all around"), corruption, independence, reach, "Whose money it is" and the exchange-rate regime.
 - **Bottom-right box** (`SIDE_GROUPS`) has two sections:
-  - **"Who owns, pays and pressures central banks":** multi-select checkboxes for 7 kinds of tie (`REL`: own, corrupt, people, inst, control, service, account) plus the "Filter by connections with central banks" block under the rows and a key with no title.
-  - **"Patterns behind the scenes":** 17 patterns from `agents/patterns.json`. They explain the pattern as the field describes it, from studies and inquiries; the map's records are a sample of it, and the writeup must not count or describe them. "What this means" comes from `agents/implications.json` or the pattern's own `implications`. Each opens as a dropdown under its row. `agents/role_info.json`, or a pattern's own `role_info`, holds the info text for each key row.
+  - **"Who owns, pays and pressures central banks":** multi-select checkboxes for 7 kinds of tie (`REL`: own, corrupt, people, inst, control, service, account) plus the "Filter by connections with central banks" block and a key with no title.
+  - **"Patterns behind the scenes":** 17 patterns from `agents/patterns.json`. They explain the pattern as the field describes it, from studies and inquiries; the map's records are a sample of it, and the writeup must not count or describe them. "What this means" comes from `agents/implications.json` or the pattern's own `implications`. `agents/role_info.json`, or a pattern's own `role_info`, holds the info text for each key row.
 - **Network** (`build_net.py` → `out/net.json`):
   - Nodes are parties placed at their true head office, using `agents/hq.json` and GeoNames.
   - Parties sharing an address fan out by a pixel offset only, so true positions never move.
   - Links: `{n, cb | tn, rel, role, detail, src_t, src_u}`.
   - Popups turn each link into a plain sentence (`SAY` / `sayLink` / `srcItem` in `app.js`). Add a `SAY` entry for any new `role` string.
 
+## Where it stands (after round 18, 11 November 2026)
+
+1,389 outside parties and 1,849 ties. 1,618 writeups, one for every box.
+
+| Category | Records | Places | Breadth |
+|---|---|---|---|
+| Corruption cases | 232 | 133 | 65% |
+| External auditors | 126 | 80 | 38% |
+| Revolving door | 206 | 70 | 34% |
+| Swap lines | 240 | 64 | 31% |
+| Banknote printers | 80 | 55 | 27% |
+| Governor removals and pressure | 110 | 55 | 27% |
+| Outside reserve managers | 128 | 17 | 8% |
+| Named shareholders | 228 | 9 | near-complete* |
+
+\* Named shareholders reads low because only about ten central banks have private shareholders at all. Outside reserve managers reads low because 103 of its 128 ties are Norway's fund — and no list of which banks hire outside managers is published anywhere, so this row has no honest denominator.
+
+\* Named shareholders reads low because only about ten central banks have private shareholders at all — that row is near-complete, not 4%. Outside reserve managers reads low because 103 of its 107 ties are Norway's fund.
+
+`agents/work/coverage.py` computes this table from the data files. Run it every round; don't estimate it.
+
 ## Data files to add to (`agents/`)
-| File | Holds | Records now |
-|---|---|---|
-| `corruption.json` | `cases` (iso3, central_bank, category, years, people, summary, status, source_title, source_url, weak_source) and `revolving_door` | 232 cases in 135 countries and territories; 158 revolving-door records in 58 |
-| `events_gold.json` | `events`: governor firings, pressure and moves against banks, 1990s–Nov 2026; plus gold storage | 102 events in 52 countries |
-| `owners.json` | `holdings` (named shareholders with shares, %, as_of, source), `bis_members`, `history` | 228 holdings; all 63 BIS members |
-| `networks.json` | `links` (entity, type, hq, cb_iso3, relation, detail, source) and `g30` members | 307 links (45 printer ties, 107 reserve-manager ties); 56 G30 members |
-| `parties.json` | Parties named in cases and events, with head offices | 891 links |
-| `swaps.json` | Swap lines (provider, counterparty, amount, dates, status, source) | 240 (100 in force) |
-| `gaps.json` | Fed and South Africa holders, Greece, Türkiye share classes, auditors, case updates | 49 auditors at 39 banks. More audit ties live in `networks.json` — check both. |
-| `hq.json` | Head-office city and country for each party | – |
-| `patterns.json`, `implications.json` | The patterns and their plain-language meanings | 17 |
-
-Altogether the map has 1,232 parties and 1,654 ties, and `agents/writeups.json` holds 1,460 plain-language paragraphs, one for every box. `agents/work/research_log_2026-11.json` lists what was searched with no result, unopened leads, and records dropped after review.
-
-## When a source calls a party something else
-
-Set `name_as_stated` whenever the canonical entity name differs materially from
-what the source actually prints, so a reader can reconcile the node with the
-citation. Taiwan's printer is the example: the Central Bank's own press release
-says "China Engraving & Printing Works" while the works is now the Central
-Engraving and Printing Plant. Short forms do not need this — a detail that says
-"Crane", "NSPMC" or "KOMSCO" for a longer canonical name is clear enough. This is
-a judgement, not a mechanical check; a substring test over the printer records
-flagged 31 rows and 30 of them were fine.
-
-## Run the audit every round
-
-`agents/work/audit_data.py` checks the classes of error the build does not catch
-and that are invisible in the rendered map. Run it with the box dump:
-
-```bash
-python3 agents/work/audit_data.py <scratchpad>/boxes.json
-```
-
-Thirteen checks: party links resolve inside their array and to the right country;
-every case, career move and event has a source URL; every case status is on one of
-the two counted/not-counted lists; every writeup still has a box and every box has
-a writeup; no exact duplicate records in any file; no bank both holding an auditor
-and listed as unavailable. It exits non-zero on failure, and prints the parties
-with no head office as information rather than as an error.
-
-One figure worth knowing when judging a round's writeup work: **157 of the 229
-country paragraphs quote a headline score in words**, and 8 state a count of career
-moves. Those are the paragraphs a score shift can silently falsify, which is why
-the stale check compares the old and new `all` value and searches for that exact
-figure before anything is rewritten.
-
-## A data bug to re-check every round
-
-`record_index` in `agents/parties.json` is a **positional** pointer into
-`corruption.json`'s `cases` and `revolving_door` arrays and `events_gold.json`'s
-`events`. Removing or inserting a record in the middle of an array silently shifts
-every later pointer, and nothing in the build complains — the party box simply
-shows another country's facts under this party's heading.
-
-Round 11 removed one duplicate case. That shifted 136 links by one position each,
-and it went unnoticed for five rounds: Estonia's box showed a Dominican Republic
-prosecution, the Maldives showed Cambodia, Israel showed Jamaica, and seven links
-pointed past the end of the array. Round 16 found it only because a writer agent
-said a record's heading did not match its body.
-
-`agents/work/fix_record_index.py` repairs this by rematching each link's
-`source_url` to the record it names rather than trusting its position. It is
-idempotent. **Run it after any round that removes, replaces or reorders a record**,
-and treat a writer agent reporting a heading that contradicts its body as a data
-bug, not a writing one.
-
-A link whose `source_url` matches no record is usually fine: it means the record's
-source was later replaced by a better one (Bini Smaghi's was, in round 11). The
-script leaves those alone rather than guessing.
+| File | Holds |
+|---|---|
+| `corruption.json` | `cases` (iso3, central_bank, category, years, people, summary, status, source_title, source_url, weak_source) and `revolving_door` |
+| `events_gold.json` | `events`: governor firings, pressure and moves against banks, 1990s–Nov 2026; plus gold storage |
+| `owners.json` | `holdings` (named shareholders with shares, %, as_of, source), `bis_members`, `history` |
+| `networks.json` | `links` (entity, entity_type, hq, cb_iso3, relation, detail, source) and `g30` members |
+| `parties.json` | Parties named in cases and events, with head offices |
+| `swaps.json` | Swap lines (provider, counterparty, amount, dates, status, source) |
+| `gaps.json` | Fed and South Africa holders, Greece, Türkiye share classes, `auditors`, `auditors_unavailable`, case updates |
+| `hq.json` | Head-office city and country for each party |
+| `patterns.json`, `implications.json` | The 17 patterns and their plain-language meanings |
+| `writeups.json` | A plain-language paragraph for every box (`p:ISO`, `n:<node name>`) |
+| `work/research_log_2026-11.json` | What was searched with no result, leads not opened, records dropped after review. **Read this before researching anything.** |
 
 ## Rules the user holds to
 - **No fabrication.** Every record needs a readable source URL that states the fact. Mark Wikipedia-only items `weak_source: true`. List acquittals but don't count them. Claims resting on one author go in as "claim, not confirmed."
 - **Don't filter datasets.** Include everything a source publishes.
 - **Plain words for a novice.** Show the case, figure or mechanism instead of characterizing it. No purple prose.
+- **No "our"** — the user works alone.
 - **Colors:** no orange, yellow or neon; earthy, muted palettes.
-- **Behavior to keep:** tables never need sideways scrolling, chart windows open centered, and markers never cluster or bunch.
+- **Behavior to keep:** tables never need sideways scrolling, chart windows open centered, markers never cluster or bunch.
 
-## Rules added Nov 2026
-- WebFetch has a shared hourly limit. Eight research agents at once used it up in minutes. Run a few at a time, each capped at about 25 fetches.
-- `charge withdrawn` and `investigation closed` are also listed and not counted.
-- The box under Find a place is the index (`indexItems`, `drawIndex`). The filter by connections is `netVis`/`linkOK`, with `S.netMin` and `S.netCb`.
-- The details box is positioned in pixels by `openDet`, and drags by its top edge.
-- Hover uses small sources of its own (`hot-lines`, `hot-nodes`); never re-filter the country layer on hover. `setP`/`setF` skip repeated paint and filter calls. Each party has one fixed spot computed in `build_net.py`: the city point, or a spot about 1 to 8 km around it, over land. Never use screen-pixel offsets; markers must not move with zoom. Clicking a stack opens a list (`stackBox`).
-- For tests, the hook must use getters for consts: `get ALLREL(){return ALLREL}`, and never push it.
-- Status `case dismissed` means a civil claim thrown out or a trial ended without a verdict. Like `acquitted`, it is listed and not counted.
-- A record with `public_move: true` (IMF or World Bank) is listed but not counted as a move to or from private finance.
-- Union banks use iso3 BEAC, BCEAO or ECCB in cases, which show on every member country. Their party links use the head-office country (CMR, SEN, KNA).
-- Staff below senior management: the role instead of the name, unless the name matters to the case.
-- `alleged` means publicly accused with no charge filed, no inquiry reported and no court ruling. `S.alleged` decides whether those count; `ccN` and `MAXCC()` both read it, and the two score caches are keyed on it. `MAXCC` is now a function, not a constant.
-- With the tick box cleared, a bank whose only cases are allegations stays on the inside layer, scored at nothing for cases, rather than dropping off it. Its writeup then carries a line saying any score in the paragraph was written with allegations counted.
-- An outsider's failed attempt against a bank is not a case. Check `events_gold.json` for firings and political prosecutions before filing them as corruption.
+## The rules that decide whether something is a record
 
-## Where coverage is thinnest
-These are rough estimates. No complete count exists for any of these categories. The same table, written for a reader, is in `about.html` under "How much of the subject is here"; **change both together.**
+- **Unstated ownership settles nothing.** A source naming an employer without saying it is private does not make a revolving-door record. Peru's Velarde (Banco Central Hipotecario, state-owned, ownership unstated) set this; the ECCB's Sir Errol Allen was declined on it in round 16 (Bank of Saint Vincent and the Grenadines, National Commercial Bank of Anguilla — government-sounding names, ownership nowhere stated). Trinidad and Tobago was **settled negatively** in round 16: the Ministry of Finance's own listing places First Citizens under "indirectly owned".
+- **Private but not financial is logged, not filed.** Slovakia's Marián Juskó to the oil refiner Slovnaft set this. Round 15 logged Teeters (IBM), Lindsey (economic advisory) and Brimmer (own consulting firm) the same way.
+- **An unnamed employer is still a record.** Where a bank publishes a full dated career but withholds the firm — Kuwait's Al-Haroon, Kuwait's Al-Rumaih — file it with no party node.
+- **`public_move: true`** means the only outside employer is the IMF or World Bank: listed, not counted. Sovereign wealth funds, statutory pension bodies and state-owned banks are public too; say which side of a career is private.
+- **Which case statuses count.** A case stops counting only when the official was cleared, or the charge is gone and no finding stands. `acquitted`, `case dismissed`, `charge withdrawn`, `investigation closed`, `conviction annulled (time-barred)` do not count. Everything still running does, and so does a case whose ending no source states. `build_final.py` refuses to build on a status that is on neither list.
+- **`alleged`** means publicly accused with no charge, inquiry or ruling. `S.alleged` decides whether those count; the tick box is on by default.
+- **Union banks.** Cases use iso3 `BEAC`, `BCEAO` or `ECCB` and expand to every member country. **Party-link records — auditors, printers, managers — must use the head-office country (`CMR`, `SEN`, `KNA`).** There are no boxes for the union codes, so a party link keyed to one is invisible. Round 17 made this mistake and caught it.
+- **Staff below senior management:** the role, not the name.
+- **`name_as_stated`:** set it whenever the canonical entity name differs materially from what the source prints. Taiwan's printer is the example — the Central Bank's release says "China Engraving & Printing Works", the works is now the Central Engraving and Printing Plant. Short forms (Crane, NSPMC, KOMSCO) don't need it.
 
-| Area | On the map | Rough share of what is documented |
-|---|---|---|
-| Datasets and indices (independence law, CPI, WGI, Basel, FSI, crises, BIS, COFER, Swift, gold, regimes) | Everything each source publishes | ~100% |
-| Named shareholders | Every list a bank publishes. The other 11 Fed Reserve Banks don't publish one, and the SARB names none of its roughly 800 holders. | ~90% of what is published |
-| Swap lines | 240 records, 100 in force (only those are drawn) | ~70-80% |
-| Governor firings and pressure | 102 in 52 countries | ~35-45% since 2019, less before |
-| Corruption cases at central banks, 1990-2026 | 232 in 135 countries and territories | ~35-45% |
-| External auditors | 49 records at 39 banks in `gaps.json`, plus more in `networks.json` | ~25% |
-| Banknote printers and their clients | 44 printing contracts, 1 paper maker, 1 substrate supplier | ~20% |
-| Revolving door (officials to or from private finance) | 158 records in 58 countries | ~20% |
-| Outside reserve and fund managers | 107, mostly Norway's fund | ~5% outside Norway |
+## Run the audit every round
 
-## What is left, and how to finish it
-In the order worth doing. The first is where most of the undiscovered material is; the last two are nearly done.
-
-### 1. Revolving door — worked hard in rounds 5 to 14, and now the shallowest it has been
-**The method that works:** go to the central bank's own governor or board page, or to the private firm's own board page, and read the career list. Do not search for scandal. Almost every record added in rounds 6 to 10 came from one search and one fetch of an official page. Where a bank publishes nothing, the firm the official joined usually does: Nordea, Swiss Re, DSK Bank and Erste Bank Hungary each supplied a record this way.
-
-Rounds 6 to 14 took the category from 117 records in 32 countries to **158 in 58**, adding a first record at Saudi Arabia, Thailand, the Philippines, Austria, Hungary, Colombia, the UAE, Greece, Ukraine, Serbia, Norway, Ireland, Belgium, Denmark, Poland, Bulgaria, Italy, Sri Lanka, Lebanon, Singapore, Peru, Russia, Jamaica, Ghana, Kuwait and Romania.
-
-**Round 11's method, which is the one to repeat:** pick a country with no record, name its best-known governor, and read one official page — the central bank's own history page, the hiring firm's board page, or an industry body's published CV. Five of the six came from a single search and a single fetch. Three were hiding in plain sight: the people were already on the map in `corruption.json` as case subjects, and nobody had recorded the career that put them there.
-
-**Before opening any lead, search `corruption.json` for the person's name.** Round 4's leads list was stale: four of its eleven entries were facts already recorded.
-
-Still with no record at all: **Finland, Slovakia, Croatia**, Malaysia beyond the two held. All three have now been tried twice and should be left alone for a round or two. Croatia's HNB vicegovernor page names no private firm; the only source for Sirkka Hamalainen's later board seats is Wikipedia, and Sampo's own 2015 board page does not list her. Slovakia's Marian Jusko joined the board of **Slovnaft**, an oil refiner, at the end of February 2005, which the Slovak Spectator reported on 7 March 2005 — a private company but not finance, so it was logged and not filed. The financnykompas encyclopedia entry stops at 2004 and names nothing after it.
-
-Still worth trying, never attempted: Vietnam, Taiwan, Qatar, Malaysia beyond the two held, and the smaller Caribbean and Pacific banks. Slovenia was tried in round 12 in Slovenian and produced nothing: the searches return candidate news and appointment coverage, not career lists, and the Banka Slovenije board pages do not give previous employers. China looks like a genuine blank rather than a gap: the senior PBoC careers run between state bodies (China Construction Bank, the Export-Import Bank, the IMF), so there may be no private move to find.
-
-A record can also be a bank refusing to name the employer. Kuwait's own governor profile sets out a full career including "vice chairman of a Kuwaiti bank" from 2016 to 2018, an investment company he headed, and a commodities firm, and names none of the three. That is still a record; it just produces no party node. **US Reserve Bank presidents before 2000** was the one closed set left, and round 13 opened it: the Federal Reserve History **individual people pages render perfectly** for an automated reader, at `federalreservehistory.org/people/<first>-<middle-initial>-<last>`. Only the people index fails. Guess the slug from the name and fetch it; six presidents came out of six fetches. Round 14 took four more and cleared five names. Still to check: Richmond (Black, Broaddus), Kansas City (Hoenig, and Guffey, whose slug `roger-guffey` returns Content Not Found — try a middle initial), Dallas (McTeer), St. Louis before Melzer, the earlier Atlanta presidents (Kimbrel, Winn, Forrestal), the earlier New York and Philadelphia holders, and the vice chairs and governors of the Board itself, which round 13 and 14 did not touch at all.
-
-**Names cleared, with nothing to file** (the page is explicit, so do not reopen): Robert H. Boykin of Dallas, forty years inside the Dallas Fed's own legal department and nothing outside it; Edward G. Boehne of Philadelphia, thirty-two years inside that bank; Anthony M. Solomon of New York, whose pre-Fed private work was a Mexican food company, not finance; Gary H. Stern of Minneapolis, a partner in a New York consulting firm the page does not name and corporate boards it does not name either, so there is nothing specific enough to record.
-
-Watch for: a move to or from the IMF or World Bank needs `public_move: true`, which lists it without counting it. Sovereign wealth funds, statutory pension bodies (Denmark's ATP) and cantonal or state-owned banks (the Geneva Cantonal Bank) are public too, so the record should say which side of a career is private. Staff below senior management go in by role, not name.
-
-**The denominator moves.** The inside-influence score divides each country's revolving-door count by the highest count anywhere, which the United States holds. Round 8 added three US records and every other country's share fell, changing the rounded figure in Australia, Ireland and Slovakia. Any round that adds to the country holding the maximum has to re-check the whole map.
-
-### 2. Governor dismissals — the next category worth a full round
-`round4.events.leads_not_opened` (17) is still the live list. Several Central Banking pages are paywalled after the first paragraph, so prefer the bank's own release, the government gazette or a wire agency. Before filing anything here as corruption, check `events_gold.json` — a political prosecution of a governor is an event, not a case.
-
-### 3. Auditors and printers
-Still with no auditor anywhere on the map: **Egypt, Saudi Arabia, Vietnam, Bangladesh, the Philippines, Peru.** The Philippine and Peruvian sites block automated readers; Brazil's row is from the 2018 statements, the only ones that would open. **Check both `gaps.json` and `networks.json` before searching** — the two files both feed the audit ties and the old gap list only tracked one, which is why Japan, Denmark and Indonesia sat on a to-do list while already being on the map.
-
-Where a bank has no private auditor, its law names who does audit it, and that is a record in its own right: China's National Audit Office, Korea's Board of Audit and Inspection and presidentially appointed auditor, Japan's Cabinet-appointed Auditors. Korea's Bank Act also requires an outside accounting-firm audit without naming the firm; that stays in `auditors_unavailable` until a firm is found.
-
-### 4. Swap lines
-`round4.swaps.leads_not_opened` (13). The PBoC's own current table (30 September 2025) lists 32 counterparties and omits exactly the 11 lines the map marks "unknown" (Albania, Armenia, Belarus, Georgia, Kazakhstan, Morocco, Nepal, Suriname, Tajikistan, Ukraine, Uzbekistan). That is evidence they lapsed, but the table says nothing in words, so the records were left alone. A source that says so plainly would settle all 11 at once.
-
-### 5. Corruption cases — treat as near-exhausted by ordinary search
-Round 4 opened almost every lead earlier rounds left. Round 5 retried Bahrain, Saudi Arabia, Oman, Taiwan and Singapore in Arabic, Chinese and English and found nothing on any central bank official: every hit was a commercial-bank employee, an unrelated political case, or the central bank acting as supervisor or investigator. Saudi Arabia is the clearest example — Nazaha publishes its cases and names SAMA repeatedly as the authority it cooperates with, never as the body investigated.
-
-**Don't spend another round on local-language retries.** If this category is taken further, it needs a different kind of source: court bulletins, supreme audit institution reports, parliamentary questions, central bank annual reports' own disciplinary notes. Still with no case and not yet retried at all: UAE, Qatar, Jordan, Brunei, Macao, Samoa, Fiji. San Marino's Confuorti and Buriani rulings still need a court or news source; only a councillor's speech was found.
-
-## Questions the user has settled (don't reopen)
-- **Unproven allegations** (10 November 2026). Show both and let the reader switch. A tick box, "Count cases that are allegations alone", sits under the legend on the three case layers (`all`, `inside`, `cc`, marked `alleg: true`). It is ticked by default, so every score and writeup reads as it did before; clearing it recomputes without them. With it cleared, a bank whose only cases are allegations stays on the inside layer scored at nothing for cases rather than dropping off, and its box carries a line saying any score in the paragraph above was written with allegations counted.
-- **Which statuses count** (10 November 2026). One rule: **a case stops counting only when the official was cleared, or when the charge is gone and no finding is left standing.** Anything still running counts, and so does a case whose ending no source states, because an outcome nobody can find is not a clearing. So `outcome not found` (Kenya, Serbia), `died; outcome not found` (Iraq), `tried (verdict not found)` (Russia) and `Sejm vote pending` (Poland) count; `acquitted`, `case dismissed`, `charge withdrawn`, `investigation closed` and `conviction annulled (time-barred)` (Romania) do not. Romania is the one genuine edge — Olteanu was convicted with a final five-year sentence in October 2020, the conviction was annulled as time-barred on 31 March 2023, and the court still confiscated the €1 million. It is left out because no conviction stands, and its writeup gives all three facts. **If that call is ever reversed, it is one string to move between the two lists in `app.js` (`CC_OUT`) and `build_final.py` (`CC_COUNTED` / `CC_NOT_COUNTED`).**
-- `build_final.py` now refuses to build on a case status that is on neither list, so a `gaps.json` update can no longer invent a wording that counts by accident. That is what let Ghana's "charges withdrawn" count. Adding a status means deciding which list it belongs on and changing both files.
-
-## Added in earlier rounds (UI)
-- **Writeups:** `agents/writeups.json` holds a plain-language paragraph for every country box (`p:ISO`) and every party box (`n:<node name>`), injected as `D.WR` and shown at the top of the box (`.wr`). They were written from each box's records and checked by script for numbers and outcomes, not re-checked against web sources. **When a record changes or a party is added, refresh that entry by hand.** A country or party with no entry just shows the lists.
-- **Hover:** only diamonds light their ties; lines take no hover or click. `hoverCountry(k)` lights a country's lines (`LK`, `lk()`) and the countries at the far ends (source `hov-ctry`, layer `c-hovto`).
-- **Anchors:** `anchorsOf` reads multi-currency anchors, so Belarus (0.2 EUR + 0.5 RUB + 0.3 USD) draws to Moscow. Ilzetzki-Reinhart-Rogoff give "n.a." for Russia and 19 others, which is why they have no outgoing line.
-- **Recenter:** `#centerBtn` runs `recenter()`; `homePadding()` removes the padding a box adds.
-- **Pattern points:** `pat-end` features carry a name, `under()` returns `{pat}`, `patPointBox(name)` opens the box.
-- **Index:** `selectEntity` turns ties on if the party is hidden and draws a ring (`drawSel`, source `sel-node`, layer `sel-ring`).
-- **Resize:** `makeResizable(el, onStart)` adds 8 handles (`.rz-*`) to `#det` and `.win`. `#det` no longer scrolls; `#detBody` does.
-- **Small places:** `build_final.py` adds real outlines from `ne10` (`D.XSHAPE`) for places missing from the boundaries file: Monaco, Tuvalu, Nauru.
-- **Career-move boxes:** in `build_net.py`, when the move line doesn't name the party, the box also shows the record's summary.
-
-## How to refresh the writeups after adding records (do this every round)
-**Build the excerpt from whole records, never a character window.** Each box
-splits cleanly on `Source says: ` — split on that and include the WHOLE block
-containing each new record. Round 17 used a fixed window instead, and all four
-writer agents reported the same thing: ties arrived with a name but no
-description, so they left them out and the paragraphs silently omitted the very
-records the round had added. Two further traps: a record whose employers are
-unnamed has no party block at all and lives in the box head, past any head cap
-(Kuwait's Al-Rumaih sits at character 3,866), so extend the head to reach it; and
-assert that no input string ends mid-sentence before dispatching.
-
-**Check the excerpt before dispatching.** The box text handed to writer agents is
-excerpted, and country boxes are large — the United States box is over 190,000
-characters. In round 16 eight refreshed paragraphs were written from excerpts that
-did not contain the new record at all, so the refresh could not have mentioned it,
-and nothing about the output looked wrong. Before sending a batch, take a
-distinctive token from each new record (a surname, a firm) and assert it appears in
-that key's excerpt. Where it does not, send the box head for context plus the
-specific sections holding the new records instead of a flat character cap.
-
-**Check drafts for names, not only numbers.** The old script checked that every
-number in a draft appeared in its box. Round 15 showed that is not enough: six
-paragraphs carried a city, a parent company and a set of ministerial roles that
-appeared nowhere in the source. Check every capitalised word in a draft against its
-box text, and treat an unexplained one as model knowledge leaking in.
-
-A writeup never updates itself, and two things make old ones wrong:
-1. New records for that place or party.
-2. **Scores shift across the whole map.** The inside-influence score counts documented cases against the highest count anywhere (`MAXCC` in `app.js`), so adding cases in one country moves the headline score of others by a point or two. After round 4, 55 paragraphs quoted a number that had moved.
-
-The routine, after merging new records and rebuilding:
 ```bash
-S=<scratchpad>   # mk_t3.py, t_dump.py and t_sc.py are kept in agents/work/
-python3 $S/mk_t3.py /root/cb/dist/central_bank_independence.html $S/t/dump.html   # injects window.T and window.T3={detail,entityBox,L}
-python3 $S/t_dump.py $S                 # writes $S/boxes.json: every box's text, keyed p:ISO and n:<name>
+python3 agents/work/audit_data.py <scratchpad>/boxes.json
+```
+
+Thirteen checks the build does not make and that are invisible in the rendered map: party links resolve inside their array and to the right country; every case, career move and event has a source URL; every status is on a known list; every writeup has a box and every box a writeup; no duplicates; no bank both holding an auditor and listed unavailable. Exits non-zero on failure.
+
+### The bug it exists for
+
+`record_index` in `parties.json` is a **positional** pointer into the cases, revolving_door and events arrays. Removing or inserting a record shifts every later pointer, and nothing complains — the party box simply shows another country's facts under this party's heading. Round 11 removed one duplicate case; 136 links went wrong and it survived five rounds. Estonia showed a Dominican Republic prosecution, the Maldives showed Cambodia, Israel showed Jamaica, and seven links pointed past the end of the array.
+
+`agents/work/fix_record_index.py` repairs it by rematching each link's `source_url` to the record it names. Idempotent. **Run after any round that removes, replaces or reorders a record.** A link whose URL matches no record is usually fine — the record's source was upgraded later (Bini Smaghi's was) — and the script leaves those alone.
+
+**Treat a writer agent reporting that a record's heading contradicts its body as a data bug, not a writing one.** That report is the only reason this was ever found.
+
+## Refreshing the writeups (every round)
+
+A writeup never updates itself, and two things make old ones wrong: new records for that place, and scores shifting map-wide because the inside-influence score divides by the highest count anywhere. **157 of the 229 country paragraphs quote a headline score in words**; 8 state a count of career moves.
+
+```bash
+S=<scratchpad>   # mk_t3.py, t_dump.py, t_sc.py are in agents/work/
+python3 $S/mk_t3.py /root/cb/dist/central_bank_independence.html $S/t/dump.html
+python3 $S/t_dump.py $S                 # writes $S/boxes.json: every box's text
 python3 $S/t_sc.py <old build> $S/sc_old.json && python3 $S/t_sc.py <new build> $S/sc_new.json
 ```
-Then compare: keys in `boxes.json` with no entry in `writeups.json` are new, and any place whose rounded score changed and whose paragraph quotes the old number is stale. Give those box texts to writer agents with `scratchpad/r4/brief_writeups.md`, about 25 keys each, and merge the results into `agents/writeups.json`. Check the drafts by script for: numbers that do not appear in the box text, the phrases "the box", "the record", "does not say", "on the map", and the word "our".
 
-## What each round added
+Then: keys in `boxes.json` with no entry in `writeups.json` are new; a place whose rounded `all` score changed **and** whose paragraph contains that exact old figure is stale. Most flags are false — compare the old and new `all` value and search for that figure before rewriting anything.
 
-- **Round 4** (10 Nov 2026): 38 corruption cases, 14 career moves, 14 governor-removal or pressure events, 6 auditors, 3 state printers, 11 swap lines. New countries on the case list: Sao Tome and Principe, Eswatini, the Cayman Islands, the Dominican Republic, the Gambia, Libya, Madagascar, Slovenia, Trinidad and Tobago, Cambodia, Israel, South Korea, Uruguay. 185 writeups rewritten.
-- **Round 5**: settled the allegations question and the undecided statuses (both under "Questions the user has settled"). Fixed the Ghana status bug and added `build_final.py`'s status guard. Korea's two statutory audits. Six revolving-door records (Canada, New Zealand, Nigeria, Argentina, Egypt, Czechia). Added "How much of the subject is here" to `about.html`.
-- **Round 6**: six revolving-door records, all at banks with none — Saudi Arabia (Al-Mubarak, Rana Investment and Morgan Stanley Saudi Arabia), Thailand (Sethaput, SCB group and TMB), the Philippines (Buenaventura, Citibank and PCIB), Austria (Nowotny, BAWAG P.S.K.), Hungary (Jarai, James Capel, Samuel Montagu, MHB, ABN-AMRO, CIG Pannonia) and Colombia (Villar, IMF, `public_move`). Korea's two auditors finally got writeups.
-- **Round 7**: the UAE (Saeed, First Abu Dhabi Bank), Greece (Provopoulos, Alpha, Emporiki, Piraeus), Ukraine (Gontareva, Societe Generale, ING, ICU), Serbia (Jelasic to Erste Bank Hungary), Thailand again (Veerathai, Siam Commercial Bank). Banorte dates added to the existing Ortiz record.
-- **Round 8**: Norway (Tangen, AKO Capital to NBIM, with the conditions the bank attached), Ireland (Elderfield to Lloyds) and the first three pre-2000 Fed moves (Corrigan to Goldman Sachs, McDonough from First Chicago and later to Merrill Lynch, Melzer from Morgan Stanley). This is the round that moved scores map-wide.
-- **Round 9**: Belgium (Dechaene, Bank Brussel Lambert, Morgan Grenfell, Deutsche Bank London), Denmark (Rohde, Realkredit Danmark and later the Nordea board), Poland (Filar, Bank Pekao).
-- **Round 10**: Switzerland (Roth to the Swiss Re board in 2010) and Bulgaria (Hristov to the DSK Bank supervisory board in August 2025).
-- **Round 14** (10 Nov 2026): four more Reserve Bank presidents — Karen Horn (out of Cleveland in April 1987 to chair Banc One Corp., having come from the First National Bank of Boston and two telephone companies), W. Lee Hoskins (PNC Financial Corp. into Cleveland in 1987, out to the Huntington National Bank in 1991), Frank Morris (a vice presidency at Loomis Sayles and Co. into Boston in 1968) and John Balles (Mellon National Bank into San Francisco in 1972). The United States count went 43 to 47. The stale check flagged twelve places and only two, Greece and Lithuania, actually quoted the figure that moved. 9 new party boxes.
-- **Round 13** (10 Nov 2026): six United States records, all Reserve Bank presidents before 2000 — Volcker (Chase Manhattan Bank, vice president, to the New York Fed in 1975), Keehn (vice chairman of Mellon Bank to Chicago in 1981), Ford (chief economist of Wells Fargo to Atlanta in 1980, then out to First Nationwide Financial Corp in 1983), Parry (Security Pacific National Bank to San Francisco in 1986), Syron (Boston out to the American Stock Exchange in 1994 and later Freddie Mac) and Jordan (Interstate Bancorp to Cleveland in 1992). This moved the United States count from 37 to 43, so the denominator moved and nine country paragraphs quoted a headline score that had shifted. 11 new party boxes. Also in this round: parties whose kind of tie is switched off now stay on the map as faint grey diamonds that can still be clicked (`net-ghost`).
-- **Round 12** (10 Nov 2026): four more first records — Jamaica (Byles: Pan Caribbean Merchant Bank from 1988, Pan Jam from 1991, Sagicor Jamaica chief executive 2004-2017 and then its chairman, Governor from 19 August 2019), Ghana (Duffuor: Governor 1997-2001, then founder and president of HODA Holdings, whose largest holding is uniBank, the bank whose later collapse is already a case on the map), Kuwait (Al-Haroon, with the private employers unnamed by the bank) and Romania (Danila: chief executive of Banca Comerciala Romana 1999-2008, the BNR board 2009-2014, chairman of First Bank SA 2018-2020). Only Jamaica, Kuwait and Romania moved a score, and only their own. 4 country writeups touched, 10 new party boxes.
-- **Round 11** (10 Nov 2026): six revolving-door records at banks with none — Italy (Draghi: Goldman Sachs International 2002-2005 into the Bank of Italy governorship in 2006, plus the World Bank 1984-1990 as a `public_move`), Sri Lanka (Mahendran: CBSL staff 1983-1995, then SG Securities, Credit Suisse Private Bank, Emirates NBD and HSBC Private Bank, back as Governor January 2015), Lebanon (Salameh: Merrill Lynch 1973-1993, where he ran Rafic Hariri's personal portfolio before Hariri appointed him governor), Singapore (Ong Chong Tee, MAS Deputy Managing Director, onto the United Overseas Bank board on 1 January 2023), Peru (Torres-Llosa: 21 years at BBVA in Peru to June 2019, then general manager of the BCRP in March 2022) and Russia (Vyugin: Bank of Russia First Deputy Chairman alongside Troika Dialog, Morgan Stanley Bank, MDM Bank, Binbank and Safmar, with no dates in the source). One duplicate removed (see below). 30 writeups rewritten; 11 new party boxes.
+### Building the input — three traps, all of which have bitten
 
-## Hard-won notes, so they are not learned twice
+1. **Split each box on `Source says: ` and send WHOLE blocks.** Never a character window. Round 17 used a window, cut records mid-sentence, and all four writer agents reported ties arriving named but undescribed — so they left them out and the paragraphs would have omitted the very records the round added.
+2. **A record with unnamed employers has no party block** and lives in the box head, past any head cap (Kuwait's Al-Rumaih sits at character 3,866). Extend the head to reach it.
+3. **Verify before dispatching.** Assert that a distinctive token from each new record appears in that key's input, and that no input ends mid-sentence. Round 16 shipped eight paragraphs written from excerpts that did not contain the new record at all.
 
-- **Check `corruption.json` for a person's name before opening a lead.** Round 4's leads list contained four facts already on the map.
-- **The Federal Reserve History people index does not render for an automated reader**, but the individual pages do. The index reports 246 profiles and returns only the filter controls; `federalreservehistory.org/people/<first>-<middle-initial>-<last>` returns a full dated career list. Round 13 got six presidents from six guessed slugs with no failures. The New York Fed also publishes its own biographies, which is where Volcker's two Chase Manhattan spells came from.
-- **Most of the stale-writeup flags are false.** Round 13's check flagged 27 places; only nine actually quoted the number that moved. The paragraphs quote the headline `all` score, and most of what moves is `inside`. Compare the old and new `all` value and search the paragraph for that exact figure before rewriting anything.
-- **The MAS board annex that search returns is not the MAS board.** It is the board of a payments body the authority chairs, with DBS, OCBC, UOB and Standard Chartered representatives on it. Banks sitting on that body is a different kind of tie from a revolving door and was not recorded.
-- **`round4.events.leads_not_opened` is stale.** Round 12 opened two of the seventeen and both were already on the map: Tunisia's dismissal of Nabli (filed at 27 June 2012) and Pakistan's Yaseen Anwar resignation (filed at January 2014, with the same anonymous-officials attribution). Check `events_gold.json` by country before opening any of the remaining fifteen. One of them, the Loanstreet page on Bank Negara governors who resigned, no longer exists — the URL now serves a motorcycle insurance page.
-- **A source that names an employer without saying it is private settles nothing.** Peru's Velarde is listed at the Banco de Industria y Construccion and the Banco Central Hipotecario, but the Banco Central Hipotecario was state-owned and the source says nothing about ownership, so Peru is still blank.
-- **"In talks" is not an appointment.** RTE had Lloyds only in talks over Elderfield with all parties declining to comment; the Irish Times report two weeks later is the one cited.
-- **Where a bank publishes no bio, the firm usually does.** Nordea, Swiss Re, DSK Bank and Erste Bank Hungary each supplied a record their central bank's own site did not.
-- **Refresh the writeups every round.** The routine is under "How to refresh the writeups after adding records". Check each changed country's paragraph for a quoted score, and check the United States paragraph's count of recorded moves, which is written out as a number.
-- **The stale-writeup check throws false positives.** It flags any paragraph containing a digit string that matches a score that moved. In round 11 that caught Cyprus ("29 unproven charges") and Croatia, whose quoted figure was the headline `all` score while the one that moved was `inside`. Only the headline `all` score is normally quoted in a paragraph, so check which layer actually moved before rewriting.
-- **A record can already be on the map under the wrong country.** Draghi's Goldman Sachs move was filed under EMU, so Italy read as having no revolving door at all. The move was into the Bank of Italy, so it now sits at ITA, and the Goldman party tie was re-pointed with it. Before concluding a country is blank, search `corruption.json` for its best-known governor's name, not just its iso3.
-- **And a record can already be on the map under a different source.** Bini Smaghi's move to Societe Generale was held at index 39 from an Irish Times report. Round 11 found Societe Generale's own biography of him, which adds the TAGES Holding directorship (2014-2019) and the exact ECB dates, so the existing record's source was replaced with the primary one and the duplicate dropped. That is why the euro-area case count fell by one and thirteen euro-country scores moved a point.
+### Facts leak between keys in the same batch
+
+A batch file holds many keys, and an agent can pull a fact from a NEIGHBOURING key's
+text into the wrong paragraph. Round 18: Valora is Portugal's printer and its own box
+names only the Banque de France release, but the paragraph arrived carrying
+"Austria's Oesterreichische Nationalbank", which appears in a different key in the
+same file. Kosovo gained a "United Nations administration regulation" the same way.
+`check_drafts.py` catches this because it tests each draft against ITS OWN box — so
+run it on every batch, and state the per-key rule in the agent's brief.
+
+### Checking the drafts
+
+```bash
+python3 agents/work/check_drafts.py <drafts.json> <boxes.json>
+```
+
+Checks numbers **and** capitalised names against the source box, plus banned phrases. Round 15 shipped six paragraphs carrying a city, a parent company and ministerial roles that appeared in no source; a numbers-only check missed all six. The script maps stroked and ligature letters (đ, ø, ł, œ) before NFKD, which does not decompose them — without that, Serbia's Zagrađanin reads as invented. It also stops on month names, spelled-out numbers and "European Union", which are reformatting the brief requires rather than leaks: a box printing "14" or "27.06.2024" legitimately becomes "Fourteen" and "27 June 2024". Adjective forms of a country in the box (Spanish, French) still flag and are fine.
+
+Where a box's header prose and its score panel disagree, **the panel is right** — the prose is the old paragraph being replaced.
+
+## Research method
+
+**The only thing that moves a percentage is a bounded set.** Rounds 5–14 averaged 4.7 records each, working one person at a time. Round 15 took 35, round 16 34, round 17 33 — and the whole difference was working lists with a countable end rather than searching open-endedly.
+
+Bounded sets that worked:
+- **Federal Reserve History people pages** render perfectly at `federalreservehistory.org/people/<first>-<middle-initial>-<last>`. The index does NOT render. Guess the slug; try the initial-first form too (`/people/robert-heller` fails, `/people/h-robert-heller` works). 37 records across rounds 13–16. No pages exist for Stephen Axilrod, Robert Rasche, William Taylor or Betty Dukes.
+- **The consolidated EUR-Lex text of ECB Decision 1999/70** lists every euro-area central bank's approved external auditor in one table. Settled five countries at once in round 16, three more in round 17.
+- **Central bank statutes** name who audits a bank even when the bank's own site blocks automated readers. The Philippines fell to Republic Act 7653 after several rounds of failing on the annual report; Vietnam to Article 47 of its State Bank law. African LII sites work well.
+
+**Where a bank publishes no biography, the hiring firm usually does.** Nordea, Swiss Re, DSK Bank, Erste Bank Hungary, AIA Group and Société Générale each supplied a record their central bank's site did not.
+
+**Before opening any lead, search `corruption.json` for the person's name**, and check `events_gold.json` by country before filing a firing as corruption. Round 4's leads list had four facts already on the map; round 12 opened two of seventeen event leads and both were already recorded.
+
+**WebFetch and permission prompts.** Constructed URLs are often refused with `PROVENANCE_REQUIRED`. The pattern that works is to run a WebSearch first and fetch only URLs the search returns. One round's agent used `curl` to bypass the prompt instead and recommended it as practice — that is not an approved method; its records were spot-checked through WebFetch before use. Don't propagate it.
+
+**Run a few agents at a time, each capped at about 25 fetches.** Eight at once exhausted the shared hourly limit in minutes.
+
+## What is left
+
+### 1. External auditors — the one category that can actually reach 100%
+Every central bank operates under a law that names who audits it, so the answer always exists. 72 of 206 done.
+- **The BCEAO's eight national directorates** are audited separately from the union accounts and the appointments are published — an August 2024 notice named Mazars Niger as titulaire and KMC S.A. as suppléant for Niger, FY2024–2029. Eight records from one bounded set.
+- **Later EUR-Lex amending decisions** (candidates: 2023/670, 2024/2001, 2025/1917). Cyprus (2018–2022) and Luxembourg (2019–2023) have expired terms recorded; Croatia is absent from the 2021 consolidated text entirely, having joined the euro in 2023.
+- Never attempted: Jordan, Rwanda, Ethiopia, Qatar, Armenia, Georgia, Azerbaijan, Uzbekistan, Moldova, the Balkans, most of Central America.
+- **Don't retry via annual report:** Croatia, Serbia, Bahrain, Botswana — their PDFs extract the narrative but drop the auditor's report page, and Botswana's is scanned images. Don't retry BEAC via beac.int (robots-disallowed); target "BEAC Etats financiers IFRS certifiés" elsewhere.
+- Trinidad and Tobago is **contested, not unknown**: the Auditor General declined to audit the Central Bank and the Government wanted it resumed. Needs care, not another fetch.
+- Panama has no central bank.
+
+### 2. Banknote printers — thinnest countable row at 21%
+**Most central banks print their own money.** Twelve of round 17's twenty records were state works run by the bank or government, and the row was thin partly because nobody had recorded them. For each country, ask first whether its own bank runs a printing works; its site usually answers.
+**The euro area opens from the other end.** The ECB names none of the eleven works that print euro notes and publishes no per-denomination allocation — but each national central bank names its own works. Round 18 took Spain (IMBISA, 80% Banco de España-owned, printing roughly 12% of total euro production), Austria (OeBS, OeNB-owned) and Portugal (Valora, Banco de Portugal-owned) this way; France and Germany were already held. **Work the remaining euro-area banks one at a time rather than hunting for an ECB allocation table.** Two near-misses to settle with one fetch each: the Bank of Italy's printing works and the Bank of Greece's Banknote Printing Works Department (IETA) are both named on official pages that do not actually say they print banknotes, so neither was recorded rather than inferred.
+
+A single joint Banque de France release with the OeNB and Banco de Portugal yielded two records at once. **Multi-bank cooperation releases are worth hunting** for exactly this reason.
+
+### 3. Outside reserve managers — 107 ties, 103 of them Norway
+Barely started. The World Bank Treasury's **RAMP** (Reserves Advisory and Management Partnership) has a published membership of central banks; one RAMP tie already appears for Guatemala. The BIS Banking Department manages reserves for central banks and publishes a customer count — a count alone is not a record.
+
+### 4. Revolving door — now the shallowest it has been
+**The method:** go to the central bank's own governor or board page, or the private firm's own board page, and read the career list. Do not search for scandal.
+**Closed as blanks:** BCEAO and BEAC publish no board biographies at all — this killed the best remaining lead. Solomon Islands has the most detailed Pacific board page found and still yields nothing, because no employer is characterised. Taiwan's three senior officials are wholly public careers; China looks like a genuine blank, its senior PBoC careers running between state bodies.
+**Still worth trying:** Cambodia, Laos, Myanmar, Brunei (BDCB annual report PDFs under cms.bdcb.gov.bn; Baiduri Bank's own governance disclosure prints director biographies), Tonga.
+**Named candidate:** Taiwan's CBC board also seats Dong Jui-pin, who chairs Mega Financial Holding — not filed because Mega is likely Ministry of Finance-controlled and the CBC states no ownership. Settling document: Mega's major-shareholders table.
+**The denominator moves.** The inside-influence score divides each country's count by the highest anywhere, which the United States holds. Any round adding US records re-checks the whole map.
+
+### 5. Governor dismissals
+Thirteen of the seventeen leads left from round 4 are closed, each recorded with what it turned out to be. Prefer the bank's own release, the government gazette or a wire agency — several Central Banking pages are paywalled after the first paragraph.
+
+### 6. Corruption cases — treat as near-exhausted by ordinary search
+Round 5 retried Bahrain, Saudi Arabia, Oman, Taiwan and Singapore in Arabic, Chinese and English and found nothing. **Don't spend another round on local-language retries.** Taking this further needs a different source type: court bulletins, supreme audit institution reports, parliamentary questions, central bank annual reports' own disciplinary notes. Still with no case and not retried: UAE, Qatar, Jordan, Brunei, Macao, Samoa, Fiji. San Marino's Confuorti and Buriani rulings still need a court or news source.
+
+## How long to finish
+
+**Three of the categories can reach 100% and three cannot**, and conflating them is what makes the question unanswerable.
+
+**Can finish:** external auditors (every bank has a law naming its auditor); the Federal Reserve seam (a countable 246 profiles, now thinning — round 16 got 12 records from ~30 names against round 15's 19 from 24); and the five patterns already complete because a source publishes the whole list.
+
+**Cannot finish:** corruption cases, governor removals, and revolving door outside closed sets. No complete count exists anywhere, so the "35–45%" in `about.html` is a judgement made while compiling and will stay one. These approach completeness asymptotically.
+
+**Estimate: 10 to 14 more rounds** for everything finishable. Yield is drifting down (35 → 34 → 33) and two of the best leads closed permanently in round 17. Worth spending one of those rounds purely on auditing what is already in — round 16's audit found a five-round-old corruption affecting 147 links.
+
+## Questions the user has settled (don't reopen)
+- **Unproven allegations** (10 November 2026). Show both and let the reader switch. A tick box, "Count cases that are allegations alone", sits under the legend on the three case layers, ticked by default. Cleared, a bank whose only cases are allegations stays on the inside layer scored at nothing rather than dropping off, and its box says any score in the paragraph was written with allegations counted.
+- **Which statuses count** (10 November 2026). The one rule is above. Romania is the edge case: Olteanu was convicted with a final five-year sentence in October 2020, the conviction was annulled as time-barred on 31 March 2023, and the court still confiscated the €1 million. It is left out because no conviction stands, and its writeup gives all three facts. **If reversed, it is one string to move between `CC_OUT` in `app.js` and `CC_COUNTED`/`CC_NOT_COUNTED` in `build_final.py`.**
+
+## UI behaviour to preserve
+- **Hover:** only diamonds light their ties; lines take no hover or click. Small sources of their own (`hot-lines`, `hot-nodes`); never re-filter the country layer on hover. `setP`/`setF` skip repeated paint and filter calls.
+- **Markers:** each party has one fixed spot computed in `build_net.py` — the city point, or a spot 1–8 km around it, over land. Never screen-pixel offsets; markers must not move with zoom. Clicking a stack opens a list (`stackBox`).
+- **Ghosts:** parties whose kind of tie is switched off stay as faint grey diamonds that can still be clicked (`net-ghost`).
+- **Index:** the box under Find a place (`indexItems`, `drawIndex`). `selectEntity` turns ties on if the party is hidden and draws a ring (`drawSel`).
+- **Details box:** positioned in pixels by `openDet`, drags by its top edge. `#det` does not scroll; `#detBody` does. `makeResizable(el, onStart)` adds 8 handles to `#det` and `.win`.
+- **Anchors:** `anchorsOf` reads multi-currency anchors, so Belarus (0.2 EUR + 0.5 RUB + 0.3 USD) draws to Moscow. Ilzetzki–Reinhart–Rogoff give "n.a." for Russia and 19 others, which is why they have no outgoing line.
+- **Small places:** `build_final.py` adds real outlines from `ne10` (`D.XSHAPE`) for Monaco, Tuvalu and Nauru.
+- **Recenter:** `#centerBtn` runs `recenter()`; `homePadding()` removes the padding a box adds.
+
+## Keep these two in step
+`about.html`'s "How much of the subject is here" table and the figures in this handoff describe the same thing for different readers. **Change both together**, and take the numbers from `coverage.py` and the build output rather than estimating.
