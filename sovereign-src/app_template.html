@@ -46,7 +46,9 @@ select:focus,input.inp:focus{outline:none;border-color:var(--accent-hi)}
 .fc .n{color:var(--mute);font-size:10.6px}
 .mk{display:inline-block;width:10px;height:10px;flex:none}
 .flab{font-size:11.2px;color:#ccd5d2;margin:8px 0 1px}
-#flist{max-height:220px;overflow:auto;margin-top:3px}
+#flist{max-height:270px;overflow:auto;margin-top:3px}
+.fhead{font-size:10.8px;color:var(--mute);padding:3px 0 2px}
+.fq{display:block;color:var(--mute);opacity:.85;font-size:10.6px;line-height:1.3;margin-top:1px}
 .fi{padding:4px 3px;border-top:1px solid var(--line2);font-size:12.4px;cursor:pointer;line-height:1.3}
 .fi:hover{background:rgba(255,255,255,.05)}.fi small{display:block;color:var(--mute);font-size:10.8px}
 #tbars{display:flex;align-items:flex-end;gap:1px;height:40px;margin-top:4px}
@@ -257,7 +259,7 @@ table.heat tr:hover td.nm{color:#fff;text-decoration:underline}
 <div id="ttip"></div>
 
 <div id="room">
-  <div class="rh"><div><input id="rq" class="inp" type="search" placeholder="Search any attempt, place or requirement" autocomplete="off"><div id="rqres" class="card scroll" style="display:none;position:absolute;z-index:30;width:320px;max-height:60vh;overflow:auto"></div></div><div><h2>Compare every place</h2><p id="roomsub"></p></div><div class="r"><button class="btn" data-act="about">About</button><button class="btn" data-act="method">Method and sources</button><button class="btn pri" data-act="map">Back to the map</button></div></div>
+  <div class="rh"><div><input id="rq" class="inp" type="search" placeholder="Search any attempt, place, requirement or subject" autocomplete="off"><div id="rqres" class="card scroll" style="display:none;position:absolute;z-index:30;width:320px;max-height:60vh;overflow:auto"></div></div><div><h2>Compare every place</h2><p id="roomsub"></p></div><div class="r"><button class="btn" data-act="about">About</button><button class="btn" data-act="method">Method and sources</button><button class="btn pri" data-act="map">Back to the map</button></div></div>
   <div id="cover"></div>
   <div id="ticker" title="The legal rule each case shows. Hover to pause, click to open."></div>
   <div id="rgrid"></div>
@@ -425,7 +427,7 @@ function buildKey() {
   $("#lede3").textContent = "Holds " + CV.overall_high_pct + "% of every example named by the published lists read for the kinds of place closest to founding one, and " + CV.all_pct + "% across all kinds, including trade zones, Indigenous self-government, new states, rebel rule and conquest." + (CV.unread_total ? (CV.unread_one ? " The whole of that gap is one thing: " + CV.unread_one.n.toLocaleString() + " trade zones in a single database, " + CV.unread_one.src + ", that could not be read. Every other kind of place here holds every example its published lists name." : " A further " + CV.unread_total.toLocaleString() + " are named in lists that refused access or were not reached.") : "") + " Published counts and estimates, named or not, run to about " + (CV.est_total || 0).toLocaleString() + ", most of them never named one by one.";
   const r = SHADES[S.shade];
   let h = '<div class="psec">Shade the places by<span class="qm" data-tip="No study measures these chances, so they are estimates based on the law and on what happened in past attempts. Open any place to read the reasoning. Method and sources explains the scale.">?</span></div><select id="shade">' + Object.keys(SHADES).map((k) => '<option value="' + k + '"' + (k === S.shade ? " selected" : "") + ">" + esc(SHADES[k][0]) + "</option>").join("") + '</select><div style="font-size:11.2px;color:var(--mute);margin-top:4px;line-height:1.35">' + esc(r[1]) + '</div><div class="ramp">' + rampOf(S.shade).map((x) => '<i style="background:' + x[1] + '"></i>').join("") + '</div><div class="rlab">' + rampOf(S.shade).map((x) => "<span>" + x[2] + "</span>").join("") + "</div>";
-  h += '<div class="psec">Find</div><input id="find" class="inp" type="search" placeholder="An attempt, founder, place or treaty" autocomplete="off" value="' + esc(S.q || "") + '"><div id="flist" class="scroll"></div>';
+  h += '<div class="psec">Find</div><input id="find" class="inp" type="search" placeholder="An attempt, founder, place, treaty or subject" autocomplete="off" value="' + esc(S.q || "") + '"><div id="flist" class="scroll"></div>';
   h += '<div class="psec">Filter what is shown</div><div class="flab">Where</div><div class="chips">' + Object.keys(GROUPS).map((g) => '<span class="fc' + (S.g[g] ? " on" : "") + '" data-g="' + g + '">' + mkSvg(g, null) + esc(GROUPS[g][0]) + ' <span class="n">' + cnt((c) => c.group === g) + "</span></span>").join("") + "</div>";
   h += '<div class="flab">How it turned out</div><div class="chips">' + Object.keys(OUTS).map((o) => '<span class="fc' + (S.o[o] ? " on" : "") + '" data-o="' + o + '"><i class="mk" style="background:' + (OUTCOL[curBase] || OUTCOL.night)[o] + ';border-radius:50%"></i>' + esc(OUTS[o]) + ' <span class="n">' + cnt((c) => c.out === o) + "</span></span>").join("") + "</div>";
   h += '<div class="flab">When<span class="qm" data-tip="Each bar is a decade, counting attempts begun then. Click a bar to show attempts active in that decade. Click again to clear.">?</span></div><div id="tbars"></div><div class="tax"><span id="tmin"></span><button class="lk" id="trst" style="display:none">show all years</button><span>2020s</span></div>';
@@ -443,8 +445,83 @@ function buildKey() {
   buildLeg();
 }
 function norm(s) { return String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); }
-function searchAll(q) { const w = norm(q); if (w.length < 2) return []; const out = []; D.cases.forEach((c) => { if (norm([c.name, (c.aka || []).join(" "), c.founder, c.story].join(" ")).includes(w)) out.push({ k: "c", id: c.id, n: c.name, s: Z[c.zid].name + " · " + yrs(c), t: norm(c.name).includes(w) ? 0 : 1 }); }); D.zones.forEach((z) => { if (norm(z.name + " " + (z.essay || "") + " " + z.who_owns + " " + (z.rules || []).map((r) => r.cite + " " + r.says).join(" ")).includes(w)) out.push({ k: "z", id: z.id, n: z.name, s: "Kind of place", t: norm(z.name).includes(w) ? 0 : 2 }); }); D.entails.forEach((e) => { if (norm(e.need + " " + e.what).includes(w)) out.push({ k: "e", id: e.id, n: e.need, s: "What it takes · " + e.group, t: norm(e.need).includes(w) ? 0 : 2 }); }); return out.sort((a, b) => a.t - b.t).slice(0, 40); }
-function find() { const l = $("#flist"), q = S.q || ""; if (q.trim().length < 2) { l.innerHTML = ""; return; } const r = searchAll(q); l.innerHTML = r.length ? r.map((x) => '<div class="fi" data-k="' + x.k + '" data-id="' + x.id + '">' + esc(x.n) + "<small>" + esc(x.s) + "</small></div>").join("") : '<div class="fi" style="cursor:default;color:var(--mute)">Nothing matches.</div>'; $$(".fi[data-id]", l).forEach((n) => n.addEventListener("click", () => openAny(n.dataset.k, n.dataset.id))); }
+let IX = null;
+function txtOf(k, o) {
+  if (k === "c") return [o.name, (o.aka || []).join(" "), o.founder, o.story, o.mechanism, o.laws, o.challenge, o.recognition, o.stopped_by, o.anchor, o.pop, o.cost, o.currency, o.passports, (Z[o.zid] || {}).name, (o.sources || []).map((x) => x.t).join(" ")].filter(Boolean).join(" ");
+  if (k === "z") return [o.name, o.essay, o.who_owns, o.hook, o.can_you_build, (o.facts || []).join(" "), (o.rules || []).map((r) => r.cite + " " + r.says).join(" "), (o.sources || []).map((x) => x.t).join(" ")].filter(Boolean).join(" ");
+  if (k === "e") return [o.need, o.what, o.figure, o.group].filter(Boolean).join(" ");
+  return [o.t, (o.body || []).join(" ")].filter(Boolean).join(" ");
+}
+function buildIX() {
+  const parts = [], off = [], ids = [], kinds = [], names = [];
+  let pos = 0;
+  const push = (k, id, name, o) => { const t = norm(txtOf(k, o)) + "\u0001"; parts.push(t); off.push(pos); ids.push(id); kinds.push(k); names.push(name); pos += t.length; };
+  D.cases.forEach((c) => push("c", c.id, c.name, c));
+  D.zones.forEach((z) => push("z", z.id, z.name, z));
+  D.entails.forEach((e) => push("e", e.id, e.need, e));
+  (D.patterns || []).forEach((p) => push("p", p.id, p.t, p));
+  IX = { s: parts.join(""), off: Int32Array.from(off), ids, kinds, names };
+}
+function recAt(i) { const o = IX.off; let lo = 0, hi = o.length - 1; while (lo < hi) { const m = (lo + hi + 1) >> 1; if (o[m] <= i) lo = m; else hi = m - 1; } return lo; }
+function cands(t) {
+  const a = [t];
+  if (t.length > 4 && /ies$/.test(t)) a.push(t.slice(0, -3) + "y");
+  else if (t.length > 4 && /es$/.test(t)) a.push(t.slice(0, -2));
+  if (t.length > 3 && /s$/.test(t)) a.push(t.slice(0, -1));
+  if (t.length > 5 && /ing$/.test(t)) a.push(t.slice(0, -3));
+  if (t.length > 4 && /ed$/.test(t)) a.push(t.slice(0, -2));
+  return [...new Set(a)].slice(0, 3);
+}
+function hitsFor(t) { const m = new Map(); let i = IX.s.indexOf(t); while (i >= 0) { const r = recAt(i); if (!m.has(r)) m.set(r, i); i = IX.s.indexOf(t, i + t.length); } return m; }
+function hitsAny(list) { let m = null; for (const t of list) { const h = hitsFor(t); if (!m) m = h; else h.forEach((v, r) => { if (!m.has(r) || m.get(r) > v) m.set(r, v); }); } return m || new Map(); }
+function origOf(k, id) { const o = k === "c" ? C[id] : k === "z" ? Z[id] : k === "e" ? D.entails.find((x) => x.id === id) : (D.patterns || []).find((x) => x.id === id); return o ? txtOf(k, o) : ""; }
+function snip(k, id, term) {
+  const t = origOf(k, id); if (!t) return "";
+  const i = norm(t).indexOf(term); if (i < 0) return "";
+  let a = Math.max(0, i - 60), b = Math.min(t.length, i + term.length + 90);
+  if (a > 0) { const sp = t.indexOf(" ", a); if (sp > 0 && sp < i) a = sp + 1; }
+  if (b < t.length) { const sp = t.lastIndexOf(" ", b); if (sp > i + term.length) b = sp; }
+  return (a > 0 ? "…" : "") + t.slice(a, b).replace(/\s+/g, " ").trim() + (b < t.length ? "…" : "");
+}
+function searchAll(q, lim) {
+  const raw = norm(q).split(/[^a-z0-9]+/).filter((t) => t.length > 1);
+  if (!raw.length) return [];
+  if (!IX) buildIX();
+  let keep = null;
+  for (const t of raw) { const h = hitsAny(cands(t)); if (!keep) keep = h; else { const nx = new Map(); keep.forEach((v, r) => { if (h.has(r)) nx.set(r, Math.min(v, h.get(r))); }); keep = nx; } if (!keep.size) return []; }
+  const phrase = raw.length > 1 ? raw.join(" ") : null;
+  const ph = phrase ? hitsFor(phrase) : null;
+  const out = [];
+  keep.forEach((at, r) => {
+    const k = IX.kinds[r], nm = norm(IX.names[r]);
+    const inName = raw.every((t) => cands(t).some((x) => nm.includes(x)));
+    const near = ph && ph.has(r);
+    out.push({ k, id: IX.ids[r], r, at: near ? ph.get(r) : at, t: inName ? 0 : near ? (k === "c" ? .5 : 1.5) : (k === "c" ? 1 : 2) });
+  });
+  out.sort((a, b) => a.t - b.t || a.at - b.at);
+  const total = out.length, cn = out.filter((x) => x.k === "c").length, ids = out.filter((x) => x.k === "c").map((x) => x.id);
+  const first = cands(raw[0])[cands(raw[0]).length - 1];
+  const res = out.slice(0, lim || 60).map((x) => {
+    const sub = x.k === "c" ? ((Z[C[x.id].zid] || {}).name || "") + " · " + yrs(C[x.id]) : x.k === "z" ? "Kind of place" : x.k === "e" ? "What it takes · " + (D.entails.find((e) => e.id === x.id) || {}).group : "Pattern behind the attempts";
+    return { k: x.k, id: x.id, n: IX.names[x.r], s: sub, t: x.t, q: x.t === 0 ? "" : snip(x.k, x.id, phrase && x.t % 1 ? phrase : first) };
+  });
+  res.total = total; res.caseCount = cn; res.caseIds = ids;
+  return res;
+}
+function find() {
+  const l = $("#flist"), q = S.q || "";
+  if (q.trim().length < 2) { l.innerHTML = ""; return; }
+  const r = searchAll(q), cs = r.caseIds || [];
+  if (!r.length) { l.innerHTML = '<div class="fi" style="cursor:default;color:var(--mute)">Nothing matches.</div>'; return; }
+  let h = '<div class="fhead">' + r.total.toLocaleString() + (r.total === 1 ? " match" : " matches") + (cs.length > 1 ? ' · <button class="lk" id="hlq">Light all ' + cs.length.toLocaleString() + " on the map</button>" : "") + "</div>";
+  h += r.map((x) => '<div class="fi" data-k="' + x.k + '" data-id="' + x.id + '">' + esc(x.n) + "<small>" + esc(x.s) + "</small>" + (x.q ? '<small class="fq">' + esc(x.q) + "</small>" : "") + "</div>").join("");
+  if (r.total > r.length) h += '<div class="fi" style="cursor:default;color:var(--mute)">Showing the first ' + r.length + '.</div>';
+  l.innerHTML = h;
+  $$(".fi[data-id]", l).forEach((n) => n.addEventListener("click", () => openAny(n.dataset.k, n.dataset.id)));
+  const hb = $("#hlq");
+  if (hb) hb.addEventListener("click", () => { S.sel = null; S.hlz = null; S.pat = null; S.hl = cs; close2(); paint(); focusIds(S.hl); });
+}
+function close2() { const d = $("#det"); if (d) d.classList.remove("open"); }
 const openAny = (k, id, l) => k === "c" ? openCase(id) : k === "z" ? openZone(id, l) : k === "e" ? openNeed(id) : k === "p" ? openPat(id) : openDoc(id);
 function buildTr() {
   const w = S.world;
@@ -485,7 +562,7 @@ function wire() { $$("[data-open]", $("#detBody")).forEach((n) => n.addEventList
 const srcs = (l) => (l && l.length) ? '<div class="src"><b style="font-weight:500">Sources</b><ol>' + l.map((s) => '<li><a href="' + esc(s.u) + '" target="_blank" rel="noopener">' + esc(s.t) + "</a></li>").join("") + "</ol></div>" : "";
 const STEPS = [["Announced", () => 1], ["Built or occupied", (c) => c.built], ["People lived there", (c) => c.inhabited], ["Own money", (c) => c.currency], ["Own laws or courts", (c) => c.laws], ["Outlasted a state's challenge", (c) => c.held], ["Recognised by a UN member", (c) => c.recd]];
 function detPad() { const f = freeBox(), d = $("#det"), plain = { left: f.L, right: f.R, top: 0, bottom: 0 }; if (isPhone() || !d.classList.contains("open")) return plain; const r = d.getBoundingClientRect(), W = innerWidth; if (!r.width) return plain; const p = (r.left + r.width / 2) < W / 2 ? { left: Math.max(f.L, r.right + 8), right: f.R, top: 0, bottom: 0 } : { left: f.L, right: Math.max(f.R, W - r.left + 8), top: 0, bottom: 0 }; return W - p.left - p.right < 260 ? plain : p; }
-function focusIds(ids) { const pts = ids.map((i) => C[i]).filter((c) => c && c.lat != null && (c.body || "earth") === S.world).map((c) => [c.plon, c.plat]); if (!pts.length || $("#room").classList.contains("open")) return; const padding = detPad(); if (pts.length === 1) return map.flyTo({ center: pts[0], zoom: Math.max(map.getZoom(), 3), padding, duration: 800 }); const lon = pts.map((p) => p[0]), lat = pts.map((p) => p[1]); const spanx = Math.max(...lon) - Math.min(...lon), spany = Math.max(...lat) - Math.min(...lat); const ct = [(Math.max(...lon) + Math.min(...lon)) / 2, (Math.max(...lat) + Math.min(...lat)) / 2]; const zoom = proj === "globe" ? Math.max(fitZ(padding, ct[1]), Math.min(3.4, Math.log2(300 / Math.max(spanx, spany * 1.6, 25)) + .3)) : Math.max(.6, Math.min(4, Math.log2(300 / Math.max(spanx, spany * 1.6, 25)))); map.flyTo({ center: ct, zoom, padding, duration: 900 }); }
+function focusIds(ids) { const pts = ids.map((i) => C[i]).filter((c) => c && c.lat != null && (c.body || "earth") === S.world).map((c) => [c.plon, c.plat]); if (!pts.length || $("#room").classList.contains("open")) return; const padding = detPad(); if (pts.length === 1) return map.flyTo({ center: pts[0], zoom: Math.max(map.getZoom(), 3), padding, duration: 800 }); const lon = pts.map((p) => p[0]).sort((a, b) => a - b), lat = pts.map((p) => p[1]); let gap = -1, gi = 0; for (let i = 0; i < lon.length; i++) { const a = lon[i], b = lon[(i + 1) % lon.length] + (i + 1 === lon.length ? 360 : 0); if (b - a > gap) { gap = b - a; gi = i; } } const spanx = Math.min(360, 360 - gap); let cx = lon[(gi + 1) % lon.length] + spanx / 2; while (cx > 180) cx -= 360; while (cx < -180) cx += 360; const spany = Math.max(...lat) - Math.min(...lat); const ct = [cx, (Math.max(...lat) + Math.min(...lat)) / 2]; const zoom = proj === "globe" ? Math.max(fitZ(padding, ct[1]), Math.min(3.4, Math.log2(300 / Math.max(spanx, spany * 1.6, 25)) + .3)) : Math.max(.6, Math.min(4, Math.log2(300 / Math.max(spanx, spany * 1.6, 25)))); map.flyTo({ center: ct, zoom, padding, duration: 900 }); }
 function openCase(id) {
   const c = C[id], z = Z[c.zid]; pushH("c", id); S.sel = id; S.hl = null; S.hlz = null; const body = c.body || "earth"; if (S.world !== body) setWorld(body); paint();
   const row = (k, v) => v ? "<tr><th>" + k + "</th><td>" + esc(v) + "</td></tr>" : "";
@@ -548,7 +625,7 @@ function buildRoom() {
   set("dec", '<div class="cols">' + dk.map((k) => '<div data-tip="' + (k === 1890 ? "1890s and before" : k + "s") + ": " + (dc[k] ? Object.keys(GROUPS).map((g) => GROUPS[g][0] + " " + dc[k][g]).join(", ") : "none") + '">' + Object.keys(GROUPS).map((g) => dc[k] && dc[k][g] ? '<i style="height:' + dc[k][g] / mxd * 100 + "%;background:" + GC[g] + '"></i>' : "").join("") + "</div>").join("") + '</div><div class="cax">' + dk.map((k) => "<span>" + (k % 20 === 0 ? String(k).slice(0) : "") + "</span>").join("") + '</div><div class="lg">' + Object.keys(GROUPS).map((g) => '<span><i style="background:' + GC[g] + '"></i>' + GROUPS[g][0] + "</span>").join("") + "</div>");
   set("cost", barRows(ch.costs.map((t) => ({ l: t.label, v: t.value, s: t.s, tip: t.note })), { log: 1 }));
   for (const id in views) { const v = views[id]; const sh = (i) => { set(id, v[i]()); $$('[data-slot="' + id + '"] .dots button').forEach((b, j) => b.classList.toggle("on", i === j)); }; sh(0); $$('[data-slot="' + id + '"] .dots button').forEach((b) => b.addEventListener("click", () => sh(+b.dataset.sl))); }
-  const q = $("#rq"), qr = $("#rqres"); q.addEventListener("input", () => { const r = searchAll(q.value); qr.style.display = r.length ? "block" : "none"; qr.innerHTML = r.map((x) => '<div class="fi" style="padding:5px 8px" data-k="' + x.k + '" data-id="' + x.id + '">' + esc(x.n) + "<small>" + esc(x.s) + "</small></div>").join(""); $$(".fi", qr).forEach((n) => n.addEventListener("click", () => { qr.style.display = "none"; openAny(n.dataset.k, n.dataset.id); })); });
+  const q = $("#rq"), qr = $("#rqres"); q.addEventListener("input", () => { const r = searchAll(q.value, 40); qr.style.display = r.length ? "block" : "none"; qr.innerHTML = r.map((x) => '<div class="fi" style="padding:5px 8px" data-k="' + x.k + '" data-id="' + x.id + '">' + esc(x.n) + "<small>" + esc(x.s) + "</small></div>").join(""); $$(".fi", qr).forEach((n) => n.addEventListener("click", () => { qr.style.display = "none"; openAny(n.dataset.k, n.dataset.id); })); });
 }
 const toMap = () => { $("#room").classList.remove("open"); reframe(0); };
 
