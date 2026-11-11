@@ -40,7 +40,7 @@ cp dist/central_bank_independence.html ~/maps/   # then git add, commit, push to
 ## Data files to add to (`agents/`)
 | File | Holds | Records now |
 |---|---|---|
-| `corruption.json` | `cases` (iso3, central_bank, category, years, people, summary, status, source_title, source_url, weak_source) and `revolving_door` | 232 cases in 135 countries and territories; 128 revolving-door records in 42 |
+| `corruption.json` | `cases` (iso3, central_bank, category, years, people, summary, status, source_title, source_url, weak_source) and `revolving_door` | 232 cases in 135 countries and territories; 133 revolving-door records in 44 |
 | `events_gold.json` | `events`: governor firings, pressure and moves against banks, 1990s–Nov 2026; plus gold storage | 102 events in 52 countries |
 | `owners.json` | `holdings` (named shareholders with shares, %, as_of, source), `bis_members`, `history` | 228 holdings; all 63 BIS members |
 | `networks.json` | `links` (entity, type, hq, cb_iso3, relation, detail, source) and `g30` members | 307 links (45 printer ties, 107 reserve-manager ties); 56 G30 members |
@@ -50,7 +50,7 @@ cp dist/central_bank_independence.html ~/maps/   # then git add, commit, push to
 | `hq.json` | Head-office city and country for each party | – |
 | `patterns.json`, `implications.json` | The patterns and their plain-language meanings | 17 |
 
-Altogether the map has 1,183 parties and 1,591 ties, and `agents/writeups.json` holds 1,412 plain-language paragraphs, one for every box. `agents/work/research_log_2026-11.json` lists what was searched with no result, unopened leads, and records dropped after review.
+Altogether the map has 1,184 parties and 1,597 ties, and `agents/writeups.json` holds 1,413 plain-language paragraphs, one for every box. `agents/work/research_log_2026-11.json` lists what was searched with no result, unopened leads, and records dropped after review.
 
 ## Rules the user holds to
 - **No fabrication.** Every record needs a readable source URL that states the fact. Mark Wikipedia-only items `weak_source: true`. List acquittals but don't count them. Claims resting on one author go in as "claim, not confirmed."
@@ -86,7 +86,7 @@ These are rough estimates. No complete count exists for any of these categories.
 | Corruption cases at central banks, 1990-2026 | 232 in 135 countries and territories | ~35-45% |
 | External auditors | 49 records at 39 banks in `gaps.json`, plus more in `networks.json` | ~25% |
 | Banknote printers and their clients | 44 printing contracts, 1 paper maker, 1 substrate supplier | ~20% |
-| Revolving door (officials to or from private finance) | 128 records in 42 countries | ~15-20% |
+| Revolving door (officials to or from private finance) | 133 records in 44 countries | ~15-20% |
 | Outside reserve and fund managers | 107, mostly Norway's fund | ~5% outside Norway |
 
 ## What is left, and how to finish it
@@ -197,3 +197,20 @@ Checked and yielded nothing: **Patrick Harker** (the Philadelphia Fed's own anno
 
 ### Where round 8 should start
 Still with no revolving-door record and worth a governor-profile pass each: **Ireland, Belgium, Poland, Singapore, Peru, Denmark, Norway, Finland, Slovakia, Croatia, Bulgaria**, Malaysia beyond the two held and Switzerland beyond Hildebrand. **US Reserve Bank presidents before 2000** is still untouched and is still the one closed, listable set here. Two Fed appointment URLs remain unopened.
+
+
+## Round 8 (10 November 2026), what it added
+Five records, two of them the first at that bank, and the first pre-2000 Federal Reserve material.
+
+- **Norway** — Nicolai Tangen, founder of the hedge fund AKO Capital in 2005, appointed chief executive of Norges Bank Investment Management on 24 March 2020, from Norges Bank's own account, which also sets out the conditions attached: he gives up all positions at AKO and the Foundation, the earnings from his interest go to the Foundation during his term, and personal trading needs the General Counsel's approval. First revolving-door record for Norges Bank. The Supervisory Council's warning about the same hire was already on the map as a case, so the two sit side by side.
+- **Ireland** — Matthew Elderfield, deputy governor and financial regulator from 2010, hired by Lloyds Banking Group as director for conduct and compliance from October 2013 (Irish Times). First for the Central Bank of Ireland. Note that RTE's earlier report had Lloyds only "in talks" with all parties declining to comment; the confirmed report is the one cited.
+- **United States, pre-2000** — E. Gerald Corrigan (New York Fed 1985-1993, Goldman Sachs partner from 1994), William J. McDonough (about 22 years at First Chicago, New York Fed from 1992, president 1993-2003, later vice chairman of Merrill Lynch) and Thomas C. Melzer (17 years at Morgan Stanley, managing director 1977-1984 over the Government Securities Department, St. Louis Fed president 1985-1998). All three from Federal Reserve History.
+
+### This round moved scores across the whole map
+The three Fed records raised the highest revolving-door count anywhere, which is the denominator, so every country's share of it fell a little. **Rounded all-around figures moved for Australia (23 to 22), Ireland (22 to 23) and Slovakia (25 to 24)**, and those three paragraphs quoted the old number and were corrected. The United States paragraph's count of recorded moves went from 34 to 37. Fifteen other countries moved by a point on the inside score, which no writeup quotes. **Check for this every time a record is added to the country holding the maximum.**
+
+### The Federal Reserve History index does not render for an automated reader
+Its people page reports 246 profiles but returns only the filter controls, so there is no list to work from. The three records here were found by name. To finish the pre-2000 set, work through each Reserve Bank's own history page for its list of presidents, then open only the profiles of those who came from or went to a bank, a securities firm or an asset manager.
+
+### Where round 9 should start
+Banks still with no revolving-door record: **Belgium, Poland, Singapore, Peru, Denmark, Finland, Slovakia, Croatia, Bulgaria**, Malaysia beyond the two held and Switzerland beyond Hildebrand. Then the rest of the pre-2000 Fed presidents by the method above. After that the revolving door stops being the cheapest seam and the governor-dismissal leads (17 unopened) are worth more.
