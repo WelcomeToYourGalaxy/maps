@@ -1914,5 +1914,96 @@
     }
    ]
   }
+ },
+ "round5": {
+  "cases_local_language": {
+   "searched_none": [
+    {
+     "iso3": "BHR",
+     "note": "Arabic search for Central Bank of Bahrain embezzlement/court cases; all hits were commercial-bank employees"
+    },
+    {
+     "iso3": "SAU",
+     "note": "Arabic search for SAMA staff bribery and Nazaha cases; Nazaha cases name commercial-bank staff with SAMA as the cooperating authority, not SAMA officials"
+    },
+    {
+     "iso3": "OMN",
+     "note": "Arabic search for Central Bank of Oman embezzlement/conviction; hits were other Gulf states' commercial banks"
+    },
+    {
+     "iso3": "TWN",
+     "note": "Chinese search for central bank officials prosecuted; hits were unrelated political corruption cases (Taipei city, presidential)"
+    },
+    {
+     "iso3": "SGP",
+     "note": "English search for MAS officers charged by CPIB; CPIB case studies name no MAS officer"
+    }
+   ],
+   "conclusion": "Local-language retries found nothing for the Gulf and East Asia. Treat this approach as exhausted unless a new kind of source is tried."
+  },
+  "service": {
+   "added": [
+    {
+     "iso3": "KOR",
+     "note": "Bank of Korea Act Arts. 43-45 and 95: Board of Audit and Inspection audits annually; auditor appointed by the President reports to the Monetary Policy Committee. Art. 98(4) requires an external accounting-corporation audit but names no firm."
+    }
+   ],
+   "already_covered_gap_list_stale": [
+    {
+     "iso3": "JPN",
+     "note": "networks.json already had the Cabinet-appointed Auditors, FY2025, Annual Review 2026"
+    },
+    {
+     "iso3": "DNK",
+     "note": "networks.json already had PwC on the 2025 accounts, Arsrapport 2025"
+    },
+    {
+     "iso3": "IDN",
+     "note": "already covered in gaps.json auditors"
+    }
+   ],
+   "still_not_found": [
+    "EGY",
+    "SAU",
+    "VNM",
+    "BGD",
+    "PHL",
+    "PER"
+   ]
+  },
+  "fixed": [
+   {
+    "iso3": "GHA",
+    "note": "gaps.json case_updates set status 'charges withdrawn', which app.js's not-counted list did not match, so a withdrawn case was counted. Normalised to 'charge withdrawn'; Ghana all 33->32, inside 21->17; writeup corrected."
+   }
+  ],
+  "open_for_user": {
+   "statuses_counted_but_undecided": [
+    {
+     "iso3": "KEN",
+     "status": "outcome not found"
+    },
+    {
+     "iso3": "SRB",
+     "status": "outcome not found"
+    },
+    {
+     "iso3": "IRQ",
+     "status": "died; outcome not found"
+    },
+    {
+     "iso3": "RUS",
+     "status": "tried (verdict not found)"
+    },
+    {
+     "iso3": "ROU",
+     "status": "conviction annulled (time-barred)"
+    },
+    {
+     "iso3": "POL",
+     "status": "Sejm vote pending"
+    }
+   ]
+  }
  }
 }
