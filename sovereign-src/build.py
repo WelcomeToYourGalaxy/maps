@@ -432,6 +432,9 @@ def _share(rows):
 _n,_nn,_nt=_share(_nr);_a,_an,_at=_share(_rt)
 _fl=lambda v:int(v*10)/10 if v<100 else 100
 COV['overall_high_pct']=_fl(_n);COV['all_pct']=_fl(_a);COV['unread_total']=sum(r.get('unread',0) for r in COV['rows'])
+_ur=[r for r in COV['rows'] if r.get('unread')]
+COV['unread_rows']=[dict(type=r['type'],n=r['unread'],src=r.get('unread_source') or '') for r in _ur]
+COV['unread_one']=(COV['unread_rows'][0] if len(_ur)==1 else None)
 COV['est_total']=sum(max(r['world_high'] or 0,r['world_low'] or 0,r['on_map']) for r in _rt);COV['on_map_total']=sum(r['on_map'] for r in _rt)
 print('coverage of named items: narrow %d/%d=%.1f%%; all %d/%d=%.1f%%; unread %d; estimates %d'%(_nn,_nt,_n,_an,_at,_a,COV['unread_total'],COV['est_total']))
 for r in COV['rows']:print('  ',r['type'],r['on_map'],r.get('named'),r.get('unread'),r['world_low'],r['world_high'],r['kind'])
