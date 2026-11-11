@@ -302,6 +302,9 @@ def main():
 
     spread(case_out); spread(ent)
 
+    import collections as _co
+    _cityc = _co.Counter(c['city'] for c in cases if c.get('city'))
+    _topcity, _topcity_n = _cityc.most_common(1)[0] if _cityc else ('Washington', 0)
     data = {'rows': rows, 'alias': alias, 'cases': case_out, 'lenses': LENSES, 'bands': BANDS,
             'sectors': TYPES, 'entities': ent, 'casebuckets': CASE_BUCKETS, 'groups': groups,
             'routes': routes, 'quarantine': [], 'dupes': [], 'qdup': [], 'notes': [], 'noted': 0,
@@ -315,7 +318,8 @@ def main():
             'offpres': {k: [[p[0], 1 if p[1] else 0] for p in present[k]] for k in OFFSETS if present.get(k)},
             'meta': {'dcap': round(DCAP, 2), 'rcap': round(RCAP, 2), 'n_orgs': len(orgs),
                      'n_cases': len(case_out), 'n_branches': len(groups), 'n_routes': len(routes),
-                     'n_est_branches': sum(g['est'] for g in groups)}}
+                     'n_est_branches': sum(g['est'] for g in groups),
+                     'topcity': _topcity, 'topcity_n': _topcity_n}}
 
     bks = load('backers.json', [])
     known = {o['k'] for o in orgs} | {x['k'] for x in bks}
