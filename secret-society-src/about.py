@@ -14,8 +14,12 @@ def about(data):
     bys = {}
     for c in cases:
         bys[c['status']] = bys.get(c['status'], 0) + 1
-    order = ['convicted', 'inquiry', 'acknowledged', 'settled', 'designated', 'indicted', 'reported', 'annulled', 'acquitted']
-    status_line = ', '.join('%d %s' % (bys[s], s) for s in order if s in bys)
+    order = ['convicted', 'indicted', 'investigation', 'inquiry', 'acknowledged', 'alleged', 'settled',
+             'designated', 'reported', 'annulled', 'acquitted']
+    for _s in bys:                      # never silently drop a status the data has
+        if _s not in order:
+            order.append(_s)
+    status_line = ', '.join('%d %s' % (bys[s], {'investigation': 'under investigation'}.get(s, s)) for s in order if s in bys)
     byb = ', '.join('%d %s' % (sum(1 for c in cases if c['bk'] == b[0]), b[1].lower()) for b in data['casebuckets'])
     byt = ', '.join('%s (%d)' % (t['label'].lower(), sum(1 for o in orgs if o['s'] == t['k'])) for t in data['sectors'])
     ncty = len({c['c'] for c in cases})
@@ -54,7 +58,8 @@ def about(data):
     a('<p>Where a case also appears in the conspiracy archive, its card gives the archive entry and the archive\'s trust rating.</p>')
     a('<p class="warn">Membership is not misconduct. Most people named in these cases belonged to lawful organisations. A case is here because a forum found that the organisation, through them, reached into an office.</p>')
     a('<h2>Layer 3: organisations, %d</h2><p>Each is plotted at its headquarters. Types: %s. Each card gives where its presence data come from and lists every case it has on the map.</p>' % (len(orgs), byt))
-    a('<h2>Layer 4: where markers sit</h2><p>A case is placed in the city of the institution it reached, a capital for a national office. Organisations are placed at their headquarters. Where many records share one city — 73 of them sit on Washington — they are spread a few kilometres apart around it so that each one can be clicked; the cluster marks the city, not an address. An earlier version drew a dot for every country an organisation had a branch in, arranged on a ring around each capital. Those rings were invented geography and have been removed: an organisation\'s country list is on its own card instead.</p>')
+    _topcity, _topn = meta.get('topcity', 'Washington'), meta.get('topcity_n', 0)
+    a('<h2>Layer 4: where markers sit</h2><p>A case is placed in the city of the institution it reached, a capital for a national office. Organisations are placed at their headquarters. Where many records share one city — %d of them sit on %s — they are spread a few kilometres apart around it so that each one can be clicked; the cluster marks the city, not an address. An earlier version drew a dot for every country an organisation had a branch in, arranged on a ring around each capital. Those rings were invented geography and have been removed: an organisation\'s country list is on its own card instead.</p>' % (_topn, _topcity))
     a('<h2>Layer 5: channels, %d</h2><p>Each joins the places named in a record — a head office and the subsidiaries it moved money through, a command centre and the services it coordinated, a church and the parliament it lobbied — along the shortest path over the globe. It shows that something moved between the places, not the route it took.</p>' % len(routes))
     a('<h2>Patterns behind the scenes</h2><p>Each pattern is written from the cases and organisations above: it names the arrangement, gives the countries and the role each plays, draws the documented connections, counts the cases by decade, lists what is not proven, and closes with what it means for someone who has not followed all of it. The country cards carry the same reading for each country.</p><ul>' +
       ''.join('<li><b>%s</b> — %d countries, %d cases, %s–%s</li>' % (H.escape(x['title']), len(x['cmap']), x['ncases'], x['span'][0], x['span'][1]) for x in pats) + '</ul>')
