@@ -40,7 +40,7 @@ cp dist/central_bank_independence.html ~/maps/   # then git add, commit, push to
 ## Data files to add to (`agents/`)
 | File | Holds | Records now |
 |---|---|---|
-| `corruption.json` | `cases` (iso3, central_bank, category, years, people, summary, status, source_title, source_url, weak_source) and `revolving_door` | 232 cases in 135 countries and territories; 133 revolving-door records in 44 |
+| `corruption.json` | `cases` (iso3, central_bank, category, years, people, summary, status, source_title, source_url, weak_source) and `revolving_door` | 232 cases in 135 countries and territories; 136 revolving-door records in 47 |
 | `events_gold.json` | `events`: governor firings, pressure and moves against banks, 1990s–Nov 2026; plus gold storage | 102 events in 52 countries |
 | `owners.json` | `holdings` (named shareholders with shares, %, as_of, source), `bis_members`, `history` | 228 holdings; all 63 BIS members |
 | `networks.json` | `links` (entity, type, hq, cb_iso3, relation, detail, source) and `g30` members | 307 links (45 printer ties, 107 reserve-manager ties); 56 G30 members |
@@ -50,7 +50,7 @@ cp dist/central_bank_independence.html ~/maps/   # then git add, commit, push to
 | `hq.json` | Head-office city and country for each party | – |
 | `patterns.json`, `implications.json` | The patterns and their plain-language meanings | 17 |
 
-Altogether the map has 1,184 parties and 1,597 ties, and `agents/writeups.json` holds 1,413 plain-language paragraphs, one for every box. `agents/work/research_log_2026-11.json` lists what was searched with no result, unopened leads, and records dropped after review.
+Altogether the map has 1,189 parties and 1,603 ties, and `agents/writeups.json` holds 1,418 plain-language paragraphs, one for every box. `agents/work/research_log_2026-11.json` lists what was searched with no result, unopened leads, and records dropped after review.
 
 ## Rules the user holds to
 - **No fabrication.** Every record needs a readable source URL that states the fact. Mark Wikipedia-only items `weak_source: true`. List acquittals but don't count them. Claims resting on one author go in as "claim, not confirmed."
@@ -86,7 +86,7 @@ These are rough estimates. No complete count exists for any of these categories.
 | Corruption cases at central banks, 1990-2026 | 232 in 135 countries and territories | ~35-45% |
 | External auditors | 49 records at 39 banks in `gaps.json`, plus more in `networks.json` | ~25% |
 | Banknote printers and their clients | 44 printing contracts, 1 paper maker, 1 substrate supplier | ~20% |
-| Revolving door (officials to or from private finance) | 133 records in 44 countries | ~15-20% |
+| Revolving door (officials to or from private finance) | 136 records in 47 countries | ~15-20% |
 | Outside reserve and fund managers | 107, mostly Norway's fund | ~5% outside Norway |
 
 ## What is left, and how to finish it
@@ -214,3 +214,18 @@ Its people page reports 246 profiles but returns only the filter controls, so th
 
 ### Where round 9 should start
 Banks still with no revolving-door record: **Belgium, Poland, Singapore, Peru, Denmark, Finland, Slovakia, Croatia, Bulgaria**, Malaysia beyond the two held and Switzerland beyond Hildebrand. Then the rest of the pre-2000 Fed presidents by the method above. After that the revolving door stops being the cheapest seam and the governor-dismissal leads (17 unopened) are worth more.
+
+
+## Round 9 (10 November 2026), what it added
+Three records, each the first at that bank, all from an official page.
+
+- **Belgium** — Tom Dechaene: Bank Brussel Lambert 1986-1990, Morgan Grenfell & Co in London 1991-1998, Deutsche Bank London as director 1998-1999 and adviser 2000-2001, Director of the National Bank of Belgium from 24 December 2014 by Royal Decree, renewed for six years from 24 December 2020. From the bank's own biography page. His first term is 2014, not 2011 as some sources have it.
+- **Denmark** — Lars Rohde: Realkredit Danmark 1989-1998, ending as deputy managing director, then the statutory pension body ATP 1998-2013, chair of the Board of Governors of Danmarks Nationalbank 2013-2023, and a Nordea board member since 2024. From Nordea's own board page. The private sides are Realkredit Danmark and Nordea; ATP is a statutory body.
+- **Poland** — Dariusz Filar, chief economist of Bank Pekao from March 1999 until the day he joined the Monetary Policy Council, from the NBP's own archive page. That page gives no dates for his Council term, so the record states none.
+
+Only Belgium's rounded all-around figure moved, 29 to 30, and its paragraph quoted the old number. The United States still holds the highest revolving-door count, so nothing shifted map-wide this round.
+
+**A false lead worth recording:** searching for the Monetary Authority of Singapore's board turns up an MAS media-release annex listing DBS, OCBC, UOB and Standard Chartered people. That is the board of a payments body MAS chairs, not the authority's own board, and banks sitting on it is a different kind of tie from a revolving door. It was not recorded. The MAS managing directors and the authority's own board are still unchecked.
+
+### Where round 10 should start
+Banks still with no revolving-door record: **Singapore, Peru, Finland, Slovakia, Croatia, Bulgaria**, Malaysia beyond the two held and Switzerland beyond Hildebrand. That list is now short enough that the revolving door stops being the cheapest seam after it. The 17 unopened **governor-dismissal leads** are the next category worth a round.
