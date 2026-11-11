@@ -140,7 +140,10 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .dot.ok{background:var(--accent-hi)} .dot.bad{background:#9a6b63} .dot.busy{background:var(--stone);animation:pulse 1s infinite}
 @keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
 /* ---------- trail ---------- */
-#trail{position:fixed;left:20px;bottom:98px;z-index:40;max-width:min(560px,46vw);font-size:12px;line-height:1.6;
+/* The panel is parked right at min(980px,58vw) with an 18px margin, so
+   its left edge never comes further left than about 60% of the window.
+   The legend is capped below that so the two cannot meet. */
+#trail{position:fixed;left:20px;bottom:98px;z-index:40;max-width:min(420px,32vw);font-size:12px;line-height:1.6;
   background:rgba(17,24,21,.93);border:1px solid var(--line);border-radius:10px;padding:9px 13px;display:none}
 #trail.on{display:block}
 #trail a{color:var(--accent-hi);cursor:pointer;text-decoration:none}
@@ -154,7 +157,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 #pincount{font-size:10.5px;color:var(--faint);margin-top:5px}
 /* ---------- modal: draggable, resizable, parked to the right ---------- */
 #modal{position:fixed;z-index:100;left:auto;right:18px;top:38px;transform:none;
-  width:min(1180px,74vw);height:calc(100vh - 58px);min-width:340px;min-height:260px;
+  width:min(980px,58vw);height:calc(100vh - 58px);min-width:340px;min-height:260px;
   display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:13px;
   box-shadow:0 24px 70px rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:opacity .2s}
 #modal.on{opacity:1;pointer-events:auto}
@@ -170,8 +173,26 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .dgwrap{margin:4px 0 0;width:100%}
 .dglabel{font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:var(--stone);margin-top:18px}
 .tree{width:100%}
+
+/* Drawn as a diagram: a spine down from each parent and an elbow out to
+   every child, so the structure is visible as lines rather than only as
+   indentation. The last child's spine stops at its own elbow instead of
+   running on past it. */
 .tnode{position:relative}
-.tkids{margin-left:15px;padding-left:13px;border-left:1px solid rgba(125,142,130,.17)}
+.tkids{margin-left:16px}
+.tkids > .tnode{padding-left:19px}
+.tkids > .tnode::before{content:'';position:absolute;left:0;top:0;bottom:0;
+  border-left:1px solid rgba(125,142,130,.34)}
+.tkids > .tnode:last-child::before{bottom:auto;height:27px}
+.tkids > .tnode::after{content:'';position:absolute;left:0;top:27px;width:19px;
+  border-top:1px solid rgba(125,142,130,.34)}
+/* the office rows hang off the same spine, on a shorter elbow */
+.tkids > .toff,.tkids > .tmore,.tkids > .tnone{position:relative;margin-left:19px}
+.tkids > .toff::before{content:'';position:absolute;left:-19px;top:0;bottom:0;
+  border-left:1px solid rgba(125,142,130,.34)}
+.tkids > .toff:last-of-type::before{bottom:auto;height:13px}
+.tkids > .toff::after{content:'';position:absolute;left:-19px;top:13px;width:13px;
+  border-top:1px solid rgba(125,142,130,.22)}
 
 /* a box: branch, kind, or theme */
 .tbox{position:relative;display:flex;align-items:flex-start;gap:9px;width:100%;box-sizing:border-box;
@@ -2040,7 +2061,16 @@ function officeRows(key, rows){
 
 function treeHTML(b){
   const pool={leg:b.leg,exec:b.exec,jud:b.jud,ag:b.ag};
-  let h='<div class="tree">';
+  const total=b.leg.length+b.exec.length+b.jud.length+b.ag.length;
+  let h='<div class="tree"><div class="tnode">';
+  h+=tbox('root','lvl-root',CUR.label,
+      'Everyone below holds office inside this jurisdiction.', total,
+      'The four branches below are the whole of who there is to approach about a law here. '+
+      'Each one is drawn whether or not Wikidata holds a record of it, so a branch with nothing '+
+      'under it means the record is missing, not that the office does not exist. Hover the i on '+
+      'any box for what that kind of office does, and click an office for how to reach it.');
+  if(COLL['root']) return h+'</div></div>';
+  h+='<div class="tkids">';
 
   ['leg','exec','jud','ag'].forEach(br=>{
     const rows=pool[br]||[];
@@ -2079,7 +2109,7 @@ function treeHTML(b){
     }
     h+='</div>';
   });
-  return h+'</div>';
+  return h+'</div></div></div>';
 }
 
 function tToggle(key){ COLL[key]=!COLL[key]; render(); }
