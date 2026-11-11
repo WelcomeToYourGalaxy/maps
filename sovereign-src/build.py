@@ -456,7 +456,7 @@ def _covhtml():
         h+='<tr style="border-top:1px solid var(--line2)"><td style="padding:3px 6px 3px 0">%s<br><small style="color:var(--mute)">%s%s Counts and estimates: %s</small></td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>'%(r['type'],nb.replace('<','&lt;'),un,r['basis'].replace('<','&lt;'),format(r['on_map'],','),format(r['named_total'],','),sh(r),est(r))
     return h+'</table>'
 METHOD=METHOD.replace('__COV__',_covhtml())
-data=dict(cases=out,zones=zones,entails=ent,patterns=PATTERNS,geo=json.load(open(os.path.join(HERE,'data','zones.geojson'))),charts=charts,short=SHORT,coverage=COV,about=ABOUT,method=METHOD.replace('__NA__',str(len(att))).replace('__NL__',str(len(out)-len(att))).replace('__NS__',str(len({s['u'] for c in out for s in c['sources']}|{s['u'] for z in zones for s in z['sources']}|{s['u'] for e in ent for s in e['sources']}))))
+data=dict(cases=out,zones=zones,entails=ent,patterns=PATTERNS,geo=json.load(open(os.path.join(HERE,'data','zones.geojson'))),charts=charts,short=SHORT,coverage=COV,about=ABOUT,method=METHOD.replace('__NA__',format(len(att),',')).replace('__NL__',format(len(out)-len(att),',')).replace('__NS__',format(len({s['u'] for c in out for s in c['sources']}|{s['u'] for z in zones for s in z['sources']}|{s['u'] for e in ent for s in e['sources']}),',')))
 for f in data['geo']['features']:
     if f['properties']['zone']=='central-arctic':f['properties']['zone']='central-arctic-ocean-and-svalbard'
 if os.environ.get('DUMP_ALL'):
