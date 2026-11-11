@@ -2361,6 +2361,14 @@
   ],
   "notes_on_blocked_fetches": "Three of four agents hit PROVENANCE_REQUIRED permission prompts on constructed URLs. The correct pattern, which worked every time, is to run a WebSearch first and fetch only URLs the search returns. One agent instead used curl to bypass the prompt; that is not an approved method, and its records were spot-checked through WebFetch before use (Alfred Hayes and Roger W. Ferguson Jr. both matched exactly).",
   "panama": "Panama has no central bank, so no audit record exists to find. Worth deciding how the map should mark this.",
-  "tto_auditor": "Contested rather than unknown: reporting says the Auditor General declined to audit the Central Bank and that the Government wanted the Auditor General to resume Central Bank audits. Needs care, not one more fetch."
+  "tto_auditor": "Contested rather than unknown: reporting says the Auditor General declined to audit the Central Bank and that the Government wanted the Auditor General to resume Central Bank audits. Needs care, not one more fetch.",
+  "data_bug_found_and_fixed": {
+   "what": "record_index in parties.json is a POSITIONAL pointer into the cases / revolving_door / events arrays. Round 11 removed one duplicate case, which shifted every later pointer by one. 136 party links pointed at another country's record, 7 pointed past the end of the array, and 14 pointed at the wrong record within the right country. Nothing in the build complained; the party box simply displayed another country's facts under this party's heading.",
+   "examples": "Estonia's box showed a Dominican Republic prosecution (Lois Malkun, Pellerano promissory notes) under the heading of Estonian prosecutor Jaan Naaber. The Maldives showed Cambodia, Israel showed Jamaica, Jamaica showed San Marino, San Marino showed Namibia, Namibia showed Lesotho, Lesotho showed Portugal, Portugal showed Poland, Poland showed Iran, Iran showed Ivory Coast, Ivory Coast showed Senegal - a clean one-position cascade.",
+   "how_it_was_found": "A writer agent refused to use two records because their heading did not match their body, and said so. That is the only reason it surfaced after five rounds. TREAT ANY SUCH REPORT AS A DATA BUG, NOT A WRITING ONE.",
+   "fix": "agents/work/fix_record_index.py rematches each link's source_url to the record it names instead of trusting its position. Idempotent. Repaired 145 links; 2 more (Chile) were repointed by hand from case 195 (Portugal) to case 204, the impersonator-payment case the link's source actually reports. Final audit: 0 out of range, 0 cross-country mismatches.",
+   "when_to_run": "After ANY round that removes, replaces or reorders a record.",
+   "false_positives": "A link whose source_url matches no record at all is usually correct: it means the record's source was later replaced by a better one. Round 11 replaced Bini Smaghi's Irish Times source with Societe Generale's own biography, so the TAGES Holding link still carries the old URL while pointing at the right record. The script leaves these alone rather than guessing. Eleven of the thirteen unresolved links were this case; only Chile's two were genuinely wrong."
+  }
  }
 }

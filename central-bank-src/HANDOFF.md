@@ -52,6 +52,30 @@ cp dist/central_bank_independence.html ~/maps/   # then git add, commit, push to
 
 Altogether the map has 1,232 parties and 1,654 ties, and `agents/writeups.json` holds 1,460 plain-language paragraphs, one for every box. `agents/work/research_log_2026-11.json` lists what was searched with no result, unopened leads, and records dropped after review.
 
+## A data bug to re-check every round
+
+`record_index` in `agents/parties.json` is a **positional** pointer into
+`corruption.json`'s `cases` and `revolving_door` arrays and `events_gold.json`'s
+`events`. Removing or inserting a record in the middle of an array silently shifts
+every later pointer, and nothing in the build complains — the party box simply
+shows another country's facts under this party's heading.
+
+Round 11 removed one duplicate case. That shifted 136 links by one position each,
+and it went unnoticed for five rounds: Estonia's box showed a Dominican Republic
+prosecution, the Maldives showed Cambodia, Israel showed Jamaica, and seven links
+pointed past the end of the array. Round 16 found it only because a writer agent
+said a record's heading did not match its body.
+
+`agents/work/fix_record_index.py` repairs this by rematching each link's
+`source_url` to the record it names rather than trusting its position. It is
+idempotent. **Run it after any round that removes, replaces or reorders a record**,
+and treat a writer agent reporting a heading that contradicts its body as a data
+bug, not a writing one.
+
+A link whose `source_url` matches no record is usually fine: it means the record's
+source was later replaced by a better one (Bini Smaghi's was, in round 11). The
+script leaves those alone rather than guessing.
+
 ## Rules the user holds to
 - **No fabrication.** Every record needs a readable source URL that states the fact. Mark Wikipedia-only items `weak_source: true`. List acquittals but don't count them. Claims resting on one author go in as "claim, not confirmed."
 - **Don't filter datasets.** Include everything a source publishes.
