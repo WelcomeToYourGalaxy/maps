@@ -12,6 +12,20 @@ Research and write NEW cases within your assigned scope. Aim for 45–70 strong 
 ## No fabrication
 Every case must be confirmed with WebSearch/WebFetch from reliable sources (court records, official inquiries, government releases, major outlets, investigative journalism such as OCCRP, Reuters, AP). Every date, figure and name in your text must come from a source you read. Put sources in "cite" (publication/body, date) and the best single link in "url". If you cannot confirm it, leave it out.
 
+### The eight ways records have actually failed the source check
+These are not hypothetical. Every one cost a record in the November 2026 rounds.
+
+1. **Never invent a denial.** This is the most common failure by a wide margin: eight records in two rounds carried a denial their source did not contain. If the page says someone declined to comment, say that. If it records no response, say that. If it says nothing at all about a response, say nothing. A manufactured denial is a fabrication even though it reads as fairness, and in one case the article said the opposite of the denial the record attributed.
+2. **Never invent an explanation of how something came to light.** "Suspicion arose because they volunteered for the same shifts" was nowhere in its source; the case came from wiretaps.
+3. **Never state a claim the page does not carry**, however plausible — a president suspending officials, a resumption date, a parallel case at another border post, a ministry issuing a passport when the page names a lawyer.
+4. **Keep the source's qualifiers.** "Originally", "allegedly", "in some cases", "as many as", "some payments", "helped secure". If the source hedged, the record hedges. Stripping a hedge is as wrong as adding a claim.
+5. **Check for the later outcome before you write.** Convictions get overturned, defendants acquitted, charges dropped, sentences handed down, extraditions halted, amnesties granted, defendants die before sentencing. A record that stops at the charge misleads about where the case stands.
+6. **Take the year from the page text, never from the URL path.** A `/2026/02/` path on a page dating the event to January 2025 has produced wrong years more than once.
+7. **Read the currency and the unit.** "About 250,000 colones" where the source said US$250,000 is an error of roughly 500 times.
+8. **Cite the page that carries the facts.** Wikipedia footnoting a DOJ release is not the source; the release is. A staging mirror, a content farm, an aggregator copy and an unlinked second citation are all failures — and one record attributed its central claims to an article that did not contain them.
+
+If a fact matters enough to write, it is on a page you opened. If it is not, leave it out and say so in your report.
+
 ## Record format (JSON array of objects), exactly these fields
 - "n": title, plain, who got inside what (max ~75 chars)
 - "c": country of the institution infiltrated — MUST be a name exactly as in secret-society-src/briefs/countries.txt
