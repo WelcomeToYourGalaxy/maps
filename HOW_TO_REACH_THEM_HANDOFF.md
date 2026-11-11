@@ -6,9 +6,41 @@
 (the Atlas basemap plate with this map's cartouche).
 
 The map answers one question: who can a member of the public contact to make a
-law, in any country, at any level down to the local one — and what can each of
-them actually do about it, how do you reach them, how often has that worked, and
-what stops it.
+law, in any country, at any level down to the municipality — and what can each
+of them actually do about it, how do you reach them, which routes work more
+often than others, and what stops them.
+
+---
+
+## 0. Read this before editing — the build parts are gone
+
+An earlier handoff said the published file is assembled from parts
+(`n1.html`, `offices.js`, `routes.json`, `n2_data.js`…`n9_pins.js`,
+`nassemble2.py`) and must not be edited directly. **Those parts are not in this
+repo and no copy of them survives.** They lived in a working directory that no
+longer exists.
+
+So `how_to_reach_them.html` is now the source, not a build artefact. Edit it
+directly. If you want the split build back, you would have to cut the file up
+again; there is nothing to restore from.
+
+Everything the parts used to hold is still in the one file, in the same order
+the parts were concatenated: markup and CSS, then `ROUTES`, the office
+classification, the queries, the map setup, the drill-down, the panel, startup,
+UI, pins. Search for the section banners in capitals.
+
+After any edit, check the page still parses before pushing:
+
+```
+node -e "const h=require('fs').readFileSync('how_to_reach_them.html','utf8');
+  const m=[...h.matchAll(/<script>\n([\s\S]*?)\n<\/script>/g)];
+  new Function(m[m.length-1][1]); console.log('JS OK')"
+```
+
+That catches a broken edit but not a broken layout. For anything visual, serve
+the folder and open it, or drive it headless with Playwright — the map needs a
+real browser, and `file://` fails because the boundary file cannot be fetched
+over that scheme.
 
 ---
 
@@ -20,46 +52,57 @@ national borders, no regions. Those appear only once you click.
 
 Click the unit you live in and the map works out the chain of government above
 it — country, region, the unit itself — and outlines each in its own colour,
-with a key at bottom left. Offices that carry a location are pinned in their
-level's colour; the rest stay on the map, dimmed.
+with a key in the row at top right. Offices that carry a location are pinned in
+their level's colour; the rest stay on the map, dimmed.
 
-The box on the right lists the offices as one diagram: the three branches, then
-agencies grouped by what they are for. Click a group, then an office, and you
-get what it can do about a law, every route that reaches it, and the hurdles
-that apply to it.
+The panel on the right draws the offices as one diagram: the jurisdiction, the
+four branches, the kinds of office inside them, and every office under its kind.
+Hovering any box shows what it is. Clicking an office opens what it can do about
+a law, every route that reaches it, and the hurdles that apply.
+
+**The row above the panel** holds the five basemaps, the flat/globe toggle and
+the level key, on one line. It is sized to the panel and right-aligned with it,
+so the two share an edge and neither crowds the map.
 
 ---
 
-## 2. How the page is built
+## 2. Going below the boundary files — municipalities
 
-The published file is assembled from parts, not edited directly. In the build
-directory:
+This is the part most likely to confuse someone reading the code cold.
 
-| Part | What it holds |
-| --- | --- |
-| `n1.html` | markup, all CSS, the chrome |
-| `offices.js` | office classification, routes and hurdles per office kind, agency themes |
-| `hurdles.js` | the nine hurdles, keyed |
-| `routes.json` | the 34 routes with cost, eligibility, timing, rate and failure |
-| `n2_data.js` | the SPARQL queries |
-| `n3_map.js` | MapLibre setup, basemaps, overlay layers, tooltip |
-| `n4_drill.js` | geometry maths, the drill-down, the chain |
-| `n5_panel.js` | the box: diagram, lists, office detail |
-| `n7_boot.js` | startup, the world file, name resolution |
-| `n8_ui.js` | drag, resize, About |
-| `n9_pins.js` | level colours, chain painting, office pins |
-| `nassemble2.py` | concatenates the above into `how_to_reach_them.html` |
+`cgaz-boundaries` has one file per country per level. Most countries stop at
+ADM2. **The United States, Brazil, India, Indonesia, Vietnam and Thailand have
+no ADM3 file at all**, so for the US the deepest polygon is the county. Kenya,
+France, the Philippines, Germany, the UK and Nepal do have ADM3.
 
-`nassemble2.py` also does two things worth knowing: it inlines the Culprits
-basemap module verbatim, and it **patches that module's PLATE constants** from
-`plate_cal.json` (see §5). Run it, then check the result parses before pushing:
+Counties are not where most people's government is. So when a boundary file
+404s, the map asks Wikidata for the settlements inside the unit and draws them
+as **open rings** rather than filled markers — somewhere to go into, not an
+office to contact. Click one and its own offices resolve: a city hall, a mayor,
+a council.
 
-```
-python3 -I nassemble2.py
-node -e "const h=require('fs').readFileSync('how_to_reach_them.html','utf8');
-  const m=[...h.matchAll(/<script>\n([\s\S]*?)\n<\/script>/g)];
-  new Function(m[m.length-1][1]); console.log('JS OK')"
-```
+The query is `qSettle()`. It matches two ways, joined by UNION:
+
+1. a settlement class — city, town, village, municipality and a few others, as
+   a fixed `VALUES` list;
+2. the plain fact that the place has a head of government (P1313) or a
+   legislature (P194) of its own.
+
+The second clause is what makes it work. Pasadena's class is "charter city",
+not "city in the United States", and a class list alone misses it. With both
+clauses Los Angeles County returns 86 of its 88 incorporated cities in about
+two seconds.
+
+**Do not replace the `VALUES` list with a subclass walk** (`?cls wdt:P279*
+wd:Q486972`). It is the obvious tidy-up and it times out — that query never
+returned inside 60 seconds in testing. The broader `Q486972` human-settlement
+class also drags in neighbourhoods and road junctions, which have no officials;
+"North Sherman Way" and "Orange Avenue Junction" came back in that version.
+
+A municipality has no polygon, so stepping into one keeps the parent's outline
+on the map and only the offices change. `enterSettlement()` pushes it onto
+`STACK` with `feature:null`, and the rest of the chain logic already handles a
+level without geometry.
 
 ---
 
@@ -81,12 +124,21 @@ per jurisdiction, fired in order of how fast they return:
    govdirectory.org models them. For Kenya that is 185 against P1001's 112,
    and the two sets barely overlap. Run only at country level.
 
+Plus `qSettle` (§2) when the boundary files run out, and `qCoords` /
+`qCoordsCountry` for pin positions.
+
 **Boundaries:** `world_lowest.topojson` for the default view;
 `cgaz-boundaries` per country per level when drilling.
 
 **Coordinates:** P625, falling back to headquarters P159 → P625. Sparse —
 Kenya 101 of 239, the US 109 of 13,508. The pin counter says how many were
 placed so the gap is visible rather than hidden.
+
+**Expect HTTP 429 from Wikidata while testing.** Running the same query in a
+loop will get you rate-limited, and because `loadSettlements` swallows its
+errors the symptom is an empty result that looks exactly like a code bug. It
+cost an hour here. If a query returns nothing, check for a 429 before you go
+looking for the mistake.
 
 **Not usable:** the CIA world-leaders page and phonebookoftheworld.com both
 serve without CORS headers, so a browser cannot fetch them. They would need a
@@ -104,8 +156,8 @@ level. A browser cannot load that.
 The solution: one file holding the deepest level each country has — ADM2 where
 it exists, ADM1 otherwise — simplified and quantised.
 
-Build script is `/home/claude/world/build_world.py` plus `topo.py`; reproduce
-with a clone of `cgaz-boundaries` and:
+Build script was `build_world.py` plus `topo.py`. **Neither is in this repo**,
+same as the other build parts. To reproduce, clone `cgaz-boundaries` and:
 
 ```
 pip install --break-system-packages shapely topojson
@@ -117,9 +169,10 @@ Result: 201 countries, 48,263 features, 34.4 MB raw GeoJSON → 17.9 MB TopoJSON
 → **4.1 MB gzipped over the wire**. Decodes in about 200 ms. Slivers below the
 tolerance squared are dropped so tiny offshore fragments do not bloat it.
 
-To go deeper (ADM3 where available), raise the level list in `lowest_file()`
-and re-run; expect the file to grow several times over, so check the gzipped
-size before committing.
+Putting ADM3 into this file is the obvious way to get municipalities drawn as
+polygons rather than rings. It would not help the United States, which has no
+ADM3 at all, and it would grow the file several times over. Check the gzipped
+size before committing anything that tries.
 
 ---
 
@@ -144,8 +197,9 @@ PLATE.top    =  85.37670536
 PLATE.bottom = -81.20886926
 ```
 
-Residual error 3–8 px in a 1351 px world. These live in `plate_cal.json` and are
-patched into the module at assembly time.
+Residual error 3–8 px in a 1351 px world. These numbers are now written into
+the inlined basemap module in the page itself, since `plate_cal.json` and the
+assembly step that patched them in are gone. Search `PLATE` in the file.
 
 Two false leads worth remembering: comparing the atlas basemap against the
 satellite basemap gives zero offset at any zoom, because above zoom 3 the
@@ -158,7 +212,7 @@ the correlation peaks come back at noise level.
 ## 6. How an office gets classified
 
 No global register of office powers exists, so the map reads the title and the
-Wikidata class. `offices.js` holds, in order of precedence:
+Wikidata class, in order of precedence:
 
 - `isTenure()` — drops periods of time: "presidency of Barack Obama" is classed
   `presidential term`, not an office.
@@ -172,78 +226,130 @@ Wikidata class. `offices.js` holds, in order of precedence:
   Reordering this array changes results.
 
 Each kind maps to `KIND_ROUTES` (which contact methods apply) and
-`KIND_HURDLES` (which obstacles). Those ids must match `routes.json` ids and
-`HURDLES` keys — there is a check for this in §8.
+`KIND_HURDLES` (which obstacles). Those ids must match `ROUTES` ids and
+`HURDLES` keys — there is a check for this in §9.
 
 Agencies are grouped by `themeOf()` into twelve themes by keyword.
 
----
-
-## 7. Success rates
-
-Every figure comes from `leverage-chart.html` in this repo, carried with its
-original dataset, year range and evidence tier. **Nothing here is estimated.**
-
-Two were computed rather than copied:
-
-- **Ballot initiatives**, 41%, from the chart's own row (3,274 US state measures).
-- **Freedom of information**, 49.7%, computed from the government-wide FY2024
-  FOIA report: 745,140 of 1,499,265 processed requests ended with records
-  released in full or in part. Note the 94% agencies quote counts only requests
-  that reached exemption review; the other 47% were closed with no records
-  found, as improper, withdrawn, or over fees.
-
-Ten routes have no rate and each says why — no denominator exists, nobody has
-counted attempts, figures are not comparable across bodies. That is the
-convention the leverage chart already uses. **If you add a rate, add its source
-and year with it, or leave the stated absence alone.**
+**`B[]` is also what the hover cards say.** `KINDINFO` is built from the same
+array at startup, so each box's `what` and `how` are the same text the office
+entry under it uses. Change a pattern's wording and the card changes with it;
+there is no second copy to keep in step.
 
 ---
 
-## 8. Traps
+## 7. The diagram
+
+Mermaid, `flowchart TB`, drawn top to bottom. It was briefly replaced with an
+indented list of HTML boxes and then put back — if you are tempted to replace it
+again, the reason it was replaced was that a Mermaid node only responds to
+clicks where Mermaid drew it, which made most boxes dead. That is fixed by
+registering a `click` for every node, which the builder now does.
+
+- Offices stack in a **column** under their kind: the first joined by an arrow,
+  the rest by invisible links (`~~~`). Without that they lay out in one
+  horizontal row and the chart went 3,031 px wide for a single test country.
+- The diagram draws at its **natural size** inside a scrolling box, not scaled
+  to fit. At realistic office counts it is about 2,000 px wide, and scaling that
+  into the panel makes the text unreadable. The box is scrolled to centre the
+  root on first draw.
+- `CAP = 25` offices per kind, then a "show the remaining N" node. The United
+  States returns over 13,000 records and drawing them all at once locks the
+  page. Raise it if you like, but test with the US.
+- **Hover cards are not Mermaid's tooltips.** Mermaid's are one line of
+  unstyled plain text. `bindCards()` attaches real handlers to each `.node`
+  after render and positions `#mmcard` near the pointer. It recovers the node
+  key from the rendered element id with `/(?:^|-)(n\d+)(?:-|$)/`, because
+  Mermaid prefixes and suffixes what you give it. **If a Mermaid upgrade
+  changes that id format, every hover card goes silently dead** — nothing
+  throws, the cards just stop appearing.
+
+---
+
+## 8. Rankings, not success rates
+
+The per-route success percentages were removed. Each route now shows an ordinal
+band instead:
+
+| Band | From |
+| --- | --- |
+| Works more often than most | base rate ≥ 40%, or effect ≥ 10 pt |
+| Works some of the time | base rate 15–39%, or effect 3–9.9 pt |
+| Rarely works on its own | below those |
+| Not measured | no figure in the data |
+
+A base success rate and a percentage-point effect are different quantities, so
+each is banded against its own kind. The thresholds are the ones the bar
+colours always used, so nothing was invented to produce the ranking — the
+numbers are still in `ROUTES`, they are just not displayed. **Routes within an
+office are sorted by band, best first**, so the order of the list is itself the
+answer to which route to try.
+
+Unmeasured routes are marked unmeasured rather than ranked last. No measurement
+is not a low score, and ten of the routes have no denominator because nobody has
+counted attempts.
+
+Two things still contain percentages, deliberately, because they are evidence
+about obstacles rather than success-rate readouts:
+
+- the **"What usually stops it"** line on five routes (for example: across 98
+  issues tracked 1999–2002, 60% of lobbying campaigns failed to move policy);
+- the **Hurdles** section, which is argument with figures in it.
+
+If those should go too, they are `rt.fail` in `ROUTES` and the `p` arrays in
+`HURDLES`.
+
+What was dropped with the numbers: each rate's `means` (the arithmetic) and
+`caveat` (the "94% agencies quote counts only requests that reached exemption
+review" line). The source name and year are still shown. The caveats were
+honest and useful, and if you want them back the text is untouched in `ROUTES` —
+it was the percentages inside them that made them awkward to keep.
+
+---
+
+## 9. Traps
 
 - **`queryRenderedFeatures` is unreliable under globe projection.** It returns
   zero for features that are plainly drawn. Anything that needs to know what is
   under a point uses the in-memory `CTRY_FEATURES` and the `inGeom`
   point-in-polygon test instead. Do not reintroduce it.
+- **`--r-high`, `--r-mid`, `--r-low`, `--r-none` were used but never defined**
+  for a long time, so the ranking bars rendered with no colour at all. They are
+  defined in `:root` now. Worth checking any other `var(--…)` you add actually
+  exists.
 - **A blind find-and-replace over the source will hit object keys.** A pass
-  replacing the word "docket" renamed a key in `hurdles.js` and broke the file.
-  Always `node --check` each part after a bulk edit.
-- **Mermaid: a top-down tree with many leaves gets very wide.** Drawing every
-  office as a node produced a chart 5,332 px wide. The diagram stops at the
-  group; offices are one click away. Keep it that way.
+  replacing the word "docket" renamed a key in the hurdles data and broke the
+  file.
 - **`LIMIT` without `ORDER BY` returns a non-deterministic sample.** This is why
   the branch lists need the targeted queries, not just `qJuris`.
 - **The targeted office queries take 20–30s for large countries.** They run
   behind the fast ones and are cached a week. If they appear to fail in testing
   from a sandboxed environment, that is usually the proxy killing a long
   connection, not the query.
-- **Check the reference counts after editing route or hurdle ids:**
-
-```
-node -e "$(cat offices.js); const R=require('./routes.json');
- const ids=new Set(R.map(r=>r.id)); const bad=[];
- for(const [k,v] of Object.entries(KIND_ROUTES)) for(const r of v) if(!ids.has(r)) bad.push(k+'->'+r);
- console.log('broken route refs:', bad.length?bad:'none')"
-```
+- **The panel and the bottom-left trail can collide.** They are sized
+  independently: the panel is `min(980px,58vw)` with an 18px right margin, the
+  trail is capped at `min(420px,32vw)`. That clears at every width from 800px
+  up — 42px at the narrowest. Widening the panel without re-checking that sum
+  is what put the panel on top of the key once already.
 
 ---
 
-## 9. Unfinished
+## 10. Unfinished
 
-- **Overpass local-office lookup was removed.** It could never be tested from a
-  sandboxed environment and had no place in a map about lawmaking. If you want
-  street addresses and front-desk numbers back, it is a GET to an Overpass
-  endpoint over the map bounds.
 - **Coordinates are the weakest layer.** Roughly a third of offices can be
   placed. OpenStreetMap would fill much of the gap for town halls and
   courthouses if someone wants to match them to Wikidata ids.
 - **The "Unsorted" group** still catches titles the classifier cannot place —
   about nine for Kenya, more for the US. Each one is a candidate pattern for
   `B[]`.
-- **Levels below ADM2** exist in `cgaz-boundaries` for some countries and are
-  reachable by drilling, but are not in the worldwide file.
-- **The box position on selection** was built as: jurisdiction fitted into the
-  strip of map left uncovered, box pinned right. If the intent was the box on
-  the left instead, it is the `#modal` rule in `n1.html` and the `right`
-  padding in `fitTo()`.
+- **Municipalities have no polygons**, only rings at their centre point. OSM
+  relations would give real outlines.
+- **Below the municipality** — wards, precincts, parishes — is not reachable at
+  all. `qSettle` could be run again on a municipality, but it has not been
+  tested and most countries will return nothing.
+- **Marker palettes** are set per basemap in `LEVELSETS`, five colours each.
+  Hell and Standard were matched by eye against their backgrounds, not measured.
+- **Overpass local-office lookup was removed** in an earlier round. It could
+  never be tested from a sandboxed environment. If you want street addresses and
+  front-desk numbers back, it is a GET to an Overpass endpoint over the map
+  bounds.
