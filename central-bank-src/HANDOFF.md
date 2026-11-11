@@ -52,6 +52,17 @@ cp dist/central_bank_independence.html ~/maps/   # then git add, commit, push to
 
 Altogether the map has 1,232 parties and 1,654 ties, and `agents/writeups.json` holds 1,460 plain-language paragraphs, one for every box. `agents/work/research_log_2026-11.json` lists what was searched with no result, unopened leads, and records dropped after review.
 
+## When a source calls a party something else
+
+Set `name_as_stated` whenever the canonical entity name differs materially from
+what the source actually prints, so a reader can reconcile the node with the
+citation. Taiwan's printer is the example: the Central Bank's own press release
+says "China Engraving & Printing Works" while the works is now the Central
+Engraving and Printing Plant. Short forms do not need this — a detail that says
+"Crane", "NSPMC" or "KOMSCO" for a longer canonical name is clear enough. This is
+a judgement, not a mechanical check; a substring test over the printer records
+flagged 31 rows and 30 of them were fine.
+
 ## Run the audit every round
 
 `agents/work/audit_data.py` checks the classes of error the build does not catch
