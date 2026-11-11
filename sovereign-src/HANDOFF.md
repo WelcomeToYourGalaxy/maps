@@ -24,3 +24,25 @@ New batches: patch_n_h1..h7 (UN members, US tribes, Alaska entities, princely st
 Pins: $SP/geo.py looks up any GeoNames place offline (full country files, built on first use by $SP/gnprep.py CC). Never pin to a country centre when the source names no place: leave lat/lon null.
 Markers now cluster (clusterRadius 30, clusterMinPoints 4, clusterMaxZoom 8) so dense regions show a numbered circle; without it the globe was a solid mass of icons.
 Unreached and refused: PEZA and New Cities Map refused permission prompts; Albert and Altman datasets paywalled or robots-blocked; Iran's 34 SEZs, Philippine zones beyond 38, most Vietnamese zones, Curaçao/Aruba, Madagascar, New Zealand, Dakhla.
+
+## Round of 10 Nov 2026: coverage closed to 100%
+Page: 10,218 attempts, 265 laws and legal tests, 159 places, 22 patterns. About 19 MB.
+Both coverage figures are now 100% of every example the published lists read name, and `unread` is 0 on every row. The map description (app_template.html, `#lede3`) prints these figures from the build, so it updates itself.
+
+What was added this round, each as its own patch file in data/research/:
+- `patch_n_peza.json` — 595 PEZA economic zones from the owner's upload of PEZA's list of 30 June 2026 (440 operating, 179 proclaimed). 24 were already here. peza.gov.ph is robots-blocked, so the file has to be downloaded by hand.
+- `patch_n_conquest.json` — all 175 conquest attempts in Altman's Modern Conquest Data v3.0, from the Taking Territory replication zip at dan-altman.weebly.com (public). The Harvard Dataverse copy is the older v2.1, 151 cases to 2017, and Dataverse refuses robots. Country codes expanded with the Correlates of War state list; Altman's FRA/GER/JAP/MAI/RUM/GEO are COW's FRN/GMY/JPN/MLI/ROM/GRG. Use `real_year`, not `year`, which is lagged by one.
+- `patch_n_rebels.json` — 234 records from Albert's Rebel Quasi-State Institutions dataset, free from the PRIO replication page. Grouped by actorid, not name: PLA, UPA, BRA and UNLF each cover two different groups in different countries. `countryname` is "NA" for 42 groups; fall back to `Location`. That field is the government fought, not the group's home, so entries are named by claimed territory where there is one. Full names where the Non-State Actor dataset (ksgleditsch.com, public) has them. The dataset stops at 2012, so no entry claims to know what happened after.
+- `patch_n_newcities.json` — all 353 cities in the New Cities Map. The whole dataset is published inside the `__NEXT_DATA__` script on newcitiesmap.com/map, with coordinates; no robots.txt. ODbL, so the Charter Cities Institute and Adrianople Group are credited on every entry. 20 were already here under other headings and are credited through the row's case_ids instead of being entered twice. The coordinates it gives for BSD City and Gwadar fall in open sea, so those two carry no position.
+- `patch_n_princely2.json` — 37 princely states from Wikipedia's alphabetical list, plus Mangrol. `patch_princely_alias.json` records 19 more that were already here under another spelling (Kota/Kotah, Khayrpur/Khairpur, Saraikela/Seraikela and so on) as alternative names, so the match is auditable.
+- `patch_rebel_xref.json` — cross-references the six groups that have both a narrative entry and a dataset record (FARC, FMLN, Hamas, Hezbollah, RENAMO, UNITA).
+
+Coverage bookkeeping corrected: `unread` means a published list names an item but could not be read. The 210 princely states previously counted there were never named by any list; published sources only count them (about 565 to 584 for British India, 193 for the Kathiawar Agency alone, which names nine). They now sit in the estimate column where the method says estimates belong. The Imperial Gazetteer's search pages refuse robots.
+Undersea habitats gained `also_covered: 2`: "SEALAB I, II and III" and "Conshelf / Précontinent" are single entries covering three named items each, which the old count read as a gap.
+
+Pins: 166 of the new entries were geocoded from the full GeoNames gazetteer (allCountries.txt, downloaded and searched offline; the Wikidata API rate-limits hard from here). Matching uses a feature-code ranking with the perpetrator's and victim's countries as hints. 15 same-name matches in the wrong place were rejected by hand and are listed in the apply script; Biafra, Eelam, Bodoland and East Karelia are simply not in GeoNames. Entries still without a position say so, and no entry is pinned to a country centre unless the source names the whole country as the territory taken.
+
+Still open from this round:
+- The Open Zone Map (study@openzonemap.com) was never written to; its data may hold zones beyond the Philippines.
+- Rebel entries whose record runs to 2012 show as faded, which is the record ending, not the group. The status field cannot say that; each entry's text does.
+- 208 of the new entries still have no position, mostly rebel groups whose territory the dataset names only as a country.
