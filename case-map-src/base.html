@@ -1393,6 +1393,7 @@ function kindsOf(c) {
   mkCache.set(c.id, k); return k;
 }
 S.kind = "all";
+S.kindOpen = false;
 S.fund = null;
 const kPass = (c) => (S.kind === "all" || kindsOf(c).includes(S.kind)) && (!S.fund || S.fund.has(c.id));
 const inK = (...ks) => S.kind === "all" || ks.includes(S.kind);
@@ -1972,7 +1973,7 @@ function flipSw(el) { const k = el.dataset.sw; SECT[k].set(!SECT[k].on()); build
 document.addEventListener("click", (e) => { const sw = e.target.closest && e.target.closest(".sw[data-sw]"); if (!sw) return; e.preventDefault(); e.stopPropagation(); flipSw(sw); }, true);
 document.addEventListener("keydown", (e) => { const sw = e.target.closest && e.target.closest(".sw[data-sw]"); if (sw && (e.key === " " || e.key === "Enter")) { e.preventDefault(); flipSw(sw); } }, true);
 function resetLayers() {
-  S.kind = "all"; S.kindOpen = true; S.fund = null; S.fundN = null; S.q = ""; FG.forEach((g) => S.f[g.id].clear()); S.all = true; S.y0 = YMIN; S.y1 = YMAX; stopPlay();
+  S.kind = "all"; S.kindOpen = false; S.fund = null; S.fundN = null; S.q = ""; FG.forEach((g) => S.f[g.id].clear()); S.all = true; S.y0 = YMIN; S.y1 = YMAX; stopPlay();
   S.layer = "none"; S.live.wb = false; S.live.pl = false; S.live.wbr = "concern"; S.live.plr = "all";
   if (S.lcpt) Object.keys(S.lcpt).forEach((k) => (S.lcpt[k] = false));
   if (S.lcf) S.lcf = { mm: "all", pf: "rel" }; S.lcex = false;
