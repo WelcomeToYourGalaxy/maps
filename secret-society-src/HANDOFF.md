@@ -6,7 +6,7 @@ Repo: WelcomeToYourGalaxy/maps. Build output: `secret_society_infiltration.html`
 ## What the map is
 A MapLibre globe of documented cases where an outside party (foreign state or spy service, organised crime, company/industry, bank, lodge/secret society, religious movement, elite network, political or armed movement, lender) got its people, money or control INSIDE a government body, an international body or a company, and decisions there served it.
 
-Current size: 1,584 cases in 182 jurisdictions, 491 organisations, 48 channels, 30 patterns.
+Current size: 1,585 cases in 182 jurisdictions, 491 organisations, 48 channels, 30 patterns.
 By who infiltrates: corp 433, crime 414, state 396, movement 103, lodge 76, money 62, faith 60, elite 29, lender 8.
 By relevance: now 541, legacy 663, past 377. Countries with no qualifying case, shown as estimates: 15.
 (Figures as of the session of 10 November 2026. The dated handoffs in the project carry what changed.)
