@@ -29,13 +29,84 @@ Every case in these batches has been looked for once already and came back witho
 
 ## Where the documents actually are
 
-- **ADB is the most productive route.** Its document paths fetch directly: `https://www.adb.org/sites/default/files/project-documents/<proj>/<proj>-rrp-en.pdf`. The Recommendation of the President reports carry full covenant summaries.
-- **EBRD** blocks automated fetching; accountability-mechanism mirrors describe complaints but not financing terms.
-- **AfDB** returns client errors on project pages and appraisal paths; the Early Warning System mirror often records no project information.
-- **IDB**: `iadb.org/document.cfm` and `mici.iadb.org` refuse direct fetches; the Accountability Console mirrors the MICI reports and works.
-- **IFC**: `disclosures.ifc.org` project pages refuse direct fetches.
-- Working hosts: `documents.worldbank.org` and `documents1.worldbank.org` PDFs, adb.org document paths, sec.gov/Archives, AidData records, the Early Warning System and Accountability Console mirrors, and most PDF appraisal documents.
-- A blocked lender site is not evidence that no condition existed. Record it as blocked.
+Routes confirmed working in rounds 8, 9a and 10a. Two entries in earlier versions of this
+brief were wrong and cost three rounds, so test a host yourself before recording it as blocked.
+
+- **The World Bank documents API is the highest-yield route.**
+  `https://search.worldbank.org/api/v3/wds?format=json&qterm=...&fl=docdt,display_title,pdfurl,docty`
+  returns conformed loan agreements and appraisal reports back to 1964. Then fetch the PDF on
+  **documents1**.worldbank.org — documents.worldbank.org itself refuses. Put the document type in
+  `qterm`; `docty` as a filter parameter returns nothing. A documents.worldbank.org URL also opens
+  if you swap the host to documents1 and the `/pdf/` segment to `/text/`.
+- **ADB** document paths fetch directly:
+  `https://www.adb.org/sites/default/files/project-documents/<proj>/<proj>-rrp-en.pdf`.
+  The Report and Recommendation of the President carries the full covenant summary. Some older
+  ones are un-OCR'd scans.
+- **AidData's Chinese official finance records** often carry the collateral, escrow and repayment
+  terms of Chinese state loans. For Serbian loans the Ministry of Finance publishes ratifying laws
+  with the whole agreement attached (mfin.gov.rs); the parliamentary site refuses.
+- **Private lenders:** loan and facility agreements filed as exhibits on sec.gov/Archives, bond
+  prospectuses, and arbitration awards and court filings that quote the agreement.
+- **IFC serves normally.** `disclosures.ifc.org/project-detail/SPI/<id>/<slug>`, and the `/ESRS/`
+  and `/ERS/` paths, all fetch in full once a WebSearch has surfaced the URL. SPI pages carry
+  amounts, dates, use of proceeds and category; ESRS and ERS pages carry the action-plan items.
+  Records go back to about 1994. `disclosuresservice.ifc.org/api/File/downloadfile` does refuse.
+- **`ewsdata.rightsindevelopment.org`** — note `ewsdata`, not `ews` — mirrors ADB, AIIB, World Bank,
+  AfDB and IDB files as PDFs at `/files/documents/<nn>/<BANK>-<id>.pdf`.
+- **`idbinvest.org` is fully open**, project pages and `environmental-and-social-review-*.pdf`
+  alike. Use it instead of `iadb.org` (client errors) and `mici.iadb.org` (refuses).
+- **IFAD:** `members.ifad.org` (and `webapps.ifad.org`) serves Executive Board President's Reports
+  in full, with conditions-precedent and covenant schedules, plus evaluation reports.
+- **`afdb.org` is not uniformly refusing:** `afdb.org/en/documents/document/<slug>` paths fetch and
+  read normally. Search AfDB appraisal reports under that path by project title.
+- **Also serving:** eib.org project summary sheets and public-register PDFs, cao-ombudsman.org,
+  fmo.nl, imf.org, accountabilitycounsel.org, info.undp.org, arabfund.org/blog/projects/…,
+  banktrack.org, statewatch.org/media and data.privacyinternational.org (released EU action
+  documents, which do carry conditionality), Companies House, HKEXnews, cninfo, govinfo, and most
+  PDF annual reports.
+- **Refusing:** ebrd.com, iadb.org, mici.iadb.org, documents.worldbank.org, otvoreniparlament.rs,
+  jica.go.jp project pages (its evaluation PDFs do open), peoplepower21.org,
+  mneguidelines.oecd.org, Reuters, The Guardian, sec.gov's cgi-bin EDGAR search.
+- **MIGA cases are retired, not researched.** miga.org publishes only cover type, amount, fiscal
+  year, sector and status. No guarantee contract or term sheet is published anywhere.
+- **The Accountability Console** serves complaint records but carries **no financing terms**. It is
+  good for confirming project ids and disbursement dates, and for establishing whether a lender's
+  own mechanism treats an operator as a sub-client.
+- A fetch that fails because a permission was not granted is **not** a server refusal. Say which it
+  was. A URL surfaced by WebSearch fetches without a prompt; a URL seen only inside an earlier
+  WebFetch result needs a permission grant, and once one grant lapses in a session every later one
+  is refused without being sent. If that happens, move to URLs a search can surface.
+- **JICA:** `www2.jica.go.jp/yen_loan/pdf/en/<id>/<date>.pdf` opens in full — JICA's own loan-signing
+  notices, with amount, rate, tenor, grace period and procurement condition. Its evaluation PDFs at
+  `www2.jica.go.jp/en/evaluation/pdf/` also open. Both are the working substitute for the
+  robots-blocked `jica.go.jp/oda/project` pages. Neither carries borrower covenants: the signing
+  notices give terms only, and the ex-ante evaluations for private-sector investment finance
+  describe what will happen ("the relocations will be carried out in accordance with...") without
+  the words required, must or condition appearing anywhere. Do not read those as obligations.
+- **sais-cari.org PDFs 302-redirect to static1.squarespace.com** and open only at the redirect
+  target. Its China-lending briefing papers catalogue the actual loan agreements in their appendices.
+- **pdf.usaid.gov** project papers carry conditions precedent and covenants in full, where the
+  particular project paper has been digitised. Check the project number on the document you open:
+  neighbouring-country papers surface for the same search.
+- **JBIC** press-release pages (`jbic.go.jp/en/information/press/press-20xx/…`) fetch, though its
+  project pages refuse. Sponsor investor-relations releases carry loan-signing detail too.
+- **KfW:** `kfw-entwicklungsbank.de` 302-redirects to `entwicklungsbank.kfw.de`, which serves its
+  PDFs. The host is not blocked; the old URL just needs following.
+- **`trisrating.com`** serves full rating reports and is the best substitute when a syndicated loan
+  agreement is unpublished: it quotes covenants for Thai and Lao project companies. Check the
+  report's date against the harm — a 2024 report describes the loans as they stand now.
+- **`ausncp.gov.au/sites/default/files/…`** serves Australian National Contact Point final
+  statements (mneguidelines.oecd.org still refuses).
+- **`finance.senate.gov/imo/media/doc/`** serves large hearing transcripts. These are OCR'd and
+  often garbled; read past the first 100,000 characters before concluding anything is absent.
+- **`rsdebate.nic.in`** now 302s everything to `sansad.in/rs/debates/officials`; the old Rajya Sabha
+  PDF deep links are dead.
+- **Also refusing:** miningnews.net (paywall), archived OPIC FOIA awards on webharvest.gov
+  (rate-limits on repeat attempts), Transnational Dispute Management (paywall).
+- **peoplepower21.org and recommon.org both serve** — each was recorded as a refusing host in a
+  round 10b blank note, and each serves its homepage in full. The failure was on the particular
+  page. That makes four host-wide blocks in this brief's history that were not host-wide blocks.
+- A blocked lender site is not evidence that no condition existed. Record the exact failure.
 
 ## The five failures that get entries rejected
 
@@ -44,3 +115,22 @@ Every case in these batches has been looked for once already and came back witho
 3. **A recommendation, an action plan agreed after a complaint, or pressure, written up as a condition.** Only "required" when the source says the money depended on it.
 4. **A term from a different loan, a later loan, or a different lender in the same deal**, attached to this one.
 5. **A date mismatch:** a covenant from an agreement signed after the harm happened.
+
+## Four more ways entries have been rejected since
+
+6. **A financing plan is not a condition.** "The Government will cover the remaining cost of the
+   project" sits in the financing plan and says who pays the rest: no covenant language, no
+   condition precedent, no remedy.
+7. **Ordinary commercial terms are not conditions.** Pricing, fees, tenor, debt-to-equity ratios,
+   share pledges, completion guarantees, a bank's own lending policy, an issuer's green-bond rule.
+8. **The wrong phase or loan.** Check which loan paid for the harm before writing the entry. At
+   Kalangala the covenants belonged to a 2010 second phase while the harm was done under a 1997
+   first phase whose evaluation names no covenant.
+9. **An intermediary's terms attached to a project it did not demonstrably fund.** A condition on a
+   bank or fund the lender financed is not a condition on the project, unless a source documents
+   the step from intermediary to project (the lender's own mechanism calling the operator a
+   sub-client, or the fund buying into the project owner). A matching facility size is not
+   evidence of a link.
+
+**Entries recording what a loan did NOT require are worth having** and get the strictest check:
+only write one when you can see the whole covenant schedule, and quote where it is.
