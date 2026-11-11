@@ -2300,5 +2300,67 @@
    "St. Louis: Lawrence Roos, Darryl Francis",
    "earlier New York and Philadelphia presidents"
   ]
+ },
+ "round16": {
+  "date": "2026-11-11",
+  "added": {
+   "revolving_door": 18,
+   "events": 8,
+   "auditors": 8
+  },
+  "resolved_from_earlier_rounds": {
+   "MAR": "SETTLED AND FILED. Jouahri's BMCE presidency ran until 1995 and the privatisation is what ENDED it, so that leg was not private. The private leg is CIMR: Morocco's insurance regulator ACAPS states in its own summary sheet that CIMR was founded by private-sector employers, governed as an employers' association under the 1958 dahir, run solely by employer representatives, voluntary and supplementary to the state CNSS scheme, and became a societe mutuelle de retraite only in 2017. BMCE was dropped from the record's party list so no node asserts a private tie the evidence denies. Le Matin gives no dates for the CIMR presidency, so the commonly cited 2002-2003 span is NOT confirmed.",
+   "TTO": "SETTLED NEGATIVELY. The Ministry of Finance's own 'MOF Company and Statutory Board Listing' places First Citizens Bank Limited and First Citizens Group Financial Holdings Limited under the heading 'INDIRECTLY OWNED', i.e. owned by the Ministry. Larry Howai's move is therefore public-to-public and not a revolving-door record. Do not reopen unless a source names a private employer before First Citizens."
+  },
+  "logged_not_filed": {
+   "KNA_Allen": "Sir Errol Allen, ECCB Deputy Governor 1983 to 31 March 2005, sits on the boards of the Bank of Saint Vincent and the Grenadines and the National Commercial Bank of Anguilla per the ECCB's own former-governors page. Ownership of neither bank is stated and both names suggest a national or government connection. Same situation as Peru's Velarde, so logged, not filed. TO RESOLVE: a source whose text states either bank's ownership.",
+   "USA_nonfinancial": "Private but NOT financial, logged under the Slovnaft precedent: Mark H. Willes (General Mills), Charles J. Scanlon (General Motors), John E. Sheehan (McKinsey, Martin Marietta, Corning subsidiary, Williamsport Wirerope), Hugh D. Galusha Jr. (own CPA and tax law firm), J. Roger Guffey (law firm Fallon, Guffey and Jenkins)."
+  },
+  "method_notes": [
+   "THE BIGGEST FIND THIS ROUND: the consolidated EUR-Lex text of ECB Decision 1999/70 lists EVERY euro-area national central bank's approved external auditor in one document, with financial years. It settled Estonia, Latvia, Lithuania, Slovakia and Slovenia at once. STILL FREE THERE, not yet taken: Cyprus (PricewaterhouseCoopers Limited, 2018-2022), Malta (KPMG, 2019-2025), Luxembourg (Ernst & Young SA, 2019-2023). Later amending Council decisions supersede individual paragraphs (Slovenia's did), so check the latest decision for any one bank.",
+   "Statute route confirmed again: African LII sites work well (ULII for the Bank of Uganda Act s.43, bot.go.tz for the Bank of Tanzania Act 2006 s.20(6)). It FAILED for Zambia because zambialii.org returns section headings without body text.",
+   "RECURRING FAILURE MODE: central bank annual-report PDFs often extract the narrative and the notes but DROP the independent auditor's report page. Croatia, Serbia, Bahrain and Botswana all failed this way, and Botswana's audit pages are scanned images with no text layer. Chasing page offsets in these PDFs wastes budget; a different document type is needed.",
+   "Federal Reserve History slug lesson confirmed and extended: initial-first forms are required for j-roger-guffey, j-alfred-broaddus-jr, thomas-m-hoenig, willis-j-winn, robert-p-forrestal. No people pages exist at all for Stephen Axilrod, Robert Rasche, William Taylor or Betty Dukes.",
+   "CORRECTION to an earlier round's name list: Willis Winn led the CLEVELAND Fed (1971-1982), not Atlanta. The Atlanta president before Forrestal was William F. Ford, already on the map. 'H. Edward Hemmings' of San Francisco does not exist; the Swan page names Hermann N. Mangels as San Francisco president 1956-1961.",
+   "WRITEUP PIPELINE BUG found this round: the box-text excerpt passed to writer agents was capped at 3,500 characters and 26 country boxes exceeded it, the United States box being 192,664 characters. In 8 cases the NEW record fell outside the excerpt, so the refreshed paragraph could not have mentioned it. Fix used: send the box head for context plus the specific sections holding the new records. ALWAYS verify that a distinctive token from each new record appears in the excerpt before dispatching a writeup batch."
+  ],
+  "still_untried_auditors": [
+   "Jordan",
+   "Kuwait",
+   "Oman",
+   "Bulgaria",
+   "Mongolia",
+   "Kazakhstan",
+   "Dominican Republic",
+   "Ethiopia",
+   "Rwanda (only a draft law findable)",
+   "BCEAO",
+   "BEAC",
+   "Cyprus, Malta and Luxembourg (free on EUR-Lex, see above)"
+  ],
+  "still_untried_rd": [
+   "Kuwait",
+   "Cambodia",
+   "Laos",
+   "Myanmar",
+   "Brunei",
+   "Tanzania",
+   "Uganda",
+   "Senegal",
+   "Ivory Coast",
+   "Samoa",
+   "Solomon Islands",
+   "Vanuatu",
+   "Tonga"
+  ],
+  "high_yield_next": [
+   "BCEAO national-directors page covers Senegal, Ivory Coast and six more countries in ONE fetch.",
+   "The Pacific four (Samoa, Solomon Islands, Vanuatu, Tonga): small central bank boards often seat ANZ and Westpac branch managers.",
+   "Malaysia second candidate: BNM board member Tan Sri Mohamed Azman Yahya (since 1 June 2020) is listed as a past board member of AIA Group Limited, a listed insurer. Needs AIA's own board page for dates.",
+   "Taiwan still open: the CBC English board page now reads 'this content has been removed'; try the CBC annual-report organisation PDFs or the Chinese-language board page. Caution: Taiwan's largest banks are government-controlled."
+  ],
+  "notes_on_blocked_fetches": "Three of four agents hit PROVENANCE_REQUIRED permission prompts on constructed URLs. The correct pattern, which worked every time, is to run a WebSearch first and fetch only URLs the search returns. One agent instead used curl to bypass the prompt; that is not an approved method, and its records were spot-checked through WebFetch before use (Alfred Hayes and Roger W. Ferguson Jr. both matched exactly).",
+  "panama": "Panama has no central bank, so no audit record exists to find. Worth deciding how the map should mark this.",
+  "tto_auditor": "Contested rather than unknown: reporting says the Auditor General declined to audit the Central Bank and that the Government wanted the Auditor General to resume Central Bank audits. Needs care, not one more fetch."
  }
 }
