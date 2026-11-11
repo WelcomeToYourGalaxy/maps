@@ -1,6 +1,6 @@
 # Globalization Case Map: handoff for a new chat
 
-Last updated: 11 Nov 2026 (early hours). Replaces the 10 Nov handoffs.
+Last updated: 11 Nov 2026 (afternoon). Replaces the earlier 11 Nov handoff.
 
 Live page: `globalization.html` in WelcomeToYourGalaxy/maps (published from `main`). Source folder: `case-map-src/`. Rebuild with `python3 case-map-src/build.py`.
 
@@ -12,9 +12,9 @@ Live page: `globalization.html` in WelcomeToYourGalaxy/maps (published from `mai
 4. Run two research agents, then a separate fact-checker per batch. Merge only checked files.
 5. Build, test headless, commit, push, and update this file with the new counts.
 
-The job worth doing next is **condition retries** (127 cases, all of them second or third attempts) — company descriptions are finished as a first pass. Everything else is listed under "What is left, and how to finish it".
+The two jobs worth doing next: **condition retries** (105 cases, all of them third or fourth attempts) and **people totals** (155 of 173). Company descriptions and whole-picture text are both finished as first passes. Everything else is listed under "What is left, and how to finish it".
 
-## Current state (11 Nov 2026, early hours)
+## Current state (11 Nov 2026, afternoon)
 
 **946 cases**, in 126 countries and territories. The page builds clean and loads headless with no errors; `build.py` prints "loan-condition cases matched 173 of 173".
 
@@ -22,20 +22,20 @@ These are the figures the About panel shows under "How complete this map is", co
 
 | What | Filled | Share |
 | --- | --- | --- |
-| Rounded "what happened to people" paragraph (`whole`) | 925 of 946 | 98% |
-| Cases that say what the money came with (`conditions`) | 915 of 946 | 97% |
-| Lender's terms looked for and settled (not tagged `research`) | 819 of 946 | 87% |
+| Rounded "what happened to people" paragraph (`whole`) | 939 of 946 | 99% |
+| Cases that say what the money came with (`conditions`) | 937 of 946 | 99% |
+| Lender's terms looked for and settled (not tagged `research`) | 841 of 946 | 89% |
 | Company names with a line saying what the firm is (`desc`) | 912 of 992 | 92% |
 | People with a checked `total` | 18 of 173 | 10% |
 | Cases with a documented buyer | 34 of 946 | 4% |
 
-### Whole-picture text — first pass complete
-Batches `rounds/r26f_whole_h1` through `h10`, each with a checker log. Briefs `docs/WHOLE.md` (researcher) and `docs/CHECKW.md` (checker). Merge with `merge_whole.py`.
-21 cases are blank. Seven were judged to have no credible information: Morelos, Batang, Java 7, Pacitan, Tanjung Kasam, Cilacap, IPP4 Al-Manakher. The other 14 can be retried: Mali Office du Niger, Zambia Camdex, Peñarroya Santo Amaro, Multan sewage plant, Shell Vila Carioca, Equatorial Palm Oil/Jogbahn, Heinda tin, Shell Ogbodo, Tayan Nuur, BNP Rwanda, Yakjin, Vedan Thi Vai, DRC bank channels, Arab Bank.
+### Whole-picture text — complete
+Batches `rounds/r26f_whole_h1` through `h11_checked.json`, each with a checker log. Briefs `docs/WHOLE.md` (researcher) and `docs/CHECKW.md` (checker). Merge with `merge_whole.py`.
+939 of 946 cases have text. Round h11 cleared all 14 retryable blanks, so the only 7 left are the ones judged to have no credible information: Morelos, Batang, Java 7, Pacitan, Tanjung Kasam, Cilacap, IPP4 Al-Manakher. **Nothing is queued on this job.**
 
-### Condition types — 127 cases still tagged `research`
-Seven rounds are merged (`rounds/r26f_conds_research_1.json` through `_7a_checked.json`, inputs in `docs/r26_condr*.json`, checker logs alongside). Merge with `merge_conds.py`, brief `docs/CONDR.md`.
-**Every case has been tried at least once**, so what remains are retries. Round 8 (`rounds/r26f_conds_research_8a_checked.json` and `_8b_checked.json`, inputs in `docs/r26_condr8a.json` and `_8b.json`, checker logs alongside) settled 19 of 146: 16 of the 86 development-bank cases, 3 of the 60 financed by bilateral, Chinese state, private, foreign-company or foundation money. Splitting the batches by lender rather than by harm is what made that possible — the two groups need completely different routes.
+### Condition types — 105 cases still tagged `research`
+Nine rounds are merged (`rounds/r26f_conds_research_1.json` through `_9a_checked.json`, inputs in `docs/r26_condr*.json`, checker logs alongside). Merge with `merge_conds.py`, brief `docs/CONDR.md`.
+**Every case has been tried at least twice**, so what remains are third and fourth attempts. Round 8 settled 19 of 146 (16 of 86 development-bank cases, 3 of 60 financed by bilateral, Chinese state, private, foreign-company or foundation money). Round 9a settled 22 of 70 after its checker blanked 11 of the 33 it submitted. Splitting batches by lender rather than by harm is what makes this work — the groups need completely different routes.
 
 Two types were added to `CTN` in `base.html` on 10 Nov, which released 12 stranded cases (`rounds/r26f_conds_retype_1.json`; proposal and desk check in `docs/r26_ct_retype_proposed.json` and `_checked.json`):
 - `fincov` — financial covenants and use-of-proceeds terms: a required rate of return, a self-financing or debt-to-equity ratio, an offtake undertaking, a restriction on what the money may be spent on, a required escrow or minimum balance.
@@ -52,6 +52,10 @@ Cards show a one-line "what this company is" (`desc`), then "In this case:" and 
 
 ### Buyers — 34 of 946 cases
 `window.PROD.chains`, 49 chains. Only where a source documents who bought the output; this will never reach 100%.
+
+## Page changes made 11 Nov 2026
+
+- No page-code changes. All of 11 Nov went to data: whole-picture text round h11, condition retry rounds 8 and 9a, and company batches 8 and 9.
 
 ## Page changes made 10 Nov 2026
 
@@ -115,7 +119,8 @@ Keys in every case: `id, title, place, iso3, lat, lng, point, start, end, mechan
 
 ## Push status
 
-- Everything through condition round 7 and company batches 9a and 9b is merged, built, tested and pushed (10 Nov, late night). The company work is complete as a first pass.
+- Everything through condition retry round 9a, whole-text round h11 and company batch 9 is merged, built, tested and pushed (11 Nov afternoon). Company descriptions and whole-picture text are both complete as first passes.
+- Out at the time of writing and not yet merged: condition retry round 10a (43 institutional cases, `docs/r26_condr10a.json`) and people totals round 2 (155 people, `docs/r26_people_in2.json`). Round 10b inputs are built but unassigned (`docs/r26_condr10b.json`, 62 cases with bilateral, Chinese state, private, foreign-company or foundation money). Each needs its own fact-checker before merging.
 - Pushing needs the repo attached to the session first (`add_repo`, push access), or the git proxy refuses with a 403. A plain `git clone` works for reading without it.
 
 ## Pending case-text fixes
@@ -144,6 +149,7 @@ These came out of the company work and are deliberately not changed, because cha
 ## Open decisions for the owner
 
 - Decided 7 Nov (owner left it to Claude): Agrokasa blanked (investment never made); GMR kept; Planafloro and ProRoutes accepted on Panel quotes of agreement sections; Suralaya kept with CAO doubt; Bataan and Escondida blanked (guarantees to banks and plain owner-debt terms are not lender conditions); Bastar, Kihansi and Bolivia keep tags with "agreed" wording; Bertin kept (agreed IFC action plan). Komodo keeps "fees"; Metolong kept (MCC is a listed co-funder); CBG kept (IFC loan active during the harm, plan dates given); Teresina and Dakar kept, credited to their planning documents.
+- **`kalangala-oil-palm` carries a `wb` lender key that looks wrong.** The World Bank projects API returns zero for Uganda plus Kalangala, oil palm or vegetable oil, and IFAD's own evaluation gives the financing as a US$20m IFAD loan of April 1997 with private and government cofinancing, names no World Bank or IDA money, and records the Bank as the project's *cooperating institution* only until August 2004, when UNOPS took over and the Bank withdrew over its forestry safeguards policy. Case data untouched. Dropping `wb` would move the case out of the World Bank layers; the question is whether it still passes the link test on another lender or should come off the map.
 - Keep al-Serraj (weakest Libya person)? Keep Arab Bank and UNICEF wells as contested? Payment services vs loans: how to present? Keep the nine `documents1.worldbank.org` links? Drop Kaziranga and Virunga-type cases if death counts are questionable?
 - Decided: `loan-conditions.html` stays online. Decided 7 Nov: whole text runs largest harms first.
 
@@ -169,30 +175,45 @@ Honest blanks run 5-20% and are the right outcome. Do not re-queue a name that c
 
 **Unsupported headquarters are common**, and several map markers sat at addresses no source gives. Remove the coordinates rather than guess a replacement, and say so on the card. Done so far: Compañía de Tierras Sud Argentino, ExplorCobres (marker was in Beijing), Golden Star (Denver). Moved on evidence: De Beers to London, Johnson Controls to Cork, Freeport to Phoenix, CIFI to Panama City.
 
-### 2. Condition types — 127 cases still tagged `research`
-All retries. By lender after round 8: bilateral 42, private 33, IFC 29, foreign company 20, Chinese state 16, other regional 14, foundations 9, MIGA 8, AfDB 8, World Bank 5, IDB 5, EBRD 4, EU 4, IMF 3, ADB 2, AIIB 1, EIB 1.
+### 2. Condition types — 105 cases still tagged `research`
+All retries. By lender after round 9a: bilateral 38, private 29, foreign company 19, IFC 16, Chinese state 16, other regional 12, foundations 9, MIGA 7, AfDB 7, IDB 3, EBRD 3, EU 3, World Bank 2, IMF 1, ADB 1.
 
-**IFC is now the largest single blocked group, at 29 cases**, every one of them blank for the same reason: `disclosures.ifc.org` refuses before serving any content. A mirror for IFC project disclosure would clear more cases than any other single fix. MIGA publishes no guarantee terms at all, which puts a ceiling on its 8.
-The blanks cluster by lender, not by case, because of what can be fetched:
+**Retire the MIGA cases rather than re-searching them.** Round 9a tested this properly: miga.org project pages serve normally but publish only cover type, amount, fiscal year, sector and status. MIGA's Policy on Environmental and Social Sustainability speaks only in general terms about its *standard* contract of guarantee, says nothing about any particular guarantee, and postdates most of these. No guarantee contract or term sheet is published anywhere.
+
+**AfDB is the one institution where a mirror was tested and does not substitute.** The Early Warning System serves AfDB project records but carries only amount, sector, borrower and board date, often with "No project information available at the time of disclosure", and links back to afdb.org rather than mirroring any appraisal. afdb.org itself could not be fetched at all in round 9a — the fetch needed a permission that was not granted, which is different from a server refusal and worth re-testing in a session where it can be granted. That is the only thing standing between the map and 7 AfDB cases.
+
+Which routes work, as established by rounds 8 and 9a:
 - **The World Bank documents API is the highest-yield route found so far.** `https://search.worldbank.org/api/v3/wds?format=json&qterm=...&fl=docdt,display_title,pdfurl,docty` returns conformed loan agreements and appraisal reports; then fetch the PDF on **documents1**.worldbank.org, because documents.worldbank.org itself refuses. Put the document type in `qterm` — `docty` as a filter parameter returns nothing. This opened appraisals back to 1964.
 - **ADB is the next most productive.** Its document paths fetch directly: `https://www.adb.org/sites/default/files/project-documents/<proj>/<proj>-rrp-en.pdf`. The Recommendation of the President reports carry full covenant summaries; some older ones (Samut Prakarn 1995) are un-OCR'd scans.
 - **AidData's Chinese official finance records** often carry the collateral, escrow and repayment terms of Chinese state loans. For Serbian loans the Ministry of Finance publishes ratifying laws with the whole agreement attached (mfin.gov.rs), where the parliamentary site refuses.
 - **Loan and facility agreements filed as exhibits on sec.gov/Archives**, bond prospectuses, and arbitration awards and court filings, which quote the agreement, are the routes that work for private lenders.
-- **EBRD** blocks automated fetching. Accountability-mechanism mirrors describe the complaints but not the financing terms. A mirror for EBRD project summaries would unlock Vares, Shah Deniz, IPP4 and TAP, which all went blank for this reason alone.
-- **AfDB** returns client errors on project pages and appraisal paths; the Early Warning System mirror often records no project information. Thwake is blank for this reason.
-- **IDB**: `iadb.org/document.cfm` and `mici.iadb.org` refuse direct fetches; the Accountability Console mirrors the MICI reports and works.
-- **IFC**: `disclosures.ifc.org` project pages refuse direct fetches.
-Before accepting any new entry, check it against the five failures now written into `docs/CONDR.md`. A lender's general policy read as a term of this loan is the most common by far; round 8's checkers also caught an invented effectiveness condition at Chixoy and, at Plan Colombia, spraying tests quoted from the FY2003 appropriations act under the FY2002 act the card cites.
+- **IFC serves normally — this was wrong in three earlier handoffs and cost three rounds.** `disclosures.ifc.org/project-detail/SPI/<id>/<slug>`, and the `/ESRS/` and `/ERS/` paths, all fetch in full once a WebSearch has surfaced the URL. SPI pages carry amounts, dates, use of proceeds and category, and for financial-intermediary investments an explicit list beginning "the bank will be required to"; ESRS and ERS pages carry the action-plan items. Records go back to about 1994 as stubs; 1988 investments such as Escondida have no page. `disclosuresservice.ifc.org/api/File/downloadfile` does refuse, which is the path EWS links IFC annex files from.
+- **`ewsdata.rightsindevelopment.org`** — note `ewsdata`, not `ews` — mirrors ADB, AIIB, World Bank, AfDB and IDB files as PDFs at `/files/documents/<nn>/<BANK>-<id>.pdf`. This is how round 9a got the ADB Report and Recommendation of the President for Amaravati.
+- **`idbinvest.org` is fully open**, project pages and `environmental-and-social-review-*.pdf` files alike. Use it for IDB Invest private-sector cases instead of `iadb.org`, which returns client errors, and `mici.iadb.org`, which refuses.
+- **`eib.org`** project summary sheets and public-register PDFs both fetch. `cao-ombudsman.org`, `fmo.nl`, `imf.org` and `banktrack.org` all serve.
+- **EBRD** blocks automated fetching, as with afdb.org a fetch-permission block rather than a server error. A mirror for EBRD project summaries would unlock Vares, Shah Deniz and IPP4.
+- **The Accountability Console** serves complaint records without login but carries **no financing terms**. It is good for confirming project ids and disbursement dates, and for establishing whether a lender's own mechanism treats an operator as a sub-client — which is how two intermediary cases survived round 9a's check.
+Before accepting any new entry, check it against the five failures now written into `docs/CONDR.md`.
+
+**Failure #4 — a term from a different loan — is now the one that costs most.** It took out 11 of round 9a's 33 entries. All 11 put the condition on a bank or fund the lender financed rather than on the project that caused the harm, and seven rested on a single IFC facility to ICICI Bank (project 25492). The requirement there is real but hedged ("commit to formalize, **if required**, the SEMS"), the use of proceeds was the bank's own capital "especially in key areas such as rural banking and microfinance", and the only basis for tying it to Mundra, Mahan or NTPC was that the IFC does not disclose end use. A facility size matching across two cases is not evidence of a link — the ZAR 1 billion in both Nedbank cases is just the one facility quoted twice.
+Only four intermediary entries survived, and each had a documented step from the intermediary to the project: Siguiri, where the CAO registered the complaint under IFC project 26014 and calls the mine operator a sub-client; Rio Salá, where the fund bought 51% of the dam owner's majority holder; and the two HAGL cases, once re-anchored from project 10740 onto 20926, the fund the CAO complaint is actually against. Agua Zarca went out because the CAO states the fund stopped considering it and "can find no other link between the DESA project and the IFC".
+Round 8's checkers also caught an invented effectiveness condition at Chixoy and, at Plan Colombia, spraying tests quoted from the FY2003 appropriations act under the FY2002 act the card cites. Round 9a found Amaravati resting on a World Bank loan that was never approved — India withdrew in July 2019 — so its requirements bound no one.
 
 **Entries that record what a loan did NOT require are worth having and need the strictest check.** Kainji's covenant list (para. 92 a-h) carries an 8% return on net fixed assets and a 1.5x debt-service test but nothing on resettling the roughly 140,000 displaced; the 1990 Jakarta water appraisal has no privatisation condition; Transmigration III has no covenant on existing residents' land claims. Each was let through only after the checker could see the whole covenant schedule. Taunsa's was softened for the opposite reason: its section 2.03(a) binds Punjab to General Conditions on land acquisition that the agreement does not reproduce, so "no resettlement covenant" could not be said.
 
 **Ordinary commercial terms are not conditions.** Round 8 deliberately left untyped the pricing, fees, tenor and debt-to-equity ratios at Hambantota and Hongsa, the share pledges and completion guarantee at Obi, a bank's own lending policy, and an issuer's green-bond rule.
 
-### 3. Whole-picture text — 21 blanks
-Seven were judged to have no credible information (Morelos, Batang, Java 7, Pacitan, Tanjung Kasam, Cilacap, IPP4 Al-Manakher). The other 14 can be retried: Mali Office du Niger, Zambia Camdex, Penarroya Santo Amaro, Multan sewage plant, Shell Vila Carioca, Equatorial Palm Oil/Jogbahn, Heinda tin, Shell Ogbodo, Tayan Nuur, BNP Rwanda, Yakjin, Vedan Thi Vai, DRC bank channels, Arab Bank.
+### 3. Whole-picture text — complete, 7 blanks left on purpose
+Round h11 cleared all 14 retryable blanks. The 7 remaining were judged to have no credible information (Morelos, Batang, Java 7, Pacitan, Tanjung Kasam, Cilacap, IPP4 Al-Manakher). Nothing is queued.
+
+The round worked because it went to primary documents instead of news: the World Bank documents API gave the Mali Office du Niger completion report (6,209 ha developed, 247,720 beneficiaries, 11.7% economic return against 34% at appraisal, rated Moderately Unsatisfactory), and ADB's evaluation path gave the Multan validation PVR-293. **A documents.worldbank.org URL opens if you swap the host to documents1 and the `/pdf/` segment to `/text/`**; the text versions are easier to query than the PDFs.
+
+Its checker corrected 13 of the 14 and is worth reading for the shape of the faults (`rounds/r26f_whole_h11_check_log.md`). The worst was a **manufactured disagreement**: the figure of 216 for Cobrac at Santo Amaro is a 1983 lead-poisoning study's sample, not a headcount, so setting it against a 2024 research project's 2,500 compared a sample with a workforce. Also removed: an Arab Bank settlement claim absent from both cited sources, two unreconciled 33% figures at Tayan Nuur where the sourced export share is about 15% in 2013, and a Vila Carioca date the council minutes do not carry. Several facts were quoted in prose with the source never listed — the checker had to find and open them to keep them.
 
 ### 4. People — 155 of 173 lack a checked `total`
-Not yet researched: about 16 company heads (Vale, Union Carbide, Trafigura, Renco, Lundin, Shell Nigeria, Unocal, Elliott's Paul Singer). Missing years for Lagarde, Lipton, Wolfensohn, Zoellick, McNamara and Woods could be filled.
+Input built from the page data at `docs/r26_people_in2.json`; brief `docs/PEOPLE.md`; merge with `merge_people_total.py`. Note `merge.py` does not handle people, and these go into `window.ENT.people`.
+The list is densest in World Bank and IMF figures, where annual reports carry approval counts directly. About 16 are company heads (Vale, Union Carbide, Trafigura, Renco, Lundin, Shell Nigeria, Unocal, Elliott's Paul Singer), where a figure such as mines or countries in a stated year is the right shape. Six need only a missing year filled: Lagarde, Lipton, Wolfensohn, Zoellick, McNamara, Woods.
+An earlier round recorded that the World Bank projects API refuses agents. **Test that rather than assuming it** — the same assumption about disclosures.ifc.org was wrong and cost three rounds. Many of the 155 should end with an empty `total`: a minister who signed one deal, a guard commander or a named victim has no countable output, and the brief says to say so in `note`.
 
 ### 5. Buyers — 34 of 946 cases
 Only where a source documents who bought the output. This is a long tail and will never reach 100%.
@@ -208,8 +229,9 @@ Leads in `docs/backlog.json`. Thin regions: Middle East and North Africa, Europe
 - WebSearch is capped at about 200 calls per turn, shared by every agent in that turn. Run at most two or three research agents per turn, or they run out partway (this happened on 7 Nov).
 - WebFetch now refuses URLs that have not appeared in a WebSearch result in the session ("provenance"), so case source links often can't be opened directly; each new source costs a search. SEC EDGAR full-text hits work well for listed firms.
 - WebFetch has an hourly limit shared across agents, and some company sites refuse fetches; checkers then blank the facts, which can be re-checked later.
-- Hosts that refuse automated fetches, found the hard way: ebrd.com, afdb.org project pages, iadb.org/document.cfm, mici.iadb.org, idbinvest.org, disclosures.ifc.org, documents.worldbank.org (but documents1 works), otvoreniparlament.rs, jica.go.jp project pages (its evaluation PDFs do open), peoplepower21.org, mneguidelines.oecd.org, miningnews.net, theedgemalaysia.com, businesslive.co.za, athexgroup.gr, Reuters, The Guardian, and sec.gov's cgi-bin EDGAR search. These work: the World Bank WDS API and documents1.worldbank.org, adb.org document paths, sec.gov/Archives, Companies House, HKEXnews, cninfo, govinfo, the Early Warning System and Accountability Console mirrors, and most PDF annual reports.
-- **Check a "blocked host" claim before trusting it.** A spot-check of ten blanks found four that named a host-wide refusal where none exists: recommon.org, buzzfeednews.com and kathmandupost.com all serve normally, and kfw.de and banktrack.org refuse only particular files. Six were genuine. Record the exact failure, not a general one.
+- Hosts that refuse automated fetches, found the hard way: ebrd.com, afdb.org, iadb.org, mici.iadb.org, documents.worldbank.org (but documents1 works), disclosuresservice.ifc.org download paths, otvoreniparlament.rs, jica.go.jp project pages (its evaluation PDFs do open), peoplepower21.org, mneguidelines.oecd.org, miningnews.net, theedgemalaysia.com, businesslive.co.za, athexgroup.gr, Reuters, The Guardian, and sec.gov's cgi-bin EDGAR search. These work: disclosures.ifc.org (SPI, ESRS and ERS paths), idbinvest.org, ewsdata.rightsindevelopment.org, eib.org, miga.org, cao-ombudsman.org, fmo.nl, imf.org, banktrack.org, the World Bank WDS API and documents1.worldbank.org, adb.org document paths, sec.gov/Archives, Companies House, HKEXnews, cninfo, govinfo, the Accountability Console, and most PDF annual reports.
+- **Check a "blocked host" claim before trusting it; two of this list's entries were wrong for weeks.** `disclosures.ifc.org` and `idbinvest.org` were both recorded here as refusing and both serve normally — that error alone kept 29 IFC cases blank across three rounds. A spot-check of ten blanks separately found four naming a host-wide refusal where none exists: recommon.org, buzzfeednews.com and kathmandupost.com all serve, and kfw.de and banktrack.org refuse only particular files. Record the exact failure, not a general one, and re-test an inherited block before building a round around it.
+- A fetch that fails because a permission was not granted is **not** a server refusal, and the two should not be recorded the same way. afdb.org and ebrd.com failed that way in round 9a, so nothing was read from either; both are worth re-testing in a session where the permission can be granted.
 - Direct `curl` from the shell is blocked by the agent proxy, and WebFetch needs a URL it has already seen in a search result or an earlier fetch; guessing a path on an already-seen host fails.
 - A blocked lender site is not evidence that no condition existed. Record it as blocked so a later round knows to try a mirror.
 
