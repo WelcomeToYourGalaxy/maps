@@ -2199,5 +2199,25 @@
    ],
    "conclusion": "round4.events.leads_not_opened is stale; check events_gold.json by country before opening the remaining fifteen"
   }
+ },
+ "round13": {
+  "rd": {
+   "added": [
+    "USA Paul Volcker, Chase Manhattan Bank, via the New York Fed own biography",
+    "USA Silas Keehn, Mellon Bank and Pullman Inc., via Federal Reserve History",
+    "USA William F. Ford, Wells Fargo and First Nationwide Financial Corp, via Federal Reserve History",
+    "USA Robert T. Parry, Security Pacific National Bank, via Federal Reserve History",
+    "USA Richard F. Syron, American Stock Exchange, Freddie Mac and the Federal Home Loan Bank of Boston, via Federal Reserve History",
+    "USA Jerry L. Jordan, Pittsburgh National Bank and Interstate Bancorp, via Federal Reserve History"
+   ],
+   "checked_none": [
+    "QAT the governor came from the State Audit Bureau and the Qatar Investment Authority, both public, so there is no private move to record"
+   ],
+   "method_note": "federalreservehistory.org/people/<first>-<middle-initial>-<last> renders in full for an automated reader; only the people index does not. Six slugs guessed from names, six full career lists returned.",
+   "scores_moved": "USA went from 37 to 43 records, which is the denominator of the inside-influence score, so scores moved across the map. The stale check flagged 27 places and only nine quoted the figure that actually moved."
+  },
+  "ui": {
+   "added": "Parties excluded by the tie-kind ticks or the connection filter are drawn as faint grey diamonds in a new net-ghosts source and net-ghost layer, below net-node. under() queries net-ghost after net-node and returns off: true, so a lit diamond always wins a click. Clicking a faint one runs selectEntity, which already switches its kinds of tie back on. The hover tip and the key both say so."
+  }
  }
 }

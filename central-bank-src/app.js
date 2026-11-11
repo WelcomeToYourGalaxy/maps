@@ -396,6 +396,11 @@ function addLayers(geo) {
       const f = map.queryRenderedFeatures([[pt.x - 8, pt.y - 8], [pt.x + 8, pt.y + 8]], { layers: ["net-node"] });
       if (f.length) { let best = f[0], bd = 1e9; f.forEach((x) => { const p = map.project(x.geometry.coordinates), d = Math.hypot(p.x - pt.x, p.y - pt.y); if (d < bd) { bd = d; best = x; } }); return { node: best.properties.i, stack: [...new Set(f.map((x) => x.properties.i))] }; }
     }
+    // then a switched-off party's faint diamond, so its box is still one click away
+    if (S.net && map.getLayer("net-ghost")) {
+      const f = map.queryRenderedFeatures([[pt.x - 7, pt.y - 7], [pt.x + 7, pt.y + 7]], { layers: ["net-ghost"] });
+      if (f.length) { let best = f[0], bd = 1e9; f.forEach((x) => { const p = map.project(x.geometry.coordinates), d = Math.hypot(p.x - pt.x, p.y - pt.y); if (d < bd) { bd = d; best = x; } }); return { node: best.properties.i, stack: [...new Set(f.map((x) => x.properties.i))], off: true }; }
+    }
     const k = hit(pt); return k && P[k] ? { ctry: k } : {};
   };
   map.on("click", (e) => {
@@ -421,6 +426,11 @@ function addLayers(geo) {
       map.getCanvas().style.cursor = "pointer";
       const names = u.stack.slice(0, 6).map((i) => esc(NET.nodes[i].name)).join("<br>");
       tip("<b>" + u.stack.length + " parties here</b><br><span class=m>" + names + (u.stack.length > 6 ? "<br>and " + (u.stack.length - 6) + " more" : "") + "<br>Click to pick one, or zoom in.</span>", x, y); return;
+    }
+    if (u.node != null && u.off) {
+      const nd = NET.nodes[u.node], all = linksOfNode(u.node), c = new Set(all.filter((l) => l.cb).map((l) => l.cb)).size;
+      map.getCanvas().style.cursor = "pointer";
+      tip("<b>" + esc(nd.name) + "</b> · tied to " + c + " central bank" + (c === 1 ? "" : "s") + "<br><span class=m>Its ties are switched off right now. Click to switch them back on and open it.</span>", x, y); return;
     }
     if (u.node != null) {
       const nd = NET.nodes[u.node], ls = linksOfNode(u.node).filter((l) => S.netRel.has(l.rel)), c = new Set(ls.filter((l) => l.cb).map((l) => l.cb)).size;
@@ -567,13 +577,17 @@ function addNetLayers() {
   map.addLayer({ id: "net-hot", type: "line", source: "hot-lines", layout: { "line-cap": "round" }, paint: { "line-color": ["get", "col"], "line-width": 2.2, "line-opacity": 0.95 } });
   map.addSource("net-nodes", { type: "geojson", data: { type: "FeatureCollection", features: [] }, maxzoom: 12, buffer: 32 });
   map.addSource("hot-nodes", { type: "geojson", data: { type: "FeatureCollection", features: [] }, maxzoom: 12, buffer: 32 });
+  // parties whose kind of tie is switched off, or which the connection filter leaves out: faint, small, still clickable
+  map.addSource("net-ghosts", { type: "geojson", data: { type: "FeatureCollection", features: [] }, maxzoom: 12, buffer: 32 });
+  map.addLayer({ id: "net-ghost", type: "symbol", source: "net-ghosts", layout: { "icon-image": "diamond", "icon-size": 0.3, "icon-allow-overlap": true, "icon-ignore-placement": true },
+    paint: { "icon-color": "#8c8782", "icon-opacity": 0.4, "icon-halo-color": "#05061a", "icon-halo-width": 0.6 } });
   map.addLayer({ id: "net-node", type: "symbol", source: "net-nodes", layout: { "icon-image": "diamond", "icon-size": ["get", "s"], "icon-allow-overlap": true, "icon-ignore-placement": true, "symbol-sort-key": ["get", "k"] },
     paint: { "icon-color": ["get", "col"], "icon-opacity": ["get", "o"], "icon-halo-color": "#05061a", "icon-halo-width": 0.7 } });
   map.addLayer({ id: "net-node-hot", type: "symbol", source: "hot-nodes", layout: { "icon-image": "diamond", "icon-size": ["*", 1.35, ["get", "s"]], "icon-allow-overlap": true, "icon-ignore-placement": true },
     paint: { "icon-color": ["get", "col"], "icon-halo-color": "#f0ece4", "icon-halo-width": 1.2 } });
   map.addSource("sel-node", { type: "geojson", data: { type: "FeatureCollection", features: [] }, maxzoom: 12 });
   map.addLayer({ id: "sel-ring", type: "circle", source: "sel-node", paint: { "circle-radius": 8, "circle-color": "rgba(0,0,0,0)", "circle-stroke-color": "#f0ece4", "circle-stroke-width": 1.6, "circle-pitch-alignment": "map" } });
-  IDS.push("net-dot", "net-line", "net-dash", "net-hot", "net-node", "net-node-hot", "sel-ring"); order();
+  IDS.push("net-dot", "net-line", "net-dash", "net-hot", "net-ghost", "net-node", "net-node-hot", "sel-ring"); order();
 }
 // Which parties pass the filter by connections with central banks. Recomputed when the ticks or the filter change.
 let NETVIS = null;
@@ -606,9 +620,11 @@ const cbOfLink = (l) => l.cb === "EMU" ? D.UM.ECB : l.cb === "BIS" || !l.cb ? []
 const linkKey = (l) => l.tn != null ? "n" + l.tn : l.cb;
 let HOT = { lines: new Map(), nodes: new Map(), cb: new Map() };
 const LINEGEO = new Map();
+// every party that has at least one tie, so a switched-off one can still be found and clicked
+const GHOSTABLE = new Set(NET.links.flatMap((l) => (l.tn != null ? [l.n, l.tn] : [l.n])));
 function drawNet() {
   if (!map.getSource("net-lines")) return;
-  if (!S.net) { ["net-lines", "net-nodes", "hot-lines", "hot-nodes"].forEach((s) => map.getSource(s).setData({ type: "FeatureCollection", features: [] })); setHot(null); return; }
+  if (!S.net) { ["net-lines", "net-nodes", "net-ghosts", "hot-lines", "hot-nodes"].forEach((s) => map.getSource(s).setData({ type: "FeatureCollection", features: [] })); setHot(null); return; }
   const focus = S.ent != null || S.sel != null;
   const hot = (l) => l.n === S.ent || l.tn === S.ent || (S.sel != null && (l.cb === S.sel || (l.cb === "EMU" && P[S.sel] && P[S.sel].u === "ECB")));
   // one line per party and far end, colored by the main kind of tie between them
@@ -635,8 +651,12 @@ function drawNet() {
     const pr = { i: n, col: RELC(main(q.rel)), s, o: focus ? (q.hot ? 1 : 0.3) : 0.95, k: q.cbs.size };
     const ft = { type: "Feature", properties: pr, geometry: { type: "Point", coordinates: nd.ll } }; nf.push(ft); HOT.nodes.set(n, ft);
   });
+  // every other party stays on the map as a faint diamond, so nothing is unreachable by clicking
+  const gf = [];
+  NET.nodes.forEach((nd, i) => { if (!per.has(i) && nd.ll && GHOSTABLE.has(i)) gf.push({ type: "Feature", properties: { i }, geometry: { type: "Point", coordinates: nd.ll } }); });
   map.getSource("net-lines").setData({ type: "FeatureCollection", features: lf });
   map.getSource("net-nodes").setData({ type: "FeatureCollection", features: nf });
+  map.getSource("net-ghosts").setData({ type: "FeatureCollection", features: gf });
   setHot(S.hov);
 }
 // Light up one party's ties and diamond. Only those few features are redrawn; the countries stay as they are.
@@ -830,7 +850,8 @@ function sideKey() {
   if (own) h += '<p class="ldesc"><b>Countries</b> are colored by the type of owners their central bank has (key at left).</p>';
   else { const d = dom(l), r = ramp(); h += '<p class="ldesc"><b>Countries</b> are shaded by how many ties of the ticked kinds their central bank has: from ' + fmt(d[0], 0) + ' (dark) to ' + fmt(d[1], 0) + ' (light). Dark grey: none found.</p><div class="ramp">' + r.map((c) => '<span style="background:' + c + '"></span>').join("") + '</div>'; }
   h += '<p class="ldesc" style="margin-top:6px"><b>Diamonds</b> are the outside parties at their head offices, colored by their main kind of tie; larger ones are tied to more central banks. Each stays on its spot at every zoom. Parties in one city sit a few kilometers apart, so zoom in to separate them, or click a stack to pick from a list.</p>';
-  h += '<p class="ldesc"><b>Lines</b> join each party to each central bank it is tied to, one line per pair, colored by the main kind of tie between them. Point at a diamond to light up its ties, and at a country to light up where its lines go. Click for what they mean.</p></div>';
+  h += '<p class="ldesc"><b>Lines</b> join each party to each central bank it is tied to, one line per pair, colored by the main kind of tie between them. Point at a diamond to light up its ties, and at a country to light up where its lines go. Click for what they mean.</p>';
+  h += '<p class="ldesc"><b>Faint grey diamonds</b> are the parties the ticks and the filter leave out. They are small and dim so the ticked kinds stand out, but they are still there to click: clicking one switches its kinds of tie back on and opens it.</p></div>';
   return h;
 }
 function buildSide() {
