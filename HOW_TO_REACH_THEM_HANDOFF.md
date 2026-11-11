@@ -104,6 +104,48 @@ on the map and only the offices change. `enterSettlement()` pushes it onto
 `STACK` with `feature:null`, and the rest of the chain logic already handles a
 level without geometry.
 
+### Why municipalities are points and not polygons
+
+This is the open question on the map, and it is a data problem, not a code one.
+The numbers below were measured against the live boundary repository, not
+assumed:
+
+- **93 of 198 countries** in the world file have an ADM3 or ADM4 file at all
+  (38 have ADM3, 90 have ADM4, with overlap).
+- **The United States has neither.** `USA3.geojson` and `USA4.geojson` both
+  404. The county is the deepest American boundary in the repository.
+- Where the deeper files do exist, **they are usually not municipalities**.
+  France's ADM3 holds 320 features — those are arrondissements, not the roughly
+  35,000 communes. Kenya's ADM3 is 1,452 wards. Germany's ADM3 is 428.
+
+So "draw municipalities as polygons, everywhere" cannot be done from
+`cgaz-boundaries`. Drilling already reaches ADM3 and ADM4 wherever they exist,
+because `drawAdm` just asks for `level+1` until a file 404s — but arriving at
+ADM4 in France still does not arrive at a commune.
+
+Two sources that would work, neither of them in place:
+
+1. **OpenStreetMap, `admin_level=8`**, which is the municipality level in most
+   countries. Reachable from a normal browser; **not reachable from the
+   sandboxed environment this was built in**, so it could not be tested here.
+   That is the same reason the earlier Overpass lookup was removed.
+2. **US Census generalized places**,
+   `https://www2.census.gov/geo/tiger/GENZ2023/shp/cb_2023_us_place_500k.zip`,
+   22.8 MB zipped, every incorporated place in the country with a real
+   boundary. Reachable and confirmed. This solves the United States only.
+
+### Why the default view is counties and not municipalities
+
+Same problem plus a size ceiling. The current world file is 48,263 units — one
+level per country, ADM2 where it exists — and that is 4.1 MB gzipped. Municipal
+coverage worldwide is on the order of hundreds of thousands of polygons; France
+alone has about 35,000 communes against the 48,263 the whole world file holds
+now. A single file at that depth would be tens of megabytes and would not
+decode in a browser in reasonable time.
+
+Doing it properly means vector tiles rather than one file — PMTiles would suit,
+and a tiled build is the only path to a municipality-level default view.
+
 ---
 
 ## 3. Where the data comes from
@@ -246,16 +288,29 @@ again, the reason it was replaced was that a Mermaid node only responds to
 clicks where Mermaid drew it, which made most boxes dead. That is fixed by
 registering a `click` for every node, which the builder now does.
 
+**One chart per branch, stacked**, not one chart for everything. All four
+branches in a single chart puts sixteen columns of offices side by side and
+runs past 2,000 px, which can only be read by dragging. One branch is at most
+five kinds and fits the panel. `branchDiagram(b, br)` builds one; `render()`
+calls it four times into four containers. `NODE` is cleared once per render in
+`render()`, not inside the builder, because the four charts share one key space.
+
+**Two shapes carry the one distinction that matters** — what a click does. A
+rounded box (`classDef off`) is an office and opens a page of its own. A square
+box (`classDef grp`) is a branch, a kind, or a "the other N" control, and only
+folds or expands. The `.shapekey` row above the diagrams states it in words.
+If you add a third kind of node, give it one of those two shapes or the rule
+stops meaning anything.
+
 - Offices stack in a **column** under their kind: the first joined by an arrow,
   the rest by invisible links (`~~~`). Without that they lay out in one
   horizontal row and the chart went 3,031 px wide for a single test country.
-- The diagram draws at its **natural size** inside a scrolling box, not scaled
-  to fit. At realistic office counts it is about 2,000 px wide, and scaling that
-  into the panel makes the text unreadable. The box is scrolled to centre the
-  root on first draw.
-- `CAP = 25` offices per kind, then a "show the remaining N" node. The United
-  States returns over 13,000 records and drawing them all at once locks the
-  page. Raise it if you like, but test with the US.
+- `useMaxWidth:true` scales each chart to the panel. A chart that would fall
+  below 55% of its natural size keeps that floor and scrolls instead, because
+  past that the labels stop being readable.
+- `CAP = 12` offices per kind, then a "the other N" node. The United States
+  returns over 13,000 records and drawing them all at once locks the page.
+  Raise it if you like, but test with the US.
 - **Hover cards are not Mermaid's tooltips.** Mermaid's are one line of
   unstyled plain text. `bindCards()` attaches real handlers to each `.node`
   after render and positions `#mmcard` near the pointer. It recovers the node
@@ -349,6 +404,11 @@ it was the percentages inside them that made them awkward to keep.
   tested and most countries will return nothing.
 - **Marker palettes** are set per basemap in `LEVELSETS`, five colours each.
   Hell and Standard were matched by eye against their backgrounds, not measured.
+- **Marker size is a real trap.** A set of radii that looked right in the code
+  (2.2–4.6 px) drew 101 markers for Kenya that could not be found on a painted
+  basemap. If markers "disappear", check the radii and the contrast ring before
+  assuming the data failed — `map.queryRenderedFeatures({layers:['pin-on']})`
+  will tell you they are there.
 - **Overpass local-office lookup was removed** in an earlier round. It could
   never be tested from a sandboxed environment. If you want street addresses and
   front-desk numbers back, it is a GET to an Overpass endpoint over the map
