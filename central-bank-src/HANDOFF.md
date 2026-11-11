@@ -40,7 +40,7 @@ cp dist/central_bank_independence.html ~/maps/   # then git add, commit, push to
 ## Data files to add to (`agents/`)
 | File | Holds | Records now |
 |---|---|---|
-| `corruption.json` | `cases` (iso3, central_bank, category, years, people, summary, status, source_title, source_url, weak_source) and `revolving_door` | 232 cases in 135 countries and territories; 117 revolving-door records in 32 |
+| `corruption.json` | `cases` (iso3, central_bank, category, years, people, summary, status, source_title, source_url, weak_source) and `revolving_door` | 232 cases in 135 countries and territories; 123 revolving-door records in 38 |
 | `events_gold.json` | `events`: governor firings, pressure and moves against banks, 1990s–Nov 2026; plus gold storage | 102 events in 52 countries |
 | `owners.json` | `holdings` (named shareholders with shares, %, as_of, source), `bis_members`, `history` | 228 holdings; all 63 BIS members |
 | `networks.json` | `links` (entity, type, hq, cb_iso3, relation, detail, source) and `g30` members | 307 links (45 printer ties, 107 reserve-manager ties); 56 G30 members |
@@ -50,7 +50,7 @@ cp dist/central_bank_independence.html ~/maps/   # then git add, commit, push to
 | `hq.json` | Head-office city and country for each party | – |
 | `patterns.json`, `implications.json` | The patterns and their plain-language meanings | 17 |
 
-Altogether the map has 1,166 parties and 1,567 ties, and `agents/writeups.json` holds 1,393 plain-language paragraphs, one for every box. `agents/work/research_log_2026-11.json` lists what was searched with no result, unopened leads, and records dropped after review.
+Altogether the map has 1,176 parties and 1,582 ties, and `agents/writeups.json` holds 1,405 plain-language paragraphs, one for every box. `agents/work/research_log_2026-11.json` lists what was searched with no result, unopened leads, and records dropped after review.
 
 ## Rules the user holds to
 - **No fabrication.** Every record needs a readable source URL that states the fact. Mark Wikipedia-only items `weak_source: true`. List acquittals but don't count them. Claims resting on one author go in as "claim, not confirmed."
@@ -86,7 +86,7 @@ These are rough estimates. No complete count exists for any of these categories.
 | Corruption cases at central banks, 1990-2026 | 232 in 135 countries and territories | ~35-45% |
 | External auditors | 49 records at 39 banks in `gaps.json`, plus more in `networks.json` | ~25% |
 | Banknote printers and their clients | 44 printing contracts, 1 paper maker, 1 substrate supplier | ~20% |
-| Revolving door (officials to or from private finance) | 117 records in 32 countries | ~15-20% |
+| Revolving door (officials to or from private finance) | 123 records in 38 countries | ~15-20% |
 | Outside reserve and fund managers | 107, mostly Norway's fund | ~5% outside Norway |
 
 ## What is left, and how to finish it
@@ -152,3 +152,27 @@ Then compare: keys in `boxes.json` with no entry in `writeups.json` are new, and
 No new corruption cases. Settled the allegations question and the undecided statuses (both above). Fixed the Ghana status bug: `gaps.json` had set it to "charges withdrawn", which the not-counted list did not match, so a withdrawn case was being counted — Ghana fell from 33 to 32 all-around and 21 to 17 inside. Added `build_final.py`'s status guard. Added Korea's two statutory audits from the Bank of Korea Act, and six revolving-door records (Canada, New Zealand, Nigeria, Argentina, Egypt, Czechia) at banks that had none. Added "How much of the subject is here" to `about.html`: the coverage table written for a reader, plus the map's totals and the record count behind each row; its styling is `#info table.cov` in `template.html`, which stacks into blocks below 620px so it never scrolls sideways.
 
 Scores that moved, all checked against a clean build of the previous code: Ghana (the bug fix), Romania (23 to 21 all-around, 11 to 7 inside, and off the case layer), and Canada, New Zealand and Nigeria by under half a point each, too little to change any rounded figure. Argentina moved 39 to 40 all-around, Egypt 30 to 31, and Czechia 6 to 7 inside. Writeups rewritten by hand: Ghana, Romania, Korea, Canada, New Zealand, Nigeria, Argentina, Egypt, Czechia.
+
+
+## Round 6 (10 November 2026), what it added
+Six revolving-door records, every one at a bank that had none, all found the way round 5 recommended: go to the bank's own governor page or an official profile, not to scandal searches.
+
+- **Saudi Arabia** — Fahad Al-Mubarak, general manager of Rana Investment Company 1992-1999 and chairman and managing director of Morgan Stanley Saudi Arabia, governor 2011-2016 and again from January 2021 (Arab News profile). The first record of any kind of this sort for SAMA.
+- **Thailand** — Sethaput Suthiwartnarueput, from the Bank of Thailand's own governor page: SCB Asset Management president 2008-2009, Siam Commercial Bank Group executive vice president and chief economist 2009-2011, SCB Securities managing director and head of research, TMB Bank director 2011-2012.
+- **Philippines** — Rafael Buenaventura, Citibank from 1965 with more than twenty years in its senior Asian and European posts, then chief executive of the Philippine Commercial Industrial Bank, governor 1999-2005 (Philippine Star).
+- **Austria** — Ewald Nowotny, chief executive of BAWAG P.S.K. 2006-2007, OeNB governor from 2008 (Forum Alpbach biography).
+- **Hungary** — Zsigmond Jarai: James Capel 1990-1993, Samuel Montagu 1993-1995, Hungarian Credit Bank 1995-1997, ABN-AMRO Hungary from 1998, CIG Pannonia from 2008 (Portfolio profile). **No central bank dates are stated in the record**: that profile gives 1998-2000 for the central bank post, which is the period other accounts give for his time as finance minister, and nothing better opened. A source for his governorship dates is still wanted.
+- **Colombia** — Leonardo Villar, IMF executive director November 2018 to October 2020, general manager from January 2021, from the bank's own CV. `public_move: true`, so listed and not counted.
+
+15 new party links, 10 new party nodes. Twelve writeups written fresh (the ten firms, plus Korea's Board of Audit and Inspection and its presidentially appointed auditor, which round 5 added without writeups) and the six country writeups extended by a sentence.
+
+Scores that moved, checked against a clean build of the previous code: Austria inside 22.80 to 23.56 and Saudi Arabia inside 15.83 to 16.59, the only two that change a rounded figure. Hungary, the Philippines and Thailand each moved about a quarter point on the all-around score with no rounded figure changing, and Colombia did not move at all. **No other country shifted**, so unlike round 4 no older writeup went stale.
+
+Two round-4 leads turned out to be already on the map and the leads list was stale: **Philip Lowe to Barrenjoey** and **Ian Macfarlane to the ANZ board**. Check `corruption.json` for the person's name before opening a lead.
+
+Checked and left out: **Stephen Poloz** (Enbridge, CGI and a Bay Street law firm — none of them finance); **Julio Velarde of Peru** (La Republica lists him as manager of the Banco de Industria y Construccion and the Banco Central Hipotecario and a director of the Banco de Comercio and the Banco Financiero, but does not say whether any was private, and the Banco Central Hipotecario was state-owned).
+
+**Mario Draghi's Goldman Sachs years sit under `EMU`**, with the central bank field reading "European Central Bank / Banca d'Italia", so Italy's own box does not carry them. The Banca d'Italia's own governor page states the same facts — Vice President and Managing Director of Goldman Sachs International 2002-2005, governor 29 December 2005 to 31 October 2011 — and is the stronger source if that record is ever moved or copied to `ITA`.
+
+### Where round 7 should start on the revolving door
+Banks still with no record and with published board bios: **Ireland, Belgium, Poland, Singapore, the United Arab Emirates, Peru, Malaysia beyond the two held, Switzerland beyond Hildebrand**. Named leads: **Veerathai Santiprabhob** (Bank of Thailand governor 2015-2020, reported Siam Commercial Bank chief strategy officer before the post — his BOT governor page should state it, same as Sethaput's did), **Guillermo Ortiz to Banorte** (the Expansion page returns a server error; another source needed), and the four round-4 URLs still unopened (two Fed president appointments, the WHYY piece on a Comcast executive named to the Fed board, Escriva's Banco de Espana CV, Joaquin Vial's farewell at the Banco Central de Chile). **US Reserve Bank presidents before 2000** remains a closed, listable set on the Federal Reserve History site and should finish in one round.
