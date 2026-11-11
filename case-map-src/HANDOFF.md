@@ -1,6 +1,6 @@
 # Globalization Case Map: handoff for a new chat
 
-Last updated: 10 Nov 2026. Replaces the 7 Nov handoff.
+Last updated: 10 Nov 2026 (late evening). Replaces the 7 Nov handoff.
 
 Live page: `globalization.html` in WelcomeToYourGalaxy/maps (published from `main`). Source folder: `case-map-src/`. Rebuild with `python3 case-map-src/build.py`.
 
@@ -12,9 +12,9 @@ Live page: `globalization.html` in WelcomeToYourGalaxy/maps (published from `mai
 4. Run two research agents, then a separate fact-checker per batch. Merge only checked files.
 5. Build, test headless, commit, push, and update this file with the new counts.
 
-The two jobs worth doing next, in order: **company descriptions** (608 names left, the biggest gap) and **condition retries** (146 cases, all of them second attempts). Everything else is listed under "What is left, and how to finish it".
+The two jobs worth doing next, in order: **company descriptions** (399 names left, the biggest gap) and **condition retries** (146 cases, all of them second attempts). Everything else is listed under "What is left, and how to finish it".
 
-## Current state (10 Nov 2026, evening)
+## Current state (10 Nov 2026, late evening)
 
 **946 cases**, in 126 countries and territories. The page builds clean and loads headless with no errors; `build.py` prints "loan-condition cases matched 173 of 173".
 
@@ -25,7 +25,7 @@ These are the figures the About panel shows under "How complete this map is", co
 | Rounded "what happened to people" paragraph (`whole`) | 925 of 946 | 98% |
 | Cases that say what the money came with (`conditions`) | 896 of 946 | 95% |
 | Lender's terms looked for and settled (not tagged `research`) | 800 of 946 | 85% |
-| Company names with a line saying what the firm is (`desc`) | 384 of 992 | 39% |
+| Company names with a line saying what the firm is (`desc`) | 593 of 992 | 60% |
 | People with a checked `total` | 18 of 173 | 10% |
 | Cases with a documented buyer | 34 of 946 | 4% |
 
@@ -43,9 +43,9 @@ Two types were added to `CTN` in `base.html` on 10 Nov, which released 12 strand
 
 `merge_conds.py` now carries checked text through even when `ct` is empty, instead of discarding it, and leaves the case tagged `research` so it stays on the to-do list. It skips text already present, so re-running is safe. Six cases carry text with no type on purpose: four record loan terms rather than conditions (Kotopanjang, Ramu, Hambantota, Santo António) and two record a condition's absence (Sendou, where the AfDB found environmental and social covenants were left out of the agreement; Wilmar, where a Category C rating meant the Performance Standards were never triggered).
 
-### Company descriptions — 608 of 992 names left
-Cards show a one-line "what this company is" (`desc`), then "In this case:" and the role. Merged so far: batches 1 and 2, then 3a, 3b, 4a, 4b (`rounds/r26f_companies_*_checked.json`, logs alongside). Merge with `merge_codesc.py`, brief `docs/COMP.md`. Batches 5a and 5b were out at the end of 10 Nov.
-Rate: about 110 names clear per turn with two writers and two checkers, so roughly five or six more turns.
+### Company descriptions — 399 of 992 names left
+Cards show a one-line "what this company is" (`desc`), then "In this case:" and the role. Merged: batches 1, 2, then 3a/3b, 4a/4b, 5a/5b, 6a/6b (`rounds/r26f_companies_*_checked.json`, logs alongside). Merge with `merge_codesc.py`, brief `docs/COMP.md`. Batches 7a and 7b were out at the end of 10 Nov.
+653 names have been attempted; 399 of the 992 have neither a description nor an attempt. About 110 clear per round, so roughly four more rounds.
 
 ### People — 155 of 173 lack a checked `total`
 `rounds/r26f_people_totals.json`, `merge_people_total.py`, brief `docs/PEOPLE.md`. Not yet researched: about 16 company heads (Vale, Union Carbide, Trafigura, Renco, Lundin, Shell Nigeria, Unocal, Elliott's Paul Singer). Missing years for Lagarde, Lipton, Wolfensohn, Zoellick, McNamara and Woods could be filled. The World Bank projects API refuses agents.
@@ -119,6 +119,7 @@ Keys in every case: `id, title, place, iso3, lat, lng, point, start, end, mechan
 - Applied 7 Nov evening (`rounds/r26f_textfix_1.json`, checked; log alongside; script `merge_textfix.py`, which handles "people:<id>" keys, paths like `lenders[0].role`, and `lenders_append`): Peru 1977 inflation, Theun-Hinboun, Elliott, Jirau, Lake Turkana, Vedanta, Gezhouba, Upper Atbara (Abu Dhabi fund added), Buchanan, Barishal, Caculo Cabaça, Celukan Bawang, Green Resources, Kompas/Tanjung Kasam, ICC Njeem post label, Vishnugad ($648M less two $100M cancellations = $448M), Tractebel on the Arequipazo card. Nathpa Jhakri already said the operator paid for the study.
 - Applied 10 Nov (`rounds/r26f_textfix_2.json`): Freeport-McMoRan's headquarters corrected to Phoenix (New Orleans was the old Freeport-McMoRan Inc. base); CIFI's to Panama City; Ecoener stated as holding 85% of Hidro Santa Cruz with Hidralia 15%; Thames Water's RWE ownership dated (2001 to October 2006, then Macquarie-led funds); Terminal Investment Limited corrected from "joint venture partner" to co-sponsor and sister company of Global Terminal Limited, which indirectly wholly owns the Lome terminal company. Both corrected headquarters markers were moved. Note `merge_textfix.py` writes strings, so numeric fields such as `hq_lat`/`hq_lng` must be set by a separate short script or they become strings.
 - Applied 10 Nov evening (`rounds/r26f_textfix_3.json`), all dated rather than overwritten: Ambatovy (none of the three named owners still holds a stake — Sherritt exited 2020, Korea Resources merged into KOMIR 2021, Sumitomo transferred its interest 2026); Aracruz (merged into Fibria 2009, later Suzano); Anglo American Platinum (demerged 31 May 2025, renamed Valterra Platinum, Anglo keeping about 19.9%); Adriatic Metals (acquired by Dundee Precious Metals 3 September 2025, renamed DPM BH Holdings); Base Resources (acquired by Energy Fuels 2 October 2024); Bougainville Copper (about 72.9% held by the Autonomous Bougainville Government and the people of Bougainville after the January 2026 transfer); Prodeco (starting to return its Colombian mining contracts, February 2021); and Caracol, which no longer states Harvard Management Company ownership flatly but gives both sides.
+- Applied 10 Nov late evening (`rounds/r26f_textfix_5.json` and `_6.json`): San Carlos-Panantza, whose card said the Chinese owners were not named in its sources and put the marker in Beijing (they are named: the CRCC-Tongguan consortium, ExplorCobres as Tongguan Nonferrous Metals Group's project subsidiary, EcuaCorriente a joint venture of Tongling Nonferrous Metals 70% and China Railway Construction Corporation 30%; marker removed, no source gives a Beijing address); Frontier Energy, called a Danish private equity fund that majority-owns and manages both plants, where Proparco says only that Frontier Energy II Alpha K/S is a fund headquartered in Denmark managed by Frontier Investment Management; Golden Star's unsupported Denver marker, removed; Sadiola, where IAMGOLD's 2024 Annual Information Form does not mention the mine and records the December 2022 sale of its Senegal, Mali and Guinea interests to Managem; Kamoa Copper, replacing "majority owner of operator" with the filing's structure (DRC state 20%, holding company 49.5% Ivanhoe, 49.5% Zijin, 1% Crystal River); Johnson Controls, incorporated in Ireland and headquartered in Cork by its own 10-K, marker moved from Milwaukee; Interagua and Irish Water, where the cards' dates conflict with the CAO closure report and Uisce Eireann's own annual report and both sides are now given; Jamuna Multipurpose Bridge Authority, renamed the Bangladesh Bridge Authority with effect from 18 December 2007; Sega Mining corrected to Seguenega Mining SA; and Indorama, where the IFC says Singapore against the Bretton Woods Project's "Indonesian".
 - Still open: Cochabamba (Aguas del Tunari) still credits Wikipedia for shareholdings and lists it as a source. Barishal "first loan in May 2021" (Global Energy Monitor, blocked) sits before AidData's September 2021 signing date; unchecked. Tanjung Kasam capacity: Jakarta Post 2×55 MW vs AidData 130 MW. Several map-point labels say "Wikipedia coordinates" (location only, not facts).
 
 ## Questions the owner has not settled
@@ -130,6 +131,8 @@ These came out of the company work and are deliberately not changed, because cha
 - **Mundra capacity**: card 4,150 MW, source 4,000 MW. Likely nameplate against the UMPP's nominal size; check the unit configuration.
 - **Shuakhevi capacity**: card 185 MW; IFC gives 178 MW for Shuakhevi and 184 MW for the financed project including the 6 MW Skhalta.
 - **Antea Cement capacity**: Titan says 1.5 Mt/yr, IFC's 2008 appraisal says 1.4 Mt/yr. A genuine disagreement between two credible sources, not an error.
+- **Three shareholding splits on cards rest on nothing retrievable**: Huaneng Shandong Ruyi (Pakistan) Energy at 51/49, KEPCO SPC Power at 60/40, and Iso Tech at 4%. The NEPRA licence states no percentages at all, the Power Engineering piece calls KSPC a joint venture with no split, and Iso Tech's 4% is on no page that opens. Unconfirmed rather than contradicted.
+- **Johnson Controls' "Glendale corporate campus"**: Cork is confirmed from the 10-K, but the checker could read only the first 100,000 characters, where neither Glendale nor Milwaukee appears at all.
 - **BWDB's embankment figure** rests on Banglapedia, a published national encyclopedia rather than a crowd wiki. At the edge of what `docs/COMP.md` allows.
 
 ## Open decisions for the owner
@@ -142,16 +145,19 @@ These came out of the company work and are deliberately not changed, because cha
 
 Counted from the page data on 10 Nov 2026. The About panel now carries these same shares, computed at build time, under "How complete this map is".
 
-### 1. Company descriptions — 608 of 992 names left (biggest gap)
-Two writers on 60 names each per turn, then a fact-checker per batch. Build inputs by ranking names with no `desc` by how many cases use them.
+### 1. Company descriptions — 399 of 992 names left (biggest gap)
+Two writers on 60 names each per turn, then a fact-checker per batch. Build inputs by ranking undescribed, never-attempted names by how many cases use them.
 
-**Two faults dominate every batch. Put both in the writer's brief, not just the checker's:**
-1. **Claiming slightly more than the cited page says.** A headquarters city, a nationality, a stock exchange, a founder, a product range or a country list the source never states; a size figure without its year; "chairman" written up as "founder". This accounts for most corrections — about half of every batch.
-2. **Describing a parent and presenting it as the subsidiary.** If no source names the company in the key, it cannot be described, and a source describing what a firm did at a project site is not a description of the firm. Three entries were blanked for this in batch 4b. The exception is a documented identity link: CMS Nomeco survived only because an SEC filing shows CMS Oil and Gas was formerly named CMS NOMECO.
+**Three faults dominate every batch. Put all three in the WRITER's brief, not just the checker's** — doing so cut the blank rate and raised the restraint, though the correction rate stayed near two thirds:
+1. **Claiming more than the cited page says.** Nationality is the commonest invention by far: a page saying a firm is "deeply rooted in France" does not say it is French, and a foreign-sounding name is not a source. Same for a headquarters city, a stock exchange, a founder, a product range, a country count. A ticker in logo alt text is not a stated listing. Never take a figure's year from the article's date.
+2. **Describing a parent and presenting it as the subsidiary.** If no source names the company in the key, it cannot be described. A source describing what a firm did at a project site is not a description of the firm. Where a key names two entities and the sources cover one, describe that one and say nothing about the other — that rule saved four entries in round 6b. The exception is a documented identity link: CMS Nomeco survived only because an SEC filing shows CMS Oil and Gas was formerly named CMS NOMECO.
+3. **Attaching a figure or shareholding to the wrong entity.** Round 6 found three: a provincial state body controlling the listed company rather than the group, a 10% stake held by a three-member consortium rather than two named firms, and a debt belonging to a subsidiary in another country. Round 5 found a report listing stakes without saying which company they sat in, one of which belonged to a different company entirely.
 
-Honest blanks are the right outcome and run about 5-10%: small local firms, dissolved companies, subsidiaries with no published record.
+Honest blanks run 5-20% and are the right outcome. Do not re-queue a name that came back blank with a sound note.
 
-**This job doubles as an audit of the case data**, and that is most of its value. Twenty-two discrepancies surfaced in two turns, and the ownership ones decay fastest — a card naming owners from when the case was written reads as a current claim. Collect them, verify each against a source the checker opens itself, then apply through `merge_textfix.py`. Phrase history with dates rather than overwriting: "X owned it until 2020, when Y bought it", not a silent swap to Y. Where ownership is contested, give both sides, as the Caracol card now does for Harvard Management Company.
+**This job doubles as an audit of the case data**, and that is most of its value — about 40 discrepancies in five rounds. Ownership decays fastest: a card naming owners from when the case was written reads as a current claim. Collect them, have the checker verify each against a source it opens itself, then apply through `merge_textfix.py`. Phrase history with dates rather than overwriting ("X held 38% at the time; the 2024 filing does not mention the mine"), and give both sides where sources disagree.
+
+**Unsupported headquarters are common**, and several map markers sat at addresses no source gives. Remove the coordinates rather than guess a replacement, and say so on the card. Done so far: Compañía de Tierras Sud Argentino, ExplorCobres (marker was in Beijing), Golden Star (Denver). Moved on evidence: De Beers to London, Johnson Controls to Cork, Freeport to Phoenix, CIFI to Panama City.
 
 ### 2. Condition types — 146 cases still tagged `research`
 Every case has now been tried at least once, so these are all retries. 108 of the 146 already carry some conditions text; what is missing is a documented term the money depended on.
