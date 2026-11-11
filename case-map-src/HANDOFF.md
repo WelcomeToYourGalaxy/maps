@@ -4,32 +4,54 @@ Last updated: 10 Nov 2026. Replaces the 7 Nov handoff.
 
 Live page: `globalization.html` in WelcomeToYourGalaxy/maps (published from `main`). Source folder: `case-map-src/`. Rebuild with `python3 case-map-src/build.py`.
 
-## Current state (10 Nov 2026)
+## Start here
 
-- **946 cases** in the page data.
-- **925 of 946 cases have rounded "what happened to people" text** (`whole`), fact-checked and merged. **The first pass is complete.** Order used: largest harms first. Batches r26f_whole_h1 through h10 are in `rounds/`, each with its checker log. Briefs: `docs/WHOLE.md` (researcher) and `docs/CHECKW.md` (checker). Merge with `merge_whole.py`.
-- **21 cases still blank** after the first pass (searches ran out, or the sources would not open): Mali Office du Niger, Zambia Camdex, Morelos/Samir Flores, Peñarroya Santo Amaro, Batang, Cilacap, Java 7, Multan WWTP, Shell Vila Carioca, Pacitan, Tanjung Kasam, Equatorial Palm Oil/Jogbahn, Heinda tin, Shell Ogbodo, Tayan Nuur, IPP4 Al-Manakher, BNP Rwanda, Yakjin, Vedan Thi Vai, DRC bank channels, Arab Bank. Seven of these were already judged to have no credible information (Morelos, Batang, Java 7, Pacitan, Tanjung Kasam, Cilacap, IPP4 Al-Manakher); the rest can be retried.
-- **7 older blanks** (no credible information): Morelos, Batang, Java 7, Pacitan, Tanjung Kasam, Cilacap, IPP4 Al-Manakher.
-- **Company descriptions:** cards now show a one-line "what this company is" (`desc` on each case company), then "In this case:" and its role. 93 + 67 names checked and merged (`rounds/r26f_companies_1.json`, `_2.json`, merged with `merge_codesc.py`). About 830 names still lack one. Batch 1 inputs came from the 250 most-used names; 78 of its entries were blanked only because company sites refused to load and can be re-checked. Brief: `docs/COMP.md`.
-- **Condition types:** every case has `ct` (types of condition attached to the money), read from its own sourced text and independently checked (`rounds/r26_cond_types.json`, log `_log.json`; brief `docs/COND.md`). Originally 344 cases were tagged `research`. **208 still tagged `research` after round 4.** Rounds so far: 1 (`rounds/r26f_conds_research_1.json`), 2 (`_2a`, `_2b`), 3 (`_3a`, `_3b`), 4 (`_4a`, `_4b`), inputs in `docs/r26_condr2_*.json` through `r26_condr4_*.json`, checker logs alongside, merged with `merge_conds.py`, brief `docs/CONDR.md`. **Rounds 5, 6 and 7 are merged (10 Nov). Cases tagged `research` fell from 208 to 146, and every case on the map has now been tried at least once.** Inputs `docs/r26_condr5_*.json` through `r26_condr7_a.json`; raw outputs and `_checked.json` files with logs in `rounds/`.
+1. `git clone https://github.com/WelcomeToYourGalaxy/maps` — reading works without anything else. **To push, attach the repo to the session first** (`add_repo`, push access), or the git proxy refuses with a 403.
+2. Read this file and `docs/COMP.md` or `docs/CONDR.md`, depending on which job you are doing.
+3. Build the batch inputs from `base.html` itself, never from a list in this file — the counts here go stale. The snippets are under "Workflow" below.
+4. Run two research agents, then a separate fact-checker per batch. Merge only checked files.
+5. Build, test headless, commit, push, and update this file with the new counts.
 
-**Two new condition types were added** to `CTN` in `base.html`: `fincov` (financial covenants and use-of-proceeds terms: required rate of return, self-financing or debt-to-equity ratio, offtake undertaking, restriction on what the money may be spent on, required escrow or minimum balance) and `admin` (institutional or planning covenants: create an agency, adopt an action plan or manual, set up a unit or committee, submit plans for the lender's review). These released 12 cases whose checked text had fitted no type (`rounds/r26f_conds_retype_1.json`, proposal and desk check in `docs/r26_ct_retype_proposed.json` and `_checked.json`).
+The two jobs worth doing next, in order: **company descriptions** (608 names left, the biggest gap) and **condition retries** (146 cases, all of them second attempts). Everything else is listed under "What is left, and how to finish it".
 
-**`merge_conds.py` now carries checked text through even when `ct` is empty**, instead of discarding it, and leaves the case tagged `research` so it stays on the to-do list. It also skips text already present, so re-running is safe.
+## Current state (10 Nov 2026, evening)
 
-**What the checkers keep rejecting, in order of frequency. Put this in every researcher brief:**
-1. A lender's general policy presented as a term of this loan (ADB's Safeguard Policy Statement, JICA's Guidelines, the Equator Principles, IFC Performance Standards applied to all financial-sector clients, an IFC Environmental and Social Review Summary's standard framing, a bank's own sector or credit policy). This is by far the biggest source of false positives.
-2. `none` claimed where the source is merely silent. "General in nature" means unrestricted use of proceeds, not an absence of conditions. All seven `none` tags in round 6a failed on this.
-3. Facts about a loan (pricing, fees, maturity, collateral a database does not record) read as conditions. Write them as facts with no type.
-4. An appraisal forecast, a readiness timeline, subproject selection criteria, or a description of what happened read as a covenant.
-5. Terms set after the harm. Where the terms are the only ones documented and the case is worth keeping, say the dates on the face of the text so the gap is visible (Noor Ouarzazate, Mahenge).
-6. A procurement label read as its opposite: "Partially Untied" and "General Untied" are not `tied`; a credit covering the value of one country's exports says what the money buys, not that buying there was required.
+**946 cases**, in 126 countries and territories. The page builds clean and loads headless with no errors; `build.py` prints "loan-condition cases matched 173 of 173".
 
-Untagged-but-confirmed texts (Saguling, Mangla, Giza, Cambodia resin, Ibadan, Wilmar) do not merge because no type fits; a "financial or administrative terms only" type could be added if wanted. No separate checker brief exists for this job; the checker prompt: open every source, say "required" only where the source says the money depended on it, and terms set after the harm or bank-wide policy do not count.
-- **People totals:** 18 people have a checked `total` ("In context" line on their card; `rounds/r26f_people_totals.json`, `merge_people_total.py`, brief `docs/PEOPLE.md`). Not yet researched: about 16 company heads (Vale, Union Carbide, Trafigura, Renco, Lundin, Shell Nigeria, Unocal, Elliott's Paul Singer); missing years for Lagarde, Lipton, Wolfensohn, Zoellick, McNamara, Woods could be filled. The World Bank projects API was refused to agents.
-- **Company descriptions:** 274 of 992 names have a one-line "what this company is" (`desc`). Batches 1 and 2 (`rounds/r26f_companies_1.json`, `_2.json`), then 3a and 3b (10 Nov, `_3a_checked.json`, `_3b_checked.json`, logs alongside). Merge with `merge_codesc.py`. Brief `docs/COMP.md`. 718 names remain; batches 4a and 4b were out at the end of 10 Nov.
-- **People:** 18 of 173 have a checked `total` ("In context" line on their card; `rounds/r26f_people_totals.json`, `merge_people_total.py`, brief `docs/PEOPLE.md`). The World Bank projects API refuses agents.
-- **Buyers:** 34 of 946 cases have a documented buyer of what the project produced (`window.PROD.chains`, 49 chains).
+These are the figures the About panel shows under "How complete this map is", computed from the page data at build time:
+
+| What | Filled | Share |
+| --- | --- | --- |
+| Rounded "what happened to people" paragraph (`whole`) | 925 of 946 | 98% |
+| Cases that say what the money came with (`conditions`) | 896 of 946 | 95% |
+| Lender's terms looked for and settled (not tagged `research`) | 800 of 946 | 85% |
+| Company names with a line saying what the firm is (`desc`) | 384 of 992 | 39% |
+| People with a checked `total` | 18 of 173 | 10% |
+| Cases with a documented buyer | 34 of 946 | 4% |
+
+### Whole-picture text — first pass complete
+Batches `rounds/r26f_whole_h1` through `h10`, each with a checker log. Briefs `docs/WHOLE.md` (researcher) and `docs/CHECKW.md` (checker). Merge with `merge_whole.py`.
+21 cases are blank. Seven were judged to have no credible information: Morelos, Batang, Java 7, Pacitan, Tanjung Kasam, Cilacap, IPP4 Al-Manakher. The other 14 can be retried: Mali Office du Niger, Zambia Camdex, Peñarroya Santo Amaro, Multan sewage plant, Shell Vila Carioca, Equatorial Palm Oil/Jogbahn, Heinda tin, Shell Ogbodo, Tayan Nuur, BNP Rwanda, Yakjin, Vedan Thi Vai, DRC bank channels, Arab Bank.
+
+### Condition types — 146 cases still tagged `research`
+Seven rounds are merged (`rounds/r26f_conds_research_1.json` through `_7a_checked.json`, inputs in `docs/r26_condr*.json`, checker logs alongside). Merge with `merge_conds.py`, brief `docs/CONDR.md`.
+**Every case has now been tried at least once**, so what remains are retries. 108 of the 146 already carry some conditions text; what is missing is a documented term the money depended on.
+
+Two types were added to `CTN` in `base.html` on 10 Nov, which released 12 stranded cases (`rounds/r26f_conds_retype_1.json`; proposal and desk check in `docs/r26_ct_retype_proposed.json` and `_checked.json`):
+- `fincov` — financial covenants and use-of-proceeds terms: a required rate of return, a self-financing or debt-to-equity ratio, an offtake undertaking, a restriction on what the money may be spent on, a required escrow or minimum balance.
+- `admin` — institutional or planning covenants: create an agency, adopt an action plan or manual, set up a unit or committee, submit plans for the lender's review.
+
+`merge_conds.py` now carries checked text through even when `ct` is empty, instead of discarding it, and leaves the case tagged `research` so it stays on the to-do list. It skips text already present, so re-running is safe. Six cases carry text with no type on purpose: four record loan terms rather than conditions (Kotopanjang, Ramu, Hambantota, Santo António) and two record a condition's absence (Sendou, where the AfDB found environmental and social covenants were left out of the agreement; Wilmar, where a Category C rating meant the Performance Standards were never triggered).
+
+### Company descriptions — 608 of 992 names left
+Cards show a one-line "what this company is" (`desc`), then "In this case:" and the role. Merged so far: batches 1 and 2, then 3a, 3b, 4a, 4b (`rounds/r26f_companies_*_checked.json`, logs alongside). Merge with `merge_codesc.py`, brief `docs/COMP.md`. Batches 5a and 5b were out at the end of 10 Nov.
+Rate: about 110 names clear per turn with two writers and two checkers, so roughly five or six more turns.
+
+### People — 155 of 173 lack a checked `total`
+`rounds/r26f_people_totals.json`, `merge_people_total.py`, brief `docs/PEOPLE.md`. Not yet researched: about 16 company heads (Vale, Union Carbide, Trafigura, Renco, Lundin, Shell Nigeria, Unocal, Elliott's Paul Singer). Missing years for Lagarde, Lipton, Wolfensohn, Zoellick, McNamara and Woods could be filled. The World Bank projects API refuses agents.
+
+### Buyers — 34 of 946 cases
+`window.PROD.chains`, 49 chains. Only where a source documents who bought the output; this will never reach 100%.
 
 ## Page changes made 7 Nov 2026
 
@@ -96,7 +118,19 @@ Keys in every case: `id, title, place, iso3, lat, lng, point, start, end, mechan
 
 - Applied 7 Nov evening (`rounds/r26f_textfix_1.json`, checked; log alongside; script `merge_textfix.py`, which handles "people:<id>" keys, paths like `lenders[0].role`, and `lenders_append`): Peru 1977 inflation, Theun-Hinboun, Elliott, Jirau, Lake Turkana, Vedanta, Gezhouba, Upper Atbara (Abu Dhabi fund added), Buchanan, Barishal, Caculo Cabaça, Celukan Bawang, Green Resources, Kompas/Tanjung Kasam, ICC Njeem post label, Vishnugad ($648M less two $100M cancellations = $448M), Tractebel on the Arequipazo card. Nathpa Jhakri already said the operator paid for the study.
 - Applied 10 Nov (`rounds/r26f_textfix_2.json`): Freeport-McMoRan's headquarters corrected to Phoenix (New Orleans was the old Freeport-McMoRan Inc. base); CIFI's to Panama City; Ecoener stated as holding 85% of Hidro Santa Cruz with Hidralia 15%; Thames Water's RWE ownership dated (2001 to October 2006, then Macquarie-led funds); Terminal Investment Limited corrected from "joint venture partner" to co-sponsor and sister company of Global Terminal Limited, which indirectly wholly owns the Lome terminal company. Both corrected headquarters markers were moved. Note `merge_textfix.py` writes strings, so numeric fields such as `hq_lat`/`hq_lng` must be set by a separate short script or they become strings.
+- Applied 10 Nov evening (`rounds/r26f_textfix_3.json`), all dated rather than overwritten: Ambatovy (none of the three named owners still holds a stake — Sherritt exited 2020, Korea Resources merged into KOMIR 2021, Sumitomo transferred its interest 2026); Aracruz (merged into Fibria 2009, later Suzano); Anglo American Platinum (demerged 31 May 2025, renamed Valterra Platinum, Anglo keeping about 19.9%); Adriatic Metals (acquired by Dundee Precious Metals 3 September 2025, renamed DPM BH Holdings); Base Resources (acquired by Energy Fuels 2 October 2024); Bougainville Copper (about 72.9% held by the Autonomous Bougainville Government and the people of Bougainville after the January 2026 transfer); Prodeco (starting to return its Colombian mining contracts, February 2021); and Caracol, which no longer states Harvard Management Company ownership flatly but gives both sides.
 - Still open: Cochabamba (Aguas del Tunari) still credits Wikipedia for shareholdings and lists it as a source. Barishal "first loan in May 2021" (Global Energy Monitor, blocked) sits before AidData's September 2021 signing date; unchecked. Tanjung Kasam capacity: Jakarta Post 2×55 MW vs AidData 130 MW. Several map-point labels say "Wikipedia coordinates" (location only, not facts).
+
+## Questions the owner has not settled
+
+These came out of the company work and are deliberately not changed, because changing them could make a card worse:
+- **Biopalm Energy's headquarters** is given as Singapore; the only source describes the Siva Group as Chennai-based and says nothing about Biopalm's own base. Remove the unsourced HQ (which removes a map marker) or find a source?
+- **COBRAC's headquarters** (Rieux, France) rests on Portuguese Wikipedia alone. The peer-reviewed paper that confirms the 1989 rename to Plumbum Mineração gives only the plant site.
+- **Alcoa's headquarters**: the card says Pittsburgh, the 2016 S-1 says 390 Park Avenue, New York. Alcoa has used both; the S-1 is evidence about 2016, not about now.
+- **Mundra capacity**: card 4,150 MW, source 4,000 MW. Likely nameplate against the UMPP's nominal size; check the unit configuration.
+- **Shuakhevi capacity**: card 185 MW; IFC gives 178 MW for Shuakhevi and 184 MW for the financed project including the 6 MW Skhalta.
+- **Antea Cement capacity**: Titan says 1.5 Mt/yr, IFC's 2008 appraisal says 1.4 Mt/yr. A genuine disagreement between two credible sources, not an error.
+- **BWDB's embankment figure** rests on Banglapedia, a published national encyclopedia rather than a crowd wiki. At the edge of what `docs/COMP.md` allows.
 
 ## Open decisions for the owner
 
@@ -108,10 +142,16 @@ Keys in every case: `id, title, place, iso3, lat, lng, point, start, end, mechan
 
 Counted from the page data on 10 Nov 2026. The About panel now carries these same shares, computed at build time, under "How complete this map is".
 
-### 1. Company descriptions — 718 of 992 names left (biggest gap)
-Run two agents per turn on 60 names each, then a fact-checker per batch. Build inputs by ranking names with no `desc` by how many cases use them (see the snippet in "Workflow" below). About 115 names clear per turn at the current rate, so roughly six more turns.
-Expect most entries to come back corrected, almost always for the same fault: claiming slightly more than the cited page says. Tell each writer so up front. Honest blanks are the right outcome for small local firms, dissolved companies and subsidiaries with no published record.
-This work keeps finding errors in case data that nobody had re-checked since the cases were written. Collect them and apply them through `merge_textfix.py` (see "Pending case-text fixes").
+### 1. Company descriptions — 608 of 992 names left (biggest gap)
+Two writers on 60 names each per turn, then a fact-checker per batch. Build inputs by ranking names with no `desc` by how many cases use them.
+
+**Two faults dominate every batch. Put both in the writer's brief, not just the checker's:**
+1. **Claiming slightly more than the cited page says.** A headquarters city, a nationality, a stock exchange, a founder, a product range or a country list the source never states; a size figure without its year; "chairman" written up as "founder". This accounts for most corrections — about half of every batch.
+2. **Describing a parent and presenting it as the subsidiary.** If no source names the company in the key, it cannot be described, and a source describing what a firm did at a project site is not a description of the firm. Three entries were blanked for this in batch 4b. The exception is a documented identity link: CMS Nomeco survived only because an SEC filing shows CMS Oil and Gas was formerly named CMS NOMECO.
+
+Honest blanks are the right outcome and run about 5-10%: small local firms, dissolved companies, subsidiaries with no published record.
+
+**This job doubles as an audit of the case data**, and that is most of its value. Twenty-two discrepancies surfaced in two turns, and the ownership ones decay fastest — a card naming owners from when the case was written reads as a current claim. Collect them, verify each against a source the checker opens itself, then apply through `merge_textfix.py`. Phrase history with dates rather than overwriting: "X owned it until 2020, when Y bought it", not a silent swap to Y. Where ownership is contested, give both sides, as the Caracol card now does for Harvard Management Company.
 
 ### 2. Condition types — 146 cases still tagged `research`
 Every case has now been tried at least once, so these are all retries. 108 of the 146 already carry some conditions text; what is missing is a documented term the money depended on.
@@ -138,10 +178,6 @@ IDB, AfDB and BII directories blocked; IMF per-country pages not read; IFC and C
 
 ### 7. New cases
 Leads in `docs/backlog.json`. Thin regions: Middle East and North Africa, Europe and Central Asia. Not researched: Payra, Mattala, Kyaukphyu. Waiting on events: Bishoftu airport, Kerio Valley, Thar Block-1, Nam Ngiep 1, Kaliwa dam.
-
-### Two figures to settle, not to guess
-- **Mundra**: the card says the plant is 4,150 MW; the source opened in the company work gives 4,000 MW. Likely nameplate against the UMPP's nominal size. Check against the plant's unit configuration before changing either.
-- **Shuakhevi**: the card says 185 MW; IFC gives 178 MW for Shuakhevi and 184 MW for the financed project including the 6 MW Skhalta. Decide which the card should state.
 
 ## Tool limits
 
