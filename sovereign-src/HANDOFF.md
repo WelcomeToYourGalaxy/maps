@@ -27,7 +27,7 @@ Unreached and refused: PEZA and New Cities Map refused permission prompts; Alber
 
 ## Round of 10 Nov 2026: coverage closed to 100%
 Page: 10,218 attempts, 265 laws and legal tests, 159 places, 22 patterns. About 19 MB.
-Both coverage figures are now 100% of every example the published lists read name, and `unread` is 0 on every row. The map description (app_template.html, `#lede3`) prints these figures from the build, so it updates itself.
+Coverage: 100% for the types closest to founding a place, 72% across all types. The whole gap is 4,077 zones named by the Adrianople Group's Open Zone Map that could not be read; every other row is at zero unread. `coverage.json` carries `unread_source` on the row that holds a gap, and `build.py` exports `unread_one` so the description can name it; if a second row ever gains an unread count, the description falls back to the plain total. The map description (app_template.html, `#lede3`) prints these figures from the build, so it updates itself.
 
 What was added this round, each as its own patch file in data/research/:
 - `patch_n_peza.json` — 595 PEZA economic zones from the owner's upload of PEZA's list of 30 June 2026 (440 operating, 179 proclaimed). 24 were already here. peza.gov.ph is robots-blocked, so the file has to be downloaded by hand.
