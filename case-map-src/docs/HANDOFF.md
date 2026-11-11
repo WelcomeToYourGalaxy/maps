@@ -1,6 +1,6 @@
 # Globalization Case Map: handoff for a new chat
 
-Last updated: 10 Nov 2026 (late night). Replaces the earlier 10 Nov handoff.
+Last updated: 11 Nov 2026 (early hours). Replaces the 10 Nov handoffs.
 
 Live page: `globalization.html` in WelcomeToYourGalaxy/maps (published from `main`). Source folder: `case-map-src/`. Rebuild with `python3 case-map-src/build.py`.
 
@@ -12,9 +12,9 @@ Live page: `globalization.html` in WelcomeToYourGalaxy/maps (published from `mai
 4. Run two research agents, then a separate fact-checker per batch. Merge only checked files.
 5. Build, test headless, commit, push, and update this file with the new counts.
 
-The job worth doing next is **condition retries** (146 cases, all of them second attempts) — company descriptions are finished as a first pass. Everything else is listed under "What is left, and how to finish it".
+The job worth doing next is **condition retries** (127 cases, all of them second or third attempts) — company descriptions are finished as a first pass. Everything else is listed under "What is left, and how to finish it".
 
-## Current state (10 Nov 2026, late night)
+## Current state (11 Nov 2026, early hours)
 
 **946 cases**, in 126 countries and territories. The page builds clean and loads headless with no errors; `build.py` prints "loan-condition cases matched 173 of 173".
 
@@ -23,8 +23,8 @@ These are the figures the About panel shows under "How complete this map is", co
 | What | Filled | Share |
 | --- | --- | --- |
 | Rounded "what happened to people" paragraph (`whole`) | 925 of 946 | 98% |
-| Cases that say what the money came with (`conditions`) | 896 of 946 | 95% |
-| Lender's terms looked for and settled (not tagged `research`) | 800 of 946 | 85% |
+| Cases that say what the money came with (`conditions`) | 915 of 946 | 97% |
+| Lender's terms looked for and settled (not tagged `research`) | 819 of 946 | 87% |
 | Company names with a line saying what the firm is (`desc`) | 912 of 992 | 92% |
 | People with a checked `total` | 18 of 173 | 10% |
 | Cases with a documented buyer | 34 of 946 | 4% |
@@ -33,9 +33,9 @@ These are the figures the About panel shows under "How complete this map is", co
 Batches `rounds/r26f_whole_h1` through `h10`, each with a checker log. Briefs `docs/WHOLE.md` (researcher) and `docs/CHECKW.md` (checker). Merge with `merge_whole.py`.
 21 cases are blank. Seven were judged to have no credible information: Morelos, Batang, Java 7, Pacitan, Tanjung Kasam, Cilacap, IPP4 Al-Manakher. The other 14 can be retried: Mali Office du Niger, Zambia Camdex, Peñarroya Santo Amaro, Multan sewage plant, Shell Vila Carioca, Equatorial Palm Oil/Jogbahn, Heinda tin, Shell Ogbodo, Tayan Nuur, BNP Rwanda, Yakjin, Vedan Thi Vai, DRC bank channels, Arab Bank.
 
-### Condition types — 146 cases still tagged `research`
+### Condition types — 127 cases still tagged `research`
 Seven rounds are merged (`rounds/r26f_conds_research_1.json` through `_7a_checked.json`, inputs in `docs/r26_condr*.json`, checker logs alongside). Merge with `merge_conds.py`, brief `docs/CONDR.md`.
-**Every case has now been tried at least once**, so what remains are retries. 108 of the 146 already carry some conditions text; what is missing is a documented term the money depended on.
+**Every case has been tried at least once**, so what remains are retries. Round 8 (`rounds/r26f_conds_research_8a_checked.json` and `_8b_checked.json`, inputs in `docs/r26_condr8a.json` and `_8b.json`, checker logs alongside) settled 19 of 146: 16 of the 86 development-bank cases, 3 of the 60 financed by bilateral, Chinese state, private, foreign-company or foundation money. Splitting the batches by lender rather than by harm is what made that possible — the two groups need completely different routes.
 
 Two types were added to `CTN` in `base.html` on 10 Nov, which released 12 stranded cases (`rounds/r26f_conds_retype_1.json`; proposal and desk check in `docs/r26_ct_retype_proposed.json` and `_checked.json`):
 - `fincov` — financial covenants and use-of-proceeds terms: a required rate of return, a self-financing or debt-to-equity ratio, an offtake undertaking, a restriction on what the money may be spent on, a required escrow or minimum balance.
@@ -169,16 +169,24 @@ Honest blanks run 5-20% and are the right outcome. Do not re-queue a name that c
 
 **Unsupported headquarters are common**, and several map markers sat at addresses no source gives. Remove the coordinates rather than guess a replacement, and say so on the card. Done so far: Compañía de Tierras Sud Argentino, ExplorCobres (marker was in Beijing), Golden Star (Denver). Moved on evidence: De Beers to London, Johnson Controls to Cork, Freeport to Phoenix, CIFI to Panama City.
 
-### 2. Condition types — 146 cases still tagged `research`
-Every case has now been tried at least once, so these are all retries. 108 of the 146 already carry some conditions text; what is missing is a documented term the money depended on.
-By lender: bilateral 47, private 34, IFC 29, foreign company 20, World Bank 17, Chinese state 17, other regional 15, foundations 9, MIGA 8, AfDB 8, ADB 5, IDB 5, EBRD 4, EU 4, IMF 3, EIB 2, AIIB 1.
+### 2. Condition types — 127 cases still tagged `research`
+All retries. By lender after round 8: bilateral 42, private 33, IFC 29, foreign company 20, Chinese state 16, other regional 14, foundations 9, MIGA 8, AfDB 8, World Bank 5, IDB 5, EBRD 4, EU 4, IMF 3, ADB 2, AIIB 1, EIB 1.
+
+**IFC is now the largest single blocked group, at 29 cases**, every one of them blank for the same reason: `disclosures.ifc.org` refuses before serving any content. A mirror for IFC project disclosure would clear more cases than any other single fix. MIGA publishes no guarantee terms at all, which puts a ceiling on its 8.
 The blanks cluster by lender, not by case, because of what can be fetched:
-- **ADB is the most productive route.** Its document paths fetch directly: `https://www.adb.org/sites/default/files/project-documents/<proj>/<proj>-rrp-en.pdf`. The Recommendation of the President reports carry full covenant summaries.
+- **The World Bank documents API is the highest-yield route found so far.** `https://search.worldbank.org/api/v3/wds?format=json&qterm=...&fl=docdt,display_title,pdfurl,docty` returns conformed loan agreements and appraisal reports; then fetch the PDF on **documents1**.worldbank.org, because documents.worldbank.org itself refuses. Put the document type in `qterm` — `docty` as a filter parameter returns nothing. This opened appraisals back to 1964.
+- **ADB is the next most productive.** Its document paths fetch directly: `https://www.adb.org/sites/default/files/project-documents/<proj>/<proj>-rrp-en.pdf`. The Recommendation of the President reports carry full covenant summaries; some older ones (Samut Prakarn 1995) are un-OCR'd scans.
+- **AidData's Chinese official finance records** often carry the collateral, escrow and repayment terms of Chinese state loans. For Serbian loans the Ministry of Finance publishes ratifying laws with the whole agreement attached (mfin.gov.rs), where the parliamentary site refuses.
+- **Loan and facility agreements filed as exhibits on sec.gov/Archives**, bond prospectuses, and arbitration awards and court filings, which quote the agreement, are the routes that work for private lenders.
 - **EBRD** blocks automated fetching. Accountability-mechanism mirrors describe the complaints but not the financing terms. A mirror for EBRD project summaries would unlock Vares, Shah Deniz, IPP4 and TAP, which all went blank for this reason alone.
 - **AfDB** returns client errors on project pages and appraisal paths; the Early Warning System mirror often records no project information. Thwake is blank for this reason.
 - **IDB**: `iadb.org/document.cfm` and `mici.iadb.org` refuse direct fetches; the Accountability Console mirrors the MICI reports and works.
 - **IFC**: `disclosures.ifc.org` project pages refuse direct fetches.
-Before accepting any new entry, check it against the five recurring failures listed above. A lender's general policy read as a term of this loan is the most common by far.
+Before accepting any new entry, check it against the five failures now written into `docs/CONDR.md`. A lender's general policy read as a term of this loan is the most common by far; round 8's checkers also caught an invented effectiveness condition at Chixoy and, at Plan Colombia, spraying tests quoted from the FY2003 appropriations act under the FY2002 act the card cites.
+
+**Entries that record what a loan did NOT require are worth having and need the strictest check.** Kainji's covenant list (para. 92 a-h) carries an 8% return on net fixed assets and a 1.5x debt-service test but nothing on resettling the roughly 140,000 displaced; the 1990 Jakarta water appraisal has no privatisation condition; Transmigration III has no covenant on existing residents' land claims. Each was let through only after the checker could see the whole covenant schedule. Taunsa's was softened for the opposite reason: its section 2.03(a) binds Punjab to General Conditions on land acquisition that the agreement does not reproduce, so "no resettlement covenant" could not be said.
+
+**Ordinary commercial terms are not conditions.** Round 8 deliberately left untyped the pricing, fees, tenor and debt-to-equity ratios at Hambantota and Hongsa, the share pledges and completion guarantee at Obi, a bank's own lending policy, and an issuer's green-bond rule.
 
 ### 3. Whole-picture text — 21 blanks
 Seven were judged to have no credible information (Morelos, Batang, Java 7, Pacitan, Tanjung Kasam, Cilacap, IPP4 Al-Manakher). The other 14 can be retried: Mali Office du Niger, Zambia Camdex, Penarroya Santo Amaro, Multan sewage plant, Shell Vila Carioca, Equatorial Palm Oil/Jogbahn, Heinda tin, Shell Ogbodo, Tayan Nuur, BNP Rwanda, Yakjin, Vedan Thi Vai, DRC bank channels, Arab Bank.
@@ -200,7 +208,9 @@ Leads in `docs/backlog.json`. Thin regions: Middle East and North Africa, Europe
 - WebSearch is capped at about 200 calls per turn, shared by every agent in that turn. Run at most two or three research agents per turn, or they run out partway (this happened on 7 Nov).
 - WebFetch now refuses URLs that have not appeared in a WebSearch result in the session ("provenance"), so case source links often can't be opened directly; each new source costs a search. SEC EDGAR full-text hits work well for listed firms.
 - WebFetch has an hourly limit shared across agents, and some company sites refuse fetches; checkers then blank the facts, which can be re-checked later.
-- Hosts that refuse automated fetches, found the hard way: ebrd.com, afdb.org project pages, iadb.org/document.cfm, mici.iadb.org, disclosures.ifc.org, Reuters, The Guardian, and sec.gov's cgi-bin EDGAR search. These work: adb.org document paths, sec.gov/Archives, Companies House, the Early Warning System and Accountability Console mirrors, and most PDF annual reports.
+- Hosts that refuse automated fetches, found the hard way: ebrd.com, afdb.org project pages, iadb.org/document.cfm, mici.iadb.org, idbinvest.org, disclosures.ifc.org, documents.worldbank.org (but documents1 works), otvoreniparlament.rs, jica.go.jp project pages (its evaluation PDFs do open), peoplepower21.org, mneguidelines.oecd.org, miningnews.net, theedgemalaysia.com, businesslive.co.za, athexgroup.gr, Reuters, The Guardian, and sec.gov's cgi-bin EDGAR search. These work: the World Bank WDS API and documents1.worldbank.org, adb.org document paths, sec.gov/Archives, Companies House, HKEXnews, cninfo, govinfo, the Early Warning System and Accountability Console mirrors, and most PDF annual reports.
+- **Check a "blocked host" claim before trusting it.** A spot-check of ten blanks found four that named a host-wide refusal where none exists: recommon.org, buzzfeednews.com and kathmandupost.com all serve normally, and kfw.de and banktrack.org refuse only particular files. Six were genuine. Record the exact failure, not a general one.
+- Direct `curl` from the shell is blocked by the agent proxy, and WebFetch needs a URL it has already seen in a search result or an earlier fetch; guessing a path on an already-seen host fails.
 - A blocked lender site is not evidence that no condition existed. Record it as blocked so a later round knows to try a mirror.
 
 ## The completeness panel
