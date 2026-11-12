@@ -1,0 +1,62 @@
+{
+ "antea-cement-kruja": {
+  "edits": [
+   {
+    "field": "companies[1].desc",
+    "old": "Neither calls its figure design, nameplate, permitted or achieved capacity, so the two cannot be reconciled as different measures.",
+    "new": "Neither calls its figure design, nameplate, permitted or achieved capacity, so the two cannot be reconciled as different measures. The 1.5 million tonne figure is also Titan's own: its announcement of 26 July 2007 says \"Cement capacity will be of a 1.5-million-ton-per-annum\", and puts the total project cost at EUR 170 million."
+   }
+  ],
+  "sources_add": [
+   {
+    "title": "Announcement: new greenfield cement plant in Albania (26 July 2007)",
+    "publisher": "Titan Cement Company",
+    "year": "2007",
+    "url": "https://www.titanmaterials.com/newsroom/announcement-new-greenfield-cement-plant-in-albania/"
+   }
+  ]
+ },
+ "penarroya-cobrac-santo-amaro-lead": {
+  "edits": [
+   {
+    "field": "companies[0].desc",
+    "old": "produced lead alloys at Santo Amaro, Bahia, from 1960 to 1993 and was owned by the multinational Peñarroya. It was renamed Plumbum Mineração e Metalurgia Ltda in 1989, and the operation was abandoned in 1993.",
+    "new": "produced lead alloys at Santo Amaro, Bahia, from 1960 to 1993. Peñarroya was not the owner throughout: Brazil's Ministry of Health study of the contamination says that in 1987 Companhia Adubos Trevo of Porto Alegre, together with Companhia Paulista de Metais, acquired control of the company, and that in 1989 it was absorbed into Plumbum Mineração e Metalurgia. So the French group owned it for the first 27 years of its 33, not the last six. The same study dates the end of operations to December 1993 in one chapter and January 1994 in another. No source opened gives COBRAC's own corporate seat. The French parent was renamed Metaleurop SA, and the European Commission's decision of 26 June 1990 addresses it at 118 Péripole, 44 rue Roger Salengro, Fontenay-sous-Bois, recording that \"the main shareholders in Peñarroya, now known as Metaleurop SA, are Preussag and Imetal\", at 45% and 20% with the remaining 35% held by the public."
+   }
+  ],
+  "sources_add": [
+   {
+    "title": "Avaliação de Risco à Saúde Humana por Metais Pesados em Santo Amaro da Purificação, Bahia (2003)",
+    "publisher": "Ministério da Saúde, Brazil",
+    "year": "2003",
+    "url": "https://www.gov.br/saude/pt-br/composicao/svsa/saude-ambiental/arsh/estudos/metais-pesados-em-santo-amaro-da-purificacao-bahia/@@download/file/ARSH%20-%20SANTO%20AMARO%20DA%20PURIFICA%C3%87%C3%83O.pdf"
+   },
+   {
+    "title": "Commission Decision of 26 June 1990 (IV/32.846 - Metaleurop SA)",
+    "publisher": "European Commission",
+    "year": "1990",
+    "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:31990D0363"
+   }
+  ]
+ },
+ "naga-cebu-kepco-coal-dust": {
+  "edits": [
+   {
+    "field": "companies[0].role",
+    "old": "SPC Power Corporation's own annual report on SEC Form 17-A for 2022 states its side of it - \"KEPCO SPC Power Corporation (KSPC). KSPC, 40% owned by the Parent Company, was incorporated on June 22, 2005\" - but no filing found states KEPCO's 60%.",
+    "new": "SPC Power Corporation's own annual report on SEC Form 17-A states its side of it - \"KEPCO SPC Power Corporation (KSPC). KSPC, 40% owned by the Parent Company, was incorporated on June 22, 2005\" - but no filing found states KEPCO's 60%. That passage is quoted from the filing for the year ended 31 December 2025, filed on 11 April 2026, which is the earliest copy on the Philippine Stock Exchange's own disclosure system: it keeps only about two years of a company's filings."
+   }
+  ],
+  "sources_add": [
+   {
+    "title": "SPC Power Corporation, SEC Form 17-A for the year ended 31 December 2025 (filed 11 April 2026)",
+    "publisher": "SPC Power Corporation, via PSE EDGE",
+    "year": "2026",
+    "url": "https://edge.pse.com.ph/openDiscViewer.do?edge_no=01e7cbc9976059a464d70b69f0a3140b"
+   }
+  ],
+  "sources_remove_urls": [
+   "https://philippines.mom-gmr.org/uploads/tx_lfrogmom/documents/186-2446_import.pdf"
+  ]
+ }
+}
