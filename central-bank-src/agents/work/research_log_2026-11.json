@@ -2760,6 +2760,31 @@
     "SGP",
     "ECU"
    ]
+  },
+  "browser_round": {
+   "method": "Load pdf.js from cdnjs into an ordinary HTML page on the PDF's OWN origin, then getDocument(url) and walk the text layer. Where the text layer is empty the page is a scan: render that page to a canvas, replace the body with it, and screenshot. Chrome's own PDF viewer exposes no text to any reader, so navigating straight to the PDF is useless. Same origin matters - a cross-origin PDF is refused by CORS.",
+   "settled": {
+    "OMN": "KPMG, Muscat, signed 7 May 2024, FY2023, from the Annual Report 2023 on cbo.gov.om. The bank's own annual-report page links PDFs on cbo.gov.om directly, which sidesteps publishing.bnet.om being robots-disallowed. IMPORTANT: the 2025 report's auditor's report IS present but its signature block carries no firm name in the text layer, so 2023 is the most recent year stating a name.",
+    "JAM": "Ernst & Young Chartered Accountants, 8 Olivier Road Kingston 8, signed at Kingston 4 March 2026, FY2025, from the Annual Report 2025. boj.org.jm loads normally in a real browser. TRAP: the same report names PwC Corporate Services (Jamaica) Limited twice, but that is a board-evaluation engagement, not the audit.",
+    "BEAC": "KPMG Afrique Centrale (Odile Ndzana, Associe) with Mazars Cameroun (Jules Alain Njall Bikok, Associe), Yaounde, 29 March 2019, FY2018. A four-page scan with no text layer, read off the rendered canvas. Replaces the 2015 record whose names extracted garbled. Reaches six countries."
+   },
+   "not_settled": {
+    "MKD": "nbrm.mk serves a Cloudflare bot check in a real browser too, then an empty document. Bot detection, not a rendering problem; not worked around. Needs a hand-fetched file or a mirror.",
+    "BRB": "cdn.centralbank.org.bb blocks the injected script and fetching the PDF wedged the renderer twice. The 2025 report URL is reachable from the 2025 annual-report news page as 2026-05-28-19-54-07-2025-Annual-Report-Web.pdf; the fetcher confirms it is binary with no text layer. Needs the canvas route from a permitting host, or a hand-fetched copy."
+   },
+   "unmined_leads": "The BEAC publications index also lists, for 2018, the Comptes annuels, the Rapport special sur le controle du compte d'operations, and a Rapport de controle de la salle des marches. None has been mined.",
+   "still_waiting_on_this_method": [
+    "SWZ",
+    "BHS (modern reports)",
+    "FJI",
+    "RWA",
+    "UZB",
+    "PRY",
+    "MAC",
+    "KHM (Khmer site)",
+    "GRC (remaining statements)",
+    "TWN (Ministry of Audit)"
+   ]
   }
  }
 }
