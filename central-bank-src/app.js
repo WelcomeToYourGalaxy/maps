@@ -562,7 +562,7 @@ function srcItem(l, head) {
   const sent = esc(sayLink(l)), pn = esc(NET.nodes[l.n].name);
   return '<li>Source says: ' + (head ? esc(head.replace(/\.$/, "")) + '. ' + sent : sent.replace(pn, '<b>' + pn + '</b>')) + (d ? ' ' + esc(d) : '') + ' <span class="note">' + link(l.src_t || "source", l.src_u) + '</span></li>';
 }
-const linksOfCountry = (k) => { const a = BYCB.get(k) || []; return P[k] && P[k].u === "ECB" ? a.concat(BYCB.get("EMU") || []) : a; };
+const linksOfCountry = (k) => { const a = BYCB.get(k) || []; const u = P[k] && P[k].u; if (!u) return a; return a.concat(BYCB.get(u) || [], u === "ECB" ? (BYCB.get("EMU") || []) : []); };
 function addNetLayers() {
   const c = document.createElement("canvas"); c.width = c.height = 32; const g = c.getContext("2d");
   g.fillStyle = "#fff"; g.beginPath(); g.moveTo(16, 2); g.lineTo(30, 16); g.lineTo(16, 30); g.lineTo(2, 16); g.closePath(); g.fill();
@@ -616,7 +616,7 @@ function drawPattern() {
   map.getSource("pat-lines").setData({ type: "FeatureCollection", features: lf });
   map.getSource("pat-ends").setData({ type: "FeatureCollection", features: ef });
 }
-const cbOfLink = (l) => l.cb === "EMU" ? D.UM.ECB : l.cb === "BIS" || !l.cb ? [] : [l.cb];
+const cbOfLink = (l) => l.cb === "EMU" ? D.UM.ECB : D.UM[l.cb] ? D.UM[l.cb] : l.cb === "BIS" || !l.cb ? [] : [l.cb];
 const linkKey = (l) => l.tn != null ? "n" + l.tn : l.cb;
 let HOT = { lines: new Map(), nodes: new Map(), cb: new Map() };
 const LINEGEO = new Map();

@@ -14,20 +14,31 @@ core = json.load(open(os.path.join(A, '..', 'out', 'core.json')))
 places = set(core['E'])
 N = len(places)
 
+import sys as _s; _s.path.insert(0, os.path.join(A, '..'))
+from cbnames import UNION
+# A tie held by a currency union is held by every member country: expand it, the way cases already expand.
+def expand(s):
+    out = set()
+    for x in s:
+        out |= set(UNION.get('ECB' if x == 'EMU' else x, [x]))
+        if x in UNION or x == 'EMU': continue
+        out.add(x)
+    return out
+
 def iso(rows, k='iso3'):
-    return {r[k] for r in rows if r.get(k)}
+    return expand({r[k] for r in rows if r.get(k)})
 
 cats = {}
 cats['Corruption cases']        = (iso(cor['cases']),            len(cor['cases']))
 cats['Revolving door']          = (iso(cor['revolving_door']),   len(cor['revolving_door']))
 cats['Governor removals and pressure'] = (iso(ev['events']),     len(ev['events']))
-aud = iso(gaps['auditors'], 'cb_iso3') | {l['cb_iso3'] for l in net['links'] if 'audit' in l.get('relation','').lower()}
+aud = iso(gaps['auditors'], 'cb_iso3') | expand({l['cb_iso3'] for l in net['links'] if 'audit' in l.get('relation','').lower()})
 naud = len(gaps['auditors']) + sum(1 for l in net['links'] if 'audit' in l.get('relation','').lower())
 cats['External auditors']       = (aud, naud)
 pr = [l for l in net['links'] if 'print' in l.get('relation','').lower()]
-cats['Banknote printers']       = ({l['cb_iso3'] for l in pr}, len(pr))
+cats['Banknote printers']       = (expand({l['cb_iso3'] for l in pr}), len(pr))
 rm = [l for l in net['links'] if l.get('relation') == 'manages its reserves or programmes']
-cats['Outside reserve managers']= ({l['cb_iso3'] for l in rm}, len(rm))
+cats['Outside reserve managers']= (expand({l['cb_iso3'] for l in rm}), len(rm))
 cats['Named shareholders']      = (iso(own['holdings'], 'cb_iso3'), len(own['holdings']))
 swl = sw['swaps'] if isinstance(sw, dict) and 'swaps' in sw else sw
 sws = set()
