@@ -2321,16 +2321,23 @@ async function openJuris(q, label){
 }
 
 /* ---------- sort what Wikidata returned into offices ---------- */
-function buckets(){
+function buckets(){ return classifyRows(CUR && CUR.core, CUR && CUR.items); }
+
+/* The same classification the diagram uses, taken out of `buckets()` so
+   a level other than the one on screen can be classified too. That is
+   what puts markers for the county, the region and the country on the
+   map at the same time as the municipality's, instead of only the level
+   whose panel happens to be open. */
+function classifyRows(core, items){
   const out={leg:[],exec:[],jud:[],ag:[]}, byId={};
-  if(!CUR) return {out:out, byId:byId};
+  if(!core && !items) return {out:out, byId:byId};
   const merged={};
-  (CUR.core||[]).forEach(r=>{
+  (core||[]).forEach(r=>{
     if(r.kind.value==='self') return;
     const id=qid(r.item.value);
     if(!merged[id]) merged[id]={row:r, classes:[r.kind.value==='legislature'?'legislature':'public office']};
   });
-  (CUR.items||[]).forEach(r=>{
+  (items||[]).forEach(r=>{
     const id=qid(r.item.value);
     if(!merged[id]) merged[id]={row:r, classes:[]};
     const cl=r.clsLabel&&r.clsLabel.value; if(cl) merged[id].classes.push(cl);
@@ -2725,12 +2732,20 @@ function renderNoEntity(nm, drawn){
    the satellite imagery is busy and mid-toned, Hell is dark red. The
    hues stay the same across the five so a level keeps its identity; only
    the lightness moves. */
+/* One colour per level of government, in the order you sit inside them:
+   country, region (a state or province), district (a county), the
+   municipality, and anything below it. The municipality is the warmest
+   because it is the level a reader is standing in and the one they came
+   to find; the country is the coolest and furthest away. Each basemap
+   gets its own set so the markers stay legible on a photograph, a
+   painting and a night earth alike. Kept earthy rather than bright:
+   these distinguish levels, they are not a warning. */
 const LEVELSETS = {
-  atlas    : ['#355f78','#376043','#6e5346','#584d6f','#45706a'],
-  satellite: ['#9dbdd2','#9ac5a6','#c6a996','#afa7cd','#9bbdb3'],
-  night    : ['#83abc6','#8abb9d','#bfa292','#a9a1c6','#93b5ad'],
-  hell     : ['#cfc6bb','#b3c7b8','#d6c0b0','#c2bad3','#b2c8c0'],
-  outlines : ['#355f78','#376043','#6e5346','#584d6f','#45706a'],
+  atlas    : ['#4a4668','#355f78','#376043','#8c5a52','#6e6a5f'],
+  satellite: ['#a9a3c6','#9dbdd2','#9ac5a6','#cf9a90','#bdb8ad'],
+  night    : ['#9a93c4','#83abc6','#8abb9d','#c88f85','#b0aaa0'],
+  hell     : ['#c2bad3','#cfc6bb','#b3c7b8','#d9a79d','#bfb9af'],
+  outlines : ['#4a4668','#355f78','#376043','#8c5a52','#6e6a5f'],
 };
 const LEVELN = ['Country','Region','District','Local','Below that'];
 function levelColours(){ return LEVELSETS[BASEKEY] || LEVELSETS.atlas; }
@@ -2972,6 +2987,102 @@ function openPin(id){
 }
 
 /* pull coordinates for a jurisdiction and merge them into the pin set */
+/* Markers for every level you are inside, not just the open one.
+
+   The panel shows one jurisdiction at a time, and the markers used to
+   follow it, so searching a small town put nothing on the map — Wikidata
+   records no offices at all for a town of 11,000. But the offices that
+   govern that town still exist one and two levels up, and those are the
+   ones a reader needs to see. Each level is resolved with the two fast
+   queries only (`qCore`, `qJuris`, about a second each, cached a week),
+   not the slow targeted ones, because this is for placing markers rather
+   than drawing the branches.
+
+   Deepest level first, so your own council appears before the country's
+   ministries do. */
+async function loadChainPins(){
+  const levels = STACK.map((s,i)=>({q:s.q, i:i})).filter(x=>x.q).reverse();
+  for(const lv of levels){
+    if(CHAIN_DONE[lv.q]) { setPins(); continue; }
+    CHAIN_DONE[lv.q]=1;
+    let core=[], items=[];
+    try{ core = await sparql(qCore(lv.q), 'core:'+lv.q); }catch(e){}
+    try{ items = await sparql(qJuris(lv.q), 'juris:'+lv.q); }catch(e){}
+    const bk = classifyRows(core, items);
+    const ids = Object.keys(bk.byId);
+    if(!ids.length) continue;
+    for(let k=0;k<ids.length;k+=180){
+      const batch=ids.slice(k,k+180);
+      try{
+        const rows = await sparql(qCoordsFor(batch), 'oc:'+lv.q+':'+k+':'+batch.length);
+        rows.forEach(r=>{
+          const m=/Point\(([-\d.]+) ([-\d.]+)\)/.exec(r.coord.value); if(!m) return;
+          const id=qid(r.item.value);
+          const o=bk.byId[id]; if(!o) return;
+          /* a deeper level claims the office: it is the closer one */
+          if(!PINS[id] || !CHAIN_CLAIMED[id]){
+            PINS[id]={id:id, lng:+m[1], lat:+m[2], label:o.label, lvlQ:lv.q};
+            CHAIN_CLAIMED[id]=1;
+          }
+        });
+        setPins();
+      }catch(e){}
+    }
+    fitToPins();
+  }
+}
+let CHAIN_DONE={}, CHAIN_CLAIMED={};
+
+/* Frame the contacts rather than the boundary.
+
+   Searching a place used to fly the camera to that municipality's own
+   outline, which is the wrong subject: the offices that govern it are
+   mostly outside it, at the county seat and the regional capital. The
+   view now opens on the markers themselves, with the place you searched
+   for included, so what you can see is what you can contact. */
+function fitToPins(){
+  /* Which markers the view should frame is not "all of them". The
+     country's offices are real contacts and stay on the map, but the
+     United States has federal offices thousands of kilometres from any
+     one town, and framing those put Sierra Madre at zoom 1.6 — the whole
+     globe, which answers nothing. The frame is built from the levels
+     between the municipality and the region: those are the offices that
+     govern this place and sit near it. The country's are still drawn,
+     further out, and the breadcrumb goes there.
+
+     Even inside one region a stray record can sit far away, so the
+     middle 90% of what is left decides the box and the outliers are
+     allowed to fall outside it. */
+  const idx = {};
+  STACK.forEach((s,i)=>{ if(s.q) idx[s.q]=i; });
+  let pts = Object.values(PINS).filter(p=>idx[p.lvlQ]!==undefined && idx[p.lvlQ]>=1);
+  if(!pts.length) pts = Object.values(PINS).filter(p=>idx[p.lvlQ]!==undefined);
+  if(!pts.length) return;
+
+  const cut = (vals)=>{
+    const v=vals.slice().sort((a,b)=>a-b);
+    if(v.length<8) return [v[0], v[v.length-1]];
+    const lo=Math.floor(v.length*0.05), hi=Math.ceil(v.length*0.95)-1;
+    return [v[lo], v[hi]];
+  };
+  const [x0r,x1r]=cut(pts.map(p=>p.lng));
+  const [y0r,y1r]=cut(pts.map(p=>p.lat));
+  let x0=x0r,x1=x1r,y0=y0r,y1=y1r;
+
+  /* the place itself belongs in the frame even when it holds no office */
+  const top=STACK[STACK.length-1];
+  if(top && top.feature && top.feature.geometry){
+    const b=bboxOf(top.feature.geometry);
+    x0=Math.min(x0,b[0]); y0=Math.min(y0,b[1]); x1=Math.max(x1,b[2]); y1=Math.max(y1,b[3]);
+  }
+  if(!(x1>=x0 && y1>=y0)) return;
+  const padx=Math.max((x1-x0)*0.10, 0.02), pady=Math.max((y1-y0)*0.10, 0.02);
+  try{ map.stop(); }catch(e){}
+  const bounds=[[x0-padx,y0-pady],[x1+padx,y1+pady]];
+  try{ map.fitBounds(bounds,{padding:{top:90,left:60,right:60,bottom:120},duration:900,maxZoom:12}); }
+  catch(e){ try{ map.fitBounds(bounds,{padding:40,duration:900,maxZoom:12}); }catch(e2){} }
+}
+
 /* Place markers for the offices the diagram resolved, and nothing else.
    `q` is the jurisdiction those offices belong to, which is what decides
    whether a marker counts as inside the level you have open. */
@@ -3167,10 +3278,13 @@ async function enterPlace(i){
   STACK.push({q:wd, label:name, iso3:top?top.iso3:null,
               level:(top?top.level:0)+1, feature:feat});
   setAdmData([feat]);
+  PINS={}; CHAIN_DONE={}; CHAIN_CLAIMED={}; PIN_TRIED={};
   if(wd) openJuris(wd, name);
   else { openModal(name,'Drawn from OpenStreetMap'); renderNoEntity(name, true); }
   paintTrail(); paintChain(); setPins();
   fitTo(feat.geometry);
+  /* then widen to take in every office that governs the place */
+  loadChainPins();
 }
 
 /* ---------- resolving a drawn unit to a Wikidata entity ---------- */
