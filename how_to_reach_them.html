@@ -229,6 +229,9 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
    its face so the choice can be made without opening anything, and the
    one you open takes the full width underneath. */
 .rgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+/* in the walkthrough each tile carries a sentence, so two to a row
+   would put four words on each line */
+.rgrid.one{grid-template-columns:1fr}
 @media (max-width:620px){ .rgrid{grid-template-columns:1fr} }
 .route{border:1px solid var(--line);border-radius:11px;background:var(--panel2);
   overflow:hidden;display:flex;flex-direction:column;transition:border-color .16s,background .16s}
@@ -240,7 +243,9 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .rhead:focus-visible{outline:2px solid var(--accent-hi);outline-offset:-2px}
 .rmain{flex:1;min-width:0}
 .rnm{font-size:13.5px;line-height:1.3;color:var(--ink)}
-.rmeta{font-size:11px;color:var(--faint);margin-top:3px}
+/* the condition that makes this the right method */
+.rwhen{font-size:11.4px;color:var(--dim);line-height:1.5;margin-top:4px}
+.rmeta{font-size:11px;color:var(--faint);margin-top:5px}
 /* the ranking as a pill on the tile face, so the tiles can be compared
    without opening any of them */
 .rpill{display:inline-flex;align-items:center;gap:6px;margin-top:8px;
@@ -323,6 +328,11 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 /* the question */
 .qwrap{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;
   max-width:720px;width:100%;margin:0 auto;padding:0 4px}
+/* the subject question has thirteen answers, so it takes the panel's
+   full width in two columns rather than one tall scrolling list */
+.qwrap.wide{max-width:none}
+.qopts.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(286px,1fr));
+  align-content:start;gap:7px}
 .qq{font-family:'Marcellus',serif;font-weight:400;font-size:25px;line-height:1.2;color:var(--text)}
 .qsub{font-size:12.6px;line-height:1.6;color:var(--dim);margin:7px 0 18px;max-width:62ch}
 .qopts{display:flex;flex-direction:column;gap:7px;overflow-y:auto;min-height:0;padding-right:2px}
@@ -339,21 +349,41 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   display:flex;align-items:center;gap:8px}
 .qopt .qt i{width:10px;height:10px;border-radius:50%;flex:none;box-shadow:0 0 6px 1px currentColor}
 .qopt .qd{grid-column:1;font-size:12px;line-height:1.55;color:var(--faint);margin-top:3px}
-.qopt .qar{grid-column:2;grid-row:1/3;font-size:16px;color:var(--stone);opacity:.6}
+.qopt .qct{grid-column:1;justify-self:start;margin-top:6px;font-size:10px;letter-spacing:.4px;
+  text-transform:uppercase;color:var(--faint);border:1px solid var(--line);
+  border-radius:999px;padding:1px 8px}
+/* a subject with offices behind it here, versus one without */
+.qopt.sm{padding:10px 13px}
+.qopt.sm .qt{font-size:13.5px}
+.qopt.sm .qd{font-size:11.2px}
+.qopt.thin{opacity:.62}
+.qopt.thin:hover{opacity:1}
+.qopt.sm:not(.thin) .qct{color:var(--accent-hi);border-color:rgba(140,189,154,.4)}
+.qopt.any{grid-column:1/-1;border-left-color:var(--accent-hi)}
+.qopt .qar{grid-column:2;grid-row:1/4;align-self:center;font-size:16px;color:var(--stone);opacity:.6}
 .qopt:hover .qar{color:var(--accent-hi);opacity:1}
 
 /* the destination: what to do on the left, who to contact on the right */
-.leaf{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1.04fr) minmax(0,0.96fr);
+/* The destination: a header across the top, then who on the left and
+   how on the right. Who is the wider column, because it is the answer
+   and the methods are what you do with it. */
+.leaf{flex:1;min-height:0;display:grid;
+  grid-template-columns:minmax(0,1.08fr) minmax(0,0.92fr);
+  grid-template-rows:auto minmax(0,1fr);
   border:1px solid var(--line);border-radius:12px;background:var(--panel2);overflow:hidden}
-.lleft{padding:16px 17px 20px;overflow-y:auto;border-right:1px solid var(--line)}
+.lhead{grid-column:1/-1;padding:14px 17px 13px;border-bottom:1px solid var(--line);
+  background:rgba(26,31,29,.45)}
+.ltags{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+.ltag{display:inline-flex;align-items:center;gap:7px;font-size:11px;color:var(--dim);
+  border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+.ltag.sub{color:var(--accent-hi);border-color:rgba(140,189,154,.4)}
+.ltag i{width:9px;height:9px;border-radius:50%;flex:none;box-shadow:0 0 6px 1px currentColor}
+.lleft{padding:14px 16px 20px;overflow-y:auto;border-right:1px solid var(--line)}
 .lright{padding:14px 15px 20px;overflow-y:auto}
 .lleft::-webkit-scrollbar,.lright::-webkit-scrollbar{width:8px}
 .lleft::-webkit-scrollbar-thumb,.lright::-webkit-scrollbar-thumb{background:rgba(125,142,130,.2);border-radius:8px}
-.lnm{font-family:'Marcellus',serif;font-weight:400;font-size:20px;line-height:1.2;color:var(--text)}
-.lscope{display:inline-flex;align-items:center;gap:7px;margin-top:7px;font-size:11px;
-  color:var(--dim);border:1px solid var(--line);border-radius:999px;padding:3px 10px}
-.lscope i{width:9px;height:9px;border-radius:50%;flex:none;box-shadow:0 0 6px 1px currentColor}
-.llead{font-size:12.8px;line-height:1.65;color:var(--dim);margin-top:11px}
+.lnm{font-family:'Marcellus',serif;font-weight:400;font-size:19px;line-height:1.2;color:var(--text)}
+.llead{font-size:12.4px;line-height:1.6;color:var(--dim);margin-top:9px;max-width:104ch}
 .lnote{margin-top:13px;border-left:2px solid var(--accent);padding-left:12px}
 .lnote dt{font-size:10px;letter-spacing:.9px;text-transform:uppercase;color:var(--stone);margin-bottom:4px}
 .lnote dd{font-size:12.4px;line-height:1.6;color:var(--text)}
@@ -372,6 +402,9 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .khead .kct{margin-left:auto;font-size:10px;color:var(--faint)}
 .khead .lawdot{width:9px;height:9px;border-radius:50%;background:#9ccfa7;flex:none;
   box-shadow:0 0 7px 1px rgba(156,207,167,.7)}
+/* the condition that makes this the right office to write to */
+.kwhen{font-size:11.6px;color:var(--dim);line-height:1.55;margin:3px 0 8px;
+  border-left:2px solid rgba(140,189,154,.35);padding-left:9px}
 .kwhat{font-size:11.4px;color:var(--faint);line-height:1.5;margin:2px 0 7px}
 .kempty{font-size:11.3px;color:var(--faint);font-style:italic;line-height:1.5;padding:2px 0 4px}
 .kblank{font-size:11.2px;color:var(--faint);line-height:1.55;margin-top:14px;padding:9px 11px;
@@ -394,7 +427,8 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .kmore:hover{text-decoration:underline}
 
 @media (max-width:900px){
-  .leaf{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) minmax(0,1fr)}
+  .leaf{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr) minmax(0,1fr)}
+  .lhead{grid-column:1}
   .lleft{border-right:0;border-bottom:1px solid var(--line)}
   .qq{font-size:21px}
 }
@@ -1643,24 +1677,69 @@ const KIND_HURDLES = {
 };
 
 /* ---- agencies, grouped by what they are for ---- */
+/* The subjects, in the words a reader would use rather than the words a
+   government files them under. The pattern is matched against an
+   office's title and its Wikidata class.
+
+   Order used to decide it: the first pattern that matched won, and
+   "Money and tax" was first, so anything with "insurance", "pension" or
+   "economic" anywhere in its title became a money office. The Medical
+   Board of California came out under Elections and records, because
+   that pattern carried "licensing". Scoring fixes both: every pattern
+   is counted against the title and the one with the most distinct hits
+   wins, with the order below breaking a tie. A title naming two
+   subjects — "Business, Consumer Services and Housing" — lands on
+   whichever it names more of.
+
+   Order is still worth getting right for the ties, so the subjects a
+   title names unambiguously come first and the broad financial
+   vocabulary comes last. */
 const THEMES = [
- ['Money and tax',      /\b(treasur|revenue|tax|budget|financ|bank|monetary|mint|currency|customs|audit|comptroller|securities|insurance|pension|accounting|fiscal|economic|trade|commerce|competition|antitrust|procurement)\b/i],
- ['Land, water and air',/\b(environment|conservation|forest|park|wildlife|fisher|water|river|ocean|marine|coast|geolog|mining|mineral|land|soil|climate|weather|meteorolog|pollution|waste|energy|nuclear|petroleum|renewab)\b/i],
- ['Health and food',    /\b(health|medic|hospital|disease|drug|pharmac|food|nutrition|sanitat|veterinar|mental|epidem|vaccin)\b/i],
- ['Policing and security',/\b(police|sheriff|prison|correction|security|intelligence|defen[cs]e|military|army|navy|air force|guard|emergency|disaster|civil protection|border|immigration|customs enforcement|counter)\b/i],
- ['Courts and justice', /\b(justice|court|judicial|prosecut|attorney|legal|law reform|human rights|ombuds|public defender|probation|parole)\b/i],
- ['Transport and building',/\b(transport|highway|road|rail|aviation|airport|port|maritime|traffic|motor|vehicle|infrastructure|public works|housing|building|planning|urban|municipal services|utilities|sanitation)\b/i],
- ['Work and welfare',   /\b(labou?r|employment|workforce|social security|welfare|pension|benefit|disabilit|child|famil|elder|veteran|housing assistance|poverty)\b/i],
- ['Schools and research',/\b(education|school|universit|college|student|research|science|technolog|innovation|space|standards|statistic|archive|librar|museum|culture|heritage|art)\b/i],
- ['Farming and land use',/\b(agricultur|farm|crop|livestock|irrigation|rural|forestry|fisheries)\b/i],
- ['Communications',     /\b(communicat|broadcast|telecom|spectrum|post|media|information|data protection|privacy|cyber|digital)\b/i],
- ['Elections and records',/\b(election|electoral|census|registr|records|vital statistics|identity|licen[cs]ing|notary)\b/i],
- ['Abroad',             /\b(foreign|external|international|diaspora|consular|aid|development cooperation)\b/i],
+ ['Health and food',    /\b(?:health|medic|hospital|clinic|disease|drug|pharmac|food|nutrition|sanitat|veterinar|mental|epidem|vaccin|ambulance|dental|nursing)\w*/ig],
+ ['Land, water and air',/\b(?:environment|conservation|forest|park|recreation|beach|harbou?r|coast|wildlife|fisher|water|river|ocean|marine|geolog|mining|mineral|soil|climate|weather|meteorolog|pollution|waste|recycl|energy|nuclear|petroleum|renewab|open space|natural resource)\w*/ig],
+ ['Farming and land use',/\b(?:agricultur|farm|crop|livestock|irrigation|rural|forestry|fisheries|pesticide|grazing)\w*/ig],
+ ['Schools and research',/\b(?:education|school|universit|college|student|research|science|technolog|innovation|space agency|standards|statistic|archive|librar|museum|culture|heritage|arts|fine art|historic)\w*/ig],
+ ['Policing and security',/\b(?:police|sheriff|prison|correction|probation|parole|security|intelligence|defen[cs]e|military|army|navy|air force|national guard|emergency|disaster|civil protection|border|immigration|counter-?terror)\w*/ig],
+ ['Courts and justice',  /\b(?:justice|court|judicial|prosecut|attorney|public defender|legal aid|law reform|human rights|ombuds|civil rights)\w*/ig],
+ ['Transport and building',/\b(?:transport|highway|road|rail|transit|aviation|airport|port authority|maritime|traffic|motor vehicle|infrastructure|public works|housing|building|construction|planning|urban|zoning|utilities|sewer)\w*/ig],
+ ['Work and welfare',   /\b(?:labou?r|employment|workforce|wage|social security|welfare|social services|pension|retirement|benefit|disabilit|child|famil|aging|elder|veteran|homeless|poverty)\w*/ig],
+ ['Communications',     /\b(?:communicat|broadcast|telecom|spectrum|postal|media|data protection|privacy|cyber|digital|internet)\w*/ig],
+ ['Elections and records',/\b(?:election|electoral|census|voter|registrar|vital statistics|notary|county clerk|recorder of deeds)\w*/ig],
+ ['Abroad',             /\b(?:foreign|external affairs|international|diaspora|consular|embassy|overseas|development cooperation)\w*/ig],
+ ['Money and tax',      /\b(?:treasur|revenue|taxation|tax|budget|financ|banking|monetary|mint|currency|customs|audit|comptroller|controller|assessor|securities|insurance|accounting|fiscal|economic|trade|commerce|competition|antitrust|procurement|consumer)\w*/ig],
 ];
 function themeOf(label){
-  for(const [nm,rx] of THEMES) if(rx.test(label)) return nm;
-  return 'Everything else';
+  const t=String(label||'');
+  let best=null, bestN=0;
+  for(const [nm,rx] of THEMES){
+    rx.lastIndex=0;
+    const m=t.match(rx);
+    if(!m) continue;
+    /* distinct words, so "water water water" does not beat a title that
+       names two different things in its subject */
+    const n=new Set(m.map(x=>x.toLowerCase())).size;
+    if(n>bestN){ bestN=n; best=nm; }
+  }
+  return best || 'Everything else';
 }
+/* What each subject covers, said in examples rather than in the words
+   of the pattern above. Shown under the option in the subject question
+   so a reader can tell which one their concern falls under. */
+const THEMEHINT={
+  'Land, water and air':'Pollution, climate, water, mining, waste, wildlife, parks, forests, energy.',
+  'Health and food':'Hospitals, medicines, disease, food safety, nutrition, sanitation.',
+  'Policing and security':'Police, prisons, borders, emergencies, defence, intelligence.',
+  'Courts and justice':'Prosecution, legal aid, human rights, probation, law reform.',
+  'Transport and building':'Roads, rail, aviation, ports, housing, planning, utilities.',
+  'Work and welfare':'Employment, wages, pensions, benefits, disability, children, carers.',
+  'Schools and research':'Schools, universities, science, culture, museums, libraries, data.',
+  'Farming and land use':'Farms, crops, livestock, irrigation, rural land, fisheries, forestry.',
+  'Money and tax':'Tax, budgets, banking, trade, competition, procurement, insurance.',
+  'Communications':'Broadcasting, telecoms, post, the internet, privacy, data protection.',
+  'Elections and records':'Voting, the census, registration, licences, official records.',
+  'Abroad':'Foreign affairs, consulates, aid, treaties, anything outside the country.',
+  'Everything else':'Nothing above fits, or the subject cuts across several of them.',
+};
 /* ====================================================================
    HURDLES
    Each one is attached to the kinds of office it actually operates on,
@@ -2555,7 +2634,13 @@ function classifyRows(core, items){
       kind:c.br+'/'+c.k, br:c.br, what:c.what, how:c.how, row:m.row};
     /* the one flag the whole map now turns on */
     o.law = LAWKINDS.has(o.kind);
-    if(c.br==='ag'||c.br==='other') o.theme=themeOf(label);
+    /* Every office gets a subject, not only the agencies. The subject
+       is what decides which of a hundred departments is the right one:
+       an environmental rule goes to the environment department, not to
+       transport. It is read from the office's title and its Wikidata
+       class, which is a good guess and no more — "Department of the
+       Interior" means land in one country and policing in another. */
+    o.theme=themeOf(label+' '+cls);
     byId[o.id]=o;
     out[c.br].push(o);
   });
@@ -2602,6 +2687,73 @@ const BRANCHINFO={
 };
 
 /* ====================================================================
+   WHEN TO USE WHAT
+
+   Two lists of one-line conditions. The first says what each kind of
+   office is the right address for; the second says what each method is
+   the right method for. Both are written as "if you want X" rather than
+   as descriptions, because the panel's whole job is to answer a reader
+   who knows what they want and not what to do about it. A group of
+   offices with no condition attached is a list of names, and a reader
+   has to guess which of them to write to.
+   ==================================================================== */
+const KINDWHEN={
+  'leg/member'   :'Contact one if you need a bill introduced, or an existing one amended. This is the only office that can start a law.',
+  'leg/committee':'Contact one if a bill on your subject already exists, or you have evidence worth putting in a public record.',
+  'leg/chamber'  :'Contact it if you want to know when your subject is scheduled, or to speak in a public comment period.',
+  'leg/presiding':'Contact one only once a bill and its sponsors exist, and the problem is that it is not being scheduled.',
+  'exec/head'    :'Contact it if you want a veto, or action by decree where the legislature will not move. Expect to be counted rather than read.',
+  'exec/minister':'Contact one if the detail is the problem: the rules written under a law, who is exempt, how it is measured.',
+  'exec/clerk'   :'Contact one if you want to file something — a ballot measure, a petition, a formal record — or to find out how.',
+  'exec/legal'   :'Contact one if you want a law enforced that is being ignored, or a written legal opinion on what a statute means.',
+  'exec/envoy'   :'Contact one only about something outside the country. Nothing they agree becomes law here without the legislature.',
+  'jud/court'    :'Go here if you need an order rather than a finding, and you have an injury of your own or a case to join.',
+  'jud/judge'    :'Not contactable about anything that might come before them. Where judges are elected, the election is the route.',
+  'jud/defender' :'Contact one if a body treated you or someone else unfairly and you want it investigated and published.',
+  'ag/agency'    :'Contact one if you want a rule made, changed or enforced in your subject. Most must answer a petition in writing.',
+  'ag/audit'     :'Contact one if a body broke an obligation already written down, and you can name which one.',
+  'ag/police'    :'Contact one about an incident. For practice or policy, the council or legislature that funds them is the address.',
+  'other/other'  :'What these do is not recorded clearly enough to say. The official site settles it.',
+};
+
+const ROUTEWHEN={
+  email      :'Use it to register a position when you have nothing else, or to send a document you have been asked for.',
+  call       :'Use it to find out which staffer owns your subject. Fastest way to learn who to write to.',
+  letter     :'Use it when you want something on file and signed, or when the recipient is senior enough that post is still read.',
+  visit      :'Use it when you have a proposal and want somebody to carry it. Ask for the staffer covering your subject.',
+  townhall   :'Use it when the decision is local and a meeting is scheduled. Your words go into the minutes.',
+  rulemaking :'Use it when the rule you want does not exist. The body has to grant or deny it in writing.',
+  comment    :'Use it when a rule is already proposed and the window is open. The body must address what you raise.',
+  foia       :'Use it before arguing, to find out what the body already knows and has already decided.',
+  sfr        :'Use it when a hearing is scheduled on your subject and you have evidence. It enters the record permanently.',
+  ig         :'Use it when a body broke a specific obligation. Name the duty and the failure, or it is closed unread.',
+  ombud      :'Use it when the treatment was unfair rather than unlawful, and a published finding would help.',
+  citizensuit:'Use it where a statute lets a private person enforce it, and the body that should have is not.',
+  climatelit :'Use it where the harm is climate-related and a comparable case has already been heard somewhere.',
+  amicus     :'Use it when a case on your subject is already running and you hold facts the parties do not.',
+  personhood :'Use it where the harm is to a river, forest or ecosystem and no person can show a particular injury.',
+  shareprop  :'Use it to put a question to a company’s board in a form it has to process. Written as a business case.',
+  engage     :'Use it before anything public, if there is a plausible commercial reason for the company to agree.',
+  boycott    :'Use it when the company sells to the public and the ask is simple enough to explain in a sentence.',
+  oecdncp    :'Use it against a multinational for conduct abroad, when a published finding is worth more than an order.',
+  devbank    :'Use it when a project funded by a development bank is causing the harm.',
+  upr        :'Use it when the state itself is the problem and its human-rights record is due for review.',
+  echr       :'Use it after the courts at home are exhausted, in a country under a regional rights court.',
+  ilo        :'Use it for workers organising, union recognition, or the right to strike.',
+  copuos     :'Use it for anything in orbit or beyond, where no national body has jurisdiction.',
+  lobby      :'Use it when a bill is live, the timing is short, and you can afford it. It buys access, not the outcome.',
+  scoping    :'Use it before spending anything larger, to find out who actually decides and when.',
+  office     :'Use it when the people deciding will not change and the seat is winnable.',
+  ballot     :'Use it where citizen initiatives exist and no politician will carry your measure.',
+  quitam     :'Use it if you have inside evidence of fraud against public money.',
+  observer   :'Use it when the question is whether the vote itself was sound.',
+  facarole   :'Use it to be in the room while the rules are drafted rather than commenting after.',
+  oped       :'Use it to reach the people who decide through the thing they read, when direct contact has failed.',
+  deepcanvass:'Use it when the obstacle is public opinion rather than any one office.',
+  petition   :'Use it to show numbers alongside something else. On its own it is counted and filed.',
+};
+
+/* ====================================================================
    THE WALKTHROUGH
 
    Two versions of this have been wrong in the same direction. The first
@@ -2633,13 +2785,20 @@ const LEAVES = {
   new_law: {
     nm:'A rule that does not exist yet', scoped:true,
     lead:'Nobody can introduce a bill except a member of the legislature, so the whole of this route runs through persuading one to do it. Until a member agrees, what you have is a proposal, not a bill. The exception is at the bottom of the list: where citizen initiatives exist, enough signatures put a measure on the ballot and no elected official has to agree to anything.',
-    kinds:['leg/member','leg/committee','leg/chamber','leg/presiding','exec/clerk','exec/head'],
+    kinds:['leg/member','leg/committee','exec/minister','ag/agency','leg/chamber','leg/presiding','exec/clerk','exec/head'],
     routes:['visit','letter','call','email','sfr','petition','townhall','ballot'],
     hurdles:['tally','concentrated','money','nobody'],
+    /* the same office means something different depending on why the
+       reader is here, so a destination can say its own version */
+    when:{
+      'exec/minister':'Contact the one that covers your subject before the legislature does. It usually drafts the text, and a member asked to introduce a bill will ask it whether the idea works.',
+      'ag/agency':'Contact the one in your subject to find out whether the change needs a law at all. Often it can be made as a rule instead, which is a shorter route.',
+    },
     notes:[
       ['Ask for the staffer, not the member','Staff decide what reaches the member, and a staffer who takes up your idea becomes the person carrying it. If you live in the member’s district you have a claim on that meeting nobody else has.'],
       ['Committee is where it dies','Most bills end in committee rather than on the floor. Committees take written submissions and hold hearings, both open to the public; the committee clerk gives you the format and the deadline.'],
       ['Ask the clerk whether an initiative exists','Before anything else, ask the office that keeps the record whether a citizen initiative is available here, and if so what the signature threshold and deadline are. It is the only route on this map that does not need a politician’s consent.'],
+      ['Check whether it needs a law at all','The department or agency in your subject can often make the change as a rule under a law that already exists. That is a shorter route with a written answer at the end of it, and the office itself will tell you which of the two applies.'],
     ],
     next:[['rules','If the law already says what you want but nothing happens'],
           ['oversight','If a body is ignoring a law that already exists']],
@@ -2793,9 +2952,20 @@ const QUESTIONS = {
 };
 
 /* where the reader is: a list of {q, opt} steps, then a leaf */
-let PATH=[], LEAF=null, LEAFLVL=null, SHOWALLK={};
+let PATH=[], LEAF=null, LEAFLVL=null, LEAFSUB=null, SHOWALLK={};
 
-function resetTree(){ PATH=[]; LEAF=null; LEAFLVL=null; SHOWALLK={}; }
+function resetTree(){ PATH=[]; LEAF=null; LEAFLVL=null; LEAFSUB=null; SHOWALLK={}; }
+
+/* Which kinds of office are divided by subject, and which are not.
+
+   An environmental rule and a transport rule are written by different
+   departments, so showing a reader all ninety departments over their
+   state answers nothing. But the same legislature votes on both, the
+   same head of government signs both, and the same clerk files both,
+   so narrowing those by subject would hide the right office rather
+   than find it. Only the kinds where the subject actually picks out a
+   different body are filtered. */
+const SUBJECTKINDS = new Set(['exec/minister','ag/agency','leg/committee','ag/audit','other/other']);
 
 /* ---------- every office on the map, not just the open level ----------
    `BK` holds only the jurisdiction whose panel is open. The chain pins
@@ -2815,11 +2985,14 @@ function officeIndex(){
   }
   return out;
 }
-function officesFor(kinds, lvl){
+function officesFor(kinds, lvl, sub){
   const ix=officeIndex(), out=[];
+  if(sub===undefined) sub=LEAFSUB;
   Object.values(ix).forEach(e=>{
     if(kinds.indexOf(e.o.kind)<0) return;
     if(lvl!=null && e.lvl!==lvl) return;
+    /* the subject narrows only the kinds it actually distinguishes */
+    if(sub && SUBJECTKINDS.has(e.o.kind) && e.o.theme!==sub) return;
     out.push(e.o);
   });
   return out;
@@ -2846,9 +3019,72 @@ function drawTree(){
   if(LEAF) h+=drawLeaf();
   else{
     const node=PATH.length?PATH[PATH.length-1].next:'start';
-    h += (node==='__level__') ? drawLevelQ() : drawQuestion(QUESTIONS[node]||QUESTIONS.start);
+    h += node==='__subject__' ? drawSubjectQ()
+       : node==='__level__'   ? drawLevelQ()
+       : drawQuestion(QUESTIONS[node]||QUESTIONS.start);
   }
   return h+'</div>';
+}
+
+/* What the law is about, asked before who to contact.
+
+   Without it the answer to "I want an environmental rule" was every
+   department and agency over the place — ninety of them for a US
+   state, covering transport, pensions and licensing alike — which is
+   a list to read rather than an answer. The subject is what picks out
+   the environment department from among them.
+
+   The options are built from the offices actually present, so a
+   subject nothing here covers is not offered, and each carries how
+   many offices it would show. A reader whose concern spans several
+   subjects, or who does not want to narrow, takes the last option. */
+function drawSubjectQ(){
+  const kinds=LEAFKINDS();
+  const subKinds=kinds.filter(k=>SUBJECTKINDS.has(k));
+
+  /* Counted twice, deliberately.
+
+     `mine` is how many offices this destination would show under each
+     subject. `here` is how many subject-specific offices of any kind
+     sit over this place, which is the honest number: a reader whose
+     concern is environmental still has an environmental department
+     over them even when the destination they picked is about
+     legislative committees and there is no environment committee.
+
+     Every subject is offered whatever the counts, because the question
+     is what the reader's concern is about, not what Wikidata happens
+     to record. A subject with nothing behind it says so on its own
+     row rather than being hidden, which is the difference between "no
+     such office exists" and "no such office is recorded". */
+  const mineRows=officesFor(kinds, LEAFLVL, null).filter(o=>SUBJECTKINDS.has(o.kind));
+  const allKinds=[...SUBJECTKINDS];
+  const hereRows=officesFor(allKinds, LEAFLVL, null);
+  const mine={}, here={};
+  mineRows.forEach(o=>{ mine[o.theme]=(mine[o.theme]||0)+1; });
+  hereRows.forEach(o=>{ here[o.theme]=(here[o.theme]||0)+1; });
+
+  const names=THEMES.map(t=>t[0]).concat(['Everything else']);
+
+  let h='<div class="qwrap wide"><h2 class="qq">What is it about?</h2>'+
+    '<p class="qsub">Different departments and agencies cover different subjects, and only one of them writes the rules on yours. '+
+    'The legislature, the head of government and the filing offices are the same whatever the subject, so those are shown either way.'+
+    '</p><div class="qopts two">';
+  names.forEach(t=>{
+    const m=mine[t]||0, hh=here[t]||0;
+    h+='<button type="button" class="qopt sm'+(m?'':' thin')+'" data-sub="'+esc(t)+'" '+
+       'onclick="pickSubject('+JSON.stringify(t).replace(/"/g,'&quot;')+')">'+
+       '<span class="qt">'+esc(t)+'</span>'+
+       '<span class="qd">'+esc(THEMEHINT[t]||'')+'</span>'+
+       '<span class="qct">'+(m? m+(m===1?' office here':' offices here')
+         : hh? hh+' elsewhere in government' : 'none recorded')+'</span>'+
+       '<span class="qar">&rarr;</span></button>';
+  });
+  h+='<button type="button" class="qopt sm any" data-sub="" onclick="pickSubject(null)">'+
+     '<span class="qt">Any subject, or more than one</span>'+
+     '<span class="qd">Do not narrow. Most real concerns touch several of these at once.</span>'+
+     '<span class="qct">'+mineRows.length+' office'+(mineRows.length===1?'':'s')+' here</span>'+
+     '<span class="qar">&rarr;</span></button>';
+  return h+'</div></div>';
 }
 
 function drawQuestion(qn){
@@ -2873,7 +3109,7 @@ function drawLevelQ(){
   const n=STACK.length;
   for(let i=n-1;i>=0;i--){
     const s=STACK[i];
-    const cnt=officesFor(LEAFKINDS(), i).length;
+    const cnt=officesFor(LEAFKINDS(), i, LEAFSUB).length;
     h+='<button type="button" class="qopt lvl" data-lvl="'+i+'" onclick="pickLevel('+i+')">'+
        '<span class="qt"><i style="background:'+levelColour(i)+'"></i>'+esc(s.label)+'</span>'+
        '<span class="qd">'+esc(LEVELN[Math.min(i,LEVELN.length-1)])+
@@ -2894,52 +3130,39 @@ function drawLeaf(){
   const rows=officesFor(L.kinds, LEAFLVL);
   const byKind={}; rows.forEach(o=>{ (byKind[o.kind]=byKind[o.kind]||[]).push(o); });
 
-  let h='<div class="leaf"><div class="lleft">';
-  h+='<h2 class="lnm">'+esc(L.nm)+'</h2>';
+  /* Who first, then how.
+
+     The methods used to come first and the offices after them, which
+     is the wrong way round: "write a letter" means nothing until you
+     know whose letterbox. The offices are now the left column and the
+     wider one, and the methods sit beside them. Each office group
+     carries the condition that makes it the right address, and each
+     method the condition that makes it the right method, because a
+     list of names and a list of verbs are not an answer on their own. */
+  let h='<div class="leaf">';
+
+  /* the header runs across both columns */
+  h+='<div class="lhead"><h2 class="lnm">'+esc(L.nm)+'</h2><div class="ltags">';
+  if(LEAFSUB) h+='<span class="ltag sub">'+esc(LEAFSUB)+'</span>';
   if(LEAFLVL!=null && STACK[LEAFLVL])
-    h+='<div class="lscope"><i style="background:'+levelColour(LEAFLVL)+'"></i>'+esc(STACK[LEAFLVL].label)+'</div>';
-  h+='<p class="llead">'+esc(L.lead)+'</p>';
-  (L.notes||[]).forEach(n=>{
-    h+='<div class="lnote"><dt>'+esc(n[0])+'</dt><dd>'+esc(n[1])+'</dd></div>';
-  });
+    h+='<span class="ltag"><i style="background:'+levelColour(LEAFLVL)+'"></i>'+esc(STACK[LEAFLVL].label)+'</span>';
+  h+='</div><p class="llead">'+esc(L.lead)+'</p></div>';
 
-  /* the methods, best-ranked first */
-  const ids = L.routes || Object.keys(KIND_ROUTES).reduce((a,k)=>a.concat(KIND_ROUTES[k]),[]);
-  const seen={}, rts=[];
-  ids.forEach(id=>{ if(seen[id])return; seen[id]=1;
-    const r=ROUTES.find(x=>x.id===id); if(r) rts.push(r); });
-  rts.sort((a,b)=>BANDS[rateBand(a.rate)].ord-BANDS[rateBand(b.rate)].ord);
-  if(rts.length){
-    h+='<div class="sec">How to reach them</div><div class="rgrid">';
-    rts.forEach((rt,i)=>{ h+=routeTile(rt,i); });
-    h+='</div>';
-  }
-  const hs=(L.hurdles||[]).map(k=>HURDLES[k]).filter(Boolean);
-  if(hs.length){
-    h+='<div class="sec">What usually stops it</div>';
-    hs.forEach(x=>{ h+='<div class="bar"><h4>'+esc(x.h)+'</h4>'+x.p.map(p=>'<p>'+p+'</p>').join('')+'</div>'; });
-  }
-  h+='</div><div class="lright">';
-
-  h+='<div class="lrh">Who to contact</div>';
+  /* ---- left: who to contact ---- */
+  h+='<div class="lleft"><div class="lrh">Who to contact</div>';
   const order=L.kinds.filter(k=>byKind[k] && byKind[k].length)
     .concat(L.kinds.filter(k=>!byKind[k] || !byKind[k].length));
   let any=false;
   const blanks=[];
   order.forEach(k=>{
     const list=(byKind[k]||[]).slice().sort((a,b)=>a.label.localeCompare(b.label));
-    /* Kinds with nothing recorded used to print the same two-line
-       explanation each, five or six times down the column, which filled
-       the space the offices should have had. They are collected into
-       one line at the bottom, with the explanation said once. */
     if(!list.length){ blanks.push(k); return; }
     any=true;
-    const ki=KINDINFO[k]||{what:''};
     h+='<div class="kgrp" data-kind="'+esc(k)+'">'+
        '<div class="khead"><b>'+esc(KINDLABEL[k]||k)+'</b>'+
        (LAWKINDS.has(k)?'<i class="lawdot" title="a route to a law"></i>':'')+
        '<span class="kct">'+list.length+'</span></div>'+
-       '<div class="kwhat">'+esc(ki.what||'')+'</div>';
+       '<div class="kwhen">'+esc((L.when&&L.when[k])||KINDWHEN[k]||(KINDINFO[k]||{}).what||'')+'</div>';
     const all=!!SHOWALLK[k], shown=all?list:list.slice(0,CAPK);
     h+='<div class="chips">';
     shown.forEach(o=>{
@@ -2957,12 +3180,40 @@ function drawLeaf(){
        blanks.map(k=>esc(KINDLABEL[k]||k)).join(', ')+'. '+
        'Coverage is deep for some countries and thin for others, and thinner at local level. '+
        'A blank means Wikidata holds no record, not that no such office exists'+
-       (LEAFLVL!=null?' \u2014 and the levels above this one usually still have them.':'.')+'</div>';
+       (LEAFLVL!=null?' — and the levels above this one usually still have them.':'.')+'</div>';
   }
-  if(!any) h+='<div class="kempty">No office of any of these kinds is recorded at this level.</div>';
+  if(!any){
+    h+='<div class="kempty">No office of any of these kinds is recorded'+
+       (LEAFSUB?' under '+esc(LEAFSUB):'')+(LEAFLVL!=null?' at this level':'')+'. '+
+       'Step back and widen the subject or the level.</div>';
+  }
+  h+='</div>';
+
+  /* ---- right: how to reach them, then what stops it ---- */
+  h+='<div class="lright"><div class="lrh">How to reach them</div>';
+  const ids = L.routes || Object.keys(KIND_ROUTES).reduce((a,k)=>a.concat(KIND_ROUTES[k]),[]);
+  const seen={}, rts=[];
+  ids.forEach(id=>{ if(seen[id])return; seen[id]=1;
+    const r=ROUTES.find(x=>x.id===id); if(r) rts.push(r); });
+  rts.sort((a,b)=>BANDS[rateBand(a.rate)].ord-BANDS[rateBand(b.rate)].ord);
+  if(rts.length){
+    h+='<div class="rgrid one">';
+    rts.forEach((rt,i)=>{ h+=routeTile(rt,i,ROUTEWHEN[rt.id]); });
+    h+='</div>';
+  }
+
+  (L.notes||[]).forEach(n=>{
+    h+='<div class="lnote"><dt>'+esc(n[0])+'</dt><dd>'+esc(n[1])+'</dd></div>';
+  });
+
+  const hs=(L.hurdles||[]).map(k=>HURDLES[k]).filter(Boolean);
+  if(hs.length){
+    h+='<div class="lrh" style="margin-top:18px">What usually stops it</div>';
+    hs.forEach(x=>{ h+='<div class="bar"><h4>'+esc(x.h)+'</h4>'+x.p.map(p=>'<p>'+p+'</p>').join('')+'</div>'; });
+  }
 
   if(L.next && L.next.length){
-    h+='<div class="lrh" style="margin-top:16px">Where next</div><div class="lnext">';
+    h+='<div class="lrh" style="margin-top:18px">Where next</div><div class="lnext">';
     L.next.forEach(([k,t])=>{
       h+='<button type="button" class="nxt" onclick="'+(k==='start'?'resetTree();render()':'jumpLeaf(\''+k+'\')')+'">'+
          esc(t)+'</button>';
@@ -2980,37 +3231,62 @@ function pickOpt(i){
   if(o.go){ PATH.push({label:o.t, next:o.go}); LEAF=null; return render(); }
   enterLeaf(o.leaf, o.t);
 }
+/* The order of the questions is what you want, then what it is about,
+   then how far it reaches. Subject before level because the subject
+   decides which body, and the level only decides which copy of it. */
 function enterLeaf(key, label){
   const L=LEAVES[key]; if(!L) return;
+  PENDLEAF=key; LEAFLVL=null; LEAFSUB=null; SHOWALLK={};
+  /* "Show me everything" is an answer to the subject question
+     already, so it is not asked again. */
+  const asksSubject = key!=='all' && L.kinds.some(k=>SUBJECTKINDS.has(k));
+  if(asksSubject){
+    PATH.push({label:label||L.nm, next:'__subject__'});
+    LEAF=null; return render();
+  }
   if(L.scoped && STACK.length>1){
-    PENDLEAF=key;
     PATH.push({label:label||L.nm, next:'__level__'});
     LEAF=null; return render();
   }
   PATH.push({label:label||L.nm, next:null});
-  LEAF=key; LEAFLVL=null; SHOWALLK={}; render(); frameKinds(L.kinds);
+  LEAF=key; render(); frameKinds(L.kinds);
+}
+function pickSubject(t){
+  LEAFSUB=t;
+  const L=LEAVES[PENDLEAF];
+  PATH.push({label:t||'Any subject', next:(L.scoped && STACK.length>1)?'__level__':null});
+  if(L.scoped && STACK.length>1){ LEAF=null; return render(); }
+  LEAF=PENDLEAF; render(); frameKinds(L.kinds);
 }
 function pickLevel(i){
-  LEAF=PENDLEAF; LEAFLVL=i; SHOWALLK={};
+  LEAF=PENDLEAF; LEAFLVL=i;
   PATH.push({label:(i==null?'Every level':(STACK[i]?STACK[i].label:'Level')), next:null});
   render();
   const ids=officesFor(LEAVES[LEAF].kinds, i).map(o=>o.id);
   frameIdsSoon(ids);
   if(i!=null && STACK[i] && STACK[i].feature) fitTo(STACK[i].feature.geometry);
 }
-/* a "where next" link: keep the trail, swap the destination */
+/* A "where next" link. The subject and level already chosen are kept:
+   somebody who said "environmental, in California" and then follows
+   "if the law itself is the problem" means the same subject and the
+   same state, not a fresh start. */
 function jumpLeaf(key){
   const L=LEAVES[key]; if(!L) return;
+  PENDLEAF=key; SHOWALLK={};
   PATH.push({label:L.nm, next:null});
-  if(L.scoped && LEAFLVL==null && STACK.length>1){ PENDLEAF=key; PATH[PATH.length-1].next='__level__'; LEAF=null; }
-  else { LEAF=key; }
-  SHOWALLK={}; render(); frameKinds(L.kinds);
+  LEAF=key; render(); frameKinds(L.kinds);
 }
 function treeGo(i){
   if(i<0){ resetTree(); return render(); }
   PATH=PATH.slice(0,i+1);
   const st=PATH[PATH.length-1];
+  /* whatever the dropped steps decided is dropped with them, or the
+     reader steps back to the subject question and the old subject is
+     still filtering the answer behind it */
+  if(st.next==='__subject__'){ LEAFSUB=null; LEAFLVL=null; }
+  if(st.next==='__level__'){ LEAFLVL=null; }
   if(st.next){ LEAF=null; }
+  SHOWALLK={};
   render();
 }
 
@@ -3148,12 +3424,13 @@ function render(){
 /* One route, as a tile. Written once because a destination lists the
    methods for a whole branch of the walkthrough and an office page
    lists the methods for one office, and the two were the same markup. */
-function routeTile(rt, i){
+function routeTile(rt, i, when){
   const R=rt.rate;
   return '<div class="route" id="rr'+i+'">'+
     '<button type="button" class="rhead" aria-expanded="false" '+
       'onclick="toggleRoute(\'rr'+i+'\',this)">'+
     '<div class="rmain"><div class="rnm">'+esc(rt.nm)+'</div>'+
+    (when ? '<div class="rwhen">'+esc(when)+'</div>' : '')+
     '<div class="rmeta">'+esc(rt.cost)+'</div>'+
     '<span class="rpill"><i style="background:'+rateColor(R)+'"></i>'+
       esc(BANDS[rateBand(R)].label)+'</span></div>'+
@@ -3194,7 +3471,7 @@ function renderOffice(o){
   if(rts.length){
     h+='<div class="sec">How to reach it</div>';
     h+='<div class="rgrid">';
-    rts.forEach((rt,i)=>{ h+=routeTile(rt,i); });
+    rts.forEach((rt,i)=>{ h+=routeTile(rt,i,ROUTEWHEN[rt.id]); });
     h+='</div>';
   }
   const hs=(KIND_HURDLES[o.kind]||[]).map(k=>HURDLES[k]).filter(Boolean);
