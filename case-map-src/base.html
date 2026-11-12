@@ -1420,9 +1420,16 @@ function startZoom() {
 }
 let proj = "globe", ready = false;
 function freeFlat() {
-  try { map.setRenderWorldCopies(proj === "mercator"); } catch (e) {}
+  // One world, never a repeating reel: the flat view shows the single centre map.
+  try { map.setRenderWorldCopies(false); } catch (e) {}
   try {
-    if (proj === "mercator") map.setTransformConstrain((ll, z) => ({ center: new maplibregl.LngLat(Math.max(-360, Math.min(360, ll.lng)), Math.max(-84, Math.min(84, ll.lat))), zoom: Math.max(0, z) }));
+    // The single sheet stays in the frame: no sliding off its edge into empty space.
+    if (proj === "mercator") map.setTransformConstrain((ll, z) => {
+      const w = 512 * Math.pow(2, Math.max(0, z)), vw = (map.getContainer().clientWidth || 1200);
+      const half = vw >= w ? 0 : 180 - (vw / 2 / w) * 360;
+      const lng = half <= 0 ? 0 : Math.max(-half, Math.min(half, ll.lng));
+      return { center: new maplibregl.LngLat(lng, Math.max(-84, Math.min(84, ll.lat))), zoom: Math.max(0, z) };
+    });
     else map.setTransformConstrain(null);
   } catch (e) {}
 }
@@ -1892,7 +1899,7 @@ function liveHTML() {
     '';
 }
 function wireLive() {
-  document.querySelectorAll("#layersBody [data-live]").forEach((i) => i.addEventListener("change", () => { S.live[i.dataset.live] = i.checked; if (i.checked && !LIVE) loadLive(); drawLive(); syncSw(); }));
+  document.querySelectorAll("#layersBody [data-live]").forEach((i) => i.addEventListener("change", () => { S.live[i.dataset.live] = i.checked; if (i.checked) { if (!LIVE) loadLive(); soloSect("live"); } drawLive(); syncSw(); }));
   document.querySelectorAll("#layersBody [data-livesel]").forEach((x) => x.addEventListener("change", () => { S.live[x.dataset.livesel] = x.value; drawLive(); }));
 }
 function detailLiveWB(i) {
@@ -1938,10 +1945,14 @@ const FLOWS = new Set(["fdi", "aid", "found", "priv", "bilat", "interest", "remi
 const isPrvLayer = (id) => id.startsWith("inf_prv_") || id.startsWith("inf_fdi_isds") || /_tied_share$/.test(id);
 const isCompLayer = (id) => id === "lc:wbca" || (id.startsWith("inf_") && !isPrvLayer(id) && id !== "inf_cn_official_infra_usd21m" && id !== "inf_cn_official_infra_projects");
 const isLenderLayer = (id) => FLOWS.has(id) || LENDER_LC.has(id) || (id !== "none" && id !== "prod" && !id.startsWith("lc:") && !isCompLayer(id) && !isPrvLayer(id));
+/* ----- two sets of marks that would be mistaken for each other: only one shows at a time ----- */
+const SOLO = ["cases", "live"];
+function soloSect(k) { if (SOLO.indexOf(k) < 0) return; SOLO.forEach((o) => { if (o !== k && SECT[o] && SECT[o].on()) SECT[o].set(false); }); }
+function czOn() { S.cz = true; soloSect("cases"); }
 const SECT = {
-  cases: { on: () => S.cz !== false, set: (v) => { S.cz = v; refreshFocus(); const l = $("#links2"); if (l) l.checked = S.links && v; } },
+  cases: { on: () => S.cz !== false, set: (v) => { S.cz = v; if (v) soloSect("cases"); refreshFocus(); const l = $("#links2"); if (l) l.checked = S.links && v; } },
   live: { on: () => !!(S.live.wb || S.live.pl), set: (v) => {
-    if (v) { const s = SAVE.live || { wb: true, pl: true }; S.live.wb = !!s.wb; S.live.pl = !!s.pl; if (!S.live.wb && !S.live.pl) S.live.wb = S.live.pl = true; if (!LIVE) loadLive(); }
+    if (v) { const s = SAVE.live || { wb: true, pl: true }; S.live.wb = !!s.wb; S.live.pl = !!s.pl; if (!S.live.wb && !S.live.pl) S.live.wb = S.live.pl = true; if (!LIVE) loadLive(); soloSect("live"); }
     else { SAVE.live = { wb: S.live.wb, pl: S.live.pl }; S.live.wb = S.live.pl = false; }
     drawLive(); drawPoints(); } },
   lenders: { on: () => isLenderLayer(S.layer) || S.f.lender.size > 0 || S.ppl || (S.off2 && S.off2.size > 0) || !!(S.ent && S.ent.t === "person"), set: (v) => {
@@ -1960,7 +1971,7 @@ const SECT = {
     if (v) OPEN.pats = true;
     else { if (S.layer.startsWith("lc:pat_")) S.layer = "none"; if (S.pat) { S.pat = null; S.ent = null; deselect(); } }
     refreshFocus(); } },
-  comps: { on: () => !!(S.links || S.hq || isCompLayer(S.layer) || (S.ent && S.ent.t === "company")), set: (v) => { S.links = v; S.hq = v; if (v) S.cz = true; if (!v && isCompLayer(S.layer)) S.layer = "none"; if (!v && S.ent && S.ent.t === "company") { S.ent = null; deselect(); } refreshFocus(); } },
+  comps: { on: () => !!(S.links || S.hq || isCompLayer(S.layer) || (S.ent && S.ent.t === "company")), set: (v) => { S.links = v; S.hq = v; if (v) czOn(); if (!v && isCompLayer(S.layer)) S.layer = "none"; if (!v && S.ent && S.ent.t === "company") { S.ent = null; deselect(); } refreshFocus(); } },
   pts: { on: () => !!(S.offs.size || S.prot || (S.lcpt && (S.lcpt.mm || S.lcpt.pf))), set: (v) => {
     if (v) { const s = SAVE.pts || { offs: Object.keys(OFFICES), prot: true }; S.offs = new Set(s.offs); S.prot = !!s.prot; if (S.lcpt) { S.lcpt.mm = !!s.mm; S.lcpt.pf = !!s.pf; } if (S.lcpt && S.lcpt.mm && LCM) LCM.loadMM(); }
     else { SAVE.pts = { offs: [...S.offs], prot: S.prot, mm: S.lcpt && S.lcpt.mm, pf: S.lcpt && S.lcpt.pf }; S.offs = new Set(); S.prot = false; if (S.lcpt) S.lcpt.mm = S.lcpt.pf = false; }
@@ -2002,7 +2013,7 @@ function flyEnt(t, id) {
   if (at && isFinite(at[0]) && isFinite(at[1])) { map.flyTo({ center: at, zoom: Math.max(map.getZoom(), 3.6), padding: flyPad(), duration: 900 }); return; }
   const pts = (e.case_ids || []).map((cid) => CASES.find((x) => x.id === cid)).filter(Boolean).map((c) => [c.lng, c.lat]);
   if (pts.length === 1) map.flyTo({ center: pts[0], zoom: Math.max(map.getZoom(), 3.6), padding: flyPad(), duration: 900 });
-  else if (pts.length) { const lo = pts.map((p) => p[0]), la = pts.map((p) => p[1]); try { map.fitBounds([[Math.min(...lo), Math.min(...la)], [Math.max(...lo), Math.max(...la)]], { padding: flyPad(), maxZoom: 5, duration: 1000 }); } catch (err) {} }
+  else if (pts.length) fitPts(pts, 3.6);
 }
 
 /* ----- the cases where an IMF or World Bank loan condition led to harm (from the loan-conditions map) ----- */
@@ -2112,6 +2123,31 @@ function allBriefHTML() {
     q("How much of the money is each kind?", 'Added up for low- and middle-income countries over ' + SH.y[0] + '–' + SH.y[1] + ', after repayments, about ' + bn(SH.total) + ' came in these five ways. ' + order.map((k) => '<b>' + esc(nm(k)) + ':</b> ' + trim1(SH.k[k].pct) + '% (' + bn(SH.k[k].usd) + ')').join("; ") + '. This is this map\'s own sum of World Bank figures.' +
       '<br><br>Two other kinds of money are left out. <b>Foreign buying of shares</b> (' + bn(SH.peq) + ') means investors abroad buying small stakes in a country\'s companies, usually on its stock market, often to sell again. It is not the same as <b>private investment by foreign companies</b>, which is counted: there a foreign company owns 10% or more of a business, such as a mine, factory or plantation, and has a say in how it is run. The World Bank uses that 10% line to tell the two apart. Share buying is left out because the buyers do not run a project or a place, and the cases on this map are about projects and places. <b>Money sent home by people working abroad</b> (' + bn(SH.rem) + ') is left out because it is workers\' own pay sent to their families, not money from a lender, donor or company.' +
       '<br><br>All of these figures are after repayments. So one kind of money can come out below zero in a year: in 2022 and 2023, banks and bondholders took more out of these countries in repayments than they lent in.') +
+    q("How much of all lending does this map cover?", (() => {
+      const A = (t, u) => '<a href="' + u + '" target="_blank" rel="noopener">' + t + '</a>';
+      const has = (c, k) => (c.lk || []).includes(k), kin = (k) => CASES.filter((c) => kindsOf(c).includes(k));
+      const sh = (a, b) => { const r = a / b * 100; return r >= 10 ? Math.round(r) + "%" : r >= 1 ? r.toFixed(1) + "%" : r >= 0.01 ? r.toFixed(2) + "%" : "1 in " + fmt(Math.round(b / Math.max(a, 1))); };
+      const rows = [
+        ["Projects the World Bank has approved since 1947", TOT.wb, CASES.filter((c) => has(c, "wb")).length, "World Bank projects database"],
+        ["Lending arrangements the IMF has agreed with " + TOT.imfc + " countries since 1952", TOT.imf, CASES.filter((c) => has(c, "imf")).length, "IMF lending records, as counted for this map"],
+        ["Loans and grants from Chinese state banks and agencies, 2000\u20132021", 20985, CASES.filter((c) => has(c, "cn") && c.start >= 2000 && c.start <= 2021).length, "AidData, Global Chinese Development Finance Dataset"],
+        ["New foreign company projects announced in developing countries, 2021\u20132023", 20032, kin("fdi").filter((c) => c.start >= 2021 && c.start <= 2023).length, A("UNCTAD, World Investment Report 2024, Table I.3", "https://unctad.org/system/files/official-document/wir2024_ch01_en.pdf") + "; this map's sum of the three years"],
+        ["Treaty lawsuits foreign investors brought against countries, 1987\u20132023", 1332, CASES.filter((c) => has(c, "icsid")).length, A("UNCTAD, Investment Dispute Settlement Navigator", "https://investmentpolicy.unctad.org/investment-dispute-settlement")],
+        ["Aid and development finance activities from 96 donors, 1947\u20132013, grants and loans together", 1500000, kin("gra").length, A("AidData Core Research Release 3.1", "https://www.aiddata.org/data/aiddata-core-research-release-level-1-3-1")],
+      ];
+      const none = [
+        ["Bank loans and bonds lent to these governments", kin("prv").length, "No public count was found."],
+        ["Payment services banks ran for governments and armed groups", kin("pay").length, "No count exists. The nearest figure is that the number of banks moving money across borders for other banks fell 22% from 2011 to 2019 (" + A("BIS, Committee on Payments and Market Infrastructures", "https://www.bis.org/publications/new-correspondent-banking-data-decline-continues-slower-pace") + ")."],
+      ];
+      const ids = new Set(); CASES.forEach((c) => (c.cx || []).forEach((h) => ids.add(h[0] + "|" + h[1])));
+      return 'No one counts the loans, grants and investments that harmed people, so there is no total to measure this map against. What can be counted is how many deals of each kind exist and how many of them have a case here. This map has ' + fmt(CASES.length) + ' cases.' +
+        '<table class="rec" style="margin-top:5px"><tr><th class="l">What has been counted</th><th>How many</th><th>Cases here</th><th>Share</th></tr>' +
+        rows.map((r) => '<tr><td class="l">' + r[0] + '<div class="mute" style="font-size:11.5px">' + r[3] + '</div></td><td>' + fmt(r[1]) + '</td><td>' + fmt(r[2]) + '</td><td>' + sh(r[2], r[1]) + '</td></tr>').join("") +
+        none.map((r) => '<tr><td class="l">' + r[0] + '<div class="mute" style="font-size:11.5px">' + r[2] + '</div></td><td>not counted</td><td>' + fmt(r[1]) + '</td><td>\u2013</td></tr>').join("") +
+        '</table>' +
+        'Each row counts a different thing over a different span of years, so the rows cannot be added up, and a case can appear in more than one. The shares are of deals counted, not of harm done: most of these loans and projects have no documented harm, and no count of the ones that did exists for any lender. ' +
+        'The complaint records come closest to a full record. Every one of the ' + fmt(CMP.length) + ' complaints people have filed with ' + new Set(CMP.map((c) => c.o)).size + ' lenders\u0027 complaint offices is on this map as a point, and ' + fmt(ids.size) + ' of them belong to a case here. They only hold the harm that people managed to file a complaint about.';
+    })()) +
     q("How often does each kind of money do harm?", 'No one has measured that for any kind of money. This map holds cases where harm is documented and an outside funder is tied to it, not a sample of all the money. The counts below show where records exist and where research has gone: official lenders have complaint offices that publish every complaint, while private lenders and donors mostly have none, so a low count does not mean little harm. A case with several kinds of money counts under each. Payment services by banks are counted here but not in the money table above: they move other people\'s money rather than supplying any, so they have a share of the harm recorded on this map but no share of the money.<table class="rec" style="margin-top:5px"><tr><th class="l">Kind</th><th>Cases</th><th>Countries</th><th>Killed</th></tr>' + order.concat(["pay"]).map(row).join("") + '</table>') +
     '<details class="bsrc"><summary>Sources for these figures</summary><ol><li><a href="https://databank.worldbank.org/source/world-development-indicators" target="_blank" rel="noopener">World Bank, World Development Indicators</a></li><li><a href="https://databank.worldbank.org/source/international-debt-statistics" target="_blank" rel="noopener">World Bank, International Debt Statistics</a></li><li><a href="https://databank.worldbank.org/metadataglossary/world-development-indicators/series/BX.KLT.DINV.CD.WD" target="_blank" rel="noopener">World Bank, definition of foreign direct investment (the 10% line)</a></li></ol></details></div></details>';
 }
@@ -2141,7 +2177,7 @@ function kindBriefHTML(k) {
 }
 function buildKey() {
   const KC_ = CASES.filter(kPass);
-  $("#lede2").textContent = KC_.length + " cases in " + new Set(KC_.map((c) => c.iso3)).size + " countries · " + new Set(KC_.flatMap((c) => (c.companies || []).map((x) => x.name))).size + " companies · every figure sourced";
+  $("#lede2").textContent = KC_.length + " cases in " + new Set(KC_.flatMap((c) => [c.iso3].concat(c.iso3_more || []))).size + " countries · " + new Set(KC_.flatMap((c) => (c.companies || []).map((x) => x.name))).size + " companies · every figure sourced";
   { const body = $("#kindBody"); $("#key").appendChild(body);
     const cnt = (k) => k === "all" ? CASES.length : CASES.filter((c) => kindsOf(c).includes(k)).length;
     $("#kindBar").innerHTML = '<div class="psec" style="margin-top:8px">Kind of money' + qm("Each kind opens its own categories. The percent is that kind's share of the money reaching low- and middle-income countries, added up over " + MK_SHARE.y[0] + "–" + MK_SHARE.y[1] + " after repayments (World Bank figures). Share buying and money sent home by workers are not counted. Payment services move other people's money, so they have no share. The second number is how many cases on this map involve that kind; a case with several kinds appears under each, and the case count reflects where research went, not how much harm each kind does.") + '<button type="button" id="resetAll" class="chipb" style="float:right;margin:-2px 0 0" title="Put every layer, filter and choice back as it was when the page opened">Reset</button></div><div class="ktr">' +
@@ -2334,13 +2370,13 @@ function wireFund() {
   const B = $("#layersBody"), L = (window.MK_FUND || {})[S.kind] || [];
   B.querySelectorAll("[data-fund]").forEach((b) => b.addEventListener("click", () => {
     const n = b.dataset.fund, e = L.find((x) => x[0] === n); if (!e) return;
-    if (S.fundN === n) { S.fundN = null; S.fund = null; } else { S.fundN = n; S.fund = new Set(e[2]); S.cz = true; leaveStory(); }
+    if (S.fundN === n) { S.fundN = null; S.fund = null; } else { S.fundN = n; S.fund = new Set(e[2]); czOn(); leaveStory(); }
     B.querySelectorAll("[data-fund]").forEach((x) => x.classList.toggle("on", x.dataset.fund === S.fundN));
     B.querySelectorAll("[data-fundt]").forEach((x) => x.classList.remove("on"));
     update(); syncSw(); }));
   B.querySelectorAll("[data-fundt]").forEach((b) => b.addEventListener("click", () => {
     const n = "t:" + b.dataset.fundt, e = fundGroups().find((g) => g[0] === b.dataset.fundt); if (!e) return;
-    if (S.fundN === n) { S.fundN = null; S.fund = null; } else { S.fundN = n; S.fund = e[1]; S.cz = true; leaveStory(); }
+    if (S.fundN === n) { S.fundN = null; S.fund = null; } else { S.fundN = n; S.fund = e[1]; czOn(); leaveStory(); }
     B.querySelectorAll("[data-fundt]").forEach((x) => x.classList.toggle("on", "t:" + x.dataset.fundt === S.fundN));
     B.querySelectorAll("[data-fund]").forEach((x) => x.classList.remove("on"));
     update(); syncSw(); }));
@@ -2439,8 +2475,8 @@ function buildLayers() {
 }
 function wireLayers() {
   const B = $("#layersBody");
-  B.querySelectorAll(".fc[data-g=ct]").forEach((b) => b.addEventListener("click", () => { const s = S.f.ct; if (s.has(b.dataset.v)) s.delete(b.dataset.v); else { s.add(b.dataset.v); S.cz = true; leaveStory(); } update(); syncSw(); }));
-  B.querySelectorAll(".fc[data-g=lender]").forEach((b) => b.addEventListener("click", () => { const s = S.f.lender; if (s.has(b.dataset.v)) s.delete(b.dataset.v); else { s.add(b.dataset.v); S.cz = true; leaveStory(); } update(); syncSw(); }));
+  B.querySelectorAll(".fc[data-g=ct]").forEach((b) => b.addEventListener("click", () => { const s = S.f.ct; if (s.has(b.dataset.v)) s.delete(b.dataset.v); else { s.add(b.dataset.v); czOn(); leaveStory(); } update(); syncSw(); }));
+  B.querySelectorAll(".fc[data-g=lender]").forEach((b) => b.addEventListener("click", () => { const s = S.f.lender; if (s.has(b.dataset.v)) s.delete(b.dataset.v); else { s.add(b.dataset.v); czOn(); leaveStory(); } update(); syncSw(); }));
   B.querySelectorAll("[data-more]").forEach((b) => b.addEventListener("click", () => { const k = b.dataset.more; S.lopen.has(k) ? S.lopen.delete(k) : S.lopen.add(k); buildLayers(); drawCountries(); }));
   B.querySelectorAll("[data-prof]").forEach((b) => b.addEventListener("click", () => selectAny({ t: "lender", k: b.dataset.prof })));
   B.querySelectorAll("input[name=layer]").forEach((r) => r.addEventListener("click", () => { S.layer = S.layer === r.value ? "none" : r.value; buildLayers(); drawCountries(); if (S.sel && S.sel.t === "country") detailCountry(S.sel.iso); }));
@@ -2451,7 +2487,7 @@ function wireLayers() {
   $("#protOn").addEventListener("change", (e) => { S.prot = e.target.checked; if (S.prot) leaveStory(); drawPoints(); });
   $("#pplOn").addEventListener("change", (e) => { S.ppl = e.target.checked; if (S.ppl) leaveStory(); drawPeople(); syncSw(); });
   $("#hqOn").addEventListener("change", (e) => { S.hq = e.target.checked; if (S.hq) leaveStory(); drawLinks(); syncSw(); });
-  $("#links2").addEventListener("change", (e) => { S.links = e.target.checked; if (S.links) { S.cz = true; leaveStory(); refreshFocus(); } const l = $("#links"); if (l) l.checked = S.links; drawLinks(); syncSw(); });
+  $("#links2").addEventListener("change", (e) => { S.links = e.target.checked; if (S.links) { czOn(); leaveStory(); refreshFocus(); } const l = $("#links"); if (l) l.checked = S.links; drawLinks(); syncSw(); });
   B.querySelectorAll("input[name=pat]").forEach((r) => r.addEventListener("click", () => setPat(S.pat === r.value ? "" : r.value)));
   $("#selCo").addEventListener("change", (e) => setEnt("company", e.target.value));
   $("#selPe").addEventListener("change", (e) => setEnt("person", e.target.value));
@@ -2637,12 +2673,21 @@ function placeDet() {
   el.style.left = Math.max(8, (W - w2) / 2) + "px"; el.style.top = top + "px"; el.style.maxHeight = (b.H - top - 40) + "px"; el.style.width = w2 + "px"; el.classList.add("big");
 }
 // The view centres the place in the band above the card.
+// A card that covers most of the map would leave no room to fly into, and the move is then
+// dropped and the map stays on the thing before it, so the margins never take more than
+// three fifths of the frame.
+function clampPad(p) {
+  const el = map ? map.getContainer() : $("#map"), W = el.clientWidth || 1200, H = el.clientHeight || 800;
+  const fit = (a, b, len) => { const m = len * 0.6; return a + b <= m ? [a, b] : [a * m / (a + b), b * m / (a + b)]; };
+  const lr = fit(p.left || 0, p.right || 0, W), tb = fit(p.top || 0, p.bottom || 0, H);
+  return { left: lr[0], right: lr[1], top: tb[0], bottom: tb[1] };
+}
 function flyPad() {
   const b = detBox(), el = $("#det");
-  if (!b) { const h = el.getBoundingClientRect().height || 300; return { top: 10, bottom: Math.min(innerHeight - 120, h + 10), left: 10, right: 10 }; }
-  if (DRAGGED) return { top: 0, bottom: 30, left: panelRight(), right: rightBox() };
-  if (!DETBIG) return { top: 20, bottom: 30, left: panelRight(), right: cornerW() + 24 };
-  return { top: 0, bottom: b.H - Math.max(14, Math.round(b.H * 0.05)) + 6, left: panelRight(), right: rightBox() };
+  if (!b) { const h = el.getBoundingClientRect().height || 300; return clampPad({ top: 10, bottom: Math.min(innerHeight - 120, h + 10), left: 10, right: 10 }); }
+  if (DRAGGED) return clampPad({ top: 0, bottom: 30, left: panelRight(), right: rightBox() });
+  if (!DETBIG) return clampPad({ top: 20, bottom: 30, left: panelRight(), right: cornerW() + 24 });
+  return clampPad({ top: 0, bottom: b.H - Math.max(14, Math.round(b.H * 0.05)) + 6, left: panelRight(), right: rightBox() });
 }
 function navBtns() {
   $("#detBack").disabled = HI <= 0; $("#detFwd").disabled = HI >= HIST.length - 1;
@@ -2666,20 +2711,22 @@ function selectCountry(iso, fly, fromNav) {
   if (!fromNav) remember({ t: "country", iso });
   S.sel = { t: "country", iso }; openDet(); detailCountry(iso); navBtns();
   drawMarkers(); drawCountries(); drawList(); drawLinks(); drawCharts();
-  if (fly && BOUNDS) {
-    const f = BOUNDS.features.filter((x) => x.properties.iso3 === iso); if (!f.length) return;
-    let b = [180, 90, -180, -90];
-    f.forEach((x) => { const walk = (a) => { if (typeof a[0] === "number") { b[0] = Math.min(b[0], a[0]); b[1] = Math.min(b[1], a[1]); b[2] = Math.max(b[2], a[0]); b[3] = Math.max(b[3], a[1]); } else a.forEach(walk); }; walk(x.geometry.coordinates); });
-    if (b[2] - b[0] < 200) {
-      let cam = null; try { cam = map.cameraForBounds([[b[0], b[1]], [b[2], b[3]]], { padding: flyPad(), maxZoom: 5 }); } catch (e) {}
-      if (!cam || !cam.center) try { cam = map.cameraForBounds([[b[0], b[1]], [b[2], b[3]]], { padding: 20, maxZoom: 5 }); } catch (e) {}
-      if (cam && cam.center) map.flyTo(Object.assign({}, cam, { padding: flyPad(), duration: 900 }));
-    }
-  }
+  if (fly) flyCountry(iso);
+}
+// Returns false when the country's own outline gives no usable view, so the caller can fall back.
+function flyCountry(iso) {
+  if (!BOUNDS) return false;
+  const f = BOUNDS.features.filter((x) => x.properties.iso3 === iso); if (!f.length) return false;
+  let b = [180, 90, -180, -90];
+  f.forEach((x) => { const walk = (a) => { if (typeof a[0] === "number") { b[0] = Math.min(b[0], a[0]); b[1] = Math.min(b[1], a[1]); b[2] = Math.max(b[2], a[0]); b[3] = Math.max(b[3], a[1]); } else a.forEach(walk); }; walk(x.geometry.coordinates); });
+  if (b[2] - b[0] >= 200) return false;
+  return flyBounds([[b[0], b[1]], [b[2], b[3]]]);
 }
 function goHist(d) {
   const n = HI + d; if (n < 0 || n >= HIST.length) return; HI = n; const e = HIST[HI];
   selectAny(e, true);
+  // The card decides where the free part of the map is, so the move waits for it to be drawn.
+  requestAnimationFrame(() => requestAnimationFrame(() => flyEntry(e)));
 }
 function deselect() { if (map.getLayer("live-hl")) map.setFilter("live-hl", ["==", ["get", "i"], -1]); if (S.pat || S.ent) { S.pat = null; S.ent = null; buildTr(); drawPatLinks(); drawPoints(); drawPeople(); } S.sel = null; DETBIG = false; sideBtn(); DRAGGED = false; $("#det").classList.remove("open"); document.body.classList.remove("detopen");
   Object.values(WINS).forEach((w) => w.el.classList.remove("ghost"));
@@ -3242,6 +3289,57 @@ function detailProtest(i) {
     '<div class="hp-h">The news record</div><p>' + esc(p.notes || "") + '</p>' +
     '<div class="hp-src">Reports cited by the dataset: ' + esc(p.sources || "") + '<br>From the Mass Mobilization Project (Clark and Regan), protests against governments, 1990–2020; this map keeps the ' + PROT.length + ' whose coded record mentions the IMF or World Bank.</div>';
   wireCard();
+}
+/* ---------- where each thing sits on the map, so back and forward always land on it ---------- */
+function fitPts(pts, zmin) {
+  if (!pts.length) return false;
+  if (pts.length === 1) { map.flyTo({ center: pts[0], zoom: Math.max(map.getZoom(), zmin || 3.6), padding: flyPad(), duration: 900 }); return true; }
+  const lo = pts.map((p) => p[0]), la = pts.map((p) => p[1]);
+  return flyBounds([[Math.min(...lo), Math.min(...la)], [Math.max(...lo), Math.max(...la)]]);
+}
+// Fitting a box is not safe on its own: on the globe MapLibre gives no camera for a wide box,
+// and for a box of 100 degrees or more it gives one far too close, which lands the view on
+// empty ground between the marks. So its answer is used only when it is not closer than the
+// width of the box allows, and otherwise the middle of the box is used with a zoom read from
+// that width.
+function flyBounds(b) {
+  const span = Math.max(b[1][0] - b[0][0], (b[1][1] - b[0][1]) * 1.4, 0.05);
+  const zFit = Math.max(0.5, Math.min(5, Math.log2(300 / span)));
+  let cam = null; try { cam = map.cameraForBounds(b, { padding: flyPad(), maxZoom: 5 }); } catch (err) {}
+  if (!cam || !cam.center) try { cam = map.cameraForBounds(b, { padding: 20, maxZoom: 5 }); } catch (err) {}
+  if (cam && cam.center && cam.zoom <= zFit + 0.4) { map.flyTo(Object.assign({}, cam, { padding: flyPad(), duration: 1000 })); return true; }
+  map.flyTo({ center: [(b[0][0] + b[1][0]) / 2, (b[0][1] + b[1][1]) / 2], zoom: zFit, padding: flyPad(), duration: 1000 });
+  return true;
+}
+const onePt = (lng, lat) => (lng == null || lat == null || lng === "" || lat === "" || !isFinite(+lng) || !isFinite(+lat)) ? [] : [[+lng, +lat]];
+const casePts = (ids) => (ids || []).map((id) => (CASEIX[id] != null ? CASES[CASEIX[id]] : null)).filter(Boolean).map((c) => [c.lng, c.lat]);
+function entryPts(e) {
+  if (!e) return [];
+  if (e.t === "case") { const c = CASES[e.i]; return c ? onePt(c.lng, c.lat) : []; }
+  if (e.t === "country") return CASES.filter((c) => c.iso3 === e.iso || (c.iso3_more || []).includes(e.iso)).map((c) => [c.lng, c.lat]);
+  if (e.t === "pat") { const p = PATS.find((x) => x.id === e.id); return p ? casePts(p.case_ids) : []; }
+  if (e.t === "lever") return CASES.filter((c) => (LV[c.id] || []).includes(e.id)).map((c) => [c.lng, c.lat]);
+  if (e.t === "company" || e.t === "person") {
+    const x = ENTITY(e.t, e.id); if (!x) return [];
+    if (e.t === "person" && x.anchor) return onePt(x.anchor[0], x.anchor[1]);
+    if (e.t === "company" && x.hq_lat != null) return onePt(x.hq_lng, x.hq_lat);
+    return casePts(x.case_ids);
+  }
+  if (e.t === "pgrp") { const g = (ENT.people || []).find((x) => x.anchor && pKey(x) === e.k); return g ? onePt(g.anchor[0], g.anchor[1]) : []; }
+  if (e.t === "pick") { for (const it of (e.items || [])) { const p = entryPts(it); if (p.length) return p; } return []; }
+  if (e.t === "lwb") return e.xy ? onePt(e.xy[0], e.xy[1]) : [];
+  if (e.t === "hq") return onePt(e.lng, e.lat);
+  if (e.t === "lof") { const o = LOFF[e.i]; return o ? onePt(o[6], o[5]) : []; }
+  if (e.t === "lender") { const at = LK_HQ[e.k]; return at ? onePt(at[3], at[2]) : []; }
+  if (e.t === "cmp") { const c = CMP[e.i]; return c ? onePt(c.lng, c.lat) : []; }
+  if (e.t === "prot") { const p = PROT[e.i]; return p ? onePt(p.lng, p.lat) : []; }
+  return [];
+}
+// A window has no place on the map; everything else does, by its own point or by the cases it covers.
+function flyEntry(e) {
+  if (!e || e.t === "win") return false;
+  if (e.t === "country" && flyCountry(e.iso)) return true;
+  return fitPts(entryPts(e), e.t === "case" ? 3.4 : 3.6);
 }
 function selectAny(e, fromNav) {
   if (e.t === "win") { S.sel = null; $("#det").classList.remove("open"); document.body.classList.remove("detopen"); openWin(e.id); navBtns(); drawMarkers(); drawLinks(); return; }
