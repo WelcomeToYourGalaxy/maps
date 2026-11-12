@@ -48,7 +48,7 @@ Another session of the user's commits to this repo often. **Always `git fetch or
 | Category | Records | Places | Breadth |
 |---|---|---|---|
 | Corruption cases | 232 | 154 | 75% |
-| External auditors | 162 | 119 | 58% |
+| External auditors | 162 | 124 | 60% |
 | Revolving door | 206 | 80 | 39% |
 | Banknote printers | 112 | 87 | 42% |
 | Swap lines | 240 | 84 | 41% |
@@ -171,7 +171,7 @@ Bounded sets that worked:
 ## What is left
 
 ### 1. External auditors — the one category that can actually reach 100%
-Every central bank operates under a law that names who audits it, so the answer always exists. 119 of 206 done, union members included.
+Every central bank operates under a law that names who audits it, so the answer always exists. 124 of 206 done, union members included.
 - **The BCEAO is settled.** The all-lots award notice that five rounds could not fetch — its URL is 364 characters and WebFetch rejects it on length — **was opened in a browser and read off the rendered PDF**. It names a titulaire and a suppléant for the head office and for every national directorate. When WebFetch refuses a URL on length, a browser tool settles it in one call; stop retrying with offsets.
 - **BEAC is settled but imperfectly.** Its 2015 statutory auditors' report names KPMG and Mazars Cameroun jointly, signed at Yaoundé on 11 March 2016. That PDF is a scan and the two names extract as garbled text; the record says so in its own sentence. The 2023 report on beac.int is the clean replacement, and beac.int is robots-disallowed to the fetcher — a browser tool would settle it, as it did for the BCEAO.
 - **The ECB's own auditor is Baker Tilly GmbH & Co. KG Wirtschaftsprüfungsgesellschaft**, Frankfurt, signed 12 February 2025 for 2024. Keyed to `ECB`, so it reaches all 21 euro-area countries.
