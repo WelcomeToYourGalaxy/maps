@@ -1,0 +1,77 @@
+[
+ {
+  "target": "Spain (Banco de Espana)",
+  "what_was_tried": "Searched bde.es and fetched the Banco de Espana task page 'Holding and managing foreign currency' (https://www.bde.es/wbe/en/sobre-banco/mision/funciones/gestionar_las_r_fc6b52429f11281.html).",
+  "result": "The page never mentions gold and names no custodian; it says only that the Banco de Espana independently manages the foreign reserves. No other bde.es page surfaced that names a gold depository. No record."
+ },
+ {
+  "target": "Sri Lanka (Central Bank of Sri Lanka)",
+  "what_was_tried": "Fetched the CBSL 2025 financial statements (32_Financial_Statements.pdf), including an offset re-read at 100,000 characters, to find the gold note.",
+  "result": "Note 7.15 and Note 18 cover gold only as a reserve asset and valuation item - 'gold including credit balances representing such gold may be held by the CBSL as part of the international reserves' and 19,948.16 bar fine ounces at 31 December 2025 - and name no custodian institution. No record."
+ },
+ {
+  "target": "Nepal (Nepal Rastra Bank)",
+  "what_was_tried": "Fetched NRB's financial statements for FY 2081/82 (Financial-Statements-81.82-for-upload.pdf) at offsets 0 and 100,000 to reach Note 5.1 on gold.",
+  "result": "Note 5.1 names only the London Bullion and Metal Association, as the source of the valuation rate, and refers to 'gold physically held with the Bank' without naming a vault or institution. No custodian named. No record."
+ },
+ {
+  "target": "Hungary (Magyar Nemzeti Bank)",
+  "what_was_tried": "Searched mnb.hu and fetched the 2024 press release 'The MNB increased Hungary's gold reserves to a record high level of 110 tonnes'.",
+  "result": "The release gives tonnages and history (including the wartime 'Gold Train' to Spital am Pyhrn) but states nothing about where the gold is kept today - no MNB vault, no Bank of England. No record."
+ },
+ {
+  "target": "Serbia (National Bank of Serbia)",
+  "what_was_tried": "Fetched the NBS IFRS financial statements for 2023 (NBS_IAS_Report_2023.pdf) and read the gold note (Note 17).",
+  "result": "Note 17 gives only amounts in thousands of RSD and a refining-cost estimate; Note 3.5 covers valuation at LBMA fixings. No vault, custodian or institution named. No record."
+ },
+ {
+  "target": "Greece (Bank of Greece)",
+  "what_was_tried": "Searched for the Bank of Greece gold note and tried to fetch its 2024 full-notes financial statements filed on the Athens exchange; the athexgroup.gr URL 302-redirected to athens.euronext.com and the redirected fetch was blocked (permission request unanswered).",
+  "result": "Blocked URL: https://athens.euronext.com/sites/default/files/hermes/2025-03/2791eee6-6324-4b5b-98e3-804b83dfb338/Financial%20Statement%20-%20Full%20Notes%20BANK%20OF%20GREECE%20S.A.%20(2024,Year%20Statement,Company).pdf - the gold note was never read, so no record. Worth retrying in a later round."
+ },
+ {
+  "target": "Romania (Banca Nationala a Romaniei)",
+  "what_was_tried": "Searched bnr.ro/bnro.ro and fetched https://www.bnr.ro/page.aspx?prid=14557, which returned only navigation and footer; the gold page is behind a 'Rezerva de aur' menu link that search did not return as a fetchable URL.",
+  "result": "No official BNR page naming the depository was read. Romanian press (financialintelligence.ro) carries a BNR statement that the BNR holds the account at the Bank of England where about 60 tonnes of Romania's gold is deposited, but that official page itself was not reached, so nothing was filed. Clear lead for a later round: the BNR annual report (Raport anual) and the 'Rezerva de aur' page."
+ },
+ {
+  "target": "Czechia - the London share",
+  "what_was_tried": "Read the CNB's own gold page.",
+  "result": "It says 'Most of the CNB's gold reserves are safely stored in London' without naming the London institution, so only the Prague own-vault record was filed. The CNB also says it lends gold as deposits to other central banks - that is lending, not custody, and was not filed."
+ },
+ {
+  "target": "Philippines (Bangko Sentral ng Pilipinas)",
+  "what_was_tried": "Searched for BSP gold custody and annual-report disclosures.",
+  "result": "Search returned only news coverage of BSP gold sales and reserve levels plus the BSP's gross international reserves statistics table; nothing naming a gold custodian. No record."
+ },
+ {
+  "target": "Israel (Bank of Israel)",
+  "what_was_tried": "Searched for a Bank of Israel gold custody disclosure.",
+  "result": "Results were Bank of England and bullion-industry pages, not Bank of Israel disclosures. The Bank of Israel holds effectively no monetary gold, which likely explains the absence. No record."
+ },
+ {
+  "target": "Kazakhstan (National Bank of Kazakhstan)",
+  "what_was_tried": "Fetched the World Gold Council interview with the National Bank of Kazakhstan ('A central banker's perspective on the role of gold', 2022).",
+  "result": "The NBK says the main share is 'physical bullion of refined gold stored in the state vault within the country's territory' and the rest is 'physical bullion stored in specialised foreign repositories' plus unallocated metal accounts with unnamed LBMA-accredited global banks. No institution is named for any location - 'state vault' does not identify a holder - so nothing was filed."
+ },
+ {
+  "target": "Mexico (Banco de Mexico)",
+  "what_was_tried": "Searched in Spanish for Banxico gold custody and Bank of England disclosures.",
+  "result": "Only press and academic commentary surfaced; no Banxico page or report naming a custodian was returned. The known disclosure route is the Auditoria Superior de la Federacion audit and transparency replies, which were not located as readable URLs in this round. No record."
+ },
+ {
+  "target": "Italy - the foreign shares",
+  "what_was_tried": "Read Banca d'Italia's gold-reserves page in full.",
+  "result": "It gives the geographic split (United Kingdom 141.2 t, Switzerland 149.3 t, United States 1,061.5 t) by country only, saying merely that the gold sits in the vaults of 'primarie banche centrali'. No institution named abroad, so only the Via Nazionale own-vault record was filed. The October 2026 Banca d'Italia speech 'Gold between Continuity and Change' names no locations at all."
+ },
+ {
+  "target": "Bulgaria - the deposit counterparties",
+  "what_was_tried": "Read chapter 5 of the BNB's international reserves publication at offset 100,000.",
+  "result": "It says gold deposits are placed with unnamed highly rated private commercial banks abroad and that delivery and settlement occur in Bank of England vaults. Only the Bank of England record was filed; the commercial-bank counterparties are not named and the publication carries no visible date, so as_of is left null."
+ },
+ {
+  "target": "South Korea, Thailand, Malaysia, Egypt, Jordan, Nigeria, Kenya, Tanzania, Zambia, Ukraine, Georgia, Mongolia, Cambodia, Brazil, Argentina, Venezuela, Ecuador, Bolivia, Singapore, Japan, Taiwan",
+  "what_was_tried": "Not reached in this round; the WebFetch budget was spent on the leads above.",
+  "result": "No searches or fetches performed for most of these, so they remain open. The Bank of Korea search that was run returned only press coverage of its buying decisions, nothing on custody."
+ }
+]
