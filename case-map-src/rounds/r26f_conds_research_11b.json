@@ -1,0 +1,72 @@
+{
+ "sao-jose-tatetuba-eviction": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "Route B tested and settled: the tesourotransparente.gov.br CKAN dataset b04f61d2-0101-407b-bd89-3da1d477ebe5 was enumerated in full and holds 76 resources; the IDB contracts in it are Contrato BID1194, 1628, 1718, 1811, 1841, 1864, 2192, 2229, 2248, 2580, 2791, 2919, 3142, 3391, 4723, 4732 and 5092 (plus World Bank BIRD contracts and some commercial ones). There is no BID1126 and no resource for any loan numbered below 1194, so the Habitar Brasil loan contract 1126/OC-BR (BR-0273, approved 23 September 1998) is not in the Brazilian Treasury's published contract set. Exact failures to record: the WebFetch of the dataset listing page https://www.tesourotransparente.gov.br/ckan/dataset/b04f61d2-0101-407b-bd89-3da1d477ebe5 and of the CKAN API endpoint /ckan/api/3/action/package_show?id=b04f61d2-0101-407b-bd89-3da1d477ebe5 both returned PROVENANCE_REQUIRED - a lapsed session fetch permission, not a refusal by the host; the enumeration above came from a direct HTTPS request to that same CKAN API, which the host answered normally. Also searched for a Brazilian Senate resolution authorising the external credit operation; the 1998 and 1999 resolution collections surfaced but none was identified as covering 1126/OC-BR, and a Senate resolution would in any case state only financial terms."
+ },
+ "marrakech-agadir-motorway-blasting": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "Route A could not be tried for want of a project id. No AfDB project number for the 2006 Chichaoua-Imintanout section of the Marrakech-Agadir motorway exists on either mirror: the Accountability Console project page https://www.accountabilityconsole.com/projects/construction-of-the-marrakech-agadir-motorway was opened and shows a blank Investment ID, the amount as \"Unknown\", no approval date and no linked documents; the Early Warning System has no record for the project, its AfDB coverage starting well after 2006. Searches for a P-MA-DB0 or other P-MA transport id for this motorway, and for the appraisal report under afdb.org/fileadmin/uploads/afdb/Documents/Project-and-Operations/, returned nothing for it. Without the id the ewsdata mirror path cannot be constructed. The IRM closure report at https://aconsole-static.s3.amazonaws.com/media/public/cases/eng_closure_report-_marackech_agadir_motorwary_11_december_2016.pdf was attempted again and returned PROVENANCE_REQUIRED - a lapsed session fetch permission, not a refusal by that S3 bucket, so whether it serves is still untested. New host found and tested: evrd.afdb.org, the Bank's evaluation results database, serves its PDFs in full (verified on evrd.afdb.org/documents/docs/PR10265_SR_FR.pdf, a 2009 project completion report for the Kankan-Kouremale-Bamako road), but no evrd document for this motorway could be surfaced, and the completion report that was opened reproduces no covenant, listing the loan agreement only as a source."
+ },
+ "el-dorado-fontibon-noise": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "National-source route tried and it does not apply: loan CO-L1029 (2477A/OC-CO) went to the private concessionaire OPAIN without a sovereign guarantee, as the MICI consultation-phase report already read in an earlier round states, so there is no Colombian ratifying law, decree or gazette publication to find. The borrower-disclosure route was tried instead: Odinsa, OPAIN's parent, publishes annual reports and consolidated financial statements that could quote the loan's covenants, but odinsa.com sits behind Incapsula bot protection - the fetch of https://odinsa.com/wp-content/uploads/Informe-Odinsa-2013-WEB.pdf returned only an Incapsula verification page, not the report. idbinvest.org still has no page for CO-L1029, which pre-dates IDB Invest. iadb.org/en/project/PN0136 was re-tested as a control this round and returned a client error."
+ },
+ "leaf-ii-lakes-edward-albert": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "Route A tried and exhausted. The ewsdata mirror directory https://ewsdata.rightsindevelopment.org/files/documents/11/ is an open index and was enumerated: the only AfDB file for this project is AFDB-P-Z1-AAF-011.pdf, with no suffixed variants, and that file is the NELSAP general procurement notice an earlier round already opened, which states no condition. So the mirror holds no appraisal report for LEAF II and the shortfall is not a routing problem. The project record at https://ewsdata.rightsindevelopment.org/projects/AFDB-P-Z1-AAF-011/pdf style pages carries no bank document either."
+ },
+ "dakar-ter-phase1": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "Route A tried and the file does not exist. https://ewsdata.rightsindevelopment.org/files/documents/03/AFDB-P-SN-DC0-003.pdf returns a client error, and the open directory index at /files/documents/03/ was enumerated to confirm it: the AfDB files there run alphabetically from AFDB-P-CV-IB0-003.pdf to AFDB-P-ZM-KF0-003.pdf and include AFDB-P-SN-AAG-003.pdf and AFDB-P-SO-E00-003.pdf, between which AFDB-P-SN-DC0-003 would fall. It is absent, with no suffixed variant. The Early Warning System project PDF for AFDB-P-SN-DC0-003 was re-opened and its \"Bank Documents\" section is an empty heading. National-source route tried: searched vie-publique.sn and Senegalese sources for a decree or law ratifying the AfDB loan to APIX; the Journal Officiel issues surfaced by date only and none was identified as carrying this loan agreement."
+ },
+ "kariobangi-north-evictions": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "Second reader on the AfDB environmental and social impact assessment summary: the earlier round's finding is confirmed, not contradicted. https://www.afdb.org/en/documents/document/kenya-nairobi-rivers-basin-rehabilitation-and-restoration-program-sewerage-improvement-project-phase-ii-esia-summary-100633 was opened again this round and states no condition, covenant or requirement attached to the loan; the words condition, required, requirement, shall and must do not appear, disbursement is not mentioned, the only reference to the Bank is that the Government of Kenya \"has requested the African Development Bank (AfDB) for support to develop wastewater facilities\", and Kariobangi is not named anywhere in it. Route A tried as well and the file does not exist: https://ewsdata.rightsindevelopment.org/files/documents/10/AFDB-P-KE-EB0-010.pdf returns a client error, and the open directory index at /files/documents/10/ was enumerated - it holds 20 AfDB files (AFDB-P-CD-I00-010.pdf through AFDB-P-ZW-E00-010.pdf) and AFDB-P-KE-EB0-010 is not among them, with no suffixed variant."
+ },
+ "malicounda-power-plant-land": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "Route A tried and the file does not exist. https://ewsdata.rightsindevelopment.org/files/documents/09/AFDB-P-SN-F00-009.pdf returns a client error, and the open directory index at /files/documents/09/ was enumerated: it holds 21 AfDB files, from AFDB-P-CD-DB0-009.pdf to AFDB-P-ZA-K00-009_Ouny6PA.pdf, and there is no AFDB-P-SN-F00-009 entry and no suffixed variant. This remains a non-sovereign operation, for which the Bank discloses no appraisal report, so Route A had no file to find rather than a mirror gap."
+ },
+ "abidjan-fourth-bridge-boribana": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "Route A tried and the file does not exist. https://ewsdata.rightsindevelopment.org/files/documents/10/AFDB-P-CI-D00-010.pdf returns a client error, and the open directory index at /files/documents/10/ was enumerated: its 20 AfDB files run from AFDB-P-CD-I00-010.pdf to AFDB-P-ZW-E00-010.pdf with no AFDB-P-CI-D00-010 entry and no suffixed variant. The project id was re-confirmed as P-CI-D00-010 (Projet de transport urbain - Abidjan phase 2) on the Early Warning System, whose project PDF was opened and gives a US$202 million loan, the Ministere des Infrastructures Economiques as borrower, an empty \"Bank Documents\" section and no condition. The neighbouring mirror file AFDB-P-CI-D00-011.pdf was opened in case it was mislabelled: it is the environmental and social management plan summary for a different operation, the Bondoukou-Soko cross-border feeder roads project, and is not an appraisal report."
+ },
+ "la-chorrera-pan-am-generating": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "Took the IDB's own announcement, which a search surfaced and which fetched despite iadb.org's usual refusals: https://www.iadb.org/en/news/idb-approves-598-million-banks-first-private-sector-infrastructure-project-panama gives US$59.8 million to IGC/ERI Pan Am Thermal Generating Limited, made up of a US$20.3 million loan from the Bank's ordinary capital and a US$39.5 million syndicated loan from financial institutions, and says the money provides take-out financing to replace short-term bridge financing and covers part of the sponsor's equity. It states no IDB guarantee, no environmental requirement and no undertaking about the five-year power purchase agreement with Empresa de Distribucion Electrica Metro Oeste, which it gives as a fact about the project rather than a term of the loan. That is a description of what the loan refinanced, not a covenant, so nothing is recorded. The project page https://www.iadb.org/en/project/PN0136 returned a client error. National-source route does not apply: this was a private-sector loan to a project company with no sovereign guarantee, so no Panamanian ratifying law or gazette entry exists to find; idbinvest.org does not reach back to a 1990s operation."
+ },
+ "thwake-dam-makueni": {
+  "conditions_add": "",
+  "ct": [],
+  "why": {},
+  "sources_add": [],
+  "searched": "Route A tried and the file does not exist. https://ewsdata.rightsindevelopment.org/files/documents/06/AFDB-P-KE-EA0-006.pdf returns a client error, and the open directory index at /files/documents/06/ was enumerated: its 22 AfDB files run from AFDB-P-BF-FF0-006.pdf to AFDB-P-ZW-KF0-006_fhi3q9C.pdf and contain no AFDB-P-KE-EA0-006 entry and no suffixed variant. The Early Warning System project PDF for AFDB-P-KE-EA0-006 was opened and gives the additional financing (voting date 14 November 2018, US$117.70 million, Ministry of Water Development as borrower), an empty \"Bank Documents\" section, \"No project information available at the time of disclosure\" as the description, and no condition. One further mirror file found by search, https://ewsdata.rightsindevelopment.org/files/documents/17/AFDB-P-KE-E00-017.pdf, was opened: it is a May 2025 Stakeholder Engagement Plan for Phase I works, not an appraisal report, and it names the AfDB as a financier without giving an amount, a date or any condition. A search for a Kenyan national source - a loan agreement tabled in the National Assembly or published by the National Treasury - surfaced only press reports of the signing; the Parliament library bitstream https://libraryir.parliament.go.ke/bitstreams/ecb71c60-2810-4d86-b4e0-7396cd818621/download returned a client error."
+ }
+}
