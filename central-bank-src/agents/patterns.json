@@ -3648,7 +3648,7 @@
    "id": "banking-crisis-waves",
    "title": "Waves of banking crises and rescues",
    "kind": "wave",
-   "summary": "Systemic banking crises, which central banks and treasuries end with liquidity loans and bailouts, come in waves. The IMF's Laeven-Valencia database (1970-2025) shows clusters in 1980-1983 (Latin America's debt crisis: Argentina, Chile, Mexico, Uruguay, Colombia, Ecuador), 1994-1995 (Mexico and a run of transition and African economies, 24 starts), 1997-1998 (Asia and Russia, 15 starts) and 2007-2008 (the US and UK, then 22 more, mostly in Europe). Fiscal costs reached 55.1% of GDP in Argentina (1980), 56.8% in Indonesia (1997), 43.8% in Thailand and 37.6% in Iceland and Ireland (2008). The map's own corruption file holds 15 cases where central banks are accused of hiding losses or rescuing failing banks.",
+   "summary": "Systemic banking crises, which central banks and treasuries end with liquidity loans and bailouts, come in waves. The IMF's Laeven-Valencia database (1970-2025) shows clusters in 1980-1983 (Latin America's debt crisis: Argentina, Chile, Mexico, Uruguay, Colombia, Ecuador), 1994-1995 (Mexico and a run of transition and African economies, 24 starts), 1997-1998 (Asia and Russia, 15 starts) and 2007-2008 (the US and UK, then 22 more, mostly in Europe). Fiscal costs reached 55.1% of GDP in Argentina (1980), 56.8% in Indonesia (1997), 43.8% in Thailand and 37.6% in Iceland and Ireland (2008).",
    "countries": [
     {
      "iso3": "ARG",
@@ -4343,7 +4343,7 @@
     }
    ],
    "series_note": "Count of crisis episodes by start year in Table A1 of IMF WP/26/094 as parsed into /root/cb/raw/lv_crises.json (164 episodes). Countries are assigned to the first of the four marked waves in which they had a crisis start; later starts are added to the note.",
-   "uncertain": "The database dates crises by when 'significant signs of distress and substantial policy interventions' appear; some fiscal costs are not reported. Waves show timing, not a single common cause."
+   "uncertain": "The database dates crises by when 'significant signs of distress and substantial policy interventions' appear; some fiscal costs are not reported. Waves show timing, not a single common cause. This layer counts crises and their fiscal costs, not wrongdoing: a rescue is not an accusation. Where a central bank has been accused of hiding losses or of rescuing a bank on favourable terms, that is a corruption case and belongs on the case layers, not here."
   },
   {
    "id": "governor-removal-wave",
@@ -5223,7 +5223,7 @@
    "id": "city-of-london-offshore",
    "title": "City of London and its offshore islands",
    "kind": "axis",
-   "summary": "London became the centre of offshore dollar banking in the late 1950s: after UK exchange controls of 1957 limited sterling lending to non-residents, London banks lent dollars instead, and Midland Bank bid for dollar deposits above the ceiling US rules (Regulation Q) allowed at home. The UK's overseas territories and Crown dependencies, which are not part of the UK but whose defence and foreign relations London handles, are among the largest secrecy jurisdictions: in the Tax Justice Network's 2025 Financial Secrecy Index the UK plus ten of them account for 9.26% of the global secrecy score, more than the United States alone (5.66%, rank 1). Two central bank cases in the map's files touch this network: Lebanon's Forry Associates was a British Virgin Islands company, and a Nigerian investigator said the CBN's former governor placed £543 million in UK fixed deposits without board approval.",
+   "summary": "London became the centre of offshore dollar banking in the late 1950s: after UK exchange controls of 1957 limited sterling lending to non-residents, London banks lent dollars instead, and Midland Bank bid for dollar deposits above the ceiling US rules (Regulation Q) allowed at home. The UK's overseas territories and Crown dependencies, which are not part of the UK but whose defence and foreign relations London handles, are among the largest secrecy jurisdictions: in the Tax Justice Network's 2025 Financial Secrecy Index the UK plus ten of them account for 9.26% of the global secrecy score, more than the United States alone (5.66%, rank 1). The network reaches central bank money directly. Forry Associates, the company through which about $330 million left Banque du Liban between 2002 and 2015, was registered in the British Virgin Islands, and a Nigerian investigator told a court that the Central Bank of Nigeria's former governor placed £543 million in UK fixed deposits without board approval.",
    "countries": [
     {
      "iso3": "GBR",

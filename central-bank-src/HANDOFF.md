@@ -2,7 +2,7 @@
 
 Paste or attach this in a new chat to carry on adding to the map.
 
-Rewritten at round 29, kept current through round 31. Earlier versions carried round-by-round narrative that went stale and misled round 26 into re-researching records already on the map. This version states the current position only. **Where it names a country as dead or blocked, that is as of round 31 — re-derive the target list from `coverage.py` before briefing anything.**
+Rewritten at round 29, kept current through round 32. Earlier versions carried round-by-round narrative that went stale and misled round 26 into re-researching records already on the map. This version states the current position only. **Where it names a country as dead or blocked, that is as of round 32 — re-derive the target list from `coverage.py` before briefing anything.**
 
 ## What it is
 - A standalone global map titled **"Central bank capture"**. It shows who owns and steers each central bank, what it hides, the corruption inside and around it, and how far its money reaches beyond its borders.
@@ -41,14 +41,14 @@ Another session of the user's commits to this repo often. **Always `git fetch or
   - Links: `{n, cb | tn, rel, role, detail, src_t, src_u}`.
   - Popups turn each link into a plain sentence (`SAY` / `sayLink` / `srcItem` in `app.js`). Add a `SAY` entry for any new `role` string.
 
-## Where it stands (after round 31, 12 November 2026)
+## Where it stands (after round 32, 12 November 2026)
 
-1,492 outside parties and 2,092 ties. 1,721 writeups, one for every box.
+1,491 outside parties and 2,091 ties. 1,720 writeups, one for every box.
 
 | Category | Records | Places | Breadth |
 |---|---|---|---|
 | Corruption cases | 232 | 154 | 75% |
-| External auditors | 199 | 161 | 78% |
+| External auditors | 198 | 161 | 78% |
 | Banknote printers | 157 | 133 | 65% |
 | Swap lines | 240 | 84 | 41% |
 | Revolving door | 206 | 80 | 39% |
@@ -215,7 +215,7 @@ Where a box's header prose and its score panel disagree, **the panel is right** 
 
 Bounded sets that worked:
 - **Federal Reserve History people pages** render at `federalreservehistory.org/people/<first>-<middle-initial>-<last>`. The index does NOT render. Guess the slug; try the initial-first form too (`/people/robert-heller` fails, `/people/h-robert-heller` works). 37 records across rounds 13–16. No pages exist for Stephen Axilrod, Robert Rasche, William Taylor or Betty Dukes.
-- **The consolidated EUR-Lex text of ECB Decision 1999/70** lists every euro-area central bank's approved external auditor in one table. The current consolidation is `CELEX:01999D0070-20240627`; check for a newer one before assuming it is still current.
+- **The consolidated EUR-Lex text of ECB Decision 1999/70** lists every euro-area central bank's approved external auditor in one table. The consolidation the records were built from is `CELEX:01999D0070-20240627`, which is now well out of date. **Do not trust the consolidation alone: check each mandate's end year and search for the amending decision.** Round 32 found three records whose mandates had already lapsed — Estonia (to 2025), Latvia (to 2024) and Lithuania (to 2024) — and two of them had changed firm. Estonia moved from Ernst & Young Baltic AS to KPMG Baltics OÜ for 2026-2030 (Council Decision (EU) 2026/443), Latvia from SIA Ernst & Young Baltic to KPMG Baltics SIA for 2025-2029 (Council Decision of 27 May 2025), and Lithuania reappointed UAB ROSK Consulting for 2025-2027. Slovenia's Mazars mandate ends with FY2026 and Ernst & Young is already approved for 2027-2029 (Council Decision (EU) 2026/423), noted in the record rather than filed, because it has not started. **Mandates ending with FY2026 to watch next: Greece, Portugal and Slovenia.** The search that works is the bank's own name plus "Council Decision amending 1999/70"; `data.consilium.europa.eu` serves the adoption notes when EUR-Lex does not.
 - **Central bank statutes** name who audits a bank even when the bank's own site blocks automated readers. The Philippines fell to Republic Act 7653; Vietnam to Article 47 of its State Bank law. African LII sites work well.
 
 **Where a bank publishes no biography, the hiring firm usually does.** Nordea, Swiss Re, DSK Bank, Erste Bank Hungary, AIA Group and Société Générale each supplied a record their central bank's site did not.
@@ -323,13 +323,13 @@ Round 30 also rewrote the `big-four-auditors` summary, which still read "of 28 i
 
 **Both are deliberately hedged.** The QE pattern says plainly that BlackRock waived its fee and credited back income, that the ECB's concentration follows a stated market-neutrality policy, and that the same scheme paid the UK Treasury more than it has since cost. The CBDC pattern says that buying software is ordinary, that the Nigerian stake report is press rather than the bank, and that the outage was an administrative failure rather than a design flaw. Keep those hedges: they are what makes the patterns usable.
 
-**What is left for the patterns section is judgement, not gaps.** The weaker fits below were noted in round 29 and are still not recommended. If the section is worked again, the better use of a round is auditing the thirteen older summaries against the rule that a pattern describes the field and does not count the map's records — round 30 found `big-four-auditors` had been wrong on that for many rounds, and no one has checked the rest.
+**The summary audit is done (round 32).** All twenty summaries were read against the rule that a pattern describes the field and does not count the map's own records. Two more were in breach and are fixed: `banking-crisis-waves` ended by claiming the map's corruption file held 15 rescue-or-hidden-loss cases, which was both a count of the map and stale — the category holds 30 — and `city-of-london-offshore` introduced two real facts as "cases in the map's files". The first sentence was removed, with a line added to that pattern's `uncertain` saying a rescue is not an accusation and belongs on the case layers; the second was rewritten to state the Forry Associates and Nigerian fixed-deposit facts directly. The other seventeen describe the field and are clean. **The rule now holds across the whole section; a future round should re-check only summaries it edits.** The weaker fits below were noted in round 29 and are still not recommended.
 
 Weaker fits, noted but not recommended: stablecoin issuers as private money creators (Tether, Circle); gold repatriation as a political current (Germany, the Netherlands, Poland, Hungary, Venezuela — the custody data already carries the facts); climate mandates and the NGFS, contested in both directions.
 
 ## How long to finish
 
-**Yield by round:** 35, 34, 33, 56, 50, 24, 34, 42, 40, 21, 14, 13, then 4 (r27), 3 (r28), 2 (r29), 3 (r30), 0 records (r31, two patterns) — the tail being single-row auditor rounds. Round 30 also added a pattern and two settled negatives, which move the picture more than a record does at this stage: with the service rows this far along, converting a "blocked" country into a confirmed blank is worth as much as a find, because it stops future rounds spending on it.
+**Yield by round:** 35, 34, 33, 56, 50, 24, 34, 42, 40, 21, 14, 13, then 4 (r27), 3 (r28), 2 (r29), 3 (r30), 0 records (r31, two patterns), 0 records (r32, four corrections) — the tail being single-row auditor rounds. Round 30 also added a pattern and two settled negatives, which move the picture more than a record does at this stage: with the service rows this far along, converting a "blocked" country into a confirmed blank is worth as much as a find, because it stops future rounds spending on it.
 
 **Auditors: 6 to 10 more rounds** for the 26 reachable countries. Rounds 27–29 took nine countries with OCR. What is left is mostly blocked hosts, so plan against 2 to 4 a round and expect several to need a copy of the document from somewhere other than the bank's own site.
 
