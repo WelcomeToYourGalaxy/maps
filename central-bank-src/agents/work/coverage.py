@@ -39,13 +39,16 @@ pr = [l for l in net['links'] if 'print' in l.get('relation','').lower()]
 cats['Banknote printers']       = (expand({l['cb_iso3'] for l in pr}), len(pr))
 rm = [l for l in net['links'] if l.get('relation') == 'manages its reserves or programmes']
 cats['Outside reserve managers']= (expand({l['cb_iso3'] for l in rm}), len(rm))
+gd = [l for l in net['links'] if l.get('relation') == 'holds its gold reserves in custody']
+cats['Gold custodians']         = (expand({l['cb_iso3'] for l in gd}), len(gd))
 cats['Named shareholders']      = (iso(own['holdings'], 'cb_iso3'), len(own['holdings']))
 swl = sw['swaps'] if isinstance(sw, dict) and 'swaps' in sw else sw
 sws = set()
 for s_ in swl:
     for k in ('provider_iso3','counterparty_iso3','iso3'):
         if s_.get(k): sws.add(s_[k])
-cats['Swap lines']              = (sws, len(swl))
+# a swap line held by a currency union is held by every member country, as above
+cats['Swap lines']              = (expand(sws), len(swl))
 
 print(f"Monetary authorities on the map: {N}\n")
 print(f"{'Category':34} {'Records':>8} {'Places':>7} {'Breadth':>8}")
