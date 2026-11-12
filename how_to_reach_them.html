@@ -2700,7 +2700,7 @@ async function loadMunicipalities(parentFeature, level){
   if(gen!==MUNI_GEN) return;                 /* reader moved on */
   if(!els.length){ setDot('bd','ok','Boundaries live'); return; }
 
-  const pb = bboxOf(pg), feats=[];
+  const pb = bboxOf(pg); let feats=[];
   els.forEach(el=>{
     if(el.type!=='relation') return;
     const g = osmPolygon(el);
@@ -2709,13 +2709,27 @@ async function loadMunicipalities(parentFeature, level){
     if(c[0]<pb[0]-0.01||c[0]>pb[2]+0.01||c[1]<pb[1]-0.01||c[1]>pb[3]+0.01) return;
     if(!inGeom(c, pg)) return;               /* the bbox overran into the next unit */
     const t = el.tags||{};
+    /* Japan and others return no name:en, so the local script is the
+       name. Reversing this order drops them off the map entirely. */
     const nm = t['name:en'] || t.name;
     if(!nm) return;
     feats.push({type:'Feature', geometry:g, properties:{
       n:nm, shapeName:nm, wd:(t.wikidata&&/^Q\d+$/.test(t.wikidata))?t.wikidata:null,
-      osm:el.id, muni:1}});
+      osm:el.id, muni:1, lvl:+(t.admin_level||0)}});
   });
   if(!feats.length){ setDot('bd','ok','Boundaries live'); return; }
+
+  /* One level at a time. The sub-municipal query asks for 9 or 10 together
+     and a city may have both: Paris returns 21 arrondissements at 9 and 200
+     quartiers at 10, which nest inside them. Drawing both stacks one set of
+     polygons on top of the other in the same layer, so every click lands on
+     two units at once. Keep the shallowest level present and let the reader
+     step down into it, which is how every other level of this map works. */
+  const lvls = feats.map(f=>f.properties.lvl).filter(v=>v>0);
+  if(lvls.length){
+    const top = Math.min.apply(null, lvls);
+    feats = feats.filter(f=>!f.properties.lvl || f.properties.lvl===top);
+  }
 
   setAdmData(feats);
   setDot('bd','ok','Boundaries live');

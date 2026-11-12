@@ -206,6 +206,16 @@ clickable but resolve no offices of their own. For a map about who to contact,
 knowing which council district an address sits in is most of the value even
 without that.
 
+**A city may have two levels below it, and only the shallower is drawn.**
+Paris returns 21 arrondissements at `admin_level=9` and 200 quartiers at
+`admin_level=10` in the same response, and the quartiers nest inside the
+arrondissements. Drawing both puts one set of polygons on top of the other in a
+single layer, so every click lands on two units at once. `loadMunicipalities`
+keeps the shallowest level present and drops the rest, which is how every other
+level of this map behaves — you step down into the next one rather than seeing
+both. If you ever want the deeper set drawn, that is the filter to change, and
+the layer will need to separate them.
+
 **Names come back in the local script.** Japan returns 港区, 守山区 and so on,
 with no `name:en` on most of them. The loader reads `name:en` first and falls
 back to `name`, so those draw under their Japanese names rather than not at
