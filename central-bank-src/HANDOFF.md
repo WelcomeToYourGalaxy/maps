@@ -2,7 +2,7 @@
 
 Paste or attach this in a new chat to carry on adding to the map.
 
-Rewritten at round 29, kept current through round 30. Earlier versions carried round-by-round narrative that went stale and misled round 26 into re-researching records already on the map. This version states the current position only. **Where it names a country as dead or blocked, that is as of round 30 — re-derive the target list from `coverage.py` before briefing anything.**
+Rewritten at round 29, kept current through round 31. Earlier versions carried round-by-round narrative that went stale and misled round 26 into re-researching records already on the map. This version states the current position only. **Where it names a country as dead or blocked, that is as of round 31 — re-derive the target list from `coverage.py` before briefing anything.**
 
 ## What it is
 - A standalone global map titled **"Central bank capture"**. It shows who owns and steers each central bank, what it hides, the corruption inside and around it, and how far its money reaches beyond its borders.
@@ -41,7 +41,7 @@ Another session of the user's commits to this repo often. **Always `git fetch or
   - Links: `{n, cb | tn, rel, role, detail, src_t, src_u}`.
   - Popups turn each link into a plain sentence (`SAY` / `sayLink` / `srcItem` in `app.js`). Add a `SAY` entry for any new `role` string.
 
-## Where it stands (after round 30, 12 November 2026)
+## Where it stands (after round 31, 12 November 2026)
 
 1,492 outside parties and 2,092 ties. 1,721 writeups, one for every box.
 
@@ -248,7 +248,7 @@ Bounded sets that worked:
 
 **Still unopened and worth trying:** Myanmar's law as a .docx on myanmartradeportal; Cambodia's Khmer-language site or National Audit Authority; the Uzbek Senate's record of the audit conclusion it receives each May.
 
-**Jordan is the closest of the remaining ones.** `opendata.gov.jo` carries the Central Bank of Jordan's "financial statements and independent auditors report" as CKAN datasets `MIGRATED-450-2018` and `MIGRATED-450-2020`, with resource UUIDs exposed (`1e1fc742-3772-494e-a843-79c79213c945`, url type `upload`, a 1.5 MiB PDF). The resource page renders through WebFetch but prints no download link, and every `curl` to that host from the sandbox is reset by the peer. The document exists and is addressed; only the fetch is blocked. Try the CKAN `package_show` API from a host that can reach it, or a browser.
+**Jordan is the closest of the remaining ones.** `opendata.gov.jo` carries the Central Bank of Jordan's "financial statements and independent auditors report" as CKAN datasets `MIGRATED-450-2018` and `MIGRATED-450-2020`, with resource UUIDs exposed (`1e1fc742-3772-494e-a843-79c79213c945`, url type `upload`, a 1.5 MiB PDF). The resource page renders through WebFetch but prints no download link, and every `curl` to that host from the sandbox is reset by the peer. The document exists and is addressed; only the fetch is blocked. Round 31 tried a browser: `opendata.gov.jo` fails to load in the user's own Chrome as well, both the dataset page and the API path, and the API path is robots-disallowed to WebFetch. So this is the host refusing outside traffic, not a sandbox limit, and a browser does not fix it. What is left is a mirror, a copy of the PDF from elsewhere, or someone fetching it from inside Jordan.
 
 **Taiwan stays unfiled on purpose.** The Ministry of Audit publishes a 中央政府總決算審核報告 whose consolidated balance sheet includes the central bank's deposits, but that is the government's consolidated account, not an audit of the bank's own statements. Filing it would say more than the source does.
 
@@ -310,23 +310,26 @@ These cannot finish; no complete count exists anywhere. They approach completene
 
 ## Patterns — the open question
 
-Eighteen patterns: five complete because a source publishes the whole list, five that are censuses of the rows above and move only when those rows move, eight shown by example. The aim the user has stated is **a rundown of all the main currents in the field worldwide, drawn from general knowledge and research rather than only from data compiled on the map.**
+Twenty patterns: five complete because a source publishes the whole list, five that are censuses of the rows above and move only when those rows move, ten shown by example. The aim the user has stated is **a rundown of all the main currents in the field worldwide, drawn from general knowledge and research rather than only from data compiled on the map.**
 
 Round 30 added the second of the three currents listed below — **supervisory capture**, as `supervisory-capture`, "Supervisors going easy on the banks they watch". It is built from inquiries and studies, not from the map's records: Ireland (Honohan 2010, "excessively deferential and accommodating", about two supervisory staff per institution), Iceland (the 2010 Special Investigation Commission, gross negligence by seven officials including a governor and the head of the FME, and staff leaving supervision for the banks they supervised), Portugal (the Costa Pinto review the Banco de Portugal commissioned on itself and then kept sealed, and the 2021 inquiry's "permanent and systematic failure"), Germany (BaFin's short-selling ban against Bundesbank advice and its criminal complaint against the FT journalists), the United States (Agarwal, Lucca, Seru and Trebbi, QJE 2014) and Lebanon (the auditor on both sides). **The US study finds no support for the revolving door as the reason for supervisory leniency** — it attributes the gap to local economic pressure and to resources. That cuts against the simplest reading of the pattern and is stated in both the summary and the `uncertain` field; do not quietly drop it.
 
 Round 30 also rewrote the `big-four-auditors` summary, which still read "of 28 institutions whose auditor the map has traced" — stale by about 170 records, and a breach of the rule that a pattern must describe the field rather than count the map's own records. **Check the other pattern summaries against that rule; this one sat wrong for many rounds.**
 
-Against the stated aim, two major currents are still missing as of round 30:
+**Round 31 added the last two of the three currents, so the list of named gaps is now empty.**
 
-1. **Asset purchases and who they enriched.** Nothing covers quantitative easing. The Fed bought corporate bonds and bond ETFs in 2020 through BlackRock's advisory arm while BlackRock was the largest manager of those same ETFs; the ECB's corporate sector purchase programme bought named companies' bonds; interest paid on reserves created by QE became multi-billion transfers from central banks to commercial banks in 2022–24.
-2. ~~**Supervisory capture.**~~ **Done in round 30.** Left here for the record: The map has the revolving door but not the structure where a central bank supervises banks it is entangled with: the same four firms auditing both the central bank and the banks it supervises, supervisory forbearance before collapse (the Banco de Portugal/BES findings are in the data but read as a Portugal case, not a pattern), supervisors moving to supervised banks, and Basel standards negotiated with the industry through the Institute of International Finance. **The existing `big-four-auditors` pattern is the seed of this one and stops at counting firms.** This is the strongest candidate: it extends a pattern already there and the auditor data anchors it.
-3. **Central bank digital currency and its vendors.** Over 100 central banks have CBDC work underway; designs differ on traceability and programmability; the building is contracted to a short list of firms (Giesecke+Devrient, Bitt, R3, Consensys, nChain).
+1. **`asset-purchase-programmes`, "Who gained when central banks bought assets".** Three strands, each sourced to documents rather than to the map: the New York Fed's own terms of assignment hiring BlackRock in March 2020, and the disclosed first week of buying in which about 48% of the ETFs bought were BlackRock's own iShares funds; the ECB's corporate purchases, where the bank publishes bond codes but not company names, and outside researchers reading those codes found repeat purchases from Shell, Eni, Total, Repsol and OMV and about 63% of the portfolio in the four most carbon-intensive sectors; and interest on reserves, where four British banks took £5.3bn in 2023 under a Treasury indemnity that had previously paid the Treasury £123.9bn in profits. Keyed `EMU` for the euro area, which expands to all 21 members, with `DEU`, `ITA` and `ESP` carrying their own notes — `app.js` checks `RC[p.iso]` before the union, so a member's own note wins.
+2. **`cbdc-vendors`, "Digital money built by a few private vendors".** The Atlantic Council tracker's 137 countries, against 35 in 2020; Bitt building DCash for the ECCB and then the eNaira for Nigeria; Giesecke+Devrient — a banknote printer — building Ghana's; the two-month DCash outage in 2022 caused by an expired certificate, and the shutdown of DCash altogether on 12 January 2024 after 34 months. Keyed `ECCB`, which expands to the eight member countries.
+
+**Both are deliberately hedged.** The QE pattern says plainly that BlackRock waived its fee and credited back income, that the ECB's concentration follows a stated market-neutrality policy, and that the same scheme paid the UK Treasury more than it has since cost. The CBDC pattern says that buying software is ordinary, that the Nigerian stake report is press rather than the bank, and that the outage was an administrative failure rather than a design flaw. Keep those hedges: they are what makes the patterns usable.
+
+**What is left for the patterns section is judgement, not gaps.** The weaker fits below were noted in round 29 and are still not recommended. If the section is worked again, the better use of a round is auditing the thirteen older summaries against the rule that a pattern describes the field and does not count the map's records — round 30 found `big-four-auditors` had been wrong on that for many rounds, and no one has checked the rest.
 
 Weaker fits, noted but not recommended: stablecoin issuers as private money creators (Tether, Circle); gold repatriation as a political current (Germany, the Netherlands, Poland, Hungary, Venezuela — the custody data already carries the facts); climate mandates and the NGFS, contested in both directions.
 
 ## How long to finish
 
-**Yield by round:** 35, 34, 33, 56, 50, 24, 34, 42, 40, 21, 14, 13, then 4 (r27), 3 (r28), 2 (r29), 3 (r30) — the tail being single-row auditor rounds. Round 30 also added a pattern and two settled negatives, which move the picture more than a record does at this stage: with the service rows this far along, converting a "blocked" country into a confirmed blank is worth as much as a find, because it stops future rounds spending on it.
+**Yield by round:** 35, 34, 33, 56, 50, 24, 34, 42, 40, 21, 14, 13, then 4 (r27), 3 (r28), 2 (r29), 3 (r30), 0 records (r31, two patterns) — the tail being single-row auditor rounds. Round 30 also added a pattern and two settled negatives, which move the picture more than a record does at this stage: with the service rows this far along, converting a "blocked" country into a confirmed blank is worth as much as a find, because it stops future rounds spending on it.
 
 **Auditors: 6 to 10 more rounds** for the 26 reachable countries. Rounds 27–29 took nine countries with OCR. What is left is mostly blocked hosts, so plan against 2 to 4 a round and expect several to need a copy of the document from somewhere other than the bank's own site.
 
