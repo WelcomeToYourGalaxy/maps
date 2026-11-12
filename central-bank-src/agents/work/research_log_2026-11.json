@@ -2635,5 +2635,131 @@
   "gold_newly_not_filable": "Croatia (note 2: 450.25 oz, no holder), Luxembourg (BCL note 3: London named only as the price fixing), Chile (note 7(d): 7,940 troy oz, no custodian), Montenegro (note 3.6: policy only), Nigeria (carried at cost, no custodian), Norway (gold sold; 7 exhibition bars and 3.5 t of 1940 coins are no longer in the reserves), Ukraine (the NBU Central Vault page says 'cash and other valuables', never gold), Tanzania (BoT named as holder, no vault or custodian), Argentina (CONTESTED - the BCRA says only physical bars plus electronic accounts abroad; the governor says Switzerland, others say London; needs a BCRA disclosure). The OMFIF custody survey names only 'predominantly the Bank of England and the Federal Reserve Bank of New York' and attributes nothing per country.",
   "iceland_is_the_best_gold_lead": "The Central Bank of Iceland has an explainer titled exactly 'Why does the Central Bank have gold and where is it stored?' and both URLs (cb.is and indicators.cb.is) return only shell metadata 'base: /'. BLOCKED, NOT ABSENT, and the single best remaining gold lead - it needs a browser. Estonia is a near-miss: 256 kg per ERR 2017, with a hint that one bar remained at the central bank, suggesting a domestic and foreign split in Eesti Pank's own annual report.",
   "gold_still_open_with_positions": "Moldova: Raport anual 2025 read at 600k-700k and 900k-1,000k, both reserve MANAGEMENT not storage; 100k-600k and 700k-900k still unread. North Macedonia: still open at character 100,000 of 349,275. Malta: AR-2017 past character 300,000, low priority at about 0.2 t. Peru, Brazil, Taiwan untried. Armenia: the file reached is a bare statement of financial position with no notes; the full annual IFRS statements are untried."
+ },
+ "round26": {
+  "date": "2026-11-11",
+  "yield": "14 records: 5 external auditors (GEO, MNE, LBN, BHS, TON), 7 banknote printers (TUN, QAT, BHR, AGO, COD, BLR, TON), 2 gold custodians (ROU, KOR).",
+  "process_note": "The agent briefs were built from the handoff's 'unworked' lists rather than from coverage.py's computed absent lists, and those handoff lists were stale. Ten of the records returned already existed (OMN, LBN, TJK, MAC, CYM, SYR, LAO printers; POL x2 and DNK gold) and were caught by the merge dedup. Build every future brief from the computed absent list, not from the handoff prose.",
+  "auditors": {
+   "settled": {
+    "GEO": "KPMG Georgia LLC, Tbilisi, FY2020, signed 23 April 2021, engagement partner Karen Safaryan, from the NBG 2020 annual report.",
+    "MNE": "Ernst & Young Montenegro d.o.o., Podgorica, FY2025, signed 13 March 2026, certified auditor Nikola Ribar. Verified directly, not only through the agent. Same signing partner as Serbia's round-25 record; he is a real EY partner signing across the region.",
+    "LBN": "KPMG, appointed 2020, from The National. Press reporting, not a BDL document; weak_source true. Deloitte and EY signed off BDL statements for over a decade before resigning in 2019.",
+    "BHS": "Deloitte & Touche with BDO, joint, Nassau, 16 April 2012 for FY2011. The 2011 report is the most recent Bahamas year whose auditors' report extracts as text.",
+    "TON": "Coopers & Lybrand, Suva, signed 21 September 1993 for FY ended 30 June 1993, from the Tonga Government Gazette 1994 no. 2 on PacLII. A private firm, not the Auditor General."
+   },
+   "already_recorded_do_not_reassign": [
+    "MDA",
+    "AZE",
+    "KEN"
+   ],
+   "closed_or_dead": {
+    "KHM": "The NBC 2023 annual report DID serve this time from data.opendevelopmentcambodia.net (256,690 chars, read at 0-100k and 150k-250k). Like the 2022 report it is narrative plus statistical appendices with NO financial statements, no auditor's report and no transmittal letter. NBC's published annual reports do not contain audited accounts at all. Retry only via the Khmer-language NBC site or the National Audit Authority of Cambodia.",
+    "BGD": "Bangladesh Bank Order 1972 art. 40(2) says only that the annual accounts must be certified by the Auditors - it does not even name an appointing body. Searches returned only BSEC/BB panels of eligible auditors, which are not an appointment. UNTRIED AND BEST ROUTE: art. 40 requires the Government to publish BB's certified accounts in the official Bangladesh Gazette.",
+    "SWZ": "The independentnews.co.sz Annual-Integrated-Report-2024-25.pdf path is a broken WordPress upload that returns the news site's homepage, confirmed again. africanfinancials carries only First National Bank of Eswatini. No centralbank.org.sz URL appears in any search result. Dead unless a CBE-hosted PDF can be made to surface in search.",
+    "EGY": "No CBE annual report or CBE financial statements PDF appears in any English or Arabic search; every hit is a commercial bank or a banking-sector aggregate release. Statute route already exhausted (art. 36 of Law 194/2020 names a two-auditor mechanism, not firms). UNTRIED: the Egyptian Official Gazette.",
+    "JAM": "boj.org.jm returns an anti-bot interstitial on the annual report pages. BOJ's own corporate-governance AUDIT page fetched fine but covers only the Internal Audit Division - so the 'bank's own external auditors page' route is now exhausted for Jamaica. The moneylaundering.com 2022 mirror's financial-statements annex is image-only. UNTRIED: the Auditor General's reports on public bodies under the PBMA Act.",
+    "RWA": "bnr.rw/index.php?id=82 returns only meta tags and a JavaScript notice - no document list. Four searches returned only Rwandan commercial banks. UNTRIED: the Office of the Auditor General's own annual report at oag.gov.rw.",
+    "OMN": "cbo.gov.om's annual report index fetched cleanly and gives three PDF URLs on publishing.bnet.om - that whole host is robots_disallowed to WebFetch, so all years are unreachable this way. Needs a mirror or a browser.",
+    "MKD": "nbrm.mk publishes exactly the right documents (Izvestaj na nezavisniot revizor i Finansiski izvestai for 2021, 2022, 2024, plus Finansiski_izvestai_2018). Both Cyrillic-path and short Latin-path fetches fail with client_error behind the Cloudflare check. The documents exist and are named; only the host is the obstacle. Browser or hand-fetch job.",
+    "PRY": "bcp.gov.py/memorias-y-balances (the BCP's own index) failed with client_error, so no memoria was reached. contrataciones.gov.py remains barred.",
+    "TWN": "The CBC FY2018 business and financial report (cbc.gov.tw/public/Data/921114252271.pdf) fetched fine and contains NO audit report and names no body. Its current-year figures are labelled self-prepared final accounts and prior years approved final accounts, which implies audit by the Ministry of Audit but never says so - NOT filed. Several cbc.gov.tw/dl-... links search returns are expired. UNTRIED: the Ministry of Audit's own site for a CBC settlement audit report.",
+    "UZB": "cbu.uz/ru/press_center/adverts/39469/ failed with client_error. Annual reports carry no financial statements. UNTRIED: the xarid.uzex.uz procurement portal award notice, or an IMF safeguards assessment.",
+    "JOR": "Trap confirmed again - portal.jordan.gov.jo/OD/files/5751.pdf and 5752.pdf are deposit-insurance bodies and were not filed. opendata.gov.jo HAS a dataset titled 'Financial statements and independent auditors report' with Government Entity = Central Bank of Jordan, at both metadata and resource level, but neither page exposes a file URL. Needs the CKAN API resource endpoint.",
+    "TJK": "NBT tender documents concern a FORTHCOMING appointment for FY2025-2029, selection due 21 November 2025, naming no firm. Asia-Plus reports from 2013 and 2019 mention Ernst & Young auditing the NBT but as past or special audits, not a current appointment - not filed. Retry after late 2025 for the award notice.",
+    "LAO": "The Banking of Lao PDR Law on laoofficialgazette.gov.la returned SERVER_ERROR - the host may simply have been down. Worth retrying; that gazette is the authoritative source.",
+    "PSE": "PMA Law art. 32 (appointment of an external auditor by presidential decree on the proposal of the Council of Ministers) and art. 18(21) are mechanism only, no body named, and expressly no role for the Financial and Administrative Control Bureau. No PMA annual report PDF has ever surfaced in search.",
+    "MAC": "Boletim Oficial II avisosoficiais-2-2023 contains only AMCM insurance notices, no accounts. UNTRIED AND LIKELIEST: the BO II 'sinteses de contas' supplements (bo-ii-21-sup-2011, bo-ii-22-sup-2020, bo-ii-18-sup2-2019, avisosoficiais-12-sup2-2015).",
+    "MWI": "Reserve Bank of Malawi Act 2018 s.60(2) requires audit by internationally recognised public auditors appointed annually by the Board, and s.60(3)-(4) limit the Auditor General to a separate efficiency examination - so the AG is explicitly NOT the statutory auditor. The Public Finance Management Act 2022's 'statutory body' definition excludes the Reserve Bank, so RBM accounts are not gazetted under it. The Scribd copy remains the only copy of the 2024 statements."
+   },
+   "bahamas_scan_note": "The 2023, 2021 and 2018 CBOB reports were each read at multiple offsets; in every one the pages between the Financial Statements divider and the Statement of Financial Position extract blank or garbled (in 2021, pages 46-48 come through as bare page numbers). The auditors' report in all modern CBOB PDFs is an image. Only the 2011 report yields a name in text. A current-year Bahamas auditor needs OCR or a browser."
+  },
+  "printers": {
+   "settled": {
+    "TUN": "Oberthur Fiduciaire, printed as 'Oberthur Technologies', 20-dinar B533a.",
+    "QAT": "De La Rue, 22-riyal 2022 World Cup commemorative BNP201a.",
+    "BHR": "De La Rue, 20-dinar B310a.",
+    "AGO": "Goznak, 5,000-kwanza B561a.",
+    "COD": "Giesecke+Devrient, printed as 'GIESECKE & DEVRIENT / MUNICH', 200-franc B321a, 31 July 2007 issue.",
+    "BLR": "China Banknote Printing and Minting Corporation, 80-ruble commemorative BNP106, introduced 31 March 2025.",
+    "TON": "De La Rue, 100-pa'anga B230a, family introduced 4 December 2023."
+   },
+   "method_note": "The newest-entry-per-country rule held: 14 of 22 BanknoteNews entries fetched carried a usable Printer field, well above the one-in-three the handoff predicted. Every miss was a post-2023 entry with the field simply ABSENT rather than marked '(Unknown)'. Commemoratives were not systematically better than regular denominations this round. The bank's-own-currency-page vein produced NOTHING: BCEAO's billets-et-pieces page and the BNM Moldova per-denomination pages give full security-feature descriptions and no printer. Not one country in this batch runs its own works.",
+   "no_printer_field": {
+    "MDV": "100-rufiyaa B227a (19.01.2025) has no Printer field. Retry an older 2015 polymer Ran Dhihafaheh entry, or mfr.mv / psmnews.mv pieces on the MVR 100 reprint.",
+    "MKD": "500-denar entry has no Printer field but DOES mention the National Bank put printing contracts out to tender - an NBRNM tender award notice is the live route.",
+    "BIH": "2017 revised family entry has no Printer field, only the Softic signature change. The 1998 original family entry (p=11749) is untried.",
+    "CRI": "1,000-colon polymer entry has no Printer field but cites a Banco Central de Costa Rica press release of 11.11.2020 - that release is the untried route.",
+    "GIN": "Newest entry, sig/date 2024 20,000-franc, has no Printer field. It reports 1.05 million notes stolen in transit, which implies an overseas printer but names none.",
+    "GEO": "50-lari commemorative reads 'Printer: (Unknown)'. Untried: centralbanking.com node 2444659, 'Innovative print techniques are key for new Georgian banknotes', likely paywalled.",
+    "ZMB": "500-kwacha B176 of the 2025 series reads 'Printer: Unknown*'. UNTRIED LEADS: diplo.news piece on the new kwacha series launch, and wbs.org.ua/en/zambiia-vypuskaie-novi-banknoty/.",
+    "MDA": "The BNM's own new MDL 500 page details size, paper and every security feature and names no printer. All BNM per-denomination pages look alike, so that route is probably dead; try a BNM annual report or procurement notice."
+   },
+   "union_leads": {
+    "BEAC": "HIGHEST-VALUE UNTRIED LEAD - one record covers six countries. Search surfaced BEAC's 30th-anniversary brochure billets-et-pieces-brochure-du-30eme-anniversaire.pdf on beac.int and FinancialAfrik pieces on the 2020-type series. beac.int is robots-disallowed, so this is a browser job.",
+    "BCEAO": "The bank's own billets-et-pieces page says nothing about printing or any works. Not dead but needs a different door: BCEAO publishes tender dossiers (a 2023 Dossier d'appel d'offres PDF surfaced) and annual financial statements."
+   },
+   "blocked": {
+    "ZWE": "The Herald piece 'RBZ begins production of redesigned ZiG banknotes' refused the fetch (client_error). Untried mirrors: mriguide.com and zimbabwenow.co.zw copies, and a pindula piece.",
+    "UGA": "Nothing usable; only centralbanking.com node 1604174 'Uganda gives banknotes a facelift', untried and likely paywalled. Route untested rather than dead.",
+    "URY": "bcu.gub.uy refuses fetches. Uruguay's BanknoteNews entries p=4795, p=5923 and p=3411 (BNU commemorative) were identified by search but never fetched; the 2000s-era commemorative is the kind that tends to carry a Printer field."
+   },
+   "not_reached": [
+    "ERI",
+    "DJI",
+    "TKM",
+    "PSE",
+    "SLV",
+    "ECU",
+    "MNE",
+    "AZE",
+    "BDI",
+    "CUB",
+    "HTI",
+    "IRQ",
+    "ISR",
+    "KHM",
+    "MDG",
+    "MRT",
+    "TLS",
+    "YEM",
+    "BMU"
+   ]
+  },
+  "gold": {
+   "settled": {
+    "ROU": "Bank of England, from the BNR's statement of 10 September 2024 as quoted in Adevarul: the BNR is the holder of the account, the custodian cannot use the gold in any form, transactions happen only on BNR instruction. 103.6 t total, 61.2 t abroad of which about 60 t at the BoE, 42.4 t in Romania. weak_source true - no BNR-hosted copy could be found; a follow-up search returned only further press copies (Profit.ro, Gandul, Cotidianul).",
+    "KOR": "Bank of England, from Asia Economy, 12 February 2025: all 104.4 t bought 2011-2013 stored at the BoE. weak_source true and filed as 'claim, not confirmed' - the storage statement is the paper's own wording, not attributed to the Bank of Korea. The figure almost certainly appears in a National Assembly answer or a BOK reserves-management report; neither was reached."
+   },
+   "confirmed_blanks_do_not_retry": {
+    "ITA": "Banca d'Italia's Riserve in oro page gives only country-level shares (Italy 1,100 t / 44.86%, US 1,061.5 t / 43.29%, Switzerland 149.3 t / 6.09%, UK 141.2 t / 5.76%, total 2,452 t) and the formula 'custodito nei caveau della Banca d'Italia e di primarie banche centrali'. No institution named.",
+    "ESP": "Banco de Espana Cuentas Anuales 2023 note 1 'Oro y derechos en oro' names no custodian anywhere; the BIS appears only as a securities/fund manager.",
+    "GRC": "OPEN LEAD NOW CLOSED. The athexgroup -> athens.euronext.com redirect WAS completed, for both the 2024 and the 2019 'Financial Statement - Full Notes BANK OF GREECE S.A.'. Both contain only a valuation note (ECB price per fine ounce) and the balance-sheet line. There is no location table in either year - the historical location table is not in these full notes. This is a real finding, not a fetch failure, and the redirect method is now proven.",
+    "LKA": "CBSL Financial Statements and Operations 2024, read at offsets 0, 100k, 300k: the gold note says only that gold may be held by the CBSL as part of the international reserves. No institution named.",
+    "NPL": "NRB Financial Statements 2081/82, read at 0 and 100k: note 5.1 names no holder; fair value from the London Bullion and Metal Association closing rate - valuation only.",
+    "PHL": "The BSP's own statement says the gross international reserves including gold are held and managed solely by the BSP, naming no vault or custodian.",
+    "ARG": "BCRA's Administracion de las reservas page says only that the BCRA maintains the same position in the metal. Press reports of gold shipped to London describe placement for yield, which the gold-accounts rule excludes.",
+    "TWN": "The one official CBC document search surfaced addresses a book's reserve figures, not storage; the New York Fed appears only as an audit example."
+   },
+   "brazil_note": "A useful negative: a CGU appeal file on gov.br records a citizen asking which institution holds Brazil's international gold reserves in custody, and BACEN refusing on the ground that the information is covered by banking secrecy. Brazil's custodian is formally WITHHELD, not merely unpublished.",
+   "retry": {
+    "UKR": "The NBU 2019 consolidated financial statements PDF failed at the site (client_error); the monetary-gold note was never read. The quarterly SFP files are statements of financial position without notes. A later annual report with full notes is the target.",
+    "JPN": "Japan's gold belongs to the MOF's foreign exchange special account with the BOJ as holder; the specific MOF/BOJ page stating the vault was not located. The BOJ page search surfaced is about services for foreign central banks, not gold."
+   },
+   "not_reached": [
+    "EGY",
+    "JOR",
+    "NGA",
+    "KEN",
+    "TZA",
+    "ZMB",
+    "MNG",
+    "GEO",
+    "THA",
+    "MYS",
+    "SGP",
+    "ECU"
+   ]
+  }
  }
 }
