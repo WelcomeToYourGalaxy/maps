@@ -40,6 +40,11 @@ Keep only if the record shows an outside party's people/money/control inside the
 ## Data files (secret-society-src/data/)
 cases.json, orgs.json ({orgs, channels}), backers.json, patterns.json, bts.json (country writeups {d, est}), glossary.json (hover definitions, ~300 terms), removed_records.json, iso3.json and GI-TOC inputs. build.py writes the single-file HTML (plate.webp is embedded).
 
+Two things in patterns.json look like rot and are not, so they are written down here rather than rediscovered each round:
+
+- **`orgs_formerly` holds 54 organisation keys that are no longer in orgs.json.** Nothing reads the field — it appears in no .py file. It is a record of what each pattern used to span before the October 2026 audit removed those organisations for failing the test, mostly from `faith_placement` (17), `elite_forums` (11) and `coldwar_web` (8): Bilderberg, the World Economic Forum, Trilateral, Skull and Bones, Le Cercle, the Rhodes Trust and so on. Kept deliberately, for the same reason removed_records.json keeps dropped cases: so a later question about whether the map ever covered one of them has an answer. Since no reader sees it, it asserts nothing. Decided 12 November 2026.
+- **Eight patterns select their cases from hand-written `case_titles` lists**, which is why `build.py` reports orphan cases on every build. Widening them with a field selector was measured and rejected, not left undone — the reasoning is in `pattern_rollcall()`. Extend a list by hand, case by case.
+
 ## Display notes
 - Default country shading "Overall: officials open to outside control" = mean of the two GI-TOC views (insiders weighted ¾, weak watchdogs ¼).
 - Glossary underlines the first use of each term per box; hover shows the definition (glossify() in app_template.html).
