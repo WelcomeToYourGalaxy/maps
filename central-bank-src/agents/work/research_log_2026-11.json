@@ -3042,5 +3042,48 @@
    "The Financial Stability Board's own accounts are audited by PricewaterhouseCoopers AG of Basel - report for the year to 31 March 2026 signed 30 June 2026 by Daniel Mueller and Ralph Maiocchi (fsb.org/uploads/P040926-2.pdf). Not filed: the FSB is not one of the 206 monetary authorities. Worth adding if the map ever records the clubs' own auditors, alongside the BIS.",
    "No successor to PwC as BIS auditor was found. PwC's seventh and final year ran to 31 March 2026, so an appointment should exist; searches did not surface it. Try the BIS Annual Report 2027 when published."
   ]
+ },
+ "round33": {
+  "date": "2026-11-12",
+  "yield": "6 records, all new places, on the moves-against-the-bank row: CAN, AUS, NZL, JPN, ZAF, GBR. Row went 110/55/27% to 116/61/30%, the largest single-row move since round 20.",
+  "the_insight": "The row was effectively only recording poor and middle-income countries, because it was looking for firings. Pressure in a rich democracy takes a different form - a threat to rewrite the bank's law, a review of its mandate, a governor quietly not reappointed, a funding squeeze. Reading the absent list and noticing that it contained Japan, the UK, Canada, Australia, Germany, France and Switzerland was the whole method; the records then took one search each.",
+  "settled": [
+   {
+    "iso3": "JPN",
+    "date": "2012-12-23",
+    "what": "Abe repeatedly threatened from December 2012 to revise the 1998 Bank of Japan Law, which guarantees independence, unless the bank adopted a 2% inflation target; LDP plus Komeito held a two-thirds lower-house majority so the threat was credible, and reporting noted a revision could let the government impose a binding target or remove the governor. The bank adopted the target and open-ended asset purchases on 22 January 2013 in a joint statement; the chief cabinet secretary then said less need to revise the law. Abe repeated the threat in parliament in February 2013. Lawmakers had summoned governor Shirakawa to the Diet several times in February 2012."
+   },
+   {
+    "iso3": "GBR",
+    "date": "2022-08-03",
+    "what": "Truss said in the Conservative leadership contest she would review the Bank's mandate, campaign saying she would be 'more directive in setting it'; Braverman said the review would consider independence. Bailey defended independence but said he was open to a mandate review. Truss dropped it in office. Later, 44 Conservative MPs (Rees-Mogg, Duncan Smith, Braverman, Jenrick) called for a Treasury-led review of the mandate and independence. NOTE: that same report is where the GBP 123.9bn APF figure used in the asset-purchase pattern also appears - the two are consistent."
+   },
+   {
+    "iso3": "CAN",
+    "date": "2022-05-11",
+    "what": "Poilievre pledged at the Edmonton leadership debate to fire governor Macklem, repeated as leader in December 2022. Bank of Canada Act: seven years 'during good behaviour'. Trudeau and Freeland defended the bank; finance critic Ed Fast was removed from his role after criticising the pledge."
+   },
+   {
+    "iso3": "AUS",
+    "date": "2023-07-14",
+    "what": "Lowe not reappointed; Bullock appointed. Criticism over forward guidance and the rise from 0.1% to 4.1% led Chalmers to commission an independent review whose recommendations the government accepted in full. The two previous governors had each had a second term; Chalmers said extension was 'the exception rather than the rule'."
+   },
+   {
+    "iso3": "NZL",
+    "date": "2025-03-05",
+    "what": "Orr resigned with three years left; board chair said personal decision. OIA documents in June 2025 showed a deadlock over the five-year funding agreement - Orr sought $1.031bn, the settled package was near $776m, and the board would accept less than he would. The Ombudsman later forced disclosure that Orr stepped down temporarily on 27 February and agreed to resign if the board's letter of concerns was withdrawn. Board chair Quigley resigned 29 August 2025."
+   },
+   {
+    "iso3": "ZAF",
+    "date": "2017-06-19",
+    "what": "The Public Protector's Bankorp report directed Parliament to amend section 224 of the Constitution to change the SARB's mandate towards growth. Binding unless set aside, so the bank went to court urgently; governor Kganyago called it a gross overreach. Struck down 15 August 2017; the rest of the report set aside 16 February 2018 as unlawful with a reasonable apprehension of bias; personal costs order (15%) upheld by the Constitutional Court on 22 July 2019, which refused the bank's separate abuse-of-office declaration. Filed with a new kind, 'attempted law change'. The map already had the Absa/Bankorp side of this as a corruption case; this is the mandate instruction, which is a different thing and was missing."
+   }
+  ],
+  "technical": [
+   "app.js counts events with evN = (p.ev||[]).filter(i => D.EV[i].kind !== 'other').length. An event filed as kind 'other' appears in the country box but is NOT counted on the layer or in the score. There are 15 such events already on file - worth re-reading them one round to see whether any deserve a real kind.",
+   "Event kinds are free text and render as written, so a new kind is safe. Added 'attempted law change'.",
+   "All six countries' scores moved (AUS 22->24, CAN 20->21, GBR 21->23, JPN 35->36, NZL 23->24, ZAF 34->36) and all six writeups quoted the old figure, so all six were rewritten. No map-wide denominator shift: the United States still holds the highest event count."
+  ],
+  "next": "The absent list for this row still holds Austria, Belgium, Czechia, Denmark, Finland, France, Germany, Ireland, Italy, Korea, Netherlands, Norway, Portugal, Spain, Sweden and Switzerland. Search the governor's name plus 'independence', or the country plus 'central bank mandate review', not for dismissals."
  }
 }
