@@ -39,24 +39,23 @@ Another session of the user's commits to this repo often. **Always `git fetch or
   - Links: `{n, cb | tn, rel, role, detail, src_t, src_u}`.
   - Popups turn each link into a plain sentence (`SAY` / `sayLink` / `srcItem` in `app.js`). Add a `SAY` entry for any new `role` string.
 
-## Where it stands (after round 19, 11 November 2026)
+## Where it stands (after round 20, 11 November 2026)
 
-1,405 outside parties and 1,893 ties. 1,634 writeups, one for every box.
+1,417 outside parties and 1,917 ties. 1,646 writeups, one for every box.
 
 | Category | Records | Places | Breadth |
 |---|---|---|---|
 | Corruption cases | 232 | 133 | 65% |
-| External auditors | 130 | 84 | 40% |
+| External auditors | 139 | 91 | 44% |
 | Revolving door | 206 | 70 | 34% |
-| Banknote printers | 92 | 68 | 33% |
+| Banknote printers | 102 | 77 | 37% |
 | Swap lines | 240 | 64 | 31% |
 | Governor removals and pressure | 110 | 55 | 27% |
-| Outside reserve managers | 148 | 31 | 15% |
+| Outside reserve managers | 153 | 35 | 17% |
 | Named shareholders | 228 | 9 | near-complete* |
 
-\* Named shareholders reads low because only about ten central banks have private shareholders at all. Outside reserve managers reads low because 103 of its 148 ties are Norway's fund — and no list of which banks hire outside managers is published anywhere, so this row has no honest denominator.
+\* Named shareholders reads low because only about ten central banks have private shareholders at all. Outside reserve managers reads low because 103 of its 153 ties are Norway's fund — and no list of which banks hire outside managers is published anywhere, so this row has no honest denominator.
 
-\* Named shareholders reads low because only about ten central banks have private shareholders at all. Outside reserve managers reads low because 103 of its 128 ties are Norway's fund — and no list of which banks hire outside managers is published anywhere, so this row has no honest denominator.
 
 `agents/work/coverage.py` computes this table from the data files. Run it every round; don't estimate it.
 
@@ -170,7 +169,11 @@ Bounded sets that worked:
 ## What is left
 
 ### 1. External auditors — the one category that can actually reach 100%
-Every central bank operates under a law that names who audits it, so the answer always exists. 84 of 206 done.
+Every central bank operates under a law that names who audits it, so the answer always exists. 91 of 206 done. Of the 115 left, 50 have already been tried and logged in `gaps.json`'s `auditors_unavailable`; 65 have never been tried.
+- **Round 20's two new methods.** A bank's own dedicated "external auditors" web page settled Namibia (Deloitte Namibia and Grand Namibia, joint) — that page type had not been tried before and is worth looking for elsewhere. A letter of transmittal settled Seychelles where the auditor's report annex would not extract.
+- **Two shapes to expect again in Commonwealth small states.** Joint audits: Namibia, and Lesotho (Moteane, Quashie & Associates with SizweNtsalubaGobodo Grant Thornton), each recorded as one printed string. Hybrids where a supreme audit institution is the statutory auditor but a private firm does the work: Seychelles (Grant Thornton Abu Dhabi on the Auditor General's behalf) and Papua New Guinea.
+- **Three that need OCR, not another search.** Fiji (Reserve Bank annual report pp. 79–81), the Maldives (MMA AR2024 pp. 125–127) and Mozambique (financial statements 2018 pp. 6–9) each have the right document open at the right page, and the auditor's report page is image-only and extracts blank.
+- Round 20 reached no auditor document at all for Zimbabwe, Angola, Eswatini, Macao or Bhutan. The Gambia's 2023 annual report carries no audited financial statements, only a summary account table. Malawi's 2024 statement exists online only as a Scribd upload behind a JavaScript wall. Myanmar's law failed to fetch as a PDF; a .docx on myanmartradeportal and an unofficial translation on cbm.gov.mm are untried.
 - **The BCEAO's seven remaining national directorates.** Niger is done (Mazars Niger as titulaire, KMC S.A. as suppléant, FY2024–2029, from the 1 August 2024 award notice, which covers Niger alone — confirmed by an offset read of the whole 902-character page). The all-lots award notice exists but **cannot be fetched because its URL is 364 characters long and WebFetch rejects it on URL length**; a second copy under `/files/2024-01/` is 369 characters and fails identically. This is NOT a document-length problem and offsets do not help — an earlier round diagnosed it wrongly and round 19 wasted a retry on that. It needs a mirrored copy with a shorter URL, a different host, or a browser tool.
 - **EUR-Lex is settled for now.** Round 18 found a newer consolidated text at `CELEX:01999D0070-20240627` — the 2021 version is what EUR-Lex serves under the old ELI path, and earlier rounds had been working from it. The 2024 text plus five later decisions gave the current auditor for the whole euro area, Croatia included. Check for a newer consolidation before assuming it is still current.
 - Never attempted: Jordan, Qatar, Armenia, Georgia, Azerbaijan, Uzbekistan, Kyrgyzstan, Tajikistan, Moldova, Albania, North Macedonia, Montenegro, Paraguay, Guatemala, Belize, Guyana, Suriname, Barbados, Bahamas, Jamaica. Tried and unavailable: Ethiopia (Proclamation 591/2008 art. 8 requires an annual external auditor, names no firm), Rwanda (the fetch returned BNR Regulation 12/2017, not Law 48/2017), Bosnia (the audit chapter is a download link only).
@@ -178,13 +181,29 @@ Every central bank operates under a law that names who audits it, so the answer 
 - Trinidad and Tobago is **contested, not unknown**: the Auditor General declined to audit the Central Bank and the Government wanted it resumed. Needs care, not another fetch.
 - Panama has no central bank.
 
-### 2. Banknote printers — 33%
+### 2. Banknote printers — 37%
+**The customer-list sweep is closed. Do not re-run it.** Round 19 found Note Printing Australia's customer page and round 20 asked whether other printers publish one. None does. Customer, reference, client and "who we work with" pages were searched at De La Rue, Giesecke+Devrient, Crane, Oberthur Fiduciaire, IDEMIA, Veridos, Bundesdruckerei, Goznak, KOMSCO, PWPW, Orell Füssli, CBPM, Canadian Bank Note, Royal Joh. Enschedé, Thomas Greg & Sons, SPMCIL, Peruri and Pakistan Security Printing. Oberthur markets "over 70 central banks among references" and names none. Canadian Bank Note names one client, New Zealand, already recorded. Banque de France prints for "more than twenty countries" and names none.
+
+**What replaced it — two page types that do yield.** PWPW's *news archive* names customers one release at a time; Paraguay and the Dominican Republic came from it and it almost certainly holds more. Giesecke+Devrient's *per-country case-study and interview pages* are the other live vein; the Armenia record came from one, and G+D has similar pages for other countries.
+
+**CBPM is closed.** The "Is China Printing Your Banknotes?" article names nine customers — Brazil, India, Nepal, Poland, Thailand, Bangladesh, Malaysia, Sri Lanka, Pakistan — and every one is already recorded.
+
+**Algeria cannot be fetched at all**: bank-of-algeria.dz is robots-disallowed, so it needs a third-party source. Zimbabwe needs care — one source is Fidelity Printers *denying* that it prints Zimbabwe dollars. A Tunisian news piece says Morocco, Egypt, Saudi Arabia, Algeria, Sudan and Jordan print domestically while Tunisia, Qatar, Kuwait, Bahrain, Oman, Lebanon, Libya, Syria, Mauritania, Djibouti, Comoros and Palestine print abroad; it names no works or firm, so nothing was filed, but it says Saudi Arabia, Jordan and Algeria have their own works worth hunting and that hunting a domestic works for the others is wasted effort.
+
 **Most central banks print their own money.** Three rounds running, state works have been most of the yield, and the row was thin partly because nobody had recorded them. For each country, ask first whether its own bank runs a printing works; its site usually answers.
 **The euro area is now mostly closed.** The ECB names none of the eleven works that print euro notes and publishes no allocation table. Five banks name their own works and are recorded — Spain (IMBISA, 80% Banco de España-owned, printing roughly 12% of total euro production), Austria (OeBS), Portugal (Valora), France and Germany. Round 19 checked five more one at a time and **all five state nothing**: Italy's page describes its banknote service and printing phases but never says it prints euro notes; Greece's statements mention only circulation and the Eurosystem allocation; the Dutch bank says it moved to printers "in Germany and Great Britain" in 2011 without naming them, and Joh. Enschedé stopped printing notes at the end of 2016; Belgium's page says only that it puts notes into circulation; Ireland's Currency Centre was printing in 2018 but a parliamentary answer says the majority are "produced elsewhere". Do not re-run these five. Untried: Finland, Slovakia, Slovenia, the Baltics, Cyprus, Malta, Croatia, Luxembourg.
 
 A single joint Banque de France release with the OeNB and Banco de Portugal yielded two records at once. **Multi-bank cooperation releases are worth hunting** for exactly this reason.
 
-### 3. Outside reserve managers — 148 ties at 31 banks, 103 of them Norway
+### 3. Outside reserve managers — 153 ties at 35 banks, 103 of them Norway
+**The World Bank's own RAMP channel is worked out.** Every central bank it has named is already recorded (Ecuador, Kosovo, Liberia, Zimbabwe, Armenia, Cabo Verde, Bosnia, Paraguay). New names on the Global Network and "RAMP voices" pages are the Pension Agency of Georgia, the Turkic Investment Fund, Korea National Pension Service, Panama Savings Fund and the FAO — none is a central bank. Further members must come from the *member bank's* own site or newsletter.
+
+**Central Banking's award archive is thinning for named pairings.** The 2022 BNP Paribas AM, 2023 Invesco, 2020 Amundi and 2025 Franklin Templeton asset-manager profiles describe mandates in detail but keep the client anonymous ("undisclosed central bank", "Mediterranean central bank"). The 2019 Citi custody profile names the Central Bank of Kuwait and Norges Bank only in the page's organisation metadata tags, never in readable text — not filed, but both are worth chasing from Citi's or the banks' own side.
+
+**New known blanks**: Chile's reserves page confirms "dos administradores externos" running about 3% of the portfolio and names neither; the UK Exchange Equalisation Account names only the Bank of England as HM Treasury's agent; OMFIF's external-managers chapter names seven firms and anonymises all 73 banks surveyed; Samoa, Fiji and Vanuatu each state they manage reserves internally.
+
+**Unresolved, not negative** — retry later: Peru's BCRP transparency PDF returned a bot-protection stub, and Lesotho's and Tanzania's 2024 annual reports failed with site errors.
+
 **RAMP does NOT publish its membership.** It only counts, and the counts contradict each other across the World Bank's own pages: "over 70" (2024), "75th member" (April 2024), "over 80" (May 2025), "more than 90" (October 2025), "a record 95" (April 2026). Round 18's fourteen RAMP ties were each assembled from an individual press release; roughly 80 members remain unidentified, and the same search run year by year, in Spanish, French and Portuguese too, will keep yielding them.
 
 **Say what the source says.** Most RAMP announcements describe advice, technical assistance or training; only Seychelles states that RAMP actually manages a portfolio. Never upgrade membership or advice into management.
@@ -208,13 +227,15 @@ Round 5 retried Bahrain, Saudi Arabia, Oman, Taiwan and Singapore in Arabic, Chi
 
 ## How long to finish
 
+**The denominator has a floor nobody has dealt with yet.** Breadth is measured against 206 monetary authorities, but 42 of those slots are members of four currency unions — 20 euro-area countries, 8 ECCB, 8 BCEAO, 6 BEAC — that between them run four banks. Corruption cases keyed to a union code expand to every member country, but **party links do not**: an auditor, printer or manager tie has to be filed at the head-office country (SEN, CMR, KNA), so the other 38 member slots show nothing and can never show anything. On the auditors row that alone caps breadth at about 82%, and the same holds for printers and managers. Making union party links expand to member countries the way cases do is a one-off change to `build_final.py`, and it is worth more than several rounds of research: it would move three rows at once. It is a judgement about what the map should say, so ask before doing it.
+
 **Three of the categories can reach 100% and three cannot**, and conflating them is what makes the question unanswerable.
 
 **Can finish:** external auditors (every bank has a law naming its auditor); the Federal Reserve seam (a countable 246 profiles, now thinning — round 16 got 12 records from ~30 names against round 15's 19 from 24); and the five patterns already complete because a source publishes the whole list.
 
 **Cannot finish:** corruption cases, governor removals, and revolving door outside closed sets. No complete count exists anywhere, so the "35–45%" in `about.html` is a judgement made while compiling and will stay one. These approach completeness asymptotically.
 
-**Estimate: 8 to 12 more rounds** for everything finishable. Yield by round: 35, 34, 33, 56, 50 — the two big rounds came from switching to a category nobody had worked, not from pressing a thinning one. That is the lesson. Worth spending one round purely on auditing what is already in: round 16's audit found a five-round-old corruption affecting 147 links.
+**Estimate: 10 to 14 more rounds** for everything finishable, against the 206-slot denominator as it stands, and the union floor above means the three service rows stop near 82% rather than 100% until that is changed. Yield by round: 35, 34, 33, 56, 50, 24 — round 20 is the first fall, and it fell because two of its three veins were worked to their end rather than because less was searched. Breadth by round is the figure that matters and it moves slower: auditors went 40% to 44% and printers 33% to 37% in round 20, about nine new countries each, so the 65 never-tried auditor banks are roughly seven rounds on their own, and perhaps half of them will turn out to publish nothing. That is the lesson. Worth spending one round purely on auditing what is already in: round 16's audit found a five-round-old corruption affecting 147 links.
 
 ## Questions the user has settled (don't reopen)
 - **Unproven allegations** (10 November 2026). Show both and let the reader switch. A tick box, "Count cases that are allegations alone", sits under the legend on the three case layers, ticked by default. Cleared, a bank whose only cases are allegations stays on the inside layer scored at nothing rather than dropping off, and its box says any score in the paragraph was written with allegations counted.
