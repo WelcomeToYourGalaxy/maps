@@ -300,61 +300,71 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .shapekey .kh{margin-left:auto;font-style:italic}
 
 /* ---------- the walkthrough ---------- */
-/* The panel body stops scrolling as a page. The rail of steps is fixed
-   at the top, the step on show fills what is left, and only the list of
-   offices on the right scrolls — and only when a place has more
-   offices at one step than fit. Four stacked charts meant a reader
-   scrolled past three branches to reach the fourth and never saw the
-   shape of the thing. */
-#mbody.jrn-on{overflow:hidden;display:flex;flex-direction:column;padding-bottom:14px}
-.jrn{flex:1;min-height:0;display:flex;flex-direction:column;gap:12px}
+/* A question at a time, in the middle of the panel, with the answers
+   as the only thing to read. The panel body stops scrolling as a page:
+   a question screen fits by construction, and on a destination only the
+   two columns scroll, independently. */
+#mbody.jrn-on{overflow:hidden;display:flex;flex-direction:column;padding:12px 16px 14px}
+.cyoa{flex:1;min-height:0;display:flex;flex-direction:column;gap:11px}
 
-/* the rail: the steps a law passes through, left to right */
-.rail{flex:none;display:flex;align-items:stretch;flex-wrap:wrap;gap:0 2px;
-  padding:4px 2px 2px}
-.rail .link{flex:none;align-self:center;width:9px;height:1px;background:rgba(125,142,130,.35)}
-.stp{flex:1 1 128px;min-width:112px;max-width:190px;box-sizing:border-box;
-  display:flex;flex-direction:column;align-items:flex-start;gap:3px;
-  /* every step is the same size whatever its name is: the old boxes
-     were sized by their text, so "Members" and "Commissioner of
-     Citywide Administrative Services" were different objects on the
-     page and read as different weights of thing */
-  height:100px;padding:9px 10px;border:1px solid var(--line);border-radius:10px;
-  background:var(--panel2);color:var(--dim);font:inherit;text-align:left;cursor:pointer;
+/* where the reader has been, and the way back to any of it */
+.ptrail{flex:none;display:flex;align-items:center;justify-content:space-between;gap:8px 14px;
+  font-size:11px;color:var(--faint);min-height:18px}
+.ptrail .pcrs{display:flex;align-items:center;flex-wrap:wrap;gap:2px 0;min-width:0}
+.ptrail .pself{flex:none;display:flex;align-items:center;gap:7px;font-size:11px;color:var(--faint)}
+.ptrail .pself a{color:var(--accent-hi);text-decoration:none}
+.ptrail .pself a:hover{text-decoration:underline}
+.ptrail .pcr{background:none;border:0;padding:1px 5px;font:inherit;font-size:11px;
+  color:var(--accent-hi);cursor:pointer;border-radius:4px}
+.ptrail .pcr:hover{background:rgba(74,124,89,.16);text-decoration:underline}
+.ptrail .pcr:last-child{color:var(--dim);cursor:default}
+.ptrail .psep{opacity:.45}
+
+/* the question */
+.qwrap{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;
+  max-width:720px;width:100%;margin:0 auto;padding:0 4px}
+.qq{font-family:'Marcellus',serif;font-weight:400;font-size:25px;line-height:1.2;color:var(--text)}
+.qsub{font-size:12.6px;line-height:1.6;color:var(--dim);margin:7px 0 18px;max-width:62ch}
+.qopts{display:flex;flex-direction:column;gap:7px;overflow-y:auto;min-height:0;padding-right:2px}
+.qopts::-webkit-scrollbar{width:8px}
+.qopts::-webkit-scrollbar-thumb{background:rgba(125,142,130,.2);border-radius:8px}
+.qopt{display:grid;grid-template-columns:1fr auto;align-items:center;gap:4px 14px;
+  width:100%;box-sizing:border-box;text-align:left;cursor:pointer;
+  border:1px solid var(--line);border-left:2px solid rgba(125,142,130,.3);
+  border-radius:10px;background:var(--panel2);padding:12px 15px;font:inherit;color:var(--dim);
   transition:border-color .15s,background .15s,transform .12s}
-.stp:hover{border-color:rgba(140,189,154,.55);background:rgba(74,124,89,.1);color:var(--ink)}
-.stp.on{border-color:var(--accent-hi);background:rgba(74,124,89,.17);color:var(--ink)}
-.stp .num{flex:none;width:19px;height:19px;border-radius:50%;border:1px solid var(--stone);
-  display:inline-flex;align-items:center;justify-content:center;
-  font-size:10.5px;line-height:1;color:var(--stone)}
-.stp.on .num,.stp.entry .num{border-color:var(--accent-hi);color:var(--accent-hi)}
-.stp.entry{box-shadow:inset 2px 0 0 var(--accent-hi)}
-.stp .snm{font-family:'Marcellus',serif;font-size:12.4px;line-height:1.25;
-  /* three lines, then it stops: the box height is the same everywhere */
-  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.stp .sct{margin-top:auto;font-size:10px;letter-spacing:.4px;color:var(--faint);text-transform:uppercase}
-.stp.walking{border-color:#cfe6d4;background:rgba(140,189,154,.22);
-  box-shadow:0 0 0 1px #cfe6d4, 0 0 14px rgba(140,189,154,.5)}
+.qopt:hover{border-color:rgba(140,189,154,.55);border-left-color:var(--accent-hi);
+  background:rgba(74,124,89,.11);transform:translateX(2px)}
+.qopt .qt{grid-column:1;font-family:'Marcellus',serif;font-size:15px;line-height:1.25;color:var(--text);
+  display:flex;align-items:center;gap:8px}
+.qopt .qt i{width:10px;height:10px;border-radius:50%;flex:none;box-shadow:0 0 6px 1px currentColor}
+.qopt .qd{grid-column:1;font-size:12px;line-height:1.55;color:var(--faint);margin-top:3px}
+.qopt .qar{grid-column:2;grid-row:1/3;font-size:16px;color:var(--stone);opacity:.6}
+.qopt:hover .qar{color:var(--accent-hi);opacity:1}
 
-/* the step on show: what happens on the left, who is there on the right */
-.tray{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,0.92fr) minmax(0,1.08fr);
-  gap:0;border:1px solid var(--line);border-radius:12px;background:var(--panel2);overflow:hidden}
-.tleft{padding:16px 17px;overflow-y:auto;border-right:1px solid var(--line)}
-.tright{padding:14px 15px;overflow-y:auto}
-.tleft::-webkit-scrollbar,.tright::-webkit-scrollbar{width:8px}
-.tleft::-webkit-scrollbar-thumb,.tright::-webkit-scrollbar-thumb{background:rgba(125,142,130,.2);border-radius:8px}
-.thead{display:flex;align-items:center;gap:9px;margin-bottom:9px}
-.thead .num{flex:none;width:24px;height:24px;border-radius:50%;background:var(--accent-soft);
-  border:1px solid var(--accent-hi);color:var(--accent-hi);
-  display:inline-flex;align-items:center;justify-content:center;font-size:12px}
-.thead h3{font-family:'Marcellus',serif;font-size:17px;font-weight:400;line-height:1.2;color:var(--text)}
-.twhat{font-size:12.6px;line-height:1.62;color:var(--dim)}
-.tact{margin-top:14px;border-left:2px solid var(--accent);padding-left:12px}
-.tact dt{font-size:10px;letter-spacing:.9px;text-transform:uppercase;color:var(--stone);margin-bottom:4px}
-.tact dd{font-size:12.6px;line-height:1.62;color:var(--text)}
-.tnone{font-size:12.5px;color:var(--faint);line-height:1.6;padding:10px 2px;font-style:italic}
+/* the destination: what to do on the left, who to contact on the right */
+.leaf{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1.04fr) minmax(0,0.96fr);
+  border:1px solid var(--line);border-radius:12px;background:var(--panel2);overflow:hidden}
+.lleft{padding:16px 17px 20px;overflow-y:auto;border-right:1px solid var(--line)}
+.lright{padding:14px 15px 20px;overflow-y:auto}
+.lleft::-webkit-scrollbar,.lright::-webkit-scrollbar{width:8px}
+.lleft::-webkit-scrollbar-thumb,.lright::-webkit-scrollbar-thumb{background:rgba(125,142,130,.2);border-radius:8px}
+.lnm{font-family:'Marcellus',serif;font-weight:400;font-size:20px;line-height:1.2;color:var(--text)}
+.lscope{display:inline-flex;align-items:center;gap:7px;margin-top:7px;font-size:11px;
+  color:var(--dim);border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+.lscope i{width:9px;height:9px;border-radius:50%;flex:none;box-shadow:0 0 6px 1px currentColor}
+.llead{font-size:12.8px;line-height:1.65;color:var(--dim);margin-top:11px}
+.lnote{margin-top:13px;border-left:2px solid var(--accent);padding-left:12px}
+.lnote dt{font-size:10px;letter-spacing:.9px;text-transform:uppercase;color:var(--stone);margin-bottom:4px}
+.lnote dd{font-size:12.4px;line-height:1.6;color:var(--text)}
+.lrh{font-family:'Marcellus',serif;font-size:12px;letter-spacing:1.1px;text-transform:uppercase;
+  color:var(--stone);padding-bottom:5px;border-bottom:1px solid var(--line);margin-bottom:11px}
+.lnext{display:flex;flex-direction:column;gap:5px}
+.nxt{text-align:left;background:none;border:1px solid var(--line);border-radius:8px;
+  padding:8px 11px;font:inherit;font-size:11.8px;line-height:1.4;color:var(--accent-hi);cursor:pointer}
+.nxt:hover{background:rgba(74,124,89,.12);border-color:rgba(140,189,154,.5)}
 
-/* the kinds of office at this step */
+/* the kinds of office, and the offices themselves */
 .kgrp{margin-bottom:15px}
 .kgrp:last-child{margin-bottom:0}
 .khead{display:flex;align-items:center;gap:7px}
@@ -363,11 +373,13 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .khead .lawdot{width:9px;height:9px;border-radius:50%;background:#9ccfa7;flex:none;
   box-shadow:0 0 7px 1px rgba(156,207,167,.7)}
 .kwhat{font-size:11.4px;color:var(--faint);line-height:1.5;margin:2px 0 7px}
-.kempty{font-size:11.4px;color:var(--faint);font-style:italic;padding:2px 0 4px}
+.kempty{font-size:11.3px;color:var(--faint);font-style:italic;line-height:1.5;padding:2px 0 4px}
+.kblank{font-size:11.2px;color:var(--faint);line-height:1.55;margin-top:14px;padding:9px 11px;
+  background:rgba(26,31,29,.6);border-left:2px solid var(--line);border-radius:0 6px 6px 0}
+.kblank b{color:var(--dim);font-weight:400}
 .kgrp.walking .khead b{color:#cfe6d4}
-
-/* the offices themselves, every tile the same size */
-.chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:5px}
+/* every office tile the same size, whatever the name in it */
+.chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(146px,1fr));gap:5px}
 .ochip{height:40px;box-sizing:border-box;padding:5px 9px;border-radius:8px;
   border:1px solid var(--line);background:rgba(26,31,29,.75);color:var(--dim);
   font:inherit;font-size:11.4px;line-height:1.28;text-align:left;cursor:pointer;
@@ -380,6 +392,12 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .kmore{margin-top:6px;font-size:11.2px;color:var(--accent-hi);background:none;border:0;
   padding:3px 0;cursor:pointer;font-family:inherit}
 .kmore:hover{text-decoration:underline}
+
+@media (max-width:900px){
+  .leaf{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) minmax(0,1fr)}
+  .lleft{border-right:0;border-bottom:1px solid var(--line)}
+  .qq{font-size:21px}
+}
 
 /* the definition card that follows the pointer */
 #mmcard{position:fixed;z-index:400;width:340px;max-width:70vw;pointer-events:none;
@@ -2586,154 +2604,417 @@ const BRANCHINFO={
 /* ====================================================================
    THE WALKTHROUGH
 
-   This replaced four hierarchy charts, one per branch of government.
-   They were accurate and they taught nothing: a reader saw Legislative
-   with four kinds under it and eleven committees under one of those,
-   and learned where each office sat in a filing cabinet rather than
-   what any of them had to do with getting a law made. The relationships
-   that matter are not "this office belongs to that branch", they are
-   "this office comes after that one, and here is the point where you
-   can act".
+   Two versions of this have been wrong in the same direction. The first
+   was four hierarchy charts, one per branch, which told a reader where
+   each office sat in a filing cabinet. The second laid the offices
+   along the path a bill takes from idea to enforcement, which is a
+   civics lesson: accurate, and still not an answer to "I want this
+   changed, who do I write to".
 
-   So the offices are laid along the path a law actually takes, from an
-   idea to a rule being enforced, and each one sits at the step where it
-   acts. The steps are the same everywhere this map goes: somebody has
-   to introduce it, somebody has to examine it, somebody has to vote,
-   somebody has to sign, somebody has to write the detail, somebody has
-   to apply it, and somebody can strike it down.
+   This one asks instead. The reader says what they are trying to do and
+   how far it has to reach, and the answer is a destination: these
+   offices, at this level, by these methods, with what usually stops
+   each one. The branches are the real forks — a rule that does not
+   exist yet needs a sponsor, a rule that exists but is applied badly
+   needs the department that wrote the detail, a decision that broke an
+   obligation needs an auditor or a court, and a company needs a
+   different set of levers from a government.
 
-   Every kind of office the classifier produces is placed at exactly one
-   step, including the ones with no part in making a law, which get the
-   last step rather than being left out. The counts across the steps
-   therefore add up to every office on the map.
+   Every kind of office still has a home, so nothing on the map is
+   unreachable from here, and the last branch ("show me everything")
+   holds all of them at once.
    ==================================================================== */
-const STAGES = [
- {id:'idea', nm:'Your idea', kinds:[], entry:true,
-  what:'A law starts as a proposal in ordinary words: what should change, who it affects, and what the rule should say. Nothing official happens yet and nobody has to be consulted.',
-  act:'Write it on one page — the problem, the rule you want, and who would carry it out. Every step after this asks for that page, and arriving without one is the most common reason an approach goes nowhere.'},
 
- {id:'sponsor', nm:'Find a sponsor', kinds:['leg/member'],
-  what:'No member of the public anywhere on Earth can introduce a bill. An elected member of the legislature has to do it, and until one agrees there is no bill — only an idea.',
-  act:'Ask for a meeting with the staffer who covers your subject rather than with the member. Staff decide what reaches the member, and a staffer who takes up your idea becomes the person carrying it. If you live in the member’s district, you have a claim on that meeting nobody else has.'},
+/* One place to say what a destination is made of. `kinds` picks the
+   offices, `routes` the methods in the order worth trying, `hurdles`
+   what stops them. `scoped` means the answer depends on how far the
+   change has to reach, so the reader is asked that first. */
+const LEAVES = {
+  new_law: {
+    nm:'A rule that does not exist yet', scoped:true,
+    lead:'Nobody can introduce a bill except a member of the legislature, so the whole of this route runs through persuading one to do it. Until a member agrees, what you have is a proposal, not a bill. The exception is at the bottom of the list: where citizen initiatives exist, enough signatures put a measure on the ballot and no elected official has to agree to anything.',
+    kinds:['leg/member','leg/committee','leg/chamber','leg/presiding','exec/clerk','exec/head'],
+    routes:['visit','letter','call','email','sfr','petition','townhall','ballot'],
+    hurdles:['tally','concentrated','money','nobody'],
+    notes:[
+      ['Ask for the staffer, not the member','Staff decide what reaches the member, and a staffer who takes up your idea becomes the person carrying it. If you live in the member’s district you have a claim on that meeting nobody else has.'],
+      ['Committee is where it dies','Most bills end in committee rather than on the floor. Committees take written submissions and hold hearings, both open to the public; the committee clerk gives you the format and the deadline.'],
+      ['Ask the clerk whether an initiative exists','Before anything else, ask the office that keeps the record whether a citizen initiative is available here, and if so what the signature threshold and deadline are. It is the only route on this map that does not need a politician’s consent.'],
+    ],
+    next:[['rules','If the law already says what you want but nothing happens'],
+          ['oversight','If a body is ignoring a law that already exists']],
+  },
 
- {id:'file', nm:'Filing, and the way round', kinds:['exec/clerk'],
-  what:'The proposal is put into legal language and filed with the office that keeps the record. That same office usually runs the other way in: where citizen initiatives exist, enough signatures put a measure on the ballot directly and no elected official has to agree to anything.',
-  act:'Ask the clerk two things: how a bill is filed here, and whether a citizen initiative exists. If it does, ask for the current signature threshold and the deadline before you do anything else. This is the only route on the map where the public can make law without a politician’s consent.'},
+  rules: {
+    nm:'The rules written under an existing law', scoped:true,
+    lead:'Laws are short and the rules written under them are long, and the rules decide what the law does in practice. Departments and agencies write them. This is the part of government with the most offices and the least public attention, and the two things open to anyone here both create an obligation to answer.',
+    kinds:['exec/minister','ag/agency'],
+    routes:['comment','rulemaking','foia','visit','letter','ig'],
+    hurdles:['docket','revolving','concentrated'],
+    notes:[
+      ['Comment while the window is open','A body proposing a rule has to address substantive comments when it issues the final version. Comment on the specific public file of responses, not by general correspondence.'],
+      ['Or petition for a rule','A department asked to make a rule must grant or deny it in writing. A written refusal can be challenged; an ignored letter cannot. This is far less used than it deserves.'],
+      ['Find out what it already holds','A freedom-of-information request is often the cheapest way to learn what the department already knows about your subject, which changes what you can argue.'],
+    ],
+    next:[['new_law','If the law itself is the problem, not the rules under it'],
+          ['courts','If you think the rule goes beyond what the law allows']],
+  },
 
- {id:'committee', nm:'Committee', kinds:['leg/committee'],
-  what:'A small group of members examines the bill, rewrites it, or lets it die without a vote. Most bills end here rather than on the floor, which makes this the step where attention is worth spending.',
-  act:'Committees take written submissions and hold hearings, and both are open to the public. The committee clerk will tell you the format and the deadline. A submission is published in the record, costs nothing, and is one of the few things somebody is obliged to receive.'},
+  enforce: {
+    nm:'A law that exists but is not being applied', scoped:true,
+    lead:'A law nobody enforces and a law that does not exist look much the same from below. Prosecutors choose which cases to bring; police enforce on the ground. Neither can change a law, and neither is usually the right address for a complaint about policy rather than an incident.',
+    kinds:['exec/legal','ag/police','ag/audit'],
+    routes:['ig','foia','ombud','townhall','letter','quitam'],
+    hurdles:['revolving','nobody','concentrated'],
+    notes:[
+      ['If it is about practice, go to whoever funds them','Most forces and prosecution offices have a civilian oversight body, and those report to the council or legislature that funds them. That funding body is where a policy actually changes, and it is a different address from the one that handles incidents.'],
+      ['Ask a law officer for a written opinion','Many attorney-general and solicitor offices will issue a formal opinion interpreting a statute on request. An opinion is a document other offices have to reckon with.'],
+      ['Name the obligation, not the feeling','An auditor or inspector general closes vague complaints. State which specific legal or policy obligation was not met, and what the failure was.'],
+    ],
+    next:[['oversight','If a body broke its own rules rather than ignoring a law'],
+          ['courts','If a court is the only thing that will settle it']],
+  },
 
- {id:'vote', nm:'The vote', kinds:['leg/chamber','leg/presiding'],
-  what:'The chamber debates and votes. A bill with enough support can still never be voted on: the presiding officer holds the calendar and decides what is scheduled and what is not.',
-  act:'Read the published calendar to find when your subject is heard, ask for an item to be put on the agenda, and speak in a public comment period where one is offered. Approaching the presiding officer is worth doing only once a bill and its sponsors exist, because before that there is nothing to schedule.'},
+  oversight: {
+    nm:'A body that broke its own rules', scoped:true,
+    lead:'Auditors, inspectors general and ombudsmen investigate whether a body followed obligations already written down, and publish what they find. Most cannot compel anything. What they produce is a document that makes an agency concede a failure in writing and commit to a dated fix, which is then something a legislator or a court can act on.',
+    kinds:['ag/audit','jud/defender','exec/legal'],
+    routes:['ig','ombud','foia','quitam','letter'],
+    hurdles:['voluntary','nobody'],
+    notes:[
+      ['The finding is the point','An ombudsman usually has no power to order anything. A published finding is still citable by a court, a lender, an insurer or a journalist in a way an unanswered letter is not.'],
+      ['One obligation, one failure','These offices close complaints that do not identify a specific duty and a specific breach of it. The narrower the claim, the more likely it is investigated.'],
+    ],
+    next:[['courts','If you need an order rather than a finding'],
+          ['new_law','If the rule they followed is the problem']],
+  },
 
- {id:'sign', nm:'Signed, or vetoed', kinds:['exec/head'],
-  what:'The head of government signs the bill into law or refuses it. In most systems they can also act alone by decree or executive order, which is faster than a law and can be undone by the next holder just as fast.',
-  act:'Correspondence here is counted rather than read. The route that works runs through the department handling your subject, at the next step, not through this office.'},
+  courts: {
+    nm:'A law or decision that should be struck down', scoped:true,
+    lead:'Courts decide what a law means and whether it stands, and a ruling can undo a law a legislature will not touch. They cannot be lobbied, and writing to a judge about a live case is improper. There are two ways in, and the first one is where most well-founded claims about wide harm stop.',
+    kinds:['jud/court','jud/judge','jud/defender'],
+    routes:['amicus','citizensuit','climatelit','personhood'],
+    hurdles:['standing','nobody','money'],
+    notes:[
+      ['As a party, which needs an injury to you','Most common-law courts require a concrete, particularised injury to the person bringing the case. An injury shared equally by everyone is treated, for this purpose, as an injury to no one.'],
+      ['Or as an outsider in someone else’s case','Courts accept briefs from non-parties when they bring facts the parties do not have. This needs no injury of your own and is the cheaper of the two.'],
+      ['Granting an ecosystem legal personhood manufactures a plaintiff','It is the mechanism behind the rights-of-nature route: it produces someone the court must hear where no individual could show a particular injury.'],
+    ],
+    next:[['new_law','If no court will hear it, the legislature is the remaining route'],
+          ['oversight','If the complaint is about process rather than the law itself']],
+  },
 
- {id:'rules', nm:'The rules underneath', kinds:['exec/minister','ag/agency'],
-  what:'Laws are short; the rules written under them are long, and the rules decide what the law does in practice. Departments and agencies write them. This is the step with the most offices on it and the least public attention.',
-  act:'Two things are open to anyone. Comment on a proposed rule while its window is open — the body has to address substantive comments when it issues the final version. Or petition for a new rule, which it must grant or deny in writing. A written refusal can be challenged; an ignored letter cannot.'},
+  company: {
+    nm:'Something a company is doing',
+    lead:'A company is not obliged to make as much money as possible — the case usually cited for that, decided in Michigan in 1919, says no such thing in its binding part — but little pushes it the other way either. So the argument that works is not that the company is permitted to act. It is a business reason the board could state in court if challenged, which is the shape a shareholder proposal takes. The other routes here reach the company through government or through bodies that publish findings about it.',
+    kinds:['ag/agency','exec/minister','exec/legal'],
+    routes:['shareprop','oecdncp','devbank','comment','ig','citizensuit','foia'],
+    hurdles:['primacy','concentrated','voluntary','money'],
+    notes:[
+      ['Through the regulator, not the company','The department or agency that licenses, inspects or sets rules for the sector is usually a better address than the company, because its proposed rules carry a comment window and it can be petitioned for a new rule.'],
+      ['The international complaint routes publish, they do not order','OECD National Contact Points, development bank accountability mechanisms and UN processes investigate and recommend. None can compel a company or a state, and remedy for harm already done is rare. Their value is the published finding.'],
+      ['A shareholder proposal costs about $2,000 to enter','It is the one route that puts a question to the board in a form it has to process, and it is written as a business case rather than as a grievance.'],
+    ],
+    next:[['new_law','If what is needed is a rule that does not exist yet'],
+          ['courts','If the harm is specific enough to sue over']],
+  },
 
- {id:'enforce', nm:'Enforcement', kinds:['ag/police','exec/legal'],
-  what:'Someone has to apply the law. Prosecutors choose which cases to bring and which to leave; police enforce on the ground. A law nobody enforces and a law that does not exist look much the same from below.',
-  act:'Neither can change a law. If your concern is about practice rather than one incident, the body that funds them — the council or the legislature — is the useful address. Many law officers will also issue a formal written opinion interpreting a statute on request.'},
+  all: {
+    nm:'Everything over this place',
+    lead:'Every office this map holds for the levels you are inside, with no question narrowing it, and every method with what usually stops it. The offices marked with a lit dot are the ones a member of the public has a route to about a law; the rest are part of government and open here in full, because the reason an answer is no is worth reading.',
+    kinds:['leg/member','leg/committee','leg/chamber','leg/presiding','exec/head','exec/minister',
+           'exec/clerk','exec/legal','exec/envoy','jud/court','jud/judge','jud/defender',
+           'ag/agency','ag/audit','ag/police','other/other'],
+    routes:null,
+    hurdles:['tally','concentrated','docket','money','nobody','voluntary','standing','revolving','primacy'],
+    notes:[],
+    next:[['start','Start again with a question instead']],
+  },
+};
 
- {id:'review', nm:'Challenge and review', kinds:['jud/court','jud/judge','jud/defender','ag/audit'],
-  what:'Courts decide what the law means and whether it stands. Auditors and ombudsmen check whether a body followed rules already written. A ruling can undo a law a legislature will not touch, which is why this step is slow but final.',
-  act:'A court is reached as a party, which needs a concrete injury to you specifically, or by filing an outsider brief in somebody else’s case. An auditor or ombudsman takes a complaint naming a specific obligation and the failure to meet it, and publishes what it finds. Vague complaints are closed.'},
+/* The questions. `opts` either go to another question (`go`) or land on
+   a destination (`leaf`). A destination marked `scoped` inserts the
+   level question first, because who you contact for a town ordinance
+   and for a national statute are different people. */
+const QUESTIONS = {
+  start: {
+    q:'What are you trying to do?',
+    sub:'Pick whichever is closest. Nothing here commits you — every answer can be stepped back.',
+    opts:[
+      {t:'Create a rule that does not exist yet',
+       d:'A ban, a requirement, a protection, a right — something nobody is obliged to do today.', leaf:'new_law'},
+      {t:'Change or repeal a law that already exists',
+       d:'The words on the page are wrong, out of date, or doing harm.', go:'change'},
+      {t:'Change how an existing law works in practice',
+       d:'The law is not the problem. The detailed rules written under it, or the way they are applied, are.', go:'practice'},
+      {t:'Challenge a decision, or hold a body to its own rules',
+       d:'Something was decided, or left undone, and you think an obligation was broken.', go:'challenge'},
+      {t:'Stop something a company is doing',
+       d:'The harm is corporate, and the question is which lever reaches it.', leaf:'company'},
+      {t:'I am not sure yet — show me everything',
+       d:'Every office over this place and every method, with nothing narrowed down.', leaf:'all'},
+    ]},
 
- {id:'outside', nm:'Outside the chain', kinds:['exec/envoy','other/other'],
-  what:'Offices in the same place with no step in making a law here: envoys, who represent the government outward rather than taking proposals inward, and offices whose titles this map could not place.',
-  act:'They are named so the count adds up. Whatever an envoy agrees abroad still has to pass the legislature, which is where the effort belongs. For an unplaced office, the official site settles what it does.'},
-];
-STAGES.forEach((s,i)=>{ s.n=i; if(s.kinds.some(k=>LAWKINDS.has(k))) s.entry=true; });
-const STAGE_OF={}; STAGES.forEach(s=>s.kinds.forEach(k=>STAGE_OF[k]=s));
+  change: {
+    q:'What is wrong with it?',
+    sub:'Repealing a law and rewriting it take the same route; striking it down takes a different one entirely.',
+    opts:[
+      {t:'The wording needs changing, or the law needs repealing',
+       d:'This takes the same route as a new law: a member of the legislature has to introduce it.', leaf:'new_law'},
+      {t:'It should not exist at all, or it is unlawful',
+       d:'A court can undo a law a legislature will not touch.', leaf:'courts'},
+      {t:'It is fine, but nobody is enforcing it',
+       d:'The law is on the books and nothing is happening.', leaf:'enforce'},
+    ]},
 
-let STAGE=1;                 /* which step the tray is showing */
-let CAPK=18;                 /* offices listed per kind before "show all" */
-let SHOWALL={};
+  practice: {
+    q:'Where is it going wrong?',
+    sub:'A law is short; most of what it actually does is in the rules written underneath and in how they are applied.',
+    opts:[
+      {t:'The detailed rules under the law',
+       d:'The department or agency wrote the detail, and the detail is the problem.', leaf:'rules'},
+      {t:'How it is being enforced on the ground',
+       d:'The rules are fine and the practice is not.', leaf:'enforce'},
+      {t:'A body is not doing what it is supposed to',
+       d:'An obligation exists and is being missed.', leaf:'oversight'},
+    ]},
 
-/* every office at a step, and at one kind within it */
-function stageRows(b, st){
-  const out=[];
-  st.kinds.forEach(k=>{
-    const br=k.split('/')[0];
-    (b[br]||[]).forEach(o=>{ if(o.kind===k) out.push(o); });
+  challenge: {
+    q:'What do you need out of it?',
+    sub:'These three produce different things: a finding, an order, or a record.',
+    opts:[
+      {t:'A finding that says publicly what went wrong',
+       d:'An auditor, inspector general or ombudsman investigates and publishes. Usually cannot compel anything.', leaf:'oversight'},
+      {t:'An order that makes it stop',
+       d:'Only a court can order. It needs an injury, or a case of someone else’s to join.', leaf:'courts'},
+      {t:'The documents, so I can see what happened',
+       d:'A freedom-of-information request is the cheapest first move and changes what you can argue afterwards.', leaf:'oversight'},
+    ]},
+};
+
+/* where the reader is: a list of {q, opt} steps, then a leaf */
+let PATH=[], LEAF=null, LEAFLVL=null, SHOWALLK={};
+
+function resetTree(){ PATH=[]; LEAF=null; LEAFLVL=null; SHOWALLK={}; }
+
+/* ---------- every office on the map, not just the open level ----------
+   `BK` holds only the jurisdiction whose panel is open. The chain pins
+   carry their own office record for every level above it, which is what
+   lets a destination list the county's offices and the country's side
+   by side, and lets the level question mean anything. */
+function officeIndex(){
+  const idx={}; STACK.forEach((s,i)=>{ if(s.q) idx[s.q]=i; });
+  const out={};
+  Object.values(PINS).forEach(p=>{
+    if(!p.o) return;
+    out[p.id]={o:p.o, lvl:(p.lvlIdx!=null)?p.lvlIdx:idx[p.lvlQ]};
+  });
+  if(BK && BK.byId){
+    const lv = CUR && CUR.q!=null && idx[CUR.q]!=null ? idx[CUR.q] : STACK.length-1;
+    Object.values(BK.byId).forEach(o=>{ if(!out[o.id]) out[o.id]={o:o, lvl:lv}; });
+  }
+  return out;
+}
+function officesFor(kinds, lvl){
+  const ix=officeIndex(), out=[];
+  Object.values(ix).forEach(e=>{
+    if(kinds.indexOf(e.o.kind)<0) return;
+    if(lvl!=null && e.lvl!==lvl) return;
+    out.push(e.o);
   });
   return out;
 }
 
-function drawJourney(b){
-  const counts=STAGES.map(st=>stageRows(b,st).length);
-  let h='<div class="jrn">';
+/* ---------- drawing ---------- */
+const CAPK=16;
 
-  /* the rail */
-  h+='<div class="rail">';
-  STAGES.forEach((st,i)=>{
-    const n=counts[i];
-    h+='<button type="button" class="stp'+(i===STAGE?' on':'')+(st.entry?' entry':'')+
-       '" data-st="'+i+'" onclick="pickStage('+i+')">'+
-       '<span class="num">'+(i+1)+'</span>'+
-       '<span class="snm">'+esc(st.nm)+'</span>'+
-       '<span class="sct">'+(st.kinds.length ? (n||0)+(n===1?' office':' offices') : 'you')+'</span>'+
-       '</button>';
-    if(i<STAGES.length-1) h+='<span class="link"></span>';
+let SELFCH=[];
+function trail(){
+  let h='<div class="ptrail"><div class="pcrs">'+
+    '<button type="button" class="pcr" onclick="treeGo(-1)">Start</button>';
+  PATH.forEach((st,i)=>{
+    h+='<span class="psep">&rsaquo;</span>'+
+       '<button type="button" class="pcr" onclick="treeGo('+i+')">'+esc(st.label)+'</button>';
   });
   h+='</div>';
-
-  /* the step on show */
-  const st=STAGES[STAGE]||STAGES[0];
-  h+='<div class="tray"><div class="tleft">'+
-     '<div class="thead"><span class="num">'+(STAGE+1)+'</span><h3>'+esc(st.nm)+'</h3></div>'+
-     '<p class="twhat">'+esc(st.what)+'</p>'+
-     '<div class="tact"><dt>'+(st.entry?'What you can do here':'What this step means for you')+
-       '</dt><dd>'+esc(st.act)+'</dd></div>'+
-     '</div><div class="tright">';
-
-  if(!st.kinds.length){
-    h+='<div class="tnone">This step is yours. No office is involved until the next one.</div>';
-  }else{
-    st.kinds.forEach(k=>{
-      const br=k.split('/')[0];
-      const rows=(b[br]||[]).filter(o=>o.kind===k).sort((x,y)=>x.label.localeCompare(y.label));
-      const ki=KINDINFO[k]||{what:''};
-      h+='<div class="kgrp" data-kind="'+esc(k)+'">'+
-         '<div class="khead"><b>'+esc(KINDLABEL[k]||k)+'</b>'+
-         (LAWKINDS.has(k)?'<i class="lawdot" title="reachable about a law"></i>':'')+
-         '<span class="kct">'+(rows.length||'none')+'</span></div>'+
-         '<div class="kwhat">'+esc(ki.what||'')+'</div>';
-      if(!rows.length){
-        h+='<div class="kempty">Wikidata records none here for this place.</div>';
-      }else{
-        const all=!!SHOWALL[k], shown=all?rows:rows.slice(0,CAPK);
-        h+='<div class="chips">';
-        shown.forEach(o=>{
-          h+='<button type="button" class="ochip'+(o.law?' law':'')+'" data-id="'+esc(o.id)+'" '+
-             'onclick="openOffice(\''+esc(o.id)+'\')">'+esc(o.label)+'</button>';
-        });
-        h+='</div>';
-        if(!all && rows.length>CAPK)
-          h+='<button type="button" class="kmore" onclick="SHOWALL[\''+esc(k)+'\']=1;render()">'+
-             'the other '+(rows.length-CAPK)+'</button>';
-      }
-      h+='</div>';
-    });
-  }
-  h+='</div></div></div>';
-  return h;
+  if(SELFCH.length) h+='<div class="pself">'+SELFCH.map(x=>x[0]).join('<span class="psep">\u00b7</span>')+'</div>';
+  return h+'</div>';
 }
 
-function pickStage(i){ STAGE=i; render(); const st=STAGES[i];
-  if(st) frameKinds(st.kinds); }
+function drawTree(){
+  let h='<div class="cyoa">'+trail();
+  if(LEAF) h+=drawLeaf();
+  else{
+    const node=PATH.length?PATH[PATH.length-1].next:'start';
+    h += (node==='__level__') ? drawLevelQ() : drawQuestion(QUESTIONS[node]||QUESTIONS.start);
+  }
+  return h+'</div>';
+}
 
-/* ---------- linking the walkthrough to the map ---------- */
-/* Hovering anything in the walkthrough takes the camera to the offices
-   it names, on the same 260 ms hold the diagram used: sweeping across
-   ten steps would otherwise make the camera unusable. */
-/* Fit the camera to a set of offices. Offices with no recorded
-   coordinate are skipped; Wikidata has one for about an office in six. */
+function drawQuestion(qn){
+  let h='<div class="qwrap"><h2 class="qq">'+esc(qn.q)+'</h2>'+
+        '<p class="qsub">'+esc(qn.sub||'')+'</p><div class="qopts">';
+  qn.opts.forEach((o,i)=>{
+    h+='<button type="button" class="qopt" data-i="'+i+'" onclick="pickOpt('+i+')">'+
+       '<span class="qt">'+esc(o.t)+'</span>'+
+       '<span class="qd">'+esc(o.d||'')+'</span>'+
+       '<span class="qar">&rarr;</span></button>';
+  });
+  return h+'</div></div>';
+}
+
+/* The level question is built from the place the reader searched for,
+   so the options are their own council, their own county and their own
+   country by name rather than four abstractions. */
+function drawLevelQ(){
+  let h='<div class="qwrap"><h2 class="qq">How far does it have to reach?</h2>'+
+    '<p class="qsub">Each of these is a different set of people. A rule for one town is made by the people who govern that town, and nobody above them has to agree.</p>'+
+    '<div class="qopts">';
+  const n=STACK.length;
+  for(let i=n-1;i>=0;i--){
+    const s=STACK[i];
+    const cnt=officesFor(LEAFKINDS(), i).length;
+    h+='<button type="button" class="qopt lvl" data-lvl="'+i+'" onclick="pickLevel('+i+')">'+
+       '<span class="qt"><i style="background:'+levelColour(i)+'"></i>'+esc(s.label)+'</span>'+
+       '<span class="qd">'+esc(LEVELN[Math.min(i,LEVELN.length-1)])+
+         ' — '+(cnt? cnt+(cnt===1?' office here':' offices here') : 'no office of this kind recorded here')+'</span>'+
+       '<span class="qar">&rarr;</span></button>';
+  }
+  h+='<button type="button" class="qopt lvl" onclick="pickLevel(null)">'+
+     '<span class="qt">Every level at once</span>'+
+     '<span class="qd">All of them together, which is how most changes actually have to be worked.</span>'+
+     '<span class="qar">&rarr;</span></button>';
+  return h+'</div></div>';
+}
+function LEAFKINDS(){ const l=LEAVES[PENDLEAF]; return l?l.kinds:[]; }
+let PENDLEAF=null;
+
+function drawLeaf(){
+  const L=LEAVES[LEAF];
+  const rows=officesFor(L.kinds, LEAFLVL);
+  const byKind={}; rows.forEach(o=>{ (byKind[o.kind]=byKind[o.kind]||[]).push(o); });
+
+  let h='<div class="leaf"><div class="lleft">';
+  h+='<h2 class="lnm">'+esc(L.nm)+'</h2>';
+  if(LEAFLVL!=null && STACK[LEAFLVL])
+    h+='<div class="lscope"><i style="background:'+levelColour(LEAFLVL)+'"></i>'+esc(STACK[LEAFLVL].label)+'</div>';
+  h+='<p class="llead">'+esc(L.lead)+'</p>';
+  (L.notes||[]).forEach(n=>{
+    h+='<div class="lnote"><dt>'+esc(n[0])+'</dt><dd>'+esc(n[1])+'</dd></div>';
+  });
+
+  /* the methods, best-ranked first */
+  const ids = L.routes || Object.keys(KIND_ROUTES).reduce((a,k)=>a.concat(KIND_ROUTES[k]),[]);
+  const seen={}, rts=[];
+  ids.forEach(id=>{ if(seen[id])return; seen[id]=1;
+    const r=ROUTES.find(x=>x.id===id); if(r) rts.push(r); });
+  rts.sort((a,b)=>BANDS[rateBand(a.rate)].ord-BANDS[rateBand(b.rate)].ord);
+  if(rts.length){
+    h+='<div class="sec">How to reach them</div><div class="rgrid">';
+    rts.forEach((rt,i)=>{ h+=routeTile(rt,i); });
+    h+='</div>';
+  }
+  const hs=(L.hurdles||[]).map(k=>HURDLES[k]).filter(Boolean);
+  if(hs.length){
+    h+='<div class="sec">What usually stops it</div>';
+    hs.forEach(x=>{ h+='<div class="bar"><h4>'+esc(x.h)+'</h4>'+x.p.map(p=>'<p>'+p+'</p>').join('')+'</div>'; });
+  }
+  h+='</div><div class="lright">';
+
+  h+='<div class="lrh">Who to contact</div>';
+  const order=L.kinds.filter(k=>byKind[k] && byKind[k].length)
+    .concat(L.kinds.filter(k=>!byKind[k] || !byKind[k].length));
+  let any=false;
+  const blanks=[];
+  order.forEach(k=>{
+    const list=(byKind[k]||[]).slice().sort((a,b)=>a.label.localeCompare(b.label));
+    /* Kinds with nothing recorded used to print the same two-line
+       explanation each, five or six times down the column, which filled
+       the space the offices should have had. They are collected into
+       one line at the bottom, with the explanation said once. */
+    if(!list.length){ blanks.push(k); return; }
+    any=true;
+    const ki=KINDINFO[k]||{what:''};
+    h+='<div class="kgrp" data-kind="'+esc(k)+'">'+
+       '<div class="khead"><b>'+esc(KINDLABEL[k]||k)+'</b>'+
+       (LAWKINDS.has(k)?'<i class="lawdot" title="a route to a law"></i>':'')+
+       '<span class="kct">'+list.length+'</span></div>'+
+       '<div class="kwhat">'+esc(ki.what||'')+'</div>';
+    const all=!!SHOWALLK[k], shown=all?list:list.slice(0,CAPK);
+    h+='<div class="chips">';
+    shown.forEach(o=>{
+      h+='<button type="button" class="ochip'+(o.law?' law':'')+'" data-id="'+esc(o.id)+'" '+
+         'onclick="openPin(\''+esc(o.id)+'\')">'+esc(o.label)+'</button>';
+    });
+    h+='</div>';
+    if(!all && list.length>CAPK)
+      h+='<button type="button" class="kmore" onclick="SHOWALLK[\''+esc(k)+'\']=1;render()">'+
+         'the other '+(list.length-CAPK)+'</button>';
+    h+='</div>';
+  });
+  if(blanks.length){
+    h+='<div class="kblank"><b>Nothing recorded here for:</b> '+
+       blanks.map(k=>esc(KINDLABEL[k]||k)).join(', ')+'. '+
+       'Coverage is deep for some countries and thin for others, and thinner at local level. '+
+       'A blank means Wikidata holds no record, not that no such office exists'+
+       (LEAFLVL!=null?' \u2014 and the levels above this one usually still have them.':'.')+'</div>';
+  }
+  if(!any) h+='<div class="kempty">No office of any of these kinds is recorded at this level.</div>';
+
+  if(L.next && L.next.length){
+    h+='<div class="lrh" style="margin-top:16px">Where next</div><div class="lnext">';
+    L.next.forEach(([k,t])=>{
+      h+='<button type="button" class="nxt" onclick="'+(k==='start'?'resetTree();render()':'jumpLeaf(\''+k+'\')')+'">'+
+         esc(t)+'</button>';
+    });
+    h+='</div>';
+  }
+  return h+'</div></div>';
+}
+
+/* ---------- moving through it ---------- */
+function pickOpt(i){
+  const node=PATH.length?PATH[PATH.length-1].next:'start';
+  const qn=QUESTIONS[node]||QUESTIONS.start;
+  const o=qn.opts[i]; if(!o) return;
+  if(o.go){ PATH.push({label:o.t, next:o.go}); LEAF=null; return render(); }
+  enterLeaf(o.leaf, o.t);
+}
+function enterLeaf(key, label){
+  const L=LEAVES[key]; if(!L) return;
+  if(L.scoped && STACK.length>1){
+    PENDLEAF=key;
+    PATH.push({label:label||L.nm, next:'__level__'});
+    LEAF=null; return render();
+  }
+  PATH.push({label:label||L.nm, next:null});
+  LEAF=key; LEAFLVL=null; SHOWALLK={}; render(); frameKinds(L.kinds);
+}
+function pickLevel(i){
+  LEAF=PENDLEAF; LEAFLVL=i; SHOWALLK={};
+  PATH.push({label:(i==null?'Every level':(STACK[i]?STACK[i].label:'Level')), next:null});
+  render();
+  const ids=officesFor(LEAVES[LEAF].kinds, i).map(o=>o.id);
+  frameIdsSoon(ids);
+  if(i!=null && STACK[i] && STACK[i].feature) fitTo(STACK[i].feature.geometry);
+}
+/* a "where next" link: keep the trail, swap the destination */
+function jumpLeaf(key){
+  const L=LEAVES[key]; if(!L) return;
+  PATH.push({label:L.nm, next:null});
+  if(L.scoped && LEAFLVL==null && STACK.length>1){ PENDLEAF=key; PATH[PATH.length-1].next='__level__'; LEAF=null; }
+  else { LEAF=key; }
+  SHOWALLK={}; render(); frameKinds(L.kinds);
+}
+function treeGo(i){
+  if(i<0){ resetTree(); return render(); }
+  PATH=PATH.slice(0,i+1);
+  const st=PATH[PATH.length-1];
+  if(st.next){ LEAF=null; }
+  render();
+}
+
+/* ---------- linking it to the map ---------- */
 function fitToIds(ids){
   const pts=ids.map(id=>PINS[id]).filter(Boolean);
   if(!pts.length) return;
@@ -2747,7 +3028,6 @@ function fitToIds(ids){
       {padding:{top:80,left:50,right:50,bottom:90}, duration:650, maxZoom:13});
   }catch(e){}
 }
-
 let FRAME_T=null;
 function frameIdsSoon(ids){
   clearTimeout(FRAME_T);
@@ -2755,35 +3035,30 @@ function frameIdsSoon(ids){
     if(ids && ids.some(i=>PINS[i])) return fitToIds(ids);
     const top=STACK[STACK.length-1];
     if(top && top.feature && top.feature.geometry) fitTo(top.feature.geometry);
-  }, 260);
+  }, 240);
 }
-function idsOfKinds(kinds){
-  if(!BK) return [];
-  const out=[];
-  kinds.forEach(k=>{ const br=k.split('/')[0];
-    (BK.out[br]||[]).forEach(o=>{ if(o.kind===k) out.push(o.id); }); });
-  return out;
-}
-/* A step with no office recorded here still frames something: the
-   jurisdiction itself, which is what frameIdsSoon falls back to. */
+function idsOfKinds(kinds, lvl){ return officesFor(kinds, lvl===undefined?LEAFLVL:lvl).map(o=>o.id); }
 function frameKinds(kinds){ frameIdsSoon(idsOfKinds(kinds)); }
 
-function bindJourney(){
+function bindTree(){
   const body=$('#mbody'); if(!body) return;
-  body.querySelectorAll('.stp').forEach(el=>{
-    const st=STAGES[+el.dataset.st];
+  /* hovering an answer frames what choosing it would show, so the map
+     previews the branch before it is taken */
+  body.querySelectorAll('.qopt').forEach(el=>{
+    const i=el.dataset.i;
+    if(el.dataset.lvl!==undefined){
+      const lv=+el.dataset.lvl;
+      el.addEventListener('mouseenter',()=>frameIdsSoon(idsOfKinds(LEAFKINDS(), lv)));
+      return;
+    }
+    if(i===undefined) return;
+    const node=PATH.length?PATH[PATH.length-1].next:'start';
+    const o=(QUESTIONS[node]||QUESTIONS.start).opts[+i];
+    if(!o) return;
     el.addEventListener('mouseenter',()=>{
-      frameKinds(st.kinds);
-      const ids=idsOfKinds(st.kinds), have=ids.filter(i=>PINS[i]).length;
-      showCard('<h5>'+esc(st.nm)+'</h5><p class="w">'+esc(st.what)+'</p>'+
-        (st.kinds.length?'<p class="loc">'+(have
-          ? have+' of '+ids.length+' have an address on the map, now in view'
-          : ids.length
-            ? 'None of these '+ids.length+' has an address recorded, so the map shows the jurisdiction instead'
-            : 'No office of this kind is recorded for this place')+'</p>':''));
+      const key=o.leaf; if(!key||!LEAVES[key]) return;
+      frameIdsSoon(idsOfKinds(LEAVES[key].kinds, null));
     });
-    el.addEventListener('mousemove',moveCard);
-    el.addEventListener('mouseleave',hideCard);
   });
   body.querySelectorAll('.kgrp').forEach(el=>{
     const k=el.dataset.kind, ki=KINDINFO[k]||{};
@@ -2797,7 +3072,8 @@ function bindJourney(){
     el.addEventListener('mouseleave',hideCard);
   });
   body.querySelectorAll('.ochip').forEach(el=>{
-    const o=BK&&BK.byId&&BK.byId[el.dataset.id]; if(!o) return;
+    const ix=officeIndex()[el.dataset.id]; if(!ix) return;
+    const o=ix.o;
     el.addEventListener('mouseenter',()=>{
       frameIdsSoon([o.id]);
       showCard('<h5>'+esc(o.label)+'</h5>'+
@@ -2810,8 +3086,7 @@ function bindJourney(){
   });
 }
 
-/* The card that follows the pointer. Kept from the diagram: it is how a
-   reader finds out what a box is without clicking anything. */
+/* The card that follows the pointer. */
 let HOVERCARD=null;
 function hoverCard(){
   if(!HOVERCARD){ HOVERCARD=document.createElement('div'); HOVERCARD.id='mmcard';
@@ -2849,34 +3124,49 @@ function render(){
      markers can be asked for by id */
   if(CUR && CUR.q) loadOfficePins(CUR.q);
   if(SEL) return renderOffice(SEL);
-  const b=BK.out;
-  const total=BRANCHES.reduce((n,br)=>n+(b[br]||[]).length,0);
-  let h='';
-  if(!total && CUR.state!=='loading'){
-    h+='<div class="note">Wikidata records no offices for '+esc(CUR.label)+
-       '. Coverage is deep for some countries and thin for others. The branches below still name the offices that would be there.</div>';
-  }
+  /* The jurisdiction's own contact details used to sit in a block above
+     the walkthrough, along with a note when Wikidata had nothing for
+     this place. Together they took a third of the panel and pushed a
+     destination off the bottom of the window. They are now one line in
+     the trail row, which is where a reader looks for where they are. */
   const selfRows=(CUR.core||[]).filter(r=>r.kind.value==='self');
   const sites=new Set(),emails=new Set(),phones=new Set();
   selfRows.forEach(r=>{ if(r.site)sites.add(r.site.value); if(r.email)emails.add(r.email.value); if(r.phone)phones.add(r.phone.value); });
-  if(sites.size||emails.size||phones.size){
-    h+='<div class="off" style="padding-top:0"><div class="nm">Official channel</div><div class="meta">';
-    [...sites].forEach(s=>h+='<a href="'+esc(s)+'" target="_blank" rel="noopener">'+esc(s)+'</a>');
-    [...emails].forEach(e=>h+='<a href="mailto:'+esc(e)+'">'+esc(e)+'</a>');
-    [...phones].forEach(p2=>h+='<span>'+esc(p2)+'</span>');
-    h+='</div></div>';
-  }
-  h+='<div class="shapekey">'+
-     '<span><i class="k-off"></i>reachable about a law</span>'+
-     '<span><i class="k-offd"></i>part of government, not a route to a law</span>'+
-     '<span class="kh">hover anything to frame it on the map</span></div>';
-  h+=drawJourney(b);
+  SELFCH=[];
+  [...sites].forEach(x=>SELFCH.push(['<a href="'+esc(x)+'" target="_blank" rel="noopener">official site</a>']));
+  [...emails].forEach(x=>SELFCH.push(['<a href="mailto:'+esc(x)+'">'+esc(x)+'</a>']));
+  [...phones].forEach(x=>SELFCH.push(['<span>'+esc(x)+'</span>']));
+  let h=drawTree();
   $('#mbody').className='jrn-on';
   $('#mbody').innerHTML=h;
   $('#mbody').scrollTop=0;
   showBack(false);
   hideCard();
-  bindJourney();
+  bindTree();
+}
+
+/* One route, as a tile. Written once because a destination lists the
+   methods for a whole branch of the walkthrough and an office page
+   lists the methods for one office, and the two were the same markup. */
+function routeTile(rt, i){
+  const R=rt.rate;
+  return '<div class="route" id="rr'+i+'">'+
+    '<button type="button" class="rhead" aria-expanded="false" '+
+      'onclick="toggleRoute(\'rr'+i+'\',this)">'+
+    '<div class="rmain"><div class="rnm">'+esc(rt.nm)+'</div>'+
+    '<div class="rmeta">'+esc(rt.cost)+'</div>'+
+    '<span class="rpill"><i style="background:'+rateColor(R)+'"></i>'+
+      esc(BANDS[rateBand(R)].label)+'</span></div>'+
+    '<div class="rtog">+</div></button><div class="rbody">'+
+    (rt.def ? '<div class="fld"><dt>What this is</dt><dd>'+esc(rt.def)+'</dd></div>' : '')+
+    fld('What it costs', rt.costn)+fld('Who can use it', rt.elig)+
+    fld('How long', rt.time)+fld('How it is done', rt.how)+
+    (R ? '<div class="fld"><dt>How it ranks'+(R.ev?'<span class="ev">'+esc(EVNAME[R.ev]||R.ev)+'</span>':'')+'</dt><dd>'+
+         esc(BANDS[rateBand(R)].label)+'. '+esc(BANDS[rateBand(R)].note)+
+         '<div class="srcline">Measured by: '+esc(R.src||'')+(R.y0?' ('+R.y0+(R.y1&&R.y1!==R.y0?'&ndash;'+R.y1:'')+')':'')+'</div></dd></div>' : '')+
+    (!R && rt.nomeasure ? '<div class="fld"><dt>Why no one has measured how often this works</dt><dd>'+esc(rt.nomeasure)+'</dd></div>' : '')+
+    '<div class="fld fail"><dt>What usually stops it</dt><dd>'+esc(rt.fail)+'</dd></div>'+
+    '</div></div>';
 }
 
 function renderOffice(o){
@@ -2904,26 +3194,7 @@ function renderOffice(o){
   if(rts.length){
     h+='<div class="sec">How to reach it</div>';
     h+='<div class="rgrid">';
-    rts.forEach((rt,i)=>{
-      const R=rt.rate;
-      h+='<div class="route" id="rr'+i+'">'+
-        '<button type="button" class="rhead" aria-expanded="false" '+
-          'onclick="toggleRoute(\'rr'+i+'\',this)">'+
-        '<div class="rmain"><div class="rnm">'+esc(rt.nm)+'</div>'+
-        '<div class="rmeta">'+esc(rt.cost)+'</div>'+
-        '<span class="rpill"><i style="background:'+rateColor(R)+'"></i>'+
-          esc(BANDS[rateBand(R)].label)+'</span></div>'+
-        '<div class="rtog">+</div></button><div class="rbody">'+
-        (rt.def ? '<div class="fld"><dt>What this is</dt><dd>'+esc(rt.def)+'</dd></div>' : '')+
-        fld('What it costs', rt.costn)+fld('Who can use it', rt.elig)+
-        fld('How long', rt.time)+fld('How it is done', rt.how)+
-        (R ? '<div class="fld"><dt>How it ranks'+(R.ev?'<span class="ev">'+esc(EVNAME[R.ev]||R.ev)+'</span>':'')+'</dt><dd>'+
-             esc(BANDS[rateBand(R)].label)+'. '+esc(BANDS[rateBand(R)].note)+
-             '<div class="srcline">Measured by: '+esc(R.src||'')+(R.y0?' ('+R.y0+(R.y1&&R.y1!==R.y0?'&ndash;'+R.y1:'')+')':'')+'</div></dd></div>' : '')+
-        (!R && rt.nomeasure ? '<div class="fld"><dt>Why no one has measured how often this works</dt><dd>'+esc(rt.nomeasure)+'</dd></div>' : '')+
-        '<div class="fld fail"><dt>What usually stops it</dt><dd>'+esc(rt.fail)+'</dd></div>'+
-        '</div></div>';
-    });
+    rts.forEach((rt,i)=>{ h+=routeTile(rt,i); });
     h+='</div>';
   }
   const hs=(KIND_HURDLES[o.kind]||[]).map(k=>HURDLES[k]).filter(Boolean);
@@ -3353,28 +3624,33 @@ function walkGlow(el, on){ if(el) el.classList.toggle('walking', !!on); }
 async function walkTo(o){
   const gen=++WALK;
   walkHalo(o.id);
-  const st=STAGE_OF[o.kind];
-  /* the office has to be listed for its chip to exist */
-  SHOWALL[o.kind]=1;
-  STAGE = st ? st.n : STAGE;
+  /* The walkthrough is a set of questions, so a marker clicked on the
+     map has no branch of its own to arrive at. It lands on the
+     destination that holds every office \u2014 which is where somebody who
+     did not want to answer questions would have gone anyway \u2014 and the
+     walk then glows the kind of office and the office itself, so the
+     reader sees what it is and what sits beside it before the page
+     replaces the list. */
+  SHOWALLK[o.kind]=1;
+  PATH=[{label:'Everything over this place', next:null}];
+  LEAF='all'; LEAFLVL=null;
   SEL=null; render();
   await walkWait(60);
   if(gen!==WALK) return;
 
   const body=$('#mbody');
   const steps=[
-    body.querySelector('.stp[data-st="'+STAGE+'"]'),
     body.querySelector('.kgrp[data-kind="'+o.kind+'"]'),
     body.querySelector('.ochip[data-id="'+o.id+'"]'),
   ];
-  const frames=[ st?st.kinds:[], [o.kind], null ];
+  const frames=[ [o.kind], null ];
   for(let i=0;i<steps.length;i++){
     if(gen!==WALK) return;
     const el=steps[i]; if(!el) continue;
     if(el.scrollIntoView) el.scrollIntoView({behavior:'smooth', block:'nearest'});
     walkGlow(el, true);
     if(frames[i]) frameKinds(frames[i]); else frameIdsSoon([o.id]);
-    await walkWait(620);
+    await walkWait(640);
     walkGlow(el, false);
     await walkWait(110);
   }
@@ -3798,7 +4074,6 @@ async function boot(){
    Its usage policy asks for no more than one request a second and no
    bulk querying, which a person typing a place name does not approach.
    ==================================================================== */
-const NOMINATIM='https://nominatim.openstreetmap.org/search';
 let SHITS=[];
 
 /* Opening the search clears the board.
@@ -3830,20 +4105,42 @@ function closeStart(){ $('#start').classList.add('off'); $('#sopen').classList.a
    the last one is sent; a typed place name produces two or three
    requests, not one per letter. The in-flight generation number drops a
    slow answer that arrives after the reader has typed on. */
+/* Two geocoders, because they are good at different halves of this.
+
+   Nominatim answers a finished query well and partial words badly:
+   "Sierra Mad" returns nothing from it, so nothing appeared until the
+   last letter was typed. Photon is OpenStreetMap's own autocomplete
+   geocoder, built for prefix matching, and it answers "Sierra Mad" with
+   Sierra Madre, California first. What it does not return is the
+   boundary polygon or the Wikidata id, which this map needs to draw the
+   place and resolve its offices.
+
+   So Photon suggests as you type, and when a suggestion is chosen,
+   Nominatim's lookup endpoint is asked for that exact OSM object and
+   returns the polygon and the Wikidata id in one request. The reader
+   waits for the second call rather than for the first, which is the
+   right way round: the list has to keep up with typing, and opening a
+   place already takes a moment.
+
+   Photon's hosted instance asks for reasonable use rather than a fixed
+   rate; 200 ms of collected keystrokes sends two or three requests for
+   a typed place name instead of one per letter. */
+const PHOTON='https://photon.komoot.io/api/';
+const NOM_LOOKUP='https://nominatim.openstreetmap.org/lookup';
 let TA_T=null, TA_GEN=0;
 function typeAhead(){
   clearTimeout(TA_T);
   const q=($('#sq').value||'').trim();
   const out=$('#sout');
-  if(q.length<3){ out.classList.remove('live'); out.innerHTML=''; return; }
-  TA_T=setTimeout(()=>runSearch(q,true), 450);
+  if(q.length<2){ out.classList.remove('live'); out.innerHTML=''; return; }
+  TA_T=setTimeout(()=>runSearch(q,true), 200);
 }
 
 async function placeSearch(){
   clearTimeout(TA_T);
   const q=($('#sq').value||'').trim();
   const out=$('#sout');
-  if(q.length<2){ out.classList.remove('live');
+  if(q.length<1){ out.classList.remove('live');
     out.innerHTML='<div class="msg">Type the name of a town, city or municipality.</div>'; return; }
   return runSearch(q,false);
 }
@@ -3853,13 +4150,11 @@ async function runSearch(q, live){
   const gen=++TA_GEN;
   out.classList.toggle('live', !!live);
   if(!live) out.innerHTML='<div class="msg">Looking for '+esc(q)+'&hellip;</div>';
-  const u=NOMINATIM+'?q='+encodeURIComponent(q)+
-    '&format=jsonv2&limit=8&polygon_geojson=1&extratags=1&featureType=settlement&accept-language=en';
   let rows=[];
   try{
-    const r=await fetch(u,{headers:{'Accept':'application/json'}});
+    const r=await fetch(PHOTON+'?q='+encodeURIComponent(q)+'&limit=8&lang=en');
     if(!r.ok) throw new Error(String(r.status));
-    rows=await r.json();
+    rows=(await r.json()).features||[];
   }catch(e){
     if(gen!==TA_GEN) return;
     if(!live) out.innerHTML='<div class="msg">The place lookup could not be reached just now. '+
@@ -3867,78 +4162,80 @@ async function runSearch(q, live){
     return;
   }
   if(gen!==TA_GEN) return;               /* the reader has typed on */
-  /* only things with a boundary: a point has no jurisdiction to draw */
-  SHITS = rows.filter(r=>r.geojson && /Polygon/.test(r.geojson.type));
+
+  /* Only things with a boundary of their own. Photon returns streets,
+     shops and mountain ranges alongside places; a street has no
+     jurisdiction to draw and no offices to resolve. An OSM relation
+     tagged as a place or a boundary is what this map can use. */
+  SHITS = rows.filter(f=>{
+    const p=f.properties||{};
+    if(p.osm_type!=='R') return false;
+    return p.osm_key==='place' || p.osm_key==='boundary';
+  }).map(f=>f.properties);
+
   if(!SHITS.length){
     out.innerHTML = live ? ''
       : '<div class="msg">Nothing with a boundary matched that. Try the name on its own, '+
         'or add the region or country &mdash; "Springfield, Illinois".</div>';
     return;
   }
-  /* A city and the county around it share a name in a great many
-     places, and Nominatim returns both: searching Los Angeles gives
-     "Los Angeles, Los Angeles County, California" and "Los Angeles
-     County, California", which read as the same place listed twice.
-     What tells them apart is the kind of unit, which Nominatim already
-     supplies in `addresstype` and `type`, so it is said on the row. The
-     rest of the address line drops the name itself, which was being
-     repeated in both halves of the row. */
-  out.innerHTML = SHITS.map((r,i)=>{
-    const dn=String(r.display_name||'');
-    const parts=dn.split(',').map(x=>x.trim());
-    const head=parts[0];
-    const rest=parts.slice(1).filter(x=>x && x!==head && !/^\d[\d\s-]*$/.test(x));
+  out.innerHTML = SHITS.map((p,i)=>{
+    const where=[p.county,p.state,p.country].filter(Boolean)
+      .filter(x=>x!==p.name).join(', ');
     return '<button type="button" class="hit" onclick="enterPlace('+i+')">'+
-      '<b>'+esc(head)+'</b>'+
-      '<em class="what">'+esc(placeKind(r))+'</em>'+
-      '<span>'+esc(rest.join(', ')||'&nbsp;')+'</span></button>';
+      '<b>'+esc(p.name||'')+'</b>'+
+      '<em class="what">'+esc(photonKind(p))+'</em>'+
+      '<span>'+esc(where||'&nbsp;')+'</span></button>';
   }).join('');
 }
 
-/* What kind of unit a result is, in the words a reader would use.
-   Nominatim's own vocabulary is close but not quite: `administrative`
-   on its own says nothing, and the useful distinction is usually
-   carried by `type` rather than `addresstype`. */
-const PLACEKIND={city:'City', town:'Town', village:'Village', hamlet:'Hamlet',
+/* What kind of unit a suggestion is, in the words a reader would use.
+   Los Angeles and Los Angeles County come back as two rows that would
+   otherwise read almost identically. Photon's `osm_value` carries the
+   OSM tag, which is the thing that tells them apart. */
+const OSMKIND={city:'City', town:'Town', village:'Village', hamlet:'Hamlet',
   municipality:'Municipality', borough:'Borough', suburb:'Suburb', quarter:'District of a city',
-  county:'County', state:'State or province', province:'Province', region:'Region',
-  district:'District', department:'Department', city_district:'District of a city',
-  island:'Island', country:'Country'};
-/* Where OpenStreetMap says only "administrative", the level says which
-   tier it is. The numbers mean roughly the same thing worldwide and
-   nothing to a reader, so they are translated. */
-const ADMWORD={'2':'Country','3':'Region','4':'State or province','5':'Region',
-  '6':'County or district','7':'District','8':'City or municipality',
-  '9':'Borough or ward','10':'Neighbourhood'};
-function placeKind(r){
-  const at=String(r.addresstype||''), ty=String(r.type||'');
-  const lv = String((r.extratags && r.extratags.admin_level)||'');
-  /* addresstype first: it is the one that distinguishes a city from the
-     county around it, where `type` says "administrative" for both and
-     the two rows read as the same place listed twice */
-  /* One word, not two. Naming both gave "City \u00b7 city or municipality",
-     and for New York City, whose admin level is 5, it gave "City \u00b7
-     region", which is worse than saying nothing. The level is only
-     consulted when OpenStreetMap gives no usable word of its own. */
-  const k = PLACEKIND[at] || PLACEKIND[ty] || ADMWORD[lv];
-  return k || (at||ty||'Place').replace(/_/g,' ');
+  neighbourhood:'Neighbourhood', county:'County', state:'State or province',
+  province:'Province', region:'Region', district:'District', department:'Department',
+  island:'Island', country:'Country', administrative:'Administrative area'};
+function photonKind(p){
+  const v=String(p.osm_value||''), t=String(p.type||'');
+  return OSMKIND[v] || OSMKIND[t] || (v||t||'Place').replace(/_/g,' ');
 }
 
 /* Build the whole chain of government above a found place: the country,
    the region, the district the boundary files carry, and then the place
    itself as the deepest level. */
 async function enterPlace(i){
-  const r=SHITS[i]; if(!r) return;
+  const sug=SHITS[i]; if(!sug) return;
   closeStart();
+  const name=String(sug.name||'');
+
+  openModal(name);
+  $('#mbody').className='';
+  $('#mbody').innerHTML='<div class="spin">Placing '+esc(name)+'&hellip;</div>';
+
+  /* Photon gave the suggestion; Nominatim gives the boundary and the
+     Wikidata id for that exact OSM object. One request, by id, so there
+     is no second round of guessing which "Springfield" was meant. */
+  let r=null;
+  try{
+    const u=NOM_LOOKUP+'?osm_ids='+encodeURIComponent('R'+sug.osm_id)+
+      '&format=jsonv2&polygon_geojson=1&extratags=1&accept-language=en';
+    const res=await fetch(u,{headers:{'Accept':'application/json'}});
+    if(res.ok){ const d=await res.json(); r=d && d[0]; }
+  }catch(e){}
+  if(!r || !r.geojson){
+    $('#mbody').innerHTML='<div class="note">The boundary for <b>'+esc(name)+
+      '</b> could not be fetched just now. Try again in a moment, or pick another result.</div>';
+    return;
+  }
+
   const lon=+r.lon, lat=+r.lat;
-  const name=String(r.display_name||'').split(',')[0];
   const wd=(r.extratags&&r.extratags.wikidata&&/^Q\d+$/.test(r.extratags.wikidata))
     ? r.extratags.wikidata : null;
   const feat={type:'Feature', geometry:r.geojson,
     properties:{n:name, shapeName:name, wd:wd, muni:1}};
-
-  openModal(name,'Working out which jurisdictions this sits inside\u2026');
-  $('#mbody').innerHTML='<div class="spin">Placing '+esc(name)+'&hellip;</div>';
 
   /* which of the world file's lowest-level units contains this point */
   const host = WORLD.find(f=>{
@@ -3961,6 +4258,7 @@ async function enterPlace(i){
               level:(top?top.level:0)+1, feature:feat});
   setAdmData([feat]);
   PINS={}; CHAIN_DONE={}; CHAIN_CLAIMED={}; PIN_TRIED={}; LOCAL={};
+  resetTree();
   if(wd) openJuris(wd, name);
   else { openModal(name,'Drawn from OpenStreetMap'); renderNoEntity(name, true); }
   paintTrail(); paintChain(); setPins();
