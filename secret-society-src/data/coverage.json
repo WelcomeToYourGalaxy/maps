@@ -1818,7 +1818,7 @@
    "publisher": "Controladoria-Geral da Uniao, published as the Acordos de Leniencia dataset on Brazil's Portal da Transparencia",
    "scope": "Every leniency agreement Brazil's federal comptroller (CGU) and attorney-general (AGU) have concluded with a company under the Clean Company Act (Lei 12.846/2013) and related statutes, counted one per administrative process and named by its lead company. The dataset lists one row per company, so these 37 agreements cover 128 company rows; the Odebrecht agreement alone covers 44 of them.",
    "url": "https://portaldatransparencia.gov.br/download-de-dados/acordos-leniencia",
-   "asof": "2026-11-12 (dataset of that date, downloaded the same day; its most recent agreement is 23 July 2026)",
+   "asof": "2026-11-12 (dataset of that date, downloaded and regrouped the same day; its most recent agreement is 23 July 2026)",
    "total": 37,
    "limits": "Brazilian federal administrative settlements only. It carries no criminal convictions, no prosecution that ran to judgment, no agreement signed by a state or municipal body, and not the separate agreements the federal prosecutors (MPF) signed with several of the same companies. More important for this map: the dataset gives the parties, the dates, the status, the process number and the sums, and nothing at all about the conduct - no body reached, no official, no decision, and no link to the agreement text. Every gap here therefore needs outside research, which is the opposite of the French CJIP list and should be expected to convert far more slowly. The count of 37 is a tally of distinct administrative processes, not a figure the dataset states; it reconciles with the CGU's own published balance of 36 agreements in January 2026, plus the agreement of 23 July 2026.",
    "kind": "case",
@@ -1831,8 +1831,8 @@
     },
     {
      "label": "14/08/2017 — Bilfinger Maschinenbau (CGU/AGU)",
-     "case": null,
-     "note": "Not researched. Agreement total EUR 2.658.169,73."
+     "case": "Bilfinger confessed to corruption in the Brazilian Navy's nuclear programme",
+     "note": "Not a Petrobras case, which the value-ranked gap list had assumed: the body reached is the Brazilian Navy and the contracts supplied its nuclear programme. The two official sources date it differently - the AGU gives supply contracts of 2012 to 2017, the signed agreement has improper payments ceasing on 5 December 2013 - and the record carries both. The agreement itself names no public body; the Navy comes from the AGU's announcement. The register's figure is one cent above the CGU's own (EUR 2.658.169,73 against 2.658.169,72); the record uses the CGU's."
     },
     {
      "label": "13/04/2018 — FCB Brasil and Mullen Lowe Brasil (CGU/AGU)",
@@ -1901,8 +1901,8 @@
     },
     {
      "label": "15/10/2021 — Statkraft Energias Renovaveis and three generators (CGU/AGU)",
-     "case": null,
-     "note": "Not researched. Agreement total R$ 18.015.264,97. Covers 4 group companies."
+     "case": "Desenvix paid for the release of north-eastern development loans",
+     "note": "The settlement establishes bribes connected with FNE money; that the recipients were officials of Banco do Nordeste is named only in reporting on a later CGU inquiry, so the record is coded probable. The register records this agreement as fulfilled. Separately, two Statkraft subsidiaries signed a leniency agreement with Minas Gerais state bodies in February 2023; that is a different case and outside this register."
     },
     {
      "label": "25/10/2021 — Rolls-Royce (CGU/AGU)",
@@ -1986,8 +1986,8 @@
     },
     {
      "label": "05/05/2025 — Minerva (CGU/AGU)",
-     "case": null,
-     "note": "Not researched. Agreement total R$ 22.040.373,16."
+     "case": "Two meat companies paid the farm ministry's inspectors in Tocantins",
+     "note": "One record covers this agreement and Bonasa's: the same inspectors at Araguaína, in Tocantins, and the same two Federal Police operations, Lucas and Vegas. Distinct from the Carne Fraca record, which is JBS and BRF in a different operation and different states. The register dates this agreement 05/05/2025 while the CGU's own announcement gives 9 May 2025; the record follows the CGU."
     },
     {
      "label": "30/07/2025 — Seatrium and Jurong Shipyard (CGU/AGU)",
@@ -1996,18 +1996,18 @@
     },
     {
      "label": "26/01/2026 — JBJ Agropecuaria and Prima Foods (CGU/AGU)",
-     "case": null,
-     "note": "Not researched. Agreement total R$ 31.156.767,70. Covers 2 group companies."
+     "case": "A meat plant at Santa Fé de Goiás paid the inspectors who certify it",
+     "note": "JBJ and Prima Foods share one process number in the register, 00190.109011/2022-88, so they are one agreement and one record. Goiás, 2012 to 2019, Operação Conduta de Risco II - a different scheme from both the Araguaína record and the Carne Fraca record. One oddity left as found: the CGU announces the signing on 26 January 2026 while clause 8.2 of the signed agreement makes the first instalment due 30 December 2025."
     },
     {
      "label": "26/01/2026 — Bonasa Alimentos (CGU/AGU)",
-     "case": null,
-     "note": "Not researched. Agreement total R$ 631.799,74."
+     "case": "Two meat companies paid the farm ministry's inspectors in Tocantins",
+     "note": "Matched to the Tocantins record alongside Minerva's agreement: the CGU puts both at the same inspection service in the same state and in the same two operations, Lucas and Vegas. It names no town for Bonasa, so the record's marker sits at Araguaína, which is named only for Minerva."
     },
     {
      "label": "23/07/2026 — Arla Foods Ingredients (CGU/AGU)",
      "case": null,
-     "note": "Not researched. Agreement total R$ 31.056,36."
+     "note": "Researched and not matched. The CGU's release gives the company, the sum and the signing date and nothing about the conduct: no body, no officials, no years. With no body named there is nothing to place on the map, so this item stays a gap until a source describes the case. It is the register's most recent agreement."
     }
    ],
    "blurb": "the leniency agreements Brazil's federal comptroller has signed with companies under its Clean Company Act"
