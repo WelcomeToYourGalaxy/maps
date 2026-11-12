@@ -41,14 +41,14 @@ Another session of the user's commits to this repo often. **Always `git fetch or
 
 ## Where it stands (after round 26, 11 November 2026)
 
-1,482 outside parties and 2,079 ties. 1,711 writeups, one for every box.
+1,483 outside parties and 2,081 ties. 1,712 writeups, one for every box.
 
 **Breadth is now measured with currency-union ties expanded to member countries** (see below). That change alone moved four rows without any new research, because `coverage.py` had been undercounting what the map already showed.
 
 | Category | Records | Places | Breadth |
 |---|---|---|---|
 | Corruption cases | 232 | 154 | 75% |
-| External auditors | 187 | 149 | 72% |
+| External auditors | 189 | 151 | 73% |
 | Revolving door | 206 | 80 | 39% |
 | Banknote printers | 157 | 133 | 65% |
 | Swap lines | 240 | 84 | 41% |
@@ -67,6 +67,30 @@ Another session of the user's commits to this repo often. **Always `git fetch or
 **Brief from `coverage.py`'s computed absent list, never from this handoff's prose lists.** Round 26 built its agent briefs from the "Unworked there" and "Never attempted" lists in this document. Those lists had gone stale: ten of the records the agents returned were already on the map (OMN, LBN, TJK, MAC, CYM, SYR and LAO printers; POL twice and DNK gold) and were caught only by the merge dedup. Three countries assigned as untried — Moldova, Azerbaijan and Kenya — already had records. Run `coverage.py` first and derive the target list from it.
 
 **Dedup on the firm, not the string.** Montenegro was already recorded as `"Ernst&Young Montenegro" Ltd Podgorica` from the bank's procurement report; round 26's find printed the same firm as `Ernst & Young Montenegro d.o.o.` in the signed accounts, and a key of (iso3, auditor string) did not match. The signature date and partner were folded into the existing record and the duplicate dropped. Any merge that keys on an entity name should normalise punctuation, spacing and legal-form suffixes before comparing.
+
+### The browser round, and the method that now beats every fetcher
+
+**Round 26 ran a browser round and it worked. This is the method to reach for first on any scanned or fetcher-blocked document.**
+
+The move is not "open the page and look at it" — Chrome's own PDF viewer exposes no text to any reader. It is to **load pdf.js into an ordinary page on the PDF's own origin and drive it from the console**:
+
+1. Navigate to any normal HTML page on the same host as the PDF (the bank's own publications index works).
+2. Inject pdf.js from cdnjs and set its worker source.
+3. `getDocument(url)` then walk the pages, joining each page's text items, and regex for the firm names.
+4. If the text layer is empty, the page is a scan — render that page to a `<canvas>`, replace the body with it, and take a screenshot. The names are then read off the image.
+
+Same origin matters: a cross-origin PDF is refused by CORS, and some sites block the cdnjs script outright. Both happened this round.
+
+**What it settled.**
+- **Oman.** `publishing.bnet.om` is robots-disallowed to the fetcher, but the bank's own annual-report page links PDFs on `cbo.gov.om` directly. The 2023 report names **KPMG, Muscat, signed 7 May 2024**. Worth knowing: the **2025** report's auditor's report is present but its signature block carries no firm name in the text layer, so 2023 is the most recent year that states a name.
+- **Jamaica.** `boj.org.jm` returns an anti-bot interstitial to the fetcher and loads normally in a real browser. The Annual Report 2025 names **Ernst & Young Chartered Accountants, 8 Olivier Road, Kingston 8, signed 4 March 2026**. Note the trap: the same report names PwC Corporate Services (Jamaica) Limited on two earlier pages, but that is a board-evaluation engagement, not the audit.
+- **BEAC, and with it six countries.** The bank publishes a **2018** `Rapport général des commissaires aux comptes` that no earlier round found. It is a four-page scan with no text layer; rendered to canvas it reads **KPMG Afrique Centrale (Odile Ndzana, Associé) with Mazars Cameroun (Jules Alain Njall Bikok, Associé), Yaoundé, 29 March 2019**. This replaces the 2015 record whose firm names extracted as garbled text, and it is clean rather than imperfect. The same index page also lists the 2018 `Comptes annuels`, the `Rapport spécial sur le contrôle du compte d'opérations` and a `Rapport de contrôle de la salle des marchés` — none of which has been mined.
+
+**What the browser did NOT settle, and why.**
+- **North Macedonia.** `nbrm.mk` serves a Cloudflare bot check in a real browser too, and then an empty document. This is bot detection, not a rendering problem, and it was not worked around. It needs the user to fetch the file by hand, or a mirror.
+- **Barbados.** `cdn.centralbank.org.bb` blocks the injected script and the PDF fetch wedged the renderer twice. The 2025 report is at a findable URL (`2026-05-28-19-54-07-2025-Annual-Report-Web.pdf`, reachable from the 2025 annual-report news page), and the fetcher confirms it is binary with no text layer. It needs the canvas-render route attempted from a host that permits the script, or a hand-fetched copy.
+
+**Still waiting on this method:** Eswatini, the Bahamas' modern reports, Fiji's annual report, Rwanda's document list, Uzbekistan, Paraguay's Memorias, Macao's Boletim Oficial supplements, Cambodia's Khmer-language site, Greece's remaining statements, Taiwan's Ministry of Audit.
 
 ### What round 26 settled, closed and confirmed
 
