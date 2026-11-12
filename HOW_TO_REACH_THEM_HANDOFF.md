@@ -6,28 +6,21 @@
 (the Atlas basemap plate with this map's cartouche).
 
 The map answers one question: who can a member of the public contact to make a
-law, in any country, at any level down to the municipality — and what can each
-of them actually do about it, how do you reach them, which routes work more
-often than others, and what stops them.
+law, where they live, at every level of government above them — and what can
+each of those offices actually do about it, how do you reach them, which routes
+work more often than others, and what stops them.
 
 ---
 
-## 0. Read this before editing — the build parts are gone
+## 0. Read this before editing
 
-An earlier handoff said the published file is assembled from parts
-(`n1.html`, `offices.js`, `routes.json`, `n2_data.js`…`n9_pins.js`,
-`nassemble2.py`) and must not be edited directly. **Those parts are not in this
-repo and no copy of them survives.** They lived in a working directory that no
-longer exists.
-
-So `how_to_reach_them.html` is now the source, not a build artefact. Edit it
-directly. If you want the split build back, you would have to cut the file up
-again; there is nothing to restore from.
-
-Everything the parts used to hold is still in the one file, in the same order
-the parts were concatenated: markup and CSS, then `ROUTES`, the office
-classification, the queries, the map setup, the drill-down, the panel, startup,
-UI, pins. Search for the section banners in capitals.
+`how_to_reach_them.html` **is the source.** An older note said it was assembled
+from parts (`n1.html`, `offices.js`, `routes.json`, `nassemble2.py`…). Those
+parts are gone and no copy survives; they lived in a working directory that no
+longer exists. Edit the file directly. Everything is in it, in the order the
+parts were concatenated: markup and CSS, then `ROUTES`, the office
+classification, the queries, the map, the drill-down, the panel, startup, UI,
+pins. The section banners are in capitals.
 
 After any edit, check the page still parses before pushing:
 
@@ -37,185 +30,117 @@ node -e "const h=require('fs').readFileSync('how_to_reach_them.html','utf8');
   new Function(m[m.length-1][1]); console.log('JS OK')"
 ```
 
-That catches a broken edit but not a broken layout. For anything visual, serve
-the folder and open it, or drive it headless with Playwright — the map needs a
-real browser, and `file://` fails because the boundary file cannot be fetched
-over that scheme.
+That catches a broken edit but not a broken layout, and almost everything that
+has gone wrong here was invisible to it. For anything visual, serve the folder
+and drive it with Playwright — the map needs a real browser, and `file://`
+fails because the boundary file cannot be fetched over that scheme.
+
+**The recurring failure in this file is a silent `catch`.** Three separate bugs
+— the camera never moving, the diagram boxes being dead, every explanatory note
+going nowhere — all presented as "the data is broken" and all were an error
+being swallowed. If you add a `try`, make the `catch` do something visible.
 
 ---
 
 ## 1. What you see, and in what order
 
-**The map now opens on a search box, not on the world.** It used to draw all
-48,263 lowest-level jurisdictions at once and leave the reader to find their
-own. Every session began with four megabytes and then a hunt, and the
-municipal layer underneath took one to four minutes because it scanned a whole
-district for every municipality inside it.
+**The map opens on a search box, not on the world.** It used to draw all 48,263
+lowest-level jurisdictions at once and leave the reader to find their own.
+Every session began with four megabytes and then a hunt, and the municipal
+layer under it took one to four minutes.
 
-Asking for the place by name replaces both. `placeSearch()` queries Nominatim,
-OpenStreetMap's own geocoder — open, CORS-enabled, no key — with
-`polygon_geojson=1&extratags=1&featureType=settlement`. One request, about a
-second, returns the candidates with their boundary polygon **and** their
-Wikidata id. `enterPlace()` then finds which unit of the world file contains
-the point, builds the chain above it with `fromWorld(host,{noMuniScan:true})`,
-and pushes the searched place on top as the deepest level.
+`placeSearch()` queries **Nominatim**, OpenStreetMap's own geocoder — open,
+CORS-enabled, no key — with `polygon_geojson=1&extratags=1&featureType=settlement`.
+One request, about a second, returns candidates with their boundary polygon
+**and** their Wikidata id. `enterPlace()` then:
 
-So the municipality arrives in about a second instead of minutes, and no
-Overpass call is involved on this path at all. Overpass is still there for
-`loadMunicipalities`, which runs when someone drills down by clicking rather
-than searching.
+1. finds which unit of the world file contains the point (point-in-polygon),
+2. builds the chain above it with `fromWorld(host, {noMuniScan:true})`,
+3. pushes the searched place on top as the deepest level,
+4. resolves markers for **every** level with `loadChainPins()`,
+5. frames the markers with `fitToPins()`.
 
-`world_lowest.topojson` is still loaded at boot: it is what the
-point-in-polygon test needs to know which district a place sits in. It is just
-not drawn. `browseAll()` draws it for anyone who wants the old view, and the
-"Search for a place" button at bottom-left reopens the search.
+So the municipality arrives in about a second and **no Overpass call happens on
+this path at all**. Overpass is still used by `loadMunicipalities()`, which runs
+when someone drills down by clicking instead of searching (§2).
+
+`world_lowest.topojson` still loads at boot — the point-in-polygon test needs
+it — but is not drawn. `browseAll()` draws it for anyone who wants the old
+view, and the "Search for a place" button at bottom-left reopens the search.
 
 Nominatim's usage policy asks for at most one request a second and no bulk
-querying. A person typing a place name does not approach that; do not add
-type-ahead that fires per keystroke.
+querying. A person typing a place name does not approach that. **Do not add
+type-ahead that fires per keystroke.**
 
+### What the markers mean
 
-Opening the page draws **every lowest-level jurisdiction on Earth** — the whole
-world's districts and counties, 48,263 of them. Nothing else is outlined: no
-national borders, no regions. Those appear only once you click.
+Every marker is an office in the diagram, and clicking it opens that office's
+page. The colour is the level of government it belongs to, from the level the
+reader stands in outward: municipality warm, district green, region blue,
+country indigo, anything below the municipality stone. `LEVELSETS` holds one
+set per basemap so they stay legible on a photograph, a painting and a night
+earth alike. The key is the row at top right.
 
-Click the unit you live in and the map works out the chain of government above
-it — country, region, the unit itself — and outlines each in its own colour,
-with a key in the row at top right. Offices that carry a location are pinned in
-their level's colour; the rest stay on the map, dimmed.
+### What `fitToPins` frames, and why not everything
 
-The panel on the right draws the offices as one diagram: the jurisdiction, the
-four branches, the kinds of office inside them, and every office under its kind.
-Hovering any box shows what it is. Clicking an office opens what it can do about
-a law, every route that reaches it, and the hurdles that apply.
+Not all the markers. The United States has federal offices thousands of
+kilometres from any one town, and framing those put Sierra Madre at zoom 1.6 —
+the whole globe, which answers nothing. The frame is built from the levels
+**between the municipality and the region**: the offices that govern this place
+and sit near it. The country's offices stay on the map, further out, and the
+breadcrumb goes there. Even within one region a stray record can sit far away,
+so the middle 90% of what is left decides the box and outliers fall outside it.
 
-**The row above the panel** holds the five basemaps, the flat/globe toggle and
-the level key, on one line. It is sized to the panel and right-aligned with it,
-so the two share an edge and neither crowds the map.
+### The panel
+
+The panel draws the offices as one diagram: the jurisdiction, the four
+branches, the kinds of office inside them, and every office under its kind.
+Hovering a box shows what it is; clicking an office opens what it can do about
+a law, every route that reaches it, and the hurdles that apply. The breadcrumb,
+the marker count and the loading note sit in the panel header under the
+jurisdiction name.
 
 ---
 
-## 2. Going below the boundary files — municipalities
+## 2. Municipalities
 
-This is the part most likely to confuse someone reading the code cold.
+The boundary files stop at the county in most of the world and at ADM3 units
+that are not municipalities in much of the rest, so the level where a mayor and
+a council sit has no polygon in `cgaz-boundaries`.
 
-`cgaz-boundaries` has one file per country per level. Most countries stop at
-ADM2. **The United States, Brazil, India, Indonesia, Vietnam and Thailand have
-no ADM3 file at all**, so for the US the deepest polygon is the county. Kenya,
-France, the Philippines, Germany, the UK and Nepal do have ADM3.
+**The search path solves this by name** (§1): one place, one Nominatim request,
+polygon and Wikidata id included.
 
-Counties are not where most people's government is. So when a boundary file
-404s, the map asks Wikidata for the settlements inside the unit and draws them
-as **open rings** rather than filled markers — somewhere to go into, not an
-office to contact. Click one and its own offices resolve: a city hall, a mayor,
-a council.
+**The click path uses Overpass.** When a boundary file 404s,
+`loadMunicipalities()` asks for every `admin_level=8` relation in the open
+unit's bounding box and draws them as polygons. This is the slow path and it is
+why the search exists.
 
-The query is `qSettle()`. It matches two ways, joined by UNION:
+**Outlines only. There are no municipality points.** A second, faster pass
+(`loadSettlements`/`qSettle`) used to draw Wikidata settlements as rings while
+the polygons loaded. It is gone, with `SUBS`, `setSubs`, `enterSettlement` and
+the `sub-dot`, `sub-label` and `sub-hit` layers. Keeping both meant one town
+could be a ring **and** a polygon at once, each with its own click handler and
+its own panel. Do not re-add a ring pass as a "fast path" without solving that.
 
-1. a settlement class — city, town, village, municipality and a few others, as
-   a fixed `VALUES` list;
-2. the plain fact that the place has a head of government (P1313) or a
-   legislature (P194) of its own.
+### Why this was written off as impossible, and was not
 
-The second clause is what makes it work. Pasadena's class is "charter city",
-not "city in the United States", and a class list alone misses it. With both
-clauses Los Angeles County returns 86 of its 88 incorporated cities in about
-two seconds.
+OSM was previously recorded as unreachable. That was wrong. `overpass-api.de`
+returns a bare nginx **406 Not Acceptable** to a request that sends no
+client-identifying header, which reads exactly like a block. A browser always
+sends one, so this had been working from the page all along.
 
-**Do not replace the `VALUES` list with a subclass walk** (`?cls wdt:P279*
-wd:Q486972`). It is the obvious tidy-up and it times out — that query never
-returned inside 60 seconds in testing. The broader `Q486972` human-settlement
-class also drags in neighbourhoods and road junctions, which have no officials;
-"North Sherman Way" and "Orange Avenue Junction" came back in that version.
+### A relation is not a polygon
 
-A municipality has no polygon, so stepping into one keeps the parent's outline
-on the map and only the offices change. `enterSettlement()` pushes it onto
-`STACK` with `feature:null`, and the rest of the chain logic already handles a
-level without geometry.
+Overpass returns a relation as an unordered bag of way fragments, any of which
+may need reversing to join the next. `osmRings` joins them end to end;
+`osmPolygon` puts each inner ring inside the outer ring containing it.
+Endpoints are compared **exactly**, not within a tolerance: Overpass echoes a
+shared node's coordinates verbatim in every way that uses it, so exact
+comparison is correct and a tolerance would weld together ways that genuinely
+do not touch.
 
-### Why municipalities are points and not polygons
-
-This is the open question on the map, and it is a data problem, not a code one.
-The numbers below were measured against the live boundary repository, not
-assumed:
-
-- **93 of 198 countries** in the world file have an ADM3 or ADM4 file at all
-  (38 have ADM3, 90 have ADM4, with overlap).
-- **The United States has neither.** `USA3.geojson` and `USA4.geojson` both
-  404. The county is the deepest American boundary in the repository.
-- Where the deeper files do exist, **they are usually not municipalities**.
-  France's ADM3 holds 320 features — those are arrondissements, not the roughly
-  35,000 communes. Kenya's ADM3 is 1,452 wards. Germany's ADM3 is 428.
-
-So "draw municipalities as polygons, everywhere" cannot be done from
-`cgaz-boundaries`. Drilling already reaches ADM3 and ADM4 wherever they exist,
-because `drawAdm` just asks for `level+1` until a file 404s — but arriving at
-ADM4 in France still does not arrive at a commune.
-
-### This is now done, from OpenStreetMap
-
-**OpenStreetMap `admin_level=8` is in place**, which is the municipality level
-in most countries. It was previously written off as unreachable; that was
-wrong. The blocker was never the network — `overpass-api.de` rejects a request
-with no `User-Agent` header, returning a bare nginx `406 Not Acceptable` that
-looks like a block. A browser always sends one, so this had been working from
-the page all along.
-
-What it does: when a boundary file 404s, the map asks Overpass for every
-`admin_level=8` relation in the open unit's bounding box and draws them as real
-polygons.
-
-**Outlines are the only thing drawn. There are no municipality points.** There
-used to be a second, faster pass (`loadSettlements`/`qSettle`) that drew
-Wikidata settlements as rings while the polygons were still loading. It is
-gone, along with `SUBS`, `setSubs`, `enterSettlement` and the `sub-dot`,
-`sub-label` and `sub-hit` layers. Keeping both meant one town could be a ring
-and a polygon at the same time, each with its own click handler and its own
-panel, so clicking the place you live opened two different things depending on
-which pixel you hit. The cost of removing it is that nothing appears at
-municipal level until Overpass answers, which can be a minute or more — that
-delay is the price of there being exactly one of each place. Do not re-add the
-ring pass as a "fast path" without solving the two-objects problem first.
-
-Measured against Los Angeles County, live:
-
-- Overpass returned **150 relations** in the county bounding box, 2.7 MB.
-- All **150 of 150 stitched into closed rings** (see below on why that is not
-  automatic), 43,659 coordinate points, 1.2 MB of GeoJSON, 314 KB gzipped.
-- The centroid-in-parent filter cut it to **95 inside the county**, dropping
-  Anaheim, Irvine and Fullerton (Orange), Fillmore and Casa Conejo (Ventura),
-  Chino (San Bernardino).
-- **85 of the 95 carry a `wikidata` tag**, which is the office lookup's key, so
-  those skip name matching entirely — and with it the wrong answers name
-  matching gives for towns that share a name.
-- Spot-checked geometrically: Pasadena City Hall falls inside Pasadena and
-  outside Burbank; Sierra Madre City Hall falls inside Sierra Madre.
-
-**A relation is not a polygon.** Overpass returns it as an unordered bag of way
-fragments, any of which may need reversing to join to the next. `osmRings`
-joins them end to end and `osmPolygon` puts each inner ring inside the outer
-ring that contains it. Endpoints are compared exactly, not within a tolerance:
-Overpass echoes a shared node's coordinates verbatim in every way that uses it,
-so exact comparison is correct, and a tolerance would weld together ways that
-genuinely do not touch.
-
-**Do not await this on the click path.** The LA County query took 102 seconds
-on a first, cold call. `loadMunicipalities` is fired without `await` and guards
-itself with `MUNI_GEN`, a counter every call captures and re-checks before it
-paints — without it a slow county repaints itself over whatever the reader has
-since opened.
-
-**The public endpoints are genuinely unreliable**, and differently from one
-another: during this work `overpass-api.de` and `overpass.kumi.systems` each
-returned 504s and refused connections at various points, minutes apart. That is
-why `OVERPASS` is a list tried in order rather than one host, and why a total
-failure is not an error state — the rings are already drawn and simply stay.
-
-### Measured outside the United States, and below the municipality
-
-The first write-up of this said the query shape was unproven outside the US
-because every attempt timed out. Those runs later completed. All of them
-stitched cleanly, so the shape holds:
+### Measured
 
 | Unit | Relations | Stitched | With `wikidata` | Raw | Server time |
 | --- | --- | --- | --- | --- | --- |
@@ -223,144 +148,108 @@ stitched cleanly, so the shape holds:
 | Vaucluse, FR | 391 | 391 | **391** | 8.9 MB | 240 s |
 | Hérault, FR | 559 | 559 | **559** | 13.4 MB | 214 s |
 | Nakuru, KE | 81 | 81 | **0** | 6.7 MB | 82 s |
-| Gifu/Nagoya, JP | 16 | 16 | **16** | 0.9 MB | 88 s |
+| Gifu/Nagoya, JP | 16 | 16 | 16 | 0.9 MB | 88 s |
 | Pasadena, US (level 9) | 7 | 7 | 0 | 83 KB | fast |
 
-Three things follow from that table.
+Three things follow. **French communes are fully linked to Wikidata** — all 950
+across two départements — so France gets municipal offices without a single
+name guess. **Kenya's wards carry no `wikidata` tag at all**, so they fall back
+to name matching and resolve poorly; that is a gap in OSM, not in the code, and
+counting those tags is the first thing to do when extending to a new country.
+**The sub-municipal level works where OSM has it**: Pasadena returns seven
+council districts at `admin_level=9`, all seven stitch, and Pasadena City Hall
+falls inside exactly one of them — District 5 — which also shows the districts
+partition the city without overlapping. They carry no Wikidata ids, so they
+draw and are clickable but resolve no offices of their own.
 
-**French communes are fully linked to Wikidata** — every one of the 950 across
-two départements — so France gets municipal offices without a single name
-guess. **Kenya's wards carry no `wikidata` tag at all**, so they fall back to
-name matching and will resolve poorly. That is a gap in OSM, not in the code,
-and it is the main thing to check before trusting this in a new country: query
-a unit and count the `wikidata` tags.
+### Rules that are load-bearing
 
-**The sub-municipal path works and returns something worth having.** Stepping
-inside Pasadena returns its seven council districts at `admin_level=9`, all
-seven stitch, and Pasadena City Hall falls inside exactly one of them —
-District 5 — which is the right answer and also shows the districts partition
-the city without overlapping. They carry no Wikidata ids, so they draw and are
-clickable but resolve no offices of their own. For a map about who to contact,
-knowing which council district an address sits in is most of the value even
-without that.
-
-**A city may have two levels below it, and only the shallower is drawn.**
-Paris returns 21 arrondissements at `admin_level=9` and 200 quartiers at
-`admin_level=10` in the same response, and the quartiers nest inside the
-arrondissements. Drawing both puts one set of polygons on top of the other in a
-single layer, so every click lands on two units at once. `loadMunicipalities`
-keeps the shallowest level present and drops the rest, which is how every other
-level of this map behaves — you step down into the next one rather than seeing
-both. If you ever want the deeper set drawn, that is the filter to change, and
-the layer will need to separate them.
-
-**Names come back in the local script.** Japan returns 港区, 守山区 and so on,
-with no `name:en` on most of them. The loader reads `name:en` first and falls
-back to `name`, so those draw under their Japanese names rather than not at
-all. Do not reverse that order.
-
-**Payload is the real ceiling, not the 6° guard.** Hérault is 1.6° wide and
-still returns 13.4 MB. The stitching itself is free — 20 ms for 559 relations —
-so the cost is entirely download plus the two to four minutes Overpass spends
-computing. Note that anything over about 5 MB will not fit in `localStorage`,
-so `cset` fails silently and those units re-query every time. If that becomes
-the thing to fix, the fix is tiles, not a better query.
-
-**Endpoint reliability is worse than the list implies.** Across this work
-`overpass.kumi.systems` returned 504s on most large queries and
-`overpass.private.coffee` carried nearly all of the ones that completed, often
-after three to four minutes. Expect to wait, and expect the first host to fail.
-
-Two further limits worth knowing:
-
-- **A bounding box wider than 6° is skipped.** Asking for every
-  `admin_level=8` relation in a country-sized box means about 35,000 communes
-  for France; it times out at the server and would not decode here either.
-  Counties and small regions are what this is for.
+- **The fetch timeout must outlast the response.** It was 90 s against measured
+  times of 88 s, 214 s and 240 s, so every request died just before it answered
+  and municipalities never appeared. It is 300 s now, server-side cap 240 s.
+  The reader is told the wait is one to four minutes, because an empty map with
+  no explanation reads as a broken one.
+- **Never `await` this on the click path.** `loadMunicipalities` is fired
+  without `await` and guards itself with `MUNI_GEN`, a counter each call
+  captures and re-checks before painting — without it a slow county repaints
+  itself over whatever the reader has since opened.
+- **A bounding box wider than 6° is skipped.** Every `admin_level=8` relation
+  in a country-sized box is about 35,000 communes for France; it times out at
+  the server and would not decode here either.
 - **Stepping inside a municipality asks for `admin_level` 9 or 10**, not 8.
-  Asking for 8 again inside a city returns that same city, which would then be
-  drawn as its own subdivision. Most countries have nothing at 9 or 10 and the
-  result is simply empty, which correctly leaves the city as the deepest unit.
+  Asking for 8 again returns that same city, drawn as its own subdivision.
+- **Only the shallowest level returned is drawn.** Paris returns 21
+  arrondissements at 9 and 200 quartiers at 10 in one response, and the
+  quartiers nest inside the arrondissements; drawing both stacks two sets of
+  polygons in one layer and every click lands on two units at once.
+- **Names come back in the local script.** Japan returns 港区, 守山区 with no
+  `name:en` on most. The loader reads `name:en` first and falls back to `name`.
+  Do not reverse that order.
+- **The public endpoints are unreliable, and differently from each other.**
+  During this work `overpass-api.de` and `overpass.kumi.systems` each returned
+  504s and refused connections minutes apart, and
+  `overpass.private.coffee` carried nearly everything that completed. That is
+  why `OVERPASS` is a list tried in order, and why total failure is not an
+  error state.
 
-Still unused, and still the only thing that would give the United States
-municipal boundaries without a live query: **US Census generalized places**,
-`https://www2.census.gov/geo/tiger/GENZ2023/shp/cb_2023_us_place_500k.zip`,
-22.8 MB zipped, every incorporated place in the country with a real boundary.
-Reachable and confirmed.
+### Why the default view is not municipal polygons everywhere
 
-### Why the default view is counties and not municipalities
-
-Same problem plus a size ceiling. The current world file is 48,263 units — one
-level per country, ADM2 where it exists — and that is 4.1 MB gzipped. Municipal
-coverage worldwide is on the order of hundreds of thousands of polygons; France
-alone has about 35,000 communes against the 48,263 the whole world file holds
-now. A single file at that depth would be tens of megabytes and would not
-decode in a browser in reasonable time.
-
-Doing it properly means vector tiles rather than one file — PMTiles would suit,
-and a tiled build is the only path to a municipality-level default view.
+Payload, not the 6° guard. Hérault is 1.6° wide and still 13.4 MB. Stitching is
+free — 20 ms for 559 relations — so the cost is download plus the two to four
+minutes Overpass spends computing. Anything over about 5 MB will not fit in
+`localStorage`, so `cset` fails silently and those units re-query every time.
+The fix for that is tiles, not a better query (§10).
 
 ---
 
 ## 3. Where the data comes from
 
-**Offices: Wikidata Query Service**, live, CORS-enabled, no key. Four queries
-per jurisdiction, fired in order of how fast they return:
+**Offices: Wikidata Query Service**, live, CORS-enabled, no key.
 
 1. `qCore` — the jurisdiction's own website/email/phone, its legislature
-   (P194), its head of government (P1313) and head of state (P1906). Under a
-   second.
+   (P194), head of government (P1313), head of state (P1906). Under a second.
 2. `qJuris` — everything with `applies to jurisdiction` (P1001). About a
-   second, capped at 600 rows. **This is a sample, not a census**: the United
-   States has 13,508 such records, so this query alone was missing Congress.
-3. `qPositions` / `qBodies` — offices and public bodies specifically, walking
-   the class tree. Slow (20–30s for the US, 1–3s for most) but this is what
-   makes the branches correct. Cached a week.
+   second, capped at 600 rows. **A sample, not a census**: the US has 13,508
+   such records, so this query alone was missing Congress.
+3. `qPositions` / `qBodies` — offices and public bodies, walking the class
+   tree. Slow (20–30 s for the US, 1–3 s for most) but this is what makes the
+   branches correct. Cached a week.
 4. `qByCountry` — agencies linked by `country` (P17), which is how
-   govdirectory.org models them. For Kenya that is 185 against P1001's 112,
-   and the two sets barely overlap. Run only at country level.
+   govdirectory.org models them. For Kenya that is 185 against P1001's 112, and
+   the two sets barely overlap. Country level only.
 
-Plus `qSettle` (§2) when the boundary files run out, and `qCoords` /
-`qCoordsCountry` for pin positions.
+`loadChainPins()` uses **only 1 and 2** for the levels that are not open: it is
+placing markers, not drawing branches, and the slow queries are not worth it.
 
-**Boundaries:** `world_lowest.topojson` for the default view;
-`cgaz-boundaries` per country per level when drilling.
+**Marker coordinates: `qCoordsFor(ids)`**, which asks for P625 (falling back to
+headquarters P159 → P625) for *exactly* the office ids the classifier already
+produced, in batches of 180.
 
-**Coordinates:** P625, falling back to headquarters P159 → P625. Sparse —
-Kenya 101 of 239, the US 109 of 13,508. The pin counter says how many were
-placed so the gap is visible rather than hidden.
-
-**The Overpass fetch timeout must outlast the measured response times.** It was
-90 s against responses measured at 88 s (LA County), 214 s (Hérault) and 240 s
-(Vaucluse), so every request was aborted just before it answered and
-municipalities never appeared at all. It is 300 s now, with the server-side cap
-in the query raised to 240 s. The reader is told the wait is one to four
-minutes, because an empty map with no explanation reads as a broken one.
+**Places:** Nominatim (§1). **Boundaries:** `world_lowest.topojson`, plus
+`cgaz-boundaries` per country per level when drilling. **Municipal polygons:**
+Nominatim on the search path, Overpass on the click path.
 
 **Expect HTTP 429 from Wikidata while testing.** Running the same query in a
-loop will get you rate-limited, and because `loadSettlements` swallows its
-errors the symptom is an empty result that looks exactly like a code bug. It
-cost an hour here. If a query returns nothing, check for a 429 before you go
-looking for the mistake.
+loop gets you rate-limited, and because these loaders swallow their errors the
+symptom is an empty result that looks exactly like a code bug. One test run
+here reported 0 pins and 81 offices; the next, with no code change, reported 42
+and 150. Re-run before investigating.
 
-**Not usable:** the CIA world-leaders page and phonebookoftheworld.com both
-serve without CORS headers, so a browser cannot fetch them. They would need a
-server-side scraper, which a self-contained file cannot have. govdirectory.org
-is reachable but is itself built on Wikidata, so it adds nothing beyond the P17
-query above.
+**Not usable:** the CIA world-leaders page and phonebookoftheworld.com serve
+without CORS headers. govdirectory.org is reachable but is itself built on
+Wikidata.
 
 ---
 
 ## 4. The worldwide boundary file
 
-The problem: `cgaz-boundaries` is 1.65 GB across 789 files, one per country per
-level. A browser cannot load that.
+`cgaz-boundaries` is 1.65 GB across 789 files. `world_lowest.topojson` is the
+deepest level each country has — ADM2 where it exists, ADM1 otherwise —
+simplified and quantised: 201 countries, 48,263 features, 34.4 MB raw GeoJSON →
+17.9 MB TopoJSON → **4.1 MB gzipped**, decoding in about 200 ms.
 
-The solution: one file holding the deepest level each country has — ADM2 where
-it exists, ADM1 otherwise — simplified and quantised.
-
-Build script was `build_world.py` plus `topo.py`. **Neither is in this repo**,
-same as the other build parts. To reproduce, clone `cgaz-boundaries` and:
+Build scripts (`build_world.py`, `topo.py`) are **not in this repo**. To
+reproduce, clone `cgaz-boundaries` and:
 
 ```
 pip install --break-system-packages shapely topojson
@@ -368,47 +257,36 @@ python3 -I build_world.py 0.01     # tolerance in degrees, ~1 km
 python3 -I topo.py 20000           # quantisation
 ```
 
-Result: 201 countries, 48,263 features, 34.4 MB raw GeoJSON → 17.9 MB TopoJSON
-→ **4.1 MB gzipped over the wire**. Decodes in about 200 ms. Slivers below the
-tolerance squared are dropped so tiny offshore fragments do not bloat it.
-
-Putting ADM3 into this file is the obvious way to get municipalities drawn as
-polygons rather than rings. It would not help the United States, which has no
-ADM3 at all, and it would grow the file several times over. Check the gzipped
-size before committing anything that tries.
+Slivers below the tolerance squared are dropped. Check the gzipped size before
+committing anything that tries to add a deeper level.
 
 ---
 
 ## 5. The Atlas plate calibration
 
-**This was a real bug and the fix is empirical — do not "tidy" these numbers.**
+**A real bug with an empirical fix — do not "tidy" these numbers.**
 
 The Culprits basemap module places the painted Atlas plate as if it covered a
 full Web Mercator world, ±85.0511°. It does not: the painting stops short of
-Antarctica. The result was that the painted land sat visibly south of true
-geography, and the boundaries appeared misaligned on the Atlas basemap while
-being correct on the satellite one.
+Antarctica, so painted land sat visibly south of true geography.
 
-How it was measured: render plate-only and a filled country layer in pure red
-at the same view, build a land mask from each, and search for the (dx, dy) that
-maximises overlap. Four views at different latitudes. dx was 0 everywhere; dy
-varied with latitude, which means a scale error rather than a shift. Solving for
-the zero crossing between the shipped values and a first correction gave:
+Measured by rendering plate-only and a filled country layer in pure red at the
+same view, building a land mask from each, and searching for the (dx, dy) that
+maximises overlap, at four latitudes. dx was 0 everywhere; dy varied with
+latitude, meaning a scale error rather than a shift:
 
 ```
 PLATE.top    =  85.37670536
 PLATE.bottom = -81.20886926
 ```
 
-Residual error 3–8 px in a 1351 px world. These numbers are now written into
-the inlined basemap module in the page itself, since `plate_cal.json` and the
-assembly step that patched them in are gone. Search `PLATE` in the file.
+Residual 3–8 px in a 1351 px world. Search `PLATE` in the file.
 
-Two false leads worth remembering: comparing the atlas basemap against the
-satellite basemap gives zero offset at any zoom, because above zoom 3 the
-satellite imagery is blended into the atlas and you are comparing an image to
-itself. And colour-thresholding a painting to find its coastline does not work —
-the correlation peaks come back at noise level.
+Two false leads: comparing the atlas basemap against the satellite basemap
+gives zero offset at any zoom, because above zoom 3 the satellite imagery is
+blended into the atlas and you are comparing an image to itself. And
+colour-thresholding a painting to find its coastline returns peaks at noise
+level.
 
 ---
 
@@ -417,97 +295,93 @@ the correlation peaks come back at noise level.
 No global register of office powers exists, so the map reads the title and the
 Wikidata class, in order of precedence:
 
-- `isTenure()` — drops periods of time: "presidency of Barack Obama" is classed
-  `presidential term`, not an office.
+- `isTenure()` — drops periods of time: "presidency of Barack Obama".
 - `RX_DOC_CLS` — drops laws, rulings, elections. **Tested on the label as well
   as the class**, because Wikidata often returns no class and "2022 Kenyan
-  general election" would otherwise be read as an elections office.
+  general election" would otherwise read as an elections office.
 - `RX_SYMBOL` — drops flags, currencies, borders, list articles.
-- `RX_DIPLO` — drops foreign missions and ambassadors.
+- `RX_DIPLO` — foreign missions. It used to catch only embassies and
+  ambassadors, which missed how a sub-national government abroad is modelled:
+  Kenya was listing "delegate of the Government of the Generalitat of Catalonia
+  in Meridional and Eastern Africa" among its own legislators, because that
+  office carries Kenya as its `applies to jurisdiction`. A mission accredited
+  **to** a place is not an office **of** it. It now also catches delegation,
+  delegate of the government, permanent representative, permanent mission,
+  mission to the, representation of the, trade office, consul and generalitat.
+  For Kenya this took the office list from 158 to 150 and the markers from 101
+  to 42.
 - `B[]` — fourteen patterns, **ordered narrowest first**. Presiding officers
   before chambers, police before agencies, law officers before departments.
   Reordering this array changes results.
 
-Each kind maps to `KIND_ROUTES` (which contact methods apply) and
-`KIND_HURDLES` (which obstacles). Those ids must match `ROUTES` ids and
-`HURDLES` keys — there is a check for this in §9.
+`classifyRows(core, items)` does the work; `buckets()` is a thin wrapper that
+passes the open jurisdiction. `loadChainPins` calls `classifyRows` directly for
+levels that are not open.
 
-Agencies are grouped by `themeOf()` into twelve themes by keyword.
+Each kind maps to `KIND_ROUTES` and `KIND_HURDLES`; those ids must match
+`ROUTES` ids and `HURDLES` keys. Agencies are grouped by `themeOf()` into
+twelve themes by keyword.
 
-**`RX_DIPLO` covers delegations, not just embassies.** It used to match
-`embassy|consulate|high commission|diplomatic|legation|nunciature|ambassador|envoy|chargé`,
-which missed the way a sub-national government abroad is modelled: Kenya was
-listing "delegate of the Government of the Generalitat of Catalonia in
-Meridional and Eastern Africa" among its own legislators, because that office
-carries Kenya as its `applies to jurisdiction`. A mission accredited **to** a
-place is not an office **of** it. The pattern now also catches delegation,
-delegate of the government, permanent representative, permanent mission,
-mission to the, representation of the, trade office, consul and generalitat.
-For Kenya this took the office list from 158 to 150 and the map markers from
-101 to 42 — the markers fell furthest because Nairobi hosts a great many
-foreign missions and `loadPins` was running no filters at all (below).
+**`B[]` is also what the hover cards say.** `KINDINFO` is built from the same
+array at startup, so a box's `what` and `how` are the same text the office
+entry under it uses. There is no second copy to keep in step.
 
 **`officeLabel()` is the single place a title's shape is decided.** Wikidata
 stores titles in no consistent case — "member of the National Assembly" next to
 "President of Kenya" — and some arrive with doubled spaces, wrapping quotes or
-a trailing comma. Every title now passes through `officeLabel()`, which fixes
-capitalisation, spacing and stray punctuation and **nothing else**. It does not
-reword a title: the words are the office's real name, and a tidier invented one
-would be a fabrication. If you want different wording, change the source, not
-this function.
-
-**`B[]` is also what the hover cards say.** `KINDINFO` is built from the same
-array at startup, so each box's `what` and `how` are the same text the office
-entry under it uses. Change a pattern's wording and the card changes with it;
-there is no second copy to keep in step.
+a trailing comma. It fixes capitalisation, spacing and punctuation and
+**nothing else**. It does not reword a title: the words are the office's real
+name, and a tidier invented one would be a fabrication.
 
 ---
 
 ## 7. The diagram
 
-Mermaid, `flowchart TB`, drawn top to bottom. It was briefly replaced with an
-indented list of HTML boxes and then put back — if you are tempted to replace it
-again, the reason it was replaced was that a Mermaid node only responds to
-clicks where Mermaid drew it, which made most boxes dead. That is fixed by
-registering a `click` for every node, which the builder now does.
+Mermaid, `flowchart TB`, drawn top to bottom.
 
-**One chart per branch, stacked**, not one chart for everything. All four
-branches in a single chart puts sixteen columns of offices side by side and
-runs past 2,000 px, which can only be read by dragging. One branch is at most
-five kinds and fits the panel. `branchDiagram(b, br)` builds one; `render()`
-calls it four times into four containers. `NODE` is cleared once per render in
-`render()`, not inside the builder, because the four charts share one key space.
+**Clicks are bound in `bindCards()`, not by Mermaid.** Mermaid's
+`click … call` directive does not work in this page and fails silently: nodes
+come out marked `clickable` with a pointer cursor, `bindFunctions` runs and
+does not throw, and no handler ever fires — so every box was dead and the
+office pages behind them unreachable. The same chart source clicks correctly
+rendered on its own, so the cause is something about four charts rendered into
+four containers rebuilt on each re-render. `bindCards` binds against whatever
+nodes are in the DOM at that moment and is already called after every render.
+**If you restore the Mermaid directive, keep this too — it is the one that
+works.**
+
+**One chart per branch, stacked.** All four in a single chart puts sixteen
+columns side by side and runs past 2,000 px. `branchDiagram(b, br)` builds one;
+`render()` calls it four times. `NODE` is cleared once per render in `render()`,
+not in the builder, because the four charts share one key space.
 
 **Two shapes carry the one distinction that matters** — what a click does. A
-rounded box (`classDef off`) is an office and opens a page of its own. A square
-box (`classDef grp`) is a branch, a kind, or a "the other N" control, and only
-folds or expands. The `.shapekey` row above the diagrams states it in words.
-If you add a third kind of node, give it one of those two shapes or the rule
-stops meaning anything.
+rounded box (`classDef off`) is an office and opens its own page. A square box
+(`classDef grp`) is a branch, a kind or a "the other N" control, and only folds
+or expands. The `.shapekey` row says so in words. A third shape would break the
+rule.
 
 - Offices stack in a **column** under their kind: the first joined by an arrow,
-  the rest by invisible links (`~~~`). Without that they lay out in one
-  horizontal row and the chart went 3,031 px wide for a single test country.
-- `useMaxWidth:true` scales each chart to the panel. A chart that would fall
-  below 55% of its natural size keeps that floor and scrolls instead, because
-  past that the labels stop being readable.
-- `CAP = 12` offices per kind, then a "the other N" node. The United States
-  returns over 13,000 records and drawing them all at once locks the page.
-  Raise it if you like, but test with the US.
-- **Hover cards are not Mermaid's tooltips.** Mermaid's are one line of
-  unstyled plain text. `bindCards()` attaches real handlers to each `.node`
-  after render and positions `#mmcard` near the pointer. It recovers the node
+  the rest by invisible links (`~~~`). Without that the chart went 3,031 px
+  wide for a single test country.
+- `useMaxWidth:true` scales each chart to the panel, with a 55% floor below
+  which it scrolls instead, because past that labels stop being readable.
+- `CAP = 12` offices per kind, then a "the other N" node. The US returns over
+  13,000 records and drawing them all locks the page. Test with the US.
+- Branch boxes carry no count. The kinds beneath them already say how many,
+  including "none", and a bare number against "Judicial" read as a score.
+- `mmText` cuts at a word boundary with an ellipsis. Cutting at exactly 46
+  split words in half — "Deputy Speaker of the National Assembly of Ken".
+- **Hover cards are not Mermaid's tooltips.** `bindCards()` recovers the node
   key from the rendered element id with `/(?:^|-)(n\d+)(?:-|$)/`, because
   Mermaid prefixes and suffixes what you give it. **If a Mermaid upgrade
-  changes that id format, every hover card goes silently dead** — nothing
-  throws, the cards just stop appearing.
+  changes that id format, the cards and the clicks both go silently dead.**
 
 ---
 
 ## 8. Rankings, not success rates
 
-The per-route success percentages were removed. Each route now shows an ordinal
-band instead:
+Per-route percentages were removed. Each route shows an ordinal band:
 
 | Band | From |
 | --- | --- |
@@ -519,134 +393,154 @@ band instead:
 A base success rate and a percentage-point effect are different quantities, so
 each is banded against its own kind. The thresholds are the ones the bar
 colours always used, so nothing was invented to produce the ranking — the
-numbers are still in `ROUTES`, they are just not displayed. **Routes within an
-office are sorted by band, best first**, so the order of the list is itself the
-answer to which route to try.
-
-Unmeasured routes are marked unmeasured rather than ranked last. No measurement
-is not a low score, and ten of the routes have no denominator because nobody has
+numbers are still in `ROUTES`, just not displayed. **Routes are sorted by band,
+best first**, so the order of the list is itself the answer to which to try.
+Unmeasured routes are marked unmeasured rather than ranked last: no measurement
+is not a low score, and ten routes have no denominator because nobody has
 counted attempts.
 
+The routes are drawn as **tiles in a grid**, each a button with the ranking as a
+pill on its face so they can be compared without opening any, and one opens at
+a time taking the full row (`toggleRoute`). They were a stack of full-width
+rows that read as a form to scroll past.
+
 Two things still contain percentages, deliberately, because they are evidence
-about obstacles rather than success-rate readouts:
-
-- the **"What usually stops it"** line on five routes (for example: across 98
-  issues tracked 1999–2002, 60% of lobbying campaigns failed to move policy);
-- the **Hurdles** section, which is argument with figures in it.
-
-If those should go too, they are `rt.fail` in `ROUTES` and the `p` arrays in
-`HURDLES`.
-
-What was dropped with the numbers: each rate's `means` (the arithmetic) and
-`caveat` (the "94% agencies quote counts only requests that reached exemption
-review" line). The source name and year are still shown. The caveats were
-honest and useful, and if you want them back the text is untouched in `ROUTES` —
-it was the percentages inside them that made them awkward to keep.
+about obstacles rather than success-rate readouts: the **"What usually stops
+it"** line on five routes, and the **Hurdles** section. They are `rt.fail` in
+`ROUTES` and the `p` arrays in `HURDLES`.
 
 ---
 
 ## 9. Traps
 
-- **`queryRenderedFeatures` is unreliable under globe projection.** It returns
-  zero for features that are plainly drawn. Anything that needs to know what is
-  under a point uses the in-memory `CTRY_FEATURES` and the `inGeom`
-  point-in-polygon test instead. Do not reintroduce it.
-- **`--r-high`, `--r-mid`, `--r-low`, `--r-none` were used but never defined**
-  for a long time, so the ranking bars rendered with no colour at all. They are
-  defined in `:root` now. Worth checking any other `var(--…)` you add actually
-  exists.
-- **Mermaid's `click … call` directive does not work in this page, and fails
-  silently.** The nodes come out marked `clickable` with a pointer cursor,
-  `bindFunctions` runs and does not throw, and no handler ever fires — so every
-  box in the diagram was dead and the office pages behind them were
-  unreachable. The same chart source clicks correctly when rendered on its own,
-  so the cause is something about four charts rendered into four containers
-  that are rebuilt on each re-render. Clicks are now bound in `bindCards()`,
-  alongside the hover cards, against whatever nodes are in the DOM at that
-  moment. Keep them there. If you re-add the Mermaid directive, do not remove
-  this.
+- **A silent `catch` hid every one of the worst bugs here.** See §0.
+- **The camera would not move on the first click.** `shiftForBox` holds a
+  persistent right-hand padding on the camera while the panel is open, and
+  `fitTo` was adding its own on top — double-counting a panel that covers most
+  of the window. Worse, `fitTo` fires 60 ms after `openModal`, inside
+  shiftForBox's own 600 ms `easeTo`, and `fitBounds` into a running camera
+  animation with that padding throws `Cannot read properties of undefined
+  (reading 'center')`. That is the first click any reader makes. The markers
+  were drawn correctly, on the far side of the globe. `shiftForBox` now applies
+  padding instantly; `fitTo` calls `map.stop()`, keeps padding even, and falls
+  through `fitBounds` → smaller padding → `easeTo` → `jumpTo`. Something has to
+  move the camera.
+- **`fitTo`'s zoom cap follows the size of what it fits.** A flat cap of 9 left
+  a town as a speck.
 - **`resolveUnitIn`'s ranking was wrong in both directions.** It originally
-  returned the exact name match LAST — the two terms of the comparator were the
-  wrong way round — and since `SUFFIXES` tries "<name> City", California
-  resolved to California City, a town of 14,000 in Kern County, and every
-  office above the county came from there. Simply reversing it is also wrong:
-  the boundary files name Los Angeles County "Los Angeles", whose exact match
-  is the city. The level is now passed in (`WANT_REGION`, `WANT_DISTRICT`) and
-  a candidate of the right kind beats one of the wrong kind whatever its name;
-  only then does an exact match break the tie. Check both California and Los
-  Angeles County after touching this — they fail in opposite directions.
-- **`loadPins` ran none of the office filters.** The coordinate query is
-  separate from the office list, so a record the diagram had already rejected
-  could still sit on the map as a contact marker — foreign high commissions in
-  Nairobi among Kenya's own offices. It now applies `RX_DIPLO`, `isTenure`,
-  `RX_DOC_CLS` and `RX_SYMBOL`, and passes names through `officeLabel()`. If
-  you add a filter to the office list, add it here too; nothing keeps the two
-  in step automatically.
-- **An empty pin set is usually a 429, not a bug.** `loadPins` swallows its
-  errors, so a rate-limited coordinate query looks exactly like a correct empty
-  result. One test run here reported zero pins and 81 offices; the next, with
-  no code change, reported 42 and 150. Re-run before investigating.
-- **`noteBelow()` was writing to an element that did not exist.** `#admnote`
-  was referenced by the function but was in none of the markup — it was
-  presumably in one of the lost build parts. So every explanation it was meant
-  to put under the map, including the long-standing "the boundary files stop
-  here" line, had been silently going nowhere. The div is now in `#trail` next
-  to `#pincount`. If you add another `$('#id')` write, check the id is actually
-  in the document.
+  returned the exact name match LAST — the comparator's terms were reversed —
+  and since `SUFFIXES` tries "<name> City", California resolved to California
+  City, a town of 14,000 in Kern County, and every office above the county came
+  from there. Simply reversing it is also wrong: the boundary files name Los
+  Angeles County "Los Angeles", whose exact match is the city. The level is now
+  passed in (`WANT_REGION`, `WANT_DISTRICT`) and a unit of the right kind beats
+  one of the wrong kind whatever its name; only then does an exact match break
+  the tie. **Check both California and Los Angeles County after touching this —
+  they fail in opposite directions.**
+- **Markers used to come from `qCoords`, which is not a list of offices.** It
+  asks for everything with `applies to jurisdiction` = this place that has a
+  coordinate, so Los Angeles County returned 573 markers: Ergomotion Inc.,
+  Penthouse World Broadcasting LLC, Venturi Astrolab Inc., the McMartin
+  preschool trial, the San Diego Humane Society. Companies regulated there and
+  events that happened there. Markers now come from the ids the classifier
+  produced. `qCoords` is left in the file, unused.
+- **A municipality with no `wikidata` tag is not name-matched.** Thousands of
+  towns share a name; the matcher returned whichever Wikidata ranked first, so
+  a small town could open another country's offices under its own name. Units
+  with no id are drawn and named from OSM and say they have no record.
+- **`queryRenderedFeatures` is unreliable under globe projection.** It returns
+  zero for features that are plainly drawn. Anything needing to know what is
+  under a point uses `CTRY_FEATURES` and `inGeom`. Do not reintroduce it.
+- **`noteBelow()` wrote to an element that did not exist.** `#admnote` was
+  referenced but in none of the markup, so every explanation it was meant to
+  put under the map had been going nowhere. If you add another `$('#id')`
+  write, check the id is in the document.
 - **A blind find-and-replace over the source will hit object keys.** A pass
-  replacing the word "docket" renamed a key in the hurdles data and broke the
-  file.
-- **`LIMIT` without `ORDER BY` returns a non-deterministic sample.** This is why
-  the branch lists need the targeted queries, not just `qJuris`.
-- **The targeted office queries take 20–30s for large countries.** They run
-  behind the fast ones and are cached a week. If they appear to fail in testing
-  from a sandboxed environment, that is usually the proxy killing a long
-  connection, not the query.
-- **The panel and the bottom-left trail can collide.** They are sized
-  independently: the panel is `min(980px,58vw)` with an 18px right margin, the
-  trail is capped at `min(420px,32vw)`. That clears at every width from 800px
-  up — 42px at the narrowest. Widening the panel without re-checking that sum
-  is what put the panel on top of the key once already.
+  replacing the word "docket" renamed a key in the hurdles data.
+- **`LIMIT` without `ORDER BY` returns a non-deterministic sample.** This is
+  why the branch lists need the targeted queries, not just `qJuris`.
+- **Marker size is a real trap.** Radii that looked right in code (2.2–4.6 px)
+  drew 101 markers for Kenya that could not be found on a painted basemap.
+  Markers are drawn images now: `pinImage()` draws a pin on a canvas and
+  `addPinImages()` registers one per basemap per level colour (25) at startup,
+  because MapLibre cannot tint a raster icon per feature. Each pin carries the
+  image name it wants in `img`, which `setPins()` rewrites.
+- **`loadPins` ran none of the office filters** and put foreign high
+  commissions among Kenya's own offices. Its replacement works from the
+  classifier's own ids, which cannot drift. If you add a filter to the office
+  list, nothing else needs to change.
 
 ---
 
 ## 10. Unfinished
 
 - **Coordinates are the weakest layer.** Roughly a third of offices can be
-  placed. OpenStreetMap would fill much of the gap for town halls and
-  courthouses if someone wants to match them to Wikidata ids.
+  placed. See §11 — the user's own `executive-map` repo holds 145,547 town
+  halls and 256,548 government offices with coordinates, addresses, phone
+  numbers and websites, and that is the obvious fix.
+- **Wikidata is thin at municipal level.** Sierra Madre (pop. ~11,000) resolves
+  to zero offices; the panel shows the city website and four empty branches.
+  That is the real state of the data, not a bug, and §11 is the way out.
+- **Below the municipality** works only where OSM has levels 9/10, and those
+  carry no Wikidata ids, so they draw but resolve no offices. Matching them to
+  council seats in Wikidata is the next step if that level matters.
+- **A municipality-level default view** needs vector tiles rather than a live
+  query. Roughly four rounds of work, and the hard part is the source data, not
+  the tiling: extract `admin_level=8` worldwide from an OSM planet file (~80 GB
+  PBF, or Geofabrik extracts — not Overpass, which would take days at that
+  scale); fill the gaps where 8 is not the municipal tier, the US especially;
+  tile with `tippecanoe`, carrying the `wikidata` tag through as a property;
+  host it. **Hosting is the real constraint** — expect 2–6 GB against GitHub
+  Pages' 1 GB soft limit and 100 MB per file. The cheapest real step is US
+  Census generalized places (`cb_2023_us_place_500k.zip`, 22.8 MB zipped,
+  reachable and confirmed), which solves one country at full speed.
+- **Marker palettes** are five colours per basemap in `LEVELSETS`. Hell and
+  Standard were matched by eye, not measured.
 - **The "Unsorted" group** still catches titles the classifier cannot place —
-  about nine for Kenya, more for the US. Each one is a candidate pattern for
-  `B[]`.
-- **Municipalities now have polygons** from OSM `admin_level=8`, measured in
-  the US, France and Kenya (§2). The open question is no longer whether the
-  query works but **whether a given country's municipalities carry `wikidata`
-  tags**: France's do, every one; Kenya's do not, none of them. Without the tag
-  an office lookup falls back to name matching. Counting those tags is the
-  first thing to do when extending this to a new country.
-- **Below the municipality** works where OSM has it — Pasadena returns seven
-  council districts at `admin_level=9` (§2). What is missing there is Wikidata
-  ids, so those units draw and can be clicked but resolve no offices. Matching
-  them to the council seats in Wikidata is the next step if this level matters.
-- **Overpass payloads are large and slow** — 13.4 MB and three and a half
-  minutes for one French département — and anything over roughly 5 MB will not
-  cache in `localStorage`, so those units re-query on every visit.
-- **Markers are drawn images now, not circles.** `pinImage()` draws a pin —
-  head, point, light core — on a canvas, and `addPinImages()` registers one per
-  basemap per level colour (25 in all) at startup, because MapLibre cannot tint
-  a raster icon per feature. Each pin carries the name of the image it wants in
-  `img`, which `setPins()` rewrites; a basemap change calls `setPins()`, so the
-  markers follow the palette. The old circles were specks at country zoom,
-  where every office in a capital lands on the same few pixels.
-- **Marker palettes** are set per basemap in `LEVELSETS`, five colours each.
-  Hell and Standard were matched by eye against their backgrounds, not measured.
-- **Marker size is a real trap.** A set of radii that looked right in the code
-  (2.2–4.6 px) drew 101 markers for Kenya that could not be found on a painted
-  basemap. If markers "disappear", check the radii and the contrast ring before
-  assuming the data failed — `map.queryRenderedFeatures({layers:['pin-on']})`
-  will tell you they are there.
-- **Overpass local-office lookup** — street addresses and front-desk numbers
-  for town halls and courthouses — is still not back. It was removed because it
-  "could not be tested"; that reason is gone now that §2 shows Overpass working,
-  so this is a straightforward thing to pick up next. It would also be the
-  cheapest fix for the coordinates gap at the top of this section.
+  about nine for Kenya, more for the US. Each is a candidate pattern for `B[]`.
+- **Overpass local-office lookup** was removed because it "could not be
+  tested"; that reason is gone (§2), so it is straightforward to pick up.
+
+---
+
+## 11. Data already in this GitHub account
+
+Measured, not guessed. These are the user's own repos and need no research.
+
+**`executive-map` — the strongest match.** Flat JSON arrays of
+`[lat, lon, name, website, ?, address, ?, phone]`:
+
+| File | Records |
+| --- | --- |
+| `execmap_local_govoffice.json` | 256,548 |
+| `execmap_local_townhall.json` | 145,547 |
+| `execmap_local_police.json` | 132,265 |
+| `execmap_local_firestation.json` | 122,065 |
+| `execmap_local_prison.json` | 11,842 |
+| `execmap_local_diplomatic.json` | 2,280 |
+| `execmap_local_ministry.json` | 299 |
+
+Town halls are exactly the municipal contact point this map lacks, and the
+records carry website, address and phone — "how to reach it" data, not just a
+dot. The repo is 73 MB, so it cannot be loaded whole. The shape that fits: cut
+town halls, government offices and ministries into 10° grid cells (648 cells,
+most empty), publish them as small per-cell JSON files, and fetch only the
+cells overlapping the searched place. That matches how the map now works —
+one place at a time — and would fill the municipal gap for towns Wikidata does
+not record at all.
+
+**`central_bank_independence.html` — a smaller, careful set.** Its `NET.nodes`
+array holds 1,479 nodes across 169 countries, 1,473 with coordinates and 1,185
+of those marked exact: 112 agencies, 101 government bodies, 73 courts, 30 state
+bodies, 29 international bodies, 374 banks. Useful as a coordinate fallback for
+named institutions. **Caveat:** the nodes carry no Wikidata ids, so joining
+them to this map's offices means matching on name, which risks placing an
+office somewhere it is not. Given the no-fabrication standard, any such join
+should be exact-name-plus-country and should mark the coordinate as derived.
+
+**`become-a-gov-official`** holds per-country, per-level office names and
+electoral-commission URLs (`NAT`, `_KE_STD`, and friends). It describes how to
+*stand* for office rather than how to contact one, so it is the right source if
+this map ever adds the electoral route to each office — not for contact data.
+
+**`cgaz-boundaries`** is already in use (§4).
