@@ -503,12 +503,56 @@ it"** line on five routes, and the **Hurdles** section. They are `rt.fail` in
 
 ---
 
-## 11. Data already in this GitHub account
+## 11. Local contacts — `contacts/`
+
+Wikidata is thin at municipal level: it records no offices at all for Sierra
+Madre (pop. ~11,000), so searching your own place could open a panel with four
+empty branches and nothing on the map. The building where the council actually
+sits is not in Wikidata, but it is in OpenStreetMap.
+
+`contacts/` holds **670,845 records in 3,623 cells of 2°**, 63 MB in all, the
+largest file 632 KB — cut from the `executive-map` repo by
+`build/cells.py`-style bucketing. `contacts/index.json` lists the cells that
+exist and names the fields. A municipality fits in one or two cells, so opening
+a place fetches one or two small files rather than anything global: the cell is
+a coarse filter and the polygon is the real one.
+
+| Kind | Code | Records |
+| --- | --- | --- |
+| Government office | `g` | 256,547 |
+| Town hall | `t` | 145,547 |
+| Police | `p` | 132,265 |
+| Fire station | `f` | 122,065 |
+| Prison | `r` | 11,842 |
+| Diplomatic post | `d` | 2,280 |
+| Ministry or department | `m` | 299 |
+
+Nothing is dropped by kind; each record is tagged and the panel says which it
+is. Fields are `lat, lon, name, kind, website, phone, email, address, operator`,
+trailing empties trimmed.
+
+**These do not enter the branch diagram, deliberately.** A town hall is where a
+council meets, not a seat in it. They answer "where do I go and what do I ring",
+which is the part Wikidata cannot answer at this level. They sit at the
+municipality's own level, are coloured with it, and open their own panel
+(`openLocal`), which says plainly that it is a building rather than an office
+with a vote.
+
+Measured: Washington D.C. returns **504 local contacts, 169 with a telephone
+number and 225 with a website**. Sierra Madre returns three — city hall, police,
+fire — with no contact details on any of them, which is what OSM holds.
+
+To rebuild after `executive-map` changes, re-run the bucketing with the field
+map in §11 of this file; it is the only place the index layout is written down.
+
+---
+
+## 12. Other data already in this GitHub account
 
 Measured, not guessed. These are the user's own repos and need no research.
 
-**`executive-map` — the strongest match.** Flat JSON arrays of
-`[lat, lon, name, website, ?, address, ?, phone]`:
+**`executive-map` — now in use (§11).** Flat JSON arrays of
+`[lat, lon, name, website, operator, address, ?, phone, email, hours]`:
 
 | File | Records |
 | --- | --- |
@@ -520,14 +564,7 @@ Measured, not guessed. These are the user's own repos and need no research.
 | `execmap_local_diplomatic.json` | 2,280 |
 | `execmap_local_ministry.json` | 299 |
 
-Town halls are exactly the municipal contact point this map lacks, and the
-records carry website, address and phone — "how to reach it" data, not just a
-dot. The repo is 73 MB, so it cannot be loaded whole. The shape that fits: cut
-town halls, government offices and ministries into 10° grid cells (648 cells,
-most empty), publish them as small per-cell JSON files, and fetch only the
-cells overlapping the searched place. That matches how the map now works —
-one place at a time — and would fill the municipal gap for towns Wikidata does
-not record at all.
+All seven files are now cut into `contacts/` (§11).
 
 **`central_bank_independence.html` — a smaller, careful set.** Its `NET.nodes`
 array holds 1,479 nodes across 169 countries, 1,473 with coordinates and 1,185

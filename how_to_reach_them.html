@@ -363,18 +363,16 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   <div id="levels"></div>
 </div>
 <div id="start">
-  <h2>Where do you live?</h2>
+  <h2>Start with your municipality</h2>
   <p class="lede">Enter your town, city or municipality. The map will go there and show you
     every office you can contact about a law &mdash; your own council first, then the
     district, the region and the country above it.</p>
   <div id="srow">
     <input id="sq" type="text" autocomplete="off" spellcheck="false"
-      placeholder="Sierra Madre, California" onkeydown="if(event.key==='Enter')placeSearch()">
+      placeholder="Washington, D.C." onkeydown="if(event.key==='Enter')placeSearch()">
     <button id="sgo" onclick="placeSearch()">Search</button>
   </div>
   <div id="sout"></div>
-  <div id="salt">Not sure of the name, or looking for somewhere else?
-    <a onclick="browseAll()">Show every jurisdiction on the map instead</a>.</div>
 </div>
 <button id="sopen" onclick="openStart()">&#9906; Search for a place</button>
 <div id="modal">
@@ -1823,11 +1821,15 @@ function osmPolygon(rel){
 const TONES = {
   satellite:{line:'#cfe0d2', fill:'#7fa88c', hi:'#eaf3ec'},
   atlas:    {line:'#3c5a46', fill:'#6d8c76', hi:'#1f3328'},
-  night:    {line:'#8cd0ae', fill:'#2f6b4f', hi:'#c9f0da'},
+  /* Bioluminescent is the one basemap whose overlay is deliberately
+     neon: it sits on a near-black night earth where a muted line
+     disappears. Blue rather than green, so the boundaries read as
+     drawn-on rather than as more of the land glow. */
+  night:    {line:'#35d0ff', fill:'#0f4f78', hi:'#9fe9ff'},
   hell:     {line:'#c4b1a6', fill:'#8a6f63', hi:'#e6d7cd'},
   outlines: {line:'#44664f', fill:'#7f9c88', hi:'#23362a'},
 };
-let BM=null, tone=TONES.atlas, mapReady=false;
+let BM=null, tone=TONES.satellite, mapReady=false;
 /* the Atlas plate with this map's cartouche */
 const PLATE_URL = 'atlas-plate-how-to-reach-them.webp?v=1';
 
@@ -1850,20 +1852,50 @@ const map = BM.maplibre;
   const box = document.getElementById('bmrow');
   box.innerHTML = CulpritsBasemaps.list.map(b =>
     '<button data-k="'+b[0]+'" onclick="pickBase(\''+b[0]+'\')">'+b[1]+'</button>').join('');
-  markBase('atlas');
+  markBase('satellite');
 })();
-let BASEKEY='atlas';
+let BASEKEY='satellite';
 function pickBase(k){ BM.set(k); markBase(k); BASEKEY=k; setPins(); }
 function markBase(k){ document.querySelectorAll('#bmrow button')
   .forEach(b=>b.classList.toggle('on', b.dataset.k===k)); }
 
 /* Flat or globe. The world draws on a sphere by default, which is the
    honest shape but hides half the planet; flat shows every country at
-   once, at the cost of stretching the poles. */
+   once, at the cost of stretching the poles.
+
+   MapLibre normally holds a flat map so that the world always covers the
+   viewport: you cannot zoom out past that point and you cannot drag the
+   edge into view. On a page that paints stars behind the map that is the
+   wrong constraint — the world is an object in space here, not a
+   wallpaper. `setConstrainOverride` is MapLibre's own hook for this
+   (transform._helper.applyConstrain defers to it), so no internals are
+   being monkey-patched.
+
+   It is not removed outright: an unconstrained flat map lets you drag
+   thousands of degrees away and lose the planet entirely — a test pan of
+   700 px put the centre at longitude 1392. The override keeps the centre
+   within roughly half a world of the edges, which is enough to put the
+   whole planet off to one side and still find it again. */
 let FLAT=false;
+const FLAT_FREE = (center, zoom) => ({
+  center: new maplibregl.LngLat(
+    Math.max(-200, Math.min(200, center.lng)),
+    Math.max(-88,  Math.min(88,  center.lat))),
+  zoom: zoom
+});
 function toggleProjection(){
   FLAT=!FLAT;
   try{ map.setProjection({type: FLAT?'mercator':'globe'}); }catch(e){}
+  try{
+    if(FLAT){
+      map.setMinZoom(-2);
+      map.transform.setConstrainOverride(FLAT_FREE);
+    }else{
+      map.transform.setConstrainOverride(null);
+      map.setMinZoom(0);
+      if(map.getZoom()<0) map.jumpTo({zoom:0});
+    }
+  }catch(e){}
   const b=document.getElementById('projbtn');
   b.textContent = FLAT?'Globe':'Flat map';
   b.classList.toggle('on', FLAT);
@@ -2868,7 +2900,7 @@ function setPins(){
   const src=map.getSource(SRC_PIN); if(!src) return;
   const live=new Set(STACK.map(s=>s.q).filter(Boolean));
   const feats=Object.values(PINS).map(p=>{
-    const i=STACK.findIndex(s=>s.q===p.lvlQ);
+    const i = (p.lvlIdx!=null) ? p.lvlIdx : STACK.findIndex(s=>s.q===p.lvlQ);
     const li = i<0 ? 0 : Math.min(i, LEVELSETS.atlas.length-1);
     return {type:'Feature', geometry:{type:'Point',coordinates:[p.lng,p.lat]},
       properties:{id:p.id, label:p.label, on:i>=0, lvl:i<0?9:i,
@@ -2973,6 +3005,7 @@ async function loadMunicipalities(parentFeature, level){
    resolved to show, so the marker says what it is and offers the record
    rather than failing silently. */
 function openPin(id){
+  if(LOCAL[id]) return openLocal(id);
   const o = BK && BK.byId && BK.byId[id];
   if(o){ openModal(CUR?CUR.label:'', 'Offices resolved live from Wikidata'); SEL=o; renderOffice(o); return; }
   const p = PINS[id]; if(!p) return;
@@ -2986,7 +3019,110 @@ function openPin(id){
   $('#mback').style.display='none';
 }
 
+/* A local contact: a real building with a door, a telephone and a
+   postal address, rather than an office with a seat in a legislature.
+   Said plainly, because the difference matters to someone deciding
+   where to spend an afternoon. */
+function openLocal(id){
+  const L=LOCAL[id]; if(!L) return;
+  openModal(officeLabel(L.name), KINDNAME[L.kind]||'Local contact');
+  const row=(t,v)=> v ? '<div class="fld"><dt>'+t+'</dt><dd>'+esc(v)+'</dd></div>' : '';
+  $('#mbody').innerHTML =
+    '<div class="note">This is a place on the ground, recorded in OpenStreetMap: '+
+    'a building you can walk into, write to or ring. It is not an office with a vote, '+
+    'so it does not appear among the branches &mdash; but it is usually where the people who '+
+    'do hold those offices are found, and where a submission is handed in.</div>'+
+    '<div class="off">'+
+    row('What it is', KINDNAME[L.kind]||'')+
+    row('Run by', L.oper)+
+    row('Address', L.addr)+
+    row('Telephone', L.phone)+
+    row('Email', L.email)+
+    (L.site ? '<div class="fld"><dt>Website</dt><dd><a href="'+esc(L.site)+'" target="_blank" rel="noopener">'+esc(L.site)+'</a></dd></div>' : '')+
+    '<div class="meta">OpenStreetMap contributors, via this account\u2019s executive-map data</div>'+
+    '</div>';
+  $('#mback').style.display='none';
+}
+
 /* pull coordinates for a jurisdiction and merge them into the pin set */
+/* ====================================================================
+   LOCAL CONTACTS — town halls and government offices from OpenStreetMap
+
+   Wikidata is thin at municipal level: it records no offices at all for
+   a town of 11,000, so searching your own place could open a panel with
+   four empty branches and nothing on the map. The building where the
+   council actually sits is not in Wikidata, but it is in OpenStreetMap,
+   with its address, telephone number and website.
+
+   `contacts/` in this repo holds 670,845 of those, cut from the
+   `executive-map` repo into 2° cells — 3,623 files, 56 MB in all, the
+   largest 632 KB. A municipality fits inside one or two cells, so
+   opening a place fetches one or two small files rather than anything
+   global. `contacts/index.json` lists the cells that exist and names
+   the fields.
+
+   Nothing is filtered out by kind: town halls, government offices,
+   ministries, police, fire stations, prisons and diplomatic posts are
+   all carried, each tagged, and the panel says which it is. These sit
+   at the municipality's own level and are coloured with it.
+
+   They are buildings, not offices with powers, so they do not enter the
+   branch diagram — a town hall is where a council meets, not a seat in
+   it. They answer "where do I go and what do I ring", which is the part
+   Wikidata cannot answer here.
+   ==================================================================== */
+const CONTACTS_DIR='contacts/';
+const KINDNAME={t:'Town hall', g:'Government office', m:'Ministry or department',
+  p:'Police', f:'Fire station', r:'Prison', d:'Diplomatic post'};
+let CELLCACHE={}, LOCAL={}, CELLINDEX=null;
+
+async function cellIndex(){
+  if(CELLINDEX) return CELLINDEX;
+  try{ CELLINDEX = new Set(await (await fetch(CONTACTS_DIR+'index.json')).json().then(j=>j.cells)); }
+  catch(e){ CELLINDEX = null; }
+  return CELLINDEX;
+}
+async function cellRows(key){
+  if(CELLCACHE[key]) return CELLCACHE[key];
+  try{
+    const r = await fetch(CONTACTS_DIR+key+'.json');
+    if(!r.ok) return (CELLCACHE[key]=[]);
+    return (CELLCACHE[key] = await r.json());
+  }catch(e){ return (CELLCACHE[key]=[]); }
+}
+
+/* Everything inside the open place, from the cells its bounding box
+   touches. The cell is a coarse filter; the polygon is the real one. */
+async function loadLocalContacts(feature, lvlIdx){
+  if(!feature || !feature.geometry) return;
+  const b=bboxOf(feature.geometry), SZ=2;
+  const idxSet = await cellIndex();
+  const keys=[];
+  for(let x=Math.floor((b[0]+180)/SZ); x<=Math.floor((b[2]+180)/SZ); x++)
+    for(let y=Math.floor((b[1]+90)/SZ); y<=Math.floor((b[3]+90)/SZ); y++){
+      const k=x+'_'+y;
+      if(!idxSet || idxSet.has(k)) keys.push(k);
+    }
+  if(!keys.length) return;
+  let added=0;
+  for(const k of keys){
+    const rows=await cellRows(k);
+    rows.forEach((r,i)=>{
+      const lat=r[0], lng=r[1];
+      if(lng<b[0]||lng>b[2]||lat<b[1]||lat>b[3]) return;
+      if(!inGeom([lng,lat], feature.geometry)) return;
+      const id='L:'+k+':'+i;
+      if(PINS[id]) return;
+      LOCAL[id]={name:r[2], kind:r[3], site:r[4]||'', phone:r[5]||'',
+                 email:r[6]||'', addr:r[7]||'', oper:r[8]||''};
+      PINS[id]={id:id, lng:lng, lat:lat, label:r[2], lvlQ:null, lvlIdx:lvlIdx};
+      added++;
+    });
+  }
+  if(added){ setPins(); fitToPins(); }
+  return added;
+}
+
 /* Markers for every level you are inside, not just the open one.
 
    The panel shows one jurisdiction at a time, and the markers used to
@@ -3055,8 +3191,9 @@ function fitToPins(){
      allowed to fall outside it. */
   const idx = {};
   STACK.forEach((s,i)=>{ if(s.q) idx[s.q]=i; });
-  let pts = Object.values(PINS).filter(p=>idx[p.lvlQ]!==undefined && idx[p.lvlQ]>=1);
-  if(!pts.length) pts = Object.values(PINS).filter(p=>idx[p.lvlQ]!==undefined);
+  const lvlOf = p => (p.lvlIdx!=null) ? p.lvlIdx : idx[p.lvlQ];
+  let pts = Object.values(PINS).filter(p=>lvlOf(p)!==undefined && lvlOf(p)>=1);
+  if(!pts.length) pts = Object.values(PINS).filter(p=>lvlOf(p)!==undefined);
   if(!pts.length) return;
 
   const cut = (vals)=>{
@@ -3177,7 +3314,9 @@ async function boot(){
        district a searched place sits in — that is a point-in-polygon
        test, not something anyone has to look at — and drawing all
        48,263 at once was what made the opening view a wall of lines
-       with no way in. `browseAll()` still draws them on request. */
+       with no way in. Searching is now the only way in: there is no
+       browse-everything option, because it was the thing that did not
+       work. */
     setDot('bd','ok', WORLD.length.toLocaleString()+' jurisdictions ready');
   }catch(e){ setDot('bd','bad','Boundaries unreachable'); }
 }
@@ -3202,13 +3341,6 @@ function openStart(){ $('#start').classList.remove('off'); $('#sopen').classList
   const i=$('#sq'); if(i){ i.focus(); i.select(); } }
 function closeStart(){ $('#start').classList.add('off'); $('#sopen').classList.add('on'); }
 
-/* the old whole-world view, still here for anyone who wants it */
-function browseAll(){
-  closeStart();
-  try{ map.getSource(SRC_A).setData({type:'FeatureCollection', features:WORLD}); }catch(e){}
-  noteBelow('');
-}
-
 async function placeSearch(){
   const q=($('#sq').value||'').trim();
   const out=$('#sout');
@@ -3223,8 +3355,7 @@ async function placeSearch(){
     rows=await r.json();
   }catch(e){
     out.innerHTML='<div class="msg">The place lookup could not be reached just now. '+
-      'You can <a onclick="browseAll()" style="color:var(--accent-hi);cursor:pointer">'+
-      'show every jurisdiction on the map</a> and click your own instead.</div>';
+      'Try again in a moment.</div>';
     return;
   }
   /* only things with a boundary: a point has no jurisdiction to draw */
@@ -3278,12 +3409,13 @@ async function enterPlace(i){
   STACK.push({q:wd, label:name, iso3:top?top.iso3:null,
               level:(top?top.level:0)+1, feature:feat});
   setAdmData([feat]);
-  PINS={}; CHAIN_DONE={}; CHAIN_CLAIMED={}; PIN_TRIED={};
+  PINS={}; CHAIN_DONE={}; CHAIN_CLAIMED={}; PIN_TRIED={}; LOCAL={};
   if(wd) openJuris(wd, name);
   else { openModal(name,'Drawn from OpenStreetMap'); renderNoEntity(name, true); }
   paintTrail(); paintChain(); setPins();
   fitTo(feat.geometry);
-  /* then widen to take in every office that governs the place */
+  /* the buildings inside the place, then the offices that govern it */
+  loadLocalContacts(feat, STACK.length-1);
   loadChainPins();
 }
 
