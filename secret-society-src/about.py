@@ -146,13 +146,15 @@ def about(data):
                     a('<h4>Which lists these are</h4>')
                     a('<p>%d of the %d lists above are built from enforcement in the United States and the United '
                       'Kingdom, or from an inquiry in one country. Together they hold %d items inside the test and '
-                      'this map covers <b>%d per cent</b> of them. The remaining list is not built that way: it is a '
-                      'compendium of arms-trade cases that indexes prosecutions in Germany, France, Spain, Chile, '
-                      'South Korea and elsewhere alongside the American and British ones. This map covers '
-                      '<b>%d per cent</b> of that one. The cases it misses there are not minor: they are among the '
+                      'this map covers <b>%d per cent</b> of them. The other %s not built that way: a compendium of '
+                      'arms-trade cases indexing prosecutions in Germany, France, Spain, Chile and South Korea '
+                      'alongside the American and British ones, and the French prosecutors\' own negotiated '
+                      'settlements for corruption. Together they hold %d items and this map covers '
+                      '<b>%d per cent</b> of them. The cases missing there are not minor: they include some of the '
                       'largest arms corruption files in Europe and Asia, and they are missing because no '
                       'English-language enforcement list indexes them. Each is named under its list below.</p>'
-                      % (len(ang), len(rows), at, ash, osh))
+                      % (len(ang), len(rows), at, ash,
+                         'list is' if len(oth) == 1 else 'two lists are', ot, osh))
                     a('<p>That difference is the single most useful thing on this page. Earlier rounds of this map '
                       'worked from the American and British lists, and the shares they produced read as near-complete. '
                       'They were measuring the lists. When a round searched in Spanish, German, Portuguese and '
