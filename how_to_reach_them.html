@@ -80,6 +80,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 #levels .lv i{width:8px;height:8px;border-radius:2px;display:inline-block;flex:none}
 
 #pincount{font-size:10.5px;color:var(--faint);margin-top:5px}
+#admnote{font-size:10.5px;color:var(--faint);margin-top:5px;line-height:1.45;max-width:100%}
 #trail .hint{color:var(--faint);font-size:11.5px}
 #status{margin-top:6px;font-size:11px;color:var(--faint);display:flex;gap:10px;align-items:center}
 .dot{width:6px;height:6px;border-radius:50%;background:var(--faint);display:inline-block;margin-right:4px}
@@ -179,6 +180,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 #trail .now{color:var(--ink)}
 
 #pincount{font-size:10.5px;color:var(--faint);margin-top:5px}
+#admnote{font-size:10.5px;color:var(--faint);margin-top:5px;line-height:1.45;max-width:100%}
 /* ---------- modal: draggable, resizable, parked to the right ---------- */
 #modal{position:fixed;z-index:100;left:auto;right:18px;top:62px;transform:none;
   width:min(980px,58vw);height:calc(100vh - 82px);min-width:340px;min-height:260px;
@@ -308,7 +310,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   <div id="projrow"><button id="projbtn" onclick="toggleProjection()">Flat map</button></div>
   <div id="levels"></div>
 </div>
-<div id="trail"><div id="crumbs"></div><div id="pincount"></div></div>
+<div id="trail"><div id="crumbs"></div><div id="pincount"></div><div id="admnote"></div></div>
 <div id="modal">
   <div id="mtop">
     <button id="mclose" onclick="closeModal()">&times;</button>
@@ -1583,6 +1585,118 @@ SELECT DISTINCT ?item ?itemLabel ?clsLabel ?coord WHERE {
 function qSubdiv(q){ return `
 SELECT ?d ?dLabel WHERE { wd:${q} wdt:P150 ?d .
  SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" } } LIMIT 600`; }
+
+/* ====================================================================
+   MUNICIPALITIES FROM OPENSTREETMAP
+   The boundary files stop at the county in most of the world and at
+   ADM3 units that are not municipalities in much of the rest, so the
+   level where a mayor and a council actually sit had no polygon and
+   was drawn as a ring at a point. OSM tags that level `admin_level=8`
+   in most countries, and Overpass serves it live with CORS open.
+
+   Three things to know before changing any of this:
+
+   1. Overpass returns a relation as a bag of unordered way fragments,
+      not a polygon. They have to be joined end to end, and a fragment
+      may need reversing to join. `osmRings` does that; `osmPolygon`
+      then puts each inner ring inside the outer ring that contains it.
+      Measured on Los Angeles County: 150 of 150 relations closed.
+   2. A county-sized query takes tens of seconds and returns megabytes
+      (LA County: 2.7 MB, 150 relations). That is far too slow to block
+      a click, so the Wikidata rings are drawn first and the polygons
+      replace them when they arrive. Never await this on the click path.
+   3. The public endpoints rate-limit and time out under load, one
+      differently from the next, which is why OVERPASS is a list tried
+      in order rather than a single host. Failure here is not an error
+      state: the rings are already on the map and stay there.
+
+   The bbox is the parent's, so it catches municipalities in the
+   neighbouring unit too; they are cut afterwards by the same
+   centroid-in-parent test `drawAdm` uses for boundary files. */
+
+function qOsmMuni(b, lv){
+  /* south,west,north,east — Overpass's order, not GeoJSON's.
+     `lv` is a regex because stepping inside a municipality has to ask
+     for the levels below it: asking for 8 again inside a city returns
+     that same city and it would be drawn as its own subdivision. */
+  return '[out:json][timeout:180];rel["boundary"="administrative"]["admin_level"~"'
+    + lv + '"]('
+    + b[1].toFixed(5)+','+b[0].toFixed(5)+','+b[3].toFixed(5)+','+b[2].toFixed(5)
+    + ');out geom;';
+}
+
+/* Tries each endpoint in turn. A refusal from one is ordinary, not a
+   reason to stop. Returns [] rather than throwing, because every
+   caller's fallback is to leave the rings alone. */
+async function overpass(query, cacheKey){
+  if(cacheKey){ const c=cget(cacheKey); if(c) return c; }
+  for(const ep of OVERPASS){
+    const ac=new AbortController(), killer=setTimeout(()=>ac.abort(), 90000);
+    try{
+      const r = await fetch(ep, {method:'POST', body:'data='+encodeURIComponent(query),
+        headers:{'Content-Type':'application/x-www-form-urlencoded'}, signal:ac.signal});
+      clearTimeout(killer);
+      if(!r.ok) continue;                       /* 429, 504 — try the next host */
+      const els = (await r.json()).elements || [];
+      if(cacheKey) cset(cacheKey, els);
+      return els;
+    }catch(e){ clearTimeout(killer); }
+  }
+  return [];
+}
+
+/* Join loose way fragments into closed rings. Endpoints are compared
+   as written: Overpass echoes the same node's coordinates verbatim in
+   every way that shares it, so exact comparison is right here and a
+   tolerance would merge ways that genuinely do not touch. */
+function osmRings(members, role){
+  const segs=[];
+  (members||[]).forEach(m=>{
+    if(m.type!=='way') return;
+    const r = m.role || 'outer';
+    if(r!==role) return;
+    const g = m.geometry;
+    if(!g || g.length<2) return;
+    if(g.some(p=>!p)) return;                   /* a way clipped by the bbox */
+    segs.push(g.map(p=>[p.lon,p.lat]));
+  });
+  const used=new Array(segs.length).fill(false), rings=[];
+  const same=(a,b)=>a[0]===b[0]&&a[1]===b[1];
+  for(let i=0;i<segs.length;i++){
+    if(used[i]) continue;
+    used[i]=true;
+    let cur=segs[i].slice(), moved=true;
+    while(!same(cur[0],cur[cur.length-1]) && moved){
+      moved=false;
+      for(let j=0;j<segs.length;j++){
+        if(used[j]) continue;
+        const sg=segs[j], a=sg[0], b=sg[sg.length-1], head=cur[0], tail=cur[cur.length-1];
+        if(same(a,tail)){ cur=cur.concat(sg.slice(1)); }
+        else if(same(b,tail)){ cur=cur.concat(sg.slice().reverse().slice(1)); }
+        else if(same(b,head)){ cur=sg.slice(0,-1).concat(cur); }
+        else if(same(a,head)){ cur=sg.slice().reverse().slice(0,-1).concat(cur); }
+        else continue;
+        used[j]=true; moved=true; break;
+      }
+    }
+    if(cur.length>=4 && same(cur[0],cur[cur.length-1])) rings.push(cur);
+  }
+  return rings;
+}
+
+function osmPolygon(rel){
+  const outers = osmRings(rel.members,'outer');
+  if(!outers.length) return null;
+  const inners = osmRings(rel.members,'inner');
+  const polys = outers.map(o=>[o]);
+  inners.forEach(h=>{
+    for(const p of polys) if(inRing(h[0], p[0])){ p.push(h); return; }
+  });
+  return polys.length===1
+    ? {type:'Polygon', coordinates:polys[0]}
+    : {type:'MultiPolygon', coordinates:polys};
+}
+
 /* ====================================================================
    THE MAP
    MapLibre, with the five basemaps shared from the Culprits map.
@@ -1807,7 +1921,11 @@ async function drawAdm(iso3, level, parentFeature){
     if(e.message==='notfound'){
       noteBelow('The boundary files go no deeper than this for this country.');
       const top=STACK[STACK.length-1];
+      /* Rings first, from Wikidata, because they arrive in about two
+         seconds. The OSM outlines take tens of seconds for a county, so
+         they are not awaited — they replace the rings when they land. */
       if(top&&top.q) loadSettlements(top.q, STACK.length-1);
+      if(top&&top.feature) loadMunicipalities(top.feature, STACK.length-1);
     }else noteBelow('Could not load the boundary file: '+e.message);
     return;
   }
@@ -1871,7 +1989,12 @@ async function onUnit(f){
   const level = top ? top.level + 1 : 1;
   openModal(nm, 'Matching it to Wikidata\u2026');
   $('#mbody').innerHTML = '<div class="spin">Looking this unit up&hellip;</div>';
-  const hit = await resolveUnit(nm);
+  /* An OSM municipality carries its own Wikidata id, so the name
+     matching that the boundary files need is skipped — along with the
+     wrong answers it gives for the many towns that share a name. */
+  const hit = f.properties.wd
+    ? {id:f.properties.wd, label:nm}
+    : await resolveUnit(nm);
   if(hit){
     STACK.push({q:hit.id, label:hit.label, iso3:iso3, level:level, feature:f});
     openJuris(hit.id, hit.label);
@@ -2536,6 +2659,80 @@ async function loadSettlements(q, level){
     if(feats.length) noteBelow('The boundary files stop here, so the '+feats.length+
       ' towns and cities Wikidata places inside this unit are drawn as rings. Click one for its own offices.');
   }catch(e){ setSubs([]); }
+}
+
+/* Municipal polygons from OSM, fetched after the rings are already up.
+
+   MUNI_GEN guards against a late answer landing on a unit the reader
+   has since clicked away from: every call takes the current number and
+   drops its result if the number has moved on. Without it a slow county
+   can repaint itself over whatever is open thirty seconds later.
+
+   Anything OSM does not cover keeps its ring, so switching a unit to
+   polygons never removes a place that was on the map a moment ago. */
+let MUNI_GEN=0;
+
+function spanOf(b){ return Math.max(b[2]-b[0], b[3]-b[1]); }
+
+async function loadMunicipalities(parentFeature, level){
+  if(!parentFeature || !parentFeature.geometry) return;
+  const pg = parentFeature.geometry, b = bboxOf(pg);
+  /* A country-sized bbox asks Overpass for every municipality in the
+     country: France alone is about 35,000 of them, which times out at
+     the server and would not decode here either. Counties and small
+     regions are what this is for. */
+  if(spanOf(b) > 6){
+    noteBelow('This unit is too large to ask OpenStreetMap for the level below it in one go, '+
+              'so it stays as it is. Step into a smaller unit for outlines.');
+    return;
+  }
+  /* Inside a municipality, ask for what sits below one — wards, boroughs,
+     arrondissements. Most countries have nothing at those levels and the
+     result is simply empty, which leaves the city as the deepest unit. */
+  const sub = !!(parentFeature.properties && parentFeature.properties.muni);
+  const lv  = sub ? '^(9|10)$' : '^8$';
+  const gen = ++MUNI_GEN;
+  const key = 'osm'+(sub?'910':'8')+':'+b.map(v=>v.toFixed(3)).join(',');
+  setDot('bd','busy',(sub?'Sub-municipal':'Municipal')+' outlines loading');
+  let els;
+  try{ els = await overpass(qOsmMuni(b, lv), key); }
+  catch(e){ els=[]; }
+  if(gen!==MUNI_GEN) return;                 /* reader moved on */
+  if(!els.length){ setDot('bd','ok','Boundaries live'); return; }
+
+  const pb = bboxOf(pg), feats=[];
+  els.forEach(el=>{
+    if(el.type!=='relation') return;
+    const g = osmPolygon(el);
+    if(!g) return;
+    const c = centroid(g);
+    if(c[0]<pb[0]-0.01||c[0]>pb[2]+0.01||c[1]<pb[1]-0.01||c[1]>pb[3]+0.01) return;
+    if(!inGeom(c, pg)) return;               /* the bbox overran into the next unit */
+    const t = el.tags||{};
+    const nm = t['name:en'] || t.name;
+    if(!nm) return;
+    feats.push({type:'Feature', geometry:g, properties:{
+      n:nm, shapeName:nm, wd:(t.wikidata&&/^Q\d+$/.test(t.wikidata))?t.wikidata:null,
+      osm:el.id, muni:1}});
+  });
+  if(!feats.length){ setDot('bd','ok','Boundaries live'); return; }
+
+  setAdmData(feats);
+  setDot('bd','ok','Boundaries live');
+
+  /* keep a ring only where no polygon arrived to replace it */
+  const left = SUBS.filter(f=>{
+    const pt=f.geometry.coordinates;
+    return !feats.some(mf=>inGeom(pt, mf.geometry));
+  });
+  setSubs(left);
+
+  const wd = feats.filter(f=>f.properties.wd).length;
+  noteBelow(feats.length+(sub?' units below the municipality':' municipalities')+
+    ' from OpenStreetMap are drawn as outlines'+
+    (wd<feats.length ? ', '+wd+' of them matched to a Wikidata record' : '')+
+    (left.length ? '. '+left.length+(left.length===1?' more is a ring':' more are rings')+
+       ', which OpenStreetMap has no boundary for.' : '.'));
 }
 
 /* stepping into a municipality: it has no polygon, so the chain keeps

@@ -123,16 +123,72 @@ So "draw municipalities as polygons, everywhere" cannot be done from
 because `drawAdm` just asks for `level+1` until a file 404s — but arriving at
 ADM4 in France still does not arrive at a commune.
 
-Two sources that would work, neither of them in place:
+### This is now done, from OpenStreetMap
 
-1. **OpenStreetMap, `admin_level=8`**, which is the municipality level in most
-   countries. Reachable from a normal browser; **not reachable from the
-   sandboxed environment this was built in**, so it could not be tested here.
-   That is the same reason the earlier Overpass lookup was removed.
-2. **US Census generalized places**,
-   `https://www2.census.gov/geo/tiger/GENZ2023/shp/cb_2023_us_place_500k.zip`,
-   22.8 MB zipped, every incorporated place in the country with a real
-   boundary. Reachable and confirmed. This solves the United States only.
+**OpenStreetMap `admin_level=8` is in place**, which is the municipality level
+in most countries. It was previously written off as unreachable; that was
+wrong. The blocker was never the network — `overpass-api.de` rejects a request
+with no `User-Agent` header, returning a bare nginx `406 Not Acceptable` that
+looks like a block. A browser always sends one, so this had been working from
+the page all along.
+
+What it does: when a boundary file 404s, the map asks Overpass for every
+`admin_level=8` relation in the open unit's bounding box and draws them as real
+polygons. The Wikidata rings still load first, because they arrive in about two
+seconds and Overpass takes tens; the polygons replace them when they land.
+Anything OSM has no boundary for keeps its ring, so nothing that was on the map
+disappears.
+
+Measured against Los Angeles County, live:
+
+- Overpass returned **150 relations** in the county bounding box, 2.7 MB.
+- All **150 of 150 stitched into closed rings** (see below on why that is not
+  automatic), 43,659 coordinate points, 1.2 MB of GeoJSON, 314 KB gzipped.
+- The centroid-in-parent filter cut it to **95 inside the county**, dropping
+  Anaheim, Irvine and Fullerton (Orange), Fillmore and Casa Conejo (Ventura),
+  Chino (San Bernardino).
+- **85 of the 95 carry a `wikidata` tag**, which is the office lookup's key, so
+  those skip name matching entirely — and with it the wrong answers name
+  matching gives for towns that share a name.
+- Spot-checked geometrically: Pasadena City Hall falls inside Pasadena and
+  outside Burbank; Sierra Madre City Hall falls inside Sierra Madre.
+
+**A relation is not a polygon.** Overpass returns it as an unordered bag of way
+fragments, any of which may need reversing to join to the next. `osmRings`
+joins them end to end and `osmPolygon` puts each inner ring inside the outer
+ring that contains it. Endpoints are compared exactly, not within a tolerance:
+Overpass echoes a shared node's coordinates verbatim in every way that uses it,
+so exact comparison is correct, and a tolerance would weld together ways that
+genuinely do not touch.
+
+**Do not await this on the click path.** The LA County query took 102 seconds
+on a first, cold call. `loadMunicipalities` is fired without `await` and guards
+itself with `MUNI_GEN`, a counter every call captures and re-checks before it
+paints — without it a slow county repaints itself over whatever the reader has
+since opened.
+
+**The public endpoints are genuinely unreliable**, and differently from one
+another: during this work `overpass-api.de` and `overpass.kumi.systems` each
+returned 504s and refused connections at various points, minutes apart. That is
+why `OVERPASS` is a list tried in order rather than one host, and why a total
+failure is not an error state — the rings are already drawn and simply stay.
+
+Two limits worth knowing:
+
+- **A bounding box wider than 6° is skipped.** Asking for every
+  `admin_level=8` relation in a country-sized box means about 35,000 communes
+  for France; it times out at the server and would not decode here either.
+  Counties and small regions are what this is for.
+- **Stepping inside a municipality asks for `admin_level` 9 or 10**, not 8.
+  Asking for 8 again inside a city returns that same city, which would then be
+  drawn as its own subdivision. Most countries have nothing at 9 or 10 and the
+  result is simply empty, which correctly leaves the city as the deepest unit.
+
+Still unused, and still the only thing that would give the United States
+municipal boundaries without a live query: **US Census generalized places**,
+`https://www2.census.gov/geo/tiger/GENZ2023/shp/cb_2023_us_place_500k.zip`,
+22.8 MB zipped, every incorporated place in the country with a real boundary.
+Reachable and confirmed.
 
 ### Why the default view is counties and not municipalities
 
@@ -372,6 +428,13 @@ it was the percentages inside them that made them awkward to keep.
   for a long time, so the ranking bars rendered with no colour at all. They are
   defined in `:root` now. Worth checking any other `var(--…)` you add actually
   exists.
+- **`noteBelow()` was writing to an element that did not exist.** `#admnote`
+  was referenced by the function but was in none of the markup — it was
+  presumably in one of the lost build parts. So every explanation it was meant
+  to put under the map, including the long-standing "the boundary files stop
+  here" line, had been silently going nowhere. The div is now in `#trail` next
+  to `#pincount`. If you add another `$('#id')` write, check the id is actually
+  in the document.
 - **A blind find-and-replace over the source will hit object keys.** A pass
   replacing the word "docket" renamed a key in the hurdles data and broke the
   file.
@@ -397,11 +460,17 @@ it was the percentages inside them that made them awkward to keep.
 - **The "Unsorted" group** still catches titles the classifier cannot place —
   about nine for Kenya, more for the US. Each one is a candidate pattern for
   `B[]`.
-- **Municipalities have no polygons**, only rings at their centre point. OSM
-  relations would give real outlines.
-- **Below the municipality** — wards, precincts, parishes — is not reachable at
-  all. `qSettle` could be run again on a municipality, but it has not been
-  tested and most countries will return nothing.
+- **Municipalities now have polygons** from OSM `admin_level=8` (§2). What is
+  still open is coverage outside the places tested: the US case is measured, a
+  French, Kenyan and Japanese case were attempted but the public endpoints
+  returned 504s before any of them completed, so **the query shape is unproven
+  outside the United States**. It is the same tag in the same schema, so it
+  should hold, but nobody has watched it work.
+- **Below the municipality** — wards, precincts, parishes — is now asked for as
+  OSM `admin_level` 9 or 10 when you step inside a municipality, but **this
+  path has never returned data in testing**: every attempt against Los Angeles
+  hit a 504. It may well be right and it may well be empty everywhere; treat it
+  as written but unverified.
 - **Marker palettes** are set per basemap in `LEVELSETS`, five colours each.
   Hell and Standard were matched by eye against their backgrounds, not measured.
 - **Marker size is a real trap.** A set of radii that looked right in the code
@@ -409,7 +478,8 @@ it was the percentages inside them that made them awkward to keep.
   basemap. If markers "disappear", check the radii and the contrast ring before
   assuming the data failed — `map.queryRenderedFeatures({layers:['pin-on']})`
   will tell you they are there.
-- **Overpass local-office lookup was removed** in an earlier round. It could
-  never be tested from a sandboxed environment. If you want street addresses and
-  front-desk numbers back, it is a GET to an Overpass endpoint over the map
-  bounds.
+- **Overpass local-office lookup** — street addresses and front-desk numbers
+  for town halls and courthouses — is still not back. It was removed because it
+  "could not be tested"; that reason is gone now that §2 shows Overpass working,
+  so this is a straightforward thing to pick up next. It would also be the
+  cheapest fix for the coordinates gap at the top of this section.
