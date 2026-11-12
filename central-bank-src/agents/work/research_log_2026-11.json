@@ -2472,5 +2472,47 @@
    "variant_names_missed": "Two slipped through anyway and were merged by hand: Belgium's KPMG appeared under both its Dutch and French names ('KPMG Reviseurs d'entreprises' vs 'KPMG Bedrijfsrevisoren / KPMG Reviseurs d'Entreprises BV/SRL'), and Ireland's Grant Thornton with and without 'Ireland'. The audit caught the orphaned writeups they left behind. CHECK banks holding more than one auditor row after every merge - most are legitimate (joint auditors, a firm plus a state body, successive terms) but variant names of one firm are not."
   },
   "audit_history_is_intended": "Several banks now carry two auditors with different terms. That is deliberate - Cyprus shows PwC for FY2018-22 and Baker Tilly for FY2023-27 - and the writeups are instructed to say which firm covered which years."
+ },
+ "round19": {
+  "date": "2026-11-11",
+  "added": {
+   "auditors": 4,
+   "printers": 25,
+   "reserve_managers": 20
+  },
+  "biggest_find": "Note Printing Australia publishes its own customer list at noteprinting.com/our-customers, naming 20 currency-issuing authorities it has 'produced and supplied polymer banknotes' to. 18 were new. The page was verified independently by the main session because so many records rested on it. Records state only what the page states: no date, no contract value, no claim of an exclusive or current contract. OTHER PRINTERS MAY PUBLISH THE SAME KIND OF LIST - that is the pattern to look for next.",
+  "bceao_blocker_correctly_diagnosed": "The all-lots BCEAO award notice fails because ITS URL IS 364 CHARACTERS LONG and WebFetch rejects it on URL length. A second copy under /files/2024-01/ is 369 characters and fails identically. This is NOT a document-length problem: an earlier round diagnosed it wrongly as too-long content, and round 19 wasted a retry on offsets because of that wrong note. Offsets cannot help. It needs a mirrored copy with a shorter URL, a different host, or a browser tool. The Niger-only notice at /files/2024-08/ is 902 characters total and was fully read with offsets, confirming it covers Niger alone.",
+  "euro_area_printers_mostly_closed": "Round 18 opened the euro area bank by bank and round 19 closed most of it. Five banks name their own works and are recorded (Spain, Austria, Portugal, France, Germany). Five more were checked ONE AT A TIME and ALL FIVE STATE NOTHING: Italy's page describes its banknote service and printing phases but never says it prints euro notes; Greece's 2025 statements mention only circulation and the Eurosystem allocation, with IETA absent; the Dutch bank says it moved to printers 'in Germany and Great Britain' in 2011 without naming them, and Joh. Enschede stopped printing notes at the end of 2016; Belgium's page says only that it puts notes into circulation; Ireland's Currency Centre was printing in 2018 but a parliamentary answer describes a proposal to cease and says the majority are 'produced elsewhere'. DO NOT RE-RUN THESE FIVE. Untried: Finland, Slovakia, Slovenia, the Baltics, Cyprus, Malta, Croatia, Luxembourg.",
+  "central_banking_awards_vein": "14 of the 20 manager records came from Central Banking's award profiles, which name client central banks that the banks' own sites do not. SOURCE-QUALITY NOTE: these profiles are substantially supplied by the firm being profiled, so the tie is stated from the manager's side rather than the bank's. Each record attributes it in its own detail sentence ('Central Banking's award profile states...') rather than being flagged weak_source. The awards archive for 2017 and 2019-2024 is the same vein and almost certainly holds more named pairings.",
+  "dead_ends_overturned": "Two entries on the previous round's dead-end list were overturned, both from the firm's side rather than the bank's: the Bank of Israel, which manages reserves in-house and names no one, is named by BlackRock's profile as a client for the equities and corporate parts of its portfolio; and the Bank of Botswana, whose IFSWF self-assessment names no firm, is named by Northern Trust's profile for performance analytics and staff training. A dead end at the bank's own site is not a dead end at the manager's.",
+  "logged_not_filed": {
+   "SLE_Bank_of_Ghana": "The Bank of Sierra Leone's financial statements say its Stabilization and Cooperation Fund balance is held at the Bank of Ghana. NOT FILED: every central-bank-like party node on this map is a WORKS or AUDIT BODY forming part of a bank, never a central bank itself, so a Bank of Ghana node would be a new and inconsistent kind of party. The West African Monetary Institute record from the same statements WAS filed, since WAMI is an outside body."
+  },
+  "printers_closed_with_nothing": [
+   "Italy",
+   "Greece",
+   "Netherlands",
+   "Belgium",
+   "Ireland",
+   "Czechia (CNB PDF client error)",
+   "Peru (BCRP bot-blocked)",
+   "Zimbabwe (printing division spun off to the Printing and Minting Company of Zimbabwe)",
+   "Israel",
+   "Russia (cbr.ru FAQ names Goznak only for coins)",
+   "BCEAO/BEAC (Banque de France names no client banks)",
+   "Zambia (Currency News paywalled)",
+   "Costa Rica (BCCR accented URL 400s)",
+   "Paraguay (the 2023 Oberthur award is for design only)"
+  ],
+  "printers_next_steps": [
+   "BCCR Costa Rica 'Fabricacion de billetes y monedas' manufacturers page",
+   "24.kg article 367822 on Kyrgyzstan's Uchkun",
+   "contrataciones.gov.py printing award for Paraguay",
+   "Banca d'Italia's Valoridicarta release on banknote paper and holograms",
+   "RTE March 2019 on the Irish Currency Centre decision",
+   "Algeria: bank-of-algeria.dz is robots-disallowed; needs the PDF annual report via a search result"
+  ],
+  "auditors_notes": "Only 4 records this round - the well has genuinely thinned. New: Albania (Ernst & Young Statutory Auditors Branch in Albania, FY2023), Montenegro (Ernst&Young Montenegro Ltd Podgorica, FY2025, by open public procurement), Moldova (KPMG Moldova SRL, FY2024 and 2023, from Note 30), Suriname (BDO Assurance NV, FY2020 - BDO WITHHELD an opinion). 26 unavailable entries written. A recurring blocker worth knowing: Barbados, Belize, Bahamas and Trinidad all have auditor's reports whose firm name is a GRAPHIC SIGNATURE absent from extracted text. Trinidad's FY2024 report is signed Port-of-Spain, 18 December 2024 and says the prior year 'were audited by another auditor', so an auditor exists but is unnamed in text. nbrm.mk returns client_error on its own PDF URLs. Guatemala's statements say only 'verificados por auditor independiente'.",
+  "verification_note": "The main session independently re-fetched the Note Printing Australia customer page before merging, because 18 records rested on one source. It matched the agent's records exactly: 20 authorities named, the same single statement covering all of them."
  }
 }

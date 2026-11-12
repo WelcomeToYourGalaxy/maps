@@ -39,24 +39,24 @@ Another session of the user's commits to this repo often. **Always `git fetch or
   - Links: `{n, cb | tn, rel, role, detail, src_t, src_u}`.
   - Popups turn each link into a plain sentence (`SAY` / `sayLink` / `srcItem` in `app.js`). Add a `SAY` entry for any new `role` string.
 
-## Where it stands (after round 18, 11 November 2026)
+## Where it stands (after round 19, 11 November 2026)
 
-1,389 outside parties and 1,849 ties. 1,618 writeups, one for every box.
+1,405 outside parties and 1,893 ties. 1,634 writeups, one for every box.
 
 | Category | Records | Places | Breadth |
 |---|---|---|---|
 | Corruption cases | 232 | 133 | 65% |
-| External auditors | 126 | 80 | 38% |
+| External auditors | 130 | 84 | 40% |
 | Revolving door | 206 | 70 | 34% |
+| Banknote printers | 92 | 68 | 33% |
 | Swap lines | 240 | 64 | 31% |
-| Banknote printers | 80 | 55 | 27% |
 | Governor removals and pressure | 110 | 55 | 27% |
-| Outside reserve managers | 128 | 17 | 8% |
+| Outside reserve managers | 148 | 31 | 15% |
 | Named shareholders | 228 | 9 | near-complete* |
 
-\* Named shareholders reads low because only about ten central banks have private shareholders at all. Outside reserve managers reads low because 103 of its 128 ties are Norway's fund — and no list of which banks hire outside managers is published anywhere, so this row has no honest denominator.
+\* Named shareholders reads low because only about ten central banks have private shareholders at all. Outside reserve managers reads low because 103 of its 148 ties are Norway's fund — and no list of which banks hire outside managers is published anywhere, so this row has no honest denominator.
 
-\* Named shareholders reads low because only about ten central banks have private shareholders at all — that row is near-complete, not 4%. Outside reserve managers reads low because 103 of its 107 ties are Norway's fund.
+\* Named shareholders reads low because only about ten central banks have private shareholders at all. Outside reserve managers reads low because 103 of its 128 ties are Norway's fund — and no list of which banks hire outside managers is published anywhere, so this row has no honest denominator.
 
 `agents/work/coverage.py` computes this table from the data files. Run it every round; don't estimate it.
 
@@ -170,22 +170,28 @@ Bounded sets that worked:
 ## What is left
 
 ### 1. External auditors — the one category that can actually reach 100%
-Every central bank operates under a law that names who audits it, so the answer always exists. 72 of 206 done.
-- **The BCEAO's eight national directorates** are audited separately from the union accounts and the appointments are published — an August 2024 notice named Mazars Niger as titulaire and KMC S.A. as suppléant for Niger, FY2024–2029. Eight records from one bounded set.
-- **Later EUR-Lex amending decisions** (candidates: 2023/670, 2024/2001, 2025/1917). Cyprus (2018–2022) and Luxembourg (2019–2023) have expired terms recorded; Croatia is absent from the 2021 consolidated text entirely, having joined the euro in 2023.
-- Never attempted: Jordan, Rwanda, Ethiopia, Qatar, Armenia, Georgia, Azerbaijan, Uzbekistan, Moldova, the Balkans, most of Central America.
+Every central bank operates under a law that names who audits it, so the answer always exists. 84 of 206 done.
+- **The BCEAO's seven remaining national directorates.** Niger is done (Mazars Niger as titulaire, KMC S.A. as suppléant, FY2024–2029, from the 1 August 2024 award notice, which covers Niger alone — confirmed by an offset read of the whole 902-character page). The all-lots award notice exists but **cannot be fetched because its URL is 364 characters long and WebFetch rejects it on URL length**; a second copy under `/files/2024-01/` is 369 characters and fails identically. This is NOT a document-length problem and offsets do not help — an earlier round diagnosed it wrongly and round 19 wasted a retry on that. It needs a mirrored copy with a shorter URL, a different host, or a browser tool.
+- **EUR-Lex is settled for now.** Round 18 found a newer consolidated text at `CELEX:01999D0070-20240627` — the 2021 version is what EUR-Lex serves under the old ELI path, and earlier rounds had been working from it. The 2024 text plus five later decisions gave the current auditor for the whole euro area, Croatia included. Check for a newer consolidation before assuming it is still current.
+- Never attempted: Jordan, Qatar, Armenia, Georgia, Azerbaijan, Uzbekistan, Kyrgyzstan, Tajikistan, Moldova, Albania, North Macedonia, Montenegro, Paraguay, Guatemala, Belize, Guyana, Suriname, Barbados, Bahamas, Jamaica. Tried and unavailable: Ethiopia (Proclamation 591/2008 art. 8 requires an annual external auditor, names no firm), Rwanda (the fetch returned BNR Regulation 12/2017, not Law 48/2017), Bosnia (the audit chapter is a download link only).
 - **Don't retry via annual report:** Croatia, Serbia, Bahrain, Botswana — their PDFs extract the narrative but drop the auditor's report page, and Botswana's is scanned images. Don't retry BEAC via beac.int (robots-disallowed); target "BEAC Etats financiers IFRS certifiés" elsewhere.
 - Trinidad and Tobago is **contested, not unknown**: the Auditor General declined to audit the Central Bank and the Government wanted it resumed. Needs care, not another fetch.
 - Panama has no central bank.
 
-### 2. Banknote printers — thinnest countable row at 21%
-**Most central banks print their own money.** Twelve of round 17's twenty records were state works run by the bank or government, and the row was thin partly because nobody had recorded them. For each country, ask first whether its own bank runs a printing works; its site usually answers.
-**The euro area opens from the other end.** The ECB names none of the eleven works that print euro notes and publishes no per-denomination allocation — but each national central bank names its own works. Round 18 took Spain (IMBISA, 80% Banco de España-owned, printing roughly 12% of total euro production), Austria (OeBS, OeNB-owned) and Portugal (Valora, Banco de Portugal-owned) this way; France and Germany were already held. **Work the remaining euro-area banks one at a time rather than hunting for an ECB allocation table.** Two near-misses to settle with one fetch each: the Bank of Italy's printing works and the Bank of Greece's Banknote Printing Works Department (IETA) are both named on official pages that do not actually say they print banknotes, so neither was recorded rather than inferred.
+### 2. Banknote printers — 33%
+**Most central banks print their own money.** Three rounds running, state works have been most of the yield, and the row was thin partly because nobody had recorded them. For each country, ask first whether its own bank runs a printing works; its site usually answers.
+**The euro area is now mostly closed.** The ECB names none of the eleven works that print euro notes and publishes no allocation table. Five banks name their own works and are recorded — Spain (IMBISA, 80% Banco de España-owned, printing roughly 12% of total euro production), Austria (OeBS), Portugal (Valora), France and Germany. Round 19 checked five more one at a time and **all five state nothing**: Italy's page describes its banknote service and printing phases but never says it prints euro notes; Greece's statements mention only circulation and the Eurosystem allocation; the Dutch bank says it moved to printers "in Germany and Great Britain" in 2011 without naming them, and Joh. Enschedé stopped printing notes at the end of 2016; Belgium's page says only that it puts notes into circulation; Ireland's Currency Centre was printing in 2018 but a parliamentary answer says the majority are "produced elsewhere". Do not re-run these five. Untried: Finland, Slovakia, Slovenia, the Baltics, Cyprus, Malta, Croatia, Luxembourg.
 
 A single joint Banque de France release with the OeNB and Banco de Portugal yielded two records at once. **Multi-bank cooperation releases are worth hunting** for exactly this reason.
 
-### 3. Outside reserve managers — 107 ties, 103 of them Norway
-Barely started. The World Bank Treasury's **RAMP** (Reserves Advisory and Management Partnership) has a published membership of central banks; one RAMP tie already appears for Guatemala. The BIS Banking Department manages reserves for central banks and publishes a customer count — a count alone is not a record.
+### 3. Outside reserve managers — 148 ties at 31 banks, 103 of them Norway
+**RAMP does NOT publish its membership.** It only counts, and the counts contradict each other across the World Bank's own pages: "over 70" (2024), "75th member" (April 2024), "over 80" (May 2025), "more than 90" (October 2025), "a record 95" (April 2026). Round 18's fourteen RAMP ties were each assembled from an individual press release; roughly 80 members remain unidentified, and the same search run year by year, in Spanish, French and Portuguese too, will keep yielding them.
+
+**Say what the source says.** Most RAMP announcements describe advice, technical assistance or training; only Seychelles states that RAMP actually manages a portfolio. Never upgrade membership or advice into management.
+
+**The best remaining vein:** small open economies that publish a standalone reserves management report. The Central Bank of Seychelles' International Reserves Management Report 2025 named three outside parties in one document.
+
+**Named but unnamed:** Botswana, the Trinidad HSF, Timor-Leste, Namibia, Ghana and Kazakhstan all confirm external managers and custodians without naming one firm. Botswana's IFSWF self-assessment says international managers run about half the Pula Fund, plus a global custodian and an investment consultant — not one is named. The BIS Banking Department says it manages mandates for central banks and names no client.
 
 ### 4. Revolving door — now the shallowest it has been
 **The method:** go to the central bank's own governor or board page, or the private firm's own board page, and read the career list. Do not search for scandal.
@@ -208,7 +214,7 @@ Round 5 retried Bahrain, Saudi Arabia, Oman, Taiwan and Singapore in Arabic, Chi
 
 **Cannot finish:** corruption cases, governor removals, and revolving door outside closed sets. No complete count exists anywhere, so the "35–45%" in `about.html` is a judgement made while compiling and will stay one. These approach completeness asymptotically.
 
-**Estimate: 10 to 14 more rounds** for everything finishable. Yield is drifting down (35 → 34 → 33) and two of the best leads closed permanently in round 17. Worth spending one of those rounds purely on auditing what is already in — round 16's audit found a five-round-old corruption affecting 147 links.
+**Estimate: 8 to 12 more rounds** for everything finishable. Yield by round: 35, 34, 33, 56, 50 — the two big rounds came from switching to a category nobody had worked, not from pressing a thinning one. That is the lesson. Worth spending one round purely on auditing what is already in: round 16's audit found a five-round-old corruption affecting 147 links.
 
 ## Questions the user has settled (don't reopen)
 - **Unproven allegations** (10 November 2026). Show both and let the reader switch. A tick box, "Count cases that are allegations alone", sits under the legend on the three case layers, ticked by default. Cleared, a bank whose only cases are allegations stays on the inside layer scored at nothing rather than dropping off, and its box says any score in the paragraph was written with allegations counted.
