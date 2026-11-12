@@ -2,7 +2,7 @@
 
 Paste or attach this in a new chat to carry on adding to the map.
 
-Rewritten at round 34. It states the current position only. Earlier versions kept round-by-round narrative, which went stale and in round 26 sent agents to re-research records already on the map. Keep it that way: when something changes, edit the statement, don't append a round note. **Where this names a country as dead or blocked, that is as of round 34 — re-derive the target list from `coverage.py` before briefing anything.**
+Rewritten at round 34, current through round 35. It states the current position only. Earlier versions kept round-by-round narrative, which went stale and in round 26 sent agents to re-research records already on the map. Keep it that way: when something changes, edit the statement, don't append a round note. **Where this names a country as dead or blocked, that is as of round 35 — re-derive the target list from `coverage.py` before briefing anything.**
 
 ## What it is
 - A standalone global map titled **"Central bank capture"**. It shows who owns and steers each central bank, what it hides, the corruption inside and around it, and how far its money reaches beyond its borders.
@@ -41,7 +41,7 @@ Another session of the user's commits to this repo often. **Always `git fetch or
   - Links: `{n, cb | tn, rel, role, detail, src_t, src_u}`.
   - Popups turn each link into a plain sentence (`SAY` / `sayLink` / `srcItem` in `app.js`). Add a `SAY` entry for any new `role` string.
 
-## Where it stands (34 rounds in, 12 November 2026)
+## Where it stands (35 rounds in, 12 November 2026)
 
 1,491 outside parties and 2,091 ties. 1,720 writeups, one for every box. 20 patterns.
 
@@ -52,7 +52,7 @@ Another session of the user's commits to this repo often. **Always `git fetch or
 | Banknote printers | 157 | 133 | 65% |
 | Swap lines | 240 | 84 | 41% |
 | Revolving door | 206 | 80 | 39% |
-| Governor removals and pressure | 118 | 61 | 30% |
+| Governor removals and pressure | 121 | 64 | 31% |
 | Outside reserve managers | 155 | 37 | 18% |
 | Gold custodians | 58 | 31 | 15% |
 | Named shareholders | 228 | 9 | near-complete* |
@@ -281,10 +281,10 @@ Bounded sets that worked:
 
 **Named next steps:** Zambia (diplo.news on the new kwacha launch), Costa Rica (BCCR press release of 11.11.2020), North Macedonia (the printing tender award notice), Georgia (centralbanking.com, likely paywalled), Zimbabwe (mriguide.com and zimbabwenow.co.zw mirrors; note one source is Fidelity Printers *denying* that it prints Zimbabwe dollars), Uruguay (2000s BanknoteNews commemorative entries identified but never fetched).
 
-### 3. Moves against the bank — 30%, and the cheapest win left
-**This row was only recording poor and middle-income countries**, because it was looking for firings. Pressure in a rich democracy takes another form: a threat to rewrite the bank's law, a review of its mandate, a governor quietly not reappointed, a funding squeeze, a resignation under political fire. Eight places went on in two rounds on that insight — Japan (Abe's threat from December 2012 to revise the 1998 Bank of Japan Law unless it adopted a 2% target, which it did on 22 January 2013), the United Kingdom (Truss's 2022 promise to review the Bank's mandate, and a later 44-MP call for a Treasury-led review), Canada (Poilievre's pledge of 11 May 2022 to fire Macklem), Australia (Lowe not reappointed on 14 July 2023 after the review his criticism produced), New Zealand (Orr's resignation of 5 March 2025, a funding deadlock with the minister and Treasury), South Africa (the Public Protector's 2017 instruction to Parliament to change the bank's constitutional mandate), Italy (Fazio forced out on 19 December 2005 while the government drafted a law to unseat a governor who held office for life) and Spain (Fernández Ordóñez leaving a month early on 29 May 2012 under government fire over Bankia).
+### 3. Moves against the bank — 31%, and the cheapest win left
+**This row was only recording poor and middle-income countries**, because it was looking for firings. Pressure in a rich democracy takes another form: a threat to rewrite the bank's law, a review of its mandate, a governor quietly not reappointed, a funding squeeze, a resignation under political fire. Eleven places went on in three rounds on that insight — Japan (Abe's threat from December 2012 to revise the 1998 Bank of Japan Law unless it adopted a 2% target, which it did on 22 January 2013), the United Kingdom (Truss's 2022 promise to review the Bank's mandate, and a later 44-MP call for a Treasury-led review), Canada (Poilievre's pledge of 11 May 2022 to fire Macklem), Australia (Lowe not reappointed on 14 July 2023 after the review his criticism produced), New Zealand (Orr's resignation of 5 March 2025, a funding deadlock with the minister and Treasury), South Africa (the Public Protector's 2017 instruction to Parliament to change the bank's constitutional mandate), Italy (Fazio forced out on 19 December 2005 while the government drafted a law to unseat a governor who held office for life) Spain (Fernández Ordóñez leaving a month early on 29 May 2012 under government fire over Bankia), Iceland (parliament restructuring the central bank on 26 February 2009 to remove a governor who had refused to resign), Germany (the 1997 plan to change the Bundesbank law and revalue its gold, which the bank's council publicly called a possible attack on its independence) and Ireland (Trichet's secret letter of 19 November 2010 making further emergency lending to Irish banks conditional on Ireland applying for a rescue programme, published only in 2014).
 
-**The absent list is still full of the same kind of country:** Austria, Belgium, Czechia, Denmark, Finland, France, Germany, Greece, Iceland, Ireland, Israel, Korea, Luxembourg, Netherlands, Norway, Portugal, Slovakia, Slovenia, Sweden, Switzerland. Search the governor's name plus "independence", or the country plus "central bank mandate review" — not for dismissals.
+**The absent list is still full of the same kind of country:** Austria, Belgium, Czechia, Denmark, Finland, France, Greece, Israel, Korea, Luxembourg, Netherlands, Norway, Portugal, Slovakia, Slovenia, Sweden, Switzerland. Switzerland is the best of them: Philipp Hildebrand resigned as SNB chairman in January 2012 over his wife's currency trades, under political attack — researched but not yet filed. Search the governor's name plus "independence", or the country plus "central bank mandate review" — not for dismissals.
 
 ### 4. Outside reserve managers — 155 ties at 37 banks, 103 of them Norway
 **RAMP does NOT publish its membership**, only contradictory counts ("over 70" 2024 → "a record 95" April 2026). Each of the fourteen RAMP ties was assembled from an individual press release; roughly 80 members remain unidentified, and the same search run year by year, in Spanish, French and Portuguese too, will keep yielding them. Every bank the World Bank has named is already recorded.
@@ -335,7 +335,7 @@ The three currents once listed as missing are all in: `supervisory-capture` (Ire
 
 ## How long to finish
 
-**Yield by round:** 35, 34, 33, 56, 50, 24, 34, 42, 40, 21, 14, 13, then 4, 3, 2, 3, then two rounds of 0 records (two patterns; four corrections), then 6 and 4.
+**Yield by round:** 35, 34, 33, 56, 50, 24, 34, 42, 40, 21, 14, 13, then 4, 3, 2, 3, then two rounds of 0 records (two patterns; four corrections), then 6, 4 and 3.
 
 The service rows are far enough along that a confirmed blank is worth as much as a find, because it stops every future round spending on the same dead country. Say so when reporting a round that produced negatives.
 
