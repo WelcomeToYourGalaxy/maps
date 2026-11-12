@@ -3140,5 +3140,36 @@
   "scores": "DEU 22->24, IRL 21->23, ISL 16->18. All three writeups quoted the old figure and were rewritten.",
   "researched_not_filed": "Switzerland: Philipp Hildebrand resigned as SNB chairman in January 2012 over his wife's currency trades, under political attack led by Christoph Blocher. Identified as the strongest remaining rich-democracy case but not researched to a source this round. Do it first next time.",
   "rounds_remaining_estimate": "Computed rather than guessed, from coverage.py's to-go counts minus the structurally unreachable, divided by realistic per-round yields. Auditors: 26 reachable, 2-4 a round, 6-13 rounds. Printers: 45 reachable after removing the structurally closed euro area, 3-5 a round, 9-15 rounds. Worked in parallel the two finishable rows need roughly 9-15 more rounds. The case rows (corruption, revolving door, moves against the bank) and the two disclosure-limited rows (reserve managers, gold custodians) have no reachable ceiling and approach completeness asymptotically - on current yields the reserve-manager and gold rows alone would need 50-160 rounds to fill, which is the honest way of saying they never fill."
+ },
+ "round36": {
+  "date": "2026-11-12",
+  "yield": "3 records, 3 new places, all on the moves-against-the-bank row: CHE, GRC, KOR. Row 121/64/31% to 124/67/33%. Scores moved CHE 30>32, GRC 30>32, KOR 24>26; those three writeups rewritten.",
+  "settled": [
+   {
+    "iso3": "CHE",
+    "date": "2012-01-09",
+    "what": "Hildebrand resigned as SNB chairman with immediate effect, under four weeks of political attack. His wife Kashya bought $504,000 in August 2011 and closed the position three weeks later for a 75,000-franc profit, after the bank intervened to weaken the franc. A Bank Sarasin IT worker leaked the family's transactions to a lawyer in the Thurgau cantonal parliament for the Swiss People's Party; the Federal Supreme Court later gave both suspended fines. Blocher passed documents on the trades to the government and had long called for Hildebrand to go; the party was at the time campaigning against the 1.20 franc ceiling. He denied wrongdoing on 5 January, resigned on 9 January. Insider-trading inquiry cleared him; criminal investigation dropped. Kind 'resignation under pressure'. Note: a corruption-case record for the same affair already existed, so the writeup says plainly that the case and the pressure episode are one affair - the two rows count different things and both are correct."
+   },
+   {
+    "iso3": "GRC",
+    "date": "2015-05",
+    "what": "The SYRIZA government's campaign against Stournaras, who had been finance minister for the previous government. Filis (party parliamentary spokesman) said on party radio he was undermining the creditor negotiations; Avgi's front page called the bank an organ against the government; a government non-paper told the bank to investigate a leak to a journalist; Handelsblatt reported Tsipras wanted him replaced; Bloomberg reported 13 May 2015 that the ECB was concerned and publicly backed him; Speaker Konstantopoulou returned his June 2015 monetary policy report as unacceptable; September 2016 prosecutors raided his home; February 2019 deputy minister Polakis leaked a recording of a call about his own bank loan and Stournaras asked Tsipras to protect the bank's independence. Kind 'public pressure'."
+   },
+   {
+    "iso3": "KOR",
+    "date": "2014-08-14",
+    "what": "Choi Kyung-hwan, deputy PM for the economy and finance minister from July 2014, pressed publicly for cuts ('I didn't even mention a word on the base rate', 'They should get the hint'). Rate cut to 2.25% on 14 August, first in fifteen months, and to 2.0% on 15 October. Contemporary reporting called both cuts government-pressured; a Reuters survey before the August meeting recorded a reversal in expectations that raised independence questions. Governor Lee Ju-yeol said the committee decided and independence was guaranteed. Also recorded: the May 2013 cut read the same way, and a vice finance minister attending a rate-setting meeting in October 2010. Kind 'public pressure'."
+   }
+  ],
+  "did_not_settle": [],
+  "lessons": [
+   "Three more forms of pressure now have a filed example each, and each is a searchable phrase for the remaining rich democracies: a minister demanding cuts in public (KOR), a leak that makes a governor's position untenable (CHE), a sustained campaign in the government's own press (GRC). Searching the governor's name plus 'independence' found all three; searching for dismissals would have found none.",
+   "mk_t3.py takes two arguments (src, dst) and t_dump.py takes a DIRECTORY containing t/dump.html and writes boxes.json into it. The hooked build goes to /tmp/t and is copied over /home/claude/w/sp/t/dump.html; dist/ is never hooked.",
+   "A country can legitimately hold both a corruption case and a pressure event for the same episode (Switzerland). Say so in the writeup rather than dropping one - the rows count different things."
+  ],
+  "next": [
+   "Israel is the strongest remaining pressure case: the 2013 governor nominations that collapsed and ministerial attacks on Fischer's successors. Then Czechia and Slovakia (presidents packing the boards), France, Portugal.",
+   "Auditors: 31 to go, mostly blocked hosts. 2 to 4 a round."
+  ]
  }
 }
