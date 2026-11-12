@@ -2,7 +2,7 @@
 
 Paste or attach this in a new chat to carry on adding to the map.
 
-Rewritten at round 29, kept current through round 32. Earlier versions carried round-by-round narrative that went stale and misled round 26 into re-researching records already on the map. This version states the current position only. **Where it names a country as dead or blocked, that is as of round 32 — re-derive the target list from `coverage.py` before briefing anything.**
+Rewritten at round 29, kept current through round 33. Earlier versions carried round-by-round narrative that went stale and misled round 26 into re-researching records already on the map. This version states the current position only. **Where it names a country as dead or blocked, that is as of round 33 — re-derive the target list from `coverage.py` before briefing anything.**
 
 ## What it is
 - A standalone global map titled **"Central bank capture"**. It shows who owns and steers each central bank, what it hides, the corruption inside and around it, and how far its money reaches beyond its borders.
@@ -41,7 +41,7 @@ Another session of the user's commits to this repo often. **Always `git fetch or
   - Links: `{n, cb | tn, rel, role, detail, src_t, src_u}`.
   - Popups turn each link into a plain sentence (`SAY` / `sayLink` / `srcItem` in `app.js`). Add a `SAY` entry for any new `role` string.
 
-## Where it stands (after round 32, 12 November 2026)
+## Where it stands (after round 33, 12 November 2026)
 
 1,491 outside parties and 2,091 ties. 1,720 writeups, one for every box.
 
@@ -52,7 +52,7 @@ Another session of the user's commits to this repo often. **Always `git fetch or
 | Banknote printers | 157 | 133 | 65% |
 | Swap lines | 240 | 84 | 41% |
 | Revolving door | 206 | 80 | 39% |
-| Governor removals and pressure | 110 | 55 | 27% |
+| Governor removals and pressure | 116 | 61 | 30% |
 | Outside reserve managers | 155 | 37 | 18% |
 | Gold custodians | 58 | 31 | 15% |
 | Named shareholders | 228 | 9 | near-complete* |
@@ -304,6 +304,10 @@ These cannot finish; no complete count exists anywhere. They approach completene
 
 **Revolving door method:** go to the bank's own governor or board page, or the private firm's own board page, and read the career list. Do not search for scandal. **Closed as blanks:** BCEAO and BEAC publish no board biographies; Solomon Islands has the most detailed Pacific board page found and still yields nothing because no employer is characterised; China looks like a genuine blank, its senior PBoC careers running between state bodies. **Still worth trying:** Cambodia, Laos, Myanmar, Brunei, Tonga. **The denominator moves** — the inside-influence score divides by the highest count anywhere, which the United States holds, so any round adding US records re-checks the whole map.
 
+**The moves-against-the-bank row had a bias, and fixing it is the cheapest win left on the case rows.** Round 33 found that the row was effectively only recording poor and middle-income countries, because it was looking for firings. Pressure in a rich democracy takes a different form: a threat to rewrite the bank's law, a review of its mandate, a governor quietly not reappointed, a funding squeeze. Six places went on in one round on that insight — Japan (Abe's repeated threat from December 2012 to revise the 1998 Bank of Japan Law unless it adopted a 2% target, which it did on 22 January 2013), the United Kingdom (Truss's 2022 promise to review the Bank's mandate, and the later 44-MP call for a Treasury-led review), Canada (Poilievre's pledge of 11 May 2022 to fire Macklem), Australia (Lowe not reappointed on 14 July 2023 after the review the criticism produced), New Zealand (Orr's resignation of 5 March 2025, revealed in June to be a funding deadlock with the minister and Treasury) and South Africa (the Public Protector's 2017 instruction to Parliament to amend section 224 of the Constitution and change the bank's mandate, struck down that August). **The rest of the absent list is full of the same kind of country** — Austria, Belgium, Denmark, Finland, France, Germany, Ireland, Italy, Korea, Netherlands, Norway, Portugal, Spain, Sweden, Switzerland, Czechia. Search for mandate reviews, non-reappointments, law-change threats and public attacks on the governor by name, not for dismissals. The useful search terms are the governor's name plus "independence", or the country plus "central bank mandate review".
+
+**A caution on event kinds.** `app.js` counts events with `evN = (p.ev||[]).filter(i => D.EV[i].kind !== "other").length`, so an event filed with kind `other` shows in the country box but is **not counted** on the layer or in the score. Never file a real episode as `other`. Kinds are free text and render as written; round 33 added `attempted law change` for South Africa.
+
 **Corruption cases are near-exhausted by ordinary search.** Local-language retries in Arabic and Chinese found nothing across Bahrain, Saudi Arabia, Oman, Taiwan and Singapore. Taking this further needs a different source type: court bulletins, supreme audit institution reports, parliamentary questions, central bank annual reports' own disciplinary notes.
 
 **If the case rows are ever worked again, measure rather than estimate:** run a blind sweep across twenty countries and count how many returns were already on the map. That duplicate rate *is* the completeness figure.
@@ -329,7 +333,7 @@ Weaker fits, noted but not recommended: stablecoin issuers as private money crea
 
 ## How long to finish
 
-**Yield by round:** 35, 34, 33, 56, 50, 24, 34, 42, 40, 21, 14, 13, then 4 (r27), 3 (r28), 2 (r29), 3 (r30), 0 records (r31, two patterns), 0 records (r32, four corrections) — the tail being single-row auditor rounds. Round 30 also added a pattern and two settled negatives, which move the picture more than a record does at this stage: with the service rows this far along, converting a "blocked" country into a confirmed blank is worth as much as a find, because it stops future rounds spending on it.
+**Yield by round:** 35, 34, 33, 56, 50, 24, 34, 42, 40, 21, 14, 13, then 4 (r27), 3 (r28), 2 (r29), 3 (r30), 0 records (r31, two patterns), 0 records (r32, four corrections), 6 records in 6 new places (r33) — the tail being single-row auditor rounds. Round 30 also added a pattern and two settled negatives, which move the picture more than a record does at this stage: with the service rows this far along, converting a "blocked" country into a confirmed blank is worth as much as a find, because it stops future rounds spending on it.
 
 **Auditors: 6 to 10 more rounds** for the 26 reachable countries. Rounds 27–29 took nine countries with OCR. What is left is mostly blocked hosts, so plan against 2 to 4 a round and expect several to need a copy of the document from somewhere other than the bank's own site.
 
