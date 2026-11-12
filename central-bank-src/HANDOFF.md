@@ -39,16 +39,16 @@ Another session of the user's commits to this repo often. **Always `git fetch or
   - Links: `{n, cb | tn, rel, role, detail, src_t, src_u}`.
   - Popups turn each link into a plain sentence (`SAY` / `sayLink` / `srcItem` in `app.js`). Add a `SAY` entry for any new `role` string.
 
-## Where it stands (after round 26, 11 November 2026)
+## Where it stands (after round 27, 11 November 2026)
 
-1,483 outside parties and 2,081 ties. 1,712 writeups, one for every box.
+1,487 outside parties and 2,085 ties. 1,716 writeups, one for every box.
 
 **Breadth is now measured with currency-union ties expanded to member countries** (see below). That change alone moved four rows without any new research, because `coverage.py` had been undercounting what the map already showed.
 
 | Category | Records | Places | Breadth |
 |---|---|---|---|
 | Corruption cases | 232 | 154 | 75% |
-| External auditors | 189 | 151 | 73% |
+| External auditors | 193 | 155 | 75% |
 | Revolving door | 206 | 80 | 39% |
 | Banknote printers | 157 | 133 | 65% |
 | Swap lines | 240 | 84 | 41% |
@@ -119,6 +119,37 @@ Same origin matters: a cross-origin PDF is refused by CORS, and some sites block
 **Malawi's statute settles a question rather than a country:** Reserve Bank of Malawi Act 2018 s.60(2) requires audit by internationally recognised public auditors appointed annually by the Board, and s.60(3)–(4) limit the Auditor General to a separate efficiency examination. The AG is explicitly *not* RBM's statutory auditor. The Public Finance Management Act 2022 excludes the Reserve Bank from its "statutory body" definition, so RBM accounts are not gazetted under it.
 
 **The Bahamas scan wall, mapped precisely.** The 2023, 2021 and 2018 reports were each read at multiple offsets; in every one the pages between the Financial Statements divider and the Statement of Financial Position extract blank or garbled (2021 pages 46–48 come through as bare page numbers). The auditors' report in all modern CBOB PDFs is an image. 2011 is the only year that yields a name as text, and a current-year Bahamas auditor needs OCR or a browser.
+
+### Round 27: OCR beats the browser, and it runs here
+
+Rounds 24 to 26 all ended with the same diagnosis: what is left is not search, it is access, and the fix is a browser. That was half right. The documents are reachable; it is the *reading* that fails, because the auditor's report page in these reports is a picture of a page. A browser does not fix that either — it just shows the same picture.
+
+**The method that does work, and it needs no browser at all:**
+
+```bash
+curl -sSL -o x.pdf "<url from a fresh search, or from the bank's own index page>"
+pdfinfo x.pdf                       # page count
+for p in $(seq 1 N); do pdftotext -f $p -l $p x.pdf - | wc -c; done   # find the blank pages
+pdftoppm -r 200 -f <a> -l <b> -png x.pdf p      # render only those
+tesseract p-0NN.png - --psm 6                   # read them
+```
+
+The blank-page scan is the whole trick: the pages that extract under about 300 characters are the scanned ones, and in every one of these reports the auditor's report sits exactly there. `-l fra+eng` for French documents. A 100-page scan costs about a minute.
+
+**Four countries settled this way in one round, each previously logged unavailable:**
+- **Barbados.** PricewaterhouseCoopers SRL, The Financial Services Centre, Bishop's Court Hill, dated Bridgetown 27 March 2026, Annual Report 2025 pages 61-64. The report says it is made to the board under section 67 of the Central Bank of Barbados Act, 2020.
+- **Bahrain.** KPMG Fakhro, 12th Floor Fakhro Tower, Manama, signed 10 March 2024 under partner registration number 213, for the period ended 31 December 2023. The English financial-statements PDF is text to page 64 and images from 65 on, which is exactly why three earlier full reads stopped at the chapter heading. The opinion is a special-purpose one: the statements are prepared on the basis of accounting in note 2, not to a general standard.
+- **Eswatini.** SNG Grant Thornton Chartered Accountants (Eswatini), Lot 195 Kal Grant Street, Mbabane, signed 26 August 2026 for the year ended 31 March 2026. The directors' report in the same file names the same firm.
+- **Burundi.** Forvis Mazars Cameroun SA, signed at Bujumbura 6 August 2026 by the partner Jules Alain Njall Bikok, for the year ended 30 June 2023, with CEMAC approval SEC 034 and ONECCA approval SEC 017. The same partner signed BEAC's 2018 report, which is a useful cross-check that the OCR read the name right.
+
+**Three entries in `auditors_unavailable` were wrong about the host, not the document.** Search, not access, was the failure in each:
+- Eswatini was logged as having no reachable `centralbank.org.sz` URL because no search result returned one. `https://www.centralbank.org.sz/annual-report/` lists 82 PDFs, financial statements for every year through 2026. The host resets the connection at random; the same plain request succeeds on the second or third try.
+- Burundi was logged dead after two searches returned only Burundian commercial banks. `https://www.brb.bi/etats_financiers` lists the statements outright.
+- Barbados was logged as needing a hand-fetched copy because `cdn.centralbank.org.bb` refused an injected script inside a browser. A plain download of the same file works.
+
+**The lesson to carry: when a search for a central bank's report returns only commercial banks, stop searching and fetch the bank's own publications index directly.** Three of this round's four came that way. Searches for central bank documents are drowned out by commercial banks with similar names in almost every country on the remaining list.
+
+**Still not settled this round:** the Bahamas (`cdn.centralbankbahamas.com` returns 403 to a plain download and the site's `viewPDF` path 404s - it needs a copy from another host); Malawi (rbm.mw builds its statements list in script that did not run even in headless Chrome); Angola (`www.bna.ao` resets every connection); Paraguay and Palestine (the same commercial-bank noise, and neither bank's own index lists a statements PDF).
 
 ## Data files to add to (`agents/`)
 | File | Holds |
@@ -230,7 +261,7 @@ Bounded sets that worked:
 ## What is left
 
 ### 1. External auditors — the one category that can actually reach 100%
-Every central bank operates under a law that names who audits it, so the answer always exists. 145 of 206 done, union members included.
+Every central bank operates under a law that names who audits it, so the answer always exists. 155 of 206 done, union members included. **`coverage.py`'s absent list is now 51 codes; take out the four union codes and the ten places with no central bank and the real remaining list is 37 countries**: AGO ARE BGD BLR COD CPV CUB CUW DZA EGY ERI ETH HTI IRN JOR KHM LAO LBY MAC MDG MKD MRT MWI PRY PSE QAT RWA SDN SMR STP SYR TJK TKM TWN UZB VEN YEM. Three of those (the UAE, Qatar, Ethiopia) are confirmed to print no name, so the ceiling is 34 more countries.
 **The browser reads what the fetcher cannot, and that is now the main method for auditors.** Three image-only auditor reports have been settled by opening the page in a browser and reading it: Botswana (EY, Gaborone, 2025), **Serbia** (Ernst & Young d.o.o. Beograd, signed at Belgrade on 20 March 2026 by Nikola Ribar, for the year ended 31 December 2025) and the **Maldives** (Deloitte Partners, Malé, signed by Mohamed Siraj Muneer on 29 April 2025, at pages 142–143). Each of those pages returns empty from every text extraction. Still open by this route: Brunei, Fiji's annual report, Eswatini, the Bahamas. One caveat: **Barbados serves its report as a download rather than inline, so the browser tab does not render it** — that one needs a different copy. Two URLs recorded in earlier notes (the Bahamas 2024 report, the Eswatini report on independentnews.co.sz) are now 404, so always get the URL from a fresh search.
 
 **Three banks genuinely print no auditor's name**, each confirmed by a full read: the UAE's 2025 report says only "an independent external auditor appointed by the Board"; Qatar's chapter 11 names nobody; Ethiopia's standalone statements open straight into the accounts and end at note 31. These are not retry targets.
@@ -349,7 +380,7 @@ Round 5 retried Bahrain, Saudi Arabia, Oman, Taiwan and Singapore in Arabic, Chi
 
 **Cannot finish:** corruption cases, governor removals, and revolving door outside closed sets. No complete count exists anywhere, so the "35–45%" in `about.html` is a judgement made while compiling and will stay one. These approach completeness asymptotically.
 
-**Estimate: 4 to 6 more rounds** for everything finishable. Yield by round: 35, 34, 33, 56, 50, 24, 34, 42, 40, 21, 14, 13.
+**Estimate: 5 to 8 more rounds** for the auditors row, which is the one that can actually finish. Yield by round: 35, 34, 33, 56, 50, 24, 34, 42, 40, 21, 14, 13, 4 auditors (round 27, a single-method round). 34 countries remain reachable on that row. Round 27's OCR route took four of them in one pass, all four previously logged unavailable, so the figure to plan against is roughly 4 to 7 auditor countries a round rather than the one or two of rounds 24 to 26.
 
 **The bottleneck is now access, not search, and the fix is the browser.** Four scanned auditor reports have been settled by opening the page and reading it — Botswana, Serbia, the Maldives, Brunei — after every text extraction returned them empty. Still waiting on that method: Bahrain, Barbados, Fiji's annual report, Eswatini, the Bahamas, Rwanda's document list, Taiwan's untitled publication links, Iceland's gold explainer, Greece's gold note, Cambodia's 2023 report. **That list is most of what is left on the two finishable rows.** A round spent entirely in the browser would likely settle more than a round spent searching.
 
