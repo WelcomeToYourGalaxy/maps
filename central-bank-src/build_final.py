@@ -262,7 +262,10 @@ for _f in _ne:
     if _k in P and _k not in _shaped: XSHAPE.append({"type": "Feature", "properties": {"iso3": _k, "name": P[_k]["n"]}, "geometry": _f["geometry"]})
 print("shapes added:", [x["properties"]["iso3"] for x in XSHAPE])
 WR = load("writeups.json", {})
-D = {"XSHAPE": XSHAPE, "WR": WR, "PAT": PAT, "NET": NET, "CC": CC, "RD": RD, "P": P, "U": U, "UM": UM, "CUR": CUR, "SW": SW, "EV": EV, "ARR": ARR, "REG": REG, "QL": QL, "HUB": HUB, "META": META, "ABOUT": ABOUT}
+PF = load("press_freedom.json", {})
+PRESS = {k: v["band"] for k, v in (PF.get("countries") or {}).items()}
+PRESSMETA = {"bands": PF.get("bands", {}), "source_title": PF.get("source_title", ""), "source_url": PF.get("source_url", "")}
+D = {"XSHAPE": XSHAPE, "WR": WR, "PAT": PAT, "NET": NET, "CC": CC, "RD": RD, "P": P, "U": U, "UM": UM, "CUR": CUR, "SW": SW, "EV": EV, "ARR": ARR, "REG": REG, "QL": QL, "HUB": HUB, "META": META, "ABOUT": ABOUT, "PRESS": PRESS, "PRESSM": PRESSMETA}
 data_js = "const D = " + json.dumps(D, ensure_ascii=False, separators=(",", ":")) + ";"
 tpl = open("/root/cb/template.html").read()
 out = tpl.replace("/*__PLATE__*/", open("/root/cb/plate.js").read()).replace("/*__DATA__*/", data_js) \

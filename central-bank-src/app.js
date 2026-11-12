@@ -27,6 +27,18 @@ const CATS = {
 };
 let CATC = CATS.night;
 const OTHER = "#8b8996", NODATA = "#3d3e4a";
+// Blank on a case layer means no record was found. Whether that blank can be read as "little happened"
+// depends on whether anyone is free to report it, so blanks are split by the RSF press-freedom band.
+const BLANK_FREE = "#3f505c", BLANK_HARD = "#6a4a4a";
+const blankKind = (iso) => { const b = D.PRESS && D.PRESS[iso]; if (!b) return "unrated"; return b >= 4 ? "hard" : "free"; };
+const PRESS_SAY = { 4: "difficult", 5: "very serious" };
+function pressNote(iso) {
+  const b = D.PRESS && D.PRESS[iso];
+  if (!b) return "";
+  if (b >= 4) return " Reporters Without Borders rates the situation for journalists here as " + PRESS_SAY[b] + " in its 2026 index, so the court reports and press coverage a case would be found in may not exist or may not be publishable.";
+  return "";
+}
+const blankColor = (iso) => ({ free: BLANK_FREE, hard: BLANK_HARD, unrated: NODATA })[blankKind(iso)];
 let BASE = "night";
 const ramp = () => RAMPS[BASE] || RAMPS.night;
 const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
@@ -163,11 +175,11 @@ seq("press", "Pressure in practice", "Quarters with reported government pressure
   desc: "Share of quarters in which the Economist Intelligence Unit's country reports describe the government pressuring the central bank, almost always to cut rates or lend more. Light means more pressure.",
   src: "Binder, Political Pressure on Central Banks, 118 central banks, 2010–2018." });
 seq("ev", "Pressure in practice", "Documented moves against the bank, 2019–2026", {
-  dom: "max", f: (v) => fmt(v, 0), get: (p) => { const n = evN(p); return n ? { v: n } : null; },
+  blank: true, dom: "max", f: (v) => fmt(v, 0), get: (p) => { const n = evN(p); return n ? { v: n } : null; },
   desc: "Firings, forced resignations, attempted dismissals, laws cutting independence, prosecutions, frozen reserves and open pressure campaigns, each with its source. Appointments and court rulings appear in the country box but are not counted.",
   src: "Compiled for this map from central bank, court, government and news-agency reports." });
 seq("cc", "Corruption inside and around the bank", "Documented corruption cases at the central bank, since 1990", {
-  alleg: true, dom: "max", f: (v) => fmt(v, 0), get: (p) => { const n = ccN(p); return n ? { v: n } : null; },
+  blank: true, alleg: true, dom: "max", f: (v) => fmt(v, 0), get: (p) => { const n = ccN(p); return n ? { v: n } : null; },
   desc: "Embezzlement, budget or election financing, leaked decisions, payments through foundations, sham contracts, officials trading on their own policies, bribery (including banknote-printing contracts), cheap foreign currency for insiders, hidden losses or rigged rescues, thefts tied to insiders, and money laundering, each with its source. Acquittals, dismissed cases, withdrawn charges and closed investigations are listed in the box but not counted. Unproven allegations are counted unless the tick box below is cleared. Euro-area countries include ECB cases.",
   src: "Compiled for this map from courts, prosecutors, official inquiries and news reports (links in each box)." });
 seq("cpi", "Corruption inside and around the bank", "Corruption in the country (Transparency International, 0–100)", {
@@ -275,10 +287,10 @@ function dom0(l) {
   const vs = ISOS.map((k) => { const r = l.get(P[k], S.year); return r && r.v > 0 ? r.v : null; }).filter((v) => v != null);
   return vs.length ? [Math.min(...vs), Math.max(...vs)] : [0, 1];
 }
-function colorOf(l, r, d) {
-  if (!r) return NODATA;
+function colorOf(l, r, d, iso) {
+  if (!r) return (l.blank && iso) ? blankColor(iso) : NODATA;
   if (l.kind === "cat") { if (r.v == null) return OTHER; const i = l.classes.findIndex((c) => c[0] === r.v); return i < 0 ? OTHER : CATC[i]; }
-  if (r.v == null) return NODATA;
+  if (r.v == null) return (l.blank && iso) ? blankColor(iso) : NODATA;
   let t;
   if (l.log) { const a = Math.log10(Math.max(d[0], 1e-6)), b = Math.log10(d[1]); t = b > a ? (Math.log10(Math.max(r.v, d[0])) - a) / (b - a) : 1; }
   else t = (r.v - d[0]) / ((d[1] - d[0]) || 1);
@@ -801,7 +813,7 @@ function setF(id, v) { const k = id + "|f", j = JSON.stringify(v); if (SEEN.get(
 function paint() {
   if (!map.getLayer("c-fill")) return;
   const l = layer(), d = l.kind === "seq" ? dom(l) : null, m = ["match", ["get", "iso3"]];
-  ISOS.forEach((k) => { m.push(k, colorOf(l, l.get(P[k], S.year), d)); });
+  ISOS.forEach((k) => { m.push(k, colorOf(l, l.get(P[k], S.year), d, k)); });
   m.push(NODATA);
   setP("c-fill", "fill-color", m);
   setP("c-dots", "circle-color", m);
@@ -991,8 +1003,16 @@ function drawLegend() {
     const nOther = rs.filter(([, r]) => r && r.other).length;
     if (nOther) h += lgRow(OTHER, l.other, nOther, infoOf(l, ["__other", l.other]));
   }
+  if (l.blank) {
+    const blanks = rs.filter(([, r]) => !r || r.v == null);
+    const cnt = (kind) => blanks.filter(([k]) => blankKind(k) === kind).length;
+    h += lgRow(BLANK_FREE, "No record found, and the press is free to report", cnt("free"), "Nothing was found for this place in the sources searched, and Reporters Without Borders rates the situation for journalists here as good, satisfactory or problematic. A blank here is more likely to mean little was documented.");
+    h += lgRow(BLANK_HARD, "No record found, and reporting is restricted", cnt("hard"), "Nothing was found for this place in the sources searched, and Reporters Without Borders rates the situation for journalists here as difficult or very serious. A blank here cannot be read as nothing happened: court bulletins and press reports that would carry such a record may not exist or may not be publishable.");
+    h += lgRow(NODATA, "No record found, press freedom not rated", cnt("unrated"), "Nothing was found for this place, and the Reporters Without Borders index does not cover it. Most of these are very small states.");
+    h += '<p class="lsrc" style="margin-top:5px">Blank shades: ' + esc(D.PRESSM && D.PRESSM.source_title ? D.PRESSM.source_title : "Reporters Without Borders") + '.</p>';
+  } else {
   const noLbl = l.id === "tiesSel" ? "None of the ticked kinds found" : l.kind === "cat" && l.id !== "reg" && l.id !== "anc" ? "No information" : "No figure from this source";
-  h += lgRow(NODATA, noLbl, l.kind === "cat" ? rs.filter(([, r]) => !r).length : nod, l.id === "tiesSel" ? "No documented tie of the ticked kinds is on this map for this place. That doesn't show none exists." : l.kind === "cat" && l.id !== "reg" && l.id !== "anc" ? (l.pat ? "Not part of this pattern in the records compiled for this map. That doesn't show it has no such tie." : "No record for this place in the sources used.") : "The source publishes no figure for this place.");
+  h += lgRow(NODATA, noLbl, l.kind === "cat" ? rs.filter(([, r]) => !r).length : nod, l.id === "tiesSel" ? "No documented tie of the ticked kinds is on this map for this place. That doesn't show none exists." : l.kind === "cat" && l.id !== "reg" && l.id !== "anc" ? (l.pat ? "Not part of this pattern in the records compiled for this map. That doesn't show it has no such tie." : "No record for this place in the sources used.") : "The source publishes no figure for this place."); }
   if (rs.some(([, r]) => r && r.via)) h += '<p class="lsrc" style="margin-top:5px">Places in a currency union, or using another country\'s currency, show the figure of the bank or currency they rely on; their boxes say so.</p>';
   $("#legend").innerHTML = h;
   $("#legend").querySelectorAll(".ib").forEach((b) => b.addEventListener("click", (e) => { e.preventDefault(); const el = b.parentNode.nextElementSibling; el.classList.toggle("open"); b.classList.toggle("on", el.classList.contains("open")); }));
@@ -1085,8 +1105,8 @@ function detail(k) {
   if (crow.length) h.push('<table class="kv">' + crow.map((x) => '<tr><th>' + x[0] + '</th><td>' + x[1] + '</td></tr>').join("") + '</table>');
   if (p.cpi) h.push(spark([{ s: p.cpi.s, c: "#c9c3ee" }], 0, 100, "Corruption Perceptions Index, 2012–2025, 0 to 100"));
   if (ccs.length) h.push('<p style="margin-top:8px"><b>' + ccs.length + '</b> documented case' + (ccs.length > 1 ? 's' : '') + ' at the central bank' + (p.u === "ECB" && ccs.some((c) => c.iso3 === "EMU") ? ' (including the ECB)' : '') + ':</p><ul>' + ccs.map((c) => '<li><b>' + esc(c.years) + '</b> · ' + esc(c.category) + ' · <i>' + esc(c.status) + '</i>. ' + esc(c.summary) + ' <span class="note">' + link(c.source_title, c.source_url) + (c.weak_source ? ' (Wikipedia)' : '') + (c.update_url ? ' · ' + link(c.update_title, c.update_url) : '') + '</span></li>').join("") + '</ul>');
+  if (!ccs.length) h.push('<p class="note">No documented case at the central bank was found. That is not proof none happened.' + pressNote(k) + '</p>');
   if (rds.length) h.push('<p style="margin-top:8px"><b>' + rds.length + '</b> documented career move' + (rds.length > 1 ? 's' : '') + ' between the bank and private finance, the IMF or the World Bank' + (p.u === "ECB" ? ' (including the ECB)' : '') + ':</p><ul>' + rds.slice().sort((a, b) => String(a.people).localeCompare(String(b.people))).map((c) => '<li><b>' + esc(c.people) + '</b>: ' + esc(c.move || '') + '. ' + esc(c.summary) + ' <span class="note">' + link(c.source_title, c.source_url) + (c.weak_source ? ' (Wikipedia)' : '') + '</span></li>').join("") + '</ul>');
-  else h.push('<p class="note">No documented case at the central bank was found. That is not proof none happened.</p>');
   if (rds.length) h.push('<details><summary>' + rds.length + ' move' + (rds.length > 1 ? 's' : '') + ' between the bank and private finance or politics</summary><ul>' + rds.map((c) => '<li>' + esc(c.people || "") + ': ' + esc(c.move || "") + '. ' + esc(c.summary || "") + ' <span class="note">' + link(c.source_title, c.source_url) + '</span></li>').join("") + '</ul></details>');
   const cr = (p.crises || []).slice().sort((a, b) => b.start - a.start);
   if (cr.length) h.push('<details><summary>' + cr.length + ' systemic banking crisis' + (cr.length > 1 ? 'es' : '') + ' since 1970</summary><table class="kv"><tr><th>Years</th><td>Public cost · central bank lending to banks</td></tr>' + cr.map((c) => '<tr><th>' + c.start + '–' + (c.end || '') + (c.border ? ' (borderline)' : '') + '</th><td>' + (c.fis == null ? 'cost not given' : fmt(c.fis, 1) + '% of GDP') + ' · ' + (c.liq == null ? '–' : fmt(c.liq, 1) + '% of deposits') + '</td></tr>').join("") + '</table></details>');

@@ -1,0 +1,734 @@
+{
+ "note": "Reporters Without Borders World Press Freedom Index 2026, situation band per country as published on the index page. Used only to say whether a blank on a case layer can be read as nothing happened.",
+ "source_title": "Reporters Without Borders, World Press Freedom Index 2026",
+ "source_url": "https://rsf.org/en/index",
+ "bands": {
+  "1": "good",
+  "2": "satisfactory",
+  "3": "problematic",
+  "4": "difficult",
+  "5": "very serious"
+ },
+ "countries": {
+  "NOR": {
+   "name": "Norway",
+   "band": 1
+  },
+  "NLD": {
+   "name": "Netherlands",
+   "band": 1
+  },
+  "EST": {
+   "name": "Estonia",
+   "band": 1
+  },
+  "DNK": {
+   "name": "Denmark",
+   "band": 1
+  },
+  "SWE": {
+   "name": "Sweden",
+   "band": 1
+  },
+  "FIN": {
+   "name": "Finland",
+   "band": 1
+  },
+  "IRL": {
+   "name": "Ireland",
+   "band": 1
+  },
+  "CHE": {
+   "name": "Switzerland",
+   "band": 2
+  },
+  "LUX": {
+   "name": "Luxembourg",
+   "band": 2
+  },
+  "PRT": {
+   "name": "Portugal",
+   "band": 2
+  },
+  "CZE": {
+   "name": "Czechia",
+   "band": 2
+  },
+  "ISL": {
+   "name": "Iceland",
+   "band": 2
+  },
+  "LIE": {
+   "name": "Liechtenstein",
+   "band": 2
+  },
+  "DEU": {
+   "name": "Germany",
+   "band": 2
+  },
+  "LTU": {
+   "name": "Lithuania",
+   "band": 2
+  },
+  "BEL": {
+   "name": "Belgium",
+   "band": 2
+  },
+  "LVA": {
+   "name": "Latvia",
+   "band": 2
+  },
+  "GBR": {
+   "name": "United Kingdom",
+   "band": 2
+  },
+  "AUT": {
+   "name": "Austria",
+   "band": 2
+  },
+  "CAN": {
+   "name": "Canada",
+   "band": 2
+  },
+  "ZAF": {
+   "name": "South Africa",
+   "band": 2
+  },
+  "NZL": {
+   "name": "New Zealand",
+   "band": 2
+  },
+  "NAM": {
+   "name": "Namibia",
+   "band": 2
+  },
+  "FJI": {
+   "name": "Fiji",
+   "band": 2
+  },
+  "FRA": {
+   "name": "France",
+   "band": 2
+  },
+  "JAM": {
+   "name": "Jamaica",
+   "band": 2
+  },
+  "POL": {
+   "name": "Poland",
+   "band": 2
+  },
+  "TWN": {
+   "name": "Taiwan",
+   "band": 2
+  },
+  "ESP": {
+   "name": "Spain",
+   "band": 2
+  },
+  "TLS": {
+   "name": "Timor-Leste",
+   "band": 2
+  },
+  "MDA": {
+   "name": "Moldova",
+   "band": 2
+  },
+  "TTO": {
+   "name": "Trinidad and Tobago",
+   "band": 2
+  },
+  "AUS": {
+   "name": "Australia",
+   "band": 2
+  },
+  "SUR": {
+   "name": "Suriname",
+   "band": 2
+  },
+  "SYC": {
+   "name": "Seychelles",
+   "band": 2
+  },
+  "SVN": {
+   "name": "Slovenia",
+   "band": 2
+  },
+  "SVK": {
+   "name": "Slovakia",
+   "band": 2
+  },
+  "CRI": {
+   "name": "Costa Rica",
+   "band": 2
+  },
+  "GHA": {
+   "name": "Ghana",
+   "band": 2
+  },
+  "CPV": {
+   "name": "Cabo Verde",
+   "band": 2
+  },
+  "MNE": {
+   "name": "Montenegro",
+   "band": 2
+  },
+  "MUS": {
+   "name": "Mauritius",
+   "band": 2
+  },
+  "GAB": {
+   "name": "Gabon",
+   "band": 2
+  },
+  "DOM": {
+   "name": "Dominican Republic",
+   "band": 3
+  },
+  "MKD": {
+   "name": "North Macedonia",
+   "band": 3
+  },
+  "GMB": {
+   "name": "Gambia",
+   "band": 3
+  },
+  "KOR": {
+   "name": "South Korea",
+   "band": 3
+  },
+  "URY": {
+   "name": "Uruguay",
+   "band": 3
+  },
+  "ROU": {
+   "name": "Romania",
+   "band": 3
+  },
+  "ARM": {
+   "name": "Armenia",
+   "band": 3
+  },
+  "TON": {
+   "name": "Tonga",
+   "band": 3
+  },
+  "BRA": {
+   "name": "Brazil",
+   "band": 3
+  },
+  "HRV": {
+   "name": "Croatia",
+   "band": 3
+  },
+  "CIV": {
+   "name": "Côte d&#039;Ivoire",
+   "band": 3
+  },
+  "UKR": {
+   "name": "Ukraine",
+   "band": 3
+  },
+  "ITA": {
+   "name": "Italy",
+   "band": 3
+  },
+  "CSS": {
+   "name": "OECS",
+   "band": 3
+  },
+  "LBR": {
+   "name": "Liberia",
+   "band": 3
+  },
+  "WSM": {
+   "name": "Samoa",
+   "band": 3
+  },
+  "AND": {
+   "name": "Andorra",
+   "band": 3
+  },
+  "MRT": {
+   "name": "Mauritania",
+   "band": 3
+  },
+  "JPN": {
+   "name": "Japan",
+   "band": 3
+  },
+  "BWA": {
+   "name": "Botswana",
+   "band": 3
+  },
+  "USA": {
+   "name": "United States",
+   "band": 3
+  },
+  "PAN": {
+   "name": "Panama",
+   "band": 3
+  },
+  "BLZ": {
+   "name": "Belize",
+   "band": 3
+  },
+  "MLT": {
+   "name": "Malta",
+   "band": 3
+  },
+  "COG": {
+   "name": "Congo-Brazzaville",
+   "band": 3
+  },
+  "MWI": {
+   "name": "Malawi",
+   "band": 3
+  },
+  "CHL": {
+   "name": "Chile",
+   "band": 3
+  },
+  "BGR": {
+   "name": "Bulgaria",
+   "band": 3
+  },
+  "COM": {
+   "name": "Comoros",
+   "band": 3
+  },
+  "PNG": {
+   "name": "Papua New Guinea",
+   "band": 3
+  },
+  "HUN": {
+   "name": "Hungary",
+   "band": 3
+  },
+  "QAT": {
+   "name": "Qatar",
+   "band": 3
+  },
+  "GUY": {
+   "name": "Guyana",
+   "band": 3
+  },
+  "ZMB": {
+   "name": "Zambia",
+   "band": 3
+  },
+  "SEN": {
+   "name": "Senegal",
+   "band": 3
+  },
+  "SLE": {
+   "name": "Sierra Leone",
+   "band": 3
+  },
+  "CYP": {
+   "name": "Cyprus",
+   "band": 3
+  },
+  "CAF": {
+   "name": "Central African Republic",
+   "band": 3
+  },
+  "CTU": {
+   "name": "Northern Cyprus",
+   "band": 3
+  },
+  "ALB": {
+   "name": "Albania",
+   "band": 3
+  },
+  "XKX": {
+   "name": "Kosovo",
+   "band": 3
+  },
+  "MNG": {
+   "name": "Mongolia",
+   "band": 3
+  },
+  "GRC": {
+   "name": "Greece",
+   "band": 3
+  },
+  "NPL": {
+   "name": "Nepal",
+   "band": 4
+  },
+  "PRY": {
+   "name": "Paraguay",
+   "band": 4
+  },
+  "LSO": {
+   "name": "Lesotho",
+   "band": 4
+  },
+  "BIH": {
+   "name": "Bosnia-Herzegovina",
+   "band": 4
+  },
+  "BOL": {
+   "name": "Bolivia",
+   "band": 4
+  },
+  "THA": {
+   "name": "Thailand",
+   "band": 4
+  },
+  "TCD": {
+   "name": "Chad",
+   "band": 4
+  },
+  "GNQ": {
+   "name": "Equatorial Guinea",
+   "band": 4
+  },
+  "MYS": {
+   "name": "Malaysia",
+   "band": 4
+  },
+  "BRN": {
+   "name": "Brunei",
+   "band": 4
+  },
+  "TGO": {
+   "name": "Togo",
+   "band": 4
+  },
+  "ARG": {
+   "name": "Argentina",
+   "band": 4
+  },
+  "MOZ": {
+   "name": "Mozambique",
+   "band": 4
+  },
+  "GNB": {
+   "name": "Guinea Bissau",
+   "band": 4
+  },
+  "SWZ": {
+   "name": "Eswatini",
+   "band": 4
+  },
+  "COL": {
+   "name": "Colombia",
+   "band": 4
+  },
+  "MDG": {
+   "name": "Madagascar",
+   "band": 4
+  },
+  "SRB": {
+   "name": "Serbia",
+   "band": 4
+  },
+  "MAR": {
+   "name": "Morocco / Western Sahara",
+   "band": 4
+  },
+  "KEN": {
+   "name": "Kenya",
+   "band": 4
+  },
+  "HTI": {
+   "name": "Haiti",
+   "band": 4
+  },
+  "MDV": {
+   "name": "Maldives",
+   "band": 4
+  },
+  "AGO": {
+   "name": "Angola",
+   "band": 4
+  },
+  "BFA": {
+   "name": "Burkina Faso",
+   "band": 4
+  },
+  "GIN": {
+   "name": "Guinea",
+   "band": 4
+  },
+  "NGA": {
+   "name": "Nigeria",
+   "band": 4
+  },
+  "BEN": {
+   "name": "Benin",
+   "band": 4
+  },
+  "PHL": {
+   "name": "Philippines",
+   "band": 4
+  },
+  "LBN": {
+   "name": "Lebanon",
+   "band": 4
+  },
+  "ISR": {
+   "name": "Israel",
+   "band": 4
+  },
+  "TZA": {
+   "name": "Tanzania",
+   "band": 4
+  },
+  "SSD": {
+   "name": "South Sudan",
+   "band": 4
+  },
+  "BDI": {
+   "name": "Burundi",
+   "band": 4
+  },
+  "NER": {
+   "name": "Niger",
+   "band": 4
+  },
+  "MLI": {
+   "name": "Mali",
+   "band": 4
+  },
+  "MEX": {
+   "name": "Mexico",
+   "band": 4
+  },
+  "SGP": {
+   "name": "Singapore",
+   "band": 4
+  },
+  "ZWE": {
+   "name": "Zimbabwe",
+   "band": 4
+  },
+  "ECU": {
+   "name": "Ecuador",
+   "band": 4
+  },
+  "SOM": {
+   "name": "Somalia",
+   "band": 4
+  },
+  "OMN": {
+   "name": "Oman",
+   "band": 4
+  },
+  "GTM": {
+   "name": "Guatemala",
+   "band": 4
+  },
+  "IDN": {
+   "name": "Indonesia",
+   "band": 4
+  },
+  "COD": {
+   "name": "Democratic Republic of the Congo",
+   "band": 4
+  },
+  "UGA": {
+   "name": "Uganda",
+   "band": 4
+  },
+  "HND": {
+   "name": "Honduras",
+   "band": 4
+  },
+  "CMR": {
+   "name": "Cameroon",
+   "band": 4
+  },
+  "LKA": {
+   "name": "Sri Lanka",
+   "band": 4
+  },
+  "GEO": {
+   "name": "Georgia",
+   "band": 4
+  },
+  "KWT": {
+   "name": "Kuwait",
+   "band": 4
+  },
+  "TUN": {
+   "name": "Tunisia",
+   "band": 4
+  },
+  "LBY": {
+   "name": "Libya",
+   "band": 4
+  },
+  "RWA": {
+   "name": "Rwanda",
+   "band": 5
+  },
+  "HKG": {
+   "name": "Hong Kong",
+   "band": 5
+  },
+  "SYR": {
+   "name": "Syria",
+   "band": 5
+  },
+  "JOR": {
+   "name": "Jordan",
+   "band": 5
+  },
+  "SLV": {
+   "name": "El Salvador",
+   "band": 5
+  },
+  "PER": {
+   "name": "Peru",
+   "band": 5
+  },
+  "DZA": {
+   "name": "Algeria",
+   "band": 5
+  },
+  "KGZ": {
+   "name": "Kyrgyzstan",
+   "band": 5
+  },
+  "UZB": {
+   "name": "Uzbekistan",
+   "band": 5
+  },
+  "ETH": {
+   "name": "Ethiopia",
+   "band": 5
+  },
+  "KAZ": {
+   "name": "Kazakhstan",
+   "band": 5
+  },
+  "BTN": {
+   "name": "Bhutan",
+   "band": 5
+  },
+  "KHM": {
+   "name": "Cambodia",
+   "band": 5
+  },
+  "BGD": {
+   "name": "Bangladesh",
+   "band": 5
+  },
+  "PAK": {
+   "name": "Pakistan",
+   "band": 5
+  },
+  "LAO": {
+   "name": "Laos",
+   "band": 5
+  },
+  "TJK": {
+   "name": "Tajikistan",
+   "band": 5
+  },
+  "PSE": {
+   "name": "Palestine",
+   "band": 5
+  },
+  "IND": {
+   "name": "India",
+   "band": 5
+  },
+  "ARE": {
+   "name": "United Arab Emirates",
+   "band": 5
+  },
+  "VEN": {
+   "name": "Venezuela",
+   "band": 5
+  },
+  "CUB": {
+   "name": "Cuba",
+   "band": 5
+  },
+  "SDN": {
+   "name": "Sudan",
+   "band": 5
+  },
+  "IRQ": {
+   "name": "Iraq",
+   "band": 5
+  },
+  "TUR": {
+   "name": "Türkiye",
+   "band": 5
+  },
+  "YEM": {
+   "name": "Yemen",
+   "band": 5
+  },
+  "BLR": {
+   "name": "Belarus",
+   "band": 5
+  },
+  "MMR": {
+   "name": "Myanmar",
+   "band": 5
+  },
+  "DJI": {
+   "name": "Djibouti",
+   "band": 5
+  },
+  "NIC": {
+   "name": "Nicaragua",
+   "band": 5
+  },
+  "EGY": {
+   "name": "Egypt",
+   "band": 5
+  },
+  "BHR": {
+   "name": "Bahrain",
+   "band": 5
+  },
+  "AZE": {
+   "name": "Azerbaijan",
+   "band": 5
+  },
+  "RUS": {
+   "name": "Russia",
+   "band": 5
+  },
+  "TKM": {
+   "name": "Turkmenistan",
+   "band": 5
+  },
+  "VNM": {
+   "name": "Vietnam",
+   "band": 5
+  },
+  "AFG": {
+   "name": "Afghanistan",
+   "band": 5
+  },
+  "SAU": {
+   "name": "Saudi Arabia",
+   "band": 5
+  },
+  "IRN": {
+   "name": "Iran",
+   "band": 5
+  },
+  "CHN": {
+   "name": "China",
+   "band": 5
+  },
+  "PRK": {
+   "name": "North Korea",
+   "band": 5
+  },
+  "ERI": {
+   "name": "Eritrea",
+   "band": 5
+  }
+ }
+}
