@@ -2844,5 +2844,66 @@
    }
   ],
   "lead": "Ultima Hora, 5 November 2026, reports the Contralor accusing the BCP of obstructing an audit. That is a pressure event, not an auditor record, and was not opened this round."
+ },
+ "round28": {
+  "date": "2026-11-12",
+  "method": "Same local pipeline as round 27 (curl, pdftoppm, tesseract), applied to the remaining absent list, going at each bank's own publications index first rather than searching.",
+  "settled": [
+   {
+    "iso3": "BGD",
+    "firm": "Howladar Yunus & Co. with ACNABIN",
+    "note": "Annual Report 2024-2025 chapter 15. The whole PDF has broken font encoding, so pdftotext returns punctuation soup rather than blank pages - the blank-page heuristic does NOT find it. OCR of pages 180-287 at 110 dpi located the auditors' report at pages 192-198. Addressed to the Government, which matches the Order 1972 publication duty."
+   },
+   {
+    "iso3": "HTI",
+    "firm": "KPMG S.A. with Merove-Pierre - Cabinet d'Experts-Comptables",
+    "note": "The BRH publishes the auditors' report itself at /notes-de-presse/?act=publications. Clean text layer, no OCR needed. 2021 and 2020 both published, plus a call for expressions of interest to select the next firm."
+   },
+   {
+    "iso3": "LBY",
+    "firm": "Deloitte",
+    "note": "Not a statutory annual auditor: a one-off review of both CBL branches for Sep 2014-Jun 2020, commissioned by the Presidency Council through UNOPS under UNSC Resolution 2434, delivered 8 July 2021. Two sources, UNSMIL and Libya Herald."
+   }
+  ],
+  "method_note": "Round 27's blank-page heuristic assumes a scan. Bangladesh is the other failure mode: a full text layer whose font encoding is broken, so every page extracts as garbage of normal length. Test for it by grepping the extracted text for a word that must appear (auditor, balance) - zero hits across a 300-page annual report means broken encoding, and OCR is the answer there too.",
+  "did_not_settle": [
+   {
+    "iso3": "EGY",
+    "why": "cbe.org.eg sits behind an F5 WAF that rejects both a plain fetch and headless Chrome with a support ID. Not a search problem."
+   },
+   {
+    "iso3": "STP",
+    "why": "The Comite de Auditoria page under Lei 03/2025 confirms the committee proposes external auditors and reviews their reports on the annual statements, but names no firm, and the site publishes no annual accounts PDF. Moved from untried to tried-and-named-nobody."
+   },
+   {
+    "iso3": "RWA",
+    "why": "bnr.rw renders but exposes no document list in any section; an IMF fiscal transparency evaluation for Rwanda mentions the Auditor General and the BNR but names no external auditor of the bank."
+   },
+   {
+    "iso3": "MWI",
+    "why": "rbm.mw's annual report and financial statement pages build their document lists in script that does not run in headless Chrome either; the only PDF links on any page are access-to-information forms. Connection resets at random, retry two or three times."
+   },
+   {
+    "iso3": "MAC",
+    "why": "amcm.gov.mo was rebuilt and the old annual-report paths 404. The new site exposes no annual report index. Searches return Macao commercial banks only."
+   },
+   {
+    "iso3": "CUW",
+    "why": "centralbank.cw refuses plain fetches and times out in headless Chrome; its exch.centralbank.cw mirror has a certificate that does not match the hostname. Press coverage of the 2024 annual report names no auditor."
+   },
+   {
+    "iso3": "MRT",
+    "why": "bcm.mr serves an empty single-page app shell; no links render at all."
+   },
+   {
+    "iso3": "DZA",
+    "why": "bank-of-algeria.dz still refuses every connection."
+   },
+   {
+    "iso3": "PRY",
+    "why": "bcp.gov.py returns 403 on the Memorias y Balances index."
+   }
+  ],
+  "lesson": "Checked the IMF safeguards-assessment route as a possible systematic vein for opaque countries. The assessments themselves are confidential and the published policy papers aggregate without naming banks' auditors. Not a vein; do not spend a round on it."
  }
 }
