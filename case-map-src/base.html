@@ -3555,6 +3555,29 @@ function init() {
 
 
 /* ---------- how complete this map's own record is ---------- */
+// How much of the whole picture is here. Two of these rows are counts against a published
+// denominator; the rest are this map\u2019s own estimate, and are labelled as such on the page.
+function wholePicHTML() {
+  try {
+    const C = window.CASES || [], M = window.CMP || [];
+    const wbifc = C.filter((c) => (c.lk || []).some((k) => k === "wb" || k === "ifc"));
+    const w0413 = wbifc.filter((c) => c.start >= 2004 && c.start <= 2013).length;
+    const harm = M.filter((c) => c.h), harmIn = harm.filter((c) => (c.cs || []).length).length;
+    const imf = C.filter((c) => (c.lk || []).includes("imf")).length;
+    const thin = C.filter((c) => (c.lk || []).some((k) => k === "cn" || k === "bil" || k === "priv" || k === "fdi" || k === "fdn")).length;
+    const pc = (a, b) => Math.round(a / b * 100) + "%";
+    const r = (what, here, share, kind) => '<tr><td style="padding:2px 10px 2px 0">' + what + '</td><td style="padding:2px 10px 2px 0;white-space:nowrap">' + here + '</td><td style="padding:2px 10px 2px 0;white-space:nowrap"><b>' + share + '</b></td><td style="padding:2px 0;white-space:nowrap">' + kind + '</td></tr>';
+    return '<h3>How much of the whole picture is here</h3>\n' +
+      '<p>The table above counts what is filled in on the cases that are here. This one asks the harder question: how many cases are missing. There is no full answer, because no institution publishes a list of the loans, grants and investments that harmed people. Two rows below are counts against a published figure. The rest are this map\u2019s own estimate, written down so a reader can argue with them, and they are not measurements.</p>' +
+      '<table style="border-collapse:collapse;margin:6px 0"><tr><th style="text-align:left;padding:2px 10px 2px 0">Where</th><th style="text-align:left;padding:2px 10px 2px 0">On this map</th><th style="text-align:left;padding:2px 10px 2px 0">Share</th><th style="text-align:left;padding:2px 0">Counted or estimated</th></tr>' +
+      r('World Bank and IFC projects that forced or may have forced people from homes or livelihoods, 2004\u20132013. Journalists at ICIJ found 969 of the nearly 7,200 projects funded in those years, 422 of them confirmed, by going through the Bank\u2019s own documents.', fmt(w0413) + ' cases began in those years', pc(w0413, 969), 'counted, though the two lists have not been matched project by project') +
+      r('Complaints where the office or another source recorded harm on the ground. All ' + fmt(M.length) + ' complaints published by the fourteen offices on this map were read.', fmt(harmIn) + ' of ' + fmt(harm.length) + ' are inside a case', pc(harmIn, harm.length), 'counted') +
+      r('IMF programmes that did documented harm. Researchers counted 763 IMF programmes in 1980\u20132015; nobody counted which of them harmed people, and a programme\u2019s harm falls on a whole country rather than one site.', fmt(imf) + ' cases involve the IMF', '20\u201330%', 'estimated') +
+      r('Chinese state lending, foreign company projects, private bank and bond lending, and aid. No register of harm exists for any of them. AidData\u2019s own project descriptions mention displacement, protest, deaths, pollution or arrests for 793 of its 20,985 Chinese-financed projects.', fmt(thin) + ' cases involve one of them', '1\u20135%', 'estimated') +
+      '</table>' +
+      '<p>Taken together, this map holds something like a tenth to a fifth of the harm that is already documented well enough to pass its three tests, and a much smaller share of the harm that happened. The best-covered part is the World Bank Group, the IMF and anything a complaint office published. The thinnest is private money, Chinese state money, aid and foreign companies, where there is no register to work from. The estimates move as cases are added, and the lead lists the next rounds work from are in the map\u2019s own files.</p>';
+  } catch (e) { return ""; }
+}
 function completeHTML() {
   try {
     const C = window.CASES || [];
@@ -3581,7 +3604,7 @@ function completeHTML() {
       row(named.size, names.size, "Company names with a line saying what the company is") +
       row(tot, ppl.length, "People with a checked record of what they oversaw") +
       row(withBuyers, n, "Cases with a documented buyer of what was produced") +
-      '</table>\n<p>Against the subject itself, the shares are far smaller, and they differ by the kind of money: the coverage line under each kind in the left-hand box compares the cases here with the published count for that kind, where a count exists. No one publishes a count of loans that harmed people, so for most kinds there is nothing to divide by.</p>';
+      '</table>\n<p>Against the subject itself, the shares are far smaller, and they differ by the kind of money: the coverage line under each kind in the left-hand box compares the cases here with the published count for that kind, where a count exists. No one publishes a count of loans that harmed people, so for most kinds there is nothing to divide by.</p>' + wholePicHTML();
   } catch (e) { return ""; }
 }
 
