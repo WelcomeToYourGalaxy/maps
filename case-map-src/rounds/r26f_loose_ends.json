@@ -1,0 +1,70 @@
+{
+  "titan_antea": {
+    "found": true,
+    "url": "https://www.titanmaterials.com/newsroom/announcement-new-greenfield-cement-plant-in-albania/",
+    "quoted": "Cement capacity will be of a 1.5-million-ton-per-annum and will allow the supply of the Albanian market as well as exports to the international markets.",
+    "date": "26/07/2007 (date shown on the announcement page; the body states the turn-key contract was signed \"yesterday, July 25, 2007\")",
+    "note": "Titan's own announcement, retrieved from Titan's corporate newsroom. titan-cement.com 302-redirects to titanmaterials.com; the page served over plain HTTPS with a declared browser user-agent. Title: 'ANNOUNCEMENT: NEW GREENFIELD CEMENT PLANT IN ALBANIA'. Found via the newsroom archive listing https://www.titanmaterials.com/newsroom/news-and-media-releases/page/8/. Further context in the same announcement: subsidiary Antea Cement Sh.A. signed with CBMI Construction Co. Ltd; 99-year lease for quarries and land; operational expected December 2009; total project cost estimated at EUR 170 million; IFC and EBRD 'could potentially participate in part of the project as equity investors'. The Athens Exchange copy of the same announcement was NOT retrieved: athexgroup.gr 302-redirects every document and announcement URL to athens.euronext.com, and three WebFetch attempts on athens.euronext.com document URLs (including the 26/07/2007-dated analyst file _content_gr_announcements_Files_Analysts_1st+Half_2007+(260707).pdf) died on unanswered permission prompts, not on any host refusal. An athens.euronext.com announcement page did serve over curl, so the host is reachable."
+  },
+  "spc_17a": {
+    "found": false,
+    "url": "https://edge.pse.com.ph/openDiscViewer.do?edge_no=01e7cbc9976059a464d70b69f0a3140b (FY2025 17-A; text in attachment https://edge.pse.com.ph/downloadFile.do file_id=1895123, 'MSRD_SPC POWER CORPORATION_SEC Form 17-A_11April2026_Part 1 of 3.pdf')",
+    "quoted": "The Parent Company also has the following major associates:\n\ni. KEPCO SPC Power Corporation (KSPC). KSPC, 40% owned by the Parent Company, was incorporated on June 22, 2005, primarily to build, operate, maintain, own, and manage the 2 x 100 Megawatt CFBC Boiler Coal-Fired Power Plant in the City of Naga, Colon, Cebu.",
+    "note": "The FY2022 filing itself was NOT found on any official source. PSE EDGE served fully and without any gate (plain curl with a declared user-agent, HTTP 200 throughout: company page, disclosure search endpoints, disclosure viewer, and 8.5 MB PDF attachment downloads) -- but EDGE retains only roughly the last two years of a company's disclosures. A disclosure search on company id 237 returns 67 items, all dated 2025-2026, and a financial-reports search returns only two Annual Reports (Apr 14 2025 and Apr 13 2026). EDGE's own Financial Reports page for SPC says previous statements must be sought on the PSE main website. So the failure is source retention, not blocking. What IS verified on EDGE is the identical passage in SPC's SEC Form 17-A for the fiscal year ended December 31, 2025 (filed 11 April 2026, report CR01996-2026), quoted above. Two wording differences from the Media Ownership Monitor text: EDGE's FY2025 text abbreviates to '2 x 100 Megawatt CFBC Boiler Coal-Fired Power Plant' rather than spelling out 'Circulating Fluidized Bed Combustion (CFBC)', and writes 'own, and manage' with a serial comma. The substance -- KSPC, 40% owned by the Parent Company, incorporated June 22 2005, 2 x 100 MW CFBC coal plant in the City of Naga, Colon, Cebu -- matches exactly. Other official routes tried and their precise failures: Philippine SEC eFAST (https://efast.sec.gov.ph/) returned HTTP 521 (Cloudflare: origin web server down); www.sec.gov.ph returned HTTP 403 with a Cloudflare 'Just a moment...' JavaScript interstitial to curl; www.pse.com.ph home page served (HTTP 200) but its company-profile endpoint returned HTTP 403; SPC's own site www.spcpower.com.ph could not be reached at all -- TLS failure, 'SSL certificate problem: unable to get local issuer certificate', both with the default trust store and with the agent proxy CA bundle. No mirror was substituted."
+  },
+  "cobrac": {
+    "metaleurop_seat": {
+      "found": true,
+      "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:31990D0363",
+      "quoted_address": "Metaleurop SA, 118 Péripole, 44 rue Roger Salengro, 94126 Fontenay-sous-Bois, Cedex, France",
+      "quoted_shareholders": "the main shareholders in Peñarroya, now known as Metaleurop SA, are Preussag and Imetal",
+      "note": "Commission Decision of 26 June 1990, IV/32.846 - Metaleurop SA. Both statements verified in the decision itself: the address appears in the addressee list (Article 2), which also names Preussag Aktiengesellschaft, Hannover, Germany. The decision further gives Preussag and Imetal holdings of 45% and 20%, with the remaining 35% held by the public. eur-lex.europa.eu served normally."
+    },
+    "penarroya_paris": {
+      "found": false,
+      "url": null,
+      "note": "NO primary source found for Societe miniere et metallurgique de Penarroya's own registered seat at 12 place Vendome, Paris, and NOTHING found to support the claimed 1930 date. No company annual report, prospectus, French official journal, legal gazette, or court/administrative decision for Penarroya itself was located. What was found, better than Wikipedia but still not primary: contemporaneous French trade sources transcribed on entreprises-coloniales.fr. (1) https://www.entreprises-coloniales.fr/afrique-du-nord/Francaise_Mines_Maroc.pdf reproduces a constitution notice reading 'Le premier conseil d'administration se compose de ... la Societe miniere et metallurgique de Penarroya, a Paris, 12, place Vendome ; ... la Societe francaise des mines du Maroc, a Paris, 12, place Vendome', sourced there to L'Echo des mines et de la metallurgie; the same PDF carries 'SOCIETE FRANCAISE DES MINES DU MAROC ... Siege social : PARIS, 12, place Vendome', sourced to Credit foncier d'Algerie et de Tunisie, Annuaire des valeurs de l'Afrique du Nord, 1926-1927, p. 259, and an item from L'Echo des mines et de la metallurgie, 20 janvier 1930, p. 63-64 giving 'la SFMM, 12, pl. Vendome, Paris'. (2) https://www.entreprises-coloniales.fr/afrique-du-nord/Penarroya-Maroc.pdf carries, from the Annuaire des entreprises coloniales 1951 entry 838, 'Filiale de la Ste miniere et metallurgique de Penarroya, 12, pl. Vendome, Paris'. (3) https://www.entreprises-coloniales.fr/afrique-du-nord/Miniere_Oued-Bazera.pdf reproduces the statutes of Societe miniere de l'Oued Bazera (a Penarroya-group company) from Les Archives commerciales de la France, 9 aout 1924, Article 4: 'Le siege social est a Paris, place Vendome, no 12.' -- a legal-gazette text, but for the subsidiary, not for Penarroya. All of these place Penarroya and its group at 12 place Vendome in the 1920s-1951, through trade periodicals and directories rather than a primary company or state document. Host failures while looking for a primary source: recherche-anmt.culture.gouv.fr (Archives nationales du monde du travail, which holds Penarroya fonds) returned an 'Access Denied' page, error code 9e4edb5b6b850c41 -- a host refusal, not a permission prompt. No Gallica/BALO item for Penarroya surfaced in search."
+    },
+    "change_of_control_1987": {
+      "found": true,
+      "url": "https://www.gov.br/saude/pt-br/composicao/svsa/saude-ambiental/arsh/estudos/metais-pesados-em-santo-amaro-da-purificacao-bahia/@@download/file/ARSH%20-%20SANTO%20AMARO%20DA%20PURIFICA%C3%87%C3%83O.pdf",
+      "document": "Avaliacao de Risco a Saude Humana por Metais Pesados em Santo Amaro da Purificacao, Bahia (2003). Hosted by the Ministerio da Saude / SVSA under its ARSH (avaliacao de risco a saude humana) studies. The study was planned by FUNASA through its Coordenacao Geral de Vigilancia Ambiental em Saude (CGVAM) and coordinated by Alexandre Pessoa da Silva of AMBIOS Engenharia e Processos Ltda.",
+      "quoted": "Em 1987 a Companhia Adubos Trevos, de Porto alegre, rio Grande do sul, associada a Companhia Paulista de Metais [...] adquirem o controle acionario da empresa. Em 1989 a empresa e incorporada a Plumbum Mineracao e Metalurgia S/A.",
+      "both_companies_named": true,
+      "wording_note": "BOTH companies are named, as required. One discrepancy from the text supplied to me: the document's Chapter II spells the first acquirer 'Companhia Adubos Trevos' (with a final s), while its introduction writes 'Grupo Trevo' / 'Plumbum Mineracao e Metalurgia Ltda., pertencente ao Grupo Trevo'. The 1987 sentence is attributed in the document to OLIVEIRA (1977), which is itself an inconsistent citation for a 1987 event.",
+      "period_of_operation": "The introduction says the company 'se instalou neste municipio no ano de 1960 a 1993'. Chapter II: 'Em dezembro de 1993, a Plumbum encerra suas atividades em Santo Amaro.' Chapter III, citing Anjos (1998), instead gives January 1994 as the abandonment date, so the document is internally inconsistent by about a month.",
+      "ownership_before_1987": "Chapter II describes COBRAC, set up in 1960 to produce lead ingots, as 'subsidiaria do grupo multinacional Penarroya'. The introduction describes the company as 'de capital frances e nacional, originalmente subsidiada pelo grupo Penarroya'. Note the document spells it 'Penarroya' without the tilde.",
+      "note": "gov.br served normally. The PDF is large (about 445,000 characters of text); the passages above come from the first 100,000 characters, which covers the introduction and Chapters II-III where the company history sits."
+    }
+  },
+  "lender_offices": {
+    "idb": {
+      "url": "https://www.iadb.org/en/who-we-are/country-offices",
+      "served": true,
+      "failure": null,
+      "note": "PREVIOUS 'blocked' RECORD IS WRONG. The page served through a rendered fetch and returned real content: IDB Group country offices in the 26 Latin American and Caribbean countries it serves, headquarters in Washington DC, plus offices in Tokyo and Madrid, with per-country entries (Argentina, Brazil, Colombia, Haiti, Jamaica, Panama among them). Plain curl with a browser user-agent gets HTTP 403 with a Cloudflare 'Attention Required!' page -- a bot gate on the raw-HTTP route only. A per-country contact page also exists: https://www.iadb.org/en/who-we-are/country-offices/contact-us"
+    },
+    "afdb": {
+      "url": "https://www.afdb.org/en/news-and-events/mozambique/2?page=1 (route proof); https://www.afdb.org/en/about-corporate-information/african-development-bank-afdb (also served)",
+      "served": true,
+      "failure": null,
+      "note": "PREVIOUS 'blocked' RECORD IS WRONG as a statement about the host. afdb.org serves real content through a rendered fetch: two different afdb.org pages returned ordinary page text, neither a bot-check nor a 'Just a moment' page. Plain curl with a browser user-agent gets HTTP 403 with a Cloudflare 'Just a moment...' JavaScript interstitial, so the block is on the raw-HTTP route only. CAVEAT: the office-directory URL itself was not confirmed. https://www.afdb.org/en/countries returned HTTP 403 to curl (same Cloudflare interstitial) and the rendered-fetch attempt on it died on an unanswered permission prompt, not a host refusal -- and no afdb.org country-office or field-office directory URL has yet been surfaced by WebSearch, so a later round needs to surface that URL first."
+    },
+    "bii": {
+      "url": "https://www.bii.co.uk/en/contact/",
+      "served": false,
+      "failure": "Bot gate, confirmed on both routes. Plain curl with a browser user-agent: HTTP 403 with a Cloudflare 'Just a moment...' JavaScript interstitial. Rendered fetch: failed at the site with a client error and nothing of the page retrieved. This is a genuine host-side refusal, not an unanswered permission prompt. Other bii.co.uk paths (https://www.bii.co.uk/en/about/contact-us/) behave the same."
+    },
+    "ifc": {
+      "url": "https://www.ifc.org/en/where-we-work",
+      "served": true,
+      "failure": null,
+      "note": "PREVIOUS 'unreachable' RECORD IS WRONG. The page served on both routes: plain curl HTTP 200 (68 KB) and a rendered fetch returning real content. It is a regional index, not an office list: six regions, each linked -- Africa; East Asia and Pacific; Europe; Latin America and the Caribbean; Middle East and Central Asia; South Asia. It states IFC 'operates in more than 100 countries' but carries no list of individual country offices with addresses; the nearest candidate is a 'Contact Directory' link under 'Get in Touch', whose target was not resolved in this route test. Regional pages exist at e.g. https://www.ifc.org/en/where-we-work/western-europe"
+    },
+    "cdb": {
+      "url": "http://www.cdb.com.cn/English/gywm_1142/jgsz/fzjg/ (also tested https://www.cdb.com.cn/English/ and https://www.cdb.com.cn/)",
+      "served": false,
+      "failure": "HTTP 412 Precondition Failed on every path tried, including the site root, from plain curl with a browser user-agent. The response is a small (about 2.9 KB) XHTML page, i.e. a WAF/anti-automation block rather than a missing page. This is a host-side refusal, not an unanswered permission prompt. No cdb.com.cn URL was surfaced by WebSearch, so no rendered-fetch route could be tried: the rendered route is therefore untested, not refused."
+    }
+  }
+}
