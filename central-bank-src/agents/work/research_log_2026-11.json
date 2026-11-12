@@ -3085,5 +3085,36 @@
    "All six countries' scores moved (AUS 22->24, CAN 20->21, GBR 21->23, JPN 35->36, NZL 23->24, ZAF 34->36) and all six writeups quoted the old figure, so all six were rewritten. No map-wide denominator shift: the United States still holds the highest event count."
   ],
   "next": "The absent list for this row still holds Austria, Belgium, Czechia, Denmark, Finland, France, Germany, Ireland, Italy, Korea, Netherlands, Norway, Portugal, Spain, Sweden and Switzerland. Search the governor's name plus 'independence', or the country plus 'central bank mandate review', not for dismissals."
+ },
+ "round34": {
+  "date": "2026-11-12",
+  "yield": "2 new records (ITA, ESP), 2 events promoted from uncounted to counted (MYS, MMR), one counting rule corrected. Row went 116/61 to 118/61 — but the 61 before this round was overstated; see below.",
+  "the_counting_bug": "coverage.py counted a place as covered on the moves-against-the-bank row if it held ANY event, while app.js counts an event only when its kind is not 'other' (evN). So the published breadth claimed places the layer renders blank. Before this round the honest figure was 58, not 61. coverage.py now filters the same way as app.js and prints, under the table, the places holding only uncounted events (currently MEX and PAK). about.html and the handoff were updated to match. If a future round changes a counting rule, say so in all three places.",
+  "reviewed_the_15_other_events": {
+   "promoted": {
+    "MMR": "The junta replaced governor Than Nyein and a vice chairman in August 2022. A replacement by the authority that seized power is a removal, not an appointment. Now kind 'dismissal', dated 2022-08-24.",
+    "MYS": "Ahmad Mohd Don and deputy Fong Weng Phak resigned in late August 1998 in disagreement with the government's currency plans; Mahathir and Daim had attacked the governor publicly over his tight policy, the FT reported a row over how the controls were to be carried out as the trigger, Anwar was sacked days later, and Zeti was appointed acting governor on 31 August. Now 'resignation under pressure', dated 1998-08, and the weak Loanstreet source replaced with Central Banking."
+   },
+   "left_as_other_on_purpose": {
+    "USA x3": "Miran's swearing-in and Warsh taking office are appointments; Trump v. Cook is a court ruling. The layer excludes both by design.",
+    "PAK": "The stored summary says the article reports no government pressure, and only unnamed officials called 'personal reasons' a cover. An earlier round made the right call; do not override it.",
+    "MEX": "A withdrawn nomination is an appointment matter. Mexico stays blank on the layer unless a real episode is found - AMLO's criticism of Banxico and the 2020 'Ley Banxico' forcing it to buy cash dollars are the obvious candidates and were not researched this round.",
+    "EGY, KGZ x2, ARG, UKR, BOL, MWI, MOZ": "Appointments, resignations with no stated reason, or internal staff dismissals. None states government pressure or a removal plainly enough to promote."
+   }
+  },
+  "settled": [
+   {
+    "iso3": "ITA",
+    "date": "2005-12-19",
+    "what": "Fazio resigned after months of pressure over the Antonveneta contest. Under the law then in force the governor held office for life and the government said it had no power to remove him; economy minister Siniscalco resigned in protest on 21 September 2005 at the government's inaction, and his successor Tremonti said on the day Fazio quit that he wanted parliament to change the bank's governing law so the governor could be replaced. The government was drafting that law when the resignation came; the reform that followed ended life tenure. NOTE: sources conflict on the new term length (five-year renewable vs seven-year non-renewable), so the record says 'a fixed term' and no number."
+   },
+   {
+    "iso3": "ESP",
+    "date": "2012-05-29",
+    "what": "Fernandez Ordonez told Rajoy he would leave on 10 June, a month early, after harsh political and media attacks and four days after BFA-Bankia asked for record public support; figures in the governing party had blamed him for the banking crisis. The next day he told the Senate he would not give the bank's account of Bankia 'because the Government wants me to remain silent', the governing majority having declined to approve his appearance before the Congress."
+   }
+  ],
+  "scores": "ESP 23->25, ITA 32->34, MMR 55->57 (now second of 194, was third), MYS 29->31. All four writeups quoted the old figure and were rewritten.",
+  "handoff": "Rewritten in full at this round. The round-29 version had been patched across five rounds and was drifting back into round-by-round narrative, which is the failure mode the round-29 rewrite existed to stop. The new one states the current position only."
  }
 }
