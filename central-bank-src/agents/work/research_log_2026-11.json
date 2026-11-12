@@ -2786,5 +2786,63 @@
     "TWN (Ministry of Audit)"
    ]
   }
+ },
+ "round27": {
+  "date": "2026-11-11",
+  "method": "Local pipeline instead of a remote browser: download the PDF with curl, render the pages with pdftoppm, read them with tesseract OCR. This reads scanned auditor reports that every text extraction and every browser read returns empty.",
+  "settled": [
+   {
+    "iso3": "BRB",
+    "what": "auditor",
+    "firm": "PricewaterhouseCoopers SRL",
+    "note": "Annual Report 2025 pp.61-64, image-only, read by OCR. Dated Bridgetown 27 March 2026."
+   },
+   {
+    "iso3": "BHR",
+    "what": "auditor",
+    "firm": "KPMG Fakhro",
+    "note": "English financial-statements PDF, pages 65-77 image-only. Signed 10 March 2024, partner registration 213. This is why earlier full reads stopped at the chapter heading."
+   },
+   {
+    "iso3": "SWZ",
+    "what": "auditor",
+    "firm": "SNG Grant Thornton Chartered Accountants (Eswatini)",
+    "note": "Whole file is a scan. Signed 26 August 2026 for the year ended 31 March 2026."
+   },
+   {
+    "iso3": "BDI",
+    "what": "auditor",
+    "firm": "Forvis Mazars Cameroun SA",
+    "note": "Signed Bujumbura 6 August 2026 by Jules Alain Njall Bikok for the year ended 30 June 2023. Same partner as the BEAC 2018 report."
+   }
+  ],
+  "corrections_to_earlier_notes": [
+   "Eswatini was logged as having no reachable centralbank.org.sz URL because no search result returned one. Fetching https://www.centralbank.org.sz/annual-report/ directly lists 82 PDFs including annual financial statements for every year to 2026. The site intermittently resets the connection; retrying the same plain request two or three times succeeds. Search was the failure, not the host.",
+   "Burundi was logged as unreachable after two searches returned only commercial banks. https://www.brb.bi/etats_financiers lists the statements directly, including the 30 June 2023 file added in October 2026.",
+   "Barbados was logged as needing a hand-fetched copy because cdn.centralbank.org.bb blocked an injected script in a browser. A plain download of the same file works; the obstacle was the browser method, not the host."
+  ],
+  "did_not_settle": [
+   {
+    "iso3": "BHS",
+    "why": "cdn.centralbankbahamas.com returns 403 to a plain download and the site's viewPDF path 404s. Needs a copy from another host."
+   },
+   {
+    "iso3": "MWI",
+    "why": "rbm.mw's financial statements page builds its document list in script that did not run even in headless Chrome; the page's only PDF links are access-to-information forms."
+   },
+   {
+    "iso3": "AGO",
+    "why": "www.bna.ao resets the connection on every request."
+   },
+   {
+    "iso3": "PRY",
+    "why": "searches in Spanish return only commercial banks, as before."
+   },
+   {
+    "iso3": "PSE",
+    "why": "pma.ps responds but the annual report page lists no PDF; searches return the statistics bureau and commercial banks."
+   }
+  ],
+  "lead": "Ultima Hora, 5 November 2026, reports the Contralor accusing the BCP of obstructing an audit. That is a pressure event, not an auditor record, and was not opened this round."
  }
 }
