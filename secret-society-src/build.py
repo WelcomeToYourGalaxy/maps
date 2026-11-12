@@ -16,7 +16,8 @@ The page is app_template.html: the MapLibre globe shell shared with the other We
 Your Galaxy maps (the Culprits basemaps in basemaps.js, the same cards, key and sky), with
 this map's data, plate and About page written in. about.py writes the About page.
 """
-import json, math, re, base64, os, sys, hashlib
+import json
+import math, re, base64, os, sys, hashlib
 HERE = os.path.dirname(os.path.abspath(__file__))
 D = lambda f: os.path.join(HERE, 'data', f)
 OUT = os.path.join(HERE, '..', 'secret_society_infiltration.html')
@@ -174,11 +175,47 @@ def coverage(cases):
     out = {'overall': cov.get('overall', {}), 'registers': regs, 'n': len(regs)}
     bm = benchmarks(cov, cases)
     if bm:
+        bench_rollcall(bm)
         out['benchmarks'] = bm
         head = next((b for b in bm if b.get('headline')), None)
         if head:
             out['head'] = {'on_map': head['on_map'], 'total': head['tested'], 'name': head['name']}
     return out
+
+
+
+# Boilerplate that carries no information about which case an item names.
+_UNUSED_NOISE = set("""united states of america v vs matter the a an and in re inc ltd llc plc
+limited corporation corp company companies group holdings formerly known fka f/k/a
+deferred prosecution agreement with sfo doj sec enforcement action actions related
+involvement multiple countries between senator president et al case no court
+report parts volumes subject""".split())
+
+
+def bench_rollcall(rows):
+    """Print every unmatched benchmark item at build time.
+
+    benchmarks() catches the forward failure — an item pointing at a case that
+    has been dropped. The reverse failure has no such guard: an item left at
+    null after a case covering it was added goes on reporting a gap forever,
+    and two rounds did exactly that, so the published share understated the map
+    for weeks. Fuzzy-matching labels to titles was tried and is not good enough
+    to rely on: at a threshold where its suggestions are worth reading it finds
+    almost nothing, and at useful recall it is wrong about half the time. So
+    this does not guess. It prints the list, every build, where whoever ran the
+    build will see it, because the failure was that nobody read it.
+    """
+    gaps = [(r.get('name') or '', m.get('label', ''))
+            for r in rows if r.get('kind') == 'case'
+            for m in r.get('miss', []) if not m.get('oos')]
+    if not gaps:
+        print('benchmarks: every item inside the test is matched to a case')
+        return
+    print('\nbenchmarks: %d item(s) count as not shown. Check each against the '
+          'case file before treating it as a research gap:' % len(gaps))
+    for name, label in gaps:
+        print('  [%s] %s' % (name[:34], label[:74]))
+    print()
 
 
 def benchmarks(cov, cases):
