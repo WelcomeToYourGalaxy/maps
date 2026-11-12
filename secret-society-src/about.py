@@ -144,17 +144,27 @@ def about(data):
                 oo, ot, osh = agg(oth)
                 if ang and oth and ash is not None and osh is not None:
                     a('<h4>Which lists these are</h4>')
+                    # What the non-English lists are is written from the rows, not spelled out
+                    # here: a third list was added on 12 November 2026 and this paragraph still
+                    # said "the other two lists" and named two of them, with the figures already
+                    # right. Each benchmark carries its own 'blurb'; add a list, add a blurb.
+                    def naming(rs):
+                        bl = [r.get('blurb') or r.get('name') or '' for r in rs]
+                        bl = [b for b in bl if b]
+                        if len(bl) == 1:
+                            return bl[0]
+                        return ', '.join(bl[:-1]) + ' and ' + bl[-1]
                     a('<p>%d of the %d lists above are built from enforcement in the United States and the United '
                       'Kingdom, or from an inquiry in one country. Together they hold %d items inside the test and '
-                      'this map covers <b>%d per cent</b> of them. The other %s not built that way: a compendium of '
-                      'arms-trade cases indexing prosecutions in Germany, France, Spain, Chile and South Korea '
-                      'alongside the American and British ones, and the French prosecutors\' own negotiated '
-                      'settlements for corruption. Together they hold %d items and this map covers '
-                      '<b>%d per cent</b> of them. The cases missing there are not minor: they include some of the '
-                      'largest arms corruption files in Europe and Asia, and they are missing because no '
-                      'English-language enforcement list indexes them. Each is named under its list below.</p>'
+                      'this map covers <b>%d per cent</b> of them. The other %s not built that way: %s. Together '
+                      'they hold %d items and this map covers <b>%d per cent</b> of them. The cases missing there '
+                      'are not minor: they include some of the largest arms corruption files in Europe and Asia and '
+                      'most of Brazil\'s largest corporate settlements. They are missing because no English-language '
+                      'enforcement list indexes them, and in some cases because the register that does name them '
+                      'publishes nothing about what the companies did. Each is named under its list below.</p>'
                       % (len(ang), len(rows), at, ash,
-                         'list is' if len(oth) == 1 else 'two lists are', ot, osh))
+                         'list is' if len(oth) == 1 else '%d lists are' % len(oth),
+                         naming(oth), ot, osh))
                     a('<p>That difference is the single most useful thing on this page. Earlier rounds of this map '
                       'worked from the American and British lists, and the shares they produced read as near-complete. '
                       'They were measuring the lists. When a round searched in Spanish, German, Portuguese and '
