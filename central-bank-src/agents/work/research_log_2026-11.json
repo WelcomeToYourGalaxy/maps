@@ -3018,5 +3018,29 @@
    "Pattern links resolve through end_pt(): a three-letter uppercase name is read as a country code (EMU and BIS have hard-coded points), otherwise it matches an existing party node by name, otherwise it falls back to the stated city. Give from_city and from_iso3 for any party not already on the map.",
    "The three named currents from round 29 are now all added. The remaining patterns work is auditing the thirteen older summaries against the rule that a pattern describes the field rather than counting the map's records - round 30 found big-four-auditors had been wrong on that for many rounds and the rest are unchecked."
   ]
+ },
+ "round32": {
+  "date": "2026-11-12",
+  "yield": "No new places. Four auditor records corrected, one superseded duplicate removed, two pattern summaries fixed. A maintenance round: the figures barely move but several things on the map were wrong before it and are right after it.",
+  "euro_area_refresh": {
+   "why": "The euro-area auditor records were built from the EUR-Lex consolidation CELEX:01999D0070-20240627 and never re-checked against later amending decisions. Reading each record's mandate end year showed three that had already lapsed.",
+   "EST": "Was Ernst & Young Baltic AS, 2021-2025. Council Decision (EU) 2026/443 of 17 February 2026 approves KPMG Baltics OU for 2026-2030, on the ECB Governing Council's recommendation of 12 December 2025. KPMG Baltics had also held 2016-2020, so Eesti Pank moved back to its previous firm.",
+   "LVA": "Was SIA Ernst & Young Baltic, 2020-2024. Council Decision of 27 May 2025 (C/2025/3212) approves KPMG Baltics SIA for 2025-2029, recommendation of 4 April 2025. KPMG Baltics SIA had also held 2015-2019.",
+   "LTU": "UAB ROSK Consulting reappointed for 2025-2027 by Council Decision of 27 May 2025 (C/2025/3210). Record's year range updated from 2022-2024.",
+   "SVN": "Mazars runs to FY2026 and is still current, so not changed. Council Decision (EU) 2026/423 approves ERNST & YOUNG Revizija, poslovno svetovanje, d. o. o. for 2027-2029 on the recommendation of 19 December 2025; noted in the Mazars record's detail rather than filed as a record, because the mandate has not started.",
+   "watch_next": "Mandates ending with FY2026: Greece (EY Hellas, 2022-2026), Portugal (PwC, 2022-2026), Slovenia (Mazars, successor already approved). Check these in 2027.",
+   "method": "Search the bank's own name plus 'Council Decision amending 1999/70'. data.consilium.europa.eu serves the Coreper adoption notes when EUR-Lex has not published the final decision yet; lawplayer.com mirrors the article text."
+  },
+  "removed": "The Lithuanian record for UAB Ernst & Young Baltic, 2018-2021, was deleted. It sat alongside the current ROSK record, and because the map renders every auditor record as 'audits the accounts of X' with no notion of a past mandate, Lietuvos bankas appeared to have two current auditors, like a joint audit. The handover is recorded in the ROSK record's detail instead, so nothing is lost in the box a reader actually sees. NOTE: this is the only kind of case where deleting is right - a superseded mandate rendered as a live tie. Do not delete auditor history for any other reason.",
+  "pattern_summary_audit": {
+   "scope": "All twenty summaries read against the rule that a pattern explains the field from studies and inquiries and does not count or describe the map's own records.",
+   "banking-crisis-waves": "Ended with 'The map's own corruption file holds 15 cases where central banks are accused of hiding losses or rescuing failing banks.' Two faults: it counted the map, and it was stale - the 'rescues or hidden losses' category holds 30. Sentence removed; a line added to uncertain saying this layer counts crises and costs, not wrongdoing, and that such accusations belong on the case layers.",
+   "city-of-london-offshore": "Ended with 'Two central bank cases in the map's files touch this network'. The two facts are real, so the sentence was rewritten to state them directly: Forry Associates, through which about $330m left Banque du Liban between 2002 and 2015, was registered in the British Virgin Islands, and a Nigerian investigator told a court the CBN's former governor placed GBP 543m in UK fixed deposits without board approval.",
+   "clean": "The other seventeen describe the field and needed no change. The rule now holds across the section."
+  },
+  "also_found": [
+   "The Financial Stability Board's own accounts are audited by PricewaterhouseCoopers AG of Basel - report for the year to 31 March 2026 signed 30 June 2026 by Daniel Mueller and Ralph Maiocchi (fsb.org/uploads/P040926-2.pdf). Not filed: the FSB is not one of the 206 monetary authorities. Worth adding if the map ever records the clubs' own auditors, alongside the BIS.",
+   "No successor to PwC as BIS auditor was found. PwC's seventh and final year ran to 31 March 2026, so an appointment should exist; searches did not surface it. Try the BIS Annual Report 2027 when published."
+  ]
  }
 }
