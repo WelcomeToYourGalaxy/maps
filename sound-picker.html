@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Basemap sound — pick one</title>
+<style>
+  :root{--ink:#e7e3d9;--mute:#9d978a;--line:#39342d;--bg:#171511;--card:#1e1b16;--on:#6e8c7c}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:15px/1.55 "Iowan Old Style",Georgia,serif;padding:26px 16px 60px}
+  .wrap{max-width:780px;margin:0 auto}
+  h1{font-size:22px;margin:0 0 6px;font-weight:600}
+  .lede{color:var(--mute);margin:0 0 26px;font-size:14px}
+  h2{font-size:15px;letter-spacing:.07em;text-transform:uppercase;color:var(--mute);
+    margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line);font-weight:600}
+  .row{background:var(--card);border:1px solid var(--line);border-radius:9px;
+    padding:11px 13px;margin:9px 0;display:flex;gap:13px;align-items:flex-start}
+  .row.keep{border-color:#43503f}
+  button.play{flex:0 0 auto;width:42px;height:42px;border-radius:50%;cursor:pointer;
+    border:1px solid #4a443a;background:#272319;color:var(--ink);font-size:15px}
+  button.play[aria-pressed="true"]{background:var(--on);border-color:var(--on);color:#10140f}
+  .txt{flex:1 1 auto;min-width:0}
+  .nm{font-weight:600}
+  .nm .tag{font-weight:400;font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+    color:#8fa394;border:1px solid #42503f;border-radius:999px;padding:1px 7px;margin-left:7px}
+  .what{color:var(--mute);font-size:13.5px;margin-top:2px}
+  .src{color:#7d776b;font-size:12px;margin-top:3px}
+  .note{color:var(--mute);font-size:13px;margin:4px 0 0}
+  footer{color:#7d776b;font-size:12.5px;margin-top:34px;border-top:1px solid var(--line);padding-top:14px}
+</style></head><body><div class="wrap">
+<h1>Basemap sound — pick one for each</h1>
+<p class="lede">Every clip is about forty seconds and loops in the map. Play them, note the ones you want,
+and tell me the names. Anything here can be hosted on your own site: radio aporee field recordings in the
+public domain or under Creative Commons Attribution, spacecraft and seismometer measurements from NASA and
+EarthScope, which are not under copyright.</p>
+<div id="list"></div>
+<footer>Nothing here comes from a video-sharing site. Volume is matched across every clip, so a quiet one is quiet on purpose.</footer>
+</div>
+<script>
+const GROUPS = [
+ ["Woodlands", [
+  ["wood_1_dawn", "A forest at dawn", "Birds waking, loud and busy, with wind behind them.", "dawn chorus, North Carolina + wind, Jinsha"],
+  ["wood_2_night", "A forest at night", "Insects, a screech owl, wind in the trees. The closest to a fantasy forest at night.", "night insects, Los Gatos + screech owl, Peru + wind, Jinsha"],
+  ["wood_3_deepwood", "Deep wood", "Wind and a stream, birds far off. Quiet and spacious.", "wind, Jinsha + stream, Herefordshire + distant dawn chorus"]]],
+ ["Bioluminescent", [
+  ["biol_1_underlake", "Under the lake", "The hydrophone alone, rumble taken out. Plain water.", "karst lake, Kirkilai"],
+  ["biol_2_lagoon", "A lagoon at night", "Water lapping, night insects, the lake underneath.", "sea surf, County Clare + night insects + karst lake"],
+  ["biol_3_singing", "Singing water", "The lake with the Van Allen Probes' chorus over it, louder than before.", "karst lake + chorus from the Van Allen Probes"]]],
+ ["Hologram", [
+  ["holo_1_akr", "Earth's radio emission", "Sweeping electronic tones. What was on the hologram before.", "Cluster spacecraft"],
+  ["holo_2_bowshock", "Jupiter's bow shock", "A long roaring wash, more weather than machine.", "Voyager"],
+  ["holo_3_whistlers", "Proton whistlers", "Descending whistles, one after another. The most machine-like of the three.", "Earth, plasma wave instrument"]]],
+ ["The Moon", [
+  ["moon_1_asis", "As it is now", "What you heard. Sped up 1,600 times.", "Apollo 12 seismometer, 15 April 1970"],
+  ["moon_2_deepbell", "Deep bell", "Slower, 700 times, spikes rounded off and the top taken away. Should not click.", "same recording"],
+  ["moon_3_hall", "Ringing hall", "1,100 times, smoothed, with a short echo so it reads as a struck bell in a space.", "same recording"]]],
+ ["Mars", [
+  ["mars_1_wind", "Wind, sol 4", "Forty seconds of Martian wind instead of eighteen. Fuller.", "Perseverance SuperCam microphone"],
+  ["mars_2_devil", "Wind and a dust devil", "The wind with a dust devil passing over the rover.", "Perseverance"],
+  ["mars_3_rover", "Wind, dust devil, the rover", "The two above with the rover's wheels on the ground underneath.", "Perseverance"]]],
+ ["Solar system (Eyes)", [
+  ["solar_1_earthrings", "The Earth ringing", "The whole planet resonating for a day after the 2011 Tohoku earthquake, recorded in New Mexico and sped up 1,300 times. The Earth's answer to the moonquake.", "EarthScope, station ANMO"],
+  ["solar_2_soundsofearth", "Sounds of Earth", "Surf, a storm coming in, birds and wind, laid together. The Golden Record's idea, built from recordings that can actually be hosted.", "sea surf, County Clare + storm + dawn chorus + forest wind"],
+  ["solar_3_radio", "Radio from Earth", "What is there now, which you did not want.", "Cluster spacecraft"]]],
+ ["Atlas", [
+  ["atlas_asis", "As it is now", "Gulls at full strength.", "sea, Trégastel + swaying boat, Klaipėda + gulls, Le Havre"],
+  ["atlas_quietgulls", "Gulls pulled well back", "Same scene, gulls at a quarter of the level, the hull brought up.", "same three recordings"]]],
+ ["Kept, for comparison", [
+  ["keep_jurassic", "Jurassic", "", "rainforest by night, Petén", 1],
+  ["keep_hell", "Hell", "", "Mount Yasur erupting, Tanna Island", 1]]],
+];
+const list = document.getElementById("list");
+let playing = null;
+for (const [head, rows] of GROUPS) {
+  const h = document.createElement("h2"); h.textContent = head; list.appendChild(h);
+  for (const [file, nm, what, src, keep] of rows) {
+    const d = document.createElement("div"); d.className = "row" + (keep ? " keep" : "");
+    d.innerHTML = '<button class="play" aria-pressed="false" aria-label="Play ' + nm + '">&#9654;</button>' +
+      '<div class="txt"><div class="nm">' + nm + (keep ? '<span class="tag">kept</span>' : '') +
+      '</div>' + (what ? '<div class="what">' + what + "</div>" : "") +
+      '<div class="src">' + src + " &middot; <code>" + file + "</code></div></div>";
+    const btn = d.querySelector("button");
+    const au = new Audio("audio/try/" + file + ".mp3");
+    au.loop = true;
+    btn.addEventListener("click", () => {
+      if (playing && playing.au !== au) { playing.au.pause(); playing.au.currentTime = 0; playing.btn.setAttribute("aria-pressed", "false"); playing.btn.innerHTML = "&#9654;"; }
+      if (au.paused) { au.play(); btn.setAttribute("aria-pressed", "true"); btn.innerHTML = "&#9632;"; playing = { au, btn }; }
+      else { au.pause(); au.currentTime = 0; btn.setAttribute("aria-pressed", "false"); btn.innerHTML = "&#9654;"; playing = null; }
+    });
+    list.appendChild(d);
+  }
+}
+</script></body></html>
