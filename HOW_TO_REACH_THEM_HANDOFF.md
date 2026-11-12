@@ -301,6 +301,13 @@ Plus `qSettle` (§2) when the boundary files run out, and `qCoords` /
 Kenya 101 of 239, the US 109 of 13,508. The pin counter says how many were
 placed so the gap is visible rather than hidden.
 
+**The Overpass fetch timeout must outlast the measured response times.** It was
+90 s against responses measured at 88 s (LA County), 214 s (Hérault) and 240 s
+(Vaucluse), so every request was aborted just before it answered and
+municipalities never appeared at all. It is 300 s now, with the server-side cap
+in the query raised to 240 s. The reader is told the wait is one to four
+minutes, because an empty map with no explanation reads as a broken one.
+
 **Expect HTTP 429 from Wikidata while testing.** Running the same query in a
 loop will get you rate-limited, and because `loadSettlements` swallows its
 errors the symptom is an empty result that looks exactly like a code bug. It
