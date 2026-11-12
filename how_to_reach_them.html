@@ -144,13 +144,31 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   background:var(--panel2);color:var(--faint);cursor:pointer;font-family:inherit}
 .fchip:hover{color:var(--dim)}
 .fchip.on{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
-.route{border:1px solid var(--line);border-radius:9px;margin-bottom:8px;background:var(--panel2);overflow:hidden}
-.rhead{padding:11px 13px;cursor:pointer;display:flex;align-items:flex-start;gap:10px}
+/* The routes were a stack of full-width rows that read as a form to
+   scroll past rather than a set of things to choose between. They are
+   now tiles laid side by side: each one is a button, the ranking sits on
+   its face so the choice can be made without opening anything, and the
+   one you open takes the full width underneath. */
+.rgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+@media (max-width:620px){ .rgrid{grid-template-columns:1fr} }
+.route{border:1px solid var(--line);border-radius:11px;background:var(--panel2);
+  overflow:hidden;display:flex;flex-direction:column;transition:border-color .16s,background .16s}
+.route:hover{border-color:rgba(140,189,154,.45)}
+.route.open{grid-column:1/-1;border-color:rgba(140,189,154,.55);background:var(--panel)}
+.rhead{padding:12px 13px;cursor:pointer;display:flex;align-items:flex-start;gap:10px;
+  flex:1;text-align:left;background:none;border:0;color:inherit;font:inherit;width:100%}
 .rhead:hover{background:rgba(74,124,89,.07)}
+.rhead:focus-visible{outline:2px solid var(--accent-hi);outline-offset:-2px}
 .rmain{flex:1;min-width:0}
-.rnm{font-size:13.5px;line-height:1.3}
+.rnm{font-size:13.5px;line-height:1.3;color:var(--ink)}
 .rmeta{font-size:11px;color:var(--faint);margin-top:3px}
-.rbody{display:none;padding:0 13px 13px;border-top:1px solid var(--line)}
+/* the ranking as a pill on the tile face, so the tiles can be compared
+   without opening any of them */
+.rpill{display:inline-flex;align-items:center;gap:6px;margin-top:8px;
+  padding:3px 9px 3px 7px;border-radius:999px;font-size:10.5px;line-height:1.5;
+  color:var(--ink);background:rgba(125,142,130,.12);border:1px solid var(--line)}
+.rpill i{width:7px;height:7px;border-radius:50%;flex:none;display:inline-block}
+.rbody{display:none;padding:2px 13px 13px;border-top:1px solid var(--line)}
 .route.open .rbody{display:block}
 .fld{margin-top:11px}
 .fld dt{font-size:10px;letter-spacing:.9px;text-transform:uppercase;color:var(--stone);margin-bottom:3px}
@@ -288,7 +306,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .crumb{font-size:11.5px;margin-bottom:10px}
 .crumb a{color:var(--accent-hi);cursor:pointer;text-decoration:none}
 .crumb a:hover{text-decoration:underline}
-.rtog{color:var(--faint);font-size:15px;flex:none;line-height:1}
+.rtog{color:var(--faint);font-size:15px;flex:none;line-height:1;transition:transform .16s}
 .route.open .rtog{transform:rotate(45deg)}
 @media(max-width:760px){
   #modal{width:100%;height:100%;border-radius:0;top:0;left:0;right:0}
@@ -1586,6 +1604,28 @@ SELECT ?item ?itemLabel ?coord WHERE {
  { ?item wdt:P625 ?coord } UNION { ?item wdt:P159/wdt:P625 ?coord }
  SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" }
 } LIMIT 600`; }
+/* Coordinates for named offices, by id.
+
+   The markers used to come from `qCoords`, which asks for everything
+   with `applies to jurisdiction` = this place and a coordinate. That is
+   not a list of offices: for Los Angeles County it returned Ergomotion
+   Inc., Penthouse World Broadcasting LLC, Venturi Astrolab Inc., the
+   McMartin preschool trial and the San Diego Humane Society — companies
+   regulated there and events that happened there. 573 markers, almost
+   none of them anybody you can write to.
+
+   The diagram has already worked out the real offices and classified
+   them into branches. This asks for the coordinates of exactly those
+   ids, so every marker on the map is an office in the diagram and
+   clicking it opens that office's page. Batched because a VALUES clause
+   of several hundred ids is slower than a few smaller ones. */
+function qCoordsFor(ids){ return `
+SELECT ?item ?itemLabel ?coord WHERE {
+ VALUES ?item { ${ids.map(i=>'wd:'+i).join(' ')} }
+ { ?item wdt:P625 ?coord } UNION { ?item wdt:P159/wdt:P625 ?coord }
+ SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" }
+}`; }
+
 function qCoordsCountry(q){ return `
 SELECT ?item ?itemLabel ?coord WHERE {
  ?item wdt:P17 wd:${q} ; wdt:P31 ?cls . ?cls wdt:P279* wd:Q327333 .
@@ -1638,7 +1678,7 @@ function qOsmMuni(b, lv){
      `lv` is a regex because stepping inside a municipality has to ask
      for the levels below it: asking for 8 again inside a city returns
      that same city and it would be drawn as its own subdivision. */
-  return '[out:json][timeout:180];rel["boundary"="administrative"]["admin_level"~"'
+  return '[out:json][timeout:240];rel["boundary"="administrative"]["admin_level"~"'
     + lv + '"]('
     + b[1].toFixed(5)+','+b[0].toFixed(5)+','+b[3].toFixed(5)+','+b[2].toFixed(5)
     + ');out geom;';
@@ -1650,7 +1690,13 @@ function qOsmMuni(b, lv){
 async function overpass(query, cacheKey){
   if(cacheKey){ const c=cget(cacheKey); if(c) return c; }
   for(const ep of OVERPASS){
-    const ac=new AbortController(), killer=setTimeout(()=>ac.abort(), 90000);
+    /* 90 seconds was below the measured response time and nothing ever
+       arrived. Overpass took 88 s for Los Angeles County, 214 s for
+       Hérault and 240 s for Vaucluse, so a 90 s abort killed every
+       request just before it answered and municipalities simply never
+       appeared. The server's own cap is set in the query (`timeout:180`),
+       so this only has to outlast that plus the transfer. */
+    const ac=new AbortController(), killer=setTimeout(()=>ac.abort(), 300000);
     try{
       const r = await fetch(ep, {method:'POST', body:'data='+encodeURIComponent(query),
         headers:{'Content-Type':'application/x-www-form-urlencoded'}, signal:ac.signal});
@@ -1908,14 +1954,37 @@ function bboxOf(geom){
    uncovered by the box, so both are in view at once. */
 function fitTo(geom){
   const b=bboxOf(geom);
-  let right=60;
-  try{
-    const m=document.getElementById('modal');
-    if(m && m.classList.contains('on') && innerWidth>760)
-      right = Math.round(innerWidth - m.getBoundingClientRect().left) + 30;
-  }catch(e){}
-  try{ map.fitBounds([[b[0],b[1]],[b[2],b[3]]],
-    {padding:{top:90,left:60,right:right,bottom:120}, duration:900, maxZoom:9}); }catch(e){}
+  const bounds=[[b[0],b[1]],[b[2],b[3]]];
+
+  /* Two things used to break this, and both were hidden by a bare catch.
+
+     `shiftForBox` already holds a persistent right-hand padding on the
+     camera for as long as the panel is open, so the panel is accounted
+     for before fitTo is called. fitTo was adding its own right padding
+     on top of that, double-counting a panel that is most of the window.
+
+     Worse, fitTo runs 60 ms after `openModal`, which is in the middle of
+     shiftForBox's own 600 ms easeTo. Calling fitBounds into a running
+     camera animation with that padding throws "Cannot read properties of
+     undefined (reading 'center')" — on the first click any reader makes,
+     since that is when the panel first opens. The camera then never
+     moved: markers were drawn correctly in the right place, on the far
+     side of the globe, and the map looked empty.
+
+     So stop whatever the camera is doing first, keep the padding even,
+     and keep a fallback that simply goes there. Something has to move. */
+  try{ map.stop(); }catch(e){}
+
+  const tries = [
+    ()=>map.fitBounds(bounds,{padding:{top:90,left:60,right:60,bottom:120},duration:900,maxZoom:9}),
+    ()=>map.fitBounds(bounds,{padding:40,duration:900,maxZoom:9}),
+    ()=>{ const c=centroid(geom);
+          map.easeTo({center:c, zoom:Math.max(map.getZoom(),6), duration:900}); },
+    ()=>{ const c=centroid(geom); map.jumpTo({center:c, zoom:6}); }
+  ];
+  for(let i=0;i<tries.length;i++){
+    try{ tries[i](); return; }catch(e){}
+  }
 }
 
 async function fetchAdm(iso3, level){
@@ -1995,7 +2064,6 @@ async function onCountry(f){
   setTimeout(()=>fitTo(f.geometry), 60);
   drawAdm(iso3, 1, null);
   paintTrail(); paintChain(); setPins();
-  loadPins(q, true);
 }
 
 async function onUnit(f){
@@ -2026,7 +2094,6 @@ async function onUnit(f){
     STACK.push({q:hit.id, label:hit.label, iso3:iso3, level:level, feature:f});
     openJuris(hit.id, hit.label);
     setTimeout(()=>fitTo(f.geometry), 60);
-    loadPins(hit.id, false);
   }else{
     STACK.push({q:null, label:nm, iso3:iso3, level:level, feature:f});
     openModal(nm, 'Drawn from the boundary files');
@@ -2068,14 +2135,12 @@ async function fromWorld(f){
     const mn = mid.properties.shapeName || mid.properties.n;
     const hit = await resolveUnitIn(mn, cq);
     STACK.push({q:hit?hit.id:null, label:hit?hit.label:mn, iso3:iso3, level:1, feature:mid});
-    if(hit) loadPins(hit.id, false);
     paintTrail(); paintChain();
   }
   const lvl = STACK.length;
   const hit2 = await resolveUnitIn(nm, cq);
   STACK.push({q:hit2?hit2.id:null, label:hit2?hit2.label:nm, iso3:iso3, level:lvl, feature:f});
-  if(cq) loadPins(cq, true);
-  if(hit2){ openJuris(hit2.id, hit2.label); loadPins(hit2.id, false); }
+  if(hit2){ openJuris(hit2.id, hit2.label); }
   else { openModal(nm,'Drawn from the boundary files'); renderNoEntity(nm, true); }
   setTimeout(()=>fitTo(f.geometry), 60);
   drawAdm(iso3, (f.properties.l||2)+1, f);
@@ -2432,6 +2497,9 @@ let BK=null;
 function render(){
   if(!CUR) return;
   BK = buckets();
+  /* the office list has just been rebuilt, so this is the moment the
+     markers can be asked for by id */
+  if(CUR && CUR.q) loadOfficePins(CUR.q);
   if(SEL) return renderOffice(SEL);
   const b=BK.out;
   const total=b.leg.length+b.exec.length+b.jud.length+b.ag.length;
@@ -2521,14 +2589,18 @@ function renderOffice(o){
     h+='<div class="sec">How to reach it</div>';
     h+='<div class="bhead">Ordered by how often each has been measured to work, best first. '+
        'The ranking comes from the datasets carried with each route; routes nobody has counted '+
-       'are marked unmeasured rather than ranked last.</div>';
+       'are marked unmeasured rather than ranked last. Pick one to open it.</div>';
+    h+='<div class="rgrid">';
     rts.forEach((rt,i)=>{
       const R=rt.rate;
-      h+='<div class="route" id="rr'+i+'"><div class="rhead" onclick="document.getElementById(\'rr'+i+'\').classList.toggle(\'open\')">'+
-        '<div class="rbar" style="background:'+rateColor(R)+'"></div>'+
-        '<div class="rmain"><div class="rnm">'+esc(rt.nm)+'</div><div class="rmeta">'+esc(rt.cost)+'</div></div>'+
-        '<div class="rrate">'+rateText(R)+'</div>'+
-        '<div class="rtog">+</div></div><div class="rbody">'+
+      h+='<div class="route" id="rr'+i+'">'+
+        '<button type="button" class="rhead" aria-expanded="false" '+
+          'onclick="toggleRoute(\'rr'+i+'\',this)">'+
+        '<div class="rmain"><div class="rnm">'+esc(rt.nm)+'</div>'+
+        '<div class="rmeta">'+esc(rt.cost)+'</div>'+
+        '<span class="rpill"><i style="background:'+rateColor(R)+'"></i>'+
+          esc(BANDS[rateBand(R)].label)+'</span></div>'+
+        '<div class="rtog">+</div></button><div class="rbody">'+
         (rt.def ? '<div class="fld"><dt>What this is</dt><dd>'+esc(rt.def)+'</dd></div>' : '')+
         fld('What it costs', rt.costn)+fld('Who can use it', rt.elig)+
         fld('How long', rt.time)+fld('How it is done', rt.how)+
@@ -2540,6 +2612,7 @@ function renderOffice(o){
         '<div class="fld fail"><dt>What usually stops it</dt><dd>'+esc(rt.fail)+'</dd></div>'+
         '</div></div>';
     });
+    h+='</div>';
   }
   const hs=(KIND_HURDLES[o.kind]||[]).map(k=>HURDLES[k]).filter(Boolean);
   if(hs.length){
@@ -2550,6 +2623,22 @@ function renderOffice(o){
   $('#mbody').scrollTop=0;
   showBack(true);
 }
+/* One route open at a time: an opened tile takes the whole row, so
+   leaving several open rebuilds the stacked list the tiles replaced. */
+function toggleRoute(id, btn){
+  const el=document.getElementById(id); if(!el) return;
+  const wasOpen=el.classList.contains('open');
+  const grid=el.parentNode;
+  if(grid) grid.querySelectorAll('.route.open').forEach(x=>{
+    x.classList.remove('open');
+    const b=x.querySelector('.rhead'); if(b) b.setAttribute('aria-expanded','false');
+  });
+  if(!wasOpen){
+    el.classList.add('open');
+    if(btn) btn.setAttribute('aria-expanded','true');
+  }
+}
+
 function fld(t,v){ return v ? '<div class="fld"><dt>'+t+'</dt><dd>'+esc(v)+'</dd></div>' : ''; }
 
 function renderNoEntity(nm, drawn){
@@ -2748,6 +2837,10 @@ async function loadMunicipalities(parentFeature, level){
   const gen = ++MUNI_GEN;
   const key = 'osm'+(sub?'910':'8')+':'+b.map(v=>v.toFixed(3)).join(',');
   setDot('bd','busy',(sub?'Sub-municipal':'Municipal')+' outlines loading');
+  /* This can take minutes, and an empty map with no explanation reads as
+     a map that is broken rather than one that is working. */
+  noteBelow('Asking OpenStreetMap for the '+(sub?'units below this one':'municipalities inside this unit')+
+            '. This is a live query over a large area and often takes one to four minutes.');
   let els;
   try{ els = await overpass(qOsmMuni(b, lv), key); }
   catch(e){ els=[]; }
@@ -2813,30 +2906,33 @@ function openPin(id){
 }
 
 /* pull coordinates for a jurisdiction and merge them into the pin set */
-async function loadPins(q, isCountry){
-  try{
-    const rows = await sparql(isCountry?qCoordsCountry(q):qCoords(q), (isCountry?'cc:':'co:')+q);
-    rows.forEach(r=>{
-      const m=/Point\(([-\d.]+) ([-\d.]+)\)/.exec(r.coord.value); if(!m) return;
-      const id=qid(r.item.value);
-      const nm=(r.itemLabel&&r.itemLabel.value)||'';
-      if(isQ(nm)||!nm) return;        /* unnamed records are not offices anyone can contact */
-      /* The coordinate query is separate from the office list, so it was
-         not running any of the same filters and put things on the map
-         that the diagram had already rejected — "High Commission of
-         Malaysia, Nairobi" sat among Kenya's own offices. A foreign
-         mission is in the country, not of it. */
-      if(RX_DIPLO.test(nm)) return;
-      if(isTenure(nm,[])||RX_DOC_CLS.test(nm)||RX_SYMBOL.test(nm)) return;
-      if(!PINS[id]) PINS[id]={id:id, lng:+m[1], lat:+m[2], label:officeLabel(nm), lvlQ:q};
-      else { PINS[id].lvlQ=q; if(isQ(PINS[id].label)) PINS[id].label=nm; }
-    });
-    /* prefer the office list's name where there is one, since it has
-       already been cleaned of tenures and records */
-    if(BK && BK.byId) Object.values(PINS).forEach(p=>{ const o=BK.byId[p.id]; if(o) p.label=o.label; });
-    setPins();
-  }catch(e){}
+/* Place markers for the offices the diagram resolved, and nothing else.
+   `q` is the jurisdiction those offices belong to, which is what decides
+   whether a marker counts as inside the level you have open. */
+async function loadOfficePins(q){
+  if(!q || !BK || !BK.byId) return;
+  const ids=Object.keys(BK.byId).filter(id=>/^Q\d+$/.test(id) && !PIN_TRIED[id]);
+  if(!ids.length) return setPins();
+  ids.forEach(id=>{ PIN_TRIED[id]=1; });
+  const CH=180;
+  for(let k=0;k<ids.length;k+=CH){
+    const batch=ids.slice(k,k+CH);
+    try{
+      const rows = await sparql(qCoordsFor(batch), 'oc:'+q+':'+k+':'+batch.length);
+      rows.forEach(r=>{
+        const m=/Point\(([-\d.]+) ([-\d.]+)\)/.exec(r.coord.value); if(!m) return;
+        const id=qid(r.item.value);
+        const o=BK.byId[id]; if(!o) return;     /* only offices in the diagram */
+        if(!PINS[id]) PINS[id]={id:id, lng:+m[1], lat:+m[2], label:o.label, lvlQ:q};
+        else { PINS[id].lvlQ=q; PINS[id].label=o.label; }
+      });
+      setPins();
+    }catch(e){}
+  }
 }
+/* ids already asked about, so re-renders do not re-query the same
+   offices every time the diagram rebuilds */
+let PIN_TRIED={};
 
 /* The worldwide lowest-level layer is loaded once at boot, so there is
    nothing to fetch on zoom. CGAZ_ROOT and AUTO_LEVEL are kept because
@@ -3010,7 +3106,12 @@ function shiftForBox(on){
   try{
     const m=document.getElementById('modal');
     const pad = (on && innerWidth>760) ? Math.round(m.getBoundingClientRect().width + 48) : 0;
-    map.easeTo({padding:{top:0,left:0,bottom:0,right:pad}, duration:600});
+    /* Applied instantly rather than over 600 ms. `fitTo` runs 60 ms after
+       the panel opens, so an animation here was still in flight when the
+       fit started; the two fought and the camera lost, staying where it
+       was while the markers were drawn half a world away. A padding
+       change needs no animation of its own. */
+    map.easeTo({padding:{top:0,left:0,bottom:0,right:pad}, duration:0});
   }catch(e){}
 }
 
