@@ -32,7 +32,7 @@ The settled-terms row moved from 849 to 867 on 11 Nov night without any new rese
 | --- | --- | --- |
 | Rounded "what happened to people" paragraph (`whole`) | 939 of 946 | 99% |
 | Cases that say what the money came with (`conditions`) | 922 of 946 | 97% |
-| Lender's terms looked for and settled (not tagged `research`) | 867 of 946 | 92% |
+| Lender's terms looked for and settled (not tagged `research`) | 870 of 946 | 92% |
 | Company names with a line saying what the firm is (`desc`) | 912 of 992 | 92% |
 | People with a checked `total` | 53 of 173 | 31% |
 | Cases with a documented buyer | 34 of 946 | 4% |
@@ -238,7 +238,13 @@ All retries, now third to fifth attempts. 18 cases came off the list on 11 Nov n
 
 **Read this before counting anything here.** A case can now carry `nopub` AND `research` at once. That is deliberate: it means one lender on the case is settled and another is not. 29 cases carry `nopub`, 15 of which still carry `research`. If you build a batch input from "cases with `research` in `ct`", you will correctly get those 15 back — but only their untested lender is worth a search, and `ct_note` on each says which side is already closed. Read it before sending anything to an agent.
 
-**Round 12 (11 Nov night) took the three EBRD cases off the blank list.** Vareš, Shah Deniz and IPP4 Al-Manakher had been blank because `ebrd.com` was recorded as refusing; it does not. See `rounds/r26f_conds_research_12.json` and its check log. The lesson generalises: before accepting that a case is blank for want of a route, re-test the route.
+**Round 12 (11 Nov night) took the three EBRD cases off the blank list, and `research` went 79 to 76.** Vareš, Shah Deniz and IPP4 Al-Manakher had been blank because `docs/CONDR.md` listed `ebrd.com` as refusing. It does not refuse, and the brief is now corrected — that one line is what blanked them. Merged from `rounds/r26f_conds_research_12_checked.json`, check log alongside.
+
+**Two findings from that round worth carrying to any future condition work:**
+- **Vareš is the mirror image of failure #4.** Usually the money reaches the project and the condition stops at the intermediary, which is why 11 of round 9a's 33 entries died. Here the money stopped short — EBRD says twice it is not financing the mine's development — and the **condition** reached the project by name: Adriatic Metals was required to produce an impact assessment "for the Vareš mining project". Keep such an entry on the strength of the condition, not of the cash. Equity counts: EBRD used the word "condition" itself three times, and the action plan had to be agreed before the subscription agreement was signed.
+- **Shah Deniz came in tagged `safeguard` and was an absence dressed as a term.** The checker re-tagged it. EBRD's borrower held 10% of the field, EBRD's own page says the relationship that would let it set requirements for operations at the site does not exist, and its board agreed no action plan was required because the borrower could not make BP do anything. It now carries `admin` for the one real term, independent monitoring and reporting, with the absence in `ct_note`. **It is deliberately not `nopub`:** EBRD published the project summary, the audit, five monitoring reports and a 149,000-word compliance review, so this is an unusually well documented absence, not an unpublished one. Do not reach for `nopub` whenever a case comes up empty — ask first whether the documents exist and say nothing, or do not exist.
+
+The lesson generalises: before accepting that a case is blank for want of a route, re-test the route — and check what the brief the agents actually read says, not just this file.
 
 **Three classes are settled absences, not open questions. Do not build a round on them.** All three are now tagged `nopub` with the reason in `ct_note`.
 - **The 15 IFC cases.** Round 11 re-tested every one. The SPI pages had already been opened and quoted in rounds 1, 2, 3 and 6 — the `disclosures.ifc.org` routing error never held these back, whatever three earlier handoffs said. Ten are Inclusive Development International financial-intermediary chains where the facility is bank-level Tier II capital naming no sub-borrower, which is failure mode 9 and immune to any routing fix; verified directly on project 25492 (ICICI Bank UT2), whose use of proceeds is the bank's own capital and which names none of Mundra, Mahan, NTPC, Zuari, Karuturi, China Hongqiao or First Quantum. The other five are dead on the documents: advisory-only (Agilis), no IFC project number (Ban Chaung), pre-ESRS vintage (Kumtor, Sadiola) and pre-portal (Escondida, 1988).
