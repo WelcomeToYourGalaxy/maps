@@ -39,16 +39,16 @@ Another session of the user's commits to this repo often. **Always `git fetch or
   - Links: `{n, cb | tn, rel, role, detail, src_t, src_u}`.
   - Popups turn each link into a plain sentence (`SAY` / `sayLink` / `srcItem` in `app.js`). Add a `SAY` entry for any new `role` string.
 
-## Where it stands (after round 27, 11 November 2026)
+## Where it stands (after round 28, 12 November 2026)
 
-1,487 outside parties and 2,085 ties. 1,716 writeups, one for every box.
+1,490 outside parties and 2,088 ties. 1,718 writeups, one for every box.
 
 **Breadth is now measured with currency-union ties expanded to member countries** (see below). That change alone moved four rows without any new research, because `coverage.py` had been undercounting what the map already showed.
 
 | Category | Records | Places | Breadth |
 |---|---|---|---|
 | Corruption cases | 232 | 154 | 75% |
-| External auditors | 193 | 155 | 75% |
+| External auditors | 196 | 158 | 77% |
 | Revolving door | 206 | 80 | 39% |
 | Banknote printers | 157 | 133 | 65% |
 | Swap lines | 240 | 84 | 41% |
@@ -150,6 +150,31 @@ The blank-page scan is the whole trick: the pages that extract under about 300 c
 **The lesson to carry: when a search for a central bank's report returns only commercial banks, stop searching and fetch the bank's own publications index directly.** Three of this round's four came that way. Searches for central bank documents are drowned out by commercial banks with similar names in almost every country on the remaining list.
 
 **Still not settled this round:** the Bahamas (`cdn.centralbankbahamas.com` returns 403 to a plain download and the site's `viewPDF` path 404s - it needs a copy from another host); Malawi (rbm.mw builds its statements list in script that did not run even in headless Chrome); Angola (`www.bna.ao` resets every connection); Paraguay and Palestine (the same commercial-bank noise, and neither bank's own index lists a statements PDF).
+
+### Round 28: the blank-page heuristic has a blind spot, and the case layers now split their blanks
+
+**Three auditors settled: Bangladesh, Haiti, Libya.**
+- **Bangladesh.** Howladar Yunus & Co. with ACNABIN, Chartered Accountants, joint, signed at Dhaka 26 August 2025 for the year to 30 June 2025, by the managing partners Muhammad Farooq FCA (ICAB 521) and Abu Sayed Mohammed Nayeem FCA (ICAB 353). The report is addressed to the Government of the People's Republic of Bangladesh, not to the board, which matches the Order 1972 duty the earlier handoff flagged as the best remaining door. The previous year was Howladar Yunus with Hoda Vasi Chowdhury & Co.
+- **Haiti.** KPMG S.A. (France) with Merove-Pierre - Cabinet d'Experts-Comptables of Port-au-Prince, joint, signed at Paris La Defense and Port-au-Prince on 30 June 2022 for the year to 30 September 2021, partners Valery Fousse and Mireille Merove-Pierre. **The BRH publishes the auditors' report itself** at `brh.ht/notes-de-presse/?act=publications`, with a clean text layer, alongside the 2020 report and a call for expressions of interest for the next appointment. Earlier rounds saw only the tender notice.
+- **Libya.** Deloitte, but **not a statutory annual auditor**: a one-off review of both branches the CBL split into in 2014, covering September 2014 to June 2020, commissioned by the Presidency Council through UNOPS under Security Council Resolution 2434, work begun August 2020, final reports delivered in Tripoli 8 July 2021. Recorded with that said plainly in its own sentence, as the BEAC garbled-scan record is.
+
+**The blind spot in round 27's method.** The blank-page scan assumes the obstacle is a scan. Bangladesh is the other failure mode: a complete text layer with broken font encoding, so every page extracts at normal length as punctuation soup. No page looks blank and nothing is readable. **Test for it by grepping the extracted text for a word that must be there** — `auditor`, `balance` — across the whole document. Zero hits in a 300-page annual report means broken encoding, and OCR is again the answer. Add that check before concluding a report has no auditor's section.
+
+**Sao Tome moves from untried to tried.** Its Comite de Auditoria page, under Lei 03/2025, says the committee proposes the external auditors to the Board and reviews their reports on the annual financial statements. So the bank appoints one; it names none, and the site publishes no annual accounts. Logged with that wording rather than left as never-attempted.
+
+**Hosts that defeated both the fetcher and headless Chrome this round:** `cbe.org.eg` (F5 WAF, rejects with a support ID — Egypt is blocked, not sourceless), `centralbank.cw` plus its `exch.` mirror (certificate does not match the hostname), `bcm.mr` (empty single-page-app shell, no links render), `amcm.gov.mo` (rebuilt site, old annual-report paths 404, no index), `rbm.mw` (document lists built in script that does not run headless; resets at random, retry two or three times), `bank-of-algeria.dz`, `bcp.gov.py`.
+
+**A vein checked and ruled out: IMF safeguards assessments.** They would name central banks' external auditors if published, but the assessments are confidential and the public policy papers aggregate without naming banks. Do not spend a round on it.
+
+### The case layers now say what a blank means
+
+A country with no record on the corruption-cases or moves-against-the-bank layer takes one of three shades instead of one grey: no record where the press is free, no record where reporting is restricted, and no record where press freedom is not rated. The split uses `agents/press_freedom.json`, built from the Reporters Without Borders World Press Freedom Index 2026 situation band, with bands 4 and 5 ("difficult", "very serious") counted as restricted. In `app.js` a layer opts in with `blank: true`; `blankKind()` and `blankColor()` do the work, `colorOf()` takes the iso3 as a fourth argument, and the legend prints all three rows with their own info text. The country box adds a sentence through `pressNote()`.
+
+Of the 52 places with no corruption case, 19 fall in the restricted bands. **Do not read those as clean.** The same call needs making for any future layer compiled case by case.
+
+**A box bug fixed on the way:** the "No documented case at the central bank was found" note was bound to the career-moves check rather than the cases check, so it printed on banks that have cases and no moves, and was missing on banks with moves and no cases.
+
+**about.html gained two sections** — what the completeness figures mean, with the recapture checks behind them, and how to read a blank. Keep them in step with this handoff and `coverage.py` the same way the table is.
 
 ## Data files to add to (`agents/`)
 | File | Holds |
@@ -261,7 +286,7 @@ Bounded sets that worked:
 ## What is left
 
 ### 1. External auditors — the one category that can actually reach 100%
-Every central bank operates under a law that names who audits it, so the answer always exists. 155 of 206 done, union members included. **`coverage.py`'s absent list is now 51 codes; take out the four union codes and the ten places with no central bank and the real remaining list is 37 countries**: AGO ARE BGD BLR COD CPV CUB CUW DZA EGY ERI ETH HTI IRN JOR KHM LAO LBY MAC MDG MKD MRT MWI PRY PSE QAT RWA SDN SMR STP SYR TJK TKM TWN UZB VEN YEM. Three of those (the UAE, Qatar, Ethiopia) are confirmed to print no name, so the ceiling is 34 more countries.
+Every central bank operates under a law that names who audits it, so the answer always exists. 158 of 206 done, union members included. **`coverage.py`'s absent list is now 48 codes; take out the four union codes and the ten places with no central bank and the real remaining list is 34 countries**: AGO ARE BLR COD CPV CUB CUW DZA EGY ERI ETH IRN JOR KHM LAO MAC MDG MKD MRT MWI PRY PSE QAT RWA SDN SMR STP SYR TJK TKM TWN UZB VEN YEM. Three of those (the UAE, Qatar, Ethiopia) are confirmed to print no name, so the ceiling is 31 more countries. Most of the rest are now blocked hosts rather than unfound documents, which is why the per-round yield is falling again.
 **The browser reads what the fetcher cannot, and that is now the main method for auditors.** Three image-only auditor reports have been settled by opening the page in a browser and reading it: Botswana (EY, Gaborone, 2025), **Serbia** (Ernst & Young d.o.o. Beograd, signed at Belgrade on 20 March 2026 by Nikola Ribar, for the year ended 31 December 2025) and the **Maldives** (Deloitte Partners, Malé, signed by Mohamed Siraj Muneer on 29 April 2025, at pages 142–143). Each of those pages returns empty from every text extraction. Still open by this route: Brunei, Fiji's annual report, Eswatini, the Bahamas. One caveat: **Barbados serves its report as a download rather than inline, so the browser tab does not render it** — that one needs a different copy. Two URLs recorded in earlier notes (the Bahamas 2024 report, the Eswatini report on independentnews.co.sz) are now 404, so always get the URL from a fresh search.
 
 **Three banks genuinely print no auditor's name**, each confirmed by a full read: the UAE's 2025 report says only "an independent external auditor appointed by the Board"; Qatar's chapter 11 names nobody; Ethiopia's standalone statements open straight into the accounts and end at note 31. These are not retry targets.
@@ -380,7 +405,7 @@ Round 5 retried Bahrain, Saudi Arabia, Oman, Taiwan and Singapore in Arabic, Chi
 
 **Cannot finish:** corruption cases, governor removals, and revolving door outside closed sets. No complete count exists anywhere, so the "35–45%" in `about.html` is a judgement made while compiling and will stay one. These approach completeness asymptotically.
 
-**Estimate: 5 to 8 more rounds** for the auditors row, which is the one that can actually finish. Yield by round: 35, 34, 33, 56, 50, 24, 34, 42, 40, 21, 14, 13, 4 auditors (round 27, a single-method round). 34 countries remain reachable on that row. Round 27's OCR route took four of them in one pass, all four previously logged unavailable, so the figure to plan against is roughly 4 to 7 auditor countries a round rather than the one or two of rounds 24 to 26.
+**Estimate: 6 to 10 more rounds** for the auditors row, which is the one that can actually finish. Yield by round: 35, 34, 33, 56, 50, 24, 34, 42, 40, 21, 14, 13, 4 auditors (round 27), 3 auditors (round 28). 31 countries remain reachable. Rounds 27 and 28 together took seven countries that OCR could reach; what is left is mostly hosts that refuse both the fetcher and headless Chrome, so plan against 3 to 5 a round, and expect several of the last ten to need a copy of the document from somewhere other than the bank's own site.
 
 **The bottleneck is now access, not search, and the fix is the browser.** Four scanned auditor reports have been settled by opening the page and reading it — Botswana, Serbia, the Maldives, Brunei — after every text extraction returned them empty. Still waiting on that method: Bahrain, Barbados, Fiji's annual report, Eswatini, the Bahamas, Rwanda's document list, Taiwan's untitled publication links, Iceland's gold explainer, Greece's gold note, Cambodia's 2023 report. **That list is most of what is left on the two finishable rows.** A round spent entirely in the browser would likely settle more than a round spent searching.
 
