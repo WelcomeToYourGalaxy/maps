@@ -46,6 +46,35 @@ over that scheme.
 
 ## 1. What you see, and in what order
 
+**The map now opens on a search box, not on the world.** It used to draw all
+48,263 lowest-level jurisdictions at once and leave the reader to find their
+own. Every session began with four megabytes and then a hunt, and the
+municipal layer underneath took one to four minutes because it scanned a whole
+district for every municipality inside it.
+
+Asking for the place by name replaces both. `placeSearch()` queries Nominatim,
+OpenStreetMap's own geocoder — open, CORS-enabled, no key — with
+`polygon_geojson=1&extratags=1&featureType=settlement`. One request, about a
+second, returns the candidates with their boundary polygon **and** their
+Wikidata id. `enterPlace()` then finds which unit of the world file contains
+the point, builds the chain above it with `fromWorld(host,{noMuniScan:true})`,
+and pushes the searched place on top as the deepest level.
+
+So the municipality arrives in about a second instead of minutes, and no
+Overpass call is involved on this path at all. Overpass is still there for
+`loadMunicipalities`, which runs when someone drills down by clicking rather
+than searching.
+
+`world_lowest.topojson` is still loaded at boot: it is what the
+point-in-polygon test needs to know which district a place sits in. It is just
+not drawn. `browseAll()` draws it for anyone who wants the old view, and the
+"Search for a place" button at bottom-left reopens the search.
+
+Nominatim's usage policy asks for at most one request a second and no bulk
+querying. A person typing a place name does not approach that; do not add
+type-ahead that fires per keystroke.
+
+
 Opening the page draws **every lowest-level jurisdiction on Earth** — the whole
 world's districts and counties, 48,263 of them. Nothing else is outlined: no
 national borders, no regions. Those appear only once you click.
@@ -536,6 +565,16 @@ it was the percentages inside them that made them awkward to keep.
   alongside the hover cards, against whatever nodes are in the DOM at that
   moment. Keep them there. If you re-add the Mermaid directive, do not remove
   this.
+- **`resolveUnitIn`'s ranking was wrong in both directions.** It originally
+  returned the exact name match LAST — the two terms of the comparator were the
+  wrong way round — and since `SUFFIXES` tries "<name> City", California
+  resolved to California City, a town of 14,000 in Kern County, and every
+  office above the county came from there. Simply reversing it is also wrong:
+  the boundary files name Los Angeles County "Los Angeles", whose exact match
+  is the city. The level is now passed in (`WANT_REGION`, `WANT_DISTRICT`) and
+  a candidate of the right kind beats one of the wrong kind whatever its name;
+  only then does an exact match break the tie. Check both California and Los
+  Angeles County after touching this — they fail in opposite directions.
 - **`loadPins` ran none of the office filters.** The coordinate query is
   separate from the office list, so a record the diagram had already rejected
   could still sit on the map as a contact marker — foreign high commissions in

@@ -50,8 +50,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 #bmbox button.on{color:var(--ink);background:var(--accent-soft)}
 
 /* ---------- trail / status, bottom-left ---------- */
-#trail{position:fixed;left:20px;bottom:98px;z-index:40;max-width:min(560px,52vw);
-  background:rgba(17,24,21,.93);border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:12px;line-height:1.6}
+#trail{margin:9px 0 2px;font-size:12px;line-height:1.55}
 #trail .lbl{font-size:10px;letter-spacing:.9px;text-transform:uppercase;color:var(--stone);display:block;margin-bottom:4px}
 #trail a{color:var(--accent-hi);cursor:pointer;text-decoration:none}
 #trail a:hover{text-decoration:underline}
@@ -79,7 +78,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #levels .lv i{width:8px;height:8px;border-radius:2px;display:inline-block;flex:none}
 
-#pincount{font-size:10.5px;color:var(--faint);margin-top:5px}
+#pincount{font-size:10.5px;color:var(--faint);margin-top:4px}
 #admnote{font-size:10.5px;color:var(--faint);margin-top:5px;line-height:1.45;max-width:100%}
 #trail .hint{color:var(--faint);font-size:11.5px}
 #status{margin-top:6px;font-size:11px;color:var(--faint);display:flex;gap:10px;align-items:center}
@@ -91,6 +90,41 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 #scrim{position:fixed;inset:0;z-index:90;background:rgba(5,9,7,.55);backdrop-filter:blur(2px);
   opacity:0;pointer-events:none;transition:opacity .22s}
 #scrim.on{opacity:1;pointer-events:auto}
+/* The opening panel. The map used to draw all 48,263 lowest-level
+   jurisdictions on Earth at once and leave the reader to find their own,
+   which meant every session began by waiting for four megabytes and then
+   hunting. Asking for the municipality instead turns the same job into
+   one question, and it is what makes the municipal boundary fast: one
+   named place is one small request, where scanning a whole county for
+   every municipality inside it took minutes. */
+#start{position:absolute;z-index:60;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:min(540px,92vw);background:rgba(17,24,21,.96);border:1px solid var(--line);
+  border-radius:14px;padding:26px 26px 22px;box-shadow:0 18px 60px rgba(0,0,0,.5)}
+#start.off{display:none}
+#start h2{font-family:'Marcellus',serif;font-weight:400;font-size:23px;margin-bottom:6px}
+#start p.lede{font-size:12.5px;color:var(--dim);line-height:1.6;margin-bottom:16px}
+#srow{display:flex;gap:8px}
+#sq{flex:1;min-width:0;background:var(--panel2);border:1px solid var(--line);border-radius:9px;
+  padding:11px 13px;color:var(--ink);font:inherit;font-size:14px}
+#sq:focus{outline:none;border-color:var(--accent-hi)}
+#sgo{background:var(--accent);border:1px solid var(--accent);border-radius:9px;color:#eef2ec;
+  padding:0 17px;font:inherit;font-size:13.5px;cursor:pointer}
+#sgo:hover{background:var(--accent-hi);border-color:var(--accent-hi);color:#10180f}
+#sout{margin-top:14px;max-height:46vh;overflow-y:auto}
+#sout .hit{display:block;width:100%;text-align:left;background:var(--panel2);border:1px solid var(--line);
+  border-radius:10px;padding:10px 13px;margin-bottom:7px;color:var(--ink);font:inherit;cursor:pointer}
+#sout .hit:hover{border-color:rgba(140,189,154,.5);background:rgba(74,124,89,.1)}
+#sout .hit b{font-size:13.5px;font-weight:400;display:block}
+#sout .hit span{font-size:11px;color:var(--faint);display:block;margin-top:2px}
+#sout .msg{font-size:12px;color:var(--dim);line-height:1.55;padding:4px 2px}
+#salt{margin-top:14px;font-size:11.5px;color:var(--faint);line-height:1.6}
+#salt a{color:var(--accent-hi);cursor:pointer;text-decoration:none}
+#salt a:hover{text-decoration:underline}
+#sopen{position:fixed;left:20px;bottom:20px;z-index:45;background:rgba(17,24,21,.93);
+  border:1px solid var(--line);border-radius:9px;color:var(--dim);padding:9px 13px;
+  font:inherit;font-size:12px;cursor:pointer;display:none}
+#sopen.on{display:block}
+#sopen:hover{color:var(--ink);border-color:var(--accent-soft)}
 #mtop{padding:17px 20px 0;border-bottom:1px solid var(--line);flex:none;position:relative}
 #mtitle{font-family:'Marcellus',serif;font-size:22px;line-height:1.22;padding-right:190px}
 #msub{max-width:none}
@@ -189,15 +223,15 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 /* The panel is parked right at min(980px,58vw) with an 18px margin, so
    its left edge never comes further left than about 60% of the window.
    The legend is capped below that so the two cannot meet. */
-#trail{position:fixed;left:20px;bottom:98px;z-index:40;max-width:min(420px,32vw);font-size:12px;line-height:1.6;
-  background:rgba(17,24,21,.93);border:1px solid var(--line);border-radius:10px;padding:9px 13px;display:none}
+#trail{margin:9px 0 2px;font-size:12px;line-height:1.55;display:none}
 #trail.on{display:block}
+#mtop #crumbs{padding-right:190px}
 #trail a{color:var(--accent-hi);cursor:pointer;text-decoration:none}
 #trail a:hover{text-decoration:underline}
 #trail .sep{opacity:.45;margin:0 5px}
 #trail .now{color:var(--ink)}
 
-#pincount{font-size:10.5px;color:var(--faint);margin-top:5px}
+#pincount{font-size:10.5px;color:var(--faint);margin-top:4px}
 #admnote{font-size:10.5px;color:var(--faint);margin-top:5px;line-height:1.45;max-width:100%}
 /* ---------- modal: draggable, resizable, parked to the right ---------- */
 #modal{position:fixed;z-index:100;left:auto;right:18px;top:62px;transform:none;
@@ -328,7 +362,21 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   <div id="projrow"><button id="projbtn" onclick="toggleProjection()">Flat map</button></div>
   <div id="levels"></div>
 </div>
-<div id="trail"><div id="crumbs"></div><div id="pincount"></div><div id="admnote"></div></div>
+<div id="start">
+  <h2>Where do you live?</h2>
+  <p class="lede">Enter your town, city or municipality. The map will go there and show you
+    every office you can contact about a law &mdash; your own council first, then the
+    district, the region and the country above it.</p>
+  <div id="srow">
+    <input id="sq" type="text" autocomplete="off" spellcheck="false"
+      placeholder="Sierra Madre, California" onkeydown="if(event.key==='Enter')placeSearch()">
+    <button id="sgo" onclick="placeSearch()">Search</button>
+  </div>
+  <div id="sout"></div>
+  <div id="salt">Not sure of the name, or looking for somewhere else?
+    <a onclick="browseAll()">Show every jurisdiction on the map instead</a>.</div>
+</div>
+<button id="sopen" onclick="openStart()">&#9906; Search for a place</button>
 <div id="modal">
   <div id="mtop">
     <button id="mclose" onclick="closeModal()">&times;</button>
@@ -337,6 +385,10 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
     <button id="mabout" onclick="toggleAbout()" title="About this map">?</button>
     <div id="mtitle">&nbsp;</div>
     <div id="msub"></div>
+    <!-- Where you are, what is on the map and what is still loading. It
+         used to sit in a floating box at the bottom-left of the map,
+         away from the jurisdiction it describes and easy to miss. -->
+    <div id="trail"><div id="crumbs"></div><div id="pincount"></div><div id="admnote"></div></div>
   </div>
   <div id="mbody"></div>
   <div id="about">
@@ -1975,11 +2027,17 @@ function fitTo(geom){
      and keep a fallback that simply goes there. Something has to move. */
   try{ map.stop(); }catch(e){}
 
+  /* A cap of 9 suits a country or a county and leaves a town as a speck.
+     The cap follows the size of the thing being fitted, so a
+     municipality fills the view the way a country does. */
+  const span = Math.max(b[2]-b[0], b[3]-b[1]);
+  const mz = span>6 ? 7 : span>1.5 ? 9 : span>0.35 ? 11 : 13;
+
   const tries = [
-    ()=>map.fitBounds(bounds,{padding:{top:90,left:60,right:60,bottom:120},duration:900,maxZoom:9}),
-    ()=>map.fitBounds(bounds,{padding:40,duration:900,maxZoom:9}),
+    ()=>map.fitBounds(bounds,{padding:{top:90,left:60,right:60,bottom:120},duration:900,maxZoom:mz}),
+    ()=>map.fitBounds(bounds,{padding:40,duration:900,maxZoom:mz}),
     ()=>{ const c=centroid(geom);
-          map.easeTo({center:c, zoom:Math.max(map.getZoom(),6), duration:900}); },
+          map.easeTo({center:c, zoom:Math.max(map.getZoom(),Math.min(mz,10)), duration:900}); },
     ()=>{ const c=centroid(geom); map.jumpTo({center:c, zoom:6}); }
   ];
   for(let i=0;i<tries.length;i++){
@@ -2000,21 +2058,24 @@ async function fetchAdm(iso3, level){
 }
 
 /* draw `level` for a country, optionally cut to one parent feature */
-async function drawAdm(iso3, level, parentFeature){
+async function drawAdm(iso3, level, parentFeature, noMuniScan){
   if(!iso3) return setAdmData([]);
   let gj;
   try{ gj = await fetchAdm(iso3, level); }
   catch(e){
     setAdmData([]);
     if(e.message==='notfound'){
-      noteBelow('The boundary files go no deeper than this for this country.');
+      if(!noMuniScan) noteBelow('The boundary files go no deeper than this for this country.');
       const top=STACK[STACK.length-1];
       /* Municipalities are outlines only. There used to be a second,
          faster pass that drew them as Wikidata points, and the two
          together meant one place could be both a ring and a polygon,
          each with its own click handler and its own popup. Outlines are
          slower to arrive and are the only thing drawn now. */
-      if(top&&top.feature) loadMunicipalities(top.feature, STACK.length-1);
+      /* Skipped when the reader searched for their own municipality:
+         that one is already drawn, and scanning the whole district for
+         every municipality inside it is the slow path this replaced. */
+      if(!noMuniScan && top && top.feature) loadMunicipalities(top.feature, STACK.length-1);
     }else noteBelow('Could not load the boundary file: '+e.message);
     return;
   }
@@ -2104,7 +2165,8 @@ async function onUnit(f){
 }
 
 /* country, then the region inside it, then the unit itself */
-async function fromWorld(f){
+async function fromWorld(f, opts){
+  opts = opts || {};
   const iso3 = f.properties.c;
   const nm   = f.properties.n || 'Unnamed unit';
   const isoN = ISO3NUM[iso3];
@@ -2133,17 +2195,19 @@ async function fromWorld(f){
   }
   if(mid){
     const mn = mid.properties.shapeName || mid.properties.n;
-    const hit = await resolveUnitIn(mn, cq);
+    const hit = await resolveUnitIn(mn, cq, WANT_REGION);
     STACK.push({q:hit?hit.id:null, label:hit?hit.label:mn, iso3:iso3, level:1, feature:mid});
     paintTrail(); paintChain();
   }
   const lvl = STACK.length;
-  const hit2 = await resolveUnitIn(nm, cq);
+  const hit2 = await resolveUnitIn(nm, cq, (f.properties.l||2)>=2 ? WANT_DISTRICT : WANT_REGION);
   STACK.push({q:hit2?hit2.id:null, label:hit2?hit2.label:nm, iso3:iso3, level:lvl, feature:f});
-  if(hit2){ openJuris(hit2.id, hit2.label); }
-  else { openModal(nm,'Drawn from the boundary files'); renderNoEntity(nm, true); }
-  setTimeout(()=>fitTo(f.geometry), 60);
-  drawAdm(iso3, (f.properties.l||2)+1, f);
+  if(!opts.noMuniScan){
+    if(hit2){ openJuris(hit2.id, hit2.label); }
+    else { openModal(nm,'Drawn from the boundary files'); renderNoEntity(nm, true); }
+    setTimeout(()=>fitTo(f.geometry), 60);
+  }
+  drawAdm(iso3, (f.properties.l||2)+1, f, opts.noMuniScan);
   paintTrail(); paintChain(); setPins();
 }
 
@@ -2371,7 +2435,9 @@ function branchDiagram(b, br){
   const bn=nid({t:'branch', key:bkey, br:br});
   const folded=!!COLL[bkey];
   const grp=[bn], off=[];
-  L.push('  '+bn+'["'+mmText(BRANCH[br].nm)+' \u00b7 '+rows.length+(folded?'  \u25b8 closed':'')+'"]');
+  /* no count on the branch: the kinds under it already say how many,
+     and a bare number against "Judicial" read as a score */
+  L.push('  '+bn+'["'+mmText(BRANCH[br].nm)+(folded?'  \u25b8 closed':'')+'"]');
   NODE[bn].tip={nm:BRANCH[br].nm, what:BRANCHINFO[br].what, how:BRANCHINFO[br].how};
   L.push('  click '+bn+' call mmPick("'+bn+'")');
 
@@ -2996,9 +3062,115 @@ async function boot(){
     const key = Object.keys(topo.objects)[0];
     const gj = topojson.feature(topo, topo.objects[key]);
     WORLD = gj.features.map((f,i)=>({...f, id:i+1}));
-    map.getSource(SRC_A).setData({type:'FeatureCollection', features:WORLD});
-    setDot('bd','ok', WORLD.length.toLocaleString()+' jurisdictions');
+    /* Loaded but not drawn. The file is needed to work out which
+       district a searched place sits in — that is a point-in-polygon
+       test, not something anyone has to look at — and drawing all
+       48,263 at once was what made the opening view a wall of lines
+       with no way in. `browseAll()` still draws them on request. */
+    setDot('bd','ok', WORLD.length.toLocaleString()+' jurisdictions ready');
   }catch(e){ setDot('bd','bad','Boundaries unreachable'); }
+}
+
+/* ====================================================================
+   FINDING YOUR OWN PLACE
+
+   Nominatim is OpenStreetMap's own geocoder: open, CORS-enabled, no key.
+   One request returns the candidates, each with its boundary polygon
+   (`polygon_geojson`) and its Wikidata id (`extratags`), in about a
+   second. That is the whole municipal problem solved for this path —
+   the thing that took Overpass minutes was scanning a county for every
+   municipality inside it, and a named place needs none of that.
+
+   Its usage policy asks for no more than one request a second and no
+   bulk querying, which a person typing a place name does not approach.
+   ==================================================================== */
+const NOMINATIM='https://nominatim.openstreetmap.org/search';
+let SHITS=[];
+
+function openStart(){ $('#start').classList.remove('off'); $('#sopen').classList.remove('on');
+  const i=$('#sq'); if(i){ i.focus(); i.select(); } }
+function closeStart(){ $('#start').classList.add('off'); $('#sopen').classList.add('on'); }
+
+/* the old whole-world view, still here for anyone who wants it */
+function browseAll(){
+  closeStart();
+  try{ map.getSource(SRC_A).setData({type:'FeatureCollection', features:WORLD}); }catch(e){}
+  noteBelow('');
+}
+
+async function placeSearch(){
+  const q=($('#sq').value||'').trim();
+  const out=$('#sout');
+  if(q.length<2){ out.innerHTML='<div class="msg">Type the name of a town, city or municipality.</div>'; return; }
+  out.innerHTML='<div class="msg">Looking for '+esc(q)+'&hellip;</div>';
+  const u=NOMINATIM+'?q='+encodeURIComponent(q)+
+    '&format=jsonv2&limit=8&polygon_geojson=1&extratags=1&featureType=settlement&accept-language=en';
+  let rows=[];
+  try{
+    const r=await fetch(u,{headers:{'Accept':'application/json'}});
+    if(!r.ok) throw new Error(String(r.status));
+    rows=await r.json();
+  }catch(e){
+    out.innerHTML='<div class="msg">The place lookup could not be reached just now. '+
+      'You can <a onclick="browseAll()" style="color:var(--accent-hi);cursor:pointer">'+
+      'show every jurisdiction on the map</a> and click your own instead.</div>';
+    return;
+  }
+  /* only things with a boundary: a point has no jurisdiction to draw */
+  SHITS = rows.filter(r=>r.geojson && /Polygon/.test(r.geojson.type));
+  if(!SHITS.length){
+    out.innerHTML='<div class="msg">Nothing with a boundary matched that. Try the name on its own, '+
+      'or add the region or country &mdash; "Springfield, Illinois".</div>';
+    return;
+  }
+  out.innerHTML = SHITS.map((r,i)=>{
+    const dn=String(r.display_name||'');
+    const head=dn.split(',')[0];
+    return '<button type="button" class="hit" onclick="enterPlace('+i+')">'+
+      '<b>'+esc(head)+'</b><span>'+esc(dn.slice(head.length+1).trim()||'&nbsp;')+'</span></button>';
+  }).join('');
+}
+
+/* Build the whole chain of government above a found place: the country,
+   the region, the district the boundary files carry, and then the place
+   itself as the deepest level. */
+async function enterPlace(i){
+  const r=SHITS[i]; if(!r) return;
+  closeStart();
+  const lon=+r.lon, lat=+r.lat;
+  const name=String(r.display_name||'').split(',')[0];
+  const wd=(r.extratags&&r.extratags.wikidata&&/^Q\d+$/.test(r.extratags.wikidata))
+    ? r.extratags.wikidata : null;
+  const feat={type:'Feature', geometry:r.geojson,
+    properties:{n:name, shapeName:name, wd:wd, muni:1}};
+
+  openModal(name,'Working out which jurisdictions this sits inside\u2026');
+  $('#mbody').innerHTML='<div class="spin">Placing '+esc(name)+'&hellip;</div>';
+
+  /* which of the world file's lowest-level units contains this point */
+  const host = WORLD.find(f=>{
+    if(!f || !f.geometry) return false;   /* a few units carry no geometry */
+    const b=bboxOf(f.geometry);
+    if(lon<b[0]||lon>b[2]||lat<b[1]||lat>b[3]) return false;
+    return inGeom([lon,lat], f.geometry);
+  });
+
+  if(host){
+    /* reuse the existing chain builder, but do not let it scan the whole
+       district for every municipality inside it — we already have ours */
+    await fromWorld(host, {noMuniScan:true});
+  }else{
+    STACK=[];
+  }
+  /* then the place itself, as the deepest level */
+  const top=STACK[STACK.length-1];
+  STACK.push({q:wd, label:name, iso3:top?top.iso3:null,
+              level:(top?top.level:0)+1, feature:feat});
+  setAdmData([feat]);
+  if(wd) openJuris(wd, name);
+  else { openModal(name,'Drawn from OpenStreetMap'); renderNoEntity(name, true); }
+  paintTrail(); paintChain(); setPins();
+  fitTo(feat.geometry);
 }
 
 /* ---------- resolving a drawn unit to a Wikidata entity ---------- */
@@ -3009,8 +3181,12 @@ const SUFFIXES = ['', ' County', ' Province', ' District', ' Region', ' Municipa
   ' Department', ' Governorate', ' Prefecture', ' State', ' Parish', ' Borough', ' Canton',
   ' Oblast', ' District Council', ' Metropolitan Municipality'];
 const RX_ADMIN = /\b(county|province|district|region|state|municipality|commune|department|governorate|prefecture|parish|borough|canton|oblast|voivodeship|territor|administrative|subdivision|city|town|village|ward|constituency)\b/i;
+/* the kind of unit each level ought to be, used to break ties between
+   same-named entities — "Los Angeles" is both a city and a county */
+const WANT_REGION = /\b(state|province|region|oblast|krai|republic|territor|governorate|voivodeship|canton|emirate|prefecture|department|county)\b/i;
+const WANT_DISTRICT = /\b(county|district|parish|borough|municipality|commune|prefecture|department|subdivision|shire|raion|powiat|okrug)\b/i;
 
-async function resolveUnitIn(nm, countryQ){
+async function resolveUnitIn(nm, countryQ, want){
   if(!countryQ) return null;
   const vals = SUFFIXES.map(s=>'"'+(nm+s).replace(/"/g,'\\"')+'"@en').join(' ');
   try{
@@ -3022,9 +3198,29 @@ async function resolveUnitIn(nm, countryQ){
       if(!cand[id]) cand[id]={id:id, label:(r.xLabel&&r.xLabel.value)||nm, types:[]};
       if(r.tLabel) cand[id].types.push(r.tLabel.value); });
     const ranked=Object.values(cand).sort((a,b)=>{
+      /* What level is being resolved decides this, and nothing else
+         does it reliably.
+
+         The comparator here used to return the exact match LAST, the two
+         terms the wrong way round, so California resolved to California
+         City — a town of 14,000 in Kern County — and every office above
+         the county came from there. But simply reversing it is wrong
+         too: the boundary files name Los Angeles County "Los Angeles",
+         and the exact match for that is the city, not the county.
+
+         So the level is passed in. `want` is a pattern for the kind of
+         unit this ought to be — states and provinces at the region
+         level, counties and districts below it — and a candidate of the
+         right kind beats one of the wrong kind whatever its name. Only
+         then does an exact name match break the tie. */
+      const aw=want&&a.types.some(t=>want.test(t))?0:1,
+            bw=want&&b.types.some(t=>want.test(t))?0:1;
+      if(aw!==bw) return aw-bw;
       const ad=a.types.some(t=>RX_ADMIN.test(t))?0:1, bd=b.types.some(t=>RX_ADMIN.test(t))?0:1;
       if(ad!==bd) return ad-bd;
-      return (a.label.toLowerCase()===nm.toLowerCase()?1:0)-(b.label.toLowerCase()===nm.toLowerCase()?1:0);
+      const ae=a.label.toLowerCase()===nm.toLowerCase()?0:1,
+            be=b.label.toLowerCase()===nm.toLowerCase()?0:1;
+      return ae-be;
     });
     return ranked[0]||null;
   }catch(e){ return null; }
@@ -3058,9 +3254,29 @@ async function resolveUnit(nm){
       if(!cand[id]) cand[id]={id:id, label:(r.xLabel&&r.xLabel.value)||nm, types:[]};
       if(r.tLabel) cand[id].types.push(r.tLabel.value); });
     const ranked=Object.values(cand).sort((a,b)=>{
+      /* What level is being resolved decides this, and nothing else
+         does it reliably.
+
+         The comparator here used to return the exact match LAST, the two
+         terms the wrong way round, so California resolved to California
+         City — a town of 14,000 in Kern County — and every office above
+         the county came from there. But simply reversing it is wrong
+         too: the boundary files name Los Angeles County "Los Angeles",
+         and the exact match for that is the city, not the county.
+
+         So the level is passed in. `want` is a pattern for the kind of
+         unit this ought to be — states and provinces at the region
+         level, counties and districts below it — and a candidate of the
+         right kind beats one of the wrong kind whatever its name. Only
+         then does an exact name match break the tie. */
+      const aw=want&&a.types.some(t=>want.test(t))?0:1,
+            bw=want&&b.types.some(t=>want.test(t))?0:1;
+      if(aw!==bw) return aw-bw;
       const ad=a.types.some(t=>RX_ADMIN.test(t))?0:1, bd=b.types.some(t=>RX_ADMIN.test(t))?0:1;
       if(ad!==bd) return ad-bd;
-      return (a.label.toLowerCase()===nm.toLowerCase()?1:0)-(b.label.toLowerCase()===nm.toLowerCase()?1:0);
+      const ae=a.label.toLowerCase()===nm.toLowerCase()?0:1,
+            be=b.label.toLowerCase()===nm.toLowerCase()?0:1;
+      return ae-be;
     });
     return ranked[0] || null;
   }catch(e){ return null; }
