@@ -353,5 +353,7 @@ Round 5 retried Bahrain, Saudi Arabia, Oman, Taiwan and Singapore in Arabic, Chi
 - **Small places:** `build_final.py` adds real outlines from `ne10` (`D.XSHAPE`) for Monaco, Tuvalu and Nauru.
 - **Recenter:** `#centerBtn` runs `recenter()`; `homePadding()` removes the padding a box adds.
 
-## Keep these two in step
-`about.html`'s "How much of the subject is here" table and the figures in this handoff describe the same thing for different readers. **Change both together**, and take the numbers from `coverage.py` and the build output rather than estimating.
+## Keep these three in step
+`about.html`'s "How much of the subject is here" table, the figures in this handoff, and `coverage.py`'s own rows describe the same thing for different readers. **Change all three together**, and take the numbers from `coverage.py` and the build output rather than estimating.
+
+Round 26 found them out of step: `coverage.py` had no gold-custodians row at all, and it did not expand currency-union codes for swap lines, so it reported 64 places and 31% where this handoff said 84 and 41%. The handoff figures were right and the script was behind. It now has the gold row and expands unions for swaps, and all three agree. If a row is ever added here or in `about.html`, add it to the script in the same commit.
