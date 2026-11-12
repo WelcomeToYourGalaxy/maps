@@ -1955,10 +1955,15 @@ const SECT = {
     if (v) { const s = SAVE.live || { wb: true, pl: true }; S.live.wb = !!s.wb; S.live.pl = !!s.pl; if (!S.live.wb && !S.live.pl) S.live.wb = S.live.pl = true; if (!LIVE) loadLive(); soloSect("live"); }
     else { SAVE.live = { wb: S.live.wb, pl: S.live.pl }; S.live.wb = S.live.pl = false; }
     drawLive(); drawPoints(); } },
-  lenders: { on: () => isLenderLayer(S.layer) || S.f.lender.size > 0 || S.ppl || (S.off2 && S.off2.size > 0) || !!(S.ent && S.ent.t === "person"), set: (v) => {
-    if (v) { const s = SAVE.lenders; if (s && (s.layer !== "none" || s.f.length || s.ppl || (s.o || []).length)) { S.layer = s.layer; s.f.forEach((x) => S.f.lender.add(x)); S.ppl = !!s.ppl; S.off2 = new Set(s.o || []); } else { S.ppl = true; } OPEN.lenders = true; }
-    else { SAVE.lenders = { layer: isLenderLayer(S.layer) ? S.layer : "none", f: [...S.f.lender], ppl: S.ppl, o: [...(S.off2 || [])] }; if (isLenderLayer(S.layer)) S.layer = "none"; S.f.lender.clear(); S.ppl = false; if (S.off2) S.off2.clear(); if (S.ent && S.ent.t === "person") { S.ent = null; deselect(); } }
+  lenders: { on: () => isLenderLayer(S.layer) || S.f.lender.size > 0 || (S.off2 && S.off2.size > 0), set: (v) => {
+    if (v) { const s = SAVE.lenders; if (s && (s.layer !== "none" || s.f.length || (s.o || []).length)) { S.layer = s.layer; s.f.forEach((x) => S.f.lender.add(x)); S.off2 = new Set(s.o || []); } OPEN.lenders = true; }
+    else { SAVE.lenders = { layer: isLenderLayer(S.layer) ? S.layer : "none", f: [...S.f.lender], o: [...(S.off2 || [])] }; if (isLenderLayer(S.layer)) S.layer = "none"; S.f.lender.clear(); if (S.off2) S.off2.clear(); }
     update(); if (typeof drawOffices === "function") drawOffices(); } },
+  people: { on: () => !!(S.ppl || (S.ent && S.ent.t === "person")), set: (v) => {
+    S.ppl = v;
+    if (!v && S.ent && S.ent.t === "person") { S.ent = null; deselect(); }
+    if (v) OPEN.people = true;
+    drawPeople(); } },
   conds: { on: () => S.f.ct.size > 0 || (isPrvLayer(S.layer) && !isSuitLayer(S.layer)) || (S.layer.startsWith("lc:") && !S.layer.startsWith("lc:pat_") && !FLOWS.has(S.layer) && !LENDER_LC.has(S.layer) && S.layer !== "lc:wbca"), set: (v) => {
     if (v) { S.layer = SAVE.conds || (S.kind === "gov" ? "lc:pc" : S.kind === "prv" ? "inf_prv_restructurings_1823_2024" : S.kind === "fdi" ? "none" : "lc:all"); OPEN.conds = true; }
     else { SAVE.conds = S.layer; S.layer = "none"; if (S.f.ct.size) { S.f.ct.clear(); update(); } }
@@ -2438,6 +2443,14 @@ const INFHELP = {
   eu_tied_share: "Of aid from EU institutions to this country, the share the EU reported as tied or partly tied, meaning who may bid for the work was limited. Grants and cheap loans together.",
 };
 INFL.forEach(([k]) => { const l = LY["inf_" + k]; if (l) l.help = (INFHELP[k] || INF.m[k].plain || "") + (/^prv_haircut/.test(k) ? " An average of zero or below shows unshaded; Mongolia's is below zero in the longer list." : "") + " Source: " + INF.m[k].src + "."; });
+function peopleHTML() {
+  const mine = (ENT.people || []).filter(entInK);
+  if (!mine.length) return '<div class="sub" style="margin-top:0">No person is placed for this kind of money yet. ' + MK_THIN + '</div>';
+  const sorted = mine.slice().sort((a, b) => (b.case_ids || []).length - (a.case_ids || []).length || a.name.localeCompare(b.name));
+  return '<label class="chk"><input type="checkbox" id="pplOn"' + (S.ppl ? " checked" : "") + '> People on the record, placed where they held their posts <span class="n">' + mine.filter((e) => e.anchor).length + '</span>' + qm("Officials, executives and others with a documented part in the cases, each placed at the building where they held the post through which they acted. Click one for their record and lines to the cases they are documented in.") + '</label>' +
+    '<div class="fgl" style="margin-top:6px">Person' + qm("Choosing a person moves the map to where they held their post and opens their record.") + '</div><select id="selPe"><option value="">Choose one</option>' +
+    sorted.map((e) => '<option value="' + esc(e.id) + '"' + (S.ent && S.ent.t === "person" && S.ent.id === e.id ? " selected" : "") + '>' + esc(e.name) + ((e.case_ids || []).length ? ' (' + e.case_ids.length + ')' : "") + '</option>').join("") + '</select>';
+}
 function buildLayers() {
   const el = $("#layersBody"); if (!el) return;
   const nTied = CMP.filter((c) => (c.cs || []).length).length, offsAll = Object.keys(OFFICES).filter(hasOff);
@@ -2449,8 +2462,7 @@ function buildLayers() {
       sec2("each", { all: "Each Lender", off: "Each Lender", fdi: "Each Kind of Investor", gra: "Each Kind of Donor", prv: "Each Kind of Private Lender", pay: "Each Kind of Bank", gov: "Each Lender Government" }[S.kind], (inK("off") ? '<div class="cbrow" style="margin-top:0">' + cbtn("money", "How much each kind of lender sends poorer countries, compared") + '</div>' : "") + fundTypesHTML() + fundHTML() + (inK("off") || S.kind === "gov" ? '<div class="sub">Click a name for its cases, <b>?</b> for who it is, <b>▸</b> for its layers.' + qm("Clicking a lender's name shows only the cases it took part in; several can be chosen. The ? opens a short profile: who owns it, how its money and conditions work, its complaint office and its record. The ▸ opens its own layers: country shading, its complaint office's points, project sites and charts. Click a checked shading layer again to turn it off.") + '</div>' : "") + Object.keys(LKN).filter((k) => S.kind === "all" ? !NOT_LENDER.includes(k) : S.kind === "off" ? MK_OFF.has(k) && !NOT_LENDER.includes(k) : (MK_LK[S.kind] || []).includes(k)).map(lenderRow).join("") +
         (!inK("off") ? "" : '<div class="lsub">Not lenders, but part of the same money' + qm("MIGA insures foreign investors against political risk. ICSID is the World Bank Group's court where foreign companies sue governments. Private foundations give grants. Foreign companies invest their own money. None of them lends to governments, but each is tied to harm in cases on this map, so their cases can be picked here too. The last rows are other money reaching the same countries, shown country by country to compare sizes: aid, money sent home by workers abroad, and debt payments. Click ▸ on any row for its layers.") + '</div>' + NOT_LENDER.concat(S.kind === "all" ? ["aid", "remit", "debtpay"] : []).filter((k) => S.kind === "all" || MK_OFF.has(k)).map(lenderRow).join("")) + flowsHTML() + wait) +
       (inK("off", "gov") ? sec2("loffs", "Their Offices", officesHTML()) : '<input type="checkbox" id="loffAll" style="display:none">') +
-      secIf((ENT.people || []).some(entInK), sec2("people", "People on the record",       '<label class="chk"><input type="checkbox" id="pplOn"' + (S.ppl ? " checked" : "") + '> People on the record, placed where they held their posts <span class="n">' + (ENT.people || []).filter((e) => e.anchor && entInK(e)).length + '</span>' + qm("Officials, executives and others with a documented part in the cases, each placed at the building where they held the post through which they acted. Click one for their record and lines to the cases they are documented in.") + '</label>' +
-      '<div class="fgl" style="margin-top:6px">Person' + qm("Choosing a person moves the map to where they held their post and opens their record.") + '</div><select id="selPe"><option value="">Choose one</option>' + ents(ENT.people).filter(entInK).map((e) => '<option value="' + esc(e.id) + '"' + (S.ent && S.ent.t === "person" && S.ent.id === e.id ? " selected" : "") + '>' + esc(e.name) + '</option>').join("") + '</select>')), swHTML("lenders")) +
+      "", swHTML("lenders")) +
     secIf(inK("off", "gov", "prv", "gra", "fdi"), sec("conds", "Conditionalities", condsHTML() + wait, swHTML("conds"))) +
     sec("pats", "Patterns Behind the Scenes",
       (S.layer === "none" ? '<div id="lyLeg"></div>' : "") +
@@ -2461,6 +2473,7 @@ function buildLayers() {
       '<label class="chk"><input type="checkbox" id="hqOn"' + (S.hq ? " checked" : "") + '> Each company\'s headquarters' + qm("A dot at the headquarters of each company named in a case. Click one for that company and its cases.") + '</label>' +
       '<label class="chk"><input type="checkbox" id="links2"' + (S.links && S.cz !== false ? " checked" : "") + '> Lines from each company\'s headquarters to its cases' + qm("Turning this on also turns on the cases, so the lines have something to end at. Choosing a case always draws its companies (solid lines) and its lenders (dashed).") + '</label>' +
       '<div class="fgl" style="margin-top:6px">' + ({ gra: "Donor or company", pay: "Bank", prv: "Bank, fund or company" }[S.kind] || "Company, adviser or fund") + qm("The number is how many cases on this map each one is documented in. Choosing one moves the map to its headquarters and shows only its story until its write-up is closed.") + '</div><select id="selCo"><option value="">Choose one</option>' + ents(ENT.companies).filter(entInK).map((e) => '<option value="' + esc(e.id) + '"' + (S.ent && S.ent.t === "company" && S.ent.id === e.id ? " selected" : "") + '>' + esc(e.name) + ((e.case_ids || []).length ? ' (' + e.case_ids.length + ')' : "") + '</option>').join("") + '</select><div class="cbrow">' + cbtn("comp", "Every company in the cases, in a table") + '</div>' + infraSec(), swHTML("comps")) +
+    sec("people", "People on the Record", peopleHTML(), swHTML("people")) +
     secIf(inK("off", "gov", "fdi"), sec("pts", "Complaints, Protests and Public Take-backs",
             '<label class="chk"' + hid(inK("off", "gov", "fdi")) + '><input type="checkbox" id="cmpAll"' + (S.offs.size ? " checked" : "") + '> <i class="dot" style="background:#9fb6d8"></i>Complaints to ' + (S.kind === "all" ? 'every lender\'s complaint office' : S.kind === "fdi" ? 'OECD contact points, about companies' : 'the complaint offices for this money') + ' <span class="n">' + fmt(CMP.filter((c) => cmpInK(c.o)).length) + '</span>' + qm("Every complaint published by fourteen complaint offices, from the World Bank's Inspection Panel to the OECD's contact points for complaints about companies, each office in its own colour. Each lender's own office can be turned on alone under its name in Lenders. A filled dot means the office or another source recorded harm on the ground; a smaller dot, that the complaint is part of a case here (" + nTied + "). While a case filter is on, only complaints tied to the cases shown stay.") + '</label>' +
       (S.kind === "all" && S.offs.size && S.offs.size < offsAll.length ? '<div class="sub" style="margin:0 0 4px 22px">Showing ' + S.offs.size + ' of ' + offsAll.length + ' offices.</div>' : '') +
@@ -2485,12 +2498,12 @@ function wireLayers() {
   B.querySelectorAll("[data-off]").forEach((i) => i.addEventListener("change", () => { i.checked ? S.offs.add(i.dataset.off) : S.offs.delete(i.dataset.off); if (i.checked) leaveStory(); drawPoints(); const m = $("#cmpAll"); if (m) { m.checked = S.offs.size > 0; } }));
   const all = $("#cmpAll"); if (all) { const n = Object.keys(OFFICES).filter(hasOff).length; all.indeterminate = S.offs.size > 0 && S.offs.size < n; all.addEventListener("change", () => { S.offs = all.checked ? new Set(Object.keys(OFFICES).filter(hasOff)) : new Set(); if (all.checked) leaveStory(); buildLayers(); drawPoints(); }); }
   $("#protOn").addEventListener("change", (e) => { S.prot = e.target.checked; if (S.prot) leaveStory(); drawPoints(); });
-  $("#pplOn").addEventListener("change", (e) => { S.ppl = e.target.checked; if (S.ppl) leaveStory(); drawPeople(); syncSw(); });
+  const pp = $("#pplOn"); if (pp) pp.addEventListener("change", (e) => { S.ppl = e.target.checked; if (S.ppl) leaveStory(); drawPeople(); syncSw(); });
   $("#hqOn").addEventListener("change", (e) => { S.hq = e.target.checked; if (S.hq) leaveStory(); drawLinks(); syncSw(); });
   $("#links2").addEventListener("change", (e) => { S.links = e.target.checked; if (S.links) { czOn(); leaveStory(); refreshFocus(); } const l = $("#links"); if (l) l.checked = S.links; drawLinks(); syncSw(); });
   B.querySelectorAll("input[name=pat]").forEach((r) => r.addEventListener("click", () => setPat(S.pat === r.value ? "" : r.value)));
   $("#selCo").addEventListener("change", (e) => setEnt("company", e.target.value));
-  $("#selPe").addEventListener("change", (e) => setEnt("person", e.target.value));
+  const sp2 = $("#selPe"); if (sp2) sp2.addEventListener("change", (e) => setEnt("person", e.target.value));
   const op = $("#openProd"); if (op) op.addEventListener("click", () => openWin("prod"));
   const sp = $("#suitPat"); if (sp) sp.addEventListener("click", () => setPat("company-sued-the-state"));
   wireLive(); wireOffices(); wireFund();
