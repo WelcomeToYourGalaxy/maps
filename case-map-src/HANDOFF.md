@@ -317,7 +317,11 @@ Only where a source documents who bought the output. This is a long tail and wil
 Re-tested 11 Nov night (`rounds/r26f_loose_ends.json`), and the old note was wrong on three of five. **IDB serves** at `iadb.org/en/who-we-are/country-offices` on the rendered route, with per-country entries for the 26 countries it serves plus Washington, Tokyo and Madrid — this one is ready for a round to collect. **IFC serves** at `ifc.org/en/where-we-work` on both routes, but it is a six-region index with no country addresses; its "Contact Directory" link is the next thing to resolve. **AfDB's host serves** on the rendered route, but no office-directory URL has been surfaced yet, so step one is finding it. **BII is genuinely blocked** on both routes. **China Development Bank** returns HTTP 412 from a firewall on the raw-HTTP route; the rendered route is untested because no URL was surfaced. IMF per-country pages still not read.
 
 ### 7. New cases
-Leads in `docs/backlog.json`. Thin regions: Middle East and North Africa, Europe and Central Asia. Not researched: Payra, Mattala, Kyaukphyu. Waiting on events: Bishoftu airport, Kerio Valley, Thar Block-1, Nam Ngiep 1, Kaliwa dam.
+**The backlog was substantially stale and has been reconciled** (11 Nov night). Of its 61 entries, **32 are already on the map** and are now annotated in `docs/backlog.json` with `likely_already_on_map` giving the case id and `match_strength`. Nothing was deleted — the selection is the owner's — but **read that field before dispatching any research round**, or you will pay for work already done. Eight of the 32 were verified case by case; the rest are keyword matches of three or more distinctive words and should be confirmed before being dropped.
+
+This was found the expensive way: of the three candidates this file listed as "not researched: Payra, Mattala, Kyaukphyu", **two were already on the map** — Payra as `payra-1320mw-coal-bcpcl` and Kyaukphyu twice over, as `kyaukphyu-sez-citic-land` and `myanmar-china-pipelines-land`. Only Mattala was genuinely new, and it produced one case (`rounds/r26f_newcases_1.json`, checked).
+
+That leaves **29 genuinely open leads**. Thin regions: Middle East and North Africa, Europe and Central Asia. Waiting on events: Bishoftu airport, Kerio Valley, Thar Block-1, Nam Ngiep 1, Kaliwa dam.
 
 ## Tool limits
 
