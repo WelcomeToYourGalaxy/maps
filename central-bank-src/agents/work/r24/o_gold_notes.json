@@ -1,0 +1,137 @@
+[
+ {
+  "target": "Greece",
+  "what_was_tried": "Searched for the Bank of Greece full-notes financial statements. Every copy is filed on athexgroup.gr (2023, 2024 full notes; 2025 annual report) and all three URL forms (sites/default/files/hermes/, sites/default/files/hermes_3/, /en/documents/10180/) return HTTP 302 to the same PDF on athens.euronext.com. Tried the athens.euronext.com target twice (2024 full notes and 2025 annual report).",
+  "result": "DEAD this round, not for lack of a document. Both athens.euronext.com fetches were refused before any bytes were read: PROVENANCE_REQUIRED, 'the permission request for this URL was not answered in time... do not retry'. Zero characters of the Greek gold note were read. Blocked URLs: https://athens.euronext.com/sites/default/files/hermes/2025-03/2791eee6-6324-4b5b-98e3-804b83dfb338/Financial%20Statement%20-%20Full%20Notes%20BANK%20OF%20GREECE%20S.A.%20(2024,Year%20Statement,Company).pdf and https://athens.euronext.com/sites/default/files/hermes_3/2026-03/en/3ad3f0aa-ebae-4b0d-93f0-aaebae9b0d97/Financial%20statement%20BANK%20OF%20GREECE%20S.A.%20(2025,Annual%20report,Parent).pdf . The lead is still live for a future round only if the athens.euronext.com host is pre-approved, or if the Bank of Greece posts the full notes on bankofgreece.gr (no such URL was returned by search)."
+ },
+ {
+  "target": "Romania",
+  "what_was_tried": "Searched Romanian for an official BNR gold-reserve page and for the Raport anual financial-statement gold note. Fetched financialintelligence.ro's report of the BNR statement (press, read in full) and tried the only bnr.ro/bnro.ro menu URL search returned, https://bnro.ro/apage.aspx?pid=21553.",
+  "result": "NOT FILED. The BNR statement, as carried by Romanian press, is explicit - 'Banca Nationala a Romaniei este titularul contului de la Banca Angliei (BOE)', 61.2 t abroad in custody at the Bank of England out of 103.6 t total, 42.4 t in the country, bars identifiable at any time and the custodian may not use them - but no official BNR page carrying it could be reached. bnro.ro/apage.aspx?pid=21553 302-redirects to the bnr.ro homepage. The Raport anual PDFs (e.g. https://www.bnr.ro/uploads/2025-6raportanual_documentpdf_545_1782459656.pdf) were NOT opened this round - the fetch budget went on documents already in hand; 0 characters read. Highest-value single item for next round: that PDF with offset re-reads at 100,000-character steps."
+ },
+ {
+  "target": "Lithuania",
+  "what_was_tried": "Searched for the Bank of Lithuania gold note; the bank's own gold-reserves page came up first and was read in full.",
+  "result": "FILED. Bank of England named as custodian of all 5.8 t. Page type: the bank's own gold page (method step 2)."
+ },
+ {
+  "target": "Colombia",
+  "what_was_tried": "Searched Spanish for Banco de la Republica gold custody; read the bank's own reserves FAQ page, characters 0-100,000 of 107,422 (the gold-custody sentence is well inside that range).",
+  "result": "FILED. Bank of England named as custodian. Page type: the bank's own reserves explainer page (method step 3). Last 7,422 characters not read; they would only add detail, not change the custodian."
+ },
+ {
+  "target": "Slovenia",
+  "what_was_tried": "Searched for the Banka Slovenije gold note and read the gold note in the 2024 audited financial statements PDF.",
+  "result": "FILED, but partially. The note names Banka Slovenije itself as the keeper of part of its gold ('the stock of gold held at Banka Slovenije') and describes the rest only as 'gold in foreign bank accounts', naming no institution and giving no split. The foreign share remains unfilable."
+ },
+ {
+  "target": "Spain",
+  "what_was_tried": "Searched for the Banco de Espana annual accounts gold note and read BE_CuentasAnuales_2023.pdf, characters 0-100,000 of 181,678 - which covers accounting policy note 'Oro' and balance-sheet note 1 'Oro y derechos en oro' in full.",
+  "result": "NOT FILABLE from this document. The gold note gives only the valuation (EUR 16,910.85 million) and never mentions a location, a custodian, 'custodia' or 'depositado'. Characters 100,000-181,678 (income-statement notes and annexes) not read; the gold note is not there. Spain now has two dead official documents - the reserves task page (logged earlier) and the annual accounts gold note."
+ },
+ {
+  "target": "Peru",
+  "what_was_tried": "Searched Spanish for BCRP gold custody; read in full the BCRP's own presentation to the Congress of Peru, ppt_bcrp_oro_vf.pdf, a parliamentary-route document (method step 4).",
+  "result": "DEAD. The slides cover valuation under article 72 of the BCRP organic law and nothing on location or custody. The only 'custodio' in the document is a 2016 bill proposing Banco de la Nacion as custodian of gold the BCRP might buy - a proposal, not a holding. BCRP Memoria chapter PDFs (memoria-bcrp-2024-7.pdf is the financial statements chapter) were not opened; 0 characters read. That is the next thing to try."
+ },
+ {
+  "target": "North Macedonia",
+  "what_was_tried": "Searched for the NBRNM gold note. The 2023 Independent Auditor's Report PDF URL contains an apostrophe and failed at the site (client_error, 0 characters). Fell back to Annual_Report_2024-NB.pdf and read characters 0-100,000 of 349,275.",
+  "result": "NO RECORD YET. The first 100,000 characters (foreword, macro chapters) name no custodian. The report's own contents list a Section VI 'Foreign reserves management and investment' and a Section VIII on vault operations, both beyond character 100,000 and unread. Live lead: re-read Annual_Report_2024-NB.pdf at offsets 100,000 / 200,000 / 300,000, or find a non-apostrophe URL for the 2023 or 2024 audited financial statements."
+ },
+ {
+  "target": "Albania",
+  "what_was_tried": "Searched for the Bank of Albania financial statements and read FINANCIAL_STATEMENTS_31889.pdf twice - characters 0-100,000 and then 100,000-166,415, which reached Note 10 'Monetary gold' itself.",
+  "result": "NOT FILABLE. Note 10 says only: 'The monetary gold is placed in current accounts (2023: current accounts) with foreign banks.' No institution is named, no own-vault holding, no split by location. The custody-risk note (8(D)(ii)) covers securities custody, not gold. Document read to the end - this one is closed, not merely unfinished."
+ },
+ {
+  "target": "Luxembourg",
+  "what_was_tried": "Searched French for the BCL gold note and read the 2025 Rapport annuel financial chapter, 239623_BCL_RAPPORT_ANNUEL_2025_FR_CHAP02.pdf, characters 0-100,000 of 122,328, which includes Note 3 'Avoirs et creances en or' in full.",
+  "result": "NOT FILABLE. Note 3 gives only 72,101.30 ounces worth EUR 264.55 million at 31 December 2025 and uses none of 'conserve', 'depose' or 'depositaire'. The BIS appears only in Note 11.2 as a shareholding. Last 22,328 characters unread (they follow the balance-sheet notes)."
+ },
+ {
+  "target": "Brazil",
+  "what_was_tried": "Searched Portuguese for BCB gold custody and read the BCB's 2026 annual international reserves management report (GESTAORESERVAS202603), a reserves-management publication (method step 5), in full.",
+  "result": "DEAD for custody. The report gives gold's weight in reserves (7.19% at December 2025) and says the BCB does not buy gold domestically, but says nothing about where the gold sits or who holds it. The BCB's own annual financial statements gold note was not tried; that is the remaining route."
+ },
+ {
+  "target": "Hungary",
+  "what_was_tried": "Searched for an MNB gold note and read mnb-annual-report-2018.pdf - the repatriation year - characters 0-100,000 of 475,331.",
+  "result": "STILL NOT FILABLE. The report says the MNB 'brought home its gold reserve' and that holdings rose from 3.1 t to 31.5 t, but names no vault and no institution - the same country-level limit as the 110-tonne press release already logged. Characters 100,000-475,331 unread, including the financial-statement notes; a gold note there is the only remaining hope."
+ },
+ {
+  "target": "Moldova",
+  "what_was_tried": "Read https://bnm.md/files/Raport_anual_BNM_2025.pdf, characters 0-100,000 of 1,072,431.",
+  "result": "ABANDONED on cost. The first 100,000 characters mention gold only as a market price. The gold note sits somewhere in the remaining 972,431 characters - roughly ten further offset re-reads at 100,000 steps, which the budget would not cover. Worth resuming with a targeted offset (try 600,000-900,000, where the financial statements usually fall)."
+ },
+ {
+  "target": "Iceland",
+  "what_was_tried": "Searched for a Central Bank of Iceland gold custody statement and read cb.is/about-the-bank/international-reserves in full.",
+  "result": "DEAD on that page - it lists 'gold, and other foreign assets' among reserve assets and says nothing about storage. The CBI annual report financial statements were not opened."
+ },
+ {
+  "target": "Malta",
+  "what_was_tried": "Searched for the Central Bank of Malta gold note; the only fetchable full annual report was the University of Malta mirror of AR-2017. Read characters 0-100,000 of 446,644.",
+  "result": "ABANDONED on cost. The financial statement notes, where 'Gold and gold receivables' sits, are past character 300,000 - three or four further offset re-reads for a holding of roughly 0.2 t. Lower priority than the open leads above."
+ },
+ {
+  "target": "Georgia",
+  "what_was_tried": "Searched for NBG gold custody and read in full the NBG's own news release 'National Bank of Georgia Adds Monetary Gold to International Reserves'.",
+  "result": "NOT A RECORD. The release says the 7 t of 999.9 gold, bought in the London gold bar market, 'is currently stored in London' - a city, with no institution named, and no NBG vault mentioned. Logged as country/city-level only, like Austria's 'the U.K.'"
+ },
+ {
+  "target": "United Kingdom",
+  "what_was_tried": "Read the Bank of England's own gold statistics page in full.",
+  "result": "NOT A RECORD. The page confirms the Bank holds gold 'in our custody' and refers to 'its gold custodial responsibilities', but never says whose gold - it does not mention HM Treasury, the UK official reserves or any depositor central bank. A UK record needs a page tying the UK's own reserve gold to the Bank; the Exchange Equalisation Account accounts were not tried."
+ },
+ {
+  "target": "Uzbekistan",
+  "what_was_tried": "Searched English for a Central Bank of Uzbekistan statement on where its gold is stored.",
+  "result": "DEAD at the search stage. Every result was press coverage of tonnage and reserve share (kun.uz, euronews, caspianpost); no CBU page and no statement naming a storage institution. No fetch spent."
+ },
+ {
+  "target": "Indonesia",
+  "what_was_tried": "Searched English for a Bank Indonesia statement on gold storage and the 2026 domestic-storage push.",
+  "result": "DEAD at the search stage. Results were commentary and trade press (OMFIF, Antara, moneymetals) on domestic storage policy in general; no Bank Indonesia page naming a custodian. No fetch spent."
+ },
+ {
+  "target": "Thailand",
+  "what_was_tried": "Searched English for a Bank of Thailand statement on gold storage, including the reserve template and annual report landing pages.",
+  "result": "DEAD at the search stage. Only statistical pages and trade press on tonnage bought; nothing naming a custodian. No fetch spent."
+ },
+ {
+  "target": "South Korea",
+  "what_was_tried": "Searched English for a Bank of Korea statement that its 104.4 t is at the Bank of England.",
+  "result": "DEAD at the search stage. All hits were Korean press (kedglobal, asiae, Korea Herald) about whether to buy more gold; none was a BOK page and none named a custodian. No fetch spent."
+ },
+ {
+  "target": "Ukraine",
+  "what_was_tried": "Searched English for an NBU statement on where its gold is stored.",
+  "result": "DEAD at the search stage. Ukrinform and Interfax tonnage reports only; bank.gov.ua returned unrelated pages. No fetch spent."
+ },
+ {
+  "target": "Estonia",
+  "what_was_tried": "Searched English and Estonian for Eesti Pank gold storage.",
+  "result": "DEAD at the search stage for an official source. Baltic press (apa.az relaying ERR) says one bar remains in storage at the central bank, but no Eesti Pank page was returned. The Eesti Pank annual report PDFs were not opened. No fetch spent."
+ },
+ {
+  "target": "Cyprus",
+  "what_was_tried": "Searched for the Central Bank of Cyprus annual report gold note.",
+  "result": "DEAD at the search stage. Search returned only Cyprus Mail monthly balance-sheet stories and a 2013 'will not sell gold' item; no fetchable CBC annual report or financial statements URL. No fetch spent."
+ },
+ {
+  "target": "Taiwan",
+  "what_was_tried": "Searched for the CBC (Taiwan) annual report gold note.",
+  "result": "NOT ATTEMPTED past search. cbc.gov.tw serves its publications behind opaque 'dl-<id>-<hash>.html' download links with no indication of which is the financial statements; with one fetch left, gambling on an opaque ID was not worth it. Live lead for next round."
+ },
+ {
+  "target": "Fetch budget",
+  "what_was_tried": "25 WebFetch calls budgeted.",
+  "result": "25 used: 3 lost to athexgroup->athens.euronext.com redirects, 2 to the blocked athens.euronext.com target, 1 to an nbrm.mk URL with an apostrophe that the site rejected, 1 to a bnro.ro menu URL that redirects to the homepage. 18 documents actually read, 3 records produced."
+ },
+ {
+  "target": "Romania (resolved this round: not filable)",
+  "what_was_tried": "Read the BNR Raport anual 2025 PDF (940,184 characters) at offsets 400,000, 700,000 and 850,000, reaching note 5 on monetary gold.",
+  "result": "NOT FILED, and now settled as not filable from the bank's own accounts. Note 5 states that gold held abroad in custody is worth 36,813,389 thousand lei, that it is not pledged and carries no repatriation restriction, and gives a total weight of 103,556.92 kg split into ingots, coins and deposits abroad - but NAMES NO CUSTODIAN. The Bank of England figure (61.2 t of 103.6 t) comes only from Romanian press reporting a BNR statement. A record was drafted and then withdrawn because the only readable source that names the Bank of England is the press report, not the bank's accounts. To file it, cite the press report itself as source_url; do not cite the annual report for a fact the annual report does not state."
+ }
+]
