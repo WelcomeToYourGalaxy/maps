@@ -2905,5 +2905,47 @@
    }
   ],
   "lesson": "Checked the IMF safeguards-assessment route as a possible systematic vein for opaque countries. The assessments themselves are confidential and the published policy papers aggregate without naming banks' auditors. Not a vein; do not spend a round on it."
+ },
+ "round29": {
+  "date": "2026-11-12",
+  "settled": [
+   {
+    "iso3": "SMR",
+    "firm": "Solution S.r.l.",
+    "note": "bcsm.sm publishes BILANCIO_2025.pdf directly off its home page. The auditor's report pages render blank even at 190 dpi because the text sits inside full-page JPEGs; pdftoppm of the PAGE gives a near-white image, but pdfimages -png extracts the embedded JPEG and OCR reads it cleanly. New failure mode, new fix."
+   },
+   {
+    "iso3": "COD",
+    "firm": "Ernst & Young RDC",
+    "note": "bcc.cd/publications/rapport-annuel lists every year; the newest page links resources.bcc.cd/.../rapport_annuel_2024.pdf. Clean text layer, auditor's report at document page 93 (PDF page 111), and the governor's foreword states it independently. No OCR needed."
+   }
+  ],
+  "method_note": "Third extraction failure mode found: a page whose text is a full-page embedded image. pdftoppm renders the PAGE as near-white because the image is drawn at low contrast or clipped. Check with pdfimages -list; if a page carries one large JPEG, extract with pdfimages -png and OCR that file, not the rendered page.",
+  "did_not_settle": [
+   {
+    "iso3": "CPV",
+    "why": "bcv.cv returns 403 to every path tried; searches return Cape Verdean commercial banks."
+   },
+   {
+    "iso3": "KHM",
+    "why": "nbc.gov.kh annual report path now 403s as well."
+   },
+   {
+    "iso3": "JOR",
+    "why": "cbj.gov.jo returns a 247-byte stub to the fetcher and times out in headless Chrome."
+   },
+   {
+    "iso3": "MDG",
+    "why": "banque-centrale.mg 404s on its publications path."
+   },
+   {
+    "iso3": "VEN",
+    "why": "bcv.org.ve refuses all connections."
+   },
+   {
+    "iso3": "TJK",
+    "why": "nbt.tj financial-report paths 404."
+   }
+  ]
  }
 }
