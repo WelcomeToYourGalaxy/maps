@@ -133,6 +133,39 @@ def about(data):
               'does not: open lobbying and public campaigning, a ruler enriching himself from his own state, a bank '
               'with weak money-laundering checks, a company-registration regime. The share in the last column is '
               'taken over the remaining items only.</p>')
+            if kind == 'case':
+                ang = [r for r in rows if r.get('rooted') != 'other']
+                oth = [r for r in rows if r.get('rooted') == 'other']
+                def agg(rs):
+                    t = sum(r.get('tested') or 0 for r in rs)
+                    o = sum(r.get('on_map') or 0 for r in rs)
+                    return o, t, (round(100.0 * o / t) if t else None)
+                ao, at, ash = agg(ang)
+                oo, ot, osh = agg(oth)
+                if ang and oth and ash is not None and osh is not None:
+                    a('<h4>Which lists these are</h4>')
+                    a('<p>%d of the %d lists above are built from enforcement in the United States and the United '
+                      'Kingdom, or from an inquiry in one country. Together they hold %d items inside the test and '
+                      'this map covers <b>%d per cent</b> of them. The remaining list is not built that way: it is a '
+                      'compendium of arms-trade cases that indexes prosecutions in Germany, France, Spain, Chile, '
+                      'South Korea and elsewhere alongside the American and British ones. This map covers '
+                      '<b>%d per cent</b> of that one. The cases it misses there are not minor: they are among the '
+                      'largest arms corruption files in Europe and Asia, and they are missing because no '
+                      'English-language enforcement list indexes them. Each is named under its list below.</p>'
+                      % (len(ang), len(rows), at, ash, osh))
+                    a('<p>That difference is the single most useful thing on this page. Earlier rounds of this map '
+                      'worked from the American and British lists, and the shares they produced read as near-complete. '
+                      'They were measuring the lists. When a round searched in Spanish, German, Portuguese and '
+                      'Japanese instead, it found cases as large as anything already here: Siemens had one case on '
+                      'this map, against a company that admitted 1.3 billion euros in off-book funds used for '
+                      'bribery, and now has twelve. A high share above means the map covers that list. It does not '
+                      'mean the map covers the subject.</p>')
+                    a('<p>What is left, in the order it can be worked: the items still missing from the lists above; '
+                      'then the enforcement records of countries that prosecute foreign bribery but publish in their '
+                      'own language, where the arms compendium is the only measurement available and suggests '
+                      'something close to half of what exists is not here yet; then the places where no court and no '
+                      'newspaper publishes at all. Countries shaded as estimates on the map have no qualifying case '
+                      'for that last reason, and searching harder does not reach them.</p>')
             for r in rows:
                 miss = r.get('miss') or []
                 gaps = [m for m in miss if not m.get('oos')]
