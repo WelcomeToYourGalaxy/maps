@@ -36,7 +36,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 /* The row above the panel is right-aligned and can be as wide as the
    panel, so the title block is capped to what is left of the window.
    Without this the subtitle runs underneath it. */
-#hdr h1,#hdr .sub{max-width:calc(100vw - min(980px,58vw) - 52px)}
+#hdr h1,#hdr .sub{max-width:calc(100vw - min(500px,38vw) - 52px)}
 #hdr .sub{font-size:12px;color:var(--dim);margin-top:3px;pointer-events:auto;line-height:1.45}
 
 /* ---------- controls ---------- */
@@ -65,7 +65,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
    the panel below keeps its full width. It is sized to the panel and
    right-aligned with it. */
 #toprow{position:fixed;z-index:60;right:18px;top:18px;height:34px;
-  width:max-content;max-width:min(980px,58vw);box-sizing:border-box;
+  width:max-content;max-width:calc(100vw - 40px);box-sizing:border-box;
   display:flex;align-items:center;gap:7px;overflow:hidden;
   background:rgba(17,24,21,.93);border:1px solid var(--line);border-radius:9px;padding:0 9px}
 #bmrow,#projrow{display:flex;align-items:center;gap:2px;flex:none}
@@ -284,8 +284,15 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 #pincount{font-size:10.5px;color:var(--faint);margin-top:4px}
 #admnote{font-size:10.5px;color:var(--faint);margin-top:5px;line-height:1.45;max-width:100%}
 /* ---------- modal: draggable, resizable, parked to the right ---------- */
+/* The panel is the thing you answer; the map is the thing you are
+   answering about. At 58% of the window the panel was the page and the
+   map was a strip behind it, so a reader narrowing from ninety offices
+   to six never saw the ninety go. It is now a column down one side,
+   and the answers narrow what is drawn rather than only what is
+   listed. Still draggable and resizable, for anyone who wants it
+   wider. */
 #modal{position:fixed;z-index:100;left:auto;right:18px;top:62px;transform:none;
-  width:min(980px,58vw);height:calc(100vh - 82px);min-width:340px;min-height:260px;
+  width:min(500px,38vw);height:calc(100vh - 82px);min-width:340px;min-height:260px;
   display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:13px;
   box-shadow:0 24px 70px rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:opacity .2s}
 #modal.on{opacity:1;pointer-events:auto}
@@ -327,39 +334,47 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 
 /* the question */
 .qwrap{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;
-  max-width:720px;width:100%;margin:0 auto;padding:0 4px}
-/* the subject question has thirteen answers, so it takes the panel's
-   full width in two columns rather than one tall scrolling list */
-.qwrap.wide{max-width:none}
-.qopts.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(286px,1fr));
-  align-content:start;gap:7px}
-.qq{font-family:'Marcellus',serif;font-weight:400;font-size:25px;line-height:1.2;color:var(--text)}
-.qsub{font-size:12.6px;line-height:1.6;color:var(--dim);margin:7px 0 18px;max-width:62ch}
+  width:100%;padding:0 2px;gap:12px}
+.qtop{flex:none}
+.qopts{display:flex;flex-direction:column;gap:6px;min-height:0;overflow:hidden}
+/* the pager at the foot of a question: the panel is a column now, so a
+   list longer than fits is paged rather than scrolled */
+.qpager{flex:none;display:flex;align-items:center;gap:8px;padding-top:2px}
+.qdots{display:flex;align-items:center;gap:5px}
+.qpn{margin-left:auto;font-size:10.5px;color:var(--faint)}
+.qq{font-family:'Marcellus',serif;font-weight:400;font-size:21px;line-height:1.22;color:var(--text)}
+.qsub{font-size:11.8px;line-height:1.55;color:var(--dim);margin-top:6px}
 .qopts{display:flex;flex-direction:column;gap:7px;overflow-y:auto;min-height:0;padding-right:2px}
 .qopts::-webkit-scrollbar{width:8px}
 .qopts::-webkit-scrollbar-thumb{background:rgba(125,142,130,.2);border-radius:8px}
-.qopt{display:grid;grid-template-columns:1fr auto;align-items:center;gap:4px 14px;
+.qopt{display:grid;grid-template-columns:1fr auto;align-items:center;gap:3px 12px;
   width:100%;box-sizing:border-box;text-align:left;cursor:pointer;
   border:1px solid var(--line);border-left:2px solid rgba(125,142,130,.3);
-  border-radius:10px;background:var(--panel2);padding:12px 15px;font:inherit;color:var(--dim);
+  border-radius:10px;background:var(--panel2);padding:10px 13px;font:inherit;color:var(--dim);
   transition:border-color .15s,background .15s,transform .12s}
 .qopt:hover{border-color:rgba(140,189,154,.55);border-left-color:var(--accent-hi);
   background:rgba(74,124,89,.11);transform:translateX(2px)}
-.qopt .qt{grid-column:1;font-family:'Marcellus',serif;font-size:15px;line-height:1.25;color:var(--text);
-  display:flex;align-items:center;gap:8px}
+.qopt .qt{grid-column:1;font-family:'Marcellus',serif;font-size:14px;line-height:1.25;color:var(--text);
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .qopt .qt i{width:10px;height:10px;border-radius:50%;flex:none;box-shadow:0 0 6px 1px currentColor}
-.qopt .qd{grid-column:1;font-size:12px;line-height:1.55;color:var(--faint);margin-top:3px}
-.qopt .qct{grid-column:1;justify-self:start;margin-top:6px;font-size:10px;letter-spacing:.4px;
+/* the level word beside the name, because a city and the county round
+   it share a name often enough that the list read as one place thrice */
+.qopt .qt .lvw{font-family:'DM Sans',sans-serif;font-style:normal;font-size:9.5px;
+  letter-spacing:.6px;text-transform:uppercase;color:var(--faint);
+  border:1px solid var(--line);border-radius:4px;padding:1px 6px}
+.qopt .qd{grid-column:1;font-size:11.4px;line-height:1.5;color:var(--faint);margin-top:2px;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.qopt .qct{grid-column:1;justify-self:start;margin-top:5px;font-size:9.5px;letter-spacing:.4px;
   text-transform:uppercase;color:var(--faint);border:1px solid var(--line);
   border-radius:999px;padding:1px 8px}
 /* a subject with offices behind it here, versus one without */
-.qopt.sm{padding:10px 13px}
-.qopt.sm .qt{font-size:13.5px}
-.qopt.sm .qd{font-size:11.2px}
+.qopt.sm{padding:9px 12px}
+.qopt.sm .qt{font-size:13px}
+.qopt.sm .qd{font-size:11px;-webkit-line-clamp:2}
 .qopt.thin{opacity:.62}
 .qopt.thin:hover{opacity:1}
 .qopt.sm:not(.thin) .qct{color:var(--accent-hi);border-color:rgba(140,189,154,.4)}
-.qopt.any{grid-column:1/-1;border-left-color:var(--accent-hi)}
+.qopt.any{border-left-color:var(--accent-hi)}
 .qopt .qar{grid-column:2;grid-row:1/4;align-self:center;font-size:16px;color:var(--stone);opacity:.6}
 .qopt:hover .qar{color:var(--accent-hi);opacity:1}
 
@@ -368,63 +383,99 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
    One thing per screen, sized to fit. The body never scrolls: what
    does not fit on a screen gets a screen of its own, which the pager
    at the top counts. */
-.leafp{flex:1;min-height:0;display:flex;flex-direction:column;
-  border:1px solid var(--line);border-radius:12px;background:var(--panel2);overflow:hidden}
-.lphead{flex:none;padding:12px 16px 0;border-bottom:1px solid var(--line);background:rgba(26,31,29,.45)}
-.lptitle{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 14px}
-.lnm{font-family:'Marcellus',serif;font-weight:400;font-size:18px;line-height:1.2;color:var(--text)}
-.ltags{display:flex;flex-wrap:wrap;gap:6px}
-.ltag{display:inline-flex;align-items:center;gap:7px;font-size:10.5px;color:var(--dim);
-  border:1px solid var(--line);border-radius:999px;padding:2px 10px}
-.ltag.sub{color:var(--accent-hi);border-color:rgba(140,189,154,.4)}
-.ltag i{width:8px;height:8px;border-radius:50%;flex:none;box-shadow:0 0 6px 1px currentColor}
+.leafp{flex:1;min-height:0;display:flex;flex-direction:column;gap:10px}
+/* which part of the answer this screen is */
+.lpeyebrow{flex:none;display:flex;align-items:center;flex-wrap:wrap;gap:0 6px;font-size:11px;color:var(--faint)}
+.lpwhat{color:var(--dim)}
+.lpsec{font-family:'Marcellus',serif;font-size:11.5px;letter-spacing:.8px;
+  text-transform:uppercase;color:var(--accent-hi)}
+.lpof{margin-left:auto;font-size:10.5px;color:var(--faint)}
 
-/* the pager */
-.lpnav{display:flex;align-items:center;flex-wrap:wrap;gap:4px 10px;margin-top:10px}
-.lpg{background:none;border:0;border-bottom:2px solid transparent;padding:5px 2px 7px;
-  font:inherit;font-size:11.5px;color:var(--faint);cursor:pointer;display:inline-flex;
-  align-items:center;gap:6px;white-space:nowrap}
-.lpg:hover{color:var(--dim)}
-.lpg.on{color:var(--ink);border-bottom-color:var(--accent)}
-.lpg .lpn{font-size:9.5px;color:var(--faint);border:1px solid var(--line);
-  border-radius:999px;padding:0 5px;line-height:14px}
-.lpsteps{display:flex;align-items:center;gap:4px;margin-left:4px;flex-wrap:wrap}
+/* the pager at the foot, the same one a question has */
+.lpfoot{flex:none;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.lpjump{margin-left:auto;display:flex;align-items:center;gap:2px}
+.lpg{background:none;border:0;border-radius:6px;padding:4px 8px;font:inherit;font-size:10.5px;
+  color:var(--faint);cursor:pointer;white-space:nowrap}
+.lpg:hover{color:var(--dim);background:rgba(74,124,89,.1)}
+.lpg.on{color:var(--ink);background:var(--accent-soft)}
 .lpdot{width:7px;height:7px;border-radius:50%;border:1px solid var(--stone);
   background:none;padding:0;cursor:pointer}
 .lpdot:hover{border-color:var(--accent-hi)}
 .lpdot.on{background:var(--accent-hi);border-color:var(--accent-hi)}
-.lparrows{margin-left:auto;display:flex;align-items:center;gap:7px;padding-bottom:4px}
 .lpa{width:24px;height:24px;border-radius:6px;border:1px solid var(--line);background:var(--panel2);
-  color:var(--dim);font:inherit;font-size:12px;line-height:1;cursor:pointer}
+  color:var(--dim);font:inherit;font-size:12px;line-height:1;cursor:pointer;flex:none}
 .lpa:hover:not(:disabled){color:var(--ink);border-color:var(--accent-soft)}
 .lpa:disabled{opacity:.3;cursor:default}
-.lpcount{font-size:10.5px;color:var(--faint);min-width:42px;text-align:center}
 
-/* the screen itself */
-.lpbody{flex:1;min-height:0;overflow:hidden;display:flex}
+.lpbody{flex:1;min-height:0;overflow:hidden;display:flex;
+  border:1px solid var(--line);border-radius:12px;background:var(--panel2)}
 /* A screen's content sits in the middle of the space rather than at
    the top of it: a page of two offices and a page of twelve both read
    as a page, instead of the short one looking unfinished. */
 .pg{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;
-  padding:18px 20px;gap:0}
+  padding:16px 17px;gap:0}
 .pgtop{display:flex;align-items:center;gap:10px;flex:none}
-.pgh{font-family:'Marcellus',serif;font-weight:400;font-size:19px;line-height:1.25;color:var(--text);
+.pgh{font-family:'Marcellus',serif;font-weight:400;font-size:20px;line-height:1.22;color:var(--text);
   display:flex;align-items:center;gap:9px}
 .pgct{margin-left:auto;font-size:10.5px;color:var(--faint);white-space:nowrap}
 /* the condition that makes this the right office, or the right method */
-.pgwhen{flex:none;font-size:13px;line-height:1.6;color:var(--text);margin-top:9px;
-  border-left:2px solid var(--accent);padding-left:12px;max-width:94ch}
+.pgwhen{flex:none;font-size:12.4px;line-height:1.6;color:var(--text);margin-top:9px;
+  border-left:2px solid var(--accent);padding-left:11px}
 .pgfoot{flex:none;font-size:10.8px;color:var(--faint);margin-top:10px;font-style:italic}
+/* what this destination has to say about this particular method */
+.pgnote{flex:none;margin-top:12px;border-left:2px solid var(--accent);padding-left:12px}
+.pgnote dt{font-size:9.5px;letter-spacing:.9px;text-transform:uppercase;color:var(--stone);margin-bottom:4px}
+.pgnote dd{font-size:12px;line-height:1.55;color:var(--text)}
 .pg-text{justify-content:center;max-width:760px;margin:0 auto}
 .pgl{font-size:13.2px;line-height:1.7;color:var(--dim);margin-top:11px}
 .pgl:first-of-type{margin-top:13px}
 
 /* a method's detail, two columns so it fits without scrolling */
-.pgcols{min-height:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:0 26px;margin-top:4px;overflow:hidden;align-content:start}
-/* the evidence tier, which ran into the label beside it */
-.pgcols .fld dt .ev{margin-left:7px;font-size:9px;letter-spacing:.3px;color:var(--faint);
+/* the three short facts about a method, as a row rather than as three
+   headed paragraphs */
+.pgmeta{flex:none;display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:12px;
+  padding-bottom:11px;border-bottom:1px solid var(--line)}
+.pgmeta dt{font-size:9px;letter-spacing:.8px;text-transform:uppercase;color:var(--stone);margin-bottom:2px}
+.pgmeta dd{font-size:11.6px;line-height:1.4;color:var(--dim);max-width:30ch}
+.pgflds{min-height:0;overflow:hidden}
+.pgflds .fld{margin-top:11px}
+.pgflds .fld dd{font-size:12.2px;line-height:1.52}
+.pgflds .fld dt .ev{margin-left:7px;font-size:9px;letter-spacing:.3px;color:var(--faint);
   border:1px solid var(--line);border-radius:4px;padding:1px 5px;text-transform:none}
+.srcline{font-size:10.5px;color:var(--faint);margin-top:4px}
+
+/* A short window has perhaps 560px of panel body, and a method screen
+   wants about 640. Rather than scroll it or split it across two
+   screens, the type and the spacing tighten: the same words, read at
+   the size a short window can hold. Measured against the three
+   longest methods at 1180x700, which overran by 40 to 80 pixels. */
+@media (max-height:820px){
+  .pg{padding:12px 15px}
+  .pgh{font-size:18px}
+  .pgwhen{font-size:11.8px;line-height:1.5;margin-top:7px}
+  .pgmeta{gap:6px 16px;margin-top:9px;padding-bottom:8px}
+  .pgmeta dd{font-size:11px}
+  .pgflds .fld{margin-top:8px}
+  .pgflds .fld dd{font-size:11.6px;line-height:1.45}
+  .pgnote{margin-top:9px}
+  .pgnote dd{font-size:11.4px;line-height:1.45}
+  .srcline{margin-top:2px}
+  .chips{margin-top:10px;gap:5px}
+  .pgfoot{margin-top:7px}
+}
+@media (max-height:760px){
+  .pg{padding:10px 14px}
+  .pgh{font-size:16.5px}
+  .pgwhen{font-size:11.1px;line-height:1.45;margin-top:6px;padding-left:9px}
+  .pgmeta{gap:5px 14px;margin-top:7px;padding-bottom:7px}
+  .pgmeta dt{font-size:8.5px}
+  .pgmeta dd{font-size:10.6px}
+  .pgflds .fld{margin-top:6px}
+  .pgflds .fld dt{font-size:9px}
+  .pgflds .fld dd{font-size:11px;line-height:1.4}
+  .pgnote{margin-top:7px}
+  .pgnote dd{font-size:11px;line-height:1.4}
+}
 .pgcols .fld{margin-top:11px}
 .pgcols .fld dd{font-size:12.2px;line-height:1.5}
 
@@ -440,12 +491,12 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
    in it, and the grid fills the space the screen has rather than being
    a fixed number of columns: a page of four reads as four, not as four
    crammed into a corner. */
-.chips{min-height:0;display:grid;gap:7px;margin-top:14px;
-  grid-template-columns:repeat(auto-fill,minmax(188px,1fr));
+.chips{min-height:0;display:grid;gap:6px;margin-top:13px;
+  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
   /* tiles grow into the space a short page leaves, but only so far:
      two offices should not become two billboards */
   grid-auto-rows:minmax(46px,74px);align-content:center;overflow:hidden}
-.chips.big{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+.chips.big{grid-template-columns:repeat(auto-fill,minmax(176px,1fr))}
 .ochip{box-sizing:border-box;padding:9px 12px;border-radius:9px;
   border:1px solid var(--line);background:rgba(26,31,29,.75);color:var(--dim);
   font:inherit;font-size:12.4px;line-height:1.3;text-align:left;cursor:pointer;
@@ -521,7 +572,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   <div id="projrow"><button id="projbtn" onclick="toggleProjection()">Flat map</button></div>
 </div>
 <div id="start">
-  <h2>Start with your municipality</h2>
+  <h2>Search for your municipality</h2>
   <div id="srow">
     <input id="sq" type="text" autocomplete="off" spellcheck="false"
       placeholder="Washington, D.C." oninput="typeAhead()"
@@ -2728,14 +2779,14 @@ const KINDWHEN={
   'leg/chamber'  :'Contact it if you want to know when your subject is scheduled, or to speak in a public comment period.',
   'leg/presiding':'Contact one only once a bill and its sponsors exist, and the problem is that it is not being scheduled.',
   'exec/head'    :'Contact it if you want a veto, or action by decree where the legislature will not move. Expect to be counted rather than read.',
-  'exec/minister':'Contact one if the detail is the problem: the rules written under a law, who is exempt, how it is measured.',
+  'exec/minister':'These are the departments over this place. The detail of a law is written here \u2014 who is exempt, how it is measured, what counts as compliance.',
   'exec/clerk'   :'Contact one if you want to file something — a ballot measure, a petition, a formal record — or to find out how.',
   'exec/legal'   :'Contact one if you want a law enforced that is being ignored, or a written legal opinion on what a statute means.',
   'exec/envoy'   :'Contact one only about something outside the country. Nothing they agree becomes law here without the legislature.',
   'jud/court'    :'Go here if you need an order rather than a finding, and you have an injury of your own or a case to join.',
   'jud/judge'    :'Not contactable about anything that might come before them. Where judges are elected, the election is the route.',
   'jud/defender' :'Contact one if a body treated you or someone else unfairly and you want it investigated and published.',
-  'ag/agency'    :'Contact one if you want a rule made, changed or enforced in your subject. Most must answer a petition in writing.',
+  'ag/agency'    :'These are the agencies over this place. They write and enforce the rules under a law, and most must answer a petition for a new one in writing.',
   'ag/audit'     :'Contact one if a body broke an obligation already written down, and you can name which one.',
   'ag/police'    :'Contact one about an incident. For practice or policy, the council or legislature that funds them is the address.',
   'other/other'  :'What these do is not recorded clearly enough to say. The official site settles it.',
@@ -2806,6 +2857,11 @@ const ROUTEWHEN={
    offices, `routes` the methods in the order worth trying, `hurdles`
    what stops them. `scoped` means the answer depends on how far the
    change has to reach, so the reader is asked that first. */
+/* `notes` are keyed by the method they belong to: ['visit', title,
+   body]. They used to be four screens of their own between the methods
+   and the hurdles, which put general advice at the same level as the
+   methods themselves and repeated what the method pages already said.
+   Each one now appears on its method's screen, under "Worth knowing". */
 const LEAVES = {
   new_law: {
     nm:'A rule that does not exist yet', scoped:true,
@@ -2816,14 +2872,14 @@ const LEAVES = {
     /* the same office means something different depending on why the
        reader is here, so a destination can say its own version */
     when:{
-      'exec/minister':'Contact the one that covers your subject before the legislature does. It usually drafts the text, and a member asked to introduce a bill will ask it whether the idea works.',
-      'ag/agency':'Contact the one in your subject to find out whether the change needs a law at all. Often it can be made as a rule instead, which is a shorter route.',
+      'exec/minister':'These are the departments over this place in your subject. They draft the text, and a member asked to introduce a bill will ask them whether the idea works, so one of them is usually the first call.',
+      'ag/agency':'These are the agencies over this place in your subject. Ask one whether the change needs a law at all \u2014 often it can be made as a rule under a law that already exists, which is a shorter route.',
     },
     notes:[
-      ['Ask for the staffer, not the member','Staff decide what reaches the member, and a staffer who takes up your idea becomes the person carrying it. If you live in the member’s district you have a claim on that meeting nobody else has.'],
-      ['Committee is where it dies','Most bills end in committee rather than on the floor. Committees take written submissions and hold hearings, both open to the public; the committee clerk gives you the format and the deadline.'],
-      ['Ask the clerk whether an initiative exists','Before anything else, ask the office that keeps the record whether a citizen initiative is available here, and if so what the signature threshold and deadline are. It is the only route on this map that does not need a politician’s consent.'],
-      ['Check whether it needs a law at all','The department or agency in your subject can often make the change as a rule under a law that already exists. That is a shorter route with a written answer at the end of it, and the office itself will tell you which of the two applies.'],
+      ['visit','Ask for the staffer, not the member','Staff decide what reaches the member, and a staffer who takes up your idea becomes the person carrying it. If you live in the member’s district you have a claim on that meeting nobody else has.'],
+      ['sfr','Committee is where it dies','Most bills end in committee rather than on the floor. Committees take written submissions and hold hearings, both open to the public; the committee clerk gives you the format and the deadline.'],
+      ['ballot','Ask the clerk whether an initiative exists','Before anything else, ask the office that keeps the record whether a citizen initiative is available here, and if so what the signature threshold and deadline are. It is the only route on this map that does not need a politician’s consent.'],
+      ['letter','Check whether it needs a law at all','The department or agency in your subject can often make the change as a rule under a law that already exists. That is a shorter route with a written answer at the end of it, and the office itself will tell you which of the two applies.'],
     ],
     next:[['rules','If the law already says what you want but nothing happens'],
           ['oversight','If a body is ignoring a law that already exists']],
@@ -2833,12 +2889,16 @@ const LEAVES = {
     nm:'The rules written under an existing law', scoped:true,
     lead:'Laws are short and the rules written under them are long, and the rules decide what the law does in practice. Departments and agencies write them. This is the part of government with the most offices and the least public attention, and the two things open to anyone here both create an obligation to answer.',
     kinds:['exec/minister','ag/agency'],
+    when:{
+      'exec/minister':'These are the departments over this place in your subject. One of them wrote the rules you are dealing with, and the same one can be petitioned to rewrite them.',
+      'ag/agency':'These are the agencies over this place in your subject. Each must publish a proposed rule for comment, and must grant or deny a petition for a new one in writing.',
+    },
     routes:['comment','rulemaking','foia','visit','letter','ig'],
     hurdles:['docket','revolving','concentrated'],
     notes:[
-      ['Comment while the window is open','A body proposing a rule has to address substantive comments when it issues the final version. Comment on the specific public file of responses, not by general correspondence.'],
-      ['Or petition for a rule','A department asked to make a rule must grant or deny it in writing. A written refusal can be challenged; an ignored letter cannot. This is far less used than it deserves.'],
-      ['Find out what it already holds','A freedom-of-information request is often the cheapest way to learn what the department already knows about your subject, which changes what you can argue.'],
+      ['comment','Comment while the window is open','A body proposing a rule has to address substantive comments when it issues the final version. Comment on the specific public file of responses, not by general correspondence.'],
+      ['rulemaking','Or petition for a rule','A department asked to make a rule must grant or deny it in writing. A written refusal can be challenged; an ignored letter cannot. This is far less used than it deserves.'],
+      ['foia','Find out what it already holds','A freedom-of-information request is often the cheapest way to learn what the department already knows about your subject, which changes what you can argue.'],
     ],
     next:[['new_law','If the law itself is the problem, not the rules under it'],
           ['courts','If you think the rule goes beyond what the law allows']],
@@ -2851,9 +2911,9 @@ const LEAVES = {
     routes:['ig','foia','ombud','townhall','letter','quitam'],
     hurdles:['revolving','nobody','concentrated'],
     notes:[
-      ['If it is about practice, go to whoever funds them','Most forces and prosecution offices have a civilian oversight body, and those report to the council or legislature that funds them. That funding body is where a policy actually changes, and it is a different address from the one that handles incidents.'],
-      ['Ask a law officer for a written opinion','Many attorney-general and solicitor offices will issue a formal opinion interpreting a statute on request. An opinion is a document other offices have to reckon with.'],
-      ['Name the obligation, not the feeling','An auditor or inspector general closes vague complaints. State which specific legal or policy obligation was not met, and what the failure was.'],
+      ['townhall','If it is about practice, go to whoever funds them','Most forces and prosecution offices have a civilian oversight body, and those report to the council or legislature that funds them. That funding body is where a policy actually changes, and it is a different address from the one that handles incidents.'],
+      ['letter','Ask a law officer for a written opinion','Many attorney-general and solicitor offices will issue a formal opinion interpreting a statute on request. An opinion is a document other offices have to reckon with.'],
+      ['ig','Name the obligation, not the feeling','An auditor or inspector general closes vague complaints. State which specific legal or policy obligation was not met, and what the failure was.'],
     ],
     next:[['oversight','If a body broke its own rules rather than ignoring a law'],
           ['courts','If a court is the only thing that will settle it']],
@@ -2866,8 +2926,8 @@ const LEAVES = {
     routes:['ig','ombud','foia','quitam','letter'],
     hurdles:['voluntary','nobody'],
     notes:[
-      ['The finding is the point','An ombudsman usually has no power to order anything. A published finding is still citable by a court, a lender, an insurer or a journalist in a way an unanswered letter is not.'],
-      ['One obligation, one failure','These offices close complaints that do not identify a specific duty and a specific breach of it. The narrower the claim, the more likely it is investigated.'],
+      ['ombud','The finding is the point','An ombudsman usually has no power to order anything. A published finding is still citable by a court, a lender, an insurer or a journalist in a way an unanswered letter is not.'],
+      ['ig','One obligation, one failure','These offices close complaints that do not identify a specific duty and a specific breach of it. The narrower the claim, the more likely it is investigated.'],
     ],
     next:[['courts','If you need an order rather than a finding'],
           ['new_law','If the rule they followed is the problem']],
@@ -2880,9 +2940,9 @@ const LEAVES = {
     routes:['amicus','citizensuit','climatelit','personhood'],
     hurdles:['standing','nobody','money'],
     notes:[
-      ['As a party, which needs an injury to you','Most common-law courts require a concrete, particularised injury to the person bringing the case. An injury shared equally by everyone is treated, for this purpose, as an injury to no one.'],
-      ['Or as an outsider in someone else’s case','Courts accept briefs from non-parties when they bring facts the parties do not have. This needs no injury of your own and is the cheaper of the two.'],
-      ['Granting an ecosystem legal personhood manufactures a plaintiff','It is the mechanism behind the rights-of-nature route: it produces someone the court must hear where no individual could show a particular injury.'],
+      ['citizensuit','As a party, which needs an injury to you','Most common-law courts require a concrete, particularised injury to the person bringing the case. An injury shared equally by everyone is treated, for this purpose, as an injury to no one.'],
+      ['amicus','Or as an outsider in someone else’s case','Courts accept briefs from non-parties when they bring facts the parties do not have. This needs no injury of your own and is the cheaper of the two.'],
+      ['personhood','Granting an ecosystem legal personhood manufactures a plaintiff','It is the mechanism behind the rights-of-nature route: it produces someone the court must hear where no individual could show a particular injury.'],
     ],
     next:[['new_law','If no court will hear it, the legislature is the remaining route'],
           ['oversight','If the complaint is about process rather than the law itself']],
@@ -2895,9 +2955,9 @@ const LEAVES = {
     routes:['shareprop','oecdncp','devbank','comment','ig','citizensuit','foia'],
     hurdles:['primacy','concentrated','voluntary','money'],
     notes:[
-      ['Through the regulator, not the company','The department or agency that licenses, inspects or sets rules for the sector is usually a better address than the company, because its proposed rules carry a comment window and it can be petitioned for a new rule.'],
-      ['The international complaint routes publish, they do not order','OECD National Contact Points, development bank accountability mechanisms and UN processes investigate and recommend. None can compel a company or a state, and remedy for harm already done is rare. Their value is the published finding.'],
-      ['A shareholder proposal costs about $2,000 to enter','It is the one route that puts a question to the board in a form it has to process, and it is written as a business case rather than as a grievance.'],
+      ['comment','Through the regulator, not the company','The department or agency that licenses, inspects or sets rules for the sector is usually a better address than the company, because its proposed rules carry a comment window and it can be petitioned for a new rule.'],
+      ['oecdncp','The international complaint routes publish, they do not order','OECD National Contact Points, development bank accountability mechanisms and UN processes investigate and recommend. None can compel a company or a state, and remedy for harm already done is rare. Their value is the published finding.'],
+      ['shareprop','A shareholder proposal costs about $2,000 to enter','It is the one route that puts a question to the board in a form it has to process, and it is written as a business case rather than as a grievance.'],
     ],
     next:[['new_law','If what is needed is a rule that does not exist yet'],
           ['courts','If the harm is specific enough to sue over']],
@@ -2922,8 +2982,9 @@ const LEAVES = {
    and for a national statute are different people. */
 const QUESTIONS = {
   start: {
-    q:'What are you trying to do?',
-    sub:'Pick whichever is closest. Nothing here commits you — every answer can be stepped back.',
+    q:'Narrow the map to what you want to do',
+    sub:'Every answer takes offices off the map and leaves the ones that can do this. '+
+        'Nothing here commits you: each one can be stepped back.',
     opts:[
       {t:'Create a rule that does not exist yet',
        d:'A ban, a requirement, a protection, a right — something nobody is obliged to do today.', leaf:'new_law'},
@@ -2941,7 +3002,7 @@ const QUESTIONS = {
 
   change: {
     q:'What is wrong with it?',
-    sub:'Repealing a law and rewriting it take the same route; striking it down takes a different one entirely.',
+    sub:'Repealing a law and rewriting it take the same route. Striking it down takes a different one entirely.',
     opts:[
       {t:'The wording needs changing, or the law needs repealing',
        d:'This takes the same route as a new law: a member of the legislature has to introduce it.', leaf:'new_law'},
@@ -2979,7 +3040,8 @@ const QUESTIONS = {
 /* where the reader is: a list of {q, opt} steps, then a leaf */
 let PATH=[], LEAF=null, LEAFLVL=null, LEAFSUB=null, LEAFPAGE=0, SHOWALLK={};
 
-function resetTree(){ PATH=[]; LEAF=null; LEAFLVL=null; LEAFSUB=null; LEAFPAGE=0; SHOWALLK={}; }
+function resetTree(){ PATH=[]; LEAF=null; PENDLEAF=null; LEAFLVL=null; LEAFSUB=null;
+  LEAFPAGE=0; SHOWALLK={}; SCOPE=null; }
 
 /* Which kinds of office are divided by subject, and which are not.
 
@@ -3010,6 +3072,25 @@ function officeIndex(){
   }
   return out;
 }
+/* Which offices the answers so far still leave on the table.
+
+   This is what makes the questions serve the map rather than replace
+   it. Each answer recomputes the set, setPins paints everything
+   outside it as a grey disc, and a reader narrowing ninety offices to
+   six watches the eighty-four go out. Before any answer it is null,
+   which means everything is in scope.
+
+   It follows the answers as they are given, not only the finished
+   destination, so picking "a rule that does not exist yet" narrows the
+   map immediately and picking a subject narrows it again. */
+let SCOPE=null;
+function recomputeScope(){
+  const key = LEAF || PENDLEAF;
+  const L = key && LEAVES[key];
+  if(!L){ SCOPE=null; return; }
+  SCOPE=new Set(officesFor(L.kinds, LEAFLVL, LEAFSUB).map(o=>o.id));
+}
+
 function officesFor(kinds, lvl, sub){
   const ix=officeIndex(), out=[];
   if(sub===undefined) sub=LEAFSUB;
@@ -3065,93 +3146,112 @@ function drawTree(){
    subjects, or who does not want to narrow, takes the last option. */
 function drawSubjectQ(){
   const kinds=LEAFKINDS();
-  const subKinds=kinds.filter(k=>SUBJECTKINDS.has(k));
 
-  /* Counted twice, deliberately.
-
-     `mine` is how many offices this destination would show under each
-     subject. `here` is how many subject-specific offices of any kind
-     sit over this place, which is the honest number: a reader whose
-     concern is environmental still has an environmental department
-     over them even when the destination they picked is about
-     legislative committees and there is no environment committee.
-
+  /* Counted twice, deliberately. `mine` is how many offices this
+     destination would show under each subject; `here` is how many
+     subject-specific offices of any kind sit over this place, which is
+     the honest number for a subject this destination does not reach.
      Every subject is offered whatever the counts, because the question
-     is what the reader's concern is about, not what Wikidata happens
-     to record. A subject with nothing behind it says so on its own
-     row rather than being hidden, which is the difference between "no
-     such office exists" and "no such office is recorded". */
+     is what the reader's concern is about and not what Wikidata
+     happens to record. */
   const mineRows=officesFor(kinds, LEAFLVL, null).filter(o=>SUBJECTKINDS.has(o.kind));
-  const allKinds=[...SUBJECTKINDS];
-  const hereRows=officesFor(allKinds, LEAFLVL, null);
+  const hereRows=officesFor([...SUBJECTKINDS], LEAFLVL, null);
   const mine={}, here={};
   mineRows.forEach(o=>{ mine[o.theme]=(mine[o.theme]||0)+1; });
   hereRows.forEach(o=>{ here[o.theme]=(here[o.theme]||0)+1; });
 
-  const names=THEMES.map(t=>t[0]).concat(['Everything else']);
+  /* with something behind it first, so the reader is not paging through
+     empty subjects to reach the one that has offices in it */
+  const names=THEMES.map(t=>t[0]).concat(['Everything else'])
+    .sort((a,b)=>(mine[b]||0)-(mine[a]||0) || (here[b]||0)-(here[a]||0));
 
-  let h='<div class="qwrap wide"><h2 class="qq">What is it about?</h2>'+
-    '<p class="qsub">Different departments and agencies cover different subjects, and only one of them writes the rules on yours. '+
-    'The legislature, the head of government and the filing offices are the same whatever the subject, so those are shown either way.'+
-    '</p><div class="qopts two">';
-  /* "Any subject" first, not last. It is the commonest answer \u2014 most
-     real concerns touch several of these \u2014 and at the bottom of
-     thirteen options it read as the afterthought rather than the
-     default. */
-  h+='<button type="button" class="qopt sm any" data-sub="" onclick="pickSubject(null)">'+
-     '<span class="qt">Any subject, or more than one</span>'+
-     '<span class="qd">Do not narrow. Most real concerns touch several of these at once.</span>'+
-     '<span class="qct">'+mineRows.length+' office'+(mineRows.length===1?'':'s')+' here</span>'+
-     '<span class="qar">&rarr;</span></button>';
+  const opts=[qopt('sm any', 'pickSubject(null)', 'Any subject, or more than one',
+    'Do not narrow. Most real concerns touch several of these at once.',
+    mineRows.length+' office'+(mineRows.length===1?'':'s')+' here', 'data-sub=""')];
   names.forEach(t=>{
     const m=mine[t]||0, hh=here[t]||0;
-    h+='<button type="button" class="qopt sm'+(m?'':' thin')+'" data-sub="'+esc(t)+'" '+
-       'onclick="pickSubject('+JSON.stringify(t).replace(/"/g,'&quot;')+')">'+
-       '<span class="qt">'+esc(t)+'</span>'+
-       '<span class="qd">'+esc(THEMEHINT[t]||'')+'</span>'+
-       '<span class="qct">'+(m? m+(m===1?' office here':' offices here')
-         : hh? hh+' elsewhere in government' : 'none recorded')+'</span>'+
-       '<span class="qar">&rarr;</span></button>';
+    opts.push(qopt('sm'+(m?'':' thin'),
+      'pickSubject('+JSON.stringify(t).replace(/"/g,'&quot;')+')',
+      esc(t), esc(THEMEHINT[t]||''),
+      (m? m+(m===1?' office here':' offices here')
+        : hh? hh+' elsewhere in government' : 'none recorded'),
+      'data-sub="'+esc(t)+'"'));
   });
-  return h+'</div></div>';
+  return qframe('Narrow the map to one subject',
+    'Different departments and agencies cover different subjects, and only one of them writes the '+
+    'rules on yours. The legislature, the head of government and the filing offices are the same '+
+    'whatever the subject, so those stay either way.', opts);
+}
+
+/* A question, paginated.
+
+   The panel is a column down one side now, so a list of fourteen
+   subjects does not fit on it and scrolling a question is worse than
+   paging one: a reader scrolling does not know whether they have seen
+   the options. QPAGE holds the page, QOPTS the number that fit, and
+   the pager at the foot says how many there are. */
+const QOPTS=5;
+let QPAGE=0;
+
+function qframe(title, sub, opts, tag){
+  const pages=Math.max(1, Math.ceil(opts.length/QOPTS));
+  if(QPAGE>=pages) QPAGE=0;
+  const shown=opts.slice(QPAGE*QOPTS,(QPAGE+1)*QOPTS);
+  let h='<div class="qwrap"><div class="qtop"><h2 class="qq">'+title+'</h2>'+
+        (sub?'<p class="qsub">'+sub+'</p>':'')+'</div>'+
+        '<div class="qopts">'+shown.join('')+'</div>';
+  if(pages>1){
+    h+='<div class="qpager">'+
+       '<button type="button" class="lpa" onclick="qPage('+(QPAGE-1)+')"'+(QPAGE<=0?' disabled':'')+'>&larr;</button>'+
+       '<div class="qdots">';
+    for(let i=0;i<pages;i++)
+      h+='<button type="button" class="lpdot'+(i===QPAGE?' on':'')+'" onclick="qPage('+i+')"></button>';
+    h+='</div><button type="button" class="lpa" onclick="qPage('+(QPAGE+1)+')"'+
+       (QPAGE>=pages-1?' disabled':'')+'>&rarr;</button>'+
+       '<span class="qpn">'+(QPAGE*QOPTS+1)+'–'+Math.min(opts.length,(QPAGE+1)*QOPTS)+
+       ' of '+opts.length+'</span></div>';
+  }
+  return h+'</div>';
+}
+function qPage(i){ QPAGE=Math.max(0,i); render(); }
+
+function qopt(cls, onclick, title, desc, count, data){
+  return '<button type="button" class="qopt'+(cls?' '+cls:'')+'" '+(data||'')+
+    ' onclick="'+onclick+'">'+
+    '<span class="qt">'+title+'</span>'+
+    (desc?'<span class="qd">'+desc+'</span>':'')+
+    (count?'<span class="qct">'+count+'</span>':'')+
+    '<span class="qar">&rarr;</span></button>';
 }
 
 function drawQuestion(qn){
-  let h='<div class="qwrap"><h2 class="qq">'+esc(qn.q)+'</h2>'+
-        '<p class="qsub">'+esc(qn.sub||'')+'</p><div class="qopts">';
-  qn.opts.forEach((o,i)=>{
-    h+='<button type="button" class="qopt" data-i="'+i+'" onclick="pickOpt('+i+')">'+
-       '<span class="qt">'+esc(o.t)+'</span>'+
-       '<span class="qd">'+esc(o.d||'')+'</span>'+
-       '<span class="qar">&rarr;</span></button>';
-  });
-  return h+'</div></div>';
+  const opts=qn.opts.map((o,i)=>qopt('', 'pickOpt('+i+')', esc(o.t), esc(o.d||''), '', 'data-i="'+i+'"'));
+  return qframe(esc(qn.q), esc(qn.sub||''), opts);
 }
 
-/* The level question is built from the place the reader searched for,
-   so the options are their own council, their own county and their own
-   country by name rather than four abstractions. */
+/* The governments above the place, as the reader's own places rather
+   than as abstractions. The level word goes beside the name because a
+   city and the county or state around it share one often enough that
+   the list read as the same place three times — Washington, District
+   of Columbia, District of Columbia. */
 function drawLevelQ(){
-  let h='<div class="qwrap wide"><h2 class="qq">Who should it apply to?</h2>'+
-    '<p class="qsub">Each of these is a different government with its own people in it. '+
-    'A rule for one town is made by the people who govern that town, and nobody above them has to agree to it.</p>'+
-    '<div class="qopts two">';
-  const n=STACK.length;
-  for(let i=n-1;i>=0;i--){
-    const s=STACK[i];
+  const opts=[];
+  for(let i=STACK.length-1;i>=0;i--){
+    const st=STACK[i];
     const cnt=officesFor(LEAFKINDS(), i, LEAFSUB).length;
-    h+='<button type="button" class="qopt sm lvl'+(cnt?'':' thin')+'" data-lvl="'+i+'" onclick="pickLevel('+i+')">'+
-       '<span class="qt"><i style="background:'+levelColour(i)+'"></i>'+esc(s.label)+'</span>'+
-       '<span class="qd">'+esc(LEVELSAY[Math.min(i,LEVELSAY.length-1)])+'</span>'+
-       '<span class="qct">'+(cnt? cnt+(cnt===1?' office here':' offices here') : 'none recorded')+'</span>'+
-       '<span class="qar">&rarr;</span></button>';
+    opts.push(qopt('sm lvl'+(cnt?'':' thin'), 'pickLevel('+i+')',
+      '<i style="background:'+levelColour(i)+'"></i>'+esc(st.label)+
+        '<em class="lvw">'+esc(LEVELN[Math.min(i,LEVELN.length-1)])+'</em>',
+      esc(LEVELSAY[Math.min(i,LEVELSAY.length-1)]),
+      (cnt? cnt+(cnt===1?' office here':' offices here') : 'none recorded'),
+      'data-lvl="'+i+'"'));
   }
-  h+='<button type="button" class="qopt sm any" onclick="pickLevel(null)">'+
-     '<span class="qt">All of them at once</span>'+
-     '<span class="qd">Every government above you together, which is how most changes actually have to be worked.</span>'+
-     '<span class="qct">'+officesFor(LEAFKINDS(), null, LEAFSUB).length+' offices</span>'+
-     '<span class="qar">&rarr;</span></button>';
-  return h+'</div></div>';
+  opts.push(qopt('sm any', 'pickLevel(null)', 'All of them at once',
+    'Every government above you together, which is how most changes actually have to be worked.',
+    officesFor(LEAFKINDS(), null, LEAFSUB).length+' offices'));
+  return qframe('Narrow the map to one government',
+    'Pick whose law it should be. Each of these is a different government with its own people in it, '+
+    'and a rule for one town is made by the people who govern that town.', opts);
 }
 function LEAFKINDS(){ const l=LEAVES[PENDLEAF]; return l?l.kinds:[]; }
 let PENDLEAF=null;
@@ -3176,7 +3276,9 @@ let PENDLEAF=null;
    of office tiles a screen holds, and a kind with more than that gets
    further screens of its own.
    ==================================================================== */
-const PAGETILES = 12;
+/* The panel is a column down one side, so a screen holds eight tiles
+   rather than twelve. A kind with more gets further screens. */
+const PAGETILES = 8;
 
 /* The pages of a destination, built once per render so the pager and
    the body agree about what page 4 is. */
@@ -3206,59 +3308,57 @@ function leafPages(L){
   rts.sort((a,b)=>BANDS[rateBand(a.rate)].ord-BANDS[rateBand(b.rate)].ord);
   rts.forEach(rt=>pages.push({sec:'how', rt:rt}));
 
-  /* what stops it, and anything the destination wants said on its own */
-  (L.notes||[]).forEach(n=>pages.push({sec:'note', note:n}));
-  (L.hurdles||[]).forEach(k=>{ const x=HURDLES[k]; if(x) pages.push({sec:'stop', h:x}); });
+  /* No screens of their own for the notes or the hurdles. Each note
+     belongs to a method and appears on that method's screen; what
+     stops a method is already the last thing on it, so a separate
+     "What stops it" group repeated the same ground four times. The
+     hurdles are still on every office's own page. */
   if(L.next && L.next.length) pages.push({sec:'next'});
   return pages;
 }
 
-const SECNAME={who:'Who to contact', how:'How to reach them', note:'Worth knowing',
-               stop:'What stops it', next:'Where next'};
+const SECNAME={who:'Who to contact', how:'How to reach them', next:'Where next'};
 
 function drawLeaf(){
   const L=LEAVES[LEAF];
   const pages=leafPages(L);
   if(LEAFPAGE>=pages.length) LEAFPAGE=0;
   const pg=pages[LEAFPAGE]||pages[0];
-
-  let h='<div class="leafp">';
-
-  /* the head: what was chosen, and where in the destination you are */
-  h+='<div class="lphead"><div class="lptitle"><h2 class="lnm">'+esc(L.nm)+'</h2>';
-  h+='<div class="ltags">';
-  if(LEAFLVL!=null && STACK[LEAFLVL])
-    h+='<span class="ltag"><i style="background:'+levelColour(LEAFLVL)+'"></i>'+esc(STACK[LEAFLVL].label)+'</span>';
-  if(LEAFSUB) h+='<span class="ltag sub">'+esc(LEAFSUB)+'</span>';
-  h+='</div></div>';
-
-  /* the pager: the three groups, and the screens inside the one you are in */
-  const groups=[];
-  ['who','how','note','stop','next'].forEach(sec=>{
-    const first=pages.findIndex(p=>p.sec===sec);
-    if(first<0) return;
-    const n=pages.filter(p=>p.sec===sec).length;
-    groups.push({sec:sec, first:first, n:n});
-  });
-  h+='<div class="lpnav">';
-  groups.forEach(g=>{
-    h+='<button type="button" class="lpg'+(pg.sec===g.sec?' on':'')+'" onclick="leafPage('+g.first+')">'+
-       esc(SECNAME[g.sec])+'<span class="lpn">'+g.n+'</span></button>';
-  });
-  h+='<div class="lpsteps">';
   const mine=pages.map((p,i)=>({p:p,i:i})).filter(x=>x.p.sec===pg.sec);
+  const at=mine.findIndex(x=>x.i===LEAFPAGE);
+
+  /* The same shape as a question screen: an eyebrow saying which part
+     of the answer this is, a heading, and the thing itself. The groups
+     used to be a tab bar across the top, which made them read as four
+     panes of one page rather than as the next steps of the walkthrough
+     the reader had been taking one screen at a time. */
+  let h='<div class="leafp">';
+  h+='<div class="lpeyebrow"><span class="lpwhat">'+esc(L.nm)+'</span>'+
+     '<span class="psep">&rsaquo;</span>'+
+     '<span class="lpsec">'+esc(SECNAME[pg.sec])+'</span>'+
+     (mine.length>1?'<span class="lpof">'+(at+1)+' of '+mine.length+'</span>':'')+
+     '</div>';
+  h+='<div class="lpbody">'+drawPage(L, pg)+'</div>';
+
+  /* the pager, at the foot where a question's is */
+  h+='<div class="lpfoot">'+
+     '<button type="button" class="lpa" onclick="leafPage('+(LEAFPAGE-1)+')"'+
+       (LEAFPAGE<=0?' disabled':'')+'>&larr;</button>'+
+     '<div class="qdots">';
   mine.forEach(x=>{
     h+='<button type="button" class="lpdot'+(x.i===LEAFPAGE?' on':'')+'" '+
        'onclick="leafPage('+x.i+')" title="'+esc(pageLabel(x.p))+'"></button>';
   });
-  h+='</div>';
-  h+='<div class="lparrows">'+
-     '<button type="button" class="lpa" onclick="leafPage('+(LEAFPAGE-1)+')"'+(LEAFPAGE<=0?' disabled':'')+'>&larr;</button>'+
-     '<span class="lpcount">'+(LEAFPAGE+1)+' / '+pages.length+'</span>'+
-     '<button type="button" class="lpa" onclick="leafPage('+(LEAFPAGE+1)+')"'+(LEAFPAGE>=pages.length-1?' disabled':'')+'>&rarr;</button>'+
-     '</div></div>';
-
-  h+='<div class="lpbody">'+drawPage(L, pg)+'</div>';
+  h+='</div><button type="button" class="lpa" onclick="leafPage('+(LEAFPAGE+1)+')"'+
+     (LEAFPAGE>=pages.length-1?' disabled':'')+'>&rarr;</button>';
+  h+='<div class="lpjump">';
+  ['who','how','next'].forEach(sec=>{
+    const first=pages.findIndex(p=>p.sec===sec);
+    if(first<0) return;
+    h+='<button type="button" class="lpg'+(pg.sec===sec?' on':'')+'" onclick="leafPage('+first+')">'+
+       esc(SECNAME[sec])+'</button>';
+  });
+  h+='</div></div>';
   return h+'</div>';
 }
 
@@ -3266,16 +3366,12 @@ function pageLabel(p){
   if(p.sec==='who') return p.blanks ? 'Not recorded here' : p.none ? 'Nothing here'
     : (KINDLABEL[p.kind]||p.kind)+(p.parts>1?' '+(p.part+1)+'/'+p.parts:'');
   if(p.sec==='how')  return p.rt.nm;
-  if(p.sec==='note') return p.note[0];
-  if(p.sec==='stop') return p.h.h;
   return 'Where next';
 }
 
 function drawPage(L, p){
   if(p.sec==='who')  return pageWho(L,p);
   if(p.sec==='how')  return pageHow(L,p);
-  if(p.sec==='note') return pageNote(p);
-  if(p.sec==='stop') return pageStop(p);
   return pageNext(L);
 }
 
@@ -3313,33 +3409,46 @@ function pageWho(L,p){
   return h+'</div>';
 }
 
-/* ---- one method ---- */
+/* ---- one method ----
+   Pared back to what a reader needs on the screen in front of them.
+   It carried seven labelled fields and ran off the bottom of a panel
+   this width: "What this is" repeated the line above it, and the
+   cost, who may use it and how long are three short facts that read
+   better as a row than as three headed paragraphs. */
 function pageHow(L,p){
   const rt=p.rt, R=rt.rate;
   let h='<div class="pg pg-how">';
   h+='<div class="pgtop"><h3 class="pgh">'+esc(rt.nm)+'</h3>'+
      '<span class="rpill"><i style="background:'+rateColor(R)+'"></i>'+esc(BANDS[rateBand(R)].label)+'</span></div>';
   h+='<div class="pgwhen">'+esc(ROUTEWHEN[rt.id]||rt.def||'')+'</div>';
-  h+='<div class="pgcols">';
-  const f=(t,v)=> v ? '<div class="fld"><dt>'+t+'</dt><dd>'+esc(v)+'</dd></div>' : '';
-  h+='<div>'+f('What this is', rt.def)+f('What it costs', rt.costn)+f('Who can use it', rt.elig)+f('How long', rt.time)+'</div>';
-  h+='<div>'+f('How it is done', rt.how)+
-     (R ? '<div class="fld"><dt>How it ranks'+(R.ev?'<span class="ev">'+esc(EVNAME[R.ev]||R.ev)+'</span>':'')+'</dt><dd>'+
-          esc(BANDS[rateBand(R)].label)+'. '+esc(BANDS[rateBand(R)].note)+
-          '<div class="srcline">Measured by: '+esc(R.src||'')+(R.y0?' ('+R.y0+(R.y1&&R.y1!==R.y0?'&ndash;'+R.y1:'')+')':'')+'</div></dd></div>'
-        : (rt.nomeasure?'<div class="fld"><dt>Why nobody has measured it</dt><dd>'+esc(rt.nomeasure)+'</dd></div>':''))+
-     '<div class="fld fail"><dt>What usually stops it</dt><dd>'+esc(rt.fail)+'</dd></div></div>';
-  return h+'</div></div>';
+
+  h+='<div class="pgmeta">';
+  [['Cost',rt.costn||rt.cost],['Who can use it',rt.elig],['How long',rt.time]].forEach(x=>{
+    if(x[1]) h+='<div><dt>'+x[0]+'</dt><dd>'+esc(x[1])+'</dd></div>';
+  });
+  h+='</div>';
+
+  const f=(t,v,cls)=> v ? '<div class="fld'+(cls?' '+cls:'')+'"><dt>'+t+'</dt><dd>'+esc(v)+'</dd></div>' : '';
+  h+='<div class="pgflds">';
+  h+=f('How it is done', rt.how);
+  if(R){
+    h+='<div class="fld"><dt>How it ranks'+(R.ev?'<span class="ev">'+esc(EVNAME[R.ev]||R.ev)+'</span>':'')+
+       '</dt><dd>'+esc(BANDS[rateBand(R)].note)+
+       '<div class="srcline">Measured by: '+esc(R.src||'')+
+       (R.y0?' ('+R.y0+(R.y1&&R.y1!==R.y0?'&ndash;'+R.y1:'')+')':'')+'</div></dd></div>';
+  }else if(rt.nomeasure){
+    h+=f('Why nobody has measured it', rt.nomeasure);
+  }
+  h+=f('What usually stops it', rt.fail, 'fail');
+  h+='</div>';
+
+  /* what this destination has to say about this particular method */
+  (L.notes||[]).filter(n=>n[0]===rt.id).forEach(n=>{
+    h+='<div class="pgnote"><dt>'+esc(n[1])+'</dt><dd>'+esc(n[2])+'</dd></div>';
+  });
+  return h+'</div>';
 }
 
-function pageNote(p){
-  return '<div class="pg pg-text"><h3 class="pgh">'+esc(p.note[0])+'</h3>'+
-         '<p class="pgl">'+esc(p.note[1])+'</p></div>';
-}
-function pageStop(p){
-  return '<div class="pg pg-text"><h3 class="pgh">'+esc(p.h.h)+'</h3>'+
-         p.h.p.map(x=>'<p class="pgl">'+x+'</p>').join('')+'</div>';
-}
 function pageNext(L){
   let h='<div class="pg pg-text"><h3 class="pgh">If this is the wrong route</h3>'+
     '<p class="pgl">The subject and the level you chose are kept, so these pick up where you are.</p>'+
@@ -3370,6 +3479,7 @@ document.addEventListener('keydown', e=>{
 
 /* ---------- moving through it ---------- */
 function pickOpt(i){
+  QPAGE=0;
   const node=PATH.length?PATH[PATH.length-1].next:'start';
   const qn=QUESTIONS[node]||QUESTIONS.start;
   const o=qn.opts[i]; if(!o) return;
@@ -3400,6 +3510,7 @@ function nextStep(L, key, after){
   return null;
 }
 function pickLevel(i){
+  QPAGE=0;
   LEAFLVL=i;
   const L=LEAVES[PENDLEAF];
   const nx=nextStep(L, PENDLEAF, 'level');
@@ -3410,6 +3521,7 @@ function pickLevel(i){
   frameIdsSoon(officesFor(L.kinds, i).map(o=>o.id));
 }
 function pickSubject(t){
+  QPAGE=0;
   LEAFSUB=t;
   const L=LEAVES[PENDLEAF];
   PATH.push({label:t||'Any subject', next:null});
@@ -3426,6 +3538,7 @@ function jumpLeaf(key){
   LEAF=key; render(); frameKinds(L.kinds);
 }
 function treeGo(i){
+  QPAGE=0;
   if(i<0){ resetTree(); return render(); }
   PATH=PATH.slice(0,i+1);
   const st=PATH[PATH.length-1];
@@ -3485,16 +3598,15 @@ function bindTree(){
       frameIdsSoon(idsOfKinds(LEAVES[key].kinds, null));
     });
   });
+  /* A kind's screen frames its offices on the map but shows no card.
+     It used to show one, and because the listener was on the whole
+     screen the card appeared on a click as well as a hover \u2014 a box
+     titled "Departments" sitting over the page that had just been
+     opened \u2014 and it only repeated the line already printed at the
+     top of that screen. */
   body.querySelectorAll('.pg-who[data-kind]').forEach(el=>{
-    const k=el.dataset.kind, ki=KINDINFO[k]||{};
-    el.addEventListener('mouseenter',()=>{
-      frameKinds([k]);
-      showCard('<h5>'+esc(KINDLABEL[k]||k)+'</h5>'+
-        (ki.what?'<p class="w">'+esc(ki.what)+'</p>':'')+
-        (ki.how?'<p>'+esc(ki.how)+'</p>':''));
-    });
-    el.addEventListener('mousemove',moveCard);
-    el.addEventListener('mouseleave',hideCard);
+    const k=el.dataset.kind;
+    el.addEventListener('mouseenter',()=>frameKinds([k]));
   });
   body.querySelectorAll('.ochip').forEach(el=>{
     const ix=officeIndex()[el.dataset.id]; if(!ix) return;
@@ -3519,6 +3631,11 @@ function hoverCard(){
   return HOVERCARD;
 }
 function showCard(html){ const c=hoverCard(); c.innerHTML=html; c.classList.add('on'); }
+/* A click replaces what is under the pointer, so the mouseleave that
+   would have hidden the card never fires and it sits there titled
+   after whatever was clicked. Hiding on any click fixes it whatever
+   was clicked and wherever. */
+document.addEventListener('click', hideCard, true);
 function hideCard(){ if(HOVERCARD) HOVERCARD.classList.remove('on'); }
 function moveCard(e){
   const c=hoverCard(); if(!c.classList.contains('on')) return;
@@ -3561,6 +3678,9 @@ function render(){
   [...sites].forEach(x=>SELFCH.push(['<a href="'+esc(x)+'" target="_blank" rel="noopener">official site</a>']));
   [...emails].forEach(x=>SELFCH.push(['<a href="mailto:'+esc(x)+'">'+esc(x)+'</a>']));
   [...phones].forEach(x=>SELFCH.push(['<span>'+esc(x)+'</span>']));
+  /* the answers so far decide what the map still shows */
+  recomputeScope();
+  setPins();
   let h=drawTree();
   $('#mbody').className='jrn-on';
   $('#mbody').innerHTML=h;
@@ -3930,8 +4050,12 @@ function setPins(){
     if(o) PINS[p.id].law=o.law;
     const bldg = !!LOCAL[p.id];
     const st = bldg ? 'bldg' : (law ? 'on' : 'off');
+    /* an answer narrows what is lit; everything else stays on the map
+       as a grey disc, so the narrowing is visible rather than silent */
+    const inScope = !SCOPE || SCOPE.has(p.id);
     return {type:'Feature', geometry:{type:'Point',coordinates:[p.lng,p.lat]},
-      properties:{id:p.id, label:p.label, on:i>=0, lvl:i<0?9:i, law:law, bldg:bldg,
+      properties:{id:p.id, label:p.label, on:(i>=0 && inScope), lvl:i<0?9:i,
+        law:law, bldg:bldg, scope:inScope,
         vis: SHOW[bldg ? (LOCAL[p.id].kind||'g') : (law?'law':'other')] !== false,
         col:levelColour(i<0?0:i),
         /* re-read on every setPins, which is also what a basemap
@@ -3940,14 +4064,18 @@ function setPins(){
   });
   src.setData({type:'FeatureCollection',features:feats.filter(f=>f.properties.vis)});
   paintShow();
-  const on=feats.filter(f=>f.properties.on && f.properties.vis);
+  const vis=feats.filter(f=>f.properties.vis);
+  const on=vis.filter(f=>f.properties.on);
   const lw=on.filter(f=>f.properties.law).length;
   const bd=on.filter(f=>f.properties.bldg).length;
+  const offices=vis.filter(f=>!f.properties.bldg).length;
   const el=$('#pincount');
-  if(el) el.textContent = Object.keys(PINS).length
-    ? (on.length-bd)+' offices govern where you picked, '+lw+' of them reachable about a law'+
-      (bd?', and '+bd+' government buildings':'')
-    : '';
+  if(!el) return;
+  if(!Object.keys(PINS).length){ el.textContent=''; return; }
+  el.textContent = SCOPE
+    ? (on.length-bd)+' of '+offices+' offices left by your answers'
+    : (on.length-bd)+' offices govern where you picked, '+lw+' of them reachable about a law'+
+      (bd?', and '+bd+' government buildings':'');
 }
 
 /* Municipal polygons from OSM, fetched after the rings are already up.
