@@ -1,0 +1,38 @@
+[
+  {
+    "cb_iso3": "PER",
+    "note": "BCRP financial-statement chapters (memoria-bcrp-2024-7.pdf) and the transparency 'informes de auditoria' PDFs were located by search, but every bcrp.gob.pe fetch returns only an Incapsula bot-protection resource URL - the whole domain is unreadable to the fetcher. No non-BCRP source naming the audit firm was found; the Contraloria General de la Republica reports surfaced (vlex paywalled) concern other entities."
+  },
+  {
+    "cb_iso3": "MKD",
+    "note": "The National Bank of the Republic of North Macedonia publishes a dedicated file, 'Independent Auditor's Report and Financial Statement of the National Bank 2023' (and 2022 equivalent), at www.nbrm.mk/content/. Both URLs, as returned by search and with and without the :443 port, fail with a site client_error - nbrm.mk refuses the fetcher. The file is certainly the right document; it cannot be read."
+  },
+  {
+    "cb_iso3": "ETH",
+    "note": "The National Bank of Ethiopia publishes 'Annual Report (Independent Report June 2024)' and 'Audited financial statement June 2024' pages at nbe.gov.et. The annual_report page fetched successfully but contains only title, navigation and footer - no report body and no auditor name. The /files/audited-financial-statement-june-2024/ download URL returns a site client_error. No source naming the auditor (Office of the Federal Auditor General or a firm) was readable."
+  },
+  {
+    "cb_iso3": "ZWE",
+    "note": "NOT a full-statements record, but the Herald (Zimbabwe) reports that BDO Zimbabwe audited the Reserve Bank of Zimbabwe's GOLD BALANCE as at 31 December 2024 and found it fairly stated in all material respects under the RBZ Act. The article is explicit that this was an audit of the gold balance only, not of the Bank's financial statements, so it does not establish the statutory external auditor of the RBZ's accounts. Source: https://www.heraldonline.co.zw/audit-reaffirms-rbzs-adherence-to-international-financial-reporting-standards/"
+  },
+  {
+    "cb_iso3": "MWI",
+    "note": "The Reserve Bank of Malawi 'Financial Statement 31 December 2024' exists as a Scribd mirror (scribd.com/document/892367301). The fetch returns Scribd's 'JavaScript is disabled' error page with no document text. Confirms the earlier finding that the statement is only available behind a JavaScript wall."
+  },
+  {
+    "cb_iso3": "BDI",
+    "note": "Searched in French for a commissaire aux comptes of the Banque de la Republique du Burundi. The only bcb.bi annual report retrievable (Rapport_Annuel_BCB_-_2022.pdf) belongs to the Banque de Credit de Bujumbura, a commercial bank (its auditor is FIDASCO INTERNATIONAL) - not the central bank. No BRB/Banque de la Republique du Burundi auditor source found."
+  },
+  {
+    "cb_iso3": "CUW",
+    "note": "The Centrale Bank van Curacao en Sint Maarten's 'Condensed financial statements as of December 31, 2020' page on exch.centralbank.cw was read in full: it states only the accounting principles (CBCS/2012/1) and reporting currency, and names no independent auditor. News coverage of the 2023 and 2024 annual reports (Curacao Chronicle) does not name an auditor either."
+  },
+  {
+    "cb_iso3": "ROU",
+    "note": "The only National Bank of Romania financial-statements file search returned was bnr.ro/files/d/.../situatii financiare/EN/E2005.pdf; the fetch returned the bnr.ro error page 'This page can't be displayed.' No readable BNR auditor's report or tender award naming the financial auditor was found."
+  },
+  {
+    "cb_iso3": "BTN",
+    "note": "The Royal Monetary Authority's Annual Report 2003/04 (apfanews mirror) lists 'Annual Audited Accounts of the RMA for 2003/2004' as Section 7, page 57, and says the accounts are published under the RMA Act of 1982, but the fetched text (first 100,000 of 395,633 characters) does not reach the audited accounts and names no auditor. Bhutan's Royal Audit Authority publishes an 'RMA IT Audit Report' - an information-systems audit, not an audit of the financial statements - so it does not establish the statements auditor."
+  }
+]

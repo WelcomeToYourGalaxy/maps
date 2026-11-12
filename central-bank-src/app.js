@@ -545,6 +545,7 @@ const SAY = {
   "Guarantees the currency under a cooperation agreement": "{P} guarantees the currency issued by {B} under a cooperation agreement",
   "Audits its accounts": "{P} audits the accounts of {B}",
   "Manages its reserves or programmes": "{P} manages reserves or funds for {B}",
+  "Holds its gold reserves in custody": "{P} holds gold reserves belonging to {B}",
   "Owned or ran an asset officials held": "{P} owned or ran an asset held by officials of {B}",
   "Prints its banknotes": "{P} prints banknotes for {B}",
   "Makes its banknote paper": "{P} makes banknote paper for {B}",
