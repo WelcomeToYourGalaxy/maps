@@ -173,7 +173,57 @@ returned 504s and refused connections at various points, minutes apart. That is
 why `OVERPASS` is a list tried in order rather than one host, and why a total
 failure is not an error state — the rings are already drawn and simply stay.
 
-Two limits worth knowing:
+### Measured outside the United States, and below the municipality
+
+The first write-up of this said the query shape was unproven outside the US
+because every attempt timed out. Those runs later completed. All of them
+stitched cleanly, so the shape holds:
+
+| Unit | Relations | Stitched | With `wikidata` | Raw | Server time |
+| --- | --- | --- | --- | --- | --- |
+| Los Angeles County, US | 150 | 150 | 122 | 2.7 MB | 88–102 s |
+| Vaucluse, FR | 391 | 391 | **391** | 8.9 MB | 240 s |
+| Hérault, FR | 559 | 559 | **559** | 13.4 MB | 214 s |
+| Nakuru, KE | 81 | 81 | **0** | 6.7 MB | 82 s |
+| Gifu/Nagoya, JP | 16 | 16 | **16** | 0.9 MB | 88 s |
+| Pasadena, US (level 9) | 7 | 7 | 0 | 83 KB | fast |
+
+Three things follow from that table.
+
+**French communes are fully linked to Wikidata** — every one of the 950 across
+two départements — so France gets municipal offices without a single name
+guess. **Kenya's wards carry no `wikidata` tag at all**, so they fall back to
+name matching and will resolve poorly. That is a gap in OSM, not in the code,
+and it is the main thing to check before trusting this in a new country: query
+a unit and count the `wikidata` tags.
+
+**The sub-municipal path works and returns something worth having.** Stepping
+inside Pasadena returns its seven council districts at `admin_level=9`, all
+seven stitch, and Pasadena City Hall falls inside exactly one of them —
+District 5 — which is the right answer and also shows the districts partition
+the city without overlapping. They carry no Wikidata ids, so they draw and are
+clickable but resolve no offices of their own. For a map about who to contact,
+knowing which council district an address sits in is most of the value even
+without that.
+
+**Names come back in the local script.** Japan returns 港区, 守山区 and so on,
+with no `name:en` on most of them. The loader reads `name:en` first and falls
+back to `name`, so those draw under their Japanese names rather than not at
+all. Do not reverse that order.
+
+**Payload is the real ceiling, not the 6° guard.** Hérault is 1.6° wide and
+still returns 13.4 MB. The stitching itself is free — 20 ms for 559 relations —
+so the cost is entirely download plus the two to four minutes Overpass spends
+computing. Note that anything over about 5 MB will not fit in `localStorage`,
+so `cset` fails silently and those units re-query every time. If that becomes
+the thing to fix, the fix is tiles, not a better query.
+
+**Endpoint reliability is worse than the list implies.** Across this work
+`overpass.kumi.systems` returned 504s on most large queries and
+`overpass.private.coffee` carried nearly all of the ones that completed, often
+after three to four minutes. Expect to wait, and expect the first host to fail.
+
+Two further limits worth knowing:
 
 - **A bounding box wider than 6° is skipped.** Asking for every
   `admin_level=8` relation in a country-sized box means about 35,000 communes
@@ -460,17 +510,19 @@ it was the percentages inside them that made them awkward to keep.
 - **The "Unsorted" group** still catches titles the classifier cannot place —
   about nine for Kenya, more for the US. Each one is a candidate pattern for
   `B[]`.
-- **Municipalities now have polygons** from OSM `admin_level=8` (§2). What is
-  still open is coverage outside the places tested: the US case is measured, a
-  French, Kenyan and Japanese case were attempted but the public endpoints
-  returned 504s before any of them completed, so **the query shape is unproven
-  outside the United States**. It is the same tag in the same schema, so it
-  should hold, but nobody has watched it work.
-- **Below the municipality** — wards, precincts, parishes — is now asked for as
-  OSM `admin_level` 9 or 10 when you step inside a municipality, but **this
-  path has never returned data in testing**: every attempt against Los Angeles
-  hit a 504. It may well be right and it may well be empty everywhere; treat it
-  as written but unverified.
+- **Municipalities now have polygons** from OSM `admin_level=8`, measured in
+  the US, France and Kenya (§2). The open question is no longer whether the
+  query works but **whether a given country's municipalities carry `wikidata`
+  tags**: France's do, every one; Kenya's do not, none of them. Without the tag
+  an office lookup falls back to name matching. Counting those tags is the
+  first thing to do when extending this to a new country.
+- **Below the municipality** works where OSM has it — Pasadena returns seven
+  council districts at `admin_level=9` (§2). What is missing there is Wikidata
+  ids, so those units draw and can be clicked but resolve no offices. Matching
+  them to the council seats in Wikidata is the next step if this level matters.
+- **Overpass payloads are large and slow** — 13.4 MB and three and a half
+  minutes for one French département — and anything over roughly 5 MB will not
+  cache in `localStorage`, so those units re-query on every visit.
 - **Marker palettes** are set per basemap in `LEVELSETS`, five colours each.
   Hell and Standard were matched by eye against their backgrounds, not measured.
 - **Marker size is a real trap.** A set of radii that looked right in the code
