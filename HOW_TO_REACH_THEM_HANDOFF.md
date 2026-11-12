@@ -134,10 +134,19 @@ the page all along.
 
 What it does: when a boundary file 404s, the map asks Overpass for every
 `admin_level=8` relation in the open unit's bounding box and draws them as real
-polygons. The Wikidata rings still load first, because they arrive in about two
-seconds and Overpass takes tens; the polygons replace them when they land.
-Anything OSM has no boundary for keeps its ring, so nothing that was on the map
-disappears.
+polygons.
+
+**Outlines are the only thing drawn. There are no municipality points.** There
+used to be a second, faster pass (`loadSettlements`/`qSettle`) that drew
+Wikidata settlements as rings while the polygons were still loading. It is
+gone, along with `SUBS`, `setSubs`, `enterSettlement` and the `sub-dot`,
+`sub-label` and `sub-hit` layers. Keeping both meant one town could be a ring
+and a polygon at the same time, each with its own click handler and its own
+panel, so clicking the place you live opened two different things depending on
+which pixel you hit. The cost of removing it is that nothing appears at
+municipal level until Overpass answers, which can be a minute or more — that
+delay is the price of there being exactly one of each place. Do not re-add the
+ring pass as a "fast path" without solving the two-objects problem first.
 
 Measured against Los Angeles County, live:
 
@@ -389,6 +398,28 @@ Each kind maps to `KIND_ROUTES` (which contact methods apply) and
 
 Agencies are grouped by `themeOf()` into twelve themes by keyword.
 
+**`RX_DIPLO` covers delegations, not just embassies.** It used to match
+`embassy|consulate|high commission|diplomatic|legation|nunciature|ambassador|envoy|chargé`,
+which missed the way a sub-national government abroad is modelled: Kenya was
+listing "delegate of the Government of the Generalitat of Catalonia in
+Meridional and Eastern Africa" among its own legislators, because that office
+carries Kenya as its `applies to jurisdiction`. A mission accredited **to** a
+place is not an office **of** it. The pattern now also catches delegation,
+delegate of the government, permanent representative, permanent mission,
+mission to the, representation of the, trade office, consul and generalitat.
+For Kenya this took the office list from 158 to 150 and the map markers from
+101 to 42 — the markers fell furthest because Nairobi hosts a great many
+foreign missions and `loadPins` was running no filters at all (below).
+
+**`officeLabel()` is the single place a title's shape is decided.** Wikidata
+stores titles in no consistent case — "member of the National Assembly" next to
+"President of Kenya" — and some arrive with doubled spaces, wrapping quotes or
+a trailing comma. Every title now passes through `officeLabel()`, which fixes
+capitalisation, spacing and stray punctuation and **nothing else**. It does not
+reword a title: the words are the office's real name, and a tidier invented one
+would be a fabrication. If you want different wording, change the source, not
+this function.
+
 **`B[]` is also what the hover cards say.** `KINDINFO` is built from the same
 array at startup, so each box's `what` and `how` are the same text the office
 entry under it uses. Change a pattern's wording and the card changes with it;
@@ -488,6 +519,27 @@ it was the percentages inside them that made them awkward to keep.
   for a long time, so the ranking bars rendered with no colour at all. They are
   defined in `:root` now. Worth checking any other `var(--…)` you add actually
   exists.
+- **Mermaid's `click … call` directive does not work in this page, and fails
+  silently.** The nodes come out marked `clickable` with a pointer cursor,
+  `bindFunctions` runs and does not throw, and no handler ever fires — so every
+  box in the diagram was dead and the office pages behind them were
+  unreachable. The same chart source clicks correctly when rendered on its own,
+  so the cause is something about four charts rendered into four containers
+  that are rebuilt on each re-render. Clicks are now bound in `bindCards()`,
+  alongside the hover cards, against whatever nodes are in the DOM at that
+  moment. Keep them there. If you re-add the Mermaid directive, do not remove
+  this.
+- **`loadPins` ran none of the office filters.** The coordinate query is
+  separate from the office list, so a record the diagram had already rejected
+  could still sit on the map as a contact marker — foreign high commissions in
+  Nairobi among Kenya's own offices. It now applies `RX_DIPLO`, `isTenure`,
+  `RX_DOC_CLS` and `RX_SYMBOL`, and passes names through `officeLabel()`. If
+  you add a filter to the office list, add it here too; nothing keeps the two
+  in step automatically.
+- **An empty pin set is usually a 429, not a bug.** `loadPins` swallows its
+  errors, so a rate-limited coordinate query looks exactly like a correct empty
+  result. One test run here reported zero pins and 81 offices; the next, with
+  no code change, reported 42 and 150. Re-run before investigating.
 - **`noteBelow()` was writing to an element that did not exist.** `#admnote`
   was referenced by the function but was in none of the markup — it was
   presumably in one of the lost build parts. So every explanation it was meant
@@ -533,6 +585,13 @@ it was the percentages inside them that made them awkward to keep.
 - **Overpass payloads are large and slow** — 13.4 MB and three and a half
   minutes for one French département — and anything over roughly 5 MB will not
   cache in `localStorage`, so those units re-query on every visit.
+- **Markers are drawn images now, not circles.** `pinImage()` draws a pin —
+  head, point, light core — on a canvas, and `addPinImages()` registers one per
+  basemap per level colour (25 in all) at startup, because MapLibre cannot tint
+  a raster icon per feature. Each pin carries the name of the image it wants in
+  `img`, which `setPins()` rewrites; a basemap change calls `setPins()`, so the
+  markers follow the palette. The old circles were specks at country zoom,
+  where every office in a capital lands on the same few pixels.
 - **Marker palettes** are set per basemap in `LEVELSETS`, five colours each.
   Hell and Standard were matched by eye against their backgrounds, not measured.
 - **Marker size is a real trap.** A set of radii that looked right in the code

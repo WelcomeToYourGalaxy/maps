@@ -1243,6 +1243,25 @@ const RX_TENURE_CLS = /\b(term|tenure|presidency|premiership|mayoralty|governors
 const RX_TENURE_LBL = /^(presidency|premiership|mayoralty|governorship|chancellorship|administration|cabinet|government)\s+of\s+/i;
 const RX_ORDINAL    = /^\d+(st|nd|rd|th)\s/i;
 
+/* Office titles as Wikidata stores them are not uniform: some are
+   sentence case, some start lowercase ("member of the National
+   Assembly"), some arrive with doubled spaces or stray punctuation, and
+   a few are wrapped in quotes or end in a comma. They were being printed
+   raw, so one branch of the diagram could show four different
+   conventions at once. Everything that displays a title goes through
+   here. It only fixes shape — capitalisation, spacing, punctuation — and
+   never rewrites the words, because the words are the office's actual
+   name and inventing a tidier one would be a fabrication. */
+function officeLabel(s){
+  let t = String(s==null?'':s).replace(/\s+/g,' ').trim();
+  t = t.replace(/^["'\u201c\u2018]+/,'').replace(/["'\u201d\u2019]+$/,'');
+  t = t.replace(/[,;:]+$/,'');
+  t = t.replace(/\s+([,;:])/g,'$1');
+  /* an initial lowercase word is a Wikidata convention, not a style */
+  if(/^[a-z]/.test(t)) t = t.charAt(0).toUpperCase()+t.slice(1);
+  return t;
+}
+
 function isTenure(label, classes){
   label = String(label||'').replace(/[\u2010-\u2015\-_]/g,' ');
   if(RX_TENURE_LBL.test(label)) return true;
@@ -1257,7 +1276,15 @@ const RX_DOC_CLS = /\b(act of|decision of|ruling|judg(e)?ment|court case|legal c
 
 /* Records that are not offices at all */
 const RX_DOC = /\b(act|amendment|decision|ruling|case|treaty|bill|constitution|statute|ordinance|regulation|directive|protocol|referendum|election|proposition|initiative|proclamation|resolution|charter|code|legislation|plebiscite)\b/i;
-const RX_DIPLO = /\b(embassy|consulate|high commission|diplomatic|legation|nunciature|ambassador|envoy|chargé)\b/i;
+/* Foreign missions. The original list caught embassies and ambassadors
+   but not delegations, which is how a sub-national government abroad is
+   usually modelled: Kenya was listing "delegate of the Government of the
+   Generalitat of Catalonia in Meridional and Eastern Africa" as one of
+   its own legislators, because that office carries Kenya as its
+   `applies to jurisdiction`. A mission accredited TO a place is not an
+   office OF it, and nobody can write to Catalonia's envoy to change
+   Kenyan law. */
+const RX_DIPLO = /\b(embassy|consulate|consul|high commission|diplomatic|legation|nunciature|ambassador|envoy|chargé|delegation|delegate of the government|permanent representative|permanent mission|mission to the|representation of the|trade office|generalitat)\b/i;
 
 /* Symbols, boundaries, reference articles and other things Wikidata
    files under the same jurisdiction property. Not offices, so this map
@@ -1574,14 +1601,6 @@ SELECT ?item ?itemLabel ?coord WHERE {
    government or a legislature of its own. The second catches the ones
    whose class is unusual — Pasadena is a "charter city", not a
    "city in the United States". */
-function qSettle(q){ return `
-SELECT DISTINCT ?item ?itemLabel ?clsLabel ?coord WHERE {
- ?item wdt:P131 wd:${q} ; wdt:P625 ?coord ; wdt:P31 ?cls .
- { VALUES ?cls { wd:Q515 wd:Q3957 wd:Q532 wd:Q15284 wd:Q1093829 wd:Q3788231 wd:Q1637706 wd:Q956318 } }
- UNION { ?item wdt:P1313 ?hg } UNION { ?item wdt:P194 ?lb }
- SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" }
-} LIMIT 500`; }
-
 function qSubdiv(q){ return `
 SELECT ?d ?dLabel WHERE { wd:${q} wdt:P150 ?d .
  SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" } } LIMIT 600`; }
@@ -1921,16 +1940,16 @@ async function drawAdm(iso3, level, parentFeature){
     if(e.message==='notfound'){
       noteBelow('The boundary files go no deeper than this for this country.');
       const top=STACK[STACK.length-1];
-      /* Rings first, from Wikidata, because they arrive in about two
-         seconds. The OSM outlines take tens of seconds for a county, so
-         they are not awaited — they replace the rings when they land. */
-      if(top&&top.q) loadSettlements(top.q, STACK.length-1);
+      /* Municipalities are outlines only. There used to be a second,
+         faster pass that drew them as Wikidata points, and the two
+         together meant one place could be both a ring and a polygon,
+         each with its own click handler and its own popup. Outlines are
+         slower to arrive and are the only thing drawn now. */
       if(top&&top.feature) loadMunicipalities(top.feature, STACK.length-1);
     }else noteBelow('Could not load the boundary file: '+e.message);
     return;
   }
   let feats = gj.features;
-  setSubs([]);                 /* polygons exist at this level, so the rings are not needed */
   if(parentFeature){
     const pg = parentFeature.geometry;
     const pb = bboxOf(pg);
@@ -1991,10 +2010,18 @@ async function onUnit(f){
   $('#mbody').innerHTML = '<div class="spin">Looking this unit up&hellip;</div>';
   /* An OSM municipality carries its own Wikidata id, so the name
      matching that the boundary files need is skipped — along with the
-     wrong answers it gives for the many towns that share a name. */
+     wrong answers it gives for the many towns that share a name.
+
+     Where OSM has no id, nothing is guessed. Name matching at this level
+     was the source of plainly wrong links: thousands of municipalities
+     share a name across countries, and the matcher would return whichever
+     one Wikidata ranked first, so a small town could open another
+     country's offices under its own name. A unit with no id is drawn and
+     named from OpenStreetMap and says it has no record, which is true
+     and checkable, rather than offering a confident wrong one. */
   const hit = f.properties.wd
     ? {id:f.properties.wd, label:nm}
-    : await resolveUnit(nm);
+    : (f.properties.muni ? null : await resolveUnit(nm));
   if(hit){
     STACK.push({q:hit.id, label:hit.label, iso3:iso3, level:level, feature:f});
     openJuris(hit.id, hit.label);
@@ -2193,7 +2220,7 @@ function buckets(){
        RX_SYMBOL.test(cls)||RX_SYMBOL.test(label)) return;
     const c=classifyOffice(label,m.classes);
     if(c.br==='other' && RX_DOC.test(label)) return;
-    const o={id:qid(m.row.item.value), label:label, cls:m.classes[0]||'',
+    const o={id:qid(m.row.item.value), label:officeLabel(label), cls:m.classes[0]||'',
       kind:c.br+'/'+c.k, br:c.br, what:c.what, how:c.how, row:m.row};
     if(c.br==='ag'||c.br==='other') o.theme=themeOf(label);
     byId[o.id]=o;
@@ -2246,7 +2273,17 @@ let COLL={}, SHOWALL={};    /* folded boxes; kinds with every office shown */
 let NODE={}, nodeSeq=0, MMSEQ=0;
 
 function nid(o){ const k='n'+(++nodeSeq); NODE[k]=o; return k; }
-function mmText(s){ return String(s).replace(/["\[\]\(\)\{\}<>#&;]/g,'').replace(/\s+/g,' ').trim().slice(0,46); }
+/* Mermaid cannot take brackets or quotes in a label, and a box has room
+   for about 46 characters. Cutting at exactly 46 split words in half —
+   "Deputy Speaker of the National Assembly of Ken" — so the cut now
+   falls at the last space and says it was cut. */
+function mmText(s){
+  const t = String(s).replace(/["\[\]\(\)\{\}<>#&;]/g,'').replace(/\s+/g,' ').trim();
+  if(t.length<=46) return t;
+  const cut = t.slice(0,45);
+  const sp = cut.lastIndexOf(' ');
+  return (sp>24 ? cut.slice(0,sp) : cut) + '\u2026';
+}
 function mmTip(s){ return String(s||'').replace(/["<>]/g,'').replace(/\s+/g,' ').trim(); }
 
 /* One diagram per branch, stacked down the panel.
@@ -2340,7 +2377,23 @@ function bindCards(el){
     const id=node.id||'';
     /* mermaid prefixes the node id it was given; recover ours */
     const key=(id.match(/(?:^|-)(n\d+)(?:-|$)/)||[])[1];
-    const n=key&&NODE[key]; if(!n||!n.tip) return;
+    const n=key&&NODE[key]; if(!n) return;
+
+    /* Clicks are bound here rather than through Mermaid's own
+       `click … call` directive. Mermaid parses those — the nodes come out
+       marked `clickable` with a pointer cursor — and `bindFunctions` runs
+       without throwing, but no handler ever fires in this page, so every
+       box was dead and the office pages behind them were unreachable. The
+       same source clicks correctly when rendered on its own, so the cause
+       is something about rendering four charts into four containers that
+       are rebuilt on each re-render. Binding here does not care: these
+       handlers go on whatever nodes are in the DOM right now, and
+       `bindCards` is already called after every render for the hover
+       cards. If you restore the Mermaid directive, keep this too — it is
+       the one that works. */
+    node.addEventListener('click', e=>{ e.preventDefault(); e.stopPropagation(); mmPick(key); });
+
+    if(!n.tip) return;
     node.addEventListener('mouseenter', ()=>{
       const c=hoverCard();
       c.innerHTML='<h5>'+esc(n.tip.nm)+'</h5>'+
@@ -2527,13 +2580,54 @@ const LEVELSETS = {
 const LEVELN = ['Country','Region','District','Local','Below that'];
 function levelColours(){ return LEVELSETS[BASEKEY] || LEVELSETS.atlas; }
 function levelColour(i){ const p=levelColours(); return p[Math.min(Math.max(i,0),p.length-1)]; }
-const SRC_CHAIN='chain', SRC_PIN='pins', SRC_SUB='subunits';
+const SRC_CHAIN='chain', SRC_PIN='pins';
+
+/* The office marker.
+
+   These were plain circles: at country zoom every office in a capital
+   lands on the same few pixels and the result read as specks of dust
+   rather than as something to click. A marker with a point and a stem
+   sits ON a place the way a pin does, keeps its shape when it overlaps
+   its neighbours, and is large enough to aim at.
+
+   Colour has to follow the basemap — the level palettes are redefined
+   per basemap so the overlay stays readable on a photograph and on a
+   painting alike — and MapLibre cannot tint an ordinary raster icon per
+   feature. So every basemap's five level colours are drawn once at
+   startup as their own image, and each pin carries the name of the one
+   it wants in `img`. Drawn at twice the size and declared pixelRatio 2,
+   so the edges stay clean on a retina screen. */
+function pinImage(hex){
+  const W=36, H=46, c=document.createElement('canvas');
+  c.width=W; c.height=H;
+  const g=c.getContext('2d');
+  const cx=W/2, cy=15, r=11.5;
+  g.beginPath();
+  g.arc(cx, cy, r, Math.PI*0.86, Math.PI*0.14);           /* the head */
+  g.lineTo(cx, H-3.5);                                     /* the point */
+  g.closePath();
+  g.fillStyle=hex;
+  g.strokeStyle='rgba(12,18,15,.85)';
+  g.lineWidth=2.4;
+  g.fill(); g.stroke();
+  /* a light core, so the marker still reads where the fill is dark */
+  g.beginPath(); g.arc(cx, cy, 4.1, 0, Math.PI*2);
+  g.fillStyle='rgba(247,245,240,.93)'; g.fill();
+  return g.getImageData(0,0,W,H);
+}
+function addPinImages(){
+  Object.keys(LEVELSETS).forEach(k=>{
+    LEVELSETS[k].forEach((hex,i)=>{
+      const id='pinimg-'+k+'-'+i;
+      if(!map.hasImage(id)) map.addImage(id, pinImage(hex), {pixelRatio:2});
+    });
+  });
+}
 
 function addChainLayers(){
   if(map.getSource(SRC_CHAIN)) return;
   map.addSource(SRC_CHAIN,{type:'geojson',data:{type:'FeatureCollection',features:[]}});
   map.addSource(SRC_PIN,{type:'geojson',data:{type:'FeatureCollection',features:[]}});
-  map.addSource(SRC_SUB,{type:'geojson',data:{type:'FeatureCollection',features:[]}});
   map.addLayer({id:'chain-f',type:'fill',source:SRC_CHAIN,
     paint:{'fill-color':['get','col'],'fill-opacity':0.10}});
   map.addLayer({id:'chain-l',type:'line',source:SRC_CHAIN,
@@ -2554,37 +2648,22 @@ function addChainLayers(){
     filter:['get','on'],
     paint:{'circle-radius':RH,'circle-color':['get','col'],'circle-opacity':0.16,
            'circle-blur':0.45}});
-  map.addLayer({id:'pin-on',type:'circle',source:SRC_PIN,
+  addPinImages();
+  map.addLayer({id:'pin-on',type:'symbol',source:SRC_PIN,
     filter:['get','on'],
-    paint:{'circle-radius':R,'circle-color':['get','col'],'circle-opacity':1,
-           'circle-stroke-width':1.8,'circle-stroke-color':'rgba(247,245,240,.92)'}});
+    layout:{'icon-image':['get','img'], 'icon-anchor':'bottom',
+            'icon-allow-overlap':true, 'icon-ignore-placement':true,
+            'icon-size':['interpolate',['linear'],['zoom'], 2,0.62, 6,0.82, 11,1]}});
   /* the name, once there is room for it */
   map.addLayer({id:'pin-label',type:'symbol',source:SRC_PIN,
     filter:['get','on'], minzoom:6.5,
-    layout:{'text-field':['get','label'],'text-size':10.5,'text-offset':[0,0.95],
+    layout:{'text-field':['get','label'],'text-size':10.5,'text-offset':[0,0.6],
             'text-anchor':'top','text-max-width':11,'text-padding':4,
             'text-allow-overlap':false,'text-optional':true},
     paint:{'text-color':'#e7e4dc','text-halo-color':'rgba(10,16,13,.92)','text-halo-width':1.4}});
-  /* Municipalities: open rings, so they read as somewhere to go into
-     rather than as an office to contact. */
-  map.addLayer({id:'sub-dot',type:'circle',source:SRC_SUB,
-    paint:{'circle-radius':['interpolate',['linear'],['zoom'],4,4.5,11,7],
-           'circle-color':['get','col'],'circle-opacity':1,
-           'circle-stroke-width':1.6,'circle-stroke-color':'rgba(247,245,240,.9)'}});
-  map.addLayer({id:'sub-label',type:'symbol',source:SRC_SUB, minzoom:6,
-    layout:{'text-field':['get','label'],'text-size':10.5,'text-offset':[0,1],
-            'text-anchor':'top','text-max-width':11,'text-padding':4,'text-optional':true},
-    paint:{'text-color':'#e7e4dc','text-halo-color':'rgba(10,16,13,.92)','text-halo-width':1.4}});
-  map.addLayer({id:'sub-hit',type:'circle',source:SRC_SUB,
-    paint:{'circle-radius':['interpolate',['linear'],['zoom'],4,9,11,15],
-           'circle-color':'#000','circle-opacity':0}});
-  map.on('mousemove','sub-hit', e=>{ map.getCanvas().style.cursor='pointer';
-    const f=e.features[0]; if(f) tip(e.lngLat, f.properties.label+(f.properties.cls?' \u2014 '+f.properties.cls:'')); });
-  map.on('mouseleave','sub-hit', ()=>{ map.getCanvas().style.cursor=''; hideTip(); });
-  map.on('click','sub-hit', e=>{ const f=e.features[0]; if(f) enterSettlement(f.properties.q, f.properties.label); });
-
   map.addLayer({id:'pin-hit',type:'circle',source:SRC_PIN,
-    paint:{'circle-radius':['interpolate',['linear'],['zoom'],2,8,11,14],
+    paint:{'circle-radius':['interpolate',['linear'],['zoom'],2,9,11,15],
+           'circle-translate':[0,-11],'circle-translate-anchor':'viewport',
            'circle-color':'#000','circle-opacity':0}});
   map.on('mousemove','pin-hit', e=>{ map.getCanvas().style.cursor='pointer';
     const f=e.features[0]; if(!f) return;
@@ -2620,9 +2699,13 @@ function setPins(){
   const live=new Set(STACK.map(s=>s.q).filter(Boolean));
   const feats=Object.values(PINS).map(p=>{
     const i=STACK.findIndex(s=>s.q===p.lvlQ);
+    const li = i<0 ? 0 : Math.min(i, LEVELSETS.atlas.length-1);
     return {type:'Feature', geometry:{type:'Point',coordinates:[p.lng,p.lat]},
       properties:{id:p.id, label:p.label, on:i>=0, lvl:i<0?9:i,
-        col:levelColour(i<0?0:i)}};
+        col:levelColour(i<0?0:i),
+        /* re-read on every setPins, which is also what a basemap
+           change calls, so the marker follows the palette */
+        img:'pinimg-'+BASEKEY+'-'+li}};
   });
   src.setData({type:'FeatureCollection',features:feats});
   const n=feats.filter(f=>f.properties.on).length;
@@ -2630,35 +2713,6 @@ function setPins(){
   if(el) el.textContent = Object.keys(PINS).length
     ? n+' of '+Object.keys(PINS).length+' offices on the map belong to where you picked'
     : '';
-}
-
-/* The municipalities inside the unit you have open. Drawn only when the
-   boundary files have run out, which is where the levels of government
-   the public deals with most — a city hall, a town council — would
-   otherwise disappear from the map. */
-let SUBS=[];
-function setSubs(feats){
-  SUBS=feats||[];
-  const src=map.getSource(SRC_SUB); if(!src) return;
-  src.setData({type:'FeatureCollection', features:SUBS});
-}
-async function loadSettlements(q, level){
-  if(!q) return setSubs([]);
-  try{
-    const rows = await sparql(qSettle(q), 'set:'+q);
-    const col = levelColour(level);
-    const seen={}, feats=[];
-    rows.forEach(r=>{
-      const m=/Point\(([-\d.]+) ([-\d.]+)\)/.exec(r.coord.value); if(!m) return;
-      const id=qid(r.item.value); if(seen[id]) return; seen[id]=1;
-      const nm=(r.itemLabel&&r.itemLabel.value)||''; if(!nm||isQ(nm)) return;
-      feats.push({type:'Feature', geometry:{type:'Point',coordinates:[+m[1],+m[2]]},
-        properties:{q:id, label:nm, cls:(r.clsLabel&&r.clsLabel.value)||'', col:col}});
-    });
-    setSubs(feats);
-    if(feats.length) noteBelow('The boundary files stop here, so the '+feats.length+
-      ' towns and cities Wikidata places inside this unit are drawn as rings. Click one for its own offices.');
-  }catch(e){ setSubs([]); }
 }
 
 /* Municipal polygons from OSM, fetched after the rings are already up.
@@ -2734,32 +2788,10 @@ async function loadMunicipalities(parentFeature, level){
   setAdmData(feats);
   setDot('bd','ok','Boundaries live');
 
-  /* keep a ring only where no polygon arrived to replace it */
-  const left = SUBS.filter(f=>{
-    const pt=f.geometry.coordinates;
-    return !feats.some(mf=>inGeom(pt, mf.geometry));
-  });
-  setSubs(left);
-
   const wd = feats.filter(f=>f.properties.wd).length;
   noteBelow(feats.length+(sub?' units below the municipality':' municipalities')+
-    ' from OpenStreetMap are drawn as outlines'+
-    (wd<feats.length ? ', '+wd+' of them matched to a Wikidata record' : '')+
-    (left.length ? '. '+left.length+(left.length===1?' more is a ring':' more are rings')+
-       ', which OpenStreetMap has no boundary for.' : '.'));
-}
-
-/* stepping into a municipality: it has no polygon, so the chain keeps
-   the parent's outline and the offices resolve for the place itself */
-function enterSettlement(q, label){
-  const top=STACK[STACK.length-1];
-  STACK.push({q:q, label:label, iso3:top?top.iso3:null,
-              level:(top?top.level:0)+1, feature:null});
-  setSubs([]);
-  openJuris(q, label);
-  paintTrail(); paintChain(); setPins();
-  loadPins(q, false);
-  loadSettlements(q, STACK.length-1);
+    ' from OpenStreetMap, drawn as outlines'+
+    (wd<feats.length ? '; '+wd+' matched to a Wikidata record.' : '.'));
 }
 
 /* Clicking a marker. If the office is in the resolved list it opens in
@@ -2789,7 +2821,14 @@ async function loadPins(q, isCountry){
       const id=qid(r.item.value);
       const nm=(r.itemLabel&&r.itemLabel.value)||'';
       if(isQ(nm)||!nm) return;        /* unnamed records are not offices anyone can contact */
-      if(!PINS[id]) PINS[id]={id:id, lng:+m[1], lat:+m[2], label:nm, lvlQ:q};
+      /* The coordinate query is separate from the office list, so it was
+         not running any of the same filters and put things on the map
+         that the diagram had already rejected — "High Commission of
+         Malaysia, Nairobi" sat among Kenya's own offices. A foreign
+         mission is in the country, not of it. */
+      if(RX_DIPLO.test(nm)) return;
+      if(isTenure(nm,[])||RX_DOC_CLS.test(nm)||RX_SYMBOL.test(nm)) return;
+      if(!PINS[id]) PINS[id]={id:id, lng:+m[1], lat:+m[2], label:officeLabel(nm), lvlQ:q};
       else { PINS[id].lvlQ=q; if(isQ(PINS[id].label)) PINS[id].label=nm; }
     });
     /* prefer the office list's name where there is one, since it has
