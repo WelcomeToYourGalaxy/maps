@@ -3116,5 +3116,29 @@
   ],
   "scores": "ESP 23->25, ITA 32->34, MMR 55->57 (now second of 194, was third), MYS 29->31. All four writeups quoted the old figure and were rewritten.",
   "handoff": "Rewritten in full at this round. The round-29 version had been patched across five rounds and was drifting back into round-by-round narrative, which is the failure mode the round-29 rewrite existed to stop. The new one states the current position only."
+ },
+ "round35": {
+  "date": "2026-11-12",
+  "yield": "3 records, 3 new places, all on the moves-against-the-bank row: ISL, DEU, IRL. Row 118/61/30% to 121/64/31%.",
+  "settled": [
+   {
+    "iso3": "ISL",
+    "date": "2009-02-26",
+    "what": "Parliament passed a bill 33-18 restructuring the Central Bank of Iceland, replacing the three-person board of governors with a governor and a deputy, which removed Davíð Oddsson. PM Jóhanna Sigurðardóttir had written to the three governors on 2 February asking them to resign; Oddsson refused publicly and called it interference with independence. RÚV reported he announced his resignation at a staff meeting earlier the same day, before the vote - the record says so rather than choosing between the two accounts. Svein Harald Øygard named interim governor 27 February. Kind 'law change'."
+   },
+   {
+    "iso3": "DEU",
+    "date": "1997-05",
+    "what": "Waigel's plan to change the Bundesbank law, revalue the bank's 95m ounces of gold and take part of the paper profit in 1997 to meet the Maastricht deficit criterion. The Bundesbank council rejected it publicly, saying it could be construed as an attack on its independence; Tietmeyer had warned the Bundestag budget committee on 19 March and said publicly on 17 April that revaluation was for the future ECB. Kohl and the coalition said at first they would change the law anyway; the bank broke its news blackout to deny Tietmeyer was resigning. Government backed down in early June - gold revaluable, proceeds not countable for 1997. Waigel survived a parliamentary motion 328-311 on 4 June. Kind 'attempted law change'. Dated 1997-05 (partial) because sources give the council statement only as late May."
+   },
+   {
+    "iso3": "IRL",
+    "date": "2010-11-19",
+    "what": "Trichet's secret letter to Lenihan making further Emergency Liquidity Assistance to Irish banks conditional on Ireland applying for an EU/IMF programme plus austerity, recapitalisation and a repayment guarantee. ELA is paid by the Central Bank of Ireland but must be allowed by the ECB governing council, which is the mechanism. ECB support had passed EUR 50bn. Ireland applied on 21 November. The ECB withheld the letter for four years and published it on 6 November 2014 after the European Ombudsman and an MEP pressed and after the Irish Times printed a copy; the ECB's own release said domestic factors pushed Ireland into the programme. Kind 'foreign pressure' (new kind). This is the clearest instance on the map of a central bank being used as leverage over a government."
+   }
+  ],
+  "scores": "DEU 22->24, IRL 21->23, ISL 16->18. All three writeups quoted the old figure and were rewritten.",
+  "researched_not_filed": "Switzerland: Philipp Hildebrand resigned as SNB chairman in January 2012 over his wife's currency trades, under political attack led by Christoph Blocher. Identified as the strongest remaining rich-democracy case but not researched to a source this round. Do it first next time.",
+  "rounds_remaining_estimate": "Computed rather than guessed, from coverage.py's to-go counts minus the structurally unreachable, divided by realistic per-round yields. Auditors: 26 reachable, 2-4 a round, 6-13 rounds. Printers: 45 reachable after removing the structurally closed euro area, 3-5 a round, 9-15 rounds. Worked in parallel the two finishable rows need roughly 9-15 more rounds. The case rows (corruption, revolving door, moves against the bank) and the two disclosure-limited rows (reserve managers, gold custodians) have no reachable ceiling and approach completeness asymptotically - on current yields the reserve-manager and gold rows alone would need 50-160 rounds to fill, which is the honest way of saying they never fill."
  }
 }
