@@ -10,10 +10,15 @@ For each case, look for the documented terms attached to THAT lender's money for
 Good sources: the lender's own project page or loan/financing agreement, project appraisal document, program document, IMF letter of intent or press release, Inspection Panel / CAO / Accountability Mechanism reports, AidData records, reputable research.
 
 Output conditions_out file: {"<id>": {"conditions_add": "1-3 plain sentences saying what the lender required, credited to the source, e.g. 'The 2009 loan agreement required the government to carry out a resettlement plan (World Bank, Project Appraisal Document).'", "ct": [types from the list below], "why": {"<type>": "short quote from conditions_add"}, "sources_add": [{"title","publisher","year","url"}], "searched": "one line"}}
-Types: priv, prices, tax, cuts, deval, trade, labour, land, fees, invest, law, repay, tied, safeguard, fincov, admin, none ("none" only if a source says no condition was attached).
+Types: priv, prices, tax, cuts, deval, trade, labour, land, fees, invest, law, repay, tied, safeguard, fincov, admin, none ("none" only if a source says no condition was attached), nopub, exhaust (both described below).
 - `fincov` — financial covenants and use-of-proceeds terms: a required rate of return, a self-financing or debt-to-equity ratio, an offtake undertaking, a restriction on what the money may be spent on, a required escrow or minimum balance.
 - `admin` — institutional or planning covenants: create an agency, adopt an action plan or manual, set up a unit or committee, submit plans for the lender's review.
 If nothing is found, give "conditions_add": "", "ct": [] and say what you tried in "searched".
+
+**Two types record an absence rather than a term. They are the right answer more often than you will expect, and a well-evidenced one is worth more than a thin entry.** Set `ct_note` whenever you use either: one plain line saying what was looked for and not found. It renders on the public card under "What was looked for", so write it for a reader, not for the next agent.
+- `nopub` — the lender named on this case never publishes terms for this kind of deal, so no further search will reach them. Use it only when the absence is a property of the lender or the vintage, not of your search: MIGA guarantees, IFC financial-intermediary facilities that name no sub-borrower, a pre-portal or pre-ESRS investment, a loan number below a publisher's floor. Say which.
+- `exhaust` — the published document types are genuinely used up and the terms would survive only in a leaked, litigated or archival copy. Name the archive if you know it.
+If a case has two lenders and you settle only one, set `nopub` AND leave `research` in place, and say in `ct_note` which side is closed. Do not retire a whole case on one lender's absence.
 
 Rules (non-negotiable):
 - Every fact comes from a page you actually opened with WebFetch. No figures from memory or search snippets. Wikipedia not as sole source.
