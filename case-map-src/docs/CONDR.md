@@ -77,9 +77,26 @@ brief were wrong and cost three rounds, so test a host yourself before recording
   banktrack.org, statewatch.org/media and data.privacyinternational.org (released EU action
   documents, which do carry conditionality), Companies House, HKEXnews, cninfo, govinfo, and most
   PDF annual reports.
-- **Refusing:** ebrd.com, iadb.org, mici.iadb.org, documents.worldbank.org, otvoreniparlament.rs,
-  jica.go.jp project pages (its evaluation PDFs do open), peoplepower21.org,
+- **ebrd.com SERVES. It was wrongly listed here as refusing, and that one line blanked three cases
+  across several rounds.** Project summary documents are at
+  `https://www.ebrd.com/work-with-us/projects/psd/<numeric-project-id>.html` — **name slugs 404, use
+  the number.** Also serving: `/documents/ipam/<year>/<case>-*.pdf`, the complaints registry paths
+  under `/content/dam/ebrd_dxp/assets/pdfs/ipam/...`, and archived monitoring reports under
+  `/content/dam/ebrd_dxp/documents/owcs-archive/...`. If a project summary URL returns a permission
+  prompt rather than a page, that is the permission system, not the host: the same URL serves in
+  full by another route. Independent consultant monitoring reports are often where a term's actual
+  wording lives when the loan agreement is not public.
+- **Refusing:** iadb.org, mici.iadb.org, documents.worldbank.org, otvoreniparlament.rs,
+  jica.go.jp project pages (its evaluation PDFs do open),
   mneguidelines.oecd.org, Reuters, The Guardian, sec.gov's cgi-bin EDGAR search.
+  **Before you record any host as refusing, re-test it and say which kind of failure you got.** This
+  list has been wrong eight times and every time the cause was the same: an unanswered permission
+  prompt written down as a refusal by the host. `disclosures.ifc.org`, `idbinvest.org`, `afdb.org`,
+  `peoplepower21.org`, `recommon.org` and `ebrd.com` were all on it and all serve.
+- **dfc.gov carries OPIC's own project summaries** at `dfc.gov/sites/default/files/esia/<year>/<project>/`.
+  They use the word covenants outright and state requirements on the project company directly, so
+  for any OPIC co-financed case they are a stronger document than the other lender's disclosure.
+  webharvest.gov's rate-limited FOIA archive is not needed for these.
 - **MIGA cases are retired, not researched.** miga.org publishes only cover type, amount, fiscal
   year, sector and status. No guarantee contract or term sheet is published anywhere.
 - **The Accountability Console** serves complaint records but carries **no financing terms**. It is
