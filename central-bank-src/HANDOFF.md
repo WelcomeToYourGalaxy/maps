@@ -2,7 +2,7 @@
 
 Paste or attach this in a new chat to carry on adding to the map.
 
-Rewritten at round 29. Earlier versions carried round-by-round narrative that went stale and misled round 26 into re-researching records already on the map. This version states the current position only. **Where it names a country as dead or blocked, that is as of round 29 — re-derive the target list from `coverage.py` before briefing anything.**
+Rewritten at round 29, kept current through round 30. Earlier versions carried round-by-round narrative that went stale and misled round 26 into re-researching records already on the map. This version states the current position only. **Where it names a country as dead or blocked, that is as of round 30 — re-derive the target list from `coverage.py` before briefing anything.**
 
 ## What it is
 - A standalone global map titled **"Central bank capture"**. It shows who owns and steers each central bank, what it hides, the corruption inside and around it, and how far its money reaches beyond its borders.
@@ -41,25 +41,25 @@ Another session of the user's commits to this repo often. **Always `git fetch or
   - Links: `{n, cb | tn, rel, role, detail, src_t, src_u}`.
   - Popups turn each link into a plain sentence (`SAY` / `sayLink` / `srcItem` in `app.js`). Add a `SAY` entry for any new `role` string.
 
-## Where it stands (after round 29, 12 November 2026)
+## Where it stands (after round 30, 12 November 2026)
 
-1,491 outside parties and 2,090 ties. 1,720 writeups, one for every box.
+1,492 outside parties and 2,092 ties. 1,721 writeups, one for every box.
 
 | Category | Records | Places | Breadth |
 |---|---|---|---|
 | Corruption cases | 232 | 154 | 75% |
-| External auditors | 198 | 160 | 78% |
+| External auditors | 199 | 161 | 78% |
 | Banknote printers | 157 | 133 | 65% |
 | Swap lines | 240 | 84 | 41% |
 | Revolving door | 206 | 80 | 39% |
 | Governor removals and pressure | 110 | 55 | 27% |
-| Outside reserve managers | 154 | 36 | 17% |
+| Outside reserve managers | 155 | 37 | 18% |
 | Gold custodians | 58 | 31 | 15% |
 | Named shareholders | 228 | 9 | near-complete* |
 
 \* Named shareholders reads low because only about ten central banks have private shareholders at all. Outside reserve managers reads low because 103 of its 154 ties are Norway's fund — and no list of which banks hire outside managers is published anywhere, so this row has no honest denominator.
 
-`agents/work/coverage.py` computes this table from the data files. **Run it every round and derive the target list from its absent list; never from prose in this document.** Round 26 briefed agents from prose lists here that had gone stale, and ten of the records the agents returned were already on the map.
+`agents/work/coverage.py` computes this table from the data files. **Run it every round and derive the target list from its absent list; never from prose in this document.** Round 30 added that absent list — it never existed, though every earlier version of this document told rounds to use it. `coverage.py` now prints, per row, the places holding no record of that kind, with union codes and the ten places with no central bank separated out as "not targets". Round 26 briefed agents from prose lists here that had gone stale, and ten of the records the agents returned were already on the map.
 
 ## How complete the map is, as a whole
 
@@ -231,21 +231,28 @@ Bounded sets that worked:
 ## What is left
 
 ### 1. External auditors — the row that can actually finish
-160 of 206 done, union members included. `coverage.py`'s absent list is 46 codes; remove the four union codes and the ten places with no central bank and **32 countries remain**:
+161 of 206 done, union members included. `coverage.py` now prints the list itself and does the subtraction: **31 countries remain**:
 
-`AGO ARE BLR CPV CUB CUW DZA EGY ERI ETH IRN JOR KHM LAO MAC MDG MKD MRT MWI PRY PSE QAT RWA SDN STP SYR TJK TKM TWN UZB VEN YEM`
+`ARE BLR CPV CUB CUW DZA EGY ERI ETH IRN JOR KHM LAO MAC MDG MKD MRT MWI PRY PSE QAT RWA SDN STP SYR TJK TKM TWN UZB VEN YEM`
 
-**Four of those are confirmed to print no name and are not retry targets**: the UAE (2025 report says only "an independent external auditor appointed by the Board"), Qatar (chapter 11 names nobody), Ethiopia (standalone statements open into the accounts and end at note 31), São Tomé (the Comité de Auditoria page under Lei 03/2025 confirms the committee proposes external auditors and reviews their reports, but names no firm and the site publishes no accounts). **So the ceiling is 28 more countries.**
+**Five of those are confirmed to print no name and are not retry targets**: the UAE (2025 report says only "an independent external auditor appointed by the Board"), Qatar (chapter 11 names nobody), Ethiopia (standalone statements open into the accounts and end at note 31), São Tomé (the Comité de Auditoria page under Lei 03/2025 confirms the committee proposes external auditors and reviews their reports, but names no firm and the site publishes no accounts), and Macao (settled in round 30, below). **So the ceiling is 26 more countries.**
+
+**Macao is the round-30 lesson and generalises.** The AMCM publishes its `Relatório e contas` in the Macao official gazette — `Boletim Oficial` II Série supplements on `images.io.gov.mo` — and not on its own site, which is why the rebuilt `amcm.gov.mo` has no annual-report index and looked like a blocked host for three rounds. The 2018 report was read in full: section 3.3.3 is headed "Auditoria interna e externa" but its text covers only the internal audit office, and item 5 is the opinion of the AMCM's own Comissão de Fiscalização. No firm anywhere; the 2004 and 2010 indexes have the same structure. **Before logging a central bank's accounts as unreachable, check whether the country publishes them in its official gazette.** That is where Macao, and probably others on the list, actually puts them.
 
 **What is actually blocking the rest, as of round 29** — these are host problems, not search problems, and OCR does not help:
 - `cbe.org.eg` (Egypt) — F5 WAF, rejects plain fetch and headless Chrome with a support ID
 - `centralbank.cw` + its `exch.` mirror (Curaçao) — refuses fetches; mirror's certificate does not match the hostname
 - `bcm.mr` (Mauritania) — empty single-page-app shell, no links render at all
-- `amcm.gov.mo` (Macao) — site rebuilt, old annual-report paths 404, no replacement index
 - `rbm.mw` (Malawi) — document lists built in script that does not run headless; only PDFs on any page are access-to-information forms
 - `bank-of-algeria.dz`, `bcp.gov.py`, `bcv.cv`, `nbc.gov.kh`, `cbj.gov.jo`, `bcv.org.ve`, `banque-centrale.mg`, `nbt.tj`, `nbrm.mk` (Cloudflare bot check), `beac.int` (robots-disallowed)
 
-**Still unopened and worth trying:** Macao's `Boletim Oficial` II "sínteses de contas" supplements (the avisos oficiais files are insurance notices only); Taiwan's Ministry of Audit; Myanmar's law as a .docx on myanmartradeportal; Cambodia's Khmer-language site or National Audit Authority.
+**Still unopened and worth trying:** Myanmar's law as a .docx on myanmartradeportal; Cambodia's Khmer-language site or National Audit Authority; the Uzbek Senate's record of the audit conclusion it receives each May.
+
+**Jordan is the closest of the remaining ones.** `opendata.gov.jo` carries the Central Bank of Jordan's "financial statements and independent auditors report" as CKAN datasets `MIGRATED-450-2018` and `MIGRATED-450-2020`, with resource UUIDs exposed (`1e1fc742-3772-494e-a843-79c79213c945`, url type `upload`, a 1.5 MiB PDF). The resource page renders through WebFetch but prints no download link, and every `curl` to that host from the sandbox is reset by the peer. The document exists and is addressed; only the fetch is blocked. Try the CKAN `package_show` API from a host that can reach it, or a browser.
+
+**Taiwan stays unfiled on purpose.** The Ministry of Audit publishes a 中央政府總決算審核報告 whose consolidated balance sheet includes the central bank's deposits, but that is the government's consolidated account, not an audit of the bank's own statements. Filing it would say more than the source does.
+
+**Uzbekistan now has a pinned statute, which is not a record.** Article 8 of the Law on the Central Bank (LRU-582, 11 November 2019) has the Senate of the Oliy Majlis consider the annual report together with the conclusion of the audit organization, and article 15 sets the 15 May deadline. The published annual reports carry no statements and no auditor's report. Same position as Egypt's article 36: a named mechanism is not a named firm.
 
 **Shapes to expect.** Joint audits are common and are recorded as one printed string: Bangladesh (Howladar Yunus & Co. with ACNABIN), Haiti (KPMG S.A. with Mérové-Pierre), Namibia, Lesotho, BEAC. Hybrids where a supreme audit institution is the statutory auditor but a private firm does the work: Seychelles (Grant Thornton Abu Dhabi on the Auditor General's behalf), Papua New Guinea, Trinidad and Tobago (BDO T&T). One-off international reviews rather than statutory appointments: Libya (Deloitte, both branches, 2014–2020, UN-procured) — say so in the record's own sentence. Purely local firms with no network: San Marino (Solution S.r.l.).
 
@@ -268,10 +275,12 @@ Bounded sets that worked:
 
 **Named next steps:** Zambia (diplo.news on the new kwacha launch), Costa Rica (BCCR press release of 11.11.2020), North Macedonia (the printing tender award notice), Georgia (centralbanking.com, likely paywalled), Zimbabwe (mriguide.com and zimbabwenow.co.zw mirrors; note one source is Fidelity Printers *denying* that it prints Zimbabwe dollars), Uruguay (2000s BanknoteNews commemorative entries identified but never fetched).
 
-### 3. Outside reserve managers — 154 ties at 36 banks, 103 of them Norway
+### 3. Outside reserve managers — 155 ties at 37 banks, 103 of them Norway
 **RAMP does NOT publish its membership**, only contradictory counts ("over 70" 2024 → "a record 95" April 2026). Each of the fourteen RAMP ties was assembled from an individual press release; roughly 80 members remain unidentified, and the same search run year by year, in Spanish, French and Portuguese too, will keep yielding them. Every bank the World Bank has named is already recorded.
 
 **Say what the source says.** Most RAMP announcements describe advice, technical assistance or training; only Seychelles states that RAMP actually manages a portfolio. Never upgrade membership or advice into management.
+
+**Angola is now on this row and is not finished.** Expansão, reading the BNA's accounts, put 56% of the central bank's external assets with the London firm Gemcorp Capital at the end of 2023, and Governor Manuel Tiago Dias answered the paper on the record referring to the bank's *other* external managers — who are not named. More Angolan managers are there to find, and the route is the same: a financial newspaper reading accounts the bank itself will not serve.
 
 **Best remaining vein:** small open economies that publish a standalone reserves-management report. The Central Bank of Seychelles' International Reserves Management Report 2025 named three outside parties in one document.
 
@@ -301,21 +310,25 @@ These cannot finish; no complete count exists anywhere. They approach completene
 
 ## Patterns — the open question
 
-Seventeen patterns: five complete because a source publishes the whole list, five that are censuses of the rows above and move only when those rows move, seven shown by example. The aim the user has stated is **a rundown of all the main currents in the field worldwide, drawn from general knowledge and research rather than only from data compiled on the map.**
+Eighteen patterns: five complete because a source publishes the whole list, five that are censuses of the rows above and move only when those rows move, eight shown by example. The aim the user has stated is **a rundown of all the main currents in the field worldwide, drawn from general knowledge and research rather than only from data compiled on the map.**
 
-Against that aim, three major currents are missing as of round 29:
+Round 30 added the second of the three currents listed below — **supervisory capture**, as `supervisory-capture`, "Supervisors going easy on the banks they watch". It is built from inquiries and studies, not from the map's records: Ireland (Honohan 2010, "excessively deferential and accommodating", about two supervisory staff per institution), Iceland (the 2010 Special Investigation Commission, gross negligence by seven officials including a governor and the head of the FME, and staff leaving supervision for the banks they supervised), Portugal (the Costa Pinto review the Banco de Portugal commissioned on itself and then kept sealed, and the 2021 inquiry's "permanent and systematic failure"), Germany (BaFin's short-selling ban against Bundesbank advice and its criminal complaint against the FT journalists), the United States (Agarwal, Lucca, Seru and Trebbi, QJE 2014) and Lebanon (the auditor on both sides). **The US study finds no support for the revolving door as the reason for supervisory leniency** — it attributes the gap to local economic pressure and to resources. That cuts against the simplest reading of the pattern and is stated in both the summary and the `uncertain` field; do not quietly drop it.
+
+Round 30 also rewrote the `big-four-auditors` summary, which still read "of 28 institutions whose auditor the map has traced" — stale by about 170 records, and a breach of the rule that a pattern must describe the field rather than count the map's own records. **Check the other pattern summaries against that rule; this one sat wrong for many rounds.**
+
+Against the stated aim, two major currents are still missing as of round 30:
 
 1. **Asset purchases and who they enriched.** Nothing covers quantitative easing. The Fed bought corporate bonds and bond ETFs in 2020 through BlackRock's advisory arm while BlackRock was the largest manager of those same ETFs; the ECB's corporate sector purchase programme bought named companies' bonds; interest paid on reserves created by QE became multi-billion transfers from central banks to commercial banks in 2022–24.
-2. **Supervisory capture.** The map has the revolving door but not the structure where a central bank supervises banks it is entangled with: the same four firms auditing both the central bank and the banks it supervises, supervisory forbearance before collapse (the Banco de Portugal/BES findings are in the data but read as a Portugal case, not a pattern), supervisors moving to supervised banks, and Basel standards negotiated with the industry through the Institute of International Finance. **The existing `big-four-auditors` pattern is the seed of this one and stops at counting firms.** This is the strongest candidate: it extends a pattern already there and the auditor data anchors it.
+2. ~~**Supervisory capture.**~~ **Done in round 30.** Left here for the record: The map has the revolving door but not the structure where a central bank supervises banks it is entangled with: the same four firms auditing both the central bank and the banks it supervises, supervisory forbearance before collapse (the Banco de Portugal/BES findings are in the data but read as a Portugal case, not a pattern), supervisors moving to supervised banks, and Basel standards negotiated with the industry through the Institute of International Finance. **The existing `big-four-auditors` pattern is the seed of this one and stops at counting firms.** This is the strongest candidate: it extends a pattern already there and the auditor data anchors it.
 3. **Central bank digital currency and its vendors.** Over 100 central banks have CBDC work underway; designs differ on traceability and programmability; the building is contracted to a short list of firms (Giesecke+Devrient, Bitt, R3, Consensys, nChain).
 
 Weaker fits, noted but not recommended: stablecoin issuers as private money creators (Tether, Circle); gold repatriation as a political current (Germany, the Netherlands, Poland, Hungary, Venezuela — the custody data already carries the facts); climate mandates and the NGFS, contested in both directions.
 
 ## How long to finish
 
-**Yield by round:** 35, 34, 33, 56, 50, 24, 34, 42, 40, 21, 14, 13, then 4 (r27), 3 (r28), 2 (r29) — the last three being single-row auditor rounds.
+**Yield by round:** 35, 34, 33, 56, 50, 24, 34, 42, 40, 21, 14, 13, then 4 (r27), 3 (r28), 2 (r29), 3 (r30) — the tail being single-row auditor rounds. Round 30 also added a pattern and two settled negatives, which move the picture more than a record does at this stage: with the service rows this far along, converting a "blocked" country into a confirmed blank is worth as much as a find, because it stops future rounds spending on it.
 
-**Auditors: 6 to 10 more rounds** for the 28 reachable countries. Rounds 27–29 took nine countries with OCR. What is left is mostly blocked hosts, so plan against 2 to 4 a round and expect several to need a copy of the document from somewhere other than the bank's own site.
+**Auditors: 6 to 10 more rounds** for the 26 reachable countries. Rounds 27–29 took nine countries with OCR. What is left is mostly blocked hosts, so plan against 2 to 4 a round and expect several to need a copy of the document from somewhere other than the bank's own site.
 
 **Ten places have no central bank at all** — Panama, Kiribati, Tuvalu, Nauru, Micronesia, the Marshall Islands, Palau, Andorra, Monaco, Liechtenstein. Listed in `gaps.json` under `no_central_bank` and left in the 206-place denominator, so every service row is understated by about five points. The reachable ceiling on those rows is 196 of 206, or 95%.
 

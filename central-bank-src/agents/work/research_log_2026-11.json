@@ -2947,5 +2947,56 @@
     "why": "nbt.tj financial-report paths 404."
    }
   ]
+ },
+ "round30": {
+  "date": "2026-11-12",
+  "yield": "3 records and two settled negatives: Angola's external auditor (KPMG) and Angola's outside reserve manager (Gemcorp Capital); a new pattern, supervisory capture; Macao settled negatively from a primary source; Uzbekistan's statute pinned down.",
+  "method": "Derived the target list from coverage.py rather than handoff prose, then worked the leads the log marked untried. The two Angola records came from the Angolan financial newspaper Expansao reading the BNA's own Relatorio e Contas, after www.bna.ao proved to be a script-built shell with no document list (same failure mode as Mauritania). Both are filed weak_source true: they rest on press reporting of the accounts, not a copy of the accounts.",
+  "settled": [
+   {
+    "iso3": "AGO",
+    "what": "auditor",
+    "firm": "KPMG",
+    "note": "Expansao, 23 May 2022, Joaquim Jose Reis: the 2021 BNA accounts carried one reservation and seven emphases from the external auditor KPMG, against three reservations and six emphases on the 2020 accounts. The member firm that signed is not stated."
+   },
+   {
+    "iso3": "AGO",
+    "what": "outside reserve manager",
+    "firm": "Gemcorp Capital (London)",
+    "note": "Expansao, 10 May 2024: Gemcorp held 56% of the BNA's external assets at end-2023, 601,697 million Kz (about 725m USD), up from 286,532 million Kz at end-2022. Holdings named: Gemcorp Fund Limited (492,786 million Kz), L-Crest (133.89m USD invested 2023, 131.40m USD at 31.12.2023), and a public-and-corporate-debt fund (108,911 million Kz). Governor Manuel Tiago Dias answered the paper on the record and referred to the bank's OTHER external managers, who are not named - so Angola has more external managers still to find. Earlier reporting: for the 2019 and 2020 accounts Gemcorp would not say what it had invested the money in, so the holding was carried at nil, and the bank then renewed for six more years. Gemcorp is also one of the bank's largest creditors."
+   }
+  ],
+  "settled_negatives": {
+   "MAC": "Confirmed blank on a primary official source, and no longer a retry target. The AMCM publishes its Relatorio e contas in the Macao official gazette (Boletim Oficial II Serie supplements on images.io.gov.mo), not on amcm.gov.mo - which is why the rebuilt site exposes no annual report index. The 2018 report was read in full: section 3.3.3 is headed 'Auditoria interna e externa' but its text covers only the internal Gabinete de Auditoria Interna, and item 5 is the opinion of the AMCM's own Comissao de Fiscalizacao, which works from the monthly accounts the AMCM sends it. No firm appears anywhere. The 2004 and 2010 gazette indexes show the same structure. NOTE: images.io.gov.mo is refused by the sandbox proxy (CONNECT 502) but reads fine through WebFetch, including the PDF.",
+   "UZB": "Statute confirms the mechanism, names no firm. Article 8 of the Law on the Central Bank (LRU-582, 11 Nov 2019) says the Senate of the Oliy Majlis considers the annual report together with the conclusion of the audit organization; article 15 sets the 15 May deadline. The 2025 annual report was read and carries no financial statements and no auditor's report; KPMG appears in it only as an adviser on buy-now-pay-later rules. Same position as Egypt's article 36: a named mechanism is not a named firm. Untried: the Senate's record of the conclusion it receives."
+  },
+  "did_not_settle": [
+   {
+    "iso3": "RWA",
+    "why": "bnr.rw/index.php?id=82 appears in search results with an annual-report list, but that is a cached index; fetching it returns the 'You need to enable JavaScript' shell. Confirms rounds 26 and 28. Dead by this route."
+   },
+   {
+    "iso3": "JOR",
+    "why": "opendata.gov.jo DOES expose the Central Bank of Jordan's 'financial statements and independent auditors report' as CKAN datasets MIGRATED-450-2018 and -2020, with resource UUIDs visible (e.g. 1e1fc742-3772-494e-a843-79c79213c945, url type 'upload', 1.5 MiB PDF). The resource page renders through WebFetch but prints no download URL, and every curl to opendata.gov.jo from the sandbox is reset by the peer. The file is there and addressed; only the fetch is blocked. Best next step: the CKAN API package_show endpoint from a host that can reach it, or a browser."
+   },
+   {
+    "iso3": "TWN",
+    "why": "No statement found that the Ministry of Audit audits the CBC's own financial statements. The Audit Office publishes a 中央政府總決算審核報告 whose consolidated balance sheet includes the central bank's deposits, but that is the government's consolidated account, not an audit of the bank's statements, and filing it would overstate what the source says. Unchanged from round 26."
+   },
+   {
+    "iso3": "LAO",
+    "why": "Searches return only Lao commercial banks and foreign bank branches (Deloitte Lao, PwC Lao, EY Lao, KPMG Lao audit those), never the Bank of the Lao PDR itself."
+   },
+   {
+    "iso3": "BLR",
+    "why": "No NBRB auditor found. Searches return Belarusian commercial banks audited by B1 Audit Services, Grant Thornton and Kept (the former EY and KPMG practices). The Banking Code route was not pinned down; the National Bank's annual report is approved by the President."
+   }
+  ],
+  "tooling": [
+   "coverage.py never printed an absent list, though the handoff told every round to build its target list from one. Added one: it now prints, per row, the places with no record, with union codes and the ten no-central-bank places separated out as 'not targets'. The no_central_bank filter must read gaps['no_central_bank']['places'] - the value is a dict with note/places, not a list.",
+   "audit_data.py earned its keep: it caught AGO sitting in auditors_unavailable while also holding a new auditor record. Removed the stale entry.",
+   "Two sandbox limits worth knowing: enumerating undocumented site API endpoints and sending a spoofed User-Agent are both refused by the environment's classifier, so site-internal APIs (www.bna.ao/service/rest) cannot be probed from here. Use WebSearch plus WebFetch, which reach documents curl cannot."
+  ],
+  "patterns": "Added the supervisory-capture pattern, the strongest of the three currents round 29 identified as missing. Built from inquiries and studies rather than from the map's records, as the pattern rule requires: Ireland (Honohan 2010), Iceland (SIC 2010), Portugal (Costa Pinto and the 2021 Novo Banco inquiry), Germany (BaFin and Wirecard), the United States (Agarwal/Lucca/Seru/Trebbi, QJE 2014) and Lebanon (auditor on both sides). The US study finds NO support for the revolving door as the reason for supervisory leniency, which cuts against the simple reading; that is stated in the pattern's summary and again in its uncertain field. Also rewrote the big-four-auditors summary, which still said 'of 28 institutions whose auditor the map has traced' - stale by 170 records, and a breach of the rule that a pattern must not count the map's own records."
  }
 }

@@ -5483,7 +5483,7 @@
    "id": "big-four-auditors",
    "title": "Four firms auditing the central banks",
    "kind": "club",
-   "summary": "Most central banks that hire private auditors use one of four firms. Of 28 institutions whose auditor the map has traced (27 central banks plus the BIS), PwC, EY, KPMG and Deloitte audit 17: PwC signs for six central banks and the BIS, EY for five (including the Bank of England), KPMG for the US Federal Reserve Banks, Spain and Switzerland, and Deloitte for France (with Mazars) and Türkiye; seven others (Japan, Hong Kong, Singapore, Sweden, Indonesia, Malaysia, Thailand) are audited by state audit offices instead. The same firms also appear in scandals: EY and Deloitte qualified but signed Lebanon's 2018 central bank accounts that carried a $6.82 billion invented asset.",
+   "summary": "Most central banks that hire a private auditor hire one of four firms: PwC, EY, KPMG and Deloitte. The same four audit many of the commercial banks those central banks supervise, so the firm checking the supervisor's own books is also paid by the banks the supervisor inspects. Lebanon shows what the overlap can cost. EY and Deloitte signed Banque du Liban's 2018 accounts, which carried a $6.82 billion asset the central bank had invented; the firms attached qualifications, and the accounts were published anyway. Where the auditor is a state audit office instead of a firm, the fee relationship goes away and the audit sits inside government.",
    "countries": [
     {
      "iso3": "FIN",
@@ -5840,7 +5840,142 @@
     }
    ],
    "claims_per_author": [],
-   "uncertain": "The sample covers only the 28 institutions traced in networks.json; auditors of the Bank of Italy, Bank of Korea, Banco de México, Saudi Central Bank, Bank of Russia, PBoC and others were not found. Concentration among four firms is a feature of the whole audit market and is not proof of influence over central banks."
+   "uncertain": "Concentration among four firms is a feature of the whole audit market and is not proof of influence over central banks. A central bank audited by a state audit office is not thereby better audited; it is audited by a body the government appoints. The count of which firm signs for which bank is in the map's own auditor records, not in this pattern."
+  },
+  {
+   "id": "supervisory-capture",
+   "title": "Supervisors going easy on the banks they watch",
+   "kind": "chain",
+   "summary": "Most central banks also supervise commercial banks, which means inspecting firms they rely on for information, for staff and for cooperation. Official inquiries keep finding that the supervisor went easy on them. Ireland's own governor, reporting in 2010 on the years before the crash, called the approach \"excessively deferential and accommodating\" and recorded that the Financial Regulator had about two supervisory staff for each credit institution. Iceland's parliamentary commission found gross negligence by seven officials, among them a central bank governor and the head of the financial supervisor, and recorded staff leaving supervision for jobs at the banks they had been supervising. The Banco de Portugal commissioned a review of its own supervision of Banco Espirito Santo and then kept it secret for years; a parliamentary inquiry in 2021 described the supervision as a permanent and systematic failure. In Germany, BaFin banned short selling of Wirecard shares after the Bundesbank had said a ban was not needed for financial stability, and filed a criminal complaint against the two Financial Times journalists who were reporting the fraud; the complaint against the journalists was later dropped and BaFin's president resigned after the company collapsed. Measuring the pattern is harder than citing it. US state-chartered banks are supervised by federal and state examiners in turn, which lets the two be compared on the same bank: federal examiners downgraded supervisory ratings about twice as often, and the states that were more lenient had higher bank failure rates and worse repayment of government assistance. The rules themselves are argued out with the industry. In 2010 the banks' own Institute of International Finance projected that the Basel III capital and liquidity rules would cut about 3 percent from advanced economies' output; the Basel Committee's Macroeconomic Assessment Group put the cost at roughly an eighth of that.",
+   "implications": "A supervisor that is slow or deferential costs the public money later, when a bank that should have been stopped has to be rescued. The inquiries above were all written after the collapse they describe, which is the usual order: the deference is visible in documents at the time and acted on afterwards. Two things make it easier to see early. One is whether the supervisor publishes what it found and when, including reviews of its own conduct. The other is what happens to people who say a bank is in trouble before the supervisor does - short sellers, journalists, staff inside the bank. A supervisor investigating those people instead of the bank is a fact that can be checked at the time, not years later.",
+   "countries": [
+    {
+     "iso3": "IRL",
+     "role": "inquiry found deference",
+     "note": "Patrick Honohan's 2010 report to the Minister for Finance, written as governor of the Central Bank, found a regulatory approach that was \"excessively deferential and accommodating; insufficiently challenging and not persistent enough\", bank supervision that relied on the banks' own governance and risk models rather than assessing risks independently, about two Financial Regulator staff per credit institution, and financial stability reports whose language was too reassuring. The 2016 Oireachtas banking inquiry found the Central Bank and Financial Regulator knew from 2003 that lending was concentrating in property."
+    },
+    {
+     "iso3": "ISL",
+     "role": "inquiry found deference",
+     "note": "The Special Investigation Commission reported to Althingi on 12 April 2010 and found gross negligence by seven officials, including then prime minister Geir Haarde, former central bank governor David Oddsson and the director of the Financial Supervisory Authority, Jonas Jonsson. It found the FME had not grown in proportion to the banks it supervised, and that staff moved from supervisory posts directly into better paid jobs at the institutions they had been supervising."
+    },
+    {
+     "iso3": "PRT",
+     "role": "inquiry found deference",
+     "note": "The Banco de Portugal asked a commission led by Joao Costa Pinto, a former vice-governor, to review its own supervision of Banco Espirito Santo. The report concluded the supervisor had not acted early or energetically enough and that keeping Ricardo Salgado in post was not the right choice. It was kept secret for years, and the Supreme Court refused in 2021 to release it to a parliamentary inquiry. The inquiry's own report called the supervision a permanent and systematic failure. The bank's supervision directors rejected the findings and said the supervisor had been energetic and intrusive."
+    },
+    {
+     "iso3": "DEU",
+     "role": "supervisor acted for the firm",
+     "note": "In February 2019 BaFin banned short selling of Wirecard shares, the first such ban on a single stock in German history, after the Bundesbank had said it was not needed for financial stability. In April 2019 it filed a criminal complaint against two Financial Times journalists who had reported whistleblower allegations, and against short sellers. Munich prosecutors later dropped the case against the journalists, finding no evidence of collusion. BaFin president Felix Hufeld announced his resignation in January 2021, and a Bundestag committee of inquiry examined the supervisor's conduct."
+    },
+    {
+     "iso3": "USA",
+     "role": "leniency measured",
+     "note": "US state-chartered commercial banks are supervised alternately by state and federal examiners on a set rotation, which allows the same bank under two supervisors to be compared. Agarwal, Lucca, Seru and Trebbi found federal examiners downgraded supervisory ratings about twice as often as state examiners, that states more lenient than the federal benchmark had higher bank failure rates, lower repayment of government assistance and more costly resolutions, and that relative leniency at one bank predicted that bank's later severe distress. The authors attribute the gap to how much weight supervisors put on the local economy and to differences in resources, and report no support for the revolving door as the explanation."
+    },
+    {
+     "iso3": "LBN",
+     "role": "auditor on both sides",
+     "note": "EY and Deloitte signed Banque du Liban's 2018 accounts, which carried a $6.82 billion asset the central bank had created, having attached qualifications rather than refusing to sign. Both firms audit commercial banks that the same central bank supervises."
+    }
+   ],
+   "role_info": {
+    "inquiry found deference": "An official inquiry or a report commissioned by the central bank itself concluded that the supervisor knew of the risks and did not act firmly enough. These are findings about conduct, not criminal verdicts.",
+    "supervisor acted for the firm": "The supervisor took action that protected the supervised company or went after the people reporting wrongdoing at it, rather than examining the company.",
+    "leniency measured": "A study compared supervisors examining the same banks and measured how differently they rated them, and what the gap cost.",
+    "auditor on both sides": "The firm auditing the central bank's own accounts also audits commercial banks that the central bank supervises."
+   },
+   "links": [
+    {
+     "from": "Institute of International Finance",
+     "from_city": "Washington",
+     "from_iso3": "USA",
+     "to": "BIS",
+     "to_city": null,
+     "to_iso3": "CHE",
+     "label": "projected Basel III would cost 3% of advanced economies' output; the Basel Committee's own group put it at about an eighth of that",
+     "years": "2010"
+    },
+    {
+     "from": "BaFin",
+     "from_city": "Frankfurt",
+     "from_iso3": "DEU",
+     "to": "Wirecard",
+     "to_city": "Munich",
+     "to_iso3": "DEU",
+     "label": "banned short selling of its shares and reported the journalists covering it",
+     "years": "2019"
+    }
+   ],
+   "timeline": [
+    {
+     "year": 2010,
+     "event": "Patrick Honohan's report on Irish banking called the regulatory approach excessively deferential and accommodating.",
+     "source_url": "https://www.rte.ie/news/2010/0609/132011-banks1"
+    },
+    {
+     "year": 2010,
+     "event": "Iceland's Special Investigation Commission found gross negligence by seven officials, including a central bank governor and the head of the financial supervisor.",
+     "source_url": "https://investing.com/news/economic-indicators/article-130009"
+    },
+    {
+     "year": 2010,
+     "event": "The Institute of International Finance projected Basel III would cut about 3% from advanced economies' output; the Basel Committee's Macroeconomic Assessment Group put the cost at roughly an eighth of that.",
+     "source_url": "https://www.bis.org/events/bokbisimf2012/session4_estimating.pdf"
+    },
+    {
+     "year": 2014,
+     "event": "A study of US federal and state examiners rotating through the same banks found federal examiners downgraded ratings about twice as often, and that leniency predicted later failures.",
+     "source_url": "https://www.nber.org/papers/w17736"
+    },
+    {
+     "year": 2019,
+     "event": "BaFin banned short selling of Wirecard shares against Bundesbank advice, then filed a criminal complaint against the Financial Times journalists reporting the fraud.",
+     "source_url": "https://www.bnnbloomberg.ca/wirecard-regulator-pursued-critics-after-a-probe-found-nothing-1.1569067"
+    },
+    {
+     "year": 2021,
+     "event": "BaFin's president resigned; Portugal's parliamentary inquiry called the Banco de Portugal's supervision of BES a permanent and systematic failure, and the Supreme Court kept the bank's own review of itself secret.",
+     "source_url": "https://www.essential-business.pt/2021/07/20/bes-novo-banco-supervision-failed-across-the-board/"
+    }
+   ],
+   "confirmed_by": [
+    {
+     "title": "Honohan report coverage, RTE and The Irish Times (2010)",
+     "url": "https://www.irishtimes.com/news/regulators-showed-unduly-deferential-approach-to-banks-1.675956"
+    },
+    {
+     "title": "Report of Iceland's Special Investigation Commission, chapter 21",
+     "url": "https://ypfsresourcelibrary.blob.core.windows.net/fcic/YPFS/SIC_04.12.2010_Ch-21.pdf"
+    },
+    {
+     "title": "UN review citing the SIC on supervisors moving to the banks they supervised",
+     "url": "https://cesr.uwazi.io/en/entity/hcjnbyxut693doszdebrfi529?page=14"
+    },
+    {
+     "title": "Costa Pinto hearings and the 2021 Novo Banco inquiry report",
+     "url": "https://www.essential-business.pt/?p=12633"
+    },
+    {
+     "title": "BaFin's pursuit of Wirecard's critics",
+     "url": "https://www.globalcapital.com/article/28mu9tpjsiu015o44foxt/people-and-markets/reckoning-begins-for-bafin-after-it-pursued-wirecard-foes-not-fraudsters"
+    },
+    {
+     "title": "Agarwal, Lucca, Seru and Trebbi, Inconsistent Regulators (NBER 17736; QJE 2014)",
+     "url": "https://econpapers.repec.org/RePEc:oup:qjecon:v:129:y:2014:i:2:p:889-938"
+    },
+    {
+     "title": "European Commission on the IIF and MAG estimates of Basel III",
+     "url": "https://ec.europa.eu/economy_finance/publications/qr_euro_area/2011/pdf/qrea1_section_1_en.pdf"
+    },
+    {
+     "title": "Al Jazeera on Banque du Liban's 2018 accounts",
+     "url": "https://www.aljazeera.com/economy/2020/7/23/lebanon-central-bank-chief-inflated-assets-by-6bn-in-2018"
+    }
+   ],
+   "claims_per_author": [],
+   "uncertain": "Deference is not the same as corruption, and none of these inquiries found that a supervisor was bought. The US study that measures leniency most carefully reports no support for the revolving door as the reason for it, and attributes the gap to local economic pressure and to supervisory resources; that finding cuts against the simplest reading of this pattern and is stated here because it does. The Banco de Portugal's supervision directors publicly rejected the Costa Pinto findings, and the report itself remains sealed, so what it says is known from the inquiry hearings and from press accounts rather than from the document. BaFin maintains the short selling ban was justified by the positions and volatility it observed at the time. Industry cost estimates for Basel III being wrong does not by itself show the rules were weakened. These are six documented instances, not a measured share of the world's supervisors; no complete count exists."
   },
   {
    "id": "money-routes",

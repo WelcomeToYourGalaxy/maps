@@ -92,3 +92,22 @@ for tier, head in (('closed','Complete — the source publishes the whole list')
         else:
             print(f"    {x['title']:52} {len(x.get('countries') or []):3d} countries shown")
     print()
+
+# ---- which places hold no record of each kind ----
+# The handoff tells each round to build its target list from here, not from prose.
+_nocb = gaps.get('no_central_bank') or {}
+NOCB = set(_nocb.get('places') or {}) if isinstance(_nocb, dict) else set(_nocb)
+UNION_CODES = set(UNION) | {'EMU'}
+print("\nPlaces with no record of this kind")
+print("  (union codes and the ten places with no central bank are listed separately)\n")
+for k in ('External auditors', 'Banknote printers', 'Gold custodians',
+          'Outside reserve managers', 'Governor removals and pressure',
+          'Corruption cases', 'Revolving door'):
+    s_, _n = cats[k]
+    ab = sorted(places - (s_ & places))
+    real = [c for c in ab if c not in UNION_CODES and c not in NOCB]
+    print(f"  {k} — {len(real)} to go")
+    print("    " + " ".join(real))
+    extra = [c for c in ab if c in UNION_CODES or c in NOCB]
+    if extra: print("    not targets: " + " ".join(extra))
+    print()
