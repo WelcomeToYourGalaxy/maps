@@ -39,21 +39,22 @@ Another session of the user's commits to this repo often. **Always `git fetch or
   - Links: `{n, cb | tn, rel, role, detail, src_t, src_u}`.
   - Popups turn each link into a plain sentence (`SAY` / `sayLink` / `srcItem` in `app.js`). Add a `SAY` entry for any new `role` string.
 
-## Where it stands (after round 21, 11 November 2026)
+## Where it stands (after round 22, 11 November 2026)
 
-1,440 outside parties and 1,950 ties. 1,669 writeups, one for every box.
+1,454 outside parties and 1,992 ties. 1,683 writeups, one for every box.
 
 **Breadth is now measured with currency-union ties expanded to member countries** (see below). That change alone moved four rows without any new research, because `coverage.py` had been undercounting what the map already showed.
 
 | Category | Records | Places | Breadth |
 |---|---|---|---|
 | Corruption cases | 232 | 154 | 75% |
-| External auditors | 162 | 124 | 60% |
+| External auditors | 170 | 132 | 64% |
 | Revolving door | 206 | 80 | 39% |
-| Banknote printers | 112 | 87 | 42% |
+| Banknote printers | 118 | 100 | 49% |
 | Swap lines | 240 | 84 | 41% |
 | Governor removals and pressure | 110 | 55 | 27% |
-| Outside reserve managers | 153 | 35 | 17% |
+| Outside reserve managers | 154 | 36 | 17% |
+| Gold custodians (new in round 22) | 27 | 11 | 5% |
 | Named shareholders | 228 | 9 | near-complete* |
 
 \* Named shareholders reads low because only about ten central banks have private shareholders at all. Outside reserve managers reads low because 103 of its 153 ties are Norway's fund — and no list of which banks hire outside managers is published anywhere, so this row has no honest denominator.
@@ -171,7 +172,7 @@ Bounded sets that worked:
 ## What is left
 
 ### 1. External auditors — the one category that can actually reach 100%
-Every central bank operates under a law that names who audits it, so the answer always exists. 124 of 206 done, union members included.
+Every central bank operates under a law that names who audits it, so the answer always exists. 132 of 206 done, union members included.
 - **The BCEAO is settled.** The all-lots award notice that five rounds could not fetch — its URL is 364 characters and WebFetch rejects it on length — **was opened in a browser and read off the rendered PDF**. It names a titulaire and a suppléant for the head office and for every national directorate. When WebFetch refuses a URL on length, a browser tool settles it in one call; stop retrying with offsets.
 - **BEAC is settled but imperfectly.** Its 2015 statutory auditors' report names KPMG and Mazars Cameroun jointly, signed at Yaoundé on 11 March 2016. That PDF is a scan and the two names extract as garbled text; the record says so in its own sentence. The 2023 report on beac.int is the clean replacement, and beac.int is robots-disallowed to the fetcher — a browser tool would settle it, as it did for the BCEAO.
 - **The ECB's own auditor is Baker Tilly GmbH & Co. KG Wirtschaftsprüfungsgesellschaft**, Frankfurt, signed 12 February 2025 for 2024. Keyed to `ECB`, so it reaches all 21 euro-area countries.
@@ -190,7 +191,7 @@ Every central bank operates under a law that names who audits it, so the answer 
 - Trinidad and Tobago is **contested, not unknown**: the Auditor General declined to audit the Central Bank and the Government wanted it resumed. Needs care, not another fetch.
 - Panama has no central bank.
 
-### 2. Banknote printers — 42%
+### 2. Banknote printers — 49%
 **The vein to run next is the issuing bank's own new-series press release.** It worked three times in four attempts in round 21 — Iceland ("printed by De La Rue Plc. in the UK"), Fiji (De La Rue International Limited) and Seychelles. It is the only vein that produced a printer name stated plainly enough to file. **BanknoteNews** is a per-country searchable archive that routinely names printers and gave Afghanistan.
 
 **A page already mined can have a second half.** The Tunisian piece used in round 20 only for its "prints abroad" list also names the Arab states that print domestically, with the works named — three records from one fetch (Saudi Arabia, Algeria, Jordan).
@@ -212,7 +213,7 @@ Every central bank operates under a law that names who audits it, so the answer 
 
 A single joint Banque de France release with the OeNB and Banco de Portugal yielded two records at once. **Multi-bank cooperation releases are worth hunting** for exactly this reason.
 
-### 3. Outside reserve managers — 153 ties at 35 banks, 103 of them Norway
+### 3. Outside reserve managers — 154 ties at 36 banks, 103 of them Norway
 **The World Bank's own RAMP channel is worked out.** Every central bank it has named is already recorded (Ecuador, Kosovo, Liberia, Zimbabwe, Armenia, Cabo Verde, Bosnia, Paraguay). New names on the Global Network and "RAMP voices" pages are the Pension Agency of Georgia, the Turkic Investment Fund, Korea National Pension Service, Panama Savings Fund and the FAO — none is a central bank. Further members must come from the *member bank's* own site or newsletter.
 
 **Central Banking's award archive is thinning for named pairings.** The 2022 BNP Paribas AM, 2023 Invesco, 2020 Amundi and 2025 Franklin Templeton asset-manager profiles describe mandates in detail but keep the client anonymous ("undisclosed central bank", "Mediterranean central bank"). The 2019 Citi custody profile names the Central Bank of Kuwait and Norges Bank only in the page's organisation metadata tags, never in readable text — not filed, but both are worth chasing from Citi's or the banks' own side.
@@ -228,6 +229,16 @@ A single joint Banque de France release with the OeNB and Banco de Portugal yiel
 **The best remaining vein:** small open economies that publish a standalone reserves management report. The Central Bank of Seychelles' International Reserves Management Report 2025 named three outside parties in one document.
 
 **Named but unnamed:** Botswana, the Trinidad HSF, Timor-Leste, Namibia, Ghana and Kazakhstan all confirm external managers and custodians without naming one firm. Botswana's IFSWF self-assessment says international managers run about half the Pula Fund, plus a global custodian and an investment consultant — not one is named. The BIS Banking Department says it manages mandates for central banks and names no client.
+
+
+### 3a. Gold custodians — new in round 22, and the fastest-growing row
+**Central banks disclose their gold custodians freely and their portfolio managers almost never.** Latvijas Banka's 2024 annual report names the Bank of England as the store of its gold in the same chapter where it refuses to name its seven external fixed-income managers. That asymmetry gave 27 records at 11 countries in one round, all from official sources: an RBA question-and-answer page, a Bundesbank release with four locations and tonnages, a Bank of Finland release with five custodians and their shares, a Riksbank notice, De Nederlandsche Bank's gold page, the SNB's balance-sheet questions, the Reserve Bank of India's half-yearly reserves report, and an Irish parliamentary answer.
+
+This is a relation of its own — `holds its gold reserves in custody` — with its own sentence in `SAY` and its own entry in `build_net.py`'s `REL` map. It is not the same thing as the gold dataset in `events_gold.json`, which gives tonnage per country and names no custodian. **Keep storage and management apart in the wording**: a bank holding gold "as bailee" leaves ownership with the depositor.
+
+**Still unworked and likely to disclose**: Poland, Portugal, Belgium, Italy, Spain, Denmark, the Philippines, Sri Lanka, Nepal, Thailand, Malaysia, and the Bank of England's own statistics on who holds gold accounts with it.
+
+**Why the manager row stays stuck.** Brazil's standalone reserves report says the reserves are managed internally; Turkey's 2024 reserves chapter says the same. The UAE selects external managers from "the top ten globally" and names none; the HKMA runs 30% externally, including all its listed equity portfolios, and names none. Every asset-manager and Central Banking hit this round was anonymised.
 
 ### 4. Revolving door — now the shallowest it has been
 **The method:** go to the central bank's own governor or board page, or the private firm's own board page, and read the career list. Do not search for scandal.
@@ -254,7 +265,9 @@ Round 5 retried Bahrain, Saudi Arabia, Oman, Taiwan and Singapore in Arabic, Chi
 
 **Cannot finish:** corruption cases, governor removals, and revolving door outside closed sets. No complete count exists anywhere, so the "35–45%" in `about.html` is a judgement made while compiling and will stay one. These approach completeness asymptotically.
 
-**Estimate: 6 to 9 more rounds** for everything finishable. Yield by round: 35, 34, 33, 56, 50, 24, 34 — and round 21 moved breadth far more than its record count suggests, because the union change counted what was already there and the BCEAO notice settled eight places at once. External auditors is the row that can actually be driven to its ceiling: 87 places are still missing it, about 40 of them already tried and logged in `auditors_unavailable`, ten of them places with no central bank at all. At round 21's rate that is four or five more rounds for auditors. Printers and managers have no master list, so they stop when the veins stop yielding rather than at a number.
+**Estimate: 5 to 8 more rounds** for everything finishable. Yield by round: 35, 34, 33, 56, 50, 24, 34, 42. External auditors is the row being driven to its ceiling — 132 of 206 places, and of the 74 left, ten have no central bank at all, so the real remainder is 64, most already tried once. **The method that is still paying is the offset re-read**: Guyana's auditor's report sat at about character 250,000 of 457,886 and Armenia's at 140,000 of 326,892, both previously abandoned because an earlier attempt read only the first 100,000 characters. Any target abandoned on a large annual report should be re-read at 100,000-character increments before being called unavailable. Second: whichever file form failed before, try the other — Belize's standalone statements are scans while its annual-report chapter extracts as text, and Guatemala and Azerbaijan were the reverse.
+
+**Three banks are fetcher-blocked rather than sourceless, and a browser settles them.** Peru fell this way: the Memoria 2024 chapter 7 PDF sits behind Incapsula to the fetcher and opens normally in Chrome. Romania fell to an offset read of a mirror. **North Macedonia did not**: nbrm.mk sits behind a Cloudflare bot check, which is not something to work around — it needs the file fetched by hand or a different mirror.
 
 ## Questions the user has settled (don't reopen)
 - **Unproven allegations** (10 November 2026). Show both and let the reader switch. A tick box, "Count cases that are allegations alone", sits under the legend on the three case layers, ticked by default. Cleared, a bank whose only cases are allegations stays on the inside layer scored at nothing rather than dropping off, and its box says any score in the paragraph was written with allegations counted.
