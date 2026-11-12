@@ -1857,12 +1857,22 @@ document.getElementById("bm").addEventListener("click", (e) => {
 // joins itself without a seam, levelled to the same quiet loudness.
 // Off until asked for: a map that starts making noise is a map people close.
 const SND_FOR = {
-  atlas: { f: "atlas.mp3", what: "Sea, wind and rain at Trégastel", by: "Yponomeutaneko, radio aporee",
-           at: "https://archive.org/details/aporee_34700_39896", lic: "public domain" },
+  // Round 178b: Atlas wanted a ship at sea, so three recordings are laid
+  // together - the swell, a hull and rigging working as the boat rolls, and
+  // gulls over it. Bioluminescent wanted a lagoon rather than a flat sound
+  // effect, so the karst lake carries the rising tones of Earth's radiation
+  // belts over it. A scene made of several recordings names each one.
+  atlas: { f: "atlas.mp3", what: "A ship at sea: the swell, a hull working, gulls overhead",
+           parts: [["sea, Trégastel", "https://archive.org/details/aporee_34700_39896"],
+                   ["swaying boat, Klaipėda", "https://archive.org/details/aporee_28237_32530"],
+                   ["gulls, Le Havre", "https://archive.org/details/aporee_32837_37737"]],
+           lic: "CC BY 3.0 and public domain" },
   jurassic: { f: "jurassic.mp3", what: "Rainforest by night, Petén", by: "radio aporee",
               at: "https://archive.org/details/aporee_31997_36745", lic: "public domain" },
-  night: { f: "bioluminescent.mp3", what: "Under a karst lake at Kirkilai", by: "alas23/sala, radio aporee",
-           at: "https://archive.org/details/aporee_29435_33876", lic: "public domain" },
+  night: { f: "bioluminescent.mp3", what: "A lagoon with something singing in it: under a karst lake, with the rising tones of Earth's own radiation belts",
+           parts: [["under a karst lake, Kirkilai", "https://archive.org/details/aporee_29435_33876"],
+                   ["chorus from the Van Allen Probes", "https://space-audio.org/"]],
+           lic: "public domain and CC BY 4.0" },
   hell: { f: "hell.mp3", what: "Mount Yasur erupting, Tanna Island", by: "Felix Blume, radio aporee",
           at: "https://archive.org/details/aporee_58757_67414", lic: "public domain" },
   // Relief is left silent: nothing recorded belongs to it.
@@ -1917,9 +1927,11 @@ function sndSay() {
   const t = document.getElementById("sndOn"); if (t) t.checked = SND.on;
   const sl = document.getElementById("sndVol"); if (sl) sl.value = String(Math.round(SND.vol * 100));
   const cr = document.getElementById("sndCr");
-  if (cr) cr.innerHTML = SND.on
-    ? rec.what + ' · <a href="' + rec.at + '" target="_blank" rel="noopener">' + rec.by + "</a> · " + rec.lic
-    : rec.what;
+  const who = rec.parts
+    ? rec.parts.map(function (q) { return '<a href="' + q[1] + '" target="_blank" rel="noopener">' + q[0] + "</a>"; }).join(", ")
+    : '<a href="' + rec.at + '" target="_blank" rel="noopener">' + rec.by + "</a>";
+  const dot = " " + String.fromCharCode(183) + " ";
+  if (cr) cr.innerHTML = SND.on ? rec.what + dot + who + dot + rec.lic : rec.what;
 }
 function sndFollow() {
   if (!SND.el && SND.on) { SND.el = new Audio(); SND.el.loop = true; SND.el.preload = "none"; SND.el.volume = 0; sndEngine(); }
