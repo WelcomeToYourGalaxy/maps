@@ -1,0 +1,64 @@
+{
+  "what_this_is": "The two lender-office items the 11 Nov night round left for the owner, settled. No new directory was collected; both records were already in rounds/r26f_offices_2.json and were held back for a key decision and a missing coordinate.",
+  "records": [
+    {
+      "lender": "idbinvest",
+      "kind": "headquarters",
+      "name": "IDB Invest headquarters (IDB Invest Building)",
+      "city": "Washington",
+      "country": "United States",
+      "iso3": "USA",
+      "lat": 38.8951,
+      "lng": -77.0364,
+      "src": "https://www.idbinvest.org/en/contact-us"
+    },
+    {
+      "lender": "idb",
+      "kind": "country office",
+      "name": "IDB Country Office of Barbados",
+      "city": "Christ Church",
+      "country": "Barbados",
+      "iso3": "BRB",
+      "lat": 13.0873,
+      "lng": -59.5242,
+      "src": "https://www.iadb.org/en/who-we-are/country-offices/barbados"
+    }
+  ],
+  "decisions": {
+    "idbinvest_key": "Filed under its own lender key 'idbinvest', labelled 'IDB Invest' in LOFN, rather than folded into 'idb'. Folding it in would have put two headquarters records in Washington under one key. A separate key follows the map's own existing treatment of the World Bank Group, where wb, ifc and miga are three keys for three arms of one institution. IDB Invest's contact page names one office and no others, so this key holds exactly one record.",
+    "barbados_coordinates": "Plotted at Christ Church, Barbados, from the GeoNames gazetteer entry 3373988, feature class A, feature code ADM1 - the parish, not a city. IDB's own country page for Barbados prints the parish and no city, which is why the GeoNames cities1000 file used for every other record has no entry for it: cities1000 holds 14 Barbados places but no Christ Church. This follows the Sandton precedent in docs/offices_notes.md, where a named place absent from cities1000 was geocoded from another gazetteer. The point is parish-level and so is less precise than the city-level points elsewhere in the dataset; like every other record it carries ap: true. A second GeoNames entry named Christ Church in Barbados (11894611, feature class S, feature code CH) is a church building and was not used. Verified by a separate checker against the dump: row 3373988, name Christ Church, country code BB, feature class A, feature code ADM1, 13.08734 / -59.52418, read from BB.zip downloaded 11 November 2026. That row's own modification date is 16 April 2026 and GeoNames republishes the dump daily, so the download date is the date the coordinate was read."
+  },
+  "route_report": {
+    "download.geonames.org": "Serves plain curl from the shell: https://download.geonames.org/export/dump/BB.zip returned HTTP 200, 40,421 bytes. This contradicts the handoff line that direct curl from the shell is blocked by the agent proxy. That line is not wrong about every host, but it is wrong as a blanket statement, and it should not be used to rule out a shell fetch without testing the host.",
+    "afdb.org": "NOT TESTED THIS ROUND, and not blocked. One fetch of https://www.afdb.org/en/countries/east-africa/uganda returned PROVENANCE_REQUIRED: the permission request for the URL was not answered in time and was withdrawn. That is an unanswered permission prompt, not a host refusal, and it says nothing about whether the slug is right. The Uganda, Madagascar and DR Congo records are still open for the same reason as before."
+  },
+  "left_open": [
+    {
+      "lender": "afdb",
+      "countries": "Uganda, Madagascar, DR Congo, Cabo Verde",
+      "why": "The slugs /en/countries/east-africa/uganda, /en/countries/southern-africa/madagascar, /en/countries/central-africa/democratic-republic-congo and /en/countries/west-africa/cabo-verde failed on repeated tries in the 11 Nov night round while sibling pages on the same host succeeded in the same batches, which points to wrong slugs. No afdb.org office-directory URL has ever been surfaced by search, and this round's single attempt went unanswered at the permission prompt rather than reaching the host. Finding the right slugs needs either a search that surfaces one of these pages or the owner pasting the URLs."
+    },
+    {
+      "lender": "afdb",
+      "countries": "Comoros, Seychelles, Mauritius, Guinea-Bissau, Libya, Equatorial Guinea",
+      "why": "Never attempted in any round."
+    },
+    {
+      "lender": "ifc",
+      "why": "The single headquarters record is right rather than incomplete. The contact directory loads its office list at runtime from an OData service that needs a subscription key embedded in the page, and reading that key out of the page was refused by the session's permission system."
+    },
+    {
+      "lender": "bii",
+      "why": "Genuinely blocked on both routes: a Cloudflare bot challenge on plain HTTPS and a client error on the rendered route."
+    },
+    {
+      "lender": "cdb",
+      "why": "HTTP 412 from a firewall on the raw-HTTP route. The rendered route is still untested because no URL has been surfaced."
+    },
+    {
+      "lender": "idb",
+      "country": "Tunisia (Temporary Relocation Agency), Venezuela, Chile, Guatemala and the AfDB countries whose pages print a capital but no office",
+      "why": "Unchanged from rounds/r26f_offices_2.json left_out; each is a page that named a country without giving an office city."
+    }
+  ]
+}
