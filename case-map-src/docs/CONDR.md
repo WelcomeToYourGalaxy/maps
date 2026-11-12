@@ -51,6 +51,14 @@ brief were wrong and cost three rounds, so test a host yourself before recording
   and `/ERS/` paths, all fetch in full once a WebSearch has surfaced the URL. SPI pages carry
   amounts, dates, use of proceeds and category; ESRS and ERS pages carry the action-plan items.
   Records go back to about 1994. `disclosuresservice.ifc.org/api/File/downloadfile` does refuse.
+  **But opening the page is usually not the problem.** Round 11 re-tested all 15 remaining IFC
+  cases and unlocked none: the SPI pages had already been fetched and quoted in rounds 1, 2, 3 and
+  6, and they carry no covenant. Ten of the 15 are financial-intermediary chains where the facility
+  is bank-level Tier II capital naming no sub-borrower — failure mode 9, which no routing fix
+  touches. Verified directly on project 25492 (ICICI Bank UT2): the use of proceeds is the bank's
+  own capital for growth, especially rural banking and microfinance, and NTPC, Adani, Essar, NHPC,
+  Zuari, Karuturi, China Hongqiao and First Quantum appear nowhere on it. Before blaming a host for
+  an IFC blank, read the case's earlier notes: a later round may already have opened the page.
 - **`ewsdata.rightsindevelopment.org`** — note `ewsdata`, not `ews` — mirrors ADB, AIIB, World Bank,
   AfDB and IDB files as PDFs at `/files/documents/<nn>/<BANK>-<id>.pdf`.
 - **`idbinvest.org` is fully open**, project pages and `environmental-and-social-review-*.pdf`
@@ -106,6 +114,46 @@ brief were wrong and cost three rounds, so test a host yourself before recording
 - **peoplepower21.org and recommon.org both serve** — each was recorded as a refusing host in a
   round 10b blank note, and each serves its homepage in full. The failure was on the particular
   page. That makes four host-wide blocks in this brief's history that were not host-wide blocks.
+- **`ewsdata.rightsindevelopment.org/files/documents/<nn>/AFDB-<project-id>.pdf` is the best AfDB
+  route found.** `nn` is the last two characters of the project id. Where a file exists it is the
+  complete Project Appraisal Report, conditions precedent and covenant schedule intact (verified on
+  AFDB-P-MA-DD0-008, Nador West Med). Coverage is partial. Try this BEFORE afdb.org.
+- **Those directories are OPEN, ENUMERABLE Apache indexes.** Fetch
+  `/files/documents/<nn>/?C=N&O=A` to sort by name, which groups the `AFDB-` files together
+  (`ADB-` precedes `AFDB-` precedes `AIIB-`). Indexes run 100k-320k characters, so read on with
+  `offset`. **Use this to prove a file absent in one fetch instead of guessing ids one at a time.**
+  Round 11b enumerated dirs 03, 06, 09, 10 and 11 and established that the mirror holds no appraisal
+  report for any of the map's seven AfDB cases — a settled absence, not an untried route.
+- **`evrd.afdb.org/documents/docs/<ref>.pdf` serves in full** — AfDB's evaluation results database,
+  project completion reports included (verified on PR10265_SR_FR.pdf). A new working AfDB host, but
+  expect compliance statements rather than covenant schedules: the PCR read lists the loan agreement
+  only as a source document. Poorly indexed by search, so find the ref first.
+- **afdb.org serves less than it appears to.** `afdb.org/en/documents/<slug>` does fetch, but the
+  served text is the document's descriptive abstract only, with no PDF link in it, so the covenant
+  schedule is not reachable that way. `/en/projects-and-operations/<id>` and constructed
+  `/en/documents/document/<slug>` paths return client errors. EWS project pages for AfDB operations
+  often list a single "bank document" that is just a link back to afdb.org.
+- **`tesourotransparente.gov.br` publishes Brazilian IDB loan contracts in full**, at
+  `/ckan/dataset/b04f61d2-0101-407b-bd89-3da1d477ebe5/resource/<uuid>/download/BID<number>.pdf`.
+  A working substitute for the refusing iadb.org on any Brazilian sovereign IDB loan. The dataset
+  has 76 resources and was enumerated in round 11b: BID1194, 1628, 1718, 1811, 1841, 1864, 2192,
+  2229, 2248, 2580, 2791, 2919, 3142, 3391, 4723, 4732 and 5092, several with *Aditivo* amendments,
+  plus World Bank BIRD contracts. **1194 is the lowest loan number held**, so anything below it
+  (Habitar Brasil's 1126 of 1998) is under the Treasury's publication floor — a real absence.
+- **A private-sector IDB loan has no national gazette route**, because there is no sovereign
+  guarantee and so no ratifying law. That closes the national-source route for CO-L1029 (OPAIN) and
+  PN0136 (Pan Am Thermal Generating) rather than leaving it untried.
+- **`idbinvest.org` coverage starts with IDB Invest-era operations**, so it has no page for older
+  IDB sovereign loans (CO-L1029 of 2010, PN0136, BR0273 of 1998). It serves; it just does not go back.
+- **`vie-publique.sn`** serves the Senegalese Journal Officiel and laws: a plausible route for
+  Senegalese loan-ratification laws.
+- **`odinsa.com` sits behind Incapsula bot protection** and returns a verification page rather than
+  the PDF. Not worth retrying.
+- **An unanswered permission prompt closes the provenance gate for the REST OF THE SESSION.** Every
+  later non-allowlisted URL then fails without being sent, while search-surfaced URLs keep working —
+  the gate is URL-scoped, not host-wide. Front-load the URLs that need a grant. Anything recorded as
+  a refusal after such a lapse should be re-tested, not believed: `aconsole-static.s3.amazonaws.com`
+  has been "blocked" in three rounds' notes and has never actually refused.
 - A blocked lender site is not evidence that no condition existed. Record the exact failure.
 
 ## The five failures that get entries rejected

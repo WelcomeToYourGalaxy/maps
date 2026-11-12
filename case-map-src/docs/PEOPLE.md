@@ -13,6 +13,23 @@ Pick the post through which they acted in the map's cases. If the person acted a
 Useful tool: the World Bank projects API returns counts without a web search, e.g.
 https://search.worldbank.org/api/v2/projects?format=json&rows=0&strdate=1995-06-01&enddate=2005-05-31  (check that the date filter works by comparing two ranges; if it does not, find another way or leave blank). Annual reports of the IMF, regional development banks and companies give approval counts too.
 
+**Two cautions on that API, both found the hard way.**
+1. **The count is not IBRD/IDA approvals.** It also includes recipient-executed trust-fund
+   activities, guarantees, GEF, carbon offset, Montreal Protocol, special financing and
+   debt-reduction operations - 13% of one president's 1,848 - while IFC and MIGA are absent and
+   additional financings count as separate rows. Tabulate `prodlinetext` and `supplementprojectflg`
+   over the full result set and break the figure down; never give the bare total as a lending count.
+2. **It undercounts the early 1990s badly.** For 1 Jul 1990 to 30 Jun 1992 it returns 309
+   operations against the Annual Reports' 229 + 222 = 451 Board-approved IBRD/IDA lending
+   operations. For anyone whose tenure predates the mid-1990s, use the Annual Reports as the
+   primary figure and the API only as a broken-down comparison.
+
+Cheap ways to read the primary documents: documents.worldbank.org serves plain-text versions of the
+annual reports at `.../text/multi-page.txt` or `.../text/multi0page.txt`, which are greppable and far
+cheaper than the PDFs, and the Annual Reports' own "Officers of the World Bank" lists are the
+soundest way to pin a tenure window, rather than a secondary biography. SEC EDGAR answers `curl`
+when a generic User-Agent is declared.
+
 Rules (non-negotiable):
 - Every figure comes from a page you actually opened with WebFetch. No figures from memory or search snippets. Wikipedia not as sole source.
 - If you computed a sum yourself, say so ("this map's sum of the bank's annual reports").

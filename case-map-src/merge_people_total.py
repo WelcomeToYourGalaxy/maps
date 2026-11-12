@@ -7,6 +7,7 @@ for p in E['people']:
   r=R.get(p['id'])
   if r and r.get('total'):
     p['total']=r['total'];a+=1
-    if r.get('sources'): p['total_sources']=r['sources']
+    src=r.get('sources') or r.get('sources_add')  # checkers write sources_add
+    if src: p['total_sources']=src
 s=s[:i]+json.dumps(E,ensure_ascii=False,separators=(',',':'))+s[i+n:]
 open(f,'w').write(s);print('people with totals',a)
