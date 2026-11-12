@@ -1,0 +1,28 @@
+{
+  "sahiwal-coal-plant-qadirabad": {
+    "edits": [
+      {
+        "field": "companies[0].role",
+        "old": "Global Energy Monitor gives the Hong Kong company as 50% Huaneng Shandong Power Generation and 50% Jining Chengtou Holding Group, with Shandong Ruyi absent. That record puts no date on either holding: both shareholder rows have an empty start date and an empty end date, and the only date carried anywhere on it is 30 June 2024, shown as \"first seen\" and \"last change\" on the OpenSanctions mirror, which is when the record entered that mirror rather than when the shareholding began. Global Energy Monitor's own Sahiwal plant page does not match its ownership record: it names Huaneng Shandong Electricity and Shandong Ruyi Group as the sponsors and China Huaneng Group and Shandong Ruyi Group as the parent companies, gives no percentages, and does not mention Jining Chengtou at all.",
+        "new": "Global Energy Monitor's ownership record for the Hong Kong company, as mirrored by OpenSanctions, gives 50.00% Huaneng Shandong Power Generation and 50.00% Jining Chengtou Holding Group, with no Shandong Ruyi entity among the shareholders. The record puts no date on either holding: both shareholder rows have an empty start date and an empty end date. The dates the page does carry are 30 June 2024, printed under \"Last change\" and \"First seen\" and beside each source statement, and 26 October 2026, printed under \"Last processed\". The page does not say what those labels mean. Global Energy Monitor's own Sahiwal plant page does not match that ownership record: it names Huaneng Shandong Electricity and Shandong Ruyi Group as the sponsors and China Huaneng Group and Shandong Ruyi Group as the parent companies, gives no percentages, and does not mention Jining Chengtou."
+      }
+    ],
+    "check_log": {
+      "verdict": "CORRECT, applied",
+      "what_the_checker_broke": [
+        "The draft said 30 June 2024 was the only date carried anywhere on the record. False: the page also prints 26 October 2026 under \"Last processed\". Both dates are now given.",
+        "The draft's clause \"which is when the record entered that mirror rather than when the shareholding began\" was struck. The page nowhere says what \"First seen\" means, so the clause supplied a reading the source does not make. The card now prints the labels and says the page does not define them."
+      ],
+      "what_it_confirmed": [
+        "Both owner names and both 50.00 percentages, read off the raw HTML.",
+        "Both shareholder rows have an empty start date and an empty end date.",
+        "The gem.wiki Sahiwal plant page names Huaneng Shandong Electricity and Shandong Ruyi Group as sponsors and China Huaneng Group and Shandong Ruyi Group as parents, carries no percentages, and the string \"Jining\" does not appear on it."
+      ],
+      "attribution_fix": "The draft wrote \"Global Energy Monitor gives\". The record is OpenSanctions' mirror of GEM's Global Energy Ownership Tracker, which that page itself labels a non-official source. The wording now says so.",
+      "not_acted_on": [
+        "The checker proposed cutting the sentence \"NEPRA's tariff decision names no shareholders\" as an unverified negative. Left standing: that sentence is not part of this round's edit, it was written and checked in round 11 against the NEPRA documents that sit in the card's own sources, and this checker was given neither. It is worth a look in any later pass that has those documents open, because the checker is right that the card does not name which decision.",
+        "The same OpenSanctions record lists Huaneng Shandong Ruyi (Pakistan) Energy at 100.00% under \"Assets and shares\". Not added: the card already establishes that the Pakistani company is wholly owned by the Hong Kong company from the prospectus and from PACRA, both better sources, so a third would change nothing."
+      ]
+    }
+  }
+}
