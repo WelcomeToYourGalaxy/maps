@@ -18,6 +18,16 @@ this map's data, plate and About page written in. about.py writes the About page
 """
 import json
 import math, re, base64, os, sys, hashlib
+
+if os.environ.get('PYTHONHASHSEED') != '0':
+    # Somewhere in here a set is iterated into the page, so Python's per-process
+    # string hash randomisation reordered the output: two runs of identical code
+    # on identical data produced files of the same length with the rows in a
+    # different order. Every commit then carried a diff that said nothing, and a
+    # real change to the build could not be told from the noise. Re-exec once
+    # with the seed pinned so a build is reproducible and a diff means something.
+    os.execve(sys.executable, [sys.executable] + sys.argv, dict(os.environ, PYTHONHASHSEED='0'))
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 D = lambda f: os.path.join(HERE, 'data', f)
 OUT = os.path.join(HERE, '..', 'secret_society_infiltration.html')
@@ -389,13 +399,16 @@ def main():
 
     spread(case_out); spread(ent)
 
+    _pats = load('patterns.json', [])
+    pattern_rollcall(_pats, case_out)
+
     import collections as _co
     _cityc = _co.Counter(c['city'] for c in cases if c.get('city'))
     _topcity, _topcity_n = _cityc.most_common(1)[0] if _cityc else ('Washington', 0)
     data = {'rows': rows, 'alias': alias, 'cases': case_out, 'lenses': LENSES, 'bands': BANDS,
             'sectors': TYPES, 'entities': ent, 'casebuckets': CASE_BUCKETS, 'groups': groups,
             'routes': routes, 'quarantine': [], 'dupes': [], 'qdup': [], 'notes': [], 'noted': 0,
-            'patterns': build_patterns(load('patterns.json', []), case_out, ent, channels),
+            'patterns': build_patterns(_pats, case_out, ent, channels),
             'bts': paragraphs(load('bts.json', {})),
             'reloc': [], 'cnotes': cnotes, 'gtypes': TYPES, 'recovered': [],
             'orgnames': oname, 'orgtypes': otype,
@@ -473,6 +486,71 @@ def spread(items):
             x['lng'] = round(lng + d * math.cos(a) / coslat, 5)
 
 
+def pattern_cases(p, cases):
+    """Pick the cases one pattern covers. The single place that decides it."""
+    orgs = p.get('orgs', [])
+    anyorg = p.get('all_orgs') or ((p.get('case_inf') or p.get('case_tgt')) and not orgs)
+    pc = [c for c in cases if (c.get('org') in orgs or anyorg)]
+    if p.get('case_inf'): pc = [c for c in pc if c.get('inf') in p['case_inf']]
+    if p.get('case_tgt'): pc = [c for c in pc if c.get('tgt') in p['case_tgt']]
+    if p.get('case_rel'): pc = [c for c in pc if c.get('rel') in p['case_rel']]
+    if p.get('case_bk'): pc = [c for c in pc if c['bk'] in p['case_bk']]
+    if p.get('case_countries'): pc = [c for c in pc if c['c'] in p['case_countries']]
+    if p.get('case_status'): pc = [c for c in pc if c['status'] in p['case_status']]
+    if p.get('case_match'): pc = [c for c in pc if re.search(p['case_match'], c['n'] + ' ' + c['d'], re.I)]
+    if p.get('extra_cases'):
+        ids = {id(c) for c in pc}
+        pc += [c for c in cases if id(c) not in ids and re.search(p['extra_cases'], c['n'] + ' ' + c['d'])]
+    for ef in p.get('extra_from', []):
+        ids = {id(c) for c in pc}
+        pc += [c for c in cases if id(c) not in ids and c.get('org') == ef['org'] and re.search(ef['re'], c['n'] + ' ' + c['d'] + ' ' + c.get('cite', ''))]
+    if p.get('case_titles'):
+        ids = {id(c) for c in pc}; want = set(p['case_titles'])
+        pc += [c for c in cases if id(c) not in ids and c['n'] in want]
+    if p.get('case_exclude'): pc = [c for c in pc if not re.search(p['case_exclude'], c['n'] + ' ' + c['d'], re.I)]
+    return pc
+
+
+def pattern_rollcall(pats, cases):
+    """Print how many cases sit in no pattern at all, at build time.
+
+    Eight patterns select their cases from a hand-written list of titles, so
+    every case added after a list was written is orphaned by construction, and
+    nothing said so. Widening those patterns with a field selector was proposed
+    and measured instead of adopted. Giving the kickbacks pattern inf corp/money
+    and tgt gov/intl selects 464 cases but sweeps in work that is not kickbacks
+    at all -- consultancies seconded to write tax law, a financier given a desk
+    in Downing Street, lobbying of MEPs -- while still missing 10 of its own
+    curated titles. Adding a bribery-word regex to that selector cuts the sweep
+    but then misses 32 of the 97, among them Al-Yamamah, Lockheed/Tanaka, Elf
+    Aquitaine, Angolagate, Fishrot and Flick, because their records say money
+    reached someone rather than that anyone was bribed. What the lists encode is
+    a judgement about what a payment bought, and no field combination or word
+    stands in for it.
+
+    So this does not widen anything either. It counts the orphans and prints
+    them grouped, so that extending a curated list stays a decision someone
+    makes case by case, with the size of the backlog in front of them.
+    """
+    seen = set()
+    for p in pats:
+        for c in pattern_cases(p, cases):
+            seen.add(id(c))
+    orph = [c for c in cases if id(c) not in seen]
+    if not orph:
+        return
+    by = {}
+    for c in orph:
+        by.setdefault((c.get('inf'), c.get('tgt')), 0)
+        by[(c.get('inf'), c.get('tgt'))] += 1
+    top = sorted(by.items(), key=lambda kv: -kv[1])[:8]
+    print('patterns: %d of %d cases sit in no pattern. Eight patterns pick their '
+          'cases from hand-written title lists, so anything added since those '
+          'lists were written is orphaned until a title is added by hand:'
+          % (len(orph), len(cases)))
+    print('  ' + ';  '.join('%s into %s: %d' % (i or '?', t or '?', n) for (i, t), n in top))
+
+
 def build_patterns(pats, cases, ent, channels):
     """Turn hand-written pattern records into what the page draws.
 
@@ -487,25 +565,7 @@ def build_patterns(pats, cases, ent, channels):
     out = []
     for p in pats:
         orgs = p.get('orgs', [])
-        anyorg = p.get('all_orgs') or ((p.get('case_inf') or p.get('case_tgt')) and not orgs)
-        pc = [c for c in cases if (c.get('org') in orgs or anyorg)]
-        if p.get('case_inf'): pc = [c for c in pc if c.get('inf') in p['case_inf']]
-        if p.get('case_tgt'): pc = [c for c in pc if c.get('tgt') in p['case_tgt']]
-        if p.get('case_rel'): pc = [c for c in pc if c.get('rel') in p['case_rel']]
-        if p.get('case_bk'): pc = [c for c in pc if c['bk'] in p['case_bk']]
-        if p.get('case_countries'): pc = [c for c in pc if c['c'] in p['case_countries']]
-        if p.get('case_status'): pc = [c for c in pc if c['status'] in p['case_status']]
-        if p.get('case_match'): pc = [c for c in pc if re.search(p['case_match'], c['n'] + ' ' + c['d'], re.I)]
-        if p.get('extra_cases'):
-            ids = {id(c) for c in pc}
-            pc += [c for c in cases if id(c) not in ids and re.search(p['extra_cases'], c['n'] + ' ' + c['d'])]
-        for ef in p.get('extra_from', []):
-            ids = {id(c) for c in pc}
-            pc += [c for c in cases if id(c) not in ids and c.get('org') == ef['org'] and re.search(ef['re'], c['n'] + ' ' + c['d'] + ' ' + c.get('cite', ''))]
-        if p.get('case_titles'):
-            ids = {id(c) for c in pc}; want = set(p['case_titles'])
-            pc += [c for c in cases if id(c) not in ids and c['n'] in want]
-        if p.get('case_exclude'): pc = [c for c in pc if not re.search(p['case_exclude'], c['n'] + ' ' + c['d'], re.I)]
+        pc = pattern_cases(p, cases)
         roles = list(p.get('roles', []))
         cmap, cn = {}, {}
         def role(name):
