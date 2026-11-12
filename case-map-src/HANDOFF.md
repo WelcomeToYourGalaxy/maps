@@ -22,7 +22,7 @@ Live page: `globalization.html` in WelcomeToYourGalaxy/maps (published from `mai
 
 ## Current state (11 Nov 2026, night)
 
-**946 cases**, in 126 countries and territories. The page builds clean and loads headless with no errors; `build.py` prints "loan-condition cases matched 173 of 173".
+**947 cases**, in 126 countries and territories. The page builds clean and loads headless with no errors; `build.py` prints "loan-condition cases matched 173 of 173".
 
 These are the figures the About panel shows under "How complete this map is", read out of the rendered panel on 11 Nov night, not copied from the last handoff. Read them the same way every time: the panel is computed in the browser, so clicking `#infoBtn` in a headless test and taking the text of `#info` is the only way to get them. Two rows were wrong in the version before last because they were copied forward instead.
 
@@ -30,12 +30,12 @@ The settled-terms row moved from 849 to 867 on 11 Nov night without any new rese
 
 | What | Filled | Share |
 | --- | --- | --- |
-| Rounded "what happened to people" paragraph (`whole`) | 939 of 946 | 99% |
-| Cases that say what the money came with (`conditions`) | 922 of 946 | 97% |
-| Lender's terms looked for and settled (not tagged `research`) | 870 of 946 | 92% |
+| Rounded "what happened to people" paragraph (`whole`) | 939 of 947 | 99% |
+| Cases that say what the money came with (`conditions`) | 923 of 947 | 97% |
+| Lender's terms looked for and settled (not tagged `research`) | 871 of 947 | 92% |
 | Company names with a line saying what the firm is (`desc`) | 912 of 992 | 92% |
 | People with a checked `total` | 53 of 173 | 31% |
-| Cases with a documented buyer | 34 of 946 | 4% |
+| Cases with a documented buyer | 34 of 947 | 4% |
 
 Counting the countries yourself: the page's 126 counts `iso3` plus `iso3_more`. A script that counts `iso3` alone returns 124 and looks like a discrepancy.
 
@@ -313,8 +313,15 @@ Round 3 (`rounds/r26f_people_totals_3_checked.json`, input `docs/r26_people_in3.
 ### 5. Buyers — 34 of 946 cases
 Only where a source documents who bought the output. This is a long tail and will never reach 100%.
 
-### 6. Lender offices
+### 6. Lender offices — IDB and AfDB filled 11 Nov night
+`LOFF` went 579 to 635 (`rounds/r26f_offices_2.json`). IDB 1 record to 26, AfDB 1 to 33, both from the lenders' own pages. **AfDB has no office directory page that could be found** — 14 searches surfaced none and six candidate paths failed — so its records come from per-country pages at `/en/countries/<region>/<country>`; Uganda, Madagascar and DR Congo are missing because those slugs would not resolve, and are worth another pass. IDB's own index lists 26 countries and prints no address for any, so each came from its country page; Tokyo and Madrid sit outside `/country-offices` entirely.
+**Left for the owner:** IDB Invest's single headquarters is collected but not merged — `idbinvest` is not in `LOFN` so it would render nowhere, and folding it into `idb` would collide with IDB's own Washington headquarters. IDB Barbados has no coordinates: its page gives Christ Church, a parish, and GeoNames has no city entry for it; the Sandton precedent would allow Nominatim if you want it plotted.
+**Still missing:** BII refuses on both routes. **IFC's single headquarters record is right, not incomplete** — its directory loads the office list from a gated data service, and reading the key out of the page to query it was refused by this session's permission system, which is a permission denial rather than the host, and was not worked around. IMF per-country pages still not read.
+
+### 6b. Lender offices, the old note
 Re-tested 11 Nov night (`rounds/r26f_loose_ends.json`), and the old note was wrong on three of five. **IDB serves** at `iadb.org/en/who-we-are/country-offices` on the rendered route, with per-country entries for the 26 countries it serves plus Washington, Tokyo and Madrid — this one is ready for a round to collect. **IFC serves** at `ifc.org/en/where-we-work` on both routes, but it is a six-region index with no country addresses; its "Contact Directory" link is the next thing to resolve. **AfDB's host serves** on the rendered route, but no office-directory URL has been surfaced yet, so step one is finding it. **BII is genuinely blocked** on both routes. **China Development Bank** returns HTTP 412 from a firewall on the raw-HTTP route; the rendered route is untested because no URL was surfaced. IMF per-country pages still not read.
+
+**One new case added 11 Nov night:** `mattala-airport-forest-elephants` (`rounds/r26f_newcases_1_checked.json`, check log alongside). Worth reading for its shape: the harm is environmental and **nobody was displaced**, which the Auditor-General and the then minister both state. `killed` is 0 — the 26 human deaths in the audit are from human-elephant conflict after the clearing, and the audit dates the conflict to after construction but never says the airport caused any particular death. They stay on the card uncounted because they are a state auditor's figures about the project's own site. It has no `whole` text yet, which is why that row is 939 of 947.
 
 ### 7. New cases
 **The backlog was substantially stale and has been reconciled** (11 Nov night). Of its 61 entries, **32 are already on the map** and are now annotated in `docs/backlog.json` with `likely_already_on_map` giving the case id and `match_strength`. Nothing was deleted — the selection is the owner's — but **read that field before dispatching any research round**, or you will pay for work already done. Eight of the 32 were verified case by case; the rest are keyword matches of three or more distinctive words and should be confirmed before being dropped.
