@@ -39,22 +39,22 @@ Another session of the user's commits to this repo often. **Always `git fetch or
   - Links: `{n, cb | tn, rel, role, detail, src_t, src_u}`.
   - Popups turn each link into a plain sentence (`SAY` / `sayLink` / `srcItem` in `app.js`). Add a `SAY` entry for any new `role` string.
 
-## Where it stands (after round 23, 11 November 2026)
+## Where it stands (after round 24, 11 November 2026)
 
-1,465 outside parties and 2,032 ties. 1,694 writeups, one for every box.
+1,472 outside parties and 2,052 ties. 1,701 writeups, one for every box.
 
 **Breadth is now measured with currency-union ties expanded to member countries** (see below). That change alone moved four rows without any new research, because `coverage.py` had been undercounting what the map already showed.
 
 | Category | Records | Places | Breadth |
 |---|---|---|---|
 | Corruption cases | 232 | 154 | 75% |
-| External auditors | 175 | 137 | 67% |
+| External auditors | 180 | 142 | 69% |
 | Revolving door | 206 | 80 | 39% |
-| Banknote printers | 131 | 112 | 54% |
+| Banknote printers | 143 | 124 | 60% |
 | Swap lines | 240 | 84 | 41% |
 | Governor removals and pressure | 110 | 55 | 27% |
 | Outside reserve managers | 154 | 36 | 17% |
-| Gold custodians | 49 | 23 | 11% |
+| Gold custodians | 52 | 26 | 13% |
 | Named shareholders | 228 | 9 | near-complete* |
 
 \* Named shareholders reads low because only about ten central banks have private shareholders at all. Outside reserve managers reads low because 103 of its 153 ties are Norway's fund — and no list of which banks hire outside managers is published anywhere, so this row has no honest denominator.
@@ -172,7 +172,13 @@ Bounded sets that worked:
 ## What is left
 
 ### 1. External auditors — the one category that can actually reach 100%
-Every central bank operates under a law that names who audits it, so the answer always exists. 137 of 206 done, union members included.
+Every central bank operates under a law that names who audits it, so the answer always exists. 142 of 206 done, union members included.
+**The browser reads what the fetcher cannot, and that is now the main method for auditors.** Three image-only auditor reports have been settled by opening the page in a browser and reading it: Botswana (EY, Gaborone, 2025), **Serbia** (Ernst & Young d.o.o. Beograd, signed at Belgrade on 20 March 2026 by Nikola Ribar, for the year ended 31 December 2025) and the **Maldives** (Deloitte Partners, Malé, signed by Mohamed Siraj Muneer on 29 April 2025, at pages 142–143). Each of those pages returns empty from every text extraction. Still open by this route: Brunei, Fiji's annual report, Eswatini, the Bahamas. One caveat: **Barbados serves its report as a download rather than inline, so the browser tab does not render it** — that one needs a different copy. Two URLs recorded in earlier notes (the Bahamas 2024 report, the Eswatini report on independentnews.co.sz) are now 404, so always get the URL from a fresh search.
+
+**Three banks genuinely print no auditor's name**, each confirmed by a full read: the UAE's 2025 report says only "an independent external auditor appointed by the Board"; Qatar's chapter 11 names nobody; Ethiopia's standalone statements open straight into the accounts and end at note 31. These are not retry targets.
+
+**Three leads closed for good.** Tajikistan's `nbt.tj/files/Audit/` is a procurement directory, not an audit archive. Paraguay's `contrataciones.gov.py` award endpoints return binary with no extractable text. `islamicmarkets.com` has no central-bank holdings beyond Bosnia.
+
 - **The BCEAO is settled.** The all-lots award notice that five rounds could not fetch — its URL is 364 characters and WebFetch rejects it on length — **was opened in a browser and read off the rendered PDF**. It names a titulaire and a suppléant for the head office and for every national directorate. When WebFetch refuses a URL on length, a browser tool settles it in one call; stop retrying with offsets.
 - **BEAC is settled but imperfectly.** Its 2015 statutory auditors' report names KPMG and Mazars Cameroun jointly, signed at Yaoundé on 11 March 2016. That PDF is a scan and the two names extract as garbled text; the record says so in its own sentence. The 2023 report on beac.int is the clean replacement, and beac.int is robots-disallowed to the fetcher — a browser tool would settle it, as it did for the BCEAO.
 - **The ECB's own auditor is Baker Tilly GmbH & Co. KG Wirtschaftsprüfungsgesellschaft**, Frankfurt, signed 12 February 2025 for 2024. Keyed to `ECB`, so it reaches all 21 euro-area countries.
@@ -191,8 +197,10 @@ Every central bank operates under a law that names who audits it, so the answer 
 - Trinidad and Tobago is **contested, not unknown**: the Auditor General declined to audit the Central Bank and the Government wanted it resumed. Needs care, not another fetch.
 - Panama has no central bank.
 
-### 2. Banknote printers — 54%
-**BanknoteNews is the vein.** It gave 11 of 13 printer records in round 23. Its per-note entries carry a literal `Printer:` field. The query shape that works is `banknotenews <country> <currency> new note confirmed "Printer"`, then fetch the entry for the newest or highest denomination. About half read `Printer: (Unknown)`, so triage is cheap — one search, one fetch, keep or discard. **Unworked there**: COD, AGO, GIN, LSO, SOM, ERI, DJI, COM, TUN, BEAC, BCEAO, TJK, TKM, LAO, MMR, BTN, MDV, MAC, OMN, QAT, BHR, SYR, LBN, PSE, URY, SLV, CYM, ECU, BIH, MKD, MNE.
+### 2. Banknote printers — 60%
+**BanknoteNews is the vein.** **Hit rate is about a third, not a half**, and the yield sits in 2023–2026 posts and specifically in commemorative notes — nine of fourteen records last round came from posts dated 2023 or later. **Go at the newest entry per country, not the highest denomination.** Many recent entries carry no Printer field at all rather than "(Unknown)".
+
+ It gave 11 of 13 printer records in round 23. Its per-note entries carry a literal `Printer:` field. The query shape that works is `banknotenews <country> <currency> new note confirmed "Printer"`, then fetch the entry for the newest or highest denomination. About half read `Printer: (Unknown)`, so triage is cheap — one search, one fetch, keep or discard. **Unworked there**: COD, AGO, GIN, LSO, SOM, ERI, DJI, COM, TUN, BEAC, BCEAO, TJK, TKM, LAO, MMR, BTN, MDV, MAC, OMN, QAT, BHR, SYR, LBN, PSE, URY, SLV, CYM, ECU, BIH, MKD, MNE.
 
 **wbs.org.ua can no longer be walked**: its index page 1 is readable but deep links and pages 2–5 are refused, so its articles must be reached through search or not at all.
 
@@ -235,7 +243,7 @@ A single joint Banque de France release with the OeNB and Banco de Portugal yiel
 **Named but unnamed:** Botswana, the Trinidad HSF, Timor-Leste, Namibia, Ghana and Kazakhstan all confirm external managers and custodians without naming one firm. Botswana's IFSWF self-assessment says international managers run about half the Pula Fund, plus a global custodian and an investment consultant — not one is named. The BIS Banking Department says it manages mandates for central banks and names no client.
 
 
-### 3a. Gold custodians — 11% after two rounds, and the fastest-growing row
+### 3a. Gold custodians — 13%, and slowing
 **The method is the note to the accounts, not the gold page.** Four countries in round 23 disclosed a location table only in the notes to their financial statements and advertised it nowhere else: Portugal (note 2, a table headed "Gold was held in the following institutions"), Belgium (note 1), Türkiye (a gram-level table by location), Mauritius (note 7). Search for the statements PDF and read the gold note directly, with offset re-reads at 100,000-character steps.
 
 **What is deliberately not filed**: gold *lending* (the Czech National Bank lending gold to other central banks; Bulgaria's deposits with unnamed commercial banks), and country-level answers that name no institution — Czechia's London share, Italy's three foreign shares ("primarie banche centrali"), Austria's roughly 140 tonnes given only as "the U.K." and "Switzerland", Kazakhstan's "specialised foreign repositories". Sri Lanka, Nepal and Serbia have a gold note that names only the LBMA valuation source.
@@ -275,7 +283,11 @@ Round 5 retried Bahrain, Saudi Arabia, Oman, Taiwan and Singapore in Arabic, Chi
 
 **Cannot finish:** corruption cases, governor removals, and revolving door outside closed sets. No complete count exists anywhere, so the "35–45%" in `about.html` is a judgement made while compiling and will stay one. These approach completeness asymptotically.
 
-**Estimate: 4 to 7 more rounds** for everything finishable. Yield by round: 35, 34, 33, 56, 50, 24, 34, 42, 40.
+**Estimate: 4 to 6 more rounds** for everything finishable. Yield by round: 35, 34, 33, 56, 50, 24, 34, 42, 40, 21.
+
+**Round 24 is the first round where every row slowed at once**, and the reason is the same in each: the cheap sources are spent. Auditors now cost about three fetches per settled country and three full reads ended in nothing because those banks print no auditor's name at all. Gold fell from 22 records to 3 — the notes-to-the-accounts method produced one of them, and the rest of the easy disclosers are done. Printers held up best, at 12 new places, but the archive's hit rate is a third rather than a half.
+
+**What is left is mostly not search, it is access.** Greece's gold note needs a host that refused the fetch twice; Cambodia's 2023 annual report is one approval away; Barbados, Brunei, Fiji, Eswatini and the Bahamas need a browser rather than a fetcher. The remaining work is less about finding documents than about opening the ones already found.
 
 **External auditors has hit the scan wall.** The offset re-read is now exhausted on the Bahamas, Serbia, Botswana, Barbados, the Maldives, Uzbekistan and Eswatini — their auditor pages carry no machine-readable text in any year or file form, and Uzbekistan's annual report series contains no financial statements at all. **The method that breaks this is opening the scanned page in a browser and reading it**: that settled Botswana (EY, Plot 22 Khama Crescent, Gaborone, unmodified opinion for 2025, statements approved by the Board on 27 March 2026) off a page every extraction returns empty. The same should settle Serbia, Barbados, the Maldives, Eswatini, Brunei, Fiji's annual report and the Bahamas. One caveat learned the hard way: **get the PDF URL from a fresh search each time** — two URLs recorded in earlier notes are now 404.
 
