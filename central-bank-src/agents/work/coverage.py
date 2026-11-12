@@ -31,7 +31,10 @@ def iso(rows, k='iso3'):
 cats = {}
 cats['Corruption cases']        = (iso(cor['cases']),            len(cor['cases']))
 cats['Revolving door']          = (iso(cor['revolving_door']),   len(cor['revolving_door']))
-cats['Governor removals and pressure'] = (iso(ev['events']),     len(ev['events']))
+# app.js counts an event only if its kind is not 'other' (evN in app.js), so the places figure
+# must use the same rule or it claims places the layer renders blank.
+_evc = [r for r in ev['events'] if r.get('kind') != 'other']
+cats['Governor removals and pressure'] = (iso(_evc),            len(ev['events']))
 aud = iso(gaps['auditors'], 'cb_iso3') | expand({l['cb_iso3'] for l in net['links'] if 'audit' in l.get('relation','').lower()})
 naud = len(gaps['auditors']) + sum(1 for l in net['links'] if 'audit' in l.get('relation','').lower())
 cats['External auditors']       = (aud, naud)
@@ -111,3 +114,8 @@ for k in ('External auditors', 'Banknote printers', 'Gold custodians',
     extra = [c for c in ab if c in UNION_CODES or c in NOCB]
     if extra: print("    not targets: " + " ".join(extra))
     print()
+
+_only_other = sorted(iso(ev['events']) - iso(_evc))
+if _only_other:
+    print("Places holding only uncounted ('other') events, blank on the layer: " + " ".join(_only_other))
+    print("  Their events show in the country box but are not counted by app.js or by the row above.\n")
