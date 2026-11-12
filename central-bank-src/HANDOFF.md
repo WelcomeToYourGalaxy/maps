@@ -39,28 +39,62 @@ Another session of the user's commits to this repo often. **Always `git fetch or
   - Links: `{n, cb | tn, rel, role, detail, src_t, src_u}`.
   - Popups turn each link into a plain sentence (`SAY` / `sayLink` / `srcItem` in `app.js`). Add a `SAY` entry for any new `role` string.
 
-## Where it stands (after round 25, 11 November 2026)
+## Where it stands (after round 26, 11 November 2026)
 
-1,479 outside parties and 2,066 ties. 1,708 writeups, one for every box.
+1,482 outside parties and 2,079 ties. 1,711 writeups, one for every box.
 
 **Breadth is now measured with currency-union ties expanded to member countries** (see below). That change alone moved four rows without any new research, because `coverage.py` had been undercounting what the map already showed.
 
 | Category | Records | Places | Breadth |
 |---|---|---|---|
 | Corruption cases | 232 | 154 | 75% |
-| External auditors | 183 | 145 | 70% |
+| External auditors | 187 | 149 | 72% |
 | Revolving door | 206 | 80 | 39% |
-| Banknote printers | 150 | 127 | 62% |
+| Banknote printers | 157 | 133 | 65% |
 | Swap lines | 240 | 84 | 41% |
 | Governor removals and pressure | 110 | 55 | 27% |
 | Outside reserve managers | 154 | 36 | 17% |
-| Gold custodians | 56 | 29 | 14% |
+| Gold custodians | 58 | 31 | 15% |
 | Named shareholders | 228 | 9 | near-complete* |
 
 \* Named shareholders reads low because only about ten central banks have private shareholders at all. Outside reserve managers reads low because 103 of its 153 ties are Norway's fund — and no list of which banks hire outside managers is published anywhere, so this row has no honest denominator.
 
 
 `agents/work/coverage.py` computes this table from the data files. Run it every round; don't estimate it.
+
+### Round 26's process lesson — read this before briefing any agent
+
+**Brief from `coverage.py`'s computed absent list, never from this handoff's prose lists.** Round 26 built its agent briefs from the "Unworked there" and "Never attempted" lists in this document. Those lists had gone stale: ten of the records the agents returned were already on the map (OMN, LBN, TJK, MAC, CYM, SYR and LAO printers; POL twice and DNK gold) and were caught only by the merge dedup. Three countries assigned as untried — Moldova, Azerbaijan and Kenya — already had records. Run `coverage.py` first and derive the target list from it.
+
+**Dedup on the firm, not the string.** Montenegro was already recorded as `"Ernst&Young Montenegro" Ltd Podgorica` from the bank's procurement report; round 26's find printed the same firm as `Ernst & Young Montenegro d.o.o.` in the signed accounts, and a key of (iso3, auditor string) did not match. The signature date and partner were folded into the existing record and the duplicate dropped. Any merge that keys on an entity name should normalise punctuation, spacing and legal-form suffixes before comparing.
+
+### What round 26 settled, closed and confirmed
+
+**Settled.** Auditors: Georgia (KPMG Georgia LLC, FY2020, signed 23 April 2021 at Tbilisi, partner Karen Safaryan); Lebanon (KPMG from 2020, press-sourced, `weak_source`); the Bahamas (Deloitte & Touche with BDO jointly, Nassau, 16 April 2012 for FY2011); Tonga (Coopers & Lybrand, Suva, 21 September 1993, from the Tonga Government Gazette on PacLII — a private firm, not the Auditor General). Printers: Tunisia, Qatar, Bahrain, Angola, Belarus, Tonga, and a second Congo record. Gold: Romania and South Korea, both at the Bank of England, both `weak_source` and the Korean one filed as a claim, not confirmed.
+
+**Closed for good — do not retry these routes.**
+- **Cambodia.** The 2023 annual report *did* serve this time (256,690 characters, read at two offsets) and, like the 2022 report, is narrative plus statistical appendices with no financial statements and no auditor's report. NBC's published annual reports do not contain audited accounts at all. Only the Khmer-language site or the National Audit Authority remains.
+- **Greece's gold note.** The athexgroup → athens.euronext.com redirect was completed, for the 2024 *and* 2019 full notes. Neither carries a location table — only an ECB valuation price. This is a real blank, not a fetch failure, and the redirect method is now proven for other Greek statements.
+- **Eswatini.** The `independentnews.co.sz` upload path returns the news site's homepage, confirmed again from a fresh search. No `centralbank.org.sz` URL appears in any search result.
+- **Egypt.** No CBE annual report or financial statements PDF appears in any English or Arabic search; every hit is a commercial bank. With the statute route already exhausted, only the Egyptian Official Gazette is left.
+- **Jamaica's "own auditors page" route.** BOJ's corporate-governance audit page fetched fine but covers only the Internal Audit Division. The annual-report pages sit behind an anti-bot interstitial.
+- **Italy, Spain, Sri Lanka, Nepal, the Philippines, Argentina and Taiwan** publish a gold note or gold page naming no institution. Confirmed blanks under the names-no-institution rule.
+
+**Brazil is a new kind of negative.** A freedom-of-information appeal on gov.br records BACEN refusing to name the custodian of the international gold reserves on banking-secrecy grounds. Brazil's custodian is formally *withheld*, not merely unpublished — worth saying so in the writeup rather than leaving it as a silent gap.
+
+**Printer method note.** The newest-entry-per-country rule held well: 14 of 22 BanknoteNews entries fetched carried a usable `Printer:` field, above the one-in-three this document predicted. Every miss was a post-2023 entry where the field is simply **absent** rather than marked "(Unknown)". Commemoratives were not systematically better than regular denominations. The bank's-own-currency-page vein produced nothing at all this round — BCEAO's `billets-et-pieces` page and the BNM Moldova per-denomination pages give full security-feature descriptions and no printer.
+
+**The highest-value untried printer lead is BEAC**: one record covers six countries. Its 30th-anniversary brochure on `beac.int` and FinancialAfrik's pieces on the 2020-type series are the targets, and `beac.int` is robots-disallowed, so it is a browser job.
+
+**New printer leads with a named next step:** Zambia (a diplo.news piece on the new kwacha series launch, and a wbs.org.ua article), Costa Rica (the BCCR press release of 11.11.2020 cited by BanknoteNews), North Macedonia (the National Bank put printing out to tender — the award notice would name the winner), Georgia (a centralbanking.com piece, likely paywalled), Zimbabwe (the Herald piece refused the fetch; mriguide.com and zimbabwenow.co.zw mirrors untried), Uruguay (its 2000s BanknoteNews commemorative entries were identified but never fetched, and that era usually carries the field).
+
+**Hosts that joined the blocked list:** `publishing.bnet.om` (robots-disallowed, which kills every year of Oman's annual report), `bcp.gov.py` (client error on the BCP's own Memorias y Balances index), `cbu.uz`, `laoofficialgazette.gov.la` (server error, may simply have been down — worth one retry).
+
+**Two untried routes worth naming:** Bangladesh's Order 1972 requires the *Government* to publish the bank's certified accounts in the official Gazette — that is the best remaining door, and the Order's own audit article names nobody. Macao's `Boletim Oficial` II "sínteses de contas" supplements are the likeliest home of AMCM's published accounts; the avisos oficiais files are insurance notices only.
+
+**Malawi's statute settles a question rather than a country:** Reserve Bank of Malawi Act 2018 s.60(2) requires audit by internationally recognised public auditors appointed annually by the Board, and s.60(3)–(4) limit the Auditor General to a separate efficiency examination. The AG is explicitly *not* RBM's statutory auditor. The Public Finance Management Act 2022 excludes the Reserve Bank from its "statutory body" definition, so RBM accounts are not gazetted under it.
+
+**The Bahamas scan wall, mapped precisely.** The 2023, 2021 and 2018 reports were each read at multiple offsets; in every one the pages between the Financial Statements divider and the Statement of Financial Position extract blank or garbled (2021 pages 46–48 come through as bare page numbers). The auditors' report in all modern CBOB PDFs is an image. 2011 is the only year that yields a name as text, and a current-year Bahamas auditor needs OCR or a browser.
 
 ## Data files to add to (`agents/`)
 | File | Holds |
@@ -291,7 +325,7 @@ Round 5 retried Bahrain, Saudi Arabia, Oman, Taiwan and Singapore in Arabic, Chi
 
 **Cannot finish:** corruption cases, governor removals, and revolving door outside closed sets. No complete count exists anywhere, so the "35–45%" in `about.html` is a judgement made while compiling and will stay one. These approach completeness asymptotically.
 
-**Estimate: 4 to 6 more rounds** for everything finishable. Yield by round: 35, 34, 33, 56, 50, 24, 34, 42, 40, 21, 14.
+**Estimate: 4 to 6 more rounds** for everything finishable. Yield by round: 35, 34, 33, 56, 50, 24, 34, 42, 40, 21, 14, 13.
 
 **The bottleneck is now access, not search, and the fix is the browser.** Four scanned auditor reports have been settled by opening the page and reading it — Botswana, Serbia, the Maldives, Brunei — after every text extraction returned them empty. Still waiting on that method: Bahrain, Barbados, Fiji's annual report, Eswatini, the Bahamas, Rwanda's document list, Taiwan's untitled publication links, Iceland's gold explainer, Greece's gold note, Cambodia's 2023 report. **That list is most of what is left on the two finishable rows.** A round spent entirely in the browser would likely settle more than a round spent searching.
 
