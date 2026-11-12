@@ -39,17 +39,19 @@ Another session of the user's commits to this repo often. **Always `git fetch or
   - Links: `{n, cb | tn, rel, role, detail, src_t, src_u}`.
   - Popups turn each link into a plain sentence (`SAY` / `sayLink` / `srcItem` in `app.js`). Add a `SAY` entry for any new `role` string.
 
-## Where it stands (after round 20, 11 November 2026)
+## Where it stands (after round 21, 11 November 2026)
 
-1,417 outside parties and 1,917 ties. 1,646 writeups, one for every box.
+1,440 outside parties and 1,950 ties. 1,669 writeups, one for every box.
+
+**Breadth is now measured with currency-union ties expanded to member countries** (see below). That change alone moved four rows without any new research, because `coverage.py` had been undercounting what the map already showed.
 
 | Category | Records | Places | Breadth |
 |---|---|---|---|
-| Corruption cases | 232 | 133 | 65% |
-| External auditors | 139 | 91 | 44% |
-| Revolving door | 206 | 70 | 34% |
-| Banknote printers | 102 | 77 | 37% |
-| Swap lines | 240 | 64 | 31% |
+| Corruption cases | 232 | 154 | 75% |
+| External auditors | 162 | 119 | 58% |
+| Revolving door | 206 | 80 | 39% |
+| Banknote printers | 112 | 87 | 42% |
+| Swap lines | 240 | 84 | 41% |
 | Governor removals and pressure | 110 | 55 | 27% |
 | Outside reserve managers | 153 | 35 | 17% |
 | Named shareholders | 228 | 9 | near-complete* |
@@ -169,7 +171,14 @@ Bounded sets that worked:
 ## What is left
 
 ### 1. External auditors — the one category that can actually reach 100%
-Every central bank operates under a law that names who audits it, so the answer always exists. 91 of 206 done. Of the 115 left, 50 have already been tried and logged in `gaps.json`'s `auditors_unavailable`; 65 have never been tried.
+Every central bank operates under a law that names who audits it, so the answer always exists. 119 of 206 done, union members included.
+- **The BCEAO is settled.** The all-lots award notice that five rounds could not fetch — its URL is 364 characters and WebFetch rejects it on length — **was opened in a browser and read off the rendered PDF**. It names a titulaire and a suppléant for the head office and for every national directorate. When WebFetch refuses a URL on length, a browser tool settles it in one call; stop retrying with offsets.
+- **BEAC is settled but imperfectly.** Its 2015 statutory auditors' report names KPMG and Mazars Cameroun jointly, signed at Yaoundé on 11 March 2016. That PDF is a scan and the two names extract as garbled text; the record says so in its own sentence. The 2023 report on beac.int is the clean replacement, and beac.int is robots-disallowed to the fetcher — a browser tool would settle it, as it did for the BCEAO.
+- **The ECB's own auditor is Baker Tilly GmbH & Co. KG Wirtschaftsprüfungsgesellschaft**, Frankfurt, signed 12 February 2025 for 2024. Keyed to `ECB`, so it reaches all 21 euro-area countries.
+- **Three methods worth repeating.** The *offset re-read* should be the default second move on any annual report that appears to have no auditor's report — Somalia's sat at about character 150,000 of 239,000. *Cross-pollination* beat targeted searching: Guinea's report came out of a Mauritania search, Djibouti's out of a Comoros search, Liberia's out of a Libya search. A *monetary-policy board resolution approving the audited statements* named the firm for Ecuador, where the bank publishes no auditor's report; Latin American and some African banks publish these.
+- **Brunei is one OCR pass away.** The BDCB Annual Report 2025 lists an Independent Auditor's Report at pages FS 5–FS 9 and those pages carry no extractable text — the same shape as Fiji, the Maldives and Mozambique.
+- **Sudan is a judgement call.** The Central Bank of Sudan Act 2002 says the accounts shall be audited in accordance with the General Audit Chambers Act 1999. That names a statute, not a body, so it is logged unavailable rather than promoted to "General Audit Chamber".
+- Dead this round: Tonga, Curaçao and Sint Maarten, San Marino, Cambodia (its 2022 annual report contains no auditor's report at all), Laos, Turkmenistan, Belarus, Madagascar, Libya, Mauritania, DR Congo, Burundi, Algeria, Cabo Verde, Palestine, Yemen, São Tomé, Venezuela, Haiti (a tender notice, no award). Iran, Cuba, Syria and Eritrea were not reached inside budget. Of the 115 left, 50 have already been tried and logged in `gaps.json`'s `auditors_unavailable`; 65 have never been tried.
 - **Round 20's two new methods.** A bank's own dedicated "external auditors" web page settled Namibia (Deloitte Namibia and Grand Namibia, joint) — that page type had not been tried before and is worth looking for elsewhere. A letter of transmittal settled Seychelles where the auditor's report annex would not extract.
 - **Two shapes to expect again in Commonwealth small states.** Joint audits: Namibia, and Lesotho (Moteane, Quashie & Associates with SizweNtsalubaGobodo Grant Thornton), each recorded as one printed string. Hybrids where a supreme audit institution is the statutory auditor but a private firm does the work: Seychelles (Grant Thornton Abu Dhabi on the Auditor General's behalf) and Papua New Guinea.
 - **Three that need OCR, not another search.** Fiji (Reserve Bank annual report pp. 79–81), the Maldives (MMA AR2024 pp. 125–127) and Mozambique (financial statements 2018 pp. 6–9) each have the right document open at the right page, and the auditor's report page is image-only and extracts blank.
@@ -181,7 +190,15 @@ Every central bank operates under a law that names who audits it, so the answer 
 - Trinidad and Tobago is **contested, not unknown**: the Auditor General declined to audit the Central Bank and the Government wanted it resumed. Needs care, not another fetch.
 - Panama has no central bank.
 
-### 2. Banknote printers — 37%
+### 2. Banknote printers — 42%
+**The vein to run next is the issuing bank's own new-series press release.** It worked three times in four attempts in round 21 — Iceland ("printed by De La Rue Plc. in the UK"), Fiji (De La Rue International Limited) and Seychelles. It is the only vein that produced a printer name stated plainly enough to file. **BanknoteNews** is a per-country searchable archive that routinely names printers and gave Afghanistan.
+
+**A page already mined can have a second half.** The Tunisian piece used in round 20 only for its "prints abroad" list also names the Arab states that print domestically, with the works named — three records from one fetch (Saudi Arabia, Algeria, Jordan).
+
+**PWPW and G+D are now closed too.** PWPW's archive returns the same four banknote customers from three different pages, all recorded; everything else it names is passports, e-ID or tachographs. G+D's case-study pages are equipment and software — cash management, inspection systems, cash centres — not printing. **The euro area is structurally closed**: Slovakia's production page names no producer, making six euro banks that state nothing. Do not spend a round on Finland, Slovenia, Estonia, Latvia, Lithuania, Cyprus, Malta, Croatia or Luxembourg.
+
+**Blocked, not closed**: bcu.gub.uy is robots-disallowed (Uruguay); the Venezuelan and Myanmar works both returned site errors. Landqart's Bahamas page thanks four firms as partners without assigning a role, so none can be called the printer — a Central Bank of the Bahamas source would close it.
+
 **The customer-list sweep is closed. Do not re-run it.** Round 19 found Note Printing Australia's customer page and round 20 asked whether other printers publish one. None does. Customer, reference, client and "who we work with" pages were searched at De La Rue, Giesecke+Devrient, Crane, Oberthur Fiduciaire, IDEMIA, Veridos, Bundesdruckerei, Goznak, KOMSCO, PWPW, Orell Füssli, CBPM, Canadian Bank Note, Royal Joh. Enschedé, Thomas Greg & Sons, SPMCIL, Peruri and Pakistan Security Printing. Oberthur markets "over 70 central banks among references" and names none. Canadian Bank Note names one client, New Zealand, already recorded. Banque de France prints for "more than twenty countries" and names none.
 
 **What replaced it — two page types that do yield.** PWPW's *news archive* names customers one release at a time; Paraguay and the Dominican Republic came from it and it almost certainly holds more. Giesecke+Devrient's *per-country case-study and interview pages* are the other live vein; the Armenia record came from one, and G+D has similar pages for other countries.
@@ -227,7 +244,9 @@ Round 5 retried Bahrain, Saudi Arabia, Oman, Taiwan and Singapore in Arabic, Chi
 
 ## How long to finish
 
-**The denominator has a floor nobody has dealt with yet.** Breadth is measured against 206 monetary authorities, but 42 of those slots are members of four currency unions — 20 euro-area countries, 8 ECCB, 8 BCEAO, 6 BEAC — that between them run four banks. Corruption cases keyed to a union code expand to every member country, but **party links do not**: an auditor, printer or manager tie has to be filed at the head-office country (SEN, CMR, KNA), so the other 38 member slots show nothing and can never show anything. On the auditors row that alone caps breadth at about 82%, and the same holds for printers and managers. Making union party links expand to member countries the way cases do is a one-off change to `build_final.py`, and it is worth more than several rounds of research: it would move three rows at once. It is a judgement about what the map should say, so ask before doing it.
+**The union floor was dealt with in round 21.** A tie held by a currency union now shows in every member country, the way corruption cases already did. In `app.js`, `linksOfCountry` reads `BYCB` for the country's union as well as for the country, and `cbOfLink` expands any union code. **Union-wide records are keyed to the union code** (`ECB`, `BCEAO`, `BEAC`, `ECCB`), not to the head-office country: the old head-office rule is reversed, and merge scripts must no longer map `BCEAO`→`SEN`, `BEAC`→`CMR`, `ECCB`→`KNA`. `coverage.py` expands union codes too, which revealed it had been understating corruption cases, revolving door and swap lines for several rounds.
+
+**What remains is a smaller floor: ten places have no central bank at all**, so no auditor, printer or manager record can ever exist for them — Panama, Kiribati, Tuvalu, Nauru, Micronesia, the Marshall Islands, Palau, Andorra, Monaco and Liechtenstein. They are listed in `gaps.json` under `no_central_bank` and left in the 206-place denominator, so every service row is understated by about five points. The reachable ceiling for those rows is 196 of 206, or 95%.
 
 **Three of the categories can reach 100% and three cannot**, and conflating them is what makes the question unanswerable.
 
@@ -235,7 +254,7 @@ Round 5 retried Bahrain, Saudi Arabia, Oman, Taiwan and Singapore in Arabic, Chi
 
 **Cannot finish:** corruption cases, governor removals, and revolving door outside closed sets. No complete count exists anywhere, so the "35–45%" in `about.html` is a judgement made while compiling and will stay one. These approach completeness asymptotically.
 
-**Estimate: 10 to 14 more rounds** for everything finishable, against the 206-slot denominator as it stands, and the union floor above means the three service rows stop near 82% rather than 100% until that is changed. Yield by round: 35, 34, 33, 56, 50, 24 — round 20 is the first fall, and it fell because two of its three veins were worked to their end rather than because less was searched. Breadth by round is the figure that matters and it moves slower: auditors went 40% to 44% and printers 33% to 37% in round 20, about nine new countries each, so the 65 never-tried auditor banks are roughly seven rounds on their own, and perhaps half of them will turn out to publish nothing. That is the lesson. Worth spending one round purely on auditing what is already in: round 16's audit found a five-round-old corruption affecting 147 links.
+**Estimate: 6 to 9 more rounds** for everything finishable. Yield by round: 35, 34, 33, 56, 50, 24, 34 — and round 21 moved breadth far more than its record count suggests, because the union change counted what was already there and the BCEAO notice settled eight places at once. External auditors is the row that can actually be driven to its ceiling: 87 places are still missing it, about 40 of them already tried and logged in `auditors_unavailable`, ten of them places with no central bank at all. At round 21's rate that is four or five more rounds for auditors. Printers and managers have no master list, so they stop when the veins stop yielding rather than at a number.
 
 ## Questions the user has settled (don't reopen)
 - **Unproven allegations** (10 November 2026). Show both and let the reader switch. A tick box, "Count cases that are allegations alone", sits under the legend on the three case layers, ticked by default. Cleared, a bank whose only cases are allegations stays on the inside layer scored at nothing rather than dropping off, and its box says any score in the paragraph was written with allegations counted.
