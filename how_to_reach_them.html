@@ -66,17 +66,27 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   display:flex;align-items:center;gap:7px;overflow:hidden;
   background:rgba(17,24,21,.93);border:1px solid var(--line);border-radius:9px;padding:0 9px}
 #bmrow,#projrow{display:flex;align-items:center;gap:2px;flex:none}
+/* the question mark leads the row: it explains the map, not a place */
+#habout{flex:none;width:22px;height:22px;border-radius:50%;border:1px solid var(--stone)!important;
+  background:var(--panel2)!important;color:var(--dim);font-size:11px;line-height:1;padding:0!important;
+  margin-right:4px;cursor:pointer;font-family:inherit}
+#habout:hover{color:var(--ink);border-color:var(--accent-hi)!important;background:var(--accent-soft)!important}
 #toprow button{font-size:10.8px;padding:4px 8px;border:0;border-radius:6px;background:none;
   color:var(--faint);cursor:pointer;font-family:inherit;white-space:nowrap}
 #toprow button:hover{color:var(--ink);background:rgba(74,124,89,.14)}
 #toprow button.on{color:var(--ink);background:var(--accent-soft)}
 #projrow{border-left:1px solid var(--line);padding-left:6px}
+/* The level key comes before the basemaps now. It is read on every
+   glance at the map — it is what says which colour is the county and
+   which is the country — where the basemap is chosen once and then left
+   alone, so that sits in the corner instead. */
 #levels{display:none;min-width:0;gap:3px 11px;overflow:hidden;
-  border-left:1px solid var(--line);padding-left:9px;margin-left:2px}
+  border-right:1px solid var(--line);padding-right:9px;margin-right:2px}
 #levels.on{display:flex;align-items:center}
 #levels .lv{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;color:var(--dim);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#levels .lv i{width:8px;height:8px;border-radius:2px;display:inline-block;flex:none}
+#levels .lv i{width:9px;height:9px;border-radius:50%;display:inline-block;flex:none;
+  box-shadow:0 0 5px 1px currentColor}
 
 #pincount{font-size:10.5px;color:var(--faint);margin-top:4px}
 #admnote{font-size:10.5px;color:var(--faint);margin-top:5px;line-height:1.45;max-width:100%}
@@ -117,34 +127,46 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 #sout .hit b{font-size:13.5px;font-weight:400;display:block}
 #sout .hit span{font-size:11px;color:var(--faint);display:block;margin-top:2px}
 #sout .msg{font-size:12px;color:var(--dim);line-height:1.55;padding:4px 2px}
+/* while typing, the candidates are a plain list rather than cards: they
+   are being scanned, not chosen between yet */
+#sout.live .hit{padding:7px 11px;margin-bottom:3px;border-color:transparent;background:transparent}
+#sout.live .hit b{font-size:12.5px}
+#sout.live .hit:hover{border-color:rgba(140,189,154,.4);background:rgba(74,124,89,.1)}
 #salt{margin-top:14px;font-size:11.5px;color:var(--faint);line-height:1.6}
 #salt a{color:var(--accent-hi);cursor:pointer;text-decoration:none}
 #salt a:hover{text-decoration:underline}
-#sopen{position:fixed;left:20px;bottom:20px;z-index:45;background:rgba(17,24,21,.93);
-  border:1px solid var(--line);border-radius:9px;color:var(--dim);padding:9px 13px;
-  font:inherit;font-size:12px;cursor:pointer;display:none}
-#sopen.on{display:block}
-#sopen:hover{color:var(--ink);border-color:var(--accent-soft)}
+/* Top-left, under the title, and in the header's own flow.
+
+   It was at the bottom-left next to the status dots, which is where
+   things nobody needs are put. Moving it to a fixed position at the top
+   instead put it on top of the subtitle, because the subtitle is two or
+   three lines depending on the window. Sitting in the header block, it
+   is above the subtitle and cannot collide with it at any width. */
+#sopen{display:none;margin:8px 0 2px;pointer-events:auto;
+  background:rgba(17,24,21,.96);border:1px solid var(--accent-soft);border-radius:9px;
+  color:var(--ink);padding:8px 14px;font:inherit;font-size:12.5px;cursor:pointer;
+  box-shadow:0 6px 20px rgba(0,0,0,.4)}
+#sopen.on{display:inline-block}
+#sopen:hover{border-color:var(--accent-hi);background:rgba(74,124,89,.2)}
 #mtop{padding:17px 20px 0;border-bottom:1px solid var(--line);flex:none;position:relative}
-#mtitle{font-family:'Marcellus',serif;font-size:22px;line-height:1.22;padding-right:190px}
-#msub{max-width:none}
-#msub{font-size:11.5px;color:var(--faint);margin-top:4px}
-#mabout{position:absolute;top:14px;right:52px;width:28px;height:28px;border-radius:7px;
-  border:1px solid var(--line);background:var(--panel2);color:var(--dim);cursor:pointer;font-size:13px;font-family:inherit}
-#mabout:hover{color:var(--ink);border-color:var(--accent-soft)}
-#about{display:none;position:absolute;inset:auto 0 0 0;max-height:62%;overflow-y:auto;
-  background:var(--panel2);border-top:1px solid var(--line);padding:16px 20px 20px;
-  border-radius:0 0 13px 13px;z-index:3}
+#mtitle{font-family:'Marcellus',serif;font-size:22px;line-height:1.22;padding-right:150px}
+#about{display:none;position:fixed;z-index:120;right:18px;top:62px;width:min(420px,88vw);
+  max-height:calc(100vh - 100px);overflow-y:auto;background:var(--panel);
+  border:1px solid var(--accent-soft);padding:18px 20px 20px;border-radius:13px;
+  box-shadow:0 24px 70px rgba(0,0,0,.6)}
 #about.on{display:block}
+#aclose{position:absolute;top:12px;right:13px;width:24px;height:24px;border-radius:6px;
+  border:1px solid var(--line);background:var(--panel2);color:var(--dim);cursor:pointer;
+  font-size:14px;line-height:1;font-family:inherit}
+#aclose:hover{color:var(--ink)}
+#about h4{padding-right:30px}
 #about h4{font-family:'Marcellus',serif;font-size:14px;margin-bottom:9px}
 #about p{font-size:12.5px;line-height:1.6;color:var(--dim)}
 #about p+p{margin-top:9px}
 #about a{color:var(--accent-hi);text-decoration:none}
-#mup,#mback{position:absolute;top:14px;height:28px;padding:0 10px;border-radius:7px;
+#mback{position:absolute;top:14px;right:52px;height:28px;padding:0 10px;border-radius:7px;
   border:1px solid var(--line);background:var(--panel2);color:var(--dim);cursor:pointer;font-size:11px;font-family:inherit}
-#mup{right:88px}
-#mback{right:88px}                 /* moved left by script when both are shown */
-#mup:hover,#mback:hover{color:var(--ink);border-color:var(--accent-soft)}
+#mback:hover{color:var(--ink);border-color:var(--accent-soft)}
 #mclose{position:absolute;top:14px;right:16px;width:28px;height:28px;border-radius:7px;border:1px solid var(--line);
   background:var(--panel2);color:var(--dim);cursor:pointer;font-size:15px;line-height:1}
 #mclose:hover{color:var(--ink)}
@@ -225,7 +247,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
    The legend is capped below that so the two cannot meet. */
 #trail{margin:9px 0 2px;font-size:12px;line-height:1.55;display:none}
 #trail.on{display:block}
-#mtop #crumbs{padding-right:190px}
+#mtop #crumbs{padding-right:150px}
 #trail a{color:var(--accent-hi);cursor:pointer;text-decoration:none}
 #trail a:hover{text-decoration:underline}
 #trail .sep{opacity:.45;margin:0 5px}
@@ -254,12 +276,26 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .shapekey{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;margin:10px 0 2px;
   font-size:11px;color:var(--faint)}
 .shapekey span{display:inline-flex;align-items:center;gap:6px}
-.shapekey i{width:17px;height:11px;display:inline-block;flex:none;border:1px solid}
-.shapekey .k-off{background:#24402f;border-color:#8cbd9a;border-radius:6px}
-.shapekey .k-grp{background:#19231e;border-color:#55705e;border-radius:1px}
+/* The first two swatches are drawn as the markers are, not as the
+   diagram boxes are, so the key reads for the map and the panel at
+   once: a lit orb and a faint one. The third is a box, because a
+   grouping only ever exists in the diagram. */
+.shapekey i{display:inline-block;flex:none;border:1px solid}
+.shapekey .k-off{width:12px;height:12px;border-radius:50%;background:#9ccfa7;
+  border-color:#eaf4ec;box-shadow:0 0 8px 2px rgba(156,207,167,.75)}
+.shapekey .k-offd{width:12px;height:12px;border-radius:50%;background:rgba(156,207,167,.3);
+  border-color:rgba(234,244,236,.35)}
+.shapekey .k-grp{width:17px;height:11px;background:#161d19;border-color:#3f5248;border-radius:1px}
 .shapekey .kh{margin-left:auto;font-style:italic}
 .mm svg{max-width:none!important}
 .mm .node{cursor:pointer}
+/* the box being stepped through on the way down from a clicked orb */
+.mm .node.walking > rect,.mm .node.walking > polygon,.mm .node.walking > path,
+.mm .node.walking > circle,.mm .node.walking > ellipse{
+  stroke:#cfe6d4!important;stroke-width:2.6px!important;
+  filter:drop-shadow(0 0 7px rgba(180,226,192,.85)) drop-shadow(0 0 16px rgba(140,189,154,.55));
+  animation:walkpulse .62s ease-in-out}
+@keyframes walkpulse{0%{opacity:.45}45%{opacity:1}100%{opacity:1}}
 /* the definition card that follows the pointer over a diagram box */
 #mmcard{position:fixed;z-index:400;width:340px;max-width:70vw;pointer-events:none;
   background:var(--panel);border:1px solid var(--accent-hi);border-radius:9px;
@@ -268,6 +304,8 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 #mmcard h5{font-family:'Marcellus',serif;font-size:13.5px;margin:0 0 5px;color:var(--text);font-weight:400}
 #mmcard p{font-size:12px;line-height:1.6;color:var(--dim);margin:0}
 #mmcard p.w{color:var(--accent-hi);margin-bottom:6px}
+#mmcard p.loc{color:var(--faint);font-size:11px;margin-top:7px;padding-top:6px;
+  border-top:1px solid var(--line)}
 .dglabel{font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:var(--stone);margin-top:18px}
 .tree{width:100%}
 
@@ -347,6 +385,8 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   #mgrip{display:none}
   #trail{max-width:calc(100vw - 40px);left:20px;right:20px}
   #hdr .sub{display:none}
+  #hdr{padding-bottom:14px}
+  #about{right:0;left:0;width:auto;top:auto;bottom:0;max-height:70%;border-radius:13px 13px 0 0}
 }
 </style>
 </head>
@@ -355,42 +395,63 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 <div id="map"></div>
 <div id="hdr">
   <h1>How To Reach Them</h1>
-  <div class="sub">Who you can contact to make a law &mdash; in every country, at every level down to the municipality &mdash; what each office can actually do about it, and how often any of it works.</div>
+  <button id="sopen" onclick="openStart()">&#9906; Search for another place</button>
+  <div class="sub">Every office of government &mdash; in every country, at every level down to the municipality &mdash; and which of them a member of the public can reach about a law. Those are marked; the rest are drawn so you can see the whole of what governs a place, not only the part that answers.</div>
 </div>
+<!-- The row above the panel, in order of how often each part is used.
+     The level key is read constantly and now sits where it can be seen;
+     the basemaps are set once and sit in the corner. The question mark
+     is its own button at the head of the row rather than inside the
+     panel, because what it explains applies to the whole map. -->
 <div id="toprow">
+  <button id="habout" onclick="toggleAbout()" title="About this map">?</button>
+  <div id="levels"></div>
   <div id="bmrow"></div>
   <div id="projrow"><button id="projbtn" onclick="toggleProjection()">Flat map</button></div>
-  <div id="levels"></div>
 </div>
 <div id="start">
   <h2>Start with your municipality</h2>
-  <p class="lede">Enter your town, city or municipality. The map will go there and show you
-    every office you can contact about a law &mdash; your own council first, then the
-    district, the region and the country above it.</p>
+  <p class="lede">Enter your town, city or municipality. The map goes there and draws every
+    office of government over it, one level at a time &mdash; your own council first, then
+    the district, the region and the country above it. The offices a member of the public
+    can reach about a law are lit; the rest are drawn too, so you can see the whole of
+    what governs the place.</p>
   <div id="srow">
     <input id="sq" type="text" autocomplete="off" spellcheck="false"
-      placeholder="Washington, D.C." onkeydown="if(event.key==='Enter')placeSearch()">
+      placeholder="Washington, D.C." oninput="typeAhead()"
+      onkeydown="if(event.key==='Enter')placeSearch()">
     <button id="sgo" onclick="placeSearch()">Search</button>
   </div>
+  <!-- Candidates appear as they are typed rather than after a button
+       press. Nominatim asks for no more than a request a second, so the
+       keystrokes are collected for 450 ms before anything is sent. -->
   <div id="sout"></div>
 </div>
-<button id="sopen" onclick="openStart()">&#9906; Search for a place</button>
+
 <div id="modal">
   <div id="mtop">
     <button id="mclose" onclick="closeModal()">&times;</button>
-    <button id="mup" style="display:none" onclick="goUp()">&uarr; Up a level</button>
     <button id="mback" style="display:none" onclick="backToDiagram()">&larr; Back to the diagram</button>
-    <button id="mabout" onclick="toggleAbout()" title="About this map">?</button>
     <div id="mtitle">&nbsp;</div>
-    <div id="msub"></div>
     <!-- Where you are, what is on the map and what is still loading. It
          used to sit in a floating box at the bottom-left of the map,
          away from the jurisdiction it describes and easy to miss. -->
     <div id="trail"><div id="crumbs"></div><div id="pincount"></div><div id="admnote"></div></div>
   </div>
   <div id="mbody"></div>
-  <div id="about">
+  <div id="mgrip" title="Drag to resize"></div>
+</div>
+<!-- Out of the panel and onto the map: what it explains is true of the
+     whole map, not of whichever place happens to be open. -->
+<div id="about"><button id="aclose" onclick="toggleAbout()">&times;</button>
     <h4>About what you are reading</h4>
+    <p>This map draws every office of government Wikidata records for a place, at every level from the
+       municipality up to the country. A marked office is one an ordinary member of the public has a route
+       to that bears on what the law says: introducing a bill, submitting to a committee, commenting on a
+       proposed rule, filing a ballot measure, petitioning for a rule. The unmarked ones are government too
+       and open in full, with their routes and what stops them, but writing to them does not change a law
+       &mdash; a judge cannot be approached about a case, a police force cannot alter the statute it
+       enforces, an auditor checks compliance with rules already written.</p>
     <p>What each office can do is read from its title and its Wikidata class. It is a good guess, not a
        constitutional ruling: powers differ from country to country, and a title that means one thing in one
        place means another elsewhere. Confirm on the official site before acting on it.</p>
@@ -404,8 +465,6 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
     <p>Coverage is deep for some countries and thin for others, and thins further at local level. A blank here
        means Wikidata has no record, not that no office exists.</p>
   </div>
-  <div id="mgrip" title="Drag to resize"></div>
-</div>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"></script>
 <script>
 /* --- shared basemaps, ported from the Culprits map --- */
@@ -1290,7 +1349,7 @@ mermaid.initialize({startOnLoad:false, securityLevel:'loose', theme:'base', font
     lineColor:'#6d8c76',secondaryColor:'#171f1b',tertiaryColor:'#141b17',fontSize:'12px'},
   flowchart:{curve:'basis', nodeSpacing:12, rankSpacing:22, useMaxWidth:true, padding:8}});
 
-const ROUTES = [{"id": "email", "nm": "Email to an office holder", "fam": "Direct contact", "sc": "Any level", "cost": "Free", "costn": "Nothing but time. Bulk sending costs nothing and is worth nothing.", "elig": "Anyone", "time": "Minutes to send; weeks to never for a reply", "how": "Office website contact form, or the published address. Form submissions are logged and counted; direct addresses are often filtered.", "own": {"val": "~2%", "note": "Response rate across the author's own global campaign of several thousand emails, demand letters and calls to officials and industry over roughly five years. Of those that replied, almost all replied to disagree or to disclaim responsibility."}, "fail": "Volume handling. Offices tally positions by issue and report counts, so an individual message is processed as one unit of a tally rather than as an argument. Form letters and unsolicited attachments are weighted lowest. Nothing about the message's quality changes how it is counted.", "rate": null, "nomeasure": "See the observed figure below. No systematic cross-office measurement exists.", "def": "An electronic message to an official or their office."}, {"id": "call", "nm": "Phone call to the office", "fam": "Direct contact", "sc": "Any level", "cost": "Free", "costn": "Free on most plans; international calls vary.", "elig": "Anyone; constituents prioritised", "time": "5–15 minutes", "how": "Ask for the legislative assistant covering the subject, by title, rather than the member. Staff log the call to a position tally.", "own": null, "fail": "Same tally mechanism as email, with one difference: a call reaches a human who can route you, so it is the cheapest way to learn which staffer owns an issue. As persuasion it is one tally mark.", "rate": null, "nomeasure": "Offices log a call as one unit of a position tally and publish nothing. nobody has counted how many were attempted: nobody counts calls against whether the position moved.", "def": "A telephone call to the office, usually answered by staff rather than the official."}, {"id": "letter", "nm": "Physical letter", "fam": "Direct contact", "sc": "Any level", "cost": "≈$0.73 US postage", "costn": "One first-class stamp. Certified mail with return receipt runs roughly $10 and produces proof of delivery.", "elig": "Anyone", "time": "Days to weeks in transit", "how": "District or constituency office, not the capital building — mail to legislative capitals is often irradiated and delayed by weeks.", "own": null, "fail": "Weighted slightly above email because it costs something, which is the only signal of effort the system reads. Still tallied.", "rate": null, "nomeasure": "Same tally as a call, with postage. Mail volumes are not published per outcome, so no rate can be computed.", "def": "A physical letter sent by post."}, {"id": "visit", "nm": "In-person meeting at a district office", "fam": "Direct contact", "sc": "Any level", "cost": "Free + travel", "costn": "The meeting is free. Cost is travel and a working day.", "elig": "Constituents", "time": "2–6 weeks to schedule; 15–30 minutes", "how": "Request the staffer who covers the subject. Bring one page. Ask for a specific action, not for agreement.", "own": null, "fail": "The only direct-contact route with a measured causal effect, and the effect is on a specific bill already in play. It does not create an agenda item; it moves an existing one.", "rate": {"val": 12, "kind": "effect", "ev": "rct", "src": "Randomised trial, Michigan state legislators", "means": "Legislators randomly assigned to constituent contact were ~12 percentage points more likely to support the bill.", "caveat": "12 points is a change in probability, not a win rate. Under deflation the floor is ~1.9 points.", "y0": 2013, "y1": 2015, "name": "Organised constituent contact (experimental)"}, "def": "A face-to-face meeting at the office an official keeps in the area they represent, rather than at the capital."}, {"id": "townhall", "nm": "Public comment at a council or board meeting", "fam": "Direct contact", "sc": "Local", "cost": "Free", "costn": "Free. Usually a 2–3 minute speaking slot.", "elig": "Residents; sometimes anyone", "time": "Sign up same day or days ahead", "how": "Agendas are published in advance by law in most jurisdictions. Comment on an agenda item, not in general.", "own": null, "fail": "On the record and minuted, which is its value. Boards are required to hear it and not required to act on it.", "rate": null, "nomeasure": "Councils minute who spoke but not whether speaking changed the vote. Attendance is recorded; influence is not coded anywhere comparable.", "def": "Speaking aloud at a meeting of a local council or board, during the part of the meeting set aside for the public."}, {"id": "rulemaking", "nm": "Ask a department to write a rule", "fam": "Formal process", "sc": "National", "cost": "Free", "costn": "Free to file. A lawyer-drafted petition costs $2,000–$20,000 and markedly raises the odds of a substantive answer.", "elig": "Any person (US: Administrative Procedure Act §553(e))", "time": "Agency response can take months to years", "how": "File directly with the agency. Unlike a comment, this is a petition the agency must formally grant or deny, and a denial is reviewable in court.", "own": null, "fail": "The most underused route on this list. It forces a written agency position where email cannot. Agencies deny most petitions, but a denial is a reviewable document, which a tally mark never is.", "rate": null, "nomeasure": "No government-wide figure is published. The Administrative Conference of the United States gathered partial counts from individual agencies in its 2014 study, but they are not comparable across agencies and no overall grant rate was assembled.", "def": "A formal written request asking a government department to make, change or scrap a rule. Unlike a letter, the department has to answer it."}, {"id": "comment", "nm": "Comment on a proposed rule", "fam": "Formal process", "sc": "National", "cost": "Free", "costn": "Free. US public file of responses at regulations.gov; most countries run an equivalent consultation portal.", "elig": "Anyone, including non-citizens", "time": "Comment windows run 30–90 days", "how": "Comment on a specific file reference inside its window. Agencies must respond to significant comments in the final rule.", "own": null, "fail": "Measured difference: across 40 rule-writing processes processes at four US federal agencies and some 1,700 responses, businesses had a significant effect on what the final rule said and everyone else had no detectable effect at all in the same analysis. Over 57% of responses came from business. The file is open to anyone and is weighted by whoever turns up, repeatedly, with lawyers, on every rule, for years.", "rate": {"val": null, "kind": "dir", "ev": "coded", "src": "Same 40 rule-writing", "means": "No detectable influence on final rule content in the same models that found business influence.", "caveat": "— no figure published: A null result. No magnitude to place. — Null result, listed with the directional findings. Twelve detailed submissions can dominate a public file of responses; ten thousand identical ones cannot.", "y0": 1994, "y1": 2001, "name": "Regulatory comment — non-business commenter"}, "def": "A written response to a rule a department has proposed but not yet brought into force, sent during the window when it is asking for views."}, {"id": "foia", "nm": "Freedom of information request", "fam": "Formal process", "sc": "Any level", "cost": "Free–$25", "costn": "Usually free for the first hours of search; fee waivers available for public-interest requests.", "elig": "Anyone; many countries accept foreign requesters", "time": "20 working days written into law, often far longer", "how": "Specific documents, named custodian, narrow date range. Broad requests get denied on burden.", "own": null, "fail": "Produces documents, not decisions. Its use is building the record that every other route needs.", "rate": {"val": 49.7, "kind": "base", "ev": "coded", "y0": 2024, "y1": 2024, "name": "FOIA request — records released, end to end", "src": "US government-wide FOIA annual report summary, FY2024 (all agencies)", "means": "Of 1,499,265 requests processed government-wide, 795,112 reached the stage where an official decides what can be withheld. Of those, 22.8% were granted in full and 70.9% in part, so 745,140 requests — 49.7% of everything processed — ended with records in hand.", "caveat": "The 94% figure agencies quote counts only requests that reached the stage where an official decides what can be withheld. The other 47% were closed with no records found, as improper requests, withdrawn, referred elsewhere or over fees. Getting records is not the same as getting the records you asked for: a partial grant can be a single page with the rest withheld."}, "def": "A formal request for copies of government documents, which the government must answer within a set time."}, {"id": "sfr", "nm": "Written submission to a hearing", "fam": "Formal process", "sc": "National", "cost": "Free", "costn": "Free. Ask the subcommittee clerk for format and the window.", "elig": "Anyone, in most committees", "time": "Window usually closes days after the hearing", "how": "Submit to the clerk in the stated format before the deadline. It is printed in the hearing record.", "own": null, "fail": "Enters a permanent published record that staff and researchers cite later. Nobody is required to read it.", "rate": null, "nomeasure": "Statements are printed in the hearing record. Nobody has coded them against whether the committee changed anything.", "def": "A written submission sent to a committee holding a public hearing, which is printed alongside what the witnesses said."}, {"id": "ig", "nm": "Inspector General or audit office complaint", "fam": "Formal process", "sc": "National", "cost": "Free", "costn": "Free.", "elig": "Anyone", "time": "Months to years", "how": "Allege a specific failure against a specific written into law or policy obligation. Vague complaints are closed.", "own": null, "fail": "An IG audit is one of the few things that forces an agency to concede a gap in writing and commit to a dated fix. It needs a concrete, auditable failure, not a disagreement about priorities.", "rate": null, "nomeasure": "Each inspector general publishes its own hotline and caseload figures on its own definitions. Nothing comparable has been assembled across them.", "def": "A complaint to the independent office that checks whether a government body followed its own rules."}, {"id": "ombud", "nm": "Ombudsman or national human rights institution", "fam": "Formal process", "sc": "National", "cost": "Free", "costn": "Free.", "elig": "Usually anyone affected", "time": "Months", "how": "Most countries have one; mandates vary widely.", "own": null, "fail": "Offices publish their own caseload and compliance figures, but nothing comparable exists across them, so there is no rate to quote. Findings are usually non-binding.", "rate": {"val": null, "kind": "none", "ev": "none", "src": "individual offices publish caseload and compliance figures; nothing comparable across them", "means": "National ombudsman offices report complaints received and recommendations accepted. Comparability is nil: some report compliance with suggestions, some report cases closed, some report neither, and the powers behind the recommendation differ in every country.", "caveat": "A per-jurisdiction extraction here would be straightforward and has never been done.", "y0": 1970, "y1": 2026, "name": "Ombudsman and human rights institution complaint"}, "def": "A complaint to an independent official whose job is investigating how government treated someone."}, {"id": "citizensuit", "nm": "Citizen-suit enforcement of a statute", "fam": "Courts", "sc": "National", "cost": "$0–$100k+", "costn": "Many environmental statutes shift fees to the loser, so a winning public-interest plaintiff can recover costs. Losing is expensive.", "elig": "Standing required: a concrete, particularised injury", "time": "Years; most statutes require 60 days notice first", "how": "Serve the the warning letter the law requires, then file if the violation continues.", "own": null, "fail": "Filings are recorded; what became of them is not counted anywhere. The usual wall is standing: to sue in most English-speaking courts you must show a specific injury to you personally, and a harm shared equally by everybody counts, in law, as an injury to nobody.", "rate": {"val": null, "kind": "none", "ev": "none", "src": "filings are recorded; outcomes are not coded as a rate", "means": "Where the law lets private parties sue to enforce it, notice letters and filings are recorded and settlements are frequently public. No dataset carries filings against outcomes, and a large share settle before judgment, which is where the wins mostly are.", "caveat": "Availability is the whole story: this exists in a handful of legal systems and nowhere else, so a global figure would be measuring which country you are in rather than what the method does.", "y0": 1970, "y1": 2026, "name": "Citizen-suit enforcement of a statute"}, "def": "A lawsuit brought by an ordinary person to enforce a law the government is not enforcing. Some laws allow this by name."}, {"id": "climatelit", "nm": "Climate litigation", "fam": "Courts", "sc": "National / international", "cost": "$50k–$1m+", "costn": "Usually carried by a public-interest firm or clinic rather than the plaintiff.", "elig": "Standing required", "time": "Years", "how": "Most cases are brought with an established climate litigation organisation rather than alone.", "own": null, "fail": "Across 3,600+ cases in 62 countries, outcomes favourable to climate action in a bit over half. Climate-washing cases — suing over false environmental claims rather than over emissions — run considerably higher, because a false statement is far easier to prove than a causal chain.", "rate": {"val": 52, "kind": "base", "ev": "coded", "src": "3,600+ cases across 62 countries (Grantham/Sabin databases)", "means": "More than half of direct judicial outcomes were favourable to climate action.", "caveat": "[Source reports 'more than half'. Taken as 52, the nearest defensible floor.] \"Favourable\" is a broad coding. Applies to concluded direct outcomes.", "y0": 1986, "y1": 2025, "name": "Climate litigation — all cases"}, "def": "A lawsuit about climate harm, brought against a government or a company."}, {"id": "amicus", "nm": "Outsider brief in a court case", "fam": "Courts", "sc": "National", "cost": "$5k–$50k", "costn": "Pro bono filing is common for an organisation with a distinctive factual record.", "elig": "Anyone with leave of the court", "time": "Tied to the case calendar", "how": "Bring facts the parties cannot. Courts read briefs that add a record, not briefs that add a voice.", "own": null, "fail": "Filings are counted; influence is contested and not coded as a rate.", "rate": {"val": null, "kind": "none", "ev": "none", "src": "filings are counted; influence is contested and not coded as a rate", "means": "Filing counts are published and have risen sharply in several supreme courts. Studies of whether briefs change outcomes disagree, and the ones that find influence generally find it in citation and reasoning rather than in who won.", "caveat": "The outcome variable is the problem. A brief that shapes a footnote has done something real and no coding scheme records it.", "y0": 1950, "y1": 2026, "name": "Amicus brief"}, "def": "A written argument filed by someone who is not one of the two sides in a court case, offering the court information it would not otherwise have."}, {"id": "personhood", "nm": "Legal rights for a river or ecosystem", "fam": "Courts", "sc": "Local to national", "cost": "Varies", "costn": "A municipal ordinance campaign is the cheap end; a constitutional provision is the expensive end.", "elig": "Varies by jurisdiction", "time": "Years", "how": "Roughly 700 initiatives counted across 66 countries. Municipal ordinances are where novel instruments actually pass first.", "own": null, "fail": "No coded outcomes exist. Adoption is documented; what adoption changes on the ground is not.", "rate": {"val": null, "kind": "none", "ev": "none", "src": "roughly 700 initiatives counted across 66 countries; no coded outcomes", "means": "Six countries have national rights-of-nature provisions — Ecuador, Bolivia, Panama, Spain, Uganda and New Zealand — and courts in Colombia, India, Peru, Bangladesh and Nepal have recognised particular rivers, forests or regions as rights-holders. About 80% of the counted initiatives are in the Americas. Whether the recognised entity then won anything is not tracked.", "caveat": "This chart already mentions the count in passing under climate litigation. It belongs here as its own row, because the count of laws passed says nothing about the count of cases won.", "y0": 2008, "y1": 2026, "name": "Rights of nature and legal personhood for an ecosystem"}, "def": "A law or ruling that treats a river, forest or ecosystem as having rights of its own, so somebody can go to court on its behalf."}, {"id": "shareprop", "nm": "Shareholder proposal", "fam": "Companies", "sc": "Corporate", "cost": "$2,000 of stock", "costn": "US Rule 14a-8 eligibility: $2,000 held 3 years, or $15,000 held 2 years, or $25,000 held 1 year. The cheapest formal route that compels a company to respond in writing.", "elig": "Qualifying shareholders", "time": "Annual proxy cycle", "how": "Submit before the company's deadline. The company must print it and respond, or win exclusion from the SEC.", "own": null, "fail": "Resubmission thresholds bite: a proposal voted on once must clear 5% to come back, twice 15%, three or more times 25%. Below that it is excludable for five years. Low votes lock the subject out rather than building toward a win.", "rate": {"val": 16, "kind": "base", "ev": "coded", "src": "US proxy seasons through 2025", "means": "Environmental and social proposals averaged 16% support in 2025, down from 20% in 2024. Governance proposals averaged 35%. The share of E&S resolutions drawing under 5% rose from 8% to 27% over five years.", "caveat": "Average support, not a pass rate. Treat this as an upper bound on visible influence.", "y0": 2020, "y1": 2025, "name": "Shareholder resolution (E&S)"}, "def": "A proposal put to a company by one of its shareholders, which the company must print and put to a vote of all shareholders."}, {"id": "engage", "nm": "Private engagement with a company", "fam": "Companies", "sc": "Corporate", "cost": "Free–high", "costn": "Free to request; effective at scale only with assets behind it.", "elig": "Shareholders, mostly institutional", "time": "Months to years", "how": "Sequences of private meetings rather than public filings.", "own": null, "fail": "The measured rate comes from one large institutional investor's own records across 2,152 engagement sequences. An individual holder is not the actor that rate describes.", "rate": {"val": 18, "kind": "base", "ev": "coded", "src": "2,152 engagement sequences with 613 US-listed companies, from one large institutional investor's own records", "means": "18% of engagement sequences succeeded. Environmental and social asks succeeded 13% of the time against 24% for governance asks, and the environmental ones needed 3.7 approaches each against 2.2. Median time from first approach to success was one year. Collaboration with other investors raised the success rate; so did the target having a reputation to lose and the headroom to change. A later international study of the same channel put the rate at 19.9%.", "caveat": "Success is coded by the investor who did the engaging, which is the obvious weakness. The 13-versus-24 split is the useful part: the same investor, the same firms, the same year, and environmental asks converted at half the rate of governance asks.", "y0": 1999, "y1": 2009, "name": "Private shareholder engagement"}, "def": "Private meetings between a company and its large shareholders, away from any public vote."}, {"id": "boycott", "nm": "Consumer boycott", "fam": "Companies", "sc": "Corporate", "cost": "Free", "costn": "Free to join; organising at scale costs staff time and media.", "elig": "Anyone", "time": "Months to years", "how": "Works through media attention and reputation rather than through lost revenue.", "own": null, "fail": "Standalone boycotts land near a quarter; boycotts inside a broader campaign do considerably better. The mechanism is reputational damage, so a boycott nobody reports is a boycott that does nothing.", "rate": {"val": 25, "kind": "base", "ev": "coded", "src": "133 boycotts, 1990–2005, covering 177 firms", "means": "~25% produced a concession. Top predictor of effectiveness was media coverage generated, not sales lost — typical boycotts barely dent revenue.", "caveat": "Broader synthesis puts it at 25–40%, with selection bias: boycotts only get studied once they gain traction.", "y0": 1990, "y1": 2005, "name": "Consumer boycott"}, "def": "An organised refusal to buy from a company until it changes something."}, {"id": "oecdncp", "nm": "Complaint about a company to an OECD contact point", "fam": "Companies", "sc": "International", "cost": "Free", "costn": "No filing fee. Legal help is optional and usually unpaid.", "elig": "Any individual or NGO with an interest — not only those directly harmed", "time": "Initial assessment 3+ months; mediation 6–12 months; final statement ~3 months after", "how": "File against a multinational headquartered in or operating in an adhering country, on any topic in the OECD Guidelines.", "own": null, "fail": "The two codings of the same mechanism disagree sharply — NGOs coding 250 complaints over fifteen years got a far lower figure than the OECD's own reporting on 2011–2016 cases. Participation is voluntary, NCPs cannot compel a company, and putting right harm already done is rare. It produces a published finding, not an enforceable order.", "rate": {"val": 14, "kind": "base", "ev": "coded", "src": "250 complaints filed with OECD National Contact Points over the mechanism's first fifteen years, coded by OECD Watch", "means": "35 of 250 complaints — 14% — produced any beneficial result that amounted to some measure of remedy, and most of those were forward-looking policy commitments rather than anything done for the people who filed. Of 18 NGO and community cases concluded in 2017, one produced compensation and a concrete improvement; five produced any element of remedy at all.", "caveat": "Read this with the row directly below. Two organisations counted the same mechanism and got 14% and 47%, because one asked whether the complainant got anything and the other asked whether the parties reached an agreement.", "y0": 2000, "y1": 2015, "name": "OECD complaint against a company (NGO coding)"}, "def": "A complaint about a multinational company, filed with the government office that each member country of the OECD keeps for the purpose."}, {"id": "devbank", "nm": "Complaint to a development bank", "fam": "Companies", "sc": "International", "cost": "Free", "costn": "Free. The World Bank Inspection Panel, the IFC's CAO and nine similar bodies.", "elig": "People affected by a financed project; usually two or more", "time": "Years", "how": "Complain about a project financed by the institution, alleging it broke its own policies.", "own": null, "fail": "758 complaints over 21 years across 11 mechanisms. The institution investigates whether it broke its own rules; it does not compel the borrower or the company. Directly relevant to lending loan conditions work.", "rate": {"val": 20, "kind": "base", "ev": "coded", "src": "758 complaints filed over 21 years with the 11 independent accountability mechanisms of development finance institutions, coded by eleven civil-society organisations", "means": "Just under 20% of concluded complaints produced either a negotiated settlement (8%) or a publicly disclosed compliance report (11.5%). Bank management produced an action plan in 7% of concluded cases. A large share of complaints were never found eligible at all.", "caveat": "The authors' own conclusion is that the outcome rarely provides adequate remedy. Counting a published compliance report as a success is generous: one documented case is a finding of non-compliance the institution then ignored. The 8% settlement figure is the strict reading, and the 7% action-plan figure is what the delivery toggle drops to.", "y0": 1994, "y1": 2015, "name": "Complaint to a development bank's accountability mechanism"}, "def": "A complaint that a project funded by a development bank has broken that bank’s own rules, filed with the bank’s independent complaints office."}, {"id": "upr", "nm": "Submission to the UN human rights review", "fam": "International", "sc": "International", "cost": "Free", "costn": "Free. NGOs file written submissions on any state under review.", "elig": "Any organisation; individuals via a coalition", "time": "Review cycles run years", "how": "File into the cycle for the state you are addressing.", "own": null, "fail": "Assessed at mid-term across 11,527 first-cycle recommendations. States accept recommendations readily and implement partially; acceptance is not compliance.", "rate": {"val": 48, "kind": "base", "ev": "coded", "src": "11,527 recommendations from the first review cycle, assessed at mid-term against submissions from states, national human rights institutions, NGOs and UN agencies", "means": "48% had triggered some action about three years after the review — 18% fully implemented, 30% partially. 48% produced nothing, and 4% could not be assessed. Even recommendations a state formally noted rather than accepted moved 19% of the time. Africa ran at 50% and one state reached 55%; where no stakeholder took part in follow-up, no assessment was possible at all.", "caveat": "the number of attempts is recommendations, not campaigns, and a recommendation can be as thin as 'continue efforts' — only about 30% were specific enough to assess cleanly. Assessment leans on the state's own reporting alongside NGO submissions. Read 48% as 'something moved in the direction of the text', not as compliance; the delivery toggle drops it to the 18% that were fully implemented.", "y0": 2008, "y1": 2014, "name": "UN Universal Periodic Review recommendation"}, "def": "A written submission about a country’s human rights record, filed into the review every UN member state goes through in turn."}, {"id": "echr", "nm": "Case at a regional human rights court", "fam": "International", "sc": "International", "cost": "Free to file", "costn": "Free; representation needed in practice.", "elig": "Domestic remedies must be exhausted first", "time": "Years", "how": "European Court of Human Rights and its regional equivalents.", "own": null, "fail": "The admissibility filter is the whole story: the overwhelming majority of applications never reach a merits judgment.", "rate": {"val": 1.5, "kind": "base", "ev": "coded", "src": "European Court of Human Rights annual statistics; Committee of Ministers execution reporting", "means": "The Court rejects around 90% of applications as inadmissible without examining them. Counting every application filed, roughly 1–2% end in a judgment finding a violation. Conditional on reaching judgment the odds invert: against the United Kingdom, 329 judgments found at least one violation and 146 found none between 1975 and 2022.", "caveat": "Winning is not the end of it. Pending leading cases before the Committee of Ministers rose from 120 in 2011 to about 1,300 in 2021, and 44% of those had been pending more than five years — the delivery gap this chart flags everywhere, in the one forum that publishes enough to measure it.", "y0": 1998, "y1": 2024, "name": "European Court of Human Rights — filing to a violation finding"}, "def": "A case brought to an international human rights court, after the courts at home have been exhausted."}, {"id": "ilo", "nm": "ILO freedom-of-association complaint", "fam": "International", "sc": "International", "cost": "Free", "costn": "Free. Filed by workers' or employers' organisations.", "elig": "Organisations, not individuals", "time": "Years", "how": "Committee on Freedom of Association, 3,300+ cases examined since 1951.", "own": null, "fail": "Findings are recommendations to the state. The ILO's own long review counts 'cases of progress' rather than compliance.", "rate": {"val": 29, "kind": "base", "ev": "coded", "src": "3,300+ cases examined since 1951; 2018 caseload used for the rate", "means": "Of 92 cases examined in 2018 (70 active, 22 in follow-up), the Committee closed 27 — 29%. Cases close when resolved by the parties, handled nationally, or inactive for 18 months. More than 60 countries have acted on its recommendations and reported positive developments. Regional distribution of complaints since 1952: roughly 44% Central and South America, 25% Europe, 13% Africa, 12% Asia, 6% North America.", "caveat": "\"Closed\" bundles resolution with abandonment, so 29% is an upper bound on success and a poor one. The full 3,300-case record has never been coded for outcome, which is the single largest unextracted dataset named on this chart.", "y0": 1951, "y1": 2024, "name": "ILO freedom-of-association complaint"}, "def": "A complaint to the United Nations labour agency that a country has broken workers’ right to organise."}, {"id": "copuos", "nm": "Observer status at the UN space committee", "fam": "International", "sc": "International", "cost": "Free", "costn": "Free, but requires an organisation with a track record.", "elig": "NGOs, by Committee decision", "time": "Years to obtain", "how": "Permanent observer status confers the right to attend sessions and make statements.", "own": null, "fail": "No rate exists. The route in for an argument rather than an organisation is scholarship: delegations cite papers, not websites.", "rate": null, "nomeasure": "A handful of organisations hold observer status and there is no published count of applications, so there is no denominator.", "def": "Formal standing to attend and speak at the UN committee that handles the law of outer space."}, {"id": "lobby", "nm": "Registered lobbyist retainer", "fam": "Money & representation", "sc": "National", "cost": "Mid five figures / month", "costn": "Check comparable clients in the public lobbying disclosure database before accepting any quote.", "elig": "Anyone who can pay; the engagement is public record", "time": "Quarterly cycles", "how": "Needs a vehicle — a bill, a public file of responses, an appropriations line — not a thesis.", "own": null, "fail": "The finding that matters: across 98 randomly selected issues tracked 1999–2002, 60% of lobbying campaigns failed to move policy, and resources explained under 5% of the difference between winners and losers. Paying more does not buy the outcome; the status quo wins most contests regardless of spending.", "rate": {"val": 40, "kind": "base", "ev": "coded", "src": "98 randomly selected issues tracked 1999–2002", "means": "40% saw policy change; 60% of campaigns failed to move policy. Resources explained under 5% of the difference between winners and losers.", "caveat": "Random issue selection is what makes this figure trustworthy.", "y0": 1999, "y1": 2002, "name": "Federal lobbying campaign"}, "def": "Paying a firm to argue your case to officials on your behalf. In most countries the arrangement has to be declared publicly."}, {"id": "scoping", "nm": "Scoping memo from a former staffer", "fam": "Money & representation", "sc": "National", "cost": "$2k–$10k", "costn": "Ten to twenty hours of one practitioner's time.", "elig": "Anyone who can pay", "time": "2–4 weeks", "how": "Buy the answer to which committee, which vehicle, which staffer, and what the ask should literally say.", "own": null, "fail": "No measured rate. Listed because it is the cheapest way to find out whether a retainer would be wasted.", "rate": null, "nomeasure": "A private professional service. No outcome data exists, and any that did would be the practitioner’s own.", "def": "Paying one experienced person, usually a former government staffer, for a short written assessment of whether your case has a route at all."}, {"id": "office", "nm": "Running for office", "fam": "Money & representation", "sc": "Any level", "cost": "$0–$2m+", "costn": "Local filing fees are often under $100 or a signature petition. Precinct and party committee seats frequently go uncontested.", "elig": "Residency and age requirements", "time": "Election cycles", "how": "The lowest offices have the least competition and the most direct jurisdiction over local decisions.", "own": null, "fail": "Randomised evidence from 265 Indian village councils where head positions were reserved: holding office changed spending priorities measurably, but not uniformly for the better. Office changes what gets decided, not whether deciding is hard.", "rate": {"val": null, "kind": "dir", "ev": "rct", "src": "265 Indian village councils; one third of head positions randomly reserved", "means": "Reserved councils invested in 2.62 more drinking-water facilities on average and made fewer road improvements, an 8% deterioration. Inexperience, re-election prospects and background were ruled out.", "caveat": "Direction and mechanism, not a percentage. Non-Western, randomised, and rare on both counts.", "y0": 1995, "y1": 2004, "name": "Holding the office (randomised)"}, "def": "Standing for election yourself, at any level from a local committee seat upward."}, {"id": "ballot", "nm": "Ballot initiative", "fam": "Money & representation", "sc": "State / local", "cost": "$1–$10 per signature", "costn": "Signature gathering is the dominant cost and scales with the jurisdiction's threshold.", "elig": "Available in some jurisdictions only", "time": "A full election cycle", "how": "Qualify by signature, then campaign.", "own": null, "fail": "Qualifying and winning are different problems, and a measure that passes can still be repealed, amended or struck down.", "rate": {"val": 41, "kind": "base", "ev": "coded", "src": "3,274 citizen-initiated measures on US state ballots", "means": "1,351 approved, 41%. California initiatives 36%; Oregon 35%.", "caveat": "US-only. Direct-democracy systems elsewhere are unmeasured here.", "y0": 1904, "y1": 2024, "name": "Citizen ballot initiative"}, "def": "Putting a proposed law directly to a public vote by collecting enough signatures. Only some places allow it."}, {"id": "quitam", "nm": "Whistleblowing for a reward", "fam": "Insider", "sc": "National", "cost": "Lawyer, contingency", "costn": "whistleblower-reward counsel works on contingency; filing costs the whistleblower little up front.", "elig": "Someone with original, non-public evidence of fraud against the government", "time": "Years under seal", "how": "Filed under seal; the government decides whether to intervene.", "own": null, "fail": "Everything turns on whether the government joins the case. It recovers money in about 95% of the cases it joins, and far less in the ones it leaves to the whistleblower alone. The whistleblower does not get to make that choice.", "rate": {"val": 27, "kind": "base", "ev": "coded", "src": "DOJ annual False Claims Act statistics", "means": "1,297 whistleblower-reward suits filed in FY2025, a record. $5.3bn of $6.8bn recovered came from whistleblower-reward matters; ~43% of that from cases the government declined and the the person who reported it pursued alone. the person who reported it received ~$330m, about 6%.", "caveat": "Intervention is the inflection point. Retaliation: 22% in earlier surveys, rising to 44% and above in later waves.", "y0": 2015, "y1": 2025, "name": "Whistleblowing — at filing (qui tam)"}, "def": "Reporting fraud against the government from the inside, under a law that pays the reporter a share of what is recovered."}, {"id": "observer", "nm": "Independent election observation", "fam": "Insider", "sc": "Any level", "cost": "Free", "costn": "Volunteer.", "elig": "Varies; often requires accreditation", "time": "Election days", "how": "Randomised evidence from Russian polling stations.", "own": null, "fail": "One of the largest measured effects available to an unpaid individual, and it only works where the problem is at the count.", "rate": {"val": 11, "kind": "effect", "ev": "rct", "src": "Randomly assigned independent observers, Russian polling stations", "means": "The presence of a randomly assigned independent observer cut the ruling party's result by 11% on average, from 47% to 36%.", "caveat": "Also the trigger for what followed: documented fraud with no official acknowledgement is what put thousands into the streets in December 2011.", "y0": 2011, "y1": 2012, "name": "Independent election observers (randomised)"}, "def": "Watching an election at a polling station as an accredited independent witness."}, {"id": "facarole", "nm": "Seat on a government advisory committee", "fam": "Insider", "sc": "National", "cost": "Free", "costn": "Unpaid or per-diem.", "elig": "Appointed; nominations often open publicly", "time": "Months to appoint; multi-year terms", "how": "Agencies must publish vacancies and solicit nominations. Seats on technical committees are frequently undersubscribed.", "own": null, "fail": "No measured rate. An unusual route: it places a person inside the body that drafts the recommendation, rather than outside writing to it.", "rate": null, "nomeasure": "Appointments are published; whether holding a seat changed a recommendation is not coded.", "def": "Sitting on a committee of outside experts that a government department appoints to advise it."}, {"id": "oped", "nm": "Newspaper op-ed", "fam": "Information", "sc": "Public", "cost": "Free", "costn": "Free to submit; most are rejected.", "elig": "Anyone", "time": "Days to weeks", "how": "Two randomised panel experiments on five op-eds, tested on a mass sample and on policy elites.", "own": null, "fail": "Moved policy attitudes about half a point on a seven-point scale, still present a month later. It moves opinion, which is not the same as moving a decision.", "rate": {"val": 7, "kind": "effect", "ev": "rct", "src": "two randomised panel experiments on five op-eds, run on a mass sample and on a sample of policy elites", "means": "Reading an op-ed moved policy attitudes about half a point on a seven-point scale — roughly 7% of the scale — and the shift was still there a month later, having closed by about half in the first ten days and then held. Attitudes on non-target issues did not move, which is the check that people read the argument rather than shifting generally. Democrats and Republicans moved in the direction of the piece in roughly equal measure, and elites moved slightly less than the public. Costed against readership, between about 50 cents and $3 per mind changed.", "caveat": "Convenience samples, forced exposure and an attitude scale rather than behaviour. The real-world version has to survive the fact that hardly anybody reads any given piece — the effect is per reader, not per publication, and the cost-per-mind figure carries every assumption in that chain.", "y0": 2016, "y1": 2018, "name": "Newspaper op-ed"}, "def": "An opinion article published in a newspaper."}, {"id": "deepcanvass", "nm": "Deep canvassing", "fam": "Information", "sc": "Public", "cost": "Free", "costn": "Volunteer time; ten minutes per conversation.", "elig": "Anyone", "time": "Ongoing", "how": "A ten-minute non-judgemental exchange of personal stories, not an argument.", "own": null, "fail": "The largest durable persuasion effect measured, and the least scalable thing on this list. Ordinary partisan canvassing measures approximately zero.", "rate": {"val": 13.8, "kind": "effect", "ev": "rct", "src": "Randomised field experiment on immigration attitudes", "means": "Support moved from 29% to 33% — a 13.8% relative increase — durable at three months or more.", "caveat": "Four points absolute. Deflated floor ~2.2% relative.", "y0": 2016, "y1": 2020, "name": "Deep canvassing (10-min story exchange)"}, "def": "A ten-minute, unhurried doorstep conversation in which both people swap personal stories rather than argue."}, {"id": "petition", "nm": "Online petition", "fam": "Information", "sc": "Any level", "cost": "Free", "costn": "Free.", "elig": "Anyone", "time": "Weeks", "how": "Official government petition sites carry response thresholds; commercial petition sites carry none.", "own": null, "fail": "Across all 20,000 petitions on the UK government site, 0.7% reached the threshold for an official response and 0.1% reached a debate. End to end the figure is about 0.15%. Petitions defending an existing policy did considerably better than those demanding change, and signature count was not decisive.", "rate": {"val": 0.7, "kind": "base", "ev": "coded", "src": "All 20,000 petitions on the UK government site", "means": "5% reached 500 signatures; 0.7% reached the 10,000 needed for an official response; 0.1% reached 100,000 for a debate. US White House site: 15% and 0.7%.", "caveat": "Crossing the threshold is not winning. See the compound row.", "y0": 2011, "y1": 2019, "name": "Petition — reaching an official response"}, "def": "Collecting signatures behind a demand. On official government petition sites, passing a set number triggers a response."}];
+const ROUTES = [{"id": "email", "nm": "Email to an office holder", "fam": "Direct contact", "sc": "Any level", "cost": "Free", "costn": "Nothing but time. Bulk sending costs nothing and is worth nothing.", "elig": "Anyone", "time": "Minutes to send; weeks to never for a reply", "how": "Office website contact form, or the published address. Form submissions are logged and counted; direct addresses are often filtered.", "own": null, "fail": "Volume handling. Offices tally positions by issue and report counts, so an individual message is processed as one unit of a tally rather than as an argument. Form letters and unsolicited attachments are weighted lowest. Nothing about the message's quality changes how it is counted.", "rate": null, "nomeasure": "No one has measured this across offices. Offices log incoming contact as a count by issue and position and publish nothing, so there is no record of how many messages were sent against how often a position moved.", "def": "An electronic message to an official or their office."}, {"id": "call", "nm": "Phone call to the office", "fam": "Direct contact", "sc": "Any level", "cost": "Free", "costn": "Free on most plans; international calls vary.", "elig": "Anyone; constituents prioritised", "time": "5–15 minutes", "how": "Ask for the legislative assistant covering the subject, by title, rather than the member. Staff log the call to a position tally.", "own": null, "fail": "Same tally mechanism as email, with one difference: a call reaches a human who can route you, so it is the cheapest way to learn which staffer owns an issue. As persuasion it is one tally mark.", "rate": null, "nomeasure": "Offices log a call as one unit of a position tally and publish nothing. nobody has counted how many were attempted: nobody counts calls against whether the position moved.", "def": "A telephone call to the office, usually answered by staff rather than the official."}, {"id": "letter", "nm": "Physical letter", "fam": "Direct contact", "sc": "Any level", "cost": "≈$0.73 US postage", "costn": "One first-class stamp. Certified mail with return receipt runs roughly $10 and produces proof of delivery.", "elig": "Anyone", "time": "Days to weeks in transit", "how": "District or constituency office, not the capital building — mail to legislative capitals is often irradiated and delayed by weeks.", "own": null, "fail": "Weighted slightly above email because it costs something, which is the only signal of effort the system reads. Still tallied.", "rate": null, "nomeasure": "Same tally as a call, with postage. Mail volumes are not published per outcome, so no rate can be computed.", "def": "A physical letter sent by post."}, {"id": "visit", "nm": "In-person meeting at a district office", "fam": "Direct contact", "sc": "Any level", "cost": "Free + travel", "costn": "The meeting is free. Cost is travel and a working day.", "elig": "Constituents", "time": "2–6 weeks to schedule; 15–30 minutes", "how": "Request the staffer who covers the subject. Bring one page. Ask for a specific action, not for agreement.", "own": null, "fail": "The only direct-contact route with a measured causal effect, and the effect is on a specific bill already in play. It does not create an agenda item; it moves an existing one.", "rate": {"val": 12, "kind": "effect", "ev": "rct", "src": "Randomised trial, Michigan state legislators", "means": "Legislators randomly assigned to constituent contact were ~12 percentage points more likely to support the bill.", "caveat": "12 points is a change in probability, not a win rate. Under deflation the floor is ~1.9 points.", "y0": 2013, "y1": 2015, "name": "Organised constituent contact (experimental)"}, "def": "A face-to-face meeting at the office an official keeps in the area they represent, rather than at the capital."}, {"id": "townhall", "nm": "Public comment at a council or board meeting", "fam": "Direct contact", "sc": "Local", "cost": "Free", "costn": "Free. Usually a 2–3 minute speaking slot.", "elig": "Residents; sometimes anyone", "time": "Sign up same day or days ahead", "how": "Agendas are published in advance by law in most jurisdictions. Comment on an agenda item, not in general.", "own": null, "fail": "On the record and minuted, which is its value. Boards are required to hear it and not required to act on it.", "rate": null, "nomeasure": "Councils minute who spoke but not whether speaking changed the vote. Attendance is recorded; influence is not coded anywhere comparable.", "def": "Speaking aloud at a meeting of a local council or board, during the part of the meeting set aside for the public."}, {"id": "rulemaking", "nm": "Ask a department to write a rule", "fam": "Formal process", "sc": "National", "cost": "Free", "costn": "Free to file. A lawyer-drafted petition costs $2,000–$20,000 and markedly raises the odds of a substantive answer.", "elig": "Any person (US: Administrative Procedure Act §553(e))", "time": "Agency response can take months to years", "how": "File directly with the agency. Unlike a comment, this is a petition the agency must formally grant or deny, and a denial is reviewable in court.", "own": null, "fail": "The most underused route on this list. It forces a written agency position where email cannot. Agencies deny most petitions, but a denial is a reviewable document, which a tally mark never is.", "rate": null, "nomeasure": "No government-wide figure is published. The Administrative Conference of the United States gathered partial counts from individual agencies in its 2014 study, but they are not comparable across agencies and no overall grant rate was assembled.", "def": "A formal written request asking a government department to make, change or scrap a rule. Unlike a letter, the department has to answer it."}, {"id": "comment", "nm": "Comment on a proposed rule", "fam": "Formal process", "sc": "National", "cost": "Free", "costn": "Free. US public file of responses at regulations.gov; most countries run an equivalent consultation portal.", "elig": "Anyone, including non-citizens", "time": "Comment windows run 30–90 days", "how": "Comment on a specific file reference inside its window. Agencies must respond to significant comments in the final rule.", "own": null, "fail": "Measured difference: across 40 rule-writing processes processes at four US federal agencies and some 1,700 responses, businesses had a significant effect on what the final rule said and everyone else had no detectable effect at all in the same analysis. Over 57% of responses came from business. The file is open to anyone and is weighted by whoever turns up, repeatedly, with lawyers, on every rule, for years.", "rate": {"val": null, "kind": "dir", "ev": "coded", "src": "Same 40 rule-writing", "means": "No detectable influence on final rule content in the same models that found business influence.", "caveat": "— no figure published: A null result. No magnitude to place. — Null result, listed with the directional findings. Twelve detailed submissions can dominate a public file of responses; ten thousand identical ones cannot.", "y0": 1994, "y1": 2001, "name": "Regulatory comment — non-business commenter"}, "def": "A written response to a rule a department has proposed but not yet brought into force, sent during the window when it is asking for views."}, {"id": "foia", "nm": "Freedom of information request", "fam": "Formal process", "sc": "Any level", "cost": "Free–$25", "costn": "Usually free for the first hours of search; fee waivers available for public-interest requests.", "elig": "Anyone; many countries accept foreign requesters", "time": "20 working days written into law, often far longer", "how": "Specific documents, named custodian, narrow date range. Broad requests get denied on burden.", "own": null, "fail": "Produces documents, not decisions. Its use is building the record that every other route needs.", "rate": {"val": 49.7, "kind": "base", "ev": "coded", "y0": 2024, "y1": 2024, "name": "FOIA request — records released, end to end", "src": "US government-wide FOIA annual report summary, FY2024 (all agencies)", "means": "Of 1,499,265 requests processed government-wide, 795,112 reached the stage where an official decides what can be withheld. Of those, 22.8% were granted in full and 70.9% in part, so 745,140 requests — 49.7% of everything processed — ended with records in hand.", "caveat": "The 94% figure agencies quote counts only requests that reached the stage where an official decides what can be withheld. The other 47% were closed with no records found, as improper requests, withdrawn, referred elsewhere or over fees. Getting records is not the same as getting the records you asked for: a partial grant can be a single page with the rest withheld."}, "def": "A formal request for copies of government documents, which the government must answer within a set time."}, {"id": "sfr", "nm": "Written submission to a hearing", "fam": "Formal process", "sc": "National", "cost": "Free", "costn": "Free. Ask the subcommittee clerk for format and the window.", "elig": "Anyone, in most committees", "time": "Window usually closes days after the hearing", "how": "Submit to the clerk in the stated format before the deadline. It is printed in the hearing record.", "own": null, "fail": "Enters a permanent published record that staff and researchers cite later. Nobody is required to read it.", "rate": null, "nomeasure": "Statements are printed in the hearing record. Nobody has coded them against whether the committee changed anything.", "def": "A written submission sent to a committee holding a public hearing, which is printed alongside what the witnesses said."}, {"id": "ig", "nm": "Inspector General or audit office complaint", "fam": "Formal process", "sc": "National", "cost": "Free", "costn": "Free.", "elig": "Anyone", "time": "Months to years", "how": "Allege a specific failure against a specific written into law or policy obligation. Vague complaints are closed.", "own": null, "fail": "An IG audit is one of the few things that forces an agency to concede a gap in writing and commit to a dated fix. It needs a concrete, auditable failure, not a disagreement about priorities.", "rate": null, "nomeasure": "Each inspector general publishes its own hotline and caseload figures on its own definitions. Nothing comparable has been assembled across them.", "def": "A complaint to the independent office that checks whether a government body followed its own rules."}, {"id": "ombud", "nm": "Ombudsman or national human rights institution", "fam": "Formal process", "sc": "National", "cost": "Free", "costn": "Free.", "elig": "Usually anyone affected", "time": "Months", "how": "Most countries have one; mandates vary widely.", "own": null, "fail": "Offices publish their own caseload and compliance figures, but nothing comparable exists across them, so there is no rate to quote. Findings are usually non-binding.", "rate": {"val": null, "kind": "none", "ev": "none", "src": "individual offices publish caseload and compliance figures; nothing comparable across them", "means": "National ombudsman offices report complaints received and recommendations accepted. Comparability is nil: some report compliance with suggestions, some report cases closed, some report neither, and the powers behind the recommendation differ in every country.", "caveat": "A per-jurisdiction extraction here would be straightforward and has never been done.", "y0": 1970, "y1": 2026, "name": "Ombudsman and human rights institution complaint"}, "def": "A complaint to an independent official whose job is investigating how government treated someone."}, {"id": "citizensuit", "nm": "Citizen-suit enforcement of a statute", "fam": "Courts", "sc": "National", "cost": "$0–$100k+", "costn": "Many environmental statutes shift fees to the loser, so a winning public-interest plaintiff can recover costs. Losing is expensive.", "elig": "Standing required: a concrete, particularised injury", "time": "Years; most statutes require 60 days notice first", "how": "Serve the the warning letter the law requires, then file if the violation continues.", "own": null, "fail": "Filings are recorded; what became of them is not counted anywhere. The usual wall is standing: to sue in most English-speaking courts you must show a specific injury to you personally, and a harm shared equally by everybody counts, in law, as an injury to nobody.", "rate": {"val": null, "kind": "none", "ev": "none", "src": "filings are recorded; outcomes are not coded as a rate", "means": "Where the law lets private parties sue to enforce it, notice letters and filings are recorded and settlements are frequently public. No dataset carries filings against outcomes, and a large share settle before judgment, which is where the wins mostly are.", "caveat": "Availability is the whole story: this exists in a handful of legal systems and nowhere else, so a global figure would be measuring which country you are in rather than what the method does.", "y0": 1970, "y1": 2026, "name": "Citizen-suit enforcement of a statute"}, "def": "A lawsuit brought by an ordinary person to enforce a law the government is not enforcing. Some laws allow this by name."}, {"id": "climatelit", "nm": "Climate litigation", "fam": "Courts", "sc": "National / international", "cost": "$50k–$1m+", "costn": "Usually carried by a public-interest firm or clinic rather than the plaintiff.", "elig": "Standing required", "time": "Years", "how": "Most cases are brought with an established climate litigation organisation rather than alone.", "own": null, "fail": "Across 3,600+ cases in 62 countries, outcomes favourable to climate action in a bit over half. Climate-washing cases — suing over false environmental claims rather than over emissions — run considerably higher, because a false statement is far easier to prove than a causal chain.", "rate": {"val": 52, "kind": "base", "ev": "coded", "src": "3,600+ cases across 62 countries (Grantham/Sabin databases)", "means": "More than half of direct judicial outcomes were favourable to climate action.", "caveat": "[Source reports 'more than half'. Taken as 52, the nearest defensible floor.] \"Favourable\" is a broad coding. Applies to concluded direct outcomes.", "y0": 1986, "y1": 2025, "name": "Climate litigation — all cases"}, "def": "A lawsuit about climate harm, brought against a government or a company."}, {"id": "amicus", "nm": "Outsider brief in a court case", "fam": "Courts", "sc": "National", "cost": "$5k–$50k", "costn": "Pro bono filing is common for an organisation with a distinctive factual record.", "elig": "Anyone with leave of the court", "time": "Tied to the case calendar", "how": "Bring facts the parties cannot. Courts read briefs that add a record, not briefs that add a voice.", "own": null, "fail": "Filings are counted; influence is contested and not coded as a rate.", "rate": {"val": null, "kind": "none", "ev": "none", "src": "filings are counted; influence is contested and not coded as a rate", "means": "Filing counts are published and have risen sharply in several supreme courts. Studies of whether briefs change outcomes disagree, and the ones that find influence generally find it in citation and reasoning rather than in who won.", "caveat": "The outcome variable is the problem. A brief that shapes a footnote has done something real and no coding scheme records it.", "y0": 1950, "y1": 2026, "name": "Amicus brief"}, "def": "A written argument filed by someone who is not one of the two sides in a court case, offering the court information it would not otherwise have."}, {"id": "personhood", "nm": "Legal rights for a river or ecosystem", "fam": "Courts", "sc": "Local to national", "cost": "Varies", "costn": "A municipal ordinance campaign is the cheap end; a constitutional provision is the expensive end.", "elig": "Varies by jurisdiction", "time": "Years", "how": "Roughly 700 initiatives counted across 66 countries. Municipal ordinances are where novel instruments actually pass first.", "own": null, "fail": "No coded outcomes exist. Adoption is documented; what adoption changes on the ground is not.", "rate": {"val": null, "kind": "none", "ev": "none", "src": "roughly 700 initiatives counted across 66 countries; no coded outcomes", "means": "Six countries have national rights-of-nature provisions — Ecuador, Bolivia, Panama, Spain, Uganda and New Zealand — and courts in Colombia, India, Peru, Bangladesh and Nepal have recognised particular rivers, forests or regions as rights-holders. About 80% of the counted initiatives are in the Americas. Whether the recognised entity then won anything is not tracked.", "caveat": "This chart already mentions the count in passing under climate litigation. It belongs here as its own row, because the count of laws passed says nothing about the count of cases won.", "y0": 2008, "y1": 2026, "name": "Rights of nature and legal personhood for an ecosystem"}, "def": "A law or ruling that treats a river, forest or ecosystem as having rights of its own, so somebody can go to court on its behalf."}, {"id": "shareprop", "nm": "Shareholder proposal", "fam": "Companies", "sc": "Corporate", "cost": "$2,000 of stock", "costn": "US Rule 14a-8 eligibility: $2,000 held 3 years, or $15,000 held 2 years, or $25,000 held 1 year. The cheapest formal route that compels a company to respond in writing.", "elig": "Qualifying shareholders", "time": "Annual proxy cycle", "how": "Submit before the company's deadline. The company must print it and respond, or win exclusion from the SEC.", "own": null, "fail": "Resubmission thresholds bite: a proposal voted on once must clear 5% to come back, twice 15%, three or more times 25%. Below that it is excludable for five years. Low votes lock the subject out rather than building toward a win.", "rate": {"val": 16, "kind": "base", "ev": "coded", "src": "US proxy seasons through 2025", "means": "Environmental and social proposals averaged 16% support in 2025, down from 20% in 2024. Governance proposals averaged 35%. The share of E&S resolutions drawing under 5% rose from 8% to 27% over five years.", "caveat": "Average support, not a pass rate. Treat this as an upper bound on visible influence.", "y0": 2020, "y1": 2025, "name": "Shareholder resolution (E&S)"}, "def": "A proposal put to a company by one of its shareholders, which the company must print and put to a vote of all shareholders."}, {"id": "engage", "nm": "Private engagement with a company", "fam": "Companies", "sc": "Corporate", "cost": "Free–high", "costn": "Free to request; effective at scale only with assets behind it.", "elig": "Shareholders, mostly institutional", "time": "Months to years", "how": "Sequences of private meetings rather than public filings.", "own": null, "fail": "The measured rate comes from one large institutional investor's own records across 2,152 engagement sequences. An individual holder is not the actor that rate describes.", "rate": {"val": 18, "kind": "base", "ev": "coded", "src": "2,152 engagement sequences with 613 US-listed companies, from one large institutional investor's own records", "means": "18% of engagement sequences succeeded. Environmental and social asks succeeded 13% of the time against 24% for governance asks, and the environmental ones needed 3.7 approaches each against 2.2. Median time from first approach to success was one year. Collaboration with other investors raised the success rate; so did the target having a reputation to lose and the headroom to change. A later international study of the same channel put the rate at 19.9%.", "caveat": "Success is coded by the investor who did the engaging, which is the obvious weakness. The 13-versus-24 split is the useful part: the same investor, the same firms, the same year, and environmental asks converted at half the rate of governance asks.", "y0": 1999, "y1": 2009, "name": "Private shareholder engagement"}, "def": "Private meetings between a company and its large shareholders, away from any public vote."}, {"id": "boycott", "nm": "Consumer boycott", "fam": "Companies", "sc": "Corporate", "cost": "Free", "costn": "Free to join; organising at scale costs staff time and media.", "elig": "Anyone", "time": "Months to years", "how": "Works through media attention and reputation rather than through lost revenue.", "own": null, "fail": "Standalone boycotts land near a quarter; boycotts inside a broader campaign do considerably better. The mechanism is reputational damage, so a boycott nobody reports is a boycott that does nothing.", "rate": {"val": 25, "kind": "base", "ev": "coded", "src": "133 boycotts, 1990–2005, covering 177 firms", "means": "~25% produced a concession. Top predictor of effectiveness was media coverage generated, not sales lost — typical boycotts barely dent revenue.", "caveat": "Broader synthesis puts it at 25–40%, with selection bias: boycotts only get studied once they gain traction.", "y0": 1990, "y1": 2005, "name": "Consumer boycott"}, "def": "An organised refusal to buy from a company until it changes something."}, {"id": "oecdncp", "nm": "Complaint about a company to an OECD contact point", "fam": "Companies", "sc": "International", "cost": "Free", "costn": "No filing fee. Legal help is optional and usually unpaid.", "elig": "Any individual or NGO with an interest — not only those directly harmed", "time": "Initial assessment 3+ months; mediation 6–12 months; final statement ~3 months after", "how": "File against a multinational headquartered in or operating in an adhering country, on any topic in the OECD Guidelines.", "own": null, "fail": "The two codings of the same mechanism disagree sharply — NGOs coding 250 complaints over fifteen years got a far lower figure than the OECD's own reporting on 2011–2016 cases. Participation is voluntary, NCPs cannot compel a company, and putting right harm already done is rare. It produces a published finding, not an enforceable order.", "rate": {"val": 14, "kind": "base", "ev": "coded", "src": "250 complaints filed with OECD National Contact Points over the mechanism's first fifteen years, coded by OECD Watch", "means": "35 of 250 complaints — 14% — produced any beneficial result that amounted to some measure of remedy, and most of those were forward-looking policy commitments rather than anything done for the people who filed. Of 18 NGO and community cases concluded in 2017, one produced compensation and a concrete improvement; five produced any element of remedy at all.", "caveat": "Read this with the row directly below. Two organisations counted the same mechanism and got 14% and 47%, because one asked whether the complainant got anything and the other asked whether the parties reached an agreement.", "y0": 2000, "y1": 2015, "name": "OECD complaint against a company (NGO coding)"}, "def": "A complaint about a multinational company, filed with the government office that each member country of the OECD keeps for the purpose."}, {"id": "devbank", "nm": "Complaint to a development bank", "fam": "Companies", "sc": "International", "cost": "Free", "costn": "Free. The World Bank Inspection Panel, the IFC's CAO and nine similar bodies.", "elig": "People affected by a financed project; usually two or more", "time": "Years", "how": "Complain about a project financed by the institution, alleging it broke its own policies.", "own": null, "fail": "758 complaints over 21 years across 11 mechanisms. The institution investigates whether it broke its own rules; it does not compel the borrower or the company. Directly relevant to lending loan conditions work.", "rate": {"val": 20, "kind": "base", "ev": "coded", "src": "758 complaints filed over 21 years with the 11 independent accountability mechanisms of development finance institutions, coded by eleven civil-society organisations", "means": "Just under 20% of concluded complaints produced either a negotiated settlement (8%) or a publicly disclosed compliance report (11.5%). Bank management produced an action plan in 7% of concluded cases. A large share of complaints were never found eligible at all.", "caveat": "The authors' own conclusion is that the outcome rarely provides adequate remedy. Counting a published compliance report as a success is generous: one documented case is a finding of non-compliance the institution then ignored. The 8% settlement figure is the strict reading, and the 7% action-plan figure is what the delivery toggle drops to.", "y0": 1994, "y1": 2015, "name": "Complaint to a development bank's accountability mechanism"}, "def": "A complaint that a project funded by a development bank has broken that bank’s own rules, filed with the bank’s independent complaints office."}, {"id": "upr", "nm": "Submission to the UN human rights review", "fam": "International", "sc": "International", "cost": "Free", "costn": "Free. NGOs file written submissions on any state under review.", "elig": "Any organisation; individuals via a coalition", "time": "Review cycles run years", "how": "File into the cycle for the state you are addressing.", "own": null, "fail": "Assessed at mid-term across 11,527 first-cycle recommendations. States accept recommendations readily and implement partially; acceptance is not compliance.", "rate": {"val": 48, "kind": "base", "ev": "coded", "src": "11,527 recommendations from the first review cycle, assessed at mid-term against submissions from states, national human rights institutions, NGOs and UN agencies", "means": "48% had triggered some action about three years after the review — 18% fully implemented, 30% partially. 48% produced nothing, and 4% could not be assessed. Even recommendations a state formally noted rather than accepted moved 19% of the time. Africa ran at 50% and one state reached 55%; where no stakeholder took part in follow-up, no assessment was possible at all.", "caveat": "the number of attempts is recommendations, not campaigns, and a recommendation can be as thin as 'continue efforts' — only about 30% were specific enough to assess cleanly. Assessment leans on the state's own reporting alongside NGO submissions. Read 48% as 'something moved in the direction of the text', not as compliance; the delivery toggle drops it to the 18% that were fully implemented.", "y0": 2008, "y1": 2014, "name": "UN Universal Periodic Review recommendation"}, "def": "A written submission about a country’s human rights record, filed into the review every UN member state goes through in turn."}, {"id": "echr", "nm": "Case at a regional human rights court", "fam": "International", "sc": "International", "cost": "Free to file", "costn": "Free; representation needed in practice.", "elig": "Domestic remedies must be exhausted first", "time": "Years", "how": "European Court of Human Rights and its regional equivalents.", "own": null, "fail": "The admissibility filter is the whole story: the overwhelming majority of applications never reach a merits judgment.", "rate": {"val": 1.5, "kind": "base", "ev": "coded", "src": "European Court of Human Rights annual statistics; Committee of Ministers execution reporting", "means": "The Court rejects around 90% of applications as inadmissible without examining them. Counting every application filed, roughly 1–2% end in a judgment finding a violation. Conditional on reaching judgment the odds invert: against the United Kingdom, 329 judgments found at least one violation and 146 found none between 1975 and 2022.", "caveat": "Winning is not the end of it. Pending leading cases before the Committee of Ministers rose from 120 in 2011 to about 1,300 in 2021, and 44% of those had been pending more than five years — the delivery gap this chart flags everywhere, in the one forum that publishes enough to measure it.", "y0": 1998, "y1": 2024, "name": "European Court of Human Rights — filing to a violation finding"}, "def": "A case brought to an international human rights court, after the courts at home have been exhausted."}, {"id": "ilo", "nm": "ILO freedom-of-association complaint", "fam": "International", "sc": "International", "cost": "Free", "costn": "Free. Filed by workers' or employers' organisations.", "elig": "Organisations, not individuals", "time": "Years", "how": "Committee on Freedom of Association, 3,300+ cases examined since 1951.", "own": null, "fail": "Findings are recommendations to the state. The ILO's own long review counts 'cases of progress' rather than compliance.", "rate": {"val": 29, "kind": "base", "ev": "coded", "src": "3,300+ cases examined since 1951; 2018 caseload used for the rate", "means": "Of 92 cases examined in 2018 (70 active, 22 in follow-up), the Committee closed 27 — 29%. Cases close when resolved by the parties, handled nationally, or inactive for 18 months. More than 60 countries have acted on its recommendations and reported positive developments. Regional distribution of complaints since 1952: roughly 44% Central and South America, 25% Europe, 13% Africa, 12% Asia, 6% North America.", "caveat": "\"Closed\" bundles resolution with abandonment, so 29% is an upper bound on success and a poor one. The full 3,300-case record has never been coded for outcome, which is the single largest unextracted dataset named on this chart.", "y0": 1951, "y1": 2024, "name": "ILO freedom-of-association complaint"}, "def": "A complaint to the United Nations labour agency that a country has broken workers’ right to organise."}, {"id": "copuos", "nm": "Observer status at the UN space committee", "fam": "International", "sc": "International", "cost": "Free", "costn": "Free, but requires an organisation with a track record.", "elig": "NGOs, by Committee decision", "time": "Years to obtain", "how": "Permanent observer status confers the right to attend sessions and make statements.", "own": null, "fail": "No rate exists. The route in for an argument rather than an organisation is scholarship: delegations cite papers, not websites.", "rate": null, "nomeasure": "A handful of organisations hold observer status and there is no published count of applications, so there is no denominator.", "def": "Formal standing to attend and speak at the UN committee that handles the law of outer space."}, {"id": "lobby", "nm": "Registered lobbyist retainer", "fam": "Money & representation", "sc": "National", "cost": "Mid five figures / month", "costn": "Check comparable clients in the public lobbying disclosure database before accepting any quote.", "elig": "Anyone who can pay; the engagement is public record", "time": "Quarterly cycles", "how": "Needs a vehicle — a bill, a public file of responses, an appropriations line — not a thesis.", "own": null, "fail": "The finding that matters: across 98 randomly selected issues tracked 1999–2002, 60% of lobbying campaigns failed to move policy, and resources explained under 5% of the difference between winners and losers. Paying more does not buy the outcome; the status quo wins most contests regardless of spending.", "rate": {"val": 40, "kind": "base", "ev": "coded", "src": "98 randomly selected issues tracked 1999–2002", "means": "40% saw policy change; 60% of campaigns failed to move policy. Resources explained under 5% of the difference between winners and losers.", "caveat": "Random issue selection is what makes this figure trustworthy.", "y0": 1999, "y1": 2002, "name": "Federal lobbying campaign"}, "def": "Paying a firm to argue your case to officials on your behalf. In most countries the arrangement has to be declared publicly."}, {"id": "scoping", "nm": "Scoping memo from a former staffer", "fam": "Money & representation", "sc": "National", "cost": "$2k–$10k", "costn": "Ten to twenty hours of one practitioner's time.", "elig": "Anyone who can pay", "time": "2–4 weeks", "how": "Buy the answer to which committee, which vehicle, which staffer, and what the ask should literally say.", "own": null, "fail": "No measured rate. Listed because it is the cheapest way to find out whether a retainer would be wasted.", "rate": null, "nomeasure": "A private professional service. No outcome data exists, and any that did would be the practitioner’s own.", "def": "Paying one experienced person, usually a former government staffer, for a short written assessment of whether your case has a route at all."}, {"id": "office", "nm": "Running for office", "fam": "Money & representation", "sc": "Any level", "cost": "$0–$2m+", "costn": "Local filing fees are often under $100 or a signature petition. Precinct and party committee seats frequently go uncontested.", "elig": "Residency and age requirements", "time": "Election cycles", "how": "The lowest offices have the least competition and the most direct jurisdiction over local decisions.", "own": null, "fail": "Randomised evidence from 265 Indian village councils where head positions were reserved: holding office changed spending priorities measurably, but not uniformly for the better. Office changes what gets decided, not whether deciding is hard.", "rate": {"val": null, "kind": "dir", "ev": "rct", "src": "265 Indian village councils; one third of head positions randomly reserved", "means": "Reserved councils invested in 2.62 more drinking-water facilities on average and made fewer road improvements, an 8% deterioration. Inexperience, re-election prospects and background were ruled out.", "caveat": "Direction and mechanism, not a percentage. Non-Western, randomised, and rare on both counts.", "y0": 1995, "y1": 2004, "name": "Holding the office (randomised)"}, "def": "Standing for election yourself, at any level from a local committee seat upward."}, {"id": "ballot", "nm": "Ballot initiative", "fam": "Money & representation", "sc": "State / local", "cost": "$1–$10 per signature", "costn": "Signature gathering is the dominant cost and scales with the jurisdiction's threshold.", "elig": "Available in some jurisdictions only", "time": "A full election cycle", "how": "Qualify by signature, then campaign.", "own": null, "fail": "Qualifying and winning are different problems, and a measure that passes can still be repealed, amended or struck down.", "rate": {"val": 41, "kind": "base", "ev": "coded", "src": "3,274 citizen-initiated measures on US state ballots", "means": "1,351 approved, 41%. California initiatives 36%; Oregon 35%.", "caveat": "US-only. Direct-democracy systems elsewhere are unmeasured here.", "y0": 1904, "y1": 2024, "name": "Citizen ballot initiative"}, "def": "Putting a proposed law directly to a public vote by collecting enough signatures. Only some places allow it."}, {"id": "quitam", "nm": "Whistleblowing for a reward", "fam": "Insider", "sc": "National", "cost": "Lawyer, contingency", "costn": "whistleblower-reward counsel works on contingency; filing costs the whistleblower little up front.", "elig": "Someone with original, non-public evidence of fraud against the government", "time": "Years under seal", "how": "Filed under seal; the government decides whether to intervene.", "own": null, "fail": "Everything turns on whether the government joins the case. It recovers money in about 95% of the cases it joins, and far less in the ones it leaves to the whistleblower alone. The whistleblower does not get to make that choice.", "rate": {"val": 27, "kind": "base", "ev": "coded", "src": "DOJ annual False Claims Act statistics", "means": "1,297 whistleblower-reward suits filed in FY2025, a record. $5.3bn of $6.8bn recovered came from whistleblower-reward matters; ~43% of that from cases the government declined and the the person who reported it pursued alone. the person who reported it received ~$330m, about 6%.", "caveat": "Intervention is the inflection point. Retaliation: 22% in earlier surveys, rising to 44% and above in later waves.", "y0": 2015, "y1": 2025, "name": "Whistleblowing — at filing (qui tam)"}, "def": "Reporting fraud against the government from the inside, under a law that pays the reporter a share of what is recovered."}, {"id": "observer", "nm": "Independent election observation", "fam": "Insider", "sc": "Any level", "cost": "Free", "costn": "Volunteer.", "elig": "Varies; often requires accreditation", "time": "Election days", "how": "Randomised evidence from Russian polling stations.", "own": null, "fail": "One of the largest measured effects available to an unpaid individual, and it only works where the problem is at the count.", "rate": {"val": 11, "kind": "effect", "ev": "rct", "src": "Randomly assigned independent observers, Russian polling stations", "means": "The presence of a randomly assigned independent observer cut the ruling party's result by 11% on average, from 47% to 36%.", "caveat": "Also the trigger for what followed: documented fraud with no official acknowledgement is what put thousands into the streets in December 2011.", "y0": 2011, "y1": 2012, "name": "Independent election observers (randomised)"}, "def": "Watching an election at a polling station as an accredited independent witness."}, {"id": "facarole", "nm": "Seat on a government advisory committee", "fam": "Insider", "sc": "National", "cost": "Free", "costn": "Unpaid or per-diem.", "elig": "Appointed; nominations often open publicly", "time": "Months to appoint; multi-year terms", "how": "Agencies must publish vacancies and solicit nominations. Seats on technical committees are frequently undersubscribed.", "own": null, "fail": "No measured rate. An unusual route: it places a person inside the body that drafts the recommendation, rather than outside writing to it.", "rate": null, "nomeasure": "Appointments are published; whether holding a seat changed a recommendation is not coded.", "def": "Sitting on a committee of outside experts that a government department appoints to advise it."}, {"id": "oped", "nm": "Newspaper op-ed", "fam": "Information", "sc": "Public", "cost": "Free", "costn": "Free to submit; most are rejected.", "elig": "Anyone", "time": "Days to weeks", "how": "Two randomised panel experiments on five op-eds, tested on a mass sample and on policy elites.", "own": null, "fail": "Moved policy attitudes about half a point on a seven-point scale, still present a month later. It moves opinion, which is not the same as moving a decision.", "rate": {"val": 7, "kind": "effect", "ev": "rct", "src": "two randomised panel experiments on five op-eds, run on a mass sample and on a sample of policy elites", "means": "Reading an op-ed moved policy attitudes about half a point on a seven-point scale — roughly 7% of the scale — and the shift was still there a month later, having closed by about half in the first ten days and then held. Attitudes on non-target issues did not move, which is the check that people read the argument rather than shifting generally. Democrats and Republicans moved in the direction of the piece in roughly equal measure, and elites moved slightly less than the public. Costed against readership, between about 50 cents and $3 per mind changed.", "caveat": "Convenience samples, forced exposure and an attitude scale rather than behaviour. The real-world version has to survive the fact that hardly anybody reads any given piece — the effect is per reader, not per publication, and the cost-per-mind figure carries every assumption in that chain.", "y0": 2016, "y1": 2018, "name": "Newspaper op-ed"}, "def": "An opinion article published in a newspaper."}, {"id": "deepcanvass", "nm": "Deep canvassing", "fam": "Information", "sc": "Public", "cost": "Free", "costn": "Volunteer time; ten minutes per conversation.", "elig": "Anyone", "time": "Ongoing", "how": "A ten-minute non-judgemental exchange of personal stories, not an argument.", "own": null, "fail": "The largest durable persuasion effect measured, and the least scalable thing on this list. Ordinary partisan canvassing measures approximately zero.", "rate": {"val": 13.8, "kind": "effect", "ev": "rct", "src": "Randomised field experiment on immigration attitudes", "means": "Support moved from 29% to 33% — a 13.8% relative increase — durable at three months or more.", "caveat": "Four points absolute. Deflated floor ~2.2% relative.", "y0": 2016, "y1": 2020, "name": "Deep canvassing (10-min story exchange)"}, "def": "A ten-minute, unhurried doorstep conversation in which both people swap personal stories rather than argue."}, {"id": "petition", "nm": "Online petition", "fam": "Information", "sc": "Any level", "cost": "Free", "costn": "Free.", "elig": "Anyone", "time": "Weeks", "how": "Official government petition sites carry response thresholds; commercial petition sites carry none.", "own": null, "fail": "Across all 20,000 petitions on the UK government site, 0.7% reached the threshold for an official response and 0.1% reached a debate. End to end the figure is about 0.15%. Petitions defending an existing policy did considerably better than those demanding change, and signature count was not decisive.", "rate": {"val": 0.7, "kind": "base", "ev": "coded", "src": "All 20,000 petitions on the UK government site", "means": "5% reached 500 signatures; 0.7% reached the 10,000 needed for an official response; 0.1% reached 100,000 for a debate. US White House site: 15% and 0.7%.", "caveat": "Crossing the threshold is not winning. See the compound row.", "y0": 2011, "y1": 2019, "name": "Petition — reaching an official response"}, "def": "Collecting signatures behind a demand. On official government petition sites, passing a set number triggers a response."}];
 /* ====================================================================
    WHAT EACH OFFICE CAN DO ABOUT A LAW
 
@@ -1352,7 +1411,14 @@ const RX_DOC = /\b(act|amendment|decision|ruling|case|treaty|bill|constitution|s
    `applies to jurisdiction`. A mission accredited TO a place is not an
    office OF it, and nobody can write to Catalonia's envoy to change
    Kenyan law. */
-const RX_DIPLO = /\b(embassy|consulate|consul|high commission|diplomatic|legation|nunciature|ambassador|envoy|chargé|delegation|delegate of the government|permanent representative|permanent mission|mission to the|representation of the|trade office|generalitat)\b/i;
+/* Narrowed, now that the map draws the whole of government rather than
+   only the part that can be written to about a law. The test it has to
+   pass is still the same — a mission accredited TO a place is not an
+   office OF it, and nobody can write to Catalonia's envoy in Nairobi to
+   change Kenyan law — but it now catches only those forms. A country's
+   own embassies, consulates and ambassadors are its offices, so they
+   stay, and classify as Envoys. */
+const RX_DIPLO = /\b(delegate of the government|permanent representative|permanent mission|mission to the|representation of the|generalitat)\b/i;
 
 /* Symbols, boundaries, reference articles and other things Wikidata
    files under the same jurisdiction property. Not offices, so this map
@@ -1456,7 +1522,10 @@ const BRANCH = {
   exec: {nm:'Executive',   sub:'Signs it, and writes the rules under it'},
   jud:  {nm:'Judicial',    sub:'Decides what it means and whether it stands'},
   ag:   {nm:'Agencies',    sub:'Turn the law into the rules that bind people'},
-  other:{nm:'Unsorted',    sub:'Title did not identify a role'},
+  /* Its own branch rather than folded in with the agencies. These are
+     offices the map could not place from their title, and filing them
+     under Agencies claimed something about them that is not known. */
+  other:{nm:'Other offices', sub:'Title did not identify a role'},
 };
 
 /* ====================================================================
@@ -1465,6 +1534,34 @@ const BRANCH = {
    actually apply to, rather than listed on their own. Route ids match
    routes.json; hurdle ids match HURDLES below.
    ==================================================================== */
+/* ====================================================================
+   WHICH OFFICES CAN BE REACHED ABOUT A LAW
+
+   The map draws every office Wikidata records for a place, because the
+   part of government that answers the public makes no sense without the
+   part that does not: a reader who only ever sees the four or five
+   contactable offices has no idea what fraction of the place they are
+   looking at, or who else is making decisions there.
+
+   So everything is drawn, and these kinds are marked. The test is
+   whether an ordinary member of the public has a route to this office
+   that bears on what the law says — introducing a bill, submitting to a
+   committee, commenting on a proposed rule, filing a ballot measure,
+   petitioning for a rule. Everything else is government and is on the
+   map, but writing to it does not change a law: a judge cannot be
+   approached about a case, a police force cannot change the statute it
+   enforces, an auditor checks compliance with rules already written,
+   and an envoy negotiates outward rather than taking proposals inward.
+
+   Those unmarked offices still open in full, with their routes and
+   their hurdles, because a reader needs to know why the answer is no.
+   ==================================================================== */
+const LAWKINDS = new Set([
+  'leg/chamber','leg/member','leg/presiding','leg/committee',
+  'exec/head','exec/minister','exec/clerk',
+  'ag/agency',
+]);
+
 const KIND_ROUTES = {
   'leg/chamber'  : ['townhall','sfr','letter','call','petition','email'],
   'leg/member'   : ['visit','call','letter','email','petition'],
@@ -1527,25 +1624,41 @@ function themeOf(label){
    and shown inside those entries rather than on a page of its own.
    ==================================================================== */
 const HURDLES = {
-  primacy: {h:'A company acting against its own profit is not breaking the law, but little pushes it to',
-   p:["It is widely believed that company directors are legally obliged to make as much money as possible for shareholders, so a company that gave up profit for a public good could be sued for it. The law is narrower than that. The case usually cited is <i>Dodge v. Ford Motor Co.</i>, decided in Michigan in 1919, where a court ordered Ford to pay out a special dividend. The famous line in it about a company existing primarily to make money for shareholders was a remark made in passing, not part of the ruling, and it does not bind anyone.",
-      "What actually governs directors is the business judgment rule: courts will not second-guess a decision if the board can point to some reasonable benefit to the company. Reputation, hiring, avoiding future regulation and keeping a licence to operate all count. Legal scholars who have read the same case describe profit maximisation as a standard directors are expected to meet rather than a law they can be punished for missing, and as a rule courts almost never enforce.",
-      "So the obstacle is real but it is not a legal wall. It is the risk of being sued, the pressure of reporting results every three months, pay packages tied to the share price, and competitors who will not follow. The practical consequence for anyone approaching a company is that the argument to make is not <i>you are allowed to do this</i>. It is a business reason the board could state out loud in court if it were challenged. That is exactly the shape a shareholder proposal takes, which is why it appears among the routes at a $2,000 entry price."]},
-  concentrated: {h:'Concentrated costs now, diffuse benefits later', p:["Every route on this list asks an institution to accept a specific, immediate, attributable cost in exchange for a benefit that is distributed, delayed, and credited to no one in particular. Institutions are built to resist exactly that trade. Nobody inside is rewarded for taking it, and the person who proposes it carries the downside alone if it goes badly.",
-    "This is why the routes with measured success are overwhelmingly those where the ask is narrow and the cost to the decider is near zero — a comment on an open public file of responses, a vote already scheduled, a bill already moving — and why the routes asking an institution to reverse its direction have no measured success at all."]},
-  tally: {h:'You are processed as a tally, not as an argument', p:["Legislative offices log incoming contact by issue and position and report the counts upward. An email is one unit in that count. So is a call, so is a letter. The quality of the reasoning does not change the arithmetic, which is why several thousand carefully argued messages can produce a form reply about an unrelated policy, and why the author's own global campaign returned roughly a 2% response rate, almost all of it disagreement or disclaimer.",
-    "The routes that escape the tally are the ones that create an obligation: a petition asking for a rule the agency must grant or deny, a comment the agency must address in the final rule, a statement entered in a hearing record, a complaint an inspector general must close in writing. The difference is not effort. It is whether anyone is required to write something back."]},
-  docket: {h:'The public file is open to everyone, and weighted by whoever fills it', p:["Across 40 rule-writing processes at four US federal agencies and some 1,700 comments, business commenters held significant influence over final rule content and non-business commenters showed no detectable influence in the same models. Over 57% of comments came from business. Agencies tend to move toward whichever side dominates the public file of responses.",
-    "The route is genuinely free and genuinely open. The asymmetry is in who turns up, repeatedly, with counsel, on every public file of responses, for years."]},
-  money: {h:'Money buys access, and access does not buy the outcome', p:["Across 98 randomly selected policy issues tracked from 1999 to 2002, 60% of lobbying campaigns failed to move policy at all, and the resources behind a campaign explained under 5% of the difference between the winners and the losers. The dominant predictor of an outcome was whether the campaign was defending the status quo or trying to change it.",
-    "This cuts both ways. It means a well-funded opponent is not guaranteed to beat you. It also means hiring representation does not convert an argument into a result, and anyone selling a retainer on the promise that it will is selling something they cannot deliver."]},
-  nobody: {h:'Nobody owns the whole problem', p:["An argument spanning several domains at once has no single office with jurisdiction over it. Each office can truthfully say the part it governs is not the part being complained about, and route it elsewhere. This is not evasion by any individual; it is what happens when a claim is wider than any mandate.",
-    "The practical answer is not to narrow the claim but to choose which existing proceeding it enters. A proceeding has a deadline, a record, and someone obliged to respond — which is the one thing an unsolicited approach never has."]},
-  voluntary: {h:'Voluntary mechanisms produce findings, not orders', p:["The international complaint routes — OECD National Contact Points, development bank accountability mechanisms, UN treaty-body and review processes, ILO complaints — share a design. They investigate, publish, and recommend. None can compel the company or the state. putting right harm already done through them is rare, and the bodies' own outcome codings differ sharply from the codings produced by the NGOs that file with them.",
-    "Their value is documentary. A published finding is citable by courts, lenders, insurers and journalists in a way a website is not, which is why they appear on the routes list despite low direct success."]},
-  standing: {h:'Standing', p:["Courts in most common-law jurisdictions require a concrete, particularised injury to the person bringing the case. An injury shared equally by everyone is, under that doctrine, treated as an injury to no one for the purpose of who may sue. The broader and more universal the harm, the harder it is to find a plaintiff the court will hear.",
-    "This is the single most common reason a well-founded claim about planetary-scale harm never reaches a merits decision. It is also the reason the rights-of-nature route matters: granting an ecosystem legal personhood is, mechanically, a way of manufacturing a plaintiff the court must hear."]},
-  revolving: {h:'The revolving door, which nobody has measured', p:["Regulatory capture and movement between agencies and the industries they regulate have an extensive theoretical and case literature and no success denominator — there is no population of attempts against which to compute a rate. It is listed here because leaving it out would imply it does not operate, and including a number would imply someone has counted."]},
+  primacy: {h:'A company that gives up profit is not breaking the law, but little pushes it to',
+   p:["It is widely believed that company directors are legally obliged to make as much money as possible for shareholders, so a company that gave up profit for a public good could be sued for it. The law is narrower than that. The case usually cited is <i>Dodge v. Ford Motor Co.</i>, decided in Michigan in 1919, where a court ordered Ford to pay a special dividend. The line in it about a company existing primarily to make money for shareholders was a remark made in passing rather than part of the ruling, and it binds nobody.",
+      "What governs directors is the business judgment rule: courts will not second-guess a decision if the board can point to some reasonable benefit to the company. Reputation, hiring, avoiding future regulation and keeping a licence to operate all count. Legal scholars reading the same case describe profit maximisation as a standard directors are expected to meet rather than a law they can be punished for missing, and one courts almost never enforce.",
+      "What remains is not a legal bar but a set of pressures: the risk of being sued, quarterly reporting, pay packages tied to the share price, and competitors who will not follow. For anyone approaching a company, that means the argument to make is not that the company is permitted to act. It is a business reason the board could state in court if challenged. A shareholder proposal is written in exactly that form, which is why it appears among the routes at a $2,000 entry price."]},
+
+  concentrated: {h:'Concentrated costs now, diffuse benefits later',
+   p:["Every route on this list asks an institution to accept a specific, immediate, attributable cost in exchange for a benefit that is spread out, delayed, and credited to no one in particular. Nobody inside the institution is rewarded for accepting that trade, and the person who proposes it carries the consequences if it goes badly.",
+    "The routes with measured success are mostly those where the ask is narrow and the cost to the person deciding is close to zero: a comment on an open public file of responses, a vote already scheduled, a bill already moving. The routes that ask an institution to reverse its direction have no measured success at all."]},
+
+  tally: {h:'Contact is counted by position, not read as an argument',
+   p:["Legislative offices log incoming contact by issue and by which side it takes, and report the counts upward. An email is one unit in that count. So is a call, and so is a letter. The reasoning in the message does not change the arithmetic, which is how several thousand carefully argued messages can produce a form reply about an unrelated policy.",
+    "Some routes sit outside the tally because they create an obligation to respond: a petition the agency must grant or deny, a comment the agency must address when it issues the final rule, a statement entered in a hearing record, a complaint an inspector general must close in writing. What separates them from an email is not the effort involved but whether anyone is required to write back."]},
+
+  docket: {h:'The public file is open to everyone, and weighted by whoever fills it',
+   p:["Across 40 rule-writing processes at four US federal agencies and some 1,700 comments, business commenters held significant influence over final rule content, and non-business commenters showed no detectable influence in the same models. Over 57% of comments came from business. Agencies tend to move toward whichever side dominates the public file of responses.",
+    "The route costs nothing and is open to anyone. What it is not is evenly used: the same firms file on every relevant proceeding, with counsel, year after year, and that is where the 57% comes from."]},
+
+  money: {h:'Money buys access, and access does not buy the outcome',
+   p:["Across 98 randomly selected policy issues tracked from 1999 to 2002, 60% of lobbying campaigns failed to move policy at all, and the resources behind a campaign explained under 5% of the difference between the winners and the losers. What predicted the outcome best was whether a campaign was defending the status quo or trying to change it.",
+    "That cuts in both directions. A well-funded opponent is not guaranteed to win. Hiring representation is also not a way of converting an argument into a result, so a retainer sold on the promise of an outcome is being sold on something the figures do not support."]},
+
+  nobody: {h:'No single office has jurisdiction over the whole problem',
+   p:["An argument spanning several domains at once does not map onto any one office's mandate. Each office can accurately say that the part it governs is not the part being complained about, and send it elsewhere. That is a consequence of how mandates are drawn rather than evasion by any individual.",
+    "The usual answer is not to narrow the claim but to pick an existing proceeding for it to enter. A proceeding has a deadline, a written record, and someone obliged to respond to what is filed in it. An unsolicited approach has none of those."]},
+
+  voluntary: {h:'Voluntary mechanisms produce findings, not orders',
+   p:["The international complaint routes — OECD National Contact Points, development bank accountability mechanisms, UN treaty-body and review processes, ILO complaints — are built the same way. They investigate, publish and recommend. None can compel a company or a state, and remedy for harm already done is rare. The bodies' own codings of their outcomes also differ sharply from the codings produced by the NGOs that file with them.",
+    "What they produce is a document. A published finding can be cited by a court, a lender, an insurer or a journalist, which is why these appear among the routes despite low direct success."]},
+
+  standing: {h:'Standing',
+   p:["Courts in most common-law jurisdictions require a concrete, particularised injury to the person bringing the case. An injury shared equally by everyone is, under that doctrine, treated as an injury to no one for the purpose of deciding who may sue. The broader the harm, the harder it is to find a plaintiff the court will hear.",
+    "This is the most common reason a well-founded claim about planetary-scale harm is dismissed before the merits are reached. It is also the mechanism the rights-of-nature route works on: granting an ecosystem legal personhood produces a plaintiff with an injury of its own."]},
+
+  revolving: {h:'The revolving door, which nobody has measured',
+   p:["Regulatory capture, and movement between agencies and the industries they regulate, have a large theoretical and case literature and no success denominator — there is no population of attempts against which to compute a rate. It is listed because leaving it out would suggest it does not operate, and putting a number on it would suggest someone has counted."]},
 };
 /* ====================================================================
    SOURCES
@@ -2243,6 +2356,10 @@ async function fromWorld(f, opts){
   paintTrail(); paintChain(); setPins();
 }
 
+/* No longer on a button of its own. The breadcrumb under the title
+   already names every level above this one and jumps to any of them,
+   which is the same job done with the destination visible; a bare "up a
+   level" said nothing about where up was. Still called by code. */
 function goUp(){
   if(STACK.length<=1){
     STACK=[]; closeModal(); paintTrail(); paintChain(); setPins();
@@ -2261,9 +2378,9 @@ function goUp(){
 }
 
 function paintTrail(){
-  const el=$('#crumbs'), up=$('#mup'), tr=$('#trail');
-  if(!STACK.length){ el.innerHTML=''; tr.classList.remove('on'); up.style.display='none'; showBack(false); return; }
-  tr.classList.add('on'); up.style.display=''; showBack($('#mback').style.display!=='none');
+  const el=$('#crumbs'), tr=$('#trail');
+  if(!STACK.length){ el.innerHTML=''; tr.classList.remove('on'); showBack(false); return; }
+  tr.classList.add('on');
   el.innerHTML = STACK.map((s,i)=> i===STACK.length-1
     ? '<span class="now">'+esc(s.label)+'</span>'
     : '<a onclick="jumpTo('+i+')">'+esc(s.label)+'</a>'
@@ -2308,7 +2425,10 @@ function rateColor(r){ return 'var(--r-'+(rateBand(r)==='none'?'none':rateBand(r
 function rateText(r){ return '<small>'+BANDS[rateBand(r)].label+'</small>'; }
 
 function openModal(title, sub){
-  $('#mtitle').textContent = title; $('#msub').textContent = sub||'';
+  /* `sub` is accepted and ignored: the line under the place name said
+     where the data came from, which the question mark covers once for
+     the whole map, and repeated it on every place opened. */
+  $('#mtitle').textContent = title;
   $('#modal').classList.add('on');
   shiftForBox(true);
 }
@@ -2361,7 +2481,7 @@ function buckets(){ return classifyRows(CUR && CUR.core, CUR && CUR.items); }
    map at the same time as the municipality's, instead of only the level
    whose panel happens to be open. */
 function classifyRows(core, items){
-  const out={leg:[],exec:[],jud:[],ag:[]}, byId={};
+  const out={leg:[],exec:[],jud:[],ag:[],other:[]}, byId={};
   if(!core && !items) return {out:out, byId:byId};
   const merged={};
   (core||[]).forEach(r=>{
@@ -2390,9 +2510,11 @@ function classifyRows(core, items){
     if(c.br==='other' && RX_DOC.test(label)) return;
     const o={id:qid(m.row.item.value), label:officeLabel(label), cls:m.classes[0]||'',
       kind:c.br+'/'+c.k, br:c.br, what:c.what, how:c.how, row:m.row};
+    /* the one flag the whole map now turns on */
+    o.law = LAWKINDS.has(o.kind);
     if(c.br==='ag'||c.br==='other') o.theme=themeOf(label);
     byId[o.id]=o;
-    (out[c.br==='other'?'ag':c.br]).push(o);
+    out[c.br].push(o);
   });
   return {out:out, byId:byId};
 }
@@ -2415,8 +2537,10 @@ const KINDORDER={
   leg : ['leg/member','leg/committee','leg/chamber','leg/presiding'],
   exec: ['exec/minister','exec/head','exec/clerk','exec/legal','exec/envoy'],
   jud : ['jud/court','jud/defender','jud/judge'],
-  ag  : ['ag/agency','ag/audit','ag/police','other/other'],
+  ag  : ['ag/agency','ag/audit','ag/police'],
+  other: ['other/other'],
 };
+const BRANCHES = ['leg','exec','jud','ag','other'];
 
 /* one-line definitions and longer notes, from the same table the
    offices are sorted by, so a box and the offices under it agree */
@@ -2432,6 +2556,8 @@ const BRANCHINFO={
     how:'Laws are short and the rules written under them are long, and the rules decide what the law does in practice. A proposed rule has a comment window, and a department asked to make a rule must grant or deny it in writing. A written refusal can be challenged; an ignored letter cannot.'},
   jud:{what:'Decides what the law means and whether it stands.',
     how:'Cannot be lobbied, and writing to a judge about a live case is improper. Two ways in: as a party, which needs a concrete injury to you, or as an outsider filing a brief in someone else’s case. Slow, but it can undo a law the legislature will not touch.'},
+  other:{what:'Offices the map could not place from their title.',
+    how:'Wikidata records these for this place but their titles do not say what they do. Some are agencies that take public comment, some are elected posts that can sponsor a measure, and some have no part in making law at all. They are drawn here rather than left out, because leaving them out would understate how much government there is; the official site settles what any one of them does.'},
   ag:{what:'Turns the law into the rules that bind people.',
     how:'The largest group and the least used. Agencies write the detail and enforce it, and most must publish a proposed rule and accept comment. Across 40 US federal rule-writing processes, business supplied over 57% of comments and held significant influence over the final text; non-business commenters showed no detectable influence in the same models.'},
 };
@@ -2473,11 +2599,17 @@ function branchDiagram(b, br){
   const bkey='br:'+br;
   const bn=nid({t:'branch', key:bkey, br:br});
   const folded=!!COLL[bkey];
-  const grp=[bn], off=[];
+  /* three fills: groupings, offices that can be reached about a law,
+     and offices that are part of government but cannot */
+  const grp=[bn], grpL=[], off=[], offd=[];
   /* no count on the branch: the kinds under it already say how many,
      and a bare number against "Judicial" read as a score */
   L.push('  '+bn+'["'+mmText(BRANCH[br].nm)+(folded?'  \u25b8 closed':'')+'"]');
   NODE[bn].tip={nm:BRANCH[br].nm, what:BRANCHINFO[br].what, how:BRANCHINFO[br].how};
+  /* every office under this box, so hovering it can frame them on the
+     map. Taken from the rows rather than from the nodes drawn, because
+     a folded branch or a capped kind still governs the same places. */
+  NODE[bn].ids=rows.map(o=>o.id);
   L.push('  click '+bn+' call mmPick("'+bn+'")');
 
   if(!folded) (KINDORDER[br]||[]).forEach(k=>{
@@ -2485,10 +2617,11 @@ function branchDiagram(b, br){
     const kkey='k:'+k, kfold=!!COLL[kkey];
     const kn=nid({t:'kind', key:kkey, kind:k});
     const ki=KINDINFO[k]||{what:'',how:''};
-    grp.push(kn);
-    L.push('  '+kn+'["'+mmText(KINDLABEL[k]||k)+' \u00b7 '+(kr.length||'none')+(kfold&&kr.length?'  \u25b8':'')+'"]');
+    (LAWKINDS.has(k)?grpL:grp).push(kn);
+    L.push('  '+kn+'["'+mmText(KINDLABEL[k]||k)+(LAWKINDS.has(k)?' \u25c6':'')+' \u00b7 '+(kr.length||'none')+(kfold&&kr.length?'  \u25b8':'')+'"]');
     L.push('  '+bn+' --> '+kn);
     NODE[kn].tip={nm:KINDLABEL[k]||k, what:ki.what, how:ki.how};
+    NODE[kn].ids=kr.map(o=>o.id);
     L.push('  click '+kn+' call mmPick("'+kn+'")');
     if(kfold || !kr.length) return;
 
@@ -2498,10 +2631,11 @@ function branchDiagram(b, br){
     let prev=kn;
     shown.forEach((o,i)=>{
       const on=nid({t:'office', id:o.id});
-      off.push(on);
+      (o.law?off:offd).push(on);
       L.push('  '+on+'("'+mmText(o.label)+'")');
       L.push('  '+prev+(i===0?' --> ':' ~~~ ')+on);
       NODE[on].tip={nm:o.label, what:o.what, how:o.how};
+      NODE[on].ids=[o.id];
       L.push('  click '+on+' call mmPick("'+on+'")');
       prev=on;
     });
@@ -2514,10 +2648,18 @@ function branchDiagram(b, br){
     }
   });
 
-  L.push('  classDef grp fill:#19231e,stroke:#55705e,stroke-width:1px,color:#c9d2cb;');
-  L.push('  classDef off fill:#24402f,stroke:#8cbd9a,stroke-width:1.4px,color:#eef2ec;');
-  if(grp.length) L.push('  class '+grp.join(',')+' grp;');
-  if(off.length) L.push('  class '+off.join(',')+' off;');
+  /* grp  — a grouping that only folds
+     grpL — a grouping whose offices can be reached about a law
+     off  — an office that can be reached about a law
+     offd — an office that is part of government but is not a route to one */
+  L.push('  classDef grp fill:#161d19,stroke:#3f5248,stroke-width:1px,color:#9aa79f;');
+  L.push('  classDef grpL fill:#1b2a22,stroke:#6d8f79,stroke-width:1.2px,color:#cfdbd1;');
+  L.push('  classDef off fill:#27452f,stroke:#9ccfa7,stroke-width:1.6px,color:#f1f5ee;');
+  L.push('  classDef offd fill:#1a1f1d,stroke:#4a5751,stroke-width:1px,color:#9aa79f;');
+  if(grp.length)  L.push('  class '+grp.join(',')+' grp;');
+  if(grpL.length) L.push('  class '+grpL.join(',')+' grpL;');
+  if(off.length)  L.push('  class '+off.join(',')+' off;');
+  if(offd.length) L.push('  class '+offd.join(',')+' offd;');
   return L.join('\n');
 }
 
@@ -2526,6 +2668,52 @@ function mmPick(key){
   if(n.t==='branch'||n.t==='kind'){ COLL[n.key]=!COLL[n.key]; return render(); }
   if(n.t==='more'){ SHOWALL[n.key]=1; return render(); }
   if(n.t==='office'){ const o=BK&&BK.byId&&BK.byId[n.id]; if(o){ SEL=o; renderOffice(o); } }
+}
+
+/* Hovering a box takes the map to its offices.
+
+   The diagram and the map were answering the same question in two
+   places with no link between them: the panel said there are eleven
+   committees and the map showed a field of orbs with no way to tell
+   which eleven. Hovering a box now fits the camera to exactly the
+   offices under it, so the shape of the box's answer is visible on the
+   ground — a city council's offices sit in one street, a country's
+   ministries spread across a capital, a judiciary turns out to be in
+   four cities.
+
+   Held for 260 ms before moving. Sweeping the pointer down a diagram
+   crosses a dozen boxes, and a camera that chased every one of them
+   would be unusable. Offices with no recorded coordinate are skipped,
+   and a box whose offices are all uncoordinated leaves the camera
+   where it is rather than flying to nowhere. */
+/* Wikidata records a coordinate for about one office in six, so a box
+   whose offices all lack one has nothing to fit to. Rather than leaving
+   the camera still — which reads as a hover that does not work — it
+   falls back to the jurisdiction the box belongs to, which is where
+   those offices are, and the hover card says how many of them the map
+   can actually place. */
+let FRAME_T=null;
+function frameNode(n){
+  if(!n || !n.ids || !n.ids.length) return;
+  clearTimeout(FRAME_T);
+  FRAME_T=setTimeout(()=>{
+    if(n.ids.some(i=>PINS[i])) return fitToIds(n.ids);
+    const top=STACK[STACK.length-1];
+    if(top && top.feature && top.feature.geometry) fitTo(top.feature.geometry);
+  }, 260);
+}
+function fitToIds(ids){
+  const pts=ids.map(id=>PINS[id]).filter(Boolean);
+  if(!pts.length) return;
+  let x0=180,y0=90,x1=-180,y1=-90;
+  pts.forEach(p=>{ if(p.lng<x0)x0=p.lng; if(p.lng>x1)x1=p.lng;
+                   if(p.lat<y0)y0=p.lat; if(p.lat>y1)y1=p.lat; });
+  const padx=Math.max((x1-x0)*0.22, 0.03), pady=Math.max((y1-y0)*0.22, 0.03);
+  try{
+    map.stop();
+    map.fitBounds([[x0-padx,y0-pady],[x1+padx,y1+pady]],
+      {padding:{top:80,left:50,right:50,bottom:90}, duration:650, maxZoom:13});
+  }catch(e){}
 }
 
 /* The definition card. It follows the pointer over a box and goes when
@@ -2563,12 +2751,19 @@ function bindCards(el){
        the one that works. */
     node.addEventListener('click', e=>{ e.preventDefault(); e.stopPropagation(); mmPick(key); });
 
-    if(!n.tip) return;
+    /* the frame runs even for boxes with no definition card */
+    if(!n.tip){ node.addEventListener('mouseenter', ()=>frameNode(n)); return; }
     node.addEventListener('mouseenter', ()=>{
+      frameNode(n);
       const c=hoverCard();
+      const have=(n.ids||[]).filter(i=>PINS[i]).length, all=(n.ids||[]).length;
       c.innerHTML='<h5>'+esc(n.tip.nm)+'</h5>'+
         (n.tip.what?'<p class="w">'+esc(n.tip.what)+'</p>':'')+
-        (n.tip.how?'<p>'+esc(n.tip.how)+'</p>':'');
+        (n.tip.how?'<p>'+esc(n.tip.how)+'</p>':'')+
+        (all?'<p class="loc">'+(have
+          ? have+' of '+all+' have an address on the map, now in view'
+          : 'None of these '+all+' has an address recorded, so the map shows the jurisdiction instead')+
+          '</p>':'');
       c.classList.add('on');
     });
     node.addEventListener('mousemove', e=>{
@@ -2589,12 +2784,9 @@ function openOffice(id){ const o=BK&&BK.byId&&BK.byId[id]; if(o){ SEL=o; renderO
    inside the scrolling body where it used to scroll away */
 function backToDiagram(){ SEL=null; render(); }
 function showBack(on){
-  const b=$('#mback'), up=$('#mup');
+  const b=$('#mback');
   if(!b) return;
   b.style.display = on ? '' : 'none';
-  /* the two share the right edge: shift Back left when Up is showing */
-  const upOn = up && up.style.display!=='none';
-  b.style.right = upOn ? '186px' : '88px';
 }
 
 /* ---------- rendering ---------- */
@@ -2607,14 +2799,11 @@ function render(){
   if(CUR && CUR.q) loadOfficePins(CUR.q);
   if(SEL) return renderOffice(SEL);
   const b=BK.out;
-  const total=b.leg.length+b.exec.length+b.jud.length+b.ag.length;
-  $('#msub').textContent = CUR.state==='loading'
-    ? 'Still resolving — more offices will appear. Hover any box for what it does; click an office for how to reach it'
-    : 'Hover any box for what it does. Click a branch or kind to fold it; click an office for how to reach it';
+  const total=BRANCHES.reduce((n,br)=>n+(b[br]||[]).length,0);
   let h='';
   if(!total && CUR.state!=='loading'){
     h+='<div class="note">Wikidata records no offices for '+esc(CUR.label)+
-       '. Coverage is deep for some countries and thin for others. The branches below still show who would be there to contact.</div>';
+       '. Coverage is deep for some countries and thin for others. The branches below still name the offices that would be there.</div>';
   }
   const selfRows=(CUR.core||[]).filter(r=>r.kind.value==='self');
   const sites=new Set(),emails=new Set(),phones=new Set();
@@ -2626,20 +2815,26 @@ function render(){
     [...phones].forEach(p2=>h+='<span>'+esc(p2)+'</span>');
     h+='</div></div>';
   }
-  /* the key: which boxes open a page and which only fold */
+  /* The key. Two things to tell apart here, not one: what a box does
+     when clicked, and whether the office in it is a route to a law. */
   h+='<div class="shapekey">'+
-     '<span><i class="k-off"></i>opens its own page</span>'+
+     '<span><i class="k-off"></i>can be reached about a law</span>'+
+     '<span><i class="k-offd"></i>part of government, but not a route to a law</span>'+
      '<span><i class="k-grp"></i>a grouping \u2014 click to fold it</span>'+
-     '<span class="kh">hover any box for what it is</span></div>';
+     '<span class="kh">hover a box to frame its offices on the map</span></div>';
   NODE={}; nodeSeq=0;
-  ['leg','exec','jud','ag'].forEach(br=>{
+  BRANCHES.forEach(br=>{
+    if(br==='other' && !(b.other||[]).length) return;
     h+='<div class="dgwrap"><div class="mm" id="mm_'+br+'"></div></div>';
   });
   const keep=$('#mbody').scrollTop;
   $('#mbody').innerHTML=h;
   $('#mbody').scrollTop=keep;
   showBack(false);
-  ['leg','exec','jud','ag'].forEach(br=>drawMermaid('mm_'+br, branchDiagram(b, br)));
+  BRANCHES.forEach(br=>{
+    if(br==='other' && !(b.other||[]).length) return;
+    drawMermaid('mm_'+br, branchDiagram(b, br));
+  });
 }
 
 function drawMermaid(id, src){
@@ -2670,7 +2865,6 @@ function drawMermaid(id, src){
 function renderOffice(o){
   if(!o) return render();
   SEL=o; hideCard();
-  $('#msub').textContent='What this office can do about a law, every route that reaches it, and what gets in the way';
   const r=o.row;
   const holder=r.holderLabel&&r.holderLabel.value;
   const site=r.site&&r.site.value, email=r.email&&r.email.value, phone=r.phone&&r.phone.value;
@@ -2692,9 +2886,6 @@ function renderOffice(o){
     .sort((a,b)=>BANDS[rateBand(a.rate)].ord-BANDS[rateBand(b.rate)].ord);
   if(rts.length){
     h+='<div class="sec">How to reach it</div>';
-    h+='<div class="bhead">Ordered by how often each has been measured to work, best first. '+
-       'The ranking comes from the datasets carried with each route; routes nobody has counted '+
-       'are marked unmeasured rather than ranked last. Pick one to open it.</div>';
     h+='<div class="rgrid">';
     rts.forEach((rt,i)=>{
       const R=rt.rate;
@@ -2712,7 +2903,6 @@ function renderOffice(o){
         (R ? '<div class="fld"><dt>How it ranks'+(R.ev?'<span class="ev">'+esc(EVNAME[R.ev]||R.ev)+'</span>':'')+'</dt><dd>'+
              esc(BANDS[rateBand(R)].label)+'. '+esc(BANDS[rateBand(R)].note)+
              '<div class="srcline">Measured by: '+esc(R.src||'')+(R.y0?' ('+R.y0+(R.y1&&R.y1!==R.y0?'&ndash;'+R.y1:'')+')':'')+'</div></dd></div>' : '')+
-        (rt.own ? '<div class="fld"><dt>Observed on this site\u2019s own campaign</dt><dd>'+esc(rt.own.note)+'</dd></div>' : '')+
         (!R && rt.nomeasure ? '<div class="fld"><dt>Why no one has measured how often this works</dt><dd>'+esc(rt.nomeasure)+'</dd></div>' : '')+
         '<div class="fld fail"><dt>What usually stops it</dt><dd>'+esc(rt.fail)+'</dd></div>'+
         '</div></div>';
@@ -2784,44 +2974,101 @@ function levelColours(){ return LEVELSETS[BASEKEY] || LEVELSETS.atlas; }
 function levelColour(i){ const p=levelColours(); return p[Math.min(Math.max(i,0),p.length-1)]; }
 const SRC_CHAIN='chain', SRC_PIN='pins';
 
-/* The office marker.
+/* The office marker: a glowing orb.
 
-   These were plain circles: at country zoom every office in a capital
-   lands on the same few pixels and the result read as specks of dust
-   rather than as something to click. A marker with a point and a stem
-   sits ON a place the way a pin does, keeps its shape when it overlaps
-   its neighbours, and is large enough to aim at.
+   It was a map pin with a head and a point. A pin is the convention for
+   "an address on a map", which is not what these are: an office is a
+   seat of power at a place, and forty of them over one capital read as
+   a bed of nails. An orb sits as a point of light on the ground instead
+   of as an object stuck into it, it overlaps its neighbours without the
+   stems crossing, and it is symmetrical, so it needs no anchor offset
+   and lands exactly on its coordinate.
 
-   Colour has to follow the basemap — the level palettes are redefined
-   per basemap so the overlay stays readable on a photograph and on a
-   painting alike — and MapLibre cannot tint an ordinary raster icon per
-   feature. So every basemap's five level colours are drawn once at
-   startup as their own image, and each pin carries the name of the one
+   Each is drawn as four concentric passes on a canvas: an outer bloom
+   that fades to nothing, a mid glow, a defined rim, and a near-white
+   core. The bloom is what carries the colour at country zoom, where the
+   orb itself is a few pixels across.
+
+   Two strengths per colour. `on` is an office that can be reached about
+   a law and is drawn at full brightness; `off` is an office that is part
+   of government but is not a route to a law, drawn at about a third of
+   it, so the two are told apart at a glance without the second one
+   disappearing. Colour still follows the level of government, and the
+   level palettes are redefined per basemap, so every combination is
+   drawn once at startup as its own image and each marker names the one
    it wants in `img`. Drawn at twice the size and declared pixelRatio 2,
    so the edges stay clean on a retina screen. */
-function pinImage(hex){
-  const W=36, H=46, c=document.createElement('canvas');
-  c.width=W; c.height=H;
-  const g=c.getContext('2d');
-  const cx=W/2, cy=15, r=11.5;
-  g.beginPath();
-  g.arc(cx, cy, r, Math.PI*0.86, Math.PI*0.14);           /* the head */
-  g.lineTo(cx, H-3.5);                                     /* the point */
-  g.closePath();
-  g.fillStyle=hex;
-  g.strokeStyle='rgba(12,18,15,.85)';
-  g.lineWidth=2.4;
-  g.fill(); g.stroke();
-  /* a light core, so the marker still reads where the fill is dark */
-  g.beginPath(); g.arc(cx, cy, 4.1, 0, Math.PI*2);
-  g.fillStyle='rgba(247,245,240,.93)'; g.fill();
-  return g.getImageData(0,0,W,H);
+function orbImage(hex, strength){
+  const S=48, c=document.createElement('canvas');
+  c.width=S; c.height=S;
+  const g=c.getContext('2d'), cx=S/2, cy=S/2;
+  const base=[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16));
+
+  /* The glow is a lightened version of the level colour, not the colour
+     itself. A first attempt bloomed in the level colour at low alpha
+     and nothing showed: these palettes are deliberately earthy and
+     muted, so a dark violet at 13% over a mid-toned basemap is
+     invisible. A glow has to be lighter than what it sits on, and the
+     level still reads because the body underneath keeps the true
+     colour. */
+  const lift=(f)=>base.map(v=>Math.round(v+(255-v)*f));
+  const rgba=(c3,a)=>'rgba('+c3[0]+','+c3[1]+','+c3[2]+','+a.toFixed(3)+')';
+  const glow=lift(0.52), rim=lift(0.78);
+
+  /* the bloom: what carries the marker at country zoom, where the body
+     itself is three or four pixels across */
+  const bl=g.createRadialGradient(cx,cy,2,cx,cy,cx);
+  bl.addColorStop(0,    rgba(glow, 0.62*strength));
+  bl.addColorStop(0.30, rgba(glow, 0.30*strength));
+  bl.addColorStop(0.60, rgba(glow, 0.10*strength));
+  bl.addColorStop(1,    rgba(glow, 0));
+  g.fillStyle=bl; g.beginPath(); g.arc(cx,cy,cx,0,Math.PI*2); g.fill();
+
+  /* the body, in the level's own colour, with a highlight up and left
+     so it reads as a lit sphere rather than a flat disc */
+  const R=9.6;
+  const bd=g.createRadialGradient(cx-2.6,cy-2.8,0.8,cx,cy,R);
+  bd.addColorStop(0,    rgba(lift(0.62), 0.30+0.68*strength));
+  bd.addColorStop(0.45, rgba(base,       0.42+0.56*strength));
+  bd.addColorStop(1,    rgba(base,       0.36+0.52*strength));
+  g.fillStyle=bd; g.beginPath(); g.arc(cx,cy,R,0,Math.PI*2); g.fill();
+
+  /* two rings: a dark one so the orb holds an edge over a pale painted
+     basemap, and a bright one inside it, which is the thing that makes
+     it look lit rather than printed */
+  g.lineWidth=1.6; g.strokeStyle='rgba(12,18,15,'+(0.40+0.42*strength).toFixed(2)+')';
+  g.beginPath(); g.arc(cx,cy,R,0,Math.PI*2); g.stroke();
+  g.lineWidth=1.3; g.strokeStyle=rgba(rim, 0.22+0.70*strength);
+  g.beginPath(); g.arc(cx,cy,R-1.3,0,Math.PI*2); g.stroke();
+
+  /* A corona, on the law-contactable orbs only.
+
+     Dimming alone was not enough to tell the three apart. Brightness is
+     a gradual cue and these palettes are muted, so on a pale basemap a
+     full-strength orb and a half-strength one looked the same. The ring
+     is categorical: an orb either has one or it does not, and that
+     survives any basemap and any zoom. */
+  if(strength>=0.9){
+    g.lineWidth=1.15; g.strokeStyle=rgba(rim,0.50);
+    g.beginPath(); g.arc(cx,cy,R+4.6,0,Math.PI*2); g.stroke();
+    g.lineWidth=1.0; g.strokeStyle='rgba(12,18,15,.34)';
+    g.beginPath(); g.arc(cx,cy,R+5.6,0,Math.PI*2); g.stroke();
+  }
+
+  /* the specular point */
+  g.beginPath(); g.arc(cx-2.7,cy-3.0, 2.0+1.1*strength, 0, Math.PI*2);
+  g.fillStyle='rgba(252,253,250,'+(0.22+0.68*strength).toFixed(2)+')'; g.fill();
+
+  return g.getImageData(0,0,S,S);
 }
+const ORB_STRENGTH={on:1, off:0.44, bldg:0.20};
 function addPinImages(){
   Object.keys(LEVELSETS).forEach(k=>{
     LEVELSETS[k].forEach((hex,i)=>{
-      const id='pinimg-'+k+'-'+i;
-      if(!map.hasImage(id)) map.addImage(id, pinImage(hex), {pixelRatio:2});
+      Object.keys(ORB_STRENGTH).forEach(st=>{  /* on, off, bldg */
+        const id='orb-'+k+'-'+i+'-'+st;
+        if(!map.hasImage(id)) map.addImage(id, orbImage(hex, ORB_STRENGTH[st]), {pixelRatio:2});
+      });
     });
   });
 }
@@ -2834,45 +3081,83 @@ function addChainLayers(){
     paint:{'fill-color':['get','col'],'fill-opacity':0.10}});
   map.addLayer({id:'chain-l',type:'line',source:SRC_CHAIN,
     paint:{'line-color':['get','col'],'line-width':['interpolate',['linear'],['get','lvl'],0,3.4,4,1.4],'line-opacity':0.95}});
-  /* A marker is three layers: a soft halo that lifts it off whatever is
-     underneath, a small crisp core, and an invisible disc wide enough to
-     click comfortably. Radii grow gently with zoom rather than jumping. */
-  /* Sized to be seen. The previous radii (2.2–4.6 px) were invisible
-     against a painted basemap at country zoom. */
-  const R = ['interpolate',['linear'],['zoom'], 2,4.5, 6,6.5, 11,8.5];
-  const RH= ['interpolate',['linear'],['zoom'], 2,9, 6,13, 11,17];
+  /* An office outside the levels you have open is still on the map, in
+     grey, at the back. It is drawn as a plain disc rather than an orb:
+     the orbs say "this governs the place you picked", and these do not. */
   map.addLayer({id:'pin-dim',type:'circle',source:SRC_PIN,
     filter:['!',['get','on']],
-    paint:{'circle-radius':['interpolate',['linear'],['zoom'],2,2.6,11,4.5],
-           'circle-color':'#8d9a92','circle-opacity':0.5,
-           'circle-stroke-width':0.8,'circle-stroke-color':'rgba(10,16,13,.7)'}});
-  map.addLayer({id:'pin-halo',type:'circle',source:SRC_PIN,
-    filter:['get','on'],
-    paint:{'circle-radius':RH,'circle-color':['get','col'],'circle-opacity':0.16,
-           'circle-blur':0.45}});
+    paint:{'circle-radius':['interpolate',['linear'],['zoom'],2,2.2,11,3.8],
+           'circle-color':'#8d9a92','circle-opacity':0.36,
+           'circle-stroke-width':0.7,'circle-stroke-color':'rgba(10,16,13,.6)'}});
   addPinImages();
+  /* The walk-in halo: one ring under the orb being stepped to, when a
+     marker was clicked and the diagram is opening its way down to it.
+     Added before the orbs so it sits under them; it carried a `beforeId`
+     of 'pin-on' instead, which refers to a layer that does not exist
+     yet, and the call failed. */
+  map.addLayer({id:'pin-walk',type:'circle',source:SRC_PIN,
+    filter:['==',['get','id'],''],
+    paint:{'circle-radius':['interpolate',['linear'],['zoom'],2,16,11,30],
+           'circle-color':['get','col'],'circle-opacity':0.3,'circle-blur':0.6}});
+  /* The orb is symmetrical, so no anchor and no offset: it sits on its
+     own coordinate. It grows with zoom but never jumps.
+
+     `icon-size` must have the zoom interpolation at the top level.
+     Written as a multiply of a per-feature case by a zoom interpolation
+     — which reads naturally, one factor for what the office is and one
+     for how far away the camera is — MapLibre rejects the whole layer:
+     a zoom expression is only allowed as the outermost expression of a
+     property. The layer was then never added at all, and no error is
+     thrown for it, so the markers simply did not appear. The two
+     factors are multiplied out into the stops instead. */
   map.addLayer({id:'pin-on',type:'symbol',source:SRC_PIN,
     filter:['get','on'],
-    layout:{'icon-image':['get','img'], 'icon-anchor':'bottom',
+    layout:{'icon-image':['get','img'],
             'icon-allow-overlap':true, 'icon-ignore-placement':true,
-            'icon-size':['interpolate',['linear'],['zoom'], 2,0.62, 6,0.82, 11,1]}});
+            /* law-contactable orbs are drawn over the rest, buildings under */
+            'symbol-sort-key':['case',['get','law'],2,['get','bldg'],0,1],
+            /* buildings are drawn smaller as well as fainter: a city
+               returns several hundred and they are context, not the answer */
+            'icon-size':['interpolate',['linear'],['zoom'],
+              2,  ['case',['get','bldg'],0.32,['get','law'],0.58,0.46],
+              6,  ['case',['get','bldg'],0.46,['get','law'],0.86,0.68],
+              11, ['case',['get','bldg'],0.62,['get','law'],1.18,0.92]]}});
   /* the name, once there is room for it */
   map.addLayer({id:'pin-label',type:'symbol',source:SRC_PIN,
-    filter:['get','on'], minzoom:6.5,
+    filter:['all',['get','on'],['get','law']], minzoom:6.5,
     layout:{'text-field':['get','label'],'text-size':10.5,'text-offset':[0,0.6],
             'text-anchor':'top','text-max-width':11,'text-padding':4,
             'text-allow-overlap':false,'text-optional':true},
     paint:{'text-color':'#e7e4dc','text-halo-color':'rgba(10,16,13,.92)','text-halo-width':1.4}});
   map.addLayer({id:'pin-hit',type:'circle',source:SRC_PIN,
-    paint:{'circle-radius':['interpolate',['linear'],['zoom'],2,9,11,15],
-           'circle-translate':[0,-11],'circle-translate-anchor':'viewport',
+    paint:{'circle-radius':['interpolate',['linear'],['zoom'],
+             2, ['case',['get','bldg'],5,9],
+             11,['case',['get','bldg'],8,15]],
            'circle-color':'#000','circle-opacity':0}});
+  /* Which marker a click means.
+
+     A city returns several hundred OpenStreetMap buildings alongside
+     its offices, and downtown they stack: a click near the city council
+     lands on thirty-two markers at once. Taking the first of them —
+     which is what this did — opened a fire station about half the time,
+     because the buildings are drawn underneath and come back first.
+
+     So the features under the pointer are ranked, by the same order the
+     map itself is built on: an office that can be reached about a law,
+     then any other office, then a building, and within each, one that
+     belongs to a level you are inside before one that does not. */
+  function pickFeature(fs){
+    if(!fs || !fs.length) return null;
+    const score=f=>(f.properties.law?0:f.properties.bldg?2:1)*2 + (f.properties.on?0:1);
+    return fs.slice().sort((a,b)=>score(a)-score(b))[0];
+  }
   map.on('mousemove','pin-hit', e=>{ map.getCanvas().style.cursor='pointer';
-    const f=e.features[0]; if(!f) return;
-    tip(e.lngLat, f.properties.on ? f.properties.label
-      : f.properties.label + ' \u2014 not in the jurisdiction you picked'); });
+    const f=pickFeature(e.features); if(!f) return;
+    const extra = e.features.length>1 ? ' \u00b7 +'+(e.features.length-1)+' more here' : '';
+    tip(e.lngLat, (f.properties.on ? f.properties.label
+      : f.properties.label + ' \u2014 not in the jurisdiction you picked') + extra); });
   map.on('mouseleave','pin-hit', ()=>{ map.getCanvas().style.cursor=''; hideTip(); });
-  map.on('click','pin-hit', e=>{ const f=e.features[0]; if(!f) return; openPin(f.properties.id); });
+  map.on('click','pin-hit', e=>{ const f=pickFeature(e.features); if(!f) return; openPin(f.properties.id); });
 }
 
 /* draw the nesting of jurisdictions the clicked unit sits inside */
@@ -2902,18 +3187,30 @@ function setPins(){
   const feats=Object.values(PINS).map(p=>{
     const i = (p.lvlIdx!=null) ? p.lvlIdx : STACK.findIndex(s=>s.q===p.lvlQ);
     const li = i<0 ? 0 : Math.min(i, LEVELSETS.atlas.length-1);
+    /* whether this office is one the public can reach about a law. A
+       local contact is a building rather than an office with a vote, so
+       it is never marked; an office the diagram has not resolved yet is
+       not marked until it has. */
+    const o = BK && BK.byId && BK.byId[p.id];
+    const law = !!(o && o.law) || !!p.law;
+    if(o) PINS[p.id].law=o.law;
+    const bldg = !!LOCAL[p.id];
+    const st = bldg ? 'bldg' : (law ? 'on' : 'off');
     return {type:'Feature', geometry:{type:'Point',coordinates:[p.lng,p.lat]},
-      properties:{id:p.id, label:p.label, on:i>=0, lvl:i<0?9:i,
+      properties:{id:p.id, label:p.label, on:i>=0, lvl:i<0?9:i, law:law, bldg:bldg,
         col:levelColour(i<0?0:i),
         /* re-read on every setPins, which is also what a basemap
            change calls, so the marker follows the palette */
-        img:'pinimg-'+BASEKEY+'-'+li}};
+        img:'orb-'+BASEKEY+'-'+li+'-'+st}};
   });
   src.setData({type:'FeatureCollection',features:feats});
-  const n=feats.filter(f=>f.properties.on).length;
+  const on=feats.filter(f=>f.properties.on);
+  const lw=on.filter(f=>f.properties.law).length;
+  const bd=on.filter(f=>f.properties.bldg).length;
   const el=$('#pincount');
   if(el) el.textContent = Object.keys(PINS).length
-    ? n+' of '+Object.keys(PINS).length+' offices on the map belong to where you picked'
+    ? (on.length-bd)+' offices govern where you picked, '+lw+' of them reachable about a law'+
+      (bd?', and '+bd+' government buildings':'')
     : '';
 }
 
@@ -3004,12 +3301,85 @@ async function loadMunicipalities(parentFeature, level){
    full. If it belongs to a level you are not inside, there is nothing
    resolved to show, so the marker says what it is and offers the record
    rather than failing silently. */
+/* Clicking an orb walks the diagram down to it.
+
+   It used to open the office page directly, which answered the question
+   but taught nothing: a reader who arrived that way never saw that the
+   office belongs to a branch, that the branch holds several kinds, or
+   where this one sits among its peers, and the back button landed them
+   in a diagram they had not been shown. The walk takes the same route a
+   reader would take by hand — the branch lights up and opens, then the
+   kind inside it, then the office — at about half a second a step, so
+   the structure is visible before the page replaces it.
+
+   Any click during the walk cancels it and goes straight to the page,
+   because a reader who already knows where they are does not want to
+   watch it again. */
+let WALK=0;
+const walkWait = ms => new Promise(r=>setTimeout(r,ms));
+
+function walkGlow(key, on){
+  document.querySelectorAll('#mbody .node').forEach(nd=>{
+    const k=(nd.id.match(/(?:^|-)(n\d+)(?:-|$)/)||[])[1];
+    if(k===key) nd.classList.toggle('walking', !!on);
+  });
+}
+function walkFind(pred){
+  for(const k of Object.keys(NODE)) if(pred(NODE[k])) return k;
+  return null;
+}
+function walkHalo(id){
+  try{ map.setFilter('pin-walk', ['==',['get','id'], id||'']); }catch(e){}
+}
+
+async function walkTo(o){
+  const gen=++WALK;
+  walkHalo(o.id);
+  /* the branch and the kind have to be open for their boxes to exist */
+  delete COLL['br:'+o.br]; delete COLL['k:'+o.kind];
+  SEL=null; render();
+  await walkWait(60);
+  if(gen!==WALK) return;
+
+  const steps=[
+    walkFind(n=>n.t==='branch' && n.br===o.br),
+    walkFind(n=>n.t==='kind'   && n.kind===o.kind),
+    walkFind(n=>n.t==='office' && n.id===o.id),
+  ];
+  for(const key of steps){
+    if(gen!==WALK) return;
+    if(!key) continue;
+    const el=document.querySelector('#mbody .node[id*="'+key+'"]');
+    if(el && el.scrollIntoView) el.scrollIntoView({behavior:'smooth', block:'center'});
+    walkGlow(key, true);
+    frameNode(NODE[key]);
+    await walkWait(620);
+    walkGlow(key, false);
+    await walkWait(110);
+  }
+  if(gen!==WALK) return;
+  walkHalo('');
+  SEL=o; renderOffice(o);
+}
+/* clicking anything while it is running takes you to the end of it */
+document.addEventListener('click', ()=>{ if(WALK) WALK++; }, true);
+
 function openPin(id){
   if(LOCAL[id]) return openLocal(id);
   const o = BK && BK.byId && BK.byId[id];
-  if(o){ openModal(CUR?CUR.label:'', 'Offices resolved live from Wikidata'); SEL=o; renderOffice(o); return; }
+  if(o){ openModal(CUR?CUR.label:''); walkTo(o); return; }
   const p = PINS[id]; if(!p) return;
-  openModal(p.label, 'An office outside the jurisdiction you picked');
+  /* A marker from a level above the open one. Most markers on screen
+     are: the panel shows one jurisdiction and the map shows every level
+     you sit inside. Rather than refusing, the panel moves to that level
+     and the walk runs there, which is where the office belongs. The
+     breadcrumb still carries every level, so coming back is one click. */
+  if(p.o && p.lvlQ){
+    const st=STACK.find(x=>x.q===p.lvlQ);
+    openJuris(p.lvlQ, st?st.label:p.label).then(()=>walkTo(p.o));
+    return;
+  }
+  openModal(p.label);
   $('#mbody').innerHTML =
     '<div class="note"><b>'+esc(p.label)+'</b> is on the map but sits outside the jurisdiction you have open, '+
     'so its routes and hurdles have not been worked out. Pick the jurisdiction it belongs to and it will resolve '+
@@ -3025,7 +3395,7 @@ function openPin(id){
    where to spend an afternoon. */
 function openLocal(id){
   const L=LOCAL[id]; if(!L) return;
-  openModal(officeLabel(L.name), KINDNAME[L.kind]||'Local contact');
+  openModal(officeLabel(L.name));
   const row=(t,v)=> v ? '<div class="fld"><dt>'+t+'</dt><dd>'+esc(v)+'</dd></div>' : '';
   $('#mbody').innerHTML =
     '<div class="note">This is a place on the ground, recorded in OpenStreetMap: '+
@@ -3134,11 +3504,33 @@ async function loadLocalContacts(feature, lvlIdx){
    not the slow targeted ones, because this is for placing markers rather
    than drawing the branches.
 
-   Deepest level first, so your own council appears before the country's
-   ministries do. */
+   Deepest level first, and shown one level at a time.
+
+   Every level used to resolve into the same view, so a reader watched
+   orbs appear in no particular order and had no way to tell the four
+   that are their own council from the three hundred that are the
+   country's. It now steps outward instead: the municipality's offices
+   are drawn and framed on their own, then the camera pulls back to
+   include the district's, then the region's, then the country's, with a
+   pause at each. The level key at the top of the window names the
+   colour that has just arrived, so each step says what it added.
+
+   `fitToLevel` frames everything resolved so far rather than only the
+   newest level, which is what makes it read as pulling back rather than
+   as jumping between places. */
+async function fitToLevel(upTo){
+  const idx={}; STACK.forEach((s,i)=>{ if(s.q) idx[s.q]=i; });
+  const lvlOf = p => (p.lvlIdx!=null) ? p.lvlIdx : idx[p.lvlQ];
+  const ids=Object.values(PINS).filter(p=>{ const i=lvlOf(p); return i!==undefined && i>=upTo; })
+    .map(p=>p.id);
+  if(ids.length) fitToIds(ids);
+}
+
 async function loadChainPins(){
   const levels = STACK.map((s,i)=>({q:s.q, i:i})).filter(x=>x.q).reverse();
+  const gen=++CHAIN_GEN;
   for(const lv of levels){
+    if(gen!==CHAIN_GEN) return;              /* the reader searched again */
     if(CHAIN_DONE[lv.q]) { setPins(); continue; }
     CHAIN_DONE[lv.q]=1;
     let core=[], items=[];
@@ -3157,17 +3549,28 @@ async function loadChainPins(){
           const o=bk.byId[id]; if(!o) return;
           /* a deeper level claims the office: it is the closer one */
           if(!PINS[id] || !CHAIN_CLAIMED[id]){
-            PINS[id]={id:id, lng:+m[1], lat:+m[2], label:o.label, lvlQ:lv.q};
+            /* `o` is carried on the pin. `BK` holds only the level whose
+               panel is open, so without this every marker belonging to
+               the county, the region or the country had no record behind
+               it: it could not be marked as law-contactable and clicking
+               it reached a dead end saying so. */
+            PINS[id]={id:id, lng:+m[1], lat:+m[2], label:o.label,
+                      lvlQ:lv.q, law:o.law, o:o};
             CHAIN_CLAIMED[id]=1;
           }
         });
         setPins();
       }catch(e){}
     }
-    fitToPins();
+    if(gen!==CHAIN_GEN) return;
+    /* this level has arrived: frame it with everything below it, then
+       hold before the next level widens the view again */
+    await fitToLevel(lv.i);
+    await new Promise(r=>setTimeout(r, 1100));
   }
+  if(gen===CHAIN_GEN) fitToPins();
 }
-let CHAIN_DONE={}, CHAIN_CLAIMED={};
+let CHAIN_DONE={}, CHAIN_CLAIMED={}, CHAIN_GEN=0;
 
 /* Frame the contacts rather than the boundary.
 
@@ -3337,15 +3740,58 @@ async function boot(){
 const NOMINATIM='https://nominatim.openstreetmap.org/search';
 let SHITS=[];
 
-function openStart(){ $('#start').classList.remove('off'); $('#sopen').classList.remove('on');
-  const i=$('#sq'); if(i){ i.focus(); i.select(); } }
+/* Opening the search clears the board.
+
+   It used to appear on top of whatever place was already open, and the
+   panel is parked over the right half of the window, so the search box
+   opened behind it and looked as though the button had done nothing.
+   Starting a new search is also a statement that the old place is
+   finished with, so the panel closes, the markers and the chain are
+   dropped, and the camera goes back to the whole world — which is what
+   the next place will be found from. */
+function openStart(){
+  closeModal();
+  STACK=[]; PINS={}; LOCAL={}; CHAIN_DONE={}; CHAIN_CLAIMED={}; PIN_TRIED={};
+  CUR=null; SEL=null;
+  setAdmData([]); paintTrail(); paintChain(); setPins();
+  noteBelow('');
+  try{ map.stop(); }catch(e){}
+  map.flyTo({center:[10,18], zoom:2.1, duration:800});
+  $('#start').classList.remove('off'); $('#sopen').classList.remove('on');
+  const i=$('#sq'); if(i){ i.focus(); i.select(); }
+}
 function closeStart(){ $('#start').classList.add('off'); $('#sopen').classList.add('on'); }
 
-async function placeSearch(){
+/* Candidates as you type.
+
+   Nominatim's usage policy asks for no more than a request a second and
+   no bulk querying, so the keystrokes are collected for 450 ms and only
+   the last one is sent; a typed place name produces two or three
+   requests, not one per letter. The in-flight generation number drops a
+   slow answer that arrives after the reader has typed on. */
+let TA_T=null, TA_GEN=0;
+function typeAhead(){
+  clearTimeout(TA_T);
   const q=($('#sq').value||'').trim();
   const out=$('#sout');
-  if(q.length<2){ out.innerHTML='<div class="msg">Type the name of a town, city or municipality.</div>'; return; }
-  out.innerHTML='<div class="msg">Looking for '+esc(q)+'&hellip;</div>';
+  if(q.length<3){ out.classList.remove('live'); out.innerHTML=''; return; }
+  TA_T=setTimeout(()=>runSearch(q,true), 450);
+}
+
+async function placeSearch(){
+  clearTimeout(TA_T);
+  const q=($('#sq').value||'').trim();
+  const out=$('#sout');
+  if(q.length<2){ out.classList.remove('live');
+    out.innerHTML='<div class="msg">Type the name of a town, city or municipality.</div>'; return; }
+  return runSearch(q,false);
+}
+
+async function runSearch(q, live){
+  const out=$('#sout');
+  const gen=++TA_GEN;
+  out.classList.toggle('live', !!live);
+  if(!live) out.innerHTML='<div class="msg">Looking for '+esc(q)+'&hellip;</div>';
   const u=NOMINATIM+'?q='+encodeURIComponent(q)+
     '&format=jsonv2&limit=8&polygon_geojson=1&extratags=1&featureType=settlement&accept-language=en';
   let rows=[];
@@ -3354,15 +3800,18 @@ async function placeSearch(){
     if(!r.ok) throw new Error(String(r.status));
     rows=await r.json();
   }catch(e){
-    out.innerHTML='<div class="msg">The place lookup could not be reached just now. '+
+    if(gen!==TA_GEN) return;
+    if(!live) out.innerHTML='<div class="msg">The place lookup could not be reached just now. '+
       'Try again in a moment.</div>';
     return;
   }
+  if(gen!==TA_GEN) return;               /* the reader has typed on */
   /* only things with a boundary: a point has no jurisdiction to draw */
   SHITS = rows.filter(r=>r.geojson && /Polygon/.test(r.geojson.type));
   if(!SHITS.length){
-    out.innerHTML='<div class="msg">Nothing with a boundary matched that. Try the name on its own, '+
-      'or add the region or country &mdash; "Springfield, Illinois".</div>';
+    out.innerHTML = live ? ''
+      : '<div class="msg">Nothing with a boundary matched that. Try the name on its own, '+
+        'or add the region or country &mdash; "Springfield, Illinois".</div>';
     return;
   }
   out.innerHTML = SHITS.map((r,i)=>{
