@@ -55,7 +55,11 @@ Three handoffs carried "raise the ceiling or cut the writeups" as a pending deci
 
 Brazil was cut from 450 to 325 words the same day without dropping a single strand, by replacing a roll-call of ten settlements with the mechanisms they share - who awards contracts, who lends public money, who sets tax bills, who certifies goods, who writes tax law. That is the method for the rest: BRIEF7 already forbids turning a writeup into a list of the new cases, and the over-length ones have become exactly that.
 
-**The ones to look at next are not the ones with the most cases.** Greece (526 words, 15 cases), Angola (424, 9), Portugal (422, 7), Somalia (406, 8) and Algeria (401, 7) are the furthest from the guide per case, and no handoff has flagged them because flagging followed whichever countries a round happened to touch. France (545, 29) is the largest single piece of cutting and its "Lower down" paragraph, about 270 words, is where that starts. Decided 12 November 2026.
+**The ones to look at next are not the ones with the most cases.** Greece (526 words, 15 cases), Angola (424, 9), Portugal (422, 7), Somalia (406, 8) and Algeria (401, 7) are the furthest from the guide per case, and no handoff has flagged them because flagging followed whichever countries a round happened to touch. Decided 12 November 2026.
+
+**France is done: 545 words to 297, later on 12 November 2026.** The cut went the Brazil way. The old text named thirteen cases; the new one names one, the Karachi affair, and organises the rest by the three levels at which outside interests reach the French state - through the people who run it, through foreign services recruiting for access rather than rank, and through a company that needs the one decision a single official can make. The whole "Lower down" roll-call of published settlements became a single sentence about the shape they share, which is what BRIEF2's correction asks for. Nothing was dropped but the case-by-case telling.
+
+**Remeasured after that cut: 196 writeups, median 290, 26 over 300, 6 over 400.** The list above still holds, with one addition no earlier handoff noticed: **South Africa, 479 words on 52 cases**, now the second furthest over. India (396, 43), Bangladesh (396, 8), Japan (392, 31) and Taiwan (386, 39) are next after the five named above.
 
 ## Display notes
 - Default country shading "Overall: officials open to outside control" = mean of the two GI-TOC views (insiders weighted ¾, weak watchdogs ¼).
