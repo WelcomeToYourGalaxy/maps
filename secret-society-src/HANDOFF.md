@@ -45,6 +45,18 @@ Two things in patterns.json look like rot and are not, so they are written down 
 - **`orgs_formerly` holds 54 organisation keys that are no longer in orgs.json.** Nothing reads the field — it appears in no .py file. It is a record of what each pattern used to span before the October 2026 audit removed those organisations for failing the test, mostly from `faith_placement` (17), `elite_forums` (11) and `coldwar_web` (8): Bilderberg, the World Economic Forum, Trilateral, Skull and Bones, Le Cercle, the Rhodes Trust and so on. Kept deliberately, for the same reason removed_records.json keeps dropped cases: so a later question about whether the map ever covered one of them has an answer. Since no reader sees it, it asserts nothing. Decided 12 November 2026.
 - **Eight patterns select their cases from hand-written `case_titles` lists**, which is why `build.py` reports orphan cases on every build. Widening them with a field selector was measured and rejected, not left undone — the reasoning is in `pattern_rollcall()`. Extend a list by hand, case by case.
 
+## BRIEF7's 150-300 word guide stands, and here is the measurement that settles it
+
+Three handoffs carried "raise the ceiling or cut the writeups" as a pending decision, on the strength of France at 545 words, Brazil at 450 and Algeria at 401. Measured across all 196 writeups on 12 November 2026 the question answers itself, in the direction of cutting:
+
+- The **median writeup is 290 words** and the mean 278, so the guide describes the body of them accurately. Twenty-seven are over 300 and eight over 400.
+- **Length does not track how much a country has.** The United States carries **154 cases in 299 words**; Italy 63 in 290; Mexico 53 in 300; the United Kingdom 38 in 300; Germany 38 in 298. Meanwhile Greece has 15 cases in 526 words, Angola 9 in 424, Portugal 7 in 422, Somalia 8 in 406 and Algeria 7 in 401.
+- So the over-length writeups are over-written, not over-full, and the guide is achievable at any case count: the United States proves it at 154.
+
+Brazil was cut from 450 to 325 words the same day without dropping a single strand, by replacing a roll-call of ten settlements with the mechanisms they share - who awards contracts, who lends public money, who sets tax bills, who certifies goods, who writes tax law. That is the method for the rest: BRIEF7 already forbids turning a writeup into a list of the new cases, and the over-length ones have become exactly that.
+
+**The ones to look at next are not the ones with the most cases.** Greece (526 words, 15 cases), Angola (424, 9), Portugal (422, 7), Somalia (406, 8) and Algeria (401, 7) are the furthest from the guide per case, and no handoff has flagged them because flagging followed whichever countries a round happened to touch. France (545, 29) is the largest single piece of cutting and its "Lower down" paragraph, about 270 words, is where that starts. Decided 12 November 2026.
+
 ## Display notes
 - Default country shading "Overall: officials open to outside control" = mean of the two GI-TOC views (insiders weighted ¾, weak watchdogs ¼).
 - Glossary underlines the first use of each term per box; hover shows the definition (glossify() in app_template.html).
