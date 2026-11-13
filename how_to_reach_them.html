@@ -841,6 +841,36 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 #bubbles.lightbase .bexp{background:rgba(45,90,60,.2);color:#13241a}
 #bubbles.lightbase .bexp:hover{background:rgba(45,90,60,.35)}
 
+/* The hurdles box. Anchored under the top bar and set against the
+   left edge of the panel, which the reader can drag and resize, so
+   both its right offset and its width are computed rather than fixed
+   (`placeHurdles`). */
+#hurd{position:fixed;top:62px;right:18px;z-index:96;display:none;width:360px}
+#hurd.on{display:block}
+#hurdbtn{display:flex;align-items:center;gap:7px;width:100%;
+  background:rgba(17,24,21,.93);border:1px solid var(--line);border-radius:9px;
+  color:var(--dim);cursor:pointer;font:inherit;font-size:11.5px;letter-spacing:.7px;
+  text-transform:uppercase;padding:8px 11px;text-align:left;
+  box-shadow:0 6px 20px rgba(0,0,0,.4)}
+#hurdbtn:hover{color:var(--ink);border-color:var(--accent-soft)}
+#hurdn{font-style:normal;font-size:10px;font-weight:700;color:var(--ink);
+  background:rgba(74,124,89,.3);border-radius:999px;padding:1px 6px}
+#hurdcar{margin-left:auto;font-weight:400;font-size:14px;transition:transform .15s}
+#hurd.open #hurdcar{transform:rotate(90deg)}
+#hurd.open #hurdbtn{color:var(--ink);border-bottom-left-radius:0;border-bottom-right-radius:0}
+#hurdbox{display:none;background:var(--panel);border:1px solid var(--line);border-top:0;
+  border-radius:0 0 11px 11px;padding:4px 15px 13px;
+  max-height:calc(100vh - 130px);overflow-y:auto;scrollbar-width:thin;
+  box-shadow:0 22px 60px rgba(0,0,0,.55)}
+#hurd.open #hurdbox{display:block}
+#hurdbox section{padding:11px 0;border-bottom:1px solid rgba(125,142,130,.12)}
+#hurdbox section:last-child{border-bottom:0;padding-bottom:2px}
+#hurdbox h5{font-family:'Marcellus',serif;font-weight:400;font-size:12.5px;line-height:1.35;
+  color:var(--accent-hi);margin:0 0 5px}
+#hurdbox p{font-size:11.8px;line-height:1.58;color:var(--dim);margin:0 0 6px}
+#hurdbox p:last-child{margin-bottom:0}
+@media (max-width:1180px){ #hurd{display:none!important} }
+
 /* every group of one level at once, in a row beside its bubble */
 #bubexp{position:fixed;left:-9999px;top:0;z-index:51;display:none;gap:12px;
   align-items:flex-start;pointer-events:none}
@@ -940,6 +970,18 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 <div id="zoomctl">
   <button type="button" onclick="map.zoomIn({duration:300})" title="Zoom in" aria-label="Zoom in">+</button>
   <button type="button" onclick="map.zoomOut({duration:300})" title="Zoom out" aria-label="Zoom out">−</button>
+</div>
+<!-- The hurdles, gathered. They used to sit at the foot of each
+     method's open row, which put a passage about how offices count
+     their post under the telephone and again under the letter and
+     again under the written submission: a structural obstacle is not
+     a property of one method. They are one box, in the free ground
+     between the bubbles and the panel, and it appears once a place
+     has been searched. -->
+<div id="hurd">
+  <button type="button" id="hurdbtn" onclick="toggleHurdles()">
+    Hurdles to Expect <i id="hurdn"></i> <b id="hurdcar">&rsaquo;</b></button>
+  <div id="hurdbox"></div>
 </div>
 <div id="bubexp"></div>
 <div id="deep"><div class="bubc deepc"><div class="bubm" id="deepm"></div></div></div>
@@ -3494,7 +3536,7 @@ const QUESTIONS = {
     ]},
 
   practice: {
-    q:'Where is it going wrong?',
+    q:'Where has it gone wrong?',
     sub:'A law is short; most of what it actually does is in the rules written underneath and in how they are applied.',
     opts:[
       {t:'The detailed rules under the law',
@@ -4064,7 +4106,10 @@ function pageWho(L){
 
   let h='<div class="pg pg-who">';
   h+='<h3 class="qq">Who to Contact</h3>';
-  h+='<p class="qsub">'+glossy(L.lead||'')+'</p>';
+  /* The destination's own paragraph is gone from here. It sat between
+     the heading and Some Context, which put two blocks of prose before
+     the list the page exists for, and the second said the same kind of
+     thing in general terms. `lead` is still in LEAVES, unread. */
   h+=howGovWorks();
   h+=loadNote(ents.length);
   if(!have.length && CUR && CUR.state!=='done'){
@@ -4328,39 +4373,18 @@ function frameKinds(kinds){ frameIdsSoon(idsOfKinds(kinds)); }
 
 function bindTree(){
   const body=$('#mbody'); if(!body) return;
-  /* hovering an answer frames what choosing it would show, so the map
-     previews the branch before it is taken */
-  body.querySelectorAll('.qopt').forEach(el=>{
-    const i=el.dataset.i;
-    if(el.dataset.lvl!==undefined){
-      const lv=+el.dataset.lvl;
-      el.addEventListener('mouseenter',()=>frameIdsSoon(idsOfKinds(LEAFKINDS(), lv)));
-      return;
-    }
-    if(i===undefined) return;
-    const node=PATH.length?PATH[PATH.length-1].next:'start';
-    const o=(QUESTIONS[node]||QUESTIONS.start).opts[+i];
-    if(!o) return;
-    el.addEventListener('mouseenter',()=>{
-      const key=o.leaf; if(!key||!LEAVES[key]) return;
-      frameIdsSoon(idsOfKinds(LEAVES[key].kinds, null));
-    });
-  });
-  /* A kind's screen frames its offices on the map but shows no card.
-     It used to show one, and because the listener was on the whole
-     screen the card appeared on a click as well as a hover \u2014 a box
-     titled "Departments" sitting over the page that had just been
-     opened \u2014 and it only repeated the line already printed at the
-     top of that screen. */
-  body.querySelectorAll('.pg-who[data-kind]').forEach(el=>{
-    const k=el.dataset.kind;
-    el.addEventListener('mouseenter',()=>frameKinds([k]));
-  });
+  /* Hovering an answer used to frame what choosing it would show,
+     so the map moved as the pointer crossed a list of options:
+     four camera moves on the way down a question nobody had
+     answered yet, and the ground never still long enough to read.
+     The map moves when something is chosen and not before; the
+     click paths (enterLeaf, openKind, walkTo) still frame what was
+     picked. The hover card stays, because it says what an option
+     is without moving anything. */
   body.querySelectorAll('.ochip').forEach(el=>{
     const ix=officeIndex()[el.dataset.id]; if(!ix) return;
     const o=ix.o;
     el.addEventListener('mouseenter',()=>{
-      frameIdsSoon([o.id]);
       showCard('<h5>'+esc(o.label)+'</h5>'+
         (o.what?'<p class="w">'+esc(o.what)+'</p>':'')+
         (o.how?'<p>'+esc(o.how)+'</p>':'')+
@@ -4415,6 +4439,7 @@ function pageSig(){
           PATH.length, SEL?SEL.id:''].join('|');
 }
 function render(){
+  try{ drawHurdles(); }catch(e){}
   if(!CUR) return;
   BK = buckets();
   /* the office list has just been rebuilt, so this is the moment the
@@ -4513,7 +4538,6 @@ function routeTile(rt, i, when, notes){
       esc(rt.fail)+'</dd></div>'+
     (notes||[]).map(nt=>'<div class="pgnote"><dt>'+esc(nt[1])+'</dt><dd>'+esc(nt[2])+
        '</dd></div>').join('')+
-    hurdleBlock(rt.id)+
     '</div></div>';
 }
 
@@ -4544,7 +4568,13 @@ function renderOffice(o){
      name, because that is what it is: part of the name's own record. */
   h+='<div class="off" style="border:0;padding-top:0"><div class="nm" style="font-size:19px">'+
      esc(o.label)+(o.desc?'<span class="nmd">'+esc(o.desc)+'</span>':'')+'</div>'+
-     '<div class="what">'+esc(o.what)+'</div><div class="how">'+esc(o.how)+'</div><div class="meta">';
+     /* `o.how` was a paragraph here, between the office's name and How
+        to Reach Them, describing the kind of office rather than this
+        one: the same words under every office of that kind, which is
+        what the kind's own page is for. `what` stays, being one line.
+        The paragraph is still in the classifier and still on the hover
+        card. */
+     '<div class="what">'+esc(o.what)+'</div><div class="meta">';
   /* The long description of what this kind of office is, and where it
      sits among the others, belongs here as much as on the kind's page.
      A reader who answered the scope question may arrive at one office
@@ -5714,9 +5744,15 @@ async function enterPlace(i){
   if(wd) openJuris(wd, name);
   else { openModal(name,'Drawn from OpenStreetMap'); renderNoEntity(name, true); }
   paintTrail(); paintChain(); setPins();
-  /* the place itself is one of the lenses now, so the camera does not
-     go to it; it frames the country and holds there */
+  /* Two moves, in this order. The country first, with the levels of
+     government drawn on it and their offices pinned, which is the
+     answer to "where does this place sit and who is above it". Then,
+     once the bubbles have been built on that view, in to the place
+     that was searched for. Doing the second one first showed a town
+     at street scale with four markers off the edge of the screen and
+     nothing to say what they were. */
   fitToNational();
+  armSearchZoom();
   /* the buildings inside the place, then the offices that govern it */
   loadLocalContacts(feat, STACK.length-1);
   loadChainPins();
@@ -5860,7 +5896,9 @@ async function resolveUnit(nm){
       m.style.height=Math.max(260,sh+(e.clientY-sy))+'px';
     }
   });
-  addEventListener('mouseup',()=>{ drag=false; rs=false; top.classList.remove('grabbing'); });
+  addEventListener('mousemove',()=>{ if(drag||rs){ try{ placeHurdles(); }catch(e){} } });
+  addEventListener('mouseup',()=>{ drag=false; rs=false; top.classList.remove('grabbing');
+    try{ placeHurdles(); }catch(e){} });
 })();
 
 function toggleAbout(){ document.getElementById('about').classList.toggle('on'); }
@@ -5911,6 +5949,24 @@ function mainlandBounds(g){
     b[2]=Math.max(b[2],r.b[2]); b[3]=Math.max(b[3],r.b[3]);
   });
   return b;
+}
+/* The second move, held until the bubbles are up. `buildBubbles` fires
+   it when the last instance is made; the timer is the fallback, for a
+   place with too few levels to draw any bubbles at all and for a
+   basemap source that errors and never goes idle. Whichever arrives
+   first wins and the other finds nothing to do. */
+let ZOOM_WANTED=false, ZOOM_T=null;
+function armSearchZoom(){
+  ZOOM_WANTED=true;
+  clearTimeout(ZOOM_T);
+  ZOOM_T=setTimeout(()=>{ try{ finishSearchZoom(); }catch(e){} }, 9000);
+}
+function finishSearchZoom(){
+  if(!ZOOM_WANTED) return;
+  ZOOM_WANTED=false; clearTimeout(ZOOM_T); ZOOM_T=null;
+  const top=STACK[STACK.length-1];
+  if(top && top.feature && top.feature.geometry) fitTo(top.feature.geometry);
+  else fitToPins();
 }
 function fitToNational(){
   for(let i=0;i<STACK.length;i++){
@@ -6323,7 +6379,8 @@ function buildBubbles(L){
   });
   const seq=++BUB_SEQ;
   const makeOne=(i)=>{
-    if(seq!==BUB_SEQ || i>=L.length) return;       /* a newer build won */
+    if(seq!==BUB_SEQ) return;                      /* a newer build won */
+    if(i>=L.length){ try{ finishSearchZoom(); }catch(e){} return; }
     const info=L[i], slot=BUBS[i];
     if(!slot || !document.getElementById('bubm'+i)){ makeOne(i+1); return; }
     const bm=CulpritsBasemaps.create('bubm'+i, {
@@ -6419,6 +6476,67 @@ function bubStep(i, d){
   b.gi=(b.gi+d+b.groups.length)%b.groups.length;
   fillBubble(b, {lv:b.lv, st:STACK[b.lv], pins:b.pins});
 }
+
+/* ---- the hurdles, in one box rather than nine times over ----
+
+   Which ones are shown follows what the reader has narrowed to: the
+   methods that reach the open office, or the open kind, or the open
+   destination, and everything when nothing is chosen yet. The order is
+   the order they are declared in, so the box does not reshuffle itself
+   as the reader moves. */
+function hurdlesInScope(){
+  let ids=null;
+  if(SEL && typeof KIND_ROUTES!=='undefined' && KIND_ROUTES[SEL.kind]) ids=KIND_ROUTES[SEL.kind];
+  else if(LEAFKIND && typeof KIND_ROUTES!=='undefined' && KIND_ROUTES[LEAFKIND]) ids=KIND_ROUTES[LEAFKIND];
+  else if(LEAF && LEAVES[LEAF] && LEAVES[LEAF].routes) ids=LEAVES[LEAF].routes;
+  const seen=new Set();
+  if(ids) ids.forEach(r=>(ROUTE_HURDLES[r]||[]).forEach(k=>seen.add(k)));
+  const keys=Object.keys(HURDLES);
+  const out=keys.filter(k=>seen.has(k));
+  return out.length?out:keys;
+}
+function drawHurdles(){
+  const host=$('#hurd'); if(!host) return;
+  const on = STACK.length>0 && innerWidth>1180;
+  host.classList.toggle('on', on);
+  if(!on){ host.classList.remove('open'); return; }
+  const ks=hurdlesInScope();
+  const n=$('#hurdn'); if(n) n.textContent=ks.length;
+  const box=$('#hurdbox');
+  if(box) box.innerHTML=ks.map(k=>{
+    const x=HURDLES[k]; if(!x) return '';
+    /* the passages carry their own markup (a case name in italics) and
+       nothing in HURDLES comes from outside, so they are not escaped */
+    return '<section><h5>'+esc(x.h)+'</h5>'+x.p.map(p=>'<p>'+p+'</p>').join('')+'</section>';
+  }).join('');
+  placeHurdles();
+}
+function toggleHurdles(){
+  const h=$('#hurd'); if(!h) return;
+  h.classList.toggle('open'); placeHurdles();
+}
+/* The panel is draggable and resizable, so where its left edge is can
+   only be read off the element. The box is set against it, and kept
+   clear of the bubble column on the other side. */
+function placeHurdles(){
+  const h=$('#hurd'); if(!h) return;
+  let right=18, left=18;
+  try{
+    const md=document.getElementById('modal');
+    if(md && md.classList.contains('on') && innerWidth>760)
+      right=Math.max(18, Math.round(innerWidth-md.getBoundingClientRect().left+12));
+  }catch(e){}
+  try{
+    const bb=$('#bubbles');
+    if(bb && bb.style.display==='block'){
+      const c=bb.querySelector('.bubc');
+      left = 18 + (c?c.offsetWidth:156) + 30;
+    }
+  }catch(e){}
+  h.style.right=right+'px';
+  h.style.width=Math.max(250, Math.min(420, innerWidth-right-left))+'px';
+}
+addEventListener('resize', ()=>{ try{ drawHurdles(); }catch(e){} });
 
 /* ---- every group of one level at once ----
 

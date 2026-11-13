@@ -161,6 +161,23 @@ the office count moved onto the title line, then 0. If you add a line to a row
 or to a block above one of these lists, re-measure — there is no slack left.
 It fits from 1080px of window height up; at 900px the worst case is 53px over.
 
+**The map holds still until something is chosen.** Hovering an answer used
+to frame what choosing it would show, so the camera moved as the pointer
+crossed a list of six options: six moves on a question nobody had answered.
+`bindTree` no longer frames on hover. The click paths still do - `enterLeaf`,
+`openKind` and `walkTo` all call `frameKinds`. The hover card on an office
+chip stays, because it says what the office is without moving anything.
+
+**The destination's own paragraph and the office's are gone.** `pageWho`
+printed `L.lead` between the heading and Some Context, which put two blocks
+of prose in front of the list the page exists for, and the second said the
+same kind of thing in general terms. An office's page printed `o.how`
+between its name and How to Reach Them, which described the kind of office
+rather than that one: the same words under every office of that kind, which
+is what the kind's own page is for. Both fields are still in the data and
+neither is printed on those screens. `o.how` is still on the hover card, and
+`o.what`, being one line, still sits under the office's name.
+
 **The scope question comes first**, before the subject: how far the rule has
 to reach decides which government makes it, and that changes who every later
 answer is about. It is worded "How far does the rule have to reach?" rather
@@ -183,11 +200,27 @@ that says where in the sequence it sits ("introduces it", "signs it, or
 refuses to"). An ordered list whose order is not stated reads as an arbitrary
 one.
 
-**The hurdles are inside the methods.** `ROUTE_HURDLES` maps each hurdle to
-the methods it actually bites on, and `hurdleBlock` draws it at the foot of
-that method's open row. `KIND_HURDLES` is kept but no longer read. Do not
-restore a hurdles section of its own: nine long passages under one heading at
-the foot of a page is what this replaced.
+**The hurdles are in a box of their own, off the panel.** They were a
+section at the foot of a page, then a block at the foot of each method's
+open row, and both were wrong in the same way. A hurdle is not a property of
+a method: the passage about offices counting contact by position applies to
+the email, the call, the letter, the petition and the written submission, so
+inside the rows it was printed five times over, and at the foot of a page it
+was nine long passages under one heading that nobody reached.
+
+`#hurd` is a button and a drop-down, fixed under the control row and set
+against the left edge of the panel. `placeHurdles` reads the panel's rect,
+because the reader can drag and resize it, and keeps the box clear of the
+bubble column on the other side. It appears once a place has been searched
+(`STACK.length`) and not before. `drawHurdles` is called from `render`, so
+what it holds follows what the reader has narrowed to: `hurdlesInScope`
+takes the methods that reach the open office, or the open kind, or the open
+destination, and everything when nothing is chosen yet. The order is the
+order `HURDLES` declares them in, so the box does not reshuffle itself as
+the reader moves.
+
+`hurdleBlock` is still in the file and nothing calls it. `KIND_HURDLES` is
+still there and still unread.
 
 ---
 
@@ -505,14 +538,12 @@ heading for the same two questions, so opening three rows in a row gave
 produces" for one of them, and "How it ranks" against "Why no one has
 measured how often this works" for the other. Both are one question asked of
 every method and both now have one name: **How often it works** (the band, or
-"Not measured" and why) and **What it produces, and what limits it**. The
-hurdle at the foot is the only block that is not about this method in
-particular, and its heading says so — **Behind this and the methods like
-it** — once per row rather than once per hurdle, because seven routes carry
-two and the heading was appearing twice. `rt.failt` and `HURDLES[].t` are
-still in the data and neither is read. If you give a route a heading of its
-own again, check it against the others in the same open row first: that is
-how the collisions got there.
+"Not measured" and why) and **What it produces, and what limits it**.
+The hurdles that used to sit at the foot of the row are out of it
+altogether, into a box of their own: see 1. `rt.failt` and `HURDLES[].t`
+are still in the data and neither is read. If you give a route a heading
+of its own again, check it against the others in the same open row
+first: that is how the collisions got there.
 
 ---
 
@@ -702,10 +733,20 @@ font that is there.
 
 ## 14. The camera, and two things that were tried and removed
 
-**One camera move per search, and it frames the country.** `fitToNational` is
-called once, from `enterPlace`, as soon as the chain is built. Four separate
-things used to move the camera on that path and the result looked like a
-fault:
+**Two camera moves per search, in a fixed order.** `fitToNational` is called
+from `enterPlace` as soon as the chain is built, and frames the country with
+the levels of government drawn on it and their offices pinned, which answers
+where this place sits and who is above it. `armSearchZoom` then holds a
+second move until the bubbles are up: `buildBubbles` fires `finishSearchZoom`
+when the last instance is made, and a 9-second timer is the fallback for a
+place with too few levels to draw any bubbles and for a source that errors
+and never goes idle. The second move frames the place that was searched for.
+Doing that one first, which is what the page used to do, showed a town at
+street scale with the offices that govern it off the edge of the screen and
+nothing on it to say what they were.
+
+What matters is that these are two moves and not four. Four separate things
+used to move the camera on this path and the result looked like a fault:
 
 | Where | What it did |
 | --- | --- |
