@@ -681,7 +681,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .rnm .rpill{margin-top:0}
 
 /* a hurdle, inside the method it stops */
-.hrd{margin-top:11px;border-left:2px solid var(--stone);padding:2px 0 2px 12px}
+.hrd{margin-top:11px;padding:0}
 .hrd dt{font-size:9.5px;letter-spacing:.9px;text-transform:uppercase;color:var(--stone);
   margin-bottom:4px}
 .hrd h5{font-family:'Marcellus',serif;font-weight:400;font-size:12.5px;line-height:1.35;
@@ -706,12 +706,6 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .wbadge.cmp{background:rgba(125,142,130,.16);color:var(--dim);border:1px solid var(--line)}
 
 /* the sequence, above the list it orders */
-.lflow{display:flex;flex-wrap:wrap;align-items:center;gap:3px 2px;margin:7px 0 2px;
-  padding:7px 9px;border:1px solid var(--line);border-radius:9px;background:var(--panel2)}
-.lfn{background:none;border:0;padding:2px 5px;border-radius:5px;font:inherit;font-size:10.5px;
-  color:var(--dim);cursor:pointer;white-space:nowrap}
-.lfn:hover{color:var(--ink);background:rgba(74,124,89,.18)}
-.lfa{color:var(--faint);font-size:10px;font-style:normal}
 
 /* a kind of office, as a row that opens a page */
 .krow{display:block;width:100%;text-align:left;padding:0;background:var(--panel2);
@@ -771,6 +765,49 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .govex[open] summary::before{content:'\25be  '}
 .govex p{font-size:11.4px;line-height:1.55;color:var(--dim);margin:0 0 8px}
 .govex p:first-of-type{margin-top:2px}
+/* the list, joined into the sequence it already was */
+.lseq{gap:0}
+/* Ten arrows at 18px apiece is 180px of the panel, and the context
+   box above them opens by default now; at 3px of padding the list ran
+   83px past the foot. */
+.lsarr{text-align:center;color:var(--faint);font-size:10px;line-height:1;padding:0}
+.govex{margin:6px 0 2px}
+.govex p{font-size:11.2px;line-height:1.5;margin:0 0 6px}
+
+/* what kind of office this one is, on its own page */
+.okind{margin-top:11px;border-left:2px solid var(--accent);padding-left:11px}
+.okind dt{font-size:9.5px;letter-spacing:.9px;text-transform:uppercase;color:var(--stone);
+  margin-bottom:4px}
+.okind dd{font-size:12px;line-height:1.55;color:var(--dim)}
+/* ====================================================================
+   THE MAGNIFYING BUBBLES
+   ==================================================================== */
+#bubbles{position:fixed;left:0;top:0;z-index:49;display:none;pointer-events:none}
+.bub{position:absolute;left:18px;width:var(--bd,156px);pointer-events:auto}
+/* the caption is allowed to be wider than the circle and centred on
+   it: "group 1 of 2" does not fit inside 156px and ran over the map */
+.bubl{width:206px;margin-left:calc((var(--bd,156px) - 206px) / 2)}
+.bubc{width:var(--bd,156px);height:var(--bd,156px);border-radius:50%;overflow:hidden;position:relative;
+  border:1.5px solid rgba(140,189,154,.45);background:#0c100e;
+  box-shadow:0 12px 34px rgba(0,0,0,.6), inset 0 0 26px rgba(0,0,0,.5)}
+.bubm{position:absolute;inset:0}
+.bubc .maplibregl-ctrl-attrib{display:none!important}
+.bubl{margin-top:5px;text-align:center;line-height:1.28}
+.bubl b{display:block;font-family:'Marcellus',serif;font-size:11.5px;color:var(--text);
+  text-shadow:0 1px 7px rgba(0,0,0,.9);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bubs{display:block;font-size:8.8px;letter-spacing:.2px;text-transform:uppercase;color:var(--faint);
+  text-shadow:0 1px 7px rgba(0,0,0,.9)}
+.bstep{background:none;border:0;color:var(--accent-hi);cursor:pointer;font:inherit;
+  font-size:11px;padding:0 3px;line-height:1}
+.bstep:hover{color:var(--ink)}
+
+/* the second bubble, over the first */
+#deep{position:fixed;left:-9999px;top:0;z-index:58;opacity:0;pointer-events:none;
+  transition:opacity .09s}
+#deep.on{opacity:1;pointer-events:auto}
+#deep .deepc{width:210px;height:210px;border-color:var(--accent-hi);
+  box-shadow:0 16px 44px rgba(0,0,0,.7), inset 0 0 26px rgba(0,0,0,.45)}
+@media (max-width:1180px){ #bubbles,#deep{display:none!important} }
 </style>
 </head>
 <body>
@@ -800,6 +837,11 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   <div id="bmrow"></div>
   <div id="projrow"><button id="projbtn" onclick="toggleProjection()">Flat map</button></div>
 </div>
+<!-- A bubble per level of government, each a real map on the same
+     basemap, and the deeper bubble that opens over whichever one the
+     pointer is in. -->
+<div id="bubbles"></div>
+<div id="deep"><div class="bubc deepc"><div class="bubm" id="deepm"></div></div></div>
 <div id="start">
   <h2>Search for your municipality</h2>
   <div id="srow">
@@ -844,9 +886,6 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
        a proposed rule, filing a ballot measure. The rest are government too and are listed in full, but
        contacting them will not change a law. A judge cannot be approached about a case, a police force
        cannot alter the statute it enforces, and an auditor only checks rules that are already written.</p>
-    <p>What an office can do is worked out from its title and its Wikidata class, so it is an informed guess.
-       Powers differ between countries, and the same title can mean two different things in two of them.
-       Check the office's own site before acting on anything here.</p>
     <p>Office titles are stable; the people in them are not. Wikidata's record of who currently holds an
        office can be years out of date, so treat any name here as a lead to check.</p>
     <p>Coverage is uneven: deep for some countries, thin for others, thinnest at municipal level. A blank
@@ -2107,40 +2146,40 @@ const THEMEHINT={
    and shown inside those entries rather than on a page of its own.
    ==================================================================== */
 const HURDLES = {
-  primacy: {h:'A company that gives up profit is not breaking the law, but little pushes it to',
+  primacy: {t:'What the company is and is not obliged to do', h:'A company that gives up profit is not breaking the law, but little pushes it to',
    p:["It is widely believed that company directors are legally obliged to make as much money as possible for shareholders, so a company that gave up profit for a public good could be sued for it. The law is narrower than that. The case usually cited is <i>Dodge v. Ford Motor Co.</i>, decided in Michigan in 1919, where a court ordered Ford to pay a special dividend. The line in it about a company existing primarily to make money for shareholders was a remark made in passing rather than part of the ruling, and it binds nobody.",
       "What governs directors is the business judgment rule: courts will not second-guess a decision if the board can point to some reasonable benefit to the company. Reputation, hiring, avoiding future regulation and keeping a licence to operate all count. Legal scholars reading the same case describe profit maximisation as a standard directors are expected to meet rather than a law they can be punished for missing, and one courts almost never enforce.",
       "What remains is not a legal bar but a set of pressures: the risk of being sued, quarterly reporting, pay packages tied to the share price, and competitors who will not follow. For anyone approaching a company, that means the argument to make is not that the company is permitted to act. It is a business reason the board could state in court if challenged. A shareholder proposal is written in exactly that form, which is why it appears among the routes at a $2,000 entry price."]},
 
-  concentrated: {h:'Concentrated costs now, diffuse benefits later',
+  concentrated: {t:'What stands in the way', h:'Concentrated costs now, diffuse benefits later',
    p:["Every route on this list asks an institution to accept a specific, immediate, attributable cost in exchange for a benefit that is spread out, delayed, and credited to no one in particular. Nobody inside the institution is rewarded for accepting that trade, and the person who proposes it carries the consequences if it goes badly.",
     "The routes with measured success are mostly those where the ask is narrow and the cost to the person deciding is close to zero: a comment on an open public file of responses, a vote already scheduled, a bill already moving. The routes that ask an institution to reverse its direction have no measured success at all."]},
 
-  tally: {h:'Contact is counted by position, not read as an argument',
+  tally: {t:'What happens to your message', h:'Contact is counted by position, not read as an argument',
    p:["Legislative offices log incoming contact by issue and by which side it takes, and report the counts upward. An email is one unit in that count. So is a call, and so is a letter. The reasoning in the message does not change the arithmetic, which is how several thousand carefully argued messages can produce a form reply about an unrelated policy.",
     "Some routes sit outside the tally because they create an obligation to respond: a petition the agency must grant or deny, a comment the agency must address when it issues the final rule, a statement entered in a hearing record, a complaint an inspector general must close in writing. What separates them from an email is not the effort involved but whether anyone is required to write back."]},
 
-  docket: {h:'The public file is open to everyone, and weighted by whoever fills it',
+  docket: {t:'Who else files, and how much it weighs', h:'The public file is open to everyone, and weighted by whoever fills it',
    p:["Across 40 rule-writing processes at four US federal agencies and some 1,700 comments, business commenters held significant influence over final rule content, and non-business commenters showed no detectable influence in the same models. Over 57% of comments came from business. Agencies tend to move toward whichever side dominates the public file of responses.",
     "The route costs nothing and is open to anyone. What it is not is evenly used: the same firms file on every relevant proceeding, with counsel, year after year, and that is where the 57% comes from."]},
 
-  money: {h:'Money buys access, and access does not buy the outcome',
+  money: {t:'What money does and does not buy', h:'Money buys access, and access does not buy the outcome',
    p:["Across 98 randomly selected policy issues tracked from 1999 to 2002, 60% of lobbying campaigns failed to move policy at all, and the resources behind a campaign explained under 5% of the difference between the winners and the losers. What predicted the outcome best was whether a campaign was defending the status quo or trying to change it.",
     "That cuts in both directions. A well-funded opponent is not guaranteed to win. Hiring representation is also not a way of converting an argument into a result, so a retainer sold on the promise of an outcome is being sold on something the figures do not support."]},
 
-  nobody: {h:'No single office has jurisdiction over the whole problem',
+  nobody: {t:'What stands in the way', h:'No single office has jurisdiction over the whole problem',
    p:["An argument spanning several domains at once does not map onto any one office's mandate. Each office can accurately say that the part it governs is not the part being complained about, and send it elsewhere. That is a consequence of how mandates are drawn rather than evasion by any individual.",
     "The usual answer is not to narrow the claim but to pick an existing proceeding for it to enter. A proceeding has a deadline, a written record, and someone obliged to respond to what is filed in it. An unsolicited approach has none of those."]},
 
-  voluntary: {h:'Voluntary mechanisms produce findings, not orders',
+  voluntary: {t:'What this produces, and what it cannot', h:'Voluntary mechanisms produce findings, not orders',
    p:["The international complaint routes — OECD National Contact Points, development bank accountability mechanisms, UN treaty-body and review processes, ILO complaints — are built the same way. They investigate, publish and recommend. None can compel a company or a state, and remedy for harm already done is rare. The bodies' own codings of their outcomes also differ sharply from the codings produced by the NGOs that file with them.",
     "What they produce is a document. A published finding can be cited by a court, a lender, an insurer or a journalist, which is why these appear among the routes despite low direct success."]},
 
-  standing: {h:'Standing',
+  standing: {t:'What stands in the way', h:'Standing',
    p:["Courts in most common-law jurisdictions require a concrete, particularised injury to the person bringing the case. An injury shared equally by everyone is, under that doctrine, treated as an injury to no one for the purpose of deciding who may sue. The broader the harm, the harder it is to find a plaintiff the court will hear.",
     "This is the most common reason a well-founded claim about planetary-scale harm is dismissed before the merits are reached. It is also the mechanism the rights-of-nature route works on: granting an ecosystem legal personhood produces a plaintiff with an injury of its own."]},
 
-  revolving: {h:'The revolving door, which nobody has measured',
+  revolving: {t:'What nobody has measured', h:'The revolving door, which nobody has measured',
    p:["Regulatory capture, and movement between agencies and the industries they regulate, have a large theoretical and case literature and no success denominator — there is no population of attempts against which to compute a rate. It is listed because leaving it out would suggest it does not operate, and putting a number on it would suggest someone has counted."]},
 };
 /* ====================================================================
@@ -2455,7 +2494,11 @@ const map = BM.maplibre;
   markBase('satellite');
 })();
 let BASEKEY='satellite';
-function pickBase(k){ BM.set(k); markBase(k); BASEKEY=k; setPins(); }
+function pickBase(k){
+  BM.set(k); markBase(k); BASEKEY=k; setPins();
+  /* the bubbles are the same ground as the map, so they change with it */
+  try{ BUBS.forEach(b=>b.bm.set(k)); if(DEEPBM) DEEPBM.set(k); }catch(e){}
+}
 function markBase(k){ document.querySelectorAll('#bmrow button')
   .forEach(b=>b.classList.toggle('on', b.dataset.k===k)); }
 
@@ -3184,7 +3227,7 @@ const ROUTEWHEN={
 const LEAVES = {
   new_law: {
     nm:'A rule that does not exist yet', scoped:true,
-    lead:'The offices below, in the order a bill passes through them.',
+    lead:'',
     kinds:['leg/member','leg/committee','exec/minister','ag/agency','leg/chamber','leg/presiding','exec/clerk','exec/head'],
     routes:['visit','letter','call','email','sfr','petition','townhall','ballot'],
     hurdles:['tally','concentrated','money','nobody'],
@@ -3838,7 +3881,6 @@ function pageWho(L){
   h+='<h3 class="qq">Who to Contact</h3>';
   h+='<p class="qsub">'+glossy(L.lead||'')+'</p>';
   h+=howGovWorks();
-  if(have.length>1) h+=lawFlow(have);
   if(!have.length){
     h+='<p class="qsub warn">No office of any of these kinds is recorded for this place'+
        (LEAFSUB?' under '+esc(LEAFSUB):'')+'. Coverage is deep for some countries and thin for '+
@@ -3846,8 +3888,15 @@ function pageWho(L){
        'office rather than no office. Step back and widen the subject.</p>';
     return h+'</div>';
   }
-  h+='<div class="rgrid one">';
-  have.forEach((k,i)=>{ h+=kindRow(L,k,byKind[k],i); });
+  /* The sequence, as a sequence. It was a strip of names above a stack
+     of rows, which said the order twice and carried the detail in only
+     one of them. The rows are joined by arrows instead, so the list is
+     the diagram. */
+  h+='<div class="rgrid one lseq">';
+  have.forEach((k,i)=>{
+    if(i) h+='<div class="lsarr">\u2193</div>';
+    h+=kindRow(L,k,byKind[k],i);
+  });
   h+='</div>';
   if(blanks.length){
     h+='<p class="pgblank"><b>Nothing recorded here for:</b> '+
@@ -3870,37 +3919,19 @@ function pageWho(L){
    is the same five sentences every time. */
 function howGovWorks(){
   return '<details class="govex"'+(GOVEX_OPEN?' open':'')+' ontoggle="GOVEX_OPEN=this.open">'+
-    '<summary>First, how a government is put together</summary>'+
+    '<summary>Some Context</summary>'+
     '<p>'+glossy(
       'Government is split into branches that are meant to check each other. The legislature '+
       'is the one that writes and passes laws, and it is made of elected members who sit on '+
       'committees and vote in chambers. The executive is the side that runs the country: the '+
       'head of government signs what the legislature passes, and the departments and agencies '+
       'under them write the detailed rules that decide what a law actually does to anybody. '+
-      'The judiciary settles what a law means when people disagree, and can strike one down.'
-    )+'</p><p>'+glossy(
-      'Two things follow that catch most people out. A law takes two bodies and not one: the '+
-      'chamber passes the bill, and then the head of government signs it, and either of them '+
-      'can stop it. And most of what government does to you day to day was not voted on by '+
-      'anybody — it was written as a rule by a department or an agency under a law passed '+
-      'years earlier, which is why those two are on this list at all.'
-    )+'</p><p>'+glossy(
-      'The list below runs in the order a law passes through them, from the office that can '+
-      'start one to the office that checks afterwards that it was followed.'
+      'The judiciary settles what a law means when people disagree, and can strike one down. '+
+      'The sequence below runs in the order a law passes through them, from the office that '+
+      'can start one to the office that checks afterwards that it was followed.'
     )+'</p></details>';
 }
-let GOVEX_OPEN=false;
-
-/* The sequence itself, above the list, so the order of the list is
-   visibly an order. A list of twelve office types sorted by something
-   the reader cannot see reads as arbitrary. */
-function lawFlow(kinds){
-  return '<div class="lflow">'+kinds.map((k,i)=>
-    (i?'<i class="lfa">\u2192</i>':'')+
-    '<button type="button" class="lfn" data-kind="'+esc(k)+'" '+
-      'onclick="openKind(\''+esc(k)+'\')">'+esc(KINDLABEL[k]||k)+'</button>'
-  ).join('')+'</div>';
-}
+let GOVEX_OPEN=true;
 
 /* One kind of office, as a row that opens its own page. It was a
    dropdown; a dropdown hides the offices behind a second click in the
@@ -4222,9 +4253,14 @@ function hurdleBlock(routeId){
   if(!ks.length) return '';
   /* the passages carry their own markup (a case name in italics), so
      they are not escaped here; nothing in HURDLES comes from outside */
+  /* Each carries its own heading. They all used to say "What stands in
+     the way", which was wrong for some of them — how an office counts
+     the messages it receives is a thing worth knowing about the method,
+     not an obstacle to it — and repeated itself whenever a method had
+     two. */
   return ks.map(k=>{
     const x=HURDLES[k]; if(!x) return '';
-    return '<div class="hrd"><dt>What stands in the way</dt>'+
+    return '<div class="hrd"><dt>'+esc(x.t||'What stands in the way')+'</dt>'+
       '<h5>'+esc(x.h)+'</h5>'+x.p.map(p=>'<p>'+p+'</p>').join('')+'</div>';
   }).join('');
 }
@@ -4264,6 +4300,12 @@ function renderOffice(o){
   let h='';
   h+='<div class="off" style="border:0;padding-top:0"><div class="nm" style="font-size:19px">'+esc(o.label)+'</div>'+
      '<div class="what">'+esc(o.what)+'</div><div class="how">'+esc(o.how)+'</div><div class="meta">';
+  /* The long description of what this kind of office is, and where it
+     sits among the others, belongs here as much as on the kind's page.
+     A reader who answered the scope question may arrive at one office
+     directly, and what the classifier knows about it on its own — a
+     line from the title and the Wikidata class — is much thinner than
+     what is known about its kind. */
   if(o.cls) h+='<span class="chip">'+esc(o.cls)+'</span>';
   if(holder) h+=isQ(holder)?'<span>holder recorded, name missing</span>'
     :'<span>'+esc(holder)+'</span> <span class="chip">verify</span>';
@@ -4272,6 +4314,12 @@ function renderOffice(o){
   if(phone) h+='<span>'+esc(phone)+'</span>';
   h+='<a href="https://www.wikidata.org/wiki/'+esc(o.id)+'" target="_blank" rel="noopener" style="opacity:.5">wikidata</a>';
   h+='</div></div>';
+  {
+    const kst=LAWSTAGE[o.kind]||{};
+    const kw=[KINDWHEN[o.kind]||'', kst.rel||''].filter(Boolean).join(' ');
+    if(kw) h+='<div class="okind"><dt>'+esc(KINDLABEL[o.kind]||o.kind)+
+      (kst.stage?' \u2014 the body that '+esc(kst.stage):'')+'</dt><dd>'+glossy(kw)+'</dd></div>';
+  }
 
   /* best-ranked first, so the order of the list is itself the answer to
      which route is worth trying before the others */
@@ -4601,6 +4649,7 @@ function setPins(){
   });
   src.setData({type:'FeatureCollection',features:feats.filter(f=>f.properties.vis)});
   paintShow();
+  if(typeof paintBubbles==='function') paintBubbles();
   const vis=feats.filter(f=>f.properties.vis);
   const on=vis.filter(f=>f.properties.on);
   const lw=on.filter(f=>f.properties.law).length;
@@ -5216,6 +5265,9 @@ function openStart(){
   STACK=[]; PINS={}; LOCAL={}; CHAIN_DONE={}; CHAIN_CLAIMED={}; PIN_TRIED={};
   CUR=null; SEL=null;
   SELFSITE=null; paintSiteLink();
+  if(typeof destroyBubbles==='function'){ destroyBubbles();
+    const dh=$('#deep'); if(dh){ dh.classList.remove('on'); dh.style.left='-9999px'; }
+    const bb=$('#bubbles'); if(bb) bb.style.display='none'; }
   setAdmData([]); paintTrail(); paintChain(); setPins();
   noteBelow('');
   try{ map.stop(); }catch(e){}
@@ -5619,6 +5671,233 @@ function fitToNational(){
   fitToPins();
 }
 
+
+/* ====================================================================
+   THE MAGNIFYING BUBBLES
+
+   The offices that govern one town sit at four scales: city hall in
+   the town, the county seat twenty miles off, the state capital two
+   hundred, the national two thousand. One camera cannot show them
+   legibly, and moving it between them in turn reads as a fault. So
+   the camera holds at the country and each level gets a bubble.
+
+   These are real maps. The first attempt drew a schematic — the
+   boundary as a path and the offices as dots on a blank disc — which
+   was too small to pick one marker out of several and looked like
+   decoration. Each bubble is now a MapLibre instance on the same
+   basemap as the main map, so what is inside is the ground itself,
+   and the markers on it are clickable.
+
+   Hovering one opens a second bubble above it, centred on whatever
+   the pointer is over and three zoom levels further in. That is what
+   makes a cluster of five offices in one downtown block separable:
+   the level bubble frames the city, the deep bubble frames the block.
+
+   ---- The overseas problem ----
+
+   A level's offices are not always in one place. A country's are
+   mostly in its capital, but some sit abroad, and a bubble framing
+   all of them is two specks with an ocean between. The fix is not to
+   drop the distant ones — they are real offices and the map does not
+   hide data — but to stop treating them as one view. `clusterPins`
+   groups a level's markers by proximity, the bubble frames the
+   largest group, and a stepper under it says "1 of 3" and moves
+   between them. Nothing is hidden and no bubble is mostly ocean.
+
+   ---- Adding the international level ----
+
+   Nothing here names a level. The bubbles are built from whatever is
+   on STACK that has markers, so an international entry pushed onto
+   STACK with its offices gets a bubble on the same terms, and the
+   clustering is what makes it legible — the UN in New York, the WHO
+   in Geneva and the ICC in The Hague are three groups, not one view
+   of the Atlantic. Give that entry a `levelName` and it is labelled
+   by it rather than by position.
+   ==================================================================== */
+const BUB_MAX=170, BUB_MIN=112, BUB_LBL=52, BUB_TOP=74, DEEP_D=210, DEEP_STEP=3;
+function bubSize(count){
+  const avail=innerHeight-BUB_TOP-18;
+  return Math.max(BUB_MIN, Math.min(BUB_MAX, Math.floor(avail/Math.max(1,count))-BUB_LBL));
+}
+let BUBS=[], BUB_KEY='', DEEPBM=null, DEEP_LV=null;
+
+function bubbleLevels(){
+  if(!STACK.length) return [];
+  const idx={}; STACK.forEach((x,i)=>{ if(x.q) idx[x.q]=i; });
+  const byLvl={};
+  Object.values(PINS).forEach(p=>{
+    const lv=(p.lvlIdx!=null)?p.lvlIdx:idx[p.lvlQ];
+    if(lv==null || !STACK[lv]) return;
+    (byLvl[lv]=byLvl[lv]||[]).push(p);
+  });
+  const out=[];
+  for(let lv=STACK.length-1; lv>=0; lv--){
+    if(byLvl[lv] && byLvl[lv].length) out.push({lv:lv, st:STACK[lv], pins:byLvl[lv]});
+  }
+  return out;
+}
+function levelName(lv){
+  const st=STACK[lv];
+  return (st && st.levelName) || LEVELN[Math.min(lv, LEVELN.length-1)];
+}
+
+/* Single-link grouping: two markers are in the same group if they are
+   within `deg` of each other or of anything already in it. Degrees
+   rather than kilometres because the bubble is framed in degrees and
+   the only question is whether one view holds them. */
+function clusterPins(pins, deg){
+  const left=pins.slice(), out=[];
+  while(left.length){
+    const g=[left.shift()];
+    let grew=true;
+    while(grew){
+      grew=false;
+      for(let i=left.length-1;i>=0;i--){
+        if(g.some(p=>Math.abs(p.lng-left[i].lng)<=deg && Math.abs(p.lat-left[i].lat)<=deg)){
+          g.push(left.splice(i,1)[0]); grew=true;
+        }
+      }
+    }
+    out.push(g);
+  }
+  return out.sort((a,b)=>b.length-a.length);
+}
+function groupBox(g){
+  let x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity;
+  g.forEach(p=>{ if(p.lng<x0)x0=p.lng; if(p.lng>x1)x1=p.lng;
+                 if(p.lat<y0)y0=p.lat; if(p.lat>y1)y1=p.lat; });
+  const padx=Math.max((x1-x0)*0.35, 0.03), pady=Math.max((y1-y0)*0.35, 0.03);
+  return [[x0-padx,y0-pady],[x1+padx,y1+pady]];
+}
+function pinFeatures(pins){
+  return {type:'FeatureCollection', features:pins.map(p=>({type:'Feature',
+    geometry:{type:'Point',coordinates:[p.lng,p.lat]},
+    properties:{id:p.id, label:p.label||'', col:p.law?'#9ccfa7':'#c7cdd6'}}))};
+}
+
+function bubAddPins(m){
+  if(m.getSource('bpins')) return;
+  m.addSource('bpins',{type:'geojson',data:{type:'FeatureCollection',features:[]}});
+  m.addLayer({id:'bpins-c',type:'circle',source:'bpins',paint:{
+    'circle-radius':6,'circle-color':['get','col'],
+    'circle-stroke-width':1.6,'circle-stroke-color':'rgba(12,16,14,.9)'}});
+  m.on('click','bpins-c', e=>{ const f=e.features&&e.features[0];
+    if(f) openPin(f.properties.id); });
+  m.on('mouseenter','bpins-c', ()=>{ m.getCanvas().style.cursor='pointer'; });
+  m.on('mouseleave','bpins-c', ()=>{ m.getCanvas().style.cursor=''; });
+}
+function freeze(m){
+  ['scrollZoom','boxZoom','dragRotate','dragPan','keyboard','doubleClickZoom','touchZoomRotate']
+    .forEach(h=>{ try{ m[h].disable(); }catch(e){} });
+}
+
+function destroyBubbles(){
+  BUBS.forEach(b=>{ try{ b.bm.maplibre.remove(); }catch(e){} });
+  BUBS=[]; BUB_KEY='';
+  const box=$('#bubbles'); if(box) box.innerHTML='';
+}
+
+function paintBubbles(){
+  const box=$('#bubbles'); if(!box) return;
+  const L=bubbleLevels();
+  if(L.length<2 || innerWidth<1180){ destroyBubbles(); box.style.display='none'; hideDeep(); return; }
+  box.style.display='block';
+  const key=L.map(x=>x.lv+':'+(x.st.label||'')).join('|');
+  if(key!==BUB_KEY){ destroyBubbles(); BUB_KEY=key; buildBubbles(L); }
+  else L.forEach((info,i)=>{ if(BUBS[i]) fillBubble(BUBS[i], info); });
+}
+
+function buildBubbles(L){
+  const box=$('#bubbles');
+  const D=bubSize(L.length), step=D+BUB_LBL;
+  box.style.setProperty('--bd', D+'px');
+  box.innerHTML=L.map((info,i)=>
+    '<div class="bub" data-i="'+i+'" style="top:'+(BUB_TOP+i*step)+'px">'+
+      '<div class="bubc"><div class="bubm" id="bubm'+i+'"></div></div>'+
+      '<div class="bubl"><b>'+esc(info.st.label||'')+'</b>'+
+        '<span class="bubs" id="bubs'+i+'"></span></div>'+
+    '</div>').join('');
+  L.forEach((info,i)=>{
+    const bm=CulpritsBasemaps.create('bubm'+i, {
+      initial:BASEKEY, projection:'mercator', center:[0,0], zoom:1, plate:PLATE_URL,
+      onReady(){ const m=bm.maplibre; bubAddPins(m); fillBubble(BUBS[i], info); }
+    });
+    const m=bm.maplibre;
+    freeze(m);
+    m.on('mousemove', e=>showDeep(i, e.lngLat));
+    m.getCanvas().addEventListener('mouseleave', hideDeep);
+    BUBS[i]={lv:info.lv, bm:bm, map:m, gi:0, groups:[], el:box.children[i]};
+    fillBubble(BUBS[i], info);
+  });
+  /* made now rather than on the first hover: its box is laid out from
+     the start, so it has a size to be built at */
+  try{ deepMap(); }catch(e){}
+}
+
+function fillBubble(b, info){
+  if(!b) return;
+  /* A level's offices are not always in one place; one view of all of
+     them can be two specks and an ocean. */
+  b.groups = clusterPins(info.pins, 2.5);
+  if(b.gi>=b.groups.length) b.gi=0;
+  b.pins = info.pins;
+  const g=b.groups[b.gi]||info.pins;
+  try{
+    const src=b.map.getSource('bpins');
+    if(src) src.setData(pinFeatures(info.pins));
+    b.map.fitBounds(groupBox(g), {padding:16, duration:0, maxZoom:14});
+  }catch(e){}
+  const el=$('#bubs'+BUBS.indexOf(b));
+  if(el){
+    const nm=levelName(b.lv);
+    el.innerHTML = b.groups.length>1
+      ? nm+' \u00b7 <button type="button" class="bstep" onclick="bubStep('+BUBS.indexOf(b)+',-1)">\u2039</button>'+
+        'group '+(b.gi+1)+' of '+b.groups.length+
+        '<button type="button" class="bstep" onclick="bubStep('+BUBS.indexOf(b)+',1)">\u203a</button>'+
+        ' \u00b7 '+info.pins.length+(info.pins.length===1?' office':' offices')
+      : nm+' \u00b7 '+info.pins.length+(info.pins.length===1?' office':' offices');
+  }
+}
+function bubStep(i, d){
+  const b=BUBS[i]; if(!b||!b.groups.length) return;
+  b.gi=(b.gi+d+b.groups.length)%b.groups.length;
+  fillBubble(b, {lv:b.lv, st:STACK[b.lv], pins:b.pins});
+}
+
+/* ---- the second bubble, on top of the first ---- */
+function deepMap(){
+  if(DEEPBM) return DEEPBM;
+  DEEPBM=CulpritsBasemaps.create('deepm', {
+    initial:BASEKEY, projection:'mercator', center:[0,0], zoom:6, plate:PLATE_URL,
+    onReady(){ const m=DEEPBM.maplibre; bubAddPins(m); }
+  });
+  freeze(DEEPBM.maplibre);
+  return DEEPBM;
+}
+function showDeep(i, lngLat){
+  const b=BUBS[i]; if(!b) return;
+  const host=$('#deep'); if(!host) return;
+  const bm=deepMap(), m=bm.maplibre;
+  if(DEEP_LV!==b.lv){
+    DEEP_LV=b.lv;
+    try{ const src=m.getSource('bpins'); if(src) src.setData(pinFeatures(b.pins)); }catch(e){}
+  }
+  const r=b.el.querySelector('.bubc').getBoundingClientRect();
+  host.classList.add('on');
+  host.style.left=Math.round(r.right+14)+'px';
+  host.style.top=Math.round(Math.max(8, Math.min(innerHeight-DEEP_D-8, r.top+r.height/2-DEEP_D/2)))+'px';
+  try{ m.jumpTo({center:[lngLat.lng, lngLat.lat], zoom:Math.min(16, b.map.getZoom()+DEEP_STEP)}); }catch(e){}
+  try{ m.resize(); }catch(e){}
+}
+function hideDeep(){
+  const host=$('#deep');
+  /* not while the pointer is inside the deep bubble itself: that is
+     where the markers are picked out */
+  setTimeout(()=>{ if(host && !host.matches(':hover')){
+    host.classList.remove('on'); host.style.left='-9999px';
+  } }, 120);
+}
+
 /* The control row is sized by its contents and sits at the top right;
    the title sits at the top left. Neither knows how wide the other is,
    so the title is told, here, whenever that could have changed. */
@@ -5629,6 +5908,7 @@ function fitHeader(){
     document.documentElement.style.setProperty('--hdrw', Math.max(220, left-40)+'px');
   }catch(e){}
 }
+addEventListener('resize', ()=>{ try{ BUB_KEY=''; paintBubbles(); }catch(e){} });
 addEventListener('resize', fitHeader);
 addEventListener('load', fitHeader);
 setTimeout(fitHeader, 0);

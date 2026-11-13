@@ -713,16 +713,51 @@ and the panel at 100 covered it. The row ends at 52px and the panel starts at
 block how much width the row has left it, because the two are anchored to
 opposite corners and neither knows the other's size.
 
-### Tried and removed
+### The magnifying bubbles
 
-**Magnifying lenses.** Each level drew in a circle down the left — its
-boundary and its markers at a readable scale, with a leader line to the real
-place — so that all four levels could be read at once without the camera
-moving. It worked and it was not good enough: 116px is too small to pick one
-marker out of several, the circles showed a schematic rather than the real
-basemap, and the whole thing read as decoration. If this is tried again, the
-requirement is that every marker is separately clickable at a size a person
-can hit, which means something much larger than a corner widget.
+One bubble per level of government, down the left. **They are real maps** —
+a `CulpritsBasemaps.create` instance each, on the same basemap as the main
+map, with a circle layer of that level's markers on top, and the markers are
+clickable. An earlier attempt drew a schematic (the boundary as a path, the
+offices as dots on a blank disc) and was rejected: too small to separate one
+marker from another, and it looked like decoration rather than a way to reach
+anything.
+
+**Hovering one opens a second bubble beside it**, centred on whatever the
+pointer is over and three zoom levels further in, which is what makes five
+offices in one downtown block separable. There is one deep-bubble instance,
+reused across all of them.
+
+**The overseas problem.** A level's offices are not always in one place: a
+country's are mostly in its capital but some sit abroad, and a bubble framing
+all of them is two specks with an ocean between. `clusterPins` groups a
+level's markers by proximity (single-link, 2.5°), the bubble frames the
+largest group, and a stepper under it reads "group 1 of 3". Nothing is
+dropped and no bubble is mostly water.
+
+**Sizes are computed, not fixed.** `bubSize` divides the usable height by the
+number of levels, clamped to 112–170px, so a fifth bubble does not push the
+last one off the bottom. Measured at 1080px with five levels: last bubble
+bottom at 1038.
+
+Two traps. A MapLibre instance created inside a `display:none` container
+measures 0×0 and draws nothing, and resizing it later does not recover the
+tiles it never requested — the deep bubble is laid out from the start and
+hidden with opacity. And `pickBase` has to call `set` on every bubble, or they
+keep the basemap they were born with.
+
+**Adding the international level.** Nothing in the bubble code names a level:
+they are built from whatever is on `STACK` that has markers, so an
+international entry with its offices gets a bubble on the same terms, and the
+clustering is what makes it readable (the UN in New York, the WHO in Geneva
+and the ICC in The Hague are three groups, not one view of the Atlantic).
+Give that entry `levelName: 'International'` and it is captioned by that
+rather than by position — **and set `levelName` on the other entries too if
+you insert it at the top of the stack**, because the fallback caption is
+`LEVELN` indexed from the country at 0, and prepending shifts every other
+level's name by one.
+
+### Tried and removed
 
 **A hierarchy diagram on the map.** Four branches with every office type under
 them, bottom left, lit in step with the panel. Removed as not worth the space.
