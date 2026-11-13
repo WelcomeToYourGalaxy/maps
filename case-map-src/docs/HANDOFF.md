@@ -806,6 +806,88 @@ on the Kazakhstan card, the latter inside "The World Bank team stated (August 29
 using anything from it**, and where such a fact is worth keeping, attribute it to the staff
 statement rather than to a document.
 
+**The sharpest example found so far, because the gap is enormous.** On the Philippines NRIMP-2
+project (P079935), the share of national roads in good or fair condition at completion is **55 per
+cent, "No change from baseline"**, against a revised target of 60, in the completion report's own
+PDO indicator table. The Evaluation Group's review of 20 November 2017 gives **77 per cent**,
+"exceeding the project target of 60 percent" — and attributes it to the project team. Same
+indicator, same measurement point, 22 points apart, with the higher figure resting on a staff
+statement and the lower on the report's own table. Neither document explains the gap, and the card
+gives both with that attribution rather than reconciling them.
+
+## 40 company-name keys collide — scanned in round 19, nothing merged
+
+Round 19's description job found **NTPC on the map under two keys** — `NTPC Limited` on two cases
+and `National Thermal Power Corporation (NTPC)` on three — with three different descriptions
+between them, and the older key's own description already saying "now named NTPC Limited". That
+prompted a scan of all **1,068** distinct company names. **40 groups collide** once legal suffixes,
+parentheticals and punctuation are stripped. The full list with the cases each name sits on is
+`docs/company_key_collisions.json`.
+
+**Nothing has been merged**, because the 40 are three different things and only one of them is a
+defect:
+
+1. **Formatting duplicates — the same company, written two ways.** `Chevron` / `Chevron
+   Corporation`; `ExxonMobil` / `ExxonMobil Corporation`; `Dow Chemical` / `Dow Chemical Company`;
+   `IAMGOLD` / `Iamgold Corporation`; `Lafarge` / `Lafarge SA`; `Vedanta Resources` / `Vedanta
+   Resources plc`; `Zijin Mining` / `Zijin Mining Group`; `AES Corporation` / `AES Corp.`;
+   `China Road and Bridge Corporation (CRBC)` / `China Road & Bridge Corporation`; three spellings
+   each of China Harbour Engineering and China Gezhouba Group; `Hindustan Coca-Cola Beverages Pvt.
+   Ltd.` differing from `Pvt Ltd` by two full stops. **Merging these is housekeeping, not an
+   editorial choice.** The cost is that they split the company-description denominator: each spelling
+   is counted separately in the panel's "company names with a line saying what the company is", so
+   the real coverage is slightly better than 90% says.
+2. **Parentheticals that carry information on purpose.** `Rio Tinto` against `Rio Tinto (SIMFER)`;
+   `Shell` against `Shell (Shell Brasil)`; `Tata Power` against `Tata Power (Bhira Investments)`;
+   `Sinohydro` against `Sinohydro (PowerChina)`; `Salini Costruttori (later Salini Impregilo, now
+   Webuild)` against `Salini Costruttori`. Each names a subsidiary, a parent or a renaming that is
+   part of the case. **Collapsing these loses a fact**, so they are the owner's call, not a tidy-up.
+   `MASEN` is the sharpest: its two keys expand the same acronym differently — Moroccan Agency for
+   **Sustainable** Energy and for **Solar** Energy — which is a real renaming, not a typo.
+3. **One case where two different companies may be conflated, and it is the only factual risk in
+   the 40.** Three keys exist:
+   - `China Machinery Engineering Corporation (CMEC)` — on four cases, described as founded 1978,
+     controlling shareholder China National Machinery Industry Corporation, Hong Kong listed 2012.
+   - `China National Machinery Import and Export Corporation (CMC)` — on Payra, described as
+     founded 1950, importing equipment into China and exporting turnkey projects since 1978.
+   - `China National Machinery Import & Export Corporation (CMEC)` — on
+     `neelum-jhelum-river-diversion-muzaffarabad`, with **no description**, pairing the second
+     company's *name* with the first company's *acronym*.
+
+   **The secondary record genuinely splits on which company was in the CGGC-CMEC consortium**, which
+   is probably how this arose. China's own Belt and Road English site says the consortium "includes
+   CGGC and China Machinery Engineering Corp."; tunnelbuilder.com names "CMEC China" and gives
+   `www.cmec.com`, which is China Machinery Engineering Corporation's domain. Against that,
+   rccdams.co.uk and Daily Times both expand it as China National Machinery Import and Export
+   Corporation. **Not corrected, because picking a side on a split secondary record is choosing for
+   the owner.** What would settle it is the contract award itself or either company's own project
+   page. Until then the Neelum-Jhelum card names a company whose identity is not established.
+
+**The scan is cheap and worth re-running after any round that adds company names** — the script is
+inline in this entry's commit and amounts to normalising each name and grouping. A new round adds
+names written by a fresh agent, which is exactly when a second spelling of an existing company
+appears.
+
+## Cache the documents to disk — it makes the follow-on jobs nearly free
+
+A lead round has at least three jobs after the research: the fact-check, the whole-picture text and
+the entity descriptions. All four read **the same documents**. Round 19 kept every downloaded PDF
+under one folder as paired `.pdf` and `.txt` (from `pdftotext -layout`), and the effect was large:
+
+- the three batch checkers re-read documents from disk rather than re-fetching them,
+- the `conditions` job used **zero** web searches of a 50-search budget,
+- the whole-picture job used **zero** of a 60-search budget.
+
+**So tell each agent where the cache is, in its task.** The saving is not only search budget — a
+re-fetch can fail, and a job that fails to re-fetch a document tends to write an absence claim
+instead, which is the fault that has cost this map the most. Round 16 recorded two "reading limits"
+that turned out to be artefacts of the fetch method, where the file on disk carried what the fetch
+said was missing.
+
+The cache is session-local and does not survive, so **a round's documents are gone once the session
+ends.** If a job is going to be re-run later, note which documents it needs; the `wds` API plus
+`documents1.worldbank.org` will rebuild the set, but it costs the fetches again.
+
 ## Reading ratings out of World Bank documents — a trap round 18 found
 
 Two documents rate the same project and they often disagree: the Bank's own Implementation
@@ -1400,5 +1482,19 @@ pass has to decide which of the nine are of that kind rather than assuming all n
    body the Bank supervised when the completion report makes it an **output of the loan**, set up
    in 2013 at the Bank's own recommendation, which did not exist when the 2010 and 2011 Inspection
    Panel cases were filed.
+
+13. **40 colliding company keys, and one of them is a factual risk — the owner's call on all three
+   kinds.** See "40 company-name keys collide" above and `docs/company_key_collisions.json` for the
+   full list with cases. The three decisions, in rising order of difficulty:
+   - **The formatting duplicates can be merged as housekeeping** (`Chevron` / `Chevron
+     Corporation` and about twenty others). They currently split the company-description
+     denominator, so the panel's 90% understates real coverage.
+   - **The informative parentheticals should probably stay** (`Rio Tinto (SIMFER)`, `Sinohydro
+     (PowerChina)`, `Tata Power (Bhira Investments)`), because collapsing them loses a fact about
+     the case. `MASEN`'s two keys expand its acronym differently and that is a real renaming.
+   - **One needs research, not a decision**: `neelum-jhelum-river-diversion-muzaffarabad` names
+     `China National Machinery Import & Export Corporation (CMEC)`, pairing one company's name with
+     another's acronym, and the secondary record splits on which of the two was actually in the
+     CGGC-CMEC consortium. The contract award or either company's own project page would settle it.
 
 **One loose thread worth a later look.** Round 13's checker wanted the Sahiwal sentence "NEPRA's tariff decision names no shareholders" cut as an unverifiable negative, on the ground that the card does not say which decision. It was left standing, because that sentence was written and checked in round 11 against NEPRA documents that sit in the card's own sources and this checker was given neither. But the checker's point about naming the decision holds, and any pass with those documents open should name it.
