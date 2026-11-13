@@ -2,6 +2,22 @@
 
 Last updated: 12 Nov 2026 (round 18). Replaces every earlier handoff.
 
+## Round 19, in flight
+
+**Two factual corrections from round 18's whole-text checker are merged and pushed** (commit
+`5516622`): the Bumbuna card said the project was restructured seven times where both documents
+say six, and the Kibera/Mukuru card attributed a Moderately Unsatisfactory outcome rating to the
+completion report, which had rated it Moderately Satisfactory. Both were in `lenders[0].role`, not
+in the prose paragraphs, which is why the whole-text checker found them and the batch checker did
+not — **a checker reading paragraphs will also read the fields those paragraphs summarise, and
+should be told to report what it finds there.**
+
+**The third ICIJ tranche is being researched now**: 36 non-China rows from the confirmed-displacement
+table, split three ways by region (South Asia; Africa; Latin America, the Caucasus and South-East
+Asia). Leads in `/home/claude/r19/leads_{A,B,C}.json`, brief in `/home/claude/r19/BRIEF19.md`.
+The brief is the round-18 forward rule plus the ICIJ figure finding, the dedupe-on-P-number rule
+and the voice rule, written out in full so a writer needs nothing else.
+
 ## Round 18, in one paragraph
 
 **The second ICIJ tranche is done and the list is now 331 open rows in its confirmed-displacement
@@ -531,6 +547,24 @@ reported discrepancies were **rejected** by the checker, which is as useful: the
 confirmed rather than contradicted, and Simplex's NARCL debt restructuring does not make the
 2016-award card wrong because Simplex still exists and trades.
 
+## Reading ratings out of World Bank documents — a trap round 18 found
+
+Two documents rate the same project and they often disagree: the Bank's own Implementation
+Completion and Results Report (ICR) and the Independent Evaluation Group's ICR Review. **Never
+write one rating and cite both documents for it.** Name each rating with the document that gave
+it. Three examples from round 18, all verified:
+
+| Project | Rating | ICR | IEG review |
+|---|---|---|---|
+| Kibera/Mukuru (P079734) | Outcome | Moderately Satisfactory | Moderately Unsatisfactory |
+| Uganda ERT2 (P112334) | Outcome | Moderately Satisfactory | Moderately Unsatisfactory |
+| Uganda ERT2 (P112334) | Efficiency | Substantial | Modest |
+
+**The newer IEG review template has no efficiency row and no relevance row in its ratings table.**
+Those two must be read out of the **body text of both documents**, not the table. A writer who
+reads only the table will report that the two documents agree on efficiency, because the table
+does not show the disagreement. That is exactly how the ERT2 error got written.
+
 ## Patterns worth carrying, from round 16
 
 These are the ones that changed an outcome, not general advice.
@@ -723,6 +757,11 @@ Keys in every case: `id, title, place, iso3, lat, lng, point, start, end, mechan
   nothing to do once applied.
 - No research round is running. The backlog is finished and the first ICIJ tranche is done; **367 rows of the confirmed-displacement table are still open** and that is the queue.
 - Pushing needs the repo attached to the session first (`add_repo`, push access), or the git proxy refuses with a 403. A plain `git clone` works for reading without it. **If `add_repo` is refused, say so and ask the owner** rather than leaving a commit stranded on a clone — that happened mid-session on 12 Nov, the owner granted push, and the same working tree pushed cleanly. Do not delete and re-clone to recover: the working tree holds the round.
+
+- **Two round-18 card corrections are merged, built, tested and pushed** (12 Nov, commit `5516622`
+  on `main`, `rounds/r26f_icij2_whole_textfix.json`, with the tranche-2 whole-text check log added
+  as `rounds/r26f_icij2_whole_check_log.md`). Build printed 173 of 173, the page loaded headless
+  with no errors, and the panel figures above are unchanged.
 
 ## Pending case-text fixes
 
