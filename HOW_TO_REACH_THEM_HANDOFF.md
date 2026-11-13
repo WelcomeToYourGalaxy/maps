@@ -100,6 +100,31 @@ about, and lands on a destination with two screens: **Who to contact** and
 **official site** as a visible link beside it; the breadcrumb, the marker
 count and the loading note sit under it.
 
+**No tabs, and no paging.** The destination used to be a tab row — Who to
+Contact / How to Reach Them / Where next — which put three unlike things at
+one level and let a reader open the methods before knowing whose methods they
+were. The path runs one way and back:
+
+    Who to Contact  every kind of office, in the order a law passes through them
+      → a kind      what it is, where it sits among the others, the offices of it here
+        → an office How to Reach Them
+
+`LEAFKIND` holds the kind whose page is open, `SEL` the office. "Where next"
+is gone; the `next` arrays in `LEAVES` are no longer read.
+
+**Terms of art are underlined.** `GLOSSARY` holds about forty, `glossy()`
+wraps the first use of each in a block and `#gltip` shows the definition. It
+is one pass over one combined expression on purpose: replacing term by term
+let a later term match inside the markup an earlier one had just inserted.
+Pass plain text to `glossy()`, never HTML — it escapes what it is given.
+
+**The sequence copy is in `LAWSEQ`**, four fields per kind: the stage phrase,
+the one-liner for the Who to Contact row, and `rel`, which says what hands to
+this body and what it hands on to. `rel` exists because the list read as a
+contradiction without it — Chambers "holds the vote" and then Head of
+Government "signs it to make it law" leaves a reader unsure which one makes a
+law. It takes both, in that order, and `rel` says so on every kind's page.
+
 **Nothing in the panel is paged, and no screen is meant to scroll.** Both were
 tried and both hid the list from the reader: a pager says no more about how
 much is left unseen than a scrollbar does. Every kind of office and every
@@ -632,3 +657,47 @@ Culprits basemap module, not by anything in this file, and the labels this map
 draws use EB Garamond, so nothing visible is missing. The fix belongs in the
 `culprits` repo: add the glyph range, or point that style's `glyphs` URL at a
 font that is there.
+
+---
+
+## 14. The magnifying circles, and the hierarchy
+
+**The camera holds at national scale.** `fitToNational` frames the widest
+level that has a shape on its `STACK` entry, which is the country, and the
+camera does not move again. `fitToPins`, which framed the offices between the
+municipality and the region, is still in the file and no longer called on the
+search path.
+
+That is only tolerable because of the lenses. The offices that govern one town
+sit at four scales — city hall in the town, the county seat twenty miles off,
+the state capital two hundred, the national two thousand — so a camera framing
+all of them shows five specks, a camera framing the town hides three levels
+off-screen, and flying between them in turn is what read as a fault.
+`paintLenses` draws one circle per level down the left: that level's boundary
+from its `STACK` feature and its markers from `PINS`, projected flat into
+116px with a `cos(lat)` term so a county is not an oval. `paintLeaders` draws
+the dashed line from each circle to where that place actually is, in screen
+space, and is bound to the map's `move` event because the circle is fixed and
+the point it names is not.
+
+**The markers inside a lens are clickable, and that is the point.** At
+national scale a town's markers are a single pixel and cannot be hit at all.
+
+Two traps. `#lenses` is `display:none` in the stylesheet, so `paintLenses` has
+to set `display:block` rather than clearing the inline value back to that
+default — clearing it hid every lens while leaving the DOM intact, which looks
+exactly like the data failing. And the lenses are hidden under 1100px of
+window: there is no room for a 116px column beside a panel that is half the
+width.
+
+**The hierarchy, bottom left**, is `HIER` drawn as an SVG by `paintHier`:
+four branches, every kind under its branch, with the count here and a dash
+where there is none. Hovering a node lights that kind's markers through the
+`pin-walk` layer (the pin features carry `kind` for exactly this) and the
+matching panel row; clicking opens that kind's page. Hover deliberately does
+not move the camera — a camera chasing the pointer around a diagram is the
+jumping this round removed.
+
+It is an SVG and not Mermaid. §7 records why: Mermaid's click directive does
+not work in this page, binds without throwing, and fires no handler, and every
+node of this diagram has to be live.
