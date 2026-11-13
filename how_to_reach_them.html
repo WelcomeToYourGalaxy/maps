@@ -65,7 +65,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
    the panel below keeps its full width. It is sized to the panel and
    right-aligned with it. */
 #sopen{flex:none;border-right:1px solid var(--line)!important;border-radius:6px 0 0 6px!important;
-  padding-right:9px!important;margin-right:3px}
+  padding-right:6px!important;margin-right:1px}
 /* Above the panel, not below it. The Shown menu is a child of this
    row, and a child cannot escape its parent's stacking context: the
    menu's own z-index of 210 was being compared against its siblings
@@ -74,18 +74,18 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
    and the panel starts at 62px — so there is nothing to lose. */
 #toprow{position:fixed;z-index:120;right:18px;top:18px;height:34px;
   width:max-content;max-width:calc(100vw - 40px);box-sizing:border-box;
-  display:flex;align-items:center;gap:7px;overflow:hidden;
+  display:flex;align-items:center;gap:3px;overflow:hidden;
   background:rgba(17,24,21,.93);border:1px solid var(--line);border-radius:9px;padding:0 9px}
 #bmrow,#projrow{display:flex;align-items:center;gap:2px;flex:none}
 /* the question mark leads the row: it explains the map, not a place */
 #habout{flex:none;width:22px;height:22px;border-radius:50%;border:1px solid var(--stone)!important;
   background:var(--panel2)!important;color:var(--dim);font-size:11px;line-height:1;padding:0!important;
-  margin-right:4px;cursor:pointer;font-family:inherit}
+  margin-right:2px;cursor:pointer;font-family:inherit}
 #habout:hover{color:var(--ink);border-color:var(--accent-hi)!important;background:var(--accent-soft)!important}
 /* What is on the map. A city returns several hundred buildings of
    seven different kinds alongside its offices, and a reader looking
    for the council does not want the fire stations. */
-#showrow{position:relative;flex:none;border-right:1px solid var(--line);padding-right:7px;margin-right:2px}
+#showrow{position:relative;flex:none;border-right:1px solid var(--line);padding-right:4px;margin-right:0}
 /* Fixed rather than absolute, and positioned in `toggleShow`. #toprow
    is 34px tall with overflow:hidden to keep the row tidy on a narrow
    window, which clipped this menu to nothing: the button worked, the
@@ -103,11 +103,11 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 #showbox .sh.on .bx{background:var(--accent-hi);border-color:var(--accent-hi)}
 #showbox .sh .ct{margin-left:auto;font-size:10px;color:var(--faint)}
 #showbox .shsep{height:1px;background:var(--line);margin:5px 9px}
-#toprow button{font-size:10.8px;padding:4px 8px;border:0;border-radius:6px;background:none;
+#toprow button{font-size:10.2px;padding:3px 6px;border:0;border-radius:6px;background:none;
   color:var(--faint);cursor:pointer;font-family:inherit;white-space:nowrap}
 #toprow button:hover{color:var(--ink);background:rgba(74,124,89,.14)}
 #toprow button.on{color:var(--ink);background:var(--accent-soft)}
-#projrow{border-left:1px solid var(--line);padding-left:6px}
+#projrow{border-left:1px solid var(--line);padding-left:4px}
 /* The level key comes before the basemaps now. It is read on every
    glance at the map — it is what says which colour is the county and
    which is the country — where the basemap is chosen once and then left
@@ -784,9 +784,11 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
    ==================================================================== */
 #bubbles{position:fixed;left:0;top:0;z-index:49;display:none;pointer-events:none}
 .bub{position:absolute;left:18px;width:var(--bd,156px);pointer-events:auto}
-/* the caption is allowed to be wider than the circle and centred on
-   it: "group 1 of 2" does not fit inside 156px and ran over the map */
-.bubl{width:206px;margin-left:calc((var(--bd,156px) - 206px) / 2)}
+/* The caption is wider than the circle, because "group 1 of 2" does
+   not fit inside 156px, but centring it on the circle pushed its left
+   edge off the window — the column starts 18px in. It hangs to the
+   right instead. */
+.bubl{width:200px;margin-left:0;text-align:left;padding-left:2px}
 .bubc{width:var(--bd,156px);height:var(--bd,156px);border-radius:50%;overflow:hidden;position:relative;
   border:1.5px solid rgba(140,189,154,.45);background:#0c100e;
   box-shadow:0 12px 34px rgba(0,0,0,.6), inset 0 0 26px rgba(0,0,0,.5)}
@@ -808,6 +810,22 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 #deep .deepc{width:210px;height:210px;border-color:var(--accent-hi);
   box-shadow:0 16px 44px rgba(0,0,0,.7), inset 0 0 26px rgba(0,0,0,.45)}
 @media (max-width:1180px){ #bubbles,#deep{display:none!important} }
+/* an office, with whatever Wikidata records about that one office */
+.orow{align-items:flex-start}
+.otx{flex:1 1 auto;min-width:0}
+.onm{display:block}
+.odesc{display:block;font-size:10.6px;line-height:1.4;color:var(--faint);margin-top:2px}
+.orow:hover .odesc{color:var(--dim)}
+.odescbox{margin-top:9px;font-size:12px;line-height:1.55;color:var(--dim);
+  border-left:2px solid var(--accent);padding-left:11px}
+/* the aiming mark inside a bubble */
+.bubx{position:absolute;width:19px;height:19px;margin:-10px 0 0 -10px;pointer-events:none;
+  border:1px solid rgba(238,244,238,.85);border-radius:50%;
+  box-shadow:0 0 0 1px rgba(10,14,12,.6), 0 0 7px rgba(0,0,0,.6);display:none;z-index:3}
+.bubx::before,.bubx::after{content:'';position:absolute;background:rgba(238,244,238,.85)}
+.bubx::before{left:8px;top:-5px;width:1px;height:5px}
+.bubx::after{left:8px;bottom:-5px;width:1px;height:5px}
+.bubc{cursor:crosshair}
 </style>
 </head>
 <body>
@@ -827,7 +845,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
        that starts the map over, and in the title block it competed
        with the title for the eye and was off on the other side of the
        window from everything else that is a control. -->
-  <button id="sopen" onclick="openStart()">&#9906; Search for a place</button>
+  <button id="sopen" onclick="openStart()">&#9906; Search</button>
   <button id="habout" onclick="toggleAbout()" title="About this map">?</button>
   <div id="showrow">
     <button id="showbtn" onclick="toggleShow()">Shown &#9662;</button>
@@ -2205,7 +2223,7 @@ const qid = u => (u||'').split('/').pop();
 const isQ = s => /^Q\d+$/.test(s||'');
 function setDot(id, cls, txt){ const d=$('#d-'+id); if(!d) return; d.className='dot'+(cls?' '+cls:''); if(txt) $('#t-'+id).textContent=txt; }
 
-const CACHE_V='htrt2';
+const CACHE_V='htrt3';
 function cget(k){ try{ const r=localStorage.getItem(CACHE_V+':'+k); if(!r) return null;
   const o=JSON.parse(r); if(Date.now()-o.t > 6048e5) return null; return o.v; }catch(e){ return null; } }
 function cset(k,v){ try{ localStorage.setItem(CACHE_V+':'+k, JSON.stringify({t:Date.now(),v:v})); }catch(e){} }
@@ -2225,7 +2243,7 @@ async function sparql(query, cacheKey){
 
 /* the jurisdiction's own channel, its legislature and its head of government */
 function qCore(q){ return `
-SELECT ?kind ?item ?itemLabel ?site ?email ?phone ?holder ?holderLabel WHERE {
+SELECT ?kind ?item ?itemLabel ?itemDescription ?site ?email ?phone ?holder ?holderLabel WHERE {
  { BIND("legislature" AS ?kind) wd:${q} wdt:P194 ?item . OPTIONAL{?item wdt:P856 ?site} }
  UNION { BIND("executive" AS ?kind) wd:${q} wdt:P1313 ?item .
          OPTIONAL{?item wdt:P856 ?site} OPTIONAL{?item wdt:P1308 ?holder} }
@@ -2239,7 +2257,7 @@ SELECT ?kind ?item ?itemLabel ?site ?email ?phone ?holder ?holderLabel WHERE {
 /* everything with this jurisdiction; classed in the browser, which is
    both faster and keeps the full result set visible */
 function qJuris(q){ return `
-SELECT ?item ?itemLabel ?cls ?clsLabel ?site ?email ?phone ?holder ?holderLabel WHERE {
+SELECT ?item ?itemLabel ?itemDescription ?cls ?clsLabel ?site ?email ?phone ?holder ?holderLabel WHERE {
  ?item wdt:P1001 wd:${q} .
  OPTIONAL{?item wdt:P31 ?cls} OPTIONAL{?item wdt:P856 ?site} OPTIONAL{?item wdt:P968 ?email}
  OPTIONAL{?item wdt:P1329 ?phone} OPTIONAL{?item wdt:P1308 ?holder}
@@ -2254,14 +2272,14 @@ SELECT ?item ?itemLabel ?cls ?clsLabel ?site ?email ?phone ?holder ?holderLabel 
    most places — so they run behind the fast pair and are cached for a
    week once they land. */
 function qPositions(q){ return `
-SELECT ?item ?itemLabel ?clsLabel ?site ?email ?phone ?holder ?holderLabel WHERE {
+SELECT ?item ?itemLabel ?itemDescription ?clsLabel ?site ?email ?phone ?holder ?holderLabel WHERE {
  ?item wdt:P1001 wd:${q} ; wdt:P31 ?cls . ?cls wdt:P279* wd:Q4164871 .
  OPTIONAL{?item wdt:P856 ?site} OPTIONAL{?item wdt:P968 ?email}
  OPTIONAL{?item wdt:P1329 ?phone} OPTIONAL{?item wdt:P1308 ?holder}
  SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" }
 } LIMIT 400`; }
 function qBodies(q){ return `
-SELECT ?item ?itemLabel ?clsLabel ?site ?email ?phone WHERE {
+SELECT ?item ?itemLabel ?itemDescription ?clsLabel ?site ?email ?phone WHERE {
  ?item wdt:P1001 wd:${q} ; wdt:P31 ?cls . ?cls wdt:P279* wd:Q327333 .
  OPTIONAL{?item wdt:P856 ?site} OPTIONAL{?item wdt:P968 ?email} OPTIONAL{?item wdt:P1329 ?phone}
  SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" }
@@ -2271,7 +2289,7 @@ SELECT ?item ?itemLabel ?clsLabel ?site ?email ?phone WHERE {
    a country with P17 rather than P1001. The two sets differ — for Kenya,
    185 agencies against 112 — so the map asks for both. */
 function qByCountry(q){ return `
-SELECT ?item ?itemLabel ?clsLabel ?site ?email ?phone ?coord WHERE {
+SELECT ?item ?itemLabel ?itemDescription ?clsLabel ?site ?email ?phone ?coord WHERE {
  ?item wdt:P17 wd:${q} ; wdt:P31 ?cls . ?cls wdt:P279* wd:Q327333 .
  OPTIONAL{?item wdt:P856 ?site} OPTIONAL{?item wdt:P968 ?email} OPTIONAL{?item wdt:P1329 ?phone}
  OPTIONAL{ ?item wdt:P625 ?coord }
@@ -3053,7 +3071,8 @@ function classifyRows(core, items){
     const id=qid(r.item.value);
     if(!merged[id]) merged[id]={row:r, classes:[]};
     const cl=r.clsLabel&&r.clsLabel.value; if(cl) merged[id].classes.push(cl);
-    ['site','email','phone','holder','holderLabel'].forEach(f=>{ if(r[f]&&!merged[id].row[f]) merged[id].row[f]=r[f]; });
+    ['site','email','phone','holder','holderLabel','itemDescription']
+      .forEach(f=>{ if(r[f]&&!merged[id].row[f]) merged[id].row[f]=r[f]; });
   });
   Object.values(merged).forEach(m=>{
     const label=(m.row.itemLabel&&m.row.itemLabel.value)||qid(m.row.item.value);
@@ -3069,7 +3088,11 @@ function classifyRows(core, items){
     const c=classifyOffice(label,m.classes);
     if(c.br==='other' && RX_DOC.test(label)) return;
     const o={id:qid(m.row.item.value), label:officeLabel(label), cls:m.classes[0]||'',
-      kind:c.br+'/'+c.k, br:c.br, what:c.what, how:c.how, row:m.row};
+      kind:c.br+'/'+c.k, br:c.br, what:c.what, how:c.how, row:m.row,
+      /* Wikidata's own one-line description of this office, which is
+         the only thing on the record that distinguishes one office of
+         a kind from another. Often absent; shown only when present. */
+      desc:(m.row.itemDescription && m.row.itemDescription.value) || ''};
     /* the one flag the whole map now turns on */
     o.law = LAWKINDS.has(o.kind);
     /* Every office gets a subject, not only the agencies. The subject
@@ -3979,7 +4002,9 @@ function pageKind(L,k){
        '<div class="olist">';
     list.forEach(o=>{
       h+='<button type="button" class="orow'+(o.law?' law':'')+'" data-id="'+esc(o.id)+'" '+
-         'onclick="openPin(\''+esc(o.id)+'\')"><span class="onm">'+esc(o.label)+'</span>'+
+         'onclick="openPin(\''+esc(o.id)+'\')"><span class="otx"><span class="onm">'+
+         esc(o.label)+'</span>'+
+         (o.desc?'<span class="odesc">'+esc(o.desc)+'</span>':'')+'</span>'+
          '<span class="oar">\u203a</span></button>';
     });
     h+='</div></div>';
@@ -4298,6 +4323,11 @@ function renderOffice(o){
   const holder=r.holderLabel&&r.holderLabel.value;
   const site=r.site&&r.site.value, email=r.email&&r.email.value, phone=r.phone&&r.phone.value;
   let h='';
+  /* The kind pages have a back link at the top left of the body; this
+     page used to have a different button in the panel header instead,
+     so the way back changed shape between one screen and the next. */
+  h+='<button type="button" class="lpback" onclick="backToDiagram()">\u2039 '+
+     esc(KINDLABEL[o.kind]||'Back')+'</button>';
   h+='<div class="off" style="border:0;padding-top:0"><div class="nm" style="font-size:19px">'+esc(o.label)+'</div>'+
      '<div class="what">'+esc(o.what)+'</div><div class="how">'+esc(o.how)+'</div><div class="meta">';
   /* The long description of what this kind of office is, and where it
@@ -4314,12 +4344,12 @@ function renderOffice(o){
   if(phone) h+='<span>'+esc(phone)+'</span>';
   h+='<a href="https://www.wikidata.org/wiki/'+esc(o.id)+'" target="_blank" rel="noopener" style="opacity:.5">wikidata</a>';
   h+='</div></div>';
-  {
-    const kst=LAWSTAGE[o.kind]||{};
-    const kw=[KINDWHEN[o.kind]||'', kst.rel||''].filter(Boolean).join(' ');
-    if(kw) h+='<div class="okind"><dt>'+esc(KINDLABEL[o.kind]||o.kind)+
-      (kst.stage?' \u2014 the body that '+esc(kst.stage):'')+'</dt><dd>'+glossy(kw)+'</dd></div>';
-  }
+  /* This used to repeat the whole of what its kind's page had just
+     said, word for word, under every office of that kind. What belongs
+     here is what is true of this office and not of the fourteen others
+     beside it, which is the description on its own record. The kind is
+     named as a link back to the page that explains it. */
+  if(o.desc) h+='<div class="odescbox">'+esc(o.desc)+'</div>';
 
   /* best-ranked first, so the order of the list is itself the answer to
      which route is worth trying before the others */
@@ -4334,7 +4364,7 @@ function renderOffice(o){
   $('#mbody').className='';
   $('#mbody').innerHTML=h;
   $('#mbody').scrollTop=0;
-  showBack(true);
+  showBack(false);
   /* the title is still the place, so its site still belongs beside it */
   paintSiteLink();
 }
@@ -5781,10 +5811,42 @@ function bubAddPins(m){
   m.addLayer({id:'bpins-c',type:'circle',source:'bpins',paint:{
     'circle-radius':6,'circle-color':['get','col'],
     'circle-stroke-width':1.6,'circle-stroke-color':'rgba(12,16,14,.9)'}});
-  m.on('click','bpins-c', e=>{ const f=e.features&&e.features[0];
+  /* The names, beside the markers. MapLibre drops a label rather than
+     overlapping one already placed, which is the behaviour wanted
+     here: five offices in one block would otherwise be five names on
+     top of each other. The ones that do not fit appear as the reader
+     zooms in, which is what the zooming is for.
+
+     EB Garamond because that is the font this map's glyph host
+     actually serves — asking for Open Sans here returns a 404 and the
+     labels silently do not draw. */
+  m.addLayer({id:'bpins-l',type:'symbol',source:'bpins',
+    layout:{'text-field':['get','label'],'text-font':['EBGaramond-Regular'],
+      'text-size':10,'text-offset':[0,0.95],'text-anchor':'top','text-max-width':8,
+      'text-allow-overlap':false,'text-ignore-placement':false,'text-padding':3,
+      'symbol-sort-key':['get','sort']},
+    paint:{'text-color':'#eef4ee','text-halo-color':'rgba(10,14,12,.95)','text-halo-width':1.5}});
+  m.on('click','bpins-c', e=>{ e.originalEvent.__pin=1; const f=e.features&&e.features[0];
     if(f) openPin(f.properties.id); });
   m.on('mouseenter','bpins-c', ()=>{ m.getCanvas().style.cursor='pointer'; });
   m.on('mouseleave','bpins-c', ()=>{ m.getCanvas().style.cursor=''; });
+
+  /* Click the ground to go one step deeper, double-click to come back
+     out. A single click is held for 240ms first, because a
+     double-click fires a click before it and the view would jump in
+     before it jumped out. */
+  let ct=null;
+  m.on('click', e=>{
+    if(e.originalEvent && e.originalEvent.__pin) return;   /* a marker took it */
+    clearTimeout(ct);
+    ct=setTimeout(()=>{
+      m.easeTo({center:e.lngLat, zoom:Math.min(17, m.getZoom()+1.4), duration:330});
+    }, 240);
+  });
+  m.on('dblclick', e=>{
+    clearTimeout(ct);
+    m.easeTo({center:e.lngLat, zoom:Math.max(1, m.getZoom()-1.4), duration:330});
+  });
 }
 function freeze(m){
   ['scrollZoom','boxZoom','dragRotate','dragPan','keyboard','doubleClickZoom','touchZoomRotate']
@@ -5824,14 +5886,31 @@ function buildBubbles(L){
     });
     const m=bm.maplibre;
     freeze(m);
-    m.on('mousemove', e=>showDeep(i, e.lngLat));
-    m.getCanvas().addEventListener('mouseleave', hideDeep);
+    m.on('mousemove', e=>{ showDeep(i, e.lngLat); bubCross(i, e.point); });
+    m.getCanvas().addEventListener('mouseleave', ()=>{ hideDeep(); bubCross(i, null); });
     BUBS[i]={lv:info.lv, bm:bm, map:m, gi:0, groups:[], el:box.children[i]};
     fillBubble(BUBS[i], info);
   });
   /* made now rather than on the first hover: its box is laid out from
      the start, so it has a size to be built at */
   try{ deepMap(); }catch(e){}
+  /* the column now occupies the left of the map */
+  try{ shiftForBox(document.getElementById('modal').classList.contains('on')); }catch(e){}
+}
+
+/* Where the pointer is inside a bubble, drawn on it. Without this
+   there is nothing to aim with: the circle is a window onto ground at
+   a different scale from the map behind it, and the deeper bubble
+   shows whatever is under this mark. */
+function bubCross(i, pt){
+  const b=BUBS[i]; if(!b) return;
+  let x=b.el.querySelector('.bubx');
+  if(!pt){ if(x) x.style.display='none'; return; }
+  if(!x){ x=document.createElement('div'); x.className='bubx';
+          b.el.querySelector('.bubc').appendChild(x); }
+  x.style.display='block';
+  x.style.left=Math.round(pt.x)+'px';
+  x.style.top=Math.round(pt.y)+'px';
 }
 
 function fillBubble(b, info){
@@ -5918,12 +5997,19 @@ function shiftForBox(on){
   try{
     const m=document.getElementById('modal');
     const pad = (on && innerWidth>760) ? Math.round(m.getBoundingClientRect().width + 48) : 0;
+    /* The bubbles take a column down the left, so the land the reader
+       is looking at has to sit between them and the panel rather than
+       between the panel and the window's edge — otherwise the place
+       just searched for is underneath the bubbles describing it. */
+    const bb=document.getElementById('bubbles');
+    const lpad = (bb && bb.style.display==='block' && innerWidth>1180)
+      ? Math.round((bb.querySelector('.bubc')||{offsetWidth:156}).offsetWidth + 44) : 0;
     /* Applied instantly rather than over 600 ms. `fitTo` runs 60 ms after
        the panel opens, so an animation here was still in flight when the
        fit started; the two fought and the camera lost, staying where it
        was while the markers were drawn half a world away. A padding
        change needs no animation of its own. */
-    map.easeTo({padding:{top:0,left:0,bottom:0,right:pad}, duration:0});
+    map.easeTo({padding:{top:0,left:lpad,bottom:0,right:pad}, duration:0});
   }catch(e){}
 }
 
