@@ -15,6 +15,13 @@ number already on the map was 1. Three researchers hit it independently in one r
 This script parses window.CASES and searches only inside case objects, which is the only
 place a P-number means "this project is already a case". It also searches window.ENT, so
 a number recorded on a company or person is reported separately rather than missed.
+
+ONE MORE FALSE MATCH, found in tranche 4. The Bank's document archive builds URLs whose
+path segments carry a DIFFERENT project's number: the P081348 completion report sits under
+a path containing P081340, and the P086446 appraisal under one containing P086101. A case's
+sources therefore hold P-numbers that are nothing to do with it. So a hit inside a source
+URL alone is reported separately as a probable false match, and only a hit in the card's
+own text -- the lender roles above all -- is reported as ON THE MAP.
 """
 import json, re, sys, os
 
@@ -35,7 +42,16 @@ def strings(o):
     elif isinstance(o, list):
         for v in o: yield from strings(v)
 
-CASE_TEXT = [(c['id'], ' '.join(strings(c))) for c in CASES]
+def split_text(c):
+    """Card text and source-URL text, kept apart: an archive URL can carry another
+    project's number in a path segment."""
+    urls = ' '.join(x.get('url') or '' for x in (c.get('sources') or []) if isinstance(x, dict))
+    body = dict(c)
+    body['sources'] = [{k: v for k, v in (x.items() if isinstance(x, dict) else [])
+                        if k != 'url'} for x in (c.get('sources') or [])]
+    return ' '.join(strings(body)), urls
+
+CASE_TEXT = [(c['id'],) + split_text(c) for c in CASES]
 ENT_TEXT = []
 for group, items in ENT.items():
     if not isinstance(items, list): continue
@@ -54,7 +70,8 @@ if not nums:
 print(f'{len(CASES)} cases, {len(ENT_TEXT)} entity records\n')
 new = []
 for n in dict.fromkeys(nums):
-    hits = [cid for cid, t in CASE_TEXT if n in t]
+    hits = [cid for cid, t, u in CASE_TEXT if n in t]
+    urlonly = [cid for cid, t, u in CASE_TEXT if n not in t and n in u]
     ehits = [eid for eid, t in ENT_TEXT if n in t]
     raw = s.count(n)
     if hits:
@@ -63,6 +80,9 @@ for n in dict.fromkeys(nums):
         new.append(n)
         extra = f'   (appears {raw}x in the file, all of it lead data)' if raw else ''
         print(f'{n}  not on the map{extra}')
+    if urlonly:
+        print(f'      appears only inside a source URL on: {", ".join(urlonly)}')
+        print(f'      -- probably an archive path segment, not this project. Open the card to be sure.')
     if ehits:
         print(f'      also named on entity records: {", ".join(ehits)}')
 
