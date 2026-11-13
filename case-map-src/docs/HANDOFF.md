@@ -196,17 +196,18 @@ These are the figures the About panel shows under "How complete this map is", re
 
 | What | Filled | Share |
 | --- | --- | --- |
-| Rounded "what happened to people" paragraph (`whole`) | 1,001 of 1,026 | 98% |
+| Rounded "what happened to people" paragraph (`whole`) | 1,019 of 1,026 | 99% |
 | Cases that say what the money came with (`conditions`) | 1,002 of 1,026 | 98% |
 | Lender's terms looked for and settled (not tagged `research`) | 943 of 1,026 | 92% |
 | Company names with a line saying what the firm is (`desc`) | 966 of 1,068 | 90% |
 | People with a checked `total` | 53 of 173 | 31% |
 | Cases with a documented buyer | 34 of 1,026 | 3% |
 
-Read out of the rendered panel on 12 Nov after round 19's merge. **Two rows went backwards and
-both are round 19's own doing**: the 18 new cases arrived without whole-picture text and brought
-19 new entity names, so those jobs are queued rather than complete. Every round-19 case does carry
-`conditions`, which is why that row held.
+Read out of the rendered panel on 12 Nov after round 19's whole-text merge. Whole text is back to
+99% with only the 7 deliberate blanks. **The company row is the one still open**: round 19 brought
+21 new entity names and their descriptions are written but not yet checked and merged. Note that
+row's denominator is inflated by the 40 colliding keys — see "40 company-name keys collide" — so
+real coverage is better than 90% says.
 
 Counting the countries yourself: the page's 126 counts `iso3` plus `iso3_more`. A script that counts `iso3` alone returns 124 and looks like a discrepancy. **Round 19 added one country, Burundi, and none of rounds 16, 17 or 18 added any** — all 61 of their cases are in countries already on the map, which is itself a finding: ICIJ's harvest covers 124 countries, so the thin regions stay thin because the map already has a case in every country ICIJ's biggest rows fall in.
 
@@ -356,6 +357,41 @@ figures. `rusumo-falls-hydro` also gained `iso3_more: ["RWA","BDI"]`, because th
 documents land taken and compensation disputed in Burundi (Mugutu village in Gitega, the
 Kamwenubusa family in Karusi), the two deaths at Kirehe in Rwanda, and water loss at Karagwe and
 Rusumo village in Tanzania. **That is where the 127th country comes from.**
+
+### The whole-text check corrected 16 of 18, and two faults are new
+
+- **Shortfalls omitted while met targets were kept.** Three paragraphs listed the indicators from a
+  bullet list that were met and left out the ones in the same list that were not: Nepal (six bridges
+  of 31 and 0.73 km of 16 km on resilience), Dehlon (roads in poor condition going 67% to 1.4% and
+  back to 31.6%, and vehicle operating costs up 10 and 11 per cent), Gujarat (its condition
+  indicator). **Same fault family as selective quotation, one level up**: not a clause dropped from
+  a sentence but a row dropped from a table.
+- **A cause supplied for a shortfall from nearby text.** Bahia's paragraph said the completion
+  report attributed 1,093 unfinished households of 6,332 "to unfinished works in four areas". The
+  report gives no reason at all; the *review* says "due to delays of construction work"; and the
+  nearest "four" in the document is "4 local technical offices". Gujarat had the same shape with
+  two explanations swapped — the reason for a rate-of-return **rise** (lower contract costs) was
+  given as the reason for a net-present-value **fall**, which the review attributes to traffic below
+  forecast in the COVID-19 slowdown.
+- **An absence claim that was half wrong, and the correction made the card better.** The writer
+  reported that no document gives delivery figures for the Lahore street where the shops stood. No
+  rate of return or visitor count exists — confirmed by reading two annexes whole — but the
+  completion report's Annex 10 carries 57 streets to pave, 773 facades, and at closing 72 per cent
+  of facade work and 52 per cent of street surfacing done, with the works contract unfinished and
+  about US$1.2m of loan funds unused. Those are now the core of the paragraph.
+- **The self-reported flag was wrong on one of 18.** Bahia's US$3,000-per-household benchmark comes
+  from a 2005 UN Millennium Task Force study, so "all the figures are the lender's own" was untrue
+  there. Kazakhstan's road-user survey and Lahore's beneficiary survey were both commissioned under
+  the project, so the flag holds for those — and Kazakhstan's paragraph now says the lender paid
+  for the survey.
+- **The staff-statement grep was under-reported and the extra hits mattered.** The writer reported
+  six reviews carrying "informed IEG" or "the project team"; there are **ten**. Its substantive
+  claim held — no delivery figure in any paragraph rests on a staff statement — but the margin was
+  thinner than reported. The Philippines 77 per cent is prefaced "As clarified by the project team"
+  **twice**, and the review itself states the indicator "was not attributable to project" because
+  the works were about two per cent of the roads department's maintenance budget.
+- Two cards were confirmed clean: `ceip-polder-land-payments-bangladesh` and
+  `swat-s3b-road-land-acquisition`.
 
 ### Other corrections worth carrying
 
@@ -814,6 +850,24 @@ PDO indicator table. The Evaluation Group's review of 20 November 2017 gives **7
 indicator, same measurement point, 22 points apart, with the higher figure resting on a staff
 statement and the lower on the report's own table. Neither document explains the gap, and the card
 gives both with that attribution rather than reconciling them.
+
+## Read a document's date off the document, never off its URL or filename
+
+**Three of round 19's four date errors came from trusting an archive filename.** The World Bank's
+document archive builds URLs and filenames with dates that are not the document's own date:
+
+- Hanoi's completion report sits at a URL ending `...01312018` and is dated **18 January 2018**.
+- Bahia's Evaluation Group review has 26 June in its URL and **11 June 2014** in its own
+  `Date Posted` line.
+- Nepal's completion report cover carries only "**September 2020**" — no day at all — and the card
+  had been given 30 September. The 31 July 2020 in that document is its exchange-rate date.
+- Separately, the Siddhirganj report's cover reads **September 28, 2020** where the card said the
+  26th, and the card's own prose already said the 28th, so the card contradicted itself.
+
+**The rule: take the date from the cover page, or from the review's own `Date Posted` line, and if
+the document gives only a month then the card gives only a month.** Inventing a day to fill a date
+field is fabrication of the quiet kind — it looks like precision and nothing on the page marks it as
+a guess. The same goes for a figure's year: never take it from the article's date.
 
 ## 40 company-name keys collide — scanned in round 19, nothing merged
 
