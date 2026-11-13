@@ -191,7 +191,10 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   text-underline-offset:2px;white-space:nowrap;border:1px solid rgba(140,189,154,.45);
   border-radius:999px;padding:3px 11px;background:rgba(74,124,89,.14)}
 #msite:hover{color:var(--ink);background:rgba(74,124,89,.3);border-color:var(--accent-hi)}
-#about{display:none;position:fixed;z-index:120;right:18px;top:62px;width:min(420px,88vw);
+/* In the open ground between the bubbles and the panel, like the
+   hurdles box, rather than over the panel it is explaining.
+   `placeSide` sets `right`, `width` and `top`. */
+#about{display:none;position:fixed;z-index:119;right:18px;top:62px;width:min(420px,88vw);
   max-height:calc(100vh - 100px);overflow-y:auto;background:var(--panel);
   border:1px solid var(--accent-soft);padding:18px 20px 20px;border-radius:13px;
   box-shadow:0 24px 70px rgba(0,0,0,.6)}
@@ -932,6 +935,11 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   align-items:center;justify-content:center}
 #zoomctl button:first-child{border-bottom:1px solid var(--line)}
 #zoomctl button:hover{color:var(--ink);background:rgba(74,124,89,.16)}
+/* the official sources, wherever they appear */
+.lawl dd{display:flex;flex-direction:column;gap:3px}
+.lawl a{color:var(--accent-hi);text-decoration:none;font-size:11.8px;line-height:1.4}
+.lawl a:hover{text-decoration:underline}
+.lawwrap{margin-top:2px}
 /* the trail, where it sits on a page that is not the walkthrough */
 #mbody > .ptrail{margin-bottom:12px}
 </style>
@@ -3564,7 +3572,7 @@ const QUESTIONS = {
 let PATH=[], LEAF=null, LEAFLVL=null, LEAFSUB=null, LEAFKIND=null, SHOWALLK={};
 
 function resetTree(){ PATH=[]; LEAF=null; PENDLEAF=null; LEAFLVL=null; LEAFSUB=null;
-  LEAFKIND=null; SHOWALLK={}; SCOPE=null; }
+  LEAFKIND=null; SHOWALLK={}; SCOPE=null; SEL=null; }
 
 /* Which kinds of office are divided by subject, and which are not.
 
@@ -4111,6 +4119,7 @@ function pageWho(L){
      the list the page exists for, and the second said the same kind of
      thing in general terms. `lead` is still in LEAVES, unread. */
   h+=howGovWorks();
+  h+=lawLinksPlace();
   h+=loadNote(ents.length);
   if(!have.length && CUR && CUR.state!=='done'){
     return h+'<div class="spin">Resolving the offices for this place\u2026</div></div>';
@@ -4191,7 +4200,10 @@ function pageKind(L,k){
   const st=LAWSTAGE[k]||{};
   const when=(L.when&&L.when[k])||KINDWHEN[k]||'';
   let h='<div class="pg pg-kind">';
-  h+='<button type="button" class="lpback" onclick="closeKind()">\u2039 Who to Contact</button>';
+  /* No back button. The page sequence at the top of every screen
+     already names every step and goes to any of them, and a second
+     control directly under it that did one of those things was the
+     same job twice. `closeKind` is still called by the trail. */
   h+='<h3 class="qq">'+esc(KINDLABEL[k]||k)+
      (LAWKINDS.has(k)?'<i class="lawdot" title="a route to a law"></i>':'')+'</h3>';
   h+='<p class="qsub">'+glossy([when, st.rel].filter(Boolean).join(' '))+'</p>';
@@ -4219,7 +4231,7 @@ function pageKind(L,k){
       h+='<button type="button" class="orow'+(o.law?' law':'')+'" data-id="'+esc(o.id)+'" '+
          'onclick="openPin(\''+esc(o.id)+'\')"><span class="otx"><span class="onm">'+
          esc(o.label)+'</span>'+
-         (o.desc?'<span class="odesc">'+esc(o.desc)+'</span>':'')+'</span>'+
+         (o.desc?'<span class="odesc">'+esc(capFirst(o.desc))+'</span>':'')+'</span>'+
          '<span class="oar">\u203a</span></button>';
     });
     h+='</div></div>';
@@ -4332,6 +4344,11 @@ function jumpLeaf(key){
   LEAF=key; render(); frameKinds(L.kinds);
 }
 function treeGo(i){
+  /* An office page is drawn from SEL before anything else in `render`,
+     so stepping back to a question with SEL still set redrew the
+     office. Nothing showed it while the back buttons were there,
+     because they cleared SEL on the way out. */
+  SEL=null;
   if(i<0){ resetTree(); return render(); }
   PATH=PATH.slice(0,i+1);
   const st=PATH[PATH.length-1];
@@ -4538,6 +4555,7 @@ function routeTile(rt, i, when, notes){
       esc(rt.fail)+'</dd></div>'+
     (notes||[]).map(nt=>'<div class="pgnote"><dt>'+esc(nt[1])+'</dt><dd>'+esc(nt[2])+
        '</dd></div>').join('')+
+    lawLinksForRoute(rt.id)+
     '</div></div>';
 }
 
@@ -4555,11 +4573,8 @@ function renderOffice(o){
      way back to any of it in one click. It is drawn first, as on every
      other screen. */
   h+=trail();
-  /* The kind pages have a back link at the top left of the body; this
-     page used to have a different button in the panel header instead,
-     so the way back changed shape between one screen and the next. */
-  h+='<button type="button" class="lpback" onclick="backToDiagram()">\u2039 '+
-     esc(KINDLABEL[o.kind]||'Back')+'</button>';
+  /* No back button here either: the kind's name is a step in the
+     sequence above, and clicking it is what comes back here. */
   /* Wikidata's one-line description of this office, on the title line.
      It was a block of its own further down, set off with a rule, which
      gave a line like "First 5 county commission for Los Angeles
@@ -4567,7 +4582,7 @@ function renderOffice(o){
      pushed everything under it down the screen. It belongs with the
      name, because that is what it is: part of the name's own record. */
   h+='<div class="off" style="border:0;padding-top:0"><div class="nm" style="font-size:19px">'+
-     esc(o.label)+(o.desc?'<span class="nmd">'+esc(o.desc)+'</span>':'')+'</div>'+
+     esc(o.label)+(o.desc?'<span class="nmd">'+esc(capFirst(o.desc))+'</span>':'')+'</div>'+
      /* `o.how` was a paragraph here, between the office's name and How
         to Reach Them, describing the kind of office rather than this
         one: the same words under every office of that kind, which is
@@ -4581,13 +4596,16 @@ function renderOffice(o){
      directly, and what the classifier knows about it on its own — a
      line from the title and the Wikidata class — is much thinner than
      what is known about its kind. */
-  if(o.cls) h+='<span class="chip">'+esc(o.cls)+'</span>';
+  /* The Wikidata class ("legislature") and a link to the Wikidata page
+     were the last line on the page, under the methods. Neither is a
+     way of reaching anybody, which is what the page is for. What is
+     left in this row is the ways in: the site, the address, the
+     number. */
   if(holder) h+=isQ(holder)?'<span>holder recorded, name missing</span>'
     :'<span>'+esc(holder)+'</span> <span class="chip">verify</span>';
   if(site)  h+='<a href="'+esc(site)+'" target="_blank" rel="noopener">'+esc(site.replace(/^https?:\/\//,'').slice(0,46))+'</a>';
   if(email) h+='<a href="mailto:'+esc(email)+'">'+esc(email)+'</a>';
   if(phone) h+='<span>'+esc(phone)+'</span>';
-  h+='<a href="https://www.wikidata.org/wiki/'+esc(o.id)+'" target="_blank" rel="noopener" style="opacity:.5">wikidata</a>';
   h+='</div></div>';
   /* best-ranked first, so the order of the list is itself the answer to
      which route is worth trying before the others */
@@ -4627,6 +4645,81 @@ function toggleRoute(id, btn){
 }
 
 function fld(t,v){ return v ? '<div class="fld"><dt>'+t+'</dt><dd>'+esc(v)+'</dd></div>' : ''; }
+
+/* ====================================================================
+   OFFICIAL SOURCES, PER COUNTRY
+
+   `lawlinks.json` is drawn from the executive map's own checked set of
+   official URLs, cut to what this map is about: where the people who
+   hold office are listed, where agencies and regulators are listed,
+   where rules and laws are published, and the portals for three of the
+   methods already on this page — rulemaking, freedom of information
+   and the lobbying register. Everything in that set about holding
+   power to account afterwards — auditors, anti-corruption bodies,
+   company registries, police and prison data, watchdog newsrooms — is
+   left out: it is a different subject and this map is about making a
+   law. 1,314 links across 198 countries, and 40 countries with
+   sub-national ones as well.
+
+   Matching is exact and nothing else. The country comes off the ISO3
+   code already on STACK, and a sub-national set is used only where the
+   file holds that unit under the name STACK gives it. A near match
+   would file one country's register under another's name, which is
+   worse than showing nothing.
+   ==================================================================== */
+let LAWLINKS=null, LAWLINKS_TRIED=false;
+function loadLawLinks(){
+  if(LAWLINKS_TRIED) return; LAWLINKS_TRIED=true;
+  fetch('lawlinks.json').then(r=>r.ok?r.json():null).then(j=>{
+    LAWLINKS=j||{}; try{ if(CUR) render(); }catch(e){}
+  }).catch(()=>{ LAWLINKS={}; });
+}
+function lawLinkSets(){
+  const out=[];
+  if(!LAWLINKS || !STACK.length) return out;
+  let iso=null, nat=null;
+  for(let i=0;i<STACK.length;i++){ if(STACK[i].iso3){ iso=STACK[i].iso3; nat=STACK[i]; break; } }
+  const e=iso?LAWLINKS[iso]:null;
+  if(!e) return out;
+  if(e.n && e.n.length) out.push({where:(nat&&nat.label)||iso, rows:e.n});
+  if(e.s) STACK.forEach(st=>{ if(st.label && e.s[st.label]) out.push({where:st.label, rows:e.s[st.label]}); });
+  return out;
+}
+/* which tags belong to which of this page's methods */
+const LAWLINK_ROUTE={'directives:regulations':['comment','rulemaking'],
+  'foia:rti':['foia'], 'foia:commissioner':['foia'], 'access:register':['lobby']};
+/* and which say who holds office and where the law is published */
+const LAWLINK_PLACE=['officials:directory','agencies:directory','agencies:regulators',
+  'directives:gazette','directives:orders'];
+function lawLinkBlock(title, keep){
+  const sets=lawLinkSets()
+    .map(x=>({where:x.where, rows:x.rows.filter(r=>(r.t||[]).some(keep))}))
+    .filter(x=>x.rows.length);
+  if(!sets.length) return '';
+  return sets.map(x=>'<div class="fld lawl"><dt>'+esc(title)+' '+esc(x.where)+'</dt><dd>'+
+    x.rows.map(r=>'<a href="'+esc(r.u)+'" target="_blank" rel="noopener">'+
+      esc(r.n)+'</a>').join('')+'</dd></div>').join('');
+}
+function lawLinksForRoute(id){
+  const tags=Object.keys(LAWLINK_ROUTE).filter(t=>LAWLINK_ROUTE[t].indexOf(id)>=0);
+  if(!tags.length) return '';
+  return lawLinkBlock('Where this is done in', t=>tags.indexOf(t)>=0);
+}
+function lawLinksPlace(){
+  const h=lawLinkBlock('Official listings for', t=>LAWLINK_PLACE.indexOf(t)>=0);
+  if(!h) return '';
+  return '<details class="govex"><summary>Official listings for this country</summary>'+
+    '<div class="lawwrap">'+h+'</div></details>';
+}
+
+/* Wikidata writes its one-line descriptions in lower case — "department
+   of the state government of California" — which reads as a broken
+   sentence under a title. Only the first letter is touched: the rest of
+   the line is the record's own words. */
+function capFirst(v){
+  const t=String(v==null?'':v);
+  return t ? t.charAt(0).toUpperCase()+t.slice(1) : t;
+}
 
 function renderNoEntity(nm, drawn){
   $('#mbody').innerHTML='<div class="note">'+(drawn
@@ -5135,8 +5228,7 @@ function openLocal(id){
   const row=(t,v)=> v ? '<div class="fld"><dt>'+t+'</dt><dd>'+esc(v)+'</dd></div>' : '';
   $('#mbody').className='';
   $('#mbody').innerHTML =
-    (LEAF?trail():'')+
-    '<button type="button" class="lpback" onclick="backToDiagram()">\u2039 Back</button>'+
+    (LEAF?trail():'<button type="button" class="lpback" onclick="backToDiagram()">\u2039 Back</button>')+
     '<div class="note">This is a place on the ground, recorded in OpenStreetMap: '+
     'a building you can walk into, write to or ring. It is not an office with a vote, '+
     'so it does not appear among the branches &mdash; but it is usually where the people who '+
@@ -5741,6 +5833,7 @@ async function enterPlace(i){
   setAdmData([feat]);
   PINS={}; CHAIN_DONE={}; CHAIN_CLAIMED={}; PIN_TRIED={}; LOCAL={};
   resetTree();
+  loadLawLinks();
   if(wd) openJuris(wd, name);
   else { openModal(name,'Drawn from OpenStreetMap'); renderNoEntity(name, true); }
   paintTrail(); paintChain(); setPins();
@@ -5901,7 +5994,13 @@ async function resolveUnit(nm){
     try{ placeHurdles(); }catch(e){} });
 })();
 
-function toggleAbout(){ document.getElementById('about').classList.toggle('on'); }
+function toggleAbout(){
+  const a=document.getElementById('about');
+  const on=a.classList.toggle('on');
+  /* the two would otherwise be open over each other in the same column */
+  if(on){ const h=document.getElementById('hurd'); if(h) h.classList.remove('open'); }
+  try{ placeHurdles(); }catch(e){}
+}
 
 /* keep the globe clear of the box: MapLibre's padding moves what the
    camera centres on, so the planet sits in the space left of it */
@@ -6023,10 +6122,20 @@ function fitToNational(){
    of the Atlantic. Give that entry a `levelName` and it is labelled
    by it rather than by position.
    ==================================================================== */
-const BUB_MAX=170, BUB_MIN=112, BUB_LBL=60, BUB_TOP=74, DEEP_D=210, DEEP_STEP=2.5, DEEP_MAX=18;
-function bubSize(count){
-  const avail=innerHeight-BUB_TOP-78;   /* the zoom buttons sit below */
-  return Math.max(BUB_MIN, Math.min(BUB_MAX, Math.floor(avail/Math.max(1,count))-BUB_LBL));
+const BUB_MAX=170, BUB_MIN=112, BUB_LBL=60, BUB_LBL_G=86, BUB_TOP=74,
+      DEEP_D=210, DEEP_STEP=2.5, DEEP_MAX=18;
+/* The space under each circle is what its caption needs, and a caption
+   with the group chip on it is a line taller than one without. Sized
+   for the short one, the bottom bubble's chip ran off the foot of the
+   window. The zoom buttons used to sit under the column and no longer
+   do, so the reserve at the bottom is 14px rather than 78. */
+function bubSize(count, lbl){
+  const avail=innerHeight-BUB_TOP-14;
+  const d=Math.floor(avail/Math.max(1,count))-(lbl||BUB_LBL);
+  /* 88 rather than BUB_MIN when it is that or nothing: a small circle
+     is worse than a legible one, and a caption off the screen is worse
+     than both. */
+  return Math.max(88, Math.min(BUB_MAX, d));
 }
 let BUBS=[], BUB_KEY='', DEEPBM=null, DEEP_LV=null, BUB_T=null, BUB_SEQ=0;
 
@@ -6359,7 +6468,12 @@ function paintBubbles(){
 
 function buildBubbles(L){
   const box=$('#bubbles');
-  const D=bubSize(L.length), step=D+BUB_LBL;
+  /* Clustered here as well as in fillBubble, which is cheap at this
+     size and is the only way to know before laying the column out
+     whether any caption will carry the group chip. */
+  const anyGroups=L.some(x=>clusterPins(x.pins,0.6).length>1);
+  const lbl=anyGroups?BUB_LBL_G:BUB_LBL;
+  const D=bubSize(L.length, lbl), step=D+lbl;
   box.style.setProperty('--bd', D+'px');
   /* the zoom buttons move clear of the column rather than sitting on
      the bottom bubble */
@@ -6474,6 +6588,9 @@ function fillBubble(b, info){
 function bubStep(i, d){
   const b=BUBS[i]; if(!b||!b.groups.length) return;
   b.gi=(b.gi+d+b.groups.length)%b.groups.length;
+  /* the open row leaves out whichever group is in the bubble, so it is
+     rebuilt against the new one */
+  if(EXP_OF===i){ collapseGroups(); setTimeout(()=>expandGroups(i), 0); }
   fillBubble(b, {lv:b.lv, st:STACK[b.lv], pins:b.pins});
 }
 
@@ -6513,13 +6630,14 @@ function drawHurdles(){
 }
 function toggleHurdles(){
   const h=$('#hurd'); if(!h) return;
-  h.classList.toggle('open'); placeHurdles();
+  const on=h.classList.toggle('open');
+  if(on){ const a=$('#about'); if(a) a.classList.remove('on'); }
+  placeHurdles();
 }
 /* The panel is draggable and resizable, so where its left edge is can
-   only be read off the element. The box is set against it, and kept
-   clear of the bubble column on the other side. */
-function placeHurdles(){
-  const h=$('#hurd'); if(!h) return;
+   only be read off the element. Both side boxes are set against it and
+   kept clear of the bubble column on the other side. */
+function sideSlot(){
   let right=18, left=18;
   try{
     const md=document.getElementById('modal');
@@ -6533,8 +6651,28 @@ function placeHurdles(){
       left = 18 + (c?c.offsetWidth:156) + 30;
     }
   }catch(e){}
-  h.style.right=right+'px';
-  h.style.width=Math.max(250, Math.min(420, innerWidth-right-left))+'px';
+  return {right:right, width:Math.max(250, Math.min(430, innerWidth-right-left))};
+}
+function placeHurdles(){
+  const sl=sideSlot();
+  const h=$('#hurd');
+  if(h){ h.style.right=sl.right+'px'; h.style.width=sl.width+'px'; }
+  /* About opens in the same column. When the hurdles button is up it
+     sits under it rather than over it, which is the one case where the
+     two want the same 62px. */
+  const a=$('#about');
+  if(a){
+    a.style.right=sl.right+'px';
+    a.style.width=sl.width+'px';
+    let top=62;
+    try{
+      const btn=$('#hurdbtn');
+      if(h && h.classList.contains('on') && btn)
+        top=Math.round(btn.getBoundingClientRect().bottom+10);
+    }catch(e){}
+    a.style.top=top+'px';
+    a.style.maxHeight='calc(100vh - '+(top+30)+'px)';
+  }
 }
 addEventListener('resize', ()=>{ try{ drawHurdles(); }catch(e){} });
 
@@ -6550,7 +6688,11 @@ addEventListener('resize', ()=>{ try{ drawHurdles(); }catch(e){} });
    fifth bubble, and the handoff's warning about that is why these are
    built one at a time and torn down on collapse. */
 let EXP_OF=null, EXPS=[], EXP_SEQ=0;
-const EXP_MIN=104, EXP_GAP=22, EXP_CAP=4;
+/* The row draws every group but the one already in the level bubble,
+   so a level with three groups puts two circles beside it rather than
+   three, one of which was a copy of what it sits next to. EXP_CAP
+   counts the groups, so six of them is five circles. */
+const EXP_MIN=92, EXP_GAP=22, EXP_CAP=6;
 
 /* The room to the right of the column, up to whatever the panel has
    not taken. */
@@ -6569,7 +6711,8 @@ function expRoom(){
    when no button is offered and the stepper is the only way through. */
 function expFits(n){
   if(n<2 || n>EXP_CAP) return 0;
-  const d=Math.floor((expRoom()-(n-1)*EXP_GAP-30)/n);
+  const m=n-1;                                  /* the one on screen is not redrawn */
+  const d=Math.floor((expRoom()-(m-1)*EXP_GAP-34)/m);
   return d>=EXP_MIN ? Math.min(d, BUB_MAX) : 0;
 }
 function bubTone(){
@@ -6587,24 +6730,28 @@ function expandGroups(i){
   collapseGroups();
   const host=$('#bubexp'); if(!host) return;
   EXP_OF=i;
+  /* Every group but the one the level bubble is already showing. The
+     row used to open with a copy of the circle beside it, which is a
+     whole basemap instance spent on something already on screen. */
+  const rest=b.groups.map((g,k)=>({g:g,k:k})).filter(x=>x.k!==b.gi);
   const r0=b.el.querySelector('.bubc').getBoundingClientRect();
   host.style.setProperty('--bd', D+'px');
   host.style.left=Math.round(r0.right+EXP_GAP)+'px';
   host.style.top=Math.round(Math.max(BUB_TOP,
-    Math.min(innerHeight-D-BUB_LBL-14, r0.top+r0.height/2-D/2)))+'px';
+    Math.min(innerHeight-D-BUB_LBL_G-14, r0.top+r0.height/2-D/2)))+'px';
   host.className='on'+(baseIsLight(BASEKEY)?' lightbase':'');
-  host.innerHTML=b.groups.map((g,k)=>
+  host.innerHTML=rest.map((x,k)=>
     '<div class="xbub"><div class="bubc"><div class="bubm" id="xbubm'+k+'"></div></div>'+
-    '<div class="bubl"><b>Group '+(k+1)+' of '+n+'</b>'+
-    '<span class="bubs">'+g.length+(g.length===1?' office':' offices')+'</span></div></div>'
+    '<div class="bubl"><b>Group '+(x.k+1)+' of '+n+'</b>'+
+    '<span class="bubs">'+x.g.length+(x.g.length===1?' office':' offices')+'</span></div></div>'
   ).join('')+'<button type="button" class="xclose" onclick="collapseGroups()" '+
     'title="back to one group at a time">\u00d7</button>';
   fillBubble(b, {lv:b.lv, st:STACK[b.lv], pins:b.pins});
   const seq=++EXP_SEQ;
   const make=(k)=>{
-    if(seq!==EXP_SEQ || k>=b.groups.length) return;
+    if(seq!==EXP_SEQ || k>=rest.length) return;
     if(!document.getElementById('xbubm'+k)){ make(k+1); return; }
-    const slot={lv:b.lv, pins:b.groups[k], bm:null, map:null, groups:[b.groups[k]], gi:0,
+    const slot={lv:b.lv, pins:rest[k].g, bm:null, map:null, groups:[rest[k].g], gi:0,
                 el:host.children[k]};
     EXPS[k]=slot;
     const bm=CulpritsBasemaps.create('xbubm'+k, {
@@ -6669,7 +6816,23 @@ function showDeepFor(b, lngLat){
   const host=$('#deep'); if(!host) return;
   const r0=b.el.querySelector('.bubc').getBoundingClientRect();
   host.classList.add('on');
-  host.style.left=Math.round(r0.right+14)+'px';
+  /* To the right of the circle, unless that puts it under the panel or
+     off the window — which is where the last bubble in an expanded row
+     always sits, since the row runs up to the panel's edge. Then it
+     goes to the left of the circle instead, and if there is no room
+     either side it is pinned inside whichever edge is nearer. */
+  let lim=innerWidth-8;
+  try{
+    const md=document.getElementById('modal');
+    if(md && md.classList.contains('on') && innerWidth>760)
+      lim=Math.min(lim, md.getBoundingClientRect().left-8);
+  }catch(e){}
+  let x=r0.right+14;
+  if(x+DEEP_D>lim){
+    x=r0.left-DEEP_D-14;
+    if(x<8) x=Math.max(8, Math.min(lim-DEEP_D, r0.left+r0.width/2-DEEP_D/2));
+  }
+  host.style.left=Math.round(x)+'px';
   host.style.top=Math.round(Math.max(8, Math.min(innerHeight-DEEP_D-8, r0.top+r0.height/2-DEEP_D/2)))+'px';
   const bm=deepMap(), m=bm.maplibre;
   const key=b.lv+':'+(b.pins?b.pins.length:0)+':'+((b.pins&&b.pins[0])?b.pins[0].id:'');
