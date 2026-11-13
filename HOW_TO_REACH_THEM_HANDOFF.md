@@ -119,6 +119,24 @@ Board of Supervisors said nothing about having come through Chambers. The
 kind is appended from `LEAFKIND` (or `SEL.kind`) and the office from `SEL`,
 the kind's crumb going back to its page and the office's being inert.
 
+**And it is the only way back.** A kind's page and an office's page each
+carried a `.lpback` button under the trail, which did one of the things the
+trail directly above it already did. Both are gone. For that to work
+`treeGo` and `resetTree` clear `SEL`: an office page is drawn from `SEL`
+before anything else in `render`, so stepping back to a question with `SEL`
+still set redrew the office, and nothing showed it while the back buttons
+were there because they cleared `SEL` on the way out. The building page
+(`openLocal`) keeps a back button for the one case where there is no trail
+to use, which is a marker opened before the walkthrough has started.
+
+**The office page is the ways in and nothing else.** The Wikidata class
+("legislature") and a link to the Wikidata record were the last line on it,
+under the methods; neither is a way of reaching anybody. The row is now the
+site, the address and the number. `o.desc` on the title line goes through
+`capFirst`, because Wikidata writes its descriptions in lower case and
+"department of the state government of California" reads as a broken
+sentence under a title. Only the first letter is touched.
+
 **The chain of levels under the title names them and does not open them.**
 `paintTrail` drew every level above the searched one as an `<a>` calling
 `jumpTo`, which opened that jurisdiction's own page — the county's offices
@@ -325,6 +343,43 @@ The fix for that is tiles, not a better query (§10).
 ---
 
 ## 3. Where the data comes from
+
+### `lawlinks.json` - official sources, per country
+
+Drawn from the executive map's own checked set of official URLs
+(`WelcomeToYourGalaxy/executive-map`, the `trackerData` in its
+`index.html`), cut to what this map is about and rebuilt as a flat file:
+1,314 links across 198 countries, with sub-national sets for 40 of them.
+
+What was kept: where the people who hold office are listed
+(`officials:directory`), where agencies and regulators are listed
+(`agencies:directory`, `agencies:regulators`), where rules and laws are
+published (`directives:gazette`, `directives:orders`), and the portals for
+three methods already on this page - `directives:regulations` for the
+comment and rulemaking routes, `foia:rti` and `foia:commissioner` for the
+freedom-of-information route, and `access:register` for the lobbying route.
+Official voice only, and nothing marked defunct or dormant.
+
+What was left out, deliberately: everything in that set about holding power
+to account after the fact - auditors, anti-corruption bodies, company
+registries, police and prison data, integrity and appointments records, and
+watchdog newsrooms. That is the executive map's subject. This one is about
+making a law, and a list that mixed the two would be a different map's
+index pasted into this one.
+
+**Matching is exact and nothing else.** The country comes off the ISO3 code
+already on `STACK`; a sub-national set is used only where the file holds
+that unit under the name `STACK` gives it. There is no fuzzy matching and
+there should not be: a near match files one country's register under
+another's name, which is worse than showing nothing. Coverage is therefore
+honest and uneven - 51 US states have a set, most countries have none below
+the national level, and nothing in the file is municipal.
+
+The links appear in two places. `lawLinksForRoute` puts the portal inside
+the matching method's open row ("Where this is done in ..."), and
+`lawLinksPlace` puts the directories and gazettes in a folded block on Who
+to Contact. `loadLawLinks` fetches the file on the first search, not at
+boot.
 
 **Offices: Wikidata Query Service**, live, CORS-enabled, no key.
 
@@ -856,6 +911,33 @@ whole basemap instance, so they are built one at a time behind
 `whenMapQuiet`, carry a sequence number like the level bubbles, and are
 removed on collapse, on a repaint and on a resize. Below that size or above
 that count there is no button and the stepper is the only way through.
+
+The row leaves out the group the level bubble is already showing, so five
+groups is four circles beside it rather than five, one of which was a copy
+of what it sits next to; `EXP_CAP` counts the groups and `expFits` sizes for
+one fewer. Six and 92px are what let a level with five groups have the
+button at all - at four and 104px only a level with up to four had one, and
+on a 1680px window that was the country and nothing else. Stepping while the
+row is open rebuilds it, since which group is left out has changed.
+
+**The deep bubble goes to whichever side has room.** It opened to the right
+of whatever was hovered, which for the last circle in an expanded row is
+underneath the panel, because the row runs up to the panel's edge.
+`showDeepFor` now measures: right of the circle unless that crosses the
+panel's left edge or the window, then left of it, and pinned inside the
+nearer edge if neither side fits.
+
+**The column is sized for the caption it actually has.** `bubSize` takes the
+caption height, `BUB_LBL_G` (86) where any level has the group chip and
+`BUB_LBL` (60) where none does, and `buildBubbles` clusters up front to find
+out which. Sized for the short caption, the bottom bubble's chip ran off the
+foot of the window. The bottom reserve is 14px rather than 78 now that the
+zoom buttons sit beside the column rather than under it.
+
+**About opens in the same column as the hurdles.** It was over the panel it
+explains. `placeHurdles` sets both boxes from `sideSlot()`, and About drops
+below the hurdles button when that button is up, since both otherwise want
+the same 62px. Opening either closes the other.
 
 **The captions are centred on their circles and change colour with the
 basemap.** They hung to the right on a 200px block, which was the fix for an
