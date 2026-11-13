@@ -1,0 +1,254 @@
+{
+ "discrepancies": [
+  {
+   "case": "cuijiaying-han-river-resettlement / shiyan-connecting-road-safeguards",
+   "company": "Hubei Provincial Transport Department / Hubei Provincial Transportation Department",
+   "verdict": "confirmed",
+   "card_says": "Two separate company entries with two spellings: 'Hubei Provincial Transport Department' on cuijiaying-han-river-resettlement and 'Hubei Provincial Transportation Department' on shiyan-connecting-road-safeguards, both with HQ Wuhan.",
+   "source_says": "One body under two spellings in the Bank's own documents, each point checked in the PDFs on disk. The Fifth Inland Waterways ICR (P085333) defines 'HPTD  Hubei Provincial Transport Department' in its abbreviation list, gives 'Hubei Provincial Transport Department' as the sole entry in its data-sheet Implementing Agencies field, and uses HPTD or the full 'Transport Department' spelling throughout; the word 'Transportation' never refers to the department in that report. The Hubei Shiman ICR (P081749) likewise defines 'HPTD  Hubei Provincial Transport Department' in its abbreviation list (immediately after 'HPCD  Hubei Provincial Communications Department'), uses the Transport spelling in running text, and files the borrower's own completion report under 'Hubei Province, Hubei Provincial Transport Department ... Submitted by HPTD, March 2010'. 'Transportation Department' appears in that report exactly twice: in the data-sheet Implementing Agencies field, and in one sentence of the Financial Management subsection, which also records 'HPTD, formerly HPCD'.",
+   "source": [
+    {
+     "title": "China - Fifth Inland Waterways Project: Implementation Completion and Results Report (P085333)",
+     "publisher": "World Bank",
+     "year": 2011,
+     "url": "https://documents1.worldbank.org/curated/en/366891481129300851/pdf/ICR19130P085330official0use0only090.pdf"
+    },
+    {
+     "title": "China - Hubei Shiman Highway Project: Implementation Completion and Results Report (P081749)",
+     "publisher": "World Bank",
+     "year": 2010,
+     "url": "http://documents.worldbank.org/curated/en/192191468011427702/pdf/ICR14090P081741ficial0use0only01091.pdf"
+    }
+   ],
+   "recommendation": "Standardise on 'Hubei Provincial Transport Department' and merge the two entries. The department's own site could not be reached from this environment either: jtyst.hubei.gov.cn, jtt.hubei.gov.cn and hbjt.gov.cn all fail to connect through the proxy. The verdict rests on the two Bank reports alone, and on that evidence it holds.",
+   "checker_note": "One correction to the writer's framing: the 'Transportation' sentence is in the main report's Financial Management subsection, not in a financial-management annex. It does not change the verdict.",
+   "severity": "name"
+  },
+  {
+   "case": "nhiip-india-corridor-land-acquisition",
+   "company": "National Highways Authority of India / Ministry of Road Transport and Highways",
+   "verdict": "confirmed",
+   "card_says": "One compound company entry, role \"Borrower's implementing bodies; state public works departments carried out the land acquisition\".",
+   "source_says": "The completion report's data sheet lists one borrower (Republic of India) against one Implementing Agency, 'Ministry of Road Transport and Highways'. The Bank's projects API record for P121185 gives impagency as 'Ministry of Road Transport and Highways' and nothing else. The report says 'The National Highways Authority of India (NHAI) was the main implementing agency for the NHDP', refers separately to 'the NHAI Technical Assistance (TA) Loan (P121515)', says MoRTH 'was assigned the role of developing the non-core NH network, i.e., NHs that were not included in the NHDP and Baratmala programs', and says 'the NHIIP project was to assist MoRTH in improving the non-NHDP network'. NHAI appears in the report only in relation to the NHDP and the separate TA loan.",
+   "source": [
+    {
+     "title": "India - National Highways Interconnectivity Improvement Project: Implementation Completion and Results Report (P121185)",
+     "publisher": "World Bank",
+     "year": 2022,
+     "url": "https://documents1.worldbank.org/curated/en/099345007082230009/pdf/BOSIB0270dc7640060928f0d09a6c88c496.pdf"
+    },
+    {
+     "title": "Projects API record for P121185, National Highways Interconnectivity Improvement Project (impagency field: Ministry of Road Transport and Highways)",
+     "publisher": "World Bank",
+     "year": 2026,
+     "url": "https://search.worldbank.org/api/v3/projects?format=json&id=P121185"
+    }
+   ],
+   "recommendation": "Split the key and remove NHAI from this case. Recommended wording for the single remaining company entry: name 'Ministry of Road Transport and Highways', role \"Borrower's implementing agency; state public works departments carried out the land acquisition\". If NHAI is to be kept anywhere it belongs to the separate NHAI Technical Assistance loan (P121515), not to this case.",
+   "severity": "role and identity"
+  },
+  {
+   "case": "liaoning-medium-cities-resettlement",
+   "company": "Liaoning Urban Construction and Renewal Project Office (LUCRPO)",
+   "verdict": "confirmed",
+   "card_says": "Company named 'Liaoning Urban Construction Project Office (LUCPRO)'.",
+   "source_says": "The completion report's data sheet reads 'Implementing Agencies: Liaoning Urban Construction and Renewal Project Office (LUCRPO)'; the abbreviation list gives 'LUCRPO-Liaoning Urban Construction and Renewal ...'; and the institutional assessment reads 'The Liaoning Urban Construction and Renewal Project Office (LUCRPO) established under the Liaoning Provincial Construction Department took the responsibilities of day-to-day project implementation at the provincial level.' 'LUCPRO' occurs in the same report as a stray transposition of the acronym, including in the title of the borrower's own completion report.",
+   "source": [
+    {
+     "title": "China - Liaoning Medium Cities Infrastructure Project: Implementation Completion and Results Report (P099992)",
+     "publisher": "World Bank",
+     "year": 2014,
+     "url": "https://documents1.worldbank.org/curated/en/988381468020080097/pdf/ICR29300P099990IC0disclosed06050140.pdf"
+    }
+   ],
+   "recommendation": "Rename to 'Liaoning Urban Construction and Renewal Project Office (LUCRPO)' and extend the role to 'Provincial project office, established under the Liaoning Provincial Construction Department, coordinating the six cities'.",
+   "severity": "name"
+  },
+  {
+   "case": "huai-river-flood-drainage-resettlement",
+   "company": "Huai River Basin Commission",
+   "verdict": "confirmed in substance; the proposed rename rejected",
+   "card_says": "Company named 'Huai River Water Resources Commission', role 'National implementing body for the project'. The batch key for the same body is 'Huai River Basin Commission'.",
+   "source_says": "The completion report's data sheet names 'Huai River Basin Commission' alongside the four provinces and abbreviates it HRBC in the text; the Bank's projects API record for P098078 gives impagency as 'Ministry of Water Resources' alone. The State Council provisions on the Ministry of Water Resources, Article 6, list the Changjiang, Yellow River, Huai River, Hai River, Pearl River and Songliao water resources commissions and the Taihu Basin Authority as the seven basin management agencies dispatched by the ministry (水利部派出的流域管理机构), exercising water administration within their jurisdictions. So the commission is a field body of the ministry, not a national-level implementing agency in its own right.",
+   "source": [
+    {
+     "title": "China - Huai River Basin Flood Management and Drainage Improvement Project: Implementation Completion and Results Report (P098078)",
+     "publisher": "World Bank",
+     "year": 2017,
+     "url": "https://documents1.worldbank.org/curated/en/533301498842930108/pdf/ICR00004036-06202017.pdf"
+    },
+    {
+     "title": "Projects API record for P098078, Huai River Basin Flood Management and Drainage Improvement Project (impagency field: Ministry of Water Resources)",
+     "publisher": "World Bank",
+     "year": 2026,
+     "url": "https://search.worldbank.org/api/v3/projects?format=json&id=P098078"
+    },
+    {
+     "title": "水利部职能配置、内设机构和人员编制规定 (Provisions on the functions, internal organisation and staffing of the Ministry of Water Resources), Article 6: the seven river basin management agencies dispatched by the ministry",
+     "publisher": "State Council of the People's Republic of China (gov.cn)",
+     "year": 2018,
+     "url": "https://www.gov.cn/zhengce/2018-09/10/content_5320821.htm"
+    }
+   ],
+   "recommendation": "Change the role to 'Basin agency of the Ministry of Water Resources, named in the completion report as implementing body with the provinces of Anhui, Henan, Jiangsu and Shandong'. Do not rename the card: the State Council provisions call the body 淮河水利委员会, of which 'Huai River Water Resources Commission' is the literal rendering, so the card's name is the body's legal name and is not an error; the batch key is the Bank report's variant. Standardise on one of the two for the map's own consistency, but neither is wrong.",
+   "checker_note": "The writer cited this gov.cn page as '取水许可和水资源费征收管理条例' (the water-abstraction permit regulation). The page is in fact 水利部职能配置、内设机构和人员编制规定, the provisions on the ministry's functions and structure. Article 6 says what the writer said it says; the title is corrected here. The writer's 'based in Bengbu, Anhui' is not in either source and has been removed from the description.",
+   "severity": "role and level of government"
+  },
+  {
+   "case": "vietnam-distribution-efficiency-five-households",
+   "company": "Northern, Central, Southern, Hanoi and Ho Chi Minh City Power Corporations",
+   "verdict": "confirmed",
+   "card_says": "One compound company entry covering five bodies.",
+   "source_says": "The completion report names them individually: 'The five PCs are (a) Hanoi Power Corporation (HNPC), (b) Northern Power Corporation (NPC), (c) Central Power Corporation (CPC), (d) Southern Power Corporation (SPC), and (e) Ho Chi Minh Power Corporation (HCMPC).' Its abbreviation list reads 'HCMPC  Ho Chi Minh Power Corporation'. 'Ho Chi Minh City Power Corporation' does not appear.",
+   "source": [
+    {
+     "title": "Vietnam - Distribution Efficiency Project: Implementation Completion and Results Report (P125996)",
+     "publisher": "World Bank",
+     "year": 2019,
+     "url": "https://documents1.worldbank.org/curated/en/612821565623362101/pdf/Vietnam-Distribution-Efficiency-Project.pdf"
+    }
+   ],
+   "recommendation": "Split into five entries, using the report's own names, including 'Ho Chi Minh Power Corporation'. All five share one sourced description, so splitting costs nothing in sourcing and gains the reader five bodies instead of one phrase.",
+   "severity": "compound key"
+  },
+  {
+   "case": "vietnam-rural-energy-2-land-loss / vietnam-distribution-efficiency-five-households",
+   "company": "Electricity of Vietnam (EVN)",
+   "verdict": "confirmed",
+   "card_says": "Company named 'Electricity of Vietnam (EVN)'.",
+   "source_says": "Both completion reports call it 'Vietnam Electricity (EVN)' - the Rural Energy 2 abbreviation list reads 'EVN  Vietnam Electricity' and its data sheet lists 'Vietnam Electricity' - and the Bank's projects API records give 'Vietnam Electricity (EVN)' for P074688 and 'Vietnam Electricity' for P125996. The string 'Electricity of Vietnam' occurs nowhere in either report.",
+   "source": [
+    {
+     "title": "Projects API record for P074688, Second Rural Energy Project (impagency field: Central Power Corporation, Ministry of Industry and Trade, Northern Power Corporation, Southern Power Corporation (former Power Company No. 2), Vietnam Electricity (EVN))",
+     "publisher": "World Bank",
+     "year": 2026,
+     "url": "https://search.worldbank.org/api/v3/projects?format=json&id=P074688"
+    },
+    {
+     "title": "Vietnam - Distribution Efficiency Project: Implementation Completion and Results Report (P125996)",
+     "publisher": "World Bank",
+     "year": 2019,
+     "url": "https://documents1.worldbank.org/curated/en/612821565623362101/pdf/Vietnam-Distribution-Efficiency-Project.pdf"
+    },
+    {
+     "title": "Vietnam - Second Rural Energy Project: Implementation Completion and Results Report (P074688)",
+     "publisher": "World Bank",
+     "year": 2014,
+     "url": "https://documents1.worldbank.org/curated/en/128411468121474879/pdf/ICR31940P0746800disclosed0120300140.pdf"
+    }
+   ],
+   "recommendation": "Rename to 'Vietnam Electricity (EVN)'. Low priority: 'Electricity of Vietnam' is a common rendering and no reader is misled.",
+   "severity": "name"
+  },
+  {
+   "case": "vietnam-rural-energy-2-land-loss",
+   "company": "Central, Northern and Southern Power Corporations (not currently on this case)",
+   "verdict": "confirmed, and stronger than reported",
+   "card_says": "The case lists only EVN and the Ministry of Industry and Trade, with EVN's role noted as working 'through provincial project management units and the regional power companies'.",
+   "source_says": "The completion report's own data sheet lists five implementing agencies: 'Central Power Corporation (former Power Company No. 3)', 'Northern Power Corporation (former Power Company No. 1)', 'Southern Power Corporation (former Power Company No. 2)', 'Vietnam Electricity' and 'Ministry of Industry and Trade (former Ministry of Industry)'. The Bank's projects API record for P074688 lists the same five. Three power corporations, and not the Hanoi or Ho Chi Minh corporations.",
+   "source": [
+    {
+     "title": "Vietnam - Second Rural Energy Project: Implementation Completion and Results Report (P074688)",
+     "publisher": "World Bank",
+     "year": 2014,
+     "url": "https://documents1.worldbank.org/curated/en/128411468121474879/pdf/ICR31940P0746800disclosed0120300140.pdf"
+    },
+    {
+     "title": "Projects API record for P074688, Second Rural Energy Project (impagency field: Central Power Corporation, Ministry of Industry and Trade, Northern Power Corporation, Southern Power Corporation (former Power Company No. 2), Vietnam Electricity (EVN))",
+     "publisher": "World Bank",
+     "year": 2026,
+     "url": "https://search.worldbank.org/api/v3/projects?format=json&id=P074688"
+    }
+   ],
+   "recommendation": "Add the three named power corporations as companies on this case. The writer offered this as optional on the strength of the API record alone; the report's own data sheet says the same, so the omission is a plain gap rather than a judgement call. Note the difference from the later project: three corporations here, five on Distribution Efficiency.",
+   "severity": "omission"
+  },
+  {
+   "case": "naji-youjiang-waterways-resettlement",
+   "company": "Guangdong Provincial Waterway Bureau",
+   "verdict": "confirmed",
+   "card_says": "Role 'Implementing agency for the Guangdong component, including the Xiniu complex'.",
+   "source_says": "The completion report's data sheet names the implementing agencies as 'Guangdong Provincial Transport Department (Former Guangdong Provincial Communications Department)' and 'Guangxi Transport Department (Former Guangxi Communications Department)'. The Waterway Bureau did the Guangdong work - it assigned the operating unit for the Xiniu complex and is assessed as an implementing agency alongside GXWCDC - but the text writes it as 'GDTD/GPWB' and the provincial transport departments are described as exercising close supervision over implementation and coordinating between the implementing entity and other government agencies.",
+   "source": [
+    {
+     "title": "China - Fourth Inland Waterways Project: Implementation Completion and Results Report (P077137)",
+     "publisher": "World Bank",
+     "year": 2011,
+     "url": "https://documents1.worldbank.org/curated/en/602221468019189277/pdf/ICR13760P077130C0disclosed010250120.pdf"
+    }
+   ],
+   "recommendation": "Keep the bureau and qualify the role: 'Carried out the Guangdong component, including the Xiniu complex, with the Guangdong Provincial Transport Department, which the completion report names as the Guangdong implementing agency'. The report does not use the word 'under', so avoid asserting the hierarchy outright.",
+   "severity": "level of government"
+  },
+  {
+   "case": "guiguang-railway-land-acquisition",
+   "company": "GuiGuang Railway Company Limited",
+   "verdict": "confirmed in substance; sourcing and one date corrected",
+   "card_says": "Role 'Project company created during implementation; the railway's assets were transferred to it...'.",
+   "source_says": "The company existed before the loan was effective. The NanGuang completion report (P112359) records 'Guiyang-Guangzhou Railway Company Limited (GGRC) (incorporated on June 4, 2009) to succeed the Preparation Group of the GuiGuang Railway Company (formed on November 28, 2007)'. The GuiGuang project loan was approved on 16 April 2009 and became effective on 26 August 2009. The GuiGuang report itself records the company's incorporation being reflected in the project documents at that project's first restructuring, which its text dates to 8 February 2013 (data sheet 08/02/2013).",
+   "source": [
+    {
+     "title": "China - NanGuang Railway Project: Implementation Completion and Results Report (P112359)",
+     "publisher": "World Bank",
+     "year": 2015,
+     "url": "https://documents1.worldbank.org/curated/en/128861467995639891/pdf/ICR3432-P112359-Box394822B-OUO-9.pdf"
+    },
+    {
+     "title": "China - Guiyang Guangzhou Railway Project: Implementation Completion and Results Report (P107559)",
+     "publisher": "World Bank",
+     "year": 2017,
+     "url": "http://documents.worldbank.org/curated/en/351311498160013357/pdf/ICR3434-06152017.pdf"
+    }
+   ],
+   "recommendation": "Reword to 'Project company incorporated 4 June 2009, before loan effectiveness, and written into the project documents at the first restructuring in 2013; the railway's assets were transferred to it, and it monitored resettlement and processed compensation payments'. Consider adding the formal name 'Guiyang-Guangzhou Railway Company Limited (GGRC)'.",
+   "checker_note": "The writer gave these dates but cited only the GuiGuang report (P107559), which does not contain them; they are in the NanGuang report (P112359), whose 25 August 2011 restructuring endorsed both companies. The writer's '25 August 2011 restructuring' is that NanGuang restructuring, not a GuiGuang one: the GuiGuang project's two restructurings were 8 February 2013 and 24 December 2015. Corrected here.",
+   "severity": "date and name"
+  },
+  {
+   "case": "shaanxi-ankang-road-resettlement",
+   "company": "Shaanxi Provincial Communications Department",
+   "verdict": "confirmed as a flag; no change recommended",
+   "card_says": "Company named 'Shaanxi Provincial Communications Department'.",
+   "source_says": "The Ankang completion report (2013) uses that name in its abbreviation list ('SPCD  Shaanxi Provincial Communications Department'), its data-sheet Implementing Agencies field and its text. Bank reports of the same period record the equivalent departments elsewhere being renamed: the Shiman report has 'HPTD, formerly HPCD' for Hubei, and the Fourth Inland Waterways data sheet has 'Guangdong Provincial Transport Department (Former Guangdong Provincial Communications Department)' and 'Guangxi Transport Department (Former Guangxi Communications Department)'. No source naming the Shaanxi department after any such change could be opened.",
+   "source": [
+    {
+     "title": "China - Shaanxi Ankang Road Development Project: Implementation Completion and Results Report (P075613)",
+     "publisher": "World Bank",
+     "year": 2013,
+     "url": "https://documents1.worldbank.org/curated/en/195501468214511539/pdf/ICR21420ICR0Ch000PUBLIC00BOx379788B.pdf"
+    },
+    {
+     "title": "China - Hubei Shiman Highway Project: Implementation Completion and Results Report (P081749)",
+     "publisher": "World Bank",
+     "year": 2010,
+     "url": "http://documents.worldbank.org/curated/en/192191468011427702/pdf/ICR14090P081741ficial0use0only01091.pdf"
+    },
+    {
+     "title": "China - Fourth Inland Waterways Project: Implementation Completion and Results Report (P077137)",
+     "publisher": "World Bank",
+     "year": 2011,
+     "url": "https://documents1.worldbank.org/curated/en/602221468019189277/pdf/ICR13760P077130C0disclosed010250120.pdf"
+    }
+   ],
+   "recommendation": "No change on this evidence - keep the report's name. The checker confirms the writer left it alone rather than modernising it silently, which was right. jtyst.shaanxi.gov.cn is also unreachable from this environment, so the department's own site cannot settle it here.",
+   "severity": "possible stale name"
+  },
+  {
+   "case": "naji-youjiang-waterways-resettlement",
+   "company": "Guangxi Xijiang Waterway Construction and Development Company (GXWCDC)",
+   "verdict": "confirmed; no change needed",
+   "card_says": "Company named '...Waterway Construction and Development Company'.",
+   "source_says": "The completion report's abbreviation list gives 'GXWCDC  Guangxi Xijiang Waterways Construction & Development Co.' (plural 'Waterways'), while its text uses 'Guangxi Xijiang Waterway Construction and Development Company'. Both spellings are in the same document.",
+   "source": [
+    {
+     "title": "China - Fourth Inland Waterways Project: Implementation Completion and Results Report (P077137)",
+     "publisher": "World Bank",
+     "year": 2011,
+     "url": "https://documents1.worldbank.org/curated/en/602221468019189277/pdf/ICR13760P077130C0disclosed010250120.pdf"
+    }
+   ],
+   "recommendation": "No change needed; recorded only so the variant is not mistaken for a second body.",
+   "severity": "minor variant"
+  }
+ ]
+}

@@ -1,5 +1,5 @@
 {
- "what": "Every World Bank or IFC project ICIJ found with confirmed or possible displacement, 2004-2013, as a lead list for new cases. Read likely_already_on_map before researching any row.",
+ "what": "Every World Bank or IFC project ICIJ found with confirmed or possible displacement, 2004-2013, as a lead list for new cases. Read likely_already_on_map and r17_outcome before researching any row. ROUND 17 FINDING, which governs how every figure in this file should be read: ICIJ's displaced figure is NOT a count of people relocated. It is ICIJ's count of project-affected people, and on ICIJ's own account of its method it searched Bank documents for 'affected', 'PAP' or 'displaced', used average household size where only households were counted, and because the documents did not distinguish temporary from permanent impacts it 'decided to include all impacts'. In several rows it is the appraisal plan figure rather than the outcome. Verified examples: Liaoning Medium Cities, where ICIJ's 31,547 is to the person the people figure in the ORIGINAL resettlement plan while the outcome was 2,467 households and 6,080 people; Distribution Efficiency, where ICIJ gives 31,581 and the completion report says only five households were relocated out of 12,880 project-affected households; Second Rural Energy, where ICIJ gives 773,838 and the appraisal gives 178 families losing more than 10% of productive land. ICIJ's ** marker means, on its method page, a project affecting more than 20,000 people where Bank documents said most impacts would be minor. Use the Bank document's own outcome figure for a case and put ICIJ's in a note, named, with what it counts.",
  "source": {
   "title": "Evicted and Abandoned: the World Bank's broken promise to the poor",
   "publisher": "International Consortium of Investigative Journalists",
@@ -29,7 +29,10 @@
    ],
    "section": "Confirmed displacement",
    "displaced": "773,838**",
-   "complaint": false
+   "complaint": false,
+   "r17_outcome": "case",
+   "r17_note": "written as a case in round 17",
+   "r17_case_id": "vietnam-rural-energy-2-land-loss"
   },
   {
    "project": "Shaanxi Ankang Road Development",
@@ -44,7 +47,10 @@
    ],
    "section": "Confirmed displacement",
    "displaced": "171,568",
-   "complaint": false
+   "complaint": false,
+   "r17_outcome": "case",
+   "r17_note": "written as a case in round 17",
+   "r17_case_id": "shaanxi-ankang-road-resettlement"
   },
   {
    "project": "ShiZheng Railway Project",
@@ -59,7 +65,10 @@
    ],
    "section": "Confirmed displacement",
    "displaced": "150,873",
-   "complaint": false
+   "complaint": false,
+   "r17_outcome": "case",
+   "r17_note": "written as a case in round 17",
+   "r17_case_id": "shizheng-railway-resettlement"
   },
   {
    "project": "India Second Kerala State Transport Project",
@@ -81,7 +90,9 @@
      "transport"
     ],
     "match_strength": "weak"
-   }
+   },
+   "r17_outcome": "dropped",
+   "r17_note": "Bucket (c): no harm established. The Bank's Implementation Completion and Results Report of 21 June 2022 (2,515 lines of extracted text, read from disk and searched in full for resettlement, compensation, land acquisition and affected-person terms) gives no count of project-affected people at all, and says at paragraph 54 that 'the project paid appropriate compensation to all PAPs/project affected families (PAFs), except PAFs that opted for a Court ruling to enhance compensation'. It rates social safeguards performance at the end of the project Highly Satisfactory and environmental safeguards "
   },
   {
    "project": "Guiyang Guangzhou Railway",
@@ -96,7 +107,10 @@
    ],
    "section": "Confirmed displacement",
    "displaced": "99,595",
-   "complaint": false
+   "complaint": false,
+   "r17_outcome": "case",
+   "r17_note": "written as a case in round 17",
+   "r17_case_id": "guiguang-railway-land-acquisition"
   },
   {
    "project": "Rural Distribution Project",
@@ -111,7 +125,9 @@
    ],
    "section": "Confirmed displacement",
    "displaced": "92,642**",
-   "complaint": false
+   "complaint": false,
+   "r17_outcome": "dropped",
+   "r17_note": "Dropped: a rural distribution project covering about 45 provinces in three power company areas, with no identified community and no number. The 24 December 2013 Implementation Completion and Results Report was read in full from disk as text (3,428 lines). It says the project 'caused modest land acquisition for the individual project affected household and small community-wide socioeconomic impacts', that many subprojects aimed to upgrade systems based on an existing right of way, and that 'The land acquisition and compensation activities by Implementation Agencies satisfactorily complied with "
   },
   {
    "project": "Lucknow-Muzaffarpur National Highway Project",
@@ -126,7 +142,10 @@
    ],
    "section": "Confirmed displacement",
    "displaced": "75,434",
-   "complaint": false
+   "complaint": false,
+   "r17_outcome": "case",
+   "r17_note": "written as a case in round 17",
+   "r17_case_id": "lucknow-muzaffarpur-highway-land"
   },
   {
    "project": "Bangladesh Padma Multipurpose Bridge Project",
@@ -148,7 +167,9 @@
      "bangladesh"
     ],
     "match_strength": "weak"
-   }
+   },
+   "r17_outcome": "dropped",
+   "r17_note": "Fails tests 1 and 3: no Bank money was ever disbursed, and the Bank's agreements were terminated before the credit became effective. The Note on Cancelled Operation, cover-dated 15 August 2013 with an NCO date of 16 August 2013, was downloaded and read in full from disk, 517 lines of extracted text. Its data sheet gives credit IDA-48650, an original commitment of XDR 779.30 million, a revised amount of XDR 0.00 million and a disbursed amount of XDR 0.00 million, and its disbursement table shows FY12 actual disbursement of 0.00 against 144.20 planned. Its key dates give approval 24 February 201"
   },
   {
    "project": "India Orissa State Roads Project",
@@ -170,7 +191,10 @@
      "roads"
     ],
     "match_strength": "weak"
-   }
+   },
+   "r17_outcome": "case",
+   "r17_note": "written as a case in round 17",
+   "r17_case_id": "orissa-state-roads-compensation"
   },
   {
    "project": "Huai River Basin Flood Management and Drainage Improvement",
@@ -185,7 +209,10 @@
    ],
    "section": "Confirmed displacement",
    "displaced": "58,659",
-   "complaint": false
+   "complaint": false,
+   "r17_outcome": "case",
+   "r17_note": "written as a case in round 17",
+   "r17_case_id": "huai-river-flood-drainage-resettlement"
   },
   {
    "project": "Urban Upgrading Project",
@@ -200,7 +227,10 @@
    ],
    "section": "Confirmed displacement",
    "displaced": "57,047",
-   "complaint": false
+   "complaint": false,
+   "r17_outcome": "case",
+   "r17_note": "written as a case in round 17",
+   "r17_case_id": "vinh-loc-b-resettlement-hcmc"
   },
   {
    "project": "Water Resources Assistance Project",
@@ -215,7 +245,10 @@
    ],
    "section": "Confirmed displacement",
    "displaced": "53,600**",
-   "complaint": false
+   "complaint": false,
+   "r17_outcome": "case",
+   "r17_note": "written as a case in round 17",
+   "r17_case_id": "vietnam-water-resources-assistance-resettlement"
   },
   {
    "project": "Guangdong Pearl River Delta Urban Environment Project",
@@ -230,7 +263,10 @@
    ],
    "section": "Confirmed displacement",
    "displaced": "48,289",
-   "complaint": false
+   "complaint": false,
+   "r17_outcome": "case",
+   "r17_note": "written as a case in round 17",
+   "r17_case_id": "chebei-village-guangzhou-resettlement"
   },
   {
    "project": "Eastern Dedicated Freight Corridor - I",
@@ -254,7 +290,10 @@
      "freight"
     ],
     "match_strength": "strong"
-   }
+   },
+   "r17_outcome": "already_on_map",
+   "r17_note": "matched locally to an existing case before research; not re-researched in round 17",
+   "r17_case_id": "eastern-dedicated-freight-corridor"
   },
   {
    "project": "Fujian Highway Sector Investment",
@@ -269,7 +308,9 @@
    ],
    "section": "Confirmed displacement",
    "displaced": "45,578",
-   "complaint": false
+   "complaint": false,
+   "r17_outcome": "dropped",
+   "r17_note": "Bucket (c), nothing usable. Opened: the Implementation Completion and Results Report (ICR3508, 2015, downloaded and read from disk) and the Independent Evaluation Group's validation (2016). The completion report says only that the safeguard issues and compliance were well managed and gives no figure for land taken or households affected. The Independent Evaluation Group wrote that the completion report does not state compliance with each safeguard policy, that no information about mitigation activities, impacts and affected households is provided in order to validate compliance, and that the i"
   },
   {
    "project": "Mekong Delta Transport Infrastructure Development Project",
@@ -284,7 +325,10 @@
    ],
    "section": "Confirmed displacement",
    "displaced": "40,979",
-   "complaint": false
+   "complaint": false,
+   "r17_outcome": "case",
+   "r17_note": "written as a case in round 17",
+   "r17_case_id": "mekong-delta-transport-unpaid-compensation"
   },
   {
    "project": "Dakar Diamniadio Toll Highway",
@@ -307,7 +351,10 @@
      "toll"
     ],
     "match_strength": "strong"
-   }
+   },
+   "r17_outcome": "already_on_map",
+   "r17_note": "matched locally to an existing case before research; not re-researched in round 17",
+   "r17_case_id": "dakar-diamniadio-toll-highway"
   },
   {
    "project": "Second Transmission and Distribution Project",
@@ -322,7 +369,9 @@
    ],
    "section": "Confirmed displacement",
    "displaced": "35,117**",
-   "complaint": false
+   "complaint": false,
+   "r17_outcome": "dropped",
+   "r17_note": "Dropped: no identified community, no number and no documented failure. Two documents were read in full from disk as text: the 31 December 2014 Implementation Completion and Results Report (2,395 lines) and the Independent Evaluation Group's 26 May 2015 review of it (503 lines). The completion report says involuntary resettlement on the transmission investments, especially the 220 kV to 500 kV subprojects, was challenging, that the magnitude of impacts there is more significant than for lower voltage investments including 'more severe impacts, including physical relocation', and that implementi"
   },
   {
    "project": "Distribution Efficiency Project",
@@ -337,7 +386,10 @@
    ],
    "section": "Confirmed displacement",
    "displaced": "31,581**",
-   "complaint": false
+   "complaint": false,
+   "r17_outcome": "case",
+   "r17_note": "written as a case in round 17",
+   "r17_case_id": "vietnam-distribution-efficiency-five-households"
   },
   {
    "project": "Liaoning Medium Cities Infrastructure Project",
@@ -352,7 +404,10 @@
    ],
    "section": "Confirmed displacement",
    "displaced": "31,547",
-   "complaint": false
+   "complaint": false,
+   "r17_outcome": "case",
+   "r17_note": "written as a case in round 17",
+   "r17_case_id": "liaoning-medium-cities-resettlement"
   },
   {
    "project": "Ethiopia-Road Sector Development Program APL4",
@@ -374,7 +429,10 @@
      "ethiopia"
     ],
     "match_strength": "weak"
-   }
+   },
+   "r17_outcome": "case",
+   "r17_note": "written as a case in round 17",
+   "r17_case_id": "mekenajo-dembidolo-road-coffee"
   },
   {
    "project": "NanGuang Railway Project",
@@ -389,7 +447,10 @@
    ],
    "section": "Confirmed displacement",
    "displaced": "25,784",
-   "complaint": false
+   "complaint": false,
+   "r17_outcome": "case",
+   "r17_note": "written as a case in round 17",
+   "r17_case_id": "nanguang-railway-resettlement"
   },
   {
    "project": "China: Fifth Inland Waterways",
@@ -404,7 +465,10 @@
    ],
    "section": "Confirmed displacement",
    "displaced": "25,655",
-   "complaint": false
+   "complaint": false,
+   "r17_outcome": "case",
+   "r17_note": "written as a case in round 17",
+   "r17_case_id": "cuijiaying-han-river-resettlement"
   },
   {
    "project": "Third National Railway Project",
@@ -419,7 +483,10 @@
    ],
    "section": "Confirmed displacement",
    "displaced": "25,393",
-   "complaint": false
+   "complaint": false,
+   "r17_outcome": "case",
+   "r17_note": "written as a case in round 17",
+   "r17_case_id": "liuzhan-railway-resettlement"
   },
   {
    "project": "National Highways Interconnectivity Improvement Project",
@@ -434,7 +501,10 @@
    ],
    "section": "Confirmed displacement",
    "displaced": "23,016",
-   "complaint": false
+   "complaint": false,
+   "r17_outcome": "case",
+   "r17_note": "written as a case in round 17",
+   "r17_case_id": "nhiip-india-corridor-land-acquisition"
   },
   {
    "project": "Hubei Shiman Highway Project",
@@ -449,7 +519,10 @@
    ],
    "section": "Confirmed displacement",
    "displaced": "21,176",
-   "complaint": false
+   "complaint": false,
+   "r17_outcome": "case",
+   "r17_note": "written as a case in round 17",
+   "r17_case_id": "shiyan-connecting-road-safeguards"
   },
   {
    "project": "Guiyang Transport Project",
@@ -464,7 +537,10 @@
    ],
    "section": "Confirmed displacement",
    "displaced": "20,850",
-   "complaint": false
+   "complaint": false,
+   "r17_outcome": "case",
+   "r17_note": "written as a case in round 17",
+   "r17_case_id": "guiyang-youxiao-road-resettlement"
   },
   {
    "project": "JiTuHun Railway",
@@ -479,7 +555,10 @@
    ],
    "section": "Confirmed displacement",
    "displaced": "19,588",
-   "complaint": false
+   "complaint": false,
+   "r17_outcome": "case",
+   "r17_note": "written as a case in round 17",
+   "r17_case_id": "jituhun-railway-resettlement"
   },
   {
    "project": "LR-Urban and Rural Infrastructure Rehabilitation Project",
@@ -494,7 +573,10 @@
    ],
    "section": "Confirmed displacement",
    "displaced": "18,770",
-   "complaint": false
+   "complaint": false,
+   "r17_outcome": "case",
+   "r17_note": "written as a case in round 17",
+   "r17_case_id": "caldwell-bridge-liberia-compensation"
   },
   {
    "project": "Urban Water Supply and Wastewater",
@@ -509,7 +591,10 @@
    ],
    "section": "Confirmed displacement",
    "displaced": "16,983",
-   "complaint": false
+   "complaint": false,
+   "r17_outcome": "case",
+   "r17_note": "written as a case in round 17",
+   "r17_case_id": "vietnam-urban-water-wastewater-below-replacement"
   },
   {
    "project": "Ethiopia-Transport Sector Project in Support of RSDP4",
@@ -531,7 +616,10 @@
      "ethiopia"
     ],
     "match_strength": "weak"
-   }
+   },
+   "r17_outcome": "case",
+   "r17_note": "written as a case in round 17",
+   "r17_case_id": "biftu-quarry-mizan-dima-road"
   },
   {
    "project": "Himachal Pradesh State Roads Project",
@@ -554,7 +642,10 @@
      "roads"
     ],
     "match_strength": "strong"
-   }
+   },
+   "r17_outcome": "case",
+   "r17_note": "written as a case in round 17",
+   "r17_case_id": "himachal-pradesh-state-roads-debris"
   },
   {
    "project": "Lagos Metropolitan Development and Governance Project",
@@ -576,7 +667,10 @@
      "lagos"
     ],
     "match_strength": "weak"
-   }
+   },
+   "r17_outcome": "extend",
+   "r17_note": "ICIJ lead 31 is the Lagos Metropolitan Development and Governance Project, P071340, credit IDA-42190, which the existing case already names as IDA Credit 4219 UNI with the same approval date of 6 July 2006 and the same closing date of 30 September 2013. It is the same credit and the same episode, so this is an extension rather than a new case. The additions come from the project's Implementation Completion and Results Report of 15 October 2013, which the existing card does not cite and which answers the card's statement that no results figures for the project were found.",
+   "r17_case_id": "badia-east-lagos"
   },
   {
    "project": "VIETNAM: Haiphong Urban Transport Project",
@@ -598,7 +692,10 @@
      "vietnam"
     ],
     "match_strength": "weak"
-   }
+   },
+   "r17_outcome": "case",
+   "r17_note": "written as a case in round 17",
+   "r17_case_id": "haiphong-bac-son-nam-hai-road"
   },
   {
    "project": "Fourth Inland Waterways Project",
@@ -613,7 +710,10 @@
    ],
    "section": "Confirmed displacement",
    "displaced": "16,805",
-   "complaint": false
+   "complaint": false,
+   "r17_outcome": "case",
+   "r17_note": "written as a case in round 17",
+   "r17_case_id": "naji-youjiang-waterways-resettlement"
   },
   {
    "project": "Coastal Cities Environmental Sanitation Project",
@@ -628,7 +728,10 @@
    ],
    "section": "Confirmed displacement",
    "displaced": "16,194",
-   "complaint": false
+   "complaint": false,
+   "r17_outcome": "case",
+   "r17_note": "written as a case in round 17",
+   "r17_case_id": "quy-nhon-coastal-cities-sanitation-resettlement"
   },
   {
    "project": "Second Karnataka State Highway Improvement",
@@ -643,7 +746,10 @@
    ],
    "section": "Confirmed displacement",
    "displaced": "15,516",
-   "complaint": false
+   "complaint": false,
+   "r17_outcome": "case",
+   "r17_note": "written as a case in round 17",
+   "r17_case_id": "karnataka-state-highways-ii-compensation"
   },
   {
    "project": "VN - Mekong Delta Water Management for Rural Dev",
@@ -658,7 +764,10 @@
    ],
    "section": "Confirmed displacement",
    "displaced": "15,504",
-   "complaint": false
+   "complaint": false,
+   "r17_outcome": "case",
+   "r17_note": "written as a case in round 17",
+   "r17_case_id": "mekong-delta-water-management-compensation-delays"
   },
   {
    "project": "ET-Road Sector Dev. Stage III Proj. (APL3) in support of Govt's RSDP",
@@ -728,7 +837,10 @@
      "quang"
     ],
     "match_strength": "strong"
-   }
+   },
+   "r17_outcome": "already_on_map",
+   "r17_note": "matched locally to an existing case before research; not re-researched in round 17",
+   "r17_case_id": "da-nang-quang-ngai-expressway"
   },
   {
    "project": "VN-Priority Infrastructure Investment Project",
@@ -1096,7 +1208,10 @@
      "pradesh"
     ],
     "match_strength": "strong"
-   }
+   },
+   "r17_outcome": "already_on_map",
+   "r17_note": "matched locally to an existing case before research; not re-researched in round 17",
+   "r17_case_id": "andhra-telangana-roads-displacement"
   },
   {
    "project": "Urban Local Govt Development Project",
@@ -1701,7 +1816,10 @@
      "vishnugad"
     ],
     "match_strength": "strong"
-   }
+   },
+   "r17_outcome": "already_on_map",
+   "r17_note": "matched locally to an existing case before research; not re-researched in round 17",
+   "r17_case_id": "vishnugad-pipalkoti-haat"
   },
   {
    "project": "Nigeria Electricity and Gas Improvement Project (NEGIP)",
@@ -2128,7 +2246,10 @@
      "giza"
     ],
     "match_strength": "weak"
-   }
+   },
+   "r17_outcome": "already_on_map",
+   "r17_note": "matched locally to an existing case before research; not re-researched in round 17",
+   "r17_case_id": "giza-north-groundwater"
   },
   {
    "project": "Xinjiang Yining Urban Transport Improvement Project",
@@ -3000,7 +3121,10 @@
      "west"
     ],
     "match_strength": "strong"
-   }
+   },
+   "r17_outcome": "already_on_map",
+   "r17_note": "matched locally to an existing case before research; not re-researched in round 17",
+   "r17_case_id": "wagp-badagry"
   },
   {
    "project": "East-West Highway Improvement 3",
@@ -3982,7 +4106,10 @@
      "rampur"
     ],
     "match_strength": "weak"
-   }
+   },
+   "r17_outcome": "already_on_map",
+   "r17_note": "matched locally to an existing case before research; not re-researched in round 17",
+   "r17_case_id": "rampur-hydro"
   },
   {
    "project": "The Greater Addo Elephant National Park Project",
@@ -16335,6 +16462,12 @@
   "confirmed displacement": 422,
   "likely already on the map": 25,
   "possible overlap only": 210,
-  "open": 943
+  "open": 906,
+  "round 17 worked": 36,
+  "round 17 cases": 30,
+  "round 17 dropped": 5,
+  "round 17 already on map (pre-excluded)": 8,
+  "open in the confirmed-displacement table": 367,
+  "resolved in round 17": 44
  }
 }
