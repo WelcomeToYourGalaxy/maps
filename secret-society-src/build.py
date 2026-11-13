@@ -291,7 +291,10 @@ def pctl(vals, q):
 
 def main():
     cond = load('conditions.json')
-    caps = load('capitals.json')
+    caps = load('capitals.json')  # noqa: F841 - kept for the branch/chapter dots, not drawn today.
+    # Three of its coordinates named one place and gave another's: St. George's sat in
+    # Lorraine, Brasília at Brazil's geographic centre, Tunis in the central desert.
+    # Corrected 12 November 2026 from where this map's own sourced cases put those cities.
     cases = load('cases.json', [])
     od = load('orgs.json', {'orgs': [], 'channels': []})
     orgs, channels = od['orgs'], od['channels']
@@ -401,6 +404,7 @@ def main():
 
     _pats = load('patterns.json', [])
     pattern_rollcall(_pats, case_out)
+    reach_drift(orgs, cases)
 
     import collections as _co
     _cityc = _co.Counter(c['city'] for c in cases if c.get('city'))
@@ -509,6 +513,50 @@ def pattern_cases(p, cases):
         pc += [c for c in cases if id(c) not in ids and c['n'] in want]
     if p.get('case_exclude'): pc = [c for c in pc if not re.search(p['case_exclude'], c['n'] + ' ' + c['d'], re.I)]
     return pc
+
+
+def reach_drift(orgs, cases):
+    """Print organisations holding a case in a country their `reach` does not list.
+
+    The effect is narrower than it looks, and worth stating so nobody "fixes" it
+    the wrong way. `reach` is the asserted-reach list and counts at an
+    organisation's full type weight; the loop in main() marked "a documented case
+    in a country is proof of presence there too" already adds any case country
+    that `reach` missed, at half that weight. So a missing entry never loses the
+    country from the reach score or from the country's `pres` list -- it only
+    lands there at half weight.
+
+    What is actually inconsistent is which case countries are listed. Rolls-Royce
+    lists Brazil, Indonesia, Kazakhstan and Thailand, all of which have cases, and
+    omits India, which also has one, so two cases of the same kind are weighted
+    differently. Making it consistent means choosing a direction: list every case
+    country in `reach` (full weight, matches most entries today) or strip them all
+    out and let the half-weight rule carry them. That changes country shading, so
+    it is the owner's call and this only reports.
+    """
+    byorg = {}
+    for c in cases:
+        if c.get('org'):
+            byorg.setdefault(c['org'], set()).add(c['c'])
+    known = {o['k']: o for o in orgs}
+    drift = []
+    for k, cs in byorg.items():
+        o = known.get(k)
+        if not o:
+            drift.append((k, sorted(cs), True)); continue
+        gap = sorted(cs - set(o.get('reach', [])) - set(o.get('reach_est', [])))
+        if gap:
+            drift.append((k, gap, False))
+    if not drift:
+        return
+    drift.sort(key=lambda d: -len(d[1]))
+    print('reach: %d of %d organisations with cases hold one in a country their reach '
+          'does not list (half weight instead of full; see reach_drift docstring):'
+          % (len(drift), len(byorg)))
+    for k, gap, unknown in drift[:8]:
+        print('    %s%s: %s' % (k, ' (NO SUCH ORG KEY)' if unknown else '', ', '.join(gap)))
+    if len(drift) > 8:
+        print('    ... and %d more' % (len(drift) - 8))
 
 
 def pattern_rollcall(pats, cases):
