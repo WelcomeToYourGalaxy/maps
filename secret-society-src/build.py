@@ -531,6 +531,11 @@ def pattern_rollcall(pats, cases):
     So this does not widen anything either. It counts the orphans and prints
     them grouped, so that extending a curated list stays a decision someone
     makes case by case, with the size of the backlog in front of them.
+
+    On 12 November 2026 that backlog was worked: 387 of 405 orphans were
+    assigned to a curated list by hand, and the 18 that were left are in
+    data/pattern_orphans.json with the reason for each. So an orphan that is
+    not in that file is new work, and this prints the two separately.
     """
     seen = set()
     for p in pats:
@@ -544,11 +549,14 @@ def pattern_rollcall(pats, cases):
         by.setdefault((c.get('inf'), c.get('tgt')), 0)
         by[(c.get('inf'), c.get('tgt'))] += 1
     top = sorted(by.items(), key=lambda kv: -kv[1])[:8]
-    print('patterns: %d of %d cases sit in no pattern. Eight patterns pick their '
-          'cases from hand-written title lists, so anything added since those '
-          'lists were written is orphaned until a title is added by hand:'
-          % (len(orph), len(cases)))
+    settled = load('pattern_orphans.json', {}).get('left', {})
+    fresh = [c for c in orph if c['n'] not in settled]
+    print('patterns: %d of %d cases sit in no pattern -- %d reviewed and left there '
+          'on purpose (data/pattern_orphans.json), %d awaiting a hand decision:'
+          % (len(orph), len(cases), len(orph) - len(fresh), len(fresh)))
     print('  ' + ';  '.join('%s into %s: %d' % (i or '?', t or '?', n) for (i, t), n in top))
+    for c in fresh[:12]:
+        print('    new orphan: %s (%s into %s)' % (c['n'], c.get('inf'), c.get('tgt')))
 
 
 def build_patterns(pats, cases, ent, channels):
