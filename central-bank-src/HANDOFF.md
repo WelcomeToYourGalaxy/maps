@@ -2,7 +2,7 @@
 
 Paste or attach this in a new chat to carry on adding to the map.
 
-Rewritten at round 34, current through round 36. It states the current position only. Earlier versions kept round-by-round narrative, which went stale and in round 26 sent agents to re-research records already on the map. Keep it that way: when something changes, edit the statement, don't append a round note. **Where this names a country as dead or blocked, that is as of round 36 — re-derive the target list from `coverage.py` before briefing anything.**
+Rewritten at round 34, current through round 38. It states the current position only. Earlier versions kept round-by-round narrative, which went stale and in round 26 sent agents to re-research records already on the map. Keep it that way: when something changes, edit the statement, don't append a round note. **Where this names a country as dead or blocked, that is as of round 38 — re-derive the target list from `coverage.py` before briefing anything.**
 
 ## What it is
 - A standalone global map titled **"Central bank capture"**. It shows who owns and steers each central bank, what it hides, the corruption inside and around it, and how far its money reaches beyond its borders.
