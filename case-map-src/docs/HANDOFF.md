@@ -18,6 +18,34 @@ Asia). Leads in `/home/claude/r19/leads_{A,B,C}.json`, brief in `/home/claude/r1
 The brief is the round-18 forward rule plus the ICIJ figure finding, the dedupe-on-P-number rule
 and the voice rule, written out in full so a writer needs nothing else.
 
+## The dedupe recipe in this file was WRONG, and it is fixed — read this before any lead round
+
+Earlier versions of this file told researchers to dedupe leads with:
+
+    grep -o 'P[0-9]\{6\}' base.html
+
+**Do not use that.** `base.html` embeds ICIJ's own per-country lead tables — the `dl` and `dpy`
+arrays the country panels draw on, sitting around byte offsets 6.5M–7.1M — so **every ICIJ project
+P-number is already in the file as lead data.** A grep over the whole file therefore matches almost
+any lead about to be researched and reports it as already on the map. In ICIJ tranche 3 that recipe
+matched 35 of 36 leads; the true number already on the map was **one**. Three researchers hit it
+independently in the same round, and each worked out for itself that the hits were in the lead
+arrays rather than in cases — otherwise the round would have been thrown away as a tranche of
+duplicates.
+
+**Use `case-map-src/dedupe_leads.py` instead.** It parses `window.CASES` and searches inside case
+objects only, which is the one place a P-number means the project is already a case; it also
+searches `window.ENT` and reports entity hits separately. Run it from anywhere:
+
+    python3 case-map-src/dedupe_leads.py P128276 P083929 P075941
+    python3 case-map-src/dedupe_leads.py --file my_leads.txt
+
+Its last line is the caveat that matters: **a P-number missing from the output is not proof the
+project is absent.** A case may carry the project under a name only, with no number — which is how
+`olkaria-maasai`, `lom-pangar-dam` and `rusumo-falls-hydro` came up as leads in tranche 3 when all
+three were already on the map. Confirm by place and years before writing a new case, and **when you
+write one, put the P-number in its lender role** so the next round's dedupe can see it.
+
 ## Round 18, in one paragraph
 
 **The second ICIJ tranche is done and the list is now 331 open rows in its confirmed-displacement
@@ -547,6 +575,47 @@ reported discrepancies were **rejected** by the checker, which is as useful: the
 confirmed rather than contradicted, and Simplex's NARCL debt restructuring does not make the
 2016-award card wrong because Simplex still exists and trades.
 
+## World Bank API routes — six corrections from round 19
+
+All six were found by three researchers working the same APIs in parallel, and every one of them
+costs a round something if it is not known.
+
+1. **The `wds` API hands back `pdfurl` pointing at the host that refuses.** The returned URL is on
+   `documents.worldbank.org`, which blocks automated fetches. **Rewrite the host to
+   `documents1.worldbank.org` and upgrade `http` to `https` before fetching.** Then download with
+   `curl` and read from disk with `pdftotext -layout`.
+2. **The `projects` API orders results by descending P-number, not by relevance.** Older projects
+   fall off the first page entirely: Ghana Urban Water (P056256, approved 2004) and Rwanda RSSP2
+   (P105176, 2008) were invisible until the query was re-run with `&os=20&rows=100` and sorted
+   locally. **Do that by default for anything approved before about 2010.**
+3. **Regional projects are not returned under a member country's ISO-2 code.**
+   `countrycode_exact=RW&qterm=Rusumo` returns nothing; dropping the country filter returns P075941
+   at once, with `countryshortname` "Eastern and Southern Africa". Note also that the DRC's code in
+   this API is **ZR**, not CD.
+4. **`wds?projectid=` returns only documents filed under that exact number.** P096305 returns one
+   resettlement plan and no completion report, because the report is filed under its parent
+   P057296; the Nigeria NEGIP report is under P106172 while P114277 returns only the appraisal.
+   **Always check the parent and sibling numbers before concluding a document does not exist.**
+5. **Before accepting that a completion report is undisclosed, try a `qterm` title search** on the
+   full project name plus "Implementation Completion Results". That found the Philippines NRIMP2
+   report in round 19 after the project-ID query had omitted it. Reports that survived that test
+   and are genuinely undisclosed: P114827 (Gujarat), P090585 (Punjab), P118783, P094488 and
+   P120960 (Burkina Faso Donsin) — for those the Evaluation Group's review, which cites the report
+   by paragraph, is the only route, and each card says so.
+6. **`wds` title fields are sometimes CDATA dicts rather than strings** — `docna` comes back as
+   `{"cdata!": "..."}` — which throws `KeyError: slice(None, 95, None)` on naive slicing. Unwrap
+   before use.
+
+**Approval date is the decisive matching field, not the project name.** Three distinct P-numbers
+carry the name "MDTF KP Emergency Roads Recovery Project"; only P125584's 16 July 2011 approval
+matches the lead row.
+
+**Nominatim needs the local script for some places.** "Shakpak Baba, Turkestan Region, Kazakhstan"
+in Latin script returns nothing, while "Шақпақ баба" returns the village at 42.5110 / 70.5575.
+"Ouagadougou-Donsin Airport" and "Ayamfuri, Ghana" return nothing where "Donsin, Loumbila, Burkina
+Faso" and "Ayanfuri, Ghana" work — and that spelling split is itself a finding, since Bank
+documents spell the same Ghanaian road both Ayanfuri and Ayamfuri, sometimes in one report.
+
 ## Reading ratings out of World Bank documents — a trap round 18 found
 
 Two documents rate the same project and they often disagree: the Bank's own Implementation
@@ -677,9 +746,9 @@ The owner asked for all five open decisions to be settled rather than carried fo
 
 ## Workflow
 
-1. **Research agent** (general-purpose, background) with a brief from `docs/` (`BRIEF17.md` for new cases; `WHOLE.md`, `COMP.md`, `COND.md` for the add-on texts). Extract current cases first: `python3 -c "import json;s=open('case-map-src/base.html').read();i=s.index('window.CASES = ')+15;json.dump(json.JSONDecoder().raw_decode(s[i:])[0],open('cases.json','w'))"`.
+1. **Research agent** (general-purpose, background) with a brief from `docs/` (**`BRIEF19.md` for new cases from the lead lists — it is the current one, carrying the forward rule, the ICIJ figure finding, the dedupe rule and the API routes; `BRIEF17.md` is the older version**; `WHOLE.md`, `COMP.md`, `COND.md` for the add-on texts). The matching checker brief is **`CHECK19.md`**. Extract current cases first: `python3 -c "import json;s=open('case-map-src/base.html').read();i=s.index('window.CASES = ')+15;json.dump(json.JSONDecoder().raw_decode(s[i:])[0],open('cases.json','w'))"`.
 2. **Dedupe yourself before checking** (iso3, nearby coordinates, keywords).
-3. **Fact-check agent** (separate, background): `docs/CHECK13.md` for cases, `docs/CHECKW.md` for whole text. Name the weak points.
+3. **Fact-check agent** (separate, background): **`docs/CHECK19.md` for cases from the lead lists**, `docs/CHECK13.md` for older-style batches, `docs/CHECKW.md` for whole text. Name the weak points.
 4. **Merge:** back up `base.html`, copy the checked file into `rounds/`, then `merge.py` (cases), `merge_whole.py` (whole text) or `merge_codesc.py` (company descriptions). merge.py does not handle people; add those directly to `window.ENT`.
 5. **Build inputs for the next batch** straight from `base.html` rather than from an old list. Conditions: cases with `research` in `ct`, minus ids already in any `rounds/r26f_conds_research_*.json`, ranked by `killed * 100 + displaced`. Companies: names in `companies[]` with no `desc`, **minus every name already present as a key in any `rounds/r26f_companies_*.json`**, ranked by how many cases use the name, passing up to four `uses` each for context. Skipping the already-attempted names matters: batch 5a wasted 10 of its 60 slots re-researching names that earlier batches had already looked for and deliberately blanked. A name that came back blank with a sound note is finished, not pending.
 6. **Build:** `python3 case-map-src/build.py` (should print "loan-condition cases matched 173 of 173").
@@ -1057,6 +1126,9 @@ pass has to decide which of the nine are of that kind rather than assuming all n
 5. **Four lender directories that cannot be collected, and why each is different.** BII is genuinely blocked, Cloudflare on `curl` and a client error on the rendered route. China Development Bank returns HTTP 412 from a firewall on the raw-HTTP route and has never been tested on the rendered route, because no URL has been surfaced — record it as untested, not refused. IFC's single headquarters record is right rather than incomplete: its directory loads the office list at runtime from a service needing a subscription key embedded in the page, and reading that key out was refused by a session's permission system. IMF per-country pages have still not been read.
 6. **The lead lists, now 1,754 rows: `docs/leads_icij.json` (870 open, of which 331 in the confirmed-displacement table), `leads_aiddata.json` (793) and `leads_complaints.json` (91).** 80 ICIJ rows are resolved across rounds 17 and 18 and carry `r17_outcome` or `r18_outcome`. **This is the only case-discovery queue on the map and the only one that would change the coverage figures.**
    - **Continue with ICIJ, but reorder it.** Two tranches of 36 yielded 30 and then 21 cases. The yield is holding, but **where it comes from has become clear: the African, South Asian and South-East Asian rows produce `documented` cases with independent sources, and the Chinese rows produce `contested` ones resting on Bank documents alone.** Every Chinese case across both rounds — 13 of them — rests on the lender reporting on its own project, after Chinese-language searches found nothing. **Put the non-China rows first.**
+   - **Dedupe with `case-map-src/dedupe_leads.py`, not with a grep over `base.html`** — see
+     "The dedupe recipe in this file was WRONG" near the top. A whole-file grep matches the
+     embedded ICIJ lead arrays and reports almost every lead as a duplicate.
    - **Dedupe on the Bank's P-number, not the project name.** This is the lesson that cost a duplicate: the Ethiopia Irrigation and Drainage Project was already on the map as `ribb-megech-irrigation`, and the duplicate survived two dedupe passes because ICIJ calls P092353 "Irrigation and Drainage Project", which shares no distinctive word with the case. Existing cases carry their P-numbers in their lender roles, so grep for those.
    - **Also dedupe on single distinctive tokens.** A two-word match rule missed Bujagali and Nam Theun 2, both already on the map, because each lead title has only one distinctive word.
    - Run the free local match before dispatching anything: it found 4 already-done leads in round 16, 8 in round 17 and 2 in round 18 at no cost.
