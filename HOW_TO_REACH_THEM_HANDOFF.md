@@ -146,11 +146,21 @@ the office count moved onto the title line, then 0. If you add a line to a row
 or to a block above one of these lists, re-measure — there is no slack left.
 It fits from 1080px of window height up; at 900px the worst case is 53px over.
 
-**There is no level question.** It used to ask which of the governments above
-the place the reader meant. They searched for where they live, which settles
-the lowest one, and every government above it governs them too, so the
-question only hid half the answer. `LEAFLVL` stays null, and Who to contact
-groups the offices by government with the closest first.
+**The scope question comes first**, before the subject: how far the rule has
+to reach decides which government makes it, and that changes who every later
+answer is about. It is worded "How far does the rule have to reach?" rather
+than "which level of government" — to most readers *government* means the
+national one, and the question then sounds like a trick. It was removed once
+and put back; `LEAFLVL` null means every level, which is the "All of them at
+once" answer.
+
+**The map is about making a law, and only that.** Complaint routes to
+regulators, equality bodies, data-protection authorities and the like are out
+of scope: they would need per-country eligibility for every jurisdiction on
+Earth. The destinations that look like complaints — `enforce`, `oversight`,
+`courts`, `company` — stay, because each is a way a law gets made or
+enforced, but they are not labelled as a separate kind of route and the
+opening question is one flat list.
 
 **Who to contact is ordered by the lawmaking sequence**, not alphabetically
 and not by count. `LAWSEQ` holds the order and the phrase beside each kind
@@ -660,44 +670,66 @@ font that is there.
 
 ---
 
-## 14. The magnifying circles, and the hierarchy
+## 14. The camera, and two things that were tried and removed
 
-**The camera holds at national scale.** `fitToNational` frames the widest
-level that has a shape on its `STACK` entry, which is the country, and the
-camera does not move again. `fitToPins`, which framed the offices between the
-municipality and the region, is still in the file and no longer called on the
-search path.
+**One camera move per search, and it frames the country.** `fitToNational` is
+called once, from `enterPlace`, as soon as the chain is built. Four separate
+things used to move the camera on that path and the result looked like a
+fault:
 
-That is only tolerable because of the lenses. The offices that govern one town
-sit at four scales — city hall in the town, the county seat twenty miles off,
-the state capital two hundred, the national two thousand — so a camera framing
-all of them shows five specks, a camera framing the town hides three levels
-off-screen, and flying between them in turn is what read as a fault.
-`paintLenses` draws one circle per level down the left: that level's boundary
-from its `STACK` feature and its markers from `PINS`, projected flat into
-116px with a `cos(lat)` term so a county is not an oval. `paintLeaders` draws
-the dashed line from each circle to where that place actually is, in screen
-space, and is bound to the map's `move` event because the circle is fixed and
-the point it names is not.
+| Where | What it did |
+| --- | --- |
+| `drawAdm` | framed the parent unit — a zoom into the county |
+| `loadLocalContacts` | framed the buildings — a zoom into the town, seconds later |
+| `loadChainPins` | framed again at the end — a second animation |
+| `fitToNational` | framed the whole country geometry — see below |
 
-**The markers inside a lens are clickable, and that is the point.** At
-national scale a town's markers are a single pixel and cannot be hit at all.
+The first three are gone or conditioned. The fourth was the worst: a country
+is a MultiPolygon and the United States carries Alaska, Hawaii and the Pacific
+territories in the same feature, so a bounding box round all of it is 358
+degrees wide and the camera landed in the Pacific. `mainlandBounds` takes the
+largest ring by area and unions in every other ring whose centre is within 20
+degrees of it. Measured: US 358° → 57.7°, France 117.6° → 14.4°, New Zealand
+355.3° → 12.6° with both islands kept, Chile 43° → 12° without Easter Island.
+Twenty degrees is the number that keeps the North Island, Sicily, Hokkaido and
+Great Britain with their neighbours and still drops Alaska. **If you change
+it, re-check New Zealand and the United States — they fail in opposite
+directions.**
 
-Two traps. `#lenses` is `display:none` in the stylesheet, so `paintLenses` has
-to set `display:block` rather than clearing the inline value back to that
-default — clearing it hid every lens while leaving the DOM intact, which looks
-exactly like the data failing. And the lenses are hidden under 1100px of
-window: there is no room for a 116px column beside a panel that is half the
-width.
+**The country can go missing from the chain.** Its shape and its Wikidata id
+are found separately, and the id fails far more often; `fromWorld` used to
+push the country onto `STACK` only when the id resolved, so a slow query left
+the chain starting at the state and the camera framing the state. It now goes
+on with whichever of the two arrived. The shape lookup is also guarded: an
+unresolved numeric code compared as the string `"undefined"` and returned
+whichever country had no code, so a search in Arizona came back with
+Somaliland at the head of the chain.
 
-**The hierarchy, bottom left**, is `HIER` drawn as an SVG by `paintHier`:
-four branches, every kind under its branch, with the count here and a dash
-where there is none. Hovering a node lights that kind's markers through the
-`pin-walk` layer (the pin features carry `kind` for exactly this) and the
-matching panel row; clicking opens that kind's page. Hover deliberately does
-not move the camera — a camera chasing the pointer around a diagram is the
-jumping this round removed.
+**The control row sits above the panel** (`z-index:120`). The Shown menu is a
+child of that row and a child cannot escape its parent's stacking context, so
+the menu's own 210 was being compared against its siblings inside a row at 60
+and the panel at 100 covered it. The row ends at 52px and the panel starts at
+62px, so there is nothing lost by raising it. `fitHeader` tells the title
+block how much width the row has left it, because the two are anchored to
+opposite corners and neither knows the other's size.
 
-It is an SVG and not Mermaid. §7 records why: Mermaid's click directive does
-not work in this page, binds without throwing, and fires no handler, and every
-node of this diagram has to be live.
+### Tried and removed
+
+**Magnifying lenses.** Each level drew in a circle down the left — its
+boundary and its markers at a readable scale, with a leader line to the real
+place — so that all four levels could be read at once without the camera
+moving. It worked and it was not good enough: 116px is too small to pick one
+marker out of several, the circles showed a schematic rather than the real
+basemap, and the whole thing read as decoration. If this is tried again, the
+requirement is that every marker is separately clickable at a size a person
+can hit, which means something much larger than a corner widget.
+
+**A hierarchy diagram on the map.** Four branches with every office type under
+them, bottom left, lit in step with the panel. Removed as not worth the space.
+What it was for — telling a reader that Members, Committees and Chambers are
+one branch and the Head of Government another — is now the `howGovWorks()`
+writeup at the top of Who to Contact, which says it in three paragraphs and
+folds away.
+
+Both are in the history if they are wanted back: see the commit that added
+them and the one after it.
