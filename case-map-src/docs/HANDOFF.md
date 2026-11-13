@@ -199,15 +199,15 @@ These are the figures the About panel shows under "How complete this map is", re
 | Rounded "what happened to people" paragraph (`whole`) | 1,019 of 1,026 | 99% |
 | Cases that say what the money came with (`conditions`) | 1,002 of 1,026 | 98% |
 | Lender's terms looked for and settled (not tagged `research`) | 943 of 1,026 | 92% |
-| Company names with a line saying what the firm is (`desc`) | 966 of 1,068 | 90% |
+| Company names with a line saying what the firm is (`desc`) | 983 of 1,067 | 92% |
 | People with a checked `total` | 53 of 173 | 31% |
 | Cases with a documented buyer | 34 of 1,026 | 3% |
 
-Read out of the rendered panel on 12 Nov after round 19's whole-text merge. Whole text is back to
-99% with only the 7 deliberate blanks. **The company row is the one still open**: round 19 brought
-21 new entity names and their descriptions are written but not yet checked and merged. Note that
-row's denominator is inflated by the 40 colliding keys — see "40 company-name keys collide" — so
-real coverage is better than 90% says.
+Read out of the rendered panel on 12 Nov after round 19 finished. **Every row round 19 moved is
+back where it was or better**: whole text at 99% with only the 7 deliberate blanks, company
+descriptions at 92%, conditions at 98%. Note the company row's denominator is inflated by the 40
+colliding keys — see "40 company-name keys collide" — so real coverage is a little better than 92%
+says.
 
 Counting the countries yourself: the page's 126 counts `iso3` plus `iso3_more`. A script that counts `iso3` alone returns 124 and looks like a discrepancy. **Round 19 added one country, Burundi, and none of rounds 16, 17 or 18 added any** — all 61 of their cases are in countries already on the map, which is itself a finding: ICIJ's harvest covers 124 countries, so the thin regions stay thin because the map already has a case in every country ICIJ's biggest rows fall in.
 
@@ -392,6 +392,48 @@ Rusumo village in Tanzania. **That is where the 127th country comes from.**
   the works were about two per cent of the roads department's maintenance budget.
 - Two cards were confirmed clean: `ceip-polder-land-payments-bangladesh` and
   `swat-s3b-road-land-acquisition`.
+
+### The description check: 11 of 21 corrected, and a lender's own document was wrong
+
+The same three faults keep appearing on this job, and round 19 added a sharper version of one:
+
+- **A sourced fact taken from the wrong document within the same source.** The Hanoi Department of
+  Transport's specialised-agency and staffing facts come from Joint Circular 42/2015, not the
+  Decision 17/2008 the entry cited. The Kazakh committee's parent ministry was taken from the
+  official site's **page metadata**, which is not a statement by anyone.
+- **A unit or currency the page does not give.** DORP's "22 crore **taka**" — the page says "more
+  than 22 corers" and names no currency. And the NTPC group's capacity attached to the company.
+- **A lone encyclopedia or project-document paraphrase carrying the whole sector claim.** GTCL's
+  June 1993 formation, its high-pressure remit and a 188 km pipeline all rested on Banglapedia
+  alone, which COMP.md excludes. Rebuilt from GTCL's own portal report, a procurement page naming
+  Petrobangla and the ministry, and the Financial Express for revenue.
+
+**The sharper version, and it is a caution about development-bank documents as institutional
+history.** The description job reported, from an AIIB project document, that Kazakhstan's Committee
+for Roads was "established in 2013", which would have undercut the card's description of it as the
+implementing agency for the 2010 and 2011 Inspection Panel complaints. **The AIIB document is
+wrong.** Government Resolution 1193 of 6 December 2007 renamed the Committee for Development of
+Transport Infrastructure as the Committee for Roads under the Ministry of Transport and
+Communications, and the Inspection Panel's own Report and Recommendation (paragraph 8, footnote 10)
+says "the Project is implemented by the Committee of Roads within the Ministry of Transport and
+Communications" for a request received 5 February 2010. The 2013 date belongs to KazAvtoZhol, which
+is what the card already said. **The card needed no change, and flagging rather than fixing it was
+what saved it** — a lender's project document is a secondary source about the institutions it
+names, and its potted history can be wrong even where its figures are good.
+
+Two case-data findings from the job were verified and are now on the cards through the
+descriptions: **PGCB was renamed Power Grid Bangladesh PLC** by a resolution of 10 February 2024
+(the card's name is still right for the 2020 report it cites), and **MOAD's functions passed to a
+new state company, the Société des Aéroports du Faso**, by a decree of 18 June 2025 — "du Faso",
+not "du Burkina Faso", which one news article had wrong. One was a note rather than an error:
+AASANA's dissolution decree is dated 30 November 2021 against the card's 1 December, and it took
+effect on publication.
+
+**One honest blank, and it is the right answer.** `Full Bright Consultancy (Pvt.) Ltd.` returned
+only aggregator profiles — Devex, DevelopmentAid and the like, all excluded — none stating sector,
+founding, ownership or size, with unrelated near-matches recurring in the same searches. The card
+already says what the firm did on the project, from the resettlement plan, which is a record of its
+work and not a description of the firm.
 
 ### Other corrections worth carrying
 
@@ -917,10 +959,24 @@ defect:
    the owner.** What would settle it is the contract award itself or either company's own project
    page. Until then the Neelum-Jhelum card names a company whose identity is not established.
 
-**The scan is cheap and worth re-running after any round that adds company names** — the script is
-inline in this entry's commit and amounts to normalising each name and grouping. A new round adds
-names written by a fresh agent, which is exactly when a second spelling of an existing company
-appears.
+**Two detectors are needed, and the NTPC duplicate is why.** The scan above normalises each name,
+and it does **not** catch a company filed under both an acronym and its expansion, because the two
+strings share no words: `NTPC Limited` normalises to `ntpc` and `National Thermal Power Corporation
+(NTPC)` to `nationalthermalpower`. NTPC was found by a **second pass** that groups names by the
+acronym in their parentheses or by their initials. So run both after any round that adds company
+names — a new round's names are written by a fresh agent, which is exactly when a second spelling
+of an existing company appears. The acronym pass is noisy, colliding unrelated firms that share
+initials (`MC` catches Mitsubishi, Marubeni, Mitsui and Mitsubishi Chemical), so read its output
+rather than acting on it.
+
+**The NTPC merge is done** (`case-map-src/r19_fix_entities.py`, which takes `--dry-run`). One legal
+entity: NTPC's own RTI Chapter I page records it incorporated 7 November 1975 as National Thermal
+Power Corporation Private Ltd and **renamed NTPC Limited on 28 October 2005**. Both facts from the
+superseded descriptions were sourced and kept, and one of them was wrong in a way worth noting:
+**the ~91 GW figure is the NTPC *group*, not the company** — NTPC's own installed-capacity page
+gives 60,992 MW in NTPC's own 54 plants and 91,668 MW across 119 plants for the group. The old card
+attached the group figure to the company. The merged description gives both and labels which is
+which.
 
 ## Cache the documents to disk — it makes the follow-on jobs nearly free
 
