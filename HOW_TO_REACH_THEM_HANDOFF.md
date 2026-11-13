@@ -777,6 +777,28 @@ each instance waits for the one before it to go idle. They draw at
 whatever is still arriving. The deep bubble is made on the first hover, not
 during the load.
 
+**One aiming mark per bubble, and it is the highlight.** There was a ring
+under the orb as well, which drew two circles around one marker and said the
+same thing twice. The mark that already follows the pointer snaps onto
+whichever marker a click would take and brightens (`.bubx.on`), and the
+hovered marker's name is forced on over the labels MapLibre dropped around
+it. `crossIn` draws it, `bubAddPins` takes the host circle as an option, and
+the deep bubble passes its own — both bubbles have it, which the first
+attempt did not.
+
+**A click where markers overlap zooms.** Rather than guessing which of five
+offices in one block was meant, a click with more than one feature under the
+pointer eases in 1.6 zoom levels; once they are apart a click is a choice.
+Markers recorded at the same coordinate never separate, so there the
+best-ranked one opens instead of zooming for ever.
+
+**A bubble click does not move the panel.** `openPin` used to call
+`openJuris` for a marker from a level above the open one, which threw the
+searched municipality away and restarted the walkthrough against the county
+or the state. There is nothing to choose between levels any more — a place
+is searched once and the levels above come with it — so the panel stays and
+the office opens on its own page.
+
 **The markers are the map's markers.** Same orb images, by the main map's own
 ids (`orb-<basemap>-<level>-<state>`), registered per instance because images
 belong to an instance; `bubAddImages` adds only the basemap in use, and
