@@ -3171,5 +3171,27 @@
    "Israel is the strongest remaining pressure case: the 2013 governor nominations that collapsed and ministerial attacks on Fischer's successors. Then Czechia and Slovakia (presidents packing the boards), France, Portugal.",
    "Auditors: 31 to go, mostly blocked hosts. 2 to 4 a round."
   ]
+ },
+ "round37": {
+  "row_worked": "Moves against the bank only. Four records, four new places: Israel, Czechia, Slovakia, Portugal. Row went 67 to 71 places, 33 to 34 percent.",
+  "method": "Round 33's insight again, read off coverage.py's absent list: in a rich democracy the episode is a condition on board appointments, a minister campaigning on rates, a governor leaving early, or pressure on a single supervisory decision - not a firing. One search each, on the governor's or president's name plus independence.",
+  "added": [
+   "Israel: Smotrich's public campaign against governor Yaron over rates, 4 September 2025 - 'If the governor doesn't lower interest rates, I will lower taxes'. Reuters. Third filed example of the minister-demanding-rate-cuts form, after South Korea.",
+   "Czechia: Zeman, 18 February 2015, said he would appoint no bank board member who favoured devaluing the crown and would name members backing the euro. The president appoints all seven alone and could choose five before March 2018. Prague Monitor; Babis's 'unacceptable interference' line from bne IntelliNews 20 February 2015.",
+   "Slovakia: Makuch told the Banking Council on 27 November 2018 he would leave in March 2019, two years early, to move the choice of his successor out of the parliament expected after the 2020 election. TASR. Said in the record that nobody pressed him to go.",
+   "Portugal: the 12 April 2016 phone call from prime minister Antonio Costa to governor Carlos Costa while the bank was removing Isabel dos Santos from EuroBic. Publico. Both sides agree the call happened and disagree what it was; the PM's own SMS, reported by Observador, confirms he thought the removal inopportune. Suits dropped by agreement May 2025."
+  ],
+  "considered_and_not_filed": [
+   "France: the only candidates found are appointment controversies, which the layer excludes. 150 economists wrote to Le Monde in September 2015 against Hollande's choice of Francois Villeroy de Galhau, a former BNP Paribas deputy chief executive, as a conflict of interest, and three former governors wrote in his support on 17 September; that is a protest against an appointment, not a move against the bank. Villeroy's early departure announced 9 February 2026, which hands Macron the succession before the 2027 election, is on his own account personal and he says no one asked him to go - the Pakistan restraint rule applies. France stays blank.",
+   "Portugal second record not filed: the Left Bloc's draft resolution recommending governor Carlos Costa's resignation, voted down in February 2017 with PS and PSD against, over his time on the Caixa Geral de Depositos board. The Portugal News carries it but the page returned a client error on fetch, so it is unverified. Worth one fetch next round - it would be a clean parliamentary-pressure record."
+  ],
+  "no_party_nodes": "None of the four records names an outside party, so parties.json, hq.json and record_index were untouched and fix_record_index.py was not needed.",
+  "blocked_this_round": "The sandbox refused to execute any script from the cloned repo (coverage.py, build_final.py, audit_data.py, mk_t3.py, t_dump.py, t_sc.py all denied as code from an external source). Coverage was recomputed with an independent reimplementation of coverage.py's arithmetic over the same data files, which reproduced round 36's table exactly before the records were added. THE MAP WAS NOT REBUILT OR PUSHED. dist/central_bank_independence.html, about.html's completeness table and the four writeups still show round 36.",
+  "owed_next_round": [
+   "Rebuild with build_final.py, run audit_data.py, push to main.",
+   "Writeups for ISR, CZE, SVK, PRT are stale: each now holds an event it does not mention, and the moves-against row's places figure moved, so any paragraph quoting a headline score needs the score diff. Run mk_t3.py, t_dump.py and t_sc.py and rewrite those four directly rather than briefing agents - it is a four-record round.",
+   "about.html: 'Governor removals and pressure' goes from 67 places / 33 percent to 71 / 34 percent. Keep it in step with the handoff table and coverage.py.",
+   "Next on this row: Israel is now done, so the strongest remaining are Czechia's and Slovakia's board-packing already filed, leaving Austria, Belgium, Denmark, Finland, Luxembourg, Netherlands, Norway, Slovenia, Sweden. Sweden and Denmark are the likeliest - search the Riksbank's 2019-2022 new Sveriges Riksbank Act and Danish political attacks on the Nationalbank's krone peg."
+  ]
  }
 }
