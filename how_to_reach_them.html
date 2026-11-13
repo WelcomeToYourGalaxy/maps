@@ -36,7 +36,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 /* The row above the panel is right-aligned and can be as wide as the
    panel, so the title block is capped to what is left of the window.
    Without this the subtitle runs underneath it. */
-#hdr h1,#hdr .sub{max-width:calc(50vw - 52px)}
+#hdr h1,#hdr .sub{max-width:var(--hdrw, calc(50vw - 52px))}
 #hdr .sub{font-size:12px;color:var(--dim);margin-top:3px;pointer-events:auto;line-height:1.45}
 
 /* ---------- controls ---------- */
@@ -66,7 +66,13 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
    right-aligned with it. */
 #sopen{flex:none;border-right:1px solid var(--line)!important;border-radius:6px 0 0 6px!important;
   padding-right:9px!important;margin-right:3px}
-#toprow{position:fixed;z-index:60;right:18px;top:18px;height:34px;
+/* Above the panel, not below it. The Shown menu is a child of this
+   row, and a child cannot escape its parent's stacking context: the
+   menu's own z-index of 210 was being compared against its siblings
+   inside a row sitting at 60, so the panel at 100 covered the whole
+   thing. The row itself never overlaps the panel — it ends at 52px
+   and the panel starts at 62px — so there is nothing to lose. */
+#toprow{position:fixed;z-index:120;right:18px;top:18px;height:34px;
   width:max-content;max-width:calc(100vw - 40px);box-sizing:border-box;
   display:flex;align-items:center;gap:7px;overflow:hidden;
   background:rgba(17,24,21,.93);border:1px solid var(--line);border-radius:9px;padding:0 9px}
@@ -84,7 +90,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
    is 34px tall with overflow:hidden to keep the row tidy on a narrow
    window, which clipped this menu to nothing: the button worked, the
    class went on, and the panel was cut off a pixel below the row. */
-#showbox{display:none;position:fixed;top:56px;left:auto;z-index:70;min-width:232px;
+#showbox{display:none;position:fixed;top:56px;left:auto;z-index:210;min-width:232px;
   background:rgba(17,24,21,.98);border:1px solid var(--line);border-radius:10px;
   padding:7px 6px;box-shadow:0 16px 42px rgba(0,0,0,.55)}
 #showbox.on{display:block}
@@ -755,49 +761,16 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .sec{margin:12px 0 7px;padding-bottom:4px}
 .off{padding:9px 0}
 .pg-kind .klvl{margin-top:10px}
-/* ====================================================================
-   THE MAGNIFYING CIRCLES
-   ==================================================================== */
-#leaders{position:fixed;inset:0;z-index:48;pointer-events:none;width:100%;height:100%}
-#lenses{position:fixed;left:0;top:0;z-index:49;pointer-events:none;display:none}
-.lens{position:absolute;left:18px;width:116px;pointer-events:auto}
-.lensc{width:116px;height:116px;border-radius:50%;overflow:hidden;
-  border:1.5px solid var(--line);background:rgba(17,24,21,.86);
-  box-shadow:0 10px 30px rgba(0,0,0,.55), inset 0 0 22px rgba(0,0,0,.45);
-  backdrop-filter:blur(2px)}
-.lensc svg{display:block}
-.lensl{margin-top:4px;text-align:center;line-height:1.25}
-.lensl b{display:block;font-family:'Marcellus',serif;font-size:11px;color:var(--text);
-  text-shadow:0 1px 6px rgba(0,0,0,.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lensl span{display:block;font-size:9px;letter-spacing:.4px;text-transform:uppercase;
-  color:var(--faint);text-shadow:0 1px 6px rgba(0,0,0,.8)}
-.lsd{cursor:pointer;stroke:rgba(17,24,21,.75);stroke-width:1}
-.lsd:hover{stroke:#fff;stroke-width:1.4;r:4.6}
-.lsd.law{stroke:#cfe6d4}
-@media (max-width:1100px){ #lenses{display:none!important} }
-/* the branches of government, bottom left */
-#hier{position:fixed;left:16px;bottom:16px;z-index:52;width:316px;max-width:calc(50vw - 40px);
-  background:rgba(17,24,21,.95);border:1px solid var(--line);border-radius:11px;
-  box-shadow:0 14px 38px rgba(0,0,0,.55);backdrop-filter:blur(8px);overflow:hidden}
-#hiertog{display:block;width:100%;text-align:left;background:none;border:0;cursor:pointer;
-  font:inherit;font-size:11px;letter-spacing:.3px;color:var(--dim);padding:9px 12px}
-#hiertog:hover{color:var(--ink)}
-#hierbody{display:none;padding:0 6px 8px}
-#hier.on #hierbody{display:block}
-#hierbody text{font-family:'DM Sans',sans-serif;font-size:9.5px;fill:var(--dim)}
-#hierbody .hbr rect{fill:rgba(74,124,89,.2);stroke:rgba(140,189,154,.35)}
-#hierbody .hbr text{font-family:'Marcellus',serif;font-size:10px;fill:var(--text)}
-#hierbody .hedge path{stroke:var(--line);stroke-width:1}
-#hierbody .hk rect{fill:var(--panel2);stroke:var(--line);cursor:pointer}
-#hierbody .hk text{cursor:pointer}
-#hierbody .hk:hover rect{fill:rgba(74,124,89,.2);stroke:rgba(140,189,154,.55)}
-#hierbody .hk:hover text{fill:var(--ink)}
-#hierbody .hk.on rect{fill:rgba(74,124,89,.34);stroke:var(--accent-hi)}
-#hierbody .hk.on text{fill:var(--text)}
-#hierbody .hk.thin{opacity:.45}
-#hierbody .hct{fill:var(--faint);text-anchor:end}
-.krow.lit{border-color:var(--accent-hi);background:rgba(74,124,89,.16)}
-@media (max-width:1100px){ #hier{display:none} }
+/* the five sentences of context the list rests on */
+.govex{margin:8px 0 2px;border:1px solid var(--line);border-radius:9px;background:var(--panel2);
+  padding:0 11px}
+.govex summary{cursor:pointer;list-style:none;padding:7px 0;font-size:11px;letter-spacing:.3px;
+  color:var(--accent-hi)}
+.govex summary::-webkit-details-marker{display:none}
+.govex summary::before{content:'\25b8  ';color:var(--faint)}
+.govex[open] summary::before{content:'\25be  '}
+.govex p{font-size:11.4px;line-height:1.55;color:var(--dim);margin:0 0 8px}
+.govex p:first-of-type{margin-top:2px}
 </style>
 </head>
 <body>
@@ -827,17 +800,6 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   <div id="bmrow"></div>
   <div id="projrow"><button id="projbtn" onclick="toggleProjection()">Flat map</button></div>
 </div>
-<!-- The magnifying circles, and the lines from each to the place it
-     magnifies. Both sit over the map and below the panel. -->
-<svg id="leaders"></svg>
-<!-- The branches of government, as a tree, kept on the map rather
-     than in the panel: it is the frame the panel's answers sit in,
-     and it is wanted while reading them, not instead of them. -->
-<div id="hier">
-  <button id="hiertog" onclick="toggleHier()">How government fits together &#9656;</button>
-  <div id="hierbody"></div>
-</div>
-<div id="lenses"></div>
 <div id="start">
   <h2>Search for your municipality</h2>
   <div id="srow">
@@ -2767,7 +2729,9 @@ async function drawAdm(iso3, level, parentFeature, noMuniScan){
     }
   }
   setAdmData(feats);
-  if(parentFeature) fitTo(parentFeature.geometry);
+  /* not on the search path: there the camera is held at the country
+     and this would pull it down to the county */
+  if(parentFeature && !noMuniScan) fitTo(parentFeature.geometry);
   noteBelow('');
 }
 function setAdmData(features){
@@ -2840,11 +2804,22 @@ async function fromWorld(f, opts){
   const iso3 = f.properties.c;
   const nm   = f.properties.n || 'Unnamed unit';
   const isoN = ISO3NUM[iso3];
-  const cf   = CTRY_FEATURES.find(x=>String(x.properties.iso_n3)===String(isoN));
+  /* Guarded, because without it an unresolved code matched on the
+     string "undefined" and silently returned whichever country sorted
+     first with no numeric code — a search in Arizona came back with
+     Somaliland at the head of the chain. No code, no country: the
+     chain starts at the state instead, which is wrong but visibly so. */
+  const cf   = (isoN==null || isoN==='') ? null
+             : CTRY_FEATURES.find(x=>String(x.properties.iso_n3)===String(isoN)) || null;
   const cq   = ISO2Q[isoN];
   CGAZ_ISO3=iso3; CGAZ_ROOT={iso3:iso3, name:(cf&&cf.properties.name)||iso3, q:cq};
   STACK=[];
-  if(cq) STACK.push({q:cq, label:CGAZ_ROOT.name, iso3:iso3, level:0, feature:cf||null});
+  /* The shape and the Wikidata id are found separately and the id
+     fails far more often — a slow or rate-limited query is enough.
+     The country still governs the reader either way, so it goes on the
+     stack with whichever of the two arrived. Without this the chain
+     silently began at the state, and so did the camera. */
+  if(cq || cf) STACK.push({q:cq||null, label:CGAZ_ROOT.name, iso3:iso3, level:0, feature:cf||null});
 
   openModal(nm, 'Working out which jurisdictions this sits inside\u2026');
   $('#mbody').innerHTML='<div class="spin">Resolving the levels above '+esc(nm)+'&hellip;</div>';
@@ -3208,7 +3183,7 @@ const ROUTEWHEN={
    Each one now appears on its method's screen, under "Worth knowing". */
 const LEAVES = {
   new_law: {
-    nm:'A rule that does not exist yet', scoped:true, way:'law',
+    nm:'A rule that does not exist yet', scoped:true,
     lead:'The offices below, in the order a bill passes through them.',
     kinds:['leg/member','leg/committee','exec/minister','ag/agency','leg/chamber','leg/presiding','exec/clerk','exec/head'],
     routes:['visit','letter','call','email','sfr','petition','townhall','ballot'],
@@ -3230,7 +3205,7 @@ const LEAVES = {
   },
 
   rules: {
-    nm:'The rules written under an existing law', scoped:true, way:'law',
+    nm:'The rules written under an existing law', scoped:true,
     lead:'Laws are short and the rules written under them are long, and the rules decide what the law does in practice. Departments and agencies write them. This is the part of government with the most offices and the least public attention, and the two things open to anyone here both create an obligation to answer.',
     kinds:['exec/minister','ag/agency'],
     when:{
@@ -3249,7 +3224,7 @@ const LEAVES = {
   },
 
   enforce: {
-    nm:'A law that exists but is not being applied', scoped:true, way:'complaint',
+    nm:'A law that exists but is not being applied', scoped:true,
     lead:'A law nobody enforces and a law that does not exist look much the same from below. Prosecutors choose which cases to bring; police enforce on the ground. Neither can change a law, and neither is usually the right address for a complaint about policy rather than an incident.',
     kinds:['exec/legal','ag/police','ag/audit'],
     routes:['ig','foia','ombud','townhall','letter','quitam'],
@@ -3264,7 +3239,7 @@ const LEAVES = {
   },
 
   oversight: {
-    nm:'A body that broke its own rules', scoped:true, way:'complaint',
+    nm:'A body that broke its own rules', scoped:true,
     lead:'Auditors, inspectors general and ombudsmen investigate whether a body followed obligations already written down, and publish what they find. Most cannot compel anything. What they produce is a document that makes an agency concede a failure in writing and commit to a dated fix, which is then something a legislator or a court can act on.',
     kinds:['ag/audit','jud/defender','exec/legal'],
     routes:['ig','ombud','foia','quitam','letter'],
@@ -3278,7 +3253,7 @@ const LEAVES = {
   },
 
   courts: {
-    nm:'A law or decision that should be struck down', scoped:true, way:'complaint',
+    nm:'A law or decision that should be struck down', scoped:true,
     lead:'Courts decide what a law means and whether it stands, and a ruling can undo a law a legislature will not touch. They cannot be lobbied, and writing to a judge about a live case is improper. There are two ways in, and the first one is where most well-founded claims about wide harm stop.',
     kinds:['jud/court','jud/judge','jud/defender'],
     routes:['amicus','citizensuit','climatelit','personhood'],
@@ -3293,7 +3268,7 @@ const LEAVES = {
   },
 
   company: {
-    nm:'Something a company is doing', way:'complaint',
+    nm:'Something a company is doing',
     lead:'A company is not obliged to make as much money as possible — the case usually cited for that, decided in Michigan in 1919, says no such thing in its binding part — but little pushes it the other way either. So the argument that works is not that the company is permitted to act. It is a business reason the board could state in court if challenged, which is the shape a shareholder proposal takes. The other routes here reach the company through government or through bodies that publish findings about it.',
     kinds:['ag/agency','exec/minister','exec/legal'],
     routes:['shareprop','oecdncp','devbank','comment','ig','citizensuit','foia'],
@@ -3308,7 +3283,7 @@ const LEAVES = {
   },
 
   all: {
-    nm:'Show me every office that governs this place', way:'both',
+    nm:'Show me every office that governs this place',
     lead:'Every office over the place you searched, and over each level above it, with nothing narrowed down. A green dot marks the ones a member of the public can contact about a law.',
     kinds:['leg/member','leg/committee','leg/chamber','leg/presiding','exec/head','exec/minister',
            'exec/clerk','exec/legal','exec/envoy','jud/court','jud/judge','jud/defender',
@@ -3328,34 +3303,20 @@ const QUESTIONS = {
   start: {
     q:'Narrow the map to what you want to do',
     opts:[
-      {grp:'Changing the law',
-       gd:'These end in words on the statute book being different. They are slow, and they '+
-          'are the only routes that change anything for anybody other than you.'},
       {t:'Create a rule that does not exist yet',
        d:'A ban, a requirement, a protection, a right.', leaf:'new_law'},
       {t:'Change or repeal a law that already exists',
        d:'The words on the page are wrong, out of date, or doing harm.', go:'change'},
       {t:'Change how an existing law works in practice',
        d:'The law is not the problem. The detailed rules written under it, or the way they are applied, are.', go:'practice'},
-
-      {grp:'Making a complaint',
-       gd:'These do not change the law. You report something already wrong under the law as '+
-          'it stands, to a body obliged to look into it, and what comes back is a decision, '+
-          'a finding or an order about your case. A complaint can still end in a new law — a '+
-          'published finding is one of the few things that puts a subject in front of a '+
-          'legislator — but that is a second step, not what the complaint itself does.'},
-      {t:'A law is being ignored and nobody is enforcing it',
-       d:'The law says what you want. Nothing is happening about it on the ground.', leaf:'enforce'},
       {t:'Challenge a decision, or hold a body to its own rules',
-       d:'A public body decided something, refused something, or left a duty undone — a permit '+
-         'refused, a service withdrawn, a procedure skipped — and the complaint is about that '+
-         'act, not about what the law says.', go:'challenge'},
+       d:'A public body decided something, refused something, or left a duty undone \u2014 a permit '+
+         'refused, a service withdrawn, a procedure skipped. The complaint is about that act '+
+         'rather than about what the law says.', go:'challenge'},
       {t:'Stop something a company is doing',
-       d:'The harm is corporate. Most of these routes reach the company through a government '+
-         'body that licenses or regulates it, rather than reaching the company directly.', leaf:'company'},
-
-      {grp:'Neither yet'},
-      {t:'I am not sure yet — show me everything',
+       d:'The harm is corporate. Most of these routes reach the company through the government '+
+         'body that licenses or regulates it rather than through the company itself.', leaf:'company'},
+      {t:'I am not sure yet \u2014 show me everything',
        d:'Every office that governs this place, and every way of reaching them.', leaf:'all'},
     ]},
 
@@ -3475,7 +3436,8 @@ function drawTree(){
   if(LEAF) h+=drawLeaf();
   else{
     const node=PATH.length?PATH[PATH.length-1].next:'start';
-    h += node==='__subject__' ? drawSubjectQ()
+    h += node==='__level__'   ? drawLevelQ()
+       : node==='__subject__' ? drawSubjectQ()
        : drawQuestion(QUESTIONS[node]||QUESTIONS.start);
   }
   return h+'</div>';
@@ -3557,17 +3519,9 @@ function qopt(cls, onclick, title, desc, count, data){
     '<span class="qar">&rarr;</span></button>';
 }
 
-/* An option list that can carry headings. The opening question sorts
-   its routes into changing the law and making a complaint, because
-   those produce different things and a reader who wants one and
-   follows the other finds out several screens later. The index passed
-   to `pickOpt` is the position in the array, headings included, so
-   adding one does not renumber the options. */
 function drawQuestion(qn){
-  const opts=qn.opts.map((o,i)=> o.grp
-    ? '<div class="qgrp"><span class="qgt">'+esc(o.grp)+'</span>'+
-      (o.gd?'<span class="qgd">'+glossy(o.gd)+'</span>':'')+'</div>'
-    : qopt('', 'pickOpt('+i+')', esc(o.t), glossy(o.d||''), '', 'data-i="'+i+'"'));
+  const opts=qn.opts.map((o,i)=>
+    qopt('', 'pickOpt('+i+')', esc(o.t), glossy(o.d||''), '', 'data-i="'+i+'"'));
   return qframe(esc(qn.q), qn.sub?glossy(qn.sub):'', opts);
 }
 
@@ -3881,8 +3835,9 @@ function pageWho(L){
   const blanks=order.filter(k=>!byKind[k] || !byKind[k].length);
 
   let h='<div class="pg pg-who">';
-  h+='<h3 class="qq">Who to Contact'+wayBadge(L)+'</h3>';
+  h+='<h3 class="qq">Who to Contact</h3>';
   h+='<p class="qsub">'+glossy(L.lead||'')+'</p>';
+  h+=howGovWorks();
   if(have.length>1) h+=lawFlow(have);
   if(!have.length){
     h+='<p class="qsub warn">No office of any of these kinds is recorded for this place'+
@@ -3902,16 +3857,39 @@ function pageWho(L){
   return h+'</div>';
 }
 
-/* Which kind of route this is. A reader who wants the law changed and
-   follows a complaint route gets a decision about their own case and
-   no change to the law, and vice versa; saying which is which at the
-   top of the destination is the cheapest place to prevent that. */
-function wayBadge(L){
-  if(L.way==='both') return '<span class="wbadge cmp">Law and complaint routes</span>';
-  if(L.way==='law') return '<span class="wbadge law">Changes the law</span>';
-  if(L.way==='complaint') return '<span class="wbadge cmp">Complaint route</span>';
-  return '';
+/* How government is put together, in a paragraph, above the list it
+   explains.
+
+   A list of office types — Members, Committees, Chambers, Head of
+   Government, Departments — tells a reader who does not already know
+   how a government works almost nothing. It does not say that the
+   first three are one branch and the fourth another, that a law needs
+   two of them and not one, or why a department appears after the law
+   has passed. Every description under it assumes that frame, so the
+   frame goes first, once, in five sentences. It folds away because it
+   is the same five sentences every time. */
+function howGovWorks(){
+  return '<details class="govex"'+(GOVEX_OPEN?' open':'')+' ontoggle="GOVEX_OPEN=this.open">'+
+    '<summary>First, how a government is put together</summary>'+
+    '<p>'+glossy(
+      'Government is split into branches that are meant to check each other. The legislature '+
+      'is the one that writes and passes laws, and it is made of elected members who sit on '+
+      'committees and vote in chambers. The executive is the side that runs the country: the '+
+      'head of government signs what the legislature passes, and the departments and agencies '+
+      'under them write the detailed rules that decide what a law actually does to anybody. '+
+      'The judiciary settles what a law means when people disagree, and can strike one down.'
+    )+'</p><p>'+glossy(
+      'Two things follow that catch most people out. A law takes two bodies and not one: the '+
+      'chamber passes the bill, and then the head of government signs it, and either of them '+
+      'can stop it. And most of what government does to you day to day was not voted on by '+
+      'anybody — it was written as a rule by a department or an agency under a law passed '+
+      'years earlier, which is why those two are on this list at all.'
+    )+'</p><p>'+glossy(
+      'The list below runs in the order a law passes through them, from the office that can '+
+      'start one to the office that checks afterwards that it was followed.'
+    )+'</p></details>';
 }
+let GOVEX_OPEN=false;
 
 /* The sequence itself, above the list, so the order of the list is
    visibly an order. A list of twelve office types sorted by something
@@ -3950,10 +3928,7 @@ function pageKind(L,k){
   h+='<button type="button" class="lpback" onclick="closeKind()">\u2039 Who to Contact</button>';
   h+='<h3 class="qq">'+esc(KINDLABEL[k]||k)+
      (LAWKINDS.has(k)?'<i class="lawdot" title="a route to a law"></i>':'')+'</h3>';
-  if(st.stage) h+='<div class="kstage">In the making of a law, this is the body that '+
-     esc(st.stage)+'.</div>';
-  h+='<p class="qsub">'+glossy(when)+'</p>';
-  if(st.rel) h+='<div class="krel"><dt>How it fits with the rest</dt><dd>'+glossy(st.rel)+'</dd></div>';
+  h+='<p class="qsub">'+glossy([when, st.rel].filter(Boolean).join(' '))+'</p>';
 
   if(!ents.length){
     h+='<p class="pgblank">No office of this kind is recorded for this place'+
@@ -3991,7 +3966,7 @@ function closeKind(){ LEAFKIND=null; SEL=null; render();
 function pickOpt(i){
   const node=PATH.length?PATH[PATH.length-1].next:'start';
   const qn=QUESTIONS[node]||QUESTIONS.start;
-  const o=qn.opts[i]; if(!o || o.grp) return;
+  const o=qn.opts[i]; if(!o) return;
   if(o.go){ PATH.push({label:o.t, next:o.go}); LEAF=null; return render(); }
   enterLeaf(o.leaf, o.t);
 }
@@ -4013,22 +3988,61 @@ function enterLeaf(key, label){
 /* Which question, if any, comes after the one just answered.
    "Show me everything" is an answer to the subject question already,
    so it is never asked there. */
-/* Which question, if any, comes after the one just answered.
-
-   There used to be a level question here, asking which of the
-   governments above the place the reader meant. It is gone. They
-   searched for where they live, which settles the lowest one, and
-   every government above it governs them as well — a town ordinance
-   and a national statute are not alternatives a reader picks between
-   before they know who is in each. `LEAFLVL` stays null, so every
-   level is shown, and Who to contact groups the offices by government
-   with the closest one first.
+/* Which question, if any, comes after the one just answered. The
+   scope question comes first: how far the rule has to reach decides
+   which government makes it, and that changes who every later answer
+   is about. Then the subject, which picks the department out of the
+   ninety a state has.
 
    "Show me everything" is an answer to the subject question already,
    so it is never asked there. */
 function nextStep(L, key, after){
+  if(after==='leaf' && L.scoped && STACK.length>1) return '__level__';
   if(after!=='subject' && key!=='all' && L.kinds.some(k=>SUBJECTKINDS.has(k))) return '__subject__';
   return null;
+}
+
+/* How far the rule has to reach.
+
+   A city ordinance binds one city and a national statute binds the
+   country, and they are made by different people in different
+   buildings, so this is the first thing that has to be settled. It is
+   asked as "whose law should it be" rather than as "which level of
+   government", because to most readers the word government means the
+   national one and the question then sounds like a trick.
+
+   The level word goes beside the place name: a city, the county round
+   it and the state round that share a name often enough that the list
+   otherwise reads as the same place three times — Washington,
+   District of Columbia, District of Columbia. */
+function drawLevelQ(){
+  const opts=[];
+  for(let i=STACK.length-1;i>=0;i--){
+    const st=STACK[i];
+    const cnt=officesFor(LEAFKINDS(), i, LEAFSUB).length;
+    opts.push(qopt('sm lvl'+(cnt?'':' thin'), 'pickLevel('+i+')',
+      '<i style="background:'+levelColour(i)+'"></i>'+esc(st.label)+
+        '<em class="lvw">'+esc(LEVELN[Math.min(i,LEVELN.length-1)])+'</em>',
+      esc(LEVELSAY[Math.min(i,LEVELSAY.length-1)]),
+      (cnt? cnt+(cnt===1?' office here':' offices here') : 'none recorded'),
+      'data-lvl="'+i+'"'));
+  }
+  opts.push(qopt('sm any', 'pickLevel(null)', 'All of them at once',
+    'Every government above you together, which is how most real changes have to be worked.',
+    officesFor(LEAFKINDS(), null, LEAFSUB).length+' offices'));
+  return qframe('How far does the rule have to reach?',
+    'A rule made by your city binds that city and nowhere else. One made by the country binds '+
+    'everybody in it. Different people in different buildings make each, so this decides who '+
+    'the rest of the answers are about.', opts);
+}
+function pickLevel(i){
+  LEAFLVL=i;
+  const L=LEAVES[PENDLEAF];
+  const nx=nextStep(L, PENDLEAF, 'level');
+  PATH.push({label:(i==null?'Every level':(STACK[i]?STACK[i].label:'Level')), next:nx});
+  if(nx){ LEAF=null; return render(); }
+  LEAF=PENDLEAF; LEAFKIND=null; render();
+  frameIdsSoon(officesFor(L.kinds, i).map(o=>o.id));
 }
 function pickSubject(t){
   LEAFSUB=t;
@@ -4053,6 +4067,7 @@ function treeGo(i){
   /* whatever the dropped steps decided is dropped with them, or the
      reader steps back to the subject question and the old subject is
      still filtering the answer behind it */
+  if(st.next==='__level__'){ LEAFLVL=null; LEAFSUB=null; }
   if(st.next==='__subject__'){ LEAFSUB=null; }
   if(st.next){ LEAF=null; }
   SHOWALLK={}; LEAFKIND=null;
@@ -4196,7 +4211,6 @@ function render(){
   showBack(false);
   hideCard();
   bindTree();
-  if(typeof paintHier==='function' && HIER_OPEN) paintHier(); else if(typeof markHier==='function') markHier();
 }
 
 /* One route, as a tile. Written once because a destination lists the
@@ -4579,9 +4593,6 @@ function setPins(){
     return {type:'Feature', geometry:{type:'Point',coordinates:[p.lng,p.lat]},
       properties:{id:p.id, label:p.label, on:(i>=0 && inScope), lvl:i<0?9:i,
         law:law, bldg:bldg, scope:inScope,
-        /* carried so the hierarchy diagram can light every marker of
-           one kind at once with a layer filter */
-        kind:(o&&o.kind)||(p.o&&p.o.kind)||'',
         vis: SHOW[bldg ? (LOCAL[p.id].kind||'g') : (law?'law':'other')] !== false,
         col:levelColour(i<0?0:i),
         /* re-read on every setPins, which is also what a basemap
@@ -4590,7 +4601,6 @@ function setPins(){
   });
   src.setData({type:'FeatureCollection',features:feats.filter(f=>f.properties.vis)});
   paintShow();
-  if(typeof paintLenses==='function') paintLenses();
   const vis=feats.filter(f=>f.properties.vis);
   const on=vis.filter(f=>f.properties.on);
   const lw=on.filter(f=>f.properties.law).length;
@@ -4935,7 +4945,9 @@ async function loadLocalContacts(feature, lvlIdx){
       added++;
     });
   }
-  if(added){ setPins(); fitToPins(); }
+  /* no camera move: these are the buildings inside the place, and
+     framing them undoes the national view a moment after it is set */
+  if(added) setPins();
   return added;
 }
 
@@ -5018,7 +5030,8 @@ async function loadChainPins(){
        all: once to the place itself in `enterPlace`, once to the
        offices here when they are all in. */
   }
-  if(gen===CHAIN_GEN){ paintLenses(); fitToNational(); }
+  /* no second fit here: enterPlace framed the country before this
+     started, and the markers appear inside that frame as they resolve */
 }
 let CHAIN_DONE={}, CHAIN_CLAIMED={}, CHAIN_GEN=0;
 
@@ -5203,8 +5216,6 @@ function openStart(){
   STACK=[]; PINS={}; LOCAL={}; CHAIN_DONE={}; CHAIN_CLAIMED={}; PIN_TRIED={};
   CUR=null; SEL=null;
   SELFSITE=null; paintSiteLink();
-  const lb=$('#lenses'); if(lb){ lb.innerHTML=''; lb.style.display='none'; }
-  const ld=$('#leaders'); if(ld) ld.innerHTML='';
   setAdmData([]); paintTrail(); paintChain(); setPins();
   noteBelow('');
   try{ map.stop(); }catch(e){}
@@ -5400,7 +5411,7 @@ async function enterPlace(i){
   paintTrail(); paintChain(); setPins();
   /* the place itself is one of the lenses now, so the camera does not
      go to it; it frames the country and holds there */
-  paintLenses(); fitToNational();
+  fitToNational();
   /* the buildings inside the place, then the offices that govern it */
   loadLocalContacts(feat, STACK.length-1);
   loadChainPins();
@@ -5552,301 +5563,76 @@ function toggleAbout(){ document.getElementById('about').classList.toggle('on');
 /* keep the globe clear of the box: MapLibre's padding moves what the
    camera centres on, so the planet sits in the space left of it */
 
-/* ====================================================================
-   MAGNIFYING LENSES
+/* The camera holds at the country, and does not go to the place first.
 
-   The problem they solve: the offices that govern one town sit at four
-   different scales. The city hall is in the town, the county seat is
-   twenty miles off, the state capital two hundred, the national
-   capital two thousand. A camera that frames all of them shows a
-   country with five specks on it and nothing readable; a camera that
-   frames the town shows one marker and hides the other three levels
-   off-screen. Flying between the levels in turn showed each one
-   properly and was the thing that read as a fault.
+   The search used to fly to the municipality and the chain loader then
+   widened the view level by level, which is the jumping about that
+   went. Now one move: the country the place sits in.
 
-   So the map holds still at national scale, and each level gets a
-   magnifying circle down the left-hand side: the level's own boundary
-   and its office markers, drawn at whatever scale makes them legible
-   inside the circle, with a line to where that place actually is on
-   the map. All four levels are readable at once and the country stays
-   in view behind them. The markers inside a lens are clickable, which
-   is the real payoff — at national scale a town's markers are a
-   single pixel and cannot be hit.
-
-   The lens contents are drawn from the data the map already holds:
-   the boundary polygon on the STACK entry and the office coordinates
-   in PINS. There is no second map instance and no extra request.
-   ==================================================================== */
-const LENS_R=58, LENS_GAP=13, LENS_TOP=74;
-
-/* The outer rings of a geometry, thinned. A département can carry
-   several thousand points and the circle is 116px across, so one point
-   in every nth is indistinguishable from all of them. */
-function lensRings(g){
-  if(!g) return [];
+   It fits the largest ring rather than the whole geometry. A country
+   is a MultiPolygon and several carry territory thousands of
+   kilometres from the rest — the United States has Alaska, Hawaii and
+   the Pacific territories in the same feature, and a bounding box
+   around all of them is most of the planet, so the camera "zoomed back
+   out" past the country it was supposed to be framing. The largest
+   pieces within twenty degrees of the biggest are the mainland. */
+function mainlandBounds(g){
+  if(!g) return null;
   const polys = g.type==='Polygon' ? [g.coordinates]
               : g.type==='MultiPolygon' ? g.coordinates : [];
-  const out=[];
+  const rings=[];
   polys.forEach(p=>{
-    const r=p[0]; if(!r || r.length<4) return;
-    const step=Math.max(1, Math.floor(r.length/160));
-    const thin=[]; for(let i=0;i<r.length;i+=step) thin.push(r[i]);
-    thin.push(r[r.length-1]);
-    out.push(thin);
+    const r=p[0]; if(!r||r.length<4) return;
+    const b=bboxOf({type:'Polygon',coordinates:[r]});
+    rings.push({a:Math.abs(ringArea(r)), b:b, c:[(b[0]+b[2])/2,(b[1]+b[3])/2]});
   });
-  /* the biggest few only: an island chain is mostly specks */
-  return out.sort((a,b)=>b.length-a.length).slice(0,6);
-}
-
-/* Which levels get a lens, deepest first, and what goes in each. */
-function lensLevels(){
-  if(!STACK.length) return [];
-  const idx={}; STACK.forEach((s,i)=>{ if(s.q) idx[s.q]=i; });
-  const byLvl={};
-  Object.values(PINS).forEach(p=>{
-    const lv=(p.lvlIdx!=null)?p.lvlIdx:idx[p.lvlQ];
-    if(lv==null) return;
-    (byLvl[lv]=byLvl[lv]||[]).push(p);
-  });
-  const out=[];
-  for(let lv=STACK.length-1; lv>=0; lv--){
-    const st=STACK[lv], pins=byLvl[lv]||[];
-    if(!st) continue;
-    /* a level with neither a shape nor an office has nothing to magnify */
-    if(!pins.length && !(st.feature && st.feature.geometry)) continue;
-    out.push({lv:lv, st:st, pins:pins});
-  }
-  return out;
-}
-
-/* One lens, as an SVG. Everything is projected flat into the circle:
-   over a county or a state the error against a real projection is
-   smaller than a pixel here, and this is a diagram of where things are
-   relative to each other, not a chart anybody measures off. */
-function lensSvg(info){
-  const D=LENS_R*2, pad=9, span=D-pad*2;
-  const rings=lensRings(info.st.feature && info.st.feature.geometry);
-  let x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity;
-  const eat=(x,y)=>{ if(x<x0)x0=x; if(x>x1)x1=x; if(y<y0)y0=y; if(y>y1)y1=y; };
-  rings.forEach(r=>r.forEach(p=>eat(p[0],p[1])));
-  info.pins.forEach(p=>eat(p.lng,p.lat));
-  if(!isFinite(x0)) return '';
-  /* a single point has no extent; give it one so it lands in the middle */
-  if(x1-x0 < 1e-6){ x0-=0.01; x1+=0.01; }
-  if(y1-y0 < 1e-6){ y0-=0.01; y1+=0.01; }
-  /* latitude is squashed by cos(lat) at this size, which is what keeps
-     a county from coming out as an oval */
-  const kx=Math.cos((y0+y1)/2*Math.PI/180) || 1;
-  const w=(x1-x0)*kx, h=(y1-y0);
-  const sc=span/Math.max(w,h);
-  const ox=pad+(span-w*sc)/2, oy=pad+(span-h*sc)/2;
-  const PX=x=>ox+(x-x0)*kx*sc, PY=y=>oy+(y1-y)*sc;
-
-  const col=levelColour(info.lv);
-  let g='';
+  if(!rings.length) return null;
+  rings.sort((x,y)=>y.a-x.a);
+  const home=rings[0];
+  /* Everything within 20 degrees of the biggest piece counts as the
+     same landmass. The biggest piece alone is not enough: New
+     Zealand's is the South Island, and framing only that puts Auckland
+     and Wellington off the screen. Twenty degrees keeps the North
+     Island, Sicily, Hokkaido and Great Britain with their neighbours,
+     and still leaves out Alaska and Hawaii from the United States,
+     Easter Island from Chile and the overseas departements from
+     France — which is the whole point, since a box around those is
+     most of the planet. */
+  let b=home.b.slice();
   rings.forEach(r=>{
-    g+='<path d="M'+r.map(p=>PX(p[0]).toFixed(1)+' '+PY(p[1]).toFixed(1)).join('L')+
-       'Z" fill="'+col+'" fill-opacity=".13" stroke="'+col+'" stroke-width="1.1"/>';
+    if(r===home) return;
+    if(Math.hypot(r.c[0]-home.c[0], r.c[1]-home.c[1])>20) return;
+    b[0]=Math.min(b[0],r.b[0]); b[1]=Math.min(b[1],r.b[1]);
+    b[2]=Math.max(b[2],r.b[2]); b[3]=Math.max(b[3],r.b[3]);
   });
-  info.pins.forEach(p=>{
-    g+='<circle class="lsd'+(p.law?' law':'')+'" cx="'+PX(p.lng).toFixed(1)+'" cy="'+
-       PY(p.lat).toFixed(1)+'" r="3.4" fill="'+col+'" data-id="'+esc(p.id)+'">'+
-       '<title>'+esc(p.label||'')+'</title></circle>';
-  });
-  return '<svg viewBox="0 0 '+D+' '+D+'" width="'+D+'" height="'+D+'">'+g+'</svg>';
+  return b;
 }
-
-function paintLenses(){
-  const box=$('#lenses'); if(!box) return;
-  const L=lensLevels();
-  if(L.length<2){ box.innerHTML=''; box.style.display='none'; paintLeaders(); return; }
-  /* the stylesheet hides it, so this has to name a value rather than
-     clear the inline one back to that default */
-  box.style.display='block';
-  box.innerHTML = L.map((info,i)=>{
-    const nm=LEVELN[Math.min(info.lv,LEVELN.length-1)];
-    return '<div class="lens" data-lv="'+info.lv+'" style="top:'+
-      (LENS_TOP+i*(LENS_R*2+LENS_GAP+26))+'px">'+
-      '<div class="lensc" style="border-color:'+levelColour(info.lv)+'">'+lensSvg(info)+'</div>'+
-      '<div class="lensl"><b>'+esc(info.st.label||'')+'</b><span>'+esc(nm)+' \u00b7 '+
-        info.pins.length+(info.pins.length===1?' office':' offices')+'</span></div></div>';
-  }).join('');
-  paintLeaders();
-}
-
-/* The line from each circle to the place it magnifies. Redrawn on
-   every camera move, because the point it lands on is a map position
-   and the circle is not. */
-function paintLeaders(){
-  const svg=$('#leaders'); if(!svg) return;
-  const box=$('#lenses');
-  if(!box || box.style.display==='none'){ svg.innerHTML=''; return; }
-  let out='';
-  [...box.querySelectorAll('.lens')].forEach(el=>{
-    const lv=+el.dataset.lv, st=STACK[lv]; if(!st) return;
-    let c=null;
-    if(st.feature && st.feature.geometry) c=centroid(st.feature.geometry);
-    if(!c){
-      const ps=Object.values(PINS).filter(p=>p.lvlIdx===lv);
-      if(ps.length) c=[ps[0].lng, ps[0].lat];
-    }
-    if(!c) return;
-    let pt; try{ pt=map.project(c); }catch(e){ return; }
-    if(!pt || !isFinite(pt.x)) return;
-    const r=el.querySelector('.lensc').getBoundingClientRect();
-    const cx=r.left+r.width/2, cy=r.top+r.height/2;
-    const dx=pt.x-cx, dy=pt.y-cy, d=Math.hypot(dx,dy);
-    if(!d || d<LENS_R+6) return;
-    const sx=cx+dx/d*(LENS_R+1), sy=cy+dy/d*(LENS_R+1);
-    const col=levelColour(lv);
-    out+='<line x1="'+sx.toFixed(1)+'" y1="'+sy.toFixed(1)+'" x2="'+pt.x.toFixed(1)+
-         '" y2="'+pt.y.toFixed(1)+'" stroke="'+col+'" stroke-width="1" stroke-dasharray="3 4" opacity=".65"/>'+
-         '<circle cx="'+pt.x.toFixed(1)+'" cy="'+pt.y.toFixed(1)+'" r="3" fill="none" stroke="'+
-         col+'" stroke-width="1.2" opacity=".9"/>';
-  });
-  svg.innerHTML=out;
-}
-try{
-  map.on('move', paintLeaders);
-  map.on('resize', ()=>{ paintLenses(); });
-  addEventListener('resize', ()=>{ paintLenses(); });
-}catch(e){}
-
-/* a marker inside a lens opens its office, which at national scale is
-   the only way to hit it at all */
-document.addEventListener('click', e=>{
-  const d=e.target.closest && e.target.closest('.lsd');
-  if(d && d.dataset.id) openPin(d.dataset.id);
-});
-
-/* Hold the country in view, which is what makes the lenses worth
-   having. `fitToPins` framed the offices between the municipality and
-   the region, which is the opposite choice and the one the lenses
-   replace. */
 function fitToNational(){
   for(let i=0;i<STACK.length;i++){
     const st=STACK[i];
-    if(st && st.feature && st.feature.geometry){ fitTo(st.feature.geometry); return; }
+    const g=st && st.feature && st.feature.geometry;
+    if(!g) continue;
+    const b=mainlandBounds(g);
+    if(b) return fitTo({type:'Polygon',coordinates:[[[b[0],b[1]],[b[2],b[1]],[b[2],b[3]],[b[0],b[3]],[b[0],b[1]]]]});
+    return fitTo(g);
   }
   fitToPins();
 }
 
-
-/* ====================================================================
-   THE HIERARCHY, BOTTOM LEFT
-
-   Who to Contact is a sequence — who introduces a bill, who votes on
-   it, who signs it — and a sequence is only half of how government is
-   arranged. The other half is the branch each office belongs to, and
-   a reader cannot infer it from a list that runs Members, Committees,
-   Chambers, Head of Government: nothing on that list says the first
-   three are one branch and the fourth is another.
-
-   So the branches are drawn, once, as a tree that stays on the map
-   while the reader moves around the panel. Hovering a node lights the
-   offices of that kind on the map and the row in the panel; clicking
-   one opens that kind's page. The node for whatever page is open is
-   lit from the other direction, so the tree says where you are.
-
-   It is drawn as an SVG rather than with Mermaid. Mermaid's click
-   directive does not work in this page — it binds, it does not throw,
-   and no handler ever fires — and the whole value of this diagram is
-   that its nodes are live.
-   ==================================================================== */
-const HIER=[
-  ['leg','Legislative','Writes and passes the law',
-   ['leg/member','leg/committee','leg/chamber','leg/presiding']],
-  ['exec','Executive','Signs it, and writes the rules under it',
-   ['exec/head','exec/minister','exec/clerk','exec/legal','exec/envoy']],
-  ['ag','Agencies and oversight','Turns it into rules, enforces them, checks them',
-   ['ag/agency','ag/police','ag/audit']],
-  ['jud','Judicial','Decides what it means and whether it stands',
-   ['jud/court','jud/judge','jud/defender']],
-];
-let HIER_OPEN=false;
-
-function hierCounts(){
-  const c={};
-  Object.values(PINS).forEach(p=>{ if(p.o&&p.o.kind) c[p.o.kind]=(c[p.o.kind]||0)+1; });
-  if(BK&&BK.byId) Object.values(BK.byId).forEach(o=>{ if(!PINS[o.id]) c[o.kind]=(c[o.kind]||0)+1; });
-  return c;
+/* The control row is sized by its contents and sits at the top right;
+   the title sits at the top left. Neither knows how wide the other is,
+   so the title is told, here, whenever that could have changed. */
+function fitHeader(){
+  try{
+    const tr=document.getElementById('toprow'); if(!tr) return;
+    const left=tr.getBoundingClientRect().left;
+    document.documentElement.style.setProperty('--hdrw', Math.max(220, left-40)+'px');
+  }catch(e){}
 }
-
-function paintHier(){
-  const box=$('#hierbody'); if(!box) return;
-  const cnt=hierCounts();
-  const ROW=19, HEAD=21, PADT=8, X0=10, X1=104, W=296;
-  let y=PADT, nodes='', edges='';
-  const branchY={};
-  HIER.forEach(([br,nm,sub,kinds])=>{
-    const by=y+HEAD/2;
-    branchY[br]=by;
-    nodes+='<g class="hbr"><rect x="'+X0+'" y="'+(y)+'" rx="6" width="'+(X1-X0-14)+
-      '" height="'+(HEAD-3)+'"/><text x="'+(X0+8)+'" y="'+(y+13)+'">'+esc(nm)+'</text></g>';
-    let ky=y+HEAD+2;
-    kinds.forEach(k=>{
-      const c=cnt[k]||0;
-      edges+='<path d="M'+(X1-12)+' '+by+' C'+(X1-2)+' '+by+','+(X1-2)+' '+(ky+ROW/2-1)+','+
-             X1+' '+(ky+ROW/2-1)+'" fill="none"/>';
-      nodes+='<g class="hk'+(c?'':' thin')+'" data-kind="'+esc(k)+'">'+
-        '<rect x="'+X1+'" y="'+ky+'" rx="5" width="'+(W-X1-10)+'" height="'+(ROW-3)+'"/>'+
-        '<text x="'+(X1+8)+'" y="'+(ky+12)+'">'+esc(KINDLABEL[k]||k)+'</text>'+
-        '<text class="hct" x="'+(W-16)+'" y="'+(ky+12)+'">'+(c||'\u2013')+'</text>'+
-        '</g>';
-      ky+=ROW;
-    });
-    y = ky + 7;
-  });
-  box.innerHTML='<svg viewBox="0 0 '+W+' '+y+'" width="100%" height="'+y+'">'+
-    '<g class="hedge">'+edges+'</g>'+nodes+'</svg>';
-  markHier();
-}
-
-/* which node is the page the reader has open */
-function markHier(){
-  const want = SEL ? SEL.kind : LEAFKIND;
-  document.querySelectorAll('#hierbody .hk').forEach(g=>{
-    g.classList.toggle('on', !!want && g.dataset.kind===want);
-  });
-}
-
-function toggleHier(){
-  HIER_OPEN=!HIER_OPEN;
-  $('#hier').classList.toggle('on', HIER_OPEN);
-  $('#hiertog').textContent = HIER_OPEN ? 'How government fits together \u25be'
-                                        : 'How government fits together \u25b8';
-  if(HIER_OPEN) paintHier();
-}
-
-/* Hover lights the offices of that kind, here and on the map; it does
-   not move the camera. Clicking does, and opens the kind's page — a
-   camera that chased the pointer around a diagram would be the
-   jumping about this map has been getting rid of. */
-function hierHover(k, on){
-  document.querySelectorAll('.krow[data-kind]').forEach(r=>{
-    if(r.dataset.kind===k) r.classList.toggle('lit', on);
-  });
-  try{ map.setFilter('pin-walk', on ? ['==',['get','kind'], k||''] : ['==',['get','id'],'']); }catch(e){}
-}
-document.addEventListener('mouseover', e=>{
-  const g=e.target.closest && e.target.closest('#hierbody .hk');
-  if(g) hierHover(g.dataset.kind, true);
-});
-document.addEventListener('mouseout', e=>{
-  const g=e.target.closest && e.target.closest('#hierbody .hk');
-  if(g) hierHover(g.dataset.kind, false);
-});
-document.addEventListener('click', e=>{
-  const g=e.target.closest && e.target.closest('#hierbody .hk');
-  if(!g) return;
-  const k=g.dataset.kind;
-  if(!CUR) return;
-  /* no destination open yet: take the one that holds every office,
-     which is where this node lives in all of them */
-  if(!LEAF){ PATH=[{label:'Every office over this place', next:null}];
-             LEAF='all'; LEAFLVL=null; LEAFSUB=null; }
-  openKind(k);
-});
+addEventListener('resize', fitHeader);
+addEventListener('load', fitHeader);
+setTimeout(fitHeader, 0);
+setTimeout(fitHeader, 400);
 
 function shiftForBox(on){
   try{
