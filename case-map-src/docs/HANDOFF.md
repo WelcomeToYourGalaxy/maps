@@ -616,6 +616,60 @@ in Latin script returns nothing, while "Шақпақ баба" returns the villa
 Faso" and "Ayanfuri, Ghana" work — and that spelling split is itself a finding, since Bank
 documents spell the same Ghanaian road both Ayanfuri and Ayamfuri, sometimes in one report.
 
+## Hazard relocation is not automatically harm — the precedent round 19 set
+
+The standing scope decision is that **a documented resettlement is harm whether or not the lender
+recorded a failure.** Round 19 had to settle what that means for a relocation out of a hazard zone,
+and the answer matters because more such rows are coming.
+
+The case was Bogotá's Disaster Vulnerability Reduction project (P085727): 1,067 families moved out
+of areas the city had classified as non-mitigable landslide and flood risk, to safer locations with
+secure housing tenure. **It was dropped.** The completion report's paragraph 43 decides it — the
+resettlement policy "was triggered mainly to prevent that any person or group of persons were
+affected by acquisition of land or property" and was not triggered for this component at all; the
+only acquisition impacts were in the health sector, under an abbreviated plan covering under 200
+people, with not one complaint filed. The 1,067 is the project's own target output, reported as a
+major beneficial impact.
+
+**The rule, as recorded:** the scope decision is about **who certifies that a displacement was
+harmless** — it stops the map deferring to a lender's own clean bill of health. It is not a rule
+that any lender-financed movement of people is harm. **A hazard relocation is kept only where a
+document records a loss on top of the move**: compensation unpaid or below replacement cost,
+livelihoods not restored at the destination, recorded compulsion with a count, or a destination
+that is worse than the origin. A single clause like "unwillingness by some families to resettle",
+with no count and no loss attached, is not enough.
+
+## The Evaluation Group's ratings table misquotes the completion report — do not read the ICR out of it
+
+Round 18 established that the two documents disagree and that each rating must be named with the
+document that gave it. Round 19 found the sharper version: **the Group's review prints a column for
+the completion report's own ratings, and that column is sometimes wrong.**
+
+On Bahia (P081436) the card said both documents rated risk to development outcome "Significant".
+The completion report says **Substantial**. On quality of supervision the completion report says
+**Moderately Satisfactory**, twice; only the Group says Moderately Unsatisfactory. Both errors got
+in the same way: the writer read the completion report's rating out of the Group's table instead of
+out of the report. **Read every ICR rating from the ICR itself.** The Group's ICR column is a
+secondary account of a document that is sitting right there.
+
+The same round found the Group broadening a rating's scope: the completion report rates
+**environmental performance** Moderately Satisfactory **for much of implementation**, and the
+Group's review turns that into **safeguard compliance** "at closing", which the report never says.
+Check the noun and the time the rating attaches to, not just the word.
+
+## "The project team informed IEG that…" — a phrase to grep for
+
+A number or fact that exists only as something Bank staff told the Bank's evaluators during a
+review is **not a document**, and an earlier round cut a case on exactly that. Round 19 found the
+newer review template is full of it: the Kazakhstan 2025 review carries **nine** attributions of
+that shape. Two cards in one batch had picked facts out of them — a new administrative region and
+"resolved for most PAPs" on the Philippines card, and a works halt with archaeologists and a museum
+on the Kazakhstan card, the latter inside "The World Bank team stated (August 29, 2025)".
+
+**Grep the review for "informed IEG", "the project team" and "the World Bank team stated" before
+using anything from it**, and where such a fact is worth keeping, attribute it to the staff
+statement rather than to a document.
+
 ## Reading ratings out of World Bank documents — a trap round 18 found
 
 Two documents rate the same project and they often disagree: the Bank's own Implementation
@@ -1170,5 +1224,25 @@ pass has to decide which of the nine are of that kind rather than assuming all n
    is not finished as a subject: GroundUp reported in February 2026 that 21 more downstream
    associations had approached the same lawyer, and 22 associations in total represent villages
    downstream of Katse, so this case will need updating again.
+
+12. **`companies` is carrying implementing agencies, not companies — the owner's call.** Round 19's
+   checker found that on four of eight cards in one batch the `companies` array holds ministries,
+   city governments and state institutes, and that **no contractor is named on any of the eight**,
+   because the Bank's reports do not name them. This is not a round-19 artefact: the ICIJ material
+   is completion reports, and those name the implementing agency and almost never the firm that
+   did the work. Round 17 already had to write a rule for it — "for a government key, require a
+   sentence about its place in the state's structure, or a named unit beneath it".
+   The question for the owner is whether these belong in `companies` at all, or want a key of
+   their own. Arguments either way: a reader scanning "Companies" for corporate responsibility
+   finds a roads committee, which is misleading; but splitting the field means a migration across
+   1,008 cases and a new card section, and the agency genuinely is the body that took the land.
+   **Nothing has been changed.** Two narrower faults of the same shape *were* fixed in round 19,
+   and they show what to watch for: Road Watch was removed from the Philippines card — it is a
+   civil society oversight body under the project's anti-corruption measures, and listing it
+   beside the department that allowed uncompensated works read as an accusation the documents do
+   not make; and KazAvtoZhol's role was rewritten, because the card called it a co-implementing
+   body the Bank supervised when the completion report makes it an **output of the loan**, set up
+   in 2013 at the Bank's own recommendation, which did not exist when the 2010 and 2011 Inspection
+   Panel cases were filed.
 
 **One loose thread worth a later look.** Round 13's checker wanted the Sahiwal sentence "NEPRA's tariff decision names no shareholders" cut as an unverifiable negative, on the ground that the card does not say which decision. It was left standing, because that sentence was written and checked in round 11 against NEPRA documents that sit in the card's own sources and this checker was given neither. But the checker's point about naming the decision holds, and any pass with those documents open should name it.
