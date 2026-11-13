@@ -93,12 +93,51 @@ so the middle 90% of what is left decides the box and outliers fall outside it.
 
 ### The panel
 
-The panel draws the offices as one diagram: the jurisdiction, the four
-branches, the kinds of office inside them, and every office under its kind.
-Hovering a box shows what it is; clicking an office opens what it can do about
-a law, every route that reaches it, and the hurdles that apply. The breadcrumb,
-the marker count and the loading note sit in the panel header under the
-jurisdiction name.
+The panel is **half the window** and holds a branching walkthrough, not a
+diagram. The reader is asked what they want to do, then what subject it is
+about, and lands on a destination with two screens: **Who to contact** and
+**How to Reach Them**. The place name at the top carries the jurisdiction's
+**official site** as a visible link beside it; the breadcrumb, the marker
+count and the loading note sit under it.
+
+**Nothing in the panel is paged, and no screen is meant to scroll.** Both were
+tried and both hid the list from the reader: a pager says no more about how
+much is left unseen than a scrollbar does. Every kind of office and every
+method is on its section's screen at once, each collapsed to one line, and
+opening a row shows the detail. One row is open at a time (`toggleRoute`).
+
+That only works because the rows are tight, so **treat the spacing as
+load-bearing**. Measured on the "show me everything" destination, the worst
+case at twelve kinds of office:
+
+| | content | panel at 1080px | over |
+| --- | --- | --- | --- |
+| two-line rows, count on its own line | 1239px | 863px | 376px |
+| one-line rows, count on its own line | 964px | 863px | 101px |
+| one-line rows, count on the title line | 863px | 863px | **0** |
+
+The subject question, fourteen options, went the same way: 226px over until
+the office count moved onto the title line, then 0. If you add a line to a row
+or to a block above one of these lists, re-measure — there is no slack left.
+It fits from 1080px of window height up; at 900px the worst case is 53px over.
+
+**There is no level question.** It used to ask which of the governments above
+the place the reader meant. They searched for where they live, which settles
+the lowest one, and every government above it governs them too, so the
+question only hid half the answer. `LEAFLVL` stays null, and Who to contact
+groups the offices by government with the closest first.
+
+**Who to contact is ordered by the lawmaking sequence**, not alphabetically
+and not by count. `LAWSEQ` holds the order and the phrase beside each kind
+that says where in the sequence it sits ("introduces it", "signs it, or
+refuses to"). An ordered list whose order is not stated reads as an arbitrary
+one.
+
+**The hurdles are inside the methods.** `ROUTE_HURDLES` maps each hurdle to
+the methods it actually bites on, and `hurdleBlock` draws it at the foot of
+that method's open row. `KIND_HURDLES` is kept but no longer read. Do not
+restore a hurdles section of its own: nine long passages under one heading at
+the foot of a page is what this replaced.
 
 ---
 
@@ -399,10 +438,11 @@ Unmeasured routes are marked unmeasured rather than ranked last: no measurement
 is not a low score, and ten routes have no denominator because nobody has
 counted attempts.
 
-The routes are drawn as **tiles in a grid**, each a button with the ranking as a
-pill on its face so they can be compared without opening any, and one opens at
-a time taking the full row (`toggleRoute`). They were a stack of full-width
-rows that read as a form to scroll past.
+The routes are drawn as **rows**, each with the ranking as a pill on its face
+and its cost at the right, so they can be compared without opening any; one
+opens at a time (`toggleRoute`). `routeTile` draws them both on a
+destination's How to Reach Them screen and on an office's own page, so the two
+are the same markup and cannot drift apart.
 
 Two things still contain percentages, deliberately, because they are evidence
 about obstacles rather than success-rate readouts: the **"What usually stops
@@ -581,3 +621,14 @@ electoral-commission URLs (`NAT`, `_KE_STD`, and friends). It describes how to
 this map ever adds the electoral route to each office — not for contact data.
 
 **`cgaz-boundaries`** is already in use (§4).
+
+---
+
+## 13. Known, and not this page's to fix
+
+`welcometoyourgalaxy.github.io/culprits/glyphs/Open Sans Regular,Arial Unicode
+MS Regular/0-255.pbf` **404s on every load.** It is requested by the shared
+Culprits basemap module, not by anything in this file, and the labels this map
+draws use EB Garamond, so nothing visible is missing. The fix belongs in the
+`culprits` repo: add the glyph range, or point that style's `glyphs` URL at a
+font that is there.
