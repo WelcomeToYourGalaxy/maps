@@ -67,7 +67,16 @@ brief were wrong and cost three rounds, so test a host yourself before recording
 - **`ewsdata.rightsindevelopment.org`** — note `ewsdata`, not `ews` — mirrors ADB, AIIB, World Bank,
   AfDB and IDB files as PDFs at `/files/documents/<nn>/<BANK>-<id>.pdf`.
 - **`idbinvest.org` is fully open**, project pages and `environmental-and-social-review-*.pdf`
-  alike. Use it instead of `iadb.org` (client errors) and `mici.iadb.org` (refuses).
+  alike.
+- **`iadb.org` and `mici.iadb.org` both serve, and the route is `curl`, not WebFetch.** This
+  corrects the note three earlier versions of this brief carried. Established in round 16:
+  `https://www.iadb.org/document.cfm?id=<EZSHARE id>` returns a 302 to a signed S3 URL, and
+  `curl -sSL` follows it to the PDF. `curl` on `https://mici.iadb.org/en/cases/<case-id>`
+  returns 200 and about 100–120 KB of HTML with every case document id and filename embedded
+  in a JSON blob — which is how round 16 found the PTRT-3 final compliance report, a document
+  the rendered page does not link at all. **WebFetch on the same MICI page returns only
+  boilerplate**, so a WebFetch failure here says nothing about the host. Try `curl` before
+  recording either host as refusing.
 - **IFAD:** `members.ifad.org` (and `webapps.ifad.org`) serves Executive Board President's Reports
   in full, with conditions-precedent and covenant schedules, plus evaluation reports.
 - **`afdb.org` is not uniformly refusing:** `afdb.org/en/documents/document/<slug>` paths fetch and
@@ -86,13 +95,16 @@ brief were wrong and cost three rounds, so test a host yourself before recording
   prompt rather than a page, that is the permission system, not the host: the same URL serves in
   full by another route. Independent consultant monitoring reports are often where a term's actual
   wording lives when the loan agreement is not public.
-- **Refusing:** iadb.org, mici.iadb.org, documents.worldbank.org, otvoreniparlament.rs,
+- **Refusing:** documents.worldbank.org, otvoreniparlament.rs,
   jica.go.jp project pages (its evaluation PDFs do open),
   mneguidelines.oecd.org, Reuters, The Guardian, sec.gov's cgi-bin EDGAR search.
   **Before you record any host as refusing, re-test it and say which kind of failure you got.** This
-  list has been wrong eight times and every time the cause was the same: an unanswered permission
-  prompt written down as a refusal by the host. `disclosures.ifc.org`, `idbinvest.org`, `afdb.org`,
-  `peoplepower21.org`, `recommon.org` and `ebrd.com` were all on it and all serve.
+  list has been wrong ten times and every time the cause was the same: an unanswered permission
+  prompt, or a failure on one route only, written down as a refusal by the host.
+  `disclosures.ifc.org`, `idbinvest.org`, `afdb.org`, `peoplepower21.org`, `recommon.org`,
+  `ebrd.com`, `iadb.org` and `mici.iadb.org` were all on it and all serve. The last two came
+  off in round 16, which also found that the working route for them is `curl` while WebFetch
+  returns boilerplate — so **name the route that failed, not just the host.**
 - **dfc.gov carries OPIC's own project summaries** at `dfc.gov/sites/default/files/esia/<year>/<project>/`.
   They use the word covenants outright and state requirements on the project company directly, so
   for any OPIC co-financed case they are a stronger document than the other lender's disclosure.
