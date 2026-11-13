@@ -682,6 +682,25 @@ Keys in every case: `id, title, place, iso3, lat, lng, point, start, end, mechan
 - **The owner's nine company questions are merged, built, tested and pushed** (11 Nov night, commit `7cb0d96`, `rounds/r26f_textfix_11_checked.json` with its checker log).
 - **Round 15 is built, tested and pushed** (11 Nov late night, commits `c4c2661` and `763a234`): People as its own top-level category in every kind of money, the three lead lists, and "How much of the whole picture is here" in the About panel. No case data changed. Build printed 173 of 173 and the page loaded headless with no errors.
 - **Round 14 is built, tested and pushed** (11 Nov late night, commit `037442a`): the history jumps, the exclusive cases/live toggles, the single flat world, the lending-coverage brief section and the lede country count. Page code only, no data. Build printed 173 of 173, the page loaded headless with no errors, and the panel figures above were re-read from the rendered panel and are unchanged.
+- **Round 18 is merged, built, tested and pushed** (12 Nov, commit `19f992b` on `main`): the second
+  ICIJ tranche, the Lesotho extend, and the four corrected displacement figures. 987 to 1,008
+  cases. Build printed 173 of 173, the page loaded headless with no errors, and the panel figures
+  above were read from the rendered panel after the merge.
+  Its files: `rounds/r26f_icij2_{china_vietnam_a,china_vietnam_b,africa_asia}{,_checked}.json`
+  with check logs, `rounds/r26f_icij2_extends_normalised.json`,
+  `rounds/r26f_icij2_field_sets.json`, `rounds/r26f_icij2_whole{,_checked}.json`,
+  `rounds/r26f_lesotho_ifr_extend{,_checked}.json` with its log, `rounds/r26f_lesotho_textfix.json`,
+  and `docs/leads_icij.json` with 36 more rows annotated.
+  **Two merge traps round 18 hit, worth knowing before re-applying anything.** First,
+  `merge.py` reads an extend's `lenders_add`, `lk_add`, `cp_add`, `sources_add` and `fields_add`
+  at the **top level** of the extend object. All five of round 18's checked extends arrived with
+  that content nested under an `add` key and with `<field>_add` names instead of `fields_add`;
+  `merge.py` silently applied nothing and still printed "extended 5".
+  `r26f_icij2_extends_normalised.json` is the flattened version that actually merges — use it,
+  not the `extend` arrays inside the batch files. Second, `fields_add` **appends** text and
+  cannot set a number, so a `_set` convention in one extend crashed it on an int;
+  `r26f_icij2_field_sets.json` holds those three replacements, applied by a short script.
+  **If an extend reports as applied, check the case actually changed.**
 - **Rounds 16 and 17 are merged, built, tested and pushed** (12 Nov, commit `7f9c651` on `main`).
   40 new cases, 947 to 987. Build printed "loan-condition cases matched 173 of 173", the page
   loaded headless with no page or console errors, and every panel figure in this file was read
