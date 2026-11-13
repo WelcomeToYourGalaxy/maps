@@ -1,5 +1,13 @@
 # Tag each case by the type of condition attached to the money
 
+**This brief is for the `ct` classification job only — picking type keys for conditions text that
+already exists.** It is NOT the brief for writing the `conditions` prose field. A round 20 job was
+pointed here for that and had to work from HANDOFF.md instead. The prose field's working rules —
+what counts as an obligation, and the five things that are not conditions (ordinary commercial
+terms, a financing plan, a description rather than an obligation, a term from another loan or
+phase, a term on an intermediary) — are in `CONDR.md` and in HANDOFF.md's condition-types
+sections.
+
 Input: cond_in.json (946 cases: id, title, kind, lk lender keys, lenders, conditions text, levers, lever_why). The conditions text and lever_why are already sourced; you only classify what they say. Do not add anything they don't say.
 
 For each case, list the condition types the text documents as attached to the money (a loan, grant, guarantee, investment deal or debt deal). A condition is something the funder required, or the deal's terms required, as the price of the money: a policy change, a law, a sale, a repayment term, a project rule.
