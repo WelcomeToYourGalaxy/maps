@@ -743,7 +743,10 @@ reader searched for sits between the bubbles and the panel rather than
 underneath the bubbles describing it.
 
 **Hovering one opens a second bubble beside it**, centred on whatever the
-pointer is over and three zoom levels further in, which is what makes five
+pointer is over and two and a half zoom levels further in (to 18, past the
+main map's ceiling of 16, since the level bubble now starts near it). Both
+bubbles carry the aiming mark under the pointer; without it there is no
+telling where in a circle of ground at its own scale the pointer sits, which is what makes five
 offices in one downtown block separable. There is one deep-bubble instance,
 reused across all of them.
 
@@ -758,6 +761,29 @@ dropped and no bubble is mostly water.
 number of levels, clamped to 112–170px, so a fifth bubble does not push the
 last one off the bottom. Measured at 1080px with five levels: last bubble
 bottom at 1038.
+
+**They are built one at a time, after the main map.** Each bubble is a whole
+basemap instance — its own WebGL context, vector tiles, relief, plate and
+glyphs — and `setPins` runs every time the stack of jurisdictions grows. A
+place arrives one level at a time, so the bubble set changed four or five
+times per search and each change tore down every instance and built a new
+one: twenty maps for one town, all queueing for tiles ahead of the map the
+reader is waiting for. The main map had begun loading slowly or not at all.
+`schedBubbles` holds the repaint until the stack stops changing (380ms),
+`whenMapQuiet` waits for the main map's `idle` before the first instance
+(with a 4.5s fallback, because a source that errors never fires it), and
+each instance waits for the one before it to go idle. They draw at
+`pixelRatio: 1`. A build carries a sequence number so a newer one orphans
+whatever is still arriving. The deep bubble is made on the first hover, not
+during the load.
+
+**The markers are the map's markers.** Same orb images, by the main map's own
+ids (`orb-<basemap>-<level>-<state>`), registered per instance because images
+belong to an instance; `bubAddImages` adds only the basemap in use, and
+`pickBase` adds the new one. A `bpins-hl` ring under the orbs marks whichever
+one a click would take, with that one's name forced on over the labels that
+were dropped around it, and `bubPick` ranks the features under the pointer the
+way the main map does — law-reachable office, other office, building.
 
 Two traps. A MapLibre instance created inside a `display:none` container
 measures 0×0 and draws nothing, and resizing it later does not recover the

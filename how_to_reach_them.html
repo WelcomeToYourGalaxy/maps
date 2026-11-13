@@ -1698,9 +1698,9 @@ function create(container, opts) {
   addProtocols();
   const state = { kind: null, want: opts.initial || "night", ready: false, stacks: {}, attribution: "" };
   const map = new maplibregl.Map({
-    container: container, center: opts.center || [10, 18], zoom: opts.zoom == null ? 1.6 : opts.zoom, minZoom: 0, maxZoom: 16,
+    container: container, center: opts.center || [10, 18], zoom: opts.zoom == null ? 1.6 : opts.zoom, minZoom: 0, maxZoom: opts.maxZoom || 16,
     attributionControl: false, renderWorldCopies: false, fadeDuration: 0, dragRotate: false, pitchWithRotate: false, touchPitch: false,
-    pixelRatio: Math.min(window.devicePixelRatio || 1, 1.5),
+    pixelRatio: opts.pixelRatio || Math.min(window.devicePixelRatio || 1, 1.5),
     style: {
       version: 8, glyphs: ROOT + "glyphs/{fontstack}/{range}.pbf", projection: { type: opts.projection || "globe" },
       sources: {
@@ -2515,7 +2515,11 @@ let BASEKEY='satellite';
 function pickBase(k){
   BM.set(k); markBase(k); BASEKEY=k; setPins();
   /* the bubbles are the same ground as the map, so they change with it */
-  try{ BUBS.forEach(b=>b.bm.set(k)); if(DEEPBM) DEEPBM.set(k); }catch(e){}
+  try{
+    BUBS.forEach(b=>{ if(!b.bm) return; b.bm.set(k);
+      bubAddImages(b.map); fillBubble(b, {lv:b.lv, st:STACK[b.lv], pins:b.pins}); });
+    if(DEEPBM){ DEEPBM.set(k); bubAddImages(DEEPBM.maplibre); DEEP_LV=null; }
+  }catch(e){}
 }
 function markBase(k){ document.querySelectorAll('#bmrow button')
   .forEach(b=>b.classList.toggle('on', b.dataset.k===k)); }
@@ -4679,7 +4683,7 @@ function setPins(){
   });
   src.setData({type:'FeatureCollection',features:feats.filter(f=>f.properties.vis)});
   paintShow();
-  if(typeof paintBubbles==='function') paintBubbles();
+  if(typeof schedBubbles==='function') schedBubbles();
   const vis=feats.filter(f=>f.properties.vis);
   const on=vis.filter(f=>f.properties.on);
   const lw=on.filter(f=>f.properties.law).length;
@@ -5744,12 +5748,49 @@ function fitToNational(){
    of the Atlantic. Give that entry a `levelName` and it is labelled
    by it rather than by position.
    ==================================================================== */
-const BUB_MAX=170, BUB_MIN=112, BUB_LBL=52, BUB_TOP=74, DEEP_D=210, DEEP_STEP=3;
+const BUB_MAX=170, BUB_MIN=112, BUB_LBL=52, BUB_TOP=74, DEEP_D=210, DEEP_STEP=2.5, DEEP_MAX=18;
 function bubSize(count){
   const avail=innerHeight-BUB_TOP-18;
   return Math.max(BUB_MIN, Math.min(BUB_MAX, Math.floor(avail/Math.max(1,count))-BUB_LBL));
 }
-let BUBS=[], BUB_KEY='', DEEPBM=null, DEEP_LV=null;
+let BUBS=[], BUB_KEY='', DEEPBM=null, DEEP_LV=null, BUB_T=null, BUB_SEQ=0;
+
+/* ---- why the map had stopped loading ----
+
+   Every bubble is a whole basemap instance: its own WebGL context, its
+   own vector tiles, relief, plate and glyphs. That is affordable once.
+   It was not being done once. `setPins` runs each time the stack of
+   jurisdictions grows, and a place arrives one level at a time, so the
+   set of bubbles changed four or five times during a single search —
+   and each change tore down every instance and built a new one. A
+   search for one town built twenty maps, all of them asking the same
+   tile server for tiles at the same moment as the main map, which is
+   the one the reader is waiting for.
+
+   Three things, therefore. The repaint is held until the stack has
+   stopped changing. The first instance is not made until the main map
+   has gone quiet. And they are made one at a time rather than all at
+   once, so the queue in front of the main map's tiles is never more
+   than one bubble long. */
+function schedBubbles(ms){
+  clearTimeout(BUB_T);
+  BUB_T=setTimeout(()=>{ BUB_T=null; try{ paintBubbles(); }catch(e){} }, ms==null?380:ms);
+}
+/* The main map's tiles come first. `idle` is the honest signal that it
+   has them; the timer is there because a source that errors never
+   fires it, and the bubbles should not be lost with it. */
+function whenMapQuiet(fn){
+  let done=false;
+  const go=()=>{ if(done) return; done=true; fn(); };
+  try{
+    if(map && typeof map.loaded==='function' && !map.loaded()){
+      map.once('idle', ()=>setTimeout(go, 150));
+      setTimeout(go, 4500);
+      return;
+    }
+  }catch(e){}
+  setTimeout(go, 60);
+}
 
 function bubbleLevels(){
   if(!STACK.length) return [];
@@ -5799,18 +5840,70 @@ function groupBox(g){
   const padx=Math.max((x1-x0)*0.35, 0.03), pady=Math.max((y1-y0)*0.35, 0.03);
   return [[x0-padx,y0-pady],[x1+padx,y1+pady]];
 }
-function pinFeatures(pins){
-  return {type:'FeatureCollection', features:pins.map(p=>({type:'Feature',
-    geometry:{type:'Point',coordinates:[p.lng,p.lat]},
-    properties:{id:p.id, label:p.label||'', col:p.law?'#9ccfa7':'#c7cdd6'}}))};
+/* The same orb the main map draws, not a plain dot. A bubble is a window
+   onto the same ground, so a marker in it has to be recognisable as the
+   marker it is: same palette for the level, same three strengths (an
+   office reachable about a law, any other office, a building). The image
+   ids are the main map's — `orb-<basemap>-<level>-<state>` — and each
+   bubble registers its own copies, because images belong to a MapLibre
+   instance and the bubbles are separate instances. */
+function pinFeatures(pins, lv){
+  const pal=levelColours();
+  const li=Math.min(Math.max(lv||0,0), pal.length-1);
+  return {type:'FeatureCollection', features:pins.map(p=>{
+    const o = (typeof BK!=='undefined' && BK && BK.byId) ? BK.byId[p.id] : null;
+    const law = !!(o && o.law) || !!p.law;
+    const bldg = !!(typeof LOCAL!=='undefined' && LOCAL && LOCAL[p.id]);
+    const st = bldg ? 'bldg' : (law ? 'on' : 'off');
+    return {type:'Feature', geometry:{type:'Point',coordinates:[p.lng,p.lat]},
+      properties:{id:p.id, label:p.label||'', law:law, bldg:bldg,
+        col:pal[li], img:'orb-'+BASEKEY+'-'+li+'-'+st,
+        sort:(law?0:(bldg?2:1))}};
+  })};
+}
+
+/* Only the basemap in use: all six palettes would be ninety canvases per
+   bubble. pickBase calls this again when the reader changes basemap. */
+function bubAddImages(m){
+  try{
+    const pal=levelColours();
+    pal.forEach((hex,i)=>{
+      Object.keys(ORB_STRENGTH).forEach(st=>{
+        const id='orb-'+BASEKEY+'-'+i+'-'+st;
+        if(!m.hasImage(id)) m.addImage(id, orbImage(hex, ORB_STRENGTH[st], baseIsLight(BASEKEY)), {pixelRatio:2});
+      });
+    });
+  }catch(e){}
+}
+
+/* Which marker a click in a bubble means, ranked the way the main map
+   ranks them: an office reachable about a law, then any other office,
+   then a building. Downtown they stack, and taking whichever came back
+   first opened a fire station as often as the city council. */
+function bubPick(fs){
+  if(!fs || !fs.length) return null;
+  return fs.slice().sort((a,b)=>(a.properties.sort|0)-(b.properties.sort|0))[0];
 }
 
 function bubAddPins(m){
   if(m.getSource('bpins')) return;
   m.addSource('bpins',{type:'geojson',data:{type:'FeatureCollection',features:[]}});
-  m.addLayer({id:'bpins-c',type:'circle',source:'bpins',paint:{
-    'circle-radius':6,'circle-color':['get','col'],
-    'circle-stroke-width':1.6,'circle-stroke-color':'rgba(12,16,14,.9)'}});
+  bubAddImages(m);
+  /* Under the orbs: the ring that says which one a click would take.
+     Two offices in one block still overlap at any zoom, and without
+     this there is no way to know which of them is in front. */
+  m.addLayer({id:'bpins-hl',type:'circle',source:'bpins',
+    filter:['==',['get','id'],'\u0000'],
+    paint:{'circle-radius':14,'circle-color':'#eef4ee','circle-opacity':0.16,
+           'circle-stroke-width':1.7,'circle-stroke-color':'rgba(238,244,238,.92)'}});
+  m.addLayer({id:'bpins-c',type:'symbol',source:'bpins',
+    layout:{'icon-image':['get','img'],
+      'icon-allow-overlap':true,'icon-ignore-placement':true,
+      'symbol-sort-key':['get','sort'],
+      'icon-size':['interpolate',['linear'],['zoom'],
+        2,  ['case',['get','bldg'],0.30,['get','law'],0.52,0.42],
+        11, ['case',['get','bldg'],0.50,['get','law'],0.90,0.70],
+        16, ['case',['get','bldg'],0.58,['get','law'],1.02,0.80]]}});
   /* The names, beside the markers. MapLibre drops a label rather than
      overlapping one already placed, which is the behaviour wanted
      here: five offices in one block would otherwise be five names on
@@ -5826,10 +5919,34 @@ function bubAddPins(m){
       'text-allow-overlap':false,'text-ignore-placement':false,'text-padding':3,
       'symbol-sort-key':['get','sort']},
     paint:{'text-color':'#eef4ee','text-halo-color':'rgba(10,14,12,.95)','text-halo-width':1.5}});
-  m.on('click','bpins-c', e=>{ e.originalEvent.__pin=1; const f=e.features&&e.features[0];
+  /* the highlighted one is named whatever else was dropped around it */
+  m.addLayer({id:'bpins-hlab',type:'symbol',source:'bpins',
+    filter:['==',['get','id'],'\u0000'],
+    layout:{'text-field':['get','label'],'text-font':['EBGaramond-Regular'],
+      'text-size':10.5,'text-offset':[0,1.15],'text-anchor':'top','text-max-width':9,
+      'text-allow-overlap':true,'text-ignore-placement':true},
+    paint:{'text-color':'#ffffff','text-halo-color':'rgba(8,12,10,.98)','text-halo-width':2}});
+  /* a circle wider than the orb, so a marker can be hit without
+     landing on it exactly */
+  m.addLayer({id:'bpins-hit',type:'circle',source:'bpins',
+    paint:{'circle-radius':['interpolate',['linear'],['zoom'],
+             2, ['case',['get','bldg'],6,9], 16, ['case',['get','bldg'],8,13]],
+           'circle-color':'#000','circle-opacity':0}});
+
+  let hov='\u0000';
+  const setHov=id=>{
+    if(id===hov) return; hov=id;
+    try{ m.setFilter('bpins-hl', ['==',['get','id'],id]);
+         m.setFilter('bpins-hlab',['==',['get','id'],id]); }catch(e){}
+  };
+  m.on('mousemove','bpins-hit', e=>{
+    m.getCanvas().style.cursor='pointer';
+    const f=bubPick(e.features);
+    setHov(f ? f.properties.id : '\u0000');
+  });
+  m.on('mouseleave','bpins-hit', ()=>{ m.getCanvas().style.cursor=''; setHov('\u0000'); });
+  m.on('click','bpins-hit', e=>{ e.originalEvent.__pin=1; const f=bubPick(e.features);
     if(f) openPin(f.properties.id); });
-  m.on('mouseenter','bpins-c', ()=>{ m.getCanvas().style.cursor='pointer'; });
-  m.on('mouseleave','bpins-c', ()=>{ m.getCanvas().style.cursor=''; });
 
   /* Click the ground to go one step deeper, double-click to come back
      out. A single click is held for 240ms first, because a
@@ -5854,6 +5971,8 @@ function freeze(m){
 }
 
 function destroyBubbles(){
+  BUB_SEQ++;                 /* orphans any build still coming */
+  clearTimeout(BUB_T); BUB_T=null;
   BUBS.forEach(b=>{ try{ b.bm.maplibre.remove(); }catch(e){} });
   BUBS=[]; BUB_KEY='';
   const box=$('#bubbles'); if(box) box.innerHTML='';
@@ -5879,21 +5998,37 @@ function buildBubbles(L){
       '<div class="bubl"><b>'+esc(info.st.label||'')+'</b>'+
         '<span class="bubs" id="bubs'+i+'"></span></div>'+
     '</div>').join('');
+  /* The captions and the groups are known without a map, so they are
+     filled in now and the circles arrive under them. */
   L.forEach((info,i)=>{
+    BUBS[i]={lv:info.lv, bm:null, map:null, gi:0, groups:[], pins:info.pins, el:box.children[i]};
+    fillBubble(BUBS[i], info);
+  });
+  const seq=++BUB_SEQ;
+  const makeOne=(i)=>{
+    if(seq!==BUB_SEQ || i>=L.length) return;       /* a newer build won */
+    const info=L[i], slot=BUBS[i];
+    if(!slot || !document.getElementById('bubm'+i)){ makeOne(i+1); return; }
     const bm=CulpritsBasemaps.create('bubm'+i, {
       initial:BASEKEY, projection:'mercator', center:[0,0], zoom:1, plate:PLATE_URL,
-      onReady(){ const m=bm.maplibre; bubAddPins(m); fillBubble(BUBS[i], info); }
+      pixelRatio:1,
+      onReady(){ if(seq!==BUB_SEQ) return;
+                 const m=bm.maplibre; bubAddPins(m); fillBubble(BUBS[i], info); }
     });
     const m=bm.maplibre;
     freeze(m);
     m.on('mousemove', e=>{ showDeep(i, e.lngLat); bubCross(i, e.point); });
     m.getCanvas().addEventListener('mouseleave', ()=>{ hideDeep(); bubCross(i, null); });
-    BUBS[i]={lv:info.lv, bm:bm, map:m, gi:0, groups:[], el:box.children[i]};
-    fillBubble(BUBS[i], info);
-  });
-  /* made now rather than on the first hover: its box is laid out from
-     the start, so it has a size to be built at */
-  try{ deepMap(); }catch(e){}
+    slot.bm=bm; slot.map=m;
+    fillBubble(slot, info);
+    /* one at a time: the next waits for this one's tiles */
+    const next=()=>setTimeout(()=>makeOne(i+1), 120);
+    let fired=false;
+    m.once('idle', ()=>{ if(!fired){ fired=true; next(); } });
+    setTimeout(()=>{ if(!fired){ fired=true; next(); } }, 2200);
+  };
+  whenMapQuiet(()=>makeOne(0));
+  /* the deep bubble is made on the first hover, not during the load */
   /* the column now occupies the left of the map */
   try{ shiftForBox(document.getElementById('modal').classList.contains('on')); }catch(e){}
 }
@@ -5904,27 +6039,40 @@ function buildBubbles(L){
    shows whatever is under this mark. */
 function bubCross(i, pt){
   const b=BUBS[i]; if(!b) return;
-  let x=b.el.querySelector('.bubx');
+  crossIn(b.el.querySelector('.bubc'), pt);
+}
+/* The mark is wanted in the deep bubble on the same grounds it is
+   wanted in the first: that circle is ground at its own scale, and
+   without something to aim with there is no telling where in it the
+   pointer is. */
+function crossIn(host, pt){
+  if(!host) return;
+  let x=host.querySelector('.bubx');
   if(!pt){ if(x) x.style.display='none'; return; }
-  if(!x){ x=document.createElement('div'); x.className='bubx';
-          b.el.querySelector('.bubc').appendChild(x); }
+  if(!x){ x=document.createElement('div'); x.className='bubx'; host.appendChild(x); }
   x.style.display='block';
   x.style.left=Math.round(pt.x)+'px';
   x.style.top=Math.round(pt.y)+'px';
 }
+function deepCross(pt){ crossIn(document.querySelector('#deep .bubc'), pt); }
 
 function fillBubble(b, info){
   if(!b) return;
+  const hasMap = !!b.map;
   /* A level's offices are not always in one place; one view of all of
      them can be two specks and an ocean. */
-  b.groups = clusterPins(info.pins, 2.5);
+  /* 0.6 degrees, about one metropolitan area. At 2.5 a whole region
+     came out as one group and the frame that held it put every marker
+     in it on top of its neighbour. More groups is the price, and the
+     stepper under the bubble is what pays it. */
+  b.groups = clusterPins(info.pins, 0.6);
   if(b.gi>=b.groups.length) b.gi=0;
   b.pins = info.pins;
   const g=b.groups[b.gi]||info.pins;
-  try{
+  if(hasMap) try{
     const src=b.map.getSource('bpins');
-    if(src) src.setData(pinFeatures(info.pins));
-    b.map.fitBounds(groupBox(g), {padding:16, duration:0, maxZoom:14});
+    if(src) src.setData(pinFeatures(info.pins, info.lv));
+    b.map.fitBounds(groupBox(g), {padding:20, duration:0, maxZoom:16});
   }catch(e){}
   const el=$('#bubs'+BUBS.indexOf(b));
   if(el){
@@ -5948,27 +6096,32 @@ function deepMap(){
   if(DEEPBM) return DEEPBM;
   DEEPBM=CulpritsBasemaps.create('deepm', {
     initial:BASEKEY, projection:'mercator', center:[0,0], zoom:6, plate:PLATE_URL,
+    maxZoom:DEEP_MAX, pixelRatio:1,
     onReady(){ const m=DEEPBM.maplibre; bubAddPins(m); }
   });
-  freeze(DEEPBM.maplibre);
+  const dm=DEEPBM.maplibre;
+  freeze(dm);
+  dm.on('mousemove', e=>deepCross(e.point));
+  dm.getCanvas().addEventListener('mouseleave', ()=>deepCross(null));
   return DEEPBM;
 }
 function showDeep(i, lngLat){
   const b=BUBS[i]; if(!b) return;
   const host=$('#deep'); if(!host) return;
+  const r0=b.el.querySelector('.bubc').getBoundingClientRect();
+  host.classList.add('on');
+  host.style.left=Math.round(r0.right+14)+'px';
+  host.style.top=Math.round(Math.max(8, Math.min(innerHeight-DEEP_D-8, r0.top+r0.height/2-DEEP_D/2)))+'px';
   const bm=deepMap(), m=bm.maplibre;
   if(DEEP_LV!==b.lv){
     DEEP_LV=b.lv;
-    try{ const src=m.getSource('bpins'); if(src) src.setData(pinFeatures(b.pins)); }catch(e){}
+    try{ const src=m.getSource('bpins'); if(src) src.setData(pinFeatures(b.pins, b.lv)); }catch(e){}
   }
-  const r=b.el.querySelector('.bubc').getBoundingClientRect();
-  host.classList.add('on');
-  host.style.left=Math.round(r.right+14)+'px';
-  host.style.top=Math.round(Math.max(8, Math.min(innerHeight-DEEP_D-8, r.top+r.height/2-DEEP_D/2)))+'px';
-  try{ m.jumpTo({center:[lngLat.lng, lngLat.lat], zoom:Math.min(16, b.map.getZoom()+DEEP_STEP)}); }catch(e){}
+  try{ m.jumpTo({center:[lngLat.lng, lngLat.lat], zoom:Math.min(DEEP_MAX, b.map.getZoom()+DEEP_STEP)}); }catch(e){}
   try{ m.resize(); }catch(e){}
 }
 function hideDeep(){
+  deepCross(null);
   const host=$('#deep');
   /* not while the pointer is inside the deep bubble itself: that is
      where the markers are picked out */
@@ -5987,7 +6140,7 @@ function fitHeader(){
     document.documentElement.style.setProperty('--hdrw', Math.max(220, left-40)+'px');
   }catch(e){}
 }
-addEventListener('resize', ()=>{ try{ BUB_KEY=''; paintBubbles(); }catch(e){} });
+addEventListener('resize', ()=>{ BUB_KEY=''; try{ schedBubbles(300); }catch(e){} });
 addEventListener('resize', fitHeader);
 addEventListener('load', fitHeader);
 setTimeout(fitHeader, 0);
