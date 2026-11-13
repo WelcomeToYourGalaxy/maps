@@ -190,7 +190,9 @@ python3 $S/t_dump.py $S                 # writes $S/boxes.json: every box's text
 python3 $S/t_sc.py $S/t/old.html $S/sc_old.json && python3 $S/t_sc.py $S/t/dump.html $S/sc_new.json
 ```
 
-`t_dump.py` needs an **absolute** path. `t_sc.py` needs a **hooked** build on both sides — run `mk_t3.py` over the old build too, or it returns nothing. Keep each round's `sc_*.json` so the next round can diff against it.
+`t_dump.py` needs an **absolute** path. `t_sc.py` needs a **hooked** build on both sides — run `mk_t3.py` over the old build too, or it returns nothing. Keep each round's `sc_*.json` so the next round can diff against it; round 37's are in `agents/work/r37/`. **If the previous round's build is not on disk, recover it from git** — `git show <round's commit>:central_bank_independence.html > old_raw.html` — rather than skipping the diff.
+
+**For a round that only adds events, one command tells you whether the writeup pass is four paragraphs or the whole map.** Events enter only the outside score, through `n / MAXEV` in `outsideParts`. Compute `MAXEV` from `events_gold.json` with union expansion before and after the round: if it is unchanged, no country outside the ones you touched can have moved, and `t_sc.py` only has to confirm it. Round 37 added four events and `MAXEV` stayed at 5 (the United States and Thailand), so exactly four `all` scores moved — 18 to 20, 25 to 26, 23 to 25, 27 to 28 — and the diff returned those four and nothing else. **A percentile quoted in words moves too:** Czechia's paragraph said less exposed than 97 percent of the places measured and had to become 95.
 
 Then: keys in `boxes.json` with no entry in `writeups.json` are new; a place whose rounded `all` score changed **and** whose paragraph contains that exact old figure is stale. Patterns create no boxes, so a pattern-only round needs no writeup work — confirm that rather than assume it.
 
