@@ -723,6 +723,25 @@ offices as dots on a blank disc) and was rejected: too small to separate one
 marker from another, and it looked like decoration rather than a way to reach
 anything.
 
+**The bubbles are navigable.** A click on open ground goes 1.4 zoom levels
+deeper, a double-click comes back out, and a click on a marker opens that
+office instead. The single click is held 240ms first, because a double-click
+fires a click before it and the view would jump in before it jumped out. A
+crosshair follows the pointer inside the circle: without it there is nothing
+to aim with, since the circle is a window onto ground at a different scale
+from the map behind it.
+
+**Marker names are drawn beside them**, with MapLibre's own collision
+handling — a label that would overlap one already placed is dropped, and
+appears as the reader zooms in, which is what the zooming is for. The font is
+`EBGaramond-Regular`: it is what this map's glyph host actually serves, and
+asking for Open Sans returns a 404 and the labels silently do not draw.
+
+**The camera leaves room for the column.** `shiftForBox` sets left padding
+equal to the bubble width plus 44 whenever the column is up, so the place the
+reader searched for sits between the bubbles and the panel rather than
+underneath the bubbles describing it.
+
 **Hovering one opens a second bubble beside it**, centred on whatever the
 pointer is over and three zoom levels further in, which is what makes five
 offices in one downtown block separable. There is one deep-bubble instance,
@@ -768,3 +787,29 @@ folds away.
 
 Both are in the history if they are wanted back: see the commit that added
 them and the one after it.
+
+---
+
+## 15. What distinguishes one office from another
+
+The classifier works from a title and a Wikidata class, which is enough to
+say what *kind* of office something is and nothing at all about which one it
+is: First 5 LA and the Los Angeles County Board of Supervisors came out with
+the same paragraph under both. There is no way to write that difference
+without inventing it.
+
+The queries now select **`?itemDescription`** — the label service already
+produces it wherever `?item` is bound, so it costs nothing — and each office
+carries `desc`. It appears under the office's name in the list and as the
+only description on its own page. It is often absent, and is shown only when
+present. `CACHE_V` went to `htrt3` because the cached answers predate the
+column.
+
+The long description of a *kind* of office stays on the kind's page, where it
+is said once, rather than being repeated verbatim under every office of that
+kind.
+
+**Back controls are the same shape everywhere**: a `.lpback` link at the top
+left of the panel body, reading "‹ Who to Contact" from a kind's page and
+"‹ Chambers" from an office's. The old `#mback` button in the panel header is
+no longer shown.
