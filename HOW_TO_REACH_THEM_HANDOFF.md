@@ -112,6 +112,21 @@ were. The path runs one way and back:
 `LEAFKIND` holds the kind whose page is open, `SEL` the office. "Where next"
 is gone; the `next` arrays in `LEAVES` are no longer read.
 
+**The trail runs to the end of the path, not to the subject.** `trail()`
+used to stop at the last `PATH` step, so the two screens past it were off
+the account of how the reader got there: a page for the Los Angeles County
+Board of Supervisors said nothing about having come through Chambers. The
+kind is appended from `LEAFKIND` (or `SEL.kind`) and the office from `SEL`,
+the kind's crumb going back to its page and the office's being inert.
+
+**The chain of levels under the title names them and does not open them.**
+`paintTrail` drew every level above the searched one as an `<a>` calling
+`jumpTo`, which opened that jurisdiction's own page — the county's offices
+under the county's name — and restarted the walkthrough against a place
+nobody had searched for. One place is searched and the levels above come
+with it, so the chain says where the place sits and nothing more. `jumpTo`
+and `goUp` are still in the file and nothing in the panel calls them.
+
 **Terms of art are underlined.** `GLOSSARY` holds about forty, `glossy()`
 wraps the first use of each in a block and `#gltip` shows the definition. It
 is one pass over one combined expression on purpose: replacing term by term
@@ -480,9 +495,24 @@ destination's How to Reach Them screen and on an office's own page, so the two
 are the same markup and cannot drift apart.
 
 Two things still contain percentages, deliberately, because they are evidence
-about obstacles rather than success-rate readouts: the **"What usually stops
-it"** line on five routes, and the **Hurdles** section. They are `rt.fail` in
-`ROUTES` and the `p` arrays in `HURDLES`.
+about obstacles rather than success-rate readouts: the `rt.fail` line on five
+routes, and the **Hurdles** section. They are `rt.fail` in `ROUTES` and the
+`p` arrays in `HURDLES`.
+
+**One set of section names, not thirty-four.** Every route wrote its own
+heading for the same two questions, so opening three rows in a row gave
+"What a call produces", "What happens to your message" and "What it
+produces" for one of them, and "How it ranks" against "Why no one has
+measured how often this works" for the other. Both are one question asked of
+every method and both now have one name: **How often it works** (the band, or
+"Not measured" and why) and **What it produces, and what limits it**. The
+hurdle at the foot is the only block that is not about this method in
+particular, and its heading says so — **Behind this and the methods like
+it** — once per row rather than once per hurdle, because seven routes carry
+two and the heading was appearing twice. `rt.failt` and `HURDLES[].t` are
+still in the data and neither is read. If you give a route a heading of its
+own again, check it against the others in the same open row first: that is
+how the collisions got there.
 
 ---
 
@@ -723,13 +753,23 @@ offices as dots on a blank disc) and was rejected: too small to separate one
 marker from another, and it looked like decoration rather than a way to reach
 anything.
 
-**The bubbles are navigable.** A click on open ground goes 1.4 zoom levels
-deeper, a double-click comes back out, and a click on a marker opens that
-office instead. The single click is held 240ms first, because a double-click
-fires a click before it and the view would jump in before it jumped out. A
-crosshair follows the pointer inside the circle: without it there is nothing
-to aim with, since the circle is a window onto ground at a different scale
-from the map behind it.
+**The bubbles are navigable, and they are dragged.** A click on open ground
+goes 1.4 zoom levels deeper, a double-click comes back out, and a click on a
+marker opens that office instead. The single click is held 240ms first,
+because a double-click fires a click before it and the view would jump in
+before it jumped out. `dragPan` is the one handler `freeze` leaves on — it
+takes a map of what to keep — because a magnifier that cannot be moved shows
+whatever it was pointed at and nothing beside it. The wheel stays off: the
+bubbles sit over the map and a scroll in one would zoom the map underneath
+as well. A drag ends in a mouseup, and both click handlers were firing at
+the end of one, so each is guarded by a `dragging` flag set between
+`dragstart` and `dragend` plus 90ms.
+
+**Leaving a bubble puts it back.** Whatever the reader zoomed or dragged to,
+`onReset` refits the circle to its group on `mouseleave` (`resetBubble` for a
+level, `expReset` for an expanded group). Without it a column of five
+bubbles became five views nobody had chosen, each at a different scale from
+the level it is captioned with.
 
 **Marker names are drawn beside them**, with MapLibre's own collision
 handling — a label that would overlap one already placed is dropped, and
@@ -742,8 +782,10 @@ equal to the bubble width plus 44 whenever the column is up, so the place the
 reader searched for sits between the bubbles and the panel rather than
 underneath the bubbles describing it.
 
-**Hovering one opens a second bubble beside it**, centred on whatever the
-pointer is over and two and a half zoom levels further in (to 18, past the
+**Hovering one opens a second bubble beside it** — a bubble in the expanded
+row as much as one in the column, since `showDeepFor` takes the bubble
+rather than its index — centred on whatever the pointer is over and two and
+a half zoom levels further in (to 18, past the
 main map's ceiling of 16, since the level bubble now starts near it). Both
 bubbles carry the aiming mark under the pointer; without it there is no
 telling where in a circle of ground at its own scale the pointer sits, which is what makes five
@@ -753,14 +795,48 @@ reused across all of them.
 **The overseas problem.** A level's offices are not always in one place: a
 country's are mostly in its capital but some sit abroad, and a bubble framing
 all of them is two specks with an ocean between. `clusterPins` groups a
-level's markers by proximity (single-link, 2.5°), the bubble frames the
-largest group, and a stepper under it reads "group 1 of 3". Nothing is
+level's markers by proximity (single-link, 0.6°), the bubble frames the
+largest group, and a stepper under it reads "Group 1 of 3". Nothing is
 dropped and no bubble is mostly water.
+
+**The stepper is a chip on a line of its own.** It was 8.8px uppercase grey
+run together with the office count, and a reader looking at five bubbles did
+not see that any of them held more than one view. What it says is that part
+of a level is not on screen, so it is `.bgrp` — bordered, backed and on its
+own line, `#bubg<i>` beside `#bubs<i>` rather than inside it.
+
+**And the groups can be laid out at once.** Stepping through them says where
+each is and not how they differ. `expandGroups(i)` builds a row of them in
+the room to the right of the column, `collapseGroups` tears it down, and
+`expFits(n)` decides whether the button is offered at all: at most
+`EXP_CAP` (4) groups, and only if each still gets `EXP_MIN` (104px) in the
+room `expRoom()` finds between the column and the panel. Each is another
+whole basemap instance, so they are built one at a time behind
+`whenMapQuiet`, carry a sequence number like the level bubbles, and are
+removed on collapse, on a repaint and on a resize. Below that size or above
+that count there is no button and the stepper is the only way through.
+
+**The captions are centred on their circles and change colour with the
+basemap.** They hung to the right on a 200px block, which was the fix for an
+earlier version that ran off the left of the window; they are now
+`var(--bd) + 32px` wide with a `-16px` margin, which centres them on the
+circle and lands the left edge 2px inside the window. The text cannot be one
+colour: the grey that reads on a night earth disappears on the Atlas plate.
+`bubTone()` puts `lightbase` on `#bubbles` and `#bubexp` from `baseIsLight`,
+and is called from `paintBubbles` and `pickBase`.
+
+**The zoom buttons move with the column.** They were fixed at the bottom
+left, which at four or five levels is on top of the country bubble.
+`buildBubbles` sets `--zx` to the column's width plus clearance and
+`destroyBubbles` puts it back to 18px; `#zoomctl` reads it.
 
 **Sizes are computed, not fixed.** `bubSize` divides the usable height by the
 number of levels, clamped to 112–170px, so a fifth bubble does not push the
-last one off the bottom. Measured at 1080px with five levels: last bubble
-bottom at 1038.
+last one off the bottom. `BUB_LBL` is the space held under each circle for
+its caption and went from 52 to 60 when the caption grew the group chip —
+a chip is 24px and at 52 it reached within a pixel of the next circle down.
+Measured at 1050px with four levels: circles at 74, 298, 522 and 746, the
+last caption ending at 966, the zoom buttons from 968.
 
 **They are built one at a time, after the main map.** Each bubble is a whole
 basemap instance — its own WebGL context, vector tiles, relief, plate and
@@ -777,14 +853,18 @@ each instance waits for the one before it to go idle. They draw at
 whatever is still arriving. The deep bubble is made on the first hover, not
 during the load.
 
-**One aiming mark per bubble, and it is the highlight.** There was a ring
-under the orb as well, which drew two circles around one marker and said the
-same thing twice. The mark that already follows the pointer snaps onto
-whichever marker a click would take and brightens (`.bubx.on`), and the
-hovered marker's name is forced on over the labels MapLibre dropped around
-it. `crossIn` draws it, `bubAddPins` takes the host circle as an option, and
-the deep bubble passes its own — both bubbles have it, which the first
-attempt did not.
+**The ring is in the deep bubble, and the level bubbles carry the orb
+alone.** A ring around an orb in a 156px circle draws two circles for one
+office and says the same thing twice; in the deep bubble it is wanted,
+because that is the circle a click is aimed in and there the ring says which
+of five offices in one block the click would take. So `bubAddPins` takes
+`host` (the circle the aiming mark is drawn in) and `hl`, and only the deep
+bubble is given either. `hl` adds two layers filtered to the hovered id:
+`bpins-hl`, a circle under the orbs, and `bpins-hc`, the same orb drawn over
+the top at a larger size, so what brightens is the icon itself rather than
+something beside it. `setHov` sets the filter on those and on `bpins-hlab`,
+which forces the hovered marker's name on over the labels MapLibre dropped
+around it.
 
 **A click where markers overlap zooms.** Rather than guessing which of five
 offices in one block was meant, a click with more than one feature under the
@@ -802,10 +882,9 @@ the office opens on its own page.
 **The markers are the map's markers.** Same orb images, by the main map's own
 ids (`orb-<basemap>-<level>-<state>`), registered per instance because images
 belong to an instance; `bubAddImages` adds only the basemap in use, and
-`pickBase` adds the new one. A `bpins-hl` ring under the orbs marks whichever
-one a click would take, with that one's name forced on over the labels that
-were dropped around it, and `bubPick` ranks the features under the pointer the
-way the main map does — law-reachable office, other office, building.
+`pickBase` adds the new one, on the expanded row as well as the column.
+`bubPick` ranks the features under the pointer the way the main map does —
+law-reachable office, other office, building.
 
 Two traps. A MapLibre instance created inside a `display:none` container
 measures 0×0 and draws nothing, and resizing it later does not recover the
@@ -848,8 +927,12 @@ without inventing it.
 
 The queries now select **`?itemDescription`** — the label service already
 produces it wherever `?item` is bound, so it costs nothing — and each office
-carries `desc`. It appears under the office's name in the list and as the
-only description on its own page. It is often absent, and is shown only when
+carries `desc`. It appears under the office's name in the list, and on the
+office's own page it sits on the title line as `.nmd` rather than in a block
+of its own. It was a block, set off with a rule, which gave a line like
+"First 5 county commission for Los Angeles County, California, United
+States" the weight of a section and pushed the methods under it off the
+screen. It is often absent, and is shown only when
 present. `CACHE_V` went to `htrt3` because the cached answers predate the
 column.
 
