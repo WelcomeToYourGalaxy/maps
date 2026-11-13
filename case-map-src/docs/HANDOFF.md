@@ -2,21 +2,29 @@
 
 Last updated: 12 Nov 2026 (round 18). Replaces every earlier handoff.
 
-## Round 19, in flight
+## Round 19, in one paragraph
 
-**Two factual corrections from round 18's whole-text checker are merged and pushed** (commit
-`5516622`): the Bumbuna card said the project was restructured seven times where both documents
-say six, and the Kibera/Mukuru card attributed a Moderately Unsatisfactory outcome rating to the
-completion report, which had rated it Moderately Satisfactory. Both were in `lenders[0].role`, not
-in the prose paragraphs, which is why the whole-text checker found them and the batch checker did
-not — **a checker reading paragraphs will also read the fields those paragraphs summarise, and
-should be told to report what it finds there.**
+**The third ICIJ tranche is done and the confirmed-displacement table is now 306 open rows.** 36
+non-China rows produced **18 cases, 3 extends and 15 drops**. The map stands at **1,026 cases in
+127 countries** — Burundi is the first new country since round 15, earned by documented
+land-taking on the Rusumo transmission line. Everything is pushed.
 
-**The third ICIJ tranche is being researched now**: 36 non-China rows from the confirmed-displacement
-table, split three ways by region (South Asia; Africa; Latin America, the Caucasus and South-East
-Asia). Leads in `/home/claude/r19/leads_{A,B,C}.json`, brief in `/home/claude/r19/BRIEF19.md`.
-The brief is the round-18 forward rule plus the ICIJ figure finding, the dedupe-on-P-number rule
-and the voice rule, written out in full so a writer needs nothing else.
+**The drops are the round's real output, and one fault produced three of them: selective
+quotation, running the same way every time** — the damaging clause quoted, the favourable clause
+in the same paragraph dropped. It appeared in five of nine cards in one batch and five of ten in
+another. See "Selective quotation" below; it is the thing to put in the next writer's brief.
+
+**Two corrections to this file's own instructions came out of the round**, and both had been
+costing work silently: the dedupe recipe was wrong (next section), and six World Bank API routes
+were wrong or unknown. Also **a death count went 0 to 7 on an existing case** — the writer found
+2, the checker found 7, and the document confirms 7.
+
+**All 18 are `contested`.** Not one case in this tranche has a source outside the lender: the whole
+set rests on Bank completion reports, the Evaluation Group's reviews of those reports, Bank
+appraisal documents and borrower-prepared resettlement plans the Bank disclosed. **Making any of
+them `documented` means going outside the Bank** — state audit reports, high court records,
+national press. Three cards name a live court case or a specific district, which is where that
+would start.
 
 ## The dedupe recipe in this file was WRONG, and it is fixed — read this before any lead round
 
@@ -180,22 +188,27 @@ what it counts on ICIJ's own account, and says the documents do not explain the 
 and the gap between those two verbs is the whole finding. A draft that turned "affected by" into
 "displaced" had to be corrected. Check the document's verb for every figure.
 
-## Current state (12 Nov 2026, round 18)
+## Current state (12 Nov 2026, round 19)
 
-**1,008 cases**, in 126 countries and territories. **637 lender office records** across 21 lender keys. The page builds clean and loads headless with no errors; `build.py` prints "loan-condition cases matched 173 of 173".
+**1,026 cases**, in 127 countries and territories. **637 lender office records** across 21 lender keys. The page builds clean and loads headless with no errors; `build.py` prints "loan-condition cases matched 173 of 173".
 
 These are the figures the About panel shows under "How complete this map is", read out of the rendered panel on 12 Nov after round 18's merge, not copied from the last handoff. Read them the same way every time: the panel is computed in the browser, so clicking `#infoBtn` in a headless test and taking the text of `#info` is the only way to get them. Two rows were wrong in an earlier version because they were copied forward instead.
 
 | What | Filled | Share |
 | --- | --- | --- |
-| Rounded "what happened to people" paragraph (`whole`) | 1,001 of 1,008 | 99% |
-| Cases that say what the money came with (`conditions`) | 984 of 1,008 | 98% |
-| Lender's terms looked for and settled (not tagged `research`) | 925 of 1,008 | 92% |
-| Company names with a line saying what the firm is (`desc`) | 966 of 1,049 | 92% |
+| Rounded "what happened to people" paragraph (`whole`) | 1,001 of 1,026 | 98% |
+| Cases that say what the money came with (`conditions`) | 1,002 of 1,026 | 98% |
+| Lender's terms looked for and settled (not tagged `research`) | 943 of 1,026 | 92% |
+| Company names with a line saying what the firm is (`desc`) | 966 of 1,068 | 90% |
 | People with a checked `total` | 53 of 173 | 31% |
-| Cases with a documented buyer | 34 of 1,008 | 3% |
+| Cases with a documented buyer | 34 of 1,026 | 3% |
 
-Counting the countries yourself: the page's 126 counts `iso3` plus `iso3_more`. A script that counts `iso3` alone returns 124 and looks like a discrepancy. **None of rounds 16, 17 or 18 added a new country** — all 61 of their cases are in countries already on the map, which is itself a finding: ICIJ's harvest covers 124 countries, so the thin regions stay thin because the map already has a case in every country ICIJ's biggest rows fall in.
+Read out of the rendered panel on 12 Nov after round 19's merge. **Two rows went backwards and
+both are round 19's own doing**: the 18 new cases arrived without whole-picture text and brought
+19 new entity names, so those jobs are queued rather than complete. Every round-19 case does carry
+`conditions`, which is why that row held.
+
+Counting the countries yourself: the page's 126 counts `iso3` plus `iso3_more`. A script that counts `iso3` alone returns 124 and looks like a discrepancy. **Round 19 added one country, Burundi, and none of rounds 16, 17 or 18 added any** — all 61 of their cases are in countries already on the map, which is itself a finding: ICIJ's harvest covers 124 countries, so the thin regions stay thin because the map already has a case in every country ICIJ's biggest rows fall in.
 
 Complaint records inside a case went from 746 to **768** in round 16, because the new cases were linked to 22 existing register records. The harm-flagged subset did not move (**434 of 483**): the 22 are all records the register carries with its harm flag false.
 
@@ -257,6 +270,129 @@ Three files in `case-map-src/docs/`. None of their rows is a case: each needs th
 **The matching hint in all three files is a hint.** `likely_already_on_map` and `possible_overlap` match rare words shared with a case in the same country; two projects in the same Indian state match each other. Confirm before dropping a row. Counts of the hint: ICIJ 25 likely and 210 possible, AidData 99 and 337.
 
 **Why these three and not others.** They are the only three registers that exist: ICIJ is the one time anyone counted harm against a lending population, the complaint offices are the only places affected people can put harm on a record, and AidData is the only project-level record of Chinese state money. For private bank and bond lending, for aid and for foreign company investment there is no register at all, which is why those kinds are thin here and will stay thin until someone builds one.
+
+## Round 19 (12 Nov 2026) — the third ICIJ tranche
+
+No page code changed. All data. Files: `rounds/r26f_icij3.json` (the merged file),
+`rounds/r26f_icij3_{southasia,africa,latam_caucasus}{,_checked}.json` with check logs,
+`rounds/r26f_icij3_conditions.json` with its report, `rounds/r26f_r19_pnumbers_textfix.json`,
+`rounds/r26f_voice_scan_textfix.json`, `case-map-src/dedupe_leads.py`, `docs/BRIEF19.md`,
+`docs/CHECK19.md`, and `docs/leads_icij.json` with 36 more rows annotated.
+
+**What was worked.** The next 36 rows of the confirmed-displacement table, **non-China first**, as
+round 18 concluded they should be — split three ways by region (South Asia; Africa; Latin America,
+the Caucasus and South-East Asia), each with its own checker. Writers submitted 24 cases; **the
+checkers cut 6 and corrected nearly all the rest.** Result 18 cases, 3 extends, 15 drops.
+
+**The non-China reordering did not deliver what round 18 predicted, and that is worth knowing
+before the next tranche.** Round 18's finding was that African, South Asian and South-East Asian
+rows yield `documented` cases with independent sources where Chinese rows yield `contested` ones.
+This round put non-China rows first and **all 18 cases are still `contested`** — not one has a
+source outside the lender. Round 18's six independently-sourced cases came from Inspection Panel
+complaints, an Amnesty International urgent action and two university field theses, and those exist
+for **large, contested infrastructure**: dams, transmission lines, railway clearances. This round's
+rows were mostly **ordinary road and water projects with no complaint attached**, and nobody
+outside the Bank has written about them. **So the predictor is not the region, it is whether the
+project drew a complaint or a campaign.** Sort the remaining rows by that if independent sourcing
+matters: ICIJ's `complaint` flag is in the lead file and is the cheapest proxy available.
+
+### Selective quotation — the fault that decided three drops
+
+Five of nine cards in one batch and five of ten in another quoted a damaging clause and dropped
+the favourable clause **from the same paragraph**. It ran in one direction every time. Three cases
+died on it:
+
+- **Uganda RDP3** quoted the Bank's "did not handle, in a timely manner, cases of delayed
+  compensation of project-affected persons". Five words further on, the same report gives the
+  consequence as "delays in completion of the civil works contracts" — harm to the works — and the
+  sentence sits inside a list the report introduces as the findings of an independent procurement
+  review. Paragraph 49 then says the agency provided the resettlement completion reports for all
+  the upgraded roads, that they are satisfactory, and rates performance Moderately Satisfactory.
+  No count of anyone appears anywhere in the report.
+- **Sri Lanka's Tudella/Ja-Ela card** rested on 4,000-plus complaints, 60% about house access.
+  That passage is **Annex 7, the Borrower's own ICR**, and it counts "complaints **or requests**" —
+  the card had silently dropped "or requests" — says "over 4000", which is a floor, and says all
+  but two were resolved on site. The Inspection Panel's own determination is that the alleged
+  flooding harm "is not occurring at this time", and the completion report says no physical or
+  economic displacement was experienced. Feared harm plus a grievance log.
+- **Ghana Transport** was cut because the graves moved out of the right of way, the street
+  vendors' compensation and the forests omission are **all three** sourced to the Evaluation
+  Group's "interaction with the TTL", and the completion report contains no instance of "grave",
+  "burial" or "tomb".
+
+**The test that catches it:** when a card quotes a document, grep that document for the sentence
+that cuts the other way, and read the whole paragraph the quote sits in. Round 16 recorded this
+after Medupi died on a clause two table rows below the quote; it is now the most productive single
+check on this job.
+
+### The death count that moved, and why the writer missed it
+
+`rusumo-falls-hydro` carried no count. The writer proposed **2**, from the project-history annex.
+The checker read the Health and Safety section and reported **7**, and the document confirms it:
+completion report ICR00541 of 9 December 2025, paragraph 82 — seven fatalities, five on the
+hydropower works in three incidents (three killed by a vehicle brake failure, a worker drowned in
+the headrace tunnel after an inappropriate working method, a community member drowned at a borrow
+pit where security protection was inadequate) and two during construction of a sports facility at
+Kirehe, Rwanda. **The causes decide the count:** "the contractor not complying with the contract,
+and on occasion rushing to meet a deadline". That is the project's own doing, so all seven count.
+
+**Contrast Lom Pangar in the same round**, where four worker deaths are recorded in a supervision
+mission's aide-memoire and attributed to illness unrelated to their tasks — those stay uncounted in
+`killed_note`. Same round, opposite answers, both from what the document says.
+
+**One discrepancy is preserved on the card**: the Evaluation Group's review describes all seven as
+*worker* fatalities where the completion report counts one of them as a member of the community.
+
+### The extends, and the dedupe hole they revealed
+
+`olkaria-maasai` (P103037, additional financing P153179), `lom-pangar-dam` (P114077) and
+`rusumo-falls-hydro` (P075941) were **already on the map** and still surfaced as fresh leads,
+because each carried its project under a name with no P-number. All three now carry their numbers,
+as does `ghana-accra-avrl-water` (P056256). **Put the P-number in the lender role of every case
+written from a lead list** — it is the only thing that makes the next round's dedupe work.
+
+Each extend adds the Bank's own credit detail as a separate lender entry, its documents and its
+figures. `rusumo-falls-hydro` also gained `iso3_more: ["RWA","BDI"]`, because the merged content
+documents land taken and compensation disputed in Burundi (Mugutu village in Gitega, the
+Kamwenubusa family in Karusi), the two deaths at Kirehe in Rwanda, and water loss at Karagwe and
+Rusumo village in Tanzania. **That is where the 127th country comes from.**
+
+### Other corrections worth carrying
+
+- **A figure's unit decides whether it may sit in `displaced`.** A card held `displaced: 147` for
+  147 shops removed at Lahore. Removed: all 105 cases on the map that carry `displaced` count
+  people, households or families, not one counts structures alone, and that project's own
+  resettlement plan says "No population/ person is going to be impacted due to impact on
+  houses/residences". **`displaced` holds a people-bearing unit.** The shop count is in the note.
+- **Burkina's `displaced: 942` was removed for two reasons**, and the second is the subtler: the
+  942 counts households *compensated* rather than relocated, **and** they were on the airport
+  platform, which the appraisal says Bank management examined under the resettlement policy and
+  "concluded that... the road infrastructure does not require the airport" — by the Bank's own
+  determination not an associated facility. The credit financed the access roads, where the
+  documents count 20 households compensated. **Check whether the harm is on the thing the credit
+  actually financed.**
+- **An appraisal document that contradicts itself.** The Punjab appraisal (P090585) gives 1,233 as
+  affected households in its main text and, in its safeguards annex, 831 households affected with
+  1,233 *people displaced*. Both are now on the card, because the standing rule is to give what
+  the source publishes and leave selection to the owner.
+- **Four facts cited to documents they are not in**, across two batches — two Kenya signing dates,
+  one Burkina signing date, and a Swat `killed_note` sentence about two suicide attacks that is in
+  the *FATA* project's report, not Swat's. **Grep the cited file for the claimed string.**
+- **An invented conflict.** A writer reported Kazakh officials' "all but one of the eight" against
+  the Panel's "seven of eight" as a disagreement. Same number. Round 16 recorded this fault and it
+  recurs: naming the quantity and the date before calling two figures a conflict catches it.
+- **A tidy reconciliation removed.** A card had the DRC closing date as "15 May 2010 after two
+  extensions", reconciling a data sheet against body text that says 30 June 2005 twice extended to
+  31 March 2010. Both now stand unreconciled.
+
+### What the round says about the queue
+
+`docs/leads_icij.json` now has **852 open rows, 306 of them in the confirmed-displacement table**,
+all annotated with `r19_outcome`, `r19_case_id` and `r19_note`. Yield across three tranches: 30,
+then 21, then 18 cases from 36 rows each. **The yield is falling as the displacement figures fall**,
+which is what should happen — the rows are sorted by ICIJ's estimate and the large ones went first.
+Note the lead file carries HTML entities in some project names (`&amp;`), so match on them with
+care.
 
 ## Round 18 (12 Nov 2026) — the second ICIJ tranche, and the Lesotho extend
 
@@ -886,6 +1022,15 @@ Keys in every case: `id, title, place, iso3, lat, lng, point, start, end, mechan
   as `rounds/r26f_icij2_whole_check_log.md`). Build printed 173 of 173, the page loaded headless
   with no errors, and the panel figures above are unchanged.
 
+- **Round 19 is merged, built, tested and pushed** (12 Nov, commits `5516622`, `8362781`, `ad8e164`,
+  `baa4722` and `f345c3a` on `main`): the third ICIJ tranche, the dedupe fix, the voice scan, the
+  Rusumo death count and the three P-numbers. 1,008 to 1,026 cases, 126 to 127 countries. Build
+  printed 173 of 173, the page loaded headless with no errors, and the panel figures above were
+  read from the rendered panel after the merge.
+  **Two jobs are queued by it and are not yet done: whole-picture text for the 18 new cases, and
+  descriptions for the 19 new entity names.** Until those land, the whole-text row reads 98% and
+  the company row 90%.
+
 ## Pending case-text fixes
 
 - Applied 7 Nov evening (`rounds/r26f_textfix_1.json`, checked; log alongside; script `merge_textfix.py`, which handles "people:<id>" keys, paths like `lenders[0].role`, and `lenders_append`): Peru 1977 inflation, Theun-Hinboun, Elliott, Jirau, Lake Turkana, Vedanta, Gezhouba, Upper Atbara (Abu Dhabi fund added), Buchanan, Barishal, Caculo Cabaça, Celukan Bawang, Green Resources, Kompas/Tanjung Kasam, ICC Njeem post label, Vishnugad ($648M less two $100M cancellations = $448M), Tractebel on the Arequipazo card. Nathpa Jhakri already said the operator paid for the study.
@@ -1178,8 +1323,19 @@ pass has to decide which of the nine are of that kind rather than assuming all n
 3b. **Whether complaints and protests should also be exclusive with the cases.** Round 14 made only the cases and the live projects exclusive, because complaints and protests are both on when the page opens and making them exclusive would have changed the opening view. If the owner wants the point sets to be one at a time across the board, add `"pts"` to `SOLO` in `base.html` and change `resetLayers()` to match.
 4. **Map-point labels that still say "Wikipedia coordinates."** Location only, no facts rest on them.
 5. **Four lender directories that cannot be collected, and why each is different.** BII is genuinely blocked, Cloudflare on `curl` and a client error on the rendered route. China Development Bank returns HTTP 412 from a firewall on the raw-HTTP route and has never been tested on the rendered route, because no URL has been surfaced — record it as untested, not refused. IFC's single headquarters record is right rather than incomplete: its directory loads the office list at runtime from a service needing a subscription key embedded in the page, and reading that key out was refused by a session's permission system. IMF per-country pages have still not been read.
-6. **The lead lists, now 1,754 rows: `docs/leads_icij.json` (870 open, of which 331 in the confirmed-displacement table), `leads_aiddata.json` (793) and `leads_complaints.json` (91).** 80 ICIJ rows are resolved across rounds 17 and 18 and carry `r17_outcome` or `r18_outcome`. **This is the only case-discovery queue on the map and the only one that would change the coverage figures.**
-   - **Continue with ICIJ, but reorder it.** Two tranches of 36 yielded 30 and then 21 cases. The yield is holding, but **where it comes from has become clear: the African, South Asian and South-East Asian rows produce `documented` cases with independent sources, and the Chinese rows produce `contested` ones resting on Bank documents alone.** Every Chinese case across both rounds — 13 of them — rests on the lender reporting on its own project, after Chinese-language searches found nothing. **Put the non-China rows first.**
+6. **The lead lists: `docs/leads_icij.json` (852 open, of which 306 in the confirmed-displacement table), `leads_aiddata.json` (793) and `leads_complaints.json` (91).** 116 ICIJ rows are resolved across rounds 17, 18 and 19 and carry `r17_outcome`, `r18_outcome` or `r19_outcome`. **This is the only case-discovery queue on the map and the only one that would change the coverage figures.**
+   - **Continue with ICIJ. Three tranches of 36 yielded 30, 21 and 18 cases**, a yield falling with
+     ICIJ's displacement figures, which is what should happen since the rows are worked in that order.
+   - **Round 18's regional prediction was tested in round 19 and did not hold.** Round 18 concluded
+     that African, South Asian and South-East Asian rows give `documented` cases while Chinese rows
+     give `contested` ones, and said to put non-China rows first. Round 19 did that and **all 18 of
+     its cases are `contested`** — not one has a source outside the lender. Round 18's independently
+     sourced cases came from Inspection Panel complaints, an Amnesty urgent action and two
+     university field theses, and those exist for large contested infrastructure: dams, transmission
+     lines, railway clearances. Round 19's rows were ordinary road and water projects with no
+     complaint attached, which nobody outside the Bank has written about. **The predictor is not the
+     region, it is whether the project drew a complaint or a campaign.** ICIJ's own `complaint` flag
+     is in the lead file and is the cheapest proxy; sort on it if independent sourcing matters.
    - **Dedupe with `case-map-src/dedupe_leads.py`, not with a grep over `base.html`** — see
      "The dedupe recipe in this file was WRONG" near the top. A whole-file grep matches the
      embedded ICIJ lead arrays and reports almost every lead as a duplicate.
