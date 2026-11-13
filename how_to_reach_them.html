@@ -64,6 +64,8 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
    Basemaps, the projection toggle and the level key share one line so
    the panel below keeps its full width. It is sized to the panel and
    right-aligned with it. */
+#sopen{flex:none;border-right:1px solid var(--line)!important;border-radius:6px 0 0 6px!important;
+  padding-right:9px!important;margin-right:3px}
 #toprow{position:fixed;z-index:60;right:18px;top:18px;height:34px;
   width:max-content;max-width:calc(100vw - 40px);box-sizing:border-box;
   display:flex;align-items:center;gap:7px;overflow:hidden;
@@ -169,12 +171,13 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
    instead put it on top of the subtitle, because the subtitle is two or
    three lines depending on the window. Sitting in the header block, it
    is above the subtitle and cannot collide with it at any width. */
-#sopen{display:none;pointer-events:auto;position:relative;top:-1px;
-  background:rgba(17,24,21,.96);border:1px solid var(--accent-soft);border-radius:9px;
-  color:var(--ink);padding:6px 13px;font:inherit;font-size:12px;cursor:pointer;
-  box-shadow:0 6px 20px rgba(0,0,0,.4)}
-#sopen.on{display:inline-block}
-#sopen:hover{border-color:var(--accent-hi);background:rgba(74,124,89,.2)}
+/* It lived in the title block and was hidden until a place was open.
+   It is a control, it now sits with the controls, and a control that
+   disappears is one a reader has to go looking for — so it stays put
+   and only dims while the search panel it opens is already open. */
+#sopen{pointer-events:auto}
+#sopen.on{opacity:1}
+#toprow #sopen:not(.on){opacity:.55}
 #mtop{padding:17px 20px 0;border-bottom:1px solid var(--line);flex:none;position:relative}
 #mtitlerow{display:flex;align-items:baseline;gap:11px;flex-wrap:wrap;padding-right:150px}
 #mtitle{font-family:'Marcellus',serif;font-size:22px;line-height:1.22}
@@ -680,14 +683,128 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .hrd p{font-size:11.6px;line-height:1.5;color:var(--dim)}
 .hrd p+p{margin-top:6px}
 .hrd i{font-style:italic}
+/* ====================================================================
+   PAGES, NOT TABS
+   ==================================================================== */
+/* a question's group heading */
+.qgrp{display:flex;flex-direction:column;gap:2px;margin:9px 0 2px}
+.qgrp:first-child{margin-top:0}
+.qgt{font-family:'Marcellus',serif;font-size:11px;letter-spacing:1.1px;text-transform:uppercase;
+  color:var(--accent-hi)}
+.qgd{font-size:10.8px;line-height:1.45;color:var(--faint)}
+
+/* which kind of route a destination is */
+.wbadge{margin-left:9px;font-family:'DM Sans',sans-serif;font-size:9.5px;letter-spacing:.7px;
+  text-transform:uppercase;border-radius:999px;padding:2px 9px;vertical-align:middle;white-space:nowrap}
+.wbadge.law{background:rgba(74,124,89,.26);color:var(--accent-hi);border:1px solid rgba(140,189,154,.42)}
+.wbadge.cmp{background:rgba(125,142,130,.16);color:var(--dim);border:1px solid var(--line)}
+
+/* the sequence, above the list it orders */
+.lflow{display:flex;flex-wrap:wrap;align-items:center;gap:3px 2px;margin:7px 0 2px;
+  padding:7px 9px;border:1px solid var(--line);border-radius:9px;background:var(--panel2)}
+.lfn{background:none;border:0;padding:2px 5px;border-radius:5px;font:inherit;font-size:10.5px;
+  color:var(--dim);cursor:pointer;white-space:nowrap}
+.lfn:hover{color:var(--ink);background:rgba(74,124,89,.18)}
+.lfa{color:var(--faint);font-size:10px;font-style:normal}
+
+/* a kind of office, as a row that opens a page */
+.krow{display:block;width:100%;text-align:left;padding:0;background:var(--panel2);
+  border:1px solid var(--line);border-radius:11px;cursor:pointer;font:inherit;color:inherit}
+.krow:hover{border-color:rgba(140,189,154,.45);background:rgba(74,124,89,.08)}
+.krow .rhead{display:flex;align-items:center;gap:9px;padding:7px 11px}
+.krow .rtog{font-size:15px;color:var(--faint);flex:none;line-height:1}
+.krow:hover .rtog{color:var(--accent-hi)}
+
+/* back out of a page, one step */
+.lpback{align-self:flex-start;background:none;border:0;padding:1px 4px 1px 0;font:inherit;
+  font-size:11px;color:var(--accent-hi);cursor:pointer;margin-bottom:4px}
+.lpback:hover{text-decoration:underline}
+
+/* a kind's own page */
+.kstage{font-size:11px;color:var(--faint);margin-top:3px}
+.krel{margin-top:9px;border-left:2px solid var(--accent);padding-left:11px}
+.krel dt{font-size:9.5px;letter-spacing:.9px;text-transform:uppercase;color:var(--stone);margin-bottom:3px}
+.krel dd{font-size:11.8px;line-height:1.52;color:var(--text)}
+.pg-kind .qq{display:flex;align-items:center;gap:9px}
+
+/* the offices themselves, as a list rather than as chips */
+.olist{display:flex;flex-direction:column;gap:3px;margin-top:5px}
+.orow{display:flex;align-items:center;gap:9px;width:100%;text-align:left;cursor:pointer;
+  background:var(--panel2);border:1px solid var(--line);border-left:2px solid rgba(125,142,130,.3);
+  border-radius:8px;padding:7px 10px;font:inherit;color:var(--dim)}
+.orow:hover{border-color:rgba(140,189,154,.5);border-left-color:var(--accent-hi);
+  background:rgba(74,124,89,.12);color:var(--ink)}
+.orow.law{border-left-color:#9ccfa7}
+.onm{flex:1 1 auto;font-size:12px;line-height:1.35}
+.oar{flex:none;font-size:14px;color:var(--stone)}
+.orow:hover .oar{color:var(--accent-hi)}
+.orow.walking{border-color:#cfe6d4;box-shadow:0 0 0 1px #cfe6d4,0 0 14px rgba(140,189,154,.5)}
+
+/* a term of art, and its definition */
+.gl{text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;
+  text-decoration-color:rgba(140,189,154,.75);cursor:help}
+.gl:hover,.gl:focus{color:var(--ink);text-decoration-color:var(--accent-hi);outline:none}
+#gltip{position:fixed;z-index:3000;display:none;background:rgba(17,24,21,.98);
+  border:1px solid rgba(140,189,154,.42);border-radius:9px;padding:9px 11px;
+  font-family:'DM Sans',sans-serif;font-size:11.5px;line-height:1.5;color:var(--text);
+  box-shadow:0 14px 38px rgba(0,0,0,.6);pointer-events:none}
+
+/* the gap above a section heading on an office page was 22px, which on
+   a page that opens straight onto one read as the panel having failed
+   to draw something */
+.sec{margin:12px 0 7px;padding-bottom:4px}
+.off{padding:9px 0}
+.pg-kind .klvl{margin-top:10px}
+/* ====================================================================
+   THE MAGNIFYING CIRCLES
+   ==================================================================== */
+#leaders{position:fixed;inset:0;z-index:48;pointer-events:none;width:100%;height:100%}
+#lenses{position:fixed;left:0;top:0;z-index:49;pointer-events:none;display:none}
+.lens{position:absolute;left:18px;width:116px;pointer-events:auto}
+.lensc{width:116px;height:116px;border-radius:50%;overflow:hidden;
+  border:1.5px solid var(--line);background:rgba(17,24,21,.86);
+  box-shadow:0 10px 30px rgba(0,0,0,.55), inset 0 0 22px rgba(0,0,0,.45);
+  backdrop-filter:blur(2px)}
+.lensc svg{display:block}
+.lensl{margin-top:4px;text-align:center;line-height:1.25}
+.lensl b{display:block;font-family:'Marcellus',serif;font-size:11px;color:var(--text);
+  text-shadow:0 1px 6px rgba(0,0,0,.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lensl span{display:block;font-size:9px;letter-spacing:.4px;text-transform:uppercase;
+  color:var(--faint);text-shadow:0 1px 6px rgba(0,0,0,.8)}
+.lsd{cursor:pointer;stroke:rgba(17,24,21,.75);stroke-width:1}
+.lsd:hover{stroke:#fff;stroke-width:1.4;r:4.6}
+.lsd.law{stroke:#cfe6d4}
+@media (max-width:1100px){ #lenses{display:none!important} }
+/* the branches of government, bottom left */
+#hier{position:fixed;left:16px;bottom:16px;z-index:52;width:316px;max-width:calc(50vw - 40px);
+  background:rgba(17,24,21,.95);border:1px solid var(--line);border-radius:11px;
+  box-shadow:0 14px 38px rgba(0,0,0,.55);backdrop-filter:blur(8px);overflow:hidden}
+#hiertog{display:block;width:100%;text-align:left;background:none;border:0;cursor:pointer;
+  font:inherit;font-size:11px;letter-spacing:.3px;color:var(--dim);padding:9px 12px}
+#hiertog:hover{color:var(--ink)}
+#hierbody{display:none;padding:0 6px 8px}
+#hier.on #hierbody{display:block}
+#hierbody text{font-family:'DM Sans',sans-serif;font-size:9.5px;fill:var(--dim)}
+#hierbody .hbr rect{fill:rgba(74,124,89,.2);stroke:rgba(140,189,154,.35)}
+#hierbody .hbr text{font-family:'Marcellus',serif;font-size:10px;fill:var(--text)}
+#hierbody .hedge path{stroke:var(--line);stroke-width:1}
+#hierbody .hk rect{fill:var(--panel2);stroke:var(--line);cursor:pointer}
+#hierbody .hk text{cursor:pointer}
+#hierbody .hk:hover rect{fill:rgba(74,124,89,.2);stroke:rgba(140,189,154,.55)}
+#hierbody .hk:hover text{fill:var(--ink)}
+#hierbody .hk.on rect{fill:rgba(74,124,89,.34);stroke:var(--accent-hi)}
+#hierbody .hk.on text{fill:var(--text)}
+#hierbody .hk.thin{opacity:.45}
+#hierbody .hct{fill:var(--faint);text-anchor:end}
+.krow.lit{border-color:var(--accent-hi);background:rgba(74,124,89,.16)}
+@media (max-width:1100px){ #hier{display:none} }
 </style>
 </head>
 <body>
 <canvas id="stars"></canvas>
 <div id="map"></div>
 <div id="hdr">
-  <div id="hline"><h1>How To Make A Law</h1>
-    <button id="sopen" onclick="openStart()">&#9906; Search for another place</button></div>
+  <div id="hline"><h1>How To Make A Law</h1></div>
   <div class="sub">Every person to contact, in every country, at every level down to the municipality.</div>
 </div>
 <!-- The row above the panel, in order of how often each part is used.
@@ -696,6 +813,11 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
      is its own button at the head of the row rather than inside the
      panel, because what it explains applies to the whole map. -->
 <div id="toprow">
+  <!-- The search sits at the head of the row: it is the one control
+       that starts the map over, and in the title block it competed
+       with the title for the eye and was off on the other side of the
+       window from everything else that is a control. -->
+  <button id="sopen" onclick="openStart()">&#9906; Search for a place</button>
   <button id="habout" onclick="toggleAbout()" title="About this map">?</button>
   <div id="showrow">
     <button id="showbtn" onclick="toggleShow()">Shown &#9662;</button>
@@ -705,6 +827,17 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   <div id="bmrow"></div>
   <div id="projrow"><button id="projbtn" onclick="toggleProjection()">Flat map</button></div>
 </div>
+<!-- The magnifying circles, and the lines from each to the place it
+     magnifies. Both sit over the map and below the panel. -->
+<svg id="leaders"></svg>
+<!-- The branches of government, as a tree, kept on the map rather
+     than in the panel: it is the frame the panel's answers sit in,
+     and it is wanted while reading them, not instead of them. -->
+<div id="hier">
+  <button id="hiertog" onclick="toggleHier()">How government fits together &#9656;</button>
+  <div id="hierbody"></div>
+</div>
+<div id="lenses"></div>
 <div id="start">
   <h2>Search for your municipality</h2>
   <div id="srow">
@@ -722,7 +855,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 <div id="modal">
   <div id="mtop">
     <button id="mclose" onclick="closeToWorld()">&times;</button>
-    <button id="mback" style="display:none" onclick="backToDiagram()">&larr; Back to the diagram</button>
+    <button id="mback" style="display:none" onclick="backToDiagram()">&lsaquo; Back to the list</button>
     <!-- The place name and its official site on one line. The link
          used to sit among the small grey chips at the bottom of the
          breadcrumb row, in body text, where it read as a label rather
@@ -2938,10 +3071,10 @@ function classifyRows(core, items){
    Used by the walkthrough below, which places each kind at the step of
    lawmaking where it acts. */
 const KINDLABEL={
-  'leg/chamber':'Chambers','leg/member':'Members','leg/presiding':'Presiding officers','leg/committee':'Committees',
-  'exec/head':'Head of government','exec/minister':'Departments','exec/legal':'Law officers','exec/clerk':'Clerks and registrars','exec/envoy':'Envoys',
-  'jud/court':'Courts','jud/judge':'Judges','jud/defender':'Defenders and ombudsmen',
-  'ag/agency':'Agencies','ag/audit':'Audit and oversight','ag/police':'Police','other/other':'Unsorted'};
+  'leg/chamber':'Chambers','leg/member':'Members','leg/presiding':'Presiding Officers','leg/committee':'Committees',
+  'exec/head':'Head of Government','exec/minister':'Departments','exec/legal':'Law Officers','exec/clerk':'Clerks and Registrars','exec/envoy':'Envoys',
+  'jud/court':'Courts','jud/judge':'Judges','jud/defender':'Defenders and Ombudsmen',
+  'ag/agency':'Agencies','ag/audit':'Audit and Oversight','ag/police':'Police','other/other':'Unsorted'};
 
 /* every kind is drawn, in the order it is worth approaching */
 const KINDORDER={
@@ -2998,7 +3131,7 @@ const KINDWHEN={
   'jud/judge'    :'Not contactable about anything that might come before them, and writing to a judge about a live case is improper. Where judges are elected, the election is the route.',
   'jud/defender' :'Ombudsmen, public defenders and human rights offices. Contact one if a public body treated you or someone else unfairly and you want it investigated and the result published. They usually cannot order anything, but a published finding can be cited by a court, a journalist, a lender or an insurer.',
   'ag/audit'     :'Auditors and inspectors general check whether a body met an obligation that is already written down in law or policy. Contact one if a body broke such an obligation and you can name which one \u2014 vague complaints are closed unread. What this produces is a body conceding a failure in writing and committing to a dated fix, which a legislator or a court can then act on.',
-  'ag/agency'    :'The agencies over this place. They write the rules under a law and enforce them, which is where most of what government actually does to people is decided. Most must publish a rule in draft and take public comment on it before it takes effect, and most must answer a written request for a new rule by granting or refusing it in writing.',
+  'ag/agency'    :'An agency is a body created by a law to run and enforce one part of it, staffed by specialists and standing at some distance from the ministers of the day \u2014 an environmental protection agency, a food and drug authority, a civil aviation authority. They write the rules under a law and enforce them, which is where most of what government actually does to people is decided. As with departments, your subject picks the agency: drinking water or air quality to the environmental agency, a medicine or a food additive to the food and drug body, an aircraft or an airport to the aviation authority. Two things make agencies the most open part of government to a member of the public, and the least used: most must publish a rule in draft and take comment on it from anybody before it takes effect, and most must answer a written request for a new rule by granting or refusing it in writing \u2014 and a written refusal can be challenged, where an ignored letter cannot.',
   'ag/police'    :'Contact a police body about a specific incident. For a question about practice or policy rather than an incident, the address is the council or legislature that funds them, because that is where a policy is actually changed.',
   'other/other'  :'What these offices do is not recorded clearly enough to say. Some are agencies that take public comment, some are elected posts that can sponsor a bill, and some have no part in making law. The office\u2019s own site settles it.',
 };
@@ -3075,16 +3208,16 @@ const ROUTEWHEN={
    Each one now appears on its method's screen, under "Worth knowing". */
 const LEAVES = {
   new_law: {
-    nm:'A rule that does not exist yet', scoped:true,
-    lead:'Nobody can introduce a bill except a member of the legislature, so the whole of this route runs through persuading one to do it. Until a member agrees, what you have is a proposal, not a bill. The exception is at the bottom of the list: where citizen initiatives exist, enough signatures put a measure on the ballot and no elected official has to agree to anything.',
+    nm:'A rule that does not exist yet', scoped:true, way:'law',
+    lead:'The offices below, in the order a bill passes through them.',
     kinds:['leg/member','leg/committee','exec/minister','ag/agency','leg/chamber','leg/presiding','exec/clerk','exec/head'],
     routes:['visit','letter','call','email','sfr','petition','townhall','ballot'],
     hurdles:['tally','concentrated','money','nobody'],
     /* the same office means something different depending on why the
        reader is here, so a destination can say its own version */
     when:{
-      'exec/minister':'These are the departments over this place in your subject. They draft the text, and a member asked to introduce a bill will ask them whether the idea works, so one of them is usually the first call.',
-      'ag/agency':'These are the agencies over this place in your subject. Ask one whether the change needs a law at all \u2014 often it can be made as a rule under a law that already exists, which is a shorter route.',
+      'exec/minister':'A department is the permanent part of government covering one subject \u2014 health, transport, defence, education \u2014 and the one you want is the one your subject falls under. They draft the actual text of laws, and a member asked to introduce a bill will go to them to ask whether the idea works, so the department is usually the first call rather than the last.',
+      'ag/agency':'An agency is a body a law set up to run and enforce one part of it \u2014 the environmental agency, the food and drug authority, the aviation authority \u2014 and the one you want is the one whose subject matches yours. Ask it whether what you want needs a new law at all. Often it can be done as a rule under a law that already exists, which is a far shorter route, and the agency is the body that knows which of the two it is.',
     },
     notes:[
       ['visit','Ask for the staffer, not the member','Staff decide what reaches the member, and a staffer who takes up your idea becomes the person carrying it. If you live in the member’s district you have a claim on that meeting nobody else has.'],
@@ -3097,12 +3230,12 @@ const LEAVES = {
   },
 
   rules: {
-    nm:'The rules written under an existing law', scoped:true,
+    nm:'The rules written under an existing law', scoped:true, way:'law',
     lead:'Laws are short and the rules written under them are long, and the rules decide what the law does in practice. Departments and agencies write them. This is the part of government with the most offices and the least public attention, and the two things open to anyone here both create an obligation to answer.',
     kinds:['exec/minister','ag/agency'],
     when:{
-      'exec/minister':'These are the departments over this place in your subject. One of them wrote the rules you are dealing with, and the same one can be petitioned to rewrite them.',
-      'ag/agency':'These are the agencies over this place in your subject. Each must publish a proposed rule for comment, and must grant or deny a petition for a new one in writing.',
+      'exec/minister':'A department is the permanent part of government covering one subject \u2014 health, transport, defence, education. One of them wrote the rules you are dealing with, and it is the one whose subject matches yours; the same one can be asked in writing to rewrite them.',
+      'ag/agency':'An agency is a body a law set up to run and enforce one part of it, and the rules you are dealing with were almost certainly written by the one whose subject matches yours. Each must publish a rule in draft and take comment on it before it takes effect, and each must grant or refuse a written request for a new one in writing \u2014 which is the difference between this and a letter.',
     },
     routes:['comment','rulemaking','foia','visit','letter','ig'],
     hurdles:['docket','revolving','concentrated'],
@@ -3116,7 +3249,7 @@ const LEAVES = {
   },
 
   enforce: {
-    nm:'A law that exists but is not being applied', scoped:true,
+    nm:'A law that exists but is not being applied', scoped:true, way:'complaint',
     lead:'A law nobody enforces and a law that does not exist look much the same from below. Prosecutors choose which cases to bring; police enforce on the ground. Neither can change a law, and neither is usually the right address for a complaint about policy rather than an incident.',
     kinds:['exec/legal','ag/police','ag/audit'],
     routes:['ig','foia','ombud','townhall','letter','quitam'],
@@ -3131,7 +3264,7 @@ const LEAVES = {
   },
 
   oversight: {
-    nm:'A body that broke its own rules', scoped:true,
+    nm:'A body that broke its own rules', scoped:true, way:'complaint',
     lead:'Auditors, inspectors general and ombudsmen investigate whether a body followed obligations already written down, and publish what they find. Most cannot compel anything. What they produce is a document that makes an agency concede a failure in writing and commit to a dated fix, which is then something a legislator or a court can act on.',
     kinds:['ag/audit','jud/defender','exec/legal'],
     routes:['ig','ombud','foia','quitam','letter'],
@@ -3145,7 +3278,7 @@ const LEAVES = {
   },
 
   courts: {
-    nm:'A law or decision that should be struck down', scoped:true,
+    nm:'A law or decision that should be struck down', scoped:true, way:'complaint',
     lead:'Courts decide what a law means and whether it stands, and a ruling can undo a law a legislature will not touch. They cannot be lobbied, and writing to a judge about a live case is improper. There are two ways in, and the first one is where most well-founded claims about wide harm stop.',
     kinds:['jud/court','jud/judge','jud/defender'],
     routes:['amicus','citizensuit','climatelit','personhood'],
@@ -3160,7 +3293,7 @@ const LEAVES = {
   },
 
   company: {
-    nm:'Something a company is doing',
+    nm:'Something a company is doing', way:'complaint',
     lead:'A company is not obliged to make as much money as possible — the case usually cited for that, decided in Michigan in 1919, says no such thing in its binding part — but little pushes it the other way either. So the argument that works is not that the company is permitted to act. It is a business reason the board could state in court if challenged, which is the shape a shareholder proposal takes. The other routes here reach the company through government or through bodies that publish findings about it.',
     kinds:['ag/agency','exec/minister','exec/legal'],
     routes:['shareprop','oecdncp','devbank','comment','ig','citizensuit','foia'],
@@ -3175,7 +3308,7 @@ const LEAVES = {
   },
 
   all: {
-    nm:'Show me every office that governs this place',
+    nm:'Show me every office that governs this place', way:'both',
     lead:'Every office over the place you searched, and over each level above it, with nothing narrowed down. A green dot marks the ones a member of the public can contact about a law.',
     kinds:['leg/member','leg/committee','leg/chamber','leg/presiding','exec/head','exec/minister',
            'exec/clerk','exec/legal','exec/envoy','jud/court','jud/judge','jud/defender',
@@ -3194,19 +3327,34 @@ const LEAVES = {
 const QUESTIONS = {
   start: {
     q:'Narrow the map to what you want to do',
-    sub:'Every answer takes offices off the map and leaves the ones that can do this. '+
-        'Nothing here commits you: each one can be stepped back.',
     opts:[
+      {grp:'Changing the law',
+       gd:'These end in words on the statute book being different. They are slow, and they '+
+          'are the only routes that change anything for anybody other than you.'},
       {t:'Create a rule that does not exist yet',
-       d:'A ban, a requirement, a protection, a right — something nobody is obliged to do today.', leaf:'new_law'},
+       d:'A ban, a requirement, a protection, a right.', leaf:'new_law'},
       {t:'Change or repeal a law that already exists',
        d:'The words on the page are wrong, out of date, or doing harm.', go:'change'},
       {t:'Change how an existing law works in practice',
        d:'The law is not the problem. The detailed rules written under it, or the way they are applied, are.', go:'practice'},
+
+      {grp:'Making a complaint',
+       gd:'These do not change the law. You report something already wrong under the law as '+
+          'it stands, to a body obliged to look into it, and what comes back is a decision, '+
+          'a finding or an order about your case. A complaint can still end in a new law — a '+
+          'published finding is one of the few things that puts a subject in front of a '+
+          'legislator — but that is a second step, not what the complaint itself does.'},
+      {t:'A law is being ignored and nobody is enforcing it',
+       d:'The law says what you want. Nothing is happening about it on the ground.', leaf:'enforce'},
       {t:'Challenge a decision, or hold a body to its own rules',
-       d:'Something was decided, or left undone, and you think an obligation was broken.', go:'challenge'},
+       d:'A public body decided something, refused something, or left a duty undone — a permit '+
+         'refused, a service withdrawn, a procedure skipped — and the complaint is about that '+
+         'act, not about what the law says.', go:'challenge'},
       {t:'Stop something a company is doing',
-       d:'The harm is corporate, and the question is which lever reaches it.', leaf:'company'},
+       d:'The harm is corporate. Most of these routes reach the company through a government '+
+         'body that licenses or regulates it, rather than reaching the company directly.', leaf:'company'},
+
+      {grp:'Neither yet'},
       {t:'I am not sure yet — show me everything',
        d:'Every office that governs this place, and every way of reaching them.', leaf:'all'},
     ]},
@@ -3249,10 +3397,10 @@ const QUESTIONS = {
 };
 
 /* where the reader is: a list of {q, opt} steps, then a leaf */
-let PATH=[], LEAF=null, LEAFLVL=null, LEAFSUB=null, LEAFSEC='who', SHOWALLK={};
+let PATH=[], LEAF=null, LEAFLVL=null, LEAFSUB=null, LEAFKIND=null, SHOWALLK={};
 
 function resetTree(){ PATH=[]; LEAF=null; PENDLEAF=null; LEAFLVL=null; LEAFSUB=null;
-  LEAFSEC='who'; SHOWALLK={}; SCOPE=null; }
+  LEAFKIND=null; SHOWALLK={}; SCOPE=null; }
 
 /* Which kinds of office are divided by subject, and which are not.
 
@@ -3363,8 +3511,12 @@ function drawSubjectQ(){
 
   /* with something behind it first, so the reader is not paging through
      empty subjects to reach the one that has offices in it */
-  const names=THEMES.map(t=>t[0]).concat(['Everything else'])
-    .sort((a,b)=>(mine[b]||0)-(mine[a]||0) || (here[b]||0)-(here[a]||0));
+  /* "Everything else" is the catch-all, so it sits at the foot of the
+     list however many offices fall into it; the rest sort by what is
+     actually here. */
+  const names=THEMES.map(t=>t[0])
+    .sort((a,b)=>(mine[b]||0)-(mine[a]||0) || (here[b]||0)-(here[a]||0))
+    .concat(['Everything else']);
 
   const opts=[qopt('sm any', 'pickSubject(null)', 'Any subject, or more than one',
     'Do not narrow. Most real concerns touch several of these at once.',
@@ -3379,9 +3531,7 @@ function drawSubjectQ(){
       'data-sub="'+esc(t)+'"'));
   });
   return qframe('Narrow the map to one subject',
-    'Different departments and agencies cover different subjects, and only one of them writes the '+
-    'rules on yours. The legislature, the head of government and the filing offices are the same '+
-    'whatever the subject, so those stay either way.', opts);
+    'Different departments and agencies cover different subjects.', opts);
 }
 
 /* A question: every option on the screen.
@@ -3407,9 +3557,18 @@ function qopt(cls, onclick, title, desc, count, data){
     '<span class="qar">&rarr;</span></button>';
 }
 
+/* An option list that can carry headings. The opening question sorts
+   its routes into changing the law and making a complaint, because
+   those produce different things and a reader who wants one and
+   follows the other finds out several screens later. The index passed
+   to `pickOpt` is the position in the array, headings included, so
+   adding one does not renumber the options. */
 function drawQuestion(qn){
-  const opts=qn.opts.map((o,i)=>qopt('', 'pickOpt('+i+')', esc(o.t), esc(o.d||''), '', 'data-i="'+i+'"'));
-  return qframe(esc(qn.q), esc(qn.sub||''), opts);
+  const opts=qn.opts.map((o,i)=> o.grp
+    ? '<div class="qgrp"><span class="qgt">'+esc(o.grp)+'</span>'+
+      (o.gd?'<span class="qgd">'+glossy(o.gd)+'</span>':'')+'</div>'
+    : qopt('', 'pickOpt('+i+')', esc(o.t), glossy(o.d||''), '', 'data-i="'+i+'"'));
+  return qframe(esc(qn.q), qn.sub?glossy(qn.sub):'', opts);
 }
 
 function LEAFKINDS(){ const l=LEAVES[PENDLEAF]; return l?l.kinds:[]; }
@@ -3444,24 +3603,122 @@ let PENDLEAF=null;
    reader who does not already know how a law is made cannot see that
    the list is a sequence at all. */
 const LAWSEQ=[
-  ['leg/member',    'introduces it'],
-  ['leg/committee', 'examines and rewrites it'],
-  ['leg/chamber',   'debates and votes on it'],
-  ['leg/presiding', 'decides whether it gets a vote'],
-  ['exec/head',     'signs it, or refuses to'],
-  ['exec/minister', 'writes the detailed rules under it'],
-  ['ag/agency',     'writes rules under it too, and enforces them'],
-  ['exec/legal',    'brings the cases that enforce it'],
-  ['ag/police',     'enforces it on the ground'],
-  ['jud/court',     'rules on what it means and whether it stands'],
-  ['jud/judge',     'sits in those courts'],
-  ['ag/audit',      'checks afterwards that it was followed'],
-  ['jud/defender',  'investigates complaints about how it was applied'],
-  ['exec/clerk',    'keeps the record and takes the filings'],
-  ['exec/envoy',    'handles whatever part of it is abroad'],
-  ['other/other',   'part in it not recorded'],
+  ['leg/member', 'introduces it',
+   'A bill starts here and nowhere else. A member writes it, or agrees to carry one somebody '+
+   'brought them, and puts it before the legislature. Until a member agrees, what you have is '+
+   'a proposal, not a bill.',
+   'Nothing reaches this stage from inside government \u2014 the idea comes from a member, a '+
+   'department, or a member of the public who persuaded one. Once a member introduces it, it '+
+   'goes straight to a committee, which is the next stage and the one that kills most bills.'],
+
+  ['leg/committee', 'examines and rewrites it',
+   'A small group of members that takes a bill apart on one subject, rewrites it, and decides '+
+   'whether the whole legislature ever sees it.',
+   'It receives the bill from the member who introduced it. Most bills stop here: the committee '+
+   'can amend it, sit on it, or vote it down, and only the ones it reports out go on to the '+
+   'chamber for a vote. This is also where written evidence from the public enters the record.'],
+
+  ['leg/chamber', 'debates and votes on it',
+   'The room where the whole body votes \u2014 a council, an assembly, a house, a senate. A vote '+
+   'here passes the bill; it does not by itself make it law.',
+   'It receives the bill from the committee. Passing it is the legislature\u2019s last act on it. '+
+   'Where there are two chambers the other one must pass the same text as well. It then goes '+
+   'to the head of government for signature, which is the step that turns it into law.'],
+
+  ['leg/presiding', 'decides whether it gets a vote',
+   'The speaker or chair who controls the order of business: which bills are called for debate, '+
+   'and when.',
+   'This office sits alongside the chamber rather than after it. A bill can have a sponsor, a '+
+   'committee\u2019s approval and enough votes to pass and still never be called, in which case it '+
+   'dies without anyone voting against it. This is the office that can call it.'],
+
+  ['exec/head', 'signs it, or refuses to',
+   'The mayor, governor, premier, prime minister or president. Signing is what turns a bill '+
+   'the legislature has passed into law.',
+   'It receives the passed bill from the chamber. Two steps make a law, not one: the chamber '+
+   'passes it and the head of government signs it. Refusing to sign is a veto, which sends it '+
+   'back; in most systems the legislature can override a veto by passing it again with a '+
+   'larger majority, so the last word is not always here.'],
+
+  ['exec/minister', 'writes the detailed rules under it',
+   'The permanent departments of government \u2014 defence, health, transport, education and the '+
+   'rest \u2014 each covering one subject.',
+   'Once a law exists it is usually only a few pages, and it hands the detail to a department '+
+   'to write: who is exempt, how a thing is measured, what counts as complying. That detail is '+
+   'what the law does in practice. Which department you need is decided by your subject, not '+
+   'by the law.'],
+
+  ['ag/agency', 'writes rules under it too, and enforces them',
+   'Bodies set up under a law to run one area of it and enforce it, usually with specialists '+
+   'and some independence from the ministers of the day.',
+   'A department and an agency both write rules under a law; the difference is that an agency '+
+   'is created by a statute for one job and holds enforcement powers of its own. This is the '+
+   'largest group in government and the least contacted, and it is the one most obliged to '+
+   'answer the public: most must publish a rule in draft for comment, and must grant or refuse '+
+   'a written request for a new rule in writing.'],
+
+  ['exec/legal', 'brings the cases that enforce it',
+   'Attorneys general, prosecutors and other law officers, who take people and bodies to court '+
+   'over a law that is being broken.',
+   'It acts after a law and its rules exist. Where an agency writes and applies a rule, a law '+
+   'officer is who sues over it when it is ignored, and who issues the formal written opinions '+
+   'other offices then have to work around.'],
+
+  ['ag/police', 'enforces it on the ground',
+   'The forces that apply the law in the street, day to day.',
+   'The last link in enforcement, and the one with no say over what the law is. A complaint '+
+   'about a single incident belongs here; a complaint about a practice or a policy belongs with '+
+   'the council or legislature that funds them, because that is where it can actually change.'],
+
+  ['jud/court', 'rules on what it means and whether it stands',
+   'The courts, which settle what a law means in a real dispute and can strike one down.',
+   'A court cannot be approached directly the way the other offices can, and it only acts when '+
+   'a case is brought. It is the one body that can undo a law the legislature will not touch, '+
+   'which is why it comes after all of them rather than inside the sequence.'],
+
+  ['jud/judge', 'sits in those courts',
+   'The individual judges.',
+   'Named separately from the courts because they are not contactable: writing to a judge about '+
+   'a case that might come before them is improper everywhere. Where judges are elected, the '+
+   'election is the only route.'],
+
+  ['ag/audit', 'checks afterwards that it was followed',
+   'Auditors and inspectors general, who examine whether a body met obligations already written '+
+   'down and publish what they find.',
+   'It acts after everything above. It cannot change a law or order anybody to do anything; '+
+   'what it produces is a body conceding a failure in writing with a dated fix attached, which '+
+   'a legislator or a court can then act on. That is what makes it the start of a loop back to '+
+   'the top rather than the end of the line.'],
+
+  ['jud/defender', 'investigates complaints about how it was applied',
+   'Ombudsmen, public defenders and human rights offices, which look into how a body treated '+
+   'somebody.',
+   'The complaint counterpart to an auditor: an auditor asks whether a rule was followed, this '+
+   'asks whether a person was treated fairly. Usually it can order nothing, but the finding is '+
+   'published and can be cited by a court, a journalist, a lender or an insurer.'],
+
+  ['exec/clerk', 'keeps the record and takes the filings',
+   'The office that holds the official record and receives anything that must be formally '+
+   'filed.',
+   'It sits beside the whole sequence rather than at one point in it. Everything filed passes '+
+   'through here \u2014 a petition, a nomination, an objection, a records request \u2014 and nothing '+
+   'counts until it is in, in the right form, before the deadline. For a ballot measure it is '+
+   'the whole route: signatures filed here put a measure to a public vote with no politician\u2019s '+
+   'consent at any stage.'],
+
+  ['exec/envoy', 'handles whatever part of it is abroad',
+   'Embassies, missions and delegations.',
+   'Outside the sequence, because nothing an envoy agrees to is law at home until the '+
+   'legislature passes it in the ordinary way.'],
+
+  ['other/other', 'part in it not recorded',
+   'Offices whose titles do not say what they do.',
+   'Listed rather than hidden, because leaving them out would understate how much government '+
+   'there is. Some are agencies that take comment, some are elected posts that can sponsor a '+
+   'bill, and some have no part in law at all.'],
 ];
-const LAWSTAGE={}; LAWSEQ.forEach((r,i)=>{ LAWSTAGE[r[0]]={stage:r[1], ord:i}; });
+const LAWSTAGE={};
+LAWSEQ.forEach((r,i)=>{ LAWSTAGE[r[0]]={stage:r[1], one:r[2], rel:r[3], ord:i}; });
 const lawOrd = k => (LAWSTAGE[k] ? LAWSTAGE[k].ord : 99);
 
 /* The offices a destination covers, each with the level it belongs to.
@@ -3493,33 +3750,129 @@ function officeEntriesFor(kinds, lvl, sub){
    be read at a glance; opening a row shows the detail. Paging hid the
    list from the reader exactly as scrolling did, with the added cost
    that a reader cannot tell how much they have not seen. */
-const SECNAME={who:'Who to contact', how:'How to Reach Them', next:'Where next'};
+/* ====================================================================
+   PLAIN WORDS FOR THE TERMS OF ART
+
+   Every sentence on this map is aimed at somebody who has not studied
+   how government works, and the words the subject uses — statute,
+   veto, rulemaking, standing, jurisdiction — are exactly the ones a
+   reader is likely to skip over rather than ask about. `glossy()`
+   underlines the first use of each in a block and `#gltip` gives the
+   definition on hover or focus.
+
+   One pass, one combined expression, first use only: replacing term by
+   term would have let a later term match inside the markup an earlier
+   one had just inserted. Definitions are written for a reader of about
+   middle-school age and say what the thing is, not what it is for —
+   the surrounding sentence is already doing that.
+   ==================================================================== */
+const GLOSSARY={
+  'legislature':'The body that writes and passes laws. A city council, a state legislature, a parliament and a congress are all legislatures.',
+  'legislatures':'The bodies that write and pass laws \u2014 councils, parliaments, congresses.',
+  'legislator':'Somebody elected to a legislature, the body that writes and passes laws.',
+  'legislators':'People elected to a legislature, the body that writes and passes laws.',
+  'bill':'A proposed law. It is only a bill until it has been passed and signed; then it is a law.',
+  'bills':'Proposed laws, not yet passed and signed.',
+  'statute':'A law passed by a legislature, as opposed to a rule written by a department underneath one.',
+  'statutes':'Laws passed by a legislature, as opposed to rules written underneath them.',
+  'veto':'A refusal by the head of government to sign a bill the legislature has passed. It usually sends the bill back, and the legislature can often override it by passing it again with a larger majority.',
+  'ordinance':'A law made by a city or county rather than by a state or a country.',
+  'decree':'An order a head of government can issue alone, without the legislature voting on it.',
+  'repeal':'To cancel a law that already exists.',
+  'amend':'To change the wording of a bill or a law rather than replace it.',
+  'amended':'Changed in its wording rather than replaced.',
+  'agency':'A body set up by a law to run and enforce one area of it, usually with specialists and some independence from the ministers of the day.',
+  'agencies':'Bodies set up by law to run and enforce one area of it each.',
+  'department':'A permanent part of government covering one subject \u2014 defence, health, transport \u2014 headed by a minister or secretary.',
+  'departments':'The permanent parts of government, each covering one subject.',
+  'committee':'A small group of members of a legislature that examines bills on one subject before the whole body sees them.',
+  'committees':'Small groups of legislature members that examine bills on one subject each.',
+  'chamber':'The room, and the body, where a whole legislature votes \u2014 a house, a senate, an assembly, a council.',
+  'chambers':'The bodies where a whole legislature votes \u2014 houses, senates, assemblies, councils.',
+  'constituent':'Somebody who lives in the area an elected official represents. Offices treat their own constituents differently from everybody else.',
+  'constituents':'The people who live in the area an elected official represents.',
+  'jurisdiction':'The area, and the subjects, a government or a court has power over.',
+  'petition':'A formal written request an office has to accept and, for some kinds, answer.',
+  'rulemaking':'The process by which a department or agency writes the detailed rules underneath a law.',
+  'regulation':'A detailed rule written by a department or agency under a law, rather than by the legislature.',
+  'regulations':'The detailed rules written by departments and agencies under a law.',
+  'ballot measure':'A question put directly to voters rather than decided by elected officials.',
+  'citizen initiative':'A way for members of the public to put a measure to a public vote by collecting enough signatures, with no politician\u2019s agreement needed.',
+  'ombudsman':'An independent official whose job is investigating how a public body treated somebody, and publishing what they find.',
+  'inspector general':'An official inside a public body whose job is checking whether it followed its own rules.',
+  'standing':'The requirement that you show a court a specific injury to you personally before it will hear your case. A harm shared equally by everybody counts, in law, as an injury to nobody.',
+  'presiding officer':'The speaker or chair who decides which bills are called for debate, and when.',
+  'attorney general':'The government\u2019s chief law officer, who brings cases to enforce the law and issues formal opinions on what it means.',
+  'clerk':'The official who keeps the public record and receives anything that has to be formally filed.',
+  'quorum':'The smallest number of members who must be present for a body to vote.',
+  'sponsor':'The member of a legislature who introduces a bill and carries it through.',
+  'hearing':'A public meeting where a committee takes evidence on a subject before deciding what to do.',
+  'enacted':'Passed and signed, so that it is now law.',
+  'override':'A second vote, by a larger majority, that passes a bill the head of government refused to sign.',
+  'decentralised':'Run by local bodies rather than from the centre.',
+};
+const GL_KEYS=Object.keys(GLOSSARY).sort((a,b)=>b.length-a.length);
+const RX_GLOSS=new RegExp('(?<![\\w-])('+
+  GL_KEYS.map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+')(?![\\w-])','gi');
+function glossy(str){
+  const used={};
+  return esc(str||'').replace(RX_GLOSS, m=>{
+    const k=m.toLowerCase();
+    if(used[k] || !GLOSSARY[k]) return m;
+    used[k]=1;
+    return '<u class="gl" tabindex="0" data-g="'+esc(k)+'">'+m+'</u>';
+  });
+}
+/* one tooltip element, moved to whatever term is under the pointer */
+let GLTIP=null;
+function glTip(el){
+  const d=GLOSSARY[el.dataset.g]; if(!d) return;
+  if(!GLTIP){ GLTIP=document.createElement('div'); GLTIP.id='gltip'; document.body.appendChild(GLTIP); }
+  GLTIP.textContent=d;
+  GLTIP.style.display='block';
+  const r=el.getBoundingClientRect(), w=Math.min(290, innerWidth-24);
+  GLTIP.style.width=w+'px';
+  GLTIP.style.left=Math.round(Math.max(10, Math.min(r.left, innerWidth-w-10)))+'px';
+  const h=GLTIP.offsetHeight||70;
+  GLTIP.style.top=Math.round(r.top-h-8 < 8 ? r.bottom+8 : r.top-h-8)+'px';
+}
+function glHide(){ if(GLTIP) GLTIP.style.display='none'; }
+document.addEventListener('mouseover', e=>{
+  const t=e.target.closest && e.target.closest('.gl'); if(t) glTip(t);
+});
+document.addEventListener('mouseout', e=>{
+  if(e.target.closest && e.target.closest('.gl')) glHide();
+});
+document.addEventListener('focusin', e=>{
+  const t=e.target.closest && e.target.closest('.gl'); if(t) glTip(t);
+});
+document.addEventListener('focusout', glHide);
+
+/* ====================================================================
+   THE DESTINATION, AS PAGES ONE INSIDE THE NEXT
+
+   It was a tab row — Who to Contact / How to Reach Them / Where next
+   — which put three unlike things at the same level and let a reader
+   open the methods before knowing whose methods they were. There are
+   no tabs. The path runs one way and back:
+
+     Who to Contact   every kind of office, in the order a law passes
+                      through them
+       → a kind       what that kind is, where it sits among the
+                      others, and the offices of it over this place
+         → an office  How to Reach Them
+
+   `LEAFKIND` holds the kind whose page is open, `SEL` the office.
+   ==================================================================== */
+const SECNAME={who:'Who to Contact', how:'How to Reach Them'};
 
 function drawLeaf(){
   const L=LEAVES[LEAF];
-  const secs=['who','how'];
-  if(L.next && L.next.length) secs.push('next');
-  if(secs.indexOf(LEAFSEC)<0) LEAFSEC='who';
-  let h='<div class="leafp">';
-  h+='<div class="lptabs">';
-  secs.forEach(sec=>{
-    h+='<button type="button" class="lpg'+(LEAFSEC===sec?' on':'')+'" '+
-       'onclick="leafSec(\''+sec+'\')">'+esc(SECNAME[sec])+'</button>';
-  });
-  h+='</div>';
-  h+='<div class="lpbody">'+drawPage(L, LEAFSEC)+'</div>';
-  return h+'</div>';
+  return '<div class="leafp"><div class="lpbody">'+
+    (LEAFKIND ? pageKind(L, LEAFKIND) : pageWho(L))+'</div></div>';
 }
 
-function drawPage(L, sec){
-  if(sec==='who') return pageWho(L);
-  if(sec==='how') return pageHow(L);
-  return pageNext(L);
-}
-
-/* ---- who to contact ----
-   Every kind of office on one screen, in the order a law passes
-   through them. */
+/* ---- Who to Contact: the kinds of office, in sequence ---- */
 function pageWho(L){
   const ents=officeEntriesFor(L.kinds, LEAFLVL);
   const byKind={}; ents.forEach(e=>{ (byKind[e.o.kind]=byKind[e.o.kind]||[]).push(e); });
@@ -3528,8 +3881,9 @@ function pageWho(L){
   const blanks=order.filter(k=>!byKind[k] || !byKind[k].length);
 
   let h='<div class="pg pg-who">';
-  h+='<h3 class="qq">Who to contact</h3>';
-  if(L.lead) h+='<p class="qsub">'+esc(L.lead)+'</p>';
+  h+='<h3 class="qq">Who to Contact'+wayBadge(L)+'</h3>';
+  h+='<p class="qsub">'+glossy(L.lead||'')+'</p>';
+  if(have.length>1) h+=lawFlow(have);
   if(!have.length){
     h+='<p class="qsub warn">No office of any of these kinds is recorded for this place'+
        (LEAFSUB?' under '+esc(LEAFSUB):'')+'. Coverage is deep for some countries and thin for '+
@@ -3542,102 +3896,102 @@ function pageWho(L){
   h+='</div>';
   if(blanks.length){
     h+='<p class="pgblank"><b>Nothing recorded here for:</b> '+
-       blanks.map(k=>esc((KINDLABEL[k]||k).toLowerCase())).join(', ')+
+       blanks.map(k=>esc(KINDLABEL[k]||k)).join(', ')+
        '. That is a gap in the record rather than a gap in the government.</p>';
   }
   return h+'</div>';
 }
 
-/* One kind of office, drawn as the same row a method uses, so the two
-   halves of the answer read alike.
+/* Which kind of route this is. A reader who wants the law changed and
+   follows a complaint route gets a decision about their own case and
+   no change to the law, and vice versa; saying which is which at the
+   top of the destination is the cheapest place to prevent that. */
+function wayBadge(L){
+  if(L.way==='both') return '<span class="wbadge cmp">Law and complaint routes</span>';
+  if(L.way==='law') return '<span class="wbadge law">Changes the law</span>';
+  if(L.way==='complaint') return '<span class="wbadge cmp">Complaint route</span>';
+  return '';
+}
 
-   The offices inside are grouped by which government they belong to,
-   closest first: the town's own before the county's, the county's
-   before the country's. The level question that used to ask the reader
-   to pick one of those governments is gone — they searched for the
-   place they live in, which fixes the lowest one, and every government
-   above it governs them too. Asking them to choose between a town and
-   the country it is in only hid half the answer. */
+/* The sequence itself, above the list, so the order of the list is
+   visibly an order. A list of twelve office types sorted by something
+   the reader cannot see reads as arbitrary. */
+function lawFlow(kinds){
+  return '<div class="lflow">'+kinds.map((k,i)=>
+    (i?'<i class="lfa">\u2192</i>':'')+
+    '<button type="button" class="lfn" data-kind="'+esc(k)+'" '+
+      'onclick="openKind(\''+esc(k)+'\')">'+esc(KINDLABEL[k]||k)+'</button>'
+  ).join('')+'</div>';
+}
+
+/* One kind of office, as a row that opens its own page. It was a
+   dropdown; a dropdown hides the offices behind a second click in the
+   same place and leaves no room to say what the kind is. */
 function kindRow(L,k,ents,i){
-  const when=(L.when&&L.when[k])||KINDWHEN[k]||(KINDINFO[k]||{}).what||'';
-  const stage=(LAWSTAGE[k]||{}).stage||'';
-  const byLvl={}; ents.forEach(e=>{ (byLvl[e.lvl]=byLvl[e.lvl]||[]).push(e.o); });
-  const lvls=Object.keys(byLvl).map(Number).sort((a,b)=>b-a);
-
-  let b='';
-  lvls.forEach(lv=>{
-    const list=byLvl[lv].slice().sort((a,b)=>a.label.localeCompare(b.label));
-    const st=STACK[lv];
-    b+='<div class="klvl"><dt>'+esc(st?st.label:'This government')+
-       '<span class="lvw">'+esc(LEVELN[Math.min(lv,LEVELN.length-1)])+'</span></dt>'+
-       '<div class="chips big">';
-    list.forEach(o=>{
-      b+='<button type="button" class="ochip'+(o.law?' law':'')+'" data-id="'+esc(o.id)+'" '+
-         'onclick="openPin(\''+esc(o.id)+'\')">'+esc(o.label)+'</button>';
-    });
-    b+='</div></div>';
-  });
-
-  return '<div class="route" id="kk'+i+'" data-kind="'+esc(k)+'">'+
-    '<button type="button" class="rhead" aria-expanded="false" '+
-      'onclick="toggleRoute(\'kk'+i+'\',this)">'+
-    '<div class="rmain"><div class="rnm">'+esc(KINDLABEL[k]||k)+
+  const st=LAWSTAGE[k]||{};
+  const lvls=new Set(ents.map(e=>e.lvl));
+  return '<button type="button" class="route krow" data-kind="'+esc(k)+'" '+
+    'onclick="openKind(\''+esc(k)+'\')"><div class="rhead"><div class="rmain">'+
+    '<div class="rnm">'+esc(KINDLABEL[k]||k)+
       (LAWKINDS.has(k)?'<i class="lawdot" title="a route to a law"></i>':'')+
-      (stage?'<span class="rstage">'+esc(stage)+'</span>':'')+
+      (st.stage?'<span class="rstage">'+esc(st.stage)+'</span>':'')+
       '<span class="rct">'+ents.length+(ents.length===1?' office':' offices')+
-      ', at '+lvls.length+(lvls.length===1?' level':' levels')+'</span></div>'+
-    (when?'<div class="rwhen">'+esc(when)+'</div>':'')+
-    '</div><div class="rtog">+</div></button>'+
-    '<div class="rbody">'+
-    (when?'<div class="fld"><dt>When this is the office</dt><dd>'+esc(when)+'</dd></div>':'')+
-    b+'<div class="pgfoot">Open any one of these for what it can do, how to reach it '+
-    'and what stops it.</div></div></div>';
+      ', at '+lvls.size+(lvls.size===1?' level':' levels')+'</span></div>'+
+    '<div class="rwhen">'+glossy(st.one||'')+'</div>'+
+    '</div><div class="rtog">\u203a</div></div></button>';
 }
 
-/* ---- how to reach them ----
-   Every method on one screen, the ones that work more often first. */
-function pageHow(L){
-  const ids = L.routes || Object.keys(KIND_ROUTES).reduce((a,k)=>a.concat(KIND_ROUTES[k]),[]);
-  const seen={}, rts=[];
-  ids.forEach(id=>{ if(seen[id])return; seen[id]=1;
-    const r=ROUTES.find(x=>x.id===id); if(r) rts.push(r); });
-  rts.sort((a,b)=>BANDS[rateBand(a.rate)].ord-BANDS[rateBand(b.rate)].ord);
-  let h='<div class="pg pg-how">';
-  h+='<h3 class="qq">How to Reach Them</h3>';
-  h+='<p class="qsub">The methods that reach the offices on the last screen, the ones that work '+
-     'more often than the rest first. Open one for what it costs, who can use it, what it '+
-     'produces, and what stands in its way.</p>';
-  h+='<div class="rgrid one">';
-  rts.forEach((rt,i)=>{
-    h+=routeTile(rt,i,ROUTEWHEN[rt.id],(L.notes||[]).filter(n=>n[0]===rt.id));
+/* ---- one kind of office: its own page ---- */
+function pageKind(L,k){
+  const ents=officeEntriesFor([k], LEAFLVL);
+  const st=LAWSTAGE[k]||{};
+  const when=(L.when&&L.when[k])||KINDWHEN[k]||'';
+  let h='<div class="pg pg-kind">';
+  h+='<button type="button" class="lpback" onclick="closeKind()">\u2039 Who to Contact</button>';
+  h+='<h3 class="qq">'+esc(KINDLABEL[k]||k)+
+     (LAWKINDS.has(k)?'<i class="lawdot" title="a route to a law"></i>':'')+'</h3>';
+  if(st.stage) h+='<div class="kstage">In the making of a law, this is the body that '+
+     esc(st.stage)+'.</div>';
+  h+='<p class="qsub">'+glossy(when)+'</p>';
+  if(st.rel) h+='<div class="krel"><dt>How it fits with the rest</dt><dd>'+glossy(st.rel)+'</dd></div>';
+
+  if(!ents.length){
+    h+='<p class="pgblank">No office of this kind is recorded for this place'+
+       (LEAFSUB?' under '+esc(LEAFSUB):'')+'. That is a gap in the record rather than a gap in '+
+       'the government: coverage is thinnest at municipal level. The levels above this one '+
+       'usually still have one.</p>';
+    return h+'</div>';
+  }
+
+  /* grouped by which government they sit in, closest first */
+  const byLvl={}; ents.forEach(e=>{ (byLvl[e.lvl]=byLvl[e.lvl]||[]).push(e.o); });
+  Object.keys(byLvl).map(Number).sort((a,b)=>b-a).forEach(lv=>{
+    const list=byLvl[lv].slice().sort((a,b)=>a.label.localeCompare(b.label));
+    const s=STACK[lv];
+    h+='<div class="klvl"><dt>'+esc(s?s.label:'This government')+
+       '<span class="lvw">'+esc(LEVELN[Math.min(lv,LEVELN.length-1)])+'</span></dt>'+
+       '<div class="olist">';
+    list.forEach(o=>{
+      h+='<button type="button" class="orow'+(o.law?' law':'')+'" data-id="'+esc(o.id)+'" '+
+         'onclick="openPin(\''+esc(o.id)+'\')"><span class="onm">'+esc(o.label)+'</span>'+
+         '<span class="oar">\u203a</span></button>';
+    });
+    h+='</div></div>';
   });
-  return h+'</div></div>';
+  h+='<div class="pgfoot">Open any one of these for How to Reach Them \u2014 every method that '+
+     'reaches it, what each costs and what stands in the way.</div>';
+  return h+'</div>';
 }
 
-function pageNext(L){
-  let h='<div class="pg pg-text"><h3 class="pgh">If this is the wrong route</h3>'+
-    '<p class="pgl">The subject and the level you chose are kept, so these pick up where you are.</p>'+
-    '<div class="lnext">';
-  L.next.forEach(([k,t])=>{
-    h+='<button type="button" class="nxt" onclick="'+(k==='start'?'resetTree();render()':'jumpLeaf(\''+k+'\')')+'">'+
-       esc(t)+'</button>';
-  });
-  return h+'</div></div>';
-}
-
-/* Which part of the answer is on screen. It was a page number into a
-   flat list of screens, with arrow keys and a row of dots; the three
-   parts of a destination are now three sections, each whole. */
-function leafSec(s){
-  LEAFSEC=s; render();
-  if(s==='who'){ const L=LEAVES[LEAF]; if(L) frameKinds(L.kinds); }
-}
+function openKind(k){ LEAFKIND=k; SEL=null; render(); frameKinds([k]); }
+function closeKind(){ LEAFKIND=null; SEL=null; render();
+  const L=LEAVES[LEAF]; if(L) frameKinds(L.kinds); }
 
 /* ---------- moving through it ---------- */
 function pickOpt(i){
   const node=PATH.length?PATH[PATH.length-1].next:'start';
   const qn=QUESTIONS[node]||QUESTIONS.start;
-  const o=qn.opts[i]; if(!o) return;
+  const o=qn.opts[i]; if(!o || o.grp) return;
   if(o.go){ PATH.push({label:o.t, next:o.go}); LEAF=null; return render(); }
   enterLeaf(o.leaf, o.t);
 }
@@ -3651,7 +4005,7 @@ function pickOpt(i){
    knows which government it is counting. */
 function enterLeaf(key, label){
   const L=LEAVES[key]; if(!L) return;
-  PENDLEAF=key; LEAFLVL=null; LEAFSUB=null; LEAFSEC='who'; SHOWALLK={};
+  PENDLEAF=key; LEAFLVL=null; LEAFSUB=null; LEAFKIND=null; SHOWALLK={};
   PATH.push({label:label||L.nm, next:nextStep(L, key, 'leaf')});
   if(PATH[PATH.length-1].next){ LEAF=null; return render(); }
   LEAF=key; render(); frameKinds(L.kinds);
@@ -3680,7 +4034,7 @@ function pickSubject(t){
   LEAFSUB=t;
   const L=LEAVES[PENDLEAF];
   PATH.push({label:t||'Any subject', next:null});
-  LEAF=PENDLEAF; LEAFSEC='who'; render(); frameKinds(L.kinds);
+  LEAF=PENDLEAF; LEAFKIND=null; render(); frameKinds(L.kinds);
 }
 /* A "where next" link. The subject and level already chosen are kept:
    somebody who said "environmental, in California" and then follows
@@ -3688,7 +4042,7 @@ function pickSubject(t){
    same state, not a fresh start. */
 function jumpLeaf(key){
   const L=LEAVES[key]; if(!L) return;
-  PENDLEAF=key; SHOWALLK={}; LEAFSEC='who';
+  PENDLEAF=key; SHOWALLK={}; LEAFKIND=null;
   PATH.push({label:L.nm, next:null});
   LEAF=key; render(); frameKinds(L.kinds);
 }
@@ -3701,7 +4055,7 @@ function treeGo(i){
      still filtering the answer behind it */
   if(st.next==='__subject__'){ LEAFSUB=null; }
   if(st.next){ LEAF=null; }
-  SHOWALLK={}; LEAFSEC='who';
+  SHOWALLK={}; LEAFKIND=null;
   render();
 }
 
@@ -3842,6 +4196,7 @@ function render(){
   showBack(false);
   hideCard();
   bindTree();
+  if(typeof paintHier==='function' && HIER_OPEN) paintHier(); else if(typeof markHier==='function') markHier();
 }
 
 /* One route, as a tile. Written once because a destination lists the
@@ -4224,6 +4579,9 @@ function setPins(){
     return {type:'Feature', geometry:{type:'Point',coordinates:[p.lng,p.lat]},
       properties:{id:p.id, label:p.label, on:(i>=0 && inScope), lvl:i<0?9:i,
         law:law, bldg:bldg, scope:inScope,
+        /* carried so the hierarchy diagram can light every marker of
+           one kind at once with a layer filter */
+        kind:(o&&o.kind)||(p.o&&p.o.kind)||'',
         vis: SHOW[bldg ? (LOCAL[p.id].kind||'g') : (law?'law':'other')] !== false,
         col:levelColour(i<0?0:i),
         /* re-read on every setPins, which is also what a basemap
@@ -4232,6 +4590,7 @@ function setPins(){
   });
   src.setData({type:'FeatureCollection',features:feats.filter(f=>f.properties.vis)});
   paintShow();
+  if(typeof paintLenses==='function') paintLenses();
   const vis=feats.filter(f=>f.properties.vis);
   const on=vis.filter(f=>f.properties.on);
   const lw=on.filter(f=>f.properties.law).length;
@@ -4240,10 +4599,15 @@ function setPins(){
   const el=$('#pincount');
   if(!el) return;
   if(!Object.keys(PINS).length){ el.textContent=''; return; }
-  el.textContent = SCOPE
+  /* Two different things were being counted in one line with no word
+     saying how they differ. An office is a post with powers — a seat,
+     a department, a court. A building is an address you can walk into
+     or ring, which may hold several offices or none. */
+  el.innerHTML = SCOPE
     ? (on.length-bd)+' of '+offices+' offices left by your answers'
-    : (on.length-bd)+' offices govern where you picked, '+lw+' of them reachable about a law'+
-      (bd?', and '+bd+' government buildings':'');
+    : (on.length-bd)+' <b>offices</b> govern this place — posts with powers, '+lw+
+      ' of them reachable about a law'+
+      (bd?' — and '+bd+' <b>buildings</b> you can walk into or ring':'');
 }
 
 /* Municipal polygons from OSM, fetched after the rings are already up.
@@ -4364,24 +4728,19 @@ async function walkTo(o){
      reader sees what it is and what sits beside it before the page
      replaces the list. */
   PATH=[{label:'Every office over this place', next:null}];
-  LEAF='all'; LEAFLVL=null; LEAFSUB=null; LEAFSEC='who';
+  LEAF='all'; LEAFLVL=null; LEAFSUB=null; LEAFKIND=o.kind;
   SEL=null; render();
   await walkWait(60);
   if(gen!==WALK) return;
 
-  /* Who to contact lists every kind at once now, so the office is
-     already on the screen; its row only has to be opened. */
+  /* `LEAFKIND` was set above, so the render already landed on the
+     office's own kind page and the office is in the list on it. The
+     walk shows the reader where that page sits — the kind, then the
+     office — before the office page replaces it. */
   const body=$('#mbody');
-  const row=body.querySelector('.route[data-kind="'+o.kind+'"]');
-  if(row){
-    const btn=row.querySelector('.rhead');
-    if(btn && !row.classList.contains('open')) toggleRoute(row.id, btn);
-  }
-  await walkWait(40);
-  if(gen!==WALK) return;
   const steps=[
-    row && row.querySelector('.rnm'),
-    body.querySelector('.ochip[data-id="'+o.id+'"]'),
+    body.querySelector('.pg-kind .qq'),
+    body.querySelector('.orow[data-id="'+o.id+'"]'),
   ];
   const frames=[ [o.kind], null ];
   for(let i=0;i<steps.length;i++){
@@ -4659,7 +5018,7 @@ async function loadChainPins(){
        all: once to the place itself in `enterPlace`, once to the
        offices here when they are all in. */
   }
-  if(gen===CHAIN_GEN) fitToPins();
+  if(gen===CHAIN_GEN){ paintLenses(); fitToNational(); }
 }
 let CHAIN_DONE={}, CHAIN_CLAIMED={}, CHAIN_GEN=0;
 
@@ -4844,6 +5203,8 @@ function openStart(){
   STACK=[]; PINS={}; LOCAL={}; CHAIN_DONE={}; CHAIN_CLAIMED={}; PIN_TRIED={};
   CUR=null; SEL=null;
   SELFSITE=null; paintSiteLink();
+  const lb=$('#lenses'); if(lb){ lb.innerHTML=''; lb.style.display='none'; }
+  const ld=$('#leaders'); if(ld) ld.innerHTML='';
   setAdmData([]); paintTrail(); paintChain(); setPins();
   noteBelow('');
   try{ map.stop(); }catch(e){}
@@ -4922,11 +5283,31 @@ async function runSearch(q, live){
      shops and mountain ranges alongside places; a street has no
      jurisdiction to draw and no offices to resolve. An OSM relation
      tagged as a place or a boundary is what this map can use. */
-  SHITS = rows.filter(f=>{
+  /* Settlements first, and the rest only when nothing smaller matched.
+
+     The map is about the place somebody lives, and the governments
+     above it are drawn from that place automatically — so a county or
+     a state in the result list is almost never what a reader wants,
+     and picking one by mistake silently drops the town's own council
+     and mayor out of the answer. Filtering them out altogether was the
+     obvious fix and the wrong one: a great many people in the United
+     States live in unincorporated land whose smallest jurisdiction
+     really is the county, and in some countries the lowest unit is not
+     a settlement at all. Those readers would have been unable to find
+     where they live.
+
+     So: cities, towns, villages, hamlets and municipalities rank
+     above everything, and a county, region or state is shown only when
+     no settlement matched the name at all. */
+  const SETTLE=new Set(['city','town','village','hamlet','municipality','borough',
+                        'suburb','quarter','neighbourhood','locality','isolated_dwelling']);
+  const usable = rows.filter(f=>{
     const p=f.properties||{};
     if(p.osm_type!=='R') return false;
     return p.osm_key==='place' || p.osm_key==='boundary';
   }).map(f=>f.properties);
+  const small = usable.filter(p=>SETTLE.has(String(p.osm_value||'')));
+  SHITS = small.length ? small : usable;
 
   if(!SHITS.length){
     out.innerHTML = live ? ''
@@ -5017,7 +5398,9 @@ async function enterPlace(i){
   if(wd) openJuris(wd, name);
   else { openModal(name,'Drawn from OpenStreetMap'); renderNoEntity(name, true); }
   paintTrail(); paintChain(); setPins();
-  fitTo(feat.geometry);
+  /* the place itself is one of the lenses now, so the camera does not
+     go to it; it frames the country and holds there */
+  paintLenses(); fitToNational();
   /* the buildings inside the place, then the offices that govern it */
   loadLocalContacts(feat, STACK.length-1);
   loadChainPins();
@@ -5168,6 +5551,303 @@ function toggleAbout(){ document.getElementById('about').classList.toggle('on');
 
 /* keep the globe clear of the box: MapLibre's padding moves what the
    camera centres on, so the planet sits in the space left of it */
+
+/* ====================================================================
+   MAGNIFYING LENSES
+
+   The problem they solve: the offices that govern one town sit at four
+   different scales. The city hall is in the town, the county seat is
+   twenty miles off, the state capital two hundred, the national
+   capital two thousand. A camera that frames all of them shows a
+   country with five specks on it and nothing readable; a camera that
+   frames the town shows one marker and hides the other three levels
+   off-screen. Flying between the levels in turn showed each one
+   properly and was the thing that read as a fault.
+
+   So the map holds still at national scale, and each level gets a
+   magnifying circle down the left-hand side: the level's own boundary
+   and its office markers, drawn at whatever scale makes them legible
+   inside the circle, with a line to where that place actually is on
+   the map. All four levels are readable at once and the country stays
+   in view behind them. The markers inside a lens are clickable, which
+   is the real payoff — at national scale a town's markers are a
+   single pixel and cannot be hit.
+
+   The lens contents are drawn from the data the map already holds:
+   the boundary polygon on the STACK entry and the office coordinates
+   in PINS. There is no second map instance and no extra request.
+   ==================================================================== */
+const LENS_R=58, LENS_GAP=13, LENS_TOP=74;
+
+/* The outer rings of a geometry, thinned. A département can carry
+   several thousand points and the circle is 116px across, so one point
+   in every nth is indistinguishable from all of them. */
+function lensRings(g){
+  if(!g) return [];
+  const polys = g.type==='Polygon' ? [g.coordinates]
+              : g.type==='MultiPolygon' ? g.coordinates : [];
+  const out=[];
+  polys.forEach(p=>{
+    const r=p[0]; if(!r || r.length<4) return;
+    const step=Math.max(1, Math.floor(r.length/160));
+    const thin=[]; for(let i=0;i<r.length;i+=step) thin.push(r[i]);
+    thin.push(r[r.length-1]);
+    out.push(thin);
+  });
+  /* the biggest few only: an island chain is mostly specks */
+  return out.sort((a,b)=>b.length-a.length).slice(0,6);
+}
+
+/* Which levels get a lens, deepest first, and what goes in each. */
+function lensLevels(){
+  if(!STACK.length) return [];
+  const idx={}; STACK.forEach((s,i)=>{ if(s.q) idx[s.q]=i; });
+  const byLvl={};
+  Object.values(PINS).forEach(p=>{
+    const lv=(p.lvlIdx!=null)?p.lvlIdx:idx[p.lvlQ];
+    if(lv==null) return;
+    (byLvl[lv]=byLvl[lv]||[]).push(p);
+  });
+  const out=[];
+  for(let lv=STACK.length-1; lv>=0; lv--){
+    const st=STACK[lv], pins=byLvl[lv]||[];
+    if(!st) continue;
+    /* a level with neither a shape nor an office has nothing to magnify */
+    if(!pins.length && !(st.feature && st.feature.geometry)) continue;
+    out.push({lv:lv, st:st, pins:pins});
+  }
+  return out;
+}
+
+/* One lens, as an SVG. Everything is projected flat into the circle:
+   over a county or a state the error against a real projection is
+   smaller than a pixel here, and this is a diagram of where things are
+   relative to each other, not a chart anybody measures off. */
+function lensSvg(info){
+  const D=LENS_R*2, pad=9, span=D-pad*2;
+  const rings=lensRings(info.st.feature && info.st.feature.geometry);
+  let x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity;
+  const eat=(x,y)=>{ if(x<x0)x0=x; if(x>x1)x1=x; if(y<y0)y0=y; if(y>y1)y1=y; };
+  rings.forEach(r=>r.forEach(p=>eat(p[0],p[1])));
+  info.pins.forEach(p=>eat(p.lng,p.lat));
+  if(!isFinite(x0)) return '';
+  /* a single point has no extent; give it one so it lands in the middle */
+  if(x1-x0 < 1e-6){ x0-=0.01; x1+=0.01; }
+  if(y1-y0 < 1e-6){ y0-=0.01; y1+=0.01; }
+  /* latitude is squashed by cos(lat) at this size, which is what keeps
+     a county from coming out as an oval */
+  const kx=Math.cos((y0+y1)/2*Math.PI/180) || 1;
+  const w=(x1-x0)*kx, h=(y1-y0);
+  const sc=span/Math.max(w,h);
+  const ox=pad+(span-w*sc)/2, oy=pad+(span-h*sc)/2;
+  const PX=x=>ox+(x-x0)*kx*sc, PY=y=>oy+(y1-y)*sc;
+
+  const col=levelColour(info.lv);
+  let g='';
+  rings.forEach(r=>{
+    g+='<path d="M'+r.map(p=>PX(p[0]).toFixed(1)+' '+PY(p[1]).toFixed(1)).join('L')+
+       'Z" fill="'+col+'" fill-opacity=".13" stroke="'+col+'" stroke-width="1.1"/>';
+  });
+  info.pins.forEach(p=>{
+    g+='<circle class="lsd'+(p.law?' law':'')+'" cx="'+PX(p.lng).toFixed(1)+'" cy="'+
+       PY(p.lat).toFixed(1)+'" r="3.4" fill="'+col+'" data-id="'+esc(p.id)+'">'+
+       '<title>'+esc(p.label||'')+'</title></circle>';
+  });
+  return '<svg viewBox="0 0 '+D+' '+D+'" width="'+D+'" height="'+D+'">'+g+'</svg>';
+}
+
+function paintLenses(){
+  const box=$('#lenses'); if(!box) return;
+  const L=lensLevels();
+  if(L.length<2){ box.innerHTML=''; box.style.display='none'; paintLeaders(); return; }
+  /* the stylesheet hides it, so this has to name a value rather than
+     clear the inline one back to that default */
+  box.style.display='block';
+  box.innerHTML = L.map((info,i)=>{
+    const nm=LEVELN[Math.min(info.lv,LEVELN.length-1)];
+    return '<div class="lens" data-lv="'+info.lv+'" style="top:'+
+      (LENS_TOP+i*(LENS_R*2+LENS_GAP+26))+'px">'+
+      '<div class="lensc" style="border-color:'+levelColour(info.lv)+'">'+lensSvg(info)+'</div>'+
+      '<div class="lensl"><b>'+esc(info.st.label||'')+'</b><span>'+esc(nm)+' \u00b7 '+
+        info.pins.length+(info.pins.length===1?' office':' offices')+'</span></div></div>';
+  }).join('');
+  paintLeaders();
+}
+
+/* The line from each circle to the place it magnifies. Redrawn on
+   every camera move, because the point it lands on is a map position
+   and the circle is not. */
+function paintLeaders(){
+  const svg=$('#leaders'); if(!svg) return;
+  const box=$('#lenses');
+  if(!box || box.style.display==='none'){ svg.innerHTML=''; return; }
+  let out='';
+  [...box.querySelectorAll('.lens')].forEach(el=>{
+    const lv=+el.dataset.lv, st=STACK[lv]; if(!st) return;
+    let c=null;
+    if(st.feature && st.feature.geometry) c=centroid(st.feature.geometry);
+    if(!c){
+      const ps=Object.values(PINS).filter(p=>p.lvlIdx===lv);
+      if(ps.length) c=[ps[0].lng, ps[0].lat];
+    }
+    if(!c) return;
+    let pt; try{ pt=map.project(c); }catch(e){ return; }
+    if(!pt || !isFinite(pt.x)) return;
+    const r=el.querySelector('.lensc').getBoundingClientRect();
+    const cx=r.left+r.width/2, cy=r.top+r.height/2;
+    const dx=pt.x-cx, dy=pt.y-cy, d=Math.hypot(dx,dy);
+    if(!d || d<LENS_R+6) return;
+    const sx=cx+dx/d*(LENS_R+1), sy=cy+dy/d*(LENS_R+1);
+    const col=levelColour(lv);
+    out+='<line x1="'+sx.toFixed(1)+'" y1="'+sy.toFixed(1)+'" x2="'+pt.x.toFixed(1)+
+         '" y2="'+pt.y.toFixed(1)+'" stroke="'+col+'" stroke-width="1" stroke-dasharray="3 4" opacity=".65"/>'+
+         '<circle cx="'+pt.x.toFixed(1)+'" cy="'+pt.y.toFixed(1)+'" r="3" fill="none" stroke="'+
+         col+'" stroke-width="1.2" opacity=".9"/>';
+  });
+  svg.innerHTML=out;
+}
+try{
+  map.on('move', paintLeaders);
+  map.on('resize', ()=>{ paintLenses(); });
+  addEventListener('resize', ()=>{ paintLenses(); });
+}catch(e){}
+
+/* a marker inside a lens opens its office, which at national scale is
+   the only way to hit it at all */
+document.addEventListener('click', e=>{
+  const d=e.target.closest && e.target.closest('.lsd');
+  if(d && d.dataset.id) openPin(d.dataset.id);
+});
+
+/* Hold the country in view, which is what makes the lenses worth
+   having. `fitToPins` framed the offices between the municipality and
+   the region, which is the opposite choice and the one the lenses
+   replace. */
+function fitToNational(){
+  for(let i=0;i<STACK.length;i++){
+    const st=STACK[i];
+    if(st && st.feature && st.feature.geometry){ fitTo(st.feature.geometry); return; }
+  }
+  fitToPins();
+}
+
+
+/* ====================================================================
+   THE HIERARCHY, BOTTOM LEFT
+
+   Who to Contact is a sequence — who introduces a bill, who votes on
+   it, who signs it — and a sequence is only half of how government is
+   arranged. The other half is the branch each office belongs to, and
+   a reader cannot infer it from a list that runs Members, Committees,
+   Chambers, Head of Government: nothing on that list says the first
+   three are one branch and the fourth is another.
+
+   So the branches are drawn, once, as a tree that stays on the map
+   while the reader moves around the panel. Hovering a node lights the
+   offices of that kind on the map and the row in the panel; clicking
+   one opens that kind's page. The node for whatever page is open is
+   lit from the other direction, so the tree says where you are.
+
+   It is drawn as an SVG rather than with Mermaid. Mermaid's click
+   directive does not work in this page — it binds, it does not throw,
+   and no handler ever fires — and the whole value of this diagram is
+   that its nodes are live.
+   ==================================================================== */
+const HIER=[
+  ['leg','Legislative','Writes and passes the law',
+   ['leg/member','leg/committee','leg/chamber','leg/presiding']],
+  ['exec','Executive','Signs it, and writes the rules under it',
+   ['exec/head','exec/minister','exec/clerk','exec/legal','exec/envoy']],
+  ['ag','Agencies and oversight','Turns it into rules, enforces them, checks them',
+   ['ag/agency','ag/police','ag/audit']],
+  ['jud','Judicial','Decides what it means and whether it stands',
+   ['jud/court','jud/judge','jud/defender']],
+];
+let HIER_OPEN=false;
+
+function hierCounts(){
+  const c={};
+  Object.values(PINS).forEach(p=>{ if(p.o&&p.o.kind) c[p.o.kind]=(c[p.o.kind]||0)+1; });
+  if(BK&&BK.byId) Object.values(BK.byId).forEach(o=>{ if(!PINS[o.id]) c[o.kind]=(c[o.kind]||0)+1; });
+  return c;
+}
+
+function paintHier(){
+  const box=$('#hierbody'); if(!box) return;
+  const cnt=hierCounts();
+  const ROW=19, HEAD=21, PADT=8, X0=10, X1=104, W=296;
+  let y=PADT, nodes='', edges='';
+  const branchY={};
+  HIER.forEach(([br,nm,sub,kinds])=>{
+    const by=y+HEAD/2;
+    branchY[br]=by;
+    nodes+='<g class="hbr"><rect x="'+X0+'" y="'+(y)+'" rx="6" width="'+(X1-X0-14)+
+      '" height="'+(HEAD-3)+'"/><text x="'+(X0+8)+'" y="'+(y+13)+'">'+esc(nm)+'</text></g>';
+    let ky=y+HEAD+2;
+    kinds.forEach(k=>{
+      const c=cnt[k]||0;
+      edges+='<path d="M'+(X1-12)+' '+by+' C'+(X1-2)+' '+by+','+(X1-2)+' '+(ky+ROW/2-1)+','+
+             X1+' '+(ky+ROW/2-1)+'" fill="none"/>';
+      nodes+='<g class="hk'+(c?'':' thin')+'" data-kind="'+esc(k)+'">'+
+        '<rect x="'+X1+'" y="'+ky+'" rx="5" width="'+(W-X1-10)+'" height="'+(ROW-3)+'"/>'+
+        '<text x="'+(X1+8)+'" y="'+(ky+12)+'">'+esc(KINDLABEL[k]||k)+'</text>'+
+        '<text class="hct" x="'+(W-16)+'" y="'+(ky+12)+'">'+(c||'\u2013')+'</text>'+
+        '</g>';
+      ky+=ROW;
+    });
+    y = ky + 7;
+  });
+  box.innerHTML='<svg viewBox="0 0 '+W+' '+y+'" width="100%" height="'+y+'">'+
+    '<g class="hedge">'+edges+'</g>'+nodes+'</svg>';
+  markHier();
+}
+
+/* which node is the page the reader has open */
+function markHier(){
+  const want = SEL ? SEL.kind : LEAFKIND;
+  document.querySelectorAll('#hierbody .hk').forEach(g=>{
+    g.classList.toggle('on', !!want && g.dataset.kind===want);
+  });
+}
+
+function toggleHier(){
+  HIER_OPEN=!HIER_OPEN;
+  $('#hier').classList.toggle('on', HIER_OPEN);
+  $('#hiertog').textContent = HIER_OPEN ? 'How government fits together \u25be'
+                                        : 'How government fits together \u25b8';
+  if(HIER_OPEN) paintHier();
+}
+
+/* Hover lights the offices of that kind, here and on the map; it does
+   not move the camera. Clicking does, and opens the kind's page — a
+   camera that chased the pointer around a diagram would be the
+   jumping about this map has been getting rid of. */
+function hierHover(k, on){
+  document.querySelectorAll('.krow[data-kind]').forEach(r=>{
+    if(r.dataset.kind===k) r.classList.toggle('lit', on);
+  });
+  try{ map.setFilter('pin-walk', on ? ['==',['get','kind'], k||''] : ['==',['get','id'],'']); }catch(e){}
+}
+document.addEventListener('mouseover', e=>{
+  const g=e.target.closest && e.target.closest('#hierbody .hk');
+  if(g) hierHover(g.dataset.kind, true);
+});
+document.addEventListener('mouseout', e=>{
+  const g=e.target.closest && e.target.closest('#hierbody .hk');
+  if(g) hierHover(g.dataset.kind, false);
+});
+document.addEventListener('click', e=>{
+  const g=e.target.closest && e.target.closest('#hierbody .hk');
+  if(!g) return;
+  const k=g.dataset.kind;
+  if(!CUR) return;
+  /* no destination open yet: take the one that holds every office,
+     which is where this node lives in all of them */
+  if(!LEAF){ PATH=[{label:'Every office over this place', next:null}];
+             LEAF='all'; LEAFLVL=null; LEAFSUB=null; }
+  openKind(k);
+});
+
 function shiftForBox(on){
   try{
     const m=document.getElementById('modal');
