@@ -218,7 +218,6 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   border:1px dashed var(--line);border-radius:999px;padding:2px 9px}
 #mfind:hover{color:var(--ink);border-color:var(--accent-hi);text-decoration:none}
 /* methods that reach something other than an office over this place */
-.loosenote{font-size:11.6px;line-height:1.55;color:var(--dim);margin:0 0 8px}
 /* In the open ground between the bubbles and the panel, like the
    hurdles box, rather than over the panel it is explaining.
    `placeSide` sets `right`, `width` and `top`. */
@@ -283,9 +282,6 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .krow.blank{opacity:.78;cursor:default;background:transparent;border-style:dashed}
 .krow.blank .rct{color:var(--stone)}
 .krow.blank .rhead{cursor:default}
-.rblank{font-size:11.4px;line-height:1.55;color:var(--dim);margin-top:6px}
-.rblank a{color:var(--accent-hi);text-decoration:none}
-.rblank a:hover{text-decoration:underline}
 /* where the method is actually carried out */
 .doat dd{display:flex;flex-direction:column;gap:5px}
 .doat dd a{display:block;font-size:11.6px;line-height:1.45;color:var(--accent-hi);
@@ -297,12 +293,13 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   text-transform:uppercase;color:var(--stone);margin-bottom:2px}
 .staleq{display:block;font-size:10.4px;line-height:1.4;color:var(--faint);
   font-style:normal;margin:-1px 0 1px 9px}
-/* the recorded link is the field that goes stale fastest */
-.recfix{margin-top:7px;display:flex;flex-wrap:wrap;gap:5px 8px;align-items:baseline}
-.recfix a{font-size:10.6px;color:var(--accent-hi);text-decoration:none;
-  border:1px solid var(--line);border-radius:7px;padding:3px 7px;white-space:nowrap}
-.recfix a:hover{background:rgba(74,124,89,.16);text-decoration:none}
-.recfix i{flex:1 1 100%;font-style:normal;font-size:10.6px;line-height:1.5;color:var(--faint)}
+/* The recorded link is the field that goes stale fastest, so the
+   search that finds the current one sits on the same line as the link
+   rather than in a row of its own underneath it. */
+.findsite{font-size:10.4px;color:var(--accent-hi);text-decoration:none;
+  border:1px solid var(--line);border-radius:7px;padding:2px 7px;white-space:nowrap;
+  word-break:normal}
+.findsite:hover{background:rgba(74,124,89,.16);text-decoration:none}
 .offleaf{font-size:11.8px;line-height:1.55;color:var(--dim);margin:0 0 4px;
   padding:8px 10px;border-left:2px solid var(--line);background:rgba(125,142,130,.07);
   border-radius:0 7px 7px 0}
@@ -3833,7 +3830,7 @@ const LEAVES = {
    and for a national statute are different people. */
 const QUESTIONS = {
   start: {
-    q:'Narrow the map to what you want to do',
+    q:'What would you like to do',
     opts:[
       {t:'Create a rule that does not exist yet',
        d:'A ban, a requirement, a protection, a right.', leaf:'new_law'},
@@ -4543,8 +4540,8 @@ function pageWho(L){
     if(i) h+='<div class="lsarr">\u2193</div>';
     h+=(byKind[k] && byKind[k].length) ? kindRow(L,k,byKind[k],i) : kindRowBlank(L,k);
   });
+  h+=looseRoutes(L, order.length);
   h+='</div>';
-  h+=looseRoutes(L);
   return h+'</div>';
 }
 
@@ -4554,11 +4551,17 @@ function pageWho(L){
    that reaches no office reached no screen: a complaint to a company,
    a submission to the United Nations review, a case at a regional
    human rights court and an ILO complaint were all in the data and
-   none of them was drawn anywhere. They are not failures of the
-   sequence above and should not be inserted into it — none of them
-   is an office over this place — so they sit under it, named for
-   what they have in common. */
-function looseRoutes(L){
+   none of them was drawn anywhere.
+
+   They were given a heading of their own — "Not addressed to any
+   office here" — with a paragraph explaining what they had in
+   common, which split one answer to one question into two lists and
+   made the second look like an appendix. They continue the same
+   sequence instead, after the last office, with no heading between.
+   What marks them is in each row: a route carries its own cost and
+   its own ranking where an office kind carries a count of offices,
+   and opening one opens the method rather than a page of offices. */
+function looseRoutes(L, after){
   const inKinds={};
   Object.keys(KIND_ROUTES).forEach(k=>KIND_ROUTES[k].forEach(r=>{ inKinds[r]=1; }));
   const pool=(L && L.routes) ? L.routes : ROUTES.map(r=>r.id);
@@ -4567,14 +4570,11 @@ function looseRoutes(L){
   const rts=ids.map(id=>ROUTES.find(x=>x.id===id)).filter(Boolean)
     .sort((a,b)=>BANDS[rateBand(a.rate)].ord-BANDS[rateBand(b.rate)].ord);
   if(!rts.length) return '';
-  let h='<div class="sec">Not addressed to any office here</div>';
-  h+='<p class="loosenote">These reach something other than a government office over this '+
-     'place — a company, or a body outside the country — so they are not part of the '+
-     'sequence above and none of the offices on it is the way in. Each one is a route in its '+
-     'own right.</p>';
-  h+='<div class="rgrid one">';
-  rts.forEach((rt,i)=>{ h+=routeTile(rt, 900+i, ROUTEWHEN[rt.id]); });
-  h+='</div>';
+  let h='';
+  rts.forEach((rt,i)=>{
+    if(after || i) h+='<div class="lsarr">\u2193</div>';
+    h+=routeTile(rt, 900+i, ROUTEWHEN[rt.id]);
+  });
   return h;
 }
 
@@ -4629,46 +4629,22 @@ function kindRow(L,k,ents,i){
    sequence, because where it falls is half of what it tells a reader:
    that an individual lawmaker comes before a committee is the point of
    the sequence, and moving the empty step to a footnote reversed it on
-   screen. Members are the step this happens to most, and it is a
-   property of the source rather than of the government — the record
-   is close to complete on bodies and thin on the individual seats
-   inside them, especially below the national level. So the row says
-   where the names are instead: the chamber those members sit in, which
-   is almost always recorded, and its own site, which lists them and is
-   kept current by the body itself. */
+   screen.
+
+   The row carried a paragraph under it as well, saying that the blank
+   was a gap in the record rather than a gap in the government and
+   that the levels above usually have one. It is off. The chip in the
+   corner already says "not in the record here", and a sentence of
+   explanation under every empty step turned a list that can be read
+   at a glance into a page of small print. */
 function kindRowBlank(L,k){
   const st=LAWSTAGE[k]||{};
-  let note='';
-  if(k==='leg/member'){
-    const ch=officeEntriesFor(['leg/chamber'], LEAFLVL);
-    const withSite=ch.filter(e=>e.o.row && e.o.row.site && e.o.row.site.value);
-    const pick=(withSite[0]||ch[0]);
-    note='No individual seat is recorded as an office for this place. That is the source '+
-      'rather than the government: the record covers the bodies far better than the seats '+
-      'inside them. ';
-    if(pick){
-      const site=pick.o.row && pick.o.row.site && pick.o.row.site.value;
-      note+='The members here sit in <b>'+esc(pick.o.label)+'</b>, which is on the list '+
-        'below, and that body publishes who they currently are'+
-        (site?' at <a href="'+esc(site)+'" target="_blank" rel="noopener">'+
-              esc(String(site).replace(/^https?:\/\//,'').slice(0,44))+'</a>':'')+
-        '. Open it for the ways of reaching it, and write to the member for your own address.';
-    } else {
-      note+='No chamber is recorded here either, so the level above this one is where to look: '+
-        'a municipality with no record almost always sits inside a county or a region that has one.';
-    }
-  } else {
-    note='No office of this kind is recorded for this place. That is a gap in the record '+
-      'rather than a gap in the government, and it is widest at municipal level. The '+
-      'levels above this one usually have one.';
-  }
   return '<div class="route krow blank"><div class="rhead"><div class="rmain">'+
     '<div class="rnm">'+esc(KINDLABEL[k]||k)+
       (LAWKINDS.has(k)?'<i class="lawdot" title="a route to a law"></i>':'')+
       (st.stage?'<span class="rstage">'+esc(st.stage)+'</span>':'')+
       '<span class="rct">not in the record here</span></div>'+
     '<div class="rwhen">'+glossy(st.one||'')+'</div>'+
-    '<div class="rblank">'+note+'</div>'+
     '</div></div></div>';
 }
 
@@ -4690,10 +4666,8 @@ function pageKind(L,k){
     return h+'<div class="spin">Still resolving\u2026</div></div>';
   }
   if(!ents.length){
-    h+='<p class="pgblank">No office of this kind is recorded for this place'+
-       (LEAFSUB?' under '+esc(LEAFSUB):'')+'. That is a gap in the record rather than a gap in '+
-       'the government: coverage is thinnest at municipal level. The levels above this one '+
-       'usually still have one.</p>';
+    h+='<p class="pgblank">Not in the record for this place'+
+       (LEAFSUB?' under '+esc(LEAFSUB):'')+'.</p>';
     return h+'</div>';
   }
 
@@ -5091,30 +5065,27 @@ function siteOf(o){ const v=o&&o.row&&o.row.site&&o.row.site.value; return v?Str
 function mailOf(o){ const v=o&&o.row&&o.row.email&&o.row.email.value; return v?String(v):''; }
 function telOf(o){  const v=o&&o.row&&o.row.phone&&o.row.phone.value; return v?String(v):''; }
 function hostOf(u){ return String(u).replace(/^https?:\/\//,'').replace(/\/$/,'').slice(0,46); }
+/* Which place to name in a search for an office.
+
+   The leaf place was used for every office, which put the municipality
+   into searches for offices that are nothing to do with it: a national
+   chamber searched as "United States House of Representatives Sierra
+   Madre" is a search for something that does not exist, and the result
+   is whatever the engine salvages from it. Each office is searched
+   with the place at its own level instead, and the country is
+   available separately for the methods that are national processes. */
+function lvlOf(o){ const e=officeIndex()[o&&o.id]; return e?e.lvl:null; }
+function placeOf(o){
+  const lv=lvlOf(o);
+  if(lv!=null && STACK[lv] && STACK[lv].label) return STACK[lv].label;
+  return STACK.length?(STACK[STACK.length-1].label||''):'';
+}
+function countryOf(){ return (STACK[0] && STACK[0].label)||''; }
+function leafPlace(){ return STACK.length?(STACK[STACK.length-1].label||''):''; }
 /* A search rather than a guessed path. Appending /contact to a domain
    produces a dead link more often than a live one, and a dead link
    that looks official is worse than none. */
 function findLink(q){ return 'https://duckduckgo.com/?q='+encodeURIComponent(q); }
-/* The words to search for, per method: what the page is called when it
-   exists. "Contact" finds a switchboard; "public comment" finds a
-   docket. */
-const DOWORDS={
-  email:'contact email', call:'contact phone number', letter:'mailing address contact',
-  visit:'contact office hours appointment', townhall:'council meeting agenda public comment',
-  sfr:'written submission committee clerk', testify:'hearing witness committee clerk',
-  comment:'public comment proposed rule consultation',
-  rulemaking:'petition for rulemaking', ig:'file a complaint inspector general',
-  ombud:'make a complaint ombudsman', facarole:'advisory committee membership nominations',
-  inquiry:'call for evidence submission', lawreform:'suggest a law reform project',
-  petition:'official petitions', citinit:'citizens initiative signatures',
-  ballot:'ballot measure filing requirements', amend:'bills before the legislature',
-  pq:'written questions', drafting:'legislative counsel bill drafting',
-  party:'party policy motion conference', coalition:'organisations campaigning',
-  munres:'council agenda resolutions', quitam:'whistleblower reward programme',
-  shareprop:'investor relations shareholder proposal', engage:'investor relations',
-  citizensuit:'citizen suit notice', amicus:'filing an amicus brief',
-  oped:'submit an opinion piece', lobby:'registered lobbyists register',
-};
 /* a national portal is the right address where the method is a
    national process rather than something this office runs */
 const DOPORTAL={ comment:'directives:regulations', rulemaking:'directives:regulations',
@@ -5128,36 +5099,184 @@ function portalRow(routeId){
   }
   return null;
 }
+
+/* WHERE A METHOD IS ACTUALLY FILED, WHICH IS OFTEN NOT THE OFFICE.
+
+   Every method used to be sent to the office's own website and to a
+   search for the office's name plus the word "contact". For the
+   methods an office runs itself — its contact form, its switchboard,
+   its hearing, its rulemaking — that is right. For the rest it was
+   wrong twice over. Running for office pointed at house.gov, which is
+   the chamber a candidate is trying to enter and not the body that
+   takes nomination papers, and then searched for "United States House
+   of Representatives contact", which finds a switchboard and nothing
+   about standing for it. The same fault ran through every method
+   filed somewhere else: a complaint to an ombudsman, an OECD
+   complaint, a ballot initiative, an op-ed, a lobbyist retainer.
+
+   So each method says which it is. The ones below are filed with a
+   body other than the office, so the office's own address is not
+   offered for them at all, and the search names the body that does
+   take them and the words that body's own page uses. The queries are
+   built from the country and from the place at the office's own level
+   rather than from the leaf place, because nomination rules, petition
+   sites, ombudsmen and lobbying registers are national or
+   state-level things everywhere, and the words for them differ from
+   country to country — which is why these are searches rather than
+   fixed links. */
+const DOELSE={
+  ig:[{lbl:'Find the body that audits this one',
+       q:'{office} {country} inspector general OR audit office complaint how to file',
+       tx:'the inspector general or audit office that covers it, not the office itself'}],
+  ombud:[{lbl:'Find the ombudsman for this country',
+       q:'{country} ombudsman OR public protector OR national human rights institution make a complaint',
+       tx:'ombudsmen go by a different name in nearly every country'}],
+  citizensuit:[{lbl:'Find whether the law here allows this',
+       q:'{country} citizen suit private enforcement statute notice requirement',
+       tx:'only some legal systems let a private person enforce a statute'}],
+  climatelit:[{lbl:'Find who already brings these cases',
+       q:'{country} climate litigation organisation OR legal clinic cases brought',
+       tx:'these are brought with an established organisation rather than alone'}],
+  amicus:[{lbl:'Find the court’s rule for filing one',
+       q:'{country} court rules amicus OR intervener brief leave to file',
+       tx:'the rule is the court’s, and the deadline is the case’s'}],
+  personhood:[{lbl:'Find a campaign working on this',
+       q:'rights of nature {country} ordinance OR constitutional provision campaign model text',
+       tx:'the organisations behind these publish model wording'}],
+  shareprop:[{lbl:'Find the filing rule where the company is listed',
+       q:'{country} shareholder proposal eligibility filing deadline rules',
+       tx:'the holding and the deadline are set by the listing, not by any office here'}],
+  engage:[{lbl:'Find an investor coalition to go through',
+       q:'{country} investor coalition shareholder engagement join',
+       tx:'an individual holder does not have this channel; an institution does'}],
+  boycott:[{lbl:'Find a campaign already running',
+       q:'{country} boycott campaign join current',
+       tx:'joining one that exists beats starting one'}],
+  oecdncp:[{lbl:'Find the National Contact Point',
+       q:'{country} OECD National Contact Point file a complaint responsible business conduct',
+       tx:'every adhering country keeps one, and you may file in the company’s or in yours'}],
+  devbank:[{lbl:'Find the bank’s complaints office',
+       q:'development bank accountability mechanism complaint project {country}',
+       tx:'each bank keeps its own independent mechanism'}],
+  upr:[{lbl:'Find the submission window for this country',
+       q:'{country} universal periodic review stakeholder submission deadline OHCHR',
+       tx:'the window opens on a fixed cycle per country'}],
+  echr:[{lbl:'Find the court for this region',
+       q:'{country} regional human rights court application form admissibility',
+       tx:'which court exists depends on the region, and most require you to exhaust the courts at home first'}],
+  ilo:[{lbl:'Find how an ILO complaint is filed',
+       q:'ILO freedom of association complaint Committee how to submit {country}',
+       tx:'filed through a workers’ or employers’ organisation rather than individually'}],
+  copuos:[{lbl:'Find the application for observer status',
+       q:'UN COPUOS permanent observer status application organisation',
+       tx:'granted to organisations, not to individuals'}],
+  lobby:[{lbl:'Find the register of lobbyists here',
+       q:'{country} lobbying register registered lobbyists list {place}',
+       tx:'the register names who is already retained and on what'}],
+  scoping:[{lbl:'Find people who have done this job',
+       q:'{country} former legislative staffer government relations consultant {place}',
+       tx:'what you are buying is somebody who worked inside the process'}],
+  office:[{lbl:'Find how to stand for this office',
+       q:'how to run for {office} {place} candidate nomination papers filing deadline requirements',
+       tx:'the office itself does not take candidacies — the election authority does'},
+      {lbl:'Find the authority that takes the papers',
+       q:'who runs elections for {office} {country} candidate filing authority',
+       tx:'the body that holds the nomination papers, the deposit and the deadline — often a '+
+          'level of government below the office itself'}],
+  ballot:[{lbl:'Find the filing rules for an initiative',
+       q:'{place} {country} ballot initiative petition signature requirement filing election office',
+       tx:'signature counts and windows are set per jurisdiction and change'}],
+  citinit:[{lbl:'Find the rules where you are',
+       q:'{country} citizens initiative signature requirement submit a bill legislature',
+       tx:'some countries have this and most do not'}],
+  quitam:[{lbl:'Find the programme that takes the report',
+       q:'{country} whistleblower reward programme how to report award',
+       tx:'the reward is paid by the authority that recovers the money'}],
+  observer:[{lbl:'Find how observers are accredited',
+       q:'{country} election observation accreditation observers apply',
+       tx:'accreditation is granted by the election authority before polling day'}],
+  oped:[{lbl:'Find a paper’s submission page',
+       q:'{country} newspaper submit an opinion piece guidelines word limit',
+       tx:'each paper publishes its own length limit and address'}],
+  deepcanvass:[{lbl:'Find a campaign doing this',
+       q:'deep canvassing training {country} campaign volunteer',
+       tx:'it is done in pairs with training, not alone'}],
+  petition:[{lbl:'Find the petitions site for this country',
+       q:'{country} official government petitions site threshold',
+       tx:'an official site has a threshold behind it; a commercial one has none'}],
+  party:[{lbl:'Find a party’s own process',
+       q:'{country} political party policy motion conference members submit',
+       tx:'usually open to members only, and tied to a conference date'}],
+  coalition:[{lbl:'Find an organisation already on it',
+       q:'{country} organisations campaigning {place}',
+       tx:'joining a brief that exists costs nothing and carries further'}],
+  lawreform:[{lbl:'Find the law reform body',
+       q:'{country} law reform commission suggest a project submissions',
+       tx:'these sit outside the departments and take suggestions from anyone'}],
+  inquiry:[{lbl:'Find an inquiry taking evidence',
+       q:'{country} public inquiry OR citizens assembly call for evidence submit {place}',
+       tx:'open only while its call for evidence is running'}],
+};
+/* The words to search for on an office's own site, per method: what
+   the page is called when it exists. "Contact" finds a switchboard;
+   "public comment" finds a docket. These are only for the methods the
+   office itself runs — everything in DOELSE is filed elsewhere. */
+const DOWORDS={
+  email:'contact email', call:'contact phone number', letter:'mailing address contact',
+  visit:'contact office hours appointment', townhall:'council meeting agenda public comment',
+  sfr:'written submission committee clerk', testify:'hearing witness committee clerk',
+  comment:'public comment proposed rule consultation',
+  rulemaking:'petition for rulemaking',
+  facarole:'advisory committee membership nominations',
+  amend:'bills before the legislature',
+  pq:'written questions', drafting:'legislative counsel bill drafting',
+  munres:'council agenda resolutions',
+};
+/* The same name twice in one query is worse than once: "United States
+   House of Representatives United States election commission" is a
+   search for a phrase nobody writes. A national office's own level is
+   the country, and its title usually carries the country in it
+   already, so a place or a country the title already holds is
+   dropped, and a place identical to the country is not repeated. */
+function doQ(tpl, o){
+  const off=o?String(o.label||''):'';
+  let pl=o?placeOf(o):leafPlace(), co=countryOf();
+  const inside=(h,n)=>!!n && String(h).toLowerCase().indexOf(String(n).toLowerCase())>=0;
+  const wantsOff=tpl.indexOf('{office}')>=0;
+  if(wantsOff && inside(off,pl)) pl='';
+  if(wantsOff && inside(off,co)) co='';
+  if(tpl.indexOf('{place}')>=0 && pl && pl===co) co='';
+  return tpl.replace(/\{office\}/g, off)
+            .replace(/\{place\}/g,  pl)
+            .replace(/\{country\}/g, co)
+            .replace(/\s+/g,' ').trim();
+}
 function doThisAt(rt, o){
-  const place=(STACK.length?(STACK[STACK.length-1].label||''):'');
-  /* A method with no office behind it still has somewhere it is filed,
-     and leaving it with no link at all was the gap this whole block
-     exists to close. What is known is the method and the place, so
-     that is what the search carries. */
-  if(!o){
-    const p0=portalRow(rt.id);
-    const rows0=[];
-    if(p0) rows0.push(p0);
-    rows0.push({lbl:'Find where this is filed',
-      u:findLink(rt.nm+' '+place+' how to file'),
-      tx:'search for \u201c'+rt.nm.toLowerCase()+'\u201d for this place'});
-    return '<div class="fld doat"><dt>Where to do this</dt><dd>'+
-      rows0.map(r=>'<a href="'+esc(r.u)+'" target="_blank" rel="noopener">'+
-        '<b>'+esc(r.lbl)+'</b> '+esc(r.tx)+'</a>').join('')+'</dd></div>';
-  }
   const rows=[];
-  const site=siteOf(o), mail=mailOf(o), tel=telOf(o);
-  if(rt.id==='email' && mail) rows.push({lbl:'Write to', u:'mailto:'+mail, tx:mail});
-  if(rt.id==='call'  && tel)  rows.push({lbl:'Ring', u:'tel:'+tel.replace(/[^+0-9]/g,''), tx:tel});
   const p=portalRow(rt.id); if(p) rows.push(p);
-  if(site) rows.push({lbl:'This office\u2019s own site', u:site, tx:hostOf(site), stale:true});
-  rows.push({lbl:'Find the page for it',
-    u:findLink(o.label+' '+place+' '+(DOWORDS[rt.id]||'contact')),
-    tx:'search for \u201c'+(DOWORDS[rt.id]||'contact')+'\u201d on this office'});
+  const away=DOELSE[rt.id];
+  if(away){
+    /* Filed with a body other than this office, so this office's own
+       address is not offered: it would be a link to the wrong door. */
+    away.forEach(a=>rows.push({lbl:a.lbl, u:findLink(doQ(a.q,o)), tx:a.tx}));
+  } else {
+    const site=o?siteOf(o):'', mail=o?mailOf(o):'', tel=o?telOf(o):'';
+    if(rt.id==='email' && mail) rows.unshift({lbl:'Write to', u:'mailto:'+mail, tx:mail});
+    if(rt.id==='call'  && tel)  rows.unshift({lbl:'Ring', u:'tel:'+tel.replace(/[^+0-9]/g,''), tx:tel});
+    if(site) rows.push({lbl:'This office’s own site', u:site, tx:hostOf(site), stale:true});
+    if(o) rows.push({lbl:'Find the page for it on that site',
+      u:findLink(doQ('{office} {place} '+(DOWORDS[rt.id]||'contact'), o)),
+      tx:'the site’s front page is rarely the page you need — this looks for the '+
+         '“'+(DOWORDS[rt.id]||'contact')+'” page on it'});
+    else rows.push({lbl:'Find where this is filed',
+      u:findLink(doQ(rt.nm+' {place} how to file', o)),
+      tx:'searched for this place, since no office on the map holds it'});
+  }
+  if(!rows.length) return '';
   return '<div class="fld doat"><dt>Where to do this</dt><dd>'+
     rows.map(r=>'<a href="'+esc(r.u)+'" target="_blank" rel="noopener">'+
       '<b>'+esc(r.lbl)+'</b> '+esc(r.tx)+'</a>'+
-      (r.stale?'<i class="staleq">recorded by Wikidata, and sometimes out of date \u2014 '+
+      (r.stale?'<i class="staleq">the recorded address, which goes out of date — '+
         'if it does not open, use the search under it</i>':'')).join('')+
     '</dd></div>';
 }
@@ -5234,35 +5353,26 @@ function holderLine(holder){
   return '<div class="holder"><b>'+esc(holder)+'</b>'+
     '<span class="chip">check this</span></div>';
 }
-/* The recorded link, and what to do when it is wrong.
+/* The search that finds the office's current address.
 
-   Every address on this map comes from one Wikidata record, so a dead
-   link here is a dead link on every site built from the same source,
-   govdirectory.org included. Nothing in a page can repair that: the
-   fix is the record, and the record is public and editable, which
-   makes the fix one click rather than a report to somebody. Both are
-   offered — the search for a reader who needs the page now, and the
-   record for a reader willing to correct it for everybody.
+   Every address on this map comes from one public record, so a dead
+   link here is a dead link on every site built from the same source.
+   Checking the link from here instead does not work: a browser is not
+   allowed to read the result of a request to another site, so a page
+   cannot tell a working link from a dead one, and saying which links
+   are stale would mean guessing and showing the guess as a fact. The
+   search is the answer, and it sits on the same line as the link it
+   replaces rather than in a row underneath, because a reader whose
+   link did not open is looking at the link.
 
-   Checking the link from here instead was the obvious alternative and
-   does not work: a browser is not allowed to read the result of a
-   request to another site, so a page cannot tell a working link from a
-   dead one. Saying which links are stale would mean guessing, and the
-   guess would be shown as a fact. */
-function recordFix(o){
+   The place in the search is the place at the office's own level: a
+   national chamber searched as "... Sierra Madre" is a search for
+   something that does not exist. */
+function findSiteLink(o){
   if(!o) return '';
-  const place=(STACK.length?(STACK[STACK.length-1].label||''):'');
-  const site=siteOf(o);
-  return '<div class="recfix">'+
-    '<a href="'+esc(findLink(o.label+' '+place+' official site'))+'" target="_blank" '+
-      'rel="noopener">Find its current site</a>'+
-    (/^Q\d+$/.test(String(o.id))
-      ? '<a href="https://www.wikidata.org/wiki/'+esc(o.id)+'" target="_blank" '+
-        'rel="noopener">Correct this record</a>' : '')+
-    (site?'<i>The address above is whatever the public record holds, which for '+
-      'smaller offices is often an address they have left. Correcting the record '+
-      'fixes it here and on every other site built on the same source.</i>':'')+
-    '</div>';
+  return '<a class="findsite" href="'+
+    esc(findLink(o.label+' '+placeOf(o)+' official site'))+'" target="_blank" '+
+    'rel="noopener">Find its current site</a>';
 }
 
 function renderOffice(o){
@@ -5308,9 +5418,10 @@ function renderOffice(o){
      left in this row is the ways in: the site, the address, the
      number. */
   if(site)  h+='<a href="'+esc(site)+'" target="_blank" rel="noopener">'+esc(hostOf(site))+'</a>';
+  h+=findSiteLink(o);
   if(email) h+='<a href="mailto:'+esc(email)+'">'+esc(email)+'</a>';
   if(phone) h+='<span>'+esc(phone)+'</span>';
-  h+='</div>'+recordFix(o)+'</div>';
+  h+='</div></div>';
   /* The methods that reach this office AND answer what the reader said
      they were trying to do. A flat list ranked only by how well each
      works put an OECD complaint and a shareholder proposal at the top
