@@ -1,6 +1,34 @@
 # Globalization Case Map: handoff for a new chat
 
-Last updated: 12 Nov 2026 (round 20). Replaces every earlier handoff.
+Last updated: 13 Nov 2026 (round 21). Replaces every earlier handoff.
+
+## Round 21, in one paragraph
+
+**The fifth ICIJ tranche is done and the confirmed-displacement table is now 234 open rows.** 36
+rows produced **20 cases, 2 extends and 14 drops**, and the map stands at **1,072 cases in 127
+countries**. Whole-picture text, entity descriptions and condition types were all written and
+checked in the same round, so every panel row is where it was or better. Everything is pushed.
+
+**The round was built as an experiment and the hypothesis lost.** 18 rows came from the sectors
+round 20 found productive and 18 from the sectors it found barren; **the barren half returned 10
+cases from 18 rows and the productive road half 5 from 11.** All three batches reached the same
+replacement independently: **what separates a case from a drop is whether the works needed a
+construction site people were living on.** The pre-screen is a sentence in the project's own
+resettlement plan — five drops carry one, Georgia's twice: "No physical relocation of households is
+required". Read "The hypothesis is refuted" below before building round 22's leads.
+
+**Two counts came off cards for the same reason, and both are worth knowing**: a Nigerian 5,721 that
+was a **divisor in a cost-benefit calculation** pricing the displacement the works *avoided*, and a
+Brazilian 2,174 that counted families *affected* where the same table's columns give 1,141 moved.
+
+**The reviews cannot be used as a check on the reports.** Three Evaluation Group reviews in this
+tranche drop what their own completion report records — ten fatalities, blasting without permits and
+183 outstanding compensation cases in one; a fatality in another, quoted up to the sentence before
+it; 249 families and sites handed to the contractor before payment in a third, summarised as "All
+Project Affected Families were eventually compensated". Each cites the paragraph it guts.
+
+**`lenders[0].role` has carried a factual error in three consecutive rounds**, each found by a
+checker looking at something else. It needs a pass of its own.
 
 ## Round 20, in one paragraph
 
@@ -214,23 +242,28 @@ what it counts on ICIJ's own account, and says the documents do not explain the 
 and the gap between those two verbs is the whole finding. A draft that turned "affected by" into
 "displaced" had to be corrected. Check the document's verb for every figure.
 
-## Current state (12 Nov 2026, round 20)
+## Current state (13 Nov 2026, round 21)
 
-**1,052 cases**, in 127 countries and territories. **637 lender office records** across 21 lender keys. The page builds clean and loads headless with no errors; `build.py` prints "loan-condition cases matched 173 of 173".
+**1,072 cases**, in 127 countries and territories. **637 lender office records** across 21 lender keys. The page builds clean and loads headless with no errors; `build.py` prints "loan-condition cases matched 173 of 173".
 
 These are the figures the About panel shows under "How complete this map is", read out of the rendered panel on 12 Nov after round 18's merge, not copied from the last handoff. Read them the same way every time: the panel is computed in the browser, so clicking `#infoBtn` in a headless test and taking the text of `#info` is the only way to get them. Two rows were wrong in an earlier version because they were copied forward instead.
 
 | What | Filled | Share |
 | --- | --- | --- |
-| Rounded "what happened to people" paragraph (`whole`) | 1,045 of 1,052 | 99% |
-| Cases that say what the money came with (`conditions`) | 1,028 of 1,052 | 98% |
-| Lender's terms looked for and settled (not tagged `research`) | 969 of 1,052 | 92% |
-| Company names with a line saying what the firm is (`desc`) | 1,009 of 1,105 | 91% |
+| Rounded "what happened to people" paragraph (`whole`) | 1,065 of 1,072 | 99% |
+| Cases that say what the money came with (`conditions`) | 1,048 of 1,072 | 98% |
+| Lender's terms looked for and settled (not tagged `research`) | 989 of 1,072 | 92% |
+| Company names with a line saying what the firm is (`desc`) | 1,025 of 1,138 | 90% |
 | People with a checked `total` | 53 of 173 | 31% |
-| Cases with a documented buyer | 34 of 1,052 | 3% |
+| Cases with a documented buyer | 34 of 1,072 | 3% |
 
-Read out of the rendered panel on 12 Nov after round 20 finished. **Every row round 20 moved is
-back where it was except the company row**: whole text at 99% with only the 7 deliberate blanks,
+Read out of the rendered panel on 13 Nov after round 21 finished. Whole text is at 99% with only
+the 7 deliberate blanks, conditions at 98%, settled terms at 92%. **The company row is at 90% and
+falling as the denominator grows**: round 21 added 33 names and 17 of them are blanks with a sound
+note, nine being Chinese project offices with no reachable instrument. That is structural to this
+material rather than unfinished work — see "Entity descriptions" in the round 21 section. The rest
+of this paragraph describes round 20 and still holds: **every row round 20 moved is back where it
+was except the company row**: whole text at 99% with only the 7 deliberate blanks,
 conditions back to 98% after the ten China transport cases were written up, settled terms at 92%.
 **The company row fell from 92% to 91% and that is honest**: round 20 added 38 names to the
 denominator and 12 of them are blanks with a sound note, nine being Chinese project offices with no
@@ -242,7 +275,11 @@ Counting the countries yourself: the page's count is `iso3` plus `iso3_more`. A 
 
 Complaint records inside a case went from 746 to **768** in round 16, because the new cases were linked to 22 existing register records. The harm-flagged subset did not move (**434 of 483**): the 22 are all records the register carries with its harm flag false.
 
-The condition tags stand at **83 `research`, 29 `nopub`, 4 `exhaust`** — the 77 ICIJ cases of rounds 17 to 20 carry no `ct` at all, so none is on the conditions queue and none counts as settled research. All 26 of round 20's cases now carry `conditions` prose and none carries a type, which is the same deliberate position. That is why the settled-terms share holds at 92% while the case count grows. Round 16 changed that by one: `polihali-lhwp-phase-ii` came in tagged `research` because its AfDB appraisal report plainly carries terms nobody had time to extract.
+The condition tags stand at **83 `research`, 29 `nopub`, 4 `exhaust`**, and across the map
+`safeguard` 354, `none` 276, `prices` 95, `admin` 77, `cuts` 77. **Round 21 typed the 93 cases that
+carried conditions prose with no type**, so only two cases are untyped now and both deliberately;
+see "Condition types" in the round 21 section. Round 21's own 20 cases carry `conditions` prose and
+no type, which is the same position every ICIJ tranche starts in. That is why the settled-terms share holds at 92% while the case count grows. Round 16 changed that by one: `polihali-lhwp-phase-ii` came in tagged `research` because its AfDB appraisal report plainly carries terms nobody had time to extract.
 
 ### Whole-picture text — complete, and the queue is now empty
 Batches `rounds/r26f_whole_h1` through `h11_checked.json`, plus round 16's `rounds/r26f_backlog_whole_checked.json`, each with a checker log. Briefs `docs/WHOLE.md` (researcher) and `docs/CHECKW.md` (checker). Merge with `merge_whole.py`.
@@ -300,6 +337,282 @@ Three files in `case-map-src/docs/`. None of their rows is a case: each needs th
 **The matching hint in all three files is a hint.** `likely_already_on_map` and `possible_overlap` match rare words shared with a case in the same country; two projects in the same Indian state match each other. Confirm before dropping a row. Counts of the hint: ICIJ 25 likely and 210 possible, AidData 99 and 337.
 
 **Why these three and not others.** They are the only three registers that exist: ICIJ is the one time anyone counted harm against a lending population, the complaint offices are the only places affected people can put harm on a record, and AidData is the only project-level record of Chinese state money. For private bank and bond lending, for aid and for foreign company investment there is no register at all, which is why those kinds are thin here and will stay thin until someone builds one.
+
+## Round 21 (13 Nov 2026) — the fifth ICIJ tranche, built as an experiment
+
+No page code changed. All data. Files: `rounds/r26f_icij5.json` (the normalised merge file),
+`rounds/r26f_icij5_{china_urban,road_other,water_rural}{,_checked}.json` with writer reports and
+check logs, `rounds/r26f_icij5_whole{,_checked}.json` with report and log,
+`rounds/r26f_icij5_companies{,_checked}.json` with report, log, `_disc.json` and `_textfix.json`,
+`rounds/r26f_icij5_textfix{,_2}.json`, `docs/BRIEF21.md`, and `docs/leads_icij.json` with 36 more
+rows annotated. BRIEF21 is a delta on BRIEF20 rather than a replacement — agents read BRIEF20 in
+full first, then BRIEF21.
+
+**What was worked.** 36 rows chosen to test the sector hypothesis round 20 left open: **18 from the
+sectors where round 20's cases survived** (airport, urban, road), split into a Chinese batch of 7
+and a non-China batch of 11, and **18 from the sectors where its drops clustered** (water,
+irrigation, rural). Both halves were the highest-displacement rows still open in their sectors, so
+the yields are comparable. Each batch had its own checker, and the whole-text and description jobs
+ran with a checker each. **20 cases, 2 extends, 14 drops.** The map stands at **1,072 cases in 127
+countries**. Yield across five tranches: 30, 21, 18, 26, 20.
+
+### The hypothesis is refuted, and the replacement is cheap to apply
+
+**The supposedly barren half returned 10 cases from 18 rows; the productive road half returned 5
+from 11.** Sector does not predict yield. All three batches reached the same answer independently:
+
+**What separates a case from a drop is whether the works needed a construction site people were
+living on** — whether a dwelling or a trading place was taken. River embankments, urban drainage, a
+landfill buffer zone, a dam reservoir, a riverfront, a transmission line and a road through a town
+all qualify. Village wells and latrines, on-farm water saving, canal rehabilitation, subsurface
+drainage and sector-wide programme support do not, whatever the sector tag says.
+
+**And the pre-screen is a sentence in the project's own resettlement plan.** Five drops carry one:
+- Georgia (P112523): "No physical relocation of households is required", twice.
+- Kiribati (P122151): "No loss of primary and secondary structures and no relocation of households".
+- Rajasthan (P130164): "No displacement / Resettlement is required".
+- Ma'anshan (P126813): "there will be no relocation of people" — **and its completion report reuses
+  that clause with the second half removed.**
+- Vietnam (P113496): "none of the project affected people will be severely affected or require
+  relocation".
+One more states it as an outcome: China's Western Provinces water project (P095315), "did not have
+any house demolition or people replaced".
+
+**Recommended for round 22 as a first pass**, with its limit known: Indonesia (P079906) has a
+framework plus fifteen subproject plans and no single sentence to grep, so the screen narrows the
+queue rather than filtering it.
+
+**Five of eighteen rows in one batch were mis-tagged by ICIJ's project name**, which is why the tag
+could never have worked. The sharpest: "Ethiopia/Nile Basin Initiative: Ethiopia-Sudan
+Interconnector" is a **296.5 km high-voltage transmission line**, 100 per cent of Bank financing
+coded to transmission and distribution — the water tag comes only from the words "Nile Basin
+Initiative". Also: "Guangxi Laibin Water Environment" is flood control and urban storm drainage in
+an old town; "Zhejiang Qiantang Small Town Environment"'s largest demolition was for a landfill
+buffer zone; "BR AF to the Ceara Integrated Water Resource Management" is five earth dams; and one
+"urban" row was neither urban works nor a loan.
+
+### A late-project plan update can rescue a card that rule 2 would drop
+
+`xining-wusixi-road-demolition` (P127867) is the precedent. Its completion report reprints the
+appraisal's "121 households (527 individuals)" with the appraisal's own word **"envisaged"**, and
+the Evaluation Group's review **drops "envisaged"** — rule 2 caught in the act. On those two
+documents the row is a drop. What carries it is the **updated resettlement action plan of January
+2018**: 233,600 m² demolished and 724.88 mu acquired, complete by 31 December 2016, figures that
+appear in no other document, and the replacement housing about three years late. The areas are
+expressly quoted from an external monitor's report that is **not in the Bank's archive**; the
+delay is stated in the plan's own voice, which is what lets the case stand, as `contested`.
+
+**So when a completion report reprints the appraisal, look for a late-project RAP update before
+dropping.** Round 20's rule 2 stands; this is where to look before applying it.
+
+### One rule on deaths, applied across the round
+
+**A death counts only where a document gives a cause tying it to the works.** Ten counted, eighteen
+not, and every note says which and names the others so nobody later reads an inconsistency into it.
+
+Counted: Serbia 3 (the completion report attributes them to unsatisfactory management of site
+safety); Ethiopia-Sudan 3 (the subcontractor neglected to mandate safety belts and helmets, and two
+towers were erected wrongly); Patna 3 (the report's words are negligence on occupational-health
+training of workers and supervisors); Corumana 1 (a preventable vehicle accident, root cause put on
+the contractor's senior management).
+
+Uncounted, in `killed_note`: Metolong 10 ("There were 10 fatalities that happened during the
+implementation", settled under Lesotho's Labour Code, with no cause, date, place or identity — and
+**a Labour Code settlement is not an admission that the works caused the death**); Nigeria 3
+(occupational fatalities, no cause in either document); the Cameroon death on the CEMAC corridor
+(the report records that a fatal accident occurred and not what happened); Kenya's excavator
+operator (same).
+
+The lead overruled a checker to reach this: batch B had kept the Cameroon death on the ground that
+the credit financed those works, which is the location test rather than the cause test. **Which
+credit paid for the works decides whether the death belongs to this project. Whether a cause is
+stated decides whether it is counted. They are two different tests.**
+
+### Three Evaluation Group reviews drop what their own completion report records
+
+This is the round's most portable finding, and it holds in both directions:
+- **Lesotho's review** omits the ten fatalities, the 2012 blasting without permits, the uncontrolled
+  blast, the ombudsman and 183 outstanding compensation cases.
+- **Mozambique's review** quotes the occupational-health sentence and stops immediately before the
+  sentence recording the fatality.
+- **India's review** omits the 249 families, the two-year land-allotment stall and the sites handed
+  to the contractor before payment, and summarises as "All Project Affected Families were eventually
+  compensated".
+Each review cites the very paragraph it guts. And on Serbia it ran the other way: the review gives a
+46 per cent traffic shortfall as project-wide where the report gives it for one corridor alone and
+project-wide as 70 per cent.
+
+**So a review is not a check on a report's safeguards reporting. It is a second copy of its
+favourable half, and sometimes a careless one.** Read the report.
+
+### Two counts came off cards, both the same species
+
+- **Nigeria's 5,721 was a divisor in a cost-benefit calculation.** It appears once, under the heading
+  "Benefit 4: Avoided involuntary displacement of people 'with project'", pricing the displacement
+  the works *avoided* at US$3,453 a head — and the same bullet extrapolates to 7,015 while switching
+  from 84 sites to **81**. The report's safeguards section gives no displacement count at all and the
+  review carries neither figure. **A number used as a modelling input is not a count of people.**
+  The case survives on 9,696 compensated, 32 never located with money escrowed, and one state still
+  implementing its plan at closing.
+- **Brazil's 2,174 was families affected, not moved.** The report's own table columns give 261
+  agrovilas + 377 remaining areas + 491 self-resettled + 12 urban = **1,141 moved**, against 1,033
+  landowners who took cash with no move recorded. `displaced` is now 1,141 with the arithmetic on
+  the card.
+
+### Whole-picture text: 20 written, all 20 corrected, and a new fault family
+
+The writer used **zero** searches, reading everything from the cache — the third round running. Its
+checker then corrected all 20, in line with 24 of 24, 16 of 18 and 23 of 26 in earlier rounds.
+**Assume on this job that most paragraphs need work.**
+
+**The new family, in 7 of 20 paragraphs: a target cut before it was met.** It goes wrong in both
+directions.
+- Crediting a project with beating a lowered target: Laibin's beneficiaries were cut from 234,000 to
+  199,600 and met, and the paragraph reported it as a shortfall; Corumana's yield target was cut
+  from 16.8 to 11.6 and met, reported as a shortfall.
+- Faulting a project against a target that never existed: **Patna's household-connection target of
+  475,310 and its BOD target were not appraisal targets at all** — both indicators were *created* at
+  the fifth restructuring in October 2019, and the report says no household-connection target
+  existed at appraisal.
+- Also: Xining (travel time relaxed 15.40 → 33.00 minutes, beneficiaries 704,000 → 640,000),
+  Qingyang (pollution targets roughly halved to match a miscalculated plant capacity), Nepal (master
+  plans 30 districts → 10, bridges 350 → 317), Xi'an (bus lanes 13 at appraisal, revised target 2,
+  one built).
+**Give both the appraisal target and the revised one, or say the indicator was created later.**
+
+Four more things from that check worth carrying:
+- **An inverted or wrong-baseline read, one in twenty**: the Central African Republic's truck
+  turnarounds were given as "19.2 against a baseline of 15", where Douala-Bangui's baseline is 20
+  and 15 belongs to Douala-N'Djamena. Round 20's inverted-measure fault, in a new shape.
+- **Units again**: Serbia's 36,161 is **person-months**, Wuhan's 1,200 is **person-days** (its
+  indicator name literally ends "(Person*day)"), and Qiantang's 280,000 waste capacity is "Metric
+  ton" in the framework and "m³" in the text.
+- **Two of three paragraphs reported as having no cancelled works did have them** — Nepal (three
+  institutional indicators dropped at the 2009 restructuring, US$6m cancelled November 2013) and
+  Lagos (a labour-based maintenance programme across 532 km, in the review only).
+- **The writer's own flagged problem was not real.** It asked for an economic table to be rasterised
+  as garbled; the main-text table is clean and it is the annex reprint that misplaces two row
+  labels, with identical values. The actual fault was omission — one of three scenarios given.
+
+### `lenders[0].role` has carried a factual error in three consecutive rounds
+
+Each was found by a checker looking at something else. Round 21's:
+`laibin-water-environment-displacement` said "The World Bank declared misprocurement on a contract
+that was not substantially complete at the closing date." Against paragraph 72 of ICR00004961 read
+verbatim: it was **five** civil works contracts; the works **were** substantially complete, and the
+sentence inverted the very clause that explains the decision ("considering the works for these
+contracts were substantially complete as of the closing date of the project, the World Bank declared
+procurement noncompliance against these contracts"); and the report says **procurement
+non-compliance**, not misprocurement. Fixed in `rounds/r26f_icij5_textfix_2.json`, with the US$8
+million the municipality agreed not to claim.
+
+Round 20's was two phantom safeguard ratings and a wrong report number on the Serbia card; round
+19's was two Kenya signing dates and a Burkina one. **That field needs a pass of its own** — it is
+the longest prose on a card, it is written last, and nothing checks it unless a checker wanders in.
+
+### Entity descriptions: 15 written, 17 blank, and the blank rate is now structural
+
+17 of 32 blank, against 12 of 27 in round 20. Nine are Chinese project offices and local companies
+that nothing outside the Bank's own documents names; three are city and district governments where
+everything findable describes their **territory**, which the round-17 rule excludes; two are
+university resettlement research centres failing the name test. **Expect this on every ICIJ
+tranche.** Round 20's one wrong blank was recovered through the municipal-server route, and round
+21's checker recovered one more — **Nepal's DOLIDAR, from its own pre-rename pages at
+`doli.gov.np/oldsite/`**, which is worth knowing as a route: a renamed body's old pages often sit on
+its current host.
+
+**Three ownership-decay finds, the job's real value**, all verified and dated rather than overwritten:
+- Albania's **General Roads Directorate** is, in the state audit office's own words, "sot Autoriteti
+  Rrugor Shqiptar", under Law 10164 of 15 October 2009, with no date of change given.
+- Ethiopia's **EEPCo ceased to exist as one body** — split in two by Regulations 302/2013 (Ethiopian
+  Electric Power) and 303/2013 (Ethiopian Electric **Utility**). The job's "December 2013" did not
+  hold: the page it rested on prints no date.
+- Serbia's **Putevi Srbije** has a December 2025 Official Gazette decision changing its legal form,
+  with no effective date given, so the card says that rather than that the conversion happened.
+
+**Two disc items would have deleted sourced Bank statements, and the check caught both.** "All seven
+airports in Jiangxi" is the Bank's own wording, twice, in the review — the fault is the card's
+present tense on a 2019 "currently", so it is dated and the six airports a 2026 report names are
+added. And the National Mission for Clean Ganga's ministry line comes from the project's data sheet
+and footnote 5; the 2016 Order's silence is not a contradiction.
+
+**One entity stays blank on purpose, and it is the CMEC/CMC risk again.** `EIT` appears **zero
+times** as a standalone token in all three cached documents for P006449 — its identity rests on
+Agência Pública alone. Do not fill it without a document giving its legal form.
+
+**Where two agents read the same documents to different conclusions, resolve it on the record.** The
+whole-text checker found that SOHIDRA is Ceará's hydraulic works agency — the builder, then left
+supervising itself — and the description checker was asked to settle it rather than defer. It
+confirmed from the completion report's acronym list ("Hydraulic Works Company") and paragraph 943,
+and rewrote the description to quote them, so the contested fact cannot be read two ways again.
+
+### Condition types: the 93 untyped cases are typed
+
+A desk pass off the conditions prose already on the cards, with a separate checker
+(`rounds/r26f_icij_ct_types{,_checked}.json`, `_untyped{,_checked}.json`, report and log).
+**91 typed, 2 left untyped**, so only two cases on the map now carry conditions prose with no type.
+
+**The distribution is a finding about the material**: `safeguard` 90, `admin` 27, `fincov` 15,
+`land` 4, `law` 1, and **nothing at all** under priv, prices, tax, cuts, deval, trade, labour,
+fees, invest, repay or tied. ICIJ's list is project lending, and project lending's conditions are
+safeguard requirements and institutional plumbing, not structural adjustment.
+
+**What typing moves and does not move.** It puts these cases under the "cases, by type of
+condition" chips, where they were invisible. It does **not** move the settled-terms panel row: that
+row counts cases not tagged `research`, and these carried no tag at all, so they already counted as
+settled. Only condition research moves that row.
+
+**The check cut `admin` from 43 to 27 on one fault: a narration read as an obligation.** These cards
+are written from completion reports, which record that offices, units, grievance mechanisms and
+audits *existed* rather than that the agreement demanded them. It also caught the one-word version
+— a justification that supplied the word "only" to turn a split of costs between government and
+credit into a use-of-proceeds restriction, invisible unless the justification is read against the
+sentence rather than against its sense.
+
+**`merge_ct.py` is new**, because `merge_conds.py` cannot do a pure typing pass: it skips any record
+without `conditions_add`, so it would have merged nothing while still printing a count — the same
+silent-failure shape as round 18's extend trap. It sets `ct` only on cases that have none,
+validates every key against `CTN`, and takes `--dry-run`.
+
+**One ruling worth knowing**: `kolkata-keiip-tranche2-vendors` is typed `safeguard` on ADB's category
+classification, which sits in its lender `role` rather than in its `conditions` prose. **Which field
+a sentence landed in is an artefact of how the card was written and cannot decide the type.**
+
+**A question for the owner, not acted on.** `safeguard` now selects 90 of 93 in this batch and 354
+across the map. A chip that nearly every case in a displacement batch carries does not sort them,
+and what varies is sitting inside it undifferentiated: a compensation-before-works covenant with a
+date, a Board waiver of the policy, a grant exception letting money pay 1990s legacy compensation,
+and the opposite — a category *releasing* a subproject from needing a plan at all. Either the tag
+splits, which would have to reach the whole map rather than this batch to mean anything, or it reads
+as "this is a project-rules case" rather than as a filter.
+
+### Routes and method
+
+- **`pdftotext` mangles the handwritten date field on conformed Project Agreements of this vintage.**
+  Rasterise page 1 with `pdftoppm` and read the image; that recovered two dates exactly as the cards
+  had them. A scanned agreement with no text layer at all (`pdftotext` returning 129 bytes, Creator
+  "Image2PDF Command Line Software") produced the right outcome: **no claim about that loan's
+  covenants on any card, in either direction.**
+- **WebFetch serves URLs a WebSearch returned and refuses ones you construct.** Six built URLs came
+  back `PROVENANCE_REQUIRED` with an unanswered prompt, and every one of those bodies was then
+  described from a search-returned URL on the same or a sibling host. **Search for the page, then
+  fetch what search returns.** None of them is a blocked host, and nor are `cge.ce.gov.br` (robots
+  disallowed), `arrsh.gov.al`'s own PDF (its firewall page), `dri.rs` (one PDF path robots
+  disallowed) or `cameroon-tribune.cm` (a paywall). That is the thirteenth time this project has
+  nearly recorded a route failure as a host refusal.
+- **Long PDFs are truncated at 100,000 characters by the fetch tool, not by the server** — go in at
+  an offset. One truncation cut a report before the chapter that was wanted.
+- New routes that worked: **`privreda.gov.rs`** (the Ministry of Economy's list of state-owned
+  capital companies — where a Serbian company's ownership actually lives, not its own pages),
+  **`prc.cm/files/`** (Cameroon presidency and defence appointment orders, which name directorates
+  inside the defence ministry), **`doli.gov.np/oldsite/`**, `klsh.org.al`, `progestao.ana.gov.br`,
+  `ampeid.org`, `ead.gov.ng`, `dls.gov.jo`, `eparlib.sansad.in`, `putevi-srbije.rs`.
+- **`wds?projectid=` returned zero documents for three projects in one batch** (P110487, P126549 and
+  post-2010 P113496), each covered by a parent. And one completion report exists but could not be
+  reached by any route tried — not its own number, not the additional financing, not a title search —
+  although the review cites it by page and paragraph (P077287, Egypt).
+- The cache is shared when several agents write to one folder. **Say so in the brief**, or an agent
+  reports another's downloads as its own.
 
 ## Round 20 (12 Nov 2026) — the fourth ICIJ tranche
 
@@ -1691,7 +2004,7 @@ Keys in every case: `id, title, place, iso3, lat, lng, point, start, end, mechan
   before `merge_codesc.py`** (it renames and splits the company keys the descriptions match on),
   then `merge_whole.py`; then `build.py` once. Both fix scripts take `--dry-run` and report
   nothing to do once applied.
-- No research round is running. Four ICIJ tranches are done; **270 rows of the confirmed-displacement table are still open** and that is the queue.
+- No research round is running. Five ICIJ tranches are done; **234 rows of the confirmed-displacement table are still open** and that is the queue.
 - Pushing needs the repo attached to the session first (`add_repo`, push access), or the git proxy refuses with a 403. A plain `git clone` works for reading without it. **If `add_repo` is refused, say so and ask the owner** rather than leaving a commit stranded on a clone — that happened mid-session on 12 Nov, the owner granted push, and the same working tree pushed cleanly. Do not delete and re-clone to recover: the working tree holds the round.
 
 - **Two round-18 card corrections are merged, built, tested and pushed** (12 Nov, commit `5516622`
@@ -1999,14 +2312,23 @@ this material makes easy to get wrong. Then read **"A plan figure reprinted in t
 report"** in the round 20 section, which is the harder version of the same trap and decided two
 drops.
 
-**How to sort what is left, now that the complaint flag is spent.** Rounds 18 and 19 argued about
-whether region predicts an independently-sourced case; round 19 settled that it does not, and
-round 20 confirmed that the complaint flag does — and then used up every flagged row. **No sorting
-key is left.** What round 20's own results suggest, as a hypothesis for the next round rather than
-a finding: the cases that survived are **urban demolition, railway and expressway clearances and
-airport land**, and the drops are **water-supply, irrigation and rural programmes** where land is
-taken, compensation is paid and nothing adverse is recorded. If that holds, sort the remaining rows
-by sector and expect the yield to fall further in the rural half.
+**How to sort what is left.** Rounds 18 and 19 argued about whether region predicts an
+independently-sourced case; round 19 settled that it does not, and round 20 confirmed that the
+complaint flag does — and then used up every flagged row. **Round 21 tested sector and it failed**:
+its barren water-and-rural half returned 10 cases from 18 rows against the productive road half's 5
+from 11, and five of eighteen rows in one batch were mis-tagged by ICIJ's own project name.
+
+**What works instead, and it is cheaper than any sort: grep the project's own resettlement plan.**
+What separates a case from a drop is whether the works needed a construction site people were living
+on, and the plans say so in plain language — "No physical relocation of households is required"
+(twice, Georgia), "No loss of primary and secondary structures and no relocation of households"
+(Kiribati), "No displacement / Resettlement is required" (Rajasthan), "there will be no relocation
+of people" (Ma'anshan, whose completion report then reuses the clause with the second half removed),
+"none of the project affected people will be severely affected or require relocation" (Vietnam).
+One project states it as an outcome. **Its limit: a project with a framework plus fifteen subproject
+plans has no single sentence to grep**, so this narrows the queue rather than filtering it. Note
+also that **ICIJ's `complaint: false` is not a reliable negative** — one row flagged false is on the
+map because of its Inspection Panel case and drew a second request in 2022.
 
 **How the first tranche ran, as a template.** 36 leads, split into three batches by country so
 each agent worked one document route; a separate checker per batch; then a recovery pass for the
@@ -2041,8 +2363,14 @@ because 83 cases are tagged `research`, and only condition research moves it.
 3b. **Whether complaints and protests should also be exclusive with the cases.** Round 14 made only the cases and the live projects exclusive, because complaints and protests are both on when the page opens and making them exclusive would have changed the opening view. If the owner wants the point sets to be one at a time across the board, add `"pts"` to `SOLO` in `base.html` and change `resetLayers()` to match.
 4. **Map-point labels that still say "Wikipedia coordinates."** Location only, no facts rest on them.
 5. **Four lender directories that cannot be collected, and why each is different.** BII is genuinely blocked, Cloudflare on `curl` and a client error on the rendered route. China Development Bank returns HTTP 412 from a firewall on the raw-HTTP route and has never been tested on the rendered route, because no URL has been surfaced — record it as untested, not refused. IFC's single headquarters record is right rather than incomplete: its directory loads the office list at runtime from a service needing a subscription key embedded in the page, and reading that key out was refused by a session's permission system. IMF per-country pages have still not been read.
-6. **The lead lists: `docs/leads_icij.json` (816 open, of which 270 in the confirmed-displacement table), `leads_aiddata.json` (793) and `leads_complaints.json` (91).** 152 ICIJ rows are resolved across rounds 17 to 20 and carry `r17_outcome` through `r20_outcome`. **This is the only case-discovery queue on the map and the only one that would change the coverage figures.**
-   - **Continue with ICIJ. Four tranches of 36 yielded 30, 21, 18 and 26 cases.** The yield fell
+6. **The lead lists: `docs/leads_icij.json` (780 open, of which 234 in the confirmed-displacement table), `leads_aiddata.json` (793) and `leads_complaints.json` (91).** 188 ICIJ rows are resolved across rounds 17 to 21 and carry `r17_outcome` through `r21_outcome`. **This is the only case-discovery queue on the map and the only one that would change the coverage figures.**
+   - **Build round 22's leads with the resettlement-plan screen, not with a sector sort.** Round 21
+     tested sector and it failed: see "The hypothesis is refuted" in the round 21 section. Grep each
+     candidate project's resettlement plan or framework for a sentence of the form "no physical
+     relocation of households is required"; five of round 21's fourteen drops carry one and one more
+     states it as an outcome. It narrows the queue rather than filtering it, because a project with a
+     framework plus subproject plans has no such sentence.
+   - **Continue with ICIJ. Five tranches of 36 yielded 30, 21, 18, 26 and 20 cases.** The yield fell
      with ICIJ's displacement figures through the first three, as it should when the rows are worked
      in that order, and then **rose in round 20**, which is worth understanding before predicting the
      next one: round 20's rows were mostly Chinese urban infrastructure, where a completion report
@@ -2124,6 +2452,17 @@ because 83 cases are tagged `research`, and only condition research moves it.
    is not finished as a subject: GroundUp reported in February 2026 that 21 more downstream
    associations had approached the same lawyer, and 22 associations in total represent villages
    downstream of Katse, so this case will need updating again.
+
+11b. **`lenders[0].role` needs a pass of its own.** It has carried a factual error in three
+   consecutive rounds, every one found by a checker looking at something else: round 19's two Kenya
+   signing dates and a Burkina one; round 20's two phantom safeguard ratings and a wrong report
+   number on the Serbia card; round 21's Laibin sentence, which said the Bank declared
+   misprocurement on one contract that was not substantially complete when the report says
+   procurement non-compliance against five contracts whose works **were** substantially complete —
+   inverting the clause that explains the decision. The field is the longest prose on a card, it is
+   written last, and nothing checks it unless a checker wanders in. A pass would read each role
+   against the documents already cited on its own card, which costs no new fetches where the cache
+   survives.
 
 12. **`companies` is carrying implementing agencies, not companies — the owner's call.** Round 19's
    checker found that on four of eight cards in one batch the `companies` array holds ministries,
