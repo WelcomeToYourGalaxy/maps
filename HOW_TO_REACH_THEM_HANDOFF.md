@@ -42,6 +42,122 @@ being swallowed. If you add a `try`, make the `catch` do something visible.
 
 ---
 
+## 0b. The final edit: how laws are made, country by country
+
+The panel used to describe one generic lawmaking sequence for the whole
+world — a member introduces, a chamber votes, the head of government
+signs — which is wrong for most parliaments, for monarchies, and for the
+countries with no legislature sitting. It now reads from a profile per
+country.
+
+**`LAWP`** (search `const LAWP=`) holds all 198 units in
+`world_lowest.topojson`. Per country: `s` the system code, `leg` and `ch`
+the national legislature and its chambers, `u` its official site, `intro`
+who may introduce a bill, `sign` who turns a passed bill into law, `n` a
+short note (transitions, suspended parliaments, disputed territory), and
+`lv` — one entry per boundary level the reader's chain can hold:
+`[ADM1, ADM2, searched place]`, each `[word, body, power]`:
+
+| power | meaning | on the map |
+| --- | --- | --- |
+| `L` | its own legislature, which passes laws | offered, offices drawn |
+| `R` | an elected council making local rules under higher law | offered, offices drawn |
+| `A` | run by officials appointed from above | named in the chain only |
+| `N` | not a level of government (statistical area, or a village inside a municipality) | named in the chain only |
+
+`x` holds ADM1 exceptions matched by regex on the unit's name (Scotland,
+Wales and Northern Ireland against England; Åland; the Azores and
+Madeira; Hong Kong; Zanzibar; the Kurdistan Region; Bangsamoro…). `m2`
+marks countries whose ADM2 already is the municipality. `dd` carries the
+International IDEA Direct Democracy Database flags (national citizens'
+initiative `ci`, agenda initiative `ai`, and which instruments exist at
+regional `reg` and local `loc` level), downloaded from
+idea.int/data-tools (`export?type=region_only&themeId=309`). `pet` is the
+official petition or initiative portal where one exists, `eu` EU
+membership, `ct` the regional human rights system (`coe`, `iac`, `afr`).
+
+The data was built from: Wikidata (P194 legislature, its chambers and
+P856 site) as a backbone, geoBoundaries' per-country ADM1/ADM2 type
+names, the IDEA database, and each constitution; recent changes were
+checked against news in November 2026 (Myanmar's parliament reconvened
+March 2026; Haiti without a parliament; Kuwait's Assembly suspended;
+Guinea's new bicameral parliament; Guinea-Bissau's transitional council;
+Madagascar's military-led transition with the Assembly kept; Nepal's new
+House; Syria's People's Assembly; the Sahel transitional bodies). **The
+volatile entries are the `T` and `D` systems — re-check them first.**
+
+What reads it:
+
+- `levInfo(i)` — word, body and power for `STACK[i]`, from `STACK[i].adm`
+  (0 country, 1 ADM1, 2 ADM2, 3 searched place), set in `fromWorld` and
+  `enterPlace`. `levWord`, `levSay`, `noLawWhy`, `adjOf` build on it.
+- `settlePlace(r)` — runs after the searched place is pushed. Where the
+  ADM2 is the municipality (`m2`) and the names or Wikidata ids match,
+  the two entries become one (Kiruna, Shibuya). A non-matching place in
+  an `m2` country is a locality and makes no rules. A same-named parent
+  with no government (Naivasha sub-county) is dropped. A US
+  census-designated place (OSM `boundary=census`) is unincorporated and
+  the county governs it. Every entry gets `nolaw`.
+- `enterPlace` opens the walkthrough on the deepest level that makes
+  rules (`anchor`); when that is not the searched place, `CUR.borrowed`
+  stops the level above's website and phone appearing as the place's own.
+- `loadChainPins` skips `nolaw` levels and now loads all levels **in
+  parallel** (`loadLevelPins`), so the country's offices no longer arrive
+  last. `addChainOffices` keeps every office in `OFFS` whether or not it
+  has a coordinate, and `officeIndex` reads `OFFS` too — a legislature
+  Wikidata cannot place is still on Who to Contact. `chainArrived`
+  re-renders the open screen once arrivals settle.
+- `howLawsMade(open)` — the country paragraph: system, legislature (linked),
+  who introduces, who signs, the levels below and which make rules,
+  citizens' routes, the portal, EU law, the note. Open on the opening
+  question; folded on Who to Contact.
+- `seqFor(k)` — stage text per kind in the country's terms, and
+  `lawOrd(k)` puts ministries and cabinet first wherever the government is
+  drawn from parliament (`SEQ_GOV`).
+- `routeAvail(id)` / `availIds` — a method that does not exist where the
+  reader is (a citizens' initiative where there is none, a regional human
+  rights court where none has jurisdiction, any legislature route where
+  none sits) is taken off every list; `hereFld` prints what it looks like
+  in that country inside the open row.
+
+Also removed in this edit: the twelve out-of-scope methods (inspector
+general, ombudsman, shareholder, boycott, OECD, development bank, UN
+review, ILO, space committee, whistleblower reward, election observer),
+the `voluntary` hurdle that only they used, `KIND_HURDLES`,
+`hurdleBlock`, `KINDINFO`, `BRANCHINFO`, `qCoords`, `qCoordsCountry`,
+`goUp`, `jumpTo`, `LEVWORD`, `LEVELSAY`, `howGovWorks`.
+
+Smaller fixes made in the same pass:
+
+- **Finding the host unit.** When the point Nominatim gives falls outside
+  every unit of the simplified world file (San Francisco's lies off the
+  coast), `enterPlace` votes over a 16×16 grid of points inside the
+  place's own polygon and takes the unit holding most of its land.
+- **Merging the place into its unit.** Besides the `m2` rule, a place
+  merges with the ADM2 unit when the Wikidata ids match, when the names
+  match after dropping a "City of"/"County of" prefix (Edinburgh), or
+  when the names match loosely and one side has no Wikidata id to tell
+  them apart (Mumbai Suburban). The merged entry keeps whichever standing
+  makes rules (Toronto keeps the city's, not the census division's).
+  The word "county" is never dropped, because Los Angeles and Los
+  Angeles County are two governments. Consecutive identical labels
+  (Hamburg as state and district) are shown once.
+- **Unit lookups ask for both spellings**, with and without
+  transliteration marks ("Mahārāshtra" and "Maharashtra").
+- **Records that are not posts are filtered**: instruments described as
+  directives or decrees (`RX_INSTR`, `RX_INSTR_LBL`), lists of everyone
+  who has held an office and generic classes like "mayor of a place in"
+  (`RX_NOTPOST`, `RX_NOTPOST_LBL`), and records with no name in English
+  (a bare `Q…` id). `CACHE_V` went to `htrt4`.
+- `ddn` in a profile replaces the generic sentence about citizens'
+  initiatives where the general wording would mislead (Italy's
+  referendum only repeals; Kenya's initiative only amends the
+  constitution; New Zealand's referendum does not bind).
+
+**Adding a country's specific contacts** (the next rounds): keep them in
+`LAWP` alongside the profile rather than in a separate table, keyed the
+same way, so one record per country stays the source.
+
 ## 1. What you see, and in what order
 
 **The map opens on a search box, not on the world.** It used to draw all 48,263
@@ -143,7 +259,7 @@ sentence under a title. Only the first letter is touched.
 under the county's name — and restarted the walkthrough against a place
 nobody had searched for. One place is searched and the levels above come
 with it, so the chain says where the place sits and nothing more. `jumpTo`
-and `goUp` are still in the file and nothing in the panel calls them.
+and `goUp` have since been removed.
 
 **Terms of art are underlined.** `GLOSSARY` holds about forty, `glossy()`
 wraps the first use of each in a block and `#gltip` shows the definition. It
@@ -237,7 +353,7 @@ destination, and everything when nothing is chosen yet. The order is the
 order `HURDLES` declares them in, so the box does not reshuffle itself as
 the reader moves.
 
-`hurdleBlock` is still in the file and nothing calls it. `KIND_HURDLES` is
+`hurdleBlock` and `KIND_HURDLES` have been removed. (Was:
 still there and still unread.
 
 ---
@@ -495,7 +611,7 @@ Wikidata class, in order of precedence:
 passes the open jurisdiction. `loadChainPins` calls `classifyRows` directly for
 levels that are not open.
 
-Each kind maps to `KIND_ROUTES` and `KIND_HURDLES`; those ids must match
+Each kind maps to `KIND_ROUTES`; those ids must match
 `ROUTES` ids and `HURDLES` keys. Agencies are grouped by `themeOf()` into
 twelve themes by keyword.
 
@@ -634,7 +750,7 @@ first: that is how the collisions got there.
   Penthouse World Broadcasting LLC, Venturi Astrolab Inc., the McMartin
   preschool trial, the San Diego Humane Society. Companies regulated there and
   events that happened there. Markers now come from the ids the classifier
-  produced. `qCoords` is left in the file, unused.
+  produced. `qCoords` has been removed.
 - **A municipality with no `wikidata` tag is not name-matched.** Thousands of
   towns share a name; the matcher returned whichever Wikidata ranked first, so
   a small town could open another country's offices under its own name. Units
@@ -1031,7 +1147,7 @@ level's name by one.
 **A hierarchy diagram on the map.** Four branches with every office type under
 them, bottom left, lit in step with the panel. Removed as not worth the space.
 What it was for — telling a reader that Members, Committees and Chambers are
-one branch and the Head of Government another — is now the `howGovWorks()`
+one branch and the Head of Government another — is now the country-specific `howLawsMade()`
 writeup at the top of Who to Contact, which says it in three paragraphs and
 folds away.
 
