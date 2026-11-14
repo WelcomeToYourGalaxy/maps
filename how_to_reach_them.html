@@ -77,6 +77,28 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   display:flex;align-items:center;gap:3px;overflow:hidden;
   background:rgba(17,24,21,.93);border:1px solid var(--line);border-radius:9px;padding:0 9px}
 #bmrow,#projrow{display:flex;align-items:center;gap:2px;flex:none}
+/* The basemap menu. Fixed rather than absolute for the same reason the
+   Shown menu is: #toprow is 34px tall with overflow:hidden, which
+   would clip a child menu to nothing. `toggleBase` sets left and top. */
+#bmbox{display:none;position:fixed;top:56px;left:auto;z-index:210;min-width:150px;
+  background:rgba(17,24,21,.98);border:1px solid var(--line);border-radius:10px;
+  padding:6px 5px;box-shadow:0 16px 42px rgba(0,0,0,.55)}
+#bmbox.on{display:block}
+#bmbox button{display:block;width:100%;padding:6px 10px!important;border-radius:7px;
+  text-align:left;font-size:11.5px!important;color:var(--dim)}
+#bmbox button:hover{background:rgba(74,124,89,.12);color:var(--ink)}
+#bmbox button.on{background:var(--accent-soft);color:var(--ink)}
+#bmbtn{display:flex;align-items:center;gap:5px}
+/* The hurdles button, at the head of the row. It is hidden until a
+   place is open, because what it describes is what stands between a
+   reader and the office in front of them. */
+#hurdwrap{display:none;flex:none;border-right:1px solid var(--line);
+  padding-right:5px;margin-right:1px}
+#hurdwrap.on{display:flex;align-items:center}
+#hurdn{font-style:normal;font-size:9.5px;font-weight:700;color:var(--ink);
+  background:rgba(74,124,89,.3);border-radius:999px;padding:1px 5px}
+#hurdcar{font-weight:400;font-size:10px;transition:transform .15s}
+#hurdbtn.open #hurdcar{transform:rotate(180deg)}
 /* the question mark leads the row: it explains the map, not a place */
 #habout{flex:none;width:22px;height:22px;border-radius:50%;border:1px solid var(--stone)!important;
   background:var(--panel2)!important;color:var(--dim);font-size:11px;line-height:1;padding:0!important;
@@ -810,9 +832,9 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
    changes. */
 .bubs{display:block;font-size:9.4px;letter-spacing:.2px;text-transform:uppercase;color:var(--dim);
   text-shadow:0 1px 7px rgba(0,0,0,.95),0 0 3px rgba(0,0,0,.8)}
-#bubbles.lightbase .bubl b,#bubexp.lightbase .bubl b{color:#131d18;
+#bubbles.lightbase .bubl b,.bubexp.lightbase .bubl b{color:#131d18;
   text-shadow:0 1px 6px rgba(255,255,255,.98),0 0 3px rgba(255,255,255,.95)}
-#bubbles.lightbase .bubs,#bubexp.lightbase .bubs{color:#3a4a41;
+#bubbles.lightbase .bubs,.bubexp.lightbase .bubs{color:#3a4a41;
   text-shadow:0 1px 6px rgba(255,255,255,.98),0 0 3px rgba(255,255,255,.95)}
 
 /* "group 1 of 3" was 8.8px uppercase grey on the same line as the
@@ -824,11 +846,11 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .bgrp{display:inline-flex;align-items:center;gap:1px;margin-top:4px;padding:2px 4px 2px 2px;
   border:1px solid rgba(140,189,154,.55);border-radius:999px;
   background:rgba(13,19,16,.86);box-shadow:0 2px 10px rgba(0,0,0,.5)}
-#bubbles.lightbase .bgrp,#bubexp.lightbase .bgrp{background:rgba(255,255,255,.9);
+#bubbles.lightbase .bgrp,.bubexp.lightbase .bgrp{background:rgba(255,255,255,.9);
   border-color:rgba(19,29,24,.4)}
 .bgct{font-size:10.4px;font-weight:700;letter-spacing:.45px;text-transform:uppercase;
   color:var(--ink);padding:0 2px;white-space:nowrap}
-#bubbles.lightbase .bgct,#bubexp.lightbase .bgct{color:#131d18}
+#bubbles.lightbase .bgct,.bubexp.lightbase .bgct{color:#131d18}
 .bstep{background:none;border:0;color:var(--accent-hi);cursor:pointer;font:inherit;
   font-size:12px;padding:0 3px;line-height:1}
 .bstep:hover{color:var(--ink)}
@@ -848,39 +870,31 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
    left edge of the panel, which the reader can drag and resize, so
    both its right offset and its width are computed rather than fixed
    (`placeHurdles`). */
-#hurd{position:fixed;top:62px;right:18px;z-index:96;display:none;width:360px}
-#hurd.on{display:block}
-#hurdbtn{display:flex;align-items:center;gap:7px;width:40%;min-width:148px;
-  background:rgba(17,24,21,.93);border:1px solid var(--line);border-radius:9px;
-  color:var(--dim);cursor:pointer;font:inherit;font-size:11.5px;letter-spacing:.7px;
-  text-transform:uppercase;padding:8px 11px;text-align:left;
-  box-shadow:0 6px 20px rgba(0,0,0,.4)}
-#hurdbtn:hover{color:var(--ink);border-color:var(--accent-soft)}
-#hurdn{font-style:normal;font-size:10px;font-weight:700;color:var(--ink);
-  background:rgba(74,124,89,.3);border-radius:999px;padding:1px 6px}
-#hurdcar{margin-left:auto;font-weight:400;font-size:14px;transition:transform .15s}
-#hurd.open #hurdcar{transform:rotate(90deg)}
-#hurd.open #hurdbtn{color:var(--ink)}
-#hurdbox{display:none;background:var(--panel);border:1px solid var(--line);
-  border-radius:11px;margin-top:6px;padding:4px 15px 13px;
-  max-height:calc(100vh - 130px);overflow-y:auto;scrollbar-width:thin;
+/* The box hangs from the button in the top row, under the question
+   mark, the search and the Shown menu, so it is read in the same place
+   it was opened from. `placeHurdles` sets left, top and width off the
+   row itself, which moves as the panel is dragged. */
+#hurd{position:fixed;top:56px;left:18px;z-index:118;display:none;width:360px}
+#hurd.open{display:block}
+#hurdbox{background:var(--panel);border:1px solid var(--line);
+  border-radius:11px;padding:4px 15px 13px;
+  max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:thin;
   box-shadow:0 22px 60px rgba(0,0,0,.55)}
-#hurd.open #hurdbox{display:block}
 #hurdbox section{padding:11px 0;border-bottom:1px solid rgba(125,142,130,.12)}
 #hurdbox section:last-child{border-bottom:0;padding-bottom:2px}
 #hurdbox h5{font-family:'Marcellus',serif;font-weight:400;font-size:12.5px;line-height:1.35;
   color:var(--accent-hi);margin:0 0 5px}
 #hurdbox p{font-size:11.8px;line-height:1.58;color:var(--dim);margin:0 0 6px}
 #hurdbox p:last-child{margin-bottom:0}
-@media (max-width:1180px){ #hurd{display:none!important} }
+@media (max-width:1180px){ #hurd,#hurdwrap{display:none!important} }
 
 /* every group of one level at once, in a row beside its bubble */
-#bubexp{position:fixed;left:-9999px;top:0;z-index:51;display:none;gap:12px;
+.bubexp{position:fixed;left:-9999px;top:0;z-index:51;display:none;gap:12px;
   align-items:flex-start;pointer-events:none}
-#bubexp.on{display:flex;pointer-events:auto}
-#bubexp .xbub{width:var(--bd,156px);position:relative}
-#bubexp .bubl{width:100%;margin-left:0}
-#bubexp .bubl b{font-size:10.5px}
+.bubexp.on{display:flex;pointer-events:auto}
+.bubexp .xbub{width:var(--bd,156px);position:relative}
+.bubexp .bubl{width:100%;margin-left:0}
+.bubexp .bubl b{font-size:10.5px}
 .xclose{align-self:flex-start;background:rgba(13,19,16,.9);border:1px solid var(--line);
   border-radius:50%;width:22px;height:22px;color:var(--dim);cursor:pointer;font:inherit;
   font-size:14px;line-height:1;padding:0}
@@ -946,8 +960,8 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   box-shadow:0 0 0 1px rgba(10,14,12,.75), 0 0 10px rgba(255,255,255,.35)}
 .bubx.on::before{top:-7px;height:7px}
 .bubx.on::after{bottom:-7px;height:7px}
-.bub .bubc,#bubexp .bubc{cursor:grab}
-.bub .bubc:active,#bubexp .bubc:active{cursor:grabbing}
+.bub .bubc,.bubexp .bubc{cursor:grab}
+.bub .bubc:active,.bubexp .bubc:active{cursor:grabbing}
 #deep .bubc{cursor:crosshair}
 
 /* Zoom, on the map itself. The keyboard and the wheel were the only way
@@ -991,10 +1005,16 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
      is its own button at the head of the row rather than inside the
      panel, because what it explains applies to the whole map. -->
 <div id="toprow">
-  <!-- The search sits at the head of the row: it is the one control
+  <!-- The hurdles lead the row, to the left of the search, and their
+       box drops from here rather than from a box of its own further
+       down the window. Next comes the search: it is the one control
        that starts the map over, and in the title block it competed
        with the title for the eye and was off on the other side of the
        window from everything else that is a control. -->
+  <div id="hurdwrap">
+    <button type="button" id="hurdbtn" onclick="toggleHurdles()">
+      Hurdles to Expect <i id="hurdn"></i> <b id="hurdcar">&#9662;</b></button>
+  </div>
   <button id="sopen" onclick="openStart()">&#9906; Search</button>
   <button id="habout" onclick="toggleAbout()" title="About this map">?</button>
   <div id="showrow">
@@ -1002,7 +1022,11 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
     <div id="showbox"></div>
   </div>
   <div id="levels"></div>
-  <div id="bmrow"></div>
+  <!-- One button rather than five. The basemap is chosen once and
+       then left alone, so the five names took the width of half the
+       row to say what one of them says. -->
+  <div id="bmrow"><button type="button" id="bmbtn" onclick="toggleBase()">
+    <span id="bmnow">Jurassic</span> &#9662;</button><div id="bmbox"></div></div>
   <div id="projrow"><button id="projbtn" onclick="toggleProjection()">Flat map</button></div>
 </div>
 <!-- A bubble per level of government, each a real map on the same
@@ -1021,11 +1045,8 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
      between the bubbles and the panel, and it appears once a place
      has been searched. -->
 <div id="hurd">
-  <button type="button" id="hurdbtn" onclick="toggleHurdles()">
-    Hurdles to Expect <i id="hurdn"></i> <b id="hurdcar">&rsaquo;</b></button>
   <div id="hurdbox"></div>
 </div>
-<div id="bubexp"></div>
 <div id="deep"><div class="bubc deepc"><div class="bubm" id="deepm"></div></div></div>
 <div id="start">
   <h2>Search for your municipality</h2>
@@ -2671,13 +2692,31 @@ BM = CulpritsBasemaps.create('map', {
 });
 const map = BM.maplibre;
 
-/* basemap switcher, now a row rather than a drop-down */
+/* basemap switcher: one button that opens the five */
 (function(){
-  const box = document.getElementById('bmrow');
+  const box = document.getElementById('bmbox');
   box.innerHTML = CulpritsBasemaps.list.map(b =>
-    '<button data-k="'+b[0]+'" onclick="pickBase(\''+b[0]+'\')">'+b[1]+'</button>').join('');
+    '<button type="button" data-k="'+b[0]+'" onclick="pickBase(\''+b[0]+'\')">'+b[1]+'</button>').join('');
   markBase('satellite');
 })();
+function toggleBase(){
+  const box=document.getElementById('bmbox'), btn=document.getElementById('bmbtn');
+  if(!box||!btn) return;
+  const on=box.classList.toggle('on');
+  btn.classList.toggle('on', on);
+  if(on){
+    const r=btn.getBoundingClientRect(), w=box.offsetWidth||150;
+    box.style.top=Math.round(r.bottom+8)+'px';
+    box.style.left=Math.round(Math.max(8, Math.min(r.left, innerWidth-w-8)))+'px';
+  }
+}
+/* clicking anywhere else puts the menu away */
+document.addEventListener('mousedown', e=>{
+  const box=document.getElementById('bmbox'), btn=document.getElementById('bmbtn');
+  if(!box||!box.classList.contains('on')) return;
+  if(box.contains(e.target) || (btn&&btn.contains(e.target))) return;
+  box.classList.remove('on'); if(btn) btn.classList.remove('on');
+});
 let BASEKEY='satellite';
 function pickBase(k){
   BM.set(k); markBase(k); BASEKEY=k; setPins();
@@ -2685,13 +2724,24 @@ function pickBase(k){
   try{
     BUBS.forEach(b=>{ if(!b.bm) return; b.bm.set(k);
       bubAddImages(b.map); fillBubble(b, {lv:b.lv, st:STACK[b.lv], pins:b.pins}); });
-    EXPS.forEach(x=>{ if(!x.bm) return; x.bm.set(k); bubAddImages(x.map); });
+    expSlots().forEach(x=>{ if(!x.bm) return; x.bm.set(k); bubAddImages(x.map); });
     if(DEEPBM){ DEEPBM.set(k); bubAddImages(DEEPBM.maplibre); DEEP_LV=null; }
     bubTone();
   }catch(e){}
 }
-function markBase(k){ document.querySelectorAll('#bmrow button')
-  .forEach(b=>b.classList.toggle('on', b.dataset.k===k)); }
+function markBase(k){
+  document.querySelectorAll('#bmbox button')
+    .forEach(b=>b.classList.toggle('on', b.dataset.k===k));
+  /* the button says which one is on, since the list is folded away */
+  try{
+    const row=(CulpritsBasemaps.list.find(b=>b[0]===k)||[])[1];
+    const lbl=document.getElementById('bmnow');
+    if(lbl && row) lbl.textContent=row;
+  }catch(e){}
+  const box=document.getElementById('bmbox'), btn=document.getElementById('bmbtn');
+  if(box) box.classList.remove('on');
+  if(btn) btn.classList.remove('on');
+}
 
 /* Flat or globe. The world draws on a sphere by default, which is the
    honest shape but hides half the planet; flat shows every country at
@@ -3188,9 +3238,11 @@ function openModal(title, sub){
   $('#modal').classList.add('on');
   shiftForBox(true);
   try{ placeZoom(); }catch(e){}
+  try{ drawHurdles(); }catch(e){}
 }
 function closeModal(){ $('#modal').classList.remove('on'); SEL=null; showBack(false); hideCard();
-  shiftForBox(false); try{ placeZoom(); }catch(e){} }
+  shiftForBox(false); try{ placeZoom(); }catch(e){}
+  try{ drawHurdles(); }catch(e){} }
 /* What the close button does. Closing the panel used to leave the
    reader on a municipality they could no longer read anything about,
    zoomed in, with no way back to the world except the button in the
@@ -4162,7 +4214,12 @@ function pageWho(L){
      the list the page exists for, and the second said the same kind of
      thing in general terms. `lead` is still in LEAVES, unread. */
   h+=howGovWorks();
-  h+=lawLinksPlace();
+  /* The "Official listings for this country" accordion is gone from
+     here. This page answers one question — which kind of office to
+     approach — and a drawer of national directory links above the list
+     answered a different one, so the reader met a second set of choices
+     before the first. The same links are still reachable where they
+     belong: under the method that uses them. */
   h+=loadNote(ents.length);
   if(!have.length && CUR && CUR.state!=='done'){
     return h+'<div class="spin">Resolving the offices for this place\u2026</div></div>';
@@ -4362,7 +4419,7 @@ function drawLevelQ(){
   const words=[];
   for(let i=STACK.length-1;i>=0;i--) words.push(levWord(i));
   const q = words.length
-    ? 'Is the rule '+words.join(', ')+', or '+allOfThem(words.length)+'?'
+    ? 'Is the rule for the '+words.join(', ')+', or '+allOfThem(words.length)+'?'
     : 'Which level should the rule be made at?';
   return qframe(q,
     'A rule made by the '+(words[0]||'local')+' government binds that place and nowhere else. '+
@@ -6187,7 +6244,9 @@ function toggleAbout(){
   const a=document.getElementById('about');
   const on=a.classList.toggle('on');
   /* the two would otherwise be open over each other in the same column */
-  if(on){ const h=document.getElementById('hurd'); if(h) h.classList.remove('open'); }
+  if(on){ const h=document.getElementById('hurd'); if(h) h.classList.remove('open');
+           const hb=document.getElementById('hurdbtn');
+           if(hb) hb.classList.remove('open','on'); }
   try{ placeHurdles(); }catch(e){}
 }
 
@@ -6825,7 +6884,7 @@ function fillBubble(b, info){
     const n=b.groups.length;
     if(n<2) gel.innerHTML='';
     else{
-      const open=(EXP_OF===i), d=expFits(n);
+      const open=isExpanded(i), d=expFits(n);
       gel.innerHTML=
         '<button type="button" class="bstep" onclick="bubStep('+i+',-1)" '+
           'title="the previous group">\u2039</button>'+
@@ -6834,7 +6893,7 @@ function fillBubble(b, info){
           'title="the next group">\u203a</button>'+
         ((d||open)
            ? '<button type="button" class="bexp" onclick="'+
-             (open?'collapseGroups()':'expandGroups('+i+')')+'" title="'+
+             (open?'collapseGroups('+i+')':'expandGroups('+i+')')+'" title="'+
              (open?'back to one group at a time':'all '+n+' groups side by side')+'">'+
              (open?'Hide':'Show all')+'</button>'
            : '');
@@ -6846,7 +6905,7 @@ function bubStep(i, d){
   b.gi=(b.gi+d+b.groups.length)%b.groups.length;
   /* the open row leaves out whichever group is in the bubble, so it is
      rebuilt against the new one */
-  if(EXP_OF===i){ collapseGroups(); setTimeout(()=>expandGroups(i), 0); }
+  if(isExpanded(i)){ collapseGroups(i); setTimeout(()=>expandGroups(i), 0); }
   fillBubble(b, {lv:b.lv, st:STACK[b.lv], pins:b.pins});
 }
 
@@ -6869,10 +6928,20 @@ function hurdlesInScope(){
   return out.length?out:keys;
 }
 function drawHurdles(){
-  const host=$('#hurd'); if(!host) return;
-  const on = STACK.length>0 && innerWidth>1180;
-  host.classList.toggle('on', on);
-  if(!on){ host.classList.remove('open'); return; }
+  const host=$('#hurd'), wrap=$('#hurdwrap'); if(!host) return;
+  /* Only while a panel is open. With nothing open there is no office,
+     no method and no destination for the hurdles to be about, so the
+     box was listing all of them against nothing. */
+  let boxOpen=false;
+  try{ const md=document.getElementById('modal');
+       boxOpen = !!(md && md.classList.contains('on')); }catch(e){}
+  const on = STACK.length>0 && innerWidth>1180 && boxOpen;
+  if(wrap) wrap.classList.toggle('on', on);
+  if(!on){
+    host.classList.remove('open');
+    const b=$('#hurdbtn'); if(b) b.classList.remove('open','on');
+    return;
+  }
   const ks=hurdlesInScope();
   const n=$('#hurdn'); if(n) n.textContent=ks.length;
   const box=$('#hurdbox');
@@ -6887,6 +6956,8 @@ function drawHurdles(){
 function toggleHurdles(){
   const h=$('#hurd'); if(!h) return;
   const on=h.classList.toggle('open');
+  const b=$('#hurdbtn');
+  if(b){ b.classList.toggle('open', on); b.classList.toggle('on', on); }
   if(on){ const a=$('#about'); if(a) a.classList.remove('on'); }
   placeHurdles();
 }
@@ -6912,22 +6983,32 @@ function sideSlot(){
 function placeHurdles(){
   const sl=sideSlot();
   const h=$('#hurd');
-  if(h){ h.style.right=sl.right+'px'; h.style.width=sl.width+'px'; }
-  /* About opens in the same column. When the hurdles button is up it
-     sits under it rather than over it, which is the one case where the
-     two want the same 62px. */
+  /* Hung off the row the button is in, at its left edge — under the
+     question mark, the search and the Shown menu — rather than set
+     against the panel as it was when it had a box of its own. */
+  if(h){
+    let left=18, top=56, w=sl.width;
+    try{
+      const row=document.getElementById('toprow');
+      if(row){
+        const r=row.getBoundingClientRect();
+        top=Math.round(r.bottom+8);
+        w=Math.max(280, Math.min(430, Math.round(innerWidth-r.left-18)));
+        left=Math.round(Math.max(8, Math.min(r.left, innerWidth-w-8)));
+      }
+    }catch(e){}
+    h.style.left=left+'px'; h.style.right='auto';
+    h.style.top=top+'px'; h.style.width=w+'px';
+    const bx=$('#hurdbox');
+    if(bx) bx.style.maxHeight='calc(100vh - '+(top+30)+'px)';
+  }
+  /* About opens against the panel, where it always did. */
   const a=$('#about');
   if(a){
     a.style.right=sl.right+'px';
     a.style.width=sl.width+'px';
-    let top=62;
-    try{
-      const btn=$('#hurdbtn');
-      if(h && h.classList.contains('on') && btn)
-        top=Math.round(btn.getBoundingClientRect().bottom+10);
-    }catch(e){}
-    a.style.top=top+'px';
-    a.style.maxHeight='calc(100vh - '+(top+30)+'px)';
+    a.style.top='62px';
+    a.style.maxHeight='calc(100vh - 92px)';
   }
 }
 addEventListener('resize', ()=>{ try{ drawHurdles(); }catch(e){} });
@@ -6943,7 +7024,18 @@ addEventListener('resize', ()=>{ try{ drawHurdles(); }catch(e){} });
    Four is the ceiling — a fifth basemap instance costs the same as a
    fifth bubble, and the handoff's warning about that is why these are
    built one at a time and torn down on collapse. */
-let EXP_OF=null, EXPS=[], EXP_SEQ=0;
+/* One row per level, and several rows open at once: a reader comparing
+   the municipality's offices with the state's wants both columns of
+   circles on screen, not one at a time. Each level keeps its own host
+   element, its own basemap instances and its own build sequence, so
+   opening or closing one leaves the others alone. */
+let EXPROWS={}, EXP_SEQ=0;
+function isExpanded(i){ return !!EXPROWS[i]; }
+function expRowList(){ return Object.keys(EXPROWS).map(k=>EXPROWS[k]); }
+function expSlots(){
+  const out=[]; expRowList().forEach(r=>r.slots.forEach(s=>{ if(s) out.push(s); }));
+  return out;
+}
 /* The row draws every group but the one already in the level bubble,
    so a level with three groups puts two circles beside it rather than
    three, one of which was a copy of what it sits next to. EXP_CAP
@@ -6969,12 +7061,7 @@ function expFits(n){
   if(n<2 || n>EXP_CAP) return 0;
   const m=n-1;                                  /* the one on screen is not redrawn */
   const d=Math.floor((expRoom()-(m-1)*EXP_GAP-34)/m);
-  /* Capped at the size of the circles in the column, not at BUB_MAX.
-     With two groups the row draws one circle and the room left over is
-     most of the window, so it came out at the ceiling — half again the
-     size of the bubble it belongs to, and sitting below it because the
-     row is vertically centred on the bubble. The United States has two
-     groups at country level, which is where that showed. */
+  /* Capped at the size of the circles in the column, not at BUB_MAX. */
   return d>=EXP_MIN ? Math.min(d, colSize()) : 0;
 }
 /* The diameter of the circles in the column, which is what the row
@@ -6987,18 +7074,22 @@ function colSize(){
 function bubTone(){
   try{
     const lite=baseIsLight(BASEKEY);
-    const a=$('#bubbles'), b=$('#bubexp');
+    const a=$('#bubbles');
     if(a) a.classList.toggle('lightbase', lite);
-    if(b) b.classList.toggle('lightbase', lite);
+    expRowList().forEach(r=>{ if(r.host) r.host.classList.toggle('lightbase', lite); });
   }catch(e){}
 }
 function expandGroups(i){
   const b=BUBS[i]; if(!b||!b.groups) return;
   const n=b.groups.length, D=expFits(n);
   if(!D) return;
-  collapseGroups();
-  const host=$('#bubexp'); if(!host) return;
-  EXP_OF=i;
+  collapseGroups(i);                       /* this level only */
+  const host=document.createElement('div');
+  host.className='bubexp on'+(baseIsLight(BASEKEY)?' lightbase':'');
+  document.body.appendChild(host);
+  const seq=++EXP_SEQ;
+  const row={host:host, slots:[], seq:seq, i:i};
+  EXPROWS[i]=row;
   /* Every group but the one the level bubble is already showing. The
      row used to open with a copy of the circle beside it, which is a
      whole basemap instance spent on something already on screen. */
@@ -7006,40 +7097,40 @@ function expandGroups(i){
   const r0=b.el.querySelector('.bubc').getBoundingClientRect();
   host.style.setProperty('--bd', D+'px');
   host.style.left=Math.round(r0.right+EXP_GAP)+'px';
-  /* Lined up with the top of the bubble it came out of, so the row
-     reads as a row. Centring it on the bubble's middle put the
-     circles half a diameter low and the whole thing on a diagonal. */
-  host.style.top=Math.round(Math.max(BUB_TOP,
-    Math.min(innerHeight-D-BUB_LBL_G-14, r0.top)))+'px';
-  host.className='on'+(baseIsLight(BASEKEY)?' lightbase':'');
+  /* Lined up with the top of the bubble it came out of, and nothing
+     else. The bottom row used to be pulled up by a clamp against the
+     window height, which put the lowest level's circles a little above
+     the bubble they belong to while every other row sat level with its
+     own. The rows are the same diameter as the circles in the column,
+     so the column's own bottom edge is the only limit there is. */
+  host.style.top=Math.round(Math.max(BUB_TOP, r0.top))+'px';
   host.innerHTML=rest.map((x,k)=>
-    '<div class="xbub"><div class="bubc"><div class="bubm" id="xbubm'+k+'"></div></div>'+
+    '<div class="xbub"><div class="bubc"><div class="bubm" id="xbubm'+i+'_'+k+'"></div></div>'+
     '<div class="bubl"><b>Group '+(x.k+1)+' of '+n+'</b>'+
     '<span class="bubs">'+x.g.length+(x.g.length===1?' office':' offices')+'</span></div></div>'
-  ).join('')+'<button type="button" class="xclose" onclick="collapseGroups()" '+
-    'title="back to one group at a time">\u00d7</button>';
+  ).join('')+'<button type="button" class="xclose" onclick="collapseGroups('+i+')" '+
+    'title="back to one group at a time">×</button>';
   fillBubble(b, {lv:b.lv, st:STACK[b.lv], pins:b.pins});
-  const seq=++EXP_SEQ;
   const make=(k)=>{
-    if(seq!==EXP_SEQ || k>=rest.length) return;
-    if(!document.getElementById('xbubm'+k)){ make(k+1); return; }
+    if(EXPROWS[i]!==row || row.seq!==seq || k>=rest.length) return;
+    if(!document.getElementById('xbubm'+i+'_'+k)){ make(k+1); return; }
     const slot={lv:b.lv, pins:rest[k].g, bm:null, map:null, groups:[rest[k].g], gi:0,
                 el:host.children[k]};
-    EXPS[k]=slot;
-    const bm=CulpritsBasemaps.create('xbubm'+k, {
+    row.slots[k]=slot;
+    const bm=CulpritsBasemaps.create('xbubm'+i+'_'+k, {
       initial:BASEKEY, projection:'mercator', center:[0,0], zoom:1, plate:PLATE_URL,
       pixelRatio:1,
-      onReady(){ if(seq!==EXP_SEQ) return;
+      onReady(){ if(EXPROWS[i]!==row || row.seq!==seq) return;
                  const mm=bm.maplibre;
                  bubAddPins(mm, {onMove:ll=>showDeepFor(slot, ll),
                                  onLeave:()=>hideDeep(),
-                                 onReset:()=>expReset(k)});
-                 fillExp(k); }
+                                 onReset:()=>expReset(slot)});
+                 fillExp(slot); }
     });
     const mm=bm.maplibre;
     freeze(mm, {dragPan:true});
     slot.bm=bm; slot.map=mm;
-    fillExp(k);
+    fillExp(slot);
     let fired=false;
     const next=()=>setTimeout(()=>make(k+1), 110);
     mm.once('idle', ()=>{ if(!fired){ fired=true; next(); } });
@@ -7047,27 +7138,31 @@ function expandGroups(i){
   };
   whenMapQuiet(()=>make(0));
 }
-function fillExp(k){
-  const x=EXPS[k]; if(!x||!x.map) return;
+function fillExp(x){
+  if(!x||!x.map) return;
   try{
     const src=x.map.getSource('bpins');
     if(src) src.setData(pinFeatures(x.pins, x.lv));
     x.map.fitBounds(groupBox(x.pins), {padding:18, duration:0, maxZoom:16});
   }catch(e){}
 }
-function expReset(k){
-  const x=EXPS[k]; if(!x||!x.map) return;
+function expReset(x){
+  if(!x||!x.map) return;
   try{ x.map.fitBounds(groupBox(x.pins), {padding:18, duration:320, maxZoom:16}); }catch(e){}
 }
-function collapseGroups(){
-  EXP_SEQ++;
-  EXPS.forEach(x=>{ try{ if(x&&x.bm) x.bm.maplibre.remove(); }catch(e){} });
-  EXPS=[];
-  const host=$('#bubexp');
-  if(host){ host.className=''; host.innerHTML=''; host.style.left='-9999px'; }
-  const was=EXP_OF; EXP_OF=null;
-  const b=(was!=null)?BUBS[was]:null;
-  if(b) fillBubble(b, {lv:b.lv, st:STACK[b.lv], pins:b.pins});
+/* With no argument, every row. With a level index, that row alone. */
+function collapseGroups(i){
+  const keys=(i==null) ? Object.keys(EXPROWS) : [String(i)];
+  keys.forEach(k=>{
+    const row=EXPROWS[k]; if(!row) return;
+    row.seq=-1;
+    row.slots.forEach(x=>{ try{ if(x&&x.bm) x.bm.maplibre.remove(); }catch(e){} });
+    row.slots=[];
+    try{ if(row.host&&row.host.parentNode) row.host.parentNode.removeChild(row.host); }catch(e){}
+    delete EXPROWS[k];
+    const b=BUBS[+k];
+    if(b) fillBubble(b, {lv:b.lv, st:STACK[b.lv], pins:b.pins});
+  });
 }
 
 /* ---- the second bubble, on top of the first ---- */
@@ -7128,7 +7223,7 @@ function overBubble(){
   try{
     const d=$('#deep');
     if(d && d.classList.contains('on') && d.matches(':hover')) return true;
-    const els=document.querySelectorAll('#bubbles .bubc, #bubexp .bubc');
+    const els=document.querySelectorAll('#bubbles .bubc, .bubexp .bubc');
     for(let i=0;i<els.length;i++) if(els[i].matches(':hover')) return true;
   }catch(e){}
   return false;
