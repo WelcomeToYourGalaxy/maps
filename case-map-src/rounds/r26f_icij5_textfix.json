@@ -1,0 +1,12 @@
+{
+ "webuye-interchange-traders": {
+  "edits": [
+   {
+    "field": "killed_note",
+    "old": "",
+    "new": "The Bank's completion report of 29 January 2021 records that a complaint to the Grievance Redress Service about the Kakamega to Webuye road section alleged a fatal accident involving a worker on site, and that a Bank mission confirmed there had been a fatal accident on site involving the operator of an excavator. The accident was reported to the police when it happened and the police took over the case, and the Bank team followed up with the Kenya National Highways Authority to ensure the family of the deceased was compensated under Kenyan law. The report does not name the person, give the date of the accident or say what caused it, and the death was on the Kakamega to Webuye section rather than at the Webuye interchange where this point sits. The death is therefore not counted in this map's figure: a death counts only where a document gives a cause tying it to the works."
+   }
+  ],
+  "why": "The Kenya extend's source document records a death that merge.py's fields_add cannot count, because that mechanism appends strings and cannot set an integer. The death is uncounted under the round-21 rule that a cause tying the death to the works is what makes it countable; the report gives none. The same rule leaves ten fatalities uncounted on metolong-dam, three on newmap-nigeria-erosion-displacement and one on baoro-bouar-road-house-damage-car, and counts three on corridor-x-dimitrovgrad-bypass-serbia, three on ethiopia-sudan-interconnector-line-deaths, three on patna-ganga-riverfront-resettlement and one on corumana-dam-resettlement-mozambique."
+ }
+}
