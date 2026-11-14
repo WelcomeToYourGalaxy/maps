@@ -270,7 +270,7 @@ Two types were added to `CTN` in `base.html` on 10 Nov, which released 12 strand
 - `fincov` — financial covenants and use-of-proceeds terms: a required rate of return, a self-financing or debt-to-equity ratio, an offtake undertaking, a restriction on what the money may be spent on, a required escrow or minimum balance.
 - `admin` — institutional or planning covenants: create an agency, adopt an action plan or manual, set up a unit or committee, submit plans for the lender's review.
 
-`merge_conds.py` now carries checked text through even when `ct` is empty, instead of discarding it, and leaves the case tagged `research` so it stays on the to-do list. It skips text already present, so re-running is safe. Six cases carry text with no type on purpose: four record loan terms rather than conditions (Kotopanjang, Ramu, Hambantota, Santo António) and two record a condition's absence (Sendou, where the AfDB found environmental and social covenants were left out of the agreement; Wilmar, where a Category C rating meant the Performance Standards were never triggered).
+`merge_conds.py` now carries checked text through even when `ct` is empty, instead of discarding it, and leaves the case tagged `research` so it stays on the to-do list. It skips text already present, so re-running is safe. **The "six cases carry text with no type on purpose" line that stood here for several rounds was stale, and round 21 checked it against the data: every one of those six now carries a type** — Kotopanjang, Ramu and Santo António `research`, Hambantota `repay`, Sendou `safeguard` and `admin`, Wilmar `fincov`. The reasoning behind them is still worth knowing, because it is the test for leaving a case untyped: four recorded loan terms rather than conditions, and two recorded a condition's absence (Sendou, where the AfDB found environmental and social covenants were left out of the agreement; Wilmar, where a Category C rating meant the Performance Standards were never triggered). **After round 21 exactly two cases carry conditions prose with no type**, and both are of the first kind: `mattala-airport-forest-elephants` (AidData's interest, maturity, grace and fees) and `malolos-clark-railway-row-pampanga` (a JICA right-of-way recommendation, a commitment fee and an economic rate of return — a recommendation is not an obligation, on the Thilawa precedent).
 
 ### Company descriptions — first pass complete, 919 of 1,002
 Cards show a one-line "what this company is" (`desc`), then "In this case:" and the role. Merged: batches 1, 2, 3a/3b, 4a/4b, 5a/5b, 6a/6b, 7a/7b, 8a/8b, 9a/9b (`rounds/r26f_companies_*_checked.json`, logs alongside), plus round 16's `rounds/r26f_backlog_companies_checked.json`.
@@ -2027,8 +2027,13 @@ precedent that six cases carry condition text with no type **on purpose** (four 
 rather than conditions, two record a condition's absence), so a typing pass has to decide which
 are of that kind rather than assuming all need a tag; and round 20's conditions entries are
 unusually rich in `admin` and `safeguard` material — effectiveness conditions, duties to implement
-a resettlement plan before works begin, independent monitoring agencies — so they should type
-quickly and would move the settled-terms row.
+a resettlement plan before works begin, independent monitoring agencies — so they type quickly.
+
+**What typing does and does not move, because this was stated wrongly once.** It puts these cases
+under the "cases, by type of condition" chips, where they are currently invisible. It does **not**
+move the settled-terms panel row: that row counts cases not tagged `research`, and these cases
+carry no tag at all rather than `research`, so they already count as settled. The row is at 92%
+because 83 cases are tagged `research`, and only condition research moves it.
 
 1. **Four AfDB country offices: Uganda, Madagascar, DR Congo, Cabo Verde.** The slugs `/en/countries/east-africa/uganda`, `/en/countries/southern-africa/madagascar`, `/en/countries/central-africa/democratic-republic-congo` and `/en/countries/west-africa/cabo-verde` failed repeatedly on 11 Nov night while sibling pages on the same host served in the same batches, which points to wrong slugs rather than a block. No afdb.org office-directory URL has ever been surfaced by search, across 14 searches in one round and several more in round 13. **The cheapest fix is the owner opening afdb.org, following its "Country Office Contacts" link and pasting the four URLs into chat** — the fetch tool strips hrefs, so an agent cannot read that link off the page. A WebSearch that surfaces any one of these pages would also do it.
 2. **Six AfDB countries never attempted:** Comoros, Seychelles, Mauritius, Guinea-Bissau, Libya, Equatorial Guinea.
