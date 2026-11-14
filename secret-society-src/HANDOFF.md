@@ -61,6 +61,15 @@ Brazil was cut from 450 to 325 words the same day without dropping a single stra
 
 **Remeasured after that cut: 196 writeups, median 290, 26 over 300, 6 over 400.** The list above still holds, with one addition no earlier handoff noticed: **South Africa, 479 words on 52 cases**, now the second furthest over. India (396, 43), Bangladesh (396, 8), Japan (392, 31) and Taiwan (386, 39) are next after the five named above.
 
+## Benchmarks outside the English-language lists: how they have to be sourced
+
+Three of the non-English benchmarks were straightforward because a body publishes a numbered list. The two added on 12 and 13 November 2026 were not, in opposite ways, and the question to ask of the next country is which of the two it resembles.
+
+- **The Netherlands has named items and no denominator.** The Aanwijzing hoge transacties promises an overview on om.nl; the page under that heading is a news feed. The settlements are separate releases and statement-of-facts documents in an unindexed folder, so the enumeration is assembled by reading and stays open.
+- **Germany has a denominator and no list of its own.** A section 30 OWiG fine carries no duty to announce anything, the Länder publish at their discretion, and the one national register of these decisions, the Federal Cartel Office's competition register, is closed by law to everyone but public purchasers asking about a named bidder. The benchmark therefore uses Annex 1C of the OECD's Phase 4 report on Germany, which lists all nineteen corporate fines in German foreign bribery cases to the end of 2017. Eight of the nineteen do not name the company, because Germany anonymises the Länder's case data, and those eight can never be matched. Nothing enumerates the years after 2017.
+
+So the denominator question has two halves: is there a count, and are the items named. A list can fail on either. Where the national authority fails on both, the OECD's country evaluations are the fallback, and their annexes are worth reading before concluding a country cannot be benchmarked.
+
 ## Display notes
 - Default country shading "Overall: officials open to outside control" = mean of the two GI-TOC views (insiders weighted ¾, weak watchdogs ¼).
 - Glossary underlines the first use of each term per box; hover shows the definition (glossify() in app_template.html).
