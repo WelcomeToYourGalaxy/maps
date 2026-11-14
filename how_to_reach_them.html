@@ -296,10 +296,12 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 /* The recorded link is the field that goes stale fastest, so the
    search that finds the current one sits on the same line as the link
    rather than in a row of its own underneath it. */
-.findsite{font-size:10.4px;color:var(--accent-hi);text-decoration:none;
+.findsite{font-size:10.4px;color:var(--dim);text-decoration:none;
   border:1px solid var(--line);border-radius:7px;padding:2px 7px;white-space:nowrap;
   word-break:normal}
-.findsite:hover{background:rgba(74,124,89,.16);text-decoration:none}
+.findsite a{color:var(--accent-hi);text-decoration:underline;text-underline-offset:2px}
+.findsite:hover{background:rgba(74,124,89,.16)}
+.findsite:hover a{color:var(--ink)}
 .offleaf{font-size:11.8px;line-height:1.55;color:var(--dim);margin:0 0 4px;
   padding:8px 10px;border-left:2px solid var(--line);background:rgba(125,142,130,.07);
   border-radius:0 7px 7px 0}
@@ -4888,9 +4890,9 @@ function render(){
   SELFCH=[];
   /* the site goes beside the place name instead of in this row */
   SELFSITE=[...sites][0]||null; paintSiteLink();
-  [...emails].forEach(x=>{ const a=String(x).replace(/^mailto:/i,'');
+  [...emails].forEach(x=>{ const a=bareMail(x);
     SELFCH.push(['<a href="mailto:'+esc(a)+'">'+esc(a)+'</a>']); });
-  [...phones].forEach(x=>SELFCH.push(['<span>'+esc(String(x).replace(/^tel:/i,''))+'</span>']));
+  [...phones].forEach(x=>SELFCH.push(['<span>'+esc(bareTel(x))+'</span>']));
   /* the answers so far decide what the map still shows */
   recomputeScope();
   setPins();
@@ -4931,8 +4933,16 @@ function render(){
    has.
    ==================================================================== */
 function siteOf(o){ const v=o&&o.row&&o.row.site&&o.row.site.value; return v?String(v):''; }
-function mailOf(o){ const v=o&&o.row&&o.row.email&&o.row.email.value; return v?String(v):''; }
-function telOf(o){  const v=o&&o.row&&o.row.phone&&o.row.phone.value; return v?String(v):''; }
+/* Wikidata stores an email as a link — "mailto:contactville@grenoble.fr"
+   — and a telephone number sometimes the same way. Printed as it came it
+   read "mailto:contactville@grenoble.fr" on the page, and the link under
+   it was "mailto:mailto:…", which opens nothing. The scheme is stripped
+   here, at the one place both are read, so every use gets the address
+   itself and adds its own scheme. */
+const bareMail = v => String(v||'').replace(/^\s*mailto:/i,'').trim();
+const bareTel  = v => String(v||'').replace(/^\s*tel:/i,'').trim();
+function mailOf(o){ return bareMail(o&&o.row&&o.row.email&&o.row.email.value); }
+function telOf(o){  return bareTel(o&&o.row&&o.row.phone&&o.row.phone.value); }
 function hostOf(u){ return String(u).replace(/^https?:\/\//,'').replace(/\/$/,'').slice(0,46); }
 /* Which place to name in a search for an office.
 
@@ -5011,14 +5021,29 @@ function findLink(q){ return 'https://duckduckgo.com/?q='+encodeURIComponent(q);
    national process rather than something this office runs */
 const DOPORTAL={ comment:'directives:regulations', rulemaking:'directives:regulations',
   lobby:'access:register' };
-function portalRow(routeId){
-  const tag=DOPORTAL[routeId]; if(!tag) return null;
-  const sets=lawLinkSets();
-  for(const s of sets){
-    for(const r of (s.rows||[])) if((r.t||[]).indexOf(tag)>=0)
-      return {lbl:'The national file for this', u:r.u, tx:r.n};
-  }
-  return null;
+/* THE BODY THAT TAKES THE FILING, NAMED ONCE.
+
+   France's lobbying register came up three times under one method: as
+   "The national file for this" inside Where to do this, as a search for
+   "the register of lobbyists here" beside it, and again underneath as
+   "Where this is done in France" — the same HATVP link twice over, with
+   a search for the thing already linked between them. `DOPORTAL` and
+   `LAWLINK_ROUTE` held the same tags against the same methods, and a
+   search is worth offering only where the register itself is not.
+
+   This returns every matching register rather than the first, so a
+   country with one per region loses none of them; `lawLinksForRoute`
+   no longer prints what this has printed, and `doThisAt` drops the
+   search for a body it is already pointing at. */
+function portalRows(routeId){
+  const tag=DOPORTAL[routeId]; if(!tag) return [];
+  const out=[], seen={};
+  lawLinkSets().forEach(s=>(s.rows||[]).forEach(r=>{
+    if((r.t||[]).indexOf(tag)<0 || seen[r.u]) return;
+    seen[r.u]=1;
+    out.push({lbl:'The register itself', u:r.u, tx:r.n+(s.where?' \u2014 '+s.where:'')});
+  }));
+  return out;
 }
 
 /* WHERE A METHOD IS ACTUALLY FILED, WHICH IS OFTEN NOT THE OFFICE.
@@ -5165,12 +5190,15 @@ function nationalRow(rt, o){
 function doThisAt(rt, o){
   const rows=[];
   const nat=nationalRow(rt,o); if(nat) rows.push(nat);
-  const p=portalRow(rt.id); if(p) rows.push(p);
+  const ports=portalRows(rt.id); ports.forEach(p=>rows.push(p));
   const away=DOELSE[rt.id];
   if(away){
     /* Filed with a body other than this office, so this office's own
-       address is not offered: it would be a link to the wrong door. */
-    away.forEach(a=>rows.push({lbl:a.lbl, u:findLink(doQ(a.q,o)), tx:a.tx}));
+       address is not offered: it would be a link to the wrong door.
+       A search for the body is dropped where the body is linked above:
+       nobody needs to be sent looking for what is on the line before. */
+    away.forEach(a=>{ if(ports.length) return;
+      rows.push({lbl:a.lbl, u:findLink(doQ(a.q,o)), tx:a.tx}); });
   } else {
     const site=o?siteOf(o):'', mail=o?mailOf(o):'', tel=o?telOf(o):'';
     if(rt.id==='email' && mail) rows.unshift({lbl:'Write to', u:'mailto:'+mail, tx:mail});
@@ -5293,9 +5321,12 @@ function holderLine(holder){
    something that does not exist. */
 function findSiteLink(o){
   if(!o) return '';
-  return '<a class="findsite" href="'+
+  /* It sits after the recorded address, so it reads on from it: the
+     address, or a search for the address it has moved to. Only the
+     search is the link; "Or" is the sentence it belongs to. */
+  return '<span class="findsite">Or <a href="'+
     esc(findLink(doQ('{office} {place} official website', o)))+'" target="_blank" '+
-    'rel="noopener">Find its current site</a>';
+    'rel="noopener">find its current site</a></span>';
 }
 
 function renderOffice(o){
@@ -5342,8 +5373,8 @@ function renderOffice(o){
      number. */
   if(site)  h+='<a href="'+esc(site)+'" target="_blank" rel="noopener">'+esc(hostOf(site))+'</a>';
   h+=findSiteLink(o);
-  if(email) h+='<a href="mailto:'+esc(email)+'">'+esc(email)+'</a>';
-  if(phone) h+='<span>'+esc(phone)+'</span>';
+  if(email) h+='<a href="mailto:'+esc(bareMail(email))+'">'+esc(bareMail(email))+'</a>';
+  if(phone) h+='<span>'+esc(bareTel(phone))+'</span>';
   h+='</div></div>';
   /* The methods that reach this office AND answer what the reader said
      they were trying to do. A flat list ranked only by how well each
@@ -5467,7 +5498,11 @@ function lawLinkBlock(title, keep){
       esc(r.n)+'</a>').join('')+'</dd></div>').join('');
 }
 function lawLinksForRoute(id){
-  const tags=Object.keys(LAWLINK_ROUTE).filter(t=>LAWLINK_ROUTE[t].indexOf(id)>=0);
+  /* Whatever "Where to do this" has already linked is not printed again
+     under a second heading. */
+  const done=DOPORTAL[id];
+  const tags=Object.keys(LAWLINK_ROUTE)
+    .filter(t=>LAWLINK_ROUTE[t].indexOf(id)>=0 && t!==done);
   if(!tags.length) return '';
   return lawLinkBlock('Where this is done in', t=>tags.indexOf(t)>=0);
 }
@@ -5735,8 +5770,8 @@ function chamberLine(){
   let h='';
   if(bits.length) h+='Its own address'+(bits.length>1?'es are ':' is ')+joinAnd(bits)+'. ';
   cd.forEach(c=>{ const d=[];
-    if(c.e) d.push('<a href="mailto:'+esc(c.e)+'">'+esc(c.e)+'</a>');
-    if(c.p) d.push('<a href="tel:'+esc(String(c.p).replace(/[^+0-9]/g,''))+'">'+esc(c.p)+'</a>');
+    if(c.e) d.push('<a href="mailto:'+esc(bareMail(c.e))+'">'+esc(bareMail(c.e))+'</a>');
+    if(c.p) d.push('<a href="tel:'+esc(bareTel(c.p).replace(/[^+0-9]/g,''))+'">'+esc(bareTel(c.p))+'</a>');
     h+=esc(c.n)+' publishes '+joinAnd(d)+'. '; });
   return h;
 }

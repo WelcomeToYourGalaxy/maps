@@ -235,6 +235,138 @@ Smaller fixes made with round one:
   screens on the way. It reads as a misfire. The state it set up is kept —
   the trail still says where the office sits — and the render is one.
 
+## 0d. Round two of the fixes, and what the municipal rounds need
+
+Fixed with this round:
+
+- **`mailto:` printed as part of the address.** Wikidata stores an email
+  as a link, `mailto:contactville@grenoble.fr`, and a telephone number
+  sometimes the same way. The page printed the value as it came and then
+  built `mailto:` + that, so the text read `mailto:…` and the link was
+  `mailto:mailto:…`, which opens nothing. `bareMail()` and `bareTel()`
+  strip the scheme in `mailOf`/`telOf`, at the one place both are read,
+  and every use adds its own.
+- **"Or find its current site."** The chip sat after the recorded
+  address and read as a second, separate thing. It now reads on from the
+  address, with only the search as the link.
+- **One register, named once.** France's lobbying register came up three
+  times under one method: as "The national file for this" inside Where to
+  do this, as a search for "the register of lobbyists here" beside it,
+  and again underneath as "Where this is done in France" — the same HATVP
+  link twice with a search for it in between. `DOPORTAL` and
+  `LAWLINK_ROUTE` held the same tags against the same methods.
+  `portalRows()` replaces `portalRow()` and returns every match rather
+  than the first (a country with one register per region loses none),
+  `lawLinksForRoute` skips any tag that block already printed, and the
+  `DOELSE` search is dropped when the body itself is linked above it.
+
+### How many rounds, and where the work actually is
+
+The count depends entirely on the level, because the number of units and
+the way to reach them both change at each step:
+
+| Level | Units worldwide | How it is reached | Rounds |
+| --- | --- | --- | --- |
+| National | 198 | Wikidata `P194`/`P527` + front-page crawl | done |
+| Sub-national legislatures | ~3,800 ADM1 | the same query against the region | 1 |
+| ADM2 councils | ~48,000 | Wikidata, thinning sharply | 1–2, partial |
+| Municipalities | ~250,000–400,000 | **not by the above** — see below | 3–6 |
+| Below the municipality | millions | not proposed | — |
+
+So four to six more rounds reaches a complete picture down to the
+municipality, and the first two are the same work already done. The
+municipal rounds are a different job, and the rest of this section is
+about why and what to do instead.
+
+### Why the round-one method cannot do municipalities
+
+Round one fetched 193 parliament front pages and read their menus. At
+300,000 municipalities that is 300,000 fetches against servers that are
+small, slow, often offline, and in every language; it would take weeks,
+break constantly, and the menu-reading that worked on a parliament
+("Members of Parliament", "Committees") has no equivalent on a town's
+site. **Crawling does not scale past the national level.** Everything
+below it has to come from bulk datasets that already exist.
+
+### The three sources that do scale, with what each actually holds
+
+**Tier A — Wikidata, by municipality class.** One query per country
+class, no crawling. Measured, not estimated:
+
+| Class | Items | With an official website |
+| --- | --- | --- |
+| Comune of Italy | 7,840 | **7,831 (99.9%)** |
+| Commune of France | 46,188 | 22,538 (49%) |
+| Municipality of Spain | 6,213 | 4,830 (78%) |
+| Municipality of Brazil | 5,572 | 3,635 (65%) |
+
+This is the cheapest high-yield source and it is already in use for
+offices. It gives the municipality's own address and nothing else — no
+phone, rarely an email.
+
+**Tier B — OpenStreetMap, which is already in this repo.** `contacts/`
+holds 670,845 records; of those **145,547 are town halls and 40,391 of
+them carry a website**. Across all records 113,576 have a website. Phone
+coverage is the weak point: 1,358 records in the whole extract, which is
+a gap in what was extracted as much as in OSM. A fresh planet extract
+should pull `website`, `contact:website`, `phone`, `contact:phone`,
+`email` and `contact:email` from both `amenity=townhall` and the
+`admin_level=8` relation itself, which the current extract did not.
+
+A town hall is a building, not a seat on a council, and §11 is right that
+the two must not be confused. The join to make is building → the
+municipality polygon containing it → the municipal council row on the
+panel, so the council entry gains a real address and the building keeps
+its own page.
+
+**Tier C — the national registers, which are the only complete ones.**
+Some countries publish every public body with its address, telephone and
+email as one machine-readable file. These are the accurate end of the
+range and the only source that gives email at scale. Two checked live
+from here:
+
+- France: `api-lannuaire.service-public.fr`, the official directory,
+  **94,117 records** including every mairie with address, phone and
+  email, filterable by `pivot like "mairie"`.
+- Italy: `indicepa.gov.it/ipa-dati/dataset/enti`, every public body with
+  its certified email address.
+
+Perhaps 25 to 30 countries have an equivalent. Each is a separate
+integration of a few hours, which is why they are a round of their own
+rather than a single pass.
+
+### The accuracy rules these rounds have to keep
+
+The failure mode at this scale is a plausible address that is wrong, and
+it is worse than a blank, because a reader cannot tell the two apart.
+
+1. **Never derive an address.** No guessing `cityname.gov`, no appending
+   `/contact`, no pattern that happened to hold for the places that were
+   checked. A record states an address or there is no address.
+2. **Name the source per record**, so a wrong one can be traced and so
+   the three tiers can disagree visibly rather than silently overwriting
+   each other. Where they disagree, prefer the national register, then
+   Wikidata, then OSM.
+3. **Verify in bulk and store the result**, as round one did: at 300,000
+   URLs that is a day of fetching at a polite rate, done once per refresh
+   rather than in the browser.
+4. **Keep a building a building.** The existing `openLocal` page says
+   plainly that it is an address rather than an office with a vote, and
+   that distinction must survive the join.
+5. **Say the coverage out loud, per country**, the way the panel already
+   says "not in the record here". Uneven coverage that is labelled is
+   usable; uneven coverage that is not is misleading.
+
+### What this does to the file
+
+At 300,000 municipalities with an address each, this stops fitting in
+`LAWP` inside the HTML — roughly 20–30 MB against the 4 MB the boundary
+file costs today. The municipal contacts need the same treatment
+`contacts/` already has: cells of 2°, fetched one or two at a time when
+a place is opened, with `LAWP` keeping only the national and regional
+layers. That change is worth making at the start of the municipal rounds
+rather than after, because it decides the shape of everything stored.
+
 ## 1. What you see, and in what order
 
 **The map opens on a search box, not on the world.** It used to draw all 48,263
