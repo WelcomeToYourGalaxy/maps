@@ -207,12 +207,18 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 #sopen.on{opacity:1}
 #toprow #sopen:not(.on){opacity:.55}
 #mtop{padding:17px 20px 0;border-bottom:1px solid var(--line);flex:none;position:relative}
-#mtitlerow{display:flex;align-items:baseline;gap:11px;flex-wrap:wrap;padding-right:150px}
+#mtitlerow{display:flex;align-items:baseline;gap:11px;flex-wrap:wrap;padding-right:214px}
 #mtitle{font-family:'Marcellus',serif;font-size:22px;line-height:1.22}
 #msite{font-size:13px;line-height:1.2;color:var(--accent-hi);text-decoration:underline;
   text-underline-offset:2px;white-space:nowrap;border:1px solid rgba(140,189,154,.45);
   border-radius:999px;padding:3px 11px;background:rgba(74,124,89,.14)}
 #msite:hover{color:var(--ink);background:rgba(74,124,89,.3);border-color:var(--accent-hi)}
+/* the search beside it, quieter, for when the recorded address is dead */
+#mfind{font-size:11px;line-height:1.2;color:var(--dim);text-decoration:none;white-space:nowrap;
+  border:1px dashed var(--line);border-radius:999px;padding:2px 9px}
+#mfind:hover{color:var(--ink);border-color:var(--accent-hi);text-decoration:none}
+/* methods that reach something other than an office over this place */
+.loosenote{font-size:11.6px;line-height:1.55;color:var(--dim);margin:0 0 8px}
 /* In the open ground between the bubbles and the panel, like the
    hurdles box, rather than over the panel it is explaining.
    `placeSide` sets `right`, `width` and `top`. */
@@ -236,6 +242,15 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 #mclose{position:absolute;top:14px;right:16px;width:28px;height:28px;border-radius:7px;border:1px solid var(--line);
   background:var(--panel2);color:var(--dim);cursor:pointer;font-size:15px;line-height:1}
 #mclose:hover{color:var(--ink)}
+/* back and forward over the pages already opened */
+#mnav{position:absolute;top:14px;right:52px;display:flex;gap:4px}
+#mnav button{width:28px;height:28px;border-radius:7px;border:1px solid var(--line);
+  background:var(--panel2);color:var(--dim);cursor:pointer;font-size:16px;line-height:1;
+  font-family:inherit;padding:0}
+#mnav button:hover:not(:disabled){color:var(--ink);background:rgba(74,124,89,.16);
+  border-color:rgba(140,189,154,.45)}
+#mnav button:disabled{opacity:.3;cursor:default}
+#mback{right:116px}
 .tab{padding:9px 13px;font-size:11.5px;font-weight:500;white-space:nowrap;cursor:pointer;color:var(--faint);
   border:0;border-bottom:2px solid transparent;background:none;font-family:inherit}
 .tab:hover{color:var(--dim)}
@@ -264,6 +279,30 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .rfam{font-size:10.5px;letter-spacing:.9px;text-transform:uppercase;color:var(--stone);
   margin:13px 0 6px;font-weight:600}
 .rfam:first-of-type{margin-top:4px}
+/* a step of the lawmaking sequence with no office recorded for the place */
+.krow.blank{opacity:.78;cursor:default;background:transparent;border-style:dashed}
+.krow.blank .rct{color:var(--stone)}
+.krow.blank .rhead{cursor:default}
+.rblank{font-size:11.4px;line-height:1.55;color:var(--dim);margin-top:6px}
+.rblank a{color:var(--accent-hi);text-decoration:none}
+.rblank a:hover{text-decoration:underline}
+/* where the method is actually carried out */
+.doat dd{display:flex;flex-direction:column;gap:5px}
+.doat dd a{display:block;font-size:11.6px;line-height:1.45;color:var(--accent-hi);
+  text-decoration:none;padding:6px 9px;border:1px solid var(--line);border-radius:8px;
+  background:rgba(74,124,89,.07);word-break:break-word}
+.doat dd a:hover{background:rgba(74,124,89,.16);border-color:rgba(140,189,154,.45);
+  text-decoration:none}
+.doat dd a b{display:block;font-weight:600;font-size:10.4px;letter-spacing:.5px;
+  text-transform:uppercase;color:var(--stone);margin-bottom:2px}
+.staleq{display:block;font-size:10.4px;line-height:1.4;color:var(--faint);
+  font-style:normal;margin:-1px 0 1px 9px}
+/* the recorded link is the field that goes stale fastest */
+.recfix{margin-top:7px;display:flex;flex-wrap:wrap;gap:5px 8px;align-items:baseline}
+.recfix a{font-size:10.6px;color:var(--accent-hi);text-decoration:none;
+  border:1px solid var(--line);border-radius:7px;padding:3px 7px;white-space:nowrap}
+.recfix a:hover{background:rgba(74,124,89,.16);text-decoration:none}
+.recfix i{flex:1 1 100%;font-style:normal;font-size:10.6px;line-height:1.5;color:var(--faint)}
 .offleaf{font-size:11.8px;line-height:1.55;color:var(--dim);margin:0 0 4px;
   padding:8px 10px;border-left:2px solid var(--line);background:rgba(125,142,130,.07);
   border-radius:0 7px 7px 0}
@@ -1079,6 +1118,17 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 
 <div id="modal">
   <div id="mtop">
+    <!-- Back and forward over the pages already opened. The trail
+         names every step of the walkthrough and goes to any of them,
+         but it does not cover the steps that are not part of the
+         walkthrough: one office, then another, then the kind they both
+         sit under. Those are where a reader was losing their place. -->
+    <div id="mnav">
+      <button type="button" id="mprev" onclick="navGo(-1)" title="Back"
+        aria-label="Back">&lsaquo;</button>
+      <button type="button" id="mnext" onclick="navGo(1)" title="Forward"
+        aria-label="Forward">&rsaquo;</button>
+    </div>
     <button id="mclose" onclick="closeToWorld()">&times;</button>
     <button id="mback" style="display:none" onclick="backToDiagram()">&lsaquo; Back to the list</button>
     <!-- The place name and its official site on one line. The link
@@ -1088,6 +1138,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
          panel most readers want, because it is where everything else
          here has to be checked. -->
     <div id="mtitlerow"><div id="mtitle">&nbsp;</div><a id="msite" target="_blank"
+      rel="noopener" style="display:none"></a><a id="mfind" target="_blank"
       rel="noopener" style="display:none"></a></div>
     <!-- Where you are, what is on the map and what is still loading. It
          used to sit in a floating box at the bottom-left of the map,
@@ -2098,12 +2149,13 @@ const B = [
   how:'The only person who can turn your proposal into an actual bill. One member introducing it is the single step that nothing else substitutes for. Ask for a meeting with the staffer who covers your subject rather than with the member — staff decide what reaches the member, and a staffer who takes up your idea becomes the person who carries it. If you live in their district you have a claim on that meeting that nobody else does.'},
 
  {br:'leg', k:'committee',
-  rx:/\b(committee|subcommittee|select committee|standing committee|joint committee)\b/i,
+  rx:/\b(legislative committee|parliamentary committee|congressional committee|select committee|standing committee|joint committee|special committee|subcommittee|house committee|senate committee|assembly committee|committee of the (house|senate|parliament|assembly|council|legislature|whole)|(house|senate|assembly|parliamentary|congressional|legislative) (standing |select |joint )?committee)\b/i,
   what:'Where bills are examined, rewritten or killed.',
   how:'Most bills end here rather than on the floor. Committees take written submissions and hold hearings, and both are open to the public — the clerk of the committee will tell you the format and the deadline. A written submission is published in the record and costs nothing, which makes it the cheapest way to put an argument somewhere permanent.'},
 
  {br:'leg', k:'chamber',
-  rx:/\b(parliament|congress|legislature|legislative assembly|national assembly|general assembly|senate|house of (representatives|commons|delegates|assembly)|chamber of deputies|diet|duma|knesset|bundestag|riksdag|storting|folketing|cortes|sejm|rada|majlis|state assembly|city council|county council|town council|municipal council|board of supervisors|board of commissioners|county commission|borough assembly|quorum court|police jury)\b/i,
+  rx:/\b(parliament|congress|legislature|legislative assembly|national assembly|general assembly|senate|house of (representatives|commons|delegates|assembly)|chamber of deputies|diet|duma|knesset|bundestag|riksdag|storting|folketing|cortes|sejm|rada|majlis|state assembly|city council|county council|town council|municipal council|board of supervisors|board of commissioners|county commission|borough assembly|quorum court|police jury|panchayat|gram sabha|zilla parishad|panchayat samiti|barangay council|sanggunian|parish council|community council|village council|ward council|local council|regional council|provincial council|district council|rural council|urban council|metropolitan council|prefectural assembly|gemeinderat|stadtrat|landtag|conseil municipal|conseil régional|conseil général|ayuntamiento|concejo municipal|consiglio comunale|câmara municipal|camara municipal|assemblée nationale|assembleia|eduskunta|althing|oireachtas|dáil|dail|seanad|lok sabha|rajya sabha|vidhan sabha|vidhan parishad|national council|legislative council|council of the european union|supreme soviet|people's council|shura council|house of keys|tynwald)\b/i,
+  no:/\b(librarian of congress|architect of the capitol|library of congress)\b/i,
   what:'The body that writes and passes the law here.',
   how:'A body that decides by a vote of its members and publishes the result with each member’s name against it. Only a member can move the vote, so the way in is its paperwork rather than its floor. The agenda and the calendar are published before each sitting, written submissions go to its committees through the clerk, and most of these bodies keep part of a sitting for public comment, which is minuted. The clerk is a permanent official rather than a politician, and is who will give you the format, the deadline and the agenda item number — none of which are discretionary. Where the measure goes to a committee first, that is the stage at which a submission can still change the text; once it reaches the floor the wording is usually fixed and the vote is all that is left.'},
 
@@ -2114,6 +2166,7 @@ const B = [
 
  {br:'exec', k:'clerk',
   rx:/\b(clerk|registrar|recorder|secretary of state|election|returning officer|notary)\b/i,
+  no:/\b(secretary of state for|united states secretary of state|secretary of state of the united states)\b/i,
   what:'Where petitions and ballot measures are filed.',
   how:'If your jurisdiction allows citizens to put a measure on the ballot directly, this is the office that takes the filing, tells you how many signatures you need and by when, and verifies them. It is the one route on the map where the public can make law without any elected official agreeing to help. Ask them for the current signature threshold and deadline before anything else.'},
 
@@ -2123,7 +2176,9 @@ const B = [
   how:'Can sign or veto what the legislature passes, and in most systems can propose legislation of their own. Can also act alone by decree or executive order, which is faster than a law but can be undone by the next holder just as quickly. Correspondence here is counted rather than read, so the realistic route is through the department that handles your subject, not the office itself.'},
 
  {br:'exec', k:'minister',
-  rx:/\b(minister|secretary of|cabinet secretary|department of|ministry|secretary for|commissioner of|director of|administrator of|chief executive officer|city manager|administrator|town administrator|village manager)\b/i,
+  rx:/\b(minister|secretary of|cabinet secretary|department of|ministry|secretary for|commissioner of|director of|administrator of|chief executive officer|city manager|administrator|town administrator|village manager|permanent secretary|principal secretary|under ?secretary|deputy secretary|chief secretary|european commission)\b/i,
+  /* an inspector general names the department it audits */
+  no:/\binspector general\b|\bauditor general\b/i,
   what:'Runs the department that writes the detailed rules.',
   how:'Laws are usually short and the rules underneath them are long. Those rules — regulations — are written here, and they decide what the law does in practice. Two things are open to you: comment on a proposed rule while its window is open, and petition for a new rule, which the department must formally grant or deny in writing. The second is far less used than it deserves to be, because a refusal is a document you can challenge, where an ignored letter is not.'},
 
@@ -2132,18 +2187,23 @@ const B = [
   what:'Represents people against the state.',
   how:'An ombudsman investigates complaints about how government behaved and publishes findings, usually without the power to compel anything. The findings are still useful: a published finding is something a court, a journalist or a legislator can cite, which an unanswered complaint is not.'},
 
+ {br:'jud', k:'court',
+  rx:/\b(court|tribunal|judiciary|bench|judicial)\b/i,
+  /* "Justice of the" on its own was the first attempt and it caught
+     the Court of Justice of the European Union, which is a court. The
+     person is named by the rank in front of the word, or by the title
+     beginning with it. */
+  no:/\b(chief|associate|puisne|presiding|senior|lord|circuit|district) justice\b|\bjustice of the peace\b|\bjudge of\b|\bcourt reporter\b|^justice\b/i,
+  what:'Can strike down or reinterpret a law.',
+  how:'Cannot be lobbied, and contacting a judge about a live case is improper. You reach a court in one of two ways: as a party, which requires a concrete injury to you specifically, or by filing an outsider brief in someone else\'s case, which courts accept when it brings facts the parties do not have. A ruling can undo a law that a legislature will not touch, which is why this branch is slow but final.'},
  {br:'jud', k:'judge',
   rx:/\b(judge|justice|magistrate|chief justice|adjudicator)\b/i,
   what:'Decides what the law means in practice.',
   how:'Not contactable about any matter that might come before them. In jurisdictions where judges are elected, the election itself is the public route. Otherwise the way in is through a case, not through correspondence.'},
 
- {br:'jud', k:'court',
-  rx:/\b(court|tribunal|judiciary|bench|judicial)\b/i,
-  what:'Can strike down or reinterpret a law.',
-  how:'Cannot be lobbied, and contacting a judge about a live case is improper. You reach a court in one of two ways: as a party, which requires a concrete injury to you specifically, or by filing an outsider brief in someone else\'s case, which courts accept when it brings facts the parties do not have. A ruling can undo a law that a legislature will not touch, which is why this branch is slow but final.'},
-
  {br:'ag', k:'audit',
   rx:/\b(inspector general|auditor|comptroller|treasurer|audit office|accountability office|anti-corruption|integrity|tax collector|revenue)\b/i,
+  no:/\binspector general of police\b/i,
   what:'Investigates whether government followed its own rules.',
   how:'Takes complaints that a body broke a specific legal or policy obligation, and publishes what it finds. An audit finding is one of the few things that makes an agency concede a failure in writing and commit to a dated fix, which then becomes something a legislator can act on. Vague complaints are closed; name the obligation and the failure.'},
 
@@ -2153,16 +2213,38 @@ const B = [
   how:'Cannot change a law. Most forces have a civilian oversight board or complaints body, and those bodies usually report to the council or legislature that funds them — which is where a policy change is actually made. If your concern is about practice rather than an incident, the funding body is the more useful address.'},
 
  {br:'ag', k:'agency',
-  rx:/\b(agency|bureau|authority|board|commission|administration|service|directorate|office of|institute|council on|corporation|district|trust|fund|inspectorate|command|federal government|government of|executive branch|archivist|librarian of)\b/i,
+  rx:/\b(agency|bureau|authority|board|commission|administration|service|directorate|office of|institute|council on|corporation|district|trust|fund|inspectorate|command|federal government|government of|executive branch|archivist|librarian of|architect of the capitol|librarian of congress)\b/i,
   what:'Writes and enforces the rules under a law.',
-  how:'Agencies turn a short law into the detailed rules that actually bind people, and most are required to publish proposed rules and accept comment before they take effect. Comment while the window is open, on the specific public file of responses, and the agency has to address substantive comments when it issues the final rule. Outside a window, a petition asking for a rule is the way to make it respond.'}
+  how:'Agencies turn a short law into the detailed rules that actually bind people, and most are required to publish proposed rules and accept comment before they take effect. Comment while the window is open, on the specific public file of responses, and the agency has to address substantive comments when it issues the final rule. Outside a window, a petition asking for a rule is the way to make it respond.'},
+
+ /* Last, so everything above has had its chance. A body named only a
+    committee, a panel, a task force or a working group, with nothing
+    in its title or its class to say it belongs to a legislature. Most
+    of these are standing interagency bodies inside the executive, and
+    they take public comment the way an agency does. */
+ {br:'ag', k:'agency',
+  rx:/\b(committee|commission|panel|task ?force|working group|advisory group|secretariat)\b/i,
+  what:'Writes and enforces the rules under a law.',
+  how:'A standing body inside the executive rather than a committee of the legislature, which is what its name suggests. Bodies like this draft the detail of a rule and most are required to publish a proposal and take comment on it before it takes effect, so the way in is its published proposals rather than its membership. Its own site says whether it has a public docket and who its secretariat is, and the secretariat is the address for asking.'}
 ];
 
 function classifyOffice(label, classes){
   /* hyphens and non-breaking punctuation are normalised away so that
      "Solicitor-General" matches the same pattern as "Solicitor General" */
   const hay = (label + ' ' + (classes||[]).join(' ')).replace(/[\u2010-\u2015\-_]/g,' ');
-  for(const r of B){ if(r.rx.test(hay)) return r; }
+  /* `no` is the exception to a rule's own pattern, and it exists
+     because this is a first-match-wins list and several titles match a
+     rule for the wrong reason. Every Secretary of State in the United
+     Kingdom is a cabinet minister and matched the rule for the
+     official who runs elections; every court named a Court of Justice
+     matched the rule for a judge. Narrowing the pattern instead would
+     have lost the cases it is there for — a Secretary of State of a
+     US state does run the elections. */
+  for(const r of B){
+    if(!r.rx.test(hay)) continue;
+    if(r.no && r.no.test(hay)) continue;
+    return r;
+  }
   return {br:'other', k:'other', what:'Role not identified.',
     how:'This map could not work out what this office does from its title, so it may or may not have a part in making law. The official site is the place to check. If it turns out to be an agency it will take public comment on its rules; if it is an elected post, the holder can usually introduce or sponsor a measure.'};
 }
@@ -2221,21 +2303,24 @@ const LAWKINDS = new Set([
    with writing a law. The destination's own list is the other half, and
    `routesFor` below shows what is on both. */
 const KIND_ROUTES = {
-  'leg/chamber'  : ['townhall','sfr','testify','petition','letter','call','email','munres'],
+  'leg/chamber'  : ['townhall','sfr','testify','petition','letter','call','email',
+                    'munres','office','oped'],
   'leg/member'   : ['visit','call','letter','email','pq','amend','drafting','party',
-                    'citinit','coalition','petition'],
+                    'citinit','coalition','petition','lobby','scoping','office',
+                    'oped','deepcanvass'],
   'leg/presiding': ['visit','letter','call','sfr','amend'],
-  'leg/committee': ['sfr','testify','letter','visit','amend'],
-  'exec/head'    : ['letter','petition','email','call','party'],
-  'exec/minister': ['comment','rulemaking','visit','letter','email','call','inquiry','lawreform'],
+  'leg/committee': ['sfr','testify','letter','visit','amend','lobby','oped'],
+  'exec/head'    : ['letter','petition','email','call','party','oped','deepcanvass'],
+  'exec/minister': ['comment','rulemaking','visit','letter','email','call','inquiry',
+                    'lawreform','lobby','scoping'],
   'exec/legal'   : ['ig','letter','email','lawreform'],
-  'exec/clerk'   : ['ballot','citinit','call','letter','email'],
+  'exec/clerk'   : ['ballot','citinit','call','letter','email','observer'],
   'exec/envoy'   : ['letter','email','oecdncp'],
   'jud/court'    : ['amicus','citizensuit','climatelit','personhood'],
   'jud/judge'    : ['amicus'],
   'jud/defender' : ['ombud','letter'],
   'ag/agency'    : ['comment','rulemaking','ig','facarole','letter','email','call',
-                    'inquiry','shareprop','oecdncp','devbank'],
+                    'inquiry','shareprop','oecdncp','devbank','lobby'],
   'ag/audit'     : ['ig','quitam','letter'],
   'ag/police'    : ['townhall','ombud','letter','munres'],
   'other/other'  : ['email','call','letter'],
@@ -3320,6 +3405,16 @@ function paintSiteLink(){
   const a=$('#msite'); if(!a) return;
   if(SELFSITE){ a.href=SELFSITE; a.textContent='Official site \u2197'; a.style.display=''; }
   else { a.removeAttribute('href'); a.style.display='none'; }
+  /* Beside it, always. The recorded address for a small municipality is
+     frequently one it has left — Sierra Madre's record still pointed
+     at ci.sierra-madre.ca.us — and a reader who clicks a dead link
+     has no way on from it. A search never goes stale. */
+  const f=$('#mfind'); if(!f) return;
+  const nm=(STACK.length?(STACK[STACK.length-1].label||''):'')||(CUR?CUR.label:'');
+  if(nm){ f.href=findLink(nm+' official website government');
+          f.textContent=SELFSITE?'or find it':'Find the official site \u2197';
+          f.style.display=''; }
+  else { f.removeAttribute('href'); f.style.display='none'; }
 }
 
 /* How well a route works, as a rank rather than a figure.
@@ -3617,7 +3712,8 @@ const LEAVES = {
     kinds:['leg/member','leg/committee','exec/minister','ag/agency','leg/chamber','leg/presiding','exec/clerk','exec/head'],
     routes:['visit','amend','drafting','pq','letter','call','email','sfr','testify',
             'citinit','ballot','munres','party','coalition','rulemaking','lawreform',
-            'petition','townhall','facarole','lobby','scoping','office','oped','deepcanvass'],
+            'petition','townhall','facarole','lobby','scoping','office','oped',
+            'deepcanvass','copuos'],
     hurdles:['tally','concentrated','money','nobody'],
     /* the same office means something different depending on why the
        reader is here, so a destination can say its own version */
@@ -3659,7 +3755,7 @@ const LEAVES = {
     lead:'A law nobody enforces and a law that does not exist look much the same from below. Prosecutors choose which cases to bring; police enforce on the ground. Neither can change a law, and neither is usually the right address for a complaint about policy rather than an incident.',
     kinds:['exec/legal','ag/police','ag/audit'],
     routes:['ig','ombud','pq','townhall','munres','letter','email','call',
-            'quitam','citizensuit'],
+            'quitam','citizensuit','ilo'],
     hurdles:['revolving','nobody','concentrated'],
     notes:[
       ['townhall','If it is about practice, go to whoever funds them','Most forces and prosecution offices have a civilian oversight body, and those report to the council or legislature that funds them. That funding body is where a policy actually changes, and it is a different address from the one that handles incidents.'],
@@ -3674,7 +3770,7 @@ const LEAVES = {
     nm:'A body that broke its own rules', scoped:true,
     lead:'Auditors, inspectors general and ombudsmen investigate whether a body followed obligations already written down, and publish what they find. Most cannot compel anything. What they produce is a document that makes an agency concede a failure in writing and commit to a dated fix, which is then something a legislator or a court can act on.',
     kinds:['ag/audit','jud/defender','exec/legal'],
-    routes:['ig','ombud','quitam','pq','letter','email'],
+    routes:['ig','ombud','quitam','pq','letter','email','upr','observer','ilo'],
     hurdles:['voluntary','nobody'],
     notes:[
       ['ombud','The finding is the point','An ombudsman usually has no power to order anything. A published finding is still citable by a court, a lender, an insurer or a journalist in a way an unanswered letter is not.'],
@@ -3687,8 +3783,12 @@ const LEAVES = {
   courts: {
     nm:'A law or decision that should be struck down', scoped:true,
     lead:'Only a court can void a law, and it does so inside a case somebody has already brought rather than on request. That makes the offices below unlike the rest of the map: none of them is persuaded, each is filed with, in a form and by a deadline it sets. A judge may not be approached at all about anything that could come before them. Where no case of your own is possible, an ombudsman or human rights office will still investigate a public body and publish what it finds, and a court will take facts from somebody who is not a party to a case already running. What each of those requires is in How to Reach Them.',
-    kinds:['jud/court','jud/judge','jud/defender'],
-    routes:['amicus','citizensuit','climatelit','personhood'],
+    /* An ombudsman was listed here and no method on this destination
+       reaches one, so opening it produced a page of methods that are
+       not about it. It belongs to the oversight destination, which is
+       where it already is, and the line below still points there. */
+    kinds:['jud/court','jud/judge'],
+    routes:['amicus','citizensuit','climatelit','personhood','echr','upr'],
     hurdles:['standing','nobody','money'],
     notes:[
       ['citizensuit','As a party, which needs an injury to you','Most common-law courts require a concrete, particularised injury to the person bringing the case. An injury shared equally by everyone is treated, for this purpose, as an injury to no one.'],
@@ -3781,11 +3881,18 @@ const QUESTIONS = {
     sub:'These three produce different things: a finding, an order, or a record.',
     opts:[
       {t:'A finding that says publicly what went wrong',
-       d:'An auditor, inspector general or ombudsman investigates and publishes. Usually cannot compel anything.', leaf:'oversight'},
+       d:'An auditor, inspector general or ombudsman investigates and publishes what it finds. '+
+         'None of them can usually compel anything, and the investigation is also how the '+
+         'documents come out: what the body did is set out in the finding, with the record '+
+         'behind it.', leaf:'oversight'},
       {t:'An order that makes it stop',
        d:'Only a court can order. It needs an injury, or a case of someone else’s to join.', leaf:'courts'},
-      {t:'The documents, so I can see what happened',
-       d:'A freedom-of-information request is the cheapest first move and changes what you can argue afterwards.', leaf:'oversight'},
+      /* A third option here offered the documents, by way of a
+         freedom-of-information request. That is not a way of
+         contacting anybody and is no longer one of the methods, so
+         the option led to a destination that could not do what the
+         option promised. What it was for is covered by the finding
+         above, which is where that sentence has gone. */
     ]},
 };
 
@@ -3793,7 +3900,10 @@ const QUESTIONS = {
 let PATH=[], LEAF=null, LEAFLVL=null, LEAFSUB=null, LEAFKIND=null, SHOWALLK={};
 
 function resetTree(){ PATH=[]; LEAF=null; PENDLEAF=null; LEAFLVL=null; LEAFSUB=null;
-  LEAFKIND=null; SHOWALLK={}; SCOPE=null; SEL=null; }
+  LEAFKIND=null; SHOWALLK={}; SCOPE=null; SEL=null;
+  /* a new place is a new history; the pages of the last one lead
+     nowhere now that the offices behind them have been replaced */
+  try{ navReset(); }catch(e){} }
 
 /* Which kinds of office are divided by subject, and which are not.
 
@@ -4399,7 +4509,6 @@ function pageWho(L){
   const byKind={}; ents.forEach(e=>{ (byKind[e.o.kind]=byKind[e.o.kind]||[]).push(e); });
   const order=L.kinds.slice().sort((a,b)=>lawOrd(a)-lawOrd(b));
   const have=order.filter(k=>byKind[k] && byKind[k].length);
-  const blanks=order.filter(k=>!byKind[k] || !byKind[k].length);
 
   let h='<div class="pg pg-who">';
   h+='<h3 class="qq">Who to Contact</h3>';
@@ -4430,17 +4539,43 @@ function pageWho(L){
      one of them. The rows are joined by arrows instead, so the list is
      the diagram. */
   h+='<div class="rgrid one lseq">';
-  have.forEach((k,i)=>{
+  order.forEach((k,i)=>{
     if(i) h+='<div class="lsarr">\u2193</div>';
-    h+=kindRow(L,k,byKind[k],i);
+    h+=(byKind[k] && byKind[k].length) ? kindRow(L,k,byKind[k],i) : kindRowBlank(L,k);
   });
   h+='</div>';
-  if(blanks.length){
-    h+='<p class="pgblank"><b>Nothing recorded here for:</b> '+
-       blanks.map(k=>esc(KINDLABEL[k]||k)).join(', ')+
-       '. That is a gap in the record rather than a gap in the government.</p>';
-  }
+  h+=looseRoutes(L);
   return h+'</div>';
+}
+
+/* The methods on this destination that no office on the map holds.
+
+   `routeTile` is only ever called from an office page, so a method
+   that reaches no office reached no screen: a complaint to a company,
+   a submission to the United Nations review, a case at a regional
+   human rights court and an ILO complaint were all in the data and
+   none of them was drawn anywhere. They are not failures of the
+   sequence above and should not be inserted into it — none of them
+   is an office over this place — so they sit under it, named for
+   what they have in common. */
+function looseRoutes(L){
+  const inKinds={};
+  Object.keys(KIND_ROUTES).forEach(k=>KIND_ROUTES[k].forEach(r=>{ inKinds[r]=1; }));
+  const pool=(L && L.routes) ? L.routes : ROUTES.map(r=>r.id);
+  const ids=pool.filter(r=>!inKinds[r]);
+  if(!ids.length) return '';
+  const rts=ids.map(id=>ROUTES.find(x=>x.id===id)).filter(Boolean)
+    .sort((a,b)=>BANDS[rateBand(a.rate)].ord-BANDS[rateBand(b.rate)].ord);
+  if(!rts.length) return '';
+  let h='<div class="sec">Not addressed to any office here</div>';
+  h+='<p class="loosenote">These reach something other than a government office over this '+
+     'place — a company, or a body outside the country — so they are not part of the '+
+     'sequence above and none of the offices on it is the way in. Each one is a route in its '+
+     'own right.</p>';
+  h+='<div class="rgrid one">';
+  rts.forEach((rt,i)=>{ h+=routeTile(rt, 900+i, ROUTEWHEN[rt.id]); });
+  h+='</div>';
+  return h;
 }
 
 /* How government is put together, in a paragraph, above the list it
@@ -4486,6 +4621,55 @@ function kindRow(L,k,ents,i){
       ', at '+lvls.size+(lvls.size===1?' level':' levels')+'</span></div>'+
     '<div class="rwhen">'+glossy(st.one||'')+'</div>'+
     '</div><div class="rtog">\u203a</div></div></button>';
+}
+
+/* A step of the sequence with no office recorded for this place.
+
+   It is drawn in its place in the order rather than listed under the
+   sequence, because where it falls is half of what it tells a reader:
+   that an individual lawmaker comes before a committee is the point of
+   the sequence, and moving the empty step to a footnote reversed it on
+   screen. Members are the step this happens to most, and it is a
+   property of the source rather than of the government — the record
+   is close to complete on bodies and thin on the individual seats
+   inside them, especially below the national level. So the row says
+   where the names are instead: the chamber those members sit in, which
+   is almost always recorded, and its own site, which lists them and is
+   kept current by the body itself. */
+function kindRowBlank(L,k){
+  const st=LAWSTAGE[k]||{};
+  let note='';
+  if(k==='leg/member'){
+    const ch=officeEntriesFor(['leg/chamber'], LEAFLVL);
+    const withSite=ch.filter(e=>e.o.row && e.o.row.site && e.o.row.site.value);
+    const pick=(withSite[0]||ch[0]);
+    note='No individual seat is recorded as an office for this place. That is the source '+
+      'rather than the government: the record covers the bodies far better than the seats '+
+      'inside them. ';
+    if(pick){
+      const site=pick.o.row && pick.o.row.site && pick.o.row.site.value;
+      note+='The members here sit in <b>'+esc(pick.o.label)+'</b>, which is on the list '+
+        'below, and that body publishes who they currently are'+
+        (site?' at <a href="'+esc(site)+'" target="_blank" rel="noopener">'+
+              esc(String(site).replace(/^https?:\/\//,'').slice(0,44))+'</a>':'')+
+        '. Open it for the ways of reaching it, and write to the member for your own address.';
+    } else {
+      note+='No chamber is recorded here either, so the level above this one is where to look: '+
+        'a municipality with no record almost always sits inside a county or a region that has one.';
+    }
+  } else {
+    note='No office of this kind is recorded for this place. That is a gap in the record '+
+      'rather than a gap in the government, and it is widest at municipal level. The '+
+      'levels above this one usually have one.';
+  }
+  return '<div class="route krow blank"><div class="rhead"><div class="rmain">'+
+    '<div class="rnm">'+esc(KINDLABEL[k]||k)+
+      (LAWKINDS.has(k)?'<i class="lawdot" title="a route to a law"></i>':'')+
+      (st.stage?'<span class="rstage">'+esc(st.stage)+'</span>':'')+
+      '<span class="rct">not in the record here</span></div>'+
+    '<div class="rwhen">'+glossy(st.one||'')+'</div>'+
+    '<div class="rblank">'+note+'</div>'+
+    '</div></div></div>';
 }
 
 /* ---- one kind of office: its own page ---- */
@@ -4758,9 +4942,64 @@ function pageSig(){
   return [LEAF||'', LEAFKIND||'', LEAFLVL==null?'':LEAFLVL, LEAFSUB||'',
           PATH.length, SEL?SEL.id:''].join('|');
 }
+/* ====================================================================
+   BACK AND FORWARD
+
+   `render` is the one place every panel page is drawn from, so it is
+   the one place the history has to be recorded. A page is the whole
+   answer state — the questions answered, the destination, the kind,
+   the level, the subject and the office — and `pageSig` already
+   reduces that to a string for the scroll position, so the same string
+   says whether this is a new page or the same one redrawn as more
+   offices arrive.
+   ==================================================================== */
+let NAVH=[], NAVI=-1, NAVLOCK=false;
+function navState(){
+  return {path:PATH.slice(), leaf:LEAF, kind:LEAFKIND, lvl:LEAFLVL, sub:LEAFSUB,
+          sel:SEL?SEL.id:null, showall:Object.assign({},SHOWALLK), sig:pageSig()};
+}
+function navPush(){
+  if(NAVLOCK) return;
+  const s=navState();
+  /* the same page redrawn, which happens on every batch of offices
+     that arrives, is not a step */
+  if(NAVI>=0 && NAVH[NAVI] && NAVH[NAVI].sig===s.sig){ NAVH[NAVI]=s; paintNav(); return; }
+  NAVH=NAVH.slice(0,NAVI+1);
+  NAVH.push(s); NAVI=NAVH.length-1;
+  if(NAVH.length>80){ NAVH.shift(); NAVI--; }
+  paintNav();
+}
+function navGo(d){
+  const j=NAVI+d;
+  if(j<0 || j>=NAVH.length) return;
+  const s=NAVH[j]; if(!s) return;
+  NAVI=j;
+  NAVLOCK=true;
+  PATH=s.path.slice(); LEAF=s.leaf; LEAFKIND=s.kind; LEAFLVL=s.lvl; LEAFSUB=s.sub;
+  SHOWALLK=Object.assign({},s.showall);
+  SEL=null;
+  if(s.sel){ const e=officeIndex()[s.sel]; if(e && e.o) SEL=e.o; }
+  try{ render(); }catch(e){}
+  NAVLOCK=false;
+  paintNav();
+}
+function navReset(){ NAVH=[]; NAVI=-1; paintNav(); }
+function paintNav(){
+  const p=$('#mprev'), n=$('#mnext');
+  if(p) p.disabled = !(NAVI>0);
+  if(n) n.disabled = !(NAVI>=0 && NAVI<NAVH.length-1);
+}
+addEventListener('keydown', e=>{
+  if(e.altKey && !e.ctrlKey && !e.metaKey){
+    if(e.key==='ArrowLeft'){ navGo(-1); e.preventDefault(); }
+    if(e.key==='ArrowRight'){ navGo(1); e.preventDefault(); }
+  }
+});
+
 function render(){
   try{ drawHurdles(); }catch(e){}
   if(!CUR) return;
+  navPush();
   BK = buckets();
   /* the office list has just been rebuilt, so this is the moment the
      markers can be asked for by id */
@@ -4831,7 +5070,99 @@ function hurdleBlock(routeId){
   return '<div class="hrd"><dt>Behind this and the methods like it</dt>'+body+'</div>';
 }
 
-function routeTile(rt, i, when, notes){
+/* ====================================================================
+   WHERE TO ACTUALLY DO IT
+
+   Every method said what it is, what it costs and what stops it, and
+   then stopped — one step short of the only step that is not
+   optional. A reader who has decided to ask a committee for a meeting
+   still has to find the committee's page, and finding it was left to
+   them.
+
+   There is no field in the record that says "the page where you book a
+   meeting", and there is not going to be, so this does not pretend to
+   one. It gives what is actually known, in order of how direct it is:
+   the address or number if the record holds one, the national portal
+   where the method is a national process, the office's own site, and
+   last a search that cannot go stale, because the recorded link often
+   has.
+   ==================================================================== */
+function siteOf(o){ const v=o&&o.row&&o.row.site&&o.row.site.value; return v?String(v):''; }
+function mailOf(o){ const v=o&&o.row&&o.row.email&&o.row.email.value; return v?String(v):''; }
+function telOf(o){  const v=o&&o.row&&o.row.phone&&o.row.phone.value; return v?String(v):''; }
+function hostOf(u){ return String(u).replace(/^https?:\/\//,'').replace(/\/$/,'').slice(0,46); }
+/* A search rather than a guessed path. Appending /contact to a domain
+   produces a dead link more often than a live one, and a dead link
+   that looks official is worse than none. */
+function findLink(q){ return 'https://duckduckgo.com/?q='+encodeURIComponent(q); }
+/* The words to search for, per method: what the page is called when it
+   exists. "Contact" finds a switchboard; "public comment" finds a
+   docket. */
+const DOWORDS={
+  email:'contact email', call:'contact phone number', letter:'mailing address contact',
+  visit:'contact office hours appointment', townhall:'council meeting agenda public comment',
+  sfr:'written submission committee clerk', testify:'hearing witness committee clerk',
+  comment:'public comment proposed rule consultation',
+  rulemaking:'petition for rulemaking', ig:'file a complaint inspector general',
+  ombud:'make a complaint ombudsman', facarole:'advisory committee membership nominations',
+  inquiry:'call for evidence submission', lawreform:'suggest a law reform project',
+  petition:'official petitions', citinit:'citizens initiative signatures',
+  ballot:'ballot measure filing requirements', amend:'bills before the legislature',
+  pq:'written questions', drafting:'legislative counsel bill drafting',
+  party:'party policy motion conference', coalition:'organisations campaigning',
+  munres:'council agenda resolutions', quitam:'whistleblower reward programme',
+  shareprop:'investor relations shareholder proposal', engage:'investor relations',
+  citizensuit:'citizen suit notice', amicus:'filing an amicus brief',
+  oped:'submit an opinion piece', lobby:'registered lobbyists register',
+};
+/* a national portal is the right address where the method is a
+   national process rather than something this office runs */
+const DOPORTAL={ comment:'directives:regulations', rulemaking:'directives:regulations',
+  lobby:'access:register' };
+function portalRow(routeId){
+  const tag=DOPORTAL[routeId]; if(!tag) return null;
+  const sets=lawLinkSets();
+  for(const s of sets){
+    for(const r of (s.rows||[])) if((r.t||[]).indexOf(tag)>=0)
+      return {lbl:'The national file for this', u:r.u, tx:r.n};
+  }
+  return null;
+}
+function doThisAt(rt, o){
+  const place=(STACK.length?(STACK[STACK.length-1].label||''):'');
+  /* A method with no office behind it still has somewhere it is filed,
+     and leaving it with no link at all was the gap this whole block
+     exists to close. What is known is the method and the place, so
+     that is what the search carries. */
+  if(!o){
+    const p0=portalRow(rt.id);
+    const rows0=[];
+    if(p0) rows0.push(p0);
+    rows0.push({lbl:'Find where this is filed',
+      u:findLink(rt.nm+' '+place+' how to file'),
+      tx:'search for \u201c'+rt.nm.toLowerCase()+'\u201d for this place'});
+    return '<div class="fld doat"><dt>Where to do this</dt><dd>'+
+      rows0.map(r=>'<a href="'+esc(r.u)+'" target="_blank" rel="noopener">'+
+        '<b>'+esc(r.lbl)+'</b> '+esc(r.tx)+'</a>').join('')+'</dd></div>';
+  }
+  const rows=[];
+  const site=siteOf(o), mail=mailOf(o), tel=telOf(o);
+  if(rt.id==='email' && mail) rows.push({lbl:'Write to', u:'mailto:'+mail, tx:mail});
+  if(rt.id==='call'  && tel)  rows.push({lbl:'Ring', u:'tel:'+tel.replace(/[^+0-9]/g,''), tx:tel});
+  const p=portalRow(rt.id); if(p) rows.push(p);
+  if(site) rows.push({lbl:'This office\u2019s own site', u:site, tx:hostOf(site), stale:true});
+  rows.push({lbl:'Find the page for it',
+    u:findLink(o.label+' '+place+' '+(DOWORDS[rt.id]||'contact')),
+    tx:'search for \u201c'+(DOWORDS[rt.id]||'contact')+'\u201d on this office'});
+  return '<div class="fld doat"><dt>Where to do this</dt><dd>'+
+    rows.map(r=>'<a href="'+esc(r.u)+'" target="_blank" rel="noopener">'+
+      '<b>'+esc(r.lbl)+'</b> '+esc(r.tx)+'</a>'+
+      (r.stale?'<i class="staleq">recorded by Wikidata, and sometimes out of date \u2014 '+
+        'if it does not open, use the search under it</i>':'')).join('')+
+    '</dd></div>';
+}
+
+function routeTile(rt, i, when, notes, o){
   const R=rt.rate;
   return '<div class="route" id="rr'+i+'">'+
     '<button type="button" class="rhead" aria-expanded="false" '+
@@ -4872,6 +5203,7 @@ function routeTile(rt, i, when, notes){
       '</dd></div>'+
     (notes||[]).map(nt=>'<div class="pgnote"><dt>'+esc(nt[1])+'</dt><dd>'+esc(nt[2])+
        '</dd></div>').join('')+
+    doThisAt(rt, o)+
     lawLinksForRoute(rt.id)+
     '</div></div>';
 }
@@ -4902,6 +5234,37 @@ function holderLine(holder){
   return '<div class="holder"><b>'+esc(holder)+'</b>'+
     '<span class="chip">check this</span></div>';
 }
+/* The recorded link, and what to do when it is wrong.
+
+   Every address on this map comes from one Wikidata record, so a dead
+   link here is a dead link on every site built from the same source,
+   govdirectory.org included. Nothing in a page can repair that: the
+   fix is the record, and the record is public and editable, which
+   makes the fix one click rather than a report to somebody. Both are
+   offered — the search for a reader who needs the page now, and the
+   record for a reader willing to correct it for everybody.
+
+   Checking the link from here instead was the obvious alternative and
+   does not work: a browser is not allowed to read the result of a
+   request to another site, so a page cannot tell a working link from a
+   dead one. Saying which links are stale would mean guessing, and the
+   guess would be shown as a fact. */
+function recordFix(o){
+  if(!o) return '';
+  const place=(STACK.length?(STACK[STACK.length-1].label||''):'');
+  const site=siteOf(o);
+  return '<div class="recfix">'+
+    '<a href="'+esc(findLink(o.label+' '+place+' official site'))+'" target="_blank" '+
+      'rel="noopener">Find its current site</a>'+
+    (/^Q\d+$/.test(String(o.id))
+      ? '<a href="https://www.wikidata.org/wiki/'+esc(o.id)+'" target="_blank" '+
+        'rel="noopener">Correct this record</a>' : '')+
+    (site?'<i>The address above is whatever the public record holds, which for '+
+      'smaller offices is often an address they have left. Correcting the record '+
+      'fixes it here and on every other site built on the same source.</i>':'')+
+    '</div>';
+}
+
 function renderOffice(o){
   if(!o) return render();
   SEL=o; hideCard();
@@ -4944,10 +5307,10 @@ function renderOffice(o){
      way of reaching anybody, which is what the page is for. What is
      left in this row is the ways in: the site, the address, the
      number. */
-  if(site)  h+='<a href="'+esc(site)+'" target="_blank" rel="noopener">'+esc(site.replace(/^https?:\/\//,'').slice(0,46))+'</a>';
+  if(site)  h+='<a href="'+esc(site)+'" target="_blank" rel="noopener">'+esc(hostOf(site))+'</a>';
   if(email) h+='<a href="mailto:'+esc(email)+'">'+esc(email)+'</a>';
   if(phone) h+='<span>'+esc(phone)+'</span>';
-  h+='</div></div>';
+  h+='</div>'+recordFix(o)+'</div>';
   /* The methods that reach this office AND answer what the reader said
      they were trying to do. A flat list ranked only by how well each
      works put an OECD complaint and a shareholder proposal at the top
@@ -4982,7 +5345,7 @@ function renderOffice(o){
         .sort((a,b)=>BANDS[rateBand(a.rate)].ord-BANDS[rateBand(b.rate)].ord);
       h+='<div class="rfam">'+esc(FAMWHAT[fm]||fm)+'</div>';
       h+='<div class="rgrid one">';
-      grp.forEach(rt=>{ h+=routeTile(rt,n++,ROUTEWHEN[rt.id]); });
+      grp.forEach(rt=>{ h+=routeTile(rt,n++,ROUTEWHEN[rt.id],null,o); });
       h+='</div>';
     });
   }
