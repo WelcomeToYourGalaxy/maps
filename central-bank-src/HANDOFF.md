@@ -2,7 +2,7 @@
 
 Paste or attach this in a new chat to carry on adding to the map.
 
-Rewritten at round 43. It states the current position only. Earlier versions kept round-by-round narrative, which went stale and in round 26 sent agents to re-research records already on the map; the moves-against-the-bank section had grown four rounds of narrative again by round 42 and was rewritten as a statement. Keep it that way: when something changes, edit the statement, don't append a round note. The round-by-round account lives in `agents/work/research_log_2026-11.json`, which is where to look for what was searched and found nothing. **Where this names a country as dead or blocked, that is as of round 43 — re-derive the target list from `coverage.py` before briefing anything.**
+Rewritten at round 43, current through round 44. It states the current position only. Earlier versions kept round-by-round narrative, which went stale and in round 26 sent agents to re-research records already on the map; the moves-against-the-bank section had grown four rounds of narrative again by round 42 and was rewritten as a statement. Keep it that way: when something changes, edit the statement, don't append a round note. The round-by-round account lives in `agents/work/research_log_2026-11.json`, which is where to look for what was searched and found nothing. **Where this names a country as dead or blocked, that is as of round 44 — re-derive the target list from `coverage.py` before briefing anything.**
 
 ## What it is
 - A standalone global map titled **"Central bank capture"**. It shows who owns and steers each central bank, what it hides, the corruption inside and around it, and how far its money reaches beyond its borders.
@@ -41,7 +41,7 @@ Another session of the user's commits to this repo often. **Always `git fetch or
   - Links: `{n, cb | tn, rel, role, detail, src_t, src_u}`.
   - Popups turn each link into a plain sentence (`SAY` / `sayLink` / `srcItem` in `app.js`). Add a `SAY` entry for any new `role` string.
 
-## Where it stands (43 rounds in, 13 November 2026)
+## Where it stands (44 rounds in, 14 November 2026)
 
 1,491 outside parties and 2,091 ties. 1,720 writeups, one for every box. 20 patterns.
 
@@ -50,7 +50,7 @@ Another session of the user's commits to this repo often. **Always `git fetch or
 | External auditors | 198 | 161 | 78% |
 | Corruption cases | 232 | 154 | 75% |
 | Banknote printers | 157 | 133 | 65% |
-| Governor removals and pressure | 148 | 89 | 43% |
+| Governor removals and pressure | 153 | 100 | 49% |
 | Swap lines | 240 | 84 | 41% |
 | Revolving door | 206 | 80 | 39% |
 | Outside reserve managers | 155 | 37 | 18% |
@@ -134,6 +134,7 @@ Some hosts reset the connection at random (`centralbank.org.sz`, `rbm.mw`). **Re
 | `patterns.json`, `implications.json` | The 20 patterns and their plain-language meanings |
 | `writeups.json` | A plain-language paragraph for every box (`p:ISO`, `n:<node name>`) |
 | `work/research_log_2026-11.json` | What was searched with no result, leads not opened, records dropped after review. **Read this before researching anything.** |
+| `work/cross_layer.py` | Which corruption cases also record a state action against the bank's leadership, reviewed by hand. Run after any round that adds a corruption case naming a removal. |
 
 Note `gaps.json['no_central_bank']` is a dict with `note` and `places`, not a list. Reading it as a list silently yields the wrong filter.
 
@@ -178,6 +179,15 @@ Thirteen checks the build does not make and that are invisible in the rendered m
 `agents/work/fix_record_index.py` repairs it by rematching each link's `source_url` to the record it names. Idempotent. **Run after any round that removes, replaces or reorders a record.** A link whose URL matches no record is usually fine — the record's source was upgraded later — and the script leaves those alone.
 
 **Treat a writer agent reporting that a record's heading contradicts its body as a data bug, not a writing one.** That report is the only reason this was ever found.
+
+### Two more the audit does not catch, both found at round 44 and both now fixed
+
+Both were latent for the whole life of the map and fired the first time an event was keyed to a currency union code.
+
+1. **Events did not expand to union members.** `build_final.py` assigned an event to `e["iso3"]` alone, while cases expand through `UM`. So a BCEAO-keyed event showed on no member country's box and scored for none of them, while `coverage.py`, which does expand, counted all eight as covered. **The symptom to watch for is `coverage.py` claiming more places than the score diff moves** — that is what exposed it. The events loop now uses the same expansion as the cases loop directly above it; keep the two in step.
+2. **A union code was being added as a country.** The loop that builds the place list skips union codes when reading `E`, but the loop over events added `e["iso3"]` unconditionally, so BCEAO acquired a country box, an exposure score of its own and a place in the 229. `places -= UKEYS | {"EMU"}` now runs after the data loops. **The symptom is the box count rising by one when no party node was added**, which is why dumping boxes every round is worth the minute it costs.
+
+Neither is caught by `audit_data.py`, which checks the data files rather than what the build does with them. The check that caught both is the ordinary writeup pass: compute what should move, then compare it with what did.
 
 ## Refreshing the writeups (every round)
 
@@ -283,8 +293,10 @@ Bounded sets that worked:
 
 **Named next steps:** Zambia (diplo.news on the new kwacha launch), Costa Rica (BCCR press release of 11.11.2020), North Macedonia (the printing tender award notice), Georgia (centralbanking.com, likely paywalled), Zimbabwe (mriguide.com and zimbabwenow.co.zw mirrors; note one source is Fidelity Printers *denying* that it prints Zimbabwe dollars), Uruguay (2000s BanknoteNews commemorative entries identified but never fetched).
 
-### 3. Moves against the bank — 43%, the fastest row on the map
-**The one thing to know: pressure on a central bank rarely looks like a firing.** This row sat at 27% for a dozen rounds because it was searched for dismissals, so it held poor and middle-income countries and almost nothing else. It has gone 27% → 43% in seven rounds on a single correction, applied twice. First: in a rich democracy the pressure takes another form. Then, when that was stated as "rich democracies", it was still too narrow — the forms it named exist everywhere, and four of the largest economies on the absent list fell in one round once the search went after the form instead of the country.
+### 3. Moves against the bank — 49%, the fastest row on the map
+**The one thing to know: pressure on a central bank rarely looks like a firing.** This row sat at 27% for a dozen rounds because it was searched for dismissals, so it held poor and middle-income countries and almost nothing else. It has gone 27% → 49% in eight rounds on a single correction, applied three times. First: in a rich democracy the pressure takes another form. Then, when that was stated as "rich democracies", it was still too narrow — the forms it named exist everywhere, and four of the largest economies on the absent list fell in one round once the search went after the form instead of the country.
+
+**The third application was not a search at all.** Several episodes where the state removed or pressed out a governor were on the map already, filed only as corruption cases, so the moves layer rendered those countries blank. `agents/work/cross_layer.py` finds them and records, by hand and not by regex, why each candidate qualifies or does not. **Run it after any round that adds a corruption case naming a removal.** The rule the user settled at round 44 is under "Questions the user has settled" below. Note what this says about method: **search `corruption.json` before researching a lead on this row, not after.** Round 44 researched Tanzania, Somalia and the BCEAO from scratch and found all three already on the map, which the handoff had warned about since round 4.
 
 **So search by shape, not by country.** Each family below has at least one filed example, and the query that finds it. Run the query against the absent list from `coverage.py`.
 
@@ -382,7 +394,7 @@ The three currents once listed as missing are all in: `supervisory-capture` (Ire
 
 ## How long to finish
 
-**Yield by round:** 35, 34, 33, 56, 50, 24, 34, 42, 40, 21, 14, 13, then 4, 3, 2, 3, then two rounds of 0 records (two patterns; four corrections), then 6, 4, 3, 3, 4, 5, 4 and 2. **The late rounds are small by nature and that is not a sign of exhaustion:** rounds 40 to 43 added 15 records and 13 new places to one row, which moved it 37% to 43%, because each round corrected the search rather than widening it. A round that produces two records and two documented negatives is doing the same work as a round of thirty did at the start.
+**Yield by round:** 35, 34, 33, 56, 50, 24, 34, 42, 40, 21, 14, 13, then 4, 3, 2, 3, then two rounds of 0 records (two patterns; four corrections), then 6, 4, 3, 3, 4, 5, 4, 2 and 5. **The late rounds are small by nature and that is not a sign of exhaustion:** rounds 40 to 43 added 15 records and 13 new places to one row, which moved it 37% to 43%, because each round corrected the search rather than widening it. A round that produces two records and two documented negatives is doing the same work as a round of thirty did at the start.
 
 The service rows are far enough along that a confirmed blank is worth as much as a find, because it stops every future round spending on the same dead country. Say so when reporting a round that produced negatives.
 
@@ -395,6 +407,7 @@ The service rows are far enough along that a confirmed blank is worth as much as
 - **Which statuses count.** Rule above. Romania is the edge case: Olteanu was convicted with a final five-year sentence in October 2020, annulled as time-barred on 31 March 2023, with the court still confiscating €1 million. Left out because no conviction stands; the writeup gives all three facts. **If reversed, it is one string to move between `CC_OUT` in `app.js` and `CC_COUNTED`/`CC_NOT_COUNTED` in `build_final.py`.**
 - **Union ties expand to members**, service ties included.
 - **Blanks on case layers are split by press freedom.**
+- **An episode can count on both case layers.** Settled at round 44. Where a source names an organ of the state — head of state, government, parliament, or a currency union's heads of state — that removed, suspended or pressed out a governor, that act counts as a move against the bank even when the episode is already a corruption case. The event record describes only the state's action; what the official was accused of stays in the corruption case. A court dismissing a claim, a suspended sentence, a prosecution of an individual, or the bank's own board acting on its own officer does **not** qualify. Tanzania, Nepal, Somalia and the BCEAO were cross-filed on this rule, taking the row from 89 to 100 places. `cross_layer.py` holds the reviewed list, including the marginal cases left out (the Maldives, Burundi) and the excluded ones with their reasons.
 - **The completeness statistics belong in `about.html`**, so a reader can judge what they are looking at.
 
 ## UI behaviour to preserve
