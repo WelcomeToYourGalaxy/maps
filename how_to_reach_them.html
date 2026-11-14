@@ -2291,6 +2291,29 @@ const LAWKINDS = new Set([
   'ag/agency',
 ]);
 
+/* EVERY KIND OF OFFICE THE MAP DRAWS AT ALL.
+
+   The map used to draw every office Wikidata holds for a place, on the
+   argument that the part of government which answers the public makes
+   no sense without the part that does not. In practice that filled a
+   map called How To Make A Law with police forces, embassies, audit
+   offices, public defenders and a few hundred offices whose titles the
+   classifier could not place, none of which has any part in writing
+   one. Completeness of that kind is a different map.
+
+   So the list below is the whole map: the four legislative kinds, the
+   three executive kinds that draft, sign and take filings, agencies,
+   and the courts — which are here because a court is the one body
+   that can undo a law a legislature will not touch. Anything else is
+   dropped at the point the record is classified, so it is absent from
+   the markers, the search and every list, rather than filtered out of
+   one screen and left on another. */
+const MAPKINDS = new Set([
+  'leg/chamber','leg/member','leg/presiding','leg/committee',
+  'exec/head','exec/minister','exec/clerk',
+  'ag/agency','jud/court','jud/judge',
+]);
+
 /* Which methods physically reach this kind of office. This is only half
    of the answer: it says nothing about what the reader came to do, and
    on its own it produced the complaint this map exists to avoid — a
@@ -2310,17 +2333,11 @@ const KIND_ROUTES = {
   'exec/head'    : ['letter','petition','email','call','party','oped','deepcanvass'],
   'exec/minister': ['comment','rulemaking','visit','letter','email','call','inquiry',
                     'lawreform','lobby','scoping'],
-  'exec/legal'   : ['ig','letter','email','lawreform'],
-  'exec/clerk'   : ['ballot','citinit','call','letter','email','observer'],
-  'exec/envoy'   : ['letter','email','oecdncp'],
+  'exec/clerk'   : ['ballot','citinit','call','letter','email'],
   'jud/court'    : ['amicus','citizensuit','climatelit','personhood'],
   'jud/judge'    : ['amicus'],
-  'jud/defender' : ['ombud','letter'],
-  'ag/agency'    : ['comment','rulemaking','ig','facarole','letter','email','call',
-                    'inquiry','shareprop','oecdncp','devbank','lobby'],
-  'ag/audit'     : ['ig','quitam','letter'],
-  'ag/police'    : ['townhall','ombud','letter','munres'],
-  'other/other'  : ['email','call','letter'],
+  'ag/agency'    : ['comment','rulemaking','facarole','letter','email','call',
+                    'inquiry','lobby'],
 };
 
 /* The methods on this office's list that are also on the open
@@ -2643,6 +2660,7 @@ SELECT ?kind ?item ?itemLabel ?itemDescription ?site ?email ?phone ?holder ?hold
 function qJuris(q){ return `
 SELECT ?item ?itemLabel ?itemDescription ?cls ?clsLabel ?site ?email ?phone ?holder ?holderLabel WHERE {
  ?item wdt:P1001 wd:${q} .
+ FILTER NOT EXISTS { ?item wdt:P576 [] }
  OPTIONAL{?item wdt:P31 ?cls} OPTIONAL{?item wdt:P856 ?site} OPTIONAL{?item wdt:P968 ?email}
  OPTIONAL{?item wdt:P1329 ?phone} OPTIONAL{?item wdt:P1308 ?holder}
  SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" }
@@ -2658,6 +2676,7 @@ SELECT ?item ?itemLabel ?itemDescription ?cls ?clsLabel ?site ?email ?phone ?hol
 function qPositions(q){ return `
 SELECT ?item ?itemLabel ?itemDescription ?clsLabel ?site ?email ?phone ?holder ?holderLabel WHERE {
  ?item wdt:P1001 wd:${q} ; wdt:P31 ?cls . ?cls wdt:P279* wd:Q4164871 .
+ FILTER NOT EXISTS { ?item wdt:P576 [] }
  OPTIONAL{?item wdt:P856 ?site} OPTIONAL{?item wdt:P968 ?email}
  OPTIONAL{?item wdt:P1329 ?phone} OPTIONAL{?item wdt:P1308 ?holder}
  SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" }
@@ -2665,6 +2684,7 @@ SELECT ?item ?itemLabel ?itemDescription ?clsLabel ?site ?email ?phone ?holder ?
 function qBodies(q){ return `
 SELECT ?item ?itemLabel ?itemDescription ?clsLabel ?site ?email ?phone WHERE {
  ?item wdt:P1001 wd:${q} ; wdt:P31 ?cls . ?cls wdt:P279* wd:Q327333 .
+ FILTER NOT EXISTS { ?item wdt:P576 [] }
  OPTIONAL{?item wdt:P856 ?site} OPTIONAL{?item wdt:P968 ?email} OPTIONAL{?item wdt:P1329 ?phone}
  SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" }
 } LIMIT 400`; }
@@ -2675,6 +2695,7 @@ SELECT ?item ?itemLabel ?itemDescription ?clsLabel ?site ?email ?phone WHERE {
 function qByCountry(q){ return `
 SELECT ?item ?itemLabel ?itemDescription ?clsLabel ?site ?email ?phone ?coord WHERE {
  ?item wdt:P17 wd:${q} ; wdt:P31 ?cls . ?cls wdt:P279* wd:Q327333 .
+ FILTER NOT EXISTS { ?item wdt:P576 [] }
  OPTIONAL{?item wdt:P856 ?site} OPTIONAL{?item wdt:P968 ?email} OPTIONAL{?item wdt:P1329 ?phone}
  OPTIONAL{ ?item wdt:P625 ?coord }
  SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" }
@@ -3504,6 +3525,16 @@ function buckets(){ return classifyRows(CUR && CUR.core, CUR && CUR.items); }
    what puts markers for the county, the region and the country on the
    map at the same time as the municipality's, instead of only the level
    whose panel happens to be open. */
+/* Words that mean the office is over, in a record's description or in
+   its Wikidata class. "Historical" is left out on purpose: it is in
+   the name of plenty of sitting bodies and in the class of plenty
+   more. */
+const RX_DEFUNCT=/\b(former|formerly|erstwhile|abolished|defunct|disestablished|dissolved|discontinued|obsolete|no longer (exists|in existence|in use))\b/i;
+function isDefunct(desc, classes){
+  if(desc && RX_DEFUNCT.test(String(desc))) return true;
+  return (classes||[]).some(c=>RX_DEFUNCT.test(String(c)));
+}
+
 function classifyRows(core, items){
   const out={leg:[],exec:[],jud:[],ag:[],other:[]}, byId={};
   if(!core && !items) return {out:out, byId:byId};
@@ -3524,6 +3555,18 @@ function classifyRows(core, items){
     const label=(m.row.itemLabel&&m.row.itemLabel.value)||qid(m.row.item.value);
     const cls=m.classes.join(' ');
     if(isTenure(label,m.classes)) return;
+    /* An office that no longer exists.
+
+       "Member of the Los Angeles Common Council", described by the
+       record as a former position, was on the map beside the sitting
+       council: a reader cannot tell the two apart, and writing to one
+       of them reaches nobody. The queries now ask Wikidata to leave
+       out anything with an abolition date, and this catches the rest
+       — results cached from an earlier visit, and the records that
+       carry no date but say in the description that the post is
+       finished. The test is the description and the class, never the
+       name: a Historic Preservation Commission is a sitting body. */
+    if(isDefunct(m.row.itemDescription && m.row.itemDescription.value, m.classes)) return;
     if(RX_DIPLO.test(label+' '+cls)) return;
     /* records are not offices, and this map is about offices */
     /* records, not offices. Tested on the label as well as the class,
@@ -3539,6 +3582,11 @@ function classifyRows(core, items){
          the only thing on the record that distinguishes one office of
          a kind from another. Often absent; shown only when present. */
       desc:(m.row.itemDescription && m.row.itemDescription.value) || ''};
+    /* Offices with no part in making a law are not on this map at
+       all — see MAPKINDS. This is the only place the test is
+       applied, which is what keeps the markers, the search and the
+       lists saying the same thing. */
+    if(!MAPKINDS.has(o.kind)) return;
     /* the one flag the whole map now turns on */
     o.law = LAWKINDS.has(o.kind);
     /* Every office gets a subject, not only the agencies. The subject
@@ -3566,10 +3614,10 @@ const KINDLABEL={
 /* every kind is drawn, in the order it is worth approaching */
 const KINDORDER={
   leg : ['leg/member','leg/committee','leg/chamber','leg/presiding'],
-  exec: ['exec/minister','exec/head','exec/clerk','exec/legal','exec/envoy'],
-  jud : ['jud/court','jud/defender','jud/judge'],
-  ag  : ['ag/agency','ag/audit','ag/police'],
-  other: ['other/other'],
+  exec: ['exec/minister','exec/head','exec/clerk'],
+  jud : ['jud/court','jud/judge'],
+  ag  : ['ag/agency'],
+  other: [],
 };
 const BRANCHES = ['leg','exec','jud','ag','other'];
 
@@ -3612,15 +3660,9 @@ const KINDWHEN={
   'exec/head'    :'The mayor, governor, premier, prime minister or president. They sign a bill to make it law, and in most systems they can veto it instead \u2014 refuse to sign, which kills the bill unless the legislature passes it again by a larger majority. So contact this office to have a bill stopped, or to ask for action by decree, which is an order the head can issue alone without the legislature. Expect to be counted rather than read.',
   'exec/minister':'The departments over this place. The detail of a law is written here \u2014 who is exempt, how a thing is measured, what counts as complying \u2014 and the detail is usually what decides whether a law does anything. A department can often make the change you want as a rule under a law that already exists, which is faster than passing a new one.',
   'exec/clerk'   :'The office that keeps the official record and receives anything that has to be formally filed: a ballot measure or citizen initiative, a petition, a nomination, an objection, a records request. Filing matters because nothing counts until it is in, in the right form and before the deadline, and this is the office that will tell you what the form and the deadline are. For a ballot measure it is the whole route: enough valid signatures put your measure to a public vote and no politician has to agree to it.',
-  'exec/legal'   :'Attorneys general, prosecutors and law officers. Contact one if a law is on the books and nobody is enforcing it, or to ask for a formal written opinion on what a statute means. An opinion is a published document other offices then have to work around, which an unanswered letter is not.',
-  'exec/envoy'   :'Embassies, missions and delegations. Contact one only about something outside the country. Nothing an envoy agrees to becomes law at home until the legislature passes it.',
   'jud/court'    :'Go to a court when you need an order rather than a finding. An order legally compels someone to act or to stop, and only a court can issue one; a finding from an auditor or ombudsman says publicly what went wrong and compels nobody. The price is that you must either have an injury of your own or join a case somebody else has already brought.',
   'jud/judge'    :'Not contactable about anything that might come before them, and writing to a judge about a live case is improper. Where judges are elected, the election is the route.',
-  'jud/defender' :'Ombudsmen, public defenders and human rights offices. Contact one if a public body treated you or someone else unfairly and you want it investigated and the result published. They usually cannot order anything, but a published finding can be cited by a court, a journalist, a lender or an insurer.',
-  'ag/audit'     :'Auditors and inspectors general check whether a body met an obligation that is already written down in law or policy. Contact one if a body broke such an obligation and you can name which one \u2014 vague complaints are closed unread. What this produces is a body conceding a failure in writing and committing to a dated fix, which a legislator or a court can then act on.',
   'ag/agency'    :'An agency is a body created by a law to run and enforce one part of it, staffed by specialists and standing at some distance from the ministers of the day \u2014 an environmental protection agency, a food and drug authority, a civil aviation authority. They write the rules under a law and enforce them, which is where most of what government actually does to people is decided. As with departments, your subject picks the agency: drinking water or air quality to the environmental agency, a medicine or a food additive to the food and drug body, an aircraft or an airport to the aviation authority. Two things make agencies the most open part of government to a member of the public, and the least used: most must publish a rule in draft and take comment on it from anybody before it takes effect, and most must answer a written request for a new rule by granting or refusing it in writing \u2014 and a written refusal can be challenged, where an ignored letter cannot.',
-  'ag/police'    :'Contact a police body about a specific incident. For a question about practice or policy rather than an incident, the address is the council or legislature that funds them, because that is where a policy is actually changed.',
-  'other/other'  :'What these offices do is not recorded clearly enough to say. Some are agencies that take public comment, some are elected posts that can sponsor a bill, and some have no part in making law. The office\u2019s own site settles it.',
 };
 
 const ROUTEWHEN={
@@ -3702,15 +3744,30 @@ const ROUTEWHEN={
    and the hurdles, which put general advice at the same level as the
    methods themselves and repeated what the method pages already said.
    Each one now appears on its method's screen, under "Worth knowing". */
+/* Three destinations have come off this map: a law that exists but is
+   not being enforced, a body that broke its own rules, and something a
+   company is doing. Each was a complaint pathway rather than a route
+   to a law, and each pulled in the offices that went with it —
+   police, prosecutors, auditors, ombudsmen, embassies — so a map
+   called How To Make A Law answered on its main screen with a police
+   force. What is left is the four things that change what the law
+   says: write a new rule, change or repeal an existing one, change the
+   rules written under one, or have a court strike one down. */
 const LEAVES = {
   new_law: {
     nm:'A rule that does not exist yet', scoped:true,
     lead:'',
     kinds:['leg/member','leg/committee','exec/minister','ag/agency','leg/chamber','leg/presiding','exec/clerk','exec/head'],
-    routes:['visit','amend','drafting','pq','letter','call','email','sfr','testify',
+    /* `amend` and `copuos` were here and neither belongs. Asking for a
+       change to a bill already moving is the next destination along,
+       not this one — a reader who said the rule does not exist yet
+       was offered a method that starts from one that does. Observer
+       status at the UN space committee is not a way of making a law in
+       any country. */
+    routes:['visit','drafting','pq','letter','call','email','sfr','testify',
             'citinit','ballot','munres','party','coalition','rulemaking','lawreform',
             'petition','townhall','facarole','lobby','scoping','office','oped',
-            'deepcanvass','copuos'],
+            'deepcanvass'],
     hurdles:['tally','concentrated','money','nobody'],
     /* the same office means something different depending on why the
        reader is here, so a destination can say its own version */
@@ -3725,7 +3782,7 @@ const LEAVES = {
       ['letter','Check whether it needs a law at all','The department or agency in your subject can often make the change as a rule under a law that already exists. That is a shorter route with a written answer at the end of it, and the office itself will tell you which of the two applies.'],
     ],
     next:[['rules','If the law already says what you want but nothing happens'],
-          ['oversight','If a body is ignoring a law that already exists']],
+          ['courts','If the law on the page is the problem and a court could undo it']],
   },
 
   rules: {
@@ -3737,7 +3794,7 @@ const LEAVES = {
       'ag/agency':'An agency is a body a law set up to run and enforce one part of it, and the rules you are dealing with were almost certainly written by the one whose subject matches yours. Each must publish a rule in draft and take comment on it before it takes effect, and each must grant or refuse a written request for a new one in writing \u2014 which is the difference between this and a letter.',
     },
     routes:['comment','rulemaking','facarole','inquiry','lawreform','pq','visit',
-            'letter','email','call','ig','coalition','oped'],
+            'letter','email','call','coalition','oped'],
     hurdles:['docket','revolving','concentrated'],
     notes:[
       ['comment','Comment while the window is open','A body proposing a rule has to address substantive comments when it issues the final version. Comment on the specific public file of responses, not by general correspondence.'],
@@ -3747,35 +3804,7 @@ const LEAVES = {
           ['courts','If you think the rule goes beyond what the law allows']],
   },
 
-  enforce: {
-    nm:'A law that exists but is not being applied', scoped:true,
-    lead:'A law nobody enforces and a law that does not exist look much the same from below. Prosecutors choose which cases to bring; police enforce on the ground. Neither can change a law, and neither is usually the right address for a complaint about policy rather than an incident.',
-    kinds:['exec/legal','ag/police','ag/audit'],
-    routes:['ig','ombud','pq','townhall','munres','letter','email','call',
-            'quitam','citizensuit','ilo'],
-    hurdles:['revolving','nobody','concentrated'],
-    notes:[
-      ['townhall','If it is about practice, go to whoever funds them','Most forces and prosecution offices have a civilian oversight body, and those report to the council or legislature that funds them. That funding body is where a policy actually changes, and it is a different address from the one that handles incidents.'],
-      ['letter','Ask a law officer for a written opinion','Many attorney-general and solicitor offices will issue a formal opinion interpreting a statute on request. An opinion is a document other offices have to reckon with.'],
-      ['ig','Name the obligation, not the feeling','An auditor or inspector general closes vague complaints. State which specific legal or policy obligation was not met, and what the failure was.'],
-    ],
-    next:[['oversight','If a body broke its own rules rather than ignoring a law'],
-          ['courts','If a court is the only thing that will settle it']],
-  },
 
-  oversight: {
-    nm:'A body that broke its own rules', scoped:true,
-    lead:'Auditors, inspectors general and ombudsmen investigate whether a body followed obligations already written down, and publish what they find. Most cannot compel anything. What they produce is a document that makes an agency concede a failure in writing and commit to a dated fix, which is then something a legislator or a court can act on.',
-    kinds:['ag/audit','jud/defender','exec/legal'],
-    routes:['ig','ombud','quitam','pq','letter','email','upr','observer','ilo'],
-    hurdles:['voluntary','nobody'],
-    notes:[
-      ['ombud','The finding is the point','An ombudsman usually has no power to order anything. A published finding is still citable by a court, a lender, an insurer or a journalist in a way an unanswered letter is not.'],
-      ['ig','One obligation, one failure','These offices close complaints that do not identify a specific duty and a specific breach of it. The narrower the claim, the more likely it is investigated.'],
-    ],
-    next:[['courts','If you need an order rather than a finding'],
-          ['new_law','If the rule they followed is the problem']],
-  },
 
   courts: {
     nm:'A law or decision that should be struck down', scoped:true,
@@ -3785,7 +3814,7 @@ const LEAVES = {
        not about it. It belongs to the oversight destination, which is
        where it already is, and the line below still points there. */
     kinds:['jud/court','jud/judge'],
-    routes:['amicus','citizensuit','climatelit','personhood','echr','upr'],
+    routes:['amicus','citizensuit','climatelit','personhood','echr'],
     hurdles:['standing','nobody','money'],
     notes:[
       ['citizensuit','As a party, which needs an injury to you','Most common-law courts require a concrete, particularised injury to the person bringing the case. An injury shared equally by everyone is treated, for this purpose, as an injury to no one.'],
@@ -3793,31 +3822,25 @@ const LEAVES = {
       ['personhood','Granting an ecosystem legal personhood manufactures a plaintiff','It is the mechanism behind the rights-of-nature route: it produces someone the court must hear where no individual could show a particular injury.'],
     ],
     next:[['new_law','If no court will hear it, the legislature is the remaining route'],
-          ['oversight','If the complaint is about process rather than the law itself']],
+          ['rules','If what you want is in the rules written under the law, not the law']],
   },
 
-  company: {
-    nm:'Something a company is doing',
-    lead:'A company is not obliged to make as much money as possible — the case usually cited for that, decided in Michigan in 1919, says no such thing in its binding part — but little pushes it the other way either. So the argument that works is not that the company is permitted to act. It is a business reason the board could state in court if challenged, which is the shape a shareholder proposal takes. The other routes here reach the company through government or through bodies that publish findings about it.',
-    kinds:['ag/agency','exec/minister','exec/legal'],
-    routes:['shareprop','engage','boycott','oecdncp','devbank','comment','rulemaking',
-            'ig','citizensuit','letter','email'],
-    hurdles:['primacy','concentrated','voluntary','money'],
-    notes:[
-      ['comment','Through the regulator, not the company','The department or agency that licenses, inspects or sets rules for the sector is usually a better address than the company, because its proposed rules carry a comment window and it can be petitioned for a new rule.'],
-      ['shareprop','A shareholder proposal costs about $2,000 to enter','It is the one route that puts a question to the board in a form it has to process, and it is written as a business case rather than as a grievance.'],
-    ],
-    next:[['new_law','If what is needed is a rule that does not exist yet'],
-          ['courts','If the harm is specific enough to sue over']],
-  },
 
   all: {
-    nm:'Show me every office that governs this place',
-    lead:'Every office over the place you searched, and over each level above it, with nothing narrowed down. A green dot marks the ones a member of the public can contact about a law.',
+    nm:'Show me every office with a part in the law here',
+    lead:'Every office over the place you searched that has a part in what the law says, and over each level above it, with nothing narrowed down. A green dot marks the ones a member of the public can contact about a law; the courts carry none, because a court is filed with rather than written to.',
     kinds:['leg/member','leg/committee','leg/chamber','leg/presiding','exec/head','exec/minister',
-           'exec/clerk','exec/legal','exec/envoy','jud/court','jud/judge','jud/defender',
-           'ag/agency','ag/audit','ag/police','other/other'],
-    routes:null,
+           'exec/clerk','jud/court','jud/judge','ag/agency'],
+    /* `routes:null` meant every method in the file, which after the
+       three destinations came off is a list with a consumer boycott
+       and a UN space-committee seat in it. Spelled out instead: the
+       methods the remaining destinations use, in roughly the order
+       worth trying. */
+    routes:['visit','drafting','pq','amend','letter','call','email','sfr','testify',
+            'citinit','ballot','munres','party','coalition','comment','rulemaking',
+            'lawreform','inquiry','facarole','petition','townhall','lobby','scoping',
+            'office','oped','deepcanvass','amicus','citizensuit','climatelit',
+            'personhood','echr'],
     hurdles:['tally','concentrated','docket','money','nobody','voluntary','standing','revolving','primacy'],
     notes:[],
     next:[['start','Start again with a question instead']],
@@ -3836,19 +3859,23 @@ const QUESTIONS = {
        d:'A ban, a requirement, a protection, a right.', leaf:'new_law'},
       {t:'Change or repeal a law that already exists',
        d:'The words on the page are wrong, out of date, or doing harm.', go:'change'},
-      {t:'Change how an existing law works in practice',
-       d:'The law is not the problem. The detailed rules written under it, or the way they are applied, are.', go:'practice'},
-      {t:'Challenge a decision, or hold a body to its own rules',
-       d:'A public body decided something, refused something, or left a duty undone \u2014 a permit '+
-         'refused, a service withdrawn, a procedure skipped. The complaint is about that act '+
-         'rather than about what the law says.', go:'challenge'},
-      {t:'Stop something a company is doing',
-       d:'The harm is corporate. Most of these routes reach the company through the government '+
-         'body that licenses or regulates it rather than through the company itself.', leaf:'company'},
+      {t:'Change the detailed rules written under a law',
+       d:'The law is not the problem. The rules a department or agency wrote under it are, and '+
+         'those are where most of what a law does to anybody actually sits.', leaf:'rules'},
       {t:'I am not sure yet \u2014 show me everything',
-       d:'Every office that governs this place, and every way of reaching them.', leaf:'all'},
+       d:'Every office over this place with a part in what the law says, and every way of '+
+         'reaching them.', leaf:'all'},
     ]},
 
+  /* Two options have come off the opening question \u2014 challenging a
+     decision, and stopping something a company is doing \u2014 and one
+     off the question below it, enforcement. None of the three changes
+     what a law says: they are complaints about how a body or a firm
+     behaved, and they brought police forces, prosecutors, auditors,
+     ombudsmen and embassies onto a map about writing law. "Change how
+     an existing law works in practice" asked a question of its own
+     whose other two answers were those same complaint routes, so it
+     now goes straight to the rules written under the law. */
   change: {
     q:'What is wrong with it?',
     sub:'Repealing a law and rewriting it take the same route. Striking it down takes a different one entirely.',
@@ -3857,39 +3884,8 @@ const QUESTIONS = {
        d:'This takes the same route as a new law: a member of the legislature has to introduce it.', leaf:'new_law'},
       {t:'It should not exist at all, or it is unlawful',
        d:'A court can undo a law a legislature will not touch.', leaf:'courts'},
-      {t:'It is fine, but nobody is enforcing it',
-       d:'The law is on the books and nothing is happening.', leaf:'enforce'},
-    ]},
-
-  practice: {
-    q:'Where has it gone wrong?',
-    sub:'A law is short; most of what it actually does is in the rules written underneath and in how they are applied.',
-    opts:[
-      {t:'The detailed rules under the law',
+      {t:'The law is fine and the rules under it are not',
        d:'The department or agency wrote the detail, and the detail is the problem.', leaf:'rules'},
-      {t:'How it is being enforced on the ground',
-       d:'The rules are fine and the practice is not.', leaf:'enforce'},
-      {t:'A body is not doing what it is supposed to',
-       d:'An obligation exists and is being missed.', leaf:'oversight'},
-    ]},
-
-  challenge: {
-    q:'What do you need out of it?',
-    sub:'These three produce different things: a finding, an order, or a record.',
-    opts:[
-      {t:'A finding that says publicly what went wrong',
-       d:'An auditor, inspector general or ombudsman investigates and publishes what it finds. '+
-         'None of them can usually compel anything, and the investigation is also how the '+
-         'documents come out: what the body did is set out in the finding, with the record '+
-         'behind it.', leaf:'oversight'},
-      {t:'An order that makes it stop',
-       d:'Only a court can order. It needs an injury, or a case of someone else’s to join.', leaf:'courts'},
-      /* A third option here offered the documents, by way of a
-         freedom-of-information request. That is not a way of
-         contacting anybody and is no longer one of the methods, so
-         the option led to a destination that could not do what the
-         option promised. What it was for is covered by the finding
-         above, which is where that sentence has gone. */
     ]},
 };
 
@@ -3911,7 +3907,7 @@ function resetTree(){ PATH=[]; LEAF=null; PENDLEAF=null; LEAFLVL=null; LEAFSUB=n
    so narrowing those by subject would hide the right office rather
    than find it. Only the kinds where the subject actually picks out a
    different body are filtered. */
-const SUBJECTKINDS = new Set(['exec/minister','ag/agency','leg/committee','ag/audit','other/other']);
+const SUBJECTKINDS = new Set(['exec/minister','ag/agency','leg/committee']);
 
 /* ---------- every office on the map, not just the open level ----------
    `BK` holds only the jurisdiction whose panel is open. The chain pins
@@ -4176,20 +4172,7 @@ const LAWSEQ=[
    'from anybody, and must grant or refuse a written request for a new rule in writing. A '+
    'refusal in writing can be taken to a court. An unanswered letter cannot.'],
 
-  ['exec/legal', 'brings the cases that enforce it',
-   'Attorneys general, prosecutors and other law officers, who take people and bodies to court '+
-   'over a law that is being broken.',
-   'They act after a law and its rules already exist. Where an agency writes a rule and applies '+
-   'it, a law officer is who sues when it is ignored, and who issues the formal written '+
-   'opinions other offices then have to work around. One of those opinions can settle a '+
-   'question for a whole state without a case being filed.'],
 
-  ['ag/police', 'enforces it on the ground',
-   'The forces that apply the law in the street, day to day.',
-   'The last link in enforcement, and the one with no say in what the law is. A complaint about '+
-   'a single incident belongs here. A complaint about a practice \u2014 a tactic, a target, a piece '+
-   'of equipment \u2014 belongs with the council or legislature that funds them, because that is the '+
-   'only place it can be changed.'],
 
   ['jud/court', 'rules on what it means and whether it stands',
    'The courts, which settle what a law means in a real dispute and, in most countries, can '+
@@ -4208,22 +4191,7 @@ const LAWSEQ=[
    'grounds to have them taken off it. Where judges are elected or confirmed, that is the one '+
    'point at which the public has any say.'],
 
-  ['ag/audit', 'checks afterwards that it was followed',
-   'Auditors and inspectors general, who examine whether a body met an obligation already '+
-   'written down, and publish what they find.',
-   'It acts after everything above and can change none of it: it cannot write a law or order '+
-   'anybody to do anything. What it produces is a body conceding a failure in writing with a '+
-   'dated fix attached, and that document is what a legislator, a journalist or a court can '+
-   'act on. It needs a named obligation and a named failure to measure against, which is why a '+
-   'disagreement about priorities is closed unread.'],
 
-  ['jud/defender', 'investigates complaints about how it was applied',
-   'Ombudsmen, public defenders and human rights offices, which look into how a body treated '+
-   'somebody.',
-   'The complaint counterpart to an auditor: an auditor asks whether a rule was followed, this '+
-   'asks whether a person was treated fairly. Most can order nothing. What they can do is '+
-   'publish a finding with your account inside it, which a court, a journalist, a lender or an '+
-   'insurer can cite, and which the body complained about then has to live beside.'],
 
   ['exec/clerk', 'keeps the record and takes the filings',
    'The office that holds the official record and receives anything that has to be formally '+
@@ -4236,20 +4204,7 @@ const LAWSEQ=[
    'filed here put a question to a public vote without any politician agreeing to it at any '+
    'stage.'],
 
-  ['exec/envoy', 'handles whatever part of it is abroad',
-   'Embassies, missions and delegations.',
-   'Outside the sequence, because nothing an envoy agrees to abroad is law at home until the '+
-   'legislature passes it in the ordinary way. What this office is good for runs the other '+
-   'direction: it is the official channel for telling a government how its conduct looks from '+
-   'outside its own borders, and what a mission reports circulates inside the government that '+
-   'sent it.'],
 
-  ['other/other', 'part in it not recorded',
-   'Offices whose titles do not say what they do.',
-   'Listed rather than dropped, because dropping them would understate how much government '+
-   'there is. Some are agencies that take public comment, some are elected posts that can '+
-   'sponsor a bill, and some have no part in making law at all. The record does not say which, '+
-   'so the office\u2019s own site is what settles it before you spend anything.'],
 ];
 
 const LAWSTAGE={};
@@ -6250,7 +6205,7 @@ function openLocal(id){
    for them. */
 const SHOWKINDS=[
   ['law',  'Offices reachable about a law'],
-  ['other','Other offices of government'],
+  ['other','Courts and judges'],
   [null,null],
   ['t','Town halls'],
   ['g','Government offices'],
