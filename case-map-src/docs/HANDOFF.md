@@ -1,6 +1,123 @@
 # Globalization Case Map: handoff for a new chat
 
-Last updated: 13 Nov 2026 (round 21). Replaces every earlier handoff.
+Last updated: 14 Nov 2026 (round 22, part done). Replaces every earlier handoff.
+
+## READ THIS FIRST: round 22 is half done and its data is staged, not merged
+
+**A weekly API limit stopped the session on 13 Nov at about 22:25 and resets 17 Nov, 8am Pacific.**
+Four agents died mid-flight. Their work was saved and is committed; **nothing of round 22's case
+data has been merged into `base.html`**, because the owner's standard is that every batch is
+fact-checked by a separate agent before merging and **no batch has been checked**.
+
+**What is merged and live:** the lender-role audit's 22 corrections across 19 cases (see below).
+The map is 1,072 cases, builds clean, loads headless with no errors.
+
+**What is staged and waiting for checkers**, all committed under `case-map-src/rounds/`:
+- `r26f_icij6_china.json` + report — 16 Chinese rows worked into **8 cases, 8 drops**
+- `r26f_icij6_energy.json` + report — 16 rows into **8 cases, 6 drops, 2 already on the map**
+- `r26f_icij6_other.json` — 16 rows into **7 cases, 8 drops, 1 already on the map**; its drops are
+  in the file under `_r22_dropped_and_mapped_rows`, and **its report was never written**
+So **23 candidate cases from 48 rows**, none checked. The documents are cached at
+`/home/claude/r22/cache/` (526 files) **but that cache dies with the session** — a checker in a new
+session rebuilds it from the `wds` API plus `documents1.worldbank.org`, at the cost of the fetches.
+
+**To finish round 22**, in this order: one checker per batch against `docs/CHECK20.md` plus
+`docs/BRIEF22.md`; then normalise the checked files into `cases`/`extend` arrays (round 20's
+normaliser filled `rg`, `lk`, `cp`, `cx`, `kind`, flattened nested `add` blocks and refused
+non-string `fields_add`); then `merge.py`, verify each extend actually changed its case, `build.py`,
+headless test, annotate the 48 lead rows with `r22_outcome`, and only then the whole-text,
+description and conditions jobs. The three lead files are staged at `docs/leads_{a_china,b_other_1,
+c_other_2}.json` and the full 48 at `docs/batch22.json`.
+
+**Two rulings already made on batch A, so a checker does not reopen them:**
+1. `wuhan-middle-ring-resettlement-overrun` stays a **separate case**, not an extend of
+   `wuhan-nanhu-village-resettlement-delay`. Separate loans financing separate works are separate
+   cases even in one city — round 21 kept two Liaoning loans and two Chongqing loans apart on that
+   ground. What makes two leads one episode is a transferred component or the same site, and a
+   checker should verify neither holds here.
+2. `hunan-gansu-small-towns-demolition` carries **no `displaced`**. 82 is the Hunan figure alone and
+   would mislabel a card covering two provinces; 95 is the writer's own arithmetic, and this map does
+   not compute a figure no document prints. Both counts go in `displaced_note` with the 243 Gansu
+   households, the 230 of them that predate the project, and the fact that the report prints no total.
+
+## The lender-role audit: it was a pattern, not a coincidence
+
+Rounds 19, 20 and 21 each turned up a factual error in `lenders[0].role`, every one found by
+accident by a checker sent to look at something else. Round 22 audited the field properly across all
+46 cases from rounds 20 and 21 — 56 lender entries, about 63,000 characters — reading each assertion
+against the documents already in the two caches.
+
+**19 of 46 cases carried an error: 22 corrections, applied in `rounds/r26f_role_audit_textfix.json`
+and live.** That is 41 per cent of the cards from the two most recently checked rounds. The three
+accidental finds were the visible part of a systematic problem.
+
+**What the errors were, as classes worth checking for:**
+- **A date no cited document gives** — three cases. Rogun's "14 February 2012" (the report says the
+  Board approved in February 2012, its data sheet gives 10 February as a restructuring, and the
+  project paper is dated 19 January); Santa Fe's 12 June 2007 signing (the report gives approval 13
+  February and effectiveness 17 August, twice); Amman's 4 December 2008 (the footnote cites a project
+  paper of 6 November 2008).
+- **A figure from the wrong column of the financing table** — three cases. Qiantang's single
+  unlabelled cost was the appraisal column read as the project's cost (appraisal 215.99, actual
+  193.01); Sichuan Small Towns' US$169.95m was the review's data-sheet field where both the report's
+  annex and the review's own text say 169.7; Amman's "132 per cent over" is the percentage-of-2008-
+  appraisal column against the revised estimate, where the overrun on the 2004 appraisal is about 284
+  per cent.
+- **A partial list of triggered safeguard policies read as the full list** — two cases. Wudu named
+  two of the five the report lists; Yining's card omitted Indigenous Peoples OP 4.10, which the
+  appraisal's safeguards table carries and which is material on a card about demolition in the seat
+  of the Yili Kazakh prefecture.
+- **A statement attributed to the wrong document** — two cases, both the same shape as the earlier
+  accidental finds. Luan-Huaibei's extension reason is in the review, not the report, which ties the
+  23-month extension to a 2015 restructuring and records the land-acquisition delays separately.
+  Amman's "High" rating is the review's own table entry where the report's section 4 says Substantial.
+- **A wrong report number** — Xi'an's card cited ICR00004130; the cover prints ICR00004124 and the
+  other number appears nowhere in the document.
+- **A wrong environmental category** — Liaoning Coastal was A on the card and "Partial Assessment
+  (B)" in both the report's data sheet and the appraisal document.
+- **A wrong implementing agency** — Bukoba's two-agency sentence against a report paragraph naming
+  TANROADS as principal and then four other bodies for particular components.
+- **Half of a review's finding reported** — Second Shandong (the review lowered borrower performance
+  as well as Bank performance) and Ouagadougou (the review's stated grounds for lowering Bank
+  performance were omitted, and it rates efficiency substantial rather than weak).
+
+**The mechanism, which the audit named and which is worth more than the list:** the field gets
+written from a data sheet and a review table **at once**, and whichever copy of a figure is nearer
+goes in. That explains every class above — a review's data-sheet field standing in for the report's
+annex, a review's own table entry standing in for the report's rating, the percentage-of-revised
+column standing in for the overrun on appraisal.
+
+**It is a pattern but a narrowing one. 37 of 56 entries are clean**, including the most figure-dense,
+and the field already carries the habits that prevent these errors: two cards print both of a
+report's conflicting dates, nine flag the review's Modest-against-Moderate label substitutions, and
+one catches the review misreporting the report's own Bank performance. The fix is to apply the house
+style that already exists, not to invent one.
+
+**Two systemic items the audit reported and deliberately did not put in the textfix**, because both
+are citation style rather than fact:
+- **39 of the 46 cited Evaluation Group reviews print no date anywhere**, and 39 cards cite one. The
+  dates match each card's own `sources` entry, which is the Bank's catalogue, so they are
+  **unattributed rather than wrong**. Round 21's cards already say "Bank document date …"; applying
+  that to the roughly 29 round-20 cards is a rewrite, not a correction.
+- **On 10 cards the completion report's cover date and its data-sheet date differ and only the cover
+  date is given.** `zhegan-line-railway-resettlement` and `henan-towns-water-land-acquisition` show
+  the house style: print both.
+
+**Four errors the audit found in the Bank's own documents while reading them**, worth knowing before
+anyone trusts a data sheet: the Bukoba completion report's cover is dated 16 January 2017 while the
+project closed 20 June 2017 and its own exchange-rate note reads December 2017, so **the cover date
+cannot be right** (that card gives no report date, which was the lucky choice); the CEMAC data sheet
+still prints environmental category B where its paragraph 76 records the 2017 change to A; the Qufu
+data sheet carries a cost figure its own note retracts; and the Kwabenya assessment report
+reproduces the review's "Significant" as the completion report's risk rating where the report says
+Substantial.
+
+**What this means for the briefs.** The field is the longest prose on a card, it is written last, and
+nothing checks it. BRIEF22 already tells writers to put the P-number in it, name the document and
+paragraph behind each rating and date, and quote the report's own term for a sanction rather than
+summarising it. **Add to any check brief: read the role field against the documents, every round.**
+And **audit rounds 17, 18 and 19's cases the same way** — 95 ICIJ cases exist and only 46 have been
+audited. Their documents are not cached, so that round costs the fetches.
 
 ## Round 21, in one paragraph
 
