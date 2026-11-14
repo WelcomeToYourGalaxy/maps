@@ -154,9 +154,86 @@ Smaller fixes made in the same pass:
   referendum only repeals; Kenya's initiative only amends the
   constitution; New Zealand's referendum does not bind).
 
-**Adding a country's specific contacts** (the next rounds): keep them in
-`LAWP` alongside the profile rather than in a separate table, keyed the
-same way, so one record per country stays the source.
+## 0c. Round one of the specific contacts
+
+The profiles now carry contacts as well as rules. Two fields per country,
+both inside `LAWP` so one record per country stays the source.
+
+**`nl` — the chambers, each at its own address.** 275 addresses across 182
+countries, one entry per address: `n` the chamber's name, `u` its site,
+`k` whether the record is for a chamber or for the parliament as a whole,
+`v` whether it answered when it was checked, and `e`/`p` the public email
+(12) and switchboard (10) where a record holds one. Built from Wikidata's
+`P856`/`P968`/`P1329` on the body behind each country's `P194` legislature
+and that legislature's `P527` parts. The head of state, libraries and
+service units come back under `P527` too and are filtered out; where two
+chambers publish at one address the entry carries both names, because that
+is what the address is; a chamber's name is taken from the country profile
+where the two records are the same body, since Wikidata's label is
+sometimes wrong ("House of Councillors to the Emperor").
+
+`chamberLink()` links a chamber named in the profile's own sentence;
+`chamberLine()` adds the addresses that sentence could not carry — a single
+chamber, two chambers at one site — and the email and phone. 170 of the 275
+answered from here; the rest are kept and shown with the stale-address
+caveat the map already uses, because a parliament that refuses a request
+from a datacentre is not a parliament that has moved.
+
+**`nd` — the page a parliament publishes for a method.** 136 pages across
+65 countries, in five kinds: members directory (28), committees (34),
+bills (28), contact (34), petitions (12). `NDROUTE` maps a method to a
+kind and `nationalRow()` puts it at the top of that method's "Where to do
+this", **only on an office of the national legislature** — a councillor's
+page offering the national members directory points at the wrong building.
+The row quotes the site's own link text, so the claim is exactly what can
+be checked: this link, under this name, is on that parliament's site.
+
+How they were gathered, and the gate they had to pass (`crawl.py`,
+`sift.py`, `verify.py` in the working directory, not in this repo):
+
+1. Fetch each parliament's front page from the `P856` addresses.
+2. Collect same-host links whose text matches one of the five kinds.
+3. **Keep one only where the link text and the URL path agree** about
+   what it is, and the path is not the front page. This is the gate that
+   matters: a menu heading reading "Members of Parliament" that points at
+   `/` is a heading, and a link reading "siga propostas, assuntos ou
+   deputados" that points at an email-subscription page is not a members
+   directory. Both were in the first pass and both are out.
+4. A stop list for the rest: a committee page is not the media advisory
+   committee, the library or the service commission; a contact page is not
+   the webmaster, the press office or the jobs page.
+5. Fetch every survivor and drop it unless it answered 200. Ten did not.
+
+**Coverage is uneven and the reason is this sandbox, not the data.** Of
+193 countries, 75 had a front page that could be fetched at all; the rest
+refused the connection or the handshake. The same ran through the earlier
+URL check in §3. Re-running the crawl from somewhere with ordinary
+consumer networking would roughly double the pages found, and nothing in
+the pipeline needs changing to do it.
+
+**What to add next, in order.** Sub-national legislatures (the 50 US
+states, the German Länder, the Indian states, Brazil's assemblies) are the
+obvious next layer and are reachable the same way, from `P194` on the
+region rather than the country. Below that, the municipal level is where
+Wikidata runs out and `contacts/` (§11) already holds 670,845 buildings
+with addresses and phone numbers; joining those to a council seat rather
+than a building is the hard part and nothing has been tried on it.
+
+Smaller fixes made with round one:
+
+- **A place in a search query now carries the levels above it.**
+  `placeTerms()` builds "Equador Rio Grande do Norte Brazil" where the
+  query used to say "Equador Equador", which a search engine read as
+  Ecuador and answered about the country. Everything that names a place
+  goes through `doQ`, including "Find its current site" and the "or find
+  it" link beside the place name, which were building their own strings.
+  `nameForms()` catches a country written two ways, so "United States
+  Congress" does not pick up "United States of America" after it.
+- **A click on an office opens that office.** `walkTo` used to draw the
+  list of every office over the place, light the kind, light the office
+  and only then open the page, about a second and a half with two other
+  screens on the way. It reads as a misfire. The state it set up is kept —
+  the trail still says where the office sits — and the render is one.
 
 ## 1. What you see, and in what order
 
