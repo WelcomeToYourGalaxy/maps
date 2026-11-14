@@ -63,7 +63,11 @@ for k in E:
 for e in EG["events"]: places.add(e["iso3"])
 for r in EG["gold"]["rows"]:
     if r.get("iso3"): places.add(r["iso3"])
-places.discard("EMU")
+# A union code is not a place. The loop over E already skips UKEYS, but the data loops
+# above would let a union-keyed record add one: the first union-keyed event, in round 44,
+# gave BCEAO a country box and a score of its own. Union-keyed records reach the member
+# countries by expansion further down; the unions themselves live in U, not P.
+places -= UKEYS | {"EMU"}
 
 P, U = {}, {}
 UM = {u: [m for m in mem] for u, mem in UNION.items()}
@@ -187,8 +191,14 @@ for i, c in enumerate(RD):
         if t in P: P[t].setdefault("rd", []).append(i)
 # ---------- events ----------
 EV = EG["events"]
+# A record held by a currency union is held by every member country, the same way
+# cases expand above. Events did not expand until round 44, so a union-keyed event
+# rendered on no member country's box while coverage.py counted all of them, and the
+# union code picked up a box and a score of its own. Keep this in step with the cases
+# line above and with coverage.py.
 for i, e in enumerate(EV):
-    if e["iso3"] in P: P[e["iso3"]].setdefault("ev", []).append(i)
+    for t in (UM["ECB"] if e["iso3"] == "EMU" else UM.get(e["iso3"], [e["iso3"]])):
+        if t in P: P[t].setdefault("ev", []).append(i)
 # ---------- swaps ----------
 SW = [s for s in SWJ if s.get("provider_iso3") and s.get("counterparty_iso3")]
 for i, s in enumerate(SW):
