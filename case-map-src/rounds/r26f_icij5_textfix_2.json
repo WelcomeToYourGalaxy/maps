@@ -1,0 +1,12 @@
+{
+ "laibin-water-environment-displacement": {
+  "edits": [
+   {
+    "field": "lenders[0].role",
+    "old": "The World Bank declared misprocurement on a contract that was not substantially complete at the closing date (Implementation Completion and Results Report ICR00004961, 22 June 2020; IEG ICR Review, Bank document date 17 December 2020).",
+    "new": "Following an investigation by the Bank's Integrity Vice Presidency in 2019 into serious fraud and corrupt practices found by the domestic anti-corruption authority, the Bank declared procurement non-compliance against five civil works contracts signed between 2014 and 2016, in a letter the report dates 12 March 2020 and its own document list 13 March 2020; the works were substantially complete at closing, and the municipality agreed not to claim about US$8 million still outstanding under those contracts (Implementation Completion and Results Report ICR00004961, 22 June 2020; IEG ICR Review, Bank document date 17 December 2020)."
+   }
+  ],
+  "why": "Round 21's whole-text check found three errors in one sentence, all against paragraph 72 of ICR00004961 read verbatim: it was five civil works contracts rather than one; the contracts were substantially complete, and the role inverted the very clause that explains the Bank's decision (\"considering the works for these contracts were substantially complete as of the closing date of the project, the World Bank declared procurement noncompliance against these contracts\"); and the report says procurement non-compliance, not misprocurement. The letter's date differs between the report's paragraph 72 and its own document list, so both are given. This is the third consecutive round in which a checker has found a factual error in a lenders[0].role field while checking something else."
+ }
+}
