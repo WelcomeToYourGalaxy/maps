@@ -1,0 +1,45 @@
+{
+  "notes": "TJK (Tajikistan) SETTLED: nbt.tj/en/ homepage fetched with curl (200, 158 KB) exposes direct links to 'Independent auditor's report' PDFs for 2021, 2022 and 2023; no 2024 or 2025 file is posted yet. Downloaded https://nbt.tj/upload/iblock/0e7/0v1j014jobn7m34b93buyud0as5r6ndv/2023(eng)Independentauditorsreport.pdf (748 KB) and ran pdftotext: the signature block of the independent auditor's report is 'Managing partner - RSM Tajikistan, LLC' with a National Bank of Tajikistan specialist bank-audit licence. This supersedes the stale Deloitte (2018) and Ernst & Young Ford Rhodes Sidat Hyder engagements reported by Asia-Plus; RSM Tajikistan LLC is the current mandate for the FY2023 consolidated statements, the latest published. COM (Comoros) SETTLED as a bonus, found while searching for Mauritania: https://banque-comores.km/uploads/Rapport-CAC-BCC-2024(3).pdf (1.2 MB, curl 200) is the Banque Centrale des Comores auditor's report for the year ended 31 December 2024, signed 'Mazars Fivoarana', Antananarivo, 14 May 2025. GIN (Guinea) SETTLED as a bonus, found the same way: https://www.bcrg-guinee.org/wp-content/uploads/2026/02/BCRG-Rapport-audit-des-etats-financiers-au-31122023.pdf (759 KB, curl 200) is the 'Rapport du commissaire aux comptes sur les etats financiers, exercice clos le 31 decembre 2023' of the Banque Centrale de la Republique de Guinee, on KPMG S.A. letterhead (Tour Eqho, 2 avenue Gambetta, Paris la Defense). NOT SETTLED. CUW (Curacao): WebFetch is no longer usable in this run -- the permission request for https://exch.centralbank.cw/annual-reports-quarterly-bulletins/2024 went unanswered (PROVENANCE_REQUIRED, instructed not to retry), and curl on that host still returns 000/0 on the certificate subject-name mismatch, while https://www.centralbank.cw/ and https://centralbank.cw/ both return 403. A plain web search of the Curacao Chronicle story on the 2024 annual report (fetched, 200, 37 KB) names no audit firm. This is a TLS/host problem plus a lost approval, not an absence: the per-year annual-report index on exch.centralbank.cw remains the live next step for a human with a browser. BLR (Belarus): https://www.nbrb.by/engl/publications/report tried six times with curl -m 150/180, plus the trailing-slash, http:// and no-www variants -- every attempt returned HTTP 000 with 0 bytes (connection reset by peer). It is not slowness; the host is unreachable from this network. Pure host block. A country-name search returned only Belarusian commercial banks (MTBank, Paritetbank, RRB, Belveb), the documented trap on this row. DZA (Algeria): https://www.bank-of-algeria.dz/ returned 000/0 on three consecutive curl attempts, and https://www.bank-of-algeria.dz/?s=audit+des+comptes likewise 000/0 three times, although search engines clearly index deep pages on that host (its tender notices appear in results) -- so this is a block on this network rather than a dead site. No auditor found; untried route left is Algeria's Journal Officiel. MRT (Mauritania): https://www.bcm.mr/ returns 200 but only a 2.5 KB single-page-app shell with no content links; an attempt to probe its search/JSON endpoints was refused by the environment's permission classifier, so I stopped that approach. Two targeted French-language searches for a BCM annual report or auditor returned only unrelated Mauritanian procurement terms of reference and World Bank documents. Unresolved, host is an empty SPA. TKM (Turkmenistan): https://www.cbt.tm/en/ returns HTTP 403. A targeted search for a Central Bank of Turkmenistan external audit returned only the state-owned Turkmen Foreign Economic Bank and Turkmenbashi bank, whose own IFRS statements are published -- nothing for the central bank. Likely a genuine non-publication, but the 403 means it is not yet proven. RWA (Rwanda): the laws.africa retry was replaced by a direct attempt at https://bnr.rw/fileadmin/user_upload/BNR_Law.pdf, which returned 200 but served HTML, not a PDF; https://www.bnr.rw/index.php?id=82 returned 200 / 21 KB of pure JavaScript shell with zero document links, confirming the site renders nothing to a non-browser client. A search for a BNR independent auditor's report returned only Rwandan commercial banks. Unresolved: JS-shell host block. PRY (Paraguay): the procurement mechanic works end to end but yields only a stale award. The awarded-suppliers tab is Ajax-loaded, however https://www.contrataciones.gov.py/licitaciones/adjudicacion/195638-contratacion-auditoria-externa/proveedores-adjudicados.csv (curl 200, 448 bytes) prints the supplier outright: 'DELOITTE & CO. SRL Y DELOITTE & TOUCHE LTDA CONSORCIO', RUC 80064303-8, 1,338,776,000 PYG, emitted 2011-02-18. That is a fifteen-year-old engagement, so under the one-current-auditor rule I have NOT filed it. The .csv suffix on any adjudicacion path is the reusable trick for the next round. A newer BCP external-audit tender was not located: https://www.bcp.gov.py/estados-financieros-i367 returns 403 both with a default and with a browser user-agent (WAF), the DNCP API path /datos/api/v3/doc/search/processes returned 404 'No encontrado', and the contrataciones search page is a form shell. The only other audit tender surfaced, 216423 'contratacion auditoria externa FGD', covers the deposit guarantee fund rather than the bank's own accounts.",
+  "records": [
+    {
+      "cb_iso3": "TJK",
+      "entity": "RSM Tajikistan LLC",
+      "entity_type": "firm",
+      "relation": "audits its accounts",
+      "detail": "RSM Tajikistan LLC signed the Independent Auditor's Report on the consolidated financial statements of the National Bank of Tajikistan and its subsidiaries for the year ended 31 December 2023, the latest set the bank has published; the report's signature block gives the signatory as 'Managing partner - RSM Tajikistan, LLC' holding a National Bank of Tajikistan specialist licence for bank audit, which supersedes the earlier Deloitte and Ernst & Young Ford Rhodes Sidat Hyder engagements reported in the Tajik press.",
+      "entity_hq_city": "Dushanbe",
+      "entity_hq_iso3": "TJK",
+      "as_of": "2023 consolidated financial statements",
+      "name_as_stated": "RSM Tajikistan, LLC",
+      "source_url": "https://nbt.tj/upload/iblock/0e7/0v1j014jobn7m34b93buyud0as5r6ndv/2023(eng)Independentauditorsreport.pdf",
+      "source_title": "National Bank of Tajikistan - Consolidated financial statements for the Year Ended 31 December 2023 and Independent Auditor's Report",
+      "weak_source": false
+    },
+    {
+      "cb_iso3": "COM",
+      "entity": "Mazars Fivoarana",
+      "entity_type": "firm",
+      "relation": "audits its accounts",
+      "detail": "Mazars Fivoarana, the Madagascar member firm of the Mazars network, signed the 'Rapport general de l'Auditeur' on the financial statements of the Banque Centrale des Comores for the year ended 31 December 2024, dated Antananarivo 14 May 2025; the firm's name appears on the cover of the published report under reference AUT/FRE/033/25 and again at the close of the general auditor's report that opens the document.",
+      "entity_hq_city": "Antananarivo",
+      "entity_hq_iso3": "MDG",
+      "as_of": "2024 financial statements",
+      "source_url": "https://banque-comores.km/uploads/Rapport-CAC-BCC-2024(3).pdf",
+      "source_title": "Banque Centrale des Comores (BCC) - Rapport de l'Auditeur, Exercice clos le 31 decembre 2024",
+      "weak_source": false
+    },
+    {
+      "cb_iso3": "GIN",
+      "entity": "KPMG S.A.",
+      "entity_type": "firm",
+      "relation": "audits its accounts",
+      "detail": "KPMG S.A., the French KPMG member firm registered with the Paris order of chartered accountants under number 14-30080101, signed the 'Rapport du commissaire aux comptes sur les etats financiers' of the Banque Centrale de la Republique de Guinee for the financial year ended 31 December 2023; the report is published on the central bank's own site on KPMG S.A. letterhead and addressed to the bank at 12, avenue du Commerce, Conakry.",
+      "entity_hq_city": "Paris La Defense",
+      "entity_hq_iso3": "FRA",
+      "as_of": "2023 financial statements",
+      "source_url": "https://www.bcrg-guinee.org/wp-content/uploads/2026/02/BCRG-Rapport-audit-des-etats-financiers-au-31122023.pdf",
+      "source_title": "Banque Centrale de la Republique de Guinee - Rapport du commissaire aux comptes sur les etats financiers, exercice clos le 31 decembre 2023",
+      "weak_source": false
+    }
+  ]
+}
