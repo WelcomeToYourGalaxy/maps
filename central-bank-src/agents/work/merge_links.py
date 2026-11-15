@@ -156,6 +156,22 @@ def main():
     places = set(json.load(open(os.path.join(A, '..', 'out', 'core.json')))['E'])
 
     have_tie = {(fold(l['entity']), l.get('cb_iso3'), l.get('relation')) for l in nets['links']}
+    # An auditor already recorded in gaps.json['auditors'] is on the map just as much as one in
+    # networks.json, but it is NOT in nets['links'], so without this it slips through as a second
+    # record for the same bank -- and the map renders every auditor as "audits the accounts of X"
+    # with no notion of a past mandate, so two records for one bank read as a JOINT AUDIT.
+    # Round 55 caught exactly that: an agent re-found Comoros' Mazars Fivoarana and Guinea's
+    # KPMG S.A., both already in gaps.json, and the dry run offered to file both.
+    _gaps = L('gaps.json')
+    for a in (_gaps.get('auditors') or []):
+        if a.get('cb_iso3') and (a.get('entity') or a.get('auditor')):
+            have_tie.add((fold(a.get('entity') or a.get('auditor')), a['cb_iso3'], 'audits its accounts'))
+    # A bank already holding ANY auditor must not gain a second one from an agent file, even under a
+    # different firm name: that is the one-current-auditor-per-bank rule, and a changed mandate is a
+    # decision to make by hand rather than a merge to wave through.
+    _has_auditor = {a['cb_iso3'] for a in (_gaps.get('auditors') or []) if a.get('cb_iso3')}
+    _has_auditor |= {l['cb_iso3'] for l in nets['links']
+                     if l.get('cb_iso3') and 'audit' in (l.get('relation') or '').lower()}
     have_case = {(c.get('iso3'), (c.get('source_url') or ''), (c.get('people') or '')[:40])
                  for c in cor['cases']}
     have_rd = {(c.get('iso3'), (c.get('source_url') or ''), (c.get('people') or '')[:40])
@@ -238,6 +254,13 @@ def main():
             key = (fold(r['entity']), iso, r['relation'])
             if key in have_tie:
                 dropped.append((src, label, 'already on the map')); continue
+            if r['relation'] == 'audits its accounts' and iso in _has_auditor:
+                refused.append((src, label, 'this bank already has an auditor on the map under another '
+                                            'name; the map renders every auditor as "audits the accounts '
+                                            'of X" with no past mandate, so a second record reads as a '
+                                            'joint audit. Decide by hand which is current, and put the '
+                                            'handover in its detail'))
+                continue
         elif k == 'event':
             if (r.get('kind') or '').strip().lower() == 'other':
                 refused.append((src, label, 'kind "other" is not counted on the layer or in the '

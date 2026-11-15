@@ -1,0 +1,18 @@
+{
+ "notes": "North Macedonia was the one auditor-row item the round-54 handoff said a human with a browser had to settle. It is a pure Cloudflare host block on a document that is openly published and indexed: curl gets 403 on both www.nbrm.mk and nbrm.mk, and WebFetch returns a client error on this path, although nbrm.mk/guverner-en.nspx reads through WebFetch perfectly, so the block is per-path rather than per-host. Opened in the user's own Chrome, the Cloudflare interstitial cleared on its own after a few seconds and the PDF rendered. Chrome's PDF viewer is canvas-based so the text could not be extracted, and the auditor's report on page 3 of 82 was read from a screenshot: the Grant Thornton wordmark, the heading Independent Auditor's Report, addressed To the Council of the National Bank of the Republic of North Macedonia, with the firm block printing Grant Thornton DOO, Sv. Kiril i Metodij 52b-1/20, 1000 Skopje, North Macedonia, VAT No. 4030003475973. The 2023 statements are the latest audited year with the firm named: the bank's own Audit Committee summary for 2024, published March 2025, still refers to the independent auditor's report on the 2023 statements, and a March 2025 news report says the Council adopted the 2024 statements as audited by an independent auditing firm without naming it. MKD had to come off gaps.json['auditors_unavailable'] in the same commit.",
+ "records": [
+  {
+   "cb_iso3": "MKD",
+   "entity": "Grant Thornton DOO",
+   "entity_type": "firm",
+   "relation": "audits its accounts",
+   "detail": "Grant Thornton DOO of Skopje signed the Independent Auditor's Report on the financial statements of the National Bank of the Republic of North Macedonia for the year ended 31 December 2023, prepared under International Financial Reporting Standards, addressed to the Council of the National Bank. The opinion is unqualified. The bank publishes the report on its own site and in the Official Gazette; its Audit Committee summary for 2024 confirms the Council accepted this report, and the 2024 statements were adopted as audited without the firm being named in the announcement.",
+   "entity_hq_city": "Skopje",
+   "entity_hq_iso3": "MKD",
+   "as_of": "2023 financial statements",
+   "source_url": "https://www.nbrm.mk/content/Independent-Auditor's-Report-and-Financial-Statement-of-the-National-Bank_2023.pdf",
+   "source_title": "Independent Auditor's Report and Financial Statements of the National Bank of the Republic of North Macedonia for the year ended 31 December 2023",
+   "weak_source": false
+  }
+ ]
+}
