@@ -85,15 +85,25 @@ HQ = {"Citi": ("New York", "USA"), "BlackRock": ("New York", "USA"), "UBS Group 
       "Andersen Tax": ("San Francisco", "USA"), "Ualá": ("Buenos Aires", "ARG"), "William R. Rhodes Global Advisors": ("New York", "USA"), "RLUSD": ("New York", "USA"), "Crane Currency": ("Boston", "USA"), "Goznak": ("Moscow", "RUS"), "Forvis Mazars": ("Paris", "FRA"), "Mazars": ("Paris", "FRA")}
 HQ.update({"Bank of Credit and Commerce International (BCCI)": ("London", "GBR"), "Global Witness": ("London", "GBR"), "BlueMountain Capital Management": ("New York", "USA"), "Bozano Simonsen": ("Rio de Janeiro", "BRA"), "BankUnited, N.A. (BankUnited, Inc.)": ("Miami", "USA"), "Infrastructure Development Finance Company": ("Chennai", "IND"), "Giesecke+Devrient Currency Technologies GmbH": ("Munich", "DEU"), "Official Stanford Investors Committee": ("Dallas", "USA"), "Claritas Investments": ("Sao Paulo", "BRA"), "Autonomous Research": ("London", "GBR"), "Nambib Resources": ("Windhoek", "NAM"), "DSB Bank": ("Amsterdam", "NLD"), "Commissie Scheltema": ("The Hague", "NLD"), "Baker Tilly GmbH & Co. KG Wirtschaftsprüfungsgesellschaft": ("Munich", "DEU"), "Credit Suisse": ("Zurich", "CHE"), "Forry Associates": ("Road Town", "VGB"), "UN Monitoring Group for Somalia and Eritrea": ("New York", "USA"), "UN Commission on Human Rights in South Sudan": ("Geneva", "CHE"), "UN Panel of Experts on Yemen": ("New York", "USA"), "Bank of Antigua": ("Saint John's", "ATG")})
 HQ_APPROX = set()
+NAME_CLASH = set()
 nodes, idx, links = [], {}, []
 def node(name, typ, city, iso, parent=None):
-    name = {"Ernst & Young": "EY", "Ernst and Young": "EY", "Citigroup": "Citi", "Securency International (now CCL Secure)": "Securency", "Oesterreichische Banknoten- und Sicherheitsdruck (OeBS)": "OeBS", "Pallas Athéné Domus Meriti Foundation": "Pallas Athéné foundations", "Citibank": "Citi", "Giesecke & Devrient GmbH": "Giesecke+Devrient", "Giesecke+Devrient Currency Technologies GmbH": "Giesecke+Devrient", "Oberthur Technologies S.A.": "Oberthur Fiduciaire", "Securency International": "Securency", "PricewaterhouseCoopers Oy": "PwC", "PricewaterhouseCoopers Inc.": "PwC", "KPMG Ltd": "KPMG", "Forvis Mazars GmbH & Co. KG Wirtschaftsprüfungsgesellschaft Steuerberatungsgesellschaft": "Forvis Mazars", "Mazars S.A.": "Forvis Mazars", "Deloitte & Associés S.A.S.": "Deloitte", "Deloitte & Touche S.p.A.": "Deloitte", "KPMG Auditores S.L.": "KPMG", "KPMG LLP": "KPMG", "KPMG Taseer Hadi & Co.": "KPMG", "EY Accountants B.V.": "EY", "Ernst and Young LLP (EY)": "EY", "Ernst & Young LLP": "EY", "Ernst & Young AS": "EY", "PricewaterhouseCoopers LLP": "PwC", "Price Waterhouse & Co. S.R.L.": "PwC", "BDO Ebrahim & Co.": "BDO", "Credit Suisse First Boston": "Credit Suisse"}.get(name, name)
+    name = {"Ernst & Young": "EY", "Ernst and Young": "EY", "Citigroup": "Citi", "Securency International (now CCL Secure)": "Securency", "Oesterreichische Banknoten- und Sicherheitsdruck (OeBS)": "OeBS", "Pallas Athéné Domus Meriti Foundation": "Pallas Athéné foundations", "Citibank": "Citi", "Giesecke & Devrient GmbH": "Giesecke+Devrient", "Giesecke+Devrient Currency Technologies GmbH": "Giesecke+Devrient", "Oberthur Technologies S.A.": "Oberthur Fiduciaire", "Securency International": "Securency", "PricewaterhouseCoopers Oy": "PwC", "PricewaterhouseCoopers Inc.": "PwC", "KPMG Ltd": "KPMG", "Forvis Mazars GmbH & Co. KG Wirtschaftsprüfungsgesellschaft Steuerberatungsgesellschaft": "Forvis Mazars", "Mazars S.A.": "Forvis Mazars", "Deloitte & Associés S.A.S.": "Deloitte", "Deloitte & Touche S.p.A.": "Deloitte", "KPMG Auditores S.L.": "KPMG", "KPMG LLP": "KPMG", "KPMG Taseer Hadi & Co.": "KPMG", "EY Accountants B.V.": "EY", "Ernst and Young LLP (EY)": "EY", "Ernst & Young LLP": "EY", "Ernst & Young AS": "EY", "PricewaterhouseCoopers LLP": "PwC", "Price Waterhouse & Co. S.R.L.": "PwC", "BDO Ebrahim & Co.": "BDO", "Credit Suisse First Boston": "Credit Suisse", "UBS Group AG": "UBS", "Standard Chartered Bank": "Standard Chartered", "JPMorgan Chase Bank": "JPMorgan Chase", "JPMorgan Chase Bank, N.A.": "JPMorgan Chase", "ING Bank": "ING", "ING Group": "ING", "Absa": "Absa Group", "Absa Bank Limited": "Absa Group", "AKO Capital LLP": "AKO Capital", "AIA Group Limited": "AIA Group", "Bear Stearns & Co., Inc.": "Bear Stearns", "Northern Trust Company": "Northern Trust", "The Northern Trust Company (Northern Trust Corp.)": "Northern Trust", "State Tribunal (Poland)": "State Tribunal of Poland", "Directorate of Public Prosecutions (Botswana)": "Directorate of Public Prosecutions of Botswana", "PricewaterhouseCoopers": "PwC", "Cristina Kirchner": "Cristina Fern\u00e1ndez de Kirchner", "Government of Argentina (Treasury)": "Government of Argentina", "Council of Representatives of Iraq (committee)": "Council of Representatives of Iraq", "Board of Supreme Audit": "Board of Supreme Audit (Iraq)", "M\u00fcnze \u00d6sterreich AG (Austrian Mint), Vienna": "Austrian Mint", "Goldman Sachs Bank USA": "Goldman Sachs", "Morgan Stanley Bank, N.A.": "Morgan Stanley", "Morgan Stanley Private Bank, N.A.": "Morgan Stanley", "Sejm of the Republic of Poland": "Sejm of Poland", "Attorney-General of Libya": "Attorney General's Office (Libya)", "Parliamentary inquiry commission on Novo Banco's losses": "Assembleia da Rep\u00fablica committee of inquiry into Novo Banco", "Supreme Court of Thailand, Criminal Division for Holders of Political Positions": "Supreme Court of Thailand"}.get(name, name)
     if name in HQ: city, iso = HQ[name]; HQ_APPROX.add(name)
     key = norm(name)
     if key not in idx:
         idx[key] = len(nodes); nodes.append({"name": name, "type": typ, "city": city, "iso3": iso, "parent": parent})
     else:
         nd = nodes[idx[key]]
+        # WHY THIS WARNING EXISTS. Only the first record to name a party sets its head
+        # office; later ones fill blanks and are otherwise ignored. So when two records
+        # name what looks like one party but place it in two different countries, the
+        # second placement vanishes silently and one marker stands for both. That is how
+        # four national audit offices became one diamond, and how a node carrying Kenya
+        # and Bermuda ended up sitting in Hamilton labelled KEN. A party whose name is
+        # unique only inside its own country needs a country-qualified name in the data.
+        if iso and nd.get("iso3") and iso != nd["iso3"]:
+            NAME_CLASH.add((name, nd["iso3"], iso))
         for f2, v in (("city", city), ("iso3", iso), ("parent", parent), ("type", typ)):
             if not nd.get(f2) and v: nd[f2] = v
     return idx[key]
@@ -166,8 +176,14 @@ for a_ in GAPS.get("auditors", []):
     # a bank with no private auditor is audited by a state body named in its law.
     # That is the finding, so the node must not be typed as a firm.
     kind = "state body" if a_.get("auditor_kind") == "public body" else "firm"
+    # A state audit office's name is unique only inside its own country. Four countries
+    # printed theirs as a plain "Auditor General" and the node key folded all four into
+    # one diamond, placed in Zambia and labelled Uganda, so the map said Guyana's bank
+    # was audited by Uganda's audit office. Those records now carry a country-qualified
+    # name; auditor_as_stated keeps the source's own wording for the popup sentence.
     n = node(a_["auditor"], kind, a_.get("auditor_hq_city"), a_.get("auditor_hq_iso3"))
-    add(n, a_.get("cb_iso3"), "service", "Audits its accounts", (a_.get("auditor") or "") + " audits the accounts" + (" (" + str(a_["year"]) + ")" if a_.get("year") else ""), a_.get("source_title"), a_.get("source_url"), "network")
+    say = a_.get("auditor_as_stated") or a_.get("auditor") or ""
+    add(n, a_.get("cb_iso3"), "service", "Audits its accounts", say + " audits the accounts" + (" (" + str(a_["year"]) + ")" if a_.get("year") else ""), a_.get("source_title"), a_.get("source_url"), "network")
 # the central banks' own bank: the BIS, owned by its member central banks
 bis = node("Bank for International Settlements", "international body", "Basel", "CHE")
 for m in owners.get("bis_members", []):
@@ -279,3 +295,6 @@ from collections import Counter
 print("suspected patterns", len(SUS))
 print("nodes", len(nodes), "links", len(links), Counter(l["rel"] for l in links), "unplaced", [n["name"] for n in nodes if "ll" not in n][:20])
 print("approx placed (country centre):", sum(1 for n in nodes if not n.get("exact")))
+if NAME_CLASH:
+    print("NAME CLASH -- one party name given two home countries; qualify it by country in the data:")
+    for nm, a, b in sorted(NAME_CLASH): print("   %s: kept %s, ignored %s" % (nm, a, b))

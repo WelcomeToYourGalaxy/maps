@@ -3,7 +3,8 @@
 Breadth = share of monetary authorities on the map holding at least one record
 of that kind. Computed exactly from the data files. Depth estimates live in
 about.html and are a judgement, not a computation."""
-import json, sys, os
+import json
+import os, sys
 A = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 L = lambda n: json.load(open(os.path.join(A, n)))
 
@@ -152,3 +153,38 @@ _only_other = sorted(iso(ev['events']) - iso(_evc))
 if _only_other:
     print("Places holding only uncounted ('other') events, blank on the layer: " + " ".join(_only_other))
     print("  Their events show in the country box but are not counted by app.js or by the row above.\n")
+
+# WHY THIS SECTION EXISTS. The standing check on this map is that coverage.py must not
+# claim more places than the score diff moves -- that symptom has caught four counting
+# bugs. Round 60 hit it with an innocent cause and nearly spent a round on it. Curacao
+# gained a move against its bank, the row went up a place, the layer renders it (the
+# layer reads evN directly), and its exposure score did not budge. outsideParts in
+# app.js pushes the "Moves against it" component only AFTER it has pushed a law or
+# pressure component, and returns early if it has neither -- so for a place in neither
+# the Romelli nor the Garriga dataset, and with no Dreher pressure figure, an event
+# cannot reach the score at all. The places below are the ones where that holds. A
+# place listed here moving no score is expected; any OTHER place failing to move is a
+# bug worth chasing.
+def _built_places():
+    """D.P out of the built page, or {} if it has not been built yet."""
+    import re as _re
+    for f in ('dist/central_bank_independence.html',
+              os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..',
+                           'dist', 'central_bank_independence.html')):
+        try:
+            m = _re.search(r'const D = (\{.*?\});\n', open(f, encoding='utf-8').read(), _re.S)
+        except OSError:
+            continue
+        if m:
+            return json.loads(m.group(1)).get('P', {})
+    return {}
+
+
+_BP = _built_places()
+_no_outside = sorted(i for i in iso(_evc)
+                     if i in _BP and not (_BP[i].get('r') or _BP[i].get('g') or _BP[i].get('p')))
+if _no_outside:
+    print("Places with a counted move whose score cannot move: " + " ".join(_no_outside))
+    print("  No independence index and no pressure figure, so app.js gives them no")
+    print("  outside-influence group and the event reaches no score. They still render")
+    print("  on the layer and still count in the row above.\n")
