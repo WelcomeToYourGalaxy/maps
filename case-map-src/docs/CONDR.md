@@ -28,9 +28,22 @@ Rules (non-negotiable):
 Budget: WebSearch is capped at about 200 calls per turn shared with two other agents. Use at most 60 searches. Open each case's own sources and lender project pages first. WebFetch has an hourly limit shared with other agents; if you hit it, wait for the next UTC hour.
 Save progress every ~10 cases. Validate with python. Reply briefly with counts.
 
-## These are retries
+## Is your batch a retry or a first attempt? Read this before the section below.
 
-Every case in these batches has been looked for once already and came back without a documented term. Each record carries `previously_searched`, the note from that attempt, and most carry some `conditions` text that describes the money without naming a term it depended on. Do not repeat the route that already failed: go to a different document type (the financing agreement rather than the project page), a mirror, or a different institution in the same deal. If you reach the same dead end, say so in `searched` and name the host that refused, so a later round knows a mirror is needed rather than another search.
+**Check your input.** If each record carries a `previously_searched` field, your batch is a retry and
+the section below applies. **If it does not, your batch is a first attempt and the section below does
+not apply to you** — ignore it and use the ordinary routes, starting with the document that is most
+likely to carry the term.
+
+This gate was added after round 33, where three writers were given first-attempt batches of cases
+merged in rounds 31 and 32 and the section below told all three they were retries. Two of them
+reported it. A writer who believes a route has already failed goes to a mirror or a second
+institution instead of opening the obvious document, which on a first attempt is the one that has
+the answer: 58 of those 76 cases had their own conformed agreement sitting in the harvest cache.
+
+## These are retries — only where your records carry `previously_searched`
+
+Every case in such a batch has been looked for once already and came back without a documented term. Each record carries `previously_searched`, the note from that attempt, and most carry some `conditions` text that describes the money without naming a term it depended on. Do not repeat the route that already failed: go to a different document type (the financing agreement rather than the project page), a mirror, or a different institution in the same deal. If you reach the same dead end, say so in `searched` and name the host that refused, so a later round knows a mirror is needed rather than another search.
 
 ## Where the documents actually are
 
@@ -216,3 +229,84 @@ brief were wrong and cost three rounds, so test a host yourself before recording
 
 **Entries recording what a loan did NOT require are worth having** and get the strictest check:
 only write one when you can see the whole covenant schedule, and quote where it is.
+
+## Round 33's findings — read these before you start
+
+Round 33 ran 76 first-attempt cases through three writers and three checkers. These are the things
+that changed an entry.
+
+**Search `Aide Memoire` before you record `exhaust` or `nopub`.** On Morupule B no loan, project or
+guarantee agreement is published, and the case had been closed as exhausted. The API returns a
+published aide memoire — "Safeguards review mission, October 2011" — whose **Annex 6 is a
+covenant-status table reproducing all three unpublished agreements' undertakings with section
+numbers, deadlines and compliance status**. It yielded four condition types, including electricity
+tariff and independent-regulator conditions. On a supervision-heavy project there is usually one
+aide memoire per mission and they are all indexed. This brief ran thousands of words on hosts and
+said nothing about this document type.
+
+**Read the loan or credit number off the cover, never off the catalogue title.** They differed in
+six cases across two batches: 4738-IR against the cover's 4738-IRN, 7166-LB against 7166-LE,
+7238-LC against 7238-SLU, 4237-LS against 4237-LSO, and a credit whose cover reads "3866-1 ZA"
+twice while the Bank catalogues it as "C3866-1-ZM". Where they differ the cover wins, and the
+source title is left matching the catalogue so the title still matches the file at its URL.
+
+**Confirm the document is executed, not a draft.** A file the archive titles "Credit Agreement
+C3936-LC - Conformed" is an unsigned "CONFIDENTIAL DRAFT (Subject to Change)" of 3 May 2004 with
+the credit number and the date left blank. A sentence had been built on it. The check is three
+things on the cover: a date, a signature block, and no blanks.
+
+**The date test goes in `conditions_add`, where it renders — not in `searched`, where it does not.**
+Round 33 found three covenants that postdate the harm, and in all three the writer had already found
+the problem and written it down in the research-log field the public never sees. Nothing was hidden;
+it simply did not reach the card. Where the agreement postdates the case's `start`, or is not the
+instrument that was in force, say so inside the term itself, with the gap stated. Bukhara's harm is
+2012 ("the construction work have already started", and the fence, gate, brick store and chicken
+shelter "have already been dismantled by the contractor") against a 2016 covenant; Rukarara's only
+published agreement is seven years after approval; Mongolia's East Tsankhi covenant comes from a
+February 2014 restatement and the shelters moved in 2010.
+
+**Cite the obligated party and the document type, not just the schedule.** A Zanzibar term was cited
+to the financing agreement's Schedule 2 Section I.C when it is in the **project agreement**'s
+Schedule I.C.2(b), binding a different party. On four projects in one batch the financing agreement
+and the project agreement sit side by side on disk with near-identical section lettering. Likewise
+the obligated party itself: the West Bank recipient is the PLO, and the clause reads "The Recipient
+shall **cause the Palestinian Authority** to carry out".
+
+**Read the project description in the same document before citing a part-numbered covenant.** Part
+numbers move between an original agreement and its additional financing. A Honduras term quoted a
+covenant barring works under Parts A.7-A.9, which that agreement's own Schedule 1 makes the storm-
+damage roads — not the roads carrying the case's 201 compensation cases, which are Parts A.3, A.4
+and A.5 of the earlier agreement.
+
+**A clause's qualifier travels with it.** A Pakistan framework was quoted as applying "to all
+components of the project regardless of the source of financing". The full clause attaches the
+source-blind phrase to two named highways, N-5 and M-9; the case's harm is on N-15, N-35 and the
+Jhelum Valley Road.
+
+**Handwritten dates on conformed copies.** Eight of nineteen covers in one batch have a date that
+text extraction renders as garbage (`Dated -c)D ,2016`, `dated A~l,lS t 1 l q,`). Where the month is
+unreadable, write "of 2016" rather than a precise-looking date with no document behind it, and say
+the day comes from the Bank's catalogued `docdt`. Where the cover matters, rasterise the page: at
+about 190 dpi a handwritten date is legible when `pdftotext` cannot see it.
+
+**Never construct a URL — and the newer URL shape is the dangerous one.** A checker drafting a
+correction wrote a plausible `curated/en/099.../pdf/P...` path from memory of the Bank's newer URL
+shape, caught itself and removed it. The old 18-digit shape cannot be guessed; the newer
+`099.../P<number>` shape can. Every URL comes from the manifest or from an API response you can
+re-run.
+
+**Two routes worth having.**
+- `search.worldbank.org/api/v3/wds?projectid=<P-number>` **works as a filter** and returns the same
+  total as the P-number in `qterm`. (This brief says `docty` as a filter returns nothing; that is
+  still true, and `projectid` is different.) With `&rows=1` it returns the Bank's own document
+  count, which turns "the record holds N documents" from an assertion into a one-call check, and
+  lets an absence be proved by enumeration instead of asserted.
+- `documents1.worldbank.org/.../text/<file>.txt` **301s to `/txt/`** and returns a 316-byte redirect
+  body without `curl -L`. A round could easily record that as an empty document.
+
+**One project number can hold another country's agreement, correctly filed.** P122402 is the West
+Africa regional communications programme APL-1B, covering The Gambia, Guinea and Burkina Faso, and
+the Bank files Burkina Faso's Credit 6222-BF under it. The file is not misplaced and is still the
+wrong country's covenant. Of all 92 documents under that number the only agreements published are
+Burkina Faso's; Guinea's H714-GN and The Gambia's H713-GM are both absent, so the absence is the
+programme's rather than any one country's.
