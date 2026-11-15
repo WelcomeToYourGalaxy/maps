@@ -2,7 +2,7 @@
 
 Paste or attach this in a new chat to carry on adding to the map.
 
-Rewritten at round 43, current through round 45. It states the current position only. Earlier versions kept round-by-round narrative, which went stale and in round 26 sent agents to re-research records already on the map; the moves-against-the-bank section had grown four rounds of narrative again by round 42 and was rewritten as a statement. Keep it that way: when something changes, edit the statement, don't append a round note. The round-by-round account lives in `agents/work/research_log_2026-11.json`, which is where to look for what was searched and found nothing. **Where this names a country as dead or blocked, that is as of round 45 — re-derive the target list from `coverage.py` before briefing anything.**
+Rewritten at round 43, current through round 46. It states the current position only. Earlier versions kept round-by-round narrative, which went stale and in round 26 sent agents to re-research records already on the map; the moves-against-the-bank section had grown four rounds of narrative again by round 42 and was rewritten as a statement. Keep it that way: when something changes, edit the statement, don't append a round note. The round-by-round account lives in `agents/work/research_log_2026-11.json`, which is where to look for what was searched and found nothing. **Where this names a country as dead or blocked, that is as of round 46 — re-derive the target list from `coverage.py` before briefing anything.**
 
 ## What it is
 - A standalone global map titled **"Central bank capture"**. It shows who owns and steers each central bank, what it hides, the corruption inside and around it, and how far its money reaches beyond its borders.
@@ -41,7 +41,7 @@ Another session of the user's commits to this repo often. **Always `git fetch or
   - Links: `{n, cb | tn, rel, role, detail, src_t, src_u}`.
   - Popups turn each link into a plain sentence (`SAY` / `sayLink` / `srcItem` in `app.js`). Add a `SAY` entry for any new `role` string.
 
-## Where it stands (45 rounds in, 14 November 2026)
+## Where it stands (46 rounds in, 14 November 2026)
 
 1,491 outside parties and 2,091 ties. 1,720 writeups, one for every box. 20 patterns.
 
@@ -49,8 +49,8 @@ Another session of the user's commits to this repo often. **Always `git fetch or
 |---|---|---|---|
 | External auditors | 198 | 161 | 78% |
 | Corruption cases | 232 | 154 | 75% |
-| Banknote printers | 159 | 147 | 71% |
-| Governor removals and pressure | 153 | 100 | 49% |
+| Banknote printers | 163 | 149 | 72% |
+| Governor removals and pressure | 155 | 101 | 49% |
 | Swap lines | 240 | 84 | 41% |
 | Revolving door | 206 | 80 | 39% |
 | Outside reserve managers | 155 | 37 | 18% |
@@ -280,7 +280,7 @@ Bounded sets that worked:
 
 **What the row shows.** The Big Four sign off on about half the records; eight networks cover roughly seven in ten; the rest are national audit offices and local firms. The countries left are disproportionately places where the auditor is a state body or unpublished, so finishing will likely push the Big Four share *down* a point or two rather than up. Take the exact figures from the data, not from this paragraph.
 
-### 2. Banknote printers — 71%
+### 2. Banknote printers — 72%
 73 absent, of which 69 are real targets. **BanknoteNews is the vein**, hit rate about a third, yield concentrated in 2023–2026 posts and in commemorative notes. Query shape: `banknotenews <country> <currency> new note confirmed "Printer"`, then fetch the newest entry per country, not the highest denomination. Many recent entries carry no `Printer:` field at all rather than "(Unknown)".
 
 **Second vein:** the issuing bank's own new-series press release — it worked three times in four attempts (Iceland, Fiji, Seychelles) and is the only vein that states a printer plainly enough to file. Multi-bank cooperation releases are worth hunting: one joint Banque de France release with the OeNB and Banco de Portugal yielded two records at once.
@@ -290,6 +290,10 @@ Bounded sets that worked:
 **Closed — do not re-run.** The customer-list sweep across De La Rue, G+D, Crane, Oberthur, IDEMIA, Veridos, Bundesdruckerei, Goznak, KOMSCO, PWPW, Orell Füssli, CBPM, Canadian Bank Note, Royal Joh. Enschedé, Thomas Greg & Sons, SPMCIL, Peruri and Pakistan Security Printing: none publishes one except Note Printing Australia, already mined. PWPW's archive and G+D's case studies are exhausted for banknotes. CBPM's nine named customers are all recorded. **The euro area is structurally closed** — do not spend a round on Finland, Slovenia, Estonia, Latvia, Lithuania, Cyprus, Malta, Croatia, Luxembourg, Italy, Greece, the Netherlands, Belgium or Ireland.
 
 **BCEAO and BEAC are now closed, and they were worth 14 places between them.** Both currency unions have their notes printed by the Banque de France at Chamalieres, and the source is the French foreign ministry's own Franc Zone page: the African central banks place the orders under a contract with a manufacturer, in this case the Banque de France, and CFA franc notes and coins have been made at Chamalieres since 1945. `beac.int` being robots-disallowed never mattered — **the printer of a currency union's notes may be documented by the printer's own government rather than by the union.** The same page names the Central Bank of the Comoros as the third franc-zone bank; the Comoros was already recorded.
+
+**The printing tender, reported in the local press, is the vein that replaced BanknoteNews.** North Macedonia fell to it after earlier rounds found `nbrm.mk` refusing its own PDFs: Macedonian outlets report each contract with the firm, the denomination, the number of notes and the price, so one country yielded three records — Oberthur Fiduciaire for the 100-denar note in May 2026 (59,800,000 denars), Goznak for the same denomination in 2021 (about 400,000 euros, in the reissue carrying the state's changed constitutional name), and three De La Rue contracts for the 10, 500 and 1,000 denar notes (45 million notes, 3.775 million euros). **Search the country's own press for "contract" plus "printing banknotes" in the local language, not the bank's site.**
+
+**Two cautions this row keeps producing.** A substrate supplier is not a printer: Zambia's Heritage Series of 31 March 2025 was printed on Landqart's Durasafe for the 10 and 20 kwacha, and the bank thanked Landqart at the launch, but BanknoteNews records the printer as unknown for every denomination, so Zambia stays absent on this row and holds a substrate record instead. And Costa Rica is filed `weak_source`: Oberthur won the 2008 international tender among the makers on the bank’s supplier register and printed the 2010-11 family, but that rests on Spanish Wikipedia and a numismatic blog, not on a BCCR document. The BCCR press release of 11.11.2020 named in earlier rounds was not found.
 
 **Still live:** PWPW's *news archive* names customers one release at a time (Paraguay and the Dominican Republic came from it); G+D's *per-country case-study pages* (Armenia came from one).
 
@@ -396,7 +400,7 @@ The three currents once listed as missing are all in: `supervisory-capture` (Ire
 
 ## How long to finish
 
-**Yield by round:** 35, 34, 33, 56, 50, 24, 34, 42, 40, 21, 14, 13, then 4, 3, 2, 3, then two rounds of 0 records (two patterns; four corrections), then 6, 4, 3, 3, 4, 5, 4, 2, 5 and 2.
+**Yield by round:** 35, 34, 33, 56, 50, 24, 34, 42, 40, 21, 14, 13, then 4, 3, 2, 3, then two rounds of 0 records (two patterns; four corrections), then 6, 4, 3, 3, 4, 5, 4, 2, 5, 2 and 7.
 
 **Count what is left in records, not in countries.** `agents/work/whats_left.py` splits each row's absent list into currency union members and everything else, and the split changes the picture: at round 45 about 140 of the absent cells across all rows were union members, reachable by roughly 17 union records rather than 140 searches. Round 45 took 14 of them with two records. **Before planning a row, run that script** — a union record is the cheapest thing on the map, and the rows where it still applies are gold custodians (30 member cells, 4 records), outside reserve managers (40 cells, 4 records), the revolving door (21 cells, 3 records) and moves against the bank (24 cells, 3 records). Two caveats: the euro area is genuinely closed for printers, because production is pooled across 11 accredited works and no one work prints a given country's notes; and a union record must be a fact about the union, not a member country's fact keyed upward. **The late rounds are small by nature and that is not a sign of exhaustion:** rounds 40 to 43 added 15 records and 13 new places to one row, which moved it 37% to 43%, because each round corrected the search rather than widening it. A round that produces two records and two documented negatives is doing the same work as a round of thirty did at the start.
 
@@ -411,7 +415,7 @@ The service rows are far enough along that a confirmed blank is worth as much as
 - **Which statuses count.** Rule above. Romania is the edge case: Olteanu was convicted with a final five-year sentence in October 2020, annulled as time-barred on 31 March 2023, with the court still confiscating €1 million. Left out because no conviction stands; the writeup gives all three facts. **If reversed, it is one string to move between `CC_OUT` in `app.js` and `CC_COUNTED`/`CC_NOT_COUNTED` in `build_final.py`.**
 - **Union ties expand to members**, service ties included.
 - **Blanks on case layers are split by press freedom.**
-- **An episode can count on both case layers.** Settled at round 44. Where a source names an organ of the state — head of state, government, parliament, or a currency union's heads of state — that removed, suspended or pressed out a governor, that act counts as a move against the bank even when the episode is already a corruption case. The event record describes only the state's action; what the official was accused of stays in the corruption case. A court dismissing a claim, a suspended sentence, a prosecution of an individual, or the bank's own board acting on its own officer does **not** qualify. Tanzania, Nepal, Somalia and the BCEAO were cross-filed on this rule, taking the row from 89 to 100 places. `cross_layer.py` holds the reviewed list, including the marginal cases left out (the Maldives, Burundi) and the excluded ones with their reasons.
+- **An episode can count on both case layers.** Settled at round 44. Where a source names an organ of the state — head of state, government, parliament, or a currency union's heads of state — that removed, suspended or pressed out a governor, that act counts as a move against the bank even when the episode is already a corruption case. The event record describes only the state's action; what the official was accused of stays in the corruption case. A court dismissing a claim, a suspended sentence, a prosecution of an individual, or the bank's own board acting on its own officer does **not** qualify. Tanzania, Nepal, Somalia and the BCEAO were cross-filed on this rule, taking the row from 89 to 100 places. `cross_layer.py` holds the reviewed list, including the marginal cases left out (the Maldives) and the excluded ones with their reasons. **Burundi was on that marginal list and is now filed as a move in its own right:** President Evariste Ndayishimiye fired governor Dieudonne Murengerantwari on 8 October 2023, thirteen months into a five-year term, the presidency giving no reasons; the arrest and charges stay in the corruption case. The actor was all that the record needed.
 - **The completeness statistics belong in `about.html`**, so a reader can judge what they are looking at.
 
 ## UI behaviour to preserve
