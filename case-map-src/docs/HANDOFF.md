@@ -1,8 +1,10 @@
 # Globalization Case Map: handoff for a new chat
 
-Last updated: round 32 — the eighth ICIJ tranche (33 cases, 2 extends, 57 drops, 95 rows worked),
-which **finishes the ICIJ confirmed-displacement table down to its last two rows**, and in which the
-checkers cut 12 of the writers' 45 keeps. Replaces every earlier handoff.
+Last updated: round 33 — the follow-on pass on rounds 31 and 32's 76 new cases. **71 of 76 now carry
+a documented lender term, 76 of 76 a whole-picture paragraph, and 107 of 127 company names a
+description.** The round also found that the completeness panel's "settled terms" row had been
+counting a case nobody had ever looked at as settled; it is corrected, and the honest figure is 91%
+where the flattering one read 93%. Replaces every earlier handoff.
 
 ## The aim, settled 14 Nov 2026 — a defensible big picture, not a bigger map
 
@@ -222,7 +224,186 @@ These came in over one session and all of them are done unless noted.
    rounds stale. The current handoff is this file, `case-map-src/docs/HANDOFF.md`, and there should
    never again be two.
 
-## READ THIS FIRST: round 32 is merged, built, tested and pushed
+## READ THIS FIRST: round 33 is merged, built, tested and pushed
+
+Not a case round. The follow-on pass the queue had as its first job: whole-picture text, condition
+types and company descriptions for the 76 cases merged in rounds 31 and 32. Ten writers and ten
+checkers, one checker per batch, none of whom saw the writing being done. Build is clean —
+`loan-condition cases matched 173 of 173`, 24 patterns, zero console errors headless.
+
+**What the 76 cases now carry.**
+
+| Job | Before | After |
+| --- | --- | --- |
+| Whole-picture paragraph | 0 of 76 | **76 of 76**, no blanks |
+| A documented lender term | 0 of 76 | **71 of 76**; 5 are evidenced absences |
+| A condition type that is not `research` | 2 of 76 | **71 of 76** |
+| Company and public-body descriptions | 8 of 137 entries | **122 of 137 entries**, 107 of 127 names |
+
+Map-wide, from the rendered panel: whole-picture text 1,162 of 1,169 (99%), conditions text 1,140
+(98%), company names described 1,169 of 1,309 (89%).
+
+### The handoff's claim that this job "needs no new research" was half wrong, and the half that was
+### right is the harvest cache
+
+Company descriptions and whole-picture text are web research and always were. **Conditions turned
+out to be largely desk work: 58 of the 76 projects had their own conformed loan, credit, financing
+or project agreement already on disk as text**, harvested in round 31 and never read. Three writers
+read the covenant instead of hunting for the document, and the yield was **71 of 76 against the
+3-to-22-out-of-43-to-70 that eleven previous conditions rounds managed**. That is not a better
+method; it is the same method with the documents already fetched.
+
+What the agreements say, in their own words:
+- **Nine cases carry a compensation-before-works covenant.** Dangriga's (Schedule 2, I.F.1(b)) bars
+  works until the plan's pre-works measures are done, the fund has reported compliance and the Bank
+  has confirmed. The DRC urban credit's reads "no displacement … before … full payment to Affected
+  Persons of compensation". Mozambique's Credit 5066-MZ, India's Credit 4054-IN, Haiti's Grant
+  D136-HT, Lebanon's and Honduras's all carry a version of it.
+- **Two outliers.** The RN34 Argentina loan agreement required that "any works under the Project do
+  not involve any Resettlement" (Schedule 2, I.G). The El Alto additional financing bars the credit
+  from financing land acquisition in La Paz or El Alto at all, with a refund duty.
+- **Shkodra-Lezha's 2006 agreement has no resettlement requirement**, and the completion report says
+  the Bank had "erroneously approved" school construction "not supported by the Financing
+  Agreement". A March 2010 amendment required the framework retroactively, with a dated covenant to
+  pay the Shkodra party by 30 April 2010.
+- **Riohacha** pledged La Guajira's coal and hydrocarbon royalties into a fiduciary account "until
+  the full repayment of the Loan".
+- **Iraq** is the one case where a document says the money actually stopped: the completion report's
+  paragraph 73 records a partial suspension of disbursement over the vendors' resettlement plan.
+
+### The completeness panel was flattering itself, and this round is how it showed
+
+The "settled terms" row was computed as *total cases minus cases tagged `research`* — so **a case
+nobody had ever looked at scored as settled.** Round 33 gave 71 such cases a real condition type and
+the row did not move, which is what exposed it. It now counts cases carrying at least one type that
+is not the research tag: **1,061 of 1,169, 91%**, where the old formula read 93%. The number went
+down because the old one was wrong. Whoever reads a completeness figure off this map should check
+what its denominator and its numerator actually are; this one had been published for several rounds.
+
+### What the checkers found, which is worth more than the counts
+
+**Six of the twenty batches' faults were one fault: a document contradicting itself, silently
+resolved to one reading — usually the favourable one.** A whole-picture checker named it best: the
+commonest fault was not fabrication but *resolution*. Instances: a Zambian road's domestic budget
+share printed as 66 per cent when 66 is the target and paragraph 60 says "was not met but reached 55
+percent"; Kigali's available capacity given as 75 MW when the indicator reads 60 against a target of
+53.3; Zanzibar street lighting at 21.3 km in a summary table and 18.26 km in the annex; an indicator
+scored achieved in one table and not achieved in the other. **The rule now in WHOLE.md: where one
+document gives a figure two ways, print both with where each appears, or print neither — and a
+results-framework annex and a summary table are two places.**
+
+**The review's prose is less reliable than the completion report's table, and nothing had said so.**
+Three of one batch's worst errors came from trusting an Evaluation Group sentence that had garbled
+the row it was summarising: El Alto's 5,010 households is the *baseline* printed as the output (the
+achieved value is 5,548), Ertanggou's 17.38 million m³ is a *reduction* printed as a level, and
+Thimphu's water and sewer targets of 600 are 850 and 950 in the completion report's annex.
+
+**A covenant dated after the harm, presented as governing it — three found, and in all three the
+writer had already spotted it and written it in `searched`, the field that does not render.** Nothing
+was hidden; it simply never reached the card. Bukhara's harm is 2012 (its own plan says "the
+construction work have already started" and the fence, gate, brick store and chicken shelter "have
+already been dismantled by the contractor") against a 2016 covenant. Rukarara's only published
+agreement is seven years after approval. Mongolia's East Tsankhi covenant comes from a February 2014
+restatement; the shelters moved in 2010. CONDR.md now requires the date test inside the public field.
+
+**`exhaust` fell to a document type nobody had looked for.** Morupule B had no published loan,
+project or guarantee agreement and had been closed as exhausted. The API returns a published **aide
+memoire** — "Safeguards review mission, October 2011" — whose Annex 6 is a covenant-status table
+reproducing all three unpublished agreements' undertakings with section numbers, deadlines and
+compliance status, including electricity tariff and independent-regulator conditions. Four condition
+types from one supervision document. `Aide Memoire` is now in CONDR.md's list.
+
+**For a public body, the project's own documents beat the web, and seven of ten blanks proved it.**
+A companies checker recovered seven descriptions from documents the writer already had paths to —
+loan agreements' definitions sections and appraisal documents' institutional annexes. Iraq's State
+Commission for Roads and Bridges is *defined* in its 2014 loan agreement as "the commission within
+the Ministry of Construction and Housing". The Ahwaz water company is a named party to its own
+project agreement. The writer's notes all said some version of "no company page, register entry or
+news article could be opened", which is a statement about the web offered as a conclusion about the
+world.
+
+**And the pages that do exist are nearly always the successor's.** A ministry's remit taken off its
+successor's infographic; a roads agency's creation taken off a page calling it by another name; a
+housing fund attributed to a delegate ministry created after the case closed; a water authority
+described in the present tense from a 1971 statute while two other entries in the same batch record
+the 1997 concessions that took over those operations. **24 renamings and ownership changes** were
+found and reported with dates rather than written over — Colombia's environment ministry split in
+2011, FONADE to ENTerritorio in 2019, Ukravtodor absorbed into the restoration agency in January
+2023, NIA back to the Office of the President by EO 69/2024, Manila Water now 52.16% Trident Water.
+
+**A date rule that caught five faults in one batch and four in another: no figure carries a date
+unless the document gives that date in the same sentence or table cell.** A 99.85 per cent stake
+dated to a deck's cover; a ministry split dated to a news timestamp; two statutes' years read off
+hyperlink URLs; a decree's year taken from the article reporting it; and four "at closing in <year>"
+phrases contradicted by the completion report's own KEY DATES "Actual Closing" cell. That last one
+hides inside a phrase that reads like context rather than a dated figure, so it survives a
+figure-by-figure check.
+
+**Read the loan number off the cover, not the catalogue title.** They differed in six cases:
+4738-IR against 4738-IRN, 7166-LB against 7166-LE, 7238-LC against 7238-SLU, 4237-LS against
+4237-LSO, and a credit whose cover reads "3866-1 ZA" twice while the Bank catalogues it "C3866-1-ZM".
+Worse, a file the archive titles "Credit Agreement C3936-LC - Conformed" is an unsigned
+"CONFIDENTIAL DRAFT (Subject to Change)" of 3 May 2004 with the number and date left blank, and a
+sentence had been built on it.
+
+### Four defects fixed in the pipeline
+
+1. **`merge_conds.py` was discarding `ct_note`**, the field that renders on the public card under
+   "What was looked for". Nine evidenced absence notes would have been lost. Fixed and merged.
+2. **The completeness metric**, above.
+3. **`extract.py` was annotating appraisal documents as outcome documents** (carried over from round
+   32's fix, now with the appraisal veto in place).
+4. **Ten merged sources had an empty `url`.** A checker recovered seven descriptions from cached
+   documents and cited them by project number, filename and paragraph with the URL left blank rather
+   than guess a `documents.worldbank.org` link — the right call, and it said so. All ten were
+   resolved from `harvest_manifest.json`; all 37 Bank URLs on those cases now match a manifest value
+   path for path.
+
+### A checker constructed a URL, caught itself, and named the reason
+
+Drafting a correction it wrote a plausible `curated/en/099.../pdf/P...` path from memory and removed
+it. **The Bank's old 18-digit URL shape cannot be guessed; the newer `099.../P<number>` shape can.**
+That is why round 31's 23-of-23 404s happened and why it can happen again. It is now in CONDR.md.
+
+### Two routes worth having
+
+- `search.worldbank.org/api/v3/wds?projectid=<P-number>` **works as a filter** (unlike `docty`), and
+  with `&rows=1` returns the Bank's own document count — which turns "the record holds N documents"
+  from an assertion into a one-call check, and lets an absence be proved by enumeration.
+- `documents1.worldbank.org/.../text/<file>.txt` **301s to `/txt/`** and returns a 316-byte redirect
+  body without `curl -L`. A round could record that as an empty document.
+
+### Three cards whose harm may not rest on the documents harvested for them
+
+Found by checkers working on other fields, and **not acted on, because the harm fields were not
+theirs to touch**:
+- **`chobhar-dry-port-arrests-kathmandu`** (P144335). "Chobhar", "arrest", "protest" and "Kirtipur"
+  appear **zero times in all six** cached Bank documents, and the cached resettlement plan is for the
+  Narayanghat-Mugling road, not the depot. The documents do support a serious land dispute at the
+  site — "the complaints on land issues in the ICD Kathmandu that halted work for about six months",
+  works "around the Jal Binayak temple area" and an Inspection Panel request the Panel registered,
+  visited and then "did not find sufficient grounds to investigate". **No arrest or detention is
+  recorded anywhere in them.** The Chobhar name and the Bank funding link come only from two
+  Kathmandu Post reports. Whether the arrests on that card can be sourced at all is the owner's call.
+- **`bijilo-cable-route-compensation-unpaid`** (P122402). "Bijilo" appears nowhere in the completion
+  report. The project number is the West Africa regional communications programme APL-1B, covering
+  The Gambia, Guinea and Burkina Faso, and the Bank files Burkina Faso's Credit 6222-BF under it.
+  The checker confirmed every figure on the whole-picture paragraph is The Gambia's own row and not
+  the programme's — the results framework carries both — so the paragraph is sound; the card's
+  siting is the open question.
+- **`hopewell-...`**'s own completion report says the 3,361 sq ft encroachment "did not have a
+  substantial impact on the two affected land owners, nor on the community" and was "minor, with no
+  lasting impacts". A checker calls it the thinnest limb (b) it saw.
+
+### Three verified terms left out on purpose
+
+A checker found three covenants verbatim in agreements already cited and **did not add them**,
+because nothing had checked them: Kabeli's 10 per cent economic-rate-of-return condition on Part 3
+sub-projects, Bukhara's 1.40/1.35 operating-ratio covenant with a duty to adjust rates, and Manila's
+guarantee Section 3.01 tariff and financial-viability covenant on the Republic. Each is noted in its
+entry's `searched`. A later round can take them with a checker.
+
+## Round 32 — merged, built, tested and pushed
 
 The eighth ICIJ tranche. **95 rows worked: 33 cases, 2 extends, 57 drops, 3 already on the map.**
 Six writers, then six separate checkers, one per batch, none of whom saw the writing being done.
@@ -550,44 +731,71 @@ Deliberately batched, as this file's own plan allows, and the panel dips honestl
 whole-picture text, entity descriptions and condition types. **Whole text is at 96%, conditions 94%,
 company descriptions 84%.** Those three jobs for round 31's cases are the second item on the queue.
 
-## Current state (15 Nov 2026, round 32)
+## Current state (15 Nov 2026, round 33)
 
 **1,169 cases**, in 135 countries and territories. Read from the rendered About panel after the merge.
 
-| What | Filled | Share |
-| --- | --- | --- |
-| Rounded "what happened to people" paragraph (`whole`) | 1,086 of 1,169 | 93% |
-| Cases that say what the money came with (`conditions`) | 1,069 of 1,169 | 91% |
-| Lender's terms looked for and settled (not tagged `research`) | 1,086 of 1,169 | 93% |
-| Company names with a line saying what the firm is (`desc`) | 1,055 of 1,309 | 81% |
-| People with a checked `total` | 53 of 173 | 31% |
-| Cases with a documented buyer | 34 of 1,169 | 3% |
+| What | Filled | Share | Last round |
+| --- | --- | --- | --- |
+| Rounded "what happened to people" paragraph (`whole`) | 1,162 of 1,169 | **99%** | 93% |
+| Cases that say what the money came with (`conditions`) | 1,140 of 1,169 | **98%** | 91% |
+| Lender's terms looked for and settled (at least one non-`research` `ct`) | 1,061 of 1,169 | **91%** | 93%, by a wrong formula |
+| Company names with a line saying what the firm is (`desc`) | 1,169 of 1,309 | **89%** | 81% |
+| People with a checked `total` | 53 of 173 | 31% | 31% |
+| Cases with a documented buyer | 34 of 1,169 | 3% | 3% |
 
-Three shares fell again, and for the same reason as last round: round 32's 33 cases arrived without
-whole-picture text, entity descriptions or condition types. That is the batching decision above, not
-lost work — the numerators are unchanged or higher and only the denominator moved. Across rounds 31
-and 32 together, 76 cases now wait for that pass, which is what the queue's second job is for.
+The backlog the last two rounds created is cleared. **The settled-terms row went down because its
+formula was wrong, not because the work went backwards**: it used to count a case nobody had looked
+at as settled, and the section above explains how round 33 exposed that. On the old formula this
+round would have read 93% unchanged; on the corrected one it rose from about 85% to 91%.
 
-## The queue, after round 32
+The seven cases still without a whole-picture paragraph are the ones judged years ago to have no
+credible information: Morelos, Batang, Java 7, Pacitan, Tanjung Kasam, Cilacap, IPP4 Al-Manakher.
+Do not re-queue them.
 
-Two of round 31's five jobs are closed: round 22's drops have been re-examined (all 19 stand) and the
-94 confirmed-displacement rows are worked down to two.
+## The queue, after round 33
 
-1. **Whole-picture text, entity descriptions and condition types for the 76 cases of rounds 31 and
-   32.** Now the largest single thing holding the state table down, and it needs no new research.
-2. **Match ICIJ's 969 against this map's 309 project by project.** The About panel hedges the 32%
-   row with "the two lists have not been matched project by project", and that hedge is the only
-   thing between the coverage claim and a counted figure. A desk job against
-   `docs/leads_icij.json` and the cases' own P-numbers, no documents to open.
-3. **The `lenders[0].role` audit of rounds 17, 18 and 19**, still never run. Rounds 31 and 32 add 76
-   more cases and name the mechanism twice over: a statement taken from the nearer document rather
-   than the one that makes it, and a partial policy list read as a full one. Round 32's ECA batch
-   audited its own nine keeps and found one error in nine, against round 22's 19 in 46.
-4. **Sweep the blank-`docty` wds records.** One of them was a project's only completion report.
-5. **AidData's 793 rows**, then the 546 untouched ICIJ possible-displacement rows, then the last two
+Three of round 31's five jobs are now closed: round 22's drops re-examined (all 19 stand), the 94
+confirmed-displacement rows worked down to two, and the follow-on pass on rounds 31 and 32's 76
+cases finished.
+
+1. **Match ICIJ's 969 against this map's 309 project by project.** The About panel hedges the 32%
+   coverage row with "the two lists have not been matched project by project", and that hedge is the
+   only thing between the claim and a counted figure. A desk job against `docs/leads_icij.json` and
+   the cases' own P-numbers; no documents to open. **This is now the cheapest defensible gain on the
+   map.**
+2. **Settle the three cards whose harm may not rest on their own documents** — Chobhar, Bijilo and
+   Hopewell, set out in the section above. Each needs a decision rather than a round.
+3. **The `lenders[0].role` audit of rounds 17, 18 and 19**, still never run. Rounds 31 and 32 added
+   76 cases and named the mechanism three times over: a statement taken from the nearer document
+   rather than the one that makes it, a partial policy list read as a full one, and the newly found
+   review-prose-over-table fault. Round 32's ECA batch audited its own nine keeps and found one
+   error in nine, against round 22's 19 in 46.
+4. **Sweep the blank-`docty` wds records.** One was a project's only completion report; another was
+   found this round by `projectid=P111567`, filed with a null `docty` and an abstract that is a
+   template error about health systems, but whose own filename reads
+   `Implementation-Completion-and-Results-Report`. That is a whole class of invisible completion
+   reports and the API filter to find them is now known.
+5. **The 108 cases still without a settled condition type**, which the corrected metric now counts
+   honestly. Every one has been tried at least twice, so these are third and fourth attempts — but
+   round 33 added two routes (aide memoires, `projectid=` enumeration) that no earlier attempt had.
+6. **AidData's 793 rows**, then the 546 untouched ICIJ possible-displacement rows, then the last two
    confirmed rows.
+7. **The three verified terms a checker left out on purpose**, listed above — a half-hour job with a
+   checker.
 
-### Open for the owner, from round 32
+### Open for the owner, from round 33
+
+- **The `displaced` labelled-sum precedent** still stands unresolved from round 32: two merged cards
+  carry a labelled sum against a rule the round 32 brief set, and a third has joined them. One rule
+  or the other, not both.
+- **Whether `chobhar-dry-port-arrests-kathmandu` keeps its arrests.** No Bank document on disk
+  records any arrest or detention, and the name Chobhar appears in none of them; the card's harm
+  rests on two Kathmandu Post reports. The whole-picture paragraph is written to that division and
+  attributes the name to the Post, so the card is honest as it stands — but the case's own title
+  claims something its project documents do not carry.
+
+### Open for the owner, from round 32 (still open)
 
 - **The labelled-sum precedent in `displaced`** — see the section above. Two merged cards break the
   rule the round 32 brief set, and a third now joins them. One rule or the other, not both.

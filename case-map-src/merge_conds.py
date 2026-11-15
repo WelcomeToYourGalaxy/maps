@@ -10,6 +10,10 @@ for k,v in R.items():
   if v['conditions_add'].strip() in t: continue
   c['conditions']=(t+' ' if t else '')+v['conditions_add'].strip()
   # a checked text with no type that fits keeps the research tag, so the case stays on the to-do list
+  # ct_note renders on the public card under "What was looked for"; it was being
+  # dropped here, so a checker's evidenced absence note never reached the map.
+  if (v.get('ct_note') or '').strip():
+    c['ct_note'] = v['ct_note'].strip()
   if v.get('ct'):
     c['ct']=[x for x in (c.get('ct') or []) if x!='research']+[x for x in v['ct'] if x not in (c.get('ct') or [])]
   for x in v.get('sources_add',[]):
