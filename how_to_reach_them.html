@@ -2643,7 +2643,7 @@ const qid = u => (u||'').split('/').pop();
 const isQ = s => /^Q\d+$/.test(s||'');
 function setDot(id, cls, txt){ const d=$('#d-'+id); if(!d) return; d.className='dot'+(cls?' '+cls:''); if(txt) $('#t-'+id).textContent=txt; }
 
-const CACHE_V='htrt7';
+const CACHE_V='htrt8';
 function cget(k){ try{ const r=localStorage.getItem(CACHE_V+':'+k); if(!r) return null;
   const o=JSON.parse(r); if(Date.now()-o.t > 6048e5) return null; return o.v; }catch(e){ return null; } }
 function cset(k,v){ try{ localStorage.setItem(CACHE_V+':'+k, JSON.stringify({t:Date.now(),v:v})); }catch(e){} }
@@ -2663,14 +2663,15 @@ async function sparql(query, cacheKey){
 
 /* the jurisdiction's own channel, its legislature and its head of government */
 function qCore(q){ return `
-SELECT ?kind ?item ?itemLabel ?itemDescription ?site ?email ?phone ?holder ?holderLabel WHERE {
+SELECT ?kind ?item ?itemLabel ?itemDescription ?site ?email ?phone ?addr ?holder ?holderLabel WHERE {
  { BIND("legislature" AS ?kind) wd:${q} wdt:P194 ?item . OPTIONAL{?item wdt:P856 ?site} }
  UNION { BIND("executive" AS ?kind) wd:${q} wdt:P1313 ?item .
          OPTIONAL{?item wdt:P856 ?site} OPTIONAL{?item wdt:P1308 ?holder} }
  UNION { BIND("executive" AS ?kind) wd:${q} wdt:P1906 ?item .
          OPTIONAL{?item wdt:P856 ?site} OPTIONAL{?item wdt:P1308 ?holder} }
  UNION { BIND("self" AS ?kind) BIND(wd:${q} AS ?item)
-         { ?item wdt:P856 ?site } UNION { ?item wdt:P968 ?email } UNION { ?item wdt:P1329 ?phone } }
+         { ?item wdt:P856 ?site } UNION { ?item wdt:P968 ?email } UNION { ?item wdt:P1329 ?phone }
+         UNION { ?item wdt:P6375 ?addr } }
  SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" }
 } LIMIT 60`; }
 
@@ -5324,8 +5325,16 @@ function levelRows(rt, o){
   /* The street the register prints, with the name of the place after it,
      because the register gives the street and the postcode and leaves
      the place to be read off the entry it sits in. */
-  if(sf && sf.a && rt.id==='letter')
-    out.push({lbl:'Post to '+place, u:null, tx:sf.a+' '+place});
+  if(sf && sf.a && rt.id==='letter'){
+    /* The registers print a street and a postcode and leave the town to
+       be read off the entry it sits in, so the town is added here. What
+       Wikidata holds is often the whole address already — "Str.
+       Moților nr.3, 400001, Cluj-Napoca, Cluj" — so it is added only
+       when it is not in there. */
+    const fold=v=>String(v||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    const tx = fold(sf.a).indexOf(fold(place))>=0 ? sf.a : (sf.a+' '+place);
+    out.push({lbl:'Post to '+place, u:null, tx:tx});
+  }
   const r=subleg(lv);
   if(r && r.u && !same(r.u)){
     out.push({lbl:'At the '+(r.n||'legislature'), u:r.u,
@@ -5855,6 +5864,12 @@ function keepSelf(q, core){
     if(r.site  && !e.u) e.u=r.site.value;
     if(r.email && !e.e) e.e=bareMail(r.email.value);
     if(r.phone && !e.p) e.p=bareTel(r.phone.value);
+    /* The street this government records for itself. Thin — 3,720
+       municipalities worldwide — but it is most of what Romania and
+       Slovakia have, and neither country has a register to import. A
+       register's address overwrites this one, which is the precedence
+       the accuracy rules ask for. */
+    if(r.addr  && !e.a) e.a=String(r.addr.value).trim();
   });
 }
 /* A COUNTRY'S OWN REGISTER OF ITS MUNICIPALITIES.
