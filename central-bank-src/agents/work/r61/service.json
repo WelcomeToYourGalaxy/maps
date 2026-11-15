@@ -1,0 +1,90 @@
+{
+ "auditors": [
+  {
+   "cb_iso3": "JOR",
+   "auditor": "KPMG",
+   "auditor_hq_city": "Amman",
+   "auditor_hq_iso3": "JOR",
+   "year": "financial year 2018",
+   "source_title": "Central Bank of Jordan, Fifty-Fifth Annual Report 2018 (Arabic), independent auditor's report, p.133",
+   "source_url": "https://cbj.gov.jo/EBV4.0/Root_Storage/AR/%D8%A7%D9%84%D8%AA%D9%82%D8%B1%D9%8A%D8%B15.pdf",
+   "quote": "عمان - المملكة الأردنية الهاشمية 28 آذار 2019 القواسمي وشركاه KPMG حاتم القواسمي إجازة رقم (656)",
+   "name_as_stated": "القواسمي وشركاه / KPMG (Hatem Al-Qawasmi, licence no. 656)"
+  },
+  {
+   "cb_iso3": "CUW",
+   "auditor": "BDO",
+   "auditor_hq_city": null,
+   "auditor_hq_iso3": null,
+   "year": "financial year 2024",
+   "source_title": "IMF Country Report No. 26/63, Kingdom of the Netherlands—Curaçao and Sint Maarten: Central Bank Transparency Code Review, March 2026",
+   "source_url": "https://smn-news.com/images/stories/pdffiles/1CUWEA2026001_CENTRAL%20BANK%20TRANSPARENCY%20CODE%20REVIEW_CBCS.pdf",
+   "quote": "For 2024, the financial statements were audited by BDO B.V., an internationally recognized audit firm.",
+   "name_as_stated": "BDO B.V."
+  },
+  {
+   "cb_iso3": "RWA",
+   "auditor": "PricewaterhouseCoopers",
+   "auditor_hq_city": "Kigali",
+   "auditor_hq_iso3": "RWA",
+   "year": "financial year ended 30 June 2022",
+   "source_title": "National Bank of Rwanda, Annual Report 2021-2022, Report of the Independent Auditor to the Shareholder of National Bank of Rwanda",
+   "source_url": "https://www.bnr.rw/documents/Annual_Report_2021_22_Web_English_Versio.pdf",
+   "quote": "PricewaterhouseCoopers Rwanda Limited, Kigali ... 12 October 2022",
+   "name_as_stated": "PricewaterhouseCoopers Rwanda Limited"
+  }
+ ],
+ "printers": [
+  {
+   "entity": "Orell Füssli",
+   "entity_type": "firm",
+   "entity_hq_city": "Zurich",
+   "entity_hq_iso3": "CHE",
+   "cb_iso3": "CRI",
+   "relation": "prints its banknotes",
+   "detail": "El Observador (Costa Rica) reports, quoting the Central Bank of Costa Rica's Treasury director, that the 1,000- and 10,000-colon polymer notes are printed by this Swiss firm, while Oberthur Fiduciaire printed the 2,000, 5,000 and 20,000. The article spells the name \"Orell Fuslli\".",
+   "as_of": "2020-07-27",
+   "source_title": "¿Tienen mayor vida útil? ¿Dónde se imprimen? Conozca detalles de los nuevos billetes de Costa Rica — El Observador CR",
+   "source_url": "https://observador.cr/tienen-mayor-vida-util-donde-se-imprimen-conozca-detalles-de-los-nuevos-billetes-de-costa-rica/",
+   "quote": "Los billetes de ¢1.000 y ¢10.000 los está imprimiendo la empresa Orell Fuslli, establecida en Suiza."
+  }
+ ],
+ "not_found": [
+  {
+   "iso3": "EGY",
+   "note": "Law 194/2020 art.36 gives the CBE's accounts to two external auditors (one named by the Central Auditing Organization, one by the Board) but names no firm. The CBE's own 'financial statements and audits report in 30 June 2024' PDF exists at https://www.cbe.org.eg/-/media/project/cbe/listing/publication/2024/june/financial-statements-and-audits-report-in-30-june-2024.pdf and is refused to automation: curl returns the F5 'Request Rejected' stub (269 bytes) and WebFetch returns the same stub. Needs a hand check. Searched for mirrors on amwalalghad (which mirrors other CBE publications), ca-egypt, World Bank/IMF annexes, and Arabic press for 'مراقبي حسابات البنك المركزي' — all return only the mechanism, never the two firms."
+  },
+  {
+   "iso3": "MRT",
+   "note": "bcm.mr is a single-page app; its sitemap.xml does render under curl and lists /page/rapport-financier/922 and /925 and /page/rapport-annuel-d-activite/921, /926, but every page returns the 2.5 KB shell. The Drupal backend is bo.bcm.mr with a JSON:API at /api/node/page; the sandbox refused that request. Searched the Mauritanian procurement vein (beta.mr, somelec.mr TDRs), the January 2025 PEFA report (BCM appears only as the Treasury's banker), and IMF CR 1mrtea2026001/2026002 — the latter only says 'we will continue to have an external auditor conduct regular audits of the quantitative performance criteria', naming no firm."
+  },
+  {
+   "iso3": "BLR",
+   "note": "nbrb.by is unreachable: curl returns code 000 on three identical tries to https://www.nbrb.by/, /engl/ and /publications/report. No NBRB annual-report PDF URL surfaced in Russian or English searches, so there was no page with provenance to fetch. Searches for a presidential decree naming the audit organisation (the Banking Code route) returned only pravo.by notices about approval of the report, and pravo.by itself answers 403 to automation."
+  },
+  {
+   "iso3": "MDG",
+   "note": "banky-foibe.mg unreachable, curl code 000 on three identical tries. IMF CR 1mdgea2025001/2025002 confirm the mechanism only: the December 2024 safeguards assessment says 'The BFM maintains strong external audit arrangements and the audit opinions on its 2022 and 2023 financial statements are unmodified' — no firm named. No actual appointment found in procurement or press."
+  },
+  {
+   "iso3": "VEN",
+   "note": "bcv.org.ve unreachable by curl (code 000, three tries). Per the standing note the BCV's own statement notes name only unnamed 'comisarios', so they were not re-read. The one new item found is April 2026 reporting (lapatilla, infobae, eldiario) that the BCV and the United States each contracted an auditing firm to oversee the use of Venezuelan funds held abroad; that is an audit of resource use, not of the bank's own accounts, and the reports do not name the BCV's firm, so nothing was filed."
+  },
+  {
+   "iso3": "RWA-note",
+   "note": "Closed, but recording the method: bnr.rw renders only an SPA shell (sitemap.xml, robots.txt and /api/* all return the same 21 KB shell), yet https://www.bnr.rw/documents/<FILENAME>.pdf serves PDFs directly. Filenames carry random suffixes, so they must come from search, not guessing."
+  },
+  {
+   "iso3": "CUW-blocked",
+   "note": "https://cdn.centralbank.cw/media/annual_report_2023/20241221_cbcs_jaarverslag_2023.pdf answers 403 to curl and the WebFetch permission request went unanswered (PROVENANCE_REQUIRED, told not to retry); https://www.centralbank.cw/publications/annual-report also answers 403, and exch.centralbank.cw is unreachable (code 000, three tries). Curaçao was closed instead from the IMF Transparency Code Review, so these need no further work."
+  },
+  {
+   "iso3": "URY-printer",
+   "note": "Printer lead closed negatively: banknotenews.com ?p=2120 and ?p=3411 (the Uruguay commemorative entries) were fetched in full and name no printer; both mriguide.com Uruguay pages now return 404."
+  },
+  {
+   "iso3": "JOR-note",
+   "note": "Method note: cbj.gov.jo HTML pages are WAF-rejected (246-byte 'Request Rejected' stub) but https://cbj.gov.jo/EBV4.0/Root_Storage/AR/<name>.pdf serves PDFs. التقرير5.pdf is the 2018 annual report (auditor's report on p.133), التقرير6/7/8/9 are 2017/2016/2015/2014, and 10-12 do not exist, so 2018 is the newest year available on that path. The portal.jordan.gov.jo/OD/files numbering was not needed: 5751.pdf turned out to be the Jordan Deposit Insurance Corporation's 2022 statements, not the CBJ's."
+  }
+ ]
+}

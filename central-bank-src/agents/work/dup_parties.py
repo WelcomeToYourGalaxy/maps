@@ -59,6 +59,24 @@ def fold(s):
     return ' '.join(sorted(words(s)))
 
 
+def fold_de(s):
+    """The same fold with German transliterations collapsed.
+
+    NFKD plus an ASCII strip turns 'ü' into 'u', never into 'ue', so the two
+    ordinary spellings of a German name do not collide: round 61 found the map
+    drawing Orell Fuessli, Orell Fussli and Orell Fuessli Security Printing Ltd
+    as three parties for one banknote printer, four ties between them. This is a
+    SEPARATE test rather than a change to fold(), because collapsing 'ue' into
+    'u' in general would also merge genuinely different names.
+    """
+    out = []
+    for w in words(s):
+        for a, b in (('ue', 'u'), ('oe', 'o'), ('ae', 'a')):
+            w = w.replace(a, b)
+        out.append(w)
+    return ' '.join(sorted(out))
+
+
 def main():
     path = sys.argv[1] if len(sys.argv) > 1 else 'dist/central_bank_independence.html'
     m = re.search(r'const D = (\{.*?\});\n', open(path, encoding='utf-8').read(), re.S)
@@ -86,8 +104,16 @@ def main():
         byfold[fold(n['name'])].append(i)
     same = [sorted(v) for k, v in byfold.items() if k and len(v) > 1]
 
+    # 1b. identical once German transliterations are collapsed
+    byde = defaultdict(list)
+    for i, n in enumerate(nodes):
+        byde[fold_de(n['name'])].append(i)
+    seen0 = {frozenset(g) for g in same}
+    same_de = [sorted(v) for k, v in byde.items()
+               if k and len(v) > 1 and frozenset(v) not in seen0]
+
     # 2. one folded word set inside another
-    seen = {frozenset(g) for g in same}
+    seen = {frozenset(g) for g in same} | {frozenset(g) for g in same_de}
     subset = []
     items = [(i, ws[i]) for i in range(len(nodes)) if len(ws[i]) >= 2]
     for a, wa in items:
@@ -116,6 +142,7 @@ def main():
 
     n = 0
     n += show('Identical under the fold -- these are one party under two names:', same)
+    n += show('Identical once German ue/oe/ae are collapsed -- one party, two spellings:', same_de)
     n += show('One name inside the other -- almost always one party:', subset)
     n += show('Share a distinctive word -- read these, a parent and a subsidiary are not a duplicate:', token)
     print('\n%d parties, %d groups to read' % (len(nodes), n))
