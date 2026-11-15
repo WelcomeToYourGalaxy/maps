@@ -1,6 +1,6 @@
 # Globalization Case Map: handoff for a new chat
 
-Last updated: round 29 (six shadow-banking suspected patterns added, 27 in all). Replaces every earlier handoff.
+Last updated: round 30 (four more suspected patterns, 31 in all; bulk sources for foreign investment noted). Replaces every earlier handoff.
 
 ## The aim, settled 14 Nov 2026 — a defensible big picture, not a bigger map
 
@@ -67,6 +67,19 @@ outside-sourcing pass over existing `contested` cases alongside the tranches rat
 **Prefer twenty cases carrying a source outside the lender to a hundred more written off the Bank's
 own reports.**
 
+**Foreign company investment: lists exist even though no register of harm does (round 30).** The
+owner asked whether bulk sources exist. Lists of investments, free and downloadable: the World Bank's
+Private Participation in Infrastructure database (project level, with private sponsors and location);
+the Land Matrix (transnational land deals with investor and investor country); Global Energy Monitor's
+trackers (plant and mine level, with owners and parent companies, CC BY 4.0); AEI's China Global
+Investment Tracker (deals of $100 million and up, country level, no site); and a free GESIS file of
+11,233 greenfield projects in Africa, 2013-2020. Paid: fDi Markets (FT) and Orbis. Harm-side lists
+that name foreign companies: the OECD's database of National Contact Point cases (since 2000), OECD
+Watch's complaints database, and the Business & Human Rights Resource Centre's Transition Minerals
+Tracker (allegations against mining companies, CSV). The investment lists could serve as the
+population, the way ICIJ did for World Bank lending; the NCP database and the Tracker are the nearest
+thing to a case list. None of them has been worked yet.
+
 **What cannot be fixed by working harder, and should be said rather than chased.** Private bank and
 bond lending, aid, and foreign company investment have no register of harm anywhere. Those rows stay
 near zero until someone builds one, and the honest move is the one the page now makes: say so in
@@ -83,8 +96,8 @@ same round.** It is prose and nothing computes it, so nothing will catch it goin
 
 `window.HYPS` in `base.html`; rendered by `hypsHTML()` at the bottom of the patterns section and by
 `detailHyp()` as a card with the story and a sources list. `docs/HYP.md` holds the owner's words, the
-rules, how a story is told and the list of the twenty-seven. Every batch gets a separate checker before
-merge; check logs are `rounds/r27_hyps_check.json`, `rounds/r28_hyps_check.json` and `rounds/r29_hyps_check.json`.
+rules, how a story is told and the list of the thirty-one. Every batch gets a separate checker before
+merge; check logs are `rounds/r27_hyps_check.json`, `rounds/r28_hyps_check.json`, `rounds/r29_hyps_check.json` and `rounds/r30_hyps_check.json`.
 
 **Research leads that used to be suspected patterns.** These came out of rounds 19 to 22 and are about
 how the lending record reads, not about the world. They are worth acting on in research rounds and
