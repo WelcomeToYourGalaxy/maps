@@ -1189,7 +1189,12 @@ function detail(k) {
   const bs = own(p, "bs");
   if (bs && bs.o.usd != null) rows.push(['Total assets, end ' + bs.o.y, '$' + fmt(bs.o.usd, 1) + ' bn' + (bs.o.gdp != null ? ' · ' + fmt(bs.o.gdp, 1) + '% of GDP' : '') + (bs.via ? ' <span class="note">(' + esc(CB_NAMES[bs.via]) + ')</span>' : '')]);
   if (u && u.bs && u.bs.usd != null && p.u === "ECB") rows.push(['Eurosystem total assets, end ' + u.bs.y, '$' + fmt(u.bs.usd, 1) + ' bn']);
-  if (p.gold) rows.push(['Gold', fmt(p.gold.t, 1) + ' tonnes' + (p.gold.pct != null ? ' · ' + fmt(p.gold.pct, 1) + '% of reserves' : '') + rankOf("gold", k)]);
+  // A holding under 0.05 tonnes printed at one decimal reads as "0 tonnes", and a
+  // reader takes that for no gold at all. Burundi holds 0.03 tonnes, 1.73% of its
+  // reserves; the Comoros writeup said outright that it "holds no gold" for several
+  // rounds because the box it was written from showed zero. Give small holdings the
+  // decimals they need so a real holding never prints as none.
+  if (p.gold) rows.push(['Gold', fmt(p.gold.t, p.gold.t > 0 && p.gold.t < 0.05 ? 2 : 1) + ' tonnes' + (p.gold.pct != null ? ' · ' + fmt(p.gold.pct, 1) + '% of reserves' : '') + rankOf("gold", k)]);
   if (rows.length) h.push('<table class="kv">' + rows.map((x) => '<tr><th>' + x[0] + '</th><td>' + x[1] + '</td></tr>').join("") + '</table>');
   const sw = (p.sw || []).map((i) => D.SW[i]);
   if (sw.length) {

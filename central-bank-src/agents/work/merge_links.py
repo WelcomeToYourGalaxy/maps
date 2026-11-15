@@ -156,6 +156,14 @@ def main():
     places = set(json.load(open(os.path.join(A, '..', 'out', 'core.json')))['E'])
 
     have_tie = {(fold(l['entity']), l.get('cb_iso3'), l.get('relation')) for l in nets['links']}
+    # fold() sorts the words and strips 'bank', 'company' and 'group', so two
+    # different parties can share a key: "City National Bank" folds like
+    # "National City Bank", and "Crane Bank" like "Crane AB". A record dropped
+    # on such a key is a record lost under the words "already on the map", so
+    # keep the spellings and name them in the message when they differ.
+    tie_names = defaultdict(set)
+    for l in nets['links']:
+        tie_names[(fold(l['entity']), l.get('cb_iso3'), l.get('relation'))].add(l['entity'])
     # An auditor already recorded in gaps.json['auditors'] is on the map just as much as one in
     # networks.json, but it is NOT in nets['links'], so without this it slips through as a second
     # record for the same bank -- and the map renders every auditor as "audits the accounts of X"
@@ -165,7 +173,9 @@ def main():
     _gaps = L('gaps.json')
     for a in (_gaps.get('auditors') or []):
         if a.get('cb_iso3') and (a.get('entity') or a.get('auditor')):
-            have_tie.add((fold(a.get('entity') or a.get('auditor')), a['cb_iso3'], 'audits its accounts'))
+            _an = a.get('entity') or a.get('auditor')
+            have_tie.add((fold(_an), a['cb_iso3'], 'audits its accounts'))
+            tie_names[(fold(_an), a['cb_iso3'], 'audits its accounts')].add(_an)
     # A bank already holding ANY auditor must not gain a second one from an agent file, even under a
     # different firm name: that is the one-current-auditor-per-bank rule, and a changed mandate is a
     # decision to make by hand rather than a merge to wave through.
@@ -253,7 +263,16 @@ def main():
                 continue
             key = (fold(r['entity']), iso, r['relation'])
             if key in have_tie:
-                dropped.append((src, label, 'already on the map')); continue
+                seen_as = tie_names.get(key, set())
+                if seen_as and r['entity'] not in seen_as:
+                    handcheck_list.append((src, label,
+                        'folds onto a DIFFERENT spelling already on the map (%s) for this bank '
+                        'and relation, so it would be dropped as a duplicate. If those are two '
+                        'parties, the fold is wrong here and the record must go in by hand'
+                        % ', '.join(sorted(seen_as))))
+                else:
+                    dropped.append((src, label, 'already on the map'))
+                continue
             if r['relation'] == 'audits its accounts' and iso in _has_auditor:
                 refused.append((src, label, 'this bank already has an auditor on the map under another '
                                             'name; the map renders every auditor as "audits the accounts '
@@ -292,6 +311,7 @@ def main():
         filed[k].append(r)
         if k == 'tie':
             have_tie.add((fold(r['entity']), iso, r['relation']))
+            tie_names[(fold(r['entity']), iso, r['relation'])].add(r['entity'])
         elif k == 'event':
             have_ev.add((iso, r.get('source_url') or ''))
         elif k == 'case':

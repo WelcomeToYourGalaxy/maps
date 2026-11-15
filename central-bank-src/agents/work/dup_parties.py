@@ -25,13 +25,21 @@ round 49.
 Exits 1 if it finds anything, so it can gate a push. Three tests, loosest last:
 
   fold      identical under merge_links.py's own fold (accents, case,
-            punctuation and legal-form filler removed) -- always a duplicate
+            punctuation and legal-form filler removed) AND in the same word
+            order -- always a duplicate
+  reorder   the same words in another order. That fold sorts the words, so a
+            permutation folds alike: this was reported as certain until round
+            62, when it put "City National Bank" beside "National City Bank"
+            and "Canada" beside "Bank of Canada". Read these
   subset    one name's folded words are a subset of the other's and the
             shorter has at least two words -- "oberthur fiduciaire" inside
             "oberthur fiduciaire sas"; usually a duplicate
   token     the two share a distinctive token (a word of 5+ characters that
-            appears in fewer than four parties on the whole map) -- worth a
-            look, often a parent and a subsidiary that are genuinely separate
+            appears in fewer than four parties on the whole map, and is not a
+            place name or a generic institutional word) -- worth a look, often
+            a parent and a subsidiary that are genuinely separate. People are
+            left out of this test: two people share a surname without being
+            one party, and a misspelled name is caught by the two tests above.
 
 A parent and its subsidiary are NOT a duplicate: the map deliberately keeps
 World Bank Treasury separate from the RAMP programme, because one record is a
@@ -59,6 +67,11 @@ def fold(s):
     return ' '.join(sorted(words(s)))
 
 
+def ordered_fold(s):
+    """fold() without the sort, to tell a permutation from a filler difference."""
+    return ' '.join(words(s))
+
+
 def fold_de(s):
     """The same fold with German transliterations collapsed.
 
@@ -75,6 +88,94 @@ def fold_de(s):
             w = w.replace(a, b)
         out.append(w)
     return ' '.join(sorted(out))
+
+
+# Generic words that carry no identity on their own. A shared one says only that
+# two bodies are both public, or both in the same country -- "Government of
+# Zimbabwe" and "Ministry of Finance of Zimbabwe" are two bodies, not two
+# spellings. Test 3 counted a word distinctive when it appeared in two or three
+# parties map-wide, and a country that holds two or three parties made its own
+# name distinctive by that measure: the test returned 579 groups, which is more
+# than anyone reads, and real duplicates (uniBank beside uniBank Ghana) sat in
+# the middle of them. Geography is taken from the map's own data rather than a
+# hand list, so it stays right as places and parties are added.
+GENERIC = {
+    'government', 'ministry', 'ministerio', 'ministere', 'national', 'nacional',
+    'nationale', 'state', 'federal', 'republic', 'republica', 'republique',
+    'central', 'office', 'oficina', 'bureau', 'department', 'authority',
+    'agency', 'commission', 'commissioner', 'committee', 'council', 'conseil',
+    'consejo', 'board', 'court', 'tribunal', 'supreme', 'parliament',
+    'parlement', 'assembly', 'congress', 'senate', 'president', 'presidency',
+    'prime', 'minister', 'cabinet', 'secretariat', 'general', 'generale',
+    'auditor', 'audit', 'accounts', 'accounting', 'finance', 'financial',
+    'financiera', 'treasury', 'tesoro', 'revenue', 'customs', 'public',
+    'publico', 'publique', 'service', 'services', 'institute', 'instituto',
+    'institution', 'fund', 'fondo', 'fonds', 'pension', 'pensions', 'provident',
+    'superannuation', 'insurance', 'assurance', 'assicurazioni', 'seguros',
+    'savings', 'risparmio', 'investment', 'investments', 'capital', 'trust',
+    'exchange', 'stock', 'securities', 'valores', 'market', 'development',
+    'economic', 'economics', 'economy', 'monetary', 'money', 'currency',
+    'reserve', 'reserves', 'commercial', 'international', 'union', 'unity',
+    'association', 'federation', 'chamber', 'corporation', 'enterprise',
+    'management', 'partnership', 'programme', 'program', 'project', 'telephone',
+    'communications', 'media', 'mediaworks', 'vault', 'vaults', 'domestic',
+    'head', 'main', 'branch', 'first', 'interstate', 'people', 'peoples',
+    'popular', 'certified', 'chartered', 'accountants', 'advisors', 'advisory',
+    'partners', 'consulting', 'anticorruption', 'oversight', 'ombudsman',
+    'prosecutor', 'attorney', 'justice', 'police', 'enforcement', 'control',
+    'supervision', 'supervisory', 'regulatory', 'regulation', 'deposit',
+    'insurance', 'guarantee', 'housing', 'agricultural', 'agriculture',
+    'industrial', 'industry', 'trade', 'trading', 'import', 'export',
+    'petroleum', 'mining', 'energy', 'power', 'water', 'transport', 'post',
+    'postal', 'university', 'college', 'school', 'foundation', 'fondazione',
+    'fondation', 'society', 'cooperative', 'cassa', 'caisse', 'banca', 'banco',
+    'banque', 'bancaria', 'bancario', 'sparkasse', 'raiffeisen',
+    # non-English corporate forms and sector words that survive the FILLER list
+    'sociedad', 'societa', 'societe', 'sociedade', 'cooperativa', 'credito',
+    'credit', 'kredit', 'genossenschaft', 'aktiengesellschaft', 'anonima',
+    'anonyme', 'responsabilidad', 'limitada', 'mutua', 'mutual', 'asociados',
+    'asociacion', 'participacoes', 'beteiligungs', 'verwaltung',
+    # nationality and regional adjectives: shared nationality is not identity
+    'swiss', 'suisse', 'schweizerische', 'french', 'francaise', 'german',
+    'deutsche', 'italian', 'italiana', 'spanish', 'espanola', 'portuguese',
+    'portuguesa', 'dutch', 'nederlandsche', 'belgian', 'austrian',
+    'oesterreichische', 'danish', 'danmarks', 'swedish', 'sveriges',
+    'norwegian', 'norges', 'finnish', 'suomen', 'polish', 'polski',
+    'narodowy', 'czech', 'slovak', 'slovenska', 'hungarian', 'magyar',
+    'romanian', 'romana', 'bulgarian', 'balgarska', 'greek', 'turkish',
+    'turkiye', 'russian', 'rossii', 'ukrainian', 'lithuanian', 'latvian',
+    'estonian', 'canadian', 'australian', 'american', 'british', 'english',
+    'scottish', 'irish', 'japanese', 'nippon', 'chinese', 'korean', 'indian',
+    'pakistani', 'bangladeshi', 'indonesian', 'malaysian', 'filipino',
+    'philippine', 'thai', 'vietnamese', 'cambodian', 'nigerian', 'ghanaian',
+    'kenyan', 'tanzanian', 'ugandan', 'zambian', 'zimbabwean', 'sudanese',
+    'egyptian', 'moroccan', 'tunisian', 'algerian', 'lebanese', 'jordanian',
+    'saudi', 'emirati', 'qatari', 'kuwaiti', 'bahraini', 'omani', 'yemeni',
+    'iraqi', 'iranian', 'israeli', 'brazilian', 'argentine', 'argentina',
+    'chilean', 'peruvian', 'colombian', 'mexican', 'cuban', 'jamaican',
+    'sammarinese', 'maltese', 'cypriot', 'icelandic', 'islandsbanki',
+    # bare qualifiers: two unrelated bodies share these constantly
+    'royal', 'rural', 'urban', 'special', 'specialised', 'specialized',
+    'southern', 'northern', 'eastern', 'western', 'north', 'south', 'east',
+    'west', 'upper', 'lower', 'alta', 'bassa', 'grand', 'petit', 'nuevo',
+    'nueva', 'santa', 'santo', 'saint', 'subsidiary', 'subsidiaries',
+    'aggregate', 'shareholders', 'shareholder', 'holders', 'other', 'others',
+    'private', 'privada', 'global', 'world', 'universal', 'unified',
+    'metropolitan', 'provincial', 'regional', 'district', 'county', 'city',
+    'municipal', 'village', 'community', 'secretary', 'secretario',
+}
+
+
+def stoplist(D):
+    """GENERIC plus every place and city name the map itself carries."""
+    stop = set(GENERIC)
+    for v in D.get('P', {}).values():
+        if isinstance(v, dict) and v.get('n'):
+            stop.update(words(v['n']))
+    for n in D.get('NET', {}).get('nodes', []):
+        if n.get('city'):
+            stop.update(words(n['city']))
+    return stop
 
 
 def main():
@@ -98,22 +199,40 @@ def main():
             print('  ' + ' | '.join('%s (%d ties)' % (name[i], ties.get(i, 0)) for i in g))
         return len(groups)
 
-    # 1. identical under the fold
+    # 1. identical under the fold, split by whether the word order also matches
     byfold = defaultdict(list)
     for i, n in enumerate(nodes):
         byfold[fold(n['name'])].append(i)
-    same = [sorted(v) for k, v in byfold.items() if k and len(v) > 1]
+    same, reordered = [], []
+    for k, v in byfold.items():
+        if not k or len(v) < 2:
+            continue
+        # fold() sorts the words, so a permutation folds the same. "City
+        # National Bank" and "National City Bank" are two banks; "Bank of
+        # Canada" and "Canada" differ only by stripped filler and are one.
+        # A name that reduces to ONE substantive word collides promiscuously,
+        # because the filler list strips the rest: "Crane Bank" (Uganda) and
+        # "Crane AB" (the banknote printer) both reduce to "crane", and so do
+        # "Canada" and "Bank of Canada", "First Bank" and "First Bank SA",
+        # "Bank of the Commonwealth" and "Commonwealth Bank Limited". Every
+        # one of those is two parties. Two or more words surviving the fold is
+        # what makes a match certain.
+        if len(k.split()) >= 2 and len({ordered_fold(name[i]) for i in v}) == 1:
+            same.append(sorted(v))
+        else:
+            reordered.append(sorted(v))
 
     # 1b. identical once German transliterations are collapsed
     byde = defaultdict(list)
     for i, n in enumerate(nodes):
         byde[fold_de(n['name'])].append(i)
-    seen0 = {frozenset(g) for g in same}
+    seen0 = {frozenset(g) for g in same} | {frozenset(g) for g in reordered}
     same_de = [sorted(v) for k, v in byde.items()
                if k and len(v) > 1 and frozenset(v) not in seen0]
 
     # 2. one folded word set inside another
-    seen = {frozenset(g) for g in same} | {frozenset(g) for g in same_de}
+    seen = ({frozenset(g) for g in same} | {frozenset(g) for g in reordered}
+            | {frozenset(g) for g in same_de})
     subset = []
     items = [(i, ws[i]) for i in range(len(nodes)) if len(ws[i]) >= 2]
     for a, wa in items:
@@ -124,10 +243,13 @@ def main():
                     seen.add(frozenset((a, b)))
 
     # 3. a distinctive token shared by two parties
+    stop = stoplist(D)
     tok = defaultdict(set)
     for i in range(len(nodes)):
+        if nodes[i].get('type') == 'person':
+            continue
         for w in ws[i]:
-            if len(w) >= 5:
+            if len(w) >= 5 and w not in stop:
                 tok[w].add(i)
     token = []
     for w, ids in sorted(tok.items()):
@@ -141,7 +263,11 @@ def main():
                         seen.add(k)
 
     n = 0
-    n += show('Identical under the fold -- these are one party under two names:', same)
+    n += show('Identical under the fold, same word order -- one party, two names:', same)
+    n += show('Fold alike but NOT certain -- read these. Either the words are in '
+              'another order ("City National Bank" is not "National City Bank"), '
+              'or the name reduces to one word ("Crane Bank" is not "Crane AB"):',
+              reordered)
     n += show('Identical once German ue/oe/ae are collapsed -- one party, two spellings:', same_de)
     n += show('One name inside the other -- almost always one party:', subset)
     n += show('Share a distinctive word -- read these, a parent and a subsidiary are not a duplicate:', token)
