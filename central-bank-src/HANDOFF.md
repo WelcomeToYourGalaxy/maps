@@ -2,7 +2,7 @@
 
 Paste or attach this in a new chat to carry on adding to the map.
 
-Rewritten at round 43, current through round 44. It states the current position only. Earlier versions kept round-by-round narrative, which went stale and in round 26 sent agents to re-research records already on the map; the moves-against-the-bank section had grown four rounds of narrative again by round 42 and was rewritten as a statement. Keep it that way: when something changes, edit the statement, don't append a round note. The round-by-round account lives in `agents/work/research_log_2026-11.json`, which is where to look for what was searched and found nothing. **Where this names a country as dead or blocked, that is as of round 44 — re-derive the target list from `coverage.py` before briefing anything.**
+Rewritten at round 43, current through round 45. It states the current position only. Earlier versions kept round-by-round narrative, which went stale and in round 26 sent agents to re-research records already on the map; the moves-against-the-bank section had grown four rounds of narrative again by round 42 and was rewritten as a statement. Keep it that way: when something changes, edit the statement, don't append a round note. The round-by-round account lives in `agents/work/research_log_2026-11.json`, which is where to look for what was searched and found nothing. **Where this names a country as dead or blocked, that is as of round 45 — re-derive the target list from `coverage.py` before briefing anything.**
 
 ## What it is
 - A standalone global map titled **"Central bank capture"**. It shows who owns and steers each central bank, what it hides, the corruption inside and around it, and how far its money reaches beyond its borders.
@@ -41,7 +41,7 @@ Another session of the user's commits to this repo often. **Always `git fetch or
   - Links: `{n, cb | tn, rel, role, detail, src_t, src_u}`.
   - Popups turn each link into a plain sentence (`SAY` / `sayLink` / `srcItem` in `app.js`). Add a `SAY` entry for any new `role` string.
 
-## Where it stands (44 rounds in, 14 November 2026)
+## Where it stands (45 rounds in, 14 November 2026)
 
 1,491 outside parties and 2,091 ties. 1,720 writeups, one for every box. 20 patterns.
 
@@ -49,7 +49,7 @@ Another session of the user's commits to this repo often. **Always `git fetch or
 |---|---|---|---|
 | External auditors | 198 | 161 | 78% |
 | Corruption cases | 232 | 154 | 75% |
-| Banknote printers | 157 | 133 | 65% |
+| Banknote printers | 159 | 147 | 71% |
 | Governor removals and pressure | 153 | 100 | 49% |
 | Swap lines | 240 | 84 | 41% |
 | Revolving door | 206 | 80 | 39% |
@@ -280,7 +280,7 @@ Bounded sets that worked:
 
 **What the row shows.** The Big Four sign off on about half the records; eight networks cover roughly seven in ten; the rest are national audit offices and local firms. The countries left are disproportionately places where the auditor is a state body or unpublished, so finishing will likely push the Big Four share *down* a point or two rather than up. Take the exact figures from the data, not from this paragraph.
 
-### 2. Banknote printers — 65%
+### 2. Banknote printers — 71%
 73 absent, of which 69 are real targets. **BanknoteNews is the vein**, hit rate about a third, yield concentrated in 2023–2026 posts and in commemorative notes. Query shape: `banknotenews <country> <currency> new note confirmed "Printer"`, then fetch the newest entry per country, not the highest denomination. Many recent entries carry no `Printer:` field at all rather than "(Unknown)".
 
 **Second vein:** the issuing bank's own new-series press release — it worked three times in four attempts (Iceland, Fiji, Seychelles) and is the only vein that states a printer plainly enough to file. Multi-bank cooperation releases are worth hunting: one joint Banque de France release with the OeNB and Banco de Portugal yielded two records at once.
@@ -289,7 +289,9 @@ Bounded sets that worked:
 
 **Closed — do not re-run.** The customer-list sweep across De La Rue, G+D, Crane, Oberthur, IDEMIA, Veridos, Bundesdruckerei, Goznak, KOMSCO, PWPW, Orell Füssli, CBPM, Canadian Bank Note, Royal Joh. Enschedé, Thomas Greg & Sons, SPMCIL, Peruri and Pakistan Security Printing: none publishes one except Note Printing Australia, already mined. PWPW's archive and G+D's case studies are exhausted for banknotes. CBPM's nine named customers are all recorded. **The euro area is structurally closed** — do not spend a round on Finland, Slovenia, Estonia, Latvia, Lithuania, Cyprus, Malta, Croatia, Luxembourg, Italy, Greece, the Netherlands, Belgium or Ireland.
 
-**Still live:** PWPW's *news archive* names customers one release at a time (Paraguay and the Dominican Republic came from it); G+D's *per-country case-study pages* (Armenia came from one). **The highest-value untried lead is BEAC** — one record covers six countries; its 30th-anniversary brochure and FinancialAfrik's pieces on the 2020-type series are the targets, and `beac.int` is robots-disallowed.
+**BCEAO and BEAC are now closed, and they were worth 14 places between them.** Both currency unions have their notes printed by the Banque de France at Chamalieres, and the source is the French foreign ministry's own Franc Zone page: the African central banks place the orders under a contract with a manufacturer, in this case the Banque de France, and CFA franc notes and coins have been made at Chamalieres since 1945. `beac.int` being robots-disallowed never mattered — **the printer of a currency union's notes may be documented by the printer's own government rather than by the union.** The same page names the Central Bank of the Comoros as the third franc-zone bank; the Comoros was already recorded.
+
+**Still live:** PWPW's *news archive* names customers one release at a time (Paraguay and the Dominican Republic came from it); G+D's *per-country case-study pages* (Armenia came from one).
 
 **Named next steps:** Zambia (diplo.news on the new kwacha launch), Costa Rica (BCCR press release of 11.11.2020), North Macedonia (the printing tender award notice), Georgia (centralbanking.com, likely paywalled), Zimbabwe (mriguide.com and zimbabwenow.co.zw mirrors; note one source is Fidelity Printers *denying* that it prints Zimbabwe dollars), Uruguay (2000s BanknoteNews commemorative entries identified but never fetched).
 
@@ -394,7 +396,9 @@ The three currents once listed as missing are all in: `supervisory-capture` (Ire
 
 ## How long to finish
 
-**Yield by round:** 35, 34, 33, 56, 50, 24, 34, 42, 40, 21, 14, 13, then 4, 3, 2, 3, then two rounds of 0 records (two patterns; four corrections), then 6, 4, 3, 3, 4, 5, 4, 2 and 5. **The late rounds are small by nature and that is not a sign of exhaustion:** rounds 40 to 43 added 15 records and 13 new places to one row, which moved it 37% to 43%, because each round corrected the search rather than widening it. A round that produces two records and two documented negatives is doing the same work as a round of thirty did at the start.
+**Yield by round:** 35, 34, 33, 56, 50, 24, 34, 42, 40, 21, 14, 13, then 4, 3, 2, 3, then two rounds of 0 records (two patterns; four corrections), then 6, 4, 3, 3, 4, 5, 4, 2, 5 and 2.
+
+**Count what is left in records, not in countries.** `agents/work/whats_left.py` splits each row's absent list into currency union members and everything else, and the split changes the picture: at round 45 about 140 of the absent cells across all rows were union members, reachable by roughly 17 union records rather than 140 searches. Round 45 took 14 of them with two records. **Before planning a row, run that script** — a union record is the cheapest thing on the map, and the rows where it still applies are gold custodians (30 member cells, 4 records), outside reserve managers (40 cells, 4 records), the revolving door (21 cells, 3 records) and moves against the bank (24 cells, 3 records). Two caveats: the euro area is genuinely closed for printers, because production is pooled across 11 accredited works and no one work prints a given country's notes; and a union record must be a fact about the union, not a member country's fact keyed upward. **The late rounds are small by nature and that is not a sign of exhaustion:** rounds 40 to 43 added 15 records and 13 new places to one row, which moved it 37% to 43%, because each round corrected the search rather than widening it. A round that produces two records and two documented negatives is doing the same work as a round of thirty did at the start.
 
 The service rows are far enough along that a confirmed blank is worth as much as a find, because it stops every future round spending on the same dead country. Say so when reporting a round that produced negatives.
 
