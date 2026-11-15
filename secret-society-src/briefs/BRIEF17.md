@@ -1,5 +1,17 @@
 # BRIEF17 — possible patterns
 
+## Update, 14 November 2026 (night): the layer was rewritten again from scratch
+
+The owner rejected the sixteen field-guide rundowns. His instructions, which override anything below where they conflict:
+
+- **No link to the proved patterns.** The "proved pattern it sits beside" box is deleted from the panel and the "beside ..." tag from the list. Items carry no `pattern` field. A possible pattern does not have to sit next to any existing pattern; pick it on its own merits.
+- **One continuous story, nothing that reads as a category.** No closing paragraph about what would settle or refute it, and no paragraph that works as a labelled field with the label removed. `would_show` and `would_refute` stay in the file for audit only. The story ends on the probable claim.
+- **No short lists of examples bunched together without context.** Use one example, told fully, where it makes the point. A row of three or four names or cases in one sentence is the fault he named.
+- **Storytelling for novices, plainly told.** Open on a concrete event (a date, a person, what happened), tell it in order, then say what is probably happening beyond it. The interest has to come from the facts and their order, not from the wording. No dramatic or literary phrasing, no quotable lines, no crescendos.
+- Specimens struck out this round: "What matters as much as...", "The trade is protected by...", "The map holds nothing on this, and says so".
+
+The set was reselected: eight items (deep-cover officers in international bodies; cartels choosing mayors; gangs placing people in police and welfare offices; North Korean workers hired under false names; spies posing as recruiters; state agents at social media companies; gangs owning funds and payment firms; outside-paid legislative staff). Every figure was checked against sources on 14 November 2026. People are named only where the map already carries their case (Cherkasov, Abouammo).
+
 `data/hypotheses.json` holds the map's **possible patterns**. They sit under the
 patterns list, in the same panel, and they are the same kind of object: a shape
 infiltration takes, in more than one place, named plainly. The difference is the

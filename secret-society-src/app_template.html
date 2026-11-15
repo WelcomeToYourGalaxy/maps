@@ -755,10 +755,9 @@ function buildPat() {
   if (HYP.length) {
     h += '<div class="flab" style="margin-top:12px">Possible patterns · nothing proved yet</div>' +
          '<div class="hypnote">' + esc(HYPW) + '</div>' +
-         HYP.map((y) => { const pp = y.pattern ? PAT_BY[y.pattern] : null;
-           return '<div class="hyp" data-hyp="' + y.id + '"><div class="ht">' + esc(y.title) + '</div><div class="hm">' +
+         HYP.map((y) => '<div class="hyp" data-hyp="' + y.id + '"><div class="ht">' + esc(y.title) + '</div><div class="hm">' +
            (y.countries.length ? y.countries.length + (y.countries.length === 1 ? ' country named' : ' countries named') : 'no country named yet') +
-           (pp ? ' · beside <i>' + esc(pp.title) + '</i>' : '') + '</div></div>'; }).join("");
+           '</div></div>').join("");
   }
   if (S.pat) {
     const p = PAT_BY[S.pat];
@@ -773,20 +772,18 @@ function buildPat() {
 function openHyp(id) {
   const y = HYP.find((x) => x.id === id);
   if (!y) return;
-  const pat = y.pattern ? PATS.find((p) => p.id === y.pattern) : null;
   // Told as one continuous rundown. The six BRIEF17 fields are still in the data and
   // still the test this pattern had to pass, but a reader meets them as prose, not as
   // labelled boxes: the owner's instruction, 14 November 2026.
   const para = (y.story && y.story.length) ? y.story : [y.claim, y.rule, y.conditions, y.documented].filter(Boolean);
   let h = '<div class="hp-k">Possible pattern · nothing proved yet</div><h3>' + esc(y.title) + '</h3>' +
-    '<div class="note">This is not a case and not evidence. It is a pattern this map thinks is probably there, told so that it can be looked for, argued with or knocked down. No person or company is named except in the cases already proved, and none of it is counted in any figure on this map.</div>' +
+    '<div class="note">This is not a case and not evidence. It describes something that is probably happening but has not been proved. People are named only where the map already carries their case, and none of this is counted in any figure on the map.</div>' +
     para.map((q) => '<div class="hp-desc">' + esc(q) + '</div>').join("");
   if (y.countries.length) {
     h += '<div class="hp-h">Where it is most likely</div><div class="chips">' +
       y.countries.map((c) => '<span class="est" data-cty="' + esc(c) + '">' + esc(c) + '</span>').join("") + '</div>' +
-      '<div class="sub">' + y.held + (y.held === 1 ? ' case' : ' cases') + ' already on the map across those ' + (y.countries.length === 1 ? 'one country' : y.countries.length + ' countries') + ', none of them this pattern.</div>';
+      '<div class="sub">' + y.held + (y.held === 1 ? ' case' : ' cases') + ' already on the map in ' + (y.countries.length === 1 ? 'that country' : 'those ' + y.countries.length + ' countries') + '.</div>';
   }
-  if (pat) h += '<div class="hp-h">The proved pattern it sits beside</div><div class="chips"><span data-pat="' + pat.id + '">' + esc(pat.title) + '</span></div>';
   show(h, null);
 }
 function buildLeg() {
