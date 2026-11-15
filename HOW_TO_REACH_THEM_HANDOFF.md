@@ -775,6 +775,27 @@ are on the town hall object, not the boundary, so Tier B needs a
 spatial join as well as a planet-sized download. Do not plan a round
 around it without first proving the extract is obtainable.
 
+### Round ten: what it looks like on a phone
+
+The page is embedded on a site people read on phones and nine rounds
+had only ever looked at it on a desktop. At 390px the row of controls
+— search, the legend, the basemap, the projection — is 287px wide and
+was pinned to the top right, where it sat **on top of the title**: "How
+To Make A Law" on the map, and then the name of the place the reader
+had just searched for. Nothing overflowed the viewport, so no
+measurement caught it. It shows in a screenshot and nowhere else.
+
+Below 760px the controls now take the row under the title, across the
+width, scrolling sideways if they do not fit, and `#mtop` gets
+`padding-top` so the panel starts below them. Check it the way it was
+found: screenshot at 390×844 on the map and again with a place open,
+and read the title.
+
+The standing checks that pass: no horizontal overflow at 390 or 820,
+the modal fills the screen, and the title, the official-site button,
+the chain of levels, the office counts and the refresh link are all
+clear of the controls.
+
 ### How live the page is, field by field
 
 Worth stating plainly, because the page looks like a static file and
