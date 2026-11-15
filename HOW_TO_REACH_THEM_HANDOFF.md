@@ -775,6 +775,65 @@ are on the town hall object, not the boundary, so Tier B needs a
 spatial join as well as a planet-sized download. Do not plan a round
 around it without first proving the extract is obtainable.
 
+### Round seven: five more registers tried, and what to do when the join fails
+
+The join key decides whether a register is usable, so this round checked
+the keys first. What the municipalities of each country carry on
+Wikidata, counted:
+
+| Country | Municipalities | Key available | Carrying it |
+| --- | --- | --- | --- |
+| Hungary | 3,191 | `P939` KSH code | 3,155 |
+| Poland | 3,185 | `P1653` TERC code | 2,478 |
+| Ukraine | 2,523 | `P9435` KATOTTH | 2,001 |
+| Switzerland | 1,390 | `P771` BFS number | 1,116 |
+| Greece | 940 | `P1116` ELSTAT code | 733 |
+| Slovakia | 2,898 | **none** | — |
+
+Then the registers, and the wall:
+
+- **Greece** publishes organisations with emails through Di@ύgeia
+  (`diavgeia.gov.gr/opendata/organizations.json`, 2.5 MB, reachable) —
+  keyed by **VAT number**, which Wikidata does not hold for
+  municipalities. Same shape of failure as Spain's DIR3.
+- **Switzerland** (opendata.swiss) and **Ukraine** (data.gov.ua) answer,
+  and neither has a national municipal contact set: Ukraine's nearest
+  hit is one oblast's telephone directory, which is a per-oblast job.
+- **Poland's** open-data API (`api.dane.gov.pl`, `dane.gov.pl/api`) does
+  not answer from this sandbox at all.
+- **Slovakia** has no identifier on its municipalities to join anything
+  to, whatever register exists.
+
+So the register count stands at two, and **the recurring failure is not
+missing data but a missing shared code**. Before spending a round on a
+country, check in this order: does Wikidata hold a code for its
+municipalities; does the register carry that same code; only then
+download anything. Greece, Spain and Norway each failed at step two,
+and each would have looked like a win from step one.
+
+### What to do instead, when there is no register: P6375
+
+`qCore` now asks each level for its street address as well as its
+website, email and telephone. **3,720 municipalities worldwide publish
+one** — thin against 191,503, and worth having because of where it
+sits: the sample is mostly Romanian and Slovak, the two countries above
+with no usable register. Cluj-Napoca gets "Str. Moților nr.3, 400001,
+Cluj-Napoca, Cluj" under the letter method, from Wikidata alone.
+
+Two rules hold it together. A register's address overwrites it, because
+`loadMuni` runs after `keepSelf` and assigns unconditionally. And the
+place name is appended only when it is not already in the string: the
+registers print a street and a postcode and leave the town implied,
+while Wikidata usually holds the whole address.
+
+What was checked and rejected: **postal code (`P281`) is on 112,141
+municipalities** — 58%, by far the best-covered address field — and it
+is not an address. Printing "36049 Sovizzo" under "where to post" would
+be deriving an address from a code and a name, which rule 1 forbids,
+however often a letter so addressed would arrive. Fax (`P2900`, 10,703)
+has no method on the page to sit under. `P969` is empty for
+municipalities.
+
 ### Round six: the levels that had no address because they had no name
 
 An audit of the per-level address across ten countries — Romania,
