@@ -55,8 +55,7 @@ KINDS = [["econ", "Economics schools that exported a doctrine", "University depa
          ["mil", "Officer and security schools", "Military, police and intelligence schools that train officers, including foreign ones."],
          ["ideas", "Think tanks and political foundations", "Think tanks, foundations and movements that train activists, candidates and future staff."],
          ["faith", "Religious formation", "Seminaries, universities and movements that train believers who go on to hold power."],
-         ["firm", "Banks, consultancies and lenders", "Employers whose young staff later run finance ministries, central banks and governments."],
-         ["rec", "Every other school in the record", "Every other university, school and academy where Wikidata records at least one person who later held national office. Data only, no writeup."]]
+         ["firm", "Banks, consultancies and lenders", "Employers whose young staff later run finance ministries, central banks and governments."]]
 kix = {k[0]: i for i, k in enumerate(KINDS)}
 
 schools = []
@@ -75,7 +74,14 @@ else:
     snap = json.load(open('data/rec_snapshot.json'))
     gsch, TOT, NALL = snap['S'], snap['T'], snap['N']
     grecs = {(p, s_): {'via': {'edu'}, 'lists': set(), 'offices': o} for p, s_, o in snap['R']}
-recs.update(grecs)
+# only the documented pipelines are shown; the record supplies their people where the earlier pulls missed them
+import meta6 as M6
+REC_TO_DOC = {'r' + p['q']: p['id'] for p in M6.P11}
+REC_TO_DOC.update({'rQ26239': 'whampoa', 'rQ59321': 'pma'})   # second Wikidata items for two documented academies
+for (p, s_), e in grecs.items():
+    d_ = REC_TO_DOC.get(s_)
+    if d_ and (p, d_) not in recs: recs[(p, d_)] = e
+gsch = []
 # a fictional character and an unverified record that Wikidata files as office-holders
 for k in [k for k in recs if k[0] in {'Q14915624', 'Q5078492'}]: del recs[k]
 schools += gsch
@@ -156,10 +162,14 @@ PE2 = [[p[0], p[1], 1 if p[2] == p[0] else p[2], p[3], p[4]] for p in PE]
 SD = [s_ for s_ in schools if s_['k'] != 'rec']
 SR = [[s_['n'], s_['t'], s_['q'], s_['iso'], s_['lat'], s_['lng'], s_['y'], 1 if s_['wp'] == s_['n'] else s_['wp']] for s_ in schools if s_['k'] == 'rec']
 assert all(s_['k'] != 'rec' for s_ in schools[:len(SD)])
-DATA = {'T': TOT, 'NALL': NALL, 'NDOC': nDoc, 'ACC': (__import__('accounts').ACC if os.path.exists('accounts.py') else {}), 'kinds': KINDS, 'S': SD, 'SR': SR, 'PE': PE2, 'PO': PO, 'L': LK3, 'POSN': POSN, 'C': C, 'PAT': pats, 'HYP': HYP, 'LISTS': LISTN,
+TM = {}
+for l in LK:
+    for o in l[3]: TM.setdefault(o[0], set()).add(l[0])
+TM = {k: len(v) for k, v in TM.items()}
+DATA = {'T': TOT, 'TM': TM, 'NALL': NALL, 'NDOC': nDoc, 'ACC': (__import__('accounts').ACC if os.path.exists('accounts.py') else {}), 'kinds': KINDS, 'S': SD, 'SR': SR, 'PE': PE2, 'PO': PO, 'L': LK3, 'POSN': POSN, 'C': C, 'PAT': pats, 'HYP': HYP, 'LISTS': LISTN,
         'meta': {'date': '15 November 2026'}}
 js = json.dumps(DATA, ensure_ascii=False, separators=(',', ':'))
-method = METHOD.replace('__NS__', str(nDoc)).replace('__NR__', f"{len(SR):,}").replace('__NALL__', f"{NALL:,}").replace('__NACC__', str(len(DATA['ACC']))).replace('__DATE__', '15 November 2026').replace('__NP__', f"{len(used):,}").replace('__NO__', f"{nO:,}").replace('__NL__', f"{len(LK):,}").replace('__NC__', str(nC))
+method = METHOD.replace('__NS__', str(nDoc)).replace('__NALL__', f"{NALL:,}").replace('__NACC__', str(len(DATA['ACC']))).replace('__DATE__', '15 November 2026').replace('__NP__', f"{len(used):,}").replace('__NO__', f"{nO:,}").replace('__NL__', f"{len(LK):,}").replace('__NC__', str(nC))
 T = open('app_template.html').read()
 css = open('base.css').read()
 plate = 'data:image/webp;base64,' + base64.b64encode(open('data/plate.webp', 'rb').read()).decode()

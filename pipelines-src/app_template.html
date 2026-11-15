@@ -270,7 +270,7 @@ function covLine() { return ''; }
 function buildKey() {
   recompute();
   const nS = SCH.length, nC = Object.keys(AGG.cty).length;
-  $("#lede2").innerHTML = esc(D.NDOC + " documented schools and programmes · " + (nS - D.NDOC).toLocaleString() + " more in the record · " + PE.length.toLocaleString() + " office-holders · " + PATS.length + " patterns") + QM("Office-holders are people who held a national post as head of state, head of government, minister or central bank governor and who studied, trained or worked at one of these places, as recorded in Wikidata and published lists. Wikidata lists " + D.NALL.toLocaleString() + " people who held such a post; " + PE.length.toLocaleString() + " of them have a school on record and appear here. The Method page explains the limits.");
+  $("#lede2").innerHTML = esc(D.NDOC + " schools and programmes · " + PE.length.toLocaleString() + " office-holders who went through them · " + PATS.length + " patterns") + QM("Office-holders are people who held a national post as head of state, head of government, minister or central bank governor and who studied, trained or worked at one of these schools and programmes, as recorded in Wikidata and published lists. People who did not go through one of them are not on the map. The Method page explains the limits.");
   let h = '';
   const L_ = LENSES.find((l) => l[0] === S.lens);
   const counts = [0, 0, 0, 0, 0]; Object.keys(AGG.cty).forEach((iso) => { const b = bandOf(lensVal(iso)); if (b >= 0) counts[b]++; });
@@ -344,7 +344,7 @@ function buildLeg() {
   const nVis = SCH.filter((s) => schOK(s.i)).length;
   h += row("schools", S.schools, '<span class="car" data-open="kinds">' + (S.open.kinds ? "▾" : "▸") + '</span><span class="sw dot" style="background:' + kcol("elite") + '"></span>Schools and programmes' + QM("Each circle is a school, academy, fellowship, network or employer, placed at its campus or headquarters. Bigger circles have more former students in national office under the current filters."), nVis);
   if (S.open.kinds) h += '<div class="up">' + KINDS.map((k) => row("k:" + k[0], S.kind[k[0]], '<span class="sw dot" style="background:' + kcol(k[0]) + '"></span>' + esc(k[1]) + QM(k[2]), SCH.filter((s) => s.k === k[0]).length, true)).join("") + '</div>';
-  h += row("arcs", S.arcs, '<span class="sw bar" style="background:' + kcol("fellow") + ';margin-left:12px"></span>Pipelines to power' + QM("Each line runs from a school to the capital of a country where at least one of its former students held national office. Thicker lines carry more people. Click a line to see who. Lines from the schools that are only in the record (the grey dots) appear when you open that school or a country, or choose \"Abroad, then ruled at home\", so the globe stays readable."), AGG.pair.size);
+  h += row("arcs", S.arcs, '<span class="sw bar" style="background:' + kcol("fellow") + ';margin-left:12px"></span>Pipelines to power' + QM("Each line runs from a school to the capital of a country where at least one of its former students held national office. Thicker lines carry more people. Click a line to see who."), AGG.pair.size);
   h += '<div class="sub">Click a school, a line or a country to see the people. Click ▸ for the kinds of school.</div>';
   $("#legBody").innerHTML = h;
   $("#legBody").querySelectorAll("[data-open]").forEach((c) => c.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); S.open[c.dataset.open] = !S.open[c.dataset.open]; buildLeg(); }));
@@ -449,7 +449,8 @@ function openCountry(iso, fly) {
   const c = CTY[iso], A = AGG.cty[iso], acc = D.ACC[iso], T = D.T[iso];
   let h = '<div class="hp-k">Country</div><h3>' + esc(c ? c.n : iso) + '</h3>';
   if (acc) h += '<div class="hp-h">Behind the scenes</div><div class="bts">' + acc.d.map((x) => '<p>' + esc(x) + '</p>').join("") + '</div>' + (acc.src && acc.src.length ? srcList(acc.src) : '');
-  if (T) h += '<div class="note">Wikidata records ' + T[0].toLocaleString() + ' people who held national office in ' + esc(c ? c.n : iso) + '. It names a school for ' + T[1].toLocaleString() + ' of them (' + Math.round(100 * T[1] / Math.max(1, T[0])) + '%), and those are the people this map can show. The rest have no education on record there.</div>';
+  const TMn = (D.TM && D.TM[iso]) || 0;
+  if (T) h += '<div class="note">Wikidata records ' + T[0].toLocaleString() + ' people who held national office in ' + esc(c ? c.n : iso) + '. ' + TMn.toLocaleString() + ' of them (' + Math.round(100 * TMn / Math.max(1, T[0])) + '%) went through one of the schools and programmes on this map. The others trained elsewhere or have no training on record.</div>';
   if (!A) { h += '<div class="sub">No office-holders on the map under the current filters. Wikidata records education unevenly, so this can mean the record is thin rather than that no leader trained at these schools.</div>'; show(h, ["c", iso]); return; }
   const groups = []; const kc = KINDS.map(() => 0); h += '<div class="hp-h">The record</div>';
   A.sch.forEach((si) => { const ppl = peopleOf(si, iso); if (ppl.length) { groups.push([si, ppl]); kc[KI[SCH[si].k]] += ppl.length; } });
