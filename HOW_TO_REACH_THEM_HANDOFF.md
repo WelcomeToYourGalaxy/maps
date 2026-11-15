@@ -469,7 +469,7 @@ from here:
   **94,117 records** including every mairie with address, phone and
   email, filterable by `pivot like "mairie"`. **Done — round four, below.**
 - Italy: `indicepa.gov.it/ipa-dati/dataset/enti`, every public body with
-  its certified email address.
+  its certified email address. **Done — round five, below.**
 
 Perhaps 25 to 30 countries have an equivalent. Each is a separate
 integration of a few hours, which is why they are a round of their own
@@ -599,6 +599,108 @@ that government *is* the method: `Direct contact` and `Formal process`.
 Check after any change here by opening one office and confirming the
 rows appear under writing, ringing and posting, and nowhere else.
 
+### Round five: Italy, all of it
+
+Italy's register is IPA, the index of digital addresses the public
+administration keeps of itself. One 4 MB xlsx, 23,772 bodies, of which
+**category L6 holds 8,047** — comuni plus their consortia and
+associations. Filtering to rows whose name begins "comune" leaves
+**7,891**, which is every comune in Italy.
+
+The join took two keys and no name matching:
+
+| Key | Wikidata | Matched |
+| --- | --- | --- |
+| ISTAT municipality code | `P635` | 7,651 |
+| Cadastral code | `P806` | 240 |
+
+The 240 are Sardinian. Sardinia's provinces were reorganised in 2016
+and the ISTAT codes were reissued: IPA carries the current code,
+Wikidata carries the pre-2016 one, so Tortolì is `116017` in one and
+`091095` in the other. The cadastral code did not change, so it picks
+up exactly the residue. **Both keys are exact joins on a published
+code**, which is the rule: where neither matched, the row would have
+been dropped rather than matched on its name. Nothing was dropped.
+
+Two cautions for the next country:
+
+- **Query the class inclusively.** `wdt:P31 wd:Q747074` — direct
+  instances only — missed 298 comuni whose class is a subclass of
+  "comune of Italy" (Valle d'Aosta's comuni among them), and they all
+  carried the right code. `wdt:P31/wdt:P279* wd:Q747074` finds them.
+- **Refuse an ambiguous code.** The build keeps a code only where it
+  maps to exactly one undissolved item, and counts the rest. For Italy
+  nothing was ambiguous on the ISTAT code and four codes were on the
+  cadastral; those four were skipped, not guessed.
+
+Italy publishes two things France does not, so the shard schema grew:
+
+- **`a`, the street address.** `Piazza Maggiore 6 40121`, as printed,
+  with the place's own name appended at render time — the register gives
+  the street and the postcode and leaves the town to be read off the
+  entry it sits in. It has nowhere to click, so it is drawn as a row
+  that is not a link, under the letter method only.
+- **`c`, the certified address (PEC).** 7,890 comuni publish one and
+  for **2,590 of them it is the only address there is**. A PEC refuses
+  mail from an ordinary account, so it is offered under its own name,
+  saying so, rather than as somewhere to write from a normal inbox.
+  Listing it as an email address would be the kind of plausible-wrong
+  this file keeps warning about.
+
+**Adding a field to a shard is half the job.** `loadMuni` copied `u`,
+`e`, `p` and `o` by name, so the street address and the certified
+address were fetched, parsed and dropped on the floor — the shards were
+right and the page showed nothing. It now copies every field the
+registers carry. If a new field does not appear on the panel, look
+there first.
+
+Verification, such as it is: of a 180-comune sample of the register's
+websites, fetched with retries, **84% answered HTTP 200**, two were
+404, one had a certificate whose hostname did not match. The remaining
+22 were connection resets, and resets in this sandbox succeed when
+retried one at a time — so 84% is a floor on the register's accuracy
+and not a measure of link rot. A bare hostname (`www.comune.x.it`,
+which is how IPA prints most of them) is given `https://`; the three
+checked by hand redirect http→https themselves.
+
+### The next registers, and what each one actually costs
+
+Surveyed this round, so the next one does not start from nothing:
+
+| Country | Municipalities | Register | State |
+| --- | --- | --- | --- |
+| France | 34,980 | service-public.fr annuaire | done |
+| Italy | 7,891 | IPA | done |
+| Spain | 8,131 | DIR3 / REL | **blocked on the join** |
+| Norway | 357 | Enhetsregisteret | **blocked on the join** |
+| Germany | 10,786 | none national | not attempted |
+
+**Spain is a join problem, not a data problem.** DIR3's public exports
+are reachable and `Listado Unidades EELL.xlsx` carries 26,608 local
+bodies with an email in `CONTACTOS` — but no INE code and no address;
+`Listado Oficinas EELL.xlsx` carries office ids and flags, also no
+address. 8,226 Spanish municipalities hold an INE code (`P772`) on
+Wikidata and **exactly one holds a DIR3 ID (`P6222`)**, so the two
+cannot be joined on a code. What is needed is a Spanish source keyed by
+INE code: REL, the Registro de Entidades Locales, is the obvious one and
+is 403 from this sandbox, and the ministry has moved its pages to
+`mptmd.gob.es` where the REL page now 404s. Find REL's current download
+and Spain falls out in an afternoon.
+
+**Norway is a trap worth naming.** Brønnøysund's Enhetsregisteret is
+open, reachable, and holds email, telephone and website for every
+registered body. The tempting key is `P2504`, held by 879 of 883
+kommune items — but its values are kommune *numbers* (`3405`, `4601`),
+not organisation numbers, and **Norway renumbered every municipality in
+the 2020 reform**. Joining on it would silently attach one town's
+details to another wherever a number was reissued, which is the exact
+failure Sardinia showed on a smaller scale. Do Norway on the
+organisation number or not at all.
+
+**Germany has no national register of municipal contacts.** The
+Gemeindeverzeichnis is names and codes. It is a per-state job, or
+Tier A and B.
+
 ### The place lookup was non-deterministic, and is not now
 
 Worth knowing before touching `resolveUnit` or `resolveUnitIn` again,
@@ -616,6 +718,28 @@ from the query service. The fix is two parts:
 - three more tie-breakers in the ranking: prefer a territory over its own
   government body (`RX_GOVBODY`), then a label that starts with the name
   asked for, then the shorter label.
+
+Two more things the place lookup got wrong, both fixed this round:
+
+- **The search reordered the geocoder.** Typing "Sovizzo" offered
+  Sovico, in another region, with Sovizzo third below a suburb in
+  Brazil. Photon had Sovizzo first; this map's relation-before-node sort
+  demoted it, because Sovizzo's relation is tagged `administrative`
+  rather than as a settlement and so fell out of the settlements, while
+  Sovico's relation is tagged `village` and rose. Promoting whatever
+  matched the typed name exactly was tried and was **worse**: "Hannover"
+  then offered a hamlet in North Dakota ahead of the city of four
+  million, which Photon ranks first and spells "Hanover" in English.
+  Photon weighs prominence and this map has nothing better to weigh it
+  with, so its order is kept, and relation-before-node now applies only
+  between two objects of the same folded name — where it decides which
+  Sovizzo to open and nothing else. Standing check: Sovizzo first for
+  "Sovizzo", Hanover first for "Hannover".
+- **A level printed its own id.** A Wikidata item with no label in any
+  of the 30 languages asked for comes back labelled `Q109290689`, and
+  that is what the chain showed a reader as the region they live in —
+  Germany's first level. The boundary file names every unit in it, so
+  `unitLabel` shows that name and keeps the id doing the work.
 
 Check **both California and a large county** after any change here.
 They fail in opposite directions — one wants the containing unit, the
