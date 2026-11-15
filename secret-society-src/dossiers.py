@@ -29,7 +29,7 @@ def region(k):
 
 
 def main(out):
-    html = open(os.path.join(HERE, '..', 'secret_society_infiltration.html')).read()
+    html = open(os.path.join(HERE, '..', 'infiltration.html')).read()
     m = re.search(r'\nvar DATA = (\{.*?\});\n', html, re.S)
     D = json.loads(m.group(1))
     rows, cases, ents, pats = D['rows'], D['cases'], D['entities'], D['patterns']

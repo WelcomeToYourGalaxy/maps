@@ -1120,7 +1120,7 @@ def main():
         k.pop("_w", None)
     out = sorted(kept, key=lambda x: x["date"], reverse=True)[:MAX_ITEMS]
 
-    json.dump(out, open(__import__("os").path.join(HERE, "..", "secret_society_wire.json"), "w"), ensure_ascii=False, indent=1)
+    json.dump(out, open(__import__("os").path.join(HERE, "..", "infiltration_wire.json"), "w"), ensure_ascii=False, indent=1)
 
     dead = [r for r in report if "unreachable" in r[2]]
     for name, n, note in sorted(report, key=lambda r: -r[1])[:25]:

@@ -1,6 +1,6 @@
 # Brief: audit and rewrite entries on the "Infiltration Map"
 
-The map (welcometoyourgalaxy.github.io/maps/secret_society_infiltration.html) shows cases where an outside force got inside a government, an international body or a company. Readers are general-audience novices. The site keeps a strict no-fabrication standard.
+The map (welcometoyourgalaxy.github.io/maps/infiltration.html) shows cases where an outside force got inside a government, an international body or a company. Readers are general-audience novices. The site keeps a strict no-fabrication standard.
 
 The owner complained about two things:
 1. Some entries are not infiltration at all. Example: Erik Prince's security firms openly signing contracts with Ecuador, Haiti and DR Congo, and a UN panel finding he broke the Libya arms embargo. Those are mercenary contracting and sanctions-breaking, not infiltration.

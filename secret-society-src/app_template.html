@@ -1035,7 +1035,7 @@ function drawWire() {
   $("#wIso").onchange = (e) => { W.iso = e.target.value; drawWire(); }; $("#wLang").onchange = (e) => { W.lang = e.target.value; drawWire(); }; $("#wAge").onchange = (e) => { W.age = e.target.value; drawWire(); };
 }
 async function loadWire() {
-  for (const u of ["secret_society_wire.json", "https://welcometoyourgalaxy.github.io/maps/secret_society_wire.json"]) {
+  for (const u of ["infiltration_wire.json", "https://welcometoyourgalaxy.github.io/maps/infiltration_wire.json"]) {
     try { const r = await fetch(u + "?_=" + Date.now(), { cache: "no-store" }); if (!r.ok) continue; const j = await r.json(); if (Array.isArray(j) && j.length) { W.all = j; break; } } catch (e) {}
   }
   drawWire();

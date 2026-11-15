@@ -1,7 +1,7 @@
 # Infiltration Map — handoff (3 Nov 2026)
 
-Live page: https://welcometoyourgalaxy.github.io/maps/secret_society_infiltration.html
-Repo: WelcomeToYourGalaxy/maps. Build output: `secret_society_infiltration.html` (repo root). Sources: `secret-society-src/`.
+Live page: https://welcometoyourgalaxy.github.io/maps/infiltration.html
+Repo: WelcomeToYourGalaxy/maps. Build output: `infiltration.html` (repo root). Sources: `secret-society-src/`.
 
 ## What the map is
 A MapLibre globe of documented cases where an outside party (foreign state or spy service, organised crime, company/industry, bank, lodge/secret society, religious movement, elite network, political or armed movement, lender) got its people, money or control INSIDE a government body, an international body or a company, and decisions there served it.
