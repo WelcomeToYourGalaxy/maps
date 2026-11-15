@@ -326,6 +326,58 @@ links, not just its legislature.
 
 The file is now 1.0 MB, 289 KB gzipped.
 
+### Round three: the jurisdiction's own address, at every level
+
+No new query. `qCore` has always asked each level for its own website,
+public email and switchboard — the `self` rows — and `classifyRows`
+dropped them, because they are not offices. Only the level whose panel
+was open ever used them, for the link beside the place name. Every other
+level in the chain fetched its own address and threw it away.
+
+That was the gap at county and municipal level. A county with no council
+recorded still has a county website; a commune with no chamber still
+publishes an address and a telephone number, and Wikidata holds those
+far more often than it holds the body — 7,831 of Italy's 7,840 comuni
+carry one against 1,727 legislature addresses for the whole world.
+
+`keepSelf()` stores them in `LEVSELF`, keyed by the same jurisdiction
+id as `SUBLEG`. Three uses: `placeLink()` makes each level's name in the
+country paragraph a link to that government's own site; `levelRows()`
+offers the email under the email method and the switchboard under the
+call method, skipped where the open office already carries the same one;
+and where no council is recorded for a level — the usual case for a
+county, the normal one for a municipality — it offers the government's
+own site in place of the council, saying that is where the council is
+published.
+
+Measured on Grenoble: `grenoble.fr`, `contactville@grenoble.fr`,
+`+33-4-76-76-36-36`, none of which was reachable before. On Modena:
+`comune.modena.it` and `regione.emilia-romagna.it`.
+
+**Three bad records found while testing this, and the filters for them.**
+Modena's agencies included "IRIS UNIMORE author ID", "PatER ID" and
+"Tourer.it ID". Wikidata records an identifier scheme as an item, gives
+it `applies to jurisdiction`, and the classifier read the title as a
+body. `RX_WDPROP` tests the class ("Wikidata property for authority
+control") and `RX_IDENT` the description ("identifier for an author
+in…"). Separately, "Constituency of the Legislative Assembly of
+Emilia-Romagna" came through as a chamber on the strength of the words
+in its name; its class is an administrative territorial entity, which is
+a place, and a place cannot be written to — `RX_PLACECLS` drops those.
+And "President of the Legislative Assembly of Emilia-Romagna" was a
+chamber rather than a presiding officer, because the pattern matched
+only "president of the senate" and "president of the assembly"; it now
+takes the qualifiers a regional body puts in between, while "President
+of Emilia-Romagna" and "President of the Republic" stay with the
+executive. `CACHE_V` went to `htrt6`.
+
+This is the pattern worth keeping in mind for the rounds below the
+county: **the classifier's failures surface one jurisdiction at a time,
+and only by opening places and reading the list.** Nothing in the
+pipeline catches them, because every one of these records is real,
+current and correctly tagged in Wikidata — it is the reading of them
+that was wrong.
+
 ### How many rounds, and where the work actually is
 
 The count depends entirely on the level, because the number of units and
@@ -335,8 +387,8 @@ the way to reach them both change at each step:
 | --- | --- | --- | --- |
 | National | 198 | Wikidata `P194`/`P527` + front-page crawl | done |
 | Sub-national legislatures | ~3,800 ADM1 | `P194` by jurisdiction id | done |
-| ADM2 councils | ~48,000 | Wikidata, thinning sharply | 1–2, partial |
-| Municipalities | ~250,000–400,000 | **not by the above** — see below | 3–6 |
+| County-level councils | ~48,000 | came with round two: 1,558 bodies, 330 with an address | done |
+| Municipalities | ~250,000–400,000 | 1,200 bodies and every level's own address so far; the rest **not by the above** — see below | 3–6 |
 | Below the municipality | millions | not proposed | — |
 
 So four to six more rounds reaches a complete picture down to the
