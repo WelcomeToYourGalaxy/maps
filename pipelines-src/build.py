@@ -12,7 +12,12 @@ for p, v in process.P.items():
             i = process.juris_iso(j)
             if i: isos.append(i)
     if isos: process.POS[p] = (isos[0], max(process.RANK[k] for k in v['k']))
+# drop local posts that Wikidata files under head of government (mayors, city committees)
+_pl = json.load(open('data/labels.json'))['pos']
+if os.path.exists('data/uni/poslabels.json'): _pl.update(json.load(open('data/uni/poslabels.json')))
+for _p in [p for p in process.POS if re.search(r'mayor|bürgermeister|burgomaster|city executive committee|local council', _pl.get(p, ''), re.I)]: del process.POS[_p]
 from process import load, PROGS, KIND
+import rec as REC
 from patterns import PATTERNS, HYP
 from about import STORY, METHOD
 
@@ -37,6 +42,10 @@ if os.path.isdir('data/alumni'):
 else:
     recs = {(p, s): {'via': set(v), 'lists': set(l), 'offices': o} for p, s, v, l, o in json.load(open('data/records.json'))}
 L = json.load(open('data/labels.json'))
+if os.path.exists('data/uni/plabels.json'):
+    for k, v in json.load(open('data/uni/plabels.json')).items(): L['people'].setdefault(k, v)
+if os.path.exists('data/uni/poslabels.json'):
+    for k, v in json.load(open('data/uni/poslabels.json')).items(): L['pos'].setdefault(k, v)
 Q = json.load(open('data/qids.json'))
 KINDS = [["econ", "Economics schools that exported a doctrine", "University departments whose graduates carried one school of economics into governments abroad."],
          ["elite", "Elite universities and policy schools", "The universities and graduate schools that educate a large share of the world's rulers."],
@@ -46,7 +55,8 @@ KINDS = [["econ", "Economics schools that exported a doctrine", "University depa
          ["mil", "Officer and security schools", "Military, police and intelligence schools that train officers, including foreign ones."],
          ["ideas", "Think tanks and political foundations", "Think tanks, foundations and movements that train activists, candidates and future staff."],
          ["faith", "Religious formation", "Seminaries, universities and movements that train believers who go on to hold power."],
-         ["firm", "Banks, consultancies and lenders", "Employers whose young staff later run finance ministries, central banks and governments."]]
+         ["firm", "Banks, consultancies and lenders", "Employers whose young staff later run finance ministries, central banks and governments."],
+         ["rec", "Every other school in the record", "Every other university, school and academy where Wikidata records at least one person who later held national office. Data only, no writeup."]]
 kix = {k[0]: i for i, k in enumerate(KINDS)}
 
 schools = []
@@ -57,6 +67,18 @@ for p in PROGS:
     if not s['iso']: raise SystemExit('no iso for ' + p['c'])
     s['q'] = (Q.get(p['id']) or [None])[0]
     schools.append(s)
+# every other school in the record (needs the raw pulls in data/uni and data/alumni; otherwise read the snapshot)
+if os.path.isdir('data/uni') and os.path.isdir('data/alumni'):
+    gsch, grecs, TOT, NALL = REC.build(process.POS, C)
+    json.dump({'S': gsch, 'R': [[p, s_, o] for (p, s_), e in grecs.items() for o in [e['offices']]], 'T': TOT, 'N': NALL}, open('data/rec_snapshot.json', 'w'), separators=(',', ':'))
+else:
+    snap = json.load(open('data/rec_snapshot.json'))
+    gsch, TOT, NALL = snap['S'], snap['T'], snap['N']
+    grecs = {(p, s_): {'via': {'edu'}, 'lists': set(), 'offices': o} for p, s_, o in snap['R']}
+recs.update(grecs)
+# a fictional character and an unverified record that Wikidata files as office-holders
+for k in [k for k in recs if k[0] in {'Q14915624', 'Q5078492'}]: del recs[k]
+schools += gsch
 order = {k[0]: i for i, k in enumerate(KINDS)}
 schools.sort(key=lambda s: (order[s['k']], s['n']))
 SIX = {s['id']: i for i, s in enumerate(schools)}
@@ -72,7 +94,8 @@ for p in pids:
     PE.append([e.get('n') or p, p, wpt, e.get('b'), e.get('d')])
 POSL = sorted({pos for e in recs.values() for pos in e['offices']})
 POSIX = {p: i for i, p in enumerate(POSL)}
-POSN = [(lambda t: 'National office' if re.fullmatch(r'Q\d+', t or '') else t)(L['pos'].get(p, p)) for p in POSL]
+FIXPOS = {'Q841760': 'President of Cyprus', 'Q7844710': 'Minister of the Interior (Iran)'}   # English labels vandalised or mis-set in Wikidata
+POSN = [(lambda t: 'National office' if re.fullmatch(r'Q\d+', t or '') else t)(FIXPOS.get(p) or L['pos'].get(p, p)) for p in POSL]
 LISTS = {}
 LK = []
 for (p, sid), e in sorted(recs.items(), key=lambda x: (PIX[x[0][0]], SIX[x[0][1]])):
@@ -114,10 +137,29 @@ for y in HYP:
 
 nC = len({o[0] for l in LK for o in l[3]})
 nO = len({(l[0], o[5]) for l in LK for o in l[3]})
-DATA = {'kinds': KINDS, 'S': schools, 'PE': PE, 'L': LK, 'POSN': POSN, 'C': C, 'PAT': pats, 'HYP': HYP, 'LISTS': LISTN,
+nDoc = sum(1 for s in schools if s['k'] != 'rec')
+# compact form: offices once per person, record-only schools as arrays, Wikipedia title 1 when it equals the name
+PO = [None] * len(PE)
+for l in LK:
+    cur = PO[l[0]] or {}
+    for o in l[3]:
+        k = o[5]
+        if k not in cur: cur[k] = o
+        else:
+            c = cur[k]
+            if o[2] and (not c[2] or o[2] < c[2]): c[2] = o[2]
+            if o[3] and (not c[3] or o[3] > c[3]): c[3] = o[3]
+    PO[l[0]] = cur
+PO = [sorted(d.values(), key=lambda o: (o[2] or 0, o[5])) for d in PO]
+LK3 = [l[:3] for l in LK]
+PE2 = [[p[0], p[1], 1 if p[2] == p[0] else p[2], p[3], p[4]] for p in PE]
+SD = [s_ for s_ in schools if s_['k'] != 'rec']
+SR = [[s_['n'], s_['t'], s_['q'], s_['iso'], s_['lat'], s_['lng'], s_['y'], 1 if s_['wp'] == s_['n'] else s_['wp']] for s_ in schools if s_['k'] == 'rec']
+assert all(s_['k'] != 'rec' for s_ in schools[:len(SD)])
+DATA = {'T': TOT, 'NALL': NALL, 'NDOC': nDoc, 'ACC': (__import__('accounts').ACC if os.path.exists('accounts.py') else {}), 'kinds': KINDS, 'S': SD, 'SR': SR, 'PE': PE2, 'PO': PO, 'L': LK3, 'POSN': POSN, 'C': C, 'PAT': pats, 'HYP': HYP, 'LISTS': LISTN,
         'meta': {'date': '15 November 2026'}}
 js = json.dumps(DATA, ensure_ascii=False, separators=(',', ':'))
-method = METHOD.replace('__NS__', str(len(schools))).replace('__DATE__', '15 November 2026').replace('__NP__', f"{len(used):,}").replace('__NO__', f"{nO:,}").replace('__NL__', f"{len(LK):,}").replace('__NC__', str(nC))
+method = METHOD.replace('__NS__', str(nDoc)).replace('__NR__', f"{len(SR):,}").replace('__NALL__', f"{NALL:,}").replace('__NACC__', str(len(DATA['ACC']))).replace('__DATE__', '15 November 2026').replace('__NP__', f"{len(used):,}").replace('__NO__', f"{nO:,}").replace('__NL__', f"{len(LK):,}").replace('__NC__', str(nC))
 T = open('app_template.html').read()
 css = open('base.css').read()
 plate = 'data:image/webp;base64,' + base64.b64encode(open(SRC + 'plate.webp', 'rb').read()).decode()
