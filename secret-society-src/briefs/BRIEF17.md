@@ -1,38 +1,72 @@
-# Brief 17: hypotheses — where infiltration is likely and unrecorded
+# BRIEF17 — possible patterns
 
-Added on 14 November 2026 at the owner's request: alongside the documented cases, the map should say where it thinks infiltration is going on and has not been recorded. These are kept in `data/hypotheses.json` and shown in the patterns box under the heading **Hypotheses · not cases**, with a dashed rule down the side, which is already this map's mark for an estimate.
+`data/hypotheses.json` holds the map's **possible patterns**. They sit under the
+patterns list, in the same panel, and they are the same kind of object: a shape
+infiltration takes, in more than one place, named plainly. The difference is the
+only one that matters — the patterns above them are carried by cases with
+convictions, findings or sanctions behind them; these have nothing proved yet.
 
-## Why they are safe to publish, and the line that keeps them safe
+Earlier rounds built this layer as commentary on the map's own coverage ("this
+country is thinly recorded", "companies are under-represented here"). That was
+not the point. Coverage analysis belongs in the handoff and in the project docs,
+not on the map. A possible pattern is a claim about **the world**, not about the
+file. The owner's instruction, 14 November 2026: *more patterns like those added
+already but just ones that are potentials. this will pair with the list of
+actual patterns with convictions/proof. keeps the map spicy/exciting, novel
+frontier stuff.*
 
-The map's standing promise is no fabrication, with verified citations. A hypothesis has no citation, because there is nothing to cite. It is defensible anyway, but only if it is built one particular way:
+## What makes one legitimate
 
-**A hypothesis is a statement about the record, derived from a rule the reader can check, not a claim about a person.** "Seventeen countries score 7.5 or higher for state-embedded actors and hold two cases or fewer on this map" is a fact about the map and a published index. The inference from it - that the silence is more likely to be absent reporting than absent conduct - is reasoning the reader can accept or reject, with the rule in front of them.
+Five fields, all mandatory, and the second is the test:
 
-So every hypothesis carries five fields and none of them is optional:
-
-- **`rule`** — the test that produced it, with the numbers. If the rule cannot be stated so that someone else could re-run it, the hypothesis does not go in.
-- **`conditions`** — the measured conditions it rests on, from a source that covers every country the same way. The Global Organized Crime Index in `data/conditions.json` scores all 193 UN member states on the same questions, which is why it can carry this weight and the map's own case counts cannot.
-- **`documented`** — what the map actually holds nearby, which is what makes the inference more than a hunch.
-- **`would_show`** — what evidence would turn it into cases. A hypothesis that nothing could confirm is a complaint, not a hypothesis.
-- **`would_refute`** — what would kill it. This is the field that stops the set drifting into conspiracy: `thin_record_severe_insiders` can be refuted by a serious published attempt to look that finds little, and Cabo Verde is written up as exactly that outcome.
+- `claim` — the pattern, stated as probable, never as fact. Hedged in the
+  sentence itself ("are probably reaching", "is probably inside"), because the
+  hedge has to survive being quoted out of the panel.
+- `rule` — **why that is likely.** This is what separates a possible pattern
+  from a guess. It has to be an argument from something real: a mechanism the
+  map already proves in the same sector, the same country or one step along the
+  chain; a structural feature of how the decision is taken; or a prize that has
+  grown while the body taking the decision has not. "It would be surprising if
+  this were clean" is not a rule.
+- `conditions` — what makes it possible: how few people take the decision, what
+  the decision is worth, who else is in the room, what is not published.
+- `documented` — the proved cases nearest to it, named. Where there are none,
+  say so and name the adjacent thing the map does prove. One item in the current
+  nine is deliberately at zero (ship registries); that is allowed, and it is why
+  the `rule` there leans entirely on structure.
+- `would_show` / `would_refute` — both. Something that cannot be knocked down is
+  not a pattern, it is an opinion. `would_refute` should describe a world where
+  the thing is clean, not merely an absence of prosecutions.
 
 ## Hard rules
 
-1. **Never name a person, a company or an office-holder in a hypothesis.** Name countries, kinds of body and kinds of decision. The moment a hypothesis names someone it is an allegation without evidence, which is the one thing this map does not publish.
-2. **Hypotheses are counted nowhere.** They do not touch `cases.json`, the country shading, the coverage percentage, the benchmarks or any filter. `build.py`'s `hypotheses()` computes exactly one number from the case file - how many cases the map holds in the countries a hypothesis names - because a thin record should be visible rather than asserted.
-3. **A hypothesis is not a research to-do.** The pending research lives in the handoff. A hypothesis says what the record's shape implies; it stays up after the research is done, because the next reader needs the reasoning as much as the result.
-4. **When a hypothesis produces cases, it stays and the claim narrows.** Do not delete one because two of its seventeen countries now have cases. Edit the rule and the numbers; the reasoning is the artefact.
-5. **No hypothesis about an individual country's politics.** The set is about where the record is thin and why, not about who is corrupt.
+- **No person, company or office-holder is ever named in a possible pattern**,
+  not even one already on the map. Named parties appear only in `documented`,
+  and only as the proved case they are already in. The claim itself names
+  sectors, bodies and functions.
+- They are counted nowhere. No figure, breakdown, share, country total or
+  benchmark count moves because of them. `build.py`'s `hypotheses()` adds a
+  `held` number, which is the cases the map already holds in the countries
+  named — shown only to make clear those cases are *not* this pattern.
+- `countries` is optional and is for where the pattern is most likely, not a
+  shortlist of suspects. Leave it empty where the pattern is global. Every name
+  must be in `briefs/countries.txt`.
+- `pattern` must be an existing id in `data/patterns.json`. The pairing is the
+  point: a reader should be able to click from the possible pattern to the
+  proved one it rhymes with.
+- They are **not a research to-do list.** The research queue lives in HANDOFF.md.
+- When a possible pattern produces cases, it stays, and the `claim` narrows to
+  the part still unproved. A pattern that is fully proved graduates to
+  `patterns.json` and is removed here.
 
-## The four kinds
+## The nine, as of 14 November 2026
 
-- **`gap`** — conditions severe, record thin. One rule, many countries.
-- **`shortfall`** — a measured deficit in the map itself, stated as a claim about the world. `companies_underrecorded` is the model: 12 per cent of cases against an estimated 30, and the shortfall argued to be in the record.
-- **`sealed`** — infiltration established and the subject withheld by the state. These are the strongest of the set, because something is on the record and only the name is missing: nine benchmark items across Germany, Switzerland and the Netherlands. Note that for this kind the display suppresses the held-cases count, which would otherwise read as if those countries were thinly covered.
-- **`pattern`** — a pattern the map documents, somewhere it has no case. These carry a `pattern` id and show a chip linking to it, which is what the owner asked for when they said hypotheses could pair with the patterns.
+data_centre_power · scam_compound_zones · gold_refiners_in_banks ·
+flag_registries · carbon_offsets_forestry · security_companies_copying_wagner ·
+medicines_approval · crypto_licensing · distant_water_fleets
 
-## Adding one
-
-Six are in as of 14 November 2026. Before adding a seventh, ask whether it is really one of these four kinds, and whether its rule survives being written down. The ones that were considered and left out are instructive: "the map is three-quarters post-2010" is a fact about the map with no claim about the world attached, so it belongs in the completeness note rather than here; and anything of the form "X is probably corrupt" has no rule behind it and names a subject, so it fails both tests.
-
-Recompute the numbers in `rule` and `conditions` whenever the case file moves enough to change them - `stale.py` and the coverage block are the models for that - and bump `_asof`.
+The three retired commentary items (thin_record_severe_insiders,
+companies_underrecorded, sealed_sanctions) are not deleted work: their content
+is in the project doc `claude/infiltration-map-how-complete-14-nov.md` and in
+the completeness section of HANDOFF.md, which is where that kind of writing
+belongs.
