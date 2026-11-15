@@ -76,7 +76,7 @@ button.btn:hover,#infoBtn:hover,#worldBtn:hover{border-color:var(--accent-hi);co
 .pat.on{background:rgba(255,255,255,.1)}
 .pat .pt{font-size:13px;color:#f0ece4;line-height:1.3}
 .pat .pm{font-size:10.8px;color:var(--mute);margin-top:1px}
-/* hypotheses: the map's own reasoning, never a case. Dashed, as estimates are elsewhere. */
+/* possible patterns: stated, never proved. Dashed, as estimates are elsewhere. */
 .hyp{padding:6px 8px;margin:4px 0;border-left:3px dashed var(--mute);border-radius:0 4px 4px 0;background:rgba(255,255,255,.02);cursor:pointer}
 .hyp:hover{background:rgba(255,255,255,.06)}
 .hyp .ht{font-size:12.6px;color:#ded9d0;line-height:1.3}
@@ -312,7 +312,7 @@ const PAL = {
 };
 let P = PAL.night;
 const BACK_COL = { night: "#e9e2f2", outlines: "#c9c3b8", satellite: "#f1eedf", atlas: "#2a2620", hell: "#f3e6e1" };
-let curBase = "night";
+let curBase = "satellite";
 const backCol = () => BACK_COL[curBase] || "#e9e2f2";
 function infCol(k) { return (k === "lender" || k === "intl_target") ? P.t.intl : P.p[INF_I[k] != null ? INF_I[k] : 6]; }
 function bcol(i) { return i < P.b.length ? P.b[i] : P.p[i === 6 ? 6 : 7]; }
@@ -380,7 +380,7 @@ function freeFlat() {
     else map.setTransformConstrain(null);
   } catch (e) {}
 }
-const BM = CulpritsBasemaps.create("map", { initial: "night", projection: "globe", plate: window.PLATE_IMG, center: [12, 30], zoom: 1.4,
+const BM = CulpritsBasemaps.create("map", { initial: "satellite", projection: "globe", plate: window.PLATE_IMG, center: [12, 30], zoom: 1.4,
   onApply: (k) => { P = PAL[k] || PAL.night; curBase = k; const u = P.ui, rs = document.documentElement.style; rs.setProperty("--accent", u[0]); rs.setProperty("--accent-hi", u[1]); rs.setProperty("--bg", u[2]); rs.setProperty("--card", P.card); rs.setProperty("--line", P.edge); if (ready) { order(); paint(); buildKey(); if (S.sel) reopen(); } },
   onReady: () => init() });
 map = window.societiesMap = BM.maplibre;
@@ -753,11 +753,12 @@ function buildPat() {
   }
   if (hid) h += '<div class="sub">' + hid + ' more ' + (hid === 1 ? 'pattern has' : 'patterns have') + ' nothing left under the filters you have set.</div>';
   if (HYP.length) {
-    h += '<div class="flab" style="margin-top:12px">Hypotheses · not cases</div>' +
+    h += '<div class="flab" style="margin-top:12px">Possible patterns · nothing proved yet</div>' +
          '<div class="hypnote">' + esc(HYPW) + '</div>' +
-         HYP.map((y) => '<div class="hyp" data-hyp="' + y.id + '"><div class="ht">' + esc(y.title) + '</div><div class="hm">' +
-           (y.countries.length ? y.countries.length + (y.countries.length === 1 ? ' country' : ' countries') + (y.kind === 'sealed' ? '' : ' · ' + y.held + (y.held === 1 ? ' case held' : ' cases held')) : 'no country named') +
-           ' · ' + esc(HKIND[y.kind] || y.kind) + '</div></div>').join("");
+         HYP.map((y) => { const pp = y.pattern ? PAT_BY[y.pattern] : null;
+           return '<div class="hyp" data-hyp="' + y.id + '"><div class="ht">' + esc(y.title) + '</div><div class="hm">' +
+           (y.countries.length ? y.countries.length + (y.countries.length === 1 ? ' country named' : ' countries named') : 'no country named yet') +
+           (pp ? ' · beside <i>' + esc(pp.title) + '</i>' : '') + '</div></div>'; }).join("");
   }
   if (S.pat) {
     const p = PAT_BY[S.pat];
@@ -769,25 +770,23 @@ function buildPat() {
   $("#patBody").querySelectorAll("[data-hyp]").forEach((d) => d.addEventListener("click", () => openHyp(d.dataset.hyp)));
   sizeBoxes();
 }
-const HKIND = { gap: "a thin record where conditions are severe", shortfall: "a measured shortfall in this map",
-                sealed: "established and sealed by the state", pattern: "a documented pattern, somewhere it has no case" };
 function openHyp(id) {
   const y = HYP.find((x) => x.id === id);
   if (!y) return;
   const pat = y.pattern ? PATS.find((p) => p.id === y.pattern) : null;
   const row = (k, v) => v ? '<div class="hp-h">' + k + '</div><div class="hp-desc">' + esc(v) + '</div>' : '';
-  let h = '<div class="hp-k">Hypothesis · not a case</div><h3>' + esc(y.title) + '</h3>' +
-    '<div class="note">This is the map\'s own reasoning about where infiltration is likely and unrecorded. It carries no evidence, names no one, and is not counted anywhere in the case figures.</div>' +
+  let h = '<div class="hp-k">Possible pattern · nothing proved yet</div><h3>' + esc(y.title) + '</h3>' +
+    '<div class="note">This is not a case and not evidence. It is a pattern this map thinks is probably there, stated so that it can be looked for, argued with or knocked down. It names no person and no company, and it is counted in no figure on this map.</div>' +
     '<div class="hp-desc"><b>' + esc(y.claim) + '</b></div>' +
-    row('How this was arrived at', y.rule) + row('The conditions it rests on', y.conditions) +
-    row('What the map does hold', y.documented) + row('What would show it', y.would_show) +
-    row('What would refute it', y.would_refute);
+    row('Why that is likely', y.rule) + row('What makes it possible', y.conditions) +
+    row('The proved cases nearest to it', y.documented) + row('What would turn it into cases', y.would_show) +
+    row('What would knock it down', y.would_refute);
   if (y.countries.length) {
-    h += '<div class="hp-h">' + (y.kind === 'sealed' ? 'The jurisdictions that sealed them' : 'Countries named') + '</div><div class="chips">' +
+    h += '<div class="hp-h">Where it is most likely</div><div class="chips">' +
       y.countries.map((c) => '<span class="est" data-cty="' + esc(c) + '">' + esc(c) + '</span>').join("") + '</div>' +
-      (y.kind === 'sealed' ? '' : '<div class="sub">' + y.held + (y.held === 1 ? ' case' : ' cases') + ' on the map across those ' + (y.countries.length === 1 ? 'one country' : y.countries.length + ' countries') + '.</div>');
+      '<div class="sub">' + y.held + (y.held === 1 ? ' case' : ' cases') + ' already on the map across those ' + (y.countries.length === 1 ? 'one country' : y.countries.length + ' countries') + ', none of them this pattern.</div>';
   }
-  if (pat) h += '<div class="hp-h">Pairs with this pattern</div><div class="chips"><span data-pat="' + pat.id + '">' + esc(pat.title) + '</span></div>';
+  if (pat) h += '<div class="hp-h">The proved pattern it sits beside</div><div class="chips"><span data-pat="' + pat.id + '">' + esc(pat.title) + '</span></div>';
   show(h, null);
 }
 function buildLeg() {
