@@ -2625,7 +2625,7 @@ const qid = u => (u||'').split('/').pop();
 const isQ = s => /^Q\d+$/.test(s||'');
 function setDot(id, cls, txt){ const d=$('#d-'+id); if(!d) return; d.className='dot'+(cls?' '+cls:''); if(txt) $('#t-'+id).textContent=txt; }
 
-const CACHE_V='htrt6';
+const CACHE_V='htrt7';
 function cget(k){ try{ const r=localStorage.getItem(CACHE_V+':'+k); if(!r) return null;
   const o=JSON.parse(r); if(Date.now()-o.t > 6048e5) return null; return o.v; }catch(e){ return null; } }
 function cset(k,v){ try{ localStorage.setItem(CACHE_V+':'+k, JSON.stringify({t:Date.now(),v:v})); }catch(e){} }
@@ -5233,10 +5233,13 @@ function levelRows(rt, o){
   /* No council recorded for this level, which is the usual case for a
      county and the normal one for a municipality. The government itself
      publishes an address, and that is where its council sits. */
+  if(sf && sf.o)
+    out.push({lbl:place+' in the national register', u:sf.o,
+              tx:'the government\u2019s own directory entry for it, kept by the department that runs it'});
   if(sf && sf.u && !same(sf.u))
     out.push({lbl:'At '+place, u:sf.u,
               tx:'this government\u2019s own site, which is where its council is published',
-              stale:true});
+              stale:!sf.reg});
   return out;
 }
 function nationalRow(rt, o){
@@ -5748,6 +5751,71 @@ function keepSelf(q, core){
     if(r.email && !e.e) e.e=bareMail(r.email.value);
     if(r.phone && !e.p) e.p=bareTel(r.phone.value);
   });
+}
+/* A COUNTRY'S OWN REGISTER OF ITS MUNICIPALITIES.
+
+   Wikidata knows a commune's website about half the time and its
+   telephone number almost never. France publishes all of it: the
+   Annuaire de l'administration carries 35,813 mairies with an email, a
+   number, an address and a page on service-public.fr, maintained by the
+   department that runs the service rather than by volunteers. 35,731 of
+   them hold at least one contact detail; 34,980 are matched to a
+   Wikidata id through the INSEE code the two sources share, which is an
+   exact join and not a name match.
+
+   It does not live in this file. Thirty-five thousand records is seven
+   megabytes, against the four the whole boundary file costs, and a
+   reader opening one commune needs one commune. They are cut into 512
+   shards by the number in the Wikidata id — about 13 KB each, the
+   largest 17 KB — and the shard for a place is fetched when that place
+   is opened, once, and kept.
+
+   Shards are addressed by arithmetic rather than by an index, so adding
+   a country adds files and changes no code. `muni/index.json` records
+   what is in them and where it came from.
+
+   Where this and Wikidata disagree, this wins: it is the government's
+   own register of itself. The panel says so. */
+const MUNI_SHARDS=512;
+let MUNI_CACHE={}, MUNI_WANT={}, MUNI_IDX=null;
+/* Which countries have a register cut into the shards. Without this
+   every place on Earth fetched a shard to find nothing in it. */
+async function muniIdx(){
+  if(MUNI_IDX) return MUNI_IDX;
+  MUNI_IDX={countries:[]};
+  try{
+    const r=await fetch('muni/index.json');
+    if(r.ok) MUNI_IDX=await r.json();
+  }catch(e){ console.warn('municipal register index', e); }
+  return MUNI_IDX;
+}
+async function loadMuni(q){
+  if(!q || MUNI_WANT[q]) return;
+  MUNI_WANT[q]=1;
+  const idx=await muniIdx();
+  const iso=(STACK[0] && STACK[0].iso3) || '';
+  if(!idx.countries || idx.countries.indexOf(iso)<0) return;
+  const n=parseInt(String(q).slice(1),10);
+  if(!isFinite(n)) return;
+  const k=n%MUNI_SHARDS;
+  try{
+    if(MUNI_CACHE[k]===undefined){
+      MUNI_CACHE[k]=null;                       /* claimed, so it is fetched once */
+      const r=await fetch('muni/'+k+'.json');
+      MUNI_CACHE[k]= r.ok ? await r.json() : {};
+    }
+    /* another level may be mid-fetch on the same shard */
+    for(let w=0; MUNI_CACHE[k]===null && w<60; w++) await new Promise(r=>setTimeout(r,120));
+    const rec=(MUNI_CACHE[k]||{})[q];
+    if(!rec) return;
+    const e=LEVSELF[q] || (LEVSELF[q]={});
+    if(rec.u) { e.u=rec.u; }
+    if(rec.e) { e.e=rec.e; }
+    if(rec.p) { e.p=rec.p; }
+    if(rec.o) { e.o=rec.o; }
+    e.reg=1;                                    /* from the country's own register */
+    try{ if(CUR && !SEL) render(); }catch(err){ console.warn(err); }
+  }catch(err){ console.warn('municipal register', q, err); }
 }
 function levself(i){
   const s=STACK[i];
@@ -6722,6 +6790,7 @@ async function loadLevelPins(lv, gen){
     try{ core = await sparql(qCore(lv.q), 'core:'+lv.q); }catch(e){ console.warn('core query failed', lv.q, e); }
     if(gen!==CHAIN_GEN) return;
     if(core.length){ keepSelf(lv.q, core); addChainOffices(classifyRows(core, []), lv); }
+    loadMuni(lv.q);
     try{ items = await sparql(qJuris(lv.q), 'juris:'+lv.q); }catch(e){ console.warn('jurisdiction query failed', lv.q, e); }
     if(gen!==CHAIN_GEN) return;
     const bk = classifyRows(core, items);
@@ -6952,7 +7021,7 @@ let SHITS=[];
    the next place will be found from. */
 function openStart(){
   closeModal();
-  STACK=[]; PINS={}; OFFS={}; LEVSELF={}; LOCAL={}; CHAIN_DONE={}; CHAIN_CLAIMED={}; PIN_TRIED={};
+  STACK=[]; PINS={}; OFFS={}; LEVSELF={}; MUNI_WANT={}; LOCAL={}; CHAIN_DONE={}; CHAIN_CLAIMED={}; PIN_TRIED={};
   CUR=null; SEL=null;
   SELFSITE=null; paintSiteLink();
   if(typeof destroyBubbles==='function'){ destroyBubbles();
@@ -7215,7 +7284,7 @@ async function enterPlace(i){
     /* No outline of its own: the unit it sits inside is the deepest
        level, and it is already on the chain. */
     const top=STACK[STACK.length-1];
-    PINS={}; OFFS={}; LEVSELF={}; CHAIN_DONE={}; CHAIN_CLAIMED={}; PIN_TRIED={}; LOCAL={};
+    PINS={}; OFFS={}; LEVSELF={}; MUNI_WANT={}; CHAIN_DONE={}; CHAIN_CLAIMED={}; PIN_TRIED={}; LOCAL={};
     resetTree(); loadLawLinks();
     if(top){
       STACK.forEach((s,i)=>{ s.level=i; s.nolaw=!lawPower(i); });
@@ -7238,7 +7307,7 @@ async function enterPlace(i){
               level:(top?top.level:0)+1, adm:3, feature:feat});
   settlePlace(r);
   setAdmData([feat]);
-  PINS={}; OFFS={}; LEVSELF={}; CHAIN_DONE={}; CHAIN_CLAIMED={}; PIN_TRIED={}; LOCAL={};
+  PINS={}; OFFS={}; LEVSELF={}; MUNI_WANT={}; CHAIN_DONE={}; CHAIN_CLAIMED={}; PIN_TRIED={}; LOCAL={};
   resetTree();
   loadLawLinks();
   /* The walkthrough opens on the place searched for when it is a
@@ -7377,6 +7446,8 @@ const RX_ADMIN = /\b(county|province|district|region|state|municipality|commune|
 /* the kind of unit each level ought to be, used to break ties between
    same-named entities — "Los Angeles" is both a city and a county */
 const WANT_REGION = /\b(state|province|region|oblast|krai|republic|territor|governorate|voivodeship|canton|emirate|prefecture|department|county)\b/i;
+/* The government of a place, as opposed to the place itself. */
+const RX_GOVBODY = /\b(government|administration|executive branch)\b/i;
 const WANT_DISTRICT = /\b(county|district|parish|borough|municipality|commune|prefecture|department|subdivision|shire|raion|powiat|okrug)\b/i;
 
 async function resolveUnitIn(nm, countryQ, want){
@@ -7395,7 +7466,7 @@ async function resolveUnitIn(nm, countryQ, want){
   try{
     const rows = await sparql('SELECT ?x ?xLabel ?tLabel WHERE { VALUES ?l { '+vals+
       ' } ?x rdfs:label|skos:altLabel ?l ; wdt:P17 wd:'+countryQ+' . OPTIONAL{?x wdt:P31 ?t} '+
-      'SERVICE wikibase:label{bd:serviceParam wikibase:language "en"} } LIMIT 10', 'unit:'+countryQ+':'+nm);
+      'SERVICE wikibase:label{bd:serviceParam wikibase:language "en"} } LIMIT 120', 'unit:'+countryQ+':'+nm);
     const cand={};
     rows.forEach(r=>{ const id=qid(r.x.value);
       if(!cand[id]) cand[id]={id:id, label:(r.xLabel&&r.xLabel.value)||nm, types:[]};
@@ -7410,6 +7481,15 @@ async function resolveUnitIn(nm, countryQ, want){
          the county came from there. But simply reversing it is wrong
          too: the boundary files name Los Angeles County "Los Angeles",
          and the exact match for that is the city, not the county.
+         The row limit belongs to this and was nearly invisible. It was
+         ten, ample while only English labels matched. Once aliases and
+         thirty languages were added, one well-documented entity can
+         fill ten rows by itself, and which ten come back is the query
+         engine's choice: the same search returned Los Angeles County
+         once and the City of Los Angeles the next time, with no change
+         to the code, and Sierra Madre was filed under a city it is not
+         in. The limit counts rows and the ranking counts entities, so
+         it has to be far larger than the candidates.
 
          So the level is passed in. `want` is a pattern for the kind of
          unit this ought to be — states and provinces at the region
@@ -7421,9 +7501,26 @@ async function resolveUnitIn(nm, countryQ, want){
       if(aw!==bw) return aw-bw;
       const ad=a.types.some(t=>RX_ADMIN.test(t))?0:1, bd=b.types.some(t=>RX_ADMIN.test(t))?0:1;
       if(ad!==bd) return ad-bd;
+      /* A place, not the body that runs it. Wikidata holds both for
+         many counties — "Los Angeles County", a charter county, and
+         "County of Los Angeles", its county government — and both
+         answer to "county" in the type test above. The chain is a
+         chain of jurisdictions: offices are recorded against the
+         territory, and the government of it carries none of them. */
+      const ag=a.types.some(t=>RX_GOVBODY.test(t))?1:0,
+            bg=b.types.some(t=>RX_GOVBODY.test(t))?1:0;
+      if(ag!==bg) return ag-bg;
       const ae=a.label.toLowerCase()===nm.toLowerCase()?0:1,
             be=b.label.toLowerCase()===nm.toLowerCase()?0:1;
-      return ae-be;
+      if(ae!==be) return ae-be;
+      /* "Los Angeles" against "Los Angeles County" and "County of Los
+         Angeles": the boundary file drops the suffix, so the name it
+         gives is the start of the canonical one. */
+      const lw=nm.toLowerCase();
+      const as=a.label.toLowerCase().startsWith(lw)?0:1,
+            bs=b.label.toLowerCase().startsWith(lw)?0:1;
+      if(as!==bs) return as-bs;
+      return a.label.length-b.label.length;
     });
     return ranked[0]||null;
   }catch(e){ return null; }
@@ -7461,7 +7558,7 @@ async function resolveUnit(nm){
   try{
     const rows = await sparql('SELECT ?x ?xLabel ?tLabel WHERE { VALUES ?l { '+vals+
       ' } ?x rdfs:label|skos:altLabel ?l ; wdt:P17 wd:'+country+' . OPTIONAL{?x wdt:P31 ?t} '+
-      'SERVICE wikibase:label{bd:serviceParam wikibase:language "en"} } LIMIT 10', 'unit:'+country+':'+nm);
+      'SERVICE wikibase:label{bd:serviceParam wikibase:language "en"} } LIMIT 120', 'unit:'+country+':'+nm);
     const cand={};
     rows.forEach(r=>{ const id=qid(r.x.value);
       if(!cand[id]) cand[id]={id:id, label:(r.xLabel&&r.xLabel.value)||nm, types:[]};
@@ -7487,9 +7584,26 @@ async function resolveUnit(nm){
       if(aw!==bw) return aw-bw;
       const ad=a.types.some(t=>RX_ADMIN.test(t))?0:1, bd=b.types.some(t=>RX_ADMIN.test(t))?0:1;
       if(ad!==bd) return ad-bd;
+      /* A place, not the body that runs it. Wikidata holds both for
+         many counties — "Los Angeles County", a charter county, and
+         "County of Los Angeles", its county government — and both
+         answer to "county" in the type test above. The chain is a
+         chain of jurisdictions: offices are recorded against the
+         territory, and the government of it carries none of them. */
+      const ag=a.types.some(t=>RX_GOVBODY.test(t))?1:0,
+            bg=b.types.some(t=>RX_GOVBODY.test(t))?1:0;
+      if(ag!==bg) return ag-bg;
       const ae=a.label.toLowerCase()===nm.toLowerCase()?0:1,
             be=b.label.toLowerCase()===nm.toLowerCase()?0:1;
-      return ae-be;
+      if(ae!==be) return ae-be;
+      /* "Los Angeles" against "Los Angeles County" and "County of Los
+         Angeles": the boundary file drops the suffix, so the name it
+         gives is the start of the canonical one. */
+      const lw=nm.toLowerCase();
+      const as=a.label.toLowerCase().startsWith(lw)?0:1,
+            bs=b.label.toLowerCase().startsWith(lw)?0:1;
+      if(as!==bs) return as-bs;
+      return a.label.length-b.label.length;
     });
     return ranked[0] || null;
   }catch(e){ return null; }
