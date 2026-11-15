@@ -296,6 +296,8 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 /* The recorded link is the field that goes stale fastest, so the
    search that finds the current one sits on the same line as the link
    rather than in a row of its own underneath it. */
+.nogeo{font-size:10.6px;line-height:1.45;color:var(--dim);margin:4px 0 0;
+  padding:5px 8px;border-left:2px solid var(--line);background:rgba(125,142,130,.07)}
 .findsite{font-size:10.4px;color:var(--dim);text-decoration:none;
   border:1px solid var(--line);border-radius:7px;padding:2px 7px;white-space:nowrap;
   word-break:normal}
@@ -6994,6 +6996,7 @@ function closeStart(){ $('#start').classList.add('off'); $('#sopen').classList.a
    a typed place name instead of one per letter. */
 const PHOTON='https://photon.komoot.io/api/';
 const NOM_LOOKUP='https://nominatim.openstreetmap.org/lookup';
+const NOM_SEARCH='https://nominatim.openstreetmap.org/search';
 let TA_T=null, TA_GEN=0;
 function typeAhead(){
   clearTimeout(TA_T);
@@ -7052,11 +7055,24 @@ async function runSearch(q, live){
      no settlement matched the name at all. */
   const SETTLE=new Set(['city','town','village','hamlet','municipality','borough',
                         'suburb','quarter','neighbourhood','locality','isolated_dwelling']);
-  const usable = rows.filter(f=>{
-    const p=f.properties||{};
-    if(p.osm_type!=='R') return false;
-    return p.osm_key==='place' || p.osm_key==='boundary';
-  }).map(f=>f.properties);
+  /* A city is not always a relation in what Photon returns. Cape Town
+     comes back as a node — OSM holds its boundary, but the geocoder's
+     best match for the name is the point in the middle of it — and
+     requiring a relation threw the whole search away: "Nothing with a
+     boundary matched that" for a city of four million.
+
+     A node is kept, and resolved by name rather than by id when it is
+     opened. Relations still rank above nodes, so where both are
+     returned the boundary is the one offered. */
+  const place = p => p.osm_key==='place' || p.osm_key==='boundary';
+  const usable = rows.map(f=>{
+      const p=Object.assign({}, f.properties);
+      const c=(f.geometry&&f.geometry.coordinates)||[];
+      p.plon=c[0]; p.plat=c[1];
+      return p;
+    })
+    .filter(p=>place(p) && (p.osm_type==='R' || SETTLE.has(String(p.osm_value||''))))
+    .sort((a,b)=>(a.osm_type==='R'?0:1)-(b.osm_type==='R'?0:1));
   const small = usable.filter(p=>SETTLE.has(String(p.osm_value||'')));
   SHITS = small.length ? small : usable;
 
@@ -7112,16 +7128,50 @@ async function enterPlace(i){
     const res=await fetch(u,{headers:{'Accept':'application/json'}});
     if(res.ok){ const d=await res.json(); r=d && d[0]; }
   }catch(e){}
-  if(!r || !r.geojson){
-    $('#mbody').innerHTML='<div class="note">The boundary for <b>'+esc(name)+
-      '</b> could not be fetched just now. Try again in a moment, or pick another result.</div>';
+  /* A node has no boundary of its own to look up, so the boundary is
+     searched for by name inside the country Photon named. The point the
+     node gives is the check: a result whose own point is far from it is
+     a different place with the same name, and is not taken. */
+  if((!r || !r.geojson) && sug.osm_type!=='R'){
+    try{
+      const q2=[sug.name, sug.state, sug.country].filter(Boolean).join(', ');
+      const u2=NOM_SEARCH+'?q='+encodeURIComponent(q2)+
+        '&format=jsonv2&polygon_geojson=1&extratags=1&limit=5&accept-language=en';
+      const res2=await fetch(u2,{headers:{'Accept':'application/json'}});
+      if(res2.ok){
+        const d2=await res2.json();
+        const near=(d2||[]).filter(x=>{
+          if(!x.geojson || !/Polygon/.test(x.geojson.type||'')) return false;
+          if(sug.plat==null || sug.plon==null) return true;
+          return Math.abs(+x.lat-sug.plat)<0.6 && Math.abs(+x.lon-sug.plon)<0.6;
+        });
+        r=near[0]||null;
+      }
+    }catch(e){}
+  }
+  /* Some places have no boundary to be had. Cape Town is a node in
+     OpenStreetMap and so is the answer Nominatim gives for its name:
+     the city's outline is held under "City of Cape Town", which is not
+     what anybody searches for. The point is still exact, and the point
+     is all the chain needs — it is what decides which unit of the world
+     file the place sits in, and every level above it follows from that.
+
+     So a place with no outline is opened at the unit that contains it,
+     drawn with that unit's boundary and named by it. Nothing is
+     invented: the reader is told the place has no boundary of its own
+     and shown the government whose boundary it is inside. */
+  const pt = r ? [+r.lon, +r.lat]
+            : (sug.plon!=null && sug.plat!=null ? [sug.plon, sug.plat] : null);
+  if(!pt || !isFinite(pt[0]) || !isFinite(pt[1])){
+    $('#mbody').innerHTML='<div class="note"><b>'+esc(name)+
+      '</b> could not be placed just now. Try again in a moment, or pick another result.</div>';
     return;
   }
-
-  const lon=+r.lon, lat=+r.lat;
-  const wd=(r.extratags&&r.extratags.wikidata&&/^Q\d+$/.test(r.extratags.wikidata))
+  const lon=pt[0], lat=pt[1];
+  const noShape = !r || !r.geojson || !/Polygon/.test(r.geojson.type||'');
+  const wd=(r && r.extratags && r.extratags.wikidata && /^Q\d+$/.test(r.extratags.wikidata))
     ? r.extratags.wikidata : null;
-  const feat={type:'Feature', geometry:r.geojson,
+  const feat=noShape ? null : {type:'Feature', geometry:r.geojson,
     properties:{n:name, shapeName:name, wd:wd, muni:1}};
 
   if(!WORLD.length || !Object.keys(ISO2Q).length){
@@ -7157,9 +7207,30 @@ async function enterPlace(i){
   if(host){
     /* reuse the existing chain builder, but do not let it scan the whole
        district for every municipality inside it — we already have ours */
-    await fromWorld(host, {noMuniScan:true});
+    await fromWorld(host, {noMuniScan:noShape?false:true});
   }else{
     STACK=[];
+  }
+  if(noShape){
+    /* No outline of its own: the unit it sits inside is the deepest
+       level, and it is already on the chain. */
+    const top=STACK[STACK.length-1];
+    PINS={}; OFFS={}; LEVSELF={}; CHAIN_DONE={}; CHAIN_CLAIMED={}; PIN_TRIED={}; LOCAL={};
+    resetTree(); loadLawLinks();
+    if(top){
+      STACK.forEach((s,i)=>{ s.level=i; s.nolaw=!lawPower(i); });
+      let anchor=null;
+      for(let i=STACK.length-1;i>=0;i--){ if(STACK[i].q && !STACK[i].nolaw){ anchor=STACK[i]; break; } }
+      if(anchor) openJuris(anchor.q, anchor.label, false);
+      else { openModal(top.label); renderNoEntity(top.label, true); }
+      noteNoShape(name, top.label);
+      if(top.feature) setAdmData([top.feature]);
+    }
+    paintTrail(); paintChain(); setPins();
+    fitToNational(); armSearchZoom();
+    if(top && top.feature) loadLocalContacts(top.feature, STACK.length-1);
+    loadChainPins();
+    return;
   }
   /* then the place itself, as the deepest level */
   const top=STACK[STACK.length-1];
@@ -7255,6 +7326,17 @@ function settlePlace(r){
     if(String(STACK[i].label).trim().toLowerCase()===String(STACK[i-1].label).trim().toLowerCase() && STACK[i].adm<3) STACK.splice(i,1);
   }
   STACK.forEach((s,i)=>{ s.level=i; s.nolaw=!lawPower(i); });
+}
+
+/* Said once, under the title, when the place searched for has no
+   boundary in OpenStreetMap and the unit containing it is what opened. */
+function noteNoShape(asked, shown){
+  try{
+    const el=$('#admnote'); if(!el) return;
+    el.className='nogeo';
+    el.textContent=asked+' has no boundary of its own in the map data, so '+
+      shown+', the government it sits inside, is what is drawn here.';
+  }catch(e){ console.warn(e); }
 }
 
 /* ---------- resolving a drawn unit to a Wikidata entity ---------- */
