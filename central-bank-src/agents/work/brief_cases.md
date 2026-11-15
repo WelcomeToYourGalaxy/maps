@@ -67,3 +67,7 @@ Allowed `role` values:
 - Staff below senior management: give the role, not the name, unless the name matters to the case.
 - An outsider's failed attempt against a bank is not a case. Misconduct by a commercial bank alone is not a case.
 - Report in two or three lines: records, WebFetch calls used, whether the limit hit, anything doubtful.
+
+## Records already settled. Do not offer these again.
+- **Myanmar, Bo Bo Nge.** The deputy governor arrested on the day of the 1 February 2021 takeover, charged in May 2022 and sentenced by a junta court to 20 years in December 2022 after a secret trial. It is well sourced and it is already on the map — on the **moves against the bank** layer, where a state's action against a central bank belongs. It was settled as moves-only because this row is built from audits, inquiries and open courts, and a military government's secret-trial conviction set beside those would read as evidence that the official was corrupt rather than as evidence of what the state did to the bank. Three agents in a row have found the same report and offered it; it is refused each time. If a future case has an open-court conviction and a published judgment, that is a different question.
+- **El Salvador, Carlos Federico Paredes.** A former president of the central bank convicted of estafa over private land deals, the conviction later annulled as time-barred. The bank's money was never involved, so it fails the subject test, and an annulled time-barred conviction would not count in any event.
