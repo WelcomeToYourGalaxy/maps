@@ -8,9 +8,11 @@ A MapLibre globe, in the same design as the Infiltration Map (its CSS, basemaps.
 
 Size at first build: 154 schools in 9 kinds, 4,473 office-holders, 7,415 national offices, 5,583 school-person links, 190 countries, 10 patterns, 5 possible patterns.
 
-Second build (same day): 168 documented schools, plus 7,500 "every other school in the record" (kind `rec`, grey dots, no writeup), 22,991 office-holders, 35,018 national offices, 38,079 school-person links, 198 countries, and a written "Behind the scenes" account for each of the 198 countries.
+Second build (same day) briefly added every school any office-holder attended (7,500 "record" schools). The owner rejected that: it turned the map into a map of where famous people studied. Third build: pipelines only. 189 documented schools and programmes, 4,985 office-holders who went through them, 191 countries, 185 country accounts.
 
-Coverage: Wikidata lists about 44,490 people in these national offices (after removing mayors). Roughly half have any school recorded; the map shows all of them. The first build showed about 10%. Programmes Wikidata does not track (visitor programmes, party schools, private fellowships) cannot be counted.
+Rule for the map: a person appears only if they went through a documented school or programme. Ordinary universities stay off the map unless a source documents them as a pipeline, in which case they get a writeup in a meta file.
+
+Coverage: Wikidata lists about 44,490 people in these national offices (after removing mayors); 4,985 (about 11%) went through a pipeline on the map. Each country box gives its own figure (DATA.TM against DATA.T).
 
 ## Files
 - `seed.py` — the school list (id | kind | Wikipedia title).
@@ -18,9 +20,10 @@ Coverage: Wikidata lists about 44,490 people in these national offices (after re
 - `patterns.py` — the ten patterns and five possible patterns (hedged claims, counted nowhere). The possible patterns say what would show them; the owner asked for the 'would be refuted' sentences to be removed. The patterns' `means` text is headed 'What this means for who governs.'
 - `meta5.py` — 14 schools added in the second build (officer academies, national defence colleges, École William Ponty, New Generation fellowships). `process.py` imports it as P10.
 - `about.py` — About and Method pages. Method placeholders (__NS__, __NR__, __NALL__, __NACC__ …) are filled by `build.py`.
-- `rec.py` — builds the record layer from `data/uni/`: every institution an office-holder attended, colleges rolled into their parent university, placed at its own coordinates or its parent's. Returns per-country totals (all holders, holders with a school).
+- `meta6.py` — 21 pipelines the country accounts described, written up with sources (West Point, Mons, India's staff college, Myanmar's DSA, Spain's General Military Academy, the Venezuelan, Indonesian, Greek, Iraqi, Sudanese and Meknes officer academies, Barewa, Malay College, Robert College, Sadiki, Mangyongdae, Tunisia's ENA, Cameroon's ENAM, Belarus's presidential academy, the CPSU Academy of Social Sciences, Fourah Bay). Their people come from the record snapshot via REC_TO_DOC in `build.py`.
+- `rec.py` — reads `data/uni/`: every institution an office-holder attended. Only used now for per-country totals and to supply people for documented schools (REC_TO_DOC); the record schools themselves are not shown.
 - `universe.py`, `universe2.py` — the pulls behind the record layer: all holders of every national position, their P69 education, institution details, labels (data/uni/, ~40 MB, only the small label and lookup files are committed).
-- `acc_0.py`–`acc_9.py` — the 198 country accounts: `d` paragraphs, `sch` documented school ids whose first source is added, `src` extra sources. `accounts.py` merges them; `build.py` reads it.
+- `acc_0.py`–`acc_9.py` — the country accounts as first written (198): `d` paragraphs, `sch` documented school ids whose first source is added, `src` extra sources. `accounts.py` merges them and applies `acc_fix.py` (cuts sentences that rested on ordinary schools or whole-record counts), `acc_fix2.py` (trims mixed sentences, repairs openings) and `acc_rule.py` (any sentence about study must name a pipeline on the map; an account with no pipeline left is dropped). 185 remain. `build.py` reads it.
 - `digest.py`, `view.py`, `who.py` — helpers used while writing the accounts (per-country digests of who studied where; lookups against the built page).
 - `tools/plate.py` — repaints the Atlas cartouche to read PIPELINE MAP (Cinzel, `tools/Cinzel.ttf`, OFL) from `../secret-society-src/plate.webp` into `data/plate.webp`, which `build.py` inlines.
 - Markers: `MK` in `app_template.html` gives each basemap its own muted marker palette (ten kinds, the record dots, and the edge colour). Documented schools are solid dots with a thin edge and a fine outer ring; record schools are small plain dots drawn beneath them. Panel swatches use the Jurassic palette when the Atlas (light) basemap is on, since the cards stay dark.

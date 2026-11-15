@@ -7,12 +7,13 @@ from meta2 import P3, P4
 from meta3 import P5, P6
 from meta4 import P7, P8, P9
 from meta5 import P10
-PROGS = P1 + P2 + P3 + P4 + P5 + P6 + P7 + P8 + P9 + P10
+from meta6 import P11
+PROGS = P1 + P2 + P3 + P4 + P5 + P6 + P7 + P8 + P9 + P10 + P11
 KIND = {}
 for k, L in [("econ", P1), ("elite", P2), ("state", P3), ("prep", P4), ("fellow", P5), ("mil", P6), ("ideas", P7), ("faith", P8), ("firm", P9)]:
     for p in L: KIND[p["id"]] = k
 KIND["skullbones"] = "fellow"
-for p in P10: KIND[p["id"]] = p["k"]
+for p in P10 + P11: KIND[p["id"]] = p["k"]
 
 P = json.load(open('data/positions_raw.json')) if os.path.exists('data/positions_raw.json') else {}
 J = json.load(open('data/juris.json'))
