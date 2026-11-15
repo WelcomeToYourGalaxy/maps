@@ -1,14 +1,24 @@
 {
  "shards": 512,
  "countries": [
-  "FRA"
+  "FRA",
+  "ITA"
  ],
  "fields": {
   "e": "email",
   "p": "telephone",
   "u": "website",
-  "o": "official directory page"
+  "o": "official directory page",
+  "a": "street address, as the register prints it",
+  "c": "certified email (Italian PEC) — needs a certified account to write to"
  },
- "source": "Annuaire de l'administration, Direction de l'information legale et administrative (service-public.fr), keyed to Wikidata by INSEE code (P374)",
- "records": 34980
+ "records": 42870,
+ "sources": {
+  "FRA": "Annuaire de l'administration, Direction de l'information légale et administrative (service-public.fr), keyed to Wikidata by INSEE code (P374)",
+  "ITA": "Indice dei domicili digitali della Pubblica Amministrazione (IPA, indicepa.gov.it), category L6, keyed to Wikidata by ISTAT municipality code (P635) and, where that code has been reissued, by cadastral code (P806)"
+ },
+ "per_country": {
+  "FRA": 34980,
+  "ITA": 7891
+ }
 }
