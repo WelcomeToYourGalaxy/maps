@@ -775,6 +775,67 @@ are on the town hall object, not the boundary, so Tier B needs a
 spatial join as well as a planet-sized download. Do not plan a round
 around it without first proving the extract is obtainable.
 
+### How live the page is, field by field
+
+Worth stating plainly, because the page looks like a static file and
+mostly is not one:
+
+| What | Where it comes from | How current |
+| --- | --- | --- |
+| Office and body names | Wikidata, on the click | live, kept a day |
+| Who holds an office (`P1308`) | Wikidata, on the click | live, kept a day |
+| Websites, emails, telephones | Wikidata, on the click | live, kept a day |
+| A level's street address | Wikidata, on the click | live, kept a day |
+| Which offices a jurisdiction has | Wikidata class walk | kept a week |
+| Place names and coordinates | Wikidata / Photon / Nominatim | kept a week |
+| Municipal registers (`muni/`) | France, Italy | rebuilt monthly |
+| Country profiles (`LAWP`), `lawlinks.json` | written by hand | changed by hand |
+
+Three things make that true rather than nearly true.
+
+**Answers expire by what they are.** `core:` and `juris:` carry the
+contact details and the office holders and are kept a day. The
+class-tree walks, which take half a minute for a large country, and the
+name and coordinate lookups are kept a week. Before this everything was
+kept for a week, which is what made a name or an address up to a week
+old. `ttlFor` is the whole rule.
+
+**The reader can force it.** "Ask again for fresh records" in the trail
+row drops every cached key for the levels on screen and asks again.
+Measured on Grenoble: 20 requests on a first visit, 0 on a second, 12
+after pressing it.
+
+**The shards are rebuilt, not maintained.** `tools/build_muni.py`
+reads each register, joins it to Wikidata on a shared code, and writes
+`muni/`; `.github/workflows/muni-refresh.yml` runs it on the 1st of the
+month and commits what changed. Adding a country means adding an entry
+to `COUNTRIES` in that script and nothing else — no change to the page.
+
+Two guards are load-bearing. The script drops any record it cannot
+join on a published code, and any code that maps to two Wikidata items,
+and counts both rather than guessing. The Action refuses to commit a
+build under 40,000 records, or any country under 1,000, so a register
+that answers with half a file cannot quietly delete data.
+
+The staleness this is for was already present when it was written: the
+French directory has **dropped the email address it published for
+Grenoble** since the first pull a few rounds earlier. Note what the page
+does with that — Wikidata still holds the address, the register no
+longer offers one, and an absent field in a register is not a statement
+that there is no email, so the Wikidata value stands. A register only
+overwrites a field it actually carries.
+
+The rebuild also switched France from the register's paged API to its
+bulk export, which carries the postal address the paged one left out.
+**All 35,054 French communes now have a street to post a letter to**,
+and 42,866 records carry one.
+
+What is still genuinely static: the country profiles in `LAWP` (how a
+law is made in each country, which chambers, which signing step) and
+`lawlinks.json`. Those are hand-written and have no upstream to rebuild
+from. A link-checking Action over the URLs in them is the obvious next
+piece of this.
+
 ### Round eight: the office counts were lying, and Hungary is unreachable
 
 **Hungary first, and it failed on access rather than on the join.** The
