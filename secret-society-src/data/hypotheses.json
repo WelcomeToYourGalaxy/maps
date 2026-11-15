@@ -1,0 +1,113 @@
+{
+ "_what": "Hypotheses are this map's own reasoning about where infiltration is likely and unrecorded. They are not cases, they carry no evidence, and nothing in them should be read as a finding about any named person. Each one states the rule that produced it, the conditions it rests on, what the map already documents nearby, and what would show or refute it. They are displayed apart from the patterns for that reason.",
+ "_asof": "2026-11-14",
+ "items": [
+  {
+   "id": "thin_record_severe_insiders",
+   "kind": "gap",
+   "title": "Seventeen countries where insiders are rated severe and this map holds almost nothing",
+   "claim": "In these countries the map's near-silence is more likely to mean that nobody has published than that little is happening.",
+   "rule": "Countries the Global Organized Crime Index scores 7.5 or higher for state-embedded actors - people inside the government, police, courts and army working with or for criminal groups - where this map holds two cases or fewer. The index scores all 193 UN member states with the same questions, so the comparison does not come from this map's own sample.",
+   "conditions": "Across the whole index, countries scoring between 8 and 9 hold a median of 6 cases on this map and those scoring 9 or more hold a median of 2.5, against a median of 2 for the countries in the 6-to-7 band. The seventeen below sit at the top of the index and at the bottom of the record.",
+   "documented": "What these countries do have is usually a single foreign prosecution: Turkmenistan is on the map because German prosecutors charged a MAN manager, Congo-Brazzaville because Swiss prosecutors fined Gunvor, Cameroon because of Glencore. None of the seventeen is on the map through a case its own courts brought.",
+   "would_show": "A prosecution, commission, leak or sustained piece of reporting naming a body and a decision in any of them.",
+   "would_refute": "A serious published attempt to look that found little. Cabo Verde is the example of the other outcome: the index scores its insiders low and its courts comparatively strong, and the map's writeup says so rather than assuming concealment.",
+   "countries": [
+    "Korea, DPR",
+    "Syria",
+    "Eritrea",
+    "South Sudan",
+    "Turkmenistan",
+    "Cambodia",
+    "Burundi",
+    "Congo, Rep.",
+    "Cameroon",
+    "Suriname",
+    "Niger",
+    "Madagascar",
+    "Laos",
+    "Gabon",
+    "Togo",
+    "Morocco",
+    "Jamaica"
+   ],
+   "pattern": null
+  },
+  {
+   "id": "companies_underrecorded",
+   "kind": "shortfall",
+   "title": "Companies are reached far more often than this map can show",
+   "claim": "Infiltration of companies is the biggest single hole in the record, and the shortfall is in the record rather than in the world.",
+   "rule": "The case file holds 209 of 1,680 cases - 12 per cent - where the body reached is a company, including state-owned ones. The map's own estimate of the worldwide field, which is not scaled from its sample, puts that share at about 30 per cent. Closing the gap by addition alone would take roughly 420 more cases of that kind.",
+   "conditions": "The same comparison puts companies and industry as the infiltrator at 32 per cent of the map against an estimated 45, and crime groups at 25 against 30. Governments and spy services are the other way round: foreign states are 24 per cent of the map against an estimated 10.",
+   "documented": "The kinds the map does hold show what the missing cases look like: a state oil company's officers paid by a trader, a bank relationship manager moving a trafficking group's money, a terminal operator's staff opening containers, a purchasing manager taking a commission.",
+   "would_show": "Company cases surface through regulators, employment tribunals, debarment lists and internal investigations rather than criminal courts. The test is whether those sources, worked systematically, yield cases at the rate the estimate implies.",
+   "would_refute": "Working them and finding the record genuinely thin, which would mean the estimate is too high rather than the map too empty.",
+   "countries": [],
+   "pattern": "crime_inside_companies"
+  },
+  {
+   "id": "sealed_sanctions",
+   "kind": "sealed",
+   "title": "Nine company sanctions whose facts the state has withheld",
+   "claim": "Nine entries on the benchmark lists are convictions or settlements in which the authority named no company and no official, so infiltration is established and cannot be placed.",
+   "rule": "Benchmark items with no matching case where the recorded reason is anonymisation by the authority: four in Germany, where the Länder anonymise case data and the report attributes it to national and constitutional data-protection rules; four in Switzerland, where the Office of the Attorney General named the company in six of its ten summary penalty orders and not in the other four; and one in the Netherlands, the Nabburg settlement.",
+   "conditions": "These are not gaps in research. The German report says the anonymisation made it hard for the OECD's own evaluators to reconcile the cases with what the press had alleged.",
+   "documented": "The grounds are on the record even where the subjects are not. Three of the four German entries are the bribery of foreign officials under sections 334 and 335 of the criminal code, one of them a construction company and its joint-venture partner in Hesse, and the fourth is a failure to supervise whose underlying payments the annex does not describe. All four Swiss entries are the bribery of foreign officials under article 322septies, with compensatory claims running from 73,346 francs to 37 million.",
+   "would_show": "A later court file, a parliamentary question, or a reconstruction from the fine's size and date.",
+   "would_refute": "Nothing refutes it. These are findings whose subjects the state has sealed, which is why they sit here rather than in the gaps.",
+   "countries": [
+    "Germany",
+    "Switzerland",
+    "Netherlands"
+   ],
+   "pattern": null
+  },
+  {
+   "id": "state_energy_awards",
+   "kind": "pattern",
+   "title": "National oil and gas companies whose awards nobody has examined",
+   "claim": "Where a state company sells the oil or gas and the officials who award the cargoes are rated severe, the award decisions are likely to have been bought, and in some producers nothing has ever been published.",
+   "rule": "The map documents traders and contractors reaching the officers of a state or national oil company in 25 countries - Sonangol, Petrobras, Pemex, PDVSA, NNPC, SNPC, GEPetrol, Turkmennebit and Intergas Central Asia among them, 55 cases in all. The candidates are producers that sell through a state company, score 7.5 or higher for insiders, and carry no case about that company here.",
+   "conditions": "Gabon scores 7.5 and holds two cases, neither about Gabon Oil Company. South Sudan scores 9.0 and holds two, neither about Nilepet. Both sell crude through a state company into the same trading houses that have been convicted elsewhere.",
+   "documented": "Of the convictions that do exist, almost all came from the buyer's home country rather than the seller's: Switzerland for Gunvor in Congo-Brazzaville and Trafigura in Angola, the Netherlands and the United States for SBM Offshore in Angola, Equatorial Guinea and Nigeria.",
+   "would_show": "A prosecution or settlement in a trader's home jurisdiction naming the state company, which is how every comparable case arrived.",
+   "would_refute": "A credible audit of the award process in one of these producers finding it clean.",
+   "countries": [
+    "Gabon",
+    "South Sudan"
+   ],
+   "pattern": "kickbacks_contracts_laws"
+  },
+  {
+   "id": "port_terminal_insiders",
+   "kind": "pattern",
+   "title": "Container terminals and customs posts on the cocaine routes",
+   "claim": "At the large transshipment ports where nothing is documented, the terminal and customs staff are probably being recruited in the way they demonstrably are at Antwerp and Saint Petersburg.",
+   "rule": "The map records customs or border officials reached in 45 countries, 60 cases, and terminal or port workers in a handful of those. Where the container volume on a known route is large and the record is empty, the absence is the thing that needs explaining.",
+   "conditions": "The documented instances cluster where a police service published: Belgian federal police on Antwerp port workers, police and customs; Spanish investigations in the Campo de Gibraltar; Bulgarian customs and border officials; a Kyrgyz customs deputy chief; German prosecutors on Saint Petersburg through a Deutsche Bahn subsidiary.",
+   "documented": "The mechanism is consistent wherever it has been examined: a reference inside the terminal to release a container, or a customs officer to wave it through, bought for a fraction of the cargo's value.",
+   "would_show": "A national police or prosecutor's report naming a terminal, a shift or a customs post.",
+   "would_refute": "A port where the containers move on the route and a serious investigation finds no insider, which has not yet been reported anywhere.",
+   "countries": [],
+   "pattern": "crime_inside_companies"
+  },
+  {
+   "id": "mining_cadastres",
+   "kind": "pattern",
+   "title": "Mining licence offices, which are barely on the record at all",
+   "claim": "The offices that award mining rights are probably reached as often as the ones that award oil cargoes, and the map holds almost nothing on them.",
+   "rule": "Four cases on the whole map turn on mining rights, a mining code or a land cadastre - Guinea, the Central African Republic, India and one Ukrainian land-registry case - against 55 cases touching a state or national oil company across 25 countries. Minerals are awarded by licence in dozens of countries whose insiders the index scores severe.",
+   "conditions": "The imbalance is unlikely to be real. A mining licence is a single signature on an asset worth hundreds of millions, which is the same shape as the oil cases, and the few documented instances reach the top: Guinea's president's wife, and in the Central African Republic a report that Wagner's firms shaped the mining code itself.",
+   "documented": "What the record does hold is mostly the buyer's end - Glencore's purchase of stakes from the Congolese state mining company, Steinmetz in Guinea - rather than the licensing office.",
+   "would_show": "An extractive-industries audit, a licence review by an incoming government, or a debarment naming the cadastre.",
+   "would_refute": "Licence reviews in several high-scoring producers finding the registers sound.",
+   "countries": [
+    "Congo, Dem. Rep.",
+    "Zimbabwe",
+    "Madagascar"
+   ],
+   "pattern": "kickbacks_contracts_laws"
+  }
+ ]
+}
