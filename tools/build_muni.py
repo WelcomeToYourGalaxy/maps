@@ -549,6 +549,80 @@ def build_fin(stats, workdir):
     return {k: v for k, v in out.items() if v is not None}
 
 
+# --------------------------------------------------------------- Norway
+# Enhetsregisteret, the register of legal persons Bronnoysund keeps, where
+# every municipality is an entry of form KOMM with the email address,
+# telephone number, website and postal address it publishes.
+#
+# The join is the organisation number and nothing else. The tempting key is
+# the municipality number (P2504), which 879 of 883 kommune items carry --
+# and Norway renumbered every municipality in the 2020 reform, so joining on
+# it would attach one town's details to another wherever a number was
+# reissued. The organisation number does not change in a boundary reform.
+NO_ENHETER = ('https://data.brreg.no/enhetsregisteret/api/enheter'
+              '?organisasjonsform=KOMM&size=1000')
+
+NO_QUERY = '''PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX wd: <http://www.wikidata.org/entity/>
+SELECT ?item ?code WHERE { ?item wdt:P31/wdt:P279* wd:Q755707 ; wdt:P2333 ?code .
+  FILTER NOT EXISTS { ?item wdt:P576 ?d } }'''
+
+
+def _no_address(unit):
+    """The postal address where the register holds one -- 189 of the 357 do --
+    and the business address otherwise, which is the building itself."""
+    for field in ('postadresse', 'forretningsadresse'):
+        block = unit.get(field) or {}
+        lines = [str(x).strip() for x in (block.get('adresse') or []) if str(x or '').strip()]
+        tail = ' '.join(x for x in [str(block.get('postnummer') or '').strip(),
+                                    str(block.get('poststed') or '').strip().title()] if x)
+        line = ' '.join(x for x in [', '.join(lines), tail] if x)
+        if line:
+            return line
+    return ''
+
+
+def build_nor(stats, workdir):
+    blob = json.loads(fetch(NO_ENHETER).decode('utf-8'))
+    units = (blob.get('_embedded') or {}).get('enheter') or []
+    stats['NOR municipalities in the register'] = len(units)
+    if len(units) < int((blob.get('page') or {}).get('totalElements') or 0):
+        raise SystemExit('the register holds %s municipalities and only %d came back'
+                         % ((blob.get('page') or {}).get('totalElements'), len(units)))
+
+    codes, ambiguous = by_code(NO_QUERY)
+    stats['NOR organisation numbers on Wikidata'] = len(codes)
+    stats['NOR codes ambiguous on Wikidata'] = ambiguous
+
+    out = {}
+    for unit in units:
+        # A municipality being wound up is still a government to write to, but
+        # one in liquidation has no office; neither has happened yet, and the
+        # flags are read so that it is not a surprise when it does.
+        if unit.get('konkurs') or unit.get('underTvangsavviklingEllerTvangsopplosning'):
+            stats['NOR municipality in liquidation'] += 1
+            continue
+        qid = codes.get(str(unit.get('organisasjonsnummer') or '').strip())
+        if not qid:
+            stats['NOR no Wikidata id for the organisation number'] += 1
+            continue
+        rec = {}
+        site = clean_site(unit.get('hjemmeside'))
+        mail = clean_mail(unit.get('epostadresse'))
+        phone = str(unit.get('telefon') or '').strip()
+        address = _no_address(unit)
+        if site:    rec['u'] = site
+        if mail:    rec['e'] = mail
+        if phone:   rec['p'] = phone
+        if address: rec['a'] = address
+        if not rec:
+            stats['NOR joined but no contact detail'] += 1
+            continue
+        put(out, qid, rec, stats, 'NOR')
+        stats['NOR joined'] += 1
+    return {k: v for k, v in out.items() if v is not None}
+
+
 COUNTRIES = {
     'FRA': ("Annuaire de l'administration, Direction de l'information legale et "
             "administrative (service-public.fr), keyed to Wikidata by INSEE code (P374)",
@@ -564,6 +638,11 @@ COUNTRIES = {
             'authority keeps its own entry in (api.palvelutietovaranto.suomi.fi), '
             'keyed to Wikidata by municipality number (P1203)',
             lambda stats, workdir: build_fin(stats, workdir)),
+    'NOR': ('Enhetsregisteret, the register of legal persons kept by the '
+            'Bronnoysund Register Centre (data.brreg.no), units of form KOMM, '
+            'keyed to Wikidata by organisation number (P2333) and never by the '
+            'municipality number, which the 2020 reform reissued',
+            lambda stats, workdir: build_nor(stats, workdir)),
 }
 
 

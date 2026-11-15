@@ -410,7 +410,7 @@ the way to reach them both change at each step:
 | National | 198 | Wikidata `P194`/`P527` + front-page crawl | done |
 | Sub-national legislatures | ~3,800 ADM1 | `P194` by jurisdiction id | done |
 | County-level councils | ~48,000 | `P194` on territories and on governments; rebuilt and re-verified in round eleven | done — the structured source is exhausted |
-| Municipalities | ~250,000–400,000 | national registers, one country at a time, sharded on disk | 8–11; four in, ~55,000 covered |
+| Municipalities | ~250,000–400,000 | national registers, one country at a time, sharded on disk | five in, 43,791 records; see round thirteen for what blocks the rest |
 | Below the municipality | millions | not proposed | — |
 
 So four to six more rounds reaches a complete picture down to the
@@ -741,9 +741,10 @@ Surveyed this round, so the next one does not start from nothing:
 | France | 34,980 | service-public.fr annuaire | done |
 | Italy | 7,891 | IPA | done |
 | Netherlands | 341 | ROO export + TOOI | done (round twelve) |
+| Norway | 357 | Enhetsregisteret, on the organisation number | done (round thirteen) |
 | Finland | 291 | Suomi.fi catalogue | done (round twelve) |
 | Spain | 8,131 | DIR3 / REL | **blocked on one crosswalk** -- measured in round twelve |
-| Norway | 357 | Enhetsregisteret | **blocked on the join** |
+| Norway | 357 | Enhetsregisteret | done in round thirteen, on `P2333` |
 | Germany | 10,786 | none national | and no code to join one to -- round twelve |
 
 **Spain is a join problem, not a data problem.** DIR3's public exports
@@ -783,6 +784,139 @@ website, 2 a telephone and 1 an email** — about 2%. The contacts in OSM
 are on the town hall object, not the boundary, so Tier B needs a
 spatial join as well as a planet-sized download. Do not plan a round
 around it without first proving the extract is obtainable.
+
+### Round thirteen: Norway, on the key round seven said it had to be
+
+Norway is in, and it took the thing round seven ruled out. That round
+found Enhetsregisteret open and holding email, telephone and website for
+every registered body, and rejected it: the obvious key is the kommune
+number (`P2504`), carried by 879 of 883 kommune items, and **Norway
+renumbered every municipality in the 2020 reform**, so joining on it
+would have attached one town's details to another wherever a number was
+reissued. The note it left was "do Norway on the organisation number or
+not at all."
+
+The organisation number is there. **354 of 359 Norwegian municipalities
+carry `P2333`**, and an organisation number does not change in a
+boundary reform. On the register's side, units of form `KOMM` are the
+municipalities and there are 357 of them, of which 354 carry an email
+address, 346 a telephone number and 338 a website.
+
+**354 joined** — every municipality the register holds that Wikidata has
+an organisation number for; the three that did not join have no `P2333`
+on Wikidata. Oslo comes out with `postmottak@oslo.kommune.no`, `02 180`
+and Postboks 2500 Vika; Bergen and Trondheim the same shape. Of an
+80-site sample of the websites, **74 answered and none was 404 or 410**,
+the other six being connection resets in this sandbox.
+
+One thing to know before touching it: only 189 of the 357 publish a
+postal address, so the build falls back to the business address, which
+is the building the municipality works from rather than the box its post
+goes to. Both are addresses the register publishes for that
+municipality; neither is composed here.
+
+The shards now hold **43,791 records** across five countries: France
+34,915, Italy 7,889, Norway 354, the Netherlands 341, Finland 230.
+
+### The three countries this round was supposed to do
+
+Round twelve named Slovakia, Mexico and the Philippines as next, on the
+strength of their keys. All three have the key and none has the
+register.
+
+**Slovakia has no identifier to join a register to.** 2,887 of its 2,898
+municipalities carry a LAU code, which is what made it the first pick.
+The only national register is RPO, the register of legal persons, and it
+is reachable (`api.statistics.sk/rpo/v1`) — but it is keyed by IČO, the
+organisation number, and **Wikidata holds no IČO on Slovak
+municipalities at all**. It also holds no email address and no telephone
+number: Obec Pukanec comes back with its name, its IČO, its street and
+its postcode and nothing to write to or ring. The one field that looks
+like a bridge is the `municipality.code` on each address
+(`SK0232502693`), and that is the municipality the address sits in, not
+an identifier of the body — using it to say which government a record
+belongs to would be deriving identity from an address. What Slovakia
+needs is an IČO import into Wikidata, or the statistical office's own
+LAU-to-IČO table.
+
+**Mexico has the best key of any country left and no national directory.**
+2,458 of 2,462 municipalities carry an INEGI municipality ID (99.8%).
+`datos.gob.mx` answers and holds 1,911 datasets, 39 of which have
+"directorio" or "municipio" in the name — and every one is sectoral: the
+directory of authorised laboratories, of quarantine checkpoints, of
+state civil-protection coordinations. `catalogo_municipios` is codes and
+names. There is no file of municipal contacts to join the key to. SNIM,
+INAFED's municipal information system, is still served but INAFED was
+itself wound up, and its pages are an application rather than a file.
+
+**The Philippines publishes the codes and not the contacts.** 1,493 of
+1,497 municipalities carry a PSGC. The PSGC itself is available and is a
+code list; DILG's LGU directory does not answer from here, and
+`data.gov.ph` holds no municipal contact set.
+
+### Bulgaria is the best-prepared country left, and blocked on a form
+
+Worth naming on its own because the usual blocker is absent. **All 265
+Bulgarian municipalities carry `P13953`, the IISDA organisation id** —
+that is Wikidata already holding the register's own identifier for every
+one of them, which is a better starting position than France or Italy
+had. All 265 also carry `P8894`, the company code. IISDA is the
+administrative register and it publishes each administration's address,
+telephone number and email.
+
+It cannot be read from here. `iisda.government.bg/ras/adm_structures` is
+a search form that answers a POST; the organisation id is not honoured in
+a URL, so there is no addressable page per administration and no API.
+Every pattern tried returns the same search page or a 404. Anyone running
+a browser could drive that form 265 times and Bulgaria would fall out
+with the join already done, which makes it the first thing to try from
+outside this sandbox.
+
+### Sweden and Denmark need credentials, not a crosswalk
+
+Both have the key: 290 of 292 Swedish municipalities carry a Swedish
+organisation number (`P6460`), and all 98 Danish municipalities carry a
+municipality code (`P1168`). Neither register is open. Bolagsverket's
+distribution host does not resolve from here; Denmark's CVR distribution
+endpoint answers 401 and wants a registered account, `cvrapi.dk` answers
+403 with its quota exceeded, and `api.dataforsyningen.dk/kommuner` is
+410 Gone. These are account problems rather than data problems, and an
+account would settle both.
+
+### Tier B is still not a round, re-checked
+
+The handoff says not to plan a round around OpenStreetMap without first
+proving the extract is obtainable. Re-checked this round and it is not:
+`download.geofabrik.de` does not resolve, neither does
+`overpass-api.de` or `overpass.kumi.systems`, and `overpass.osm.ch`
+answers but holds only its own region. Nothing has changed since round
+seven.
+
+### Where the registers stand after thirteen rounds
+
+| Country | Municipalities | Joined on | State |
+| --- | --- | --- | --- |
+| France | 34,980 | INSEE code | 34,915 |
+| Italy | 7,891 | ISTAT, then cadastral | 7,889 |
+| Norway | 357 | organisation number | 354 |
+| Netherlands | 341 | CBS code, then TOOI | 341 |
+| Finland | 291 | municipality number | 230 |
+| Bulgaria | 265 | **IISDA id, already on Wikidata** | needs a browser to read the form |
+| Spain | 8,391 | — | needs REL's code-to-INE crosswalk |
+| Sweden | 292 | organisation number | needs a Bolagsverket account |
+| Denmark | 98 | municipality code | needs a CVR account |
+| Slovakia | 2,898 | — | needs an IČO import into Wikidata |
+| Mexico | 2,462 | — | no national directory exists |
+| Philippines | 1,497 | — | no national contact set |
+| Germany | 13,697 | — | no national code and no national register |
+
+Five registers, 43,791 municipalities with a published contact detail.
+Of the eight countries blocked, **five are blocked on one specific
+missing thing that is not data** — a crosswalk table, two accounts, an
+identifier import, and a form that needs a browser — and three have no
+register at all. That is a more useful picture than round seven's
+estimate of rounds: the work left is not mostly downloading, it is
+mostly getting one key or one credential per country.
 
 ### Round twelve: two more registers, and a join that looked like a win
 
@@ -1043,7 +1177,7 @@ mostly is not one:
 | A level's street address | Wikidata, on the click | live, kept a day |
 | Which offices a jurisdiction has | Wikidata class walk | kept a week |
 | Place names and coordinates | Wikidata / Photon / Nominatim | kept a week |
-| Municipal registers (`muni/`) | France, Italy, the Netherlands, Finland | rebuilt monthly |
+| Municipal registers (`muni/`) | France, Italy, Norway, the Netherlands, Finland | rebuilt monthly |
 | Country profiles (`LAWP`), `lawlinks.json` | written by hand | changed by hand |
 
 Three things make that true rather than nearly true.
