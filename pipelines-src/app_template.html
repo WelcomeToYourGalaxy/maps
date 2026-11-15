@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pipeline Map</title>
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Uncial+Antiqua&display=swap">
+<style>
+__CSS__
+/* pipeline map additions */
+#rcol{bottom:calc(var(--legH,200px) + 46px)}
+.fi{padding:4px 2px;border-top:1px solid var(--line2);cursor:pointer;font-size:12.6px}
+.fi:hover{color:#fff}
+.fi .n{margin-left:6px}
+#flist{max-height:180px;overflow:auto;margin-top:4px}
+.kbar{display:flex;height:8px;border-radius:2px;overflow:hidden;margin:6px 0 2px}
+.kbar span{display:block;height:100%}
+.hyp .ht{font-size:13px;color:#e8e4ec;line-height:1.3}
+.hyp .hm{font-size:10.8px;color:var(--mute);margin-top:1px}
+.tline{font-size:12px;color:var(--mute);margin:4px 0}
+.tline input{width:56px}
+.sch-lab{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--mute);margin:10px 0 2px}
+.pp{font-size:12.2px;color:#d8d5e0;margin:2px 0 6px 0;line-height:1.5}
+.pp a{color:var(--accent-hi)}
+.grp{margin:8px 0 2px;font-size:12.6px}
+.grp .gh{display:flex;gap:6px;align-items:center;cursor:pointer}
+.grp .gh b{font-weight:400;color:#f0ece4}
+.lede2 .cov{display:block}
+.chips span span{border:0;padding:0;margin:0 0 0 4px;cursor:inherit}
+.chips span span.sw{width:8px;height:8px;border-radius:50%;margin:0 4px 0 0;display:inline-block;vertical-align:0}
+.grp .gb{display:none;margin-left:14px}.grp.open .gb{display:block}.grp.open .car{transform:rotate(90deg)}
+</style>
+</head>
+<body>
+<div id="map"></div>
+
+<div id="key" class="card scroll">
+  <button id="toggleKey" class="tog" type="button" title="Pull the key up or down">−</button>
+  <h1>Pipeline Map</h1>
+  <p class="lede">Where the young are picked, trained and placed into power, and who pays for it.</p>
+  <p class="lede2" id="lede2"></p>
+  <div class="body" id="keyBody"></div>
+</div>
+
+<div id="rcol">
+  <div class="btnrow"><div id="storyBtn" class="card" role="button" tabindex="0">About this map</div><div id="infoBtn" class="card" role="button" tabindex="0">Method and sources</div></div>
+  <div id="tr" class="card"><button id="toggleTr" class="tog" type="button" title="Pull the basemap box up or down">−</button><div class="body" id="trBody"></div></div>
+</div>
+<div id="det" class="card scroll hp"><div id="detGrip" title="Drag to move"></div><button id="detX" type="button" title="Close">×</button><div id="detBody"></div></div>
+<div id="patBox" class="card"><div class="bh"><span class="psec">Patterns behind the scenes</span><button id="togglePat" class="tog" type="button">−</button></div><div id="patBody" class="scroll"></div></div>
+<div id="legBox" class="card"><div class="bh"><span class="psec">On the map</span><button id="toggleLeg" class="tog" type="button">−</button></div><div id="legBody" class="scroll"></div></div>
+<div id="story" class="card scroll"></div>
+<button id="storyClose" class="btn" type="button">Close</button>
+<button id="worldBtn" type="button" title="Zoom back out to the whole world">Whole world</button>
+<div id="info" class="card scroll"></div>
+<button id="infoClose" class="btn" type="button">Close</button>
+<div id="ttip"></div>
+
+<script src="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
+<script>window.PLATE_IMG = "__PLATE__";</script>
+<script>
+__BASEMAPS__
+</script>
+<script>
+var DATA = __DATA__;
+</script>
+<script>
+(function () {
+"use strict";
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const D = DATA, KINDS = D.kinds, SCH = D.S, PE = D.PE, LK = D.L, POSN = D.POSN, CTY = D.C, PATS = D.PAT, HYP = D.HYP;
+const KI = {}; KINDS.forEach((k, i) => { KI[k[0]] = i; });
+const SID = {}; SCH.forEach((s, i) => { s.i = i; SID[s.id] = i; });
+const PAT_BY = {}; PATS.forEach((p) => { PAT_BY[p.id] = p; p.set = new Set(p.schools.map((x) => SID[x]).filter((x) => x != null)); });
+const ISO_NAME = {}; Object.keys(CTY).forEach((i) => { ISO_NAME[i] = CTY[i].n; });
+const NAME_ISO = {}; Object.keys(CTY).forEach((i) => { NAME_ISO[CTY[i].n] = i; });
+// links per school and per person
+const BYS = SCH.map(() => []), BYP = PE.map(() => []);
+LK.forEach((l, i) => { BYS[l[1]].push(i); BYP[l[0]].push(i); });
+const RANKL = { 4: "Head of state", 3: "Head of government", 2: "Central bank governor", 1: "Minister" };
+
+/* ---------- palettes: the basemap colours from the house maps; school kinds in muted, earthy tones ---------- */
+const KCOL_DARK = ["#7fb8a4", "#8ea6d4", "#c47f7f", "#b8a9c9", "#e2ddd0", "#8b9c72", "#5f9fb5", "#ad8f7e", "#9aa3ad"];
+const KCOL_LIGHT = ["#2f6e5c", "#3e5a8f", "#8a3b3b", "#6b5a85", "#3a3530", "#4f5e3c", "#2f6a80", "#6e4e40", "#5a6470"];
+const PAL = {
+  night:     { r: ["#6d8bb8", "#56719b", "#42597c", "#31435d", "#233142"], fo: 0.62, ln: "#a9bdd0", card: "rgba(8,16,26,.94)", edge: "#1d3147", ui: ["#326c9f", "#95c6e4", "#06101c"] },
+  outlines:  { r: ["#7e6fa6", "#6a7fb0", "#5b8fa6", "#4f7a8a", "#3d5560"], fo: 0.58, ln: "#e2e5e8", card: "rgba(14,18,20,.94)", edge: "#2c3640", ui: ["#4f6f8f", "#a9c4dc", "#0c1012"] },
+  satellite: { r: ["#1e4a2a", "#3f7a3c", "#7aa85a", "#b8d18e", "#e6efcf"], fo: 0.58, ln: "#e3ecd8", card: "rgba(10,18,12,.94)", edge: "#2a3d2c", ui: ["#4f7a52", "#b3d39a", "#0a120c"] },
+  atlas:     { r: ["#2c4a2a", "#3f6338", "#5c7d4c", "#7e9a6a", "#a2b694"], fo: 0.55, ln: "#24361f", light: true, card: "rgba(12,20,14,.94)", edge: "#2f4632", ui: ["#3f6b45", "#a9c79a", "#0c140e"] },
+  hell:      { r: ["#7a1f26", "#a3393c", "#c4615f", "#dc928c", "#efc4bd"], fo: 0.58, ln: "#f2dcd6", card: "rgba(22,9,11,.94)", edge: "#4a2226", ui: ["#8e3a3e", "#e8aaa4", "#14080a"] },
+};
+let P = PAL.satellite, curBase = "satellite";
+const kcol = (k) => (P.light ? KCOL_LIGHT : KCOL_DARK)[KI[k]] || "#aaa";
+const halo = () => P.light ? "#f3efe4" : "#05060c";
+
+/* ---------- state ---------- */
+const S = { kind: {}, rmin: 1, where: "all", y0: 0, y1: 9999, now: false, lens: "all", bandOn: [1, 1, 1, 1, 1],
+  schools: true, arcs: true, pat: null, focus: null, sel: null, q: "", open: { kinds: false }, hw: {} };
+KINDS.forEach((k) => { S.kind[k[0]] = true; });
+const ERAS = [["all", "Any year", 0, 9999], ["now", "Since 2010", 2010, 2100], ["cold", "1945–1991", 1945, 1991], ["early", "Before 1945", 0, 1944]];
+
+/* ---------- which office records pass the filters ---------- */
+function offOK(o, s) {
+  if (o[1] < S.rmin) return false;
+  if (S.now && !o[4]) return false;
+  if (S.y0 > 0 || S.y1 < 9999) { const y = o[2]; if (y == null) return false; const e = o[3] || (o[4] ? 2100 : y); if (e < S.y0 || y > S.y1) return false; }
+  const ab = o[0] !== s.iso;
+  if (S.where === "abroad" && !ab) return false;
+  if (S.where === "home" && ab) return false;
+  return true;
+}
+function schOK(si) { const s = SCH[si]; if (!S.kind[s.k]) return false; if (S.pat && !PAT_BY[S.pat].set.has(si)) return false; return true; }
+let AGG = null;
+function recompute() {
+  const pair = new Map(), cty = {}, sch = SCH.map(() => new Set()), ppl = new Set();
+  LK.forEach((l, li) => {
+    const si = l[1]; if (!schOK(si)) return;
+    const s = SCH[si];
+    l[3].forEach((o) => {
+      if (!offOK(o, s)) return;
+      const iso = o[0], pi = l[0];
+      const key = si + "|" + iso; let pr = pair.get(key); if (!pr) { pr = { si, iso, p: new Set() }; pair.set(key, pr); } pr.p.add(pi);
+      const c = cty[iso] || (cty[iso] = { all: new Set(), ab: new Set(), heads: new Set(), sch: new Set() });
+      c.all.add(pi); if (iso !== s.iso) c.ab.add(pi); if (o[1] >= 3) c.heads.add(pi); c.sch.add(si);
+      sch[si].add(pi); ppl.add(pi);
+    });
+  });
+  AGG = { pair, cty, sch, ppl };
+}
+const lensVal = (iso) => { const c = AGG.cty[iso]; if (!c) return 0; return S.lens === "abroad" ? c.ab.size : S.lens === "heads" ? c.heads.size : c.all.size; };
+const BANDS = [[50, "50+"], [20, "20–49"], [8, "8–19"], [3, "3–7"], [1, "1–2"]];
+const bandOf = (v) => v >= 50 ? 0 : v >= 20 ? 1 : v >= 8 ? 2 : v >= 3 ? 3 : v >= 1 ? 4 : -1;
+const LENSES = [["all", "Office-holders trained at these schools", "Every person on the map who held a national office in this country and trained at one of the schools shown."],
+  ["abroad", "Office-holders trained abroad", "Only those who trained at a school outside the country where they held office."],
+  ["heads", "Heads of state or government", "Only presidents, prime ministers, monarchs and other heads of state or government."]];
+
+/* ---------- map ---------- */
+let proj = "globe", ready = false, map = null;
+function panelRight() { try { const r = $("#key").getBoundingClientRect(), w = map.getContainer().clientWidth; if (r.width && r.right < w * 0.6) return r.right + 10; } catch (e) {} return 0; }
+function rightBox() { try { const r = $("#rcol").getBoundingClientRect(), w = map.getContainer().clientWidth; if (r.width && r.left > w * 0.5) return w - r.left + 10; } catch (e) {} return 0; }
+function freeBox() {
+  const el = map ? map.getContainer() : $("#map"), W = el.clientWidth || 1200, H = el.clientHeight || 800;
+  let L = 0, R = 0; try { L = panelRight(); R = rightBox(); } catch (e) {}
+  if (W - L - R < 240) { L = 0; R = 0; }
+  return { W, H, L, R, fw: W - L - R };
+}
+function startZoom() { const fb = freeBox(); return Math.max(0.2, Math.log2(0.86 * Math.max(220, Math.min(fb.H - 40, fb.fw - 20)) * Math.PI / 512)); }
+function freeFlat() { try { if (proj === "mercator") map.setTransformConstrain((ll, z) => ({ center: new maplibregl.LngLat(Math.max(-360, Math.min(360, ll.lng)), Math.max(-84, Math.min(84, ll.lat))), zoom: Math.max(0, z) })); else map.setTransformConstrain(null); } catch (e) {} }
+const BM = CulpritsBasemaps.create("map", { initial: "satellite", projection: "globe", plate: window.PLATE_IMG, center: [12, 30], zoom: 1.4,
+  onApply: (k) => { P = PAL[k] || PAL.night; curBase = k; const u = P.ui, rs = document.documentElement.style; rs.setProperty("--accent", u[0]); rs.setProperty("--accent-hi", u[1]); rs.setProperty("--bg", u[2]); rs.setProperty("--card", P.card); rs.setProperty("--line", P.edge); if (ready) { order(); paint(); buildKey(); if (S.sel) reopen(); } },
+  onReady: () => init() });
+map = BM.maplibre;
+map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
+map.once("idle", () => { const a = map.getContainer().querySelector(".maplibregl-ctrl-attrib"); if (a) { a.classList.remove("maplibregl-compact-show"); a.removeAttribute("open"); } });
+function wholeWorld() { const fb = freeBox(), padding = { left: fb.L, right: fb.R, top: 0, bottom: 0 };
+  if (proj === "globe") map.flyTo({ center: [12, 25], zoom: startZoom(), padding, duration: 1200 });
+  else { const z = Math.max(0, Math.log2(Math.min(fb.fw - 20, (fb.H - 40) * 1.55) / 512)); map.flyTo({ center: [10, 22], zoom: z, padding, duration: 1200 }); } }
+const IDS = [];
+function order() { const st = map.getStyle(); if (!st) return; const mine = new Set(IDS); const first = st.layers.find((l) => !mine.has(l.id) && (l.type === "symbol" || l.id === "labels")); IDS.forEach((id) => { if (map.getLayer(id)) map.moveLayer(id, first ? first.id : undefined); }); }
+
+/* ---------- tooltip and glossary-style hints ---------- */
+const tt = $("#ttip");
+const QM = (txt) => txt ? '<span class="qm" data-tip="' + esc(txt) + '">?</span>' : '';
+document.addEventListener("mouseover", (e) => { const q = e.target.closest && e.target.closest(".qm"); if (q) tip('<span class=mute>' + esc(q.dataset.tip) + '</span>', e.clientX, e.clientY); });
+document.addEventListener("mouseout", (e) => { if (e.target.closest && e.target.closest(".qm")) tip(null); });
+function tip(html, x, y) { if (!html) { tt.style.display = "none"; return; } tt.innerHTML = html; tt.style.display = "block"; const r = tt.getBoundingClientRect(); let L = x + 14, T = y + 12; if (L + r.width > innerWidth - 6) L = x - r.width - 12; if (T + r.height > innerHeight - 6) T = y - r.height - 10; tt.style.left = L + "px"; tt.style.top = T + "px"; }
+
+/* ---------- arcs: a raised curve from the school to the capital where its former student held office ---------- */
+function arc(a, b) {   // a, b as [lng, lat]
+  let l1 = a[0], l2 = b[0]; while (l2 - l1 > 180) l2 -= 360; while (l2 - l1 < -180) l2 += 360;
+  const dx = l2 - l1, dy = b[1] - a[1], d = Math.hypot(dx, dy);
+  if (d < 0.05) return null;
+  const mx = (l1 + l2) / 2, my = (a[1] + b[1]) / 2, k = Math.min(0.28, 0.12 + d / 900);
+  const cx = mx - dy * k, cy = my + dx * k;
+  const n = Math.max(8, Math.min(64, Math.round(d / 2))), out = [];
+  for (let i = 0; i <= n; i++) { const t = i / n, u = 1 - t; out.push([u * u * l1 + 2 * u * t * cx + t * t * l2, Math.max(-84, Math.min(84, u * u * a[1] + 2 * u * t * cy + t * t * b[1]))]); }
+  return out;
+}
+const FC = (f) => ({ type: "FeatureCollection", features: f });
+const BOUND_URL = "https://welcometoyourgalaxy.github.io/culprits/data/boundaries.geojson";
+function addLayers() {
+  const T = (spec) => { map.addLayer(spec); IDS.push(spec.id); };
+  map.addSource("bounds", { type: "geojson", data: BOUND_URL });
+  T({ id: "cty-fill", type: "fill", source: "bounds", paint: { "fill-color": "rgba(0,0,0,0)", "fill-opacity": 0.55 } });
+  T({ id: "cty-line", type: "line", source: "bounds", paint: { "line-color": "rgba(240,236,228,0.3)", "line-width": 0.5 } });
+  T({ id: "cty-sel", type: "line", source: "bounds", filter: ["==", ["get", "iso3"], ""], paint: { "line-color": "#f0ece4", "line-width": 1.6 } });
+  map.addSource("arcs", { type: "geojson", data: FC([]) });
+  T({ id: "arc-glow", type: "line", source: "arcs", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": ["get", "c"], "line-width": ["*", ["get", "w"], 3], "line-blur": 3, "line-opacity": ["*", ["get", "o"], 0.18] } });
+  T({ id: "arc-line", type: "line", source: "arcs", layout: { "line-cap": "round", "line-join": "round", "line-sort-key": ["get", "n"] }, paint: { "line-color": ["get", "c"], "line-width": ["get", "w"], "line-opacity": ["get", "o"] } });
+  T({ id: "arc-hit", type: "line", source: "arcs", paint: { "line-color": "#000", "line-width": 12, "line-opacity": 0.001 } });
+  map.addSource("caps", { type: "geojson", data: FC([]) });
+  T({ id: "cap", type: "circle", source: "caps", paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 1, 1.6, 6, 3], "circle-color": ["get", "c"], "circle-opacity": 0.85, "circle-stroke-width": 0 } });
+  map.addSource("schools", { type: "geojson", data: FC([]) });
+  T({ id: "sch-halo", type: "circle", source: "schools", paint: { "circle-radius": ["+", ["get", "r"], 3], "circle-color": ["get", "c"], "circle-opacity": 0.16, "circle-blur": 0.6 } });
+  T({ id: "sch", type: "circle", source: "schools", layout: { "circle-sort-key": ["-", 0, ["get", "r"]] }, paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 1, ["get", "r"], 6, ["*", 1.35, ["get", "r"]]], "circle-color": ["get", "c"], "circle-opacity": ["get", "o"], "circle-stroke-color": ["get", "h"], "circle-stroke-width": ["get", "sw"] } });
+  const hover = (id, html) => { map.on("mousemove", id, (e) => { map.getCanvas().style.cursor = "pointer"; tip(html(e.features[0].properties, e), e.originalEvent.clientX, e.originalEvent.clientY); });
+    map.on("mouseleave", id, () => { map.getCanvas().style.cursor = ""; tip(null); }); };
+  hover("sch", (p) => { const s = SCH[p.i]; return "<b>" + esc(s.n) + "</b><br><span class=mute>" + esc(KINDS[KI[s.k]][1]) + " · " + esc(s.city) + (s.y ? " · since " + s.y : "") + "<br>" + p.n + (p.n === 1 ? " office-holder" : " office-holders") + " under the current filters</span>"; });
+  hover("cap", (p) => "<b>" + esc(ISO_NAME[p.iso] || p.iso) + "</b><br><span class=mute>" + (AGG.cty[p.iso] ? AGG.cty[p.iso].all.size : 0) + " office-holders · click for who trained them</span>");
+  hover("arc-hit", (p) => { const s = SCH[p.si]; return "<b>" + esc(s.n) + " → " + esc(ISO_NAME[p.iso] || p.iso) + "</b><br><span class=mute>" + p.n + (p.n === 1 ? " office-holder" : " office-holders") + " · click to list them</span>"; });
+  map.on("mousemove", "cty-fill", (e) => { if (map.queryRenderedFeatures(e.point, { layers: ["sch", "arc-hit"] }).length) return; const iso = e.features[0].properties.iso3; if (!ISO_NAME[iso]) { tip(null); return; }
+    map.getCanvas().style.cursor = "pointer"; const c = AGG.cty[iso];
+    tip("<b>" + esc(ISO_NAME[iso]) + "</b><br><span class=mute>" + (c ? c.all.size + " office-holders trained at " + c.sch.size + (c.sch.size === 1 ? " school" : " schools") + " on the map" + (c.ab.size ? " · " + c.ab.size + " abroad" : "") : "No office-holders under the current filters") + "</span>", e.originalEvent.clientX, e.originalEvent.clientY); });
+  map.on("mouseleave", "cty-fill", () => { map.getCanvas().style.cursor = ""; tip(null); });
+  map.on("click", (e) => {
+    const f = map.queryRenderedFeatures([[e.point.x - 4, e.point.y - 4], [e.point.x + 4, e.point.y + 4]], { layers: ["sch", "cap", "arc-hit", "cty-fill"] });
+    if (!f.length) return;
+    const sch = f.filter((x) => x.layer.id === "sch");
+    if (sch.length > 1) { openStack(sch.map((x) => x.properties.i)); return; }
+    const g = f[0], p = g.properties;
+    if (g.layer.id === "sch") openSchool(p.i, false);
+    else if (g.layer.id === "cap") openCountry(p.iso, false);
+    else if (g.layer.id === "arc-hit") openPair(p.si, p.iso);
+    else { const iso = p.iso3; if (ISO_NAME[iso]) openCountry(iso, false); }
+  });
+}
+
+/* ---------- drawing ---------- */
+function paint() {
+  if (!map.getLayer("cty-fill")) return;
+  recompute();
+  const m = ["match", ["get", "iso3"]];
+  Object.keys(AGG.cty).forEach((iso) => { if (S.lens === "none") return; const b = bandOf(lensVal(iso)); if (b >= 0 && S.bandOn[b]) m.push(iso, P.r[b]); });
+  m.push("rgba(0,0,0,0)");
+  map.setPaintProperty("cty-fill", "fill-color", m.length > 3 ? m : "rgba(0,0,0,0)");
+  map.setPaintProperty("cty-fill", "fill-opacity", P.fo);
+  map.setPaintProperty("cty-line", "line-color", P.light ? "rgba(40,36,30,0.35)" : "rgba(240,236,228,0.3)");
+  map.setFilter("cty-sel", ["==", ["get", "iso3"], S.sel && S.sel[0] === "c" ? S.sel[1] : ""]);
+  // arcs
+  const feats = [];
+  if (S.arcs) AGG.pair.forEach((pr) => {
+    const s = SCH[pr.si], c = CTY[pr.iso]; if (!c) return;
+    const foc = S.focus != null ? (S.focus === pr.si) : S.sel && S.sel[0] === "c" ? S.sel[1] === pr.iso : true;
+    const pts = arc([s.lng, s.lat], [c.lng, c.lat]); if (!pts) return;
+    const n = pr.p.size, w = Math.min(5, 0.5 + 0.8 * Math.log2(1 + n));
+    feats.push({ type: "Feature", properties: { si: pr.si, iso: pr.iso, n, c: kcol(s.k), w: foc ? w * 1.1 : w * 0.7, o: foc ? (S.focus != null || (S.sel && S.sel[0] === "c") ? 0.95 : 0.24) : 0.05 }, geometry: { type: "LineString", coordinates: pts } });
+  });
+  map.getSource("arcs").setData(FC(feats));
+  // capital dots where at least one line ends
+  const caps = []; Object.keys(AGG.cty).forEach((iso) => { const c = CTY[iso]; if (c && S.arcs) caps.push({ type: "Feature", properties: { iso, c: P.light ? "#2a2620" : "#f0ece4" }, geometry: { type: "Point", coordinates: [c.lng, c.lat] } }); });
+  map.getSource("caps").setData(FC(caps));
+  // schools
+  map.getSource("schools").setData(FC(S.schools ? SCH.filter((s) => schOK(s.i)).map((s) => { const n = AGG.sch[s.i].size, on = S.focus == null || S.focus === s.i;
+    return { type: "Feature", properties: { i: s.i, n, c: kcol(s.k), h: halo(), r: Math.min(15, 3.6 + 1.45 * Math.log2(1 + n)), o: on ? 0.95 : 0.35, sw: S.focus === s.i ? 2.4 : 1.1 }, geometry: { type: "Point", coordinates: [s.lng, s.lat] } }; }) : []));
+}
+
+/* ---------- the key ---------- */
+function covLine() { return ''; }
+function buildKey() {
+  recompute();
+  const nS = SCH.length, nC = Object.keys(AGG.cty).length;
+  $("#lede2").innerHTML = esc(nS + " schools and programmes · " + PE.length.toLocaleString() + " office-holders · " + PATS.length + " patterns") + QM("Office-holders are people who held a national post as head of state, head of government, minister or central bank governor and who studied, trained or worked at one of these places, as recorded in Wikidata and published lists. The Method page explains the limits.");
+  let h = '';
+  const L_ = LENSES.find((l) => l[0] === S.lens);
+  const counts = [0, 0, 0, 0, 0]; Object.keys(AGG.cty).forEach((iso) => { const b = bandOf(lensVal(iso)); if (b >= 0) counts[b]++; });
+  h += '<div class="psec">Shade the countries by' + QM((L_ ? L_[2] + " " : "") + "Counts are of people, not offices: someone who held three posts counts once.") + '</div><select id="lens">' + LENSES.map((l) => '<option value="' + l[0] + '"' + (S.lens === l[0] ? " selected" : "") + '>' + esc(l[1]) + '</option>').join("") + '<option value="none"' + (S.lens === "none" ? " selected" : "") + '>No shading</option></select>';
+  if (S.lens !== "none") h += '<div class="hbar">' + BANDS.map((b, i) => '<span data-band="' + i + '" class="' + (S.bandOn[i] ? "" : "off") + '" style="background:' + P.r[i] + '" title="' + b[1] + ': ' + counts[i] + ' countries"></span>').join("") + '</div>' +
+    '<div class="hlab">' + BANDS.map((b, i) => '<span data-band="' + i + '" class="' + (S.bandOn[i] ? "" : "off") + '">' + b[1] + '</span>').join("") + '</div>';
+  h += '<div class="psec">Find</div><input class="inp" id="find" style="width:100%" placeholder="A school, country or person" value="' + esc(S.q) + '"><div id="flist" class="scroll"></div>';
+  // filters
+  h += '<div class="psec">Filter what is shown' + (filtered() ? ' <span class="frst" id="fReset" style="float:right;letter-spacing:0;text-transform:none">reset</span>' : '') + '</div><div class="desc" style="margin-top:0">Click to switch on or off. Double-click to show only that kind.</div>';
+  h += '<div class="flab">Kind of school</div><div class="fchips">' + KINDS.map((k) => { const n = SCH.filter((s) => s.k === k[0]).length;
+    return '<span class="fc' + (S.kind[k[0]] ? " on" : "") + '" data-kind="' + k[0] + '" title="' + esc(k[2]) + '"><span class="sw dot" style="background:' + kcol(k[0]) + '"></span>' + esc(k[1]) + '<span class="n">' + n + '</span></span>'; }).join("") + '</div>';
+  const sel = (id, label, help, opts, cur) => '<div class="frow"><span class="flab" style="margin:0;white-space:nowrap">' + label + QM(help) + '</span><select id="' + id + '">' + opts.map(([v, l]) => '<option value="' + v + '"' + (String(v) === String(cur) ? " selected" : "") + '>' + l + '</option>').join("") + '</select></div>';
+  h += sel("fRank", "Office reached", "Heads of state include monarchs and presidents; heads of government include prime ministers. Ministers are recorded less completely than heads, so the heads-only view compares countries more fairly.", [[1, "Any national office"], [2, "Central bank governor or higher"], [3, "Head of state or government"], [4, "Head of state only"]], S.rmin);
+  h += sel("fWhere", "Where they trained", "Abroad means the school is in a different country from the one where the person held office.", [["all", "Anywhere"], ["abroad", "Abroad, then ruled at home"], ["home", "In their own country"]], S.where);
+  h += '<label class="chk"><input type="checkbox" id="fNow"' + (S.now ? " checked" : "") + '> Only those still in office' + QM("Offices that Wikidata records with a start date and no end date. Some of these will be out of date.") + '</label>';
+  const era = (ERAS.find((e) => e[2] === S.y0 && e[3] === S.y1) || [""])[0];
+  h += '<div class="psec">When they held office</div><div class="presets">' + ERAS.map((e) => '<button class="btn' + (era === e[0] ? " on" : "") + '" data-era="' + e[0] + '">' + e[1] + '</button>').join("") + '</div>' +
+       '<div class="tline">From <input class="inp" id="y0" value="' + (S.y0 || "") + '" placeholder="any"> to <input class="inp" id="y1" value="' + (S.y1 < 9999 ? S.y1 : "") + '" placeholder="any"></div>' +
+       '<div class="desc">' + AGG.ppl.size.toLocaleString() + ' office-holders and ' + AGG.pair.size.toLocaleString() + ' pipelines on the map now, reaching ' + nC + ' countries.' + (S.y0 || S.y1 < 9999 ? ' Offices with no recorded start date are hidden while a period is set.' : '') + '</div>';
+  $("#keyBody").innerHTML = h;
+  $("#lens").addEventListener("change", (e) => { S.lens = e.target.value; refresh(); });
+  $("#keyBody").querySelectorAll("[data-band]").forEach((d) => d.addEventListener("click", () => { const i = +d.dataset.band; S.bandOn[i] = S.bandOn[i] ? 0 : 1; refresh(); }));
+  $("#keyBody").querySelectorAll("[data-era]").forEach((b) => b.addEventListener("click", () => { const e = ERAS.find((x) => x[0] === b.dataset.era); S.y0 = e[2]; S.y1 = e[3]; refresh(); }));
+  $("#y0").addEventListener("change", (e) => { S.y0 = +e.target.value || 0; refresh(); });
+  $("#y1").addEventListener("change", (e) => { S.y1 = +e.target.value || 9999; refresh(); });
+  $("#find").addEventListener("input", (e) => { S.q = e.target.value; drawFind(); });
+  $("#fRank").addEventListener("change", (e) => { S.rmin = +e.target.value; refresh(); });
+  $("#fWhere").addEventListener("change", (e) => { S.where = e.target.value; refresh(); });
+  $("#fNow").addEventListener("change", (e) => { S.now = e.target.checked; refresh(); });
+  let clickT = null;
+  $("#keyBody").querySelectorAll("[data-kind]").forEach((d) => {
+    d.addEventListener("click", () => { clearTimeout(clickT); clickT = setTimeout(() => { S.kind[d.dataset.kind] = !S.kind[d.dataset.kind]; refresh(); }, 220); });
+    d.addEventListener("dblclick", () => { clearTimeout(clickT); KINDS.forEach((k) => { S.kind[k[0]] = k[0] === d.dataset.kind; }); refresh(); });
+  });
+  if ($("#fReset")) $("#fReset").addEventListener("click", () => { KINDS.forEach((k) => { S.kind[k[0]] = true; }); S.rmin = 1; S.where = "all"; S.now = false; S.y0 = 0; S.y1 = 9999; refresh(); });
+  drawFind(); buildPat(); buildLeg();
+}
+function filtered() { return KINDS.some((k) => !S.kind[k[0]]) || S.rmin > 1 || S.where !== "all" || S.now || S.y0 > 0 || S.y1 < 9999; }
+function refresh() { paint(); buildKey(); if (S.sel) reopen(); }
+function drawFind() {
+  const q = S.q.trim().toLowerCase(), el = $("#flist"); if (!el) return;
+  if (q.length < 2) { el.innerHTML = '<div class="sub">Type two letters or more.</div>'; return; }
+  const out = [];
+  SCH.forEach((s) => { if ((s.n + " " + s.city + " " + s.c).toLowerCase().includes(q)) out.push(["s", s.i, s.n, KINDS[KI[s.k]][1]]); });
+  Object.keys(CTY).forEach((iso) => { if (CTY[iso].n.toLowerCase().includes(q)) out.push(["c", iso, CTY[iso].n, "country"]); });
+  PATS.forEach((p) => { if (p.title.toLowerCase().includes(q)) out.push(["p", p.id, p.title, "pattern"]); });
+  let np = 0; PE.forEach((p, i) => { if (np < 120 && p[0].toLowerCase().includes(q)) { np++; out.push(["k", i, p[0], topOffice(i)]); } });
+  el.innerHTML = out.slice(0, 150).map((r) => '<div class="fi" data-k="' + r[0] + '" data-v="' + esc(r[1]) + '">' + esc(r[2]) + '<span class="n">' + esc(r[3]) + '</span></div>').join("") || '<div class="sub">Nothing matches.</div>';
+  el.querySelectorAll(".fi").forEach((d) => d.addEventListener("click", () => { const k = d.dataset.k, v = d.dataset.v; if (k === "s") openSchool(+v, true); else if (k === "c") openCountry(v, true); else if (k === "p") setPattern(v); else openPerson(+v); }));
+}
+
+/* ---------- patterns ---------- */
+function buildPat() {
+  let h = '';
+  const row = (p, i) => { const n = [...p.set].filter((si) => S.kind[SCH[si].k]).length;
+    return '<div class="pat' + (S.pat === p.id ? " on" : "") + '" data-pat="' + p.id + '" style="--pc:' + KCOL_DARK[i % 9] + '"><div class="pt">' + esc(p.title) + '</div><div class="pm">' + n + ' schools · ' + p.reach + ' countries reached</div></div>'; };
+  h += PATS.map(row).join("");
+  if (HYP.length) h += '<div class="flab" style="margin-top:12px">Possible patterns · nothing proved yet' + QM("Things that are probably happening but have not been proved. They are not counted in any figure on the map.") + '</div>' +
+    HYP.map((y) => '<div class="hyp" data-hyp="' + y.id + '"><div class="ht">' + esc(y.title) + '</div><div class="hm">' + y.schools.length + ' schools named</div></div>').join("");
+  $("#patBody").innerHTML = h;
+  $("#patBody").querySelectorAll("[data-pat]").forEach((d) => d.addEventListener("click", () => setPattern(S.pat === d.dataset.pat ? null : d.dataset.pat)));
+  $("#patBody").querySelectorAll("[data-hyp]").forEach((d) => d.addEventListener("click", () => openHyp(d.dataset.hyp)));
+  sizeBoxes();
+}
+function setPattern(id) { S.pat = id; S.focus = null; refresh(); if (id) openPattern(id); else deselect(); }
+
+/* ---------- legend ---------- */
+function row(t, on, label, n, sub) { return '<div class="row' + (sub ? " sub2" : "") + '"><input type="checkbox" id="c_' + t.replace(/\W/g, "_") + '" data-t="' + t + '"' + (on ? " checked" : "") + '><label for="c_' + t.replace(/\W/g, "_") + '">' + label + ' <span class="n">' + n + '</span></label></div>'; }
+function buildLeg() {
+  let h = '';
+  const nVis = SCH.filter((s) => schOK(s.i)).length;
+  h += row("schools", S.schools, '<span class="car" data-open="kinds">' + (S.open.kinds ? "▾" : "▸") + '</span><span class="sw dot" style="background:' + kcol("elite") + '"></span>Schools and programmes' + QM("Each circle is a school, academy, fellowship, network or employer, placed at its campus or headquarters. Bigger circles have more former students in national office under the current filters."), nVis);
+  if (S.open.kinds) h += '<div class="up">' + KINDS.map((k) => row("k:" + k[0], S.kind[k[0]], '<span class="sw dot" style="background:' + kcol(k[0]) + '"></span>' + esc(k[1]) + QM(k[2]), SCH.filter((s) => s.k === k[0]).length, true)).join("") + '</div>';
+  h += row("arcs", S.arcs, '<span class="sw bar" style="background:' + kcol("fellow") + ';margin-left:12px"></span>Pipelines to power' + QM("Each line runs from a school to the capital of a country where at least one of its former students held national office. Thicker lines carry more people. Click a line to see who."), AGG.pair.size);
+  h += '<div class="sub">Click a school, a line or a country to see the people. Click ▸ for the kinds of school.</div>';
+  $("#legBody").innerHTML = h;
+  $("#legBody").querySelectorAll("[data-open]").forEach((c) => c.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); S.open[c.dataset.open] = !S.open[c.dataset.open]; buildLeg(); }));
+  $("#legBody").querySelectorAll("input[data-t]").forEach((c) => c.addEventListener("change", () => { const t = c.dataset.t; if (t.startsWith("k:")) S.kind[t.slice(2)] = c.checked; else S[t] = c.checked; refresh(); }));
+  sizeBoxes();
+}
+function stackBoxes() {
+  if (innerWidth <= 820) return;
+  const H = innerHeight, gap = 10, foot = 34;
+  const key = $("#key"), pb = $("#patBox"), keyMin = key.classList.contains("min"), patMin = pb.classList.contains("min");
+  const avail = H - 12 - gap - foot;
+  if (!keyMin && !patMin) { const patNeed = pb.querySelector(".bh").offsetHeight + $("#patBody").scrollHeight + 30; const patShare = Math.min(patNeed, Math.max(0.4 * avail, avail - key.scrollHeight)); key.style.maxHeight = Math.max(0.4 * avail, avail - patShare) + "px"; }
+  else key.style.maxHeight = (patMin ? avail - 40 : avail) + "px";
+  const k = key.getBoundingClientRect(); const top = k.bottom + gap; pb.style.top = top + "px"; pb.style.bottom = "auto"; pb.style.maxHeight = Math.max(60, H - top - foot) + "px";
+  const kids = [...$("#rcol").children].filter((e) => e.offsetParent !== null && e.getBoundingClientRect().height > 0);
+  const rb = kids.length ? Math.max(...kids.map((e) => e.getBoundingClientRect().bottom)) : 12, lb = $("#legBox");
+  const t2 = rb + gap, room = H - t2 - foot; lb.style.top = t2 + "px"; lb.style.bottom = "auto"; lb.style.maxHeight = Math.max(80, Math.min(room, Math.max(160, 0.5 * H))) + "px";
+}
+function sizeBoxes() { const rs = document.documentElement.style; rs.setProperty("--patH", $("#patBox").getBoundingClientRect().height + "px"); rs.setProperty("--legH", $("#legBox").getBoundingClientRect().height + "px"); requestAnimationFrame(stackBoxes); }
+function buildTr() {
+  $("#trBody").innerHTML = '<div class="psec" style="margin-top:0">Basemap</div><div class="bases">' + CulpritsBasemaps.list.map((b) => '<label><input type="radio" name="basemap" value="' + b[0] + '"' + (b[0] === BM.current() ? " checked" : "") + '> ' + esc(b[1]) + '</label>').join("") + '</div>' +
+    '<div class="psec">View</div><div class="seg"><button type="button" class="btn on" data-proj="globe">Globe</button><button type="button" class="btn" data-proj="mercator">Flat map</button></div>';
+  $("#trBody").querySelectorAll("input[name=basemap]").forEach((r) => r.addEventListener("change", () => BM.set(r.value)));
+  $("#trBody").querySelectorAll("[data-proj]").forEach((b) => b.addEventListener("click", () => { proj = b.dataset.proj; map.setProjection({ type: proj }); freeFlat(); $("#trBody").querySelectorAll("[data-proj]").forEach((x) => x.classList.toggle("on", x === b)); }));
+}
+
+/* ---------- cards ---------- */
+(function () {
+  const box = document.getElementById("det"); let d = null;
+  const start = (e) => { const t = e.target; if (!(t.id === "detGrip" || (t.closest && t.closest("#det .hp-k, #det h3")))) return; if (t.closest && t.closest("a,button,input,select")) return;
+    const r = box.getBoundingClientRect(); box.style.transform = "none"; box.style.left = r.left + "px"; box.style.top = r.top + "px"; d = { x: e.clientX - r.left, y: e.clientY - r.top }; box.classList.add("dragging"); e.preventDefault(); };
+  const move = (e) => { if (!d) return; const r = box.getBoundingClientRect(); box.style.left = Math.min(window.innerWidth - 60, Math.max(60 - r.width, e.clientX - d.x)) + "px"; box.style.top = Math.min(window.innerHeight - 40, Math.max(0, e.clientY - d.y)) + "px"; };
+  const end = () => { if (d) { d = null; box.classList.remove("dragging"); } };
+  box.addEventListener("pointerdown", start); window.addEventListener("pointermove", move); window.addEventListener("pointerup", end);
+  window.addEventListener("resize", () => { box.style.transform = ""; box.style.left = ""; box.style.top = ""; });
+})();
+function show(html, sel, focus) { S.sel = sel; S.focus = focus == null ? null : focus; $("#detBody").innerHTML = html; $("#det").classList.add("open"); $("#det").scrollTop = 0; paint(); wireCard(); }
+function deselect() { S.sel = null; S.focus = null; $("#det").classList.remove("open"); paint(); }
+function reopen() { const s = S.sel; if (!s) return; if (s[0] === "c") openCountry(s[1], false); else if (s[0] === "s") openSchool(s[1], false); else if (s[0] === "p") openPattern(s[1]); else if (s[0] === "a") openPair(s[1], s[2]); else if (s[0] === "k") openPerson(s[1]); }
+function wireCard() {
+  const B = $("#detBody");
+  B.querySelectorAll("[data-sch]").forEach((d) => d.addEventListener("click", (e) => { e.stopPropagation(); openSchool(+d.dataset.sch, true); }));
+  B.querySelectorAll("[data-cty]").forEach((d) => d.addEventListener("click", (e) => { e.stopPropagation(); openCountry(d.dataset.cty, true); }));
+  B.querySelectorAll("[data-pat]").forEach((d) => d.addEventListener("click", (e) => { e.stopPropagation(); setPattern(d.dataset.pat); }));
+  B.querySelectorAll("[data-per]").forEach((d) => d.addEventListener("click", (e) => { e.stopPropagation(); openPerson(+d.dataset.per); }));
+  B.querySelectorAll(".rec .rh").forEach((d) => d.addEventListener("click", () => d.parentNode.classList.toggle("open")));
+  B.querySelectorAll(".grp .gh").forEach((d) => d.addEventListener("click", () => d.parentNode.classList.toggle("open")));
+}
+const yrs = (o) => o[2] ? (o[2] + (o[3] ? (o[3] !== o[2] ? "–" + o[3] : "") : o[4] ? "–" : "")) : "";
+function topOffice(pi) { let best = null; BYP[pi].forEach((li) => LK[li][3].forEach((o) => { if (!best || o[1] > best[1] || (o[1] === best[1] && (o[2] || 0) > (best[2] || 0))) best = o; })); return best ? POSN[best[5]] + (best[2] ? " · " + yrs(best) : "") : ""; }
+function visOffices(li) { const l = LK[li], s = SCH[l[1]]; return l[3].filter((o) => offOK(o, s)); }
+const srcList = (src) => '<div class="hp-src">Sources: ' + src.map((x) => '<a href="' + esc(x[1]) + '" target="_blank" rel="noopener">' + esc(x[0]) + '</a>').join(" · ") + '</div>';
+function personRec(pi, offs, si) {
+  const p = PE[pi], best = offs.slice().sort((a, b) => b[1] - a[1] || (b[2] || 0) - (a[2] || 0))[0];
+  const schools = [...new Set(BYP[pi].map((li) => LK[li][1]))];
+  const lists = [...new Set(BYP[pi].filter((li) => LK[li][2]).map((li) => LK[li][2]))];
+  return '<div class="rec"><div class="rh"><span class="sw dot" style="background:' + (si != null ? kcol(SCH[si].k) : "var(--mute)") + '"></span><b>' + esc(p[0]) + '</b><span class="n">' + esc(POSN[best[5]]) + (best[2] ? " · " + yrs(best) : "") + '</span></div>' +
+    '<div class="rb">' + offs.map((o) => '<div>' + esc(POSN[o[5]]) + (o[2] ? ' <span class="mute">' + yrs(o) + '</span>' : '') + (CTY[o[0]] ? ' · <span class="mute">' + esc(CTY[o[0]].n) + '</span>' : '') + '</div>').join("") +
+    '<div class="chips" style="margin-top:4px">' + schools.map((x) => '<span data-sch="' + x + '"><span class="sw dot" style="background:' + kcol(SCH[x].k) + '"></span>' + esc(SCH[x].n) + '</span>').join("") + '</div>' +
+    '<div class="mute" style="font-size:11px;margin-top:4px">' + (p[1] ? '<a href="https://www.wikidata.org/wiki/' + p[1] + '" target="_blank" rel="noopener">Wikidata record</a>' : '') + (p[2] ? ' · <a href="https://en.wikipedia.org/wiki/' + encodeURIComponent(p[2].replace(/ /g, "_")) + '" target="_blank" rel="noopener">Wikipedia</a>' : '') + (lists.length ? ' · listed in ' + lists.map((u) => '<a href="' + esc(D.LISTS[u][1]) + '" target="_blank" rel="noopener">' + esc(D.LISTS[u][0]) + '</a>').join(", ") : '') + ' · <span data-per="' + pi + '" style="cursor:pointer;text-decoration:underline">open</span></div></div></div>';
+}
+function peopleOf(si, iso) {   // [[pi, offices]] for a school, optionally one country
+  const m = new Map();
+  BYS[si].forEach((li) => { const offs = visOffices(li).filter((o) => !iso || o[0] === iso); if (offs.length) { const pi = LK[li][0]; m.set(pi, (m.get(pi) || []).concat(offs)); } });
+  return [...m.entries()].sort((a, b) => Math.max(...b[1].map((o) => o[1])) - Math.max(...a[1].map((o) => o[1])) || Math.max(...b[1].map((o) => o[2] || 0)) - Math.max(...a[1].map((o) => o[2] || 0)));
+}
+function kindBar(counts) { const t = counts.reduce((a, b) => a + b, 0) || 1; return '<div class="kbar">' + counts.map((n, i) => n ? '<span title="' + esc(KINDS[i][1]) + ': ' + n + '" style="width:' + (100 * n / t) + '%;background:' + kcol(KINDS[i][0]) + '"></span>' : '').join("") + '</div>'; }
+function openSchool(si, fly) {
+  const s = SCH[si]; recompute();
+  const ppl = peopleOf(si), byC = {};
+  ppl.forEach(([pi, offs]) => offs.forEach((o) => { (byC[o[0]] = byC[o[0]] || new Set()).add(pi); }));
+  const cs = Object.keys(byC).sort((a, b) => byC[b].size - byC[a].size);
+  const heads = ppl.filter(([, offs]) => offs.some((o) => o[1] >= 3)).length;
+  let h = '<div class="hp-k">' + esc(KINDS[KI[s.k]][1]) + '</div><h3>' + esc(s.n) + '</h3><div class="hp-sub">' + esc(s.city) + ', ' + esc(s.c) + (s.y ? ' · founded ' + s.y : '') + (s.end ? ' · closed ' + s.end : '') + '</div>';
+  h += '<table class="kv"><tr><th>Behind it</th><td style="text-align:left">' + esc(s.hand) + '</td></tr><tr><th>How people get in</th><td style="text-align:left">' + esc(s.sel) + '</td></tr></table>';
+  h += '<div class="hp-desc">' + esc(s.d) + '</div>';
+  const pats = PATS.filter((p) => p.set.has(si));
+  if (pats.length) h += '<div class="hp-h">Patterns</div><div class="chips">' + pats.map((p) => '<span class="pchip" data-pat="' + p.id + '">' + esc(p.title) + '</span>').join("") + '</div>';
+  h += '<div class="hp-h">Former students in national office' + QM("Under the filters now set. From Wikidata and published lists; see Method.") + '</div>';
+  if (!ppl.length) h += '<div class="sub">None recorded under the current filters. Wikidata holds few records of who attended programmes like this one, so this is a gap in the record, not proof that none exist.</div>';
+  else {
+    h += '<div class="pp">' + ppl.length + (ppl.length === 1 ? ' person' : ' people') + ' in ' + cs.length + (cs.length === 1 ? ' country' : ' countries') + (heads ? ', ' + heads + ' of them heads of state or government' : '') + '.</div>';
+    h += '<div class="chips">' + cs.slice(0, 40).map((iso) => '<span data-cty="' + iso + '">' + esc(CTY[iso] ? CTY[iso].n : iso) + ' <span class="n">' + byC[iso].size + '</span></span>').join("") + (cs.length > 40 ? '<span class="est">and ' + (cs.length - 40) + ' more</span>' : '') + '</div>';
+    h += '<div style="margin-top:8px">' + ppl.slice(0, 300).map(([pi, offs]) => personRec(pi, offs, si)).join("") + (ppl.length > 300 ? '<div class="sub">' + (ppl.length - 300) + ' more; narrow the filters to see them.</div>' : '') + '</div>';
+  }
+  h += srcList(s.src.concat([["Wikidata", "https://www.wikidata.org/wiki/" + (s.q || "")]]).filter((x) => x[1] !== "https://www.wikidata.org/wiki/"));
+  show(h, ["s", si], si);
+  if (fly) map.flyTo({ center: [s.lng, s.lat], zoom: Math.max(map.getZoom(), 3), duration: 900 });
+}
+function openPair(si, iso) {
+  const s = SCH[si], ppl = peopleOf(si, iso);
+  let h = '<div class="hp-k">Pipeline</div><h3>' + esc(s.n) + ' → ' + esc(CTY[iso] ? CTY[iso].n : iso) + '</h3><div class="hp-sub">' + ppl.length + (ppl.length === 1 ? ' person' : ' people') + ' trained here and later held national office in ' + esc(CTY[iso] ? CTY[iso].n : iso) + '</div>';
+  h += '<div class="chips"><span data-sch="' + si + '"><span class="sw dot" style="background:' + kcol(s.k) + '"></span>' + esc(s.n) + '</span><span data-cty="' + iso + '">' + esc(CTY[iso] ? CTY[iso].n : iso) + '</span></div><div style="margin-top:8px">' + ppl.map(([pi, offs]) => personRec(pi, offs, si)).join("") + '</div>';
+  show(h, ["a", si, iso], si);
+}
+function openCountry(iso, fly) {
+  recompute();
+  const c = CTY[iso], A = AGG.cty[iso];
+  let h = '<div class="hp-k">Country</div><h3>' + esc(c ? c.n : iso) + '</h3>';
+  if (!A) { h += '<div class="sub">No office-holders on the map under the current filters. Wikidata records education unevenly, so this can mean the record is thin rather than that no leader trained at these schools.</div>'; show(h, ["c", iso]); return; }
+  const groups = []; const kc = KINDS.map(() => 0);
+  A.sch.forEach((si) => { const ppl = peopleOf(si, iso); if (ppl.length) { groups.push([si, ppl]); kc[KI[SCH[si].k]] += ppl.length; } });
+  groups.sort((a, b) => b[1].length - a[1].length);
+  const headsAll = A.heads.size, abroadHeads = [...A.heads].filter((pi) => A.ab.has(pi)).length;
+  h += '<div class="hp-sub">' + A.all.size + ' office-holders trained at ' + A.sch.size + (A.sch.size === 1 ? ' school' : ' schools') + ' on the map · ' + A.ab.size + ' of them abroad</div>' + kindBar(kc);
+  const top = groups[0], topAb = groups.find(([si]) => SCH[si].iso !== iso);
+  let plain = '';
+  if (headsAll) plain += 'Of the ' + headsAll + (headsAll === 1 ? ' head of state or government' : ' heads of state or government') + ' on the map for ' + (c ? c.n : iso) + ', ' + abroadHeads + ' trained abroad. ';
+  if (topAb) plain += 'The foreign school that appears most often is ' + SCH[topAb[0]].n + ', with ' + topAb[1].length + (topAb[1].length === 1 ? ' former student' : ' former students') + ' in national office. ';
+  if (top && (!topAb || top[0] !== topAb[0])) plain += 'At home, the leading pipeline is ' + SCH[top[0]].n + ' (' + top[1].length + '). ';
+  if (plain) h += '<div class="imp-box">' + esc(plain.trim()) + '</div>';
+  h += '<div class="hp-h">Who trained them</div>' + groups.map(([si, ppl]) => '<div class="grp' + (groups.length <= 3 ? ' open' : '') + '"><div class="gh"><span class="car">▸</span><span class="sw dot" style="background:' + kcol(SCH[si].k) + '"></span><b>' + esc(SCH[si].n) + '</b><span class="n">' + ppl.length + '</span><span class="n" data-sch="' + si + '" style="cursor:pointer;text-decoration:underline">school</span></div><div class="gb">' + ppl.map(([pi, offs]) => personRec(pi, offs, si)).join("") + '</div></div>').join("");
+  show(h, ["c", iso]);
+  if (fly && c) map.flyTo({ center: [c.lng, c.lat], zoom: Math.max(map.getZoom(), 3), duration: 900 });
+}
+function openPerson(pi) {
+  const p = PE[pi], links = BYP[pi];
+  const offs = []; links.forEach((li) => LK[li][3].forEach((o) => { if (!offs.some((x) => x[5] === o[5])) offs.push(o); }));
+  offs.sort((a, b) => (a[2] || 0) - (b[2] || 0));
+  let h = '<div class="hp-k">Office-holder</div><h3>' + esc(p[0]) + '</h3><div class="hp-sub">' + (p[3] ? 'Born ' + p[3] : '') + (p[4] ? ' · died ' + p[4] : '') + '</div>';
+  h += '<div class="hp-h">Trained at</div><div class="chips">' + [...new Set(links.map((li) => LK[li][1]))].map((x) => '<span data-sch="' + x + '"><span class="sw dot" style="background:' + kcol(SCH[x].k) + '"></span>' + esc(SCH[x].n) + '</span>').join("") + '</div>';
+  h += '<div class="hp-h">National offices</div>' + offs.map((o) => '<div class="tl"><b>' + esc(yrs(o) || "–") + '</b>' + esc(POSN[o[5]]) + (CTY[o[0]] ? ' · <span data-cty="' + o[0] + '" style="cursor:pointer;text-decoration:underline">' + esc(CTY[o[0]].n) + '</span>' : '') + '</div>').join("");
+  h += '<div class="hp-src">Sources: ' + (p[1] ? '<a href="https://www.wikidata.org/wiki/' + p[1] + '" target="_blank" rel="noopener">Wikidata ' + p[1] + '</a>' : '') + (p[2] ? ' · <a href="https://en.wikipedia.org/wiki/' + encodeURIComponent(p[2].replace(/ /g, "_")) + '" target="_blank" rel="noopener">Wikipedia</a>' : '') + '</div>';
+  show(h, ["k", pi]);
+}
+function openPattern(id) {
+  const p = PAT_BY[id]; if (!p) return; recompute();
+  const cs = Object.keys(AGG.cty).sort((a, b) => AGG.cty[b].all.size - AGG.cty[a].all.size);
+  let h = '<div class="hp-k">Pattern behind the scenes</div><h3>' + esc(p.title) + '</h3><div class="bts">' + p.d.map((x) => '<p>' + esc(x) + '</p>').join("") + '</div>';
+  h += '<div class="imp-box"><b>Why it matters.</b> ' + esc(p.means) + '</div>';
+  h += '<div class="hp-h">Schools in this pattern</div><div class="chips">' + [...p.set].map((si) => '<span data-sch="' + si + '"><span class="sw dot" style="background:' + kcol(SCH[si].k) + '"></span>' + esc(SCH[si].n) + ' <span class="n">' + AGG.sch[si].size + '</span></span>').join("") + '</div>';
+  h += '<div class="hp-h">Where their former students hold or held office</div><div class="chips">' + cs.slice(0, 50).map((iso) => '<span data-cty="' + iso + '">' + esc(CTY[iso] ? CTY[iso].n : iso) + ' <span class="n">' + AGG.cty[iso].all.size + '</span></span>').join("") + (cs.length > 50 ? '<span class="est">and ' + (cs.length - 50) + ' more</span>' : '') + '</div>';
+  h += '<div class="sub">The map now shows only this pattern\'s schools. Click the pattern again to show everything.</div>' + srcList(p.src);
+  show(h, ["p", id]);
+}
+function openHyp(id) {
+  const y = HYP.find((x) => x.id === id); if (!y) return;
+  let h = '<div class="hp-k">Possible pattern · nothing proved yet</div><h3>' + esc(y.title) + '</h3><div class="note">This is not a finding and not evidence. It describes something that is probably happening but has not been proved, and it is counted in no figure on the map.</div>' + y.story.map((x) => '<div class="hp-desc">' + esc(x) + '</div>').join("");
+  h += '<div class="hp-h">Schools it concerns</div><div class="chips">' + y.schools.map((x) => SID[x]).filter((x) => x != null).map((si) => '<span class="est" data-sch="' + si + '">' + esc(SCH[si].n) + '</span>').join("") + '</div>';
+  show(h, null);
+}
+function openStack(list) {
+  const h = '<div class="hp-k">' + list.length + ' schools here</div><h3>Several schools share this spot</h3>' + list.map((si) => '<div class="rec stk" data-sch="' + si + '"><div class="rh"><span class="sw dot" style="background:' + kcol(SCH[si].k) + '"></span><b>' + esc(SCH[si].n) + '</b><span class="n">' + AGG.sch[si].size + '</span></div></div>').join("");
+  show(h, null);
+}
+
+/* ---------- background ---------- */
+function stars() {
+  let seed = 1977; const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
+  const Wd = 1400, H = 1000, c = document.createElement("canvas"); c.width = Wd; c.height = H; const g = c.getContext("2d");
+  g.fillStyle = "#03040a"; g.fillRect(0, 0, Wd, H);
+  const tints = ["255,255,255", "214,224,255", "236,232,246", "224,236,240"];
+  for (let i = 0; i < 2600; i++) { const x = rnd() * Wd, y = rnd() * H, r = .25 + rnd() * .55; g.beginPath(); g.arc(x, y, r, 0, 7); g.fillStyle = "rgba(" + tints[(rnd() * 4) | 0] + "," + (.15 + rnd() * .55) + ")"; g.fill(); }
+  const el = $("#map"); el.style.background = '#03040a url(' + c.toDataURL("image/jpeg", .9) + ') repeat'; el.style.backgroundSize = Wd + "px " + H + "px";
+  const drift = () => { const ct = map.getCenter(), z = map.getZoom(); el.style.backgroundPosition = Math.round(-ct.lng * 3) + "px " + Math.round(ct.lat * 3 + z * 6) + "px"; };
+  map.on("move", drift); drift();
+}
+function init() {
+  recompute();
+  PATS.forEach((p) => { const sv = S.pat; S.pat = p.id; recompute(); p.reach = Object.keys(AGG.cty).length; S.pat = sv; }); recompute();
+  addLayers(); buildKey(); buildTr(); stars();
+  $("#detX").addEventListener("click", deselect);
+  $("#worldBtn").addEventListener("click", wholeWorld);
+  $("#toggleKey").addEventListener("click", () => { const p = $("#key"); p.classList.toggle("min"); $("#toggleKey").textContent = p.classList.contains("min") ? "+" : "−"; sizeBoxes(); });
+  $("#toggleTr").addEventListener("click", () => { const p = $("#tr"); p.classList.toggle("min"); $("#toggleTr").textContent = p.classList.contains("min") ? "Basemap +" : "−"; sizeBoxes(); });
+  $("#togglePat").addEventListener("click", () => { const p = $("#patBox"); p.classList.toggle("min"); $("#togglePat").textContent = p.classList.contains("min") ? "+" : "−"; sizeBoxes(); });
+  $("#toggleLeg").addEventListener("click", () => { const p = $("#legBox"); p.classList.toggle("min"); $("#toggleLeg").textContent = p.classList.contains("min") ? "+" : "−"; sizeBoxes(); });
+  try { const ro = new ResizeObserver(() => stackBoxes()); ["#key", "#tr"].forEach((s) => ro.observe($(s))); } catch (e) {}
+  addEventListener("resize", sizeBoxes);
+  if (innerWidth <= 820) { $("#key").classList.add("min"); $("#toggleKey").textContent = "+"; $("#tr").classList.add("min"); $("#toggleTr").textContent = "Basemap +"; }
+  ready = true; order(); paint();
+  map.jumpTo({ center: [12, 25], zoom: startZoom(), padding: { left: freeBox().L, right: freeBox().R, top: 0, bottom: 0 } });
+}
+window.pipelines = { S, openSchool, openCountry, setPattern, refresh, map: () => map };
+
+/* ---------- about and sources ---------- */
+const info = $("#info"); info.innerHTML = __ABOUT__;
+const story = $("#story"); story.innerHTML = __STORY__;
+const openInfo = (on) => info.classList.toggle("open", on), openStory = (on) => story.classList.toggle("open", on);
+$("#storyBtn").addEventListener("click", () => openStory(true));
+$("#storyBtn").addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openStory(true); } });
+$("#storyClose").addEventListener("click", () => openStory(false));
+$("#infoBtn").addEventListener("click", () => openInfo(true));
+$("#infoBtn").addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openInfo(true); } });
+$("#infoClose").addEventListener("click", () => openInfo(false));
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") { openStory(false); openInfo(false); if (S.sel) deselect(); } });
+})();
+</script>
+</body>
+</html>
