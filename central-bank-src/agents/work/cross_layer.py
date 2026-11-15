@@ -40,6 +40,17 @@ QUALIFIES = {
  'NPL': "On 8 April 2022 the government suspended governor Adhikari and formed a three-member probe committee headed by a former Supreme Court judge; the Supreme Court stayed the suspension on 19 April and he returned.",
  'SOM': "Governor Abrar resigned after seven weeks, writing to the president that she had continuously been asked to sanction deals and violate her fiduciary responsibility. Executive pressure stated in her own resignation letter.",
  'BCEAO': "A summit of UEMOA heads of state required and accepted governor Dacoury-Tabley's resignation in January 2011. Expands to all eight member countries.",
+ 'SWZ': "Filed at round 53, and it widens the test. No governor was removed, so this does not "
+        "turn on the round-44 removal rule but on the 'pressured' half of it, with the head of "
+        "state as the actor: governor Majozi Sithole said a royal command required him to attend "
+        "a meeting about Farmers Bank on 14 July 2017; in May 2018 the finance minister told the "
+        "bank that King Mswati III had ordered an investigation into its reluctance to license "
+        "the venture; a conditional licence followed in September 2018 after a royal command; and "
+        "when the bank revoked that licence in October 2020 a minister-chaired appeal overrode "
+        "the revocation. What the state did is to order an investigation into the bank's own "
+        "supervisory decision and then reverse it, which is the same shape as Uganda's audit of "
+        "the bank closures. Found by reading writeups.json, not by a search: the facts had been "
+        "in the Eswatini paragraph for rounds while the moves layer rendered the country blank.",
 }
 MARGINAL = {
  'MDV': "Governor Naseer resigned in July 2019 after being summoned twice by parliament's public finance committee. Parliamentary pressure, but the summons concerned allegations against him personally and no organ of state is said to have required him to go.",

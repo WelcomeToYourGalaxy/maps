@@ -9,7 +9,12 @@ corr, par, gaps, net = J("corruption.json"), J("parties.json"), J("gaps.json"), 
 ev, hq, sw, own = J("events_gold.json"), J("hq.json"), J("swaps.json"), J("owners.json")
 wr = J("writeups.json")
 ARR = {"case": corr["cases"], "revolving_door": corr["revolving_door"], "event": ev["events"]}
-CBISO = {"BEAC": "CMR", "BCEAO": "SEN", "ECCB": "KNA"}
+# A union-wide record keys to the union code and expands to every member country; app.js
+# expands a link's cb the same way (cbOfLink). The old head-office rule -- BEAC->CMR,
+# BCEAO->SEN, ECCB->KNA -- is reversed, so a party link must carry the union code its
+# record carries, and this check compares them directly. Mapping them here hid seven
+# links that were still keyed to a head office and so drew for one member instead of all.
+CBISO = {}
 fail = 0
 def check(name, bad, show=6):
     global fail
