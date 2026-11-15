@@ -29,7 +29,7 @@ WS = re.compile(r'[ \t ]+')
 
 UNIT_CELL = re.compile(r'(?:mu|m2|m\u00b2|ha|hectares?|acres?|km|person|persons|people|household|households|famil(?:y|ies)|no\.?|nos\.?|unit|units|sq\.?\s?m|square\s+met(?:re|er)s?)', re.I)
 COLSEP = re.compile(r'[ \t\u00a0]{2,}')
-OUTCOME = {'ICR', 'ICRR', 'ICRX', 'PPAR'}
+OUTCOME = {'ICR', 'ICRR', 'ICRX', 'PPAR', 'ISR'}
 PLAN = {'PAD', 'SAR', 'PP', 'SDR', 'RP', 'RAP', 'IPP'}
 
 # The Bank files implementation reports, mission reports and monitoring reports
@@ -47,10 +47,26 @@ OUTCOME_TITLE = re.compile(
     r'audit\s+report|ex[\s-]?post', re.I)
 
 
+APPRAISAL_SIGNAL = re.compile(
+    r'project\s+appraisal\s+document|staff\s+appraisal\s+report|'
+    r'program\s+appraisal\s+document|\bPAD\b|technical\s+annex|'
+    r'document\s+d.?\u00e9valuation', re.I)
+
+
 def effective_tag(tag, title, head=''):
-    """Treat a plan-tagged document as an outcome document when it is one."""
-    if tag in PLAN and (OUTCOME_TITLE.search(title or '')
-                        or OUTCOME_TITLE.search(head or '')):
+    """Treat a plan-tagged document as an outcome document when it is one.
+
+    Two rounds found this firing on appraisal documents, whose figures are
+    forecasts: a round 32 checker reported a brief telling a writer to read a
+    2005 appraisal document's table as an outcome. So the outcome signal must
+    be in the document's own title, and any appraisal signal in the title or
+    the opening pages vetoes it.
+    """
+    if tag not in PLAN:
+        return tag
+    if APPRAISAL_SIGNAL.search(title or '') or APPRAISAL_SIGNAL.search(head or ''):
+        return tag
+    if OUTCOME_TITLE.search(title or ''):
         return 'RP-OUTCOME'
     return tag
 
@@ -308,8 +324,10 @@ def main():
         for d in sorted(docs, key=lambda x: (x['tag'], x['docdt'])):
             eff = effective_tag(d['tag'], d.get('title', ''),
                                 texts.get(d['path'], '')[:3000])
-            mark = ('  **<- filed as a plan but reads as an outcome document; '
-                    'treat its figures as outcomes**' if eff == 'RP-OUTCOME' else '')
+            mark = ('  **<- filed as a plan, but its own title reads as an '
+                    'implementation or completion report; check the tense before '
+                    'reading any figure in it as an outcome**'
+                    if eff == 'RP-OUTCOME' else '')
             A(f"- `{d['path']}` — **{d['tag']}** {d['docdt']} — {d.get('title', '')[:120]}{mark}")
         A("")
         tags_here = {d['tag'] for d in docs}

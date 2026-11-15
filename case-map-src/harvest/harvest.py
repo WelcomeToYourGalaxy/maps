@@ -168,7 +168,16 @@ def fetch_doc(pid, tag, docdt, docid, txturl, pdfurl):
             if not raw.lstrip()[:200].lower().startswith(b'<!doctype') and b'<html' not in raw[:300].lower():
                 open(final, 'w', encoding='utf-8').write(fix_text(raw))
                 os.remove(tmp)
-                return ('txt', final, os.path.getsize(final))
+                n = os.path.getsize(final)
+                # A few hundred bytes is the "Public Disclosure Authorized"
+                # stamp layer with no body. Round 31 had one such file be the
+                # ONLY document in a brief, and round 32 found a 261-byte
+                # aide-memoire recorded as a success. Fall through to the PDF,
+                # which usually has the text the txt route lost.
+                if n < 1200:
+                    os.remove(final)
+                else:
+                    return ('txt', final, n)
         if os.path.exists(tmp):
             os.remove(tmp)
 
@@ -217,6 +226,31 @@ def harvest_pid(pid):
             'id': v.get('id') or k.lstrip('D'),
             'txturl': cdata(v.get('txturl')), 'pdfurl': cdata(v.get('pdfurl')),
         })
+    # Implementation status reports are excluded by default — a project has many
+    # and they add volume without adding much. But where a project has no
+    # completion report, assessment report or evaluation review at all, they are
+    # the ONLY outcome document. Round 32's re-examination of round 22's drops
+    # found P087291 in exactly that position: its drop could only have been
+    # argued from a plan, and three status reports nobody had read were the real
+    # record. So they are fetched as a fallback, newest two, and only then.
+    if not any(p['tag'] in ('ICR', 'ICRR', 'PPAR', 'ICRX') for p in picked):
+        isrs = []
+        for k, v in docs.items():
+            if k == 'facets' or not isinstance(v, dict):
+                continue
+            dt = cdata(v.get('docty'))
+            if 'Implementation Status' in dt:
+                isrs.append({
+                    'tag': 'ISR', 'docty': dt,
+                    'docdt': (cdata(v.get('docdt')) or '')[:10],
+                    'title': cdata(v.get('display_title'))[:160],
+                    'id': v.get('id') or k.lstrip('D'),
+                    'txturl': cdata(v.get('txturl')),
+                    'pdfurl': cdata(v.get('pdfurl')),
+                })
+        isrs.sort(key=lambda x: x['docdt'], reverse=True)
+        picked.extend(isrs[:2])
+
     # newest first within a tag, so the operative ICR/ICRR lands first
     picked.sort(key=lambda x: (x['tag'], x['docdt']), reverse=True)
     for p in picked:
