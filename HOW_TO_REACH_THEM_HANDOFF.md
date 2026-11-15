@@ -371,6 +371,28 @@ takes the qualifiers a regional body puts in between, while "President
 of Emilia-Romagna" and "President of the Republic" stay with the
 executive. `CACHE_V` went to `htrt6`.
 
+**A city is not always a boundary, and that was losing whole cities.**
+Searching Cape Town returned "Nothing with a boundary matched that" — a
+city of four and a half million. Photon's best match for the name is a
+node, OpenStreetMap holds the outline under "City of Cape Town", which
+nobody searches for, and Nominatim's own search for the name returns the
+same node. The result list required an OSM relation and threw everything
+else away.
+
+A node is kept now and ranked below any relation. When one is opened,
+the boundary is searched for by name inside the country Photon named,
+and the node's point is the check: a candidate whose own point is more
+than 0.6° away is a different place with the same name and is not taken.
+Where there is still no outline — Cape Town — the point alone is enough,
+because the point is what decides which unit of the world file the place
+sits in and every level above follows from that. The unit containing it
+opens, drawn with that unit's boundary, and `noteNoShape()` says under
+the title that the place has no boundary of its own and names the
+government whose boundary is drawn. Cape Town now opens at South Africa
+→ Western Cape → City of Cape Town, with the Western Cape Provincial
+Parliament, Cape Town City Council, `contact.us@capetown.gov.za` and
+`+27-860-103-089`.
+
 This is the pattern worth keeping in mind for the rounds below the
 county: **the classifier's failures surface one jurisdiction at a time,
 and only by opening places and reading the list.** Nothing in the
