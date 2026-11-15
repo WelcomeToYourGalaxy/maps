@@ -27,6 +27,8 @@ OUT = os.path.join(HERE, 'briefs')
 os.makedirs(OUT, exist_ok=True)
 WS = re.compile(r'[ \t ]+')
 
+UNIT_CELL = re.compile(r'(?:mu|m2|m\u00b2|ha|hectares?|acres?|km|person|persons|people|household|households|famil(?:y|ies)|no\.?|nos\.?|unit|units|sq\.?\s?m|square\s+met(?:re|er)s?)', re.I)
+COLSEP = re.compile(r'[ \t\u00a0]{2,}')
 OUTCOME = {'ICR', 'ICRR', 'ICRX', 'PPAR'}
 PLAN = {'PAD', 'SAR', 'PP', 'SDR', 'RP', 'RAP', 'IPP'}
 
@@ -144,22 +146,42 @@ RELOC_RX = re.compile(RELOC, re.I)
 # number that happens to sit near the word "resettlement". Without this, the
 # reprint check fills up with transmission voltages, line lengths, years and page
 # numbers, because a project's technical specs sit next to its land acquisition.
+# `m2` is often extracted from a PDF as `m 2`, because the superscript lands on
+# its own line, so the unit patterns tolerate the gap.
 UNIT_AFTER = re.compile(
     r'\s{0,3}(?:households?|families|persons?|people|residents?|PAPs?|'
     r'project[\s-]affected\s+(?:persons?|people|households?)|houses?|dwellings?|'
-    r'homes?|structures?|shops?|enterprises?|square\s+met(?:re|er)s?|m2|m\u00b2|'
-    r'sq\.?\s*m|mu|hectares?|ha\b|acres?)', re.I)
+    r'homes?|structures?|shops?|enterprises?|square\s+met(?:re|er)s?|m\s?2\b|m\u00b2|'
+    r'sq\.?\s*m|mu\b|hectares?|ha\b|acres?)', re.I)
+# The verb is often a few words from the figure — "the area of houses which will
+# be resettled is 4774.36" — so up to four words are allowed between them. The
+# old pattern required punctuation only and missed every sentence of that shape.
 VERB_BEFORE = re.compile(
     r'(?:relocat|resettl|rehous|re-hous|displac|demolish|demolit|evict|'
-    r'expropriat|acquir|compensat)[a-z]*\W{0,24}$', re.I)
+    r'expropriat|acquir|compensat)[a-z]*(?:\W+\w+){0,4}\W*$', re.I)
 
 
-def resettlement_figures(text):
-    """Figures carrying a people-or-housing unit in a resettlement context."""
+def resettlement_figures(text, raw=None):
+    """Figures carrying a people-or-housing unit in a resettlement context.
+
+    Two ways a figure qualifies.
+
+    1. A unit follows it, or a relocation verb precedes it, inside one sentence.
+    2. It sits in a table row inside a resettlement section. Round 31's China
+       checker found the first rule alone missed the thing this check exists to
+       catch: the Turfan completion report's Table 5-2 is the 2009 resettlement
+       plan's Table 1-2 reprinted whole — 14.11, 21.37, 35.05, 167.86 mu and
+       4,774.36 m2 of housing, in column order — and in a table the unit sits in
+       a column header rather than beside the number, so rule 1 sees nothing. The
+       card then presented a forecast inventory as the report's count of what was
+       lost.
+
+    `raw` is the text with its line breaks; without it only rule 1 runs.
+    """
     found = {}
     for n in NUM.finditer(text):
-        raw = n.group()
-        v = raw.rstrip('.').replace(',', '')
+        raw_s = n.group()
+        v = raw_s.rstrip('.').replace(',', '')
         try:
             f = float(v)
         except ValueError:
@@ -172,18 +194,48 @@ def resettlement_figures(text):
         has_verb = bool(VERB_BEFORE.search(head))
         if not (has_unit or has_verb):
             continue
-        # a bare year with no unit is a date, not a count
         if not has_unit and 1900 <= f <= 2100 and '.' not in v:
             continue
-        # require the surrounding text to be about resettlement at all
         ctx_a = max(0, n.start() - 300)
-        ctx = text[ctx_a:n.end() + 300]
-        if not RELOC_RX.search(ctx):
+        if not RELOC_RX.search(text[ctx_a:n.end() + 300]):
             continue
         if v in found:
             continue
         a = max(0, n.start() - 160)
-        found[v] = text[a:n.end() + 180].strip()[:320]
+        found[v] = ('sentence', text[a:n.end() + 180].strip()[:320])
+
+    if raw:
+        for line in raw.split('\n'):
+            # a table row: at least two runs of two or more spaces between values
+            if len(COLSEP.findall(line)) < 2:
+                continue
+            cells = [c.strip() for c in COLSEP.split(line) if c.strip()]
+            if len(cells) < 3:
+                continue
+            # The quantity may share its cell with prose: the Turfan row reads
+            # "6 | Houses | m2 | 4774.36 were also impacted to some extent, and".
+            # So numbers are pulled out of cells rather than required to be
+            # whole cells, and the row qualifies on carrying a bare unit token
+            # in a cell of its own, which is what a quantity table looks like.
+            if not any(UNIT_CELL.fullmatch(c) for c in cells):
+                continue
+            i = raw.index(line)
+            if not RELOC_RX.search(raw[max(0, i - 2500):i + 1200]):
+                continue
+            for c in cells:
+                for m in NUM.finditer(c):
+                    v = m.group().rstrip('.').replace(',', '')
+                    try:
+                        f = float(v)
+                    except ValueError:
+                        continue
+                    if f < 4 or f > 5e8:
+                        continue
+                    if 1900 <= f <= 2100 and '.' not in v:
+                        continue
+                    if v in found:
+                        continue
+                    found[v] = ('table row', ' | '.join(cells)[:320])
     return found
 
 
@@ -210,11 +262,13 @@ def main():
         slug = re.sub(r'[^a-z0-9]+', '-', rec['project'].lower()).strip('-')[:48]
         name = f"{rec['pid']}_{slug or 'project'}.md"
 
-        texts = {}
+        texts, raws = {}, {}
         for d in docs:
             fp = os.path.join(HERE, d['path'])
             if os.path.exists(fp):
-                texts[d['path']] = flat(load(fp))
+                r = load(fp)
+                raws[d['path']] = r
+                texts[d['path']] = flat(r)
 
         # the plan-reprint trap, mechanised
         out_nums, plan_nums = {}, {}
@@ -222,14 +276,14 @@ def main():
             t = texts.get(d['path'], '')
             if not t:
                 continue
-            got = resettlement_figures(t)
+            got = resettlement_figures(t, raws.get(d['path']))
             eff = effective_tag(d['tag'], d.get('title', ''), t[:3000])
             tgt = (out_nums if (d['tag'] in OUTCOME or eff == 'RP-OUTCOME')
                    else (plan_nums if d['tag'] in PLAN else None))
             if tgt is None:
                 continue
-            for v, ctx in got.items():
-                tgt.setdefault(v, []).append((f"{d['tag']} {d['docdt']}", ctx))
+            for v, (how, ctx) in got.items():
+                tgt.setdefault(v, []).append((f"{d['tag']} {d['docdt']} [{how}]", ctx))
         reprinted = sorted(set(out_nums) & set(plan_nums),
                            key=lambda v: -float(v.replace(',', '')))
 
@@ -295,7 +349,15 @@ def main():
               "report's own results annex. Each figure below sits in a resettlement context in an "
               "outcome document **and** in the appraisal or resettlement plan. That does not make "
               "the project a drop; it means that figure may be a plan reprinted as an outcome, and "
-              "the verb usually gives it away. Check the verb before using any of them.\n")
+              "the verb usually gives it away. Check the verb before using any of them. A figure "
+              "found in a table row is marked `[table row]`: the Turfan completion report reprinted "
+              "its plan's whole inundation table in column order, and a card then presented a "
+              "forecast inventory as the report's count of what was lost.\n")
+            A("**This check runs only on this row's own P-numbers.** Where the plan sits under a "
+              "parent or an earlier operation and the outcome under an additional financing, the "
+              "two never meet here and the check returns nothing — which is exactly the pairing it "
+              "exists to find. If the completion report names another P-number, compare that "
+              "project's plan by hand.\n")
             for v in reprinted[:14]:
                 A(f"- **{v}**")
                 for where, ctx in out_nums[v][:1]:
