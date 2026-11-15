@@ -1,0 +1,83 @@
+{
+ "notes": "Round 59, second batch. HND and GMB refused on the settled rule: the agent itself marked both ownership_stated: false. Honduras names Banco Mercantil S.A. and Intermediaria Financiera S.A. of Grupo FICOHSA, and the Gambia names FBN Bank Gambia Limited, and no page opened states who owns any of them. GMB was one fetch from settling -- https://www.fbnbankgambia.com/about-us/ -- but the permission prompt for it went unanswered, so no further approval-needing calls were made. TO FILE GMB LATER: open that page; if it states the bank's parent or shareholders, re-run merge_links.py on agents/work/r59/rd_americas.json with --url-ok for the record's own source_url.",
+ "records": [
+  {
+   "iso3": "GIN",
+   "country": "Guinea",
+   "central_bank": "Banque Centrale de la République de Guinée",
+   "years": "2003-2021",
+   "people": "Karamo Kaba (16th Governor of the Banque Centrale de la République de Guinée since December 2021)",
+   "move": "from Economist Strategist and then Director of Economic Research at the asset manager Ecofi Investissements (2003-2021) to Governor of the Banque Centrale de la République de Guinée (December 2021)",
+   "summary": "A Rencontres Economiques speaker profile says that since December 2021 Karamo Kaba has been the 16th Governor of the Central Bank of the Republic of Guinea, and that from 2003 to 2021 he was Economist Strategist and then Director of Economic Research at Ecofi Investissements; it also lists earlier work as portfolio manager and financial analyst at ACOFI Gestion and as an economist at the agricultural cooperative union InVivo. Club Patrimoine describes Ecofi as a societe de gestion - an asset management company - and a subsidiary of the Credit Cooperatif group. Neither page gives Ecofi's head-office city, so none is recorded.",
+   "status": "career move, no finding",
+   "source_title": "Karamo Kaba, Governor, Central Bank of the Republic of Guinea (Les Rencontres Economiques d'Aix-en-Provence 2024)",
+   "source_url": "https://www.lesrencontreseconomiques.fr/2024/en/speakers/karamo-kaba/",
+   "weak_source": false,
+   "quote": "From 2003 to 2021, Economist Strategist then Director of Economic Research at ECOFI Investissements",
+   "parties": [
+    {
+     "party": "Ecofi Investissements",
+     "name_as_stated": "ECOFI Investissements",
+     "party_type": "company",
+     "hq_city": null,
+     "hq_iso3": "FRA",
+     "role": "employed an official before or after (revolving door)"
+    }
+   ],
+   "public_move": false,
+   "extra_sources": [
+    "https://www.clubpatrimoine.com/partenaires/ecofi"
+   ]
+  },
+  {
+   "iso3": "CUW",
+   "country": "Curaçao and Sint Maarten",
+   "central_bank": "Centrale Bank van Curaçao en Sint Maarten",
+   "years": "2019",
+   "people": "Bob Traa (President of the Centrale Bank van Curaçao en Sint Maarten with effect from 13 June 2019)",
+   "move": "from over 34 years at the International Monetary Fund to President of the Centrale Bank van Curaçao en Sint Maarten (13 June 2019)",
+   "summary": "A CBCS press release carried by the Curacao Chronicle says Bob Traa was appointed president with effect from 13 June 2019, as a temporary appointment by the Supervisory Board pending official appointment by Curacao and Sint Maarten, and that he had worked for the International Monetary Fund for over 34 years. No private employer is named.",
+   "status": "career move, no finding",
+   "source_title": "Appointment CBCS president Bob Traa (press release) (Curaçao Chronicle)",
+   "source_url": "https://www.curacaochronicle.com/post/main/appointment-cbcs-president-bob-traa-press-release",
+   "weak_source": false,
+   "quote": "Mr. Traa has worked for the International Monetary Fund (IMF) for over 34 years.",
+   "parties": [
+    {
+     "party": "International Monetary Fund",
+     "name_as_stated": "International Monetary Fund (IMF)",
+     "party_type": "international body",
+     "hq_city": null,
+     "hq_iso3": "USA",
+     "role": "employed an official before or after (revolving door)"
+    }
+   ],
+   "public_move": true
+  },
+  {
+   "iso3": "STP",
+   "country": "São Tomé and Príncipe",
+   "central_bank": "Banco Central de São Tomé e Príncipe",
+   "years": "2014-2022",
+   "people": "Américo d'Oliveira dos Ramos (Governor of the Banco Central de São Tomé e Príncipe, appointed by the Council of Ministers in early December 2022)",
+   "move": "from Minister of Finance in the government of Patrice Trovoada (2014-2018) to Governor of the Banco Central de São Tomé e Príncipe (December 2022)",
+   "summary": "Forbes Africa Lusofona reported on 3 December 2022 that the Council of Ministers replaced governor Americo Soares de Barros with Americo d'Oliveira dos Ramos, who had been Minister of Finance in Patrice Trovoada's government between 2014 and 2018. The report names no private employer.",
+   "status": "career move, no finding",
+   "source_title": "Banco Central de São Tomé e Príncipe tem novo governador (Forbes África Lusófona)",
+   "source_url": "https://forbesafricalusofona.com/?p=50560",
+   "weak_source": false,
+   "quote": "foi ministro das Finanças do Governo de Patrice Trovoada entre 2014 e 2018",
+   "parties": [
+    {
+     "party": "Ministry of Finance of São Tomé and Príncipe",
+     "name_as_stated": "ministro das Finanças",
+     "party_type": "other",
+     "hq_city": null,
+     "hq_iso3": "STP",
+     "role": "employed an official before or after (revolving door)"
+    }
+   ],
+   "public_move": true
+  }
+ ]
+}
