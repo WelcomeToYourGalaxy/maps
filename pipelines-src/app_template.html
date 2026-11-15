@@ -99,7 +99,18 @@ const PAL = {
   hell:      { r: ["#7a1f26", "#a3393c", "#c4615f", "#dc928c", "#efc4bd"], fo: 0.58, ln: "#f2dcd6", card: "rgba(22,9,11,.94)", edge: "#4a2226", ui: ["#8e3a3e", "#e8aaa4", "#14080a"] },
 };
 let P = PAL.satellite, curBase = "satellite";
-const kcol = (k) => (P.light ? KCOL_LIGHT : KCOL_DARK)[KI[k]] || "#aaa";
+/* marker colours per basemap: ten kinds (the last is the record layer), the record dots, and the thin edge drawn round each marker */
+const MK = {
+  satellite: { k: ["#9fcfbc", "#a9bde4", "#d79b97", "#c6b6da", "#efeae0", "#b4c69a", "#88bfd1", "#c9a99a", "#b4bcc6", "#ddd8cc"], rec: "#e4dfd2", edge: "#0b130d" },
+  night:     { k: ["#86c2b8", "#9db4e6", "#cf98a4", "#b6a7dc", "#e4eaf1", "#9dbb98", "#7fb2d4", "#c3a6a0", "#a8b3c3", "#b9c8da"], rec: "#b9c8da", edge: "#06101c" },
+  outlines:  { k: ["#8cc0b2", "#a3b5dc", "#cf9c9c", "#bcaed6", "#e8e9ea", "#a9bb98", "#86b4c8", "#c4aa9e", "#aab2bc", "#c9ced4"], rec: "#c9ced4", edge: "#0c1012" },
+  atlas:     { k: ["#2f6e5c", "#34507f", "#873a3a", "#5e4e7c", "#3a3530", "#4c5b39", "#2a6178", "#6a4b3d", "#4f5864", "#5a4e40"], rec: "#5a4e40", edge: "#f1e7d0" },
+  hell:      { k: ["#9cc2b4", "#a9b6d8", "#efb2a9", "#ccb7d8", "#f3e6e0", "#b8c39d", "#93b8c8", "#dbb3a2", "#c1bbbf", "#ead2cc"], rec: "#ead2cc", edge: "#14080a" },
+};
+const mkp = () => MK[curBase] || MK.satellite;
+const mk = (k) => mkp().k[KI[k]] || "#aaa";
+/* swatches in the panels sit on dark cards, so the ink colours of the Atlas map are shown with their Jurassic equivalents */
+const kcol = (k) => ((P.light ? MK.satellite : mkp()).k)[KI[k]] || "#aaa";
 const halo = () => P.light ? "#f3efe4" : "#05060c";
 
 /* ---------- state ---------- */
@@ -198,8 +209,9 @@ function addLayers() {
   map.addSource("caps", { type: "geojson", data: FC([]) });
   T({ id: "cap", type: "circle", source: "caps", paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 1, 1.6, 6, 3], "circle-color": ["get", "c"], "circle-opacity": 0.85, "circle-stroke-width": 0 } });
   map.addSource("schools", { type: "geojson", data: FC([]) });
-  T({ id: "sch-halo", type: "circle", source: "schools", paint: { "circle-radius": ["+", ["get", "r"], 3], "circle-color": ["get", "c"], "circle-opacity": 0.16, "circle-blur": 0.6 } });
-  T({ id: "sch", type: "circle", source: "schools", layout: { "circle-sort-key": ["-", 0, ["get", "r"]] }, paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 1, ["get", "r"], 6, ["*", 1.35, ["get", "r"]]], "circle-color": ["get", "c"], "circle-opacity": ["get", "o"], "circle-stroke-color": ["get", "h"], "circle-stroke-width": ["get", "sw"] } });
+  const RZ = (f) => ["interpolate", ["linear"], ["zoom"], 1, f(["get", "r"]), 6, f(["*", 1.35, ["get", "r"]])];
+  T({ id: "sch-halo", type: "circle", source: "schools", filter: ["==", ["get", "d"], 1], paint: { "circle-radius": RZ((r) => ["+", r, 2.6]), "circle-color": "rgba(0,0,0,0)", "circle-stroke-color": ["get", "c"], "circle-stroke-width": 0.8, "circle-stroke-opacity": ["*", ["get", "o"], 0.55], "circle-pitch-alignment": "map" } });
+  T({ id: "sch", type: "circle", source: "schools", layout: { "circle-sort-key": ["-", ["*", 100, ["get", "d"]], ["get", "r"]] }, paint: { "circle-radius": RZ((r) => r), "circle-color": ["get", "c"], "circle-opacity": ["get", "o"], "circle-stroke-color": ["get", "h"], "circle-stroke-width": ["get", "sw"], "circle-stroke-opacity": ["get", "o"], "circle-pitch-alignment": "map" } });
   const hover = (id, html) => { map.on("mousemove", id, (e) => { map.getCanvas().style.cursor = "pointer"; tip(html(e.features[0].properties, e), e.originalEvent.clientX, e.originalEvent.clientY); });
     map.on("mouseleave", id, () => { map.getCanvas().style.cursor = ""; tip(null); }); };
   hover("sch", (p) => { const s = SCH[p.i]; return "<b>" + esc(s.n) + "</b><br><span class=mute>" + esc(s.k === "rec" ? SUBT[s.t] : KINDS[KI[s.k]][1]) + " · " + esc(where(s)) + (s.y ? " · since " + s.y : "") + "<br>" + p.n + (p.n === 1 ? " office-holder" : " office-holders") + " under the current filters</span>"; });
@@ -241,7 +253,7 @@ function paint() {
     const foc = S.focus != null ? (S.focus === pr.si) : S.sel && S.sel[0] === "c" ? S.sel[1] === pr.iso : true;
     const pts = arc([s.lng, s.lat], [c.lng, c.lat]); if (!pts) return;
     const n = pr.p.size, w = Math.min(5, 0.5 + 0.8 * Math.log2(1 + n));
-    feats.push({ type: "Feature", properties: { si: pr.si, iso: pr.iso, n, c: kcol(s.k), w: foc ? w * 1.1 : w * 0.7, o: foc ? (S.focus != null || (S.sel && S.sel[0] === "c") ? 0.95 : 0.24) : 0.05 }, geometry: { type: "LineString", coordinates: pts } });
+    feats.push({ type: "Feature", properties: { si: pr.si, iso: pr.iso, n, c: mk(s.k), w: foc ? w * 1.1 : w * 0.7, o: foc ? (S.focus != null || (S.sel && S.sel[0] === "c") ? 0.95 : 0.24) : 0.05 }, geometry: { type: "LineString", coordinates: pts } });
   });
   map.getSource("arcs").setData(FC(feats));
   // capital dots where at least one line ends
@@ -249,7 +261,8 @@ function paint() {
   map.getSource("caps").setData(FC(caps));
   // schools
   map.getSource("schools").setData(FC(S.schools ? SCH.filter((s) => s.lat != null && schOK(s.i) && (s.k !== "rec" || AGG.sch[s.i].size)).map((s) => { const n = AGG.sch[s.i].size, on = S.focus == null || S.focus === s.i, rec = s.k === "rec";
-    return { type: "Feature", properties: { i: s.i, n, c: kcol(s.k), h: halo(), r: rec ? Math.min(9, 1.8 + 1.1 * Math.log2(1 + n)) : Math.min(15, 3.6 + 1.45 * Math.log2(1 + n)), o: on ? (rec ? 0.7 : 0.95) : 0.3, sw: S.focus === s.i ? 2.4 : rec ? 0.4 : 1.1 }, geometry: { type: "Point", coordinates: [s.lng, s.lat] } }; }) : []));
+    const m = mkp(), foc = S.focus === s.i;
+    return { type: "Feature", properties: { i: s.i, n, d: rec ? 0 : 1, c: rec && !foc ? m.rec : mk(s.k), h: m.edge, r: rec ? Math.min(5.5, 1.3 + 0.75 * Math.log2(1 + n)) : Math.min(11, 3.2 + 1.1 * Math.log2(1 + n)), o: on ? (rec ? (foc ? 0.95 : 0.5) : 0.95) : (rec ? 0.15 : 0.3), sw: foc ? 2 : rec ? 0 : 1 }, geometry: { type: "Point", coordinates: [s.lng, s.lat] } }; }) : []));
 }
 
 /* ---------- the key ---------- */
@@ -467,7 +480,7 @@ function openPattern(id) {
   const p = PAT_BY[id]; if (!p) return; recompute();
   const cs = Object.keys(AGG.cty).sort((a, b) => AGG.cty[b].all.size - AGG.cty[a].all.size);
   let h = '<div class="hp-k">Pattern behind the scenes</div><h3>' + esc(p.title) + '</h3><div class="bts">' + p.d.map((x) => '<p>' + esc(x) + '</p>').join("") + '</div>';
-  h += '<div class="imp-box"><b>Why it matters.</b> ' + esc(p.means) + '</div>';
+  h += '<div class="imp-box"><b>What this means for who governs.</b> ' + esc(p.means) + '</div>';
   h += '<div class="hp-h">Schools in this pattern</div><div class="chips">' + [...p.set].map((si) => '<span data-sch="' + si + '"><span class="sw dot" style="background:' + kcol(SCH[si].k) + '"></span>' + esc(SCH[si].n) + ' <span class="n">' + AGG.sch[si].size + '</span></span>').join("") + '</div>';
   h += '<div class="hp-h">Where their former students hold or held office</div><div class="chips">' + cs.slice(0, 50).map((iso) => '<span data-cty="' + iso + '">' + esc(CTY[iso] ? CTY[iso].n : iso) + ' <span class="n">' + AGG.cty[iso].all.size + '</span></span>').join("") + (cs.length > 50 ? '<span class="est">and ' + (cs.length - 50) + ' more</span>' : '') + '</div>';
   h += '<div class="sub">The map now shows only this pattern\'s schools. Click the pattern again to show everything.</div>' + srcList(p.src);

@@ -15,13 +15,15 @@ Coverage: Wikidata lists about 44,490 people in these national offices (after re
 ## Files
 - `seed.py` — the school list (id | kind | Wikipedia title).
 - `meta1.py`–`meta4.py` — each school's box: location, founding year, who is behind it, how people get in, the writeup, sources. Writeups state only what the cited pages support.
-- `patterns.py` — the ten patterns and five possible patterns (hedged claims, counted nowhere).
+- `patterns.py` — the ten patterns and five possible patterns (hedged claims, counted nowhere). The possible patterns say what would show them; the owner asked for the 'would be refuted' sentences to be removed. The patterns' `means` text is headed 'What this means for who governs.'
 - `meta5.py` — 14 schools added in the second build (officer academies, national defence colleges, École William Ponty, New Generation fellowships). `process.py` imports it as P10.
 - `about.py` — About and Method pages. Method placeholders (__NS__, __NR__, __NALL__, __NACC__ …) are filled by `build.py`.
 - `rec.py` — builds the record layer from `data/uni/`: every institution an office-holder attended, colleges rolled into their parent university, placed at its own coordinates or its parent's. Returns per-country totals (all holders, holders with a school).
 - `universe.py`, `universe2.py` — the pulls behind the record layer: all holders of every national position, their P69 education, institution details, labels (data/uni/, ~40 MB, only the small label and lookup files are committed).
 - `acc_0.py`–`acc_9.py` — the 198 country accounts: `d` paragraphs, `sch` documented school ids whose first source is added, `src` extra sources. `accounts.py` merges them; `build.py` reads it.
 - `digest.py`, `view.py`, `who.py` — helpers used while writing the accounts (per-country digests of who studied where; lookups against the built page).
+- `tools/plate.py` — repaints the Atlas cartouche to read PIPELINE MAP (Cinzel, `tools/Cinzel.ttf`, OFL) from `../secret-society-src/plate.webp` into `data/plate.webp`, which `build.py` inlines.
+- Markers: `MK` in `app_template.html` gives each basemap its own muted marker palette (ten kinds, the record dots, and the edge colour). Documented schools are solid dots with a thin edge and a fine outer ring; record schools are small plain dots drawn beneath them. Panel swatches use the Jurassic palette when the Atlas (light) basemap is on, since the cards stay dark.
 - `data/rec_snapshot.json` — processed snapshot of the record layer; `build.py` uses it when `data/uni/` raw pulls are absent.
 - `app_template.html` — the app. `base.css` is the infiltration map's CSS.
 - `data/records.json` — processed snapshot of the Wikidata pulls: [person QID, school id, via, list URLs, offices]. `build.py` uses it when `data/alumni/` is absent.
