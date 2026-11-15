@@ -2135,6 +2135,19 @@ const RX_IDENT  = /^identifier (for|of|in)\b|\bauthority control\b/i;
 const RX_PLACECLS = /^(administrative territorial entity|constituency|electoral district|territorial entity)\b/i;
 const RX_NOTPOST = /\boffices held over time\b|\blist of (holders|office ?holders)\b|\bhead of a municipality or city in\b/i;
 const RX_NOTPOST_LBL = /^(mayor|councillor|member|head) of an? (place|municipality|city|town|village)\b/i;
+/* A sitting of a legislature is not a legislature.
+
+   Searching Sierra Madre returned "California State Legislature,
+   2027–2028 session" and "California State Legislature, 2025–26
+   session" beside the Legislature itself. Wikidata keeps an item per
+   session so it can record who sat in each one; each carries the
+   legislature's own classes, so the classifier read three chambers
+   where there is one. The 2027 session has not met. Writing to it is
+   writing to a date.
+
+   The same shape covers an ordinal sitting ("119th United States
+   Congress", "10th Oklahoma Legislature") and a Roman-numbered one. */
+const RX_SESSION = /,\s*(the\s+)?\d{4}\s*[\u2013\u2014-]?\s*\d{0,4}\s*(session|term|legislature|legislative session)\s*$|,\s*\d{4}\s*[\u2013\u2014-]\s*\d{2,4}\s*$|^\d{1,3}(st|nd|rd|th)\s+[\w\s]*\b(legislature|legislative assembly|congress|parliament|assembly|senate|duma|session)\b|^[IVXL]{1,6}\s+(legislature|legislatura|legislature of|congress)\b|\b(session|term)\s+of\s+the\s+\d{4}/i;
 const RX_DOC_CLS = /\b(act of|decision of|ruling|judg(e)?ment|court case|legal case|legislation|statute|amendment to|bill|constitution|treaty|election|referendum|plebiscite|ordinance|resolution|proclamation|case law|doctrine|protocol|convention|accord|executive order|list article)\b/i;
 
 /* Records that are not offices at all */
@@ -3543,6 +3556,7 @@ function classifyRows(core, items){
     if(RX_INSTR.test(dsc) || RX_INSTR_LBL.test(label) || RX_NOTPOST.test(dsc) || RX_NOTPOST_LBL.test(label)) return;
     if(RX_WDPROP.test(cls) || RX_IDENT.test(dsc)) return;
     if(m.classes.some(c=>RX_PLACECLS.test(String(c)))) return;
+    if(RX_SESSION.test(label)) return;
     const c=classifyOffice(label,m.classes);
     if(c.br==='other' && RX_DOC.test(label)) return;
     const o={id:qid(m.row.item.value), label:officeLabel(label), cls:m.classes[0]||'',
@@ -5207,9 +5221,18 @@ const NDSAY={ members:'where this parliament lists its members',
    and where its committees take submissions. The office's own record
    rarely carries any of it. Skipped when the office's own address is
    already that address, which it is for the chamber itself. */
+/* Which methods this government's own address belongs under. Writing,
+   ringing, posting, visiting and speaking at its meeting all happen at
+   the address it publishes, and so does a petition for a rule or a
+   submission to its committee. Deep canvassing happens at a door, an
+   op-ed at a newspaper, a case in a court, a retainer at a firm — the
+   town hall's telephone number under any of those is an answer to a
+   question nobody asked, and it used to print under all of them. */
+const LEVFAM={'Direct contact':1, 'Formal process':1};
 function levelRows(rt, o){
   const out=[];
   if(!o) return out;
+  if(!rt || !LEVFAM[rt.fam]) return out;
   const lv=lvlOf(o);
   if(lv==null || lv===0) return out;
   const place=STACK[lv] ? STACK[lv].label : 'this level';
@@ -5780,21 +5803,33 @@ const MUNI_SHARDS=512;
 let MUNI_CACHE={}, MUNI_WANT={}, MUNI_IDX=null;
 /* Which countries have a register cut into the shards. Without this
    every place on Earth fetched a shard to find nothing in it. */
-async function muniIdx(){
+/* The promise is what is kept, not the answer. Every level of a chain
+   asks for this at once; when the answer was kept, the first caller
+   stored an empty placeholder before its fetch returned and the other
+   callers read it as "this country has no register", so only one level
+   of any chain was ever looked up. Keeping the promise makes the
+   others wait for the one fetch. */
+function muniIdx(){
   if(MUNI_IDX) return MUNI_IDX;
-  MUNI_IDX={countries:[]};
-  try{
-    const r=await fetch('muni/index.json');
-    if(r.ok) MUNI_IDX=await r.json();
-  }catch(e){ console.warn('municipal register index', e); }
+  MUNI_IDX = fetch('muni/index.json')
+    .then(r => r.ok ? r.json() : {countries:[]})
+    .catch(e => { console.warn('municipal register index', e); return {countries:[]}; });
   return MUNI_IDX;
 }
 async function loadMuni(q){
-  if(!q || MUNI_WANT[q]) return;
-  MUNI_WANT[q]=1;
+  if(!q) return;
   const idx=await muniIdx();
   const iso=(STACK[0] && STACK[0].iso3) || '';
-  if(!idx.countries || idx.countries.indexOf(iso)<0) return;
+  if(!idx.countries || !iso || idx.countries.indexOf(iso)<0) return;
+  /* Claimed only once the country is known to have a register. The flag
+     used to be set on the way in, and a chain is built a level at a
+     time: the first call for a level can land before STACK[0].iso3 is
+     filled, which read as "this country has no register" and left the
+     flag set, so the call that came with the country in hand did
+     nothing. Grenoble kept Wikidata's number and lost the register's
+     email, address and directory page. */
+  if(MUNI_WANT[q]) return;
+  MUNI_WANT[q]=1;
   const n=parseInt(String(q).slice(1),10);
   if(!isFinite(n)) return;
   const k=n%MUNI_SHARDS;
@@ -6780,6 +6815,16 @@ async function loadChainPins(){
      now; Wikidata's query service takes five at once per address. */
   const levels = STACK.map((s,i)=>({q:s.q, i:i})).filter(x=>x.q && !STACK[x.i].nolaw).reverse();
   const gen=++CHAIN_GEN;
+  /* The country's register of its own municipalities, for every level of
+     this chain. It used to be asked for inside loadLevelPins, after that
+     level's office query, which meant it never ran for a level whose
+     offices had already been fetched once (CHAIN_DONE) or whose chain
+     had been superseded (CHAIN_GEN) — so a commune opened after its
+     country got no register entry at all. It depends on nothing but the
+     id, so it is asked for here, for every level, including the ones
+     that make no rules: a mairie has an address whether or not it
+     passes anything. */
+  STACK.forEach(s=>{ if(s && s.q) loadMuni(s.q); });
   await Promise.all(levels.map(lv=>loadLevelPins(lv, gen)));
 }
 async function loadLevelPins(lv, gen){
@@ -6790,7 +6835,6 @@ async function loadLevelPins(lv, gen){
     try{ core = await sparql(qCore(lv.q), 'core:'+lv.q); }catch(e){ console.warn('core query failed', lv.q, e); }
     if(gen!==CHAIN_GEN) return;
     if(core.length){ keepSelf(lv.q, core); addChainOffices(classifyRows(core, []), lv); }
-    loadMuni(lv.q);
     try{ items = await sparql(qJuris(lv.q), 'juris:'+lv.q); }catch(e){ console.warn('jurisdiction query failed', lv.q, e); }
     if(gen!==CHAIN_GEN) return;
     const bk = classifyRows(core, items);
