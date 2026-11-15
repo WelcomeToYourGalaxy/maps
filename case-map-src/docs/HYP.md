@@ -100,7 +100,7 @@ crescendo sentences, no manufactured significance. Spell out every connection a 
 `entryPts()` flies to the case points when there are any, otherwise to the cases in the countries
 named.
 
-## The twenty-one that are there now (round 28)
+## The twenty-seven that are there now (rounds 28 and 29)
 
 | id | Title | Built on |
 | --- | --- | --- |
@@ -125,9 +125,14 @@ named.
 | `seed-laws-for-seed-companies` | Seed laws pushed on poor countries that restrict farmers' own seed | Enabling the Business of Agriculture; CAFOD on World Bank seed conditions; Oakland Institute |
 | `pension-funds-buy-up-farmland` | Pension funds and university endowments behind land grabs | Harvard endowment and TIAA farms in Matopiba (GRAIN, Rede Social) |
 | `development-money-through-tax-havens` | Development money that flows through tax havens | Oxfam 2016 on IFC clients in sub-Saharan Africa |
+| `vulture-funds` | Hedge funds that buy poor countries' debt cheap and sue for the full price | ARA Libertad held in Ghana 2012 and Argentina's 2016 payout; Donegal v Zambia; UN count of 54 suits; Hamilton Reserve v Sri Lanka |
+| `bondholders-block-debt-relief` | Big investment funds that refuse debt relief and profit from the crisis | Zambia's 2020 default and BlackRock; one private creditor in the G20 suspension; Debt Justice on five countries |
+| `banks-that-bank-the-looters` | Western banks that knowingly hold money stolen from poor countries | Riggs Bank and Equatorial Guinea; FSA on Abacha's money in 23 London banks; FinCEN Files |
+| `private-equity-with-development-money` | Development money handed to private equity and for-profit hospitals | Abraaj collapse and US charges; Oxfam's Sick Development |
+| `ratings-that-punish-relief` | Credit ratings that punish poor countries for seeking debt relief | Ethiopia's 2021 downgrades; UNDP $74.5bn; S&P and Moody's mortgage-ratings settlements |
+| `debt-for-nature-deals` | Debt-for-nature deals that hand oceans and forests to foreign financiers | Ecuador's Galápagos swap and the IDB complaint; Belize's 2021 superbond deal; Barclays note |
 
-Directions that fit the standard and are not yet written: debt-for-nature swaps with unpublished
-terms; vulture-fund lobbying; the US and European hold on the two top jobs. The 1974 US-Saudi
+Directions that fit the standard and are not yet written: vulture-fund lobbying in Washington; the US and European hold on the two top jobs. The 1974 US-Saudi
 petrodollar arrangement was considered in round 28 and left out as too far from aid and lending.
 
 ## The 15 Nov 2026 check
@@ -165,3 +170,15 @@ none failed. Log: `rounds/r28_hyps_check.json`; draft `rounds/r28_hyps_draft.jso
 Weakest after fixes: `spying-at-the-negotiating-table` (paragraph 3 is a single sentence; a third
 documented case would strengthen it) and `pension-funds-buy-up-farmland` (rests largely on GRAIN,
 Rede Social and Chain Reaction Research; the Incra finding is preliminary).
+
+## The round 29 check (shadow banks)
+
+Round 29 added six on the owner's request for shadow banking: hedge funds (vulture funds), asset
+managers (bondholders and debt relief), private equity (Abraaj and for-profit hospitals), the banks
+that hold looted money, rating agencies, and debt-for-nature swaps arranged through offshore vehicles.
+Two checkers, 31 fixes, none failed. Log `rounds/r29_hyps_check.json`; data `rounds/r29_hyps_final.json`.
+Classes caught: a figure credited to the wrong study (the 62.5% African downgrade share is Fofack's, not
+UNDP's); a caveat written as the companies' own statement when it was the journalists' (FinCEN Files);
+a wire service credited for another's story (Bloomberg, not Reuters, on Abraaj); "up to" for "more
+than"; a defence attributed to "the funds" when only BlackRock said it. Unresolved: whether Arif Naqvi
+has been extradited or tried since March 2023.

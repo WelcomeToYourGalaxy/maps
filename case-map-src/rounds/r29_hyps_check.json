@@ -1,0 +1,380 @@
+{
+ "vulture-funds": {
+  "verdict": "fixes",
+  "fixes": [
+   {
+    "field": "story[2]",
+    "find": "54 lawsuits had been brought against 12 heavily indebted poor countries between 1998 and 2008, many by funds that had bought the debt cheaply",
+    "replace": "54 court cases had been brought by commercial creditors against 12 heavily indebted poor countries between 1998 and 2008",
+    "why": "The report (A/HRC/14/21, para 9) attributes the 54 cases to 'commercial creditors'; it does not say many were brought by funds that bought the debt cheaply. Listed Scribd copy does not show the passage; text verified at https://right-docs.org/doc/a-hrc-14-21"
+   }
+  ],
+  "add_sources": [
+   {
+    "title": "Report of the independent expert on foreign debt and human rights (A/HRC/14/21)",
+    "publisher": "UN Human Rights Council (via Right-Docs)",
+    "year": 2010,
+    "url": "https://right-docs.org/doc/a-hrc-14-21"
+   },
+   {
+    "title": "Bondholder sues Sri Lanka in US court",
+    "publisher": "Al Jazeera (Bloomberg)",
+    "year": 2022,
+    "url": "https://www.aljazeera.com/economy/2022/6/22/bondholder-sues-sri-lanka-in-us-court"
+   },
+   {
+    "title": "Debt justice prevails at the Belgian Constitutional Court: vulture funds law survives challenge by NML Capital",
+    "publisher": "Eurodad",
+    "year": 2018,
+    "url": "https://www.eurodad.org/vulture-funds-blog"
+   },
+   {
+    "title": "New York lawmakers revive bill to curb distressed sovereign debt lawsuits",
+    "publisher": "Insurance Journal (Bloomberg)",
+    "year": 2026,
+    "url": "https://www.insurancejournal.com/news/east/2026/04/22/866818.htm"
+   }
+  ],
+  "remove_sources": [
+   "https://es.scribd.com/document/238273969/Leer-Fondos-Buitres-Onu"
+  ]
+ },
+ "bondholders-block-debt-relief": {
+  "verdict": "fixes",
+  "fixes": [
+   {
+    "field": "story[0]",
+    "find": "BlackRock disputed this and said it was likely to make losses on bonds held to maturity",
+    "replace": "BlackRock disputed this and said it was likely to make losses when its bonds matured",
+    "why": "Irish Times reports BlackRock said it was likely to make losses when its bondholdings mature; 'held to maturity' is not in the source. https://www.irishtimes.com/world/africa/2022/09/16/lenders-urged-to-write-off-debt-for-crisis-stricken-zambia-amid-concern-over-economic-collapse"
+   },
+   {
+    "field": "story[1]",
+    "find": "and asked private lenders to join on comparable terms",
+    "replace": "and encouraged private lenders to join",
+    "why": "World Bank Q&A says the World Bank, IMF and G20 'encouraged private creditors' participation'; no 'comparable terms' wording there. https://www.worldbank.org/en/topic/debt/brief/debt-service-suspension-initiative-qas"
+   },
+   {
+    "field": "story[1]",
+    "find": "Countries kept paying their bondholders and commercial banks while their payments to governments were paused.",
+    "replace": "In 2020 no payments to private lenders were suspended under the scheme, while payments to governments were.",
+    "why": "Not in the World Bank source, and not true of every country (Zambia defaulted). Debt Justice, Feb 2021: no payments were suspended to private lenders in 2020. https://debtjustice.org.uk/press-release/uk-companies-driving-debt-crises-in-poor-countries"
+   },
+   {
+    "field": "story[2]",
+    "find": "Most bonds of poor countries are governed by English or New York law, and Britain already passed a law in 2010 forcing private lenders to accept an earlier debt relief scheme in its courts; campaigners have asked for it to be extended.",
+    "replace": "The five countries' bonds are governed by English law (57 per cent) or New York law (43 per cent). Britain passed a law in 2010 that stops creditors claiming more in its courts than an earlier debt relief scheme allowed; campaigners have asked for it to be updated to cover current relief.",
+    "why": "No source for 'most bonds of poor countries'; Debt Justice (25 April 2023) gives the 57/43 split for these five countries and describes the 2010 Act and the call to update it. https://debtjustice.org.uk/news/bondholders-could-make-30-billion-profit-by-refusing-to-cancel-debts"
+   },
+   {
+    "field": "story[2]",
+    "find": "The funds say they have a duty to their own clients, many of them pension savers, and that cutting debt too far would raise future borrowing costs for the same countries.",
+    "replace": "BlackRock says it has a duty to its own clients, many of them saving for retirement, and cannot forgive sovereign debt on its own.",
+    "why": "Only BlackRock's response is reported (Guardian via inkl); no source found for the claim about future borrowing costs, so it is cut. https://inkl.com/news/finance-companies-may-make-30bn-by-delaying-debt-relief-for-five-countries"
+   }
+  ],
+  "add_sources": [
+   {
+    "title": "On Zambia, health, and public debt: alternatives to austerity",
+    "publisher": "Amnesty International",
+    "year": 2023,
+    "url": "https://www.amnesty.org/en/latest/campaigns/2023/06/on-zambia-health-and-public-debt-alternatives-to-austerity/"
+   },
+   {
+    "title": "UK companies driving debt crises in poor countries",
+    "publisher": "Debt Justice (Jubilee Debt Campaign)",
+    "year": 2021,
+    "url": "https://debtjustice.org.uk/press-release/uk-companies-driving-debt-crises-in-poor-countries"
+   },
+   {
+    "title": "Bondholders could make $30 billion profit by refusing to cancel debts",
+    "publisher": "Debt Justice",
+    "year": 2023,
+    "url": "https://debtjustice.org.uk/news/bondholders-could-make-30-billion-profit-by-refusing-to-cancel-debts"
+   }
+  ],
+  "remove_sources": []
+ },
+ "banks-that-bank-the-looters": {
+  "verdict": "fixes",
+  "fixes": [
+   {
+    "field": "story[0]",
+    "find": "Riggs Bank, a bank a few blocks from the White House that had handled the accounts of foreign embassies for decades",
+    "replace": "Riggs Bank, a Washington bank that held accounts for more than 95 per cent of the foreign embassies in the city",
+    "why": "No source given for 'a few blocks from the White House' or 'for decades'; the Senate report says Riggs administered accounts for more than 95% of foreign missions and embassies in the Washington area. https://www.hsgac.senate.gov/wp-content/uploads/imo/media/doc/REPORT-Money%20Laundering%20&%20Foreign%20Corruption%20(July%202004).pdf"
+   },
+   {
+    "field": "story[0]",
+    "find": "From 1995 Riggs held up to 60 accounts",
+    "replace": "From 1995 Riggs held more than 60 accounts",
+    "why": "Senate report and Washington Post: 'more than 60 accounts'. Senate report URL above; https://journal.probeinternational.org/2004/07/15/bank-big-oil-tied-african-payments/"
+   },
+   {
+    "field": "story[0]",
+    "find": "for the president and his son,",
+    "replace": "for the president and his sons,",
+    "why": "Senate report: shell offshore corporations 'for the E.G. President and his sons'."
+   },
+   {
+    "field": "story[2]",
+    "find": "Filing a report satisfies the law; it does not require the bank to stop the payment. The banks said the reports are not evidence of wrongdoing, and the Treasury condemned the leak.",
+    "replace": "Banks can stop a suspicious payment but often are not required to; filing a report is often enough. A report is not in itself evidence of wrongdoing; the banks denied systematic wrongdoing, and FinCEN, the Treasury agency that receives the reports, condemned the leak.",
+    "why": "ICIJ says banks 'often don't have to' do more than file a report (not that filing always satisfies the law); the 'not evidence' point is ICIJ's, while the banks denied systematic wrongdoing; FinCEN condemned the leak. https://www.icij.org/investigations/fincen-files/about-the-fincen-files-investigation/"
+   }
+  ],
+  "add_sources": [
+   {
+    "title": "Money Laundering and Foreign Corruption: Enforcement and Effectiveness of the Patriot Act, Case Study Involving Riggs Bank",
+    "publisher": "US Senate Permanent Subcommittee on Investigations",
+    "year": 2004,
+    "url": "https://www.hsgac.senate.gov/wp-content/uploads/imo/media/doc/REPORT-Money%20Laundering%20&%20Foreign%20Corruption%20(July%202004).pdf"
+   },
+   {
+    "title": "Global banks defy U.S. crackdowns by serving oligarchs, criminals and terrorists",
+    "publisher": "ICIJ",
+    "year": 2020,
+    "url": "https://www.icij.org/investigations/fincen-files/global-banks-defy-u-s-crackdowns-by-serving-oligarchs-criminals-and-terrorists/"
+   }
+  ],
+  "remove_sources": [
+   "https://globalwitness.org/en/archive/us-must-act-now-corruption-allegations-centred-equatorial-guineas-oil-accounts",
+   "https://www.icij.org/?p=17668"
+  ]
+ },
+ "private-equity-with-development-money": {
+  "verdict": "fixes",
+  "fixes": [
+   {
+    "field": "story[0]",
+    "find": "was a regular at Davos speaking about ending poverty through investment",
+    "replace": "had sat on a Davos panel with Bill Gates",
+    "why": "Sources do not support 'a regular at Davos speaking about ending poverty'; PitchBook says Naqvi served on a World Economic Forum panel in Davos with Bill Gates. https://pitchbook.com/news/articles/how-a-private-equity-powerhouse-went-bust"
+   },
+   {
+    "field": "story[0]",
+    "find": "in what Reuters called the world's biggest private equity insolvency",
+    "replace": "in what Bloomberg called the world's biggest private-equity insolvency",
+    "why": "The listed article on The Star is a Bloomberg story (ends '- Bloomberg'), not Reuters. https://www.thestar.com.my/business/business-news/2019/04/24/abraaj-ceo-charged-with-fraud-in-us-after-firms-collapse"
+   },
+   {
+    "field": "story[0]",
+    "find": "with defrauding investors, including the Gates Foundation, and two former partners pleaded guilty",
+    "replace": "with defrauding investors, and two former partners pleaded guilty",
+    "why": "Charging reports name the Gates Foundation only as one of the investors that commissioned the audit, not as a named fraud victim. https://www.bnnbloomberg.ca/three-abraaj-executives-charged-in-u-s-fraud-investigation-1.1273067 ; guilty pleas of Abdel-Wadood and Vettivetpillai: https://www.geo.tv/latest/368725-two-abraaj-partners-accepted-criminal-charges-to-help-us-get-arif-naqvi"
+   },
+   {
+    "field": "story[0]",
+    "find": "A British judge approved Naqvi's extradition in 2021; he denies the charges.",
+    "replace": "A British judge approved Naqvi's extradition in 2021, and in March 2023 the High Court refused his last challenge; he denies the charges.",
+    "why": "Update: Naqvi lost his final UK challenge on 8-9 March 2023 (Dawn/Reuters). I could not find any reliable report of his extradition, arraignment or trial in the US since then, so no later status is stated. https://www.dawn.com/news/1741195/arif-naqvi-loses-final-appeal-against-extradition-to-us"
+   },
+   {
+    "field": "story[1]",
+    "find": "Where the money did reach hospitals, the record is uneasy.",
+    "replace": "Oxfam looked at where the money reached hospitals.",
+    "why": "Editorial characterisation ('the record is uneasy') rather than fact; replaced with a plain lead-in."
+   },
+   {
+    "field": "story[1]",
+    "find": "for more than two years",
+    "replace": "for two years",
+    "why": "Oxfam (via Bond) says the body was locked in the morgue 'for two years'; the report says bodies were held 'for up to two years'. https://www.bond.org.uk/news/2023/07/sick-development-how-funding-to-for-profit-healthcare-by-development-finance-institutions-is-causing-harm-and-should-be-stopped/"
+   },
+   {
+    "field": "story[2]",
+    "find": "the chain's owner said emergency patients are always treated whatever they can pay",
+    "replace": "TPG, a shareholder in the chain, told Oxfam that patients are always treated in an emergency whatever their finances",
+    "why": "Oxfam's report attributes this reply to TPG, described as a shareholder of CARE Hospitals, not 'the chain's owner' (Blackstone took a controlling stake). https://www.medbox.org/index.php/dl/64d217a98dc672025f060eb6"
+   },
+   {
+    "field": "story[2]",
+    "find": "The lenders say private investment fills gaps that governments cannot.",
+    "replace": "The IFC told the Guardian that private providers can add to health systems' capacity.",
+    "why": "No source for the original wording; the IFC's reply to Oxfam in the Guardian said private-sector innovation can 'augment health systems' capacity'. https://inkl.com/news/uk-aid-should-not-fund-private-hospitals-in-developing-countries-says-oxfam"
+   }
+  ],
+  "add_sources": [
+   {
+    "title": "Abraaj CEO charged with fraud in US after firm's collapse",
+    "publisher": "Bloomberg via The Star",
+    "year": 2019,
+    "url": "https://www.thestar.com.my/business/business-news/2019/04/24/abraaj-ceo-charged-with-fraud-in-us-after-firms-collapse"
+   },
+   {
+    "title": "Three Abraaj executives charged in US fraud investigation",
+    "publisher": "BNN Bloomberg",
+    "year": 2019,
+    "url": "https://www.bnnbloomberg.ca/three-abraaj-executives-charged-in-u-s-fraud-investigation-1.1273067"
+   },
+   {
+    "title": "Two Abraaj partners accepted criminal charges to help US get Arif Naqvi",
+    "publisher": "Geo News",
+    "year": 2021,
+    "url": "https://www.geo.tv/latest/368725-two-abraaj-partners-accepted-criminal-charges-to-help-us-get-arif-naqvi"
+   },
+   {
+    "title": "Arif Naqvi loses final appeal against extradition to US",
+    "publisher": "Dawn (Reuters)",
+    "year": 2023,
+    "url": "https://www.dawn.com/news/1741195/arif-naqvi-loses-final-appeal-against-extradition-to-us"
+   },
+   {
+    "title": "UK aid should not fund private hospitals in developing countries, says Oxfam",
+    "publisher": "The Guardian via inkl",
+    "year": 2023,
+    "url": "https://inkl.com/news/uk-aid-should-not-fund-private-hospitals-in-developing-countries-says-oxfam"
+   }
+  ],
+  "remove_sources": [
+   "https://www.thestar.com.my/business/business-news/2019/04/24/abraaj-ceo-charged-with-fraud-in-us-after-firms-collapse"
+  ]
+ },
+ "ratings-that-punish-relief": {
+  "verdict": "fixes",
+  "fixes": [
+   {
+    "field": "story[0]",
+    "find": "The next week Fitch cut Ethiopia's rating from B to CCC",
+    "replace": "On 9 February Fitch cut Ethiopia's rating from B to CCC",
+    "why": "Fitch's downgrade was on 9 February 2021, eleven days after the 29 January announcement, not 'the next week'. https://au.int/en/pressreleases/20210211/statement-african-peer-review-mechanism-downgrade-ethiopia-fitch"
+   },
+   {
+    "field": "story[0]",
+    "find": "Three firms, S&P, Moody's and Fitch, rate more than 90 per cent of the world's debt.",
+    "replace": "Three firms, S&P, Moody's and Fitch, issue more than 90 per cent of outstanding credit ratings.",
+    "why": "Source (Ghosh) says the three 'control more than 94 per cent of outstanding credit ratings', not of the world's debt. Full text: https://www.ips-journal.eu/topics/economy-and-ecology/how-credit-rating-agencies-could-derail-the-economic-recovery-5053/"
+   },
+   {
+    "field": "story[1]",
+    "find": "In the first months of the pandemic, it found, the three agencies downgraded up to 62.5 per cent of rated African countries, against a global average of 31.8 per cent.",
+    "replace": "Hippolyte Fofack, chief economist of the African Export-Import Bank, wrote in 2021 that more than half of rated African countries were downgraded in 2020, against a global average of 31.8 per cent.",
+    "why": "The 62.5% / 31.8% figures come from Fofack (Afreximbank), not from the UNDP study; 62.5% includes early-2021 downgrades. https://www.thereporterethiopia.com/11842/"
+   },
+   {
+    "field": "story[1]",
+    "find": "rather than conscious bias, and the agencies say they apply the same methods everywhere.",
+    "replace": "rather than conscious bias, and its study found the agencies use similar methods worldwide.",
+    "why": "No source found for the agencies saying this; TRT Afrika reports the UNDP study ruled out bias because similar methodology is applied worldwide. https://www.trtafrika.com/english/article/18205493 ; UNDP wording: https://www.undp.org/press-releases/more-objective-credit-ratings-could-save-billions-african-countries-development"
+   },
+   {
+    "field": "story[2]",
+    "find": "The agencies' own record shows how ratings can bend.",
+    "replace": "The two largest agencies have paid to settle claims over inflated ratings.",
+    "why": "Rhetorical line replaced with a plain statement."
+   },
+   {
+    "field": "story[2]",
+    "find": "Connecticut's attorney general said Moody's ratings had been shaped by the demands",
+    "replace": "Connecticut's attorney general said the states had alleged that Moody's ratings were influenced by the demands",
+    "why": "The attorney general framed this as an allegation ('We alleged that...'), not a finding. https://portal.ct.gov/AG/Press-Releases-Archived/2017-Press-Releases/Attorney-General-Jepsen-Leads-Multistate-Coalition-in-863M-StateFederal-Settlement-with-Moodys"
+   },
+   {
+    "field": "story[2]",
+    "find": "has called for an African rating agency to give a second opinion.",
+    "replace": "has called for Africa to have its own credit rating agency.",
+    "why": "The listed Mail & Guardian link is the site homepage and does not support the claim; African Business reports Adesina called for an African ratings agency but not 'a second opinion'. https://african.business/2024/06/economy/afdbs-adesina-calls-for-african-credit-ratings-agency"
+   },
+   {
+    "field": "countries[1].note",
+    "find": "Lost investment grade during the pandemic, per UNDP.",
+    "replace": "Downgraded to junk in 2020, during the pandemic.",
+    "why": "Not found in the UNDP sources; Fofack (Afreximbank) cites 2020 downgrades of South Africa and Morocco to junk. https://www.thereporterethiopia.com/11842/"
+   },
+   {
+    "field": "countries[2].note",
+    "find": "Lost investment grade during the pandemic, per UNDP.",
+    "replace": "Downgraded to junk in 2020, during the pandemic.",
+    "why": "Not found in the UNDP sources; Fofack (Afreximbank) cites 2020 downgrades of South Africa and Morocco to junk. https://www.thereporterethiopia.com/11842/"
+   }
+  ],
+  "add_sources": [
+   {
+    "title": "Statement of the African Peer Review Mechanism on the downgrade of Ethiopia by Fitch",
+    "publisher": "African Union",
+    "year": 2021,
+    "url": "https://au.int/en/pressreleases/20210211/statement-african-peer-review-mechanism-downgrade-ethiopia-fitch"
+   },
+   {
+    "title": "How credit rating agencies could derail the economic recovery (Jayati Ghosh, full text)",
+    "publisher": "IPS Journal",
+    "year": 2021,
+    "url": "https://www.ips-journal.eu/topics/economy-and-ecology/how-credit-rating-agencies-could-derail-the-economic-recovery-5053/"
+   },
+   {
+    "title": "Lowering the Costs of Development Finance in Africa (policy brief)",
+    "publisher": "UNDP",
+    "year": 2023,
+    "url": "https://global-prod.acquia.undp.org/sites/g/files/zskgke326/files/2023-04/Policy%20Brief%20-%20Lowering%20the%20Costs%20of%20Development%20Finance%20in%20Africa%20-%20UNDP%20April%202023.pdf"
+   },
+   {
+    "title": "Downgrading Africa's Development (Hippolyte Fofack)",
+    "publisher": "The Reporter Ethiopia (Project Syndicate)",
+    "year": 2021,
+    "url": "https://www.thereporterethiopia.com/11842/"
+   },
+   {
+    "title": "AfDB's Adesina calls for African credit ratings agency",
+    "publisher": "African Business",
+    "year": 2024,
+    "url": "https://african.business/2024/06/economy/afdbs-adesina-calls-for-african-credit-ratings-agency"
+   },
+   {
+    "title": "Moody's pays $864 million to U.S., states over pre-crisis ratings",
+    "publisher": "Business Standard (Reuters)",
+    "year": 2017,
+    "url": "https://www.business-standard.com/article/reuters/moody-s-pays-864-million-to-u-s-states-over-pre-crisis-ratings-117011400158_1.html"
+   },
+   {
+    "title": "S&P to pay nearly $1.4B to resolve allegations it inflated ratings of mortgage securities",
+    "publisher": "ABA Journal",
+    "year": 2015,
+    "url": "https://www.abajournal.com/news/article/ratings_agency_to_pay_nearly_1.4b_to_resolve_allegations_it_inflated_rating"
+   }
+  ],
+  "remove_sources": [
+   "https://mg.co.za/?p=642865",
+   "https://www.african-markets.com/en/news/east-africa/ethiopia/moody-s-places-ethiopia-s-b2-ratings-on-review-for-downgrade"
+  ]
+ },
+ "debt-for-nature-deals": {
+  "verdict": "fixes",
+  "fixes": [
+   {
+    "field": "conviction",
+    "find": "Ecuador's and Belize's swaps were arranged by Credit Suisse through offshore vehicles with binding conservation terms and private seats on the funds;",
+    "replace": "Ecuador's and Belize's swaps were funded by bonds Credit Suisse arranged, with binding conservation terms, and private members hold six of eleven seats on Ecuador's Galápagos fund;",
+    "why": "Sources show an Irish vehicle and private board majority for Ecuador only; nothing found on offshore vehicles or private seats for Belize. https://www.latindadd.org/2023/05/25/galapagos-deal-an-ignominious-legacy/ ; https://www.greenfinanceinstitute.com/?p=7581"
+   },
+   {
+    "field": "story[0]",
+    "find": "the finance ministry did not release the deal's financial documents.",
+    "replace": "the finance ministry did not provide all the financial documents a local rights group requested.",
+    "why": "CDES says the ministry 'did not provide all the requested documentation', not that it released nothing. https://www.cffacape.org/publications-blog/galapagos-debt-swap-these-deals-are-being-used-to-privatize-the-management-of-strategic-areas-without-the-consent-of-those-who-inhabit-these-territories"
+   },
+   {
+    "field": "story[1]",
+    "find": ", and the government welcomed the deal.",
+    "replace": ".",
+    "why": "No listed source quotes the Belize government welcoming the deal (IMF and GFI pages checked)."
+   },
+   {
+    "field": "story[3]",
+    "find": "Ecuador's Galápagos papers were requested under freedom-of-information law and not released.",
+    "replace": "Ecuador's Galápagos papers were requested under freedom-of-information law and not all were released.",
+    "why": "CDES says the ministry did not provide all the requested documents. https://www.cffacape.org/publications-blog/galapagos-debt-swap-these-deals-are-being-used-to-privatize-the-management-of-strategic-areas-without-the-consent-of-those-who-inhabit-these-territories"
+   }
+  ],
+  "add_sources": [
+   {
+    "title": "Record Galapagos debt-for-nature swap scrutinized over transparency irregularities claims",
+    "publisher": "Reuters via ThePrint",
+    "year": 2024,
+    "url": "https://theprint.in/environment/record-galapagos-debt-for-nature-swap-scrutinized-over-transparency-irregularities-claims/2287581"
+   }
+  ],
+  "remove_sources": [
+   "https://stabroeknews.com/2024/09/28/news/regional/record-galapagos-debt-for-nature-swap-scrutinized-over-transparency-irregularities-claims"
+  ]
+ }
+}

@@ -1,6 +1,6 @@
 # Globalization Case Map: handoff for a new chat
 
-Last updated: round 28 (suspected patterns retold so the opening example is never revisited; eight added, 21 in all). Replaces every earlier handoff.
+Last updated: round 29 (six shadow-banking suspected patterns added, 27 in all). Replaces every earlier handoff.
 
 ## The aim, settled 14 Nov 2026 — a defensible big picture, not a bigger map
 
@@ -83,8 +83,8 @@ same round.** It is prose and nothing computes it, so nothing will catch it goin
 
 `window.HYPS` in `base.html`; rendered by `hypsHTML()` at the bottom of the patterns section and by
 `detailHyp()` as a card with the story and a sources list. `docs/HYP.md` holds the owner's words, the
-rules, how a story is told and the list of the twenty-one. Every batch gets a separate checker before
-merge; check logs are `rounds/r27_hyps_check.json` and `rounds/r28_hyps_check.json`.
+rules, how a story is told and the list of the twenty-seven. Every batch gets a separate checker before
+merge; check logs are `rounds/r27_hyps_check.json`, `rounds/r28_hyps_check.json` and `rounds/r29_hyps_check.json`.
 
 **Research leads that used to be suspected patterns.** These came out of rounds 19 to 22 and are about
 how the lending record reads, not about the world. They are worth acting on in research rounds and
