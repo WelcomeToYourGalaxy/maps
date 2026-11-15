@@ -263,6 +263,7 @@ ABOUT = open("/root/cb/about.html").read()
 import subprocess; subprocess.run(["python3", "/root/cb/build_net.py"], check=True)
 NET = json.load(open("/root/cb/out/net.json"))
 PAT = NET.pop("pats", [])
+SUS = NET.pop("sus", [])   # suspected patterns: their own category in the box at right
 # real outlines for small places the boundaries file lacks
 _shaped = set(f["properties"].get("iso3") for f in bnd["features"]) | {"XKX", "SOL", "CYN"}
 _ne = json.load(open("/root/cb/geo/ne10.geojson"))["features"]
@@ -275,7 +276,7 @@ WR = load("writeups.json", {})
 PF = load("press_freedom.json", {})
 PRESS = {k: v["band"] for k, v in (PF.get("countries") or {}).items()}
 PRESSMETA = {"bands": PF.get("bands", {}), "source_title": PF.get("source_title", ""), "source_url": PF.get("source_url", "")}
-D = {"XSHAPE": XSHAPE, "WR": WR, "PAT": PAT, "NET": NET, "CC": CC, "RD": RD, "P": P, "U": U, "UM": UM, "CUR": CUR, "SW": SW, "EV": EV, "ARR": ARR, "REG": REG, "QL": QL, "HUB": HUB, "META": META, "ABOUT": ABOUT, "PRESS": PRESS, "PRESSM": PRESSMETA}
+D = {"XSHAPE": XSHAPE, "WR": WR, "PAT": PAT, "SUS": SUS, "NET": NET, "CC": CC, "RD": RD, "P": P, "U": U, "UM": UM, "CUR": CUR, "SW": SW, "EV": EV, "ARR": ARR, "REG": REG, "QL": QL, "HUB": HUB, "META": META, "ABOUT": ABOUT, "PRESS": PRESS, "PRESSM": PRESSMETA}
 data_js = "const D = " + json.dumps(D, ensure_ascii=False, separators=(",", ":")) + ";"
 tpl = open("/root/cb/template.html").read()
 out = tpl.replace("/*__PLATE__*/", open("/root/cb/plate.js").read()).replace("/*__DATA__*/", data_js) \

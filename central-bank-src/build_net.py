@@ -13,6 +13,10 @@ evg = load("events_gold.json", {"events": []})
 HQF = load("hq.json", {})
 GAPS = load("gaps.json", {})
 PATS = load("patterns.json", {"patterns": []}).get("patterns", [])
+# Suspected patterns are a third category in the box at right, added at round 49. They are
+# shaped like a pattern but carry `established`, `not_established` and `test`, and are
+# rendered by susExtra() in app.js. Keep their handling in step with PATS below.
+SUS = load("suspected.json", {"suspected": []}).get("suspected", [])
 
 # city points
 pl = json.load(open("/root/cb/geo/places.geojson"))["features"]
@@ -228,6 +232,13 @@ for p in PATS:
         l["b"] = end_pt(l.get("to"), l.get("to_city"), l.get("to_iso3"))
     for c in p.get("countries", []):
         if c.get("iso3") == "EUU": c["iso3"] = "EMU"
+for p_ in SUS:
+    if p_.get("id") in ROLEINFO and not p_.get("role_info"): p_["role_info"] = ROLEINFO[p_["id"]]
+    for l in p_.get("links", []):
+        l["a"] = end_pt(l.get("from"), l.get("from_city"), l.get("from_iso3"))
+        l["b"] = end_pt(l.get("to"), l.get("to_city"), l.get("to_iso3"))
+    for c in p_.get("countries", []):
+        if c.get("iso3") == "EUU": c["iso3"] = "EMU"
 for nd in nodes: nd["approx"] = not nd.get("exact")
 # Parties placed at one point get their own fixed spot a few kilometers around it, over land. A spot never moves with zoom; the city point itself goes to the most connected party.
 from shapely.geometry import shape as _shape, Point as _Pt
@@ -263,7 +274,8 @@ for key, ids in _groups.items():
             j2 = ids.index(i); r, th = 0.004 * _m.sqrt(j2), j2 * 2.39996
             placed = [round(lon + r * _m.cos(th) / c, 5), round(lat + r * _m.sin(th), 5)]
         nodes[i]["ll"] = placed
-json.dump({"nodes": nodes, "links": links, "hist": owners.get("history", []), "pats": PATS}, open("/root/cb/out/net.json", "w"), ensure_ascii=False)
+json.dump({"nodes": nodes, "links": links, "hist": owners.get("history", []), "pats": PATS, "sus": SUS}, open("/root/cb/out/net.json", "w"), ensure_ascii=False)
 from collections import Counter
+print("suspected patterns", len(SUS))
 print("nodes", len(nodes), "links", len(links), Counter(l["rel"] for l in links), "unplaced", [n["name"] for n in nodes if "ll" not in n][:20])
 print("approx placed (country centre):", sum(1 for n in nodes if not n.get("exact")))

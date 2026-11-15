@@ -53,10 +53,38 @@ for s_ in swl:
 # a swap line held by a currency union is held by every member country, as above
 cats['Swap lines']              = (expand(sws), len(swl))
 
-print(f"Monetary authorities on the map: {N}\n")
-print(f"{'Category':34} {'Records':>8} {'Places':>7} {'Breadth':>8}")
+# Fourteen of the places can never carry a record: ten have no central bank, and four are
+# the currency-union keys whose member countries are counted individually. Report both
+# denominators -- the user asked for the reachable one as well as the raw 206.
+NOCB = set((gaps.get('no_central_bank') or {}).get('places') or [])
+UKEYS = {'ECB', 'BCEAO', 'BEAC', 'ECCB'}
+unreachable = (NOCB | UKEYS) & places
+R = N - len(unreachable)
+
+print(f"Monetary authorities on the map: {N}")
+print(f"Reachable (excluding the {len(NOCB & places)} places with no central bank and the "
+      f"{len(UKEYS & places)} currency-union keys): {R}\n")
+print(f"{'Category':34} {'Records':>8} {'Places':>7} {'of 206':>7} {'of ' + str(R):>7}")
 for k, (s, n) in cats.items():
-    print(f"{k:34} {n:8d} {len(s & places) or len(s):7d} {100*len(s & places)/N if (s & places) else 100*len(s)/N:7.0f}%")
+    have = len(s & places) or len(s)
+    print(f"{k:34} {n:8d} {have:7d} {100*have/N:6.0f}% {100*have/R:6.0f}%")
+
+# A bank with no gold cannot have a gold custodian, so this row's real denominator is the
+# places that hold any gold at all, not every place on the map. Settled at round 52.
+# A bank with no gold cannot have a gold custodian. The World Gold Council lists 122 places,
+# but 14 of them at zero tonnes, so the denominator that matches the sentence "places that hold
+# any gold at all" is the 108 with a holding above zero. Round 52 used 122 and so understated
+# this row; both are printed here so the figure in about.html can be checked against either.
+LISTED = expand({r['iso3'] for r in ev['gold']['rows'] if r.get('iso3')}) & places
+GOLDP = expand({r['iso3'] for r in ev['gold']['rows'] if r.get('iso3') and r.get('tonnes')}) & places
+_gdp = cats['Gold custodians'][0] & places
+print(f"\nGold custodians, measured against the banks that hold gold rather than every place:")
+print(f"  {len(_gdp & GOLDP)} of the {len(GOLDP)} places with a holding above zero = "
+      f"{100*len(_gdp & GOLDP)/len(GOLDP):.0f}%")
+print(f"  {len(_gdp & LISTED)} of the {len(LISTED)} places the World Gold Council lists at all "
+      f"({len(LISTED - GOLDP)} of them at zero tonnes) = {100*len(_gdp & LISTED)/len(LISTED):.0f}%")
+print(f"  {len(_gdp - LISTED)} further places have a custodian but no gold holding of their own "
+      f"(the BCEAO members, whose gold is pooled at the union rather than apportioned)")
 
 # ---- per-pattern completeness ----
 pat = L('patterns.json')['patterns']
