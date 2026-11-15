@@ -430,6 +430,7 @@ def main():
     spread(case_out); spread(ent)
 
     _pats = load('patterns.json', [])
+    stale_titles(_pats, case_out)
     pattern_rollcall(_pats, case_out)
     reach_drift(orgs, cases)
 
@@ -586,6 +587,25 @@ def reach_drift(orgs, cases):
         print('    %s%s: %s' % (k, ' (NO SUCH ORG KEY)' if unknown else '', ', '.join(gap)))
     if len(drift) > 8:
         print('    ... and %d more' % (len(drift) - 8))
+
+
+def stale_titles(pats, cases):
+    """Warn when a curated case_titles list points at a case no longer on the map.
+
+    A curated title is a string, so removing a case leaves the pattern holding a
+    name that matches nothing, silently. It happened on 15 November 2026: two
+    records of the same $2m paid for Rio's 2016 host-city votes were merged, and
+    the one that went had been curated into bought_inside_intl_bodies, so that
+    pattern quietly lost a case it still should have had. Cheap to check, and the
+    fix is to point the list at the surviving record.
+    """
+    live = {c['n'] for c in cases}
+    bad = [(p.get('id'), t) for p in pats for t in (p.get('case_titles') or []) if t not in live]
+    if not bad:
+        return
+    print('patterns: %d curated title(s) point at a case that is no longer on the map:' % len(bad))
+    for pid, t in bad:
+        print('    %s: %s' % (pid, t))
 
 
 def pattern_rollcall(pats, cases):
