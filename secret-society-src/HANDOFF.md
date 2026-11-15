@@ -27,6 +27,19 @@ Percentages on the "who is infiltrating" and "who is being infiltrated" buttons 
 - Give every agent its own scratch folder: two agents overwrote each other's build.py in a shared one.
 - Check every case against its sources before merging. BRIEF15 explains the research. In this round's source check more than half of the cases needed a correction, mostly later outcomes (acquittals, annulled convictions, final sentences); none failed its core claim. A separate reviewer applying BRIEF11 dropped 23 of 253 candidates (all in removed_records.json).
 
+## Outcome maintenance: the queue, and why it is now a standing job (14 November 2026)
+
+A record that stops at the charge misleads about where a case stands, and the map has been caught doing it twice in one day. The Credit Suisse record carried the June 2022 convictions as if they stood: the relationship manager had died in April 2023 before her appeal and her case was discontinued, and the bank was acquitted on appeal in March 2026. The Stanfield record carried a prosecution that had been withdrawn in September 2024 without being tried. Neither was found by looking for it; both turned up because another piece of work passed nearby.
+
+**Run `python3 stale.py` in secret-society-src.** It lists the records whose `status` is indicted, investigation, inquiry or alleged and which carry no `verified` date, oldest first, because a 2014 charge has had the longest to move. On 14 November 2026 that queue was 196 records still marked `rel: now`, out of 595 that stop before an outcome, and only 658 of 1,680 cases had ever been checked.
+
+**Seven were done that day**, and six of the seven had moved: Bolloré goes to trial in Paris from 7 to 17 December 2026; Austria's final refusal of Firtash's extradition came in March 2026; Jovanjica's two cases were joined and the trial restarted from the beginning; a money-laundering verdict on Belivuk is set for 25 December 2026; part of Očistec was discontinued as time-barred on 21 October 2026 while the criminal-group charge survives; the Stanfield licences case was withdrawn. Only Scorpene was where the record left it, and even there the prosecutors' request for a trial has a date now.
+
+Two things the round settled about how to do this:
+
+- **Write the outcome into `undone`, not only into `d`.** The description says what happened; `undone` is where "no verdict has been reached", "the charges were withdrawn without being tried" and "he is presumed innocent" belong. Where a defendant died before appeal, say so and say they are presumed innocent - that is a fairness point, not a hedge.
+- **Set `verified` whenever a record is checked, even when nothing changed.** An unverified record and a verified-and-unchanged record look identical in the file otherwise, so the next round re-does the work. Jovanjica and Belivuk changed little in substance and were still worth the check.
+
 ## The test (stricter since 3 Nov 2026) — see briefs/BRIEF11.md
 Keep only if the record shows an outside party's people/money/control inside the institution AND decisions or actions there serving it (or it set out to, e.g. a recruited spy). Not infiltration: an office-holder's membership of a club, lodge, church or alumni network with nothing steered; an executive or lobbyist appointed to a post with no decision shown serving the former firm; open lobbying, donations, public loan conditions, conquest, coalition deals; hacks, disinformation, diaspora harassment from outside; cases where officials are incidental. How well a case is proven does NOT decide inclusion — the "How sure we are" filter handles that; word allegations as allegations. The owner removed the Skull and Bones/Mnuchin and OneWest/Otting cases as examples of what does not count.
 
