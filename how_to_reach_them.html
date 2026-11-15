@@ -301,6 +301,11 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 /* The recorded link is the field that goes stale fastest, so the
    search that finds the current one sits on the same line as the link
    rather than in a row of its own underneath it. */
+#refresh{display:block;margin:5px 0 0;padding:0;border:0;background:none;cursor:pointer;
+  font:inherit;font-size:10.4px;letter-spacing:.3px;color:var(--accent-hi);
+  text-decoration:underline;text-underline-offset:2px}
+#refresh:hover{color:var(--ink)}
+#refresh[disabled]{color:var(--faint);cursor:default;text-decoration:none}
 .nogeo{font-size:10.6px;line-height:1.45;color:var(--dim);margin:4px 0 0;
   padding:5px 8px;border-left:2px solid var(--line);background:rgba(125,142,130,.07)}
 .findsite{font-size:10.4px;color:var(--dim);text-decoration:none;
@@ -1151,7 +1156,8 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
     <!-- Where you are, what is on the map and what is still loading. It
          used to sit in a floating box at the bottom-left of the map,
          away from the jurisdiction it describes and easy to miss. -->
-    <div id="trail"><div id="crumbs"></div><div id="pincount"></div><div id="admnote"></div></div>
+    <div id="trail"><div id="crumbs"></div><div id="pincount"></div><div id="admnote"></div>
+      <button type="button" id="refresh" onclick="refreshPlace()" hidden>Ask again for fresh records</button></div>
   </div>
   <div id="mbody"></div>
   <div id="mgrip" title="Drag to resize"></div>
@@ -2644,8 +2650,39 @@ const isQ = s => /^Q\d+$/.test(s||'');
 function setDot(id, cls, txt){ const d=$('#d-'+id); if(!d) return; d.className='dot'+(cls?' '+cls:''); if(txt) $('#t-'+id).textContent=txt; }
 
 const CACHE_V='htrt8';
+/* How long an answer is kept.
+
+   Everything on this page except the municipal registers is asked of
+   Wikidata when a place is opened, so the page is as current as the
+   data is — but an answer was then kept for a week, which made a name
+   or an address up to a week old. The things that change — who holds an
+   office, the address it publishes, a council's own record — are kept
+   for a day now. The class-tree walks that take half a minute for a
+   country are still kept for a week, because asking for them again on
+   every visit would cost the reader the wait and Wikidata the load,
+   and the set of offices a jurisdiction has does not turn over daily.
+
+   Either way the reader can force a fresh answer: the refresh link
+   drops the keys for the place on screen. */
+const TTL_DAY=864e5, TTL_WEEK=6048e5;
+/* core: and juris: carry the websites, emails, telephone numbers,
+   addresses and office holders. pos:, bod:, sub:, ctr:, oc: and unit:
+   carry which offices and units exist and where they are, which is
+   slow to ask for and slow to change. */
+const ttlFor = k => /^(core|juris):/.test(String(k)) ? TTL_DAY : TTL_WEEK;
 function cget(k){ try{ const r=localStorage.getItem(CACHE_V+':'+k); if(!r) return null;
-  const o=JSON.parse(r); if(Date.now()-o.t > 6048e5) return null; return o.v; }catch(e){ return null; } }
+  const o=JSON.parse(r); if(Date.now()-o.t > ttlFor(k)) return null; return o.v; }catch(e){ return null; } }
+/* Everything held for the place on screen, dropped, so the next click
+   asks Wikidata again. */
+function cdropFor(qs){
+  let n=0;
+  try{
+    const keys=[];
+    for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); if(k && k.indexOf(CACHE_V+':')===0) keys.push(k); }
+    keys.forEach(k=>{ if(qs.some(q=>q && k.indexOf(q)>=0)){ localStorage.removeItem(k); n++; } });
+  }catch(e){ console.warn(e); }
+  return n;
+}
 function cset(k,v){ try{ localStorage.setItem(CACHE_V+':'+k, JSON.stringify({t:Date.now(),v:v})); }catch(e){} }
 
 /* Every office on this page comes from Wikidata's query service, and
@@ -3493,6 +3530,37 @@ function paintTrail(){
     ? '<span class="now">'+esc(s.label)+'</span>'
     : '<span class="up">'+esc(s.label)+'</span>'
   ).join('<span class="sep">&rsaquo;</span>');
+  const rb=$('#refresh'); if(rb) rb.hidden = !STACK.some(s=>s.q);
+}
+
+/* Ask Wikidata again for this place, now.
+
+   Answers are kept for a day, which is what makes the page quick on a
+   second visit, and it also means a name or an address can be a day
+   old. A reader who can see that something has changed — a new mayor,
+   a dead link — should not have to wait for the day to run out. This
+   drops what is held for the levels on screen and asks again. */
+async function refreshPlace(){
+  const rb=$('#refresh');
+  const qs=STACK.map(s=>s.q).filter(Boolean);
+  if(!qs.length) return;
+  if(rb){ rb.disabled=true; rb.textContent='Asking again\u2026'; }
+  try{
+    cdropFor(qs);
+    CHAIN_DONE={}; CHAIN_CLAIMED={}; PIN_TRIED={};
+    OFFS={}; PINS={}; LEVSELF={}; MUNI_WANT={};
+    QFAIL.n=0; QFAIL.why='';
+    try{ const el=$('#admnote'); if(el && el.textContent.indexOf('incomplete')>=0){ el.textContent=''; el.className=''; } }catch(e){}
+    if(CUR && CUR.q){
+      try{ CUR.core = await sparql(qCore(CUR.q), 'core:'+CUR.q); }catch(e){ console.warn('refresh core', e); }
+    }
+    await loadChainPins();
+    STACK.forEach(s=>{ if(s.q) loadMuni(s.q); });
+    paintTrail(); paintChain(); setPins();
+    try{ if(CUR && !SEL) render(); }catch(e){ console.warn(e); }
+  } finally {
+    if(rb){ rb.disabled=false; rb.textContent='Ask again for fresh records'; }
+  }
 }
 /* ====================================================================
    THE PANEL
