@@ -72,7 +72,12 @@ var DATA = __DATA__;
 "use strict";
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const D = DATA, KINDS = D.kinds, SCH = D.S, PE = D.PE, LK = D.L, POSN = D.POSN, CTY = D.C, PATS = D.PAT, HYP = D.HYP;
+const D = DATA, KINDS = D.kinds, POSN = D.POSN, CTY = D.C, PATS = D.PAT, HYP = D.HYP;
+const SCH = D.S.concat(D.SR.map((a) => ({ id: "r" + a[2], n: a[0], k: "rec", t: a[1], q: a[2], iso: a[3], lat: a[4], lng: a[5], y: a[6], wp: a[7] === 1 ? a[0] : a[7], c: a[3] && D.C[a[3]] ? D.C[a[3]].n : "", city: "" })));
+const PE = D.PE.map((p) => [p[0], p[1], p[2] === 1 ? p[0] : p[2], p[3], p[4]]);
+const LK = D.L.map((l) => [l[0], l[1], l[2], D.PO[l[0]]]);
+const SUBT = { uni: "University or college", sec: "Secondary or boarding school", mil: "Military, police or staff school", rel: "Religious school", oth: "Other institution" };
+const where = (s) => s.city ? s.city + (s.c && s.c !== s.city ? ", " + s.c : "") : (s.c || "Country not recorded");
 const KI = {}; KINDS.forEach((k, i) => { KI[k[0]] = i; });
 const SID = {}; SCH.forEach((s, i) => { s.i = i; SID[s.id] = i; });
 const PAT_BY = {}; PATS.forEach((p) => { PAT_BY[p.id] = p; p.set = new Set(p.schools.map((x) => SID[x]).filter((x) => x != null)); });
@@ -84,8 +89,8 @@ LK.forEach((l, i) => { BYS[l[1]].push(i); BYP[l[0]].push(i); });
 const RANKL = { 4: "Head of state", 3: "Head of government", 2: "Central bank governor", 1: "Minister" };
 
 /* ---------- palettes: the basemap colours from the house maps; school kinds in muted, earthy tones ---------- */
-const KCOL_DARK = ["#7fb8a4", "#8ea6d4", "#c47f7f", "#b8a9c9", "#e2ddd0", "#8b9c72", "#5f9fb5", "#ad8f7e", "#9aa3ad"];
-const KCOL_LIGHT = ["#2f6e5c", "#3e5a8f", "#8a3b3b", "#6b5a85", "#3a3530", "#4f5e3c", "#2f6a80", "#6e4e40", "#5a6470"];
+const KCOL_DARK = ["#7fb8a4", "#8ea6d4", "#c47f7f", "#b8a9c9", "#e2ddd0", "#8b9c72", "#5f9fb5", "#ad8f7e", "#9aa3ad", "#8f897e"];
+const KCOL_LIGHT = ["#2f6e5c", "#3e5a8f", "#8a3b3b", "#6b5a85", "#3a3530", "#4f5e3c", "#2f6a80", "#6e4e40", "#5a6470", "#7a7468"];
 const PAL = {
   night:     { r: ["#6d8bb8", "#56719b", "#42597c", "#31435d", "#233142"], fo: 0.62, ln: "#a9bdd0", card: "rgba(8,16,26,.94)", edge: "#1d3147", ui: ["#326c9f", "#95c6e4", "#06101c"] },
   outlines:  { r: ["#7e6fa6", "#6a7fb0", "#5b8fa6", "#4f7a8a", "#3d5560"], fo: 0.58, ln: "#e2e5e8", card: "rgba(14,18,20,.94)", edge: "#2c3640", ui: ["#4f6f8f", "#a9c4dc", "#0c1012"] },
@@ -108,9 +113,7 @@ function offOK(o, s) {
   if (o[1] < S.rmin) return false;
   if (S.now && !o[4]) return false;
   if (S.y0 > 0 || S.y1 < 9999) { const y = o[2]; if (y == null) return false; const e = o[3] || (o[4] ? 2100 : y); if (e < S.y0 || y > S.y1) return false; }
-  const ab = o[0] !== s.iso;
-  if (S.where === "abroad" && !ab) return false;
-  if (S.where === "home" && ab) return false;
+  if (S.where !== "all") { if (!s.iso) return false; const ab = o[0] !== s.iso; if (S.where === "abroad" && !ab) return false; if (S.where === "home" && ab) return false; }
   return true;
 }
 function schOK(si) { const s = SCH[si]; if (!S.kind[s.k]) return false; if (S.pat && !PAT_BY[S.pat].set.has(si)) return false; return true; }
@@ -125,7 +128,7 @@ function recompute() {
       const iso = o[0], pi = l[0];
       const key = si + "|" + iso; let pr = pair.get(key); if (!pr) { pr = { si, iso, p: new Set() }; pair.set(key, pr); } pr.p.add(pi);
       const c = cty[iso] || (cty[iso] = { all: new Set(), ab: new Set(), heads: new Set(), sch: new Set() });
-      c.all.add(pi); if (iso !== s.iso) c.ab.add(pi); if (o[1] >= 3) c.heads.add(pi); c.sch.add(si);
+      c.all.add(pi); if (s.iso && iso !== s.iso) c.ab.add(pi); if (o[1] >= 3) c.heads.add(pi); c.sch.add(si);
       sch[si].add(pi); ppl.add(pi);
     });
   });
@@ -199,7 +202,7 @@ function addLayers() {
   T({ id: "sch", type: "circle", source: "schools", layout: { "circle-sort-key": ["-", 0, ["get", "r"]] }, paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 1, ["get", "r"], 6, ["*", 1.35, ["get", "r"]]], "circle-color": ["get", "c"], "circle-opacity": ["get", "o"], "circle-stroke-color": ["get", "h"], "circle-stroke-width": ["get", "sw"] } });
   const hover = (id, html) => { map.on("mousemove", id, (e) => { map.getCanvas().style.cursor = "pointer"; tip(html(e.features[0].properties, e), e.originalEvent.clientX, e.originalEvent.clientY); });
     map.on("mouseleave", id, () => { map.getCanvas().style.cursor = ""; tip(null); }); };
-  hover("sch", (p) => { const s = SCH[p.i]; return "<b>" + esc(s.n) + "</b><br><span class=mute>" + esc(KINDS[KI[s.k]][1]) + " · " + esc(s.city) + (s.y ? " · since " + s.y : "") + "<br>" + p.n + (p.n === 1 ? " office-holder" : " office-holders") + " under the current filters</span>"; });
+  hover("sch", (p) => { const s = SCH[p.i]; return "<b>" + esc(s.n) + "</b><br><span class=mute>" + esc(s.k === "rec" ? SUBT[s.t] : KINDS[KI[s.k]][1]) + " · " + esc(where(s)) + (s.y ? " · since " + s.y : "") + "<br>" + p.n + (p.n === 1 ? " office-holder" : " office-holders") + " under the current filters</span>"; });
   hover("cap", (p) => "<b>" + esc(ISO_NAME[p.iso] || p.iso) + "</b><br><span class=mute>" + (AGG.cty[p.iso] ? AGG.cty[p.iso].all.size : 0) + " office-holders · click for who trained them</span>");
   hover("arc-hit", (p) => { const s = SCH[p.si]; return "<b>" + esc(s.n) + " → " + esc(ISO_NAME[p.iso] || p.iso) + "</b><br><span class=mute>" + p.n + (p.n === 1 ? " office-holder" : " office-holders") + " · click to list them</span>"; });
   map.on("mousemove", "cty-fill", (e) => { if (map.queryRenderedFeatures(e.point, { layers: ["sch", "arc-hit"] }).length) return; const iso = e.features[0].properties.iso3; if (!ISO_NAME[iso]) { tip(null); return; }
@@ -233,7 +236,8 @@ function paint() {
   // arcs
   const feats = [];
   if (S.arcs) AGG.pair.forEach((pr) => {
-    const s = SCH[pr.si], c = CTY[pr.iso]; if (!c) return;
+    const s = SCH[pr.si], c = CTY[pr.iso]; if (!c || s.lat == null) return;
+    if (s.k === "rec" && S.focus !== pr.si && !(S.sel && S.sel[0] === "c" && S.sel[1] === pr.iso) && S.where !== "abroad") return;
     const foc = S.focus != null ? (S.focus === pr.si) : S.sel && S.sel[0] === "c" ? S.sel[1] === pr.iso : true;
     const pts = arc([s.lng, s.lat], [c.lng, c.lat]); if (!pts) return;
     const n = pr.p.size, w = Math.min(5, 0.5 + 0.8 * Math.log2(1 + n));
@@ -244,8 +248,8 @@ function paint() {
   const caps = []; Object.keys(AGG.cty).forEach((iso) => { const c = CTY[iso]; if (c && S.arcs) caps.push({ type: "Feature", properties: { iso, c: P.light ? "#2a2620" : "#f0ece4" }, geometry: { type: "Point", coordinates: [c.lng, c.lat] } }); });
   map.getSource("caps").setData(FC(caps));
   // schools
-  map.getSource("schools").setData(FC(S.schools ? SCH.filter((s) => schOK(s.i)).map((s) => { const n = AGG.sch[s.i].size, on = S.focus == null || S.focus === s.i;
-    return { type: "Feature", properties: { i: s.i, n, c: kcol(s.k), h: halo(), r: Math.min(15, 3.6 + 1.45 * Math.log2(1 + n)), o: on ? 0.95 : 0.35, sw: S.focus === s.i ? 2.4 : 1.1 }, geometry: { type: "Point", coordinates: [s.lng, s.lat] } }; }) : []));
+  map.getSource("schools").setData(FC(S.schools ? SCH.filter((s) => s.lat != null && schOK(s.i) && (s.k !== "rec" || AGG.sch[s.i].size)).map((s) => { const n = AGG.sch[s.i].size, on = S.focus == null || S.focus === s.i, rec = s.k === "rec";
+    return { type: "Feature", properties: { i: s.i, n, c: kcol(s.k), h: halo(), r: rec ? Math.min(9, 1.8 + 1.1 * Math.log2(1 + n)) : Math.min(15, 3.6 + 1.45 * Math.log2(1 + n)), o: on ? (rec ? 0.7 : 0.95) : 0.3, sw: S.focus === s.i ? 2.4 : rec ? 0.4 : 1.1 }, geometry: { type: "Point", coordinates: [s.lng, s.lat] } }; }) : []));
 }
 
 /* ---------- the key ---------- */
@@ -253,7 +257,7 @@ function covLine() { return ''; }
 function buildKey() {
   recompute();
   const nS = SCH.length, nC = Object.keys(AGG.cty).length;
-  $("#lede2").innerHTML = esc(nS + " schools and programmes · " + PE.length.toLocaleString() + " office-holders · " + PATS.length + " patterns") + QM("Office-holders are people who held a national post as head of state, head of government, minister or central bank governor and who studied, trained or worked at one of these places, as recorded in Wikidata and published lists. The Method page explains the limits.");
+  $("#lede2").innerHTML = esc(D.NDOC + " documented schools and programmes · " + (nS - D.NDOC).toLocaleString() + " more in the record · " + PE.length.toLocaleString() + " office-holders · " + PATS.length + " patterns") + QM("Office-holders are people who held a national post as head of state, head of government, minister or central bank governor and who studied, trained or worked at one of these places, as recorded in Wikidata and published lists. Wikidata lists " + D.NALL.toLocaleString() + " people who held such a post; " + PE.length.toLocaleString() + " of them have a school on record and appear here. The Method page explains the limits.");
   let h = '';
   const L_ = LENSES.find((l) => l[0] === S.lens);
   const counts = [0, 0, 0, 0, 0]; Object.keys(AGG.cty).forEach((iso) => { const b = bandOf(lensVal(iso)); if (b >= 0) counts[b]++; });
@@ -297,7 +301,7 @@ function drawFind() {
   const q = S.q.trim().toLowerCase(), el = $("#flist"); if (!el) return;
   if (q.length < 2) { el.innerHTML = '<div class="sub">Type two letters or more.</div>'; return; }
   const out = [];
-  SCH.forEach((s) => { if ((s.n + " " + s.city + " " + s.c).toLowerCase().includes(q)) out.push(["s", s.i, s.n, KINDS[KI[s.k]][1]]); });
+  const rs = []; SCH.forEach((s) => { if ((s.n + " " + s.city + " " + s.c).toLowerCase().includes(q)) (s.k === "rec" ? rs : out).push(["s", s.i, s.n, s.k === "rec" ? SUBT[s.t] + (s.c ? ", " + s.c : "") : KINDS[KI[s.k]][1]]); }); rs.slice(0, 60).forEach((r) => out.push(r));
   Object.keys(CTY).forEach((iso) => { if (CTY[iso].n.toLowerCase().includes(q)) out.push(["c", iso, CTY[iso].n, "country"]); });
   PATS.forEach((p) => { if (p.title.toLowerCase().includes(q)) out.push(["p", p.id, p.title, "pattern"]); });
   let np = 0; PE.forEach((p, i) => { if (np < 120 && p[0].toLowerCase().includes(q)) { np++; out.push(["k", i, p[0], topOffice(i)]); } });
@@ -327,7 +331,7 @@ function buildLeg() {
   const nVis = SCH.filter((s) => schOK(s.i)).length;
   h += row("schools", S.schools, '<span class="car" data-open="kinds">' + (S.open.kinds ? "▾" : "▸") + '</span><span class="sw dot" style="background:' + kcol("elite") + '"></span>Schools and programmes' + QM("Each circle is a school, academy, fellowship, network or employer, placed at its campus or headquarters. Bigger circles have more former students in national office under the current filters."), nVis);
   if (S.open.kinds) h += '<div class="up">' + KINDS.map((k) => row("k:" + k[0], S.kind[k[0]], '<span class="sw dot" style="background:' + kcol(k[0]) + '"></span>' + esc(k[1]) + QM(k[2]), SCH.filter((s) => s.k === k[0]).length, true)).join("") + '</div>';
-  h += row("arcs", S.arcs, '<span class="sw bar" style="background:' + kcol("fellow") + ';margin-left:12px"></span>Pipelines to power' + QM("Each line runs from a school to the capital of a country where at least one of its former students held national office. Thicker lines carry more people. Click a line to see who."), AGG.pair.size);
+  h += row("arcs", S.arcs, '<span class="sw bar" style="background:' + kcol("fellow") + ';margin-left:12px"></span>Pipelines to power' + QM("Each line runs from a school to the capital of a country where at least one of its former students held national office. Thicker lines carry more people. Click a line to see who. Lines from the schools that are only in the record (the grey dots) appear when you open that school or a country, or choose \"Abroad, then ruled at home\", so the globe stays readable."), AGG.pair.size);
   h += '<div class="sub">Click a school, a line or a country to see the people. Click ▸ for the kinds of school.</div>';
   $("#legBody").innerHTML = h;
   $("#legBody").querySelectorAll("[data-open]").forEach((c) => c.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); S.open[c.dataset.open] = !S.open[c.dataset.open]; buildLeg(); }));
@@ -401,9 +405,13 @@ function openSchool(si, fly) {
   ppl.forEach(([pi, offs]) => offs.forEach((o) => { (byC[o[0]] = byC[o[0]] || new Set()).add(pi); }));
   const cs = Object.keys(byC).sort((a, b) => byC[b].size - byC[a].size);
   const heads = ppl.filter(([, offs]) => offs.some((o) => o[1] >= 3)).length;
-  let h = '<div class="hp-k">' + esc(KINDS[KI[s.k]][1]) + '</div><h3>' + esc(s.n) + '</h3><div class="hp-sub">' + esc(s.city) + ', ' + esc(s.c) + (s.y ? ' · founded ' + s.y : '') + (s.end ? ' · closed ' + s.end : '') + '</div>';
-  h += '<table class="kv"><tr><th>Behind it</th><td style="text-align:left">' + esc(s.hand) + '</td></tr><tr><th>How people get in</th><td style="text-align:left">' + esc(s.sel) + '</td></tr></table>';
-  h += '<div class="hp-desc">' + esc(s.d) + '</div>';
+  const rec = s.k === "rec";
+  let h = '<div class="hp-k">' + esc(rec ? KINDS[KI.rec][1] + " · " + SUBT[s.t] : KINDS[KI[s.k]][1]) + '</div><h3>' + esc(s.n) + '</h3><div class="hp-sub">' + esc(where(s)) + (s.y ? ' · founded ' + s.y : '') + (s.end ? ' · closed ' + s.end : '') + '</div>';
+  if (rec) h += '<div class="hp-desc">This school is on the map because Wikidata records people who studied here and later held national office. There is no writeup for it yet; the list below is the whole of what the record shows.' + (s.lat == null ? ' Wikidata gives no location for it, so it has no dot on the globe.' : '') + '</div>';
+  else {
+    h += '<table class="kv"><tr><th>Behind it</th><td style="text-align:left">' + esc(s.hand) + '</td></tr><tr><th>How people get in</th><td style="text-align:left">' + esc(s.sel) + '</td></tr></table>';
+    h += '<div class="hp-desc">' + esc(s.d) + '</div>';
+  }
   const pats = PATS.filter((p) => p.set.has(si));
   if (pats.length) h += '<div class="hp-h">Patterns</div><div class="chips">' + pats.map((p) => '<span class="pchip" data-pat="' + p.id + '">' + esc(p.title) + '</span>').join("") + '</div>';
   h += '<div class="hp-h">Former students in national office' + QM("Under the filters now set. From Wikidata and published lists; see Method.") + '</div>';
@@ -413,9 +421,9 @@ function openSchool(si, fly) {
     h += '<div class="chips">' + cs.slice(0, 40).map((iso) => '<span data-cty="' + iso + '">' + esc(CTY[iso] ? CTY[iso].n : iso) + ' <span class="n">' + byC[iso].size + '</span></span>').join("") + (cs.length > 40 ? '<span class="est">and ' + (cs.length - 40) + ' more</span>' : '') + '</div>';
     h += '<div style="margin-top:8px">' + ppl.slice(0, 300).map(([pi, offs]) => personRec(pi, offs, si)).join("") + (ppl.length > 300 ? '<div class="sub">' + (ppl.length - 300) + ' more; narrow the filters to see them.</div>' : '') + '</div>';
   }
-  h += srcList(s.src.concat([["Wikidata", "https://www.wikidata.org/wiki/" + (s.q || "")]]).filter((x) => x[1] !== "https://www.wikidata.org/wiki/"));
+  h += srcList((s.src || (s.wp ? [["Wikipedia", "https://en.wikipedia.org/wiki/" + encodeURIComponent(s.wp.replace(/ /g, "_"))]] : [])).concat([["Wikidata", "https://www.wikidata.org/wiki/" + (s.q || "")]]).filter((x) => x[1] !== "https://www.wikidata.org/wiki/"));
   show(h, ["s", si], si);
-  if (fly) map.flyTo({ center: [s.lng, s.lat], zoom: Math.max(map.getZoom(), 3), duration: 900 });
+  if (fly && s.lat != null) map.flyTo({ center: [s.lng, s.lat], zoom: Math.max(map.getZoom(), 3), duration: 900 });
 }
 function openPair(si, iso) {
   const s = SCH[si], ppl = peopleOf(si, iso);
@@ -425,10 +433,12 @@ function openPair(si, iso) {
 }
 function openCountry(iso, fly) {
   recompute();
-  const c = CTY[iso], A = AGG.cty[iso];
+  const c = CTY[iso], A = AGG.cty[iso], acc = D.ACC[iso], T = D.T[iso];
   let h = '<div class="hp-k">Country</div><h3>' + esc(c ? c.n : iso) + '</h3>';
+  if (acc) h += '<div class="hp-h">Behind the scenes</div><div class="bts">' + acc.d.map((x) => '<p>' + esc(x) + '</p>').join("") + '</div>' + (acc.src && acc.src.length ? srcList(acc.src) : '');
+  if (T) h += '<div class="note">Wikidata records ' + T[0].toLocaleString() + ' people who held national office in ' + esc(c ? c.n : iso) + '. It names a school for ' + T[1].toLocaleString() + ' of them (' + Math.round(100 * T[1] / Math.max(1, T[0])) + '%), and those are the people this map can show. The rest have no education on record there.</div>';
   if (!A) { h += '<div class="sub">No office-holders on the map under the current filters. Wikidata records education unevenly, so this can mean the record is thin rather than that no leader trained at these schools.</div>'; show(h, ["c", iso]); return; }
-  const groups = []; const kc = KINDS.map(() => 0);
+  const groups = []; const kc = KINDS.map(() => 0); h += '<div class="hp-h">The record</div>';
   A.sch.forEach((si) => { const ppl = peopleOf(si, iso); if (ppl.length) { groups.push([si, ppl]); kc[KI[SCH[si].k]] += ppl.length; } });
   groups.sort((a, b) => b[1].length - a[1].length);
   const headsAll = A.heads.size, abroadHeads = [...A.heads].filter((pi) => A.ab.has(pi)).length;
