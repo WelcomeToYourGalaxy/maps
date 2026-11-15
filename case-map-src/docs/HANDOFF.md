@@ -1,6 +1,6 @@
 # Globalization Case Map: handoff for a new chat
 
-Last updated: 14 Nov 2026 (round 22 finished and merged, not pushed; the suspected patterns reworked). Replaces every earlier handoff.
+Last updated: 14 Nov 2026 (round 22 merged and pushed; the suspected patterns rewritten as continuous rundowns). Replaces every earlier handoff.
 
 ## The aim, settled 14 Nov 2026 — a defensible big picture, not a bigger map
 
@@ -28,6 +28,17 @@ read from the rendered panel on 14 Nov):
 | Chinese state loans | 82 | 20,985 | 0.4% |
 | Foreign company projects | 9 | 20,032 | 0.04% |
 | Aid activities | 35 | 1.5 million | 1 in 42,857 |
+
+**The suspected patterns were rewritten on 14 Nov 2026 and the writing standard changed.** The owner
+rejected the labelled-field card ("categorical snippets") and the prose itself ("the writing is
+horrible"). All thirteen are now one continuous rundown each, written for a novice, in the voice of
+the four guides in the owner's GMO-map repo; `would_refute` is deleted from the data by the owner's
+ruling; `detailHyp()` renders the story alone. `case-map-src/docs/HYP.md` carries the full standard,
+the banned-style list and the order a story must cover. **It also carries a lesson that applies
+beyond that file: round 22 moved the map's totals and the suspected patterns were still asserting the
+old ones** — 1,072 cases for 1,093, 127 countries for 129, 1,138 company names for 1,177, Ghana 16
+for 17, Uganda 24 for 25, Senegal 13 for 14. Any text that repeats a map-derived total has to be
+recounted against `window.CASES` at the end of a round.
 
 **Three facts decide what to work on, and none of them is the case count.**
 

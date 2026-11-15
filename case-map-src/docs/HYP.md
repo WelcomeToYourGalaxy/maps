@@ -5,11 +5,12 @@ more than once and cannot yet state as a finding.** It lives in `window.HYPS` in
 under the patterns in the left-hand box as "Suspected patterns", and opens its own card through
 `detailHyp()`.
 
-It is not a question-and-answer format and must not be written as one. It reads like a pattern,
-because it is one in every respect except conviction: a title that states the thing, a summary with
-the figures, what it would mean if it holds, the countries and what was seen in each. What makes it
-different from `PATS` is three extra fields — what is missing, what would settle it, what would
-refute it — and a dashed card that says it is not documented.
+It is not a question-and-answer format and must not be written as one. **The card shows one
+continuous rundown and nothing else** — the `story` field, told straight through for a reader new to
+the subject. The fields behind it stay in the data as the test an entry has to pass, and are not
+drawn: `summary`, `implications`, `missing`, `would_settle`, `conviction`, `looked_at`. What marks it
+off from `PATS` is that dashed card saying it is not documented, and the closing paragraph of the
+story, which says what the thing rests on and what would settle it.
 
 It exists because the map had nowhere to put a pattern it was not yet sure of. A researcher who saw
 the same shape on four cards could write it up as a pattern, which claims more than four cards carry,
@@ -28,9 +29,12 @@ produced findings of exactly that kind.
    card.** No new claims and no outside figures that have not been through a check. If a figure comes
    from searching the text of the cards, say so and call it a floor — that search finds only cases
    whose text already says the thing.
-4. **`would_settle` and `would_refute` are both required, and both must name a document, a count or a
-   record.** A suspected pattern nobody can imagine refuting is an opinion. Writing the refutation
-   first is the test of whether it belongs here at all.
+4. **`would_settle` is required and must name a document, a count or a record**, and the story's last
+   paragraph has to carry it in plain sentences. A `would_settle` naming a document that will never be
+   released is not a test. **`would_refute` is deleted.** The owner's ruling, 14 Nov 2026: the
+   category was not needed. Do not reintroduce it, in the data or in the prose. Whether an entry can
+   be knocked down is still the test of whether it belongs here, but it is a question the writer
+   answers before writing, not a field on the card.
 5. **`missing` says what has not been done, not what is unknowable.** It is the honest version of the
    conviction line and it is what stops a later round re-running work.
 6. **A confirmed one graduates.** Write it into `PATS` with its sources, set the suspected pattern's
@@ -72,11 +76,11 @@ produced findings of exactly that kind.
   kind: "suspected",
   years: [first, last],
   conviction: "One line on how much it rests on. Say the number of cases or documents.",
-  summary: "Two to four paragraphs, pattern style: what was seen, with its figures.",
-  implications: "What it would mean if it holds.",
-  missing: "What has not been done.",
-  would_settle: "The document, count or record that would confirm it.",
-  would_refute: "The one that would refute it.",
+  story: ["Four paragraphs. The whole of what the card shows. See 'How it is told' below."],
+  summary: "Two to four paragraphs, pattern style: what was seen, with its figures. Not displayed.",
+  implications: "What it would mean if it holds. Not displayed.",
+  missing: "What has not been done. Not displayed.",
+  would_settle: "The document, count or record that would confirm it. Not displayed.",
   countries: [ { iso3: "ISO3", role: "short", note: "what was seen there" } ],
   case_ids: ["case-id", ...],
   looked_at: "How much has been read so far.",
@@ -94,6 +98,48 @@ reads both, and `countries` is the field to write. Entries written before that f
 `places` array as well; leave it. Every id must exist in `window.CASES` — check
 before committing, because a bad id renders as a missing chip.
 
+## How it is told: one continuous rundown
+
+The owner's instruction, 14 Nov 2026: *continuous organic rundowns written in captivating storytelling
+manner for novices, like a scary story, not categorical snippets like What would refute it, What would
+settle it, etc.* And on the writing the first thirteen were given: *the writing is horrible*. It was
+rewritten from scratch, not edited, against the four guides in the owner's GMO-map repo
+(`guides/*.pdf`), which are the house voice for this kind of prose.
+
+**Four paragraphs, in this order, with no headings between them:**
+
+1. What is probably happening, hedged in the sentence itself, **and why it matters to the reader**,
+   said plainly. A novice must never reach the end of a paragraph wondering what the point was.
+2. Why it is likely: the measured regularity, with its figures, and the documented case on this map
+   that shows the same shape.
+3. What makes it possible — how few people decide, which record is not published.
+4. What would settle it, as plain sentences naming the documents or the count.
+
+**Spell out every implied connection.** If eighty-five per cent of the votes are needed and one
+member holds more than fifteen per cent, write the subtraction down. The reader is not to be left
+assembling the argument.
+
+**What not to do**, from the owner's instruction: no faux-gravitas, portentous phrasing, manufactured
+significance, contrived contrasts, repetitive sentence rhythms or formulaic transitions. Named
+offenders to avoid reinventing: "What matters as much as...", "The trade is protected by...", "The map
+holds nothing on this, and says so." No aphorisms, no compressed metaphors, no sentence that exists to
+sound quotable, nothing written to seem literary or sophisticated. The unease comes from the
+specifics — how small the room is, how much money is in it, what nobody publishes — and never from an
+adjective, a rhetorical question or a one-line punch at the end. It should read as though a thoughtful
+person wrote it first, not as though AI prose was edited to sound human.
+
+Working length is about 400 to 500 words. The thirteen here run 392 to 527. Figures and quotes carry
+the weight, so cut adjectives before cutting a number.
+
+**Quoting.** One quote per source, under fifteen words, and paraphrase everything else from that
+source. Several of these entries previously took three or four quotes from one charter or one paper.
+
+**Stale counts are a live risk.** The prose repeats totals that later rounds move. Round 22 took the
+map from 1,072 cases to 1,093, from 127 countries to 129, from 1,138 company names to 1,177, and it
+moved Ghana 16 to 17, Uganda 24 to 25 and Senegal 13 to 14 — all of which were still being asserted
+in these entries until they were rewritten. **Recount every map-derived figure in `window.CASES`
+before publishing a round**, and prefer a count that was measured to one that was inherited.
+
 ## Writing one
 
 Plain, novice-friendly wording, short sentences, figures rather than characterisations, the same
@@ -103,7 +149,7 @@ standard as a card. Four things to avoid:
   implications are what it might mean. Keep them in their own fields.
 - **Do not count a search of the cards as a count of the world.** Say which it is.
 - **Do not let one become a lead list in disguise.** If the next step is research, it goes in the
-  handoff's queue as well, and `would_settle` says what that research would settle.
+  handoff's queue as well, and the story's last paragraph says what that research would settle.
 - **Do not write one from a single case.** One case is a card. Two is a coincidence. The six that are
   there rest on between four cases and three independent research batches.
 
@@ -148,3 +194,22 @@ fields naming documents that would never be released (room documents, committee 
 records, supervision files, administration agreements), all rewritten onto published records.
 **A `would_settle` that names an unobtainable document is not a test, and writing it is the commonest
 way this field goes wrong.**
+
+## The rewrite of 14 Nov 2026
+
+All thirteen stories were written from scratch in one pass, from the figures already checked in the
+`summary`, `missing`, `would_settle` and `countries` fields, so no new sourcing was done and no new
+claim entered. Every figure in the new prose was then matched mechanically against those fields: one
+did not match, a derived "no other member is above 7 per cent", and it was replaced with the figure
+the source actually gives, Japan's 6.88 per cent. `would_refute` was deleted from all thirteen,
+`detailHyp()` now renders `story` alone, and the tooltip over the section heading was rewritten,
+since it had described the labelled rows that are gone.
+
+**Four of the thirteen still argue from this map's own method rather than from the world**:
+`site-people-lived-on`, `lender-record-understates`, `state-bodies-not-companies` and
+`thin-means-no-register`. Each was rewritten so its first paragraph states a claim about the world —
+the lender writes down in advance whether a project will take anyone's home; the published verdict on
+a project is cleaner than the staff report under it; the body that takes the land is usually an arm of
+the borrower's own state; blank space on the map means no register exists, not that nobody was hurt.
+If the owner would rather they went, the sibling infiltration map retired its equivalents to its
+handoff and a project doc, which is where that kind of writing usually belongs.
