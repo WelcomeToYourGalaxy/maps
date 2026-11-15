@@ -1,0 +1,218 @@
+{
+  "gold": [
+    {
+      "cb_iso3": "IRQ",
+      "custodian": "Central Bank of Iraq vault, Baghdad",
+      "custodian_as_stated": "Gold reserve at CBI vault",
+      "custodian_hq_city": "Baghdad",
+      "custodian_hq_iso3": "IRQ",
+      "source_title": "Central Bank of Iraq, Financial Statements for the year ended 31 December 2025, note 4 'Gold reserve and gold revaluation reserve'",
+      "source_url": "https://cbi.iq/static/uploads/up/file-178383920232205.pdf",
+      "source_quote": "Gold reserve at CBI vault 753,950 ... Gold coins at CBI vault 5,926",
+      "as_of": "31 December 2025",
+      "notes": "The note splits the holding into three lines: 'Gold reserve abroad' (IQD 30,733,538m), 'Gold reserve at CBI vault' (IQD 753,950m) and 'Gold coins at CBI vault' (IQD 5,926m). Only the CBI's own vault is named; the note names no institution for the gold held abroad, so no record is filed for that part."
+    },
+    {
+      "cb_iso3": "RUS",
+      "custodian": "Central Bank of the Russian Federation vaults, Russia",
+      "custodian_as_stated": "CBR vaults in Russian territory",
+      "custodian_hq_city": "Moscow",
+      "custodian_hq_iso3": "RUS",
+      "source_title": "Interfax, 'CBR has taken no gold out of Russia, it is all in regulator's storage facilities', quoting the Bank of Russia",
+      "source_url": "https://interfax.com/newsroom/top-stories/77385/",
+      "source_quote": "All gold from our foreign exchange reserves is in CBR vaults in Russian territory.",
+      "as_of": "2022",
+      "notes": "A statement by the Bank of Russia itself, quoted in the report. The Bank's own Annual Report 2025 says only that the Bank 'has access to the assets in Chinese yuan, gold bars, and foreign cash stored in Russia' - country-level, naming no institution - so the quoted statement is the record."
+    },
+    {
+      "cb_iso3": "MWI",
+      "custodian": "Federal Reserve Bank",
+      "custodian_as_stated": "the Federal Reserve Bank",
+      "custodian_hq_city": "New York",
+      "custodian_hq_iso3": "USA",
+      "source_title": "Reserve Bank of Malawi, Annual Report and Accounts for the year ended 31 December 2025, note 6 'Gold Reserves'",
+      "source_url": "https://www.rbm.mw/Home/GetContentFile/?ContentID=63680",
+      "source_quote": "The Bank holds monetary gold on deposit with the Federal Reserve Bank.",
+      "as_of": "31 December 2025",
+      "notes": "The note states the whole holding, 12,836.998 ounces (K95,205 million at 31 December 2025), is on deposit with the Federal Reserve Bank. The note says 'the Federal Reserve Bank' without a city; the Federal Reserve Bank of New York is the Fed's gold custodian, but the document does not name the city, so custodian_hq_city is an inference and the stated wording is kept in custodian_as_stated. 'On deposit with' rather than 'in custody with'."
+    },
+    {
+      "cb_iso3": "COM",
+      "custodian": "Banque Centrale des Comores strongroom, Moroni",
+      "custodian_as_stated": "la Serre de Moroni",
+      "custodian_hq_city": "Moroni",
+      "custodian_hq_iso3": "COM",
+      "source_title": "Banque Centrale des Comores, Rapport du commissaire aux comptes et etats financiers au 31 decembre 2024, note 5 'Avoirs en or'",
+      "source_url": "https://banque-comores.km/uploads/Rapport-CAC-BCC-2024(3).pdf",
+      "source_quote": "Les avoirs en or de 714 Millions KMF au 31 decembre 2024 sont constitues des 18 lingots d'or detenus dans la Serre de Moroni.",
+      "as_of": "31 December 2024",
+      "notes": "The whole holding is 18 gold bars kept in the Bank's own strongroom ('la Serre') in Moroni, the BCC's head office city. The note names the Banque de France only as the source of the year-end gold price, not as a custodian. Accented characters in the quote were transliterated; the original reads 'detenus dans la Serre de Moroni'."
+    }
+  ],
+  "not_found": [
+    {
+      "iso3": "USA",
+      "note": "Treasury's 'Status Report of U.S. Government Gold Reserve' is no longer served at fiscal.treasury.gov/reports-statements/gold-report/<YY-MM>.html (all month paths 302-redirect to a generic Reports index) and the fiscaldata.treasury.gov API endpoint for the gold_reserve dataset timed out and then returned a 503 error page twice. The dataset landing page is https://fiscaldata.treasury.gov/datasets/status-report-government-gold-reserve/u-s-treasury-owned-gold - needs a hand check. Not filed from memory: the depository-by-depository figures (Fort Knox, West Point, Denver, FRBNY) must come from that document."
+    },
+    {
+      "iso3": "QAT",
+      "note": "Qatar Central Bank Annual Report 2020 (full PDF read): gold appears only as a balance-sheet and reserves line ('Gold 12,572'); no custody note, no institution named."
+    },
+    {
+      "iso3": "CHL",
+      "note": "Banco Central de Chile, Estados financieros 2024 (full PDF read, note 7d and the 'Oro monetario' definition): gold valued at the London Gold Fixing, no custodian or storage location named. Confirmed blank."
+    },
+    {
+      "iso3": "UKR",
+      "note": "National Bank of Ukraine consolidated financial statements 2024 (full PDF read): the gold note says only 'gold held in foreign banks' and 'Short-term deposits in gold'; no institution named. Confirmed blank."
+    },
+    {
+      "iso3": "EST",
+      "note": "Eesti Pank Annual Report 2019, Note 1 'Gold and gold receivables' (full PDF read): 8,250.171 ounces, no custodian or location named. Confirmed blank."
+    },
+    {
+      "iso3": "FJI",
+      "note": "Reserve Bank of Fiji Annual Report August 2023-July 2024 (full PDF read, accounting policy 2(f) 'Gold' and all gold tables): valuation only, no custodian named. Confirmed blank."
+    },
+    {
+      "iso3": "ISL",
+      "note": "Central Bank of Iceland Annual Report 2022, Note 14 'Gold' (full PDF read): 63,797 ounces, no custodian named. The Bank's own explainer page 'Why does the Central Bank have gold and where is it stored' (cb.is / indicators.cb.is) is a JavaScript shell that returns no text to curl or WebFetch - needs a hand check; BullionStar reports the Bank says its gold is at the Bank of England, citing CBI statistics metadata and the 2014 annual report, but that is secondary and unverified."
+    },
+    {
+      "iso3": "MKD",
+      "note": "National Bank of the Republic of North Macedonia Annual Report 2024 (read in two WebFetch passes covering the first 200,000 of 349,275 characters, including the foreign reserves management section): gold's share of reserves and a 'special tranche to manage gold' are given, but no custodian or storage location. Confirmed blank for the part read."
+    },
+    {
+      "iso3": "ALB",
+      "note": "Bank of Albania Financial Statements 2024, Note 10 'Monetary gold' (full PDF read): 'The monetary gold is placed in current accounts (2023: current accounts) with foreign banks.' No institution named. Confirmed blank."
+    },
+    {
+      "iso3": "MLT",
+      "note": "Central Bank of Malta Annual Report 2017, note A1 'Gold and gold receivables' (full PDF read): 'The Bank's gold balances consist of correspondent accounts with foreign banks and holdings with counterparties.' No institution named. Confirmed blank."
+    },
+    {
+      "iso3": "ABW",
+      "note": "Centrale Bank van Aruba Financial Statements 2025 and Operational Report 2024 (both full PDFs read, incl. section 2.3.3 'The CBA's gold holdings' and the 'Gold (1)' note): 111,294.165 fine troy ounces, valuation only, no custodian or location named. Confirmed blank."
+    },
+    {
+      "iso3": "ARE",
+      "note": "Central Bank of the UAE Annual Report 2024 (full PDF read): 'Gold bullion' appears only as a balance-sheet line (AED 22,982m); no custody note. Confirmed blank. The 2025 report URL returned by search (centralbank.ae/media/pjimtxfq/annual-report-2025-en.pdf) 404s."
+    },
+    {
+      "iso3": "BIH",
+      "note": "Central Bank of Bosnia and Herzegovina press item 1409 (Governor Senad Softic's answers to Vecernji list, 8 October 2021) read in full: gives 96,000 ounces of gold and the reserve structure but names no custodian for the gold; 'cash in the CBBH vaults' refers to banknotes, not gold. Confirmed blank for that source."
+    },
+    {
+      "iso3": "MOZ",
+      "note": "Banco de Mocambique Demonstracoes financeiras 2025, Nota 8 'Ouro' (full PDF read): the single line is 'Ouro em moedas e barras - No estrangeiro' (abroad), 126,575 ounces, naming no institution. Confirmed blank."
+    },
+    {
+      "iso3": "TTO",
+      "note": "Central Bank of Trinidad and Tobago Annual Report 2025 (full PDF read, accounting policy 's. Gold holdings' and all gold tables): valuation only; the only 'custodian' references are to securities pricing. Confirmed blank."
+    },
+    {
+      "iso3": "KGZ",
+      "note": "National Bank of the Kyrgyz Republic consolidated financial statements 2025, Note 6 'Monetary gold' (full PDF read): 'Gold in accounts with foreign banks and in bullion' and a concentration disclosure giving only the banks' Fitch rating (A+). No institution named. Confirmed blank."
+    },
+    {
+      "iso3": "UZB",
+      "note": "Central Bank of Uzbekistan Annual Report 2025 (full PDF read): gold is covered at length as a share of reserves and as purchases from domestic producers, but no custodian or storage location is named. Confirmed blank."
+    },
+    {
+      "iso3": "THA",
+      "note": "Bank of Thailand: the Reserve Management page names a custodian only for currency deposits ('money deposits at a custodian outside the Kingdom'), not gold. BullionStar's FOI survey records the BoT as refusing to disclose its gold storage arrangements. Treat as a bank that withholds."
+    },
+    {
+      "iso3": "SGP",
+      "note": "Monetary Authority of Singapore: recorded in BullionStar's survey of FOI-style requests as refusing to disclose gold storage arrangements. No annual-report gold note naming a custodian found."
+    },
+    {
+      "iso3": "MYS",
+      "note": "Bank Negara Malaysia: recorded in BullionStar's survey as refusing to disclose gold storage arrangements."
+    },
+    {
+      "iso3": "PRY",
+      "note": "Banco Central del Paraguay: recorded in BullionStar's survey as refusing - 'That information is classified and cannot be disclosed.'"
+    },
+    {
+      "iso3": "KWT",
+      "note": "Central Bank of Kuwait: recorded in BullionStar's survey as not replying to a storage-location request; no gold-custody note found in its publications."
+    },
+    {
+      "iso3": "JOR",
+      "note": "Central Bank of Jordan: recorded in BullionStar's survey as not replying to a storage-location request. No CBJ annual-report or financial-statements PDF filename surfaced in search, so the cbj.gov.jo /EBV4.0/Root_Storage/AR/<name>.pdf path could not be used - needs a filename from the CBJ publications page by hand."
+    },
+    {
+      "iso3": "MAR",
+      "note": "Bank Al-Maghrib: recorded in BullionStar's survey as not replying to a storage-location request."
+    },
+    {
+      "iso3": "KHM",
+      "note": "National Bank of Cambodia: recorded in BullionStar's survey as not replying to a storage-location request."
+    },
+    {
+      "iso3": "KAZ",
+      "note": "National Bank of Kazakhstan: recorded in BullionStar's survey as not replying to a storage-location request; no institution found this round (country-level statement already read in an earlier round)."
+    },
+    {
+      "iso3": "OMN",
+      "note": "Central Bank of Oman annual report index (cbo.gov.om/Pages/AnnualReport.aspx) fails TLS verification through this sandbox's proxy and no CBO annual-report PDF URL was returned by search. Needs a hand check."
+    },
+    {
+      "iso3": "PAK",
+      "note": "State Bank of Pakistan: sbp.org.pk returns 403 to plain curl and WebFetch reported a client error on the Annual Accounts PDF (https://www.sbp.org.pk/publications/anu_stats/2020/Part-2/08-Annual Accounts of State Bank of Pakistan.pdf). The host has the document and is refusing automation - needs a hand check."
+    },
+    {
+      "iso3": "PER",
+      "note": "Banco Central de Reserva del Peru: bcrp.gob.pe serves an Incapsula bot wall to plain curl on the Memoria PDF (memoria-bcrp-2024-7.pdf). Needs a hand check. BullionStar only infers a Bank of England share from the 2013 Memoria, which is not a record."
+    },
+    {
+      "iso3": "BDI",
+      "note": "Banque de la Republique du Burundi: bcb.bi returned HTTP 429 (rate-limited) on its financial statements PDF. The host has the document and is refusing automation - needs a hand check or a later retry."
+    },
+    {
+      "iso3": "EGY",
+      "note": "Central Bank of Egypt: no CBE annual report or financial statements PDF naming a gold custodian surfaced in search (results were commercial Egyptian banks). Not reached this round."
+    },
+    {
+      "iso3": "TUN",
+      "note": "Banque Centrale de Tunisie: no BCT annual report PDF on bct.gov.tn surfaced in search (results were commercial Tunisian banks). Not reached this round."
+    },
+    {
+      "iso3": "HND",
+      "note": "Banco Central de Honduras: search returned only opaque portalunico.iaip.gob.hn/ver_archivo/<base64> links with no titles, so the BCH financial statements could not be identified. Not reached this round."
+    },
+    {
+      "iso3": "DOM",
+      "note": "Banco Central de la Republica Dominicana: search returned Banreservas (a commercial bank) and untitled repository bitstreams, not the BCRD's own financial statements. Not reached this round."
+    },
+    {
+      "iso3": "SUR",
+      "note": "Centrale Bank van Suriname: search returned only weekly condensed balance sheets (cbvs.sr/.../Weekbalans/), which carry a single gold line and no custody note. The annual financial statements were not located. Not reached this round."
+    },
+    {
+      "iso3": "SYR",
+      "note": "Reuters reported (December 2024) that about 26 tonnes of gold remained in the Central Bank of Syria's vaults in Damascus, but the report is sourced to unnamed officials and quotes no document, so under the row's rules it is not a record. Needs a document."
+    },
+    {
+      "iso3": "CHN",
+      "note": "People's Bank of China: no custody disclosure found. The In Gold We Trust 2025 repatriation chapter says China 'promptly moves it back to Beijing' but cites no PBoC document. Not filable."
+    },
+    {
+      "iso3": "IRQ",
+      "note": "Partial blank worth recording: the Central Bank of Iraq's 2025 note 4 names its own vault (filed) but gives the much larger 'Gold reserve abroad' line (IQD 30.7 trillion of 31.5 trillion) with no institution. The abroad custodian is still open."
+    },
+    {
+      "iso3": "BHR",
+      "note": "Central Bank of Bahrain Annual Report 2023 incl. CBB financial statements (full PDF read, 204,347 characters): the string 'gold' does not appear anywhere in the document, so no gold note and no custodian. Confirmed blank for this source."
+    },
+    {
+      "iso3": "PNG",
+      "note": "Bank of Papua New Guinea Annual Report 2024, Note 1(k) 'Gold' (read in two WebFetch passes covering the first 200,000 of 231,931 characters): 'Gold reserves placed on deposit with a financial institution' - the institution is not named. Confirmed blank."
+    },
+    {
+      "iso3": "DZA",
+      "note": "Banque d'Algerie: search surfaced only its rapports-annuels HTML index (bank-of-algeria.dz/rapports-annuels/) and Algerian commercial banks, no annual-report PDF. Not reached this round."
+    }
+  ]
+}

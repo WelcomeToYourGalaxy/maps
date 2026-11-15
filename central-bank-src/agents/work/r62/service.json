@@ -1,0 +1,48 @@
+{
+ "auditors": [],
+ "printers": [
+  {
+   "entity": "Giesecke & Devrient",
+   "entity_type": "firm",
+   "entity_hq_city": "Munich",
+   "entity_hq_iso3": "DEU",
+   "cb_iso3": "GEO",
+   "relation": "prints its banknotes",
+   "detail": "At the National Bank of Georgia's own presentation of the 200 lari note, Giesecke & Devrient's executive director Walter Schlebusch said the note had been produced at his company; the record is for that denomination, not confirmed for the whole lari series.",
+   "as_of": "2007",
+   "source_title": "The 200 Lari is One of the Most Secured Banknotes in the World - National Bank of Georgia, 31 March 2007",
+   "source_url": "https://nbg.gov.ge/en/media/news/the-200-lari-is-one-of-the-most-secured-banknotes-in-the-world",
+   "quote": "The 200 lari banknote was produced at Giesecke & Devrient and it is one of the most secured banknotes in the world"
+  }
+ ],
+ "not_found": [
+  {
+   "iso3": "EGY",
+   "note": "No IMF Central Bank Transparency Code review exists for Egypt (checked imf.org/en/data/cbt/reports index + index.json by curl, and searched the Staff Country Report series; the only published CBT Detailed Review Reports found are Oman 2025, Montenegro 2025, Kosovo 2026 and Curacao/Sint Maarten 2026). Downloaded and grepped the current IMF Egypt report (imf.org/-/media/files/publications/cr/2026/english/1egyea2026002.pdf.md): the 'Capacity to repay the IMF and safeguards' section records only mixed CBE safeguards progress and names no audit firm. cbe.org.eg answers the F5 'Request Rejected' stub to plain curl (200, 269 bytes) on both the home page and the annual-report path - it has the page and refuses automation, so the CBE annual report with its two auditors' reports needs a hand check. Searched Arabic and English for the auditors' names via Cairo outlets (en.firstbankeg.com/8040 read in full - reports the FY2023/24 CBE figures but names no auditor), fra.gov.eg, bankygate.com, alborsaanews, amwalalghad. Also read KPMG Hazem Hassan's Egypt transparency report 2015 and RSM Egypt's 2025 transparency report in full: both mention the CBE only as the regulator keeping the bank-audit register, not as an audit client; EY Egypt's 2021 transparency report has no mention of the CBE."
+  },
+  {
+   "iso3": "MDG",
+   "note": "No IMF Central Bank Transparency Code review for Madagascar. Downloaded by curl and grepped two IMF Madagascar reports: 1mdgea2021001 and the 2025 report (imf.org/-/media/files/publications/cr/2025/english/1mdgea2025001-print-pdf.pdf, p.8348 of extracted text) - both say only 'The BFM maintains strong external audit arrangements and the audit opinions ... are unmodified' and name no firm, as the brief anticipated. banky-foibe.mg, www.banky-foibe.mg and bfm.mg all return curl code 000 with the egress proxy reporting connect_unreachable. Searched French and Malagasy for an actual appointment (commissaire aux comptes, auditeur externe, cabinet) and for Cour des Comptes mentions: nothing names a firm."
+  },
+  {
+   "iso3": "MRT",
+   "note": "No IMF Central Bank Transparency Code review for Mauritania. Downloaded by curl and grepped the current IMF Mauritania staff report (imf.org/-/media/files/publications/cr/2026/english/1mrtea2026001-source-pdf.pdf): paragraphs 26, 28 and 49 cover the 2023 safeguards assessment and the BCM's commitment to 'regular audits by an external auditor of the quantitative performance criteria', naming no firm. bcm.mr is reachable by curl and robots-open; its sitemap.xml lists /page/rapport-financier/922 and /925, but every page returns the same 2,568-byte single-page-app shell. Read the site's JS bundle (/assets/index-B9nUG0IK.js): all content and all documents come from the Drupal JSON:API at bo.bcm.mr (jsonapi/node/..., jsonapi/media/document/...) and from bo.bcm.mr/sites/default/files/. A curl request to bo.bcm.mr (both a known file URL from the bundle and /jsonapi) was denied by the sandbox permission classifier, so the BCM financial report could not be opened - this host needs a hand check or that permission. ww2.bcm.mr, named in robots.txt, answers 503."
+  },
+  {
+   "iso3": "BLR",
+   "note": "No IMF Central Bank Transparency Code review for Belarus. nbrb.by, www.nbrb.by (including a direct annual-report document path) all return curl code 000 - unreachable, as last round found. pravo.by, which carries the news items about the President approving the National Bank's annual report, answers 403 to curl: it has the pages and refuses automation, so it needs a hand check. Searched Russian for a presidential decree or resolution designating an audit organisation for the National Bank, and for 'аудиторское заключение' on its consolidated financial statements: only commercial-bank reports came back. No firm named anywhere reachable."
+  },
+  {
+   "iso3": "VEN",
+   "note": "No IMF Central Bank Transparency Code review for Venezuela. bcv.org.ve returns curl code 000. The one live 2026 lead was run down: the BCV's 27 April 2026 announcement that the US and Venezuelan governments had each contracted auditing firms over the use of Venezuela's external resources (read eldiario.com/2026/04/27/bcv-firmas-auditoras-para-el-uso-de-recursos-financieros in full by curl). BCV president Luis Perez Gonzalez names no firm - 'no ofrecio mas detalles sobre la contratacion de estas firmas auditoras' - and in any case that is an engagement over the use of external resources, not an audit of the bank's own financial statements, so it would not belong in this row. lapatilla.com answers 403 to curl."
+  },
+  {
+   "iso3": "MDA",
+   "note": "Printer. monitorul.fisc.md/en/editorial/bnm_modernizeaza_bancnotele.html answers 403 to curl (Cloudflare 'Just a moment') and was then read with WebFetch: it names no printer and no banknote-paper maker. Also read the National Bank of Moldova's own announcements of the modernised 1-500 leu notes (bnm.md/en/print/node/52461, 11 Oct 2015) and of the modernised 5 leu note (bnm.md/en/print/node/56160, 11 Dec 2017) in full by curl: both describe the new security features only and name no firm."
+  },
+  {
+   "iso3": "ZWE",
+   "note": "Printer. Read mriguide.com's two 2026 items on the redesigned ZiG family and zimbabwenow.co.zw/articles/17159 in full by curl: all three say the notes will be printed on a better substrate and that production is advanced, and none names a printer or substrate supplier. heraldonline.co.zw answers 403 to curl and needs a hand check. No positive source for Fidelity Printers and Refiners printing Zimbabwe's notes was found, and a previously noted source has Fidelity denying it, so nothing was filed."
+  }
+ ]
+}

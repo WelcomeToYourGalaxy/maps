@@ -1,0 +1,10 @@
+# Build and scratch artifacts. Each line is here because it was accidentally
+# staged at least once; the source copy is made with tar, which carries
+# everything the working tree holds.
+dl/                      # agent download cache, ~21MB (round 60)
+__pycache__/
+dist/                    # the built page belongs at the repo ROOT, not here
+shots/                   # shot2.py screenshots
+geo/cities1000.txt       # 31MB unzip of the committed cities1000.zip (round 62)
+agents/work/*/t/         # hooked builds and page copies, ~20MB a round (round 62)
+agents/work/*/boxes.json # the box dump, ~5.8MB a round (round 62)

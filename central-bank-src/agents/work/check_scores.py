@@ -32,6 +32,26 @@ PCTL  = re.compile(r'(Less|More) exposed than (\d+)% of the (\d+) places')
 # the exposure score as a paragraph states it: the first bare "NN of 100".
 # (?<![\d.]) keeps it off "72.4 of 100" and "3.99 of 10".
 SCORE = re.compile(r'(?<![\d.])(\d+)(?= of 100)')
+# Three other indices are also printed as "NN of 100": the World Bank control of
+# corruption score, the Corruption Perceptions Index and the financial secrecy
+# score. (?<![\d.]) only keeps the matcher off the decimal forms ("72.4 of 100");
+# the integer forms ("financial secrecy is 77 of 100") still match, and taking the
+# first match blindly made this tool report 17 paragraphs that were in fact right
+# -- and, worse, would have had --fix overwrite another index with the exposure
+# score. So a match is disqualified when its OWN sentence names another index.
+# The window is the clause since the last full stop, not a fixed number of
+# characters: Panama states a secrecy score in one sentence and its exposure
+# score in the next, and a fixed lookback swallows the sentence boundary.
+OTHER_INDEX = re.compile(r'corruption|secrecy|Perceptions', re.I)
+
+
+def find_score(text):
+    """First "NN of 100" in text that is the exposure score, or None."""
+    for m in SCORE.finditer(text):
+        clause = text[:m.start()].rsplit('.', 1)[-1]
+        if not OTHER_INDEX.search(clause):
+            return m
+    return None
 # "leaving it less exposed than 95 percent of the places measured"
 PARA_PCTL = re.compile(r'\b(less|more)(?P<mid> exposed than )(\d+)(?P<tail> ?(?:percent|per cent|%))', re.I)
 
@@ -53,14 +73,14 @@ def main():
             continue
         m = PANEL.search(box)
         if not m:
-            if SCORE.search(para):
+            if find_score(para):
                 no_panel.append(k)        # paragraph quotes a score the box no longer shows
             continue
         checked += 1
         score = int(m.group(1))
         new = para
 
-        ms = SCORE.search(new)
+        ms = find_score(new)
         if ms and int(ms.group(1)) != score:
             stale_score.append((k, int(ms.group(1)), score))
             new = new[:ms.start()] + str(score) + new[ms.end():]
