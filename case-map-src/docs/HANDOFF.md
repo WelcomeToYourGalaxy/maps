@@ -1,6 +1,6 @@
 # Globalization Case Map: handoff for a new chat
 
-Last updated: 14 Nov 2026 (round 22 merged and pushed; the suspected patterns rewritten as continuous rundowns). Replaces every earlier handoff.
+Last updated: 15 Nov 2026 (the suspected patterns replaced and moved under the patterns). Replaces every earlier handoff.
 
 ## The aim, settled 14 Nov 2026 — a defensible big picture, not a bigger map
 
@@ -29,16 +29,14 @@ read from the rendered panel on 14 Nov):
 | Foreign company projects | 9 | 20,032 | 0.04% |
 | Aid activities | 35 | 1.5 million | 1 in 42,857 |
 
-**The suspected patterns were rewritten on 14 Nov 2026 and the writing standard changed.** The owner
-rejected the labelled-field card ("categorical snippets") and the prose itself ("the writing is
-horrible"). All thirteen are now one continuous rundown each, written for a novice, in the voice of
-the four guides in the owner's GMO-map repo; `would_refute` is deleted from the data by the owner's
-ruling; `detailHyp()` renders the story alone. `case-map-src/docs/HYP.md` carries the full standard,
-the banned-style list and the order a story must cover. **It also carries a lesson that applies
-beyond that file: round 22 moved the map's totals and the suspected patterns were still asserting the
-old ones** — 1,072 cases for 1,093, 127 countries for 129, 1,138 company names for 1,177, Ghana 16
-for 17, Uganda 24 for 25, Senegal 13 for 14. Any text that repeats a map-derived total has to be
-recounted against `window.CASES` at the end of a round.
+**The suspected patterns were replaced on 15 Nov 2026, all thirteen, and the standard changed
+again.** The owner ruled that none may be built from this map's own data or method, that the dry ones
+do not belong, and that they must be big, well-known suspicions in the main vein of the map, built
+from the public record (Perkins's disclosure is the model), told as continuous stories. Thirteen new
+ones are live, each with its sources on the card, and they now sit inside "Patterns Behind the Scenes"
+under a "Suspected patterns" sub-heading rather than in their own row. **Read `docs/HYP.md` before
+touching one.** The retired thirteen are archived in `rounds/r27_hyps_retired.json`; the six
+data-derived ones survive below as research leads, which is what they always were.
 
 **Three facts decide what to work on, and none of them is the case count.**
 
@@ -78,58 +76,25 @@ claims — thickest in 2004-2013 World Bank lending, every published complaint r
 resting on the lender's own documents. **If a round changes any of those, change that block in the
 same round.** It is prose and nothing computes it, so nothing will catch it going stale.
 
-## Suspected patterns are a new kind of content on the map, added 14 Nov 2026
+## Suspected patterns — see `docs/HYP.md`
 
-**`window.HYPS` in `base.html`, rendered under the patterns in the left-hand box as "Suspected
-patterns", one card each through `detailHyp()`. Brief: `docs/HYP.md`, which is the thing to read
-before writing or changing one.** Six are written and none is tested.
+`window.HYPS` in `base.html`; rendered by `hypsHTML()` at the bottom of the patterns section and by
+`detailHyp()` as a card with the story and a sources list. `docs/HYP.md` holds the owner's words, the
+rules, how a story is told and the list of the thirteen. Every batch gets a separate checker before
+merge; the 15 Nov batch's check log is `rounds/r27_hyps_check.json`.
 
-**What it is, and what it is not.** It is the same kind of write-up as a pattern, about something the
-work has seen more than once and cannot yet state as a finding: a title that states the thing, a
-summary with the figures, what it would mean if it holds, the countries and what was seen in each.
-**It is not a question-and-answer format.** An earlier version of this was written as questions and
-the owner rejected that: a suspected pattern reads like a pattern, and the dashed card and the "not
-documented" kicker carry the uncertainty instead of the prose. What `PATS` does not have is three
-fields — `missing`, `would_settle`, `would_refute`.
+**Research leads that used to be suspected patterns.** These came out of rounds 19 to 22 and are about
+how the lending record reads, not about the world. They are worth acting on in research rounds and
+must not go back on the page as suspected patterns:
 
-**Why it exists.** The map had nowhere to put a pattern it was not sure of. A researcher seeing the
-same shape on four cards could write it up as a pattern, which claims more than four cards carry, or
-leave it in a round report where the next chat has to rediscover it. Rounds 19 to 22 each produced
-findings of exactly that kind — the reviews dropping what their own reports record, the companies
-field filling with ministries, the site-people-lived-on rule, the role-field audit.
-
-**The rules, in full in `docs/HYP.md`:** never a finding and nothing on the map rests on one; title
-written as a statement; every figure from this map's own data or a document already cited on a card;
-`would_settle` and `would_refute` both required and both naming a document, a count or a record; a
-confirmed one graduates into `PATS` with `status: "documented"` and `graduated_to` left behind; a
-refuted one stays with `status: "refuted"` and the reason. **It is deliberately not a filter** —
-`setHyp()` leaves every mark on the map where it is, unlike `setPat()`. `S.hyp` holds the open one and
-`deselect()` clears it and rebuilds the panel.
-
-**Do not reach across maps for the shape.** Other maps in this repo have their own suspected-pattern
-data in their own shape. They are separate work on separate subjects and the owner has said so
-plainly: do not try to unify them, and do not import another map's field names here.
-
-**The six, and what each would cost to settle.** Three need no new fetches, so no API limit blocks them:
-
-| id | What would settle it | New fetches |
+| Lead | What would settle it | New fetches |
 | --- | --- | --- |
-| `site-people-lived-on` | Apply the resettlement-plan screen to the queue before research, then compare predicted against actual | no, it is round 22's lead rule already |
-| `thin-means-no-register` | Divide per-country case counts by per-country lending; WDI and IDS are both on the map | no |
-| `state-bodies-not-companies` | Sort all 1,138 company names into state bodies, private firms and special-purpose vehicles | no |
-| `lender-record-understates` | Count the omissions across every paired completion report and evaluation review, recording which way each runs | only where a cache has lapsed |
-| `works-before-payment` | Code each ICIJ case for two dates: works begun on the ground, compensation paid | yes |
-| `compensation-into-court-deposits` | The deposit provision in each country's land acquisition statute, then a count across the Indian road cases | yes |
-
-**Two of them bear directly on open items in this file.** `state-bodies-not-companies` is the counted
-version of item 12, whether `companies` should be split — settle it and the owner has the number the
-decision needs. `lender-record-understates` is the general form of what the lender-role audit found on
-19 of 46 cases and of the three reviews round 21 caught gutting their own reports.
-
-**Write new ones as rounds produce them.** The test for whether a round finding belongs here rather
-than in a round report: would a researcher two rounds from now act differently if they knew it, and is
-there a document that would settle it? Both yes, it is a suspected pattern. A finding that only tells
-a writer how to read a document is a brief note instead, and goes in BRIEF.
+| Whether a case exists turns on whether the works needed ground people lived on | Apply the resettlement-plan screen to the queue before research, then compare | no |
+| Thin regions mean no register, not no harm | Divide per-country case counts by per-country lending | no |
+| The body taking the land is usually a state arm, not a company | Sort the company names into state bodies, firms and vehicles (bears on item 12) | no |
+| Evaluation reviews drop what completion reports record, and the omissions run one way | Count omissions across every paired report and review | only where a cache has lapsed |
+| Works came first and payment after | Code each ICIJ case for works-begun and compensation-paid dates | yes |
+| Compensation paid into court deposits the owner never reaches | The deposit provision in each land acquisition statute | yes |
 
 ## Getting to the big picture in fewer rounds — the plan, 14 Nov 2026
 
@@ -297,24 +262,12 @@ the confirmed-displacement table open**, down from 234. Yield across six tranche
    exist and only 46 have been audited.
 6. AidData's 793 rows, then the 181 open confirmed-displacement rows.
 
-## The suspected patterns were invisible, and are now their own section
+## Where the suspected patterns render
 
-`hypsHTML()` was being appended to the bottom of the patterns list inside `sec("pats", ...)` —
-below 24 pattern labels, inside a section that opens closed, inside the kind panel that also opens
-closed. The entries rendered and nobody could find them. They now have their own row in the
-left-hand box through `sec("hyps", "Suspected Patterns", hypsHTML())`; `sec()` reads `OPEN[id]` and
-the toggle listener records state by `data-sec`, so no registration was needed.
-
-`entryPts()` also read a flat `places` array and ignored `countries`, so a suspected pattern with
-empty `case_ids` flew nowhere however many countries it named. It now reads both. **`countries` is
-the field to write**; see `docs/HYP.md`.
-
-**The register changed too, and `docs/HYP.md` rules 9 and 10 carry it.** The owner's verdict on the
-first six was that they were "kind of small scale" — they described the lending record and this map's
-own research rather than the world — and asked for suspected patterns that are global or
-international and about who is arranging things behind the scenes. Seven were written and checked on
-that standard and are live; the eighth was cut. Read those two rules and the error list under "The
-thirteen that are there now" before writing another.
+`hypsHTML()` is appended inside `sec("pats", ...)` after the documented patterns, by the owner's
+request of 15 Nov 2026 that suspected patterns belong under the patterns category. (They briefly had
+their own `sec("hyps", ...)` row; that row is gone.) `entryPts()` reads `case_ids` first and falls back
+to `countries`.
 
 ## The lender-role audit: it was a pattern, not a coincidence
 

@@ -1,0 +1,750 @@
+{
+ "aid-cover-for-spies": {
+  "verdict": "pass_with_fixes",
+  "fixes": [
+   {
+    "field": "story[1]",
+    "find": "its first chief, Byron Engle, came from the CIA",
+    "replace": "its director from 1962 to 1973, Byron Engle, is described in published histories as a CIA operative",
+    "why": "No opened source says Engle came from the CIA. Wikipedia calls him a 'CIA operative and police reformer'; the map's own spy-agencies pattern says his CIA tie rests on one historian's account.",
+    "source_url": "https://en.wikipedia.org/wiki/Office_of_Public_Safety"
+   },
+   {
+    "field": "story[1]",
+    "find": "A CIA document describes the office as having a budget of more than $50 million and 400 advisers in 45 countries, and says Congress dismantled it in 1974 after hearings uncovered torture, disappearances and killings by US-equipped police.",
+    "replace": "By one historical count it sent about 1,500 advisers to at least 52 countries. Congress ended it in 1974, after Senator James Abourezk set out to expose its activities amid accusations that it taught torture.",
+    "why": "The CIA Reading Room URL loads only the reading-room home page (tried cia.gov and www.cia.gov, and its print view), so the $50m / 400 / 45 figures and the 'hearings uncovered torture, disappearances and killings' wording could not be checked. Replacement figures and wording are from the Wikipedia article already listed.",
+    "source_url": "https://en.wikipedia.org/wiki/Office_of_Public_Safety"
+   },
+   {
+    "field": "story[1]",
+    "find": "through shell companies and a foreign bank",
+    "replace": "through front companies in Spain and the Cayman Islands, paid through foreign banks",
+    "why": "AP says contractors 'set up front companies in Spain and the Cayman Islands' and financed it 'through foreign banks'; no single bank is named.",
+    "source_url": "https://www.nbcwashington.com/news/national-international/US-Secretly-Built-Cuban-Twitter-to-Stir-Unrest-253704791.html"
+   },
+   {
+    "field": "story[1]",
+    "find": "More than 68,000 Cubans used it before it disappeared in 2012, without being told who had made it.",
+    "replace": "By USAID's own count it had about 68,000 users (AP had reported at least 40,000) before it shut down in September 2012, and users were not told who had made it.",
+    "why": "68,000 is USAID's figure and is 'around', not 'more than'; AP reported 'at least 40,000 subscribers'. AP gives the end as September 2012.",
+    "source_url": "https://techcrunch.com/2014/04/07/usaid-our-cuban-twitter-clone-was-more-popular-than-reported"
+   },
+   {
+    "field": "story[2]",
+    "find": "congressional hearings in one",
+    "replace": "congressional pressure in one",
+    "why": "No opened source describes hearings that exposed OPS; Wikipedia describes Fulbright's criticism and Abourezk's effort to expose it.",
+    "source_url": "https://en.wikipedia.org/wiki/Office_of_Public_Safety"
+   },
+   {
+    "field": "story[2]",
+    "find": "has since gained about a dozen exemptions, according to a report reproduced by the Federation of American Scientists",
+    "replace": "had gained 'a dozen exemptions' by 1992, according to Senator Alan Cranston, whose remarks the Federation of American Scientists reproduces with a GAO report",
+    "why": "The 'dozen' figure is Senator Cranston's floor statement, not the GAO report, which says only 'numerous exemptions'. The count is as of 1992.",
+    "source_url": "https://irp.fas.org/gao/920300-train.htm"
+   },
+   {
+    "field": "story[3]",
+    "find": "the records a Senate committee demanded from USAID that year on its work in other countries",
+    "replace": "the records on ZunZuneo that the Senate Foreign Relations Committee demanded from USAID that year, in a review that was also to compare it with programmes elsewhere",
+    "why": "NBC: the committee asked USAID to turn over all records on the Cuban programme, as part of a wider review that would consider whether it matched programmes in other countries. It does not say records on other countries were demanded.",
+    "source_url": "https://www.nbcnews.com/news/latino/senate-orders-review-usaid-cuban-twitter-program-n77196"
+   },
+   {
+    "field": "would_settle",
+    "find": "the Senate Foreign Relations Committee's 2014 request for USAID civil-society programme records.",
+    "replace": "the records the Senate Foreign Relations Committee requested from USAID on ZunZuneo in 2014.",
+    "why": "Same as above: the request was for ZunZuneo records.",
+    "source_url": "https://www.nbcnews.com/news/latino/senate-orders-review-usaid-cuban-twitter-program-n77196"
+   },
+   {
+    "field": "countries[1].note",
+    "find": "more than 68,000 users",
+    "replace": "about 68,000 users by USAID's count",
+    "why": "See story fix.",
+    "source_url": "https://stabroeknews.com/2014/04/09/news/world/anti-government-action-goal-cuban-twitter-usaid-chief"
+   },
+   {
+    "field": "countries[2].note",
+    "find": "Office of Public Safety mission in Montevideo from 1965.",
+    "replace": "Office of Public Safety programme in Uruguay from 1964.",
+    "why": "Wikipedia: 'The OPS operated in Uruguay from 1964'. No source opened gives 1965.",
+    "source_url": "https://en.wikipedia.org/wiki/Office_of_Public_Safety"
+   }
+  ],
+  "add_sources": [
+   {
+    "title": "USAID: our Cuban Twitter clone was more popular than reported",
+    "publisher": "TechCrunch",
+    "year": 2014,
+    "url": "https://techcrunch.com/2014/04/07/usaid-our-cuban-twitter-clone-was-more-popular-than-reported"
+   },
+   {
+    "title": "Anti-government action not goal of 'Cuban Twitter' - USAID chief",
+    "publisher": "Reuters via Stabroek News",
+    "year": 2014,
+    "url": "https://stabroeknews.com/2014/04/09/news/world/anti-government-action-goal-cuban-twitter-usaid-chief"
+   },
+   {
+    "title": "US secretly built 'Cuban Twitter' to stir unrest (AP)",
+    "publisher": "NBC Washington",
+    "year": 2014,
+    "url": "https://www.nbcwashington.com/news/national-international/US-Secretly-Built-Cuban-Twitter-to-Stir-Unrest-253704791.html"
+   },
+   {
+    "title": "Senate orders review of USAID 'Cuban Twitter' program",
+    "publisher": "NBC News",
+    "year": 2014,
+    "url": "https://www.nbcnews.com/news/latino/senate-orders-review-usaid-cuban-twitter-program-n77196"
+   },
+   {
+    "title": "Teaching torture: the death and legacy of Dan Mitrione",
+    "publisher": "ZNetwork",
+    "year": null,
+    "url": "https://znetwork.org/znetarticle/teaching-torture-the-death-and-legacy-of-dan-mitrione/"
+   }
+  ],
+  "remove_sources": [
+   "https://cia.gov/readingroom/document/cia-rdp91-00587r000100110002-9",
+   "https://www.ajc.com/ap/secretly-built-cuban-twitter-stir-unrest/mukdN97BXrDNcPoxJrS7IM/"
+  ],
+  "notes": "CIA CREST URL serves only the reading-room home page (3 attempts, including the official print view); AJC copy of the AP story failed to load, replaced by the NBC Washington copy of the same AP story. Confirmed: hepatitis B cover campaign and Afridi (AlterNet, Bangor); deans' 'seven or more United Nations health workers ... gunned down' (AlterNet); May 2014 White House/Monaco pledge with Brennan's 'no operational use of vaccination programs' wording (Bangor); 'more than 1,000 pages of documents' (AP); USAID called it 'discreet', not covert (Reuters); USAID IG review July 2014 (AP/Washington Examiner); Guatemala 'largest in Central America' (Wikipedia); Brazil police training (ZNet: USAID trained over 100,000 Brazilian police). 'An arrest in Pakistan' is loosely supported: sources say Afridi was jailed and convicted, not that his arrest exposed the scheme. would_settle: the CIA records are realistic only through slow FOIA or a mandatory declassification review; the IG review and the Senate records are obtainable."
+ },
+ "forecasts-inflated-to-sell-loans": {
+  "verdict": "pass_with_fixes",
+  "fixes": [
+   {
+    "field": "story[1]",
+    "find": "chief economist at the Boston engineering firm Chas. T. Main in the 1970s",
+    "replace": "an economist at the Boston engineering firm Chas. T. Main in the 1970s, hired in 1971 as a junior economist and later, by his account, its chief economist",
+    "why": "Boston Magazine: hired early 1971 as a 'junior economist'; Wikipedia gives 'chief economist' only as Perkins's own account ('As chief economist ... Perkins said'). The map's own pattern calls him a junior economist from 1971.",
+    "source_url": "https://www.bostonmagazine.com/?p=2977"
+   },
+   {
+    "field": "story[2]",
+    "find": "In 2014 an Oxford team led by Bent Flyvbjerg",
+    "replace": "In 2014 an Oxford team, Atif Ansar, Bent Flyvbjerg and colleagues,",
+    "why": "The paper's lead author is Atif Ansar; neither ENR nor International Rivers says Flyvbjerg led it.",
+    "source_url": "https://www.internationalrivers.org/news/large-dams-are-uneconomic-scientific-study-finds/"
+   },
+   {
+    "field": "story[2]",
+    "find": "and one of the authors said dams backed by development banks did no better",
+    "replace": "and one of the authors, Atif Ansar, told International Rivers that dams backed by development banks did no better",
+    "why": "The remark comes only from International Rivers ('in a personal conversation'); naming the speaker and where he said it makes the attribution checkable.",
+    "source_url": "https://www.internationalrivers.org/news/large-dams-are-uneconomic-scientific-study-finds/"
+   },
+   {
+    "field": "story[2]",
+    "find": "saw its cost estimate rise from $2.6 billion to $11 to 12 billion.",
+    "replace": "saw its cost rise from $2.5 billion to over $10.5 billion, or over $15 billion by International Rivers' count.",
+    "why": "The Yacyretá card says: 'The cost rose from $2.5 billion to over $10.5 billion, or over $15 billion by International Rivers' count.' $2.6bn and $11-12bn are not on the card.",
+    "source_url": ""
+   },
+   {
+    "field": "story[3]",
+    "find": "The World Bank has opened its 1992 task-force files in its archives",
+    "replace": "The World Bank's evaluation office says the inside history of the 1992 task force is documented in the Bank's archives",
+    "why": "IEG says the history is 'documented in the archives'; it does not say the files have been opened.",
+    "source_url": "https://ieg.worldbankgroup.org/node/54367"
+   },
+   {
+    "field": "countries[0].note",
+    "find": "One of the countries where Perkins says inflated forecasts were used.",
+    "replace": "Central to Perkins's book, which claims President Jaime Roldós was killed for opposing the country's creditors.",
+    "why": "No opened source ties Ecuador to Perkins's forecast claim; Wikipedia ties Ecuador to the Roldós claim.",
+    "source_url": "https://en.wikipedia.org/wiki/Confessions_of_an_Economic_Hit_Man"
+   },
+   {
+    "field": "countries[1].note",
+    "find": "Perkins's first assignment for Chas. T. Main.",
+    "replace": "One of Perkins's early assignments for Chas. T. Main, by his account.",
+    "why": "Boston Magazine places Indonesia after his first 1971 training project; it does not call it his first assignment.",
+    "source_url": "https://www.bostonmagazine.com/?p=2977"
+   },
+   {
+    "field": "countries[2].note",
+    "find": "Yacyretá estimate rose from $2.6 billion to $11 to 12 billion.",
+    "replace": "Yacyretá cost rose from $2.5 billion to over $10.5 billion, per this map's card.",
+    "why": "Match the card.",
+    "source_url": ""
+   }
+  ],
+  "add_sources": [
+   {
+    "title": "Is John Perkins for real? (Boston Magazine on Confessions of an Economic Hit Man)",
+    "publisher": "Boston Magazine",
+    "year": 2005,
+    "url": "https://www.bostonmagazine.com/?p=2977"
+   },
+   {
+    "title": "John Perkins (author)",
+    "publisher": "Wikipedia",
+    "year": 2026,
+    "url": "https://en.wikipedia.org/wiki/John_Perkins_(author)"
+   },
+   {
+    "title": "Optimism Bias in Growth Forecasts (WP/20/229), full text",
+    "publisher": "IMF",
+    "year": 2020,
+    "url": "https://www.imf.org/-/media/Files/Publications/WP/2020/English/wpiea2020229-print-pdf.ashx"
+   }
+  ],
+  "remove_sources": [],
+  "notes": "Confirmed: Wapenhans 37.5% of projects completed in 1991 deemed failures vs 15% in 1981 (Global Policy Forum); 'approval culture', appraisals as 'marketing devices for securing loan approval', and 'systematic and growing bias towards excessively optimistic rate of return expectations' (Probe International). Note that IEG's own page gives different figures (projects with major problems up from 11% in FY81 to 20% in FY91); the story's figures are the GPF ones. Flyvbjerg study: 245 dams, 65 countries, 1934-2007, 96% average real overrun, three-quarters over budget, strategic misrepresentation '(deliberately) underestimate costs to push approval' (ENR). IMF WP/20/229: 'around 0.2 percentage points ... each year into the projection horizon', adding up to '1 percentage point' over five years; larger planned fiscal adjustment, more optimism (full PDF; the landing page has no figures). Greve's position is correctly stated: he first said 'basically the story is true', later said he knew no one in the NSA (Wikipedia, Boston Magazine). The fourth paragraph's 'An honest mistake and a deliberate one leave the same trace' is framing, not a fact claim. would_settle is realistic: Bank archives hold appraisal documents under its access policy."
+ },
+ "lending-to-known-thieves": {
+  "verdict": "pass_with_fixes",
+  "fixes": [
+   {
+    "field": "story[1]",
+    "find": "The month before, a Bank vice-president had told reporters the Bank knew exactly where its money was going.",
+    "replace": "The month before, the Bank's vice-president for East Asia, Jean-Michel Severino, had said: \"We know exactly where our money is going.\"",
+    "why": "The WSJ copy gives the speaker, the date (July 1997) and the words; it does not say he 'told reporters'. Quote is 8 words.",
+    "source_url": "https://archive.globalpolicy.org/socecon/bwi-wto/simpson.htm"
+   }
+  ],
+  "add_sources": [
+   {
+    "title": "Erwin Blumenthal is Zaire's last hope",
+    "publisher": "Euromoney",
+    "year": 1979,
+    "url": "https://www.euromoney.com/article/27bjsstsqxhkmh1y5f4a7/banking/erwin-blumenthal-is-zaires-last-hope/"
+   }
+  ],
+  "remove_sources": [],
+  "notes": "Strong entry. Confirmed: Blumenthal 'a retired German banker', ex-Bundesbank, 'the IMF man in Zaire's central bank' who was 'effectively running the central bank' (Euromoney 1979; the CSM 1982 piece alone does not say the IMF sent him, hence the added source); $4.1bn debt and the quote 'no - I repeat no - chance' (CSM 1982, word for word); IMF $600m, World Bank $650m, Western governments nearly $3bn over the next six years, debt over $13bn when Mobutu fell (Probe International); Jakarta memo August 1997, 'at least 20-30 per cent', 'no basis to claim a smaller leakage for Bank projects', 50-80% of land acquisition and resettlement funds (UK Parliament appendix; WSJ 19 August 1998). Bataan: $2.3bn, finished 1984, never produced electricity, P64.7bn paid (P43.5bn principal, P21.2bn interest) (Vera Files); $17.2m to Disini called a 'legitimate commission', May 1993 US jury acquittal (CSM 1993; CSM gives $2.1bn and 1985, Vera Files and the card give $2.3bn and 1984); Supreme Court June 2021 held Disini liable for undue influence (Inquirer); April 2007 final payment (map card, AFP). Small point: Vera Files counts the P64.7bn as paid 'since 1986', so 'a total' means the total paid after Marcos. would_settle is realistic: both archives open records after 20 years."
+ },
+ "aid-into-offshore-accounts": {
+  "verdict": "pass_with_fixes",
+  "fixes": [
+   {
+    "field": "story[1]",
+    "find": "Half of the deposits the study could place were in Switzerland.",
+    "replace": "Among the havens it could trace country by country, Switzerland was by far the most important, and the rise was driven by accounts in Switzerland and Luxembourg.",
+    "why": "The paper never says 'half'. Its Table 6 has Switzerland at 14% of these countries' foreign deposits against 29% for all six traceable havens (about 48% if you do the division yourself); the text says Switzerland 'is by far the most important' and the increase is 'driven by accounts in Switzerland and Luxembourg'.",
+    "source_url": "https://documents1.worldbank.org/curated/en/493201582052636710/text/Elite-Capture-of-Foreign-Aid-Evidence-from-Offshore-Bank-Accounts.txt"
+   },
+   {
+    "field": "story[2]",
+    "find": "resigned after 15 months in the job",
+    "replace": "resigned after less than 15 months in the job",
+    "why": "Reuters: 'after less than 15 months on the job'.",
+    "source_url": "https://www.curacaochronicle.com/post/world/world-bank-to-lose-second-chief-economist-after-only-15-months"
+   },
+   {
+    "field": "countries[0].note",
+    "find": "Held half of the deposits the study could place.",
+    "replace": "By far the most important haven among those with country-level data; with Luxembourg, drove the rise.",
+    "why": "See story fix.",
+    "source_url": "https://documents1.worldbank.org/curated/en/493201582052636710/text/Elite-Capture-of-Foreign-Aid-Evidence-from-Offshore-Bank-Accounts.txt"
+   },
+   {
+    "field": "countries[1].note",
+    "find": "Named by commentators as the most aid-dependent country at the time.",
+    "replace": "Highest aid-to-GDP ratio in the study's sample (33.5 per cent), per ProMarket.",
+    "why": "ProMarket gives the specific figure; 'commentators' is vague.",
+    "source_url": "https://promarket.org/2020/02/18/the-world-banks-papergate-censorship-is-not-the-best-way-to-stop-development-aid-from-fueling-corruption/"
+   }
+  ],
+  "add_sources": [
+   {
+    "title": "Elite Capture of Foreign Aid (WPS 9150), full text",
+    "publisher": "World Bank Documents",
+    "year": 2020,
+    "url": "https://documents1.worldbank.org/curated/en/493201582052636710/text/Elite-Capture-of-Foreign-Aid-Evidence-from-Offshore-Bank-Accounts.txt"
+   },
+   {
+    "title": "World Bank to lose second chief economist after only 15 months (Reuters)",
+    "publisher": "Curaçao Chronicle",
+    "year": 2020,
+    "url": "https://www.curacaochronicle.com/post/world/world-bank-to-lose-second-chief-economist-after-only-15-months"
+   }
+  ],
+  "remove_sources": [
+   "https://www.finews.ch/news/english-news/40001-how-much-foreign-aid-ends-up-in-switzerland"
+  ],
+  "notes": "finews.ch redirects to finews.com; the redirect needed an approval nobody gave, so the page was not read and supports nothing as checked. Confirmed: 22 most aid-dependent countries; aid of 1% of GDP brings a 3.4% rise in haven deposits; no increase in non-havens; about 7.5% leakage, rising with aid dependence (paper text, abstract); JPE vol. 130(2), 2022 (Utrecht portal); The Economist's report that it 'passed an exacting internal review ... in November' and that publication was 'blocked by higher officials'; Goldberg's resignation linked by The Economist; Johannesen posted the draft and the Bank published it 'a few hours later' (ProMarket). Not checked: that Johannesen is a Copenhagen professor who did not work for the Bank (true as far as I know, but no opened page says it); ProMarket lists Rijkers as the Bank author, which is consistent. would_settle: account-level haven records are realistic only for tax authorities or investigators, not for the public or researchers; the Bank's internal correspondence could be requested under its access-to-information policy but would likely be withheld as deliberative."
+ },
+ "rescues-that-rescue-banks": {
+  "verdict": "pass_with_fixes",
+  "fixes": [
+   {
+    "field": "story[1]",
+    "find": "Banks from those three countries held more than $122 billion of Greek government bonds early in 2010, and they sold heavily that spring.",
+    "replace": "According to The Press Project, banks from those three countries held more than $122 billion of Greek government bonds early in 2010 and began selling that spring.",
+    "why": "The $122bn figure and the selling come only from The Press Project, which cites no primary source; El País, quoted there, says they 'sold them in haste'. Attribution needed.",
+    "source_url": "https://thepressproject.gr/imf-leak-european-banks-had-committed-to-maintain-exposure-in-greek-bonds-after-first-bailout-but-didnt/"
+   },
+   {
+    "field": "countries[1].note",
+    "find": "Board director promised banks would keep their exposure.",
+    "replace": "Board director conveyed banks' commitment to broadly maintain exposure.",
+    "why": "Minutes: the chairs 'conveyed to the Board the commitments of their commercial banks to support Greece and broadly maintain their exposures'. 'Promised' overstates.",
+    "source_url": "https://derechos.org/nizkor/econ/grc382.html"
+   },
+   {
+    "field": "countries[2].note",
+    "find": "Board director promised banks would keep their exposure.",
+    "replace": "Board director conveyed banks' commitment to broadly maintain exposure.",
+    "why": "Same.",
+    "source_url": "https://derechos.org/nizkor/econ/grc382.html"
+   },
+   {
+    "field": "countries[3].note",
+    "find": "Board director promised banks would keep their exposure.",
+    "replace": "Board director conveyed banks' commitment to broadly maintain exposure.",
+    "why": "Same.",
+    "source_url": "https://derechos.org/nizkor/econ/grc382.html"
+   }
+  ],
+  "add_sources": [],
+  "remove_sources": [],
+  "notes": "Confirmed against the leaked minutes: meeting of 9 May 2010, marked strictly confidential; €110bn; Brazil's chair warned of 'a bailout of Greece's private sector bondholders, mainly European financial institutions'; 'Several chairs (Argentina, Brazil, India, Russia, and Switzerland) lamented' the missing debt restructuring; Dutch/French/German chairs on banks maintaining exposure. Debt Justice: WSJ released the documents; Lagarde, June 2013: 'In May 2010, we knew that Greece needed a bailout, but not that it would require debt restructuring'. The Press Project says the minutes went to El País and the WSJ, and its links are dated January 2014; the WSJ first reported them in 2013, so '2013' stands. ESMT WP-16-02: €215.9bn, €86.9bn, €52.3bn, €37.3bn, €9.7bn 'or less than 5%'; it blames the Greek state's budget management; INET sets out how Colasanti counts it differently. The card gives a 22% minimum-wage cut in 2012. would_settle: ECB counterparty records are realistic only through a formal request the ECB is likely to refuse; bank exposure data partly exist in EBA stress-test disclosures."
+ },
+ "lenders-expect-the-riots": {
+  "verdict": "pass_with_fixes",
+  "fixes": [
+   {
+    "field": "story[1]",
+    "find": "described the \"IMF riot\" to the reporter Greg Palast as a predictable stage of a lending programme",
+    "replace": "described the \"IMF riot\" to the reporter Greg Palast as one of the steps of a lending programme",
+    "why": "Palast presents it as 'Step-Three-and-a-Half'; no opened source has Stiglitz calling it 'predictable'.",
+    "source_url": "https://www.gregpalast.com/the-globalizer-who-came-in-from-the-cold/"
+   },
+   {
+    "field": "story[2]",
+    "find": "found that torture, political imprisonment, killings by the state and disappearances were all more likely once a World Bank structural adjustment loan had been received and carried out.",
+    "replace": "found that carrying out a World Bank structural adjustment agreement worsened governments' respect for freedom from torture, political imprisonment, killings by the state and disappearances.",
+    "why": "The abstract says SAAs 'worsen government respect for physical integrity rights', a combined index of those four rights; it does not report that each one separately became more likely.",
+    "source_url": "https://data.zhenzhi.com/details/1/867667835"
+   }
+  ],
+  "add_sources": [
+   {
+    "title": "The human rights effects of World Bank structural adjustment, 1981-2000 (abstract record)",
+    "publisher": "International Studies Quarterly, via Zhenzhi",
+    "year": 2006,
+    "url": "https://data.zhenzhi.com/details/1/867667835"
+   }
+  ],
+  "remove_sources": [
+   "https://typeset.io/pdf/the-human-rights-effects-of-world-bank-structural-adjustment-3i27j5dh20.pdf"
+  ],
+  "notes": "typeset.io redirects to scispace.com and could not be read; replaced with an abstract record (a link to the publisher or DOI would be better). Kenya: protesters stormed parliament on 25 June and police opened fire; bill 'expected to raise an additional US$2.3 billion', 'in part to meet IMF requirements' (HRW, 28 June 2024). KNCHR said police 'killed at least 60 protesters' (HRW World Report 2025, which misdates the report to 'June 31'). The card has parliament passing the bill on 25 June. Palast: confidential World Bank documents; the Ecuador interim strategy 'several times' expected 'social unrest' and called for 'political resolve'; Observer and BBC Newsnight, 2001. Walton & Seddon: '146 riots across 39 countries over the period 1976 to 1992' (THE review). The THE review is dated 1995 (the source entry says 1994; the book itself is 1994). Cards: Caracazo official figure 276; Ecuador 2019, 11 dead per the Ombudsman, fuel prices more than doubled. The money-kept-flowing pattern (55 of 72 cases with new lending within a year) supports 'usually continued'. would_settle is realistic: IMF staff reports and World Bank programme documents with risk sections are mostly public."
+ },
+ "rankings-bent-for-money": {
+  "verdict": "pass_with_fixes",
+  "fixes": [
+   {
+    "field": "story[1]",
+    "find": "The changes moved China up seven places, to 78th, in the 2018 edition.",
+    "replace": "The changes put China at 78th in the 2018 edition, seven places higher than the draft data had it.",
+    "why": "Reuters: China 'rose seven places to 78th after the data methodology changes' compared with the draft; the FT summary says it was held at 78, the same as the year before. 'Moved up' could be read as a rise on the previous year.",
+    "source_url": "https://www.taiwannews.com.tw/en/news/4290074"
+   },
+   {
+    "field": "story[2]",
+    "find": "the economist responsible for Chile's scores called the accusation wholly without merit",
+    "replace": "Augusto Lopez-Claros, who had directed the group that published the rankings, called the claim that the changes targeted Chile wholly without merit",
+    "why": "Mother Jones identifies the speaker and his role.",
+    "source_url": "https://fullsite.motherjones.com/kevin-drum/2018/01/lopez-claros-replies-to-charges-of-gaming-world-bank-rankings/"
+   },
+   {
+    "field": "story[2]",
+    "find": "and a panel the Bank set up later found no significant link between it and employment",
+    "replace": "and an independent panel the Bank set up in 2013 recommended removing it permanently",
+    "why": "No opened source reports a panel finding of 'no significant link' with employment. ITUC reports the 2013 panel recommended 'Permanent removal of the Employing Workers Indicator'. (The 'insignificant or modest' employment finding belongs to the Bank's 2013 World Development Report, not the panel.)",
+    "source_url": "https://www.ituc-csi.org/responsible-business-identified-as"
+   }
+  ],
+  "add_sources": [
+   {
+    "title": "Ex-World Bank officials under scrutiny on China after inquiry (Reuters/AP)",
+    "publisher": "Taiwan News",
+    "year": 2021,
+    "url": "https://www.taiwannews.com.tw/en/news/4290074"
+   },
+   {
+    "title": "WilmerHale, Investigation of Data Irregularities in Doing Business 2018 and 2020 (report copy)",
+    "publisher": "Alliance Sud",
+    "year": 2021,
+    "url": "https://alliancesud.ch/de/media/577"
+   },
+   {
+    "title": "Lopez-Claros replies to charges of gaming World Bank rankings",
+    "publisher": "Mother Jones",
+    "year": 2018,
+    "url": "https://fullsite.motherjones.com/kevin-drum/2018/01/lopez-claros-replies-to-charges-of-gaming-world-bank-rankings/"
+   },
+   {
+    "title": "World Bank economist Paul Romer quits after Chile comments (Reuters)",
+    "publisher": "The Fiscal Times",
+    "year": 2018,
+    "url": "https://thefiscaltimes.com/latestnews/2018/01/24/World-Bank-economist-Paul-Romer-quits-after-Chile-comments"
+   },
+   {
+    "title": "Romer se retracta y dice que no vio manipulación política en reporte del Banco Mundial",
+    "publisher": "La República",
+    "year": 2018,
+    "url": "https://www.larepublica.co/globoeconomia/romer-se-retracta-y-dice-que-no-vio-manipulacion-politica-en-reporte-del-banco-mundial-2589238"
+   },
+   {
+    "title": "U-turn on Doing Business",
+    "publisher": "Bretton Woods Project",
+    "year": 2009,
+    "url": "https://www.brettonwoodsproject.org/2009/07/u-turn-on-doing-business-time-to-withdraw-from-the-knowledge-bank/"
+   },
+   {
+    "title": "Responsible business identified as key indicator by independent Doing Business review panel",
+    "publisher": "ITUC",
+    "year": 2013,
+    "url": "https://www.ituc-csi.org/responsible-business-identified-as"
+   },
+   {
+    "title": "Saudi Arabia is top improver in World Bank's Doing Business report",
+    "publisher": "The National",
+    "year": 2019,
+    "url": "https://www.thenationalnews.com/business/economy/saudi-arabia-is-top-improver-in-world-banks-doing-business-report-as-uae-leads-the-region-1.928174"
+   }
+  ],
+  "remove_sources": [
+   "https://m.uk.investing.com/news/economy/world-bank-kills-business-climate-report-after-ethics-probe-cites-undue-pressure-on-rankings-2465356?ampMode=1",
+   "https://www.dhakatribune.com/world/136435/world-bank-economist-paul-romer-quits-after-chile"
+  ],
+  "notes": "investing.com redirects (not followed); Dhaka Tribune failed. Both replaced. Confirmed: Georgieva visited a Doing Business manager's home to collect the final hard copy and thanked the employee for helping 'resolve the problem' (Reuters/Taiwan News, NTD); her denial 'I disagree fundamentally with the findings' (Devex, AP); the capital increase context (Reuters); Saudi Arabia 'climbed 30 places to 62nd' (Reuters); a senior staff member changed Saudi data to 'reward' it (Devex); Saudi Arabia's paid RAS contracts were built around Doing Business indicators, and WilmerHale found 'no evidence' of Office of the President or Board involvement in the Saudi/UAE changes (WilmerHale via Alliance Sud; Reuters names Azerbaijan too); IMF board statement October 2021 and King Abdullah's 2006 top-ten-by-2010 pledge (CRS); EWI suspended 2009 (ITUC, BWP), with pressure from Congress and the ILO (CRS) and from unions (BWP); 133 to 190 countries (CRS). 'Top improver' is supported by The National (added). The CRS does not give the 7 and 30 place figures, hence the Reuters source. Living person Georgieva is named with what WilmerHale says and with her denial: OK. would_settle: the full change log is realistic to request under the Bank's access policy, and WilmerHale had it."
+ },
+ "secret-loans-banks-traders": {
+  "verdict": "pass_with_fixes",
+  "fixes": [
+   {
+    "field": "story[1]",
+    "find": "Testimony in later trials said the loans had been inflated from $300 million to make room for kickbacks.",
+    "replace": "The Financial Times reported that the deals had been inflated from $300 million to over $2 billion.",
+    "why": "The only opened source for the $300m figure is the FT (via swissinfo), which does not attribute it to trial testimony or say 'to make room for kickbacks'.",
+    "source_url": "https://swissinfo.ch/eng/mozambique-reeling-from-credit-suisse--tuna-bond--scandal/47054964"
+   },
+   {
+    "field": "story[1]",
+    "find": "US authorities said at least $200 million went in bribes and kickbacks, including about $50 million to Credit Suisse bankers.",
+    "replace": "US authorities said about $200 million went in bribes and kickbacks: about $150 million to Mozambican officials and about $50 million to Credit Suisse bankers.",
+    "why": "DOJ gives 'approximately $50 million' in kickbacks to bankers and 'approximately $150 million' in bribes to officials, which is about $200m, not 'at least'.",
+    "source_url": "https://www.justice.gov/opa/pr/credit-suisse-resolves-fraudulent-mozambique-loan-case-547-million-coordinated-global"
+   },
+   {
+    "field": "story[1]",
+    "find": "agreed to pay about $475 million to US, UK and Swiss authorities",
+    "replace": "agreed to pay about $475 million to US and UK authorities",
+    "why": "DOJ: 'approximately $475 million to authorities in the United States and the United Kingdom'; Swiss FINMA took enforcement action with no payment stated.",
+    "source_url": "https://www.justice.gov/opa/pr/credit-suisse-resolves-fraudulent-mozambique-loan-case-547-million-coordinated-global"
+   },
+   {
+    "field": "story[2]",
+    "find": "In the Republic of Congo, the government had promised the IMF since about 2000 to stop taking loans repaid in oil. In August 2017 it disclosed loans from the commodity traders Glencore and Trafigura, and its debt jumped by 33 percentage points of national income overnight.",
+    "replace": "In the Republic of Congo, the commodity traders Glencore and Trafigura had lent the government money repaid in future oil. In 2017 the IMF raised its estimate of Congo's debt from 77 to 110 per cent of national income after hidden debts came to light; Debt Justice said it could not tell how much of the jump was hidden debt and how much was falling output or new loans.",
+    "why": "The Global Witness IMF page loads only the Global Witness home page, so the 'promise since about 2000', 'August 2017' and '33 points overnight' claims could not be checked. Debt Justice gives 77% (March 2017) and 110% (October 2017), a 33-point difference, but says the cause is unclear. Engineering News/Reuters gives the Glencore (~$850m) and Trafigura (~$1bn) loans repaid in oil.",
+    "source_url": "https://debtjustice.org.uk/blog/hidden-debts-contribute-crisis-congo"
+   },
+   {
+    "field": "story[2]",
+    "find": "and 85 per cent of the country's oil income went to paying it back",
+    "replace": "and in 2016 $231 million of the government's $271 million in net oil revenue, about 85 per cent, went to Glencore",
+    "why": "IMF CR 17/246 gives the dollar figures; the 85% is a division of them, not a figure the IMF states.",
+    "source_url": "https://www.imf.org/-/media/files/publications/cr/2017/cr17246.pdf.md"
+   },
+   {
+    "field": "countries[1].note",
+    "find": "Debt rose 33 points of GDP overnight when trader loans were disclosed in 2017.",
+    "replace": "IMF debt estimate rose from 77 to 110 per cent of GDP during 2017 as hidden debts surfaced.",
+    "why": "See story fix.",
+    "source_url": "https://debtjustice.org.uk/blog/hidden-debts-contribute-crisis-congo"
+   }
+  ],
+  "add_sources": [
+   {
+    "title": "Credit Suisse resolves fraudulent Mozambique loan case in $547 million coordinated global resolution",
+    "publisher": "US Department of Justice",
+    "year": 2021,
+    "url": "https://www.justice.gov/opa/pr/credit-suisse-resolves-fraudulent-mozambique-loan-case-547-million-coordinated-global"
+   },
+   {
+    "title": "Tuna boats at heart of $2 billion Mozambique scandal up for auction (Bloomberg)",
+    "publisher": "gCaptain",
+    "year": 2024,
+    "url": "https://gcaptain.com/tuna-boats-at-heart-of-2-billion-mozambique-scandal-up-for-auction"
+   },
+   {
+    "title": "Mozambique Constitutional Court declares secret debts void",
+    "publisher": "Debt Justice",
+    "year": 2020,
+    "url": "https://debtjustice.org.uk/?p=8199"
+   },
+   {
+    "title": "Hidden debts contribute to crisis in Congo",
+    "publisher": "Debt Justice",
+    "year": 2017,
+    "url": "https://debtjustice.org.uk/blog/hidden-debts-contribute-crisis-congo"
+   },
+   {
+    "title": "Congo seeks relief talks with oil traders over $2bn debt (Reuters)",
+    "publisher": "Engineering News",
+    "year": 2018,
+    "url": "https://www.engineeringnews.co.za/article/congo-seeks-relief-talks-with-oil-traders-over-2bn-debt-2018-02-20"
+   },
+   {
+    "title": "Chad: request for an Extended Credit Facility arrangement (Country Report 17/246)",
+    "publisher": "IMF",
+    "year": 2017,
+    "url": "https://www.imf.org/-/media/files/publications/cr/2017/cr17246.pdf.md"
+   },
+   {
+    "title": "How Goldman Sachs helped mask Greece's debt",
+    "publisher": "Bureau of Investigative Journalism",
+    "year": 2012,
+    "url": "https://thebureauinvestigates.com/stories/2012-02-21/how-goldman-sachs-helped-mask-greeces-debt"
+   },
+   {
+    "title": "Countries have $385 billion in 'hidden debts' to China, study finds",
+    "publisher": "Radio Free Asia",
+    "year": 2021,
+    "url": "https://www.rfa.org/english/news/laos/china-debt-10012021161618.html"
+   }
+  ],
+  "remove_sources": [
+   "https://globalwitness.org/en/campaigns/oil-gas-and-mining/imf-congo-transparency-actions-before-bailout",
+   "https://globalwitness.org/en/blog/hey-big-lenders",
+   "https://en.wikipedia.com/wiki/Greek_Financial_Audit,_2004",
+   "https://www.businesslive.co.za/amp/bd/companies/2021-10-20-credit-suisse-to-pay-nearly-475m-for-role-in-mozambique-looting/"
+  ],
+  "notes": "Failed or empty: the Global Witness IMF page (serves the home page); 'Hey, big lenders' (the page has no Chad/Glencore content); en.wikipedia.com and BusinessLive (both redirect, not followed). Confirmed: tuna boats 'rusting away for a decade in a port in Maputo' (Bloomberg via gCaptain); guarantees 'not agreed by the Mozambique parliament' (Debt Justice); loans issued 'without disclosure to the IMF', cost $11bn, 'almost two million' into poverty, $200m forgiven, admission of fraud (FT via swissinfo); CSSEL guilty plea to conspiracy to commit wire fraud (DOJ); three state companies, CIP/CMI study and 1.9m (map card). SNPC 'up to $3.3 billion in previously undisclosed oil-backed liabilities' (Global Witness, Rigged). Chad: 'Glencore loan accounts for about 98 percent of commercial debt stock in 2016' (IMF CR 17/246). AidData: about $385bn underreported, borrowers are state companies and SPVs, 42 countries above 10% of GDP (AidData); Laos at 64.8% of GDP (RFA). Goldman: €2.8bn hidden (TBIJ); Goldman says the deals matched the standards of the time (MercoPress). Greece joined the euro on 1 January 2001; no opened page states it, but it is not in dispute. would_settle is realistic in part: BIS and bank filings are public, while trader prepayment contracts are private."
+ },
+ "rescue-money-timed-for-elections": {
+  "verdict": "pass_with_fixes",
+  "fixes": [
+   {
+    "field": "story[1]",
+    "find": "about twelve times Argentina's normal borrowing limit at the Fund",
+    "replace": "equal to 1,227 per cent of Argentina's quota at the Fund",
+    "why": "The IMF gives access as '1,227 percent of Argentina's IMF quota'. That is about twelve times the quota, not twelve times the normal limit: the IMF's normal cumulative access limit was then far above 100% of quota, so 'normal borrowing limit' overstates the multiple.",
+    "source_url": "https://www.imf.org/en/news/articles/2021/12/22/pr21401-argentina"
+   },
+   {
+    "field": "story[1]",
+    "find": "In 2020 Mauricio Claver-Carone, Trump's adviser on Latin America, told a teleconference held by a Chilean foreign-relations council that Trump had pushed for the loan because he saw Macri as a strategic ally, according to Infobae's report of the call.",
+    "replace": "In July 2020 Mauricio Claver-Carone, Trump's adviser on Latin America, was reported to have told a teleconference held by the Chilean Council on Foreign Relations that Trump asked the IMF for the loan so that Macri would win the election; Argentine senators repeated the account in a letter that November.",
+    "why": "The listed source (Conclusión) failed to load, so the 'strategic ally' wording and the Infobae attribution could not be checked. The senators' letter (Radiográfica) says that at a CCRI teleconference on 22 July Claver-Carone said Trump asked the IMF for the loan so that Macri would win the elections. It is indirect speech, so keep 'was reported'. No denial by Claver-Carone was found.",
+    "source_url": "https://radiografica.org.ar/?p=22838"
+   }
+  ],
+  "add_sources": [
+   {
+    "title": "Carta de senadores sobre los dichos de Claver-Carone (CCRI teleconference)",
+    "publisher": "Radiográfica",
+    "year": 2020,
+    "url": "https://radiografica.org.ar/?p=22838"
+   },
+   {
+    "title": "Raking in loans and doling out promises, Yeltsin boosts June bid",
+    "publisher": "Christian Science Monitor",
+    "year": 1996,
+    "url": "https://csmonitor.com/1996/0226/26071.html"
+   },
+   {
+    "title": "Address by Michel Camdessus (1 April 1996)",
+    "publisher": "IMF",
+    "year": 1996,
+    "url": "https://www.imf.org/external/np/sec/mds/1996/mds9604.htm"
+   }
+  ],
+  "remove_sources": [
+   "https://www.conclusion.com.ar/?p=669637"
+  ],
+  "notes": "Confirmed: 14 October 2025, Trump: 'If he loses, we are not going to be generous with Argentina' (Al Jazeera; 12 words); election 26 October, so twelve days; Bessent: 'It is not election-specific. It is policy-specific.' (Al Jazeera 15 Oct); La Libertad Avanza 40.84% (The New Arab); $57bn after the October 2018 augmentation, the largest stand-by in Fund history, did not meet its objectives, four of twelve reviews completed (IMF PR 21/401). Al Jazeera calls the swap one the Treasury 'recently set up'; 'had just made available' is acceptable. Russia: $10.2bn pledged February 1996, 'less than four months before the presidential election', Zyuganov called it 'a blatantly political move' (RFE/RL); Camdessus: 'The Fund does not support individuals, it supports economic programs' and 'Not to support Russia today could be also interpreted as taking sides' (IMF; CSM); The Economist (13 July) alleged the IMF and Russia kept Russia within conditions 'on paper'; the IMF delayed a $340m tranche on 23 July 1996 (Jamestown). Dreher, Marchesi and Vreeland: 157 countries, 1999-2005, lower inflation forecasts 'as domestic elections approach' (Public Choice; the body says the effect is significant only at 10% in places). would_settle: Treasury instructions to the US executive director are realistic to seek by FOIA; IMF board minutes become available after the archive delay."
+ },
+ "ports-that-become-naval-bases": {
+  "verdict": "pass_with_fixes",
+  "fixes": [
+   {
+    "field": "story[0]",
+    "find": "It announced one in late 2015 and opened it in 2017.",
+    "replace": "It confirmed one in November 2015 and opened it in 2017.",
+    "why": "China Daily, 27 November 2015: 'Beijing confirms military support facilities in Djibouti'; opened 2017 (AidData, Foreign Policy). The date was not in the listed sources.",
+    "source_url": "https://covid-19.chinadaily.com.cn/usa/china/2015-11/27/content_22522763.htm"
+   },
+   {
+    "field": "story[1]",
+    "find": "Cambodia reopened Ream in April 2025 and said it was open to the ships of all friendly countries",
+    "replace": "Cambodia formally opened the rebuilt Ream in April 2025 and declared it open to foreign navies",
+    "why": "Maritime Executive (18 March 2025) gives a planned formal opening on 2 April and says Cambodia insisted it would be open to 'many foreign navies'; Defense News says Cambodia 'declared Ream open to all the world's navies'. Neither uses 'all friendly countries'.",
+    "source_url": "https://www.maritime-executive.com/article/cambodia-s-chinese-built-naval-base-holds-grand-opening"
+   },
+   {
+    "field": "story[1]",
+    "find": "It also noted that China could not defend any of them in a war.",
+    "replace": "It also noted that none of them is currently militarily defensible.",
+    "why": "AidData: 'none of the ports described above is currently militarily defensible'. That is a statement about the ports, not about China's ability in a war.",
+    "source_url": "https://docs.aiddata.org/reports/harboring-global-ambitions/Harboring_Global_Ambitions.pdf"
+   },
+   {
+    "field": "story[2]",
+    "find": "On this map, Hambantota's industrial zone and Gwadar's new expressway have both pushed local people off land and water.",
+    "replace": "On this map, Hambantota's industrial zone met protests over the taking of village and farm land, and Gwadar's port and new expressway have pushed fishers off their homes and fishing routes.",
+    "why": "The Hambantota card records protests against taking residential and farm land, not people pushed off it. The Gwadar card records about 800 fishermen displaced by the port and the expressway cutting their routes to sea.",
+    "source_url": ""
+   },
+   {
+    "field": "countries[2].note",
+    "find": "not a debt-for-port swap, per Chatham House research.",
+    "replace": "not a debt-for-port swap, per Chatham House research (Jones and Hameiri, 2020).",
+    "why": "No change of substance; the listed Chatham House URL failed, and the PDF (added) confirms it.",
+    "source_url": "https://www.chathamhouse.org/sites/default/files/2020-08-19-debunking-myth-debt-trap-diplomacy-jones-hameiri.pdf"
+   }
+  ],
+  "add_sources": [
+   {
+    "title": "Debunking the myth of 'debt-trap diplomacy' (full paper)",
+    "publisher": "Chatham House",
+    "year": 2020,
+    "url": "https://www.chathamhouse.org/sites/default/files/2020-08-19-debunking-myth-debt-trap-diplomacy-jones-hameiri.pdf"
+   },
+   {
+    "title": "China is building carrier-size infrastructure at Cambodian base",
+    "publisher": "Maritime Executive",
+    "year": 2023,
+    "url": "https://www.maritime-executive.com/article/china-is-building-carrier-size-infrastructure-at-cambodian-base"
+   },
+   {
+    "title": "Beijing confirms military support facilities in Djibouti",
+    "publisher": "China Daily",
+    "year": 2015,
+    "url": "https://covid-19.chinadaily.com.cn/usa/china/2015-11/27/content_22522763.htm"
+   }
+  ],
+  "remove_sources": [
+   "https://www.chathamhouse.org/node/23773/nojs?heading=Conclusion"
+  ],
+  "notes": "Listed Chatham House node URL failed; the full PDF confirms 4.8% of government external debt (excluding SOEs), a July 2017 99-year lease to CMPort for about $1.12bn ($973.7m plus $146.3m), 'no debt was forgiven', and 'did not receive debt relief'. AidData: 123 seaport projects, $29.9bn (2021 USD), 78 ports, 46 countries; ranked list Hambantota, Bata, Gwadar, Kribi, Ream, Vanuatu (Luganville per Foreign Policy), Nacala, Nouakchott, which matches the story's order. Ream: WSJ 2019 report of a 30-year arrangement (Maritime Executive 2025); denials (Breaking Defense); China funded it as 'grant aid' (Breaking Defense); pier 'identical to the PLA Navy's new finger pier in Djibouti' per BlackSky (Maritime Executive 2025); 'large enough to host an aircraft carrier' (Maritime Executive 2023, H.I. Sutton, added); two Chinese corvettes from December 2023 (Breaking Defense); USS Cincinnati visit, January 2026 (Defense News). would_settle: concession contracts are unlikely to be published, but port-call records can be assembled from ship-tracking data, so the test is realistic."
+ },
+ "poor-countries-take-the-poison": {
+  "verdict": "pass",
+  "fixes": [],
+  "add_sources": [
+   {
+    "title": "'Logical but totally insane'",
+    "publisher": "Grist",
+    "year": 2005,
+    "url": "https://grist.org/article/logical-but-totally-insane"
+   }
+  ],
+  "remove_sources": [],
+  "notes": "All checked claims hold. Summers memo: dated 12 December 1991; signed by Summers as chief economist; 'impeccable' sentence; written by Pritchett; both say it was sarcastic; Pritchett says the leak was edited to strip context; leaked 2 February 1992 by Roberto Smeraldi of Friends of the Earth to Jornal do Brasil (Wikipedia); Brazil's environment secretary replied 'Your reasoning is perfectly logical but totally insane' (Grist, added; Wikipedia names Lutzenberger). Probo Koala: night of 19 August 2006 (Amnesty); Amsterdam attempt 2 July 2006, ship left 5 July (Wikipedia); 'newly licensed' Compagnie Tommy and more than 500 tons (Wikipedia); $17,000 (Amnesty, and the card; Wikipedia gives the contract as €18,500, a small discrepancy between sources); more than 100,000 sought treatment, inquiry 15 deaths, court 17 (Al Jazeera); $198m in 2007 without admitting wrongdoing, ending action against it (Wikipedia; Amnesty says 'around US$200 million' and 'sweeping immunity'); £30m to almost 30,000 in 2009 (Wikipedia); Dutch €1m fine on 23 July 2010 for concealing the waste's dangerous nature (BHRRC, Wikipedia; Amnesty misdates it to 2008); Trafigura says the waste 'could not have caused the death and ongoing health concerns' (Wikipedia). 'Without admitting liability' in 2009 was not confirmed word for word on an opened page but matches what the settlement is widely reported as. would_settle is realistic: Basel national reports are public."
+ },
+ "markets-opened-for-subsidized-food": {
+  "verdict": "pass_with_fixes",
+  "fixes": [
+   {
+    "field": "story[2]",
+    "find": "Imports of frozen chicken rose from about 5,000 tonnes in 1998 to 30,000 tonnes in 2001",
+    "replace": "Imports of chicken rose from 26,000 tonnes in 2002 to about 40,000 tonnes in 2004",
+    "why": "No opened source gives 5,000 t in 1998 or 30,000 t in 2001 (the Ghana card gives 5,000 t for 1998 but 40,000 t for 2004). IPS and Poultry World give 26,000 t in 2002 and about 40,000 t in 2004.",
+    "source_url": "https://www.ipsnews.net/?p=18749"
+   },
+   {
+    "field": "story[2]",
+    "find": "The government backed down after pressure from international lenders",
+    "replace": "The government backed down within two months, under pressure from the IMF according to press reports",
+    "why": "Green Left: the rise was reversed 'within two months' 'under pressure from the International Monetary Fund'. The card marks the IMF link as contested and resting on press reports.",
+    "source_url": "https://www.greenleft.org.au/2005/630/world/ghana-dumping-chickens-undermines-farmers"
+   },
+   {
+    "field": "story[2]",
+    "find": "Inter Press Service reported that the European Union's trade commissioner had lobbied against the tariff",
+    "replace": "Inter Press Service reported that the European Union's trade commissioner, Pascal Lamy, had lobbied against the tariff",
+    "why": "IPS names Lamy. Naming him is useful because MyJoyOnline later quotes Lamy, as WTO head, blaming Ghana's own government.",
+    "source_url": "https://www.ipsnews.net/?p=27168"
+   },
+   {
+    "field": "story[2]",
+    "find": "though Mexico's own earlier reforms had also pushed corn prices down.",
+    "replace": "though the source attributes most of that fall to other causes, such as migration to cities, land reforms and Mexico's own earlier cuts to corn price supports, and finds NAFTA played only a minor role.",
+    "why": "Mother Jones gives the 8.1m to 6.8m figures but says NAFTA played 'only a minor role' in the job losses. The current wording implies NAFTA caused them.",
+    "source_url": "https://develop.motherjones.com/?p=647604"
+   }
+  ],
+  "add_sources": [
+   {
+    "title": "Cheap imports hurt Ghana's poultry farmers",
+    "publisher": "Poultry World",
+    "year": 2006,
+    "url": "https://live.poultryworld.net/home/cheap-imports-hurt-ghanas-poultry-farmers/"
+   },
+   {
+    "title": "Ghana: dumping of chickens undermines farmers",
+    "publisher": "Green Left",
+    "year": 2005,
+    "url": "https://www.greenleft.org.au/2005/630/world/ghana-dumping-chickens-undermines-farmers"
+   },
+   {
+    "title": "Ghana poultry imports (IPS)",
+    "publisher": "Inter Press Service",
+    "year": 2006,
+    "url": "https://www.ipsnews.net/?p=18749"
+   }
+  ],
+  "remove_sources": [
+   "https://poultryworld.net/home/cheap-imports-hurt-ghanas-poultry-farmers",
+   "https://www.modernghana.com/news/81060/free-trade-has-devastated-ghanas-economy.html"
+  ],
+  "notes": "poultryworld.net redirects off-site (the live.poultryworld.net copy works and replaces it); Modern Ghana failed to load. Confirmed: Clinton to the Senate Foreign Relations Committee on 10 March 2010, 'It may have been good for some of my farmers in Arkansas, but it has not worked' (AP; quote 11 words); Aristide restored in 1994 (AP); tariff 'from 50 to 3 percent' in 1995 under an IMF and World Bank programme, over 80% of rice from the US, EWG: more than $2bn in direct payments to Arkansas farmers 1995-2011, half for rice (Type Investigations). Ghana: 95% in 1992 to 11% in 2002 (IPS, Poultry World; Green Left says 2001); the 2003 bill to double the poultry tariff to 40% (IPS; card: Act 641); EU pays its farmers €43bn a year (MyJoyOnline). Mexico: 8.1m (1993) to 6.8m (2001) (Mother Jones). would_settle: programme conditions are public; executive directors' instructions are realistic only through FOIA, mostly for the US."
+ },
+ "carbon-credits-new-land-grab": {
+  "verdict": "pass_with_fixes",
+  "fixes": [
+   {
+    "field": "story[0]",
+    "find": "officers of the Kenya Forest Service arrived at Sasimwani in the Mau Forest and began pulling down the homes of the Ogiek",
+    "replace": "the Kenyan government began evicting the Ogiek from Sasimwani in the Mau Forest, destroying their homes",
+    "why": "Forest Peoples Programme: 'On Thursday, November 2, the Kenyan government began to evict Ogiek communities' at Sasimwani. No opened source names the Kenya Forest Service as the agency that did it (the BBC says 'armed forest rangers').",
+    "source_url": "https://www.forestpeoples.org/en/2023/press-release/Ogiek-face-humanitarian-crisis-as-Kenyan-government-evicts-them-in-direct-violation"
+   },
+   {
+    "field": "story[1]",
+    "find": "Liberia's government later halted its deal, saying it lacked local input, and an AFP investigation in 2025 found that most of the deals appeared to have stalled.",
+    "replace": "Liberia's government later said its deal had been stopped, and an AFP investigation in 2025 found that other deals had also gone nowhere.",
+    "why": "AFP quotes Liberia's climate coordinator: 'It was stopped.' No opened source gives 'lacked local input' as the reason. AFP says other accords 'have also gone nowhere' but gives no count, so 'most' is not supported.",
+    "source_url": "https://www.al-monitor.com/originals/2025/11/case-africas-vanishing-carbon-deals"
+   },
+   {
+    "field": "story[1]",
+    "find": "Amnesty International, Minority Rights Group and Survival International asked Kenya's government whether the Ogiek evictions were linked to the carbon deal.",
+    "replace": "Amnesty International, Minority Rights Group and Survival International put out a joint statement asking whether carbon credits were behind the Ogiek evictions.",
+    "why": "Survival's page is titled 'Kenya: Are carbon credits behind Ogiek evictions? NGOs release statement'. It does not show the question being put to the government.",
+    "source_url": "https://www.survivalinternational.org/news/13793"
+   },
+   {
+    "field": "story[2]",
+    "find": "had been set up unconstitutionally, without proper consultation of the people living there",
+    "replace": "had been set up unconstitutionally, with no basis in law",
+    "why": "Survival quotes the ruling as 'established unconstitutionally, with no basis in law'. Neither REDD-Monitor nor Survival says the ruling turned on consultation.",
+    "source_url": "https://survivalinternational.org/news/14211"
+   }
+  ],
+  "add_sources": [
+   {
+    "title": "Ogiek face humanitarian crisis as Kenyan government evicts them",
+    "publisher": "Forest Peoples Programme",
+    "year": 2023,
+    "url": "https://www.forestpeoples.org/en/2023/press-release/Ogiek-face-humanitarian-crisis-as-Kenyan-government-evicts-them-in-direct-violation"
+   },
+   {
+    "title": "Liberia to concede territory to UAE firm in carbon offset deal",
+    "publisher": "Middle East Eye",
+    "year": 2023,
+    "url": "https://acquiaprod.middleeasteye.net/node/297991"
+   }
+  ],
+  "remove_sources": [],
+  "notes": "Confirmed: 'an estimated 167 Ogiek houses, including a school' (Survival); Blue Carbon signed with Kenya in October 2023, told the BBC it did 'not have any ongoing projects in Kenya', and the government says the operations protect the environment (BBC via BHRRC); founded October 2022, chaired by Sheikh Ahmed Dalmook Al Maktoum, Zimbabwe 7.5m ha (~20%), Zambia 8m ha, Tanzania 8m ha of forest reserves, Liberia ~1m ha (~10%) (AFP 2025); Zambia 10% (Down To Earth, CorpWatch); 'the size of the UK' and Liberia 70% 'of the royalties for the first decade' (CorpWatch); NGOs learned of the Liberian MoU 'until government sources leaked the news' (Middle East Eye, added, supports 'leaked'). NRT: more than 2m ha, 14 conservancies, Netflix and Meta among buyers, January 2025 ruling on Cherab and Biliqo Bulesa, about 20% of credits, Verra hold in March 2023 and second suspension in 2025 (REDD-Monitor, Survival); reinstated mid-June 2026 (REDD-Monitor, 23 June 2026). The paragraph 1 statement that Blue Carbon signed its deals 'during 2023' is plausible but no opened page dates every deal. would_settle: carbon registries (Verra, Gold Standard) publish project boundaries, so the overlap count is realistic; government agreements mostly are not published."
+ }
+}
