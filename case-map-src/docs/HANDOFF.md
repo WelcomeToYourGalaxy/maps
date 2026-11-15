@@ -67,51 +67,150 @@ claims — thickest in 2004-2013 World Bank lending, every published complaint r
 resting on the lender's own documents. **If a round changes any of those, change that block in the
 same round.** It is prose and nothing computes it, so nothing will catch it going stale.
 
-## Hypotheses are a new kind of content on the map, added 14 Nov 2026
+## Suspected patterns are a new kind of content on the map, added 14 Nov 2026
 
-**`window.HYPS` in `base.html`, rendered under Patterns, one card each through `detailHyp()`. Brief:
-`docs/HYP.md`, which is the thing to read before writing or changing one.** Six are written and none
-is tested.
+**`window.HYPS` in `base.html`, rendered under the patterns in the left-hand box as "Suspected
+patterns", one card each through `detailHyp()`. Brief: `docs/HYP.md`, which is the thing to read
+before writing or changing one.** Six are written and none is tested.
 
-**What it is for.** The map had nowhere to put a suspicion. A researcher who saw the same shape on
-four cards could write it up as a pattern, which claims more than four cards carry, or drop it, which
-loses it. Rounds 19, 20 and 21 each produced findings of exactly that kind — the reviews dropping what
-their own reports record, the companies field filling with ministries, the site-people-lived-on rule —
-and each sat in a round report where the next chat had to rediscover it. A hypothesis is a third
-place: a question, written down, with what would settle it.
+**What it is, and what it is not.** It is the same kind of write-up as a pattern, about something the
+work has seen more than once and cannot yet state as a finding: a title that states the thing, a
+summary with the figures, what it would mean if it holds, the countries and what was seen in each.
+**It is not a question-and-answer format.** An earlier version of this was written as questions and
+the owner rejected that: a suspected pattern reads like a pattern, and the dashed card and the "not
+documented" kicker carry the uncertainty instead of the prose. What `PATS` does not have is three
+fields — `missing`, `would_settle`, `would_refute`.
 
-**The rules that matter, in full in `docs/HYP.md`:** a hypothesis is never a finding and nothing on
-the map may rest on one; it is written as an answerable question; every figure in its basis comes from
-this map's own data or a document already cited on a card; `would_confirm` and `would_refute` are both
-required and both must name a document, a count or a record; a confirmed one graduates into `PATS`
-with `status: "graduated"` left behind; a refuted one stays with `status: "refuted"` and the reason.
+**Why it exists.** The map had nowhere to put a pattern it was not sure of. A researcher seeing the
+same shape on four cards could write it up as a pattern, which claims more than four cards carry, or
+leave it in a round report where the next chat has to rediscover it. Rounds 19 to 22 each produced
+findings of exactly that kind — the reviews dropping what their own reports record, the companies
+field filling with ministries, the site-people-lived-on rule, the role-field audit.
 
-**It is deliberately not a filter.** `setHyp()` leaves every mark on the map where it is, unlike
-`setPat()`, which shows only its own story. Opening a question must not change what the map appears to
-show. `S.hyp` holds the open one, `deselect()` clears it and rebuilds the panel so the radio clears.
+**The rules, in full in `docs/HYP.md`:** never a finding and nothing on the map rests on one; title
+written as a statement; every figure from this map's own data or a document already cited on a card;
+`would_settle` and `would_refute` both required and both naming a document, a count or a record; a
+confirmed one graduates into `PATS` with `status: "documented"` and `graduated_to` left behind; a
+refuted one stays with `status: "refuted"` and the reason. **It is deliberately not a filter** —
+`setHyp()` leaves every mark on the map where it is, unlike `setPat()`. `S.hyp` holds the open one and
+`deselect()` clears it and rebuilds the panel.
 
-**The six, and what each would cost to settle.** Three need no new fetches:
+**Do not reach across maps for the shape.** Other maps in this repo have their own suspected-pattern
+data in their own shape. They are separate work on separate subjects and the owner has said so
+plainly: do not try to unify them, and do not import another map's field names here.
 
-| id | What would settle it | Needs fetches |
+**The six, and what each would cost to settle.** Three need no new fetches, so no API limit blocks them:
+
+| id | What would settle it | New fetches |
 | --- | --- | --- |
 | `site-people-lived-on` | Apply the resettlement-plan screen to the queue before research, then compare predicted against actual | no, it is round 22's lead rule already |
 | `thin-means-no-register` | Divide per-country case counts by per-country lending; WDI and IDS are both on the map | no |
-| `state-bodies-not-companies` | Classify all 1,138 company names into state bodies, private firms and special-purpose vehicles | no |
-| `lender-record-understates` | Count the omissions across every paired completion report and evaluation review, and record which way each runs | the 46 audited cases' documents are gone with their cache |
+| `state-bodies-not-companies` | Sort all 1,138 company names into state bodies, private firms and special-purpose vehicles | no |
+| `lender-record-understates` | Count the omissions across every paired completion report and evaluation review, recording which way each runs | only where a cache has lapsed |
 | `works-before-payment` | Code each ICIJ case for two dates: works begun on the ground, compensation paid | yes |
 | `compensation-into-court-deposits` | The deposit provision in each country's land acquisition statute, then a count across the Indian road cases | yes |
 
-**Two of these bear directly on open items in this file.** `state-bodies-not-companies` is the
-counted version of item 12, the question of whether `companies` should be split — settle the
-hypothesis and the owner has the number the decision needs. `lender-record-understates` is the
-general form of what the lender-role audit found on 19 of 46 cases, and of the three reviews round 21
-caught gutting their own reports; if the omissions run one way, every figure this map takes from a
-review alone is low.
+**Two of them bear directly on open items in this file.** `state-bodies-not-companies` is the counted
+version of item 12, whether `companies` should be split — settle it and the owner has the number the
+decision needs. `lender-record-understates` is the general form of what the lender-role audit found on
+19 of 46 cases and of the three reviews round 21 caught gutting their own reports.
 
-**Write new hypotheses as rounds produce them.** The test for whether a round finding belongs here
-rather than in a round report: would a researcher two rounds from now act differently if they knew
-it, and is there a document that would settle it? Both yes, it is a hypothesis. A finding that only
-tells a writer how to read a document is a brief note instead, and goes in BRIEF.
+**Write new ones as rounds produce them.** The test for whether a round finding belongs here rather
+than in a round report: would a researcher two rounds from now act differently if they knew it, and is
+there a document that would settle it? Both yes, it is a suspected pattern. A finding that only tells
+a writer how to read a document is a brief note instead, and goes in BRIEF.
+
+## Getting to the big picture in fewer rounds — the plan, 14 Nov 2026
+
+**The owner's question: the aim above needs five or six more ICIJ tranches and then four or five
+AidData ones, and that is too many. Can the coverage be reached in fewer?** Yes, for the queues that
+have a register. Not at all for the kinds of money that have none. Those are two different answers and
+they should not be mixed.
+
+**First, what 100 per cent can and cannot mean here:**
+
+| What | Reachable? | Rounds at today's method | Rounds with the method below |
+| --- | --- | --- | --- |
+| ICIJ confirmed-displacement table (234 open) | yes | 5 to 6 | **2 to 3** |
+| ICIJ possible-displacement rows (546, untouched) | yes | ~15 | **3 to 4**, most screening out |
+| AidData Chinese state finance (793) | yes | ~22 | **4 to 5** |
+| Complaint registers (91) | yes | ~3 | 1 to 2 |
+| Private bank and bond lending, aid, foreign company investment | **no** | — | — |
+
+The last row is the one that matters for the aim and no number of rounds fixes it. There is no register
+of harm for private lending, for aid or for foreign company investment, so there is no list to work
+from. Reaching those means building a register, which is a different project from this one. The honest
+move is the one the About panel now makes: say so in prose where a reader sees it.
+
+**Four changes compress the rest. They are in the order they should be done, because each one makes
+the next cheaper.**
+
+1. **Harvest the documents once and keep them. This is the biggest single waste on the map.** Round
+   22 cached 526 files and **all of them died with the session**, as every round's cache has. Each
+   round therefore pays the fetches again, and fetches are exactly what the weekly API limit throttles.
+   Instead, do a one-off bulk harvest for every remaining P-number — completion report, appraisal
+   document, resettlement plan, evaluation review — through the `wds` API and `documents1`, run
+   `pdftotext -layout` over all of it, and store the text, gzipped, where it survives: a release asset,
+   a sibling repo, or `case-map-src/cache/` if the size allows. Roughly 900 documents for the 234 open
+   confirmed rows. After that a round is reading, not fetching, and the API limit stops setting the pace.
+2. **Screen mechanically before any agent is dispatched.** With the text on disk, grep every project
+   for the resettlement-plan null sentences (`site-people-lived-on` lists the five forms found so far)
+   and for the relocation-count patterns. A project with the null sentence and no count anywhere is a
+   drop with the sentence as its recorded reason — **a desk job, no research round, no checker.** Round
+   21 found the sentence on five of its fourteen drops, so this may clear a fifth to a third of the
+   queue at near-zero cost. Record each screened drop in the lead file the same way a researched drop
+   is recorded, so the queue count falls honestly.
+3. **Pre-extract the decisive sentences for the survivors.** For each project left, grep the cached
+   text for what the writers spend their time hunting: relocation and household counts, death language
+   with its cause, compensation arrears, "replacement cost", the plan-reprint traps ("envisaged", a
+   figure that also appears in the appraisal), and the staff-statement phrases ("informed IEG", "the
+   project team", "the World Bank team stated"). Hand each writer a file of candidate sentences with
+   their document and paragraph. The writers then verify and judge rather than search, which is where
+   most of the per-case time goes.
+4. **Make a round wider rather than running more rounds.** Batch size was capped because WebSearch is
+   capped at about 200 calls a turn across every agent. **That cap has stopped binding**: rounds 19 and
+   21 used nearly no searches because their work was `curl` plus `pdftotext`, and one batch used two
+   calls in total. With the documents already on disk it binds even less. So run six agents on 16 rows
+   each rather than three — 96 rows a round instead of 48 — and the 234 open confirmed rows take two
+   rounds instead of six.
+
+**What must not be compressed: the check.** The checkers cut between a third and a half of what
+writers submit, and that is the mechanism that makes this map trustworthy rather than large. Scale
+checkers one-for-one with writers. A wider round means six checkers, not three. If a round is ever too
+big to check, it is too big.
+
+**One more saving, smaller but free: batch the follow-on jobs.** Whole-picture text, entity
+descriptions and condition types currently run once per tranche. Run them once per two or three
+tranches instead. The panel figures dip in between, which is honest, and `docs/HANDOFF.md` should say
+which tranches are still waiting on them.
+
+**So the realistic shape of the work, if the plan is followed:** one harvest-and-screen round that
+dispatches no researchers, then two or three wide rounds to finish the confirmed table, then the
+possible-displacement rows and AidData on the same machinery. That is something like eight to ten
+rounds to the end of every register that exists, against about forty-five at the present rate — and
+then a map that is as complete as the available records allow, with the gap that no record covers
+stated on its face.
+
+## Requests from the owner, 14 Nov 2026, recorded so they are not lost
+
+These came in over one session and all of them are done unless noted.
+
+1. **The aim is a defensible big picture, not a bigger map.** Written up as the first section of this
+   file. It governs what rounds are worth commissioning.
+2. **The About panel should say in prose what the map does and does not show**, not only in numbers.
+   Done: a "What this map shows, and what it does not" block in `ABOUT_HTML`, placed ahead of "What
+   counts as a case". Nothing computes that block, so a round that changes the shape of the coverage
+   must change it too.
+3. **Suspected patterns, pairing with the patterns already on the map.** Done, and note the correction:
+   the first version was written as questions and was rejected. They read like patterns.
+4. **Reach the coverage in fewer rounds.** The plan is the section above.
+5. **The other maps in this repo are separate work.** Do not unify their data shapes with this map's,
+   and do not carry a finding from one to another without checking it against this map's own sources.
+6. **Repo updates are pushed from chat.** Standing: commit and push rather than handing the owner files.
+   `add_repo` with push access first, or the git proxy refuses with a 403.
+7. **`case-map-src/HANDOFF.md` is a pointer now, not a handoff.** It held the round 13 text and was nine
+   rounds stale. The current handoff is this file, `case-map-src/docs/HANDOFF.md`, and there should
+   never again be two.
 
 ## READ THIS FIRST: round 22 is half done and its data is staged, not merged
 
