@@ -260,6 +260,72 @@ Fixed with this round:
   `lawLinksForRoute` skips any tag that block already printed, and the
   `DOELSE` search is dropped when the body itself is linked above it.
 
+### Round two: the legislature of a state, a province or a region
+
+`SUBLEG`, beside `LAWP`, keyed by the **Wikidata id of the jurisdiction**
+rather than by its name. The name is the thing that goes wrong — a
+boundary file calls a unit "Los Angeles" and so does the city inside it,
+and half the world's regions share a name with somewhere else — and the
+chain already carries the id it resolved for each level, so the match is
+that id or nothing. A level that resolved to no id gets no record, which
+is the honest result rather than a near miss.
+
+**5,159 jurisdictions with the body that makes their law, 1,727 of them
+with its address**, 1,008 of which answered when checked, plus 66 public
+emails and 129 switchboards. California State Legislature, the Landtag of
+Bavaria, the Landtag of Lower Saxony with `poststelle@lt.niedersachsen.de`
+and its number, the Municipal Chamber of São Paulo — and where there is
+no address the record still names the body, which turns "a state
+parliament" into "the Landtag of Bavaria".
+
+It reaches below ADM1 wherever Wikidata has it: Brazil's municipal
+chambers come through this query, which is the first municipal contact
+data in the file.
+
+Three places read it. `levSay()` names the body in the level question;
+`howLawsMade()` links it in the sentence that says the level makes its
+own law; `levelRow()` puts it at the top of a method's "Where to do
+this" for any office belonging to that level, because a member of a
+state assembly is reached through the assembly — that is where its
+members are listed and where its committees take submissions — and the
+office's own record rarely carries any of it. It is skipped where the
+office's own address is already that address, which it is for the
+chamber itself.
+
+**How it was gathered, and the one trap in it.** `P194` on the
+jurisdiction, pulled globally in pages of 2,500 (`suball.py`), with no
+country filter: an earlier per-country version returned nothing for the
+United States, Germany or India because their state items carry no `P17`,
+and filtering on it silently dropped every federation that matters. Two
+filters do the real work: anything with a dissolution date is out, and a
+label beginning with an ordinal — "10th Oklahoma Legislature" — is a
+numbered session rather than a body, which is the same class of record as
+the "presidency of Barack Obama" entries already excluded.
+
+A second route was tried and rejected: `P1001` (applies to jurisdiction)
+on bodies of a legislature class returned mostly those numbered sessions,
+25 rows for the whole United States. `P194` is the property that holds
+this relation; `P1001` is not.
+
+**A boundary file is not in English, and that was costing a whole
+layer.** geoBoundaries names a unit the way the country does —
+"Niedersachsen", "Lombardia" — and Wikidata's English label is "Lower
+Saxony". `resolveUnitIn` asked only for an English label, so Lower Saxony
+resolved to no id at all; since the contacts are keyed on the id, the
+Landtag of Lower Saxony was in the file and unreachable. The bare name is
+now asked for in thirty Latin-script languages and `skos:altLabel` is
+matched as well as `rdfs:label`, because Wikidata usually carries the
+local name as an alias. The suffixed and prefixed forms stay English —
+they are English words. Matching a label in any language at all, with a
+`FILTER` on `STR(?lab)`, was tried and times out: the language tag is
+what makes it an index hit. `CACHE_V` went to `htrt5`.
+
+This fix is worth more than the round it came from. Every id that now
+resolves also gives that level its offices, its markers and its official
+links, not just its legislature.
+
+The file is now 1.0 MB, 289 KB gzipped.
+
 ### How many rounds, and where the work actually is
 
 The count depends entirely on the level, because the number of units and
@@ -268,7 +334,7 @@ the way to reach them both change at each step:
 | Level | Units worldwide | How it is reached | Rounds |
 | --- | --- | --- | --- |
 | National | 198 | Wikidata `P194`/`P527` + front-page crawl | done |
-| Sub-national legislatures | ~3,800 ADM1 | the same query against the region | 1 |
+| Sub-national legislatures | ~3,800 ADM1 | `P194` by jurisdiction id | done |
 | ADM2 councils | ~48,000 | Wikidata, thinning sharply | 1–2, partial |
 | Municipalities | ~250,000–400,000 | **not by the above** — see below | 3–6 |
 | Below the municipality | millions | not proposed | — |
