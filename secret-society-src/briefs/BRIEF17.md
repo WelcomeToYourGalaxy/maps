@@ -1,5 +1,11 @@
 # BRIEF17 — possible patterns
 
+## Update, 14 November 2026 (23:30): Current / Past / Potential, and ways as drop-downs
+
+The owner renamed the three panel sections: "Going on today" is now **Current**, "Past influence" is **Past**, and the possible-pattern list is **Potential**. Each of the five ways in is its own drop-down under Potential, open by default; collapse state lives in `S.hw` (a way is open unless `S.hw[way] === false`), labels still come from `_ways`.
+
+The intro paragraph above the list (`_what`, rendered as `.hypnote`) is **deleted** by his instruction. `_what` is now an empty string: the five way headings carry the structure on their own. Do not reinstate a paragraph there. The rules it stated still hold and live here: every item names its `way`, and where an item shares ground with a proved pattern, its **title** names the unproved part (people not yet caught, other countries, a higher level).
+
 ## Update, 14 November 2026 (late): five ways in, and the line between possible and proved
 
 The owner said the 24 read as a hodge-podge, and that possible and proved patterns overlapped. Both true: items were cut on different axes (some by who infiltrates, some by industry, some by target, some by method), and several restated proved patterns.
