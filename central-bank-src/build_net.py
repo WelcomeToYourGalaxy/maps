@@ -71,7 +71,7 @@ def locate(city, iso):
 REL = {"paid or bribed the bank's officials": "corrupt", "received money, favors or contracts from the bank": "corrupt", "received leaked information": "corrupt",
        "owned or ran an asset officials held": "service", "employed an official before or after (revolving door)": "people", "paid a former official for speeches or advice": "people",
        "pressured, dismissed or prosecuted bank officials": "control", "froze or seized the bank's reserves": "control", "audited or investigated": "service", "other": "service",
-       "member of the same forum": "people", "sits on the board": "people", "prints its banknotes": "service", "makes its banknote paper": "service", "supplies its banknote substrate": "service", "audits its accounts": "service",
+       "member of the same forum": "people", "sits on the board": "people", "appoints or directs the bank's board": "own", "prints its banknotes": "service", "makes its banknote paper": "service", "supplies its banknote substrate": "service", "audits its accounts": "service",
        "manages its reserves or programmes": "service", "holds its gold reserves in custody": "service", "bribery or misconduct with the bank": "corrupt"}
 # Head offices for firms and bodies whose sources did not state one (used only to place the marker).
 HQ = {"Citi": ("New York", "USA"), "BlackRock": ("New York", "USA"), "UBS Group AG": ("Zurich", "CHE"), "Standard Chartered": ("London", "GBR"),
