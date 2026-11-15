@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Build secret_society_infiltration.html from the shared map shell and the data folder.
+"""Build infiltration.html from the shared map shell and the data folder.
 
-    python3 build.py            -> writes ../secret_society_infiltration.html
+    python3 build.py            -> writes ../infiltration.html
 
 Inputs (all in ./data):
     cases.json       documented records: one object per event where an organisation
@@ -30,7 +30,7 @@ if os.environ.get('PYTHONHASHSEED') != '0':
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 D = lambda f: os.path.join(HERE, 'data', f)
-OUT = os.path.join(HERE, '..', 'secret_society_infiltration.html')
+OUT = os.path.join(HERE, '..', 'infiltration.html')
 
 # ------------------------------------------------------------------ vocabulary
 CASE_BUCKETS = [

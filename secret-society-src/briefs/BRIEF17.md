@@ -59,8 +59,23 @@ therefore has to carry all of it, in this order and without headings:
 2. why that is likely - the measured fact or structural feature, and the proved case
    on this map that shows the same shape;
 3. what makes it possible - how few people decide, what is not published;
-4. what would turn it into a case, and what would show it is clean. Woven into the
-   closing paragraph as plain sentences, never as two labelled fields.
+4. what would turn it into a case, as a plain sentence and never a labelled field.
+
+**The story stops there.** It does not carry `would_refute`. The owner, 14 November
+2026, on the first drafts: *note the last two look like you just tried to paste the
+category from the first drafts onto the last paragraph; it stands out; just delete that
+last category part.* He was right - every one of the nine ended with a bolted-on
+"publish X and this is dead" sentence. `would_refute` is still a mandatory field,
+because a possible pattern that cannot be knocked down is an opinion, but it lives in
+the file for whoever audits the layer and never in the prose.
+
+Phrasings he struck out by name, worth keeping struck: "That text travels is not a
+guess", "This map already holds the same thing happening to...", "which is exactly the
+shape described here", "It would stop being a suspicion the day", "It would die just as
+cleanly", "and the suspicion is answered". The common fault is the sentence that
+announces what the map is doing instead of saying the thing. Write "The copying has been
+measured", not "that it travels is not a guess"; write "Ordinary national law moves the
+same way", not "this map already holds the same thing".
 
 Write it the way the rest of the map is written: plain words, short sentences, the
 mechanism shown rather than characterised. The unease has to come from the specifics -
@@ -93,6 +108,38 @@ proved case is usually the most convincing part of the rundown, so it is named p
 - When a possible pattern produces cases, it stays, and the `claim` narrows to
   the part still unproved. A pattern that is fully proved graduates to
   `patterns.json` and is removed here.
+
+## Infiltration, not capture
+
+A third owner instruction, 14 November 2026: *i noticed that your suspected patterns
+selections are more about capture, not infiltration necessarily; kind of veered from
+this map's topic.*
+
+This is the sharpest test in the brief and the easiest one to fail, because capture
+reads as the same subject and is not. The map's subject is a **party getting its people
+inside a body**: placed, paid, seconded, sworn, or steering a decision from within.
+Capture is a body coming to serve an outside interest through lobbying, revolving doors,
+funding dependence or a seat at a consultation. The second is real and matters, and it
+is somebody else's map.
+
+The test to apply before writing anything: **name the person inside.** If the item can
+only be stated as "the industry shapes the rules", it is capture and does not belong
+here. If it can be stated as "their staff hold posts in the ministry", "their members
+sit as judges without declaring it", "an officer of that service is on the board", it is
+infiltration.
+
+Items added on 14 November under this test, and what each puts inside: cohorts selected
+by a private forum who then hold office (`groomed_cohorts`); officers under cover on
+multilateral staff (`officers_inside_multilateral_bodies`); paid informants inside
+land-defence movements (`informants_inside_movements`); minders inside diaspora bodies
+and party branches (`diaspora_minders`); sworn members among judges and senior police
+(`brotherhoods_in_courts_police`); contractors in the adviser's chair inside ministries
+(`security_advisers_in_ministries`); party cells and liaison officers inside companies
+that operate worldwide (`party_cells_in_global_companies`).
+
+The nine written earlier the same day lean to capture by this test, `standards_committees`,
+`health_emergency_seats` and `asset_managers_advising_states` most of all. They were kept
+at the owner's instruction, not because they pass it.
 
 ## Scale: they have to be big-picture
 
