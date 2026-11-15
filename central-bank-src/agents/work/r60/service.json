@@ -1,0 +1,79 @@
+{
+ "auditors": [
+  {
+   "cb_iso3": "MWI",
+   "auditor": "Deloitte (Malawi) with Deloitte & Touche (South Africa)",
+   "name_as_stated": "Deloitte (Malawi) and Deloitte & Touche (South Africa)",
+   "auditor_hq_city": "Blantyre",
+   "auditor_hq_iso3": "MWI",
+   "year": "year ended 31 December 2025 (reports signed 30 June 2026)",
+   "source_title": "Reserve Bank of Malawi, Consolidated and Separate Annual Financial Statements for the year ended 31 December 2025",
+   "source_url": "https://www.rbm.mw/Home/GetContentFile/?ContentID=63591",
+   "quote": "These consolidated and separate annual financial statements have been audited by the Bank's independent auditors, Deloitte (Malawi) and Deloitte & Touche (South Africa)"
+  },
+  {
+   "cb_iso3": "YEM",
+   "auditor": "Ernst & Young",
+   "name_as_stated": "إرنست أند يونج (Ernst & Young)",
+   "auditor_hq_city": "London",
+   "auditor_hq_iso3": "GBR",
+   "year": "appointment announced 7 February 2021; the source states no financial year",
+   "source_title": "حكومة اليمن تختار إرنست أند يونج لتدقيق حسابات البنك المركزى (Youm7)",
+   "source_url": "https://www.youm7.com/story/2021/2/7/%D8%AD%D9%83%D9%88%D9%85%D8%A9-%D8%A7%D9%84%D9%8A%D9%85%D9%86-%D8%AA%D8%AE%D8%AA%D8%A7%D8%B1-%D8%A5%D8%B1%D9%86%D8%B3%D8%AA-%D8%A3%D9%86%D8%AF-%D9%8A%D9%88%D9%86%D8%AC-%D9%84%D8%AA%D8%AF%D9%82%D9%8A%D9%82-%D8%AD%D8%B3%D8%A7%D8%A8%D8%A7%D8%AA-%D8%A7%D9%84%D8%A8%D9%86%D9%83-%D8%A7%D9%84%D9%85%D8%B1%D9%83%D8%B2%D9%89/5195083",
+   "quote": "أن الحكومة عينت إرنست أند يونج لتدقيق حسابات البنك المركزي",
+   "detail": "Appointed by the Yemeni government, announced by the office of Prime Minister Moeen Abdulmalik; a wire/press report, not the bank's own statements.",
+   "weak_source": false
+  }
+ ],
+ "printers": [],
+ "not_found": [
+  {
+   "iso3": "EGY",
+   "note": "Law 194 of 2020, English translation published by Andersen Egypt (https://eg.andersen.com/wp-content/uploads/2025/07/banking-law-no-194-of-2020.pdf), downloaded and read: 'The Bank's accounts shall be audited by two external auditors, one appointed by the Central Auditing Organization and the other by the Board upon nomination by the Audit Committee, from among the registered auditors.' Mechanism only - no firm named - and the same article says 'The audits shall substitute for those of the Central Auditing Organization', so the CAO is the appointer, not the auditor, and filing the CAO would misstate the source. cbe.org.eg remains behind an F5 WAF; every search for the CBE's own statements returns Egyptian commercial banks (Credit Agricole Egypt, EG Bank, Banque Misr). NEEDS A HAND CHECK: the auditors' report page of the CBE's own annual report, which names the two firms."
+  },
+  {
+   "iso3": "JOR",
+   "note": "Jordan's open-data entry is confirmed real: opendata.gov.jo resource 1e1fc742-3772-494e-a843-79c79213c945 is titled 'Financial statements of the Central Bank of Jordan 2018' (entity code 450), format application/pdf, 1.5 MiB, last updated 16 July 2025 - but WebFetch of the resource page returns 'Url type: upload' with no download address, as the brief said. The file store portal.jordan.gov.jo/OD/files/<n>.pdf IS reachable by WebFetch (curl gets a connection reset), so the CBJ statements are retrievable if the file number is known: 5752.pdf is the Deposit Insurance Fund for Islamic Banks (audited by 'Ernst & Young - Jordan', 16 April 2023), 1048.pdf and 2413.pdf are both CBJ organisation charts. cbj.gov.jo itself answers 200 to curl but its /AR/List/التقارير report list is built by ASP.NET postback, so no document URLs appear in the markup. NEEDS A HAND CHECK: the OD/files number for dataset 450, or the CBJ annual report's auditors' page."
+  },
+  {
+   "iso3": "MDG",
+   "note": "Loi n. 2016-004 (statut de la Banque Centrale), assemblee-nationale.mg, read by WebFetch: article 85 al.2 'Les états financiers de la Banque Centrale sont audités par un auditeur externe' and article 76 'L'auditeur externe est nommé par le Conseil d'administration', which speaks of a 'Cabinet d'audit' without naming one. Mechanism only; the Cour des Comptes appears only as a recipient of the annual report (art. 34), not as auditor, so it is not filable. banky-foibe.mg unreachable. NOT FILED."
+  },
+  {
+   "iso3": "MRT",
+   "note": "beta.mr (the Mauritanian tender file store) is reachable by curl; files/offr/351.pdf downloaded and read - a commercial bank's accountant job advert, not a central bank audit tender; files/appls/5621, 6757, 7709, 7815, 10735 all return 404. No BCM audit tender or award found. bcm.mr returns a 2.5 KB single-page shell. IMF French country reports (1MRTFA2023003) return 403 to curl. NOT FILED."
+  },
+  {
+   "iso3": "RWA",
+   "note": "bnr.rw/index.php?id=82 downloaded by curl: a React single-page shell. Its bundle /static/js/main.02c11141.js was downloaded and read - documents are loaded from relative axios endpoints (/fs_documents, /prodocuments, /lr_documents etc.) whose base URL is build-time, and only three hard-coded bnr.rw/documents/*.pdf paths appear, none of them an annual report. Probing those endpoints was refused by the permission system. rwandalii.africanlii.org is unreachable from the egress proxy (connect_unreachable). parliament.gov.rw annual-reports-links and the BNR draft law both 404. allbusiness.africa's 'rw contract for external audit services' award page returned a client error to WebFetch: https://allbusiness.africa/contract-awards/rw-contract-for-external-audit-services-999075470 - NEEDS A HAND CHECK, it is the one page that may name the firm and its years."
+  },
+  {
+   "iso3": "VEN",
+   "note": "bcv.org.ve PDFs ARE reachable by WebFetch (curl fails TLS at the proxy). Read notas_de_los_estados_financieros_30-06-2024.pdf: it names no audit firm, referring only to 'el informe de los comisarios' without saying who the comisarios are. Separately, April 2026 press (eldiario, infobae, lapatilla) reports that the BCV and the US each contracted audit firms to audit the USE OF VENEZUELAN RESOURCES HELD ABROAD - that is not an audit of the bank's own accounts, so it was deliberately not filed under 'audits its accounts'. NOT FILED."
+  },
+  {
+   "iso3": "BLR",
+   "note": "nbrb.by unreachable as stated. base.spinform.ru/show_doc.fwx?rgn=22844 downloaded and read: it is the National Bank's instruction on regulating audit OF COMMERCIAL banks, not the audit of the National Bank itself. pravo.by returned a client error to WebFetch. NOT FILED."
+  },
+  {
+   "iso3": "CUW",
+   "note": "exch.centralbank.cw unreachable. zoek.officielebekendmakingen.nl/dossier/blg-1245981.pdf downloaded in case it mirrored the CBCS accounts - it is the Boards of Financial Supervision semiannual report, July-December 2025, and names no CBCS auditor. Only Curacao Chronicle and smn-news press summaries of the 2023 and 2024 annual reports were found, none naming an audit firm. NOT FILED."
+  },
+  {
+   "iso3": "DJI",
+   "note": "Banque Centrale de Djibouti Rapport Annuel 2024 (https://banque-centrale.dj/wp-content/uploads/2025/09/Rapport-Annuel_-V.Definitive.pdf) downloaded and read: 'Les auditeurs externes, en l'occurrence le cabinet Deloitte Cote d'Ivoire, ont procédé à la certification des états...' - this CONFIRMS the existing DJI record (Deloitte Cote d'Ivoire) for financial year 2024, but is not refiled because one auditor record per bank is enforced. The same report names no banknote printer, and no Djiboutian procurement notice for banknote printing was found. PRINTER NOT FILED."
+  },
+  {
+   "iso3": "ZMB",
+   "note": "PRINTER: the two surviving leads are both negative. diplo.news (https://www.diplo.news/en/articles/erfolgreiche-lancierung-der-neuen-kwacha-banknotenserie-in-sambia, 28 April 2025) says only 'the Kwacha 10 and Kwacha 20 banknotes have been printed on Landqart AG's innovative Durasafe substrate' - a substrate, not a printer. currency-news.com's 2 May 2025 piece on the new family (K500 to K10, launched 31 March 2025) is paywalled after the intro and names no printer in the visible text. The diplo.news lead named in the brief is now closed. NOT FILED."
+  },
+  {
+   "iso3": "MDA",
+   "note": "PRINTER: bnm.md's own pages /ro/print/content/bancnote, /print/content/elementele-de-siguranta-pe-leul-moldovenesc and /ro/print/node/56167 were downloaded by curl and searched - no printer named anywhere, only the words for 'printed'. monitorul.fisc.md's 'BNM modernizeaza bancnotele' returns 403 to curl (has the page, refusing automation) - NEEDS A HAND CHECK. mtender.gov.md searches surface only opaque storage.mtender.gov.md/get/<uuid> file links with no way to tell which tender they belong to; probing the mtender API was not attempted because endpoint probing is refused here. NOT FILED."
+  },
+  {
+   "iso3": "MDG",
+   "note": "PRINTER: banknotenews.com/?p=3985 (the 2017 new note family) names no printer or supplier. capmad.com/?p=74812 'Malagasy currency: the ariary still printed elsewhere' (governor's clarification, 7 May 2024) says only that Madagascar relies 'entirely on European and American printing plants', naming no firm. Papierfabrik Louisenthal is already on the map as the paper maker. NOT FILED."
+  }
+ ]
+}
