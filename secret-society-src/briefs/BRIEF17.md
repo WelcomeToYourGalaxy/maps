@@ -1,5 +1,11 @@
 # BRIEF17 — possible patterns
 
+## Update, 14 November 2026 (late): five ways in, and the line between possible and proved
+
+The owner said the 24 read as a hodge-podge, and that possible and proved patterns overlapped. Both true: items were cut on different axes (some by who infiltrates, some by industry, some by target, some by method), and several restated proved patterns.
+
+Fix, with nothing removed: every item now carries `way`, one of five ways an outsider gets inside an institution: `place` (putting their own people in), `select` (choosing who rises), `pay` (paying people already there), `fund` (paying for the institution itself), `run` (running the systems it depends on). The list renders a subheading per way, and the popup kicker names it. Labels live in `_ways`. Fifteen titles were rewritten so the title itself names the unproved part where a proved pattern covers the rest (people not yet caught, other countries, or a higher level), and the intro says so. Any new item must name its way and, if it touches a proved pattern, state the unproved part in its title.
+
 ## Update, 14 November 2026 (just before midnight): the list as a whole statement
 
 The owner: taken together, the list should read as "this is what infiltration looks like on Earth", complete like a full stop. Eight more were added to close the gaps in who gets inside (private forums, arms makers, drug makers, accounting firms, foreign sovereign funds paying former officials, privately funded judicial networks, religious networks, state paramilitaries) and where (regulators, courts, armies, tax law). 24 items, widest reach first. The intro text now names the spectrum: states, companies, private fortunes, criminal groups and networks of belief, getting inside international bodies, governments, parliaments, courts, regulators, armies and companies.

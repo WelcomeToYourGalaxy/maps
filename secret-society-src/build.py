@@ -216,8 +216,9 @@ def hypotheses(h, cases):
                     'documented': it.get('documented', ''), 'would_show': it.get('would_show', ''),
                     'would_refute': it.get('would_refute', ''), 'pattern': it.get('pattern'),
                     'story': it.get('story') or [],
+                    'way': it.get('way', ''),
                     'countries': cs, 'held': sum(per.get(x, 0) for x in cs)})
-    return {'what': h.get('_what', ''), 'asof': h.get('_asof', ''), 'items': out}
+    return {'what': h.get('_what', ''), 'asof': h.get('_asof', ''), 'ways': h.get('_ways', {}), 'items': out}
 
 
 # Boilerplate that carries no information about which case an item names.
