@@ -785,6 +785,103 @@ are on the town hall object, not the boundary, so Tier B needs a
 spatial join as well as a planet-sized download. Do not plan a round
 around it without first proving the extract is obtainable.
 
+### Round fourteen: no new register, and four doors closed with evidence
+
+A survey round. Nothing shipped, the shards are unchanged at 43,791
+records, and what it produced is a sharper account of what each
+remaining country is actually blocked on — in three cases a different
+thing from what the earlier rounds recorded.
+
+**The pan-European source that joins and must not be used.** TED, the
+EU's tender notices, publishes a contact block for every contracting
+authority, and municipalities are contracting authorities. The API is
+reachable (`api.ted.europa.eu/v3/notices/search`, POST only) and it
+carries `organisation-identifier-buyer`, which for Bulgaria is the
+company code — **the key Wikidata holds for all 265 Bulgarian
+municipalities**. Checked on a sample of 100 Bulgarian notices from
+2025: the identifier is present on all 100, the email on all 100, the
+telephone on all 100, and Kyustendil's identifier came back `000261517`,
+matching its `P8894` on Wikidata exactly. The join is perfect.
+
+The payload is not the municipality's. A buyer contact on a tender
+notice is whoever handles that tender, and on that sample it is
+`ob_porachki@kyustendil.bg` — the public-procurement desk — and, four
+times in fourteen, a named officer's personal address:
+`elkavaseva@gmail.com`, `ibstoimenova1@gmail.com`, `zgemieva@gmail.com`.
+The first buyer record pulled gave a mobile number as the
+municipality's telephone. The panel prints `e` and `p` as the
+government's own email and switchboard, so importing these would put a
+procurement officer's private Gmail on the page as the way to write to a
+council about a law. **Rejected, and it should stay rejected** however
+good the join looks: the fault is in what the field means, not in
+whether it matches.
+
+**Spain's crosswalk is behind a login, not only a 403.** Round twelve
+left Spain needing REL's own code-to-INE table. Two more routes were
+tried. The Treasury's BDGEL — the Ministry's general database of local
+entities, which is where that table would live — answers at
+`serviciostelematicosext.hacienda.gob.es/SGCIEF/BDGEL`, and its form is
+a username and password box for local-authority officials. DIR3's
+offices file was checked for a locality code that would bridge unit to
+INE code, and it carries office ids, unit ids and service flags and no
+locality. So the position is: 7,015 municipal emails sitting in a
+reachable file, and the one table that would place them is either 403 or
+behind credentials.
+
+**Bulgaria's register exposes the office-holders and not the contacts.**
+A correction to round thirteen, which said it needed a browser. The
+`P13953` id Wikidata holds is the *organigram* id, and the organigram is
+addressable:
+`iisda.government.bg/ras/adm_structures/organigram_municipality_administration/342`
+returns Kyustendil's administration as a tree of posts — mayor, deputy
+mayors, secretary. The list of all 265 is addressable too, 30 to a page
+through a GET form. What is not addressable is the contact block: no
+URL pattern reaches an administration's address, telephone or email, and
+the search runs through xajax. So Bulgaria is two different things —
+**its office-holders are readable from here today**, which is the layer
+the handoff says Wikidata runs out at, and its contacts are not. The
+first is a page change rather than a shard, and worth its own round.
+
+**Slovakia and Estonia fail at the same place, and it is worth naming as
+a class.** Both have a register with the data and neither has an
+organisation identifier on Wikidata to join it with. Slovakia: 2,887 LAU
+codes, and RPO is keyed by IČO, which no Slovak municipality item
+carries — and RPO holds no email or telephone in any case. Estonia: the
+Business Register publishes bulk files that include contacts, and
+Estonian municipality items carry an EHAK id and no registry code.
+**The pattern across rounds seven, twelve and fourteen is now clear: a
+statistical code is what Wikidata has and an organisation code is what
+registers are keyed by, and the countries that have joined are the ones
+where those happen to be the same code or where a second register
+bridges them.** Norway joined because Wikidata had the organisation
+number; Spain, Greece, Slovakia and Estonia are all blocked on the same
+missing half.
+
+Also re-checked and unchanged: Poland's open-data API does not answer
+from here, Switzerland and the Philippines have no national municipal
+contact set, Mexico's 39 candidate datasets are all sectoral, and
+Portugal publishes municipal finance and no contacts.
+
+### France's 759 unjoined rows were never a loss
+
+Worth writing down so that a later round does not "fix" it. The build
+reports 759 French register rows whose INSEE code matches no undissolved
+Wikidata item, which reads like a gap of 759 municipalities. It is not.
+**745 of them are named "Mairie déléguée" and 2 "Mairie annexe"** — 98%
+— and they cluster in Maine-et-Loire, Manche, Calvados and Orne, which
+is exactly where France's commune mergers concentrated. A mairie
+déléguée is the former town hall of a commune that has merged into a
+*commune nouvelle*: a building that still opens, with no council and no
+power to make a rule. Its INSEE code belongs to a commune that no longer
+exists, which is why the query's `P576` filter correctly finds nothing.
+
+The tempting fix — dropping that filter so the codes resolve — would
+attach each of those 745 branch offices to a dissolved commune and the
+panel would present it as a government that makes law, which is the
+rule in §11 about keeping a building a building, broken at scale. The
+residue genuinely unaccounted for is **12 rows named plainly "Mairie"**,
+which is the only part of that 759 worth another look.
+
 ### Round thirteen: Norway, on the key round seven said it had to be
 
 Norway is in, and it took the thing round seven ruled out. That round
@@ -901,11 +998,11 @@ seven.
 | Norway | 357 | organisation number | 354 |
 | Netherlands | 341 | CBS code, then TOOI | 341 |
 | Finland | 291 | municipality number | 230 |
-| Bulgaria | 265 | **IISDA id, already on Wikidata** | needs a browser to read the form |
-| Spain | 8,391 | — | needs REL's code-to-INE crosswalk |
+| Bulgaria | 265 | **IISDA id, already on Wikidata** | office-holders readable now; contacts behind xajax (round fourteen) |
+| Spain | 8,391 | — | 7,015 emails in hand; REL's crosswalk is 403 or behind a BDGEL login |
 | Sweden | 292 | organisation number | needs a Bolagsverket account |
 | Denmark | 98 | municipality code | needs a CVR account |
-| Slovakia | 2,898 | — | needs an IČO import into Wikidata |
+| Slovakia | 2,898 | — | needs an IČO import into Wikidata; RPO holds no email either |
 | Mexico | 2,462 | — | no national directory exists |
 | Philippines | 1,497 | — | no national contact set |
 | Germany | 13,697 | — | no national code and no national register |
