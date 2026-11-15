@@ -75,8 +75,8 @@ else:
     gsch, TOT, NALL = snap['S'], snap['T'], snap['N']
     grecs = {(p, s_): {'via': {'edu'}, 'lists': set(), 'offices': o} for p, s_, o in snap['R']}
 # only the documented pipelines are shown; the record supplies their people where the earlier pulls missed them
-import meta6 as M6
-REC_TO_DOC = {'r' + p['q']: p['id'] for p in M6.P11}
+import meta6 as M6, meta7 as M7
+REC_TO_DOC = {'r' + p['q']: p['id'] for p in M6.P11 + M7.P12}
 REC_TO_DOC.update({'rQ26239': 'whampoa', 'rQ59321': 'pma'})   # second Wikidata items for two documented academies
 for (p, s_), e in grecs.items():
     d_ = REC_TO_DOC.get(s_)
