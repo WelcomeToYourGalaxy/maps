@@ -59,11 +59,29 @@ Five fields, all mandatory, and the second is the test:
   the part still unproved. A pattern that is fully proved graduates to
   `patterns.json` and is removed here.
 
-## The nine, as of 14 November 2026
+## Scale: they have to be big-picture
 
-data_centre_power · scam_compound_zones · gold_refiners_in_banks ·
-flag_registries · carbon_offsets_forestry · security_companies_copying_wagner ·
-medicines_approval · crypto_licensing · distant_water_fleets
+A second owner instruction, the same evening: *are the patterns big picture ones or nothing special; i was looking for spicy hot topic exciting conspiracies global or international in scale, just not too woo woo and still remaining in the main vein of the topic, not tangential. what really moves the audience while still remaining true and rounded to the subject.*
+
+The first nine failed this. Several were real but small - fisheries observers, carbon baselines, medicines registration. A possible pattern has to clear three bars at once:
+
+1. **Scale.** It operates across many countries, or inside one of the handful of decisions that shape the world: who governs AI, where sanctioned oil goes, how a continent rearms, who staffs a government.
+2. **Live.** It is happening now, with money that has grown recently. A pattern whose moment was 1995 belongs in the proved list or nowhere.
+3. **Central, not tangential.** It is a party getting its people, money or control inside a government, an international body or a company. Procurement fraud with no insider is not this map's subject, however large.
+
+And one bar it has to clear on the other side: **not woo-woo.** The claim has to be the next step along a chain the map already proves, not a leap off the end of it. Every one of the thirteen names proved cases in `documented`, and the one that cannot - ship registries - says so in the field and argues from structure instead.
+
+## The thirteen, as of 14 November 2026
+
+ai_labs_in_regulators · gulf_money_former_officials · spyware_inside_services ·
+china_local_politics · shadow_fleet_paperwork · scam_compound_zones ·
+after_wagner · rearmament_procurement · crypto_in_legislatures ·
+policy_shops_staffing · consultancies_in_finance_ministries ·
+conflict_gold_reserves · data_centre_power
+
+Dropped from the first attempt for failing the scale bar: carbon offsets in forestry
+ministries, distant-water fishing fleets, medicines approval agencies. The work is in
+the git history if the bar ever moves.
 
 The three retired commentary items (thin_record_severe_insiders,
 companies_underrecorded, sealed_sanctions) are not deleted work: their content
