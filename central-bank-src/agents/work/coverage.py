@@ -30,7 +30,12 @@ def iso(rows, k='iso3'):
 
 cats = {}
 cats['Corruption cases']        = (iso(cor['cases']),            len(cor['cases']))
-cats['Revolving door']          = (iso(cor['revolving_door']),   len(cor['revolving_door']))
+# app.js counts a career move only if it is not a public_move (rdN in app.js): a move whose only
+# outside employer is the IMF, World Bank or another state body is listed in the box but not counted,
+# and insideParts gives such a place no group at all. Use the same rule or the row claims places the
+# layer renders blank -- the same mistake the 'other' events and the union-expansion bugs made.
+_rdc = [r for r in cor['revolving_door'] if not r.get('public_move')]
+cats['Revolving door']          = (iso(_rdc),   len(_rdc))
 # app.js counts an event only if its kind is not 'other' (evN in app.js), so the places figure
 # must use the same rule or it claims places the layer renders blank.
 _evc = [r for r in ev['events'] if r.get('kind') != 'other']
