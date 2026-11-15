@@ -1,0 +1,75 @@
+{
+ "taunsa-barrage-relocation": {
+  "_why": "Round 22's lead row 'taunsa-barrage-basti-shaikhan-relocation' (P088994) is this case. The checker ruled it an extend rather than a second card and listed the verified new material in `_extend_recommendation` in rounds/r26f_icij6_other_checked.json. Written here as a textfix rather than an extend because the job includes correcting existing text, which `fields_add` cannot do, and because merge_textfix.py handles sources_add as well. Two faults in the live card are corrected: it dates the Descon protest to August 2007, and it presents as the 2007 article's own reporting a protest that article relays as what 'reports said'. The protest at which a case was filed against some 15 people and two were arrested is Dawn of 12 August 2006. The `displaced: 900` question the handoff left open is settled by keeping the figure and making its unit, its approximation and its source explicit in a label: it is the completion report's own count of people with a relocation verb attached, which is what the field requires.",
+  "edits": [
+   {
+    "field": "suppression",
+    "old": "JACSES reported that 38 people who had lived on the land for more than 40 years were indicted by the government because they had no land titles. Dawn reported in August 2007 that affected villagers had protested against Descon and irrigation officials, and that fisherwomen said officials stopped them fishing.",
+    "new": "The Japan Center for a Sustainable Environment and Society wrote to two World Bank staff on 26 October 2006 that \"38 Villagers in Basti Allah Wali are facing court cases filed by the Government of Pakistan on the basis of illegal occupation\". The villagers' own account, relayed in the same letter, is that they had lived on that land for more than 40 years. Dawn reported on 9 May 2006 that displaced people held a rally during a visit by a World Bank delegation, that police first blocked them and they pushed through to the delegation, that compensation to displaced fishermen \"ranged only from Rs16,000 to Rs40,000\", and that many of those displaced had still not been paid. Dawn reported on 12 August 2006 that local communities had asked Descon not to work long hours at night and that \"the firm allegedly did not pay heed to their request\", that its staff \"reportedly started harassing residents of Allahwali Basti\", that \"a case was lodged against some 15 people for allegedly hampering the construction work\" and that \"Two of the accused were arrested as well\". The Bank's country director, John Wall, told a news conference on 27 February 2007 that the Bank had no authority to appoint the independent commission two non-governmental organisations were demanding, saying \"We have no authority to appoint such an independent commission\"; that the matter involved Pakistan's sovereignty; that this was not a new project and \"only involved repair works\"; and that the affected families had at first been satisfied with the resettlement plan, which he said had lifted them out of poverty, raising privacy concerns later, after which the Punjab government supplied water and lavatories. Dawn's report of 20 August 2007 on a two-day fact-finding visit by a Bank team and a panel of social and environmental experts records, as what \"reports said\" rather than as its own reporting, that hundreds of affected villagers had protested against the Descon construction company and irrigation department officials, and records fisherwomen's resentment at irrigation officials not allowing them to catch fish."
+   },
+   {
+    "field": "community",
+    "old": "160 families (about 900 people) were resettled.",
+    "new": "160 families (about 900 people) were resettled, 137 on the left bank and 23 on the right. The two new sites cover about 2.8 hectares of irrigation department land, and every household built its own house with the compensation money. About 136 local people took work with the contractor, 66 of them project-affected. Resettlement was first costed at Rs 12.42 million; Rs 14.704 million of a revised provision of Rs 19.883 million was spent on the plan itself, with a further Rs 17.150 million of community works through the construction contractor, Rs 31.855 million in all."
+   },
+   {
+    "field": "ecosystem",
+    "old": "JACSES reported that areas tens of kilometres downstream were left short of drinking and farm water, and that maximum flows in the left-bank canal soaked nearby farmland and rotted crop roots.",
+    "new": "JACSES reported that areas tens of kilometres downstream were left short of drinking and farm water, and that maximum flows in the left-bank canal soaked nearby farmland and rotted crop roots. Its letter also put to the Bank, as allegations rather than findings, erosion losses at Pul Chandia, Bait Qaim Wala, Loon Wala and Parhar Ghairbi after the coffer dams were built, with no compensation for lost land, houses, tube wells, poultry and fish farms and fruit trees. The barrage sits inside the Taunsa Barrage Wildlife Sanctuary. A baseline survey of the sanctuary by WWF-Pakistan, given to the Project Management Office in August 2006, recorded \"some 25 Indus Dolphins within 2.5 km of the Barrage\" which \"appeared to have been displaced by the disturbance arising from project activities\", and found hog deer at risk of extinction within the sanctuary because the population \"was not viable and was not connected to other populations\". The completion report says of that survey: \"Not all recommendations of the report were implemented.\" The death of two Indus dolphins near the barrage was reported in January 2006; WWF's final report concluded that one dolphin was involved and that it was released after becoming entangled in a fishing net, \"although its subsequent survival was uncertain\"."
+   },
+   {
+    "field": "outcome",
+    "old": "The Punjab Rural Support Program ran an aid programme for farmers hit by the canal closures.",
+    "new": "The Punjab Rural Support Program ran an aid programme for farmers hit by the canal closures. The completion report's own lesson is that \"The initial simplistic and rushed approach skipped the required planning steps and led to many of the grievances and cost increases later.\" The people moved were never given legal rights over the new land, and Dawn reported on 24 April 2026 that in January 150 armed policemen and two bulldozers cleared the settlement, on 47 kanal of government land mapped as \"proposed for Circuit House\". The Punjab Enforcement and Regulatory Authority, launched in July 2025 under a 2024 law, says through its director-general that encroachers are served a digital Emergency Prohibition Order; the activist Fazl-e-Rab said residents had no warning the bulldozers were coming, and an evicted resident, Muhammad Shareef, has a petition against the authority still being heard."
+   },
+   {
+    "field": "displaced_label",
+    "old": "",
+    "new": "about 900 people in 160 families, 137 on the left bank and 23 on the right, physically relocated in June 2005 and resettled under the November 2005 resettlement action plan; the completion report's own words are 160 families \"comprising of some 900 people\" (World Bank completion report, 1 June 2010)"
+   },
+   {
+    "field": "confidence_note",
+    "old": "",
+    "new": "The relocation, its date, the breach of the Bank's resettlement policy and the 160 families all come from the Bank's own completion report, which is candid about them, and are repeated by the Independent Evaluation Group's review. The compensation amounts, the court cases against 38 villagers and the conditions at the new sites come from an independent source, the Japan Center for a Sustainable Environment and Society, which investigated in the field and wrote to Bank staff; the payment figures are attributed in its letter to the villagers themselves rather than stated as its own finding. The protests, the arrests and the 2026 clearance are from Dawn. The January 2026 clearance was carried out by the Punjab Enforcement and Regulatory Authority more than sixteen years after the loan closed and is not attributed here to the project, which is why the case still ends in 2009; it is recorded because it fell on the settlement the project created and because it turns on the lack of legal title the project left in place. ICIJ gives 799 for this project, which is its count of project-affected people and not a count of people moved, and no document found explains the gap between it and the report's figures. The Japan Center's factsheet of 28 November 2006 is in Japanese in a font pdftotext cannot map and that pdftoppm renders without its glyphs, so nothing could be read out of that file by any route tried."
+   }
+  ],
+  "sources_add": [
+   {
+    "title": "Letter to John Wall and Xiaokai Li on the Taunsa Barrage Emergency Rehabilitation and Modernization Project",
+    "publisher": "Japan Center for a Sustainable Environment and Society",
+    "year": 2006,
+    "url": "https://www.jacses.org/sdap/projects/taunsa/letter061026.pdf"
+   },
+   {
+    "title": "Displaced people hold demonstration: WB-funded project",
+    "publisher": "Dawn",
+    "year": 2006,
+    "url": "https://www.dawn.com/news/191411/displaced-people-hold-demonstration-wb-funded-project"
+   },
+   {
+    "title": "Demo by affectees of Taunsa Barrage",
+    "publisher": "Dawn",
+    "year": 2006,
+    "url": "https://www.dawn.com/news/205738/demo-by-affectees-of-taunsa-barrage"
+   },
+   {
+    "title": "World Bank turns down call for Taunsa probe",
+    "publisher": "Dawn",
+    "year": 2007,
+    "url": "https://www.dawn.com/news/235077/world-bank-turns-down-call-for-taunsa-probe"
+   },
+   {
+    "title": "The boatpeople basti who bothered a barrage",
+    "publisher": "Dawn",
+    "year": 2026,
+    "url": "https://www.dawn.com/news/1994681"
+   },
+   {
+    "title": "Pakistan - Taunsa Barrage Emergency Rehabilitation and Modernization Project: Technical Annex",
+    "publisher": "World Bank",
+    "year": 2005,
+    "url": "https://documents1.worldbank.org/curated/en/819451468758395555/pdf/T7642.pdf"
+   }
+  ]
+ }
+}
