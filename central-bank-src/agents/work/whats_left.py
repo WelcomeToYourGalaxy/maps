@@ -3,7 +3,19 @@ UNION={"ECB":["AUT","BEL","BGR","HRV","CYP","EST","FIN","FRA","DEU","GRC","IRL",
 "BCEAO":["BEN","BFA","CIV","GNB","MLI","NER","SEN","TGO"],"BEAC":["CMR","CAF","TCD","COG","GNQ","GAB"],
 "ECCB":["AIA","ATG","DMA","GRD","MSR","KNA","LCA","VCT"]}
 MEM={m:u for u,ms in UNION.items() for m in ms}
-txt=open('/tmp/cov45.txt').read()
+# NEVER read a cached absent list. At round 49 this script parsed a stale /tmp/cov45.txt and sent an
+# agent to research union printer ties that had been on the map since round 45, and the stale figures
+# reached the user: they were told 17 union records would close 143 cells when the live number was 11
+# records and 98 cells. The round-49 handoff recorded that this was fixed; it was not -- the fix was
+# lost with its session, the same way merge_links.py and check_scores.py were. Fixed again at round 56.
+# Run coverage.py in the same session, every time.
+import subprocess, os, sys
+_here = os.path.dirname(os.path.abspath(__file__))
+_cov = os.path.join(_here, 'coverage.py')
+_r = subprocess.run([sys.executable, _cov], capture_output=True, text=True)
+if _r.returncode != 0:
+    sys.exit("coverage.py failed:\n" + _r.stderr)
+txt = _r.stdout
 rows={}
 for m in re.finditer(r'  (.+?) — (\d+) to go\n    (.+?)\n',txt):
     rows[m.group(1)]=m.group(3).split()
