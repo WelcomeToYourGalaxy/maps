@@ -30,7 +30,11 @@ def iso(rows, k='iso3'):
     return expand({r[k] for r in rows if r.get(k)})
 
 cats = {}
-cats['Corruption cases']        = (iso(cor['cases']),            len(cor['cases']))
+# app.js counts a case only if it is not counterparty_only (ccN in app.js): a finding whose
+# subject is another body, with this central bank only the counterparty, is listed in the box and
+# not counted. Use the same rule or the row claims places the layer renders blank.
+_ccc = [r for r in cor['cases'] if not r.get('counterparty_only')]
+cats['Corruption cases']        = (iso(_ccc),                    len(_ccc))
 # app.js counts a career move only if it is not a public_move (rdN in app.js): a move whose only
 # outside employer is the IMF, World Bank or another state body is listed in the box but not counted,
 # and insideParts gives such a place no group at all. Use the same rule or the row claims places the
@@ -74,6 +78,42 @@ print(f"{'Category':34} {'Records':>8} {'Places':>7} {'of 206':>7} {'of ' + str(
 for k, (s, n) in cats.items():
     have = len(s & places) or len(s)
     print(f"{k:34} {n:8d} {have:7d} {100*have/N:6.0f}% {100*have/R:6.0f}%")
+
+# THE CASES ROW HAS TWO HONEST PLACE FIGURES AND THEY DIFFER BY 19. The row above counts a
+# place that holds a case record. app.js colours a place only if ccN > 0, and ccN also drops the
+# cleared outcomes on CC_OUT -- acquitted, case dismissed, charge withdrawn, investigation closed,
+# conviction annulled. So 19 places hold nothing but cleared cases and render BLANK on the layer
+# while the row above counts them, eight of those being ECCB members sharing one dismissed case.
+# Found at round 63 by check_about.py disagreeing with this script. Both are printed because both
+# are true of different claims -- "has a documented case" and "is coloured on the case layer" --
+# and burying either one is how the 'other' events and public_move mismatches survived for rounds.
+CC_OUT = {'acquitted', 'case dismissed', 'charge withdrawn', 'investigation closed',
+          'conviction annulled (time-barred)'}
+# build_final.py applies gaps.json's `case_updates` to the statuses before the page is written, so
+# corruption.json's own status can be stale: Kyrgyzstan and Romania both read 'charged' in the data
+# file and 'acquitted' / 'conviction annulled (time-barred)' on the map. Any figure here that turns
+# on a status has to apply the same updates or it describes a map nobody is looking at. Found at
+# round 63, when this script and check_about.py disagreed by two places and the page was right.
+_cc_upd = [dict(c) for c in cor['cases']]
+for _u in (gaps.get('case_updates') or []):
+    _m = (_u.get('match') or '').split('/')[0].split(' (')[0].strip().lower()
+    if not _m:
+        continue
+    for _c in _cc_upd:
+        if _m in (_c.get('people') or '').lower() or _m in (_c.get('summary') or '').lower():
+            if _u.get('status'):
+                _c['status'] = _u['status']
+            break
+_cc_live = [r for r in _cc_upd
+            if not r.get('counterparty_only') and (r.get('status') or '') not in CC_OUT]
+_p_rec, _p_live = cats['Corruption cases'][0] & places, iso(_cc_live) & places
+print(f"\nCorruption cases, the two place figures:")
+print(f"  {len(_p_rec)} places hold a case record = {100*len(_p_rec)/N:.0f}% of {N}, "
+      f"{100*len(_p_rec)/R:.0f}% of {R}")
+print(f"  {len(_p_live)} of those are coloured on the case layer = {100*len(_p_live)/N:.0f}% of {N}, "
+      f"{100*len(_p_live)/R:.0f}% of {R}")
+print(f"  the other {len(_p_rec - _p_live)} hold only cleared cases (acquitted, dismissed, "
+      f"withdrawn, closed): {' '.join(sorted(_p_rec - _p_live))}")
 
 # A bank with no gold cannot have a gold custodian, so this row's real denominator is the
 # places that hold any gold at all, not every place on the map. Settled at round 52.

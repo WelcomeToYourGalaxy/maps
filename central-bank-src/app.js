@@ -88,9 +88,18 @@ const MAXEV = Math.max(1, ...Object.values(P).map(evN));
 const CC_OUT = ["acquitted", "case dismissed", "charge withdrawn", "investigation closed", "conviction annulled (time-barred)"];
 // "alleged" = publicly accused in a readable source, with no charge filed, no inquiry reported and no court ruling.
 // S.alleged decides whether those count. The tick box in the legend switches it; the default counts them.
-const ccAlleged = (p) => (p.cc || []).filter((i) => D.CC[i].status === "alleged").length;
-const ccN = (p) => (p.cc || []).filter((i) => { const st = D.CC[i].status; return !CC_OUT.includes(st) && (S.alleged || st !== "alleged"); }).length;
-const ALLEG_N = D.CC.filter((c) => c.status === "alleged").length;
+// counterparty_only = the finding's subject is another body and this central bank is only the
+// counterparty: Palestine's finance ministry failing to disclose a debt it owed the Monetary
+// Authority, Samoa's audit of government debt the bank merely paid out. The round-52 test is
+// "is the bank, its officials, its subsidiary or its own money the SUBJECT of the finding, or is
+// the bank the one doing the finding", and Denmark was refused on exactly this shape -- the bank
+// acting as the state's debt manager is not the bank being the subject. Such a record is kept in
+// the country's box, because the fact is real and sourced, and is NOT counted, because the row
+// claims cases at a country's own central bank. Same treatment as public_move on the career row.
+const ccCounts = (i) => !D.CC[i].counterparty_only;
+const ccAlleged = (p) => (p.cc || []).filter((i) => ccCounts(i) && D.CC[i].status === "alleged").length;
+const ccN = (p) => (p.cc || []).filter((i) => { const st = D.CC[i].status; return ccCounts(i) && !CC_OUT.includes(st) && (S.alleged || st !== "alleged"); }).length;
+const ALLEG_N = D.CC.filter((c) => c.status === "alleged" && !c.counterparty_only).length;
 const MAXCC_C = {};
 const MAXCC = () => { const k = S.alleged ? "y" : "n"; if (MAXCC_C[k] == null) MAXCC_C[k] = Math.max(1, ...Object.values(P).map(ccN)); return MAXCC_C[k]; };
 const rdN = (p) => (p.rd || []).filter((i) => !D.RD[i].public_move).length;

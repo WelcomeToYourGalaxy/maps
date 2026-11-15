@@ -2,7 +2,7 @@
 
 Paste or attach this in a new chat to carry on adding to the map.
 
-Rewritten at round 43, current through round 62. It states the current position only. Earlier versions kept round-by-round narrative, which went stale and in round 26 sent agents to re-research records already on the map; the moves-against-the-bank section had grown four rounds of narrative again by round 42 and was rewritten as a statement. Keep it that way: when something changes, edit the statement, don't append a round note. The round-by-round account lives in `agents/work/research_log_2026-11.json`, which is where to look for what was searched and found nothing. **Where this names a country as dead or blocked, that is as of round 62 — re-derive the target list from `coverage.py` before briefing anything. Paste the list `coverage.py` prints; do not summarise it from memory. Round 56 lost an agent's calls to a target list written partly from memory that included a country which was not absent at all, and round 57 made the same mistake again — it pasted `coverage.py`'s list and then added QAT from this document's own prose, where QAT was not absent. Paste what the script prints and add nothing to it.**
+Rewritten at round 43, current through round 63. It states the current position only. Earlier versions kept round-by-round narrative, which went stale and in round 26 sent agents to re-research records already on the map; the moves-against-the-bank section had grown four rounds of narrative again by round 42 and was rewritten as a statement. Keep it that way: when something changes, edit the statement, don't append a round note. The round-by-round account lives in `agents/work/research_log_2026-11.json`, which is where to look for what was searched and found nothing. **Where this names a country as dead or blocked, that is as of round 63 — re-derive the target list from `coverage.py` before briefing anything. Paste the list `coverage.py` prints; do not summarise it from memory. Round 56 lost an agent's calls to a target list written partly from memory that included a country which was not absent at all, and round 57 made the same mistake again — it pasted `coverage.py`'s list and then added QAT from this document's own prose, where QAT was not absent. Paste what the script prints and add nothing to it.**
 
 ## What it is
 - A standalone global map titled **"Central bank capture"**. It shows who owns and steers each central bank, what it hides, the corruption inside and around it, and how far its money reaches beyond its borders.
@@ -73,7 +73,7 @@ same commit as the work it did.
   - Links: `{n, cb | tn, rel, role, detail, src_t, src_u}`.
   - Popups turn each link into a plain sentence (`SAY` / `sayLink` / `srcItem` in `app.js`). Add a `SAY` entry for any new `role` string.
 
-## Where it stands (62 rounds in, 15 November 2026)
+## Where it stands (63 rounds in, 15 November 2026)
 
 1,665 outside parties and 2,415 ties. One writeup for every box. 20 patterns and 14
 suspected patterns.
@@ -91,7 +91,7 @@ ignores" below.
 
 | Category | Records | Places | of 206 | of 192 |
 |---|---|---|---|---|
-| Corruption cases | 260 | 176 | 85% | 92% |
+| Corruption cases | 258 | 174 | 84% | 91% |
 | Revolving door | 274 | 159 | 77% | 83% |
 | Governor removals and pressure | 228 | 181 | 88% | 94% |
 | External auditors | 211 | 174 | 84% | 91% |
@@ -107,6 +107,10 @@ counted, because nobody moved between public office and private finance. Sevente
 nothing but moves of that kind, so they read blank on the layer while their box is not empty:
 BLR BOL BTN CPV CUB DOM IRQ MDG MOZ MRT QAT SDN SLE STP TLS TON VUT. Each needs one employer whose
 private ownership a source states — that is the whole of what stands between them and the row.
+
+The corruption row counts the 258 cases that are not `counterparty_only`. Two more findings are
+listed in a country's box without being counted, because the subject of the finding was another body
+and the central bank was only the counterparty — see the decisions section below.
 
 Named shareholders reads low because only about ten central banks have private shareholders at
 all. Outside reserve managers reads low because 103 of its 160 ties are Norway's fund — and no
@@ -126,7 +130,7 @@ The breadth figures count *places*, not events. For the three rows the user care
 - Thirty major internationally reported episodes checked by name: 28 already recorded. The two misses were arguable (Russia's Masterbank is a commercial-bank licensing scandal, Venezuela's Andrade was a treasurer not a bank official), and both countries already hold a different case.
 - A blind news sweep for central bank officials facing corruption proceedings returned four people (Hungary's Matolcsy, Lebanon's Salameh, Mauritius's Seegolam, Burundi's Murengerantwari). All four already recorded.
 
-**So: roughly 90% of cases a well-informed reader would recognise since 2000; roughly 40% of every documented instance of any size and any year.** The gap is three things, each visible in the data: cases before 2000 are thin (4 in the 1980s, 15 in the 1990s, 97 in the 2010s) because those court and press records are not online; 90 of the 157 countries with a case have exactly one, which usually means one *findable* case; and 95 of the 274 counted revolving-door records are American or British because the Fed and the Bank of England publish full career histories.
+**So: roughly 90% of cases a well-informed reader would recognise since 2000; roughly 40% of every documented instance of any size and any year.** The gap is three things, each visible in the data: cases before 2000 are thin (4 in the 1980s, 15 in the 1990s, 96 in the 2010s) because those court and press records are not online; 88 of the 155 countries with a counted case have exactly one, which usually means one *findable* case; and 95 of the 274 counted revolving-door records are American or British because the Fed and the Bank of England publish full career histories.
 
 **Re-derive those four numbers rather than copying them.** Round 60 found "80 of the 135" had been stale for several rounds while the figure beside it was current, and the same sentence in `about.html` was stale in the same way. They are one query each: the decade counts from `corruption.json`, and the exactly-one count from the built `D.P` on the layer's own filter, which is cases whose status is not on `CC_OUT`.
 
@@ -503,6 +507,136 @@ facts are all in the country box, so a reader does reach them, and the writer ag
 leave them out of the party paragraphs. **But if a party paragraph looks thin for no reason, this is
 why.** Worth changing the condition to "append unless the summary adds nothing", rather than
 "append unless the party is named".
+
+## The five open decisions, settled at round 63
+
+The owner delegated all five. What each turned on, and what the data said, because the reasoning
+matters more than the answer if any of them is ever reopened.
+
+**1. Belarus / Belgazprombank stays NOT counted.** Yermakova went from chairing the National Bank of
+Belarus (2011-2014) to chairing Belgazprombank's board on 15 January 2021. The source names four
+shareholders: Gazprom PJSC 49.66%, Gazprombank JSC 49.66%, Gazprom Transgaz Belarus 0.49% and the
+Republic of Belarus through its Ministry of Energy 0.097% — so 99.8% of the employer sits in the
+Gazprom group, which the Russian state controls. **The row's own rule makes a state-owned bank a
+public move**, and a foreign state's ownership does not change that. She also chaired Belarusbank,
+which is state-owned, so both legs are public. The record is filed, flagged `public_move`, and the
+shareholding is quoted in its own text, so a reader sees the whole thing and the count does not claim
+a move into private finance. **Belarus therefore stays on the list of seventeen places whose only
+career moves are public.**
+
+**2. Uganda / Alpha Capital Partners stays COUNTED, and the gap is being closed rather than ruled
+away.** The record counts because the source says Kaboyo FOUNDED the firm, which is a step short of
+the usual stated-ownership test. Rather than settle that by fiat, round 63 sent an agent after a page
+stating the firm's ownership — the Capital Markets Authority of Uganda's register of licensed fund
+managers, the firm's own About page, or a Ugandan press item naming its shareholders. **If that lands,
+the record moves onto the same footing as every other and the question disappears; if the firm turns
+out to have state participation, the record flips.** Either way the answer comes from a source.
+
+**3. Malawi's gold stays HELD, for the same reason.** The Reserve Bank of Malawi's 2025 accounts,
+note 6, say the Bank holds monetary gold "on deposit with the Federal Reserve Bank". Two things are
+missing and either is enough: the note does not say WHICH Reserve Bank — there are twelve, and only
+the New York one holds foreign official gold, but that is knowledge and not a source — and **"on
+deposit" may be custody or a placement**, where the row's own rule says gold lent or deposited at
+interest does not say where the metal sits. Filing the bare words would also put a second party
+beside the existing `Federal Reserve Bank of New York` node, which is the duplicate-party problem
+round 62 was spent removing. Round 63 is walking `rbm.mw`'s document list for other years — the host
+serves it under plain curl at `/Home/GetContentFile/?ContentID=NNNN` — and looking for a Federal
+Reserve list of earmarked gold by holder.
+
+**4. National member firms stay SEPARATE parties, and the three "duplicates" were never duplicates.**
+This looked like a policy question and turned out to be a counting one. The alias map in
+`build_net.py` folds 26 firm names into a brand, which suggested folding was the practice. **It is
+not: the map carries about a hundred national member firms as their own nodes** — KPMG Georgia LLC,
+Ernst & Young Moldova, KPMG Baltics OÜ, Deloitte Audit Ltd, BDO T&T, Mazars Fivoarana and so on, one
+tie each. The 26 folds are mostly global-brand VARIANTS ("Ernst & Young" to EY, "KPMG LLP" to KPMG),
+plus six early national folds made before the separate-node practice settled. So folding two more
+would have made them consistent with the minority and inconsistent with the hundred. **And the three
+pairs `dup_parties.py` flagged are two different firms in two different countries:** BDO & Co is
+Mauritius and BDO CHARTERED ACCOUNTANTS is Samoa; PricewaterhouseCoopers Limited is Cyprus and
+PricewaterhouseCoopers SRL is Barbados; Oberthur Fiduciaire AD is Bulgaria and Oberthur Fiduciaire is
+its French parent, which the map keeps separate the way it keeps Societe Generale Albania and BNP
+Paribas El Djazaïr separate. **The fix was to country-qualify all five names** — the same treatment
+"National Bank (Sudan)" got — with the source's own styling kept in `name_as_stated` and each
+rename's writeup key migrated. `dup_parties.py`'s certain bucket is now EMPTY, which is the right end
+state.
+
+**What the Big Four question actually wanted is a figure, and it does not need the nodes merged:**
+**114 of the 211 auditor records, 54%, name a firm in a Big Four network** — KPMG 38, EY 33, Deloitte
+22, PwC 21 — with Forvis Mazars 15, BDO 11, Grant Thornton 11, Baker Tilly 8, PKF 5, Crowe 2, RSM 1.
+Sixty records name no global network at all: local firms and national audit offices. Thirteen name
+more than one, because they are joint audits. Recompute it rather than copying it; the one-liner is
+a brand-keyword match over `gaps.json`'s auditors plus `networks.json`'s `audits its accounts` links.
+
+**5. `counterparty_only` is now LIVE, and the corruption row lost two places as a result.** Two
+findings had the flag and nothing read it, so both were being counted: Palestine's Financial and
+Administrative Control Bureau qualifying the **Ministry of Finance's** account over an undisclosed
+2,130,918 dinars it owed the Monetary Authority, and a Samoa Audit Office performance audit of
+**government debt** whose recommendations went to the Ministry of Finance, with the central bank
+merely making the payments. **Both fail the round-52 test** — is the bank, its officials, its
+subsidiary or its own money the SUBJECT of the finding — and the second is the Denmark shape exactly,
+which was refused on the ground that the bank acting as the state's debt manager is not the bank
+being the subject.
+
+Rather than delete the research, the flag was made to do what `public_move` does on the career row:
+`ccN` and `ccAlleged` in `app.js` skip it, and `coverage.py` filters it out of the cases row. **So the
+finding stays in the country's box, where the fact is real and sourced, and the row stops claiming a
+case at a bank that was not the subject.** The cases row went from 260 records and 176 places to 258
+and 174, and Palestine and Samoa are back on that row's absent list — each now needs a finding whose
+subject is the bank or its officials. Both paragraphs already described the distinction correctly
+before the flag was wired up; Palestine's says the Authority "is on the receiving end of the money
+rather than the subject of the finding", and Samoa's says the recommendations went to the ministry
+and no wrongdoing by any person is alleged. **A figure that goes DOWN for a correct reason is right** —
+the same thing happened to the revolving door between rounds 53 and 54.
+
+## Two more coverage bugs, both found by one check disagreeing with another (round 63)
+
+Writing `check_about.py` gave the map a second, independent count of several figures, and within one
+round it disagreed with `coverage.py` three times. All three disagreements were real. **That is the
+argument for keeping both scripts rather than having one read the other: a single source of truth
+cannot catch itself being wrong.**
+
+**`coverage.py` was reading stale case statuses.** `build_final.py` applies `gaps.json`'s twelve
+`case_updates` before writing the page — each matches a name token and overrides the status, so a
+case filed as `charged` becomes `acquitted` or `conviction annulled (time-barred)` once the outcome
+is known. `coverage.py` read `corruption.json` directly and never applied them, so **Kyrgyzstan read
+`charged` in the data file and `acquitted` on the map, and Romania `charged` against `conviction
+annulled`.** Any figure here that turns on a status was therefore describing a map nobody was looking
+at. `coverage.py` now applies the same updates, in the same way, before any status filter. **If a
+status rule is ever added anywhere else, apply `case_updates` first.**
+
+**The cases row has TWO honest place figures and they differ by 19.** The table counts a place that
+holds a case record: 174. But `ccN` in `app.js` colours a place only if a case survives `CC_OUT` —
+acquitted, case dismissed, charge withdrawn, investigation closed, conviction annulled — so **19
+places hold nothing but cleared cases and render BLANK on the layer while the table counts them**:
+AIA ATG BWA COL DMA DZA GRD GTM KGZ KNA LCA MSR ROU SLE SMR URY VCT YEM ZAF. Eight of those are ECCB
+members sharing one dismissed case, which is union expansion multiplying a single record by eight.
+
+This is the same mismatch as the `other` events and the `public_move` career moves, and the standing
+rule says to use the layer's rule or the row claims places the layer renders blank. **It was not
+resolved that way, because here both numbers are true of different claims** — "has a documented case"
+and "is coloured on the case layer" — and a cleared case is still a documented case, which is why
+the map keeps it visible in the box. So `coverage.py` now prints both, with the 19 named, the way the
+gold row already prints two denominators. 174 places is 84% of 206 and 91% of 192; 155 is 75% and
+81%. **Quote whichever the sentence means, and say which it is.** `about.html`'s completeness
+paragraph means the coloured figure, and `check_about.py` checks it against that one.
+
+## Kosovo is on the map and in none of the denominators — a question for the owner
+
+`D.P` holds 229 places. 206 of them are the monetary authorities in `out/core.json`'s `E` list, which
+is what every percentage on the map divides by. The other 23 are dependencies and territories — and
+**Kosovo, which has its own Central Bank of the Republic of Kosovo and a corruption case already on
+the map, but appears in no row's numerator or denominator** because the source datasets that build
+the 206 (Romelli, Garriga and the rest) do not cover it, its statehood being disputed. So its box is
+visible and its case is readable, and it is counted nowhere.
+
+**This was found at round 63 by `check_about.py` disagreeing with `coverage.py` by exactly one place**,
+which is worth noting on its own: two independent counts of the same thing is how it surfaced at all.
+The checker now intersects with `core['E']` so the two agree.
+
+Nothing has been changed about it, because moving the denominator from 206 to 207 would move every
+percentage on the map and that is the owner's call. Worth knowing before deciding: the IMF published
+a Central Bank Transparency Code Review for Kosovo in May 2026, so its external auditor is probably
+one fetch away, and it would be a cheap first record if Kosovo is brought inside the count.
 
 ## Two records this round did NOT go on, and the rules they settle (round 62)
 
