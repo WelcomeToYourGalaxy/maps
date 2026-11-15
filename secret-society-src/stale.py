@@ -11,7 +11,9 @@ rather than whenever a round happens to touch a country.
 Run: python3 stale.py [limit]
 Priority is oldest first: a 2014 charge has had the most time to move.
 """
-import json, sys, collections
+import json, sys, collections, signal
+
+signal.signal(signal.SIGPIPE, signal.SIG_DFL)  # so `| head` does not raise
 
 OPEN = {'indicted', 'investigation', 'inquiry', 'alleged'}
 
