@@ -2,7 +2,7 @@
 
 Paste or attach this in a new chat to carry on adding to the map.
 
-Rewritten at round 43, current through round 60. It states the current position only. Earlier versions kept round-by-round narrative, which went stale and in round 26 sent agents to re-research records already on the map; the moves-against-the-bank section had grown four rounds of narrative again by round 42 and was rewritten as a statement. Keep it that way: when something changes, edit the statement, don't append a round note. The round-by-round account lives in `agents/work/research_log_2026-11.json`, which is where to look for what was searched and found nothing. **Where this names a country as dead or blocked, that is as of round 60 — re-derive the target list from `coverage.py` before briefing anything. Paste the list `coverage.py` prints; do not summarise it from memory. Round 56 lost an agent's calls to a target list written partly from memory that included a country which was not absent at all, and round 57 made the same mistake again — it pasted `coverage.py`'s list and then added QAT from this document's own prose, where QAT was not absent. Paste what the script prints and add nothing to it.**
+Rewritten at round 43, current through round 61. It states the current position only. Earlier versions kept round-by-round narrative, which went stale and in round 26 sent agents to re-research records already on the map; the moves-against-the-bank section had grown four rounds of narrative again by round 42 and was rewritten as a statement. Keep it that way: when something changes, edit the statement, don't append a round note. The round-by-round account lives in `agents/work/research_log_2026-11.json`, which is where to look for what was searched and found nothing. **Where this names a country as dead or blocked, that is as of round 61 — re-derive the target list from `coverage.py` before briefing anything. Paste the list `coverage.py` prints; do not summarise it from memory. Round 56 lost an agent's calls to a target list written partly from memory that included a country which was not absent at all, and round 57 made the same mistake again — it pasted `coverage.py`'s list and then added QAT from this document's own prose, where QAT was not absent. Paste what the script prints and add nothing to it.**
 
 ## What it is
 - A standalone global map titled **"Central bank capture"**. It shows who owns and steers each central bank, what it hides, the corruption inside and around it, and how far its money reaches beyond its borders.
@@ -73,9 +73,9 @@ same commit as the work it did.
   - Links: `{n, cb | tn, rel, role, detail, src_t, src_u}`.
   - Popups turn each link into a plain sentence (`SAY` / `sayLink` / `srcItem` in `app.js`). Add a `SAY` entry for any new `role` string.
 
-## Where it stands (60 rounds in, 15 November 2026)
+## Where it stands (61 rounds in, 15 November 2026)
 
-1,631 outside parties and 2,365 ties. One writeup for every box. 20 patterns and 14
+1,648 outside parties and 2,391 ties. One writeup for every box. 20 patterns and 14
 suspected patterns.
 
 The party count is lower than the tie count implies, and deliberately: round 60 folded 28 duplicate
@@ -91,18 +91,18 @@ ignores" below.
 
 | Category | Records | Places | of 206 | of 192 |
 |---|---|---|---|---|
-| Corruption cases | 258 | 174 | 84% | 91% |
-| Revolving door | 263 | 153 | 74% | 80% |
-| Governor removals and pressure | 224 | 178 | 86% | 93% |
-| External auditors | 208 | 171 | 83% | 89% |
+| Corruption cases | 260 | 176 | 85% | 92% |
+| Revolving door | 271 | 157 | 76% | 82% |
+| Governor removals and pressure | 227 | 181 | 88% | 94% |
+| External auditors | 211 | 174 | 84% | 91% |
 | Banknote printers | 181 | 166 | 81% | 86% |
 | Outside reserve managers | 162 | 62 | 30% | 32% |
 | Gold custodians | 78 | 47 | 23% | 24% |
 | Swap lines | 240 | 84 | 41% | 44% |
 | Named shareholders | 228 | 9 | 4% | 5% |
 
-The revolving-door row counts the 263 records with a private employer. There are 305 career-move
-records in all; the other 42 are `public_move` and are listed in the country's box without being
+The revolving-door row counts the 271 records with a private employer. There are 316 career-move
+records in all; the other 45 are `public_move` and are listed in the country's box without being
 counted, because nobody moved between public office and private finance.
 
 Named shareholders reads low because only about ten central banks have private shareholders at
@@ -123,7 +123,7 @@ The breadth figures count *places*, not events. For the three rows the user care
 - Thirty major internationally reported episodes checked by name: 28 already recorded. The two misses were arguable (Russia's Masterbank is a commercial-bank licensing scandal, Venezuela's Andrade was a treasurer not a bank official), and both countries already hold a different case.
 - A blind news sweep for central bank officials facing corruption proceedings returned four people (Hungary's Matolcsy, Lebanon's Salameh, Mauritius's Seegolam, Burundi's Murengerantwari). All four already recorded.
 
-**So: roughly 90% of cases a well-informed reader would recognise since 2000; roughly 40% of every documented instance of any size and any year.** The gap is three things, each visible in the data: cases before 2000 are thin (4 in the 1980s, 15 in the 1990s, 96 in the 2010s) because those court and press records are not online; 88 of the 155 countries with a case have exactly one, which usually means one *findable* case; and 95 of the 263 counted revolving-door records are American or British because the Fed and the Bank of England publish full career histories.
+**So: roughly 90% of cases a well-informed reader would recognise since 2000; roughly 40% of every documented instance of any size and any year.** The gap is three things, each visible in the data: cases before 2000 are thin (4 in the 1980s, 15 in the 1990s, 97 in the 2010s) because those court and press records are not online; 90 of the 157 countries with a case have exactly one, which usually means one *findable* case; and 95 of the 271 counted revolving-door records are American or British because the Fed and the Bank of England publish full career histories.
 
 **Re-derive those four numbers rather than copying them.** Round 60 found "80 of the 135" had been stale for several rounds while the figure beside it was current, and the same sentence in `about.html` was stale in the same way. They are one query each: the decade counts from `corruption.json`, and the exactly-one count from the built `D.P` on the layer's own filter, which is cases whose status is not on `CC_OUT`.
 
@@ -212,7 +212,8 @@ Some hosts reset the connection at random (`centralbank.org.sz`, `rbm.mw`). **Re
 | `work/research_log_2026-11.json` | What was searched with no result, leads not opened, records dropped after review. **Read this before researching anything.** |
 | `work/cross_layer.py` | Which corruption cases also record a state action against the bank's leadership, reviewed by hand. Run after any round that adds a corruption case naming a removal. |
 | `work/r57/link_rd.py`, `work/r57/link_events.py` | How a bulk party-linking job is done safely: a hand-written table keyed on (record index, a token that must appear in that record), which refuses to write if a token is missing. Copy these rather than writing a matcher. |
-| `work/dup_parties.py` | Finds two spellings of one party anywhere on the map, and one name used for several countries' institutions — neither of which `merge_links.py` can catch. Reads a **built page**. Exits non-zero on a find, so it can gate a push. Run it every round. |
+| `work/dup_parties.py` | Finds two spellings of one party anywhere on the map, and one name used for several countries' institutions — neither of which `merge_links.py` can catch. Reads a **built page**. Exits non-zero on a find, so it can gate a push. Run it every round, and **read all three sections**: round 61's three-way Orell Füssli duplicate had been sitting in the second and third sections for rounds. |
+| `work/check_nodes.py` | Finds a party paragraph that states a tie count its box no longer supports — the party-side equivalent of `check_scores.py`. Relation-aware: "tied to N" is checked against all ties, "audits N" against the audit mandates only, because comparing an audits sentence with the whole tie count cries wolf and a check that cries wolf gets ignored. Run it every round. |
 | `work/r60/prep_r60.py` | How a round's decisions are applied to agent output: one hand-written table of file/public/hold per record, keyed on a token that must appear in that record, refusing to write if anything does not line up. It also carries the reasoning for every record held, which is where the next round should look first. |
 | `work/r60/link_r60.py`, `work/r60/mk_batches.py` | This round's party linking, and the writer-agent batch builder that asserts its own inputs (every block reconstructs its box, and each new record's token is present in its own key). |
 
@@ -342,9 +343,16 @@ Scores only moved for countries that gained a record, so this is not a map-wide 
 python3 agents/work/audit_data.py <scratchpad>/boxes.json
 ```
 
-Run `python3 agents/work/dup_parties.py dist/central_bank_independence.html` in the same pass: it
-catches the two things `audit_data.py` and `merge_links.py` both miss — one firm drawn as two parties,
-and one name standing for several countries' institutions.
+Run these two in the same pass, both against a BUILT page. They catch what `audit_data.py` and
+`merge_links.py` both miss:
+
+```bash
+python3 agents/work/dup_parties.py dist/central_bank_independence.html
+python3 agents/work/check_nodes.py dist/central_bank_independence.html
+```
+
+The first finds one firm drawn as two parties, and one name standing for several countries'
+institutions. The second finds a party paragraph whose stated tie count its box no longer supports.
 
 Thirteen checks the build does not make and that are invisible in the rendered map: party links resolve inside their array and to the right country; every case, career move and event has a source URL; every status is on a known list; every writeup has a box and every box a writeup; no duplicates; no bank both holding an auditor and listed unavailable. Exits non-zero on failure. It earns its keep — it caught Angola sitting in `auditors_unavailable` while also holding a new auditor record.
 
@@ -365,6 +373,38 @@ Both were latent for the whole life of the map and fired the first time an event
 
 3. **And a third, found at round 53: the revolving-door loop did not expand either.** `build_final.py` has three loops that hang a record on a country box. Cases expand through `UM`. Events expand, since round 44. The revolving-door loop read `(UM["ECB"] if c["iso3"] == "EMU" else [c["iso3"]])` — EMU and nothing else — so a record keyed to `ECCB`, `BCEAO` or `BEAC` fell through to a bare union code, and the loop that builds the place list removes union codes, so the record rendered in no box and scored for nobody. Nine such records existed, all filed in rounds 47 to 52, and the row was really at 109 places against the 130 `coverage.py` reported. Fixing it gained 21 places, moved 11 exposure scores a point and shifted 35 percentiles. **The symptom was the one named above — `coverage.py` claiming more places than the score diff moves — and it went unnoticed for six rounds because nobody ran the comparison.** `app.js` expands a link's `cb` through `cbOfLink`, so keying to the union is right; it is the Python that was wrong.
 
+## A party paragraph that counts its ties goes stale, and nothing read it
+
+`check_scores.py` catches a COUNTRY paragraph quoting a stale exposure score, which happens every
+round. Nothing did the same for a PARTY paragraph — and party paragraphs routinely open by counting:
+"tied to eight central banks", "audits the accounts of two central banks". That number goes stale the
+moment a tie is added, whether by a new record or by folding a duplicate spelling of the firm into the
+node, and no build, audit or draft check reads prose for arithmetic.
+
+**`agents/work/check_nodes.py` now does. Run it every round.** When round 61 ran it for the first time,
+**eighteen of the thirty party paragraphs that state a count were wrong, including the map's most
+clicked boxes**: De La Rue said eight when its box held thirty-eight, the International Monetary Fund
+said sixteen against thirty, Note Printing Australia nine against twenty, Oberthur Fiduciaire two
+against thirteen, Giesecke+Devrient three against fourteen, KPMG eight against fifteen. Those
+paragraphs also enumerate, so each was wrong twice over: the count was low and the countries were
+missing. All eighteen were rewritten.
+
+**The check only flags the map's own phrasing, "tied to N central banks", and that restriction is
+deliberate.** A paragraph may also quote a source's claim about the firm — a release saying Crane
+supplies more than 50 central banks, or the 63 central banks that own the BIS — and those are facts
+about the firm, not counts of what this map holds. A looser pattern flagged both and would have had a
+later round "correcting" a sourced figure into a tie count. It counts distinct central banks rather
+than links, because a firm with two dated mandates at one bank is tied to one bank, which is what the
+prose means.
+
+**It does not rewrite, and should not.** A paragraph that counts its ties usually enumerates them, so
+the fix is a rewritten paragraph and not a substituted digit.
+
+**One ordering trap, hit at round 61:** the box dump feeding the writer agents was taken before two
+auditor records were filed, so two of the eighteen paragraphs came back written from a box one tie
+short. **Dump the boxes AFTER the last record is filed, or re-run `check_nodes.py` at the end and
+repair by hand.**
+
 ## Two spellings of one firm, and one name for four countries
 
 These are the same bug seen from two sides, and `agents/work/dup_parties.py` now finds both. Run it
@@ -384,6 +424,16 @@ into the name already carrying the most ties, through the alias map in `node()` 
 which is the map's own mechanism for this and leaves the records untouched. The 23 surviving party
 boxes were rewritten, because each had gained ties its paragraph did not describe, and the folded
 names' paragraphs were archived in `agents/work/r60/orphaned_writeups.json` rather than deleted.
+
+**The fold is blind to German transliterations, and `dup_parties.py` now has a second test for it.**
+NFKD plus an ASCII strip turns "ü" into "u" and never into "ue", so the two ordinary spellings of a
+German name do not collide. Round 61 found the map drawing one banknote printer as three parties —
+`Orell Füssli`, `Orell Füssli Security Printing Ltd` and `Orell Fuessli`, four ties between them,
+across Switzerland, Israel and Nicaragua — and the strict test had missed it for rounds. The new test
+collapses `ue`, `oe` and `ae` before comparing, as a SEPARATE pass rather than a looser fold, because
+collapsing them in general would merge genuinely different names. **The other half of that lesson is
+about reading the output: the subset and token tests HAD flagged all three pairs, and nobody had read
+past the first section.** Read the whole thing.
 
 **Read the groups; do not fold them automatically.** The sweep's loosest test is deliberately noisy,
 and three kinds of result are not duplicates: a parent and its subsidiary that the map keeps apart on
@@ -433,10 +483,11 @@ layer's rule, exactly as it already did for `other` events.
 
 **The symptom was the same one as the other three: `coverage.py` claiming more places than the
 score diff moves.** Rounds 54 to 58 closed ten of the twelve, and Korea converted at round 58 from JP Morgan's Seoul branch.
-**The list of places whose ONLY career moves are public is still thirteen, but it is a different
-thirteen:** round 60 converted Aruba, Cape Verde, Nicaragua, El Salvador and five others, and added
-Bhutan, Iraq and Sudan in their place. They are now
-**BTN CPV CUW IRQ MDG MOZ MRT QAT SDN SLE STP TON VUT**. Each needs a record naming a private
+**The list of places whose ONLY career moves are public is now fourteen and it keeps churning rather
+than shrinking:** round 60 converted Aruba, Cape Verde, Nicaragua, El Salvador and five others and
+added Bhutan, Iraq and Sudan; round 61 converted Curacao and added the Dominican Republic and
+Timor-Leste, whose boxes had held no career move at all before. They are now
+**BTN CPV DOM IRQ MDG MOZ MRT QAT SDN SLE STP TLS TON VUT**. Each needs a record naming a private
 financial employer, not another public one. (Cape Verde, Mauritania, Mozambique, Qatar, Sierra Leone,
 São Tomé, Tonga and Vanuatu are the carry-overs; Curaçao's held record names neither the person nor
 the bank, which is why it is still here.) **Before researching one of
@@ -463,7 +514,20 @@ own 2025 annual report names its holders above 5%, mostly private, with the Pale
 at 10.39%. A company-law FORM is not an ownership statement — "public shareholding company" was not
 enough on its own for Palestine, and the shareholder table was. Silence is never enough.
 
-**Four are still held, each with the one fetch that settles it**, in `agents/work/r60/held.json`:
+**Round 61 settled two of round 60's four held records by making the one fetch each needed**, which
+is now twice running that this has been the cheapest work on the row. Curacao's held record had named
+NEITHER the person nor the bank; both are now named — Jose Jardim, a CBCS board member until 30 June
+2025, became chief executive of Banco di Caribe on 1 July 2025, and the same report says the bank
+"has been wholly owned by United Group Holdings since 2022". Lesotho's was settled from the South
+African Reserve Bank's designated-entity list and Liberty Holdings' own 2019 annual report, which
+puts Standard Bank Group at 53.6% of Liberty. **Bolivia was held for a second round running** — the
+CV was re-fetched and still gives three firms with no titles, no dates and no ownership, and ASFI's
+history page returned a client error. ASFI's registers of banks and of insurers remain the fetch.
+**Sudan is the one to do first next round:** it would take Sudan off the public-only list above, and
+what is missing is the ownership of Elneilin Bank, National Bank or Workers National Bank, any one of
+which settles it.
+
+**Four were held at round 60, each with the one fetch that settles it**, in `agents/work/r60/held.json`:
 Bolivia (the bank's own CV names Banco de la Union, Banco de Cochabamba and Compania Boliviana de
 Seguros with no dates and no ownership — ASFI's registers would settle all three), Lesotho's second
 record (Liberty Life Lesotho's ownership stated nowhere opened; Lesotho is already a place on the
@@ -572,6 +636,55 @@ Bounded sets that worked:
 
 `ARE BLR CUB CUW EGY ERI ETH IRN JOR LAO MAC MDG MRT PSE QAT RWA STP TKM TWN UZB VEN`
 
+**THE NEW VEIN, found at round 61, and the best thing to try next on this row: IMF Central Bank
+Transparency Code reviews name the external auditor.** This document had said for several rounds that
+the IMF route was dead, on the strength of safeguards assessments, which are confidential and whose
+published policy papers aggregate without naming banks. **A Central Bank Transparency Code review is
+a different product and it is public.** The CBT Code was adopted by the IMF's Executive Board in July
+2020 as a voluntary framework, a central bank requests its own review, and the resulting Detailed
+Review Report describes the bank's audit arrangements. That is how Curacao was closed after three
+rounds of being written off as an unreachable host: IMF Country Report No. 26/63, March 2026, says in
+terms that "For 2024, the financial statements were audited by BDO B.V., an internationally
+recognized audit firm", and that "The external auditors are appointed by the Board of Supervisory
+Directors". **Reviews exist for other countries — a Republic of Kosovo review was published in May
+2026 — so search `imf.org` publications for "Central Bank Transparency Code Review" plus each
+remaining country before anything else.** The reports are long: the Curacao auditor sentence sits
+past the first 100,000 characters, so pass `offset` and read on.
+
+**Jordan closed at round 61, and the lesson is to test the host's DOCUMENT path rather than its
+pages.** Two rounds were spent on the `opendata.gov.jo` file-number route, and it was never needed:
+`cbj.gov.jo` serves HTML behind an F5 wall, but `cbj.gov.jo/EBV4.0/Root_Storage/AR/<name>.pdf` serves
+PDFs to plain curl. `التقرير5.pdf` is the Fifty-Fifth Annual Report for 2018, and its independent
+auditor's report is signed by القواسمي وشركاه / KPMG, by the partner حاتم القواسمي under licence
+656, at Amman on 28 March 2019, over statements for the year ended 31 December 2018. Files 6, 7, 8
+and 9 on that path are 2017, 2016, 2015 and 2014; 10 to 12 do not exist, so **2018 is the newest CBJ
+annual report published anywhere that search surfaces.** One further trap: the report is 431,627
+characters with the opinion between offsets 200,000 and 300,000, so reading the first window returns
+the monetary and banking chapters and nothing about an auditor — which reads exactly like a document
+that names nobody. For the record, `portal.jordan.gov.jo/OD/files/5751.pdf` turned out to be the
+Jordan Deposit Insurance Corporation's 2022 statements, not the central bank's.
+
+**Rwanda closed the same round and is the Cape Verde pattern again.** `bnr.rw`'s pages are an empty
+single-page-app shell, but `bnr.rw/documents/Annual_Report_2021_22_Web_English_Versio.pdf` downloads
+with curl: 226 pages, 11.7 MB. Its contents list carries "INDEPENDENT AUDITOR'S REPORT" and the pages
+that follow extract as page headers alone, because they are image-only scans — so a grep for
+"auditor" over the extracted text finds nothing and the document looks silent. `pdftoppm -r 170`
+followed by `tesseract` on pages 152 to 157 reads the signature block: "For PricewaterhouseCoopers
+Rwanda Limited, Kigali", 12 October 2022, over the statements for the year ended 30 June 2022. **And
+the extractable text had the answer anyway**, in the governor's own statement: "PwC, our external
+auditor, audited the 2021/22 financial statements and issued a clean audit report." Grep a bank's
+annual report for the firm names and for "our external auditor" before deciding its opinion page is
+the only place the auditor is named.
+
+**Three hosts were retried three times each at round 61 and are genuinely unreachable (curl code
+000): `nbrb.by`, `banky-foibe.mg`, `bcv.org.ve` and `exch.centralbank.cw`.** Two of the remaining five
+have a named next step: **Egypt's** own "financial statements and audits report in 30 June 2024" PDF
+exists at a known URL and refuses both curl and WebFetch with the same F5 stub, so it needs a hand
+check in a real browser; **Mauritania's** `bcm.mr` is a single-page app whose Drupal backend
+`bo.bcm.mr` exposes a JSON:API that the sandbox refused. Madagascar's IMF safeguards material confirms
+"strong external audit arrangements" and names no firm. One host note worth keeping: on `imf.org`,
+`/-/media/**/*.pdf` returns 200 to curl where the `.ashx` form returns 403.
+
 **Malawi and Yemen came off at round 60, and Malawi is the one worth copying: `rbm.mw` is NOT a
 blocked host.** This document had said for several rounds that its document lists are built in script
 that does not run headless. They render under plain curl, and the links are
@@ -588,7 +701,7 @@ or `audit_data.py` fails on a bank that both holds an auditor and is listed unav
 
 **Eight are confirmed to print no name and are not retry targets:** the UAE (2025 report says only "an independent external auditor appointed by the Board"), Qatar (chapter 11 names nobody), Ethiopia (standalone statements open into the accounts and end at note 31), São Tomé (the Comité de Auditoria page confirms the committee proposes auditors but names no firm), and Macao (the gazette report was read in full: section 3.3.3 is headed "Auditoria interna e externa" but covers only the internal audit office, and item 5 is the opinion of the AMCM's own Comissão de Fiscalização; no firm appears anywhere, and the 2004 and 2010 indexes have the same structure). Three more were settled in round 40 and are structural, not search problems: **Cuba**, where Decreto-Ley 361 says in terms that the Banco Central de Cuba's own statements are verified by the *internal* auditor, while the same law requires commercial institutions to use firms authorised by the Contralor General — the contrast is deliberate; **Iran**, where article 22 of the Monetary and Banking Law gives the auditing of Bank Markazi's accounts and annual balance sheet to the bank's own Supervisory Board (the Macao precedent, so not promoted to an external auditor) and the Supreme Audit Court's jurisdiction over the bank is itself contested; and **Eritrea**, where a 1999 US government guide confirms that an independent local accounting firm audits the bank but names no firm, and the Audit Service Corporation is described only as auditing "accounts of banks" as a category. **Round 57 settled four more negatively, on the banks' own primary texts: Turkmenistan (article 53 — the President designates an audit organisation and names none), Laos (article 20 offers three alternatives, one of them a Ministry of Finance committee, and names none), Palestine (no firm named anywhere readable) and Uzbekistan (the 2025 annual report was downloaded and read and names no firm, and the Senate lead listed below as unopened was opened and closed). Those are the Egypt test — a statute naming a mechanism is not a record.**
 
-**So the ceiling is 8 more countries:** `BLR CUW EGY JOR MDG MRT RWA VEN`, and five of those are unreachable hosts rather than unsolved searches (see below).
+**So the ceiling is 6 more countries:** `BLR EGY MDG MRT RWA VEN`. Four of those are unreachable hosts rather than unsolved searches (see below) — and Curacao was in that group until an IMF review closed it from outside the host altogether, which is the lesson to carry to the other four.
 
 **What is blocking the rest** — these are host problems, not search problems, and OCR does not help:
 - `cbe.org.eg` (Egypt) — F5 WAF, rejects plain fetch and headless Chrome with a support ID
@@ -662,8 +775,17 @@ record**, and the lead is spent. Madagascar's governor, speaking to capmad on 7 
 "European and American printing plants", and BanknoteNews names nobody. Moldova's `mtender.gov.md`
 surfaces only opaque storage UUIDs and `bnm.md`'s own banknote pages name no printer.
 
-**So the only live leads left on this row are:** Costa Rica (the BCCR press release of 11.11.2020,
-which would replace a `weak_source` record), Georgia (centralbanking.com, likely paywalled, and note
+**Costa Rica gained a second, better-sourced printer at round 61 and its old lead is spent.** The
+BCCR press release of 11.11.2020 was never found, but El Observador of 27 July 2020, quoting the
+bank's own Treasury director, says the 1,000 and 10,000 colon polymer notes are printed by Orell
+Fuessli of Switzerland while Oberthur Fiduciaire printed the 2,000, 5,000 and 20,000. The country was
+already on the row through the weak-sourced Oberthur record, so this adds a record rather than a
+place, and the two records are about different denominations rather than in conflict. The article
+misspells the firm as "Orell Fuslli", which is in the record's own text. **Uruguay's lead is closed
+negatively:** both BanknoteNews commemorative entries were read in full and name no printer, and both
+mriguide pages now return 404.
+
+**So the only live leads left on this row are:** Georgia (centralbanking.com, likely paywalled, and note
 Georgia has now been refused twice on sources that describe design participation rather than
 printing), Zimbabwe (mriguide.com and zimbabwenow.co.zw mirrors; note one source is Fidelity Printers
 *denying* that it prints Zimbabwe dollars), Uruguay (2000s BanknoteNews commemorative entries
@@ -743,6 +865,37 @@ has the page. `currencyaffairs.org` per-country product profiles remain worth ru
 - **Trinidad's four other short-serving governors:** John F Pierce (left April 1966, tensions with the Ministry of Finance over implementing the Central Bank Act), Alexander Norman McLeod (departed 1969, friction with the Eric Williams administration over whether the bank should serve development goals or monetary stability), Euric Bobb (resigned 1987 after what the Guardian calls irreconcilable disagreements over the bank's role and exchange-rate policy) and William Demas. All are a newspaper retrospective's characterisation of a disagreement with no episode attached — the Finland test. **Bobb is the only one worth another look, and only if a contemporaneous 1987 source states the resignation and its cause.**
 
 **Papua New Guinea and Vanuatu were cross-filed at round 54 from facts already in their own writeups**, which is now the third and fourth time that vein has paid; see "A ninth kind of tie worth hunting" below for the method. Papua New Guinea also reverses a round-44 exclusion, and the reasoning is in `cross_layer.py` rather than left implicit: round 44 judged it against the removal rule, but the layer already carries Slovenia's 2016 police search of Banka Slovenije's premises with no removal and no charge, and a state directorate searching the central bank's offices is that same shape. **Tonga and Bosnia and Herzegovina were examined on the same pass and both stay excluded, with their reasons written in.**
+
+**Round 61 took the row to 181 places and the absent list to 11, and the three it filed are each a
+different family.** **North Macedonia** is the best of them and it reverses what this document said:
+the ECB route was dead, but the State Audit Office's own final report 11-107/8 of 4 March 2005 on the
+National Bank's 2003 accounts is the Uganda shape — a supreme audit institution auditing the bank. It
+found that foreign banks drew 20,759,515 US dollars from the bank's guarantee deposit in January 2004,
+and that 30,210 thousand denars of procurement, 35.61% of what was audited, was done outside the
+Public Procurement Law. **WebFetch returns "[binary data]" for the .doc, so it was downloaded with
+curl and converted locally**, and every figure was verified against the file, whose own metadata says
+it was last printed on 4 March 2005. **Samoa** is the "law the bank objected to in writing" family
+that Mexico, Romania and Peru are in: the Central Bank of Samoa wrote to the Attorney-General's office
+saying changes widening the Finance Minister's role had come as a surprise and could weaken its
+independence. That was the different fact Samoa needed, having been held on the Singapore line.
+**Namibia** is the marginal one, and it was filed on a consistency test rather than a judgement call:
+the President told parliament on 13 April 2026 that reported losses at the bank were "smelling of
+corruption" and must be investigated, and the map already carries Trump's "should resign immediately"
+and Poilievre's pledge to fire the Governor of the Bank of Canada as public pressure, both with no act
+following. It is distinguishable from the Armenian exclusion, where the actor was a deputy chairman of
+an oversight body rather than a head of state. The record says plainly that no investigation is
+reported as ordered.
+
+**Five refusals carry the single fact that would reverse each, and two of them are cheap.** Namibia's
+standing section 66 power needs **an instance of a Minister actually directing such an investigation**.
+North Macedonia's second record needs **an article of Sluzben vesnik 16/25** giving the Government or
+Assembly a direction, profit or at-will dismissal power — `nbrm.mk` still refuses both the PDF and the
+.docx of its own 2025 law with a client error. Eritrea needs **the Bank of Eritrea proclamation text
+or a dated governor removal**; the AFP currency-controls dispatch names no issuing authority and no
+year. Timor-Leste needs **the Petroleum Fund Law article** that puts the investment strategy in the
+Minister of Finance's hands with the central bank only executing — Lusa and Tatoli state that
+division and the law text is on `mj.gov.tl/jornal`. Samoa's second record needs **the enacted
+Amendment Act 2026 text** if it differs from the bill.
 
 **Round 60 took the row to 178 places and the absent list to 14, and what it closed matters more
 than what it filed.** Three were filed, all standing arrangements rather than episodes: **Guyana** on
@@ -851,6 +1004,30 @@ The record moved no row, because board seats are a network tie rather than one o
 
 Round 58 filed nine corruption cases and **all nine are supreme-audit-institution or parliamentary-inquiry findings** — Barbados five, Timor-Leste, Aruba and the Comoros two. That shape is now the main vein on this row, and it works: it closed four places in a round when ordinary search has been exhausted for several.
 
+**Round 61 is the first round where this vein came up mostly empty, and that is worth knowing before
+spending another round on it.** Two places were closed, and only one of the two came from an audit
+institution. **The Bahamas** is the stronger: 232.3 million dollars of special drawing rights drawn
+through the Central Bank of The Bahamas in December 2022, which the opposition's finance spokesman
+said was contrary to section 21 of the Central Bank Act, after which the government tabled a bill
+disapplying section 21 to that transaction, deemed in force from 1 December 2022. The retroactive
+amendment is a fact in the source and the breach is an assertion, so the status is `alleged`; it is
+the same shape as the Barbados record where the government's overdraft exceeded its statutory limit.
+**Samoa** is a 2014 Audit Office performance audit finding government debt repayments made late by
+the central bank and no formalised arrangement between the bank and the Ministry of Finance, with the
+recommendations aimed at the Ministry; it alleges no wrongdoing and is flagged `counterparty_only`.
+
+**Where the vein failed, it failed on primary documents that were readable, which makes these
+confirmed rather than unsearched:** Djibouti's 2020 external audit of the BCD is an unqualified
+Ernst & Young opinion with no irregularity; Sudan's Inspector General report of December 2012 on
+bank-government deals and the Auditor-General's December 2014 report to parliament do not name the
+Bank of Sudan; Bermuda's Auditor General 2023 report on government-related entities does not list the
+BMA; Oman's State Audit Institution report does not name the Central Bank of Oman. **Fiji is now
+firmly blank**: every FICAC release and PacLII judgment matching "Reserve Bank of Fiji" turned out to
+be the military, the Fiji Development Bank or Public Works, and a 1995 paper by Reserve Bank and USP
+authors states that no judicial or parliamentary inquiry into the National Bank of Fiji collapse was
+ever held. One lead is unread: Appendix III of Bermuda's Auditor General 2023 report, audits in
+progress, sat past the fetched part of the PDF.
+
 **Round 60 confirms this is now the row's main vein, and it closed three more places with it:**
 **Canada** (two 2004 Bank of Canada internal audits released under the Access to Information Act,
 finding that staff paid invoices without authorization, did not evaluate supplier value, and violated
@@ -899,6 +1076,20 @@ The three currents once listed as missing are all in: `supervisory-capture` (Ire
 ## How long to finish
 
 **Yield by round:** 35, 34, 33, 56, 50, 24, 34, 42, 40, 21, 14, 13, then 4, 3, 2, 3, then two rounds of 0 records (two patterns; four corrections), then 6, 4, 3, 3, 4, 5, 4, 2, 5, 2, 7, 3, then 1 record and 7 hypotheses, then round 49's 21 records, 8 suspected patterns and 45 new place-cells on the first round of agent fan-out, then round 53's 17 records and, worth more than the records, three corrections: six rounds of source recovered, the revolving-door union bug worth 21 places, and the gold denominator. Then round 54's 17 records across four parallel agents, 11 of the records agents offered refused with reasons written down, and two corrections: the revolving-door `public_move` counting bug, and the live page's About table, which had been built before its own `about.html` was corrected and so published the round-52 figures for six rounds. Then round 56's 25 records across five parallel agents plus a sixth on head offices: the moves row up six places on the statute and board routes, gold's first new places in several rounds, and `whats_left.py` found still broken and fixed. Then round 55's 24 records across five parallel agents plus browser work — the printers row's best round in a long while at nine places — with the `merge_links.py` auditor hole that would have printed a false joint audit for two countries, a stranded prose splice in the Zambia paragraph repaired, and two standing claims in this document corrected by actually obtaining the documents: BEAC's gold note and Oman's statute. Then round 57's 19 records across five parallel agents and four writer agents: the moves row up eight places, its best round yet, on the statute route and the government-appoints-the-board route; the auditors row up three and four more countries settled negatively, leaving a ceiling of ten; two of the five places that held only public career moves converted; and the revolving-door party linking that three handoffs had deferred finally done by hand, 95 links, with a script that refuses to write if an index has moved. Nine of the records agents offered were refused with the reasons written down, and two of those refusals are worth more than the records would have been: a prosecution of a sitting governor for conduct as a former minister, which the round-44 rule excludes in terms, and a competition regulator's fine on a governor for his own private business, which is not the state acting on the bank. Then round 58's 32 records across five parallel agents and three writer agents: the moves row's largest round ever at fourteen places, ten of them from banks' own founding statutes; nine corruption cases, all of them from supreme audit institutions and parliamentary inquiries, which is now the main vein on that row; five printer places on thin sources, said so in the records; two leads held from round 57 closed as negatives; and round 57's Malta refusal converted because the refusal had been written down with the fact that would reverse it. Then round 59's 24 records across five parallel agents: the revolving door up four places and the printers row up three, the ECCB reserve-manager blank confirmed after three passes through its accounts, five duplicate party spellings folded into the names already on the map, and four places refused on one rule — unstated ownership settles nothing — each left with the single fetch that would settle it. No corruption case and no moves record was filed: the one case offered was Myanmar, refused for the third time.
+Then round 61's 17 records, 3 auditors and 1 printer across five research agents and three writer
+agents: the auditors row from 171 places to 174 and its ceiling from eight countries to five, with
+Jordan, Rwanda and Curacao all closed — two of them on hosts this document had written off, and
+Curacao from outside the host altogether, through an IMF Central Bank Transparency Code review, which
+is the new vein on that row. The revolving door up four places to 157, again mostly by making the
+ownership fetches the previous round had written down. The moves row up three to 181 on a state audit
+office's own report, a bank objecting in writing to its own law, and a head of state's remarks filed
+on a consistency test. Two corruption cases, where that row's audit-institution vein came up mostly
+empty against readable primary documents, which makes five countries confirmed rather than unsearched.
+Worth more than the records: `check_nodes.py`, which found that **eighteen of the thirty party
+paragraphs stating a tie count were wrong**, De La Rue's saying eight against thirty-eight and the
+Federal Reserve Bank of New York's saying two against ten while omitting that it holds gold for eight
+central banks; and a three-way duplicate of one banknote printer that the duplicate sweep's own output
+had been reporting unread.
 Then round 60's 22 records and 2 auditors across five research agents and four writer agents: the
 revolving door up twelve places, its largest round ever, almost all of it from making the ownership
 fetches round 59 had written down rather than from finding new careers; the moves row up three to 178
