@@ -663,6 +663,68 @@ and not a measure of link rot. A bare hostname (`www.comune.x.it`,
 which is how IPA prints most of them) is given `https://`; the three
 checked by hand redirect http→https themselves.
 
+### How far the per-level address actually gets, measured
+
+The goal was each level's own address at every level, everywhere. Here
+is where it stands, counted rather than estimated — Wikidata, all
+undissolved municipalities, November 2026:
+
+| | Municipalities | Share |
+| --- | --- | --- |
+| Exist | 191,503 | |
+| Carry a website | 102,672 | 54% |
+| Carry an email | 47,086 | 25% |
+| Carry a telephone | 38,365 | 20% |
+
+All of that is already on the page: round three fetches it live for
+every level of the chain, so no round is needed to "add" it. The two
+registers put France and Italy near 100% on all three.
+
+Where the remaining gap is, per country, is what decides the rounds
+left — and it is not spread evenly:
+
+| | Municipalities | Website | Email |
+| --- | --- | --- | --- |
+| United States | 23,556 | 59% | **0%** |
+| Russia | 20,283 | 8% | 0% |
+| Germany | 13,694 | 82% | **0%** |
+| Vietnam | 9,673 | 0% | 0% |
+| Spain | 8,391 | 77% | 0% |
+| Czechia | 6,305 | 99% | **98%** |
+| Brazil | 5,591 | 65% | 0% |
+| Romania | 2,965 | 82% | **99%** |
+| Austria | 2,395 | 88% | 87% |
+| Belgium | 593 | 96% | 87% |
+
+Czechia, Romania, Austria, Belgium and France are near-complete on
+Wikidata because somebody has already bulk-imported a national register
+into it. Nothing to do for those: Brno and Cluj-Napoca both show an
+email on the page today. **25 countries hold 124,485 municipalities
+where fewer than half carry an email**, and that is the whole of the
+remaining work.
+
+So, rounds left for the per-level address:
+
+- **Websites: effectively done.** 54% worldwide from Wikidata, live,
+  plus two registers. The rest sits in countries with no register to
+  import from, where the only sources left are per-state or per-city.
+- **Email and telephone: 6 to 9 rounds**, if each round takes three to
+  five countries from the table above and the register exists and
+  joins. France took one round; Italy took one round and found four
+  bugs on the way. That estimate assumes about half the attempts fail
+  the way Spain and Norway did below — a register that exists but has
+  no shared code to join on.
+- **The United States is its own problem**: 23,556 municipalities, no
+  national register of municipal contacts, and nothing to join on but
+  a per-state directory. Count it as 1 to 2 rounds on its own, and
+  expect partial coverage.
+
+Honest total: **8 to 11 rounds** to take the email and telephone
+figures from a quarter of the world's municipalities to most of it,
+with the United States, Russia and Vietnam likely still thin at the
+end. The website figure barely moves, because it is already the thing
+Wikidata is best at.
+
 ### The next registers, and what each one actually costs
 
 Surveyed this round, so the next one does not start from nothing:
@@ -697,9 +759,66 @@ details to another wherever a number was reissued, which is the exact
 failure Sardinia showed on a smaller scale. Do Norway on the
 organisation number or not at all.
 
-**Germany has no national register of municipal contacts.** The
-Gemeindeverzeichnis is names and codes. It is a per-state job, or
-Tier A and B.
+**Germany has no national register of municipal contacts** — checked,
+not assumed: GovData returns the Gemeindeverzeichnis, which is names
+and codes, and a contact list of equality officers, and nothing else
+that covers municipalities. It is a per-state job.
+
+**Tier B (OpenStreetMap) is worse than it looks, and the main endpoints
+are unreachable from here.** overpass-api.de resets the connection,
+kumi.systems and private.coffee time out at the gateway on a
+country-sized query; overpass.osm.ch answers in five seconds but holds
+only its own region. And where it does answer, the yield is poor: of
+**782 municipal boundary relations carrying a Wikidata tag, 18 had a
+website, 2 a telephone and 1 an email** — about 2%. The contacts in OSM
+are on the town hall object, not the boundary, so Tier B needs a
+spatial join as well as a planet-sized download. Do not plan a round
+around it without first proving the extract is obtainable.
+
+### Round six: the levels that had no address because they had no name
+
+An audit of the per-level address across ten countries — Romania,
+Austria, Czechia, Germany, Belgium, the United States, Brazil, Japan,
+France, Italy — found the chain working everywhere except for two
+levels that resolved to **no entity at all**, and a level with no entity
+has no offices and no address, which is the point of having it there.
+The boundary files shout some names and glue brackets onto others:
+Romania's first level arrives as "CLUJ" against a label of "Cluj
+County", Austria's second as "Graz(Stadt)" against "Graz".
+
+Four fixes, each found by the one before it, and each with its own
+standing check:
+
+1. **The spellings.** `nameVariants` asks for the name as it arrives,
+   without accents, without a bracketed suffix, and — for a name in
+   capitals — in ordinary case with small words kept small, because
+   Wikidata writes "Rio Grande do Sul".
+2. **Not all at once.** Asking for every spelling in one query fixed the
+   names and broke the chain: the extra query lands inside the sequence
+   that builds it, and Cluj County was then present in two runs out of
+   four, from identical input and identical network traffic. The chain
+   is built on the cheap lookup alone; `widenLevels` runs after the
+   chain is on screen and patches a level that has no id yet. It only
+   ever fills a level in. **Check by opening one place four times and
+   counting the levels.**
+3. **A county seat is not a county.** The wide lookup then returned the
+   city three times in four: Cluj-Napoca is typed "county seat in
+   Romania", the region pattern matched it on the word "county", and
+   from there it tied the county on every later test — both start with
+   "Cluj", both labels are eleven characters — so the query service's
+   row order decided. `RX_SEAT` stops a type that merely says where a
+   government sits from counting as that kind of government.
+4. **One government, once.** Naming a level can reveal it is the level
+   below it under another spelling, and Graz appeared twice with the
+   same offices under each. The collapse is now `dedupeChain`, it runs
+   again whenever a level is named, and two entries sharing a Wikidata
+   id are one government whatever depth the files put them at.
+
+And the silent one: the boundary file for the level between the country
+and the place was fetched inside an empty `catch`, so a single
+unreachable fetch dropped a whole level of government with nothing
+said. Three tries now, and `noteLevelMissing` tells the reader a level
+is missing rather than showing a short chain that looks complete.
 
 ### The place lookup was non-deterministic, and is not now
 
