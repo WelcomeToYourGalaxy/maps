@@ -3337,26 +3337,46 @@ async function fromWorld(f, opts){
 
   /* the region between country and unit, found by containment */
   const c = centroid(f.geometry);
-  let mid = null;
+  let mid = null, midFailed = false;
   if(f.properties.l === 2){
-    try{
-      const a1 = await fetchAdm(iso3, 1);
-      mid = a1.features.find(x=>{
-        const b=bboxOf(x.geometry);
-        if(c[0]<b[0]||c[0]>b[2]||c[1]<b[1]||c[1]>b[3]) return false;
-        return inGeom(c, x.geometry);
-      }) || null;
-    }catch(e){}
+    /* The level between the country and this unit — a county, a
+       province, a judȩț — comes out of a second boundary file, and the
+       failure used to be swallowed whole: one unreachable fetch and
+       Cluj County simply was not in the chain, with nothing said. The
+       same place opened twice gave three levels and then two. It is
+       tried three times now, and if it still will not load the reader
+       is told a level is missing rather than shown a chain that looks
+       complete. */
+    for(let a=0; a<3 && !mid; a++){
+      try{
+        const a1 = await fetchAdm(iso3, 1);
+        mid = a1.features.find(x=>{
+          const b=bboxOf(x.geometry);
+          if(c[0]<b[0]||c[0]>b[2]||c[1]<b[1]||c[1]>b[3]) return false;
+          return inGeom(c, x.geometry);
+        }) || null;
+        if(!mid) break;                 /* loaded, and the point is in none of them */
+      }catch(e){
+        midFailed = true;
+        if(a<2) await new Promise(r=>setTimeout(r, 700*(a+1)));
+        else console.warn('regional boundary file unreachable', iso3, e);
+      }
+    }
+    if(mid) midFailed=false;
   }
   if(mid){
     const mn = mid.properties.shapeName || mid.properties.n;
-    const hit = await resolveUnitIn(mn, cq, WANT_REGION);
-    STACK.push({q:hit?hit.id:null, label:unitLabel(hit, mn), iso3:iso3, level:1, adm:1, feature:mid});
+    const hit = await resolveUnitIn(mn, cq, WANT_REGION, true);
+    STACK.push({q:hit?hit.id:null, label:unitLabel(hit, mn), raw:mn, want:'region',
+                iso3:iso3, level:1, adm:1, feature:mid});
     paintTrail(); paintChain();
   }
   const lvl = STACK.length;
-  const hit2 = await resolveUnitIn(nm, cq, (f.properties.l||2)>=2 ? WANT_DISTRICT : WANT_REGION);
-  STACK.push({q:hit2?hit2.id:null, label:unitLabel(hit2, nm), iso3:iso3, level:lvl, adm:(f.properties.l||2), feature:f});
+  const want2 = (f.properties.l||2)>=2 ? WANT_DISTRICT : WANT_REGION;
+  const hit2 = await resolveUnitIn(nm, cq, want2, true);
+  STACK.push({q:hit2?hit2.id:null, label:unitLabel(hit2, nm), raw:nm,
+              want:((f.properties.l||2)>=2?'district':'region'),
+              iso3:iso3, level:lvl, adm:(f.properties.l||2), feature:f});
   if(!opts.noMuniScan){
     if(hit2){ openJuris(hit2.id, hit2.label); }
     else { openModal(nm,'Drawn from the boundary files'); renderNoEntity(nm, true); }
@@ -3364,6 +3384,47 @@ async function fromWorld(f, opts){
   }
   drawAdm(iso3, (f.properties.l||2)+1, f, opts.noMuniScan);
   paintTrail(); paintChain(); setPins();
+  if(midFailed && !opts.noMuniScan) noteLevelMissing();
+  widenLevels(cq);
+}
+
+/* A level the cheap lookup could not name, looked up again with the
+   awkward spellings, after the chain exists.
+
+   The boundary files shout some names ("CLUJ") and glue brackets onto
+   others ("Graz(Stadt)"), and Wikidata labels neither that way, so
+   those levels resolved to nothing: no offices, no address, nothing to
+   write to. Asking for every spelling up front fixed the names and
+   broke the chain, because the extra query lands inside the sequence
+   that builds it. This runs when the chain is already on the screen, so
+   a slow answer costs nothing, and it only ever fills a level in — it
+   does not move or remove one. */
+async function widenLevels(cq){
+  if(!cq) return;
+  for(let i=1;i<STACK.length;i++){
+    const s=STACK[i];
+    if(!s || s.q || !s.raw) continue;
+    const wide=nameVariants(s.raw);
+    if(wide.length <= nameVariants(s.raw, true).length) continue;
+    const want = s.want==='region' ? WANT_REGION : WANT_DISTRICT;
+    let hit=null;
+    try{ hit = await resolveUnitInWith(s.raw, cq, want, wide); }
+    catch(e){ console.warn('wider name lookup failed', s.raw, e); }
+    if(!hit) continue;
+    /* The chain may have been rebuilt while this was in flight. Only
+       the same unnamed level, still in the same place, is touched. */
+    const t=STACK[i];
+    if(!t || t.q || t.raw!==s.raw) continue;
+    t.q=hit.id; t.label=unitLabel(hit, t.label);
+    /* Naming a level can reveal that it is the level below it under
+       another spelling — "Graz(Stadt)" and "Graz" are one city — so the
+       collapse runs again now that both have an id. */
+    dedupeChain();
+    STACK.forEach((x,k)=>{ x.level=k; x.nolaw=!lawPower(k); });
+    paintTrail(); paintChain();
+    try{ loadChainPins(); }catch(e){ console.warn(e); }
+    try{ loadMuni(hit.id); }catch(e){ console.warn(e); }
+  }
 }
 
 function paintTrail(){
@@ -7486,14 +7547,45 @@ function settlePlace(r){
   /* A unit the boundary files repeat at two levels — Hamburg as a state
      and as a district, Algeria's wilayas, the Republika Srpska as an
      entity and as a "canton" — is one government, shown once. */
-  for(let i=STACK.length-1;i>0;i--){
-    if(String(STACK[i].label).trim().toLowerCase()===String(STACK[i-1].label).trim().toLowerCase() && STACK[i].adm<3) STACK.splice(i,1);
-  }
+  dedupeChain();
   STACK.forEach((s,i)=>{ s.level=i; s.nolaw=!lawPower(i); });
+}
+
+/* Two entries in the chain that are one government, collapsed. Called
+   when the chain is built and again when a level is named later, since
+   a level with no id yet cannot be compared by id. */
+function dedupeChain(){
+  for(let i=STACK.length-1;i>0;i--){
+    const same = String(STACK[i].label).trim().toLowerCase()===String(STACK[i-1].label).trim().toLowerCase();
+    /* The same Wikidata entity twice is one government whatever depth
+       the boundary files put it at: Austria's second level arrives as
+       "Graz(Stadt)" and its lowest as "Graz", and once the bracketed
+       form resolved, Graz was in the list twice with the same offices
+       under each. The depth test above it stays for the pairs that
+       match by name alone. */
+    const sameEntity = STACK[i].q && STACK[i-1].q && STACK[i].q===STACK[i-1].q;
+    if(sameEntity){
+      if(!STACK[i].feature && STACK[i-1].feature) STACK[i].feature=STACK[i-1].feature;
+      STACK.splice(i-1,1);
+      continue;
+    }
+    if(same && STACK[i].adm<3) STACK.splice(i,1);
+  }
 }
 
 /* Said once, under the title, when the place searched for has no
    boundary in OpenStreetMap and the unit containing it is what opened. */
+/* Said when a level of government is missing from the chain because its
+   boundary file would not load — so a short chain reads as a fault
+   rather than as the country's structure. */
+function noteLevelMissing(){
+  try{
+    const el=$('#admnote'); if(!el) return;
+    el.className='nogeo';
+    el.textContent='The regional level between the country and this place could not be '+
+      'loaded just now, so it is missing from the list below. Reloading usually fixes it.';
+  }catch(e){ console.warn(e); }
+}
 function noteNoShape(asked, shown){
   try{
     const el=$('#admnote'); if(!el) return;
@@ -7557,14 +7649,77 @@ const unitLabel = (hit, fallback) => {
 };
 const RX_GOVBODY = /\b(government|administration|executive branch)\b/i;
 const WANT_DISTRICT = /\b(county|district|parish|borough|municipality|commune|prefecture|department|subdivision|shire|raion|powiat|okrug)\b/i;
+/* A town that holds a county's offices is not the county.
 
-async function resolveUnitIn(nm, countryQ, want){
-  if(!countryQ) return null;
-  /* The boundary files carry transliteration marks Wikidata's English
-     labels do not ("Mahārāshtra" against "Maharashtra"), so both
-     spellings are asked for. */
+   Cluj-Napoca is typed "county seat in Romania", so the pattern for a
+   region matched it on the word "county", and from there it tied the
+   county itself on every later test — both start with "Cluj", both
+   labels are eleven characters — leaving the query service's row order
+   to decide which the chain showed. It showed the city about three
+   times in four, in the county's place in the list. A type that only
+   says where a government sits no longer counts as being that kind of
+   government. */
+const RX_SEAT = /\b(seat|capital)\b/i;
+
+/* The forms of a boundary file's name worth asking Wikidata about.
+
+   The files do not spell a name the way Wikidata labels it. Romania's
+   first level arrives as "CLUJ" and is labelled "Cluj County"; Austria's
+   second level arrives as "Graz(Stadt)", with no space, and is labelled
+   "Graz". Neither matched, because the lookup asks for labels by exact
+   string — so both levels resolved to no entity at all, and a level
+   with no entity has no offices and no address, which is the whole
+   point of having it in the chain.
+
+   Four forms are asked for: the name as it arrives, the same without
+   accents, the part before any bracket, and — for a name shouted in
+   capitals — the name in ordinary case, with the small words of a
+   handful of languages left small, since Wikidata writes "Rio Grande do
+   Sul" and not "Rio Grande Do Sul". */
+const SMALLWORDS = new Set(['of','and','the','de','del','della','di','da','do','dos','das',
+  'du','des','la','le','les','el','van','der','den','und','e','y','i','na','nad','ve','az']);
+function titleish(v){
+  return String(v).toLowerCase().split(/(\s+|-)/).map((w,i)=>{
+    if(/^(\s+|-)$/.test(w)) return w;
+    if(i>0 && SMALLWORDS.has(w)) return w;
+    return w.charAt(0).toUpperCase()+w.slice(1);
+  }).join('');
+}
+function nameVariants(nm, plainOnly){
+  const out=[], add=v=>{ v=String(v||'').trim().replace(/\s+/g,' ');
+    if(v && out.indexOf(v)<0) out.push(v); };
+  add(nm);
   const plain=String(nm).normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-  const names = plain!==nm ? [nm, plain] : [nm];
+  add(plain);
+  if(plainOnly) return out;
+  const bare=String(nm).split('(')[0];
+  if(bare!==String(nm)) add(bare);
+  /* No lowercase letter anywhere, and more than one letter: shouted. */
+  if(/[A-Z\u00c0-\u00de]/.test(nm) && !/[a-z\u00df-\u00ff]/.test(nm)){
+    add(titleish(nm));
+    if(bare!==String(nm)) add(titleish(bare));
+  }
+  return out.slice(0,4);
+}
+async function resolveUnitIn(nm, countryQ, want, fast){
+  if(!countryQ) return null;
+  /* The plain name first, exactly as before. The awkward spellings — a
+     name shouted in capitals, a name with a bracket stuck to it — cost
+     a second query, and a second query inside the chain builder changes
+     its timing enough to break it: with the wide lookup in line, Cluj
+     County was in the chain in two runs out of four and gone in the
+     others, from identical input and identical network traffic. So the
+     chain is built on the cheap lookup alone, which is what `fast`
+     means, and the wide one runs afterwards and patches the level it
+     belongs to — see widenLevels. */
+  const plain = nameVariants(nm, true);
+  const first = await resolveUnitInWith(nm, countryQ, want, plain);
+  if(first || fast) return first;
+  const wide = nameVariants(nm);
+  if(wide.length <= plain.length) return null;      /* nothing else to ask */
+  return await resolveUnitInWith(nm, countryQ, want, wide);
+}
+async function resolveUnitInWith(nm, countryQ, want, names){
   const q=x=>'"'+String(x).replace(/"/g,'\\"')+'"';
   const vals = names.flatMap(n=>
       SUFFIXES.map(s=>q(n+s)+'@en')
@@ -7574,7 +7729,7 @@ async function resolveUnitIn(nm, countryQ, want){
   try{
     const rows = await sparql('SELECT ?x ?xLabel ?tLabel WHERE { VALUES ?l { '+vals+
       ' } ?x rdfs:label|skos:altLabel ?l ; wdt:P17 wd:'+countryQ+' . OPTIONAL{?x wdt:P31 ?t} '+
-      'SERVICE wikibase:label{bd:serviceParam wikibase:language "en"} } LIMIT 120', 'unit:'+countryQ+':'+nm);
+      'SERVICE wikibase:label{bd:serviceParam wikibase:language "en"} } LIMIT 120', 'unit:'+countryQ+':'+nm+':'+names.length);
     const cand={};
     rows.forEach(r=>{ const id=qid(r.x.value);
       if(!cand[id]) cand[id]={id:id, label:(r.xLabel&&r.xLabel.value)||nm, types:[]};
@@ -7604,8 +7759,8 @@ async function resolveUnitIn(nm, countryQ, want){
          level, counties and districts below it — and a candidate of the
          right kind beats one of the wrong kind whatever its name. Only
          then does an exact name match break the tie. */
-      const aw=want&&a.types.some(t=>want.test(t))?0:1,
-            bw=want&&b.types.some(t=>want.test(t))?0:1;
+      const aw=want&&a.types.some(t=>want.test(t)&&!RX_SEAT.test(t))?0:1,
+            bw=want&&b.types.some(t=>want.test(t)&&!RX_SEAT.test(t))?0:1;
       if(aw!==bw) return aw-bw;
       const ad=a.types.some(t=>RX_ADMIN.test(t))?0:1, bd=b.types.some(t=>RX_ADMIN.test(t))?0:1;
       if(ad!==bd) return ad-bd;
@@ -7652,11 +7807,10 @@ async function resolveUnit(nm){
      as readily as the administrative unit */
   const country = STACK[0] && STACK[0].q;
   if(!country) return null;
-  /* The boundary files carry transliteration marks Wikidata's English
-     labels do not ("Mahārāshtra" against "Maharashtra"), so both
-     spellings are asked for. */
-  const plain=String(nm).normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-  const names = plain!==nm ? [nm, plain] : [nm];
+  /* The plain name and its accent-stripped form, which is what this
+     path has always asked for. The shouted and bracketed spellings come
+     out of the boundary files and are handled where those are read. */
+  const names = nameVariants(nm, true);
   const q=x=>'"'+String(x).replace(/"/g,'\\"')+'"';
   const vals = names.flatMap(n=>
       SUFFIXES.map(s=>q(n+s)+'@en')
@@ -7687,8 +7841,8 @@ async function resolveUnit(nm){
          level, counties and districts below it — and a candidate of the
          right kind beats one of the wrong kind whatever its name. Only
          then does an exact name match break the tie. */
-      const aw=want&&a.types.some(t=>want.test(t))?0:1,
-            bw=want&&b.types.some(t=>want.test(t))?0:1;
+      const aw=want&&a.types.some(t=>want.test(t)&&!RX_SEAT.test(t))?0:1,
+            bw=want&&b.types.some(t=>want.test(t)&&!RX_SEAT.test(t))?0:1;
       if(aw!==bw) return aw-bw;
       const ad=a.types.some(t=>RX_ADMIN.test(t))?0:1, bd=b.types.some(t=>RX_ADMIN.test(t))?0:1;
       if(ad!==bd) return ad-bd;
