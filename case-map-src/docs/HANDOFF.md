@@ -1,6 +1,6 @@
 # Globalization Case Map: handoff for a new chat
 
-Last updated: 14 Nov 2026 (round 22, part done). Replaces every earlier handoff.
+Last updated: 14 Nov 2026 (round 22 finished and merged, not pushed; the suspected patterns reworked). Replaces every earlier handoff.
 
 ## The aim, settled 14 Nov 2026 — a defensible big picture, not a bigger map
 
@@ -21,7 +21,7 @@ read from the rendered panel on 14 Nov):
 | Kind of money | On the map | Published total | Share |
 | --- | --- | --- | --- |
 | Complaints recording harm, inside a case | 434 | 483 | 90% |
-| World Bank / IFC projects begun 2004-2013, against ICIJ's 969 | 216 | 969 | 22% |
+| World Bank / IFC projects begun 2004-2013, against ICIJ's 969 | 237 | 969 | 24% |
 | IMF arrangements | 160 | 1,693 | 9.5% |
 | World Bank projects, all years | ~337 | 15,720 | ~2% |
 | Treaty lawsuits | 4 | 1,332 | 0.3% |
@@ -212,43 +212,98 @@ These came in over one session and all of them are done unless noted.
    rounds stale. The current handoff is this file, `case-map-src/docs/HANDOFF.md`, and there should
    never again be two.
 
-## READ THIS FIRST: round 22 is half done and its data is staged, not merged
+## READ THIS FIRST: round 22 is finished and merged; four commits are NOT pushed
 
-**A weekly API limit stopped the session on 13 Nov at about 22:25 and resets 17 Nov, 8am Pacific.**
-Four agents died mid-flight. Their work was saved and is committed; **nothing of round 22's case
-data has been merged into `base.html`**, because the owner's standard is that every batch is
-fact-checked by a separate agent before merging and **no batch has been checked**.
+**Round 22 is done.** The three staged batches were checked by a checker each, normalised, merged,
+built and tested, and the follow-on jobs — conditions prose, whole-picture text, entity descriptions
+— were all written and checked in the same session, on purpose, because the document cache dies with
+the session. **The map stands at 1,093 cases in 129 countries**, and Benin and Timor-Leste are the
+first new countries since Burundi in round 19. Build prints 173 of 173 and the page loads headless
+with no errors.
 
-**What is merged and live:** the lender-role audit's 22 corrections across 19 cases (see below).
-The map is 1,072 cases, builds clean, loads headless with no errors.
+**Nothing is pushed.** `add_repo` with push access was refused by the session's permission system, so
+four commits sit on a local clone: the tranche, the conditions prose, the whole text and descriptions,
+and the suspected-patterns work. The handoff's own rule applies — say so and ask the owner rather than
+leaving a commit stranded. Do not delete and re-clone to recover; the working tree holds the round.
+**The clone is also two commits behind where it started**: origin gained a merged pull request
+rebuilding the secret-society map's possible patterns, which touches no file this map uses, and the
+round was rebased onto it cleanly.
 
-**What is staged and waiting for checkers**, all committed under `case-map-src/rounds/`:
-- `r26f_icij6_china.json` + report — 16 Chinese rows worked into **8 cases, 8 drops**
-- `r26f_icij6_energy.json` + report — 16 rows into **8 cases, 6 drops, 2 already on the map**
-- `r26f_icij6_other.json` — 16 rows into **7 cases, 8 drops, 1 already on the map**; its drops are
-  in the file under `_r22_dropped_and_mapped_rows`, and **its report was never written**
-So **23 candidate cases from 48 rows**, none checked. The documents are cached at
-`/home/claude/r22/cache/` (526 files) **but that cache dies with the session** — a checker in a new
-session rebuilds it from the `wds` API plus `documents1.worldbank.org`, at the cost of the fetches.
+**What round 22 produced.** 48 lead rows gave **21 cases, 22 drops and 5 rows already on the map**;
+every row is annotated with `r22_outcome`, `r22_note` and `r22_case_id`, which leaves **181 rows of
+the confirmed-displacement table open**, down from 234. Yield across six tranches: 30, 21, 18, 26,
+20, 21.
 
-**To finish round 22**, in this order: one checker per batch against `docs/CHECK20.md` plus
-`docs/BRIEF22.md`; then normalise the checked files into `cases`/`extend` arrays (round 20's
-normaliser filled `rg`, `lk`, `cp`, `cx`, `kind`, flattened nested `add` blocks and refused
-non-string `fields_add`); then `merge.py`, verify each extend actually changed its case, `build.py`,
-headless test, annotate the 48 lead rows with `r22_outcome`, and only then the whole-text,
-description and conditions jobs. The three lead files are staged at `docs/leads_{a_china,b_other_1,
-c_other_2}.json` and the full 48 at `docs/batch22.json`.
+**Three findings from it that change how the next round reads documents.**
+1. **A plan figure can sit in the completion report's own results annex, one column from the
+   outcome.** Guangrun's card said 28 people; Annex 5 of the parent completion report has a
+   per-component table giving **865 persons resettled against a plan of 848**, and **ICIJ's 848 is
+   that annex's plan column, to the person**. The writer had reported those figures as absent from a
+   document the card already cited. So the standing instruction to grep the appraisal is not enough:
+   grep the completion report's own annexes too. Guizhou's 1,337 is the same shape, a projected
+   affected population for one subproject.
+2. **Conformed Loan and Project Agreements are published for projects whose completion report is
+   not.** Wuhan's L4727 agreements of 12 May 2004 carry the resettlement covenant in stronger wording
+   than the appraisal document — Project Agreement Schedule 2 paragraphs 5(b) and 6, with failure to
+   perform an event of suspension — while no completion report for P069852 exists in the archive.
+   **That reopens the cases this file lists as having no reachable report**, and it is a better
+   document than an appraisal summary for the conditions field.
+3. **Two near-nothing conditions entries rest on an untested assumption**: that a 2012-13 appraisal
+   data-sheet covenant table is the complete legal schedule. Wuhan shows the conformed agreements are
+   usually there, so fetching them for P126210 and P129431 would either confirm those two entries or
+   replace them. Small job, high value.
 
-**Two rulings already made on batch A, so a checker does not reopen them:**
-1. `wuhan-middle-ring-resettlement-overrun` stays a **separate case**, not an extend of
-   `wuhan-nanhu-village-resettlement-delay`. Separate loans financing separate works are separate
-   cases even in one city — round 21 kept two Liaoning loans and two Chongqing loans apart on that
-   ground. What makes two leads one episode is a transferred component or the same site, and a
-   checker should verify neither holds here.
-2. `hunan-gansu-small-towns-demolition` carries **no `displaced`**. 82 is the Hunan figure alone and
-   would mislabel a card covering two provinces; 95 is the writer's own arithmetic, and this map does
-   not compute a figure no document prints. Both counts go in `displaced_note` with the 243 Gansu
-   households, the 230 of them that predate the project, and the fact that the report prints no total.
+**Four rulings the owner left to Claude on 14 Nov, now applied and on the cards.**
+- **Nigeria's `displaced: 675` is off.** It counted people who moved a business rather than a home;
+  every case carrying the field counts people, households or families moved from where they lived,
+  and the Lahore card was corrected on the same ground when it held 147 removed shops. The figure and
+  the road-by-road estimates are in `displaced_note`.
+- **Moba Gorge's 1,081 and Xuancheng's 86 stay**, both taken from a demolition table with no
+  relocation verb. **Ten cards already on the map carry the field in that form, so one ruling should
+  cover all twelve** rather than splitting two off and planting the kind of invisible inconsistency
+  that forced Xining and Inner Mongolia to go the same way. **That twelve-card sweep is queued.**
+- **Xuancheng's `killed: 1` stands.** The report gives a cause tied to the works, a crane overturning
+  during the unloading of steel bars at a project road site; the test is whether a cause is stated,
+  not whether fault is attributed. The Bank's view that it was not non-compliance is on the card.
+- **Taunsa becomes an extend, not a second card.** `taunsa-barrage-basti-shaikhan-relocation` is the
+  project already on the map as `taunsa-barrage-relocation` — same loan, same completion report, same
+  160 families and about 900 people, same two villages. It surfaced as a fresh lead because the live
+  case carries no P-number, which is exactly the failure this file warns about. The checker verified
+  enough new material for an extend (revised RAP costs Rs 12.42m estimated against Rs 31.855m total,
+  the JACSES letter read in full, two Dawn reports, a WWF dolphin survey, an April 2026 eviction
+  report) and **corrected the live card: the Descon protest with the 15-person case and two arrests is
+  Dawn of 12 August 2006, not August 2007.** Writing that extend is the first queued job.
+
+**What is queued, in the order it is worth doing.**
+1. The Taunsa extend, with the live card's `displaced: 900` and its 2007 dating settled.
+2. The twelve-card `displaced` sweep described above.
+3. The conformed agreements for P126210 and P129431.
+4. **A sweep of rounds 17-21's 95 ICIJ cases for Project Performance Assessment Reports.** Of round
+   22's seven surviving energy projects only one had a PPAR and nobody queried for them; a PPAR is
+   field-based and states a cause where a completion report does not. On Zagtouli it gave the cause of
+   two deaths outright, and on an earlier round it reversed the sense of a case.
+5. The `lenders[0].role` audit of rounds 17, 18 and 19, which has never been run — 95 ICIJ cases
+   exist and only 46 have been audited.
+6. AidData's 793 rows, then the 181 open confirmed-displacement rows.
+
+## The suspected patterns were invisible, and are now their own section
+
+`hypsHTML()` was being appended to the bottom of the patterns list inside `sec("pats", ...)` —
+below 24 pattern labels, inside a section that opens closed, inside the kind panel that also opens
+closed. The entries rendered and nobody could find them. They now have their own row in the
+left-hand box through `sec("hyps", "Suspected Patterns", hypsHTML())`; `sec()` reads `OPEN[id]` and
+the toggle listener records state by `data-sec`, so no registration was needed.
+
+`entryPts()` also read a flat `places` array and ignored `countries`, so a suspected pattern with
+empty `case_ids` flew nowhere however many countries it named. It now reads both. **`countries` is
+the field to write**; see `docs/HYP.md`.
+
+**The register changed too, and `docs/HYP.md` rules 9 and 10 carry it.** The owner's verdict on the
+first six was that they were "kind of small scale" — they described the lending record and this map's
+own research rather than the world — and asked for suspected patterns that are global or
+international and about who is arranging things behind the scenes. Seven were written and checked on
+that standard and are live; the eighth was cut. Read those two rules and the error list under "The
+thirteen that are there now" before writing another.
 
 ## The lender-role audit: it was a pattern, not a coincidence
 
