@@ -2648,17 +2648,67 @@ function cget(k){ try{ const r=localStorage.getItem(CACHE_V+':'+k); if(!r) retur
   const o=JSON.parse(r); if(Date.now()-o.t > 6048e5) return null; return o.v; }catch(e){ return null; } }
 function cset(k,v){ try{ localStorage.setItem(CACHE_V+':'+k, JSON.stringify({t:Date.now(),v:v})); }catch(e){} }
 
+/* Every office on this page comes from Wikidata's query service, and
+   the service refuses requests when it is busy — 429 with a retry
+   window, or 503, and during one outage it refused everything above one
+   request a minute. Each refusal used to be caught by the caller,
+   written to the console, and nothing else: the office list came back
+   short and read as complete. Austin showed 104 offices in one run and
+   4 in the next, from the same click.
+
+   So: three tries, waiting as long as the service asks for, and if it
+   still refuses, the reader is told the list is short rather than left
+   to assume their government has four offices in it. */
+const QFAIL={n:0, why:''};
+const sleep = ms => new Promise(r=>setTimeout(r, ms));
 async function sparql(query, cacheKey){
   if(cacheKey){ const c=cget(cacheKey); if(c) return c; }
-  const ac=new AbortController(), killer=setTimeout(()=>ac.abort(), 58000);
-  let r;
-  try{ r = await fetch(WDQS+'?query='+encodeURIComponent(query)+'&format=json',
-      {headers:{'Accept':'application/sparql-results+json'}, signal:ac.signal}); }
-  finally{ clearTimeout(killer); }
-  if(!r.ok) throw new Error(r.status===504?'the query timed out at Wikidata':'Wikidata returned '+r.status);
-  const rows = (await r.json()).results.bindings;
-  if(cacheKey) cset(cacheKey, rows);
-  return rows;
+  let last=null;
+  for(let a=0; a<3; a++){
+    const ac=new AbortController(), killer=setTimeout(()=>ac.abort(), 58000);
+    let r=null;
+    try{ r = await fetch(WDQS+'?query='+encodeURIComponent(query)+'&format=json',
+        {headers:{'Accept':'application/sparql-results+json'}, signal:ac.signal}); }
+    catch(e){ last=e; }
+    finally{ clearTimeout(killer); }
+    if(r && r.ok){
+      const rows = (await r.json()).results.bindings;
+      if(cacheKey) cset(cacheKey, rows);
+      return rows;
+    }
+    if(r){
+      last = new Error(r.status===504 ? 'the query timed out at Wikidata'
+                                      : 'Wikidata returned '+r.status);
+      /* 429 and 5xx are "come back later"; anything else is this
+         query's own fault and will fail again on a retry. */
+      if(!(r.status===429 || r.status>=500)) break;
+      const ra=parseInt(r.headers.get('Retry-After')||'', 10);
+      await sleep(isFinite(ra) ? Math.min(ra*1000, 20000) : 1500+2500*a);
+    } else {
+      await sleep(1200+2000*a);
+    }
+  }
+  QFAIL.n++; QFAIL.why=(last&&last.message)||'the data service did not answer';
+  noteQueryTrouble();
+  throw last || new Error('the data service did not answer');
+}
+/* One line, once, saying the lists are short and why. */
+let QNOTE_T=null;
+function noteQueryTrouble(){
+  if(QNOTE_T) return;
+  QNOTE_T=setTimeout(()=>{
+    QNOTE_T=null;
+    try{
+      const el=$('#admnote'); if(!el) return;
+      const msg='Some of the lists on this page are incomplete: '+QFAIL.why+
+        (QFAIL.n>1 ? ' ('+QFAIL.n+' requests)' : '')+
+        '. The service that holds the office records limits how fast it answers. '+
+        'Reloading in a minute usually fills them in.';
+      el.className='nogeo';
+      el.textContent = el.textContent && el.textContent.indexOf('incomplete')<0
+        ? el.textContent+' '+msg : msg;
+    }catch(e){ console.warn(e); }
+  }, 1200);
 }
 
 /* the jurisdiction's own channel, its legislature and its head of government */
