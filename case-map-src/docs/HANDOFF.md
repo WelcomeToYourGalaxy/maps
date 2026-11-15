@@ -2,6 +2,71 @@
 
 Last updated: 14 Nov 2026 (round 22, part done). Replaces every earlier handoff.
 
+## The aim, settled 14 Nov 2026 — a defensible big picture, not a bigger map
+
+**The owner's purpose for this map is that a reader comes away with a complete picture of the
+negative side of outside money. It does not have that yet, and the coverage figures say exactly
+where the gap is.** This section governs what rounds are worth commissioning. Read it before
+picking the next job.
+
+**What a reader gets today**, and this is now written on the page in these words, in the About
+panel under "What this map shows, and what it does not": harm that lenders recorded in their own
+projects, thickest in World Bank lending between 2004 and 2013, plus every complaint the fourteen
+complaint offices have published. Not the whole of the subject. Most money that crosses a border is
+private, and no one keeps a record of the harm it does.
+
+**Where the map stands against its own subject** (the About panel computes these live; these are
+read from the rendered panel on 14 Nov):
+
+| Kind of money | On the map | Published total | Share |
+| --- | --- | --- | --- |
+| Complaints recording harm, inside a case | 434 | 483 | 90% |
+| World Bank / IFC projects begun 2004-2013, against ICIJ's 969 | 216 | 969 | 22% |
+| IMF arrangements | 160 | 1,693 | 9.5% |
+| World Bank projects, all years | ~337 | 15,720 | ~2% |
+| Treaty lawsuits | 4 | 1,332 | 0.3% |
+| Chinese state loans | 82 | 20,985 | 0.4% |
+| Foreign company projects | 9 | 20,032 | 0.04% |
+| Aid activities | 35 | 1.5 million | 1 in 42,857 |
+
+**Three facts decide what to work on, and none of them is the case count.**
+
+1. **One row can become a claim that needs no hedging, and it is close.** The ICIJ window — World
+   Bank and IFC projects begun 2004-2013 — is at 216 cases against ICIJ's 969, which is 22%.
+   Finishing the confirmed-displacement table costs about five more tranches and would let the map
+   state plainly: *this is the documented harm in World Bank lending in one decade.* That is the
+   cheapest defensible big-picture claim available and it should be finished.
+2. **The lopsidedness is the real defect, not the count.** All 18 of round 19's cases are
+   `contested`, 29 of 30 in round 17, and every Chinese case in four tranches rests on the Bank's
+   documents alone. **A hundred more `contested` World Bank cards make the map bigger without making
+   it less lopsided.** The map's harm is currently harm the lender was willing to write down, which
+   is a floor and not a measure — and the rounds keep proving it from the inside: three Evaluation
+   Group reviews in round 21 dropped what their own completion report recorded, including ten
+   fatalities and 183 outstanding compensation cases.
+3. **Two kinds of work change what the map can claim.** Going outside the lender on cases already
+   here — state audit reports, high court records, national press — which is what turns `contested`
+   into `documented`; and AidData's 793 rows, because Chinese state money is the second-largest
+   source of development finance on earth and sits at 0.4%. Round 19 noted three cards that name a
+   live court case or a specific district, which is where an outside-sourcing pass starts.
+
+**So the order of work, and it is a change from "continue with ICIJ" alone:**
+finish round 22; finish the ICIJ confirmed table; then AidData, not the complaints; and run an
+outside-sourcing pass over existing `contested` cases alongside the tranches rather than after them.
+**Prefer twenty cases carrying a source outside the lender to a hundred more written off the Bank's
+own reports.**
+
+**What cannot be fixed by working harder, and should be said rather than chased.** Private bank and
+bond lending, aid, and foreign company investment have no register of harm anywhere. Those rows stay
+near zero until someone builds one, and the honest move is the one the page now makes: say so in
+prose where a reader will see it. The same goes for the time window — ICIJ counted only 2004-2013,
+so World Bank coverage outside that decade is whatever earlier rounds happened to find.
+
+**Keep the About panel's prose true.** `ABOUT_HTML` in `base.html` now carries the
+"What this map shows, and what it does not" block ahead of "What counts as a case". It makes three
+claims — thickest in 2004-2013 World Bank lending, every published complaint read, and most cases
+resting on the lender's own documents. **If a round changes any of those, change that block in the
+same round.** It is prose and nothing computes it, so nothing will catch it going stale.
+
 ## READ THIS FIRST: round 22 is half done and its data is staged, not merged
 
 **A weekly API limit stopped the session on 13 Nov at about 22:25 and resets 17 Nov, 8am Pacific.**
