@@ -88,9 +88,11 @@ def fold(s):
 _url_cache = {}
 
 
-def url_ok(u):
+def url_ok(u, waived):
     if not u:
-        return False, 'no source_url'
+        return False, 'no source_url', False
+    if u in waived:
+        return True, '', False
     if u in _url_cache:
         return _url_cache[u]
     try:
@@ -98,10 +100,22 @@ def url_ok(u):
                             '-w', '%{http_code}', u], capture_output=True, text=True, timeout=40)
         code = (r.stdout or '').strip()[-3:]
         # an unreachable host gives curl code 000 with a non-zero exit, which is not a
-        # success -- require a real 2xx or 3xx
-        ok = code.isdigit() and 200 <= int(code) < 400
-        res = (ok, 'source_url host could not be reached' if code in ('', '000')
-                   else f'source_url returned {code}')
+        # success -- require a real 2xx or 3xx.
+        # 401, 403 and 429 are different in kind: the page is there and the host is
+        # refusing an automated request. Several of this map's sources do that (acp.cd,
+        # cbe.org.eg, the Cloudflare-fronted banks), and they read fine through WebFetch.
+        # Those are reported for a hand check rather than called dead, because treating a
+        # bot block as a 404 would throw away good records.
+        if code in ('', '000'):
+            res = (False, 'source_url host could not be reached', False)
+        elif code in ('401', '403', '429'):
+            res = (False, f'source_url returned {code}: the host refuses automated requests. '
+                          f'Open it with WebFetch or a browser; if the page states the fact, '
+                          f're-run with --url-ok ' + u, True)
+        elif code.isdigit() and 200 <= int(code) < 400:
+            res = (True, '', False)
+        else:
+            res = (False, f'source_url returned {code}', False)
     except Exception as e:
         res = (False, f'source_url could not be fetched ({type(e).__name__})')
     _url_cache[u] = res
@@ -121,8 +135,20 @@ def kind_of(r):
 
 
 def main():
-    args = [a for a in sys.argv[1:] if not a.startswith('--')]
-    dry = '--dry' in sys.argv[1:]
+    argv = sys.argv[1:]
+    waived = set()
+    args = []
+    i = 0
+    while i < len(argv):
+        a = argv[i]
+        if a == '--url-ok':
+            waived.add(argv[i + 1]); i += 2; continue
+        if a.startswith('--url-ok='):
+            waived.add(a.split('=', 1)[1]); i += 1; continue
+        if not a.startswith('--'):
+            args.append(a)
+        i += 1
+    dry = '--dry' in argv
     if not args:
         sys.exit(__doc__)
 
@@ -137,7 +163,7 @@ def main():
     have_ev = {(e.get('iso3'), (e.get('source_url') or '')) for e in evg['events']}
 
     filed = {'tie': [], 'event': [], 'rd': [], 'case': []}
-    refused, dropped = [], []
+    refused, dropped, handcheck_list = [], [], []
 
     # read every file first, so same-person collapsing can run across files
     incoming = []
@@ -236,9 +262,9 @@ def main():
             if (iso, r.get('source_url') or '', (r.get('people') or '')[:40]) in have_rd:
                 dropped.append((src, label, 'already on the map')); continue
 
-        ok, why = url_ok(r.get('source_url'))
+        ok, why, handcheck = url_ok(r.get('source_url'), waived)
         if not ok:
-            refused.append((src, label, why)); continue
+            (handcheck_list if handcheck else refused).append((src, label, why)); continue
 
         filed[k].append(r)
         if k == 'tie':
@@ -264,6 +290,11 @@ def main():
         print(f"\nDROPPED {len(dropped)} already on the map:")
         for s, l, w in dropped:
             print(f"  {l[:60]:60s}  {w}")
+    if handcheck_list:
+        print(f"\nNOT FILED, NEEDS A HAND CHECK {len(handcheck_list)} "
+              f"(the host blocks automated requests; the page may be perfectly good):")
+        for s_, l, w in handcheck_list:
+            print(f"  {l[:52]:52s}  {w}")
     if refused:
         print(f"\nREFUSED {len(refused)}:")
         for s, l, w in refused:
