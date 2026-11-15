@@ -2115,6 +2115,22 @@ function isTenure(label, classes){
    not match, or the FBI is filed as a law. */
 const RX_INSTR = /^((german|french|presidential|federal|royal|executive|ministerial|military|government) )*(directive|decree|ordinance)\b|\b(presidential|executive|royal|ministerial|military) (decree|order|directive)\b|^(directive|decree|order|regulation|statute) (of|on|by|no)\b/i;
 const RX_INSTR_LBL = /^(anordnung|verordnung|gesetz|erlass|decreto|décret|loi|ley|lei|ordonnance|presidential order|executive order|royal decree|order on|order in council)\b/i;
+/* A Wikidata property is not an office.
+
+   Searching Modena returned "IRIS UNIMORE author ID", "PatER ID" and
+   "Tourer.it ID" among its agencies: Wikidata records an identifier
+   scheme as an item, gives it `applies to jurisdiction`, and the
+   classifier read the title as a body. Their class says what they are
+   — "Wikidata property for authority control" — and the description
+   opens with "identifier for".
+
+   A constituency is not an office either. "Constituency of the
+   Legislative Assembly of Emilia-Romagna" came through as a chamber on
+   the strength of the words in its name; its class is an administrative
+   territorial entity, which is a place. A place cannot be written to. */
+const RX_WDPROP = /\bwikidata (property|qualifier|item)\b|\bproperty for authority control\b|\bexternal identifier\b/i;
+const RX_IDENT  = /^identifier (for|of|in)\b|\bauthority control\b/i;
+const RX_PLACECLS = /^(administrative territorial entity|constituency|electoral district|territorial entity)\b/i;
 const RX_NOTPOST = /\boffices held over time\b|\blist of (holders|office ?holders)\b|\bhead of a municipality or city in\b/i;
 const RX_NOTPOST_LBL = /^(mayor|councillor|member|head) of an? (place|municipality|city|town|village)\b/i;
 const RX_DOC_CLS = /\b(act of|decision of|ruling|judg(e)?ment|court case|legal case|legislation|statute|amendment to|bill|constitution|treaty|election|referendum|plebiscite|ordinance|resolution|proclamation|case law|doctrine|protocol|convention|accord|executive order|list article)\b/i;
@@ -2156,7 +2172,7 @@ const B = [
   how:'Negotiates on the government\u2019s behalf rather than taking proposals from the public. Named here so it is not mistaken for a legislator: the word representative in this title means representing the state abroad or at an international body, not representing you. Whatever they agree still has to pass the legislature, which is where to put your effort.'},
 
  {br:'leg', k:'presiding',
-  rx:/\b(speaker|president of the (senate|assembly)|presiding officer|chair(man|woman|person)? of the (house|senate|council|committee|assembly|board|commission)|majority leader|minority leader|whip|leader of the house|deputy speaker)\b/i,
+  rx:/\b(speaker|president of the (legislative |national |state |regional |federal )*(senate|assembly|council|chamber|parliament|house|diet|congress)|presiding officer|chair(man|woman|person)? of the (house|senate|council|committee|assembly|board|commission)|majority leader|minority leader|whip|leader of the house|deputy speaker)\b/i,
   what:'Controls what reaches a vote.',
   how:'Holds the calendar. A bill with support can still never be voted on if this office does not schedule it, so once a bill exists and has backers, this is the office that decides whether it moves. Approaching it is worth doing only when you already have a bill and sponsors; before that there is nothing to schedule.'},
 
@@ -2607,7 +2623,7 @@ const qid = u => (u||'').split('/').pop();
 const isQ = s => /^Q\d+$/.test(s||'');
 function setDot(id, cls, txt){ const d=$('#d-'+id); if(!d) return; d.className='dot'+(cls?' '+cls:''); if(txt) $('#t-'+id).textContent=txt; }
 
-const CACHE_V='htrt5';
+const CACHE_V='htrt6';
 function cget(k){ try{ const r=localStorage.getItem(CACHE_V+':'+k); if(!r) return null;
   const o=JSON.parse(r); if(Date.now()-o.t > 6048e5) return null; return o.v; }catch(e){ return null; } }
 function cset(k,v){ try{ localStorage.setItem(CACHE_V+':'+k, JSON.stringify({t:Date.now(),v:v})); }catch(e){} }
@@ -3523,6 +3539,8 @@ function classifyRows(core, items){
        of offices and is none of them. */
     const dsc=String((m.row.itemDescription&&m.row.itemDescription.value)||'');
     if(RX_INSTR.test(dsc) || RX_INSTR_LBL.test(label) || RX_NOTPOST.test(dsc) || RX_NOTPOST_LBL.test(label)) return;
+    if(RX_WDPROP.test(cls) || RX_IDENT.test(dsc)) return;
+    if(m.classes.some(c=>RX_PLACECLS.test(String(c)))) return;
     const c=classifyOffice(label,m.classes);
     if(c.br==='other' && RX_DOC.test(label)) return;
     const o={id:qid(m.row.item.value), label:officeLabel(label), cls:m.classes[0]||'',
@@ -4884,6 +4902,7 @@ function render(){
      the trail row, which is where a reader looks for where they are. */
   /* A borrowed record is the level above's, so its own website and
      switchboard are not this place's and are not shown as if they were. */
+  if(CUR && CUR.q) keepSelf(CUR.q, CUR.core);
   const selfRows=CUR.borrowed ? [] : (CUR.core||[]).filter(r=>r.kind.value==='self');
   const sites=new Set(),emails=new Set(),phones=new Set();
   selfRows.forEach(r=>{ if(r.site)sites.add(r.site.value); if(r.email)emails.add(r.email.value); if(r.phone)phones.add(r.phone.value); });
@@ -5186,15 +5205,37 @@ const NDSAY={ members:'where this parliament lists its members',
    and where its committees take submissions. The office's own record
    rarely carries any of it. Skipped when the office's own address is
    already that address, which it is for the chamber itself. */
-function levelRow(rt, o){
-  if(!o) return null;
+function levelRows(rt, o){
+  const out=[];
+  if(!o) return out;
   const lv=lvlOf(o);
-  if(lv==null || lv===0) return null;
-  const r=subleg(lv); if(!r || !r.u) return null;
-  if(siteOf(o) && siteOf(o).replace(/\/+$/,'')===r.u.replace(/\/+$/,'')) return null;
-  return {lbl:'At the '+(r.n||'legislature'), u:r.u,
-          tx:'the body that makes '+(STACK[lv]?STACK[lv].label:'this level')+'\u2019s own law',
-          stale:!r.v};
+  if(lv==null || lv===0) return out;
+  const place=STACK[lv] ? STACK[lv].label : 'this level';
+  const same=u=>siteOf(o) && u && siteOf(o).replace(/\/+$/,'')===u.replace(/\/+$/,'');
+  const sf=levself(lv);
+  /* The address and the number this government publishes for the
+     public, offered under the method that uses them — unless the office
+     open is that government, which already carries both and would
+     otherwise print each twice under a second name. */
+  const digits=v=>String(v||'').replace(/[^0-9]/g,'');
+  if(sf && sf.e && rt.id==='email' && mailOf(o).toLowerCase()!==sf.e.toLowerCase())
+    out.push({lbl:'Write to '+place, u:'mailto:'+sf.e, tx:sf.e});
+  if(sf && sf.p && rt.id==='call' && digits(telOf(o))!==digits(sf.p))
+    out.push({lbl:'Ring '+place, u:'tel:'+sf.p.replace(/[^+0-9]/g,''), tx:sf.p});
+  const r=subleg(lv);
+  if(r && r.u && !same(r.u)){
+    out.push({lbl:'At the '+(r.n||'legislature'), u:r.u,
+              tx:'the body that makes '+place+'\u2019s own law', stale:!r.v});
+    return out;
+  }
+  /* No council recorded for this level, which is the usual case for a
+     county and the normal one for a municipality. The government itself
+     publishes an address, and that is where its council sits. */
+  if(sf && sf.u && !same(sf.u))
+    out.push({lbl:'At '+place, u:sf.u,
+              tx:'this government\u2019s own site, which is where its council is published',
+              stale:true});
+  return out;
 }
 function nationalRow(rt, o){
   const P=cpro(); const nd=P && P.nd; if(!nd) return null;
@@ -5206,7 +5247,7 @@ function nationalRow(rt, o){
 function doThisAt(rt, o){
   const rows=[];
   const nat=nationalRow(rt,o); if(nat) rows.push(nat);
-  const lvr=levelRow(rt,o); if(lvr) rows.push(lvr);
+  levelRows(rt,o).forEach(r=>rows.push(r));
   const ports=portalRows(rt.id); ports.forEach(p=>rows.push(p));
   const away=DOELSE[rt.id];
   if(away){
@@ -5680,6 +5721,36 @@ const SYSTXT={
    Each entry is the body that makes that unit's law: its name, its own
    address, the public email and switchboard where a record holds one,
    and whether the address answered when it was checked. */
+/* THE JURISDICTION'S OWN ADDRESS, AT EVERY LEVEL.
+
+   `qCore` has always asked each level for its own website, public email
+   and switchboard — the "self" rows — and `classifyRows` dropped them,
+   because they are not offices. Only the level whose panel was open
+   ever used them, for the link beside the place name. Every other level
+   in the chain fetched its own address and threw it away.
+
+   That was the gap at county and municipal level. A county with no
+   council recorded still has a county website; a commune with no
+   chamber still publishes an address and a telephone number. Wikidata
+   holds these far more often than it holds the body: 7,831 of Italy's
+   7,840 comuni carry one.
+
+   Nothing new is fetched for this. The rows are kept as they arrive. */
+let LEVSELF={};
+function keepSelf(q, core){
+  if(!q || !core) return;
+  const e=LEVSELF[q] || (LEVSELF[q]={});
+  core.forEach(r=>{
+    if(!r.kind || r.kind.value!=='self') return;
+    if(r.site  && !e.u) e.u=r.site.value;
+    if(r.email && !e.e) e.e=bareMail(r.email.value);
+    if(r.phone && !e.p) e.p=bareTel(r.phone.value);
+  });
+}
+function levself(i){
+  const s=STACK[i];
+  return (s && s.q && LEVSELF[s.q]) || null;
+}
 function subleg(i){
   const s=STACK[i];
   return (s && s.q && typeof SUBLEG!=='undefined' && SUBLEG[s.q]) || null;
@@ -5818,6 +5889,14 @@ function chamberLine(){
     h+=esc(c.n)+' publishes '+joinAnd(d)+'. '; });
   return h;
 }
+/* A level's name in the paragraph, as a link to that government's own
+   site where one is recorded. */
+function placeLink(i){
+  const s=STACK[i], r=levself(i);
+  return (r && r.u)
+    ? '<a href="'+esc(r.u)+'" target="_blank" rel="noopener">'+esc(s.label)+'</a>'
+    : esc(s.label);
+}
 function howLawsMade(open){
   const P=cpro(); if(!P || !STACK.length) return '';
   const c=STACK[0].label, T=SYSTXT[P.s]||{};
@@ -5845,9 +5924,9 @@ function howLawsMade(open){
       const body=r&&r.u
         ? '<a href="'+esc(r.u)+'" target="_blank" rel="noopener">'+esc(r.n||v.b||'legislature')+'</a>'
         : esc(v.b||'legislature');
-      lawBits.push(esc(s.label)+' has its own '+body+', which passes its laws');
+      lawBits.push(placeLink(i)+' has its own '+body+', which passes its laws');
     }
-    else if(v.p==='R') lawBits.push('the '+esc(v.b||'council')+' of '+esc(s.label)+' makes its local rules');
+    else if(v.p==='R') lawBits.push('the '+esc(v.b||'council')+' of '+placeLink(i)+' makes its local rules');
     else{
       const w=(v.w||'').replace(/\s*\(.*\)/,'');
       offBits.push(esc(s.label)+(w&&w!=='locality'?', '+(/^[aeiou]/i.test(w)?'an ':'a ')+esc(w)+',':'')+' is '+esc(noLawWhy(i))+', so it is left off the list');
@@ -6640,7 +6719,7 @@ async function loadLevelPins(lv, gen){
     let core=[], items=[];
     try{ core = await sparql(qCore(lv.q), 'core:'+lv.q); }catch(e){ console.warn('core query failed', lv.q, e); }
     if(gen!==CHAIN_GEN) return;
-    if(core.length){ addChainOffices(classifyRows(core, []), lv); }
+    if(core.length){ keepSelf(lv.q, core); addChainOffices(classifyRows(core, []), lv); }
     try{ items = await sparql(qJuris(lv.q), 'juris:'+lv.q); }catch(e){ console.warn('jurisdiction query failed', lv.q, e); }
     if(gen!==CHAIN_GEN) return;
     const bk = classifyRows(core, items);
@@ -6871,7 +6950,7 @@ let SHITS=[];
    the next place will be found from. */
 function openStart(){
   closeModal();
-  STACK=[]; PINS={}; OFFS={}; LOCAL={}; CHAIN_DONE={}; CHAIN_CLAIMED={}; PIN_TRIED={};
+  STACK=[]; PINS={}; OFFS={}; LEVSELF={}; LOCAL={}; CHAIN_DONE={}; CHAIN_CLAIMED={}; PIN_TRIED={};
   CUR=null; SEL=null;
   SELFSITE=null; paintSiteLink();
   if(typeof destroyBubbles==='function'){ destroyBubbles();
@@ -7088,7 +7167,7 @@ async function enterPlace(i){
               level:(top?top.level:0)+1, adm:3, feature:feat});
   settlePlace(r);
   setAdmData([feat]);
-  PINS={}; OFFS={}; CHAIN_DONE={}; CHAIN_CLAIMED={}; PIN_TRIED={}; LOCAL={};
+  PINS={}; OFFS={}; LEVSELF={}; CHAIN_DONE={}; CHAIN_CLAIMED={}; PIN_TRIED={}; LOCAL={};
   resetTree();
   loadLawLinks();
   /* The walkthrough opens on the place searched for when it is a
