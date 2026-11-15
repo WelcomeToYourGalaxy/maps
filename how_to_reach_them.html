@@ -655,6 +655,21 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   #hdr .sub{display:none}
   #hdr{padding-bottom:14px}
   #about{right:0;left:0;width:auto;top:auto;bottom:0;max-height:70%;border-radius:13px 13px 0 0}
+  /* The row of controls is 287px wide and was pinned to the top right,
+     where on a phone it sat on top of the title: "How To Make A Law"
+     and then the name of the place the reader had searched for, both
+     half covered by it. There is no room for the two side by side at
+     390px, so the controls take the row under the title, across the
+     width, and the title gets the width back. */
+  #toprow{top:50px;left:18px;right:18px;width:auto;max-width:none;justify-content:flex-start;
+    overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  #toprow::-webkit-scrollbar{display:none}
+  #hdr h1,#hdr .sub{max-width:calc(100vw - 40px)}
+  #hdr{padding-top:11px;padding-bottom:10px}
+  /* The panel fills the screen on a phone and starts at the top, where
+     the controls now sit, so its own title and site link were under
+     them. It starts below them instead. */
+  #mtop{padding-top:94px}
 }
 /* ====================================================================
    CONDENSED, AND THE SAME SHAPE ON EVERY SCREEN
@@ -3585,7 +3600,7 @@ function paintSiteLink(){
   const f=$('#mfind'); if(!f) return;
   const nm=(STACK.length?(STACK[STACK.length-1].label||''):'')||(CUR?CUR.label:'');
   if(nm){ f.href=findLink(doQ('{place} official website government', null));
-          f.textContent=SELFSITE?'or find it':'Find the official site \u2197';
+          f.textContent=SELFSITE?'or find its current site':'Find the official site \u2197';
           f.style.display=''; }
   else { f.removeAttribute('href'); f.style.display='none'; }
 }
