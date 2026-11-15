@@ -1,5 +1,9 @@
 # BRIEF17 — possible patterns
 
+## Update, 15 November 2026: two shadow-banking items, 36 in all
+
+Added under run: sanctioned governments running hidden banks inside the world's banking system (Iran's network, OFAC June and September 2025); underground banking networks moving cartel money through ordinary banks, beyond the one convicted (FinCEN FIN-2025-A003; builds on the map's TD Bank case). Considered and left out as not infiltration: the size of non-bank finance as such, private equity owning insurers, private credit funds lending to companies. Counts: place 12, select 5, pay 5, fund 6, run 8.
+
 ## Update, 15 November 2026 (early): four more, 34 in all
 
 Added: lenders gaining a say through secret loan terms (fund; How China Lends, 2021); bills written by lobbies and passed under lawmakers' names (place; Copy, Paste, Legislate, 2019); governments funding Interpol and using red notices against critics (fund; UAE pledge and 2021 presidency); foreign consultancies running other countries' campaigns (select; Channel 4 on Cambridge Analytica in Kenya, 2018). Counts by way: place 12, select 5, pay 5, fund 6, run 6.
