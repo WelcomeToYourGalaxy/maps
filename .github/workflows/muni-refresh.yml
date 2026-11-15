@@ -1,0 +1,66 @@
+name: Refresh the municipal contact shards
+
+# The registers change under us: between two pulls a month apart, the
+# French directory dropped Grenoble's published email address. The page
+# asks Wikidata for everything else when a reader opens a place, so the
+# shards in muni/ are the only part of it that can go stale, and this is
+# what stops them.
+#
+# Monthly, and on demand from the Actions tab.
+
+on:
+  schedule:
+    - cron: '41 7 1 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install what the build needs
+        run: pip install --quiet openpyxl
+
+      - name: Rebuild from the national registers
+        run: python3 tools/build_muni.py --out muni --work "${{ runner.temp }}"
+
+      - name: Refuse an empty or shrunken build
+        # A register that answers with half a file, or a join that quietly
+        # stops matching, would otherwise be committed as a loss of data.
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          idx = json.load(open('muni/index.json'))
+          total = idx.get('records', 0)
+          print('records:', total, 'per country:', idx.get('per_country'))
+          if total < 40000:
+              sys.exit('built only %d records; refusing to commit' % total)
+          for iso, n in (idx.get('per_country') or {}).items():
+              if n < 1000:
+                  sys.exit('%s built only %d records; refusing to commit' % (iso, n))
+          PY
+
+      - name: Commit if anything changed
+        run: |
+          git config user.name  'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add muni
+          if git diff --cached --quiet; then
+            echo 'The registers published nothing new.'
+          else
+            git commit -m "muni: refresh the contact shards from the national registers
+
+          Rebuilt by tools/build_muni.py from the French and Italian
+          registers. Each record is joined to a Wikidata id through a code
+          the two sources share, never through a name."
+            git push
+          fi
