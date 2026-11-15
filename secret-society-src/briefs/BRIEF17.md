@@ -1,5 +1,9 @@
 # BRIEF17 — possible patterns
 
+## Update, 14 November 2026 (just before midnight): the list as a whole statement
+
+The owner: taken together, the list should read as "this is what infiltration looks like on Earth", complete like a full stop. Eight more were added to close the gaps in who gets inside (private forums, arms makers, drug makers, accounting firms, foreign sovereign funds paying former officials, privately funded judicial networks, religious networks, state paramilitaries) and where (regulators, courts, armies, tax law). 24 items, widest reach first. The intro text now names the spectrum: states, companies, private fortunes, criminal groups and networks of belief, getting inside international bodies, governments, parliaments, courts, regulators, armies and companies.
+
 ## Update, 14 November 2026 (late night): big-picture items added, list ordered by reach
 
 The owner asked for possible patterns that are big-picture infiltration of the world's largest movements, not one industry or low-level examples even when widespread (mayors were his example of large-scale but low-level), and for the finished list to show the whole spectrum of types behind the most consequential shifts today.
