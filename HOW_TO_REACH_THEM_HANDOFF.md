@@ -775,6 +775,47 @@ are on the town hall object, not the boundary, so Tier B needs a
 spatial join as well as a planet-sized download. Do not plan a round
 around it without first proving the extract is obtainable.
 
+### Round eight: the office counts were lying, and Hungary is unreachable
+
+**Hungary first, and it failed on access rather than on the join.** The
+key is there — 3,155 of 3,191 municipalities carry the KSH code — but
+`data.gov.hu` does not resolve from this sandbox, `kozadattar.hu` 404s,
+and the KSH's own Helységnévtár page renders its download links in
+JavaScript, so there is nothing to fetch without a browser. It is still
+the best remaining candidate for anyone running outside this sandbox:
+the key coverage is 99%.
+
+**Then the thing that mattered more.** Through four rounds of audits the
+office counts moved for no visible reason — Austin 104 offices in one
+run and 4 in the next, Graz 62 and then 4, Cluj-Napoca 114 and then 6,
+from the same click and the same network. It was not a classifier fault
+and not a data fault. Every office on this page comes from Wikidata's
+query service, the service refuses requests when it is busy — 429 with
+a retry window, 503, and during one outage everything above one request
+a minute — and `sparql()` threw on the first refusal. The callers each
+caught it, wrote a line to the console, and carried on. **A refused
+query produced a short list that read as complete.** A reader would have
+concluded their city government has four offices in it.
+
+`sparql()` now tries three times, waiting as long as the service asks
+for in `Retry-After`, and gives up at once on a 4xx that is not 429,
+because that is the query's own fault and a retry will fail the same
+way. If it still refuses, `noteQueryTrouble` puts one line on the page
+saying the lists are incomplete and why.
+
+Checked both ways, and worth repeating after any change to the query
+layer:
+
+- Force it: intercept `**/sparql**` and answer 429 with `Retry-After: 1`.
+  Expect three attempts per logical query, `QFAIL.n` above zero, and the
+  notice on screen.
+- Leave it alone: the notice must stay empty. a small town, Grenoble and
+  Austin came back with 158, 68 and 110 offices and no notice.
+
+This is the most likely explanation for any future report of "the list
+is missing things". Check `QFAIL` in the console before suspecting the
+classifier.
+
 ### Round seven: five more registers tried, and what to do when the join fails
 
 The join key decides whether a register is usable, so this round checked
