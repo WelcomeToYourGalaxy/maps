@@ -195,3 +195,49 @@ language was 8 of 9 road-safety indicators in one batch, once matching "there wa
 no recorded fatality at construction sites". Worst single hazard: "count with a
 relocation verb" twice returned the June 2010 Osh unrest, "about 400,000 people
 were displaced", on two Kyrgyz projects.
+
+## Round 32 findings
+
+**Run `normalise.py` against a directory holding only the checked files.** The writers' unchecked
+output sits beside the checked output in the working directory, and `west_central_africa.json` sorts
+before `west_central_africa_checked.json`, so the unchecked version won every batch and the checked
+one was dropped as a duplicate id. The script now reads only `*_checked.json` where any are present
+and prints what it ignored, but copying the checked files into their own directory first is still
+the safer habit.
+
+**`normalise.py` now reports extends that would merge nothing.** `merge.py` adds a lender only when
+its name is not already on the case, and treats `lk`, `cp` and `sources` the same way, so an extend
+made entirely of such entries merges nothing while the merge prints "extended 1". The check reads
+`base.html`, so it is **only meaningful before the round is merged**: run it afterwards and every
+extend's own additions read as inert.
+
+**`extract.py` no longer annotates appraisal documents as outcome documents.** `effective_tag` was
+firing on a PAD and a 2005 appraisal document, and the brief then told the writer to treat their
+figures as outcomes — the plan-reprint trap arriving through the brief. An appraisal signal in the
+title or the opening pages now vetoes it, the outcome signal must be in the document's own title,
+and the annotation tells the writer to check the tense rather than what to conclude.
+
+**Route notes.**
+
+- A blank `docty` in the wds records hides a document from the type filter, and the hidden file may
+  be the project's only completion report (P098572: Report No. 70326-PH, 29 June 2012). The other
+  blank-`docty` file opened this round was a routine provincial audit, so the gap is real but it is
+  not always an outcome document.
+- `/text/` **301s** on documents the harvester never saw, while `/pdf/` serves them. The `/txt/`
+  shortcut is not always present.
+- A near-empty `/txt/` response is recorded in the manifest as a successful fetch. One file was 261
+  bytes of stamp page. `harvest.py` now falls through to the PDF route below 1,200 bytes.
+- `cti.ufpel.edu.br` returns 403 with a web-application-firewall interstitial to `curl`, with and
+  without a browser user agent, while WebFetch to the same URL returns the document. The host serves
+  the file; one client route is blocked.
+
+**Reading figures out of these documents.** Four corrections in one batch trace to taking a number
+out of a table by grep: the columns survive text extraction unaligned, with the neighbouring case's
+data directly above the value wanted. One card read a seasonal-camp identifier as a hectare figure.
+Print the block from header row to footnote and read it.
+
+**Two gaps the briefs still have.** A resettlement plan written *after* the move is an outcome
+document, and no pattern looks for past-tense harm inside a plan — that is what carries the round's
+strongest east-Africa case. And the document list should give every spelling of a site name that
+occurs across a row's documents: a drop reason lost its deciding fact because one document spells it
+Mirsharai and another Mirsarai.
