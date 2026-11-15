@@ -100,7 +100,7 @@ crescendo sentences, no manufactured significance. Spell out every connection a 
 `entryPts()` flies to the case points when there are any, otherwise to the cases in the countries
 named.
 
-## The twenty-seven that are there now (rounds 28 and 29)
+## The thirty-one that are there now (rounds 28 to 30)
 
 | id | Title | Built on |
 | --- | --- | --- |
@@ -131,6 +131,10 @@ named.
 | `private-equity-with-development-money` | Development money handed to private equity and for-profit hospitals | Abraaj collapse and US charges; Oxfam's Sick Development |
 | `ratings-that-punish-relief` | Credit ratings that punish poor countries for seeking debt relief | Ethiopia's 2021 downgrades; UNDP $74.5bn; S&P and Moody's mortgage-ratings settlements |
 | `debt-for-nature-deals` | Debt-for-nature deals that hand oceans and forests to foreign financiers | Ecuador's Galápagos swap and the IDB complaint; Belize's 2021 superbond deal; Barclays note |
+| `companies-pay-armed-groups` | Foreign companies that pay soldiers and militias to protect their profits | Chiquita and the AUC; Freeport's payroll for Indonesian officers; Amnesty on Shell in Ogoniland; Lafarge and ISIS |
+| `companies-behind-coups` | Foreign companies behind the overthrow of governments | United Fruit and Guatemala 1954; Anglo-Iranian Oil and Iran 1953; ITT's $1 million offer in Chile |
+| `private-courts-for-investors` | Private tribunals that can order countries to pay companies billions | Reko Diq award against Pakistan; Occidental v Ecuador; Profiting from Injustice |
+| `water-handed-to-companies` | Cities' water handed to foreign companies on the lenders' advice | Cochabamba and Bechtel; Jakarta's Thames and Suez concessions; Manila and the IFC |
 
 Directions that fit the standard and are not yet written: vulture-fund lobbying in Washington; the US and European hold on the two top jobs. The 1974 US-Saudi
 petrodollar arrangement was considered in round 28 and left out as too far from aid and lending.
@@ -182,3 +186,15 @@ UNDP's); a caveat written as the companies' own statement when it was the journa
 a wire service credited for another's story (Bloomberg, not Reuters, on Abraaj); "up to" for "more
 than"; a defence attributed to "the funds" when only BlackRock said it. Unresolved: whether Arif Naqvi
 has been extradited or tried since March 2023.
+
+## The round 30 check
+
+Two checkers, 25 fixes, none failed. Log `rounds/r30_hyps_check.json`; data `rounds/r30_hyps_final.json`.
+The checker found two errors that were also on case cards, and both cards were corrected in the same
+round: `grasberg-freeport` said the army "killed 37"; ACFOA counted at least 37 killed or disappeared,
+22 civilians and 15 rebels, with Freeport denying the figures. `manila-water-concessions` gave the
+60-to-80 per cent coverage rise as the east zone's; PolitiFact's source speaks of Metro Manila.
+Other classes caught: a "first ever" claim contradicted by the same story (Lafarge after Chiquita);
+events put in the wrong order (Reko Diq's lease refusal came before the court ruling); an interest
+figure that did not add up to the total; a fee rule that has since changed (ICSID arbitrators are now
+paid by the hour).

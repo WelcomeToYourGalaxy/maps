@@ -1,0 +1,354 @@
+{
+ "companies-pay-armed-groups": {
+  "verdict": "fixes",
+  "fixes": [
+   {
+    "field": "story[0]",
+    "find": "Officers of its Colombian subsidiary had paid the AUC about $1.7 million between 1997 and 2004 in Urabá, the banana-growing region where the group was killing civilians,",
+    "replace": "Through its Colombian subsidiary, Banadex, Chiquita had paid the AUC more than $1.7 million between 1997 and 2004 in the banana-growing regions of Urabá and Santa Marta, where the group was killing civilians,",
+    "why": "DOJ release: payments made by Chiquita through its subsidiary Banadex, over $1.7 million, in Urabá and Santa Marta. https://www.justice.gov/opa/pr/2007/March/07_nsd_161.html"
+   },
+   {
+    "field": "story[0]",
+    "find": "About 4,000 Colombians later sued over relatives killed by the group",
+    "replace": "Thousands of Colombians later sued over relatives killed by the group",
+    "why": "NPR (2024) counts more than 5,000 wrongful-death claims; the 4,000 figure (map card, from Wikipedia) refers to an earlier suit and could not be fetched. https://www.opb.org/article/2024/06/13/a-jury-says-chiquita-should-pay-millions-over-paramilitary-killings-in-colombia/"
+   },
+   {
+    "field": "story[1]",
+    "find": "In 1995 the Australian Council for Overseas Aid had reported that the Indonesian army, helped by Freeport security staff, killed 37 people near the mine in less than a year.",
+    "replace": "In April 1995 the Australian Council for Overseas Aid had reported that at least 37 people, 22 of them civilians, were killed or disappeared around the mine in 1994 and early 1995, and that Freeport security staff joined the army in shootings, arrests and torture; Freeport and the Indonesian government denied the death figures.",
+    "why": "ACFOA's 'Trouble at Freeport' (5 April 1995) counts 37 'killed and/or disappeared', 22 civilians and 15 rebels; it does not attribute all 37 to the army with Freeport help; Freeport denied. https://minesandcommunities.org/article.php?a=968 . Map card grasberg-freeport also says the army 'killed 37' and should be corrected the same way."
+   },
+   {
+    "field": "story[2]",
+    "find": "In 2017 Amnesty International published Shell's own internal documents from Nigeria in the 1990s,",
+    "replace": "In 2017 Amnesty International published a report drawing on thousands of pages of Shell's internal documents from Nigeria in the 1990s,",
+    "why": "Amnesty reviewed internal company documents and witness statements; it did not publish the documents as such. https://www.amnesty.org/en/latest/news/2017/11/investigate-shell-for-complicity-in-murder-rape-and-torture/"
+   },
+   {
+    "field": "story[2]",
+    "find": "Amnesty found that Shell had given the security forces logistical support and payments as a matter of routine, and that it kept asking for military help after soldiers had killed protesters and burned villages;",
+    "replace": "Amnesty found that Shell had given the security forces logistical support and payments, which the head of Shell Nigeria from 1994 admitted was standard practice, and that it kept asking for military help after security forces had killed protesters and burned villages;",
+    "why": "'Standard practice' is Brian Anderson's admission as reported by Amnesty, not Amnesty's own finding of routine; the 1990 Umuechem killings and burning were by Mobile Police, not soldiers. https://www.amnesty.org.uk/shell-criminal-enterprise ; https://www.amnesty.org/en/latest/news/2017/11/investigate-shell-for-complicity-in-murder-rape-and-torture/"
+   },
+   {
+    "field": "story[2]",
+    "find": "US officials said it was the first time a company had pleaded guilty to supporting a terrorist organisation.",
+    "replace": "US officials said it was the first time a company had pleaded guilty to conspiring to provide material support to a foreign terrorist organisation.",
+    "why": "The narrower charge is what officials said was a first; as written it contradicts Chiquita's 2007 guilty plea in paragraph 1. https://www.pbs.org/newshour/nation/french-cement-firm-pleads-guilty-to-sending-payments-to-the-islamic-state"
+   },
+   {
+    "field": "story[3]",
+    "find": "Companies are not required to publish what they pay to security forces abroad.",
+    "replace": "Companies are generally not required to publish what they pay to security forces abroad.",
+    "why": "No source given for an absolute claim; softened. Existing payment-to-government disclosure rules for extractive companies do not list security payments, but the claim is not sourced in the entry."
+   },
+   {
+    "field": "countries[2].note",
+    "find": "Amnesty documented Shell's routine payments in the 1990s.",
+    "replace": "Amnesty documented Shell's payments and logistical support to security forces in the 1990s.",
+    "why": "Amnesty does not itself call the payments routine (see story[2] fix). https://www.amnesty.org.uk/shell-criminal-enterprise"
+   }
+  ],
+  "add_sources": [
+   {
+    "title": "Chiquita Brands International pleads guilty to making payments to a designated terrorist organization and agrees to pay $25 million fine",
+    "publisher": "US Department of Justice",
+    "year": 2007,
+    "url": "https://www.justice.gov/opa/pr/2007/March/07_nsd_161.html"
+   },
+   {
+    "title": "A jury says Chiquita should pay millions over paramilitary killings in Colombia",
+    "publisher": "OPB (NPR)",
+    "year": 2024,
+    "url": "https://www.opb.org/article/2024/06/13/a-jury-says-chiquita-should-pay-millions-over-paramilitary-killings-in-colombia/"
+   },
+   {
+    "title": "The case against Freeport McMoRan in West Papua: documents to use in evidence (summary of ACFOA, Trouble at Freeport, 1995)",
+    "publisher": "Mines and Communities",
+    "year": 2001,
+    "url": "https://minesandcommunities.org/article.php?a=968"
+   },
+   {
+    "title": "Freeport defends payouts made to support military",
+    "publisher": "Metal Bulletin News, via Asia Pacific Solidarity Network",
+    "year": 2006,
+    "url": "https://www.asia-pacific-solidarity.net/news/2006-01-03/freeport-defends-payouts-made-support-military.html"
+   },
+   {
+    "title": "Shell: A criminal enterprise?",
+    "publisher": "Amnesty International UK",
+    "year": 2018,
+    "url": "https://www.amnesty.org.uk/shell-criminal-enterprise"
+   }
+  ],
+  "remove_sources": [
+   "https://www.asia-pacific-solidarity.net/news/2006-01-03/freeport-defends-payouts-made-support-military.html",
+   "https://www.amnesty.org.uk/shell-criminal-enterprise",
+   "https://en.wikipedia.org/wiki/Chiquita"
+  ]
+ },
+ "water-handed-to-companies": {
+  "verdict": "fixes",
+  "fixes": [
+   {
+    "field": "story[0]",
+    "find": "by the American engineering giant Bechtel",
+    "replace": "by the American engineering company Bechtel",
+    "why": "Plain wording (owner's style rule against flourish)."
+   },
+   {
+    "field": "story[0]",
+    "find": "The city rose up. In April 2000",
+    "replace": "Protests spread across the city, and in April 2000",
+    "why": "Short punch sentence (style rule); facts unchanged. https://opiniojuris.org/2006/02/10/bechtel-abandons-its-icsid-claim-against-bolivia/"
+   },
+   {
+    "field": "story[0]",
+    "find": "having invested less than $1 million;",
+    "replace": "having invested, by one estimate, less than $1 million;",
+    "why": "Democracy Center gives the investment as an estimate ('estimated at less than a million dollars'). https://www.democracyctr.org/bechtel-vs-bolivia"
+   },
+   {
+    "field": "story[2]",
+    "find": "and in October 2003, 672 people in the poor Tondo district fell ill",
+    "replace": "and from late October 2003, 672 people in the poor Tondo district fell ill",
+    "why": "Cases began 23 October and reached 672 by 11 November 2003. https://www.philstar.com/metro/2003/11/11/227474/gastro-cases-reach-672"
+   },
+   {
+    "field": "story[2]",
+    "find": "Coverage in the east zone did rise, from about 60 to over 80 per cent by 2002.",
+    "replace": "Coverage did rise, from about 60 to over 80 per cent of people by 2002.",
+    "why": "PolitiFact (citing a 2007 study) gives the 60-to-80 figure without naming the east zone; the study speaks of Metro Manila. Map card manila-water-concessions has the same east-zone wording and should match. https://www.politifact.com/factchecks/2016/may/12/gwen-moore/arm-world-bank-tied-8-fold-rise-water-rates-manila/"
+   },
+   {
+    "field": "story[3]",
+    "find": "The loan documents show advice and conditions, but not who drafted them or which companies were consulted beforehand.",
+    "replace": "The published record shows lending, advice and, in Cochabamba, a reported loan condition, but not who drafted the advice or which companies were consulted beforehand.",
+    "why": "Overstated: the Jakarta loan appraisal (map card jakarta-water-1997) contains no privatisation condition, and the Cochabamba condition is the Democracy Center's account of what Bank officials told the mayor, not a published loan document. https://www.democracyctr.org/the-role-of-the-world-bank"
+   }
+  ],
+  "add_sources": [
+   {
+    "title": "The role of the World Bank",
+    "publisher": "The Democracy Center",
+    "year": null,
+    "url": "https://www.democracyctr.org/the-role-of-the-world-bank"
+   },
+   {
+    "title": "Water and politics in the fall of Suharto (Andreas Harsono)",
+    "publisher": "International Consortium of Investigative Journalists",
+    "year": 2003,
+    "url": "https://www.icij.org/investigations/waterbarons/water-and-politics-fall-suharto/"
+   },
+   {
+    "title": "Water privatisation in Indonesia (Nila Ardhianie), in Reclaiming Public Water",
+    "publisher": "Transnational Institute",
+    "year": 2005,
+    "url": "https://www.tni.org/files/waterindonesia_0.pdf"
+   },
+   {
+    "title": "What you need to know about Jakarta's water privatization",
+    "publisher": "The Jakarta Post",
+    "year": 2018,
+    "url": "https://www.thejakartapost.com/news/2018/04/12/what-you-need-to-know-about-jakartas-water-privatization.html"
+   },
+   {
+    "title": "Loaves, fishes and dirty dishes",
+    "publisher": "ICIJ / Center for Public Integrity",
+    "year": 2003,
+    "url": "https://www.icij.org/investigations/waterbarons/loaves-fishes-and-dirty-dishes/"
+   },
+   {
+    "title": "Gwen Moore: World Bank arm tied to 8-fold rise in Manila water rates",
+    "publisher": "PolitiFact",
+    "year": 2016,
+    "url": "https://www.politifact.com/factchecks/2016/may/12/gwen-moore/arm-world-bank-tied-8-fold-rise-water-rates-manila/"
+   },
+   {
+    "title": "Gastro cases reach 672",
+    "publisher": "The Philippine Star",
+    "year": 2003,
+    "url": "https://www.philstar.com/metro/2003/11/11/227474/gastro-cases-reach-672"
+   }
+  ],
+  "remove_sources": []
+ },
+ "companies-behind-coups": {
+  "verdict": "fixes",
+  "fixes": [
+   {
+    "field": "story[1]",
+    "find": "Iran had already been through it.",
+    "replace": "Iran's coup had come a year earlier.",
+    "why": "Vague phrase that relies on the reader to supply the point; plain statement instead."
+   },
+   {
+    "field": "story[1]",
+    "find": "Britain has never acknowledged its part",
+    "replace": "Britain has never officially acknowledged its part",
+    "why": "In 2013 the Foreign Office would 'neither confirm nor deny' its involvement, but Jack Straw as foreign secretary in 2009 referred to British 'interferences' in Iran, so only official acknowledgement is lacking. https://www.dawn.com/news/amp/1037298"
+   },
+   {
+    "field": "story[2]",
+    "find": "The CIA turned the money down, while running its own operations against Allende; two ITT officials were later charged with lying to the Senate about it.",
+    "replace": "The offer was turned down, while the CIA ran its own operations against Allende. In 1978 two ITT officials were charged with lying to the Senate about the company's actions in Chile; in 1979 the government dropped the case against one of them, Robert Berrellez, saying a trial would expose national security information.",
+    "why": "The $1 million was offered through John McCone to CIA director Helms and to Kissinger, and Kissinger wrote that he turned it down (EBSCO), so 'the CIA' alone is too narrow. Charges against Edward Gerrity and Robert Berrellez in 1978 confirmed (Harvard Crimson 1978); the Berrellez case was dropped on national security grounds (News Journal, 9 Feb 1979). How the Gerrity case ended could not be confirmed, so it is left unstated. https://www.ebsco.com/research-starters/history/itt-actions-cause-suspicion-involvement-chilean-coup ; https://www.thecrimson.com/article/1978/4/5/the-discreet-lies-of-itt-pii/ ; https://www.newspapers.com/newspage/161291565/"
+   },
+   {
+    "field": "missing",
+    "find": "No declassified record on company involvement in coups after the 1970s.",
+    "replace": "Few declassified records on company involvement in coups after the 1970s.",
+    "why": "An absolute 'no record' cannot be verified; weakened."
+   }
+  ],
+  "add_sources": [
+   {
+    "title": "CIA admits role in 1953 Iranian coup",
+    "publisher": "The Guardian",
+    "year": 2013,
+    "url": "https://www.theguardian.com/world/2013/aug/19/cia-admits-role-1953-iranian-coup"
+   },
+   {
+    "title": "CIA Confirms Role in 1953 Iran Coup (Electronic Briefing Book 435)",
+    "publisher": "National Security Archive",
+    "year": 2013,
+    "url": "https://nsarchive2.gwu.edu/NSAEBB/NSAEBB435/"
+   },
+   {
+    "title": "CIA and Assassinations: The Guatemala 1954 Documents (Electronic Briefing Book 4; includes Cullather's 1994 CIA history, released 1997)",
+    "publisher": "National Security Archive",
+    "year": 1997,
+    "url": "https://nsarchive2.gwu.edu/NSAEBB/NSAEBB4/"
+   },
+   {
+    "title": "Decree 900 expropriations of United Fruit land (Editorial Note 420)",
+    "publisher": "US State Department, Office of the Historian, FRUS 1952-1954 vol. IV",
+    "year": 1983,
+    "url": "https://history.state.gov/historicaldocuments/frus1952-54v04/d420"
+   },
+   {
+    "title": "ITT Actions Cause Suspicion of Involvement in a Chilean Coup",
+    "publisher": "EBSCO Research Starters",
+    "year": 2023,
+    "url": "https://www.ebsco.com/research-starters/history/itt-actions-cause-suspicion-involvement-chilean-coup"
+   },
+   {
+    "title": "The Discreet Lies of ITT",
+    "publisher": "The Harvard Crimson",
+    "year": 1978,
+    "url": "https://www.thecrimson.com/article/1978/4/5/the-discreet-lies-of-itt-pii/"
+   },
+   {
+    "title": "Perjury charges against ex-ITT official Berrellez dropped (front page)",
+    "publisher": "The News Journal, Wilmington",
+    "year": 1979,
+    "url": "https://www.newspapers.com/newspage/161291565/"
+   }
+  ],
+  "remove_sources": [
+   "https://nsarchive.gwu.edu/media/cia-admits-role-1953-iranian-coup"
+  ]
+ },
+ "private-courts-for-investors": {
+  "verdict": "fixes",
+  "fixes": [
+   {
+    "field": "title",
+    "find": "Private tribunals where companies can fine countries billions",
+    "replace": "Private tribunals that can order countries to pay companies billions",
+    "why": "Tribunals award damages; they do not fine, and companies do not issue the orders."
+   },
+   {
+    "field": "story[0]",
+    "find": "Pakistan's province of Balochistan had refused Tethyan a lease in 2011 to mine Reko Diq, one of the world's largest untouched copper and gold deposits, after Pakistan's Supreme Court found the original deal illegal.",
+    "replace": "Pakistan's province of Balochistan refused Tethyan a lease in November 2011 to mine Reko Diq, one of the world's largest untouched copper and gold deposits, and in 2013 Pakistan's Supreme Court declared the original deal void.",
+    "why": "Wrong order: the lease was refused in November 2011; the Supreme Court ruling came in January 2013, after the refusal and after Tethyan filed its claim in 2012. https://www.dawn.com/news/1493967 ; https://arabnews.com/node/1525616 ; https://tribune.com.pk/story/2012667/pakistan-slapped-6-billion-penalty-reko-diq-case"
+   },
+   {
+    "field": "story[0]",
+    "find": "awarded $4.087 billion for the mine's value plus $1.753 billion in interest",
+    "replace": "awarded $4.087 billion for the mine's value plus interest and costs",
+    "why": "$4.087bn + $1.753bn = $5.84bn, not $5.976bn. Debevoise gives $1.753bn interest plus $62m costs (about $5.9bn); Pakistani reports of $5.976bn give interest as $1.87bn. Dropping the interest figure removes the contradiction. https://www.debevoise.com/news/2019/07/debevoise-secures-historic-$6-billion-icsid ; https://www.dawn.com/news/1493967"
+   },
+   {
+    "field": "story[0]",
+    "find": "Tethyan said it had spent about $220 million on the project.",
+    "replace": "Reuters reported that the company had invested more than $220 million in the project; its owners have put their spending at more than $500 million.",
+    "why": "The $220m figure is Reuters' (via Dawn), not a Tethyan statement found in sources; Bloomberg reports the joint venture said it spent more than $500m. https://www.dawn.com/news/1493967 ; https://www.bnnbloomberg.ca/barrick-and-antofagasta-win-us-5-8b-pakistan-ruling-1.1287064"
+   },
+   {
+    "field": "story[2]",
+    "find": "Arbitrators at the centre are paid by the day",
+    "replace": "Arbitrators at the centre are paid by the hour",
+    "why": "Since ICSID's 2022 rules arbitrators receive a fee for each hour worked (the old daily rate was replaced). https://icsid.worldbank.org/services/cost-of-proceedings/schedule-fees/2023"
+   },
+   {
+    "field": "story[2]",
+    "find": "states win more cases than investors",
+    "replace": "states win more concluded cases than investors, about 38 per cent against 29 per cent",
+    "why": "Claim confirmed; adds UNCTAD's treaty-based ISDS figures. https://unctad.org/system/files/official-document/diaepcbinf2025d5_en.pdf"
+   },
+   {
+    "field": "missing",
+    "find": "arbitrators' ties are not disclosed",
+    "replace": "arbitrators' ties are not publicly disclosed",
+    "why": "Arbitrators must declare relationships to the parties under ICSID rules, but these declarations are not published; 'not disclosed' overstates."
+   }
+  ],
+  "add_sources": [
+   {
+    "title": "Pakistan told to pay $5.9bn to mining firm in Reko Diq case",
+    "publisher": "Dawn",
+    "year": 2019,
+    "url": "https://www.dawn.com/news/1493967"
+   },
+   {
+    "title": "Barrick and Antofagasta win US$5.8B Pakistan ruling",
+    "publisher": "BNN Bloomberg",
+    "year": 2019,
+    "url": "https://www.bnnbloomberg.ca/barrick-and-antofagasta-win-us-5-8b-pakistan-ruling-1.1287064.amp.html"
+   },
+   {
+    "title": "Antofagasta exits Reko Diq project in Pakistan (RNS)",
+    "publisher": "Antofagasta plc",
+    "year": 2022,
+    "url": "https://www.lse.co.uk/rns/antofagasta-exits-reko-diq-project-in-pakistan-87dut7pmv7xtuzy.html"
+   },
+   {
+    "title": "Oxy gets $1 billion from Ecuador following decade-long dispute",
+    "publisher": "Oil & Gas Journal",
+    "year": 2016,
+    "url": "https://www.ogj.com/general-interest/article/17249735/oxy-gets-1-billion-from-ecuador-following-decade-long-dispute"
+   },
+   {
+    "title": "Schedule of Fees (2023)",
+    "publisher": "ICSID",
+    "year": 2023,
+    "url": "https://icsid.worldbank.org/services/cost-of-proceedings/schedule-fees/2023"
+   },
+   {
+    "title": "The Ethics and Empirics of Double Hatting",
+    "publisher": "ESIL Reflection (Langford, Behn and Lie)",
+    "year": 2017,
+    "url": "https://esil-sedi.eu/?p=1829"
+   },
+   {
+    "title": "Investor-State arbitration under investment laws: risks and policy lessons (IIA Issues Note)",
+    "publisher": "UNCTAD",
+    "year": 2025,
+    "url": "https://unctad.org/system/files/official-document/diaepcbinf2025d5_en.pdf"
+   },
+   {
+    "title": "A response to the critics of Profiting from Injustice",
+    "publisher": "Kluwer Arbitration Blog",
+    "year": 2013,
+    "url": "https://legalblogs.wolterskluwer.com/arbitration-blog/a-response-to-the-critics-of-profiting-from-injustice/"
+   }
+  ],
+  "remove_sources": [
+   "https://arbitrationblog.kluwerarbitration.com/?p=6547"
+  ]
+ }
+}
