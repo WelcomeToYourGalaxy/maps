@@ -15,7 +15,7 @@ Input: a JSON file mapping a key to the box's text. "p:" keys are places, "n:" k
 - A career move is not an accusation. A tie is not wrongdoing.
 - Never mention the box, the excerpt, the record, or that text is missing. If no outcome is given, just stop at what happened.
 - Plain, direct sentences. No adjectives doing the work, no flourish, no closing moral or punchline. No "our". One paragraph, no bullets.
-- Length: 40 to 90 words for most parties. 80 to 150 for places. Up to 200 words only for the fullest (US, Italy, Lebanon, Nigeria and the like).
+- Length: 40 to 90 words for most parties. For places, write what the box supports and stop — **do not cut a documented case, outcome, section number or tie to hit a word count.** For scale, the country paragraphs already on the map run to a median of about 290 words, and the members of the West African and Central African currency unions run 800 to 1,000 because the union's records appear in every member's box. A place with one or two records should still come in well under 200.
 
 No web use. Read the input, then Write a JSON object mapping every key to its paragraph at the output path. Write each by hand, without a template. Report only the count written.
 
