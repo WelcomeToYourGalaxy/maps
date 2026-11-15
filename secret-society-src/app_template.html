@@ -81,7 +81,8 @@ button.btn:hover,#infoBtn:hover,#worldBtn:hover{border-color:var(--accent-hi);co
 .hyp:hover{background:rgba(255,255,255,.06)}
 .hyp .ht{font-size:12.6px;color:#ded9d0;line-height:1.3}
 .hyp .hm{font-size:10.8px;color:var(--mute);margin-top:1px}
-.hypway{font-size:10.6px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin:10px 0 2px}
+.hypway{font-size:10.6px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin:10px 0 2px;cursor:pointer;user-select:none}
+.hypway:hover{color:#ded9d0}.hypway .car{width:11px}
 .hypnote{font-size:11px;color:var(--mute);line-height:1.45;margin:2px 0 4px;border-left:2px dashed var(--mute);padding-left:7px}
 /* time */
 #tchart svg{display:block;width:100%}
@@ -323,7 +324,7 @@ function tcol(k) { return P.t[k] || (k === "crime" ? P.p[0] : k === "bank" ? P.p
 const YR = CASES.reduce((a, c) => c.y ? [Math.min(a[0], c.y), Math.max(a[1], c.y)] : a, [9999, 0]);
 const S = { lens: "meta", bandOn: [1, 1, 1, 1, 1], pat: null, y0: 0, y1: 9999, colBy: "inf",
             f: { inf: {}, tgt: {}, rel: { now: true, legacy: true, past: false }, lik: {}, int: 1, wide: 1 }, cases: true, bk: {}, orgs: true, backers: true, ty: {}, routes: true,
-            open: { cases: false, orgs: false }, sel: null, q: "" };
+            open: { cases: false, orgs: false }, hw: {}, sel: null, q: "" };
 BUCKETS.forEach((b) => { S.bk[b[0]] = true; }); TYPES.forEach((t) => { S.ty[t.k] = true; });
 INF.forEach((x) => { S.f.inf[x.k] = true; }); TGT.forEach((t) => { S.f.tgt[t[0]] = true; }); LIK.forEach((l) => { S.f.lik[l[0]] = true; });
 S.f.bk = S.bk;
@@ -750,16 +751,20 @@ function buildPat() {
   } else {
     const rows_ = (root) => live.filter(([p]) => !!p.root === root).map(([p, i]) => patRow(p, i)).join("");
     const now_ = rows_(false), back_ = rows_(true);
-    h += (now_ ? '<div class="flab">Going on today</div>' + now_ : '') + (back_ ? '<div class="flab">Past influence</div>' + back_ : '');
+    h += (now_ ? '<div class="flab">Current</div>' + now_ : '') + (back_ ? '<div class="flab">Past</div>' + back_ : '');
   }
   if (hid) h += '<div class="sub">' + hid + ' more ' + (hid === 1 ? 'pattern has' : 'patterns have') + ' nothing left under the filters you have set.</div>';
   if (HYP.length) {
-    h += '<div class="flab" style="margin-top:12px">Possible patterns · nothing proved yet</div>' +
-         '<div class="hypnote">' + esc(HYPW) + '</div>' +
-         HYP.map((y, i) => (y.way && (i === 0 || HYP[i - 1].way !== y.way) ? '<div class="hypway">' + esc(HYPWAYS[y.way] || '') + '</div>' : '') +
-           '<div class="hyp" data-hyp="' + y.id + '"><div class="ht">' + esc(y.title) + '</div><div class="hm">' +
-           (y.countries.length ? y.countries.length + (y.countries.length === 1 ? ' country named' : ' countries named') : 'no country named yet') +
-           '</div></div>').join("");
+    // Each way in is its own drop-down, open until the reader closes it.
+    const hypRow = (y) => '<div class="hyp" data-hyp="' + y.id + '"><div class="ht">' + esc(y.title) + '</div><div class="hm">' +
+      (y.countries.length ? y.countries.length + (y.countries.length === 1 ? ' country named' : ' countries named') : 'no country named yet') +
+      '</div></div>';
+    const ways = []; HYP.forEach((y) => { if (y.way && ways.indexOf(y.way) < 0) ways.push(y.way); });
+    h += '<div class="flab" style="margin-top:12px">Potential</div>' +
+         ways.map((w) => { const open = S.hw[w] !== false;
+           return '<div class="hypway" data-hway="' + w + '"><span class="car">' + (open ? "▾" : "▸") + '</span>' + esc(HYPWAYS[w] || '') + '</div>' +
+             (open ? HYP.filter((y) => y.way === w).map(hypRow).join("") : ''); }).join("") +
+         HYP.filter((y) => !y.way).map(hypRow).join("");
   }
   if (S.pat) {
     const p = PAT_BY[S.pat];
@@ -769,6 +774,7 @@ function buildPat() {
   $("#patBody").querySelectorAll("[data-pat]").forEach((d) => d.addEventListener("click", () => setPattern(S.pat === d.dataset.pat ? null : d.dataset.pat)));
   $("#patBody").querySelectorAll("[data-ord]").forEach((d) => d.addEventListener("click", () => { S.ord[d.dataset.ord] = !S.ord[d.dataset.ord]; buildPat(); }));
   $("#patBody").querySelectorAll("[data-hyp]").forEach((d) => d.addEventListener("click", () => openHyp(d.dataset.hyp)));
+  $("#patBody").querySelectorAll("[data-hway]").forEach((d) => d.addEventListener("click", () => { S.hw[d.dataset.hway] = S.hw[d.dataset.hway] === false; buildPat(); }));
   sizeBoxes();
 }
 function openHyp(id) {
