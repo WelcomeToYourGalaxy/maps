@@ -194,6 +194,31 @@ def coverage(cases):
 
 
 
+
+def hypotheses(h, cases):
+    """Pass the hypotheses through, with a live count of what the map holds in each one's countries.
+
+    A hypothesis is this map's own reasoning, not a case, so nothing here
+    touches the case file or the shading. The only thing computed is how many
+    cases the map actually holds in the countries a hypothesis names, which is
+    the figure that makes a thin record visible rather than asserted.
+    """
+    items = (h or {}).get('items') or []
+    if not items:
+        return {}
+    import collections as _c
+    per = _c.Counter(c['c'] for c in cases)
+    out = []
+    for it in items:
+        cs = it.get('countries') or []
+        out.append({'id': it['id'], 'kind': it.get('kind', 'gap'), 'title': it['title'],
+                    'claim': it['claim'], 'rule': it['rule'], 'conditions': it.get('conditions', ''),
+                    'documented': it.get('documented', ''), 'would_show': it.get('would_show', ''),
+                    'would_refute': it.get('would_refute', ''), 'pattern': it.get('pattern'),
+                    'countries': cs, 'held': sum(per.get(x, 0) for x in cs)})
+    return {'what': h.get('_what', ''), 'asof': h.get('_asof', ''), 'items': out}
+
+
 # Boilerplate that carries no information about which case an item names.
 _UNUSED_NOISE = set("""united states of america v vs matter the a an and in re inc ltd llc plc
 limited corporation corp company companies group holdings formerly known fka f/k/a
@@ -430,6 +455,8 @@ def main():
     for x in bks:
         x['backs'] = [k for k in x.get('backs', []) if k in known]
     data['backers'] = [x for x in bks if x['backs']]
+    _hyp = load('hypotheses.json', {})
+    data['hyp'] = hypotheses(_hyp, case_out)
     data['iso'] = load('iso3.json', {})
     data['gloss'] = load('glossary.json', {})
     import about
