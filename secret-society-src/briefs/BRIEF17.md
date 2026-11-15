@@ -1,5 +1,9 @@
 # BRIEF17 — possible patterns
 
+## Update, 15 November 2026: six more, 30 in all
+
+Gaps closed after a check of who infiltrates and where: spyware companies running hacks for governments (run), foreign state-owned companies holding ports (run), allied spy agencies using a partner's cables (run), foreign governments funding think tanks (fund), regulators' assessments written by applicants (place), foreign police offices inside diaspora associations (place). Each title names the unproved part where a proved pattern covers the rest. The owner does not want any line on the map claiming the list is complete or "every way infiltration works".
+
 ## Update, 14 November 2026 (23:30): Current / Past / Potential, and ways as drop-downs
 
 The owner renamed the three panel sections: "Going on today" is now **Current**, "Past influence" is **Past**, and the possible-pattern list is **Potential**. Each of the five ways in is its own drop-down under Potential, open by default; collapse state lives in `S.hw` (a way is open unless `S.hw[way] === false`), labels still come from `_ways`.
