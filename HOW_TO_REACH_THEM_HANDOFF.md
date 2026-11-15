@@ -530,11 +530,41 @@ loadMuni(q)            // q is the level's Wikidata QID
   → LEVSELF[q] ← u,e,p,o, and e.reg = 1
 ```
 
-It runs on the click that already resolves the level, from
-`loadLevelPins`, so it adds no round trip of its own. The merge is
-additive: a field already supplied by Wikidata or by round three is not
-overwritten, and `reg=1` records that the register was the source, which
-is rule 2 of the accuracy rules above.
+It runs on the click that already resolves the level, so it adds no
+round trip of its own. **Where the register and Wikidata disagree, the
+register wins** — it is the government's own record of itself, which is
+rule 2's precedence above — and `reg=1` records that, so the panel can
+stop calling the address unverified. Grenoble is the visible case: the
+register's `04 76 76 36 36` replaces Wikidata's `+33-4-76-76-36-36`, and
+the directory entry and email are new.
+
+Three things went wrong on the way and are worth knowing before touching
+this:
+
+1. **It hung off the office query.** `loadMuni` was called inside
+   `loadLevelPins`, after that level's Wikidata fetch, which meant it
+   never ran for a level whose offices were already cached
+   (`CHAIN_DONE`) or whose chain had been superseded (`CHAIN_GEN`). It
+   depends on nothing but the id, so it is now called from
+   `loadChainPins` for every level of the chain, before any of that.
+2. **The claim flag was set too early.** `MUNI_WANT[q]=1` ran before the
+   country check, and a chain is built a level at a time — the first
+   call for a level can arrive before `STACK[0].iso3` is filled, which
+   reads as "no register here" and leaves the flag set, so the call that
+   came with the country in hand did nothing. The flag is now claimed
+   only after the country is known to have a register.
+3. **`muniIdx` cached the answer, not the promise.** It assigned an
+   empty placeholder before its own fetch returned, so of the four
+   levels asking at once, three read the placeholder and concluded
+   France had no register. It caches the promise now. Symptom to
+   recognise: exactly one shard fetched per visit, always the country's.
+
+Each of these produced the same visible result — a French commune with
+Wikidata's details and none of the register's — and none of them threw.
+The check that catches all three is the shard list: opening a French
+commune should fetch `index.json` and **one shard per level** of the
+chain, and opening a place in a country with no register should fetch
+`index.json` and nothing else.
 
 **Adding the next country** is the same four steps and nothing in the
 HTML changes: produce `{QID: {u,e,p,o}}`, shard it by the same modulus
@@ -543,6 +573,31 @@ picks it up. Italy is next and is confirmed live at
 `indicepa.gov.it/ipa-dati/dataset/enti`. Keep the shard count at 512
 for every country — shards are keyed by QID alone, so two countries
 share a shard file happily and the loader needs no per-country logic.
+
+### Two office records that are not offices, and one row in the wrong place
+
+Found while verifying round four, both the same class of fault as §6:
+the record is real, correctly tagged upstream, and wrong here.
+
+**A sitting is not a legislature.** a small town returned "California
+State Legislature, 2027–2028 session" and "… 2025–26 session" beside
+the Legislature itself. Wikidata keeps an item per session to record
+who sat in it, and each carries the legislature's own classes, so three
+chambers appeared where there is one — one of them a session that has
+not met. `RX_SESSION` drops a label that names a session by year, by
+ordinal ("119th United States Congress") or by Roman numeral. It is
+checked against the label only, because the class is the real
+legislature's.
+
+**A town hall's telephone number under "deep canvassing".** Round
+three's level rows — the government's own address, number and register
+entry — were appended to every method, so Grenoble's directory entry
+printed under deep canvassing, an op-ed, an online petition and a party
+motion. Those happen at a door, a newspaper, a petition site and a
+party. `LEVFAM` limits the rows to the route families where contacting
+that government *is* the method: `Direct contact` and `Formal process`.
+Check after any change here by opening one office and confirming the
+rows appear under writing, ringing and posting, and nowhere else.
 
 ### The place lookup was non-deterministic, and is not now
 
