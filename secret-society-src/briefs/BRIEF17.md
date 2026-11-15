@@ -1,5 +1,11 @@
 # BRIEF17 — possible patterns
 
+## Update, 14 November 2026 (late night): big-picture items added, list ordered by reach
+
+The owner asked for possible patterns that are big-picture infiltration of the world's largest movements, not one industry or low-level examples even when widespread (mayors were his example of large-scale but low-level), and for the finished list to show the whole spectrum of types behind the most consequential shifts today.
+
+Eight were added at the top: fossil fuel producers inside the UN climate talks; the largest money managers inside central banks' rescue operations; companies given a standing place in UN agenda-setting; private donors steering the WHO; governments using their nationals at the top of UN agencies; owners of the largest tech companies inside government systems; foreign governments paying other countries' lawmakers; trafficking money reaching presidents. The list now runs from widest reach to most local, so the low-level items (gangs in public offices, cartels choosing mayors) sit at the bottom. People are named only for a public role or a case the map already carries.
+
 ## Update, 14 November 2026 (night): the layer was rewritten again from scratch
 
 The owner rejected the sixteen field-guide rundowns. His instructions, which override anything below where they conflict:
