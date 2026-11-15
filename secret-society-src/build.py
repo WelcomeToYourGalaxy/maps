@@ -215,6 +215,7 @@ def hypotheses(h, cases):
                     'claim': it['claim'], 'rule': it['rule'], 'conditions': it.get('conditions', ''),
                     'documented': it.get('documented', ''), 'would_show': it.get('would_show', ''),
                     'would_refute': it.get('would_refute', ''), 'pattern': it.get('pattern'),
+                    'story': it.get('story') or [],
                     'countries': cs, 'held': sum(per.get(x, 0) for x in cs)})
     return {'what': h.get('_what', ''), 'asof': h.get('_asof', ''), 'items': out}
 

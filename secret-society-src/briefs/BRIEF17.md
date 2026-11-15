@@ -38,6 +38,41 @@ Five fields, all mandatory, and the second is the test:
   not a pattern, it is an opinion. `would_refute` should describe a world where
   the thing is clean, not merely an absence of prosecutions.
 
+## How they are told: one continuous rundown, not labelled boxes
+
+The owner's instruction, 14 November 2026: *continuous organic rundowns written in
+captivating storytelling manner for novices, like a scary story, not categorical
+snippets.*
+
+So every item also carries **`story`**: a list of paragraphs, read as one piece,
+written for someone who has never heard of any of this. The panel renders only
+`story`. The five labelled rows it used to draw - "Why that is likely", "What makes
+it possible", "The proved cases nearest to it", "What would turn it into cases",
+"What would knock it down" - are gone from the display.
+
+The six fields above have **not** gone away. They are still mandatory, still the test
+an item has to pass before it is written, and still in the file for anyone auditing
+the layer. The change is that a reader meets their substance as prose. Each `story`
+therefore has to carry all of it, in this order and without headings:
+
+1. what is probably happening, hedged in the sentence itself;
+2. why that is likely - the measured fact or structural feature, and the proved case
+   on this map that shows the same shape;
+3. what makes it possible - how few people decide, what is not published;
+4. what would turn it into a case, and what would show it is clean. Woven into the
+   closing paragraph as plain sentences, never as two labelled fields.
+
+Write it the way the rest of the map is written: plain words, short sentences, the
+mechanism shown rather than characterised. The unease has to come from the specifics -
+how small the room is, how much money is in it, what nobody publishes - and never from
+adjectives, a rhetorical question or a one-line punch at the end. About 300 to 380
+words is the working length.
+
+**Naming inside a story.** The no-naming rule below still holds for the claim and for
+everything unproved. A `story` may name a party only where it is recounting a case this
+map has already proved, which is the same permission `documented` has always had. The
+proved case is usually the most convincing part of the rundown, so it is named plainly.
+
 ## Hard rules
 
 - **No person, company or office-holder is ever named in a possible pattern**,
