@@ -21,6 +21,7 @@ hand.
 Exits 1 if anything is stale, so it can gate a push. Run it in the same breath
 as coverage.py, every round.
 """
+import collections
 import json
 import os
 import re
@@ -48,9 +49,13 @@ def main():
     D = built_places()
     P, RD = D['P'], D['RD']
 
+    CORE_E = set(json.load(open(os.path.join(A, 'out', 'core.json'), encoding='utf-8'))['E'])
+
     def places_with(key, pred=None):
         n = 0
         for iso, p in P.items():
+            if iso not in CORE_E:
+                continue
             idx = p.get(key) or []
             if not idx:
                 continue
@@ -59,18 +64,27 @@ def main():
         return n
 
     rel = lambda *rs: sum(1 for l in net['links'] if l['relation'] in rs)
+    CC_OUT = {'acquitted', 'case dismissed', 'charge withdrawn',
+              'investigation closed', 'conviction annulled (time-barred)'}
     cases = cor['cases']
+    counted_cases = [c for c in cases if not c.get('counterparty_only')]
     rd = cor['revolving_door']
 
     # (a label, the number as about.html should state it, the regex that finds it)
     checks = [
         ('events filed', len(evg['events']),
          r'(\d+) events in \d+ countries'),
-        ('cases filed', len(cases),
+        # The row counts a case only if it is not counterparty_only, the same way the
+        # career row skips public_move, so about.html must state the COUNTED figure.
+        # Checking it against the raw length would have let the two diverge silently,
+        # which is the exact failure this script exists to catch.
+        ('cases counted', len(counted_cases),
          r'(\d+) cases reaching \d+ of the 206 places'),
-        ('alleged cases', sum(1 for c in cases if (c.get('status') or '') == 'alleged'),
+        ('cases listed but not counted', len(cases) - len(counted_cases),
+         r'A further (\d+) findings are listed'),
+        ('alleged cases', sum(1 for c in counted_cases if (c.get('status') or '') == 'alleged'),
          r'alleged; (\d+) of the \d+ cases are'),
-        ('cases the alleged share is quoted against', len(cases),
+        ('cases the alleged share is quoted against', len(counted_cases),
          r'alleged; \d+ of the (\d+) cases are'),
         ('printing ties', rel('prints its banknotes', 'prints some of its banknotes'),
          r'(\d+) printing ties, reaching \d+ of the 206 places'),
@@ -107,7 +121,26 @@ def main():
             stale.append((label, got, want))
 
     # the places figures, which need the built page's union expansion
+    # coverage.py counts a place only if it is one of the 206 in out/core.json's E list,
+    # and D.P is larger than that: it also carries 22 dependencies and territories, and
+    # Kosovo, which has its own central bank and a case on the map but is in none of the
+    # source datasets that build the 206. Intersect, or this check disagrees with
+    # coverage.py by one and there is no way to tell which is right.
+    CORE = set(json.load(open(os.path.join(A, 'out', 'core.json'), encoding='utf-8'))['E'])
+
+    def places_cc():
+        n = 0
+        for iso, p in P.items():
+            if iso not in CORE:
+                continue
+            idx = p.get('cc') or []
+            if any(not D['CC'][i].get('counterparty_only') for i in idx):
+                n += 1
+        return n
+
     place_checks = [
+        ('places with a case counted', places_cc(),
+         r'\d+ cases reaching (\d+) of the 206 places'),
         ('places with a career move counted',
          places_with('rd', lambda rs: any(not r.get('public_move') for r in rs)),
          r'they reach (\d+) of the 206 places'),
@@ -129,7 +162,58 @@ def main():
         elif got != want:
             stale.append((label, got, want))
 
-    print('checked %d figures in %s' % (len(checks) + len(place_checks), os.path.basename(path)))
+    # The completeness paragraph spells its figures out in words, and the handoff warns
+    # that exactly these go stale: round 60 found "80 of the 135" had been wrong for
+    # several rounds while the figure beside it was current. Check them too.
+    WORDNUM = {'four': 4, 'fifteen': 15, 'ninety-seven': 97, 'ninety-four': 94,
+               'eighty-eight': 88, 'eighty-nine': 89, 'ninety': 90, 'ninety-one': 91,
+               'eighty-seven': 87, 'ninety-two': 92, 'ninety-three': 93,
+               'ninety-five': 95, 'ninety-six': 96}
+    dec = collections.Counter()
+    for c in counted_cases:
+        y = re.search(r'(?:19|20)\d{2}', str(c.get('years') or ''))
+        if y:
+            dec[(int(y.group(0)) // 10) * 10] += 1
+    # Two different place counts live in about.html and both are right:
+    #   places_cc()  = holds a case RECORD                  (what coverage.py's table prints)
+    #   live_places  = coloured on the case layer, i.e. ccN > 0, which also drops the cleared
+    #                  outcomes on CC_OUT                   (what the completeness sentence means)
+    # They differ by 19. Comparing one sentence against the other figure is what made this
+    # check disagree with coverage.py at round 63.
+    one, live_places = 0, 0
+    for iso, p_ in P.items():
+        if iso not in CORE:
+            continue
+        n_ = sum(1 for i in (p_.get('cc') or [])
+                 if not D['CC'][i].get('counterparty_only')
+                 and (D['CC'][i].get('status') or '') not in CC_OUT)
+        if n_:
+            live_places += 1
+        if n_ == 1:
+            one += 1
+    word_checks = [
+        ('cases in the 1980s', dec[1980], r'([a-z\-]+) in the 1980s'),
+        ('cases in the 1990s', dec[1990], r'and ([a-z\-]+) in the 1990s'),
+        ('cases in the 2010s', dec[2010], r'against ([a-z\-]+) in the 2010s'),
+        ('countries with exactly one counted case', one,
+         r'([A-Za-z\-]+) of the \d+ countries with a counted case have exactly one'),
+        ('countries coloured on the case layer', live_places,
+         r'of the (\d+) countries with a counted case have exactly one'),
+    ]
+    for label, want, pat in word_checks:
+        m = re.search(pat, html)
+        if not m:
+            unfound.append((label, pat))
+            continue
+        raw = m.group(1)
+        got = int(raw) if raw.isdigit() else WORDNUM.get(raw.lower())
+        if got is None:
+            unfound.append((label, pat))
+        elif got != want:
+            stale.append((label, got, want))
+
+    print('checked %d figures in %s'
+          % (len(checks) + len(place_checks) + len(word_checks), os.path.basename(path)))
     if unfound:
         print('\n%d figures could not be found -- the sentence was reworded, so this check '
               'is blind to it until the pattern is updated:' % len(unfound))
