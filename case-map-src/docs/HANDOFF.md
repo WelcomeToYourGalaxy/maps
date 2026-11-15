@@ -1,6 +1,7 @@
 # Globalization Case Map: handoff for a new chat
 
-Last updated: round 30 (four more suspected patterns, 31 in all; bulk sources for foreign investment noted). Replaces every earlier handoff.
+Last updated: round 31 — the seventh ICIJ tranche (43 cases, 45 drops, 90 rows worked), the documents
+harvested once and kept, and **the mechanical screen measured and withdrawn**. Replaces every earlier handoff.
 
 ## The aim, settled 14 Nov 2026 — a defensible big picture, not a bigger map
 
@@ -21,13 +22,16 @@ read from the rendered panel on 14 Nov):
 | Kind of money | On the map | Published total | Share |
 | --- | --- | --- | --- |
 | Complaints recording harm, inside a case | 434 | 483 | 90% |
-| World Bank / IFC projects begun 2004-2013, against ICIJ's 969 | 237 | 969 | 24% |
+| World Bank / IFC projects begun 2004-2013, against ICIJ's 969 | 278 | 969 | **29%** |
 | IMF arrangements | 160 | 1,693 | 9.5% |
-| World Bank projects, all years | ~337 | 15,720 | ~2% |
+| World Bank projects, all years | ~380 | 15,720 | ~2% |
 | Treaty lawsuits | 4 | 1,332 | 0.3% |
 | Chinese state loans | 82 | 20,985 | 0.4% |
 | Foreign company projects | 9 | 20,032 | 0.04% |
 | Aid activities | 35 | 1.5 million | 1 in 42,857 |
+
+Read from the rendered About panel after round 31's merge. **The ICIJ row moved from 24% to 29%**, which
+is the row this file calls the cheapest defensible claim available.
 
 **The suspected patterns were replaced on 15 Nov 2026, all thirteen, and the standard changed
 again.** The owner ruled that none may be built from this map's own data or method, that the dry ones
@@ -43,14 +47,23 @@ data-derived ones survive below as research leads, which is what they always wer
 
 **Three facts decide what to work on, and none of them is the case count.**
 
-1. **One row can become a claim that needs no hedging, and it is close.** The ICIJ window — World
-   Bank and IFC projects begun 2004-2013 — is at 216 cases against ICIJ's 969, which is 22%.
-   Finishing the confirmed-displacement table costs about five more tranches and would let the map
-   state plainly: *this is the documented harm in World Bank lending in one decade.* That is the
-   cheapest defensible big-picture claim available and it should be finished.
+1. **One row can become a claim that needs no hedging, and it is closer.** The ICIJ window — World
+   Bank and IFC projects begun 2004-2013 — is at **278 cases against ICIJ's 969, which is 29%**, up
+   from 24% before round 31. **94 rows of the confirmed-displacement table are still open**, down
+   from 181. At round 31's rate — 90 rows worked in one round, 43 cases — that is one more round of
+   the same width, and the map could then state plainly: *this is the documented harm in World Bank
+   lending in one decade.* That is the cheapest defensible big-picture claim available and it is now
+   within one round. **Finish it.**
 2. **The lopsidedness is the real defect, not the count.** All 18 of round 19's cases are
    `contested`, 29 of 30 in round 17, and every Chinese case in four tranches rests on the Bank's
-   documents alone. **A hundred more `contested` World Bank cards make the map bigger without making
+   documents alone. Round 31 moved this a little and the movement is instructive: **5 of its 43 cases
+   are `documented`** — Raciborz in Poland on Polish press, Hade in Kosovo on an Inspection Panel
+   investigation and Prishtina Insight, Chobhar in Nepal on the Kathmandu Post and a Request for
+   Inspection, Kitwe in Zambia on the Times of Zambia, and the Pinheiros station collapse in São
+   Paulo on a state court improbity judgment. Every one came from a national newspaper, a court or a
+   complaint office, and four of the five are in countries with a free local press. Writers spent
+   almost none of their search budget: nine of fifteen rows in one batch had no outside source to
+   find at all. **A hundred more `contested` World Bank cards make the map bigger without making
    it less lopsided.** The map's harm is currently harm the lender was willing to write down, which
    is a floor and not a measure — and the rounds keep proving it from the inside: three Evaluation
    Group reviews in round 21 dropped what their own completion report recorded, including ten
@@ -204,79 +217,241 @@ These came in over one session and all of them are done unless noted.
    rounds stale. The current handoff is this file, `case-map-src/docs/HANDOFF.md`, and there should
    never again be two.
 
-## READ THIS FIRST: round 22 is finished and merged; four commits are NOT pushed
+## READ THIS FIRST: round 31 is merged, built, tested and pushed
 
-**Round 22 is done.** The three staged batches were checked by a checker each, normalised, merged,
-built and tested, and the follow-on jobs — conditions prose, whole-picture text, entity descriptions
-— were all written and checked in the same session, on purpose, because the document cache dies with
-the session. **The map stands at 1,093 cases in 129 countries**, and Benin and Timor-Leste are the
-first new countries since Burundi in round 19. Build prints 173 of 173 and the page loads headless
-with no errors.
+**The seventh ICIJ tranche is done and it is the widest round this map has run.** 90 rows worked by
+six writers with a checker each, against 36 rows and three writers in every tranche since round 17.
+**43 cases, 1 extend, 45 drops, 2 already on the map.** The map stands at **1,136 cases in 132
+countries**, and **Bhutan, Djibouti and St Vincent and the Grenadines are three new countries** —
+against one new country across rounds 16 to 22 together. **94 rows of the confirmed-displacement
+table are still open**, down from 181. Build prints 173 of 173 and the page loads headless with no
+page or console errors. Panel figures below were read from the rendered panel after the merge.
 
-**Nothing is pushed.** `add_repo` with push access was refused by the session's permission system, so
-four commits sit on a local clone: the tranche, the conditions prose, the whole text and descriptions,
-and the suspected-patterns work. The handoff's own rule applies — say so and ask the owner rather than
-leaving a commit stranded. Do not delete and re-clone to recover; the working tree holds the round.
-**The clone is also two commits behind where it started**: origin gained a merged pull request
-rebuilding the secret-society map's possible patterns, which touches no file this map uses, and the
-round was rebased onto it cleanly.
+**Round 22's four stranded commits were not lost.** This file recorded them as sitting unpushed on a
+dead clone. They are in `main`: `r26f_icij6*` and the suspected-patterns work are all in the repo.
+Nothing had to be redone.
 
-**What round 22 produced.** 48 lead rows gave **21 cases, 22 drops and 5 rows already on the map**;
-every row is annotated with `r22_outcome`, `r22_note` and `r22_case_id`, which leaves **181 rows of
-the confirmed-displacement table open**, down from 234. Yield across six tranches: 30, 21, 18, 26,
-20, 21.
+### The one thing to carry out of this round
 
-**Three findings from it that change how the next round reads documents.**
-1. **A plan figure can sit in the completion report's own results annex, one column from the
-   outcome.** Guangrun's card said 28 people; Annex 5 of the parent completion report has a
-   per-component table giving **865 persons resettled against a plan of 848**, and **ICIJ's 848 is
-   that annex's plan column, to the person**. The writer had reported those figures as absent from a
-   document the card already cited. So the standing instruction to grep the appraisal is not enough:
-   grep the completion report's own annexes too. Guizhou's 1,337 is the same shape, a projected
-   affected population for one subproject.
-2. **Conformed Loan and Project Agreements are published for projects whose completion report is
-   not.** Wuhan's L4727 agreements of 12 May 2004 carry the resettlement covenant in stronger wording
-   than the appraisal document — Project Agreement Schedule 2 paragraphs 5(b) and 6, with failure to
-   perform an event of suspension — while no completion report for P069852 exists in the archive.
-   **That reopens the cases this file lists as having no reachable report**, and it is a better
-   document than an appraisal summary for the conditions field.
-3. **Two near-nothing conditions entries rest on an untested assumption**: that a 2012-13 appraisal
-   data-sheet covenant table is the complete legal schedule. Wuhan shows the conformed agreements are
-   usually there, so fetching them for P126210 and P129431 would either confirm those two entries or
-   replace them. Small job, high value.
+**BRIEF22 told writers to drop a row on a sentence, and that instruction destroys about one real case
+in nine. It is withdrawn.** The rule was: a sentence of the form "No physical relocation of
+households is required" in a project's own resettlement plan, with nothing in the completion report
+contradicting it, is enough to drop the row without researching it.
 
-**Four rulings the owner left to Claude on 14 Nov, now applied and on the cards.**
-- **Nigeria's `displaced: 675` is off.** It counted people who moved a business rather than a home;
-  every case carrying the field counts people, households or families moved from where they lived,
-  and the Lahore card was corrected on the same ground when it held 147 removed shops. The figure and
-  the road-by-road estimates are in `displaced_note`.
-- **Moba Gorge's 1,081 and Xuancheng's 86 stay**, both taken from a demolition table with no
-  relocation verb. **Ten cards already on the map carry the field in that form, so one ruling should
-  cover all twelve** rather than splitting two off and planting the kind of invisible inconsistency
-  that forced Xining and Inner Mongolia to go the same way. **That twelve-card sweep is queued.**
-- **Xuancheng's `killed: 1` stands.** The report gives a cause tied to the works, a crane overturning
-  during the unloading of steel bars at a project road site; the test is whether a cause is stated,
-  not whether fault is attributed. The Bank's view that it was not non-compliance is on the card.
-- **Taunsa becomes an extend, not a second card.** `taunsa-barrage-basti-shaikhan-relocation` is the
-  project already on the map as `taunsa-barrage-relocation` — same loan, same completion report, same
-  160 families and about 900 people, same two villages. It surfaced as a fresh lead because the live
-  case carries no P-number, which is exactly the failure this file warns about. The checker verified
-  enough new material for an extend (revised RAP costs Rs 12.42m estimated against Rs 31.855m total,
-  the JACSES letter read in full, two Dawn reports, a WWF dolphin survey, an April 2026 eviction
-  report) and **corrected the live card: the Descon protest with the 15-person case and two arrests is
-  Dawn of 12 August 2006, not August 2007.** Writing that extend is the first queued job.
+Round 31 measured it, blind, against 57 projects whose outcome is already settled — the 12 drops this
+file names and 45 cases written in rounds 17 to 22. **It called 5 of the 45 known cases a drop, and
+caught only 4 of the 12 known drops.** The five it would have thrown away:
 
-**What is queued, in the order it is worth doing.**
-1. The Taunsa extend, with the live card's `displaced: 900` and its 2007 dating settled.
-2. The twelve-card `displaced` sweep described above.
-3. The conformed agreements for P126210 and P129431.
-4. **A sweep of rounds 17-21's 95 ICIJ cases for Project Performance Assessment Reports.** Of round
-   22's seven surviving energy projects only one had a PPAR and nobody queried for them; a PPAR is
-   field-based and states a cause where a completion report does not. On Zagtouli it gave the cause of
-   two deaths outright, and on an earlier round it reversed the sense of a case.
-5. The `lenders[0].role` audit of rounds 17, 18 and 19, which has never been run — 95 ICIJ cases
-   exist and only 46 have been audited.
-6. AidData's 793 rows, then the 181 open confirmed-displacement rows.
+- `kwabenya-landfill-expropriation` — one of only three `documented` cases on this map resting on an
+  Inspection Panel finding
+- `bukoba-airport-resettlement-arrears` — the case this file names as the weakest keep, kept
+  deliberately by the owner
+- `liuzhou-environment-management-resettlement` — a round 20 keep on the housing-demolished rule
+- `baoro-bouar-road-house-damage-car`
+- `nepal-raidp-land-donation`
+
+**It is not a matter of tuning the words.** Kwabenya's and Bukoba's completion reports carry no
+numbers anywhere next to a relocation or compensation word. Those cases exist *because* a harm is
+documented without a count of people, which is limb (b) of the forward rule, and no test built on
+counts can keep them. Adding a harm-language guard removes the five false drops and then catches
+nothing at all — 0 of 12 — because every resettlement framework recites "compensation at replacement
+cost" as boilerplate. Each of the five also carries one to four null sentences of its own, sitting in
+a framework or in one component's plan while the harm was elsewhere in the project.
+
+**Round 22's 22 drops were made under the withdrawn instruction, and its own check log records that
+the drop reasons were "read, not re-verified". Re-examining them is the first job on the queue.**
+
+### Where the compression actually came from
+
+The plan in this file said the round would be cheap because rows would be screened out without being
+read. That was wrong. The compression came from two other things, and both of them decide nothing:
+
+1. **The documents were harvested once and kept.** 1,467 files, 219 MB of text, for 190 P-numbers,
+   through the Bank's `/txt/` route. Writers made **zero** Bank fetches across all six batches. The
+   weekly API limit stopped setting the pace of the round. See `case-map-src/harvest/README.md`.
+2. **Candidate sentences were pre-extracted** into one brief per row, with the documents' paths, so a
+   writer verifies and judges instead of searching. Every writer said the document inventory was
+   worth more than everything else combined.
+
+**The briefs are in `case-map-src/briefs/`, one per open row, and they are the reason the next round
+is cheap.** The raw text is not in the repo — 220 MB is the wrong thing to put in a repository whose
+`.git` is near a gigabyte — but `harvest/manifest.json` holds every document's URL and
+`harvest/harvest.py` rebuilds the whole cache in about fifteen minutes, idempotently.
+
+### What the writers and checkers found, which is worth more than the case count
+
+**`lenders[0].role` is still the worst field on the map.** Round 22 found errors in 19 of 46 cases.
+Round 31's China checker found **a partial safeguard-policy list reported as the full list on five of
+six cards**, and on one the card asserted two policies as triggered that the appraisal's own checkbox
+table marks "No". The mechanism is now named: each report states the policy list twice, once as a
+count sentence ("It triggered five Bank safeguard policies") and once as the policies relevant to the
+section being read, and **the nearer copy goes in**. *Read the count sentence.* Error rates across the
+other batches: 2 of 8, 1 of 8, 3 of 8, 5 of 10.
+
+**A batch shipped with every Bank source URL a 404.** The South Asia writer constructed
+`documents1.worldbank.org/curated/en/docsearch/projects/<PID>`, which is not a document path. All 23
+were wrong; the real URL for every cached document was sitting in `harvest/manifest.json`. Its
+checker caught it and replaced them all. **Take source URLs from the manifest; never build one.**
+
+**Two plans of the same type and month in one folder, with opposite findings.** A card said the
+Birembo substation plan recorded no physical displacement; that plan says the land acquisition "will
+lead to the physical displacement of some of the households living in the project site". The
+"no physical displacement" sentence belongs to the Jabana thermal plant plan, the other July 2008
+plan in the same folder, distinguishable in the brief only by document id. **A brief must carry each
+plan's own subject from its cover.**
+
+**A joint assessment report attributed to the wrong half.** A Project Performance Assessment Report
+often covers several projects under one cover, and the extraction does not carry the section heading
+onto a sentence. On one row the candidate sentences came from Annex A — a different credit, approved
+eight years earlier — including "About 1,000 people were displaced", which is exactly the shape of
+sentence that becomes a `displaced` field. The writer caught it before filing. **Check which annex and
+which credit number a sentence sits under.**
+
+**Deaths moved in both directions, which is the rule working.** `killed: 5` went to 0 on the
+Abidjan-Lagos corridor: the report says "at **least** 22 accidents, including five fatalities", which
+is a floor, gives a collective cause and no cause for any individual death, and footnote 6 records
+that IDA financed only the Aboisso-Noé section of the corridor — so both tests fail separately.
+`killed: 0` went to 1 on Georgia's Igoeti-Sveneti road, where the writer had zeroed a death because a
+speeding third party caused it: the report ties it to the works ("the fatal accident on the Project
+section", an employee performing a pavement test, a driver who ignored a construction warning sign)
+and draws its own lesson about traffic safety during construction. **20 deaths are counted across 7
+cards this round.**
+
+### Three defects in the harvest itself, all found and all fixed
+
+1. **A sibling pairing that crossed a country.** The resolver carries a second P-number where one
+   operation is filed twice. A widened test matching on shared name tokens paired Albania's
+   "Education Excellence and Equity Project" with The Gambia's "Third Education Project" on the single
+   word *education*, putting Gambia's completion report, appraisal and three resettlement plans into
+   Albania's brief; it did the same to a Kenya row with a Central African Republic project and a
+   Turkey row with a Belarus one. One reached a writer and was caught mid-run. Every genuine pairing
+   shares a country, so `finalize_pnums.py` now requires it.
+2. **One file in 1,883 is not its project's.** `cache/P106956/` holds the Dominican Republic Social
+   Protection Investment Project's completion report, returned by the Bank's own API under a Ningbo
+   project number, and a sentence from it reached that brief. `harvest/cache_integrity.py` sweeps for
+   this and for near-empty extractions (one "resettlement plan" is 243 bytes of watermark and was the
+   only document in its brief). Everything else it flags is a language variant — Maroc, Cabo Verde,
+   Türkiye, West Bank and Gaza — or a genuinely multi-country programme.
+3. **Both Bank APIs answer HTTP 200 with a failure, in two shapes.** The projects API returns a JSON
+   error body when its backend search times out; the wds API returns a well-formed response with
+   `total: 0` for a project that does have documents. The second cost 45 projects their documents
+   until empty answers stopped being cached — completion reports went 135 to 169 and resettlement
+   plans 434 to 602 on the re-run. **Neither is distinguishable from an empty archive by status code.**
+
+### What the briefs still miss, from the writers who used them
+
+Four writers converged on the same list, and each item decided a case: **footnotes** (four of ten
+cases in one batch turned on one); **compensation tables dated after the closing date**, printed in
+the completion report; **counts in a table's row label** rather than a sentence; **the borrower's own
+annex**, which sometimes contradicts the Bank's main text in the same document; **the outcome
+document's own planned-versus-actual annex table**; and **sentences saying nothing happened**, which
+decided four of seven drops in one batch. Patterns for the first three are in. Two more asked for:
+a bucket for sentences limiting what the credit financed ("only", "financed by the counterpart",
+"not an associated facility"), and one for the explanation beside an unpaid count ("104 farmers were
+not harmed", "erroneously received compensation") — without it a writer gets one half of a ledger.
+
+**One claimed gap was checked and is wrong.** A writer reported that its batch's gravest finding,
+five fatalities, had no candidate sentence; the brief carried it as the sole hit under "death, with
+any cause given". Another reported the batch files missing when they were there. Treat an absence
+claim about the briefs the way this file treats any other absence claim.
+
+### Four more findings from the checkers, each of which changed an outcome
+
+**A hazard relocation hiding in a plan's own reasoning, and it decided the round's largest cut.**
+A Rio de Janeiro card rested on 83 families moved off a railway right of way. The plan's §1.4 says
+the move is recommended *"pois as mesmas estão exposta ao risco de acidentes na ferrovia"* — because
+the families are exposed to rail-accident risk. On this map's own precedent a hazard relocation is
+kept only where a document records a loss on top of the move, and there is none: 70 rehoused, 13
+took cash, no arrears, no complaint. **Nothing in the briefs looks for that clause.** A bucket on
+"exposto ao risco", "expuesto al riesgo", "flood-prone", "unsuitable for habitation" is worth adding.
+
+**A project boundary fifteen months wide.** The São Paulo Pinheiros station collapse killed seven on
+12 January 2007. The row's additional financing was approved **8 April 2008** and cannot have paid
+for the works that collapsed. The case survives because the Line 5 completion report names the Metro
+Line 4 Phase 1 Project (P051696, approved 2002) as the Bank operation that financed those works, and
+says Phase 1 "was financed under World Bank procurement guidelines" — the opposite of Line 5, whose
+civil works the Bank did not finance, which is why the Line 5 row is correctly a drop. **The lender
+role now leads with that and states the gap.** Check which operation paid before writing a date-based
+link, and note how close this came to being the Burkina airport-platform error again.
+
+**The reprint check runs per row and misses the pairing that matters.** On one row the plan sits
+under the parent's P-number and the outcome under the additional financing's, so the two never met
+inside one brief — and 80 planned against 83 resettled is exactly what the check exists to find.
+**It should run across parent, sibling and additional-financing numbers**, which the completion
+report names in plain text. A second shape it misses: a plan column printed beside an actual column
+*inside* one outcome document, which is what proves a figure is not a reprint and is also round 22's
+one-column-away fault.
+
+**An absence in a brief read as a finding.** The P105959 brief said no documents were reachable. Nine
+were listed under that number; the harvester took one, because an additional financing gets a
+**"Project Paper"** rather than an appraisal document and no pattern matched it. `harvest.py` now
+takes Project Papers. **A brief's silence is a gap in the harvest, not a fact about the archive.**
+
+Two smaller route notes. **Two cached files are double-encoded** — UTF-8 read as cp1252 — so greps on
+accented Portuguese and Spanish silently miss (`cache/P111996/RP_2011-09-01_*` and
+`cache/P096965/RP_2011-06-01_*`). And **the newer Evaluation Group review template prints no date
+anywhere** — not on the cover, not in a header or footer, no "Date Posted" line. Four checkers
+verified this independently across about twenty reviews. Those review dates on cards therefore come
+from the Bank library's own `docdt` field, which is the publisher's date rather than a filename
+inference, so they stand — but CHECK20's read-the-date-off-the-cover rule cannot be satisfied from
+the file for that template, and a card citing one should say so.
+
+### Follow-on jobs NOT run for round 31's 43 cases
+
+Deliberately batched, as this file's own plan allows, and the panel dips honestly meanwhile:
+whole-picture text, entity descriptions and condition types. **Whole text is at 96%, conditions 94%,
+company descriptions 84%.** Those three jobs for round 31's cases are the second item on the queue.
+
+## Current state (15 Nov 2026, round 31)
+
+**1,136 cases**, in 132 countries and territories. Read from the rendered About panel after the merge.
+
+| What | Filled | Share |
+| --- | --- | --- |
+| Rounded "what happened to people" paragraph (`whole`) | 1,086 of 1,136 | 96% |
+| Cases that say what the money came with (`conditions`) | 1,069 of 1,136 | 94% |
+| Lender's terms looked for and settled (not tagged `research`) | 1,053 of 1,136 | 93% |
+| Company names with a line saying what the firm is (`desc`) | 1,047 of 1,250 | 84% |
+| People with a checked `total` | 53 of 173 | 31% |
+| Cases with a documented buyer | 34 of 1,136 | 3% |
+
+The three shares that fell did so because round 31's 43 cases arrived without whole-picture text,
+entity descriptions or condition types, which is the batching decision above and not lost work.
+Settled terms **rose** from 92% to 93%.
+
+## The queue, after round 31
+
+1. **Re-examine round 22's 22 drops.** Made under the withdrawn screening instruction, never
+   re-verified. This is the first job and it is cheap: the documents are in the manifest.
+2. **Whole-picture text, entity descriptions and condition types for round 31's 43 cases.**
+3. **The remaining 94 confirmed-displacement rows**, whose briefs are already built in
+   `case-map-src/briefs/`. One round of round 31's width finishes the table and takes the ICIJ
+   coverage row to a claim that needs no hedging.
+4. **The `lenders[0].role` audit of rounds 17, 18 and 19**, still never run — 95 ICIJ cases exist and
+   only 46 have been audited. Round 31 adds 43 more and names the mechanism to check for.
+5. **AidData's 793 rows**, then the 546 untouched ICIJ possible-displacement rows.
+
+### Open for the owner, from round 31
+
+- **`sichuan-urban-development-four-cities` carries `displaced: 3262`, and three of the four places
+  the completion report gives that figure call it *affected*.** Only the outcomes section says "the
+  3,262 households that were relocated". Households that lost land and no house are inside it —
+  Panzhihua is 228 affected against 186 under house demolition. The letter of the standing rule is
+  met by the one relocation sentence, so the figure was left alone and the card now leads with the
+  report's own "Affected households" wording. The demolition rows give 2,619 households, but that is
+  this map's arithmetic and not a figure the report prints. **Changing a live figure is the owner's
+  call, not Claude's.**
+- **`moba-gorge-forest-land-compensation` carries the Wenchuan Earthquake Recovery Project's
+  project-wide totals** — 1,081 households, 3,435 people, 213,373.62 m². The Moba Gorge Dam row alone
+  is 3 households and 16 people. The note explains the scope, but a card named for Moba Gorge
+  carrying a project-wide figure may want a second look.
+- **`quy-nhon-coastal-cities-sanitation-resettlement` carries `displaced: 1247`**, which is the
+  completion report's count of *affected* households; 223 were resettled. Both are three-city totals
+  across Quy Nhon, Nha Trang and Dong Hoi and the report gives no Quy Nhon-only breakdown, so 223
+  must not simply replace 1,247 on a card named for Quy Nhon. `merge_textfix.py` cannot set a number.
+- **A separate case was found and not written**: the Limpopo National Park resettlement, about 2,000
+  families from eight villages in Massingir (Mail & Guardian, 6 April 2018). The Bank's own report
+  names **KfW** as its funder and puts it outside the credit, so it needs a KfW lender row.
 
 ## Where the suspected patterns render
 

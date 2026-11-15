@@ -1,0 +1,54 @@
+{
+ "wushan-hospital-landslide-resettlement": {
+  "_why": "Queued job 3 from round 22. The handoff recorded that this entry rested on an untested assumption — that a 2012-13 appraisal data-sheet covenant table is the complete legal schedule — and that fetching the conformed agreements would either confirm the entry or replace it. It replaces it. The conformed Project Agreement for Loan 8171-CN of 11 July 2012 carries a Section C headed Safeguards whose paragraph 1(b) is a compensation-before-works covenant, so the card's claim that the loan obliged nobody to carry out the resettlement plans was wrong. This is round 22's Wuhan finding generalising: the conformed agreements are usually published and they carry the resettlement covenant in stronger wording than the appraisal document. The agreement's date was read off the rasterised cover page, not off the API's docdt field: pdftotext renders the handwritten date field as 'Dated )n (/ ,2012'. pdftoppm at 190 dpi shows 'Dated July 11, 2012'. That is the third time round 21's rasterise remedy has recovered a date on a conformed agreement of this vintage.",
+  "edits": [
+   {
+    "field": "conditions",
+    "old": "None of the six names land acquisition or resettlement. Resettlement action plans for the Wanzhou and Wushan sites were prepared, submitted to the Bank on 19 January 2012 and found acceptable, but the covenant table does not require them to be carried out.",
+    "new": "None of the six names land acquisition or resettlement. The appraisal data sheet is not the whole of the legal schedule, though, and the conformed Project Agreement for Loan 8171-CN of 11 July 2012 carries the load-bearing part in a section of its own schedule headed \"Safeguards\". The project implementing entity \"shall implement, or shall cause the Project Counties to implement, the RAPs and the EMP, respectively, all in a manner and substance satisfactory to the Bank\". It must \"take all necessary actions to minimize to the extent possible the acquisition of land or assets of people\" and their displacement, and where acquisition or displacement is unavoidable it must \"make available to such people compensation in accordance with the RAP, before the carrying out of the works which would result in such acquisition or displacement, all in a manner satisfactory to the Bank\". It may not amend, suspend or waive the resettlement plans without the Bank's prior written concurrence. It must keep policies and procedures able to monitor and evaluate how the plans are carried out, must report to the Bank on compliance with them, including any conditions that interfere or threaten to interfere with them and the remedial measures taken, and must put into every works contract the loan finances an obligation on contractors and subcontractors to comply with the environmental management plan. Resettlement action plans for the Wanzhou and Wushan sites were prepared, submitted to the Bank on 19 January 2012 and found acceptable, and this agreement required them to be carried out and the compensation paid before the works that caused the displacement."
+   },
+   {
+    "field": "ct_note",
+    "old": "",
+    "new": "The appraisal document's six-row covenant table was taken for the complete legal schedule when this entry was first written. It is not: the conformed Project Agreement of 11 July 2012 carries the resettlement covenants, including a compensation-before-works requirement, which the data sheet does not mention."
+   }
+  ],
+  "sources_add": [
+   {
+    "title": "Official Documents - Project Agreement for Loan 8171-CN (Closing Package), Chongqing Urban Rural Integration Project II-Health",
+    "publisher": "World Bank",
+    "year": 2012,
+    "url": "https://documents1.worldbank.org/curated/en/177361468214197528/pdf/RAD705370901.pdf"
+   },
+   {
+    "title": "Official Documents - Loan Agreement for Loan 8171-CN (Closing Package), Chongqing Urban Rural Integration Project II-Health",
+    "publisher": "World Bank",
+    "year": 2012,
+    "url": "https://documents1.worldbank.org/curated/en/842111468242401243/pdf/RAD1199402017.pdf"
+   }
+  ]
+ },
+ "xuancheng-industry-zone-house-demolition": {
+  "_why": "The other half of queued job 3. Here the conformed agreements are NOT published: a qterm title search returns only a cancellation and amendment letter. So the appraisal data-sheet table stays the only published source for this project's covenants, and after the Wushan correction above the card must say that rather than leave the reader to assume the table is complete. What the amendment letter does carry is recorded, because it is the only instrument in the archive.",
+  "edits": [
+   {
+    "field": "conditions",
+    "old": "The completion report states that \"All the legal covenants were complied with on time.\"",
+    "new": "The completion report states that \"All the legal covenants were complied with on time.\" The conformed Loan and Project Agreements for this loan are not in the Bank's archive, under the project's own number or by a title search, so the appraisal data sheet is the only published source for its covenants — and on the Wushan precedent, where the conformed Project Agreement turned out to carry resettlement covenants the data sheet never mentioned, that is not the same thing as the complete legal schedule. The one instrument that is published is a cancellation and amendment letter of 26 January 2017 for Loan 8270-CN. It refers to a Loan Agreement of 16 August 2013, cancels US$60 million as of 1 September 2016, raises the share of works expenditure the loan finances from 61 per cent to 100 per cent, reallocates the proceeds between works, goods and consultants' services, and redefines the project area as about 14.6 square kilometres inside Phase 2 of the development zone, bounded by four named roads, plus the Changqiao wastewater treatment plant site. It records a letter from Xuancheng's mayor of 15 November 2016 \"setting forth certain commitments on behalf of Xuancheng Municipality\" without giving what those commitments were. It states that every other term of the Loan Agreement remains in full force."
+   },
+   {
+    "field": "ct_note",
+    "old": "",
+    "new": "The conformed Loan and Project Agreements are not published for this project, so the covenants here come from the appraisal document's data-sheet table alone. Only a cancellation and amendment letter of 26 January 2017 is in the archive, and it does not reproduce the covenant schedule."
+   }
+  ],
+  "sources_add": [
+   {
+    "title": "Official Documents - Amendment to Loan Agreement for Loan 8270-CN, Cancellation and Amendment, Anhui Xuancheng Infrastructure for Industrial Relocation",
+    "publisher": "World Bank",
+    "year": 2017,
+    "url": "https://documents1.worldbank.org/curated/en/788431487861145949/pdf/ITK171540-201701230943.pdf"
+   }
+  ]
+ }
+}
