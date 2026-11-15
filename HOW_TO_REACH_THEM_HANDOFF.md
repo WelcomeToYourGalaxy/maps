@@ -409,8 +409,8 @@ the way to reach them both change at each step:
 | --- | --- | --- | --- |
 | National | 198 | Wikidata `P194`/`P527` + front-page crawl | done |
 | Sub-national legislatures | ~3,800 ADM1 | `P194` by jurisdiction id | done |
-| County-level councils | ~48,000 | came with round two: 1,558 bodies, 330 with an address | done |
-| Municipalities | ~250,000–400,000 | round four started it: national registers, one country at a time, sharded on disk | 3–5 |
+| County-level councils | ~48,000 | `P194` on territories and on governments; rebuilt and re-verified in round eleven | done — the structured source is exhausted |
+| Municipalities | ~250,000–400,000 | national registers, one country at a time, sharded on disk | 8–11 |
 | Below the municipality | millions | not proposed | — |
 
 So four to six more rounds reaches a complete picture down to the
@@ -774,6 +774,50 @@ website, 2 a telephone and 1 an email** — about 2%. The contacts in OSM
 are on the town hall object, not the boundary, so Tier B needs a
 spatial join as well as a planet-sized download. Do not plan a round
 around it without first proving the extract is obtainable.
+
+### Round eleven: the county level, finished to what the data holds
+
+**County-level councils are done**, in the sense that the structured
+source is exhausted: `P194` is the property that links a jurisdiction to
+its legislature, and it exists on **7,004 items**, of which 5,091 are
+administrative units. `SUBLEG` already held 5,159 entries. There was no
+coverage left to win — what was left was that a quarter of it was wrong.
+
+**1,408 of those entries were not councils.** The World Intellectual
+Property Organization was recorded as a jurisdiction's legislature. So
+were bare place names — "Badagry", "Lokoja", "Okene" — which the panel
+printed as "the body that makes this place's own law", pointing a reader
+at a place rather than at anything they could write to. Asking Wikidata
+what those records are classed as returned **restaurants, people, law
+firms, elections and massacres**: the pull behind them had asked for
+anything carrying `P194` and kept whatever came back.
+
+Rebuilt from two queries that ask what a thing is before taking its
+body: an administrative territorial entity with a legislative body
+(`P31/P279* Q56061`), or a government with one (`Q7188`) — that second
+one matters, because a county's council is often hung off the *county
+government* item rather than the territory. Result: **5,121 units,
+4,622 entries worth keeping, 2,133 with a website.**
+
+**The verification was wrong in the other direction.** 403 is a live
+site refusing an automated client, not a dead link, and the old pass
+counted it dead — `legislature.ca.gov`, `consiglioveneto.it` and
+`lisboa.pt` were all being shown to readers as stale while being
+perfectly reachable in a browser. Under the right rule (401, 403, 405,
+406 and 429 mean the site is there), **1,639 of 2,133 verify live**
+rather than 1,368. Keep that rule in any future link check: only 404
+and 410 are dead, and a network failure in this sandbox is not evidence
+of anything.
+
+The gain is not only tidying. Brazil has no national register and no
+email on any municipality in Wikidata, and it picks up its municipal
+chambers here: Itu now shows the Câmara de Vereadores da Estância
+Turística de Itu, with a verified address, at the level a reader lands
+on.
+
+What this leaves for the county level: nothing structured. More would
+mean per-country registers, which is the same wall the municipal rounds
+hit.
 
 ### Round ten: what it looks like on a phone
 
