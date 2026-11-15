@@ -49,7 +49,7 @@ A second session ran the test the first one had not: whether the *world* looks t
 
 **3. Rounds need to be bigger.** The owner does not want to wait sixteen rounds for the rebalance. `briefs/BRIEF16.md` is the method: work **source-dense enumerations** - one document carrying twenty to forty named, adjudicated cases - instead of one case at a time, which is what made the old rounds cost four to six searches and a source check per case. The richest seam for the rebalance is the FCPA corpus year by year, because under ruling 12 a state-owned enterprise reached through its own officers is `tgt: company`, which is most of what the FCPA prosecutes. Then multilateral debarment decisions, the earlier years of registers already benchmarked, port-insider police reporting and bank-insider typologies. With four to six agents, a search ration stated in each prompt, mechanical validation before any reading, and batch source-checking against the single document, a round should land 60 to 80 cases rather than 26.
 
-**4. Hypotheses are now part of the map.** Six are in `data/hypotheses.json`, shown in the patterns box under "Hypotheses · not cases" with a dashed rule, and `briefs/BRIEF17.md` holds the rules. The short version: a hypothesis is a statement about the record derived from a rule the reader can re-run, never a claim about a person; it names countries, kinds of body and kinds of decision, and no one else; it is counted nowhere - not in the shading, the coverage figure, the benchmarks or any filter; and every one carries `rule`, `conditions`, `documented`, `would_show` and `would_refute`, the last of which is what keeps the set from drifting into conspiracy. The four kinds are `gap` (conditions severe, record thin), `shortfall` (a measured deficit in the map, stated as a claim about the world), `sealed` (established and the subject withheld by the state - the nine anonymised benchmark items) and `pattern` (a documented pattern somewhere it has no case, carrying a chip to that pattern).
+**4. Possible patterns are now part of the map.** Nine are in `data/hypotheses.json`, shown under the patterns list as "Possible patterns · nothing proved yet" with a dashed rule, and `briefs/BRIEF17.md` holds the test. This replaced a first attempt, built the same day, which the owner judged on sight: *the hypotheses you added are more like commentary of this maps data. what i meant by hypotheses is more patterns like those added already but just ones that are potentials. this will pair with the list of actual patterns with convictions/proof. keeps the map spicy/exciting, novel frontier stuff.* The lesson generalises past this layer: **analysis of the map's own coverage goes in the handoff and the project docs, never on the map.** A possible pattern is a claim about the world. Every one carries `claim` (hedged in the sentence itself, so the hedge survives being quoted), `rule` (why it is likely - a mechanism the map already proves one step away, or a structural feature of how the decision is taken; "it would be surprising if this were clean" does not qualify), `conditions`, `documented` (the proved cases nearest to it, named - or an honest zero, as with ship registries), `would_show` and `would_refute`. No person or company is ever named in a claim, only in `documented`. They are counted nowhere. Each pairs with an existing pattern id, and that pairing is the point. The three retired commentary items survive in `claude/infiltration-map-how-complete-14-nov.md`.
 
 ## Outcome maintenance: the queue, and why it is now a standing job (14 November 2026)
 
@@ -120,3 +120,20 @@ Strict no fabrication with sources; plain prose for novices, no purple prose or 
 
 ## Commit routine
 `git checkout -- secret-society-src/__pycache__`, add secret-society-src and the HTML, commit as Claude <noreply@anthropic.com> with the session trailer, `git fetch && git rebase origin/main && git push` (the wire Action commits often).
+
+## The default basemap is Jurassic (14 November 2026)
+
+`app_template.html` opens on `satellite`, labelled Jurassic in the basemap list, in both places that set it: `let curBase = "satellite"` and `CulpritsBasemaps.create("map", { initial: "satellite"`. `PAL.satellite` already held the earthy green marker set, so markers followed without a palette change. If the default is ever moved again, both lines have to move together or the first paint uses one palette and the control reports another.
+
+## The possible patterns, and the seams they open (14 November 2026)
+
+The nine are not a research queue - BRIEF17 is explicit about that - but six of them sit on seams where cases are likely to exist and have not been looked for:
+
+- **data_centre_power** - United States state utility commission dockets and inspector-general reports on interconnection and tariff decisions. The proved Ohio pair is the template.
+- **scam_compound_zones** - national prosecutions in Cambodia, Laos, Myanmar, the Philippines and Thailand, plus United States and United Kingdom designations on compound operators, which increasingly name officials.
+- **gold_refiners_in_banks** - Treasury and OFAC designations, and central bank gold purchase audits in producing states.
+- **carbon_offsets_forestry** - registry cancellations with findings attached, and national forestry audits.
+- **medicines_approval** - Securities and Exchange Commission orders read for the approval end rather than the sales end; every proved case on the map is a sale.
+- **distant_water_fleets** - observer programmes and licensing offices, not quotas; the quota end is already proved by Fishrot.
+
+**flag_registries** is deliberately at zero cases and stated from structure alone. If a round closes it with a real case, that is the strongest single confirmation this layer can get.
