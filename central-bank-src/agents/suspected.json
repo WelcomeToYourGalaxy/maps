@@ -1,0 +1,1499 @@
+{
+ "suspected": [
+  {
+   "id": "private-dollar-issuers-holding-government",
+   "title": "Private dollar issuers holding government debt",
+   "kind": "chain",
+   "summary": "Two private companies, Tether and Circle, issue most of the dollar tokens used in crypto markets, and they back those tokens mainly by buying short-term US government debt. The Bank for International Settlements counted dollar stablecoin assets above 270 billion dollars by December 2025, and about 35 billion dollars of US Treasury bills bought during 2025, which its researchers say is comparable to the largest US government money market funds. Tether's own quarterly attestation for the second quarter of 2025 claimed more than 127 billion dollars of US Treasury exposure. A BIS working paper by Rashad Ahmed and Inaki Aldasoro estimates that a 3.5 billion dollar inflow pushes the three-month Treasury bill yield down by roughly 4 to 5 basis points within two weeks, and that the effect runs larger during redemption episodes. The BIS Annual Economic Report 2025 says over 99 percent of stablecoins are dollar-denominated and that they fail its tests of singleness, elasticity and integrity. An IMF departmental paper, Understanding Stablecoins, published 2 December 2025, warns the same instruments can speed currency substitution and let money cross borders around capital controls, which would cut into what a central bank can steer.",
+   "countries": [
+    {
+     "iso3": "USA",
+     "role": "debt issuer and host regulator",
+     "note": "Dollar tokens are backed by US Treasury bills, and the GENIUS Act of 2025 (P.L. 119-27) created the first federal licensing regime for payment stablecoin issuers."
+    },
+    {
+     "iso3": "CHE",
+     "role": "official analysis",
+     "note": "The BIS in Basel produced both the working-paper estimate of the yield effect and the 2025 Annual Economic Report chapter judging stablecoins unfit as the mainstay of the monetary system."
+    }
+   ],
+   "role_info": {
+    "debt issuer and host regulator": "Dollar tokens are backed by US Treasury bills, and the GENIUS Act of 2025 (P.L. 119-27) created the first federal licensing regime for payment stablecoin issuers.",
+    "official analysis": "The BIS in Basel produced both the working-paper estimate of the yield effect and the 2025 Annual Economic Report chapter judging stablecoins unfit as the mainstay of the monetary system."
+   },
+   "established": "Dollar stablecoin assets exceeded 270 billion dollars by December 2025 and the sector bought roughly 35 billion dollars of Treasury bills in 2025 (BIS). The BIS estimate of the price effect on short-dated Treasury bills is published and peer-reviewed within the BIS working paper series. Over 99 percent of stablecoins are dollar-denominated (BIS Annual Economic Report 2025). Tether itself published a figure above 127 billion dollars of Treasury exposure for Q2 2025. The IMF has stated in a departmental paper that dollar stablecoins may accelerate currency substitution and weaken control over capital flows, and that the risk is larger where inflation is high and confidence in the domestic monetary framework is low. The US enacted a federal stablecoin statute in 2025.",
+   "not_established": "That any central bank has actually lost monetary control to stablecoins. The IMF paper argues in terms of regions and country characteristics, not named countries, and publishes no country-level estimate of stablecoin-driven dollarisation; the yield result is an estimate from one BIS working paper by two authors, Ahmed and Aldasoro, using token-blockchain level flow data, and is not an official BIS position. Tether's reserve figures come from attestations commissioned by Tether, not from an audit, so the composition and custody of the Treasury holdings rest on the issuer's own disclosure. Nobody has shown where those bills sit in the US primary-dealer chain, which would determine what a large redemption wave does to the Treasury bill market. The adoption side is the weakest link: there is no public, country-by-country measurement of stablecoin balances held by residents, so the substitution claim cannot be tested.",
+   "test": "Two obtainable artefacts. First, a full financial-statement audit of Tether and Circle reserves, with CUSIP-level Treasury holdings and named custodians, which the GENIUS Act's reporting and examination regime should begin to force out of US-licensed issuers. Second, a central bank publishing resident stablecoin holdings as a line in its monetary statistics or balance-of-payments reporting, alongside deposits, for one high-inflation economy; that single series would turn currency substitution from an inference into a measurement.",
+   "confirmed_by": [
+    {
+     "title": "BIS Working Paper 1270, Stablecoins and safe asset prices (Ahmed and Aldasoro)",
+     "url": "https://www.bis.org/publ/work1270.htm"
+    },
+    {
+     "title": "BIS Annual Economic Report 2025, Chapter III: The next-generation monetary and financial system",
+     "url": "https://www.bis.org/publ/arpdf/ar2025e3.htm"
+    },
+    {
+     "title": "IMF departmental paper, Understanding Stablecoins (2 December 2025)",
+     "url": "https://www.imf.org/en/publications/departmental-papers/issues/2025/12/02/understanding-stablecoins-570602"
+    },
+    {
+     "title": "Congressional Research Service, Stablecoin Legislation: An Overview of the GENIUS Act of 2025 (P.L. 119-27)",
+     "url": "https://www.everycrsreport.com/files/2026-08-20_IN12553_0b329134f6be0cc12f78017358552f4053d52c5e.html"
+    },
+    {
+     "title": "Tether company statement on Q2 2025 attestation (issuer's own claim)",
+     "url": "https://tether.io/news/tether-issues-20b-in-usdt-ytd-becomes-one-of-largest-u-s-debt-holders-with-127b-in-treasuries-net-profit-4-9b-in-q2-2025-attestation-report"
+    },
+    {
+     "title": "The Block report on the IMF stablecoin paper",
+     "url": "https://www.theblock.co/news/regulation/2025-12-04-imf-warns-stablecoins-may-accelerate-currency-substitution-381467"
+    }
+   ],
+   "parties": [
+    {
+     "name": "Tether Holdings (USDT issuer)",
+     "hq_city": "not established in these sources",
+     "hq_iso3": "",
+     "what_it_does": "Issues the largest dollar stablecoin and reports its reserve composition through quarterly attestations rather than audited public filings."
+    },
+    {
+     "name": "Circle Internet Group (USDC issuer)",
+     "hq_city": "Boston",
+     "hq_iso3": "USA",
+     "what_it_does": "Issues the second-largest dollar stablecoin; named with Tether by the BIS as where growth is concentrated."
+    },
+    {
+     "name": "Bank for International Settlements",
+     "hq_city": "Basel",
+     "hq_iso3": "CHE",
+     "what_it_does": "Published the yield-impact estimate and the assessment that stablecoins can at best play a subsidiary role in the monetary system."
+    },
+    {
+     "name": "International Monetary Fund",
+     "hq_city": "Washington",
+     "hq_iso3": "USA",
+     "what_it_does": "Published Understanding Stablecoins (2 December 2025), warning of currency substitution and capital-control bypass."
+    }
+   ],
+   "body": "Two private companies, Tether and Circle, issue most of the dollar tokens used in crypto markets and back them with short-term US government debt. Their customers buying in or cashing out therefore pushes on the rate the US government pays to borrow, and so on what banks charge everyone else. The tokens also let people in high-inflation countries hold dollars beyond their own central bank's controls on money leaving the country, and nobody counts how many do.\n\nThe Bank for International Settlements counted dollar stablecoin assets above 270 billion dollars by December 2025 and about 35 billion dollars of US Treasury bills bought during 2025. Tether's own attestation for the second quarter of 2025 claimed more than 127 billion dollars of US Treasury exposure. A BIS working paper by Rashad Ahmed and Inaki Aldasoro estimates that a 3.5 billion dollar inflow pushes the three-month Treasury bill yield down by roughly 4 to 5 basis points, a basis point being one hundredth of a percentage point, within two weeks. An IMF departmental paper, Understanding Stablecoins, published 2 December 2025, says the instruments can speed currency substitution and move money around capital controls.\n\nNo central bank has been shown to have lost monetary control to stablecoins. The IMF paper argues in terms of regions and country characteristics, not named countries, and gives no country-level estimate of stablecoin-driven dollarisation. The yield result is an estimate from one working paper by two authors, Ahmed and Aldasoro, and is not an official BIS position. Tether's reserve figures come from attestations it commissioned, not an audit, so composition and custody rest on the issuer's own disclosure. Nobody has shown where the bills sit among the banks that trade Treasury debt directly with the government, which decides what a large wave of cashing out does to that market. There is no public, country-by-country measurement of resident stablecoin balances, so the substitution claim cannot be tested.\n\nTwo records would answer it: a full audit of Tether and Circle reserves naming each bond and custodian, which the GENIUS Act's examination regime should force out of US-licensed issuers, and one high-inflation country publishing resident stablecoin holdings in its monetary statistics."
+  },
+  {
+   "id": "buyout-funds-taking-over-the",
+   "title": "Buyout funds taking over the companies that make cash",
+   "kind": "chain",
+   "summary": "The firms that print banknotes and supply the inks and threads that make them hard to copy are being bought by private owners who do not have to publish much. De La Rue, which says it supplies finished banknotes, polymer and security features for more than 69 national currencies and passports for 40 countries, and which bought the Bank of England's own Debden printing works in 2003, was taken over by the US private investment firm Atlas Holdings for 263 million pounds; the deal completed on 3 July 2025 and the company left the London Stock Exchange. Before that, in October 2024, De La Rue agreed to sell its authentication business to the US-listed Crane NXT for 300 million pounds. The ink side of the chain is also privately held: SICPA, a family-owned Swiss company that makes security inks for currencies and documents, was found corporately liable by the Swiss Office of the Attorney General in April 2023 for failing to prevent its staff bribing foreign officials in the Colombian and Venezuelan markets between 2009 and 2011, and paid 81 million Swiss francs; it had paid 135 million francs to Brazilian authorities in 2021. The result is that several governments' note supply now sits inside companies that file no listed-company accounts.",
+   "countries": [
+    {
+     "iso3": "GBR",
+     "role": "customer and former home market",
+     "note": "The Bank of England's notes are printed at Debden by De La Rue, which has been owned by a US private investment firm since July 2025 and no longer reports as a listed company."
+    },
+    {
+     "iso3": "USA",
+     "role": "new owners",
+     "note": "Atlas Holdings bought De La Rue; Crane NXT bought its authentication division for 300 million pounds."
+    },
+    {
+     "iso3": "CHE",
+     "role": "ink supplier's home",
+     "note": "SICPA, family-owned and unlisted, supplies security inks for banknotes and was held corporately liable in Switzerland in 2023 over bribery by an employee."
+    }
+   ],
+   "role_info": {
+    "customer and former home market": "The Bank of England's notes are printed at Debden by De La Rue, which has been owned by a US private investment firm since July 2025 and no longer reports as a listed company.",
+    "new owners": "Atlas Holdings bought De La Rue; Crane NXT bought its authentication division for 300 million pounds.",
+    "ink supplier's home": "SICPA, family-owned and unlisted, supplies security inks for banknotes and was held corporately liable in Switzerland in 2023 over bribery by an employee."
+   },
+   "established": "The ownership changes and the prices are documented: Atlas Holdings' 263 million pound acquisition of De La Rue completed 3 July 2025 with delisting, and the 300 million pound sale of the authentication arm to Crane NXT was agreed in October 2024. De La Rue's own description of its reach (69-plus currencies, passports for 40 countries, purchase of the Bank of England's Debden operation in 2003) is on the public record. SICPA's corporate liability finding, the 81 million Swiss franc total and the 135 million franc Brazilian settlement were announced by the Swiss Office of the Attorney General and reported by SWI swissinfo.ch, and SICPA published the prosecutor's side letter on its own site.",
+   "not_established": "That private ownership changes what central banks pay, what they get, or how securely note supply continues. No regulator or audit office has published a review of the consequences of the De La Rue sale for the central banks that depend on it; the UK government has published no national-security assessment of it that these sources show. The number of central banks with a single-supplier dependency is not published anywhere, because note contracts are almost always confidential. Market-share figures for security ink do not exist in public form: the SICPA reporting does not give one. And there is no evidence linking the ownership change to any conduct problem; the SICPA case concerns 2009 to 2011 employee conduct, not its owners' structure.",
+   "test": "The procurement record. A freedom-of-information release of a central bank's banknote supply contract and tender evaluation (the Bank of England's Debden arrangement is the cleanest target, since the works were sold by the Bank itself), showing price, term, single-source justification and change-of-control clauses, before and after July 2025. Alongside it, the UK government's Investment Security Unit record of whether the Atlas acquisition was called in for review. Those two documents would show whether anyone in government examined the dependency, and what the ownership change cost.",
+   "confirmed_by": [
+    {
+     "title": "De La Rue (company history, Atlas Holdings takeover, Crane NXT sale, Debden, scale)",
+     "url": "https://en.wikipedia.org/wiki/De_La_Rue"
+    },
+    {
+     "title": "King & Spalding: representation of Atlas in the ~263 million pound acquisition of De La Rue",
+     "url": "https://www.kslaw.com/about/news/king-spalding-represents-atlas-in-its-approximately-263-million-acquisition-of-de-la-rue"
+    },
+    {
+     "title": "SecuringIndustry: private equity deal agrees takeover of De La Rue",
+     "url": "https://securingindustry.com/security-documents-and-it/private-equity-deal-agrees-takeover-of-de-la-rue/s110/a16934"
+    },
+    {
+     "title": "SWI swissinfo.ch: Swiss security firm SICPA convicted of corruption (27 April 2023)",
+     "url": "https://www.swissinfo.ch/eng/business/swiss-security-firm-sicpa-convicted-of-corruption/48468054"
+    },
+    {
+     "title": "Office of the Attorney General side letter on the SICPA conviction, published by SICPA",
+     "url": "https://www.sicpa.com/sites/default/files/2023-06/OAG%20Side-letter%20reSICPA%20conviction%2027Ap2023.pdf"
+    }
+   ],
+   "parties": [
+    {
+     "name": "De La Rue plc",
+     "hq_city": "Basingstoke",
+     "hq_iso3": "GBR",
+     "what_it_does": "Prints banknotes and passports for dozens of countries; taken private by Atlas Holdings on 3 July 2025."
+    },
+    {
+     "name": "Atlas Holdings",
+     "hq_city": "Greenwich, Connecticut",
+     "hq_iso3": "USA",
+     "what_it_does": "Private investment firm that acquired De La Rue for 263 million pounds."
+    },
+    {
+     "name": "Crane NXT",
+     "hq_city": "Washington",
+     "hq_iso3": "USA",
+     "what_it_does": "Bought De La Rue's authentication business for 300 million pounds under an October 2024 agreement."
+    },
+    {
+     "name": "SICPA",
+     "hq_city": "Prilly, Vaud",
+     "hq_iso3": "CHE",
+     "what_it_does": "Family-owned maker of security inks for banknotes and documents; paid 81 million Swiss francs after the 2023 Swiss finding and 135 million francs to Brazil in 2021."
+    }
+   ],
+   "body": "A government that cannot get banknotes printed cannot replace worn cash or meet a rush to withdraw it. The companies that print notes are passing to private owners, and a private owner files no listed-company accounts, so what a central bank pays and what it is promised stop being public.\n\nDe La Rue says it supplies finished banknotes, polymer and security features for more than 69 national currencies and passports for 40 countries, and it bought the Bank of England's own Debden printing works in 2003. The US private investment firm Atlas Holdings took it over for 263 million pounds; the deal completed on 3 July 2025 and the company left the London Stock Exchange. In October 2024 De La Rue had agreed to sell its authentication business to the US-listed Crane NXT for 300 million pounds.\n\nNothing documented connects that change of ownership to any effect. No regulator or audit office has published a review of what the sale means for the central banks that depend on De La Rue, and these sources show no UK government national-security assessment. How many central banks rely on a single supplier is published nowhere, because note contracts are almost always confidential, and public market-share figures for security ink do not exist. The nearest conduct case in the chain belongs to another company and another period: SICPA, a family-owned Swiss maker of security inks, was found corporately liable by the Swiss Office of the Attorney General in April 2023 for failing to prevent staff bribing foreign officials in the Colombian and Venezuelan markets between 2009 and 2011, and paid 81 million Swiss francs, having paid 135 million francs to Brazilian authorities in 2021. SICPA did not change hands, and nothing links that case to Atlas or Crane NXT.\n\nThe procurement record would answer it: a freedom-of-information release of a central bank's banknote contract and tender evaluation, showing price, term and change-of-control clauses before and after July 2025, and the UK Investment Security Unit's record of whether the Atlas acquisition was called in for review."
+  },
+  {
+   "id": "central-banks-run-as-state",
+   "title": "Central banks run as state investment funds",
+   "kind": "chain",
+   "summary": "Some central banks have stopped being only guardians of reserves and started acting like state investment funds, deciding where public money is put to work. In March and April 2020 the Saudi central bank, SAMA, moved 150 billion riyals, about 40 billion dollars, of foreign-currency reserves to the Public Investment Fund, the kingdom's sovereign wealth fund; Finance Minister Mohammed Al-Jadaan said the transfer helped cause the fastest fall in net foreign assets in two decades and that it followed a comprehensive study. In Hong Kong the Monetary Authority's Exchange Fund held 4,161.2 billion Hong Kong dollars at the end of 2025, of which a Long-Term Growth Portfolio of 578.4 billion included 417.1 billion in private equity and 161.3 billion in real assets, with the benchmark set by the Financial Secretary in consultation with an advisory committee and tactical decisions delegated to the Authority. In Nigeria the central bank took the opposite route and ran lending programmes itself: Governor Olayemi Cardoso told the Chartered Institute of Bankers in November 2023 that the bank had pumped over 10 trillion naira into the economy through quasi-fiscal interventions, that this 'took it into areas where it had limited expertise', and that it would stop. In each case the body that sets the price of money is also choosing assets, companies or sectors.",
+   "countries": [
+    {
+     "iso3": "SAU",
+     "role": "reserves moved to the wealth fund",
+     "note": "SAMA transferred about 40 billion dollars of reserves to the Public Investment Fund in March and April 2020, which the finance minister confirmed through the Saudi Press Agency."
+    },
+    {
+     "iso3": "HKG",
+     "role": "monetary authority as private-equity investor",
+     "note": "The HKMA's Exchange Fund reported 417.1 billion Hong Kong dollars of private equity and 161.3 billion of real assets at end-2025, with the investment benchmark set by the Financial Secretary."
+    },
+    {
+     "iso3": "NGA",
+     "role": "central bank as development lender",
+     "note": "The CBN ran over 10 trillion naira of development-finance and intervention schemes, which its own governor said in November 2023 had distracted it from its mandate and would be discontinued."
+    }
+   ],
+   "role_info": {
+    "reserves moved to the wealth fund": "SAMA transferred about 40 billion dollars of reserves to the Public Investment Fund in March and April 2020, which the finance minister confirmed through the Saudi Press Agency.",
+    "monetary authority as private-equity investor": "The HKMA's Exchange Fund reported 417.1 billion Hong Kong dollars of private equity and 161.3 billion of real assets at end-2025, with the investment benchmark set by the Financial Secretary.",
+    "central bank as development lender": "The CBN ran over 10 trillion naira of development-finance and intervention schemes, which its own governor said in November 2023 had distracted it from its mandate and would be discontinued."
+   },
+   "established": "The Saudi transfer amount, timing and the finance minister's confirmation are documented (reported by Bloomberg's Vivian Nereim, carried by Al Jazeera, with Al-Jadaan's statement in the Saudi Press Agency). The HKMA's portfolio figures and the division of decision rights between the Financial Secretary, the Exchange Fund Advisory Committee and the Authority are published in the HKMA's own 2025 annual report chapter on reserves management. Cardoso's statements on the scale and withdrawal of CBN quasi-fiscal activity are on the record from his November 2023 keynote, including a 629 billion naira Anchor Borrowers disbursement in 2022 and a 1 trillion naira manufacturers' facility from April 2020.",
+   "not_established": "Whether any of this has changed monetary policy decisions. Nobody has shown a case where a central bank softened or tightened policy to protect the value of assets it or a related state fund holds; that is the claim the pattern would need and it is unproven. The Saudi case has no published governance trail: there is no account of who authorised the transfer inside SAMA, on what terms, or whether it is reversible, and the reporting rests on one Bloomberg story plus a short ministerial statement. For Hong Kong, the Exchange Fund's private-equity holdings are disclosed in aggregate only, with no fund managers, vintages or counterparties named, so overlap with institutions the HKMA regulates cannot be checked. For Nigeria, the loan-level record of the intervention schemes, including who received the money and what was repaid, has not been published.",
+   "test": "A reserve-transfer paper trail and a holdings list. For Saudi Arabia: SAMA board minutes or the government decision authorising the 150 billion riyal transfer, plus the accounting treatment in SAMA's audited statements. For Hong Kong: the Exchange Fund's Long-Term Growth Portfolio schedule of fund commitments and co-investments by manager, the kind of list US public pension funds publish routinely. Either document would show whether the investing arm and the regulating arm touch the same counterparties.",
+   "confirmed_by": [
+    {
+     "title": "Al Jazeera (Bloomberg-sourced): Saudi Arabia moved 40bn dollars in reserves to sovereign fund",
+     "url": "https://www.aljazeera.com/economy/2020/5/29/saudi-arabia-moved-40bn-in-reserves-to-sovereign-fund"
+    },
+    {
+     "title": "HKMA Annual Report 2025, chapter 17: Reserves Management",
+     "url": "https://www.hkma.gov.hk/media/eng/publication-and-research/annual-report/2025/17_Reserves_Management.pdf"
+    },
+    {
+     "title": "Nairametrics: CBN will discontinue quasi-fiscal interventions (Cardoso keynote, 25 November 2023)",
+     "url": "https://nairametrics.com/2023/11/25/cbn-will-discontinue-quasi-fiscal-interventions-in-the-nigerian-economy/"
+    }
+   ],
+   "parties": [
+    {
+     "name": "Saudi Central Bank (SAMA)",
+     "hq_city": "Riyadh",
+     "hq_iso3": "SAU",
+     "what_it_does": "Holds Saudi reserves; transferred 150 billion riyals to the Public Investment Fund in spring 2020."
+    },
+    {
+     "name": "Public Investment Fund",
+     "hq_city": "Riyadh",
+     "hq_iso3": "SAU",
+     "what_it_does": "Saudi sovereign wealth fund; received the reserve transfer for overseas investment."
+    },
+    {
+     "name": "Hong Kong Monetary Authority",
+     "hq_city": "Hong Kong",
+     "hq_iso3": "HKG",
+     "what_it_does": "Manages the Exchange Fund, including a long-term portfolio holding private equity and real assets, under a benchmark set by the Financial Secretary."
+    },
+    {
+     "name": "Central Bank of Nigeria",
+     "hq_city": "Abuja",
+     "hq_iso3": "NGA",
+     "what_it_does": "Ran intervention lending in agriculture, power and manufacturing; its governor put the total above 10 trillion naira and announced withdrawal."
+    }
+   ],
+   "body": "A central bank sets the price of borrowing for everyone: mortgages, business loans, the interest on government debt. Some have also become investors, putting national reserves into companies and property. The money at risk is the buffer that pays for imports and defends the currency, and an institution that owns assets has a reason to want their prices high, which can cut against raising interest rates.\n\nIn March and April 2020 the Saudi central bank, SAMA, moved 150 billion riyals, about 40 billion dollars, of foreign-currency reserves to the Public Investment Fund, the kingdom's sovereign wealth fund. Finance Minister Mohammed Al-Jadaan said it helped cause the fastest fall in net foreign assets in two decades and that it followed a comprehensive study; Bloomberg's Vivian Nereim reported it and the Saudi Press Agency carried his statement. In Hong Kong the Monetary Authority's Exchange Fund held 4,161.2 billion Hong Kong dollars at the end of 2025, of which a Long-Term Growth Portfolio of 578.4 billion included 417.1 billion in private equity, meaning stakes in companies not listed on a stock market, and 161.3 billion in real assets, with the Financial Secretary setting the benchmark and the Authority taking tactical decisions.\n\nNobody has shown a case where a central bank softened or tightened policy to protect the value of assets it or a related state fund holds, and that is the claim the pattern needs. The Saudi case has no published governance trail: no account of who authorised the transfer inside SAMA, on what terms, or whether it is reversible, and the reporting rests on one Bloomberg story and a short ministerial statement. Hong Kong discloses private-equity holdings only as totals, naming no managers, vintages or counterparties, so overlap with institutions the HKMA regulates cannot be checked.\n\nSAMA board minutes or the government decision authorising the 150 billion riyal transfer would answer the first. For Hong Kong, the Long-Term Growth Portfolio's schedule of commitments and co-investments by manager, the kind of list US public pension funds publish routinely, would show whether the investing arm and the regulating arm touch the same counterparties."
+  },
+  {
+   "id": "central-banks-building-payment-routes",
+   "title": "Central banks building payment routes around Western banking",
+   "kind": "axis",
+   "summary": "Two central banks under sanctions have been connecting their national payment plumbing to each other, and a third has opened a currency channel on the side. Iran's central bank governor Mohammadreza Farzin announced in late January 2023 that Iran's SEPAM financial messaging service had been linked to SPFS, the Bank of Russia's messaging system, after Iranian banks had been cut off from SWIFT; Iran said all of its several dozen financial institutions could connect to Russian banks, and more than 100 banks in 13 other countries already had SPFS access. The card networks followed: a second phase of the Shetab-Mir integration, allowing Russian cardholders to pay by phone in Iran, was launched at a ceremony hosted by the Central Bank of Iran on 13 May 2025, where Farzin said that 'through the SEPAM system, we can connect with any country's banking messaging platform without relying on SWIFT'. In India, the Reserve Bank of India approved a rupee settlement mechanism in 2022 and nine Russian banks opened special vostro accounts with Indian banks under it. The US Treasury, designating Russia's VTB Bank on 14 September 2026, said VTB had built a settlement system using correspondent accounts in Iranian rials and Russian roubles and had moved billions of frozen Iranian assets.",
+   "countries": [
+    {
+     "iso3": "IRN",
+     "role": "cut off, building alternatives",
+     "note": "The Central Bank of Iran linked SEPAM to Russia's SPFS and hosted the card-network integration phases; its governor presents the system as a way to connect without SWIFT."
+    },
+    {
+     "iso3": "RUS",
+     "role": "operator of the alternative messaging system",
+     "note": "The Bank of Russia runs SPFS, which Iran connected to and which more than 100 banks in 13 other countries can reach."
+    },
+    {
+     "iso3": "IND",
+     "role": "national-currency channel",
+     "note": "The Reserve Bank of India approved rupee trade settlement, under which nine Russian banks opened special vostro accounts with Indian banks in 2022."
+    },
+    {
+     "iso3": "USA",
+     "role": "sanctioning authority",
+     "note": "OFAC designated VTB Bank on 14 September 2026 under E.O. 13902, citing a rial-rouble correspondent settlement system and movement of frozen Iranian assets."
+    }
+   ],
+   "role_info": {
+    "cut off, building alternatives": "The Central Bank of Iran linked SEPAM to Russia's SPFS and hosted the card-network integration phases; its governor presents the system as a way to connect without SWIFT.",
+    "operator of the alternative messaging system": "The Bank of Russia runs SPFS, which Iran connected to and which more than 100 banks in 13 other countries can reach.",
+    "national-currency channel": "The Reserve Bank of India approved rupee trade settlement, under which nine Russian banks opened special vostro accounts with Indian banks in 2022.",
+    "sanctioning authority": "OFAC designated VTB Bank on 14 September 2026 under E.O. 13902, citing a rial-rouble correspondent settlement system and movement of frozen Iranian assets."
+   },
+   "established": "The institutional links are announced and dated: the SEPAM-SPFS connection (announced by Farzin, reported February 2023), the second phase of Shetab-Mir integration at a CBI ceremony on 13 May 2025 with four Iranian banks adopting the first phase, and the RBI-approved rupee vostro accounts opened by nine Russian banks in 2022. The rouble was added to Iran's NIMA foreign-exchange market in July 2022. The US Treasury's account of VTB's rial-rouble correspondent settlement and Tehran expansion is published in its own designation release of 14 September 2026.",
+   "not_established": "Whether any of it moves significant money. Hamidreza Azizi of the German Institute for International and Security Affairs said the Russian system will not become a viable SWIFT alternative in the short term without China and India, and doubted that non-Russian SPFS banks would take on Iran-related risk; Esfandyar Batmanghelidj of the Bourse and Bazaar Foundation said rouble and rial liquidity is lacking and called the link a step, not a game-changer. The Central Bank of Iran's own deputy for international affairs, Mohsen Karimi, said connection only means communication until banks actually deal with each other. Neither central bank publishes rial-rouble transaction volumes, and the share of trade settled in national currencies is not available. Treasury's 'billions' figure for moved Iranian assets is an allegation in a designation notice with no published evidence attached and no court finding; VTB's response is not in these sources.",
+   "test": "Volume data. Either central bank publishing monthly SEPAM-SPFS message counts and rial-rouble settlement values, or the Bank of Russia's SPFS traffic statistics broken down by counterparty country, would show whether this is plumbing in use or a signed protocol. Failing that, an unsealed US enforcement action with transaction records, or India's RBI publishing drawdowns on the special vostro accounts, which it collects from the authorised banks.",
+   "confirmed_by": [
+    {
+     "title": "Al Jazeera: What's behind Iran and Russia's efforts to link banking systems (8 February 2023)",
+     "url": "https://www.aljazeera.com/news/2023/2/8/whats-behind-iran-and-russias-efforts-to-link-banking-systems"
+    },
+    {
+     "title": "bne IntelliNews: Iran, Russia launch second phase of banking payment system integration",
+     "url": "https://www.intellinews.com/iran-russia-launch-second-phase-of-banking-payment-system-integration-380827/"
+    },
+    {
+     "title": "US Treasury press release: Operation Economic Outcast sanctions VTB Bank",
+     "url": "https://home.treasury.gov/news/press-releases/sb0629"
+    },
+    {
+     "title": "Business Standard: nine Russian banks open vostro accounts for trade in rupee after RBI approval",
+     "url": "https://www.business-standard.com/article/finance/9-russian-banks-open-vostro-accounts-for-trade-in-rupee-after-rbi-approval-122111501838_1.html"
+    }
+   ],
+   "parties": [
+    {
+     "name": "Central Bank of Iran",
+     "hq_city": "Tehran",
+     "hq_iso3": "IRN",
+     "what_it_does": "Operates SEPAM messaging and Shetab cards; signed and hosted the integration with Russian systems."
+    },
+    {
+     "name": "Bank of Russia",
+     "hq_city": "Moscow",
+     "hq_iso3": "RUS",
+     "what_it_does": "Operates SPFS, the domestic alternative to SWIFT messaging, to which Iranian banks were connected."
+    },
+    {
+     "name": "Reserve Bank of India",
+     "hq_city": "Mumbai",
+     "hq_iso3": "IND",
+     "what_it_does": "Authorised the special rupee vostro account mechanism used for trade with Russia."
+    },
+    {
+     "name": "VTB Bank",
+     "hq_city": "St Petersburg",
+     "hq_iso3": "RUS",
+     "what_it_does": "Russian state bank that Treasury says built rial-rouble correspondent settlement and expanded its Tehran presence from January 2025."
+    },
+    {
+     "name": "US Office of Foreign Assets Control",
+     "hq_city": "Washington",
+     "hq_iso3": "USA",
+     "what_it_does": "Issues the designations that describe the alleged settlement architecture."
+    }
+   ],
+   "body": "Sanctions work by cutting banks off from SWIFT, the network banks use to instruct each other to pay. Two central banks under sanctions have wired their messaging and card systems together instead. If that carries real trade, the countries imposing sanctions cannot see those payments or stop them, and the threat works less well on anyone else next time.\n\nIran's central bank governor Mohammadreza Farzin announced in late January 2023 that Iran's SEPAM messaging service had been linked to SPFS, the Bank of Russia's system, after Iranian banks were cut off from SWIFT. Iran said more than 100 banks in 13 other countries already had SPFS access. A second phase of the Shetab-Mir card integration, letting Russian cardholders pay in Iran, launched at a Central Bank of Iran ceremony on 13 May 2025. The US Treasury, designating Russia's VTB Bank on 14 September 2026, said VTB had built a settlement system using accounts in rials and roubles and had moved billions of frozen Iranian assets.\n\nNamed analysts doubt the volumes. Hamidreza Azizi of the German Institute for International and Security Affairs said the Russian system will not become a viable SWIFT alternative in the short term without China and India, and doubted non-Russian SPFS banks would take on Iran-related risk. Esfandyar Batmanghelidj of the Bourse and Bazaar Foundation said rouble and rial liquidity is lacking and called the link a step, not a game-changer. The Central Bank of Iran's own deputy for international affairs, Mohsen Karimi, said connection only means communication until banks actually deal with each other. Neither central bank publishes rial-rouble transaction volumes, and the share of trade settled in national currencies is not available. Treasury's figure of billions in moved assets is an allegation in a designation notice with no published evidence attached and no court finding; VTB's response is not in these sources.\n\nVolume data would answer it: monthly SEPAM-SPFS message counts and rial-rouble settlement values, or the Bank of Russia's SPFS traffic by counterparty country. Failing that, an unsealed US enforcement action with transaction records, or India's Reserve Bank publishing drawdowns on the rupee settlement accounts nine Russian banks opened in 2022."
+  },
+  {
+   "id": "public-digital-money-that-can",
+   "title": "Public digital money that can watch and restrict spending",
+   "kind": "wave",
+   "summary": "When a central bank issues digital money, someone has to decide what the system can see and what it can block, and those decisions are being made now, inside draft laws and technical designs. The European Data Protection Board and the European Data Protection Supervisor, in Joint Opinion 02/2023 on the digital euro regulation, found that the ECB's settlement infrastructure would centrally store data on everyone using the online digital euro, including authentication data, and asked for a binding duty to pseudonymise transaction data towards the ECB and national central banks. The same opinion said the proposed central fraud detection mechanism in Article 32 lacked foreseeability and that its necessity had not been demonstrated, and it welcomed the proposal's ban on programmable money, warning that 'a programmable digital euro would raise unacceptable high data protection risks'. China has taken the other route openly: Mu Changchun, director of the People's Bank of China's Digital Currency Research Institute, described the e-CNY principle as controllable anonymity, summarised as small amounts anonymous, large amounts traceable, with phone-number-only wallets capped at 2,000 yuan per transaction and big-data analysis available to flag suspect wallets for referral to law enforcement. The design choice, not the currency, is what determines whether a payment can be traced or limited.",
+   "countries": [
+    {
+     "iso3": "CHN",
+     "role": "traceability designed in",
+     "note": "The PBoC's e-CNY applies tiered anonymity: small wallets opened with a phone number are treated as anonymous while larger balances require identification, and the bank describes using big-data analysis to flag wallets."
+    },
+    {
+     "iso3": "EMU",
+     "role": "privacy limits being fought over in law",
+     "note": "The ECB's proposed digital euro would centrally store online transaction and authentication data; the EU's two data protection authorities asked for pseudonymisation duties, questioned the central fraud mechanism and urged keeping the ban on programmable money."
+    }
+   ],
+   "role_info": {
+    "traceability designed in": "The PBoC's e-CNY applies tiered anonymity: small wallets opened with a phone number are treated as anonymous while larger balances require identification, and the bank describes using big-data analysis to flag wallets.",
+    "privacy limits being fought over in law": "The ECB's proposed digital euro would centrally store online transaction and authentication data; the EU's two data protection authorities asked for pseudonymisation duties, questioned the central fraud mechanism and urged keeping the ban on programmable money."
+   },
+   "established": "The EU documents are public and specific: central storage of online digital euro user data including authentication data (para 53), the request for binding pseudonymisation towards the ECB and national central banks (para 54), the finding that necessity of a general fraud detection mechanism was not sufficiently demonstrated (para 60), and the warning on programmability (para 48). On the Chinese side, Mu Changchun's explanation of controllable anonymity was given at the China Development Forum in March 2021 and the PBoC's July 2021 English white paper uses the term managed anonymity; the 2,000 yuan single-transaction cap on phone-number wallets and the referral-to-law-enforcement route are described in the same material, compiled by Stanford's DigiChina.",
+   "not_established": "That surveillance or spending restriction has actually been used. No regulator, court or inquiry has published a case of a central bank tracing an individual's digital-currency payments or blocking a category of spending. The EU material is advisory commentary on a legislative proposal that has not been adopted in final form, so the ECB's eventual data architecture is unknown. On the Chinese side the public account comes from officials and from one DigiChina analysis by Eli MacKinnon, who argues small-wallet anonymity is incomplete because phone numbers are tied to government IDs; there is no independent technical audit of what the PBoC can resolve from e-CNY ledger data, and the claim that recipients cannot see payer data has not been verified outside PBoC statements.",
+   "test": "A technical specification plus a disclosure log. For the euro area: the ECB's digital euro data protection impact assessment and the final settlement-infrastructure data model, published in full, showing which fields reach the central ledger. For China: an e-CNY law-enforcement request transparency report, or an independent protocol audit of the wallet tiers, showing what can be linked to a person and how often it was. Either would replace official assurance with a checkable record.",
+   "confirmed_by": [
+    {
+     "title": "EDPB-EDPS Joint Opinion 02/2023 on the digital euro regulation proposal",
+     "url": "https://www.edpb.europa.eu/system/files/2023-10/edpb_edps_jointopinion_022023_digitaleuro_en.pdf"
+    },
+    {
+     "title": "Stanford DigiChina: Lexicon on controllable or managed anonymity and China's digital yuan",
+     "url": "https://digichina.stanford.edu/work/lexicon-controllable-anonymity-or-managed-anonymity-and-chinas-digital-yuan"
+    }
+   ],
+   "parties": [
+    {
+     "name": "European Central Bank",
+     "hq_city": "Frankfurt",
+     "hq_iso3": "DEU",
+     "what_it_does": "Would operate the digital euro settlement infrastructure and the proposed fraud detection mechanism."
+    },
+    {
+     "name": "European Data Protection Board and European Data Protection Supervisor",
+     "hq_city": "Brussels",
+     "hq_iso3": "BEL",
+     "what_it_does": "Issued Joint Opinion 02/2023 identifying the central storage, fraud-mechanism and programmability risks in the digital euro proposal."
+    },
+    {
+     "name": "People's Bank of China, Digital Currency Research Institute",
+     "hq_city": "Beijing",
+     "hq_iso3": "CHN",
+     "what_it_does": "Designs the e-CNY and set out the controllable anonymity principle, with transaction-size tiers and analytic monitoring."
+    }
+   ],
+   "body": "Cash leaves no record and buys anything. Digital money issued by a central bank can be built to log who paid whom, and to refuse some payments. Whoever writes the design settles that once for everyone, and the choice is being made now inside draft laws and technical specifications.\n\nIn the European Union, the European Data Protection Board and the European Data Protection Supervisor, the EU's data-rules watchdogs, issued Joint Opinion 02/2023 on the digital euro regulation. They found that the European Central Bank's settlement infrastructure would centrally store data on everyone using the online digital euro, including authentication data (paragraph 53), and asked for a binding duty to pseudonymise transaction data towards the ECB and national central banks, meaning strip the names from it (paragraph 54). They welcomed the proposal's ban on programmable money, money restricted to certain uses, warning that a programmable digital euro would raise unacceptable high data protection risks (paragraph 48). Mu Changchun, director of the People's Bank of China's Digital Currency Research Institute, described the e-CNY principle at the China Development Forum in March 2021 as controllable anonymity, summarised as small amounts anonymous, large amounts traceable, with phone-number-only wallets capped at 2,000 yuan per transaction and big-data analysis available to flag suspect wallets for law enforcement.\n\nNo regulator, court or inquiry has published a case of a central bank tracing an individual's digital-currency payments or blocking a category of spending. The EU material is advisory commentary on a proposal not yet adopted in final form, so the ECB's eventual data architecture is unknown. The Chinese account comes from officials and from one analysis by Eli MacKinnon for Stanford's DigiChina, who argues small-wallet anonymity is incomplete because phone numbers are tied to government IDs. There is no independent technical audit of what the PBoC can resolve from e-CNY ledger data, and the claim that recipients cannot see payer data has not been verified outside PBoC statements.\n\nThe ECB's digital euro data protection impact assessment and final data model, published in full, would show which fields reach the central ledger. For China, an e-CNY law-enforcement transparency report, or an independent audit of the wallet tiers, would show what can be linked to a person."
+  },
+  {
+   "id": "one-adviser-sitting-beside-many",
+   "title": "The same few advisers beside many central banks",
+   "kind": "club",
+   "summary": "Central banks that need help investing reserves or running emergency programmes buy that help from a very short list of providers, and the same names appear in many countries. On 27 March 2020 the Federal Reserve Bank of New York appointed BlackRock Financial Markets Advisory as asset management adviser and fiduciary for the Secondary Market Corporate Credit Facility, buying corporate bonds and bond ETFs at the New York Fed's sole direction, with a fee schedule that credited back fees and income BlackRock earned on its own iShares ETFs held in the facility. The World Bank's Reserve Advisory and Management Partnership, set up in 2001, counts over 70 member institutions including central banks, public pension funds and sovereign wealth funds, and provides advisory visits, about 30 week-long technical workshops a year, and asset management in which World Bank portfolio managers help set members' investment and risk policies; the Central Bank of Bosnia and Herzegovina joined in April 2024 and the Central Bank of Ecuador in April 2026. The same firm that advises can also be a counterparty in the markets it advises on, which is the relationship the European Ombudsman examined in November 2020 when BlackRock won a European Commission contract on sustainable banking rules.",
+   "countries": [
+    {
+     "iso3": "USA",
+     "role": "hired a private manager to run a central bank facility",
+     "note": "The New York Fed engaged BlackRock FMA on 27 March 2020 to manage corporate bond purchases under the SMCCF."
+    },
+    {
+     "iso3": "BIH",
+     "role": "outsourced reserve advice",
+     "note": "The Central Bank of Bosnia and Herzegovina joined the World Bank's RAMP programme in April 2024."
+    },
+    {
+     "iso3": "ECU",
+     "role": "outsourced reserve advice",
+     "note": "The Central Bank of Ecuador joined RAMP in April 2026, which the World Bank presented as part of RAMP's growth in Latin America."
+    },
+    {
+     "iso3": "BEL",
+     "role": "watchdog scrutiny of the same adviser",
+     "note": "The European Ombudsman in Brussels examined the European Commission's award of a sustainable-banking-rules contract to BlackRock and issued a decision on 23 November 2020."
+    }
+   ],
+   "role_info": {
+    "hired a private manager to run a central bank facility": "The New York Fed engaged BlackRock FMA on 27 March 2020 to manage corporate bond purchases under the SMCCF.",
+    "outsourced reserve advice": "The Central Bank of Ecuador joined RAMP in April 2026, which the World Bank presented as part of RAMP's growth in Latin America.",
+    "watchdog scrutiny of the same adviser": "The European Ombudsman in Brussels examined the European Commission's award of a sustainable-banking-rules contract to BlackRock and issued a decision on 23 November 2020."
+   },
+   "established": "The New York Fed's investment management agreement naming BlackRock FMA, dated 27 March 2020, with its fee structure and the iShares fee credit-back, is published by the New York Fed itself. RAMP's membership count (over 70), its founding in 2001, its service lines including asset management and roughly 30 workshops a year, and individual joinings by the central banks of Bosnia and Herzegovina (April 2024) and Ecuador (April 2026) are published by the World Bank. The European Ombudsman opened and decided a case on the Commission's BlackRock contract, with a decision dated 23 November 2020; the case record shows no finding of maladministration while the Ombudsman's accompanying press release was titled as criticising the Commission.",
+   "not_established": "Whether the advice is the same advice everywhere, and whether advisers gain from what they learn. Nobody has published the content of RAMP's advice to any member, so the claim that a single institution's investment template is being reproduced across dozens of central banks is untested; the World Bank publishes membership, not recommendations. For BlackRock, the question raised at the time by Americans for Financial Reform was whether an adviser inside a central bank facility could benefit from what it saw; no regulator, inspector general or court has published a finding either way, and the Fed's own information-barrier compliance reports on the mandate are not public. The Ombudsman's case concerned the European Commission, not a central bank, so it is context rather than evidence about central banks. Fee totals paid by central banks to external advisers are, in most countries, not disclosed at all.",
+   "test": "Two documents. First, the New York Fed's internal compliance reviews and BlackRock's information-barrier attestations for the SMCCF mandate, obtainable through a Freedom of Information Act request to the Board of Governors or an Inspector General review, with the fees actually paid. Second, one RAMP member central bank releasing the advisory report and model investment policy it received, which would show how much of the template is common across members.",
+   "confirmed_by": [
+    {
+     "title": "Federal Reserve Bank of New York: SMCCF investment management agreement with BlackRock FMA (27 March 2020)",
+     "url": "https://www.newyorkfed.org/medialibrary/media/markets/special_facilities/SMCCF_Terms_BlackRock.pdf"
+    },
+    {
+     "title": "World Bank Treasury: About RAMP (one-pager, 2024)",
+     "url": "https://thedocs.worldbank.org/en/doc/4c60e791d77abbbe20fca8df2ecdc3b1-0340012024/original/About-RAMP-English-one-pager-2024.pdf"
+    },
+    {
+     "title": "World Bank: RAMP membership and how to join",
+     "url": "https://treasury.worldbank.org/en/about/unit/treasury/reserve-advisory-management-partnership/become-a-member"
+    },
+    {
+     "title": "World Bank press release: Central Bank of Bosnia and Herzegovina joins RAMP (22 April 2024)",
+     "url": "https://www.worldbank.org/en/news/press-release/2024/04/22/central-bank-of-bosnia-and-herzegovina-joins-world-bank-ramp-to-enhance-reserve-management"
+    },
+    {
+     "title": "World Bank press release: RAMP welcomes the Central Bank of Ecuador (15 April 2026)",
+     "url": "https://www.worldbank.org/en/news/press-release/2026/04/15/world-bank-group-ramp-welcomes-central-bank-of-ecuador-as-new-member-highlighting-ramp-s-strong-growth-in-latin-america-"
+    },
+    {
+     "title": "European Ombudsman case record and decision on the Commission's BlackRock contract (23 November 2020)",
+     "url": "https://www.ombudsman.europa.eu/el/news-document/en/130213"
+    },
+    {
+     "title": "Americans for Financial Reform: can BlackRock benefit from inside information from Fed facilities?",
+     "url": "https://ourfinancialsecurity.org/news/blog-can-blackrock-benefit-from-inside-information-from-fed-facilities/"
+    }
+   ],
+   "parties": [
+    {
+     "name": "BlackRock Financial Markets Advisory",
+     "hq_city": "New York",
+     "hq_iso3": "USA",
+     "what_it_does": "Advisory arm of the world's largest asset manager; ran the New York Fed's SMCCF purchases as fiduciary from March 2020."
+    },
+    {
+     "name": "Federal Reserve Bank of New York",
+     "hq_city": "New York",
+     "hq_iso3": "USA",
+     "what_it_does": "Directed the SMCCF and set BlackRock's mandate and fees."
+    },
+    {
+     "name": "World Bank Treasury (RAMP)",
+     "hq_city": "Washington",
+     "hq_iso3": "USA",
+     "what_it_does": "Advises and trains over 70 public asset managers and manages money for members, helping set their investment and risk policies."
+    }
+   ],
+   "body": "A central bank deciding what to buy with public reserves, or whose bonds to support in a crisis, often lacks the staff and hires a firm to do it. That firm sees the decisions before the market does, and in most countries the fees it is paid are never disclosed.\n\nOn 27 March 2020 the Federal Reserve Bank of New York appointed BlackRock Financial Markets Advisory as adviser and fiduciary for the Secondary Market Corporate Credit Facility, buying corporate bonds and bond ETFs, baskets of bonds traded like a share, at the Fed's sole direction. The published agreement's fee schedule credited back fees and income BlackRock earned on its own iShares ETFs held in the facility. The World Bank's Reserve Advisory and Management Partnership, set up in 2001, counts over 70 member institutions and runs advisory visits, about 30 week-long workshops a year, and asset management in which World Bank managers help set members' investment and risk policies: the Central Bank of Bosnia and Herzegovina joined in April 2024 and the Central Bank of Ecuador in April 2026.\n\nThe link is not documented. Nobody has published the content of RAMP's advice to any member, so the claim that one institution's investment template is reproduced across dozens of central banks is untested; the World Bank publishes membership, not recommendations. For BlackRock, the question raised at the time by Americans for Financial Reform was whether an adviser inside a central bank facility could benefit from what it saw; no regulator, inspector general or court has published a finding either way, and the Fed's compliance reports on the mandate are not public. The European Ombudsman decided a case on a European Commission contract BlackRock won on sustainable banking rules, dated 23 November 2020; the record shows no finding of maladministration, the accompanying press release was titled as criticising the Commission, and the case concerned the Commission, not a central bank.\n\nTwo documents would answer it: the New York Fed's compliance reviews and BlackRock's information-barrier attestations for the mandate, with the fees paid, obtainable by Freedom of Information Act request, and one RAMP member releasing the advisory report and model investment policy it received."
+  },
+  {
+   "id": "central-banks-paying-the-government",
+   "title": "Central banks paying the government's bills through overdrafts",
+   "kind": "wave",
+   "summary": "When a government cannot sell its bonds, its central bank can simply credit the treasury's account, and two large African economies have done so on a scale that shows up in the central bank's own accounts. The Bank of Ghana stated in a press release of 9 February 2023 that as at December 2022 it had bought 7.2 billion cedi of treasury bonds from banks, on-lent 8.9 billion cedi of IMF facilities to the government and extended a 37.9 billion cedi overdraft 'solely meant for the purpose of addressing auction shortfalls and paying customers whose bonds had matured', with its net claims on government rising 44.5 billion cedi in the year; it said Ghana had lost access to international capital markets, that the IMF viewed the arrangement as sub-optimal but temporary, and that Parliament had suspended the Fiscal Responsibility Act 2018 and not reinstated it. The Bank then reported a loss for 2022; press reports put it at 60.8 billion cedi, and the Bank itself described a 55.12 billion cedi loss in equity, largely caused by the government's Domestic Debt Exchange Programme, which put a 50 per cent haircut on its own holdings of government paper. Press reports put the Bank's loss for 2022 at 60.8 billion cedi. In Nigeria the Central Bank advanced about 23.7 trillion naira under the Ways and Means facility, although section 38 of the CBN Act caps advances at 5 percent of the previous year's actual revenue and requires repayment by the end of the fiscal year; the government asked the National Assembly to convert the stock into a 40-year loan at 9 percent interest. Governor Olayemi Cardoso has said the law bars further such advances.",
+   "countries": [
+    {
+     "iso3": "GHA",
+     "role": "central bank financed the budget",
+     "note": "The Bank of Ghana disclosed a 37.9 billion cedi overdraft to government and a 44.5 billion cedi rise in net claims on government for 2022, then reported a loss of about 60.8 billion cedi."
+    },
+    {
+     "iso3": "NGA",
+     "role": "statutory ceiling overrun and securitisation",
+     "note": "About 23.7 trillion naira of Ways and Means advances accumulated against a 5 percent-of-revenue statutory cap, with the government seeking to restructure the total as a 40-year, 9 percent loan."
+    }
+   ],
+   "role_info": {
+    "central bank financed the budget": "The Bank of Ghana disclosed a 37.9 billion cedi overdraft to government and a 44.5 billion cedi rise in net claims on government for 2022, then reported a loss of about 60.8 billion cedi.",
+    "statutory ceiling overrun and securitisation": "About 23.7 trillion naira of Ways and Means advances accumulated against a 5 percent-of-revenue statutory cap, with the government seeking to restructure the total as a 40-year, 9 percent loan."
+   },
+   "established": "The Ghanaian numbers come from the central bank's own press release and its 2022 accounts, including the 37.9 billion cedi overdraft, the 44.5 billion cedi increase in claims on government and the reported 60.8 billion cedi loss, which the Bank later clarified after a Reuters report. For Nigeria, the roughly 23.7 trillion naira figure, the section 38 cap of 5 percent of previous-year actual revenue with its end-of-year repayment requirement, and the 40-year, 9 percent securitisation proposal are set out in the BudgIT-hosted analysis, with Cardoso quoted separately saying the law bars further advances.",
+   "not_established": "That there is a documented decision chain from government pressure to central bank credit. In neither country has an inquiry published who asked for the money, what the board recorded, or whether officials objected; the Bank of Ghana's own release is advocacy for its decision rather than a minute of it. The legality of Nigeria's overrun is contested by commentators rather than settled: the breach is asserted by analysts including Kalu Aja and by press reporting of experts calling the bond issue illegal, and no court or audit institution has ruled on it in these sources. How much of the Bank of Ghana's loss came from financing the government as opposed to the domestic debt exchange and exchange-rate movements is disputed, and the Bank itself attributes much of it to the debt restructuring. There is also no published cross-country count, so whether this is a wave or two large cases is unresolved. The wave framing is also weaker than it looks: the Bank of Ghana says it gave the government no credit at all in 2017, 2018, 2019 or 2021, so two countries and a handful of years are not yet a pattern.",
+   "test": "Board minutes and audit findings. The Bank of Ghana's Monetary Policy Committee and board minutes for 2022 covering the overdraft decision, and the Nigerian Auditor-General's or National Assembly committee report establishing the Ways and Means balance against the section 38 limit year by year. For the wave claim, the IMF's Monetary and Financial Statistics country data on 'claims on central government' by central banks, extracted for all reporting countries, would show how many central banks crossed their own statutory limits and when.",
+   "confirmed_by": [
+    {
+     "title": "Bank of Ghana press release rejoinder: financing of the 2022 budget deficit (9 February 2023)",
+     "url": "https://3news.com/wp-content/uploads/2023/02/PRESS-RELEASE-REJOINDER-BANK-OF-GHANA-FINANCING-OF-2022-BUDGET-DEFICIT-09-02-2023.pdf"
+    },
+    {
+     "title": "MyJoyOnline: Bank of Ghana records 60.8 billion cedi loss for 2022",
+     "url": "https://myjoyonline.com/bank-of-ghana-records-60-8-billion-loss-for-2022"
+    },
+    {
+     "title": "Central Banking: Bank of Ghana clarifies losses after Reuters report",
+     "url": "https://www.centralbanking.com/central-banks/governance/financial-reporting/7959447/bank-of-ghana-clarifies-losses-after-reuters-report"
+    },
+    {
+     "title": "BudgIT: securitisation of the 23.7 trillion naira Ways and Means debt, legality and appropriateness",
+     "url": "https://budgit.org/securitization-of-the-n23-7tn-ways-and-means-debt-legality-and-appropriateness/"
+    },
+    {
+     "title": "Leadership: law bars CBN from advancing more loans to FG, says Cardoso",
+     "url": "https://leadership.ng/law-bars-cbn-from-advancing-more-loans-to-fg-cardoso"
+    }
+   ],
+   "parties": [
+    {
+     "name": "Bank of Ghana",
+     "hq_city": "Accra",
+     "hq_iso3": "GHA",
+     "what_it_does": "Extended the overdraft and bond purchases, published the figures, and recorded the resulting loss."
+    },
+    {
+     "name": "Central Bank of Nigeria",
+     "hq_city": "Abuja",
+     "hq_iso3": "NGA",
+     "what_it_does": "Provided the Ways and Means advances to the federal government."
+    },
+    {
+     "name": "BudgIT Foundation",
+     "hq_city": "Lagos",
+     "hq_iso3": "NGA",
+     "what_it_does": "Nigerian budget-transparency organisation that hosted the public analysis of the 23.7 trillion naira securitisation and its legality."
+    },
+    {
+     "name": "International Monetary Fund",
+     "hq_city": "Washington",
+     "hq_iso3": "USA",
+     "what_it_does": "Lender whose programme conditions bear on monetary financing; the Bank of Ghana says the Fund called its arrangement sub-optimal but temporary."
+    }
+   ],
+   "body": "A government that cannot sell its bonds can have its central bank credit the treasury's account instead, creating the money rather than borrowing it. Wages are paid on time and the shortfall does not show; the cost arrives later as a falling currency and higher prices in the shops, a tax nobody voted on. Statutory limits exist to stop it.\n\nThe Bank of Ghana stated on 9 February 2023 that as at December 2022 it had bought 7.2 billion cedi of treasury bonds from banks, on-lent 8.9 billion cedi of IMF facilities to the government, and extended a 37.9 billion cedi overdraft solely meant for the purpose of addressing auction shortfalls and paying customers whose bonds had matured. Net claims on government rose 44.5 billion cedi in the year. It said Ghana had lost market access, that the IMF viewed the arrangement as sub-optimal but temporary, and that Parliament had suspended the Fiscal Responsibility Act 2018. In Nigeria the Central Bank advanced about 23.7 trillion naira under the Ways and Means facility, although section 38 of the CBN Act caps advances at 5 percent of the previous year's actual revenue and requires repayment by the end of the fiscal year.\n\nThere is no documented decision chain from government pressure to central bank credit. No inquiry in either country has published who asked for the money, what the board recorded, or whether officials objected, and the Bank of Ghana's release argues for its decision rather than recording how it was taken. Nigeria's overrun is contested rather than settled: the breach is asserted by analysts including Kalu Aja and by press reporting of experts calling the bond issue illegal, and no court or audit institution has ruled on it in these sources. The Bank of Ghana also says it gave the government no credit at all in 2017, 2018, 2019 or 2021, so two countries and a few years are not yet a pattern.\n\nThe Bank of Ghana's board minutes for 2022 covering the overdraft decision, and a Nigerian Auditor-General's or National Assembly report setting the Ways and Means balance against the section 38 limit year by year, would answer it."
+  },
+  {
+   "id": "reserve-gold-that-is-lent",
+   "title": "Reserve gold that is lent out while still counted as reserves",
+   "kind": "chain",
+   "summary": "Central bank gold is reported as a reserve asset even when the metal has been deposited with or lent to someone else. The IMF's reserves reporting template puts the entry as 'Gold (including gold deposits and, if appropriate, gold swapped)' on a single line, with no separate line for gold lent out or for where the metal physically sits. In January 2025, as bullion was shipped to New York ahead of possible US tariffs, Reuters reported that London market participants were queuing to borrow gold from central banks that store bullion at the Bank of England, and that one source put the minimum wait to withdraw metal from the Bank at four weeks against a normal few days; the Bank declined to comment, and Robert Gottlieb, former head of precious metals at Koch Supply and Trading, said the Bank was 'not prepared to handle the onslaught of gold borrowing'. The ownership question is not new: Germany's Federal Court of Auditors called for a thorough audit of Bundesbank gold stocks held with the Federal Reserve, the Bank of England and the Bank of France, after which the Bundesbank moved to bring metal home from Paris. A reader of the published reserve figures cannot tell how much of the gold is on loan.",
+   "countries": [
+    {
+     "iso3": "GBR",
+     "role": "custodian and lending venue",
+     "note": "The Bank of England stores gold for other central banks and is where market participants sought to borrow it in January 2025, with withdrawal waits reported at four weeks."
+    },
+    {
+     "iso3": "USA",
+     "role": "destination of the metal",
+     "note": "Large shipments to New York ahead of possible tariffs drained London vaults, which is what set off the borrowing demand Reuters described."
+    },
+    {
+     "iso3": "DEU",
+     "role": "owner that stored abroad and asked questions",
+     "note": "The Bundesbank held 45 percent of its gold with the Federal Reserve, 13 percent at the Bank of England and 11 percent at the Bank of France, and its Federal Court of Auditors called for a thorough audit of the foreign-held stocks."
+    }
+   ],
+   "role_info": {
+    "custodian and lending venue": "The Bank of England stores gold for other central banks and is where market participants sought to borrow it in January 2025, with withdrawal waits reported at four weeks.",
+    "destination of the metal": "Large shipments to New York ahead of possible tariffs drained London vaults, which is what set off the borrowing demand Reuters described.",
+    "owner that stored abroad and asked questions": "The Bundesbank held 45 percent of its gold with the Federal Reserve, 13 percent at the Bank of England and 11 percent at the Bank of France, and its Federal Court of Auditors called for a thorough audit of the foreign-held stocks."
+   },
+   "established": "The IMF template's wording is verifiable in the template itself: gold deposits and swapped gold are inside the reported official reserve asset line, there is no separate gold-lent line, and gold outside reserve assets appears only as 'gold not included in official reserve assets'. Reuters reported in January 2025 that market participants were borrowing central bank gold held in London, with the four-week withdrawal wait attributed to sources familiar with the matter and on-record comment from Robert Gottlieb and from Heraeus trader Alexander Zumpfe; the Bank of England declined to comment. The Bundesbank's storage split and the Federal Court of Auditors' call for an audit were reported in January 2013.",
+   "not_established": "How much central bank gold is lent, by whom, and whether any reported reserve figure overstates metal the owner can actually call back. No central bank named in the January 2025 reporting is identified as a lender; the lending claim rests on two unnamed Reuters sources plus market practitioners, and the Bank of England has published no gold-lending data. The template permits gold deposits and swaps to be included, which is a reporting convention, not evidence that any particular country's figure is inflated, and nobody has produced a case where a central bank could not retrieve metal it reported. The Bundesbank episode is about verification of custody, not lending, and the audit demand came from euro-sceptic political pressure as well as the auditors. Much of the writing on this subject comes from firms that sell bullion, which is a reason for caution rather than a source.",
+   "test": "Disclosure of the lending book. The Bank of England publishing its gold lending and deposit balances by counterparty type, as it does for other parts of its balance sheet, or a central bank's audited annual accounts showing a note that separates allocated metal in own vaults, allocated metal in custody abroad, and gold on deposit or swapped, with maturities. One such note for one large holder, set against that country's IRFCL filing, would show directly whether the reserve line counts metal that is out on loan.",
+   "confirmed_by": [
+    {
+     "title": "IMF IRFCL reporting template (gold line wording)",
+     "url": "https://data.imf.org/-/media/iData/External-Storage/Documents/889DCE5B5B5E483485B6EDA73B651A40/en/IRFCL---Reporting-Template.pdf"
+    },
+    {
+     "title": "Reuters via Kitco: London gold market queues up to borrow central bank gold after big shipments to US (29 January 2025)",
+     "url": "https://www.kitco.com/news/off-the-wire/2025-01-29/london-gold-market-queues-borrow-central-bank-gold-after-big-shipments"
+    },
+    {
+     "title": "Fortune: waiting time to get gold out of the Bank of England reportedly lengthened amid shipments to the US",
+     "url": "https://fortune.com/europe/2025/01/31/waiting-time-get-gold-out-bank-england-reportedly-octupled-trump-tariff-threats-spark-exodus-us/"
+    },
+    {
+     "title": "Japan Times: Bundesbank gold held abroad and the Federal Court of Auditors' call for a thorough audit (17 January 2013)",
+     "url": "https://www.japantimes.co.jp/news/2013/01/17/business/repatriate-gold-cache-stored-abroad-berlin"
+    }
+   ],
+   "parties": [
+    {
+     "name": "Bank of England",
+     "hq_city": "London",
+     "hq_iso3": "GBR",
+     "what_it_does": "Custodies gold for central banks; declined to comment on withdrawal queues in January 2025."
+    },
+    {
+     "name": "International Monetary Fund",
+     "hq_city": "Washington",
+     "hq_iso3": "USA",
+     "what_it_does": "Sets the IRFCL reserves template whose gold line folds in gold deposits and swapped gold."
+    },
+    {
+     "name": "Deutsche Bundesbank",
+     "hq_city": "Frankfurt",
+     "hq_iso3": "DEU",
+     "what_it_does": "Holds most of its gold abroad and faced an audit-office demand to verify it."
+    },
+    {
+     "name": "Bundesrechnungshof (German Federal Court of Auditors)",
+     "hq_city": "Bonn",
+     "hq_iso3": "DEU",
+     "what_it_does": "Called for a thorough audit of German gold held with foreign central banks."
+    }
+   ],
+   "body": "Gold in a country's official reserves — the emergency savings a state keeps for a currency crisis — is reported in full even when the metal has been lent or deposited elsewhere. Nobody reading the published figures can tell which part is out on loan, and a holding that cannot be fetched quickly would become visible only at the moment it is needed.\n\nThe International Monetary Fund's reporting form puts the whole amount on one line, worded \"Gold (including gold deposits and, if appropriate, gold swapped)\", with no separate line for gold lent out or for where it sits. In January 2025, as bullion was shipped to New York ahead of possible US tariffs, Reuters reported London market participants queuing to borrow gold from central banks that store bullion at the Bank of England, one source putting the minimum wait to withdraw metal at four weeks against a normal few days. The Bank declined to comment. Robert Gottlieb, former head of precious metals at Koch Supply and Trading, said the Bank was \"not prepared to handle the onslaught of gold borrowing\".\n\nNo figure for how much central bank gold is lent appears anywhere in these sources. No central bank is named as a lender, the borrowing claim rests on two unnamed Reuters sources plus market practitioners, and the Bank of England has published no gold-lending data. The form's wording is a reporting convention, not evidence that any country's number is overstated, and no case exists of a central bank failing to retrieve metal it had reported. Germany's Federal Court of Auditors did call in January 2013 for an audit of Bundesbank gold held with the Federal Reserve, the Bank of England and the Bank of France, but that concerned custody rather than lending, and the demand came from euro-sceptic political pressure as well as from the auditors. Much of the writing on the subject comes from firms that sell bullion.\n\nThe Bank of England publishing its gold lending and deposit balances by counterparty type, as it does for other parts of its balance sheet, would settle it. So would an audited accounts note from one large holder separating metal in its own vaults, metal with custodians abroad, and gold on deposit or swapped, with maturities."
+  },
+  {
+   "id": "the-short-list-of-banks",
+   "title": "The short list of banks the central bank trades with",
+   "kind": "club",
+   "summary": "Most big central banks and debt offices buy and sell government bonds only with firms on a published short list. The Federal Reserve Bank of New York publishes its primary dealer list itself; after NatWest Markets Securities Inc. withdrew with effect from 16 October 2026 it held 25 firms, including J.P. Morgan Securities LLC, Goldman Sachs & Co. LLC, Citigroup Global Markets Inc., Mizuho Securities USA LLC and Santander US Capital Markets LLC. To join, a broker-dealer needs at least $50 million of net regulatory capital (a bank, $1 billion of Tier 1 capital at holding-company level) and at least a 0.25% share of Treasury market-making activity, and must then bid for its pro-rata share of every Treasury auction at reasonably competitive prices; the United Kingdom runs the same arrangement through the Debt Management Office, which lists 19 Gilt-edged Market Makers (15 wholesale, 3 associate, 1 retail) and calls them \"primary dealers in UK government bonds\". Membership can also carry lending access: the Fed's Primary Dealer Credit Facility, announced 16 March 2008 and closed 1 February 2010, was an overnight loan facility for primary dealers only, a discount window for firms that are not deposit-taking banks. Competition authorities have since fined firms on these lists over what their traders typed to each other: on 21 February 2025 the UK Competition and Markets Authority fined Citi 17.16 million pounds, HSBC 23.4 million, Morgan Stanley 29.7 million and Royal Bank of Canada 34.2 million, 104.46 million pounds in total, for one-to-one Bloomberg chats about gilt pricing between 2009 and 2013 that touched DMO auctions, secondary trading and Bank of England buy-back auctions, with Deutsche Bank given immunity for reporting it. On 20 May 2021 the European Commission fined UBS 172,378,000 euros, Nomura 129,573,000 euros and UniCredit 69,442,000 euros over a euro-area government bond trading cartel of 2007-2011 run mainly in Bloomberg chatrooms, with NatWest (then RBS) immune for revealing it; and on 14 September 1992 Salomon Brothers Inc. paid the US government about $27.8 million, part of a $290 million settlement with the Justice Department and the SEC, to settle charges that it limited the supply of May 1993 two-year notes, without admitting a violation.",
+   "countries": [
+    {
+     "iso3": "USA",
+     "role": "publisher of the list",
+     "note": "The New York Fed publishes the primary dealer list, sets the capital and market-share criteria, and ran the Primary Dealer Credit Facility from 2008 to 2010."
+    },
+    {
+     "iso3": "GBR",
+     "role": "publisher of the list",
+     "note": "The Debt Management Office names 19 Gilt-edged Market Makers; the CMA fined four of the banks in that market in February 2025 and the Bank of England's buy-back auctions were among the subjects of the chats."
+    },
+    {
+     "iso3": "BEL",
+     "role": "enforcement seat",
+     "note": "The European Commission in Brussels issued the 20 May 2021 decision on the euro government bond trading cartel."
+    },
+    {
+     "iso3": "CHE",
+     "role": "fined firm's home",
+     "note": "UBS was fined 172,378,000 euros by the European Commission in the 2021 bond decision."
+    },
+    {
+     "iso3": "JPN",
+     "role": "fined firm's home",
+     "note": "Nomura was fined 129,573,000 euros in the same decision and is a primary dealer in the United States and a GEMM in the United Kingdom."
+    },
+    {
+     "iso3": "ITA",
+     "role": "fined firm's home",
+     "note": "UniCredit was fined 69,442,000 euros in the same decision."
+    },
+    {
+     "iso3": "DEU",
+     "role": "immunity applicant and fined-firm home",
+     "note": "Deutsche Bank reported the gilt chats to the CMA and received immunity; Portigon (formerly WestLB) was found to have taken part in the euro bond cartel but fined zero because of the 10% turnover cap."
+    },
+    {
+     "iso3": "CAN",
+     "role": "fined firm's home",
+     "note": "Royal Bank of Canada paid the largest single CMA fine, 34.2 million pounds; RBC Capital Markets is a US primary dealer and RBC Europe a GEMM."
+    },
+    {
+     "iso3": "FRA",
+     "role": "party to the bond decision",
+     "note": "Natixis was found to have taken part in the euro government bond cartel from 26 February 2008 to 6 August 2009 but was not fined, as the conduct fell outside the limitation period."
+    },
+    {
+     "iso3": "EMU",
+     "role": "broad-access counterpoint",
+     "note": "Eurosystem access is not a short list: any euro-area institution subject to minimum reserve requirements, under harmonised EU/EEA supervision, financially sound and meeting its national central bank's operational requirements can be a counterparty."
+    }
+   ],
+   "role_info": {
+    "publisher of the list": "The Debt Management Office names 19 Gilt-edged Market Makers; the CMA fined four of the banks in that market in February 2025 and the Bank of England's buy-back auctions were among the subjects of the chats.",
+    "enforcement seat": "The European Commission in Brussels issued the 20 May 2021 decision on the euro government bond trading cartel.",
+    "fined firm's home": "Royal Bank of Canada paid the largest single CMA fine, 34.2 million pounds; RBC Capital Markets is a US primary dealer and RBC Europe a GEMM.",
+    "immunity applicant and fined-firm home": "Deutsche Bank reported the gilt chats to the CMA and received immunity; Portigon (formerly WestLB) was found to have taken part in the euro bond cartel but fined zero because of the 10% turnover cap.",
+    "party to the bond decision": "Natixis was found to have taken part in the euro government bond cartel from 26 February 2008 to 6 August 2009 but was not fined, as the conduct fell outside the limitation period.",
+    "broad-access counterpoint": "Eurosystem access is not a short list: any euro-area institution subject to minimum reserve requirements, under harmonised EU/EEA supervision, financially sound and meeting its national central bank's operational requirements can be a counterparty."
+   },
+   "established": "The lists are public and the criteria are written down. The New York Fed publishes its primary dealer list and the business standards for joining it, including the $50 million net regulatory capital floor for broker-dealers, the $1 billion Tier 1 floor for banks, the 0.25% market-making share, and the duty to bid for a pro-rata share of every Treasury auction; after NatWest's withdrawal effective 16 October 2026 the list names 25 firms. The DMO publishes 19 GEMMs and describes them as primary dealers in UK government bonds. The Primary Dealer Credit Facility, 16 March 2008 to 1 February 2010, lent overnight to primary dealers only. Three enforcement outcomes are documented with dates and amounts: the CMA's 21 February 2025 settlement decision (104.46 million pounds across Citi, HSBC, Morgan Stanley and RBC; Deutsche Bank immune; payment due 22 April 2025), the European Commission's 20 May 2021 decision (UBS, Nomura and UniCredit fined 371 million euros; NatWest immune; Bank of America, Natixis and Portigon found to have taken part but not fined), and the 14 September 1992 Salomon Brothers settlement of about $27.8 million, part of a $290 million package announced in May 1992.",
+   "not_established": "That a closed list causes collusion is not established, and the US courts have gone the other way. Private plaintiffs alleging that primary dealers rigged Treasury auctions lost: the Southern District of New York dismissed the claims and the Second Circuit affirmed on 1 February 2024, calling the chatroom messages \"inconsequential market chatter\" and the plaintiffs' statistics not specific to the defendants. The CMA itself made no finding that the gilt conduct actually restricted competition, only that it was restrictive by object, and the Debt Management Office, the Bank of England, HM Treasury and Bloomberg were not under investigation. No authority has found that any of these conduct findings resulted from the existence of the dealer list, and no enforcement action names a central bank as a party. The official case for a short list is operational: the New York Fed says primary dealers are simply its trading counterparties, that the relationship is a business one and not an endorsement, and it requires back-office capacity, triparty and central-counterparty arrangements and geographically dispersed disaster recovery; the IMF working paper by George Iden and Marco Arnone (March 2003) reports broad agreement among surveyed authorities that such systems are highly recommended. The euro area is the clearest counter-example to the \"club\" reading: the Bank of Spain's explanation of Eurosystem counterparties sets out only generic criteria (minimum reserve requirements, harmonised supervision, financial soundness, operational requirements) and says the Eurosystem endeavours to have as many bidding counterparties as possible. I did not obtain a count of Eurosystem counterparties, nor the Bank of England's own Sterling Monetary Framework participant list, so no figure is given for either.",
+   "test": "Two full decisions, both already written and only partly public: the CMA's non-confidential decision in its UK government bonds case (listed on its gov.uk case page) and the European Commission's non-confidential decision in the European Government Bonds case of 20 May 2021, which name the desks, the chats and the auctions involved. Alongside them, two datasets that exist and are collected weekly: the FR 2004 dealer position reports that primary dealers must file with the New York Fed, and the US Treasury's auction allotment results by bidder class. Matching dealer-level FR 2004 positions against auction allotments would show what share of each auction the 25 firms actually take and whether that share has moved as the list has shrunk; neither needs new research, only release at dealer level.",
+   "parties": [
+    {
+     "name": "Federal Reserve Bank of New York",
+     "hq_city": "New York",
+     "hq_iso3": "USA",
+     "what_it_does": "Publishes the primary dealer list, sets the business standards for joining, and trades government securities only with those 25 firms when it implements monetary policy."
+    },
+    {
+     "name": "UK Debt Management Office",
+     "hq_city": "London",
+     "hq_iso3": "GBR",
+     "what_it_does": "Issues gilts and publishes the list of 19 Gilt-edged Market Makers, who are expected to take part in issuance and quote two-way prices to clients."
+    },
+    {
+     "name": "Competition and Markets Authority",
+     "hq_city": "London",
+     "hq_iso3": "GBR",
+     "what_it_does": "Fined four banks 104.46 million pounds on 21 February 2025 over gilt and gilt asset swap pricing chats, after Deutsche Bank reported them under the leniency policy."
+    },
+    {
+     "name": "European Commission, Directorate-General for Competition",
+     "hq_city": "Brussels",
+     "hq_iso3": "BEL",
+     "what_it_does": "Decided on 20 May 2021 that traders on seven banks' European government bond desks shared prices, volumes and auction bidding strategy, and fined three of them 371 million euros in total."
+    },
+    {
+     "name": "United States Department of Justice, Antitrust Division",
+     "hq_city": "Washington",
+     "hq_iso3": "USA",
+     "what_it_does": "Brought the 1992 Salomon Brothers case over the 1991 squeeze in two-year Treasury notes, settled for about $27.8 million under Section 6 of the Sherman Act."
+    },
+    {
+     "name": "Salomon Brothers Inc.",
+     "hq_city": "New York",
+     "hq_iso3": "USA",
+     "what_it_does": "Then a primary dealer; settled the Justice Department suit over coordinating trading to limit the supply of May 1993 two-year notes, without admitting a violation."
+    },
+    {
+     "name": "UBS AG",
+     "hq_city": "Zurich",
+     "hq_iso3": "CHE",
+     "what_it_does": "US primary dealer and London GEMM; received the largest fine, 172,378,000 euros, in the European Commission's 2021 bond decision for conduct from 4 January 2007 to 28 November 2011."
+    },
+    {
+     "name": "NatWest Group (formerly Royal Bank of Scotland)",
+     "hq_city": "Edinburgh",
+     "hq_iso3": "GBR",
+     "what_it_does": "Revealed the euro government bond cartel to the European Commission and was fined zero; NatWest Markets plc is a GEMM, and NatWest Markets Securities Inc. left the New York Fed's primary dealer list on 16 October 2026."
+    },
+    {
+     "name": "Citigroup",
+     "hq_city": "New York",
+     "hq_iso3": "USA",
+     "what_it_does": "Primary dealer and GEMM; fined 17.16 million pounds by the CMA after applying for leniency during the gilts investigation."
+    },
+    {
+     "name": "Bank of England",
+     "hq_city": "London",
+     "hq_iso3": "GBR",
+     "what_it_does": "Ran the gilt buy-back auctions that were one of the three areas the CMA found traders discussed; it was not itself under investigation."
+    }
+   ],
+   "confirmed_by": [
+    {
+     "title": "Federal Reserve Bank of New York, Primary Dealers List (NatWest Markets Securities withdrawal effective 16 October 2026)",
+     "url": "https://www.newyorkfed.org/newsevents/news/markets/2026/an261016p"
+    },
+    {
+     "title": "Federal Reserve Bank of New York, Primary Dealers (obligations and business standards for joining)",
+     "url": "https://newyorkfed.org/markets/primarydealers"
+    },
+    {
+     "title": "UK Debt Management Office, Gilt Market: Market Participants (list of Gilt-edged Market Makers)",
+     "url": "https://dmo.gov.uk/responsibilities/gilt-market/market-participants"
+    },
+    {
+     "title": "Federal Reserve Board, Primary Dealer Credit Facility (PDCF)",
+     "url": "https://www.federalreserve.gov/regreform/reform-pdcf.htm"
+    },
+    {
+     "title": "CMA press release, 'CMA reaches settlement with banks in competition case', 21 February 2025",
+     "url": "https://www.gov.uk/government/news/cma-reaches-settlement-with-banks-in-competition-case"
+    },
+    {
+     "title": "CMA case page, 'Anti-competitive arrangements in UK government bonds'",
+     "url": "https://www.gov.uk/cma-cases/financial-services-sector-suspected-anti-competitive-practices"
+    },
+    {
+     "title": "European Commission announcement, 'Commission fines investment banks EUR 371 million for participating in a European Government Bonds trading cartel', 20 May 2021 (full text)",
+     "url": "https://mondovisione.com/news/antitrust-european-commission-fines-investment-banks-371-million-for-particip-2021520/"
+    },
+    {
+     "title": "US Department of Justice, Antitrust Division press release on the Salomon Brothers Treasury notes settlement, 14 September 1992",
+     "url": "https://www.justice.gov/archive/atr/public/press_releases/1992/211290.htm"
+    },
+    {
+     "title": "Sullivan & Cromwell, Second Circuit affirmance of dismissal in the Treasury auctions antitrust litigation, 1 February 2024",
+     "url": "https://sullcrom.com/About/News-and-Events/Highlights/2024/February/S-C-Obtains-Second-Circuit-Win-for-Barclays-and-Goldman-Sachs-in-Treasury-Auctions-Antitrust-Case"
+    },
+    {
+     "title": "Banco de España, 'What are counterparties?' (Eurosystem counterparty criteria)",
+     "url": "https://www.bde.es/wbe/en/areas-actuacion/politica-monetaria/politica-monetaria-area-euro/tipos-interes-bce/que-son-las-entidades-contrapartida.html"
+    },
+    {
+     "title": "George Iden and Marco Arnone, 'Primary Dealers in Government Securities: Policy Issues and Selected Countries Experience', IMF Working Paper, 1 March 2003",
+     "url": "https://www.imf.org/en/publications/wp/issues/2016/12/30/primary-dealers-in-government-securities-policy-issues-and-selected-countries-experience-16334/index.md"
+    }
+   ],
+   "body": "Governments borrow by selling bonds, and central banks buy and sell them to steer interest rates. Both usually deal only with firms on a published short list. Those firms see the state's orders first, and the auction prices decide what a government pays to borrow, which feeds into taxes and mortgage rates.\n\nThe New York Fed publishes its list of primary dealers; after NatWest Markets Securities Inc. withdrew with effect from 16 October 2026 it held 25 firms. Joining requires $50 million of net regulatory capital, or $1 billion of Tier 1 capital for a bank, plus a 0.25% share of Treasury market-making. On 21 February 2025 the UK Competition and Markets Authority settled with Citi for 17.16 million pounds, HSBC 23.4 million, Morgan Stanley 29.7 million and Royal Bank of Canada 34.2 million, 104.46 million pounds in all, over one-to-one Bloomberg chats on gilt pricing between 2009 and 2013. Two earlier cases ended similarly: about $27.8 million from Salomon Brothers on 14 September 1992, 371 million euros from UBS, Nomura and UniCredit on 20 May 2021.\n\nThat the short list causes the conduct is not established, and US courts went the other way: the Southern District of New York dismissed claims that primary dealers rigged Treasury auctions and the Second Circuit affirmed on 1 February 2024, calling the chatroom messages \"inconsequential market chatter\". The CMA found the gilt conduct restrictive by object, not that it actually restricted competition, and the Debt Management Office, Bank of England, HM Treasury and Bloomberg were not investigated. No enforcement action names a central bank. The New York Fed says primary dealers are simply its trading counterparties and the relationship is not an endorsement; an IMF working paper by Iden and Arnone (March 2003) found authorities broadly agreed such systems are recommended; and the Bank of Spain says Eurosystem criteria are generic and the Eurosystem aims for as many bidders as possible. No Eurosystem count and no Bank of England Sterling Monetary Framework list were obtained.\n\nRelease of the CMA's and the Commission's non-confidential decisions would name the desks, chats and auctions. Dealer-level FR 2004 position reports, filed weekly with the New York Fed and matched against Treasury auction allotments by bidder class, would show what share of each auction the 25 firms take."
+  },
+  {
+   "id": "private-meetings-governors-attend-where",
+   "title": "Private meetings governors attend where nothing is minuted",
+   "kind": "club",
+   "summary": "Some of the rooms central bankers sit in publish a guest list and nothing else. The Bilderberg Meetings' own participant list for its 70th meeting, Madrid, 30 May to 2 June 2024, includes \"Hernandez de Cos, Pablo (ESP), Governor, Banco de Espana\" alongside Poland's finance minister Andrzej Domanski, Turkey's finance minister Mehmet Simsek and US Deputy Treasury Secretary Adewale Adeyemo; Hernandez de Cos was Governor of the Bank of Spain until June 2024, a member of the ECB Governing Council and chair of the Basel Committee on Banking Supervision, and the BIS announced on 11 November 2024 that he would become its General Manager from 1 July 2025. At the 2011 meeting in Switzerland the trade journal Central Banking reported the attendance of ECB president Jean-Claude Trichet, National Bank of Belgium governor Luc Coene and Bank of Canada governor Mark Carney. Bilderberg's own FAQ sets out the terms: attendance is by invitation only with no application process, participants \"take part in the Meeting as individuals in their own right\", they \"agree not to quote each other\", there are no resolutions or votes and no closing statement, and only the location, topics and participant list are published, shortly beforehand. One oversight body has ruled on a comparable membership: in case 1697/2016/ANA, opened 17 January 2017 on a complaint by Corporate Europe Observatory, the European Ombudsman recommended on 15 January 2018 that ECB President Mario Draghi suspend his membership of the Group of Thirty and that his successor and other decision-makers not join; the ECB replied on 18 April 2018 that the G30 was \"an appropriate forum\" and disagreed, and the Ombudsman's decision of 5 July 2018 found maladministration, stating that \"the ECB has failed to ensure that its President suspends his membership of the G30\". The ECB's Code of Conduct for high-level officials, signed 5 December 2018 and in force from 1 January 2019, tells its most senior figures to use \"particular prudence\" and appropriate safeguards when taking part in closed events, to notify the Ethics Committee in writing of private activities, and to publish Declarations of Interests and monthly calendars.",
+   "countries": [
+    {
+     "iso3": "ESP",
+     "role": "sitting governor on a published list",
+     "note": "Pablo Hernandez de Cos appears on the Bilderberg Meetings' own 2024 participant list as Governor, Banco de Espana, a post he held until June 2024."
+    },
+    {
+     "iso3": "EMU",
+     "role": "subject of the oversight finding",
+     "note": "The European Ombudsman found maladministration by the ECB over its President's membership of the Group of Thirty, and the ECB's 2019 Code of Conduct is the one documented rule telling central bankers to be cautious at closed events."
+    },
+    {
+     "iso3": "BEL",
+     "role": "attending governor and complainant's seat",
+     "note": "National Bank of Belgium governor Luc Coene attended the 2011 Bilderberg meeting; the Brussels group Corporate Europe Observatory brought the Ombudsman complaint."
+    },
+    {
+     "iso3": "CAN",
+     "role": "attending governor",
+     "note": "Mark Carney attended the 2011 meeting while governor of the Bank of Canada."
+    },
+    {
+     "iso3": "CHE",
+     "role": "meeting host",
+     "note": "The 2011 Bilderberg meeting at which Trichet, Coene and Carney were reported as present was held in Switzerland; the BIS, which Hernandez de Cos now heads, is in Basel."
+    },
+    {
+     "iso3": "USA",
+     "role": "officials attending, and founder of the Trilateral Commission",
+     "note": "Deputy Treasury Secretary Adewale Adeyemo is on the 2024 Bilderberg list; the Trilateral Commission was founded in 1973 by the American banker David Rockefeller and has about 350 members across three regional groups."
+    },
+    {
+     "iso3": "POL",
+     "role": "finance minister attending",
+     "note": "Finance minister Andrzej Domanski appears on the 2024 Bilderberg participant list."
+    },
+    {
+     "iso3": "TUR",
+     "role": "finance minister attending",
+     "note": "Finance minister Mehmet Simsek appears on the 2024 Bilderberg participant list."
+    }
+   ],
+   "role_info": {
+    "sitting governor on a published list": "Pablo Hernandez de Cos appears on the Bilderberg Meetings' own 2024 participant list as Governor, Banco de Espana, a post he held until June 2024.",
+    "subject of the oversight finding": "The European Ombudsman found maladministration by the ECB over its President's membership of the Group of Thirty, and the ECB's 2019 Code of Conduct is the one documented rule telling central bankers to be cautious at closed events.",
+    "attending governor and complainant's seat": "National Bank of Belgium governor Luc Coene attended the 2011 Bilderberg meeting; the Brussels group Corporate Europe Observatory brought the Ombudsman complaint.",
+    "attending governor": "Mark Carney attended the 2011 meeting while governor of the Bank of Canada.",
+    "meeting host": "The 2011 Bilderberg meeting at which Trichet, Coene and Carney were reported as present was held in Switzerland; the BIS, which Hernandez de Cos now heads, is in Basel.",
+    "officials attending, and founder of the Trilateral Commission": "Deputy Treasury Secretary Adewale Adeyemo is on the 2024 Bilderberg list; the Trilateral Commission was founded in 1973 by the American banker David Rockefeller and has about 350 members across three regional groups.",
+    "finance minister attending": "Finance minister Mehmet Simsek appears on the 2024 Bilderberg participant list."
+   },
+   "established": "Named sitting central bankers appear on published lists. The Bilderberg Meetings' own participant list for Madrid, 30 May to 2 June 2024, names Pablo Hernandez de Cos as Governor of the Banco de Espana; the BIS's 11 November 2024 release confirms he held that post until June 2024, sat on the ECB Governing Council and chaired the Basel Committee from January 2019. Central Banking reported on 10 June 2011 that ECB president Jean-Claude Trichet, Belgian governor Luc Coene and Bank of Canada governor Mark Carney were on that year's list. The terms of the gathering are the organisers' own: invitation only, no application, participants attend as individuals, no quoting each other, no votes, no closing statement, and the only documents published are the location, the topics and the list. On the oversight side, the European Ombudsman's case 1697/2016/ANA produced a recommendation dated 15 January 2018 and a decision of 5 July 2018 finding maladministration over the ECB President's membership of the Group of Thirty, with five specific recommendations including that attendance at non-member G30 events meet the same transparency standards as other ECB meetings with the banking industry and that Executive Board members be accompanied by an ECB staff member at all meetings. The rule that exists is the ECB's own: Article 8 of the 2019 Code of Conduct (2019/C 89/03) asks for particular prudence and appropriate safeguards when participating in closed events, Article 7.5 requires written notification of private activities to the Ethics Committee, and the ECB publishes Declarations of Interests and monthly calendars. The attendance is not hidden by the central bank either: the Banco de Espana publishes its governor's institutional diary, and the June 2024 calendar lists \"Asistencia al 70 Club Bilderberg\" in Madrid on Saturday 1 and Sunday 2 June, in the same list as the European Central Bank Governing Council meeting of 5 and 6 June in Frankfurt. He attended again in 2025, by then as the incoming General Manager of the Bank for International Settlements.",
+   "not_established": "Nothing here shows what was said or decided, and nothing in these sources shows a policy that followed from a meeting. The Bilderberg participant list is a list: it carries no agenda item attributed to anyone, no record of discussion and no outcome, and the organisers state there is none to publish. For the Trilateral Commission I could not obtain the Commission's own current membership list from its own website through search, so this record makes no claim that any sitting central banker is a Trilateral member; the only Trilateral facts given are from Britannica. Beyond 2024 and 2011 I did not retrieve the Bilderberg lists year by year, so no series of central bank attendance over time is asserted. The strongest reading in circulation is itself hedged by the researcher who makes it: Lukas Kantor, interviewed in the Georgetown Journal of International Affairs on 24 February 2025, says every ECB president attended at least one conference before taking office but describes his career evidence as largely circumstantial, says he does not want to demonise the meetings, and notes that the subject was almost monopolised by conspiracy theorists, which kept mainstream researchers away. The ECB disputes the Ombudsman's reading directly, calling the G30 an appropriate forum and the group's transparency \"certainly adequate\"; the Ombudsman's finding concerns the G30, not Bilderberg, and no oversight body in these sources has made any finding about Bilderberg or Trilateral attendance. I found no central bank with a rule flatly barring attendance at such gatherings, only the ECB's prudence-and-notification requirements.",
+   "test": "Three artefacts that already exist and are routinely released. First, the monthly calendars and annual Declarations of Interests that the ECB's Code of Conduct requires its Executive Board and Governing Council members to publish, which should show whether a closed meeting was entered in the diary and under what description. Second, the equivalent diaries and expense or travel records of national central banks for the days of a named meeting, obtainable under national freedom-of-information or transparency rules, which would show who travelled, who paid and who accompanied the official, the point the Ombudsman's fourth recommendation turned on. Third, the Bilderberg Meetings' own archived participant lists year by year on its website, which would make a dated series of central bank attendance verifiable without any inference about content.",
+   "parties": [
+    {
+     "name": "Bilderberg Meetings",
+     "hq_city": "not stated in the sources used",
+     "hq_iso3": "",
+     "what_it_does": "Runs an annual invitation-only conference; publishes location, topics and the participant list shortly before each meeting, takes no votes, issues no closing statement, and asks participants not to quote each other."
+    },
+    {
+     "name": "Banco de Espana",
+     "hq_city": "Madrid",
+     "hq_iso3": "ESP",
+     "what_it_does": "Its governor Pablo Hernandez de Cos, in office 2018 to June 2024 and then chair of the Basel Committee, appears on the Bilderberg Meetings' own 2024 participant list."
+    },
+    {
+     "name": "European Central Bank",
+     "hq_city": "Frankfurt am Main",
+     "hq_iso3": "DEU",
+     "what_it_does": "Defended its President's Group of Thirty membership as 'an appropriate forum' in its 18 April 2018 reply, and in 2019 brought in a single Code of Conduct requiring particular prudence at closed events and publication of monthly calendars."
+    },
+    {
+     "name": "European Ombudsman",
+     "hq_city": "Strasbourg",
+     "hq_iso3": "FRA",
+     "what_it_does": "In case 1697/2016/ANA recommended (15 January 2018) that the ECB President suspend his G30 membership, and on 5 July 2018 found maladministration when the ECB declined."
+    },
+    {
+     "name": "Corporate Europe Observatory",
+     "hq_city": "Brussels",
+     "hq_iso3": "BEL",
+     "what_it_does": "Complained to the Ombudsman that ECB involvement in the Group of Thirty was incompatible with the ECB's independence, reputation and integrity once it took on banking supervision."
+    },
+    {
+     "name": "Bank for International Settlements",
+     "hq_city": "Basel",
+     "hq_iso3": "CHE",
+     "what_it_does": "Announced on 11 November 2024 that Hernandez de Cos would be its General Manager from 1 July 2025, succeeding Agustin Carstens."
+    },
+    {
+     "name": "National Bank of Belgium",
+     "hq_city": "Brussels",
+     "hq_iso3": "BEL",
+     "what_it_does": "Its governor Luc Coene was reported among the attendees of the 2011 Bilderberg meeting."
+    },
+    {
+     "name": "Bank of Canada",
+     "hq_city": "Ottawa",
+     "hq_iso3": "CAN",
+     "what_it_does": "Its governor Mark Carney was reported among the attendees of the 2011 Bilderberg meeting."
+    },
+    {
+     "name": "Trilateral Commission",
+     "hq_city": "not stated in the sources used",
+     "hq_iso3": "",
+     "what_it_does": "Private body founded in 1973 by David Rockefeller with about 350 members organised in North American, European and Asia-Pacific groups, meeting annually to consider reports and debate strategy."
+    }
+   ],
+   "confirmed_by": [
+    {
+     "title": "Bilderberg Meetings, participant list, 70th meeting, Madrid, 30 May - 2 June 2024",
+     "url": "https://bilderbergmeetings.org/meetings/meeting-2024/participants-2024"
+    },
+    {
+     "title": "Bilderberg Meetings, Frequently Asked Questions (invitation, no quoting, no votes, what is published)",
+     "url": "https://bilderbergmeetings.org/frequently-asked-questions"
+    },
+    {
+     "title": "Central Banking, 'Governors among attendees at Bilderberg meet', 10 June 2011",
+     "url": "https://www.centralbanking.com/central-banking/news/2078226/finance-officials-attend-secretive-bilderberg-meeting"
+    },
+    {
+     "title": "European Ombudsman, decision in case 1697/2016/ANA on the ECB President's Group of Thirty membership, 5 July 2018",
+     "url": "https://www.ombudsman.europa.eu/hr/decision/en/98547"
+    },
+    {
+     "title": "European Ombudsman, case file 1697/2016/ANA (opened 17 January 2017; recommendation 15 January 2018)",
+     "url": "https://www.ombudsman.europa.eu/it/case/en/49031"
+    },
+    {
+     "title": "ECB/SSM press release, 'ECB publishes single Code of Conduct for high-level officials', 16 January 2019",
+     "url": "https://www.bankingsupervision.europa.eu/press/pr/date/2019/html/ssm.pr190116.en.html"
+    },
+    {
+     "title": "Code of Conduct for high-level European Central Bank officials (2019/C 89/03), signed 5 December 2018, in force 1 January 2019",
+     "url": "https://www.banque-france.fr/system/files/2024-12/code-of-conduct_high-level_ecb_en.pdf"
+    },
+    {
+     "title": "BIS press release, 'Pablo Hernandez de Cos announced as next BIS General Manager, effective 1 July 2025', 11 November 2024",
+     "url": "https://www.bis.org/press/p241111.htm"
+    },
+    {
+     "title": "Encyclopaedia Britannica, Trilateral Commission",
+     "url": "https://www.britannica.com/topic/Trilateral-Commission"
+    },
+    {
+     "title": "Georgetown Journal of International Affairs, interview with Lukas Kantor, 'The Bilderberg Meetings: A Forum for Trans-Atlantic Dialogue and Elite Career Advancement', 24 February 2025",
+     "url": "https://gjia.georgetown.edu/2025/02/24/the-bilderberg-meetings-a-forum-for-trans-atlantic-dialogue-and-elite-career-advancement/"
+    },
+    {
+     "title": "Banco de Espana, governor's institutional diary, June 2024",
+     "url": "https://www.bde.es/f/webbe/INF/MenuHorizontal/SobreElBanco/Transparencia/Informacion_Institucional/Agendas_Gobernador_Subgobernador/2024.06_Calendar_GOV_Spanish.pdf"
+    }
+   ],
+   "body": "The people who set interest rates attend gatherings where the guest list is published and nothing else is: no record of the discussion, no outcome. Rate decisions move mortgage payments, savings returns and jobs, and a parliament reviewing those decisions cannot learn what was put to a governor in such a room, or by whom.\n\nBilderberg's own list for its 70th meeting, Madrid, 30 May to 2 June 2024, includes \"Hernandez de Cos, Pablo (ESP), Governor, Banco de Espana\", who also sat on the ECB Governing Council, chaired the Basel Committee, and was named General Manager of the Bank for International Settlements from 1 July 2025. The organisers' terms are their own: invitation only, participants attend \"as individuals in their own right\", they \"agree not to quote each other\", and only the location, topics and list are published. The Banco de Espana's June 2024 diary lists \"Asistencia al 70 Club Bilderberg\" on 1 and 2 June.\n\nNothing here shows what was said, and no policy is linked to a meeting. The only case with an oversight finding attached concerns a different body: the European Ombudsman, on a complaint by Corporate Europe Observatory, recommended on 15 January 2018 that ECB President Mario Draghi suspend his membership of the Group of Thirty; the ECB replied on 18 April 2018 that the G30 was \"an appropriate forum\" and disagreed; the decision of 5 July 2018 found maladministration. No oversight body has made any finding about Bilderberg or Trilateral attendance. The Trilateral Commission's membership list could not be obtained, so no central banker is claimed as a member; lists for other Bilderberg years were not retrieved, so no trend is asserted. Lukas Kantor, who makes the strongest published reading, told the Georgetown Journal of International Affairs on 24 February 2025 that every ECB president attended at least one conference before taking office, but calls that circumstantial. No central bank was found with a rule barring attendance, only the ECB's code asking for \"particular prudence\" at closed events.\n\nThree existing records would answer the factual part: the calendars and Declarations of Interests the ECB requires; national central banks' diaries and travel records for a named meeting's dates, under freedom-of-information rules, showing who paid and who travelled; and Bilderberg's archived participant lists year by year."
+  },
+  {
+   "id": "one-bank-s-former-staff",
+   "title": "One bank's former staff in Europe's top money jobs at the same time",
+   "kind": "club",
+   "summary": "In November 2011 several of the most powerful economic posts in Europe and in global financial rule-making were held at the same moment by people whose official biographies record a career at one firm, Goldman Sachs. The European Central Bank's own biography of Mario Draghi, who became ECB President on 1 November 2011, lists him as 'Vice-Chairman and Managing Director at Goldman Sachs International (2002-05)', after ten years as Director General of the Italian Treasury (1991-2001) and before his years as Governor of the Banca d'Italia (2006-2011). The chairmanship of the Financial Stability Board, the body that writes the post-crisis bank rules for the G20, passed in that same month from Draghi to Mark Carney, then Governor of the Bank of Canada, whose Bank of Canada biography records a thirteen-year career with Goldman Sachs in London, Tokyo, New York and Toronto before he joined the Bank in August 2003. In the same weeks, Antonio Borges resigned as Director of the International Monetary Fund's European Department, the desk running the euro-area bailout talks, a post he had held since November 2010; the Financial Times obituary records that he had been deputy governor of the Bank of Portugal from 1990 to 1993 and became vice-chairman of Goldman Sachs International in 2000. Across the Atlantic William Dudley, who joined Goldman Sachs in 1986 and was the firm's chief US economist for a decade, was President of the Federal Reserve Bank of New York from 27 January 2009 to 2018 and chaired two of the BIS central bank committees. Goldman's then chief executive Lloyd Blankfein answered the 'Government Sachs' label in his 2017 shareholder letter by writing that 'five of my most recent predecessors went into government service, and that has not been by happenstance.'",
+   "countries": [
+    {
+     "iso3": "ITA",
+     "role": "central bank and treasury",
+     "note": "Draghi was Director General of the Italian Treasury 1991-2001 and Governor of the Banca d'Italia 2006-2011, with a Goldman Sachs International vice-chairmanship in between."
+    },
+    {
+     "iso3": "DEU",
+     "role": "euro-area central bank",
+     "note": "Draghi was ECB President from 1 November 2011; Otmar Issing, ECB Executive Board member 1998-2006, is listed by Bruegel among his current positions as International Advisor, Goldman Sachs."
+    },
+    {
+     "iso3": "CAN",
+     "role": "central bank",
+     "note": "Mark Carney joined the Bank of Canada as Deputy Governor in August 2003 after thirteen years at Goldman Sachs, was Governor from 1 February 2008 and took the FSB chair in November 2011."
+    },
+    {
+     "iso3": "PRT",
+     "role": "central bank, then IMF Europe desk",
+     "note": "Antonio Borges was deputy governor of the Bank of Portugal 1990-1993, vice-chairman of Goldman Sachs International from 2000, IMF European Department director from November 2010 until he resigned in November 2011, and in 2012 was asked by Prime Minister Pedro Passos Coelho to oversee privatisations under the bailout programme."
+    },
+    {
+     "iso3": "USA",
+     "role": "central bank and firm headquarters",
+     "note": "William Dudley went from Goldman Sachs partner and chief US economist to the New York Fed in 2007 and was its president from 27 January 2009 to 2018."
+    },
+    {
+     "iso3": "GBR",
+     "role": "where the firm's international arm sits",
+     "note": "Goldman Sachs International, the London arm, is the entity named in the Draghi and Borges vice-chairmanships."
+    },
+    {
+     "iso3": "GRC",
+     "role": "debt office",
+     "note": "Petros Christodoulou was appointed General Manager of Greece's Public Debt Management Agency in February 2010; his own conference biography records Goldman Sachs money-markets and bond-trading jobs in London and Canada from 1987 to 1989, then J.P. Morgan and twelve years at the National Bank of Greece."
+    }
+   ],
+   "role_info": {
+    "central bank and treasury": "Draghi was Director General of the Italian Treasury 1991-2001 and Governor of the Banca d'Italia 2006-2011, with a Goldman Sachs International vice-chairmanship in between.",
+    "euro-area central bank": "Draghi was ECB President from 1 November 2011; Otmar Issing, ECB Executive Board member 1998-2006, is listed by Bruegel among his current positions as International Advisor, Goldman Sachs.",
+    "central bank": "Mark Carney joined the Bank of Canada as Deputy Governor in August 2003 after thirteen years at Goldman Sachs, was Governor from 1 February 2008 and took the FSB chair in November 2011.",
+    "central bank, then IMF Europe desk": "Antonio Borges was deputy governor of the Bank of Portugal 1990-1993, vice-chairman of Goldman Sachs International from 2000, IMF European Department director from November 2010 until he resigned in November 2011, and in 2012 was asked by Prime Minister Pedro Passos Coelho to oversee privatisations under the bailout programme.",
+    "central bank and firm headquarters": "William Dudley went from Goldman Sachs partner and chief US economist to the New York Fed in 2007 and was its president from 27 January 2009 to 2018.",
+    "where the firm's international arm sits": "Goldman Sachs International, the London arm, is the entity named in the Draghi and Borges vice-chairmanships.",
+    "debt office": "Petros Christodoulou was appointed General Manager of Greece's Public Debt Management Agency in February 2010; his own conference biography records Goldman Sachs money-markets and bond-trading jobs in London and Canada from 1987 to 1989, then J.P. Morgan and twelve years at the National Bank of Greece."
+   },
+   "established": "The individual appointments and dates are in official biographies and can be checked one by one: the ECB's biography of Draghi gives his Goldman Sachs International years as 2002-05, his Italian Treasury years as 1991-2001, his Banca d'Italia governorship as 2006-2011 and his chairmanship of the Financial Stability Forum and Board from April 2006 to November 2011; the Bank of Canada's biography of Carney gives his thirteen years at Goldman Sachs, his arrival as Deputy Governor in August 2003, his governorship from 1 February 2008 and his FSB chairmanship from November 2011; the Federal Reserve history archive gives Dudley's Goldman Sachs career from 1986, his move to the New York Fed in 2007 and his presidency from 27 January 2009; the IMF's press release of 16 November 2011 confirms Borges held the European Department post from November 2010 until his successors took over on 17 November 2011, and the Financial Times obituary gives his Bank of Portugal deputy governorship (1990-93) and his Goldman Sachs International vice-chairmanship from 2000; Bruegel's biography of Otmar Issing lists International Advisor, Goldman Sachs among his current positions after eight years on the ECB Executive Board; Christodoulou's conference biography gives his Goldman Sachs years as 1987-89 and his appointment to the Greek debt office in February 2010. That these posts overlapped in time is a matter of arithmetic on those dates. Goldman Sachs has publicly defended the pattern rather than denied it: Blankfein's 2017 shareholder letter said the firm 'will continue to encourage our people to contribute to government service if they are fortunate enough to be asked'.",
+   "not_established": "Nothing in these records shows the people acted together, acted for the firm, or decided anything in its favour, and no source found here shows any instruction, payment or contact between the firm and any of them while in office. The lengths of the Goldman connections are very uneven, which weakens any single label: Draghi was a vice-chairman for three years, Carney spent thirteen years there, while Christodoulou's Goldman jobs were two years as a trader two decades before he ran Greece's debt office, and Issing's listed role is an unpaid-or-paid advisory title with no dates published. The strongest published rebuttal is empirical: David Lucca, Amit Seru and Francesco Trebbi, in Federal Reserve Bank of New York Staff Report No. 678 (June 2014), built career histories for 34,064 current and former staff of US banking regulators and found flows into and out of regulation both rose in periods of intense enforcement, results they say 'appear inconsistent with a quid pro quo explanation of the revolving door' and more consistent with 'regulatory schooling', while cautioning that their evidence is 'admittedly naive' and does not rule out distortions at a finer level. In other words, movement between a big bank and public office may simply reflect where people with that training are recruited from, and a list of names without a base rate does not separate concentration from selection. Josef Joffe's Hoover Institution column of 5 December 2016, which asserts that 'the real locus of power is not the White House, but the Goldman Sachs headquarters', is a short opinion piece with no data and should not be read as evidence. Three cases often cited in this argument were not verified in this round and are deliberately left out: Mario Monti's reported advisory role with Goldman Sachs before becoming Italian Prime Minister in November 2011, and the US Treasury secretaryships of Robert Rubin and Henry Paulson.",
+   "test": "A single countable dataset settles the concentration question. Compile, from official central bank and ministry biographies and gazette appointment notices, the prior private employer of every governor of the 63 BIS member central banks, every G20 finance minister and every national debt-office head for 1990 to 2026, then compare the Goldman Sachs share against the shares for Citigroup, JPMorgan, Morgan Stanley, Deutsche Bank, McKinsey and the IMF itself, and against each firm's share of senior finance employment. If Goldman's share is not out of line with its size, the pattern is selection; if it is, the number is the finding. The method is already proven: Lucca, Seru and Trebbi did exactly this for 34,064 US regulator CVs.",
+   "parties": [
+    {
+     "name": "Goldman Sachs International",
+     "hq_city": "London",
+     "hq_iso3": "GBR",
+     "what_it_does": "The firm's international arm; the entity whose vice-chairmanship Draghi held 2002-05 and Borges held from 2000."
+    },
+    {
+     "name": "The Goldman Sachs Group, Inc.",
+     "hq_city": "New York",
+     "hq_iso3": "USA",
+     "what_it_does": "Investment bank whose chief executive Lloyd Blankfein publicly defended the flow of its people into government in his 2017 shareholder letter."
+    },
+    {
+     "name": "European Central Bank",
+     "hq_city": "Frankfurt",
+     "hq_iso3": "DEU",
+     "what_it_does": "Sets interest rates for the euro area; Draghi was President from 1 November 2011 to 2019."
+    },
+    {
+     "name": "Financial Stability Board",
+     "hq_city": "Basel",
+     "hq_iso3": "CHE",
+     "what_it_does": "Coordinates global financial regulation for the G20; its chairmanship passed from Draghi (April 2006 as FSF, to November 2011) to Carney (November 2011, three-year term)."
+    },
+    {
+     "name": "International Monetary Fund, European Department",
+     "hq_city": "Washington",
+     "hq_iso3": "USA",
+     "what_it_does": "Ran the Fund's side of the euro-area bailout programmes; directed by Borges from November 2010 to November 2011."
+    },
+    {
+     "name": "Federal Reserve Bank of New York",
+     "hq_city": "New York",
+     "hq_iso3": "USA",
+     "what_it_does": "Carries out US monetary policy operations and supervises the largest US banks; Dudley was markets chief from 2007 and president 2009-2018."
+    },
+    {
+     "name": "Public Debt Management Agency",
+     "hq_city": "Athens",
+     "hq_iso3": "GRC",
+     "what_it_does": "Issues and manages Greek government debt; headed by Christodoulou from February 2010."
+    }
+   ],
+   "confirmed_by": [
+    {
+     "title": "ECB Forum biography of Mario Draghi (Goldman Sachs International 2002-05; Italian Treasury 1991-2001; Banca d'Italia 2006-2011; FSF/FSB chair from April 2006)",
+     "url": "https://www.ecb.europa.eu/pub/conferences/ecbforum/previous_fora/2017/html/biographies/draghi.en.html"
+    },
+    {
+     "title": "Bank of Canada, former governors: Mark Carney (thirteen years at Goldman Sachs; Deputy Governor August 2003; Governor from 1 February 2008; FSB Chairman November 2011)",
+     "url": "https://www.bankofcanada.ca/about/history/former-governors/mark-carney/"
+    },
+    {
+     "title": "Federal Reserve History: William C. Dudley (Goldman Sachs from 1986, chief US economist for a decade; New York Fed 2007; president from 27 January 2009; BIS committee chairmanships)",
+     "url": "https://www.federalreservehistory.org/people/william_c_dudley"
+    },
+    {
+     "title": "IMF Press Release: Antonio Borges to leave the Fund (European Department post taken up November 2010; successors effective 17 November 2011)",
+     "url": "https://www.imf.org/en/news/articles/2015/09/14/01/49/pr11417"
+    },
+    {
+     "title": "Financial Times obituary: Antonio Borges, former dean of INSEAD (Bank of Portugal deputy governor 1990-93; vice-chairman of Goldman Sachs International from 2000; IMF European director; 2012 Portuguese privatisations role)",
+     "url": "https://euro2day.gr/ftcom_en/article-ft-en/1128943/obituary-antonio-borges-former-dean-of-insead.html"
+    },
+    {
+     "title": "Bruegel biography of Otmar Issing (ECB Executive Board 1 June 1998 - 31 May 2006; current positions include International Advisor, Goldman Sachs)",
+     "url": "https://www.bruegel.org/people/otmar-issing"
+    },
+    {
+     "title": "Capital Link conference biography of Petros Christodoulou (Goldman Sachs London 1987-88 and Canada 1988-89; J.P. Morgan 1989-98; National Bank of Greece 1998-2010; General Manager, Public Debt Management Agency, February 2010)",
+     "url": "https://forums.capitallink.com/greece/2012/bios/christodoulou.htm"
+    },
+    {
+     "title": "Risk.net: Greece replaces debt management chief (Christodoulou takes over the PDMA, reported 1 March 2010)",
+     "url": "https://www.risk.net/node/1594742"
+    },
+    {
+     "title": "CNN Money: Goldman Sachs CEO responds to 'Government Sachs' criticism (Blankfein's 2017 shareholder letter)",
+     "url": "https://money.cnn.com/2017/03/17/investing/goldman-sachs-lloyd-blankfein-defends-government-sachs-trump/index.html"
+    },
+    {
+     "title": "Lucca, Seru and Trebbi, 'The Revolving Door and Worker Flows in Banking Regulation', Federal Reserve Bank of New York Staff Report No. 678, June 2014",
+     "url": "https://www.newyorkfed.org/medialibrary/media/research/staff_reports/sr678.pdf"
+    },
+    {
+     "title": "Josef Joffe, 'Who Runs The World?', Hoover Institution, 5 December 2016",
+     "url": "https://www.hoover.org/research/who-runs-world"
+    }
+   ],
+   "body": "The people who set interest rates and write bank rules are often recruited from the banks themselves, and the cost of a rescue or a loose rule lands on taxpayers. In November 2011 four such posts were held at once by people whose biographies record a career at one firm, Goldman Sachs.\n\nThe ECB lists Mario Draghi, President from 1 November 2011, as \"Vice-Chairman and Managing Director at Goldman Sachs International (2002-05)\", and as chair of the Financial Stability Board, which writes bank rules for the G20, from April 2006 to November 2011. That chairmanship passed the same month to Mark Carney, then Governor of the Bank of Canada, whose official biography records thirteen years at Goldman Sachs. In the same weeks Antonio Borges, a former Goldman Sachs vice-chairman, ran the IMF's euro-area bailout desk, and William Dudley, a Goldman economist from 1986, led the New York Fed. Lloyd Blankfein's 2017 shareholder letter answered the label: \"five of my most recent predecessors went into government service, and that has not been by happenstance.\"\n\nNothing shows the people acted together, acted for the firm, or decided anything in its favour, and no source shows any instruction, payment or contact while in office. The connections are uneven: three years for Draghi, thirteen for Carney, 1987-89 for Petros Christodoulou two decades before he ran Greece's debt office, no dates for Otmar Issing's advisory role. The strongest rebuttal is a count: Lucca, Seru and Trebbi, in New York Fed Staff Report No. 678 (June 2014), tracked 34,064 current and former US banking regulator staff and found movement into and out of regulation both rose when enforcement was intense, results they say \"appear inconsistent with a quid pro quo explanation of the revolving door\", calling their own evidence \"admittedly naive\". Without a comparison rate, a list of names cannot separate concentration from ordinary recruitment; Josef Joffe's Hoover Institution column of 5 December 2016 is opinion with no data. Mario Monti's reported Goldman role and the Rubin and Paulson Treasury secretaryships were unverified and are left out.\n\nOne dataset would settle it: the previous employer of every governor of the 63 BIS member central banks and every G20 finance minister from 1990 to 2026, with Goldman's share set against Citigroup, JPMorgan, Deutsche Bank and the IMF."
+  },
+  {
+   "id": "thirty-governors-meeting-in-basel",
+   "title": "Thirty governors meeting in Basel with no agenda or record released",
+   "kind": "club",
+   "summary": "Every two months the governors of 30 of the Bank for International Settlements' member central banks meet in Basel as the Global Economy Meeting, a group the BIS says represents about four fifths of world GDP, with the governors of 22 further central banks attending as observers; a smaller 19-member Economic Consultative Committee, made up of all the governors who sit on the BIS Board plus the BIS General Manager, prepares the proposals and recommends who chairs the three Basel central bank committees. Both bodies are led by the same person: the BIS announced on 12 November 2025 that Christine Lagarde, President of the European Central Bank, would take the chair from May 2026, succeeding Jerome Powell, after Agustin Carstens (from 1 July 2013) and Mark Carney (from 1 December 2017). The BIS page for the Markets Committee, one of the committees the meeting instructs, states plainly that 'there are no public releases of the meeting agendas or discussions'. Papers from these meetings do exist in member central banks: in 2019 the Reserve Bank of Australia, answering a freedom-of-information request about the Global Economy Meetings, refused to release the agendas, discussion papers and meeting programmes under sections 33 and 45 of the FOI Act, its Secretary Anthony Dickman saying release could reasonably be expected to cause damage to the Bank's international relations and that the BIS had supplied the material in confidence; on internal review Assistant Governor Lindsay Boulton upheld the refusal under section 33(b), which covers information communicated in confidence by an international organisation, and released only 54 travel documents showing that Governor Philip Lowe and the RBA's chief representative in Europe, Michael Davies, were the only two officers who attended. The meeting rooms themselves sit under the agreement of 10 February 1987 between the Swiss Federal Council and the BIS, which guarantees the Bank 'absolute freedom to hold meetings, including freedom of discussion and decision' (Article 2), makes its premises inviolable so that 'no agent of the Swiss public authorities may enter therein without the express consent of the Bank' and its archives and all documents and data media 'inviolable at all times and in all places' (Article 3), gives it immunity from Swiss jurisdiction and from seizure or freezing of its assets and of all deposits entrusted to it (Article 4), exempts it from federal, cantonal and communal taxes (Article 7), and gives Board members, visiting central bank representatives and all BIS officials immunity from jurisdiction for acts carried out in their duties and inviolability of their papers (Articles 12 to 14).",
+   "countries": [
+    {
+     "iso3": "CHE",
+     "role": "host state granting the immunities",
+     "note": "Switzerland signed the headquarters agreement of 10 February 1987 under which Swiss officials cannot enter BIS premises without the Bank's consent and the Bank's archives are inviolable."
+    },
+    {
+     "iso3": "DEU",
+     "role": "chairs the meeting from May 2026",
+     "note": "ECB President Christine Lagarde, based in Frankfurt, chairs the Global Economy Meeting and Economic Consultative Committee from May 2026."
+    },
+    {
+     "iso3": "USA",
+     "role": "outgoing chair",
+     "note": "Federal Reserve Chair Jerome Powell held the Global Economy Meeting chair until the handover announced for May 2026; New York Fed president William Dudley chaired two of the committees that report into the meeting."
+    },
+    {
+     "iso3": "ITA",
+     "role": "chairs the BIS Board and the All Governors' Meeting",
+     "note": "Fabio Panetta, Governor of the Banca d'Italia, is Chair of the BIS Board and chairs the All Governors' Meeting of all 63 member central banks."
+    },
+    {
+     "iso3": "AUS",
+     "role": "member whose papers were requested and withheld",
+     "note": "The Reserve Bank of Australia refused a 2019 FOI request for Global Economy Meeting agendas and discussion papers under sections 33 and 45 of the FOI Act, releasing only travel records."
+    },
+    {
+     "iso3": "MEX",
+     "role": "former chair",
+     "note": "Agustin Carstens chaired the Economic Consultative Committee and the Global Economy Meeting from 1 July 2013 while Governor of the Bank of Mexico, then became BIS General Manager in December 2017."
+    },
+    {
+     "iso3": "GBR",
+     "role": "former chair",
+     "note": "Mark Carney took the chair of both bodies on 1 December 2017 while Governor of the Bank of England."
+    }
+   ],
+   "role_info": {
+    "host state granting the immunities": "Switzerland signed the headquarters agreement of 10 February 1987 under which Swiss officials cannot enter BIS premises without the Bank's consent and the Bank's archives are inviolable.",
+    "chairs the meeting from May 2026": "ECB President Christine Lagarde, based in Frankfurt, chairs the Global Economy Meeting and Economic Consultative Committee from May 2026.",
+    "outgoing chair": "Federal Reserve Chair Jerome Powell held the Global Economy Meeting chair until the handover announced for May 2026; New York Fed president William Dudley chaired two of the committees that report into the meeting.",
+    "chairs the BIS Board and the All Governors' Meeting": "Fabio Panetta, Governor of the Banca d'Italia, is Chair of the BIS Board and chairs the All Governors' Meeting of all 63 member central banks.",
+    "member whose papers were requested and withheld": "The Reserve Bank of Australia refused a 2019 FOI request for Global Economy Meeting agendas and discussion papers under sections 33 and 45 of the FOI Act, releasing only travel records.",
+    "former chair": "Mark Carney took the chair of both bodies on 1 December 2017 while Governor of the Bank of England."
+   },
+   "established": "The structure, the attendance numbers and the chairmanship are published by the BIS itself: 30 governors in the Global Economy Meeting representing about four fifths of global GDP, 22 observer governors, a 19-member Economic Consultative Committee of the Board governors plus the General Manager, both chaired by the same person, with the chair passing from Carstens (1 July 2013) to Carney (1 December 2017) to Powell and to Lagarde from May 2026, and a separate All Governors' Meeting of all 63 members chaired by BIS Board Chair Fabio Panetta. The absence of a public record is also published: the BIS states for the Markets Committee that 'there are no public releases of the meeting agendas or discussions'. The existence of written papers is documented from outside the BIS, by the Reserve Bank of Australia's 2019 FOI decisions, which withheld agendas, discussion papers and meeting programmes as material communicated in confidence by an international organisation. The legal insulation is in a signed and published treaty text: Articles 2, 3, 4, 7 and 12 to 14 of the 1987 agreement with Switzerland, reprinted in the BIS Basic Texts.",
+   "not_established": "No source found here establishes that minutes of the Global Economy Meeting are taken at all, so the common claim that minutes exist and are suppressed is not supported; what is documented is agendas, discussion papers and programmes. Nothing found shows that any decision binding on any country is taken in these rooms: the BIS presents the meetings as a forum that gives guidance to committees, and says the outcomes of the Basel Process are visible to the public in those committees' reports and standards. The immunities in the 1987 agreement are not unique to the BIS; they follow the pattern Switzerland grants other international organisations, and the agreement itself carves out exceptions, allowing suits by the Bank's own contractual counterparties and permitting execution on a final judgment. The confidentiality has a published defence: Stefan Gerlach, a former BIS official and later chief economist at EFG Bank, told SWI swissinfo.ch that central bank governors 'can go there and talk freely' without concern that their remarks will leak. The sharpest published criticism is a characterisation rather than a finding: the journalist Adam LeBor, author of Tower of Basel (2013), called the BIS 'an opaque, elitist and anti-democratic institution, out of step with the twenty-first century', and SWI swissinfo.ch reported that 'there are no public records of debates or conversations'. This entry takes no position on claims that the meetings constitute any form of world government; no source found supports that, and the documented material does not reach it.",
+   "test": "Two obtainable artefacts would settle it. First, an appeal to the Australian Information Commissioner against the Reserve Bank of Australia's section 33 refusal, or a parallel access request to another BIS member under a freedom-of-information law, such as the Bank of England or the Bank of Canada, for Global Economy Meeting agendas, discussion papers and any record of proceedings for a named year: either the papers are released, or the decision states on the record what classes of document the member holds, which answers whether minutes exist. Second, the BIS archive: a request under the Bank's own archive access rules for the Global Economy Meeting and Economic Consultative Committee files of a year now past any closure period would show whether a written record of these meetings is created and kept.",
+   "parties": [
+    {
+     "name": "Bank for International Settlements",
+     "hq_city": "Basel",
+     "hq_iso3": "CHE",
+     "what_it_does": "Hosts the bimonthly governors' meetings, banks for central banks, and holds immunities and tax exemption under its 1987 agreement with Switzerland."
+    },
+    {
+     "name": "Global Economy Meeting",
+     "hq_city": "Basel",
+     "hq_iso3": "CHE",
+     "what_it_does": "Bimonthly meeting of the governors of 30 member central banks, with 22 more as observers, that reviews global risks and gives guidance to three Basel committees."
+    },
+    {
+     "name": "Economic Consultative Committee",
+     "hq_city": "Basel",
+     "hq_iso3": "CHE",
+     "what_it_does": "19-member group of the governors on the BIS Board plus the General Manager that prepares proposals for the Global Economy Meeting and recommends the committee chairs."
+    },
+    {
+     "name": "Markets Committee",
+     "hq_city": "Basel",
+     "hq_iso3": "CHE",
+     "what_it_does": "Committee of senior officials from 27 central banks reporting to the Global Economy Meeting; its page states that no agendas or discussions are released."
+    },
+    {
+     "name": "Swiss Federal Council",
+     "hq_city": "Bern",
+     "hq_iso3": "CHE",
+     "what_it_does": "Signed the 10 February 1987 headquarters agreement granting the BIS inviolability of premises and archives, immunity from jurisdiction and execution, and tax exemption."
+    },
+    {
+     "name": "Reserve Bank of Australia",
+     "hq_city": "Sydney",
+     "hq_iso3": "AUS",
+     "what_it_does": "BIS member central bank that holds Global Economy Meeting papers and refused to release them under Australian freedom-of-information law in 2019."
+    }
+   ],
+   "confirmed_by": [
+    {
+     "title": "BIS: Bimonthly meetings (Global Economy Meeting of 30 governors plus 22 observers, about four fifths of global GDP; All Governors' Meeting of 63 members; chairs named)",
+     "url": "https://www.bis.org/about/bimonthly_meetings.htm"
+    },
+    {
+     "title": "BIS: Meetings and the Basel Process (GEM membership, 19-member ECC of Board governors plus the General Manager, guidance to the three committees)",
+     "url": "https://www.bis.org/about/meetings.htm"
+    },
+    {
+     "title": "BIS media release, 12 November 2025: Appointment of BIS Global Economy Meeting and Economic Consultative Committee Chair (Lagarde to succeed Powell from May 2026)",
+     "url": "https://www.bis.org/press/p251112.htm"
+    },
+    {
+     "title": "BIS press release, 11 September 2017: Mark Carney to chair two key BIS central bank groups (effective 1 December 2017, succeeding Carstens, who chaired from 1 July 2013; GEM of 30 governors; 18-member ECC)",
+     "url": "https://www.bis.org/press/p170911.htm"
+    },
+    {
+     "title": "BIS: Markets Committee organisation and governance ('There are no public releases of the meeting agendas or discussions'; reports to the GEM of 31 governors; 27 member central banks)",
+     "url": "https://www.bis.org/committees/mc/governance"
+    },
+    {
+     "title": "Right to Know: Documents relating to the BIS Global Economy Meetings (2019) - Reserve Bank of Australia FOI refusal under ss 33 and 45, internal review under s 33(b), release of 54 travel documents",
+     "url": "https://righttoknow.org.au/request/documents_relating_to_the_bis_gl"
+    },
+    {
+     "title": "BIS Basic Texts, containing the Agreement of 10 February 1987 between the Swiss Federal Council and the BIS (Articles 2, 3, 4, 7, 12-14: freedom to hold meetings, inviolability of premises and archives, immunity from jurisdiction and execution, tax exemption, officials' immunities)",
+     "url": "https://www.bis.org/publications/basic-texts.pdf"
+    },
+    {
+     "title": "BIS legal information overview (Headquarters Agreement concluded with the Swiss Federal Council on 10 February 1987; 1930 Convention and Constituent Charter; 1936 Brussels Protocol on immunities)",
+     "url": "https://www.bis.org/about/legal.htm"
+    },
+    {
+     "title": "SWI swissinfo.ch: How a secretive central bankers' club responds to crises ('no public records of debates or conversations'; Adam LeBor's criticism; Stefan Gerlach's defence)",
+     "url": "https://www.swissinfo.ch/eng/business/how-a-secretive-central-bankers--club-responds-to-crises/47206588"
+    },
+    {
+     "title": "BIS: Principles for senior management meetings with private sector entities and speaking engagements (logs of private sector meetings published every six months with a six-month lag)",
+     "url": "https://www.bis.org/about/transparency/private_sector.htm"
+    }
+   ],
+   "body": "Every two months the governors of 30 central banks, together covering about four fifths of world GDP on the Bank for International Settlements' estimate, meet in Basel as the Global Economy Meeting, with 22 more as observers. They set interest rates and bank capital rules, which decide mortgage costs, savings returns and bank lending. No agenda and no account of the discussion is published.\n\nThe BIS says of its Markets Committee that \"there are no public releases of the meeting agendas or discussions\". Written papers exist: in 2019 the Reserve Bank of Australia refused a freedom-of-information request for meeting agendas, discussion papers and programmes, its Secretary Anthony Dickman citing damage to international relations and material supplied in confidence by the BIS, releasing only 54 travel documents showing Governor Philip Lowe and Michael Davies as the only attendees. Under the 10 February 1987 agreement with the Swiss Federal Council no Swiss official may enter the premises without consent and the archives are \"inviolable at all times and in all places\" (Article 3), and the Bank and its officials cannot be sued in Swiss courts over their work (Article 4).\n\nNo source establishes that minutes are taken, so the claim that minutes exist and are suppressed is unsupported; what is documented is agendas and papers. Nothing shows a decision binding on any country being taken there: the BIS presents the meetings as a forum guiding committees, whose reports and standards are public. The immunities follow the pattern Switzerland grants other international organisations, and the agreement allows suits by its contractual counterparties. Stefan Gerlach, a former BIS official and later chief economist at EFG Bank, told SWI swissinfo.ch that governors \"can go there and talk freely\" without fear of leaks. The sharpest criticism is a characterisation, not a finding: Adam LeBor, in Tower of Basel (2013), called the BIS \"an opaque, elitist and anti-democratic institution, out of step with the twenty-first century\". No source supports claims that the meetings amount to world government.\n\nTwo requests would settle whether a record exists: an appeal to the Australian Information Commissioner, or a request to the Bank of England or Bank of Canada for one year's papers and any record of proceedings; and a request under the BIS's archive rules for files past their closure period."
+  },
+  {
+   "id": "one-company-s-risk-software",
+   "title": "One company's risk software inside the banks and the central banks that watch them",
+   "kind": "chain",
+   "summary": "BlackRock, the world's largest asset manager, also sells the software that other investors use to measure their own risk. Its platform, Aladdin, held 21.6 trillion dollars of assets from only about a third of its 240 clients when the Financial Times counted in early 2020, and BlackRock had stopped publishing the figure after disclosing 20 trillion dollars in February 2017; by November 2020 the FT reported more than 900 clients in 65 countries. Public bodies are among the users: the Bank of Israel started on Aladdin in 2019 and ran 208 billion dollars of foreign-currency assets on it, according to Central Banking in March 2022, and BlackRock's separate Financial Markets Advisory arm says it has served over 280 clients in more than 35 countries across more than 580 engagements since 2008. Regulators have written about the general shape of this, without naming the firm: the Financial Stability Board's December 2023 toolkit says authorities may conclude that a provider serving many institutions, where switching quickly is impractical, creates a 'systemic third-party dependency', and the Bank of England's Financial Policy Committee said in April 2025 that 'reliance on a small number of providers for a given service could lead to systemic risks'. The worry named by investors is narrower and older: the Los Angeles County Employees' Retirement Association, a 58 billion dollar pension fund, cited the potential for 'groupthink' in January 2020 as one reason it declined Aladdin's risk tools. BlackRock's chief operating officer Rob Goldstein answered that Aladdin's risk tools are 'designed to support, rather than replace, portfolio managers', that rivals exist in 'an incredibly competitive environment', and that the total assets figure does not reflect how clients actually use the platform.",
+   "countries": [
+    {
+     "iso3": "USA",
+     "role": "home of the software vendor",
+     "note": "BlackRock, headquartered in New York, builds and sells Aladdin and runs the Financial Markets Advisory arm that advises public bodies."
+    },
+    {
+     "iso3": "ISR",
+     "role": "central bank running reserves on the platform",
+     "note": "The Bank of Israel began using Aladdin in 2019 and managed 208 billion dollars of foreign-currency assets on it, according to Central Banking in March 2022."
+    },
+    {
+     "iso3": "GBR",
+     "role": "regulators raising the dependency question",
+     "note": "The Bank of England's Financial Policy Committee warned in April 2025 that reliance on a small number of service providers could create systemic risks, and the FCA was reported in January 2020 to have said that failure of a system like Aladdin could cause serious consumer harm."
+    },
+    {
+     "iso3": "CHE",
+     "role": "standard-setter defining the problem",
+     "note": "The Financial Stability Board, based in Basel, published the December 2023 toolkit that sets out when a shared service provider becomes a systemic third-party dependency."
+    }
+   ],
+   "role_info": {
+    "home of the software vendor": "BlackRock, headquartered in New York, builds and sells Aladdin and runs the Financial Markets Advisory arm that advises public bodies.",
+    "central bank running reserves on the platform": "The Bank of Israel began using Aladdin in 2019 and managed 208 billion dollars of foreign-currency assets on it, according to Central Banking in March 2022.",
+    "regulators raising the dependency question": "The Bank of England's Financial Policy Committee warned in April 2025 that reliance on a small number of service providers could create systemic risks, and the FCA was reported in January 2020 to have said that failure of a system like Aladdin could cause serious consumer harm.",
+    "standard-setter defining the problem": "The Financial Stability Board, based in Basel, published the December 2023 toolkit that sets out when a shared service provider becomes a systemic third-party dependency."
+   },
+   "established": "The Financial Times reported in March 2020 that 21.6 trillion dollars of assets sat on Aladdin from about a third of its 240 clients, that BlackRock's last public disclosure had been 20 trillion dollars in February 2017, and that it had since stopped disclosing the number; the FT put the platform at more than 900 clients in 65 countries in November 2020. BlackRock's own Financial Markets Advisory page states that the practice has served over 280 unique clients in over 35 countries in more than 580 engagements since 2008, with the figures footnoted to 31 December 2018. Central Banking reported on 31 March 2022 that the Bank of Israel started using Aladdin in 2019 and manages 208 billion dollars in foreign-currency assets. On the general risk, the FSB's 4 December 2023 toolkit states that authorities may conclude that services and providers used by many institutions, where switching is impractical, 'give rise to a systemic third-party dependency', and that critical services from the same provider 'may be subject to the same set of risks'. The Bank of England's Financial Policy Committee wrote on 9 April 2025 that reliance on a small number of providers could lead to systemic risks and that models or data libraries shared across many firms could cause them to misprice risk together. The academic strand is older and generic: Danielsson, Shin and Zigrand argue that value-at-risk constraints are 'widespread among financial firms and encouraged by the Basel regulations' and that such risk-management rules 'serve to amplify aggregate fluctuations', making crises 'sharper, larger, and more costly'. Named objectors to Aladdin's spread include LACERA (January 2020, groupthink), Jim McCaughan, former chief executive of Principal Global Investors, and Jon Little, formerly of BNY Mellon's international asset management business. BlackRock's answers are on the record: Goldstein's statement that the tools support rather than replace portfolio managers and that the market is 'incredibly competitive', the firm's point that platform assets do not describe how clients use it, and its reply that the American Economic Liberties Project report contained 'multiple factual inaccuracies and misconceptions'. The 21.6 trillion dollar figure is the Financial Times's own reconstruction from client filings, reported in March 2020 and summarised by Finadium; BlackRock stopped publishing a platform figure after giving 20 trillion dollars in February 2017, so there is no company number to check it against.",
+   "not_established": "No regulator has designated Aladdin, or BlackRock, as a systemically important utility or a critical third party; the FSB and Bank of England statements read here are about shared providers and shared models in general and do not name the company. There is no published count of central banks using Aladdin: the Bank of Israel is the only central bank named as a user in the sources read here, and BlackRock's own official-institutions and FMA pages name no public client at all. The 21.6 trillion dollar figure is a 2020 Financial Times reconstruction from documents and accounts, not a company disclosure, and BlackRock told the FT it does not reflect how clients use the platform. The strongest doubt is the one BlackRock and the FT both state: Aladdin does not tell asset managers what to buy or sell, so the step from shared measurement to shared behaviour is an inference, and no study read here shows that Aladdin users traded alike in any particular episode. Competitors - Charles River Development with State Street, and MSCI - are repeatedly cited as alternatives, which cuts against the single-point-of-failure reading. The Danielsson, Shin and Zigrand work concerns value-at-risk rules generally and says nothing about Aladdin.",
+   "test": "Two obtainable documents would settle most of it. First, the UK critical third parties regime: HM Treasury designates critical third parties to the financial sector on the recommendation of the Bank of England and the FCA, and the published designation list either names BlackRock or does not. Second, central banks' own procurement and annual-report vendor disclosures: a request to each of the G20 central banks for the name of the vendor of its portfolio and risk system, and for the contract, would produce a countable list of public Aladdin users in place of the single named case.",
+   "parties": [
+    {
+     "name": "BlackRock, Inc.",
+     "hq_city": "New York",
+     "hq_iso3": "USA",
+     "what_it_does": "Asset manager that also licenses the Aladdin portfolio and risk platform to other investors and runs the Financial Markets Advisory practice for financial institutions, regulators and government entities."
+    },
+    {
+     "name": "Bank of Israel",
+     "hq_city": "Jerusalem",
+     "hq_iso3": "ISR",
+     "what_it_does": "Israel's central bank; named by Central Banking as an Aladdin user since 2019 for its foreign-currency reserves."
+    },
+    {
+     "name": "Financial Stability Board",
+     "hq_city": "Basel",
+     "hq_iso3": "CHE",
+     "what_it_does": "International body that coordinates financial regulation; its 2023 toolkit sets out how authorities should treat shared third-party service providers."
+    },
+    {
+     "name": "Bank of England (Financial Policy Committee)",
+     "hq_city": "London",
+     "hq_iso3": "GBR",
+     "what_it_does": "UK central bank committee responsible for financial stability; published the April 2025 assessment of concentration and correlated-position risk."
+    },
+    {
+     "name": "Los Angeles County Employees' Retirement Association",
+     "hq_city": "Pasadena",
+     "hq_iso3": "USA",
+     "what_it_does": "Public pension fund that declined Aladdin's risk capabilities in January 2020, citing the potential for groupthink."
+    },
+    {
+     "name": "American Economic Liberties Project",
+     "hq_city": "Washington",
+     "hq_iso3": "USA",
+     "what_it_does": "Anti-monopoly think tank; in November 2020 its senior fellow Graham Steele proposed designating Aladdin a systemically important market utility and separating it from BlackRock."
+    }
+   ],
+   "confirmed_by": [
+    {
+     "title": "Finadium summary: 'BlackRock's Aladdin under scrutiny for crowding risk as assets pass $20tr', 24 February 2020",
+     "url": "https://finadium.com/?p=98845"
+    },
+    {
+     "title": "Central Banking, 'Risk management technology: BlackRock's Aladdin Risk', 31 March 2022 - Bank of Israel use from 2019 and $208bn in FX assets",
+     "url": "https://www.centralbanking.com/awards/7941401/risk-management-technology-blackrocks-aladdin-risk"
+    },
+    {
+     "title": "BlackRock Financial Markets Advisory - our clients (280+ clients, 35+ countries, 580+ engagements since 2008; figures as of 31 December 2018)",
+     "url": "https://blackrock.com/financial-markets-advisory/fma-clients/our-clients"
+    },
+    {
+     "title": "Financial Stability Board, 'Enhancing Third-Party Risk Management and Oversight: a toolkit', 4 December 2023",
+     "url": "https://fsb.org/uploads/P041223-1.pdf"
+    },
+    {
+     "title": "Bank of England, 'Financial Stability in Focus: Artificial intelligence in the financial system', 9 April 2025",
+     "url": "https://www.bankofengland.co.uk/financial-stability-in-focus/2025/april-2025"
+    },
+    {
+     "title": "Danielsson, Shin and Zigrand, 'Modelling financial turmoil through endogenous risk', CEPR/VoxEU",
+     "url": "https://cepr.org/voxeu/columns/modelling-financial-turmoil-through-endogenous-risk"
+    },
+    {
+     "title": "American Economic Liberties Project on the FT report that it proposed splitting off Aladdin, 24 November 2020, with BlackRock's response",
+     "url": "https://www.economicliberties.us/media/financial-times-blackrock-should-split-off-its-aladdin-tech-platform-says-think-tank/"
+    },
+    {
+     "title": "Institutional Investor, 'Can anyone bury BlackRock?', 1 October 2018 - $18tn on the platform, 210 institutional clients, Goldstein on BlackRock as largest user",
+     "url": "https://www.institutionalinvestor.com/article/2bsxpilyzo8y3xdlej7r4/portfolio/can-anyone-bury-blackrock"
+    },
+    {
+     "title": "Wikipedia, 'Aladdin (BlackRock)' - index of reported figures, named users and criticisms with underlying citations",
+     "url": "https://en.wikipedia.org/wiki/Aladdin_(BlackRock)"
+    }
+   ],
+   "body": "BlackRock, the world's largest asset manager, also sells the software other investors use to measure risk in their own portfolios. Aladdin is used by banks, pension funds and at least one central bank. Investors have named the concern: managers measuring risk with the same tool may cut exposure at the same moment, selling into the same falling market; most of that money is pension savings.\n\nThe Financial Times reported in March 2020 that 21.6 trillion dollars of assets sat on Aladdin, from about a third of its 240 clients; BlackRock's last public figure was 20 trillion dollars in February 2017, after which it stopped publishing one. Central Banking reported on 31 March 2022 that the Bank of Israel began using Aladdin in 2019 and runs 208 billion dollars of foreign-currency assets. The Los Angeles County Employees' Retirement Association, a 58 billion dollar pension fund, cited \"groupthink\" in January 2020 as one reason it declined Aladdin's risk tools.\n\nNo regulator has designated Aladdin or BlackRock a systemically important utility or critical third party. The Financial Stability Board's toolkit of 4 December 2023 and the Bank of England Financial Policy Committee's statement of 9 April 2025, that reliance on a few providers could lead to systemic risks, are general and never name the company. No published count of central banks using Aladdin exists: the Bank of Israel is the only one named here, and BlackRock's official-institutions pages name no public client. The 21.6 trillion dollar figure is the FT's reconstruction from filings, not a disclosure, with no company number to check. Chief operating officer Rob Goldstein said the tools are \"designed to support, rather than replace, portfolio managers\" in \"an incredibly competitive environment\", and the firm says platform assets do not describe client use. Aladdin does not tell managers what to buy or sell, so the step from shared measurement to shared selling is an inference, and no study read here shows its users trading alike in any episode. Charles River Development and MSCI are cited as alternatives.\n\nTwo documents would settle most of it: the UK critical third parties designation list, published by HM Treasury on the Bank of England's and the FCA's recommendation, which either names BlackRock or not, and each G20 central bank's procurement records naming its risk-system supplier."
+  },
+  {
+   "id": "central-bankers-trading-their-own",
+   "title": "Central bankers trading their own money while setting policy",
+   "kind": "wave",
+   "summary": "In September 2021 newspapers read the Federal Reserve's own annual disclosure forms and found that officials had been trading during the year the Fed was rescuing markets. The Wall Street Journal reported on 7 September 2021 that Dallas Fed president Robert Kaplan made multiple 2020 trades including stakes over one million dollars in Apple, Delta Air Lines and Occidental Petroleum; Bloomberg reported the next day that Boston Fed president Eric Rosengren bought and sold real-estate investment trusts in 2020 while warning publicly about property-market contagion. Both announced their departures on 27 September 2021: Rosengren retired on 30 September citing a worsening kidney condition, and Kaplan left on 8 October saying his financial dealings risked becoming a distraction to the Fed's execution of monetary policy. Vice chair Richard Clarida, reported on 1 October 2021 to have moved between one and five million dollars from a Pimco bond fund into stock funds on 27 February 2020, resigned in a letter to President Biden on 10 January 2022, leaving on 14 January instead of 31 January. The Fed's Inspector General closed both investigations on 18 January 2024: it found no violation by Kaplan, Rosengren, Powell or Clarida of the laws, rules or policies it examined and told the Inspector General there was insufficient evidence to refer anything for law-enforcement review, while saying Kaplan's filing created an 'appearance of acting on confidential FOMC information' and Rosengren's REIT trading an 'appearance of a conflict of interest'. The FOMC adopted new rules on 18 February 2022 banning individual stocks, sector funds, individual bonds, crypto, commodities and foreign currencies for officials and their spouses and minor children, with 45 days' non-retractable notice, pre-clearance, a one-year holding period and no trading during periods of heightened market stress. The pattern is not only American: Swiss National Bank chairman Philipp Hildebrand resigned on 9 January 2012 over dollar transactions he and his wife made in 2011, three weeks after an SNB report cleared him of wrongdoing, and the European Central Bank published an enhanced code of conduct on 16 December 2022 under which Banco de Portugal governor Alvaro Santos Pereira's December 2025 purchases of Galp Energia and Jeronimo Martins shares were found incompatible with the rules and unwound.",
+   "countries": [
+    {
+     "iso3": "USA",
+     "role": "disclosure scandal and rule change",
+     "note": "Two Reserve Bank presidents and a vice chair left in 2021-22 after their disclosure forms were reported on, and the FOMC adopted new investment rules on 18 February 2022."
+    },
+    {
+     "iso3": "CHE",
+     "role": "earlier comparable resignation",
+     "note": "Swiss National Bank chairman Philipp Hildebrand resigned on 9 January 2012 over 2011 dollar transactions, after an SNB report in late December 2011 had cleared him of wrongdoing."
+    },
+    {
+     "iso3": "EMU",
+     "role": "euro-area rulebook",
+     "note": "The European Central Bank published an enhanced code of conduct for high-level officials on 16 December 2022 adding restrictions on their private financial transactions."
+    },
+    {
+     "iso3": "PRT",
+     "role": "recent enforcement under those rules",
+     "note": "Banco de Portugal governor Alvaro Santos Pereira bought Galp Energia and Jeronimo Martins shares in December 2025; the ECB compliance unit treated them as incompatible with the code and the positions were reversed, with no sanction announced."
+    }
+   ],
+   "role_info": {
+    "disclosure scandal and rule change": "Two Reserve Bank presidents and a vice chair left in 2021-22 after their disclosure forms were reported on, and the FOMC adopted new investment rules on 18 February 2022.",
+    "earlier comparable resignation": "Swiss National Bank chairman Philipp Hildebrand resigned on 9 January 2012 over 2011 dollar transactions, after an SNB report in late December 2011 had cleared him of wrongdoing.",
+    "euro-area rulebook": "The European Central Bank published an enhanced code of conduct for high-level officials on 16 December 2022 adding restrictions on their private financial transactions.",
+    "recent enforcement under those rules": "Banco de Portugal governor Alvaro Santos Pereira bought Galp Energia and Jeronimo Martins shares in December 2025; the ECB compliance unit treated them as incompatible with the code and the positions were reversed, with no sanction announced."
+   },
+   "established": "The dates and the outcomes are in official documents. The Inspector General's report 'Report of Investigation on the Closing of 22-0030-I Reserve Bank Trading Activity', dated 18 January 2024, found no violation by Kaplan of the laws, rules, regulations or policies it investigated: his June and December 2020 General Electric sales arose from call options written before the FOMC blackout, which the rule permits, and no prohibited holdings were found; it nonetheless concluded that his filing created an 'appearance of acting on confidential FOMC information' and an 'appearance of a conflict of interest'. The same report lists Rosengren's unreported 2020 REIT transactions in Annaly, Invesco Mortgage, AGNC and Two Harbors, finds no violation of the blackout rule or federal conflict-of-interest law, and records an 'appearance of a conflict of interest' because he traded REITs while the Fed authorised agency mortgage-backed securities purchases; Rosengren declined an interview and later said he would divest. The companion report on Board trading, also dated 18 January 2024, found no evidence that Powell or Clarida violated laws, rules or policies then in effect - Powell's five 11 December 2019 trades were made by his spouse as trustee of a charitable lead annuity trust and fell in a blackout the advisers called an oversight; Clarida omitted one trade from his 2019 form and three from his 2020 form, amended both on 16 December 2021, and the OIG found the omissions needed no further investigation - while stating that the rules then in effect 'did not sufficiently support public confidence'. In both reports the OIG consulted experts on federal insider-trading law, including 18 U.S.C. 1348 and Rule 10b-5, and found insufficient evidence to refer the matter for law-enforcement review. A later OIG report dated 4 September 2024 and released on 11 September found that Atlanta Fed president Raphael Bostic breached two FOMC rules and two Atlanta Fed policies, with more than 150 transactions executed on his behalf during blackout periods between March 2018 and March 2023 and Treasury holdings above the 50,000 dollar threshold, while finding the trades were not based on confidential information and showed no conflict of interest; it made no recommendations and referred the report to the Board. Departures: Rosengren announced on 27 September 2021 that he would retire on 30 September, about nine months early, citing a worsening kidney condition; Kaplan announced the same day and left on 8 October 2021; Clarida wrote to the president on 10 January 2022 and left on 14 January. Senator Elizabeth Warren wrote to all twelve Reserve Banks on 15 September 2021 asking them to ban senior officials from owning individual stocks, and asked the SEC on 1 October 2021 to investigate Clarida's trades. The rules the Fed then adopted, announced by Powell on 21 October 2021 and formally adopted by the FOMC on 18 February 2022, take effect from 1 May 2022, with notice and pre-clearance from 1 July 2022. Abroad: Al Jazeera reported that the SNB cleared Hildebrand in a report in late December 2011 and that he resigned on 9 January 2012 amid public criticism of 2011 dollar transactions by him and his wife that profited tens of thousands of dollars, the details having been leaked by an IT employee at Bank Sarasin; he denied breaking central bank rules and said he would give the profits to charity. The ECB published its enhanced code of conduct on 16 December 2022 for Governing Council, Executive Board and Supervisory Board members, with additional restrictions on private financial transactions.",
+   "not_established": "Nobody has established that any of these trades changed a policy decision, and in the US cases the official findings run the other way: the Inspector General found no violation by Kaplan, Rosengren, Powell or Clarida of the rules it examined, made no law-enforcement referral in either investigation, and found that Bostic's trades were not based on confidential information and showed no conflict of interest. The findings against Kaplan and Rosengren are findings of appearance under internal codes, not of law-breaking, and the Dallas Morning News headlined the January 2024 result as the watchdog clearing Kaplan. Rosengren gave a medical reason for retiring and the sources read here do not establish that his trading caused it. Critics who think the matter was not closed include Senator Elizabeth Warren, who wrote to the Inspector General on 5 March 2024 about the report, and the contents of that letter were not read here. The Portuguese case rests on a report in Publico relayed by an English-language outlet: neither Banco de Portugal nor the ECB disclosed the value of the trades or the date they were unwound, and no sanction was announced. On the comparative question the evidence simply stops: no systematic cross-country study of central bank officials' personal trading or of the disclosure rules that cover them was found, and the IMF's Central Bank Transparency Code of June 2020 contains no principle on officials' personal financial interests, only principle 1.6.3 on anti-corruption measures and internal codes of conduct, with conflicts of interest appearing in the consultation feedback rather than in the code.",
+   "test": "A single comparable table can be built from documents that already exist. For the euro area, the ECB's enhanced code of conduct requires high-level officials to declare private financial transactions, and the ECB publishes members' declarations of interests; for the US, Reserve Bank presidents and Board members file annual OGE Form 278e reports, which the Fed releases on request. Collecting both sets for one calendar year, plus the equivalent declarations from the Bank of England, Bank of Japan, Bank of Canada and Reserve Bank of Australia, would show for the first time which central banks publish their officials' transactions at all and what the officials hold - and the absence of a filing for a given central bank is itself the finding.",
+   "parties": [
+    {
+     "name": "Federal Reserve Board of Governors",
+     "hq_city": "Washington",
+     "hq_iso3": "USA",
+     "what_it_does": "US central bank; its chair Jerome Powell ordered a review of ethics rules on 16 September 2021 and the FOMC adopted new investment rules in February 2022."
+    },
+    {
+     "name": "Office of Inspector General, Federal Reserve",
+     "hq_city": "Washington",
+     "hq_iso3": "USA",
+     "what_it_does": "Independent watchdog for the Fed; published the 18 January 2024 closing reports on Board and Reserve Bank trading and the 4 September 2024 report on Raphael Bostic."
+    },
+    {
+     "name": "Federal Reserve Bank of Dallas",
+     "hq_city": "Dallas",
+     "hq_iso3": "USA",
+     "what_it_does": "Reserve Bank whose president Robert Kaplan stepped down on 8 October 2021."
+    },
+    {
+     "name": "Federal Reserve Bank of Boston",
+     "hq_city": "Boston",
+     "hq_iso3": "USA",
+     "what_it_does": "Reserve Bank whose president Eric Rosengren retired on 30 September 2021."
+    },
+    {
+     "name": "Federal Reserve Bank of Atlanta",
+     "hq_city": "Atlanta",
+     "hq_iso3": "USA",
+     "what_it_does": "Reserve Bank whose president Raphael Bostic was found by the Inspector General to have breached FOMC and Atlanta Fed trading rules, in a report dated 4 September 2024."
+    },
+    {
+     "name": "Swiss National Bank",
+     "hq_city": "Bern",
+     "hq_iso3": "CHE",
+     "what_it_does": "Switzerland's central bank; its late-December 2011 report cleared chairman Philipp Hildebrand, who resigned anyway on 9 January 2012."
+    },
+    {
+     "name": "European Central Bank",
+     "hq_city": "Frankfurt",
+     "hq_iso3": "DEU",
+     "what_it_does": "Euro-area central bank; published the 16 December 2022 enhanced code of conduct covering the Governing Council, Executive Board and Supervisory Board, and its compliance unit reviews members' private transactions."
+    },
+    {
+     "name": "Banco de Portugal",
+     "hq_city": "Lisbon",
+     "hq_iso3": "PRT",
+     "what_it_does": "Portugal's central bank; confirmed its governor's December 2025 share purchases and said they were disclosed in his mandatory declaration."
+    },
+    {
+     "name": "International Monetary Fund",
+     "hq_city": "Washington",
+     "hq_iso3": "USA",
+     "what_it_does": "Publishes the Central Bank Transparency Code, whose principle 1.6.3 covers internal codes of conduct and anti-corruption measures but sets out no principle on officials' personal financial disclosure."
+    }
+   ],
+   "confirmed_by": [
+    {
+     "title": "Federal Reserve OIG, 'Report of Investigation on the Closing of 22-0030-I Reserve Bank Trading Activity', 18 January 2024 (Kaplan and Rosengren)",
+     "url": "https://oig.federalreserve.gov/releases/investigation-closing-reserve-bank-trading.pdf"
+    },
+    {
+     "title": "Federal Reserve OIG, 'Report of Investigation on the Closing of 22-0028-I Board Trading Activity', 18 January 2024 (Powell and Clarida)",
+     "url": "https://oig.federalreserve.gov/releases/investigation-closing-board-trading.pdf"
+    },
+    {
+     "title": "Federal Reserve press release, 'FOMC formally adopts comprehensive new rules for investment and trading activity', 18 February 2022",
+     "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20220218a.htm"
+    },
+    {
+     "title": "FOMC Investment and Trading Policy (full text)",
+     "url": "https://www.federalreserve.gov/monetarypolicy/files/fomc_investmentpolicy.pdf"
+    },
+    {
+     "title": "Associated Press / Yahoo, 'A timeline of the Federal Reserve's trading scandal' - disclosure reports, resignation dates and stated reasons, Warren letters",
+     "url": "https://au.finance.yahoo.com/news/a-timeline-of-the-federal-reserves-trading-scandal-104415556.html"
+    },
+    {
+     "title": "Banking Dive, 'Atlanta Fed's Bostic violated trading rules, OIG finds', on the 4 September 2024 OIG report",
+     "url": "https://www.bankingdive.com/news/atlanta-fed-bostic-ethics-trades-probe-oig-report/727006/"
+    },
+    {
+     "title": "Dallas Morning News, 'Watchdog clears former Dallas Fed president Robert Kaplan of suspicious trades', 22 January 2024",
+     "url": "https://www.dallasnews.com/business/2024/01/22/watchdog-clears-former-dallas-fed-president-robert-kaplan-of-suspicious-trades/"
+    },
+    {
+     "title": "Al Jazeera, 'Switzerland's central bank chief resigns', 9 January 2012 - Hildebrand resignation after the SNB report cleared him",
+     "url": "https://www.aljazeera.com/amp/economy/2012/1/9/switzerlands-central-bank-chief-resigns"
+    },
+    {
+     "title": "Banka Slovenije on the ECB's enhanced Code of Conduct for high-level ECB officials, published 16 December 2022",
+     "url": "https://www.bsi.si/en/media/posts/enhanced-code-of-conduct-for-high-level-ecb-officials"
+    },
+    {
+     "title": "ECB press release, 'ECB publishes enhanced rules for private financial transactions of high-level officials', 16 December 2022",
+     "url": "https://www.ecb.europa.eu/press/pr/date/2022/html/ecb.pr221216~93f4c11548.en.html"
+    },
+    {
+     "title": "The Portugal Post, 'Portugal's central bank governor forced to unwind stock purchases over conflict rules' (reporting Publico)",
+     "url": "https://theportugalpost.com/posts/portugals-central-bank-governor-forced-to-unwind-stock-purchases-over-conflict-rules"
+    },
+    {
+     "title": "IMF Central Bank Transparency Code, executive summary and key provisions (June 2020)",
+     "url": "https://www.imf.org/-/media/files/data/cbt/landing-page/imf-central-bank-transparency-code.pdf.md"
+    },
+    {
+     "title": "Senator Elizabeth Warren, letter to Fed Inspector General Mark Bialek on the 2024 report, 5 March 2024",
+     "url": "https://www.warren.senate.gov/imo/media/doc/2024.03.05%20Letter%20to%20Fed%20IG%20Mark%20Bialek%20re.%202024%20report.pdf"
+    }
+   ],
+   "body": "Senior Fed officials know policy decisions before anyone else, and those decisions move share and bond prices; they also hold personal investments, listed on annual forms. In September 2021 reporters found trades made during 2020, while the Fed was buying assets heavily. The Inspector General investigated and on 18 January 2024 found no violation by Robert Kaplan, Eric Rosengren, Jerome Powell or Richard Clarida, and made no law-enforcement referral.\n\nOn 7 September 2021 the Wall Street Journal reported 2020 trades by Dallas Fed president Kaplan including stakes over one million dollars in Apple, Delta Air Lines and Occidental Petroleum; Bloomberg next day that Boston Fed president Rosengren traded property funds while warning about property-market contagion. Both left in autumn 2021; Clarida resigned on 10 January 2022. Neither man broke the blackout or conflict-of-interest rules, Kaplan's sales coming from options written before the blackout, though each filing created an \"appearance of a conflict of interest\". A report of 4 September 2024 found Atlanta Fed president Raphael Bostic breached two FOMC rules and two Atlanta Fed policies, with more than 150 transactions in blackout periods from March 2018 to March 2023, though it found the trades were not based on confidential information.\n\nNobody has established that any trade changed a policy decision. The Kaplan and Rosengren findings are of appearance under internal codes, not law-breaking; the Dallas Morning News headlined the result as the watchdog clearing Kaplan. Rosengren cited a kidney condition for retiring. Senator Elizabeth Warren wrote to the Inspector General on 5 March 2024; that letter was not read here. Two cases abroad are thinner: Swiss National Bank chairman Philipp Hildebrand resigned on 9 January 2012 over 2011 dollar transactions, three weeks after an SNB report cleared him; Banco de Portugal governor Alvaro Santos Pereira's December 2025 share purchases were unwound under the ECB's code, on a Publico report with no sanction disclosed. No cross-country study of officials' personal trading was found, and the IMF's June 2020 Central Bank Transparency Code has no principle on personal interests.\n\nOne table from existing filings would settle it: ECB declarations of private financial transactions, the OGE Form 278e reports US Fed officials file, and equivalents from the Bank of England, Bank of Japan and Reserve Bank of Australia. A central bank with nothing to collect is the finding."
+  }
+ ]
+}

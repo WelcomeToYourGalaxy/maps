@@ -221,6 +221,13 @@ seq("tiesSel", "Who owns, pays and pressures central banks", "Number of ties of 
     classes: roles.map((r) => [r, r]), other: "Other role", get: (p) => { const c = RC[p.iso] || (p.u && RC[p.u === "ECB" ? "EMU" : p.u]); return c ? (roles.includes(c.role) ? { v: c.role, note: c.note } : { v: null, other: true, note: c.note }) : null; },
     desc: pt.summary, src: "" });
 });
+(D.SUS || []).forEach((pt) => {
+  const roles = [...new Set((pt.countries || []).map((c) => c.role))].slice(0, 4);
+  const RC = {}; (pt.countries || []).forEach((c) => { RC[c.iso3] = c; });
+  L.push({ id: "sus_" + pt.id, group: "Suspected patterns", label: pt.title, kind: "cat", pat: pt, sus: true,
+    classes: roles.map((r) => [r, r]), other: "Other role", get: (p) => { const c = RC[p.iso] || (p.u && RC[p.u === "ECB" ? "EMU" : p.u]); return c ? (roles.includes(c.role) ? { v: c.role, note: c.note } : { v: null, other: true, note: c.note }) : null; },
+    desc: pt.summary, src: "" });
+});
 cat("own", "Who owns, pays and pressures central banks", "Who owns the central bank (type of owners)", {
   classes: [["listed", "Private shareholders, shares traded on an exchange"], ["private", "Private shareholders, shares not traded"], ["mixed", "Shareholders other than the state named, terms in the box"]],
   other: "No private shareholders found", get: (p) => p.own ? { v: p.own.k } : { v: null, other: true },
@@ -315,7 +322,7 @@ function freeFlat() {
     else map.setTransformConstrain(null);
   } catch (e) {}
 }
-const BM = CulpritsBasemaps.create("map", { initial: "night", projection: "globe", plate: window.PLATE_IMG, center: [12, 25], zoom: startZoom(),
+const BM = CulpritsBasemaps.create("map", { initial: "satellite", projection: "globe", plate: window.PLATE_IMG, center: [12, 25], zoom: startZoom(),
   onApply: (k) => { BASE = k; CATC = CATS[k] || CATS.night; REPAINT(); if (!S.names) setTimeout(hideNames, 0); const u = UI[k] || UI.night, rs = document.documentElement.style; rs.setProperty("--accent", u[0]); rs.setProperty("--accent-hi", u[1]); rs.setProperty("--bg", u[2]); if (ready) { order(); update(); } },
   onReady: () => init() });
 const map = window.cbMap = BM.maplibre;
@@ -829,7 +836,7 @@ function paint() {
 
 /* ---------- the key ---------- */
 /* ---------- the box at right: who each bank answers to, and the patterns behind the scenes ---------- */
-const SIDE_GROUPS = ["Who owns, pays and pressures central banks", "Patterns behind the scenes"];
+const SIDE_GROUPS = ["Who owns, pays and pressures central banks", "Patterns behind the scenes", "Suspected patterns"];
 const sideLayer = (id) => { const l = L.find((x) => x.id === id); return !!l && SIDE_GROUPS.includes(l.group); };
 const ALLREL = () => new Set(REL.map((r) => r[0]));
 const REL_SHORT = { own: "Who owns it: shareholders and governance seats", corrupt: "Paid, bribed, or got money, favors or leaks from it", people: "Shares its people: revolving door, board seats, forum members", inst: "Belongs to the same institutions: BIS, Financial Stability Board", control: "Pressured, fired, prosecuted or froze its money", service: "Other ties: named in a case, prints its money, audits or manages funds", account: "Investigated, charged or tried its officials" };
@@ -880,7 +887,10 @@ function buildSide() {
     '<p class="note" id="netCnt" style="margin:4px 0 8px"></p>';
   const pats = '<p class="ldesc">Pick one to color the countries by their role in it and draw its connections. What it shows opens under its row. Click it again to close it and turn it off.</p>' +
     L.filter((l) => l.group === "Patterns behind the scenes").map((l) => '<button type="button" class="srow' + (S.layer === l.id ? ' on' : '') + '" data-pat="' + l.id + '"><span class="sw" style="background:var(--accent-hi);opacity:.75"></span><span>' + esc(l.label) + '</span><span class="arr">' + (S.layer === l.id ? "▴" : "▾") + '</span></button>' + (S.layer === l.id ? '<div class="pdrop"><p class="ldesc">' + esc(l.desc) + '</p>' + patExtra(l.pat) + '</div>' : '')).join("");
-  const body = { "Who owns, pays and pressures central banks": ans, "Patterns behind the scenes": pats };
+  const sus = '<p class="ldesc">Structures that researchers, reporters and inquiries describe as emerging or probable, and that are <b>not established</b>. Nothing here is a finding of this map. Each one says what is documented, exactly where the evidence stops and who doubts it, and the record or release that would settle it. Pick one to color the countries by their part in it. A country colored here is not accused of anything.</p>' +
+    (L.filter((l) => l.group === "Suspected patterns").length ? "" : '<p class="note">None are filed yet.</p>') +
+    L.filter((l) => l.group === "Suspected patterns").map((l) => '<button type="button" class="srow' + (S.layer === l.id ? ' on' : '') + '" data-pat="' + l.id + '"><span class="sw" style="background:var(--accent-hi);opacity:.45"></span><span>' + esc(l.label) + '</span><span class="arr">' + (S.layer === l.id ? "\u25b4" : "\u25be") + '</span></button>' + (S.layer === l.id ? '<div class="pdrop">' + susExtra(l.pat) + '</div>' : '')).join("");
+  const body = { "Who owns, pays and pressures central banks": ans, "Patterns behind the scenes": pats, "Suspected patterns": sus };
   $("#sideBody").innerHTML = SIDE_GROUPS.map((g) => '<div class="sgrp' + (open(g) ? '' : ' min') + '" data-g="' + esc(g) + '"><button type="button" class="shead" aria-expanded="' + open(g) + '">' + esc(g) + '<span class="arr">' + (open(g) ? "▴" : "▾") + '</span></button><div class="sbody">' + body[g] + '</div></div>').join("");
   $("#sideBody").querySelectorAll(".shead").forEach((b) => b.addEventListener("click", () => { const g = b.parentNode.dataset.g; S.sideOpen[g] = !S.sideOpen[g]; buildSide(); }));
   $("#sideBody").querySelectorAll("[data-kind]").forEach((c) => c.addEventListener("change", () => toggleKind(c.dataset.kind)));
@@ -916,7 +926,7 @@ function indexItems() {
   if (IDX) return IDX;
   const o = [], where = (k) => P[k] ? P[k].n : (k === "EMU" ? "Euro area" : (D.UM[k] ? k : k));
   const firstPlace = (k) => P[k] ? k : (D.UM[k] && D.UM[k][0]) || (k === "EMU" ? D.UM.ECB[0] : null);
-  L.forEach((l) => { if (l.group === "Patterns behind the scenes") o.push({ n: l.label, t: "Pattern", s: l.desc, go: () => openPattern(l.id) }); else if (l.id !== "tiesSel" && !SIDE_GROUPS.includes(l.group)) o.push({ n: l.label.trim(), t: "Map color", s: l.desc, go: () => { S.layer = S.mainLayer = l.id; S.netRel = new Set(); setNet(false); clearCache(); syncSelect(); update(); } }); });
+  L.forEach((l) => { if (l.group === "Patterns behind the scenes") o.push({ n: l.label, t: "Pattern", s: l.desc, go: () => openPattern(l.id) }); else if (l.group === "Suspected patterns") o.push({ n: l.label, t: "Suspected pattern", s: l.desc, go: () => openPattern(l.id) }); else if (l.id !== "tiesSel" && !SIDE_GROUPS.includes(l.group)) o.push({ n: l.label.trim(), t: "Map color", s: l.desc, go: () => { S.layer = S.mainLayer = l.id; S.netRel = new Set(); setNet(false); clearCache(); syncSelect(); update(); } }); });
   CHARTS.forEach((c) => o.push({ n: c[1], t: "Chart", s: "", go: () => openWin(c[0]) }));
   ISOS.forEach((k) => { if (P[k].cb) o.push({ n: P[k].cb, t: "Central bank", s: P[k].n, sub: P[k].n, go: () => select(k, true) }); });
   NET.nodes.forEach((nd, i) => { o.push({ n: nd.name, t: "Party", sub: [nd.city, P[nd.iso3] ? P[nd.iso3].n : ""].filter(Boolean).join(", "), s: nd.type || "", go: () => selectEntity(i) }); });
@@ -929,7 +939,7 @@ function indexItems() {
   o.sort((a, b) => a.f.localeCompare(b.f));
   IDX = o; return o;
 }
-function openPattern(id) { S.sideOpen["Patterns behind the scenes"] = true; if (S.layer === id) { buildSide(); return; } choosePattern(id); }
+function openPattern(id) { S.sideOpen[id.indexOf("sus_") === 0 ? "Suspected patterns" : "Patterns behind the scenes"] = true; if (S.layer === id) { buildSide(); return; } choosePattern(id); }
 function drawIndex() {
   const box = $("#ilist"); if (!box) return;
   const q = fold($("#idxq").value).trim(), items = indexItems();
@@ -963,6 +973,22 @@ function buildKey() {
   $("#ibar").querySelectorAll("[data-l]").forEach((b) => b.addEventListener("click", () => { IDXL = IDXL === b.dataset.l ? "" : b.dataset.l; $("#idxq").value = ""; drawIndex(); }));
   drawIndex();
 }
+function susExtra(pt) {
+  const h = [];
+  // One readable rundown, not four stacked headings. `body` carries the whole
+  // explanation: what it is, what is documented, where the evidence stops and
+  // who disagrees, and what would settle it. The older four fields are kept in
+  // the data and shown only for an entry that has no body yet.
+  if (pt.body) h.push(pt.body.split(/\n\s*\n/).map((p) => '<p class="ldesc">' + esc(p.trim()) + '</p>').join(""));
+  else {
+    if (pt.summary) h.push('<p class="ldesc">' + esc(pt.summary) + '</p>');
+    if (pt.established) h.push('<p class="ldesc">' + esc(pt.established) + '</p>');
+    if (pt.not_established) h.push('<p class="ldesc">' + esc(pt.not_established) + '</p>');
+    if (pt.test) h.push('<p class="ldesc">' + esc(pt.test) + '</p>');
+  }
+  if (pt.confirmed_by && pt.confirmed_by.length) h.push('<p class="lsrc">Sources: ' + pt.confirmed_by.map((c) => link(c.title, c.url)).join(" \u00b7 ") + '</p>');
+  return h.join("");
+}
 function patExtra(pt) {
   const h = [];
   if (pt.implications) h.push('<div class="psec">What this means</div><p class="ldesc">' + esc(pt.implications) + '</p>');
@@ -990,7 +1016,7 @@ const lgRow = (col, label, n, info) => '<div class="lg"><span class="sw" style="
 function drawLegend() {
   const l = layer();
   if (l.id === "none") { $("#ldesc").innerHTML = '<p class="ldesc">' + esc(l.desc) + '</p>'; $("#legend").innerHTML = ""; $("#yrs").innerHTML = ""; drawLinesLegend(); return; }
-  $("#ldesc").innerHTML = l.pat ? '<p class="ldesc">' + esc(l.label) + '. Countries are colored by their role in it. The full text is open under its row in the box at right.</p>' : '<p class="ldesc">' + esc(l.desc) + '</p>' + (l.src || l.id === "gold" ? '<p class="lsrc">Source: ' + esc(l.id === "gold" ? (D.META.gold || "") : l.src) + '</p>' : "");
+  $("#ldesc").innerHTML = l.pat ? '<p class="ldesc">' + esc(l.label) + '. Countries are colored by their role in it. ' + (l.sus ? 'This one is suspected, not established; what is documented and what is not is open under its row in the box at right.' : 'The full text is open under its row in the box at right.') + '</p>' : '<p class="ldesc">' + esc(l.desc) + '</p>' + (l.src || l.id === "gold" ? '<p class="lsrc">Source: ' + esc(l.id === "gold" ? (D.META.gold || "") : l.src) + '</p>' : "");
   const rs = ISOS.map((k) => [k, l.get(P[k], S.year)]);
   const nod = rs.filter(([, r]) => !r || (l.kind === "seq" && r.v == null)).length;
   let h = "";
@@ -1012,7 +1038,7 @@ function drawLegend() {
     h += '<p class="lsrc" style="margin-top:5px">Blank shades: ' + esc(D.PRESSM && D.PRESSM.source_title ? D.PRESSM.source_title : "Reporters Without Borders") + '.</p>';
   } else {
   const noLbl = l.id === "tiesSel" ? "None of the ticked kinds found" : l.kind === "cat" && l.id !== "reg" && l.id !== "anc" ? "No information" : "No figure from this source";
-  h += lgRow(NODATA, noLbl, l.kind === "cat" ? rs.filter(([, r]) => !r).length : nod, l.id === "tiesSel" ? "No documented tie of the ticked kinds is on this map for this place. That doesn't show none exists." : l.kind === "cat" && l.id !== "reg" && l.id !== "anc" ? (l.pat ? "Not part of this pattern in the records compiled for this map. That doesn't show it has no such tie." : "No record for this place in the sources used.") : "The source publishes no figure for this place."); }
+  h += lgRow(NODATA, noLbl, l.kind === "cat" ? rs.filter(([, r]) => !r).length : nod, l.id === "tiesSel" ? "No documented tie of the ticked kinds is on this map for this place. That doesn't show none exists." : l.kind === "cat" && l.id !== "reg" && l.id !== "anc" ? (l.pat ? (l.sus ? "Not named in the work describing this suspected pattern. That doesn't show it has no part in it." : "Not part of this pattern in the records compiled for this map. That doesn't show it has no such tie.") : "No record for this place in the sources used.") : "The source publishes no figure for this place."); }
   if (rs.some(([, r]) => r && r.via)) h += '<p class="lsrc" style="margin-top:5px">Places in a currency union, or using another country\'s currency, show the figure of the bank or currency they rely on; their boxes say so.</p>';
   $("#legend").innerHTML = h;
   $("#legend").querySelectorAll(".ib").forEach((b) => b.addEventListener("click", (e) => { e.preventDefault(); const el = b.parentNode.nextElementSibling; el.classList.toggle("open"); b.classList.toggle("on", el.classList.contains("open")); }));
