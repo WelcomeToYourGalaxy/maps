@@ -34,7 +34,7 @@ Five fields, all mandatory, and the second is the test:
   say so and name the adjacent thing the map does prove. One item in the current
   nine is deliberately at zero (ship registries); that is allowed, and it is why
   the `rule` there leans entirely on structure.
-- `would_show` / `would_refute` — both. Something that cannot be knocked down is
+- `would_show` / `would_refute` — both. `would_show` must describe something that **BRIEF11 would accept as a case** if it happened: an insider placed, paid or steering a decision. This matters most for `spyware_inside_services`: hacking a minister's phone is excluded by BRIEF11 and the removed-records file holds more than twenty such drops, NSO and Pegasus among them. The possible pattern is legitimate because it claims the vendor is *inside the ministry* - staff with live access, ex-officers on both sides of the contract - which would be a case. A possible pattern must never become a route back in for records the inclusion test has already excluded. Something that cannot be knocked down is
   not a pattern, it is an opinion. `would_refute` should describe a world where
   the thing is clean, not merely an absence of prosecutions.
 
