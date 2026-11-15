@@ -144,3 +144,12 @@ The thirteen are not a research queue, but most sit on seams where cases are lik
 - **data_centre_power** - state utility commission dockets and inspector-general reports on interconnection and tariff decisions, now beyond the United States: Ireland, Chile, Malaysia, the Gulf.
 
 **shadow_fleet_paperwork** is deliberately at zero cases and argued from structure alone. If a round closes it with a real case - registry staff, an insurer, a class society - that is the strongest single confirmation this layer can get.
+
+## Two cases added on the new seams, and one seam closed by an old ruling (14 November 2026)
+
+Searching the possible patterns for records produced two additions, both the rebalance shape (`inf: corp`, a government target):
+
+- **Mauritania** - Smith & Ouzman's money reaching the interior ministry that organises elections, sibling to the Kenya record already held. The Serious Fraud Office conviction of December 2014 covered Kenya *and* Mauritania; the Mauritanian body and official come from the February 2016 charge against the ministry's secretary-general. Mauritania's trial outcome has not been traced, which is in the record and in the `stale.py` queue.
+- **United States** - a Turkish construction magnate who bought two successive contracting officers in the State Department's Office of Acquisitions Management, including a 142 million dollar embassy power plant. Both officials convicted.
+
+**The spyware seam ran into a settled ruling, and the ruling held.** Greece's Predatorgate convictions of February 2026 - four Intellexa-linked executives, the first spyware executives convicted anywhere - are *not* a case here. `removed_records.json` already holds more than twenty drops on exactly this ground, NSO and Pegasus included: hacking a minister's phone is espionage, not someone placed, paid or steering a decision inside a body. BRIEF17 now says a possible pattern's `would_show` has to be something BRIEF11 would accept, so this layer cannot become a route back in for excluded records. `spyware_inside_services` survives because it claims the vendor is inside the ministry - staff with live access, ex-officers on both sides of the contract - which would be a case if shown.
