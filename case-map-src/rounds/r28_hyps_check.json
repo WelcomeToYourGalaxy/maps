@@ -1,0 +1,619 @@
+{
+ "loans-cut-off-to-topple-governments": {
+  "verdict": "fixes",
+  "fixes": [
+   {
+    "field": "story[0]",
+    "find": "In the years that followed, the World Bank made no new loans to Chile, and lending from the Inter-American Development Bank fell sharply; one count puts the two banks' average yearly lending to Chile at $42.2 million between 1962 and 1970 and $3.9 million between 1971 and 1973.",
+    "replace": "In the years that followed, the World Bank made no new loans to Chile, and the Senate investigation found that loans from the Inter-American Development Bank fell from $46 million in 1970 to $2 million in 1972.",
+    "why": "The $42.2m/$3.9m figures come only from a school National History Day entry citing an undergraduate thesis. The Senate Church Committee staff report (Covert Action in Chile, 1975) gives IDB loans of $46m in 1970 and $2m in 1972, and no new World Bank loans 1970-73. https://www.intelligence.senate.gov/wp-content/uploads/2024/08/sites-default-files-94chile.pdf"
+   },
+   {
+    "field": "countries[0].note",
+    "find": "Development bank lending fell from $42.2 million a year to $3.9 million under Allende.",
+    "replace": "No new World Bank loans under Allende; IDB loans fell from $46 million in 1970 to $2 million in 1972.",
+    "why": "Matches the story fix; figures from the Church Committee staff report. https://www.intelligence.senate.gov/wp-content/uploads/2024/08/sites-default-files-94chile.pdf"
+   },
+   {
+    "field": "story[1]",
+    "find": "The bank's member governments protested at their annual meeting that March",
+    "replace": "Several of the bank's member governments criticized the letter at the bank's annual meeting that March",
+    "why": "Source says member countries 'reacted strongly' and a majority criticized political lending at the March 1985 Vienna meeting, with Mexico, Colombia, France and others named; not all members protested. https://www.multinationalmonitor.org/hyper/issues/1985/04/the.html"
+   },
+   {
+    "field": "story[2]",
+    "find": "Documents obtained by the Robert F. Kennedy Memorial Center through freedom-of-information requests show the US director at the bank writing to its president in April 2001, and the center says the bank's about-face followed.",
+    "replace": "On 6 April 2001 the US executive director at the bank, Lawrence Harrington, wrote to its president asking that the loans not be paid out, and the Robert F. Kennedy Memorial Center, which later obtained Treasury documents through freedom-of-information requests and a lawsuit, says the bank's about-face followed. A 2003 Congressional Research Service report also listed disputes over the 2000 elections, Haiti's arrears to the bank and unmet loan conditions as reasons the money was held up.",
+    "why": "The Harrington letter was public by 2003 (cited by Tracy Kidder in The Nation), before the RFK Center's FOIA request (filed Aug 2003, documents released 2008); the FOIA documents are internal Treasury emails about slowing disbursement. CRS gives other stated reasons. https://archive.globalpolicy.org/security/issues/haiti/2006/0815rfk.htm ; https://upsidedownworld.org/archives/haiti/what-the-world-bank-and-idb-owe-haiti/ ; https://www.everycrsreport.com/files/20030917_IB96019_1103f6d071e46b3deae7b9f205ac6596dab7dc23.html"
+   }
+  ],
+  "add_sources": [
+   {
+    "title": "Covert Action in Chile, 1963-1973 (staff report)",
+    "publisher": "US Senate Select Committee on Intelligence Activities (Church Committee)",
+    "year": 1975,
+    "url": "https://www.intelligence.senate.gov/wp-content/uploads/2024/08/sites-default-files-94chile.pdf"
+   },
+   {
+    "title": "Taking care of business in Nicaragua: waging economic war (chronology of US actions at the World Bank and IDB)",
+    "publisher": "Multinational Monitor",
+    "year": 1985,
+    "url": "https://multinationalmonitor.org/hyper/issues/1985/04/waging.html"
+   },
+   {
+    "title": "RFK Center releases documents outlining US actions to block funds to Haiti",
+    "publisher": "Upside Down World",
+    "year": 2008,
+    "url": "https://upsidedownworld.org/news-briefs/news-briefs-news-briefs/rfk-center-releases-documents-outlining-us-actions-to-block-life-saving-funds-to-haiti/"
+   }
+  ],
+  "remove_sources": [
+   "https://clas.ucdenver.edu/nhdc/sites/default/files/attached-files/entry_438.pdf"
+  ]
+ },
+ "spying-at-the-negotiating-table": {
+  "verdict": "fixes",
+  "fixes": [
+   {
+    "field": "conviction",
+    "find": "Australia's bugging of Timor-Leste's cabinet is admitted through a conviction and a renegotiated treaty;",
+    "replace": "Australia's bugging of Timor-Leste's cabinet was exposed by the intelligence officer who led it, who later pleaded guilty to revealing secret information, and was followed by a renegotiated treaty, though Australia has never officially confirmed it;",
+    "why": "Australia has never officially acknowledged the bugging; Witness K pleaded guilty to communicating ASIS information, which is not a government admission. https://en.wikipedia.org/wiki/Australia%E2%80%93Timor-Leste_spying_scandal ; https://www.news4jax.com/news/world/2022/07/07/australia-drops-charge-against-lawyer-over-spying-claim/"
+   },
+   {
+    "field": "story[0]",
+    "find": "Timor-Leste was the poorest country in Asia, two years independent,",
+    "replace": "Timor-Leste was one of the poorest countries in the region, two years independent,",
+    "why": "ABC Lateline says 'one of the poorest nations in the region'; no listed source says poorest in Asia. https://www.abc.net.au/news/2015-11-25/east-timor-greater-sunrise-spy-scandal/6969830"
+   },
+   {
+    "field": "story[0]",
+    "find": "including the Greater Sunrise fields. The treaty signed in 2006",
+    "replace": "including the Greater Sunrise fields. ABC's Lateline reported that transcripts of the bugged conversations were delivered to Australia's negotiating team. The treaty signed in 2006",
+    "why": "Moves the transcripts detail out of paragraph 3, which went back to the opening example (style rule). Lateline: a representative's role included delivering transcripts to the negotiating team. https://www.abc.net.au/news/2015-11-25/east-timor-greater-sunrise-spy-scandal/6969830"
+   },
+   {
+    "field": "story[2]",
+    "find": "The Timor case is the one with a confession attached, and it shows how the knowledge was used: transcripts of Timor-Leste's cabinet discussions were reportedly delivered to Australia's negotiators. Spying of this kind is legal under the spying country's own law and illegal under the target's, so it is almost never tried in court, and the people who reveal it are the ones prosecuted.",
+    "replace": "Spying of this kind is generally authorized under the spying country's own law, so it is rarely tried in that country's courts, and the people who reveal it are often the ones prosecuted.",
+    "why": "Style rule: paragraph 3 returned to the Timor opening example (detail moved to paragraph 1). The legal generalization was unsourced and too absolute; Timor-Leste did take related cases to the ICJ and the Permanent Court of Arbitration."
+   }
+  ],
+  "add_sources": [
+   {
+    "title": "'Matter of death and life': Espionage in East Timor and Australia's diplomatic bungle",
+    "publisher": "ABC News (Lateline)",
+    "year": 2015,
+    "url": "https://www.abc.net.au/news/2015-11-25/east-timor-greater-sunrise-spy-scandal/6969830"
+   },
+   {
+    "title": "GCHQ intercepted foreign politicians' communications at G20 summits",
+    "publisher": "The Guardian",
+    "year": 2013,
+    "url": "https://www.theguardian.com/uk/2013/jun/16/gchq-intercepted-communications-g20-summits"
+   }
+  ],
+  "remove_sources": [
+   "https://johnmenadue.com/?p=19997",
+   "https://www.goodreads.com/author_blog_posts/5027064-gchq-intercepted-foreign-politicians-communications-at-g20-summits?tab=author"
+  ]
+ },
+ "bribes-built-into-financed-contracts": {
+  "verdict": "fixes",
+  "fixes": [
+   {
+    "field": "story[0]",
+    "find": "The World Bank had helped design the project and lent to it.",
+    "replace": "The World Bank lent to the project.",
+    "why": "Sources confirm World Bank lending (about $150m-$155m) but none of the listed sources says it helped design the project. https://mg.co.za/article/2004-03-19-western-firms-face-bribery-blacklist"
+   },
+   {
+    "field": "story[1]",
+    "find": "between 2001 and 2007, and that some of the projects were financed by the World Bank.",
+    "replace": "between 2001 and 2007.",
+    "why": "The SEC release does not say any of the bribed projects were World Bank-financed; the World Bank link is the separate 2009 settlement. https://www.sec.gov/news/press/2008/2008-294.htm"
+   },
+   {
+    "field": "story[2]",
+    "find": "The money involved is small next to the projects. Lesotho's bribes were around $2 million on a project worth billions, and companies only get caught when a borrowing government is willing to prosecute, as Lesotho was, or when a rich country's regulator acts, as the United States did with Siemens.",
+    "replace": "Companies are caught when a borrowing government is willing to prosecute, when a rich country's regulator acts, as the United States did with Siemens, or when the World Bank's own investigators find the evidence, as they did with Siemens's Russian subsidiary.",
+    "why": "Style rule: paragraph 3 went back to the Lesotho opening example. 'Only' was too strong: the Siemens Russia debarment followed a World Bank investigation. https://www.i-law.com/ilaw/doc/view.htm?id=241047"
+   },
+   {
+    "field": "story[2]",
+    "find": "The World Bank's own debarment list grows every year, but it records only the firms that were caught.",
+    "replace": "The World Bank's debarment list records only the firms that were caught.",
+    "why": "'Grows every year' is unsourced; debarments expire, so the list does not necessarily grow."
+   },
+   {
+    "field": "story[2]",
+    "find": " On this map, the Lesotho Highlands case shows what the project did to the people living in the valleys it flooded.",
+    "replace": "",
+    "why": "Style rule: returns to the Lesotho opening example. The link is already carried by case_ids."
+   }
+  ],
+  "add_sources": [
+   {
+    "title": "SEC charges Siemens AG for engaging in worldwide bribery",
+    "publisher": "US Securities and Exchange Commission",
+    "year": 2008,
+    "url": "https://www.sec.gov/news/press/2008/2008-294.htm"
+   },
+   {
+    "title": "Siemens to pay $100 million to fight fraud and corruption as part of World Bank Group settlement",
+    "publisher": "World Bank",
+    "year": 2009,
+    "url": "https://www.worldbank.org/en/news/press-release/2009/07/02/siemens-pay-million-fight-fraud-corruption-part-world-bank-group-settlement"
+   }
+  ],
+  "remove_sources": []
+ },
+ "aid-traded-for-arms-sales": {
+  "verdict": "fixes",
+  "fixes": [
+   {
+    "field": "story[1]",
+    "find": "In the early 2000s the British arms company BAE Systems sold Tanzania,",
+    "replace": "In a deal agreed in 1999 and cleared for export by Britain in 2001, the British arms company BAE Systems sold Tanzania,",
+    "why": "The SFO describes it as BAE's 1999 sale; the export licence was approved in December 2001. https://corruption-tracker.org/case/tanzanias-air-traffic-control-system"
+   },
+   {
+    "field": "story[1]",
+    "find": "delayed a £10 million aid payment and called the deal corrupt.",
+    "replace": "delayed a £10 million aid payment and suggested the deal was corrupt.",
+    "why": "Sources say Short 'suggested that the project was corrupt' and delayed £10m; no source shows her calling it corrupt outright. https://corruption-tracker.org/case/tanzanias-air-traffic-control-system ; https://mg.co.za/article/2002-03-21-britain-halts-aid-to-tanzania-after-air-control-system-deal/"
+   },
+   {
+    "field": "story[1]",
+    "find": "BAE had paid about $12 million through a marketing adviser.",
+    "replace": "BAE had paid about $12 million to a marketing adviser; the case never established where the money went after that.",
+    "why": "BAE paid $12.4m to its agent; the SFO did not try to prove the money was paid on as bribes, so 'through' overstates. https://corruption-tracker.org/case/tanzanias-air-traffic-control-system"
+   },
+   {
+    "field": "story[1]",
+    "find": "agreed to pay £29.5 million, which went to textbooks for Tanzania's primary schools.",
+    "replace": "agreed to pay £29.5 million, which was paid in 2012 for textbooks and other school supplies in Tanzania.",
+    "why": "The payment was made under a March 2012 memorandum for textbooks and other school supplies and equipment. https://star.worldbank.org/asset-recovery-watch-database/bae-systems-tanzania-radar-defence-system-case"
+   },
+   {
+    "field": "story[2]",
+    "find": "The two cases were exposed by a court challenge and a fraud investigation, and both settlements kept much of the evidence out of public view; the 2010 agreement ended the investigation into the radar deal.",
+    "replace": "The radar deal came to court only through a fraud investigation, and the 2010 plea agreement ended it with an accounting offence, so the bribery allegations were never tested at trial.",
+    "why": "Pergau was exposed by the National Audit Office and parliamentary committees, not the court case, and it ended in a ruling, not a settlement; the sentence also went back to the Pergau opening example (style rule). https://corruption-tracker.org/case/the-pergau-dam-arms-for-aid-scandal"
+   },
+   {
+    "field": "countries[1].note",
+    "find": "BAE paid £29.5 million in 2010.",
+    "replace": "BAE agreed in 2010 to pay £29.5 million, paid in 2012.",
+    "why": "Settlement 2010, payment 2012. https://star.worldbank.org/asset-recovery-watch-database/bae-systems-tanzania-radar-defence-system-case"
+   }
+  ],
+  "add_sources": [
+   {
+    "title": "The Pergau Dam 'arms for aid' scandal",
+    "publisher": "World Peace Foundation, Corruption Tracker (formerly Tufts Compendium of Arms Trade Corruption)",
+    "year": 2019,
+    "url": "https://corruption-tracker.org/case/the-pergau-dam-arms-for-aid-scandal"
+   },
+   {
+    "title": "Tanzania's air traffic control system",
+    "publisher": "World Peace Foundation, Corruption Tracker (formerly Tufts Compendium of Arms Trade Corruption)",
+    "year": 2019,
+    "url": "https://corruption-tracker.org/case/tanzanias-air-traffic-control-system"
+   }
+  ],
+  "remove_sources": [
+   "https://sites.tufts.edu/corruptarmsdeals/?p=1397",
+   "https://sites.tufts.edu/corruptarmsdeals/?p=167"
+  ]
+ },
+ "advisers-who-profit-from-the-sell-off": {
+  "verdict": "fixes",
+  "fixes": [
+   {
+    "field": "story[0]",
+    "find": "found both liable for fraud for making personal investments",
+    "replace": "found both liable under the US False Claims Act for making personal investments",
+    "why": "Judge Woodlock's June 2004 summary judgment found Shleifer and Hay liable under the False Claims Act for breaching the contract's conflict-of-interest rules; 'fraud' alone is looser than the ruling. https://www.thecrimson.com/article/2005/8/5/harvard-settles-suit-for-265-m/"
+   },
+   {
+    "field": "story[0]",
+    "find": "Hay between $1 million and $2 million",
+    "replace": "Hay up to $2 million",
+    "why": "Sources differ: the Crimson gives $1-2 million, Harvard Magazine gives $500,000 to $2 million, depending on his future income. 'Up to $2 million' fits both. https://www.harvardmagazine.com/print/2567?page=all"
+   },
+   {
+    "field": "story[1]",
+    "find": "What happened next in Russia shows where that leads.",
+    "replace": "Russia's next large sell-off went to insiders.",
+    "why": "Implies the Harvard advisers' conduct led to loans-for-shares; no source shows that. The scheme was designed by Russian bankers and officials. The new wording states only what the sources support."
+   },
+   {
+    "field": "story[1]",
+    "find": "12 of the country's most valuable companies",
+    "replace": "12 large state companies",
+    "why": "Treisman (NBER w15819) argues against the 'crown jewels' description: the stakes were worth 8-10% of the stock market at the time. 'Large' is accurate without taking a side. https://www.nber.org/system/files/working_papers/w15819/w15819.pdf"
+   },
+   {
+    "field": "story[1]",
+    "find": "51 per cent of Norilsk Nickel",
+    "replace": "51 per cent of the voting shares in Norilsk Nickel",
+    "why": "The 51% was voting stock; Treisman's table gives the stake as 38% of total equity, sold for $170.1m. https://www.nber.org/system/files/working_papers/w15819/w15819.pdf"
+   },
+   {
+    "field": "story[1]",
+    "find": "and the scheme created many of the people now called the oligarchs",
+    "replace": "and the scheme gave several of the men later called the oligarchs control of major companies",
+    "why": "The winning bankers (Potanin, Khodorkovsky, Berezovsky) were already rich; Treisman finds the biggest overall winners were Soviet-era managers. 'Created' goes further than the sources. https://www.nber.org/system/files/working_papers/w15819/w15819.pdf"
+   },
+   {
+    "field": "story[2]",
+    "find": "came out only because",
+    "replace": "came out after",
+    "why": "Warsh reports that whistle-blowers complained and USAID investigated; no source says this was the only way the investments could have come out. https://davidwarsh.substack.com/p/andrei-and-rafael"
+   }
+  ],
+  "add_sources": [],
+  "remove_sources": []
+ },
+ "seed-laws-for-seed-companies": {
+  "verdict": "fixes",
+  "fixes": [
+   {
+    "field": "title",
+    "find": "that make farmers' own seed illegal",
+    "replace": "that restrict farmers' own seed",
+    "why": "The sources describe laws that restrict saving, swapping and selling protected varieties and selling uncertified seed. They do not outlaw farmers' own seed in general. https://www.oaklandinstitute.org/sites/default/files/files-archive/down-on-the-seed.pdf"
+   },
+   {
+    "field": "story[0]",
+    "find": "protects the rights of companies that breed new plant varieties",
+    "replace": "protects the rights of those who breed new plant varieties",
+    "why": "UPOV protects breeders' rights generally, including public research institutes, not only companies. https://www.oaklandinstitute.org/sites/default/files/files-archive/down-on-the-seed.pdf"
+   },
+   {
+    "field": "story[2]",
+    "find": "measure rules that help farmers get improved varieties quickly",
+    "replace": "measure laws and rules that support the timely release of new seed to farmers",
+    "why": "The EBA page says the indicator measures laws and regulations that support the timely release of seed for use by domestic farmers. It does not mention 'improved varieties'. https://eba.worldbank.org/en/data/exploretopics/seed"
+   },
+   {
+    "field": "story[2]",
+    "find": "and the companies that sell certified seed are few and mostly foreign",
+    "replace": "and six Western firms control over two-thirds of the world's commercial seed sales, according to the Oakland Institute",
+    "why": "No source given shows that certified-seed sellers in these countries are 'few and mostly foreign'. Several, e.g. Kenya, have many local seed firms. Replaced with the global concentration figure the Oakland report gives. https://www.oaklandinstitute.org/sites/default/files/files-archive/down-on-the-seed.pdf"
+   }
+  ],
+  "add_sources": [],
+  "remove_sources": []
+ },
+ "pension-funds-buy-up-farmland": {
+  "verdict": "fixes",
+  "fixes": [
+   {
+    "field": "conviction",
+    "find": "Brazil's land agency found farmland deals by a US pension manager and Harvard's endowment illegal;",
+    "replace": "In a preliminary report, Brazil's land agency found that land deals involving a US pension manager broke limits on foreign ownership, and a Brazilian court froze the deed to land held by Harvard's endowment;",
+    "why": "Incra's finding concerned TIAA only and was preliminary, still awaiting a legal opinion from the Attorney General's Office (Bloomberg, 17 Dec 2020). Harvard's Campo Largo tract was blocked by the Bahia Court of Justice on 6 Oct 2020 on public-land grounds. That was a court, not Incra, and not about foreign ownership. https://farmlandgrab.org/30015 ; https://en.agroefogo.org.br/dangerous-liaisons-international-pension-funds-wildfires-and-land-grabbing-in-matopiba"
+   },
+   {
+    "field": "story[0]",
+    "find": "and that the pension manager TIAA had bought at least 13 farms in Matopiba",
+    "replace": "while Chain Reaction Research reported that the pension manager TIAA had bought at least 13 farms in Matopiba",
+    "why": "The 13 farms, 4 of them from companies linked to the late Euclides de Carli, come from Chain Reaction Research (Nov 2019), not from the Rede Social/GRAIN Harvard research. Figures confirmed. https://farmlandgrab.org/post/29279-the-chain-cerrado-fires-show-tiaa-and-harvard-s-endowment-face-mounting-deforestation-risks"
+   },
+   {
+    "field": "story[0]",
+    "find": ", and in 2020, according to these groups, Brazil's land agency found that the funds' deals broke Brazil's limits on foreign land ownership.",
+    "replace": ". In a preliminary report revealed in December 2020, Brazil's land agency, Incra, found that TIAA's indirect part in land bought by a Brazilian company it co-owns broke Brazil's limits on foreign land ownership, which TIAA disputes; in October 2020 a Bahia state court froze the deed to a 107,000-hectare tract held by Harvard's Brazilian company and reopened an inquiry into whether it was public land illegally transferred to private hands.",
+    "why": "Incra's finding was about TIAA (Tellus Brasil, co-owned by Cosan and a TIAA subsidiary). It was preliminary, and the AATR/GRAIN dossier dates the Incra opinion to May 2019, so '2020' is the date it became public, not the date of the finding. Harvard's case was a state court ruling on public land, not an Incra foreign-ownership finding. https://farmlandgrab.org/30015 ; https://en.agroefogo.org.br/dangerous-liaisons-international-pension-funds-wildfires-and-land-grabbing-in-matopiba"
+   },
+   {
+    "field": "story[1]",
+    "find": "GRAIN reports that the funds structured their purchases through layers of Brazilian companies, which is how foreign buyers got around Brazil's legal limits on foreign land ownership, and that in parts of the Cerrado false land titles are commonly used to claim public land before it is sold on.",
+    "replace": "In 2015 GRAIN and Rede Social reported that Sweden's national pension fund AP2 and two Canadian pension funds, the Caisse de dépôt et placement du Québec and British Columbia's bcIMC, had put money into a global farmland fund that bought Brazilian farms through a structure of companies and debentures which, the groups said, let them evade Brazil's limits on foreign land ownership; the fund's manager said the farms were bought legally. In parts of the Cerrado, GRAIN reports, false land titles are commonly used to claim public land before it is sold on.",
+    "why": "Style rule: 'the funds' pointed back to the opening Harvard/TIAA example. Replaced with separate evidence about other pension funds, from GRAIN's 2015 report. https://grain.org/en/article/5350-top-swedish-us-and-canadian-pension-funds-linked-to-brazilian-land-grabs-displacement-of-people . The false-titles point is unchanged and supported (grilagem, Witness Radio/GRAIN 2018)."
+   },
+   {
+    "field": "story[1]",
+    "find": " Harvard paid one partner's company millions of dollars a year in fees, and has since written down the value of its farmland.",
+    "replace": "",
+    "why": "Style rule: goes back to the opening Harvard example. The facts are accurate ($3m a year to an Insolo-linked company; $1.1bn write-down of the natural resources portfolio in 2017) but belong in paragraph 1 if anywhere. https://witnessradio.org/harvards-billion-dollar-farmland-fiasco/amp/"
+   },
+   {
+    "field": "story[2]",
+    "find": "But the people who would object, the teachers whose pensions TIAA manages and the students and staff Harvard's endowment serves, are not told which farms they own",
+    "replace": "But the savers and institutions whose money pays for these farms are generally not told which farms they own",
+    "why": "Style rule: goes back to the opening TIAA/Harvard example. The general point is kept. Harvard's 'problems predate' and ESG statements are confirmed (Grist 2018); TIAA claims due diligence (Bloomberg 2020)."
+   },
+   {
+    "field": "countries[0].note",
+    "find": "deals ruled illegal by Brazil's land agency, per research groups.",
+    "replace": "TIAA deals found to breach foreign-ownership limits in a preliminary Incra report; deed to a Harvard tract frozen by a Bahia court in 2020.",
+    "why": "Same correction as the conviction: Incra's preliminary finding covered TIAA only; Harvard's case was a state court ruling. https://farmlandgrab.org/30015"
+   }
+  ],
+  "add_sources": [
+   {
+    "title": "US pension fund TIAA embroiled in Brazil land-purchase probe",
+    "publisher": "Bloomberg (via farmlandgrab.org)",
+    "year": 2020,
+    "url": "https://farmlandgrab.org/30015"
+   },
+   {
+    "title": "Top Swedish, US and Canadian pension funds linked to Brazilian land grabs, displacement of people",
+    "publisher": "GRAIN",
+    "year": 2015,
+    "url": "https://grain.org/en/article/5350-top-swedish-us-and-canadian-pension-funds-linked-to-brazilian-land-grabs-displacement-of-people"
+   }
+  ],
+  "remove_sources": []
+ },
+ "development-money-through-tax-havens": {
+  "verdict": "fixes",
+  "fixes": [
+   {
+    "field": "story[0]",
+    "find": "with ties to 40 per cent of the IFC's clients investing in the region",
+    "replace": "involved in 40 per cent of the IFC's projects in the region",
+    "why": "Oxfam's briefing says 40 per cent of total 2015 projects included companies with a subsidiary or headquarters in Mauritius. That counts projects, not clients. https://www.oxfam.org.au/wp-content/uploads/2016/04/bn-ifc-tax-havens-110416-embargo-en-28129.pdf"
+   },
+   {
+    "field": "story[0]",
+    "find": ", and a quarter of the IFC's projects there went directly to a company incorporated in a tax haven",
+    "replace": "",
+    "why": "Oxfam's own figure contradicts itself: it says '25 per cent of the IFC investment projects' but counts '6 projects out of a total of 67' (about 9 per cent). Public Finance Focus reports it as 25% of investment. It cannot be stated reliably as a share of projects, so the clause is removed. https://www.publicfinancefocus.org/node/28964"
+   },
+   {
+    "field": "story[2]",
+    "find": "The lenders say that using offshore centres can be legitimate, for example to pool money from many investors under a reliable legal system.",
+    "replace": "The IFC said in response that there are legitimate uses for offshore structures and that it requires the companies it funds to comply with tax law.",
+    "why": "No source given contains the 'pool money ... reliable legal system' rationale. The IFC's actual 2016 response (spokesman Frederick Jones, Thomson Reuters Foundation) was that there are legitimate uses for offshore structures and that clients must comply with applicable law, including tax law. https://www.eco-business.com/news/world-bank-invests-in-firms-using-tax-havens-says-oxfam"
+   },
+   {
+    "field": "countries[0].note",
+    "find": "Linked to 40 per cent of IFC clients investing in sub-Saharan Africa.",
+    "replace": "Linked to 40 per cent of IFC projects in sub-Saharan Africa in 2015.",
+    "why": "As above: the Oxfam figure counts projects. https://www.oxfam.org.au/wp-content/uploads/2016/04/bn-ifc-tax-havens-110416-embargo-en-28129.pdf"
+   }
+  ],
+  "add_sources": [
+   {
+    "title": "World Bank invests in firms using tax havens, says Oxfam",
+    "publisher": "Thomson Reuters Foundation via Eco-Business",
+    "year": 2016,
+    "url": "https://www.eco-business.com/news/world-bank-invests-in-firms-using-tax-havens-says-oxfam"
+   }
+  ],
+  "remove_sources": []
+ },
+ "aid-cover-for-spies": {
+  "verdict": "fixes",
+  "fixes": [
+   {
+    "field": "conviction",
+    "find": "Three cases are on the public record",
+    "replace": "Four cases are on the public record",
+    "why": "The story now has four cases (Office of Public Safety, ZunZuneo, Abbottabad, Timor-Leste); the conviction still says three."
+   },
+   {
+    "field": "story[0]",
+    "find": "would make no operational use of vaccination programmes.",
+    "replace": "would make no operational use of vaccination programmes, a promise that covers vaccination and nothing else.",
+    "why": "Structure rule: moves the comment on the 2014 promise into the opening paragraph so paragraph 3 does not return to the Abbottabad case (see the next fix)."
+   },
+   {
+    "field": "story[2]",
+    "find": "The 2014 American promise covers vaccination and nothing else. ",
+    "replace": "",
+    "why": "Structure rule: this sentence goes back to the opening example in paragraph 3; moved into paragraph 1 by the fix above."
+   },
+   {
+    "field": "story[2]",
+    "find": "another, an arrest in Pakistan, a retired spy's complaint.",
+    "replace": "another, a retired spy's complaint in the third.",
+    "why": "Structure rule: 'an arrest in Pakistan' adds a new detail to the opening Abbottabad example in paragraph 3. The Timor details check out: bugging in 2004 of the cabinet offices under an Australian aid renovation, exposed through a former ASIS officer (https://devpolicy.org/really-disgraceful-australian-aid-program-allegedly-used-as-cover-for-timor-spying20131206-2/; https://privacyinternational.org/blog/1327/east-timor-takes-australia-over-commercial-spying-allegations)."
+   }
+  ],
+  "add_sources": [],
+  "remove_sources": []
+ },
+ "forecasts-inflated-to-sell-loans": {
+  "verdict": "fixes",
+  "fixes": [
+   {
+    "field": "story[2]",
+    "find": "So do independent counts.",
+    "replace": "So do other studies.",
+    "why": "The paragraph includes the IMF's own working paper, which is not independent of the lenders."
+   }
+  ],
+  "add_sources": [],
+  "remove_sources": []
+ },
+ "lending-to-known-thieves": {
+  "verdict": "ok",
+  "fixes": [],
+  "add_sources": [],
+  "remove_sources": []
+ },
+ "aid-into-offshore-accounts": {
+  "verdict": "fixes",
+  "fixes": [
+   {
+    "field": "story[0]",
+    "find": "so that about 7.5 per cent of the aid appeared to leak out, most of it to Switzerland and Luxembourg.",
+    "replace": "so that about 7.5 per cent of the aid appeared to leak out, with the rise driven by accounts in Switzerland and Luxembourg.",
+    "why": "The paper has country-level data for only some havens, so 'most of it' is stronger than the source; the earlier checked wording was that the rise was driven by Switzerland and Luxembourg (https://documents1.worldbank.org/curated/en/493201582052636710/text/Elite-Capture-of-Foreign-Aid-Evidence-from-Offshore-Bank-Accounts.txt)."
+   },
+   {
+    "field": "story[1]",
+    "find": "estimated capital flight from 40 sub-Saharan African countries between 1970 and 2004 at $443 billion",
+    "replace": "estimated capital flight from 33 sub-Saharan African countries between 1970 and 2004 at $443 billion",
+    "why": "The $443 billion and $195 billion figures are for 33 countries (IRAE 2011 abstract). The 40-country version (PERI WP166, 2008) gives $420 billion against $227 billion of debt. https://ideas.repec.org/a/taf/irapec/v25y2011i2p149-170.html ; https://econpapers.repec.org/RePEc:uma:periwp:wp166"
+   },
+   {
+    "field": "story[1]",
+    "find": "shows where the corporate side of the same money goes.",
+    "replace": "shows how companies use the same havens.",
+    "why": "Corporate investment routed through havens is not 'the same money' as aid or loan money taken by officials; the old wording claimed a link no source makes."
+   },
+   {
+    "field": "story[2]",
+    "find": "Neither study can say whose money it was. The deposit figures are country totals, Swiss and other haven banks do not publish who holds their accounts, and the lenders are not required to trace where a disbursement went after it reached a government's account.",
+    "replace": "Neither study can say whose money it was. Both rest on country totals, Swiss and other haven banks do not publish who holds their accounts, and no public record traces where a disbursement went after it reached a government's account.",
+    "why": "Structure rule: 'The deposit figures' goes back to explain the opening paper's method; 'both rest on country totals' covers both studies (Ndikumana and Boyce also use country balance-of-payments totals). 'Lenders are not required to trace' is unsourced and too strong, since World Bank project funds have audit rules; softened to what can be supported."
+   },
+   {
+    "field": "story[2]",
+    "find": "That is why the evidence takes the form of a statistical shadow rather than a list of names.",
+    "replace": "That is why the evidence is statistical rather than a list of names.",
+    "why": "Plain wording; drops the figure of speech 'statistical shadow'."
+   }
+  ],
+  "add_sources": [],
+  "remove_sources": []
+ },
+ "rescues-that-rescue-banks": {
+  "verdict": "fixes",
+  "fixes": [
+   {
+    "field": "story[0]",
+    "find": "though its authors also blamed years of high Greek spending.",
+    "replace": "though its authors also blamed years of high Greek spending. On this map, the 2012 Greek programme cut the minimum wage by 22 per cent, and other cards record the protests that followed.",
+    "why": "Structure rule: moves the Greek minimum-wage line out of paragraph 3 and into the opening paragraph (see the next fix). Checked against the map's own cards: the 22% cut and the Syntagma protest cards are there."
+   },
+   {
+    "field": "story[2]",
+    "find": "In both cases the private lenders who had bought the debt were paid, and the public lenders who replaced them were then repaid by the borrowing country through cuts and taxes. On this map, the 2012 Greek programme cut the minimum wage by 22 per cent, and other cards record the protests that followed. ",
+    "replace": "In Mexico the bondholders were paid what they were owed, and the public lenders who replaced them were then repaid by Mexico. ",
+    "why": "Factually wrong for Greece: private holders of Greek bonds took a write-down of more than half the face value in the 2012 debt exchange, so they were not all paid, and Greece's euro-area rescue loans are not yet repaid. It also breaks the structure rule by going back to Greece in paragraph 3. The Mexican government met its tesobono obligations (Federal Reserve Bulletin, March 1996, https://www.federalreserve.gov/pubs/bulletin/1996/396lead.pdf)."
+   },
+   {
+    "field": "story[1]",
+    "find": "In 1994 the Mexican government had sold short-term bonds called tesobonos, repayable in dollars, and the amount outstanding grew from $1.2 billion to $17.8 billion in a single year.",
+    "replace": "In 1994 the Mexican government had sold short-term bonds called tesobonos, paid in pesos but tied to the value of the dollar, and the amount outstanding grew from $3.1 billion in March to $29.2 billion in December, about $17 billion of it held by foreign investors.",
+    "why": "Tesobonos were paid in pesos, with their value tied to the dollar (Federal Reserve Bulletin 1996; Lustig, Brookings 1995). The $1.2 billion to $17.8 billion figure from one 1996 journal article does not match Lustig's month-by-month data: $3.1 billion in March, $29.2 billion in December 1994, about $17 billion of it foreign-held. https://www.brookings.edu/wp-content/uploads/2016/06/bdp114.pdf"
+   },
+   {
+    "field": "countries[4].note",
+    "find": "tesobonos rose from $1.2 billion to $17.8 billion in 1994.",
+    "replace": "tesobonos rose from $3.1 billion in March 1994 to $29.2 billion in December.",
+    "why": "Matches the corrected story figure (Lustig, Brookings 1995, https://www.brookings.edu/wp-content/uploads/2016/06/bdp114.pdf)."
+   }
+  ],
+  "add_sources": [
+   {
+    "title": "The Mexican Peso Crisis: The Foreseeable and the Surprise (Brookings Discussion Papers 114)",
+    "publisher": "Brookings Institution",
+    "year": 1995,
+    "url": "https://www.brookings.edu/wp-content/uploads/2016/06/bdp114.pdf"
+   },
+   {
+    "title": "Mexican Bail-Out",
+    "publisher": "Encyclopedia.com (Dictionary of American History)",
+    "year": 2003,
+    "url": "https://encyclopedia.com/history/encyclopedias-almanacs-transcripts-and-maps/mexican-bail-out"
+   },
+   {
+    "title": "The Mexican peso crisis (tesobonos paid in pesos, value linked to the dollar)",
+    "publisher": "Federal Reserve Bulletin",
+    "year": 1996,
+    "url": "https://www.federalreserve.gov/pubs/bulletin/1996/396lead.pdf"
+   }
+  ],
+  "remove_sources": [
+   "https://library.fes.de/libalt/journals/swetsfulltext/11220654.pdf"
+  ]
+ },
+ "rankings-bent-for-money": {
+  "verdict": "ok",
+  "fixes": [],
+  "add_sources": [],
+  "remove_sources": []
+ },
+ "secret-loans-banks-traders": {
+  "verdict": "fixes",
+  "fixes": [
+   {
+    "field": "story[0]",
+    "find": "and the loans were kept secret from Mozambique's parliament and from the IMF.",
+    "replace": "and the loans were taken without the approval of Mozambique's parliament, with more than $1 billion of them kept secret from the IMF until 2016.",
+    "why": "The tuna-fleet (EMATUM) loan was sold publicly as a bond in 2013; the hidden part was the ProIndicus and MAM loans, over $1 billion, revealed in 2016. All three bypassed parliament (U4, https://u4.no/publications/the-mozambique-hidden-loans-case-an-opportunity-for-donors-to-demonstrate-anti-corruption-commitment/fullversion)."
+   },
+   {
+    "field": "story[1]",
+    "find": "Commodity traders lend in the same shadows.",
+    "replace": "Commodity traders make hidden loans too.",
+    "why": "Plain wording instead of a figure of speech."
+   },
+   {
+    "field": "story[2]",
+    "find": "The pattern reaches the largest lenders and the richest borrowers.",
+    "replace": "The same thing happens with Chinese lending and in Europe.",
+    "why": "Plain wording; Greece is not one of the 'richest borrowers', and the phrase is rhetorical."
+   }
+  ],
+  "add_sources": [
+   {
+    "title": "The Mozambique hidden loans case: an opportunity for donors to demonstrate anti-corruption commitment",
+    "publisher": "U4 Anti-Corruption Resource Centre",
+    "year": 2018,
+    "url": "https://u4.no/publications/the-mozambique-hidden-loans-case-an-opportunity-for-donors-to-demonstrate-anti-corruption-commitment/fullversion"
+   }
+  ],
+  "remove_sources": []
+ },
+ "rescue-money-timed-for-elections": {
+  "verdict": "fixes",
+  "fixes": [
+   {
+    "field": "story[0]",
+    "find": "in a presidential election he had looked likely to lose.",
+    "replace": "in a presidential election in which he was trailing in the polls.",
+    "why": "The cited source says Zyuganov held 'a sizeable and stable lead' in the polls; it does not say Yeltsin looked likely to lose (https://csmonitor.com/1996/0226/26071.html)."
+   }
+  ],
+  "add_sources": [],
+  "remove_sources": []
+ },
+ "poor-countries-take-the-poison": {
+  "verdict": "ok",
+  "fixes": [],
+  "add_sources": [],
+  "remove_sources": []
+ },
+ "markets-opened-for-subsidized-food": {
+  "verdict": "fixes",
+  "fixes": [
+   {
+    "field": "story[2]",
+    "find": "The largest US food aid programme, Food for Peace, requires that the food it sends be grown in the United States, so even emergency help to a country like Haiti is bought from American farmers and shipped.",
+    "replace": "The long-running US food aid programme Food for Peace requires that the food it sends be grown in the United States, so emergency help sent through it is bought from American farmers and shipped.",
+    "why": "Food for Peace is not the largest US food aid programme: CRS reports $2.94 billion programmed for the Emergency Food Security Program in FY2024, which is larger (https://www.everycrsreport.com/files/2026-01-26_IF13162_a9350f2d453aa8c761ca1f98033ac5bda268637b.html). The 100% US-grown rule is confirmed by PBS NewsHour. 'A country like Haiti' goes back to the opening example in paragraph 3 (structure rule)."
+   }
+  ],
+  "add_sources": [
+   {
+    "title": "U.S. International Food Assistance Primer (IF13162)",
+    "publisher": "Congressional Research Service",
+    "year": 2026,
+    "url": "https://www.everycrsreport.com/files/2026-01-26_IF13162_a9350f2d453aa8c761ca1f98033ac5bda268637b.html"
+   }
+  ],
+  "remove_sources": []
+ },
+ "carbon-credits-new-land-grab": {
+  "verdict": "fixes",
+  "fixes": [
+   {
+    "field": "story[2]",
+    "find": "Where carbon projects have gone ahead, courts have found problems.",
+    "replace": "Where carbon projects have gone ahead, a court and the main certifier have found problems.",
+    "why": "The paragraph gives one court ruling (Kenya, January 2025) and Verra's suspensions, not several court rulings."
+   }
+  ],
+  "add_sources": [],
+  "remove_sources": []
+ }
+}
