@@ -186,8 +186,14 @@ RD = [c for c in CCJ.get("revolving_door", []) if c.get("iso3")]
 for i, c in enumerate(CC):
     for t in (UM["ECB"] if c["iso3"] == "EMU" else UM.get(c["iso3"], [c["iso3"]])):
         if t in P: P[t].setdefault("cc", []).append(i)
+# A revolving-door record held by a currency union is held by every member country, the
+# same way cases expand above and events expand below. This loop expanded EMU alone until
+# round 53, so the nine records keyed to ECCB, BCEAO and BEAC rendered in no country box
+# and scored for nobody, while coverage.py, which does expand, counted all 21 member
+# countries as covered. That is the round-44 events bug in a third place. Keep all three
+# loops and coverage.py in step: if one changes, change them together.
 for i, c in enumerate(RD):
-    for t in (UM["ECB"] if c["iso3"] == "EMU" else [c["iso3"]]):
+    for t in (UM["ECB"] if c["iso3"] == "EMU" else UM.get(c["iso3"], [c["iso3"]])):
         if t in P: P[t].setdefault("rd", []).append(i)
 # ---------- events ----------
 EV = EG["events"]
