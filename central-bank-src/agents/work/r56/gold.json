@@ -1,0 +1,122 @@
+{
+ "notes": "ROUND 56 - gold custodians, depositor-side only. METHOD: WebSearch first, then curl + pdftotext on the returned PDF, grepping for gold/or/oro/ouro/emas/custody/Bank of England/BIS. 9 records across 3 countries (NLD, LBN, MNG).\n\nFILLED.\nNLD - De Nederlandsche Bank's own gold page (dnb.nl/en/about-us/gold, read Nov 2026) gives a four-way location table in words: 'Almost a third, 31%, is held at DNB's Cash Centre in Zeist, the Netherlands' (200,000 kg); 'A similar share, 32%, is kept in the vaults of the Bank of England in London'; '18.5% at the Federal Reserve Bank of New York'; 'another 18.5% at the Royal Canadian Mint in Ottawa'. Total 'more than 612 tonnes', valued EUR 72.2bn at end-2025. The page notes 'Until 2026, the proportions were different, although the storage locations were the same' - i.e. these shares are post the Sept 2026 move of 86 t out of North America. Four records. The page is HTML, not a note to the accounts; curl is Akamai-blocked on dnb.nl so this came through WebFetch.\nMNG - Bank of Mongolia 2021 annual report (IFRS statements, Note 13 'Gold bullion and precious metals'): 'Monetary gold and silver are mainly placed at the Bank of England and JP Morgan Chase Bank.' Two named institutions. The SAME note in the 2024 statements drops the names and instead says 'Gold bullion consists of the stocks of gold bars of international standard held in foreign banks and in the vault of the Bank' - that sentence is the source for the third record (Bank of Mongolia's own vault). So Mongolia disclosed custodian identity in 2021 and stopped in 2024; worth flagging as a disclosure regression.\nLBN - no BdL accounts are published. The named pairing comes from a policy paper of the Issam Fares Institute, American University of Beirut (April 2026): 'Roughly two-thirds of the gold is stored domestically at Banque du Liban, with the remainder held abroad for safekeeping at the Federal Reserve Bank of New York.' Holdings ~287 tonnes since 1971. Filed with weak_source true because it is a third-party paper, not the bank's own note.\n\nCONFIRMED NEGATIVES - each of these publishes a gold note (or an equivalent official statement) that names NO institution. These are blanks, not gaps; do not re-spend calls on them.\nISL - Central Bank of Iceland Annual Report 2022, Note 14 'Gold' (63,797 oz, ISK 16,526m) and accounting-policy Note 41.9 'Gold': both give value and ounces only. The reserve-management chapter says deposits are held with central banks but says nothing about where the gold sits. Names nobody.\nEST - Eesti Pank Annual Report 2019, Note 1 'Gold and gold receivables': 8,250.171 oz, market value EUR 11.172m, revaluation only. Names nobody.\nCHL - Banco Central de Chile estados financieros 2024, Note 7(d) 'Oro monetario': 7,940 troy ounces at USD 2,615.72/oz, no location and no counterparty. Names nobody.\nMOZ - Banco de Mocambique demonstracoes financeiras 2025, NOTA 8 - OURO: the table's only line is 'Ouro em moedas e barras - No estrangeiro' (abroad) for 126,575 oz / USD 548,192,544. Location given at country-of-residence level only ('abroad'); names nobody.\nMAR - Bank Al-Maghrib Rapport annuel 2025, Note 1 'Avoirs et placements en or': 'avoirs en or conserves au Maroc et aupres de depositaires etrangers', with a split table - Maroc 4,855 oz, Etranger 706,223 oz, total 711,078 oz (22.12 t). It gives the domestic/foreign split in ounces but names no foreign depositary, so it fails the named-institution test the same way Austria's 'the U.K.' did.\nLUX - Banque centrale du Luxembourg Rapport annuel 2024, NOTE 3 'Avoirs et creances en or': 72,464.97 oz worth EUR 181.96m. Names nobody.\nTTO - Central Bank of Trinidad and Tobago Annual Report 2025: accounting policy (s) 'Gold holdings' and the revaluation table ('Gold holdings' TT$1,409,920k unrealised) are the only gold disclosures. Names nobody.\nUKR - National Bank of Ukraine consolidated financial statements H1 2025: the only gold line outside revaluation reserves is 'Short-term deposits in gold' UAH 12,339m under non-financial assets, plus monetary gold in the fair-value hierarchy. That is gold held in accounts, not custody, and no counterparty is named. Names nobody.\nKGZ - National Bank of the Kyrgyz Republic consolidated and separate financial statements for 2025, Note 6 'Monetary gold': 'Gold in accounts with foreign banks and in bullion' KGS 563,086,315k; the concentration paragraph gives only a Fitch rating of A+ for the foreign banks. Gold accounts, not custody, and no institution named.\nMDA - National Bank of Moldova financial statements 2024, Note 8 'Monetary gold': 74,133.48 grams of Good Delivery bullion, MDL 115,639k. Names nobody.\nGEO - National Bank of Georgia 2025 annual financial report, as reported in detail by Georgia Today (6 May 2026): the report names counterparties for everything EXCEPT gold - commercial banks, OECD central banks, US/French/German/Finnish/Belgian/Austrian/Danish/Dutch/Portuguese/Canadian government bonds, World Bank, EIB, ADB, KfW, CADES, KEXIM, and a BIS investment portfolio - and then says only that the NBG 'holds monetary gold as part of its reserves. As of 2025, this amounts to 229,478 ounces, or approximately 7.1 tons.' No custodian for the gold.\nCYP - a WITHHELD-shape negative, like Brazil. Central Bank of Cyprus governor Chrystalla Georghadji told the House ethics committee (9 Nov 2016, Cyprus Mail) that the CBC's 13.9 t of gold is 'intact' and 'being stored in the vaults of a central bank in a European country' - she described the custodian's type and continent and deliberately did not name it.\nAZE - Central Bank of Azerbaijan Annual Report 2024, section 2.4 'Storage and management of international gold and foreign exchange reserves held by the Central Bank': despite the heading it discusses only FX currency composition, tranching and external managers. No gold custodian, no gold location, and the word gold appears nowhere else in the report.\nALB - Bank of Albania financial statements for 2024 (fetched via WebFetch after curl got HTTP 520): Note 7(G) 'Monetary gold' says only 'The Bank of Albania as a central bank maintains particular volumes of gold as part of Albania's international reserves', plus the London Bullion Market valuation basis. Monetary gold ALL 26,724m sits under Note 10; the Note 10 text fell past the fetched window, so Albania is a probable blank rather than a confirmed one - one targeted re-read of Note 10 would settle it.\nBWA - Bank of Botswana Annual Report 2022: the word gold appears only in mining/export statistics and in an IIP line 'Monetary Gold and SDRs'; there is no gold note in the Bank's own financial statements and the 'Monetary gold' row of its own table is all dashes. Consistent with Botswana holding no monetary gold - check the World Gold Council figure before spending another call.\n\nHOST BLOCKS - the document exists but the host refused the download; a different transport would be needed.\nPNG - bankpng.gov.pg serves a Cloudflare 'Just a moment...' interstitial instead of the PDF, for both BPNG Annual Report 2024 and 2022.\nMKD - nbrm.mk same Cloudflare interstitial for the National Bank's Independent Auditor's Report and Financial Statements 2023; WebFetch also failed at the site with a client error. North Macedonia is unresolved, not negative.\nPAK - sbp.org.pk returns an HTML/JS challenge for both the Annual Accounts of the State Bank of Pakistan 2020 and arFY12 Chapter 12.\nARM - cba.am served HTML instead of IFRS_FS_CBA_30.09.23_Eng.pdf.\nPER - bcrp.gob.pe served HTML instead of memoria-bcrp-2025-8.pdf (the Memoria chapter carrying the estados financieros).\nIDN - bi.go.id closed the connection ('Empty reply from server') for Laporan Keuangan Tahunan BI 2025 and 2022.\n\nDEAD ENDS WORTH RECORDING. The OMFIF piece 'The custody question: where are central banks storing gold?' (Sept 2026) describes the custody models and says official holders use 'predominantly the Bank of England and the Federal Reserve Bank of New York', but names not one central bank against a custodian - no usable pairings. Searching for the custodian-side phrase ('gold is held in custody' + Bank of England) returns only UK government and Bank of England accounts, confirming again that the custodian side is dead.",
+ "records": [
+  {
+   "cb_iso3": "NLD",
+   "entity": "De Nederlandsche Bank Cash Centre, Zeist",
+   "entity_type": "central bank's own vault",
+   "relation": "holds its gold reserves in custody",
+   "detail": "De Nederlandsche Bank's own gold page states that 'Almost a third, 31%, is held at DNB's Cash Centre in Zeist, the Netherlands' and that this gold weighs 200,000 kilogrammes, out of total holdings of more than 612 tonnes worth EUR 72.2 billion at the end of 2025; the page notes the shares changed in 2026 while the four storage locations stayed the same.",
+   "entity_hq_city": "Zeist",
+   "entity_hq_iso3": "NLD",
+   "as_of": "2026 location shares, holdings valued at end-2025",
+   "source_url": "https://dnb.nl/en/about-us/gold",
+   "source_title": "Gold - De Nederlandsche Bank",
+   "weak_source": false
+  },
+  {
+   "cb_iso3": "NLD",
+   "entity": "Bank of England",
+   "entity_type": "central bank",
+   "relation": "holds its gold reserves in custody",
+   "detail": "De Nederlandsche Bank's own gold page states that 'A similar share, 32%, is kept in the vaults of the Bank of England in London', making London the largest of DNB's four storage sites for holdings of more than 612 tonnes; the page says these proportions date from 2026, after DNB moved 86 tonnes out of North America.",
+   "entity_hq_city": "London",
+   "entity_hq_iso3": "GBR",
+   "as_of": "2026 location shares, holdings valued at end-2025",
+   "source_url": "https://dnb.nl/en/about-us/gold",
+   "source_title": "Gold - De Nederlandsche Bank",
+   "weak_source": false
+  },
+  {
+   "cb_iso3": "NLD",
+   "entity": "Federal Reserve Bank of New York",
+   "entity_type": "central bank",
+   "relation": "holds its gold reserves in custody",
+   "detail": "De Nederlandsche Bank's own gold page states that 18.5% of its gold is held 'at the Federal Reserve Bank of New York', one of two North American sites alongside Ottawa, out of total holdings of more than 612 tonnes worth EUR 72.2 billion at the end of 2025.",
+   "entity_hq_city": "New York",
+   "entity_hq_iso3": "USA",
+   "as_of": "2026 location shares, holdings valued at end-2025",
+   "source_url": "https://dnb.nl/en/about-us/gold",
+   "source_title": "Gold - De Nederlandsche Bank",
+   "weak_source": false
+  },
+  {
+   "cb_iso3": "NLD",
+   "entity": "Royal Canadian Mint",
+   "entity_type": "state body",
+   "relation": "holds its gold reserves in custody",
+   "detail": "De Nederlandsche Bank's own gold page states that 'another 18.5%' of its gold sits 'at the Royal Canadian Mint in Ottawa', the fourth of DNB's storage sites, out of total holdings of more than 612 tonnes worth EUR 72.2 billion at the end of 2025.",
+   "entity_hq_city": "Ottawa",
+   "entity_hq_iso3": "CAN",
+   "as_of": "2026 location shares, holdings valued at end-2025",
+   "source_url": "https://dnb.nl/en/about-us/gold",
+   "source_title": "Gold - De Nederlandsche Bank",
+   "weak_source": false
+  },
+  {
+   "cb_iso3": "MNG",
+   "entity": "Bank of England",
+   "entity_type": "central bank",
+   "relation": "holds its gold reserves in custody",
+   "detail": "Note 13 'Gold bullion and precious metals' in the Bank of Mongolia's 2021 audited financial statements states that 'Monetary gold and silver are mainly placed at the Bank of England and JP Morgan Chase Bank', against gold bullion carried at MNT 1,594,121 million at 31 December 2021; the same note in the 2024 statements no longer names either institution.",
+   "entity_hq_city": "London",
+   "entity_hq_iso3": "GBR",
+   "as_of": "2021 financial statements",
+   "source_url": "https://www.mongolbank.mn/file/files/documents/annualreport/2021e.pdf",
+   "source_title": "Bank of Mongolia Annual Report 2021 - Note 13, Gold Bullion and Precious Metals",
+   "weak_source": false
+  },
+  {
+   "cb_iso3": "MNG",
+   "entity": "JPMorgan Chase Bank",
+   "entity_type": "bank",
+   "relation": "holds its gold reserves in custody",
+   "detail": "Note 13 'Gold bullion and precious metals' in the Bank of Mongolia's 2021 audited financial statements states that 'Monetary gold and silver are mainly placed at the Bank of England and JP Morgan Chase Bank', the only commercial bank named as holding Mongolia's monetary metal, against gold bullion of MNT 1,594,121 million at 31 December 2021.",
+   "entity_hq_city": "New York",
+   "entity_hq_iso3": "USA",
+   "as_of": "2021 financial statements",
+   "source_url": "https://www.mongolbank.mn/file/files/documents/annualreport/2021e.pdf",
+   "source_title": "Bank of Mongolia Annual Report 2021 - Note 13, Gold Bullion and Precious Metals",
+   "weak_source": false
+  },
+  {
+   "cb_iso3": "MNG",
+   "entity": "Bank of Mongolia's own vault, Ulaanbaatar",
+   "entity_type": "central bank's own vault",
+   "relation": "holds its gold reserves in custody",
+   "detail": "Note 13 'Gold bullion and precious metals' in the Bank of Mongolia's 2024 financial statements states that 'Gold bullion consists of the stocks of gold bars of international standard held in foreign banks and in the vault of the Bank', against total gold bullion and precious metals of MNT 2,412,095 million at 31 December 2024; the note gives no split between the Bank's own vault and the foreign banks.",
+   "entity_hq_city": "Ulaanbaatar",
+   "entity_hq_iso3": "MNG",
+   "as_of": "2024 financial statements",
+   "source_url": "https://www.mongolbank.mn/file/63b2bf87e5c92cebd412c82585c08928/files/2058c634-0e63-43d1-b1b0-e9f00a5dea61.pdf",
+   "source_title": "Bank of Mongolia financial statements, 31 December 2024 - Note 13, Gold Bullion and Precious Metals",
+   "weak_source": false
+  },
+  {
+   "cb_iso3": "LBN",
+   "entity": "Banque du Liban's own vaults, Beirut",
+   "entity_type": "central bank's own vault",
+   "relation": "holds its gold reserves in custody",
+   "detail": "A policy paper of the Issam Fares Institute at the American University of Beirut (April 2026) states that 'Roughly two-thirds of the gold is stored domestically at Banque du Liban, with the remainder held abroad for safekeeping at the Federal Reserve Bank of New York', against holdings of about 9.21 million troy ounces or 287 tonnes held unchanged since 1971.",
+   "entity_hq_city": "Beirut",
+   "entity_hq_iso3": "LBN",
+   "as_of": "April 2026 policy paper; holdings unchanged since 1971",
+   "source_url": "https://www.aub.edu.lb/ifi/Documents/Managing-Lebanon-Gold.pdf",
+   "source_title": "Managing Lebanon's Gold - Issam Fares Institute for Public Policy and International Affairs, American University of Beirut",
+   "weak_source": true
+  },
+  {
+   "cb_iso3": "LBN",
+   "entity": "Federal Reserve Bank of New York",
+   "entity_type": "central bank",
+   "relation": "holds its gold reserves in custody",
+   "detail": "A policy paper of the Issam Fares Institute at the American University of Beirut (April 2026) states that 'Roughly two-thirds of the gold is stored domestically at Banque du Liban, with the remainder held abroad for safekeeping at the Federal Reserve Bank of New York', so about a third of Lebanon's 287 tonnes sits in New York; Banque du Liban publishes no audited accounts of its own.",
+   "entity_hq_city": "New York",
+   "entity_hq_iso3": "USA",
+   "as_of": "April 2026 policy paper; holdings unchanged since 1971",
+   "source_url": "https://www.aub.edu.lb/ifi/Documents/Managing-Lebanon-Gold.pdf",
+   "source_title": "Managing Lebanon's Gold - Issam Fares Institute for Public Policy and International Affairs, American University of Beirut",
+   "weak_source": true
+  }
+ ]
+}

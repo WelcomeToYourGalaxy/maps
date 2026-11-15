@@ -2,7 +2,7 @@
 
 Paste or attach this in a new chat to carry on adding to the map.
 
-Rewritten at round 43, current through round 55. It states the current position only. Earlier versions kept round-by-round narrative, which went stale and in round 26 sent agents to re-research records already on the map; the moves-against-the-bank section had grown four rounds of narrative again by round 42 and was rewritten as a statement. Keep it that way: when something changes, edit the statement, don't append a round note. The round-by-round account lives in `agents/work/research_log_2026-11.json`, which is where to look for what was searched and found nothing. **Where this names a country as dead or blocked, that is as of round 55 — re-derive the target list from `coverage.py` before briefing anything.**
+Rewritten at round 43, current through round 56. It states the current position only. Earlier versions kept round-by-round narrative, which went stale and in round 26 sent agents to re-research records already on the map; the moves-against-the-bank section had grown four rounds of narrative again by round 42 and was rewritten as a statement. Keep it that way: when something changes, edit the statement, don't append a round note. The round-by-round account lives in `agents/work/research_log_2026-11.json`, which is where to look for what was searched and found nothing. **Where this names a country as dead or blocked, that is as of round 56 — re-derive the target list from `coverage.py` before briefing anything. Paste the list `coverage.py` prints; do not summarise it from memory. Round 56 lost an agent's calls to a target list written partly from memory that included a country which was not absent at all.**
 
 ## What it is
 - A standalone global map titled **"Central bank capture"**. It shows who owns and steers each central bank, what it hides, the corruption inside and around it, and how far its money reaches beyond its borders.
@@ -73,9 +73,9 @@ same commit as the work it did.
   - Links: `{n, cb | tn, rel, role, detail, src_t, src_u}`.
   - Popups turn each link into a plain sentence (`SAY` / `sayLink` / `srcItem` in `app.js`). Add a `SAY` entry for any new `role` string.
 
-## Where it stands (55 rounds in, 15 November 2026)
+## Where it stands (56 rounds in, 15 November 2026)
 
-1,503 outside parties and 2,154 ties. 1,732 writeups, one for every box. 20 patterns and 14
+1,508 outside parties and 2,161 ties. 1,737 writeups, one for every box. 20 patterns and 14
 suspected patterns.
 
 Take these from `coverage.py` in the same session, never from this table. The round-52 handoff's
@@ -87,16 +87,16 @@ ignores" below.
 | Category | Records | Places | of 206 | of 192 |
 |---|---|---|---|---|
 | Corruption cases | 244 | 166 | 81% | 86% |
-| Revolving door | 235 | 130 | 63% | 68% |
-| Governor removals and pressure | 191 | 147 | 71% | 77% |
-| External auditors | 201 | 164 | 80% | 85% |
+| Revolving door | 240 | 132 | 64% | 69% |
+| Governor removals and pressure | 198 | 153 | 74% | 80% |
+| External auditors | 202 | 165 | 80% | 86% |
 | Banknote printers | 172 | 158 | 77% | 82% |
 | Outside reserve managers | 160 | 60 | 29% | 31% |
-| Gold custodians | 72 | 45 | 22% | 23% |
+| Gold custodians | 78 | 47 | 23% | 24% |
 | Swap lines | 240 | 84 | 41% | 44% |
 | Named shareholders | 228 | 9 | 4% | 5% |
 
-The revolving-door row counts the 235 records with a private employer. There are 263 career-move
+The revolving-door row counts the 240 records with a private employer. There are 268 career-move
 records in all; the other 28 are `public_move` and are listed in the country's box without being
 counted, because nobody moved between public office and private finance.
 
@@ -157,6 +157,22 @@ Settled San Marino.
 
 Add `-l fra+eng`, `-l ita`, etc. for non-English documents. A 100-page scan costs about a minute. **This runs locally and needs no browser.** The documents are reachable; it is the *reading* that fails, and a browser shows the same unreadable picture. Use OCR first.
 
+## OCR the last pages before calling a bank's report silent
+
+Added at round 56, and it may be the cheapest remaining lever on the auditors row. Cape Verde's audit
+opinion sits on pages 246–249 of the bank's own annual report, and **those pages are image-only scans
+that `pdftotext` returns blank while the rest of the document extracts perfectly.** They yielded only to
+`pdftoppm -r 170 -png` followed by `tesseract -l por`. Both tools are in the sandbox. This is a different
+failure from the three above: those describe a document that is wholly unreadable, this is a readable
+document with an unreadable opinion page, and a grep for "auditor" over the extracted text returns
+nothing in both cases.
+
+**So any country logged as "annual report published but names no auditor" on the strength of a
+`pdftotext` grep should be re-checked by OCRing its last few pages.** A second mechanic from the same
+country: the Banco de Cabo Verde's reports index puts its PDF paths inside a JavaScript data blob rather
+than in `href` attributes, and `grep -oE 'SiteCollectionDocuments/[0-9]{4}/[^"]*'` found them — worth
+trying on any bank site whose document list looks empty in the markup.
+
 ## Where to look when a bank's own site fails
 
 **When a search for a central bank's report returns only commercial banks, stop searching and fetch the bank's own publications index directly.** Eswatini, Burundi, Haiti, DR Congo and San Marino were all logged dead on searches that drowned in commercial banks with similar names, and all five publish the document openly on their own site. Country-name searches are nearly useless for this row.
@@ -208,7 +224,7 @@ These accumulate. Read them as live instructions, not history.
 - **Push to `WelcomeToYourGalaxy/maps` directly from chat.** The user does not upload by hand. The clone goes wherever `git clone` puts it — `$HOME/maps`, which has been `/home/claude/maps` in some sessions and `/root/maps` in others, so check rather than assume. The build tree is `/root/cb`, which is not a git repository. Copy the built `central_bank_independence.html` to the repo root **and copy the whole of `/root/cb` back over `central-bank-src/`**, excluding `dist/`, `raw/` and the unzipped `geo/cities1000.txt`.
 - **Deliver `HANDOFF.md` as a file each round**, not just as a commit.
 - **Work the rows that can actually finish first, then approach the rows that cannot.** Within that, the user's stated priority is the corruption cases, the revolving door, and removals and pressure — in their words, "the spicy stuff."
-- **Reach as near 100% as the sources allow, in as few rounds as possible.** The three levers, in order of size, are the reachable denominator above, union records (`whats_left.py`), and running research agents in parallel. **Agent fan-out was approved at round 49** — run a few at a time, each capped at about 25 fetches, each writing to its own file under `agents/work/r<NN>/`, and merge them yourself. Never let two agents write the same file. `agents/work/merge_links.py <files>` does the merge. Lost with round 49's session and rewritten at round 53, with each refusal path tested against a record built to trip it. **Run it with `--dry` first, always.** It takes agent output files holding a `records` list, works out each record's kind from its own fields, and refuses:
+- **Reach as near 100% as the sources allow, in as few rounds as possible.** The three levers, in order of size, are the reachable denominator above, union records (`whats_left.py`), and running research agents in parallel. **The union lever is now exhausted, and `whats_left.py` says so.** The only union blocks left in any absent list are ones that can never be filled: the ECCB holds no gold, BEAC's gold note names nobody, the euro area is structurally closed on printers, and a reserve-manager record keyed to the euro area would be false for the other members. **That script was still broken at round 56** — the handoff had said since round 49 that it shells out to `coverage.py`, and it was still reading a cached `/tmp/cov45.txt` and dying on it. That is the **third** script whose fix was lost with its session, after `merge_links.py` and `check_scores.py`. It now runs `coverage.py` itself and exits if that fails. **When this document says a script was fixed, run it before you believe it.** **Agent fan-out was approved at round 49** — run a few at a time, each capped at about 25 fetches, each writing to its own file under `agents/work/r<NN>/`, and merge them yourself. Never let two agents write the same file. `agents/work/merge_links.py <files>` does the merge. Lost with round 49's session and rewritten at round 53, with each refusal path tested against a record built to trip it. **Run it with `--dry` first, always.** It takes agent output files holding a `records` list, works out each record's kind from its own fields, and refuses:
 
 - a relation or `entity_type` outside the vocabulary (a new relation also needs a `SAY` entry in `app.js`, so it has to be a decision, not an agent's phrasing)
 - anything keyed to `ECB`, `EMU`, `BCEAO`, `BEAC` or `ECCB`, because a union key expands to every member and a mistaken one puts a false record in eight to twenty boxes
@@ -336,8 +352,8 @@ Mongolia, Mozambique, Pakistan, Sierra Leone, Sweden and Zambia. `coverage.py` n
 layer's rule, exactly as it already did for `other` events.
 
 **The symptom was the same one as the other three: `coverage.py` claiming more places than the
-score diff moves.** Rounds 54 and 55 closed five of the twelve between them; the seven
-still holding only public moves are **COL GUY KOR MKD MOZ SLE ZMB**, and each needs a
+score diff moves.** Rounds 54 to 56 closed seven of the twelve between them; the five
+still holding only public moves are **KOR MKD MOZ SLE ZMB**, and each needs a
 record naming a private financial employer, not another public one.
 
 **The general rule this keeps teaching: wherever `app.js` filters a record out of a count,
@@ -464,8 +480,8 @@ Bounded sets that worked:
 
 **Named next steps:** Zambia (diplo.news on the new kwacha launch), Costa Rica (BCCR press release of 11.11.2020), North Macedonia (the printing tender award notice), Georgia (centralbanking.com, likely paywalled), Zimbabwe (mriguide.com and zimbabwenow.co.zw mirrors; note one source is Fidelity Printers *denying* that it prints Zimbabwe dollars), Uruguay (2000s BanknoteNews commemorative entries identified but never fetched).
 
-### 3. Moves against the bank — 71%, the fastest row on the map
-**The one thing to know: pressure on a central bank rarely looks like a firing.** This row sat at 27% for a dozen rounds because it was searched for dismissals, so it held poor and middle-income countries and almost nothing else. It has gone 27% → 71% in twelve rounds on a single correction, applied six times. First: in a rich democracy the pressure takes another form. Then, when that was stated as "rich democracies", it was still too narrow — the forms it named exist everywhere, and four of the largest economies on the absent list fell in one round once the search went after the form instead of the country.
+### 3. Moves against the bank — 74%, the fastest row on the map
+**The one thing to know: pressure on a central bank rarely looks like a firing.** This row sat at 27% for a dozen rounds because it was searched for dismissals, so it held poor and middle-income countries and almost nothing else. It has gone 27% → 74% in thirteen rounds on a single correction, applied seven times. First: in a rich democracy the pressure takes another form. Then, when that was stated as "rich democracies", it was still too narrow — the forms it named exist everywhere, and four of the largest economies on the absent list fell in one round once the search went after the form instead of the country.
 
 **The sixth application, at round 55, ran the statute route at the seven countries left for it and converted three, plus one more a different way.** Bahrain fell to Article 173 of its 2006 law, the closest thing yet to the Kuwait bar: the Minister watches whether the bank keeps to the Kingdom's general economic policy and, where the Minister sees a conflict and the board holds to its own view, refers it to the Cabinet, which settles it by order within thirty days. Cambodia fell to Article 13 of its 1996 law, where the Governor and Deputy Governor are appointed, replaced and dismissed by royal decree on the Royal Government's recommendation, with no grounds named in that article. **Oman had to be rewritten, and that is the lesson of the round: ALWAYS CHECK WHETHER A STATUTE IS STILL IN FORCE before filing it as a standing arrangement.** An agent filed Oman on Royal Decree 114/2000 and flagged a doubt about it; Royal Decree 2/2025 took effect on 1 January 2025 and its Article IV repeals 114/2000 expressly. The replacement rests on the current framework, which carries the same finding — Royal Decree 4/2025 seats the Minister of Economy as Deputy Chairman of the board with the Undersecretary of the Ministry of Finance among the members, and Royal Decree 5/2025 appointed the Governor with the rank of Minister. **Brunei was settled without the statute at all**, and that route is worth remembering: the bank's own announcement of 21 October 2025 names its board, and it is the Minister of Primary Resources and Tourism as Chairman, the Deputy Minister of Finance and Economy as Deputy Chairman, two permanent secretaries, the Deputy State Mufti, the Solicitor General and the Managing Director. **Where the Order or Act cannot be obtained, who the bank says sits on its board can carry the record, as long as the record says that is what it rests on.** Still open on this route: **QAT** (needs a hand check of the QCB legislation page or almeezan.qa; the host fails TLS for curl and no search returns a URL on it), **TJK** (publishes no English text of its central bank law) and **MAC** (both gazette hosts unreachable from the sandbox).
 
@@ -548,9 +564,9 @@ Bounded sets that worked:
 
 **Retry later:** Peru's BCRP transparency PDF (bot-protection stub), Lesotho's and Tanzania's 2024 annual reports (site errors).
 
-### 5. Gold custodians — 72 ties at 45 places, and the row's real ceiling is 108, not 206
+### 5. Gold custodians — 78 ties at 47 places, and the row's real ceiling is 108, not 206
 
-**Measure this row against the banks that hold gold, not against every place on the map.** A bank with no gold cannot have a gold custodian. Round 52 set the denominator at the 122 places the World Gold Council lists, but **14 of those are listed at zero tonnes**, and a bank with no gold can hold none in custody, so 122 was too generous and the row's own sentence ("places that hold any gold at all") did not describe it. Against the **108 places with a holding above zero**, 37 have a custodian filed: **34 per cent of what is reachable**, against the 22 per cent the plain count shows. `coverage.py` prints both figures below the main table so either can be checked, and `about.html` now gives 108 and 34 per cent. Eight more places have a custodian but no holding of their own, the BCEAO members, because the union's gold is pooled at the bank rather than apportioned by country.
+**Measure this row against the banks that hold gold, not against every place on the map.** A bank with no gold cannot have a gold custodian. Round 52 set the denominator at the 122 places the World Gold Council lists, but **14 of those are listed at zero tonnes**, and a bank with no gold can hold none in custody, so 122 was too generous and the row's own sentence ("places that hold any gold at all") did not describe it. Against the **108 places with a holding above zero**, 39 have a custodian filed: **36 per cent of what is reachable**, against the 23 per cent the plain count shows. `coverage.py` prints both figures below the main table so either can be checked, and `about.html` gives 108 and 36 per cent. Eight more places have a custodian but no holding of their own, the BCEAO members, because the union's gold is pooled at the bank rather than apportioned by country.
 
 **The ECCB holds no gold at all. Confirmed, do not research it again.** An agent read the whole of the Independent Auditors' Report and Financial Statements to 31 March 2025, 241,961 characters in three passes: the word gold does not appear, and the foreign assets are currencies, balances with other central banks and foreign banks, money market instruments, derivatives and foreign investment securities, totalling EC$5,485,841,410. That closes AIA ATG DMA GRD KNA LCA MSR VCT on this row.
 **The method is the note to the accounts, not the gold page.** Portugal (note 2), Belgium (note 1), Türkiye (gram-level table by location) and Mauritius (note 7) each disclosed a location table only there. Search for the statements PDF and read the gold note directly.
@@ -582,9 +598,9 @@ France designates two of the six board members of the Central Bank of the Comoro
 The record moved no row, because board seats are a network tie rather than one of the counted datasets. It is still worth having: it is the only government on the ties layer holding seats inside another country's central bank, and the search that found it would find others. Look at the remaining monetary cooperation agreements, and at currency boards whose statutes seat a foreign appointee.
 
 ### 6. Revolving door and corruption cases
-These cannot finish; no complete count exists anywhere. They approach completeness asymptotically. The revolving door is at 63 per cent and corruption cases at 81. **The revolving-door figure went down between rounds 53 and 54 while seven records were added, because the row had been counting public moves the layer ignores — see the counting-bug section above. The real level rose from 122 places to 128.**
+These cannot finish; no complete count exists anywhere. They approach completeness asymptotically. The revolving door is at 64 per cent and corruption cases at 81. **The revolving-door figure went down between rounds 53 and 54 while seven records were added, because the row had been counting public moves the layer ignores — see the counting-bug section above. The real level rose from 122 places to 128.**
 
-**Twenty-odd employers named in records have no party node**, so they draw no diamond and sit outside the index. They are the employers in the rounds 47-52 records, which came back from the built page without their `parties.json` links; round 53 filed links only where the party already existed as a node. The list and the method are in `research_log_2026-11.json` under `round53.named_next_steps.parties`. **Take a head office from the record's own text where the record states it, and research the rest into `hq.json` rather than guessing** — a guessed city puts a marker somewhere false, and the map's markers are fixed points.
+**Fifty revolving-door records have no `parties.json` entry at all**, so their employers draw no diamond and sit outside the index — far more than the twenty-odd earlier rounds estimated. **Round 56 did the research half: `agents/work/r56/hq.json` holds verified head offices for 30 of 34 firms**, with four not established (Latin Securities, Baker Tilly Moldova, MIG LLC, BPM Mongolia LLC) and eight resting on Wikipedia that should be re-sourced before their markers are trusted (CBZ, Investrust, State Bank of Mongolia, Banco de Bogotá, Banco AV Villas, Islami Bank Bangladesh, Nepal Investment Mega Bank, BPC). **The linking half is not done, and must be done BY HAND.** Automated matching was tried and is unsafe: substring matching against existing party names returned "Robert Mugabe" and "Nicolás Maduro" as employers, matched "Kaupthing Bank" to "ING Bank", and matched destination central banks rather than outside employers. `record_index` is the positional pointer that caused the round-11 bug, so do this in a round that files few or no revolving-door records, compute each index in the same session, then run `fix_record_index.py` and `audit_data.py`. They are the employers in the rounds 47-52 records, which came back from the built page without their `parties.json` links; round 53 filed links only where the party already existed as a node. The list and the method are in `research_log_2026-11.json` under `round53.named_next_steps.parties`. **Take a head office from the record's own text where the record states it, and research the rest into `hq.json` rather than guessing** — a guessed city puts a marker somewhere false, and the map's markers are fixed points.
 
 **Revolving door method:** go to the bank's own governor or board page, or the private firm's own board page, and read the career list. Do not search for scandal. **Closed as blanks:** BCEAO and BEAC publish no board biographies; Solomon Islands has the most detailed Pacific board page found and still yields nothing because no employer is characterised; China looks like a genuine blank, its senior PBoC careers running between state bodies. **Still worth trying:** Cambodia, Laos, Myanmar, Brunei, Tonga. **The denominator moves** — the inside-influence score divides by the highest count anywhere, which the United States holds, so any round adding US records re-checks the whole map.
 
@@ -608,7 +624,7 @@ The three currents once listed as missing are all in: `supervisory-capture` (Ire
 
 ## How long to finish
 
-**Yield by round:** 35, 34, 33, 56, 50, 24, 34, 42, 40, 21, 14, 13, then 4, 3, 2, 3, then two rounds of 0 records (two patterns; four corrections), then 6, 4, 3, 3, 4, 5, 4, 2, 5, 2, 7, 3, then 1 record and 7 hypotheses, then round 49's 21 records, 8 suspected patterns and 45 new place-cells on the first round of agent fan-out, then round 53's 17 records and, worth more than the records, three corrections: six rounds of source recovered, the revolving-door union bug worth 21 places, and the gold denominator. Then round 54's 17 records across four parallel agents, 11 of the records agents offered refused with reasons written down, and two corrections: the revolving-door `public_move` counting bug, and the live page's About table, which had been built before its own `about.html` was corrected and so published the round-52 figures for six rounds. Then round 55's 24 records across five parallel agents plus browser work — the printers row's best round in a long while at nine places — with the `merge_links.py` auditor hole that would have printed a false joint audit for two countries, a stranded prose splice in the Zambia paragraph repaired, and two standing claims in this document corrected by actually obtaining the documents: BEAC's gold note and Oman's statute.
+**Yield by round:** 35, 34, 33, 56, 50, 24, 34, 42, 40, 21, 14, 13, then 4, 3, 2, 3, then two rounds of 0 records (two patterns; four corrections), then 6, 4, 3, 3, 4, 5, 4, 2, 5, 2, 7, 3, then 1 record and 7 hypotheses, then round 49's 21 records, 8 suspected patterns and 45 new place-cells on the first round of agent fan-out, then round 53's 17 records and, worth more than the records, three corrections: six rounds of source recovered, the revolving-door union bug worth 21 places, and the gold denominator. Then round 54's 17 records across four parallel agents, 11 of the records agents offered refused with reasons written down, and two corrections: the revolving-door `public_move` counting bug, and the live page's About table, which had been built before its own `about.html` was corrected and so published the round-52 figures for six rounds. Then round 56's 25 records across five parallel agents plus a sixth on head offices: the moves row up six places on the statute and board routes, gold's first new places in several rounds, and `whats_left.py` found still broken and fixed. Then round 55's 24 records across five parallel agents plus browser work — the printers row's best round in a long while at nine places — with the `merge_links.py` auditor hole that would have printed a false joint audit for two countries, a stranded prose splice in the Zambia paragraph repaired, and two standing claims in this document corrected by actually obtaining the documents: BEAC's gold note and Oman's statute.
 
 ## Three tooling failures from round 49, all now fixed. Read this before running agents again.
 
