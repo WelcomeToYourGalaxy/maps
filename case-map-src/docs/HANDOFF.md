@@ -1,6 +1,6 @@
 # Globalization Case Map: handoff for a new chat
 
-Last updated: 15 Nov 2026 (the suspected patterns replaced and moved under the patterns). Replaces every earlier handoff.
+Last updated: round 28 (suspected patterns retold so the opening example is never revisited; eight added, 21 in all). Replaces every earlier handoff.
 
 ## The aim, settled 14 Nov 2026 — a defensible big picture, not a bigger map
 
@@ -35,7 +35,10 @@ do not belong, and that they must be big, well-known suspicions in the main vein
 from the public record (Perkins's disclosure is the model), told as continuous stories. Thirteen new
 ones are live, each with its sources on the card, and they now sit inside "Patterns Behind the Scenes"
 under a "Suspected patterns" sub-heading rather than in their own row. **Read `docs/HYP.md` before
-touching one.** The retired thirteen are archived in `rounds/r27_hyps_retired.json`; the six
+touching one.** Round 28: the owner liked the stories but objected that paragraph 2 kept going
+back to the opening example (small, then big, then the same small example again). All thirteen were
+retold so paragraph 1 tells the opening example completely and later paragraphs only move outward,
+and eight new ones were added on the same rule, 21 in all. The retired thirteen are archived in `rounds/r27_hyps_retired.json`; the six
 data-derived ones survive below as research leads, which is what they always were.
 
 **Three facts decide what to work on, and none of them is the case count.**
@@ -80,8 +83,8 @@ same round.** It is prose and nothing computes it, so nothing will catch it goin
 
 `window.HYPS` in `base.html`; rendered by `hypsHTML()` at the bottom of the patterns section and by
 `detailHyp()` as a card with the story and a sources list. `docs/HYP.md` holds the owner's words, the
-rules, how a story is told and the list of the thirteen. Every batch gets a separate checker before
-merge; the 15 Nov batch's check log is `rounds/r27_hyps_check.json`.
+rules, how a story is told and the list of the twenty-one. Every batch gets a separate checker before
+merge; check logs are `rounds/r27_hyps_check.json` and `rounds/r28_hyps_check.json`.
 
 **Research leads that used to be suspected patterns.** These came out of rounds 19 to 22 and are about
 how the lending record reads, not about the world. They are worth acting on in research rounds and
