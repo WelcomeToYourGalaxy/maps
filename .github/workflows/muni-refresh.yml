@@ -30,23 +30,38 @@ jobs:
       - name: Install what the build needs
         run: pip install --quiet openpyxl
 
+      - name: Keep the committed counts to compare against
+        run: cp muni/index.json "${{ runner.temp }}/index-before.json"
+
       - name: Rebuild from the national registers
         run: python3 tools/build_muni.py --out muni --work "${{ runner.temp }}"
 
       - name: Refuse an empty or shrunken build
         # A register that answers with half a file, or a join that quietly
         # stops matching, would otherwise be committed as a loss of data.
+        # The test is each country against what it built last month rather
+        # than against a fixed floor: the countries here range from 341
+        # municipalities to 35,000, so any one number would be either no
+        # guard at all for France or a permanent veto on the Netherlands.
         run: |
-          python3 - <<'PY'
+          python3 - "${{ runner.temp }}/index-before.json" <<'PY'
           import json, sys
+          before = json.load(open(sys.argv[1])).get('per_country') or {}
           idx = json.load(open('muni/index.json'))
-          total = idx.get('records', 0)
-          print('records:', total, 'per country:', idx.get('per_country'))
+          now, total = idx.get('per_country') or {}, idx.get('records', 0)
+          print('records:', total)
+          for iso in sorted(set(before) | set(now)):
+              print('  %s  was %-7s now %s' % (iso, before.get(iso, '-'), now.get(iso, '-')))
           if total < 40000:
-              sys.exit('built only %d records; refusing to commit' % total)
-          for iso, n in (idx.get('per_country') or {}).items():
-              if n < 1000:
-                  sys.exit('%s built only %d records; refusing to commit' % (iso, n))
+              sys.exit('built only %d records in all; refusing to commit' % total)
+          for iso, was in before.items():
+              got = now.get(iso, 0)
+              if got < was * 0.8:
+                  sys.exit('%s built %d records against %d last time; refusing to commit'
+                           % (iso, got, was))
+          for iso, got in now.items():
+              if got < 50:
+                  sys.exit('%s built only %d records; refusing to commit' % (iso, got))
           PY
 
       - name: Commit if anything changed
@@ -59,8 +74,8 @@ jobs:
           else
             git commit -m "muni: refresh the contact shards from the national registers
 
-          Rebuilt by tools/build_muni.py from the French and Italian
-          registers. Each record is joined to a Wikidata id through a code
-          the two sources share, never through a name."
+          Rebuilt by tools/build_muni.py from the registers named in
+          muni/index.json. Each record is joined to a Wikidata id through a
+          code the two sources share, never through a name."
             git push
           fi
