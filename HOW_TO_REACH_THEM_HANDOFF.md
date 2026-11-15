@@ -410,7 +410,7 @@ the way to reach them both change at each step:
 | National | 198 | Wikidata `P194`/`P527` + front-page crawl | done |
 | Sub-national legislatures | ~3,800 ADM1 | `P194` by jurisdiction id | done |
 | County-level councils | ~48,000 | came with round two: 1,558 bodies, 330 with an address | done |
-| Municipalities | ~250,000–400,000 | 1,200 bodies and every level's own address so far; the rest **not by the above** — see below | 3–6 |
+| Municipalities | ~250,000–400,000 | round four started it: national registers, one country at a time, sharded on disk | 3–5 |
 | Below the municipality | millions | not proposed | — |
 
 So four to six more rounds reaches a complete picture down to the
@@ -467,7 +467,7 @@ from here:
 
 - France: `api-lannuaire.service-public.fr`, the official directory,
   **94,117 records** including every mairie with address, phone and
-  email, filterable by `pivot like "mairie"`.
+  email, filterable by `pivot like "mairie"`. **Done — round four, below.**
 - Italy: `indicepa.gov.it/ipa-dati/dataset/enti`, every public body with
   its certified email address.
 
@@ -501,11 +501,73 @@ it is worse than a blank, because a reader cannot tell the two apart.
 
 At 300,000 municipalities with an address each, this stops fitting in
 `LAWP` inside the HTML — roughly 20–30 MB against the 4 MB the boundary
-file costs today. The municipal contacts need the same treatment
-`contacts/` already has: cells of 2°, fetched one or two at a time when
-a place is opened, with `LAWP` keeping only the national and regional
-layers. That change is worth making at the start of the municipal rounds
-rather than after, because it decides the shape of everything stored.
+file costs today. So it is not in the HTML. Round four put it beside the
+HTML instead, sharded, and the next sections are how.
+
+### Round four: the national register of communes
+
+France first, because its register is complete and public. The build:
+read `api-lannuaire.service-public.fr` for every record whose `pivot`
+names a mairie, match each to its commune by INSEE code (Wikidata
+`P374`), and key the result by the commune's QID — the same key the
+panel already resolves a clicked place to, so no name matching happens
+at read time. **34,980 communes**, with `u` website, `e` email, `p`
+phone, `o` the postal address.
+
+It ships as `muni/0.json` … `muni/511.json` plus `muni/index.json`.
+The shard is `int(qid[1:]) % 512`, which spreads France's QIDs evenly:
+7.7 MB in total, about **15 KB per shard**, so opening a French commune
+costs one small fetch rather than an 8 MB file. `index.json` lists the
+countries that have a register at all, and `loadMuni` checks that list
+before fetching anything — so a click in a country with no register
+costs one cached 200-byte read, not a 404 per visit.
+
+```
+loadMuni(q)            // q is the level's Wikidata QID
+  → muniIdx()          // muni/index.json, once per session
+  → country in idx?    // no → return, nothing fetched
+  → shard = q % 512    // muni/<k>.json, cached per session
+  → LEVSELF[q] ← u,e,p,o, and e.reg = 1
+```
+
+It runs on the click that already resolves the level, from
+`loadLevelPins`, so it adds no round trip of its own. The merge is
+additive: a field already supplied by Wikidata or by round three is not
+overwritten, and `reg=1` records that the register was the source, which
+is rule 2 of the accuracy rules above.
+
+**Adding the next country** is the same four steps and nothing in the
+HTML changes: produce `{QID: {u,e,p,o}}`, shard it by the same modulus
+into the same directory, add the ISO3 to `index.json`, and the loader
+picks it up. Italy is next and is confirmed live at
+`indicepa.gov.it/ipa-dati/dataset/enti`. Keep the shard count at 512
+for every country — shards are keyed by QID alone, so two countries
+share a shard file happily and the loader needs no per-country logic.
+
+### The place lookup was non-deterministic, and is not now
+
+Worth knowing before touching `resolveUnit` or `resolveUnitIn` again,
+because the symptom is confusing: Los Angeles County resolved to Q65
+(the city), Q104994 (the county) and Q5589236 (the county's government
+body) on three consecutive runs **with no code change between them**.
+
+Round two had added 30 languages and `skos:altLabel` to the name match,
+to catch Niedersachsen → Lower Saxony. `LIMIT 10` counts rows, not
+entities, and one well-labelled place can produce ten rows on its own —
+so which candidates reached the ranking at all depended on row order
+from the query service. The fix is two parts:
+
+- `LIMIT 120` in both resolvers, so the real candidates are all present.
+- three more tie-breakers in the ranking: prefer a territory over its own
+  government body (`RX_GOVBODY`), then a label that starts with the name
+  asked for, then the shorter label.
+
+Check **both California and Los Angeles County** after any change here.
+They fail in opposite directions — one wants the containing unit, the
+other the exact match — and a ranking that fixes either one alone will
+break the other. The standing five-case check is Sierra Madre, California
+City, Grenoble, Hannover, Cape Town; run it twice in a row, because a
+single pass cannot show non-determinism.
 
 ## 1. What you see, and in what order
 
