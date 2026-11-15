@@ -67,6 +67,52 @@ claims — thickest in 2004-2013 World Bank lending, every published complaint r
 resting on the lender's own documents. **If a round changes any of those, change that block in the
 same round.** It is prose and nothing computes it, so nothing will catch it going stale.
 
+## Hypotheses are a new kind of content on the map, added 14 Nov 2026
+
+**`window.HYPS` in `base.html`, rendered under Patterns, one card each through `detailHyp()`. Brief:
+`docs/HYP.md`, which is the thing to read before writing or changing one.** Six are written and none
+is tested.
+
+**What it is for.** The map had nowhere to put a suspicion. A researcher who saw the same shape on
+four cards could write it up as a pattern, which claims more than four cards carry, or drop it, which
+loses it. Rounds 19, 20 and 21 each produced findings of exactly that kind — the reviews dropping what
+their own reports record, the companies field filling with ministries, the site-people-lived-on rule —
+and each sat in a round report where the next chat had to rediscover it. A hypothesis is a third
+place: a question, written down, with what would settle it.
+
+**The rules that matter, in full in `docs/HYP.md`:** a hypothesis is never a finding and nothing on
+the map may rest on one; it is written as an answerable question; every figure in its basis comes from
+this map's own data or a document already cited on a card; `would_confirm` and `would_refute` are both
+required and both must name a document, a count or a record; a confirmed one graduates into `PATS`
+with `status: "graduated"` left behind; a refuted one stays with `status: "refuted"` and the reason.
+
+**It is deliberately not a filter.** `setHyp()` leaves every mark on the map where it is, unlike
+`setPat()`, which shows only its own story. Opening a question must not change what the map appears to
+show. `S.hyp` holds the open one, `deselect()` clears it and rebuilds the panel so the radio clears.
+
+**The six, and what each would cost to settle.** Three need no new fetches:
+
+| id | What would settle it | Needs fetches |
+| --- | --- | --- |
+| `site-people-lived-on` | Apply the resettlement-plan screen to the queue before research, then compare predicted against actual | no, it is round 22's lead rule already |
+| `thin-means-no-register` | Divide per-country case counts by per-country lending; WDI and IDS are both on the map | no |
+| `state-bodies-not-companies` | Classify all 1,138 company names into state bodies, private firms and special-purpose vehicles | no |
+| `lender-record-understates` | Count the omissions across every paired completion report and evaluation review, and record which way each runs | the 46 audited cases' documents are gone with their cache |
+| `works-before-payment` | Code each ICIJ case for two dates: works begun on the ground, compensation paid | yes |
+| `compensation-into-court-deposits` | The deposit provision in each country's land acquisition statute, then a count across the Indian road cases | yes |
+
+**Two of these bear directly on open items in this file.** `state-bodies-not-companies` is the
+counted version of item 12, the question of whether `companies` should be split — settle the
+hypothesis and the owner has the number the decision needs. `lender-record-understates` is the
+general form of what the lender-role audit found on 19 of 46 cases, and of the three reviews round 21
+caught gutting their own reports; if the omissions run one way, every figure this map takes from a
+review alone is low.
+
+**Write new hypotheses as rounds produce them.** The test for whether a round finding belongs here
+rather than in a round report: would a researcher two rounds from now act differently if they knew
+it, and is there a document that would settle it? Both yes, it is a hypothesis. A finding that only
+tells a writer how to read a document is a brief note instead, and goes in BRIEF.
+
 ## READ THIS FIRST: round 22 is half done and its data is staged, not merged
 
 **A weekly API limit stopped the session on 13 Nov at about 22:25 and resets 17 Nov, 8am Pacific.**
