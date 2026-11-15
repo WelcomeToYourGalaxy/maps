@@ -1,5 +1,9 @@
 # BRIEF17 — possible patterns
 
+## Update, 15 November 2026 (early): four more, 34 in all
+
+Added: lenders gaining a say through secret loan terms (fund; How China Lends, 2021); bills written by lobbies and passed under lawmakers' names (place; Copy, Paste, Legislate, 2019); governments funding Interpol and using red notices against critics (fund; UAE pledge and 2021 presidency); foreign consultancies running other countries' campaigns (select; Channel 4 on Cambridge Analytica in Kenya, 2018). Counts by way: place 12, select 5, pay 5, fund 6, run 6.
+
 ## Update, 15 November 2026: six more, 30 in all
 
 Gaps closed after a check of who infiltrates and where: spyware companies running hacks for governments (run), foreign state-owned companies holding ports (run), allied spy agencies using a partner's cables (run), foreign governments funding think tanks (fund), regulators' assessments written by applicants (place), foreign police offices inside diaspora associations (place). Each title names the unproved part where a proved pattern covers the rest. The owner does not want any line on the map claiming the list is complete or "every way infiltration works".
