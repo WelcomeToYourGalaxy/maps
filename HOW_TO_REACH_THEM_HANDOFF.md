@@ -410,7 +410,7 @@ the way to reach them both change at each step:
 | National | 198 | Wikidata `P194`/`P527` + front-page crawl | done |
 | Sub-national legislatures | ~3,800 ADM1 | `P194` by jurisdiction id | done |
 | County-level councils | ~48,000 | `P194` on territories and on governments; rebuilt and re-verified in round eleven | done — the structured source is exhausted |
-| Municipalities | ~250,000–400,000 | national registers, one country at a time, sharded on disk | 8–11 |
+| Municipalities | ~250,000–400,000 | national registers, one country at a time, sharded on disk | 8–11; four in, ~55,000 covered |
 | Below the municipality | millions | not proposed | — |
 
 So four to six more rounds reaches a complete picture down to the
@@ -470,8 +470,15 @@ from here:
   email, filterable by `pivot like "mairie"`. **Done — round four, below.**
 - Italy: `indicepa.gov.it/ipa-dati/dataset/enti`, every public body with
   its certified email address. **Done — round five, below.**
+- The Netherlands: `organisaties.overheid.nl`, the register the government
+  keeps of itself, every municipality with its telephone number, email
+  address, website and postal address. **Done — round twelve, below.**
+- Finland: `api.palvelutietovaranto.suomi.fi`, the catalogue every Finnish
+  authority keeps its own entry in. **Done — round twelve, below.**
 
-Perhaps 25 to 30 countries have an equivalent. Each is a separate
+Perhaps 25 to 30 countries have an equivalent, and round twelve's survey
+is the evidence for how many of those will join: of six tried, two
+shipped. Each is a separate
 integration of a few hours, which is why they are a round of their own
 rather than a single pass.
 
@@ -733,9 +740,11 @@ Surveyed this round, so the next one does not start from nothing:
 | --- | --- | --- | --- |
 | France | 34,980 | service-public.fr annuaire | done |
 | Italy | 7,891 | IPA | done |
-| Spain | 8,131 | DIR3 / REL | **blocked on the join** |
+| Netherlands | 341 | ROO export + TOOI | done (round twelve) |
+| Finland | 291 | Suomi.fi catalogue | done (round twelve) |
+| Spain | 8,131 | DIR3 / REL | **blocked on one crosswalk** -- measured in round twelve |
 | Norway | 357 | Enhetsregisteret | **blocked on the join** |
-| Germany | 10,786 | none national | not attempted |
+| Germany | 10,786 | none national | and no code to join one to -- round twelve |
 
 **Spain is a join problem, not a data problem.** DIR3's public exports
 are reachable and `Listado Unidades EELL.xlsx` carries 26,608 local
@@ -774,6 +783,187 @@ website, 2 a telephone and 1 an email** — about 2%. The contacts in OSM
 are on the town hall object, not the boundary, so Tier B needs a
 spatial join as well as a planet-sized download. Do not plan a round
 around it without first proving the extract is obtainable.
+
+### Round twelve: two more registers, and a join that looked like a win
+
+The Netherlands and Finland are in. The register count is four and the
+shards hold **43,437 records**: France 34,915, Italy 7,889, the
+Netherlands 341, Finland 230.
+
+**The Netherlands, complete.** The Register van Overheidsorganisaties is
+the register the government keeps of itself, and one export file
+(`exportOO_gemeenten.xml`, 17 MB) holds every municipality with the
+telephone number, email address, website and postal address each one
+publishes. 419 rows, of which 78 carry the date they were abolished —
+Aalburg is in the file with `eindDatum` 2019-01-01 and is not a
+government to write to. **All 341 current rows joined**, which is the
+first register to lose nothing.
+
+The last twelve took a second hop. The register has not added the CBS
+code to the rows of the municipalities created by merger since 2018:
+Altena, Westerkwartier, Het Hogeland and nine others carry a
+chamber-of-commerce number and no `gemeentecode`. TOOI, the government's
+register of its own identifiers, publishes both that code and the OWMS
+identifier which the export row does carry, so those twelve join
+through it — two published identifiers end to end, no name matching, the
+same shape as Italy's cadastral-code residue.
+
+**Finland, and a record that is not a municipality.** Suomi.fi's service
+catalogue (Palvelutietovaranto) is the catalogue every Finnish authority
+is required by law to keep its own entry in. 1,789 organisations, read
+50 at a time from the batch endpoint rather than one by one.
+
+The trap is in what it calls a municipality. **32 of the 328 records
+typed `Municipality` are a municipality's own companies**, each tagged
+with that municipality's number: Mänttä-Vilppula's number sits on the
+town and on six companies — a district-heating company, a property
+company, a catering company — and Pyhäntä's on the town and on
+Kiinteistö Oy Ukonojankartano. Offering a town's catering company as the
+place to write to about a law is exactly the plausible-wrong this build
+exists to avoid. The municipality is the record with no parent and the
+companies hang off it, so only parentless records are read.
+
+That leaves 291 municipalities, of which **230 joined**. Of the rest,
+**56 publish no contact detail at all** — Jyväskylä's entry carries no
+website, email, telephone or address, which is the catalogue's own gap
+and not a fault in the reading of it — and 5 numbers are claimed by two
+parentless records each. Tampere is one of those five: Tampereen Vesi Oy,
+the water company, is parentless and carries the city's number, and
+nothing in the catalogue separates the two. **The fix is a published
+code, and the one that would do it is missing: not one of the 604 Finnish
+municipality items on Wikidata carries a business ID (`P2622`).** Import
+those and Tampere, Forssa, Kauhava, Korsnäs and Kuopio fall out, because
+the catalogue gives each record its own `businessCode`.
+
+Two smaller things the Finnish records needed. The catalogue publishes
+each website once per language, and asking for the first gave Helsinki
+its Swedish front page, so Finnish is preferred over the Swedish and
+English versions of the same page. And among several email addresses it
+prefers the one the catalogue describes as the *kirjaamo*, the registry,
+which is the address of record for anything put to a municipality in
+writing, rather than customer service.
+
+### The guard that was missing, and the 76 records it found
+
+`by_code` has always refused a code that maps to two Wikidata items.
+Nothing refused the reverse: **a Wikidata id claimed by two register
+rows**, where the second row simply overwrote the first and the page
+then showed one municipality's telephone number under another's name.
+The page looks a place up by its id and prints what it finds, so this is
+the same fault as an ambiguous code arrived at from the other end.
+
+`put()` now drops both rows and counts them. What it found on the
+existing data: **61 in France, 1 in Italy, 14 in Finland.** France's
+shipped count falls from 34,976 to 34,915 and Italy's from 7,890 to
+7,889, and those 62 records were wrong rather than missing. Finland's 14
+were its municipal companies, before the parentless rule took them out
+earlier in the chain.
+
+**The Action's floor had to change with it.** It refused any country
+under 1,000 records, which was a sound guard when the countries were
+France and Italy and is a permanent veto on a country of 341
+municipalities. It now compares each country against what it built last
+month and refuses a fall below 80% of it, with an absolute floor of
+40,000 on the total and 50 per country. A register that answers with
+half a file is still caught; a small country is not.
+
+### Spain: the join that agrees 40% of the time
+
+Spain is the biggest prize left in Europe — 8,391 municipalities, 98% of
+them carrying an INE code — and round seven left it "blocked on the
+join". It still is, and now the reason is measured rather than inferred.
+
+DIR3 is reachable and its `Listado Unidades EELL.xlsx` is better than
+round seven recorded: filtered to top-level units of type `AY` that are
+current, it holds **8,133 ayuntamientos, 8,128 with a tax identifier and
+7,015 with an email address**. That is Spain's municipal email in one
+file.
+
+The only code on it is the CIF, and a Spanish local-authority CIF looks
+exactly like an INE code with a letter on each end: Madrid is
+`P2807900B` and Madrid's INE code is 28079. Barcelona and Sevilla agree
+too. **It is not the INE code.** Checked against INE's own list of 8,132
+municipalities and codes (`ine.es/daco/daco42/codmun`), joining the
+name to the code and comparing:
+
+| CIF's embedded code against the INE code | Units | Share |
+| --- | --- | --- |
+| the two agree | 3,308 | 40.7% |
+| off by 1 | 1,099 | 13.5% |
+| off by 2 | 554 | 6.8% |
+| off by 3 | 431 | 5.3% |
+| off by 1 the other way | 302 | 3.7% |
+| off by more | ~2,000 | ~25% |
+
+The digits are the Registro de Entidades Locales' own sequence, which
+diverges from INE's wherever a municipality has been created or
+dissolved. Turís's CIF embeds 46250, and 46250 is the INE code of
+Valencia. Join on it and 59% of Spain gets a neighbouring town's email
+address, which is the Norway trap at national scale. **Rejected.**
+
+What Spain needs is one crosswalk: REL's own code against the INE code.
+REL is the register that issues these numbers and it is 403 from this
+sandbox. Find that table and Spain falls out in an afternoon, with 7,015
+emails waiting behind it.
+
+### Also surveyed this round, and why each was left
+
+| Country | Municipalities | What was found | State |
+| --- | --- | --- | --- |
+| Netherlands | 341 | ROO export, CBS code + TOOI | **done** |
+| Finland | 291 | Suomi.fi catalogue, municipality number | **done** |
+| Spain | 8,391 | DIR3 has 7,015 emails; CIF is not the INE code | blocked on one crosswalk |
+| Colombia | 1,227 | 90% carry a DANE code, and there is no national register: datos.gov.co holds 76 directories published one city at a time | per-city job |
+| Portugal | 310 | 99.7% carry an INE ID; dados.gov.pt publishes municipal finance and no contacts, and the Portal Autárquico does not answer from here | no register found |
+| Slovakia | 2,898 | **round seven's "no identifier" is wrong — 2,887 carry a LAU code.** No register tried yet | the next candidate |
+
+Slovakia is worth naming twice: it was written off for having nothing to
+join on, and it has the best-covered code of any country left. The
+register is the open question, not the key.
+
+### Key coverage for the rounds after this one
+
+Counted this round, so the next does not start from nothing. The rule
+from round seven holds — Wikidata's code first, the register's second,
+download nothing until both are in hand:
+
+| Country | Municipalities | Code on Wikidata | Carrying it |
+| --- | --- | --- | --- |
+| Mexico | 2,462 | `P3801` INEGI municipality ID | 2,458 (99.8%) |
+| Slovakia | 2,898 | `P782` LAU | 2,887 (99.6%) |
+| Philippines | 1,497 | `P988` PSGC | 1,493 (99.7%) |
+| Japan | 1,812 | `P429` dantai code | 1,745 (96%) |
+| Colombia | 1,227 | `P7325` DANE code | 1,102 (90%) |
+| Poland | 3,185 | `P1653` TERC code | 2,478 (78%) |
+| Chile | 356 | `P6929` CUT code | 284 (80%) |
+| Croatia | 686 | none | — |
+| Germany | 13,697 | none on its municipalities | — |
+
+Germany is worth stating plainly after two rounds of looking: its
+13,697 municipalities carry no national statistical code on Wikidata at
+all — no AGS, no Gemeindeschlüssel — which is a second wall behind the
+first one round seven found. Even with a per-state register in hand
+there would be nothing to join it to.
+
+### What the municipal rounds have left
+
+Where the email figure stands, measured on Wikidata plus the four
+registers:
+
+| | Municipalities | Email |
+| --- | --- | --- |
+| Covered by a register here | 43,437 | France, Italy, the Netherlands and Finland near complete |
+| Near complete on Wikidata already | ~12,000 | Czechia, Romania, Austria, Belgium |
+| Everything else | ~136,000 | mostly none |
+
+Four registers have taken about 55,000 of 191,503 municipalities to a
+published email address. The remaining estimate from round seven stands
+at **6 to 9 rounds**, and this round is the evidence for the half of it
+that fails: of six countries surveyed, two shipped, three had no
+register or no crosswalk, and one had never been tried because its key
+was mis-recorded. The order to work in is Slovakia, Mexico and the
+Philippines — best keys, registers untested — then Spain the moment
+REL's crosswalk is found.
 
 ### Round eleven: the county level, finished to what the data holds
 
@@ -853,7 +1043,7 @@ mostly is not one:
 | A level's street address | Wikidata, on the click | live, kept a day |
 | Which offices a jurisdiction has | Wikidata class walk | kept a week |
 | Place names and coordinates | Wikidata / Photon / Nominatim | kept a week |
-| Municipal registers (`muni/`) | France, Italy | rebuilt monthly |
+| Municipal registers (`muni/`) | France, Italy, the Netherlands, Finland | rebuilt monthly |
 | Country profiles (`LAWP`), `lawlinks.json` | written by hand | changed by hand |
 
 Three things make that true rather than nearly true.
@@ -879,8 +1069,11 @@ to `COUNTRIES` in that script and nothing else — no change to the page.
 Two guards are load-bearing. The script drops any record it cannot
 join on a published code, and any code that maps to two Wikidata items,
 and counts both rather than guessing. The Action refuses to commit a
-build under 40,000 records, or any country under 1,000, so a register
-that answers with half a file cannot quietly delete data.
+build under 40,000 records in all, or any country that falls below 80% of
+what it built last month, so a register that answers with half a file
+cannot quietly delete data. It used to use a flat floor of 1,000 per
+country, which would have vetoed the Netherlands at 341 -- see round
+twelve.
 
 The staleness this is for was already present when it was written: the
 French directory has **dropped the email address it published for

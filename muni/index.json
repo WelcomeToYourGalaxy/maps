@@ -1,8 +1,10 @@
 {
  "shards": 512,
  "countries": [
+  "FIN",
   "FRA",
-  "ITA"
+  "ITA",
+  "NLD"
  ],
  "fields": {
   "e": "email",
@@ -14,12 +16,16 @@
  },
  "sources": {
   "FRA": "Annuaire de l'administration, Direction de l'information legale et administrative (service-public.fr), keyed to Wikidata by INSEE code (P374)",
-  "ITA": "Indice dei domicili digitali della Pubblica Amministrazione (IPA, indicepa.gov.it), category L6, keyed to Wikidata by ISTAT municipality code (P635) and, where that code has been reissued, by cadastral code (P806)"
+  "ITA": "Indice dei domicili digitali della Pubblica Amministrazione (IPA, indicepa.gov.it), category L6, keyed to Wikidata by ISTAT municipality code (P635) and, where that code has been reissued, by cadastral code (P806)",
+  "FIN": "Palvelutietovaranto, the Suomi.fi service catalogue every Finnish authority keeps its own entry in (api.palvelutietovaranto.suomi.fi), keyed to Wikidata by municipality number (P1203)",
+  "NLD": "Register van Overheidsorganisaties (organisaties.overheid.nl), the municipalities export, keyed to Wikidata by CBS municipality code (P382)"
  },
  "per_country": {
-  "FRA": 34976,
-  "ITA": 7890
+  "FRA": 34915,
+  "ITA": 7889,
+  "FIN": 230,
+  "NLD": 341
  },
- "records": 42866,
+ "records": 43437,
  "built": "2026-11-15"
 }
