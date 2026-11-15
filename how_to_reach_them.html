@@ -289,6 +289,11 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   background:rgba(74,124,89,.07);word-break:break-word}
 .doat dd a:hover{background:rgba(74,124,89,.16);border-color:rgba(140,189,154,.45);
   text-decoration:none}
+.doat dd .noat{display:block;font-size:11.6px;line-height:1.45;color:var(--ink);
+  padding:7px 9px;border:1px dashed rgba(140,189,154,.3);border-radius:4px;
+  background:rgba(255,255,255,.015)}
+.doat dd .noat b{display:block;font-weight:600;font-size:10.4px;letter-spacing:.5px;
+  text-transform:uppercase;color:var(--accent-hi);margin-bottom:2px}
 .doat dd a b{display:block;font-weight:600;font-size:10.4px;letter-spacing:.5px;
   text-transform:uppercase;color:var(--stone);margin-bottom:2px}
 .staleq{display:block;font-size:10.4px;line-height:1.4;color:var(--faint);
@@ -3346,12 +3351,12 @@ async function fromWorld(f, opts){
   if(mid){
     const mn = mid.properties.shapeName || mid.properties.n;
     const hit = await resolveUnitIn(mn, cq, WANT_REGION);
-    STACK.push({q:hit?hit.id:null, label:hit?hit.label:mn, iso3:iso3, level:1, adm:1, feature:mid});
+    STACK.push({q:hit?hit.id:null, label:unitLabel(hit, mn), iso3:iso3, level:1, adm:1, feature:mid});
     paintTrail(); paintChain();
   }
   const lvl = STACK.length;
   const hit2 = await resolveUnitIn(nm, cq, (f.properties.l||2)>=2 ? WANT_DISTRICT : WANT_REGION);
-  STACK.push({q:hit2?hit2.id:null, label:hit2?hit2.label:nm, iso3:iso3, level:lvl, adm:(f.properties.l||2), feature:f});
+  STACK.push({q:hit2?hit2.id:null, label:unitLabel(hit2, nm), iso3:iso3, level:lvl, adm:(f.properties.l||2), feature:f});
   if(!opts.noMuniScan){
     if(hit2){ openJuris(hit2.id, hit2.label); }
     else { openModal(nm,'Drawn from the boundary files'); renderNoEntity(nm, true); }
@@ -5247,6 +5252,19 @@ function levelRows(rt, o){
     out.push({lbl:'Write to '+place, u:'mailto:'+sf.e, tx:sf.e});
   if(sf && sf.p && rt.id==='call' && digits(telOf(o))!==digits(sf.p))
     out.push({lbl:'Ring '+place, u:'tel:'+sf.p.replace(/[^+0-9]/g,''), tx:sf.p});
+  /* A certified address — Italy's PEC, and the equivalent elsewhere — is
+     the address most Italian comuni publish, and for about a third of
+     them it is the only one. It is an email address that refuses mail
+     from an ordinary account, so it is offered under its own name
+     rather than as somewhere to write from a normal inbox. */
+  if(sf && sf.c && rt.id==='email')
+    out.push({lbl:'Write to '+place+' by certified mail', u:'mailto:'+sf.c,
+              tx:sf.c+' — a certified address (PEC), which accepts mail only from another certified account'});
+  /* The street the register prints, with the name of the place after it,
+     because the register gives the street and the postcode and leaves
+     the place to be read off the entry it sits in. */
+  if(sf && sf.a && rt.id==='letter')
+    out.push({lbl:'Post to '+place, u:null, tx:sf.a+' '+place});
   const r=subleg(lv);
   if(r && r.u && !same(r.u)){
     out.push({lbl:'At the '+(r.n||'legislature'), u:r.u,
@@ -5299,9 +5317,12 @@ function doThisAt(rt, o){
       tx:'searched for this place, since no office on the map holds it'});
   }
   if(!rows.length) return '';
+  /* A postal address has nowhere to click. It is drawn as the links
+     are drawn, without being one. */
   return '<div class="fld doat"><dt>Where to do this</dt><dd>'+
-    rows.map(r=>'<a href="'+esc(r.u)+'" target="_blank" rel="noopener">'+
-      '<b>'+esc(r.lbl)+'</b> '+esc(r.tx)+'</a>'+
+    rows.map(r=> (r.u
+      ? '<a href="'+esc(r.u)+'" target="_blank" rel="noopener"><b>'+esc(r.lbl)+'</b> '+esc(r.tx)+'</a>'
+      : '<span class="noat"><b>'+esc(r.lbl)+'</b> '+esc(r.tx)+'</span>')+
       (r.stale?'<i class="staleq">the recorded address, which goes out of date — '+
         'if it does not open, use the search under it</i>':'')).join('')+
     '</dd></div>';
@@ -5844,10 +5865,11 @@ async function loadMuni(q){
     const rec=(MUNI_CACHE[k]||{})[q];
     if(!rec) return;
     const e=LEVSELF[q] || (LEVSELF[q]={});
-    if(rec.u) { e.u=rec.u; }
-    if(rec.e) { e.e=rec.e; }
-    if(rec.p) { e.p=rec.p; }
-    if(rec.o) { e.o=rec.o; }
+    /* Every field the registers carry. A field added to a shard and not
+       to this list is fetched, parsed and dropped on the floor: Italy's
+       street address and certified address were both in the shards and
+       invisible on the page until they were named here. */
+    ['u','e','p','o','a','c'].forEach(k=>{ if(rec[k]) e[k]=rec[k]; });
     e.reg=1;                                    /* from the country's own register */
     try{ if(CUR && !SEL) render(); }catch(err){ console.warn(err); }
   }catch(err){ console.warn('municipal register', q, err); }
@@ -7108,6 +7130,10 @@ function closeStart(){ $('#start').classList.add('off'); $('#sopen').classList.a
    rate; 200 ms of collected keystrokes sends two or three requests for
    a typed place name instead of one per letter. */
 const PHOTON='https://photon.komoot.io/api/';
+/* A name with case and accents taken off, for deciding whether two
+   suggestions are the same place under two OSM objects. */
+const nameFold = v => String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+  .toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 const NOM_LOOKUP='https://nominatim.openstreetmap.org/lookup';
 const NOM_SEARCH='https://nominatim.openstreetmap.org/search';
 let TA_T=null, TA_GEN=0;
@@ -7185,7 +7211,32 @@ async function runSearch(q, live){
       return p;
     })
     .filter(p=>place(p) && (p.osm_type==='R' || SETTLE.has(String(p.osm_value||''))))
-    .sort((a,b)=>(a.osm_type==='R'?0:1)-(b.osm_type==='R'?0:1));
+    /* The geocoder's own order is kept.
+
+       Typing "Sovizzo" used to offer Sovico, in another region, at the
+       top of the list, with Sovizzo itself third, below a suburb in
+       Brazil. The geocoder had Sovizzo first; this list reordered it.
+       Sovizzo comes back twice, as a boundary relation and as a village
+       node, and the relation's kind is "administrative" rather than a
+       kind of settlement, so it fell out of the settlements — while
+       Sovico, tagged "village" on its own relation, rose to the top for
+       being a relation.
+
+       Promoting whatever matched the typed name exactly was tried and
+       was worse: "Hannover" then offered a hamlet in North Dakota ahead
+       of the city of four million, which the geocoder had ranked first
+       and spells "Hanover" in English. The geocoder weighs prominence
+       and this map has nothing better to weigh it with.
+
+       So relation before node applies only between two objects of the
+       same name — where it decides which Sovizzo to open, and nothing
+       else. Everything keeps the order it arrived in. */
+    .map((p,i)=>{ p._i=i; return p; })
+    .sort((a,b)=>{
+      const an=nameFold(a.name), bn=nameFold(b.name);
+      if(an===bn){ const d=(a.osm_type==='R'?0:1)-(b.osm_type==='R'?0:1); if(d) return d; }
+      return a._i-b._i;
+    });
   const small = usable.filter(p=>SETTLE.has(String(p.osm_value||'')));
   SHITS = small.length ? small : usable;
 
@@ -7491,6 +7542,19 @@ const RX_ADMIN = /\b(county|province|district|region|state|municipality|commune|
    same-named entities — "a large city" is both a city and a county */
 const WANT_REGION = /\b(state|province|region|oblast|krai|republic|territor|governorate|voivodeship|canton|emirate|prefecture|department|county)\b/i;
 /* The government of a place, as opposed to the place itself. */
+/* The name to show for a level of the chain.
+
+   A Wikidata item with no label in any of the languages asked for comes
+   back labelled with its own id, and the chain printed "Q109290689" to
+   a reader as the region they live in — Germany's first level, a
+   statistical region nobody has named in those languages. The boundary
+   file carries a name for every unit in it, so that is what is shown,
+   while the id stays attached and keeps doing the work of fetching
+   offices. */
+const unitLabel = (hit, fallback) => {
+  const L=hit && hit.label ? String(hit.label) : '';
+  return (!L || /^Q\d+$/.test(L)) ? (fallback || L) : L;
+};
 const RX_GOVBODY = /\b(government|administration|executive branch)\b/i;
 const WANT_DISTRICT = /\b(county|district|parish|borough|municipality|commune|prefecture|department|subdivision|shire|raion|powiat|okrug)\b/i;
 
