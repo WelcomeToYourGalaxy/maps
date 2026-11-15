@@ -77,11 +77,48 @@ announces what the map is doing instead of saying the thing. Write "The copying 
 measured", not "that it travels is not a guess"; write "Ordinary national law moves the
 same way", not "this map already holds the same thing".
 
-Write it the way the rest of the map is written: plain words, short sentences, the
-mechanism shown rather than characterised. The unease has to come from the specifics -
-how small the room is, how much money is in it, what nobody publishes - and never from
-adjectives, a rhetorical question or a one-line punch at the end. About 300 to 380
-words is the working length.
+### House style: the GMO-map field guides
+
+The owner's instruction, 14 November 2026, after the first set of rundowns: *they should
+use the writing style in these guides* - `WelcomeToYourGalaxy/GMO-map/tree/main/guides`,
+the four "how to" field manuals. Read one before writing any of these. What that voice
+does:
+
+- **Opens on the concrete thing.** A date, a number, a named case. Never a sentence that
+  sets a scene or announces what is about to be argued.
+- **States a fact and stops.** "Four firms hold roughly 56 per cent of the world's
+  commercial seed and 61 per cent of its pesticides." No adjective is doing work.
+- **Front-loads numbers and dates**, and gives a mechanism as a flat sequence - first
+  this, then this, then somebody signs - rather than describing it.
+- **Short paragraphs. British spelling, "per cent".**
+- Contradicts the reader's assumption plainly where that is the point: "You are told
+  this is a question for scientists. Most of it is not."
+
+Banned, by the owner, by name: faux-gravitas, portentous phrasing, manufactured
+significance, contrived contrasts, repetitive sentence rhythms, formulaic transitions.
+Specimens he struck out: "What matters as much as the case is what officials did next",
+"The trade is protected by its paperwork", "The map holds nothing on this, and says so",
+"which is not the act of people who believe they have found all of it", "That text
+travels is not a guess", "This map already holds the same thing happening to...", "which
+is exactly the shape described here", "It would stop being a suspicion the day", "It
+would die just as cleanly".
+
+Do not make the prose sound literary, dramatic or sophisticated. No aphorisms, no
+compressed metaphors, no sentence that exists to be quotable. The common fault is the
+sentence that announces what the map is doing instead of saying the thing: write "The
+copying has been measured", not "that it travels is not a guess".
+
+When a rundown needs fixing, **rewrite it from scratch.** Polishing AI prose leaves the
+rhythm intact, and the rhythm is what the owner is reading. About 230 to 350 words is
+the working length.
+
+### Order
+
+`items` order is display order - `buildPat()` maps over `HYP` and does not sort. Keep
+the list ranked by hook: the ones a general reader will open first at the top. As of
+14 November the order is groomed_cohorts, brotherhoods_in_courts_police,
+officers_inside_multilateral_bodies, party_cells_in_global_companies, then the rest
+down to standards_committees, which is the most technical and the least gripping.
 
 **Naming inside a story.** The no-naming rule below still holds for the claim and for
 everything unproved. A `story` may name a party only where it is recounting a case this
