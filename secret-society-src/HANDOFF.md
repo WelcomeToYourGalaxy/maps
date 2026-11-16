@@ -136,6 +136,16 @@ On 15 November 2026 the 100 cases with no `city` were worked from the records' o
 - **Algeria, 36.75, 3.06.** The seizure described is at the port of Oran; the point is Algiers, which fits the police chief's removal instead. Labelled Algiers.
 - **Gacanin.** The `c` field is United Arab Emirates while the conduct described is bribery of Bosnian politicians and the state security chief. The Dubai free-zone companies make the placement defensible; the country field does not match the record's subject.
 
+## Six records carry more than the 130-word cap allows, and that is now a decision (15 November 2026)
+
+The word cap was enforced on 143 records on 14 November and on a further 42 on 15 November, taking 1,058 more words out. **Six records will not come inside it without a fact leaving, and they are left over cap on purpose**: the German-Greek submarine record (196 words), ThyssenKrupp in Israel (186), Ferrostaal in Portugal (164), the Brazilian tourism group at CARF (153), Stericycle at the SUS (147) and Squarcini at LVMH (139). Each is over because its load-bearing material is dense, not because it is over-written - the Greek one carries two separate German proceedings and a Greek one, with their own figures, named managers and outcomes; the Israeli one is a charge list with a different charge against each of five people and a 2026 commission finding on top.
+
+The owner's standing rule is that everything a source publishes goes in and nothing is filtered out on their behalf. Where that rule and the cap disagree, the rule wins and the record stays long. **Do not put these six back on a trim list.** The honest trim on a dense record cuts wordiness and background; once those are gone, a further cut costs a date, a figure or an outcome.
+
+Four trims on 15 November were caught cutting the wrong thing and were repaired: the tourism record lost a June 2026 CGU fine of 5.1 million reais and the note's recommendation of no action; Stericycle lost the spreadsheets and the 'CP' code word, which are the mechanism, and the prosecutors' statement that it had complied; Squarcini lost why LVMH wanted Ruffin and his colleagues watched; the machinery dealer lost the register's record that the agreement was fulfilled. **The check that caught them**: diff the figures, the proper nouns and the hedge words between the old and new text, then read every loss rather than counting them. Background and repetition are the only safe losses.
+
+One trim also dropped a case out of a regex-selected pattern again - the Spanish arms exporter in Cameroon - and the orphan rollcall caught it the same minute. Eight patterns select on a regex over title and description, so **any description edit can silently empty a pattern**; curating the case by title fixes it.
+
 ## Display notes
 - Default country shading "Overall: officials open to outside control" = mean of the two GI-TOC views (insiders weighted ¾, weak watchdogs ¼).
 - Glossary underlines the first use of each term per box; hover shows the definition (glossify() in app_template.html).
