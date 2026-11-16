@@ -146,9 +146,11 @@ def main():
          r'they reach (\d+) of the 206 places'),
         ('places whose career moves are all public',
          places_with('rd', lambda rs: all(r.get('public_move') for r in rs)),
-         r'(Fourteen|Fifteen|Sixteen|Seventeen|Eighteen|Nineteen|Twenty) places hold only moves'),
+         r'(Five|Six|Seven|Eight|Nine|Ten|Eleven|Twelve|Thirteen|Fourteen|Fifteen|Sixteen|Seventeen|Eighteen|Nineteen|Twenty) places hold only moves'),
     ]
-    WORDS = {'Fourteen': 14, 'Fifteen': 15, 'Sixteen': 16, 'Seventeen': 17,
+    WORDS = {'Five': 5, 'Six': 6, 'Seven': 7, 'Eight': 8, 'Nine': 9, 'Ten': 10,
+             'Eleven': 11, 'Twelve': 12, 'Thirteen': 13,
+             'Fourteen': 14, 'Fifteen': 15, 'Sixteen': 16, 'Seventeen': 17,
              'Eighteen': 18, 'Nineteen': 19, 'Twenty': 20}
     for label, want, pat in place_checks:
         m = re.search(pat, html)

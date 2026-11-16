@@ -2,7 +2,7 @@
 
 Paste or attach this in a new chat to carry on adding to the map.
 
-Rewritten at round 43, current through round 66. It states the current position only. Earlier versions kept round-by-round narrative, which went stale and in round 26 sent agents to re-research records already on the map; the moves-against-the-bank section had grown four rounds of narrative again by round 42 and was rewritten as a statement. Keep it that way: when something changes, edit the statement, don't append a round note. The round-by-round account lives in `agents/work/research_log_2026-11.json`, which is where to look for what was searched and found nothing. **Where this names a country as dead or blocked, that is as of round 66 — re-derive the target list from `coverage.py` before briefing anything. Paste the list `coverage.py` prints; do not summarise it from memory. Round 56 lost an agent's calls to a target list written partly from memory that included a country which was not absent at all, and round 57 made the same mistake again — it pasted `coverage.py`'s list and then added QAT from this document's own prose, where QAT was not absent. **Round 64 is the third instance and it came from a different direction: the list of named one-page fetches below, not the absent list.** Ecuador sat at the top of that list as "the cheapest one" and Ecuador was already filed and already counted — record 327, the same person, the same CV and the same URL — so a third of one agent's budget went on re-finding a record the map had. The absent list was pasted correctly; the *leads* were not checked against it. **Check a named lead against `coverage.py`'s absent list too, not just the target list.** Paste what the script prints and add nothing to it.**
+Rewritten at round 43, current through round 67. It states the current position only. Earlier versions kept round-by-round narrative, which went stale and in round 26 sent agents to re-research records already on the map; the moves-against-the-bank section had grown four rounds of narrative again by round 42 and was rewritten as a statement. Keep it that way: when something changes, edit the statement, don't append a round note. The round-by-round account lives in `agents/work/research_log_2026-11.json`, which is where to look for what was searched and found nothing. **Where this names a country as dead or blocked, that is as of round 67 — re-derive the target list from `coverage.py` before briefing anything. Paste the list `coverage.py` prints; do not summarise it from memory. Round 56 lost an agent's calls to a target list written partly from memory that included a country which was not absent at all, and round 57 made the same mistake again — it pasted `coverage.py`'s list and then added QAT from this document's own prose, where QAT was not absent. **Round 64 is the third instance and it came from a different direction: the list of named one-page fetches below, not the absent list.** Ecuador sat at the top of that list as "the cheapest one" and Ecuador was already filed and already counted — record 327, the same person, the same CV and the same URL — so a third of one agent's budget went on re-finding a record the map had. The absent list was pasted correctly; the *leads* were not checked against it. **Check a named lead against `coverage.py`'s absent list too, not just the target list.** Paste what the script prints and add nothing to it.**
 
 **Round 66 is the fourth instance, and it was the briefer's own prose this time.** The gold agent's brief pasted the absent list correctly and then added a separate paragraph of "good odds" countries written from this document — a list that included Guatemala, Mongolia and Bangladesh, none of which were absent from the gold row. Four of the six records that came back were dropped as already on the map, and only Tunisia was a new place. The absent list was right there in the same brief, contradicting the paragraph below it. **Do not write a second list of names alongside the absent list.** If a lead deserves emphasis, name it *and* say it was checked against what `coverage.py` printed, in the same sentence. Any country name in a brief that is not in the pasted absent list is a bug unless the brief says why.
 
@@ -75,9 +75,9 @@ same commit as the work it did.
   - Links: `{n, cb | tn, rel, role, detail, src_t, src_u}`.
   - Popups turn each link into a plain sentence (`SAY` / `sayLink` / `srcItem` in `app.js`). Add a `SAY` entry for any new `role` string.
 
-## Where it stands (66 rounds in, 15 November 2026)
+## Where it stands (67 rounds in, 15 November 2026)
 
-1,689 outside parties and 2,463 ties. One writeup for every box, 1,918 of them. 20 patterns
+1,715 outside parties and 2,497 ties. One writeup for every box, 1,944 of them. 20 patterns
 and 14 suspected patterns.
 
 The party count is lower than the tie count implies, and deliberately: round 60 folded 28 duplicate
@@ -94,23 +94,23 @@ ignores" below.
 | Category | Records | Places | of 206 | of 192 |
 |---|---|---|---|---|
 | Corruption cases | 259 | 175 | 85% | 91% |
-| Revolving door | 282 | 167 | 81% | 87% |
+| Revolving door | 288 | 172 | 83% | 90% |
 | Governor removals and pressure | 232 | 183 | 89% | 95% |
-| External auditors | 212 | 175 | 85% | 91% |
+| External auditors | 216 | 178 | 86% | 93% |
 | Banknote printers | 184 | 168 | 82% | 88% |
-| Outside reserve managers | 186 | 68 | 33% | 35% |
-| Gold custodians | 84 | 52 | 25% | 27% |
+| Outside reserve managers | 195 | 71 | 34% | 37% |
+| Gold custodians | 96 | 58 | 28% | 30% |
 | Swap lines | 240 | 84 | 41% | 44% |
 | Named shareholders | 228 | 9 | 4% | 5% |
 
-The revolving-door row counts the 282 records with a private employer. There are 336 career-move
+The revolving-door row counts the 288 records with a private employer. There are 342 career-move
 records in all; the other 54 are `public_move` and are listed in the country's box without being
-counted, because nobody moved between public office and private finance. FOURTEEN places hold
+counted, because nobody moved between public office and private finance. TEN places hold
 nothing but moves of that kind, so they read blank on the layer while their box is not empty:
-BOL BTN CPV CUB IRQ MDG MRT QAT SDN SLE STP TLS TON VUT. Each needs one employer whose
+BOL BTN CPV CUB MRT QAT STP TLS TON VUT. Each needs one employer whose
 private ownership a source states — that is the whole of what stands between them and the row.
-**Round 64 corrected this number to eighteen, round 65 converted three and round 66 converted the
-Dominican Republic, so it is fourteen. Derive it, never read it:** the places in `core['E']` holding at least one career move where every
+**Round 64 corrected this number to eighteen; rounds 65, 66 and 67 converted eight of them between
+them, so it is ten. Round 67 alone took IRQ, MDG, SDN and SLE off it. Derive it, never read it:** the places in `core['E']` holding at least one career move where every
 one of them is `public_move`.
 
 The corruption row counts the 259 cases that are not `counterparty_only`. Two more findings are
@@ -873,6 +873,29 @@ auditor row, each naming the document and section read. That is the part of a wi
 not duplicate, because a blank is specific to the document that was opened, and it is what keeps the
 next round from re-reading them.
 
+**Round 67 ran the same four-agent shape against pasted absent lists and the duplicate rate
+collapsed.** Twenty-seven records filed, seventeen new places, one record overturned and one merged
+in place — against **five** duplicate offers, where round 66 had eight. The brief carried no
+"good odds" paragraph this time, only what `coverage.py` printed, and the three duplicates that did
+arrive all came from a single trade-press citation naming four client banks, three already filed.
+The agent flagged them itself rather than claiming them.
+
+**The negatives again outweighed the records in volume, and that is the point of a wide round.**
+Twenty-five new gold blanks, fifteen manager blanks, five case blanks, each naming the document and
+section. `gaps.json` now holds 109 closed gold countries, 50 manager, 16 case and 38 auditor.
+
+**One agent returned zero records and it was the right result.** The corruption-case agent worked all
+seven genuinely open countries by the annual-report method and closed five of them with documents.
+A row at 91 per cent with seventeen left is not a row where a wide round produces records; it is one
+where a wide round produces proof that the remaining blanks are real. **Do not read zero records as
+a failed agent.**
+
+**What the owner's own hands were worth this round.** The four agents produced 23 records between
+them; the browser work done directly produced 4, all on the auditors row the owner cares most about,
+and all three countries it closed had been written up here as dead ends. **An agent cannot drive a
+browser. When this document says a host "needs a human in a browser", that is now a task to do, not
+a note to carry forward.**
+
 **The lesson for the next round's split: the volume rows pay per agent-hour and the spicy rows pay
 per place.** One standalone reserves report named three firms for Bolivia and one quarterly table
 named four for Guatemala, where a revolving-door agent spends its whole budget to convert one
@@ -990,6 +1013,107 @@ method for both the manager and gold rows.
 **Individual CV PDFs are a separate resource from a board page.** Mozambique converted from
 `millenniumbim.co.mz/media/...cv-<name>.pdf`, after an earlier round had exhausted the same bank's
 board page. Three more of those files are unopened.
+
+## The browser is now a first-class tool on this map, and when to reach for it (round 67)
+
+Three of the longest-standing auditor blanks fell in one sitting to the same move, and it is worth
+stating as a method rather than as three anecdotes.
+
+**Reach for a browser when the bank's own site is a single-page app or refuses automation.** Those
+sites render fine in Chrome. What you want from them is not the reading — it is **the document's
+direct path**, which the rendered page exposes and which curl can then usually fetch. That is how
+Mauritania and Sao Tome were closed: browser for the path, shell for the file, grep for the name.
+
+**When the host refuses curl even with the exact path, read it in the browser's PDF viewer.**
+Madagascar's `banky-foibe.mg` fails at the TLS layer regardless of path, so the joint-audit cover
+page and the signature page were read as rendered pages. Chrome's PDF viewer exposes no text to
+`get_page_text`, so this is screenshot-and-read, page by page, with the page-number box to jump.
+
+**What a browser does not fix:** a network-level block. `nbrb.by` does not resolve in Chrome either.
+That is the difference between "blocked" and "unreachable", and it is worth recording which one a
+country is.
+
+**A warning that applies to everything above.** `merge_links.py`'s reachability check will refuse
+these records, correctly, because the host refuses the checker too. `--url-ok` is then right — but
+**only after reading the document yourself.** It waives the reachability check, never the reading.
+Every round-67 waiver was taken after a hand read.
+
+## The `entity_hq_*` defect has a second half, and the build's fallback is where it bites (round 67)
+
+Round 66 fixed agents writing `hq_city` where a tie needs `entity_hq_city`. Round 67 found the other
+half of the same problem: **a tie whose source states no head office at all.**
+
+`build_net.py` gives such a node the country of its single tied central bank. That is right for a
+government or a court, and wrong for a firm. Round 67 filed six Kazakh manager records from a 2012
+note that names the firms and no addresses, and the build drew **Aviva Investors and Lombard Odier
+in Kazakhstan**. Guinea's three gold handlers landed in Guinea the same way, which may be right for
+a local processor and is not sourced either way.
+
+Aviva's was closed properly — London, from the firm's own published registered office, now in
+`hq.json`. **The rest are listed below and must not be guessed.** This is the same class of defect
+as round 65's five asset managers drawn at their client's country, and it will recur on every round
+that files a firm from a table with no address column. **Check `build_final.py`'s `approx placed
+(country centre)` count and the node list after any such round.**
+
+### Head offices still needed, round 67 — none of these should be guessed
+- **Lombard Odier Asset Management (Europe) Limited** — drawn in KAZAKHSTAN, which is wrong on its
+  face for a Lombard Odier entity. Needs the registered office from the firm's own filings.
+- **AFFINOR, BRINKS, EMR** — Guinea's three commercial gold handlers, drawn in GUINEA. If BRINKS is
+  Brink's Global Services the country is wrong; if it is a local branch it is right. No source says.
+- **Federal Reserve Bank** (Haiti's) — carries USA and no city **on purpose**. Do not fold it into
+  the Federal Reserve Bank of New York node without a source saying which Reserve Bank holds Haiti's
+  gold.
+
+## A party link needs the whole schema, or the build dies (round 67)
+
+`link_r67.py` wrote ten party links with `record_index`, `iso3`, `party`, `name_as_stated`,
+`party_type`, `hq_city`, `hq_iso3` and `role` — and `build_net.py` died with
+`KeyError: 'record_type'`. A party link needs all of: `party`, `name_as_stated`, `party_type`,
+`parent`, `hq_city`, `hq_iso3`, **`cb_iso3`** (not `iso3`), `role`, **`record_type`**,
+`record_index`, `source_url`. The script has been corrected and is idempotent; re-running it writes
+nothing. **The failure mode is loud, which is the good case — but note that the row would simply
+have had no country had `record_type` happened to be present and `cb_iso3` absent.**
+
+## Host notes and named leads, round 67 (shelf life about a round — test, do not trust)
+
+**Expired or broken TLS — curl cannot, WebFetch can:** `beac.int` (closes six countries on the gold
+row), `rbv.gov.vu`, `aisccuf.org`, `cbo.gov.om` (incomplete chain), `dohabank.com` (SNI failure).
+**Refuses curl at the TLS layer even with the exact file path:** `banky-foibe.mg`.
+**Serves curl fine once you have the path, though the site itself needs a browser:** `bo.bcm.mr`,
+`bcstp.st`, `cbos.gov.sd`, `cbos.gov.sd/en/node/NNN` (cheap, and holds Sudan's governor careers).
+**403 or bot interstitial:** `bcrp.gob.pe` (Imperva), `bsp.gov.ph`, `nbrm.mk`, `capitalbank.jo` (F5),
+`rms.paclii.org`. **Does not resolve at all, browser included:** `nbrb.by`, `bb.org.bd`,
+`centralbank.net.bs`, `exch.centralbank.cw`.
+**JavaScript single-page apps with no document links in the served HTML:** `bnr.rw`, `boz.zm`,
+`pma.ps`, `bcv.cv` (a SharePoint list, 816KB of markup exposing no PDF URL), `rbm.mw`. **Every one
+of these is a browser case, not a dead end** — that is the lesson of round 67.
+**Gone or wrong:** `fibsudan.com` is now a gambling site; the real Faisal Islamic Bank Sudan is
+`fib-sd.com`. `bni.mg` annual-report PDFs now 404; `bank-of-africa.net` serves the Madagascar
+reports. `digitallibrary.un.org` answers HTTP 202 with no file; `securitycouncilreport.org` served
+the one UN document that was needed.
+
+### Named leads for the next round, each checked against `coverage.py`'s absent list
+1. **MWI, gold** — the Reserve Bank of Malawi ran a domestic gold purchase programme and reversed it
+   in 2026, so its statements should say where the gold sits. `rbm.mw` is a script-loaded document
+   list that blocks WebFetch by robots.txt. **Browser case, and the best single gold lead.**
+2. **RWA, reserve managers** — `bnr.rw` is a single-page app and a plausible RAMP case, untested.
+3. **CPV, corruption cases** — `bcv.cv`'s SharePoint list needs a script-running browser; no Banco de
+   Cabo Verde annual report is indexed anywhere.
+4. **AGO, corruption cases** — the Auditor-General of Singapore's reports FY2012/13 to FY2024/25,
+   only one of which has been read; the MAS Act makes the AGO its statutory auditor every year. The
+   cheapest unopened lead on that row.
+5. **TWN, auditors** — `web.pcc.gov.tw` needs a form POST in a browser, noting that the Ministry of
+   Audit's consolidated account is not an audit of the bank's own statements and must not be filed.
+6. **SVN, reserve managers** — the owner's decision on whether units in a BIS fund plus ETFs,
+   bundled in one line, clear the no-upgrade rule. BCEAO's BISIP K units are the precedent for yes.
+7. **SDN, revolving door / auditors** — the Abdelateef Hassan audit-partnership move, above: a scope
+   decision for the owner.
+8. **TZA, gold** — a second node waits on a document naming the vault where TZS 1,517,580.5m sits
+   "pending transfer to the foreign custodian".
+9. **SLB, revolving door** — unchanged and still needing a browser at
+   `rms.paclii.org/sb/other/SBGovGaz/2005/94.pdf`; the expectation remains that the role is public.
+10. **The `big-four-auditors` pattern** — whether to carry the ten-network count (149 of 216 records,
+    101 of them Big Four) into the pattern text. A decision, not a merge.
 
 ## Host notes and named leads, round 66 (shelf life about a round — test, do not trust)
 
@@ -1571,10 +1695,58 @@ Bounded sets that worked:
 
 ## What is left
 
-### 1. External auditors — 91% of the reachable 192, and the row is now ACCOUNTED FOR rather than unfinished
-175 of 206 done, union members included. `coverage.py` prints the list and does the subtraction: **17 countries remain**:
+### 1. External auditors — 93% of the reachable 192, and three of the longest-standing blanks fell at round 67
+178 of 206 done, union members included. `coverage.py` prints the list and does the subtraction: **14 countries remain**:
 
-`ARE BLR CUB EGY ERI IRN LAO MAC MDG MRT PSE QAT STP TKM TWN UZB VEN`
+`ARE BLR CUB EGY ERI IRN LAO MAC PSE QAT TKM TWN UZB VEN`
+
+### The method that closed Mauritania, Madagascar and Sao Tome, and why it is the first thing to try now
+
+All three were written up in this document as dead ends. All three fell in one sitting, to the same
+move: **open the bank's own site in a real browser, read the document link off the rendered page,
+then fetch that exact path from the shell.** The blocker in each case was never the host refusing
+the file; it was not having the file's path, which only the rendered site gives.
+
+- **MRT — Grant Thornton Tunisie.** The handoff's "one best hand check" was `marchespublics.gov.mr`,
+  the national procurement portal. It opens fine in a browser and answers negatively: searching it
+  for "Banque Centrale" returns exactly one notice, for financial-education content, and "BCM"
+  returns nothing. The bank's own tender page is the same — IT security, a payment-incidents centre,
+  cafeteria equipment. **The statutory audit is not tendered, on either portal; stop looking there.**
+  What worked instead is the bank's NEW 2026 site, which renders where curl got a 2,568-byte shell
+  and publishes a "Rapport d'audit de la BCM 2025" outright. Auditor: Grant Thornton Tunisie, member
+  of Grant Thornton International, partner Elmoez Ben Amor, signed **in Tunis on 18 May 2026**,
+  unqualified, balance sheet total 131,274,381,414 MRU. **`bo.bcm.mr` serves the file to plain curl
+  once you have the path** — the HTTP 500 recorded against its JSON:API root was the API, not the
+  files.
+- **MDG — a JOINT audit, Auditeurs Associes CGA and Deloitte & Associes.** This document said
+  Madagascar was closed because two IMF country reports repeat "strong external audit arrangements"
+  and name no firm. The bank publishes a column headed **"Opinion de l'Auditeur Externe" every year
+  back to 2000**, plus full statements for 2019-2025. The 2025 accounts are signed by Rivoharisoa
+  Randriambelomanana for the Malagasy firm and **Julien Koscien for Deloitte's French member firm**,
+  dated "Antananarivo et Paris-La Defense, le 29 avril 2026". `banky-foibe.mg` refuses curl at the
+  TLS layer **even with the exact file path**, so this one had to be read page by page in the
+  browser's PDF viewer.
+- **STP — BDO & Associados, SROC, S.A. of Lisbon, and the opinion is QUALIFIED.** Previously closed
+  as "the audit committee proposes auditors but names none". The bank publishes the audit reports
+  themselves, back to 2003, behind the opaque `?y=` query strings this document noted — a browser
+  follows them without trouble. The 2024 report's four qualifications are in the record and are
+  substantial: 1,517,669,216 dobras claimed against the State including interest-free flood credits
+  and a fuel-import advance the auditor says did not meet article 26 of the bank's Organic Law;
+  34,674,000 dobras advanced to a head-office contractor sacked in 2017; a payments-company stake
+  carried at 33,491,704 dobras against 3,756,626 dobras of actual equity; and 43,192,500 dobras owed
+  by a bank whose licence the central bank cancelled. `bcstp.st` serves curl once you have the path.
+
+**The pattern across the three, and worth the owner's attention:** each is a network member firm
+signing **from another country** — Tunisia for Mauritania, France for Madagascar, Portugal for Sao
+Tome. Counting across both auditor stores, 149 bank-country pairs now trace to ten global networks:
+KPMG 36, EY 27, Deloitte 21, PwC 17, Mazars 13, Grant Thornton 12, BDO 11, Baker Tilly 7, Crowe 2,
+Forvis 2, RSM 1. The Big Four alone account for 101. **The map draws every one of these as an
+unrelated diamond**, because each local member firm carries its own name, which is correct for
+placement and invisible as a network. Whether to surface that — a count in the `big-four-auditors`
+pattern, or a `network` field on the node — is a decision for the owner, not a merge.
+
+**BLR is unreachable rather than unread.** `nbrb.by` does not resolve in a browser either, so this
+is a network-level block and no amount of tooling fixes it from here.
 
 **Ethiopia came off this list at round 66, and the reason it was ever on it is worth keeping.** This
 document said for several rounds that Ethiopia's statements "end at note 31". They did — in the file
@@ -1964,7 +2136,47 @@ names no issuing authority and no year; it reverses on the Bank of Eritrea procl
 dated governor removal.
 
 **Where this row goes next.** The absent list is long and no longer a short list of rich democracies, so work it by shape. The thickest untouched ground is the auditor-general-and-parliament route that produced Uganda: it is untried across nearly all of Africa, the reports are free and primary, and a single special audit can carry both an inquiry record and a corruption case. After that, Guatemala and Bolivia in Latin America, and Ecuador's 2021 Ley de Defensa de la Dolarización as a second Ecuadorean record. **Pakistan is no longer the blank-by-design case.** The restraint rule was right about the 2014 resignation — the source says the governor cited personal reasons and reports no government pressure, so the unnamed officials who called that a cover were not enough to promote it — and that event stays `other`. What changed at round 55 is that a different, dated episode was found: on 8 August 2023 the National Assembly Public Accounts Committee, chaired by Noor Alam Khan, directed the Auditor General to audit the State Bank over the disbursement of about Rs1,145 billion in TERF concessional loans and directed an inquiry into whether they went out on merit. **That is the Uganda shape, and it is the lesson: a place that looks blank under the restraint rule is not closed, it just needs a different episode.**
-### 4. Outside reserve managers — 35% of the reachable 192, 186 ties at 68 banks, 103 of them Norway
+### 4. Outside reserve managers — 37% of the reachable 192, 195 ties at 71 banks, 103 of them Norway
+
+**Round 67 added Morocco, Kazakhstan and South Korea, and the primary vein did not pay.** The
+Central Banking award citations, named here last round as the best single lead, were opened for
+State Street, BlackRock and Crown Agents and **every client bank they named was already on the
+map** — the CNB, Israel, Lithuania, Eswatini, Solomon Islands, Jamaica. Checking each name against
+the absent list before spending a fetch is what stopped that costing the round. **The grep vein is
+what paid**, again.
+- **MAR** — Bank Al-Maghrib's Rapport Annuel 2025 says its US dollar securities portfolios are ones
+  "dont la gestion est deleguee a la Banque Mondiale sur la base de contrats de delegation", revalued
+  from net asset values supplied by the "mandataire de gestion"; capital gains on management mandates
+  452,544 thousand dirhams in 2025. Keyed to World Bank Treasury, because the report says only "the
+  World Bank".
+- **KAZ** — two different things in one country. The 2024 annual report records RAMP participation,
+  appointing the IBRD "as an external manager for part of the assets of the emerging markets
+  portfolio", that portfolio being USD 233.1m of USD 45,648.3m. And the **2012** consolidated
+  statements, Note 19, name **six foreign managers with a table**: Amundi, Aviva Investors Global
+  Services, Nomura Asset Management U.K., Bank Julius Baer, Deutsche Asset Management International
+  and Lombard Odier Asset Management (Europe), KZT 302,149,584k in total. **Those six were filed on
+  the owner's standing rule — include everything the source publishes and leave selection to them —
+  with the 31 December 2012 as-at date stated in every detail**, and with the point that the bank's
+  2018 and 2024 reports say external managers are used and name none, so no source says any of the
+  six still runs money.
+- **KOR** — Korea Investment Corporation, `weak_source: true`. Its Santiago Principles
+  self-assessment says it manages assets entrusted by the government, the Bank of Korea and other
+  public funds. The detail states the other side: it never calls those assets foreign exchange
+  reserves, gives no amount and gives no date.
+
+**Two cases left undecided rather than filed, both the same shape** — a bank holding units in an
+outside-managed fund rather than giving a mandate: **IDN** (BISIP G3, the BIS Asia green bond fund)
+and **SVN** (Banka Slovenije's longest maturity bucket "includes holdings in a BIS fund and of
+equity ETFs", Investment funds EUR 665,430k). The precedent cuts both ways: BCEAO's BISIP K units
+ARE on this row. The difference is that BCEAO's note names the fund and the manager and gives the
+figure, while Slovenia's bundles ETFs into the same line and Indonesia's only source is paywalled.
+**Indonesia cannot be filed at all under the paywall rule.** Slovenia is a decision.
+
+**Fifteen more confirmed blanks went into `gaps.json['managers_unavailable']`, which now holds 50.**
+The substantial one is **HTI**: the BRH's statements say it chose "gestion deleguee" and put
+$1,807,431,480 with external managers, and name nobody. AZE, FIN and VUT are the same shape. **GMB
+is a clean no-upgrade case** — Crown Agents appears only in the "Bankers" list and in counterparty
+tables with rating and collateral columns, across eleven documents.
 
 **Round 66 added Kenya and Mongolia and upgraded Moldova, all three out of the audited statements
 rather than the reserves-management page.** The method that worked was grepping the downloaded PDF:
@@ -2081,7 +2293,41 @@ renders every tie as a standalone present-tense sentence and has no notion of a 
 
 **Retry later:** Peru's BCRP transparency PDF (bot-protection stub), Lesotho's and Tanzania's 2024 annual reports (site errors).
 
-### 5. Gold custodians — 84 ties at 52 places, and the row's real ceiling is 108, not 206
+### 5. Gold custodians — 96 ties at 58 places, and the row's real ceiling is 108, not 206
+
+**Round 67 was this row's best round: twelve records across six new countries, and twenty-five
+documented blanks.** Against the 108 places with a holding above zero, 48 now have a custodian, 44
+per cent. The six: **TZA** (Bank of England, TZS 174,895.4m at 30 June 2025); **HTI** (two nodes
+from the BRH's own Note 4 — Banque de Montreal with 56,905.49 oz and an unnamed "Federal Reserve
+Bank" with 1,307.53 oz); **ECU** (BIS 774,962.772 oz and "Banco Citybank" 70,000 oz); **GIN** (four
+nodes — BRI, AFFINOR, BRINKS, EMR); **BLR** (the National Bank's own Central Vault, Minsk); **AFG**
+(FRBNY, and a vault at the presidential palace in Kabul).
+
+**Two of those carry findings worth reading on their own.** Guinea's KPMG-audited note records that
+the contractor holding 3.1 tonnes — the AFFINOR line — has failed to return the deposit since
+January 2022, that the bank won an ICC Paris arbitration award in September 2024, and that a
+provision of 888.51 billion Guinean francs, half the fair value, stands against it, with an
+emphasis-of-matter paragraph in the opinion. Afghanistan's figures are **end-2020 read from DAB's
+own statement by Reuters in August 2021**, and the palace figure covers gold and silver together;
+the record says so rather than implying a current position.
+
+**Two naming decisions were made deliberately and should not be quietly undone.** Haiti's statements
+say only "Federal Reserve Bank", with no Reserve Bank and no city, so the node is **kept separate
+from the Federal Reserve Bank of New York node** — naming New York would be an inference. Ecuador's
+statements spell the custodian "Banco Citybank" with a y and print the BIS figure as 774,962,772
+where their own arithmetic gives 774,962.772; both are stated in the detail rather than silently
+corrected.
+
+**`beac.int` serves an expired TLS certificate** — curl cannot fetch it and should not be made to;
+WebFetch reads it fine. That one host closes six countries at once (CMR CAF TCD COG GAB GNQ), whose
+2018 accounts split 201,865.777 oz between unnamed "depositaires or" and "contreparties or".
+
+**The best remaining prospect is MWI**: the Reserve Bank of Malawi ran a domestic gold purchase
+programme and reversed it in 2026, so its statements should say where the gold sits, but `rbm.mw`
+loads its document list by script and blocks WebFetch by robots.txt — a browser case. **TZA has a
+second node waiting** too: the same Note 20 records TZS 1,517,580.5m "held at the Bank of Tanzania
+pending transfer to the foreign custodian", which the row's place-must-be-named rule bars until a
+document names the vault.
 
 **Round 66 added Tunisia** (the Banque Centrale de Tunisie's own vaults in Tunis) **and a second
 custodian for Guatemala** (the Banco de Guatemala's own vaults, alongside the Federal Reserve Bank of
@@ -2168,7 +2414,76 @@ every record of this shape on the map.
 **But five records for one country moved Barbados from 28 to 35 on exposure and its inside-influence group from 20 to 41, and the owner should decide whether that is right.** Most of these findings are against the *Treasury's* or the *Accountant General's* bookkeeping, with the central bank as the counterparty whose records were correct. They were filed because they are the same shape as Guyana's dormant state accounts and the two Belize findings already on the map, and because the standing rule is not to filter a source. **Two of the five are different in kind and survive any narrowing:** the government's overdraft at the bank exceeding its statutory 10 per cent limit twice, and eight transfers totalling $13.137m that the bank made with no authorising memorandum. If the row should carry only findings against the bank itself, the other three come out.
 
 ### 6. Revolving door and corruption cases
-These cannot finish; no complete count exists anywhere. They approach completeness asymptotically. The revolving door is at 87 per cent of the reachable 192 and corruption cases at 91.
+These cannot finish; no complete count exists anywhere. They approach completeness asymptotically. The revolving door is at 90 per cent of the reachable 192 and corruption cases at 91.
+
+**Round 67, revolving door: six records and six new counted countries — SAU, IRQ, MDG, SLE, COM and
+SDN.** Four of those (IRQ, MDG, SDN, SLE) came off the all-public list rather than off zero.
+- **SAU** — the named lead held. Ayman Omran Abdullah Abu Dahim went from acting head of the
+  Financial and Banking Studies Unit at the **Saudi Central Bank's Banking Institute** to Capital
+  Bank Group as CFO in 2011, and has been the National Bank of Iraq's CEO since 15 April 2018. The
+  document is NBI's **2024** annual report, not 2023. One qualification is on the record: his own
+  biography says he sat on the Capital Bank board representing Jordan's General Organization for
+  Social Security, a state pension body, and `capitalbank.jo` returns F5 403s so no Jordanian share
+  register could be opened.
+- **IRQ** — the cleanest of the round. International Development Bank's 2017 report says Fouad
+  Mohammed Al-Jawahri "served as an executive with both the Central Bank of Iraq and Al-Bilad
+  Islamic Bank", and the same document, same year, gives the Khalaf Abdel Karim family 61 per cent.
+  No gap between career and ownership.
+- **MDG, SLE, COM, SDN** — BOA Madagascar's chairman became Governor in November 2014; Access Bank
+  Sierra Leone's board carries a former Bank of Sierra Leone senior director; AFG Bank Comores' own
+  comite de direction page carried the Comoros line the last three rounds could not find; and
+  Sudan's central bank **publishes full career lists for its past governors at `cbos.gov.sd/en/node/617`
+  to `625`, which plain curl reads cheaply.** That last one is the richest untapped seam found this
+  round.
+
+**A duplicate caught, and how.** Bolivia's Jaime Valencia Valencia was offered as a new record from
+the BCB's own published CV. `merge_links.py` refused it: the same career was already on the map at
+`revolving_door[321]` from a weaker source. **It was merged in place rather than filed twice** — the
+source upgraded from a Wikipedia article to the central bank's own CV — and `public_move` deliberately
+**stays True**. The reason is worth keeping: of the seven outside employers the CV names, the only one
+whose ownership any source establishes is Banco de la Union S.A., which the government created in 1979
+and held 97 per cent of. The bank's phrase about his working "in private enterprise" characterises the
+period without naming which employer was private. **One sourced ownership sentence for any of the other
+six converts Bolivia.**
+
+**An open scope question for the owner, flagged rather than decided.** Sudan's own site lists
+Abdelateef Hassan, Governor 1970-1971, as later **Partner at Abd-Altaif Eltayeb and Partners and
+Manager of KPMG Co. Sudan**. That is a central bank to private audit partnership move. It was left
+unfiled because an audit firm is not a finance employer in the sense this row has used, but given
+how much the owner cares about the auditors row, they may want it counted. Sudan is already on the
+row, so this adds a record, not a country.
+
+**Round 67, corruption cases: zero records, and that is the honest result.** Of the 17 absent, 10
+were already closed; all 7 genuinely open ones were worked by the annual-report method and came back
+blank with the documents named. **DJI is the strongest blank on the map**: eight consecutive BCD
+annual reports, 2017 to 2024, each read at the audit-committee section, plus the bank's own E&Y
+report on FY2020 and Djibouti's Chambre des Comptes 2021 general report in full, in which the central
+bank is not mentioned at all. DNK, FJI, OMN and BRN are closed the same way, each with its sections.
+
+**A reusable move was found and should be named: the inversion test.** Read a supreme audit
+institution's own list of audited bodies and show the central bank is absent from it. That is what
+closed Saudi Arabia, Bahrain, Singapore and now Oman, where the State Audit Institution's report
+names every examined body — ministries, universities, PDO, OQ Methanol, Oman LNG, municipalities —
+and the Central Bank of Oman is not among them. **It belongs beside the annual-report method as the
+second standard move on this row.**
+
+**Myanmar was offered and refused, on round 52's rule, and is now recorded in `cases_unavailable`
+with the reasoning.** Bo Bo Nge was arrested on coup day, 1 February 2021, charged more than a year
+later by the junta's own commission and given 20 years. The act alleged against him is dated **8
+February 2021, a week after he had been arrested and removed**. Prosecution of a removed official by
+the body that removed him is a move against the bank, not a corruption case.
+
+**Sudan has a live thread that one missing paragraph leaves hanging, and it has been written into
+the auditor record rather than this one.** The CBOS 64th Annual Report 2024 prints the National Audit
+Chamber's **qualified** opinion, signed 2 September 2025 — "except for the possible effects of the
+matter described in the Basis for Opinion section of our report" — and **the Basis for Opinion
+section is not printed.** The Arabic phrase for it appears exactly once in the whole document,
+inside the opinion that refers to it. The National Audit Chamber's own report would hold the matter;
+it has no reachable site from here.
+
+**A standing rule held under pressure and should be noted.** Sudan's 2012, 2018 and 2021 annual
+reports exist only on `cbos01jo2022.dev2.dot.jo`, a **development host** for the bank's own site.
+They were not read there. The 2024 report is on `cbos.gov.sd` itself and was read from there.
 
 **Round 66, revolving door: Cambodia is new and the Dominican Republic came off the all-public list.**
 - **KHM** — Chea Sok ran bank supervision at the National Bank of Cambodia (Deputy Governor,
