@@ -1,0 +1,1827 @@
+{
+ "round": 38,
+ "what": "The limb-(b)-capable remainder of the AidData queue. 52 of the 230 financings left after round 37 carry a candidate bucket that can meet limb (b): an arrest, land taken, compensation withheld, a death with a cause or a relocation count. The other 178 carry a protest or pollution flag and nothing else.",
+ "brief": "docs/BRIEF36.md after docs/BRIEF20.md in full, then BRIEF22's forward rule, then CHECK31.md.",
+ "read_the_screen_flags": "Every candidate sentence carries screen_flags from three screens round 37 paid to learn. They annotate and never drop. prospective_verb_only: the sentence's own verb is a plan, so the figure is a projection and must not reach `displaced` - round 32's fault and round 37 found it pre-labelled in seven of eight cases. names_another_country: the death or event may have happened outside the recipient country, which is not this project's harm. relief_or_disaster_language: the money may have responded to the harm rather than caused it, and round 37 found six such financings that carried no r36_relief flag.",
+ "every_limb_b_sentence_carries_a_screen_flag": "True means every sentence that could meet limb (b) is also flagged by a screen. That is a warning, not a verdict: open the full text and decide. Round 31 measured a screen that dropped on a sentence and it destroyed about one real case in nine.",
+ "hard_rules": [
+  "A protest is not harm under test 2 unless something happened to the people in it.",
+  "AidData's prose is not a document. Open the source it rests on before any figure reaches a card.",
+  "A relocation verb is not a count, and a projection is not an outcome.",
+  "Research the FINANCING once; aiddata_rows lists every lender row on it.",
+  "Seven entries are marked already_on_map_and_figure_already_carried. Check the live card first: in round 37 every decisive-looking sentence of this kind was already on its card.",
+  "Where a dedupe hint holds on place and years, make it an EXTEND, not a new case.",
+  "Put the AidData record id, and a P-number where one exists, in lenders[0].role.",
+  "lk is 'cn'. Do NOT set `kind`: all 93 existing lk:cn cases carry none, and round 37 found kind:'off' would file Chinese credit with the World Bank's.",
+  "Never write displaced: 0. Omit the field and put the reasoning in displaced_note.",
+  "No researcher's voice on a card. Name your own two weakest entries in your report."
+ ],
+ "search_budget": "About 30 WebSearch calls, 45 ceiling; the ~200-per-turn cap is shared across three writers. Round 37's writers needed only 6 to 9 each because AidData's project pages serve in full over curl.",
+ "batch": "a",
+ "rows": 18,
+ "countries": [
+  "Angola",
+  "Democratic Republic of the Congo",
+  "Egypt",
+  "Ethiopia",
+  "Guinea-Bissau",
+  "Kenya",
+  "Lebanon",
+  "Nigeria",
+  "Rwanda",
+  "Turkey",
+  "Uganda",
+  "Zambia"
+ ],
+ "financings": [
+  {
+   "financing": "G388",
+   "recipient": "Angola",
+   "iso3": "AGO",
+   "year": 2012,
+   "sector": "AGRICULTURE, FORESTRY, FISHING",
+   "title": "CDB provides $88.638 million loan for Camacupa Agro-industrial Farm Project (Linked to Project ID#67)",
+   "aiddata_rows": [
+    {
+     "id": 64148,
+     "title": "CDB provides $88.638 million loan for Camacupa Agro-industrial Farm Project (Linked to Project ID#67)",
+     "amount_usd_2021": 104071963.927431,
+     "year": 2012,
+     "status": "Completion"
+    }
+   ],
+   "limb_b_buckets": [
+    "land taken"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": false,
+   "candidate_sentences": {
+    "land taken": [
+     {
+      "field": "Description",
+      "sentence": "However, the project encountered several problems and delays related to to land expropriation during construction.",
+      "aiddata_row": 64148,
+      "screen_flags": []
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On April 18, 2011, China CAMC Engineering Co., Ltd. (CAMCE) and Angola’s Ministry of Agriculture, Rural Development and Fishery signed a $88.638 million commercial contract for the Camacupa Agro-industrial Farm Project. Then, in 2012, China Development Bank approved a $88.638 million subsidiary loan for this project through a larger $1.5 billion line of credit agreement that it signed with the Government of Angola (captured via Project ID#67). The proceeds of the loan were to be used by the borrower to finance the commercial contract that was signed on April 18, 2011.   This project involved the construction of the Camacupa agro-industrial farm in Bié Province. More specifically, it involved the cultivation of 5,000 hectares of maize and soybeans, the installation of 400 hectares of irrigation facilities, the construction of a maize flour factory, and the provision of agricultural equipment.   Construction began sometime in 2012. However, the project encountered several problems and delays related to to land expropriation during construction.  On April 18, 2013, the Angolan Minister of Agriculture, Governor of Bié Province, and Mayor of Camacupa District inspected the project. Then, on March 11, 2014, a major milestone was achieved when four, 5,000 ton grain silos were successfully installed. The farm was officially handed over to the Angolan authorities on July 6, 2017.",
+    "staff_comments": "1. The Chinese project title is 卡玛库巴农场. The Portuguese project title is Fazenda Agro-Industrial do Camacupa. 2. According to the World Bank Group's International Finance Corporation, the Fundo Soberano de Angola was the 'responsible entity' for the financing provided by CDB (see ''CREATING MARKETS IN ANGOLA''). However, it is unclear if this means that Fundo Soberano de Angola was the borrower. This issue warrants further investigation. ",
+    "location_narrative": "This project involved the construction of the Camacupa agro-industrial farm in Bié Province. More detailed locational information can be found at https://www.openstreetmap.org/node/1251148044.",
+    "description_chars": 1393
+   },
+   "r36_dedupe_hint": null,
+   "local_match": []
+  },
+  {
+   "financing": "G507",
+   "recipient": "Angola",
+   "iso3": "AGO",
+   "year": 2016,
+   "sector": "OTHER SOCIAL INFRASTRUCTURE AND SERVICES",
+   "title": "China Development Bank provides $37 million loan for the 3000 Sambizanga Social Housing Units Project",
+   "aiddata_rows": [
+    {
+     "id": 73905,
+     "title": "China Development Bank provides $37 million loan for the 3000 Sambizanga Social Housing Units Project",
+     "amount_usd_2021": 43689766.8092632,
+     "year": 2016,
+     "status": "Implementation"
+    }
+   ],
+   "limb_b_buckets": [
+    "land taken"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": false,
+   "candidate_sentences": {
+    "land taken": [
+     {
+      "field": "Description",
+      "sentence": "This project involved the construction of 3,000 social housing units for families whose land was expropriated under a presidential order.",
+      "aiddata_row": 73905,
+      "screen_flags": []
+     }
+    ]
+   },
+   "full_text": {
+    "description": "In 2016, China Development Bank (CDB) and the Government of Angola signed a $37 million loan agreement for the 3000 Sambizanga Social Housing Units Project. This loan was reportedly obtained through a master loan facility agreement. The borrowing terms of the loan are unknown.  This project involved the construction of 3,000 social housing units for families whose land was expropriated under a presidential order.  This project took place in Sambizanga district within the city of Luanda. Sambizanga is one of the six districts in the municipality of Luanda.  It consists of the communes of Sambizanga, Bairro Operário and Ngola Kiluanje.  It has 14.5 square kilometers and about 244,000 inhabitants.  In late June 2016, China Gezhouba Group Company was awarded the $137.3 million commercial contract.  A groundbreaking ceremony for this project took place on 1 August 2016. The first phase of 576 housing units was completed and inhabited in 2018. A set of schools for the neighborhood were handed over in January 2020. The second phase of 1470 houses and supporting municipalities were handed over to owners and completed immigration in 2021. On 19 May 2021, a foundation-laying ceremony was held for the police station, school, and medical center in the new Sambizanga neighborhood. Construction of the third phase of 954 houses is expected to be completed by the end of 2022.",
+    "staff_comments": "The Chinese project title is 安哥拉桑比赞加安置房工程. This project may be financed through the CDB 2015 MLFA worth $15 billion (see Project ID#66847).For the timing being, AidData records the face value of the CDB loan ($37 million) that is reported in the database of Chinese loan commitments that SAIS-CARI released in July 2020.  However, the value of the commercial contract for this project is $137.3 million, so it is possible that SAIS-CARI misreported the face value (See: Chinese firm awarded US$137-mln social housing project in Angola and Empresa da China constrói habitação social em Luanda, Angola). These issues require further investigation.",
+    "location_narrative": "This project was undertaken in Sambizanga district within the city of Luanda. More detailed locational information can be found at https://www.openstreetmap.org/relation/11704223#map=15/-8.8088/13.2590.",
+    "description_chars": 1382
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "angola-april-2024-diesel-price-rise",
+     "shared_words": [
+      "angola",
+      "luanda",
+      "under"
+     ],
+     "case_title": "Angola April 2024 Diesel Price Rise Under the World Bank Loan",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2024,
+      2024
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "caculo-cabaca-dam-workers",
+     "shared_words": [
+      "angola",
+      "gezhouba",
+      "police"
+     ],
+     "case_title": "Caculo Cabaça Dam: Workers Killed in Police Response to Strike",
+     "case_killed": 2,
+     "case_displaced": null,
+     "case_years": [
+      2016,
+      2022
+     ],
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G310",
+   "recipient": "Democratic Republic of the Congo",
+   "iso3": "COD",
+   "year": 2015,
+   "sector": "OTHER SOCIAL INFRASTRUCTURE AND SERVICES",
+   "title": "[Sino-Congolese Programme] China Eximbank provides $9.9 million loan for Goma Stadium Construction Project (Linked to Project ID#450)",
+   "aiddata_rows": [
+    {
+     "id": 59211,
+     "title": "[Sino-Congolese Programme] China Eximbank provides $9.9 million loan for Goma Stadium Construction Project (Linked to Project ID#450)",
+     "amount_usd_2021": 11218639.6715788,
+     "year": 2015,
+     "status": "Completion"
+    }
+   ],
+   "limb_b_buckets": [
+    "land taken"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": false,
+   "candidate_sentences": {
+    "land taken": [
+     {
+      "field": "Description",
+      "sentence": "An additional budget of $1,500,000 was requested in 2017 for the treatment of cracks observed on the site, in accordance with the recommendations of the Volcanological Observatory of Goma, and to cover the expropriations envisaged for the extension of the stadium.",
+      "aiddata_row": 59211,
+      "screen_flags": []
+     }
+    ]
+   },
+   "full_text": {
+    "description": "In 2008, China Eximbank issued a $3 billion line of credit to Sino–Congolais des Mines (Sicomines SARL) — a joint venture — to finance infrastructure projects in the DRC (see Project ID#450). All borrowings through this line of credit (framework agreement) are repaid with revenues from mining projects managed by Sicomines SARL. Each subsidiary loan issued through the line of credit carries a maturity of 25 years, a grace period of 10 years, and an interest rate of 6-month LIBOR plus a 1% margin (or 3.839% at the time of the agreement). The infrastructure projects that are supported by this line of credit are collectively referred to as the ‘Sino-Congolese Programme’. The Government of Democratic Republic of Congo issued a sovereign guarantee for all infrastructure loans approved through the ‘Sino-Congolese Programme’ line of credit.   One of the subsidiary loans issued as part of the 'Sino-Congolese Programme' was a $9,996,332.43 loan for the Goma Stadium Construction Project. The loan ultimately achieved a disbursement rate of 88% ($8,835,791.80 out of $9,996,332.43). The project involves the construction of a stadium that is located in the city of Goma in North Kivu Province.   Sinohydro 2 — a subsidiary of Sinohydro — is the contractor responsible for project implementation. It was awarded a $9,996,332.43 contract (ID#ACGT/DG/015/2015) on August 17, 2015. Then, on May 25, 2017, construction began. The Goma Stadium was completed on January 19, 2022. An additional budget of $1,500,000 was requested in 2017 for the treatment of cracks observed on the site, in accordance with the recommendations of the Volcanological Observatory of Goma, and to cover the expropriations envisaged for the extension of the stadium. ",
+    "staff_comments": " 1. The French project title is Projet du Stade de Goma.",
+    "location_narrative": "Goma Stadium is located in the city of Goma in North Kivu Province. More detailed locational information can be found at https://www.openstreetmap.org/node/60715164",
+    "description_chars": 1741
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "busanga-dam-sicohydro-evictions",
+     "shared_words": [
+      "congo",
+      "joint",
+      "sicomines",
+      "sinohydro",
+      "venture"
+     ],
+     "case_title": "Busanga dam: village homes destroyed for the Sicomines power plant",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2020,
+      null
+     ],
+     "strength": "strong"
+    },
+    {
+     "case": "proroutes-bukavu-goma",
+     "shared_words": [
+      "congo",
+      "goma",
+      "kivu",
+      "sarl"
+     ],
+     "case_title": "Bukavu-Goma Road (ProRoutes)",
+     "case_killed": null,
+     "case_displaced": null,
+     "case_years": [
+      2016,
+      2021
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "kamoa-kakula-muvunda-resettlement",
+     "shared_words": [
+      "congo",
+      "each",
+      "mines",
+      "site"
+     ],
+     "case_title": "Kamoa-Kakula Copper Mine Resettlement, Muvunda",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2018,
+      null
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "kun-hou-shabunda-ulindi-gold",
+     "shared_words": [
+      "congo",
+      "democratic",
+      "kivu",
+      "republic"
+     ],
+     "case_title": "Kun Hou Mining on the Ulindi River: Guns and Cash for Armed Groups",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2014,
+      null
+     ],
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G290",
+   "recipient": "Egypt",
+   "iso3": "EGY",
+   "year": 2017,
+   "sector": "ENERGY",
+   "title": "ICBC contributes $70 million to syndicated loan for 3 solar power plants in Benban Solar Park",
+   "aiddata_rows": [
+    {
+     "id": 57965,
+     "title": "ICBC contributes $70 million to syndicated loan for 3 solar power plants in Benban Solar Park",
+     "amount_usd_2021": 80663670.9914681,
+     "year": 2017,
+     "status": "Completion"
+    }
+   ],
+   "limb_b_buckets": [
+    "land taken"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": false,
+   "candidate_sentences": {
+    "land taken": [
+     {
+      "field": "Description",
+      "sentence": "The guarantees are issued for up to 20 years against the risks of Transfer and Convertibility Restrictions, Breach of Contract, Expropriation and War and Civil Disturbance.",
+      "aiddata_row": 57965,
+      "screen_flags": []
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On October 18, 2017, the Industrial and Commercial Bank of China (ICBC) and the European Bank for Reconstruction and Development (EBRD) issued a $140 million syndicated loan to Alcom Energy JSC — a special purpose vehicle and project company that is owned by ACWA Power, Al Tawakol Electrical Co. incorporated in Egypt (Al Tawakol), and Hassan Allam Holding incorporated in Egypt (Hassan Allam) — for the construction of 3 solar power plants in Benban Solar Park. Both the ICBC and ERBD contributed USD $70,000,000 as lead arrangers of the loan. The loan has a maturity length of 18 years. Its interest rate and grace period are unknown. On December 15, 2017, Multilateral Investment Guarantee Agency (MIGA) signed a contract in which it agreed to issue guarantees of $42,046,560 to ICBC for its investment into Alcom Energy JSC. The guarantees are issued for up to 20 years against the risks of Transfer and Convertibility Restrictions, Breach of Contract, Expropriation and War and Civil Disturbance.   The purpose of the syndicated loan from ICBC and EBRD is to develop, construct, and commission three solar power plants in Beban Solar Park (محطة بنبان للطاقة الشمسية) within Aswan Governorate.  The 3 power plants will have a combined capacity of 165.5 MW (67.5 MW, 70 MW and 28 MW, respectively) at the 1.8 GW Benban Solar Park (or Complex). The project is expected to produce power for 80,000 homes as well as reduce Co2 emissions by 156,000 tons annually. All of the solar projects are being developed under Egypt’s Feed-in Tariff (FiT) scheme. ACWA Power was granted a 25-year  Power Purchase Agreement (PPA) and it will sell the power generated by the three solar plants to the state-owned Egyptian Electricity Transmission Company (EETC) (the off-taker). The project is allocated to plot 3-1 (approximately 97 hectares (Ha)) in the Benban complex. The project will have alternating current capacity of 50 MWAC and peak direct current capacity of 70MWDCP, and will be linked to substation 1 (SS1) on the northeastern corner of the Benban complex via an underground 22 kilovolt (kV) transmission line following the internal routes right-of-way (RoW) installed by EETC. SS1 covers an area of 15 km2. The Benban solar complex comprises a 37-square kilometer (km2) area allocated to Egypt's New and Renewable Energy Agency (NREA) located in the western desert, 15 km west of the River Nile and approximately 1 km west of Aswan – Luxor highway. The complex is approximately 650 kilometers (km) from Cairo.   With the exception of the narrow and densely populated Nile Valley with its intensive agriculture, the area is all desert land, largely unused and unpopulated. The area is mainly flat, with sand and gravel dunes, and with no notable natural vegetation and no human activities. The nearest villages are Benban village, about 12 km east and Fares village about 25 km northeast of the Benban solar complex, with 26,200 and 11,000 inhabitants respectively. The nearest cities are Aswan, 40 km south and Luxor 140 km north. The Benban solar complex was sub-divided into 39 plots each allowing for a solar plant of up to 50 megawatts (MW) with a total capacity for the entire site of up to 1.8 Gigawatts (GW).   As per Government of Egypt (GoE) requirements, each plot in the Benban solar complex is allocated to a separate project company, requiring separate permits to operate; although one company may have ownership stakes in more than one project. Power evacuation will be the responsibility of EETC. Power will be evacuated from the new substations via an existing 220 kV high voltage line, 12 km east of the Benban solar complex.  The total cost of this project is $185 million. $140 million is being provided via debt financing and $5 million is being provided via equity contributions.   A consortium of Astroenergy and CGGC (China Gezhouba Group Corporation) International is the Engineering, Procurement, and Construction (EPC) contractor and First National Operation & Maintenance Co. Ltd (NOMAC) — a fully owned subsidiary of ACWA Power — is the Operations and Maintenance (O&M) contractor. On January 7, 2018, this project reached financial closure. According to ACWA Power, the 3 solar power plants became commercially operational during the third quarter of 2019. ",
+    "staff_comments": "1. This project is also known as the ACWA Solar Power Plant Project or ACWA Benban Solar Project.  2. This project was one of the first fully non-recourse project financed transactions in Egypt since the late 1990s – and the only feed-in-tariff (FiT) project financing to attract a pure commercial bank. It was also the first non-recourse project-financed transaction in Egypt across sectors for any Chinese bank, and the first fully non-recourse deal in the power sector in the African continent for ICBC. It was awarded several international prizes, such as the “2017 Global Multilateral Deal” by PFI and the “Project Finance Deal of 2018” by Bond, Loan & Sukuk Middle East. 3. This project should not be confused with Project ID#57855, which captures a $60 million contribution by ICBC to a syndicated loan the construction of three additional solar photovoltaic power plants in the Benban Solar Park.",
+    "location_narrative": "Benban Solar Park, Aswan Governorate. More detailed locational information can be found at https://www.openstreetmap.org/way/694477324",
+    "description_chars": 4287
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "cairo-metro-fares-2018",
+     "shared_words": [
+      "cairo",
+      "egypt",
+      "fares",
+      "under"
+     ],
+     "case_title": "Cairo Metro Fare Protests Under the IMF Program",
+     "case_killed": null,
+     "case_displaced": null,
+     "case_years": [
+      2016,
+      2018
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "cairo-metro-3-zamalek",
+     "shared_words": [
+      "cairo",
+      "egypt",
+      "european",
+      "investment"
+     ],
+     "case_title": "Cairo Metro Line 3: Zamalek Building Evacuated and Resettlement Complaints",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2016,
+      null
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "giza-north-groundwater",
+     "shared_words": [
+      "cairo",
+      "egypt",
+      "villages"
+     ],
+     "case_title": "Giza North Power Plant and Farm Wells",
+     "case_killed": null,
+     "case_displaced": null,
+     "case_years": [
+      2010,
+      2013
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "aswan-high-dam-nubian-displacement",
+     "shared_words": [
+      "aswan",
+      "egypt",
+      "governorate"
+     ],
+     "case_title": "Aswan High Dam: Soviet Credits and the Displacement of the Nubians",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      1958,
+      null
+     ],
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G308",
+   "recipient": "Ethiopia",
+   "iso3": "ETH",
+   "year": 2007,
+   "sector": "COMMUNICATIONS",
+   "title": "CDB provides $1.5 billion seller's credit to ZTE for on-lending to Ethiopian Telecommunications Corporation as supplier credit for first three phases of telecommunications infrastructure project (Linked to Project ID#30884)",
+   "aiddata_rows": [
+    {
+     "id": 59129,
+     "title": "CDB provides $1.5 billion seller's credit to ZTE for on-lending to Ethiopian Telecommunications Corporation as supplier credit for first three phases of telecommunications infrastructure project (Linked to Project ID#30884)",
+     "amount_usd_2021": 2698896574.32615,
+     "year": 2007,
+     "status": "Completion"
+    }
+   ],
+   "limb_b_buckets": [
+    "arrest or detention"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": false,
+   "candidate_sentences": {
+    "arrest or detention": [
+     {
+      "field": "Description",
+      "sentence": "(3) In August 2008, the FEACC arrested a senior ETC manager after receiving an audio recording and transcript from an anonymous source in which the manager is allegedly recorded soliciting a bribe from an international supplier.",
+      "aiddata_row": 59129,
+      "screen_flags": []
+     }
+    ]
+   },
+   "full_text": {
+    "description": "At the FOCAC summit in 2006, Zhongxing Telecom Corporation (ZTE) and the Ethiopian Telecommunications Corporation (ETC), which was eventually renamed Ethio Telecom, agreed to a three-year sole supplier framework agreement worth $1.9 billion. The deal, which was finalized in March 2007, gave a single supplier (ZTE) the right to supply and install all telecommunications equipment in Ethiopia over a three-year period. According to the World Bank, there is “no evidence … that there was a commercial justification for the award of such a large contract to one supplier, that a competitive tender took place, or that there was an effective contractual mechanism for price protection and technical compliance.”   Under the terms of the deal, ZTE provided a $1.5 billion supplier credit (i.e. vendor financing) for ETC to purchase its equipment. This supplier’s credit was, in turn, supported by a $1.5 billion export seller's credit from China Development Bank (CDB) to ZTE. The interest rate for the CDB export seller’s credit was reportedly set at LIBOR (in March 2007, 6-month LIBOR was at 5.3212%) plus 150 basis points (or a 1.5% margin) and the maturity was set to 10 years. The terms of the ZTE supplier’s credit reportedly included a 13 year maturity, and interest rate of LIBOR (in March 2007, 6-month LIBOR was at 5.3212%) plus 100 basis points (or a 1% margin), and a moratorium on interest payments during the first three years of the deal.   ETC's national telecom network infrastructure expansion project involved three phases of construction. The first phase was the Ethiopian Millennium Project, which began in April 2007 and ended in September 2007; the second phase focused on the GSM and IP-based systems that cover the cities and roads; and the third phase started in October 2008 and covered the countryside and remote areas. By 2010, ZTE pledged to roll out a 10,000 km optical fiber transmission network; increase the number of fixed lines in operation to 4.4 million, thus raising teledensity to 6%; attain 1,000,000 Internet subscribers, thus raising Internet subscribers density from 0.02% to 0.23%; expand 3G services to rural areas, in particular to major towns out of Addis Ababa; install wireless and VSAT connections to 15,000 villages including installation of CDMA Wireless Local Loop; expand the CDMA network with a capacity of 2.5 million subscribers; install 50,000 public telephones all over the country; establish a Network Operation Centre; establish a state-of-the art call centre; and establish a modern customer care and billing system. As a result of the project's completion, the number of mobile subscribers grew sharply from less than 1.2 million in September 2007 to around 17.5 million in 2012. This was augmented by 2.4 million CDMA customers. The number of internet and data subscribers grew sevenfold, from 71,059 in 2009 to around 221,000 by the end of 2012.   In 2013, it was reported that the third phase of construction would be jointly undertaken by ZTE and Huawei (captured via Project ID#30884), but that project was later suspended.   There is also some circumstantial evidence that this project may have been plagued by corruption. Press reports cite three cases of alleged corruption between July 2007 and August 2008: (1) In July 2007, the ETC allegedly dismissed 16 high-level employees for corruption as a result of an audit report that suggested irregularities in purchases from international suppliers. The contracts in question allegedly were worth US$54 million. (2) In January 2008, the country’s Federal Ethics and Anti-Corruption Commission (FEACC) brought charges against a former ETC CEO and 26 former ETC executives for allegedly “procuring low quality equipment from companies that were supposed to be rejected on the basis of procurement regulations.” The contracts in question allegedly were worth US$154 million. (3) In August 2008, the FEACC arrested a senior ETC manager after receiving an audio recording and transcript from an anonymous source in which the manager is allegedly recorded soliciting a bribe from an international supplier. ",
+    "staff_comments": "1. China Development Bank offers export seller’s credits to Chinese companies that are implementing overseas projects. The companies may, in turn, use the proceeds of an export seller's credit to either make equity investments or provide loans (i.e. supplier’s credits) to the host government or other entities in the host country. In this particular case, China Development Bank provided a $1.5 billion export seller's credit to ZTE, and ZTE then used the proceeds of the export seller's credit to lend to the Government of Ethiopia. Under the deal, ZTE provided a $1.5 billion supplier credit (I.e. vendor financing) to ETC to help it acquire equipment from ZTE. 2. Some sources also indicate that ZTE may have offered ETC a separate $400 million supplier’s credit for engineering construction activities, although it is unclear if this agreement was ever finalized (and whether a Chinese bank provided ZTE with an additional export seller’s credit). The terms of the framework agreement between Ethiopian Telecommunications Corporation (ETC) and ZTE specified the commercial terms and conditions under which nine telecommunication equipment acquisition contracts would be placed. ZTE committed, under the agreement, that all technology supplied would be state of the art and all its prices internationally competitive. For each of the nine equipment packages, the ETC agreed to provide technical specifications, in response to which ZTE would submit a technical proposal to meet those specifications. The proposals for each package were then to be agreed on, and ZTE would provide ETC with its price for the supply and installation of compliant equipment. The contract for that package was then to be signed, incorporating the terms of the financing agreement and framework agreement.  The contract would grant the ETC 30 days from the date of signature to verify whether there were any “big problems with the technical proposal” and whether the supplier’s prices “far exceed[ed] reasonable industry prices.” If any such problems were identified, ZTE was required to adjust the technical proposal or price accordingly. During the 30-day verification period, the ETC (with the help of its consultants) would assesses ZTE’s prices by comparing them with market prices of comparable equipment. When agreed-on milestones were reached during execution of the telecommunication equipment acquisition contracts, the ETC would pay ZTE by issuing a promissory note that stated the amount payable. The promissory note would record a debt due from the ETC to ZTE. The ETC would then pay the capital plus interest due on the promissory note to ZTE under the terms of the financing agreement.",
+    "location_narrative": "",
+    "description_chars": 4118
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "ethiopia-birr-float-2024",
+     "shared_words": [
+      "ababa",
+      "addis",
+      "ethiopia",
+      "price",
+      "world"
+     ],
+     "case_title": "Ethiopia 2024 Birr Float and Price Rises",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2024,
+      2024
+     ],
+     "strength": "strong"
+    },
+    {
+     "case": "ethiopia-sudan-interconnector-line-deaths",
+     "shared_words": [
+      "ethiopia",
+      "ethiopian",
+      "three",
+      "world"
+     ],
+     "case_title": "Three Line Workers Killed and Compensation Paid Late on the Ethiopia-Sudan Interconnector",
+     "case_killed": 3,
+     "case_displaced": null,
+     "case_years": [
+      2007,
+      2013
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "nech-sar-african-parks-guji",
+     "shared_words": [
+      "ethiopia",
+      "over",
+      "took"
+     ],
+     "case_title": "Nech Sar: Guji Homes Burned Before African Parks Took Over",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2004,
+      2008
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "biftu-quarry-mizan-dima-road",
+     "shared_words": [
+      "contract",
+      "ethiopia",
+      "world"
+     ],
+     "case_title": "Mizan-Dima road and the Biftu quarry: dust, blasting damage, seven deaths and a suspended World Bank credit",
+     "case_killed": 7,
+     "case_displaced": null,
+     "case_years": [
+      2015,
+      2019
+     ],
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G295",
+   "recipient": "Ethiopia",
+   "iso3": "ETH",
+   "year": 2015,
+   "sector": "INDUSTRY, MINING, CONSTRUCTION",
+   "title": "ICBC provides $550 million buyer’s credit loan for Omo Kuraz 5 Sugar Plant Project",
+   "aiddata_rows": [
+    {
+     "id": 58616,
+     "title": "ICBC provides $550 million buyer’s credit loan for Omo Kuraz 5 Sugar Plant Project",
+     "amount_usd_2021": 617251563.268423,
+     "year": 2015,
+     "status": "Implementation"
+    }
+   ],
+   "limb_b_buckets": [
+    "arrest or detention"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": false,
+   "candidate_sentences": {
+    "arrest or detention": [
+     {
+      "field": "Description",
+      "sentence": "On July 25, 2017, Yuan Jialin, the JJIEC head of the Omo Kuraz 5 Project, was detained in relation to an alleged act of corruption: paying a $30 million bribe (‘commission’) for Ethiopian Ministry of Finance officials to illegally grant a contract to JJIEC.",
+      "aiddata_row": 58616,
+      "screen_flags": []
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On July 23, 2015, the Industrial and Commercial Bank of China (ICBC) and the Ethiopian Sugar Corporation (ESC) — an Ethiopian state-owned enterprise — signed a $550 million (ETB 11,262,597,025) export buyer’s credit (loan) agreement for the Omo Kuraz 5 Project. The Government of Ethiopia issued a sovereign guarantee for this loan. The loan carries the following borrowing terms: an 8-year maturity, a 3-year grace period, and an interest rate of LIBOR plus 2.95% margin. The borrower was expected to use the proceeds of the loan to finance 85% of the total cost of a $647 million commercial contract between Jianglian Heavy Industry Co., Ltd. and the ESC, which was signed on August 13, 2013.   According to the Government of Ethiopia’s Aid Management Platform (AMP), the $550 million loan achieved an 88% disbursement rate, with ICBC making 9 loan disbursements (worth ETB 9,961,853,894) between 2016 and 2018: an ETB 2,448,261,038 disbursement on May 31, 2016, an ETB 298,977,218 disbursement on April 30, 2017, an ETB 692,625,989 disbursement on September 18, 2018, an ETB 75,043,474 disbursement on November 23, 2018, an ETB 27,682,313 disbursement on November 23, 2018, an ETB 34,611,272 disbursement on November 23, 2018, an ETB 778,810,201 disbursement on November 23, 2018, an ETB 280,385,250 disbursement on November 23, 2018, and an ETB 5,325,457,140 disbursement on November 23, 2018.   The Omo Kuraz Sugar Project consists of five sugar plants (Omo Kuraz 1, Omo Kuraz 2, Omo Kuraz 3, Omo Kuraz 4, and Omo Kuraz 5). The Omo Kuraz 5 Sugar Plant Project involves the construction of the fifth factory in the Omo-Kuraz Sugar Project. This factory is located in Awi Zone’s Jawi District of Amhara region. Upon completion, the facility is expected to produce 242,000 tons of sugar and 20 million 827 liters ethanol a year at full capacity. As part of the project, extensive irrigation infrastructure is also being constructed on Omo River in order to enable 100,000 hectares of land to be covered with sugarcane.  Jiangxi Jianglian International Engineering Co. Ltd (JJIEC), a subsidiary of Jianglian Heavy Industry, is the contractor responsible for project implementation. According to the ESC, the project is being undertaken in two phases. Phase 1 construction activities commenced in November 2016. To date, 30,000 hectares of land at the project site have been irrigated, of which 16,0000 hectares are covered with sugarcane.   However, this project has also become a source of scandal and controversy. On July 25, 2017, Yuan Jialin, the JJIEC head of the Omo Kuraz 5 Project, was detained in relation to an alleged act of corruption: paying a $30 million bribe (‘commission’) for Ethiopian Ministry of Finance officials to illegally grant a contract to JJIEC. Yuan Jialin, wrote a letter to Ethiopian Prime Minister Abiy Ahmed on May 29, 2018, requesting his personal intervention. In his letter, he indicated that he had been denied bail for nearly a year. He also wrote that “JJIEC […] operates on the highest standard and uses fair and competitive system of procurement and carefully controls projects at hand to be free from corruptive and fraudulent activities.\" Jialin also argued in the letter that it was difficult to commit corruption in a strictly monitored purchase process. He claimed that there has not been any evidence to substantiate the charges brought against him. He also noted that, while JJIEC recruited a lawyer to investigate the alleged corruption, he was subjected to an inappropriate search which resulted in physical and psychological damages to him. He also asserted that the documentary evidence presented to substantiate the charges against him were counterfeit. He also warned that the ‘dire situation’ of the Omo Kuraz 5 project might hamper the bilateral relations between the Ethiopian Government and JJIEC, and requested that Prime Minister Abiy Ahmed establish a neutral and separate body to see his case and give him a speedy trial.  There are indications that the ICBC loan for the Omo Kuraz 5 Sugar Plant Project financially underperformed vis-a-vis the original expectations of the lender. According to the Government of Ethiopia’s Aid Management Platform, as of September 2019, ICBC suspended about $67 million worth of loan disbursements for the Omo Kuraz 5 Sugar Plant Project 'due to [the] cross-default situation of the country.' Then, after considerable delay, the G20 Common Framework (CF) creditor committee for Ethiopia convened in September 2021, with the French Government and the Chinese Government serving as co-chairs. The CF debt rescheduling talks were still ongoing in mid-2023. ",
+    "staff_comments": "1. A 2017 SAIS-CARI report indicates that the ICBC loan was for $700 million, but official source materials are consistent in reporting the face value of the loan as $550 million. 2. This project is also known as the Omo Kuraz 5 Sugar Factory Project. The Chinese project title is OMO KURAZ 5糖厂项目. 3. AidData has estimated the all-in interest rate by adding 2.95% to the average 6-month LIBOR rate in July 2015 (0.462%). 4. The borrowing terms of the loan are not identified in database of Chinese loan commitments that SAIS-CARI released in 2020 and re-released in 2021. They are drawn from the Ethiopian Ministry of Finance's Public Sector Debt Statistical Bulletin No. 18 (2011/12 - 2015/16). 5. The system identification number for the ICBC loan in the Government of Ethiopia’s Aid Management Platform (AMP) is 87143359107659. The AMP identifies the value this loan commitment as ETB 11,262,597,025.  1 Ethiopian Birr (ETB) was equal to 0.047 United States Dollars (USD) in July 2015 (at the time that the loan agreement was signed). 6. The signatories of the July 23, 2015 agreement, which is also known as the ‘Investment and Financing Development Cooperation Agreement’, were ICBC CEO Jiang Jianqing and Ethiopian Ministry of Finance Sufian Ahmed Beker.",
+    "location_narrative": "This project is located in Awi Zone's Jawi District of the Amhara region. More detailed locational information can be found at http://www.mofed.gov.et/documents/10182/14053/Ethiopia+Sugar+Policy+Salient+Features_second+draft-261119/e92f9a6d-ac16-4149-aa77-7ae8d5d44159 and https://www.google.com/maps/place/Omo+Kuraz+Sugar+Factory+5/@5.5464182,35.7438875,17z/data=!3m1!4b1!4m5!3m4!1s0x17a6998621550f55:0xda6d5147414b7d9e!8m2!3d5.5464182!4d35.7460815 and https://www.openstreetmap.org/node/7779318086",
+    "description_chars": 4651
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "ribb-megech-irrigation",
+     "shared_words": [
+      "amhara",
+      "ethiopia",
+      "full",
+      "irrigation"
+     ],
+     "case_title": "Ribb and Megech Irrigation Scheme Compensation",
+     "case_killed": null,
+     "case_displaced": 227,
+     "case_years": [
+      2007,
+      2017
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "midroc-lega-dembi-gold",
+     "shared_words": [
+      "ethiopia",
+      "ethiopian",
+      "international",
+      "owned"
+     ],
+     "case_title": "MIDROC's Lega Dembi Gold Mine and the 2018 Shakiso Protests",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      1997,
+      null
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "tendaho-sugar-india-exim-afar",
+     "shared_words": [
+      "ethiopia",
+      "infrastructure",
+      "land",
+      "sugar"
+     ],
+     "case_title": "Tendaho sugar project: India's credit line and Afar grazing land",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2008,
+      null
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "neshe-dam-compensation-oromia",
+     "shared_words": [
+      "ethiopia",
+      "ethiopian",
+      "factory",
+      "sugar"
+     ],
+     "case_title": "Neshe dam: compensation not paid as promised and abandoned resettlement houses",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2007,
+      2017
+     ],
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G289",
+   "recipient": "Guinea-Bissau",
+   "iso3": "GNB",
+   "year": 2018,
+   "sector": "DEVELOPMENTAL FOOD AID/FOOD SECURITY ASSISTANCE",
+   "title": "China donates 3 million USD worth of rice to Guinea-Bissau",
+   "aiddata_rows": [
+    {
+     "id": 57743,
+     "title": "China donates 3 million USD worth of rice to Guinea-Bissau",
+     "amount_usd_2021": 3269549.24363603,
+     "year": 2018,
+     "status": "Completion"
+    }
+   ],
+   "limb_b_buckets": [
+    "arrest or detention"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": false,
+   "candidate_sentences": {
+    "arrest or detention": [
+     {
+      "field": "Description",
+      "sentence": "It is unknown whether the police department was able to arrest the minister and distribute the rice to the people or not.",
+      "aiddata_row": 57743,
+      "screen_flags": []
+     }
+    ]
+   },
+   "full_text": {
+    "description": "At the 3rd China-Africa Cooperation Forum (FOCAC) in Beijing on September 3-4, 2018, the Chinese government agreed to donate US$3 million worth of rice to Guinea-Bissau. The donation consisted of 2,638 tons of rice. As of April 27, 2019, the project has been completed. However, according to media reports, 170 tons of the rice was seized and confiscated by Guinea-Bissau's government, in particular, the country's minister of agriculture, forestry, and animal husbandry. It is unknown whether the police department was able to arrest the minister and distribute the rice to the people or not.",
+    "staff_comments": "",
+    "location_narrative": "",
+    "description_chars": 593
+   },
+   "r36_dedupe_hint": null,
+   "local_match": []
+  },
+  {
+   "financing": "G071",
+   "recipient": "Kenya",
+   "iso3": "KEN",
+   "year": 2014,
+   "sector": "TRANSPORT AND STORAGE",
+   "title": "China Eximbank provides $1.903 billion buyer’s credit loan for Phase 1 of Standard Gauge Railway Project (Linked to Project ID#31777 and #47025)",
+   "aiddata_rows": [
+    {
+     "id": 31777,
+     "title": "China Eximbank provides $1.6 billon preferential buyer's credit for Phase 1 of the Standard Gauge Railway Project (Linked to Project ID#37103, #47025)",
+     "amount_usd_2021": 1771352370.25358,
+     "year": 2014,
+     "status": "Completion"
+    },
+    {
+     "id": 37103,
+     "title": "China Eximbank provides $1.903 billion buyer’s credit loan for Phase 1 of Standard Gauge Railway Project (Linked to Project ID#31777 and #47025)",
+     "amount_usd_2021": 2107250407.87657,
+     "year": 2014,
+     "status": "Completion"
+    }
+   ],
+   "limb_b_buckets": [
+    "arrest or detention"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": false,
+   "candidate_sentences": {
+    "arrest or detention": [
+     {
+      "field": "Description",
+      "sentence": "According to Reuters, the “Kenyan authorities […] arrested the head of the agency that manages public land and the boss of the state railway on suspicion of corruption over land allocation for the new $3-billion flagship Nairobi-Mombasa railway.",
+      "aiddata_row": 37103,
+      "screen_flags": []
+     },
+     {
+      "field": "Description",
+      "sentence": "[…] Mohammed Abdalla Swazuri, the chairman of National Land Commission, was one of 18 officials, businesspeople and companies named in a statement listing arrests that was posted …on the prosecutor’s office’s Twitter feed.",
+      "aiddata_row": 37103,
+      "screen_flags": []
+     },
+     {
+      "field": "Description",
+      "sentence": "Also arrested was Atanas Kariuki Maina, managing director of the Kenya Railways Corporation.",
+      "aiddata_row": 37103,
+      "screen_flags": []
+     },
+     {
+      "field": "Description",
+      "sentence": "[…] The investigation that led to the arrests centers on allegations that officials siphoned taxpayer money through [fraudulent] compensation claims for land used for the railway.’    John Githongo, a former anti-corruption czar in Kenya, told a newspaper in August 2022 that ‘[t]he standard gauge railway is the jewel in the crown of corruption in Kenya.’ The secrecy surrounding the China Eximbank loan contracts that were issued for the SGR Project has also become a source of local concern.",
+      "aiddata_row": 37103,
+      "screen_flags": [
+       "names_another_country:china"
+      ]
+     },
+     {
+      "field": "Description",
+      "sentence": "According to Reuters, the “Kenyan authorities […] arrested the head of the agency that manages public land and the boss of the state railway on suspicion of corruption over land allocation for the new $3-billion flagship Nairobi-Mombasa railway.",
+      "aiddata_row": 31777,
+      "screen_flags": []
+     },
+     {
+      "field": "Description",
+      "sentence": "[…] Mohammed Abdalla Swazuri, the chairman of National Land Commission, was one of 18 officials, businesspeople and companies named in a statement listing arrests that was posted …on the prosecutor’s office’s Twitter feed.",
+      "aiddata_row": 31777,
+      "screen_flags": []
+     },
+     {
+      "field": "Description",
+      "sentence": "Also arrested was Atanas Kariuki Maina, managing director of the Kenya Railways Corporation.",
+      "aiddata_row": 31777,
+      "screen_flags": []
+     },
+     {
+      "field": "Description",
+      "sentence": "[…] The investigation that led to the arrests centers on allegations that officials siphoned taxpayer money through [fraudulent] compensation claims for land used for the railway.’    John Githongo, a former anti-corruption czar in Kenya, told a newspaper in August 2022 that ‘[t]he standard gauge railway is the jewel in the crown of corruption in Kenya.’ The secrecy surrounding the China Eximbank loan contracts that were issued for the SGR Project has also become a source of local concern.",
+      "aiddata_row": 31777,
+      "screen_flags": [
+       "names_another_country:china"
+      ]
+     }
+    ],
+    "protest with specifics": [
+     {
+      "field": "Description",
+      "sentence": "This decision set off protests, riots, and court cases in October 2019 and November 2019.",
+      "aiddata_row": 37103,
+      "screen_flags": []
+     },
+     {
+      "field": "Description",
+      "sentence": "This decision set off protests, riots, and court cases in October 2019 and November 2019.",
+      "aiddata_row": 31777,
+      "screen_flags": []
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On June 26, 2012, Kenya Railway Corporation (KRC) approved a feasibility study and preliminary project design from China Road and Bridge Corporation (CRBC) for Phase 1 of the Standard Gauge Railway (SGR). Then, on July 11, 2012 and October 4, 2012, KRC and CRBC signed two commercial (EPC) contracts worth $3,804,192,784.92: (1) a $2,657,401,776.17 Construction on the Civil Works of Mombasa-Nairobi Standard Gauge Railway Project EPC Turnkey Commercial Contract on July 11, 2012 and (2) a $1,146,791,008.75 Supply and Installation of the Facilities, Locomotives and Rolling Stocks for the Mombasa-Nairobi Standard Gauge Railway Project Contract on October 4, 2012. In August 2012, the Kenyan Cabinet approved the development of the railway, which was followed by the signing of a bilateral agreement by the Kenyan and Ugandan governments for the construction of the railway (that was later upgraded to a tripartite agreement with the Rwandan government). Less than a year later, in July 2013, the National Treasury of the Republic of Kenya and China Eximbank signed an MOU — that was witnessed by the President of the Republic of Kenya — based on the commercial (EPC) contracts that CRBC and KRC signed on July 11, 2012 and October 4, 2012. On May 11, 2014, China Eximbank and the Government of the Republic of Kenya (represented by the National Treasury of the Republic of Kenya) signed two loan agreements worth $3.604 billion for Phase 1 of the Standard Gauge Railway Project (also known as the Kenya Mombasa-Nairobi Standard Gauge Railway Project). The first loan was a buyer’s credit loan (BCL) [Contract No. 1410302052014210766] worth $2,003,584,028.87 and it was provided on the following terms: a 5.25 year grace period, a 5 year (60 month) disbursement period, a 15.25 year maturity, an interest rate of 6-month Libor plus 3.6% margin, a 1% default (penalty) interest rate, a 0.75% commitment fee, a 0.75% ($15,026,880.22) management fee, a 6.93% insurance premium (payable in three installments), and a 1% default interest rate. The face value of the BCL was subsequently revised to $1,903,404,827.42. The BCL is backed by a credit insurance policy from China Export & Credit Insurance Corporation (Sinosure). The total cost of the Sinosure insurance premium is $211,543,142.85. The second loan was a preferential buyer's credit (PBC) [CHINA EXIMBANK PBC NO. (2014) 13 TOTAL NO. (307) NO. (1420303052014210788)] worth $1,600,000,000 and it was provided on the following terms: a 2 percent interest rate, a 0% default (penalty) interest rate, a 7.25 year grace period, a 7 year (84 month) availability period, a 20.25 year maturity, a 0.25% commitment fee, and a 0.25% ($4,000,000) management fee. The BCL was scheduled for 20 semi-annual repayments between July 21, 2019 and July 21, 2029. The PBC was scheduled for 26 semi-annual repayments between July 21, 2021 and July 21, 2034. The Government of Kenya on-lent the proceeds of the BCL (captured via captured via Project ID#37103) and the PBC (captured via Project ID#31777) to the ‘end-user’ (KRC). The ultimate borrower (KRC) was expected to use the proceeds of the BCL and PBC to to finance 90% of the total costs of the two commercial contracts that it signed with CRBC on July 11, 2012 and October 4, 2012. More specifically, the proceeds from the PBC were to be used to finance 42.06% of the total costs of the two commercial contracts and be exclusively utilized to make payment for the ‘Line Section of the Project’ (i.e. the construction contents and items under the Construction on the Civil Works of Mombasa-Nairobi Standard Gauge Railway Project EPC Turnkey Commercial Contract). The proceeds from the BCL were to be used to finance (a) 31.95% of the total cost ($849,000,000 out of $2,657,401,776.17) of the ‘Line Section of the Project’ (i.e. the construction contents and items under the Construction on the Civil Works of Mombasa-Nairobi Standard Gauge Railway Project EPC Turnkey Commercial Contract), (b) 85% of the total cost ($974,772,357.44 out of $1,146,791,008.75) of the Supply and Installation of the Facilities, Locomotives and Rolling Stocks for the Mombasa-Nairobi Standard Gauge Railway Project Contract, and (c) 85% of the total cost ($179,811,671,43 out of $211,543,142.85) of the medium-long term buyer’s credit insurance premium from Sinosure. The remaining 10% was to be paid by Kenya Railways Corporation to China Road and Bridge Corporation as counterpart financing, of which not less than $380,420,427.8 was to be applied to the Facilities, Locomotives and Rolling Stocks for the Mombasa-Nairobi Standard Gauge Railway Project Contract. In order to facilitate repayment of its debts to China Eximbank, the Kenyan Government provided an assurance to the lender that it would guarantee a minimum amount of railway freight through the execution of a take-or-pay agreement between KRC and the Kenya Ports Authority (KPA). The KPA also agreed to levy a new, 1.5% tax on imported goods (called the ‘Railway Development Levy’). The Railway Development Levy was designed to serve as insurance in case the revenues generated through the take-or-pay arrangement fall short of the amount required to service the China Eximbank loans. The borrower also expected to use to the Railway Development Levy to finance the Kenyan government’s portion (15%) of the project (commercial contract) cost.    The BCL and PBC are secured by (i.e. collateralized against) project revenues that are deposited into a revenue account (escrow account) and a minimum cash balance in a payment account (escrow account). A 2014 Escrow Account Agreement between Kenya Railways Corporation (KRC), the Government of Kenya, and China Eximbank specifies that ‘KRC shall ensure that the following minimum amounts in [U.S.] Dollars [USD] shall be held in the Payment Account, so long as an Secured Obligations under the Loan [PBC and BCL] Agreement remain outstanding: (i) when the Loans are within the applicable Grace Period, no less than US$84,000,000, which shall be deposited into the Payment Account in the following installments: 1) an amount, of US$16,800,000, shall be deposited into the Payment Account before the first disbursement, 2) an amount of US$16,800,000 shall be deposited into the Payment Account before January 15, 2015, 3) an amount of US$25,200,000 shall be deposited into the Payment Account before July 15, 2015, 4) an amount of US$25,200,000 shall be deposited into the Payment Account before July 15, 2016; (ii) when any Loan [PBC or BCL] is within its Repayment Period, no less than US$250,000,000, and (iii) when the [BCL is] fully repaid, no less than US$80,000,000.' If the borrower does not adhere to its loan repayment schedule (runs arrears), the escrow account bank is responsible for withdrawing funds the overdue payment amount (plus 1% penalty interest) from the payment account and remitting payment to China Eximbank; then, the escrow account bank reimburses/replenishes the payment account with funds from the revenue account (where project revenues are deposited).  According to the audited financial statements of KRC, the cash balances in the escrow accounts were as follows: KES 0 in the USD payment account (Account No. 1162573333) and KES 1,000 (USD 11.4) in the KES revenue account (Account No. 1162574615) in June 2014, KES 0 in the USD payment account (Account No. 1162573333) and KES 1,000 (USD 11.4) in the KES revenue account (Account No. 1162574615) in June 2015, KES 5,981,587,210 (USD 59,217,713.37)  in the USD payment account (Account No. 1162573333) and KES 2,708 (USD 26.80) in the KES revenue account (Account No. 1162574615) in June 2016, KES 8,713,702,264 (USD 85,394,282.18) in the USD payment account (Account No. 1162573333) and KES 72,472,503 (USD 702,983) in the KES revenue account (Account No. 1162574615) in June 2017, KES 8,912,943,504 (USD 88,238,140.68) in the USD payment account (Account No. 1162573333), KES 424,026,583 (USD 4,197,863.17) in the USD revenue account (Account No. 1162573333), and KES 1,412,855,396 (USD 13,987,268.42) in the KES revenue account (Account No. 1162574615) in June 2018, KES 9,078,451,382 (USD 88,968,823.54) in the USD payment account (Account No. 1162573333), KES 5,334,370,360 (USD 52,276,829.52) in the USD revenue account (Account No. 1162573333), and KES 1,567,057,226 (USD 15,357,160.81) in the KES revenue account (Account No. 1162574615) in June 2019, and KES 9,195,200,216 (USD 86,434,882.03) in the USD payment account (Account No. 1162573333), KES 18,447,296,513 (USD 173,404,587.22) in the USD revenue account (Account No. 1162573333), and KES 2,991,272,808 (USD 28,117,964.39) in the KES revenue account (Account No. 1162574615) in June 2020. Given that the BCL was still in its grace period until August 11, 2019 and the Preferential Buyer’s Credit (PBC) was still in its grace period until August 11, 2021, the borrower evidently complied with the lender’s requirement that it maintain a USD 84 million cash balance in the USD escrow account while the BCL and PBC were still in their grace periods and the lender’s requirement that it maintain a USD 250 million cash balance in the USD escrow account while either loan was in its repayment period (as specified in the Escrow Account Agreement).  The borrower made principal repayments on the BCL worth $100,179,201.44 between July 1, 2020 and June 30, 2021 (Fiscal Year 2020-2021) and $200,358,402.88 between July 1, 2021 and June 30, 2022 (Fiscal Year 2021-2022). The BCL’s amount outstanding was $1,903,404,827.42 as of June 30, 2020, $1,703,046,424.53 as of June 30, 2021, and $1,502,688,021.64 as of June 30, 2022.   The borrower made no principal repayments on the PBC between July 1, 2020 and June 30, 2021 (Fiscal Year 2020-2021) and principal repayments worth $61,538,461.54 between July 1, 2021 and June 30, 2022 (Fiscal Year 2021-2022). The PBC’s amount outstanding was $1,600,000,000 as of June 30, 2020, $1,600,000,000 as of June 30, 2021, and $1,538,461,538.46 as of June 30, 2022.  The Standard Gauge Railway (SGR) is the largest infrastructure project constructed in Kenya since independence in 1963. The Kenyan Government and the Ugandan Government first promoted the idea of the SGR in 2008 as part of a Northern Corridor Initiative to link the Kenyan coastal city of Mombasa to the landlocked countries of the Great Lakes Region. In August 2009, Kenya’s Ministry of Transport (MoT) and CRBC signed a memorandum of understanding, whereby CRBC agreed to undertake a feasibility study of the SGR Project at no cost to Kenya’s MoT.     In January 2011, CRBC submitted a feasibility report to Kenya’s MoT, which concluded that Phase 1 of the railway’s expected economic internal rate of return (EIRR) was of 14.66%, which was higher than the Government of Kenya’s ‘hurdle rate’ of 12%. However, the CRBC feasibility study later became a source of controversy. Its central conclusion — that the SGR was economically feasible — was inconsistent with the conclusions of previous studies undertaken by the World Bank and a Canadian consultancy firm. The CRBC feasibility study also included no cash flow projections. It asserted that the project would be highly profitable, but its estimates of the net present value (NPV) of the project’s expected economic benefits varied between $2 billion and $2.6 billion. The fact that the project’s estimated economic benefits were lower than its expected costs aroused suspicion about the credibility of the 14.66% EIRR estimate. The Government of Kenya’s decision to only allow CRBC to conduct the project’s feasibility study was also challenged by the Law Society of Kenya (LSK), which argued that Kenyan laws require competitive bidding for a feasibility study. However, a Kenyan court ruled in favor of the government, and stated that the whole procurement process was legal. After the award of tender for the whole project was issued without competitive bidding, sub-tenders did not follow competitive bidding processes. Two Kenyan parliamentary committees, learning of this lack of competitive bidding, recommended cancellation of the sub-tenders, but they were ignored by President Kenyatta. Then, in 2020, a Kenyan court of appeal ruled that the SGR contract issued to CRBC was illegal because it was issued in a manner that is inconsistent Kenya’s procurement laws. The court ruled that the contract should be made public, but a Kenyan MoT official said that making the contract public would undermine national security.     The purpose of the project was to construct a 485 km railway from the Kenyan port of Mombasa to Nairobi and then onward to Uganda, Rwanda, Burundi, and South Sudan. Upon completion, the railway was expected have a total track length of 609 km. The project sought to transport passengers and cargo from Nairobi to the southeastern port city of Mombasa at 120 kilometers per hour, thus reducing travel time between Nairobi and Mombasa from more than 10 hours to more than 4 hours. The project was also expected to reduce travel times and transport costs by as much as 60 percent. If properly implemented, the Kenyan Government estimated that the railway would increase the country’s annual rate of economic growth by 1.5 percentage points.   China Road & Bridge Corporation (CRBC) was the EPC contractor responsible for project implementation, and Kenya Railway Corporation (KR) supervised its work. Project implementation commenced on December 12, 2014. The project reached completion on May 31, 2017, eighteen months ahead of schedule. President Kenyatta scheduled the completion ceremony just two months before voters would go to the polls and on Madaraka Day—a national holiday that commemorates the day when colonial Britain granted Kenya the right to internal self-rule. At the project completion ceremony, President Kenyatta gave a speech and said that ‘[our] history … was first started 122 years ago when the British, who had colonised this nation, kicked off the train to nowhere ... it was then dubbed the ‘Lunatic Express’. Today... despite again a lot of criticism we now celebrate not the ‘Lunatic Express’ but the Madaraka Express that will begin to reshape the story of Kenya for the next 100 years.’ However, the project has become a source of local scrutiny and controversy. In December 2018, a letter from Kenya’s Auditor General to the Kenya Ports Authority was leaked to the media. It suggested that the Port of Mombasa’s assets were sources of collateral that could be seized in the event that the Kenyan government could not repay its loans to China Eximbank. The letter also suggested that the Kenyan government had waived its sovereign immunity rights in order to make this pledge of collateral. The possibility that Beijing would seize a strategic asset like the Port of Mombasa provokes a public outcry in Kenya. President Kenyatta dismissed the criticism that the Kenyan government had mortgaged the Port of Mombasa to Beijing as ‘pure propaganda.’ He told a group of journalists that ‘if you want a copy of the [SGR loan] contract we have with China I can get it to you tomorrow. […]’. But neither the BCL contract nor the PBC contract was made public. In 2018, the SGR project also became a target of an anti-corruption drive by Kenya's Department of Public Prosecutions (DPP). According to Reuters, the “Kenyan authorities […] arrested the head of the agency that manages public land and the boss of the state railway on suspicion of corruption over land allocation for the new $3-billion flagship Nairobi-Mombasa railway. […] Mohammed Abdalla Swazuri, the chairman of National Land Commission, was one of 18 officials, businesspeople and companies named in a statement listing arrests that was posted …on the prosecutor’s office’s Twitter feed. Also arrested was Atanas Kariuki Maina, managing director of the Kenya Railways Corporation. […] The investigation that led to the arrests centers on allegations that officials siphoned taxpayer money through [fraudulent] compensation claims for land used for the railway.’    John Githongo, a former anti-corruption czar in Kenya, told a newspaper in August 2022 that ‘[t]he standard gauge railway is the jewel in the crown of corruption in Kenya.’ The secrecy surrounding the China Eximbank loan contracts that were issued for the SGR Project has also become a source of local concern. The Kenyan government has declined to make public the loan contracts in response to a court petition by two activists (Khelef Khalifa and Wanjiru Gikonyo), saying they have non-disclosure clauses and that releasing them would amount to breaching a bilateral agreement, thereby impairing relations between the Kenyan government and the Chinese Government. According to an affidavit from Kenya’s Public Works Principal Secretary Solomon Kitungu, releasing the loan contracts would undermine Kenya’s national security ‘since [the] terms in the contract[s] touch on foreign government information with implications on national security and foreign relations.’ Two activists—Khelef Khalifa and Wanjiru Gikonyo—filed a petition in 2021 at the High Court in Mombasa seeking to obtain all contracts, agreements, and studies for the construction and operation of the SGR. Through a coalition called Okoa Mombasa, Khalifa had previously attempted and failed to get the documents through Kenya’s Access to Information Act after the Kenyan government directed that all containerized cargo at the Port of Mombasa be transported inland through the SGR. This move reportedly had negative impact on the Kenyan coast’s port-based economy because it forced logistics companies to move their operations to container depots in the country’s interior. ‘We have a right to know the details of the project: how our money is being spent, the consequences of a loan default, and the government’s decision-making processes in signing the deal. Right now, we know none of this—the Kenyan public is completely in the dark,’ said Khalifa. Gikonyo, his co-petitioner, is the national coordinator for The Institute for Social Accountability, a Nairobi-based civil society organization.    Yet another concern about the project is related to its revenue performance. It was originally projected that the railway would move 22 million tons of cargo a year. However, a Government of Kenya assessment later revealed that the maximum amount of cargo that the railway could move was approximately 8.7 million tons of cargo a year. Also, one year after the SGR was put into operation, a parliamentary report showed that it cost more than double the amount to transport goods on the train than on the road. To make the railway profitable, the Kenyan authorities compelled importers to send cargo by railway instead of by road. This decision set off protests, riots, and court cases in October 2019 and November 2019. Then, on On December 4, 2019. Kenya’s senate committee on transport summoned the Kenyan cabinet secretary for transport over his directive to haul cargo from the port city of Mombasa to Nairobi exclusively by rail. The meeting — attended by activists, businessmen and leaders from Mombasa — ended with the cabinet secretary, James Macharia, promising to rescind the directive, which had reportedly hurt local businesses. Then, in September 2020  Kenyan lawmakers tabled a report in parliament recommending that the government renegotiate the terms of the China Eximbank loans for the SGR ‘due to the prevailing economic distress occasioned by the effects of Covid 19’. In the same report, the lawmakers recommend that the government renegotiate the SGR operation agreement, ‘by planning to reduce operation costs by at least 50%’. The SGR operators had to halt its passenger service for nearly three months due to concerns about the potential spread of the pandemic. CRBC operates the railway’s passenger and cargo service through its subsidiary, the Africa Star Railway Operation Company. In the three years the SGR has been in operation, Africa Star Railway Operation’s expenditure has always exceeded revenue, and the Kenyan taxpayer money has to fill the gap to sustain the company’s operations. A report by Kenya’s transport ministry tabled in parliament in 2018 says the railway made a loss of KES 9.8 billion ($90.3 million) in its first year of operation. At the time, the Kenyan Government projected a profit of $46.8 million for the following year. However, a report by the transport ministry in 2020, also tabled to parliament, said the railway recorded a loss of $200 million over the previous three years. The document also said that during this period, the railway generated revenues of $230.7 million but had operational costs of $430.5 million. The transport ministry cited reduced limited storage capacity at a Nairobi container depot, minimum use of the city’s freight terminal, and railway charges as reasons for this performance, arguably the kinds of details a thorough appraisal should have raised. The SGR operates both passenger and cargo services and while passengers embrace it for reducing travel time compared to buses, cargo owners shun it for reasons including higher fees and tariffs, additional time clearing goods and a lack of last-mile delivery, when compared to trucks. Kenya’s election in August 2022 became a vote on President Uhuru Kenyatta’s legacy of debt-financed infrastructure building, much of it built and financed by China Eximbank. This was especially true for the SGR.    The opposition party candidate Raila Odinga ran on a promise to renegotiate the Kenyan government’s outstanding debts to China Eximbank. Speaking at Chatham House in London on March 16, 2022, he said he would assemble a tough team of negotiators: ‘It depends on how you negotiate with the Chinese. If you don't have negotiators they will of course impose their terms on you.’ Several months later, in June 2022, the ruling party presidential candidate, William Ruto, told Reuters that he would publish government contracts with Chinese companies and renegotiate loans with China Eximbank. Then, in September 2022, newly elected Kenyan President William Ruto reverted cargo clearing services from Nairobi inland container depot (ICD) to the Port of Mombasa. The expected immediate impact of reverting port operations to the Port of Mombasa was a shift to road haulage and a reduction in cargo business for the SGR. Ruto’s predecessor, Uhuru Kenyatta, moved cargo clearance to the Nairobi ICD to help ease congestion at the Port of Mombasa and boost its competitiveness while also boosting traffic on the SGR to increase revenue for debt repayment. The effect of Ruto’s September 2022 decision was to shift more of the responsibility for repayment of the China Eximbank loans to Kenyan taxpayers.  In mid-October 2022, Kenya’s incoming Transport Secretary, Kipchumba Murkomen also said during his confirmation hearing that he planned to renegotiate the China Eximbank loans for the Standard Gauge Railway Project. He said that these loans were likely repayable over fifty years rather than fifteen to twenty years. He also said that ‘[I]f approved, I will look for the SGR agreement and make it available to the public because no one knows the contents of that agreement’. Then, in November 2022, Kipchumba Murkomen publicly disclosed all three China Eximbank loan agreements for the SGR project.  There are some indications that the SGR loans have underperformed vis-a-vis the lender's original expectations. In July 2022, the Government of Kenya received 'settlement notes' (an overdue repayment notification) from China Eximbank. Then, in October 2022, local media outlets reported (based on confidential Treasury documents) that the Government of Kenya defaulted on its China Eximbank loans for Phase 1 of the Standard Gauge Railway Project. The lender reportedly imposed a fine (‘default interest’ payment) worth $10.8 million (1.312 billion Kenyan shillings). ",
+    "staff_comments": "1. This project is also known as the Development of Mombasa to Nairobi Standard Gauge Railway Project. The Chinese project title is 蒙内铁路项目.  2. AidData has estimated the all-in interest rate that applies to the BCL by adding 3.6% to the average 6-month LIBOR rate in May 2014 (0.323%).  3. The PBC agreement and BCL agreement define ‘Long Term Service Agreement’ as ‘any long term service purchase agreement with take-or-pay terms (or similar agreement or arrangement) entered into or to be entered into between the railway operator of the Railway (being the End-User as of the date of this Agreement or any of its legal assigns or successors) and users of the Railway (including without limitation the Kenya Ports Authority), in form and substance reasonably satisfactory to the Lender.’  Under clause 1.4 of the September 30, 2014 take-or-pay agreement (also known as the ‘Delivery and Movement of Freight to the Embakasi Container Depot’ agreement), Kenya Ports Authority (KPA) and Kenya Railways Corporation (KRC) were required to enter into a Long Term Service Agreement which provides under paragraph(C) of the preamble that ‘the repayment of the principal and payment of the interest and fees of the loans are to be secured, inter alia, by a Long Term Service Agreement with an aim of guaranteeing a minimum amount of freight throughout the term of the agreement to be charged and received by the operator for the project, which shall be used to secure the repayment of principal and interest’. Further, the Long Term Service Agreement between KRC and KPA also provides under clause 7 (c) that “that KPA shall make good any short fall arising either on account of failure to consign the minimum cargo as stipulated in Schedule 1 or to remit the amount of money commensurate with the volume of cargo so consigned and shall pay to Kenya Railways Corporation such an amount as is required to make good the short fall within a period of 30 days following the completion of reconciliation exercise”. In the event of default by Kenya Railways Corporation to pay China Eximbank collected freight and service charges, Kenya Ports Authority would be compelled to deposit the amount due to Kenya Railways Corporation [in a] bank account designated by the China Eximbank.’  4. Under the ‘Take or Pay’ Agreement, KPA undertakes to consign a defined minimum volume of freight to the Embakasi Inland Container Depot to be transported on the Standard Gauge Railway. This agreement will form part of the security package (collateral arrangement) for the loan.  5. On December 5, 2015, China Eximbank and the Government of Kenya signed a buyer’s credit loan (BCL) agreement worth $1,397,927,373.27 for Phase 2A of the Standard Gauge Railway Project. This loan is captured via Project ID#47025. 6. The 2014 China Eximbank buyer’s credit loan for the Mombasa-Nairobi Section of the SGR Project can be accessed in its entirety via https://www.dropbox.com/s/5j3alwun2tv8wk2/SGR%20BCL%202014.pdf?dl=0 and https://www.dropbox.com/s/m98rfi886dl3jjd/SGR%20BCL%202014%20Published%20by%20Government%20of%20Kenya.pdf?dl=0. The 2014 China Eximbank preferential buyer’s credit for the Mombasa-Nairobi Section of the SGR Project can be accessed in its entirety via https://www.dropbox.com/s/4r65hnvegvqwzao/SGR%20PBC%202014.pdf?dl=0 and https://www.dropbox.com/s/6ejzkjhjc8yr7cn/SGR%20PBC%202014%20Loan%20Contract%20Published%20by%20Government%20of%20Kenya.pdf?dl=0. The escrow agreement for the Mombasa-Nairobi Section of the SGR Project can be accessed in its entirety via https://www.dropbox.com/s/sseiuktq7zdoim7/SGR%20Escrow%20Agreement.pdf?dl=0.  The 2015 China Eximbank buyer’s credit loan for the Nairobi-Naivasha Section of the SGR Project can be accessed in its entirety via https://www.dropbox.com/s/0vhgyylakdrfgac/SGR%20BCL%202015%20Published%20Online%20by%20Government%20of%20Kenya.pdf?dl=0 and https://www.dropbox.com/s/zy6zgzk8cufl6z7/SGR%20BCL%202015.pdf?dl=0. 7.  According to Section 6.11 of the PBC agreement, ‘[t]he Borrower undertakes that the repayment of principal and payment of interest and fees under this Agreement and the Buyer Credit Loan Agreement shall be credit enhanced and secured by the following arrangements: (1) the Railway Development Fund (the “RDF”) which could be applied in priority to repay all loans drawn under this Agreement and the Buyer Credit Loan Agreement for the Project; (2) a payment account established and opened in the Account Bank of the Lender or another bank approved by the Lender prior to the establishment of such account, which shall be subject to the escrow arrangement contemplated under the relevant Escrow Account Agreement and be used to maintain the agreed minimum amount of balance as a debt service reserve arrangement in favour of the Lender; (3) a revenue (proceeds) account established and opened in an account bank in the Borrower’s Country approved by the Lender prior to the establishment of such account, which shall be subject to the relevant Escrow Account Agreement and be used to collect the revenues generated from the Project in favour of the Lender; (4) the Long Term Service Agreement with an aim to guaranteeing a minimum amount of freight throughout the term of this Agreement of the Buyer Credit Loan Agreement (whichever is longer) to be charged and received by the relevant railway operator for this Project, which shall be used to ensure the annual repayment of principal and interest under this Agreement and the Buyer Credit Loan Agreement (including without limitation the funding of the Escrow Account pursuant to the requirements of the relevant Escrow Account Agreement). The detailed arrangements of the above credit enhancement and security arrangements will be set out by the Borrower, the Lender and other relevant parties under the relevant Security Document. The Borrower shall ensure that the relevant parties will perform their obligations under the relevant Security Document. The Lender shall be entitled to examine and supervise the execution and performance of the Security Document. Notwithstanding the existence of the Security Document, the Borrower shall be fully liable for the payment and repayment obligations under this Agreement and the Buyer Credit Loan Agreement. The Borrower’s obligations under this Agreement and the Buyer Credit Loan Agreement shall not be affected or undermined by the execution, delivery and performance by the relevant parties of such Security Document and the On-Lending Agreement.’ 8.  The PBC agreement defines ‘Security Document’ as ‘all the agreement(s) and legal document(s) signed by the relevant parties in connection with the security interests as stipulated in the Article 6.11, including without limitation the Escrow Account Agreement and any Long Term Service Agreement.’  The BCL agreement also defines ‘Security Document’ as ‘all the agreement(s) and legal document(s) signed by the relevant parties in connection with the security interests as stipulated in the Article 12.2, including without limitation the Escrow Account Agreements, any Long Term Service Agreement, and any other security or similar document as mutually agreed between the Borrower and the Lender from time to time […].’ The 2014 Escrow Account Agreement between Kenya Railways Corporation (KRC), the Government of Kenya, and China Eximbank can be accessed in its entirety via https://www.dropbox.com/s/sseiuktq7zdoim7/SGR%20Escrow%20Agreement.pdf?dl=0. The 2017 Long Term Service Agreement (also known as the 'Operation and Maintenance Service Agreement for the Mombasa-Nairobi Standard Gauge Railway' Agreement) can be accessed in its entirety via https://www.dropbox.com/s/8aab7pr4qhf2xaj/Operation%20and%20Maintenance%20Service%20Agreement%20for%20the%20Mombasa-Nairobi%20Standard%20Gauge%20Railway.pdf?dl=09. The PBC agreement and BCL agreement define ‘escrow account agreement’ as ‘the agreement(s) entered into among the Lender, the Borrower, the End-User and the relevant account bank(s) appointed by the Lender for the purpose of supervising the Escrow Account.’ The PBC agreement and BCL agreement define ‘escrow account’ as ‘the account(s) established and opened by the End-User in the account banks appointed by the Lender (including without limitation account banks located in the Borrower’s Country and the PRC) to deposit the monies and collect the revenue generated by the Project, to secure the payment and repayment under this Agreement and the Buyer Credit Loan Agreement, including without limitation a payment account and a revenue account as stipulated in Article 6.11. The specific name of such accounts should be subject to the relevant Escrow Account Agreement.’ The PBC agreement and BCL agreement define the ‘Account Bank of the Lender’ as ‘The Export-Import Bank of China.’ 10. According to Section 6.12 of the PBC agreement, ‘[t]he Borrower undertakes to procure that the Government of Kenya or the relevant authorities of Kenya shall stipulate and issue preferential policies, regulations, or approvals in relation to the RDF which could be applied in priority to make the repayment of loans in relation to the Project as owing to the Lender, the Long Term Service Agreement and its due performance, the revenues generated from the Project which will be applied in priority to make the repayment of loans in relation to the project as owing to the Lender (except for the expenditures of operation and management of the Project), the Inland Container Depot (inland port) established in Nairobi and its mandatory customs clearance, and all other necessary policies or approvals, with an aim to ensuring the due operation of the Project and the repayment of such loan in relation to the Project as owing to the Lender.’ 11. The PBC agreement and BCL agreement define ‘On-Lending Agreement’ as the ‘loan agreement entered into between the Borrower and the End-User, whereby the Facility is on-lent by the Borrower to the End-User to implement the Project.’ 12.  A secret Government of Kenya ‘project information memorandum’ on Phase 1 of the SGR Project can be accessed in its entirety via https://www.dropbox.com/s/wh5on1xatrdje65/Secret%20Project%20Information%20Memorandum%20on%20Phase%201%20of%20SGR.pdf?dl=0.13. The Government of Kenya loan identification number for the PBC is 2014006_1. The Government of Kenya loan identification number for the BCL is 2014008_1.14. The amounts outstanding and repayments data are drawn from the Kenyan Treasury’s External Public Debt Register. See https://www.dropbox.com/s/549ixt2gj1jbjvi/External-Public-Debt-Register-as-at-End-June-2022.pdf?dl=0 and https://www.dropbox.com/s/0et4jg1qfg1bo7r/External-Public-Debt-Register-as-at-End-June-2021.pdf?dl=0 and https://www.dropbox.com/s/233j706743q7f1g/External-Public-Debt-Register-as-at-End-June-2020.pdf?dl=0 and https://www.dropbox.com/s/qkoybr9ja0ohemy/External-Public-Debt-Register-as-at-End-June-2009.pdf?dl=0 and https://www.dropbox.com/s/thy3s6ggjcjd97z/External-Public-Debt-Register-as-at-End-June-2012.pdf?dl=0 and https://www.dropbox.com/s/fzbfq01vas6m0i9/External-Public-Debt-Register-as-at-End-June-2019.pdf?dl=0 and https://www.dropbox.com/s/ennrl6d4zd2nizs/External-Public-Debt-Register-as-at-End-June-2018.pdf?dl=0 and https://www.dropbox.com/s/8ibazrj1a8oho2d/External-Public-Debt-Register-as-at-End-June-2017.pdf?dl=0 and https://www.dropbox.com/s/wdbjl0wq49i09x1/External-Public-Debt-Register-as-at-End-June-2015.pdf?dl=0",
+    "location_narrative": "This 475 km railway runs from Mombasa to Nairobi. More detailed locational information can be found at https://www.openstreetmap.org/relation/7190306 and https://en.wikipedia.org/wiki/Mombasa%E2%80%93Nairobi_Standard_Gauge_Railway#/media/File:Ferrovia_Mombasa-Nairobi.png and http://krc.co.ke/?page_id=1538",
+    "description_chars": 23943
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "kenya-sgr-cargo-directive",
+     "shared_words": [
+      "crbc",
+      "eximbank",
+      "kenya",
+      "mombasa"
+     ],
+     "case_title": "Kenya SGR: forced cargo rule and Mombasa job losses",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2014,
+      2022
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "nutrip-road-compensation-arrears",
+     "shared_words": [
+      "between",
+      "kenya",
+      "nairobi",
+      "works"
+     ],
+     "case_title": "Unpaid Road Compensation and a Site Death on the Nairobi and Kisumu Road Works",
+     "case_killed": 1,
+     "case_displaced": null,
+     "case_years": [
+      2012,
+      2019
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "karimenu-ii-dam-compensation",
+     "shared_words": [
+      "design",
+      "eximbank",
+      "kenya",
+      "works"
+     ],
+     "case_title": "Karimenu II dam: land taken in Gatundu North and compensation still unpaid",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2017,
+      null
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "kariobangi-north-evictions",
+     "shared_words": [
+      "kenya",
+      "nairobi",
+      "works"
+     ],
+     "case_title": "Kariobangi North evictions for the sewage works",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2020,
+      2024
+     ],
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G216",
+   "recipient": "Kenya",
+   "iso3": "KEN",
+   "year": 2016,
+   "sector": "TRANSPORT AND STORAGE",
+   "title": "China Eximbank pledges $3.7 billion loan for Kisumu-Malaba Section of Standard Gauge Railway Project  (Linked to #37103, #31777, and #47025) ",
+   "aiddata_rows": [
+    {
+     "id": 52929,
+     "title": "China Eximbank pledges $3.7 billion loan for Kisumu-Malaba Section of Standard Gauge Railway Project  (Linked to #37103, #31777, and #47025) ",
+     "amount_usd_2021": 4368976680.92632,
+     "year": 2016,
+     "status": "Pipeline: Pledge"
+    }
+   ],
+   "limb_b_buckets": [
+    "arrest or detention"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": false,
+   "candidate_sentences": {
+    "arrest or detention": [
+     {
+      "field": "Description",
+      "sentence": "According to Reuters, the “Kenyan authorities … arrested the head of the agency that manages public land and the boss of the state railway on suspicion of corruption over land allocation for the new $3-billion flagship Nairobi-Mombasa railway.",
+      "aiddata_row": 52929,
+      "screen_flags": []
+     },
+     {
+      "field": "Description",
+      "sentence": "… Mohammed Abdalla Swazuri, the chairman of National Land Commission, was one of 18 officials, businesspeople, and companies named in a statement listing arrests that was posted …on the prosecutor’s office’s Twitter feed.",
+      "aiddata_row": 52929,
+      "screen_flags": []
+     },
+     {
+      "field": "Description",
+      "sentence": "Also arrested was Atanas Kariuki Maina, managing director of the Kenya Railways Corporation.",
+      "aiddata_row": 52929,
+      "screen_flags": []
+     },
+     {
+      "field": "Description",
+      "sentence": "…The investigation that led to the arrests centers on allegations that officials siphoned taxpayer money through [fraudulent] compensation claims for land used for the railway.” In late 2018, the International Monetary Fund (IMF) officially revised its evaluation of Kenya’s financial risk profile, raising Kenya’s risk of default on debt repayment from “low” to “moderate.” As of 2019, Kenya’s public-debt-to-GDP ratio stood at 60%, which the IMF considers to be a dangerous level that can impinge upon a country's economic growth prospects.",
+      "aiddata_row": 52929,
+      "screen_flags": []
+     }
+    ]
+   },
+   "full_text": {
+    "description": "In December 2016, China Eximbank reportedly expressed interest in financing the third section of Kenya's Standard Gauge Railway (SGR), from Kisumu to Malaba. In March 2016, Kenya signed an agreement with China Communications Construction Company (CCCC) for the extension of the railway from Kisumu to Malaba, although this contract did not include financing of the railway section. Then, in April 2019, President Kenyatta traveled to Beijing to request a China Eximbank loan worth approximately US$3.7 billion for the Kisumu to Malaba section of the Standard Gauge Railway. His request was rejected. The Chinese Ambassador to Kenya was later asked about the Kenyan President’s expectations that he would secure a new loan commitment from China Eximbank for the SGR and he reportedly said that “I really don’t know where those expectations came from. There are several potential reasons why this loan agreement was not approved, including several active corruption investigations related to other sections of the SGR and escalating concerns about the government's loan repayment capacity.   In 2018, the SGR project became a target of an anti-corruption drive by Kenya's Department of Public Prosecutions (DPP). According to Reuters, the “Kenyan authorities … arrested the head of the agency that manages public land and the boss of the state railway on suspicion of corruption over land allocation for the new $3-billion flagship Nairobi-Mombasa railway. … Mohammed Abdalla Swazuri, the chairman of National Land Commission, was one of 18 officials, businesspeople, and companies named in a statement listing arrests that was posted …on the prosecutor’s office’s Twitter feed. Also arrested was Atanas Kariuki Maina, managing director of the Kenya Railways Corporation. …The investigation that led to the arrests centers on allegations that officials siphoned taxpayer money through [fraudulent] compensation claims for land used for the railway.” In late 2018, the International Monetary Fund (IMF) officially revised its evaluation of Kenya’s financial risk profile, raising Kenya’s risk of default on debt repayment from “low” to “moderate.” As of 2019, Kenya’s public-debt-to-GDP ratio stood at 60%, which the IMF considers to be a dangerous level that can impinge upon a country's economic growth prospects. ",
+    "staff_comments": "The other agreements between the China Eximbank and the Government of Kenya for the Standard Gauge Railway Project can be found in #37103, #31777, and #47025.",
+    "location_narrative": "This 107 km planned railway construction project runs from Kisumu to Malaba via Yala and Mumias. More detailed locational information can be found at https://www.openstreetmap.org/relation/11604776#map=17/-1.17798/36.10983",
+    "description_chars": 2313
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "nutrip-road-compensation-arrears",
+     "shared_words": [
+      "commission",
+      "compensation",
+      "kenya",
+      "kisumu",
+      "land",
+      "nairobi"
+     ],
+     "case_title": "Unpaid Road Compensation and a Site Death on the Nairobi and Kisumu Road Works",
+     "case_killed": 1,
+     "case_displaced": null,
+     "case_years": [
+      2012,
+      2019
+     ],
+     "strength": "strong"
+    },
+    {
+     "case": "kenya-finance-bill-2024",
+     "shared_words": [
+      "fund",
+      "international",
+      "kenya",
+      "monetary",
+      "nairobi"
+     ],
+     "case_title": "Kenya Finance Bill Protests",
+     "case_killed": 60,
+     "case_displaced": null,
+     "case_years": [
+      2024,
+      2024
+     ],
+     "strength": "strong"
+    },
+    {
+     "case": "kisip-informal-settlements-fatalities",
+     "shared_words": [
+      "about",
+      "international",
+      "kenya",
+      "kenyan",
+      "mombasa"
+     ],
+     "case_title": "Kenya's informal settlements upgrading project: six deaths the Bank was not told about",
+     "case_killed": 6,
+     "case_displaced": null,
+     "case_years": [
+      2011,
+      2019
+     ],
+     "strength": "strong"
+    },
+    {
+     "case": "karimenu-ii-dam-compensation",
+     "shared_words": [
+      "compensation",
+      "eximbank",
+      "international",
+      "kenya",
+      "land"
+     ],
+     "case_title": "Karimenu II dam: land taken in Gatundu North and compensation still unpaid",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2017,
+      null
+     ],
+     "strength": "strong"
+    }
+   ]
+  },
+  {
+   "financing": "G220",
+   "recipient": "Kenya",
+   "iso3": "KEN",
+   "year": 2016,
+   "sector": "TRANSPORT AND STORAGE",
+   "title": "China Eximbank provides $418.6 million buyer's credit loan for Kibwezi-Mutomo-Kitui (B7) Highway Upgrade Project (Linked to Project ID#58152)",
+   "aiddata_rows": [
+    {
+     "id": 53111,
+     "title": "China Eximbank provides $418.6 million buyer's credit loan for Kibwezi-Mutomo-Kitui (B7) Highway Upgrade Project (Linked to Project ID#58152)",
+     "amount_usd_2021": 494258887.47102,
+     "year": 2016,
+     "status": "Implementation"
+    },
+    {
+     "id": 58152,
+     "title": "China Eximbank provides $194.7 million buyer's credit loan for Phase 1 of Kibwezi-Mutomo-Kitui (B7) Highway Project (Linked to Project ID#53111)",
+     "amount_usd_2021": 229950576.621994,
+     "year": 2016,
+     "status": "Implementation"
+    }
+   ],
+   "limb_b_buckets": [
+    "land taken"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": true,
+   "candidate_sentences": {
+    "land taken": [
+     {
+      "field": "Description",
+      "sentence": "However, the project has encountered major implementation delays due to land acquisition challenges, the relocation of power line alongs the road corridor, delayed payments, a shortage of water for the works, and a temporary suspension of work by contractor due to COVID-19 cases reported in Kitui.",
+      "aiddata_row": 53111,
+      "screen_flags": [
+       "relief_or_disaster_language"
+      ]
+     },
+     {
+      "field": "Description",
+      "sentence": "However, the project has encountered major implementation delays due to land acquisition challenges, the relocation of power line alongs the road corridor, delayed payments, a shortage of water for the works, and a temporary suspension of work by contractor due to COVID-19 cases reported in Kitui.",
+      "aiddata_row": 58152,
+      "screen_flags": [
+       "relief_or_disaster_language"
+      ]
+     }
+    ],
+    "pollution or damage": [
+     {
+      "field": "Description",
+      "sentence": "Local residents have also complained about the noise, dust, and pollution that has resulted from construction activities.",
+      "aiddata_row": 53111,
+      "screen_flags": []
+     },
+     {
+      "field": "Description",
+      "sentence": "Local residents have also complained about the noise, dust, and pollution that has resulted from construction activities.",
+      "aiddata_row": 58152,
+      "screen_flags": []
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On November 29, 2016, China Eximbank signed a buyer’s credit loan agreement worth 50 billion Ksh ($492,444,803.49 USD) with the Government of Kenya for the 472 km Kibwezi-Mutomo-Kitui (B7) Highway Project. The purpose of the 50 billion Ksh ($492,444,803.49) agreement, signed on November 29, 2016, is to support 85% of the commercial contract costs of three highway sections in three phases. The Kibwezi-Mutomo-Kitui highway (基布韦济—穆托莫—基图依公路), the Kandwia-Tseikuru-Usueni-Mikinduri-Muriri highway (坎达维亚—特瑟库鲁—乌苏埃尼公路), and the Kitui-Mwingi-Kandwia Highway (基图依—姆温吉—坎达维亚公路). Phase 1, tarmacking 192-km of the B7 highway, is worth Ks 23 billion (see Project ID#58152), Phase II is 167 km, and Phase III is 113 km, for a total of 472 km.  The Kenya Electronic Project Monitoring Information System (eProMIS) identifies two different loans: one for a $212.8 million Upgrading of Kibwezi ­-Mutomo-Kitui Road to Bitumen Standard Project [E-Promis ID#56059 and MOTI0012016 project reference number] and one for a $206,134,747.16 Upgrading of Kibwezi-Mutomo-Kitui-Migwani Road (A9/B64) Project [E-Promis ID#2018/057235 and KeNHA/RD/1469/2016 project reference number]. It is unclear if these records refer to different projects, so for the time being AidData represents this project as being supported by a single China Eximbank loan. The terms of this loan are 15 year maturity and 3% interest rate.   The highway begins at the junction with A8 (Nairobi-Mombasa road) near Kibwezi town and runs in a northward direction via Ikutha, Mutomo, Kitui, Kabati and ends at Migwani. Upon completion, it is envisioned that this highway will encourage development of critical infrastructure facilities such as power, water, telecommunications, and social infrastructure in the regions traversed as well as support the long term development and viability of the Mombasa-Isiolo-Moyale corridor, and Lamu Port-South Sudan-Ethiopia Transport (LAPSSET) corridor, while linking three more regional transport corridors which are the Northern Corridor (A8), the Kenya-Ethiopia Corridor (A2) and the Thika-Garissa-Liboi (A3).   China Hydropower International Co., Ltd (中水电国际公司) -- also known as Sinohydro -- is the contractor responsible for project implementation. The Kenya National Highways Authority administers the project. Construction began on December 6, 2016. The project had achieved a 53% complete rate as of May 2019. Its originally expected completion date was February 15, 2021. However, the project has encountered major implementation delays due to land acquisition challenges, the relocation of power line alongs the road corridor, delayed payments, a shortage of water for the works, and a temporary suspension of work by contractor due to COVID-19 cases reported in Kitui. Local residents have also complained about the noise, dust, and pollution that has resulted from construction activities.",
+    "staff_comments": "1. The Chinese project title is 基布韦济至基图伊公路升级项目. 2. The Kenya Electronic Project Monitoring Information System (eProMIS) identifies two different loans: one for a $212.8 million Upgrading of Kibwezi ­-Mutomo-Kitui Road to Bitumen Standard Project [E-Promis ID#56059 and MOTI0012016 project reference number] and one for a $206,134,747.16 Upgrading of Kibwezi-Mutomo-Kitui-Migwani Road (A9/B64) Project [E-Promis ID#2018/057235 and KeNHA/RD/1469/2016 project reference number]. It is unclear if these records refer to different projects, so for the time being we represent this project as being supported by a single China Eximbank loan. 3. None of the attached sources explicitly state the USD-denominated face value of the loan (transaction amount). However, China Eximbank BCLs typically cover 85% of the cost of the underlying commercial contract cost, which in this case is equal to 50 billion ksh or $492,444,803.49 in 2016 USD. $492,444,803.49 X 0.85 = $418,578,082.97. This estimate of the face value of the loan (transaction amount) is broadly consistent with the sum of the two 'loans' recorded in E-Promis [ID#56059 and ID#2018/057235].4. The loan identification number in the Government of Kenya’s external public debt register is 2016052.5. The borrowing terms of the loan are not identified in the database of Chinese loan commitments that SAIS-CARI released in July 2020. AidData records both the maturity (15 years) and the interest rate (3% interest rate) of the loan.",
+    "location_narrative": "More detailed locational information can be found at https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=-2.4103%2C37.9655%3B-1.1164%2C37.7071",
+    "description_chars": 2884
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "nutrip-road-compensation-arrears",
+     "shared_words": [
+      "highways",
+      "junction",
+      "kenya",
+      "land",
+      "nairobi",
+      "northern",
+      "works"
+     ],
+     "case_title": "Unpaid Road Compensation and a Site Death on the Nairobi and Kisumu Road Works",
+     "case_killed": 1,
+     "case_displaced": null,
+     "case_years": [
+      2012,
+      2019
+     ],
+     "strength": "strong"
+    },
+    {
+     "case": "karimenu-ii-dam-compensation",
+     "shared_words": [
+      "eximbank",
+      "international",
+      "kenya",
+      "land",
+      "works"
+     ],
+     "case_title": "Karimenu II dam: land taken in Gatundu North and compensation still unpaid",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2017,
+      null
+     ],
+     "strength": "strong"
+    },
+    {
+     "case": "lake-turkana-wind-land",
+     "shared_words": [
+      "kenya",
+      "land",
+      "near",
+      "standard"
+     ],
+     "case_title": "Lake Turkana Wind Power and the Sarima Community Land",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2009,
+      null
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "sondu-miriu-jbic",
+     "shared_words": [
+      "international",
+      "kenya",
+      "land",
+      "loans"
+     ],
+     "case_title": "Sondu-Miriu dam: Japanese loans, land and a dispute over the river",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      1997,
+      2009
+     ],
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G422",
+   "recipient": "Lebanon",
+   "iso3": "LBN",
+   "year": 2009,
+   "sector": "RECONSTRUCTION RELIEF AND REHABILITATION",
+   "title": "Chinese Government provides a $680,000 USD grant for the rehabilitation of Palestinian refugee camps (Linked to Project ID#65642)",
+   "aiddata_rows": [
+    {
+     "id": 65641,
+     "title": "Chinese Government provides a $680,000 USD grant for the rehabilitation of Palestinian refugee camps (Linked to Project ID#65642)",
+     "amount_usd_2021": 1021366.83282685,
+     "year": 2009,
+     "status": "Completion"
+    },
+    {
+     "id": 65642,
+     "title": "Chinese Government provides a $500,000 USD grant for the reconstruction of the Nahr el-Bared Camp (Linked to Project ID#65641)",
+     "amount_usd_2021": 751005.024137396,
+     "year": 2009,
+     "status": "Completion"
+    }
+   ],
+   "limb_b_buckets": [
+    "land taken"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": false,
+   "candidate_sentences": {
+    "land taken": [
+     {
+      "field": "Description",
+      "sentence": "According to a 2009 Lebanese Ministry of Finance Aid Coordination Newsletter, on April 27, 2009, the Council of Ministers pf Lebanon approved two grants from China: $680,000 USD through UNRWA for the rehabilitation of Palestinian camps in Lebanon and $500,000 USD for land expropriation in the Nahr el-Bared Palestinian Camp (see linked project ID#65642).",
+      "aiddata_row": 65641,
+      "screen_flags": [
+       "names_another_country:china"
+      ]
+     },
+     {
+      "field": "Description",
+      "sentence": "The land expropriation will be implemented through the Lebanese Council for Development and Reconstruction (CDR).",
+      "aiddata_row": 65641,
+      "screen_flags": [
+       "prospective_verb_only"
+      ]
+     },
+     {
+      "field": "Description",
+      "sentence": "According to a 2009 Lebanese Ministry of Finance Aid Coordination Newsletter, on April 27, 2009, the Council of Ministers approved two grants from China: $500,000 USD for reconstruction and land expropriation of the Nahr el-Bared Palestinian Camp and $680,000 USD through UNRWA for the rehabilitation of Palestinian camps in Lebanon (see linked project ID#65641).",
+      "aiddata_row": 65642,
+      "screen_flags": [
+       "names_another_country:china"
+      ]
+     },
+     {
+      "field": "Description",
+      "sentence": "The land expropriation will be implemented through the Lebanese Council for Development and Reconstruction (CDR).",
+      "aiddata_row": 65642,
+      "screen_flags": [
+       "prospective_verb_only"
+      ]
+     },
+     {
+      "field": "Staff Comments",
+      "sentence": "This project is known as 'Contribution in the Expropriation for the Reconstruction of Nahr el Bared Camp, 2009' in the Lebanese Council for Development and Reconstruction's (CDR) database.",
+      "aiddata_row": 65642,
+      "screen_flags": []
+     },
+     {
+      "field": "Staff Comments",
+      "sentence": "The agreement number is 5909 (see 'CDR Funding - Contribution in the Expropriation for the Reconstruction of Nahr el Bared Camp, 2009').",
+      "aiddata_row": 65642,
+      "screen_flags": []
+     }
+    ]
+   },
+   "full_text": {
+    "description": "According to a 2009 Lebanese Ministry of Finance Aid Coordination Newsletter, on April 27, 2009, the Council of Ministers pf Lebanon approved two grants from China: $680,000 USD through UNRWA for the rehabilitation of Palestinian camps in Lebanon and $500,000 USD for land expropriation in the Nahr el-Bared Palestinian Camp (see linked project ID#65642). The land expropriation will be implemented through the Lebanese Council for Development and Reconstruction (CDR).  With its funding, the UNRWA works to improve the lives of Palestine refugees in Lebanon. The funds are allocated to work on a number of projects in the 12 Palestinian camps throughout the country, including shelter rehabilitation, construction, maintenance, infrastructure, camp improvement, and environmental health. According to CDR, this project was completed.  This capital in Lebanon is allocated by the UNRWA towards infrastructure projects in Dbayeh, Shatila and Mar Elias which are scheduled for completion in 2010. During 2009, a total of only 101 shelters were rehabilitated, extended, or reconstructed in Lebanon and Jordan.  There are 12 refugee camps in Lebanon and 448,599 registered refugees. The following is a list of the camps with founding date and number of registered refugees: 1948, Bourj el-Barajneh, 17,945 1948, Ain al-Hilweh, 54,116 1948, El Buss, 11,254 1949, Nahr al-Bared, 5,857 1949, Shatila, 9,842 1948, Wavel, 8,806 1952, Mar Elias, 662 1954, Mieh Mieh, 5,250 1955, Beddawi, 16,500 1955, Burj el-Shemali, 22,789 1956, Dbayeh camp, 4,351 1963, Rashidieh, 31,478",
+    "staff_comments": "This project is known as 'Rehabilitation of Palestinian Camps, 2009' in the Lebanese Council for Development and Reconstruction's (CDR) database. The agreement number is 5910 (see 'CDR Funding - Rehabilitation of Palestinian Camps, 2009').",
+    "location_narrative": "Palestine Refugee Camps",
+    "description_chars": 1563
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "tripoli-tyre-heritage-market-relocation",
+     "shared_words": [
+      "council",
+      "lebanon",
+      "reconstruction",
+      "works"
+     ],
+     "case_title": "Households and market vendors moved for heritage works in Tripoli, Tyre and Saida",
+     "case_killed": 0,
+     "case_displaced": 71,
+     "case_years": [
+      2012,
+      2019
+     ],
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G207",
+   "recipient": "Nigeria",
+   "iso3": "NGA",
+   "year": 2018,
+   "sector": "INDUSTRY, MINING, CONSTRUCTION",
+   "title": "CDB provides $26 million loan to CNG Glass Nigeria for Float Glass and Online Solar Control Coated Glass Production Line Project",
+   "aiddata_rows": [
+    {
+     "id": 52483,
+     "title": "CDB provides $26 million loan to CNG Glass Nigeria for Float Glass and Online Solar Control Coated Glass Production Line Project",
+     "amount_usd_2021": 28336093.4448455,
+     "year": 2018,
+     "status": "Completion"
+    }
+   ],
+   "limb_b_buckets": [
+    "land taken"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": false,
+   "candidate_sentences": {
+    "land taken": [
+     {
+      "field": "Description",
+      "sentence": "The guarantees were issued for up to five years for the shareholder and non-shareholder loans, and for up to ten years for the equity investment against the risks of Expropriation, Transfer Restriction, and War and Civil Disturbance.",
+      "aiddata_row": 52483,
+      "screen_flags": []
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On January 22, 2018, the Dalian Branch of China Development Bank and CNG Glass (Nigeria) FZE [中玻（尼日利亞）自貿區公司] — a special purpose vehicle and wholly-owned subsidiary of China Glass Holdings Limited (CGHL) — signed a $26 million loan facility agreement for a Float Glass and Online Solar Control Coated Glass Production Line Project. This loan has a 5 year maturity. CNG (Nigeria) Investment Ltd also provided equity investment and a non-shareholder loan for this project. On December 21, 2017, and May 10, 2018, the World Bank Group’s Multilateral Investment Guarantee Agency (MIGA) agreed to issue guarantees of up to $30,452,058 to China Development Bank (CDB) of China and of up to $41,360,000 to CNG (Nigeria) Investment Ltd. (CGIL) of Hong Kong, respectively, for their non-shareholder loans, shareholder loans and equity investments into CNG Glass (Nigeria) FZE in Nigeria. The guarantees were issued for up to five years for the shareholder and non-shareholder loans, and for up to ten years for the equity investment against the risks of Expropriation, Transfer Restriction, and War and Civil Disturbance. Beijing Qinchang Glass Co., Ltd.（北京秦昌玻璃有限 公司), an indirect wholly-owned subsidiary of the CGHL, also agreed to provide mortgage over its legally owned industrial property and apartment, to the CDB for the liabilities of the borrower [CNG Glass (Nigeria) FZE] under the loan agreement.  The Float Glass Plant Construction Project involves the design, construction and operation of a float glass manufacturing plant with a capacity of 500 tons per day (tpd) in Nigeria’s Ogun Guangdong Free Trade Zone, about 30-km from Lagos. The project will require an area of approximately 250,000 m2, and will include construction of a raw material storage warehouse and batching; float glass combined workshop; finished products warehouse; cooling water circulation system; protective gas preparation system; furnace and chimney; and offices and worker accommodation. The production process consists of charging the raw materials required to make clear or colored glass through weighing, mixing and conveying to the furnace which produces molten glass. The molten glass then passes into a bath of molten tin where the temperature is gradually reduced and the glass sheets can be pulled off the bath by rollers. Variation in the flow speed and roller speed enables glass sheets of varying thickness to be formed. This is followed by annealing, cutting and loading.  The project will also include construction of a natural gas power generating system (installed capacity 6 MW) and a back-up diesel generating system (installed capacity 6 MW). Natural gas will be supplied by the local natural gas company via a pipeline, which has already been constructed to supply the Ogun Guangdong Free Trade Zone (see Project ID#52477). Diesel will be brought to site via truck.  The project is located within the OGFTZ located in the Igbessa Region of Ogun State. The zone opened in 2009 as a partnership between the Ogun Statement Government and the Guangdong Provincial Government in China. A total of 10,000 ha has been allocated for the zone, but thus far, only 250 ha has been developed (i.e. land prepared and fully fenced). As of March 2016, 27 companies were operating within the zone and an additional 14 have committed investments. Raw materials for the glass production, including silica sand, dolomite, feldspar, limestone, glauber salt and coal powder, will be sourced domestically. Soda ash will import from overseas. Raw materials will be transported via powder truck by a licensed contractor. Both raw materials and the final product will be transported by existing roads.  China Glass Holdings Limited (CGHL) is constructing the float glass and on-line solar control glass production line with a capacity of 500tpd. The project will be developed and operated by CNG Glass (Nigeria) FZE. Three sub-contractors are also involved in construction: SinoSunny Nigeria Company Ltd.; Shaanxi Nigeria Company Ltd.; and China Railway Construction Nigeria Company Ltd. (CRCC). All three are Chinese companies that are incorporated locally and have been operating in Nigeria for many years. Civil works were underway and expected to reach completion by the end of 2016. The plant’s machinery was expected to be shipped to Nigeria by March 2017 and its commercial operation date (COD) was scheduled for September 2017. Natural gas was expected to be supplied by the local natural gas company via a pipeline, which has already been constructed to supply the Ogun Guangdong Free Trade Zone. The float glass manufacturing plant was ultimately put into production on October 18, 2019.",
+    "staff_comments": "The Chinese project title is 日产500吨的浮式液化天然气生产装置.",
+    "location_narrative": "The project constructed a glass manufacturing plant in the Igbessa Region of Ogun State within the Ogun Guangdong Free Trade Zone. More detailed locational information can be found at: https://www.openstreetmap.org/way/597915414#map=15/6.5545/3.1275.",
+    "description_chars": 4671
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "wagp-badagry",
+     "shared_words": [
+      "lagos",
+      "miga",
+      "nigeria",
+      "pipeline",
+      "world"
+     ],
+     "case_title": "West African Gas Pipeline Land Compensation",
+     "case_killed": null,
+     "case_displaced": null,
+     "case_years": [
+      2004,
+      2008
+     ],
+     "strength": "strong"
+    },
+    {
+     "case": "shell-bonga-spill-2011",
+     "shared_words": [
+      "december",
+      "nigeria",
+      "production",
+      "through"
+     ],
+     "case_title": "Shell's Bonga Offshore Spill of December 2011",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2011,
+      null
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "shell-ogbodo-isiokpo-spill",
+     "shared_words": [
+      "local",
+      "nigeria",
+      "pipeline",
+      "through"
+     ],
+     "case_title": "Shell's Ogbodo Pipeline Spill: 18 Days of Oil",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2001,
+      2002
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "badia-east-lagos",
+     "shared_words": [
+      "lagos",
+      "nigeria",
+      "world"
+     ],
+     "case_title": "Badia East Evictions",
+     "case_killed": null,
+     "case_displaced": 9000,
+     "case_years": [
+      2012,
+      2014
+     ],
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G224",
+   "recipient": "Rwanda",
+   "iso3": "RWA",
+   "year": 2018,
+   "sector": "INDUSTRY, MINING, CONSTRUCTION",
+   "title": "China Eximbank provides RMB 550 million government concessional loan for 66km Huye-Kibeho-Munini Road Project",
+   "aiddata_rows": [
+    {
+     "id": 53369,
+     "title": "China Eximbank provides RMB 550 million government concessional loan for 66km Huye-Kibeho-Munini Road Project",
+     "amount_usd_2021": 84916065.9676692,
+     "year": 2018,
+     "status": "Implementation"
+    }
+   ],
+   "limb_b_buckets": [
+    "land taken"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": true,
+   "candidate_sentences": {
+    "land taken": [
+     {
+      "field": "Staff Comments",
+      "sentence": "In Nyaruguru District, 1,647 properties will be expropriated for a total value equivalent to FRW 2,358,140,223.",
+      "aiddata_row": 53369,
+      "screen_flags": [
+       "prospective_verb_only"
+      ]
+     },
+     {
+      "field": "Staff Comments",
+      "sentence": "407 properties will be expropriated for a total value equivalent to FRW 1.082.968.718.",
+      "aiddata_row": 53369,
+      "screen_flags": [
+       "prospective_verb_only"
+      ]
+     },
+     {
+      "field": "Staff Comments",
+      "sentence": "The total estimated cost for project expropriation is equivalent to FRW 3,441,108,941.",
+      "aiddata_row": 53369,
+      "screen_flags": [
+       "prospective_verb_only"
+      ]
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On July 23, 2018, the Government of Rwanda and the People’s Republic of China today signed a preferential loan framework agreement for the Bugesera International Airport Road (Sonatubes-Gahanga-Akagera) Project. On the same day, China Eximbank and the Government of Rwanda signed an RMB 550 million ($77,915,388) government concessional loan (GCL) agreement [CHINA EXIMBANK GCL NO.(2018) 14 TOTAL No.(656)] for the 66km Huye-Kibeho-Munini Road Project. The GCL carries the following borrowing terms: a 20 year maturity, a 5 year grace period, a 2% interest rate, a 0% default (penalty) interest rate, a 0.25% commitment fee, and a 0.25% (RMB 1,375,000) management fee. The borrower is expected to use the proceeds of the GCL to finance a $77,915,388 commercial contract (ID# 038/RTDA/016] between Rwanda Transport Development Agency (RTDA) and Sinohydro Corporation Limited, which was signed on December 30, 2016 and amended on August 29, 2017.   This project involves the upgrading of unsurfaced roads (including 12 km of urban streets in Kibeho City) measuring 66.3 km length in Huye and Nyaruguru provinces in southern Rwanda. The existing roads are gravel roads, except for 1.5 km in Huye town which is asphalted. The 66.3 km road connects the touristic centre of Kibeho with Kigali-Huye-Akanyaru Haut national road (NR1), linking this centre with Burundi border at Akanyaru-Haut border; and it also connects with Munini Hospital. The road passes one town, Kibeho and several villages, the largest of which are Ndago, Ngoma and Munini. Upon completion, this project is expected to boost transport and investment conditions in the country, and promote the development of local tourism and agriculture industries. It is also expected to improve the country's traffic conditions with its neighbor Burundi, while facilitating trade ties between the two countries.   Sinohydro Corporation Limited is the general EPC contractor responsible for implementation.  A local company, Horizon Rwanda Ltd., is also involved as a subcontractor. Construction began on March 29, 2019. Project implementation was originally expected to take place between April 9, 2019 and April 9, 2022.",
+    "staff_comments": "1. The China Eximbank loan agreement can be accessed in its entirety via https://www.dropbox.com/s/wa70bq1t7clg9qe/China%20Eximbank%20GCL%20Agreement%20for%20the%20Huye-Kibeho-Munini%3ANgoma%20Road%20Upgrading%20Project.pdf?dl=0. 2. In the database of Chinese loan commitments that SAIS-CARI released in July 2020, it does not identify the borrowing terms of the China Eximbank loan [a 20 year maturity, a 5 year grace period, a 2% interest rate, a 0.25% commitment fee, and a 0.25% (RMB 1,375,000) management fee] that was issued for this project. AidData relies on the borrowing terms that are identified in the loan agreement itself. 3. This project is also known as the Huye-Kibeho-Munini/Ngoma Road Upgrading Project or the 66.3km Huye-Kibeho-Munini Road Project. The Chinese project title is 卢旺达南方省66公里道路升级项目 or 卢旺达胡也66公里公路项目. 4. In Nyaruguru District, 1,647 properties will be expropriated for a total value equivalent to FRW 2,358,140,223. In Huye District; 407 properties will be expropriated for a total value equivalent to FRW 1.082.968.718. The total estimated cost for project expropriation is equivalent to FRW 3,441,108,941. ",
+    "location_narrative": "The project upgrades the 66.3km Huye-Kibeho-Munini Road (NR9) which runs from Huye District to Kibeho-Munini and Ngoma in Nyarugura District in the Southern Province of Rwanda. More detailed locational information can be found at:https://www.openstreetmap.org/way/196866633#map=15/-2.5978/29.7392, https://www.openstreetmap.org/way/196866635#map=14/-2.5968/29.7016, https://www.openstreetmap.org/way/394438127#map=14/-2.6246/29.6508, https://www.openstreetmap.org/way/229084335#map=14/-2.6435/29.6165, https://www.openstreetmap.org/way/697053685#map=15/-2.6456/29.5836, https://www.openstreetmap.org/way/540553030#map=15/-2.6462/29.5691, https://www.openstreetmap.org/way/196748627#map=14/-2.6745/29.5633, https://www.openstreetmap.org/way/680562916#map=15/-2.6971/29.5620, https://www.openstreetmap.org/way/196748630#map=14/-2.7057/29.5335, https://www.openstreetmap.org/way/696276149#map=16/-2.7085/29.5012, https://www.openstreetmap.org/way/701034583#map=16/-2.7135/29.4932, https://www.openstreetmap.org/way/196748636#map=13/-2.7544/29.4958https://www.openstreetmap.org/way/196748625#map=15/-2.7954/29.5138, https://www.openstreetmap.org/way/125743187#map=14/-2.7950/29.4871",
+    "description_chars": 2173
+   },
+   "r36_dedupe_hint": {
+    "case_id": "rwanda-hillside-irrigation-relocation-deaths",
+    "shared_words": [
+     "province",
+     "rwanda",
+     "southern"
+    ],
+    "strength": 3
+   },
+   "local_match": [
+    {
+     "case": "rwanda-hillside-irrigation-relocation-deaths",
+     "shared_words": [
+      "agriculture",
+      "rwanda",
+      "southern"
+     ],
+     "case_title": "Relocations and two deaths at Rwanda's hillside irrigation dams",
+     "case_killed": 2,
+     "case_displaced": 117,
+     "case_years": [
+      2010,
+      2018
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "rwanda-electricity-access-rukarara-relocation",
+     "shared_words": [
+      "international",
+      "rwanda",
+      "southern"
+     ],
+     "case_title": "Thirty households moved and compensation delayed on Rwanda's electricity rollout",
+     "case_killed": 0,
+     "case_displaced": 30,
+     "case_years": [
+      2009,
+      2018
+     ],
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G271",
+   "recipient": "Rwanda",
+   "iso3": "RWA",
+   "year": 2018,
+   "sector": "TRANSPORT AND STORAGE",
+   "title": "China Eximbank provides RMB 340 million government concessional loan for the Bugesera International Airport Road (Sonatubes-Gahanga-Akagera) Project",
+   "aiddata_rows": [
+    {
+     "id": 56766,
+     "title": "China Eximbank provides RMB 340 million government concessional loan for the Bugesera International Airport Road (Sonatubes-Gahanga-Akagera) Project",
+     "amount_usd_2021": 56026180.123626,
+     "year": 2018,
+     "status": "Implementation"
+    }
+   ],
+   "limb_b_buckets": [
+    "land taken"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": false,
+   "candidate_sentences": {
+    "land taken": [
+     {
+      "field": "Description",
+      "sentence": "Emile Patrick Baganizi, the Deputy Director General of Rwanda Transport Development Agency, has attributed the project’s smooth implementation to RTDA’s role in compensating the expropriation of properties and supervising construction works.",
+      "aiddata_row": 56766,
+      "screen_flags": []
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On July 23, 2018, the Government of Rwanda and the People’s Republic of China today signed a preferential loan framework agreement for the Bugesera International Airport Road (Sonatubes-Gahanga-Akagera) Project. On the same day, China Eximbank and the Government of Rwanda signed an RMB 340 million ($50,300,000) government concessional loan (GCL) agreement [CHINA EXIMBANK GCL NO.(2018) 19 TOTAL No.(661)] for the Bugesera International Airport Road (Sonatubes-Gahanga-Akagera) Project. The GCL carries the following borrowing terms: a 20 year maturity, a 7 year grace period, a 2% interest rate, a 0% default (penalty) interest rate, a 0.25% commitment fee, and a 0.25% (RMB 850,000) management fee. The borrower is expected to use the proceeds of the GCL to finance a $53,954,298.50 commercial contract [ID# 003/RTDA/018] between Rwanda Transport Development Agency (RTDA) and China Road and Bridge Corporation (CRBC), which was signed on March 29, 2018.   The purpose of this project is to build an expressway (4-lane dual-carriageway) that links the urban area of Kigali to a new airport (Bugesera International Airport), thereby relieving traffic congestion, saving transit time of tourists and cargos, and increasing the tourism revenue. The project consists of two sections: the first section is from the Sonatubes Intersection to a crossing of Akagera River (Akagera Bridge), and the second section is from Akagera Bridge to Bugesera International Airport (BIA). The first section is a part of rehabilitation of National Road (NR5) Kicukiro-Nemba.   China Road and Bridge Corporation is the EPC contractor responsible for project implementation. Construction began March 8, 2019. As of September 2, 2021, the project had achieved an 80% completion rate. As of December 2021, the project had achieved a 96.1% completion rate. The project is expected to reach completion in 2022. Emile Patrick Baganizi, the Deputy Director General of Rwanda Transport Development Agency, has attributed the project’s smooth implementation to RTDA’s role in compensating the expropriation of properties and supervising construction works.",
+    "staff_comments": "1. The China Eximbank loan agreement can be accessed in its entirety via https://www.dropbox.com/s/3qur0qvr2mtiges/China%20Eximbank%20loan%20agreement%20for%20the%20%20Bugesera%20International%20Airport%20Road%20Project.pdf?dl=0. 2. In the database of Chinese loan commitments that SAIS-CARI released in July 2020, it does not identify the borrowing terms of the China Eximbank loan [a 20 year maturity, a 7 year grace period, a 2% interest rate, a 0.25% commitment fee, and a 0.25% (RMB 850,000) management fee] that was issued for this project. AidData relies on the borrowing terms that are identified in the loan agreement itself. 3. This project is also known as the Upgrading of Sonatubes-Gahanga-Akagera Road Project. The Chinese project title is 卢旺达新机场路升级改造项目.",
+    "location_narrative": "The project constructs two sections of roads to improve access to the Bugesera International Airport. The first section expands a 13.8km road between the Sonatubes intersection in Kicukiro to the Akagera River Bridge along NR5. The second section continues construction from the Akagera River Bridge to the Bugesera International Airport. Both sections will consist of the expansion of the roads and the beautification of the surrounding area. More detailed locational information can be found at:First Section: https://www.openstreetmap.org/way/618816014#map=14/-2.0413/30.1063https://www.openstreetmap.org/way/570870728#map=15/-2.0138/30.0998https://www.openstreetmap.org/way/570876711#map=15/-1.9915/30.0981https://www.openstreetmap.org/way/569683181#map=16/-1.9739/30.1098Second Section: https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=-2.0624%2C30.0868%3B-2.1192%2C30.1703#map=13/-2.1042/30.1188",
+    "description_chars": 2128
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "rwanda-electricity-access-rukarara-relocation",
+     "shared_words": [
+      "access",
+      "international",
+      "rwanda"
+     ],
+     "case_title": "Thirty households moved and compensation delayed on Rwanda's electricity rollout",
+     "case_killed": 0,
+     "case_displaced": 30,
+     "case_years": [
+      2009,
+      2018
+     ],
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G441",
+   "recipient": "Turkey",
+   "iso3": "TUR",
+   "year": 2019,
+   "sector": "ENERGY",
+   "title": "CDB contributes $460 million to $1.381 billion syndicated buyer’s credit for 1320 MW Coal-Fired Emba Hunutlu Power Station Construction Project (Linked to Project ID#91516 and #91517)",
+   "aiddata_rows": [
+    {
+     "id": 67340,
+     "title": "CDB contributes $460 million to $1.381 billion syndicated buyer’s credit for 1320 MW Coal-Fired Emba Hunutlu Power Station Construction Project (Linked to Project ID#91516 and #91517)",
+     "amount_usd_2021": 516839721.640584,
+     "year": 2019,
+     "status": "Implementation"
+    },
+    {
+     "id": 91516,
+     "title": "ICBC contributes $460 million to $1.381 billion syndicated buyer’s credit for 1320 MW Coal-Fired Emba Hunutlu Power Station Construction Project (Linked to Project ID#67340 and #91517)",
+     "amount_usd_2021": 516839721.640584,
+     "year": 2019,
+     "status": "Implementation"
+    },
+    {
+     "id": 91517,
+     "title": "Bank of China contributes $460 million to $1.381 billion syndicated buyer’s credit for 1320 MW Coal-Fired Emba Hunutlu Power Station Construction Project (Linked to Project ID#91516 and #67340)",
+     "amount_usd_2021": 516839721.640584,
+     "year": 2019,
+     "status": "Implementation"
+    }
+   ],
+   "limb_b_buckets": [
+    "land taken"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": false,
+   "candidate_sentences": {
+    "land taken": [
+     {
+      "field": "Description",
+      "sentence": "In 2015, the land was expropriated, with the price being set at 100 lira per square meter.",
+      "aiddata_row": 67340,
+      "screen_flags": []
+     },
+     {
+      "field": "Description",
+      "sentence": "Both insurance policies covered the risks of inconvertibility and transfer restrictions, expropriation, war and political violence, with an insurance liability period of 180 months.",
+      "aiddata_row": 67340,
+      "screen_flags": []
+     },
+     {
+      "field": "Description",
+      "sentence": "In 2015, the land was expropriated, with the price being set at 100 lira per square meter.",
+      "aiddata_row": 91516,
+      "screen_flags": []
+     },
+     {
+      "field": "Description",
+      "sentence": "Both insurance policies covered the risks of inconvertibility and transfer restrictions, expropriation, war and political violence, with an insurance liability period of 180 months.",
+      "aiddata_row": 91516,
+      "screen_flags": []
+     },
+     {
+      "field": "Description",
+      "sentence": "In 2015, the land was expropriated, with the price being set at 100 lira per square meter.",
+      "aiddata_row": 91517,
+      "screen_flags": []
+     },
+     {
+      "field": "Description",
+      "sentence": "Both insurance policies covered the risks of inconvertibility and transfer restrictions, expropriation, war and political violence, with an insurance liability period of 180 months.",
+      "aiddata_row": 91517,
+      "screen_flags": []
+     }
+    ],
+    "protest with specifics": [
+     {
+      "field": "Description",
+      "sentence": "An environmental permitting meeting held in Sugözü in September 2012 was met with protests from locals and environmentalists.",
+      "aiddata_row": 67340,
+      "screen_flags": []
+     },
+     {
+      "field": "Description",
+      "sentence": "An environmental permitting meeting held in Sugözü in September 2012 was met with protests from locals and environmentalists.",
+      "aiddata_row": 91516,
+      "screen_flags": []
+     },
+     {
+      "field": "Description",
+      "sentence": "An environmental permitting meeting held in Sugözü in September 2012 was met with protests from locals and environmentalists.",
+      "aiddata_row": 91517,
+      "screen_flags": []
+     }
+    ]
+   },
+   "full_text": {
+    "description": "In June 2012, Emba Elektrik Üretim applied to build a 1200 MW coal-fired power plant in Yumurtalık district, where numerous other proposed coal-fired power plant projects are located. An environmental permitting meeting held in Sugözü in September 2012 was met with protests from locals and environmentalists. There was no news on the project for several years, and it seemed possible that it had been abandoned. Along with numerous other proposals, the proposal was revived in 2014 as the 1,200-MW, two-unit Hunutlu plant. The project began the public comment period for environmental permitting in June 2014. In 2015, the land was expropriated, with the price being set at 100 lira per square meter. The Turkish Energy Market Regulation Authority (EPDK) finally permitted the project construction and issued a 49-year generation license on July 9, 2015. Then, on June 29, 2016, Adana Bar, Turkish Bar Associations, Medical Chamber of Adana, Agriculture and Engineers Chamber of Adana and Doğu Akdeniz Çevre Dernekleri (East Mediterranean Environment Associations) filed a lawsuit against seven coal-fired power plant projects in the region, including the Emba Hunutlu power plant. Eighteen months later, on January 30, 2018, the expert report for the court case filed by Adana Bar, Turkish Bar Associations, Medical Chamber of Adana, Agriculture and Engineers Chamber of Adana and Doğu Akdeniz Çevre Dernekleri (East Mediterranean Environment Associations) was published, acknowledging that the Emba Hunutlu power plant would harm the public health and agricultural production in the area. Then, on October 30, 2018, the hearing of the court case by Adana Bar, Turkish Bar Associations, Medical Chamber of Adana, Agriculture and Engineers Chamber of Adana Doğu Akdeniz Çevre Dernekleri (East Mediterranean Environment Associations) was held in Ankara. Despite the expert report, which stated the harmful effects of the plant, the Ankara District Administrative Court decided not to cancel the permit of the Emba Hunutlu power plant.   In April 2019, China Development Bank, Industrial and Commercial Bank of China, Bank of China signed a $1.381 billion syndicated buyer’s credit facility (loan) agreement with EMBA Elektrik Üretim A.S. (also known as ‘EMBA Electricity Production’) — a special purpose vehicle and joint venture of Shanghai Electric Power (SEP, 50.01%), AVIC International Project Engineering (2.99%), and two local Turkish investors (47%) — for the 1320 MW Coal-Fired Emba Hunutlu Power Station Construction Project. All three banks acted as joint-lead managers and bookrunners and each bank contributed USD 460 million to the overall syndicated loan. See #91516 for ICBC’s contribution and #91517 for Bank of China’s contribution. The loan carries a 15-year maturity. It is a senior secured amortizing term loan that matures on March 29, 2034. Sinosure provided two overseas investment (equity and debt) insurance policies, with a maximum underwritten amount of $280 million for the equity component and $2.04 billion for the debt component (covering the loan’s principal and interest). Both insurance policies covered the risks of inconvertibility and transfer restrictions, expropriation, war and political violence, with an insurance liability period of 180 months. The proceeds of the loan were to be used by the borrower to partially finance a $1.7 billion commercial (EPC) contract between EMBA Elektrik Uretim A.S., CLP Power Engineering Co., Ltd (CPIPEC or 上海能源科技发展有限公司), and AVIC-INTL Project Engineering Company, which was initially signed on October 26, 2017 and subsequently revised and updated on April 25, 2019. The 1320 MW Coal-Fired Emba Hunutlu Power Station Construction Project is being financed as an independent power project (IPP) and financed with a debt-to-equity ratio of 80:20.   The purpose of the project is to construct a 1200MW supercritical coal-fired power plant — with two 660MW power generation units (‘Unit 1’ and ‘Unit 2’) — in the village of Sugözü village, the district of Yumurtalık, and the province of Adana near the Syrian border. The project will feature two seawater desalination systems to provide 7,320m³ of desalinated water per day for the plant’s operations. A selective catalytic reduction (SCR) DeNOx system will be installed at the plant for the efficient conversion of harmful oxides of nitrogen into N2 and H2O using ammonia. Additionally, facilities such as flue gas desulphurization unit along with dry and wet electrostatic precipitator system will be installed to minimize the dust and particulate emissions from the plant.   The primary infrastructure at the project site will include a turbine building, a crusher house platform, a comprehensive building platform, and an intake platform. In addition, the plant will feature a jetty and associated facilities, and a trestle with a connected road. The power generated by the Hunutlu thermal power plant will be evacuated through 380kV transmission lines and transmitted to the national grid operated by Turkish Electricity Transmission Corporation (TEIAS). The plant will be connected to the electricity transmission line between the Mersin 380 substation and the İsken TPP. A transmission line connecting Hunutlu TPP and Adana 380kV substation will be constructed as part of the project, in addition to three feeder displacement works at Adana 380kV substation. The project also includes the construction a port to receive coal. Upon completion, the plant will reportedly be capable of delivering up to 11.5 billion kilowatt-hours (kWh) of electricity to the country’s national grid annually. It is expected to contribute an estimated 3% of all electricity supplied across Turkey. The project also expected to provide employment opportunities for 4,000 employees during construction and 500 employees during production phase.   CLP Power Engineering Co., Ltd (CPIPEC or 上海能源科技发展有限公司) and AVIC-INTL Project Engineering Company are the general EPC contractors responsible for project implementation. However, several subcontractors are also involved, including Anhui No.1 Electric Power Construction Co., Ltd. (a subsidiary of China Energy Engineering Group), Ilk Construction, Hyflux Newspring Construction Engineering (Shanghai), ÇİMTEK Mühendislik Mimarlık, HNM Zemin Yapı, and ESI Eurosilo. Preliminary excavation works began in July 2018. Then, a logistical voyage ceremony took place in Shanghai on August 25, 2019, but on-site construction activities did not begin until September 22, 2019. In 2020, Turkey was the worst-hit country by COVID-19 in the MENA region, with over 1.8 million infections. However, altogether 1,831 Chinese and Turkish personnel chose to stay and continue working on the project. In August 2020, to speed up the construction, 455 Chinese staff members flew to Turkey and joined the project, despite the health risks. On February 17, 2020, the project’s first truss gantry crane was successfully hoisted into place. On March 21, 2020, the first steel structure of the Unit 2 boiler was successfully hoisted into place. On July 22, 2020, the power plant’s Unit 1 boiler was successfully hoisted into place. On March 10, 2021, the power plant’s Unit 2 boiler water storage tank furnace was successfully hoisted in place. On April 29, 2021, the steam turbines for Unit 1 and Unit 2 were successfully installed. On September 3, 2021, Unit 1 passed a hydraulic test, thereby laying a foundation for its commissioning. On June 18, 2022, Unit 1 began operations.   In June 2020, this project became a subject of local controversy when more than 20 non-governmental organizations called on Chinese banks to withdraw financial support for a coal-fired power plant under construction in Turkey, citing environmental damage and a disregard for the “green” pledge of China’s Belt and Road Initiative. The groups sent letters to China Development Bank, Bank of China Ltd., and Industrial & Commercial Bank of China Ltd., asking them to halt financing for the 1320 MW Coal-Fired Emba Hunutlu Power Station Construction Project. A related online petition garnered more than 19,000 signatures.  ",
+    "staff_comments": "1. This project is also known as the 2 x 660 MW Hunutlu Thermal Power Plant Project, the 2×660MW Supercritical Coal-fired Power Plant Project, the Emba Hunutlu Project, and the 1.32GW Hunutlu Thermal Power Plant (HTPP) Project. The Chinese project title is 土耳其胡努特鲁燃煤电站项目 or 胡努特鲁燃煤电厂项目 or 胡努特鲁2×66 万瓦燃煤电站项目 or 胡努特鲁项目. The Turkish project title is Emba Hunutlu Termik Elektrik Santrali. 2. King & Wood Mallesons’ PRC and Australian teams acted as PRC and English counsel to Shanghai Power and the borrower. Sunshine Law Firm acted as legal counsel to EMBA Power Generation and Mirze Rencber was the Turkish legal counsel to the project. 3. The Hunutlu coal-fired power plant is a part of Turkey’s Middle Corridor and is also supported by the Chinese Government’s Belt and Road Initiative (BRI).",
+    "location_narrative": "The purpose of the project is to construct a 1200MW supercritical coal-fired power plant — with two 660MW power generation units — in the village of Sugözü village, the district of Yumurtalık, and the province of Adana near the Syrian border. The project will feature two seawater desalination systems to provide 7,320m³ of desalinated water per day for the plant’s operations. A selective catalytic reduction (SCR) DeNOx system will be installed at the plant for the efficient conversion of harmful oxides of nitrogen into N2 and H2O using ammonia. Additionally, facilities such as flue gas desulphurization unit along with dry and wet electrostatic precipitator system will be installed to minimzse the dust and particulate emissions from the plant. The primary infrastructure at the project site will include a turbine building, a crusher house platform, a comprehensive building platform, and an intake platform. In addition, the plant will feature a jetty and associated facilities, and a trestle with a connected road. The power generated by the Hunutlu thermal power plant will be evacuated through 380kV transmission lines and transmitted to the national grid operated by Turkish Electricity Transmission Corporation (TEIAS). The plant will be connected to the electricity transmission line between the Mersin 380 substation and the İsken TPP. A transmission line connecting Hunutlu TPP and Adana 380kV substation will be constructed as part of the project, in addition to three feeder displacement works at Adana 380kV substation. The project also includes the construction a port to receive coal. More detailed locational information can be found at https://www.openstreetmap.org/way/941746258; https://www.openstreetmap.org/way/1030441913",
+    "description_chars": 8139
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "turkey-january-1980-price-rises-sal",
+     "shared_words": [
+      "ankara",
+      "january",
+      "price"
+     ],
+     "case_title": "Turkey's 24 January 1980 Price Rises and Wage Limits",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      1980,
+      1980
+     ],
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G442",
+   "recipient": "Turkey",
+   "iso3": "TUR",
+   "year": 2019,
+   "sector": "ENERGY",
+   "title": " ICBC provides $30 million loan for Efeler Geothermal Power Plant (GPP) Project",
+   "aiddata_rows": [
+    {
+     "id": 67341,
+     "title": " ICBC provides $30 million loan for Efeler Geothermal Power Plant (GPP) Project",
+     "amount_usd_2021": 33706938.3678641,
+     "year": 2019,
+     "status": "Completion"
+    }
+   ],
+   "limb_b_buckets": [
+    "land taken"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": false,
+   "candidate_sentences": {
+    "land taken": [
+     {
+      "field": "Description",
+      "sentence": "As per the 2018 ESIA addendum and confirmed by the 2019 ESA, land acquisition for the project was completed on a willing-buyer/willing-seller basis, and no direct/indirect physical displacement or disruptions in livelihood occurred.",
+      "aiddata_row": 67341,
+      "screen_flags": []
+     },
+     {
+      "field": "Description",
+      "sentence": "Outstanding land acquisition for Efe-8's transmission line by the national power distribution company will be monitored by the Company for compliance with PR1 and PR5.",
+      "aiddata_row": 67341,
+      "screen_flags": [
+       "prospective_verb_only"
+      ]
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On July 24, 2019, Gurmat Elektrik Uretim A.S. -- a special purpose vehicle (project company) that is jointly owned by Guris Holding A.S., Guris Insaat ve Muhendislik A.S. and Mogan Enerji Yatirim Holding A.S. — signed a syndicated debt financing package with a group of six lenders [European Bank for Reconstruction and Development (EBRD), the Asian Infrastructure Investment Bank (AIIB), the Black Sea Trade and Development Bank (BSTDB), Isbank, the Industrial Development Bank of Turkey (TSKB), and ICBC Turkey] for the Efeler Geothermal Power Plant Expansion Project. Under the financing arrangement, AIIB, EBRD, and BSTDB issued loans worth $100 million, $60 million, and $20 million, respectively. Isbank issued a $90 million loan, while ICBC Turkey issued a $30 million loan and Industrial Development Bank of Turkey (TSKB) issued a $50 million loan. These loans carried maturity lengths of 11.5 years.   The purpose of the project is to finance the expansion of a 97 MW geothermal power project located in the region of Aydin, Western part of Turkey. The expansion involves the construction of three additional binary GPP units — namely, the 22.6MW Efe-6, the 25MW Efe-7, and the 50MW Efe-8 — along with associated transmission lines, boreholes (22 production wells and 20 reinjection wells), and a pipeline network interconnecting the powerhouse and production wells. The primary infrastructure of the project includes the power plant units consisting of conventional steam turbines, borewells, pipelines, and emergency ponds to collect the geothermal fluids during a crisis. The electricity generated by Efe-6 is fed to the national grid via the existing 3.9km-long 154kV overhead transmission line of the Gürmat-1 GPP, while Efe-8 will use the existing 154kV Gürmat-2 transmission line. Interconnection with the transmission grid requires the construction of two new switchyards adjacent to the Efe-6 and Efe-8 site. Efe-7 is interconnected to the grid without any switchyard using a 31.5kV underground cable system that is 0.9km-long. The project is expected to help Turkey achieve a stable baseload geothermal power generation capacity of 810 gigawatt-hours (GWh) a year in 2022.   Dse Enerji was responsible for project implementation. The project was prepared in accordance with the EBRD Environmental and Social Policy (EBRD E&S Policy) and the EBRD Performance Requirements (EBRD PRs). The Project was placed in Category “A\", in accordance with the EBRD E&S Policy, due to risks associated with the over-ground network of connecting pipelines, their location near populated areas and agricultural land, cumulative land take of the project company’s geothermal power plants and operational carbon dioxide (CO2) and hydrogen sulfide (H2S) emissions. The project was subject to a national Environmental Impact Assessment (EIA) procedure and permits were granted by the MoEU for Efe-6, Efe-7 and Efe-8 Geothermal Power Plants (GPPs). The MoEU's approval of the Efe-8 EIA was challenged by a local CSO in Aydin in July 2017 in the local Administrative Court, which revoked the approval in September 2018. An appeal decision by the Chamber of the Council of State reversed the lower court's decision in December 2018, thus rendering the initial granting of the EIA approval valid and in effect while sending back the case to the lower court for re-examination and rendering of a further decision. With this Council of State decision, the project company could proceed with the construction of Efe-8 on the ground of the initial EIA approval; however, the approval needed to be reconfirmed by the Administrative Court. The ESIA prepared in accordance with EBRD’s standards for the original Gürmat-2 project and an ESIA Addendum for the expansion project were disclosed on the EBRD’s website respectively on September 24, 2014 and November 13, 2018. Additional due diligence was undertaken in 2019 following stakeholder concerns and updates on the project permitting resulting in additional mitigation measures. As required by the Lenders, an independent consultant was retained by the project company in 2019 to conduct an Environmental and Social Due Diligence (ESDD) of the project and prepare an Environmental and Social Assessment (ESA), Stakeholder Engagement Plan (SEP), and Non-Technical Summary (NTS). The ESDD confirmed that the project’s existing and anticipated environmental and social risks and impacts have not materially changed since the ESIA Addendum disclosure in November 2018, but the scrutiny on the industry across Turkey and challenges to geothermal operations in the Germencik region had heightened. It also confirmed that the project was not expected to have any impacts on any protected areas, and it was not expected to be associated with any resettlement. The project was structured to comply with the EBRD's PRs and national requirements. The ESDD also confirmed the project company’s track record in implementing an Environmental, Health, Safety and Social Management System (EHSSMS) in line with the national legislation and familiarity with good international industry practice. However, additional areas for improvement were identified during the ESDD and an updated Environmental and Social Action Plan (ESAP) were developed and disclosed to ensure that the project and operations followed the EBRD's PRs. Measures to mitigate environmental and social impacts during construction, operation, and in case of incidents such as leakage of geothermal fluids, and to strengthen stakeholder outreach were included in the design of the project and relevant 2019 E&S documentation disclosed on the EBRD’s and Company’s website in English and Turkish. As per the 2018 ESIA addendum and confirmed by the 2019 ESA, land acquisition for the project was completed on a willing-buyer/willing-seller basis, and no direct/indirect physical displacement or disruptions in livelihood occurred. Compensation was assessed by the EBRD to have been satisfactory. Outstanding land acquisition for Efe-8's transmission line by the national power distribution company will be monitored by the Company for compliance with PR1 and PR5.   The Efe-6 unit came online in August 2017, followed by the Efe-7, which began commercial operations in October 2018. The environmental impact assessment (EIA) of the Efe-8 was approved after reconsideration by the Turkish government in December 2018. EMRA issued the license for the final unit in 2019. The expansion was originally expected to reach completion with the commissioning of Efe-8 in October 2020. Efe-8 ultimately came online in January 2021. ",
+    "staff_comments": "1. This project is also known as the Gürmat-2 GPP Expansion Project. The Turkish project title is Efeler Jeotermal Enerji Santrali'dir. 2. Gurmat Elektrik Uretim A.S. , which owns Mogan Enerji Yatirim Holding (85%), Güriş Holding (4.72%), Güriş Inşaat ve Muhendislik (4.72%), Gurenerji Elektrik Uretim (0.56%), and Mr. Müsfik Hamdi Yamantürk (5%), operates the Efeler geothermal power plant.",
+    "location_narrative": "The purpose of the project is to finance the expansion of a 97 MW geothermal power project located in the region of Aydin, Western part of Turkey. More detailed locational information can be found at https://www.openstreetmap.org/way/245095602. ",
+    "description_chars": 6610
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "btc-pipeline-ardahan-turkey",
+     "shared_words": [
+      "ebrd",
+      "european",
+      "pipeline",
+      "reconstruction",
+      "turkey"
+     ],
+     "case_title": "Baku–Tbilisi–Ceyhan Pipeline in Turkey: Ardahan Villages and Ferhat Kaya",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2003,
+      2005
+     ],
+     "strength": "strong"
+    },
+    {
+     "case": "tuz-golu-gas-storage-informal-households",
+     "shared_words": [
+      "pipeline",
+      "site",
+      "turkey"
+     ],
+     "case_title": "Four households cleared from the Tuz Golu gas storage site",
+     "case_killed": 0,
+     "case_displaced": 17,
+     "case_years": [
+      2016,
+      2018
+     ],
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G327",
+   "recipient": "Uganda",
+   "iso3": "UGA",
+   "year": 2015,
+   "sector": "INDUSTRY, MINING, CONSTRUCTION",
+   "title": "ICBC provides $240 million loan for Sukulu Phosphate Comprehensive Industrial Development Project (Linked to Project ID#31123)",
+   "aiddata_rows": [
+    {
+     "id": 60236,
+     "title": "ICBC provides $240 million loan for Sukulu Phosphate Comprehensive Industrial Development Project (Linked to Project ID#31123)",
+     "amount_usd_2021": 269346136.698948,
+     "year": 2015,
+     "status": "Completion"
+    }
+   ],
+   "limb_b_buckets": [
+    "arrest or detention"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": true,
+   "candidate_sentences": {
+    "arrest or detention": [
+     {
+      "field": "Description",
+      "sentence": "In April 2019, two former senior officials at Uganda’s Ministry of Finance who had previously been arrested for soliciting a bribe a Chinese investors were sentenced to two years in prison.",
+      "aiddata_row": 60236,
+      "screen_flags": [
+       "names_another_country:chinese"
+      ]
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On August 1, 2013, the Government of Uganda granted an exploration license to Guangzhou Dong Song Energy Group (U) Co., Limited to develop the phosphates and rare earth minerals at Sukulu. Then, on December 4, 2015, the Industrial and Commercial Bank of China (ICBC) signed a $240 million loan agreement (project financing facility agreement) with Guangzhou Dong Song Energy Group (U) Co., Limited for the Sukulu Phosphate Comprehensive Industrial Development Project. Sinosure provided credit insurance for the loan. The borrower was expected to use the proceeds of the loan to partially finance a commercial contract with the 23rd Metallurgical Construction Group Company Limited. The project involved the construction of a phosphate fertilizer production plant. It was part of a larger $620 million investment in the Osukuru industrial complex that was expected to include a steel manufacturing factory, a sulphuric acid manufacturing factory, (a rare earth minerals mining plant), the Osukuru Thermal Power Station (with capacity generation of 12 megawatts), and the largest organic fertilizer factory in East Africa (with capacity of 300,000 metric tonnes of organic fertilizer annually). The project site is located in Sukulu village in Eastern Uganda’s Tororo District. It is about 11 km outside Tororo town -- 5 km along the Busia-Tororo road -- near the Uganda-Kenya border. 23rd Metallurgical Construction Group Company Limited was the contractor responsible for project implementation. Project implementation commenced on October 16, 2015 and the phosphate fertilizer production plant was officially commissioned/completed on October 24, 2018. After the plant’s commissioning, it produced 50,000 tons of bio-organic fertilizer, which was distributed to tea, sugarcane and other commercial farms, for one planting season to test its effectiveness. The trial test was successful and commercial fertilizer production was expected to commence in January 2020. However, commercial fertilizer production was halted because of a legal dispute (due to alleged fraudulent acquisition and ownership of a multi-million dollar mineral deposit that led to the cancellation of Guangzhou Dong Song Energy Group (U) Co., Limited’s mining lease). Guangzhou Dong Song Energy Group (U) Co., Limited originally expected to commission a steel plant, sheet glass factory and slag cement plant in June 2019, but ICBC withheld loan disbursements because of legal challenges facing the company. ICBC also notified Guangzhou Dong Song Energy Group (U) Co., Limited in 2019 that it was withholding $60 million, at least part of which was the undisbursed balance of the $240 million loan, due to the introduction of a new policy that required ICBC to lower its overseas loan centralization ratio. The COVID-19 pandemic also affected project implementation, as many staff were either laid off or unable to return to the project site. The Sukulu Phosphate Comprehensive Industrial Development Project was also plagued by corruption. In April 2019, two former senior officials at Uganda’s Ministry of Finance who had previously been arrested for soliciting a bribe a Chinese investors were sentenced to two years in prison. The Anti-Corruption Court at Kololo also banned the two officers who were interdicted in 2017, from holding any public office for 10 years. Presiding Judge Lawrence Gidudu convicted former principal finance officer, John Ogol Charles Ogol and Geoffrey Turyamuhika alias Tumwine (senior economist) for receiving and accepting a $50,000 bribe from Hassan Sserunjogi on March 27, 2017. According to evidence in court, the convicted persons received the money in exchange for expediting documentation for financing the construction of a power substation and transmission line at the Sukulu Phosphate Comprehensive Industrial Development Project in Tororo. In addition to the jail punishment, Justice Gidudu ordered Ogol and Turyamuhika to pay a fine of Shs 4.8 million each. Then, in September 2022, President Museveni lamented the fact that Ugandan Ministry of Finance officials had cheated the project owner. He said ‘That Chinese man, they took bribes from him’ [and] ‘I have reached out to the President of China to get me another investor if the other one has problems. Or else I will get a solution. Tororo will give us phosphorus, associated gas, nitrogen and Lake Katie will give us potassium’.",
+    "staff_comments": "1. This project is also known as the Osukuru Industrial Complex Project, the Sukulu Phosphate Project in Tororo, and Phase 1 of the Sukulu Phosphate Comprehensive Industrial Development Project. The Chinese project title is 苏库卢碳酸岩综合产业开发项目 or 托罗罗地区的苏库鲁磷酸工厂项目2. Some sources indicate that, while ICBC issued a $240 million loan for Phase 1 of the project, it agreed to lend Guangzhou Dong Song Energy Group (U) Co., Limited up to $520 million for the project as a whole. 3. This project supported the development of phosphorite mine, iron mine, niobium mine, rare earth mine, fertilizer manufacturing facilities and refining facilities. 4. Guangzhou Dong Song Energy Group (U) Co., Limited is also known as Guangzhou DongSong Energy Group Company and M/S Guangzhou Dong Song Energy Group Company. 5. It is known that ICBC and Guangzhou Dong Song Energy Group (U) Co., Limited amended and restructured their loan agreement (project financing facility). However, the specific changes that were made are unknown. This issue warrants further investigation.6. There is some official reporting (http://fec.mofcom.gov.cn/article/fwydyl/zgzx/201808/20180802774372.shtml) that suggests the Government of Uganda issued a sovereign guarantee in support of the ICBC loan. This issue warrants further investigation. ",
+    "location_narrative": "This project is located in Sukulu village in Eastern Uganda’s Tororo District. It is about 11 km outside Tororo town -- 5km along the Busia-Tororo road -- towards the Uganda-Kenya border. The approximate locational coordinates are 0°37'25.0N, 34°09'13.0E (Latitude:0.623611; Longitude:34.153611). More detailed location information can be found at: https://www.openstreetmap.org/node/2229128058",
+    "description_chars": 4402
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "tilenga-eacop-land-acquisition",
+     "shared_words": [
+      "acquisition",
+      "along",
+      "other",
+      "uganda"
+     ],
+     "case_title": "Tilenga oilfield and EACOP pipeline: land taken from Ugandan farmers",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2020,
+      null
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "bujagali",
+     "shared_words": [
+      "investment",
+      "near",
+      "uganda"
+     ],
+     "case_title": "Bujagali Dam",
+     "case_killed": null,
+     "case_displaced": null,
+     "case_years": [
+      2001,
+      2017
+     ],
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G217",
+   "recipient": "Zambia",
+   "iso3": "ZMB",
+   "year": 2018,
+   "sector": "TRANSPORT AND STORAGE",
+   "title": "[Suspended] China Eximbank provides loan for 321 km Lusaka-Ndola Dual Carriageway Project (Linked to Project ID#53037 and ID#92430)",
+   "aiddata_rows": [
+    {
+     "id": 53037,
+     "title": "China Eximbank makes $147 million loan disbursement for 321 km Lusaka-Ndola Dual Carriageway Project (Linked to Project ID#92425, ID#92430)",
+     "amount_usd_2021": 160207912.938165,
+     "year": 2018,
+     "status": "Implementation"
+    },
+    {
+     "id": 92425,
+     "title": "[Suspended] China Eximbank provides loan for 321 km Lusaka-Ndola Dual Carriageway Project (Linked to Project ID#53037 and ID#92430)",
+     "amount_usd_2021": 1154052348.52167,
+     "year": 2018,
+     "status": "Suspended"
+    },
+    {
+     "id": 92430,
+     "title": "Jiangxi Bank provides $187 million loan for 321 km Lusaka-Ndola Dual Carriageway Project (Linked to Project ID#53037 and ID#92425)",
+     "amount_usd_2021": 203801902.853312,
+     "year": 2018,
+     "status": "Implementation"
+    }
+   ],
+   "limb_b_buckets": [
+    "arrest or detention"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": true,
+   "candidate_sentences": {
+    "arrest or detention": [
+     {
+      "field": "Description",
+      "sentence": "That is why I have said very very categorically that no road will cost $1.2 billion, it won’t! As long as I am Minister, as long as this government is in place, as long as President Hakainde Hichilema is in place, there will be no road costing $1.2 billion per kilometer […].’ Then, in February 2022, local media reported that “the contractor [CJIC] who was picked by the previous PF regime to work on the Lusaka-Ndola dual carriageway at a cost of US$1.2 billion is back in Zambia and has agreed to do the works at a 50 per cent lower rate.” In response, Zambia Association of Citizen Contractors (Z",
+      "aiddata_row": 92425,
+      "screen_flags": [
+       "prospective_and_past_verbs_both_present"
+      ]
+     },
+     {
+      "field": "Description",
+      "sentence": "That is why I have said very very categorically that no road will cost $1.2 billion, it won’t! As long as I am Minister, as long as this government is in place, as long as President Hakainde Hichilema is in place, there will be no road costing $1.2 billion per kilometer […].’ Then, in February 2022, local media reported that “the contractor [CJIC] who was picked by the previous PF regime to work on the Lusaka-Ndola dual carriageway at a cost of US$1.2 billion is back in Zambia and has agreed to do the works at a 50 per cent lower rate.” In response, Zambia Association of Citizen Contractors (Z",
+      "aiddata_row": 92430,
+      "screen_flags": [
+       "prospective_and_past_verbs_both_present"
+      ]
+     },
+     {
+      "field": "Description",
+      "sentence": "That is why I have said very very categorically that no road will cost $1.2 billion, it won’t! As long as I am Minister, as long as this government is in place, as long as President Hakainde Hichilema is in place, there will be no road costing $1.2 billion per kilometer […].’ Then, in February 2022, local media reported that “the contractor [CJIC] who was picked by the previous PF regime to work on the Lusaka-Ndola dual carriageway at a cost of US$1.2 billion is back in Zambia and has agreed to do the works at a 50 per cent lower rate.” In response, Zambia Association of Citizen Contractors (Z",
+      "aiddata_row": 53037,
+      "screen_flags": [
+       "prospective_and_past_verbs_both_present"
+      ]
+     }
+    ]
+   },
+   "full_text": {
+    "description": "In 2015, a Restricted Invitation to Tender (Ref: RDA/PPP/CE/001/15) was issued by the Road Development Agency (RDA) of Zambia. It stated that the RDA intended to enter into a Public-Private Partnership Agreement in form of a concession to undertake the upgrading of the Lusaka to Ndola road to dual carriageway. This Request for Proposals (RFP) solicited for financially and technically competent prospective concessionaires to implement the 321 km Lusaka-Ndola Dual Carriageway Project on a ‘Finance, Design, Construct, Operate, Maintain and Toll’ basis. According to the RDA, the Economic Internal Rate of Return (EIRR) for the project was approximately 29 per cent and the cost of construction was estimated at K930 million. However, in December 2016, the Government of Zambia’s PPP Council granted authority to change the procurement method for the project from a PPP model to an Engineering, Procurement, Construction plus Finance (EPC+F) model.   Then, on May 30, 2017, RDA and China Jiangxi Corporation for International Economic and Technical Cooperation (CJIC or 中国江西国际 or 江西国际) signed an EPC+F contract worth $1,245,775,986.98. CJIC reportedly secured loans from Jiangxi Bank Co., Ltd. (Jiangxi Bank) and the Jiangxi Branch of China Eximbank worth $1,245,775,986.98 in 2018 to finance this EPC+F contract. The Government of Zambia reportedly issued a sovereign guarantee in support of the loans. The face value of the Jiangxi Bank loan, which is captured via Project ID# 92430, was $187,000,000 (i.e approximately 15% of the cost of the commercial contract . Therefore, the estimated value of the loan from the Jiangxi Branch of China Eximbank is $1,058,909,588.93 (i.e. approximately 85% of the cost of the commercial contract). This loan is captured via Project ID# 92425. The borrowing terms of the China Eximbank loan and the Jiangxi Bank Co., Ltd. (Jiangxi Bank) are unknown. However, it is known (based on official RDA documentation) that China Eximbank disbursed approximately $147 million by the end of 2018.  It is also known that, as of July 2022, the Jiangxi Bank loan had achieved a 16% disbursement rate ($30,000,000 out of $187,000,000). In a statement to Parliament, Zambia’s Minister of Infrastructure and Housing later revealed that, although the total contract value of $1,245,775,986 (approx. K11.1 billion) was a major increase from the original estimated K930 million), the project’s EIRR had declined to 15%.   The initial specification for the project included two roads (321 km and 45 km), construction of a new carriageway lane road (6.8m wide w/2m shoulders), median separation, service lanes, pedestrian accommodation facilities, 50mm Asphalt concrete on 200mm crushed stone base, 300mm cement stabilized sub-base, bypasses around Kapiri and Kabwe (business districts), drainage works, reconstruction of existing road, and construction of toll sites. However, the final scope of the project included the construction of 321 km of the core Lusaka to Ndola Dual Carriageway, but not the 45 km of the Kafulafuta to Masangano dual road. The core Lusaka-Ndola Dual Carriageway has several interlinks, including the Lusaka/Kabwe road − T002 (144 km), Kabwe/Kapiri Mposhi road − T002 (61 km), Kapiri Mposhi/Ndola road − T003 (116 km) and Kafulafuta/Masangano road − M006 (45 km). CJIC was the EPC contractor responsible for project implementation.   A formal groundbreaking ceremony took place on September 8, 2017. However, work on the project halted in June 2021 due to overdue contractor payments. Zambia’s Ministry of Finance reportedly issued a directive to postpone the construction on the project. Construction had not yet begun in earnest. At that time (June 2021), RDA Public Relations Manager Masuzyo Ndholvu announced that ‘[t]o date, the contractor [CJIC] has carried out several preliminary activities such as setting up the construction camps site that is the preparation of designs, identified project-affected persons (PAPS) and property and services that may require to be relocated to pave way for the construction works on the Lusaka–Ndola dual carnage way on the great north road (GNR).” The RDA also said at the time that project would “only resume once the debt situation improves in the country or funds are sourced.’ This statement implies that the China Eximbank either suspended disbursements for the project.   Then, in January 2022, Zambia’s Minister of Infrastructure, Housing Urban and Development Charles Milupi announced that the New Dawn Government was working hard to ensure that the 321 km Lusaka-Ndola Dual Carriageway Project would recommenced by the end of the rainy season with a revised cost that would be substantially less than that negotiated by the previous Patriotic Front (PF) Government. Several months earlier, Milupi said that ‘[o]verpricing, you have to have a benchmark and we are developing a benchmark which is a standard per unit price. That is why I have said very very categorically that no road will cost $1.2 billion, it won’t! As long as I am Minister, as long as this government is in place, as long as President Hakainde Hichilema is in place, there will be no road costing $1.2 billion per kilometer […].’ Then, in February 2022, local media reported that “the contractor [CJIC] who was picked by the previous PF regime to work on the Lusaka-Ndola dual carriageway at a cost of US$1.2 billion is back in Zambia and has agreed to do the works at a 50 per cent lower rate.” In response, Zambia Association of Citizen Contractors (ZACCO) General Secretary Danny Simumba stated ‘that the nation deserves to know what exactly has led to the reduction in the amount from the initial one point two billion dollars to five hundred billion dollars.’ He said that ‘in the absence of such information, people would continue speculating that there was corruption in the initial transaction.’   At the time, William Harrington, a former Zambian Minister of Communications and Transport, also said that “[t[his whole matter smells of corruption in a dubiously awarded contract over which the contractor should be summoned for questioning by the [Anti-Corruption Commission] and to show cause why he should not be arrested for what appears to be a dubious scheme to steal money from the people of Zambia in collusion with the former Patriotic Front regime through overpricing.’ Then, on July 29, 2022, Ministry of Finance & National Planning (MOFNP) of Zambia announced that it was seeking lender approval to formally cancel the Jiangxi Bank loan’s undisbursed balance ($157,000,000); however, it also noted that it had not yet secured formal lender approval for this action. This announcement came approximately 21 months after the Government of Zambia defaulted on its repayment obligations to Eurobond holders and approximately 6 weeks after China, France, and 14 other countries formed a creditor committee to discuss the Zambian authorities’ request for a debt treatment under ‘the Common Framework for Debt Treatment beyond the DSSI’ endorsed by the G20 and the Paris Club.",
+    "staff_comments": " 1. The $147 million loan disbursement from China Eximbank for the 321 km Lusaka-Ndola Dual Carriageway Project is captured via Project ID#53037. China Eximbank’s apparent suspension of the loan for the 321 km Lusaka-Ndola Dual Carriageway Project is captured via Project ID#92425. 2. This project is also known as the Lusaka-Kapiri Mposhi-Ndola Dual Carriageway Project and the Upgrade T2 Road from Lusaka to Ndola, 321 km; Luansha-Fisenge Masangano Road, 45 km; Kabwe and Kapiri-Mposhi bypasses. The Chinese project title is 赞比亚卢萨卡至恩多拉高速公路项目 or 卢萨卡至恩多拉高速公路项目. 3. According to the Annual Work Plans of Zambia Road Development Agency, the source of funding for the project was reported to be  China Eximbank, in 2017, in 2018 and 2019, but in 2020 it was reported to be the Bank of China.  This issue warrants further investigation. 4. The RDA 2018 Approved Road Sector Annual Work Plan (RSAWP) shows a disbursement of K1.4 billion ($147 million) for 86 km worth of works under the Lusaka-Ndola Dual Carriageway Project (for the period covering 2018) and it identifies China Eximbank as the source of funding. 5. The China Eximbank loan is not included is not included the database of Chinese loan commitments that SAIS-CARI released in July 2020. Nor is it included it in the China’s Overseas Development Finance Dataset that Boston University's Global Development Policy Center published in December 2020. 6. In 2019, a Zambian parliamentary committee was informed that ‘the contract [for the Lusaka-Ndola dual carriageway] was to be financed using the Contractor Financing Initiative (CFI) model of Financing. However, in order to keep the country’s debt at sustainable levels, the Ministry of Finance (MoF) had granted authority to terminate the aforesaid signed contract. The Road Development Agency shall engage the office of the Attorney General to ensure that any litigation costs were avoided.’ CFI is another term for the EPC+F modality. Under most EPC+F contractual arrangements, a loan is extended to the EPC contractor but with a sovereign guarantee from the host government. 7. Jiangxi Bank Co., Ltd. (Jiangxi Bank) is a state-owned commercial bank in China. 8. The $187 million loan is identified by SAIS-CARI and Boston University’s Global Development Policy Center as supporting the ‘Chalala Barracks’ Project (also known as the 6th Regiment Chalala Barracks Project). However, the 6th Regiment Chalala Barracks Project was supported by a $181 million buyer's credit from China Eximbank, which was used to partially finance a $201,391,650 commercial contract between the Ministry of Defense of the Government of Zambia and Jiangxi Zhongmei Engineering Construction Co., Ltd. (as captured via AidData via Project ID#88394). In July 2022, the Ministry of Finance & National Planning (MOFNP) of Zambia disclosed that the $187 million Jiangxi Bank loan was issued to finance approximately 15% of the $1,245,775,986.98 cost of the commercial contract for the 321 km Lusaka-Ndola Dual Carriageway Project between RDA and China Jiangxi Corporation for International Economic and Technical Cooperation, which was signed on May 30, 2017.",
+    "location_narrative": "The core Lusaka-Ndola Dual Carriageway has several interlinks, including the Lusaka/Kabwe road − T002 (144 km), Kabwe/Kapiri Mposhi road − T002 (61 km), Kapiri Mposhi/Ndola road − T003 (116 km) and Kafulafuta/Masangano road − M006 (45 km).  More detailed locational information can be found at https://www.openstreetmap.org/relation/6437475#map=12/-12.9425/28.2098 and https://www.openstreetmap.org/way/369188743 and https://www.openstreetmap.org/way/369188752 and https://www.openstreetmap.org/way/250834184 and https://www.openstreetmap.org/way/369292247#map=16/-12.8312/28.2213.",
+    "description_chars": 7056
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "zambia-textiles-collapse",
+     "shared_words": [
+      "international",
+      "lusaka",
+      "zambia"
+     ],
+     "case_title": "Zambia textile and clothing industry collapse",
+     "case_killed": null,
+     "case_displaced": null,
+     "case_years": [
+      1991,
+      2002
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "zambia-donegal-vulture-fund",
+     "shared_words": [
+      "international",
+      "lusaka",
+      "zambia"
+     ],
+     "case_title": "Donegal International v Zambia",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      1999,
+      2007
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "zambia-camdex-copper-revenue",
+     "shared_words": [
+      "international",
+      "lusaka",
+      "zambia"
+     ],
+     "case_title": "Camdex tries to seize Zambia's copper export earnings",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      1995,
+      1997
+     ],
+     "strength": "worth_checking"
+    }
+   ]
+  }
+ ]
+}

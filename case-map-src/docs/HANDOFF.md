@@ -35,22 +35,32 @@ forward without re-reading the panel.**
 | IMF arrangements | 160 | 1,693 | 9.5% |
 | World Bank projects, all years | **435** | 15,720 | **2.8%** |
 | Treaty lawsuits | 4 | 1,332 | 0.30% |
-| Chinese state loans, 2000-2021 | **93** | 20,985 | **0.44%** |
+| Chinese state loans, 2000-2021 | **91** | 20,985 | **0.43%** |
 | Foreign company projects, 2021-2023 | 9 | 20,032 | 0.04% |
 | Aid activities | 35 | 1.5 million | 1 in 42,857 |
 | Private bank and bond lending | 79 | not counted | — |
 | Payment services for governments and armed groups | 5 | not counted | — |
 
-**How much of that table round 37 actually re-read, because this matters more than the figures.**
-The About panel was re-read from the rendered page after the merge and its rows are in "Current
-state" below. The eight-row coverage brief was **not**: it renders inside the "Every kind together"
-kind panel, which opens closed (`S.kindOpen` starts `false`), and a headless click-through to it was
-not built. **So every row of the table above except the Chinese one is round 35's reading and may be
-stale.** The Chinese row was changed because it is countable from the data: cases carrying `lk: "cn"`
-went 84 to 93 across round 37's seven cases and two of its extends, over the 20,985 denominator the
-panel prints. That is a count from `window.CASES`, not a figure read off the rendered brief. **The
-next round should open that brief headlessly and re-read all eight rows**, and whoever does it should
-add the click-through to the test script so it stops being skipped.
+**Every row of that table was re-read from the rendered page after round 37's merge, and the way to
+read it is now in the test script — because getting at it was the thing that went wrong twice.**
+
+`#brief` holds the table from page load, but **`#brief`'s parent has `display:none`** while
+`S.kindOpen` is false, and `innerText` returns the empty string for anything inside a hidden
+element. `textContent` returns all of it. Clicking the kind bar is neither necessary nor sufficient:
+the content is already in the DOM. `case-map-src/test_map.js` now reads it with `textContent` and
+prints it, so this stops being skipped.
+
+**Two readings of this table were wrong before that, both in the same direction, and the lesson is
+the file's own rule.** Round 37 first recorded the brief as unreachable; it then changed the Chinese
+row to 93 by counting `lk: "cn"` cases in `window.CASES` instead. **The page says 91.** The page
+does not count that row as "cases carrying `lk: cn`" — `kindsOf()` builds it from its own test — so a
+count that looks equivalent is not. The rule this file already states is the one that was broken:
+*the only figures to trust are the ones read out of the rendered panel.* A figure computed from the
+data is a different measurement wearing the same label.
+
+Also re-read and worth carrying: **complaints belonging to a case are now 781 of 3,001**, up from
+768 after round 16 and 746 when round 14 built the section. The harm-flagged subset in the table
+above, 434 of 483, is a different denominator and did not move.
 
 Separate, and **not** a row of that table: **309** map cases whose harm began in 2004-2013 with the
 World Bank or IFC among the lenders. 234 of those are among the 249 matched; 75 are cases ICIJ never
@@ -449,10 +459,11 @@ to the screen.**
 
 ### What round 37 did not do
 
-**It did not touch the 379 financings without decisive evidence**, which is the rest of this queue
-and is where the next AidData round goes. It wrote no `cx`/`cp` AidData provenance onto the three
-existing cards that need it (below). And it did not re-read the rendered "How much of all lending
-does this map cover?" brief — see the note under the coverage table.
+**It did not touch the rest of the queue**, which round 38 recounted as 230 financings, 52 of them
+able to meet limb (b). It wrote no `cx`/`cp` AidData provenance onto the three existing cards that
+need it (below). It first recorded the lending-coverage brief as unreachable and then mis-stated one
+of its rows from a count of its own; both are corrected above, and the brief is now read by
+`case-map-src/test_map.js`.
 
 ## READ THIS FIRST: round 36 is merged, built, tested and pushed
 
@@ -1436,16 +1447,51 @@ Do not re-queue them.
 Round 37 closed the front of the AidData queue — the 59 financings carrying decisive evidence. In
 order of what each would do for the aim:
 
-1. **The rest of the AidData queue: 379 financings with no decisive-evidence sentence, plus two
-   named leads.** This is the live case-discovery queue and it is the one that moves the
-   lopsidedness, for the structural reason round 37 demonstrated. Before commissioning it, do three
-   cheap things round 37 paid to learn: rename or split the `decisive_buckets` "relocation count"
-   bucket so a projection cannot pass as a count; add a **country-of-death check**, which clears a
-   whole class of rows where the death is in China or a third country; and widen the relief screen,
-   because six relief rows in round 37 carried no `r36_relief` flag. Expect a thinner yield than
-   round 37 — these are the rows where the dataset's own text records no deciding sentence, so the
-   case has to come from outside it entirely. Budget it as search-bound but note that round 37's
-   writers used 6 to 9 searches each, not 30: AidData's project pages serve in full over `curl`.
+1. **The rest of the AidData queue: 230 financings, of which 52 can meet limb (b) and 129 cannot.**
+   **The "379" an earlier version of this line gave was wrong, and so was round 36's own figure.**
+   Round 36's table reads "left to research: 471 rows, 379 financings", but that does not survive
+   being recounted at financing level. Counted properly — a financing screened out only when *every*
+   one of its rows is screened out, which is the right test because one live row is enough to
+   research the financing — 364 of the 653 financings have every row screened out, 289 have at least
+   one live row, and removing round 37's front of 59 leaves **230**. Screening a financing out as
+   soon as *any* row carries a flag gives 220; the difference is the 10 financings where one row is
+   relief or demonstration-only and another is not.
+
+   **What is in the 230 is the thing to understand before commissioning anything.** Only nine carry
+   a decisive bucket at all, against 59 in round 37's front, and the decisive buckets are now
+   effectively exhausted:
+
+   | What the candidate sentences carry | Financings |
+   | --- | --- |
+   | Protest flag and nothing else | 129 |
+   | Pollution or a protest/pollution mix, no limb-(b) bucket | 49 |
+   | **Arrest, land taken, compensation withheld, a death or a relocation count** | **52** |
+
+   **A protest is not harm under test 2 unless something happened to the people in it**, which is
+   why the 129 are not a queue. The 52 are, and that is round 38's front.
+
+   **Seven of those 52 look like decisive evidence round 36's flag missed. They are not.** All seven
+   are already on the map *and already carry the figure*: Coca Codo Sinclair's tunnel collapse at
+   `killed: 13`, Sorik Marapi's geothermal blowout at `killed: 5`, Lower Sesan 2 at
+   `displaced: 5000`, Souapiti at `displaced: 16000`, plus Ramu, Techo airport and Chico River
+   (Macli-ing Dulag at `killed: 1`). Round 36's `r36_dedupe_hint` caught every one, which is that
+   screen working rather than failing. Ramu is the instructive one: AidData's "a man died from a
+   'cocktail of heavy metals,' the lawsuit alleges" is an allegation in a pleading, and the card
+   correctly holds `killed: 0`. **Check a decisive-looking sentence against the existing card before
+   treating it as a miss** — the figure is usually already there.
+
+   So **45 of the 52 are genuinely new**, and they fall in countries this map is thin in: Belarus,
+   Bosnia and Herzegovina, Nauru, the Kyrgyz Republic, Mongolia, Uzbekistan, Ukraine, Zimbabwe,
+   Guinea-Bissau, Costa Rica, Honduras. Europe and Central Asia and the Middle East and North Africa
+   are the two thin regions this file has named for several rounds, and this is the first queue that
+   reaches them.
+
+   Before commissioning, do three cheap things round 37 paid to learn: rename or split the
+   `decisive_buckets` "relocation count" bucket so a projection cannot pass as a count; add a
+   **country-of-death check**, which clears a whole class where the death is in China or a third
+   country; and widen the relief screen, because six relief financings in round 37 carried no
+   `r36_relief` flag. Budget it as search-bound, but note round 37's writers used 6 to 9 searches
+   each against a 30-call plan: AidData's project pages serve in full over `curl`.
    - **G408 Samoa, Apia Park stadium** is a drop the check overturned and is ready to write: a
      February 2007 worker death with a cause, carried by RNZ Pacific with the contractor named.
      Reach it with WebFetch; `curl` fails on a proxy 502.
@@ -3614,7 +3660,15 @@ The owner asked for all five open decisions to be settled rather than carried fo
 4. **Merge:** back up `base.html`, copy the checked file into `rounds/`, then `merge.py` (cases), `merge_whole.py` (whole text) or `merge_codesc.py` (company descriptions). merge.py does not handle people; add those directly to `window.ENT`.
 5. **Build inputs for the next batch** straight from `base.html` rather than from an old list. Conditions: cases with `research` in `ct`, minus ids already in any `rounds/r26f_conds_research_*.json`, ranked by `killed * 100 + displaced`. Companies: names in `companies[]` with no `desc`, **minus every name already present as a key in any `rounds/r26f_companies_*.json`**, ranked by how many cases use the name, passing up to four `uses` each for context. Skipping the already-attempted names matters: batch 5a wasted 10 of its 60 slots re-researching names that earlier batches had already looked for and deliberately blanked. A name that came back blank with a sound note is finished, not pending.
 6. **Build:** `python3 case-map-src/build.py` (should print "loan-condition cases matched 173 of 173").
-7. **Test** headless Chromium via Playwright (`NODE_PATH=$(npm root -g)`), served with `python3 -m http.server 8766` in the repo. Re-rendering menus can make Playwright's own clicks hang; clicking through `page.evaluate(() => el.click())` is reliable. Check for page errors and the case count.
+7. **Test** with `case-map-src/test_map.js`: serve the repo with `python3 -m http.server 8766`, then
+   `NODE_PATH=$(npm root -g) node case-map-src/test_map.js`. It prints the case, pattern and
+   suspected-pattern counts, every page and console error, the About panel's completeness rows and
+   the eight-row lending-coverage brief — the four things a round has to read before it can claim
+   anything. Chromium is already present at `/opt/pw-browsers`; `npx playwright install` is not
+   needed and silently does nothing. The two non-obvious parts are in the script's own header
+   comment: the completeness figures exist only in the browser, and the coverage brief must be read
+   with `textContent` because its parent is hidden. Headless Chromium via Playwright directly
+   (`NODE_PATH=$(npm root -g)`), served the same way, for anything the script does not cover. Re-rendering menus can make Playwright's own clicks hang; clicking through `page.evaluate(() => el.click())` is reliable. Check for page errors and the case count.
 8. **Push:** `git add globalization.html case-map-src && git commit` (attribution trailers from the session reminder), then `git pull --rebase -q && git push -q`. If the push is refused by the git proxy, attach the repo to the session first (add_repo, push access).
 
 ## Case shape

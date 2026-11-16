@@ -1,0 +1,1463 @@
+{
+ "round": 38,
+ "what": "The limb-(b)-capable remainder of the AidData queue. 52 of the 230 financings left after round 37 carry a candidate bucket that can meet limb (b): an arrest, land taken, compensation withheld, a death with a cause or a relocation count. The other 178 carry a protest or pollution flag and nothing else.",
+ "brief": "docs/BRIEF36.md after docs/BRIEF20.md in full, then BRIEF22's forward rule, then CHECK31.md.",
+ "read_the_screen_flags": "Every candidate sentence carries screen_flags from three screens round 37 paid to learn. They annotate and never drop. prospective_verb_only: the sentence's own verb is a plan, so the figure is a projection and must not reach `displaced` - round 32's fault and round 37 found it pre-labelled in seven of eight cases. names_another_country: the death or event may have happened outside the recipient country, which is not this project's harm. relief_or_disaster_language: the money may have responded to the harm rather than caused it, and round 37 found six such financings that carried no r36_relief flag.",
+ "every_limb_b_sentence_carries_a_screen_flag": "True means every sentence that could meet limb (b) is also flagged by a screen. That is a warning, not a verdict: open the full text and decide. Round 31 measured a screen that dropped on a sentence and it destroyed about one real case in nine.",
+ "hard_rules": [
+  "A protest is not harm under test 2 unless something happened to the people in it.",
+  "AidData's prose is not a document. Open the source it rests on before any figure reaches a card.",
+  "A relocation verb is not a count, and a projection is not an outcome.",
+  "Research the FINANCING once; aiddata_rows lists every lender row on it.",
+  "Seven entries are marked already_on_map_and_figure_already_carried. Check the live card first: in round 37 every decisive-looking sentence of this kind was already on its card.",
+  "Where a dedupe hint holds on place and years, make it an EXTEND, not a new case.",
+  "Put the AidData record id, and a P-number where one exists, in lenders[0].role.",
+  "lk is 'cn'. Do NOT set `kind`: all 93 existing lk:cn cases carry none, and round 37 found kind:'off' would file Chinese credit with the World Bank's.",
+  "Never write displaced: 0. Omit the field and put the reasoning in displaced_note.",
+  "No researcher's voice on a card. Name your own two weakest entries in your report."
+ ],
+ "search_budget": "About 30 WebSearch calls, 45 ceiling; the ~200-per-turn cap is shared across three writers. Round 37's writers needed only 6 to 9 each because AidData's project pages serve in full over curl.",
+ "batch": "c",
+ "rows": 17,
+ "countries": [
+  "Argentina",
+  "Belarus",
+  "Bosnia and Herzegovina",
+  "Brazil",
+  "Colombia",
+  "Costa Rica",
+  "Ecuador",
+  "Honduras",
+  "Philippines",
+  "Serbia",
+  "Ukraine",
+  "Uzbekistan",
+  "Venezuela"
+ ],
+ "financings": [
+  {
+   "financing": "G203",
+   "recipient": "Philippines",
+   "iso3": "PHL",
+   "year": 2011,
+   "sector": "GOVERNMENT AND CIVIL SOCIETY",
+   "title": "China's Ministry of Public Security signs letter of exchange for law enforcement equipment worth 14M Philippine pesos to the Philippines Ministry of Justice",
+   "aiddata_rows": [
+    {
+     "id": 49601,
+     "title": "China's Ministry of Public Security signs letter of exchange for law enforcement equipment worth 14M Philippine pesos to the Philippines Ministry of Justice",
+     "amount_usd_2021": 397601.143785986,
+     "year": 2011,
+     "status": "Pipeline: Pledge"
+    }
+   ],
+   "limb_b_buckets": [
+    "arrest or detention"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": false,
+   "candidate_sentences": {
+    "arrest or detention": [
+     {
+      "field": "Description",
+      "sentence": "In 2017, the Secretary of Justice of the Philippines, Leila de Lima — who was exchanging these letters, was detained and as of 2023 remains in custody.",
+      "aiddata_row": 49601,
+      "screen_flags": []
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On December 13, 2011, the Ministry of Public Security of the People's Republic of China exchanged letters for the donation of 14 million Philippine pesos worth of law enforcement equipment to the Department of Justice of the Republic of the Philippines. This donation is attended to better crack down on drug trafficking, economic crimes and telecommunication fraud. In 2017, the Secretary of Justice of the Philippines, Leila de Lima — who was exchanging these letters, was detained and as of 2023 remains in custody. The project's current status is uncertain.",
+    "staff_comments": "",
+    "location_narrative": "",
+    "description_chars": 561
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "philippines-nrimp2-unpaid-land-claims",
+     "shared_words": [
+      "philippine",
+      "philippines",
+      "public"
+     ],
+     "case_title": "Philippine road works built on land before the claims were paid",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2008,
+      2016
+     ],
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G584",
+   "recipient": "Uzbekistan",
+   "iso3": "UZB",
+   "year": 2008,
+   "sector": "INDUSTRY, MINING, CONSTRUCTION",
+   "title": "CDB contributes $1.75 billion to $3.5 billion syndicated loan for Uzbek Sections of Lines A and B of the Central Asia-China Gas Pipeline Project (Linked to Project ID#54489, #39997, #54528, #39955, #70616, #91898, #91917, #91923, #91926, #91901)",
+   "aiddata_rows": [
+    {
+     "id": 91901,
+     "title": "CDB contributes $1.75 billion to $3.5 billion syndicated loan for Uzbek Sections of Lines A and B of the Central Asia-China Gas Pipeline Project (Linked to Project ID#54489, #39997, #54528, #39955, #70616, #91898, #91917, #91923, #91926, #91901)",
+     "amount_usd_2021": 2668025363.41083,
+     "year": 2008,
+     "status": "Completion"
+    },
+    {
+     "id": 91917,
+     "title": "BOC contributes $1.75 billion to $3.5 billion syndicated loan for Uzbek Sections of Lines A and B of the Central Asia-China Gas Pipeline Project (Linked to Project ID#54489, #39997, #54528, #39955, #70616, #91898, #91901, #91917, #91923)",
+     "amount_usd_2021": 2668025363.41083,
+     "year": 2008,
+     "status": "Completion"
+    }
+   ],
+   "limb_b_buckets": [
+    "arrest or detention"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": false,
+   "candidate_sentences": {
+    "arrest or detention": [
+     {
+      "field": "Staff Comments",
+      "sentence": "In March 2010, months before the company’s closure, Zeromax’s chief executive, Miridal Djalalov, was allegedly detained for ‘questioning.’ He was later released.",
+      "aiddata_row": 91901,
+      "screen_flags": []
+     },
+     {
+      "field": "Staff Comments",
+      "sentence": "In March 2010, months before the company’s closure, Zeromax’s chief executive, Miridal Djalalov, was allegedly detained for ‘questioning.’ He was later released.",
+      "aiddata_row": 91917,
+      "screen_flags": []
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On April 30, 2007, the Chinese Government and the Government of Uzbekistan reached in principle agreement on the construction and operation of the Uzbek Sections of Lines A and B of the Central Asia-China Gas Pipeline. Then, in July 2007, China National Petroleum Corporation (CNPC) and Uzbekneftegaz signed an agreement on construction and operation of the Uzbek Sections of Lines A and B of the Central Asia-China Gas Pipeline.  On November 18, 2008, Asia Trans Gas LLC (or Asia-Trans Gas LLC or СП ООО “Asia TransGas”) — a special purpose vehicle and joint venture of Trans-Asia Gas Pipeline Company Limited (TAPLINE) [50% equity stake] and Uzbekneftegaz National Holding Company (UNG) [50% equity stake] that was created on January 28, 2008 — signed a $3.5 billion syndicated loan agreement with China Development Bank (CDB) and Bank of China (BoC) for the Uzbek Sections of Lines A and B of the Central Asia-China Gas Pipeline Project. CDB's $1.75 billion contribution is captured in Project ID #91901 and BOC's $1.75 billion contribution is captured in Project ID #91917. The borrowing terms of the syndicated loan are unknown. However, it is known that the borrower pledged the pipeline itself as a source of collateral to the lenders. The proceeds of the loan were used by the borrower to finance EPC contracts with China Petroleum Pipeline Bureau, China Petroleum Engineering and Construction Corporation (CPECC), and Zeromax GmbH.  The purpose of the project was to construct the Uzbek sections of Line A and Line B of the 1873 km Central Asia-China Gas Pipeline. These sections both measure 529 km in length and they run parallel to each other from Gedaim on the Turkmen-Uzbek border through central Uzbekistan. The project also involved the construction of three compressor stations. China Petroleum Pipeline Bureau, China Petroleum Engineering and Construction Corporation (CPECC), and Zeromax GmbH were the EPC contractors responsible for project implementation. A formal groundbreaking ceremony took place on June 30, 2008. Then, on October 1, 2008, the first compressor station of the Central Asia-China Gas Pipeline was built in Uzbekistan's Qasqadaryo province. The Uzbek section of Line A was put into operation in December 2009. Also, on December 14, 2009, the Presidents of China, Turkmenistan, Kazakhstan and Uzbekistan attended the inauguration ceremony of the China-Central Asia Gas Pipeline at the gas plant on the right bank of the Amu Darya River in Turkmenistan, and turned on the gas flow together. The first batch of gas arrived in China in January 2010.  Then, on June 9, 2010, CNPC signed a framework agreement on the purchase and sale of natural gas with Uzbekneftegaz, which specified that Uzbekistan would supply 10 billion cubic meters of natural gas to China annually. Two months later, in August 2010, the Uzbek section of Line B was officially commissioned. The Uzbek section of Line B became operational in October 2010. A delivery capacity of 30 billion cubic meters per annum was reached by the end of 2011. It was originally envisaged that the Uzbek section of Line A would be built by December 31, 2009 and put into operation by January 2010, while the Uzbek section of Line B would reach completion by December 31, 2011.  Then, on September 21, 2011, CNPC and Uzbekneftegaz signed an agreement on the construction and operation of the Uzbek Section of Line C of the Central Asia-China Gas Pipeline. In 2013, Asia Trans Gas LLC signed a $1.4 billion syndicated loan agreement with China Development Bank and Bank of China for the Uzbek Section of Line C of the Central Asia-China Gas Pipeline Project. CDB’s contribution to the syndicated loan amounted to $1.2 billion (captured via Project ID#54528). Given that there are only two known members of the loan syndicate, AidData assumes that Bank of China contributed the remaining $200 million. Bank of China’s contribution is captured via Project ID#91898.  The purpose of the project was to construct the Uzbek section of Line C of the 1873 km Central Asia-China Gas Pipeline. The Uzbek section measures 529 km in length and its runs parallel to Lines A and B from Gedaim on the Turkmenistan-Uzbekistan border through central Uzbekistan. Line C ultimately ends in Horgos, in the Xinjiang region of China. With a designed capacity of 25 billion cubic meters per annum, Line C’s pipe diameter is 1,219 mm, 152 mm larger than Line A and Line B. The total estimated cost of the Uzbek Section of Line C of the Central Asia-China Gas Pipeline Project was $2.2 billion.  China Petroleum Pipeline Bureau was the EPC contractor responsible for project implementation. It was notified that the project’s official commencement date was August 1, 2012. Then, on August 10, 2012, the first batch of steel pipes arrived in Uzbekistan. Construction of Line C began on January 16, 2013. The overall welding work for Line C was completed at the end of 2013. Line C went into operation on May 31, 2014 and it was officially commissioned on July 9, 2015. Upon completion of all its supporting facilities by the end of 2015, Line C was expected reach its designed annual deliverability of 25 billion m3.  By the end of 2015, the overall delivery capacity of the Central Asia-China Gas Pipeline was expected to hit 55 billion cubic m3 per annum (which is equivalent to approximately 20% of China’s natural gas consumption).",
+    "staff_comments": "1. The Chinese project title is 中亚天然气管道乌兹别克斯坦段 or 中亚天然气管道建设项目 or 中亚天然气管道工程(A、B线项目). The Russian project title is Узбекский участок Трубопровод Центральная Азия - Китай or Узбекский участок Трубопровод Газопровод Туркмения - Китай. 2. TAPLINE is a a wholly owned subsidiary of China National Petroleum Corporation (CNPC). 3. For evidence that the pipeline itself is the underlying source of collateral, see https://www.research.manchester.ac.uk/portal/files/188959328/FULL_TEXT.PDF. 4. Asia Trans Gas LLC was legally incorporated on January 28, 2008. 5. The national holding company Uzbekneftegaz is a state-owned holding company of Uzbekistan's oil and gas industry. 6. Zeromax GmbH was a private sector conglomerate registered in Switzerland and operating mainly in Uzbekistan and was the largest investor in the Uzbek economy. Before being dissolved in 2010, the company was registered in Zug, Switzerland. Prior to this, Zeromax was registered in Delaware in the United States before moving to Switzerland in 2005. In May 2010, Zeromax GmbH was suddenly and mysteriously shut down. The company officially filed for bankruptcy on October 28, 2010, at which point administrators were appointed and the company’s assets were seized. In March 2010, months before the company’s closure, Zeromax’s chief executive, Miridal Djalalov, was allegedly detained for ‘questioning.’ He was later released. Swissinfo wrote in 2021 that Zeromax was ‘closely associated’ with Gulnara Karimova, daughter of a former Uzbek president. 7. One of the sources underpinning this record (a law firm that served as a transaction adviser) refers to $11 billion of project financing from CDB to two joint ventures established by CNPC in Kazakhstan and Uzbekistan for the Central Asia Gas Pipeline Project. See https://www.dropbox.com/s/26bg8wr3kby6nlw/%E4%B8%AD%E4%BC%A6%E5%BE%8B%E5%B8%88%E4%BA%8B%E5%8A%A1%E6%89%80.pdf?dl=0. This is a reference to the combined value of the $7.5 billion syndicated CDB/BoC loan with Asia Gas Pipeline LLP (AGP) in October 2008 for the Kazakh Sections of Lines A and B (captured via Project ID#54489) and the $3.5 billion syndicated CDB/BoC loan with Asia Trans Gas LLC in November 2008 for the Uzbek Sections of Lines A and B (captured via Project ID#91901 and 91917). 8. This transaction was won Asian Legal Business’ Project Finance Deal of the Year 2009. Geraint Hughes, Clifford Chance’s Regional Head of Energy and Infrastructure, was a legal adviser for this transaction. 9. The Central Asia-China Gas Pipeline—also known as the Turkmenistan-China Gas Pipeline or the Asia Gas Pipeline—is a 1,873-kilometer long gas pipeline connecting Turkmenistan to China via Uzbekistan and Kazakhstan, which delivers gas equal to approximately 20% of China’s annual natural gas consumption. It consists of 4 lines (A, B, C, and D). Lines A, B, and C run parallel to each other. These three pipelines begin at Gedaim on the Turkmen-Uzbek border, run through central Uzbekistan and southern Kazakhstan, and end at Khorgas in China's Xinjiang Uyghur Autonomous Region. Roughly 188 kilometers of Lines A-C are in Turkmenistan, roughly 529 (or 530) kilometers of Lines A-C are in Kazakhstan, and roughly 1115 (or 1300) kilometers of of Lines A-C run from Kazakhstan to China. Line D, which is still under construction, will be 966 kilometers in length and connect Galkynysh to western China via Kyrgyzstan and Tajikistan. It will originate at the Galkynysh gas field in Turkmenistan. Then, in Tajikistan, Line D will run through Tursunzoda, Shahrinav, Hisor, Roudaki, Vahdat, Fayzobod, Nourobod, Rasht and Lakhsh (formerly Jirgatol) to Kyrgyzstan’s border. It will then go through Kyrgyzstan, crossing into China near the village of Irkeshtam on the Kyrgyzstan-China border. The Central Asia-China Gas Pipeline is supplied from the Galkynysh and Dauletabad gas fields, as well as from the Bagtyyarlyk gas field in Turkmenistan, where it originates. The pipeline is also supplied with gas from the Beineu-Bozoy-Shymkent Gas Pipeline to which it is linked in Shymkent, Kazakhstan. The Beineu-Bozoy-Shymkent Gas Pipeline delivers gas originating in gas fields of Kazakhstan. Line A and Line B connect to the Second West-East Gas Pipeline, while Line C connects to the Third West-East Gas Pipeline. Line D, which is under construction, will connect to the Fifth West-East Gas Pipeline. Line A, B, and C provide 55 billion cubic meters (bcm) of gas to China per annum. Line D is planned to have capacity of 30 bcm/year. 10. The construction of the China-Central Asia Gas Pipeline was financed through a series of Chinese loans and equity investments: $7.5 billion syndicated CDB/BoC loan for Kazakh Section of Lines A and B (captured via Projects ID#54489, #91923); $4.7 billion syndicated CDB/BoC loan for the Kazakh Section of Line C (captured via Projects ID#39997, #91926); $3.5 billion syndicated CDB/BoC loan for the Uzbek Sections of Lines A and B (captured via Projects ID#91901, #91917); $1.4 billion syndicated CDB/BoC loan for the Uzbek Section of Line C (captured via Projects ID#54528 #91898); $300 million CNPC Finance loan for Tajik Section of Line D (captured via Project ID#39955); and $300 million equity investment from Trans-Asia Gas Pipeline Company Limited for Line D of the Central Asia-China Gas Pipeline Project (captured via Project ID#70616).11. The individual contributions of China Development Bank and Bank of China to the $3.5 billion syndicated loan are unknown. For the time being, AidData estimated the individual contributions of each Chinese state-owned bank by assuming that the two lenders contributed equal amounts ($1.75 billion) to the loan syndicate.",
+    "location_narrative": "The purpose of the project was to construct the Uzbek sections of Line A and Line B of the 1873 km Central Asia-China Gas Pipeline. These sections both measure 529 km in length and they run parallel to each other from Gedaim on the Turkmen-Uzbek border through central Uzbekistan. The exact locational coordinates of Line A are 40.06448,52.8474414:40.077122,53.3362904:39.931986,53.8388714:37.6111411,61.8303464:39.2286814,63.6977864:40.5353817,63.5813514:41.980634,67.3980224:42.3988358,69.5828844:44.2128229,80.3887575;40.5353817,63.5813514:39.7206122,65.5962644:38.8960976,65.7170714:38.2044839,67.1837034:37.8128191,65.9998834. The exact locational coordinates of Line B are 40.06448,52.8474414:40.077122,53.3362904:39.931986,53.8388714:37.6111411,61.8303464:39.2286814,63.6977864:40.5353817,63.5813514:41.980634,67.3980224:42.3988358,69.5828844:44.2128229,80.3887575;40.5353817,63.5813514:39.7206122,65.5962644:38.8960976,65.7170714:38.2044839,67.1837034:37.8128191,65.9998834. More detailed locational information can be found at https://www.gem.wiki/Central_Asia%E2%80%93China_Gas_Pipeline and https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=39.206%2C63.655%3B41.344%2C69.126#map=8/40.816/68.901",
+    "description_chars": 5397
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "bukhara-sewer-pump-station-cleared-plot",
+     "shared_words": [
+      "built",
+      "station",
+      "uzbekistan"
+     ],
+     "case_title": "Pump station built on a Bukhara household's plot before any plan existed",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2010,
+      2021
+     ],
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G594",
+   "recipient": "Argentina",
+   "iso3": "ARG",
+   "year": 2019,
+   "sector": "TRANSPORT AND STORAGE",
+   "title": "ICBC contributes to $85 million onshore loan to Aeropuertos Argentina 2000",
+   "aiddata_rows": [
+    {
+     "id": 92332,
+     "title": "ICBC contributes to $85 million onshore loan to Aeropuertos Argentina 2000",
+     "amount_usd_2021": 23875748.0105704,
+     "year": 2019,
+     "status": "Pipeline: Commitment"
+    }
+   ],
+   "limb_b_buckets": [
+    "land taken"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": false,
+   "candidate_sentences": {
+    "land taken": [
+     {
+      "field": "Description",
+      "sentence": "and (b) the collection rights of AA2000 as a trustee pursuant to the provisions of article 11.4 of the Negotiable Obligations guarantee contract between AA2000 and Citibank dated January 17, 2017, in the event of termination, expropriation or rescue of the Concession Contract;",
+      "aiddata_row": 92332,
+      "screen_flags": []
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On August 9, 2019, Aeropuertos Argentina 2000 S.A. (AA2000) signed two loan agreements: (a) the onshore loan agreement for $85,000,000 and (b) the offshore loan agreement for $35,000,000. The onshore lenders were Citibank N.A., Industrial and Commercial Bank of China (Argentina) S.A., Banco Galicia y Buenos Aires S.A.U. and Banco Santander Río S.A. Both loans carry 3-year terms (maturities).   The capital under the loan agreements was to be repaid in eight equal and consecutive quarterly installments, with the first capital payment made one year after the disbursement date. The onshore loan carries a fixed annual interest rate of 9.75%.   As a source of collateral for the loans, AA2000 constituted a trust under which it was assigned fiduciary for guarantee purposes in accordance with the provisions of article 1680 and concordant of the Civil and Commercial Code of the Nation and for the benefit of each and every one of the lending banks, as beneficiaries (a) the collection rights, whether charged directly by AA2000 or a third party for the account and / or order of AA2000, with respect to the total flow of funds for import and export  services provided  by Terminal de Cargas Argentinas (a business unit of AA2000), including but not limited to storage,  handling, refrigeration and scanning of merchandise in any of the airports of AA2000 (with the exception of 15% corresponding to the total revenues of the Concession, in accordance with the provisions of clause 5 of the Memorandum  Agreement);  and (b) the collection rights of AA2000 as a trustee pursuant to the provisions of article 11.4 of the Negotiable Obligations guarantee contract between AA2000 and Citibank dated January 17, 2017, in the event of termination, expropriation or rescue of the Concession Contract; including the right to receive and withhold all payments  pursuant to them and any other  proceeds thereof, fiduciary assigned under guarantee of the Negotiable Obligations by AA2000 under the Negotiable Obligations Guarantee Trust. Said assignment has been authorized by Resolution No. 61/2019 of the ORSNA dated August 8, 2019.",
+    "staff_comments": "1. Aeropuertos Argentina 2000 S.A. (AA2000) was incorporated in the Autonomous City of Buenos Aires in 1998, after a consortium of companies won the national and international bid for the concession rights for the use, management and operation of the ‘A’ Group of the Argentine National Airport System. ‘A’ Group includes 33 airports, which operate in Argentina. 2. The size of ICBC’s contribution to the $85 million syndicated loan is unknown. For the time being, AidData assumes equal contributions ($21.25 million) across the 5 known members of the loan syndicate3. Project intent coded as 'Mixed' insofar as the end purpose of the loan is unknown. It is potentially for either infrastructure that promotes the development of Argentina (i.e. development intent) or only for working capital, general operations, debt servicing, etc. (i.e. commercial intent), or both.",
+    "location_narrative": "",
+    "description_chars": 2125
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "buenos-aires-aguas-argentinas",
+     "shared_words": [
+      "aires",
+      "argentina",
+      "argentinas",
+      "buenos",
+      "concession"
+     ],
+     "case_title": "Buenos Aires water concession (Aguas Argentinas)",
+     "case_killed": null,
+     "case_displaced": null,
+     "case_years": [
+      1993,
+      2006
+     ],
+     "strength": "strong"
+    },
+    {
+     "case": "argentina-december-2001",
+     "shared_words": [
+      "aires",
+      "argentina",
+      "buenos"
+     ],
+     "case_title": "Argentina December 2001 Uprising",
+     "case_killed": 39,
+     "case_displaced": null,
+     "case_years": [
+      2001,
+      2001
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "argentina-imf-standby-2018",
+     "shared_words": [
+      "aires",
+      "argentina",
+      "buenos"
+     ],
+     "case_title": "Argentina 2018 IMF Stand-By and the 2019 Austerity Budget",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2018,
+      2019
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "argentina-pension-protests-2024-2025",
+     "shared_words": [
+      "aires",
+      "argentina",
+      "buenos"
+     ],
+     "case_title": "Argentina Pension Vetoes and Wednesday Pensioner Protests",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2024,
+      2025
+     ],
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G215",
+   "recipient": "Belarus",
+   "iso3": "BLR",
+   "year": 2016,
+   "sector": "INDUSTRY, MINING, CONSTRUCTION",
+   "title": "China Development Bank provides $1.4 billion buyer’s credit loan for Slavkaliy Potash Mine and Processing Plant Construction Project",
+   "aiddata_rows": [
+    {
+     "id": 52888,
+     "title": "China Development Bank provides $1.4 billion buyer’s credit loan for Slavkaliy Potash Mine and Processing Plant Construction Project",
+     "amount_usd_2021": 1653126311.70185,
+     "year": 2016,
+     "status": "Implementation"
+    },
+    {
+     "id": 97749,
+     "title": "CDB provides 2-year grace period extension and 2-year maturity extension on $1.4 billion buyer’s credit loan for Slavkaliy Potash Mine and Processing Plant Construction Project (Linked to Project ID#52888)",
+     "amount_usd_2021": null,
+     "year": 2019,
+     "status": "Completion"
+    }
+   ],
+   "limb_b_buckets": [
+    "arrest or detention"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": true,
+   "candidate_sentences": {
+    "arrest or detention": [
+     {
+      "field": "Description",
+      "sentence": "Outraged by the forced landing of a passenger plane in Minsk on May 23, 2021, to arrest a dissident journalist, the EU blacklisted transport, defense and air traffic officials as part of coordinated action with the United States, Canada and Britain.",
+      "aiddata_row": 52888,
+      "screen_flags": [
+       "names_another_country:britain"
+      ]
+     },
+     {
+      "field": "Description",
+      "sentence": "Outraged by the forced landing of a passenger plane in Minsk on May 23, 2021, to arrest a dissident journalist, the EU blacklisted transport, defense and air traffic officials as part of coordinated action with the United States, Canada and Britain.",
+      "aiddata_row": 97749,
+      "screen_flags": [
+       "names_another_country:britain"
+      ]
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On May 10, 2015, the Ministry of Finance of Belarus, China Development Bank, JSC Savings Bank Belarusbank (JSB Belarusbank) and Slavkali LLC (or ИООО \"Славкалий”) — a special purpose vehicle and wholly-owned subsidiary of the UK-registered GMC Global Energy plc (GMC), which is itself owned by Russian businessman Mikhail Gutseriyev — signed a Memorandum of Understanding regarding the Slavkaliy Potash Mine and Processing Plant Construction Project. Then, on June 17, 2016, China Development Bank (CDB), JSC Savings Bank Belarusbank, and Slavkali LLC (or ИООО \"Славкалий”) signed a $1.4 billion buyer’s credit loan agreement for the Slavkaliy Potash Mine and Processing Plant. The loan carried the following borrowing terms: a 14-year maturity, a 5-year grace period, and a 4.3% interest rate. The Government of Belarus issued a sovereign guarantee in support of the loan and Sinosure provided buyer’s credit insurance. The borrower also provided security in the form of a mortgage on the potash mine and processing plant.    The purpose of the project is to build a potash mine and processing plant — using raw materials in the Nezhinskoye (Nezhinsky) section of the Starobinskoye (Starobin) potash salt deposit — in Lyuban District and Minsk Oblast. The run-of-pit potash salt reserves at the three segments of the Starobin potash deposit controlled by Slavkali LLC exceed 3 billion tons, including 829 million tons at the Nezhinsky deposit. The project also involves the installation of natural gas infrastructure in 21 localities within Lyuban District; the construction of a railway station and a 37 km railway line; and the reconstruction of water supply intake and the waste treatment facilities in Lyuban District. Upon completion, it is envisaged that the annual production capacity of the mining and processing plant will be somewhere between 1.1 to 2.0 million tons of potassium chloride. By solidifying Belarus’ position as one of the major and leading exporters of potash fertilizers in the world, this project has the potential to substantially increase tax revenue, employment, and the inflow of foreign currency to the country's budget.     China State Energy Engineering Corp. Ltd. is the general contractor responsible for implementation. However, several other contractors are involved. Deilmann-Haniel GmbH — another German company — is responsible for shaft work at the (Nezhinsky) potash mine and processing plant. Another German company — Herrenknecht AG — is responsible for supplying shaft-sinking machines.   A foundation stone laying ceremony took place on September 11, 2015. Then, in September 2017, construction of temporary on-site roads began. In October 2017, power supply works commenced. Two months later, the reconstruction of the Urechye railway station began. Water and electricity connections were established at the site of the potash mine and processing plant in January 2018. Construction of a cage shaft took place in March 2018. During the same month, the construction of a 110 kV overhead electricity transmission line from Kalinaya to Sorochi was completed. Then, the delivery of the first SBR shaft-boring complex to the site of the potash mine and processing plant took place in August 2018. A launch ceremony for the SBR shaft tunneling complex took place on December 20, 2018. The first layer of potash salt was extracted at a depth of 567 meters in April 2020. Then, in June 2020, China National Chemical Engineering Sixth Construction Co., Ltd., a subsidiary of China National Chemical Engineering Group Corporation Ltd (CNCEC), and CITIC Construction Co., Ltd., signed a contract to facilitate the participation of CITIC Construction Co., Ltd. in the Slavkaliy Potash Mine and Processing Plant Construction Project. The scope of the contract included construction of the main structure of the plant as well as auxiliary utilities and facility installation. On October 20, 2020, the main wooden structure of the ore warehouse was successfully capped by CITIC Construction Co., Ltd. The gas turbine for the self-provided power station of the potash fertilizer plant was successfully hoisted in place by CITIC Construction Co., Ltd. on March 22, 2021.   Then, the European Union (EU) included Russian businessman Mikhail Gutseriyev, the largest single foreign investor in Belarus and a long-standing friend of Belarussian leader Alexander Lukashenko, in its sanctions announced in June 2021. Outraged by the forced landing of a passenger plane in Minsk on May 23, 2021, to arrest a dissident journalist, the EU blacklisted transport, defense and air traffic officials as part of coordinated action with the United States, Canada and Britain. Gutseriyev (the owner of GMC Global Energy plc) was among the individuals facing sanctions, according to the EU Official Journal. CDB reportedly responded to the sanctions by halting disbursements to GMC Global Energy plc. As of January 2021, most project activities had also come to a halt. As of January 2023, the project was still not complete. It was originally scheduled to to commence commercial operations by the end of 2021. However, in May 2023, Belarussian Deputy Prime Minister Nikolai Snopkov announced that the Slavkaliy potash mine and processing plant would be put into operation at a later date (by June 1, 2025).  There are strong indications that the CDB loan that was issued to Slavkali LLC for the Slavkaliy Potash Mine and Processing Plant Construction Project has financially underperformed vis-a-vis the lender's original expectations. In November 2022, the Government of Belarus legally incorporated a new project company -- called OJSC Nedra Nezhin -- to assume responsibility for the Slavkaliy Potash Mine and Processing Plant Construction Project. This move was apparently designed to address the fact that Slavkali LLC (as a legal entity facing strict international sanctions) could not longer transact in U.S. dollars (USD) and thus no longer meet its USD-denominated loan repayment obligations to CDB. The grace period of the CDB was originally scheduled to expire in 2019. However, media reports suggest that the grace period was eventually extended by two years (until 2021) and the final maturity date was also extended by two years (from 2029 to 2031). The Government of Belarus has identified the sovereign guarantee that it issued in support of the CDB loan for the Slavkaliy Potash Mine and Processing Plant Construction Project as one of its largest sources of public debt exposure.  The Government of Belarus showed other sign of financial distress around the time that the grace period and maturity extension was offered. In 2019, the International Monetary Fund (IMF) reported that international reserves had fallen 'well below adequacy metrics', covering a mere 2 months of imports. On December 16, 2019, China Development Bank stepped into the breach and issued an RMB 3.5 billion ($500 million) emergency loan to Ministry of Finance of Belarus. It explicitly authorized the borrower to use the proceeds of the loan to repay existing debts and shore up the country's foreign exchange reserves. Then, on July 14, 2022, the Government of Belarus defaulted on a USD-denominated Eurobond payment. As of April 2023, the Government of Belarus was attempting to meet its Eurobond payment obligations in local currency, in contravention of bond documentation that does not allow for settlement in alternative currencies. This approach was taken as Western sanctions against the Government of Belarus were tightened due to its support for Russia’s invasion of Ukraine.",
+    "staff_comments": "1. This project is also known as the Slavkali Potash Mine Project, the Slavkaliy Potash Mine and Processing Plant Project, and the Nezhinsky Mining and Processing Complex Construction Project. The Russian project title is Нежинский Горно-обогатительный комбинат or проект строительства Нежинского  ГОКа. The Chinese project title is 白俄斯拉夫钾肥项目. 2. Slavkali LLC was created in 2011 and it is controlled by Mikhail Gutseriev, the largest shareholder of Russian oil producer, Russneft. Slavkali LLC, which is a tax resident of Belarus, is also known as Slavkaliy FLLC, Slavkali Ltd., and ИООО 'Славкалий”. 3.  The CDB loan is referred to in a 2020 Government of Belarus bond prospectus as one of the Government of Belarus’ ‘largest exposures’. 4. B&N Bank – a Russian bank controlled by Mikhail Gutseriev – is also reportedly providing $250 million of additional financial support for the Slavkaliy Potash Mine and Processing Plant Construction Project. This issue warrants further investigation. 5. The Nezhinsky potash mine is located approximately 180km south of the Minks region, and 6km south-west of the Lyuban district, in the Republic of Belarus. The project lies in the Nezhinsky section of the Starobinskoye potash salt deposit, adjacent to the eastern part of the Belaruskali potash mine. The potash salt deposits are composed of layers of rock salt along with the alternate layers of clay-carbonate rocks and sylvinite. The Nezhinsky potash mine is estimated to hold approximately 829Mt of potash salt reserves. The potassium chloride (KCl) to be produced by the project will have a grade value of up to 98%. The Nezhinsky potash mine project utilises the mechanised tunneling method using shaft boring roadheader (SBR) machines to access the potash salt resources. The shaft boring roadheaders (SBR) are being used as an alternative to the conventional drilling and blasting methods for salt extraction. The project involves two SBR machines, namely Ulyana (the cage shaft) and Olga (the skip shaft) to support the potash salt extraction process. The extracted potash salt resources will be lifted in buckets to the surface for processing. The other infrastructure facilities for the Nezhinsky potash mine include a 43km-long gas pipeline, water supply system, warehouses, administrative buildings, a 30km railway corridor connecting the Urechye station, a 110/10 kV step-down substation, switchgear building, transformer, and a 3.8km-long access road. The project also involves the construction of a modular boiler house for a future combined heat power plant (CHPP) of 60MW capacity.6.  After Gutseriev was put on the EU sanctions list, he transferred control of GCM Global Energy (at least 75% of shares) to his younger brother Sait-Salam Gutseriev. In July 2022, Kazakh citizen Salman Gutsariev became the principal shareholder of this company.",
+    "location_narrative": "The primary purpose of the project is to build a potash mine and processing plant — using raw materials in the Nezhinskoye (Nezhinsky) section of the Starobinskoye (Starobin) potash salt deposit  — in Lyuban District and Minsk Oblast. However, the project also involves the installation of natural gas infrastructure in 21 localities within Lyuban District; the construction of a railway station and a 37 km railway line; and the reconstruction o water supply intake and the waste treatment facilities in Lyuban District.  More detailed locational information can be found at https://www.openstreetmap.org/relation/71140 and https://www.openstreetmap.org/way/596504788 and https://www.openstreetmap.org/way/781530362.",
+    "description_chars": 7595
+   },
+   "r36_dedupe_hint": null,
+   "local_match": []
+  },
+  {
+   "financing": "G428",
+   "recipient": "Bosnia and Herzegovina",
+   "iso3": "BIH",
+   "year": 2014,
+   "sector": "EMERGENCY RESPONSE",
+   "title": "Chinese Government provides grant for provision of agricultural machinery",
+   "aiddata_rows": [
+    {
+     "id": 66093,
+     "title": "Chinese Government provides grant for provision of agricultural machinery",
+     "amount_usd_2021": 734410.042447828,
+     "year": 2014,
+     "status": "Completion"
+    }
+   ],
+   "limb_b_buckets": [
+    "arrest or detention"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": false,
+   "candidate_sentences": {
+    "arrest or detention": [
+     {
+      "field": "Description",
+      "sentence": "However, the equipment reportedly never reached those affected by the floods as government officials responsible for allocating it were arrested for selling the equipment for profit.",
+      "aiddata_row": 66093,
+      "screen_flags": []
+     }
+    ]
+   },
+   "full_text": {
+    "description": "In 2014, Chinese Government and the Government of Bosnia and Herzegovina signed a grant agreement of the provision of agricultural machinery worth around 1 million BCM (half a million euros). The equipment arrived in Bosnia and Herzegovina during the summer of 2014 and it was earmarked for several areas affected by flooding — specifically, the Zenica-Doboj, Tuzla, Pasavina, and Brcko districts. The distribution of the equipment was supervised by Indirect Taxation Authority of Bosnia-Herzegovina (i.e. customs) responsible for supervision. However, the equipment reportedly never reached those affected by the floods as government officials responsible for allocating it were arrested for selling the equipment for profit. The handing over of the machinery was held on July 23, 2014",
+    "staff_comments": "",
+    "location_narrative": "The purpose of this project was to provide agricultural equipment to Zenica-Doboj, Tuzla, Posavina, and Brcko districts. More detailed locational information can be found at https://www.openstreetmap.org/relation/2528155, https://www.openstreetmap.org/relation/2528152, https://www.openstreetmap.org/relation/2528150, https://www.openstreetmap.org/relation/2528143",
+    "description_chars": 786
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "bosnia-2018-fuel-road-toll",
+     "shared_words": [
+      "bosnia",
+      "herzegovina",
+      "tuzla",
+      "zenica"
+     ],
+     "case_title": "Bosnia 2018 Fuel Road Toll and Excise Rise",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2017,
+      2018
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "banja-luka-doboj-motorway-villages",
+     "shared_words": [
+      "bosnia",
+      "doboj",
+      "herzegovina"
+     ],
+     "case_title": "Banja Luka–Doboj motorway: Hrvaćani and Drugovići villages",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2016,
+      null
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "arcelormittal-zenica-air",
+     "shared_words": [
+      "bosnia",
+      "herzegovina",
+      "zenica"
+     ],
+     "case_title": "ArcelorMittal Zenica Steelworks Pollution",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2004,
+      null
+     ],
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G509",
+   "recipient": "Brazil",
+   "iso3": "BRA",
+   "year": 2020,
+   "sector": "INDUSTRY, MINING, CONSTRUCTION",
+   "title": "China Co-Financing Fund for Latin America and the Caribbean provides $50 million loan to LD Celulose S.A. for Amadeus Dissolving Wood Pulp Project.",
+   "aiddata_rows": [
+    {
+     "id": 73925,
+     "title": "China Co-Financing Fund for Latin America and the Caribbean provides $50 million loan to LD Celulose S.A. for Amadeus Dissolving Wood Pulp Project.",
+     "amount_usd_2021": 55841850.1193699,
+     "year": 2020,
+     "status": "Implementation"
+    }
+   ],
+   "limb_b_buckets": [
+    "land taken"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": false,
+   "candidate_sentences": {
+    "land taken": [
+     {
+      "field": "Staff Comments",
+      "sentence": "v) PS5 Land Acquisition and Involuntary Resettlement;",
+      "aiddata_row": 73925,
+      "screen_flags": []
+     }
+    ],
+    "pollution or damage": [
+     {
+      "field": "Description",
+      "sentence": "iii) utilities (biomass boiler, water treatment plant, boiler feed water treatment plant and effluent treatment plant);",
+      "aiddata_row": 73925,
+      "screen_flags": []
+     },
+     {
+      "field": "Description",
+      "sentence": "xiii) 23-km effluent emissary and water intake from the Araguari river;",
+      "aiddata_row": 73925,
+      "screen_flags": []
+     },
+     {
+      "field": "Description",
+      "sentence": "The mill site will be located in Indianópolis, and the water intake and treated effluent disposal pipelines will be located in Araguari, near the federal BR-365 highway and about 35 km from the city of Uberlândia.",
+      "aiddata_row": 73925,
+      "screen_flags": [
+       "prospective_verb_only"
+      ]
+     },
+     {
+      "field": "Description",
+      "sentence": "The alignment of the Project’s transmission line and water intake and effluent pipelines traverse a mosaic of mixed crop and cattle farming landscapes.",
+      "aiddata_row": 73925,
+      "screen_flags": []
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On May 29, 2020, LD Celulose S.A. (“LD Celulose”), a special purpose vehicle and joint venture of Lenzing (51% equity stake) and Duratex (49% equity stake), signed several loan agreements for the Amadeus Dissolving Wood Pulp Project: (i) an A Loan of up to US$200 million to be jointly funded by IDB and IDB Invest with a tenor of up to eleven years, including a 42-months grace period; (ii) an IDB-administered loan of up to US$50 million to be funded by the China Co-Financing Fund for Latin America and the Caribbean with a tenor of up to eleven years, including a 42-months grace period; and (iii) B Loans of up to US$250 million to be funded by international financial institutions with a tenor of up to nine years, including a 42-months grace period (all together, the \"Loan\").   The proceeds of the loan are to be used by the borrower to finance part of the construction of an integrated $1.8 billion industrial plant that will produce 500,000 tons per year of dissolving wood pulp (“DWP”) that will be exported and used to manufacture textiles and non-woven fabrics. More specifically, the project will build and operate a total chlorine free (“TCF”) dissolving wood pulp (“DWP”) mill (the ”Project”, or the ”Amadeus Project”) with a capacity of 500,000 tons per annum (TPA). The DWP mill will be located in the municipality of Indianópolis, state of Minas Gerais, Brazil.   The Project components include: i) pulp production (wood preparation, fiber processing, drying and baling; ii) chemical recovery (evaporation, recovery boiler, causticizing, lime kiln); iii) utilities (biomass boiler, water treatment plant, boiler feed water treatment plant and effluent treatment plant); iv) cogeneration unit with a nominal capacity of 144 MW; v) area for unloading, handling and storage of sodium hydroxide, hydrogen peroxide, sulfuric acid and magnesium sulphate; vi) dedicated plants for the production of oxygen and ozone; vii) natural gas storage tanks; viii) fuel oil storage tanks for boilers start-up; ix) area for waste treatment; x) spur for connecting to the existing rail line crossing inside the Nova Monte Carmelo (“NMC”) Forest Unit; xi) administrative areas (first aid post, laboratory, and restaurant); xii) 5-km access road from state highway LMG-748 to the mill site; xiii) 23-km effluent emissary and water intake from the Araguari river; xiv) 22-km 138kV transmission line connecting LDC’s cogeneration unit to substation; and xv) two substations, one located close to the water intake site and another at the plant site.   The Project will also include the following associated facilities: i) a 4.2-km transmission line and substation to connect LDC’s transmission line to the transmission line of the electric power distribution company (Companhia Energética de Minas Gerais S.A – “CEMIG”), located on the opposite bank of the Araguari river; and ii) workers’ accommodation camps with capacity for up to 600 workers, close to Araguari. Amadeus will require 2.9 million cubic meters of wood per year to produce some 500,000 tons of DWP, sourced from 44,000 ha of existing eucalyptus plantations from Duratex’s NMC Forest Unit comprised of Fazendas NMC, Furnas and Brejão; and 26,000 ha of additional eucalyptus plantations in leased lands.   The site is expected to be released for construction on June 2020 and the DWP mill is expected to start operating in March 2022. The production of the dissolving pulp will be carried out through the kraft process, similar to the papermaking obtained from processing the common pulp. However, the DWP process requires a higher content of cellulose in its composition (>92%) and this means a longer cooking process with an associated lower yield when compared to that of the common pulp. Because it is a high-purity pulp and has lower level of contaminants, it is used for four major product groups: viscose (cut rayon, industrial and textile filaments, cellophanes, etc.), acetates (cigarettes filter, acetate filaments and films), ethers (binders, detergents, glues, foods, pharmaceuticals) and nitrates (explosives, varnishes and celluloid). The DWP pulp has this name because it is dissolved in a caustic solution to form the viscose and then extruded into a baffle to form rayon filaments.   The Amadeus Dissolving Wood Pulp Project also involves the construction of a power co-generation plant with nominal capacity of 144MW/h of electricity, making LD Celulose a net exporter of energy. The Municipalities in the Amadeus Project’s area of influence include Indianopolis, Estrela do Sul, Araguari and Uberlandia. The mill site will be located in Indianópolis, and the water intake and treated effluent disposal pipelines will be located in Araguari, near the federal BR-365 highway and about 35 km from the city of Uberlândia. The mill (industrial plant) will be built within Duratex’s Nova Monte Carmelo Forest Unit, in a selected 150-ha site currently occupied predominantly by large fields of eucalyptus plantations for commercial purposes, and from which approximately 72 ha will be occupied by industrial installations. The mill site is crossed by the Ferrovia Centro-Atlântica (“FCA”) railway that connects to the Araguari Terminal, one of the largest cargo trans-shipment terminals of Latin America, currently being used to transport grains and fertilizers. The alignment of the Project’s transmission line and water intake and effluent pipelines traverse a mosaic of mixed crop and cattle farming landscapes. Whereas Uberlandia is the second most populous city in Minas Gerais (approximately 700,000 inhabitants), Araguari is a mid-sized city (approximately 120,000 inhabitants) and Indianópolis is a small rural town (approximately 7,000 inhabitants). A significant proportion (>40%) of the gross domestic product (GDP) of the municipalities in the Project’s area of influence (Araguari, Indianópolis, Estrela do Sul) comes from the agribusiness sector in terms of eucalyptus forest plantations and cash crops (coffee, soybeans, and maize).  Construction was originally expected commence in early April 2020 and last for 28 months (August 2022). As of May 2022, IDB Invest indicated the project implementation was underway.",
+    "staff_comments": "1.  This transaction won Loan of the Year and Infrastructure Deal of the Year Awards from LatinFinance Magazine. 2. Founded in 1938 and headquartered in Austria, Lenzing is a world market leader in the production of wood-based cellulose fibers. It has operations in 17 locations and employs over 6,800 worldwide. It has two DWP plants with a total production capacity of 600,000 ton/year and seven factories to produce fiber for various applications, with a total capacity of over 1,000,000 tons. 3. Founded in 1951 and headquartered in São Paulo, Brazil, Duratex engages in the manufacture of wood panels, sanitary ware and metals and ceramic tiles. Duratex ranks within the top 10 manufacturers of wooden panels globally and the largest player in the Southern Hemisphere, with 16 industrial units and seven forestal units located in Brazil, and three industrial units in Colombia. Duratex exports to over 50 countries and employs over 11,000 employees. 4. The IDB project identification number is 12710-01. 5. The Project has been classified as a ‘Category A’ Project, pursuant to the IDB Invest Environmental and Social Sustainability Policy, because it may cause significant adverse E&S impacts that may be diverse and irreversible6. During its peak construction period, the Project will directly employ nearly 8,000 workers with resulting impacts on public services, security of nearby municipalities, and the increase of occupational health and safety risks. During operations, the mill will require large quantities of inputs (i.e. wood, chemicals) with the associated risks of vehicular accidents from log hauling and hazardous materials transportation. Wood will be secured from 44,000 ha of existing plantations but the Project will require the acquisition (through lease) of additional 26,000 ha. The mill will also generate large amount of air and effluent emissions, with the potential to impact the air and water quality in the Project’s area of influence. The Project has triggered the following Performance Standards (“PS”): i) PS-1: Assessment and Management of Environmental and Social Risks and Impacts; ii) PS-2: Labor and Working Conditions; iii) PS-3: Resource Efficiency and Pollution Prevention; iv) PS-4: Community Health, Safety and Security; v) PS5 Land Acquisition and Involuntary Resettlement; and vi) PS-6: Biodiversity Conservation and Sustainable Management of Living Natural Resources.",
+    "location_narrative": "The China Co-Financing Fund for Latin America and the Caribbean provided a loan to help with the construction of the Amadeus Dissolving Wood Pulp Project in Indianópolis, state of Minas Gerais, Brazil.  More detailed locational information can be found at: https://www.openstreetmap.org/way/1040186469",
+    "description_chars": 6202
+   },
+   "r36_dedupe_hint": {
+    "case_id": "aperam-jequitinhonha",
+    "shared_words": [
+     "brazil",
+     "gerais",
+     "minas"
+    ],
+    "strength": 3
+   },
+   "local_match": [
+    {
+     "case": "plantar-minas-gerais",
+     "shared_words": [
+      "brazil",
+      "fund",
+      "gerais",
+      "minas",
+      "nova"
+     ],
+     "case_title": "Plantar Eucalyptus Carbon Project",
+     "case_killed": null,
+     "case_displaced": null,
+     "case_years": [
+      2003,
+      null
+     ],
+     "strength": "strong"
+    },
+    {
+     "case": "tiaa-matopiba-farmland-grilagem",
+     "shared_words": [
+      "america",
+      "brazil",
+      "fund",
+      "gerais",
+      "joint"
+     ],
+     "case_title": "TIAA's Farmland Funds and Land Grabbing in Southern Piauí and Maranhão",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2010,
+      null
+     ],
+     "strength": "strong"
+    },
+    {
+     "case": "samarco-fundao-dam-mariana",
+     "shared_words": [
+      "brazil",
+      "fund",
+      "gerais",
+      "minas"
+     ],
+     "case_title": "Samarco's Fundão Dam Collapse, Mariana",
+     "case_killed": 19,
+     "case_displaced": null,
+     "case_years": [
+      2015,
+      null
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "aperam-jequitinhonha",
+     "shared_words": [
+      "brazil",
+      "gerais",
+      "minas"
+     ],
+     "case_title": "Aperam BioEnergia eucalyptus plantations",
+     "case_killed": null,
+     "case_displaced": null,
+     "case_years": [
+      2025,
+      null
+     ],
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G628",
+   "recipient": "Brazil",
+   "iso3": "BRA",
+   "year": 2017,
+   "sector": "BUSINESS AND OTHER SERVICES",
+   "title": "[Cancelled] CDB provides loan to Paper Excellence for its acquisition of Eldorado pulp and paper mill in Brazil",
+   "aiddata_rows": [
+    {
+     "id": 95937,
+     "title": "[Cancelled] CDB provides loan to Paper Excellence for its acquisition of Eldorado pulp and paper mill in Brazil",
+     "amount_usd_2021": null,
+     "year": 2017,
+     "status": "Cancelled"
+    }
+   ],
+   "limb_b_buckets": [
+    "arrest or detention"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": false,
+   "candidate_sentences": {
+    "arrest or detention": [
+     {
+      "field": "Staff Comments",
+      "sentence": "Wesley and Joesley were jailed from September 2017 until February and March 2018, respectively.",
+      "aiddata_row": 95937,
+      "screen_flags": []
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On September 2, 2017, Paper Excellence B.V. (PEBV) — a special purpose vehicle that was legally incorporated in the Netherlands in 2008 and that is wholly owned by Jackson Wijaya Limantara, the grandson of Sinar Mas founder Eka Tjipta Widjaja — and its wholly-owned subsidiary CA Investment (Brazil) SA signed a share purchase agreement with J&F Investimentos. The purpose of the agreement was to enable PEBV to purchase a 100% equity stake in Eldorado Brasil Celulose SA (Eldorado) — a Brazilian pulp and paper producer — from J&F Investimentos for BRL 15 billion. China Development Bank (CDB) provided a loan to PEBV to facilitate the acquisition. On September 25, 2017, PEBV successfully acquired a 13% ownership stake in Eldorado from J&F Investimentos.   Several months later, in December 2017, PEBV increased its stake in Eldorado to 49.41%. According to the terms of the share purchase agreement, PEBV had one year (until September 2, 2018) to raise the necessary bank financing to buy the remaining 50.59% equity stake in Eldorado. However, in 2018, J&F Investimentos chose not to accept additional funds from PEBV to complete the ‘third and final’ stage of the acquisition (due to concerns about guarantees that it had issued) and CDB reportedly cancelled its loan agreement with PEBV.   Then, in August 2018, J&F Investimentos — the holding company that controls the Batista family's businesses — filed a lawsuit against PEBV asking for an injunction to prevent the transfer of 100% of Eldorado shares to PEBV. Then, in 2021, PEBV announced that the ICC (International Chamber of Commerce) arbitration court had ruled in favor of PEBV, enabling it to proceed with the full (100%) acquisition of Eldorado. The acquisition was to be completed under the terms of the share purchase agreement between PEBV and J&F Investimentos that was entered into in 2017. At the time of the 2021 announcement, PEBV owned 49.41% of Eldorado. Then, in October 2022, Paper Excellence obtained a São Paulo court decision allowing for the completion of its deal to acquire Eldorado Brasil Celulose from J&F Investimentos. The court overturned a 2018 injunction suspending the transfer of control from Eldorado to PEBV. Thus, the minority partner (PEBV) was released to complete the purchase a 100% ownership stake in Eldorado.",
+    "staff_comments": "1. Eldorado Brasil is one of the most modern and competitive pulp companies in the world. In 2019, it reached the production mark of 1.8 million tons, establishing a new level for the industry located in Três Lagoas (MS). 2. Asia Pulp and Paper (APP) is controlled by the Widjaja family, which also controls PEBV, a shell company that is used to hold pulp mills abroad.  3. The Batista family founded and controls meatpacker JBS, which expanded globally via acquisitions with strong financial support from BNDES and other government entities. J&F Investimentos, through which the family holds JBS, also owns Banco Original, cosmetics and cleaning products maker Flora and TV channel Canal Rural. After admitting to bribing officials in exchange for financing and other benefits, J&F executives including Wesley and Joesley Batista signed plea bargains and the company obtained a leniency agreement in 2017. However, the deals may be revoked due to revelations of additional offenses. J&F executives’ testimony implicated politicians including Brazil’s president, as well as government bank officials. Wesley and Joesley were jailed from September 2017 until February and March 2018, respectively. They are barred from positions at group companies and may face prison terms. Second-largest shareholder BNDES has pushed to remove the family from management",
+    "location_narrative": "This project supported the partial ownership of Eldorado Brasil Celulose SA (Eldorado). More detailed locational information can be found at: https://www.openstreetmap.org/way/187815851#map=14/-20.6002/-51.6075",
+    "description_chars": 2314
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "shell-vila-carioca-contamination",
+     "shared_words": [
+      "brasil",
+      "brazil",
+      "netherlands",
+      "partner",
+      "paulo"
+     ],
+     "case_title": "Shell's Vila Carioca Fuel Terminal: Buried Waste and a Contaminated Neighbourhood",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      1993,
+      null
+     ],
+     "strength": "strong"
+    },
+    {
+     "case": "shell-basf-paulinia-pesticide-plant",
+     "shared_words": [
+      "brasil",
+      "brazil",
+      "paulo",
+      "then"
+     ],
+     "case_title": "Shell and BASF Pesticide Plant at Paulínia",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      1977,
+      2013
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "brazil-general-strike-july-1983",
+     "shared_words": [
+      "against",
+      "brazil",
+      "paulo"
+     ],
+     "case_title": "Brazil July 1983 General Strike Against IMF Wage Cuts",
+     "case_killed": null,
+     "case_displaced": null,
+     "case_years": [
+      1983,
+      1983
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "hidrovias-miritituba",
+     "shared_words": [
+      "brasil",
+      "brazil",
+      "international"
+     ],
+     "case_title": "Hidrovias do Brasil Grain Port, Miritituba",
+     "case_killed": null,
+     "case_displaced": null,
+     "case_years": [
+      2015,
+      null
+     ],
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G110",
+   "recipient": "Colombia",
+   "iso3": "COL",
+   "year": 2009,
+   "sector": "GOVERNMENT AND CIVIL SOCIETY",
+   "title": "China donates $300,000 to Colombia to develop community cleared of landmines",
+   "aiddata_rows": [
+    {
+     "id": 36063,
+     "title": "China donates $300,000 to Colombia to develop community cleared of landmines",
+     "amount_usd_2021": 439730.315370032,
+     "year": 2009,
+     "status": "Implementation"
+    }
+   ],
+   "limb_b_buckets": [
+    "land taken"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": false,
+   "candidate_sentences": {
+    "land taken": [
+     {
+      "field": "Description",
+      "sentence": "There were no further records as to whether this land acquisition ever happened, or how the remainder of the funds were to be used.",
+      "aiddata_row": 36063,
+      "screen_flags": []
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On June 9th of 2009 the Chinese government donated 2 million Yuan (approximately 300,000 USD) to Colombia for the ongoing efforts to clear the country of anti-personnel mines. The government agency Programa Presidencial para la Acción Integral contra Minas Antipersonal (PAICMA) received the funds to implement rebuilding and development efforts in the village of Bajo Grande, in the Montes de Maria, which is now clear of mines but has not yet been developed enough for the families who were displaced to return. There were no further records as to whether this land acquisition ever happened, or how the remainder of the funds were to be used. ",
+    "staff_comments": "",
+    "location_narrative": "The project removed mines from Bajo Grande, Colombia. More detailed locational information can be found at https://www.openstreetmap.org/node/703210127",
+    "description_chars": 646
+   },
+   "r36_dedupe_hint": null,
+   "local_match": []
+  },
+  {
+   "financing": "G124",
+   "recipient": "Costa Rica",
+   "iso3": "CRI",
+   "year": 2013,
+   "sector": "TRANSPORT AND STORAGE",
+   "title": "China Eximbank provides $296 million buyer's credit loan for the Route 32 Renovation Project (Linked to Project ID#39847)",
+   "aiddata_rows": [
+    {
+     "id": 37364,
+     "title": "China Eximbank provides $296 million buyer's credit loan for the Route 32 Renovation Project (Linked to Project ID#39847)",
+     "amount_usd_2021": 333898819.448191,
+     "year": 2013,
+     "status": "Implementation"
+    },
+    {
+     "id": 39847,
+     "title": "China Eximbank provides RMB 628 million government concessional loan for the Route 32 Renovation Project (Linked to Project ID#37364)",
+     "amount_usd_2021": 115212727.033116,
+     "year": 2013,
+     "status": "Implementation"
+    }
+   ],
+   "limb_b_buckets": [
+    "land taken"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": false,
+   "candidate_sentences": {
+    "land taken": [
+     {
+      "field": "Description",
+      "sentence": "However, it has faced a variety of delays related to land expropriation, tree cutting and clearing activities, environmental challenges, relocation of utilities, archaeological studies at five locations, and also cultural and language barriers.",
+      "aiddata_row": 37364,
+      "screen_flags": []
+     },
+     {
+      "field": "Description",
+      "sentence": "However, it has faced a variety of delays related to land expropriation, tree cutting and clearing activities, environmental challenges, relocation of utilities, archaeological studies at five locations, and also cultural and language barriers.",
+      "aiddata_row": 39847,
+      "screen_flags": []
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On June 3, 2013, the Export-Import Bank of China and the Government of Costa Rica signed two financing agreements worth $396 million for the Rehabilitation and Extension of National Route N° 32 Cross Section Route 4-Limón. The Costa Rican Government approved these financing agreements on March 10, 2015 through Law N° 9293.  The first agreement is a USD-denominated buyer's credit loan (ID# 1420202052013211015) worth $296 million (captured via Project ID#37364). The buyer's credit loan (BCL) carries the following borrowing terms: a 4% interest rate, a 0% default (penalty) interest rate, a maturity of 20 years, a 5 year grace period, a 0.25% commitment fee, and a 0.25% management fee.  The second financing agreement is a government concessional loan (GCL) agreement [CHINA EXIMBANK GCL NO. (2013) 30 TOTAL NO. (475) 1420203052013111013] worth RMB 628 million (as captured via Project ID #39847). The GCL carries the following terms: an interest rate of 2%, a default (penalty) interest rate of 0%, a maturity of 20 years, a 5 year grace period, a 0.25% commitment fee, and a 0.25% management fee. The borrower was expected to use the proceeds of the GCL and BCL to finance 85% of the cost of a $465,593,387.06 commercial (EPC) contract [CONAVI-CHEC-00] between Costa Rica's National Road Council [Consejo Nacional de Vialidad] (CONAVI) and China Harbour Engineering Company Ltd. (CHEC), which was signed on June 3, 2013.  The purpose of the project is to expand a 107-kilometer section of National Route 32 from two to four lanes. This road section begins at the Route 4 junction at Frío river and extends to Puerto Limón’s district center. National Route 32 connects San José with the port of Limón. 80% of Costa Rican exports and imports go through the ports of Moín and Limón, as it is the main connection with the ports of the eastern United States, Europe, and South America.   CHEC is the EPC contractor responsible for project implementation. CONAVI issued an order to CHEC to commence work on November 20, 2017.  The project was originally expected to take 42 months from the start date. However, it has faced a variety of delays related to land expropriation, tree cutting and clearing activities, environmental challenges, relocation of utilities, archaeological studies at five locations, and also cultural and language barriers. The initial planned completion date was October 4, 2020. However, according to Service order (O.S.-7) issued by CONAVI to CHEC on January 6, 2020, indicating that the new deadline for completion of the project was March 27, 2021. Another service order (O.S.-11) issued by CONAVI on February 25 2021, indicated that the new deadline for completion of the project was May 22, 2022. As of March 2019, the project had achieved a 9% completion rate. ",
+    "staff_comments": "1. The China-Latin America Finance Database, which is co-produced by the Inter-American Dialogue and Boston University’s Global Development Policy Center, characterizes this project as being supported by a single $395 million USD loan from the ‘Chinese government’ and ‘Ex-Im Bank’. However, AidData captures the project as being supported by two separate China Eximbank loans: an RMB 628,000,000 government concessional loan (GCL) and a $296,000,000 USD buyer’s credit loan. Each China Eximbank loan agreement is available in its entirety via https://www.masterlex.com/ResumenesDiarios/Gaceta/2013/Noviembre/ALCA127_01_11_2013.pdf. 2. Costa Rican Law N° 9293, which ratified the two loan agreements, refers to the project as 'proyecto rehabilitación y extensión de la ruta nacional N° 32 sección cruce ruta 4-Limón' and 'Proyecto de Diseño, Rehabilitación y Ampliación de la Ruta Nacional No.32’.3. There are several web resources for this project. There is a section of the CONAVI website dedicated to this project, including financial and implementation details: https://conavi.go.cr/ruta-32. There is also a website powered by CONAVI dedicated to this project, including financial and implementation details: https://www.ruta32.cr/. Lastly, there is a YouTube channel exclusively for this road project (Channel name: Ruta 32 Costa Rica): https://www.youtube.com/channel/UCpFEoi7YAvWiMKGhbKMS2tA.",
+    "location_narrative": "The purpose of this project is to expand a 107-kilometer section of National Route 32 from two to four lanes. This road section begins at the Route 4 junction at Frío river and extends to Puerto Limón’s district center. More detailed locational information on the route of this road can be found at: http://intervenciones.mopt.go.cr:8084/geo/index.html and https://sig.mopt.go.cr:8084/web/index.html#8/9.773/-83.446 and https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=9.9919%2C-83.0248%3B10.2110%2C-83.8975 and https://www.openstreetmap.org/way/947500171#map=10/10.4216/-84.1278 and https://www.openstreetmap.org/way/948283357 and https://www.openstreetmap.org/way/371285406#map=14/9.9862/-83.0612",
+    "description_chars": 2793
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "reventazon-hydro",
+     "shared_words": [
+      "costa",
+      "rica",
+      "through"
+     ],
+     "case_title": "Reventazón Hydroelectric Dam",
+     "case_killed": null,
+     "case_displaced": null,
+     "case_years": [
+      2012,
+      2020
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "crucitas-infinito-gold",
+     "shared_words": [
+      "costa",
+      "rica",
+      "through"
+     ],
+     "case_title": "Crucitas Gold Mine and Infinito Gold's Claim",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2008,
+      2024
+     ],
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G521",
+   "recipient": "Costa Rica",
+   "iso3": "CRI",
+   "year": 2014,
+   "sector": "TRANSPORT AND STORAGE",
+   "title": "[China Co-Financing Fund] IDB administers $50 million loan from CHC for Infrastructure Transport Program (PIT)",
+   "aiddata_rows": [
+    {
+     "id": 85322,
+     "title": "[China Co-Financing Fund] IDB administers $50 million loan from CHC for Infrastructure Transport Program (PIT)",
+     "amount_usd_2021": 55354761.5704244,
+     "year": 2014,
+     "status": "Implementation"
+    }
+   ],
+   "limb_b_buckets": [
+    "land taken"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": false,
+   "candidate_sentences": {
+    "land taken": [
+     {
+      "field": "Description",
+      "sentence": "and as of January 2021, only 8% of necessary land expropriations had been made.",
+      "aiddata_row": 85322,
+      "screen_flags": []
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On April 3, 2014, the Inter-American Development Bank (IDB) signed two loan contracts with the Government of Costa Rica to finance the Infrastructure Transport Program (PIT): a $400 million loan that IDB issued from its ordinary capital (Loan 3071/OC-CRA), and a $50 million loan from the People's Bank of China (loan 3072/CH-CR) via the China Co-Financing Fund for Latin America and the Caribbean (CHC). The $450 million of loan financing authorized by IDB was designed to cover the total project cost.   The IDB approval date for the loan financing was November 13, 2013, and it refers to this project as ‘CR-L1032 : Infrastructure Transport Program (PIT)’.   The CHC loan carries the following borrowing terms: a 24-year maturity, a 6.5 grace period, a 0.75% commitment (credit) fee, no management fee, and an annual interest rate of 3-month LIBOR plus a 0.07% funding margin (also known as the ‘Bank’s Cost of Funding’) and a 0.85% IDB lending spread.   The Infrastructure Transport Program (PIT) seeks to repair or pave up to 110 kilometers of the national road network, widen 51 kilometers of roads from two to four lanes, and build or repair 19 bridges and nearly 400 meters of breakwater in ports. These measures are expected to help reduce vehicle operations by 7 percent and travel time by 28 percent. It is also intended to decrease vehicle operating costs and increased road and port safety. The PIT is part of the National Transportation Plan 2011-2035 (Plan Nacional de Transporte 2011-2035) to promote the improvement of infrastructures in Costa Rica. For a full list of other PIT infrastructure projects funded by the IDB ordinary capital loan, see pages 43-44 in Alcance Digital No. 67.   In the framework of this project, all of the funds from the China Co-Financing Fund were specifically to be used for the Limonal-Barranca section of the Inter-American Highway (also referred to as Route 1/Ruta 1), along with 149.16 million USD of the IDB ordinary capital loan. The Limonal-Barranca section, 49.37 km, is being improved in order to facilitate the flow of trade between Costa Rica and the rest of the countries and regional economic integration. Work on this section includes adding expanding the road from two to four lanes, the reconstruction of the existing road, the rehabilitation and duplication of the 19 bridges located on the route and the construction of 6 interchanges or overpasses in the main intersections. It will also add safety elements (such as sidewalks, 14 pedestrian crossings, bicycle lanes, signaling and containment barriers), and environmental works such as slope stabilization and 39 wildlife crossings.   The Ministry of Public Works and Transport (Ministerio de Obras Públicas y Transportes) is responsible for project implementation. On March 5, 2020, Route 1 Consortium (Consorcio Ruta 1), comprised of contractors Hernán Solís SR and Ingeniería Estrella, were awarded a contract for $182,578,060.79 to work on the Limonal-Barranca section and the La Angostura Route 17 section (reference number IDB-C503378-03/20), and were given a 30 month execution period. On August 28, 2020, a commencement order was issued for the Limonal-Barranca section. The 30 month execution period implies that the originally expected end date for construction was February 27, 2023.   However, it was reported that the the actual felling of trees for the beginning of the project’s construction activities did not start until September 15, 2020; as of December 2020, only 0.045% physical progress had been made; and as of January 2021, only 8% of necessary land expropriations had been made. At the end of 2020, $15 million of the CHC loan had been disbursed. As of October 8, 2020, $170 million (37.78% of the total financing from the IDB ordinary capital and the Co-Financing Fund) had been disbursed. Then, on April 9, 2021, Ingenieria y Economia del Transporte SMEMP, SA (INECO) was awarded a consulting contract to work on the project. The contract (reference number IDB-C739801-05/21) lists the China Co-Financing Fund loan and the IDB ordinary capital loan as a source of financing.",
+    "staff_comments": "1. The CHC loan agreement can be accessed in its entirety via http://www.pgrweb.go.cr/scij/Busqueda/Normativa/Normas/nrm_texto_completo.aspx?param1=NRTC&nValor1=1&nValor2=78365&nValor3=98718&strTipM=TC and https://www.mopt.go.cr/wps/wcm/connect/672207bd-77df-4a68-9fcc-fce51ad7bed0/Ley+9283+PIT+MOPT-BID+13-NOV-14.pdf?MOD=AJPERES. 2. AidData has estimated the all-in interest rate (1.17%) by adding average 3-month LIBOR in the second quarter of 2014 (0.23%) to the funding margin during the second quarter of 2014 (0.07%) and the IDB lending spread during the second quarter of 2014 (0.85%). 3. According to the CHC loan contract, the ‘Bank's Cost of Funding’ means a cost margin calculated quarterly relative to a three (3)-month LIBOR Dollar Interest Rate, using the weighted average cost of funding instruments applicable to the Flexible Financing Facility, expressed in terms of an annual percentage, as determined by the Bank. AidData identified this cost margin via https://idbdocs.iadb.org/wsdocs/getdocument.aspx?docnum=EZSHARE-1436601171-376. 4. The China Co-Financing Fund for Latin America and the Caribbean was established on January 14, 2013 with a contribution of $2 billion by the People's Bank of China. It is administered by the IDB. For more information, see umbrella Project ID#865265. The IDB lending spread data are drawn from https://idbdocs.iadb.org/wsdocs/getdocument.aspx?docnum=EZSHARE-1436601171-376.",
+    "location_narrative": "This project involved an expansion of the 49.37 km Limonal-Barranca section of National Route 1 (Ruta Nacional No. 1, carretera Interamericana Norte) and the widening of a section of National Route 17 between El Roble and El Carmen in Lan Angostura, Puntarenas. More detailed locational information can be found at https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=10.2657%2C-85.0207%3B9.9976%2C-84.7176#map=11/10.1314/-84.8690 and https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=9.9772%2C-84.7409%3B9.9785%2C-84.8325 and https://www.mopt.go.cr/wps/wcm/connect/dffc4e4e-4405-4c38-a176-f9bb8d511718/PUBLICACION+DE+LA+LINEA+BASE+BARRANCA+LIMONAL.pdf?MOD=AJPERES",
+    "description_chars": 4119
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "costa-rica-cantonal-roads-buenos-aires",
+     "shared_words": [
+      "american",
+      "costa",
+      "inter",
+      "puntarenas",
+      "rica",
+      "roads"
+     ],
+     "case_title": "Cantonal Road Program II: cut access to Salitre and Ujarrás",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2021,
+      2024
+     ],
+     "strength": "strong"
+    },
+    {
+     "case": "reventazon-hydro",
+     "shared_words": [
+      "american",
+      "costa",
+      "inter",
+      "rica"
+     ],
+     "case_title": "Reventazón Hydroelectric Dam",
+     "case_killed": null,
+     "case_displaced": null,
+     "case_years": [
+      2012,
+      2020
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "costa-rica-2021-public-wage-freeze-employment-law",
+     "shared_words": [
+      "costa",
+      "public",
+      "rica"
+     ],
+     "case_title": "Costa Rica Public Wage Freeze and Public Employment Law Under the 2021 IMF Programme",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2021,
+      2024
+     ],
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G142",
+   "recipient": "Ecuador",
+   "iso3": "ECU",
+   "year": 2010,
+   "sector": "ENERGY",
+   "title": "China Eximbank provides $1.68 billion buyer's credit loan for 1500MW Coca Codo Sinclair Hydroelectric Facility Project (Linked to Project ID#58432, #93431, #96292)",
+   "aiddata_rows": [
+    {
+     "id": 38935,
+     "title": "China Eximbank provides $1.68 billion buyer's credit loan for 1500MW Coca Codo Sinclair Hydroelectric Facility Project (Linked to Project ID#58432, #93431, #96292)",
+     "amount_usd_2021": 2343604287.57644,
+     "year": 2010,
+     "status": "Completion"
+    }
+   ],
+   "limb_b_buckets": [
+    "death with a cause"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": false,
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "A tunnel collapse at the plant construction site killed 13 people and injured 12 in December 2014.",
+      "aiddata_row": 38935,
+      "screen_flags": []
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On June 3, 2010, China Eximbank and the Ministry of Finance of the Republic of Ecuador signed a $1,682,745,000 buyer’s credit loan (BCL) agreement [Contract No. 1410202052010210644] for the 1500 MW Coca Codo Sinclair Hydroelectric Project. The loan carried the following borrowing terms: an annual interest rate of 6.9%, a default (penalty) interest rate of 1.5%, a grace period of 5.5 years, a maturity of 15 years, a 0.4% commitment fee, and a 0.4% management fee. The loan agreement required that the borrower purchase buyer’s credit insurance from Sinosure.   The proceeds of the loan were to be used by the borrower to finance 85% of the cost of the $1,979,700,000 EPC contract between Coca Codo Sinclair E.P. and Sinohydro Corporation, which was signed on October 5, 2009.   As of December 2016, the loan (BCL) had achieved an 87.7% disbursement rate ($1,476,205,953.32 out of $1,682,745,000). The borrower made principal repayments worth $93,485,833.33 on March 21, 2017, $93,485,833.33 on September 21, 2017, $93,485,833.33 on March 21, 2018, $93,485,833.33 on September 21, 2018, $93,485,833.33 on March 21, 2019, $93,485,833.33 on September 21, 2019, $93,485,833.33 on March 21, 2020, and $128,543,020.84 on March 21, 2022. It did not make any principal repayments on the originally scheduled repayment dates of September 21, 2020, March 21, 2021, September 21, 2021, and September 21, 2022. The loan’s (principal) amount outstanding was $1,589,259,166.67 as of March 20, 2017, $1,495,773,333.34 as of September 20, 2017, $1,402,287,500.01 as of March 21, 2018, $1,308,801,666.68 as of September 21, 2018, $1,2015,315,833.35 as of March 21, 2019, $1,121,830,000.02 as of September 21, 2019, $1,028,344,166.69 as of March 21, 2020, $1,028,344,166.69 as of September 21, 2020, $1,028,344,166.69 as of March 21, 2021, $1,028,344,166.69 as of September 21, 2021, $1,028,344,166.69 as of December 31, 2021, $899,801,145,85 as of March 21, 2022, $899,801,145,85 as of September 21, 2022, and $$899,801,145.86 as of November 30, 2022.   The Coca Codo Sinclair hydroelectric project was first proposed in the early 1980s but could not be implemented because of the Reventador volcanic eruption in 1987 and financial constraints. Then, in 2007, Ecuadorian President Rafael Correa restarted the project and Italian company Electroconsult was contracted to conduct a new feasibility study. In February 2008, Coca Codo Sinclair SA was established as a joint venture company between Ecuador’s state-owned power company Termopichincha (70% ownership stake) and Energia Argentina (30% ownership stake). The Government of Ecuador then bought the entire 30% ownership stake of Energia Argentina for $5.5 million in September 2009. Coca Codo Sinclair E.P. — a project company (special purpose vehicle) — was eventually established to oversee the design and implementation of the Coca Codo Sinclair Hydroelectric Project. Its sole shareholder is La Corporación Eléctrica del Ecuador E.P. (CELEC), an Ecuadorian state-owned holding company engaged in electricity generation, transmission, distribution, and commercialization.   The purpose of the project was to construct a 1500 MW hydroelectric power plant in El Reventador on the Coca River between the provinces of Napo and Sucumbíos. The plant’s eight turbines were designed to produce 8.8 billion kWh per annum, supplying 35% of the country’s overall electricity consumption and saving about two billion liters of imported diesel for thermal power plants per year. The project was developed in an area where the Coca River flows in a great curve at a natural slope of 620 meters. The water intake complex is located on the Coca River, 1 km downstream of the confluence of the Quijos and Salado rivers. It comprises a concrete face rockfill dam built on the existing river channel, a concrete spillway built on the left bank of the river, and the sedimentation basin and intake built between the dam and spillway. Any water diverted from the intake passes via the 120 meter-long sedimentation basin to run through a 24.8 km-long concrete-lined headrace tunnel, with an excavation diameter of 9.1 meters, into the compensating reservoir, which has a usable volume 800,000m³. Water from the compensating reservoir is fed through two 1,900 meter-long penstocks to the eight Pelton turbines installed in the underground powerhouse, which measure 26m x 50m x 192m. A parallel cavern of 16.5m x 33m x 192m houses 24 single-phase transformers of 68.3 MVA each and a 500kV substation. The access path to the powerhouse is 495m long, 6.5m wide and 7.5m high. A tailrace tunnel delivers water back to the Coca River. The hydroelectric project is designed to use a 620 meter-high natural waterfall with a maximum regulated flow of water of 278m³/s. Coca Codo’s run-of-river intake has a maximum capacity of 7,500m³/s. The sedimentation basin has six bays and a design sediment particles size of 0.25mm, while the maximum derived flow in the headrace tunnel is 222m³/s. Two penstocks with vertical shaft and horizontal reach feed the water from the compensating reservoir to the eight generating units of the plant. In addition, the power plant is equipped with eight six-nozzle vertical Pelton turbines, each with a rated output of 187.7MW. Each turbine is powered by a runner with 22 buckets with a width of 835mm.   Sinohydro was the EPC contractor responsible for project implementation and its work was overseen by Coca Codo Sinclair E.P. and CELEC. Project implementation commenced on July 28, 2010. The access road to the powerhouse was completed in October 2012. A tunnel collapse at the plant construction site killed 13 people and injured 12 in December 2014. It also caused partial damage to the high-pressure pipes inside the engine room. The project was ultimately completed on November 18, 2016. Its originally scheduled completion date was January 28, 2016.   Since then, the project has been plagued by a variety of engineering problems and corruption accusations.  In 2017, the Ecuadorian tax authority (SRI) uncovered pending taxes of $198 million from Sinohydro. One of the main controversies involved a payment of $172.5 million by Sinhohydro to China Export and Credit Insurance Corporation (Sinosure) for the purchase of an insurance policy, for which Sinohydro sought tax deductions, which SRI rejected. Then, in December 2018, the New York Times reported that ‘7,648 cracks have developed in the dam’s machinery, according to the government, because of substandard steel and inadequate welding by Sinohydro. Sand and silt are also big concerns because they can damage vital equipment.’  In May 2021, CELEC requested arbitration through the International Chamber of Commerce to settle a dispute over cracks in the power plant’s machinery that prevented it from operating at full capacity since it was completed in 2016 (after $2.2 billion in construction costs). Then, in July 2021, Reuters reported that new problems at the hydroelectric plant threatened water flow and electricity generation. During a shutdown of four of the facility’s eight turbines for planned maintenance, CELEC discovered missing bolts on some of its valves. CELEC CEO Gonzalo Uquillas said that the problem could prevent valves from opening and closing to adequately regulate the flow of water. ‘Of the 96 bolts that secure the seals on these valves, some bolts are missing,’ Uquillas said in an interview on July 16, 2021. He added that ‘I don’t want to believe they weren’t installed, but they are missing.’ Then, in March 2023, Ecuador's Prosecutor General filed charges against 37 people, including the former President of Ecuador Lenín Moreno (2017-2021) and five former employees of Sinohydro (Cai Runguo, Yan Huijun, Song Dongsheng, Wu Yu, and Liu Aisheg) for allegedly accepting bribes worth $1.1 million to secure the commercial contract for the 1500MW Coca Codo Sinclair Hydroelectric Facility Project.  The China Eximbank loan (BCL) that supported the Coca Codo Sinclair Hydroelectric Project has also financially underperformed. It was rescheduled twice — once in September 2020 (as captured via Project ID#93431) and again in September 2022 (as captured via Project ID#96292).",
+    "staff_comments": "1. The Spanish project title el Proyecto Hidroeléctrico Coca Codo Sinclair. The Chinese project title is 科卡·科多·辛克雷水电站项目举.2. The end_actual field is coded based on the following clause from pg. 4 of the subsidiary agreement (https://www.celec.gob.ec/cocacodosinclair/images/lotaip/2015/8Agosto/convenio.pdf) between Ecuador’s Ministry of Finance and Coca Codo Sinclair E.P.: ‘El plazo dentro del cual el 'ORGANISMO EJECUTOR' se obliga a concluir el 'PROYECTO', es de 66 meses, contado desde la fecha de suscripción del Acta de Inicio, esto es el 28 de julio de 2010’.3. The June 3, 2010 buyer's credit loan agreement can be accessed in its entirety via https://www.dropbox.com/s/8x40907khm9128s/Loan%20Agreement%20for%20Coca%20Codo%20Sinclair%20Hydroelectric%20Project.pdf?dl=0. 4. The September 2022 loan rescheduling agreement can be accessed in its entirety via https://www.dropbox.com/s/gperxwvl9dua0v8/13%20September%202022%20Amendment%20Agreement%20related%20to%20BCL%20for%20Coca%20Codo%20Sinclair%20Hydroelectric%20Project.pdf?dl=0.5.     The Ecuadorian Ministry of Finance loan identification number is 23158000",
+    "location_narrative": "The Coca Codo Sinclair Dam is a hydroelectric dam in Ecuador. It is located in El Reventador on the Coca River in Napo Province, 100 kilometres (62 mi) east of Quito. More detailed locational information can be found at https://www.google.com/maps/place/Coca+Codo+Sinclair+Dam/@-0.0775,-77.655833,15z/data=!4m5!3m4!1s0x0:0x985711bc8b63f6c6!8m2!3d-0.0775!4d-77.655833 and https://www.openstreetmap.org/way/310742588#map=17/-0.19980/-77.68573",
+    "description_chars": 8219
+   },
+   "r36_dedupe_hint": {
+    "case_id": "coca-codo-sinclair",
+    "shared_words": [
+     "ecuador",
+     "reventador",
+     "river",
+     "sinclair"
+    ],
+    "strength": 4
+   },
+   "local_match": [
+    {
+     "case": "coca-codo-sinclair",
+     "shared_words": [
+      "coca",
+      "codo",
+      "ecuador",
+      "eximbank",
+      "napo",
+      "reventador",
+      "sinclair",
+      "sinohydro"
+     ],
+     "case_title": "Coca Codo Sinclair Dam: tunnel deaths and Coca River erosion",
+     "case_killed": 13,
+     "case_displaced": null,
+     "case_years": [
+      2010,
+      null
+     ],
+     "strength": "strong"
+    },
+    {
+     "case": "ecuador-october-2019",
+     "shared_words": [
+      "ecuador",
+      "october",
+      "quito"
+     ],
+     "case_title": "Ecuador October 2019 National Strike",
+     "case_killed": 11,
+     "case_displaced": null,
+     "case_years": [
+      2019,
+      2019
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "ecuador-june-2022-strike",
+     "shared_words": [
+      "ecuador",
+      "june",
+      "quito"
+     ],
+     "case_title": "Ecuador June 2022 National Strike",
+     "case_killed": 6,
+     "case_displaced": null,
+     "case_years": [
+      2022,
+      2022
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "ecuador-2008-debt-audit-default",
+     "shared_words": [
+      "default",
+      "ecuador",
+      "quito"
+     ],
+     "case_title": "Ecuador's debt squeeze and the 2008 audit default",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2000,
+      2009
+     ],
+     "strength": "worth_checking"
+    }
+   ],
+   "already_on_map_and_figure_already_carried": "coca-codo-sinclair",
+   "note": "Round 38's build checked this one against the live card: the decisive figure is already on it. Confirm, then record already_on_map unless the row adds a lender or an amount the card lacks, in which case it is an extend."
+  },
+  {
+   "financing": "G101",
+   "recipient": "Honduras",
+   "iso3": "HND",
+   "year": 2013,
+   "sector": "ENERGY",
+   "title": "ICBC provides $297.7 million loan for Phase 2 of 104MW Patuca III Dam Project",
+   "aiddata_rows": [
+    {
+     "id": 35552,
+     "title": "ICBC provides $297.7 million loan for Phase 2 of 104MW Patuca III Dam Project",
+     "amount_usd_2021": 335838967.980348,
+     "year": 2013,
+     "status": "Completion"
+    }
+   ],
+   "limb_b_buckets": [
+    "land taken"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": false,
+   "candidate_sentences": {
+    "land taken": [
+     {
+      "field": "Description",
+      "sentence": "The first phase, which was completed in 2013, involved the design and construction of the cofferdam, diversion tunnel, bridge access, land acquisition and other complementary works at a cost of approximately $153.0 million.",
+      "aiddata_row": 35552,
+      "screen_flags": []
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On September 22, 2013, the Industrial and Commercial Bank of China (ICBC) signed a $297,719,934.10 buyer’s credit loan agreement with Empresa Nacional de Energía Eléctrica (ENEE) — Honduras's government-owned and -operated electrical power company — for Phase 2 of the 104 MW Patuca III Dam Project. This loan carried the following borrowing terms: an interest rate of 6 month LIBOR plus a 4% margin, a 2% default (penalty) interest rate, a 15 year maturity, a 5 year grace period, a 0.8% commitment fee, and a 1% management fee. The Government of Honduras provided a sovereign guarantee for the loan on December 27, 2013.   The first ICBC loan disbursement (of $48 million) took place on August 10, 2015. As of November 2016, the loan had achieved an 89.8% disbursement rate ($267.4 million out of $297.7 million). The borrower (ENEE) made no principal payment and an interest payment worth $15.86 million in 2018. Then, in 2019, the borrower made a principal payment worth $14.76 million and an interest payment worth $17.21 million. The loan's (principal) amount outstanding was $266.41 million as of December 31, 2018 and $258.91 million as of December 31, 2019.  The purpose of the Patuca III project was to construct a hydroelectric dam in Patuca on the Rio Patuca in Olancho located in the south-eastern part of Honduras. The project involved the construction of a dam with a height of 57 meters, a shot and a pressure pipe creating a fall of 42.2 meters and a reservoir area of 51 square kilometers. At the end of the pipe is a surface house where two Kaplan turbines were to be installed. Construction of the project was expected to reduce dependence on expensive thermal energy and further diversify the country’s energy matrix. Upon completion, the project was expected have an estimated capacity of 104MW and is expected to generate 326 GWh per year. It was estimated that the completed project will serve a population of nearly one million people.   The project was completed in several stages. The first phase, which was completed in 2013, involved the design and construction of the cofferdam, diversion tunnel, bridge access, land acquisition and other complementary works at a cost of approximately $153.0 million. The second phase was executed at an estimated cost of $554.4 million. It consisted of the acquisition of generators, purchase and installation of two turbines, construction of the transmission line, installation of transformers, construction of the curtain and the reservoir, construction of the machine house, access roads, among others activities. The second phase was financed with funds from ENEE ($205.6 million), as well as loans to the Central Government from Bancatlan ($14.8 million), Petrocaribe ($36.1 million) and the Industrial and Commercial Bank of China ($297.7 million).   The contractor responsible for project implementation is Sinohydro. Project implementation officially commenced on September 21, 2015. The Patuca III dam was officially inaugurated in January 2021. The project was originally scheduled to reach completion in the spring of 2018. However, the project faced implementation delays due the the fact that ENEE had trouble raising $35 million of additional funding to address a set of resettlement and environmental protections concerns before the dam could become operational.  A 2008 Honduran Government-sponsored environmental impact assessment (EIA) was 'so weak,' according to a 2012 letter from the Inter-American Development Bank (IADB) to the Honduran Government, 'that we could not even envision starting to study [Tegucigalpa's request for project funding] seriously.' Among the failings the IADB’s EIA identified, the Honduran Government neither adequately consulted with nor compensated affected communities. According to the IADB, changes in the Patuca river’s flow also threatened several species of migrating fish, as well as lizards, crocodiles and turtles.  When the IADB declined to fund the 104MW Patuca III Dam Project, ICBC stepped in as an alternative source of financing.   The Patuca III Dam Project was plagued by accusations of corruption. The Honduran National Anti-Corruption Council investigated several officials at ENEE for the alleged embezzlement of more than $4 million from the construction of the barracks that housed Sinohydro’s technicians and laborers.",
+    "staff_comments": "1. The Spanish project title is Proyecto Central Hidroeléctrica Patuca III (Piedras Amarillas), Fase II. The Chinese project title is 洪都拉斯帕图卡水电站 or 帕图卡III水电站项目. 2. According to the loan agreement, which can be accessed in its entirety at https://www.documentcloud.org/documents/20488291-hnd_2013_434_3_of_4, the Foreign Debt Serivice Account ('Cuenta de Reserva de Servicio de la Deuda' at ICBC New York) is to be used for the repayment of the debt (and accessed if the funds in the Local Account for Project Revenue Collection, or 'Cuenta Local de Cobros de Ingresos del Proyecto', aren't enough). The loan agreement also specifies that, in event of default, the lender may withdraw any amount of money that has been deposited in the Foreign Debt Service Account ('Abroad Account') or the Local Account for Project Revenue Collection to ensure repayment of the loan. 3. It appears that Phase 1 of the project was funded by ENEE, Central Government Bank from Bancatlan, and Petrocaribe. AidData has not identified any evidence that ICBC funded Phase 1 (See: 'Informe de Cartera Industrial and Commercial Bank of China').4. AidData has estimated the all-in interest rate (4.380%) by adding 4% to average 6-month LIBOR in September 2013 (0.380%). 5. The 2018 and 2019 principal payment, interest payment, and amount outstanding data are drawn from https://www.dropbox.com/s/vzl7f617upyln1k/OfferingCircular5-625-2030.pdf?dl=0",
+    "location_narrative": "The Patuca III hydroelectric dam is located in Patuca on the Rio Patuca in Olancho located in the south-eastern part of Honduras. It exact locational coordinates are available at https://www.google.com/maps/place/Central+Hidroe%C3%A9ctrica+%22Patuca+III%22/@14.4457441,-85.9665798,17z/data=!3m1!4b1!4m5!3m4!1s0x8f6c382eef0ba18d:0x59ce090850210f5b!8m2!3d14.4457389!4d-85.9643911 and https://www.openstreetmap.org/way/1025987844 and https://www.openstreetmap.org/way/1025987845",
+    "description_chars": 4356
+   },
+   "r36_dedupe_hint": {
+    "case_id": "patuca-iii-dam-landowners",
+    "shared_words": [
+     "honduras",
+     "olancho",
+     "patuca"
+    ],
+    "strength": 3
+   },
+   "local_match": [
+    {
+     "case": "patuca-iii-dam-landowners",
+     "shared_words": [
+      "honduras",
+      "icbc",
+      "olancho",
+      "patuca",
+      "payment",
+      "sinohydro"
+     ],
+     "case_title": "Patuca III dam: expropriated landowners left waiting for payment and resettlement",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2015,
+      null
+     ],
+     "strength": "strong"
+    },
+    {
+     "case": "agua-zarca-berta-caceres",
+     "shared_words": [
+      "energ",
+      "honduras",
+      "sinohydro"
+     ],
+     "case_title": "Agua Zarca Dam and the Murder of Berta Cáceres",
+     "case_killed": 3,
+     "case_displaced": null,
+     "case_years": [
+      2009,
+      2017
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "honduras-road-rehabilitation-ii-land-taken",
+     "shared_words": [
+      "honduras",
+      "land",
+      "roads"
+     ],
+     "case_title": "Three Households Resettled and Land Taken in Two Hundred and One Cases on Honduras’s Second Road Credit",
+     "case_killed": 0,
+     "case_displaced": 3,
+     "case_years": [
+      2008,
+      2015
+     ],
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G447",
+   "recipient": "Serbia",
+   "iso3": "SRB",
+   "year": 2020,
+   "sector": "WATER SUPPLY AND SANITATION",
+   "title": "China Eximbank provides EUR 164.6 million buyer’s credit loan for 29.18 km Obrenovac-Novi Beograd Heating Pipeline Project",
+   "aiddata_rows": [
+    {
+     "id": 67648,
+     "title": "China Eximbank provides EUR 164.6 million buyer’s credit loan for 29.18 km Obrenovac-Novi Beograd Heating Pipeline Project",
+     "amount_usd_2021": 209008176.372466,
+     "year": 2020,
+     "status": "Pipeline: Commitment"
+    }
+   ],
+   "limb_b_buckets": [
+    "land taken"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": false,
+   "candidate_sentences": {
+    "land taken": [
+     {
+      "field": "Description",
+      "sentence": "There is, however, evidence that some preliminary (pre-construction) activities have taken place, such as land expropriation.",
+      "aiddata_row": 67648,
+      "screen_flags": []
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On June 7, 2017, the Chinese Government and the Government of Serbia signed a Memorandum of Understanding on the 29.18 km Obrenovac-Novi Beograd Heating Pipeline Project. Then, on January 17, 2020, China Eximbank and the Government of the Republic of Serbia signed an EUR 164,685,800 buyer’s credit loan (BCL) agreement [ID#1420313022020210056] for the 29.18 km Obrenovac-Novi Beograd Heating Pipeline Project. The National Assembly of Serbia ratified the loan agreement in February 2020.   The loan (BCL) carries the following borrowing terms: a 15-year maturity, a 3-year grace period, interest rate of 6-month EURIBOR plus a 2.7% margin, a 2% default (penalty) interest rate, a 0.5% commitment fee, a 0.5% (EUR 823,429) management fee, and an EUR 12,208,102.49 Sinosure insurance premium. The proceeds of the loan (BCL) are to be used by the borrower to finance 85% of the cost of an EUR 193,748,000 commercial (EPC) contract between Public Utility Company \"Beogradske elektrane”, the City of Belgrade, and Power Construction Corporation of China (PowerChina), which was signed on November 27, 2017 and amended on July 9, 2019.   The lender made disbursements worth EUR 32,937,000 ($37,265,000) in 2021. The loan’s (principal) amount outstanding was $0 as of December 31, 2020, EUR 32,937,000 ($37,265,000) as of December 31, 2021, and EUR 32,937,000 ($32,321,000) as of September 31, 2022.    The purpose of the project is to construct a 29.18 km heating pipeline (heat transmission line) — with heat transfer capacity of 800MW — that connects the Termoelektrane Nikola Tesla (TENT) power plant near the city municipality of Obrenovac (exact locational coordinates: 44.65461414707668, 20.004822111741095) and the Novi Beograd (New Belgrade) thermal power plant (exact locational coordinates: 44.8005, 20.4099). The project also involves the construction of four pumping stations. The project will seek to use hot water, which is currently discharged from a power plant into the Sava river, for heating purposes. Upon completion, the heating pipeline is expected to generate annual savings of about EUR 43 million, or roughly one third of the EUR 140 million that the Belgrade district heating company spends on natural gas imports each year.   Power Construction Corporation of China (PowerChina) is the EPC contractor responsible for implementation.  Construction was originally scheduled to commence in June 2021. However, as of January 2022, AidData could not identify any evidence that construction had commenced. Some sources seems to suggest that the COVID-19 pandemic has led to implementation delays. There is, however, evidence that some preliminary (pre-construction) activities have taken place, such as land expropriation.",
+    "staff_comments": "1. The Chinese project title is 塞尔维亚奥布雷诺瓦茨至贝尔格莱德新区供热管道建设项目 or 塞尔维亚奥布雷诺瓦兹至贝尔格莱德新区供热管道建设项目. The Serbian project title is Пројекат изградње топловода Обреновац - Нови Београд. 2. AidData estimated the all-in interest rate (2.37%) by adding a 2.7% margin to the average 6-month EURIBOR rate in January 2020 (-0.330%). 3. The China Eximbank BCL (loan) agreement [ID#1420313022020210056] can be accessed in its entirety via https://www.dropbox.com/s/gjrlmg2c8e8f55w/China%20Eximbank%20loan%20agreement%20for%20Construction%20of%20District%20Heating%20Pipeline%20Project%20Obrenovac-Novi%20Beograd.pdf?dl=0",
+    "location_narrative": "The purpose of this project is to construct a 29.18 km heating pipeline (heat transmission line) — with heat transfer capacity of 800MW — that connects the Termoelektrane Nikola Tesla (TENT) power plant near the city municipality of Obrenovac (exact locational coordinates: 44.65461414707668, 20.004822111741095) and the Novi Beograd (New Belgrade) thermal power plant (exact locational coordinates: 44.8005, 20.4099). The project also involves the construction of four pumping stations. The project will seek to use hot water, which is currently discharged from a power plant into the Sava river, for heating purposes. More detailed locational information can be found at https://www.openstreetmap.org/way/678830571 and https://www.openstreetmap.org/way/180603118",
+    "description_chars": 2738
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "belgrade-vinca-landfill",
+     "shared_words": [
+      "belgrade",
+      "municipality",
+      "public",
+      "serbia",
+      "utility"
+     ],
+     "case_title": "Vinča Landfill Roma Evictions, Belgrade",
+     "case_killed": null,
+     "case_displaced": 17,
+     "case_years": [
+      2018,
+      2025
+     ],
+     "strength": "strong"
+    },
+    {
+     "case": "eagle-hills-belgrade-waterfront-savamala",
+     "shared_words": [
+      "belgrade",
+      "beograd",
+      "republic",
+      "sava",
+      "serbia"
+     ],
+     "case_title": "Eagle Hills' Belgrade Waterfront and the Savamala Night Demolitions",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2014,
+      2016
+     ],
+     "strength": "strong"
+    },
+    {
+     "case": "serbia-2014-pension-wage-cuts",
+     "shared_words": [
+      "belgrade",
+      "public",
+      "serbia"
+     ],
+     "case_title": "Serbia 2014 Pension and Public Pay Cuts",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2014,
+      2018
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "novi-sad-station-canopy-collapse",
+     "shared_words": [
+      "eximbank",
+      "novi",
+      "serbia"
+     ],
+     "case_title": "Novi Sad Railway Station: Canopy Collapse on the China Exim-Financed Line",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2021,
+      null
+     ],
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G450",
+   "recipient": "Ukraine",
+   "iso3": "UKR",
+   "year": 2012,
+   "sector": "AGRICULTURE, FORESTRY, FISHING",
+   "title": "China Eximbank provides $1.5 billion buyer’s credit loan for the purchase of grain and the export of grain to China (Linked to Project ID#42559 and ID#85202)",
+   "aiddata_rows": [
+    {
+     "id": 67803,
+     "title": "China Eximbank provides $1.5 billion buyer’s credit loan for the purchase of grain and the export of grain to China (Linked to Project ID#42559 and ID#85202)",
+     "amount_usd_2021": 1761185336.88876,
+     "year": 2012,
+     "status": "Implementation"
+    }
+   ],
+   "limb_b_buckets": [
+    "arrest or detention"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": false,
+   "candidate_sentences": {
+    "arrest or detention": [
+     {
+      "field": "Description",
+      "sentence": "In August 2021, Ihor Yakubovych made an unsuccessful attempt to flee the country, but was detained by the National Police.",
+      "aiddata_row": 67803,
+      "screen_flags": []
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On June 28, 2012, China Eximbank and the Government of Ukraine’s Ministry of Agriculture and Food signed a Memorandum of Understanding (MoU) regarding a $3 billion line of credit (captured in Project ID#42559). This agreement, which is popularly known as the loan-for-corn deal (or loan-for-grain deal), specified that China Eximbank would provide a $3 billion line of credit to PJSC 'State Food Grain Corporation of Ukraine' (SFGCU or PJSC DPZKU) — a Ukrainian state-owned enterprise — in two loan tranches: the first $1.5 billion tranche would be for the purchase of grain (through forward and spot contracts) and the export of grain to China, and the second $1.5 billion tranche would be for the acquisition of Chinese goods (plant protection products, machinery, elevator equipment) and potentially also the construction of biodiesel and corn processing production plants.   Then, on October 24, 2012, SFGCU and China National Complete Engineering Corporation (CCEC) signed a 'General Contract for Cooperation.' The contract specified that the $3 billion China Eximbank loan was to be repaid within 15 years with the proceeds from grain supply contracts between SFGCU and CCEC. Grain supply was to begin in 2012 (or 2013) and continue until 2027 (or 2028). The supply/sale of maize and other grains from SFGCU to CCEC was not to be less than 80 million metric ton over the 15-year period. SFGCU agreed to supply/sell 4 million tons in the first year, 4.5 million tons in the second year, and 5.2 million tons in the third year. Grain prices were tethered to futures contracts for the relevant period of time on the Dalian Commodity Exchange of China. The contract also stipulated that, in the event that SFGCU did not meet its annual grain supply commitments, CCEC had the right to notify China Eximbank so that it could in turn adjust loan disbursements in proportion to the annual supply of grain. SFGCU also granted CCEC the right to re-export grain to other countries for their legal resale. Additionally, under the terms of the contract, SFGCU agreed to buy various goods (including fuel, mineral fertilizers, plant protection products, seeds, agricultural machinery) and services from CCEC.  The contract further stipulated that CCEC would be the main EPC contractor for any turnkey project financed by the $3 billion loan agreement. The contract identified $1.5 billion worth of goods, services, and turnkey projects that CCEC would supply to SFGCU between 2013 and 2017: $275 million for the purchase of Chinese plant protection products; $305 million for the purchase of mineral fertilizers; $55 million for the purchase of agricultural machinery; $350 million for the purchase of seeds; $70 million for the construction of a plant for organic and mineral fertilizers; $70 million for the construction of a plant for the production of plant protection products; $195 million for the construction of an agricultural market center; $15 million for agricultural waste as alternative energy sources (pellets); and $165 million for the construction of a port elevator.  Then, on December 26, 2012, China Eximbank and SFGCU signed a $1.5 billion buyer’s credit loan agreement [№ BLA 201209], which represented the first tranche described in the June 28, 2012 MOU. This loan agreement is captured in Project ID#67803. It carried the following terms: an interest rate of 6-month LIBOR (0.515% in December 2012) plus a 4.5% margin, a maturity of 15 years, and a 5 year grace period. The final maturity date of the loan was December 28, 2027. The Government of Ukraine issued a sovereign guarantee in support of the loan. In the event that SFGCU did not meet its repayment obligations, the guarantor (the Ministry of Finance of the Government of Ukraine) agreed to pay the amount of debt that was outstanding within 20 working days of receiving a written request from China Eximbank.   The full amount of the first tranche ($1.5 billion) was reportedly disbursed by China Eximbank and deposited in an account controlled by Ukraine Export-Import Bank (Ukreximbank) on February 6, 2013. The proceeds of the loan were reportedly used by the borrower (SFGCU) for forward grain purchases (i.e the purchase of barley, wheat, and corn from Ukrainian farmers intended for export to China). However, the SFGCU did not honor its commitment to sell 4-6 million tons of grain to CCEC each year. The SFGCU’s First Deputy Board Chairman Robert Brovdi said that his company had only exported 1.5 million tons of grain to China as of December 3, 2013. Other sources suggest that grain deliveries ranged between 10% and 23% of the agreed volumes. In March 2013, CCEC filed a complaint against SFGCU at the London Court of International Arbitration for failing to fulfill its grain supply obligations (and thus effectively defaulting on its repayment obligations under its $1.5 billion buyer’s credit loan with China Eximbank). Shortly thereafter, the Ukrainian media reported that the loan had been defrauded, and Ukrainian officials had demanded large bribes in return for declaring to purchase agricultural machines in China.   On March 11, 2014, the Ukrainian Ministry of Agricultural Policy and Food relieved Ihor Yakubovych, the Chairman of the SFGCU, of his duties. Then, in April 2014, CCEC and SFGCU performed a comprehensive audit of SFGCU’s implementation of projects associated with the $1.5 billion dollar loan. Then, in early September 2014, the Prosecutor General's Office informed Ihor Yakubovych that he and his deputy were suspected of a crime: misuse of credit funds (from China Eximbank) and deliberately creating the conditions for embezzlement of $15 million in cooperation with other persons. Several months later, in January 2015, the Prosecutor General's Office put Ihor Yakubovych and his deputy on a ‘wanted list’ for allegedly fabricating official documents and embezzling funds. According to an investigation undertaken by the Prosecutor General's Office, Ihor Yakubovych and the SFGCU Director of the Department of Trading and Sales purchased grain for loans obtained under state guarantees through fictitious enterprises and sold the grain below market price to such companies as SN, Trans Trade RK SA, RL Prosperis Commerce SA, Trans Trade RK SA, Apiq Commodities Gmbh, Ai Amal General Traiding Limited, QAM7, and GSteam. In 2015, China Eximbank and SFGCU amended the $1.5 billion buyer’s credit loan agreement in an unusual way. The amended agreement specified (in Annex 3) that, for every ton of grain exported by SFGCU to China, SFGCU would be obliged to pay China Eximbank a $5 ‘commission’ (above and beyond its principal and interest repayment obligations). Additional problems arose in 2017. On March 20, 2017, SFGCU was accused of attempting to illegally appropriate a privately-owned grain port terminal to increase its export capacity to China. Several media outlets also reported in 2017 that Ukreximbank froze SFGCU’s bank accounts at the request of China Eximbank.   Due to anticipated loan repayment difficulties, SFGCU and China Eximbank also engaged in debt rescheduling negotiations in March 2017. The parties ultimately agreed to reduce the loan’s interest rate from 6-month LIBOR + a 4.5% margin to 6-month LIBOR + a 3% margin. This loan rescheduling is captured via Project ID#85202.  Semi-annual principal repayments  commenced in January 2018 and the loan's principal amount outstanding stood at $1.2 billion in October 2019 and $900 million in October 2021.   Additional problems and controversies arose in 2019 and 2020. At the end of 2019, the National Anti-Corruption Bureau of Ukraine (NABU) reported the detention of another former SFGCU chairman in Lithuania. Then, in early 2020, the Acting Chairman of the Board of SFGCU, Simon Chernyavsky, announced that law enforcement had opened 150 criminal cases against SFGCU officials. He also announced on March 2, 2020 that SFGCU was ordered by the London Court of International Arbitration to pay $4 million to CCEC. In August 2021, Ihor Yakubovych made an unsuccessful attempt to flee the country, but was detained by the National Police. In July 2022, China Eximbank was reportedly ‘playing hardball and threatening to send a default note on the loan’. This disclosure came at a time when the Government of Ukraine was seeking a 2-year moratorium on debt repayments to private and official creditors.  On January 23, 2020, SFGCU paid off $115.9 million on the loan issued by the Export-Import Bank of China: the corporation repaid $75 million of principal and $40.9 million of interest.",
+    "staff_comments": "1. In March 2017, a Vice President of China Eximbank visited SFGCU and announced that its loan with SFGCU would be used for two new projects: the creation of rolling stock (through the acquisition of 3,000 railroad cars from China) and the supply of plant protection products from the People’s Republic of China to Ukraine. SFGCU and China Eximbank also agreed in March 2017 that the Mykolaiv Port Elevator Reconstruction Project would be implemented with proceeds from the loan after the successful launch of the first two projects. These announcements suggested that the second tranche of the loan would be released. However, AidData has not identified any evidence that the second $1.5 billion tranche was ever drawn down or even made available to SFGCU. Ukraine’s Ministry of Finance reports disbursements through the $1.5 billion buyer’s credit loan agreement [№ BLA 201209] that was issued on December 26, 2012, but it does not report any disbursements through (drawdowns under) the second, $1.5 billion loan tranche. 2. The Overseas Development Finance Dataset published by Boston University’s Global Development Policy Center in December 2020 identifies the face value of the 2012 loan from China Eximbank loan as $3 billion. AidData records the face value that is reported by Ukraine’s Ministry of Finance ($1.5 billion). 3. Between January 2021 and May 2021, SFGCU concluded 10 foreign trade contracts for the export of grain with these foreign companies for more than $231 million. By the end of July 2021, the receivables of SN, Trans Trade RK SA, RL Prosperis Commerce SA, Trans Trade RK SA, Apiq Commodities Gmbh, Ai Amal General Traiding Limited, QAM7, and GSteam to SFGCU amounted to more than $57 million.",
+    "location_narrative": "This loan supported the PJSC “State Food Grain Corporation of Ukraine.” Their corporate office is located at Kyiv, Saksaganskogo Street, 1. More detailed locational information can be found at https://www.openstreetmap.org/way/140018236.",
+    "description_chars": 8580
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "ukraine-farmland-market-2020",
+     "shared_words": [
+      "kyiv",
+      "market",
+      "sale",
+      "ukraine"
+     ],
+     "case_title": "Ukraine Farmland Sale Ban Lifted",
+     "case_killed": 0,
+     "case_displaced": null,
+     "case_years": [
+      2019,
+      2021
+     ],
+     "strength": "worth_checking"
+    },
+    {
+     "case": "okko-revutskoho-kyiv",
+     "shared_words": [
+      "kyiv",
+      "street",
+      "ukraine"
+     ],
+     "case_title": "OKKO Filling Station, Revutskoho Street",
+     "case_killed": null,
+     "case_displaced": null,
+     "case_years": [
+      2017,
+      2019
+     ],
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G188",
+   "recipient": "Ukraine",
+   "iso3": "UKR",
+   "year": 2011,
+   "sector": "TRANSPORT AND STORAGE",
+   "title": "[Cancelled] China Eximbank provides $320.1 million for Tranche 2 of buyer’s credit loan for Aerial Express Project (Linked to Project ID#42577 and ID#67775)",
+   "aiddata_rows": [
+    {
+     "id": 42494,
+     "title": "[Cancelled] China Eximbank provides $320.1 million for Tranche 2 of buyer’s credit loan for Aerial Express Project (Linked to Project ID#42577 and ID#67775)",
+     "amount_usd_2021": 393794896.196438,
+     "year": 2011,
+     "status": "Cancelled"
+    },
+    {
+     "id": 42577,
+     "title": "China Eximbank reschedules Tranche 1 of buyer’s credit loan for Aerial Express Project via 2-year grace period extension (Linked to Project ID#42494 and ID#67775)",
+     "amount_usd_2021": null,
+     "year": 2014,
+     "status": "Completion"
+    },
+    {
+     "id": 67775,
+     "title": "China Eximbank provides $52.1 million for Tranche 1 of buyer’s credit loan for Aerial Express Project (Linked to Project ID#42494 and ID#42577)",
+     "amount_usd_2021": 64106145.4348137,
+     "year": 2011,
+     "status": "Implementation"
+    }
+   ],
+   "limb_b_buckets": [
+    "arrest or detention"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": false,
+   "candidate_sentences": {
+    "arrest or detention": [
+     {
+      "field": "Description",
+      "sentence": "The State Administration of Railway Transport of Ukraine (Ukrzaliznytsia) subsequently assumed responsibility for the EPC contract from CMCEC and it was charged with financing a scaled-down and rescoped version of the project.",
+      "aiddata_row": 42494,
+      "screen_flags": []
+     },
+     {
+      "field": "Description",
+      "sentence": "He was detained in Panama in September 2016.",
+      "aiddata_row": 42494,
+      "screen_flags": []
+     },
+     {
+      "field": "Description",
+      "sentence": "The State Administration of Railway Transport of Ukraine (Ukrzaliznytsia) subsequently assumed responsibility for the EPC contract from CMCEC and it was charged with financing a scaled-down and rescoped version of the project.",
+      "aiddata_row": 67775,
+      "screen_flags": []
+     },
+     {
+      "field": "Description",
+      "sentence": "He was detained in Panama in September 2016.",
+      "aiddata_row": 67775,
+      "screen_flags": []
+     },
+     {
+      "field": "Description",
+      "sentence": "The State Administration of Railway Transport of Ukraine (Ukrzaliznytsia) subsequently assumed responsibility for the EPC contract from CMCEC and it was charged with financing a scaled-down and rescoped version of the project.",
+      "aiddata_row": 42577,
+      "screen_flags": []
+     },
+     {
+      "field": "Description",
+      "sentence": "He was detained in Panama in September 2016.",
+      "aiddata_row": 42577,
+      "screen_flags": []
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On September 3, 2010, the Government of Ukraine’s State Investment Agency and the Export-Import Bank of China (China Eximbank) signed a loan framework agreement regarding the Aerial Express Project. Then, on July 5, 2011, China Eximbank and SC \"National Project \"Airexpress\" (Ukrainian: «Дирекція з будівництва та управління національного проекту «Повітряний експрес») — a project company and special purpose vehicle (SPV) wholly-owned by the Government of Ukraine — signed a $372,313,538 buyer’s credit loan agreement [№ BLA201123] for the Aerial Express Project. The borrowing terms of this loan were as follows: a 15 year maturity, a 3 year grace period, and an interest rate of 6-month LIBOR (0.414% in July 2011) plus a 3.5% margin. Ukraine’s Cabinet of Ministers issued a sovereign guarantee in support of the loan on June 16, 2011. SC \"National Project \"Airexpress\" also purchased buyer’s credit insurance from Sinosure on July 25, 2012 (at an additional cost of $36.39 million). The China Eximbank loan was split into two tranches. The first tranche was worth $52,123,895 and it was earmarked for design and preparatory work (phase 1 of the project). The second tranche was worth $320,189,643 and it was earmarked for construction activities (phase 2 of the project).   The borrower was to use the proceeds of the loan to finance two separate EPC contracts with China National Complete Engineering Corporation (CMCEC) that were signed on April 18, 2011. One EPC contract was for Phase 1 and the other EPC contract was for Phase 2. The purpose of the Aerial Express Project was to construct an 4.752 km passenger railway from Boryspil International Airport (BIA) to the capital city of Kiev. It was also supposed to involve the installation of supporting electricity systems, information systems, signaling system, water supply and drainage systems, two new train stations, and one electricity substation. A formal groundbreaking ceremony took place on December 28, 2011. However, construction did not begin until 6.5 years later.   The first tranche of the loan fully disbursed in July 2013 and shortly thereafter many questions arose about the use of these funds. Law enforcement officers uncovered large-scale fraud involving the purchase of land, and Ukraine’s Center for Transport Studies (CTS) reported on November 21, 2013 that employees of SC \"National Project \"Airexpress\" stole $20 million from the first tranche of the China Eximbank loan and spent the remaining $32,123,895 without producing a final project design. Consequently, China Eximbank never disbursed the loan’s second tranche. The Government of Ukraine also had difficulty meeting its repayment obligations related to the loan’s first tranche. The Chinese Economic and Commercial Office in Ukraine initially reported that Ukraine’s Ministry of Finance had failed to honor its sovereign guarantee. Then, in July 2014, China Eximbank agreed to grant SC \"National Project \"Airexpress\" an additional 2-year loan repayment holiday (i.e. grace period) on the first tranche of the loan. The Government of Ukraine — as the guarantor of the loan — eventually stepped in and fully repaid the ($52,123,895) first loan tranche. It also unsuccessfully attempted to reallocate the second loan tranche to the Podil-Voskresensk Bridge Project and the Kiev Subway Extension Project.   Additionally, the Government of Ukraine initiated talks with Sinosure regarding the possibility of recovering approximately $30 million via insurance payments, but the outcome of these negotiations is unknown. Project ID#67775 captures the first tranche of the loan and Project ID#42577 captures the July 2014 rescheduling of the first tranche of the loan. Project ID#42494 captures the de facto cancellation of the second tranche of the loan.   On June 17, 2015, responsibility for the Aerial Express Project was transferred from SC \"National Project \"Airexpress\" to the Ukrainian Ministry of Infrastructure. The State Administration of Railway Transport of Ukraine (Ukrzaliznytsia) subsequently assumed responsibility for the EPC contract from CMCEC and it was charged with financing a scaled-down and rescoped version of the project. Construction began on May 22, 2018 and Ukrzaliznytsia announced on November 30, 2018 that the first trains had left from Kiev to Boryspil airport. Vladyslav Kaskiv, the former Head of Ukraine’s State Agency for Investment and National Projects, was closely involved in the Aerial Express Project. He put on an international wanted list in March 2016. He was detained in Panama in September 2016. A local court set his bail at $600,000. The Government of Panama refused to grant Kaskiv a political refugee status, and has was later extradited to Ukraine. Subsequently, Kaskiv was released on bail. As of May 2020, his case was pending before the High Anti-Corruption Court of Ukraine.",
+    "staff_comments": "This project is also known as the Ukrainian Air Express Airport Railway Project and the Rail Transit linking Borispol International Airport Project and the Kyiv Boryspil Express Project. The Ukrainian project title is 'Дирекція з будівництва та управління національного проекту 'Повітряний експрес' та інших інфраструктурних об'єктів Київського регіону”. The Chinese project title is 空中快车 or 《空中快车》项目.",
+    "location_narrative": "The purpose of the Aerial Express Project was to construct a 4.752 km passenger railway from Boryspil International Airport (BIA) to the capital city of Kiev. More detailed locational information can be found at https://uk.wikipedia.org/wiki/Kyiv_Boryspil_Express#/map/0",
+    "description_chars": 4868
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "okko-revutskoho-kyiv",
+     "shared_words": [
+      "international",
+      "kyiv",
+      "ukraine"
+     ],
+     "case_title": "OKKO Filling Station, Revutskoho Street",
+     "case_killed": null,
+     "case_displaced": null,
+     "case_years": [
+      2017,
+      2019
+     ],
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G134",
+   "recipient": "Venezuela",
+   "iso3": "VEN",
+   "year": 2013,
+   "sector": "INDUSTRY, MINING, CONSTRUCTION",
+   "title": "CDB provides $4.015 billion loan for Sinovensa Oil Field Development Project (Linked to Project ID#38319, #38056, and #38055)",
+   "aiddata_rows": [
+    {
+     "id": 38053,
+     "title": "CDB provides $4.015 billion loan for Sinovensa Oil Field Development Project (Linked to Project ID#38319, #38056, and #38055)",
+     "amount_usd_2021": 4529066757.04218,
+     "year": 2013,
+     "status": "Completion"
+    }
+   ],
+   "limb_b_buckets": [
+    "arrest or detention"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": true,
+   "candidate_sentences": {
+    "arrest or detention": [
+     {
+      "field": "Description",
+      "sentence": "At the time, a Chinese diplomat told a media outlet that '[HCG] suspended its activities to encourage Sinovensa, in this case PdV, to pay its past due debts promptly so that work can resume quickly,'  Then, in October 2019, Sinovensa President Alberto Emilio Bockh and three other officials (Sinovensa’s General Services Director Domingo Raga, Finance Director Leon Jose Gonzalez, and Security Director Alejandro Armas Cordero) were arrested by Venezuela’s General Directorate of Military Counterintelligence (DGCIM) for 'embezzlement, conspiracy of officials with contractors, arrangement of bidding",
+      "aiddata_row": 38053,
+      "screen_flags": [
+       "names_another_country:chinese"
+      ]
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On June 3, 2013, China Development Bank (CDB) signed a $4.015 billion loan facility agreement with Petrolera Sinovensa, S.A. (Petrosinovensa or Sinovensa) — a special purpose vehicle and a joint venture of CVP (60% ownership stake) and CNPC Venezuela B.V. (40% ownership stake) — for the Sinovensa Oil Field Development Project. This loan carried the following borrowing terms: a maturity of 10 years (final maturity date: 2023) and an interest rate of LIBOR plus a 5.8% margin. Pursuant to an associated guarantee, Pétroleos de Venezuela S.A (PDVSA) made a payment guarantee obligation of 60% of Petrosinovensa’s payment obligations under the facility agreement.   As of 2014, $291 million from the facility agreement was drawn by Petrosinovensa. As of 2015, $699 million from the facility agreement was drawn by Petrosinovensa. As of 2016, $1.256 billion from the facility agreement was drawn by Petrosinovensa. As of December 31, 2017, the loan had achieved a disbursement rate of 43.7% ($1.75488 billion out of $4.015 billion). The loan’s amount outstanding was $291 million as of December 31, 2014, $699 million as of December 31, 2015, $1.256 billion as of December 31, 2016, $1.58 billion as of December 31, 2016, $1.313 billion as of December 31, 2018, and $1.182 billion as of December 31, 2019.   Additionally, two smaller credit lines of $1.5 billion (captured via Project ID#38055) and $500 million (captured via Project ID#38056) were signed for refinery operations and the purchase of oilfield equipment, respectively.   The purpose of the Sinovensa Oil Field Development Project was to construct and develop oil field facilities (the so-called Morichal Operational Complex) to extract oil from the Carabobo block within the Morichal oil field in the Orinoco oil belt. The ultimate goal of the project was to increase the daily production capacity of Petrosinovensa from 90,000 barrels to 330,000 barrels by 2014.   Huanqiu Contracting and Engineering Corporation (HCG) was the EPC contractor responsible for implementation. It was originally envisaged that the project would commence in January 2012 and conclude in September 2017. However, the project encountered multiple delays and problems during implementation. The main facilities supporting the 165,000 barrel-per-day (bbl/d) expansion were not completed and commissioned until 2018. On September 19, 2018, the President of CNPC attended a test operation ceremony at the José Antonio Anzoátegui Industrial Complex (CIJAA) in Barcelona City. In September 2018, CVP also sold a 9.9% ownership stake in Sinovensa to CNPC Venezuela B.V. to reduce the joint venture’s overall debt exposure (thus increasing CNPC Venezuela B.V.’s ownership stake in Sinovensa to 49.9%). By the end of March 2019, the project gained stable power, taking oil and gas production to 93,000 barrels per day (b/d).   However, in order to avoid the sanctions established by the U.S. Office of Foreign Assets Control (OFAC) against the Venezuelan Government, CNPC halted its oil production activities in Venezuela in September 2019. This included both Petrosinovensa’s operations and those of its engineering subsidiary, HCG, which also charged Sinovensa for the non-payment of over $50 million. In a letter dated September 3, 2019, HCG’s senior executive in Venezuela Liang Qiang notified Sinovensa project manager and CNPC official Zhao Xiongfei that the construction of ‘complementary works’ associated with Sinovensa's capacity expansion from 105,000 b/d to 165,000 b/d would be suspended immediately pending full payment of two unpaid invoices totaling $52 million (issued in November 2018 and February 2019).  The letter cited HCG's discretionary authority under its contract with Sinovensa to suspend work unilaterally if Sinovensa missed two successive invoice payments. At the time, a Chinese diplomat told a media outlet that '[HCG] suspended its activities to encourage Sinovensa, in this case PdV, to pay its past due debts promptly so that work can resume quickly,'  Then, in October 2019, Sinovensa President Alberto Emilio Bockh and three other officials (Sinovensa’s General Services Director Domingo Raga, Finance Director Leon Jose Gonzalez, and Security Director Alejandro Armas Cordero) were arrested by Venezuela’s General Directorate of Military Counterintelligence (DGCIM) for 'embezzlement, conspiracy of officials with contractors, arrangement of bidding procedure or false allegations, as well as conspiracy to commit a crime.' DGCIM was also, at the time, seeking Sinovensa's Contracting Director Yurialbert Garcia on corruption charges.   Then, on April 26, 2020, in the midst of a Covid-19 quarantine, a huge fire broke out at the Morichal Operational Complex in the Orinoco Oil Belt. Several factors caused it to develop into a forest fire 'of unimaginable proportions,' as Eudis Girot, Executive Director of the United Oil Workers’ Federation described it. According to half a dozen oil workers speaking to Reuters, the surrounding bushes had not been maintained, the plant’s firefighters were under-resourced, and frequent oil spills in the vicinity had never been cleaned up. Prior to the fire, Petrosinovensa was reportedly responsible for 15% of Venezuela’s oil production.  Then, in May 2023, Bloomberg reported that Sinovensa's output had nearly doubled in April 2023 (to 90,000 b/d), although its production was still down by approximately 40% vis-a-vis in 2015 level of 160,000 b/d.",
+    "staff_comments": "1. This project is also known as Phase 1 of the MPE3 Oilfield Project. The Chinese project title is 委内瑞拉MPE3项目. 2. AidData has estimated the all-in interest rate (6.736%) by adding 5.8% to average 6-month LIBOR in June 2013 (0.936%). 3. Petrosinovensa was established as a joint venture of Corporación Venezolana del Petróleo, S.A. (CVP) and CNPC Venezuela B.V. in February 2008. CVP is a subsidiary of Petróleos de Venezuela, S.A. (PDVSA), which is Venezuela’s state-owned oil company. CNPC Venezuela B.V. is a subsidiary of China National Petroleum Corporation (CNPC), which is a Chinese state-owned oil company. 4. The CDB loan matures 10 years from the date on which all precedents in the facility agreement have been satisfied or waived. 5. In 2017, the New York Branch of CNPC Finance provided a loan for the Sinovensa Oil Field Development Project (MPE3 project) in Venezuela (see http://www.cnpc.com.cn/en/2014enbvfg/201504/469c5c60316a49bd8f75f461417eab33/files/e20c8207fff2405396f34075b67f3f8f.pdf and https://www.cnpc.com.cn/en/2014enbvfgr/201907/38bc2bd862ea4f289b0f926043736166/files/4baf94e6f3fa442b9d989c2d2e7232d2.pdf). This transaction warrants further investigation. One possible explanation is that CNPC Venezuela B.V. may have obtained a loan from the New York Branch of CNPC Finance to facilitate its acquisition of an additional 9.9% equity stake in Sinovensa in September 2018.",
+    "location_narrative": "China provided a loan for the Sinovensa Oil Field Development Project.  More detailed locational information can be found at https://www.openstreetmap.org/node/5245685388#map=14/8.8430/-63.0824 and https://www.google.com/maps/place/PDVSA+Morichal+Camp/@8.8401723,-63.0808997,17z/data=!3m1!4b1!4m5!3m4!1s0x8dcc627168b41fc7:0xa61a93ae82cfbd25!8m2!3d8.840167!4d-63.078711 and https://www.openstreetmap.org/way/265071557#map=14/10.0692/-64.8644",
+    "description_chars": 5462
+   },
+   "r36_dedupe_hint": null,
+   "local_match": []
+  },
+  {
+   "financing": "G617",
+   "recipient": "Venezuela",
+   "iso3": "VEN",
+   "year": 2009,
+   "sector": "AGRICULTURE, FORESTRY, FISHING",
+   "title": "[China-Venezuela Joint Fund] CDB funds USD 25 million Jose Ignacio de Abreu e Lima Socialist Agriculture Project (linked to project ID#58677, 37528)",
+   "aiddata_rows": [
+    {
+     "id": 94030,
+     "title": "[China-Venezuela Joint Fund] CDB funds USD 25 million Jose Ignacio de Abreu e Lima Socialist Agriculture Project (linked to project ID#58677, 37528)",
+     "amount_usd_2021": null,
+     "year": 2009,
+     "status": "Completion"
+    }
+   ],
+   "limb_b_buckets": [
+    "land taken"
+   ],
+   "every_limb_b_sentence_carries_a_screen_flag": false,
+   "candidate_sentences": {
+    "land taken": [
+     {
+      "field": "Description",
+      "sentence": "The project also involved the controversial expropriation of land and homes from local farmers.",
+      "aiddata_row": 94030,
+      "screen_flags": []
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On October 9, 2009, the Jose Ignacio de Abreu e Lima Socialist Agriculture Project (Spanish: Producción Agraria José Ignacio Abreu e Lima, Integral Socialista José Ignacio Abreu e Lima), a collaboration between the governments of Venezuela and Brazil, was announced by Luis Inácio Lula Da Silva of Brazil and Hugo Chavez of Venenzuela. It is named after a Brazilian soldier who fought for Venezuelan independence, and involved the planned cultivation of 35,000 hectares of soybeans, the construction of a flavored drinks plant, an animal feed processing plant, a soybean oil processing plant, a flour mill, 491 homes, recreation areas, squares, a supermarket, a school, a medical assistance center and a radio service. The total project cost exceeded USD 600 million, but most of the funding came from the governments of Venezuela and Brazil. USD 25 million for the project came from the China-Venezuela Joint Fund (see project ID#58677) Tranche B (see project ID#37528).   The project was extended in 2014 with a completion date of December 31, 2017, although none of the production plants exceeded 1% progress. Consumable foods (texturized protein and flavored drinks plants) only advanced 0.69%; the construction of the civil works of the plant for animal feed had 0.24% progress; the construction of the plant for the extraction of soybean oil through the extrusion of the grain to obtain soybean meal and oil registered 0.67% growth; the plant for the refining and bottling of soybean oil 0.66%; the construction of boilers and installation of structures for industrial plants 0.22%; and the construction of the oil and flour preparation plant advanced only 0.37%.  The project successfully completed a storage capacity of 40,000 tons. In 2009, 1,500 hectares of soybeans were cultivated. In 2010, 1,900 were planted. In 2011, the acreage increased to 3,340, and the organization had a payroll of 139 workers, 60% of whom were indigenous laborers from local communities. Capacity significantly increased in 2012, with 14,100 hectares of soybeans and 127 hectares of seed. Production peaked in 2013, with 14,958 hectares of soybeans planted out of a planned 25,000. In 2014, 229 hectares of soybeans were planted. In 2015, 1,498.13 hectares of grain were planted. In 2017, 270 hectares were in permanent mechanized agriculture.   The project was implemented by the Ministry of People's Power for Agriculture and Land and INDER. The primary contractor was Odebrecht, a Brazilian multinational. According to United States federal investigations, Odebrecht paid USD 95 million in bribes for the contracts for twelve projects in Venezuela, including this project, the Tocoma dam (see project ID#91452), and a bridge over the Orinoco river (see project ID#58628). The project also involved the controversial expropriation of land and homes from local farmers. In 2015, the Primero Justicia party asked the comptroller to investigate Ministry of Agriculture and Land and INDER ministers involved in the project for embezzlement in Anzoátegui state. ",
+    "staff_comments": "1. No transaction amount is included for this project because it is captured by the China-Venezuela Joint Fund (project ID#37528).",
+    "location_narrative": "Anzoátegui StateSee 'DESARRQLLO Y TRANSFERENCIA TECNOLOGICA DEL CULTIVO DE SOYA' for location information. ",
+    "description_chars": 3047
+   },
+   "r36_dedupe_hint": null,
+   "local_match": []
+  }
+ ]
+}
