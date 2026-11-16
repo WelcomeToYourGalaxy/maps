@@ -3,8 +3,8 @@
 
 Each country here publishes a register of its own municipalities with
 their contact details. This reads those registers, joins each record to
-a Wikidata id through a code the two sources share -- never through a
-name -- and writes the result into muni/, keyed by that id.
+a Wikidata id through a code the two sources share, and writes the result
+into muni/, keyed by that id.
 
     python3 tools/build_muni.py                # every country
     python3 tools/build_muni.py --only FRA     # one of them
@@ -24,6 +24,22 @@ Rules this script will not break:
   * A code that maps to two Wikidata items is ambiguous: dropped, counted.
   * Nothing is derived. No guessed domains, no composed addresses beyond
     joining the fields the register itself prints.
+
+Spain is the one exception to the first rule and the conditions on it are
+narrow, because the rule is there for a reason. Spain publishes no code
+that both its contact register and Wikidata hold, so its municipalities
+are matched on the official name inside a fixed province, between two
+registers of the same 8,131 bodies kept by the same ministry. That is
+allowed only where all of this holds: the match is exact on a canonical
+official name and never fuzzy; the match is bounded by a published
+administrative code, so two places of the same name in different
+provinces cannot meet; a name claimed by two rows on either side is
+refused rather than guessed; and the result is checked against a
+published field the match never touches, with a floor under it that stops
+the country shipping if the check ever fails. Every row that got in this
+way carries j='name', so the page can say so and a later round can find
+them all. A country that cannot meet those four conditions is not
+matched by name -- it waits for a code.
 """
 import argparse, collections, io, json, os, re, sys, time
 import urllib.parse, urllib.request
@@ -623,7 +639,283 @@ def build_nor(stats, workdir):
     return {k: v for k, v in out.items() if v is not None}
 
 
+# ----------------------------------------------------------------- Spain
+# The one country here whose record is matched by name, and the reason is
+# measured rather than assumed. Spain publishes its municipal email in
+# DIR3, the common directory of public units: 8,133 top-level
+# ayuntamientos, 7,216 of them with an address. DIR3 carries only the tax
+# number (CIF), a province and a name. Wikidata's Spanish municipalities
+# carry the INE code and nothing else -- no CIF, no DIR3 id -- so there is
+# no code the two sources share.
+#
+# The CIF looks like the answer and is not. A local-authority CIF reads as
+# an INE code with a letter on each end (Madrid is P2807900B against INE
+# 28079) but the digits are the tax register's own alphabetical sequence,
+# and the two sequences slip apart wherever a municipality has been
+# created, merged or renamed: checked against REL below, the CIF's digits
+# name the right municipality 40.5% of the time and a neighbouring town
+# the rest. Joining on it would give 59% of Spain another town's address,
+# which is the Norway trap at national scale.
+#
+# What is new is REL, the Registro de Entidades Locales, whose municipal
+# export is public at the address below and needs no session. Its
+# NUMERO_INSCRIPCION is "01" + the INE code + a check digit: the 8,132
+# codes it yields are exactly INE's own 8,132, with nothing on either
+# side left over, and the official name agrees for 99.8% of them. So REL
+# is an authority list of official municipality names keyed to the code
+# Wikidata holds, and the join becomes DIR3's official name inside a
+# fixed province against REL's.
+#
+# Three things keep that honest, and the third is the one that matters:
+#   * the match is exact on the canonical official name, never fuzzy, and
+#     the province is pinned, so the usual name-join failure -- one
+#     country's register filed under another's name -- cannot arise;
+#   * a name claimed by two rows on either side is refused, not guessed;
+#   * it is verified against the CIF, which the join never touches. Both
+#     the CIF and the INE code number municipalities alphabetically
+#     within a province, so a scrambled match would break that ordering.
+#     CONCORD_FLOOR is a gate, not a one-off measurement: if the two
+#     orderings ever stop agreeing, Spain stops shipping.
+# Each record carries j='name' so the page says so and a later round can
+# find every row that got in this way.
+ES_REL = ('https://registroentidadeslocales.mpt.es/REL/frontend/export_data/'
+          'file_export/export_excel/municipios/all/all')
+ES_DIR3 = ('https://administracionelectronica.gob.es/ctt/resources/Soluciones/238/'
+           'Descargas/Listado%20Unidades%20EELL.xlsx')
+
+ES_INE = '''PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX wd: <http://www.wikidata.org/entity/>
+SELECT ?item ?code WHERE { ?item wdt:P31/wdt:P279* wd:Q2074737 ; wdt:P772 ?code .
+  FILTER NOT EXISTS { ?item wdt:P576 ?d } }'''
+
+CONCORD_FLOOR = 0.95
+ES_ARTICLES = ('el', 'la', 'los', 'las', 'l', 'a', 'o', 'os', 'as', 'es', 'sa', 'ses', 'lo')
+
+
+def _es_canon(name):
+    """The canonical form of an official Spanish municipality name.
+
+    The two registers write the same name two ways -- "Vall de Gallinera,
+    la" in one and "la Vall de Gallinera" in the other -- because an
+    official name carries its article at the end and ordinary prose puts
+    it in front. Both forms fold to the same key: accents dropped,
+    punctuation dropped, the trailing article moved to the front and then
+    removed. A bilingual name ("Alacant/Alicante") keeps both halves, so
+    the two registers must still agree on their order.
+    """
+    import unicodedata
+    text = unicodedata.normalize('NFKD', str(name or '').lower())
+    text = ''.join(c for c in text if not unicodedata.combining(c)).replace('/', ' ')
+    text = re.sub(r'[^a-z0-9]+', ' ', text).strip()
+    tail = re.match(r'^(.*?)\s+(' + '|'.join(ES_ARTICLES) + r')$', text)
+    if tail:
+        text = (tail.group(2) + ' ' + tail.group(1)).strip()
+    for article in ES_ARTICLES:
+        if text.startswith(article + ' '):
+            text = text[len(article) + 1:]
+            break
+    return text
+
+
+def _es_strip_ayuntamiento(name):
+    return re.sub(r'(?i)^ayuntamiento\s+(?:de\s+l[ao]s?\s+|de\s+l\s*’|de\s+l\s*\'|de\s+|del\s+|d\s*’|d\s*\')?',
+                  '', str(name or '').strip())
+
+
+def _es_rel(stats, workdir):
+    """{INE code: official name} from REL's own municipal export."""
+    try:
+        import xlrd
+    except ImportError:
+        raise SystemExit('Spain needs xlrd for REL\'s .xls export: pip install xlrd')
+    path = os.path.join(workdir, 'rel_municipios.xls')
+    with open(path, 'wb') as fh:
+        fh.write(fetch(ES_REL))
+    sheet = xlrd.open_workbook(path).sheet_by_index(0)
+    head = None
+    for row in range(min(40, sheet.nrows)):
+        values = [str(sheet.cell_value(row, c)).strip() for c in range(sheet.ncols)]
+        if 'NUMERO_INSCRIPCION' in values and 'DENOMINACION' in values:
+            head = {v: i for i, v in enumerate(values)}
+            start = row + 1
+            break
+    if not head:
+        raise SystemExit('REL\'s export has no NUMERO_INSCRIPCION column; the format moved')
+    out = {}
+    for row in range(start, sheet.nrows):
+        raw = sheet.cell_value(row, head['NUMERO_INSCRIPCION'])
+        name = str(sheet.cell_value(row, head['DENOMINACION'])).strip()
+        if not raw or not name:
+            continue
+        number = str(int(float(raw))).zfill(8)
+        # "01" + the five-digit INE code + a check digit.
+        if not number.startswith('01'):
+            stats['ESP REL row is not a municipality inscription'] += 1
+            continue
+        out[number[2:7]] = name
+    stats['ESP municipalities in REL'] = len(out)
+    if len(out) < 8000:
+        raise SystemExit('REL answered with %d municipalities; refusing to go on' % len(out))
+    return out
+
+
+def _es_dir3(stats, workdir):
+    """The top-level ayuntamiento rows DIR3 publishes, one per municipality."""
+    try:
+        import openpyxl
+    except ImportError:
+        raise SystemExit('Spain needs openpyxl: pip install openpyxl')
+    path = os.path.join(workdir, 'unidades_eell.xlsx')
+    with open(path, 'wb') as fh:
+        fh.write(fetch(ES_DIR3))
+    book = openpyxl.load_workbook(path, data_only=True)
+    sheet = book['Unidades EELL']
+    rows = list(sheet.iter_rows(values_only=True))
+    header = None
+    for i, row in enumerate(rows[:20]):
+        if 'C_ID_TIPO_ENT_PUBLICA' in [str(x or '').strip() for x in row]:
+            header, start = [str(x or '').strip() for x in row], i + 1
+            break
+    if not header:
+        raise SystemExit('DIR3\'s unit list has no C_ID_TIPO_ENT_PUBLICA column; the format moved')
+    # C_DNM_UD_ORGANICA appears four times -- the unit, its superior, its
+    # root and its public-law parent. The first is the unit's own name.
+    at = {}
+    for i, name in enumerate(header):
+        if name and name not in at:
+            at[name] = i
+    need = ('C_ID_UD_ORGANICA', 'C_DNM_UD_ORGANICA', 'C_ID_TIPO_ENT_PUBLICA',
+            'N_NIVEL_JERARQUICO', 'C_ID_AMB_PROVINCIA', 'C_ID_ESTADO', 'NIF_CIF', 'CONTACTOS')
+    missing = [n for n in need if n not in at]
+    if missing:
+        raise SystemExit('DIR3 is missing %s' % ', '.join(missing))
+
+    out = []
+    for row in rows[start:]:
+        def cell(name):
+            i = at[name]
+            return str(row[i]).strip() if i < len(row) and row[i] is not None else ''
+        if cell('C_ID_TIPO_ENT_PUBLICA') != 'AY':
+            continue
+        if cell('C_ID_ESTADO') != 'V':
+            stats['ESP DIR3 ayuntamiento no longer current'] += 1
+            continue
+        # An ayuntamiento's own departments are AY rows too, at a deeper
+        # level of the same hierarchy ("Intervencion - Ayuntamiento de
+        # Amurrio"). Level 1 is the council itself, and there are 8,133
+        # of them against 8,132 municipalities.
+        if cell('N_NIVEL_JERARQUICO') != '1':
+            continue
+        out.append({'id': cell('C_ID_UD_ORGANICA'), 'name': cell('C_DNM_UD_ORGANICA'),
+                    'prov': cell('C_ID_AMB_PROVINCIA').zfill(2), 'cif': cell('NIF_CIF'),
+                    'contact': cell('CONTACTOS')})
+    stats['ESP top-level ayuntamientos in DIR3'] = len(out)
+    if len(out) < 8000:
+        raise SystemExit('DIR3 answered with %d ayuntamientos; refusing to go on' % len(out))
+    return out
+
+
+def _es_concordance(pairs):
+    """Of every pair of municipalities in one province, the share the CIF
+    and the INE code put in the same order. Both number a province's
+    municipalities alphabetically, so a join that had swapped two towns
+    would show up here as a pair in the wrong order. Returns (share,
+    comparisons)."""
+    byprov = collections.defaultdict(list)
+    for ine, cif in pairs:
+        digits = re.fullmatch(r'[A-Za-z](\d{7})[A-Za-z0-9]', cif or '')
+        if digits:
+            byprov[ine[:2]].append((ine, digits.group(1)[:5]))
+    same = other = 0
+    for rows in byprov.values():
+        rows.sort()
+        for i in range(len(rows) - 1):
+            for j in range(i + 1, len(rows)):
+                if rows[i][1] == rows[j][1]:
+                    continue
+                if rows[i][1] < rows[j][1]:
+                    same += 1
+                else:
+                    other += 1
+    total = same + other
+    return (same / total if total else 0.0), total
+
+
+def build_esp(stats, workdir):
+    rel = _es_rel(stats, workdir)
+    dir3 = _es_dir3(stats, workdir)
+
+    rel_by_key = collections.defaultdict(list)
+    for ine, name in rel.items():
+        rel_by_key[(ine[:2], _es_canon(name))].append(ine)
+    d_by_key = collections.defaultdict(list)
+    for row in dir3:
+        d_by_key[(row['prov'], _es_canon(_es_strip_ayuntamiento(row['name'])))].append(row)
+
+    matched = {}
+    for key, ines in rel_by_key.items():
+        rows = d_by_key.get(key)
+        if not rows:
+            stats['ESP REL municipality not in DIR3 under that name'] += 1
+            continue
+        if len(ines) > 1 or len(rows) > 1:
+            stats['ESP name claimed by two rows, refused'] += 1
+            continue
+        matched[ines[0]] = rows[0]
+    stats['ESP matched one-to-one'] = len(matched)
+
+    share, comparisons = _es_concordance([(i, r['cif']) for i, r in matched.items()])
+    stats['ESP CIF and INE agree on the order of this many pairs'] = int(share * comparisons)
+    stats['ESP such pairs compared'] = comparisons
+    print('   name match verified against the CIF: %.2f%% of %d pairs ordered alike'
+          % (100 * share, comparisons), flush=True)
+    if share < CONCORD_FLOOR:
+        raise SystemExit('the CIF and the INE code agree on only %.2f%% of pairs, under the '
+                         '%.0f%% floor: the name match can no longer be trusted, so Spain is '
+                         'not shipped' % (100 * share, 100 * CONCORD_FLOOR))
+
+    codes, ambiguous = by_code(ES_INE)
+    stats['ESP INE codes on Wikidata'] = len(codes)
+    stats['ESP codes ambiguous on Wikidata'] = ambiguous
+
+    out = {}
+    for ine, row in matched.items():
+        qid = codes.get(ine) or codes.get(ine.lstrip('0'))
+        if not qid:
+            stats['ESP no Wikidata id for the INE code'] += 1
+            continue
+        # A cell holds every address the directory publishes for that
+        # council -- 178 of them hold more than one -- and all of them are
+        # kept, because which to write to is the reader's choice.
+        mails, phones = [], []
+        for part in re.split(r'[;,]', row['contact'] or ''):
+            part = part.strip()
+            if not part:
+                continue
+            clean = clean_mail(part)
+            if clean:
+                if clean.lower() not in [m.lower() for m in mails]:
+                    mails.append(clean)
+            elif re.fullmatch(r'[+0-9][+0-9 ()./-]{5,}', part):
+                phones.append(part)
+            else:
+                stats['ESP contact field is neither an address nor a number'] += 1
+        rec = {}
+        if mails:
+            rec['e'] = ','.join(mails)
+        if phones:
+            rec['p'] = phones[0]
+        if not rec:
+            stats['ESP matched but no contact detail'] += 1
+            continue
+        rec['j'] = 'name'
+        put(out, qid, rec, stats, 'ESP')
+        stats['ESP joined'] += 1
+    return {k: v for k, v in out.items() if v is not None}
+
 COUNTRIES = {
+    'ESP': ('DIR3, the Directorio Comun de Unidades Organicas y Oficinas (administracionelectronica.gob.es), top-level ayuntamientos, matched to the Registro de Entidades Locales (registroentidadeslocales.mpt.es) on the official municipality name inside a fixed province and through REL to Wikidata by INE code (P772) -- the one register here joined by name rather than by a shared code, because Spain publishes none, verified against the tax number the match never uses',
+            lambda stats, workdir: build_esp(stats, workdir)),
     'FRA': ("Annuaire de l'administration, Direction de l'information legale et "
             "administrative (service-public.fr), keyed to Wikidata by INSEE code (P374)",
             lambda stats, workdir: build_fra(stats)),
@@ -696,7 +988,11 @@ def main():
     index['fields'] = {'e': 'email', 'p': 'telephone', 'u': 'website',
                        'o': 'official directory page',
                        'a': 'street address, as the register prints it',
-                       'c': 'certified email (Italian PEC) — needs a certified account to write to'}
+                       'c': 'certified email (Italian PEC) — needs a certified account to write to',
+                       'j': 'how the record was matched to the place: "name" where the '
+                            'country publishes no code the register and Wikidata share, '
+                            'and the official name inside a fixed province was used '
+                            'instead (Spain alone); absent where a shared code did it'}
     index['sources'].update(sources)
     index['per_country'].update(per_country)
     index['countries'] = sorted(set(index['countries']) | set(per_country))
