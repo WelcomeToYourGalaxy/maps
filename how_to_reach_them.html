@@ -2664,7 +2664,7 @@ const qid = u => (u||'').split('/').pop();
 const isQ = s => /^Q\d+$/.test(s||'');
 function setDot(id, cls, txt){ const d=$('#d-'+id); if(!d) return; d.className='dot'+(cls?' '+cls:''); if(txt) $('#t-'+id).textContent=txt; }
 
-const CACHE_V='htrt11';
+const CACHE_V='htrt13';
 /* How long an answer is kept.
 
    Everything on this page except the municipal registers is asked of
@@ -3160,7 +3160,7 @@ function addOverlays(){
     paint:{'line-color':tone.line,'line-width':1.1,'line-opacity':0.9}});
   addChainLayers();
   wireHover('ctry-f', SRC_C, f=>f.properties.name, onCountry);
-  wireHover('adm-f',  SRC_A, f=>f.properties.shapeName || f.properties.n || '', onUnit);
+  wireHover('adm-f',  SRC_A, f=>fixMoji(f.properties.shapeName || f.properties.n || ''), onUnit);
 }
 function retint(){
   if(!map.getLayer || !map.getLayer('ctry-f')) return;
@@ -3375,7 +3375,7 @@ async function onCountry(f){
 }
 
 async function onUnit(f){
-  const nm = f.properties.shapeName || f.properties.n || 'Unnamed unit';
+  const nm = fixMoji(f.properties.shapeName || f.properties.n) || 'Unnamed unit';
   /* a unit from the worldwide layer carries its country code, so the
      whole chain it sits inside can be built from scratch */
   if(f.properties.c && !STACK.length) return fromWorld(f);
@@ -3415,7 +3415,7 @@ async function onUnit(f){
 async function fromWorld(f, opts){
   opts = opts || {};
   const iso3 = f.properties.c;
-  const nm   = f.properties.n || 'Unnamed unit';
+  const nm   = fixMoji(f.properties.n) || 'Unnamed unit';
   const isoN = ISO3NUM[iso3];
   /* Guarded, because without it an unresolved code matched on the
      string "undefined" and silently returned whichever country sorted
@@ -3468,7 +3468,7 @@ async function fromWorld(f, opts){
     if(mid) midFailed=false;
   }
   if(mid){
-    const mn = mid.properties.shapeName || mid.properties.n;
+    const mn = fixMoji(mid.properties.shapeName || mid.properties.n);
     const hit = await resolveUnitIn(mn, cq, WANT_REGION, true);
     STACK.push({q:hit?hit.id:null, label:unitLabel(hit, mn), raw:mn, want:'region',
                 iso3:iso3, level:1, adm:1, feature:mid});
@@ -7716,20 +7716,33 @@ function settlePlace(r){
    when the chain is built and again when a level is named later, since
    a level with no id yet cannot be compared by id. */
 function dedupeChain(){
+  /* The same Wikidata entity twice is one government whatever depth the
+     boundary files put it at, and the two need not be next to each
+     other. A city that is also its own first-level unit comes back with
+     itself at the top of the chain, one of its own districts under it,
+     and itself again as the place searched for: Seoul gave Korea → Seoul
+     → Jongno District → Seoul, Nairobi gave Kenya → Nairobi → Kilimani →
+     Nairobi, and Porto gave Portugal → Porto → Vila Nova de Gaia →
+     Porto, which puts a neighbouring municipality above the one the
+     reader asked for. The old test compared adjacent entries only, so a
+     pair with a level between them was never looked at.
+
+     Everything between two entries of one government is inside that
+     government, not a level above the place searched for, so the run is
+     dropped and the deepest occurrence kept — it is the one the reader
+     asked for, and it carries the searched place's own standing. */
+  for(let j=STACK.length-1;j>0;j--){
+    if(!STACK[j].q) continue;
+    let i=-1;
+    for(let k=0;k<j;k++){ if(STACK[k].q===STACK[j].q){ i=k; break; } }
+    if(i<0) continue;
+    if(!STACK[j].feature && STACK[i].feature) STACK[j].feature=STACK[i].feature;
+    STACK.splice(i, j-i);            /* i..j-1 go; STACK[j] lands at i */
+    j=i;
+  }
   for(let i=STACK.length-1;i>0;i--){
     const same = String(STACK[i].label).trim().toLowerCase()===String(STACK[i-1].label).trim().toLowerCase();
-    /* The same Wikidata entity twice is one government whatever depth
-       the boundary files put it at: Austria's second level arrives as
-       "Graz(Stadt)" and its lowest as "Graz", and once the bracketed
-       form resolved, Graz was in the list twice with the same offices
-       under each. The depth test above it stays for the pairs that
-       match by name alone. */
-    const sameEntity = STACK[i].q && STACK[i-1].q && STACK[i].q===STACK[i-1].q;
-    if(sameEntity){
-      if(!STACK[i].feature && STACK[i-1].feature) STACK[i].feature=STACK[i-1].feature;
-      STACK.splice(i-1,1);
-      continue;
-    }
+    /* The depth test stays for the pairs that match by name alone. */
     if(same && STACK[i].adm<3) STACK.splice(i,1);
   }
 }
@@ -7891,6 +7904,17 @@ const RX_GENERIC = /^\s*(administrative\s+)?territorial\s+entit(y|ies)\s*$/i;
    already drops list articles in `RX_SYMBOL`; this is the same rule for
    the chain. */
 const RX_LIST = /\b(list of|lists of|liste von|liste der|lista de|elenco di)\b/i;
+/* A subdivision of a state that no longer exists.
+
+   Krakow's second level resolved to Q3044626, "department of the Duchy
+   of Warsaw" — a Napoleonic division abolished in 1815 — which answers
+   to "department" in the pattern for that level. It carries no
+   dissolution date, so the `P576` filter on the query cannot see it, and
+   the words that give it away are the polity in its own class name.
+   Only forms that no current state uses are listed here: "kingdom" is
+   left out because Spain and the Netherlands are kingdoms today and
+   their current subdivisions are named for them. */
+const RX_FORMER = /\b(duchy|grand duchy|empire|imperial|tsardom|khanate|caliphate|protectorate|dominion|soviet|crown land|governorate of the)\b/i;
 
 /* The forms of a boundary file's name worth asking Wikidata about.
 
@@ -7916,6 +7940,46 @@ function titleish(v){
     return w.charAt(0).toUpperCase()+w.slice(1);
   }).join('');
 }
+/* A boundary file's name with its administrative type words taken off.
+
+   SUFFIXES and PREFIXES in the query add a type word to the name; this
+   is the missing direction. The files often carry the type in the name
+   where Wikidata's label does not: "Bogota Capital District" is labelled
+   "Bogotá", "Waitematā Local Board Area" is "Waitematā", "Prefecture of
+   Casablanca" is "Casablanca". Those levels resolved to no entity at
+   all, and a level with no entity has no offices and no address, which
+   is the whole point of having it in the chain.
+
+   The last word alone is not enough to strip — "Local Board Area" is
+   three — so the longest matching phrase goes, and a name that is
+   nothing but a type word is left alone, because "District" on its own
+   is still the only name that unit has. */
+const RX_TYPETAIL = /[\s,]+(capital\s+district|local\s+board\s+area|metropolitan\s+municipality|metropolitan\s+area|special\s+capital\s+region|capital\s+region|autonomous\s+region|regional\s+council|district\s+council|city\s+council|county\s+council|municipal\s+district|rural\s+district|urban\s+district|municipality|prefecture|governorate|department|province|district|division|region|county|parish|borough|canton|oblast|raion|okrug|city|area)$/i;
+const RX_TYPEHEAD = /^(prefecture|province|governorate|department|district|region|county|municipality|canton|city)\s+of\s+/i;
+function stripType(nm){
+  let v=String(nm||'').trim();
+  const head=v.replace(RX_TYPEHEAD,'').trim();
+  if(head && head!==v) return head;
+  const tail=v.replace(RX_TYPETAIL,'').trim();
+  return (tail && tail!==v) ? tail : '';
+}
+/* A name in the file that was written out as UTF-8 and read back as
+   Latin-1. 14 of the 48,263 units carry one -- ten in New Zealand, four
+   in Peru -- and every one of them is unresolvable as it stands and is
+   shown to the reader with the broken spelling: "WaitematÄ" for
+   "Waitematā". The repair is the round trip back, and it is attempted
+   only where the telltale pair is present, so a name that is merely
+   accented is never touched. */
+const RX_MOJI = /[\u00c3\u00c2\u00c4\u00c5\u00d0\u00d1\u00d2][\u0080-\u00bf]/;
+function fixMoji(nm){
+  const v=String(nm||'');
+  if(!RX_MOJI.test(v)) return v;
+  try{
+    const bytes=new Uint8Array(Array.from(v, c=>c.charCodeAt(0)&0xff));
+    const out=new TextDecoder('utf-8',{fatal:true}).decode(bytes);
+    return out || v;
+  }catch(e){ return v; }
+}
 function nameVariants(nm, plainOnly){
   const out=[], add=v=>{ v=String(v||'').trim().replace(/\s+/g,' ');
     if(v && out.indexOf(v)<0) out.push(v); };
@@ -7925,12 +7989,14 @@ function nameVariants(nm, plainOnly){
   if(plainOnly) return out;
   const bare=String(nm).split('(')[0];
   if(bare!==String(nm)) add(bare);
+  const cut=stripType(nm);
+  if(cut) add(cut);
   /* No lowercase letter anywhere, and more than one letter: shouted. */
   if(/[A-Z\u00c0-\u00de]/.test(nm) && !/[a-z\u00df-\u00ff]/.test(nm)){
     add(titleish(nm));
     if(bare!==String(nm)) add(titleish(bare));
   }
-  return out.slice(0,4);
+  return out.slice(0,5);
 }
 async function resolveUnitIn(nm, countryQ, want, fast){
   if(!countryQ) return null;
@@ -8015,7 +8081,8 @@ async function resolveUnitInWith(nm, countryQ, want, names){
          level, counties and districts below it — and a candidate of the
          right kind beats one of the wrong kind whatever its name. Only
          then does an exact name match break the tie. */
-      const fit=t=>want.test(t)&&!RX_SEAT.test(t)&&!RX_ELECT.test(t)&&!RX_GENERIC.test(t)&&!RX_LIST.test(t);
+      const fit=t=>want.test(t)&&!RX_SEAT.test(t)&&!RX_ELECT.test(t)&&!RX_GENERIC.test(t)&&
+                   !RX_LIST.test(t)&&!RX_FORMER.test(t);
       const aw=want&&a.types.some(fit)?0:1, bw=want&&b.types.some(fit)?0:1;
       if(aw!==bw) return aw-bw;
       const ad=a.types.some(t=>RX_ADMIN.test(t)&&!RX_ELECT.test(t))?0:1,
@@ -8132,7 +8199,8 @@ async function resolveUnit(nm){
          level, counties and districts below it — and a candidate of the
          right kind beats one of the wrong kind whatever its name. Only
          then does an exact name match break the tie. */
-      const fit=t=>want.test(t)&&!RX_SEAT.test(t)&&!RX_ELECT.test(t)&&!RX_GENERIC.test(t)&&!RX_LIST.test(t);
+      const fit=t=>want.test(t)&&!RX_SEAT.test(t)&&!RX_ELECT.test(t)&&!RX_GENERIC.test(t)&&
+                   !RX_LIST.test(t)&&!RX_FORMER.test(t);
       const aw=want&&a.types.some(fit)?0:1, bw=want&&b.types.some(fit)?0:1;
       if(aw!==bw) return aw-bw;
       const ad=a.types.some(t=>RX_ADMIN.test(t)&&!RX_ELECT.test(t))?0:1,

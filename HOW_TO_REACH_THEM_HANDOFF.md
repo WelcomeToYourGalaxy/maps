@@ -786,6 +786,101 @@ are on the town hall object, not the boundary, so Tier B needs a
 spatial join as well as a planet-sized download. Do not plan a round
 around it without first proving the extract is obtainable.
 
+### Round eighteen: the audit, and four faults it found
+
+No new country and no new records: the shards stand at 50,774. This
+round is the audit the file keeps asking for — §6 says the classifier's
+failures surface one jurisdiction at a time and only by opening places
+and reading the list, and rounds fifteen and seventeen each found a real
+fault from opening exactly one. So twenty-two places were opened across
+six continents and every level of every chain was read.
+
+**Do this again when the resolver changes.** The places were Nairobi,
+Lagos, Accra, Casablanca, Dhaka, Jakarta, Seoul, Istanbul, Kraków, Brno,
+Porto, Antwerpen, Toronto, Guadalajara, São Paulo, Bogotá, Auckland,
+Zürich, München, Graz, Mumbai and Shibuya — picked for a spread of
+government shapes rather than of flags: federations, city-states,
+capital districts, `m2` countries and not. Four faults came out of it,
+and none of them threw.
+
+**A city that is also its own first-level unit was in the chain twice
+with one of its own districts above it.** Seoul gave *South Korea →
+Seoul → Jongno District → Seoul*; Nairobi gave *Kenya → Nairobi →
+Kilimani → Nairobi*, Kilimani being a neighbourhood; and Porto gave
+*Portugal → Porto → Vila Nova de Gaia → Porto*, which puts a
+neighbouring municipality above the one the reader asked for.
+`dedupeChain` has collapsed two entries sharing a Wikidata id since
+round six — but it compared **adjacent** entries only, so a pair with a
+level between them was never looked at. It now finds a duplicate at any
+distance and drops the whole run between, keeping the deepest
+occurrence, which is the one the reader asked for. Seoul is *South Korea
+→ Seoul*, Nairobi *Kenya → Nairobi*, Porto *Portugal → Porto*. Graz
+still collapses, which is the adjacent case the old test was written
+for. **This shape is common** — any country where a capital or a major
+city is its own region — so check one of those after touching the chain.
+
+**A Napoleonic division was Kraków's second level.** Q3044626,
+"department of the Duchy of Warsaw", abolished in 1815 and carrying no
+dissolution date, so round fifteen's `P576` filter cannot see it. It
+answers to `department` in the pattern for that level. `RX_FORMER` keeps
+a type naming a polity no current state uses — duchy, empire, tsardom,
+khanate, protectorate, dominion, soviet, crown land — from counting as
+a tier. "Kingdom" is deliberately left out: Spain and the Netherlands
+are kingdoms today and their current subdivisions are named for them.
+Kraków now gives *Poland → Lesser Poland Voivodeship → Kraków County →
+Kraków*, the real powiat.
+
+**The boundary files carry the type inside the name and nothing stripped
+it.** `SUFFIXES` and `PREFIXES` in the query add a type word to a name;
+there was no code for the other direction. So "Bogota Capital District",
+"Jakarta Special Capital Region", "Prefecture of Casablanca" and
+"Waitematā Local Board Area" all resolved to **no entity at all**, and a
+level with no entity has no offices, no address and no legislature.
+`stripType` takes the longest matching type phrase off the front or the
+back and adds that as another spelling to try. Bogotá's first level is
+now Bogotá, Jakarta's is Jakarta — which the new collapse then reduces
+to *Indonesia → Jakarta*, because Jakarta is both — and Casablanca's
+second level is Casablanca Prefecture.
+
+Two safety properties hold it in place, and both matter. A name that is
+nothing but a type word is left alone, because "District" on its own is
+the only name that unit has. And the stripped spelling only ever reaches
+`widenLevels`, which skips any level that already has an id — so
+"Kraków County" is never re-asked as "Kraków" and cannot lose its county
+to the city, which is the fault §9 warns about for a large city.
+
+**Fourteen names in the boundary file are mojibake.** `WaitematÄ Local
+Board Area` for Waitematā, `Åtorohanga District` for Ōtorohanga — ten in
+New Zealand, four in Peru, out of 48,263 units. Each was written as
+UTF-8 and read back as Latin-1 somewhere in the build, and every one of
+them is both unresolvable and shown to the reader with the broken
+spelling. `fixMoji` does the round trip back, and only where the
+telltale byte pair is present, so a name that is merely accented —
+Almería, Kraków — is never touched. The corruption is in
+`world_lowest.topojson` itself, so `build_world.py` is where it should
+be fixed properly; this repairs it at read time in the meantime.
+
+**What the audit found and this round did not fix**, so that the next one
+does not rediscover it:
+
+- **Three levels still resolve to nothing**: Accra's "La Dade-kotopon",
+  Auckland's "Waitematā Local Board Area" and Bogotá's "Bogotá, D.c.".
+  The first two have no type phrase to strip and the third is an
+  abbreviation; each needs a spelling rule of its own, which is the kind
+  of per-unit guessing this file avoids. They are named in the chain and
+  carry no offices, which is the honest result.
+- **The geocoder puts a village ahead of a megacity for two names.**
+  "Lagos" offers Lagos in Pyrénées-Atlantiques first and "Guadalajara"
+  offers the Spanish city before the Mexican one. §6 records that
+  Photon's order is kept on purpose and that promoting an exact match
+  made Hannover worse, so this is a known trade-off rather than a new
+  fault — but the reader does see the list and can pick, and for these
+  two names the right answer is not first.
+- **Bogotá resolves to two different items** at the first level (Q2841)
+  and as the place searched for (Q268264). Not a duplicate the collapse
+  can see, because the ids differ; whether Wikidata should hold one item
+  or two is upstream.
+
 ### Round seventeen: Germany's first level, and four doors closed properly
 
 No new country. What this round ships is a fix worth more than the
@@ -1922,9 +2017,11 @@ Check **both California and a large county** after any change here.
 They fail in opposite directions — one wants the containing unit, the
 other the exact match — and a ranking that fixes either one alone will
 break the other. The standing check is a small town City, Grenoble, Hannover,
-Cape Town and Sorbas; run it twice in a row, because a single pass cannot
+Cape Town, Sorbas, Kraków and one city that is its own region — Seoul,
+Nairobi or Porto; run it twice in a row, because a single pass cannot
 show non-determinism. Hannover covers the list guard and California the
-row-count fault, both from round seventeen.
+row-count fault (round seventeen); Kraków covers the former-state guard
+and the city-that-is-its-own-region covers the collapse (round eighteen).
 
 ## 1. What you see, and in what order
 
