@@ -10,7 +10,7 @@
  ],
  "matched": 249,
  "of": 968,
- "distinct_cases": 249,
+ "distinct_cases": 248,
  "confirmed_table": {
   "rows": 422,
   "matched": 244
@@ -119,6 +119,22 @@
    "icij_project": "Rwanda Land; husbandry water harvesting and hillside irrigation",
    "date": "2011-02-22",
    "why": "The name is the case's own project family, but ICIJ's row is P124785, a separate operation the card does not name; the card names P114931, approved 22 December 2009, and the additional financing Credit 5360-RW, which is P147543 of 19 December 2013. Not counted, on the same rule that left out Liuzhou Phase II, Liaoning Second and Third Medium Cities, the first Lagos Urban Transport Project and the Niger Basin APL-1."
+  },
+  {
+   "moved": "case link removed, row still counted",
+   "lead_index": 1,
+   "icij_project": "Shaanxi Ankang Road Development",
+   "date": "2007-03-13",
+   "was_matched_to": "borj-chakir-landfill",
+   "why": "Two projects were approved on 13 March 2007: P075613, Shaanxi Ankang Road Development in China, and P095012, Tunisia: Sustainable Municipal Solid Waste Management Project. ICIJ's row is the Shaanxi one and resolves to P075613 at name similarity 1.00, which the case shaanxi-ankang-road-resettlement prints. The Tunisian landfill case was pulled in on the shared approval date alone; it is in a different country, under a different project, and P075613 appears nowhere on it. The row stays matched on its China case. This is the same-day collision the round 33 checker found twice and removed; this one survived because the reverse pass was not re-run against the country."
+  },
+  {
+   "moved": "case link removed, row still counted",
+   "lead_index": 44,
+   "icij_project": "Electricity Sector Development Project",
+   "date": "2011-06-30",
+   "was_matched_to": "bukoba-airport-resettlement-arrears",
+   "why": "ICIJ's row is Uganda's. P126206, Tanzania Transport Sector Support Project - Additional Financing, was approved the same day, 30 June 2011, and bukoba-airport-resettlement-arrears prints it, so the Tanzanian case was pulled in on the date alone. The row stays matched on kawanda-masaka-line-galatiya, which is in Uganda. Bukoba loses nothing: it is still matched as lead 123, Tanzania-Transport Sector Support Project, approved 27 May 2010, which is P055120 and is on the card."
   }
  ],
  "rows": [
@@ -145,7 +161,6 @@
    "section": "Confirmed displacement",
    "displaced": "171,568",
    "case_ids": [
-    "borj-chakir-landfill",
     "shaanxi-ankang-road-resettlement"
    ],
    "lead_index": 1
@@ -635,7 +650,6 @@
    "section": "Confirmed displacement",
    "displaced": "13,596",
    "case_ids": [
-    "bukoba-airport-resettlement-arrears",
     "kawanda-masaka-line-galatiya"
    ],
    "lead_index": 44
@@ -3428,5 +3442,37 @@
    "icij_name": "TUN GEF Second Natural Resources Management",
    "date": "2010-06-17"
   }
- ]
+ ],
+ "verified_round_35": {
+  "what": "Every one of the 249 matched rows was re-resolved to a P-number offline, against a fresh harvest of all 5,798 World Bank board approvals of 2004-2013 now kept at docs/wb_approvals_2004_2013.json. The script is case-map-src/verify_icij_match.py and it needs no web calls.",
+  "rows_confirmed_by_a_pnumber_on_the_matched_case": 245,
+  "rows_needing_a_person": 4,
+  "method_notes": [
+   "A row counts as confirmed when the project its name and date resolve to is printed on one of its linked cases, or is a sibling of one - the same operation filed under two numbers, same approval date and the same name once prefixes are stripped. P079734 and P098770 are that case.",
+   "Country agreement is now tested. That is what found the two corrections above.",
+   "The harvest returned 5,798 distinct P-numbers against the API's own total of 5,798, with no short window, so the population the panel cites is confirmed by enumeration."
+  ],
+  "needs_a_person": [
+   {
+    "lead_index": 73,
+    "icij_project": "Niger Basin Water Resources Development APL 2A",
+    "note": "Settled by hand in the round 33 check as the same project as P130174, Kandadji Project, approved 2 October 2012, which the case prints. The name resolver cannot see it because ICIJ names the programme and the Bank names the project. No action needed; recorded so a later run does not re-flag it."
+   },
+   {
+    "lead_index": 95,
+    "icij_project": "MDTF KP Emergency Roads Recovery Project",
+    "note": "A genuine date discrepancy. ICIJ prints 7 July 2011; the Bank's record gives P125584 a board approval date of 16 July 2011. P125584 is the only project of that name in all 5,798 approvals and the case prints it, so the match holds and the dates differ. An earlier handoff said the 16 July date 'matches the lead row', which it does not."
+   },
+   {
+    "lead_index": 523,
+    "icij_project": "BR Municipal APL: Teresina Enhancing Municipal Governance and Quality of Life Project",
+    "note": "Resolves at 1.00 to P088966, approved 27 March 2008, the only Teresina project in the decade. The case teresina-lagoas-do-norte prints only P146870, the February 2016 additional financing, and refers to 'a first-phase loan that resettled 466 families' without naming or dating it. P088966 is almost certainly that first phase, but the card names neither the project nor the date, so it was not written. Opening the card's own sources would settle it."
+   },
+   {
+    "lead_index": 598,
+    "icij_project": "Ethiopia Protection of Basic Services Program Phase II Project",
+    "note": "Resolves to P103022, approved 14 May 2009. The case gambella-villagization prints the two dates its own text gives - 22 February 2011 and 25 September 2012 - which round 35 resolved to P121727 (Phase 2 Additional Financing) and P128891 (Phase III). P121727 is the additional financing of P103022, so the parent is the operation ICIJ's row names and is not on the card. Not written, because no date on the card supports it."
+   }
+  ]
+ }
 }
