@@ -212,6 +212,33 @@ Round seven left three orphans on the ground that the map has no pattern for **a
 
 **Why they are in the kickbacks pattern meanwhile:** leaving sixteen cases as orphans to preserve a distinction the map does not yet draw would have hidden them from every reader. `kickbacks_contracts_laws` honestly covers them - it says "licences, laws and rulings" - but it now carries 812 curated titles, which is a sign the pattern is doing more than one job.
 
+## Writeups asserting things the map does not hold: a third instance, and now a routine check (16 November 2026)
+
+Refreshing eight more writeups found the same fault as Denmark and Finland, in a worse form.
+
+- **Tunisia's entire third paragraph** - Ennahda's "secret apparatus", Rached Ghannouchi's June 2026 life sentence, rights groups' objections - had **no case behind it anywhere on the map**. Searching the whole corpus for "Ghannouchi" and "Ennahda" returns nothing.
+- **Botswana's text** asserted a diamond partnership with **De Beers**, which appears in no case on the map, called a 2023 case "Botswana's first documented case" when two earlier convictions are recorded, and said Botswana was "ahead of most of its neighbours", which nothing in its records supports.
+- **Senegal's text** said the 2013 police affair was the only documented claim and that no other case showed outside money inside a Senegalese public body - contradicted by two of its own records, the 2020 airport police charges and the 2025 Senelec referral.
+
+All three are cut. **The check to run after any round, and it costs nothing:** for each writeup, take its distinctive proper nouns and ask whether any live case for that country carries them. This has now caught five countries across two passes. The cause is the same each time - a writeup written from the sources of the day, then a removal or a tightening of the test, with nobody going back to the country text.
+
+## Two merges and a spelling, from reading eight countries' records (16 November 2026)
+
+- **Two Philippine records were the same event**: the March 2026 National Security Council disclosure of civilian analysts recruited at the Department of National Defense, the navy and the coast guard. The surviving record is the one carrying the mechanism - resumes found on sites like LinkedIn, commissioned geopolitical analysis, payments of up to 100,000 pesos through e-wallets, messages hidden in a modified Tetris app. It is over the word cap at 132 words and stays there.
+- **One Kazakh state developer appeared under two spellings**, Yelorda Kurylys Kompaniyasy and Elorda Qurylys Kompaniyasy, across two separate cases. The map now uses Elorda Qurylys Kompaniyasy, with the variant given once in the record that introduced it. Renaming the title left a dangling curated pattern title, caught by `stale_titles` as it was the last two times.
+- **A seventh record is over the 130-word cap** and left there on purpose, for the same reason as the other six: its load-bearing material does not fit. I tried three times to get the Philippine recruitment record under the cap and each attempt cost a fact - "more than two years" became "two years", a full stop went missing. **That is the error this file already warns about, committed by the person who wrote the warning.** When a record will not fit, stop cutting.
+
+## Faults in existing records, for a round with searches (16 November 2026)
+
+Added to the list from the previous round, none fixed:
+
+- **Mauritius's Mauritius Telecom record is filed under 2022 but its own text says the page gives no year**, so the year field is unsourced.
+- **Morocco's Fez record has a title saying "contractor's 20,000-dirham bribe" while its description gives 20,000 dirhams as the fine and the sum ordered returned** - the bribe amount is not in the record at all. Its Sidi Taibi record is filed under 2023 though the report gives no date for either the offence or the verdict.
+- **Kazakhstan's Astana LRT record holds two judgments** - seven defendants in May 2021, nine in May 2023 - and its Ust-Kamenogorsk record carries y=2025 against a verdict reported 14 May 2026.
+- **Malaysia's Golden Triangle narcotics-police record is filed under 2019 but covers cases from 2018 to 2024**, so it is a summary rather than a case and may not meet ruling 11.
+- **The two 2005 Philippine CAMEC backhoe cases, at Viga and Romblon, are both P13.95 million from the same supplier.** They read as two municipalities and two decisions, and the identical price is worth confirming rather than assuming.
+- The `y` field question from the last round now has more instances: Mauritius mixes event and judgment years within one country, and the Felda record sits at 2021 although its operative outcome is the Federal Court restoring the sentence on 10 February 2026. **This needs a ruling, not more instances.**
+
 ## Display notes
 - Default country shading "Overall: officials open to outside control" = mean of the two GI-TOC views (insiders weighted ¾, weak watchdogs ¼).
 - Glossary underlines the first use of each term per box; hover shows the definition (glossify() in app_template.html).
