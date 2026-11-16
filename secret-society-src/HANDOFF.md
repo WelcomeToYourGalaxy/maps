@@ -269,6 +269,28 @@ Created as `bought_off_checks`, with **52 cases hand-picked across 21 countries*
 
 `kickbacks_contracts_laws` keeps these 52 as well - a case can sit in more than one pattern - so nothing was taken off the kickbacks pattern, which still carries 812 curated titles. **If the owner wants the split to be exclusive, removing these 52 from the kickbacks list is a one-line change.**
 
+## Ruling 17: a record that names no body and no decision is not a case (16 November 2026)
+
+Two outcome agents, working different batches, independently reported the same thing: a handful of records carry a live prosecution status while naming no defendant, no court and no single proceeding, so **an outcome round can never resolve them and they will come back to the queue every time**. They are patterns wearing a case's clothes.
+
+**The ruling has two limbs.** Where the practice a generalisation describes is already carried by named case records, the generalisation goes, with its reason and the facts carried over. Where the practice is real and recorded but the map holds no named case behind it, the record stays - the content is worth having - but is recoded **`status: reported`**, which the vocabulary already holds and `build.py` already weights at 0.45, with an `undone` line saying plainly that it is a pattern drawn from several prosecutions rather than one proceeding. That takes it out of `stale.py`'s queue honestly, by describing what it is, rather than by an exclusion list.
+
+**Removed under the first limb:** the Ecuadorian generalisation about cocaine exporters recruiting Guayaquil port and customs staff. The map now holds three named Guayaquil port cases covering the same practice - the five workers filmed moving a container in October 2026, the Balkan-Ecuadorian network that bribed officials at both main terminals, and the four marine infantry and three terminal guards charged over the Naportec container of September 2025. Nothing in the general record is lost by those three, which name their defendants and their terminals.
+
+**Recoded under the second limb:** crime groups buying lower-division football clubs in Spain, Italy and Belgium; traffickers recruiting airport ground staff; the smuggling channels at Ukraine's western border; and Air Cocaine in northern Mali. Each stays, now reported rather than indicted or under investigation.
+
+**One of those four is worth a later look on its own terms.** The Ukrainian record says the anti-corruption bureau charged customs officers in Zakarpattia in cases from 2022 to 2024, and the only survey the agent found of the ten largest Ukrainian customs cases lists Volyn, Chernivtsi, Lviv, Poltava, Kyiv and Vinnytsia and no Zakarpattia case at all. The record could be neither confirmed nor refuted. If a later round cannot pin it to a named case, it fails ruling 11 outright rather than merely being a pattern.
+
+**The queue is the measure of whether this worked.** It stood at 267 records this morning. After five of nine batches and this ruling it stands at 158.
+
+## A title can assert what the court record denies (16 November 2026)
+
+The worst single fault found in this round. The map carried **"Chinese military intelligence sought THAAD plans through a Korean soldier"**, with a serving soldier leaking 21 military secrets for about 50 million won. On the court record there was no soldier and no leak: **the contact was an undercover investigator of the Defense Counterintelligence Command posing as a serving soldier, and every document handed over was a fake.** The real operation was real and was prosecuted to a final conviction - a Chinese national, named in the reporting only as Ching, indicted in April 2025, convicted under the Military Secrets Protection Act, five years and forfeiture of 4,577,230 won affirmed by the Supreme Court's First Division on 16 July 2026 - but the sums were smaller and differently shaped, and the headline claim was wrong. The figures came from English-language reporting of May 2025, which the record cited.
+
+The description is rewritten and the title is now "Chinese handlers paid for THAAD secrets and reached an undercover investigator". **The lesson for the next round: when a record's own text is rewritten from a court record, read the title against the new text.** Two titles needed changing this way in one day - this one, and a Brazilian record calling a man a sitting state deputy when he was a substitute.
+
+**A coding judgement worth knowing about.** The US Federal Reserve adviser record is now `acquitted`, not `convicted`, although a jury convicted him of making false statements on 3 February 2026. What the record claims is the economic espionage, and the jury acquitted him of that; coding it `convicted` would read on the map as confirming the claim. The false-statements conviction and the 38-month sentence are in `undone`. Recode it if you read the field as describing the proceeding rather than the claim.
+
 ## Display notes
 - Default country shading "Overall: officials open to outside control" = mean of the two GI-TOC views (insiders weighted ¾, weak watchdogs ¼).
 - Glossary underlines the first use of each term per box; hover shows the definition (glossify() in app_template.html).
