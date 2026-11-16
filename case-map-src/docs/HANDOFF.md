@@ -1,10 +1,12 @@
 # Globalization Case Map: handoff for a new chat
 
-Last updated: round 35 — a desk round with no researchers that made the ICIJ claim checkable
-instead of larger. **The 249 of 968 stands, and 245 of those 249 rows now rest on a P-number printed
-on the matched case, up from 238.** Two wrong case links were found and removed, both the same-day
-collision round 34 named. The whole 2004-2013 approval population is now cached in the repo, so the
-check costs no web calls ever again. Replaces every earlier handoff.
+Last updated: round 36 — the AidData queue characterised before a single researcher is dispatched,
+and it is **a fifth of the size the handoff has been claiming**. The 793 rows are 653 financings,
+143 are disaster relief whose deaths belong to the disaster, 153 carry a protest flag that is a
+demonstration *farm*, and **59 financings carry the evidence that actually decides a case**. Nothing
+was deleted. Round 35, below, made the ICIJ claim checkable: 245 of its 249 rows now rest on a
+P-number printed on the matched case, up from 238, and two wrong case links were removed. Replaces
+every earlier handoff.
 
 ## The aim, settled 14 Nov 2026 — a defensible big picture, not a bigger map
 
@@ -240,6 +242,110 @@ These came in over one session and all of them are done unless noted.
 7. **`case-map-src/HANDOFF.md` is a pointer now, not a handoff.** It held the round 13 text and was nine
    rounds stale. The current handoff is this file, `case-map-src/docs/HANDOFF.md`, and there should
    never again be two.
+
+## READ THIS FIRST: round 36 is merged, built, tested and pushed
+
+A desk round. No researchers, no new cases, no page code. It did the thing this file's own plan puts
+first — harvest once, screen mechanically, pre-extract — to the AidData queue, and the queue turned
+out to be nothing like what this file has been saying. Build is clean: `loan-condition cases matched
+173 of 173`, 24 patterns, zero console errors headless, 1,169 cases.
+
+### The queue, counted honestly
+
+| | rows | financings |
+| --- | --- | --- |
+| In the lead file | 793 | 653 |
+| Disaster or humanitarian relief | 143 | |
+| Protest flag is a demonstration farm or project only | 153 | |
+| Share 4+ distinctive words with a case already on the map | 35 | |
+| No candidate sentence anywhere in the full text | 201 | |
+| **Left to research** | **471** | **379** |
+| **Carrying a relocation count, a death with a cause, or compensation withheld** | **87** | **59** |
+
+**Nothing was deleted.** Every row is annotated in place with `r36_*` fields and the selection is
+the owner's, which is the standing rule. The 59 is the front of the queue, not a filter.
+
+**This file has been saying AidData is 793 rows and about 22 rounds at today's rate, or 4 to 5
+compressed.** The real figure to plan against is 59 financings with decisive evidence and 379
+without, and the first of those is one or two wide rounds.
+
+### What the lead list had wrong, and all three are measurable
+
+1. **Its text was truncated and nobody knew.** `leads_aiddata.json` capped `description` and
+   `staff_comments` at **1,200 characters**. 411 of 793 rows were cut. The source carries **2.3
+   times** the free text — a mean description of 2,383 characters against 937, and a maximum of
+   23,943 against 1,200. **For 210 rows, every candidate sentence sits past where the lead file
+   stopped.** Any screen built on the lead file was reading 43 per cent of the evidence.
+2. **A row is a financing, not a project.** AidData files one row per lender in a syndicate.
+   Following each row's own `Linked to Project ID#` field gives **653 groups**: four rows for the
+   Banskhali power plant, eight for one Peruvian syndicated loan, six each for Nam Dinh and a
+   Kazakh rescheduling. 229 rows share a project with another flagged row. Research the financing
+   once or four cards land on one power plant.
+3. **The "protest or unrest" flag is 60 per cent noise from one search term.** Of its 376 rows only
+   **142** carry a real protest, riot, unrest or clash word. 234 fire on some form of
+   "demonstration" alone, and for **153** every occurrence is a demonstration farm, a demonstration
+   centre or "gave a demonstration" on an agricultural or medical aid project. The fix for any later
+   word search is in the lead file's `word_search._r36_defect`: drop the bare term, keep
+   "demonstrators" and "demonstration against".
+
+### The trap worth the most, because the rows look like the best ones
+
+**143 rows are disaster or humanitarian relief, and they rank near the top.** A flood-relief grant's
+description recites the deaths and the displacement the disaster caused — 389 deaths from a typhoon
+in the Philippines, 25 killed in a Cambodian flood, 32 by the Nyiragongo eruption — so the row flags
+for both "people killed or hurt" and "displaced or resettled". **The money responded to the harm. It
+did not cause it.** They fail test 1 and test 3 outright. They carry `r36_relief`, and a drop on one
+should say the harm is the disaster's.
+
+This is the first queue on this map where the strongest-looking rows are systematically the wrong
+ones, and no sort built on the flags can see it.
+
+### What is now in the repo so no round pays for it again
+
+- **`docs/aiddata_full_text.json.gz`**, 1.3 MB — the full untruncated AidData record for all 793
+  flagged rows, from the source xlsx. Scanning it confirmed **20,985 data rows**, which is the
+  denominator the panel prints, by enumeration. No round needs the 28 MB download or the parse
+  again.
+- **`docs/aiddata_candidates.json`** — candidate sentences for 592 rows, nine patterns over
+  Description, Staff Comments and Location Narrative, each with the field it came from. This is
+  round 31's finding applied to a new queue: every writer who had pre-extracted sentences said the
+  inventory was worth more than everything else combined.
+- **`docs/leads_aiddata.json`** — annotated in place, with a `fields` block explaining every
+  `r36_*` key and the counts updated.
+- **`docs/BRIEF36.md`** — the writer brief, a delta on BRIEF20. It carries the three defects above,
+  the relief trap, the syndicate rule, the dedupe hints and the budget.
+
+### The free local dedupe paid better here than in any previous round
+
+**35 rows share four or more distinctive words with a case in the same country, and most are
+genuinely the same project already on the map**: Sorik Marapi, Ramu, Caculo Cabaça, Letpadaung,
+Tagaung Taung, Myitsone, Lower Sesan 2, Mes Aynak, Merowe, Kamchay, Celukan Bawang, Coca Codo
+Sinclair, Techo airport, Teluk Sepang, Isimba, Barishal, Suki Kinari, Indorama Eleme, Southern
+Expressway. Against 4 of 29 in round 16 and 8 of 36 in round 17. Most should become **extends**
+rather than new cases, since the row adds a lender or an amount the card lacks.
+
+Two hints are false and show what a hint is worth: lead 187 matches `ebola-imf-wage-limits` on the
+words Guinea, Liberia and Sierra Leone, and lead 88644 matches `chashma-right-bank-irrigation` on
+Pakistani province names. **Shared country words are not a shared project.**
+
+### The screen ranks. It does not drop.
+
+`r36_rank_score` is a weighted sum over the buckets. It orders the queue and removes nothing, which
+is the lesson round 31 paid for: BRIEF22's screen dropped rows on a sentence and, measured blind
+against 57 settled outcomes, it called 5 of 45 known cases a drop and caught only 4 of 12 known
+drops. Note also that the highest score is **not** the place to start — the score gives a point to
+protest and to pollution, and neither decides a case on its own. `r36_decisive_evidence` is the
+front of the queue.
+
+### What round 36 did not do
+
+**No cases.** The round that writes them needs three writers and three checkers, and this one had
+none. Note the budget inversion before commissioning it: the ICIJ rounds ran on `curl` and
+`pdftotext` against the Bank's archive and one batch used two searches in total. **Chinese state
+lenders publish no comparable archive**, so an AidData round is search-bound — three writers at
+about 30 searches each against the ~200-per-turn cap, not six at 55. Expect a lower yield than any
+ICIJ tranche and a higher share of `documented` cases, because the evidence that exists is press,
+court records and audit offices, which sit outside the lender.
 
 ## READ THIS FIRST: round 35 is merged, built, tested and pushed
 
