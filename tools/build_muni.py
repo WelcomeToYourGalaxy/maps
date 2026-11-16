@@ -717,6 +717,23 @@ def _es_canon(name):
     return text
 
 
+def _es_key(name):
+    """The join key: the canonical name, and for a bilingual official name
+    its halves in a fixed order.
+
+    Spain writes a bilingual name both ways round -- REL has
+    "Alacant/Alicante" where DIR3 has "Alicante/Alacant" -- and the first
+    build lost 19 municipalities to nothing but that order. Sorting the
+    halves matches them without any fuzziness: both sides must still hold
+    the same two names, spelled the same way. It moved the match from
+    8,080 to 8,099 and left the count of refused names at 3.
+    """
+    parts = [p for p in re.split(r'\s*/\s*', str(name or '')) if p.strip()]
+    if len(parts) > 1:
+        return ' | '.join(sorted(_es_canon(p) for p in parts))
+    return _es_canon(name)
+
+
 def _es_strip_ayuntamiento(name):
     return re.sub(r'(?i)^ayuntamiento\s+(?:de\s+l[ao]s?\s+|de\s+l\s*’|de\s+l\s*\'|de\s+|del\s+|d\s*’|d\s*\')?',
                   '', str(name or '').strip())
@@ -795,23 +812,28 @@ def _es_dir3(stats, workdir):
         def cell(name):
             i = at[name]
             return str(row[i]).strip() if i < len(row) and row[i] is not None else ''
-        if cell('C_ID_TIPO_ENT_PUBLICA') != 'AY':
+        tipo = cell('C_ID_TIPO_ENT_PUBLICA')
+        # AY is an ayuntamiento, DP a provincial or foral council. Both
+        # are tiers this map draws; everything else in the file -- lesser
+        # local entities, consortia, comarcas, island councils -- is not a
+        # level of the chain, or cannot be told apart by the codes here.
+        if tipo not in ('AY', 'DP'):
             continue
         if cell('C_ID_ESTADO') != 'V':
-            stats['ESP DIR3 ayuntamiento no longer current'] += 1
+            stats['ESP DIR3 body no longer current'] += 1
             continue
-        # An ayuntamiento's own departments are AY rows too, at a deeper
-        # level of the same hierarchy ("Intervencion - Ayuntamiento de
-        # Amurrio"). Level 1 is the council itself, and there are 8,133
-        # of them against 8,132 municipalities.
-        if cell('N_NIVEL_JERARQUICO') != '1':
-            continue
+        # A council's own departments are rows of the same type at a
+        # deeper level of the same hierarchy ("Intervencion - Ayuntamiento
+        # de Amurrio"). Level 1 is the council itself, and there are 8,133
+        # AY rows at level 1 against 8,132 municipalities.
         out.append({'id': cell('C_ID_UD_ORGANICA'), 'name': cell('C_DNM_UD_ORGANICA'),
                     'prov': cell('C_ID_AMB_PROVINCIA').zfill(2), 'cif': cell('NIF_CIF'),
-                    'contact': cell('CONTACTOS')})
-    stats['ESP top-level ayuntamientos in DIR3'] = len(out)
-    if len(out) < 8000:
-        raise SystemExit('DIR3 answered with %d ayuntamientos; refusing to go on' % len(out))
+                    'contact': cell('CONTACTOS'), 'tipo': tipo,
+                    'jer': cell('N_NIVEL_JERARQUICO')})
+    tops = [r for r in out if r['tipo'] == 'AY' and r['jer'] == '1']
+    stats['ESP top-level ayuntamientos in DIR3'] = len(tops)
+    if len(tops) < 8000:
+        raise SystemExit('DIR3 answered with %d ayuntamientos; refusing to go on' % len(tops))
     return out
 
 
@@ -841,16 +863,85 @@ def _es_concordance(pairs):
     return (same / total if total else 0.0), total
 
 
+# The provincial councils, which is the first contact data this build has
+# at the level above the municipality. Round eleven finished the county
+# level on what Wikidata holds and recorded that nothing structured was
+# left: `P194` was exhausted and more would mean per-country registers.
+# This is one of those registers, and the join is a code rather than a
+# name, because DIR3 stamps every local body with the province it sits in
+# and Wikidata's Spanish province items carry the same two-digit INE
+# province code on 45 of 51. Measured before anything was downloaded:
+# those 51 items hold 40 websites, **no email addresses and no telephone
+# numbers at all**, so whatever comes out of this is new.
+#
+# Island councils are left out on purpose. The Cabildos and Consells are
+# the same tier in the Canaries and the Balearics, and DIR3 holds 11 of
+# them -- but four Balearic councils all carry province code 07, so the
+# code cannot say which one a chain's second level is. Attaching one of
+# four to the province would be the ambiguity `put` exists to refuse,
+# arrived at from the other end. They need the island's own item, which
+# is a job of its own.
+ES_PROVINCE = '''PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX wd: <http://www.wikidata.org/entity/>
+SELECT ?item ?code WHERE { ?item wdt:P31/wdt:P279* wd:Q162620 ; wdt:P17 wd:Q29 ; wdt:P772 ?code .
+  FILTER NOT EXISTS { ?item wdt:P576 ?d } }'''
+
+
+def _es_provinces(stats, dir3_rows, out):
+    """DIR3's top-level provincial councils, keyed by province code."""
+    councils = {}
+    for row in dir3_rows:
+        if row['tipo'] != 'DP' or row['jer'] != '1':
+            continue
+        code = row['prov']
+        if code in councils:
+            # 41 rows and 41 distinct codes today. If a province ever
+            # carries two councils the code stops identifying one, which
+            # is the island-council problem above, so both go.
+            stats['ESP province code claimed by two councils, refused'] += 1
+            councils[code] = None
+            continue
+        councils[code] = row
+    councils = {k: v for k, v in councils.items() if v is not None}
+    stats['ESP provincial councils in DIR3'] = len(councils)
+
+    codes, ambiguous = by_code(ES_PROVINCE)
+    stats['ESP province codes on Wikidata'] = len(codes)
+    stats['ESP province codes ambiguous on Wikidata'] = ambiguous
+
+    for code, row in councils.items():
+        qid = codes.get(code) or codes.get(code.lstrip('0'))
+        if not qid:
+            stats['ESP no Wikidata id for the province code'] += 1
+            continue
+        mails = []
+        for part in re.split(r'[;,]', row['contact'] or ''):
+            clean = clean_mail(part.strip())
+            if clean and clean.lower() not in [m.lower() for m in mails]:
+                mails.append(clean)
+        if not mails:
+            stats['ESP provincial council with no address published'] += 1
+            continue
+        # Every address the directory publishes for the council. Five of
+        # these carry a named officer's mailbox beside the general one.
+        # They are kept: each is on the council's own domain, published by
+        # the council in the official directory as a way to reach it,
+        # which is not the fault round fourteen rejected TED for -- there
+        # the addresses were private accounts at a procurement desk.
+        put(out, qid, {'e': ','.join(mails)}, stats, 'ESP')
+        stats['ESP provincial council joined'] += 1
+
 def build_esp(stats, workdir):
     rel = _es_rel(stats, workdir)
-    dir3 = _es_dir3(stats, workdir)
+    everything = _es_dir3(stats, workdir)
+    dir3 = [r for r in everything if r['tipo'] == 'AY' and r['jer'] == '1']
 
     rel_by_key = collections.defaultdict(list)
     for ine, name in rel.items():
-        rel_by_key[(ine[:2], _es_canon(name))].append(ine)
+        rel_by_key[(ine[:2], _es_key(name))].append(ine)
     d_by_key = collections.defaultdict(list)
     for row in dir3:
-        d_by_key[(row['prov'], _es_canon(_es_strip_ayuntamiento(row['name'])))].append(row)
+        d_by_key[(row['prov'], _es_key(_es_strip_ayuntamiento(row['name'])))].append(row)
 
     matched = {}
     for key, ines in rel_by_key.items():
@@ -911,6 +1002,7 @@ def build_esp(stats, workdir):
         rec['j'] = 'name'
         put(out, qid, rec, stats, 'ESP')
         stats['ESP joined'] += 1
+    _es_provinces(stats, everything, out)
     return {k: v for k, v in out.items() if v is not None}
 
 COUNTRIES = {

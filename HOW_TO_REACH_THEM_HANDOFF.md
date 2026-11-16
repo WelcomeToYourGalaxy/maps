@@ -410,8 +410,8 @@ the way to reach them both change at each step:
 | --- | --- | --- | --- |
 | National | 198 | Wikidata `P194`/`P527` + front-page crawl | done |
 | Sub-national legislatures | ~3,800 ADM1 | `P194` by jurisdiction id | done |
-| County-level councils | ~48,000 | `P194` on territories and on governments; rebuilt and re-verified in round eleven | done — the structured source is exhausted |
-| Municipalities | ~250,000–400,000 | national registers, one country at a time, sharded on disk | six in, 50,738 records; see round fifteen for Spain and round thirteen for what blocks the rest |
+| County-level councils | ~48,000 | `P194` on territories and on governments; rebuilt and re-verified in round eleven | structured source exhausted; round sixteen added Spain’s 18 provincial councils from a register |
+| Municipalities | ~250,000–400,000 | national registers, one country at a time, sharded on disk | six in, 50,774 records; see round fifteen for Spain and round thirteen for what blocks the rest |
 | Below the municipality | millions | not proposed | — |
 
 So four to six more rounds reaches a complete picture down to the
@@ -786,11 +786,102 @@ are on the town hall object, not the boundary, so Tier B needs a
 spatial join as well as a planet-sized download. Do not plan a round
 around it without first proving the extract is obtainable.
 
+### Round sixteen: Spain's provinces, and five doors that are still shut
+
+The shards hold **50,774 records**. Spain is 6,983 of them: 6,965
+municipalities and **18 provincial councils**, which is the first contact
+data this build has at the level above the municipality.
+
+**The province is a code join, not a name one.** Round eleven finished
+the county level on what Wikidata holds — `P194` exhausted, 4,622
+entries — and recorded that nothing structured was left, that more would
+mean per-country registers. DIR3 is one of those registers and it stamps
+every local body with the province it sits in, while Wikidata's Spanish
+province items carry the same two-digit INE province code on 45 of 51.
+So no name is involved here and the records carry no `j`. Measured
+before anything was downloaded, those 51 province items hold 40
+websites, **no email address and no telephone number at all**, so
+everything this adds is new.
+
+DIR3 holds 41 top-level provincial and foral councils, one per province
+code, of which **18 publish an address**: Teruel's `registro@dpteruel.es`,
+Alicante's `registro@diputacionalicante.es`, Barcelona's
+`intervenciogf@diba.cat`. The other 23 publish none. Spain has 50
+provinces and seven of them are single-province autonomous communities
+with no diputación at all, so 41 is the whole set rather than a shortfall.
+
+**One of the 18 is worth naming.** Sevilla's only published addresses are
+three named officers at `dipusevilla.es`, with no general registry
+address among them, and four more councils carry an officer's mailbox
+beside a general one. All are on the council's own domain and all are
+what the official directory publishes as the way to reach the council,
+which is not the fault round fourteen rejected TED for — there the
+addresses were private accounts belonging to whoever handled one tender.
+They are kept, and every address a record holds is offered as its own
+row. If a later round wants only general channels, Sevilla is the case
+to decide it on.
+
+**Island councils are deliberately out.** The Cabildos and Consells are
+the same tier in the Canaries and the Balearics and DIR3 holds 11 of
+them — but four Balearic councils all carry province code 07, so the
+code cannot say which one a chain's second level is. Attaching one of
+four to the province is the ambiguity `put` exists to refuse, reached
+from the other end. They need the island's own Wikidata item.
+
+**A bilingual name written the other way round was costing 19
+municipalities.** REL has "Alacant/Alicante" where DIR3 has
+"Alicante/Alacant", and nothing but that order separated them. `_es_key`
+sorts the halves of a bilingual official name before matching, which
+takes the one-to-one match from 8,080 to 8,099 and leaves the count of
+refused names at 3 — both sides must still hold the same two names,
+spelled the same way, so it adds no fuzziness. 18 of the 19 carry an
+address.
+
+The 29 still unmatched are a real residue and not worth chasing:
+**renames DIR3 has not caught up with** (`Palamós i Sant Joan` against
+`Palamós`, `Calonge i Sant Antoni` against `Calonge`, `Bigues i Riells
+del Fai`) and **the same place spelled in the other official language**
+(`Maó` against Mahón, `Almassora` against Almazora). Matching those
+means fuzzy matching, which is the thing rule 1 forbids.
+
+### What was surveyed this round, and why none of it shipped
+
+Seven countries, chosen on key coverage, and every one came back blocked
+for a reason that is now specific. Three of them had been recorded
+differently before.
+
+| Country | Municipalities | What was tried | Where it stops |
+| --- | --- | --- | --- |
+| Japan | 1,812 | National Tax Agency corporate-number register | bulk download is a POST behind a CSRF token; the Web-API needs an application ID; and the register holds a name and an address, no email or telephone |
+| Colombia | 1,227 | datos.gov.co, 202 datasets named "directorio" | every one is a single city — "Directorio Alcaldía de Mosquera", "Directorio Alcaldia de Tenjo". Confirms round twelve: a per-city job |
+| Chile | 356 | datos.gob.cl | nine results for municipalities, all budgets, permits and waste. No directory exists |
+| Portugal | 310 | dados.gov.pt, 128 datasets | municipal finance and environment. Confirms round twelve |
+| Poland | 3,185 | `api.dane.gov.pl` | does not answer from here, the third round running |
+| Sweden | 292 | SCB's Myndighetsregistret, which round thirteen had not tried | **it is not a municipal register.** The 2007 ordinance behind it covers the courts, the public enterprises and the state administrative authorities. Sweden still needs a Bolagsverket account |
+| Denmark | 98 | `api.dataforsyningen.dk/kommuner` | **410 Gone, with no successor named in the response.** Still needs a CVR account |
+
+**Sweden is the correction worth carrying forward.** Round thirteen left
+it as "needs a Bolagsverket account", which read as though any Swedish
+public register would do. SCB is the body that issues organisation
+numbers for the whole public sector, so its register looked like the
+obvious way round — and its remit stops at the state. The account is the
+only route.
+
+**Japan is the one to pick up from outside this sandbox.** 1,745 of its
+1,812 municipalities carry the dantai code, the corporate-number
+register covers every local public body under corporate type 2, and the
+Web-API's application ID is free to request. What it would give is the
+street address rather than an email, which is thin against the 102,672
+websites already live from Wikidata — but Japan has no email anywhere,
+so an address under the letter method is the whole of what is available
+for it.
+
 ### Round fifteen: Spain, on a name and a gate under it
 
 Spain is in. 6,947 municipalities with a published email address, and the
-shards now hold **50,738 records** across six countries: France 34,915,
-Italy 7,889, Spain 6,947, Norway 354, the Netherlands 341, Finland 230.
+shards now hold **50,774 records** across six countries: France 34,915,
+Italy 7,889, Spain 6,983, Norway 354, the Netherlands 341, Finland 230.
+(Spain’s figure is rounds fifteen and sixteen together.)
 
 It is the first record here joined on a name rather than on a code the
 two sources share, which is a rule this build has kept since round four
@@ -1188,7 +1279,7 @@ proving the extract is obtainable. Re-checked this round and it is not:
 answers but holds only its own region. Nothing has changed since round
 seven.
 
-### Where the registers stand after fifteen rounds
+### Where the registers stand after sixteen rounds
 
 | Country | Municipalities | Joined on | State |
 | --- | --- | --- | --- |
@@ -1198,15 +1289,15 @@ seven.
 | Netherlands | 341 | CBS code, then TOOI | 341 |
 | Finland | 291 | municipality number | 230 |
 | Bulgaria | 265 | **IISDA id, already on Wikidata** | office-holders readable now; contacts behind xajax (round fourteen) |
-| Spain | 8,391 | official name inside a province, verified against the tax number | 6,947 — round fifteen |
-| Sweden | 292 | organisation number | needs a Bolagsverket account |
-| Denmark | 98 | municipality code | needs a CVR account |
+| Spain | 8,391 | official name inside a province, verified against the tax number; provinces on the INE province code | 6,965 municipalities and 18 provincial councils — rounds fifteen and sixteen |
+| Sweden | 292 | organisation number | needs a Bolagsverket account; SCB’s own register covers the state only — round sixteen |
+| Denmark | 98 | municipality code | needs a CVR account; the address API is 410 Gone — round sixteen |
 | Slovakia | 2,898 | — | needs an IČO import into Wikidata; RPO holds no email either |
 | Mexico | 2,462 | — | no national directory exists |
 | Philippines | 1,497 | — | no national contact set |
 | Germany | 13,697 | — | no national code and no national register |
 
-Six registers, 50,738 municipalities with a published contact detail.
+Six registers, 50,774 records with a published contact detail.
 Of the eight countries blocked, **five are blocked on one specific
 missing thing that is not data** — a crosswalk table, two accounts, an
 identifier import, and a form that needs a browser — and three have no
