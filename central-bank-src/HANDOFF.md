@@ -79,9 +79,9 @@ same commit as the work it did.
   - Links: `{n, cb | tn, rel, role, detail, src_t, src_u}`.
   - Popups turn each link into a plain sentence (`SAY` / `sayLink` / `srcItem` in `app.js`). Add a `SAY` entry for any new `role` string.
 
-## Where it stands (68 rounds in, 16 November 2026)
+## Where it stands (69 rounds in, 16 November 2026)
 
-1,716 outside parties and 2,502 ties. One writeup for every box, 1,945 of them. 20 patterns
+1,716 outside parties and 2,505 ties. One writeup for every box, 1,945 of them. 20 patterns
 and 14 suspected patterns.
 
 The party count is lower than the tie count implies, and deliberately: round 60 folded 28 duplicate
@@ -102,7 +102,7 @@ ignores" below.
 | Governor removals and pressure | 232 | 183 | 89% | 95% |
 | External auditors | 216 | 178 | 86% | 93% |
 | Banknote printers | 184 | 168 | 82% | 88% |
-| Outside reserve managers | 200 | 73 | 35% | 38% |
+| Outside reserve managers | 203 | 76 | 37% | 40% |
 | Gold custodians | 96 | 58 | 28% | 30% |
 | Swap lines | 240 | 84 | 41% | 44% |
 | Named shareholders | 228 | 9 | 4% | 5% |
@@ -111,7 +111,7 @@ The revolving-door row counts the 288 records with a private employer. There are
 records in all; the other 59 are `public_move` and are listed in the country's box without being
 counted, because nobody moved between public office and private finance. FIFTEEN places hold
 nothing but moves of that kind, so they read blank on the layer while their box is not empty:
-BOL BTN CPV CUB HTI MRT QAT SLB SMR STP SYC TLS TON VUT WSM. **Derive it, never read it:** the
+BOL BTN CPV CUB HTI MRT QAT SLB SMR STP SYC TLS TON VUT WSM YEM. **Derive it, never read it:** the
 places in `core['E']` holding at least one career move where every one of them is `public_move`.
 
 **The number went UP at round 68 and that was the honest result, not a regression.** Round 68 filed
@@ -269,6 +269,137 @@ again on the career row would double-count one fact across two rows and assert a
 not describe. The round-44 cross-filing rule is specific to a state act against a governor and does
 not reach this. Brunei stays absent on the revolving door and needs a real career.
 
+
+
+## The fund rule needed one more turn of the screw, and New Zealand is why (round 69)
+
+Round 69 settled that a fund holding counts when the source names the fund, names its manager and
+gives a figure. Within the same round a case arrived that failed that test on two of three and was
+plainly a record anyway, so the rule is sharper now and the sharper version is the one to apply.
+
+**What decides it is whether the source SAYS THE NAMED PARTY MANAGES.** The fund's name and the
+amount strengthen a record and their absence does not disqualify one — this row already carries
+records with no amount and no date, Korea's among them, and says so on their face.
+
+- **SVK counts**: "managed by the Bank for International Settlements in Basel", fund named, USD 47m.
+- **NZL counts**: the Reserve Bank's own page has a section headed "Bank of International Settlements
+  (BIS) investment funds" saying a small portion of the reserves portfolio is invested in investment
+  funds managed by the BIS, and names three — the Asian Bond Fund, the Chinese Yuan Bond Fund and the
+  US Dollar Green Bond Fund. No amount anywhere, and the record claims none. A separate Reserve Bank
+  announcement of September 2019 confirms the third, saying the green bond investment was funded from
+  the foreign reserves portfolio into a BIS Investment Pool.
+- **SVN still does not**: "holdings in the BIS fund" in a maturity clause says nothing about who
+  manages anything.
+- **PRT does not**: EUR 60,632 thousand of ETF units at 31 December 2024 — a figure, and no manager
+  named, and an ETF is excluded outright in any case.
+
+**Two notes on getting this one right.** The agent that found New Zealand reported the fund as
+unnamed and left it unfiled as a borderline call; the live page names three, and the agent's URL was
+an old path under `/markets-and-payments/` while the page now sits under `/financial-markets/`.
+**Both the refusal and the under-reporting came from a 404 that did not look like one** — so when an
+agent reports a page as thinner than expected, check the path before trusting the reading.
+
+## Malawi converts on the manager row, out of a document already on disk (round 69)
+
+The Reserve Bank of Malawi's audited statements for 2025 — `ContentID=63591`, the same file round 68
+downloaded and grepped for GOLD and closed as a blank — say in the interest-rate risk note that the
+Bank benchmarks "foreign reserves being managed by external fund managers" against the Merrill Lynch
+1-3 Year US Government Bond Index at 80 per cent and the 3-month US dollar deposit rate at 20 per
+cent, allocates those managers a risk budget, and puts the externally managed funds at K3,880 million
+at 31 December 2025 against K3,740 million a year earlier. **The counterparty table then names the
+firm and ties it to that exact figure**: "Crown Agents Fund manager", United Kingdom, No Limit, 5.00
+per cent, 3,880 — listed separately from three "Crown Agents Bank Limited" banking rows. Filed to the
+map's existing Crown Agents Investment Management node, which now has five banks.
+
+**The lesson is cheap and will keep paying: a document opened for one row is free for every other
+row.** This one sat on disk for a whole round because it had been grepped for the word gold and
+nothing else. **Grep a downloaded central bank report for every row's vocabulary at once**, not just
+the one you came for.
+
+## Peru and the Bahamas, closed by hand (round 69)
+
+**PER is a confirmed blank on the bank's own definition, and it needed a browser.** `bcrp.gob.pe`
+serves a 1,162-byte Incapsula stub to plain curl **even with the exact document path**, which is the
+harder of the two block types and the Madagascar case rather than the usual one. The site renders
+normally in Chrome. The BCRP publishes a MONTHLY reserves-management note going back to 2002 at
+`bcrp.gob.pe/reservas-internacionales/gestion.html`, each one a Nota de Estudios; the September 2026
+note, No. 79 of 10 November 2026, names no outside firm, and its own glossary settles it positively
+rather than by silence: "Portafolio de Inversiones. - Es el conjunto de activos internacionales que
+es administrado internamente." **That spends the whole monthly series, not one issue.**
+
+**BHS is confirmed externally managed with no firm named, across two editions four years apart.**
+Note 8 of the Central Bank of The Bahamas' accounts says "These represent securities that are
+externally managed by a third party", against Note 7 calling Foreign Government Securities
+"internally managed" — and the same wording is in both the 2022 and the 2024 reports, neither naming
+a firm. **Round 69 closed the obvious lead by checking the later edition, which is what an agent had
+flagged as the cheapest remaining chance.** Host note: the site answers 404 with a 312KB HTML page to
+plain curl even on the exact PDF path, and serves the same URL correctly through WebFetch with
+`offset`.
+
+## Lesotho has a record written and held, and it needs one fetch (round 69)
+
+**This is the single cheapest open item on the manager row and it is held for a host reason, not an
+evidential one.** There is no 2025 Lesotho annual report — the site lists annual reports only to 2024
+— so the document is `CBL-AFS-2025.pdf`, the audited statements, which are a scan and were OCRed in
+full. Note 37's counterparty table, under Treasury notes and bonds, carries "United States-RAMP" at
+M1,932,669 thousand **immediately above a new row "United States-internally Managed" at M4,610,394
+thousand.** The bank is classifying its own US holdings by who manages them, and the contrast it
+draws is the evidence: a row set against one labelled "internally Managed" is not internally managed.
+No narrative sentence says the World Bank manages a portfolio.
+
+**It is stronger than Mongolia, which IS filed on exactly this kind of reasoning**, and it is held
+only because `centralbank.org.ls` returns curl code 000 from here and this project does not file a
+record built from an agent's sole reading of a document nobody else could open. **Open that file and
+it goes in**, with the reasoning on its face as Mongolia's carries it.
+
+## Units in an outside-managed fund: the rule, settled at round 69
+
+The owner delegated this. It had been open since round 67 under two names — Indonesia's BISIP G3 and
+Slovenia's "BIS fund and equity ETFs" — and round 68 added a third, Slovakia. Reading all three
+settles it, and the two halves of the rule are different enough to state separately.
+
+**A holding of units in an outside-managed fund COUNTS on this row when the source names the fund,
+names its manager, and gives a figure for it.** That is the BCEAO precedent, whose own accounts name
+the BISIP K fund, name the Bank for International Settlements as its manager and give the amount.
+
+**Slovakia matches it exactly and is filed.** Národná banka Slovenska's Annual Report 2020, footnote
+3: the renminbi investment is made through "the BISIP CNY, an open-ended fund comprising Chinese
+government bonds and managed by the Bank for International Settlements in Basel", market value about
+USD 47 million at the end of 2020, with a balance-sheet line of its own for "Participating interests
+in BISIP fund". **The audited statements confirm it independently of the narrative** — the valuation
+note says the BISIP holding is valued on data "provided by the Bank for International Settlements
+(BIS) in Basel, Switzerland on a monthly basis" — which is what makes this a document and not a
+press description. Keyed to SVK, not to a union.
+
+**Slovenia does NOT match it and is refused.** This document had said the wording was in the audited
+statements; it is not, and round 68 established that "BIS", "ETF" and "exchange-traded" return zero
+hits there. It is in the Annual Report 2024, section 3.9, and it appears **exactly once, in a clause
+about maturity**: the largest maturity bucket is over three years, "52%, including holdings in the
+BIS fund and of equity ETFs, which have no maturity". No fund is named, no figure is given for it,
+and nothing says the BIS manages it. A fund category mentioned in passing is not a mandate.
+
+**Indonesia cannot be filed at all**, and not on this test: its only source is paywalled, and this
+map does not file from a paywalled source.
+
+**The second half, which applies to every country and is the part most likely to be got wrong: an
+equity ETF never counts on this row.** A listed exchange-traded fund is a security bought on a
+market, not a mandate given to anyone; no manager is named for it, and the bank has no relationship
+with one. Slovenia holds 9 per cent of its financial assets in equity ETFs and Slovakia EUR 236
+million, and neither is a reserve-manager tie. Several banks' reports bundle a fund holding and an
+ETF holding into one sentence — **read which is which before filing either.**
+
+## Sudan's qualified opinion: chased again at round 69 and still not filable
+
+One more attempt was made on the thing round 68 left open, and it failed, so the entry stands.
+Searching in Arabic for the National Audit Chamber's own report on the central bank returns nothing;
+the only audit finding that surfaces is the Inspector General's report that **the Ministry of
+Finance** hid SDG 16 billion in liabilities, discovered while reviewing the central bank's records —
+which is the counterparty shape this row already refuses, and which this document already records as
+not naming the Bank of Sudan. The qualification therefore remains a dated, signed finding by the
+supreme audit institution on the bank's own accounts **whose subject matter is withheld**, two years
+running, and it alleges no conduct by any person. Not filed. It becomes a record the moment any
+source states what the matter is.
+
 ## The three extraction failure modes, and the fix for each
 
 A central bank's auditor report is usually *present* and *unreadable*, and there are exactly three reasons. Diagnose before concluding a report has no auditor's section.
@@ -364,6 +495,29 @@ Note `gaps.json['no_central_bank']` is a dict with `note` and `places`, not a li
 These accumulate. Read them as live instructions, not history.
 
 - **Report coverage every round, by row, and account for the rate of change.** The level alone is not the answer; say what moved, by how much, and why. Report against both denominators (see below).
+- **Carry a START-OF-TODAY column in that table**, added at round 68: beside this round's figures, what each row stood at when the day began, so the day's work is visible as well as the round's. Derive the baseline rather than copying it: find the last commit to touch `central_bank_independence.html` before local midnight —
+
+  ```bash
+  cd ~/maps && TZ=America/Los_Angeles git log --format='%h|%ad|%s' \
+      --date=format-local:'%Y-%m-%d %H:%M' -- central_bank_independence.html \
+      | awk -F'|' '$2 < "YYYY-MM-DD"' | head -1
+  ```
+
+  — and take the table out of `central-bank-src/HANDOFF.md` AT THAT COMMIT (`git show <hash>:central-bank-src/HANDOFF.md`), which is the figure the map itself reported then, computed by `coverage.py` in that session. **Do not try to recompute it from the built page: `D.CC` carries no `counterparty_only` and `D.RD` no `public_move`, so the two filtered rows cannot be reproduced from a page alone**, and a baseline computed under today's rules would not be what the map said at the time anyway.
+
+  **The baseline for 15 November 2026 is commit `c241e772`, the end of round 55 at 23:31 on the 14th** — rounds 56 to 68 all fell on the 15th:
+
+  | Category | Records | Places | of 206 | of 192 |
+  |---|---|---|---|---|
+  | Corruption cases | 244 | 166 | 81% | 86% |
+  | Revolving door | 235 | 130 | 63% | 68% |
+  | Governor removals and pressure | 191 | 147 | 71% | 77% |
+  | External auditors | 201 | 164 | 80% | 85% |
+  | Banknote printers | 172 | 158 | 77% | 82% |
+  | Outside reserve managers | 160 | 60 | 29% | 31% |
+  | Gold custodians | 72 | 45 | 22% | 23% |
+  | Swap lines | 240 | 84 | 41% | 44% |
+  | Named shareholders | 228 | 9 | 4% | 5% |
 - **Measure against what is reachable, not against 206.** Fourteen of the 206 monetary authorities can never carry a record: ten places have no central bank, and four are the union keys whose members are counted individually. The reachable denominator is **192**. Report both.
 - **Push to `WelcomeToYourGalaxy/maps` directly from chat.** The user does not upload by hand. The clone goes wherever `git clone` puts it — `$HOME/maps`, which has been `/home/claude/maps` in some sessions and `/root/maps` in others, so check rather than assume. The build tree is `/root/cb`, which is not a git repository. Copy the built `central_bank_independence.html` to the repo root **and copy the whole of `/root/cb` back over `central-bank-src/`**, excluding `dist/`, `raw/` and the unzipped `geo/cities1000.txt`.
 - **Deliver `HANDOFF.md` as a file each round**, not just as a commit.
@@ -2512,7 +2666,37 @@ renders every tie as a standalone present-tense sentence and has no notion of a 
 
 **Best remaining vein:** small open economies that publish a standalone reserves-management report. The Central Bank of Seychelles' International Reserves Management Report 2025 named three outside parties in one document.
 
-**Known blanks — confirmed external managers, no firm named:** Botswana, the Trinidad HSF, Timor-Leste, Namibia, Ghana, Kazakhstan, Chile ("dos administradores externos", about 3%), the UAE ("the top ten globally"), the HKMA (30% externally including all listed equity), Brazil and Türkiye (both internal). OMFIF's external-managers chapter names seven firms and anonymises all 73 banks.
+**Known blanks — confirmed external managers, no firm named.** This is the row's largest single
+category and it is worth reading as a finding rather than as a leftover: in all of these the bank
+says plainly that outsiders run part of its money and will not say who. Botswana, the Trinidad HSF,
+Timor-Leste, Namibia, Ghana, Kazakhstan, Chile ("dos administradores externos", about 3%), the UAE
+("the top ten globally"), the HKMA (30% externally including all listed equity), India, El Salvador,
+South Africa, Haiti (the BRH chose "gestion deleguee" and put $1,807,431,480 with external managers,
+naming nobody), Pakistan (balances "maintained, on behalf of the Bank through reputable fund
+managers", Rs 426,417m at 30 June 2022), the Cayman Islands ("managed by independent fund managers"),
+and Brazil and Türkiye (both internal). **Round 69 added three, and two of them are the strongest
+documented of the set:**
+
+- **THA.** The Bank of Thailand's separate audited Financial Statements 2025 carry it in the
+  accounting-policy note rather than the reserves note — Note 3.8: "Foreign securities, including
+  those managed by external fund managers, are held for international reserve management purposes" —
+  and **Note 24 puts a price on it: "External fund manager management fees" of THB 1,107 million for
+  2025, against THB 786 million in 2024, listed separately from "Investment management fees" of THB
+  831 million.** A fee line of that size is proof that contracts exist, which makes a Thai
+  procurement award notice the obvious next route and a far better one than another annual report.
+- **PHL.** The BSP Annual Report 2025, page 27: "The BSP also engaged the services of external fund
+  managers", with a note that improved internal capability "allowed the BSP to manage some outsourced
+  portfolios in-house". No firm in 18,829 lines. The BSP's audited statements are a separate volume
+  and are unread; PhilGEPS award notices are the other route.
+- **BHS.** Note 8 of the Central Bank of The Bahamas' accounts: "These represent securities that are
+  externally managed by a third party", set against Note 7 calling Foreign Government Securities
+  "internally managed". **Round 69 closed the obvious lead on it** — the same wording is in both the
+  2022 and the 2024 editions and neither names a firm, so a later edition will not help.
+
+OMFIF's external-managers chapter names seven firms and anonymises all 73 banks. **The pattern across
+the whole category is the thing to notice: the disclosure that a manager exists is routine and the
+identity is withheld almost everywhere, which is why this row's denominator is honest at 192 and its
+ceiling is not.**
 
 **Retry later:** Peru's BCRP transparency PDF (bot-protection stub), Lesotho's and Tanzania's 2024 annual reports (site errors).
 
@@ -2914,6 +3098,21 @@ agent filed nothing at all, which is the honest outcome for a row near-exhausted
 Two agents produced no records between them and both were worth running: one settled Qatar
 negatively and killed a live lead, the other found that this document's own "cheapest fetch next
 round" had been filed six rounds earlier.
+Then round 69's 6 records across six parallel agents plus browser and shell work, worked almost
+entirely off round 68's "not reached" list -- 80 countries each left with the next document already
+named, which is the cheapest brief this project has ever written and should be the default whenever a
+previous round leaves one. The reserve-manager row went up 3 records and 3 places to 76, its best
+place-count since round 65, from Slovakia, New Zealand and Malawi; the revolving door filed three
+more public moves, Yemen's being that country's first career record of any kind. **127 documented
+blanks, nine of them countries converted from "never opened" to read**, including five of the
+advanced economies that had never been tested at all -- Germany, Britain, Canada, France and
+Singapore all state in-house or state-agent management outright. Worth more than the records: the
+fund rule settled in both directions and then sharpened within the round; Thailand and the
+Philippines added to the confirmed-but-unnamed list, Thailand with a THB 1,107 million external
+fund manager fee line that proves contracts exist; Peru and the Bahamas closed by hand; and a
+Lesotho record written and held on a host that cannot be reached. The new `audit_data.py` check
+earned itself in its first full round, catching three countries whose negatives this very round's
+records had superseded.
 Then round 68's 10 records across six parallel agents plus browser and shell work of my own, and the
 records are a small part of it. The reserve-manager row went up 5 records and 2 places, four of them
 out of a single Estonian annual report; the revolving door filed five records that are all public

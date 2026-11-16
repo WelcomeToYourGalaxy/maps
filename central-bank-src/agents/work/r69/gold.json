@@ -1,0 +1,90 @@
+{
+  "records": [],
+  "blanks": [
+    {
+      "iso3": "TLS",
+      "kind": "confirmed blank",
+      "note": "HOST FACT FIRST (this was the open question): bancocentral.tl/uploads/documentos/*.pdf is a dead path that answers every request with HTTP 200 and the 158,178-byte BCTL homepage HTML, to curl and to WebFetch alike, which is why round 68 tested nothing. The working path is the listing page https://bancocentral.tl/publication/bctl_ann_rep/ (315,179 bytes, items server-rendered in the HTML, not script-loaded) whose cards carry real download endpoints of the form /publication/krep/download/<id>/. Two were downloaded and byte-checked before grepping: id 9 = 'Annual Report 2024 - Operations, Activities and Financial Statements of BCTL', 11,138,942-byte PDF, extracting 167,475 characters; id 6 = 'Operations, Activities & Financial Statement of BCTL 2025', 5,538,853-byte PDF, extracting 125,986 characters. Both read for gold. The word gold occurs in each only twice and in neither case as an asset: once in the recital of BCTL's statutory mandate ('Hold and manage the State's gold reserves', BCTL Organic Law functions list) and once in the Petroleum Fund investment rules ('Article 19: Limits investments to low-risk foreign assets (e.g., gold, foreign currency...)'). The asset classes in the statement of financial position and in the net-foreign-currency-exposure note of the 2024 statements are Cash and cash equivalents, Financial assets at fair value through other comprehensive income, IMF related assets and Other assets; there is no monetary gold line and no precious-metals line. Also checked the custody mentions in both documents: all five relate to the Petroleum Fund's securities custodian and external-manager fees (MERCER's recommendations for Custodian Bank services; 'External managers & custody mgmt services'), not to metal. Timor-Leste is dollarised and the BCTL holds no monetary gold, so there is no custodian to name: this closes rather than merely fails. Source: https://bancocentral.tl/publication/krep/download/9/ and /6/."
+    },
+    {
+      "iso3": "TJK",
+      "kind": "confirmed blank",
+      "note": "The best lead of the twelve and it is now read in full. National Bank of Tajikistan audited consolidated financial statements as at 31 December 2025 (Russian), 3,368,828-byte PDF extracting 299,820 characters, reached from the NBT's own financial-reports listing at https://nbt.tj/ru/about/finansovye-otchety.php. Note 13 'Золото и прочие драгоценные металлы' (gold and other precious metals) was read line by line together with the accounting-policy note that precedes it by some 1,600 lines. The note does break the holding down by WHERE the metal is, which is more than most banks on this row publish, and it still names nobody: monetary gold is itemised as 'Монетарное золото на счетах в иностранных банках и в хранилище' 10,844,724 thousand somoni, 'Золотые слитки в хранилище' (gold bars in the vault) 3,862,985, 'Золото на счетах в иностранных банках' (gold in accounts at foreign banks) 3,854,498, 'Золото на иностранных аффинажных заводах' (gold at foreign refineries) 728,717 and 'Золотые мерные слитки в хранилище' (gold measure-bars in the vault), total monetary gold 19,290,924 thousand somoni against 8,211,440 a year earlier; non-monetary gold in bars in the vault is a further 13,642,465. No foreign bank is named, no refinery is named, and 'в хранилище' is a vault with neither a name nor a city, which the row's rules refuse. The gold held at foreign banks is held in ACCOUNTS, which this row excludes outright. The accounting-policy note repeats the same three unnamed categories. The valuation paragraph names only the London Bullion Market Association morning quotation as the price source, which is a price and not a custodian. Also checked, per the brief's point 4: the credit-risk concentration and credit-rating tables (lines 3444-3469 and 5216-6790 of the extract) rate and concentrate loans to banks and to the Government and funds placed with foreign banks, and name no counterparty on the gold line at all. Note 12.1 'Средства, размещенные в иностранных банках' is the trap the brief warns about - it tabulates cash and deposits, not metal. Source: https://nbt.tj/ru/about/finansovye-otchety.php, file /upload/iblock/273/.../Консолидированная_финансовая_отчетность_на 31_12_2025_2.pdf. Host note for the next round: the 2023 auditor-report link printed on the NBT HOMEPAGE carries a stale iblock hash (/upload/iblock/789/...) and resets the connection on every retry; the listing page above carries the live hashes (2023 is /upload/iblock/e46/...), and FinState_2024.pdf and reports back to 2009 are listed there too."
+    },
+    {
+      "iso3": "SOM",
+      "kind": "confirmed blank",
+      "note": "Central Bank of Somalia Annual Report 2025, https://centralbank.gov.so/wp-content/uploads/2026/08/Annual-Report_2025.pdf, 20,735,526-byte PDF of 128 pages extracting 140,868 characters, read for gold: the string 'gold' does not occur anywhere in the document, nor do 'bullion', 'custody' or 'precious metal'. The balance-of-payments tables carry a 'Reserve Assets' line as an undifferentiated figure with no asset breakdown, and the only balance sheets presented are the consolidated balance sheet of the commercial banks (Table 10), not the CBS's own. So the CBS's own flagship annual document discloses no gold holding of any kind. One qualification for the next round: the CBS's separately published AUDITED financial statements with notes were not opened - the 2020 statements PDF at centralbank.gov.so/wp-content/uploads/2022/08/s338qQ-CBS-2020-financial-statements-report.pdf answered 403 to curl, and the bank advertises five consecutive clean audits 2020-2024 at centralbank.gov.so/?p=6040 without a direct link to the newer statement files. If the next round wants to convert this from 'the annual report names no gold' to 'the audited statements name no gold', that 403 is the thing to get past, probably through WebFetch or through the Somali Office of the Auditor General at oag.gov.so."
+    },
+    {
+      "iso3": "MRT",
+      "kind": "not reached",
+      "note": "No Banque Centrale de Mauritanie document was opened, so Mauritania is untested, not silent. The reason is a host fact worth recording: https://www.bcm.mr/ returns HTTP 200 with only 2,568 bytes - a bare single-page-application shell whose <body id=\"root\"> is empty and whose entire content loads from /assets/index-B9nUG0IK.js, so there are no server-rendered links to a Rapport annuel or to any PDF, and a crawler or a grep of the homepage finds nothing whatever. Two WebSearches ('Banque Centrale de Mauritanie rapport annuel etats financiers or monetaire' and a bcm.mr-scoped variant) returned no bcm.mr document at all, only Ministry of Finance and IMF material. Next document to open: the SPA's own data endpoint - fetch /assets/index-B9nUG0IK.js and read the publication API path out of it, or try the search endpoint the site advertises in its JSON-LD, https://www.bcm.mr/recherche?q=rapport+annuel - and failing that the IMF country page for Mauritania, whose Article IV and ECF staff reports (several French-language CR files surfaced in the search, e.g. imf.org/-/media/Files/Publications/CR/2023/French/1MRTFA2023001.ashx) carry the safeguards-assessment and reserve-asset discussion that is the only other route here."
+    },
+    {
+      "iso3": "LAO",
+      "kind": "not reached",
+      "note": "No Bank of the Lao PDR document was opened. https://www.bol.gov.la/ did not connect at all - curl returned HTTP 000 with a zero-byte transfer, not a 403 or a 404 - and a WebSearch for the BOL annual report and financial statements returned no bol.gov.la file whatever, only commercial-bank reports (BCEL, BFL) and an IMF Article IV. Next document to open: retry bol.gov.la through WebFetch rather than curl (the brief's point that the two fail differently applies squarely here, since the host refused the socket rather than the request), and if the host stays dark, the Lao PDR annual economic report mirrored on the Open Development Mekong data portal (data.opendevelopmentmekong.net, which carries annual-economic-report files for the BOL) plus the 2025 Article IV consultation staff report are the fallback for the reserves composition."
+    },
+    {
+      "iso3": "VNM",
+      "kind": "not reached",
+      "note": "No State Bank of Vietnam document was opened. https://www.sbv.gov.vn/ answered HTTP 403 with a 730-byte block page to curl. Next document to open: the SBV annual report through WebFetch instead of curl, specifically the foreign-exchange-reserve-management chapter, since the SBV publishes no audited financial statements with notes and so has no gold note to grep; expect this to close as a blank naming no institution rather than to yield a custodian. Worth adding for whoever takes it: Vietnam's gold policy documents (Decree 24/2012 and its 2025 replacement) govern the domestic bullion market and the SBV's monopoly on gold-bar import and branding, which is a different subject from where the SBV's own reserve metal sits, and a decree is a mechanism and not evidence under the no-fabrication rule."
+    },
+    {
+      "iso3": "CUB",
+      "kind": "not reached",
+      "note": "No Banco Central de Cuba document was opened. https://www.bc.gob.cu/ did not connect - curl returned HTTP 000 with a zero-byte transfer. Next document to open: bc.gob.cu through WebFetch, looking for the Informe Anual and any estados financieros; the BCC publishes the Informe Anual irregularly and it does not normally carry a gold note, so if the Informe Anual is reached and names nothing the country should be closed as a confirmed blank on that document rather than left open a third round."
+    },
+    {
+      "iso3": "IRN",
+      "kind": "not reached",
+      "note": "No Central Bank of the Islamic Republic of Iran document was opened. https://www.cbi.ir/ did not connect - curl returned HTTP 000 with a zero-byte transfer, which for this host is likely to be sanctions-related network blocking rather than a transient reset. Next document to open: cbi.ir's Annual Review / balance-sheet series through WebFetch, and the CBI's Persian-language financial statements. Carrying forward the warning left at round 68, which still stands: Iranian gold held abroad has been the subject of sanctions litigation and of repatriation claims against banks in Turkey and South Africa, but any such claim must come from a CBI document or a court filing that names the holder, not from press reconstruction, and this row refuses 'abroad' with no institution behind it."
+    },
+    {
+      "iso3": "TKM",
+      "kind": "not reached",
+      "note": "No Central Bank of Turkmenistan document was opened; budget ran out on the three countries that do publish. This is expected to be a want-of-document blank rather than a silent document: Turkmenistan publishes no audited central bank financial statements and does not report reserve assets to the IMF on the standard template. Next document to open: cbt.tm's publications section (try WebFetch, the host was not probed this round), and failing that the most recent IMF Article IV consultation for Turkmenistan, which is the only regular outside source on Turkmen reserve assets. Whoever closes it should say in the note that nothing was published, not that something published was silent - the two are different findings."
+    },
+    {
+      "iso3": "ERI",
+      "kind": "not reached",
+      "note": "No Bank of Eritrea document was opened; budget ran out. Expected to be a want-of-document blank: the Bank of Eritrea publishes no financial statements and Eritrea has had no IMF Article IV consultation concluded for many years, so there is probably no document in existence to read. Next document to open: bankoferitrea.gov.er publications (host not probed this round), then the most recent IMF Article IV consultation or staff-monitored material for Eritrea. As with Turkmenistan, the close should distinguish 'nothing is published' from 'the published document is silent'."
+    },
+    {
+      "iso3": "SSD",
+      "kind": "not reached",
+      "note": "No Bank of South Sudan document was opened; budget ran out. Next document to open: boss.gov.ss annual report and audited financial statements, then the IMF staff reports on South Sudan's reserve assets. South Sudan's audited statements have been repeatedly delayed, so a want-of-document blank is the likely outcome, and the IMF route is the one with a real chance of describing the reserve composition even though it will not name a custodian."
+    },
+    {
+      "iso3": "YEM",
+      "kind": "not reached",
+      "note": "No Central Bank of Yemen document was opened; budget ran out. Next document to open: the CBY Aden annual report or audited financial statements, and the IMF Article IV and safeguards material on CBY reserve assets. The bank is split between Aden and Sanaa and has published almost nothing audited since 2016, so this is likely to close for want of any document rather than for a silent one; whoever closes it should say that explicitly, because an undisclosed holding and an unpublished bank read identically in the data and are not the same fact."
+    }
+  ],
+  "checked_not_in_assignment": [
+    "No country outside the twelve assigned codes (CUB ERI IRN LAO MRT SOM SSD TJK TKM TLS VNM YEM) was researched or filed. All twelve were first looked up in have_gold.json (absent from all twelve) and in closed_negatives.json gold_unavailable (present for all twelve, each carrying only a round-68 'not reached' note, which is why the script re-surfaced them - they are untested, not closed). No candidate outside the assignment came up, because zero records were produced and so no entity name had to be resolved; party_names.json was therefore not needed for a firm-name match this round."
+  ],
+  "leads_not_opened": [
+    {
+      "lead": "Central Bank of Somalia audited financial statements with notes, most recent year",
+      "why": "The CBS Annual Report 2025 was read in full and contains no occurrence of the word gold, but the separately published audited statements - the document class that carries the asset notes - were not reached: the 2020 statements PDF answered 403 to curl, and the bank's own announcement of five clean audits 2020-2024 gives no direct file links. Getting past that 403, or finding the statements through the Somali Office of the Auditor General, would convert Somalia from a strong annual-report blank into a statements-level close.",
+      "url": "https://centralbank.gov.so/wp-content/uploads/2022/08/s338qQ-CBS-2020-financial-statements-report.pdf"
+    },
+    {
+      "lead": "Banque Centrale de Mauritanie publication endpoint behind the single-page application",
+      "why": "bcm.mr serves a 2,568-byte empty SPA shell with no server-rendered links, so neither search nor a homepage grep can see its Rapport annuel. The site's own bundle at /assets/index-B9nUG0IK.js contains the publication API path, and the JSON-LD advertises a search endpoint at /recherche?q=. One fetch of the bundle should expose the document list and unblock Mauritania, which publishes audited statements under an IMF programme and is one of the more promising of the twelve.",
+      "url": "https://www.bcm.mr/assets/index-B9nUG0IK.js"
+    },
+    {
+      "lead": "National Bank of Tajikistan FinState_2024.pdf and the 2016-2023 independent auditor's reports",
+      "why": "Tajikistan is now a confirmed blank on the 31 December 2025 statements, whose Note 13 places the metal by category (vault, foreign bank accounts, foreign refineries) while naming no institution. The NBT's listing page carries an unbroken run of audited reports back to 2009. If any single year names the foreign banks or the refineries - and a bank that itemises its gold this finely might once have - it would place a holding that is now large, monetary gold having risen from 8.2 to 19.3 billion somoni in one year. This is a cheap re-read of one row of links rather than a new search.",
+      "url": "https://nbt.tj/ru/about/finansovye-otchety.php"
+    },
+    {
+      "lead": "Bank of the Lao PDR annual economic report mirrored on Open Development Mekong",
+      "why": "bol.gov.la refused the socket outright (HTTP 000), so the bank's own host may stay unreachable from here. The Open Development Mekong data portal mirrors BOL annual economic reports, which carry the foreign-reserves chapter that is the realistic route for Laos.",
+      "url": "https://data.opendevelopmentmekong.net/dataset/4ce252d6-f633-40e4-af68-4fc4196d3bc9/resource/b7455a6d-d8cd-498a-afba-8324cdc17571/download/annual-economic-report-2016_eng.pdf"
+    }
+  ]
+}
