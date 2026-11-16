@@ -167,10 +167,16 @@ def main(path):
                     notes.append((i,f'near-{src}',
                                   f'{int(ov*100)}% title overlap but a different city '
                                   f'({rcity} vs {ocity}): {on[:52]}'))
+        # A person named in two countries' records is worth a hard look: it is how the
+        # same banker was written up twice, as Switzerland and as Venezuela. But it is
+        # also legitimate - Trinh Xuan Thanh appears in Vietnam for a villa bought by a
+        # contractor and in Slovakia for the plane used in his abduction, two events. So
+        # this is a note to check, not a problem to fix.
         for nm in names(t):
             for src, oc, on in name_index.get(nm,[]):
                 if oc != r.get('c'):
-                    bad(i,'dup-name',f'"{nm}" already on the map under {oc}: {on[:60]}')
+                    notes.append((i,'name-'+src,
+                                  f'"{nm}" is also on the map under {oc}: {on[:56]}'))
 
     print(f'{len(cands)} candidates, {len(problems)} problems, {len(notes)} to check')
     for i, kind, msg in problems:
