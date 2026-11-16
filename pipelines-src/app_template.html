@@ -268,9 +268,9 @@ function paint() {
 
 /* ---------- the key ---------- */
 function covLine() {
-  const host = new Set(); SCH.forEach((x) => { if (x.k !== "rec" && x.iso) host.add(x.iso); });
-  return '<div class="cov2">' + esc("These " + D.NDOC + " are the pipelines a published source names as one, found by a sweep of the record. Nobody has counted the undocumented rest, so a share of all pipelines would be a guess.") +
-    QM("Party schools, short courses and private fellowships keep their participant lists closed, so no register of training pipelines exists to measure against. A school is on the map only where a published source documents its role in producing people who hold power; each school's box gives its sources. They sit in " + host.size + " countries.") + '</div>';
+  const host = new Set(), mil = new Set(); SCH.forEach((x) => { if (x.k === "rec" || !x.iso) return; host.add(x.iso); if (x.k === "mil") mil.add(x.iso); });
+  return '<div class="cov2">' + esc("Close to all of the pipelines anyone has documented as one are here. Of those that plausibly exist, this is a minority: " + host.size + " countries have one on the map and about " + (195 - host.size) + " have none, and most national officer academies and party schools are still out.") +
+    QM("No register of training pipelines exists, so no share can be given. A school is on the map only where a published source documents its role in producing people who hold power; the sweep that found these read the record for such sources, which is why the documented side is close to complete and the undocumented side is not. Officer academies on the map sit in " + mil.size + " countries. The world total of 195 counts UN members and observer states.") + '</div>';
 }
 
 function buildKey() {
