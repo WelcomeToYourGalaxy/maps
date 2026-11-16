@@ -2,7 +2,7 @@
 
 Paste or attach this in a new chat to carry on adding to the map.
 
-Rewritten at round 43, current through round 63. It states the current position only. Earlier versions kept round-by-round narrative, which went stale and in round 26 sent agents to re-research records already on the map; the moves-against-the-bank section had grown four rounds of narrative again by round 42 and was rewritten as a statement. Keep it that way: when something changes, edit the statement, don't append a round note. The round-by-round account lives in `agents/work/research_log_2026-11.json`, which is where to look for what was searched and found nothing. **Where this names a country as dead or blocked, that is as of round 63 — re-derive the target list from `coverage.py` before briefing anything. Paste the list `coverage.py` prints; do not summarise it from memory. Round 56 lost an agent's calls to a target list written partly from memory that included a country which was not absent at all, and round 57 made the same mistake again — it pasted `coverage.py`'s list and then added QAT from this document's own prose, where QAT was not absent. Paste what the script prints and add nothing to it.**
+Rewritten at round 43, current through round 64. It states the current position only. Earlier versions kept round-by-round narrative, which went stale and in round 26 sent agents to re-research records already on the map; the moves-against-the-bank section had grown four rounds of narrative again by round 42 and was rewritten as a statement. Keep it that way: when something changes, edit the statement, don't append a round note. The round-by-round account lives in `agents/work/research_log_2026-11.json`, which is where to look for what was searched and found nothing. **Where this names a country as dead or blocked, that is as of round 64 — re-derive the target list from `coverage.py` before briefing anything. Paste the list `coverage.py` prints; do not summarise it from memory. Round 56 lost an agent's calls to a target list written partly from memory that included a country which was not absent at all, and round 57 made the same mistake again — it pasted `coverage.py`'s list and then added QAT from this document's own prose, where QAT was not absent. **Round 64 is the third instance and it came from a different direction: the list of named one-page fetches below, not the absent list.** Ecuador sat at the top of that list as "the cheapest one" and Ecuador was already filed and already counted — record 327, the same person, the same CV and the same URL — so a third of one agent's budget went on re-finding a record the map had. The absent list was pasted correctly; the *leads* were not checked against it. **Check a named lead against `coverage.py`'s absent list too, not just the target list.** Paste what the script prints and add nothing to it.**
 
 ## What it is
 - A standalone global map titled **"Central bank capture"**. It shows who owns and steers each central bank, what it hides, the corruption inside and around it, and how far its money reaches beyond its borders.
@@ -73,10 +73,10 @@ same commit as the work it did.
   - Links: `{n, cb | tn, rel, role, detail, src_t, src_u}`.
   - Popups turn each link into a plain sentence (`SAY` / `sayLink` / `srcItem` in `app.js`). Add a `SAY` entry for any new `role` string.
 
-## Where it stands (63 rounds in, 15 November 2026)
+## Where it stands (64 rounds in, 15 November 2026)
 
-1,679 outside parties and 2,438 ties. One writeup for every box. 20 patterns and 14
-suspected patterns.
+1,683 outside parties and 2,444 ties. One writeup for every box, 1,912 of them. 20 patterns
+and 14 suspected patterns.
 
 The party count is lower than the tie count implies, and deliberately: round 60 folded 28 duplicate
 spellings of firms already on the map and split three generic audit-office nodes into the eight
@@ -93,7 +93,7 @@ ignores" below.
 |---|---|---|---|---|
 | Corruption cases | 258 | 174 | 84% | 91% |
 | Revolving door | 275 | 160 | 78% | 83% |
-| Governor removals and pressure | 229 | 181 | 88% | 94% |
+| Governor removals and pressure | 232 | 183 | 89% | 95% |
 | External auditors | 211 | 174 | 84% | 91% |
 | Banknote printers | 183 | 167 | 81% | 87% |
 | Outside reserve managers | 177 | 64 | 31% | 33% |
@@ -210,8 +210,9 @@ Some hosts reset the connection at random (`centralbank.org.sz`, `rbm.mw`). **Re
 | `networks.json` | `links` (entity, entity_type, hq, cb_iso3, relation, detail, source) and `g30` members |
 | `parties.json` | Parties named in cases and events, with head offices |
 | `swaps.json` | Swap lines (provider, counterparty, amount, dates, status, source) |
-| `gaps.json` | Fed and South Africa holders, Greece, Türkiye share classes, `auditors`, `auditors_unavailable`, `no_central_bank`, case updates |
+| `gaps.json` | Fed and South Africa holders, Greece, Türkiye share classes, `auditors`, `auditors_unavailable`, `no_central_bank`, case updates, and the confirmed-blank maps `gold_unavailable` (76), `managers_unavailable` (20) and `cases_unavailable` (11, new at round 64) |
 | `press_freedom.json` | RSF 2026 situation band per country; drives the blank split on the case layers |
+| `work/check_prose.py` | Finds a stranded prose splice and a writeups-brief rule printed as a sentence — the two faults no other check reads for. Exits non-zero on a find. Run it every round |
 | `hq.json` | Head-office city and country for each party |
 | `patterns.json`, `implications.json` | The 20 patterns and their plain-language meanings. `implications.json` overrides `patterns.json` at build time |
 | `suspected.json` | The 14 suspected patterns. Absent from the repo for four rounds; recovered at round 53 |
@@ -359,6 +360,7 @@ python3 agents/work/dup_parties.py dist/central_bank_independence.html
 python3 agents/work/check_nodes.py dist/central_bank_independence.html
 python3 agents/work/check_scores.py <scratchpad>/boxes.json      # --fix to rewrite
 python3 agents/work/check_about.py
+python3 agents/work/check_prose.py
 ```
 
 The first finds one firm drawn as two parties, and one name standing for several countries'
@@ -368,7 +370,8 @@ only one of the four that will rewrite for you. The fourth finds a figure in `ab
 data has moved past — and reports any figure it can no longer FIND, so rewording a sentence cannot
 quietly switch the check off. **All four were tightened or written at round 62 and three of them were
 crying wolf before that; read "The three checkers were crying wolf" below before trusting a clean
-run from an older copy.**
+run from an older copy. A fifth, `check_prose.py`, was written at round 64 and found 87 paragraphs
+printing the writeups brief's own rules as prose — see its own section below.**
 
 Thirteen checks the build does not make and that are invisible in the rendered map: party links resolve inside their array and to the right country; every case, career move and event has a source URL; every status is on a known list; every writeup has a box and every box a writeup; no duplicates; no bank both holding an auditor and listed unavailable. Exits non-zero on failure. It earns its keep — it caught Angola sitting in `auditors_unavailable` while also holding a new auditor record.
 
@@ -546,33 +549,48 @@ Its own domain does not resolve under three spellings and the Capital Markets Au
 market-player paths are 404. No state participation surfaced either. So a second independent source
 now says he founded it, which is as far as that line of evidence goes.
 
-### Eritrea is researched, written and NOT on the map — it needs one page opened by hand
+### Eritrea is filed, and the host that blocked it has an open door (round 64)
 
-An agent found Proclamation 93/1997, the law that set up the Bank of Eritrea, as a 30-page
-image-only scan in the **Library of Congress's digital Gazette of Eritrean Laws**
-(`loc.gov/item/eritrean-proc-93-1997/`) and OCR'd it in full. What it says: the President appoints
-the Governor for a five-year term with the legislature's approval and appoints the Deputy Governor;
-the names of all nominated Board members are submitted to the President for appointment; the Board
-seats the Finance Ministry's representative and the Auditor General; the Governor's pay is set by
-the President on the Board's recommendation; and a director who resigns does so by letter to the
-President, the resignation taking effect only once the President accepts it.
+Eritrea is on the removals row. The record rests on Proclamation 93/1997, and three things about
+getting it are worth keeping.
 
-**That is a qualifying record and it would take the last unworked place off the removals row.** It is
-not filed, for one reason only: `loc.gov` returns 403 to the merge's reachability check, and the
-WebFetch needed to confirm the page by hand went unanswered, so **nothing has been filed on an
-agent's reading alone.** The record is written and waiting in
-`agents/work/r63/to_merge.json`; one WebFetch of that URL, then
-`merge_links.py --url-ok https://www.loc.gov/item/eritrean-proc-93-1997/`, files it.
+**`loc.gov`'s HTML is behind Cloudflare and its JSON API is not.** `/item/<id>/` answers 403 to
+plain curl; **`/item/<id>/?fo=json` answers 200**, and the JSON carries the catalogue record —
+title, date, contributor — plus `resources[0].pdf`, a `tile.loc.gov` URL that downloads the scan
+with no block at all. So the Library of Congress's digital Gazette of Eritrean Laws, 2,854 items,
+is fully reachable from the sandbox, which is worth remembering because it was the only route to
+Eritrean primary law found in 63 rounds, after FAOLEX, Ecolex, InforMEA and UNEP LEAP all turned
+out to carry only land, fisheries and standards proclamations. The 30-page scan OCRs cleanly with
+`pdftoppm -r 200 -png` and `tesseract --psm 6`.
 
-**Two things about that record are worth keeping whatever happens to it.** First, the reason it
-qualifies is NOT its dismissal clause — the Governor may be relieved only "for just cause after
-consultation with the national legislature", which is a normal protection, and clauses like it are
-why Armenia, Belgium, Denmark, Finland, France and Luxembourg were all closed. It qualifies on
-executive control of appointments, pay and resignations, which is what the map's twenty-five or so
-`statutory arrangement ...` records carry. Second, **the Library of Congress's digital Gazette of
-Eritrean Laws holds 2,854 items with a free JSON API and image scans that OCR cleanly** — the only
-reachable route to Eritrean primary law found in 63 rounds, after FAOLEX, Ecolex, InforMEA and UNEP
-LEAP all turned out to carry only land, fisheries and standards proclamations.
+**The agent's reading had two faults, and reading the document myself is what found them.** Round
+63 wrote the record from an agent's OCR and this document said it only needed one WebFetch to
+confirm the page. It needed more than that:
+
+- The record said Proclamation 93/1997 was "the law that set up the Bank of Eritrea". **Article 3
+  says the bank was created by Proclamation 32/1993 and "shall continue to exist and shall
+  henceforth be governed by this Proclamation".** Two outside sources agree that 32/1993 founded
+  it. The filed record says the law *governs* the bank.
+- The agent did not report **Article 6(2): "The Bank shall be independent from and not be subject
+  to instructions by the Government in performing its functions, determining its budget, and
+  setting its procedures."** That is an express no-instructions clause, and a no-instructions
+  clause is the Singapore line on which Namibia, Timor-Leste, Curacao and Samoa were all HELD.
+
+**Why it was filed anyway, and this is the reasoning to keep.** The Singapore line holds an
+*accountability* provision sitting beside a no-instructions clause. Eritrea is not that shape: it
+is executive control of appointments, pay and resignations, which is the Djibouti and Macao shape,
+and both of those are filed on appointment control alone. **Cabo Verde settles it directly** — its
+record is filed although its own law "sets out the bank's functional autonomy" and says the bank
+executes policy autonomously, with that clause quoted in the record's own text. So Eritrea is
+filed with Article 6(2) on the face of the record, and the record says in terms that what it
+carries is control of the posts rather than a power to direct the bank's decisions. The dismissal
+clause is *not* the ground: the Governor may be relieved only "for just cause after consultation
+with the national legislature", which is a normal protection and is why Armenia, Belgium, Denmark,
+Finland, France and Luxembourg were all closed.
+
+**The general lesson: `merge_links.py --url-ok` waives the reachability check, not the reading.**
+A record built from an agent's reading of a document the agent alone opened should have the
+document opened again before it is filed, because what an agent omits is invisible in its output.
 
 ### Six firms need a sourced head office, and none of them should be guessed
 
@@ -807,6 +825,152 @@ by holder, settles both.
 that about 26 tonnes remained in the Central Bank of Syria's Damascus vaults, but sourced to unnamed
 officials with no document quoted.
 
+## The duplicate key for a career move was defeated by a parenthesis (round 64)
+
+**This is the round's most useful find and it had been live for the whole life of the map.**
+`merge_links.py` keys a career-move duplicate on `(iso3, source_url, people[:40])`. Records on
+this map conventionally write `people` as "Name (post, dates)". An agent that writes the bare name
+therefore produces a different first forty characters for the same person, and the key misses.
+
+Round 64 offered three records into that hole and the dry run would have filed all three:
+
+- **ECU** — the same person, the same CV and **the same source URL** as `revolving_door[327]`,
+  which is already filed and already counted. A straight duplicate.
+- **BOL** and **SDN** — the same people as records 321, 319 and 320, which are filed
+  `public_move: true` precisely because their employers' ownership is unsettled. Filing the new
+  ones would have **silently gained two places on the revolving-door row** on evidence that does
+  not meet the row's own test.
+
+`person_stem()` now compares the name with the parenthetical stripped and folded, and an rd
+record for a person the country already holds is refused with the existing indices named. The
+message discriminates, because the two cases need different answers: **same source URL** means
+either the same career written twice or this map's other practice, one career deliberately SPLIT
+by leg so a settled leg and an unsettled one carry their own reasoning (Sudan's Nimir is split
+that way, 319 and 320, and is NOT a duplicate); **a different source URL** may be a second,
+distinct move, which is fine. Nine people on the map legitimately hold two records in one country
+— Draghi, Greenspan, Ferguson, Frenkel, Mboweni among them — so this refuses about 3% of the time
+and tells the caller which kind it is looking at rather than refusing in the same words either way.
+
+**Also hardened: a non-string field used to crash the whole run.** An agent wrote `people` as a
+list and `merge_links.py` died with an unhashable-type traceback in the collapse step, losing
+every record in the file rather than one. It now refuses that record and names the field.
+
+## 87 paragraphs printed the brief's own rules as prose (round 64)
+
+Round 63 found this in five of fourteen drafts in one batch and fixed those five. **It never swept
+the corpus.** The first full sweep found it in 87 places: "Moving between jobs is not wrongdoing"
+23 times, "This is a career move, not an accusation" 10 times, "The source records a career move,
+not an accusation" 5 times, and so on down a long tail. Every word is in the writeups brief and
+none is in any box, which is exactly why `check_drafts.py` passes them — it tests a draft against
+its own box, and these come from the brief.
+
+All 87 are gone. Where the sentence said nothing but the moral it was removed; where it carried a
+fact the clause alone went, so no sentence gained a word it did not have and no claim can have
+changed. Samples read: "...took office as governor on 1 November 2015." and "Most of the ties are
+careers." and "Three officials moved in from finance or international lenders: Joaquin Vial from
+BBVA...".
+
+**`agents/work/check_prose.py` is new and finds both faults nothing else reads for. Run it with
+the other four.** It also finds a stranded splice, and the pattern matters: a splice is a LETTER,
+then a full stop, then a digit, with no space. The obvious pattern — a full stop followed by a
+digit — returns every decimal figure on the map, 170KB of them, and a check nobody can read is a
+check that dies. An ordinary decimal has a digit before the point, so it does not match.
+
+**One caution on the leak pattern, learned by writing it.** The loose form caught three
+*legitimate* lines: "this is an allegation and no outcome is reported" states a case's evidentiary
+status, which the map does say and should. A leak tells the reader how to feel about a tie or a
+move; a status line says what the record is. Only the first is matched now.
+
+## Timor-Leste, and one new role added deliberately (round 64)
+
+Timor-Leste is on the removals row, which takes it to 183 places. **Article 11 of the Petroleum
+Fund Law** (Law No. 9/2005 of 3 August, republished with amendments by Law No. 12/2011) says the
+Government is responsible for the overall management of the Petroleum Fund, that the Minister of
+Finance takes the decisions on its investment strategy after obtaining the Investment Advisory
+Board's opinion, and that the Minister contracts with the central bank for the Fund's operational
+management. **Article 12(5) requires an investment manager to act "em quaisquer instruções
+emitidas pelo Ministro" and within "o contrato para gestão operacional referido no n.º 3 do artigo
+11.º"** — that cross-reference names the bank's own contract, so the Minister's instructions bind
+the bank by direct textual chain and not by inference. Ministerial Diploma No. 4/2019 shows this
+version still in force and names the bank as Operational Manager. Verified against the Ministry of
+Justice journal directly, not from the agent's quotes. `mj.gov.tl` is open to curl and to WebFetch,
+though `merge_links.py`'s reachability check failed on it once and passed on the retry — **retry
+before concluding a host is dead** still earns its keep.
+
+**The record says in terms that it covers the Petroleum Fund only and that the law says nothing
+about who sets interest rates.** That is the Taiwan rule: write where the institution sits and do
+not claim more.
+
+**A new role, "directs the bank's management of a state fund", with its three parts in step** — a
+`SAY` entry in `app.js`, a `REL` entry in `build_net.py` mapping it to `control`, and the role
+stored lowercase in `parties.json`. It exists because the alternatives would publish something
+false: the nearest role, "appoints or directs the bank's board", would have the map say the
+Government of Timor-Leste appoints the bank's board, which Article 11 does not do, and `other`
+maps to the *service* group, which reads as a service provided to the bank. **Guyana and Hong Kong
+are arguably the same shape and were NOT retro-fitted** — Guyana's record carries a power to
+terminate the Governor's appointment as well, so "appoints or directs" is fair there. Whether
+those two should move onto the new role is the owner's call.
+
+## A second tie for a party is not a second party (round 64)
+
+Two folds, both flagged in this document and both in `dup_parties.py`'s own output:
+
+- **`Citibank, N.A.` is folded into `Citi`.** `"Citibank"` already folded; the string with ", N.A."
+  did not, so the map drew Citi with ten ties and Citibank, N.A. with one — the 42.8% shareholding
+  in the Federal Reserve Bank of New York — and a reader comparing concentration between firms read
+  a split count. Same group, same city, wholly-owned subsidiary: the PIMCO case, not the UBS (UK)
+  case where folding would move a marker to another country. The Citi paragraph was rewritten to
+  carry the shareholding and the orphan archived in `agents/work/r64/orphaned_writeups.json`.
+- **Paraguay's `Banco Union` is now `Banco Unión (Paraguay)`.** Not a duplicate of Bolivia's
+  `Banco Unión S.A. (Bolivia)` — two different banks in two different countries — but the
+  Paraguayan node was the only one of the pair not country-qualified, which is the reverse bug
+  waiting to happen: a name unique only inside its own country. It got the treatment "National
+  Bank (Sudan)" got, with the source's "Union" kept in `name_as_stated` and the writeup key
+  migrated.
+
+## The corruption row now records its negatives in the data (round 64)
+
+`gaps.json` has a **`cases_unavailable` map, 11 entries**, on the model of `gold_unavailable` and
+`managers_unavailable`. Nothing in the build reads it; it is research state, and it is worth as
+much as a record because it stops the next round spending a call. Round 64's corruption agent
+filed **no records** and produced these, which is the honest outcome when a row is near-exhausted
+by its main vein.
+
+**Each entry says which of four things it is, because treating "the vein is closed" as "the
+country is closed" is how a round gets wasted:** `confirmed blank` (the document that would name a
+case was read and names none), `vein closed` (the audit-institution route is exhausted here, other
+routes are not), `not reached` (the document was never opened, so the country has not actually been
+tested), `refused` (a real candidate failed a settled rule).
+
+The three worth knowing:
+
+- **SGP is the strongest negative on this row anywhere.** Singapore's Auditor-General's Report
+  FY2023/24, Part II para 1(c) and footnote 1: **MAS is audited by the AGO every year** because the
+  MAS Act names no other auditor, and for 2023/24 it got an unmodified opinion with no observation.
+  The supreme audit institution examines this central bank annually and has found nothing. That
+  also makes each AGO annual report FY2012/13 to FY2024/25 a separate checkable document; only
+  FY2023/24 has been read.
+- **EGY is one fact away.** On 13 June 2018 Egypt's Administrative Control Authority arrested the
+  "director of the supervision and oversight sector at one of the banks" for taking bribes from a
+  private exchange-company owner to overlook its violations and for leaking the dates of planned
+  inspections, and referred him to prosecution. Named conduct, a date, an arresting body, and a
+  supervisory failure — squarely what this row carries. Two outlets both say only "one of the
+  banks". Supervising exchange companies is a CBE function and the sector name matches the CBE's
+  own, **but that is inference and not a source. THE REVERSING FACT: any source naming the employer
+  as the Central Bank of Egypt.** Nine unopened ACA round-up URLs are in
+  `agents/work/r64/cases.json`. Make it the next round's first fetch.
+- **SAU is the inversion trap confirmed.** A dozen Nazaha case statements, the two most detailed
+  read case by case: every named employer is a municipality, a traffic department, a hospital, a
+  school or a private firm, and the Saudi Central Bank appears only in "in cooperation with the
+  Presidency of State Security and the Saudi Central Bank". It is the detector. Filing any of them
+  would credit Saudi Arabia with a corruption case for catching wrongdoing.
+
+**CPV and BRN were never actually reached** and are marked `not reached` rather than closed: the
+Tribunal de Contas de Cabo Verde's own site never appeared in a search result, and Brunei's Auditor
+General report is not published online in any form search returns. One trap recorded with CPV:
+search surfaces the PORTUGUESE Tribunal de Contas' Novo Banco audit, which has nothing to do with
+Cabo Verde and must not be keyed to CPV.
+
 ## Two spellings of one firm, and one name for four countries
 
 These are the same bug seen from two sides, and `agents/work/dup_parties.py` now finds both. Run it
@@ -885,12 +1049,16 @@ layer's rule, exactly as it already did for `other` events.
 
 **The symptom was the same one as the other three: `coverage.py` claiming more places than the
 score diff moves.** Rounds 54 to 58 closed ten of the twelve, and Korea converted at round 58 from JP Morgan's Seoul branch.
-**The list of places whose ONLY career moves are public is now fourteen and it keeps churning rather
-than shrinking:** round 60 converted Aruba, Cape Verde, Nicaragua, El Salvador and five others and
-added Bhutan, Iraq and Sudan; round 61 converted Curacao and added the Dominican Republic and
-Timor-Leste, whose boxes had held no career move at all before. They are now
-**BTN CPV DOM IRQ MDG MOZ MRT QAT SDN SLE STP TLS TON VUT**. Each needs a record naming a private
-financial employer, not another public one. (Cape Verde, Mauritania, Mozambique, Qatar, Sierra Leone,
+**The list of places whose ONLY career moves are public keeps churning rather than shrinking, and
+it is EIGHTEEN as of round 64:** round 60 converted Aruba, Cape Verde, Nicaragua, El Salvador and
+five others and added Bhutan, Iraq and Sudan; round 61 converted Curacao and added the Dominican
+Republic and Timor-Leste, whose boxes had held no career move at all before; round 62 added Belarus
+and Bolivia by settling both the other way. They are now
+**BLR BOL BTN CPV CUB DOM IRQ LBY MDG MOZ MRT QAT SDN SLE STP TLS TON VUT**. Each needs a record naming a private
+financial employer, not another public one. **This document stated the number as "fourteen" here and
+"seventeen" a few hundred lines down, the second beside a list of eighteen codes, for several rounds.
+Derive it, do not read it:** it is the places in `core['E']` holding at least one career move where
+every one of them is `public_move`. (Cape Verde, Mauritania, Mozambique, Qatar, Sierra Leone,
 São Tomé, Tonga and Vanuatu are the carry-overs; Curaçao's held record names neither the person nor
 the bank, which is why it is still here.) **Before researching one of
 these, check whether its existing records are mis-flagged — round 57 checked all five in minutes
@@ -1255,7 +1423,14 @@ identified but never fetched), and one page that needs a hand check:
 `monitorul.fisc.md/en/editorial/bnm_modernizeaza_bancnotele.html`, which answers 403 to automation and
 has the page. `currencyaffairs.org` per-country product profiles remain worth running.
 
-### 3. Moves against the bank — 85%, the fastest row on the map, and close to its ceiling
+### 3. Moves against the bank — 95% of the reachable 192, and AT its ceiling as the research stands
+
+**Round 64 took it to 183 places and the absent list to nine: `ARM BEL DNK DOM FIN FRA HND LUX
+SYC`. Every one of those nine is a documented negative already written up in this document** —
+worked, reasoned and closed, not unopened. So there is no target left on this row that research
+alone can convert; each of the nine reverses only on a single named fact, and those facts are
+listed under "Worked and ruled out" below. Eritrea and Timor-Leste were the last two that could be
+converted, and both were.
 **The one thing to know: pressure on a central bank rarely looks like a firing.** This row sat at 27% for a dozen rounds because it was searched for dismissals, so it held poor and middle-income countries and almost nothing else. It has gone 27% → 85% in fifteen rounds on a single correction, applied nine times. First: in a rich democracy the pressure takes another form. Then, when that was stated as "rich democracies", it was still too narrow — the forms it named exist everywhere, and four of the largest economies on the absent list fell in one round once the search went after the form instead of the country.
 
 **The sixth application, at round 55, ran the statute route at the seven countries left for it and converted three, plus one more a different way.** Bahrain fell to Article 173 of its 2006 law, the closest thing yet to the Kuwait bar: the Minister watches whether the bank keeps to the Kingdom's general economic policy and, where the Minister sees a conflict and the board holds to its own view, refers it to the Cabinet, which settles it by order within thirty days. Cambodia fell to Article 13 of its 1996 law, where the Governor and Deputy Governor are appointed, replaced and dismissed by royal decree on the Royal Government's recommendation, with no grounds named in that article. **Oman had to be rewritten, and that is the lesson of the round: ALWAYS CHECK WHETHER A STATUTE IS STILL IN FORCE before filing it as a standing arrangement.** An agent filed Oman on Royal Decree 114/2000 and flagged a doubt about it; Royal Decree 2/2025 took effect on 1 January 2025 and its Article IV repeals 114/2000 expressly. The replacement rests on the current framework, which carries the same finding — Royal Decree 4/2025 seats the Minister of Economy as Deputy Chairman of the board with the Undersecretary of the Ministry of Finance among the members, and Royal Decree 5/2025 appointed the Governor with the rank of Minister. **Brunei was settled without the statute at all**, and that route is worth remembering: the bank's own announcement of 21 October 2025 names its board, and it is the Minister of Primary Resources and Tourism as Chairman, the Deputy Minister of Finance and Economy as Deputy Chairman, two permanent secretaries, the Deputy State Mufti, the Solicitor General and the Managing Director. **Where the Order or Act cannot be obtained, who the bank says sits on its board can carry the record, as long as the record says that is what it rests on.** **The seventh application, at round 57, converted five of ten and closed Macao.** Bhutan is the cleanest of them and the new bar alongside Kuwait: section 149 of the Royal Monetary Authority Act 2010 says the Royal Government may issue directives to the Authority after consulting the Governor, and four of the seven board seats are the Government's, one reserved to the Ministry of Finance. The Comoros carries a kind the map had nowhere else: under statutes signed in Paris on 22 April 2008 the board's seats are filled half by the French Government and half by the Comorian Government, so **a foreign government fills half the board of a sitting central bank.** Djibouti's board is the Governor plus six administrators appointed by decree; Palestine's whole board was reconstituted by presidential decree, with a Ministry of Finance seat held by virtue of law. **Macao came off the blocked list without the gazette host working:** `images.io.gov.mo` reads through WebFetch, and Despacho do Chefe do Executivo 120/2025 — an ordinary appointment order — cites articles 14 and 15 of Decree-Law 14/96/M as its basis, which both proves the statute is in force and shows the Chief Executive appointing the board. **An appointment order is not a record, but the articles it cites can be.**
@@ -1348,16 +1523,49 @@ following. It is distinguishable from the Armenian exclusion, where the actor wa
 an oversight body rather than a head of state. The record says plainly that no investigation is
 reported as ordered.
 
-**Five refusals carry the single fact that would reverse each, and two of them are cheap.** Namibia's
-standing section 66 power needs **an instance of a Minister actually directing such an investigation**.
-North Macedonia's second record needs **an article of Sluzben vesnik 16/25** giving the Government or
-Assembly a direction, profit or at-will dismissal power — `nbrm.mk` still refuses both the PDF and the
-.docx of its own 2025 law with a client error. Eritrea needs **the Bank of Eritrea proclamation text
-or a dated governor removal**; the AFP currency-controls dispatch names no issuing authority and no
-year. Timor-Leste needs **the Petroleum Fund Law article** that puts the investment strategy in the
-Minister of Finance's hands with the central bank only executing — Lusa and Tatoli state that
-division and the law text is on `mj.gov.tl/jornal`. Samoa's second record needs **the enacted
-Amendment Act 2026 text** if it differs from the bill.
+**Five refusals carried the single fact that would reverse each. Round 64 went after all five:
+two are now filed, one is filed as an attempt, and two stay held with what they still need.**
+
+**Eritrea and Timor-Leste are FILED** — the Bank of Eritrea proclamation and the Petroleum Fund Law
+article were both obtained; see their own sections above. That is twice running that writing a
+refusal down with the fact that would reverse it has produced the record a round or two later.
+
+**North Macedonia's second record is filed, as an attempt rather than a law change, and what is
+still missing is narrow.** The primary bill text was found on the Economic Chamber's site: tabled by
+a group of MPs in January 2025 under the shortened procedure, its Article 2 rewrites Article 15 so
+the Council pays 30% of the financial result into general reserves, 15% once base capital is
+reached, **"and 2) the remainder into the Budget of the Republic of North Macedonia"**, and its
+Article 4 orders the Bank to move the special reserves it had formed — the bill puts them at almost
+27 million euro — into general reserves within 30 days and bars it from using them meanwhile. **That
+is the claim on the bank's profit this row wanted.** What could not be read is the enacted text:
+`nbrm.mk` answers 403 to every path, including its own `Закон-за-Народната-банка-16-25.pdf`, and
+`slvesnik.com.mk` is robots-disallowed to WebFetch and fails TLS to curl. **But 16/25 is confirmed
+enacted and in force by early February 2025 from a different direction: the National Bank's own
+regulatory decisions of 4 February 2025 and later cite the Law with its amendment list ending
+"110/21, 74/24 и 16/25".** So an amendment passed, on a timeline that fits a January bill under the
+shortened procedure — and the record says in terms that nothing in it asserts the bill's provisions
+are what 16/25 contains. **It reverses to `law change` on one reading of 16/25's Article 15**, by
+hand in a browser or from the Assembly Hansard for that sitting.
+
+**Namibia stays held, and section 66 stays beside section 5.** Three searches over Namibian press,
+the National Assembly order papers for September and October 2026 and the Act itself found no
+instance of a Minister directing such an investigation. The one promising hit, Republikein's
+"Finance PS explains audit worries", is from 10 July 2017, is paywalled, does not mention the
+Auditor-General, and its only central-bank line is that the Bank was asked to take over settlement
+of accounts for ministry staffing reasons. It still reverses on **a dated report of a Minister of
+Finance actually directing the Auditor-General to investigate the Bank of Namibia**.
+
+**Samoa stays held, and round 64 established that its Amendment Act is NOT enacted.** The Samoa Law
+Reform Commission newsletter Vol 8 Issue 2 (Jan-Jun 2026) lists only an "Amendment Proposal for the
+Central Bank of Samoa Act 2015", received 3 December 2025 and completed 9 March 2026, and names no
+Act passed that half-year; PMN reported the Bill at **second reading** on 19 August 2026, going to
+committee for submissions. So the existing record correctly stays `attempted law change`, and it
+reverses on **a third reading, an assent date or an Act number**. Worth knowing for its strength:
+PMN quotes the Prime Minister telling MPs "The CBS belongs to the government of Samoa", and the
+former Prime Minister saying "It's clear in the bill the reach being given to the minister of
+finance" — but on this map's rules the Bill's quarterly reports and 14-day budget comment are
+accountability and not direction, and the part that would matter is the dismissal grounds and the
+Cabinet removal route.
 
 **Round 60 took the row to 178 places and the absent list to 14, and what it closed matters more
 than what it filed.** Three were filed, all standing arrangements rather than episodes: **Guyana** on
@@ -1495,7 +1703,7 @@ France designates two of the six board members of the Central Bank of the Comoro
 
 The record moved no row, because board seats are a network tie rather than one of the counted datasets. It is still worth having, and **round 57 turned the same idea into a counted one**: five of its moves records are a government that appoints or directs a central bank's board (the Comoros, Macao, Bhutan, Djibouti and Palestine), filed as standing arrangements on the moves layer and carried on the ties layer under a new role, `appoints or directs the bank's board`, which groups with "Owns shares or sits in its governance". **So this kind of tie now moves a row.** The Comoros is still the only case of a *foreign* government holding seats, and the search that found it would find others: look at the remaining monetary cooperation agreements, and at currency boards whose statutes seat a foreign appointee.
 
-**Adding a role is a decision, not an agent's phrasing.** A role needs three things in step or it half-works: a `SAY` entry in `app.js` or the popup prints raw text, an entry in `REL` in `build_net.py` or it falls into the "other ties" bucket, and the role stored **lowercase** in `parties.json`, because `build_net.py` capitalises the first letter to make the `SAY` key. Round 57 got the last of those wrong first time and the tie rendered in the wrong group until it was fixed.
+**Adding a role is a decision, not an agent's phrasing.** A role needs three things in step or it half-works: a `SAY` entry in `app.js` or the popup prints raw text, an entry in `REL` in `build_net.py` or it falls into the "other ties" bucket, and the role stored **lowercase** in `parties.json`, because `build_net.py` capitalises the first letter to make the `SAY` key. Round 57 got the last of those wrong first time and the tie rendered in the wrong group until it was fixed. **Round 64 added the second such role, `directs the bank's management of a state fund`, mapped to `control`** — and the test it had to pass is worth repeating: a role is added only when every existing one would publish something FALSE. "Appoints or directs the bank's board" would have said the Government of Timor-Leste appoints the bank's board, which its law does not do, and `other` maps to the *service* group, which reads as a service provided to the bank.
 
 ### 5a. What the corruption row is filling up with, and a question for the owner
 
@@ -1554,9 +1762,9 @@ These cannot finish; no complete count exists anywhere. They approach completene
 rounds running now.** Round 60 got 12 new places that way, round 61 four, round 62 two. The reason is
 structural: an agent finds a career easily and almost never finds the one page that states who owns
 the employer, so the unsettled records pile up and each one is a place waiting on a single request.
-**Seventeen places are in exactly that position** — their only career moves are public, so they read
-blank on the layer while their box is not empty: BLR BOL BTN CPV CUB DOM IRQ MDG MOZ MRT QAT SDN SLE
-STP TLS TON VUT.
+**Eighteen places are in exactly that position** — their only career moves are public, so they read
+blank on the layer while their box is not empty: BLR BOL BTN CPV CUB DOM IRQ LBY MDG MOZ MRT QAT SDN SLE STP TLS TON VUT.
+(Derive this list rather than copying it; see the note where it appears above.)
 
 **Two of those were settled at round 62 and both settled the OTHER way, which is just as useful.**
 Sudan: El Nilein Bank's own group history says it was nationalised in 1970 and became an independent
@@ -1566,13 +1774,47 @@ public too. Both are now filed and flagged `public_move`, which is the honest re
 record whose employer is public or whose ownership nothing states: **it is listed in the box and not
 counted, and it prints no claim of its own, so it asserts nothing either way.**
 
-**The named fetches for next round, each one page:**
-- **BOL** — Valencia's other two employers, Banco de Cochabamba S.A. and Compania Boliviana de Seguros S.A. ASFI's 1999 report lists Banco de Cochabamba only under ENTIDADES EN LIQUIDACION, which is a status and not an ownership.
-- **SDN** — National Bank and Workers National Bank, Nimir's employers in 1980-1982 and 1989-1992. Sudan nationalised its banks in 1970 and reversed course later, so the YEARS decide it.
-- **ECU** — the cheapest one on the list. Produbanco's own 2023 report calls it "el unico banco de capital privado en Latinoamerica", so Ecuadorian private ownership is now STATED; five Produbanco board CVs are in round 62's `leads_not_opened`, and any one of them naming the Banco Central del Ecuador gives Ecuador a counted record.
-- **QAT** — Lesha Bank, if a later document shows Al Suwaidi elected rather than nominated. See the nomination rule below.
-- **UGA** — Alpha Capital Partners' ownership. Uganda now counts on the strength of the source saying Kaboyo FOUNDED it, which is a step short of the usual stated-ownership test; a page stating the shareholding would put that record on the same footing as the rest.
-- **KOR** — Seoul Foreign Exchange Brokerage's ownership. `smbs.biz` has never surfaced in a search, so it cannot be opened under the provenance rule, and its LEI record gives "Parent Information Not Provided". Needs a hand check.
+**The named fetches for next round, each one page. CHECK EACH AGAINST `coverage.py`'S ABSENT LIST
+BEFORE BRIEFING IT** — round 64 sent an agent after Ecuador, which was already filed and counted.
+
+- **BOL** — Valencia's employers. **Round 64 refused the Banco de Cochabamba and the reasoning is
+  the point:** the evidence offered was three sentences in a 1989 United States country study,
+  which places the bank among the top five banks, says commercial banks were the core of the
+  private financial sector, and lists the public-sector institutions without naming it. **Absence
+  from a list is not an ownership statement**, and the CV gives no dates for the post, so even a
+  correct 1988 snapshot need not cover the years he was there. ASFI's registers of banks and of
+  insurers are still the fetch; its `Libro_Historia_Tomo_II.pdf` is 485k characters and only the
+  first 100k has been read, so paging it with `offset` is the best remaining Bolivian lead.
+- **SDN** — **round 64 found the ownership statement and it contradicts the dates.** The National
+  Bank of Sudan's own site says it "was established in 1981 as an initiative by a group of national
+  Sudanese businessmen" (and that Bank Audi took 75% in July 2006) — but the central bank's page
+  puts Nimir as its general manager from **1980**, a year before the bank says it existed. So
+  either that date is wrong or the bank he ran was a different institution of a similar name. The
+  fetch is a Bank of Sudan annual report from the early 1980s listing banks with founding years and
+  ownership, or any Sudanese source naming the bank he led in 1980-1982. Workers National Bank
+  (1989-1992) is untouched. Both findings are now written into record 320 itself.
+- **QAT** — **settled negatively at round 64; do not re-run it.** Lesha Bank's Corporate Governance
+  Report 2025 gives the full board seated after the 24 February 2025 AGM, nine members, and no
+  "Al Suwaidi" appears anywhere in it — not as director, alternate, committee member or executive.
+  The bank's own summary of resolutions for the 25 February 2026 meeting elects no director at all;
+  its only appointment is KPMG as auditors for 2026. The 28 May 2024 election named three others.
+  **A nomination with no election is not a career move**, and she was never elected. Qatar still
+  renders blank and needs a different career entirely.
+- **UGA** — Alpha Capital Partners' ownership, still unsettled, **and round 64 added a decisive
+  negative:** the Capital Markets Authority of Uganda's "LIST OF APPROVED PERSONS AS OF MAY 2026"
+  does not list the firm at all under any of its twenty-odd categories, and shows no ownership data
+  for any firm; the nearest name is a different company, Alpha Asset Managers Limited. Uganda
+  Reinsurance Company's board biography calls Kaboyo "founder and Managing Director" and says
+  nothing about ownership. **No state participation surfaced either, so the existing record is not
+  shown to be wrong** and Uganda stays counted on the founder footing. The one URL that would
+  settle it is the Uganda Registration Services Bureau company search at
+  `eregistry.ursb.go.ug/search`, which needs a query typed into a form and so needs a hand check.
+- **KOR** — Seoul Foreign Exchange Brokerage's ownership. Seven searches in Korean and English for
+  shareholders, largest shareholder, ownership structure and audit report returned unrelated firms.
+  **A Korean company-profile page for the firm does exist at `catch.co.kr/Comp/CompInfo/F13463` and
+  answers 403 to curl on both its paths — it HAS the page and refuses automation, so it needs a
+  hand check**, not another search. A DART/FSS audit-report shareholder table would also settle it.
+- **ECU** — **nothing to do. Already filed and already counted** as `revolving_door[327]`.
 
 **Revolving door method:** go to the bank's own governor or board page, or the private firm's own board page, and read the career list. Do not search for scandal. **Closed as blanks:** BCEAO and BEAC publish no board biographies; Solomon Islands has the most detailed Pacific board page found and still yields nothing because no employer is characterised; China looks like a genuine blank, its senior PBoC careers running between state bodies. **Still worth trying:** Cambodia, Laos, Myanmar, Brunei, Tonga. **The denominator moves** — the inside-influence score divides by the highest count anywhere, which the United States holds, so any round adding US records re-checks the whole map.
 
@@ -1621,6 +1863,20 @@ nodes split into the eight national offices they had been merging, one of which 
 Guyana's central bank was audited by Uganda's audit office. Four records were held with the single
 fetch that settles each, and one figure in `about.html` and this document turned out to have been
 stale for several rounds beside a figure that was current.
+Then round 64's 3 records across four parallel agents, and the records are the smallest part of it.
+The moves row went to 183 places, 95% of the reachable 192, and **reached its ceiling as the
+research stands** — Eritrea and Timor-Leste were the last two convertible places and both were
+converted, leaving nine, every one of them a documented negative. Worth more than the records:
+**the duplicate key for a career move turned out to be defeated by a parenthesis**, so three
+records offered this round would have filed a straight duplicate of an already-counted record and
+silently gained two places on the revolving-door row; **87 paragraphs were found printing the
+writeups brief's own rules as prose**, where round 63 had found five in one batch and never swept
+the corpus; a `cases_unavailable` map gave the corruption row its first place to record a negative,
+with Singapore closed on the strongest negative available anywhere on that row; and the corruption
+agent filed nothing at all, which is the honest outcome for a row near-exhausted by its main vein.
+Two agents produced no records between them and both were worth running: one settled Qatar
+negatively and killed a live lead, the other found that this document's own "cheapest fetch next
+round" had been filed six rounds earlier.
 
 ## Three tooling failures from round 49, all now fixed. Read this before running agents again.
 

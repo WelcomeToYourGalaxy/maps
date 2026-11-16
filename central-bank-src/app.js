@@ -566,6 +566,7 @@ const SAY = {
   "Employed an official before or after (revolving door)": "{P} employed an official of {B} before or after their time there",
   "Sits on the board": "{P} sits on the board of {B}",
   "Appoints or directs the bank's board": "{P} appoints or directs the board of {B}",
+  "Directs the bank's management of a state fund": "{P} directs {B} in its management of a state fund",
   "Audited or investigated": "{P} audited or investigated {B} or its officials",
   "Named in the case": "{P} is named in a documented case involving {B}",
   "Named in the event": "{P} is named in a documented event involving {B}",
