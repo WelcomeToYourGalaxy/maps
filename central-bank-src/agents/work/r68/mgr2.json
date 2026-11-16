@@ -1,0 +1,299 @@
+{
+ "records": [],
+ "blanks": [
+  {
+   "iso3": "PAK",
+   "kind": "confirmed blank",
+   "note": "State Bank of Pakistan Annual Financial Statements for the year ended 30 June 2022 (https://www.sbp.org.pk/assets/document/publications/AFS-2022-eng_1.pdf), note 8.3 on foreign currency assets, read through WebFetch after the host returned HTTP 403 to curl. The note confirms outside management but names nobody: balances are 'maintained, on behalf of the Bank through reputable fund managers' and 'The activities of these fund managers are being monitored through a custodian', with market value of Rs 426,417 million (about USD 2,081.3 million) at 30 June 2022. No firm, no World Bank/RAMP, no BIS anywhere in the note. A naming source for Pakistan would have to be a procurement or mandate document, not the statements."
+  },
+  {
+   "iso3": "NIC",
+   "kind": "confirmed blank",
+   "note": "Banco Central de Nicaragua audited financial statements 2024 and 2023/2022, plus Informe BCN 2025, all downloaded and grepped in full (Informe de Estados Financieros BCN 2024 FINAL.pdf; Estados financieros auditados 2023 y 2022.pdf; Informe_BCN_2025_Final.pdf, bcn.gob.ni). Note 4 'Depositos en el exterior' and note 5 'Inversiones en el exterior' are pure counterparty tables — Bank for International Settlements, Bank of America, Federal Reserve Bank of New York, Deutsche Bundesbank Zentrale, Banco Centroamericano de Integracion Economica, split into overnight/short/medium term with rates of 0.10-4.53%. Grep for administrador/administradores externos/delegad/World Bank/Banco Mundial/RAMP/BIRF and the firm word list returned nothing in any of the three documents. The only hits for 'externos' are 'pasivos externos a largo plazo'."
+  },
+  {
+   "iso3": "BTN",
+   "kind": "confirmed blank",
+   "note": "Royal Monetary Authority of Bhutan Annual Reports 2003/04 and 2007/08 (apfanews.com mirror, Annual_report_RMA_2003_04.pdf and Annual_report_RMA_2007_08.pdf), both downloaded and grepped end to end. 'World Bank' appears only in external-debt and IDA tables and in a note on IMF-World Bank meetings; no external manager, fund manager, portfolio manager, RAMP, Crown Agents or named firm anywhere. Only old reports are reachable on an open host — the RMA's own recent annual reports on rma.org.bt were not opened, so a current-year test is still outstanding."
+  },
+  {
+   "iso3": "PER",
+   "kind": "not reached",
+   "note": "Blocked host, not a blank, exactly as the task warned. Three BCRP documents tried under curl — memoria-bcrp-2024-7.pdf (the Memoria chapter on international reserves), eng-docs/Reserves-Management/2025/international-reserves-october-2025.pdf, and Transparencia/Balance-General/2025/situacion-financiera-09-2025.pdf — each returned HTTP 200 with a 1.1-1.2 KB body. WebFetch on the October 2025 reserves report returned the same thing and identified it as an Incapsula bot-protection stub with NOINDEX/NOFOLLOW meta tags. Both tools fail on bcrp.gob.pe. Next step: the monthly 'international reserves' series is the richest-looking document on this list (BCRP publishes it in English every month) and needs a route that is not curl or WebFetch."
+  },
+  {
+   "iso3": "MKD",
+   "kind": "not reached",
+   "note": "Half-opened. NBRM Annual Report 2024 (https://www.nbrm.mk/content/Annual_Report_2024-NB.pdf) returns a Cloudflare 'Just a moment...' challenge to curl. WebFetch served it but covered only characters 0-100,000 of 349,275 — it stops inside Section III, before Section VI on foreign reserves management (page 49 onward) and before the notes to the financial statements. In the part read, no World Bank/RAMP, BIS, BlackRock or Amundi; the only outside body is an ECB repo line, which is a liquidity facility, not management. Next step: WebFetch the same URL with offset 100000 and again at 200000 — one or two calls finish this country."
+  },
+  {
+   "iso3": "RWA",
+   "kind": "not reached",
+   "note": "The bnr.rw/documents/ route works as the task said: MPFSS_Report_March_2025.pdf downloaded under plain curl (3.5 MB) and grepped in full — 'World Bank' appears only as a commodity-price source, and no manager, RAMP or firm appears. That is the Monetary Policy and Financial Stability Statement, not the reserves document. The annual report / audited financial statements were not located: searches returned no bnr.rw annual-report filename and two constructed paths (BNR_Annual_Report_2023_2024.pdf, Annual_Report_2023_2024.pdf) returned 404. Next step: find the exact bnr.rw/documents/ filename for the BNR annual report or audited financial statements, then curl and grep it; the RAMP case is still untested."
+  },
+  {
+   "iso3": "HND",
+   "kind": "not reached",
+   "note": "Partial. Tribunal Superior de Cuentas audit report on the BCH for 2023 (https://www.tsc.gob.hn/wp-content/uploads/42-2023-DFEP-BCH.pdf) downloaded and grepped — 'externos' only in shocks and interest income; no manager, no World Bank. The BCH transparency documents on the IAIP single portal (portalunico.iaip.gob.hn/ver_archivo/...), which is where a Honduran 'informe de administracion de las reservas internacionales' would sit, return HTTP 403 to curl. Next step: the IAIP portal document MjM1NTI0MQ== (and the other ver_archivo ids a search for the Spanish phrase returns) through WebFetch rather than curl."
+  },
+  {
+   "iso3": "BHS",
+   "kind": "not reached",
+   "note": "Central Bank of The Bahamas Annual Report and Financial Statements PDFs exist on open paths that searches return, but the host refuses curl: www.centralbankbahamas.com/viewPDF/documents/... returns HTTP 404 with a 312 KB error body, and cdn.centralbankbahamas.com/documents/... returns HTTP 403. Next step: WebFetch https://www.centralbankbahamas.com/viewPDF/documents/2023-05-09-12-27-39-2022-CB0B-Annual-Report-and-FS.pdf, reading past the first 100,000 characters, because the external-manager note sits in the financial statements at the back."
+  },
+  {
+   "iso3": "JOR",
+   "kind": "not reached",
+   "note": "Found but not opened. Open-data Jordan carries the Central Bank of Jordan 'Financial statements and independent auditor's report' as dataset 450-2018 (opendata.gov.jo/en/dataset/financial-statements-and-independent-auditors-report-450-2018, with a later MIGRATED-450-2020 dataset), and the file appears to be served through portal.jordan.gov.jo/OD/files/ — one such PDF (5752.pdf) failed with a connection error (curl exit before any HTTP code). Next step: resolve the opendata.gov.jo resource page to its file URL and grep the CBJ statements' foreign-currency-investment note."
+  },
+  {
+   "iso3": "CUW",
+   "kind": "not reached",
+   "note": "Centrale Bank van Curacao en Sint Maarten publishes condensed financial statements and annual reports on exch.centralbank.cw (e.g. /publications/annual-reports-quarterly-bulletins/2021/condensed-financial-statements-as-of-december-31-2020 and the 2022 annual report press release carrying Dutch/English/Papiamentu PDFs). None opened. Trade press reports CBCS 'strategic portfolio moves' and large investment gains, which suggests an investment-portfolio note worth grepping for 'externally managed'/'extern beheerd'. Next step: open the 2024 annual report PDF from the exch.centralbank.cw press-release page."
+  },
+  {
+   "iso3": "IDN",
+   "kind": "not reached",
+   "note": "Not worked, on purpose. The task records that the only known Indonesian lead — Bank Indonesia holding units in a BIS green bond fund — rests on a paywalled source, and this project does not file from a paywalled source, so that lead is a blank by rule. No unpaywalled Bank Indonesia document was opened this round. Next step: Bank Indonesia's audited financial statements (laporan keuangan tahunan) note on foreign exchange reserve assets, grepped for 'dikelola' and 'manajer eksternal'."
+  },
+  {
+   "iso3": "AFG",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Da Afghanistan Bank audited financial statements / annual bulletin; reserves largely frozen at the Federal Reserve Bank of New York, so the Swiss 'Afghan Fund' trustee documents may be the only live manager route."
+  },
+  {
+   "iso3": "ARG",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: BCRA estados contables (audited financial statements) note on 'reservas internacionales', grepped for 'administradores externos' and 'gestion delegada'."
+  },
+  {
+   "iso3": "BDI",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Banque de la Republique du Burundi rapport annuel, note on 'avoirs extérieurs'; search 'rapport sur la gestion des réserves' in French."
+  },
+  {
+   "iso3": "BGD",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Bangladesh Bank Annual Report (bb.org.bd) financial statements note on 'foreign currency financial assets', grepped for 'external fund manager'; also the Bangladesh Bank Order and BB's reserve-management guidelines."
+  },
+  {
+   "iso3": "BLR",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: National Bank of the Republic of Belarus annual report financial statements note on foreign-currency assets."
+  },
+  {
+   "iso3": "BLZ",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Central Bank of Belize Annual Report and audited financial statements, note on 'external assets'; Crown Agents Investment Management is the live hypothesis for a Caribbean/Commonwealth bank of this size."
+  },
+  {
+   "iso3": "BRN",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Brunei Darussalam Central Bank annual report; BDCB's investment note is the only route and may name an external mandate."
+  },
+  {
+   "iso3": "CHN",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: PBoC annual report and SAFE annual report on foreign exchange reserve management; SAFE has a published reserves-management chapter, and the SAFE Investment Company subsidiaries are a separate question from outside managers."
+  },
+  {
+   "iso3": "CUB",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Banco Central de Cuba informe anual; no audited statements are published, so this is likely a structural blank rather than an unopened document."
+  },
+  {
+   "iso3": "DOM",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: BCRD estados financieros auditados (bancentral.gov.do) note on 'activos de reserva', grepped for 'administradores externos'; searches for a standalone Dominican reserves-management report returned only press coverage."
+  },
+  {
+   "iso3": "DZA",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Banque d'Algerie rapport annuel, chapter on 'gestion des reserves de change' — Algeria has in the past described mandates to outside managers in that chapter."
+  },
+  {
+   "iso3": "EGY",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Central Bank of Egypt Annual Report financial statements note on foreign-currency securities."
+  },
+  {
+   "iso3": "ERI",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Bank of Eritrea — no published annual report or statements located; expect a structural blank."
+  },
+  {
+   "iso3": "ETH",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: National Bank of Ethiopia annual report / audited financial statements; NBE is a plausible World Bank RAMP case and the IMF country reports discuss its reserve management."
+  },
+  {
+   "iso3": "GIN",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Banque Centrale de la Republique de Guinee rapport annuel, note on 'avoirs extérieurs'."
+  },
+  {
+   "iso3": "IND",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: RBI Annual Report chapter on 'Management of Foreign Exchange Reserves' (rbidocs.rbi.org.in), which discusses deployment with external asset managers; the test is whether any year names a firm."
+  },
+  {
+   "iso3": "IRN",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Central Bank of Iran annual review; sanctions make an outside mandate unlikely to be published."
+  },
+  {
+   "iso3": "IRQ",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Central Bank of Iraq audited financial statements (cbi.iq), note on foreign investments — CBI publishes full English statements and is the best untested Middle East candidate on this list."
+  },
+  {
+   "iso3": "KWT",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Central Bank of Kuwait annual report financial statements note on foreign investments (the Kuwait Investment Authority is a separate body and not this row)."
+  },
+  {
+   "iso3": "LAO",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Bank of the Lao PDR annual report; English statements are thin."
+  },
+  {
+   "iso3": "LBN",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Banque du Liban annual report and the Alvarez & Marsal forensic audit material, which discusses BdL's outside portfolio arrangements."
+  },
+  {
+   "iso3": "MDG",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Banky Foiben'i Madagasikara rapport annuel, note on 'avoirs de réserve'; search 'rapport sur la gestion des réserves de change' plus Madagascar. Untested rather than closed."
+  },
+  {
+   "iso3": "MMR",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Central Bank of Myanmar annual report financial statements note on foreign assets."
+  },
+  {
+   "iso3": "MYS",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Bank Negara Malaysia Annual Report financial statements note on 'investments', grepped for 'external fund managers'."
+  },
+  {
+   "iso3": "OMN",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Central Bank of Oman Annual Report financial statements note on foreign investments; CBO publishes full English statements."
+  },
+  {
+   "iso3": "PHL",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: BSP Annual Report financial statements note on 'investments in foreign securities'; a 2026 trade-press item on BSP being 'feted for a modern approach to managing foreign reserves' suggests a reserve-management write-up worth finding on bsp.gov.ph."
+  },
+  {
+   "iso3": "PSE",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Palestine Monetary Authority annual report and audited financial statements, note on foreign investments — searches returned only third-party hosts, so the PMA's own site (pma.ps) is the next stop; a strong candidate because the PMA publishes detailed English statements."
+  },
+  {
+   "iso3": "QAT",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Qatar Central Bank annual report financial statements note on foreign investments."
+  },
+  {
+   "iso3": "RUS",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Bank of Russia Annual Report section on the management of foreign currency and gold assets; the published breakdown is by currency and country, so a named outside manager is unlikely post-2022."
+  },
+  {
+   "iso3": "SAU",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Saudi Central Bank (SAMA) annual report; SAMA's reserve-management mandates are reported in trade press but not in its own documents, and trade press alone is a weak source."
+  },
+  {
+   "iso3": "SSD",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Bank of South Sudan audited financial statements; the National Audit Chamber reports tabled in the Transitional National Legislative Assembly are the parliamentary route."
+  },
+  {
+   "iso3": "STP",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Banco Central de Sao Tome e Principe relatorio anual, note on 'activos externos'; search 'relatório de gestão das reservas' in Portuguese."
+  },
+  {
+   "iso3": "SUR",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Centrale Bank van Suriname annual report / audited financial statements note on foreign assets (cbvs.sr)."
+  },
+  {
+   "iso3": "SYR",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Central Bank of Syria — no recent published statements located; untested rather than closed, but expect a structural blank."
+  },
+  {
+   "iso3": "THA",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Bank of Thailand Annual Report financial statements note on foreign-currency investments; BOT also publishes a separate reserve-management write-up worth finding."
+  },
+  {
+   "iso3": "TJK",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: National Bank of Tajikistan annual report and audited financial statements (nbt.tj); untested rather than closed, and a plausible World Bank RAMP case."
+  },
+  {
+   "iso3": "TKM",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Central Bank of Turkmenistan — no published statements located."
+  },
+  {
+   "iso3": "TON",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: National Reserve Bank of Tonga Annual Report, tabled in the Legislative Assembly of Tonga — the parliamentary vein, and the closed negatives for Samoa, Fiji and Vanuatu make this the natural Pacific test."
+  },
+  {
+   "iso3": "TWN",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Central Bank of the Republic of China (Taiwan) Annual Report, English edition, chapter on foreign exchange reserve management plus the audited accounts."
+  },
+  {
+   "iso3": "VEN",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: BCV estados financieros; publication has lapsed for years, so expect a structural blank."
+  },
+  {
+   "iso3": "VNM",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: State Bank of Vietnam annual report; the SBV's foreign-reserve management decree names a mechanism rather than firms."
+  },
+  {
+   "iso3": "YEM",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Central Bank of Yemen (Aden) audited financial statements, which exist in recent IMF-supported form."
+  },
+  {
+   "iso3": "ZMB",
+   "kind": "not reached",
+   "note": "Never opened — no document for this country was fetched this round. Next document: Bank of Zambia Annual Report financial statements note on foreign reserve assets. boz.zm is an Angular single-page app that serves no document links in its HTML (a constructed path returned the app shell, HTTP 200, 9.9 KB), and no boz.zm PDF appeared in two searches. Next step: find a mirror of the BoZ annual report (africanfinancials or a parliamentary tabling) rather than boz.zm itself. Zambia is a known RAMP participant, so this is a live lead."
+  }
+ ],
+ "checked_not_in_assignment": [
+  {
+   "iso3": "SYC",
+   "what_i_found": "The parliamentary host that keeps surfacing in searches is nationalassembly.sc, and the document is the Central Bank of Seychelles 'International Reserves Management Report 2025' (https://www.nationalassembly.sc/sites/default/files/2026-04/CBS_%20International%20Reserves%20Management%20Report%202025.pdf). It downloads cleanly under plain curl (1.18 MB). Seychelles is not in my assignment, and have_mgr.json already carries three ties for SYC — World Bank Treasury RAMP, Crown Agents Investment Management and UBS Asset Management — which is almost certainly this very document, so it is already harvested. I did not grep it and filed nothing."
+  },
+  {
+   "iso3": "PRY",
+   "what_i_found": "A World Bank feature story on transforming reserve management at the Central Bank of Paraguay with RAMP surfaced in a search. Paraguay is not in my assignment; have_mgr.json already carries the World Bank Treasury RAMP tie for PRY, and PRY is not on the reserve-manager absent list. Nothing filed."
+  }
+ ],
+ "leads_not_opened": [
+  {
+   "lead": "Seychelles-style reserves-management reports tabled in parliament: nationalassembly.sc works under plain curl where central bank sites do not. For this assignment the equivalent hosts to try are the Legislative Assembly of Tonga (TON), the Transitional National Legislative Assembly of South Sudan (SSD) and the Parliament of Bangladesh (BGD)."
+  },
+  {
+   "lead": "Hosts that block curl but may serve WebFetch, each with an exact URL already in hand: centralbankbahamas.com (BHS, 2022 Annual Report and FS), nbrm.mk (MKD, Annual_Report_2024-NB.pdf, needs offset 100000+), portalunico.iaip.gob.hn (HND, ver_archivo ids), sbp.org.pk (PAK, worked through WebFetch)."
+  },
+  {
+   "lead": "bcrp.gob.pe (PER) is behind Incapsula for both curl and WebFetch — needs a third route or a mirror of the monthly English 'international reserves' report."
+  },
+  {
+   "lead": "bnr.rw/documents/ serves PDFs to plain curl; the missing piece is the exact filename of the BNR annual report or audited financial statements, which no search returned."
+  }
+ ]
+}

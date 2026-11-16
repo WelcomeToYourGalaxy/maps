@@ -76,9 +76,77 @@ for label, rows, keyf in (
     c = collections.Counter(keyf(r) for r in rows)
     check(f"{label} have no exact duplicates", [k for k, v in c.items() if v > 1])
 
-# 6. a bank cannot be both settled and listed as unavailable
-check("no bank both has an auditor and is listed unavailable",
-      sorted({a["cb_iso3"] for a in gaps["auditors"]} & set(gaps.get("auditors_unavailable", {}))))
+# 6. a country cannot both hold a record and be listed as unavailable for that row
+#
+# This check used to read `gaps["auditors"]` alone, which made it half-blind in
+# exactly the way merge_links.py was at round 55, only mirrored. Auditor records
+# live in TWO stores -- `gaps["auditors"]` and the "audits its accounts" links in
+# networks.json -- and it read one of them. Round 57 filed four auditors (Cape
+# Verde, Cambodia, Paraguay and Syria) into networks.json and left all four in
+# `auditors_unavailable`, where they sat for eleven rounds while this check
+# printed "ok" every round. A check that cannot see half its own subject is worse
+# than no check, because it gets read as a clearance.
+#
+# It now covers all four negative maps and expands union keys, since a member
+# country's record usually arrives through the union.
+#
+# The overlap is NOT always an error, and that is why this check nearly could not
+# be written. A country can hold a record for one part of a row and a documented
+# blank for another part: Iraq's own Baghdad vault is filed while the much larger
+# "gold reserve abroad" line names nobody, and an ECCB member's auditor comes from
+# the union record expanding to members while the territory has no national
+# auditor of its own to find. Those entries are worth keeping. So the rule is that
+# such an entry must SAY SO -- a negative deliberately kept beside a filed record
+# carries an `also_filed` note giving the reason -- and anything else fails. That
+# keeps the check loud without crying wolf, which is the round-62 lesson applied
+# to a new check rather than relearned on it.
+UM = json.loads(re.search(r"const D = (\{.*?\});\n",
+                          open(f"{CB}/dist/central_bank_independence.html",
+                               encoding="utf-8").read(), re.S).group(1))["UM"]
+
+
+def _expand(iso):
+    return set(UM.get("ECB" if iso == "EMU" else iso, [iso]))
+
+
+def _filed(relation, extra=()):
+    out = set()
+    for l in net["links"]:
+        if l["relation"] == relation:
+            out |= _expand(l["cb_iso3"])
+    for iso in extra:
+        out |= _expand(iso)
+    return out
+
+
+for mapname, filed in (
+        ("auditors_unavailable",
+         _filed("audits its accounts", [a["cb_iso3"] for a in gaps["auditors"]])),
+        ("gold_unavailable", _filed("holds its gold reserves in custody")),
+        ("managers_unavailable", _filed("manages its reserves or programmes")),
+        ("cases_unavailable",
+         set().union(*[_expand(c["iso3"]) for c in corr["cases"]
+                       if not c.get("counterparty_only")] or [set()])),
+        # New at round 68. The revolving door is the only one of these rows whose
+        # negatives had nowhere to live, so its blanks went into the research log
+        # and nowhere a script could read them. "Filed" here means a record the
+        # LAYER counts, which is one that is not a public_move -- a country whose
+        # only moves are public reads blank on the layer, so a negative beside
+        # those is right and must not fail.
+        ("revolving_door_unavailable",
+         set().union(*[_expand(r["iso3"]) for r in corr["revolving_door"]
+                       if not r.get("public_move")] or [set()]))):
+    entries = gaps.get(mapname, {})
+    bad = []
+    for iso in sorted(set(entries) & filed):
+        note = entries[iso]
+        said = (note.get("also_filed") if isinstance(note, dict)
+                else "ALSO_FILED:" in note if isinstance(note, str) else False)
+        if not said:
+            bad.append(f"{iso}: holds a record and is also listed in {mapname}. "
+                       f"Either the negative is stale and goes, or add an "
+                       f"also_filed note saying why both are true.")
+    check(f"no country both holds a record and is listed in {mapname}", bad)
 
 # 7. party links name a party that has a head office entry or an explicit null
 # a party with neither an hq_iso3 on its link nor an entry in hq.json cannot be

@@ -1,0 +1,179 @@
+{
+  "records": [],
+  "blanks": [
+    {
+      "iso3": "NZL",
+      "kind": "confirmed blank",
+      "note": "No gold to custody. Reserve Bank of New Zealand's own Official Information Act response of 24 August 2023 to FYI requests 23611/23613 (published at fyi.org.nz, 'Official information request relating to legal tender, gold reserve sales, and sovereign debt', p.2, answer to the gold-sales question) states: 'The below chart shows RBNZ gold holdings by year. You will note that approximately $14m of gold was sold around 1989/1990. Gold holdings would have been classified as foreign reserves at the time.' The accompanying chart is an image and extracts as nothing, but the text is unambiguous that the holding was sold out around 1989/1990, and the answer treats gold as a past holding throughout. There is therefore no custodian to find; any future round should treat NZL as a structural blank rather than an unread document. Source URL: https://fyi.org.nz/request/23611/response/89405/attach/5/OIA2324%20007%20008%20Response.pdf"
+    },
+    {
+      "iso3": "ESP",
+      "kind": "confirmed blank",
+      "note": "Banco de Espana, Cuentas Anuales 2023 (repositorio.bde.es/bitstream/123456789/36256/1/BE_CuentasAnuales_2023.pdf), note 'Oro y derechos en oro' read: gives only 'Las tenencias de oro al cierre del ejercicio se elevan a 16.910,85 millones de euros, equivalentes a 9,054 millones de onzas troy de oro fino' and names no depositary, no institution and no city (no Banco de Inglaterra, no Reserva Federal, no BPI). The FX-reserves-structure lever was tried and also fails: Informe Institucional 2024, Capitulo 5 'Informacion financiera' (bde.es/f/webbe/INF/MenuHorizontal/Publicaciones/PublicacionesAnuales/InformeInstitucional/2024/INI2024_Capitulo5.pdf, 38,928 characters of text read in full) itemises the foreign-currency portfolio by currency and by instrument type (graphic 5.4) and the gold holding separately (p. text lines 530-534, graphic 5.5: 9,054 million fine troy ounces constant 2020-2024, market value EUR 22,735 million at end-2024) without naming any holder or location for the metal. Not yet read: the second half (characters 100,000-181,678) of the Cuentas Anuales 2023 PDF, which is income statement and post-reserves notes, and the Cuentas Anuales 2024 edition. Repositorio.bde.es returns HTTP 403 to curl; WebFetch serves it."
+    },
+    {
+      "iso3": "GRC",
+      "kind": "confirmed blank",
+      "note": "Bank of Greece publishes its annual financial statements only as the ATHEX filing 'Financial Statement - Full Notes BANK OF GREECE S.A.'. Both the 2024 edition (athexgroup.gr/sites/default/files/hermes/2025-03/2791eee6-6324-4b5b-98e3-804b83dfb338/Financial%20Statement%20-%20Full%20Notes%20BANK%20OF%20GREECE%20S.A.%20%282024%2CYear%20Statement%2CCompany%29.pdf) and the 2025 edition (athexgroup.gr/sites/default/files/hermes_3/2026-03/en/3ad3f0aa-ebae-4b0d-93f0-aaebae9b0d97/Financial%20statement%20BANK%20OF%20GREECE%20S.A.%20%282025%2CAnnual%20report%2CParent%29.pdf) were downloaded and read in full (25,181 and 25,167 characters of extracted text respectively). The balance-sheet line 'Gold and gold receivables' is explained only by note 2 to the statements: 'Gold has been valued at the price provided by the ECB as at 31.12.2025: EUR 3,669.106 per fine ounce, compared with EUR 2,511.069 as at 31.12.2024' - valuation only, no tonnage split, no depositary, no city. The only occurrence of the word custody in either document is in the description of the Bank's own services, 'and custody of assets of public entities, social security funds and private agents', which is the Bank acting as custodian for third parties and not a statement about its own gold. No FX-reserves structure or composition section exists in this abridged filing, so that lever cannot be applied; a fuller Greek-language annex to the Governor's Annual Report was searched for twice and did not surface."
+    },
+    {
+      "iso3": "LKA",
+      "kind": "confirmed blank",
+      "note": "Central Bank of Sri Lanka, 'Financial Statements and Operations 2024' (cbsl.gov.lk/sites/default/files/cbslweb_documents/publications/fsor/2024/en/financial-statements-operations.pdf, 548,403 characters of extracted text, grepped in full). Note 18 'Gold' gives only the statutory basis and the quantity: 'Section 40 (2) of the Central Bank of Sri Lanka Act ... states that gold including credit balances representing such gold may be held by the CBSL as part of the international reserves. This includes Gold weighted 15,148.163 Bar Fine Ounce as at 31 December 2024 (2023 - 15,148.163 Bar Fine Ounce) priced at USD 2,624.01 per troy ounce'. Accounting policy 7.14 'Gold' repeats the same statutory wording and adds only fair-value treatment. Three further levers were tried and all fail: (a) the reserve-management narrative in the same volume ('Investment instruments and portfolio management') says the investment portfolio includes 'gold investments, securities lending (managed by custodians on behalf of CBSL)' but names no custodian and does not tie one to gold; (b) the credit-risk counterparty table lists Federal Reserve Bank - USA / Reserve Bank of Australia / Bank for International Settlements / Bank of Japan / Deutsche Bundesbank / Bank of England / Sveriges Riksbank / Bank of Canada / Reserve Bank of New Zealand / Reserve Bank of India / People's Bank of China - but that list sits against the row 'Cash and Cash Equivalents', not against gold, which is exactly the trap the brief warns of, so it names no gold custodian; (c) note 52.1.8 'The Bank also has custodial arrangements with one State-controlled bank, for which no charges were levied' names no bank and is a related-party disclosure about the CBSL providing custody, not receiving it. The only named global custodian in the document, Euroclear (note at line 30037), is tied to AUD collateral for auto bond lending, not gold."
+    },
+    {
+      "iso3": "NPL",
+      "kind": "confirmed blank",
+      "note": "Nepal Rastra Bank, Financial Statement FY 2077/78 (2020/21) (nrb.org.np/contents/uploads/2021/11/Financial-Statement-2077_78-1.pdf, 180,899 characters, grepped in full). Note 4.4 'Gold & Silver at Fair Value' and the explanatory note 5.1 'Gold and Silver' split the holding into 'Investment in Paper Gold' (5,863.058408 kg, NRs 44,655,278,083) and 'Gold held in Stock' (1,953.662100 kg, NRs 15,610,737,010), plus silver. Neither names a vault, an institution or a city. Note 5.1 says only 'For gold physically held with the bank, the rate for Fine Gold (9999) has been considered for the purpose of fair value' - the bank as holder but with no place named, which this row's place-must-be-named rule refuses. The paper-gold leg is a gold deposit earning interest (income statement line 'Interest Income from Foreign Gold Deposit', and the weighted-average-interest schedule lists 'Investment in Paper Gold' beside US Government Treasury Notes and time deposits), which the row's rules exclude as not saying where metal sits, and no counterparty is named for it anywhere. Accounting policy 3.16 'Gold and Silver at fair value' and 3.17 'Inventories' add nothing on location. Not read: the FY 2079/80 (2022/23) financial statement at nrb.org.np/fmd/financial-statement-fy-2022-23-2079-80, which appears to use the same template."
+    },
+    {
+      "iso3": "TWN",
+      "kind": "confirmed blank",
+      "note": "Central Bank of the Republic of China (Taiwan) publishes no notes to its financial statements. Its Balance Sheet 2025 (cbc.gov.tw/en/dl-227340-3902a8b8eacc4688acf54d967ae3e340.html, one page) carries gold only inside an aggregate, with the single explanatory note: 'Foreign Assets include gold, deposits with foreign banks, and securities issued by foreign governments' - no gold line of its own, no holder, no place. The CBC Annual Report 2025, chapter 3 'Foreign Exchange Management' (cbc.gov.tw/dl-225846-905d3e594a524e47987afb5abb5bf0ee.html, 7 pages, read in full) states 'Combining the reserves held in gold valued at US$4.9 billion, the Bank's reserve assets totaled US$607.5 billion at the end of the year' and sets out the reserve portfolio by currency against the IMF COFER average, naming no custodian and no location for the metal. The only use of the word custodian in the chapter is a rule change allowing offshore securities branches 'to deposit offshore customer funds with foreign custodian banks', which is about banks' customer funds and not the CBC's gold. Vein note: the CBC has long declined to confirm storage locations publicly, so the remaining route would be Legislative Yuan committee records rather than the bank's own publications."
+    },
+    {
+      "iso3": "AIA",
+      "kind": "confirmed blank",
+      "note": "Already answered before this round and not researched again, per the round brief: Anguilla is served by the Eastern Caribbean Central Bank, whose Independent Auditors' Report and Financial Statements to 31 March 2025 were read in full in an earlier round (241,961 characters, three passes) and do not contain the word gold at all. The ECCB holds no gold, so there is no custodian to find for any of its eight member places. AIA appears on the gold row's absent list because that row's denominator counts places, not because the question is open."
+    },
+    {
+      "iso3": "ATG",
+      "kind": "confirmed blank",
+      "note": "Already answered before this round and not researched again, per the round brief: Antigua and Barbuda is served by the Eastern Caribbean Central Bank, whose Independent Auditors' Report and Financial Statements to 31 March 2025 were read in full in an earlier round (241,961 characters, three passes) and do not contain the word gold at all. The ECCB holds no gold, so there is no custodian to find for any of its eight member places."
+    },
+    {
+      "iso3": "DMA",
+      "kind": "confirmed blank",
+      "note": "Already answered before this round and not researched again, per the round brief: Dominica is served by the Eastern Caribbean Central Bank, whose Independent Auditors' Report and Financial Statements to 31 March 2025 were read in full in an earlier round (241,961 characters, three passes) and do not contain the word gold at all. The ECCB holds no gold, so there is no custodian to find for any of its eight member places."
+    },
+    {
+      "iso3": "GRD",
+      "kind": "confirmed blank",
+      "note": "Already answered before this round and not researched again, per the round brief: Grenada is served by the Eastern Caribbean Central Bank, whose Independent Auditors' Report and Financial Statements to 31 March 2025 were read in full in an earlier round (241,961 characters, three passes) and do not contain the word gold at all. The ECCB holds no gold, so there is no custodian to find for any of its eight member places."
+    },
+    {
+      "iso3": "KNA",
+      "kind": "confirmed blank",
+      "note": "Already answered before this round and not researched again, per the round brief: Saint Kitts and Nevis is served by the Eastern Caribbean Central Bank, whose Independent Auditors' Report and Financial Statements to 31 March 2025 were read in full in an earlier round (241,961 characters, three passes) and do not contain the word gold at all. The ECCB holds no gold, so there is no custodian to find for any of its eight member places."
+    },
+    {
+      "iso3": "LCA",
+      "kind": "confirmed blank",
+      "note": "Already answered before this round and not researched again, per the round brief: Saint Lucia is served by the Eastern Caribbean Central Bank, whose Independent Auditors' Report and Financial Statements to 31 March 2025 were read in full in an earlier round (241,961 characters, three passes) and do not contain the word gold at all. The ECCB holds no gold, so there is no custodian to find for any of its eight member places."
+    },
+    {
+      "iso3": "VCT",
+      "kind": "confirmed blank",
+      "note": "Already answered before this round and not researched again, per the round brief: Saint Vincent and the Grenadines is served by the Eastern Caribbean Central Bank, whose Independent Auditors' Report and Financial Statements to 31 March 2025 were read in full in an earlier round (241,961 characters, three passes) and do not contain the word gold at all. The ECCB holds no gold, so there is no custodian to find for any of its eight member places."
+    },
+    {
+      "iso3": "TLS",
+      "kind": "not reached",
+      "note": "Host defeated the fetch rather than the document being silent. Three Banco Central de Timor-Leste document URLs returned by search (bancocentral.tl/uploads/documentos/documento_1784769142_3775.pdf, documento_1746494179_9220.pdf, documento_1734605110_7977.pdf) each returned HTTP 200 with the identical 158,178-byte BCTL homepage HTML instead of a PDF, to curl and to WebFetch alike, so no BCTL annual report was actually opened and nothing about Timor-Leste gold was tested. Next document to open: the BCTL Annual Report listing page at bancocentral.tl/publication/bctl_ann_rep/, to recover a working direct link to the most recent Annual Report and its audited financial statements, then grep the statements for gold. Worth knowing before spending much: Timor-Leste is dollarised and the BCTL's reserve assets are dominated by the Petroleum Fund, so a nil gold holding is the likely answer and would itself be a close."
+    },
+    {
+      "iso3": "MRT",
+      "kind": "not reached",
+      "note": "Not opened this round; budget exhausted on the five report-publishing countries the brief told me to start with. Next document to open: Banque Centrale de Mauritanie, Rapport annuel / etats financiers audites (bcm.mr), grepping the French text for 'or monetaire', 'depose', 'conservation' and 'Banque d'Angleterre'. The bank publishes audited statements under an IMF programme, so the statements note is a live route, and the FX-reserves structure section of the Rapport annuel should be read in the same pass."
+    },
+    {
+      "iso3": "TJK",
+      "kind": "not reached",
+      "note": "Not opened this round. Next document to open: National Bank of Tajikistan annual report and audited financial statements (nbt.tj), Russian or Tajik edition, grepping for 'золото' / 'монетарное золото' and 'хранении'. Tajikistan is a gold producer whose central bank buys domestic output, so its statements have a real chance of placing the metal, and the accounting-policy note rather than the gold note is where comparable Central Asian banks have disclosed it."
+    },
+    {
+      "iso3": "LAO",
+      "kind": "not reached",
+      "note": "Not opened this round. Next document to open: Bank of the Lao PDR annual report / audited financial statements (bol.gov.la), grepping for gold and for the foreign-reserves composition section. The BOL publishes an annual report in Lao and English but its audited statements are intermittent, so the annual report's reserves chapter is the first place to look."
+    },
+    {
+      "iso3": "VNM",
+      "kind": "not reached",
+      "note": "Not opened this round. Next document to open: State Bank of Vietnam annual report (sbv.gov.vn), reserves-management chapter, plus the SBV's gold-management decrees. The SBV does not publish audited financial statements with notes, so the realistic route is the annual report's foreign-exchange-reserve section; expect this one to close as a blank rather than yield a custodian."
+    },
+    {
+      "iso3": "IRN",
+      "kind": "not reached",
+      "note": "Not opened this round. Next document to open: Central Bank of the Islamic Republic of Iran annual review / balance sheet (cbi.ir), and the CBI's own statements in Persian. Note for whoever takes it: Iranian gold held abroad has been the subject of sanctions litigation and of repatriation claims against banks in Turkey and South Africa, but any such claim must come from a CBI document or a court filing that names the holder, not from press reconstruction, and the row's rules refuse 'abroad' without an institution."
+    },
+    {
+      "iso3": "CUB",
+      "kind": "not reached",
+      "note": "Not opened this round. Next document to open: Banco Central de Cuba Informe Anual / estados financieros (bc.gob.cu). The BCC's annual report is published irregularly and does not normally carry a gold note; if the Informe Anual names nothing, the country should be closed as a confirmed blank on that document rather than left open."
+    },
+    {
+      "iso3": "YEM",
+      "kind": "not reached",
+      "note": "Not opened this round. Next document to open: Central Bank of Yemen (Aden) annual report or audited financial statements, and the IMF Article IV / safeguards material that discusses CBY reserve assets. The bank is split between Aden and Sanaa and has published almost nothing audited since 2016, so this is likely to close as a blank for want of any document rather than for a silent one; say so explicitly when it is closed."
+    },
+    {
+      "iso3": "SOM",
+      "kind": "not reached",
+      "note": "Not opened this round. Next document to open: Central Bank of Somalia Annual Report and audited financial statements (centralbank.gov.so), which the bank has published for recent years under its IMF programme. Grep for gold; a nil holding is the likely answer and is itself a close."
+    },
+    {
+      "iso3": "SSD",
+      "kind": "not reached",
+      "note": "Not opened this round. Next document to open: Bank of South Sudan annual report / audited financial statements (boss.gov.ss), and the IMF staff reports on South Sudan's reserve assets. Audited statements have been repeatedly delayed, so expect a want-of-document blank."
+    },
+    {
+      "iso3": "TKM",
+      "kind": "not reached",
+      "note": "Not opened this round. Next document to open: Central Bank of Turkmenistan (cbt.tm) annual report. Turkmenistan publishes essentially no audited central bank statements and does not report reserve assets to the IMF on the standard template, so this is likely a want-of-document blank; record it that way rather than as a silent document."
+    },
+    {
+      "iso3": "ERI",
+      "kind": "not reached",
+      "note": "Not opened this round. Next document to open: Bank of Eritrea publications (bankoferitrea.gov.er) and the most recent IMF Article IV consultation for Eritrea, which is the only regular source on Eritrean reserve assets. Eritrea has had no Article IV consultation concluded for many years and the Bank of Eritrea publishes no financial statements, so expect a want-of-document blank."
+    },
+    {
+      "iso3": "MWI",
+      "kind": "not reached",
+      "note": "Deliberately skipped: the round brief reserved Malawi to the manager because the Reserve Bank of Malawi's document list loads by script and blocks automated readers. No fetch was spent on it."
+    }
+  ],
+  "checked_not_in_assignment": [
+    {
+      "iso3": "TZA",
+      "checked_in": "have_gold.json",
+      "found": "Already on the map: Bank of England recorded as holding Tanzania's gold reserves in custody, sourced to the Bank of Tanzania Annual Report. Not researched. Noted only because the brief gave Tanzania's Note 20 wording - a sum 'held at the Bank of Tanzania pending transfer to the foreign custodian' - as the shape to refuse: a pending transfer names no vault, so that shape is a blank under the place-must-be-named rule."
+    },
+    {
+      "iso3": "PSE",
+      "checked_in": "have_gold.json and closed_negatives.json gold_unavailable",
+      "found": "Absent from both, so it is open, but it falls in the five of the brief's twenty-seven that were not handed to me (the brief's 'your real work' list excludes it) and the brief warns that Palestine has no currency of its own, so a gold claim for it needs care. Not researched and no fetch spent."
+    },
+    {
+      "iso3": "IRQ",
+      "checked_in": "have_gold.json and closed_negatives.json gold_unavailable",
+      "found": "Present in BOTH files - it already carries a custodian record in have_gold.json and also appears in the gold_unavailable negatives list. Not researched. Flagging it only because a code sitting in both files may mean one of the two is stale and the manager may want to reconcile it."
+    },
+    {
+      "iso3": "TUN",
+      "checked_in": "have_gold.json and closed_negatives.json gold_unavailable",
+      "found": "Present in BOTH files, same situation as IRQ: a custodian record exists and a documented negative also exists. Not researched; raised for reconciliation only."
+    }
+  ],
+  "leads_not_opened": [
+    {
+      "lead": "Banco de Espana Cuentas Anuales 2023, characters 100,000-181,678",
+      "why": "The gold note sits in the first window and names nobody, but the back half of the PDF (later notes, off-balance-sheet disclosures) was never read. The brief's point 5 - that the placing disclosure can sit in the last pages - has not been tested for Spain.",
+      "url": "https://repositorio.bde.es/bitstream/123456789/36256/1/BE_CuentasAnuales_2023.pdf"
+    },
+    {
+      "lead": "Nepal Rastra Bank Financial Statement FY 2079/80 (2022/23)",
+      "why": "The FY 2077/78 statement was read in full and names nothing, but NRB has since restated some foreign-asset disclosures; the newer statement is one grep and could carry a counterparty for the 'paper gold' leg.",
+      "url": "https://nrb.org.np/fmd/financial-statement-fy-2022-23-2079-80"
+    },
+    {
+      "lead": "Banco Central de Timor-Leste Annual Report listing page",
+      "why": "Three direct PDF URLs all served the site homepage instead of the file, to curl and WebFetch alike. The listing page should give a working link, or show that the reports are only reachable through a scripted viewer.",
+      "url": "https://bancocentral.tl/publication/bctl_ann_rep/"
+    },
+    {
+      "lead": "Taiwan Legislative Yuan committee records on CBC gold storage",
+      "why": "The CBC's own publications carry no gold note at all - its only financial statement is a one-page balance sheet - so the depositor-side disclosure for Taiwan, if it exists, is in answers given to legislators rather than in a report. Trade press (Focus Taiwan, Kitco, Taipei Times, August 2024) covered a CBC statement on the gold reserve and would point to the committee session, but is a weak source on its own.",
+      "url": null
+    }
+  ]
+}
