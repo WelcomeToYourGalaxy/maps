@@ -1,0 +1,1797 @@
+{
+ "round": 37,
+ "what": "The first AidData case round. One entry per FINANCING from the 59 that round 36 found carry a relocation count, a death with a cause, or compensation withheld - the three kinds of sentence that decide a case. Full untruncated AidData text and pre-extracted candidate sentences are on each entry.",
+ "brief": "docs/BRIEF36.md, after docs/BRIEF20.md in full. Then docs/CHECK31.md for the checker.",
+ "hard_rules": [
+  "A candidate sentence is AidData's prose, NOT a document. Open the source it rests on, or the press/court/audit record, before any figure reaches a card.",
+  "A relocation verb is not a count (round 32). The forward rule needs either (a) a count of people or households actually relocated, or (b) a specific documented harm to identifiable people.",
+  "Disaster and humanitarian relief rows are drops: the harm is the disaster's. 143 such rows carry r36_relief and are NOT in this batch, but say so if one surfaces.",
+  "Research the FINANCING once. aiddata_rows lists every lender row on it; four rows is one power plant, not four cards.",
+  "local_match and r36_dedupe_hint are hints. Shared country words are not a shared project. Confirm by place and years before dropping a row, and never drop on a hint alone.",
+  "Most of these should become EXTENDS of a case already on the map where the hint holds, since the row adds a lender or an amount the card lacks.",
+  "Put the AidData record id and, where one exists, the P-number in lenders[0].role, so the next round's dedupe can see it.",
+  "No researcher's voice on a card. No 'searches returned nothing' sentences. That belongs in your report.",
+  "Name your own two weakest entries in your report."
+ ],
+ "search_budget": "BRIEF36 says about 30 WebSearch calls per writer. The ~200-per-turn cap is shared across all three writers running in this turn, so treat 45 as a hard ceiling and 30 as the plan. Prefer curl plus pdftotext wherever a document exists - a PDF read from disk costs no search.",
+ "batch": "b",
+ "rows": 20,
+ "countries": [
+  "Angola",
+  "Comoros",
+  "Ethiopia",
+  "Kenya",
+  "Mali",
+  "Mozambique",
+  "Myanmar",
+  "Niger",
+  "Nigeria",
+  "Philippines",
+  "Solomon Islands",
+  "Sri Lanka",
+  "Sudan",
+  "Viet Nam"
+ ],
+ "financings": [
+  {
+   "financing": "G405",
+   "aiddata_rows": [
+    {
+     "id": 64750,
+     "title": "CDB signed an Memorandum of Understanding that will help implement the New Clark City Project (Linked to Project ID#64749, #63610, #63593)",
+     "amount_usd_2021": null,
+     "year": 2018,
+     "status": "Pipeline: Pledge",
+     "decisive": true
+    }
+   ],
+   "recipient": "Philippines",
+   "iso3": "PHL",
+   "year": 2018,
+   "sector": "INDUSTRY, MINING, CONSTRUCTION",
+   "infrastructure": "Yes",
+   "title": "CDB signed an Memorandum of Understanding that will help implement the New Clark City Project (Linked to Project ID#64749, #63610, #63593)",
+   "rank_score": 5,
+   "flags": [
+    "displaced or resettled"
+   ],
+   "decisive_buckets": [
+    "relocation count"
+   ],
+   "candidate_sentences": {
+    "relocation count": [
+     {
+      "field": "Description",
+      "sentence": "The construction threatens to displace at least 65,000 people from 12 villages, including some 18,000 indigenous people who belong to the Aeta tribe.",
+      "aiddata_row": 64750
+     },
+     {
+      "field": "Description",
+      "sentence": "At least 300 families were evicted when a sports complex in the Phase 1-A of NCC was built.",
+      "aiddata_row": 64750
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On November 26th, 2017, the Philippines and Chinese governments signed a memorandum of understanding for the Clark Industrial Park Project (or the \"New Clark City Industrial Park Project\"). In the MoU, China committed to developing the industrial park and bring in Chinese investors. On November 19th 2018, China Energy Construction Co. Ltd. and the Philippines representative signed an agreement for the Clark Industrial Park Project. The China Gezhouba Group Company Limited (CGGC) has also signed an MoU for the project with the also partnered to develop the Bases Conversion and Development Authority (BCDA). On January 7, 2018, a Memorandum of Understanding (MOU) was signed between the Bases Conversion and Development Authority (BCDA) and China Development Bank (CDB) for a framework agreement for financing cooperation. The agreement would allocate money for projects under the \"Build Build Build\" initiative, specifically \"high impact infrastructure projects,\" such as the New Clark City Project.   New Clark City aims to be the country's first smart, green and disaster-resilient metropolis. For this project, China sought to build one or multiple \"industrial parks\" across the Philippines to facilitate Chinese investment. China sought to construct an industrial park on 1,000 hectares of land, but the Philippines could only provide 300-500 hectares of land for the project. China wants to build the project in New Clark City because of its connectivity to the airport and the area's adjacent infrastructure. This project is located in New Clark Town, Pampanga Province, in the northern part of the Philippines. The park covers an area of ​​about 500 hectares and is planned to be commercial, industrial, residential and mixed, with high-tech and manufacturing industries..  Construction will start in 2020 and the first phase of the estate is expected to be completed in around one to one and a half years.. According to \"The Philippines is building a green, disaster-resilient city,\" the first phase of the construction is expected to be completed in 2022, with the entire project taking \"at least 30 years to finish.\" Bases Conversion and Development Authority (BCDA) began the construction of the initial phase of New Clark City (NCC), a 9,450-hectare smart city, in January 2018 in the hills of Capas town in Tarlac province.   The construction threatens to displace at least 65,000 people from 12 villages, including some 18,000 indigenous people who belong to the Aeta tribe. At least 300 families were evicted when a sports complex in the Phase 1-A of NCC was built. The massive sports complex includes a stadium, an aquatic center, and an athlete’s village where delegates to the 2019 Southeast Asian Games were housed.   On December 2, 2019, at least 500 families from the Aeta tribe in Aranguren village in Capas town were given a seven-day notice to evacuate from their lands to make way for the construction of the access road from NCC to Clark International Airport. The BCDA offered the affected communities some $5,900 per hectare of land and relocation sites, but did not disclose where the Aetas would move to, and some Aetas report that claimants who have accepted this money are not actually from their clan or ancestral lands. The Aeta community was told to evacuate by mid-to-late December 2019, but no one came to evict them.",
+    "staff_comments": "1. This project is linked to umbrella project ID#64749, the financing cooperation with the CDB that would fund this project, and subsidiary infrastructure projects also potentially funded by the agreement; project ID#63610, the Subic City Railway project, and project ID#63593, BGC-NAIA-Makati Bus Rapid Transit project.",
+    "location_narrative": "The project aims to construct New Clark City, a metropolis financed by the Chinese Government in the Pampanga provincence. More locational data can be found at https://www.openstreetmap.org/way/675364504. The project intends to build an industrial park to the direct west of the New Clark City Economic Zone. It is located in the Municipality of Capas, near New Clark Town. More locational data can be found at https://www.openstreetmap.org/way/919056923#map=15/15.3549/120.5192.",
+    "description_chars": 3360,
+    "was_truncated_in_lead_file_by": 2160
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "malolos-clark-railway-row-pampanga",
+     "shared_words": [
+      "asian",
+      "clark",
+      "cooperation",
+      "international",
+      "pampanga",
+      "philippines"
+     ],
+     "case_years": [
+      2018,
+      null
+     ],
+     "case_title": "Malolos–Clark Railway: tagged in 2018, still waiting, and a 2026 complaint of demolition without compensation",
+     "strength": "strong"
+    },
+    {
+     "case": "philippines-nrimp2-unpaid-land-claims",
+     "shared_words": [
+      "built",
+      "including",
+      "land",
+      "philippines"
+     ],
+     "case_years": [
+      2008,
+      2016
+     ],
+     "case_title": "Philippine road works built on land before the claims were paid",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "philippines-irrigation-canal-easement-relocations",
+     "shared_words": [
+      "hectares",
+      "land",
+      "philippines",
+      "signed"
+     ],
+     "case_years": [
+      2009,
+      2018
+     ],
+     "case_title": "35 families moved off irrigation canal land, and 19.7 hectares signed over by 299 project-affected people, on ten Philippine irrigation systems",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "rcbc-coal-plants",
+     "shared_words": [
+      "financed",
+      "international",
+      "philippines"
+     ],
+     "case_years": [
+      2011,
+      null
+     ],
+     "case_title": "RCBC-Financed Coal Power Plants",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G638",
+   "aiddata_rows": [
+    {
+     "id": 96601,
+     "title": "China donates road construction materials to for Fataleka Constituency Road Project",
+     "amount_usd_2021": null,
+     "year": 2021,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Solomon Islands",
+   "iso3": "SLB",
+   "year": 2021,
+   "sector": "INDUSTRY, MINING, CONSTRUCTION",
+   "infrastructure": null,
+   "title": "China donates road construction materials to for Fataleka Constituency Road Project",
+   "rank_score": 5,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "On August 7, Ambassador Li Ming was invited to attend the donation ceremony of road construction materials to the Fataleka Constituency Road Project on Malaita.",
+      "aiddata_row": 96601
+     },
+     {
+      "field": "Location Narrative",
+      "sentence": "Fataleka Constituency Road Project is a 35.2km road project, which includes maintenance of the 6.6 kilometer East Malaita Constituency road, manpower road from Aluta bridge to Amenia camp including new road construction from Amenia camp to Ata’a head road.",
+      "aiddata_row": 96601
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On August 7, Ambassador Li Ming was invited to attend the donation ceremony of road construction materials to the Fataleka Constituency Road Project on Malaita. Deputy Prime Minister and Minister of Infrastructure Melanga, Minister of Mines Tovosia, Minister of Planning Ramofafia and others attended the meeting. The donated supplies included diesel and other construction materials. ",
+    "staff_comments": "",
+    "location_narrative": "Fataleka Constituency Road Project is a 35.2km road project, which includes maintenance of the 6.6 kilometer East Malaita Constituency road, manpower road from Aluta bridge to Amenia camp including new road construction from Amenia camp to Ata’a head road.  More detailed locational information can be found at: Ata Head Road - Aluta Bridge: https://www.openstreetmap.org/way/259719599 and https://www.openstreetmap.org/way/1087152221Aluta Bridge: https://www.openstreetmap.org/way/1087152222Aluta Bridge - East Road: https://www.openstreetmap.org/way/1087151277Sengori Feeder Road: https://www.openstreetmap.org/way/259722341",
+    "description_chars": 385,
+    "was_truncated_in_lead_file_by": null
+   },
+   "r36_dedupe_hint": null,
+   "local_match": []
+  },
+  {
+   "financing": "G610",
+   "aiddata_rows": [
+    {
+     "id": 93462,
+     "title": "Chinese Embassy donates to Fataleka Community in Malaita, Solomon Islands",
+     "amount_usd_2021": null,
+     "year": 2020,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Solomon Islands",
+   "iso3": "SLB",
+   "year": 2020,
+   "sector": "OTHER SOCIAL INFRASTRUCTURE AND SERVICES",
+   "infrastructure": null,
+   "title": "Chinese Embassy donates to Fataleka Community in Malaita, Solomon Islands",
+   "rank_score": 5,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "On December 12, 2020, Ambassador Li Ming attended and delivered a speech at the Handover Ceremony of Material Donation for the Fataleka Community, Malaita Province, Solomon Islands, accompanied by Commercial Counselor Gong Rui.",
+      "aiddata_row": 93462
+     },
+     {
+      "field": "Location Narrative",
+      "sentence": "The purpose of the project is for Material Donations for the Fataleka Community, Malaita Province.",
+      "aiddata_row": 93462
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On December 12, 2020, Ambassador Li Ming attended and delivered a speech at the Handover Ceremony of Material Donation for the Fataleka Community, Malaita Province, Solomon Islands, accompanied by Commercial Counselor Gong Rui. The National Planning and Development Coordination Minister of the Institute, Ramofa Feia, the Permanent Secretary of the Rural Development Department of the Institute, the Permanent Secretary of the National Planning and Development Coordination Department and the officials of the Prime Minister's Office attended the meeting.",
+    "staff_comments": "",
+    "location_narrative": "The purpose of the project is for Material Donations for the Fataleka Community, Malaita Province. More detailed location information can be found at: https://www.openstreetmap.org/relation/2536263#map=7/-7.414/161.067. ",
+    "description_chars": 556,
+    "was_truncated_in_lead_file_by": null
+   },
+   "r36_dedupe_hint": {
+    "case_id": "santa-cruz-lata-airfield",
+    "shared_words": [
+     "islands",
+     "province",
+     "solomon"
+    ],
+    "strength": 3
+   },
+   "local_match": []
+  },
+  {
+   "financing": "G192",
+   "aiddata_rows": [
+    {
+     "id": 45520,
+     "title": "China Eximbank provides $74.3 million buyer’s credit loan for Package 1 of Section IV (Pinnaduwa-Godagama) of Southern Transport Development Project (STDP) (Linked to Project ID#95928)",
+     "amount_usd_2021": 91416878.2703601,
+     "year": 2011,
+     "status": "Completion",
+     "decisive": true
+    },
+    {
+     "id": 95928,
+     "title": "China Eximbank provides $55.3 million buyer’s credit loan for Package 2 of Section IV (Pinnaduwa-Godagama) of Southern Transport Development Project (STDP) (Linked to Project ID#45520)",
+     "amount_usd_2021": 68097875.2983794,
+     "year": 2011,
+     "status": "Completion",
+     "decisive": false
+    }
+   ],
+   "recipient": "Sri Lanka",
+   "iso3": "LKA",
+   "year": 2011,
+   "sector": "TRANSPORT AND STORAGE",
+   "infrastructure": "Yes",
+   "title": "China Eximbank provides $74.3 million buyer’s credit loan for Package 1 of Section IV (Pinnaduwa-Godagama) of Southern Transport Development Project (STDP) (Linked to Project ID#95928)",
+   "rank_score": 5,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "Also, after the opening of the Southern Expressway, there was a reduction in the fatal accident rate on the Galle Road.",
+      "aiddata_row": 45520
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On February 17, 2011, China Eximbank and the Government of Sri Lanka signed two different buyer’s credit loan (BCL) agreements for Section IV (Pinnaduwa-Godagama) of the Southern Transport Development Project (STDP): a $74,329,906 BCL agreement [No. BLA201011] for ‘Package 1’ [Highway Section from Pinnaduwa to Kodagoda (30.8 km to 45 km)] and a $55,369,520 BCL agreement [No.BLA201012] for ‘Package 2’ [Highway Section from Kodagoda to Godagama (45 km to 61.05 km) and balance work in Galle Port Access Road]. Both of the BCLs carry the same borrowing terms: an interest rate of 6 month LIBOR plus a 2.40% margin, a maturity of 15 years, a 4 year grace period, a 0.7% commitment fee, a 0.3% management fee, and a 6% Sinosure insurance premium (exposure fee). Project ID#45520 captures the BCL for Package 1 and Project ID#95928 captures the BCL for Package 2.   The BCL for Package 1 disbursed an unknown amount in 2011, $9,090,320.75 in 2012, $19,368,205.48 in 2013, $5,593,164.69 in 2014, $18,207,246.05 in 2015, and $13,057,899.34 in 2016. The borrower made repayments worth $7,079,038 in 2018, $7,079,038 in 2019, $7,079,038 in 2020 and $7,079,038 in 2021. The loan's amount outstanding was $63,711,349 as of December 31, 2017, $56,632,311 as of December 31, 2018, $49,553,273 as of December 31, 2019, $42,474,235 as of December 31, 2020, $35,395,197 as of December 31, 2021, and $31,855,678 as of June 30, 2022.   The BCL for Package 2 disbursed an unknown amount in 2011, $16,621,983.58 in 2012, $17,476,621.41 in 2013, $7,299,211.98 in 2014, $4,863,327.11 in 2015, and $1,004,818.20 in 2016. The borrower made repayments worth $5,273,286 in 2018, $5,273,286 in 2019, $5,273,286 in 2020 and $5,273,286 in 2021. The loan's amount outstanding was $47,459,591 as of December 31, 2017, $42,186,305 as of December 31, 2018, $36,913,019 as of December 31, 2019, $31,639,733 as of December 31, 2020, $26,366,447 as of December 31, 2021., and $23,729,804 as of June 30, 2022.   The Southern Transport Development Project (STDP) is the largest greenfield road project ever implemented in Sri Lanka. The purpose of the STDP was to assist the development of the economy of Sri Lanka’s Southern Province by encouraging growth in industries, tourism, fisheries and agriculture by connecting the access roads to the country’s first access controlled highway. The STDP was financed by the Government of Sri Lanka and five development partners (Asian Development Bank, Japan Bank for International Corporation, Nordic Development Fund, Swedish International Development Association, and China Eximbank).   The project involved the construction of the Southern Expressway, which is an access-controlled expressway of about 126 kilometers (km) from Kottawa to Godagama; the Galle Port Access Road, which is a 5.5 km long access road from the Southern Expressway to Galle; and a road safety component. The Southern Expressway was divided into four sections for financing purposes. Section I is from Kottawa to Dodangoda. Section II is from Dodangoda to Kurundugahahethekma. Section III is from Kurundugahahethekma to Pinnaduwa. Section IV is a 30.8 km segment of the expressway from Pinnaduwa to Godagama. There are 3 interchanges (Imaduwa, Kokmaduwa and Godagama) and 9 bridges in Section IV.   China National Technical Import & Export Corporation (CNTIC) was the contractor responsible for implementation of Package 1 and Package 2. It signed an EPC contract on June 11, 2010. It commenced work in April 2011. It completed its work in January 2014 and the Pinnaduwa-Godagama section of the Southern Expressway was opened to traffic on March 16, 2014.   Upon completion of the Southern Expressway (STDP) Project, the Asian Development Bank (ADB) conducted a project completion report. It rated the project as ‘effective’ in achieving the expected outcomes, which included an expressway in operational condition and increased economic opportunities for residents in the southern region of the country. The travel time between Colombo and Matara was reduced to 1.5 hours as of March 2014. Also, after the opening of the Southern Expressway, there was a reduction in the fatal accident rate on the Galle Road. In 2010, the accident rate was 25 per 1 million vehicles; in 2011, it went down to 21 per 1 million vehicles, and in 2012 it was 16 per 1 million vehicles.   Two new industrial estates (Koggala and Mirijjawila) were set up in the Southern Province and Hambanthota Port and Hambanthota International Airport were built after the STDP project started. While the expressway section from Kottawa to Galle has only been operating since November 2011, the social and economic investments made under the STDP since 2000 have attracted borrower and private sector investment to the Southern Province. Overall, there was an increase in socioeconomic conditions in all three districts in the Southern Province. The four sample villages (Godagama, Kabaragala, Paraduwa, Yaddehimulla) in the ADB’s design and monitoring framework are in Galle and Matara districts. Yakdehimulla and Kabaragala are close to the Galle Port Access Road and the Pinnaduwa Interchange. The other two villages mainly benefited from the section of the Southern Expressway funded by China Eximbank. The ADB’s project completion report notes that there was an increase in socioeconomic conditions in all four villages.   However, this project has encountered debt repayment problems. On April 12, 2022, the Government of Sri Lanka announced a ‘pre-emptive’ sovereign debt default, noting that it would suspend debt repayments to all external creditors other than multilateral institutions. Its decision to suspend external debt service reportedly affected all China Eximbank loans with amounts outstanding at the time of the announcement.",
+    "staff_comments": "1. Average 6-month LIBOR in February 2011 was 0.464%, so AidData has estimated the all-in interest rate as 0.464% + 2.40%, or 2.864%. 2. The Chinese project title is 斯里兰卡南部公路发展项目.3. Package 1 is also known as Highway Section Pinnaduwa to Kodagoda (30km to 45km). Package 2 is also known as Highway Section Kodagoda to Godagama (45km to 61km).4. The Government of Sri Lanka loan key number for the BCL that supported Package 1 is 2011005. The Government of Sri Lanka loan key number for the BCL that supported Package 2 is 2011006.",
+    "location_narrative": "This project supported a section of the Southern Expressway from Pinnaduwa to Kodagoda. More detailed locational information can be found at https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=6.0681%2C80.2643%3B6.0279%2C80.3923",
+    "description_chars": 5797,
+    "was_truncated_in_lead_file_by": 4597
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "southern-expressway-sri-lanka",
+     "shared_words": [
+      "asian",
+      "expressway",
+      "fund",
+      "galle",
+      "international",
+      "japan",
+      "lanka",
+      "nordic",
+      "southern",
+      "transport"
+     ],
+     "case_years": [
+      2002,
+      2011
+     ],
+     "case_title": "Southern Transport Development Project (Colombo–Matara highway): displacement",
+     "strength": "strong"
+    },
+    {
+     "case": "upper-kotmale-jbic",
+     "shared_words": [
+      "international",
+      "japan",
+      "lanka"
+     ],
+     "case_years": [
+      2002,
+      null
+     ],
+     "case_title": "Upper Kotmale dam: Japanese loans, 524 households moved",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "mattala-airport-forest-elephants",
+     "shared_words": [
+      "eximbank",
+      "lanka",
+      "southern"
+     ],
+     "case_years": [
+      2009,
+      null
+     ],
+     "case_title": "Mattala Airport: 800 Hectares of Forest Cleared in an Elephant Area",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G653",
+   "aiddata_rows": [
+    {
+     "id": 98681,
+     "title": "Asia Pacific Daily donates to Sri Lanka Ministry of Disaster Management following 2016 floods",
+     "amount_usd_2021": null,
+     "year": 2016,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Sri Lanka",
+   "iso3": "LKA",
+   "year": 2016,
+   "sector": "EMERGENCY RESPONSE",
+   "infrastructure": null,
+   "title": "Asia Pacific Daily donates to Sri Lanka Ministry of Disaster Management following 2016 floods",
+   "rank_score": 5,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "At least 102 people were killed in the floods.",
+      "aiddata_row": 98681
+     }
+    ]
+   },
+   "full_text": {
+    "description": "In May, 2016, Asia Pacific Daily donated an unknown amount of funds to the Sri Lanka Ministry of Disaster Management following extreme flooding in Sri Lanka. At least 102 people were killed in the floods. The disaster was recorded as one of the worst in Sri Lanka's history.",
+    "staff_comments": "1. Asia Pacific Daily is a branch of the Chinese state-controlled Xinhua News Agency.",
+    "location_narrative": "",
+    "description_chars": 274,
+    "was_truncated_in_lead_file_by": null
+   },
+   "r36_dedupe_hint": null,
+   "local_match": []
+  },
+  {
+   "financing": "G417",
+   "aiddata_rows": [
+    {
+     "id": 65181,
+     "title": "Bank of China provides USD 114 million to syndicated loan for 1320 MW Vân Phong 1 Supercritical Coal-Fired Power Plant Project",
+     "amount_usd_2021": 128086365.797883,
+     "year": 2019,
+     "status": "Implementation",
+     "decisive": true
+    }
+   ],
+   "recipient": "Viet Nam",
+   "iso3": "VNM",
+   "year": 2019,
+   "sector": "ENERGY",
+   "infrastructure": "Yes",
+   "title": "Bank of China provides USD 114 million to syndicated loan for 1320 MW Vân Phong 1 Supercritical Coal-Fired Power Plant Project",
+   "rank_score": 5,
+   "flags": [
+    "protest or unrest"
+   ],
+   "decisive_buckets": [
+    "compensation withheld"
+   ],
+   "candidate_sentences": {
+    "compensation withheld": [
+     {
+      "field": "Description",
+      "sentence": "According to the local government, because the route corridor passes through a densely populated area, the compensation plan and policy are not consistent, leading to the delay in handing over the site.",
+      "aiddata_row": 65181
+     }
+    ],
+    "protest with specifics": [
+     {
+      "field": "Description",
+      "sentence": "The project has also been protested by anti-coal groups in Japan, and on April 16, responding to Bloomberg, Oversea-Chinese Banking Corp said two coal-fired power plants in Vietnam will be the last project that OCBC will finance.",
+      "aiddata_row": 65181
+     }
+    ]
+   },
+   "full_text": {
+    "description": "In January 2011, the Vân Phong Economic Zone Management Authority approved a plan from Sumitomo Corporation, a Japanese enterprise, to build a two-unit, 1320 MW, coal-fired power plant in the port-industrial complex in Vân Phong Bay. In May 2017, Sumitomo Corporation signed and investment agreement with the Vietnam Ministry of Industry and Trade for the Vân Phong 1 Supercritical Coal-Fired Power Plant Project. In December 2017, the Sumitomo Corporation received an investment certificate and in March 2018, the environmental impact assessment was approved. Sumitomo Corporation created a special purpose vehicle called Van Phong Power Company Limited (VAN PHONG) to carry out the project. This project was supposed to be financed with about USD 1 billion in equity from Sumitomo Corporation and about USD 2 billion in debt.   On April 19, 2019, a consortium of eight banks signed a USD 1.988 billion syndicated loan agreement with Van Phong Power Company Limited (VAN PHONG) for the 2 x 660 MW Van Phong 1 Supercritical Coal-Fired Power Plant Project. Of that total amount, JBIC, the lead arranger, provided a USD 1.199 billion export credit facility. In addition, seven commercial banks including the Bank of China (BOC) provided a USD 799 million term loan. According to IJGlobal, Bank of China contributed USD 114 million to this co-financed portion. The other co-financiers included Sumitomo Mitsui Banking Corporation, MUFG Bank, Limited, Mizuho Bank Limited, Sumitomo Mitsui Trust Bank Limited, Oversea-Chinese Banking Corporation Limited, and DBS Bank Limited. Nippon Export and Investment Insurance (NEXI) provided political risk coverage for the USD 799 million commercial facility. The Government of Vietnam provided a sovereign guarantee. The borrowing terms are unknown. According to IJGlobal, the loan agreement reached financial close on August 26, 2019.  In this project, VAN PHONG will build, own and operate a super critical coal-fired power plant with an installed capacity of 1,320 MW (two units of 660 MW each) in Van Phong district, Khánh Hòa Province in southern Vietnam. Each unit will be equipped with a once-through pulverised coal-fired boiler and a steam turbine from Toshiba. Both the units will be fitted with electrostatic precipitators (ESP), flue gas desulphurisation (FGD) and low NOX burners to control emissions. The other components of the project include a coal handling plant, an ash pond area, and a switchyard. The Van Phong I power plant will use supercritical technology, with an expected emission intensity of 750 grams - 850 grams CO2 per kilowatt-hour. The plant provides about 9 billion KWh of electricity to the national grid every year. This amount of electricity is transmitted through the 500 KV Van Phong - Vinh Tan transmission line. Covering more than 350 hectares in Nam Van Phong, Ninh Hoa Town, the project is expected to boost the development of Van Phong Economic Zone. The Van Phong 1 thermal power station is estimated to require 3.4 million tonnes (Mt) of coal a year which will be sourced from Australia and Indonesia. The coal shipments for the project are expected to be started from 2023 onwards. This project is responsible for releasing the capacity of Van Phong Power Center (including Van Phong BOT Thermal Power Plant 1), Bac Ai Storage Hydropower Plant and renewable energy sources in Ninh province. Thuan, Binh Thuan into the national electricity system. The electricity generated from this plant will be sold to Vietnam Electricity (EVN), a state-owned enterprise, for 25 years.   In August 2019, a consortium of four companies-- Toshiba Energy Systems & Solutions Corporations (Toshiba ESS), IHI Corporation, CTCI Corporation, and Doosan Heavy Industries & Construction-- was awarded the engineering, procurement and construction (EPC) contract for this project. Toshiba ESS will be in charge of the design, manufacturing, installation and test operation for the stream turbines and generators (STGs) used in the project. Lilama 18 Joint Stock Company is the sub-contractor in charge of installing 2 boilers, each with capacity of 660 MW, and each with a contract value of USD 28.6 million.   The groundbreaking ceremony took place on October 6, 2019. In April 2021, construction began on the steel structure for Van Phong-1 Unit 1's coal-fired boiler.  According to Vietnam's Power Development Plan 7 (PDP7), Phase I of the project was scheduled for completion in 2022 and 2023. Phase II of the project was cancelled.   The design and procurement work at Van Phong 1 Project was affected when a number of contracts for supplying materials and equipment (especially goods originating from China) were interrupted due to COVID-19. The project has also been protested by anti-coal groups in Japan, and on April 16, responding to Bloomberg, Oversea-Chinese Banking Corp said two coal-fired power plants in Vietnam will be the last project that OCBC will finance.  As of May 2022, at Van Phong 500kV substation project and connection, the substation ground has been completed, but the connection line part still has 5/62 foundation positions waiting for handover. According to the local government, because the route corridor passes through a densely populated area, the compensation plan and policy are not consistent, leading to the delay in handing over the site. Particularly for the 2nd circuit of the 220kV Krong Buk - Nha Trang transmission line, 89/93 foundation positions have been paid for, the rest of the people have not yet agreed to receive the money for handing over the ground.  EVN said that if the project is behind schedule, the Government of Vietnam has to compensate USD 1 million per day to residents. If this transmission project is 6 months behind schedule, the amount to be compensated is about VND 5,000 billion. If it is more than 6 months, the BOT contract of Van Phong 1 Thermal Power Plant will be terminated early and the Government of Vietnam has to buy back the plant.",
+    "staff_comments": "",
+    "location_narrative": "The plant will be located in Ninh Phước commune, Ninh Hòa township, Khánh Hòa province. The coal-fired power station is being developed on a 514ha-site within the Van Phong Special Administrative-Economic Zone (SAEZ), in the Khanh Hoa province in southern Vietnam.More detailed location information can be found at: https://www.openstreetmap.org/way/784121545",
+    "description_chars": 5975,
+    "was_truncated_in_lead_file_by": 4775
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "vietnam-rural-energy-2-land-loss",
+     "shared_words": [
+      "industry",
+      "southern",
+      "trade",
+      "vietnam",
+      "vinh"
+     ],
+     "case_years": [
+      2004,
+      2014
+     ],
+     "case_title": "Second Rural Energy Project, Vietnam: land taken along power lines in 25 provinces, with no count of anyone moved",
+     "strength": "strong"
+    },
+    {
+     "case": "vietnam-natural-disaster-risk-989-resettled",
+     "shared_words": [
+      "other",
+      "risk",
+      "trust",
+      "vietnam"
+     ],
+     "case_years": [
+      2005,
+      2013
+     ],
+     "case_title": "Vietnam disaster risk works: 989 households resettled across ten provinces",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "vinh-tan-2-coal-dust-highway-protest",
+     "shared_words": [
+      "phong",
+      "vietnam",
+      "vinh"
+     ],
+     "case_years": [
+      2010,
+      null
+     ],
+     "case_title": "Vinh Tan 2 Coal Plant: Dust over the Village and the 2015 Highway Blockade",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "vietnam-distribution-efficiency-five-households",
+     "shared_words": [
+      "including",
+      "southern",
+      "vietnam"
+     ],
+     "case_years": [
+      2012,
+      2018
+     ],
+     "case_title": "Vietnam Distribution Efficiency Project: five households relocated out of 12,880 affected",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G090",
+   "aiddata_rows": [
+    {
+     "id": 34481,
+     "title": "China donates US$100 000 in emergency aid to Vietnam for bird flu (link to project ID:#34482)",
+     "amount_usd_2021": 227765.212188663,
+     "year": 2004,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Viet Nam",
+   "iso3": "VNM",
+   "year": 2004,
+   "sector": "HEALTH",
+   "infrastructure": null,
+   "title": "China donates US$100 000 in emergency aid to Vietnam for bird flu (link to project ID:#34482)",
+   "rank_score": 5,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "_x000D_ _x000D_ Over 2,500 communes in 57 cities and provinces in Vietnam have been struck by the H5N1 strain of avian influenza, which killed and led to the culling of over 38.1 million birds, 15 percent of the country's poultry.",
+      "aiddata_row": 34481
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On 10 February 2004, China donated US$100, 000 to Vietnam in order to combat the bird flu virus. No details were given regarding how the grant would be used. _x000D_ _x000D_ Over 2,500 communes in 57 cities and provinces in Vietnam have been struck by the H5N1 strain of avian influenza, which killed and led to the culling of over 38.1 million birds, 15 percent of the country's poultry. _x000D_ _x000D_ _x000D_ ",
+    "staff_comments": "",
+    "location_narrative": "",
+    "description_chars": 413,
+    "was_truncated_in_lead_file_by": null
+   },
+   "r36_dedupe_hint": null,
+   "local_match": []
+  },
+  {
+   "financing": "G088",
+   "aiddata_rows": [
+    {
+     "id": 34197,
+     "title": "CNPC pledges 32 million USD to compensate farmers in response to pipeline projects (linked to ID #32195)",
+     "amount_usd_2021": 36097169.6700747,
+     "year": 2013,
+     "status": "Pipeline: Pledge",
+     "decisive": true
+    }
+   ],
+   "recipient": "Myanmar",
+   "iso3": "MMR",
+   "year": 2013,
+   "sector": "ENERGY",
+   "infrastructure": "Yes",
+   "title": "CNPC pledges 32 million USD to compensate farmers in response to pipeline projects (linked to ID #32195)",
+   "rank_score": 4,
+   "flags": [
+    "displaced or resettled"
+   ],
+   "decisive_buckets": [
+    "compensation withheld"
+   ],
+   "candidate_sentences": {
+    "compensation withheld": [
+     {
+      "field": "Description",
+      "sentence": "Local officials report that residents received full compensation of 4 million kyat ($4,625) per hectare of land lost, but some residents claim that they received no such compensation.",
+      "aiddata_row": 34197
+     }
+    ]
+   },
+   "full_text": {
+    "description": "In 2013, China National Petroleum Corp. (CNPC) pledged 32 million USD to compensate farmers who were displaced due to railway construction for twin oil and gas pipelines. Local officials report that residents received full compensation of 4 million kyat ($4,625) per hectare of land lost, but some residents claim that they received no such compensation. A CNPC official responded by saying that it is difficult to provide compensation for previous landowners because most land on Maday Island was registered as vacant, and most residents do not have official land ownership documentation. Whether or not the total pledged amount was delivered is unclear.",
+    "staff_comments": "",
+    "location_narrative": "Near HSIPAW, Myanmar",
+    "description_chars": 655,
+    "was_truncated_in_lead_file_by": null
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "myanmar-china-pipelines-land",
+     "shared_words": [
+      "cnpc",
+      "land",
+      "myanmar",
+      "petroleum",
+      "pipelines"
+     ],
+     "case_years": [
+      2010,
+      null
+     ],
+     "case_title": "Myanmar–China oil and gas pipelines: land and fishing",
+     "strength": "strong"
+    },
+    {
+     "case": "yadana-pipeline-forced-labour",
+     "shared_words": [
+      "myanmar",
+      "pipeline",
+      "total"
+     ],
+     "case_years": [
+      1992,
+      2005
+     ],
+     "case_title": "Yadana Gas Pipeline Forced Labour and Abuses",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "pinpet-iron-mine-pa-o-land",
+     "shared_words": [
+      "land",
+      "myanmar",
+      "near"
+     ],
+     "case_years": [
+      2004,
+      null
+     ],
+     "case_title": "Pinpet Iron Mine and Steel Works Land Seizures, Taunggyi",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "dawei-sez-itd-land",
+     "shared_words": [
+      "land",
+      "lost",
+      "myanmar"
+     ],
+     "case_years": [
+      2008,
+      2015
+     ],
+     "case_title": "Dawei Special Economic Zone: Land Lost to the Italian-Thai Concession",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G004",
+   "aiddata_rows": [
+    {
+     "id": 178,
+     "title": "China Eximbank provides $608 million loan for 1250 MW Merowe Hydroelectric Power Plant Project (Linked to Project ID#695, #56927, #56959)",
+     "amount_usd_2021": 1481126754.15015,
+     "year": 2003,
+     "status": "Completion",
+     "decisive": true
+    },
+    {
+     "id": 56927,
+     "title": "Chinese Government provides $37.7 million loan for New Amri Agriculture Scheme (Merowe Resettlement) Project (Linked to Project ID#178, #56959)",
+     "amount_usd_2021": 91894901.7078987,
+     "year": 2003,
+     "status": "Completion",
+     "decisive": false
+    },
+    {
+     "id": 56959,
+     "title": "China Eximbank provides $80.75 million seller's credit to CWE for Kehaila East Agriculture Scheme (Linked to Project ID#56927, #178, #85574)",
+     "amount_usd_2021": 196712147.035566,
+     "year": 2003,
+     "status": "Completion",
+     "decisive": false
+    },
+    {
+     "id": 85574,
+     "title": "China Eximbank provides $29.9 million USD loan for El Makabra Agriculture Scheme (Linked to Project ID#56927, #178, #56959)",
+     "amount_usd_2021": 72867925.9363375,
+     "year": 2003,
+     "status": "Completion",
+     "decisive": false
+    }
+   ],
+   "recipient": "Sudan",
+   "iso3": "SDN",
+   "year": 2003,
+   "sector": "ENERGY",
+   "infrastructure": "Yes",
+   "title": "China Eximbank provides $608 million loan for 1250 MW Merowe Hydroelectric Power Plant Project (Linked to Project ID#695, #56927, #56959)",
+   "rank_score": 11,
+   "flags": [
+    "displaced or resettled",
+    "protest or unrest",
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause",
+    "relocation count"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "Sudanese civilians protested the project’s execution from the start, and in a confrontation with authorities in April 2006, five people from a displaced community were killed.",
+      "aiddata_row": 178
+     }
+    ],
+    "protest with specifics": [
+     {
+      "field": "Description",
+      "sentence": "Sudanese civilians protested the project’s execution from the start, and in a confrontation with authorities in April 2006, five people from a displaced community were killed.",
+      "aiddata_row": 178
+     }
+    ],
+    "relocation count": [
+     {
+      "field": "Description",
+      "sentence": "The report focused on complex resettlement issues involving about 7500 families.",
+      "aiddata_row": 178
+     },
+     {
+      "field": "Description",
+      "sentence": "Sudanese civilians protested the project’s execution from the start, and in a confrontation with authorities in April 2006, five people from a displaced community were killed.",
+      "aiddata_row": 178
+     }
+    ]
+   },
+   "full_text": {
+    "description": "In October 2002, a joint venture called CCMD Corporation, which is between China International Water and Electric Corporation (CWE) and China Water Resources and Hydropower Engineering Corporation (CWHEC or Sinohydro), applied to China Eximbank for a loan guarantee before bidding on the 1250 MW Merowe Hydroelectric Power Plant Project in Sudan. On May 20, 2003, this Chinese consortium ended up winning three different contracts for this project:  (1) a $600 million (EUR 550 million) contract signed on June 7, 2003 for construction of the dam;  (2) a $60 million contract signed on December 23, 2003 for auxiliary projects related to the metal frame and hydraulic mechanics; and (3) a $400 million contract signed on December 23, 2003 for construction of substations and transmission lines. (Note: A $381.5 million loan for this project component is captured via Project ID#695).   On December 23, 2003, China Eximbank and the Government of Sudan signed three different loan agreements worth a total of $519 million in order to partially finance the first two contracts:  (1) a $400 million loan; (2) a $65 million loan; and (3) a $54 million loan. These loans carried the following borrowing terms: a 20 year maturity, a grace period between 6 and 7 years, and interest rate of 3-4%. China Eximbank later increased its total lending for the 1250 MW Merowe Hydroelectric Power Plant Project to $608 million (as captured via Project ID#178).   The total project cost is unclear but estimates range from $1 billion to $3 billion. Therefore, several other entities served as co-financiers. The 1250 MW Merowe Hydroelectric Power Plant Project was co-financed with:  (1) $250 million from Arab Fund for Social and Economic Development (and possibly an additional $211 million) (2) $150 million from the Kuwait Development Fund (and possibly an additional $50 million) (3) $150 million from the Abu Dhabi Foundation (4) $200 million from the Saudi Fund for Development (5) $15 million from the Government of Qatar (6) $106 million from the Government of Oman  (7) $575 million from the Government of Sudan  The 1250 MW Merowe Hydroelectric Power Plant Project involved the construction of a 9.7-kilometer-long and 65-meter-high dam with a total installed capacity of 1250 MW and a storage capacity at 12.4 billion cubic meters. It is located near Merowe Town in northern Sudan, about 350 kilometers (220 mi) north of the capital Khartoum. The project had 8 main components:  (1) Dam: This component included the construction of concrete and embankment sections of the dam on the Nile River channel. The dam crest was to be 9.7 km long and 10 m wide, and its height 60 m above river bed. The dam was also to include the appurtenant structures such as spillway, water intakes and sediment sluices, as well as a hydropower station.  (2) Preparatory Works: This component included the construction of housing facilities for construction supervision and operations personnel, the construction of 27 km access roads from Karima to the dam site, and a loading platform and storage areas at the nearby railway station. (3) Civil Works: This component included excavation, fill, drilling and grouting works, and concrete works for the dam and its appurtenant structures. It also included all civil works for the hydropower station, as well as all necessary instrumentation and monitoring equipment for the operation of the dam. (4) Mechanical Works: This component included the supply and installation of gates, pipes and related mechanical equipment for the dam and its appurtenant structures. (5) Hydro-Mechanical Works: This component included the supply and installation of gates, penstocks, cranes and related hydro-mechanical equipment necessary for the control of water, and operation and maintenance of the dam and its appurtenant structures. (6) Electromechanical and Electrical Works for the Power Station: This component included the furnishing and installation of ten turbines, each rated at 125 MW, and ten 150 MVA generators. It also included the construction of 500 and 220 kV switchyards, and the supply of the necessary transformers and bus bars, as well as control, protection and monitoring systems. (7) Transmission Lines: This component included the construction of 500 and 220 kV overhead lines having a total length of 1700 km, as well as seven sub-stations. (8) Consultancy Services: This component included the consultancy services required to review the conceptual design, prepare the detailed design, and construction supervision.  The project owner was Sudan’s Ministry of Irrigation and Water Resources’ Merowe Dam Implementation Unit. The contractors responsible for implementation included China International Water and Electric Corporation (CWE), Sinohydro, Harbin Power Engineering Company (HPEC), and Alstom, a French company.   The originally anticipated project commencement and completion dates were July 30, 2005 and July 30, 2008, respectively. The project began construction on July 8, 2003, and the first two generators were officially connected to the national grid on March 3, 2009. However, it was not until April 8, 2010 that the tenth unit of the Merowe dam was officially connected to the grid. However; issues with silt and debris accumulation threaten the long-term life of the dam. By 2020, the dam had lost 1.7% of its holding capacity.  According to a 2015 book (entitled \"Water, Civilisation and Power in Sudan\") by Harry Verhoeven, Dr. Sabir Mohamed Hassan (the Governor of the Central Bank of Sudan) has \"described one of the reasons for prioritising Merowe as 'the government needed something big to show to the people'. It was no coincidence that Omar Al-Bashir campaigned for the Sudanese presidency in April 2010 with a picture of himself in front of the Merowe Dam, the symbol of civilisation delivered by Al-Ingaz, as his main electoral poster.\"  The project was awarded the Luban Prize, a master prize in the PRC for development projects. However, it was also plagued by controversy.  The project participants were required to prepare or contract an environmental impact assessment (EIA) in accordance with specific guidelines that address three major topics:  (1) Social issues -- consequences of people resettlement from future flooded area;  and (2) Archeological issues -- resulting from destruction or submerging important archeological sites or places of high cultural value; and (3) Environmental issues -- effect of large scale hydrological alteration of the natural river system with major impacts on the environment and water quality.   In April 2002, Lahmeyer International prepared the EIA report for the Merowe Dam Project. The report focused on complex resettlement issues involving about 7500 families. Among the environmental impacts it discussed were the hydrological changes, the erosion of the river bed and its banks, greenhouse gas emissions, and changes in the aquatic ecosystem. The 150 page report was far from meeting European or international standards, such as the guidelines of the World Commission on Dams. No serious attempt was made to use the vast scientific knowledge base on environmental effects of large dams, although four decades of research on the Aswan High Dam (Lake Nasser in Egypt, Lake Nubia in Sudan) had revealed a dramatic sediment accumulation in the upper part of the reservoir, problematic water quality issues and detrimental downstream effects such as river bed erosion or water level fluctuations. An estimated 60,000 civilians were ultimately displaced during the construction of the dam. Sudanese civilians protested the project’s execution from the start, and in a confrontation with authorities in April 2006, five people from a displaced community were killed.  There are also some indications that the loans that were issued for the construction of the Merowe Hydroelectric Power Plant may have underperformed vis-a-vis lender expectations. According to Sudan’s Finance Minister Ali Mahmood Abdel-Rasool, China Eximbank suspended its financing for 11 projects in Sudan following the secession of South Sudan in July 2011, which triggered a major loss of oil revenue (a key source of collateral for China Eximbank loans). Ali Mahmood Abdel-Rasool said at the time that the Government of Sudan had previously pledged oil revenues (worth 120,000 barrels per day) to China Eximbank as a source of collateral. Then, on February 18, 2012, the Chinese Government announced that it had agreed to reschedule the outstanding debt obligations of the Government of Sudan by extending loan repayment periods by 5 years (as captured via Project ID#30421). According to the External Debt Unit of the Central Bank of Sudan, the Government of Sudan's total arrears to Chinese creditors amounted to $3.864 billion ($2.608 billion in principal, $1.129 billion in interest, and $127 million in penalty interest) as of March 31, 2022. ",
+    "staff_comments": "1. This project is also called Sudan's Three Gorges Project. The Chinese project title is 麦罗维电站工程 or 麦洛维大坝工程 or 苏丹的麦洛维水库大坝工程 or 苏丹麦洛维项目 or 麦罗维大坝 or 苏丹麦洛维大坝工程 or 蘇丹麥洛維水電站項目 or 阿特巴拉-海亚公路项目. 2. SAIS-CARI's Chinese Loans to Africa Database claims that this project was financed with an export buyer's credit. However, according to an official source (http://www.tjjh.gov.cn/xyjh/xydt/gjdt/202008/t20200819_3490848.html), the project was financed with an export seller’s credit. This issue warrants further investigation. 3. AidData relies on the borrowing terms that are reported by the Government of Sudan. 4. According to an official source (http://www.tjjh.gov.cn/xyjh/xydt/gjdt/202008/t20200819_3490848.html), the borrower purchased a credit insurance policy from Sinosure.5.  Although China Eximbank increased its total lending for the 1250 MW Merowe Hydroelectric Power Plant Project to $608 million, it is unclear if the additional $89 million was provided through a separate loan agreement or an amendment to an existing loan agreement.  This issue warrants further investigation. The joint venture between CWE and Sinohydro won four different contracts: 2A, 2B, 2C, and 3D worth a total of EUR 603 million (RMB 6 billion). Contracts 2A-C were probably signed in 2003 (described in first paragraph of the project description) and contract 3D (unknown) likely explains the increase in financing from China Eximbank.6. The arrears data from the External Debt Unit of the Central Bank of Sudan are drawn from https://web.archive.org/web/20230208195131/https://cbos.gov.sd/sites/default/files/Quarter%201%20Report%20%202022%20.pdf7. In order to facilitate the resettlement of people displaced by the Merowe Dam, the Chinese Government provided another $37.7 million for the Kehaila East Agriculture Scheme, the El Makabra Agriculture Scheme (Merowe Resettlement) Project (as captured via Project ID#56959), and $110.7 million for the New Amri Agriculture Scheme (Merowe Resettlement) Project (as captured via Project ID#56927). China Eximbank also provided a $381,467,000 loan for the Merowe Hydroelectric Dam Transmission Lines and Substations Project (as captured via Project ID#695).",
+    "location_narrative": "Merowe Dam is located near Merowe Town in northern Sudan, about 350 kilometers (220 mi) north of the capital Khartoum. More detailed locational information can be found at https://www.openstreetmap.org/way/218610666#map=19/18.66901/32.05299",
+    "description_chars": 8925,
+    "was_truncated_in_lead_file_by": 7725
+   },
+   "r36_dedupe_hint": {
+    "case_id": "merowe-dam-amri-manasir",
+    "shared_words": [
+     "merowe",
+     "northern",
+     "sudan"
+    ],
+    "strength": 3
+   },
+   "local_match": [
+    {
+     "case": "merowe-dam-amri-manasir",
+     "shared_words": [
+      "arab",
+      "dhabi",
+      "economic",
+      "eximbank",
+      "fund",
+      "international",
+      "kuwait",
+      "merowe",
+      "nile",
+      "northern",
+      "oman",
+      "other",
+      "qatar",
+      "saudi",
+      "sinohydro",
+      "social",
+      "sudan"
+     ],
+     "case_years": [
+      2003,
+      2009
+     ],
+     "case_title": "Merowe Dam displacement on the Nile's Fourth Cataract",
+     "strength": "strong"
+    },
+    {
+     "case": "upper-atbara-setit-arab-funds",
+     "shared_words": [
+      "arab",
+      "dhabi",
+      "economic",
+      "fund",
+      "kuwait",
+      "saudi",
+      "social",
+      "sudan"
+     ],
+     "case_years": [
+      2010,
+      null
+     ],
+     "case_title": "Upper Atbara and Setit dams: Gulf and Arab funds, tens of thousands moved",
+     "strength": "strong"
+    },
+    {
+     "case": "sudan-2013-fuel-subsidy",
+     "shared_words": [
+      "fund",
+      "international",
+      "khartoum",
+      "other",
+      "sudan"
+     ],
+     "case_years": [
+      2013,
+      2013
+     ],
+     "case_title": "Sudan September 2013 fuel subsidy protests",
+     "strength": "strong"
+    },
+    {
+     "case": "sudan-1985-price-uprising",
+     "shared_words": [
+      "fund",
+      "international",
+      "khartoum",
+      "sudan"
+     ],
+     "case_years": [
+      1985,
+      1985
+     ],
+     "case_title": "Sudan 1985 price protests and fall of Nimeiri",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G181",
+   "aiddata_rows": [
+    {
+     "id": 42029,
+     "title": "China Eximbank extends $2 billion master buyer’s credit loan facility agreement in March 2004 (Linked to Project ID#34030 and #85457)",
+     "amount_usd_2021": 4555304243.77327,
+     "year": 2004,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Angola",
+   "iso3": "AGO",
+   "year": 2004,
+   "sector": "OTHER MULTISECTOR",
+   "infrastructure": null,
+   "title": "China Eximbank extends $2 billion master buyer’s credit loan facility agreement in March 2004 (Linked to Project ID#34030 and #85457)",
+   "rank_score": 8,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "arrest or detention": [
+     {
+      "field": "Description",
+      "sentence": "He received a suspended death sentence, which—in line with usual practice in China for such a penalty—was commuted to life imprisonment in 2020.",
+      "aiddata_row": 42029
+     }
+    ],
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "He received a suspended death sentence, which—in line with usual practice in China for such a penalty—was commuted to life imprisonment in 2020.",
+      "aiddata_row": 42029
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On November 28, 2003, the Chinese Government and the Angolan Government signed a framework agreement pertaining to a special economic cooperation arrangement (Agreement name in Chinese: 中华人民共和国商务部与安哥拉共和国财政部关于两国经贸合作特殊安排的框架协议).  Following the signing of the framework agreement, on March 2, 2004, China Eximbank entered into a $2 billion Master Loan Facility Agreement (MLFA) with the Government of Angola. All borrowings under the MLFA, which is an oil prepayment facility, carried the following borrowing terms: a 21.5 maturity, a 1.5 year grace period, an interest rate of 3-month LIBOR plus a 1.5% margin, a 0.3% management fee, and a 0.3% commitment fee.  The facility was split between a $1.0 billion Phase I facility and a $1.0 billion Phase II facility.  Availability of the Phase II facility was subject to confirmation by the lender on or prior to the date falling five years after satisfaction of the conditions precedent to the MLFA and was made available by China Eximbank during that period.  The MLFA is a framework agreement under which the Government of Angola and China Eximbank may conclude individual buyer’s credit loan agreements (ILAs or subsidiary loan agreements) for the purpose of financing up to 90% of the contract price owing to certain contractors in respect of certain contracts.  The first tranche of the facility was released in December 2004.  The facility was fully drawn down as of December 31, 2017.  Sonangol provided a source of collateral under the MLFA, and repayments were made with the proceeds of oil sales from Sonangol to UNIPEC (China international United Petroleum & Chemicals Co. Ltd, Sinopec group), which were deposited in an Angolan Ministry of Finance (MINFIN) account at China Eximbank.  The volume of oil to be sold to UNIPEC each month for repayment of the loan varied according to market oil prices.  Under the agreement, 70% of works have to be contracted with Chinese companies and the same proportion of construction material, equipment and labour has to be contracted in China.  Loan disbursements were made on a project-by-project basis.  Tendering, management and payments were jointly managed by the Chinese Ministry of Commerce and the Angolan Ministry of Finance (which coordinated the various Angolan line ministries responsible for supervising the projects).   The Angolan Ministry of Finance submitted the projects for tendering; China Eximbank selected Chinese candidate firms for the projects; and a joint commission made the final firm selections. The process was managed by an office in the Angolan Ministry of Finance -- known as Gabinete de Apoio Técnico (GAT) -- that was specifically created to manage the MLFA with China Eximbank.  On June 9, 2015, Angola and China Eximbank entered into amendments of this MLFA and others in order to realign payments of drawn amounts under certain ILAs with the revised schedules of progress and/or completion of certain specified public investment projects, the timing and/or scale of which was altered when the revised 2015 national budget was adopted in March 2015. However, it is unclear whether the borrowing terms of the MLFA were amended.  The following is a list of projects financed through Phase I of the facility (as of December 31, 2007). A portion of the following projects were signed as part of a commercial contract between Sinomach and Angola's Ministry of Education to construct 28 schools (captured via Project ID#85457):  Project ID#34772, a $12.5 million loan to Angola for the Bus Transport Project, which involved the acquisition of 250 buses Project ID#34773, a $41 million loan to Angola for construction of two agriculture schools in Huambo and Bié  Project ID#34774, a $15.2 million loan to Angola for rehabilitation of Malange Agricultural School Project ID#34775, a $16.1 million loan to Angola for construction and equipping of three secondary schools in Luanda, one in Benguela Project ID#34776, a $53,044,838 loan for four technical schools in Luanda and two technical schools in Benguela Project ID#34777, a $7.18 million loan for construction of 2 secondary schools in Malange Project ID#34778, a $12.88 million loan for construction of technical institute and secondary school in Huila  Project ID#34779, a $41.2 million loan for construction and equipping of two agricultural schools in Kwanza-Sul and Kwanza Norte Project ID#34794, a $8.66 million loan for the construction of Instituto Médio Politécnico no Sumbe  Project ID#34796, a $26.26 million loan for the rehabilitation and equipping of Malange Hospital Project #34798, a $36.47 million loan for rehabilitation and equipping of Benguela Regional Hospital  Project ID#34841, a $10.81 million for the construction and equipping of health centers in Malange  Project ID#73809, a $8.33 million loan for the rehabilitation and equipping of Namibe Municipal Hospital Project ID#34843, a $43.254 million loan for the construction and equipping of regional hospital in Lubango  Project ID#34844, a $32.134 million for the rehabilitation and equipping of Huambo Central Hospital as well as for the provision of 86 ambulances Project ID#34845, a $3.6 million for the construction and equipping of Huambo Health Center Project ID#34846, a $16.67 million loan for the construction and equipping of 2 municipal hospitals in Kwanza-Norte and Kwanza-Sul  Project ID#34783, a $7.2 million loan for the construction and equipping of 2 Kwanza-Norte Health Centers Project ID#34784, a $95.3 million loan to Angola for Phase I of irrigation construction in Caxito, Gandjelas, Luena, and Wako-Kungo Project ID#34785, a $28.871 million loan for the purchase of agriculture equipment for MECANAGRO  Project ID#34786, a $20.131 million loan for purchase of agricultural equipment, machines and tools for MECANAGRO and Instiuto de Desenvolvimiento Agrário Project ID#34787, a $40 million loan for the rehabilitation and expansion of Luanda Electric Grid Phase II Project ID#34788, a $13.13 million loan for the reconstruction of Quifangondo LT 60 kv and substation  Project ID#34789, a $34.53 million loan for the construction of third 220 kv transmission line in Cambambe Project ID#34847, a $26.564 million loan for the construction of the Luanda Sul substation and 220 kv transmission line Project ID#34848, a $25.423 million loan for the construction of the Capanda, Lucala and Ndalatando LT 220 Kv transmission line Project ID#34849, a $40.225 million loan for the partial rehabilitation of the Luanda water supply system  Project ID#34850, a $20.136 million loan for the rehabilitation of the water supply system in Huambo  Project ID#34851, a $19.385 million loan for rehabilitation of water supply system in Caxito, Catete, and Uige Project ID#34852, a $60 million loan for the construction and equipping of TPA center in Camama  Project ID#34853, a $190.515 million loan for the rehabilitation of the highway in Quifangondo, Caxito, Uige, and Negage  The following is a list of projects financed through Phase II of the facility (as of June 30, 2008): Project ID#34836, a $39.424 million loan for the construction and equipping of hospitals and health centers in Huambo, Huila, and Benguela Project ID#34840, a $62.187 million loan for the construction and equipping of secondary schools, technical institutes, and administrative centers in Huambo, Juila, Bie, Cunene, Cuando, and Cubango Project ID#34881, a $83.909 million loan for the construction and equipping of technical institutes, administrative institutes, and secondary schools in Luanda, Bengo, Cabinda, Namibe, and Zaire Project ID#34883, a $60.581 million loan for the construction and equipping of technical institutes, agricultural institutes, administration institutes, and a secondary school in Luanda-Sul, Luanda-Norte, Uige, and Moxico Project ID#34884, a $43.578 million loan for the completion of university campus facilities Project ID#34885, a $36.963 million loan for the construction of the Palácio da Justiça in Luanda Project ID#34887, a $88.307 million loan for provision of 25 fishing boats and 1000 canoes Project ID#34889, a $88.062 million loan for the provision of 5 patrol boats, 10 shrimping boats, and 2000 canoes Project ID#34890, a $63.792 million for the provision of 10 fishing boats, 1 speedboat, 1 naval launch base, 5 patrol vessels, and 1 tugboat Project ID#34898, a $48.606 million loan to Angola for Phase II of irrigation construction in Caxito, Gandjelas, Luena, and Wako-Kungo Project ID#34917, a $66.898 million loan for construction of New Generation Network in Bengo, Bie, Kwanza-Norte, Kwanza-Sul, Luanda, Malange, and Moxico  Project ID#34918, a $61.195 million loan for construction of New Generation Network in Benguela, Kwanza Norte, Cunene, Huambo, Uige, and Zaire Project ID#34919, a $67.747 million loan for construction of New Generation Network in Huambo, Bie, Huila, and Luanda; including optic fibre cabling, IP, VSAT, and intelligence network Project ID#34920, a $52.871 million loan for construction of New Generation Network in Bie, Huambo, Huila, and Luanda Project ID#34921, a $25.637 million loan for rehabilitation and expansion of MT/BT networks in Luanda  Project ID#34923, a $26.866 million loan for rehabilitation and expansion of MT/BT networks in Malange  Project ID#34924, a $45.627 million loan for rehabilitation and expansion of MT/BT networks in Luanda-Sul, Luanda-Norte, Dundo, and Saurimo Project ID#34925, a $32.317 million loan for the rehabilitation and reinforcement of water systems in Luanda-Sul, Luanda-Norte, Dundo, and Saurimo  There is evidence that some of the borrowings approved through MLFA and projects financed through the MLFA were plagued by corruption. Dai Chunning, a China Eximbank official, was convicted in 2017, more than a year and a half after he first stood trial behind closed doors, on corruption charges including taking bribes. He denied some of the allegations against him and later lost an appeal against his conviction. He received a suspended death sentence, which—in line with usual practice in China for such a penalty—was commuted to life imprisonment in 2020. Prosecutors said that Dai Chunning, acting by himself or with associates, solicited or took bribes worth more than RMB 200 million, and attempted to defraud the state of some $19 million in assets, according to court documents. Leung Ping, a well-connected businessman, told Chinese investigators that he, at Dai Chunning’s behest, teamed up with a Hong Kong businessman named Yu Tai Wai (who at the time represented the Angolan Government in talks to secure infrastructure loans from China) to broker Chinese infrastructure projects in Angola and help everyone involved 'make money together.' Leung Ping said Yu Tai Wai represented Angolan parties in talks to negotiate Chinese loans (through the MLFA) and consulting fees for the projects. Dai Chunning and his associates would take these fees as kickbacks for themselves and use a portion of them to pay bribes to Angolan officials, according to Leung Ping's our testimony.  There are also some indications that the Government of Angola's borrowings under the March 2004 MLFA have financially underperformed vis-a-vis the original expectations of the lender. As a result of the Government of Angola’s decision to avail itself of the G20's Debt Service Sustainability Initiative (DSSI), the MLFA and ILAs entered into by China Eximbank and the Government of Angola (described above) were under DSSI treatment and payments due by the Government of Angola under these finance agreements were suspended from May 1, 2020 until December 31, 2021.",
+    "staff_comments": "1. The 2003 framework agreement (中华人民共和国商务部与安哥拉共和国财政部关于两国经贸合作特殊安排的框架协议) specified that Sinosure would be signing relevant agreements with the Government of Angola, although the nature of the agreements is unclear. AidData has coded Sinosure as an accountable agency and as providing insurance for the loan.  2. AidData considers this loan to be collateralized in a de facto sense. The cash deposited by the Angolan Ministry of Finance into a bank account controlled by China Eximbank is, for all intents and purposes, a source of collateral. This is true even if the lender does not have a formal security interest in the account.3. AidData relies on the maturity, grace period, and interest rate that are recorded in the World Bank's Debt Reporting System (a 3.0899% interest rate, a 21.5 year maturity, and a 1.5 year grace period). See https://www.dropbox.com/s/ab8qt4n6jijcbhd/IDS_Average%20interest%20on%20new%20external%20debt%20commitments.xlsx?dl=0 and https://www.dropbox.com/s/949n5rctiue6d7c/IDS_Average_grace_period_and_maturity_on_new_external_debt_commitments.xlsx?dl=0 and https://www.dropbox.com/s/2sw4f7gluxa52fk/DRS%20Official%20Commitments%20from%20China%20Through%202021.xlsx?dl=0 and https://www.dropbox.com/s/0vpohwt96l40o19/World%20Bank%20DRS%20Extract%20Sep%202021%20--%20Chinese%20Loan%20Commitments%20from%202013%20to%202019.xlsx?dl=04.  According to another World Bank source {{see pg.19 of Source ID#85131}}, all borrowings under the MLFA carried a management fee (comissão de gestão) of 0.3%; a commitment fee (comissão de imobilização) of 0.3%, and an installation fee (comissão de instalação) of 1%.5. Project ID#34030 captures a $500 million MLFA the Government of Angola entered into with China Eximbank intended for complementary actions to corresponding sub-projects of this $2 billion MLFA.",
+    "location_narrative": "",
+    "description_chars": 11618,
+    "was_truncated_in_lead_file_by": 10418
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "angola-april-2024-diesel-price-rise",
+     "shared_words": [
+      "angola",
+      "price",
+      "under"
+     ],
+     "case_years": [
+      2024,
+      2024
+     ],
+     "case_title": "Angola April 2024 Diesel Price Rise Under the World Bank Loan",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G299",
+   "aiddata_rows": [
+    {
+     "id": 58737,
+     "title": "China Eximbank provides $200.5 million loan — via EPCF arrangement — for Karimenu II Dam Water Supply Project",
+     "amount_usd_2021": 231079062.03031,
+     "year": 2017,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Kenya",
+   "iso3": "KEN",
+   "year": 2017,
+   "sector": "WATER SUPPLY AND SANITATION",
+   "infrastructure": "Yes",
+   "title": "China Eximbank provides $200.5 million loan — via EPCF arrangement — for Karimenu II Dam Water Supply Project",
+   "rank_score": 7,
+   "flags": [
+    "displaced or resettled"
+   ],
+   "decisive_buckets": [
+    "compensation withheld"
+   ],
+   "candidate_sentences": {
+    "compensation withheld": [
+     {
+      "field": "Description",
+      "sentence": "However, in early 2021, Gatundu North residents who had surrendered 383 acres of land for construction (phase 2) had still not received compensation and they vowed to block excavation works at the project site.",
+      "aiddata_row": 58737
+     }
+    ],
+    "land taken": [
+     {
+      "field": "Description",
+      "sentence": "The committee also found that Athi Water Services Board had not yet issued a commencement to proceed letter to the EPCF contractor because of land acquisition challenges.",
+      "aiddata_row": 58737
+     },
+     {
+      "field": "Description",
+      "sentence": "The parliamentary committee also called upon Kenya's Auditor General to conduct a special audit to \"investigate the circumstance under which agreements were signed between the Athi Water Works Develoment Agency and the contractor (AVIC International) and advance payments were made before the acquisition of the requisite land for implementation of the Karimenu II Dam leading to loss of public funds through idle time.\" It further recommended that \"[i]f any culpability is found, the perpetrators should be prosecuted.\" A resettlement action plan (RAP) was implemented for priority areas, and a comp",
+      "aiddata_row": 58737
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On April 24, 2017, Kenya's Ministry of Water and Sanitation -- through Athi Water Services Board (AWSB) -- signed an Engineering, Construction, Procurement, and Financing (EPCF) contract worth $235,918,461 with M/S Avic International Holding Corporation and Shanghai Municipal Engineering Design Institute (Group) Co., LTD Joint Venture (AVIC & SMEDI JV) for the Karimenu II Dam Water Supply Project. AVIC & SMEDI JV, in turn, secured a $200,530,600 loan on February 14, 2017 from China Eximbank to finance 85% of the cost of the $235,918,461 EPCF contract. The loan’s final maturity date is July 21, 2042 and it is repayable in 20 equal, semi-annual installments. Therefore, its implied maturity length and grace period are 25.5 years and 15.5 years, respectively. The Government of Kenya appears to have issued a sovereign guarantee in support of the loan.   Loan disbursements worth $13,364,912.29 took place between July 1, 2020 and June 30, 2021 (Fiscal Year 2020-2021). Loan disbursements worth $133,093,268.26 took place between July 1, 2021 and June 30, 2022 (Fiscal Year 2021-2022).  The loan’s amount outstanding was $11,795,831.20 as of June 30, 2020, $25,160,743.49 as of June 30, 2021, and $158,254,011.75 as of June 30, 2022.   The Karimenu II Dam Water Supply Project involves the construction of a 59-meter-high dam with a capacity of 26.5 million cubic meters of water, a water treatment plant (with 70,000 m3 per day of capacity), and a water distribution system (involving 67 km of raw and treated water pipelines and two terminal tanks in Ruiru and Juja). It will be constructed across Kariminu River at Kiriko in Gatundu North Sub-County, Kiambu County in order to supply an additional 850,000 people with 70 million liters/day of water to Juja Town (11.75 million liters/day), Ruiru Town (35.25 million liters/day) and Nairobi City (23 million liters/day). It is just upstream of the main bridge linking Buchana to Kariko and Gituamba Markets about 6km from Kanyoni market on the Thika – Gituamba road. The dam will be constructed across Kariminu River downstream of its confluence with its tributaries including Gathanje, Kagundu and Githanga. The project requires the acquisition of 600 acres of land: 171 acres during phase 1 for the dam’s embankment and water draw-off structures and 429 acres during phase 2 for the reservoir area.   AVIC & SMEDI JV is the EPC contract responsible for implementation.  The project was originally scheduled to commence in January 2018 and reach completion by December 2022. However, it has encountered various delays and implementation challenges. After mobilization of the environmental and social impact assessment (ESIA) study team, a commencement meeting with Athi Water Services Board (AWSB) took place on March 16, 2016, followed by a combined reconnaissance site visit on April 6, 2016. Then, in mid-2017, an advance payment worth 20% of the EPCF contract ($47,183,692) was made to AVIC & SMEDI JV against a bank guarantee. On March 28, 2019, a Kenyan parliamentary committee conducted an on-site project inspection and found that no works had commenced 24 months after agreements were signed and an advance payment of KES 4 billion ($47,183,692) was made to the contractor (AAVIC & SMEDI JV). The committee also found that Athi Water Services Board had not yet issued a commencement to proceed letter to the EPCF contractor because of land acquisition challenges. The parliamentary committee also called upon Kenya's Auditor General to conduct a special audit to \"investigate the circumstance under which agreements were signed between the Athi Water Works Develoment Agency and the contractor (AVIC International) and advance payments were made before the acquisition of the requisite land for implementation of the Karimenu II Dam leading to loss of public funds through idle time.\" It further recommended that \"[i]f any culpability is found, the perpetrators should be prosecuted.\" A resettlement action plan (RAP) was implemented for priority areas, and a compensation process for 246 project affected persons was undertaken in order to acquire 171 acres of land (as part of phase 1). However, in early 2021, Gatundu North residents who had surrendered 383 acres of land for construction (phase 2) had still not received compensation and they vowed to block excavation works at the project site. One local resident said “[w]e gave the land to the government for the construction of the dam and we were promised to wait for compensation several months ago. We are, however, shocked that the land is being excavated even before we get our pay,.” Jane Wanjiru, another resident, said that the surrendered land was their only source of livelihood and they had not cultivated this season to allow for the construction of the dam: “[w]e can’t fight the government; we hope that this matter is resolved. These frustrations are making us hopeless and we need to have our lives back. We are calling on the National Land Commission (NLC), which has been executing the compensation exercise and the Athi Water Services that is implementing the project to intervene and solve the prevailing tussle to allow smooth construction works to go on.” Construction ultimately began on or near August 1, 2019. As of September 2019, the project had achieved a 5% completion rate. June 2021, a pipe laying works ceremony took place. At that point in time, the project had achieved a 45% completion rate and the other key project milestones that had not yet been met were groundbreaking, tunnel breakthrough, completion of tunnel secondary lining, river diversion, and substantial completion of dam foundation treatment works. The dam was ultimately completed and officially completed on August 1, 2022.",
+    "staff_comments": "1. This project is also known as the Kariminu II Dam Project. The Chinese project title is Karimenu大坝供水项 or 肯尼亚卡瑞曼纽大坝供水项目. 2. Joseph Wairagu Irungu, the Principal Secretary of Kenya’s Ministry of Water and Sanitation, identified the face value of the China Eximbank loan as KES 23.6 billion on January 1, 2019. However, AidData relies upon the face value of the loan ($200,530,600) that is recorded in the Government of Kenya’s external public debt register (https://www.treasury.go.ke/wp-content/uploads/2021/09/External-Public-Debt-Register-as-at-End-June-2020.pdf). 3. In the database of Chinese loan commitments that it released in July 2020, SAIS-CARI identifies the face value of the China Eximbank loan for the Karimenu II Dam Water Supply Project as $31 million. Boston University’s Global Development Policy Center reports a face value of $229 million in its China’s Global Development Finance Dataset. AidData instead relies on the $200,530,600 that is recorded in the Government of Kenya’s external public debt register. 4. Karimenu II Dam was first identified through a feasibility study carried out in 2012 by the AWSB as a source of water for supply to Ruiru and Juja towns and parts of Nairobi. 5. Under most EPCF contractual arrangements, a loan is extended to the EPC contractor but with a sovereign guarantee from the host government. Therefore, AidData assumes that the loan issued to AVIC & SMEDI JV is backed by a repayment guarantee from the Government of Kenya (i.e. a sovereign guarantee). 6. The loan identification number in the Government of Kenya’s external public debt register is 2017011_1.7. The amounts outstanding, disbursements and repayments data are drawn from the Kenyan Treasury’s External Public Debt Register. See https://www.dropbox.com/s/549ixt2gj1jbjvi/External-Public-Debt-Register-as-at-End-June-2022.pdf?dl=0 and https://www.dropbox.com/s/0et4jg1qfg1bo7r/External-Public-Debt-Register-as-at-End-June-2021.pdf?dl=0 and https://www.dropbox.com/s/233j706743q7f1g/External-Public-Debt-Register-as-at-End-June-2020.pdf?dl=0 and https://www.dropbox.com/s/qkoybr9ja0ohemy/External-Public-Debt-Register-as-at-End-June-2009.pdf?dl=0 and https://www.dropbox.com/s/thy3s6ggjcjd97z/External-Public-Debt-Register-as-at-End-June-2012.pdf?dl=0 and https://www.dropbox.com/s/fzbfq01vas6m0i9/External-Public-Debt-Register-as-at-End-June-2019.pdf?dl=0 and https://www.dropbox.com/s/ennrl6d4zd2nizs/External-Public-Debt-Register-as-at-End-June-2018.pdf?dl=0 and https://www.dropbox.com/s/8ibazrj1a8oho2d/External-Public-Debt-Register-as-at-End-June-2017.pdf?dl=0 and https://www.dropbox.com/s/wdbjl0wq49i09x1/External-Public-Debt-Register-as-at-End-June-2015.pdf?dl=0",
+    "location_narrative": "The purpose of this project is to supply water to Ruiru, Juja and Thika. The dam is being constructed across Karimenu River at Kiriko in Gatundu North Sub-County, Kiambu County in order to supply an additional 850,000 people with 70 million litres/day of water to Juja Town (11.75 million liters/day), Ruiru Town (35.25 million liters/day) and Nairobi City (23 million liters/day). It is just upstream of the main bridge linking Buchana to Kariko and Gituamba Markets about 6km from Kanyoni market on the Thika – Gituamba road. The dam will be constructed across Kariminu River downstream of its confluence with its tributaries including Gathanje, Kagundu and Githanga. More detailed locational information can be found at https://www.openstreetmap.org/node/44931883#map=17/-0.65556/37.39857 and https://www.nema.go.ke/images/Docs/EIA%20-%201270%20-%201279/EIA_1274%20Kariminu%20Dam%20II%20ESIA%20study%20report.pdf",
+    "description_chars": 5751,
+    "was_truncated_in_lead_file_by": 4551
+   },
+   "r36_dedupe_hint": {
+    "case_id": "nutrip-road-compensation-arrears",
+    "shared_words": [
+     "county",
+     "kiambu",
+     "nairobi"
+    ],
+    "strength": 3
+   },
+   "local_match": [
+    {
+     "case": "nutrip-road-compensation-arrears",
+     "shared_words": [
+      "between",
+      "county",
+      "kenya",
+      "kiambu",
+      "land",
+      "nairobi",
+      "site"
+     ],
+     "case_years": [
+      2012,
+      2019
+     ],
+     "case_title": "Unpaid Road Compensation and a Site Death on the Nairobi and Kisumu Road Works",
+     "strength": "strong"
+    },
+    {
+     "case": "bridge-academies-kenya",
+     "shared_words": [
+      "across",
+      "international",
+      "kenya",
+      "nairobi"
+     ],
+     "case_years": [
+      2013,
+      null
+     ],
+     "case_title": "Bridge International Academies, Kenya",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "kenya-finance-bill-2024",
+     "shared_words": [
+      "international",
+      "kenya",
+      "nairobi"
+     ],
+     "case_years": [
+      2024,
+      2024
+     ],
+     "case_title": "Kenya Finance Bill Protests",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "kenya-1991-university-fees-esac",
+     "shared_words": [
+      "across",
+      "kenya",
+      "nairobi"
+     ],
+     "case_years": [
+      1991,
+      1995
+     ],
+     "case_title": "Kenya 1991 University Fees Under the World Bank Education Adjustment Credit",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G193",
+   "aiddata_rows": [
+    {
+     "id": 46183,
+     "title": "China Eximbank provides $491.7 million buyer's credit loan for 100 km Ali Sabieh to Nagad Section of Addis Ababa–Djibouti Railway Project (Linked to Project ID#59420, #85163, #70083, #70085, and #70086)",
+     "amount_usd_2021": 554760480.111095,
+     "year": 2013,
+     "status": "Completion",
+     "decisive": true
+    },
+    {
+     "id": 70083,
+     "title": "China Eximbank provides $220 million buyer’s credit loan for Addis Ababa–Djibouti Railway Rolling Stock Supply Project (Linked to Project ID#30171, #70085, #70086, #61941, #85163)",
+     "amount_usd_2021": 248699346.697845,
+     "year": 2013,
+     "status": "Completion",
+     "decisive": true
+    },
+    {
+     "id": 70085,
+     "title": "China Eximbank provides $981 million buyer’s credit loan for the Addis Ababa–Djibouti Railway Project (Linked to Project ID#30171, #70086, #70083, #61941, #85163)",
+     "amount_usd_2021": 1106897147.20179,
+     "year": 2013,
+     "status": "Completion",
+     "decisive": true
+    },
+    {
+     "id": 70086,
+     "title": "China Eximbank provides $1.2 billion buyer’s credit loan for the Addis Ababa–Djibouti Railway Project (Linked to Project ID#30171, #70085, #70083, #61941, #85163)",
+     "amount_usd_2021": 1454071828.83271,
+     "year": 2013,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Ethiopia",
+   "iso3": "ETH",
+   "year": 2013,
+   "sector": "TRANSPORT AND STORAGE",
+   "infrastructure": "Yes",
+   "title": "China Eximbank provides $1.2 billion buyer’s credit loan for the Addis Ababa–Djibouti Railway Project (Linked to Project ID#30171, #70085, #70083, #61941, #85163)",
+   "rank_score": 6,
+   "flags": [
+    "protest or unrest",
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "Field interview evidence has also revealed a number of accidents involving animals (camels in particular) being hit by trains and killed.",
+      "aiddata_row": 70086
+     },
+     {
+      "field": "Description",
+      "sentence": "Field interview evidence has also revealed a number of accidents involving animals (camels in particular) being hit by trains and killed.",
+      "aiddata_row": 70085
+     },
+     {
+      "field": "Description",
+      "sentence": "Field interview evidence has also revealed a number of accidents involving animals (camels in particular) being hit by trains and killed.",
+      "aiddata_row": 70083
+     },
+     {
+      "field": "Description",
+      "sentence": "Interviews also revealed a number of accidents involving animals (camels in particular) being hit by trains and killed.",
+      "aiddata_row": 46183
+     }
+    ],
+    "protest with specifics": [
+     {
+      "field": "Description",
+      "sentence": "Railway service interruptions have also occurred due to protests, For example, in late July 2021, a group of Somali Region protestors blocked the railway line following an attack by Afar regional militia.",
+      "aiddata_row": 70086
+     },
+     {
+      "field": "Description",
+      "sentence": "Railway service interruptions have also occurred due to protests, For example, in late July 2021, a group of Somali Region protestors blocked the railway line following an attack by Afar regional militia.",
+      "aiddata_row": 70085
+     },
+     {
+      "field": "Description",
+      "sentence": "Railway service interruptions have also occurred due to protests, For example, in late July 2021, a group of Somali Region protestors blocked the railway line following an attack by Afar regional militia.",
+      "aiddata_row": 70083
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On May 15, 2013, China Eximbank and the Government of Ethiopia signed a $2,490,760,000 buyer’s credit loan (BCL) agreement for the Addis Ababa–Djibouti Railway Project. The BCL carried the following borrowing terms: a 15-year maturity, a 6-year grace period, and an interest rate of LIBOR plus a 3% margin. The loan was also backed by a credit insurance policy from China Export and Credit Insurance Corporation (SINOSURE). China Eximbank provided the loan in three separate loan tranches. The first tranche is worth $1,289,029,000 (captured via Project ID#70086) and it supported the Sebeta-Adama–Meiso Section of the Addis Ababa–Djibouti Railway Project. The second tranche is worth $981,260,000 (captured via Project ID#70085) and it supported the Meiso-Dewanle Section of the Addis Ababa–Djibouti Railway Project.  The third tranche is worth $220,471,000 (captured via Project ID#70083) and it supported the Addis Ababa–Djibouti Railway Rolling Stock Supply Project. The borrower was expected to use the proceeds of the $1,289,029,000 China Eximbank loan tranche to finance 70% of the cost of a $1,841,470,000.00 commercial (EPC) contract between the Ethiopian Railway Corporation (ERC) and China Railway Engineering Corporation (CREC), which was signed on October 25, 2011 (and modified on November 5, 2012, February 7, 2013, and March 15, 2013) to support the construction of a 329 km Sebeta (Addis Ababa) to Miesso section of the railway. The borrower was expected to use the proceeds of the $981,260,000 China Eximbank loan to finance 70% of the cost of a $1,401,800,000 commercial (EPC) contract between the ERC and China Civil Engineering Construction Corporation (CCECC), which was signed on December 16, 2011 (and modified on modified on November 2, 2012, February 7, 2013 and March 8, 2013) to support the construction of a 339 km section of the railway that runs from Miesso (Meiso) to Dewelle (Dewanle) on Ethiopia's border with Djibouti. The borrower was expected to use the proceeds of the $220,471,000 China Eximbank loan to finance approximately 85% of a $259 million commercial contract between China North Industries Corporation (NORINCO) and the ERC, which was signed in March 2013 to support the Addis Ababa–Djibouti Railway Rolling Stock Supply Project. The purpose of the Addis Ababa–Djibouti Railway Project was to construct a 750.224 km railway from Sebeta to Nagad. The purpose of the Sebeta-Adama–Meiso Section of the Addis Ababa–Djibouti Railway Project was to construct a 329.065 km railway section from Sebeta to Meiso (Mieso) that consists of two subsections: a 113.836 km railway subsection from Sebeta to Adama and a 215.229 km subsection from Adama to Meiso (Mieso). The purpose of the Meiso-Dewanle Section of the Addis Ababa–Djibouti Railway Project was to construct a 339.182 km railway section from Meiso (Mieso) or to Dewelle (Dewanle/Dawanle) on Ethiopia's border with Djibouti. The line runs from Mieso to the east — via Mulu, Afdem, Bike,Gota, Erer, and Hurso — to Dire-Dawa. It then turns to the north before reaching Arawa, and then runs from Adigala to Lasarat, Aysha, Dawanle and the border between Ethiopia and Djibouti.  The purpose of the Addis Ababa–Djibouti Railway Rolling Stock Supply Project was to acquire 5 electric locomotives, 6 diesel locomotives, 30 railway passenger cars and 1,100 railway freight cars for the Addis Ababa–Djibouti Railway.  * Loan Disbursements: According to the Government of Ethiopia’s Aid Management Platform (AMP), the $1,289,029,000 (ETB 24,004,264,432) loan tranche for the Sebeta-Adama–Meiso Section of the Addis Ababa–Djibouti Railway Project achieved a 104% disbursement rate, with China Eximbank making 14 loan disbursements (worth ETB 24,905,259,256) between 2014 and 2020: an ETB 1,062,992,126 disbursement on July 8, 2014, an ETB 5,420,000,000 disbursement on October 8, 2014, an ETB 2,303,030,303 disbursement on January 8, 2015, an ETB 5,597,115,886 disbursement on April 8, 2015, an ETB 1,808,159 disbursement on October 7, 2015, an ETB 1,740,583,177 disbursement on January 7, 2016, an ETB 825,731,677 disbursement on April 7, 2016, an ETB 2,165,153,034 disbursement on July 7, 2016, an ETB 143,690,666 disbursement on October 7, 2016, an ETB 923,238,863 disbursement on January 7, 2017, an ETB 325,274,645 disbursement on April 7, 2017, an ETB 372,159,087 disbursement on July 7, 2017, an ETB  1,422,471,270 disbursement on September 20, 2017, and an ETB 2,602,010,364 disbursement on November 12, 2020. According to the Government of Ethiopia’s AMP, the $981,260,000 (ETB 18,272,998,138) loan tranche for the Meiso-Dewanle Section of the Addis Ababa–Djibouti Railway Project achieved a 75% disbursement rate, with China Eximbank making 8 loan disbursements (worth ETB 13,669,737,755 ) between 2014 and 2017: an ETB 5,580,000,000 disbursement on October 8, 2014, an ETB 2,585,858,586 disbursement on January 8, 2015, an ETB 1,515,331,236 disbursement on July 8, 2015, an ETB 243,681,645 disbursement on January 7, 2016, an ETB 1,660,143,553 disbursement on July 7, 2016, an ETB 1,092,814,700 disbursement on October 7, 2016, an ETB 448,108,619 disbursement on January 7, 2017, and an ETB 543,799,417 disbursement on July 7, 2017. According to the Government of Ethiopia’s Aid Management Platform (AMP), the $220,471,000 (ETB 4,105,605,214) loan tranche for the Addis Ababa–Djibouti Railway Rolling Stock Supply Project achieved a 115% disbursement rate, with China Eximbank making 12 loan disbursements (worth ETB 4,738,085,121) between 2014 and 2021: an ETB 665,417,485 disbursement on December 4, 2014, an ETB 160,812,787 disbursement on August 4, 2015, an ETB 153,698,778 disbursement on September 8, 2015, an ETB 59,771,749 disbursement on December 14, 2015, an ETB 102,465,859 disbursement on December 21, 2015, an ETB 91,306,426 disbursement on February 18, 2016, an ETB 119,581,905 disbursement on May 26, 2015, an ETB 1,969,772,945 disbursement on June 8, 2016, an ETB 298,939,684 disbursement on October 28, 2016, an ETB 166,925,102 disbursement on April 6, 2017, an ETB 245,832,231 disbursement on June 21, 2019,  and an ETB 703,560,172 disbursement on January 20, 2021.\\  * Project Design:  The 759 km Addis Ababa–Djibouti Railway (‘Yali Railway’) is the only railway line connecting landlocked Ethiopia with a Djibouti Port. The railway begins at Sebeta, just outside of Ethiopia's capital of Addis Ababa. The city is served by two stations in its southern outskirts, at Furi-Labu and Indode. The line then runs southeast to Modjo and Adama, both towns located in the Ethiopian Great Rift Valley. At Modjo, a railway junction exists for the planned Modjo–Hawassa Railway. In addition, at Modjo the railway is connected to the Modjo Dry Port, Ethiopia's most important inland dry port and also Ethiopia's main hub for domestic and international freight services. At Adama, the railway turns northeast towards Dire Dawa. At Awash, there is a junction with the Awash–Hara Gebeya Railway, which is under construction as of 2018. Directly after Awash station, the line crosses 60 meters above the Awash River canyon over a 155 meter long bridge, the main bridge of the railway.The railway then proceeds to Dire Dawa, where it turns and heads directly for Djibouti. Crossing the Ethiopia-Djibouti border between Dewale and Ali Sabieh, the line reaches the Djibouti passenger terminal at Nagad railway station, near Djibouti–Ambouli International Airport. In February 2001; the Government of Ethiopia asked CCECC to inspect the line and propose a construction plan. This plan was put on hold for several years due to a lack of funding. After years of continued deterioration due to mismanagement, a 2007 pre-feasibility study indicated that the line needed to be renovated (at a cost of approximately $3.4 billion. The proposed renovation of the railway was designed to include a double track from Addis Ababa to Adama, a single track from Adama to Dewele, a 1035 meter long bridge, the grand bridge at DK42, the 155 meter Awash grand bridge, and a Labu station upgrade. Upon completion, it was envisaged that the Yaji Railway would run passenger trains (at 120 km/hr) and cargo trains (at 80 km/hr).   * Project Implementation:  Construction began in 2012 and the project as a whole had achieved a 50% completion rate by 2014.  Track laying for the railway began in May 2015.  The railway was opened for passenger services on October 4, 2016. Then, on December 31, 2017, Ethiopian Railway Company issued a project handover certificate to CREC and CCECC. The next day, on January 1, 2018, a ceremony was held to mark the beginning of the railway’s commercial operations. Two days later, in January 3, 2018, a two-way passenger train on the Ethiopian section of the railway went into service.  The Yali Railway was the first overseas railway constructed by Chinese enterprises that adhered to international standards (1,435 mm gauge line and electrification at 25 kV) and used Chinese equipment (CSR Zhuzhou for the rolling stock). The Sebeta-Adama–Meiso Section of the Addis Ababa–Djibouti Railway Project was originally scheduled (under the terms of the EPC contract) to commence on February 12, 2012 and reach completion within 42 months (August 12, 2015). It was ultimately completed about 15 months behind schedule (November 12, 2016).  The Meiso-Dewanle Section of the Addis Ababa–Djibouti Railway Project was originally scheduled (under the terms of the EPC contract) to commence on April 12, 2012 and reach completion within 42 months (October 12, 2015). It was ultimately completed about 14 months behind schedule (December 12, 2016). The Addis Ababa–Djibouti Railway Rolling Stock Supply Project was implemented between 2013 and 2015.  In April 2014, three diesel locomotives manufactured by arrived in Ethiopia by sea. Then, in October 2015, the ERC took delivery of 315 locomotives — that carry passengers and freight —  from NORINCO and Metals and Engineering Corporation. On December 13, 2015, 22 electric locomotives, 6 diesel locomotives and 6 passenger carriages arrived in the Port of Djibouti.   * Railway Operations & Management (Project Supervision and Control): On July 28, 2016, CREC and CCECC signed the Ethiopia-Djibouti Railway Operation and Management Agreement. The agreement specified that the CREC-CCECC consortium (also known as the CCECC-CREC JV and 中土集团与中铁二局亚吉铁路联营体公司) would manage the railway for 5 years (following construction completion). Then, on December 16, 2015, ERC and Société Djiboutienne de Chemin de Fer (SDCF) established a joint venture called the Ethio-Djibouti Standard Gauge Railway Company (EDR). ERC holds a 75% ownership stake and SDCF holds a 25% ownership stake in EDR. The main purpose of the EDR is to manage the Addis Ababa–Djibouti Railway (including the maintenance and renewal of all infrastructure and equipment) and to operate freight and passenger transport services on the line from 2024. The December 16, 2015 agreement specified that  CREC and CCECC would operate and maintain the railway for six years from the launch of operations and provide two additional years of technical support during the gradual handover of management duties to EDR from 2024.  * Financial Performance Problems: The project has faced financial problems associated with lower traffic volumes than predicted in the transport forecast and currency exchange rate fluctuations (as the project’s debt was issued in USD, but construction and operation costs as well as revenues are denominated in Ethiopian Birr or ETB).  It remains to be seen if the Yali Railway will find a path to commercial viability. The price of a railway passenger ticket was initially set at 30 Ethiopian birr (ETB). However, this price was subsequently deemed too high and reduced to 4 ETB, which means that the railway will generate substantially less ticket revenue than originally planned. Sinosure has reportedly written off $1 billion in losses due to the poor commercial performance of the Addis Ababa–Djibouti Railway. In 2018, the Government of Ethiopia and China Eximbank agreed to restructure the project debt through a 20-year maturity extension and a 4-year grace period extension (see Project ID#61941).  The Government of Djibouti also requested a restructuring of its $491,793,000 buyer's credit loan agreement with China Eximbank for the 100 km Ali Sabieh to Nagad Section of the Addis Ababa–Djibouti Railway Project on December 31, 2017.  The Djiboutian authorities reported to the IMF that a memorandum of understanding (MOU) was signed in 2019 to extend the grace period from 5 years to 10 years, extend maturity of the loan from 15 years to 25 years, and reduce the interest rate from 3.409% (0.409% [2013 avg. 6-month LIBOR] + 3% [300 basis points]) to 2.509% (0.409% [2013 avg. 6-month LIBOR] + 2.1% [210 basis points]). The Djiboutian authorities also indicated that arrears on interest payments on this loan that had been accumulated during the restructuring discussion (worth 1.2 percent of the country’s GDP) had been restructured—and that they were integrated to the principal and expected to be repaid over the extended amortization period The new terms of the loan reportedly reduced the present value of the country’s debt-to-GDP ratio by 4 percentage points and smoothed total debt service. However, the final loan restructuring agreement (captured via Project ID#85163) was not signed until September 2, 2020. It not only codified the terms and conditions that were first specified in the 2019 MOU, but also sought to improve the performance and profitability of the railway in order to increase revenue generation. The restructuring agreement was ratified into Djiboutian law in February 2021.    * Operational Performance Problems:  Energy supply is not always stable in Ethiopia, due to the variable level of water in the country’s dams. The lack of stable energy supply delayed the start of railway operations, even after construction was complete.  ‘Overvoltage’ problems also led to repeated service interruptions after the railway began commercial operations in early 2018. This is a technical problem where surges in the electrical grid (due to Ethiopia exporting power to its neighbors) lead to overvoltage in the railway transmission line, akin to blowing a fuse. The railway line has also been flooded on several occasions, halting or delaying services. The Ethiopian Government claims that the standards used by the Chinese companies to build the railway did not take flooding into account. CCECC and CREC, however, argue that their standards accounted for potential floods, but that, in the flooded sections, tracks were stolen, causing structural damage to the railroad. Field interview evidence has also revealed a number of accidents involving animals (camels in particular) being hit by trains and killed. As the ERC has paid more than the market price for camels in compensation, there are suspicions that people are pushing their camels in front of trains deliberately. There is a plan is to build a fence along the railway, which should reduce accidents and enable trains to travel faster, from the current 50 km/h to 80 km/h. However, there is a risk that this may in turn create other problems, including interrupting paths used by people and animals. Railway service interruptions have also occurred due to protests, For example, in late July 2021, a group of Somali Region protestors blocked the railway line following an attack by Afar regional militia. The line reopened on August 3, 2021.",
+    "staff_comments": "1. This project is also known as the Addis Ababa–Djibouti Railway Rolling Stock Procurement Project and the Supply of Rolling Stocks, Simulators, Accessories and Related Services Project. The broader Addis Ababa–Djibouti Railway is also known as the Djibouti-Ethiopia Railway Project, the Yaji Railway Construction Project, and the Addis Ababa-Mojo-Awash-Dire Dawa-Dewele-Djibouti Railway Project. The Chinese project title is 埃塞俄比亚机车车辆供货项目 or 东非亚吉铁路项目. 2. AidData has estimated the all-in interest rate by adding 3% to the average 6-month LIBOR rate in May 2013 (0.421%). 3. When the commercial contract for the Sebeta-Adama–Meiso Section of the Addis Ababa–Djibouti Railway Project was originally signed on October 25, 2011, it was worth $1,639,031,409.00. Its value was increased to $1,841,470,000.00 on November 5, 2012. When the commercial contract for the Meiso-Dewanle Section of the Addis Ababa–Djibouti Railway Project was originally signed on December 16, 2011, it was worth $1,197,400,000.00. Its value was increased to $1,401,800,000.00 on November 2, 2012. 4. The system identification numbers for the Addis Ababa–Djibouti Railway Rolling Stock Supply Project in the Government of Ethiopia’s Aid Management Platform (AMP) is 87143552129340. The AMP system identification number for the Sebeta-Adama–Meiso Section of the Addis Ababa–Djibouti Railway Project is 87143319101806. The AMP system identification number for the Meiso-Dewanle Section of the Addis Ababa–Djibouti Railway Project is 87143319101810. 1 Ethiopian Birr (ETB) was equal to 0.053 United States Dollars (USD) in May 2013, which implies that (a) the ETB 24,004,264,432 loan tranche recorded in the AMP (for the Sebeta-Adama–Meiso Section of the Addis Ababa–Djibouti Railway Project) was worth USD 1,272,226,014.89 at that time that it was contracted, (b) the ETB 18,272,998,138 loan tranche recorded in the AMP (for the Meiso-Dewanle Section of the Addis Ababa–Djibouti Railway Project) was worth USD 968,468,901.31 at that time that it was contracted, and ETB 4,105,605,214 loan tranche recorded in the AMP (for the Addis Ababa–Djibouti Railway Rolling Stock Supply Project) was worth USD 217,597,076.34. 5. The AMP also includes a record (system identification number: 87143319101811) for an ETB 4,830,204,842 Chinese Government loan commitment (that never disbursed) for a Rolling Stock Supply Project. For the time being, AidData assumes that this is a duplicate record of the China Eximbank loan record in the AMP (system identification number: 87143552129340) for the Addis Ababa–Djibouti Railway Rolling Stock Supply Project (also known as the Supply of Rolling Stocks, Simulators, Accessories and Related Services Project).",
+    "location_narrative": "The purpose of the Sebeta-Adama–Meiso Section of the Addis Ababa–Djibouti Railway Project was to construct a 329.065 km railway section from Sebeta to Meiso (Mieso) that consists of two subsections: a 113.836 km railway subsection from Sebeta to Adama and a 215.229 km subsection from Adama to Meiso (Mieso). More detailed locational information can be found at: https://www.openstreetmap.org/relation/6281977",
+    "description_chars": 15564,
+    "was_truncated_in_lead_file_by": 14364
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "ethiopia-sudan-interconnector-line-deaths",
+     "shared_words": [
+      "border",
+      "ethiopia",
+      "ethiopian",
+      "three"
+     ],
+     "case_years": [
+      2007,
+      2013
+     ],
+     "case_title": "Three Line Workers Killed and Compensation Paid Late on the Ethiopia-Sudan Interconnector",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "ethiopia-birr-float-2024",
+     "shared_words": [
+      "ababa",
+      "addis",
+      "ethiopia"
+     ],
+     "case_years": [
+      2024,
+      2024
+     ],
+     "case_title": "Ethiopia 2024 Birr Float and Price Rises",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G017",
+   "aiddata_rows": [
+    {
+     "id": 1240,
+     "title": "China Eximbank provides $681.6 million buyer's credit loan for Maputo-Katembe Bridge Construction Project (Linked to Project ID#57131)",
+     "amount_usd_2021": 800271536.772568,
+     "year": 2012,
+     "status": "Completion",
+     "decisive": true
+    },
+    {
+     "id": 57131,
+     "title": "China Eximbank provided Mozambique $72.5 million buyer's credit loan for Maputo-Katembe Bridge Construction Project (Linked to Project ID#1240)",
+     "amount_usd_2021": 85123957.9496237,
+     "year": 2012,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Mozambique",
+   "iso3": "MOZ",
+   "year": 2012,
+   "sector": "TRANSPORT AND STORAGE",
+   "infrastructure": "Yes",
+   "title": "China Eximbank provides $681.6 million buyer's credit loan for Maputo-Katembe Bridge Construction Project (Linked to Project ID#57131)",
+   "rank_score": 6,
+   "flags": [
+    "displaced or resettled",
+    "protest or unrest"
+   ],
+   "decisive_buckets": [
+    "relocation count"
+   ],
+   "candidate_sentences": {
+    "protest with specifics": [
+     {
+      "field": "Description",
+      "sentence": "However, local workers organized protests in 2014 due to poor working conditions and late payments of salaries.",
+      "aiddata_row": 1240
+     },
+     {
+      "field": "Description",
+      "sentence": "However, local workers organized protests in 2014 due to poor working conditions and late payments of salaries.",
+      "aiddata_row": 57131
+     }
+    ],
+    "relocation count": [
+     {
+      "field": "Description",
+      "sentence": "The construction of the bridge also required the resettlement of 900 families and stallholders from the Nwankakakana market.",
+      "aiddata_row": 1240
+     },
+     {
+      "field": "Description",
+      "sentence": "The construction of the bridge also required the resettlement of 900 families and stallholders from the Nwankakakana market.",
+      "aiddata_row": 57131
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On July 18, 2012, the Government of Mozambique ratified a $681,590,562.91 buyer’s credit loan (BCL) agreement with China Eximbank for the Maputo-Katembe Bridge Construction Project. (as captured via Project ID#1240). The BCL, which was finalized after the Government of Portugal failed to fulfill its 2010 commitment to finance the bridge, carried the following borrowing terms: a maturity of 20 years, a grace period of 5 years, and an interest rate of 4%.   The Government of Mozambique agreed to collect toll revenue to repay the loan. Then, on May 30, 2012, the Government of Mozambique ratified another buyer’s credit loan (BCL) agreement with China Eximbank worth $72,580,000 to provide supplemental funding for the Maputo-Katembe Bridge Construction Project. (captured via Project ID#57131). The borrowing terms of the loan are unknown. However, it is known that the borrower purchased buyer’s credit insurance from Sinosure in support of the loan.  The Maputo-Katembe Bridge Construction Project involved the construction of a 3 kilometer long and 48 meter high suspension bridge that connects the cities of Maputo and Katembe. It also involved the extension of 129 kilometer road from Katembe to the border town of Ponta do Ouro, and the upgrading of ta 63 kilometer road between Boane and Bela Vista (including bridges over the Maputo, Futi and Umbelúzi rivers).   China Road and Bridge Corporation (CRBC) and the Maputo Development Corporation (Maputo-Sul) were the entities responsible for implementation. An official groundbreaking ceremony took place on September 20, 2012.  However, construction did not begin in earnest until June 6, 2014 and the project encountered several major problems and delays. Maputo-Sul and CRBC employed more than 3,800 local workers and 500 Chinese workers. However, local workers organized protests in 2014 due to poor working conditions and late payments of salaries. The construction of the bridge also required the resettlement of 900 families and stallholders from the Nwankakakana market. Initially, insufficient compensation was offered to the concerned parties; however, extra funds were eventually allocated for building houses for the families and remunerating stallholders. The project was originally scheduled for completion on June 25, 2018 but it was ultimately completed on November 10, 2018.   There are some indications that the China Eximbank loan for the Maputo-Katembe Bridge Construction Project may have financially underperformed vis-a-vis the original expectations of the lender. In 2016, several credit rating agencies downgraded the Government of Mozambique to 'selective default' or 'restricted default' status, and the World Bank and the IMF re-classified Mozambique's external debt as 'in distress.' In January 2017, the Government of Mozambique defaulted on a coupon payment for its dollar-denominated Eurobond. Then, in February 2018, the International Monetary Fund (IMF) announced that the Government of Mozambique had accumulated $710 million in arrears to external creditors and had agreed to reschedule some bilateral debt service payments with the Chinese Government. Two months later, in April 2018, Stelia Neta, a National Director at the Ministry of Finance of Mozambique revealed that the Government of Mozambique’s outstanding debt obligations to the Chinese Government amounted to $2.02 billion and the Chinese Government had agreed to extend the grace periods (and first principal repayments) on these outstanding debt obligations without changing their final maturity dates or interest rates (as captured via Project ID#66283).",
+    "staff_comments": "1. This project is also known as the Maputo-Catembe-Ponta D'Ouro and Bela Vista Bridge Project or the Maputo-Katembe Bridge and Katembe Bridge/Ponta D'Ouro Road Project. The Chinese project title is 马普托－卡滕贝大桥工程 or 马普托大桥及连接线项目. The Portuguese project title is Ponte Maputo-Catembe-Ponta D’Ouro e Bela Vista or Projecto de Ponte e Estrada Maputo-Katembe.2. Evidence of a $1.096 billion Sinosure buyer's credit insurance policy is provided via http://fec.mofcom.gov.cn/article/fwydyl/zgzx/201808/20180802774372.shtml. ",
+    "location_narrative": "The Maputo-Katembe Bridge Construction Project involved the construction of a 3 kilometer long and 48 meter high suspension bridge that connects the cities of Maputo and Katembe. It also involved the extension of 129 kilometer road from Katembe to the border town of Ponta do Ouro, and the upgrading of ta 63 kilometer road between Boane and Bela Vista (including bridges over the Maputo, Futi and Umbelúzi rivers). More detailed locational information can be found at https://www.openstreetmap.org/way/378386159#map=15/-25.9730/32.5571",
+    "description_chars": 3616,
+    "was_truncated_in_lead_file_by": 2416
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "maputo-water-lease",
+     "shared_words": [
+      "international",
+      "maputo",
+      "mozambique",
+      "portugal",
+      "world"
+     ],
+     "case_years": [
+      1999,
+      2009
+     ],
+     "case_title": "Maputo water lease (Águas de Moçambique)",
+     "strength": "strong"
+    },
+    {
+     "case": "maputo-katembe-bridge",
+     "shared_words": [
+      "crbc",
+      "eximbank",
+      "katembe",
+      "maputo",
+      "mozambique"
+     ],
+     "case_years": [
+      2012,
+      2018
+     ],
+     "case_title": "Maputo–Katembe bridge resettlement and strikes",
+     "strength": "strong"
+    },
+    {
+     "case": "beira-maputo-climate-works-deaths-compensation",
+     "shared_words": [
+      "compensation",
+      "failed",
+      "maputo",
+      "mozambique",
+      "world"
+     ],
+     "case_years": [
+      2012,
+      2021
+     ],
+     "case_title": "Five deaths and a failed compensation process on Mozambique's urban climate works",
+     "strength": "strong"
+    },
+    {
+     "case": "mozambique-lng-afungi",
+     "shared_words": [
+      "agencies",
+      "international",
+      "july",
+      "mozambique"
+     ],
+     "case_years": [
+      2017,
+      null
+     ],
+     "case_title": "Afungi LNG resettlement and the Palma conflict",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G008",
+   "aiddata_rows": [
+    {
+     "id": 409,
+     "title": "China provides $320,000 for Guangzhou University malaria study in Comoros (linked to #30101, #57366, #57367, #34813)",
+     "amount_usd_2021": 575764.602522912,
+     "year": 2007,
+     "status": "Implementation",
+     "decisive": true
+    }
+   ],
+   "recipient": "Comoros",
+   "iso3": "COM",
+   "year": 2007,
+   "sector": "HEALTH",
+   "infrastructure": null,
+   "title": "China provides $320,000 for Guangzhou University malaria study in Comoros (linked to #30101, #57366, #57367, #34813)",
+   "rank_score": 5,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "_x000D_ _x000D_ According to a 2011 Working Series report, the highest incidence is 94.4 per cent and malaria is the most common cause of death in children under the age of five.",
+      "aiddata_row": 409
+     }
+    ]
+   },
+   "full_text": {
+    "description": "In June of 2007, Li Guoqiao and a team of Chinese medical researchers from the Tropical Medicine Institute at the Guangzhou University of Traditional Chinese Medicine proposed to take the anti-malaria drug artemisinin and dispense it in combination with another drug as a mass treatment to the 40,000 people living on Moheli Island in Comoros. The World Health Organization offered to support the Chinese government-funded project. Beijing would pay the estimated $320,000 for the drugs used in the Moheli treatments and would also meet the cost of additional drugs used to clear up remaining infections over a five-year period, according to World Health Organization officials. In December of 2010, it was reported that 11 Chinese researchers had initiated the project. ID #30101 contains details of the final project implementation. _x000D_ _x000D_ According to a 2011 Working Series report, the highest incidence is 94.4 per cent and malaria is the most common cause of death in children under the age of five. In 2007, a joint project between Moheliand the Tropical Medicine Institute at Guangzhou University of Traditional Chinese Medicine (GUTCM) in southern China was started with the purpose of eradicating the parasite from the human body._x000D_ _x000D_ This project has been linked to projects #30101, #57366, #57367, and #34813 because they all relate to anti malaria efforts made by China in Comoros as part of the campaign initiated by this project.",
+    "staff_comments": "",
+    "location_narrative": "A team of Chinese medical researchers proposed to take the anti-malaria drug artemisinin and dispense it in combination with another drug as a mass treatment to the 40,000 people living on Moheli Island in Comoros. More detailed locational information can be found at https://www.openstreetmap.org/relation/7174450.",
+    "description_chars": 1463,
+    "was_truncated_in_lead_file_by": 263
+   },
+   "r36_dedupe_hint": null,
+   "local_match": []
+  },
+  {
+   "financing": "G209",
+   "aiddata_rows": [
+    {
+     "id": 52499,
+     "title": "[Cancelled] ICBC provides $900 million export credit for 981.5 MW Lamu Coal-Fired Power Plant Project",
+     "amount_usd_2021": 1010048012.62105,
+     "year": 2015,
+     "status": "Cancelled",
+     "decisive": true
+    }
+   ],
+   "recipient": "Kenya",
+   "iso3": "KEN",
+   "year": 2015,
+   "sector": "ENERGY",
+   "infrastructure": "Yes",
+   "title": "[Cancelled] ICBC provides $900 million export credit for 981.5 MW Lamu Coal-Fired Power Plant Project",
+   "rank_score": 5,
+   "flags": [
+    "displaced or resettled",
+    "protest or unrest"
+   ],
+   "decisive_buckets": [
+    "compensation withheld"
+   ],
+   "candidate_sentences": {
+    "compensation withheld": [
+     {
+      "field": "Description",
+      "sentence": "The Kwasasi Mvunjeni Farmers Self-Help Group is a collective of farmers who have been displaced without compensation by infrastructure associated with the proposed 1,050-megawatt coal-fired power plant in Lamu.",
+      "aiddata_row": 52499
+     },
+     {
+      "field": "Description",
+      "sentence": "They claimed that “our farmers are being displaced from their land, losing their income and food security, without a clear plan for their compensation.",
+      "aiddata_row": 52499
+     }
+    ],
+    "protest with specifics": [
+     {
+      "field": "Description",
+      "sentence": "However, the project continued to suffer delays due to environmental protests and legal hurdles.",
+      "aiddata_row": 52499
+     },
+     {
+      "field": "Description",
+      "sentence": "Save Lamu had been using various approaches to lobby against the Lamu coal plant in the hope that investors such as ICBC would pull out including petitions, demonstrations, and other lobbying tactics.",
+      "aiddata_row": 52499
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On June 8, 2015, the Industrial and Commercial Bank of China (ICBC) signed an indicative term sheet for a $900 million export credit financing agreement with Amu Power Company Limited for the 981.5 MW Lamu Coal-Fired Power Plant Project. The ICBC loan was offered on the following terms: an 18-year maturity, a 4-year grace period, a 3 month LIBOR plus a 2% margin, a 1.1% arrangement (management) fee, a 0.8% commitment fee, and a 2% default (penalty) interest rate.  The export credit financing agreement was reportedly finalized in 2015, but the official commitment date is unknown.  The borrower was responsible for purchasing buyer’s credit insurance rom Sinosure. The borrower also pledged a number of different sources of collateral, including all project revenues and assets and its insurance policy with Sinosure.  Kenya’s Ministry of Energy and Petroleum (MoEP) requested Expressions of Interest for the 981.5 MW Lamu Coal-Fired Power Plant Project in 2013, invited tenders in early 2014, and awarded the project to Amu Power Company Limited in September 2014. Amu Power Company Limited is a special purpose vehicle (project company) that was created by its sponsors/shareholders for the purpose of financing, designing, constructing, owning, maintaining, and operating a 981.5 MW coal-fired power plant in Lamu County, Kenya, which will sell power to Kenya Power and Light Company (KPLC) under a 25-year Power Purchase Agreement (PPA). Amu Power Company Limited is 51% owned by Kenyan investment firm Centum Investments and 51% owned by Oman’s Gulf Energy. Sichuan Electric and Consulting Company Limited and Power Construction Corporation of China were the EPC contractors responsible for project implementation. This independent power project (IPP) was developed under a Build, Operate, and Transfer (BOT) structure and financed according to a 75:25 debt-to-equity ratio.  The project’s construction start date was originally scheduled for September 2015 and the power plant was expected to be finished within 30 months by about 3,000 workers, including 1,400 Chinese workers. The plant’s commercial operations date (COD) was expected to occur no later than December 31, 2019. However, implementation was delayed due to environmentalists’ opposition to Kenya’s Energy Regulatory Commission (ERC) issuing an energy generation license for the project. The project received environmental approval from Kenya’s National Environment Management Authority (NEMA) in September 2016, while Kenya’s Energy Regulatory Commission granted a development license for the project in February 2017. Then, on August 4, 2017, Amu Power Company Limited finalized a power purchase agreement (PPA) with Kenya Power and Light Company (KPLC). Soon thereafter, Kenya's National Treasury issued a formal letter of support for the project. However, the project continued to suffer delays due to environmental protests and legal hurdles.   The project was opposed by a number of environmental organizations, including Save Lamu and the Kwasasi Mvunjeni Farmers Self-Help Group (also known as the Kwasasi Farmers Self-Help Group). Save Lamu is a community-based umbrella organization made up of over 40 other organizations from Lamu, Kenya. The Kwasasi Mvunjeni Farmers Self-Help Group is a collective of farmers who have been displaced without compensation by infrastructure associated with the proposed 1,050-megawatt coal-fired power plant in Lamu. Save Lamu and the Kwasasi Mvunjeni Farmers Self-Help Group jointly opposed the project due to concerns about serious risks posed by the coal plant to their communities’ health, livelihoods, food security, environment and valuable cultural heritage. They claimed that “our farmers are being displaced from their land, losing their income and food security, without a clear plan for their compensation. Tourism and artisanal fishing, the two most important industries in Lamu, face existential threats from the plant’s potentially dramatic disruption of the distinct character of the area and the productivity of its marine environment. Indigenous communities are being further marginalised, losing access to critical natural and cultural resources that they have sustainably managed for generations. Our concerns about those risks have been exacerbated by the lack of meaningful community consultation and participation in project design.” On July 26, 2019, Kenya’s National Environmental  Tribunal (NET) ruled that the environmental and social impact assessment (ESIA) license for the Lamu coal-fired power plant in Kenya was insufficient (due to a lack of public participation) and that the construction had to be halted. Amu Power Company Limited appealed the decision. Then, on November 24, 2019, the African Development Bank (AfDB) announced that it would pull out of the project. According to project documents published by the project proponents, AfDB was expected to provide a partial risk guarantee for the project.   Then, on November 16, 2020, Save Lamu announced that ICBC had withdrawn from Lamu coal plant.  “We are very happy and grateful to hear that the ICBC will no longer fund Amu Power for the coal project. We as Save Lamu will always be there to defend its people and our environment; we don’t want a coal project in Lamu County and in Kenya at large,” said Is’haq Abubakar, Vice Chairperson at Save Lamu. Save Lamu had been using various approaches to lobby against the Lamu coal plant in the hope that investors such as ICBC would pull out including petitions, demonstrations, and other lobbying tactics.   If completed, the Lamu 981.5 MW power plant would have been the largest single power station in Kenya. The power generated would have been transmitted to Nairobi, the country's capital, via a new 520 kilometers (320 mi), 400 kiloVolt electricity transmission line. In the initial years, the station would utilize imported coal, mainly from South Africa, and later convert to locally sourced coal from the Mui Basin in Kitui County.",
+    "staff_comments": "1. For evidence that an official commitment took place, see pg. 47 of Standard Bank Group, Annual Integrated Report 2015 (“Standard Bank and ICBC have concluded debt financing agreements with a consortium of Kenyan investors for the building of the 1000 megawatt Amu coal-fired power plant”) via https://thevault.exchange/?get_group_doc=18/1461565691-SBG_FY15_Annualintegratedreport.pdf.2. This loan is not included in the database of Chinese loan commitments that SAIS-CARI released in July 2020. 3. The indicative term sheet that was issued on June 8, 2015 can be accessed in its entirety via https://www.dropbox.com/s/r608h03z7pjy4hy/2015.06.08%20ICBC%20_%20Amu%20Power%20Term%20Sheet.pdf?dl=04. AidData records the all-in interest rate as 2.283% by using the average 3M LIBOR rate as of June 2015 (0.283%) plus the 2% margin. ",
+    "location_narrative": "This power plant project is located on 975.4 acres (395 ha) in the Kwasasi area, about 21 kilometres (13 mi) north of the town of Lamu in Lamu County. Its locational coordinates are 02°09′13″S 40°54′12″E. More detailed locational information can be found at https://www.openstreetmap.org/way/301235519",
+    "description_chars": 5997,
+    "was_truncated_in_lead_file_by": 4797
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "kinangop-wind-park-shooting",
+     "shared_words": [
+      "county",
+      "investment",
+      "kenya",
+      "protests"
+     ],
+     "case_years": [
+      2013,
+      2016
+     ],
+     "case_title": "Kinangop Wind Park Protests and Police Shooting",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "akiira-lorropil-eviction",
+     "shared_words": [
+      "investment",
+      "kenya",
+      "management"
+     ],
+     "case_years": [
+      2019,
+      2024
+     ],
+     "case_title": "Akiira geothermal site eviction, Lorropil and Mlima Tatu",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "owino-uhuru-lead-smelter",
+     "shared_words": [
+      "kenya",
+      "kenyan",
+      "owned"
+     ],
+     "case_years": [
+      2007,
+      2024
+     ],
+     "case_title": "Owino Uhuru Lead Battery Smelter",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "lake-turkana-wind-land",
+     "shared_words": [
+      "county",
+      "investment",
+      "kenya"
+     ],
+     "case_years": [
+      2009,
+      null
+     ],
+     "case_title": "Lake Turkana Wind Power and the Sarima Community Land",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G115",
+   "aiddata_rows": [
+    {
+     "id": 36440,
+     "title": "China sends peacekeepers to Mali to help after plane crash",
+     "amount_usd_2021": null,
+     "year": 2014,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Mali",
+   "iso3": "MLI",
+   "year": 2014,
+   "sector": "EMERGENCY RESPONSE",
+   "infrastructure": null,
+   "title": "China sends peacekeepers to Mali to help after plane crash",
+   "rank_score": 5,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "On July 25, 2014, China sent its first batch of peacekeepers to help after the fatal plane crash of Air Algerie flight AH5017.",
+      "aiddata_row": 36440
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On July 25, 2014, China sent its first batch of peacekeepers to help after the fatal plane crash of Air Algerie flight AH5017. They are mainly responsible for transferring and refrigerating the bodies. The site of the accident, the Gossi area, was 60 km away from where the Chinese mission is stationed. China sent 30 people, 5 pieces of engineering machinery, and 15 carrier vehicles in the assistance work. ",
+    "staff_comments": "",
+    "location_narrative": "Gossi",
+    "description_chars": 409,
+    "was_truncated_in_lead_file_by": null
+   },
+   "r36_dedupe_hint": null,
+   "local_match": []
+  },
+  {
+   "financing": "G651",
+   "aiddata_rows": [
+    {
+     "id": 98509,
+     "title": "Bejing Urban Construction Group provides relief to flood victims",
+     "amount_usd_2021": null,
+     "year": 2013,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Mozambique",
+   "iso3": "MOZ",
+   "year": 2013,
+   "sector": "EMERGENCY RESPONSE",
+   "infrastructure": null,
+   "title": "Bejing Urban Construction Group provides relief to flood victims",
+   "rank_score": 5,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "In early January of 2013, Mozambique was hit with massive flooding, causing 2000 deaths and 45,18 evacuees.",
+      "aiddata_row": 98509
+     }
+    ]
+   },
+   "full_text": {
+    "description": "In early January of 2013, Mozambique was hit with massive flooding, causing 2000 deaths and 45,18 evacuees. Bejining Urban Construction Group helped in a variety of ways. The project department cooperated with FIPAG, a Mozambican water company, to dispatch on-site water trucks to the FIPAG water station 60 kilometers away, which then transported clean water to people in the refuge areas. The department was able to provide 62 cubic meters of drinking water, which helped more than 1,000 affected families. In addition, the office in Mozambique purchased a large number of disinfectants, watering cans, epidemic prevention knowledge manuals and other materials and sent them to the construction site and local disaster victims to ensure timely disinfection and health. The final donation was 300 T-shirts, 100 cold jackets and 100 sets of stationery and school bags collected by Chinese employees and given to the Mozambique victims. ",
+    "staff_comments": "",
+    "location_narrative": "",
+    "description_chars": 936,
+    "was_truncated_in_lead_file_by": null
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "beira-maputo-climate-works-deaths-compensation",
+     "shared_words": [
+      "deaths",
+      "mozambique",
+      "site"
+     ],
+     "case_years": [
+      2012,
+      2021
+     ],
+     "case_title": "Five deaths and a failed compensation process on Mozambique's urban climate works",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G294",
+   "aiddata_rows": [
+    {
+     "id": 58576,
+     "title": "China Donates Anti-malarial Medicine to Niger (December)",
+     "amount_usd_2021": null,
+     "year": 2011,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Niger",
+   "iso3": "NER",
+   "year": 2011,
+   "sector": "HEALTH",
+   "infrastructure": null,
+   "title": "China Donates Anti-malarial Medicine to Niger (December)",
+   "rank_score": 5,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "On 21 December 2011, the Chinese Government officially donated anti-malarial drugs in pursuit of the Nigerien President's national campaign to reduce malaria-induced death rates.",
+      "aiddata_row": 58576
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On 21 December 2011, the Chinese Government officially donated anti-malarial drugs in pursuit of the Nigerien President's national campaign to reduce malaria-induced death rates. The value and quantity of medicine are unknown. ",
+    "staff_comments": "",
+    "location_narrative": "",
+    "description_chars": 227,
+    "was_truncated_in_lead_file_by": null
+   },
+   "r36_dedupe_hint": null,
+   "local_match": []
+  },
+  {
+   "financing": "G054",
+   "aiddata_rows": [
+    {
+     "id": 30371,
+     "title": "China Eximbank provides $984.23 million preferential buyer’s credit for 700MW Zungeru Hydroelectric Power Plant Construction Project",
+     "amount_usd_2021": 1110348939.05149,
+     "year": 2013,
+     "status": "Implementation",
+     "decisive": true
+    }
+   ],
+   "recipient": "Nigeria",
+   "iso3": "NGA",
+   "year": 2013,
+   "sector": "ENERGY",
+   "infrastructure": "Yes",
+   "title": "China Eximbank provides $984.23 million preferential buyer’s credit for 700MW Zungeru Hydroelectric Power Plant Construction Project",
+   "rank_score": 5,
+   "flags": [
+    "displaced or resettled",
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "We have checks and counter checks at every point in time, and it is a slow and laborious process because you don’t want to pay someone twice and you don’t want to omit anybody.’   Then, in January 2022, three Chinese workers were abducted from the project site after a shoot-out that killed workers and police.",
+      "aiddata_row": 30371
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On September 28, 2013, China Eximbank and the Government of Nigeria signed a $984.23 million preferential buyer’s credit (PBC) agreement for the 700MW Zungeru Hydroelectric Power Plant Construction Project. The PBC (loan) carries the following borrowing terms: a 20 year maturity, a 7 year grace period, and a 2.5% interest rate. The loan’s final maturity date is September 21, 2033. As of December 31, 2020, Nigeria’s Debt Management Office (DMO) reported that the China Eximbank loan had achieved a 57.14% disbursement rate ($562.47 million) and the borrower had made interest repayments worth $26.36 million and no principal repayments to the lender. As such, the loan’s (principal) amount outstanding, as of December 31, 2020, was $562.47 million. The borrower is expected to use the proceeds of the loan to finance approximately 75% of a $1.293 billion commercial contract between the Government of Nigeria and a consortium consisting of Sinohydro and China National Electric Engineering Co (CNEEC), which was signed on October 19, 2012. The Government of Nigeria agreed to directly finance the remaining 25% of the commercial contract cost.   The purpose of the project is to construct a 700WM hydroelectric power plant — with four, 175MW power generators — on the Kaduna River in Niger State (exact locational coordinates: 9.90091, 6.28723). The project also involves the construction of a dam, electricity transmission lines, and associated substations to evacuate power from the dam. Upon completion, the power plant is expected to generate 2.64 billion kWh of electricity a year. The project is also expected to support flood control, irrigation, as well as water supply and fish breeding facilities. According to a ‘valuation report’ that was undertaken prior to implementation, the project would likely negatively impact 22,100 persons, 15,958 farmlands and 6,762 properties domiciled in 98 communities. Sinohydro and CNEEC are the contractors responsible for project implementation.   On May 28, 2013, a groundbreaking ceremony was held. Then, on January 22, 2018, the placement of the first silo of Roller Compacted Concrete (RCC) took place. As of June 18, 2020, the Government of Nigeria’s Debt Management Office (DMO) reported that China Eximbank had disbursed 52.65% of the original face value of the PBC. By October 28, 2019, the project had achieved a 68% completion rate. The rotor of the first power generation unit was hoisted into place on September 30, 2021. Then, on March 28, 2022, the first (175MW) power generation unit went into operation. The unit was officially commissioned on April 1, 2022. However, the broader project has encountered major implementation obstacles and delays.   In 2015, the project stalled due to insufficient compensation of communities affected by the power plant (requiring resettlement) and litigation by aggrieved persons.  Nigeria’s then Minister of State for Power, Mohammed Wakil, confirmed the stoppage of the project in an interview. He said: ‘immediately [after] the Zungeru project took off, we had legal challenges. Somehow in the communities, some people, I can say powerful people instituted court action and in fact they succeeded in getting an injunction restraining government from further doing the project. […] At a point we had about two to three litigations on the project but the ministry has been trying to resolve the problems outside the court. A committee has been set up and they have held several meetings with the parties involved. It is a national project and we do not want to be unnecessarily bogged down by litigations. […] We are being careful and are engaging the parties with a view to settling out of court. That has tampered with our timetable but even with that there has been a lot of progress.’ Nigeria’s Director of Power, Sanusi Garba, said at the time that ‘you cannot pay 98 communities overnight. We have checks and counter checks at every point in time, and it is a slow and laborious process because you don’t want to pay someone twice and you don’t want to omit anybody.’   Then, in January 2022, three Chinese workers were abducted from the project site after a shoot-out that killed workers and police.  In March 2022, Nigeria’s Minister of Power, Abubakar D. Aliyu, said ‘[i]t’s unfortunate that the insecurity in some parts of the country has affected the delivery of the Zungeru Hydro Plant project because some persons were abducted by bandits and have not been released’.   The 700MW Zungeru Hydroelectric Power Plant Construction Project was originally scheduled for completion by the end of 2017. However, its scheduled completion date was later pushed back to December 2021 and then December 2022.",
+    "staff_comments": "1. This project is also known as the Zungeru 4x175MW Hydropower Plant. The Chinese project title is 宗盖鲁水电站 or 尼日利亚宗格鲁水电站项目. 2. Boston University’s China's Global Energy Finance Database identifies the face value of this loan as $975 million and SAIS-CARI report the maturity length of this loan as 19 years. AidData records the face value ($984,320,000) and maturity length (20 years) that is reported by Nigeria’s Debt Management Office (DMO) in its ‘Loans Obtained from China Exim As At December 31, 2020’ publication.",
+    "location_narrative": "Zungeru Dam is located on the Kaduna River in Niger State. More detailed locational information can be found at https://www.google.com/maps/place/Zungeru+Hydroelectric+Dam/@9.8476505,6.1846699,13z/data=!4m8!1m2!2m1!1sZungeru+Dam!3m4!1s0x104b79c76c9b9abb:0x22ac191867c5a1!8m2!3d9.8996684!4d6.2941588 and https://geohack.toolforge.org/geohack.php?pagename=Zungeru_Hydro_Power_Dam&params=9_48_N_6_9_E_type:landmark and https://www.openstreetmap.org/way/356573680",
+    "description_chars": 4711,
+    "was_truncated_in_lead_file_by": 3511
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "zungeru-dam-displacement",
+     "shared_words": [
+      "cneec",
+      "communities",
+      "engineering",
+      "eximbank",
+      "niger",
+      "nigeria",
+      "sinohydro",
+      "zungeru"
+     ],
+     "case_years": [
+      2013,
+      null
+     ],
+     "case_title": "Zungeru Dam: 98 Communities Displaced and a Court Award",
+     "strength": "strong"
+    },
+    {
+     "case": "bakolori-dam-1980-killings",
+     "shared_words": [
+      "irrigation",
+      "nigeria",
+      "then"
+     ],
+     "case_years": [
+      1974,
+      1983
+     ],
+     "case_title": "Bakolori Dam Displacement and 1980 Police Killings",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "shell-bonga-spill-2011",
+     "shared_words": [
+      "december",
+      "niger",
+      "nigeria"
+     ],
+     "case_years": [
+      2011,
+      null
+     ],
+     "case_title": "Shell's Bonga Offshore Spill of December 2011",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "newmap-nigeria-erosion-displacement",
+     "shared_words": [
+      "compensation",
+      "implementation",
+      "nigeria"
+     ],
+     "case_years": [
+      2012,
+      2022
+     ],
+     "case_title": "Erosion Works Closed With One State's Compensation Still Unpaid, Nigeria",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G063",
+   "aiddata_rows": [
+    {
+     "id": 30792,
+     "title": "Sinohydro Engineering Bureau 7 donates 50,000 Sudanese pounds to help flood refugees (linked to #30789)",
+     "amount_usd_2021": 12042.3127223107,
+     "year": 2013,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Sudan",
+   "iso3": "SDN",
+   "year": 2013,
+   "sector": "EMERGENCY RESPONSE",
+   "infrastructure": null,
+   "title": "Sinohydro Engineering Bureau 7 donates 50,000 Sudanese pounds to help flood refugees (linked to #30789)",
+   "rank_score": 5,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "Hundreds were injured or killed.",
+      "aiddata_row": 30792
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On August 21, 2013, POWERCHINA's subsidiary -- Sinohydro Engineering Bureau 7 -- donated 50,000 Sudanese pounds ($11,355) to flood refugees in Sudan. The donation ceremony was organized by the Chinese Embassy and Economic Counselor's Office where they, too, made a donation to Sudanese flood victims (see linked ProjectID#30789). Many Chinese enterprises in Sudan actively participated in the event.  Some regions and states in Sudan suffered severe flooding during the rainy season in 2013, and the persistent heavy rains caused large scale damage on buildings and infrastructure, such as roads. Hundreds were injured or killed.",
+    "staff_comments": "",
+    "location_narrative": "",
+    "description_chars": 629,
+    "was_truncated_in_lead_file_by": null
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "merowe-dam-amri-manasir",
+     "shared_words": [
+      "economic",
+      "sinohydro",
+      "sudan"
+     ],
+     "case_years": [
+      2003,
+      2009
+     ],
+     "case_title": "Merowe Dam displacement on the Nile's Fourth Cataract",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "upper-atbara-setit-arab-funds",
+     "shared_words": [
+      "economic",
+      "states",
+      "sudan"
+     ],
+     "case_years": [
+      2010,
+      null
+     ],
+     "case_title": "Upper Atbara and Setit dams: Gulf and Arab funds, tens of thousands moved",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "ethiopia-sudan-interconnector-line-deaths",
+     "shared_words": [
+      "killed",
+      "sudan",
+      "sudanese"
+     ],
+     "case_years": [
+      2007,
+      2013
+     ],
+     "case_title": "Three Line Workers Killed and Compensation Paid Late on the Ethiopia-Sudan Interconnector",
+     "strength": "worth_checking"
+    }
+   ]
+  }
+ ]
+}

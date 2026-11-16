@@ -1,0 +1,2441 @@
+{
+ "round": 37,
+ "what": "The first AidData case round. One entry per FINANCING from the 59 that round 36 found carry a relocation count, a death with a cause, or compensation withheld - the three kinds of sentence that decide a case. Full untruncated AidData text and pre-extracted candidate sentences are on each entry.",
+ "brief": "docs/BRIEF36.md, after docs/BRIEF20.md in full. Then docs/CHECK31.md for the checker.",
+ "hard_rules": [
+  "A candidate sentence is AidData's prose, NOT a document. Open the source it rests on, or the press/court/audit record, before any figure reaches a card.",
+  "A relocation verb is not a count (round 32). The forward rule needs either (a) a count of people or households actually relocated, or (b) a specific documented harm to identifiable people.",
+  "Disaster and humanitarian relief rows are drops: the harm is the disaster's. 143 such rows carry r36_relief and are NOT in this batch, but say so if one surfaces.",
+  "Research the FINANCING once. aiddata_rows lists every lender row on it; four rows is one power plant, not four cards.",
+  "local_match and r36_dedupe_hint are hints. Shared country words are not a shared project. Confirm by place and years before dropping a row, and never drop on a hint alone.",
+  "Most of these should become EXTENDS of a case already on the map where the hint holds, since the row adds a lender or an amount the card lacks.",
+  "Put the AidData record id and, where one exists, the P-number in lenders[0].role, so the next round's dedupe can see it.",
+  "No researcher's voice on a card. No 'searches returned nothing' sentences. That belongs in your report.",
+  "Name your own two weakest entries in your report."
+ ],
+ "search_budget": "BRIEF36 says about 30 WebSearch calls per writer. The ~200-per-turn cap is shared across all three writers running in this turn, so treat 45 as a hard ceiling and 30 as the plan. Prefer curl plus pdftotext wherever a document exists - a PDF read from disk costs no search.",
+ "batch": "a",
+ "rows": 20,
+ "countries": [
+  "Bangladesh",
+  "Indonesia",
+  "Iraq",
+  "Kazakhstan",
+  "Lao People's Democratic Republic",
+  "Myanmar",
+  "Nepal",
+  "Pakistan",
+  "Viet Nam"
+ ],
+ "financings": [
+  {
+   "financing": "G214",
+   "aiddata_rows": [
+    {
+     "id": 52792,
+     "title": "Bank of China contributes to $1.78 billion buyer's credit for 2x660 MW Supercritical Coal-Fired Banskhali Power Plant Project (Linked to Project ID#98804, #98814, #98815, #54275)",
+     "amount_usd_2021": 323322091.907002,
+     "year": 2018,
+     "status": "Implementation",
+     "decisive": true
+    },
+    {
+     "id": 98804,
+     "title": "China Construction Bank contributes to $1.78 billion buyer's credit for 2x660 MW Supercritical Coal-Fired Banskhali Power Plant Project (Linked to Project ID#52792, #98814, #98815, #54275)",
+     "amount_usd_2021": 323322091.907002,
+     "year": 2018,
+     "status": "Implementation",
+     "decisive": true
+    },
+    {
+     "id": 98814,
+     "title": "China Development Bank contributes to $1.78 billion buyer's credit for 2x660 MW Supercritical Coal-Fired Banskhali Power Plant Project (Linked to Project ID#52792, #98804, #98815, #54275)",
+     "amount_usd_2021": 323322091.907002,
+     "year": 2018,
+     "status": "Implementation",
+     "decisive": true
+    },
+    {
+     "id": 98815,
+     "title": "Agricultural Bank of China contributes to $1.78 billion buyer's credit for 2x660 MW Supercritical Coal-Fired Banskhali Power Plant Project (Linked to Project ID#52792, #98804, #98814, #54275)",
+     "amount_usd_2021": 323322091.907002,
+     "year": 2018,
+     "status": "Implementation",
+     "decisive": true
+    }
+   ],
+   "recipient": "Bangladesh",
+   "iso3": "BGD",
+   "year": 2018,
+   "sector": "ENERGY",
+   "infrastructure": "Yes",
+   "title": "Bank of China contributes to $1.78 billion buyer's credit for 2x660 MW Supercritical Coal-Fired Banskhali Power Plant Project (Linked to Project ID#98804, #98814, #98815, #54275)",
+   "rank_score": 14,
+   "flags": [
+    "displaced or resettled",
+    "protest or unrest",
+    "people killed or hurt",
+    "pollution or damage",
+    "arrests or suppression"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "arrest or detention": [
+     {
+      "field": "Description",
+      "sentence": "The next month, on May 28, 2021, police arrested a local Bangladeshi engineer for posting an anti-power plant message on Facebook under Bangladesh's Digital Security Act.",
+      "aiddata_row": 52792
+     },
+     {
+      "field": "Description",
+      "sentence": "The next month, on May 28, 2021, police arrested a local Bangladeshi engineer for posting an anti-power plant message on Facebook under Bangladesh's Digital Security Act.",
+      "aiddata_row": 98804
+     },
+     {
+      "field": "Description",
+      "sentence": "The next month, on May 28, 2021, police arrested a local Bangladeshi engineer for posting an anti-power plant message on Facebook under Bangladesh's Digital Security Act.",
+      "aiddata_row": 98814
+     },
+     {
+      "field": "Description",
+      "sentence": "The next month, on May 28, 2021, police arrested a local Bangladeshi engineer for posting an anti-power plant message on Facebook under Bangladesh's Digital Security Act.",
+      "aiddata_row": 98815
+     }
+    ],
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "Alam Group, and local authorities, clashes broke out between pro and anti-plant factions (which were composed of followers of a local Awami League leader and Bangladesh Nationalist Party leader, respectively) that led to the death of a pro-plant man and injured 16 more.",
+      "aiddata_row": 52792
+     },
+     {
+      "field": "Description",
+      "sentence": "Two more workers died of their injuries, raising the death toll to seven.",
+      "aiddata_row": 52792
+     },
+     {
+      "field": "Description",
+      "sentence": "Alam Group, and local authorities, clashes broke out between pro and anti-plant factions (which were composed of followers of a local Awami League leader and Bangladesh Nationalist Party leader, respectively) that led to the death of a pro-plant man and injured 16 more.",
+      "aiddata_row": 98804
+     },
+     {
+      "field": "Description",
+      "sentence": "Two more workers died of their injuries, raising the death toll to seven.",
+      "aiddata_row": 98804
+     },
+     {
+      "field": "Description",
+      "sentence": "Alam Group, and local authorities, clashes broke out between pro and anti-plant factions (which were composed of followers of a local Awami League leader and Bangladesh Nationalist Party leader, respectively) that led to the death of a pro-plant man and injured 16 more.",
+      "aiddata_row": 98814
+     },
+     {
+      "field": "Description",
+      "sentence": "Two more workers died of their injuries, raising the death toll to seven.",
+      "aiddata_row": 98814
+     },
+     {
+      "field": "Description",
+      "sentence": "Alam Group, and local authorities, clashes broke out between pro and anti-plant factions (which were composed of followers of a local Awami League leader and Bangladesh Nationalist Party leader, respectively) that led to the death of a pro-plant man and injured 16 more.",
+      "aiddata_row": 98815
+     },
+     {
+      "field": "Description",
+      "sentence": "Two more workers died of their injuries, raising the death toll to seven.",
+      "aiddata_row": 98815
+     }
+    ],
+    "land taken": [
+     {
+      "field": "Description",
+      "sentence": "Alam Group's land acquisition efforts, decrying the displacement because of the plant's construction.",
+      "aiddata_row": 52792
+     },
+     {
+      "field": "Description",
+      "sentence": "Alam Group's land acquisition efforts, decrying the displacement because of the plant's construction.",
+      "aiddata_row": 98804
+     },
+     {
+      "field": "Description",
+      "sentence": "Alam Group's land acquisition efforts, decrying the displacement because of the plant's construction.",
+      "aiddata_row": 98814
+     },
+     {
+      "field": "Description",
+      "sentence": "Alam Group's land acquisition efforts, decrying the displacement because of the plant's construction.",
+      "aiddata_row": 98815
+     }
+    ],
+    "pollution or damage": [
+     {
+      "field": "Description",
+      "sentence": "Alam Group bought their land to construct a garment factory to increase local employment, not a polluting power plant.",
+      "aiddata_row": 52792
+     },
+     {
+      "field": "Description",
+      "sentence": "For example, the EIA failed to discuss the health impacts of the plant or mercy pollution, and falsely claimed that the air quality in Banskhali met Bangladeshi standards.",
+      "aiddata_row": 52792
+     },
+     {
+      "field": "Description",
+      "sentence": "Alam Group bought their land to construct a garment factory to increase local employment, not a polluting power plant.",
+      "aiddata_row": 98804
+     },
+     {
+      "field": "Description",
+      "sentence": "For example, the EIA failed to discuss the health impacts of the plant or mercy pollution, and falsely claimed that the air quality in Banskhali met Bangladeshi standards.",
+      "aiddata_row": 98804
+     },
+     {
+      "field": "Description",
+      "sentence": "Alam Group bought their land to construct a garment factory to increase local employment, not a polluting power plant.",
+      "aiddata_row": 98814
+     },
+     {
+      "field": "Description",
+      "sentence": "For example, the EIA failed to discuss the health impacts of the plant or mercy pollution, and falsely claimed that the air quality in Banskhali met Bangladeshi standards.",
+      "aiddata_row": 98814
+     },
+     {
+      "field": "Description",
+      "sentence": "Alam Group bought their land to construct a garment factory to increase local employment, not a polluting power plant.",
+      "aiddata_row": 98815
+     },
+     {
+      "field": "Description",
+      "sentence": "For example, the EIA failed to discuss the health impacts of the plant or mercy pollution, and falsely claimed that the air quality in Banskhali met Bangladeshi standards.",
+      "aiddata_row": 98815
+     }
+    ],
+    "protest with specifics": [
+     {
+      "field": "Description",
+      "sentence": "Villagers opposed to the plant began peaceful protests during the S.",
+      "aiddata_row": 52792
+     },
+     {
+      "field": "Description",
+      "sentence": "Then, on April 4, 2016, 500 villagers gathered on the grounds of Gondamara School to protest against the construction of the plant, despite local authorities having banned the demonstration.",
+      "aiddata_row": 52792
+     },
+     {
+      "field": "Description",
+      "sentence": "The demonstration turned violent, as police opened fire, killing four protesters and wounding 30 more.",
+      "aiddata_row": 52792
+     },
+     {
+      "field": "Description",
+      "sentence": "Alam Group, and local authorities, clashes broke out between pro and anti-plant factions (which were composed of followers of a local Awami League leader and Bangladesh Nationalist Party leader, respectively) that led to the death of a pro-plant man and injured 16 more.",
+      "aiddata_row": 52792
+     },
+     {
+      "field": "Description",
+      "sentence": "Villagers opposed to the plant began peaceful protests during the S.",
+      "aiddata_row": 98804
+     },
+     {
+      "field": "Description",
+      "sentence": "Then, on April 4, 2016, 500 villagers gathered on the grounds of Gondamara School to protest against the construction of the plant, despite local authorities having banned the demonstration.",
+      "aiddata_row": 98804
+     },
+     {
+      "field": "Description",
+      "sentence": "The demonstration turned violent, as police opened fire, killing four protesters and wounding 30 more.",
+      "aiddata_row": 98804
+     },
+     {
+      "field": "Description",
+      "sentence": "Alam Group, and local authorities, clashes broke out between pro and anti-plant factions (which were composed of followers of a local Awami League leader and Bangladesh Nationalist Party leader, respectively) that led to the death of a pro-plant man and injured 16 more.",
+      "aiddata_row": 98804
+     },
+     {
+      "field": "Description",
+      "sentence": "Villagers opposed to the plant began peaceful protests during the S.",
+      "aiddata_row": 98814
+     },
+     {
+      "field": "Description",
+      "sentence": "Then, on April 4, 2016, 500 villagers gathered on the grounds of Gondamara School to protest against the construction of the plant, despite local authorities having banned the demonstration.",
+      "aiddata_row": 98814
+     },
+     {
+      "field": "Description",
+      "sentence": "The demonstration turned violent, as police opened fire, killing four protesters and wounding 30 more.",
+      "aiddata_row": 98814
+     },
+     {
+      "field": "Description",
+      "sentence": "Alam Group, and local authorities, clashes broke out between pro and anti-plant factions (which were composed of followers of a local Awami League leader and Bangladesh Nationalist Party leader, respectively) that led to the death of a pro-plant man and injured 16 more.",
+      "aiddata_row": 98814
+     },
+     {
+      "field": "Description",
+      "sentence": "Villagers opposed to the plant began peaceful protests during the S.",
+      "aiddata_row": 98815
+     },
+     {
+      "field": "Description",
+      "sentence": "Then, on April 4, 2016, 500 villagers gathered on the grounds of Gondamara School to protest against the construction of the plant, despite local authorities having banned the demonstration.",
+      "aiddata_row": 98815
+     },
+     {
+      "field": "Description",
+      "sentence": "The demonstration turned violent, as police opened fire, killing four protesters and wounding 30 more.",
+      "aiddata_row": 98815
+     },
+     {
+      "field": "Description",
+      "sentence": "Alam Group, and local authorities, clashes broke out between pro and anti-plant factions (which were composed of followers of a local Awami League leader and Bangladesh Nationalist Party leader, respectively) that led to the death of a pro-plant man and injured 16 more.",
+      "aiddata_row": 98815
+     }
+    ]
+   },
+   "full_text": {
+    "description": "In November 2010, Bangladesh Power Development Board (BPDB) began looking for sponsors to support the construction of a 2x660 MW supercritical coal-fired power plant — known as the 2x660 MW Supercritical Coal-Fired Banskhali Power Plant — in Paschim Gandamara within Banskhali Upzila and Chittagong Division. Then, on December 19, 2013, S. Alam Group — a Bangladeshi company that is active in the commodity trade, banking, insurance, and transportation sector — signed a deal with Shangdong Electric Power Corporation III (SEPCO III), a subsidiary of China Power Construction Co. (PowerChina), to set-up a joint venture company to finance, design, construct, and operate the 2x660 MW Supercritical Coal-Fired Banskhali Power Plant. The special purpose vehicle that was established, SS Power I Limited, is jointly owned by S. Alam Group (70% equity stake), SEPCO III Electric Power Construction Corporation (20% equity stake), and HTG Development Group Co. Ltd. (10% equity stake).  The $2.506 billion Banskhali Power Plant is an independent power project (IPP) that was implemented on a build, own, and operate (BOO) basis and financed according to a debt-to-equity ratio of 71.1:28.9. On December 28, 2018, a syndicate of banks — including Bank of China (Qingdao Branch) as an arranger, lender, and original hedging bank, Bank of China Limited (Singapore Branch) as a lender, facility agent, offshore security agent, and offshore account bank, China Development Bank (CDB) as an arranger and lender, China Construction Bank (Shandong Branch) as an arranger, lender, original hedging bank, Agricultural Bank of China (Qingdao Branch) as a lender, China Minsheng Bank (Qingdao Branch) as a lender, and Rupali Bank Limited as a lender, onshore security agent, and onshore account bank — signed a $1.782 billion USD syndicated buyer’s credit agreement with SS Power I Limited for the 2x660 MW Supercritical Coal-Fired Banskhali Power Plant Project. The buyer’s credit carried a 15-year maturity and an unknown interest rate. It was also supported by a Sinosure credit insurance policy and secured by (collateralized against) a share pledge, account pledge, a mortgage and debenture. AidData estimates that Bank of China contributed $296,666,666.7 (captured in Project ID#52792), CCB contributed $296,666,666.7 (captured in Project ID#98804), CDB contributed $296,666,666.7 (captured in Project ID#98814), and that ABC also contributed $296,666,666.7 (captured in Project ID#98815).  The borrower was to use the proceeds of the loan to finance (a) 85% of the cost a $1.86 billion commercial (EPC) contract between S. Alam Group and SEPCO III, which was signed on June 29, 2015; and (b) 85% of the cost of the Sinosure premium and interest during construction under the senior buyer’s credit facility. The syndicated loan covered 71.1% of the total project cost. S. Alam Group, SEPCO III, and HTG Development Group Co. Ltd. were expected to cover the remaining 28.9% via equity contributions. Project ID#52792 captures the debt financing for the project, while Project ID#54275 captures the equity financing for the project.  The purpose of the project was to construct a supercritical coal-fired power plant — with two 660 MW supercritical power generation units — and a new special coal unloading wharf in Paschim Gandamara within Banskhali Upzila and Chittagong Division (exact locational coordinates: 21.970844, 91.888932). The IPP is governed by the terms of an Implementation Agreement (IA) and a 25-year power purchase agreement (PPA) executed with Bangladesh Power Development Board (BPDB).  SEPCO III is the general engineering, procurement, and construction (EPC) contractor responsible for project implementation. However, several other contractors are also involved in the project. Dongfang Electric Corporation is responsible for providing the turbine generators, while Babcock & Wilcox Beijing Co., Ltd. is responsible for providing the boiler equipment. Sinohydro Foundation Engineering Co., Ltd. is also involved in project implementation. A formal project unveiling ceremony took place on October 14, 2016, with Chinese President Xi Jinping and Prime Minister of Bangladesh Sheikh Hasina laying the plant's foundation. However, project implementation did not begin until significantly later. A notice to proceed (NTP) was issued to the EPC contractor on December 10, 2018, and project implementation commenced on December 31, 2018. As stipulated in the EPC contract, the project completion date was scheduled to fall between 39 and 40 months (March 31, 2022 or April 30, 2022) after the EPC commencement date and the NTP date.  The construction of the Banskhali Power Plant has been the source of significant, often violent, controversy in Bangladesh. Villagers opposed to the plant began peaceful protests during the S. Alam Group's land acquisition efforts, decrying the displacement because of the plant's construction. Then, on April 4, 2016, 500 villagers gathered on the grounds of Gondamara School to protest against the construction of the plant, despite local authorities having banned the demonstration. The demonstration turned violent, as police opened fire, killing four protesters and wounding 30 more. Then, in early February 2017, at a community meeting in Abhaittya Ghona in Banskhali, sponsored by the Bangladesh Navy, the S. Alam Group, and local authorities, clashes broke out between pro and anti-plant factions (which were composed of followers of a local Awami League leader and Bangladesh Nationalist Party leader, respectively) that led to the death of a pro-plant man and injured 16 more. After the clashes, the Bangladesh Navy began to supervise the project site's security along the local police.  In July 2020, the sponsors of the project were fined ৳2,000,000,000 BDT for delays in the construction works and received a two-year extension to the project period. Then, on April 17, 2021, clashes erupted between the Banskhali police and construction workers at the plant, supported by local people. The workers had been protesting over unpaid wages. The resulting altercation saw the police kill five workers and critically wound a dozen more. During the protest, workers committed arson and vandalism in the construction period. Two more workers died of their injuries, raising the death toll to seven. The next month, on May 28, 2021, police arrested a local Bangladeshi engineer for posting an anti-power plant message on Facebook under Bangladesh's Digital Security Act.  One cause of the resistance to the power plant is allegations from local residents near the power plant that the S. Alam Group bought their land to construct a garment factory to increase local employment, not a polluting power plant. The resistance was reportedly so strong that the S. Alam Group was willing to shift the entire plant to Chokoria if it could not convince the locals to support the plant. Another cause of protests was the environmental impact of the plant. An analysis of the air quality segment of the project's Environmental Impact Assessment (EIA) by the Helsinki-based Centre for Research on Energy and Clean Air, in collaboration with the Bangladesh Environmental Lawyers Association and the Bangladesh Working Group on External Debt, found that the EIA was filled with false information and omitted key details, in violation of the laws of Bangladesh. For example, the EIA failed to discuss the health impacts of the plant or mercy pollution, and falsely claimed that the air quality in Banskhali met Bangladeshi standards. The conclusions of the review suggested that the low-quality of the EIA was either the result of gross incompetence or deliberate manipulation. In a June 2021 letter to China's Commerce Minister, 129 activists and 79 organizations from 21 countries, including a number of well-known Bangladeshi figures, asked the Chinese Government to withdraw financing and technical support from the Banskhali Power Plant Project based on the project's lack of transparency, violations of human rights, and environmental damage.",
+    "staff_comments": "1. The Chinese project title is 艾萨拉姆2x660MW燃煤电站项目 or 孟加拉国艾萨拉姆2x660MW燃煤电站项目 or 艾萨拉姆项目. The power plant is also known as the Chittagong 1320 MW Thermal Power Plant and the S.Alam Chittagong Power Plant. Banskhali is also spelled Banshkhali.2. Several sources suggest that the Export-Import Bank of China was involved this financing this project, despite its absence on an Industrial and Commercial Bank of China webpage describing the structure of the syndicated loan that supported the project. This issue merits further investigation.3. The exact size of BOC, ABC, CDB, and CCB's respective financial contributions to the $1.78 billion syndicated loan are unknown. For the time being, AidData assumes that all 6 members of the lending syndicate contributed equal amounts ($296,666,666.7).4. AidData has coded this transaction as a collateralized loan because Bank of China and Rupali Bank Limited were selected as the security agent (i.e. collateral agent) for the loan. When lenders take collateral as security for their loans, a collateral/security agent is often appointed to enforce rights against the collateral in the event of the borrower's default under the loan.5. This loan is not recorded the China’s Overseas Development Finance Dataset, which Boston University's Global Development Policy Center published in December 2020.6. This project is considered to be part of the Bangladesh, China, India and Myanmar Economic Corridor (BCIM) and the Belt and Road Initiative (BRI).7. HTG Development Group Co. Ltd. is sometimes referred to as STG Development Group.8. During Chinese President Xi Jinping's state visit to Bangladesh in October 2016, Xi announced several major energy cooperation projects, including the S.Alam Chittagong Power Plant.9. Sinosure provided medium and long-term buyer credit insurance and overseas investment (equity) insurance.10. Deheng Law Firm advised the project owner on PRC law. Sunshine Law Firm acted as the leading counsel, and Doulah & Doulah acted as Bangladesh counsel to China Export & Credit Insurance Corporation (Sinosure). JunHe served as PRC counsel to the financing party.",
+    "location_narrative": "This project supports the construction of a power plant located in Paschim Gandamara in Banskhali Upzila of Chittagong Division. More detailed locational information can be found at: https://www.openstreetmap.org/way/998933526#map=16/21.9751/91.8898.",
+    "description_chars": 8079,
+    "was_truncated_in_lead_file_by": 6879
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "banskhali-coal-plant",
+     "shared_words": [
+      "agricultural",
+      "alam",
+      "bangladesh",
+      "banskhali",
+      "minsheng",
+      "powerchina",
+      "sepco"
+     ],
+     "case_years": [
+      2018,
+      2021
+     ],
+     "case_title": "Banshkhali (S. Alam) coal plant shootings",
+     "strength": "strong"
+    },
+    {
+     "case": "barishal-coal-plant-evictions",
+     "shared_words": [
+      "bangladesh",
+      "owned",
+      "powerchina"
+     ],
+     "case_years": [
+      2017,
+      null
+     ],
+     "case_title": "Barishal Coal Plant: Evictions and Assaults at Nishanbaria",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G349",
+   "aiddata_rows": [
+    {
+     "id": 61320,
+     "title": "CDB provides $2.3805 billion loan tranche for the Jakarta-Bandung High Speed Rail Project (Linked to Project ID#61321, #61322, and #96344)",
+     "amount_usd_2021": 2743140982.78842,
+     "year": 2017,
+     "status": "Implementation",
+     "decisive": true
+    },
+    {
+     "id": 61321,
+     "title": "CDB provides RMB-denominated loan tranche for the Jakarta-Bandung High Speed Rail Project (Linked to Project ID#61320, #61322, and #96344)",
+     "amount_usd_2021": 1828760655.19228,
+     "year": 2017,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Indonesia",
+   "iso3": "IDN",
+   "year": 2017,
+   "sector": "TRANSPORT AND STORAGE",
+   "infrastructure": "Yes",
+   "title": "CDB provides $2.3805 billion loan tranche for the Jakarta-Bandung High Speed Rail Project (Linked to Project ID#61321, #61322, and #96344)",
+   "rank_score": 9,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "Fifth, during the construction process, gas pipelines owned by the national Pertamina Oil Company were damaged, which caused an explosion and killed a Chinese worker in Melong, near Cimahi town.",
+      "aiddata_row": 61320
+     },
+     {
+      "field": "Description",
+      "sentence": "Fifth, during the construction process, gas pipelines owned by the national Pertamina Oil Company were damaged, which caused an explosion and killed a Chinese worker in Melong, near Cimahi town.",
+      "aiddata_row": 61321
+     }
+    ],
+    "land taken": [
+     {
+      "field": "Description",
+      "sentence": "By September 2019, 32.8% of the project’s construction activities were complete and land acquisition progress reached 99%.",
+      "aiddata_row": 61320
+     },
+     {
+      "field": "Description",
+      "sentence": "By mid-February 2020, construction progress had reached 44% and land acquisition progress reached 99.96%.",
+      "aiddata_row": 61320
+     },
+     {
+      "field": "Description",
+      "sentence": "Construction resumed in June 2020, and as of September 2020, the Director of KCIC Xin Xuezhong reported that construction progress had reached 60% and land acquisition progress had reached 100%.",
+      "aiddata_row": 61320
+     },
+     {
+      "field": "Description",
+      "sentence": "Third, although KCIC exclusively appointed PT Pilar Sinergi, a state-owned enterprise to deal with land acquisition issues, the process has not proceeded as smoothly as the Indonesian government had hoped.",
+      "aiddata_row": 61320
+     },
+     {
+      "field": "Description",
+      "sentence": "By September 2019, 32.8% of the project’s construction activities were complete and land acquisition progress reached 99%.",
+      "aiddata_row": 61321
+     },
+     {
+      "field": "Description",
+      "sentence": "By mid-February 2020, construction progress had reached 44% and land acquisition progress reached 99.96%.",
+      "aiddata_row": 61321
+     },
+     {
+      "field": "Description",
+      "sentence": "Construction resumed in June 2020, and as of September 2020, the Director of KCIC Xin Xuezhong reported that construction progress had reached 60% and land acquisition progress had reached 100%.",
+      "aiddata_row": 61321
+     },
+     {
+      "field": "Description",
+      "sentence": "Third, although KCIC exclusively appointed PT Pilar Sinergi, a state-owned enterprise to deal with land acquisition issues, the process has not proceeded as smoothly as the Indonesian government had hoped.",
+      "aiddata_row": 61321
+     }
+    ],
+    "protest with specifics": [
+     {
+      "field": "Description",
+      "sentence": "Meiki Paendong, executive director of WALHI West Java, argues that the flooding in Bekasi and elsewhere demonstrated that the project’s EIA was flawed, as it failed to address the closure and loss of drainage flows due to land-use change.",
+      "aiddata_row": 61320
+     },
+     {
+      "field": "Description",
+      "sentence": "Meiki Paendong, executive director of WALHI West Java, argues that the flooding in Bekasi and elsewhere demonstrated that the project’s EIA was flawed, as it failed to address the closure and loss of drainage flows due to land-use change.",
+      "aiddata_row": 61321
+     }
+    ]
+   },
+   "full_text": {
+    "description": "The Jakarta-Bandung High Speed Rail (HSR) Project was originally going to be financed by the Japan International Cooperation Agency (JICA). In January 2014, JICA included the project in its Overseas Development Aid plan for Indonesia and agreed in principle to bankroll 75% of the total cost of the project at a 0.1% interest rate so long as the host government provided a loan repayment guarantee. However, Beijing was determined to win the contract for the HSR project and sought to outcompete Tokyo on several dimensions, including cost, speed of implementation, and level of public liability. In early 2015, Indonesian President Joko Jokowi invited China to submit an alternative proposal, and it proposed a lower cost version of the project that could be fully-financed with a government-guaranteed (CDB) loan at a 2% interest rate and implemented on a shorter timeline (3 years rather than 5 years).   Then, in September 2015, when President Jokowi was expected to announce the winning bidder, he surprised everyone by rejecting Beijing’s offer and Tokyo’s offer and “cancelling” the project. The stated rationale for his decision was that the project would lead to a ballooning of public debt. Tokyo responded by offering a 50% reduction in the amount of debt that would need to be backed by a sovereign guarantee. Beijing responded by scrapping the sovereign guarantee requirement altogether and proposing an off-public balance sheet transaction, in which CDB would work around the country’s public debt ceiling by extending a loan to a special purpose vehicle (jointly owned by Chinese and Indonesian state-owned companies) rather than the Government of Indonesia. Beijing’s revised offer was sufficiently attractive to seal the deal.   On October 16, 2015, a consortium of Indonesian state-owned companies (called PT Pilar Sinergi BUMN) and a consortium of Chinese state-owned companies (called Beijing Yawan HSR Co Ltd) established a joint venture and special purpose vehicle called PT Kereta Cepat Indonesia China (also known as PT Kereta Api Indonesia China or KCIC) to design, finance, implement, and manage the Jakarta-Bandung High Speed Rail Project. PT Pilar Sinergi BUMN (PSBI) — a joint venture of PT Wijaya Karya Tbk (38% ownership stake), PT Kereta Api Indonesia (25% ownership stake), PT Perkebunan Nusantara VIII (25% ownership stake), and PT Jasa Marga (Persero) Tbk. (12%) ownership stake — holds a 60% ownership stake (shareholding interest) in KCIC. Beijing Yawan HSR Co Ltd — a joint venture of China Railway International Co. Ltd., China Railway Group Limited, Sinohydro Corporation Limited, CRRC Corporation Limited, and China Railway Signal and Communication Corp. — holds the remaining 40% ownership stake (shareholding interest) in KCIC. Then, on May 14, 2017, China Development Bank (CDB) signed a $3.9675 billion loan agreement with KCIC for the Jakarta-Bandung High-Speed Rail Project.   The loan consists of two tranches: a USD-denominated tranche worth $2.3805 billion (captured via Project ID#61320) and an RMB-denominated tranche worth $1.587 billion (captured via Project ID#61321). The USD-denominated tranche carries the following borrowing terms: 40-year maturity, 10 year grace period, 2% interest rate, and no sovereign guarantee. The RMB-denominated tranche carries the following borrowing terms: 40-year maturity, 10 year grace period, 3.46% interest rate, and no sovereign guarantee. ICBC is the security agent for the loan. The borrower was to use the proceeds of the loan to partially finance an EPC contract between KCIC and seven Indonesian and Chinese state-owned firms, which was signed on April 4, 2017. The total cost of the Jakarta-Bandung HSR Project is $5.29 billion and it is being financed according to a 75:25 debt-to-equity ratio. The equity contribution of Beijing Yawan HSR Co Ltd. is captured via Project ID#61322.   The purpose of the Jakarta-Bandung HSR Project is to construct a 142.3 km high-speed railway from the city of Jakarta to Bandung, the capital of West Java. Upon completion, the railway is expected to reduce the travel time between Jakarta and Bandung from more than 3 hours to less than 40 minutes. Construction began on January 21, 2016. However, the first CDB loan disbursement ($170 million) did not occur until May 2018. CDB planned to disburse another $1.1 billion before the end of July 2018. In May 2019, the 608-meter Walini tunnel was built. By September 2019, 32.8% of the project’s construction activities were complete and land acquisition progress reached 99%. By mid-February 2020, construction progress had reached 44% and land acquisition progress reached 99.96%. Then, in March 2020, the 442-meter No.5 tunnel was finished. Due to the COVID-19 pandemic, work on the project was temporarily halted during the spring of 2020. Construction resumed in June 2020, and as of September 2020, the Director of KCIC Xin Xuezhong reported that construction progress had reached 60% and land acquisition progress had reached 100%.   The Jakarta-Bandung HSR Project, which was originally scheduled for completion in May 2019, has encountered a number of different problems during implementation. First, Indonesia Law No. 32/2009 regarding Environment Management and Control requires an environmental impact assessment (EIA) be developed over at least one year (and include analysis for both dry and rainy seasons) for a project of the Jakarta-Bandung HSR’s scale. However, the EIA for the project was completed in less than 6 months, and environmental NGOs claim that it contains inaccurate and flawed data analysis regarding the project’s actual environmental impacts. Second, the project reportedly violated Government Regulation No. 27/2012 regarding environmental permits, which requires public participation in the making of the EIA document. Environmental NGOs claim that, due to a lack of public participation in the EIA process, the project has serious design defects, including a planned route through numerous geological faults, which has led to delays, cost overruns, and local opposition. Third, although KCIC exclusively appointed PT Pilar Sinergi, a state-owned enterprise to deal with land acquisition issues, the process has not proceeded as smoothly as the Indonesian government had hoped. In July 2018, three lawsuits resulted in legal approval from the courts to proceed with claims seeking compensation for their properties affected by the project. Fourth, Indonesia’s Ministry of Public Works and Public Housing (PUPR) ordered a temporary halt to the project on March 2, 2020 after flooding blocked the main toll road between Jakarta and the city of Cikampe. Acting Director General of Public Works Danis Sumadilaga said piles of soil dumped on roadsides had buried drainage channels and caused the flooding, adding that shoddy management practices paid scant attention to health, safety, and environmental degradation concerns. Fifth, during the construction process, gas pipelines owned by the national Pertamina Oil Company were damaged, which caused an explosion and killed a Chinese worker in Melong, near Cimahi town. Sixth, blasting work for tunnels in the area of the Tipar Sari Asih housing complex in the West Java town of Cimahi has caused serious damage. According to Meiki Paendong, executive director of WALHI West Java, an environmental NGO based in Bandung, “[m]any walls of [nearby] houses cracked … [and] there was information that [the company] would examine the impact, but until now, the results of the inspection have not been made public.” Seventh, when flooding hit the Jakarta suburb of Bekasi in January 2020, Deputy Mayor Tri Ardhianto Tjahyono pointed to the HSR project as a cause, as did officials in the West Bandung regency which also flooded. Arief Maulana, head of Bekasi City Public Works and Water Management, said that “[o]ne of KCIC effects… is the problem of drainage control in several project activity locations, which are close to the drainage area that causes sedimentation and also disrupted waterways.” Maulana argued that it is the responsibility of KCIC to fix all drainage damage due to the project. KCIC eventually agreed to repair and restore the drainage system after the State-Owned Enterprises Ministry demanded an assessment of the project in March 2020, due to environmental degradation concerns. Meiki Paendong, executive director of WALHI West Java, argues that the flooding in Bekasi and elsewhere demonstrated that the project’s EIA was flawed, as it failed to address the closure and loss of drainage flows due to land-use change. For example, drainage canals were covered by landfills, which reportedly increased flooding throughout the rainy season.   In 2015, Indonesian President Joko Jokowi signed a decree prohibiting the use of government funds for the Jakarta-Bandung High Speed Rail Project. However, during implementation, the project encountered major cost overruns worth an estimated $2 billion due to various factors, including but not limited to higher-than-expected land procurement costs, delays in construction due to the Covid-19 pandemic, the rising prices of materials, and additional project insurance costs and debt service reserve account (DSRA) requirements. Then, in October 2021, President Jokowi reversed course, issuing a new decree and authorizing a government bailout of the Jakarta-Bandung HSR Project. The Indonesian government reportedly authorized the use of $286.7 million from state coffers to inject liquidity into PT Kereta Cepat Indonesia China (the borrowing institution) in the next fiscal year. It also made clear that it was prepared to provide additional funding on an as needed basis. At the time, a spokesperson for the Indonesian Ministry of State-Owned Enterprises (SOEs), said that ‘like it or not, … we have to ask the government to participate in funding the project if we want it to be finished on time.’ Then, in July 2022, the project’s prime contractor (PT KCIC) reported that the project had achieved an 85% completion rate. At that time, Jakarta-Bandung HSR saw the laying of ballasted tracks begin on its main line. One month later, in August 2022, high-speed bullet trains for the Indonesian Jakarta-Bandung HSR rolled off the assembly line in Qingdao within China’s Shandong Province. Eleven pairs of high-speed electric multiple units (EMUs) and one set of comprehensive testing bullet railcars were ready to be shipped to Indonesia.   As of August 2022, all Jakarta-Bandung HSR tunnels had been completed and more than 90 percent of the subgrade, bridge and station civil works had been completed. By October 2022, the project had achieved a 88.8% completion rate. Also, during the last quarter of calendar year 2022, Indonesian state auditor BPKP reported that the cost overruns associated with the Jakarta-Bandung HSR Project were just under $1.5 billion (rather than the earlier estimate of $2 billion). On October 18, 2022, Indonesia’s Deputy Minister of SOEs Kartiko Wirjoatmodjo announced that ‘[w]e are currently in the final negotiation with CDB for additional loans for cost overruns'. He also indicated that KCIC would contract one or more supplementary loans worth $1.03 billion (IDR 16.1 trillion) from CDB to cover approximately 75% of the project’s cost overruns (worth $1.45 billion). Then, on November 9, 2022, KCIC Director Dwiyana Slamet Riyadi told a legislative committee that the project’s cash flow would run out by the end of the month and China’s National Development and Reform Commission (NDRC) agreed that 75% of the project’s cost overruns should be funded with the proceeds of an additional CDB loan. At the time, KCIC was also asking parliament to make another IDR 3.22 million cash injection into the project company (as an additional equity contribution on behalf of PSBI) in conjunction with an additional IDR 2.15 trillion equity contribution from Beijing Yawan HSR Co Ltd. KCIC Director Dwiyana Slamet Riyadi told the legislative committee that completing the project by June 2023 would require receipt of additional project debt and equity by the end of November 2022.   On March 31, 2023, the track laying of the whole line of the Jakarta-Bandung High-Speed Railway was completed. Then, on April 10, 2023, Indonesia' Chief Investment Affairs Minister Luhut Binsar Pandjaitan said that KCIC had been working with CDB to lower the interest rate attached to the supplementary loan to cover the project's cost overruns. The Indonesian Government proposed a $560 million loan at a 2%interest rate from China Development Bank (CDB) to pay for the cost overruns. In April 2023, Luhut told a press briefing in Jakarta that '[CDB] is already willing to bring the interest down from 4 percent. The first offer is a reduction from 4 percent to 3.4 percent, but we want it to be even lower. [...] We do want a 2 percent interest, but it is impossible to have everything [we want] come true. If you ask for loans [outside China], the interest can go up to 6 percent. So if we end up with a 3.4-percent rate, we are doing okay, although not that okay. But that would be better than [borrowing money from other countries].' Luhut also noted that a 3.4 percent interest rate would not necessarily be problematic: 'Do not underestimate our country. We are getting better. Our state tax revenue has grown by 48.6 percent [in January 2023] thanks to better efficiency with digitalization, etc.'  As of April 2023, the Jakarta-Bandung High-Speed Railway was expected to launch its commercial operations on August 18, 2023 — one day after the 78th anniversary of Indonesia's independence day.  Then, in May 2023, Indonesia’s Transport Ministry and three consulting firms -- Mott MacDonald, PwC and local law firm Umbra -- pushed back on the suggestion that the project could achieve full-fledged commercial operations by August 18, 2023. At the time, the Chinese participants in KCIC reportedly wanted a full operational worthiness certificate for the Jakarta-Bandung HSC despite the incomplete construction of a railway station, but the Indonesian Transport Ministry and its consultants suggested that KCIC might not achieve full-fledged commercial operations until December 31, 2023.   Then, in June 2023, Reuters reported that KCIC was still in negotiations with CDB over a $560 million supplemental loan (captured via captured via Project ID#96344). After CDB offered an interest rate of 3.46% on the loan's RMB-denominated tranche, KCIC reportedly countered with a 2.8% interest rate request.",
+    "staff_comments": "1. The Indonesian project title is Proyek Kereta Cepat Jakarta - Bandung Belum Rampung. The Chinese project title is 雅加达至万隆高铁项目 or 雅万高铁项目. 2. AidData has coded this transaction as a collateralized loan because ICBC was selected as the security agent (i.e. collateral agent) for the loan. When lenders take collateral as security for their loans, a collateral/security agent is often appointed to enforce rights against the collateral in the event of the borrower’s default under the loan.",
+    "location_narrative": "The purpose of the project is to construct a 142.3 km high-speed railway from the city of Jakarta to Bandung, the capital of West Java. More detailed locational information can be found at https://www.openstreetmap.org/relation/12150229#map=8/-6.607/107.312",
+    "description_chars": 14544,
+    "was_truncated_in_lead_file_by": 13344
+   },
+   "r36_dedupe_hint": {
+    "case_id": "jakarta-bandung-hsr-construction",
+    "shared_words": [
+     "bandung",
+     "jakarta",
+     "speed"
+    ],
+    "strength": 3
+   },
+   "local_match": [
+    {
+     "case": "jakarta-bandung-hsr-construction",
+     "shared_words": [
+      "bandung",
+      "beijing",
+      "consortium",
+      "high",
+      "indonesia",
+      "jakarta",
+      "java",
+      "lead",
+      "speed",
+      "yawan"
+     ],
+     "case_years": [
+      2016,
+      2023
+     ],
+     "case_title": "Jakarta–Bandung High-Speed Rail: Pipeline Fire, Flooding and Cracked Homes",
+     "strength": "strong"
+    },
+    {
+     "case": "indramayu-coal-jica-farmers",
+     "shared_words": [
+      "cooperation",
+      "indonesia",
+      "international",
+      "japan",
+      "java",
+      "jica",
+      "persero"
+     ],
+     "case_years": [
+      2015,
+      2022
+     ],
+     "case_title": "Indramayu 2 Coal Plant: JICA Loan and Jailed Farmers",
+     "strength": "strong"
+    },
+    {
+     "case": "jawa-1-lng-power-fishers",
+     "shared_words": [
+      "cooperation",
+      "indonesia",
+      "international",
+      "japan",
+      "java"
+     ],
+     "case_years": [
+      2019,
+      null
+     ],
+     "case_title": "Jawa-1 gas power plant: fishers' catch and tenant farmers",
+     "strength": "strong"
+    },
+    {
+     "case": "batang-coal-jbic",
+     "shared_words": [
+      "cooperation",
+      "indonesia",
+      "international",
+      "japan",
+      "java"
+     ],
+     "case_years": [
+      2013,
+      2017
+     ],
+     "case_title": "Batang Coal Power Plant Land Takeover",
+     "strength": "strong"
+    }
+   ]
+  },
+  {
+   "financing": "G212",
+   "aiddata_rows": [
+    {
+     "id": 52663,
+     "title": "China Eximbank provides $2.67 billion preferential buyer's credit for Padma Bridge Rail Link Project (Linked to Project ID#52765)",
+     "amount_usd_2021": 2907653736.35543,
+     "year": 2018,
+     "status": "Implementation",
+     "decisive": true
+    }
+   ],
+   "recipient": "Bangladesh",
+   "iso3": "BGD",
+   "year": 2018,
+   "sector": "TRANSPORT AND STORAGE",
+   "infrastructure": "Yes",
+   "title": "China Eximbank provides $2.67 billion preferential buyer's credit for Padma Bridge Rail Link Project (Linked to Project ID#52765)",
+   "rank_score": 8,
+   "flags": [
+    "displaced or resettled"
+   ],
+   "decisive_buckets": [
+    "relocation count"
+   ],
+   "candidate_sentences": {
+    "land taken": [
+     {
+      "field": "Description",
+      "sentence": "Specific issues relating to the face value of the loan were related to major increases in the cost of land acquisition.",
+      "aiddata_row": 52663
+     },
+     {
+      "field": "Description",
+      "sentence": "China Eximbank disagreed with the Government of Bangladesh over the costs of the land acquisition.",
+      "aiddata_row": 52663
+     }
+    ],
+    "relocation count": [
+     {
+      "field": "Description",
+      "sentence": "Construction of the railway is expected to impact the living accommodations of 7,705 people, necessitating resettlement arrangements.",
+      "aiddata_row": 52663
+     }
+    ]
+   },
+   "full_text": {
+    "description": "In January 2015, the Chinese Government proposed loans worth $15 to $20 billion to finance the expansion of various railways in Bangladesh. Soon thereafter, Bangladesh's Ministry of Railways sent a set of projects to the Economic Relations Division (ERD) of Bangladesh's Ministry of Finance to inquire about potential Chinese financing. Then, Bangladesh’s Ministry of Finance sent a list of projects, including the Padma Bridge Rail Project, to the Chinese Government. At that point, Bangladesh's Ministry of Railways had already signed memoranda of understanding (MoUs) with China Railway Group Limited for the Padma Bridge Rail Project. Then, on August 8, 2016, Bangladesh Railway and China Railway Engineering Corporation (CREC) signed a $3.13 billion commercial contract for the construction of a 172-kilometer-long railway line from Dhaka to Jessore crossing through the Padma Bridge. Two months later, in October 2016, during the state visit of Chinese President Xi Jinping to Bangladesh, the Chinese Government and the Government of Bangladesh signed an MoU on the Padma Bridge Rail Link Project.    However, the project hit a snag because of disagreements between the Chinese Government and the Government of Bangladesh on the face value and interest rate of the proposed loan for the project. The Bangladesh's Ministry of Railways requested that the project begin implementation in January 2017 in order to be completed by the time the Padma Bridge was completed. However, a loan agreement with China Eximbank had yet to be signed and was scheduled to be signed on December 16, 2017. This date came and past, despite attempts of Bangladeshi authorities — including the Prime Minister's Office — to contact their Chinese counterparts to finalize the loan. The Government of Bangladesh had wanted the project to be completed before Bangladesh's December 2018 general elections.    Specific issues relating to the face value of the loan were related to major increases in the cost of land acquisition. China Eximbank disagreed with the Government of Bangladesh over the costs of the land acquisition. As a result, China Eximbank reduced the promised loan amount by 15% (from approximately ৳247.490 billion BDT to ৳210.36 billion BDT) and turned its previously promised ‘soft loan’ (most likely a governmental concessional loan) into a preferential buyer's credit. As a result, the Government of Bangladesh was forced to increase its counterpart funding contribution from ৳102 billion BDT to ৳190.43 billion BDT.    Then, on February 2, 2018, China Eximbank sent a letter to the Government of Bangladesh informing them that it would begin the process of signing the loan agreement. To ensure that China Eximbank would issue the loan for the Padma Bridge Rail Link Project promptly, in early February 2018 (presumably after the China Eximbank letter was received), the Government of Bangladesh approved ‘on an urgent basis’ a China Eximbank government concessional loan worth RMB 1,547,071,939.09 ($231.5 million) for the Modernization of Telecommunication Network for Digital Connectivity Project (MOTN) (captured via Project ID#52765) because the ‘[d]elay in offering the green signal to the Chinese assistance [for the telecommunications modernization project] was affecting the implementation of the [Padma Bridge Rail Link Project].’ The Government of Bangladesh had previous problems with the MOTN loan and delayed approving it, which provoked concerns among the Chinese authorities. To address these concerns and advance the Padma Bridge Rail Link Project, the Government of Bangladesh approved the MOTN loan. Then, China’s State Council provided its approval for China Eximbank to issue a loan for the Padma Bridge Rail Link Project in February 2018. The Chinese Government sent the loan agreement to the Bangladeshi Government by the end of February for final review and countersignature.    Then, on April 27, 2018, China Eximbank and the Government of Bangladesh signed the $2,667,940,000 preferential buyer's credit (PBC) agreement for the Padma Bridge Rail Link Project (PBRLP). The PBC carried the following borrowing terms: an interest rate of 2%, a grace period of 6 years, a maturity period of 20 years, a management fee of 0.25%, and a commitment fee of 0.25%. The proceeds of the PBC were to be used by the borrower to finance 85% of the cost of a $3,138,750,000 commercial contract between the Government of Bangladesh and CREC, which was signed in August 2016. The Government of Bangladesh is responsible for covering the remaining 15% ($470.81 million).    According to the Government of Bangladesh’s Economic Relations Division (ERD), the PBC had achieved a disbursement rate of 20% ($533,588,000 out of $2,667,940,000) as of June 30, 2020 and a 40.4% disbursement rate ($1,079,727,000 out of $2,667,940,000) as of June 30, 2021.  According to the Government of Bangladesh’s ERD, the borrower had not made any repayments under the PBC as of June 30, 2021. The purpose of the project is to construct a new railway track that runs from the city of Dhaka to the city of Jessore via Padma Multipurpose Bridge to establish new Broad Gauge (BG) railway connectivity through south-west part of the country. The project is being implemented in 2 phases. The first phase is an 82 kilometer section from Dhaka to Bhanga, and the second phase is a Bhanga to Jessore section. The project involves the construction of 215.22 km of rail track, including loops and sidings; 23.38 km of viaducts, 1.98 km of ramps, 66 major bridges, 244 minor bridges and culverts, 1 highway overpass, and 29 level crossings. The project also includes the construction of 14 new station buildings, remodeling of 6 existing station buildings, the supply of 100 passenger coaches, and the acquisition of 1796 acres of land. 172 kilometer of track is to be laid between Dhaka to Jessore via Padam Bridge and Bhanga of Faridpur, while 43.2 km of track was set to be lines loop lines. 23 kilometers of the rail line is set to be elevated. The single-track rail line is designed to accommodate a maximum speed of 120 kilometers per hour. Construction of the railway is expected to impact the living accommodations of 7,705 people, necessitating resettlement arrangements.    The PBRLP seeks to establish a rail-based transportation network with nine southern districts including the Port of Mongla and Benapole Land Port through the 6.15-kilometer Padma Bridge (which was still under construction when this project began implementation). The route is to be constructed in four sections: Dhaka-Gendaria, Gendaria-Mawa, Mawa-Bhanga junction via Padma Bridge and Bhanga-Jessore Bridge. The 50-kilometer-long Mawa-Bhanga junction-Bhanga via Padma Bridge section was originally expected to be completed by the end of 2018 to allow trains to travel over the bridge on the day of its inauguration. The project, part of the Bangladesh-China-India-Myanmar Economic Corridor (BCIM) of the Belt and Road Initiative (BRI), is expected to cut the travel time from Dhaka to Kolkata, West Bengal, India by five hours and time from Dhaka to Khulna in southern Bangladesh from nine hours to 3 hours.  CREC is the general EPC contractor responsible for implementation. China Railway First Group Co, Ltd. (CRFG) — a subsidiary of China Railway Group Limited — is also involved in project implementation. The Engineering Corps of Bangladesh Army and Bangladesh University of Engineering and Technology have also served as consultants for the project. Bangladesh Railway is the main executing agency on behalf of the Bangladeshi Government, while Bangladesh's Ministry of Railways (MoR) is the ‘sponsoring ministry.’ After the signing of the loan agreement, construction was placed under the supervision of Fast Track Project Monitoring Committee, headed by Prime Minister of Bangladesh Sheikh Hasina.    Project implementation commenced on July 3, 2018, with an intended completion date of June 2022. However, even by May 2018, before implementation had commenced, Bangladesh Railways officials were attempting to secure an extension of implementation from June 2022 to June 2024 due to the previously described delays relating to the loan. Prime Minister Hasina officially inaugurated work on the project on October 14, 2018, despite the commencement of construction works several months prior.     By November 2020, the project had achieved a 28.28% completion rate, despite the outbreak of the COVID-19 pandemic. The expected project completion date at that time was June 2024, and the Mawa-Bhanga junction-Bhanga via Padma Bridge section was to be set to be open in 2021 (although this section was originally scheduled to be opened by the end of 2018). On August 23, 2021, the installation of all road slabs on Padma Bridge was completed. In total, 2,917 road slabs and 2,959 railway slabs were installed on the 6.15 km-long bridge. As of November 2021, the physical works of the main structure of the Padma Bridge had achieved a 95% completion rate and the overall progress of the bridge construction stood at an 88.75% completion rate. Asphalt carpeting on the road slabs also began in November 2021.",
+    "staff_comments": "1. This project is also known as the Padma Rail Link Project and the Dhaka-Jessore Railway Project. The Chinese project title is 帕德玛大桥铁路连接线项目.  2. The Government of Bangladesh’s loan identification number for the PBC is B1120180427A. 3. There is a Bangladeshi Government website dedicated to this project: https://pbrlp.gov.bd/. 4. This $2.67 billion China Eximbank loan is not recorded the China’s Overseas Development Finance Dataset, which Boston University's Global Development Policy Center published in December 2020.",
+    "location_narrative": "The Padma Bridge Rail Link Project (PBRLP) (also known as the Dhaka-Jessore Railway Project) will connect Dhaka and Jessore via the Padma Bridge in Bangladesh. It is being developed in 2 phases. The first is an 82 kilometer section from Dhaka to Bhanga, and the second is a Bhanga to Jessore Section. More detailed locational information for the completed section of the rail link can be found at:https://www.openstreetmap.org/way/903303239#map=9/23.2440/89.8000https://www.openstreetmap.org/way/821981467#map=9/23.5325/90.1648https://www.openstreetmap.org/way/821981466#map=12/23.4574/90.2903https://www.openstreetmap.org/way/821979335#map=11/23.5624/90.3622https://www.openstreetmap.org/way/943708882#map=13/23.5077/90.2845",
+    "description_chars": 9174,
+    "was_truncated_in_lead_file_by": 7974
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "bangladesh-fuel-strike-2013",
+     "shared_words": [
+      "bangladesh",
+      "dhaka",
+      "january"
+     ],
+     "case_years": [
+      2013,
+      2013
+     ],
+     "case_title": "Bangladesh January 2013 Fuel Price Strike",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "jamuna-bridge-chars",
+     "shared_words": [
+      "acquisition",
+      "bangladesh",
+      "land"
+     ],
+     "case_years": [
+      1994,
+      1999
+     ],
+     "case_title": "Jamuna Multipurpose Bridge: char dwellers and land acquisition",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "bhabadah-waterlogging-kjdrp",
+     "shared_words": [
+      "after",
+      "bangladesh",
+      "jessore"
+     ],
+     "case_years": [
+      2005,
+      null
+     ],
+     "case_title": "Bhabadah Waterlogging after the Khulna-Jessore Drainage Project",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "siddhirganj-pipeline-transmission-land",
+     "shared_words": [
+      "bangladesh",
+      "land",
+      "through"
+     ],
+     "case_years": [
+      2008,
+      2019
+     ],
+     "case_title": "Land and Structures Lost to the Siddhirganj Gas Pipeline and Transmission Line",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G600",
+   "aiddata_rows": [
+    {
+     "id": 92603,
+     "title": "Bank of China participates in $2.6 billion syndicated loan for 2GW Java 9 and Java 10 Coal-Fired Power Plant Complex Construction Project",
+     "amount_usd_2021": 181486012.887952,
+     "year": 2020,
+     "status": "Implementation",
+     "decisive": true
+    }
+   ],
+   "recipient": "Indonesia",
+   "iso3": "IDN",
+   "year": 2020,
+   "sector": "ENERGY",
+   "infrastructure": "Yes",
+   "title": "Bank of China participates in $2.6 billion syndicated loan for 2GW Java 9 and Java 10 Coal-Fired Power Plant Complex Construction Project",
+   "rank_score": 8,
+   "flags": [
+    "protest or unrest",
+    "people killed or hurt",
+    "pollution or damage"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "A report published by Greenpeace in November 2019 modeling the health impacts of the project suggested that Jawa 9 and 10 would cause 4,700 premature deaths over its lifetime.",
+      "aiddata_row": 92603
+     }
+    ],
+    "pollution or damage": [
+     {
+      "field": "Description",
+      "sentence": "As construction began on the Unit 9 & 10 expansion, residents complained about already high levels of air pollution from the plant and damage to the sea and local fishing industry.",
+      "aiddata_row": 92603
+     }
+    ],
+    "protest with specifics": [
+     {
+      "field": "Description",
+      "sentence": "However, this project has become a source of controversy and protest.",
+      "aiddata_row": 92603
+     },
+     {
+      "field": "Description",
+      "sentence": "Demonstrations against the Jawa 9 & 10 expansion took place in January and April 2021.",
+      "aiddata_row": 92603
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On July 17, 2020, PT Indo Raya Tenaga — a special purpose vehicle and joint venture of the PLN-owned Indonesia Power (51%), Barito Pacific (34%) and KEPCO (15%) — signed a USD $2.6 billion syndicated loan agreement with a group of 11 banks for the 2GW Java 9 and Java 10 Coal-Fired Power Plant Complex Construction Project. The transaction reached financial close on November 6, 2020. Participants in the syndicate included the Development Bank of Singapore (DBS), Korea Development Bank (KDB), Korea Export-Import Bank (KEXIM), Hana Bank, CIMB, Maybank, Bank of China, Bank Mandiri, Bank Negara Indonesia, Bank Rakyat Indonesia, Indonesia Eximbank. The loan carries a 15.25-year maturity and an unknown interest rate. It is secured by (i.e. collateralized against) a pledge of shares in PT Barito Wahana Tenaga. Indonesian banks were reported to have contributed to 50% of this loan. The expansion was estimated to cost USD $3.5 billion.  The purpose of the project is to expand the existing Suralaya coal-fired steam power plant (CFSPP) by adding two additional power generation units (Unit 9 and Unit 10). Each unit will have a capacity of 1GW. The Jawa 9 and 10 plants will use Doosan Heavy Industry’s ultra-supercritical (USC) technology for electricity generation. Doosan’s boiler technology has higher output efficiency than a conventional boiler that uses subcritical technology. It operates at temperatures and pressures above the critical point of water and hence uses less coal per MWh, resulting in lower emissions and a low cost of production. The Siemens SST-6000 series steam turbine will be installed in the two units. The turbines are characterized by their short start-up times, operational flexibility and low maintenance costs. The power plant will also be equipped with electrostatic precipitator (ESP), advance low NOx burners, selective catalytic reduction and flue gas desulphurisation (FGD) equipment to dislodge dust particles and to control sulphur emissions.   Black & Veatch and AF Consult were appointed as the technical advisers for the project, and Tokyo Electric Power Services Co., Ltd. (TEPSCO) and PT Connusa Energindo served as the technical consultants. The Korea Electric Power Corporation (KEPCO) were contracted to provide specialized technical services for the project. AECOM, Environmental Resources Management (ERM), and Pöyry PLC did environmental consulting for the project.  The project is backed by a power purchase agreement (PPA) with offtaker PLN, while state-owned coal producers Bukit Asam, Adarno Energy and Kideco Jaya Agung will supply the coal. A conditional PPA was signed with Perusahaan Listrik Negara (PLN) in June 2017. PLN will purchase power capacity on a take-or-pay basis from the power plant for a period of 25 years.   The power plant is located in the city of Cilegon within Pulomerak District and Banten Province (exact locational coordinates:  -5.8892179, 106.0336018). Korea's Doosan Heavy Industries was awarded an EPC contract in September 2018. PT HutamaKarya is also one of the project’s EPC contractors.   A formal groundbreaking ceremony took place in December 2017. However, construction did not begin until early- to mid-2021. As of May 2022, the project had achieved a 50% completion rate. Jawa 9 was originally expected to be commissioned in the fourth quarter of 2023, while Jawa 10 was scheduled for commissioning in the first quarter of 2024. However, this project has become a source of controversy and protest. As construction began on the Unit 9 & 10 expansion, residents complained about already high levels of air pollution from the plant and damage to the sea and local fishing industry. In August 2019 three residents of Banten and civil society groups from the State of Ginseng, South Korea sued the project's potential funders in South Korea's Level 1 Court to stop financing for the plant on the grounds that building it would be irresponsible toward future generations. These funders are Korea Development Bank (KDB), the Korea Export-Import Bank (Kexim), and Korea Trade Insurance Corporation (K-Sure).   A report published by Greenpeace in November 2019 modeling the health impacts of the project suggested that Jawa 9 and 10 would cause 4,700 premature deaths over its lifetime. In August 2020 WALHI called on the Governor of Banten to revoke the environmental permits for Jawa-9 and Jawa-10 on the grounds that the plants were not in compliance with Regulation No. 15/2019 concerning emissions, that public participation in the permitting process had been inadequate, and that the Environmental Impact Assessment (AMDAL) contained misinformation. In November 2020, WALHI filed a lawsuit against the project's environmental permit at the Serang State Administrative Court as the construction of Jawa 9 & 10 ‘would worsen the quality of the environment and public health around the plant and fails to comply with the latest emission standards that have been in effect since 2019.’   Then, in 2020, Indonesia Corruption Watch (ICW), a Jakarta-based NGO, found major discrepancies in coal purchase agreements throughout the Indonesian power system. At the Banten Suralaya power plants, ICW said it could not account for 1.24 trillion rupiah ($88 million) in coal every year. Demonstrations against the Jawa 9 & 10 expansion took place in January and April 2021. Not only are activists opposing the environmental harms that will be caused by expanding the power station, they are also questioning the need for more electricity in the Java-Bali electrical grid. In 2020, the Java-Bali grid had a 46.6% surplus, suggesting that 2,000 MW of expanded coal-fired capacity at the Banten Suralaya power complex may not be necessary.",
+    "staff_comments": "1. DLA Piper provided legal counsel to the sponsors while Milbank provided legal counsel to the lenders. 2. It was reported that 50% of the funding came from Indonesian banks. The exact contribution from the Bank of China is unknown. Assuming equal contribution, the remaining USD 1.3 billion was divided among the remaining eight financing agencies. 3. Given that Indonesia Power (a subsidiary of Indonesian state-owned utility PLN) holds a majority in the borrowing institution and PLN was also the offtaker, the deal required a bespoke corporate governance solution to satisfy lender concerns. 4. This project is also known as the 2,000MW Jawa 9+10 Power Project and the PLTU Jawa 9 & 10 Project.",
+    "location_narrative": "The purpose of the project is to expand the existing Suralaya coal-fired steam power plant (CFSPP) by adding two additional power generation units (Unit 9 and and Unit 10).  Each unit will have a capacity of 1GW. The project is backed by a PPA with offtaker PLN, while state-owned coal producers Bukit Asam, Adarno Energy and Kideco Jaya Agung will supply the coal. The power plant is located in the city of Cilegon within Pulomerak District and Banten Province (exact locational coordinates:  -5.8892179, 106.0336018). More detailed locational information can be found at https://www.openstreetmap.org/way/531146215#map=17/-5.89398/106.02172.",
+    "description_chars": 5720,
+    "was_truncated_in_lead_file_by": 4520
+   },
+   "r36_dedupe_hint": {
+    "case_id": "suralaya-java-9-10",
+    "shared_words": [
+     "banten",
+     "cilegon",
+     "suralaya"
+    ],
+    "strength": 3
+   },
+   "local_match": [
+    {
+     "case": "suralaya-java-9-10",
+     "shared_words": [
+      "banten",
+      "cilegon",
+      "hana",
+      "indo",
+      "indonesia",
+      "java",
+      "plants",
+      "raya",
+      "suralaya",
+      "tenaga"
+     ],
+     "case_years": [
+      2020,
+      2025
+     ],
+     "case_title": "Suralaya Java 9 and 10 Coal Plants",
+     "strength": "strong"
+    },
+    {
+     "case": "saguling-dam",
+     "shared_words": [
+      "indonesia",
+      "java",
+      "listrik",
+      "negara",
+      "perusahaan"
+     ],
+     "case_years": [
+      1981,
+      1986
+     ],
+     "case_title": "Saguling Dam Resettlement",
+     "strength": "strong"
+    },
+    {
+     "case": "cirata-dam-resettlement",
+     "shared_words": [
+      "indonesia",
+      "java",
+      "listrik",
+      "negara",
+      "perusahaan"
+     ],
+     "case_years": [
+      1983,
+      1990
+     ],
+     "case_title": "Cirata Dam: 11,052 Families Moved",
+     "strength": "strong"
+    },
+    {
+     "case": "obi-kawasi-nickel-hpal",
+     "shared_words": [
+      "indonesia",
+      "mandiri",
+      "maybank",
+      "resources",
+      "technology"
+     ],
+     "case_years": [
+      2021,
+      null
+     ],
+     "case_title": "Obi Island nickel mines and smelters: Kawasi's water and fishing grounds",
+     "strength": "strong"
+    }
+   ]
+  },
+  {
+   "financing": "G351",
+   "aiddata_rows": [
+    {
+     "id": 61401,
+     "title": "ICBC contributes IDR 366 billion to syndicated loan for Cikampek-Palimanan Toll Road Development Project",
+     "amount_usd_2021": 45777324.3757177,
+     "year": 2012,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Indonesia",
+   "iso3": "IDN",
+   "year": 2012,
+   "sector": "TRANSPORT AND STORAGE",
+   "infrastructure": "Yes",
+   "title": "ICBC contributes IDR 366 billion to syndicated loan for Cikampek-Palimanan Toll Road Development Project",
+   "rank_score": 8,
+   "flags": [
+    "displaced or resettled",
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "Within 10 days of the road being inaugurated, there were 30 car accidents that led to injuries and fatalities.",
+      "aiddata_row": 61401
+     }
+    ],
+    "land taken": [
+     {
+      "field": "Description",
+      "sentence": "As of July 2012, 95 percent of land acquisition was achieved.",
+      "aiddata_row": 61401
+     },
+     {
+      "field": "Description",
+      "sentence": "However, the syndicated loan did not disburse until 100% of land acquisition was achieved.",
+      "aiddata_row": 61401
+     },
+     {
+      "field": "Description",
+      "sentence": "Social impacts included: some 5,617 Project Affected People (PAP), mainly due to land acquisition;",
+      "aiddata_row": 61401
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On September 26, 2012, PT Lintas Marga Sedaya (LMS) — a project company and special purpose vehicle — signed an IDR 8.8 trillion syndicated loan agreement with a group of 22 banks and financial institutions (including ICBC Indonesia) for the Cikampek-Palimanan Toll Road Development Project. Members of the lending syndicate included BCA, Bank DKI, Bank Panin, Bank bjb (Bank Jabar Banten), ICBC Indonesia, Export-Import Bank of Malaysia Berhad (Mexim), Deutsche Bank Indonesia, BII (Maybank Indonesia), and Bank CIMB Niaga. The syndicated credit facility was divided into three tranches and the maximum amount of the credit facility is IDR 8,800,000 million with the first scheduled drawdown in June 2013. It carried a 15-year maturity and an estimated average interest rate of 9.86%. The loan was secured by (collateralized with) receivables, assets, escrow account, shares issued, assignment of rights agreement and a letter of undertaking from UEM Group Berhad, shareholders of the project company (PT Lintas Marga Sedaya) and Mezzanine creditors. ICBC Indonesia contributed IDR 366 billion to the syndicated loan, which carried a 15-year maturity an unknown interest rate.   The IDR 12 trillion project involved the construction, ownership and operation of a 116 km toll road connecting Cikampek and Palimanan in the West Java province. It consisted of 6 sections: Section I, Cikopo–Kalijati (29.12 kilometers); Section II, Kalijati–Subang (9.56 kilometers); Section III, Subang–Cikedung (31.37 kilometers); Section IV, Cikedung–Kertajati (17.66 kilometers); Section V, Kertajati–Sumberjaya (14.51 kilometers); and Section VI, Sumberjaya–Palimanan (13.78 kilometers).   Construction began on December 11, 2011.  As of July 2012, 95 percent of land acquisition was achieved. However, the syndicated loan did not disburse until 100% of land acquisition was achieved. The first loan disbursement took place in September 2012.  As of January 2014, the project had achieved a 15 percent physical completion rate and the toll road was expected to go into operation in late 2014 or early 2015. The toll road was ultimately opened to traffic by Indonesian President, Joko Widodo, on June 13, 2015.    Within 10 days of the road being inaugurated, there were 30 car accidents that led to injuries and fatalities. Not all of the rest areas along the toll road were in operation, causing drivers to drive continuously with no rest. Another apparent reason for the car accidents was the absence of lighting facilities. The project had both environmental and social impacts. Key environmental impacts included: major changes in land use in construction areas; increased noise, erosion, dust, waste and traffic, especially during construction; and degradation of environmental quality. Social impacts included: some 5,617 Project Affected People (PAP), mainly due to land acquisition; and project alignment to accommodate 2 cultural sites (an ancestor tomb and a sacred well). To minimize these environmental and social impacts, the project agreement included a Corrective Action Plan (CAP), and the project developer (LMS) provided: i) a Supplemental Resettlement Action Plan (SRAP) Unit; ii) a Community Development Unit; iii) a Grievance Redress Unit; iv) a Stakeholder Relations Unit; and v) a budget of up to USD15 million for the livelihood restoration program and the CAP. Implementation was closely monitored through a local consulting firm. Concerning the SRAP, about 1,527 PAPs in 5 regencies registered for a Livelihood Restoration Program. The program assisted PAPs to improve their standards of living—or at least restore them to pre-displacement levels— through PAPs working on the construction works and skills training for food security, animal husbandry and running a business. In managing and delivering this Program, LMS worked with, among others, Village Heads and three NGOs. Late in the process, a satisfaction survey was conducted to measure the effectiveness of the engagement with PAPs and 87% of the surveyed PAPs found the process acceptable (versus a target of 75%).",
+    "staff_comments": "1. In June 2015, the name of the road changed from the Cikampek-Palimanan Toll Road (Cikapali) to the Cikopo-Palimanan Toll Road (Cipali). PT Lintas Marga Sedaya is the 35-year concession holder and operator of the Cikopo-Palimanan (Cipali) toll road in Indonesia. 2. Astra Infra, a unit of PT Astra International Tbk, holds a 45% ownership stake in PT Lintas Marga Sedaya. Canada Pension Plan Investment Board holds a 55% ownership stake in PT Lintas Marga Sedaya; it purchased this 55% stake from Malaysia’s Khazanah Nasional Berhard (Plus Expressways Berhad) in 2019. PT Astra International Tbk is a private Indonesian conglomerate controlled by Jardine Matheson. It is Southeast Asia's largest independent automotive group. 3. The average interest rates that applied to the syndicated loan are 10.76% (2018: 10.76%) for the portion of loan without Standby Letter of Credit and 8.96% (2018: 8.96%) for the portion of loan with Standby Letter of Credit. AidData has taken the average of these two interest rates to code its interest rate field (9.86%).",
+    "location_narrative": "The project involved the construction, ownership and operation of a 116 km toll road connecting Cikampek and Palimanan in the West Java province. It consisted of 6 sections: Section I, Cikopo–Kalijati (29.12 kilometers); Section II, Kalijati–Subang (9.56 kilometers); Section III, Subang–Cikedung (31.37 kilometers); Section IV, Cikedung–Kertajati (17.66 kilometers); Section V, Kertajati–Sumberjaya (14.51 kilometers); and Section VI, Sumberjaya–Palimanan (13.78 kilometers). More detailed locational information can be found at https://www.openstreetmap.org/relation/12430956",
+    "description_chars": 4085,
+    "was_truncated_in_lead_file_by": 2885
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "jawa-1-lng-power-fishers",
+     "shared_words": [
+      "banks",
+      "indonesia",
+      "java",
+      "subang"
+     ],
+     "case_years": [
+      2019,
+      null
+     ],
+     "case_title": "Jawa-1 gas power plant: fishers' catch and tenant farmers",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "suralaya-java-9-10",
+     "shared_words": [
+      "banten",
+      "indonesia",
+      "java"
+     ],
+     "case_years": [
+      2020,
+      2025
+     ],
+     "case_title": "Suralaya Java 9 and 10 Coal Plants",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "batang-coal-jbic",
+     "shared_words": [
+      "indonesia",
+      "java",
+      "land"
+     ],
+     "case_years": [
+      2013,
+      2017
+     ],
+     "case_title": "Batang Coal Power Plant Land Takeover",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "ioi-ketapang-peatland-clearing",
+     "shared_words": [
+      "indonesia",
+      "indonesian",
+      "malaysia"
+     ],
+     "case_years": [
+      2010,
+      2016
+     ],
+     "case_title": "IOI Palm Oil Peatland Clearing, Ketapang",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G230",
+   "aiddata_rows": [
+    {
+     "id": 53674,
+     "title": "[CPEC, IPP] CDB contributes to $1.43 billion syndicated loan for 1320MW Thar Block-1 Integrated Coal Mine and Power Project (Linked to Project ID#54013, 92627, 92628)",
+     "amount_usd_2021": 400386065.355882,
+     "year": 2020,
+     "status": "Implementation",
+     "decisive": true
+    },
+    {
+     "id": 92627,
+     "title": "[CPEC, IPP] ICBC contributes to $1.43 billion syndicated loan for 1320MW Thar Block-1 Integrated Coal Mine and Power Project (Linked to Project ID#54013, 53647, 92628)",
+     "amount_usd_2021": 400386065.355882,
+     "year": 2020,
+     "status": "Implementation",
+     "decisive": true
+    },
+    {
+     "id": 92628,
+     "title": "[CPEC, IPP] China Eximbank contributes to $1.43 billion syndicated loan for 1320MW Thar Block-1 Integrated Coal Mine and Power Project (Linked to Project ID#54013, 92627, 92628)",
+     "amount_usd_2021": 400386065.355882,
+     "year": 2020,
+     "status": "Implementation",
+     "decisive": true
+    }
+   ],
+   "recipient": "Pakistan",
+   "iso3": "PAK",
+   "year": 2020,
+   "sector": "ENERGY",
+   "infrastructure": "Yes",
+   "title": "[CPEC, IPP] CDB contributes to $1.43 billion syndicated loan for 1320MW Thar Block-1 Integrated Coal Mine and Power Project (Linked to Project ID#54013, 92627, 92628)",
+   "rank_score": 8,
+   "flags": [
+    "displaced or resettled"
+   ],
+   "decisive_buckets": [
+    "relocation count"
+   ],
+   "candidate_sentences": {
+    "land taken": [
+     {
+      "field": "Description",
+      "sentence": "It is also known that TCBPGCPL acquired 232.32 acres of land within the Thar Coalfield Block-I and the Government of Pakistan allowed TCBPGCPL to mortgage the land to its lenders.",
+      "aiddata_row": 53674
+     },
+     {
+      "field": "Description",
+      "sentence": "It is also known that TCBPGCPL acquired 232.32 acres of land within the Thar Coalfield Block-I and the Government of Pakistan allowed TCBPGCPL to mortgage the land to its lenders.",
+      "aiddata_row": 92627
+     },
+     {
+      "field": "Description",
+      "sentence": "It is also known that TCBPGCPL acquired 232.32 acres of land within the Thar Coalfield Block-I and the Government of Pakistan allowed TCBPGCPL to mortgage the land to its lenders.",
+      "aiddata_row": 92628
+     }
+    ],
+    "relocation count": [
+     {
+      "field": "Description",
+      "sentence": "An estimated 600 families will be displaced due to the coal mining and installation of the power plant.",
+      "aiddata_row": 53674
+     },
+     {
+      "field": "Description",
+      "sentence": "An estimated 600 families will be displaced due to the coal mining and installation of the power plant.",
+      "aiddata_row": 92627
+     },
+     {
+      "field": "Description",
+      "sentence": "An estimated 600 families will be displaced due to the coal mining and installation of the power plant.",
+      "aiddata_row": 92628
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On April 20, 2015, Shanghai Electric Group Company Limited (SEGCL) and Sino Sindh Resources (Pvt.) Ltd (SSRL or  (華信資源有限責任 公司) — a subsidiary of Global Mining (China) that was awarded a 30-year mining lease for Thar Coalfield Block I in October 2011— signed a cooperation framework agreement. Following the signing of this agreement, the two parties sought to establish an arrangement for the supply of coal to satisfy the coal consumption needs of a 1320 MW (2 x 660MW) coal-fired power plant project at Thar Coal Block-1 within Thar District and the Province of Sindh. As part of this deal, SSRL and SEGCL also entered into a coal supply agreement, in which SSRL will extract coal and supply it to China Power International (CPI). The mine is eventually expected to reach 20 million tons per year, which will be used for additional power plants as well as for export. In 2016, Pakistan’s Private Power Infrastructure Board issued a Letter of Intent to SEGCL to set up a 1320 MW supercritical indigenous coal-fired generation facility/thermal power plant at the project site. To facilitate the financing, development and operations of the power plant as well as a 7.8 million tons annual output (7.8 mtpa) coal mine, a special purpose vehicle called Thar Coal Block-1 Power Generation Company (Private) Limited (TCBPGCPL or 塔尔发电公司) was established on January 28, 2016. TCBPGCPL is jointly owned by Shanghai Electric Investment (Dubai) Limited (99.9997% equity stake) and 2 Chinese individuals in equal proportions (0.0003% equity stake). The total cost of the 1320MW Thar Block-1 Integrated Coal Mine and Power Project is $1.9122 billion. It is being implemented as an Independent Power Project — as part of the CPEC initiative — and financed according to a debt-to-equity ratio of 75:25.   On March 6, 2020, TCBPGCPL signed a $1.43 billion syndicated buyer’s credit (loan) agreement with China Development Bank (Project ID#53674), China Eximbank (Project ID#92628), ICBC (Project ID#92627), and Habib Bank for the 1320MW Thar Block-1 Integrated Coal Mine and Power Project. SEGCL/SEPCO agreed to provide $478 million of equity. The borrowing terms of the syndicated loan are unknown. However, it is known that Sinosure provided buyer’s credit insurance. It is also known that TCBPGCPL acquired 232.32 acres of land within the Thar Coalfield Block-I and the Government of Pakistan allowed TCBPGCPL to mortgage the land to its lenders.   The proceeds of the loan were to be used by the borrower to finance two contracts: a $434,750,358 commercial (EPC) contract between Shanghai Electric Engineering Consulting Company Limited（上海電 氣工程設計有限公司) and SSRL, which was signed on April 17, 2019; and a $467,956,549 commercial (EPC) contract between Shanghai Electric Hongkong International Engineering Company Limited（上海電氣香港國際工程有限公司) and SSRL, which was signed on April 17, 2019. Then, on August 27, 2019, TCBPGCPL and Pakistan’s Central Power Purchasing Agency (Guarantee) Limited (CCP-G) signed a Power Purchase Agreement (PPA). The Government of Pakistan has not only issued a CCP-G payment guarantee but also a 20% return on equity (ROE) guarantee.    The purpose of the project is to construct a 1320 MW supercritical indigenous coal-fired generation facility/thermal power plant and to develop an integrated coal mine with an annual production capacity of 7.8 million tons. The power plant will consist of two, 660 MW supercritical units having supercritical variable pressure operation coal-fired tower type boiler with single furnace, extraction condensing steam turbine and inner-cooled generator. It is envisaged that the power plant will eventually be connected with the 660kV Matiari-Lahore HVDC Transmission Line Project (captured via Project ID#54013). An estimated 600 families will be displaced due to the coal mining and installation of the power plant. The Thar Block-1 covers approximately 122 km2 in the southern part of the Thar coalfield area in the Thar Desert in the Sindh province of Pakistan, approximately 380km east of Karachi. The Thar coalfield area covers approximately 9,000 km2 and is bounded by the Pakistan-India border to the north, east, and south. The 1.3GW coal-fired power plant being developed as part of the integrated project is located approximately 5km away from the pithead of the Thar Block-1 coal mine. Shanghai Electric Engineering Consulting Company Limited and Shanghai Electric Hongkong International Engineering Company Limited are the EPC contractors responsible for implementation.   Mining work on the Thar Coal Block-I mine and plant began in October 2019. Then, in December 2019, the Government of Pakistan’s Private Power and Infrastructure Board (PPIB) signed an implementation agreement (IA) with Shanghai Electric for the project. Construction was temporarily suspended during the Covid-19 pandemic. Then, in August 2020, a batch of 500 Chinese workers and managers arrived in Pakistan by a special chartered flight, which accelerated the implementation of the project. In February 2021, almost 40% of work related to coal mining was reportedly completed and construction work was also in progress on the power station. The first unit (660MW) is expected to be operational by August 2022, while the expected commercial operations date (COD) is February 2023. 4,767 people are reportedly being employed by the project (of which 1381 are Chinese and 3386 are Pakistani).",
+    "staff_comments": "1. This project is also known as the 1320MW SSRL Thar Coal Block-I 7.8 mtpa & Power Plant (2×660MW), the 1.32GW Thar Block-1 Integrated Coal Mine-Power Project, the SSRL Thar Coal Block-I Shanghai Electric Coal Plant Project, the Pakistan SSRL Thar Coal Block-I Coal Plant Project, or the 2 X 660 MW Mine-Mouth Coal-Fired Power Generation Plant at Thar Block-1 Project. The Chinese project title is 与塔尔电站项目 or 巴基斯坦塔尔煤田项目 or 巴基斯坦塔尔煤田一区块煤电一体化项目. 2. According to multiple, official sources, the Government of Pakistan has issued sovereign guarantees in support of all loans issued by Chinese state-owned banks for independent power projects (IPPs) in Pakistan (see https://www.fmprc.gov.cn/ce/cepk/chn/zbgx/t1735166.htm and http://pk.chineseembassy.org/eng/zbgx/202110/t20211010_9558510.htm and https://www.dropbox.com/s/bmx3w2b38o7guxm/Debt%20Pricing%20of%20IPPs%20%28002%29.pdf?dl=0). As such, AidData assumes that the loan captured in this record is backed by a sovereign guarantee from the Government of Pakistan. The precise loan commitment date is unknown. One source (http://cpec.gov.pk/project-details/9) suggests that the project reached financial close on December 31, 2019. Another source indicated that the project reached financial close in February 2020. Still another source indicates that the syndicated loan agreement was signed in January 2020. For the time being, AidData has coded the commitment date as December 31, 2019. However, this issue merits additional investigation. 3. Thar Coal Block-1 Power Generation Company (Private) Limited (TCBPGCPL)— the SPV (project company) responsible for repaying the syndicated loan — is also known as TCB-I and 塔尔发电公司. 4. ICBC reportedly contributed $358.5 million to the $1.43 billion syndicated loan (i.e. one-quarter of the face value of the loan). The size of the contributions from CDB, China Eximbank, and Habib Bank are unknown. For the time being, AidData assumes that CDB, China Eximbank, and ICBC each contributed $358.5 million (i.e. equally sized contributions to the lending syndicate). 5. The Thar coalfield holds an estimated lignite resource of over 175 billion tons. It is spread over an area of more than 9,000 square kilometers in the Thar Desert in the southeastern part of the Pakistani province. 6. For the time being, AidData assumes that the borrowing terms of the loan are identical to those reported in NEPRA’s approval of the upfront tariff application submitted by TCBPGCPL (https://nepra.org.pk/tariff/Tariff/IPPs/003%20Coal/Thar%20Coal%20Block-I/TRF-360%20TCB-I%20Upfront%20Tariff%208694-96%2010-06-2016.PDF): 10-year maturity, 4-year grace period, and 4.95% interest rate. 7. SSRL was owned 55% by Global Mining China (GMC) and 40% by Asiapak Investments, with the remaining 5% owned by a Dubai-based company. However, in September 2018, Shanghai Electric agreed to become the controlling shareholder of SSRL.",
+    "location_narrative": "The purpose of the project is to construct a 1320 MW (2 x 660MW) coal-fired power plant project at Thar Coal Block-1 within Thar District and the Province of Sindh. the project also involves the development of a 7.8 million tons annual output (7.8 mtpa) coal mine. The Thar Block-1 covers approximately 122 km2 in the southern part of the Thar coalfield area in the Thar Desert in the Sindh province of Pakistan, approximately 380km east of Karachi. The Thar coalfield area covers approximately 9,000 km2 and is bounded by the Pakistan-India border to the north, east, and south. The 1.3GW coal-fired power plant being developed as part of the integrated project is located approximately 5km away from the pithead of the Thar Block-1 coal mine.  More detailed locational information can be found at https://www.openstreetmap.org/way/859911854 and https://www.openstreetmap.org/way/864718736",
+    "description_chars": 5422,
+    "was_truncated_in_lead_file_by": 4222
+   },
+   "r36_dedupe_hint": {
+    "case_id": "karachi-brt-red-line-university-road",
+    "shared_words": [
+     "karachi",
+     "pakistan",
+     "sindh"
+    ],
+    "strength": 3
+   },
+   "local_match": [
+    {
+     "case": "karachi-brt-red-line-university-road",
+     "shared_words": [
+      "infrastructure",
+      "investment",
+      "karachi",
+      "pakistan",
+      "sindh"
+     ],
+     "case_years": [
+      2022,
+      null
+     ],
+     "case_title": "Karachi BRT Red Line: a fatal collapse, injuries and closed businesses on University Road",
+     "strength": "strong"
+    },
+    {
+     "case": "thar-block-ii-sehnri-dars-gorano",
+     "shared_words": [
+      "block",
+      "engineering",
+      "pakistan",
+      "sindh",
+      "thar"
+     ],
+     "case_years": [
+      2015,
+      null
+     ],
+     "case_title": "Thar Coal Block II: Sehnri Dars Relocation and the Gorano Reservoir",
+     "strength": "strong"
+    },
+    {
+     "case": "balakot-hydropower-demolitions",
+     "shared_words": [
+      "infrastructure",
+      "investment",
+      "land",
+      "pakistan"
+     ],
+     "case_years": [
+      2022,
+      null
+     ],
+     "case_title": "Balakot Hydropower: land taken and buildings demolished in the Kaghan Valley",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "jalalpur-canal-land-flooding",
+     "shared_words": [
+      "acquired",
+      "acres",
+      "land",
+      "pakistan"
+     ],
+     "case_years": [
+      2018,
+      null
+     ],
+     "case_title": "Jalalpur Canal: 8,558 Acres Acquired and Villages Cut Off",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G633",
+   "aiddata_rows": [
+    {
+     "id": 96461,
+     "title": "Bank of China contributes $425 million to $1 billion syndicated loan for Formosa Ha Tinh Steel Plant Construction Project",
+     "amount_usd_2021": 501841916.052348,
+     "year": 2016,
+     "status": "Implementation",
+     "decisive": true
+    }
+   ],
+   "recipient": "Viet Nam",
+   "iso3": "VNM",
+   "year": 2016,
+   "sector": "INDUSTRY, MINING, CONSTRUCTION",
+   "infrastructure": "Yes",
+   "title": "Bank of China contributes $425 million to $1 billion syndicated loan for Formosa Ha Tinh Steel Plant Construction Project",
+   "rank_score": 7,
+   "flags": [
+    "people killed or hurt",
+    "pollution or damage"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "Then, in June 2016, the complex was found to be discharging cyanide and other pollutants that killed fish along a 130-mile stretch of the Vietnamese coast.",
+      "aiddata_row": 96461
+     }
+    ],
+    "pollution or damage": [
+     {
+      "field": "Description",
+      "sentence": "Then, in June 2016, the complex was found to be discharging cyanide and other pollutants that killed fish along a 130-mile stretch of the Vietnamese coast.",
+      "aiddata_row": 96461
+     }
+    ]
+   },
+   "full_text": {
+    "description": "In 2016, Formosa Ha Tinh (Cayman) Limited — a special purpose vehicle and subsidiary of the Taiwanese conglomerate Formosa Plastics Group that is registered in the Cayman Islands — signed a $2.5 billion syndicated loan agreement with a group of Chinese and non-Chinese lenders for the Formosa Ha Tinh Steel Plant Construction Project. The loan consisted of a $1.5 billion, 7-year tranche that carried an interest rate of LIBOR plus a 1.58% margin and a $1 billion, 5-year tranche  that carried an interest rate of LIBOR plus a 1.4% margin. Known participants in the $1.5 billion tranche include Bank of Taiwan, DBS, Hua Nan Commercial Bank, Mega International Commercial Bank and Taipei Fubon Bank. Known participants in the $1 billion tranche include Bank of China, Mizuho and Sumitomo Mitsui Banking Corp. Bank of China reportedly contributed $425 million.    The purpose of the project was to construct the Ha Tinh Formosa Plastics Steel Complex in in Kỳ Phương commune, Kỳ Anh district, and Hà Tĩnh province. A groundbreaking ceremony for the plant took place in December 2, 2012 in the presence of Prime Minister Nguyen Tan Dung. Then in late 2015, the plant outputted the first hot rolled coil manufactured in Vietnam. However, the project encountered a variety of problems and delays. On March 24, 2015, a 30-meter-high scaffolding section at the project site collapsed, killing 16 construction workers and injuring 27 others. Then, in June 2016, the complex was found to be discharging cyanide and other pollutants that killed fish along a 130-mile stretch of the Vietnamese coast. After a Vietnamese government report confirmed that Hung Nghiep Formosa Ha Tinh Steel Limited Company was responsible for the environmental damage, the company agreed to pay $500 million in compensation for discharging water containing chemicals such as phenol, cyanide and iron hydroxides. Then, on May 29, 2017, the plant restarted (and one of the blast furnaces was put into operation) after its operations were halted in the wake of the disaster. However, one day later (on May 30, 2017), a dust explosion rocked the Ha Tinh Formosa Plastics Steel Complex.",
+    "staff_comments": "1. AidData has estimated the all-in interest rate by adding 1.4% to average 6-month LIBOR in 2016 (1.06%).2. Formosa Ha Tinh (Cayman) Limited is assumed to be linked to Hung Nghiep Formosa Ha Tinh Steel Limited Company.",
+    "location_narrative": "The Ha Tinh Formosa Plastics Steel Complex is located in Kỳ Phương commune, Kỳ Anh district, Hà Tĩnh province. More detailed locational information can be found at https://www.openstreetmap.org/way/630749161",
+    "description_chars": 2150,
+    "was_truncated_in_lead_file_by": 950
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "formosa-ha-tinh-marine-disaster",
+     "shared_words": [
+      "disaster",
+      "formosa",
+      "plastics",
+      "taiwan",
+      "tinh",
+      "vietnam"
+     ],
+     "case_years": [
+      2016,
+      null
+     ],
+     "case_title": "Formosa Ha Tinh Steel Toxic Discharge",
+     "strength": "strong"
+    },
+    {
+     "case": "vietnam-natural-disaster-risk-989-resettled",
+     "shared_words": [
+      "along",
+      "disaster",
+      "other",
+      "plus",
+      "tinh",
+      "vietnam"
+     ],
+     "case_years": [
+      2005,
+      2013
+     ],
+     "case_title": "Vietnam disaster risk works: 989 households resettled across ten provinces",
+     "strength": "strong"
+    },
+    {
+     "case": "da-nang-sustainable-city-164-pending",
+     "shared_words": [
+      "compensation",
+      "nguyen",
+      "site"
+     ],
+     "case_years": [
+      2013,
+      2022
+     ],
+     "case_title": "Da Nang Sustainable City: 1,076 relocated and 164 compensation cases unresolved at closing",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G634",
+   "aiddata_rows": [
+    {
+     "id": 96462,
+     "title": "China Eximbank provides RMB 400 million loan for Formosa Plastics Vietnam Ha Tinh Blast Furnace Project",
+     "amount_usd_2021": 71078560.6845641,
+     "year": 2016,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Viet Nam",
+   "iso3": "VNM",
+   "year": 2016,
+   "sector": "INDUSTRY, MINING, CONSTRUCTION",
+   "infrastructure": "Yes",
+   "title": "China Eximbank provides RMB 400 million loan for Formosa Plastics Vietnam Ha Tinh Blast Furnace Project",
+   "rank_score": 7,
+   "flags": [
+    "people killed or hurt",
+    "pollution or damage"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "Then, in June 2016, the complex was found to be discharging cyanide and other pollutants that killed fish along a 130-mile stretch of the Vietnamese coast.",
+      "aiddata_row": 96462
+     }
+    ],
+    "pollution or damage": [
+     {
+      "field": "Description",
+      "sentence": "Then, in June 2016, the complex was found to be discharging cyanide and other pollutants that killed fish along a 130-mile stretch of the Vietnamese coast.",
+      "aiddata_row": 96462
+     }
+    ]
+   },
+   "full_text": {
+    "description": "In 2016, China Eximbank and Hung Nghiep Formosa Ha Tinh Steel Limited Company (台塑河靜鋼鐵興業) — a special purpose vehicle and joint venture of China Steel Corporation (CSC), Formosa Plastics Corporation (台灣塑膠), Nan Ya Plastics Corporation (南亞塑膠), Formosa Chemicals & Fibre Corporation (台塑化纖), Formosa Taffeta Corporation (福懋興業), Formosa Petrochemical Corporation (台塑石化), and Japan’s JFE Steel — signed an RMB 400 million loan agreement for the Formosa Plastics Vietnam Ha Tinh Blast Furnace Project. The borrowing terms of the loan are unknown.   The purpose of the project was to install two blast furnaces at the Ha Tinh Formosa Plastics Steel Complex in in Kỳ Phương commune, Kỳ Anh district, and Hà Tĩnh province.   Metallurgical Corporation of China Limited (MCC) was the EPC contractor responsible for project implementation. The No. 1 and No. 2 blast furnaces were originally scheduled to be put into operation in June 2016 and June 2017, respectively. However, the project encountered a variety of problems and delays. On March 24, 2015, a 30-meter-high scaffolding section at the project site collapsed, killing 16 construction workers and injuring 27 others. Then, in June 2016, the complex was found to be discharging cyanide and other pollutants that killed fish along a 130-mile stretch of the Vietnamese coast. After a Vietnamese government report confirmed that Hung Nghiep Formosa Ha Tinh Steel Limited Company was responsible for the environmental damage, the company agreed to pay $500 million in compensation for discharging water containing chemicals such as phenol, cyanide and iron hydroxides. Then, on May 29, 2017, the plant restarted (and one of the blast furnaces was put into operation) after its operations were halted in the wake of the disaster. However, one day later (on May 30, 2017), a dust explosion rocked the Ha Tinh Formosa Plastics Steel Complex. The second blast furnace did not become operational until May 18, 2019.",
+    "staff_comments": "1. The Chinese project title is 台塑河靜鋼鐵興業責任有限公司 or 中冶赛迪台塑河静钢厂1、2号高炉成套设备供货项目 or 台塑河静钢厂 or 中冶赛迪台塑河静钢厂项目. The Vietnamese project title is Công ty TNHH Gang Thép Hưng Nghiệp Formosa Hà Tĩnh.2. Hung Nghiep Formosa Ha Tinh Steel Limited Company is also sometimes known simply as Formosa Ha Tinh Steel Limited Company.",
+    "location_narrative": "The  Ha Tinh Formosa Plastics Steel Complex is located in Kỳ Phương commune, Kỳ Anh district, Hà Tĩnh province. More detailed locational information can be found at https://www.openstreetmap.org/way/630749161",
+    "description_chars": 1952,
+    "was_truncated_in_lead_file_by": 752
+   },
+   "r36_dedupe_hint": {
+    "case_id": "formosa-ha-tinh-marine-disaster",
+    "shared_words": [
+     "formosa",
+     "steel",
+     "vietnam"
+    ],
+    "strength": 3
+   },
+   "local_match": [
+    {
+     "case": "vietnam-natural-disaster-risk-989-resettled",
+     "shared_words": [
+      "along",
+      "disaster",
+      "japan",
+      "other",
+      "tinh",
+      "vietnam"
+     ],
+     "case_years": [
+      2005,
+      2013
+     ],
+     "case_title": "Vietnam disaster risk works: 989 households resettled across ten provinces",
+     "strength": "strong"
+    },
+    {
+     "case": "formosa-ha-tinh-marine-disaster",
+     "shared_words": [
+      "disaster",
+      "formosa",
+      "plastics",
+      "tinh",
+      "vietnam"
+     ],
+     "case_years": [
+      2016,
+      null
+     ],
+     "case_title": "Formosa Ha Tinh Steel Toxic Discharge",
+     "strength": "strong"
+    },
+    {
+     "case": "vinh-tan-2-coal-dust-highway-protest",
+     "shared_words": [
+      "dust",
+      "eximbank",
+      "vietnam"
+     ],
+     "case_years": [
+      2010,
+      null
+     ],
+     "case_title": "Vinh Tan 2 Coal Plant: Dust over the Village and the 2015 Highway Blockade",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "vietnam-medium-cities-phu-ly-noncompliance",
+     "shared_words": [
+      "compensation",
+      "joint",
+      "vietnam"
+     ],
+     "case_years": [
+      2011,
+      2022
+     ],
+     "case_title": "Medium Cities Development: compensation below replacement cost in Phu Ly",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G556",
+   "aiddata_rows": [
+    {
+     "id": 89169,
+     "title": "China Development Bank  contributes to $1.89 billion syndicated loan for 1200 MW Nam Dinh 1 Independent Power Project (Linked to Project ID#90862, #90864, #90863, #92280, #92281)",
+     "amount_usd_2021": 303362445.310777,
+     "year": 2019,
+     "status": "Pipeline: Commitment",
+     "decisive": true
+    },
+    {
+     "id": 90862,
+     "title": "China Eximbank contributes to $1.89 billion syndicated loan for 1200 MW Nam Dinh 1 Independent Power Project (Linked to Project ID#90863, #90864, #89169, #90863, #92280)",
+     "amount_usd_2021": 303362445.310777,
+     "year": 2019,
+     "status": "Pipeline: Commitment",
+     "decisive": true
+    },
+    {
+     "id": 90863,
+     "title": "Bank of China contributes to $1.89 billion syndicated loan for 1200 MW Nam Dinh 1 Independent Power Project (Linked to Project ID#90862, #90864, #89169, #92280, #92281)",
+     "amount_usd_2021": 303362445.310777,
+     "year": 2019,
+     "status": "Pipeline: Commitment",
+     "decisive": true
+    },
+    {
+     "id": 90864,
+     "title": " ICBC contributes to $1.89 billion syndicated loan for 1200 MW Nam Dinh 1 Independent Power Project (Linked to Project ID#90862, #90863, #89169, #90863, #92281)",
+     "amount_usd_2021": 303362445.310777,
+     "year": 2019,
+     "status": "Pipeline: Commitment",
+     "decisive": true
+    },
+    {
+     "id": 92280,
+     "title": "ICBC contributes to $1.89 billion syndicated loan for 1200 MW Nam Dinh 1 Independent Power Project (Linked to Project ID#90862, #90864, #89169, #90863, #92281)",
+     "amount_usd_2021": 303362445.310777,
+     "year": 2019,
+     "status": "Pipeline: Commitment",
+     "decisive": true
+    },
+    {
+     "id": 92281,
+     "title": "Agricultural Bank of China contributes to $1.89 billion syndicated loan for 1200 MW Nam Dinh 1 Independent Power Project (Linked to Project ID#90862, #90864, #89169, #90863, #92280)",
+     "amount_usd_2021": 303362445.310777,
+     "year": 2019,
+     "status": "Pipeline: Commitment",
+     "decisive": true
+    }
+   ],
+   "recipient": "Viet Nam",
+   "iso3": "VNM",
+   "year": 2019,
+   "sector": "ENERGY",
+   "infrastructure": "Yes",
+   "title": "China Development Bank  contributes to $1.89 billion syndicated loan for 1200 MW Nam Dinh 1 Independent Power Project (Linked to Project ID#90862, #90864, #90863, #92280, #92281)",
+   "rank_score": 7,
+   "flags": [
+    "pollution or damage"
+   ],
+   "decisive_buckets": [
+    "relocation count"
+   ],
+   "candidate_sentences": {
+    "pollution or damage": [
+     {
+      "field": "Description",
+      "sentence": "The local population has also expressed concerns regarding pollution of the farming and fishing industries.",
+      "aiddata_row": 89169
+     },
+     {
+      "field": "Description",
+      "sentence": "The local population has also expressed concerns regarding pollution of the farming and fishing industries.",
+      "aiddata_row": 90862
+     },
+     {
+      "field": "Description",
+      "sentence": "The local population has also expressed concerns regarding pollution of the farming and fishing industries.",
+      "aiddata_row": 90863
+     },
+     {
+      "field": "Description",
+      "sentence": "The local population have expressed concerns regarding pollution of the farming and fishing industries.",
+      "aiddata_row": 90863
+     },
+     {
+      "field": "Description",
+      "sentence": "The local population has also expressed concerns regarding pollution of the farming and fishing industries.",
+      "aiddata_row": 90864
+     },
+     {
+      "field": "Description",
+      "sentence": "The local population has also expressed concerns regarding pollution of the farming and fishing industries.",
+      "aiddata_row": 92280
+     },
+     {
+      "field": "Description",
+      "sentence": "The local population has also expressed concerns regarding pollution of the farming and fishing industries.",
+      "aiddata_row": 92281
+     }
+    ],
+    "relocation count": [
+     {
+      "field": "Description",
+      "sentence": "In order to create the power plant, roughly 300 households will need to relocated and receive compensation.",
+      "aiddata_row": 89169
+     },
+     {
+      "field": "Description",
+      "sentence": "In order to create the power plant, roughly 300 households will need to relocated and receive compensation.",
+      "aiddata_row": 90862
+     },
+     {
+      "field": "Description",
+      "sentence": "In order to create the power plant, roughly 300 households will need to relocated and receive compensation.",
+      "aiddata_row": 90863
+     },
+     {
+      "field": "Description",
+      "sentence": "In order to create the Nam Dinh power station about 300 households are being relocated and will only receive minimal compensation.",
+      "aiddata_row": 90863
+     },
+     {
+      "field": "Description",
+      "sentence": "In order to create the power plant, roughly 300 households will need to relocated and receive compensation.",
+      "aiddata_row": 90864
+     },
+     {
+      "field": "Description",
+      "sentence": "In order to create the power plant, roughly 300 households will need to relocated and receive compensation.",
+      "aiddata_row": 92280
+     },
+     {
+      "field": "Description",
+      "sentence": "In order to create the power plant, roughly 300 households will need to relocated and receive compensation.",
+      "aiddata_row": 92281
+     }
+    ]
+   },
+   "full_text": {
+    "description": "In April 2008, Government of Vietnam approved the construction site in Nam Dinh for the power station. Then, in 2012, Vietnam’s Ministry of Natural Resources and Environment (MONRE) approved the project’s environmental impact assessment (EIA). In October 2014, ACWA Power and Taekwang Power Holdings signed a joint development agreement (JDA) for this project. Then, in January 2016, Vietnam’s Ministry of Industry & Trade signed a build-operate-transfer (BOT) agreement with the Taekwang Power Holdings-ACWA Power consortium. Under the terms of the BOT agreement, the consortium agreed to build and operate the power plant for a period of 25 years and then transfer it to the Government of Vietnam. In April 2017, Vinacomin — a Vietnamese state-owned enterprise — reached a coal supply agreement with the two project sponsors. Vietnam’s Ministry of Planning and Investment subsequently issued an investment registration certificate (IRC) to develop the project to Nam Dinh First Power Holdings, a joint venture incorporated by ACWA Power (50% ownership stake) and Taekwang Power Holdings (50% ownership stake) in Singapore in July 2017.  The total project cost is $2.52 billion and it is being financed according to a 75:25 debt-to-equity ratio. On May 8, 2019, ACWA Power and Bank of China (BOC) signed an memorandum of understanding (MOU) regarding the financing of the project. Then, on December 16, 2019, a syndicate of seven Chinese lenders — Agricultural Bank of China (ABC), Bank of China (BOC), China Construction Bank (CCB), China Development Bank (CDB), the Export-Import Bank of China (China Eximbank), China Minsheng Bank (CMBC), and Industrial and Commercial Bank of China (ICBC) — and Nam Dinh First Power Company Limited — a special purpose vehicle and wholly-owned subsidiary of Nam Dinh First Power Holdings— signed a $1.89 billion loan agreement for the 1200 MW Nam Dinh 1 Independent Power Project. The loan carries a 20-year maturity, but its grace period and interest rate is unknown. The borrower purchased credit insurance from Sinosure. The loan proceeds are to be used by the borrower to partially finance an EPC contract between ACWA Power and China Gezhouba Group International Engineering Co., Ltd which was signed in May 2019.  CDB's estimated contribution is captured via Project ID#89169. China Eximbank’s estimated contribution is captured via Project ID#90862. BOC’s estimate contribution is captured via Project ID#90863. CCB’s estimated contribution is captured via Project ID#90864. ICBC’s estimated contribution is captured via Project ID#92280. ABC’s estimated contribution is captured via Project ID#92281. China Minsheng Bank’s estimated contribution is not captured in a separate AidData project record because it is a privately-owned bank.  A $600 million equity contribution to the project company (Nam Dinh First Power Company Limited) was split between the two project sponsors: Taekwang Power Holdings (50% stake), a subsidiary of South Korea's Taekwang Group, and First National Operation & Maintenance Co. (50% stake), a subsidiary of Saudi Arabia's ACWA Power.  The purpose of the project is to construct a 1200 MW coal-fired power plant — with two, 600MW power generation units — in Hai Hau District and Nam Dinh Province. The plant is to be equipped with the new application of clean technologies for coal utilization – Circulating Fluidized Bed Combustion (CFBC) as an alternative to Pulverized Coal Combustion (PCC) for power generation with the coal supplied by Vinacomin, a government owned coal mined company. China Gezhouba Group International Engineering Co., Ltd. — a subsidiary of China Gezhouba Group Corporation (CGGC) — is the EPC contractor responsible for implementation.  The 1200 MW Nam Dinh 1 Independent Power Project has experienced a series of delays and implementation obstacles. In order to create the power plant, roughly 300 households will need to relocated and receive compensation. The local population has also expressed concerns regarding pollution of the farming and fishing industries. Additionally, the project has struggled to maintain momentum because the both the Government of Vietnam and the Government of the People's Republic of China have pledged to stop financing and building new coal-fired power projects.  Construction was originally scheduled to begin in 2014. However, according to the Government of Vietnam’s 2016 Revised Power Development Plan, Phase 1 Unit 1 was rescheduled for completion in 2020 and Phase 1 Unit 2 was rescheduled for 2021. Phase 2 was subsequently cancelled. In June 2019, according to a Vietnam Ministry of Industry & Trade's report on the implementation of the revised seventh Power Development Plan (PDP7), the completion date for Unit 1 was further delayed to 2024 and the completion date for Unit 2 was further delayed to 2025. In February 2020, the Government of Vietnam’s National Steering Committee on Power Development stated that Unit 1 was scheduled to be commissioned in Q1 2025 and Unit 2 in Q3 2025. Commissioning dates are now scheduled for 2025. In September 2020, the Standing Deputy Secretary of the Nam Dinh Provincial Party Committee, announced that the first step toward building the power plant would begin with the construction of a road in the coastal economic zone where the plant will be located.  Then, in October 2020, a project company representative disclosed that the project investor was planning to officially sign the BOT contract with the Government of Vietnam by early November 2020. Following this milestone, the investor would transfer all of the funding needed to implement the project, including compensation funds for local stakeholders. Construction was at that time expected to start by the end of 2020.  However, in 2020, ACWA Power decided not to pursue any new coal projects in line with its commitment to decarbonization. Therefore, they have ‘fully written-off the incurred project development and related costs of the Nam Dinh 1 IPP project in Vietnam, amounting to SAR 80.9 million’. As of July 2022, there was no evidence that construction had commenced. However, site preparation work was reportedly underway.",
+    "staff_comments": "1. This project is also known as Phase 1 of the 1200 MW Nam Định 1 Coal-Fired Power Plant Project, the Nam Định 1 Power Plant Project, Nam Dinh 1 Build-Operate-Transfer (BOT) Thermal Power Plant Project, the 1.2GW Nam Dinh 1 IPP Project, and the Nam Dinh Phase I Coal-fired Power Plant Project. The Vietnamese project title is Dự án nhà máy nhiệt điện BOT Nam Định 1 or Dự án Nhiệt điện Nam Định 1 or Nhiệt điện Hải Hậu or Nhà máy Nhiệt điện than Hải Hậu. The Chinese project title is 越南南定I期BOT热电厂项目 or Nam Dinh 1燃煤电站的投资项目 or 北部南定1燃煤电站的投资项目 or 越南南定燃煤电站项目 or 越南南定电厂 or 南定燃煤电站项目 or 越南南定2×600MW燃煤电站项目.2. ACWA Power is legally incorporated in Saudi Arabia and Taekwang Power Holdings is legally incorporated in South Korea.3. Nam Dinh First Power Company Limited was legally incorporated in Vietnam as as a special purpose vehicle and wholly-owned subsidiary of Nam Dinh First Power Holdings (which was legally incorporated in Singapore). In 2019, CIC Capital — a subsidiary of the state-owned China Investment Corporation (CIC) — acquired a 20% equity interest in Nam Dinh First Power Holding from its shareholders (ACWA Power and Taekwang Power Holdings). CIC is a sovereign wealth fund responsible for managing part of the People's Republic of China's foreign exchange reserves.4. The size of the financial contributions made by Agricultural Bank of China, Bank of China, China Construction Bank, China Development Bank, the Export-Import Bank of China, China Minsheng Bank, and ICBC to the lending syndicate are unknown. For the time being, AidData assumes equal contributions ($270 million) by all of the members of the lending syndicate. IJGlobal does not identify ICBC or Agricultural Bank of China as participants in the lending syndicate. As such, it assumes $380 million (equal) contributions from all other participants in the lending syndicate.5. Some sources refer to the name of the borrowing institution as Nam Dinh 1 Thermal Power Co., Ltd.6. This project was originally going to be financed by and implemented by Korean entities but circa 2016 they backed out and were replaced by Chinese financiers and Chinese contractors.",
+    "location_narrative": "Hải Ninh commune is the approximate location where the plant would be built, in Hải Hậu district, Nam Định province, Vietnam, approximately 150km south-east of Hanoi.More detailed location information can be found at: https://www.openstreetmap.org/relation/7127622",
+    "description_chars": 6182,
+    "was_truncated_in_lead_file_by": 4982
+   },
+   "r36_dedupe_hint": {
+    "case_id": "vietnam-natural-disaster-risk-989-resettled",
+    "shared_words": [
+     "hanoi",
+     "province",
+     "vietnam"
+    ],
+    "strength": 3
+   },
+   "local_match": [
+    {
+     "case": "vietnam-natural-disaster-risk-989-resettled",
+     "shared_words": [
+      "hanoi",
+      "natural",
+      "resources",
+      "vietnam"
+     ],
+     "case_years": [
+      2005,
+      2013
+     ],
+     "case_title": "Vietnam disaster risk works: 989 households resettled across ten provinces",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "cat-linh-ha-dong-accidents",
+     "shared_words": [
+      "eximbank",
+      "hanoi",
+      "vietnam"
+     ],
+     "case_years": [
+      2011,
+      2022
+     ],
+     "case_title": "Cat Linh–Ha Dong Elevated Railway: Fatal Construction Accidents",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "vietnam-rural-energy-2-land-loss",
+     "shared_words": [
+      "industry",
+      "trade",
+      "vietnam"
+     ],
+     "case_years": [
+      2004,
+      2014
+     ],
+     "case_title": "Second Rural Energy Project, Vietnam: land taken along power lines in 25 provinces, with no count of anyone moved",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "vietnam-water-resources-assistance-resettlement",
+     "shared_words": [
+      "ninh",
+      "resources",
+      "vietnam"
+     ],
+     "case_years": [
+      2004,
+      2012
+     ],
+     "case_title": "Vietnam Water Resources Assistance: 5,974 households affected, 65 required resettlement",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G437",
+   "aiddata_rows": [
+    {
+     "id": 67055,
+     "title": "China Eximbank pledges preferential buyer’s credit for 74.40MW Lompatan Harimau Dam Construction Project",
+     "amount_usd_2021": null,
+     "year": 2016,
+     "status": "Pipeline: Pledge",
+     "decisive": true
+    }
+   ],
+   "recipient": "Indonesia",
+   "iso3": "IDN",
+   "year": 2016,
+   "sector": "ENERGY",
+   "infrastructure": "Yes",
+   "title": "China Eximbank pledges preferential buyer’s credit for 74.40MW Lompatan Harimau Dam Construction Project",
+   "rank_score": 6,
+   "flags": [
+    "displaced or resettled",
+    "protest or unrest"
+   ],
+   "decisive_buckets": [
+    "relocation count"
+   ],
+   "candidate_sentences": {
+    "protest with specifics": [
+     {
+      "field": "Description",
+      "sentence": "In April 2018, members of the Rokan Dam Rejection Alliance demonstrated at the Riau governor's office in Pekanbaru to protest against the construction of the Lompatan Harimau Dam, which allegedly would displace 15,000 people from the villages of Cipang Kiri Hilir, Cipang Kiri Hulu, Cipang Kanan and Tibawan Village in Rokan Hulu district.",
+      "aiddata_row": 67055
+     }
+    ],
+    "relocation count": [
+     {
+      "field": "Description",
+      "sentence": "In April 2018, members of the Rokan Dam Rejection Alliance demonstrated at the Riau governor's office in Pekanbaru to protest against the construction of the Lompatan Harimau Dam, which allegedly would displace 15,000 people from the villages of Cipang Kiri Hilir, Cipang Kiri Hulu, Cipang Kanan and Tibawan Village in Rokan Hulu district.",
+      "aiddata_row": 67055
+     }
+    ]
+   },
+   "full_text": {
+    "description": "In 2016, China Eximbank reportedly signaled interest in issuing a preferential buyer’s credit for the Lompatan Harimau Dam Construction Project. The purpose of the project was to construct a 74.40MW hydropower plant in the district/city of Rokan Hulu within Riau Province and thereby irrigate 4,000 hectares of land. In a 2015-2019 List of Medium-Term Planned External Loans, the Government of Indonesia’s Planning Ministry (BAPPENAS) identified a potential $152,100,000 loan for this project. However, AidData has not identified that China Eximbank ever issued a loan for this project. In April 2018, members of the Rokan Dam Rejection Alliance demonstrated at the Riau governor's office in Pekanbaru to protest against the construction of the Lompatan Harimau Dam, which allegedly would displace 15,000 people from the villages of Cipang Kiri Hilir, Cipang Kiri Hulu, Cipang Kanan and Tibawan Village in Rokan Hulu district. ",
+    "staff_comments": "This project is also known as the Rokan Kiri Dam Construction Project. The Chinese project title is 廖省的隆巴丹哈里茂水坝（Lompatan Harimau). The project was part of a larger, $4 billion lending package captured in Project ID#49923.",
+    "location_narrative": "The purpose of the project was to construct a 74.40 MW hydropower plant in the district/city of Rokan Hulu within Riau Province and thereby irrigate 4,000 hectares of land.",
+    "description_chars": 927,
+    "was_truncated_in_lead_file_by": null
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "wilmar-sambas-riau",
+     "shared_words": [
+      "indonesia",
+      "land",
+      "riau"
+     ],
+     "case_years": [
+      2007,
+      2014
+     ],
+     "case_title": "Wilmar Palm Oil Land Disputes in Sambas and Riau",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "kotopanjang-dam",
+     "shared_words": [
+      "indonesia",
+      "kanan",
+      "riau"
+     ],
+     "case_years": [
+      1991,
+      2015
+     ],
+     "case_title": "Koto Panjang Dam evictions",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "batang-coal-jbic",
+     "shared_words": [
+      "indonesia",
+      "land",
+      "villages"
+     ],
+     "case_years": [
+      2013,
+      2017
+     ],
+     "case_title": "Batang Coal Power Plant Land Takeover",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "jatigede-dam-sumedang-flooding",
+     "shared_words": [
+      "eximbank",
+      "indonesia",
+      "villages"
+     ],
+     "case_years": [
+      2015,
+      null
+     ],
+     "case_title": "Jatigede dam: villages flooded with compensation unsettled",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G386",
+   "aiddata_rows": [
+    {
+     "id": 64061,
+     "title": "China Eximbank provides $101.98 million preferential buyer's credit for Upper Yeywa-Shwesaryan 230 kV Transmission Line and 230 kV Shwesaryan Substation Extension Project (Linked to Project ID#96221, 98029)",
+     "amount_usd_2021": 115037167.592319,
+     "year": 2013,
+     "status": "Implementation",
+     "decisive": true
+    }
+   ],
+   "recipient": "Myanmar",
+   "iso3": "MMR",
+   "year": 2013,
+   "sector": "ENERGY",
+   "infrastructure": "Yes",
+   "title": "China Eximbank provides $101.98 million preferential buyer's credit for Upper Yeywa-Shwesaryan 230 kV Transmission Line and 230 kV Shwesaryan Substation Extension Project (Linked to Project ID#96221, 98029)",
+   "rank_score": 6,
+   "flags": [
+    "protest or unrest"
+   ],
+   "decisive_buckets": [
+    "relocation count"
+   ],
+   "candidate_sentences": {
+    "protest with specifics": [
+     {
+      "field": "Description",
+      "sentence": "Implementation delays are likely related to the fact that the 280MW (4x70MW) Upper Yeywa Hydropower Plant was still not complete as of Q2 of 2021 and its construction has triggered various protests.",
+      "aiddata_row": 64061
+     },
+     {
+      "field": "Description",
+      "sentence": "On February 17, 2021, workers from the Upper Yeywa dam site joined protests in Kyaukme, holding a banner that said ‘Upper Yeywa Hydropower Project Civil Disobedience Movement.’   There are some indications that the China Eximbank loan for the Upper Yeywa-Shwesaryan 230 kV Transmission Line and 230 kV Shwesaryan Substation Extension Project may have financially underperformed vis-a-vis the original expectations of the lender.",
+      "aiddata_row": 64061
+     }
+    ],
+    "relocation count": [
+     {
+      "field": "Staff Comments",
+      "sentence": "Two villages with a total of 143 households and 486 inhabitants will be affected by the reservoir and need relocation to two existing neighboring villages 13 km and 22 km away from the river.4.",
+      "aiddata_row": 64061
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On April 5, 2013, China Eximbank and the Government of Myanmar signed a $101.98 million preferential buyer’s credit (PBC) agreement for the Upper Yeywa-Shwesaryan 230 kV Transmission Line and 230 kV Shwesaryan Substation Extension Project. The signing of the loan agreement marked the completion of the financing of the project and a major breakthrough in the progress of the project. The borrowing terms of the PBC are unknown. However, it is known that the borrower was to use the proceeds of the loan to finance 90% of the cost of a commercial contract with Hydrochina Corporation (中国水电工程顾问集团), which was signed on March 1, 2012.  Hydrochina Corporation (中国水电工程顾问集团) is a wholly-owned subsidiary of PowerChina.   The purpose of the project was to construct a 129 km, 230 kV power transmission line from a to-be-constructed 280MW (4x70MW) Upper Yeywa Hydropower Plant (exact locational coordinates: 22.2413452801704, 97.10127992329045) to the Shwesaryan (Shwe Sar Yan) substation (exact locational coordinates: 21.85798, 96.23105) in Patheingyi Township. As of 2017, this project had achieved a 28% completion rate. However, AidData has not identified any evidence that it reached completion.   Implementation delays are likely related to the fact that the 280MW (4x70MW) Upper Yeywa Hydropower Plant was still not complete as of Q2 of 2021 and its construction has triggered various protests. Shan civil society groups have opposed the building of the Upper Yeywa Hydropower Plant. They claim that the project, which was started by the military regime in 2008, was initiated without local consultation or consent and that the reservoir of the 280 megawatt dam will stretch for 60 kilometers up to Hsipaw town, submerging centuries-old Shan communities and fertile farmlands. The dam site also lies in an active conflict zone, and Burma Army troops guarding the site have allegedly committed gross human rights violations against local villagers, including extrajudicial killing, torture and use of human shields. On February 17, 2021, workers from the Upper Yeywa dam site joined protests in Kyaukme, holding a banner that said ‘Upper Yeywa Hydropower Project Civil Disobedience Movement.’   There are some indications that the China Eximbank loan for the Upper Yeywa-Shwesaryan 230 kV Transmission Line and 230 kV Shwesaryan Substation Extension Project may have financially underperformed vis-a-vis the original expectations of the lender. In 2020, China Eximbank and the Government of Myanmar signed a debt suspension agreement as part of the G-20 Debt Service Suspension Initiative (DSSI). Under the terms of the agreement, the lender agreed to suspend principal and interest payments due between May 1, 2020 and December 31, 2020 under 3 buyer’s credit loan (BCL) agreements, 6 government concessional loan (GCL) agreements, and 27 preferential buyer’s credit (PBC) agreements (as captured via Project ID#98029).  Debt service payments under many of these loan agreements were again deferred in 2021 (as captured via Project ID#96221).",
+    "staff_comments": "1. This project is also known as the Upper Yeywa-Shwesaryan 230 kV Twin Bundle Double Circuit Transmission Line and 230 kV Shwesaryan Substation Extension Project and the Design, Material Supply and Technical Service of Upper Yeywa-Shwesaryan 230 KV Twin Bundle Double Circuit Transmission Line (80 Miles) and 230 KV Shwesaryan Substation Extension Project. The Chinese project title is 上耶涯输变电项目 or 缅甸上耶崖（UpperYeywa）输变电项目. The Burmese project title is အထက်ရဲရွာေရအာဵလျှပ်စစ်စီမဳကိန်ဵလျှပ်စစ်ဓာတ်အာဵပို့လွှတ်ေရဵနှငဴ်.2. In the Overseas Development Finance Dataset that Boston University’s Global Development Policy Center published in December 2020, it estimates the face value of the China Eximbank loan that supported this project as $180 million. However, AidData relies on the face value of the PBC ($101.98 million) that is reported by the contractor responsible for implementation. 3. Shan civil society groups claim that the 280MW (4x70MW) Upper Yeywa Hydropower Plant Project is being financed by China Eximbank, but AidData has not yet independently confirmed that this is indeed the case. The dam site is located in the upper reaches of the Myitnge River (also called Nam Tu) in Pyinoolwin District, Mandalay Region.  The concrete gravity dam will be 97 meters high and it will create a 26.9 km2 reservoir storing 342 hm3 . The reservoir will be about 60 km long reaching Hsipaw Town in Shan State. A 12 meter wide, 32 km long access road will connect the main project site to the Mandalay-Lashio Highway at milepost 95/0. A 10 meter diameter, 308 meter long construction diversion tunnel on the right bank was completed and the river diverted on March 9, 2015. Two 12.5 meter diameter headrace tunnels — 473 meters and 538 meters long, respectively — are being excavated on the left bank. The Government of Myanmar has approved the Environmental and Social Impact Assessment (ESIA) for the project. Two villages with a total of 143 households and 486 inhabitants will be affected by the reservoir and need relocation to two existing neighboring villages 13 km and 22 km away from the river.4. According to the World Bank's Debtor Reporting System (DRS), the weighted average maturity of all official sector lending from Chinese creditors to government and government-guaranteed borrowing institutions in Myanmar was 11.3692 years in 2013. AidData estimates the maturity of the China Eximbank loan that supported the Upper Yeywa-Shwesaryan 230 kV Transmission Line and 230 kV Shwesaryan Substation Extension Project by using this figure. See https://www.dropbox.com/s/949n5rctiue6d7c/IDS_Average_grace_period_and_maturity_on_new_external_debt_commitments.xlsx?dl=0   5. According to the World Bank's Debtor Reporting System (DRS), the weighted average grace period of all official sector lending from Chinese creditors to government and government-guaranteed borrowing institutions in Myanmar was 3.5596 years in 2013. AidData estimates the grace period of the China Eximbank loan that supported the Upper Yeywa-Shwesaryan 230 kV Transmission Line and 230 kV Shwesaryan Substation Extension Project by using this figure. See https://www.dropbox.com/s/949n5rctiue6d7c/IDS_Average_grace_period_and_maturity_on_new_external_debt_commitments.xlsx?dl=0   6. According to the World Bank's Debtor Reporting System (DRS), the weighted average interest rate of all official sector lending from Chinese creditors to government and government-guaranteed borrowing institutions in Myanmar was 3.8936% in 2013. AidData estimates the interest rate of the China Eximbank loan that supported the Upper Yeywa-Shwesaryan 230 kV Transmission Line and 230 kV Shwesaryan Substation Extension Project by using this figure. See https://www.dropbox.com/s/ab8qt4n6jijcbhd/IDS_Average%20interest%20on%20new%20external%20debt%20commitments.xlsx?dl=0",
+    "location_narrative": "The purpose of the project was to construct a 129 km, 230 kV power transmission line from a to-be-constructed 280MW (4x70MW) Upper Yeywa Hydropower Plant (exact locational coordinates: 22.2413452801704, 97.10127992329045) to the Shwesaryan (Shwe Sar Yan) substation (exact locational coordinates: 21.85798, 96.23105) in Patheingyi Township. More detailed locational information can be found at https://www.openstreetmap.org/way/449082772#map=15/22.2535/97.1016 and https://www.openstreetmap.org/way/292309088",
+    "description_chars": 3043,
+    "was_truncated_in_lead_file_by": 1843
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "letpadaung-copper-mine",
+     "shared_words": [
+      "eximbank",
+      "myanmar",
+      "subsidiary",
+      "township"
+     ],
+     "case_years": [
+      2010,
+      null
+     ],
+     "case_title": "Letpadaung copper mine: evictions, phosphorus attack and shooting",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "hatgyi-dam-karen-displacement",
+     "shared_words": [
+      "myanmar",
+      "powerchina",
+      "site",
+      "township"
+     ],
+     "case_years": [
+      2006,
+      null
+     ],
+     "case_title": "Hatgyi Dam Site Offensive and Karen Displacement, Salween River",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "tagaung-taung-nickel",
+     "shared_words": [
+      "eximbank",
+      "myanmar",
+      "township"
+     ],
+     "case_years": [
+      2007,
+      null
+     ],
+     "case_title": "Tagaung Taung nickel mine land and waste",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "pinpet-iron-mine-pa-o-land",
+     "shared_words": [
+      "myanmar",
+      "owned",
+      "shan"
+     ],
+     "case_years": [
+      2004,
+      null
+     ],
+     "case_title": "Pinpet Iron Mine and Steel Works Land Seizures, Taunggyi",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G267",
+   "aiddata_rows": [
+    {
+     "id": 56402,
+     "title": "China Eximbank contributes to $1.77 billion syndicated loan for 1320 (2 x 600) MW Patuakhali Coal-Fired Thermal Power Plant Construction Project (Linked to Project ID#56005, #52748, #38245, #56357, #56547, and #96157)",
+     "amount_usd_2021": 988400747.112848,
+     "year": 2020,
+     "status": "Implementation",
+     "decisive": true
+    },
+    {
+     "id": 96157,
+     "title": "Bank of China contributes to $1.77 billion syndicated loan for 1320 (2 x 600) MW Patuakhali Coal-Fired Thermal Power Plant Construction Project (Linked to Project ID#56005, #52748, #38245, #56357, #56547, and #56402)",
+     "amount_usd_2021": 988400747.112848,
+     "year": 2020,
+     "status": "Implementation",
+     "decisive": true
+    }
+   ],
+   "recipient": "Bangladesh",
+   "iso3": "BGD",
+   "year": 2020,
+   "sector": "ENERGY",
+   "infrastructure": "Yes",
+   "title": "China Eximbank contributes to $1.77 billion syndicated loan for 1320 (2 x 600) MW Patuakhali Coal-Fired Thermal Power Plant Construction Project (Linked to Project ID#56005, #52748, #38245, #56357, #56547, and #96157)",
+   "rank_score": 5,
+   "flags": [
+    "displaced or resettled"
+   ],
+   "decisive_buckets": [
+    "relocation count"
+   ],
+   "candidate_sentences": {
+    "relocation count": [
+     {
+      "field": "Description",
+      "sentence": "The power plant is expected to displace 350 families, so RPCL plans to set up a village with schools, shops, community centers, and mosques to accommodate them.",
+      "aiddata_row": 56402
+     },
+     {
+      "field": "Description",
+      "sentence": "The power plant is expected to displace 350 families, so RPCL plans to set up a village with schools, shops, community centers, and mosques to accommodate them.",
+      "aiddata_row": 96157
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On December 24, 2020, China Eximbank and Bank of China signed a $1.77 billion syndicated loan (facility) agreement with RPCL-NORINCO Intl. Power Ltd. (RNPL) — a special purpose vehicle and joint venture of Rural Power Company Ltd. (RPCL) [50% ownership take] and NORINCO International Cooperation Limited [50% ownership stake] that was legally incorporated in December 2017 — for the 1320 (2 x 600) MW Patuakhali Coal-Fired Thermal Power Plant Construction Project. The loan carries a 2.9% interest rate and a 14-year maturity. The Ministry of Finance of Bangladesh issued a sovereign guarantee in support of the loan on March 8, 2021.   The first loan disbursement took place on September 26, 2021. The borrower was expected to use the proceeds of the loan to partially finance an EPC contract that it signed with a consortium consisting of Tianjin Electric Power Construction Co. Ltd., China Huadian Engineering Co. Ltd, and China Wanbao Engineering Corporation (TEPC-CHEC-CWEC) on March 6, 2019. The total cost of the project is approximately $2.54 billion and it is being financed according to a 70:30 debt-to-equity ratio.   The purpose of the project is to construct a thermal power plant with two 660MW coal-fired units (‘Unit 1’ and ‘Unit 2’) in Kalapara within Patuakhali District. The project site is located on the western bank of the Rabnabad River, in the vicinity of the Payra Port, 210km away from Dhaka and 160km away from Chittagong. Each 660MW power generation unit will be equipped with an ultra-supercritical boiler along with a high-efficiency steam turbine and a generator. The plant will be equipped with low nitrogen oxide (Nox) burner, electrostatic precipitators (ESP), and a flue gas desulphurisation (FGD) system to control emissions. Other components of the project will include a closed-cycle cooling system, 275m-high flue stacks, and a 400kV gas-insulated substation (GIS). The plant will source water from the Rabnabad River for cooling. The Patuakhali power plant is estimated to consume 4.48 million tonnes (Mt) of coal a year, which will be imported from Indonesia and Australia. Other infrastructure for the Patuakhali power project will include a coal jetty, coal handling and storage facilities, and access roads for transporting material and equipment. The project site will also house a water treatment facility and a warehouse building. The construction works are being facilitated by a concrete batching plant and a temporary project office. The electricity generated by the Patuakhali coal-fired power plant will be evacuated into the national grid of Bangladesh through a 400kV power transmission line. The power plant will process 12273 tons of coal per day and sell power to the Bangladesh Power Development Board (BPDB). Bangladesh Power Development Board (BPBD) will offtake the entire electricity output of the plant, under a power purchase agreement (PPA) that it signed with RNPL in February 2019.  The power plant is expected to displace 350 families, so RPCL plans to set up a village with schools, shops, community centers, and mosques to accommodate them.   TEPC-CHEC-CWEC is the EPC contractor responsible for project implementation. Central Southern China Electric Power Design Institute (CSEPDI) of China Power Engineering Consulting Group Corporation was also involved in the design of the project. RNPL issued a notice to proceed (NTP) to the EPC contractor (TEPC-CHEC-CWEC) on August 31, 2019. Construction began on September 1, 2019. As of October 2022, the project had achieved a 61.19% completion rate. The power plant’s first 660MW unit (Unit 1) was originally expected to come online by February 2023, followed by the commissioning of the second 660MW unit (Unit 2) in August 2023.",
+    "staff_comments": "1. The Chinese project title  孟加拉博杜阿卡利1320MW燃煤电站项目建设 or Patuakhali 2台66万千瓦燃煤电站业主工程师咨询服务项目. 2. AidData has coded this transaction as a collateralized loan because Agrani Bank was selected as the security agent (i.e. collateral agent) for the loan. When lenders take collateral as security for their loans, a collateral/security agent is often appointed to enforce rights against the collateral in the event of the borrower’s default under the loan. 3. As of February 2023, this government-guaranteed BoC/CEXIM loan was not captured in the China’s Global Energy Finance (CGEF) Database or China's Overseas Development Finance (CODF) Datbase published by Boston University’s Global Development Policy Center.4. There are three different power plants being constructed in the Patuakhali region of Bangladesh. Each one of these projects is funded partially via joint ventures between Chinese and Bangladeshi state-owned enterprises and partially via China Eximbank loans. Two of the coal-fired plants will contain two 660MW generators, with the third project involves two phases, both of which have two 660MW generators. The joint venture partners have clarified that these plants are near each other, but they are distinct plants supporting a region-wide electrification campaign. These projects include: (i) Bangladesh’s Northwest Power Generation Company Ltd. and China National Machinery Import & Export Corporation, which established the Bangladesh-China Power Company Ltd. (BCPCL) joint venture in October 2014 to oversee the financing, design, and construction of Patuakhali 1320MW (2 x 660MW) Ultra Supercritical Coal Based Thermal Power Plant Project (Phase 2). The joint venture is captured in Project ID #56005. China Eximbank is funding phase one (units 1 and 2) of this project (see Project ID#52748). China Eximbank financing for phase two (units 3 and 4) is currently unspecified, with the most recent details record in Project ID#38245.(ii) Bangladesh’s Ashuganj Power Station Company Ltd. (APSCL) and China’s China Energy Engineering Corporation Ltd. (CEEC) established a joint venture in July 2017 to oversee the financing, design, and construction of Patuakhali 1320MW (2 x 660MW) Coal-Fired Power Plant (Ashuganj/ APSCL). The joint venture is captured in Project ID#56547. CEEC will solicit a loan from the China Eximbank for the debt portion of the project. China Eximbank financing for this project is currently not captured in a stand-alone Project ID#.(iii) Bangladesh’s Rural Power Company Ltd. (RPCL) and China’s NORINCO, which established a joint venture in November 2017 to oversee the financing, design, and construction of 1320MW (2 x 660MW) MW Patuakhali Coal Fired Thermal Power Plant. The joint venture is captured in Project ID#56357.5. The specific monetary contributions of Bank of China and China Eximbank to the loan syndicate are unknown. For the time being, AidData assumes equal contributions ($885,000,000) by the two members of the syndicate.  Project ID#56402 captures China Eximbank's estimated contribution and Project ID#96157 captures Bank of China's estimated contribution. ",
+    "location_narrative": "This project is located in Londa village within Kalapara upazali, Patuakhali district, and Barisal division. More detailed locational information can be found at https://www.openstreetmap.org/way/998622475.",
+    "description_chars": 3748,
+    "was_truncated_in_lead_file_by": 2548
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "matarbari-coal-salt-farmers",
+     "shared_words": [
+      "bangladesh",
+      "cooperation",
+      "generation",
+      "international"
+     ],
+     "case_years": [
+      2014,
+      null
+     ],
+     "case_title": "Matarbari coal plant and port",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "payra-1320mw-coal-bcpcl",
+     "shared_words": [
+      "bangladesh",
+      "kalapara",
+      "patuakhali",
+      "payra"
+     ],
+     "case_years": [
+      2016,
+      null
+     ],
+     "case_title": "Payra 1,320 MW Coal Plant: 130 Families Lose Homes",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "siddhirganj-pipeline-transmission-land",
+     "shared_words": [
+      "bangladesh",
+      "generation",
+      "grid",
+      "through"
+     ],
+     "case_years": [
+      2008,
+      2019
+     ],
+     "case_title": "Land and Structures Lost to the Siddhirganj Gas Pipeline and Transmission Line",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G648",
+   "aiddata_rows": [
+    {
+     "id": 98165,
+     "title": "Bank of China donates Rp200 million IDR to Indonesian Red Cross Society to support flood victims in Sentani, Jayapura",
+     "amount_usd_2021": 15854.179079557,
+     "year": 2019,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Indonesia",
+   "iso3": "IDN",
+   "year": 2019,
+   "sector": "EMERGENCY RESPONSE",
+   "infrastructure": null,
+   "title": "Bank of China donates Rp200 million IDR to Indonesian Red Cross Society to support flood victims in Sentani, Jayapura",
+   "rank_score": 5,
+   "flags": [
+    "displaced or resettled",
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "The donation came after a flood on March 16, 2019, killed and displaced a number of Indonesians in Sentani.",
+      "aiddata_row": 98165
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On March 27, 2019, the Jakarta Branch of the Bank of China (BOC) donated Rp200 million IDR to the Indonesian Red Cross Society to support flood victims in Sentani, Indonesia. The donation came after a flood on March 16, 2019, killed and displaced a number of Indonesians in Sentani. The Indonesian Red Cross Society was to transfer the donation to the victims.",
+    "staff_comments": "",
+    "location_narrative": "This donation supported flood victims in Sentani Jayapura, Papua.",
+    "description_chars": 360,
+    "was_truncated_in_lead_file_by": null
+   },
+   "r36_dedupe_hint": null,
+   "local_match": []
+  },
+  {
+   "financing": "G171",
+   "aiddata_rows": [
+    {
+     "id": 41375,
+     "title": "Chinese Embassy donates office and educational equipment to the Iraqi Ministry of Foreign Affairs",
+     "amount_usd_2021": null,
+     "year": 2009,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Iraq",
+   "iso3": "IRQ",
+   "year": 2009,
+   "sector": "GOVERNMENT AND CIVIL SOCIETY",
+   "infrastructure": null,
+   "title": "Chinese Embassy donates office and educational equipment to the Iraqi Ministry of Foreign Affairs",
+   "rank_score": 5,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "The donation to support the ministry came after a truck bombing terrorist attack on the Iraqi Ministry of Foreign Affairs on August 19, 2009 killed or wounded hundreds of faculty, staff, and students of the institute and ministry.",
+      "aiddata_row": 41375
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On October 22, 2009, the Chinese Embassy in Iraq donated office and educational equipment, such as computers, printers, and projectors, to the Foreign Service Institute, an institution affiliated with the Iraqi Ministry of Foreign Affairs, in the capital city of Baghdad. The donation from the embassy was intended to aid the development of Iraqi education in foreign affairs. The donation to support the ministry came after a truck bombing terrorist attack on the Iraqi Ministry of Foreign Affairs on August 19, 2009 killed or wounded hundreds of faculty, staff, and students of the institute and ministry. The monetary value of this donation is unknown.",
+    "staff_comments": "",
+    "location_narrative": "This donation went to the Iraqi Ministry of Foreign Affairs in the capital city of Iraq, Baghdad. More detailed locational information can be found at https://www.openstreetmap.org/node/4102222590.",
+    "description_chars": 655,
+    "was_truncated_in_lead_file_by": null
+   },
+   "r36_dedupe_hint": null,
+   "local_match": []
+  },
+  {
+   "financing": "G484",
+   "aiddata_rows": [
+    {
+     "id": 73471,
+     "title": "CNPC AktobeMunaiGas finances the construction of a museum and monument of Kazakhstani World War II veteran Aliya Moldagulova",
+     "amount_usd_2021": null,
+     "year": 2004,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Kazakhstan",
+   "iso3": "KAZ",
+   "year": 2004,
+   "sector": "OTHER SOCIAL INFRASTRUCTURE AND SERVICES",
+   "infrastructure": "Yes",
+   "title": "CNPC AktobeMunaiGas finances the construction of a museum and monument of Kazakhstani World War II veteran Aliya Moldagulova",
+   "rank_score": 5,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "Moldagulova was a female Soviet sniper born in the Aktobe Region killed in action in 1944 during World War II.",
+      "aiddata_row": 73471
+     }
+    ]
+   },
+   "full_text": {
+    "description": "In 2004, CNPC AktobeMunaiGas (CNPC AMG), a Kazakhstan-based subsidiary of China National Petroleum Corporation, financed the construction of a museum and a memorial monument to Kazakhstani national hero Aliya Moldagulova. Moldagulova was a female Soviet sniper born in the Aktobe Region killed in action in 1944 during World War II. The monument was reportedly a statue.",
+    "staff_comments": "'Project status' was coded as 'Completion' because it appears that all Chinese funds were disbursed. Based on the details, AidData has assumed this was a donation and coded it as such. 'Year uncertain' box was checked because it is not confirmed that this donation was committed to in 2004. Furthermore, one source, ('中国石油中亚油气合作项目履行社会责任纪实') names 2005 as the year of donation, while others name 2004. AidData has chosen the earlier year as the commitment year.",
+    "location_narrative": "The project was to finance the construction of a museum and monument of Kazakhstani World War II veteran Aliya Moldagulova. More detailed locational information can be found at:  https://www.openstreetmap.org/node/687995653#map=19/43.25390/76.94331",
+    "description_chars": 370,
+    "was_truncated_in_lead_file_by": null
+   },
+   "r36_dedupe_hint": null,
+   "local_match": []
+  },
+  {
+   "financing": "G140",
+   "aiddata_rows": [
+    {
+     "id": 38715,
+     "title": "China Eximbank pledges $1.7 billion loan for 1320MW Pak Lay Hydropower Project ",
+     "amount_usd_2021": 1958974866.93565,
+     "year": 2017,
+     "status": "Pipeline: Pledge",
+     "decisive": true
+    }
+   ],
+   "recipient": "Lao People's Democratic Republic",
+   "iso3": "LAO",
+   "year": 2017,
+   "sector": "ENERGY",
+   "infrastructure": "Yes",
+   "title": "China Eximbank pledges $1.7 billion loan for 1320MW Pak Lay Hydropower Project ",
+   "rank_score": 5,
+   "flags": [
+    "displaced or resettled"
+   ],
+   "decisive_buckets": [
+    "relocation count"
+   ],
+   "candidate_sentences": {
+    "relocation count": [
+     {
+      "field": "Description",
+      "sentence": "5,010 people would need to be resettled as a result of the dam, although there is a proposal under consideration to reduce these resettlement impacts.",
+      "aiddata_row": 38715
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On June 11, 2007, Sinohydro signed a Memorandum of Understanding (MoU) with the Government of Lao PDR regarding the 1320MW Pak Lay Hydropower Project. This project involves the construction of a dam that is 630 meters long, 35 meters high, with a 108 sq km area. 5,010 people would need to be resettled as a result of the dam, although there is a proposal under consideration to reduce these resettlement impacts. There are also concerns that the dam along the Mekong river would seriously adversely affect the environment as the Mekong river is the site of a major inland fishery.   As of 2009, the project was undergoing feasibility studies. Then, on August 25, 2017 a feasibility study report was approved by the Lao Government. Then, in 2018, PowerChina Resources and China National Electronics Import & Export Corporation (CEIEC) proposed to develop the $2.134 billion project under a build-operate-transfer model with a $1.7 billion loan provided by China Eximbank. At that time, construction was expected to start in 2022 and commercial operations were expected to begin in 2029. However, the project faced major delays and the proposal from PowerChina Resources and China National Electronics Import & Export Corporation petered out.   Then, on January 26, 2022, Sinohydro and Gulf Energy Development — a Thai power producer — announced plans to create a joint venture to finance, design, implement, and manage the $2.1 billion Pak Lay hydropower project in northwestern Laos. The project, by that point, had been designed from a 1320MW run-of-the-river dam on the Mekong River in Pak Lay, Xayaburi to a 770MW run-of-the-river dam on the Mekong River in Pak Lay, Xayaburi. Pak Lay is among the projects pushed forward by the Laotian government to sell electricity to neighboring countries such as Thailand. Thai state-owned utility Electricity Generating Authority of Thailand (EGAT) had been in the running to be an offtaker with a tariff price at Bt2.69 per kWh. However, in September 2021 EGAT said it had not decided whether to purchase additional power generated from the new dam projects in Laos and may not sign the PPA.",
+    "staff_comments": "1. This project is also known as the Pak Lay BOT Project. The Chinese project title is 老挝芭莱水电站项目. 2. In the Overseas Development Finance Dataset that Boston University’s Global Development Policy Center published in December 2020, it identifies this project as being supported by a $90 million China Eximbank loan commitment. However, AidData has not identified any evidence that a loan agreement with China Eximbank was ever finalized.",
+    "location_narrative": "Xayaboury",
+    "description_chars": 2135,
+    "was_truncated_in_lead_file_by": 935
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "xayaburi-dam-thai-banks",
+     "shared_words": [
+      "laos",
+      "mekong",
+      "thai",
+      "thailand",
+      "xayaburi"
+     ],
+     "case_years": [
+      2010,
+      null
+     ],
+     "case_title": "Xayaburi Dam resettlement and the Thai bank loans",
+     "strength": "strong"
+    },
+    {
+     "case": "nam-ou-cascade-resettlement",
+     "shared_words": [
+      "eximbank",
+      "laos",
+      "powerchina",
+      "resources",
+      "sinohydro"
+     ],
+     "case_years": [
+      2013,
+      null
+     ],
+     "case_title": "Nam Ou Dam Cascade: Families Moved Without Farmland",
+     "strength": "strong"
+    },
+    {
+     "case": "hongsa-lignite-thai-banks",
+     "shared_words": [
+      "generating",
+      "laos",
+      "thai",
+      "thailand",
+      "xayaburi"
+     ],
+     "case_years": [
+      2010,
+      null
+     ],
+     "case_title": "Hongsa Lignite Plant: Thai Bank Loans, Moved Villages and Nan's Crops",
+     "strength": "strong"
+    },
+    {
+     "case": "nam-theun-2",
+     "shared_words": [
+      "generating",
+      "laos",
+      "thai"
+     ],
+     "case_years": [
+      2005,
+      2015
+     ],
+     "case_title": "Nam Theun 2 Dam",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G546",
+   "aiddata_rows": [
+    {
+     "id": 88686,
+     "title": "People's Liberation Army provides medical assistance under the Peace Train-2019 (Linked to Project ID#88757 and #88761)",
+     "amount_usd_2021": null,
+     "year": 2019,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Lao People's Democratic Republic",
+   "iso3": "LAO",
+   "year": 2019,
+   "sector": "HEALTH",
+   "infrastructure": null,
+   "title": "People's Liberation Army provides medical assistance under the Peace Train-2019 (Linked to Project ID#88757 and #88761)",
+   "rank_score": 5,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "the accident killed 13 of the Chinese citizens, injured 29 other Chinese citizens and the two Laotian citizens, and left two other Chinese citizens missing.",
+      "aiddata_row": 88686
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On August 15, 2019, the People's Liberation Army (PLA) began the China-Laos Army Humanitarian Medical Rescue Joint Exercise and Medical Service Activities (Chinese: 的中国-老挝军队人道主义医学救援联合演训活动暨医疗服务活动), also known as the \"Peace Train-2019\", with the Lao People's Armed Forces in Vientiane. After the completion of the exercise and from August 20 to August 26, 2019, the PLA medical team planned to be divided into smaller groups to carry out medical services activities based at the Hospital 103 of the Lao People’s Army in Vientiane, the 101st Hospital of the Lao People’s Army in Xiangkhouang, and the Hospital of the 5th Division of the Lao People's Armed Forces in Pakse City in the Champasak Province.  Then, on August 19, 2019, a tourist bus carrying 46 people, including 44 Chinese citizens and two Laotian citizens, was involved in a major traffic accident 40 kilometers from the city of Luang Prabang; the accident killed 13 of the Chinese citizens, injured 29 other Chinese citizens and the two Laotian citizens, and left two other Chinese citizens missing. The accident occurred at the conclusion of the Peace Train-2019 exercise, so the PLA decided to provide medical assistance by dispatching medical teams drawn from the members of the Second Affiliated Hospital of Army Medical University and Nanjing General Hospital of People's Liberation Army participating in the exercise.  The PLA dispatched two groups of 10 members to the accident to care for the wounded. The first group featured a team leader, six military doctors - including cardiologists, respiratory intensive care specialists, orthopedists, general surgeons, and neurologists, and three nurses equipped for emergency response and care. The first and second groups arrived in Luang Prabang on the morning of August 20, 2019, bringing emergency medicine and equipment, blood for transfusion, first aid equipment, and other medical supplies. Above arrival, the medical team provided assistance at the local hospital, and then later the Chinese Hospital and the International Lao-China Hospital in Luang Prabang for diagnosis and early treatment of the wounded. 20 of the wounded were later transferred to the Hospital 103 of the Lao People’s Army in Vientiane, where Laotian and the PLA medical staff provided treatment jointly.  Furthermore, on August 21 to August 25, 2019, the PLA medical team provided free physical examinations, consultations, and operations for Laotian soldiers and civilians in Vientiane, Xieng Khouang, and Pakse. It treated more than 1,000 patients each day. The PLA medical team also provided technical assistance and training for Laotian medical staff including lectures, guidance during surgery, and professional consultations; for example, on August 23, 2019, the PLA medical team conducted first aid training for the Laotian doctors and nurses of the Hospital of the 5th Division of the Lao People's Armed Forces in Pakse City. The PLA medical team also provided free consultations for Laotian soldiers and civilians in Luang Namtha Province. The PLA medical team that went to Pakse arrived on August 23, 2019. It examined and treated over 200 people, conducted 60 ultrasounds and X-rays, and distributed 300 medications. The PLA medical team also brought medications and medical equipment worth RMB 500,000 which were to be donated to Laos after the completion of the medical assistance, as captured by linked project ID#88761.  Additionally, on August 24, 2019, the PLA medical team traveled to the Sanamxay district of the Attapeu Province in southern Laos to provide medical services to the local people. The district had been the site of severe flooding in July 2018, which the PLA provided medical assistance for (see project ID#65394). The return to the Sanamxay district was proposed by the Chinese Ambassador to Laos and designed by the Logistic Support Department of the Central Military Commission. The medical team, split into three smaller teams, included experts in cardiology, pediatric, liver disease, epidemiology, endocrinology, digestion, gynecology, otolaryngology, and general medicine. The team organized medical services activities and provided free consultations and brought inspection materials and medicines. The medical team also created Chinese-Lao bilingual health manuals to instruct the local population on disease prevention, self-care, dieting, and treatment. In total, the medical team treated 360 people in Attapeu Province, distributed 307 medicines and over 1,200 educational health manuals. At the end of their day-long stay, the medical team also donated all of their remaining medicine to the Attapeu Provincial Government, as captured by linked project ID#88757.  The PLA medical team completed its medical assistance on August 25, 2019. ",
+    "staff_comments": "The exact commitment date is unknown. For now, AidData has coded because commitment_date field as August 8, 2019 and checked commitment_date_estimated? field, as it is apparent according to '“和平列车”医疗队将赴老挝开展人道主义医学救援联合演训' that the PLA had committed to providing this medical assistance by this date.",
+    "location_narrative": "This assistance supported citizens in the Sanamxay district of the Attapeu Province, Laotian soldiers and civilians in Luang Namtha Province, the Hospital 103 of the Lao People’s Army in Vientiane, the 101st Hospital of the Lao People’s Army in Xiangkhouang, and the Hospital of the 5th Division of the Lao People's Armed Forces in Pakse City in the Champasak Province, and the Chinese Hospital and the International Lao-China Hospital in Luang Prabang Province.More detailed location information can be found at: https://www.openstreetmap.org/relation/5831765https://www.openstreetmap.org/way/465279122https://www.openstreetmap.org/node/6098758835#map=18/17.94744/102.63279https://www.openstreetmap.org/relation/5831670#map=9/19.4192/103.4658https://www.openstreetmap.org/node/133069982https://www.openstreetmap.org/node/6053990488",
+    "description_chars": 4780,
+    "was_truncated_in_lead_file_by": 3580
+   },
+   "r36_dedupe_hint": {
+    "case_id": "xe-pian-xe-namnoy-collapse",
+    "shared_words": [
+     "attapeu",
+     "province",
+     "sanamxay"
+    ],
+    "strength": 3
+   },
+   "local_match": [
+    {
+     "case": "namtha-1-dam-resettled-villages",
+     "shared_words": [
+      "international",
+      "laos",
+      "luang",
+      "namtha"
+     ],
+     "case_years": [
+      2016,
+      null
+     ],
+     "case_title": "Namtha 1 Dam: 10,000 Resettled Without Farmland",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "xe-pian-xe-namnoy-collapse",
+     "shared_words": [
+      "attapeu",
+      "laos",
+      "sanamxay"
+     ],
+     "case_years": [
+      2015,
+      null
+     ],
+     "case_title": "Xe-Pian Xe-Namnoy saddle dam collapse",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "hagl-rubber-attapeu-laos",
+     "shared_words": [
+      "attapeu",
+      "international",
+      "laos"
+     ],
+     "case_years": [
+      2005,
+      null
+     ],
+     "case_title": "HAGL rubber plantations in Attapeu and Xekong, Laos",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G105",
+   "aiddata_rows": [
+    {
+     "id": 35828,
+     "title": "China Eximbank provides export seller's credit to YMEC for 140MW Upper Paunglaung Hydroelectric Power Plant Construction Project",
+     "amount_usd_2021": 138172537.797455,
+     "year": 2006,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Myanmar",
+   "iso3": "MMR",
+   "year": 2006,
+   "sector": "ENERGY",
+   "infrastructure": "Yes",
+   "title": "China Eximbank provides export seller's credit to YMEC for 140MW Upper Paunglaung Hydroelectric Power Plant Construction Project",
+   "rank_score": 5,
+   "flags": [
+    "displaced or resettled"
+   ],
+   "decisive_buckets": [
+    "relocation count"
+   ],
+   "candidate_sentences": {
+    "relocation count": [
+     {
+      "field": "Description",
+      "sentence": "The Myanmar Times found that more than 10,000 people from 23 villages were evicted after April 2013 to make place for the large dam.",
+      "aiddata_row": 35828
+     }
+    ]
+   },
+   "full_text": {
+    "description": "In 2002, Hydroelectric Power Department (HPD) of Myanmar’s Ministry of Electric Power and Kansai Co of Japan conducted a preliminary survey report for the 140MW Upper Paunglaung Hydroelectric Power Plant Construction Project. Then, in 2004, the Switzerland-based Colenco Power Engineering Ltd completed a project feasibility study.  On June 3, 2005, HPD and Yunnan Machinery and Equipment Import and Export Corporation (YMEC) signed an MOU regarding the 140MW Upper Paunglaung Hydroelectric Power Plant Construction Project. Then, on February 14, 2006, HPD and YMEC signed an $80 million commercial contract for the project. YMEC also reported provided a supplier credit to HPD to support the implementation of the project, and YMEC in turn financed the supplier credit by securing an export seller’s credit from China Eximbank.  The purpose of the project was to construct a 140MW hydroelectric power plant — with two, 70MW power generation units (Unit 1 and Unit 2) — on Paunglaung Creek. The project site is located 26 miles east of Pyinmana in Mandalay Division (exact locational coordinates:  19.756000, 96.598000) and 24 km upstream from the Paunglaung Dam (captured via Project ID#63813).   The project involved the construction of a 98 meter high RCC dam and a reservoir that stores 1,286 hm3 and extending 50 km. The reservoir was designed to allow the river to be regulated and thereby improve power generation at Lower Paung Laung and increase the irrigation potential further downstream. An above ground power plant is connected to the Lower Paung Laung switchyard via the Nancho hydropower plant by a 27 km long (to Nancho) 230 kV transmission line.   YMEC was the contractor responsible for implementation. Construction began in 2006 and a test run of the spillway was conducted in 2008. The rotor of Unit 1 was hoisted into place on December 2, 2013. The rotor of Unit 2 was hoisted into place on February 22, 2014. A project completion ceremony took place on December 9, 2015. The power plant connected to the national grid on or around December 24, 2015.    This project was plagued by controversy. One report from the civil society group Kayan Women’s Union alleged that the project supported involved forced labor and forced displacement. Another report from Physicians for Human Rights (PHR), Land in Our Hands, and Kayan New Generation Youth documented various human rights violations. The Myanmar Times found that more than 10,000 people from 23 villages were evicted after April 2013 to make place for the large dam. Among the affected groups were ethnic Kayan Lahta, Shan, Burman, and Pa-O. Most were moved to a relocation site near the Lein Li bridge, close to the middle of the reservoir. Residents were not well informed about the displacement process. They first learned about the project when officials came to place markers in their village to assess the water line for the reservoir, some villagers said. Many residents only realized that they would be displaced once construction work had started.  While the government assisted the relocation through the provision of new housing infrastructure and farmland, villagers and civil society groups were deeply concerned about related livelihood losses, provoked by the drowning of traditionally used farming, fishing and forest areas. The relocation sites were hilly and lacked enough fertile plain to offer sufficient land to everybody. Compensation procedures were reported as irregular, corrupt and not transparent. In several cases, the payments were insufficient to cover the costs imposed by the relocation on the villagers.  ",
+    "staff_comments": "1. The face value of the export seller’s credit is unknown. However, given that China Eximbank has a policy of using export credits to finance up to 85% of the cost of a commercial contract, AidData assumes for the time being that the face value of the export seller’s credit was equivalent to 85% of $80 million. 2. The China Eximbank export seller’s credit that supported this project is not included in the Overseas Development Finance Dataset that Boston University’s Global Development Policy Center published in December 2020.3. This project is also known as the Paunglaung (II) Hydropower Project and the 2x70MW Paunglaung Hydropower Project Phase II. The Chinese project title is 缅甸上邦朗水电站 or 我公司承建的缅甸邦朗二期水电站（上邦朗水电站项目.",
+    "location_narrative": "The purpose of the project was to construct a 140MW hydroelectric power plant — with two, 70MW power generation units (Unit 1 and Unit 2) — on Paunglaung Creek. The project site is located 26 miles east of Pyinmana in Mandalay Division (exact locational coordinates:  19.756000, 96.598000) and 24 km upstream from the Paunglaung Dam (captured via Project ID#63813). More detailed locational information can be found at https://www.openstreetmap.org/way/405725488 and https://www.openstreetmap.org/way/405724476.",
+    "description_chars": 3611,
+    "was_truncated_in_lead_file_by": 2411
+   },
+   "r36_dedupe_hint": {
+    "case_id": "upper-paunglaung-dam",
+    "shared_words": [
+     "paunglaung",
+     "pyinmana",
+     "upper"
+    ],
+    "strength": 3
+   },
+   "local_match": [
+    {
+     "case": "upper-paunglaung-dam",
+     "shared_words": [
+      "equipment",
+      "eximbank",
+      "machinery",
+      "myanmar",
+      "near",
+      "paunglaung",
+      "pyinmana",
+      "ymec",
+      "yunnan"
+     ],
+     "case_years": [
+      2006,
+      2015
+     ],
+     "case_title": "Upper Paunglaung Dam evictions",
+     "strength": "strong"
+    },
+    {
+     "case": "pinpet-iron-mine-pa-o-land",
+     "shared_words": [
+      "equipment",
+      "land",
+      "myanmar",
+      "near",
+      "shan",
+      "supplier"
+     ],
+     "case_years": [
+      2004,
+      null
+     ],
+     "case_title": "Pinpet Iron Mine and Steel Works Land Seizures, Taunggyi",
+     "strength": "strong"
+    },
+    {
+     "case": "tigyit-coal-mine-power-plant",
+     "shared_words": [
+      "engineering",
+      "machinery",
+      "myanmar",
+      "shan"
+     ],
+     "case_years": [
+      2002,
+      null
+     ],
+     "case_title": "Tigyit Coal Mine and Power Plant, Pinlaung",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "letpadaung-copper-mine",
+     "shared_words": [
+      "eximbank",
+      "myanmar",
+      "union"
+     ],
+     "case_years": [
+      2010,
+      null
+     ],
+     "case_title": "Letpadaung copper mine: evictions, phosphorus attack and shooting",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G234",
+   "aiddata_rows": [
+    {
+     "id": 54190,
+     "title": "China grants $1 Million Aid to Nepal for Flood Response (linked to #53718)",
+     "amount_usd_2021": 1152338.15702097,
+     "year": 2017,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Nepal",
+   "iso3": "NPL",
+   "year": 2017,
+   "sector": "EMERGENCY RESPONSE",
+   "infrastructure": null,
+   "title": "China grants $1 Million Aid to Nepal for Flood Response (linked to #53718)",
+   "rank_score": 5,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "More than 110 people were killed by landslides and flooding in Nepal.",
+      "aiddata_row": 54190
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On August 15, 2017, Chinese Vice-Premier Wang Yang agreed to provide $1 million humanitarian assistance aid to help repair regions affected by landslides and floods in Nepal. The agreement was signed during Wang's visit in Nepal, but it is unclear which branch of the Chinese government will provide the funding.  More than 110 people were killed by landslides and flooding in Nepal.  This project is now complete.  In November 2017, China provided an additional grant of $4 million, described in project #53718_x000D_ ",
+    "staff_comments": "",
+    "location_narrative": "",
+    "description_chars": 519,
+    "was_truncated_in_lead_file_by": null
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "narayanghat-mugling-road-structures",
+     "shared_words": [
+      "affected",
+      "landslides",
+      "nepal"
+     ],
+     "case_years": [
+      2013,
+      2021
+     ],
+     "case_title": "Homes and shops affected by road widening and landslides on the Narayanghat-Mugling road",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G555",
+   "aiddata_rows": [
+    {
+     "id": 89097,
+     "title": "China donates Equipment to Sindh Police",
+     "amount_usd_2021": null,
+     "year": 2019,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Pakistan",
+   "iso3": "PAK",
+   "year": 2019,
+   "sector": "GOVERNMENT AND CIVIL SOCIETY",
+   "infrastructure": null,
+   "title": "China donates Equipment to Sindh Police",
+   "rank_score": 5,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "The donation came 11 months after two police officers from the Sindh Police were killed while defending the Chinese Consulate in Karachi from a terrorist attack in November 2018.",
+      "aiddata_row": 89097
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On October 11, 2019, officials of the Consulate General of China donated three automobiles, fifty walkie-talkie sets, fifteen printers, two computers, a photocopy machine and a set of monitoring equipment to the Sindh Police during a ceremony at the Sindh Central Police Office. Later, Inspector General of the Sindh Police, Dr. Syed Kaleem Imam, distributed the equipment among different departments. Two mobile vans were given to Foreigners Security Cell while other items were handed over to the Special Security Unit.   The donation came 11 months after two police officers from the Sindh Police were killed while defending the Chinese Consulate in Karachi from a terrorist attack in November 2018. Five months after the attack, in June 2019, the Chinese Consul General, Wang Yu, met with the Sindh Province Chief of Police and expressed willingness to assist the Sindh Police in capacity building and personnel training. ",
+    "staff_comments": "",
+    "location_narrative": "The project provided equipment to the Central Police Office in Karachi, Sindh Province, Pakistan. More detailed locational information can be found at https://www.openstreetmap.org/way/539432944",
+    "description_chars": 926,
+    "was_truncated_in_lead_file_by": null
+   },
+   "r36_dedupe_hint": {
+    "case_id": "karachi-brt-red-line-university-road",
+    "shared_words": [
+     "karachi",
+     "pakistan",
+     "sindh"
+    ],
+    "strength": 3
+   },
+   "local_match": [
+    {
+     "case": "pakistan-power-bills-2023",
+     "shared_words": [
+      "karachi",
+      "other",
+      "pakistan"
+     ],
+     "case_years": [
+      2023,
+      2023
+     ],
+     "case_title": "Pakistan 2023 Electricity Bill Protests",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "karachi-brt-red-line-university-road",
+     "shared_words": [
+      "karachi",
+      "pakistan",
+      "sindh"
+     ],
+     "case_years": [
+      2022,
+      null
+     ],
+     "case_title": "Karachi BRT Red Line: a fatal collapse, injuries and closed businesses on University Road",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "pakistan-2024-power-rebasing-trader-taxes",
+     "shared_words": [
+      "karachi",
+      "other",
+      "pakistan"
+     ],
+     "case_years": [
+      2024,
+      2024
+     ],
+     "case_title": "Pakistan 2024 Power Tariff Rebasing, Trader Taxes and Shutter-Down Strike",
+     "strength": "worth_checking"
+    }
+   ]
+  }
+ ]
+}
