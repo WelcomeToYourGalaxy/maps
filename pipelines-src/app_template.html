@@ -267,11 +267,17 @@ function paint() {
 }
 
 /* ---------- the key ---------- */
-function covLine() { return ''; }
+function covLine() {
+  const pct = (100 * PE.length / D.NALL);
+  return '<div class="cov2">' + esc(PE.length.toLocaleString() + " of the " + D.NALL.toLocaleString() + " people Wikidata records in national office, " + pct.toFixed(1) + "%, went through one of the " + D.NDOC + " schools and programmes here.") +
+    ' ' + esc("No register of training pipelines exists, so the share of them mapped cannot be measured.") +
+    QM("The 258 here are the ones a published source documents as training people for power. The known gap is programmes that keep their participant lists closed: party schools, short courses and private fellowships. Method and sources sets out how both figures are counted.") + '</div>';
+}
 function buildKey() {
   recompute();
   const nS = SCH.length, nC = Object.keys(AGG.cty).length;
   $("#lede2").innerHTML = esc(D.NDOC + " schools and programmes · " + PE.length.toLocaleString() + " office-holders who went through them · " + PATS.length + " patterns") + QM("Office-holders are people who held a national post as head of state, head of government, minister or central bank governor and who studied, trained or worked at one of these schools and programmes, as recorded in Wikidata and published lists. People who did not go through one of them are not on the map. The Method page explains the limits.");
+  $("#lede2").insertAdjacentHTML("beforeend", covLine());
   let h = '';
   const L_ = LENSES.find((l) => l[0] === S.lens);
   const counts = [0, 0, 0, 0, 0]; Object.keys(AGG.cty).forEach((iso) => { const b = bandOf(lensVal(iso)); if (b >= 0) counts[b]++; });
