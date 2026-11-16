@@ -1,0 +1,278 @@
+{
+ "rampur-hydro": {
+  "corrections": [],
+  "clean": true,
+  "checked": "ICR00003326 (24 June 2015 data sheet, paras 26, 607) and PAD para 78 for P095114, fetched from the Bank's catalogue; IEG review ICRR for P095114.",
+  "could_not_settle": [
+   "The loan approval (US$400 million, 13 September 2007) and the US$615 million expected cost both check out against the PAD and the completion report. 'Umbrella Carbon Facility Tranche 2' is not in the completion report, the appraisal document or the review; the completion report says only that the Bank, as Trustee of the Umbrella Carbon Facility, signed an emission reduction purchase agreement on 6 October 2011 for the separate carbon finance project P101274. The tranche number may come from the card's Carbon Market Watch source, which I did not open.",
+   "The EJAtlas figure of US$670 million is attributed to EJAtlas, not to a Bank document, and I did not open the EJAtlas page."
+  ]
+ },
+ "ribb-megech-irrigation": {
+  "corrections": [
+   {
+    "lender_index": 0,
+    "field": "role",
+    "was": " (the IEG review gives US$129.9 million)",
+    "now": "",
+    "why": "The IEG review's own data table gives Actual 105,794,445.60, the same as the completion report's data sheet. The US$129.9 million is in the review's prose only ('The total disbursement was US$129.9 million'), and the completion report's financing table shows US$129.93 million as the Bank's allocation after the October 2017 restructuring, not a disbursement. The table wins.",
+    "class": "review_prose_over_table"
+   }
+  ],
+  "clean": false,
+  "checked": "ICR00004349 for P092353 (10 January 2019): data sheet financing and key dates, paras 28 and 73, and the financing table on page 18; IEG review ICRR0021528 (5 March 2019), project data table and section e.",
+  "could_not_settle": []
+ },
+ "rsdp-apl3-road-deaths": {
+  "corrections": [
+   {
+    "lender_index": 0,
+    "field": "role",
+    "was": "the component for institutional strengthening of the roads authority was dropped and the Yalo-Nehile road was excluded",
+    "now": "the component for construction of regional rural roads was excluded from IDA financing, taking the Yalo-Nehile road out of the project",
+    "why": "The completion report's Table 4 lists component 2, Construction of regional rural road, as 'Excluded from IDA financing' and component 3, Institutional Strengthening of ERA, as 'No change'. Its paragraph 17 says 'Component 3 which was excluded', using the revised numbering, which is what the card followed. The IEG review agrees with the table: 'The second component construction of regional roads, specifically the Yalo-Nehile road ... was dropped in 2013'.",
+    "class": "review_prose_over_table"
+   }
+  ],
+  "clean": false,
+  "checked": "ICR00003504 for P091077 (29 December 2015): cover, data sheet sections A, B and H, paras 17 and 18, Table 4, and the Annex 1 cost and financing tables; IEG review ICRR0020128 (27 November 2016), project data table and section d.",
+  "could_not_settle": []
+ },
+ "rurrenabaque-airport-land-compensation": {
+  "corrections": [
+   {
+    "lender_index": 0,
+    "field": "role",
+    "was": "triggering Indigenous Populations OP 4.10, Physical Cultural Resources OP 4.11 and Involuntary Resettlement OP 4.12",
+    "now": "triggering Environmental Assessment OP 4.01, Natural Habitats OP 4.04, Forest Management OP 4.36, Indigenous Populations OP 4.10, Physical Cultural Resources OP 4.11 and Involuntary Resettlement OP 4.12",
+    "why": "The card lists the three social policies from the completion report's paragraph 67 as the whole set. Paragraph 69 of the same report adds three more: 'The Project was classified as category B and triggered the following policies: Environmental Assessment (OP 4.01), Natural Habitats (OP 4.04), and Forest Management (OP 4.36).'",
+    "class": "partial_list"
+   }
+  ],
+  "clean": false,
+  "checked": "ICR00006416 for P122007 (31 May 2024): cover, data sheet financing, key dates, restructurings and key ratings, paras 66 to 69; IEG review (4 September 2024), outcome table, Bank performance section and the section 11 ratings table.",
+  "could_not_settle": []
+ },
+ "rusumo-falls-hydro": {
+  "corrections": [],
+  "clean": true,
+  "checked": "Cached ICR00541 for P075941 (9 December 2025): cover, data sheet financing table, key dates, paras 80 and the post-closure passage at the social safeguards annex; cached IEG review for P075941.",
+  "could_not_settle": [
+   "The African Development Bank figure of US$121 million is attributed to InfoNile (2017), not to a Bank document, and I did not open it. The completion report's financing table gives the African Development Fund US$88.24 million committed and US$76,074,403 disbursed, which is what the card prints for the Bank report."
+  ]
+ },
+ "rwanda-rssp2-marshland-resettlement": {
+  "corrections": [],
+  "clean": true,
+  "checked": "ICR for P105176 (30 April 2013): cover page, data sheet sections A and B, paras 6, 22 and 23, para at line 1705 on resettlement costs, and the results table giving 3,324 ha; IEG review for P105176.",
+  "could_not_settle": [
+   "The report number 'ICR2741' is nowhere in the completion report. The document prints no report number at all; the string comes from the Bank catalogue's file name (ICR27410P105170C0disclosed050130130.pdf). On the brief's rule that citation style is not a fact, I left it, but it is an unattributed number rather than one the document gives."
+  ]
+ },
+ "salem-tnudp-squatter-resettlement": {
+  "corrections": [
+   {
+    "lender_index": 0,
+    "field": "role",
+    "was": "gives INR 137.22 million at appraisal for rehabilitation and resettlement together with shifting of utilities, against INR 191.2 million actually spent",
+    "now": "gives INR 137.22 million as the revised allocation for rehabilitation and resettlement together with shifting of utilities, against INR 191.21 million spent to March 2014",
+    "why": "In the table in Annex 7 of the completion report the 137.22 figure sits under the column headed 'Revised allocation / Project Cost (INR in mn)', not an appraisal column. The row reads 137.22 revised allocation, 191.20 amount committed, 191.21 expenditure up to March 2014. The card read the revised-allocation column as appraisal and the committed column as spend.",
+    "class": "wrong_column"
+   }
+  ],
+  "clean": false,
+  "checked": "Cached ICR00003125 for P083780 (30 September 2014): cover, data sheet sections A, B and H, paras on the first and second restructurings (August 2009 and January 2012), para 895 on 110 sub-projects, and the Annex 7 cost table; cached IEG review ICRR14687 (12 May 2015) cover.",
+  "could_not_settle": [
+   "The cost table the card quotes is in Annex 7, which summarises the borrower's own completion report, not in the Bank's Annex 1 cost tables. The card calls it 'the completion report's cost table', which is where the table physically sits."
+  ]
+ },
+ "shaanxi-ankang-road-resettlement": {
+  "corrections": [],
+  "clean": true,
+  "checked": "Cached ICR2142 for P075613: data sheet sections A and B, cover loan line; cached loan agreement cover (LOAN NUMBER 4853-CHA); cached IEG review for P075613.",
+  "could_not_settle": []
+ },
+ "shiyan-connecting-road-safeguards": {
+  "corrections": [
+   {
+    "lender_index": 0,
+    "field": "role",
+    "was": " (L4745-CN)",
+    "now": " (Loan 4745-CHA)",
+    "why": "The loan agreement's cover prints 'LOAN NUMBER 4745-CHA', and the project agreement's cover the same number. The suffix CN is in the Bank catalogue's titles for those two files ('Loan Agreement, L4745-CN Conformed'), not in either document. The IEG review's data table gives the number as L4745 with no country suffix.",
+    "class": "wrong_number"
+   }
+  ],
+  "clean": false,
+  "checked": "Cached ICR00001409 for P081749 (June 2010): cover, data sheet sections A and B, Annex 1 cost and financing tables; cached loan and project agreement covers; cached IEG review for P081749; the Bank catalogue's document list for P081749.",
+  "could_not_settle": []
+ },
+ "shizheng-railway-resettlement": {
+  "corrections": [
+   {
+    "lender_index": 0,
+    "field": "role",
+    "was": "The project's total cost is recorded as about US$6.544 billion.",
+    "now": "The completion report's cost table gives total financing required as US$6,224.10 million in its appraisal-estimate column and US$5,197.29 million actual.",
+    "why": "US$6,544 million is the Revised column of the 'Revised Financing Plan' in the 2012 restructuring paper (Report No. 71424-CN), a plan total, not a cost. The completion report's Annex 1 gives total financing required 6,224.10 at appraisal estimate and 5,197.29 actual; the IEG review's prose gives an appraisal estimate of US$6,109.10 million, a revised estimate of US$6,224.10 million and actual cost at closure of US$5,197.29 million.",
+    "class": "wrong_column"
+   }
+  ],
+  "clean": false,
+  "checked": "ICR00003435 for P099062 (October 2016): cover, data sheet sections A and B, Annex 1 cost tables; IEG review for P099062, project data table and section d; 2012 restructuring paper (Report No. 71424-CN) financing plan; loan agreement cover (LOAN NUMBER 7557-CN).",
+  "could_not_settle": []
+ },
+ "sichuan-urban-development-four-cities": {
+  "corrections": [],
+  "clean": true,
+  "checked": "Cached ICR 2753 for P083322: cover, data sheet sections A and B; cached loan agreement cover (LOAN NUMBER 4838-CHA, dated October 27, 2006); cached IEG review for P083322.",
+  "could_not_settle": []
+ },
+ "siddhirganj-pipeline-transmission-land": {
+  "corrections": [
+   {
+    "lender_index": 0,
+    "field": "role",
+    "was": "World Bank Implementation Completion and Results Report, 26 September 2020",
+    "now": "World Bank Implementation Completion and Results Report, 28 September 2020",
+    "why": "The completion report's cover prints 'September 28, 2020' (Report No. ICR00005299). 26 September 2020 is the Bank catalogue's document date for the file, not a date in the document.",
+    "class": "date_unsupported"
+   }
+  ],
+  "clean": false,
+  "checked": "ICR00005299 for P095965 (cover dated 28 September 2020): cover, data sheet financing, key dates and key ratings, footnote 13 on the financing agreement signing, Table 5 split rating, footnote 45 on resettlement costs; IEG review for P095965.",
+  "could_not_settle": []
+ },
+ "south-west-roads-turkestan-sairam-compensation": {
+  "corrections": [
+   {
+    "lender_index": 0,
+    "field": "role",
+    "was": "triggering the Bank's Involuntary Resettlement policy OP/BP 4.12",
+    "now": "triggering the Bank's Environmental Assessment policy OP/BP 4.01 and Involuntary Resettlement policy OP/BP 4.12, with Physical Cultural Resources OP 4.11 and Natural Habitats OP 4.04 added at the 2017 restructuring",
+    "why": "Paragraph 75 of the completion report says the project was Category A and triggered OP/BP 4.01, and that two more policies, OP 4.11 and OP 4.04, were triggered at the 2017 restructuring; paragraph 77 adds OP/BP 4.12. The data sheet's restructuring table also lists 'Safeguard Policies Triggered' as a revision on 16 June 2017. The card named one of the four.",
+    "class": "partial_list"
+   }
+  ],
+  "clean": false,
+  "checked": "ICR00317 for P099270 (19 June 2025): cover, basic data, financing table, key dates, paras 14, 75, 76, 77, 78 and 83; IEG review (7 October 2025), project data table, safeguards passage and section 11 ratings table; Inspection Panel Report and Recommendation of 18 October 2011, paras 9, 10, 11, 14, 15 and footnotes 4 and 4 to para 6.",
+  "could_not_settle": []
+ },
+ "swat-s3b-road-land-acquisition": {
+  "corrections": [],
+  "clean": true,
+  "checked": "ICR00003859 for P125584 (cover dated 11 August 2016): data sheet sections A, B and C for all three phases, Annex 1 cost table, para 27 on compensation from grant funds; IEG review for P125584, project data table and section 12 ratings table.",
+  "could_not_settle": [
+   "The card's reading of the two documents is right down to the clash it reports: the completion report rates risk to development outcome Significant, and the IEG review's own ratings table prints the completion report's rating as Substantial. I left that as the card has it, since the card attributes each rating to the document that gives it."
+  ]
+ },
+ "trung-son-hydropower-resettlement": {
+  "corrections": [],
+  "clean": true,
+  "checked": "ICR00004999 for P084773 (cover dated 24 June 2020): cover amount line, data sheet financing and key dates; IEG review for P084773; the Bank catalogue's document list for P084773.",
+  "could_not_settle": [
+   "'the loan agreement signed in June 2011' is in neither the completion report nor the review, and the Bank has published no loan agreement for P084773, only a 2016 amendment. The data sheet gives approval 26 April 2011 and effectiveness 23 September 2011, so a June 2011 signing sits between them, but no document I opened gives it."
+  ]
+ },
+ "uganda-ert2-grid-compensation": {
+  "corrections": [],
+  "clean": true,
+  "checked": "ICR4053 for P112334 (cover dated 23 June 2017): cover amounts, data sheet sections A, B and C for P112334, P112340 and P120108.",
+  "could_not_settle": [
+   "The completion report also rates borrower performance Moderately Unsatisfactory. The card gives outcome and Bank performance only, which is a pair rather than a claim to list every rating, so I left it; a later round may want the borrower rating added."
+  ]
+ },
+ "upper-cisokan-pumped-storage-land": {
+  "corrections": [],
+  "clean": true,
+  "checked": "ICR00005774 for P112158 (25 June 2022): cover, data sheet financing, key dates and restructurings, footnote 16 and paras 79 and 80 on the action plan and the new project; IEG review for P112158; the first Implementation Status and Results Report for P172256 (archived 27 January 2022), which prints 'Bank Approval Date: 10-Sep-2021'.",
+  "could_not_settle": [
+   "The 10 September 2021 approval date for P172256 is not in the completion report, which gives only 'September 2021' in footnote 16. I checked it against the new project's own status report, which gives the day, so I left the card as written."
+  ]
+ },
+ "vietnam-distribution-efficiency-five-households": {
+  "corrections": [],
+  "clean": true,
+  "checked": "ICR00004664 for P125996 (14 June 2019): cover amount line, data sheet financing and key dates, para on component C, the AusAID grant row in the cost table and para 69 on the reduction to US$6.2 million at effectiveness; IEG review for P125996.",
+  "could_not_settle": []
+ },
+ "vietnam-medium-cities-phu-ly-noncompliance": {
+  "corrections": [],
+  "clean": true,
+  "checked": "ICR00006072 for P116398 (22 December 2022): cover amount lines, data sheet financing, key dates and restructurings, organizations block, paras 17 and 18 and the PDO as given in Financing Agreement Cr-5031-VN; IEG review for P116398.",
+  "could_not_settle": [
+   "The 11 June 2018 restructuring extended the closing date of the original credit, from 30 June 2018 to 31 December 2018, while the project closing date went to 31 December 2020 at the June 2017 additional financing and to 30 June 2022 in December 2020 (completion report para 17). The card groups both dates as extensions of the closing date, which the data sheet's restructuring table also does ('Change in Loan Closing Date(s)' on both), so I left it."
+  ]
+ },
+ "vietnam-natural-disaster-risk-989-resettled": {
+  "corrections": [],
+  "clean": true,
+  "checked": "Cached ICR3183 for P073361 (ICR date 30 June 2014): data sheet sections A, B and H and paras 18 and 19; cached IEG review for P073361.",
+  "could_not_settle": [
+   "The completion report calls the 5 March 2010 change the first amendment of the Development Credit Agreement, made to add Quang Tri Province at the government's request; the restructuring itself is dated 24 May 2010 and the amendment is described inside it. The card calls 5 March 2010 'a restructuring'. The date and the substance are the document's; only the label differs, so I left it."
+  ]
+ },
+ "vietnam-road-asset-management-resettlement": {
+  "corrections": [],
+  "clean": true,
+  "checked": "ICR for P123961 (29 September 2023): data sheet financing, key dates and restructuring table; IEG review for P123961.",
+  "could_not_settle": []
+ },
+ "vietnam-rural-energy-2-land-loss": {
+  "corrections": [],
+  "clean": true,
+  "checked": "Cached ICR00003194 for P074688 (ICR date 31 December 2014): cover amount lines, data sheet sections A and B for P074688 and P080074; cached IEG review ICRR for P074688, project data table and the financing paragraph giving US$220 million and US$200 million.",
+  "could_not_settle": []
+ },
+ "vietnam-urban-water-wastewater-below-replacement": {
+  "corrections": [],
+  "clean": true,
+  "checked": "ICR for P119077, Urban Water Supply and Wastewater Project (18 June 2020): data sheet financing, key dates and restructuring table, paras 18 and the Di An component description; IEG review for P119077.",
+  "could_not_settle": []
+ },
+ "vietnam-water-resources-assistance-resettlement": {
+  "corrections": [
+   {
+    "lender_index": 0,
+    "field": "role",
+    "was": "Total project cost at completion was SDR 102.83 million (US$159.44 million equivalent).",
+    "now": "The Independent Evaluation Group's 2019 performance assessment gives total project cost at completion as SDR 102.83 million (US$159.44 million equivalent). Its 2013 review of the completion report gives US$159.44 million as the credit disbursed and total project costs as US$177.84 million.",
+    "why": "The card prints one of two conflicting IEG figures as settled. The performance assessment's preface says 'Total project cost at completion was special drawing rights 102.83 million ($159.44 million equivalent)'. The earlier ICR review's project data table puts 159.44 in the Loan/Credit row (appraisal 157.8) and 177.84 in the Project Costs row (appraisal 176.2), so 159.44 is the credit, not the project cost. No completion report is published for this project, so both readings are IEG's.",
+    "class": "wrong_column"
+   }
+  ],
+  "clean": false,
+  "checked": "Cached IEG review ICRR14273 for P065898 (posted 9 December 2013): project data table and para on the credit being fully disbursed; cached IEG Project Performance Assessment Report for P065898 (20 August 2019): preface, para 3.5 on the no-cost extension and the loan amount table; cached credit agreement cover (CREDIT NUMBER 3880-VN); the project's last Implementation Status and Results Report (11 February 2013) for the effectiveness date 21 December 2004. The Bank has published no completion report for this project.",
+  "could_not_settle": []
+ },
+ "vinh-loc-b-resettlement-hcmc": {
+  "corrections": [],
+  "clean": true,
+  "checked": "ICR00003331 for P070197, Vietnam Urban Upgrading Project (ICR date 5 October 2015): cover amount lines, data sheet sections A and B, section 1.7 on the withdrawal of AFD financing and the additional financing, and the para giving compensation and resettlement costs of US$188.5 million against US$111.3 million at appraisal; credit agreement cover (CREDIT NUMBER 3887-VN); IEG review for P070197.",
+  "could_not_settle": []
+ },
+ "vishnugad-pipalkoti-haat": {
+  "corrections": [],
+  "clean": true,
+  "checked": "Restructuring paper RES46746 for P096124 (25 June 2021): financing summary table (IBRD-80780 approved 30 June 2011, effective 7 November 2011, net commitment 548.00), rationale section C and the cancellations table (548.0 less 100.0 gives 448.0, after US$100 million already cancelled in June 2019); restructuring paper of 28 June 2022; appraisal document paras 22 and 25 for the 444 MW run-of-river scheme on the Alaknanda. No completion report is published for this project.",
+  "could_not_settle": []
+ },
+ "wagp-badagry": {
+  "corrections": [],
+  "clean": true,
+  "checked": "ICR for P082502, The West African Gas Pipeline Project (30 June 2014, Guarantee No. B-006-0-GH): Annex 1 financing section, which gives the IDA guarantee of US$50 million for obligations of the Republic of Ghana related to the purchase of natural gas and MIGA's US$75 million political risk guarantee to WAPCo for construction of the pipeline, and para 13 on the partial risk guarantee structure.",
+  "could_not_settle": []
+ },
+ "wuxikou-reservoir-chitan-resettlement": {
+  "corrections": [],
+  "clean": true,
+  "checked": "ICR for P128867 (26 January 2021): data sheet financing table, key dates and the two restructurings of 25 April 2019 and 26 June 2019; IEG review for P128867.",
+  "could_not_settle": []
+ },
+ "zhejiang-urban-environment-resettlement": {
+  "corrections": [],
+  "clean": true,
+  "checked": "Cached ICR1917 for P066955 (26 December 2011): data sheet sections A and B, the restructuring table and the paras on the two new components added in 2008 and 2009 to use loan savings; cached IEG review for P066955.",
+  "could_not_settle": []
+ }
+}
