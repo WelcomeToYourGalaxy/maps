@@ -166,6 +166,38 @@ These came out of reading eleven countries' records end to end. None is fixed, b
 - `bk: legis` **for a city or municipal government body is the map's own convention, not a miscoding.** The Ust-Kamenogorsk city construction department sits there, and so do about twenty mayor and city-hall records. Do not "fix" it.
 - **The `y` field means two different things across the map**: some records are tagged by the year of the conduct, others by the year of the first verdict or indictment. Romania's ARSVOM record is 2021 with a January 2026 plea agreement; North Macedonia's REK Bitola is 2022 with a November 2026 verdict. Not a fault in any one record, but it makes the map's oldest-to-newest sorting mean two things at once, and it is worth a ruling.
 
+## WebFetch will not take a URL out of a file, even a url the map itself stored (16 November 2026)
+
+The outcome-queue round was planned on the assumption that an agent could fetch the `url` already stored on each record for free, so its search ration would go on finding new material rather than re-finding the page the record came from. **That assumption is wrong.** Every such attempt returned `PROVENANCE_REQUIRED`, so each record cost a search, and the agent cleared 20 of the 45 it was given instead of all 45. Plan an outcome round at **one search per record**, and treat a stored url as a record of where a fact came from, not as a way back to it.
+
+## The outcome queue has now caught three records that stopped at a charge after an acquittal (16 November 2026)
+
+The first two were Credit Suisse and Stanfield, found on 14 November by other work passing nearby. The third was found by looking: **Yorgen Fenech was found not guilty on 2 September 2026**, by eight votes to one on each charge, by a nine-member jury at the Law Courts in Valletta, of complicity in the murder of Daphne Caruana Galizia and of criminal association, with the prosecution expected to appeal. The map had him indicted and nothing more. That is the whole case for running this queue as a standing job rather than waiting for the next piece of work to stumble on it.
+
+Twenty of the 45 oldest were cleared, fifteen of them having moved. Two reached a verdict: Paraguay's A Ultranza (Senator Erico Galeano, 13 years, 4 March 2026) and Motor Sich (Oleh Dziuba convicted 20 April 2025, five years, released on three years' probation). **None reached a final outcome across all defendants, so none moved to `rel: legacy`.** The remaining 25 were deliberately left without a verified date, because a date on a record nobody checked is worse than none. Fourteen of those already carry 2026 outcome text and are cheap to clear; two have judgment reserved to **26 November 2026**, a date still ahead, so they cannot have moved; the rest are structural records with no single proceeding to track, and for those the honest question is not whether the case moved but whether it meets ruling 11 at all.
+
+## Dates are a bigger constraint on this map than sources (16 November 2026)
+
+Across three jurisdictions in one round, more candidates died for want of a year on the page than for any other reason bar ruling 3.
+
+- **`kazpravda.kz` article pages carry no publication date** and often no offence date. Three otherwise-complete Kazakh records were dropped on that ground alone, and three more - KazAvtoZhol's Mangistau and Zhambyl branches and the Kostanai heat and power company - are recoverable with one dated reprint each. Treat kazpravda as a lead-finder, not a source.
+- **PTI copy republished by ThePrint, Devdiscourse and Business Standard carries the date, the name and the sum where the originating Indian regional page says only "on Tuesday".** Three Indian records exist only because of that; four candidates died without it, including the National Insurance Company case at Srinagar, which is otherwise fully confirmed.
+- `skreact.siakapkeli.my` fetches but carries no publication date, which cost a year on a Malaysian record.
+
+**The practical rule: when a regional page gives no year, look for the wire copy of the same story rather than dropping the candidate.**
+
+## Verdict databases: one that works, and two more that do not (16 November 2026)
+
+**`fcc.mu`, the Mauritius Financial Crimes Commission, publishes full judgment and sentence PDFs as readable text**, dozens of them, and the fetcher reads them cleanly. Two searches surfaced about thirty, of which three became records and roughly a dozen remain unread. It is the one true verdict database found on this map so far. The caveat is scale: many are petty, Rs 200 to Rs 25,000, and some are acquittals.
+
+Against that: **the CGU's per-agreement leniency PDFs cannot be read** - the Car Rental Systems file is 18.6 MB and returns a server error, and the `/view` wrapper carries no content - so the route the last handoff recommended for Brazil is a dead end for this toolchain, not merely unworked. And **`tanzlii.org` serves full judgment text well but its index pages carry no case names**, only undescribed dates, so it cannot be used as a case list.
+
+## Two structural findings about where company-shaped records exist (16 November 2026)
+
+**The Philippines does not have them, and this is not bad luck.** Philippine government-owned corporations are prosecuted and the verdicts are published, but almost every conviction turns on **gross inexcusable negligence by the corporation's own officers with the private supplier acquitted, uncharged, dead or at large** - PAGCOR, PSALM, the National Irrigation Administration, the Philippine Tourism Authority, NABCOR, and PhilHealth, which is a run of acquittals rather than convictions. What the Philippines publishes in quantity, with the private party convicted and named, is **municipal and provincial procurement**, which codes `tgt: gov`. A second Philippine round returned 20 gov to 3 company. Do not plan a company-shaped round there again.
+
+**Kazakhstan's company-shaped residual is thinner than the last handoff estimated.** The estimate of 20+ more company records was made from a scope that had not yet been worked; the obvious state-company cases with a named outside payer were largely already on the map, and what Antikor publishes most heavily now is akimat departments, regional ecology, revenue and land offices and inspection bodies, which code `gov`. A dedicated Kazakh round returned 10 company to 17 gov. Every one of the 17 still has a named outside payer and a named decision, so they are good records; they are just not the shape a rebalance round wants.
+
 ## Display notes
 - Default country shading "Overall: officials open to outside control" = mean of the two GI-TOC views (insiders weighted ¾, weak watchdogs ¼).
 - Glossary underlines the first use of each term per box; hover shows the definition (glossify() in app_template.html).
