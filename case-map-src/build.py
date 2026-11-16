@@ -33,7 +33,10 @@ print('loan-condition cases matched', len(LCH), 'of', len(_lcc))
 LICN = sum(1 for c in _W if c['incomeLevel']['id'] == 'LIC')
 
 # ---- data blob
-blob = base64.b64encode(gzip.compress(json.dumps(D, separators=(',', ':')).encode(), 9)).decode()
+# mtime=0 keeps the build reproducible: without it gzip stamps the current time into
+# the member header, so every rebuild changed globalization.html even when no datum had,
+# which made the round's own diff useless as a check on what actually moved.
+blob = base64.b64encode(gzip.compress(json.dumps(D, separators=(',', ':')).encode(), 9, mtime=0)).decode()
 app_at = s.index('const CASES = window.CASES')
 app_tag = s.rindex('<script>', 0, app_at)
 s = s[:app_tag] + '<script>window.LC_DATA_GZ = "' + blob + '";window.LCH = ' + json.dumps(LCH) + ';window.LICN = ' + str(LICN) + ';</script>\n' + s[app_tag:]

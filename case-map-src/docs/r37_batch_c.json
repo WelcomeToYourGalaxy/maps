@@ -1,0 +1,1406 @@
+{
+ "round": 37,
+ "what": "The first AidData case round. One entry per FINANCING from the 59 that round 36 found carry a relocation count, a death with a cause, or compensation withheld - the three kinds of sentence that decide a case. Full untruncated AidData text and pre-extracted candidate sentences are on each entry.",
+ "brief": "docs/BRIEF36.md, after docs/BRIEF20.md in full. Then docs/CHECK31.md for the checker.",
+ "hard_rules": [
+  "A candidate sentence is AidData's prose, NOT a document. Open the source it rests on, or the press/court/audit record, before any figure reaches a card.",
+  "A relocation verb is not a count (round 32). The forward rule needs either (a) a count of people or households actually relocated, or (b) a specific documented harm to identifiable people.",
+  "Disaster and humanitarian relief rows are drops: the harm is the disaster's. 143 such rows carry r36_relief and are NOT in this batch, but say so if one surfaces.",
+  "Research the FINANCING once. aiddata_rows lists every lender row on it; four rows is one power plant, not four cards.",
+  "local_match and r36_dedupe_hint are hints. Shared country words are not a shared project. Confirm by place and years before dropping a row, and never drop on a hint alone.",
+  "Most of these should become EXTENDS of a case already on the map where the hint holds, since the row adds a lender or an amount the card lacks.",
+  "Put the AidData record id and, where one exists, the P-number in lenders[0].role, so the next round's dedupe can see it.",
+  "No researcher's voice on a card. No 'searches returned nothing' sentences. That belongs in your report.",
+  "Name your own two weakest entries in your report."
+ ],
+ "search_budget": "BRIEF36 says about 30 WebSearch calls per writer. The ~200-per-turn cap is shared across all three writers running in this turn, so treat 45 as a hard ceiling and 30 as the plan. Prefer curl plus pdftotext wherever a document exists - a PDF read from disk costs no search.",
+ "batch": "c",
+ "rows": 19,
+ "countries": [
+  "Antigua and Barbuda",
+  "Bolivia",
+  "Democratic People's Republic of Korea",
+  "Ethiopia",
+  "Grenada",
+  "Guyana",
+  "Montenegro",
+  "North Macedonia",
+  "Peru",
+  "Samoa",
+  "Serbia",
+  "Uganda",
+  "Venezuela",
+  "Zambia"
+ ],
+ "financings": [
+  {
+   "financing": "G065",
+   "aiddata_rows": [
+    {
+     "id": 30919,
+     "title": "China Eximbank provides $789.33 million preferential buyer’s credit for 600 MW Karuma Hydropower Dam and Associated Transmission lines and Sub-stations Project (Linked to Project ID#36211)",
+     "amount_usd_2021": 873871533.524024,
+     "year": 2014,
+     "status": "Implementation",
+     "decisive": true
+    },
+    {
+     "id": 36211,
+     "title": "China Eximbank provides $645.82 million buyer’s credit loan for 600 MW Karuma Hydropower Dam and Associated Transmission Lines and Sub-stations Project (Linked to Project ID#30919)",
+     "amount_usd_2021": 724789587.521878,
+     "year": 2015,
+     "status": "Implementation",
+     "decisive": true
+    }
+   ],
+   "recipient": "Uganda",
+   "iso3": "UGA",
+   "year": 2014,
+   "sector": "ENERGY",
+   "infrastructure": "Yes",
+   "title": "China Eximbank provides $789.33 million preferential buyer’s credit for 600 MW Karuma Hydropower Dam and Associated Transmission lines and Sub-stations Project (Linked to Project ID#36211)",
+   "rank_score": 5,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "the death of a worker due to allegedly unsafe work practices;",
+      "aiddata_row": 30919
+     },
+     {
+      "field": "Description",
+      "sentence": "the death of a worker due to allegedly unsafe work practices;",
+      "aiddata_row": 36211
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On December 18, 2014 and February 20, 2015, China Eximbank and the Government of Uganda signed two loan agreements worth a total of $1,435,158,682 for the 600 MW Karuma Hydropower Dam and Associated Transmission lines and Sub-stations Project. Then, on February 27, 2015, the Parliament of Uganda ratified these two loan agreements. The first loan agreement with China Eximbank, captured via Project ID#36211, is a buyer’s credit loan (BCL) agreement [No. 140302052015210069] worth $645,821,407.12 that was signed on February 20, 2015 with the following borrowing terms: an annual interest rate of 3.827% (LIBOR plus 3.5% margin), a 1% default (penalty) interest rate, a 15 year maturity, a 5 year grace period, a 0.5% management fee ($3,229,107.04), and a 0.5% commitment fee. Under the terms of the BCL, the Government to Uganda is responsible for on-lending the full amount of the loan to Uganda Electricity Generation Company Limited (UEGCL) and the Uganda Electricity Transmission Company Limited (UETCL). The second China Eximbank loan agreement, captured via Project ID#30919, is a preferential buyer’s credit (PBC) agreement [CHINA EXIMBANK PBC (2014) 46 TOTAL NO. (340)] worth $789,337,275.36 that was signed on December 18, 2014 with the following borrowing terms: a 2% interest rate, a 0% default (penalty) interest rate, a 20 year maturity, a 7 year grace period, a 0.25% management fee (worth $1,973,343.19), and a 0.25% commitment fee. The proceeds from the BCL and the PBC were to be used by the borrower to finance 85% of the total cost of a $1,688,421,979.39 commercial contract between the Government of Uganda’s Ministry of Energy and Mineral Development and Sinohydro Corporation Limited, which was signed on August 16, 2013 and amended on May 6, 2014 and May 15, 2014 (via Addendum No. 1 and Addendum No. 2). The borrower was to use the BCL proceeds to finance 38.25% of the commercial contract cost and the PBC proceeds to finance 46.75% of the commercial contract cost.   The Government of Uganda provided a sovereign guarantee for both China Eximbank loans, and the Government of Uganda was obligated under the terms of these loans to open escrow accounts with Stanbic Bank and deposit funds in the accounts over the terms of the loans to facilitate repayment and provide security in the event of default. As of June 30, 2019, the cash balance of one of these escrow (repayment reserve) accounts was UGX 87,154,247,132 ($26,146,274.13).  UMEME Ltd. became the major privately owned electricity distributor in Uganda in 2005 after winning a 20-year concession to operate UEDCL's main distribution network. It was involved as a contractual signatory to the Karuma PPA in order to safeguard the repayment mechanism and avoid potential risks of revenues being misallocated. Loan repayments to China Eximbank were to be made through electricity payments under a power purchase agreement (PPA) with UETCL and UMEME Ltd. According to the terms of the loan agreements and the PPA, UEGCL was to supply UETCL all available power capacity on “take or pay” basis, which means that UETCL was responsible for paying for all available electricity generated by the dam, and not only what was needed. However, in 2019, Uganda’s Auditor General discovered that the generation and sales licenses were in contradiction of the PPA and loan agreements because they stated that “the tariff methodology [will] be based on the energy service cost implying that the energy dispatch to UETCL will be influenced by market demand.”   According to the Government of Uganda’s Aid Management Platform (AMP), the PBC achieved a 85.4% disbursement rate, with China Eximbank making 24 loan disbursements (worth $674,527,385.55) between 2015 and 2020: a $101,179,038 disbursement on December 24, 2015, a $16,324,648 disbursement on December 25, 2015, a $16,009,159 disbursement on December 28, 2015, a $23,583,642.35 disbursement on April 27, 2016, a $11,850,199 disbursement on July 29, 2016, a $37,208,639 disbursement on September 13, 2016, a $18,949,811 disbursement on December 15, 2016, a $8,637,526 disbursement on April 21, 2017, a $6,927,809 disbursement on June 27, 2016, a $43,705,347.25 disbursement on September 6, 2017, a $28,149,577.68 disbursement on October 18, 2017, a $12,649,419.75 disbursement on November 14, 2017, a $39,929,383.45 disbursement on December 26, 2017, a $48,155,261.48 disbursement on April 13, 2018, a $13,785,395.25 disbursement on May 31, 2018, a $65,799,750.54 disbursement on October 19, 2018, a $7,308,794.90 disbursement on December 25, 2018, a $41,827,450.63 disbursement on February 28, 2019, a $36,212,516.45 disbursement on April 29, 2019, a $13,979,022.20 disbursement on June 20, 2019, a $52,698,924.89 disbursement on November 13, 2019, a $10,010,402.52 disbursement on December 19, 2019, a $14,101,813.11 disbursement on March 20, 2020, and a $5,543,854.10 disbursement on August 18, 2020.   According to the Uganda Ministry of Finance, Planning, and Economic Development's Report on Public Debt, Grants, Guarantees and Other Financial Liabilities for Financial Year 2021/2022, as of December 31, 2021, total loan disbursements amounted to $674,527,385.55 and the loan’s amount outstanding (including arrears) was $674,527,385.55.  According to the Government of Uganda’s Aid Management Platform (AMP), the BCL achieved a 97% disbursement rate, with China Eximbank making 31 loan disbursements (worth $625,602,535.38) between 2015 and 2021: a $31,356,497 disbursement on December 25, 2015, a $30,767,223 disbursement on January 29, 2016, a $58,068,539 disbursement on March 7, 2016, a $8,341,230.65 disbursement on May 26, 2016, a $9,695,618 disbursement on July 29, 2016, a $30,443,431 disbursement on September 13, 2016, a $15,504,390 disbursement on December 15, 2016, a $7,067,066 disbursement on April 21, 2017, a $5,668,207 disbursement on June 29, 2017, a $22,395,381 disbursement on September 1, 2017, a $13,363,539.75 disbursement on September 8, 2017, a $23,031,472.65 disbursement on October 17, 2017, a $10,349,525.25 disbursement on November 15, 2017, a $32,669,495.55 disbursement on December 19, 2017, a $39,399,759.39 disbursement on April 20, 2018, a $11,278,959.75 disbursement on May 29, 2018, a $53,836,159.53 disbursement on October 18, 2018, a $5,979,923.10 disbursement on December 24, 2018, a $34,222,459.61 disbursement on March 1, 2019, a $29,628,422.56 disbursement on April 29, 2019, a $11,437,381.80 disbursement on June 19, 2019, a $43,117,302.18 disbursement on November 12, 2019, a $8,190,329.33 disbursement on December 20, 2019, a $11,537,847.09 disbursement on March 19, 2010, a $8,362,437.84 disbursement on August 19, 2020, a $16,193,030.50 disbursement on November 5, 2020, a $9,772,888.57 disbursement on August 26, 2021, a $8,920,595.93 on March 17, 2022, a $10,602,602.45 disbursement on May 9, 2022, a $14,822,335.90 disbursement on June 17, 2022, and a $9,578,484 disbursement on August 18, 2022.  According to the Uganda Ministry of Finance, Planning, and Economic Development's Report on Public Debt, Grants, Guarantees and Other Financial Liabilities for Financial Year 2021/2022, as of December 31, 2021, total disbursements under the BCL amounted to $581,678,517 and the loan’s amount outstanding (including arrears) was $517,096,376.38.   On July 28, 2021, the Government of Uganda and China Eximbank signed a supplementary agreement to the BCL agreement [ID#14030205015210069A], which extended the loan's availability (disbursement) period to allow for $73,915,778.59 of undisbursed funds to be utilized by the borrower (after the original availability period expired on December 24, 2020). The supplementary agreement also specified that, if the loan fully disbursed, the borrower would be responsible for making twenty, semi-annual repayments (worth $32,291,070.36 each) between January 21, 2021 and July 21, 2030.  The 600 MW Karuma Hydropower Dam and Associated Transmission lines and Sub-stations Project., which is also known as the Karuma Hydropower Plant and Interconnection Project, will involve the installation of 6 turbines (10 million kilowatts each), which will create a total capacity of 600 MW, making it Uganda's largest power plant. After the first two turbines start generating electricity, the remaining four turbines will be turned on once per month. The project includes dams, water diversion pipes, underground power plants, and transmission lines. The purpose of the Interconnection Project is to evacuate power produced from Karuma Hydropower Plant in Northern Uganda to load centers, which include Lira and Olwiyo in Northern Uganda, and Kawanda in Central Uganda. It will involve construction of a 248km, 400kV, Double Circuit Karuma-Kawanda transmission line; a 78km, 132kV, Double Circuit Karuma-Lira Transmission Line; a 55km, 400kV, Double Circuit Karuma-Olwiyo transmission Line (which will be initially operated at 132kV); a new 400/132kV sub-station interconnecting with Karuma HPP and 400kV line bays; a new 400kV/220kV substation with two new incoming 400kV line bays to interface with the existing Kawanda 220/132kV substation; two new incoming 132kV line bays to interface with the existing Lira 132/33kV substation; and a new 132/33kV Olwiyo substation.   The EPC contractor responsible for implementation of this project was Sinohydro Corporation Limited. The construction of the dam and power station officially started on August 12, 2013. As of March 2016, about 30% of the work had been completed. In October 2016, it was estimated that about 1,000 Chinese nationals and about 5,000 Ugandans were working at the power station. As of June 2018, 56 months from the beginning of construction, an estimated 76% of the physical work had been completed. Of the 6,000 workers, 5,300 were Ugandan. As of September 2019, an estimated 95% of construction activities had been completed, which included 100% completion of the Karuma–Lira High Voltage Line, 100% of the Karuma–Kawanda High Voltage Power Line and 98% of the Karuma–Olwiyo High Voltage Line. As of December 2020, the Karuma Hydropower dam had reached a 98.7% physical progress rate, the Karuma-Kawanda transmission line had reached a 99.5% physical progress rate, the Karuma-Lira transmission line had reached a 86.4% physical progress rate, the Karuma-Olwiyo transmission line had reached a 95.5% physical progress rate, and the Karuma, Kawanda, Olwiyo, and Lira substations have reached 99.9%, 99.9%, 93% and 99% physical progress rates, respectively. The COVID-19 pandemic was considered a force major event in that it constrained manufacturing and prevented the shipping of equipment and the travel of experts to facilitate the installation and commissioning of equipment. Other project implementation challenges have included a dispute between the EPC contractor and a sub-contractor, which halted the finalization of the stringing and energizing of a 2.504 km transmission line; UMEME distribution lines without required minimum clearances at Walusi, and Wabigalo; the vandalism of tower materials; accusations of public waste and corruption; the death of a worker due to allegedly unsafe work practices; and accusations that one worker was engaged in ivory smuggling activities. The cost of the project also reportedly ballooned from $1.68 billion at least $2.2 billion.",
+    "staff_comments": "1. In July 2016, the Government of Uganda concluded an an interest rate swap deal with Standard Bank and Standard Chartered on its China Eximbank BCL loan. Under the terms of the deal, the Government of Uganda agreed to pay a fixed interest rate of 2.58 percent (0.79 plus a swap premium of 1.79) on its loan, allowing Standard Bank and Standard Chartered to pay the floating interest, which is dependent on LIBOR. Thus, the Government of Uganda only benefits from the arrangement when LIBOR plus the agreed premium is higher than 2.58 percent. According to the Government of Uganda, the purpose of engaging in this interest rate swap was “to ensure certainty and hedge against future [LIBOR] rate fluctuations. However, as of 2018, the Government of Uganda had not yet benefited from the interest rate swap arrangement because the floating rate remained below 2.58 percent. As a result, the Government of Uganda incurred additional costs that it would not have incurred in the absence of the interest rate swap arrangement. 2. In the China’s Overseas Development Finance Dataset that Boston University's Global Development Policy Center published in December 2020 and the database of Chinese loan commitments that SAIS-CARI released in July 2020, a single, $1.4 billion China Eximbank loan for the 600 MW Karuma Hydropower Dam and Associated Transmission Lines and Sub-stations Project project is identified. However, AidData records two separate China Eximbank loans for this project (a PBC and a BCL) based on the loan agreements themselves. SAIS-CARI also records only one set of borrowing terms: 20 year maturity, 5 year grace period, and 2% interest rate. However, PBC and BCL agreements specify that these loans carry different borrowing terms. The BCL carries an annual interest rate of 3.827% (LIBOR plus 3.5% margin), a 15 year maturity, a 5 year grace period, a 0.5% management fee ($3,229,107.04), and a 0.5% commitment fee. The PBC carries a 2% interest rate, a 20 year maturity, a 7 year grace period, a 0.25% management fee (worth $1,973,343.19), and a 0.25% commitment fee. The PBC agreement can be accessed in its entirety via https://www.dropbox.com/s/znwu46a5h6vsclk/China%20EximBank%20Loan%20-%20Karuma%20Hydropower%20Dam%20and%20associated%20works%20Project%20PBC%20%282014%29%2046%20Total%20No%20340.pdf?dl=0. The BCL agreement can be accessed in its entirety via https://www.dropbox.com/s/rp79c47zockl9gi/China%20EximBank%20Loan%20-%20Karuma%20Hydropower%20Dam%20and%20associated%20works%20Project%20Contract%20No.%20140302052015210069.pdf?dl=0. 3. AidData has calculated the BCL’s all-in interest rate by taking the average 6-month LIBOR rate in November 2014 (0.327%) and adding a 3.5% margin. Therefore, the all-in interest rate is coded as 3.827%. 4. On July 28, 2021, the BCL agreement was amended in order to extend the loan’s disbursement period by two additional years (to allow for $73.915 million of unutilized funds to be utilized by the borrower). The amended agreement [No. 140302052015210069A] can be accessed in its entirety via https://www.dropbox.com/s/kklgyc75pkwedat/Supplementary%20Agreement%20to%20Buyer%20Credit%20Loan%20Agreement%20for%20Karuma%20HPP.pdf?dl=0. 5. The collateralization arrangement that governs the BCL and the PBC is described in detail in Article 6.12 of the PBC agreement and Article 12.k of the BCL agreement. Both loan agreements define the ‘security document’ as ‘each of the agreements and legal documents signed by the relevant parties for the purposes of creating security interests in favor of the Lender and enhancing the credit of the Borrower as stipulated in Article 6.12, including without limitation the On-lending Agreement(s), the Escrow Account, the Repayment Reserve Account Agreement, the Power Purchase Agreement, the Power Sales Agreement and the Assignment Agreement/Debenture. 6. Article 6.12 reads as follows: ‘The borrower undertakes that the repayment of principal and payment of interest and fees under this Agreement shall be credit enhanced and the following arrangements: (1) After this Agreement has been signed by the Borrower and the Lender, the On-Lending Agreement(s) shall be duly signed as provided in this Agreement, in form and substance acceptable to the Lender. (2) The Repayment Reserve Account and the Sales Collection Account shall be opened and maintained with the Lender and the Escrow Account Bank and be subject to the respective escrow arrangement under the Repayment Reserve Account Agreement and the Escrow Account Agreement. The Repayment Reserve Account shall be used to maintain the minimum amount of balance as a debt service reserve as required by the Lender and the Lender shall be entitled to utilized the funds in the Repayment Reserve Account. The Sales Collection Account shall be used to collect the revenues generated from the Project and the required amount of funds in the Sales Collection Account shall be transferred to the Repayment Reserve Account as required by the Lender. (3) All the revenues (proceeds) generated from the Project shall be applied in priority to payment of any and all amounts due and payable under this Agreement. (4) The Borrower shall procure UEGCL as seller and UETCL as purchaser to sign the Power Purchase Agreement in form and substance acceptable to the Lender. (5) The Borrower shall procure UETCL as seller and the relevant distributor(s) relating to the Project as purchaser to sign the Power Sales Agreement in form and substance acceptable to the Lender. (6) The Borrower shall procure each of UEGCL and UETCL as assignor/chargor to sign with the Lender assignee/chargee the Assignment Agreements/Debenture in forma and substance acceptable to the Lender, which which UEGCL and UETCL shall assign and/or pledge, among others, all its assignable rights and interests and revenue under the Power Purchase Agreement and the Power Sales Agreement (as the case may be) to the Lender. (7) The Borrower undertakes to ensure that the successors of permitted assignees and transferee of the parties of the Security Documents shall abide by the provisions of the relevant Security Documents. (8) Notwithstanding the existence of the Security Document, the Borrower shall be fully liable for the payment and repayment obligations under this Agreement. The Borrower’s obligations under this Agreement shall not be affected or undermined by the execution, delivery and performance by the relevant parties of such Security Documents.’ The BCL and PBC define the ‘Assignment Agreement/Debenture’ as ‘each or both (as the context may require) or (i) the assignment agreement/debenture entered into or to be entered into between UEGCL as assignor/chargor and the Lender as assignee/chargee, under which UEGCL shall assign and/or pledge, among others, all its assignable rights and interest under the Power Purchase Agreement to the Lender; and (ii) the assignment agreement/debenture entered into or to be entered into between UETCL as assignor/chargor and the Lender as assignee/chargee, under which UETCL shall assign and/or pledge, among others, all its assignable rights and interests and revenues under the Power Sales Agreement to the Lender, both of which are in form and substance acceptable to the Lender.’ The BCL and PBC define the ‘Escrow Account Agreement’ as the ‘escrow account agreement entered into to or to be entered into among the Lender, the Borrower, and other relevant parties as well as the Escrow Account Bank in respect of opening, maintenance and control of the Sales Collection Account and in form and substance acceptable to the Lender. The BCL and PBC define the ‘Escrow Account Bank’ as the ‘Export-Import Bank of China and/or such other reputable international bank registered in Uganda and approved by the lender.’ The BCL and PBC define the ‘On-Lending Agreement(s)’ as the ‘loan agreement(s) entered into or to be entered into between the Borrower and the lender and UEGCL and UETCL as co-borrowers (whereby the Borrower enters into separate on-lending agreement with each of UEGCL and UETCL respectively); whereby the proceeds of the Facility are on-lent by the Borrower to UEGCL and UETCL to implement the Project.’ The BCL and PBC define the ‘Power Purchase Agreement’ as the ‘power purchase agreement entered into or to be entered into between UEGCL as seller and UETCL as purchaser under the ‘Take or Pay’ terms in connection with the Project, in form and substance acceptable to the Lender.’ The BCL and PBC define the ‘Power Sales Agreement’ as the ‘power sales agreement entered into or to be entered into between UETCL as seller and relevant distributor(s) related to the Project as purchaser under the ‘Take or Pay’ terms in connection with the Project, in form and substance acceptable to the Lender.’ The BCL and PBC define the ‘Repayment Reserve Account’ as ‘the account in the name of the Borrower with the Lender and for the purpose of maintaining the minimum amount of the funds as debt service reserve pursuant to the Escrow Account Agreement.’ The BCL and PBC define the ‘Repayment Reserve Account Agreement’ as ‘the repayment reserve account agreement entered into or to be entered into among the Lender, the Borrower, and other relevant parties in respect of the opening, maintenance and control of the Repayment Reserve Account and in form and substance satisfactory to the Lender.’ The BCL and PBC define the ‘Sales Collection Account’ as ‘the account in the name of UEGCL and/or UETCL or other relevant parties with the Escrow Account Bank and for the purpose of collecting revenues generated from the Project pursuant to the Escrow Account Agreement.’ 7. The revenues generated by this project flow through a ‘cashflow waterfall’ arrangement (usefully described via https://pivotal180.com/project-finance-cash-flow-waterfall/ and https://www.lexology.com/library/detail.aspx?g=26f2629e-2040-4dda-a6d8-6600e478cf7f). 8. Under the terms of the BCL agreement, the borrower is responsible for paying 20 installments of $32,291,070.28 every six months between January 2021 and July 2030. The commencement date of the loan repayment period is December 24, 2020 and the first repayment date is January 21, 2021. 9. The June 2019 escrow account cash balance is drawn from the following source https://www.oag.go.ug/storage/reports/ACC_FIIT_AGCY_2018_19_1649574114.pdf. Conversion to USD based on an exchange rate of 1 UGX = 0.0003 USD.10. The Government of Uganda’s agreement code for the PBC agreement and the BCL agreement is L-0639. The system identification number in the Government of Uganda’s Aid Management Platform (AMP) is 87299228334.",
+    "location_narrative": "The Karuma Hydroelectric Power Station is located at Karuma Falls on the Nile River in Kiryandongo District in mid-northern Uganda, 110km downstream of Lake Kyoga, and 270km from Kampala. It is approximately 2.5 kilometers (1.6 mi) upstream of where the Masindi-Gulu Highway crosses the Nile. By road, it is approximately 98 kilometers (61 mi) northeast of Masindi and 75 kilometers (47 mi) south of Gulu. Its exact locational coordinates are: 02°14'51.0N, 32°16'05.0E (Latitude:2.247500; Longitude:32.268056). This project also involves the construction of transmission lines and substations to evacuate power produced from the Karuma Hydroelectric Power Station to load centers in Lira, Olwiyo, and Kawanda. More detailed locational information can be found at https://www.openstreetmap.org/way/846731379 and https://www.openstreetmap.org/way/846731378 and https://www.openstreetmap.org/way/846731380 and https://www.openstreetmap.org/way/1006639183 and https://www.openstreetmap.org/way/846731377#map=17/2.24217/32.26619 and https://www.openstreetmap.org/way/668889197",
+    "description_chars": 11362,
+    "was_truncated_in_lead_file_by": 10162
+   },
+   "r36_dedupe_hint": {
+    "case_id": "karuma-dam-evictions-awoo",
+    "shared_words": [
+     "karuma",
+     "kiryandongo",
+     "uganda"
+    ],
+    "strength": 3
+   },
+   "local_match": [
+    {
+     "case": "karuma-dam-evictions-awoo",
+     "shared_words": [
+      "eximbank",
+      "karuma",
+      "kiryandongo",
+      "sinohydro",
+      "uganda"
+     ],
+     "case_years": [
+      2013,
+      null
+     ],
+     "case_title": "Karuma Dam: Evictions at Awoo and Unpaid Compensation",
+     "strength": "strong"
+    },
+    {
+     "case": "kawanda-masaka-line-galatiya",
+     "shared_words": [
+      "kawanda",
+      "over",
+      "uetcl",
+      "uganda",
+      "used"
+     ],
+     "case_years": [
+      2011,
+      2019
+     ],
+     "case_title": "Kawanda-Masaka power line: armed police used to string a line over unpaid land",
+     "strength": "strong"
+    },
+    {
+     "case": "isimba-dam-kalagala",
+     "shared_words": [
+      "eximbank",
+      "falls",
+      "nile",
+      "uganda"
+     ],
+     "case_years": [
+      2014,
+      null
+     ],
+     "case_title": "Isimba Dam flooding of the Kalagala Falls offset",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "uganda-ueb-umeme",
+     "shared_words": [
+      "concession",
+      "kampala",
+      "uganda",
+      "umeme"
+     ],
+     "case_years": [
+      1999,
+      2025
+     ],
+     "case_title": "Uganda power board sale and Umeme concession",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G273",
+   "aiddata_rows": [
+    {
+     "id": 56956,
+     "title": "Chinese Government provides $68 million interest-free loan for Levy Mwanawasa (Ndola) Stadium Construction Project",
+     "amount_usd_2021": 102136683.282685,
+     "year": 2009,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Zambia",
+   "iso3": "ZMB",
+   "year": 2009,
+   "sector": "OTHER SOCIAL INFRASTRUCTURE AND SERVICES",
+   "infrastructure": "Yes",
+   "title": "Chinese Government provides $68 million interest-free loan for Levy Mwanawasa (Ndola) Stadium Construction Project",
+   "rank_score": 5,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "The stadium was named after Levy Mwanawasa, the third President of Zambia, who served from 2002 to his death in 2008.",
+      "aiddata_row": 56956
+     }
+    ]
+   },
+   "full_text": {
+    "description": "In 2008, the Government of Zambia requested assistance from the Chinese Government to construct a modern stadium in Ndola. Then, in 2009, the Chinese Government agreed to provide a $68 million interest-free loan for the Levy Mwanawasa Stadium Construction Project. The borrowing terms included a 0% interest rate, a 20-year maturity, and a 10-year grace period.   The project involved the construction of a stadium in Ndola with a total capacity of 40,100 seats. The stadium was named after Levy Mwanawasa, the third President of Zambia, who served from 2002 to his death in 2008. It was expected to be a multi-purpose stadium but mostly for football matches. It is located on the T3 Highway at the start of the Ndola-Kitwe Dual Carriageway.   Anhui Foreign Economic Construction Group (AFECC) was the contractor responsible for project implementation. An official groundbreaking ceremony took place on July 4, 2009. However, construction itself did not begin until August 28, 2009. Construction was completed on August 13, 2011. On January 4, 2012, the Chinese Government and the Government of Zambia signed the project handover certificate. Then, a formal opening ceremony was organized on June 2, 2012. The stadium hosted its first international game on June 9, 2012.   Then, in July 2019, the Chinese Government forgave all of the Government of Zambia's outstanding debt obligations related to this project, although the amount of debt forgiveness that was reported at the time was over $70 million (as captured via Project ID #66330). In 2015, the Chinese government carried out the Levy Mwanawasa Stadium Technical Assistance Project (as captured via Project ID#56960).",
+    "staff_comments": "1. This project is also known as the Ndola Stadium Construction Project. The Chinese project title is 恩多拉体育场.2. Since the borrowing terms of the interest-free loan are unavailable, AidData has set maturity to 20 years by default and grace period to 10 years by default per China's Foreign Assistance White Paper (http://www.cidca.gov.cn/2018-08/06/c_129925064_3.htm) which states that the maturity of interest-free loans is 20 years, with a drawdown period of 5 years, grace period of 5 years, and repayment over 10 years. AidData treats the drawdown period as providing 5 years of additional grace.",
+    "location_narrative": "Levy Mwanawasa Stadium is located along the T3 Highway at the start of the Ndola-Kitwe Dual Carriageway. The T3 is a Trunk Road in Zambia. The road runs from Kapiri Mposhi via Ndola, Kitwe and Chingola to Kasumbalesa on the border with DR Congo. The locational coordinates of the stadium are 12°58′30″S 28°36′41″E. More detailed locational information can be found at https://www.openstreetmap.org/way/251406486 and https://geohack.toolforge.org/geohack.php?pagename=Levy_Mwanawasa_Stadium&params=12_58_30_S_28_36_41_E_type:landmark_source:kolossus-frwiki.",
+    "description_chars": 1675,
+    "was_truncated_in_lead_file_by": 475
+   },
+   "r36_dedupe_hint": {
+    "case_id": "kasumbalesa-market-traders-moved",
+    "shared_words": [
+     "border",
+     "kasumbalesa",
+     "zambia"
+    ],
+    "strength": 3
+   },
+   "local_match": [
+    {
+     "case": "kasumbalesa-market-traders-moved",
+     "shared_words": [
+      "border",
+      "kasumbalesa",
+      "zambia"
+     ],
+     "case_years": [
+      2005,
+      2006
+     ],
+     "case_title": "Market Traders Moved at Kasumbalesa Border Post",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G025",
+   "aiddata_rows": [
+    {
+     "id": 2234,
+     "title": "Chinese Government provides $500,000 USD cash grant, food, and blankets after CNMC industrial accident",
+     "amount_usd_2021": 1085116.67480707,
+     "year": 2005,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Zambia",
+   "iso3": "ZMB",
+   "year": 2005,
+   "sector": "EMERGENCY RESPONSE",
+   "infrastructure": null,
+   "title": "Chinese Government provides $500,000 USD cash grant, food, and blankets after CNMC industrial accident",
+   "rank_score": 5,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "In 2005, the Chinese Government donated $500,000 USD and material assistance (including food and blankets) to the Government of Zambia after a fatal accident took place at a CNMC-owned BGRIMM explosives plant in the town of Kitwe.",
+      "aiddata_row": 2234
+     },
+     {
+      "field": "Description",
+      "sentence": "The explosion killed 51 and injured 2 others.",
+      "aiddata_row": 2234
+     }
+    ]
+   },
+   "full_text": {
+    "description": "In 2005, the Chinese Government donated $500,000 USD and material assistance (including food and blankets) to the Government of Zambia after a fatal accident took place at a CNMC-owned BGRIMM explosives plant in the town of Kitwe. The explosion killed 51 and injured 2 others.",
+    "staff_comments": "",
+    "location_narrative": "This project involved sending aid to the BGRIMM Explosive Mine on the grounds of the Chambishi Mine. For more detailed locational information, see: https://www.openstreetmap.org/way/251021938. ",
+    "description_chars": 276,
+    "was_truncated_in_lead_file_by": null
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "sino-metals-chambishi-kafue-spill",
+     "shared_words": [
+      "chambishi",
+      "cnmc",
+      "zambia"
+     ],
+     "case_years": [
+      2025,
+      null
+     ],
+     "case_title": "Sino-Metals Leach Tailings Dam Collapse into the Kafue River",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G591",
+   "aiddata_rows": [
+    {
+     "id": 92137,
+     "title": "China Eximbank provides $71.7 million buyer’s credit loan for Lot 1 of 97MW Neshe Multipurpose Dam Construction Project (Linked to Project ID#45047)",
+     "amount_usd_2021": 129083662.014809,
+     "year": 2007,
+     "status": "Completion",
+     "decisive": true
+    },
+    {
+     "id": 92164,
+     "title": "China Eximbank provides $57.9 million buyer’s credit loan for Lot 2 of 97MW Neshe Multipurpose Dam Construction Project (Linked to Project ID#45047)",
+     "amount_usd_2021": 104303203.338318,
+     "year": 2007,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Ethiopia",
+   "iso3": "ETH",
+   "year": 2007,
+   "sector": "ENERGY",
+   "infrastructure": "Yes",
+   "title": "China Eximbank provides $71.7 million buyer’s credit loan for Lot 1 of 97MW Neshe Multipurpose Dam Construction Project (Linked to Project ID#45047)",
+   "rank_score": 4,
+   "flags": [
+    "displaced or resettled"
+   ],
+   "decisive_buckets": [
+    "compensation withheld"
+   ],
+   "candidate_sentences": {
+    "compensation withheld": [
+     {
+      "field": "Description",
+      "sentence": "Many respondents confirmed that compensation for land that was taken for the new dam was not paid as originally agreed, which, as they explain, was due to insufficient asset valuations, incorrect surveys, mismanagement, and corruption.",
+      "aiddata_row": 92137
+     },
+     {
+      "field": "Description",
+      "sentence": "Many respondents confirmed that compensation for land that was taken for the new dam was not paid as originally agreed, which, as they explain, was due to insufficient asset valuations, incorrect surveys, mismanagement, and corruption.",
+      "aiddata_row": 92164
+     }
+    ]
+   },
+   "full_text": {
+    "description": "In November 2006, China Eximbank and the Government of Ethiopia’s Ministry of Finance and Economic Development signed a $500 million buyer’s credit facility agreement (互惠贷款) — also known as a master loan framework agreement and a master facility agreement — for an unspecified set of development projects.  All subsidiary loans approved under the buyer’s credit facility agreement (captured via Project ID#45047) carried the following borrowing terms: a 13-year maturity and an interest rate of LIBOR plus a 2-3% margin. All of the subsidiary loans were secured with (i.e., collateralized against) Ethiopia's export receipts to China, which at the time primarily consisted of sesame seed export receipts. The buyer’s credit facility agreement also required that all Ethiopian exports (export receipts) to China to be overseen by the Commercial Bank of Ethiopia, the country’s largest state-owned financial institution. 16 subsidiary loans for 16 different projects were reportedly approved under the buyer’s credit facility agreement. According to the Government of Ethiopia’s Aid Management Platform (AMP), China Eximbank and the Commercial Bank of Ethiopia (CBE)— an Ethiopian state-owned bank — signed a subsidiary buyer’s credit loan worth approximately $125.205 million (ETB 1,082,214,356) for the 97MW Neshe Multipurpose Dam Construction Project on September 20, 2007.  The borrower was expected to use the proceeds of the loan to finance approximately 85% of the cost of a $147.3 million (ETB 1.3 billon) commercial contract between the Ethiopian Electric Power Corporation (EEPCo) — an Ethiopian state-owned enterprise — and China Gezhouba Group Corporation (CGGC), which was signed in December 2006. The $125.205 million (ETB 1,082,214,356) was provided in two tranches for two different lots (contracts). 53.7% of the face value of the loan ($71,742,465 or ETB 581,478,798) was earmarked for the Neshe Multipurpose Civil Work Contract (‘Lot 1’). 46.3% of the face value of the loan ($57,969,915 or ETB 500,735,558) was earmarked for the Neshe Multipurpose Electro Mechanical Work Contract (‘Lot 2’).   According to the Government of Ethiopia’s AMP, the ETB 581,478,798 ($71,742,465) loan for Lot 1 achieved a 58% disbursement rate, with China Eximbank making 7 loan disbursements (worth ETB 336,241,047) between 2010 and 2012: an ETB 59,128,437 disbursement on April 8, 2010, an ETB 73,663,866 disbursement on April 8, 2011, an ETB 76,373,469 disbursement on July 7, 2011, an ETB 18,236,942 disbursement on October 10, 2011, an ETB 59,108,763 disbursement on October 10, 2011, an ETB 21,447,578 disbursement on January 8, 2010, and an ETB 28,281,993 disbursement on April 8, 2012. According to the Government of Ethiopia’s AMP, the ETB 500,735,558 loan ($57,969,915) for Lot 2 achieved a 104% disbursement rate, with China Eximbank making 8 loan disbursements (worth ETB 521,882,224) between 2009 and 2012: an ETB 24,803,050 disbursement on December 31, 2009, an ETB 24,229,515 disbursement on April 8, 2010, an ETB 159,702,521 disbursement on April 8, 2011, an ETB 187,753,061 disbursement on July 7, 2011, an ETB 39,950,859 disbursement on October 10,, 2011, an ETB 18,469,723 disbursement on January 8, 2012, an ETB 39,639,860 disbursement on April 8, 2012, and an ETB 27,333,635 disbursement on October 10, 2012. The purpose of the project was to construct the 97MW Fincha-Amerti-Neshi (FAN) hydroelectric power plant — also known as the Neshe multipurpose dam — on the Neshi River in the Blue Nile catchment within Eastern Wolega Zone in Oromia Regional State. Upon completion, it was envisaged that the multi-purpose dam would enable the irrigation of a 6,000 hectare plot nearby, where sugarcane is grown by the state-owned Fincha Sugar Factory (also known as the Finchaa Sugar Estate).   CGGC was the general EPC contractor responsible for project implementation. Dam construction started on July 22, 2010. The project was originally scheduled for completion on August 25, 2011. It was ultimately completed on November 17, 2011. A formal inauguration ceremony was held on December 17, 2011. Project implementation challenges and delays reportedly include a 24-month delay in the approval of the China Eximbank loan, power interruptions, and logistical problems while transporting construction materials from Djibouti port. According to field interview evidence collected by Detlef Müller-Mahn and Million Gebreyes, the implementation of the project also provoked two sets of concerns among local residents: ‘First, there is a general feeling of unfairness, because apparently information about the new project and its opportunities was not made generally available. Secondly, and worse than that, many people complain about broken promises and disappointed expectations, especially with regard to the payment of compensation and the organization of the out-grower scheme adjacent to the sugar cane plantation. Many respondents confirmed that compensation for land that was taken for the new dam was not paid as originally agreed, which, as they explain, was due to insufficient asset valuations, incorrect surveys, mismanagement, and corruption. Tensions in connection with the project were further aggravated when some of the resettled families realized that the new houses they had been given in the lowland area close to the sugar cane plantation were not as nice as they had expected and that living conditions in that location were not favorable. For that reason, many families left the new settlement again and went back to the highlands. They abandoned their new homes and the land they had been given. However, as out-growers they were no longer free in their decision about what to cultivate and where to live, but had to grow sugar cane for the factory. In 2017, when the farm managers of the sugar cane plantation realized that the land of the out-growers was no longer cultivated, they started to plant it with sugar cane. This again caused a major uproar among the settlers who claimed that the sugar company should pay rent to them. The company did so in the first year, but when it refused to do so in the second year, people threatened that they would burn the plantation and attack the factory. As a consequence, almost 2000 hectares of the out-grower scheme were left without cultivation.",
+    "staff_comments": "1. AidData has estimated the all-in interest rate by adding 2.5% (the midpoint between a 2% and 3% margin) to the average 6-month LIBOR rate in September 2007 (5.365%). 2. In the database of Chinese loan commitments that it released in 2020 and re-released in 2021, SAIS-CARI does not identify the borrowing terms of the loan that supported this project.  3. The AMP system identification number for the Neshe Multipurpose Civil Work Contract is 8714327100832. The AMP system identification number for the Neshe Multipurpose Electro Mechanical Work Contract is 8714327100833. 4. 1 Ethiopian Birr (ETB) was equal to 0.11 United States Dollars (USD) in September 2007, which implies that the ETB 581,478,798 loan commitment for the Neshe Multipurpose Civil Work Contract recorded in the AMP was worth USD 63,962,667.78 at that time that it was contracted. 1 Ethiopian Birr (ETB) was equal to 0.11 United States Dollars (USD) in September 2007, which implies that the ETB 500,735,558 loan commitment for the Neshe Multipurpose Electro Mechanical Work Contract recorded in the AMP was worth USD 55,080,911.38 at that time that it was contracted. 5. This project is also known as the Neshe Dam Construction Project, the 97 MW Amerti Neshi Hydroelectric Power Plant Project, and the Fincha-Amerti-Neshi (FAN) Hydropower Station Project. The Chinese project title is 芬恰—阿莫提—奈舍项目. 6. This was reportedly the first EPC project ever undertaken by a Chinese company in East Africa.",
+    "location_narrative": "The purpose of the project was to construct the 97MW Fincha-Amerti-Neshi (FAN) hydroelectric power plant — also known as the Neshe multipurpose dam — on the Neshi River in the Blue Nile catchment within Eastern Wolega Zone in Oromia Regional State. Upon completion, it was envisaged that the multi-purpose dam would enable the irrigation of a 6,000 hectare plot nearby, where sugarcane is grown by the state-owned Fincha Sugar Factory (also known as the Finchaa Sugar Estate). More detailed locational information can be found at: https://www.openstreetmap.org/way/581161502 and https://www.openstreetmap.org/way/845221791 and https://www.openstreetmap.org/way/185697158 and https://www.openstreetmap.org/way/185697172 and https://www.openstreetmap.org/way/185999585 and https://www.openstreetmap.org/way/185999538 and https://www.openstreetmap.org/way/185999542 and https://www.openstreetmap.org/way/185669607 and https://www.openstreetmap.org/way/185999586 and https://www.openstreetmap.org/way/185999552",
+    "description_chars": 6324,
+    "was_truncated_in_lead_file_by": 5124
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "midroc-lega-dembi-gold",
+     "shared_words": [
+      "ethiopia",
+      "ethiopian",
+      "oromia",
+      "owned"
+     ],
+     "case_years": [
+      1997,
+      null
+     ],
+     "case_title": "MIDROC's Lega Dembi Gold Mine and the 2018 Shakiso Protests",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "amibara-afar-grazing-lands",
+     "shared_words": [
+      "economic",
+      "ethiopia",
+      "irrigation"
+     ],
+     "case_years": [
+      1977,
+      1991
+     ],
+     "case_title": "Amibara Irrigation and Afar Grazing Lands",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "saudi-star-gambella-reprisals",
+     "shared_words": [
+      "ethiopia",
+      "ethiopian",
+      "owned"
+     ],
+     "case_years": [
+      2008,
+      2012
+     ],
+     "case_title": "Saudi Star Rice Farm Attack and Army Reprisals, Gambella",
+     "strength": "worth_checking"
+    },
+    {
+     "case": "mekenajo-dembidolo-road-coffee",
+     "shared_words": [
+      "ethiopia",
+      "ethiopian",
+      "oromia"
+     ],
+     "case_years": [
+      2009,
+      2017
+     ],
+     "case_title": "Mekenajo-Dembidolo road: flooding and lost coffee trees on an Ethiopian road loan",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G316",
+   "aiddata_rows": [
+    {
+     "id": 59737,
+     "title": "China Eximbank provides $84.9 million buyer’s credit loan for Luzira Industrial Park, Mukono Industrial Park, Iganga Industrial Park, and Namanve South Industrial Park Substations and Remote Ends Project",
+     "amount_usd_2021": 100344179.705483,
+     "year": 2016,
+     "status": "Implementation",
+     "decisive": true
+    }
+   ],
+   "recipient": "Uganda",
+   "iso3": "UGA",
+   "year": 2016,
+   "sector": "ENERGY",
+   "infrastructure": "Yes",
+   "title": "China Eximbank provides $84.9 million buyer’s credit loan for Luzira Industrial Park, Mukono Industrial Park, Iganga Industrial Park, and Namanve South Industrial Park Substations and Remote Ends Project",
+   "rank_score": 4,
+   "flags": [
+    "displaced or resettled"
+   ],
+   "decisive_buckets": [
+    "compensation withheld"
+   ],
+   "candidate_sentences": {
+    "compensation withheld": [
+     {
+      "field": "Description",
+      "sentence": "First, due to compensation delays that arose from the wetland ownership queries and a notice to cancel the titles within the wetland, one of the wetland claimants went ahead and built a printery at the terminal tower spot of the Luzira transmission line corridor.",
+      "aiddata_row": 59737
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On February 3, 2016, China Eximbank and the Government of Uganda signed a buyer’s credit loan (BCL) agreement (Contract No. 1410302052015212960) worth $84,979,502.53 for the Luzira Industrial Park, Mukono Industrial Park, Iganga Industrial Park, and Namanve South Industrial Park Substations and Remote Ends Project. The borrowing terms of the BCL are as follows: an interest rate of 6-month LIBOR plus 300 basis points, a 1% default (penalty) interest rate, a 15 year maturity, a 3 year grace period, a management fee of 0.5% ($424,897.51), and a commitment fee of 0.5%. The BCL is also supported by a Sinosure buyer’s credit insurance policy. The borrower is expected to use the proceeds of the BCL to finance 85% of the cost of a $99,975,885.34 commercial (EPC) contract between Uganda Electricity Transmission Company Ltd and China CAMC Engineering Co. Ltd, which was signed on August 30, 2013 and amended on March 26, 2014 an April 28, 2014. According to the Government of Uganda’s Aid Management Platform (AMP), this loan achieved a 100% disbursement rate, with China Eximbank making 6 loan disbursements (worth $84,979,502.53) between 2017 and 2020: a $4,998,794.27 disbursement on January 25, 2017, a $3,492,800 disbursement on June 19, 2017, a $25,204,618.77 disbursement on April 3, 2018, a $11,154,866.56 disbursement on December 14, 2018, a $7,912,008.56 disbursement on December 20, 2018, and a $32,216,414.37 disbursement on July 20, 2020. According to the Uganda Ministry of Finance, Planning, and Economic Development's Report on Public Debt, Grants, Guarantees and Other Financial Liabilities for Financial Year 2021/2022, as of December 31, 2021, total loan disbursements amounted to $84,979,502.53 and the loan’s amount outstanding (including arrears) was $74,357,064.70.   The objective of the project is provision of adequate transmission capacity to cater for the projected demand from within 4 industrial park areas. The project has 4 components: (1) Construction of Luzira Industrial Park 132/33kV Substation and Transmission Line Project (15 km); (2) Construction of Mukono Industrial Park 132/33kV Substation and Transmission Line Project (5 km); (3) Construction of Iganga Industrial Park 132/33kV Substation and Transmission Line Project (10 km); and (4) Construction of Namanve Industrial Park 132/33kV Substation and Transmission Line Project (5 km).   China CAMCE Engineering Co. Ltd is the contractor responsible for project implementation. The project officially commenced implementation on June 29, 2016. The first disbursement through the loan took place on January 25, 2017. Another loan disbursement took place on December 20, 2018. As of April 7, 2020, the Aid Management Platform (AMP) of the Government of Uganda's Ministry of Finance, Planning, and Economic Development recorded a total loan disbursement value of $52,763,088.16. As of December 31, 2020, the AMP identified the $84,979,502.53 as being fully disbursed. By mid-2021, tower foundation work was 59% complete (30 out of 58 towers), tower erection work was 39% complete (23 out of 58 towers), the construction of the 3X40MVA, 132/33kV Luzira substation was 98% complete, the construction of the 2X40MVA, 132/33kV Iganga substation was 100% complete, the construction of the 3X60MVA, 132/33kV Namanve substation was 100% complete, and the construction of the 3X60MVA, 132/33kV Mukono substation was 100% complete, the construction of the 15 km Namanve South-Luzira transmission was 47% complete (with completion expected by December 31, 2021), the construction of the Namanve North-Namanve South transmission line was 100% complete (and commissioned on January 26, 2021), the construction of the Mukono T-off was 100% complete (and commissioned on July 4, 2019), the construction of the Iganga T-off was 100% complete (and commissioned on December 8, 2019), and the implementation of the resettlement action plan (RAP) was 60% complete (427 out of 707 actions).   This project has encountered multiple obstacles and delays during implementation. First, due to compensation delays that arose from the wetland ownership queries and a notice to cancel the titles within the wetland, one of the wetland claimants went ahead and built a printery at the terminal tower spot of the Luzira transmission line corridor. Second, an increase in a nearby lake’s water level has affected the Luzira wetland, thus making construction harder for the contractor. (The Luzira transmission line corridor is located in Luzira wetland; therefore, access to the tower spots has proven very difficult during construction of tower foundations and tower erection.) Third, as of October 26, 2021, there were still right of way (RoW) acquisition issues at Luzira Port Bell Market, Miami Beach, Kilombe and Panda PL Villages. Project implementation is running behind schedule; its originally scheduled completion date was February 28, 2019. ",
+    "staff_comments": "1. The China Eximbank loan agreement for this project can be accessed in its entirety at: https://www.dropbox.com/s/nn76ig3tlzbbe5v/China%20EximBank%20Loan%20-%20Four%20Industrial%20Substations%20and%20Transmission%20Lines%20%281%29.pdf?dl=0. 2. This project is not a duplicate of Project ID#53493. 3. The February 3, 2016 version of the China Eximbank loan contract does not reference an escrow account or a requirement that the borrower maintain a minimum cash balance in an escrow account. However, in its 'Report on Public Debt, Grants, Guarantees and Other Financial Liabilities for Financial Year 2021/2022' (https://www.finance.go.ug/sites/default/files/Publications/REPORT%20ON%20PUBLIC%20DEBT%2C%20GRANTS%2C%20GUARANTEES%20AND%20OTHER%20FINANCIAL%20LIABILITIES%20FY%202021-22.pdf), Uganda's Ministry of Finance notes that the borrower had fulfilled the lender's escrow account conditions. This issue warrants further investigation.3. According to Uganda's Ministry of Finance, Planning, and Economic Development National Budget Framework Paper, the forecasted disbursement of the 2018/19 loan was US$76.46 million and US$89.57 million for 2019/20. The final disbursement through this loan is scheduled for June 29, 2019. 4. This project is also known as the Construction of 4 Industrial Parks Substations of Luzira, Mukono, Iganga and Namanve Project and the Electrification of Industrial Parks Project.",
+    "location_narrative": "The four industrial parks that are being electrified through this project are located in Luzira, Mukono, Iganga and Namanve.",
+    "description_chars": 4914,
+    "was_truncated_in_lead_file_by": 3714
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "benet-mount-elgon-2008",
+     "shared_words": [
+      "foundation",
+      "park",
+      "uganda"
+     ],
+     "case_years": [
+      2008,
+      null
+     ],
+     "case_title": "Benet evictions from Mount Elgon National Park",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G127",
+   "aiddata_rows": [
+    {
+     "id": 37541,
+     "title": "CDB provides $1 billion loan -- via pre-export financing (PxF) arrangement -- to BANDES for CVG mining projects in Southern Venezuela",
+     "amount_usd_2021": 1502010048.27479,
+     "year": 2009,
+     "status": "Implementation",
+     "decisive": true
+    }
+   ],
+   "recipient": "Venezuela",
+   "iso3": "VEN",
+   "year": 2009,
+   "sector": "INDUSTRY, MINING, CONSTRUCTION",
+   "infrastructure": "Yes",
+   "title": "CDB provides $1 billion loan -- via pre-export financing (PxF) arrangement -- to BANDES for CVG mining projects in Southern Venezuela",
+   "rank_score": 8,
+   "flags": [
+    "arrests or suppression"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "arrest or detention": [
+     {
+      "field": "Description",
+      "sentence": "On June 12, 2013, President Nicolás Maduro announced the arrest of CVG Ferrominera Orinoco President Radwan Sabbagh, who had earlier complained about the impossibility of paying utility bills.",
+      "aiddata_row": 37541
+     }
+    ],
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "In the end, the Palúa wharf was the only project to be completed, some five years behind schedule and after Hugo Chávez had died.",
+      "aiddata_row": 37541
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On December 22, 2009, China Development Bank and Banco de Desarrollo Económico y Social de Venezuela (BANDES) signed a $1 billion pre-export financing (loan) agreement. The loan carried a 6-year maturity and an interest rate of LIBOR plus an unspecified margin. The proceeds of the loan were to be used by the borrower improve Venezuela’s iron ore production and the production capacity of CVG Ferrominera Orinoco in the state of Bolívar, in the south of the country. The loan agreement specified that Chinese companies would be contracted to support project implementation, according to documents accessed by Armando.info and processed and analyzed together with the data team of the Latin American Centre for Investigative Journalism (CLIP), with additional reporting by Diálogo Chino.   The CDB loan was secured by (collateralized against) the sale of 42.96 million tons of iron ore from CVG Ferrominera Orinoco to Wuhan Iron and Steel Corporation (Wisco) over an 8-year period. CVG Ferrominera Orinoco signed an Iron Ore Sales and Purchase Contract with Wuhan Iron and Steel Corporation (Wisco) on October 22, 2009. Under the terms of the Iron Ore Sales and Purchase Contract, CVG Ferrominera Orinoco was obliged to deliver Wisco a first installment of 160,000 tons of iron ore by the end of October 2009. Two more deliveries were to follow: one of 160,000 tons in November 2009 and another in December 2009 for an additional 140,000 tons. Delivery of the ore was delayed, but the quota for that year was eventually met. In the first half of 2010, CVG Ferrominera Orinoco delivered a further 460,000 tons of iron ore that corresponded to the previous year’s quota. For 2010, the agreed quota was much higher, at 4 million tons, or 29% of CVG Ferrominera Orinoco’s eventual total production that year, just over 14 million tons, according to a 2013 Annual Report published by the Venezuelan Ministry of Basic Industries.   The goal was ambitious but looked achievable if the iron ore production capacity improvements identified in the CDB loan were undertaken. However, they were not. By June 30, 2010, CVG Ferrominera Orinoco had delivered just 337,250 tons of iron ore, less than 10% of the total that was committed. To meet its commitment for 2010, it had to deliver on its outstanding balance of 3,461,946 tons, with only six months to go. A joint report by the Venezuelan delegation to the CVG Financing Agreement and China Development Bank (CDB) warned that the Venezuelan company was in dangerous waters and that, if it failed to meet the schedule, it would be obliged to pay China an amount equivalent to the volume not delivered at the agreed price. In other words, almost $70 million, in addition to payments for transport, cargo loading and unloading, among others.   Eventually, it became clear that CVG Ferrominera Orinoco would not be able to honor its commitments. \"Minister [Rodolfo] Sanz made promises that Corporación Venezolana de Guayana was unable to keep and committed [CVG Ferrominera Orinoco] to supplying iron ore at levels it does not have,\" complained Tian Yunhai, deputy director of CDB’s international cooperation department, during an urgent meeting in Beijing in December 2010.   A report presented by the Venezuelan delegation to the CVG Financing Agreement and China Development Bank (CDB) in June 2010 detailed that the iron ore delivery contract signed with Wisco did not generate income for CVG Ferrominera Orinoco. \"Although so far there has been enough ore in inventory to cover commitments, it is necessary to recover and increase CVG Ferrominera Orinoco's production capacity to guarantee the volume of iron ore to China, without detriment to its other commitments (...) It is essential to have other sources of income to meet contractual and operational commitments, and currently this source is exporting to Europe,\" the document says.   The report highlighted the company's operational and logistical inability to meet a commitment of the size agreed upon: \"In order to increase transport capacity, the ship Río Caroní, which is currently undergoing major repairs at the Curaçao dock, is required. The cost of these repairs amounts to US$9 million, which CVG Ferrominera [Orinoco] does not have. To date this payment has been delayed for two months and the Curaçao dock states that it will remove the vessel without completing the repairs if the delay in payment persists. This would imply that the vessel would be anchored and out of operations, with the consequent associated costs,\" the report says. It also acknowledged that the company did not have the funds to cover the costs of materials and spare parts that would allow it to reach operational capacity in the extraction, processing and transport processes. Moreover, the company could not afford to maintain the Boca Grande II transfer station, the largest floating iron ore transfer station in the world, located in the Columbus Channel (otherwise known as the Serpent’s Mouth), which lies opposite the mouth of the Orinoco River between Venezuela and the island of Trinidad and Tobago.   Another challenge was identified in the report: the port capacity of the Boca Grande II station did not match that of the vessels hired by the Chinese company Wisco to transport the ore. To make matters worse, those vessels did not have GPS-assisted navigation systems to allow for night navigation, slowing transit through the treacherous waters of the channel.   In addition to the fact that the iron committed to the Chinese company came at a significant price discount, there was the prospect of an imminent decrease in CVG Ferrominera Orinoco’s income from sales to its domestic customers in the industrial sector. A plan to cut energy consumption was already in force. It was the year of the electricity emergency decreed by Chávez, which foresaw important limitations for heavy industry.   There were also technical problems in the direct reduction plants in the Guayana region (Matesi, Orinoco Iron, FMO Briquette Plant and Comsigua) that are responsible for the second process in the iron production cycle, which consists of reducing pellets so they suitable for making steel, a process which also includes the removal of the oxygen in the iron oxide.   The report, drafted at the request of Venezuela's Ministry of Basic Industries and Mining (Mibam), noted that that \"CVG Ferrominera [Orinoco] has not benefited from [CDB] funding\" and it proposed an investment of $50 million to overcome some of these obstacles and increase CVG Ferrominera Orinoco’s production capabilities. Failure to take immediate action will result in non-compliance with the loan contract as of September 2010 and with the supply contract as of December 2010, which would generate the legal and economic consequences already described. However, \"such actions also do not guarantee the due [fulfillment] of all obligations under the various contracts for subsequent years, as their [fulfillment] will depend on structural reforms in the company,\" the report warns. At the end of 2010, the Chinese partner complained about Venezuela’s non-delivery of its side of the deal.   Then, on December 9, 2010, a meeting was held at CDB’s headquarters in Beijing. Edmée Betancourt, President of the Venezuelan Economic and Social Development Bank (Bandes), was supposed to attend. Instead, Richard Miranda, compliance officer of Bandes, and Guadalupe Franco, first secretary of Venezuela’s Beijing embassy, attended. During the meeting, Tian Yunhai, deputy director of CDB's international cooperation department, expressed his frustration. \"Both [CDB] and Wisco expected a response from Venezuela vis-a-vis cooperation and sincere dialogue. However, the negotiations led by Ferrominera veered far from that goal, presenting only a purely commercial position and with supply ranges that did not meet Wisco's expectations,\" said the official, according to documents to which Armando.info had access.   Tian recalled that in 2009, when the then minister of Basic Industries and Mining, Rodolfo Sanz, made an emergency request for resources from CDB, \"its response was in line with the confidence it maintains in cooperation with Venezuela\". The aim of the meeting was to receive CDB’s proposal for the use of the credit line, but Chinese representatives complained about the absence of the recently appointed minister of Basic Industries and Mining, José Khan, and of Edmée Betancourt, president of Bandes, who until then had represented Venezuela during contract negotiations with China. \"The situation is affecting the financial relationship with Venezuela and I am sure that this situation would not be to the liking of President Hugo Chávez,\" Tian said.   The day after the meeting, the Venezuelan Diplomatic Commission in China received an urgent communication from Tian. He informed them of an urgent visit to Venezuela in 30 days, accompanied by [CDB] officials and Wisco's technical team, to evaluate the productive capacity and logistical conditions and begin carrying out planned projects by the end of 2011. \"The objective is to solve CVG's production and logistics problems as soon as possible,\" he said. Improving CVG Ferrominera Orinoco’s iron ore production and dispatch capacity justified the $1 billion CDB loan that obliged the CVG Ferrominera Orinoco to commit 42.96 million tonnes of output. But the mine's upgrading projects saw as many setbacks as its attempts to meet the payment schedule.   At a meeting on May 30 2011, CVG Ferrominera Orinoco and Wisco signed a new agreement committing the Chinese company to design and implement two projects with the state-owned China Railway Engineering Corporation Group (CREC), including the \"expansion of the operational capacity of the Palúa dock\", in the small port in the northeast of San Félix, a city in Bolívar state, and the \"dredging of the Orinoco River\". The agreement also contemplated a third project to be developed by Wisco for the \"purchase of machinery and spare parts for the mines\", in order to alleviate the operational and infrastructure crisis faced by the company.   Three months later, on August 10, 2011, after several meetings between CVG Ferrominera Orinoco and Wisco, the parties concluded that the projects should be executed by companies specialized in these areas. Wisco acknowledged that it did not have sufficient experience to undertake engineering work to expand the operational capacity of the Palúa dock or to dredge the Orinoco. It therefore informed CVG Ferrominera Orinoco that both projects were to be handed over to third parties, awarding the dredging project to China Railway Engineering Corporation Group (CRECG) and China Communications Construction Company (CCCC), which, as Diálogo Chino has shown, has more than 50 projects in Latin America. The expansion of the operational capacity of the Palúa wharf was awarded to China Railway 10th Engineering Group Co., a subsidiary of CREC. Wisco would thus be left with only one of the three projects mooted in the original agreement, for the purchase of machinery and spare parts for the mines.   On September 5, 2011, CVG Ferrominera Orinoco signed a contract with China Communications Construction Company (CCCC) for the maintenance, dredging and deepening of the Orinoco River channel, between miles 0 and 42 of its outer channel and miles 42 and 196 of its inner channel. On the same day, the Venezuelan state-owned company gave the go-ahead to China Railway N° 10 Engineering Group Co, Ltd to begin a number of works at the the Palúa wharf. These included the construction, installation and commissioning of receiving hoppers for fine and coarse iron ore, conveyors, a transfer house, a stacker with a capacity of 3,500 tn/h, a reclaimer, a mud loader, a stacking yard, and the construction of 2.5km of closed-circuit railway track for the entry, unloading and exit of trains. Both works were due to start in October 2011 and slated to be completed in December 2012.   But while the infrastructure improvement projects did not materialize, CVG Ferrominera Orinoco faced increasing delivery commitments and difficulties in meeting them. In 2011 it had to deliver a quota of six million tonnes, or 35% of total production that year. For 2012, that quota rose to 6.5 million tonnes, some 43% of production which, as it turned out, would barely reach 15 million tons, according to the Ministry of Basic Industries report from that year. In the end, the Palúa wharf was the only project to be completed, some five years behind schedule and after Hugo Chávez had died. Marcial Arenas, the then vice-minister of Industrial Planning and Strategic Investments, and Isaías Suárez Chourio, president of the state mining company inaugurated the work on January 31, 2017 on an episode of the during the TV show “Contacto con Maduro”, along with CREC representatives.   The CDB’s was also engulfed in a corruption scandal. On June 12, 2013, President Nicolás Maduro announced the arrest of CVG Ferrominera Orinoco President Radwan Sabbagh, who had earlier complained about the impossibility of paying utility bills. Sabbagh was later sentenced to six years in prison after admitting his responsibility in the diversion of more than $1.8 million during his tenure between 2006 and 2013. Several other CVG Ferrominera Orinoco officials also ended up in prison, including finance manager María Acosta, administrative manager María Rodríguez, legal consultant Noel Ramírez, former technical operations manager Ángel Ramón Campero Franco and a businessman, Yamal Mustafá, who had extensive links to the long-time governor of Bolívar state and prominent ‘chavista’, General Francisco Rangel Gómez. The announcement uncovered several crimes linking CVG Ferrominera Orinoco’s top management to a corruption scheme involving the sale of iron ore at preferential prices to intermediary companies that then placed the product on the international market. It also revealed that those involved had bribed Álvarez Dionisi (‘The Shark’), who was sent to investigate the irregularities, to not report them. The Shark was charged by the 54th national and 2nd assistant national prosecutors, Nelly Sánchez Pantaleón and Maryori Da'Cunhade, respectively, with the crimes of extortion, money laundering and criminal association.  Chinese executives, frustrated and faced with the inability of their commercial partner - now also plagued by a corruption scandal - to comply with the agreements, were forced to evaluate and renegotiate the projects, seeking a real recovery in iron ore production. The latest public records on the status of the projects date back to 2015. They explain that the Palúa docks were completed at the end of the previous year, that loading tests were carried out and that provisional acceptance certificates had been signed, despite the fact that the technical assistance to the project was still pending completion.   According to Panjiva, a company that records international trade data, between 2017 and 2018, CVG Ferrominera Orinoco still exported about 3 million tons of iron ore per year to China. The last public announcement made by President Maduro on the matter assured that, in October 2019, CVG Ferrominera Orinoco would return to producing 3 million tons of iron ore per year. One year after his prediction, furnaces in the Punta Cuchillo industrial complex, in the industrial area of Matanzas, west of Ciudad Guayana, remained shut down, while the company's production figures continued to fall sharply. Production did not even reach 2 million tons in 2020, one seventh of what CVG Ferrominera Orinoco was producing a decade earlier, when it received the CDB loan for its expansion.",
+    "staff_comments": "1. Corporación Venezolana de Guayana (CVG) is a state-owned mining company in Venezuela. It constitutes Venezuela's largest diversified mining and mineral processing business based on estimated market share and production volume. With operations throughout the Guayana region, which occupies more than 550,000 square kilometers in southern Venezuela, CVG is Venezuela's, and one of Latin America's, largest producers of aluminum (including its principal constituent elements, bauxite and alumina) and steel and iron products. CVG's business also includes an increasing emphasis on significant mining and production of gold. CVG is also engaged in the growing and harvesting of timber and production of lumber. CVG comprises 15 operating subsidiaries and approximately 18,000 employees. 2. CVG Ferrominera Orinoco is a subsidiary of Corporación Venezolana de Guayana (CVG). 3. Multiple sources suggest or imply the BANDES on-lent the proceeds of the CDB loan to Corporación Venezolana de Guayana (CVG) and/or CVG Ferrominera Orinoco. However, this issue requires further investigation. 4. The project description is largely based on a trove of documents obtained by Armando.info, which were processed and analyzed in partnership with the Latin American Centre for Investigative Journalism (CLIP) and with additional reporting by Diálogo Chino. 5. A pre-export finance (PXF) facility is an arrangement in which a commodity (e.g. iron ore) producer gets up-front cash from a customer in return for a promise to repay the customer with that commodity (possibly at a discount) in the future. PXF funds may be advanced by a lender or syndicate of lenders to a commodity producer to assist the company in meeting either its working capital needs (for example, to cover the purchase of raw materials and costs associated with processing, storage and transport) or its capital investment needs (for example, investment in plant and machinery and other elements of infrastructure). PXF facilities are usually secured by (1) an assignment of rights by the producer under an ‘offtake contract’ (i.e., a sale and purchase contract between the producer and a buyer of that producer of goods or commodities), and (2) a collection account charge over a bank account into which proceeds due to the producer from the buyer of the goods or commodities under the offtake contract are credited. There are two key documents in prepayment finance transactions: a contract providing for the advance payment by the offtaker to the producer for the purchase of goods/commodities (the 'Prepayment Contract'), and a loan agreement between a lender and the offtaker (the 'Offtaker Loan Agreement') under which the advance payment is financed. Wuhan Iron & Steel Corporation (Wisco”) is the off taker in the PXF facility agreement that CDB and BANDES signed in December 2009.",
+    "location_narrative": "The Chinese Government attempted to help the Venezuelan Government improve mining operations at CVG Ferrominera Orinoco in the state of Bolivar, Venezuela.  More detailed locational information can be found at: Bolivar State: https://www.openstreetmap.org/relation/2269155 Palua Port: https://www.openstreetmap.org/way/646425832 CVG Ferrominera Orinoco: https://www.openstreetmap.org/node/10595279694#map=15/8.3356/-62.7175",
+    "description_chars": 15716,
+    "was_truncated_in_lead_file_by": 14516
+   },
+   "r36_dedupe_hint": null,
+   "local_match": []
+  },
+  {
+   "financing": "G563",
+   "aiddata_rows": [
+    {
+     "id": 89551,
+     "title": "Chinese Government provides EC $100 million grant for Affordable Housing Project",
+     "amount_usd_2021": 48437766.5723856,
+     "year": 2018,
+     "status": "Pipeline: Commitment",
+     "decisive": true
+    },
+    {
+     "id": 92146,
+     "title": "Chinese Government provides RMB 80 million grant — via ETCA — for Affordable Housing Project (Linked to Project ID#89551)",
+     "amount_usd_2021": 13089601.2324128,
+     "year": 2019,
+     "status": "Implementation",
+     "decisive": true
+    },
+    {
+     "id": 92147,
+     "title": "Chinese Government provides RMB 80 million grant — via ETCA — for Affordable Housing Project (Linked to Project ID#89551)",
+     "amount_usd_2021": 13089601.2324128,
+     "year": 2019,
+     "status": "Implementation",
+     "decisive": true
+    },
+    {
+     "id": 92148,
+     "title": "Chinese Government provides RMB 80 million grant — via ETCA — for Affordable Housing Project (Linked to Project ID#89551)",
+     "amount_usd_2021": 13089601.2324128,
+     "year": 2019,
+     "status": "Implementation",
+     "decisive": true
+    }
+   ],
+   "recipient": "Antigua and Barbuda",
+   "iso3": "ATG",
+   "year": 2018,
+   "sector": "OTHER SOCIAL INFRASTRUCTURE AND SERVICES",
+   "infrastructure": "Yes",
+   "title": "Chinese Government provides EC $100 million grant for Affordable Housing Project",
+   "rank_score": 6,
+   "flags": [
+    "displaced or resettled",
+    "protest or unrest"
+   ],
+   "decisive_buckets": [
+    "relocation count"
+   ],
+   "candidate_sentences": {
+    "protest with specifics": [
+     {
+      "field": "Description",
+      "sentence": "At the same time, this project has faced some setbacks, including a staged protest by one family, with the support of some residents from the Booby Alley area, who for months, refused to relocate.",
+      "aiddata_row": 89551
+     },
+     {
+      "field": "Description",
+      "sentence": "At the same time, this project has faced some setbacks, including a staged protest by one family, with the support of some residents from the Booby Alley area, who for months, refused to relocate.",
+      "aiddata_row": 92146
+     },
+     {
+      "field": "Description",
+      "sentence": "At the same time, this project has faced some setbacks, including a staged protest by one family, with the support of some residents from the Booby Alley area, who for months, refused to relocate.",
+      "aiddata_row": 92147
+     },
+     {
+      "field": "Description",
+      "sentence": "At the same time, this project has faced some setbacks, including a staged protest by one family, with the support of some residents from the Booby Alley area, who for months, refused to relocate.",
+      "aiddata_row": 92148
+     }
+    ],
+    "relocation count": [
+     {
+      "field": "Description",
+      "sentence": "At the same time, this project has faced some setbacks, including a staged protest by one family, with the support of some residents from the Booby Alley area, who for months, refused to relocate.",
+      "aiddata_row": 89551
+     },
+     {
+      "field": "Description",
+      "sentence": "At the same time, this project has faced some setbacks, including a staged protest by one family, with the support of some residents from the Booby Alley area, who for months, refused to relocate.",
+      "aiddata_row": 92146
+     },
+     {
+      "field": "Description",
+      "sentence": "At the same time, this project has faced some setbacks, including a staged protest by one family, with the support of some residents from the Booby Alley area, who for months, refused to relocate.",
+      "aiddata_row": 92147
+     },
+     {
+      "field": "Description",
+      "sentence": "At the same time, this project has faced some setbacks, including a staged protest by one family, with the support of some residents from the Booby Alley area, who for months, refused to relocate.",
+      "aiddata_row": 92148
+     }
+    ]
+   },
+   "full_text": {
+    "description": "In October 2018, the Chinese Government and the Government of Antigua and Barbuda signed a EC $100 million grant agreement for the Affordable Housing Project. Then, on November 26, 2019, the Chinese Government and the Government of Antigua and Barbuda signed an Economic and Technical Cooperation Agreement (ECTA), which committed an additional RMB 80 million of grant funding for the project. The original purpose of the project was to facilitate the development of the Booby Alley site for 98 units (including mixed use units) and an additional 50 units to resettle the households subsequent to temporary relocation at Bay Street. Booby Alley, which is less than two acres large covers the area from North Street to St. John’s Street on Wilkinson’s Cross; west on St. John’s Street to Mariner’s Lane; south on Mariner’s Lane to North Street; and east on North Street to Wilkinson’s Cross. However, Prime Minister Gaston Browne later announced the scope of the project would be expanded to include the construction of 250 homes – 150 of which will be erected in the Booby Alley area, 50 in Bolans and another 50 on Barbuda. He also announced that “[t]he project, for the most part, will comprise of rental properties which will be heavily subsidized. Those who had homes in the Booby Alley area will also be able to own a home at a substantially reduced cost, we will also have to give them credit for their existing home, no matter the conditions.” Preparatory work for the project commenced in April 2019.   Construction was originally slated to begin in the first quarter of 2021 and site clearance was expected to reach completion by January 31, 2021. Then, in March 2021, Prime Minister Gaston Browne presided over a handover ceremony in the Booby Alley are on Lower Bay Street Villa. 12 families from the Booby Alley area in Point received keys to their temporary homes at the ceremony. Each three-bedroom house that was handed over was approximately twelve hundred square feet in size, with a laundry room, bathroom, kitchen, and living room with a combination of reinforced concrete, cement base foam panels, metal trusses with angle iron, foam galvanize metal doors and windows. All homes are said to have electricity, water, and internet infrastructures in place. At the same time, this project has faced some setbacks, including a staged protest by one family, with the support of some residents from the Booby Alley area, who for months, refused to relocate. The small chattel houses that are currently located at the Booby Alley project site are to be replaced with modern, climate-resilient houses. The modern, climate-resilient houses are supposed to be offered to the current residents upon completion of the construction. The challenge faced by the local authorities is the temporary displacement of the residents of Booby Alley to the temporary housing being constructed, and to rental homes that are within the City of St. John’s. Several temporary homes are being built on Crown land at Bay Street and on Reginald Stevens Street. Environmental concerns and waste-water management concerns have also arisen. Ninety cement bases have already been laid as foundations for the temporary homes. When all residents currently residing within Booby Alley have been placed in the temporary housing, or have had their homes moved to vacant plots, the chattel houses which cannot be salvaged will have to be razed since they are likely to be too fragile.   It is anticipated that the two-acre Booby Alley site will be made completely vacant by January 31, 2021, except for the buildings which house Papasita Destin’s supermarket and the Bethel Anglican church. It is then expected that it will take approximately two years for the replacement housing to be constructed, and for most of the residents to return to living in an upgraded housing project.  ",
+    "staff_comments": "1. This project is also known as the Booby Alley Rehabilitation Housing Project and the Urban Development & Renewal Project.",
+    "location_narrative": "The low-income housing will be built in several regions across Antigua and Barbuda.  Booby Alley is a low-income area on Antigua.  Booby Alley: https://www.openstreetmap.org/way/1081942197Bolans: https://www.openstreetmap.org/node/224336074Barbuda: https://www.openstreetmap.org/relation/9604459",
+    "description_chars": 3863,
+    "was_truncated_in_lead_file_by": 2663
+   },
+   "r36_dedupe_hint": null,
+   "local_match": []
+  },
+  {
+   "financing": "G247",
+   "aiddata_rows": [
+    {
+     "id": 55426,
+     "title": "CDB contributes to $5.988 billion syndicated loan to repay debts and meet capital requirements of Las Bambas Copper Project (Linked to Project ID#98774, #98775, #98776, #99780, #99781, #99783, and #55427)",
+     "amount_usd_2021": 3314643122.83701,
+     "year": 2014,
+     "status": "Completion",
+     "decisive": true
+    },
+    {
+     "id": 55427,
+     "title": "CDB contributes to $969 million syndicated loan for acquisition of Las Bambas Copper Project (Linked to Project ID98874, #98875, #98876, #98780, #98781, #98783, #55426)",
+     "amount_usd_2021": 536387639.617412,
+     "year": 2014,
+     "status": "Completion",
+     "decisive": true
+    },
+    {
+     "id": 98774,
+     "title": "China Eximbank contributes to $5.988 billion syndicated loan to repay debts and meet capital requirements of Las Bambas Copper Project (Linked to Project ID#55426, #98775, #98776, and #55427)",
+     "amount_usd_2021": 662928624.567402,
+     "year": 2014,
+     "status": "Completion",
+     "decisive": true
+    },
+    {
+     "id": 98775,
+     "title": "ICBC contributes to $5.988 billion syndicated loan to repay debts and meet capital requirements of Las Bambas Copper Project (Linked to Project ID#55426, #98774, #98776, and #55427)",
+     "amount_usd_2021": 1988785873.7022,
+     "year": 2014,
+     "status": "Completion",
+     "decisive": true
+    },
+    {
+     "id": 98776,
+     "title": "Bank of China contributes to $5.988 billion syndicated loan to repay debts and meet capital requirements of Las Bambas Copper Project (Linked to Project ID#55426, #98774, #98775, and #55427)",
+     "amount_usd_2021": 662928624.567402,
+     "year": 2014,
+     "status": "Completion",
+     "decisive": true
+    },
+    {
+     "id": 98780,
+     "title": "China Eximbank contributes to $969 million syndicated loan for acquisition of Las Bambas Copper Project (Linked to Project ID#55427, #98781, #98783, #55426)",
+     "amount_usd_2021": 107277527.923482,
+     "year": 2014,
+     "status": "Completion",
+     "decisive": true
+    },
+    {
+     "id": 98781,
+     "title": "ICBC contributes to $969 million syndicated loan for acquisition of Las Bambas Copper Project (Linked to Project ID#55427, #98780, #98783, #55426)",
+     "amount_usd_2021": 321832583.770447,
+     "year": 2014,
+     "status": "Completion",
+     "decisive": true
+    },
+    {
+     "id": 98783,
+     "title": "Bank of China contributes to $969 million syndicated loan for acquisition of Las Bambas Copper Project (Linked to Project ID#55427, #98780, #98781, #55426)",
+     "amount_usd_2021": 107277527.923482,
+     "year": 2014,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Peru",
+   "iso3": "PER",
+   "year": 2014,
+   "sector": "INDUSTRY, MINING, CONSTRUCTION",
+   "infrastructure": null,
+   "title": "CDB contributes to $5.988 billion syndicated loan to repay debts and meet capital requirements of Las Bambas Copper Project (Linked to Project ID#98774, #98775, #98776, #99780, #99781, #99783, and #55427)",
+   "rank_score": 6,
+   "flags": [
+    "protest or unrest",
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "About 15,000 people protested the mine during the early phases of construction, resulting in clashes with police who shot and killed four local people.",
+      "aiddata_row": 55426
+     },
+     {
+      "field": "Description",
+      "sentence": "About 15,000 people protested the mine during the early phases of construction, resulting in clashes with police who shot and killed four local people.",
+      "aiddata_row": 98775
+     },
+     {
+      "field": "Description",
+      "sentence": "About 15,000 people protested the mine during the early phases of construction, resulting in clashes with police who shot and killed four local people.",
+      "aiddata_row": 98774
+     },
+     {
+      "field": "Description",
+      "sentence": "About 15,000 people protested the mine during the early phases of construction, resulting in clashes with police who shot and killed four local people.",
+      "aiddata_row": 98776
+     },
+     {
+      "field": "Description",
+      "sentence": "About 15,000 people protested the mine during the early phases of construction, resulting in clashes with police who shot and killed four local people.",
+      "aiddata_row": 55427
+     },
+     {
+      "field": "Description",
+      "sentence": "About 15,000 people protested the mine during the early phases of construction, resulting in clashes with police who shot and killed four local people.",
+      "aiddata_row": 98781
+     },
+     {
+      "field": "Description",
+      "sentence": "About 15,000 people protested the mine during the early phases of construction, resulting in clashes with police who shot and killed four local people.",
+      "aiddata_row": 98780
+     },
+     {
+      "field": "Description",
+      "sentence": "About 15,000 people protested the mine during the early phases of construction, resulting in clashes with police who shot and killed four local people.",
+      "aiddata_row": 98783
+     }
+    ],
+    "protest with specifics": [
+     {
+      "field": "Description",
+      "sentence": "About 15,000 people protested the mine during the early phases of construction, resulting in clashes with police who shot and killed four local people.",
+      "aiddata_row": 55426
+     },
+     {
+      "field": "Description",
+      "sentence": "There were continued protests in 2021-2022, when protestors blockaded the mine and complained that they received few benefits from the mine.",
+      "aiddata_row": 55426
+     },
+     {
+      "field": "Description",
+      "sentence": "About 15,000 people protested the mine during the early phases of construction, resulting in clashes with police who shot and killed four local people.",
+      "aiddata_row": 98775
+     },
+     {
+      "field": "Description",
+      "sentence": "There were continued protests in 2021-2022, when protestors blockaded the mine and complained that they received few benefits from the mine.",
+      "aiddata_row": 98775
+     },
+     {
+      "field": "Description",
+      "sentence": "About 15,000 people protested the mine during the early phases of construction, resulting in clashes with police who shot and killed four local people.",
+      "aiddata_row": 98774
+     },
+     {
+      "field": "Description",
+      "sentence": "There were continued protests in 2021-2022, when protestors blockaded the mine and complained that they received few benefits from the mine.",
+      "aiddata_row": 98774
+     },
+     {
+      "field": "Description",
+      "sentence": "About 15,000 people protested the mine during the early phases of construction, resulting in clashes with police who shot and killed four local people.",
+      "aiddata_row": 98776
+     },
+     {
+      "field": "Description",
+      "sentence": "There were continued protests in 2021-2022, when protestors blockaded the mine and complained that they received few benefits from the mine.",
+      "aiddata_row": 98776
+     },
+     {
+      "field": "Description",
+      "sentence": "About 15,000 people protested the mine during the early phases of construction, resulting in clashes with police who shot and killed four local people.",
+      "aiddata_row": 55427
+     },
+     {
+      "field": "Description",
+      "sentence": "There were continued protests in 2021-2022, when protestors blockaded the mine and complained that they received few benefits from the mine.",
+      "aiddata_row": 55427
+     },
+     {
+      "field": "Description",
+      "sentence": "About 15,000 people protested the mine during the early phases of construction, resulting in clashes with police who shot and killed four local people.",
+      "aiddata_row": 98781
+     },
+     {
+      "field": "Description",
+      "sentence": "There were continued protests in 2021-2022, when protestors blockaded the mine and complained that they received few benefits from the mine.",
+      "aiddata_row": 98781
+     },
+     {
+      "field": "Description",
+      "sentence": "About 15,000 people protested the mine during the early phases of construction, resulting in clashes with police who shot and killed four local people.",
+      "aiddata_row": 98780
+     },
+     {
+      "field": "Description",
+      "sentence": "There were continued protests in 2021-2022, when protestors blockaded the mine and complained that they received few benefits from the mine.",
+      "aiddata_row": 98780
+     },
+     {
+      "field": "Description",
+      "sentence": "About 15,000 people protested the mine during the early phases of construction, resulting in clashes with police who shot and killed four local people.",
+      "aiddata_row": 98783
+     },
+     {
+      "field": "Description",
+      "sentence": "There were continued protests in 2021-2022, when protestors blockaded the mine and complained that they received few benefits from the mine.",
+      "aiddata_row": 98783
+     }
+    ]
+   },
+   "full_text": {
+    "description": "In 2014, Minera Las Bambas S.A.C -- a special purpose vehicle and joint venture of MMG (62.5%), GUOXIN International Investment Group Ltd. (22.5%) and CITIC Metal Co. Ltd. (15%) -- entered into a project facility agreement with the CDB, China Eximbank, ICBC and Bank of China (Sydney Branch) for a syndicated loan worth $5.988 billion. China Development Bank is the leading bank and responsible for about 50% of the loan (captured in Project ID#55426). The co-leading bank, Industrial and Commercial Bank of China, is responsible for about 30% of the loan (captured in Project ID#98775). Bank of China and the Export-Import Bank of China are each responsible for about 10% of the loan (captured in Project ID#98776 and #98774). The proceeds of the loan are to be used by the borrower to repay intragroup loans, and meet the ongoing capital requirements of the Las Bambas project. The loan carries an interest rate set at 6 months LIBOR + 365 basis points (4.461%) and 18-year maturity.  The loan is secured by (i.e. collateralized with) share security over the entire share capital of MMG South America Management Co Ltd and each of its subsidiaries including Minera Las Bambas S.A. (“MLB”), a debenture over the assets of MMG South America Management Co Ltd, an assets pledge agreement and production unit mortgage in respect of all of the assets of MLB, assignments of shareholder loans between MMG South America Management Co Ltd and its subsidiaries and security agreements over bank accounts of MLB. Approximately $469.0 million (2018: $699.0 million) of these borrowings are guaranteed on a several basis by China Minmetals Non-ferrous Metals Holding Company Limited (“CMNH”) and China Minmetals Corporation Limited (“CMCL”), Guoxin International Investment Corporation Limited and CITIC Corporation Limited in proportion to the respective shareholdings of MMG SA, Elion Holdings Corporation Limited and Citic Metal Peru Investment Limited in the Las Bambas Joint Venture Group. ICBC also provided a letter of guarantee for the operation of the Las Bambas copper project.  There is evidence that this loan has disbursed. As of 2014, the borrower had utilized (\"drawn down) $4.119 billion of the $5.988 billion facility.  The Las Bambas Project is a world class copper development project located in Peru, in the provinces of Cotabambas and Grau in the districts of Challhuahuacho, Tambobamba and Coyllurqui, province of Cotabambas, and in the district of Progreso, province of Grau, region of Apurímac, 72 km from Cusco. The Las Bambas Project tenements include approximately 35,000 Ha of land, of which less than 10% has been explored for additional resources. The estimated mine life is over 20 years and further exploration could potentially increase this. The Las Bambas Project is within the Andahuaylas-Yauri copper belt, which hosts the Antapaccay and Constancia copper mines.  The project was approved by Xstrata plc’s Board in July 2010. Its Environmental and Social Impact Assessment (ESIA) was approved in March 2011. The project’s main construction permit was issued on May 31, 2012. Mass earthworks started on June 1, 2012. The first 50 km of heavy haul road was put into service on September 15, 2012. The first permanent concrete poured (Flotation Area Tower Crane) was poured in August 2012. The project had achieved a 19% completion rate as of October 2012. MMG completed its acquisition of the Las Bambas mine in August 2014. Mine development began in August 2015 and commercial production began on July 1, 2016.  The mine has resulted in multiple environmental conflicts between 2015 and 2022. About 15,000 people protested the mine during the early phases of construction, resulting in clashes with police who shot and killed four local people. There were continued protests in 2021-2022, when protestors blockaded the mine and complained that they received few benefits from the mine.",
+    "staff_comments": "1. AidData calculated the interest rate by taking the 2014 average 6-month LIBOR (0.329%) and adding it to 365 basis points (3.65%). However, it should be noted that the exact margin is unknown other than that it did not exceed 365 basis points per annum.2. MMG is a wholly-owned subsidiary of China’s Guoxin International Investment. 3. This transaction is not a duplicate of Project ID#55427. Project ID#55426 is a project facility, and Project ID#55427 is an acquisition facility. 4. In August 2004, XSchweiz was awarded the rights to explore and the option to develop Las Bambas through the privatisation process run by the government of Peru. The privatisation process was conducted through an international bid process run by ProInversion. XSchweiz was the successful bidder and was awarded certain rights in relation to the Las Bambas Project, including an option to develop the Las Bambas Project (the “Option”). XSchweiz subsequently appointed XPERU (as its local subsidiary) to be the holder of the Option on 1 October 2004 for a term of five years, with the ability to extend for an additional year. In 2007, XPERU assigned the Option to XTintaya and XTintaya exercised its Option right in August 2010 and entered into a transfer agreement, dated 2 September 2010, pursuant to which it acquired the Las Bambas Project for US$45.5 million plus US$0.5 million and US$0.75 million for each six-month period in year five and year six of the Option, respectively.  XTintaya subsequently assigned the Las Bambas Project to the Minera Las Bambas S.A.C. on 1 January 2011. The Peruvian authorities approved the Las Bambas Project’s environmental impact assessment (EIA) in March 2011.",
+    "location_narrative": "Las Bambas is a large, long-life copper development project located in the Apurimac region of Peru. More detailed locational information can be found at https://www.openstreetmap.org/way/316077081 and https://www.google.com/maps/place/Las+Bambas+copper+mine/@-14.0893292,-72.337757,17z/data=!3m1!4b1!4m5!3m4!1s0x916c13a20869e741:0xca347b7d668f39b6!8m2!3d-14.0893344!4d-72.3355683",
+    "description_chars": 3911,
+    "was_truncated_in_lead_file_by": 2711
+   },
+   "r36_dedupe_hint": null,
+   "local_match": [
+    {
+     "case": "las-bambas-2015",
+     "shared_words": [
+      "apur",
+      "bambas",
+      "copper",
+      "cotabambas",
+      "eximbank",
+      "icbc",
+      "minmetals",
+      "peru"
+     ],
+     "case_years": [
+      2014,
+      null
+     ],
+     "case_title": "Las Bambas copper mine protest killings",
+     "strength": "strong"
+    },
+    {
+     "case": "xstrata-tintaya-espinar-2012",
+     "shared_words": [
+      "antapaccay",
+      "copper",
+      "cusco",
+      "minera",
+      "peru",
+      "xstrata",
+      "yauri"
+     ],
+     "case_years": [
+      2010,
+      2012
+     ],
+     "case_title": "Xstrata's Tintaya Mine and the 2012 Espinar Strike",
+     "strength": "strong"
+    },
+    {
+     "case": "vale-miski-mayo-la-morada",
+     "shared_words": [
+      "between",
+      "districts",
+      "exploration",
+      "minera",
+      "peru"
+     ],
+     "case_years": [
+      2004,
+      2009
+     ],
+     "case_title": "Vale's La Morada Exploration and the Armed Guards of Cerro Mogol",
+     "strength": "strong"
+    },
+    {
+     "case": "rio-blanco-majaz-2005",
+     "shared_words": [
+      "copper",
+      "metals",
+      "minera",
+      "peru"
+     ],
+     "case_years": [
+      2005,
+      2011
+     ],
+     "case_title": "Río Blanco (Majaz) Copper Project: the 2005 Detentions and Torture",
+     "strength": "worth_checking"
+    }
+   ]
+  },
+  {
+   "financing": "G125",
+   "aiddata_rows": [
+    {
+     "id": 37408,
+     "title": "China and Bolivia Signed the Exchange of Notes Concerning the Establishment of the Spot Exchange Project of $300,000 in Cash",
+     "amount_usd_2021": 450603.014482437,
+     "year": 2009,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Bolivia",
+   "iso3": "BOL",
+   "year": 2009,
+   "sector": "EMERGENCY RESPONSE",
+   "infrastructure": null,
+   "title": "China and Bolivia Signed the Exchange of Notes Concerning the Establishment of the Spot Exchange Project of $300,000 in Cash",
+   "rank_score": 5,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "The assistance comes in response to the January 2009 dengue epidemic that erupted in Bolivia that infected over 31,000 and killed approximately 18 people._x000D_",
+      "aiddata_row": 37408
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On March 26, 2009, China granted $300,000 USD in cash to Bolivia to help combat the spread of dengue fever. The assistance comes in response to the January 2009 dengue epidemic that erupted in Bolivia that infected over 31,000 and killed approximately 18 people._x000D_ ",
+    "staff_comments": "",
+    "location_narrative": "",
+    "description_chars": 270,
+    "was_truncated_in_lead_file_by": null
+   },
+   "r36_dedupe_hint": null,
+   "local_match": []
+  },
+  {
+   "financing": "G518",
+   "aiddata_rows": [
+    {
+     "id": 85284,
+     "title": "Chinese Government donates security equipment to Bolivia to safeguard the Plurinational Legislative Assembly's building",
+     "amount_usd_2021": null,
+     "year": 2004,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Bolivia",
+   "iso3": "BOL",
+   "year": 2004,
+   "sector": "GOVERNMENT AND CIVIL SOCIETY",
+   "infrastructure": null,
+   "title": "Chinese Government donates security equipment to Bolivia to safeguard the Plurinational Legislative Assembly's building",
+   "rank_score": 5,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "The exchange of letters came after a bombing in front of the assembly's building in March 2004 killed three Bolivian police officers.",
+      "aiddata_row": 85284
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On July 29, 2004, the Chinese Government and the Government of Bolivia signed an exchange of letters in which the Chinese Government committed to donating security equipment to Bolivia to safeguard the Plurinational Legislative Assembly's building. The exchange of letters came after a bombing in front of the assembly's building in March 2004 killed three Bolivian police officers. The equipment was handed over on July 28, 2005. A monument was erected to commemorate the aid from China. The monetary value of this aid is unknown.",
+    "staff_comments": "",
+    "location_narrative": "The project provided security equipment to the Plurinational Legislative Assembly's building. More detailed locational information can be found at https://www.openstreetmap.org/relation/13612709",
+    "description_chars": 531,
+    "was_truncated_in_lead_file_by": null
+   },
+   "r36_dedupe_hint": null,
+   "local_match": []
+  },
+  {
+   "financing": "G173",
+   "aiddata_rows": [
+    {
+     "id": 41496,
+     "title": "Chinese Government donates 2163.8 tons of wheat to North Korea in 2011",
+     "amount_usd_2021": 705967.040349025,
+     "year": 2011,
+     "status": "Completion",
+     "decisive": false
+    },
+    {
+     "id": 63332,
+     "title": "Chinese Government donates 500,000 tons of crude oil in 2011 (Linked to Project ID#41496)",
+     "amount_usd_2021": 427672630.834745,
+     "year": 2011,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Democratic People's Republic of Korea",
+   "iso3": "PRK",
+   "year": 2011,
+   "sector": "INDUSTRY, MINING, CONSTRUCTION",
+   "infrastructure": null,
+   "title": "Chinese Government donates 500,000 tons of crude oil in 2011 (Linked to Project ID#41496)",
+   "rank_score": 5,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "This donation was decided upon right after the announcement of Kim Jong Il's death on December 19, 2011.",
+      "aiddata_row": 63332
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On December 20, 2011, Hu Jintao announced that the Chinese Government would donate 250,000 tons of crude oil and 500,000 tons of food (captured via Project ID#41496) to North Korea in a meeting with senior officials. This donation was decided upon right after the announcement of Kim Jong Il's death on December 19, 2011.  The aid package was offered as a gesture of support for the new regime of Kim Jong Un.  500,000 tons of oil is equivalent to 3,665,000 barrels of oil. Therefore, to estimate the monetary value of this donation ($347,735,200), AidData has taken the average price ($94.88) of a barrel of West Texas Intermediate (NYMEX) crude oil in 2011 and multiplied it by 3,665,000 barrels of oil.  In 2012, a North Korean source disclosed that every year the ‘the Ministry of Commerce of China and the North Korean government will discuss the catalogue of aid products, quantity, period, etc., but it is basically 100,000 tons of grain, 500,000 tons of oil, and materials needed by North Korea worth 20 million US dollars.’ The same source disclosed that the Chinese Government ultimately donated 500,000 tons of crude oil to the North Korean Government in 2011. This annual oil donation arrangement between the Chinese Government and the North Korean Government dates back to the 1970s. On October 17, 1970, the Chinese Government and the Government of North Korea signed an Agreement on Mutual Supply of Critical Materials 1971-1976. Under the terms of this agreement, the Chinese Government agreed to provide the North Korean Government with 500,000 tons of crude oil per year.",
+    "staff_comments": "1. This crude oil donation project was supported via recurring grants from China’s Ministry of Commerce (MOFCOM) between 2000 and 2017.2. Since 1991, China has been North Korea's largest crude oil provider, making up 80% of its supply. Crude oil is provided to North Korea through a pipeline (known as the Dandong-Sinuiju Pipeline or Friendship Oil Pipeline) from the Daqing Oil Field, 800 kilometers north of the China-North Korea border. The pipeline, which was completed in December 1975, runs for more than 30 km from storage facilities in the Chinese border city of Dandong to an oil depot in Sinuiju in North Korea. It supplies approximately 520,000 tons (3.64 million barrels) of heavy crude oil each year, according to its operator, China National Petroleum Corporation (CNPC). Once across the border, the crude oil is processed at North Korea's sole working refinery, the Ponghwa Chemical Factory, a facility built with Chinese assistance during the 1970s. The refinery turns the oil into refined products for North Korea's government, military, transport, agricultural and fishing sectors.",
+    "location_narrative": "",
+    "description_chars": 1589,
+    "was_truncated_in_lead_file_by": 389
+   },
+   "r36_dedupe_hint": null,
+   "local_match": []
+  },
+  {
+   "financing": "G245",
+   "aiddata_rows": [
+    {
+     "id": 54965,
+     "title": "China Harbour Engineering Co., Ltd. provides a $5.1 million supplier's credit loan for St. Mark's Flood Mitigation Project (Linked to Project ID#85813 and #85814)",
+     "amount_usd_2021": 5752986.41616815,
+     "year": 2013,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Grenada",
+   "iso3": "GRD",
+   "year": 2013,
+   "sector": "GENERAL ENVIRONMENTAL PROTECTION",
+   "infrastructure": "Yes",
+   "title": "China Harbour Engineering Co., Ltd. provides a $5.1 million supplier's credit loan for St. Mark's Flood Mitigation Project (Linked to Project ID#85813 and #85814)",
+   "rank_score": 5,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "Mark's River is located in Saint Mark Parish, where flooding during the rainy season had caused house collapses and deaths.",
+      "aiddata_row": 54965
+     }
+    ]
+   },
+   "full_text": {
+    "description": "In 2013, China Harbour Engineering Co., Ltd. (CHEC) provided a $5.1 million supplier's credit (loan) to the Government of Grenada. The House of Representatives of Grenada approved the 2013 Budget Loan Authorisation Act, 2013, which included the loan, on April 18, 2013. The Senate of Grenada approved the authorization on April 24, 2013. The act received the assent of the Governor-General of Grenada on May 2, 2013, but the interest rate, terms and repayment, and fees were all to be negotiated at a later date. The supplier's credit loan was intended to finance a commercial contract between CHEC and the Government of Grenada signed on April 12, 2013 for the St. Mark's Flood Mitigation Project. The entire project cost EC$13 million.  The purpose of this project was to protect the town of Victoria from flooding via involved the construction of flood mitigation structures, watercourse dredging, and the reconstruction and enhancement of slope protection along St. Mark's River. It also included addition of new signs for swimming areas as well as repairs to the waterfront and road subgrade. The project specifically sought to construct gabion bank protection walls over an area of 900 meters along the banks of the river. The walls were to stretch from the sea to the Bonair Government School.    St. Mark's River is located in Saint Mark Parish, where flooding during the rainy season had caused house collapses and deaths. The project sought to protect residents and properties from the flooding risk, and allow the area to become a place of tourism and leisure for the parish.  CHEC was the contractor for project implementation, while Grenada's Ministry of Works was the Grenadian government agency responsible for certifying the project. CHEC used a large section of the grounds of the Bonair Government School as a project site; it also donated school supplies to students at the school (as captured via Project ID#85814) and donated a basketball court (as captured via Project ID#85813) during the implementation of the flood mitigation project.  The project's groundbreaking ceremony was held on May 29, 2013 and was attended by Prime Minister of Grenada Keith Mitchell. The construction period was originally expected to last 12 months. The project was ultimately completed on June 27, 2014 in a ceremony attended by Prime Minister Mitchell. The ceremony was held on the newly-built basketball court donated by CHEC the same day.  There are some indications that the loan for the St. Mark's Flood Mitigation Project may have financially underperformed vis-a-vis the original expectations of the lender. In March 2013, the Government of Grenada defaulted on its foreign and local currency debt maturing in 2025, ceasing service on $193 million external debt and EC$184 million in local currency debt.",
+    "staff_comments": "1. This project is also known as the St. Mark River Road Dredging Project and the Bonair River Project. The Chinese project title is 圣马克河防洪工程项目 and 圣马克河道疏浚项目.",
+    "location_narrative": "The project constructed flooding mitigation structures over an area of 900 meters, stretching from the sea to St. Mark Secondary School, along the banks of the St. Mark's River in the town of Victoria in Saint Mark Parish. More detailed locational information can be found at https://www.openstreetmap.org/way/235977001 and https://www.openstreetmap.org/way/680997052 and https://www.openstreetmap.org/way/234982977",
+    "description_chars": 2815,
+    "was_truncated_in_lead_file_by": 1615
+   },
+   "r36_dedupe_hint": null,
+   "local_match": []
+  },
+  {
+   "financing": "G116",
+   "aiddata_rows": [
+    {
+     "id": 36574,
+     "title": "China Eximbank provides RMB 825 million government concessional loan for the Cheddi Jagan International Airport Expansion Project",
+     "amount_usd_2021": 169051537.906967,
+     "year": 2012,
+     "status": "Implementation",
+     "decisive": true
+    }
+   ],
+   "recipient": "Guyana",
+   "iso3": "GUY",
+   "year": 2012,
+   "sector": "TRANSPORT AND STORAGE",
+   "infrastructure": "Yes",
+   "title": "China Eximbank provides RMB 825 million government concessional loan for the Cheddi Jagan International Airport Expansion Project",
+   "rank_score": 5,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "Then, in September 2015, the collapse of a pit killed a worker working on the project (Source ID: 151255).",
+      "aiddata_row": 36574
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On October 31, 2012, the Chinese Government and the Government of Guyana signed a preferential loan framework agreement for the Cheddi Jagan International Airport Expansion Project. Then, on November 2, 2012, the Government of Guyana and China Eximbank signed an RMB 825,000,000 government concessional loan (GCL) agreement [CHINA EXIMBANK GCL No. (2012) 32 Total No. (434) No. 1420203052012112030] for the Cheddi Jagan International Airport Expansion Project. The GCL (loan) carried the following borrowing terms: a 2% interest rate, a 0% default (penalty) interest rate, a 5 year grace period, a 20 year maturity, a management fee of 0.75% (RMB 6,187,500), and a commitment fee of 0.5%. As of December 31, 2020, the loan’s total amount outstanding (including principal and capitalized interest) was RMB 673,698,000. The proceeds of the GCL were to be used by the borrower to finance 94.2% of the cost of a $138,000,000 commercial contract between Guyana’s Ministry of Public Works and Communications and China Harbour Engineering Company (CHEC) Ltd., which was signed on November 11, 2011.  The purpose of this project was to expand Cheddi Jagan International Airport at Timehri, 40 km from the capital city of Georgetown, and the Ogle Municipal Aerodrome on the East Coast of Demerara. Cheddi Jagan International Airport is Guyana's main airport. The project involved a 3.3 km extension of the airport runaway to accommodate Boeing 747-sized aircraft, the building of a new construction terminal, the introduction of a departure control system, the installation of a CCTV system with approximately 300 cameras, the installation of passenger boarding bridges, elevators, and escalators, and the acquisition of new equipment. The existing 7,448 ft long runway was to be extended to 10,800 ft to make it a category Code 4E runway and to enable it to accommodate the Boeing 747-400 aircraft.   CHEC was the EPC contractor responsible for implementation. A groundbreaking ceremony for the project took place on March 23, 2013. Construction of the terminal and runway was originally expected to begin in March 2013 and reach completion 32 months later (December 2015). However, this project encountered various problems and delays. On October 12, 2013, CHEC employees were violently robbed by cutlass-wielding individuals (Source ID: 151254). Then, in September 2015, the collapse of a pit killed a worker working on the project (Source ID: 151255). The country's political opposition also raised objections about the cost of the project and delayed its implementation. In January 2015, the then Alliance for Change (AFC) Vice Chairman, Moses Nagamootoo, criticized the project in the media. It appears the AFC, then-an opposition party, was opposed to the project, supporting its abandonment for a new airport on the West Bank of Demerara at Sandhills. The opposition blocked funding for the project in 2014. Nagamootoo called the project a ‘fly by night project’, and was accused of misleading the public as to why Guyana used China Eximbank to finance the project. Nagamootoo later that year was sworn in as the new Prime Minister of Guyana. (Source ID: 151253). As of 2019, the project was still not complete and the Government of Guyana's contract with China Harbour Engineering Company expired on December 31, 2018. In 2019, Guyana's Auditor General, Deodat Sharma, launched a full value-for-money audit into the Cheddi Jagan International Airport (CJIA) Expansion Project. Significant concerns arose about the project running over budget. As of December 31, 2017, $111.79 million had been spent on the project. However, the total cost of the project eventually escalated to more than $160 million. As of December 2021, project implementation was still underway and Guyana’s Minister of Public Works, Juan Edghill, promised that the total cost for the project would not exceed $200 million. During a visit to the project site in September 2020, the country’s former Auditor General, Anand Goolsarran, pointed out that President Irfaan Ali had identified 71 defects that needed to be rectified. President Irfaan conveyed that the Government of Guyana would only accept completed works based on the original contract entered into in November 2011. Then, in April 2022, Anand Goolsarran told the media that the Cheddi Jagan International Airport Expansion Project had ‘failed completely’ to deliver in terms of their objectives, outputs, outcomes and impacts, thereby ‘encumbering the Guyana’s public debt […] with little or nothing to show for the expenditure incurred’. He noted that construction was still ongoing after ten years, with a revised completion date of June 20, 2022. He argued that project’s underperformance was related to the absence of feasibility and economic visibility studies prior to the issuing of the commercial contract (to determine the precise nature and scope of the works to be undertaken. He also noted that the project had suffered from a lack of effective supervision as the works progressed. Additionally, he pointed out that the $138 million commercial contract was awarded to CHEC in November 2011 — only ten days before the November 2011 national and regional elections.",
+    "staff_comments": "1. The Chinese project title is 圭亚那国际机场项目. 2. The China Eximbank loan agreement can be accessed in its entirety via https://www.dropbox.com/s/wqtm619ypgp8gx9/Loan%20Agreement%20%28434%29%20-%20Cheddi%20Jagan%20International%20Airport%20Extension.pdf?dl=0.",
+    "location_narrative": "The Cheddi Jagan International Airport is located in Timehri. More detailed locational information is available at https://www.google.com/maps/place/Cheddi+Jagan+International+Airport/@6.5035313,-58.2547997,17z/data=!3m1!4b1!4m5!3m4!1s0x8da55125f3ce556f:0xe01823b73ab8ba84!8m2!3d6.5035313!4d-58.252611 and https://www.openstreetmap.org/relation/11166939#map=15/6.4983/-58.2546",
+    "description_chars": 5208,
+    "was_truncated_in_lead_file_by": 4008
+   },
+   "r36_dedupe_hint": null,
+   "local_match": []
+  },
+  {
+   "financing": "G559",
+   "aiddata_rows": [
+    {
+     "id": 89383,
+     "title": "Chinese Center for Disease Control aids Pakera Regional Hospital with histoplasmosis outbreak",
+     "amount_usd_2021": null,
+     "year": 2019,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Guyana",
+   "iso3": "GUY",
+   "year": 2019,
+   "sector": "HEALTH",
+   "infrastructure": null,
+   "title": "Chinese Center for Disease Control aids Pakera Regional Hospital with histoplasmosis outbreak",
+   "rank_score": 5,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "This announcement came after an April outbreak of histoplasmosis at the Matthew's Ridge Tunnel mine that killed 2 Chinese workers and sickened 27 others.",
+      "aiddata_row": 89383
+     }
+    ]
+   },
+   "full_text": {
+    "description": "In April 2019, the Chinese Center for Disease Control (CCDC) committed assistance to the Pakera Regional Hospital and Georgetown Public Hospital to address a Histoplasmosis outbreak in manganese mines in Guyana, with some Chinese workers contracting the illness.  On April 6, 2019 a team of medical experts from the CCDC was compiled and deployed to Georgetown Public Hospital.  The CCDC also provided specialists, a laboratory, and x-ray equipment. From April 8 to April 10 a group of nine specialists came to aid in testing. This announcement came after an April outbreak of histoplasmosis at the Matthew's Ridge Tunnel mine that killed 2 Chinese workers and sickened 27 others. ",
+    "staff_comments": "",
+    "location_narrative": "The project donated to Pakera Regional Hospital in the village of Matthew's Ridge and Georgetown Public Hospital. More detailed locational information can be found at https://www.openstreetmap.org/node/674938303, https://www.openstreetmap.org/relation/11213168",
+    "description_chars": 681,
+    "was_truncated_in_lead_file_by": null
+   },
+   "r36_dedupe_hint": null,
+   "local_match": []
+  },
+  {
+   "financing": "G117",
+   "aiddata_rows": [
+    {
+     "id": 36648,
+     "title": "China provides medical training to Guyanese doctors",
+     "amount_usd_2021": null,
+     "year": 2014,
+     "status": "Pipeline: Commitment",
+     "decisive": true
+    }
+   ],
+   "recipient": "Guyana",
+   "iso3": "GUY",
+   "year": 2014,
+   "sector": "HEALTH",
+   "infrastructure": null,
+   "title": "China provides medical training to Guyanese doctors",
+   "rank_score": 5,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "The overall objective of the agreement is to reduce maternal mortality in Guyana, reducing the number of deaths by 75%.",
+      "aiddata_row": 36648
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On September 27, 2014, China’s Minister of National Health and Family Planning, Li Bin, and Guyana’s Health Minister Dr. Bheri Ramsaran sign the five-year Memorandum of Understanding on promoting cooperation in health policy, human resource training, and disease control. The agreement calls for Chinese specialists to train doctors and medical personnel from Guyana, while the Guyanese government will invite Chinese instructors to offer courses at the University of Guyana's School of Medicine. The overall objective of the agreement is to reduce maternal mortality in Guyana, reducing the number of deaths by 75%. ",
+    "staff_comments": "",
+    "location_narrative": "Chinese doctors were sent to teach at the University of Guyana's School of Medicine.  More detailed locational information can be found at: https://www.openstreetmap.org/way/816669649",
+    "description_chars": 617,
+    "was_truncated_in_lead_file_by": null
+   },
+   "r36_dedupe_hint": null,
+   "local_match": []
+  },
+  {
+   "financing": "G625",
+   "aiddata_rows": [
+    {
+     "id": 95399,
+     "title": "ICBC participates in EUR 69.5 million syndicated loan for 46MW Možura Wind Park Project (Linked to Project ID#67392)",
+     "amount_usd_2021": 44684892.8120102,
+     "year": 2018,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Montenegro",
+   "iso3": "MNE",
+   "year": 2018,
+   "sector": "ENERGY",
+   "infrastructure": "Yes",
+   "title": "ICBC participates in EUR 69.5 million syndicated loan for 46MW Možura Wind Park Project (Linked to Project ID#67392)",
+   "rank_score": 5,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "Caruana Galizia was killed in a car bombing in October 2017.",
+      "aiddata_row": 95399
+     }
+    ]
+   },
+   "full_text": {
+    "description": "In 2018, Možura Wind Park d.o.o. (黑山莫祖拉风电有限公司)— a special purpose vehicle (SPV) and joint venture of Malta Montenegro Wind Power JV Limited (90% equity stake) and Enemalta (10% equity stake) — signed an EUR 69,500,000 syndicated loan agreement with a group of banks for the 46MW Možura Wind Park Project. Known participants in the loan syndicate included Deutsche Bank and the Industrial and Commercial Bank of China (ICBC). The borrower was expected to use the proceeds of the loan to partially finance an EUR 90,000,000 commercial contract with Shanghai Electric Power Engineering Montenegro LLC.  The purpose of the project was to install 23 Chinese-made, 2 MW low-speed intelligent wind turbine generators — with a total installed capacity of 46,000 kW — in Možura within southern Montenegro. The project also involved the construction of a substation. The wind power plant was designed with a capacity of 46MW on 502,858 square meters of land at a cost of EUR 0.37 per square meter.   Shanghai Electric Power Engineering Montenegro LLC was the EPC contractor responsible for project implementation. Construction formally commenced on December 7, 2017. Then on December 22, 2018, the first set of wind turbine generators was connected to the grid. By February 8, 2019, all of the wind turbine generators were connected to the grid. The wind farm began its trial operation period in April 2019, which extended until the end of September 2019. Following technical acceptance on November 15, 2019, the project secured a usage license from the Montenegrin Government. The wind farm went into commercial operation on November 18, 2019. Investors have leased state land to the project company (SPV) for a period of 20 years and will pay it an EUR 186,057 fee annually. The state has pledged to guarantee a fixed electricity price of EUR 95.99/MWh and EUR 115 million in incentives over the first 12 years of the wind farm’s operation. After the lease period expires, the Možura wind farm will become the property of the Montenegrin state.   Notwithstanding its successful completion, the Možura Wind Park Project has been plagued by controversy and scandal.  In the months before her murder in 2017, Maltese journalist Daphne Caruana Galizia was investigating an offshore company called 17 Black Limited. She didn’t know who owned the firm, which was registered in the United Arab Emirates. But she was certain it was set up to channel corrupt payments to Maltese political leaders. Caruana Galizia was killed in a car bombing in October 2017.  Then, in 2019, police charged one of Malta’s wealthiest businessmen, Yorgen Fenech — previously revealed by Reuters to be the owner of Limited — with ordering the murder of Caruana Galizia. He denied the charge. The assassination triggered a political crisis in Malta that drove Prime Minister Joseph Muscat from office in 2020.   17 Black Limited’s activities remain shrouded in mystery. But evidence uncovered by Reuters and the Times of Malta shed light on its operations through one particular deal. In December 2015, 17 Black Limited made a previously undisclosed profit of EUR 4.6 million ($5 million) when  Enemalta plc — a joint venture of the Government of Malta (67% ownership stake) and Shanghai Electric Power (33% ownership stake) — purchased an equity stake in the 46MW Možura Wind Park Project via Možura Wind Park d.o.o.. The purchase came after negotiations and several trips to Montenegro led by Malta’s then energy minister, Konrad Mizzi. In that same month, accountants for Mizzi and the prime minister’s then chief of staff, Keith Schembri, wrote in an email that Schembri and Mizzi stood to receive payments from 17 Black Limited for services that weren’t specified. Reuters and other news outlets have previously reported these emails, which were part of an application to open bank accounts for Panamanian firms owned by the two men. Keith Schembri confirmed to Reuters in April 2018 that companies he owns had devised a ‘draft business plan’ with 17 Black Limited that was not implemented, but he gave no further details. He is now under investigation for potential involvement in Caruana Galizia’s murder, police have said. He has denied any role in the journalist’s killing. Konrad Mizzi has previously stated he had no involvement in or knowledge of the plot to murder Caruana Galizia.",
+    "staff_comments": "1. The Chinese Government has designated the Mozura Wind Farm Project as a BRI project. 2. In 2010, the Government signed a 20 year lease agreement with a consortium including Fersa Energias Renovables S.A. (“Fersa”) and Celebic, for the purposes of constructing a wind farm capable of producing 46MW of renewable energy. In 2015, the lease and construction agreements were transferred to a Maltese state owned entity, Enemalta plc.  In 2017, the Government approved the transfer of a 90 per cent stake in Mozura Wind Park, the company responsible for the construction of the wind farm, from Enemalta plc to Malta Montenegro Wind Power JV Limited. Under the terms of this transfer, investment obligations remain with Enemalta plc but further extend to Malta Montenegro Wind Power JV Limited. 3. This project is also known as the 46MW Mozura Wind Farm Project. The Montenegrin project title is Vjetroelektrana Možura. 4. The Government of Malta holds a 67% ownership stake and Shanghai Electric Power (SEP) holds a 33% ownership stake in Enemalta plc. In March 2014, SEP acquired a 33% ownership stake in Enemalta plc for EUR 320 million. 5. The size of ICBC’s financial contribution to the loan syndication is unknown. For the time being, AidData assumes equal contributions across the two (known) members of the syndicate (EUR 34,750,000).",
+    "location_narrative": "ICBC participated in a syndicated loan for 46MW Možura Wind Park Project.  More detailed locational information can be found at: https://www.openstreetmap.org/relation/10215415",
+    "description_chars": 4356,
+    "was_truncated_in_lead_file_by": 3156
+   },
+   "r36_dedupe_hint": null,
+   "local_match": []
+  },
+  {
+   "financing": "G185",
+   "aiddata_rows": [
+    {
+     "id": 42300,
+     "title": "Chinese Government provides $1.32 million grant for provision of 23 school buses",
+     "amount_usd_2021": 1623441.83937048,
+     "year": 2011,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "North Macedonia",
+   "iso3": "MKD",
+   "year": 2011,
+   "sector": "TRANSPORT AND STORAGE",
+   "infrastructure": null,
+   "title": "Chinese Government provides $1.32 million grant for provision of 23 school buses",
+   "rank_score": 5,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "Chinese citizens criticized their government's decision to carry forward with the donation in the wake of a \"school bus\" (repurposed minivan) crash less than two weeks prior that had led to the deaths of 19 preschoolers.",
+      "aiddata_row": 42300
+     }
+    ]
+   },
+   "full_text": {
+    "description": "According to a spokesman from China’s Ministry of Foreign Affairs, the Chinese Government and the Government of Macedonia signed a grant agreement in early 2011 for the provision of 23 school buses. The reported monetary value of the grant commitment from China’s Ministry of Commerce (MOFCOM) was $1.32 million (EUR 1 million). Each of these yellow buses — manufactured by the Yutong (a Chinese company) — was equipped with 35 seats, automatic doors, fire extinguishers, and seat belts. The ultimate purpose of the project was to support the transportation of students to and from primary and secondary schools in Macedonia’s rural areas.   China National Corporation for Overseas Economic Cooperation (CCOEC) was the contractor responsible for the acquisition and delivery of the buses. The buses were officially handed over to the Macedonian authorities on November 25, 2011. The Ambassador of China to Macedonia, Cui Zhivei, and Deputy Prime Minister for European Affairs and National Coordinator for Foreign Aid, Teuta Arifi, attended the handover ceremony. Then, in February 2012, Macedonia’s Deputy Prime Minister for European Affairs and National Coordinator for Foreign Aid, Teuta Arifi, signed an agreement with the President of the Association of Local Self-Government Units, Koce Trajanovski. The agreement specified that twenty-three municipalities in Macedonia would receive one of the donated school buses.  Chinese citizens criticized their government's decision to carry forward with the donation in the wake of a \"school bus\" (repurposed minivan) crash less than two weeks prior that had led to the deaths of 19 preschoolers.  The van was carrying 64 people, well over its capacity, and the crash highlighted the poor state of school transportation infrastructure in China—an issue Chinese citizens had been pressuring their government to address for years.  Ironically, the day after the donation, another school bus carrying 39 people in Liaoning province encountered an accident that led to 35 students being injured, with two 7-year-olds incurring serious head injuries.  Given these events, there were concerns raised regarding the safety of the donated vehicles, as well.",
+    "staff_comments": "One source suggests that the grant proceeds for this project were drawn from an Economic and Technical Cooperation Agreement (ETCA) that the Chinese Government and Government of Macedonia signed in 2008, but this issue requires further investigation.The Chinese project title is 马其顿校车项目. The Macedonian project title is 23 автобуси.",
+    "location_narrative": "",
+    "description_chars": 2195,
+    "was_truncated_in_lead_file_by": 995
+   },
+   "r36_dedupe_hint": null,
+   "local_match": []
+  },
+  {
+   "financing": "G408",
+   "aiddata_rows": [
+    {
+     "id": 64861,
+     "title": "Chinese Government provides RMB 43 million grant for Apia Park Stadium Rehabilitation Project (Linked to Project ID#65361, #64765, #64864, #65302)",
+     "amount_usd_2021": 11389289.0296397,
+     "year": 2005,
+     "status": "Completion",
+     "decisive": true
+    }
+   ],
+   "recipient": "Samoa",
+   "iso3": "WSM",
+   "year": 2005,
+   "sector": "OTHER SOCIAL INFRASTRUCTURE AND SERVICES",
+   "infrastructure": "Yes",
+   "title": "Chinese Government provides RMB 43 million grant for Apia Park Stadium Rehabilitation Project (Linked to Project ID#65361, #64765, #64864, #65302)",
+   "rank_score": 5,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "Then, in February 2007, a Chinese engineer was killed when he fell from a machine being used to install beams for the Apia Park Stadium.",
+      "aiddata_row": 64861
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On March 28, 2005, the Chinese Government provided an RMB 43 million ($6.9 million) grant to the Government of Samoa for the Apia Park Stadium Rehabilitation Project. The purpose of the project was to rehabilitate Apia Park Stadium (also known was Apia Sports Complex) in the capital city of Apia. The stadium was originally constructed between 1981 and 1983 with an interest-free loan from the Chinese Government to support the 1983 South Pacific Games.   To host the 2007 South Pacific Games, the Government of Samoa asked the Chinese Government for assistance to repair and expand the main venue for the opening and closing ceremonies. These activities included the reinforcement of the stadium's stands, the renovation of a runway, the addition of stands and VIP boxes, and the addition of tennis courts. In early 2005, a project design contract was signed, and the signing ceremony was attended by Samoan Prime Minister Tuilaepa, Samoa’s Minister of Engineering, the Chinese Ambassador to the Republic of China (Liu Guanren), and the head of the Economic and Commercial Office, Zhou Geping.   Then, on December 13, 2005, Qingjian Group (which was known at the time as the Qingdao Construction Group Corporation) signed a project implementation contract. A groundbreaking ceremony took place on February 17, 2006. Then, in February 2007, a Chinese engineer was killed when he fell from a machine being used to install beams for the Apia Park Stadium. Another Chinese engineer was hospitalized after being severely injured in the same incident. A Samoan worker was also injured. The project sponsor — China's Ministry of Commerce (MOFCOM) — conducted a final project inspection on March 12, 2007.   The project was officially completed and handed over to the local authorities on April 3, 2007. According to the Lowy Institute and several media reports, this project has been controversial because the Government of Samoa was unable to finance the recurring costs of maintaining the swimming pool at the Aquatic Center and it asked the Government of New Zealand to shoulder this expense.",
+    "staff_comments": "Staff Note 1: This project is also known as the Apia Park Sports Facility Maintenance and Renovation Project or Maintenance and Expansion Project of the Apia Park Sports Complex Project. The Chinese project title is 阿皮亚公园体育设施维修和扩建工程项目.Staff Note 2: The interest-free loan that financed the construction of Apia Park Stadium was forgiven in 2006 (as captured via Project ID#65302). Staff Note 3: The Chinese Government has funded a series maintenance and renovation projects for the Apia Park Complex (as captured via Project ID#65361, #64765, #64864).",
+    "location_narrative": "The purpose of the project was to rehabilitate Apia Park Stadium (also known was Apia Sports Complex) in the capital city of Apia. More detailed locational information can be found at https://www.openstreetmap.org/way/666117780#map=17/-13.83620/-171.75131",
+    "description_chars": 2090,
+    "was_truncated_in_lead_file_by": 890
+   },
+   "r36_dedupe_hint": null,
+   "local_match": []
+  },
+  {
+   "financing": "G186",
+   "aiddata_rows": [
+    {
+     "id": 42392,
+     "title": "Chinese Government pledges RMB 20 million interest-free loan for unspecified purposes",
+     "amount_usd_2021": 6200300.01448102,
+     "year": 2000,
+     "status": "Pipeline: Pledge",
+     "decisive": true
+    }
+   ],
+   "recipient": "Serbia",
+   "iso3": "SRB",
+   "year": 2000,
+   "sector": "GOVERNMENT AND CIVIL SOCIETY",
+   "infrastructure": null,
+   "title": "Chinese Government pledges RMB 20 million interest-free loan for unspecified purposes",
+   "rank_score": 5,
+   "flags": [
+    "people killed or hurt"
+   ],
+   "decisive_buckets": [
+    "death with a cause"
+   ],
+   "candidate_sentences": {
+    "death with a cause": [
+     {
+      "field": "Description",
+      "sentence": "jets struck the Chinese embassy on May 7, 1999, during the 78-day NATO bombing of Yugoslavia, causing three deaths and 27 injuries.",
+      "aiddata_row": 42392
+     }
+    ]
+   },
+   "full_text": {
+    "description": "On December 3, 2000, Tang Jiaxuan, China's foreign minister laid a wreath at the ruins of the Chinese embassy destroyed by NATO bombs and denounced the West for 'double standards' over human rights. U.S. jets struck the Chinese embassy on May 7, 1999, during the 78-day NATO bombing of Yugoslavia, causing three deaths and 27 injuries. Tang arrived for the first high-level visit by a Chinese official since the fall of the Milosevic regime in October 2000 and the rise to power of democratically elected President Vojislav Kostunica. On December 2, Yugoslavia's foreign minister, Goran Svilanovic, said Tang Jiaxuan promised RMB 20 million ($2.4 million) in aid (in the form of an interest-free loan) to the new government and promised to support Belgrade's entry into international organizations. Also, in a statement following a meeting between Yugoslavia's deputy prime minister, Miroljub Labus, and Tang Jiaxuan, Labus said that China remained Yugoslavia's 'strategic partner’ and it promised not to press Yugoslavia to repay the ‘millions of dollars’ that it owes China.",
+    "staff_comments": "Since loan terms for the interest-free loan are unavailable, AidData has set maturity period to 20 years by default and grace period to 10 years by default per China's Foreign Assistance White Paper (http://www.cidca.gov.cn/2018-08/06/c_129925064_3.htm) which states that the maturity period of interest-free loans is 20 years, with a drawdown period of 5 years, grace period of 5 years, and repayment over 10 years. AidData treats the drawdown period as providing 5 years of additional grace.",
+    "location_narrative": "",
+    "description_chars": 1076,
+    "was_truncated_in_lead_file_by": null
+   },
+   "r36_dedupe_hint": null,
+   "local_match": []
+  }
+ ]
+}
