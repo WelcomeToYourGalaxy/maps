@@ -412,7 +412,7 @@ the way to reach them both change at each step:
 | Sub-national legislatures | ~3,800 ADM1 | `P194` by jurisdiction id | **done.** 5,159 jurisdictions, 1,727 with an address, 1,008 verified |
 | County-level councils | ~48,000 | `P194` on territories and on governments, rebuilt in round eleven | **structured source exhausted.** 4,622 entries, 2,133 with a website, 1,639 verified. Past that it is per-country registers: round sixteen took Spain's 18 provincial councils from one |
 | Municipalities | ~191,500 undissolved on Wikidata | seven national registers and one provincial one, sharded on disk | **57,448 records, 30% of them.** Website 54% worldwide from Wikidata live; email 25%, telephone 20%. France, Italy, Spain, Norway, the Netherlands, Finland and Quebec are near complete on all three; Brazil has an address and a switchboard and no email, because its register holds none (round twenty) |
-| Municipal office-holders | ~191,500 | the registers that name them | **not started.** Quebec publishes 1,103 mayors and 6,810 councillors against councils already on the page; Bulgaria publishes 265 administrations' post titles with nobody in them. Needs a shard field and a panel row (round nineteen) |
+| Municipal office-holders | ~191,500 | the registers that name them | **started: 1,103 mayors and 6,818 councillors, Quebec only** (round twenty-one). Bulgaria publishes 265 administrations' post titles with nobody in them, which is a label and not a route. Every other register here names no one |
 | Below the municipality | millions | not proposed | — |
 
 The earlier figure of ~250,000–400,000 municipalities was an estimate
@@ -803,6 +803,94 @@ website, 2 a telephone and 1 an email** — about 2%. The contacts in OSM
 are on the town hall object, not the boundary, so Tier B needs a
 spatial join as well as a planet-sized download. Do not plan a round
 around it without first proving the extract is obtainable.
+
+### Round twenty-one: who sits in the council
+
+The first office-holders in this build. Quebec's register names the
+mayor and every councillor of its municipalities, and they are now on
+the page: **1,103 mayors and 6,818 councillors**, against councils whose
+email address and telephone number round nineteen had already put there.
+The shard count does not move — 57,448 — because these are two more
+fields on records that already existed.
+
+Why this is worth a round when Bulgaria's organigram was not: round
+seventeen recorded that Bulgaria publishes post titles with nobody in
+them and nothing to write to, so it adds a label rather than a route.
+Quebec publishes the names *and* the council's own address, so the
+reader gets a body they can write to and the names of the people in it.
+
+**Where it is drawn, and the three places it is not.** `seatsBlock(o)`
+runs once per office page, under the office's own ways-in row and above
+How to Reach Them. Not on Who to Contact: `pageWho` already removed one
+drawer from that screen because a reader met a second set of choices
+before the first, and a list of names there would repeat the mistake.
+Not inside a method's open row either — five methods would mean five
+copies, which is the fault round four fixed for the level rows and
+round one's §1 fixed for the hurdles. And not on every office at the
+level: `SEATKINDS` is `leg/member`, `leg/chamber`, `leg/presiding` and
+`exec/head`, so a municipal water authority sits at the same level and
+does not claim these people as its members. A committee is left out
+too, because its membership is a subset and naming the whole council
+there would mislead.
+
+Measured in the browser, which is the only way to see it: a chamber at
+the municipal level renders 2,355 characters for Montréal and 667 for
+Sacré-Coeur; an agency, a committee and a national chamber each render
+nothing.
+
+**Long councils fold.** Montréal's is 64 seats and the median is 6.
+Above eight the names go behind a one-line `<details>` summary — "64
+seats on the council in Montréal" — because nothing in the panel is
+meant to scroll and §1 measured the spacing there as having no slack
+left. At or below eight they are drawn inline.
+
+**It says what it is.** Names only, with a line under them: no register
+here publishes an address for an individual member, so the council is
+the route and its own address is on the same page. Saying otherwise
+would invent a contact. The names come from the monthly rebuild like
+every other register field, so the line says a seat can change before
+the next one.
+
+Two new shard fields, `m` and `cn`, both documented in
+`muni/index.json`. `loadMuni`'s field list names them — a field in a
+shard and not in that list is fetched, parsed and dropped on the floor,
+which is the fault Italy's street address had in round five and Spain's
+`j` had in round fifteen. That is now three rounds in a row; check it
+first whenever a new field does not appear.
+
+#### Two things found while testing this
+
+**Driving the page from Playwright: `window.STACK` is not `STACK`.**
+The page declares its state with `let STACK=[]` at script top level, and
+a `let` binding at top level is not a property of `window`. A test that
+sets `window.STACK=[...]` creates a second, unrelated property, the
+page's own `STACK` stays empty, and everything downstream returns
+nothing — `loadMuni` reads `STACK[0].iso3`, finds none, and concludes
+the country has no register. It looks exactly like a broken data path.
+Assign the bare name inside `page.evaluate` instead. The same applies to
+`LEVSELF`, `OFFS` and `MUNI_WANT`. And an office has to be in
+`officeIndex()` for `lvlOf` to place it, so a fabricated office object
+is invisible: put it in `OFFS` keyed by `lvlQ` and let the index find
+it.
+
+**Wikidata's own query service is rate-limiting, and QLever would not
+be.** Through this round's work `query.wikidata.org` answered `429
+Aggressively rate-limiting to 1 req / min — this rule was created
+during active wdqs outage`, intermittently rather than constantly: it
+answered 200 at the end of the session. Everything the page draws about
+offices comes from that endpoint, so while it refuses, office lists come
+back short — round eight's retry and `noteQueryTrouble` are what keep
+that honest rather than silent, and this is the condition they were
+written for.
+
+`tools/build_muni.py` already prefers QLever and that is why this
+round's censuses were possible at all. The page does not, and it could:
+`qlever.cs.uni-freiburg.de/api/wikidata` returns
+`Access-Control-Allow-Origin: *`, so a browser may call it. Doing that
+properly means trying QLever first and falling back to Wikidata's own
+service rather than replacing it — QLever is a third party and its index
+is a dump rather than the live store — so it is a round of its own and
+not a line change. It is the most valuable one left on the page itself.
 
 ### Round twenty: Brazil, and what its register does not hold
 
@@ -2657,7 +2745,11 @@ produced, in batches of 180.
 `cgaz-boundaries` per country per level when drilling. **Municipal polygons:**
 Nominatim on the search path, Overpass on the click path.
 
-**Expect HTTP 429 from Wikidata while testing.** Running the same query in a
+**Expect HTTP 429 from Wikidata while testing, and in late 2026 expect it
+in ordinary use as well: the service has been answering `429
+Aggressively rate-limiting to 1 req / min — this rule was created during
+active wdqs outage`, intermittently. Round twenty-one's note on QLever
+as a first choice with this as the fallback is the fix.** Running the same query in a
 loop gets you rate-limited, and because these loaders swallow their errors the
 symptom is an empty result that looks exactly like a code bug. One test run
 here reported 0 pins and 81 offices; the next, with no code change, reported 42

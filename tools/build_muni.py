@@ -1238,6 +1238,21 @@ def _ca_address(row):
     return ' '.join(x for x in [line, code] if x)
 
 
+def _ca_seats(row):
+    """The mayor and the councillors the register names for this
+    municipality. `con1`..`con75` are its own columns and a seat left
+    vacant is an empty one, so the list is as long as the council is.
+    Names only: the register publishes no contact for an individual
+    member, and the council's own address is the route."""
+    mayor = str(row.get('maire') or '').strip()
+    seats = []
+    for n in range(1, 76):
+        name = str(row.get('con%d' % n) or '').strip()
+        if name:
+            seats.append(name)
+    return mayor, seats
+
+
 def build_can(stats, workdir):
     raw = fetch(CA_QC_MUN)
     for encoding in ('utf-8-sig', 'cp1252', 'latin-1'):
@@ -1297,14 +1312,19 @@ def build_can(stats, workdir):
         mail = clean_mail(row.get('mcourriel'))
         phone = _ca_phone(row.get('mtel'))
         address = _ca_address(row)
+        mayor, seats = _ca_seats(row)
         if site:    rec['u'] = site
         if mail:    rec['e'] = mail
         if phone:   rec['p'] = phone
         if address: rec['a'] = address
+        if mayor:   rec['m'] = mayor
+        if seats:   rec['cn'] = seats
         if not rec:
             # Every one of these is an unorganized territory or a reserve.
             stats['CAN joined but the register publishes no contact'] += 1
             continue
+        if mayor:   stats['CAN mayors named'] += 1
+        stats['CAN councillors named'] += len(seats)
         put(out, qid, rec, stats, 'CAN')
         stats['CAN joined'] += 1
     return {k: v for k, v in out.items() if v is not None}
@@ -1401,6 +1421,10 @@ def main():
                        'o': 'official directory page',
                        'a': 'street address, as the register prints it',
                        'c': 'certified email (Italian PEC) — needs a certified account to write to',
+                       'm': 'the mayor, or the head of the council, as the register names them',
+                       'cn': 'the councillors the register names, one per seat it fills; '
+                             'names only, because no register here publishes a contact for '
+                             'an individual member and the council itself is the route',
                        'j': 'how the record was matched to the place: "name" where the '
                             'country publishes no code the register and Wikidata share, '
                             'and the official name inside a fixed province was used '
