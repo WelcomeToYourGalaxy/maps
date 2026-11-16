@@ -44,6 +44,20 @@ ETYPE = {'firm', 'state body', 'forum', 'state printing works', 'international b
          'state works', "central bank's own vault", "central bank's own works", 'central bank',
          'central bank subsidiary', 'bank', 'state mint', 'agency', 'government', 'court',
          'company', 'other'}
+# A network tie (a record with a 'relation') carries its head office as entity_hq_city /
+# entity_hq_iso3. Written as hq_city / hq_iso3 the build silently ignores them, and the marker
+# lands on the firm's fallback head office or nowhere at all. Round 66 found 14 ties like that.
+TIE_HQ = {"hq_city": "entity_hq_city", "hq_iso3": "entity_hq_iso3"}
+def fix_tie_hq(r, notes):
+    if not r.get("relation"):
+        return
+    for a, b in TIE_HQ.items():
+        if a in r:
+            v = r.pop(a)
+            if v is not None and not r.get(b):
+                r[b] = v
+            notes.append("renamed %s to %s" % (a, b))
+
 ETYPE_ALIAS = {
  'asset manager': 'firm', 'fund manager': 'firm', 'investment manager': 'firm',
  'asset management firm': 'firm', 'insurer': 'firm', 'insurance company': 'firm',
@@ -83,6 +97,10 @@ def main(paths):
         fixed, flags = 0, []
         for i, r in enumerate(recs):
             tag = f"{r.get('iso3','???')}[{i}]"
+            _n = []
+            fix_tie_hq(r, _n)
+            if _n:
+                fixed += len(_n)
             for k in SCALARS:
                 v = r.get(k)
                 if isinstance(v, list):
