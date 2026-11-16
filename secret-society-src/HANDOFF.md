@@ -276,6 +276,81 @@ left anonymous — the map's Arcahaie record said in terms that the panel had no
 name, and the September 2026 final report names her. **Re-reading a series against the
 map's own flagged unknowns is a seam of its own.**
 
+### DISCOVERY IS NOW SEPARATE FROM VERIFICATION — data/candidates.json, 16 November 2026
+
+This file has carried the following line since 3 November 2026: *"Leads named by last
+round's agents but not confirmed are not stored; run the scopes again."* Every round since
+has thrown away the leads it could not finish and paid to rediscover them. An agent that
+ran out of search budget half way through a document lost everything it had read. **That is
+now fixed.**
+
+`data/candidates.json` holds leads with their source locator and the verbatim excerpt that
+supports them. **`build.py` does not read it**, so nothing in it reaches a reader until it
+has been written up as a full record and merged into `cases.json`. A candidate is not a
+case and is never counted as one. `candidates.py` manages it: `harvest`, `stats`, `list`,
+`set`.
+
+Statuses: `discovered` (found mechanically, excerpt and locator captured, nobody has read
+it) · `duplicate_suspect` · `apparently_qualifying` · `awaiting_verification` · `verified`
+(written up and merged) · `rejected` (with the reason recorded) · `upgrade` (new facts for a
+record already held).
+
+**`duplicate_suspect` is a flag, not a verdict.** It fires when two or more of a
+paragraph's proper names already appear anywhere in the dataset text, which is far too
+loose: a paragraph can share names with an existing record and describe a different case
+entirely. 132 of the first 255 candidates were flagged this way. They stay in the queue for
+a reading. **Nothing is ever discarded on a mechanical flag.**
+
+### What a discovery pass measured, 16 November 2026
+
+| | result |
+|---|---|
+| UN Digital Library API calls to find documents | **5** |
+| documents found with English PDFs | **153** |
+| WebSearch calls spent on any of it | **0** |
+| documents downloaded and indexed | 46, in 142 seconds for the last 34 |
+| words of source indexed | 628,342 |
+| candidates captured with locator and excerpt | **255** |
+| of those, flagged `duplicate_suspect` | 132 |
+| new records written, verified and merged, whole session | **9** |
+| existing records upgraded with new findings | 3 |
+
+**And the finding that matters: broadening the source net destroyed precision.** The five
+queries were "Panel of Experts", "Group of Experts", "Monitoring Group", "Panel of Experts
+on the Sudan" and "commission of inquiry". The last of those alone returned 59 documents,
+and **every candidate any of them produced was off-topic** — human-rights and
+racial-discrimination reporting, nuclear-weapon-free-zone treaty analysis, budget
+documents. All were rejected with that reason recorded. The same happened to the
+disarmament and budget series under `A/80`, `A/81`, `E/C.20` and `A/AC.302`.
+
+**So expand along the axis the map tests for, not along "more UN bodies."** What produced
+every record was the sanctions-monitoring series for a specific country regime: the Panels
+of Experts on Libya, Haiti, Yemen and South Sudan and the Group of Experts on the
+Democratic Republic of the Congo. Those report on who controls which institution, which is
+the map's subject. A commission of inquiry reports on violations, which is not.
+
+**Precision by query, measured:**
+
+| query | documents | useful |
+|---|---|---|
+| sanctions Panel/Group of Experts, by country regime | ~44 | **every record came from here** |
+| `commission of inquiry` | 59 | **none** |
+| disarmament, budget and treaty series | ~12 | **none** |
+
+### Two seams this pass opened
+
+- **Re-reading a report series against the map's own flagged unknowns.** The Arcahaie
+  record stated in terms that the panel had not given the mayor's name. The September 2026
+  final report names her, and adds that she took sensitive police investigation files from
+  corrupt officers and passed them to two sanctioned gang backers for their legal defence.
+  **Grep the dataset for its own admissions of ignorance — "the report does not name", "no
+  verdict was found", "the sources read do not say" — and check the next report in the
+  series.** That is a cheap, high-conversion seam nobody has worked.
+- **An intergovernmental report corroborating a record held from an NGO source.** Two
+  records moved from a single NGO report to a corroborated UN Panel finding at the cost of
+  reading one annex. Worth a pass of its own over the records whose only source is one
+  advocacy organisation.
+
 ### Source families, ranked by measured or estimated qualifying density
 
 Density is qualifying records per document, for this map's test. Only the first two rows
