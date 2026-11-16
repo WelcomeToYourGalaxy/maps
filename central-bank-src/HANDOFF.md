@@ -75,7 +75,7 @@ same commit as the work it did.
 
 ## Where it stands (63 rounds in, 15 November 2026)
 
-1,665 outside parties and 2,415 ties. One writeup for every box. 20 patterns and 14
+1,679 outside parties and 2,438 ties. One writeup for every box. 20 patterns and 14
 suspected patterns.
 
 The party count is lower than the tie count implies, and deliberately: round 60 folded 28 duplicate
@@ -92,20 +92,20 @@ ignores" below.
 | Category | Records | Places | of 206 | of 192 |
 |---|---|---|---|---|
 | Corruption cases | 258 | 174 | 84% | 91% |
-| Revolving door | 274 | 159 | 77% | 83% |
-| Governor removals and pressure | 228 | 181 | 88% | 94% |
+| Revolving door | 275 | 160 | 78% | 83% |
+| Governor removals and pressure | 229 | 181 | 88% | 94% |
 | External auditors | 211 | 174 | 84% | 91% |
 | Banknote printers | 183 | 167 | 81% | 87% |
-| Outside reserve managers | 162 | 62 | 30% | 32% |
-| Gold custodians | 81 | 50 | 24% | 26% |
+| Outside reserve managers | 177 | 64 | 31% | 33% |
+| Gold custodians | 82 | 51 | 25% | 27% |
 | Swap lines | 240 | 84 | 41% | 44% |
 | Named shareholders | 228 | 9 | 4% | 5% |
 
-The revolving-door row counts the 274 records with a private employer. There are 327 career-move
-records in all; the other 53 are `public_move` and are listed in the country's box without being
-counted, because nobody moved between public office and private finance. Seventeen places hold
+The revolving-door row counts the 275 records with a private employer. There are 329 career-move
+records in all; the other 54 are `public_move` and are listed in the country's box without being
+counted, because nobody moved between public office and private finance. Eighteen places hold
 nothing but moves of that kind, so they read blank on the layer while their box is not empty:
-BLR BOL BTN CPV CUB DOM IRQ MDG MOZ MRT QAT SDN SLE STP TLS TON VUT. Each needs one employer whose
+BLR BOL BTN CPV CUB DOM IRQ LBY MDG MOZ MRT QAT SDN SLE STP TLS TON VUT. Each needs one employer whose
 private ownership a source states — that is the whole of what stands between them and the row.
 
 The corruption row counts the 258 cases that are not `counterparty_only`. Two more findings are
@@ -130,7 +130,7 @@ The breadth figures count *places*, not events. For the three rows the user care
 - Thirty major internationally reported episodes checked by name: 28 already recorded. The two misses were arguable (Russia's Masterbank is a commercial-bank licensing scandal, Venezuela's Andrade was a treasurer not a bank official), and both countries already hold a different case.
 - A blind news sweep for central bank officials facing corruption proceedings returned four people (Hungary's Matolcsy, Lebanon's Salameh, Mauritius's Seegolam, Burundi's Murengerantwari). All four already recorded.
 
-**So: roughly 90% of cases a well-informed reader would recognise since 2000; roughly 40% of every documented instance of any size and any year.** The gap is three things, each visible in the data: cases before 2000 are thin (4 in the 1980s, 15 in the 1990s, 96 in the 2010s) because those court and press records are not online; 88 of the 155 countries with a counted case have exactly one, which usually means one *findable* case; and 95 of the 274 counted revolving-door records are American or British because the Fed and the Bank of England publish full career histories.
+**So: roughly 90% of cases a well-informed reader would recognise since 2000; roughly 40% of every documented instance of any size and any year.** The gap is three things, each visible in the data: cases before 2000 are thin (4 in the 1980s, 15 in the 1990s, 96 in the 2010s) because those court and press records are not online; 88 of the 155 countries with a counted case have exactly one, which usually means one *findable* case; and 95 of the 275 counted revolving-door records are American or British because the Fed and the Bank of England publish full career histories.
 
 **Re-derive those four numbers rather than copying them.** Round 60 found "80 of the 135" had been stale for several rounds while the figure beside it was current, and the same sentence in `about.html` was stale in the same way. They are one query each: the decade counts from `corruption.json`, and the exactly-one count from the built `D.P` on the layer's own filter, which is cases whose status is not on `CC_OUT`.
 
@@ -508,6 +508,102 @@ leave them out of the party paragraphs. **But if a party paragraph looks thin fo
 why.** Worth changing the condition to "append unless the summary adds nothing", rather than
 "append unless the party is named".
 
+## Round 63's research: what moved, what is exhausted, and the one record waiting on you
+
+**Six new places across four rows this round and the round before**, but the two things worth
+reading are a method and a correction.
+
+**The gold note is not the only place the gold is.** Serbia had been a confirmed blank for several
+rounds because its gold note names no institution. The answer is in a different section: the NBS
+Annual Report 2024's **"Structure and profitability of FX reserves"** itemises the reserves as
+foreign securities 59.16%, FX in accounts abroad 22.04% and **gold in NBS vaults 13.26%** — so the
+whole 48.1-tonne holding is in the bank's own vaults. **Read the FX-reserves structure or
+composition section before calling a bank silent on this row**, and treat the eight remaining
+"confirmed blanks" above as worth one more look on that basis.
+
+**`imf.org`'s curl vein, recorded one round ago, is already closed.** The three document-path forms
+(`.pdf.md`, `-print-pdf.pdf`, `-source-pdf.pdf`) now return 403 to plain curl. IMF reports need
+WebFetch again. Recorded so nobody spends a round re-discovering it — and as a reminder that a host
+note in this document has a shelf life of about a round.
+
+**Malawi's gold is now EXHAUSTED rather than untried, and the answer is no.** Five documents were
+read — the Consolidated and Separate Annual Financial Statements for 2024 and 2025 and the Report
+and Accounts for 2023, 2024 and 2025, all reachable under plain curl at
+`rbm.mw/Home/GetContentFile/?ContentID=NNNN`. **All five carry the identical sentence, "The Bank
+holds monetary gold on deposit with the Federal Reserve Bank", with no city, no named Reserve Bank
+and no custody or earmarking wording.** "New York" appears in them only as "Citibank New York"; the
+counterparty-concentration tables list "Federal Reserve Bank / United States of America / AAA"
+against cash and securities, not against gold. The 2021 statements have no gold at all, so the
+holding is recent — 12,836.998 ounces, unchanged 2023 to 2025. The 2016-2020 PDFs are image scans
+with no extractable text. **So the next move on Malawi is not another Malawi document: it is a
+Federal Reserve list of earmarked gold by holder, or OCR of the older scans.**
+
+**Alpha Capital Partners is not settled either, and Uganda stays counted on the founder footing.**
+The Daily Monitor profile "Kaboyo's money in forex trading" says he "established the financial
+services firm – Alpha Capital Partners (ACP)" and calls him the Bank of Uganda's former director of
+financial markets, lists the firm's businesses, and **names no owner and never calls it private**.
+Its own domain does not resolve under three spellings and the Capital Markets Authority of Uganda's
+market-player paths are 404. No state participation surfaced either. So a second independent source
+now says he founded it, which is as far as that line of evidence goes.
+
+### Eritrea is researched, written and NOT on the map — it needs one page opened by hand
+
+An agent found Proclamation 93/1997, the law that set up the Bank of Eritrea, as a 30-page
+image-only scan in the **Library of Congress's digital Gazette of Eritrean Laws**
+(`loc.gov/item/eritrean-proc-93-1997/`) and OCR'd it in full. What it says: the President appoints
+the Governor for a five-year term with the legislature's approval and appoints the Deputy Governor;
+the names of all nominated Board members are submitted to the President for appointment; the Board
+seats the Finance Ministry's representative and the Auditor General; the Governor's pay is set by
+the President on the Board's recommendation; and a director who resigns does so by letter to the
+President, the resignation taking effect only once the President accepts it.
+
+**That is a qualifying record and it would take the last unworked place off the removals row.** It is
+not filed, for one reason only: `loc.gov` returns 403 to the merge's reachability check, and the
+WebFetch needed to confirm the page by hand went unanswered, so **nothing has been filed on an
+agent's reading alone.** The record is written and waiting in
+`agents/work/r63/to_merge.json`; one WebFetch of that URL, then
+`merge_links.py --url-ok https://www.loc.gov/item/eritrean-proc-93-1997/`, files it.
+
+**Two things about that record are worth keeping whatever happens to it.** First, the reason it
+qualifies is NOT its dismissal clause — the Governor may be relieved only "for just cause after
+consultation with the national legislature", which is a normal protection, and clauses like it are
+why Armenia, Belgium, Denmark, Finland, France and Luxembourg were all closed. It qualifies on
+executive control of appointments, pay and resignations, which is what the map's twenty-five or so
+`statutory arrangement ...` records carry. Second, **the Library of Congress's digital Gazette of
+Eritrean Laws holds 2,854 items with a free JSON API and image scans that OCR cleanly** — the only
+reachable route to Eritrean primary law found in 63 rounds, after FAOLEX, Ecolex, InforMEA and UNEP
+LEAP all turned out to carry only land, fisheries and standards proclamations.
+
+### Six firms need a sourced head office, and none of them should be guessed
+
+Round 63's reserve-manager records named six firms new to the map, and no source states an address
+for any of them: **UBS Asset Management (Americas) Inc., JPMorgan Asset Management (UK) Limited,
+Wellington Management Company LLP, Goldman Sachs Asset Management L.P., Barings LLC and Franklin
+Templeton.** The agent supplied a city for every one and flagged only one as coming from general
+knowledge; three of its cities contradicted the map, putting UBS Asset Management in London and in
+Chicago where the map has Zurich sourced to the Seychelles reserves report. **They are filed with
+null cities**, so `build_net.py` places them at the country centre, or leaves them unplaced where
+even the country is unstated, and says so in its output. The rule is in `agents/hq.json`: a head
+office comes from the record's text, else that file, else the spelling already on the map, else
+nothing. A guessed city puts a marker somewhere false and the map's markers are fixed points.
+
+**Where a name states its own jurisdiction, that is the source stating it** — "(UK) Ltd" and "(UK)
+Limited" give GBR — and where it does not, "(Americas)" is a business region and "Inc." is a company
+form, so neither gives a country.
+
+**A distinction worth not re-litigating:** a wholly-owned asset-management arm IS folded into its
+group's node (Pacific Investment Management Company LLC into PIMCO, State Street Global Advisors
+Trust Co. into State Street Global Advisors, Amundi Asset Management into Amundi), while the national
+member firms of an audit network are kept SEPARATE. Those look alike and are not. EY Moldova is a
+legally separate firm with no common owner; UBS Asset Management (UK) Ltd is one group's business.
+The exception within the exception is that **UBS Asset Management (UK) Ltd and JPMorgan Asset
+Management (UK) Limited are kept separate from their groups' nodes anyway**, because the Irish award
+notice names the UK company at a stated London address and the map's group nodes sit in Zurich and
+New York — folding would publish a Zurich marker for a contract awarded to a London company.
+
+**One pre-existing split found on the way past and not fixed:** the map carries both `Citi` and
+`Citibank, N.A.` as separate parties. Worth folding next time `dup_parties.py` is read.
+
 ## The five open decisions, settled at round 63
 
 The owner delegated all five. What each turned on, and what the data said, because the reasoning
@@ -670,11 +766,19 @@ onto nothing honest. **Check an incoming `kind` against the list `events_gold.js
 before merging; `merge_links.py` refuses `other` outright, so there is no quiet landing place for a
 kind that does not fit.**
 
-## Confirmed gold blanks now live in the data, not in a working file (round 62)
+## Confirmed blanks now live in the data, not in a working file (rounds 62 and 63)
 
-`gaps.json` has a `gold_unavailable` map, 41 entries, each an ISO code and a note naming the report
-and the note already read. It is the same idea as `auditors_unavailable` and it is worth as much as
-a record: it stops the next round spending a call re-reading a document that names nobody. What is in
+`gaps.json` has a **`gold_unavailable` map, now 76 entries**, and a **`managers_unavailable` map, 20
+entries**, each an ISO code and a note naming the report and the note already read. Round 63 added
+35 places to the first and created the second. The reserve-manager blanks are ARE BOL BRA BWA CZE
+FJI GHA HKG LKA LVA MDV MNE MUS MWI NAM NGA TTO TUR WSM ZAF — and four of those are worth a
+second look only if a tender surfaces, because **Hong Kong, South Africa, Namibia and the UAE all
+confirm they use external managers and name none.** Hard closes on gold from round 63: Canada (nil
+since 2016), Norway (gold no longer in the reserves, a residual seven bars and 3.5 tonnes of coins
+with no location given), Israel (the word "gold" absent from 206,000 characters of the 2024
+statements), Djibouti ("Or monetaire 0 0 0") and Namibia (gold not yet in the reserve portfolio).
+Each entry is the same idea as `auditors_unavailable`, and worth as much as a record: it stops the next
+round spending a call re-reading a document that names nobody. What is in
 it: the gold notes of QAT CHL UKR EST FJI ISL ALB MLT ABW ARE UZB KGZ MOZ TTO BHR PNG MKD BIH read in
 full, each naming no institution ("foreign banks", "abroad", "a financial institution"); THA SGP MYS
 PRY recorded as refusing a storage-location request and KWT JOR MAR KHM KAZ as not replying; CHN with
@@ -905,6 +1009,32 @@ Checks numbers **and** capitalised names against the source box, plus banned phr
 
 Where a box's header prose and its score panel disagree, **the panel is right** — the prose is the old paragraph being replaced.
 
+**`check_drafts.py` cannot see the commonest fault, which is a brief instruction printed as prose.**
+Round 63 found it in five of fourteen drafts. The writeups brief says "A career move is not an
+accusation. A tie is not wrongdoing" as a rule for the writer, and five paragraphs printed it as a
+closing sentence: "Holding a board seat is a tie, not wrongdoing", "A career move is not an
+accusation", "Nothing in that is an allegation against the bank". Every word of those is in the
+brief and none is in the box, so the fact-leak check passes them — and they are exactly the closing
+moral the voice rules forbid, besides telling the reader how to feel about a record instead of
+giving it. **Grep every batch for them before merging:**
+
+```bash
+python3 - <<'EOF'
+import json, re
+d = json.load(open('agents/work/r<NN>/drafts_newnodes.json'))
+PAT = re.compile(r'not wrongdoing|not an accusation|(?:not |no |is )an allegation'
+                 r'|is not evidence|does not imply', re.I)
+for k, v in d.items():
+    for m in PAT.finditer(v):
+        print(k, '->', v[max(0, m.start()-60):m.end()+20])
+EOF
+```
+
+The same shape turns up as "which is not to say", "this does not mean" and any sentence that
+characterises the record rather than stating it. **The rule belongs in the brief and never in the
+paragraph**: a tie stated plainly already reads as a tie, and a reader who is told it is not
+wrongdoing starts wondering who said it was.
+
 ## Research method
 
 **The only thing that moves a percentage is a bounded set.** Rounds 5–14 averaged 4.7 records each, working one person at a time. Rounds 15–17 took 35, 34 and 33 — and the whole difference was working lists with a countable end.
@@ -959,11 +1089,14 @@ the only DRRs findable anywhere are Oman (2025), Montenegro (2025), Kosovo (2026
 Curacao/Sint Maarten (2026). The vein below is real but it is four countries wide, not a route to
 the rest of this row.
 
-**A curl vein worth keeping for everything, not just auditors: `imf.org` serves
+**A curl vein that worked at round 62 and was CLOSED by round 63, recorded because it may reopen
+and because its lifespan is the point.** `imf.org` served
 `/-/media/files/publications/cr/<year>/english/<code>.pdf.md`, `<code>-print-pdf.pdf` and
-`<code>-source-pdf.pdf` at 200 to plain curl**, where the `.ashx` form answers 403. So IMF country
-reports can be grepped for free, without spending a WebFetch call. That is how all five of this
-round's negatives were established in a single agent's budget of one WebFetch call.
+`<code>-source-pdf.pdf` at 200 to plain curl where the `.ashx` form answered 403, and that is how
+all five of round 62's auditor negatives were established on a budget of one WebFetch call. **One
+round later all three forms return 403 and IMF reports need WebFetch again.** Worth retrying once a
+round, since it costs one request; worth not relying on. **The general lesson: a host note in this
+document has a shelf life of about a round, so test the host rather than trusting the note.**
 
 **THE NEW VEIN, found at round 61, and the best thing to try next on this row: IMF Central Bank
 Transparency Code reviews name the external auditor.** This document had said for several rounds that
@@ -1259,7 +1392,7 @@ names no issuing authority and no year; it reverses on the Bank of Eritrea procl
 dated governor removal.
 
 **Where this row goes next.** The absent list is long and no longer a short list of rich democracies, so work it by shape. The thickest untouched ground is the auditor-general-and-parliament route that produced Uganda: it is untried across nearly all of Africa, the reports are free and primary, and a single special audit can carry both an inquiry record and a corruption case. After that, Guatemala and Bolivia in Latin America, and Ecuador's 2021 Ley de Defensa de la Dolarización as a second Ecuadorean record. **Pakistan is no longer the blank-by-design case.** The restraint rule was right about the 2014 resignation — the source says the governor cited personal reasons and reports no government pressure, so the unnamed officials who called that a cover were not enough to promote it — and that event stays `other`. What changed at round 55 is that a different, dated episode was found: on 8 August 2023 the National Assembly Public Accounts Committee, chaired by Noor Alam Khan, directed the Auditor General to audit the State Bank over the disbursement of about Rs1,145 billion in TERF concessional loans and directed an inquiry into whether they went out on merit. **That is the Uganda shape, and it is the lesson: a place that looks blank under the restraint rule is not closed, it just needs a different episode.**
-### 4. Outside reserve managers — 30%, 162 ties at 62 banks, 103 of them Norway
+### 4. Outside reserve managers — 33% of the reachable 192, 177 ties at 64 banks, 103 of them Norway
 
 **The union accounts did in five records what forty searches would have done.** Round 49 took this row from 18% to 29%, 37 places to 60, out of four documents:
 - **BCEAO** — Note 8 of its 2025 financial statements, under "Parts de fonds commun de placement détenues", says it holds units in the BISIP K fund managed by the Bank for International Settlements (205,811 million FCFA at 31 December 2025 against 222,297 million a year earlier) and has joined the World Bank's RAMP fund (138,800 million against 149,873 million). Two records, eight countries.
@@ -1270,7 +1403,42 @@ dated governor removal.
 
 **The ECCB blank is now CONFIRMED, not open.** Round 59 read the 2025/26 Independent Auditors' Report and all notes in three passes: the text says only "the global custodian" and "the external fund money managers" and names neither. Do not spend another round on it.
 
-**Three more confirmed-but-unnamed cases for the known-blanks list, found at round 59:** El Salvador, Colombia (an external-manager programme running about 30 per cent of reserves, the firms described only as "firmas especializadas") and India (the governor on the record that the RBI uses an external manager for a very small part of reserves).
+**Two confirmed-but-unnamed cases for the known-blanks list, found at round 59:** El Salvador, and India (the governor on the record that the RBI uses an external manager for a very small part of reserves).
+
+**COLOMBIA WAS THE THIRD AND IT WAS WRONG.** Round 59 recorded it as unnamed, the firms described
+only as "firmas especializadas". Round 63 named all seven out of the bank's own
+**Informe de Administración de las Reservas Internacionales**: JPMorgan Asset Management (UK),
+Wellington Management, Goldman Sachs Asset Management, State Street Global Advisors Trust, UBS Asset
+Management (Americas), PIMCO and Amundi, each running a dedicated portfolio at 31 December 2024,
+plus the bank's holdings in two BIS investment pools (USD 914.79m in renminbi and USD 287.59m in
+corporate paper). **That is the second "confirmed blank" to fall in one round**, Serbia's gold being
+the other, and both fell the same way: the earlier round read one document or one section and the
+answer was in another. **So a confirmed-blank entry has to name the document AND the section read,
+or it is not a close, it is a note that somebody looked somewhere.** The entries in
+`gold_unavailable` and `managers_unavailable` are written that way for this reason.
+
+### The three veins that work on this row, in order of yield (round 63)
+
+1. **A standalone reserves-management report.** Colombia's and Timor-Leste's thirteen records came
+   out of two documents. Search "reserves management report", "informe de gestión de reservas",
+   "annual report on the management of foreign reserves" plus the country.
+2. **The note to the annual financial statements** on foreign reserve assets: "external managers",
+   "externally managed", "mandates awarded", "gestores externos".
+3. **Public procurement award notices**, which is how Ireland's two came — `irl.eu-supply.com`
+   publishes the Central Bank of Ireland's contract award notices with the contractor's name, its
+   address and the contract value (UBS Asset Management (UK) Ltd, ref 2022P012, €10m; Amundi Asset
+   Management, ref 2016P038, €700k, both for the bank's own equity portfolio). **A central bank
+   tenders these mandates publicly far more often than it reports them**, so for any EU or EEA
+   central bank the award notices are worth trying before the annual report.
+
+**TED is dead for this and should not be tried again:** its PDFs are robots-disallowed to WebFetch
+and return 202 with an empty body to curl, and `stotles.com` answers 410 after the first page. The
+national portals work where TED does not.
+
+**Timor-Leste's source is `laohamutuk.org`'s copy of the BCTL's own Petroleum Fund quarterly
+report**, not `bancocentral.tl`, whose board page is script-rendered and yielded nothing in two
+fetches. Laohamutuk is a Timorese NGO that archives government documents; the record says which
+document it is, so the citation can be re-pointed if the bank ever serves it.
 
 **The Kosovo upgrade is applied, and the way it went wrong is worth keeping.** Round 59 filed the
 release of 16 April 2026, under which a portion of Kosovo's reserves is managed by RAMP rather than
@@ -1294,14 +1462,14 @@ renders every tie as a standalone present-tense sentence and has no notion of a 
 
 **Retry later:** Peru's BCRP transparency PDF (bot-protection stub), Lesotho's and Tanzania's 2024 annual reports (site errors).
 
-### 5. Gold custodians — 81 ties at 50 places, and the row's real ceiling is 108, not 206
+### 5. Gold custodians — 82 ties at 51 places, and the row's real ceiling is 108, not 206
 
-**Measure this row against the banks that hold gold, not against every place on the map.** A bank with no gold cannot have a gold custodian. Round 52 set the denominator at the 122 places the World Gold Council lists, but **14 of those are listed at zero tonnes**, and a bank with no gold can hold none in custody, so 122 was too generous and the row's own sentence ("places that hold any gold at all") did not describe it. Against the **108 places with a holding above zero**, 42 have a custodian filed: **39 per cent of what is reachable**, against the 24 per cent the plain count shows. `coverage.py` prints both figures below the main table so either can be checked, and `about.html` gives 108 and 39 per cent. Eight more places have a custodian but no holding of their own, the BCEAO members, because the union's gold is pooled at the bank rather than apportioned by country.
+**Measure this row against the banks that hold gold, not against every place on the map.** A bank with no gold cannot have a gold custodian. Round 52 set the denominator at the 122 places the World Gold Council lists, but **14 of those are listed at zero tonnes**, and a bank with no gold can hold none in custody, so 122 was too generous and the row's own sentence ("places that hold any gold at all") did not describe it. Against the **108 places with a holding above zero**, 43 have a custodian filed: **40 per cent of what is reachable**, against the 25 per cent the plain count shows. `coverage.py` prints both figures below the main table so either can be checked, and `about.html` gives 108 and 40 per cent. Eight more places have a custodian but no holding of their own, the BCEAO members, because the union's gold is pooled at the bank rather than apportioned by country.
 
 **The ECCB holds no gold at all. Confirmed, do not research it again.** An agent read the whole of the Independent Auditors' Report and Financial Statements to 31 March 2025, 241,961 characters in three passes: the word gold does not appear, and the foreign assets are currencies, balances with other central banks and foreign banks, money market instruments, derivatives and foreign investment securities, totalling EC$5,485,841,410. That closes AIA ATG DMA GRD KNA LCA MSR VCT on this row.
 **The method is the note to the accounts, not the gold page.** Portugal (note 2), Belgium (note 1), Türkiye (gram-level table by location) and Mauritius (note 7) each disclosed a location table only there. Search for the statements PDF and read the gold note directly.
 
-**Not filed on purpose:** gold *lending* (Czech National Bank, Bulgaria), and country-level answers naming no institution — Czechia's London share, Italy's "primarie banche centrali", Austria's "the U.K." and "Switzerland", Kazakhstan's "specialised foreign repositories". Sri Lanka, Nepal, Serbia, Italy, Spain, the Philippines, Argentina and Taiwan publish a gold note naming no institution: confirmed blanks. Greece is a confirmed blank — the 2024 and 2019 full notes were both read.
+**Not filed on purpose:** gold *lending* (Czech National Bank, Bulgaria), and country-level answers naming no institution — Czechia's London share, Italy's "primarie banche centrali", Austria's "the U.K." and "Switzerland", Kazakhstan's "specialised foreign repositories". Sri Lanka, Nepal, Italy, Spain, the Philippines, Argentina and Taiwan publish a gold note naming no institution: confirmed blanks. **Serbia was on that list for several rounds and came OFF it at round 63 — see the FX-reserves-structure note below.** Greece is a confirmed blank — the 2024 and 2019 full notes were both read.
 
 **Brazil is a different kind of negative:** a freedom-of-information appeal on gov.br records BACEN refusing to name the custodian on banking-secrecy grounds. Formally *withheld*, not unpublished — worth saying so in the writeup.
 
