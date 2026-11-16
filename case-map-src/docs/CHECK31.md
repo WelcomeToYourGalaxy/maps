@@ -114,3 +114,56 @@ yourself or cut the claim.**
   given. A tidy reconciliation is a claim and needs a source that makes it; so does a conflict.
 - Whether the pre-extracted briefs helped the writer or misled them, and which candidate-sentence
   kinds were noise. The briefs are new this round.
+
+## The harvest is not the card's evidence base — read the card's own sources first
+
+Round 34 settled three cards that round-33 checkers had flagged as possibly not resting on the
+documents harvested for them. **All three stood, unchanged, and in each one the card's own
+`confidence_note` already disclosed the thing the flag worried about.** The flags were raised in
+good faith by checkers working other fields, and every one came from the same move: grepping the
+harvested set — the completion report, the review, the appraisal document, the agreement, the plans
+— and drawing a conclusion about the card.
+
+The harvested set is what a P-number returns from the Bank's document system. A card's evidence is
+whatever is in its `sources` list, which routinely includes documents the harvest never sees.
+
+- **`chobhar-dry-port-arrests-kathmandu`.** The flag: "Chobhar", "arrest" and "protest" appear zero
+  times in all six cached documents. True, and the card never said otherwise. The arrests rest on
+  two sources, both cited and both live: The Kathmandu Post of 18 January 2019, which names the
+  Chobhar Conservation Committee coordinator as its source for "at least 54", and the **Request for
+  Inspection filed with the Bank's own Inspection Panel**, which says fifty-two were detained. The
+  card gives both counts and says they differ. The Panel registration, the works stoppage from
+  August 2018 to January 2019 and the Bank withholding disbursement until grievances were addressed
+  are all in Bank documents. The Panel filings sit at inspectionpanel.org and are not in any
+  project's harvest.
+- **`bijilo-cable-route-compensation-unpaid`.** The flag: "Bijilo" appears nowhere in the completion
+  report. True — the completion report covers Burkina Faso, The Gambia and Guinea. The siting comes
+  from **The Gambia's own resettlement plan of May 2011**, a country-specific document in the
+  sources. The card's `confidence_note` already states the harder problem, which the flag did not
+  reach: the 15 is the plan's count of shops and houses and the completion report carries it as a
+  count of people, and neither document explains the shift.
+- **`hopewell-road-land-taken-st-vincent`.** The flag: the completion report says the encroachment
+  "did not have a substantial impact on the two affected land owners, nor on the community", so it
+  is the thinnest limb (b) on the map. The flag had the favourable sentence and not the remedial
+  plan, which puts the 3,064 square feet taken from one owner at **40 per cent of that owner's
+  assets**, leaves each land valuation at "value tbd", and records both land payments as "Awaiting
+  payment" in March 2013 with June 2013 expected. No document says they were made, and the
+  completion report — six months after that deadline — gives no amount and no date. That is
+  Bukoba's shape, not something thinner than it. The card already sets the two sentences against
+  each other and is marked `contested`.
+
+**So, before reporting that a card does not rest on its documents: open the card's `sources` list and
+read its `confidence_note`.** If the claim is sourced to a Panel filing, a country-specific plan, a
+newspaper or a national audit office, the harvested set is the wrong place to have looked. Say what
+the harvested documents do and do not support — which is useful — but do not convert that into a
+verdict on the card.
+
+**A shell route is not a dead link, either.** Two sources on the Bijilo card return no response to
+`curl` from the workspace (one refused by the agent proxy, one a TLS reset) and both were opened
+with WebFetch by the writer who added them. A source is removed when the page is gone, not when one
+client cannot reach it.
+
+**One real defect found while settling these**, worth keeping: the resettlement plan cached under
+P144335 is for the **Narayanghat-Mugling road**, not the Kathmandu depot. A filename near-miss of
+that kind can date a harm to the wrong year, which is what it nearly did on another card this round.
+Read the plan's own title page before using it to date anything.

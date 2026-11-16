@@ -293,6 +293,51 @@ By class: `partial_list` 5, `wrong_column` 5, `wrong_number` 4, `wrong_document`
 **The field is now a brief, not a handoff paragraph: `docs/ROLES.md`.** It carries the ten error
 classes round 22 named, the eleventh ruled in this round, the mechanism, and the routes.
 
+### Job three: the three flagged cards, settled — all three stand, unchanged
+
+Round 33's checkers flagged three cards as possibly not resting on the documents harvested for them.
+**All three stand, and in each one the card's own `confidence_note` already disclosed the thing the
+flag worried about.** Nothing was changed on any card. The flags were raised in good faith by
+checkers working other fields, and all three came from one move: grepping the harvested set and
+drawing a conclusion about the card, when the card's evidence is its `sources` list.
+
+- **`chobhar-dry-port-arrests-kathmandu` — stands.** "Chobhar", "arrest" and "protest" do appear
+  zero times in the six cached documents, and the card never said otherwise. The arrests rest on The
+  Kathmandu Post of 18 January 2019, which names the Chobhar Conservation Committee's coordinator as
+  its source for "at least 54", and on the **Request for Inspection filed with the Bank's own
+  Inspection Panel**, which says fifty-two; the card gives both and says they differ. The Panel
+  registration, the works stoppage from August 2018 to January 2019 and the Bank withholding
+  disbursement until grievances were addressed are in Bank documents. All three of those sources
+  return HTTP 200.
+- **`bijilo-cable-route-compensation-unpaid` — stands.** "Bijilo" is absent from the completion
+  report because that report covers Burkina Faso, The Gambia and Guinea; the siting comes from The
+  Gambia's own resettlement plan of May 2011, which is in the sources. The card already states the
+  harder problem the flag did not reach: the 15 is the plan's count of shops and houses and the
+  completion report carries it as a count of people, with neither document explaining the shift.
+- **`hopewell-road-land-taken-st-vincent` — stands, and it is not the thinnest limb (b) on the
+  map.** The flag had the completion report's "did not have a substantial impact on the two affected
+  land owners" and not the remedial plan, which puts the 3,064 square feet taken from one owner at
+  **40 per cent of that owner's assets**, leaves each land valuation at "value tbd", and records both
+  land payments as "Awaiting payment" in March 2013 with June 2013 expected. No document says they
+  were made, and the completion report, six months past that deadline, gives no amount and no date.
+  That is Bukoba's shape. The card already sets the two sentences against each other.
+
+**The rule this produced, now in `docs/CHECK31.md`: the harvest is not a card's evidence base.** The
+harvested set is what a P-number returns from the Bank's document system; a card routinely rests on
+Panel filings, country-specific plans, press and national audit offices, none of which the harvest
+sees. Before reporting that a card does not rest on its documents, open its `sources` list and read
+its `confidence_note`. Saying what the harvested documents do and do not support is useful;
+converting that into a verdict on the card is not.
+
+**Also recorded there: a shell route is not a dead link.** Two sources on the Bijilo card return no
+response to `curl` from the workspace — one refused by the agent proxy, one a TLS reset — and both
+were opened with WebFetch by the writer who added them. A source goes when the page is gone, not
+when one client cannot reach it.
+
+**One real defect found while settling these:** the resettlement plan cached under P144335 is for
+the **Narayanghat-Mugling road**, not the Kathmandu depot. A filename near-miss of that kind nearly
+dated another card's harm to the wrong year this round.
+
 ### What round 34 learned about auditing, which is worth more than the 26 corrections
 
 **The sharper version of round 22's mechanism: not "which document says this figure?" but "whose
@@ -351,6 +396,27 @@ running the other way.
 
 The checker also made and caught the warned-of mistake itself: it logged a Bumbuna citation as a
 missed error on the cover and catalogue alone, then withdrew it on opening the data sheet.
+
+### The P-number write-back, and why it did not move the figure
+
+Round 34's auditors resolved project numbers for cases that print none, which is exactly what the
+ICIJ match's blind spot is made of. Five of them genuinely carried no P-number anywhere:
+`giza-north-groundwater` P116194, `bujagali` P089659, `dakar-diamniadio-toll-highway` P087304,
+`rampur-hydro` P095114 (with P101274 the separate carbon-finance operation) and `wagp-badagry`
+P082502.
+
+**Each was verified before being written, against the Bank's own project record: in all five the
+board approval date the Bank gives matches the date the card already printed independently** — 8
+June 2010, 26 April 2007, 2 June 2009, 13 September 2007, 23 November 2004 — and the project name
+matches the card's subject. The numbers are now in each card's `lenders[0].role`
+(`rounds/r34f_pids_textfix.json`). The map carries 327 P-numbers on 274 cases, up from 322 on 269.
+
+**The matched figure stays at 249.** Re-running the reverse pass, the four ICIJ rows these numbers
+reach were all already counted by the forward pass, every one at name similarity 1.00 with the
+country agreeing. So the write-back changed no count — but it did confirm four of the 249
+independently, where before they rested only on a round's annotation, and it closes the blind spot
+for the next round. That is the useful shape of this job: **it makes existing matches checkable
+rather than finding new ones**, and anyone repeating it should expect the same.
 
 ### Still open from this round
 
@@ -901,24 +967,22 @@ Do not re-queue them.
 Round 33's first two jobs are closed: ICIJ's projects are matched one by one, and the lender-role
 audit has reached rounds 17 to 19, which was the last unaudited block.
 
-1. **Settle the three cards whose harm may not rest on their own documents** — Chobhar, Bijilo and
-   Hopewell, set out under round 33 below. Each needs a decision, not a round.
-2. **Sweep the blank-`docty` wds records.** One was a project's only completion report. Round 34's
+1. **Sweep the blank-`docty` wds records.** One was a project's only completion report. Round 34's
    checker narrowed the class usefully: on the two projects it tested, the single blank-`docty`
    entry was the API's own `facets` key and not a hidden document, so the sweep should expect fewer
    hits than round 32 implied — but `projectid=` plus `repnb` now makes each one a single call.
-3. **The 108 cases still without a settled condition type.** Every one has been tried at least
+2. **The 108 cases still without a settled condition type.** Every one has been tried at least
    twice, so these are third and fourth attempts — but round 33 added two routes no earlier attempt
    had: aide memoires, which reproduce unpublished agreements' covenant schedules, and
    `projectid=` enumeration, which proves an absence instead of asserting it.
-4. **Write back the 12 P-numbers round 34's auditors resolved for cases that carry none**, listed in
-   the audits' `checked` lines. Cheap, and it is what the ICIJ match's blind spot is made of.
-5. **The four follow-ons round 34 left**, all listed in its section above: two uncounted name
+3. ~~Write back the P-numbers round 34's auditors resolved for cases that carry none.~~ **Done** —
+   see "The P-number write-back" below. Five cases, and the matched figure did not move.
+4. **The four follow-ons round 34 left**, all listed in its section above: two uncounted name
    matches for a person to settle, two `wrong_scope` errors filed before the class existed, and the
    three routes that would close more of the 47 unsettled assertions.
-6. **AidData's 793 rows**, then the 546 untouched ICIJ possible-displacement rows, then the last two
+5. **AidData's 793 rows**, then the 546 untouched ICIJ possible-displacement rows, then the last two
    confirmed rows.
-7. **The three verified terms a checker left out on purpose** in round 33 — a half-hour job with a
+6. **The three verified terms a checker left out on purpose** in round 33 — a half-hour job with a
    checker.
 
 ## The queue, after round 33 (superseded, kept for its reasoning)
