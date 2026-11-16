@@ -2664,7 +2664,7 @@ const qid = u => (u||'').split('/').pop();
 const isQ = s => /^Q\d+$/.test(s||'');
 function setDot(id, cls, txt){ const d=$('#d-'+id); if(!d) return; d.className='dot'+(cls?' '+cls:''); if(txt) $('#t-'+id).textContent=txt; }
 
-const CACHE_V='htrt8';
+const CACHE_V='htrt9';
 /* How long an answer is kept.
 
    Everything on this page except the municipal registers is asked of
@@ -3475,7 +3475,7 @@ async function fromWorld(f, opts){
     paintTrail(); paintChain();
   }
   const lvl = STACK.length;
-  const want2 = (f.properties.l||2)>=2 ? WANT_DISTRICT : WANT_REGION;
+  const want2 = (f.properties.l||2)>=2 ? wantDistrict() : WANT_REGION;
   const hit2 = await resolveUnitIn(nm, cq, want2, true);
   STACK.push({q:hit2?hit2.id:null, label:unitLabel(hit2, nm), raw:nm,
               want:((f.properties.l||2)>=2?'district':'region'),
@@ -3509,7 +3509,7 @@ async function widenLevels(cq){
     if(!s || s.q || !s.raw) continue;
     const wide=nameVariants(s.raw);
     if(wide.length <= nameVariants(s.raw, true).length) continue;
-    const want = s.want==='region' ? WANT_REGION : WANT_DISTRICT;
+    const want = s.want==='region' ? WANT_REGION : wantDistrict();
     let hit=null;
     try{ hit = await resolveUnitInWith(s.raw, cq, want, wide); }
     catch(e){ console.warn('wider name lookup failed', s.raw, e); }
@@ -5443,8 +5443,18 @@ function levelRows(rt, o){
      open is that government, which already carries both and would
      otherwise print each twice under a second name. */
   const digits=v=>String(v||'').replace(/[^0-9]/g,'');
-  if(sf && sf.e && rt.id==='email' && mailOf(o).toLowerCase()!==sf.e.toLowerCase())
-    out.push({lbl:'Write to '+place, u:'mailto:'+sf.e, tx:sf.e});
+  /* A register can publish more than one address for one council -- 178
+     of Spain's do -- and which to write to is the reader's choice, so
+     every one of them is offered rather than the first.
+     `sf.j` says the record was matched to this place by its official
+     name rather than by a code the two registers share, which is true of
+     Spain alone and is said on the row, because a reader checking an
+     address should know what ties it to the place. */
+  if(sf && sf.e && rt.id==='email'){
+    const mine=mailOf(o).toLowerCase();
+    String(sf.e).split(',').map(a=>a.trim()).filter(a=>a && a.toLowerCase()!==mine)
+      .forEach(a=>out.push({lbl:'Write to '+place, u:'mailto:'+a, tx:a, named:sf.j==='name'}));
+  }
   if(sf && sf.p && rt.id==='call' && digits(telOf(o))!==digits(sf.p))
     out.push({lbl:'Ring '+place, u:'tel:'+sf.p.replace(/[^+0-9]/g,''), tx:sf.p});
   /* A certified address — Italy's PEC, and the equivalent elsewhere — is
@@ -5527,7 +5537,10 @@ function doThisAt(rt, o){
       ? '<a href="'+esc(r.u)+'" target="_blank" rel="noopener"><b>'+esc(r.lbl)+'</b> '+esc(r.tx)+'</a>'
       : '<span class="noat"><b>'+esc(r.lbl)+'</b> '+esc(r.tx)+'</span>')+
       (r.stale?'<i class="staleq">the recorded address, which goes out of date — '+
-        'if it does not open, use the search under it</i>':'')).join('')+
+        'if it does not open, use the search under it</i>':'')+
+      (r.named?'<i class="staleq">published by the national directory for the council '+
+        'of this name in this province, matched on that name rather than on a shared '+
+        'reference number, because this country publishes none</i>':'')).join('')+
     '</dd></div>';
 }
 
@@ -6078,7 +6091,7 @@ async function loadMuni(q){
        to this list is fetched, parsed and dropped on the floor: Italy's
        street address and certified address were both in the shards and
        invisible on the page until they were named here. */
-    ['u','e','p','o','a','c'].forEach(k=>{ if(rec[k]) e[k]=rec[k]; });
+    ['u','e','p','o','a','c','j'].forEach(k=>{ if(rec[k]) e[k]=rec[k]; });
     e.reg=1;                                    /* from the country's own register */
     try{ if(CUR && !SEL) render(); }catch(err){ console.warn(err); }
   }catch(err){ console.warn('municipal register', q, err); }
@@ -7777,10 +7790,22 @@ const PREFIXES = ['canton of ','Canton of ','province of ','Province of ','State
 const SUFFIXES = ['', ' County', ' Province', ' District', ' Region', ' Municipality', ' City',
   ' Department', ' Governorate', ' Prefecture', ' State', ' Parish', ' Borough', ' Canton',
   ' Oblast', ' District Council', ' Metropolitan Municipality'];
-const RX_ADMIN = /\b(county|province|district|region|state|municipality|commune|department|governorate|prefecture|parish|borough|canton|oblast|voivodeship|territor|administrative|subdivision|city|town|village|ward|constituency)\b/i;
+const RX_ADMIN = /\b(county|province|district|region|state|municipality|commune|communit\w*|department|governorate|prefecture|parish|borough|canton|oblast|voivodeship|territor\w*|administrative|subdivision|city|town|village|ward|constituency)\b/i;
 /* the kind of unit each level ought to be, used to break ties between
    same-named entities — "Los Angeles" is both a city and a county */
-const WANT_REGION = /\b(state|province|region|oblast|krai|republic|territor|governorate|voivodeship|canton|emirate|prefecture|department|county)\b/i;
+/* Spain's first level is an "autonomous community of Spain" and Ceuta and
+   Melilla are "autonomous cities", and neither word was in here. The
+   pattern's own "territor" then matched the generic class "administrative
+   territorial entity", so a candidate carrying only that generic class
+   outranked the real autonomous community, which carried none of these
+   words at all: Almería's chain came up under the Four Kingdoms of
+   Andalusia, a jurisdiction abolished in 1833, in place of Andalusia —
+   and with it the Parliament of Andalusia, the community's own site and
+   every office recorded against it. Checked for the other federations
+   whose first level is named in its own terms: Germany's and India's
+   states, Italy's and Portugal's regions and Switzerland's cantons were
+   already matched by the words above. */
+const WANT_REGION = /\b(state|province|region|oblast|krai|republic|territor\w*|governorate|voivodeship|canton|emirate|prefecture|department|county|autonomous communit\w*|autonomous cit\w*)\b/i;
 /* The government of a place, as opposed to the place itself. */
 /* The name to show for a level of the chain.
 
@@ -7796,7 +7821,27 @@ const unitLabel = (hit, fallback) => {
   return (!L || /^Q\d+$/.test(L)) ? (fallback || L) : L;
 };
 const RX_GOVBODY = /\b(government|administration|executive branch)\b/i;
-const WANT_DISTRICT = /\b(county|district|parish|borough|municipality|commune|prefecture|department|subdivision|shire|raion|powiat|okrug)\b/i;
+/* "province" belongs here as well as at the region level, because which
+   level a province is depends on the country: Spain's boundary file has
+   the province as its second level, under the autonomous community, and
+   without this word the province of Almeria lost the tie to an electoral
+   district of the same name. The pattern is a tie-break for the level
+   being resolved, not a claim about what a province is anywhere. */
+const WANT_DISTRICT = /\b(county|district|parish|borough|municipality|commune|province|prefecture|department|subdivision|shire|raion|powiat|okrug)\b/i;
+/* The same pattern for the countries whose second level is not the
+   municipality, which is most of them.
+
+   A country's profile already records which ones those are, in `m2`.
+   Where the second level is a province or a county, a municipality of
+   the same name is the level below it and must not win the tie: the
+   province of Almeria is labelled "Almeria Province" and the city of
+   Almeria is labelled "Almeria", so the city took it on the last
+   tie-break, which is the shorter label, and Sorbas came up inside the
+   city of Almeria — a municipality it is nowhere near. Where `m2` is
+   set the full pattern is used, because there the municipality is the
+   right answer. */
+const WANT_DISTRICT_ABOVE = /\b(county|district|parish|borough|province|prefecture|department|subdivision|shire|raion|powiat|okrug)\b/i;
+const wantDistrict = () => { const P=cpro(); return (P && P.m2) ? WANT_DISTRICT : WANT_DISTRICT_ABOVE; };
 /* A town that holds a county's offices is not the county.
 
    Cluj-Napoca is typed "county seat in Romania", so the pattern for a
@@ -7808,6 +7853,31 @@ const WANT_DISTRICT = /\b(county|district|parish|borough|municipality|commune|pr
    says where a government sits no longer counts as being that kind of
    government. */
 const RX_SEAT = /\b(seat|capital)\b/i;
+/* A seat someone is elected from is not a government with an address.
+
+   Spain draws an electoral district of the Congress of Deputies over
+   each province and gives it the province's name, and the type
+   "electoral district of the Spanish Congress" answers to "district" in
+   the pattern above — so Almeria's second level resolved to the
+   electoral district instead of the province, and every office recorded
+   against the province went with it. Nobody writes to a constituency.
+   It is checked the same way a county seat is: a type that only says
+   where votes are counted does not count as that kind of government.
+   RX_ADMIN's own "constituency" was pulling the same way, so the guard
+   is applied to that test too. */
+const RX_ELECT = /\b(electoral|constituenc\w*|congressional|riding)\b/i;
+/* The class that says only "this is a place a government covers".
+
+   "administrative territorial entity" is Wikidata's generic class and
+   every tier is an instance of something under it, so it says nothing
+   about which tier a candidate is. It has to be excluded by itself
+   rather than by a word, because a real first-level type contains the
+   same word: India's union territories and Australia's territories are
+   territories and belong in the pattern. The Four Kingdoms of Andalusia
+   — abolished in 1833, and carrying no dissolution date to filter it out
+   by — holds that generic class and nothing else, and it was beating the
+   autonomous community of Andalusia on it. */
+const RX_GENERIC = /^\s*(administrative\s+)?territorial\s+entit(y|ies)\s*$/i;
 
 /* The forms of a boundary file's name worth asking Wikidata about.
 
@@ -7875,8 +7945,13 @@ async function resolveUnitInWith(nm, countryQ, want, names){
         .concat(NAMELANGS.map(l=>q(n)+'@'+l))
     ).join(' ');
   try{
+    /* An abolished jurisdiction is not one anybody can write to, and the
+       name of a place is very often also the name of what used to govern
+       it. The dissolution date is the one field that separates the two,
+       and it was never asked for. */
     const rows = await sparql('SELECT ?x ?xLabel ?tLabel WHERE { VALUES ?l { '+vals+
       ' } ?x rdfs:label|skos:altLabel ?l ; wdt:P17 wd:'+countryQ+' . OPTIONAL{?x wdt:P31 ?t} '+
+      'FILTER NOT EXISTS { ?x wdt:P576 ?dissolved } '+
       'SERVICE wikibase:label{bd:serviceParam wikibase:language "en"} } LIMIT 120', 'unit:'+countryQ+':'+nm+':'+names.length);
     const cand={};
     rows.forEach(r=>{ const id=qid(r.x.value);
@@ -7907,10 +7982,11 @@ async function resolveUnitInWith(nm, countryQ, want, names){
          level, counties and districts below it — and a candidate of the
          right kind beats one of the wrong kind whatever its name. Only
          then does an exact name match break the tie. */
-      const aw=want&&a.types.some(t=>want.test(t)&&!RX_SEAT.test(t))?0:1,
-            bw=want&&b.types.some(t=>want.test(t)&&!RX_SEAT.test(t))?0:1;
+      const fit=t=>want.test(t)&&!RX_SEAT.test(t)&&!RX_ELECT.test(t)&&!RX_GENERIC.test(t);
+      const aw=want&&a.types.some(fit)?0:1, bw=want&&b.types.some(fit)?0:1;
       if(aw!==bw) return aw-bw;
-      const ad=a.types.some(t=>RX_ADMIN.test(t))?0:1, bd=b.types.some(t=>RX_ADMIN.test(t))?0:1;
+      const ad=a.types.some(t=>RX_ADMIN.test(t)&&!RX_ELECT.test(t))?0:1,
+            bd=b.types.some(t=>RX_ADMIN.test(t)&&!RX_ELECT.test(t))?0:1;
       if(ad!==bd) return ad-bd;
       /* A place, not the body that runs it. Wikidata holds both for
          many counties — "Los Angeles County", a charter county, and
@@ -7968,6 +8044,7 @@ async function resolveUnit(nm){
   try{
     const rows = await sparql('SELECT ?x ?xLabel ?tLabel WHERE { VALUES ?l { '+vals+
       ' } ?x rdfs:label|skos:altLabel ?l ; wdt:P17 wd:'+country+' . OPTIONAL{?x wdt:P31 ?t} '+
+      'FILTER NOT EXISTS { ?x wdt:P576 ?dissolved } '+
       'SERVICE wikibase:label{bd:serviceParam wikibase:language "en"} } LIMIT 120', 'unit:'+country+':'+nm);
     const cand={};
     rows.forEach(r=>{ const id=qid(r.x.value);
@@ -7989,10 +8066,11 @@ async function resolveUnit(nm){
          level, counties and districts below it — and a candidate of the
          right kind beats one of the wrong kind whatever its name. Only
          then does an exact name match break the tie. */
-      const aw=want&&a.types.some(t=>want.test(t)&&!RX_SEAT.test(t))?0:1,
-            bw=want&&b.types.some(t=>want.test(t)&&!RX_SEAT.test(t))?0:1;
+      const fit=t=>want.test(t)&&!RX_SEAT.test(t)&&!RX_ELECT.test(t)&&!RX_GENERIC.test(t);
+      const aw=want&&a.types.some(fit)?0:1, bw=want&&b.types.some(fit)?0:1;
       if(aw!==bw) return aw-bw;
-      const ad=a.types.some(t=>RX_ADMIN.test(t))?0:1, bd=b.types.some(t=>RX_ADMIN.test(t))?0:1;
+      const ad=a.types.some(t=>RX_ADMIN.test(t)&&!RX_ELECT.test(t))?0:1,
+            bd=b.types.some(t=>RX_ADMIN.test(t)&&!RX_ELECT.test(t))?0:1;
       if(ad!==bd) return ad-bd;
       /* A place, not the body that runs it. Wikidata holds both for
          many counties — "Los Angeles County", a charter county, and

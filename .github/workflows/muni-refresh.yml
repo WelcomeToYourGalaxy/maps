@@ -28,7 +28,8 @@ jobs:
           python-version: '3.12'
 
       - name: Install what the build needs
-        run: pip install --quiet openpyxl
+        # xlrd reads REL's .xls export, which is the Spanish crosswalk.
+        run: pip install --quiet openpyxl xlrd
 
       - name: Keep the committed counts to compare against
         run: cp muni/index.json "${{ runner.temp }}/index-before.json"
@@ -76,6 +77,8 @@ jobs:
 
           Rebuilt by tools/build_muni.py from the registers named in
           muni/index.json. Each record is joined to a Wikidata id through a
-          code the two sources share, never through a name."
+          code the two sources share, except Spain, which publishes none and
+          is matched on the official name inside a fixed province under the
+          four conditions set out in that script."
             git push
           fi

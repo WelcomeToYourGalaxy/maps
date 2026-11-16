@@ -1,6 +1,7 @@
 {
  "shards": 512,
  "countries": [
+  "ESP",
   "FIN",
   "FRA",
   "ITA",
@@ -13,22 +14,25 @@
   "u": "website",
   "o": "official directory page",
   "a": "street address, as the register prints it",
-  "c": "certified email (Italian PEC) — needs a certified account to write to"
+  "c": "certified email (Italian PEC) — needs a certified account to write to",
+  "j": "how the record was matched to the place: \"name\" where the country publishes no code the register and Wikidata share, and the official name inside a fixed province was used instead (Spain alone); absent where a shared code did it"
  },
  "sources": {
   "FRA": "Annuaire de l'administration, Direction de l'information legale et administrative (service-public.fr), keyed to Wikidata by INSEE code (P374)",
   "ITA": "Indice dei domicili digitali della Pubblica Amministrazione (IPA, indicepa.gov.it), category L6, keyed to Wikidata by ISTAT municipality code (P635) and, where that code has been reissued, by cadastral code (P806)",
   "FIN": "Palvelutietovaranto, the Suomi.fi service catalogue every Finnish authority keeps its own entry in (api.palvelutietovaranto.suomi.fi), keyed to Wikidata by municipality number (P1203)",
   "NLD": "Register van Overheidsorganisaties (organisaties.overheid.nl), the municipalities export, keyed to Wikidata by CBS municipality code (P382)",
-  "NOR": "Enhetsregisteret, the register of legal persons kept by the Bronnoysund Register Centre (data.brreg.no), units of form KOMM, keyed to Wikidata by organisation number (P2333) and never by the municipality number, which the 2020 reform reissued"
+  "NOR": "Enhetsregisteret, the register of legal persons kept by the Bronnoysund Register Centre (data.brreg.no), units of form KOMM, keyed to Wikidata by organisation number (P2333) and never by the municipality number, which the 2020 reform reissued",
+  "ESP": "DIR3, the Directorio Comun de Unidades Organicas y Oficinas (administracionelectronica.gob.es), top-level ayuntamientos, matched to the Registro de Entidades Locales (registroentidadeslocales.mpt.es) on the official municipality name inside a fixed province and through REL to Wikidata by INE code (P772) -- the one register here joined by name rather than by a shared code, because Spain publishes none, verified against the tax number the match never uses"
  },
  "per_country": {
   "FRA": 34915,
   "ITA": 7889,
   "FIN": 230,
   "NLD": 341,
-  "NOR": 354
+  "NOR": 354,
+  "ESP": 6947
  },
- "records": 43791,
+ "records": 50738,
  "built": "2026-11-15"
 }

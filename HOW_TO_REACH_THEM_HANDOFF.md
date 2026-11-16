@@ -2,6 +2,7 @@
 
 **Live:** https://welcometoyourgalaxy.github.io/maps/how_to_reach_them.html
 **Files in this repo:** `how_to_reach_them.html` (one self-contained page),
+`muni/` (the municipal contact shards, 513 files), `tools/build_muni.py`,
 `world_lowest.topojson` (48,263 jurisdictions), `atlas-plate-how-to-reach-them.webp`
 (the Atlas basemap plate with this map's cartouche).
 
@@ -410,7 +411,7 @@ the way to reach them both change at each step:
 | National | 198 | Wikidata `P194`/`P527` + front-page crawl | done |
 | Sub-national legislatures | ~3,800 ADM1 | `P194` by jurisdiction id | done |
 | County-level councils | ~48,000 | `P194` on territories and on governments; rebuilt and re-verified in round eleven | done — the structured source is exhausted |
-| Municipalities | ~250,000–400,000 | national registers, one country at a time, sharded on disk | five in, 43,791 records; see round thirteen for what blocks the rest |
+| Municipalities | ~250,000–400,000 | national registers, one country at a time, sharded on disk | six in, 50,738 records; see round fifteen for Spain and round thirteen for what blocks the rest |
 | Below the municipality | millions | not proposed | — |
 
 So four to six more rounds reaches a complete picture down to the
@@ -696,7 +697,7 @@ left — and it is not spread evenly:
 | Russia | 20,283 | 8% | 0% |
 | Germany | 13,694 | 82% | **0%** |
 | Vietnam | 9,673 | 0% | 0% |
-| Spain | 8,391 | 77% | 0% |
+| Spain | 8,391 | 77% | **done in round fifteen** |
 | Czechia | 6,305 | 99% | **98%** |
 | Brazil | 5,591 | 65% | 0% |
 | Romania | 2,965 | 82% | **99%** |
@@ -715,7 +716,7 @@ So, rounds left for the per-level address:
 - **Websites: effectively done.** 54% worldwide from Wikidata, live,
   plus two registers. The rest sits in countries with no register to
   import from, where the only sources left are per-state or per-city.
-- **Email and telephone: 6 to 9 rounds**, if each round takes three to
+- **Email and telephone: 5 to 8 rounds** after Spain, if each round takes three to
   five countries from the table above and the register exists and
   joins. France took one round; Italy took one round and found four
   bugs on the way. That estimate assumes about half the attempts fail
@@ -726,7 +727,7 @@ So, rounds left for the per-level address:
   a per-state directory. Count it as 1 to 2 rounds on its own, and
   expect partial coverage.
 
-Honest total: **8 to 11 rounds** to take the email and telephone
+Honest total: **7 to 10 rounds** after Spain to take the email and telephone
 figures from a quarter of the world's municipalities to most of it,
 with the United States, Russia and Vietnam likely still thin at the
 end. The website figure barely moves, because it is already the thing
@@ -784,6 +785,204 @@ website, 2 a telephone and 1 an email** — about 2%. The contacts in OSM
 are on the town hall object, not the boundary, so Tier B needs a
 spatial join as well as a planet-sized download. Do not plan a round
 around it without first proving the extract is obtainable.
+
+### Round fifteen: Spain, on a name and a gate under it
+
+Spain is in. 6,947 municipalities with a published email address, and the
+shards now hold **50,738 records** across six countries: France 34,915,
+Italy 7,889, Spain 6,947, Norway 354, the Netherlands 341, Finland 230.
+
+It is the first record here joined on a name rather than on a code the
+two sources share, which is a rule this build has kept since round four
+and states three times. The conditions on the exception are narrow and
+they are in the script. Read this section before adding a country that
+way.
+
+**What was missing, and where it was.** Round twelve left Spain needing
+one table: the Registro de Entidades Locales' own code against the INE
+code. Round fourteen looked for it in BDGEL, found a username and
+password box, and recorded REL itself as 403. REL is not 403. It has
+moved to `registroentidadeslocales.mpt.es`, which is the address
+datos.gob.es carries for it, and it answers. Its municipal page is a
+search by autonomous community and province, and the form submits as
+path segments rather than as a POST
+(`/REL/frontend/inicio/municipios/<ca>/<province>`), which is why every
+POST against it came back as the form. Under the results table is an
+Excel export, and `municipios/all/all` is the whole country in one
+2.0 MB file: **8,132 municipalities**, no session cookie, no account.
+
+**REL's own number is the INE code.** `NUMERO_INSCRIPCION` is `01`, then
+the five-digit INE code, then a check digit: Abla is `01040010` against
+INE 04001, Madrid `01280796` against 28079. Checked against INE's own
+list of municipalities and codes (`ine.es/daco/daco42/codmun`), the
+8,132 codes REL yields are **exactly** INE's 8,132 — nothing left over
+on either side — and the official name agrees for 99.80% of them, the
+16 differences being spelling variants of the same place (`Porto do Son,
+O` against `Porto do Son`). So REL is an authority list of official
+municipality names keyed to the code Wikidata holds.
+
+**The tax number is still not that code, and now there is proof rather
+than inference.** A local-authority CIF reads as an INE code with a
+letter at each end, and round twelve measured 40.7% agreement by joining
+DIR3's names to INE's. With REL as the authority the same measurement
+comes out at **40.5%**, and what the failures look like is now plain:
+both the CIF and the INE code number a province's municipalities
+alphabetically, from different epochs, so they slip by one and then by
+more as the alphabet goes on. Asparrena's CIF embeds 01010 and 01010 is
+Ayala/Aiara; 01009 is Arratzua-Ubarrundia. Joining on it gives 59% of
+Spain a neighbouring town's address.
+
+**And there is no other code.** Counted rather than assumed: of the 98
+properties on Spain's 8,349 undissolved municipality items, the only
+identifier with any coverage is `P772`, the INE code, on 8,205 of them.
+Not one carries a CIF and exactly one carries a DIR3 id. On DIR3's side
+the units file holds the unit id, the tax number, a province and a name
+and nothing else; the offices file was checked again for a locality code
+that would bridge to a municipality and carries office ids, unit ids and
+service flags, as round fourteen found. INVENTE, the inventory that
+would hold NIF against INE code, 404s.
+
+**So the join is the official name inside a fixed province**, between
+DIR3's 8,133 top-level ayuntamientos and REL's 8,132 municipalities —
+two registers of the same bodies kept by the same ministry. Canonical
+form: accents and punctuation dropped, and the article moved off the end
+and removed, because an official name carries it there (`Vall de
+Gallinera, la`) and ordinary prose puts it in front. **8,082 matched
+one-to-one**, one name claimed by two rows and refused, 48 REL
+municipalities not in DIR3 under that name — recent renames and merges
+(`Palamós i Sant Joan` against `Palamós`, `Alacant/Alicante` written the
+other way round). Of the 8,082, 6,947 carry a contact detail.
+
+**The gate is the part to keep.** The CIF is useless as a key and useful
+as a check, because the join never touches it: both it and the INE code
+order a province's municipalities alphabetically, so a match that had
+swapped two towns would put a pair in the wrong order. Of **836,051**
+pairs of municipalities within a province, the two codes order
+**98.33%** the same way. A scrambled match would sit near half. That
+number is computed on every build and `CONCORD_FLOOR` is 0.95: if the
+orderings ever stop agreeing, the build raises and Spain does not ship.
+
+The four conditions, which is what a later country has to meet:
+
+1. The match is exact on a canonical official name. Never fuzzy, never
+   nearest.
+2. It is bounded by a published administrative code — here the province —
+   so two places of one name in different provinces cannot meet.
+3. A name claimed by two rows on either side is refused and counted, not
+   resolved.
+4. The result is checked against a published field the match never uses,
+   with a floor under it that stops the country shipping.
+
+A country that cannot meet all four is not matched by name. It waits for
+a code, as Slovakia, Estonia and Greece are still waiting.
+
+**Every row that got in this way says so.** The shard record carries
+`j: "name"`, `index.json` documents the field, and `levelRows` prints
+under the address that it is the one the national directory publishes
+for the council of this name in this province, matched on that name
+because the country publishes no shared reference number. A reader
+checking an address can see what ties it to the place.
+
+Two smaller things came with it. **A register can publish more than one
+address for one council** — 178 of Spain's do — and the page printed the
+field as a single address, so a cell reading
+`registro@aytoalmeria.es,secretaria@aytoalmeria.es` became one dead
+`mailto:`. Each is now its own row, because which to write to is the
+reader's choice. And `loadMuni`'s field list needed `j` adding: a field
+in the shards and not in that list is fetched, parsed and dropped, which
+is the fault Italy's street address had in round five.
+
+**What the domain check does not measure.** The obvious test — does the
+email sit on the municipality's own web domain — gives 29.1% and means
+nothing. Spain's small councils are on their provincial council's mail
+service (`al058reg@dipalme.org` for Líjar, `capellades.diba.es` for
+Capellades) or on a legacy consumer account (`aytogallardos@wanadoo.es`).
+Every one of the first fourteen disagreements was plainly the right
+municipality. The provincial pattern is itself a confirmation and a neat
+one: 64 of the addresses carry the municipality's own INE number in the
+local part, `al086reg@dipalme.org` under Sorbas, whose INE code is
+04086.
+
+**Three resolver faults found by opening Spanish places, and the chain
+was wrong at both levels above the town.** Sorbas opened under *Spain →
+Four Kingdoms of Andalusia → Almería → Sorbas*: a jurisdiction abolished
+in 1833 in the autonomous community's place, and the city of Almería in
+the province's place, which is a municipality Sorbas is nowhere near.
+None of it threw, and the page read as complete. Each fault is the same
+shape as §6's: the record is real and correctly tagged upstream, and the
+reading of it was wrong.
+
+1. **A word the pattern could not match.** `WANT_REGION` is the kind of
+   unit the first level ought to be, and it held `territor` between word
+   boundaries — `\bterritor\b` cannot match inside "territorial", so that
+   alternative had never matched anything since it was written. It is
+   `territor\w*` now. The same trap caught the first attempt at this fix:
+   `autonomous commun` does not match "autonomous community" either.
+   **Check an alternative against a real type string before trusting it**
+   — the pattern is long and a dead branch in it is invisible.
+2. **The generic class was deciding it.** Every tier in Wikidata is under
+   "administrative territorial entity", so that class says nothing about
+   which tier a candidate is — and the Four Kingdoms carries it and
+   nothing else, with no dissolution date to filter it out by.
+   `RX_GENERIC` excludes it by itself rather than by a word, because
+   India's union territories and Australia's territories contain the same
+   word and belong in the pattern.
+3. **A constituency is not a government.** Spain draws an electoral
+   district of the Congress over each province and names it after the
+   province, and "electoral district of the Spanish Congress" answers to
+   `district` in the pattern for the second level. `RX_ELECT` stops a type
+   that only says where votes are counted from counting as a tier, the
+   same way `RX_SEAT` stops a county seat. It is applied to the `RX_ADMIN`
+   test as well, because that pattern's own `constituency` was pulling the
+   other way.
+
+A fourth, and the one that needed data rather than a pattern: with the
+electoral district out, the **city** of Almería beat the province, because
+the province is labelled "Almería Province", the city is labelled
+"Almería", and the last tie-break is the shorter label. The second level
+is the province in Spain and the municipality in 42 other countries, and
+the profiles already record which: `m2`. `wantDistrict()` returns the
+full pattern where `m2` is set and `WANT_DISTRICT_ABOVE`, without
+`municipality` or `commune`, where it is not. Both `fromWorld` and
+`widenLevels` read it, or a level correct on the first pass would be
+overwritten by a wrong one on the second.
+
+Also: the two unit resolvers now ask `FILTER NOT EXISTS { ?x wdt:P576 }`.
+An abolished jurisdiction is not one anybody can write to, and the name
+of a place is very often the name of what used to govern it. It does not
+catch the Four Kingdoms — Wikidata holds no dissolution date for it,
+which is why guard 2 exists — but it is the cheap half of the problem.
+`CACHE_V` went to `htrt9`.
+
+These were checked the way §6 says to, and it is worth keeping to:
+**the standing five-case check twice in a row, because one pass cannot
+show non-determinism.** Sierra Madre, California City, Grenoble,
+Hannover and Cape Town came back identical on both passes and unchanged
+from before the fix; Sorbas came back *Spain → Andalusia → Almería
+Province → Sorbas* on both. Then one `m2` country each way, because the
+fourth fix is conditioned on it: Kiruna gives *Sweden → Norrbotten
+County → Kiruna Municipality*, Shibuya *Japan → Tokyo → Shibuya*, Modena
+*Italy → Nord-Est → Emilia-Romagna → Modena*, and Cluj-Napoca is still
+*Romania → Cluj County → Cluj-Napoca*, which is `RX_SEAT` still doing its
+work. **Run both halves after touching any of these patterns.** They fail
+in opposite directions and a change that fixes one country will break
+another.
+
+**Bulgaria, re-checked and not taken.** Round fourteen left its
+office-holders as the next thing to do from here. The organigram is
+readable: `organigram_municipality_administration/342` embeds
+Kyustendil's whole tree as JSON inside an `init({…})` call — mayor, five
+deputy mayors, the municipal secretary, the internal audit unit, the
+financial controller, the chief architect — so 265 GETs would give every
+municipal administration's posts with the join already done, since all
+265 carry `P13953`. Ten more URL patterns were tried for a page carrying
+the contact block and every one 404s, which confirms round fourteen.
+What that leaves is post titles with no name against them and nothing to
+write to or ring, under a map whose question is who to contact and how.
+A mayor's office is already resolved from Wikidata where it exists. So
+the organigram is recorded here as reachable and worth having **once
+there is a contact to attach to a post** — on its own it adds a label,
+not a route.
 
 ### Round fourteen: no new register, and four doors closed with evidence
 
@@ -989,7 +1188,7 @@ proving the extract is obtainable. Re-checked this round and it is not:
 answers but holds only its own region. Nothing has changed since round
 seven.
 
-### Where the registers stand after thirteen rounds
+### Where the registers stand after fifteen rounds
 
 | Country | Municipalities | Joined on | State |
 | --- | --- | --- | --- |
@@ -999,7 +1198,7 @@ seven.
 | Netherlands | 341 | CBS code, then TOOI | 341 |
 | Finland | 291 | municipality number | 230 |
 | Bulgaria | 265 | **IISDA id, already on Wikidata** | office-holders readable now; contacts behind xajax (round fourteen) |
-| Spain | 8,391 | — | 7,015 emails in hand; REL's crosswalk is 403 or behind a BDGEL login |
+| Spain | 8,391 | official name inside a province, verified against the tax number | 6,947 — round fifteen |
 | Sweden | 292 | organisation number | needs a Bolagsverket account |
 | Denmark | 98 | municipality code | needs a CVR account |
 | Slovakia | 2,898 | — | needs an IČO import into Wikidata; RPO holds no email either |
@@ -1007,7 +1206,7 @@ seven.
 | Philippines | 1,497 | — | no national contact set |
 | Germany | 13,697 | — | no national code and no national register |
 
-Five registers, 43,791 municipalities with a published contact detail.
+Six registers, 50,738 municipalities with a published contact detail.
 Of the eight countries blocked, **five are blocked on one specific
 missing thing that is not data** — a crosswalk table, two accounts, an
 identifier import, and a form that needs a browser — and three have no
@@ -1143,7 +1342,7 @@ emails waiting behind it.
 | --- | --- | --- | --- |
 | Netherlands | 341 | ROO export, CBS code + TOOI | **done** |
 | Finland | 291 | Suomi.fi catalogue, municipality number | **done** |
-| Spain | 8,391 | DIR3 has 7,015 emails; CIF is not the INE code | blocked on one crosswalk |
+| Spain | 8,391 | DIR3 has 7,015 emails; CIF is not the INE code | **done in round fifteen**, on REL |
 | Colombia | 1,227 | 90% carry a DANE code, and there is no national register: datos.gov.co holds 76 directories published one city at a time | per-city job |
 | Portugal | 310 | 99.7% carry an INE ID; dados.gov.pt publishes municipal finance and no contacts, and the Portal Autárquico does not answer from here | no register found |
 | Slovakia | 2,898 | **round seven's "no identifier" is wrong — 2,887 carry a LAU code.** No register tried yet | the next candidate |
@@ -1274,7 +1473,7 @@ mostly is not one:
 | A level's street address | Wikidata, on the click | live, kept a day |
 | Which offices a jurisdiction has | Wikidata class walk | kept a week |
 | Place names and coordinates | Wikidata / Photon / Nominatim | kept a week |
-| Municipal registers (`muni/`) | France, Italy, Norway, the Netherlands, Finland | rebuilt monthly |
+| Municipal registers (`muni/`) | France, Italy, Spain, Norway, the Netherlands, Finland | rebuilt monthly |
 | Country profiles (`LAWP`), `lawlinks.json` | written by hand | changed by hand |
 
 Three things make that true rather than nearly true.
