@@ -406,15 +406,31 @@ that was wrong.
 The count depends entirely on the level, because the number of units and
 the way to reach them both change at each step:
 
-| Level | Units worldwide | How it is reached | Rounds |
+| Level | Units worldwide | How it is reached | Where it stands after nineteen rounds |
 | --- | --- | --- | --- |
-| National | 198 | Wikidata `P194`/`P527` + front-page crawl | done |
-| Sub-national legislatures | ~3,800 ADM1 | `P194` by jurisdiction id | done |
-| County-level councils | ~48,000 | `P194` on territories and on governments; rebuilt and re-verified in round eleven | structured source exhausted; round sixteen added Spain’s 18 provincial councils from a register |
-| Municipalities | ~250,000–400,000 | national registers, one country at a time, sharded on disk | six in, 50,774 records; see round fifteen for Spain and round thirteen for what blocks the rest |
+| National | 198 | Wikidata `P194`/`P527`, plus the front-page crawl | **done.** 275 chamber addresses across 182 countries, 136 method pages across 65. The crawl reached 75 of 193 front pages from this sandbox; re-running it from ordinary consumer networking roughly doubles that and needs no code change (§0c) |
+| Sub-national legislatures | ~3,800 ADM1 | `P194` by jurisdiction id | **done.** 5,159 jurisdictions, 1,727 with an address, 1,008 verified |
+| County-level councils | ~48,000 | `P194` on territories and on governments, rebuilt in round eleven | **structured source exhausted.** 4,622 entries, 2,133 with a website, 1,639 verified. Past that it is per-country registers: round sixteen took Spain's 18 provincial councils from one |
+| Municipalities | ~191,500 undissolved on Wikidata | six national registers and one provincial one, sharded on disk | **51,880 records, 27% of them.** Website 54% worldwide from Wikidata live; email 25%, telephone 20%, and the registers put France, Italy, Spain, Norway, the Netherlands, Finland and Quebec near complete on all three |
+| Municipal office-holders | ~191,500 | the registers that name them | **not started.** Quebec publishes 1,103 mayors and 6,810 councillors against councils already on the page; Bulgaria publishes 265 administrations' post titles with nobody in them. Needs a shard field and a panel row (round nineteen) |
 | Below the municipality | millions | not proposed | — |
 
-So four to six more rounds reaches a complete picture down to the
+The earlier figure of ~250,000–400,000 municipalities was an estimate
+taken before anything was counted. Wikidata holds 191,503 undissolved
+ones and that is the denominator every figure above uses.
+
+The municipal count is where the remaining work is, and it is no longer
+mostly downloading. Of the countries still open, Brazil needs one host
+to answer, Germany needs a per-state register to exist, Sweden and
+Denmark need an account each, and Slovakia, Estonia, Greece and Japan
+need one identifier imported into Wikidata. Honest estimate after
+nineteen rounds: **7 to 10 more** to take email and telephone from a
+quarter of the world's municipalities to most of it, with the United
+States, Russia and Vietnam likely still thin at the end.
+
+What the original estimate said, kept because the first two lines of it
+turned out to be right: four to six more rounds reaches a complete
+picture down to the
 municipality, and the first two are the same work already done. The
 municipal rounds are a different job, and the rest of this section is
 about why and what to do instead.
@@ -695,11 +711,11 @@ left — and it is not spread evenly:
 | --- | --- | --- | --- |
 | United States | 23,556 | 59% | **0%** |
 | Russia | 20,283 | 8% | 0% |
-| Germany | 13,694 | 82% | **0%** |
+| Germany | 13,698 | 82% | **0%** — and the key to fix it exists, round nineteen |
 | Vietnam | 9,673 | 0% | 0% |
 | Spain | 8,391 | 77% | **done in round fifteen** |
 | Czechia | 6,305 | 99% | **98%** |
-| Brazil | 5,591 | 65% | 0% |
+| Brazil | 5,591 | 65% | 0% — one unreachable download away, round nineteen |
 | Romania | 2,965 | 82% | **99%** |
 | Austria | 2,395 | 88% | 87% |
 | Belgium | 593 | 96% | 87% |
@@ -746,7 +762,9 @@ Surveyed this round, so the next one does not start from nothing:
 | Finland | 291 | Suomi.fi catalogue | done (round twelve) |
 | Spain | 8,131 | DIR3 / REL | **blocked on one crosswalk** -- measured in round twelve |
 | Norway | 357 | Enhetsregisteret | done in round thirteen, on `P2333` |
-| Germany | 10,786 | none national | and no code to join one to -- round twelve |
+| Germany | 13,698 | none national | the code to join one **does** exist — `P439` on 81% — and no national register does; a per-state job, and Brandenburg's file turned out to be state bodies only (round nineteen) |
+| Quebec (Canada) | 1,281 | Répertoire des municipalités | done (round nineteen) |
+| Brazil | 5,591 | IBGE code → CNPJ → Receita Federal | the crosswalk is live and the download is not — round nineteen |
 
 **Spain is a join problem, not a data problem.** DIR3's public exports
 are reachable and `Listado Unidades EELL.xlsx` carries 26,608 local
@@ -785,6 +803,151 @@ website, 2 a telephone and 1 an email** — about 2%. The contacts in OSM
 are on the town hall object, not the boundary, so Tier B needs a
 spatial join as well as a planet-sized download. Do not plan a round
 around it without first proving the extract is obtainable.
+
+### Round nineteen: Quebec, and the key Germany was said not to have
+
+Quebec is in, and the round's larger finding is a correction: Germany
+carries a national municipality code on Wikidata after all. Both came
+out of asking Wikidata a question these rounds had never asked it.
+
+**Ask which codes exist, rather than which code you expected.** Rounds
+seven and twelve picked a property per country — the KSH code for
+Hungary, the TERC code for Poland — and counted how many municipalities
+carried it. That finds what you already suspected and nothing else.
+This round asked the other way round: for thirty countries, every
+literal-valued property their undissolved municipalities hold, counted
+and ranked. One query, 100 seconds. Do that first for any country from
+here on.
+
+It needs an endpoint. Wikidata's own query service is in an outage and
+answers `429 Aggressively rate-limiting to 1 req / min`, which makes a
+census of this shape impossible. QLever holds the same dump and answered
+in three seconds for most of these queries; `tools/build_muni.py`
+already prefers it. Two hosts serve it —
+`qlever.cs.uni-freiburg.de/api/wikidata` and `qlever.dev/api/wikidata` —
+and they agreed on every spot check here.
+
+**Germany has the code.** `P439`, the German municipality key, is on
+**11,126 of its 13,698 municipalities (81%)**, and `P1388`, the regional
+key, on 10,737 (78%). Round twelve recorded the opposite in terms —
+"carry no national statistical code on Wikidata at all, no AGS, no
+Gemeindeschlüssel" — and round seven built on it, so Germany has been
+written off since as a double wall. It is one wall: a register. The
+first state register was checked this round and is not it. Brandenburg
+publishes `service.brandenburg.de/.../bvdaten.csv`, 408 rows with
+street, telephone, email and website, and not one of them is a
+municipality: the categories are special-purpose associations, courts,
+state offices and public-law bodies. The path says `kommunalverzeichnis`
+and the contents are the state's own authorities. GovData's CKAN API
+answers (`govdata.de/ckan/api/3/action/package_search`), which is how
+that file and the seven other `Behördenverzeichnis` datasets were found
+in one pass rather than by reading pages — use it for the other fifteen
+states.
+
+**Brazil has the crosswalk.** Round eleven recorded Brazil as having no
+national register and no email on any municipality, and the missing half
+was an identifier the contact data is keyed by. The Treasury publishes
+it: `apidatalake.tesouro.gov.br/ords/siconfi/tt/entes` returns all
+**5,598** Brazilian entes with `cod_ibge` and `cnpj` together, and
+`P1585`, the IBGE municipality code, is on 5,570 of 5,591 municipality
+items. So IBGE code → CNPJ → the Receita Federal CNPJ open data, which
+publishes `correio_eletronico` and a telephone number per establishment,
+is a complete chain on paper. It is blocked at the last step and only
+there: `arquivos.receitafederal.gov.br`, `dados.rfb.gov.br` and
+`dadosabertos.rfb.gov.br` all reset the connection from here and the
+legacy `200.152.38.155` answers 503. That is a download problem, which
+is the cheapest kind left — anyone with ordinary consumer networking
+should try it, and 5,591 municipalities at 0% email is the largest
+single prize on the table.
+
+**Ontario, measured and not taken.** `data.ontario.ca` publishes the
+directory of institutions under FIPPA and MFIPPA, and 443 of its 1,497
+rows are municipal corporations — Ontario has 444. Every one carries a
+telephone number and a street address. **Two carry an email**, and the
+file holds no code: a join would be on the name inside the province,
+and the independent check round fifteen requires would have to be the
+postal code against `P281`. Phone and address for 443 municipalities is
+worth a round; it is not worth it before Receita, and it should be done
+under round fifteen's four conditions or not at all.
+
+#### Quebec: the first sub-national register
+
+Canada keeps no national register of municipal contacts and the
+provinces keep their own, so this is the first entry here that is not a
+country. The shards do not care — they are keyed by Wikidata id and the
+loader checks the ISO3 in `index.json` before fetching — so nothing in
+`how_to_reach_them.html` changed.
+
+The **Répertoire des municipalités** is kept by the Ministère des
+Affaires municipales et de l'Habitation and exports at
+`donneesouvertes.affmunqc.net/repertoire/MUN.csv`: 1,281 municipal
+organisations, no account, no session. Montréal comes out with
+`greffier@montreal.ca`, `514-872-3142` and 275, rue Notre-Dame Est;
+Québec with `311@ville.quebec.qc.ca`. The clerk's office is the address
+of record for anything filed to a Quebec council, which is the same
+choice Finland's `kirjaamo` rule makes.
+
+**Two codes that are nearly the same code, which is the trap.** The
+register keys each row by the ministry's five-digit geographic code;
+Wikidata holds the seven-digit Statistics Canada Geographic Code
+(`P3012`), whose last five digits are usually those same five. Usually:
+Amos is `88057` in the register and `2488055` on Wikidata. Where they
+slip the row does not join and is counted — that is rule 1 — but a slip
+could in principle land on another municipality's code, so this is the
+one entry here whose shared code is verified rather than trusted.
+
+The check is the official name, which the join never touches: of the
+1,249 rows that match, the register's name and Wikidata's French label
+agree for **99.8%**, the three failures being an Innu-language name
+beside the official one for the same community (Nutashkuan against
+Natashquan, Unamen Shipi against La Romaine). A scrambled match would
+sit near zero, because Quebec municipality names are long and
+distinctive. `CAN_NAME_FLOOR` is 0.97 and is computed on every build, so
+if the two code systems ever diverge far enough to cross-match, Quebec
+stops shipping.
+
+What the counts mean, because three of them look like losses and are
+not:
+
+| | Rows |
+| --- | --- |
+| In the register | 1,281 |
+| Joined on the code | 1,249 |
+| Joined, but the register publishes no contact | 143 |
+| **Shipped** | **1,106** |
+| No live Wikidata item on the code | 32 |
+
+The 143 are every one of the register's 105 unorganized territories and
+30 Indian reserves, plus eight others. It publishes no address,
+telephone number or email for any of them: an unorganized territory has
+no council, and a reserve is governed by a band council the ministry
+does not keep. Nothing was filtered by hand — they fall out on the
+contact test, which is what rule 1 does instead of an editorial
+decision.
+
+The 32 split in two, and **11 of them are real governments Wikidata
+thinks are gone**: Westmount, Dorval, L'Île-Dorval, Montréal-Est,
+Montréal-Ouest, Brossard, Boucherville, Saint-Lambert, Grosse-Île,
+Lac-Tremblant-Nord and Stratford. Each carries `P576` with a 2002 or
+2003 date — the forced amalgamations into Montréal and Longueuil — and
+Wikidata never recorded the 2006 demergers that undid them. The build's
+`FILTER NOT EXISTS { ?x wdt:P576 ?d }` is right and the data behind it
+is wrong, which is the same shape as §6's faults. Do not drop the filter
+to recover them: that is the tempting fix France's 745 *mairies
+déléguées* exist to warn against. Fix it upstream and they appear at the
+next monthly rebuild. The other 21 have no item on that code at all,
+Amos among them, because the register still prints the code of a city
+that merged in 2025.
+
+**What is in that file and not in these shards.** The register names the
+mayor of every municipality and all of its councillors: 1,103 mayors and
+**6,810 councillors**, each by name, against the council whose email and
+telephone number are now on the page. The handoff says twice that
+municipal office-holders are the layer Wikidata runs out at, and that
+Bulgaria's organigram adds a label rather than a route because it has no
+contact to attach a name to. This has both. It needs a shard field and a
+panel row of its own, which is a page change rather than a build change,
+so it is the next round and not this one.
 
 ### Round eighteen: the audit, and four faults it found
 
@@ -1492,7 +1655,7 @@ proving the extract is obtainable. Re-checked this round and it is not:
 answers but holds only its own region. Nothing has changed since round
 seven.
 
-### Where the registers stand after sixteen rounds
+### Where the registers stand after nineteen rounds
 
 | Country | Municipalities | Joined on | State |
 | --- | --- | --- | --- |
@@ -1501,6 +1664,7 @@ seven.
 | Norway | 357 | organisation number | 354 |
 | Netherlands | 341 | CBS code, then TOOI | 341 |
 | Finland | 291 | municipality number | 230 |
+| Quebec (Canada) | 1,281 | Statistics Canada code, verified against the official name | 1,106 — round nineteen; Canada has no national register and the other provinces are untouched |
 | Bulgaria | 265 | **IISDA id, already on Wikidata** | no contacts published — the register holds structure only (round seventeen) |
 | Spain | 8,391 | official name inside a province, verified against the tax number; provinces on the INE province code | 6,965 municipalities and 18 provincial councils — rounds fifteen and sixteen |
 | Sweden | 292 | organisation number | needs a Bolagsverket account; SCB’s own register covers the state only — round sixteen |
@@ -1508,15 +1672,19 @@ seven.
 | Slovakia | 2,898 | — | needs an IČO import into Wikidata; RPO holds no email either |
 | Mexico | 2,462 | — | no national directory exists |
 | Philippines | 1,497 | — | no national contact set |
-| Germany | 13,697 | — | no national code and no national register |
+| Germany | 13,698 | **`P439`, the municipality key, on 11,126 of them** | no register. Round nineteen corrects rounds seven and twelve, which recorded the code as absent; Brandenburg's file is state bodies only, and the other fifteen states are untested |
+| Brazil | 5,591 | **IBGE code → CNPJ, through the Treasury's `entes` endpoint** | the crosswalk is complete and Receita Federal's CNPJ download is unreachable from here — round nineteen |
+| Ontario (Canada) | 444 | — | 443 rows with telephone and street address, two with an email, and no code to join on — round nineteen |
 
-Six registers, 50,774 records with a published contact detail.
-Of the eight countries blocked, **five are blocked on one specific
-missing thing that is not data** — a crosswalk table, two accounts, an
-identifier import, and a form that needs a browser — and three have no
-register at all. That is a more useful picture than round seven's
-estimate of rounds: the work left is not mostly downloading, it is
-mostly getting one key or one credential per country.
+Seven registers, **51,880 records** with a published contact detail.
+What each blocked country is blocked on is now one specific thing, and
+only one of them is missing data: Brazil needs a host to answer, Germany
+needs a state register to exist, Sweden and Denmark need an account
+each, Slovakia and Estonia need an identifier imported into Wikidata,
+Japan needs `P3548`, Bulgaria publishes no contacts at all, and Mexico
+and the Philippines have no register. The work left is not mostly
+downloading — it is mostly getting one key, one credential or one host
+per country.
 
 ### Round twelve: two more registers, and a join that looked like a win
 
@@ -1673,11 +1841,39 @@ download nothing until both are in hand:
 | Croatia | 686 | none | — |
 | Germany | 13,697 | none on its municipalities | — |
 
-Germany is worth stating plainly after two rounds of looking: its
-13,697 municipalities carry no national statistical code on Wikidata at
-all — no AGS, no Gemeindeschlüssel — which is a second wall behind the
-first one round seven found. Even with a per-state register in hand
-there would be nothing to join it to.
+**The Germany row is wrong and round nineteen corrects it.** Its
+municipalities carry `P439`, the German municipality key, on 11,126 of
+13,698 (81%), and `P1388`, the regional key, on 10,737 (78%). This round
+and round seven both looked for the code by name and concluded it was
+absent; round nineteen asked Wikidata which properties German
+municipalities actually hold and it was near the top of the list. There
+is one wall in Germany, not two, and it is the register. Read round
+nineteen before planning anything here, and run its property census
+before trusting any row of this table.
+
+Corrected and added in round nineteen, by the same census:
+
+| Country | Municipalities | Key available | Carrying it |
+| --- | --- | --- | --- |
+| Germany | 13,698 | `P439` municipality key / `P1388` regional key | 11,126 (81%) / 10,737 (78%) |
+| Russia | 20,283 | `P764` OKTMO | 19,966 (98%) |
+| Brazil | 5,591 | `P1585` IBGE municipality code | 5,570 (99.6%) |
+| Canada | 3,587 | `P3012` Statistics Canada code | 3,285 (92%) |
+| Czechia | 6,305 | `P4156` IČO | 6,256 (99%) |
+| Belgium | 593 | `P3376` enterprise number | 562 (95%) |
+| Cyprus | 624 | `P4812` Statistical Service geocode | 614 (98%) |
+| Austria | 2,395 | `P964` Austrian municipality key | 2,271 (95%) |
+| Switzerland | 1,390 | `P771` BFS number | 1,116 (80%) |
+| Estonia | 1,238 | none above 50% | — |
+| Thailand | 1,121 | none above 50% | — |
+
+Czechia and Belgium are already near-complete on email from Wikidata, so
+their keys are worth nothing. Russia's OKTMO coverage is the surprise on
+this list: 98%, against 8% website and 0% email, and its registers were
+unreachable from here (`rosstat.gov.ru` fails TLS with a self-signed
+certificate). Austria and Switzerland both have a key and neither has a
+national municipal contact set, which round seven already found for
+Switzerland.
 
 ### What the municipal rounds have left
 
@@ -1777,7 +1973,7 @@ mostly is not one:
 | A level's street address | Wikidata, on the click | live, kept a day |
 | Which offices a jurisdiction has | Wikidata class walk | kept a week |
 | Place names and coordinates | Wikidata / Photon / Nominatim | kept a week |
-| Municipal registers (`muni/`) | France, Italy, Spain, Norway, the Netherlands, Finland | rebuilt monthly |
+| Municipal registers (`muni/`) | France, Italy, Spain, Norway, the Netherlands, Finland, Quebec | rebuilt monthly |
 | Country profiles (`LAWP`), `lawlinks.json` | written by hand | changed by hand |
 
 Three things make that true rather than nearly true.

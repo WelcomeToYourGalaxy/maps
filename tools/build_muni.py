@@ -41,7 +41,7 @@ way carries j='name', so the page can say so and a later round can find
 them all. A country that cannot meet those four conditions is not
 matched by name -- it waits for a code.
 """
-import argparse, collections, io, json, os, re, sys, time
+import argparse, collections, csv, io, json, os, re, sys, time, unicodedata
 import urllib.parse, urllib.request
 
 UA = {'User-Agent': 'how-to-reach-them-build/1.0 (civic map; github.com/WelcomeToYourGalaxy/maps)'}
@@ -1005,6 +1005,154 @@ def build_esp(stats, workdir):
     _es_provinces(stats, everything, out)
     return {k: v for k, v in out.items() if v is not None}
 
+# ---------------------------------------------------------- Quebec, Canada
+# The first sub-national register in this build, and the reason it is one
+# is that Canada has no national register of municipal contacts: the
+# provinces keep them. Quebec's is the Repertoire des municipalites, kept
+# by the Ministere des Affaires municipales et de l'Habitation, and it
+# publishes every municipal organisation in the province with its street
+# address, telephone number, email address and website -- and, past what
+# this build has a field for, the mayor and every councillor by name.
+#
+# The join is a code, not a name, but the two codes are not the same
+# code and that is the trap to know about. The register keys each row by
+# the five-digit geographic code the ministry assigns; Wikidata holds the
+# seven-digit Statistics Canada Geographic Code (P3012), whose last five
+# digits are usually those same five. Usually is not always: Amos is
+# 88057 in the register and 2488055 on Wikidata, so the two sequences do
+# slip. Where they slip the row does not join and is counted, which is
+# the rule -- but a slip could in principle land on another
+# municipality's code, so this is the one country here whose shared code
+# is verified rather than trusted.
+#
+# The check is the official name, which the join never touches: of the
+# rows that match, the register's name and Wikidata's agree for 99.76%,
+# the three failures being an Innu-language name beside the official one
+# for the same community. A scrambled match would sit near zero, because
+# Quebec municipality names are long and distinctive. CAN_NAME_FLOOR is a
+# gate and not a measurement: if the two code systems ever diverge far
+# enough to cross-match, Quebec stops shipping.
+#
+# Nothing is filtered by hand. The register's 105 unorganized territories
+# and 30 Indian reserves fall out on their own, because it publishes no
+# address, telephone number or email for any of them -- a reserve is
+# governed by a band council the ministry does not keep, and an
+# unorganized territory has no council at all.
+CA_QC_MUN = 'https://donneesouvertes.affmunqc.net/repertoire/MUN.csv'
+
+CA_QC_QUERY = '''PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?item ?code ?label WHERE { ?item wdt:P3012 ?code .
+  FILTER(STRSTARTS(?code,"24"))
+  FILTER NOT EXISTS { ?item wdt:P576 ?d }
+  OPTIONAL { ?item rdfs:label ?label . FILTER(lang(?label)="fr") } }'''
+
+CAN_NAME_FLOOR = 0.97
+
+
+def _ca_canon(name):
+    """Enough to compare two spellings of one official name: the oe
+    ligature written out, accents dropped, everything but letters and
+    digits removed. It is never used to match -- only to check a match
+    the code already made."""
+    name = str(name or '').replace('\u0153', 'oe').replace('\u0152', 'OE')
+    name = unicodedata.normalize('NFKD', name).encode('ascii', 'ignore').decode()
+    return re.sub(r'[^a-z0-9]', '', name.lower())
+
+
+def _ca_phone(value):
+    """Ten digits as the register stores them, grouped the way Canada
+    prints them. 0000000000 is its blank."""
+    digits = re.sub(r'\D', '', str(value or ''))
+    if len(digits) != 10 or digits == '0000000000':
+        return ''
+    return '%s-%s-%s' % (digits[:3], digits[3:6], digits[6:])
+
+
+def _ca_address(row):
+    """The street, the town and the postal code, each as the register
+    prints it. The postal code is given its conventional space and
+    nothing else is composed."""
+    code = re.sub(r'\s+', '', str(row.get('mcodpos') or '')).upper()
+    if len(code) == 6:
+        code = code[:3] + ' ' + code[3:]
+    parts = [str(row.get('madr1') or '').strip(), str(row.get('madr2') or '').strip()]
+    line = ', '.join(x for x in parts if x)
+    return ' '.join(x for x in [line, code] if x)
+
+
+def build_can(stats, workdir):
+    raw = fetch(CA_QC_MUN)
+    for encoding in ('utf-8-sig', 'cp1252', 'latin-1'):
+        try:
+            text = raw.decode(encoding)
+            break
+        except UnicodeDecodeError:
+            continue
+    rows = list(csv.DictReader(io.StringIO(text)))
+    stats['CAN Quebec municipal organisations in the register'] = len(rows)
+    if len(rows) < 1000:
+        raise SystemExit('the Quebec register came back with %d rows' % len(rows))
+
+    items = collections.defaultdict(set)
+    labels = {}
+    for row in sparql(CA_QC_QUERY):
+        code = row['code']['value'].strip()
+        qid = row['item']['value'].rsplit('/', 1)[-1]
+        items[code].add(qid)
+        if 'label' in row:
+            labels[qid] = row['label']['value']
+    ambiguous = {k for k, v in items.items() if len(v) > 1}
+    codes = {k: next(iter(v)) for k, v in items.items() if len(v) == 1}
+    stats['CAN Statistics Canada codes on Wikidata for Quebec'] = len(codes)
+    stats['CAN codes ambiguous on Wikidata'] = len(ambiguous)
+
+    agree = differ = 0
+    pending = []
+    for row in rows:
+        code = '24' + str(row.get('mcode') or '').strip().zfill(5)
+        qid = codes.get(code)
+        if not qid:
+            stats['CAN no Wikidata id for the geographic code'] += 1
+            continue
+        label = labels.get(qid, '')
+        if label:
+            if _ca_canon(row.get('munnom')) == _ca_canon(label):
+                agree += 1
+            else:
+                differ += 1
+        pending.append((qid, row))
+
+    checked = agree + differ
+    share = (agree / checked) if checked else 0.0
+    stats['CAN name check comparisons'] = checked
+    stats['CAN name check agreeing (per mille)'] = int(round(share * 1000))
+    if checked < 500 or share < CAN_NAME_FLOOR:
+        raise SystemExit('Quebec name check is %.4f over %d comparisons, floor %.2f: '
+                         'the geographic code and the Statistics Canada code have '
+                         'diverged and a match may now be cross-matching'
+                         % (share, checked, CAN_NAME_FLOOR))
+
+    out = {}
+    for qid, row in pending:
+        rec = {}
+        site = clean_site(row.get('mweb'))
+        mail = clean_mail(row.get('mcourriel'))
+        phone = _ca_phone(row.get('mtel'))
+        address = _ca_address(row)
+        if site:    rec['u'] = site
+        if mail:    rec['e'] = mail
+        if phone:   rec['p'] = phone
+        if address: rec['a'] = address
+        if not rec:
+            # Every one of these is an unorganized territory or a reserve.
+            stats['CAN joined but the register publishes no contact'] += 1
+            continue
+        put(out, qid, rec, stats, 'CAN')
+        stats['CAN joined'] += 1
+    return {k: v for k, v in out.items() if v is not None}
+
+
 COUNTRIES = {
     'ESP': ('DIR3, the Directorio Comun de Unidades Organicas y Oficinas (administracionelectronica.gob.es), top-level ayuntamientos, matched to the Registro de Entidades Locales (registroentidadeslocales.mpt.es) on the official municipality name inside a fixed province and through REL to Wikidata by INE code (P772) -- the one register here joined by name rather than by a shared code, because Spain publishes none, verified against the tax number the match never uses',
             lambda stats, workdir: build_esp(stats, workdir)),
@@ -1018,6 +1166,14 @@ COUNTRIES = {
     'NLD': ('Register van Overheidsorganisaties (organisaties.overheid.nl), the '
             'municipalities export, keyed to Wikidata by CBS municipality code (P382)',
             lambda stats, workdir: build_nld(stats, workdir)),
+    'CAN': ('Repertoire des municipalites du Quebec, Ministere des Affaires '
+            'municipales et de l\'Habitation (donneesouvertes.affmunqc.net), keyed to '
+            'Wikidata by the Statistics Canada Geographic Code (P3012), whose last '
+            'five digits are the ministry\'s own geographic code -- usually but not '
+            'always, so the match is verified against the official name it never '
+            'uses. Quebec only: Canada keeps no national register of municipal '
+            'contacts and the provinces keep their own',
+            lambda stats, workdir: build_can(stats, workdir)),
     'FIN': ('Palvelutietovaranto, the Suomi.fi service catalogue every Finnish '
             'authority keeps its own entry in (api.palvelutietovaranto.suomi.fi), '
             'keyed to Wikidata by municipality number (P1203)',
