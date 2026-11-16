@@ -1,0 +1,3432 @@
+{
+ "what": "Which of ICIJ's 968 World Bank and IFC projects are on this map, matched project by project. Checked independently in round 33.",
+ "method": [
+  "Three passes, then the union, then an independent check.",
+  "Forward: 241 lead rows carry an r*_case_id written by a previous round; 3 more were matched inside the forward pass by P-number. That is the '244' the first method reported.",
+  "Reverse: every P-number the map prints was looked up in the Bank projects API and matched to a lead row with the same board approval date. It added 2 rows and both were wrong (see corrections).",
+  "Check pass (round 33 checker): all 120 monthly windows of the Bank's projects API for 2004-2013 were fetched (5,798 board approvals). Every one of the 968 lead rows was resolved to a P-number on its own name, date and country: 940 of 968 resolved. The map's own P-numbers were re-extracted from the whole case record rather than five fields, which found 13 the first extraction missed. 233 of the first method's 246 rows are confirmed by a P-number printed on the matched case; 12 of the remaining 13 are confirmed by the project name and approval date written in the card's own text; 1 was wrong.",
+  "Every unmatched lead row was then scanned against every case in the same country for its approval date in prose or its project name, which found 4 rows that are on the map under cases printing no P-number.",
+  "6 rows share a date with a map project and agree on nothing else. 5 are different projects and are not counted. The 6th (lead 73, Kandadji) is the same project and is counted."
+ ],
+ "matched": 249,
+ "of": 968,
+ "distinct_cases": 249,
+ "confirmed_table": {
+  "rows": 422,
+  "matched": 244
+ },
+ "possible_table": {
+  "rows": 546,
+  "matched": 5
+ },
+ "what_this_is_not": [
+  "Not the panel's 309. The panel counts map cases whose start year is 2004-2013 and whose lender list carries wb or ifc. 234 of those 309 match an ICIJ row; 75 do not, being Bank or IFC cases ICIJ never listed. And 15 matched cases fall outside the 309, because a case's start year is the year the harm began and ICIJ's year is the year the board approved the money.",
+  "Not a claim that the harm ICIJ recorded is on the map. 1 of the 249 rows (lead 276, Sao Paulo Metro Line 5) was dropped by a previous round after reading its documents, and is counted only because the map cites that project's appraisal and completion reports inside a case about Line 4.",
+  "Not a complete match. The method can only see a project the map names, by P-number or by a name close to the Bank's. 233 of the 249 rows rest on a P-number printed on the matched case; 16 rest on the project name and approval date in the card's prose."
+ ],
+ "corrections": [
+  {
+   "moved": "removed",
+   "lead_index": 378,
+   "icij_project": "Rebuilding Energy Infrastructure and Access",
+   "date": "2012-09-27",
+   "was_matched_to": "cap-labadie-road-compensation-escrow",
+   "why": "Two Haiti projects were approved on 27 September 2012. ICIJ's row resolves at name similarity 1.00 to P127203, Rebuilding Energy Infrastructure and Access. The case rests on P120895 and its additional financing P130749, AF Infrastructure & Institutions Emergency Recovery, which is a different operation; P127203 is nowhere on the case. The parent, P120895, is already matched as lead 247. Round 32 had also dropped this row on its own completion report, which says at paragraph 96 that the project required no physical or economic displacement."
+  },
+  {
+   "moved": "removed",
+   "lead_index": 531,
+   "icij_project": "Central African Backbone - APL1A",
+   "date": "2009-09-24",
+   "was_matched_to": "sao-gabriel-cable-station-urban-farmers",
+   "why": "The case is about P117652, Central African Backbone APL2 in Sao Tome and Principe, approved 20 January 2011, which is already matched as lead 356. P108368 is APL1A in Cameroon, Chad and the Central African Republic. It appears on the case only inside the filename of one Evaluation Group assessment report covering four project numbers (126034-PPAR-P108368-P117652-P165413-P165415). The name similarity of 1.00 compared the Bank's name for P108368 with ICIJ's name for the same project, which tests nothing about the case. This was the only match in the possible-displacement table."
+  },
+  {
+   "moved": "added",
+   "lead_index": 697,
+   "icij_project": "Kenya - Natural Resource Management Project",
+   "date": "2007-03-27",
+   "section": "Possible displacement",
+   "case_ids": [
+    "embobut-sengwer"
+   ],
+   "why": "The card reads: 'IDA Credit 4277-KE for the Natural Resource Management Project (NRMP), approved 27 March 2007. The project funded the Kenya Forest Service, the agency that carried out the evictions.' The Bank's record for P095050 gives the same name, the same date and Kenya. The row was missed because the case prints P095050 only in an Inspection Panel case title, which the first P-number extraction did not read."
+  },
+  {
+   "moved": "added",
+   "lead_index": 523,
+   "icij_project": "BR Municipal APL: Teresina Enhancing Municipal Governance and Quality of Life Project",
+   "date": "2008-03-27",
+   "section": "Possible displacement",
+   "case_ids": [
+    "teresina-lagoas-do-norte"
+   ],
+   "why": "The card rests on the phase 2 loan of 24 February 2016 'after a first-phase loan that resettled 466 families'. The first phase is P088966, which the Bank's record gives under ICIJ's exact name with ICIJ's exact approval date."
+  },
+  {
+   "moved": "added",
+   "lead_index": 946,
+   "icij_project": "Lignite Power Technical Assistance Project",
+   "date": "2006-10-12",
+   "section": "Possible displacement",
+   "case_ids": [
+    "kosovo-hade-shala"
+   ],
+   "why": "The card reads: 'Lignite Power Technical Assistance Project (US$8.5 million, 2006-2012) paid for the mining Resettlement Policy Framework and the Shala resettlement plan.' The Bank's record for P097635 gives the same name and ICIJ's approval date of 12 October 2006."
+  },
+  {
+   "moved": "added",
+   "lead_index": 598,
+   "icij_project": "Ethiopia Protection of Basic Services Program Phase II Project",
+   "date": "2009-05-14",
+   "section": "Possible displacement",
+   "case_ids": [
+    "gambella-villagization"
+   ],
+   "why": "The card's conditions field quotes the 'World Bank, Project Appraisal Document, Ethiopia Second Phase of the Protection of Basic Services Project, 2009', which is P103022, ICIJ's row, with the same name and date. Lead 595, the Phase III project of 25 September 2012, is also added below."
+  },
+  {
+   "moved": "added",
+   "lead_index": 595,
+   "icij_project": "Ethiopia Promoting Basic Services Program Phase III Project",
+   "date": "2012-09-25",
+   "section": "Possible displacement",
+   "case_ids": [
+    "gambella-villagization"
+   ],
+   "why": "The card's lender role reads 'Phases approved 22 February 2011 and 25 September 2012', and the case carries Inspection Panel case 82, 'Protection of Basic Services Program Phase II Additional Financing and Promoting Basic Services Phase III Project'. P128891 is that project, same name, same date."
+  },
+  {
+   "moved": "description corrected",
+   "lead_index": 73,
+   "why": "The first file lists lead 73 (Kandadji, P130174) among 6 rows that 'share a date with a map project and agree on nothing else' and are 'NOT counted'. It is in fact the same project and it is counted: round 18's own note records that the Bank titles P130174 'Kandadji Project' and gives the board approval date ICIJ prints. The score was 0 because the Bank files the project under the country 'Western and Central Africa'."
+  },
+  {
+   "moved": "description corrected",
+   "lead_index": null,
+   "why": "The first file says 11 annotated rows have no ICIJ row sharing that date 'because ICIJ printed a date that differs from the Bank's board approval date'. That is true of 1 of the 11 (lead 95, MDTF KP Emergency Roads Recovery: the Bank's record says 16 July 2011, ICIJ prints 7 July 2011). The other 10 were invisible to the reverse pass for a different reason: the map case prints no P-number at all. All 11 were checked by hand and all 11 are sound."
+  },
+  {
+   "moved": "not changed, recorded",
+   "lead_index": 714,
+   "icij_project": "LB- Greater Beirut Water Supply",
+   "date": "2010-12-16",
+   "why": "P103063 is printed on bisri-dam, but only inside the titles of Inspection Panel cases 127 and 134, which the Panel registered against the Water Supply Augmentation Project and the Greater Beirut project together. The case's own lender role names only the Water Supply Augmentation Project, P125184, approved 30 September 2014 and outside ICIJ's decade. Not counted. A person should rule on it."
+  },
+  {
+   "moved": "not changed, recorded",
+   "lead_index": 845,
+   "icij_project": "Rwanda Land; husbandry water harvesting and hillside irrigation",
+   "date": "2011-02-22",
+   "why": "The name is the case's own project family, but ICIJ's row is P124785, a separate operation the card does not name; the card names P114931, approved 22 December 2009, and the additional financing Credit 5360-RW, which is P147543 of 19 December 2013. Not counted, on the same rule that left out Liuzhou Phase II, Liaoning Second and Third Medium Cities, the first Lagos Urban Transport Project and the Niger Basin APL-1."
+  }
+ ],
+ "rows": [
+  {
+   "project": "Second Rural Energy Project",
+   "approved": "Nov. 18, 2004",
+   "iso3": [
+    "VNM"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "773,838**",
+   "case_ids": [
+    "vietnam-distribution-efficiency-five-households",
+    "vietnam-rural-energy-2-land-loss"
+   ],
+   "lead_index": 0
+  },
+  {
+   "project": "Shaanxi Ankang Road Development",
+   "approved": "Mar. 13, 2007",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "171,568",
+   "case_ids": [
+    "borj-chakir-landfill",
+    "shaanxi-ankang-road-resettlement"
+   ],
+   "lead_index": 1
+  },
+  {
+   "project": "ShiZheng Railway Project",
+   "approved": "Jun. 24, 2008",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "150,873",
+   "case_ids": [
+    "shizheng-railway-resettlement"
+   ],
+   "lead_index": 2
+  },
+  {
+   "project": "Guiyang Guangzhou Railway",
+   "approved": "Apr. 16, 2009",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "99,595",
+   "case_ids": [
+    "guiguang-railway-land-acquisition"
+   ],
+   "lead_index": 4
+  },
+  {
+   "project": "Lucknow-Muzaffarpur National Highway Project",
+   "approved": "Dec. 21, 2004",
+   "iso3": [
+    "IND"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "75,434",
+   "case_ids": [
+    "lucknow-muzaffarpur-highway-land"
+   ],
+   "lead_index": 6
+  },
+  {
+   "project": "India Orissa State Roads Project",
+   "approved": "Sep. 30, 2008",
+   "iso3": [
+    "IND"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "64,287",
+   "case_ids": [
+    "orissa-state-roads-compensation"
+   ],
+   "lead_index": 8
+  },
+  {
+   "project": "Huai River Basin Flood Management and Drainage Improvement",
+   "approved": "Jul. 6, 2010",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "58,659",
+   "case_ids": [
+    "huai-river-flood-drainage-resettlement"
+   ],
+   "lead_index": 9
+  },
+  {
+   "project": "Urban Upgrading Project",
+   "approved": "Apr. 29, 2004",
+   "iso3": [
+    "VNM"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "57,047",
+   "case_ids": [
+    "vinh-loc-b-resettlement-hcmc"
+   ],
+   "lead_index": 10
+  },
+  {
+   "project": "Water Resources Assistance Project",
+   "approved": "Mar. 30, 2004",
+   "iso3": [
+    "VNM"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "53,600**",
+   "case_ids": [
+    "vietnam-water-resources-assistance-resettlement"
+   ],
+   "lead_index": 11
+  },
+  {
+   "project": "Guangdong Pearl River Delta Urban Environment Project",
+   "approved": "Jun. 8, 2004",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "48,289",
+   "case_ids": [
+    "chebei-village-guangzhou-resettlement"
+   ],
+   "lead_index": 12
+  },
+  {
+   "project": "Eastern Dedicated Freight Corridor - I",
+   "approved": "May. 31, 2011",
+   "iso3": [
+    "IND"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "46,646",
+   "case_ids": [
+    "eastern-dedicated-freight-corridor"
+   ],
+   "lead_index": 13
+  },
+  {
+   "project": "Mekong Delta Transport Infrastructure Development Project",
+   "approved": "May. 22, 2007",
+   "iso3": [
+    "VNM"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "40,979",
+   "case_ids": [
+    "mekong-delta-transport-unpaid-compensation"
+   ],
+   "lead_index": 15
+  },
+  {
+   "project": "Dakar Diamniadio Toll Highway",
+   "approved": "Jun. 2, 2009",
+   "iso3": [
+    "SEN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "39,594",
+   "case_ids": [
+    "dakar-diamniadio-toll-highway"
+   ],
+   "lead_index": 16
+  },
+  {
+   "project": "Distribution Efficiency Project",
+   "approved": "Sep. 11, 2012",
+   "iso3": [
+    "VNM"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "31,581**",
+   "case_ids": [
+    "vietnam-distribution-efficiency-five-households",
+    "vietnam-rural-energy-2-land-loss"
+   ],
+   "lead_index": 18
+  },
+  {
+   "project": "Liaoning Medium Cities Infrastructure Project",
+   "approved": "Jun. 27, 2006",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "31,547",
+   "case_ids": [
+    "liaoning-medium-cities-resettlement"
+   ],
+   "lead_index": 19
+  },
+  {
+   "project": "Ethiopia-Road Sector Development Program APL4",
+   "approved": "Jun. 2, 2009",
+   "iso3": [
+    "ETH"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "27,401",
+   "case_ids": [
+    "mekenajo-dembidolo-road-coffee"
+   ],
+   "lead_index": 20
+  },
+  {
+   "project": "NanGuang Railway Project",
+   "approved": "Jun. 24, 2009",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "25,784",
+   "case_ids": [
+    "guiguang-railway-land-acquisition",
+    "liuzhan-railway-resettlement",
+    "nanguang-railway-resettlement"
+   ],
+   "lead_index": 21
+  },
+  {
+   "project": "China: Fifth Inland Waterways",
+   "approved": "Oct. 11, 2005",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "25,655",
+   "case_ids": [
+    "cuijiaying-han-river-resettlement",
+    "shiyan-connecting-road-safeguards"
+   ],
+   "lead_index": 22
+  },
+  {
+   "project": "Third National Railway Project",
+   "approved": "Jan. 23, 2007",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "25,393",
+   "case_ids": [
+    "liuzhan-railway-resettlement",
+    "nanguang-railway-resettlement"
+   ],
+   "lead_index": 23
+  },
+  {
+   "project": "National Highways Interconnectivity Improvement Project",
+   "approved": "Oct. 29, 2013",
+   "iso3": [
+    "IND"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "23,016",
+   "case_ids": [
+    "nhiip-india-corridor-land-acquisition"
+   ],
+   "lead_index": 24
+  },
+  {
+   "project": "Hubei Shiman Highway Project",
+   "approved": "Jun. 24, 2004",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "21,176",
+   "case_ids": [
+    "cuijiaying-han-river-resettlement",
+    "shiyan-connecting-road-safeguards"
+   ],
+   "lead_index": 25
+  },
+  {
+   "project": "Guiyang Transport Project",
+   "approved": "Jan. 8, 2008",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "20,850",
+   "case_ids": [
+    "guiyang-youxiao-road-resettlement"
+   ],
+   "lead_index": 26
+  },
+  {
+   "project": "JiTuHun Railway",
+   "approved": "May. 24, 2011",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "19,588",
+   "case_ids": [
+    "jituhun-railway-resettlement"
+   ],
+   "lead_index": 27
+  },
+  {
+   "project": "LR-Urban and Rural Infrastructure Rehabilitation Project",
+   "approved": "Apr. 21, 2009",
+   "iso3": [
+    "LBR"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "18,770",
+   "case_ids": [
+    "caldwell-bridge-liberia-compensation"
+   ],
+   "lead_index": 28
+  },
+  {
+   "project": "Urban Water Supply and Wastewater",
+   "approved": "May. 24, 2011",
+   "iso3": [
+    "VNM"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "16,983",
+   "case_ids": [
+    "vietnam-urban-water-wastewater-below-replacement"
+   ],
+   "lead_index": 29
+  },
+  {
+   "project": "Ethiopia-Transport Sector Project in Support of RSDP4",
+   "approved": "Sep. 25, 2012",
+   "iso3": [
+    "ETH"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "16,902",
+   "case_ids": [
+    "biftu-quarry-mizan-dima-road"
+   ],
+   "lead_index": 30
+  },
+  {
+   "project": "Himachal Pradesh State Roads Project",
+   "approved": "Jun. 5, 2007",
+   "iso3": [
+    "IND"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "16,896",
+   "case_ids": [
+    "himachal-pradesh-state-roads-debris"
+   ],
+   "lead_index": 31
+  },
+  {
+   "project": "Lagos Metropolitan Development and Governance Project",
+   "approved": "Jul. 6, 2006",
+   "iso3": [
+    "NGA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "16,857",
+   "case_ids": [
+    "badia-east-lagos"
+   ],
+   "lead_index": 32
+  },
+  {
+   "project": "VIETNAM: Haiphong Urban Transport Project",
+   "approved": "Mar. 29, 2011",
+   "iso3": [
+    "VNM"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "16,828",
+   "case_ids": [
+    "haiphong-bac-son-nam-hai-road",
+    "quy-nhon-coastal-cities-sanitation-resettlement"
+   ],
+   "lead_index": 33
+  },
+  {
+   "project": "Fourth Inland Waterways Project",
+   "approved": "Mar. 25, 2004",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "16,805",
+   "case_ids": [
+    "naji-youjiang-waterways-resettlement"
+   ],
+   "lead_index": 34
+  },
+  {
+   "project": "Coastal Cities Environmental Sanitation Project",
+   "approved": "Dec. 19, 2006",
+   "iso3": [
+    "VNM"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "16,194",
+   "case_ids": [
+    "quy-nhon-coastal-cities-sanitation-resettlement"
+   ],
+   "lead_index": 35
+  },
+  {
+   "project": "Second Karnataka State Highway Improvement",
+   "approved": "Mar. 24, 2011",
+   "iso3": [
+    "IND"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "15,516",
+   "case_ids": [
+    "karnataka-state-highways-ii-compensation"
+   ],
+   "lead_index": 36
+  },
+  {
+   "project": "VN - Mekong Delta Water Management for Rural Dev",
+   "approved": "Jun. 7, 2011",
+   "iso3": [
+    "VNM"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "15,504",
+   "case_ids": [
+    "mekong-delta-water-management-compensation-delays"
+   ],
+   "lead_index": 37
+  },
+  {
+   "project": "ET-Road Sector Dev. Stage III Proj. (APL3) in support of Govt's RSDP",
+   "approved": "May. 31, 2007",
+   "iso3": [
+    "ETH"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "15,015",
+   "case_ids": [
+    "rsdp-apl3-road-deaths"
+   ],
+   "lead_index": 38
+  },
+  {
+   "project": "Sichuan Urban Development Project",
+   "approved": "Sep. 7, 2006",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "15,005",
+   "case_ids": [
+    "sichuan-urban-development-four-cities"
+   ],
+   "lead_index": 39
+  },
+  {
+   "project": "Da Nang-Quang Ngai Expressway Development Project",
+   "approved": "May. 24, 2011",
+   "iso3": [
+    "VNM"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "13,790",
+   "case_ids": [
+    "da-nang-quang-ngai-expressway"
+   ],
+   "lead_index": 41
+  },
+  {
+   "project": "VN-Priority Infrastructure Investment Project",
+   "approved": "May. 22, 2008",
+   "iso3": [
+    "VNM"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "13,788",
+   "case_ids": [
+    "da-nang-sustainable-city-164-pending"
+   ],
+   "lead_index": 42
+  },
+  {
+   "project": "Chongqing Small Cities Infrastructure Improvement Project",
+   "approved": "Jun. 21, 2005",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "13,744",
+   "case_ids": [
+    "chongqing-small-cities-qianjiang-resettlement",
+    "tongliang-road-land-lease-compensation"
+   ],
+   "lead_index": 43
+  },
+  {
+   "project": "Electricity Sector Development Project",
+   "approved": "Jun. 30, 2011",
+   "iso3": [
+    "UGA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "13,596",
+   "case_ids": [
+    "bukoba-airport-resettlement-arrears",
+    "kawanda-masaka-line-galatiya"
+   ],
+   "lead_index": 44
+  },
+  {
+   "project": "Medium Cities Development Project",
+   "approved": "Dec. 15, 2011",
+   "iso3": [
+    "VNM"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "13,115",
+   "case_ids": [
+    "vietnam-medium-cities-phu-ly-noncompliance"
+   ],
+   "lead_index": 45
+  },
+  {
+   "project": "Uganda Transport Sector Development Project",
+   "approved": "Dec. 10, 2009",
+   "iso3": [
+    "UGA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "12,882",
+   "case_ids": [
+    "kamwenge-fort-portal-road"
+   ],
+   "lead_index": 46
+  },
+  {
+   "project": "Uganda: Energy for Rural Transformation APL-2",
+   "approved": "Apr. 6, 2009",
+   "iso3": [
+    "UGA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "12,239",
+   "case_ids": [
+    "uganda-ert2-grid-compensation"
+   ],
+   "lead_index": 48
+  },
+  {
+   "project": "Danang Sustainable City Development Project (SCDP)",
+   "approved": "Apr. 26, 2013",
+   "iso3": [
+    "VNM"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "11,752",
+   "case_ids": [
+    "da-nang-sustainable-city-164-pending"
+   ],
+   "lead_index": 49
+  },
+  {
+   "project": "East Africa Trade and Transport Facilitation Project",
+   "approved": "Jan. 24, 2006",
+   "iso3": [
+    "KEN",
+    "UGA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "11,722",
+   "case_ids": [
+    "kibera-mukuru-railway-relocation"
+   ],
+   "lead_index": 50
+  },
+  {
+   "project": "Natural Disaster Risk Management Project",
+   "approved": "Sep. 15, 2005",
+   "iso3": [
+    "VNM"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "11,643",
+   "case_ids": [
+    "vietnam-natural-disaster-risk-989-resettled"
+   ],
+   "lead_index": 51
+  },
+  {
+   "project": "Hunan Urban Development Project",
+   "approved": "Sep. 16, 2004",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "11,214",
+   "case_ids": [
+    "hunan-urban-development-wwtp-resettlement"
+   ],
+   "lead_index": 53
+  },
+  {
+   "project": "Jiangxi Wuxikou Integrated Flood Management Project",
+   "approved": "Mar. 20, 2013",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "10,957",
+   "case_ids": [
+    "wuxikou-reservoir-chitan-resettlement"
+   ],
+   "lead_index": 54
+  },
+  {
+   "project": "Third Jiangxi Highway Project",
+   "approved": "Jun. 27, 2006",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "10,611",
+   "case_ids": [
+    "jiangxi-third-highway-resettlement"
+   ],
+   "lead_index": 55
+  },
+  {
+   "project": "VN-Trung Son Hydropower Project",
+   "approved": "Apr. 26, 2011",
+   "iso3": [
+    "VNM"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "10,591",
+   "case_ids": [
+    "trung-son-hydropower-resettlement"
+   ],
+   "lead_index": 56
+  },
+  {
+   "project": "Ningxia Highway Project",
+   "approved": "May. 13, 2010",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "10,436",
+   "case_ids": [
+    "ningxia-highway-compensation-delays"
+   ],
+   "lead_index": 57
+  },
+  {
+   "project": "Irrigation and Drainage Project",
+   "approved": "Jun. 21, 2007",
+   "iso3": [
+    "ETH"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "10,409",
+   "case_ids": [
+    "ribb-megech-irrigation"
+   ],
+   "lead_index": 58
+  },
+  {
+   "project": "Zhejiang Urban Environment Project",
+   "approved": "Jan. 29, 2004",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "10,251",
+   "case_ids": [
+    "zhejiang-urban-environment-resettlement"
+   ],
+   "lead_index": 59
+  },
+  {
+   "project": "UG - Private Power Generation (Bujagali) Project",
+   "approved": "Apr. 26, 2007",
+   "iso3": [
+    "UGA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "9,310",
+   "case_ids": [
+    "bujagali"
+   ],
+   "lead_index": 60
+  },
+  {
+   "project": "Kenya Water Security and Climate Resilience Project",
+   "approved": "Jun. 18, 2013",
+   "iso3": [
+    "KEN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "9,079",
+   "case_ids": [
+    "lower-nzoia-irrigation-unpaid-compensation"
+   ],
+   "lead_index": 62
+  },
+  {
+   "project": "Andhra Pradesh Road Sector Project",
+   "approved": "Oct. 15, 2009",
+   "iso3": [
+    "IND"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "9,046",
+   "case_ids": [
+    "andhra-telangana-roads-displacement"
+   ],
+   "lead_index": 63
+  },
+  {
+   "project": "Nam Theun 2 Social and Environment Project",
+   "approved": "Mar. 31, 2005",
+   "iso3": [
+    "LAO"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "8,959",
+   "case_ids": [
+    "nam-theun-2"
+   ],
+   "lead_index": 65
+  },
+  {
+   "project": "Integrated Growth Poles",
+   "approved": "Jul. 12, 2005",
+   "iso3": [
+    "MDG"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "8,911",
+   "case_ids": [
+    "qmm-fort-dauphin"
+   ],
+   "lead_index": 66
+  },
+  {
+   "project": "SL Bumbuna Hydroelectric Environmental and Social Management project",
+   "approved": "Jun. 16, 2005",
+   "iso3": [
+    "SLE"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "8,862",
+   "case_ids": [
+    "bumbuna-hydro-reservoir-resettlement"
+   ],
+   "lead_index": 68
+  },
+  {
+   "project": "Hubei Yiba Highway",
+   "approved": "Mar. 31, 2009",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "8,380",
+   "case_ids": [
+    "hubei-yiba-expressway-resettlement"
+   ],
+   "lead_index": 70
+  },
+  {
+   "project": "Upper Cisokan Pumped Storage Hydro-Electrical Power (1040 MW) Project",
+   "approved": "May. 26, 2011",
+   "iso3": [
+    "IDN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "8,213",
+   "case_ids": [
+    "upper-cisokan-pumped-storage-land"
+   ],
+   "lead_index": 71
+  },
+  {
+   "project": "Kenya Informal Settlements Improvement Project (KISIP)",
+   "approved": "Mar. 24, 2011",
+   "iso3": [
+    "KEN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "7,952",
+   "case_ids": [
+    "kisip-informal-settlements-fatalities"
+   ],
+   "lead_index": 72
+  },
+  {
+   "project": "First Part of the Second Phase of the Niger Basin Water Resources Development and Sustainable Ecosystems Management Program - APL 2A",
+   "approved": "Oct. 2, 2012",
+   "iso3": [
+    "NER"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "7,912",
+   "case_ids": [
+    "kandadji-dam"
+   ],
+   "lead_index": 73
+  },
+  {
+   "project": "Vietnam Road Asset Management Project",
+   "approved": "Dec. 12, 2013",
+   "iso3": [
+    "VNM"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "7,788",
+   "case_ids": [
+    "vietnam-road-asset-management-resettlement"
+   ],
+   "lead_index": 74
+  },
+  {
+   "project": "Electricity Expansion",
+   "approved": "May. 27, 2010",
+   "iso3": [
+    "KEN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "7,461",
+   "case_ids": [
+    "olkaria-maasai"
+   ],
+   "lead_index": 76
+  },
+  {
+   "project": "Liaoning Coastal Economic Zone Urban Infrastructure and Environmental Management Project",
+   "approved": "Mar. 20, 2013",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "7,364",
+   "case_ids": [
+    "liaoning-coastal-zone-resettlement"
+   ],
+   "lead_index": 77
+  },
+  {
+   "project": "South-West Roads: Western Europe-Western China International Transit Corridor (Carec 1B &amp; 6B)",
+   "approved": "Apr. 30, 2009",
+   "iso3": [
+    "KAZ"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "7,350",
+   "case_ids": [
+    "south-west-roads-turkestan-sairam-compensation"
+   ],
+   "lead_index": 78
+  },
+  {
+   "project": "Hanoi Urban Transport Development Project",
+   "approved": "Jul. 3, 2007",
+   "iso3": [
+    "VNM"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "7,329",
+   "case_ids": [
+    "hanoi-ring-road-2-relocation"
+   ],
+   "lead_index": 79
+  },
+  {
+   "project": "Nanning Urban Environment",
+   "approved": "Jun. 1, 2010",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "7,191",
+   "case_ids": [
+    "nanning-urban-environment-resettlement"
+   ],
+   "lead_index": 80
+  },
+  {
+   "project": "Coastal Embankment Improvement Project - Phase I (CEIP-I)",
+   "approved": "Jun. 26, 2013",
+   "iso3": [
+    "BGD"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "6,325",
+   "case_ids": [
+    "ceip-polder-land-payments-bangladesh"
+   ],
+   "lead_index": 83
+  },
+  {
+   "project": "Punjab Municipal Services Improvement Project (PMSIP)",
+   "approved": "Jun. 1, 2006",
+   "iso3": [
+    "PAK"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "6,153",
+   "case_ids": [
+    "lahore-walled-city-shop-removals"
+   ],
+   "lead_index": 85
+  },
+  {
+   "project": "Sichuan Small Towns Development",
+   "approved": "May. 10, 2011",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "6,119",
+   "case_ids": [
+    "sichuan-small-towns-unfinished-resettlement"
+   ],
+   "lead_index": 86
+  },
+  {
+   "project": "Road Sector Development Project",
+   "approved": "Dec. 6, 2007",
+   "iso3": [
+    "NPL"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "5,824",
+   "case_ids": [
+    "nepal-road-sector-unpaid-compensation"
+   ],
+   "lead_index": 88
+  },
+  {
+   "project": "Bahia Poor Urban Areas Integrated Development",
+   "approved": "Dec. 6, 2005",
+   "iso3": [
+    "BRA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "5,768",
+   "case_ids": [
+    "bahia-viver-melhor-ii-resettlement"
+   ],
+   "lead_index": 89
+  },
+  {
+   "project": "ZhangHu Railway",
+   "approved": "Mar. 15, 2012",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "5,748",
+   "case_ids": [
+    "zhanghu-railway-resettlement"
+   ],
+   "lead_index": 90
+  },
+  {
+   "project": "Sustainable Urban Transport Project",
+   "approved": "Dec. 10, 2009",
+   "iso3": [
+    "IND"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "5,564",
+   "case_ids": [
+    "sutp-brts-corridor-displacement"
+   ],
+   "lead_index": 91
+  },
+  {
+   "project": "Second Shandong Environment Project",
+   "approved": "Feb. 27, 2007",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "5,535",
+   "case_ids": [
+    "second-shandong-environment-resettlement"
+   ],
+   "lead_index": 92
+  },
+  {
+   "project": "China: Anhui Medium Cities Urban Transport Project",
+   "approved": "May. 20, 2010",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "5,480",
+   "case_ids": [
+    "luan-huaibei-urban-transport-resettlement"
+   ],
+   "lead_index": 94
+  },
+  {
+   "project": "MDTF KP Emergency Roads Recovery Project",
+   "approved": "Jul. 7, 2011",
+   "iso3": [
+    "PAK"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "5,398",
+   "case_ids": [
+    "swat-s3b-road-land-acquisition"
+   ],
+   "lead_index": 95
+  },
+  {
+   "project": "Second National Railways Project (Zhe-Gan Line)",
+   "approved": "Jun. 24, 2004",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "5,277",
+   "case_ids": [
+    "zhegan-line-railway-resettlement"
+   ],
+   "lead_index": 97
+  },
+  {
+   "project": "Vishnugad Pipalkoti Hydro Electric Project",
+   "approved": "Jun. 30, 2011",
+   "iso3": [
+    "IND"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "5,159",
+   "case_ids": [
+    "vishnugad-pipalkoti-haat"
+   ],
+   "lead_index": 99
+  },
+  {
+   "project": "China: Nanchang Urban Rail Project",
+   "approved": "Jun. 20, 2013",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "5,058",
+   "case_ids": [
+    "nanchang-line-2-demolition"
+   ],
+   "lead_index": 101
+  },
+  {
+   "project": "Shanghai Urban Environment APL Phase 2",
+   "approved": "Jul. 5, 2005",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "5,056",
+   "case_ids": [
+    "shanghai-urban-environment-apl2-resettlement"
+   ],
+   "lead_index": 102
+  },
+  {
+   "project": "Han River Urban Environment Improvement Project",
+   "approved": "Apr. 29, 2008",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "4,880",
+   "case_ids": [
+    "han-river-urban-environment-resettlement"
+   ],
+   "lead_index": 104
+  },
+  {
+   "project": "Siddhirganj Power Project",
+   "approved": "Oct. 30, 2008",
+   "iso3": [
+    "BGD"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "4,444",
+   "case_ids": [
+    "siddhirganj-pipeline-transmission-land"
+   ],
+   "lead_index": 107
+  },
+  {
+   "project": "Hubei Xiangyang Urban Transport",
+   "approved": "Apr. 26, 2012",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "4,212",
+   "case_ids": [
+    "xiangyang-panggong-resettlement-housing-delay"
+   ],
+   "lead_index": 108
+  },
+  {
+   "project": "CM - Lom Pangar Hydropower Proj. (FY12)",
+   "approved": "Mar. 27, 2012",
+   "iso3": [
+    "CMR"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "4,129",
+   "case_ids": [
+    "lom-pangar-dam"
+   ],
+   "lead_index": 109
+  },
+  {
+   "project": "China: Shandong Confucius and Mencius Culture Heritage Protection and Development Project",
+   "approved": "May. 24, 2011",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "4,087",
+   "case_ids": [
+    "qufu-gupan-pond-demolition"
+   ],
+   "lead_index": 110
+  },
+  {
+   "project": "Democratic Republic of Confo - High Priority Reopening and Maintenance Project",
+   "approved": "Mar. 18, 2008",
+   "iso3": [
+    "COD"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "4,066",
+   "case_ids": [
+    "proroutes-bukavu-goma"
+   ],
+   "lead_index": 111
+  },
+  {
+   "project": "Second Gujarat State Highway Project (GSHP II)",
+   "approved": "Dec. 13, 2013",
+   "iso3": [
+    "IND"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "4,000",
+   "case_ids": [
+    "gujarat-highway-ii-delayed-compensation"
+   ],
+   "lead_index": 112
+  },
+  {
+   "project": "Henan Towns Water Supply and Sanitation Project",
+   "approved": "Jun. 27, 2006",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "3,995",
+   "case_ids": [
+    "henan-towns-water-land-acquisition"
+   ],
+   "lead_index": 113
+  },
+  {
+   "project": "Punjab State Road Sector Project",
+   "approved": "Dec. 5, 2006",
+   "iso3": [
+    "IND"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "3,977",
+   "case_ids": [
+    "dehlon-bypass-uncompensated-landowner"
+   ],
+   "lead_index": 114
+  },
+  {
+   "project": "Sichuan Wudu Irrigated Agriculture Development Project",
+   "approved": "Feb. 28, 2012",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "3,848",
+   "case_ids": [
+    "sichuan-wudu-canal-resettlement"
+   ],
+   "lead_index": 117
+  },
+  {
+   "project": "National Roads and Airport Infrastructure Project",
+   "approved": "May. 5, 2011",
+   "iso3": [
+    "BOL"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "3,686",
+   "case_ids": [
+    "rurrenabaque-airport-land-compensation"
+   ],
+   "lead_index": 120
+  },
+  {
+   "project": "DRC Emergency Multi Sectoral Rehab &amp; Recovery ERL Supplemental (FY06)",
+   "approved": "Dec. 8, 2005",
+   "iso3": [
+    "COD"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "3,675",
+   "case_ids": [
+    "drc-selembao-loange-compensation"
+   ],
+   "lead_index": 121
+  },
+  {
+   "project": "Urban Water Project",
+   "approved": "Jul. 27, 2004",
+   "iso3": [
+    "GHA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "3,630",
+   "case_ids": [
+    "ghana-accra-avrl-water",
+    "ghana-urban-water-unpaid-compensation"
+   ],
+   "lead_index": 122
+  },
+  {
+   "project": "Tanzania-Transport Sector Support Project",
+   "approved": "May. 27, 2010",
+   "iso3": [
+    "TZA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "3,595",
+   "case_ids": [
+    "bukoba-airport-resettlement-arrears"
+   ],
+   "lead_index": 123
+  },
+  {
+   "project": "EG-Giza North Power Project",
+   "approved": "Jun. 8, 2010",
+   "iso3": [
+    "EGY"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "3,589",
+   "case_ids": [
+    "giza-north-groundwater"
+   ],
+   "lead_index": 124
+  },
+  {
+   "project": "Xinjiang Yining Urban Transport Improvement Project",
+   "approved": "May. 29, 2012",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "3,552",
+   "case_ids": [
+    "yining-urban-roads-demolition"
+   ],
+   "lead_index": 125
+  },
+  {
+   "project": "Burkina Faso Donsin Transport Infrastructure Project",
+   "approved": "May. 16, 2013",
+   "iso3": [
+    "BFA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "3,324",
+   "case_ids": [
+    "burkina-donsin-airport-roads-resettlement"
+   ],
+   "lead_index": 127
+  },
+  {
+   "project": "Third Tamil Nadu Urban Development Project (TNUDP III)",
+   "approved": "Jul. 5, 2005",
+   "iso3": [
+    "IND"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "3,300",
+   "case_ids": [
+    "salem-tnudp-squatter-resettlement"
+   ],
+   "lead_index": 128
+  },
+  {
+   "project": "National Roads Improvement and Management Program (APL) Phase 2",
+   "approved": "May. 13, 2008",
+   "iso3": [
+    "PHL"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "3,149",
+   "case_ids": [
+    "philippines-nrimp2-unpaid-land-claims"
+   ],
+   "lead_index": 130
+  },
+  {
+   "project": "China: Anhui Shaying River Channel Improvement Project",
+   "approved": "Apr. 12, 2011",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "3,140",
+   "case_ids": [
+    "shaying-river-sanba-village-resettlement"
+   ],
+   "lead_index": 131
+  },
+  {
+   "project": "Regional Rusumo Falls Hydroelectric Project",
+   "approved": "Aug. 6, 2013",
+   "iso3": [
+    "RWA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "3,121",
+   "case_ids": [
+    "rusumo-falls-hydro"
+   ],
+   "lead_index": 133
+  },
+  {
+   "project": "Second Rural Sector Support",
+   "approved": "Jun. 24, 2008",
+   "iso3": [
+    "RWA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "3,088",
+   "case_ids": [
+    "rwanda-rssp2-marshland-resettlement"
+   ],
+   "lead_index": 134
+  },
+  {
+   "project": "Liuzhou Environment Management Project",
+   "approved": "May. 24, 2005",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "2,977",
+   "case_ids": [
+    "liuzhou-environment-management-resettlement"
+   ],
+   "lead_index": 135
+  },
+  {
+   "project": "Chongqing Urban-Rural Integration Project",
+   "approved": "Jun. 3, 2010",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "2,912",
+   "case_ids": [
+    "tongliang-road-land-lease-compensation"
+   ],
+   "lead_index": 136
+  },
+  {
+   "project": "Assam State Roads Project",
+   "approved": "Mar. 13, 2012",
+   "iso3": [
+    "IND"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "2,891",
+   "case_ids": [
+    "assam-roads-uncompensated-acquisition"
+   ],
+   "lead_index": 137
+  },
+  {
+   "project": "Second Central Transport Corridor Project",
+   "approved": "May. 27, 2008",
+   "iso3": [
+    "TZA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "2,862",
+   "case_ids": [
+    "dar-brt-kariakoo-clearance"
+   ],
+   "lead_index": 139
+  },
+  {
+   "project": "Poor Rural Communities Development Project",
+   "approved": "Jun. 21, 2005",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "2,791",
+   "case_ids": [
+    "guangxi-poor-rural-land-acquisition"
+   ],
+   "lead_index": 140
+  },
+  {
+   "project": "Kenya: National Urban Transport Improvement Project",
+   "approved": "Aug. 2, 2012",
+   "iso3": [
+    "KEN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "2,763",
+   "case_ids": [
+    "nutrip-road-compensation-arrears"
+   ],
+   "lead_index": 141
+  },
+  {
+   "project": "China: Jiangxi Shangrao Sanqingshan Airport Project",
+   "approved": "May. 13, 2013",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "2,479",
+   "case_ids": [
+    "shangrao-sanqingshan-airport-land-take"
+   ],
+   "lead_index": 145
+  },
+  {
+   "project": "China: Qinghai Xining Urban Transport Project",
+   "approved": "Dec. 27, 2013",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "2,444",
+   "case_ids": [
+    "xining-wusixi-road-demolition"
+   ],
+   "lead_index": 147
+  },
+  {
+   "project": "Zhejiang Qiantang River Basin Small Town Environment Project",
+   "approved": "Jan. 20, 2011",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "2,379",
+   "case_ids": [
+    "qiantang-small-town-house-demolition"
+   ],
+   "lead_index": 150
+  },
+  {
+   "project": "TZ-Gef Energy Dvpt And Access Expansion",
+   "approved": "Dec. 13, 2007",
+   "iso3": [
+    "TZA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "2,351",
+   "case_ids": [
+    "tedap-ukonga-mzinga-wayleaves"
+   ],
+   "lead_index": 151
+  },
+  {
+   "project": "CORRIDOR X HIGHWAY PROJECT",
+   "approved": "Jul. 9, 2009",
+   "iso3": [
+    "SRB"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "2,337",
+   "case_ids": [
+    "corridor-x-dimitrovgrad-bypass-serbia"
+   ],
+   "lead_index": 152
+  },
+  {
+   "project": "CN Integrated Economic Development of Small Towns",
+   "approved": "May. 24, 2012",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "2,138",
+   "case_ids": [
+    "hunan-gansu-small-towns-demolition"
+   ],
+   "lead_index": 156
+  },
+  {
+   "project": "Xi'an Sustainable Urban Transport Project",
+   "approved": "Jun. 24, 2008",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "2,100",
+   "case_ids": [
+    "xian-weiyang-xinjiamiao-resettlement"
+   ],
+   "lead_index": 157
+  },
+  {
+   "project": "Anhui Xuancheng Infrastructure for Industry Relocation",
+   "approved": "Jun. 20, 2013",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "2,053",
+   "case_ids": [
+    "xuancheng-industry-zone-house-demolition"
+   ],
+   "lead_index": 159
+  },
+  {
+   "project": "Af Energy Loss Reduction",
+   "approved": "Feb. 14, 2012",
+   "iso3": [
+    "TJK"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "2,048",
+   "case_ids": [
+    "rogun-stage1-resettlement"
+   ],
+   "lead_index": 160
+  },
+  {
+   "project": "Kenya Transport Sector Support Project",
+   "approved": "Apr. 21, 2011",
+   "iso3": [
+    "KEN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "2,031",
+   "case_ids": [
+    "webuye-interchange-traders"
+   ],
+   "lead_index": 161
+  },
+  {
+   "project": "Tourism Development",
+   "approved": "Jun. 30, 2009",
+   "iso3": [
+    "ETH"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "2,024",
+   "case_ids": [
+    "lalibela-core-zone-relocation"
+   ],
+   "lead_index": 162
+  },
+  {
+   "project": "Guangxi Laibin Water Environment Project",
+   "approved": "May. 31, 2013",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "2,014",
+   "case_ids": [
+    "laibin-water-environment-displacement"
+   ],
+   "lead_index": 163
+  },
+  {
+   "project": "CN-Second Guangdong Pearl River Delta Urban Environment Project",
+   "approved": "Mar. 21, 2007",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "1,980",
+   "case_ids": [
+    "fenjiang-river-foshan-resettlement"
+   ],
+   "lead_index": 164
+  },
+  {
+   "project": "Urban Water Sector Project",
+   "approved": "May. 28, 2009",
+   "iso3": [
+    "BFA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "1,953",
+   "case_ids": [
+    "ouagadougou-onea-works-before-compensation"
+   ],
+   "lead_index": 165
+  },
+  {
+   "project": "JO Amman Development Corridor",
+   "approved": "Jun. 3, 2004",
+   "iso3": [
+    "JOR"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "1,898",
+   "case_ids": [
+    "amman-development-corridor-land"
+   ],
+   "lead_index": 167
+  },
+  {
+   "project": "China: Gansu Qingyang Urban Infrastructure Improvement Project",
+   "approved": "May. 31, 2012",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "1,800",
+   "case_ids": [
+    "qingyang-xifeng-ring-road-relocation"
+   ],
+   "lead_index": 168
+  },
+  {
+   "project": "Nigeria Lagos Urban Transport Project 2",
+   "approved": "Jun. 29, 2010",
+   "iso3": [
+    "NGA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "1,749",
+   "case_ids": [
+    "lagos-brt-ikorodu-market-traders"
+   ],
+   "lead_index": 170
+  },
+  {
+   "project": "3A-West African Gas Pipeline (IDA S/UP)",
+   "approved": "Nov. 23, 2004",
+   "iso3": [
+    "BEN",
+    "GHA",
+    "NGA",
+    "TGO"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "1,584",
+   "case_ids": [
+    "wagp-badagry"
+   ],
+   "lead_index": 176
+  },
+  {
+   "project": "CEMAC - Transport-Transit Facilitation",
+   "approved": "Jun. 26, 2007",
+   "iso3": [
+    "CAF",
+    "CMR",
+    "TCD"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "1,489",
+   "case_ids": [
+    "baoro-bouar-road-house-damage-car"
+   ],
+   "lead_index": 179
+  },
+  {
+   "project": "China Wuhan Second Urban Transport",
+   "approved": "Mar. 30, 2010",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "1,486",
+   "case_ids": [
+    "wuhan-nanhu-village-resettlement-delay"
+   ],
+   "lead_index": 180
+  },
+  {
+   "project": "WAPP APL 1 (1st Phase - Coastal Transmission Backbone)",
+   "approved": "Jun. 30, 2005",
+   "iso3": [
+    "GHA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "1,454",
+   "case_ids": [
+    "ctb-kwabenya-stone-crackers"
+   ],
+   "lead_index": 181
+  },
+  {
+   "project": "Water Sector Improvement APL Phase II: Metolong Dam and Water Supply",
+   "approved": "May. 26, 2009",
+   "iso3": [
+    "LSO"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "1,438",
+   "case_ids": [
+    "metolong-dam"
+   ],
+   "lead_index": 182
+  },
+  {
+   "project": "Transport Project",
+   "approved": "Feb. 22, 2007",
+   "iso3": [
+    "ALB"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "1,426",
+   "case_ids": [
+    "milot-rreshen-road-compensation-albania"
+   ],
+   "lead_index": 183
+  },
+  {
+   "project": "Ethiopia/Nile Basin Initiative: Ethiopia-Sudan Interconnector",
+   "approved": "Dec. 20, 2007",
+   "iso3": [
+    "ETH",
+    "SDN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "1,415",
+   "case_ids": [
+    "ethiopia-sudan-interconnector-line-deaths"
+   ],
+   "lead_index": 184
+  },
+  {
+   "project": "CN-Guizhou Cultural and Natural Heritage Protection and Development",
+   "approved": "May. 5, 2009",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "1,337",
+   "case_ids": [
+    "guizhou-heritage-sites-demolition"
+   ],
+   "lead_index": 189
+  },
+  {
+   "project": "Electricity Distribution and Transmission Improvement Project",
+   "approved": "Jun. 17, 2008",
+   "iso3": [
+    "PAK"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "1,303",
+   "case_ids": [
+    "pakistan-edtip-crop-compensation"
+   ],
+   "lead_index": 190
+  },
+  {
+   "project": "Wuhan Urban Transport Project",
+   "approved": "Mar. 9, 2004",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "1,297",
+   "case_ids": [
+    "wuhan-middle-ring-resettlement-overrun"
+   ],
+   "lead_index": 191
+  },
+  {
+   "project": "Afghanistan: Sustainable Development of Natural Resources Project II",
+   "approved": "May. 31, 2011",
+   "iso3": [
+    "AFG"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "1,287",
+   "case_ids": [
+    "mes-aynak-resettlement"
+   ],
+   "lead_index": 192
+  },
+  {
+   "project": "Increased Access to Modern Energy",
+   "approved": "Jun. 23, 2009",
+   "iso3": [
+    "BEN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "1,249",
+   "case_ids": [
+    "benin-iame-transmission-compensation"
+   ],
+   "lead_index": 193
+  },
+  {
+   "project": "BR AF to the Ceara Integrated Water Resource Management Project",
+   "approved": "Dec. 18, 2008",
+   "iso3": [
+    "BRA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "1,176",
+   "case_ids": [
+    "gameleira-agrovila-ceara"
+   ],
+   "lead_index": 196
+  },
+  {
+   "project": "WAPP: The First Phase of the Inter-Zonal Transmission Hub Project of the WAPP (APL3) Program",
+   "approved": "Jun. 29, 2011",
+   "iso3": [
+    "BFA",
+    "GHA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "1,166",
+   "case_ids": [
+    "wapp-apl3-zagtouli-bolgatanga-deaths"
+   ],
+   "lead_index": 197
+  },
+  {
+   "project": "Kampala Institutional and Infrastructure Development Project",
+   "approved": "Nov. 6, 2007",
+   "iso3": [
+    "UGA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "1,118",
+   "case_ids": [
+    "kiidp-kampala-roads-compensation"
+   ],
+   "lead_index": 200
+  },
+  {
+   "project": "IN National Ganga River Basin Project",
+   "approved": "May. 31, 2011",
+   "iso3": [
+    "IND"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "1,103",
+   "case_ids": [
+    "patna-ganga-riverfront-resettlement"
+   ],
+   "lead_index": 201
+  },
+  {
+   "project": "Nigeria Erosion and Watershed Management Project",
+   "approved": "May. 8, 2012",
+   "iso3": [
+    "NGA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "1,087",
+   "case_ids": [
+    "newmap-nigeria-erosion-displacement"
+   ],
+   "lead_index": 203
+  },
+  {
+   "project": "Tanzania Strategic Cities Project",
+   "approved": "May. 27, 2010",
+   "iso3": [
+    "TZA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "1,054",
+   "case_ids": [
+    "tanzania-tscp-compensation-delays"
+   ],
+   "lead_index": 204
+  },
+  {
+   "project": "Liberia Road Asset Management Project - LIBRAMP",
+   "approved": "Jun. 7, 2011",
+   "iso3": [
+    "LBR"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "1,042",
+   "case_ids": [
+    "liberia-redlight-traders"
+   ],
+   "lead_index": 205
+  },
+  {
+   "project": "Rural Access Improvement and Decentralization Project",
+   "approved": "Jun. 21, 2005",
+   "iso3": [
+    "NPL"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "1,028",
+   "case_ids": [
+    "nepal-raidp-land-donation"
+   ],
+   "lead_index": 206
+  },
+  {
+   "project": "Fourth East West Highway Improvement Project",
+   "approved": "May. 9, 2013",
+   "iso3": [
+    "GEO"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "1,011",
+   "case_ids": [
+    "agara-zemo-osiauri-e60-agarebi"
+   ],
+   "lead_index": 207
+  },
+  {
+   "project": "Dem Rep Congo - Western Growth Poles",
+   "approved": "Jun. 11, 2013",
+   "iso3": [
+    "COD"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "976",
+   "case_ids": [
+    "maluku-sez-maes-inkiene-demolition"
+   ],
+   "lead_index": 210
+  },
+  {
+   "project": "Water Resources Development",
+   "approved": "Sep. 15, 2011",
+   "iso3": [
+    "MOZ"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "935",
+   "case_ids": [
+    "corumana-dam-resettlement-mozambique"
+   ],
+   "lead_index": 213
+  },
+  {
+   "project": "Brasilia Environmentally Sustainable Project",
+   "approved": "Aug. 25, 2005",
+   "iso3": [
+    "BRA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "903",
+   "case_ids": [
+    "brasilia-vila-estrutural-resettlement"
+   ],
+   "lead_index": 215
+  },
+  {
+   "project": "Sierra Leone Energy Access Project - Sierra Leone Infrastructure Development Fund",
+   "approved": "Jan. 31, 2013",
+   "iso3": [
+    "SLE"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "888",
+   "case_ids": [
+    "freetown-wellington-33kv-demolitions"
+   ],
+   "lead_index": 217
+  },
+  {
+   "project": "Nepal-India Electricity Transmission and Trade Project",
+   "approved": "Jun. 21, 2011",
+   "iso3": [
+    "NPL"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "873",
+   "case_ids": [
+    "bharatpur-bardaghat-line-dumkibas"
+   ],
+   "lead_index": 218
+  },
+  {
+   "project": "Timor Leste Road Climate Resilience Project",
+   "approved": "May. 17, 2011",
+   "iso3": [
+    "TLS"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "851",
+   "case_ids": [
+    "laulara-solerema-road-structures"
+   ],
+   "lead_index": 221
+  },
+  {
+   "project": "China-PCF-CDCF Hubei Guangrun Hydropower",
+   "approved": "Oct. 27, 2006",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "848",
+   "case_ids": [
+    "zhamushui-guangrun-resettlement-postponed"
+   ],
+   "lead_index": 222
+  },
+  {
+   "project": "China: Kunming Urban Rail Project",
+   "approved": "May. 10, 2011",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "808",
+   "case_ids": [
+    "kunming-line-3-jinmasi-relocation"
+   ],
+   "lead_index": 225
+  },
+  {
+   "project": "Taunsa Barrages Emergency Rehabilitation and Modernization Project",
+   "approved": "Mar. 15, 2005",
+   "iso3": [
+    "PAK"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "799",
+   "case_ids": [
+    "taunsa-barrage-relocation"
+   ],
+   "lead_index": 226
+  },
+  {
+   "project": "Nigeria Federal Roads Development Project",
+   "approved": "Apr. 3, 2008",
+   "iso3": [
+    "NGA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "750",
+   "case_ids": [
+    "nigeria-federal-roads-trader-relocations"
+   ],
+   "lead_index": 229
+  },
+  {
+   "project": "Chongqing Urban Rural Integration Project II-Health",
+   "approved": "Jun. 14, 2012",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "744",
+   "case_ids": [
+    "wushan-hospital-landslide-resettlement"
+   ],
+   "lead_index": 230
+  },
+  {
+   "project": "Rampur Hydropower Project",
+   "approved": "Sep. 13, 2007",
+   "iso3": [
+    "IND"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "711",
+   "case_ids": [
+    "rampur-hydro"
+   ],
+   "lead_index": 231
+  },
+  {
+   "project": "The Greater Addo Elephant National Park Project",
+   "approved": "Feb. 24, 2004",
+   "iso3": [
+    "ZAF"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "709",
+   "case_ids": [
+    "addo-park-farm-worker-rehousing"
+   ],
+   "lead_index": 232
+  },
+  {
+   "project": "Wenchuan Earthquake Recovery",
+   "approved": "Feb. 12, 2009",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "705",
+   "case_ids": [
+    "moba-gorge-forest-land-compensation"
+   ],
+   "lead_index": 233
+  },
+  {
+   "project": "Abidjan-Lagos Trade and Transport Facilitation Program - APL-2",
+   "approved": "May. 31, 2012",
+   "iso3": [
+    "CIV"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "692",
+   "case_ids": [
+    "abidjan-lagos-corridor-road-works-deaths-and-late-compensation"
+   ],
+   "lead_index": 238
+  },
+  {
+   "project": "Odra River Basin Flood Protection",
+   "approved": "Mar. 21, 2007",
+   "iso3": [
+    "POL"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "689",
+   "case_ids": [
+    "raciborz-polder-nieboczowy-village-removal"
+   ],
+   "lead_index": 240
+  },
+  {
+   "project": "Cameroon - Kribi Gas Power Project",
+   "approved": "Nov. 10, 2011",
+   "iso3": [
+    "CMR"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "680",
+   "case_ids": [
+    "kribi-gas-plant-land-and-crops-taken-mpolongwe"
+   ],
+   "lead_index": 242
+  },
+  {
+   "project": "Gansu Cultural and Natural Heritage Protection and Development Project",
+   "approved": "Mar. 20, 2008",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "665",
+   "case_ids": [
+    "lutusi-liancheng-heritage-resettlement"
+   ],
+   "lead_index": 243
+  },
+  {
+   "project": "DJ- Flood Emergency Rehabilitation",
+   "approved": "Sep. 2, 2004",
+   "iso3": [
+    "DJI"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "660",
+   "case_ids": [
+    "djibouti-ambouli-dike-resettlement"
+   ],
+   "lead_index": 244
+  },
+  {
+   "project": "Second East-West Highway Improvement",
+   "approved": "Dec. 18, 2007",
+   "iso3": [
+    "GEO"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "607",
+   "case_ids": [
+    "igoeti-sveneti-highway-worker-death-and-land-damage"
+   ],
+   "lead_index": 245
+  },
+  {
+   "project": "Jiangxi Shihutang Navigation and Hydropower Complex Project",
+   "approved": "Sep. 25, 2008",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "597",
+   "case_ids": [
+    "shihutang-dam-ganjiang-relocation"
+   ],
+   "lead_index": 246
+  },
+  {
+   "project": "Infrastructure &amp; Institutions Emergency Recovery",
+   "approved": "Mar. 18, 2010",
+   "iso3": [
+    "HTI"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "582",
+   "case_ids": [
+    "cap-labadie-road-compensation-escrow"
+   ],
+   "lead_index": 247
+  },
+  {
+   "project": "CM-Urban and Water Development Support Project",
+   "approved": "May. 29, 2007",
+   "iso3": [
+    "CMR"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "536",
+   "case_ids": [
+    "pdue-cameroon-unpaid-compensation-yaounde"
+   ],
+   "lead_index": 250
+  },
+  {
+   "project": "RCI- Emergency Urban Infrastructure (FY08)",
+   "approved": "Jun. 12, 2008",
+   "iso3": [
+    "CIV"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "519",
+   "case_ids": [
+    "abidjan-riviera-2-shop-workers-unpaid-wages"
+   ],
+   "lead_index": 251
+  },
+  {
+   "project": "CO APL1 La Guajira Water &amp; Sanitation Infrast and Service Mngmt Proj",
+   "approved": "Mar. 15, 2007",
+   "iso3": [
+    "COL"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "518",
+   "case_ids": [
+    "riohacha-wayuu-lagoon-resettlement"
+   ],
+   "lead_index": 252
+  },
+  {
+   "project": "GH Second Urban Environmental Sanitation Project",
+   "approved": "Apr. 29, 2004",
+   "iso3": [
+    "GHA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "516",
+   "case_ids": [
+    "kwabenya-landfill-expropriation"
+   ],
+   "lead_index": 253
+  },
+  {
+   "project": "Highways Rehabilitation Project",
+   "approved": "Dec. 1, 2005",
+   "iso3": [
+    "PAK"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "513",
+   "case_ids": [
+    "pakistan-earthquake-roads-compensation-arrears"
+   ],
+   "lead_index": 254
+  },
+  {
+   "project": "Urgent Electricity Rehabilitation",
+   "approved": "Jan. 27, 2005",
+   "iso3": [
+    "RWA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "459",
+   "case_ids": [
+    "kigali-gasabo-electricity-land-retrospective-plan"
+   ],
+   "lead_index": 256
+  },
+  {
+   "project": "Western Indonesia National Roads Improvement Project",
+   "approved": "May. 26, 2011",
+   "iso3": [
+    "IDN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "442",
+   "case_ids": [
+    "lubuk-alung-kuraitaji-road-works-death"
+   ],
+   "lead_index": 258
+  },
+  {
+   "project": "Land Husbandry; Water Harvesting and Hillside Irrigation",
+   "approved": "Dec. 22, 2009",
+   "iso3": [
+    "RWA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "423",
+   "case_ids": [
+    "rwanda-hillside-irrigation-relocation-deaths"
+   ],
+   "lead_index": 262
+  },
+  {
+   "project": "VN-GEF-Coastal Cities Project",
+   "approved": "Jun. 23, 2009",
+   "iso3": [
+    "VNM"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "423",
+   "case_ids": [
+    "quy-nhon-coastal-cities-sanitation-resettlement"
+   ],
+   "lead_index": 263
+  },
+  {
+   "project": "Nepal-India Regional Trade And Transport Project",
+   "approved": "Jun. 28, 2013",
+   "iso3": [
+    "NPL"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "414",
+   "case_ids": [
+    "chobhar-dry-port-arrests-kathmandu",
+    "narayanghat-mugling-road-structures"
+   ],
+   "lead_index": 265
+  },
+  {
+   "project": "Energy Sector Cleanup and Land Reclamation Project",
+   "approved": "Jun. 13, 2006",
+   "iso3": [
+    "XKX"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "407",
+   "case_ids": [
+    "hade-shala-neighbourhood-mine-resettlement"
+   ],
+   "lead_index": 267
+  },
+  {
+   "project": "Laguna de Bay Institutional Strengthening and Community Participation Project - Additional Financing",
+   "approved": "Apr. 12, 2011",
+   "iso3": [
+    "PHL"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "397",
+   "case_ids": [
+    "rodriguez-ecotourism-site-397-families-relocated"
+   ],
+   "lead_index": 269
+  },
+  {
+   "project": "The Eastern Electricity Highway Project under the First Phase of the Eastern Africa Power Integration Program",
+   "approved": "Jul. 12, 2012",
+   "iso3": [
+    "ETH",
+    "KEN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "386",
+   "case_ids": [
+    "ethiopia-kenya-power-line-kenya"
+   ],
+   "lead_index": 270
+  },
+  {
+   "project": "LB-Cultural Heritage Add. Financing",
+   "approved": "Apr. 12, 2012",
+   "iso3": [
+    "LBN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "371",
+   "case_ids": [
+    "tripoli-tyre-heritage-market-relocation"
+   ],
+   "lead_index": 271
+  },
+  {
+   "project": "India: Emergency Tsunami Reconstruction Project",
+   "approved": "May. 3, 2005",
+   "iso3": [
+    "IND"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "360",
+   "case_ids": [
+    "nagapattinam-canal-demolition-tsunami-rebuild"
+   ],
+   "lead_index": 274
+  },
+  {
+   "project": "Sao Paulo Metro Line 5 Project",
+   "approved": "Apr. 20, 2010",
+   "iso3": [
+    "BRA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "350",
+   "case_ids": [
+    "pinheiros-station-collapse-sao-paulo"
+   ],
+   "lead_index": 276
+  },
+  {
+   "project": "Road Rehabilitation and Maintenance Project Phase II",
+   "approved": "Oct. 16, 2009",
+   "iso3": [
+    "ZMB"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "333",
+   "case_ids": [
+    "kitwe-mufuchani-bridge-relocation"
+   ],
+   "lead_index": 278
+  },
+  {
+   "project": "Fostering Agricultural Productivity Project",
+   "approved": "Jun. 3, 2010",
+   "iso3": [
+    "MLI"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "310",
+   "case_ids": [
+    "mali-office-du-niger-hamlets"
+   ],
+   "lead_index": 282
+  },
+  {
+   "project": "AR Santa Fe Road Infrastructure",
+   "approved": "Feb. 13, 2007",
+   "iso3": [
+    "ARG"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "305",
+   "case_ids": [
+    "santa-fe-road-19-expropriation"
+   ],
+   "lead_index": 283
+  },
+  {
+   "project": "Second Trade and Transport Facilitation Project",
+   "approved": "May. 29, 2007",
+   "iso3": [
+    "MKD"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "294",
+   "case_ids": [
+    "tabanovce-kumanovo-motorway-compensation-arrears"
+   ],
+   "lead_index": 284
+  },
+  {
+   "project": "Ningbo New Countryside Development Project",
+   "approved": "Feb. 25, 2010",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "287",
+   "case_ids": [
+    "chunhu-fenghua-access-road-demolition"
+   ],
+   "lead_index": 285
+  },
+  {
+   "project": "BT: Urban Development II",
+   "approved": "Apr. 29, 2010",
+   "iso3": [
+    "BTN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "279",
+   "case_ids": [
+    "thimphu-land-pooling-compensation-arrears"
+   ],
+   "lead_index": 286
+  },
+  {
+   "project": "Cities and Climate Change",
+   "approved": "Apr. 3, 2012",
+   "iso3": [
+    "MOZ"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "276",
+   "case_ids": [
+    "beira-maputo-climate-works-deaths-compensation"
+   ],
+   "lead_index": 288
+  },
+  {
+   "project": "Ferghana Valley Water Resources Management Phase-I Project",
+   "approved": "Sep. 24, 2009",
+   "iso3": [
+    "UZB"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "263",
+   "case_ids": [
+    "ferghana-valley-drainage-land-taken-without-plan"
+   ],
+   "lead_index": 291
+  },
+  {
+   "project": "Transport Corridors Project",
+   "approved": "Dec. 19, 2013",
+   "iso3": [
+    "IRQ"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "256",
+   "case_ids": [
+    "iraq-expressway-worker-deaths-vendor-relocation"
+   ],
+   "lead_index": 292
+  },
+  {
+   "project": "Lesotho Integrated Transport Project",
+   "approved": "Oct. 19, 2006",
+   "iso3": [
+    "LSO"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "247",
+   "case_ids": [
+    "lesotho-integrated-transport-farmland-and-resettlement"
+   ],
+   "lead_index": 294
+  },
+  {
+   "project": "DRC Emergency Urban and Social Rehabilitation Project",
+   "approved": "Mar. 29, 2007",
+   "iso3": [
+    "COD"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "245",
+   "case_ids": [
+    "kinshasa-water-works-land-and-houses-taken"
+   ],
+   "lead_index": 295
+  },
+  {
+   "project": "Second Decentralized City Management",
+   "approved": "Sep. 12, 2005",
+   "iso3": [
+    "BEN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "243",
+   "case_ids": [
+    "takon-landfill-land-taken-porto-novo"
+   ],
+   "lead_index": 297
+  },
+  {
+   "project": "Rwanda Electricity Access Scale-up and Sector Wide Approach (SWAp) Development Project",
+   "approved": "Oct. 15, 2009",
+   "iso3": [
+    "RWA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "234",
+   "case_ids": [
+    "rwanda-electricity-access-rukarara-relocation"
+   ],
+   "lead_index": 299
+  },
+  {
+   "project": "Jordan - Cultural Heritage; Tourism &amp; Urban Development",
+   "approved": "Jan. 30, 2007",
+   "iso3": [
+    "JOR"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "231",
+   "case_ids": [
+    "jordan-heritage-cities-house-shop-demolition"
+   ],
+   "lead_index": 300
+  },
+  {
+   "project": "DRC Urban Development Project FY13",
+   "approved": "May. 9, 2013",
+   "iso3": [
+    "COD"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "230",
+   "case_ids": [
+    "drc-urban-project-injury-threats-and-works-before-resettlement"
+   ],
+   "lead_index": 301
+  },
+  {
+   "project": "Participatory Irrigation Development Project",
+   "approved": "Jun. 24, 2009",
+   "iso3": [
+    "PHL"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "204",
+   "case_ids": [
+    "philippines-irrigation-canal-easement-relocations"
+   ],
+   "lead_index": 308
+  },
+  {
+   "project": "Kabeli Transmission Project",
+   "approved": "May. 10, 2011",
+   "iso3": [
+    "NPL"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "203",
+   "case_ids": [
+    "kabeli-transmission-line-compensation-arrears"
+   ],
+   "lead_index": 309
+  },
+  {
+   "project": "Metro Manila Wastewater Management Project",
+   "approved": "May. 15, 2012",
+   "iso3": [
+    "PHL"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "192",
+   "case_ids": [
+    "muntinlupa-sewage-plant-site-clearances"
+   ],
+   "lead_index": 311
+  },
+  {
+   "project": "Beira Railway Project",
+   "approved": "Oct. 14, 2004",
+   "iso3": [
+    "MOZ"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "190",
+   "case_ids": [
+    "sena-railway-right-of-way-and-retrenchment"
+   ],
+   "lead_index": 312
+  },
+  {
+   "project": "Regional Development Project",
+   "approved": "Mar. 20, 2012",
+   "iso3": [
+    "GEO"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "165",
+   "case_ids": [
+    "dartlo-telavi-rehabilitation-compensation-delays"
+   ],
+   "lead_index": 316
+  },
+  {
+   "project": "EC Manta Public Services Improvement Project",
+   "approved": "Aug. 8, 2013",
+   "iso3": [
+    "ECU"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "150",
+   "case_ids": [
+    "manta-properties-taken-without-agreement"
+   ],
+   "lead_index": 319
+  },
+  {
+   "project": "Bolivia Urban Infrastructure Project",
+   "approved": "Nov. 21, 2006",
+   "iso3": [
+    "BOL"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "148",
+   "case_ids": [
+    "el-alto-avenue-land-paid-for-afterwards"
+   ],
+   "lead_index": 320
+  },
+  {
+   "project": "BR-Sao Paulo Metro Line 4 - Additional Financing",
+   "approved": "Apr. 8, 2008",
+   "iso3": [
+    "BRA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "129",
+   "case_ids": [
+    "pinheiros-station-collapse-sao-paulo"
+   ],
+   "lead_index": 329
+  },
+  {
+   "project": "DO Emergency Recovery &amp; Disaster Mgmt",
+   "approved": "May. 1, 2008",
+   "iso3": [
+    "DOM"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "128",
+   "case_ids": [
+    "canal-neyba-arroyo-rico-expropriations"
+   ],
+   "lead_index": 330
+  },
+  {
+   "project": "BR Ceara Inclusive Growth (SWAp II)",
+   "approved": "Sep. 30, 2008",
+   "iso3": [
+    "BRA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "114",
+   "case_ids": [
+    "ceara-sanear-ii-resettlement"
+   ],
+   "lead_index": 332
+  },
+  {
+   "project": "Xinjiang Turfan Water Conservation Project",
+   "approved": "Jun. 17, 2010",
+   "iso3": [
+    "CHN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "108",
+   "case_ids": [
+    "ertanggou-reservoir-tuyamar-village-inundation"
+   ],
+   "lead_index": 335
+  },
+  {
+   "project": "Integrated Coastal Zone Management &amp; Clean-Up Project (APL #1)",
+   "approved": "Jun. 21, 2005",
+   "iso3": [
+    "ALB"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "103",
+   "case_ids": [
+    "bajkaj-landfill-land-taken-before-payment",
+    "jale-albania"
+   ],
+   "lead_index": 337
+  },
+  {
+   "project": "Second Road and Safety Improvement Project",
+   "approved": "Sep. 20, 2012",
+   "iso3": [
+    "UKR"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "73",
+   "case_ids": [
+    "bilotserkivka-m03-bypass-house-damage"
+   ],
+   "lead_index": 342
+  },
+  {
+   "project": "Manila Third Sewerage Project",
+   "approved": "Jun. 21, 2005",
+   "iso3": [
+    "PHL"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "72",
+   "case_ids": [
+    "manila-sewerage-site-clearances-san-mateo-road-5"
+   ],
+   "lead_index": 343
+  },
+  {
+   "project": "Road Rehabilitation and Maintenance Project",
+   "approved": "Mar. 9, 2004",
+   "iso3": [
+    "ZMB"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "67",
+   "case_ids": [
+    "kasumbalesa-market-traders-moved",
+    "kitwe-mufuchani-bridge-relocation"
+   ],
+   "lead_index": 344
+  },
+  {
+   "project": "Mongolia Mining Sector Technical Assistance Project",
+   "approved": "Jun. 26, 2008",
+   "iso3": [
+    "MNG"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "41",
+   "case_ids": [
+    "east-tsankhi-herder-displacement"
+   ],
+   "lead_index": 354
+  },
+  {
+   "project": "Municipal Development",
+   "approved": "Sep. 16, 2010",
+   "iso3": [
+    "BLZ"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "40",
+   "case_ids": [
+    "dangriga-market-vendors-income-loss"
+   ],
+   "lead_index": 355
+  },
+  {
+   "project": "Central African Backbone - APL2",
+   "approved": "Jan. 20, 2011",
+   "iso3": [
+    "STP"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "40",
+   "case_ids": [
+    "sao-gabriel-cable-station-urban-farmers"
+   ],
+   "lead_index": 356
+  },
+  {
+   "project": "GZ- Electric Utility Management",
+   "approved": "May. 15, 2008",
+   "iso3": [
+    "PSE"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "38",
+   "case_ids": [
+    "west-bank-substation-land-taking-eump"
+   ],
+   "lead_index": 357
+  },
+  {
+   "project": "Land Administration Project - 2",
+   "approved": "Mar. 31, 2011",
+   "iso3": [
+    "GHA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "36",
+   "case_ids": [
+    "kumasi-lands-office-farmers-displaced"
+   ],
+   "lead_index": 358
+  },
+  {
+   "project": "Senegal River Basin Multi-purpose Water Resources Development Project",
+   "approved": "Jun. 8, 2006",
+   "iso3": [
+    "GIN",
+    "MLI",
+    "MRT",
+    "SEN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "36",
+   "case_ids": [
+    "senegal-river-perimeter-crops-destroyed"
+   ],
+   "lead_index": 359
+  },
+  {
+   "project": "Gas Sector Development",
+   "approved": "Nov. 29, 2005",
+   "iso3": [
+    "TUR"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "31",
+   "case_ids": [
+    "tuz-golu-gas-storage-informal-households"
+   ],
+   "lead_index": 364
+  },
+  {
+   "project": "West Africa Regional Communications Infrastructure Project - APL-1B",
+   "approved": "Jun. 21, 2011",
+   "iso3": [
+    "BFA",
+    "GMB"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "27",
+   "case_ids": [
+    "bijilo-cable-route-compensation-unpaid"
+   ],
+   "lead_index": 366
+  },
+  {
+   "project": "Malawi: Shire River Basin Management Program (Phase-I) Project",
+   "approved": "Jun. 14, 2012",
+   "iso3": [
+    "MWI"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "26",
+   "case_ids": [
+    "kamuzu-barrage-liwonde-businesses"
+   ],
+   "lead_index": 368
+  },
+  {
+   "project": "Southern Africa Trade and Transport Facilitation Project",
+   "approved": "May. 21, 2013",
+   "iso3": [
+    "TZA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "17",
+   "case_ids": [
+    "mafinga-igawa-road-deaths-displacement"
+   ],
+   "lead_index": 375
+  },
+  {
+   "project": "ARP/II-Integrated Solid Waste Management",
+   "approved": "Jun. 17, 2008",
+   "iso3": [
+    "AZE"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "14",
+   "case_ids": [
+    "balakhani-landfill-families-and-waste-pickers"
+   ],
+   "lead_index": 377
+  },
+  {
+   "project": "Zanzibar Urban Services Project",
+   "approved": "Feb. 24, 2011",
+   "iso3": [
+    "TZA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "14",
+   "case_ids": [
+    "zanzibar-drainage-deaths-compensation"
+   ],
+   "lead_index": 379
+  },
+  {
+   "project": "Central African Backbone - APL4 - Gabon",
+   "approved": "Mar. 28, 2012",
+   "iso3": [
+    "GAB"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "13",
+   "case_ids": [
+    "lalara-fibre-assets-destroyed"
+   ],
+   "lead_index": 381
+  },
+  {
+   "project": "Education Excellence and Equity Project",
+   "approved": "Jun. 1, 2006",
+   "iso3": [
+    "ALB"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "11",
+   "case_ids": [
+    "shkodra-lezha-school-sites-land-cleared"
+   ],
+   "lead_index": 383
+  },
+  {
+   "project": "Additional Financing to the St. Lucia Disaster Management Project II",
+   "approved": "Jul. 15, 2008",
+   "iso3": [
+    "LCA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "11",
+   "case_ids": [
+    "dennery-embankment-land-used-without-compensation"
+   ],
+   "lead_index": 384
+  },
+  {
+   "project": "West Africa Regional Transport and Transit Facilitation Project",
+   "approved": "Jun. 19, 2008",
+   "iso3": [
+    "BFA",
+    "GHA",
+    "MLI"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "9",
+   "case_ids": [
+    "tema-ouagadougou-bamako-corridor-compensation"
+   ],
+   "lead_index": 386
+  },
+  {
+   "project": "AR APL2 National Highway Asset Mgt",
+   "approved": "Jun. 28, 2007",
+   "iso3": [
+    "ARG"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "8",
+   "case_ids": [
+    "rn34-colonia-santa-rosa-canteen-eviction"
+   ],
+   "lead_index": 388
+  },
+  {
+   "project": "IR-Ahwaz &amp; Shiraz Water Supply and Sanitation Project",
+   "approved": "May. 25, 2004",
+   "iso3": [
+    "IRN"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "8",
+   "case_ids": [
+    "ahwaz-jomhori-pumping-station-house-expropriation"
+   ],
+   "lead_index": 389
+  },
+  {
+   "project": "Botswana - Morupule B Generation and Transmission Project",
+   "approved": "Oct. 29, 2009",
+   "iso3": [
+    "BWA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "5",
+   "case_ids": [
+    "morupule-b-family-moved-fatal-accidents"
+   ],
+   "lead_index": 396
+  },
+  {
+   "project": "Hurricane Tomas Emergency Recovery Loan",
+   "approved": "Jan. 13, 2011",
+   "iso3": [
+    "VCT"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "4",
+   "case_ids": [
+    "hopewell-road-land-taken-st-vincent"
+   ],
+   "lead_index": 401
+  },
+  {
+   "project": "Honduras Road Rehabilitation and Improvement II",
+   "approved": "Jun. 17, 2008",
+   "iso3": [
+    "HND"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "3",
+   "case_ids": [
+    "honduras-road-rehabilitation-ii-land-taken"
+   ],
+   "lead_index": 403
+  },
+  {
+   "project": "Metro Colombo Urban Development Project",
+   "approved": "Mar. 15, 2012",
+   "iso3": [
+    "LKA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "2",
+   "case_ids": [
+    "colombo-st-sebastian-canal-mcudp"
+   ],
+   "lead_index": 406
+  },
+  {
+   "project": "PE Rural Electrification",
+   "approved": "Mar. 7, 2006",
+   "iso3": [
+    "PER"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "2",
+   "case_ids": [
+    "peru-rural-electrification-right-of-way-arrears"
+   ],
+   "lead_index": 407
+  },
+  {
+   "project": "Regional Communications Infrastructure Project",
+   "approved": "Mar. 29, 2007",
+   "iso3": [
+    "BDI",
+    "KEN",
+    "MDG"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "1",
+   "case_ids": [
+    "burundi-fibre-backbone-unpaid-compensation"
+   ],
+   "lead_index": 409
+  },
+  {
+   "project": "Uzbekistan Bukhara and Samarkand Sewerage Project",
+   "approved": "Aug. 4, 2009",
+   "iso3": [
+    "UZB"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "1",
+   "case_ids": [
+    "bukhara-sewer-pump-station-cleared-plot"
+   ],
+   "lead_index": 412
+  },
+  {
+   "project": "Santos Municipality",
+   "approved": "Nov. 24, 2009",
+   "iso3": [
+    "BRA"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "",
+   "case_ids": [
+    "santos-vila-gilda-stilt-house-resettlement"
+   ],
+   "lead_index": 416
+  },
+  {
+   "project": "Emergency Living Conditions Improvement Support Project",
+   "approved": "May. 26, 2005",
+   "iso3": [
+    "COD"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "",
+   "case_ids": [
+    "drc-rn5-rn6-rn2-compensation-arrears"
+   ],
+   "lead_index": 417
+  },
+  {
+   "project": "Water And Sanitation Sector Support Project 1st APL",
+   "approved": "Mar. 22, 2005",
+   "iso3": [
+    "COL"
+   ],
+   "section": "Confirmed displacement",
+   "displaced": "",
+   "case_ids": [
+    "colombia-water-easements-unsettled-at-closing"
+   ],
+   "lead_index": 418
+  },
+  {
+   "project": "BR Municipal APL: Teresina Enhancing Municipal Governance and Quality of Life Project",
+   "approved": "Mar. 27, 2008",
+   "iso3": [
+    "BRA"
+   ],
+   "section": "Possible displacement",
+   "displaced": "",
+   "case_ids": [
+    "teresina-lagoas-do-norte"
+   ],
+   "lead_index": 523,
+   "added_by": "round 33 check: name-and-approval-date identity in the case card, Bank project record re-read from the projects API"
+  },
+  {
+   "project": "Ethiopia Promoting Basic Services Program Phase III Project",
+   "approved": "Sep. 25, 2012",
+   "iso3": [
+    "ETH"
+   ],
+   "section": "Possible displacement",
+   "displaced": "",
+   "case_ids": [
+    "gambella-villagization"
+   ],
+   "lead_index": 595,
+   "added_by": "round 33 check: name-and-approval-date identity in the case card, Bank project record re-read from the projects API"
+  },
+  {
+   "project": "Ethiopia Protection of Basic Services Program Phase II Project",
+   "approved": "May. 14, 2009",
+   "iso3": [
+    "ETH"
+   ],
+   "section": "Possible displacement",
+   "displaced": "",
+   "case_ids": [
+    "gambella-villagization"
+   ],
+   "lead_index": 598,
+   "added_by": "round 33 check: name-and-approval-date identity in the case card, Bank project record re-read from the projects API"
+  },
+  {
+   "project": "Kenya - Natural Resource Management Project",
+   "approved": "Mar. 27, 2007",
+   "iso3": [
+    "KEN"
+   ],
+   "section": "Possible displacement",
+   "displaced": "",
+   "case_ids": [
+    "embobut-sengwer"
+   ],
+   "lead_index": 697,
+   "added_by": "round 33 check: name-and-approval-date identity in the case card, Bank project record re-read from the projects API"
+  },
+  {
+   "project": "Lignite Power Technical Assistance Project",
+   "approved": "Oct. 12, 2006",
+   "iso3": [
+    "XKX"
+   ],
+   "section": "Possible displacement",
+   "displaced": "",
+   "case_ids": [
+    "kosovo-hade-shala"
+   ],
+   "lead_index": 946,
+   "added_by": "round 33 check: name-and-approval-date identity in the case card, Bank project record re-read from the projects API"
+  }
+ ],
+ "same_date_only_not_counted": [
+  {
+   "pid": "P130422",
+   "bank_name": "CEMAC Transport and Transit Facilitation- Third Additional Financing",
+   "icij_name": "Vietnam - Managing Natural Hazards Project",
+   "date": "2012-07-26"
+  },
+  {
+   "pid": "P094917",
+   "bank_name": "WAPP APL 1 (2nd Phase  - COASTAL TRANSMISSION BACKBONE)",
+   "icij_name": "GEF-Ningbo Water and Environment Project",
+   "date": "2006-06-29"
+  },
+  {
+   "pid": "P125915",
+   "bank_name": "Africa:  CEMAC Transport and Transit Facil - Second Add'l Financing",
+   "icij_name": "CM-Sanitation Project",
+   "date": "2011-06-23"
+  },
+  {
+   "pid": "P089244",
+   "bank_name": "Energy Loss Reduction Project",
+   "icij_name": "Energy Community of South East Europe (APL) Program - Serbia and Montenegro Component - Serbia Project",
+   "date": "2005-06-30"
+  },
+  {
+   "pid": "P119684",
+   "bank_name": "VN- Natural Disaster Risk Management Project - Additional Finance",
+   "icij_name": "TUN GEF Second Natural Resources Management",
+   "date": "2010-06-17"
+  }
+ ]
+}

@@ -3602,15 +3602,26 @@ function wholePicHTML() {
     const C = window.CASES || [], M = window.CMP || [];
     const wbifc = C.filter((c) => (c.lk || []).some((k) => k === "wb" || k === "ifc"));
     const w0413 = wbifc.filter((c) => c.start >= 2004 && c.start <= 2013).length;
+    // Matched project by project on 15 November 2026 and checked by a second
+    // pass; the working is in docs/icij_matched.json. These are counts of a
+    // one-off comparison, not of the data on this page, so they are written
+    // here rather than computed: of ICIJ's 968 rows, 249 are on this map, 244
+    // of them from ICIJ's 422-row confirmed-displacement table. ICIJ published
+    // 969; one row was a duplicate and was removed.
+    const icijRows = 968, icijMatched = 249, icijConf = 422, icijConfMatched = 244;
+    // Of the w0413 cases above, this many are among those 249. The two sets are
+    // not the same thing and the row below says so.
+    const w0413InIcij = 234;
     const harm = M.filter((c) => c.h), harmIn = harm.filter((c) => (c.cs || []).length).length;
     const imf = C.filter((c) => (c.lk || []).includes("imf")).length;
     const thin = C.filter((c) => (c.lk || []).some((k) => k === "cn" || k === "bil" || k === "priv" || k === "fdi" || k === "fdn")).length;
     const pc = (a, b) => Math.round(a / b * 100) + "%";
     const r = (what, here, share, kind) => '<tr><td style="padding:2px 10px 2px 0">' + what + '</td><td style="padding:2px 10px 2px 0;white-space:nowrap">' + here + '</td><td style="padding:2px 10px 2px 0;white-space:nowrap"><b>' + share + '</b></td><td style="padding:2px 0;white-space:nowrap">' + kind + '</td></tr>';
     return '<h3>How much of the whole picture is here</h3>\n' +
-      '<p>The table above counts what is filled in on the cases that are here. This one asks the harder question: how many cases are missing. There is no full answer, because no institution publishes a list of the loans, grants and investments that harmed people. Two rows below are counts against a published figure. The rest are this map\u2019s own estimate, written down so a reader can argue with them, and they are not measurements.</p>' +
+      '<p>The table above counts what is filled in on the cases that are here. This one asks the harder question: how many cases are missing. There is no full answer, because no institution publishes a list of the loans, grants and investments that harmed people. Three rows below are counts against a published figure. The rest are this map\u2019s own estimate, written down so a reader can argue with them, and they are not measurements.</p>' +
       '<table style="border-collapse:collapse;margin:6px 0"><tr><th style="text-align:left;padding:2px 10px 2px 0">Where</th><th style="text-align:left;padding:2px 10px 2px 0">On this map</th><th style="text-align:left;padding:2px 10px 2px 0">Share</th><th style="text-align:left;padding:2px 0">Counted or estimated</th></tr>' +
-      r('World Bank and IFC projects that forced or may have forced people from homes or livelihoods, 2004\u20132013. Journalists at ICIJ found 969 of the nearly 7,200 projects funded in those years, 422 of them confirmed, by going through the Bank\u2019s own documents.', fmt(w0413) + ' cases began in those years', pc(w0413, 969), 'counted, though the two lists have not been matched project by project') +
+      r('World Bank and IFC projects that forced or may have forced people from homes or livelihoods, 2004\u20132013. Journalists at ICIJ went through the Bank\u2019s own documents and found ' + fmt(icijRows) + ' such projects, ' + fmt(icijConf) + ' of them where it confirmed people were displaced. ICIJ put the projects funded in those years at nearly 7,200; the Bank\u2019s own project record returns 5,798 board approvals for the same decade.', fmt(icijMatched) + ' of ICIJ\u2019s ' + fmt(icijRows) + ' are here, ' + fmt(icijConfMatched) + ' of the ' + fmt(icijConf) + ' confirmed', pc(icijMatched, icijRows), 'counted, matched project by project') +
+      r('The same decade counted the other way round: cases on this map whose harm began in 2004\u20132013 with the World Bank or IFC among the lenders. This is <b>not</b> the row above. ' + fmt(w0413InIcij) + ' of these are among the ' + fmt(icijMatched) + ' matched projects and the rest are cases ICIJ never listed, and a case\u2019s year here is the year the harm began where ICIJ\u2019s is the year the board approved the money.', fmt(w0413) + ' cases', '\u2014', 'counted') +
       r('Complaints where the office or another source recorded harm on the ground. All ' + fmt(M.length) + ' complaints published by the fourteen offices on this map were read.', fmt(harmIn) + ' of ' + fmt(harm.length) + ' are inside a case', pc(harmIn, harm.length), 'counted') +
       r('IMF programmes that did documented harm. Researchers counted 763 IMF programmes in 1980\u20132015; nobody counted which of them harmed people, and a programme\u2019s harm falls on a whole country rather than one site.', fmt(imf) + ' cases involve the IMF', '20\u201330%', 'estimated') +
       r('Chinese state lending, foreign company projects, private bank and bond lending, and aid. No register of harm exists for any of them. AidData\u2019s own project descriptions mention displacement, protest, deaths, pollution or arrests for 793 of its 20,985 Chinese-financed projects.', fmt(thin) + ' cases involve one of them', '1\u20135%', 'estimated') +
