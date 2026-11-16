@@ -1,5 +1,17 @@
 # Brief 16: high-throughput rounds, and the rebalance they have to serve
 
+> **SUPERSEDED IN PART, 16 November 2026.** The rebalance this brief was written to
+> serve is closed: `bk: company` is at 29.5 per cent against an estimated 30, and a
+> company-shaped round now makes the map's shape *worse*. The throughput method below —
+> one agent, one enumeration, mechanical validation first, batch source-checking, set
+> `verified` as you write — is unchanged and still the method. **What has changed is the
+> target the method is pointed at.** Read "THE STANDING GOAL" at the head of
+> `HANDOFF.md` before briefing anyone: the cells to work are now a crime group or a
+> political, religious or armed movement reaching a police force, army, intelligence
+> service, court or cabinet ministry. Ignore point 1 below and the per-category table
+> under "The rebalance, as numbers", both of which describe a gap that no longer exists.
+
+
 Set on 14 November 2026, on two owner decisions:
 
 1. **Prefer an accurately rounded selection over "biggest first."** BRIEF5 tells research agents to prioritise the largest and most consequential cases. That instruction did its job and has now bent the map: measured against `data/field_estimate.json`, which is the map's own estimate of the worldwide field and is deliberately not scaled from its sample, heads of state are over-represented elevenfold and international bodies eightfold, while infiltration of companies sits at 12 per cent of cases against an estimated 30. From now on, the shape of the selection matters as much as the size of the case. Keep adding big cases when they come; stop *steering* toward them.

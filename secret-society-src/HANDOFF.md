@@ -11,6 +11,95 @@ By who infiltrates: corp 433, crime 414, state 396, movement 103, lodge 76, mone
 By relevance: now 541, legacy 663, past 377. Countries with no qualifying case, shown as estimates: 15.
 (Figures as of the session of 10 November 2026. The dated handoffs in the project carry what changed.)
 
+## THE STANDING GOAL (set by the owner, 16 November 2026) — read this first
+
+**The goal is a map whose mix of cases matches `data/field_estimate.json`, the map's
+own estimate of the worldwide field.** The measure is the sum of the absolute gaps
+between the map's share and the estimated share, across all seventeen classes on both
+axes — who infiltrates, and which body was reached. Call it the shape deviation.
+Zero is a scale model of the field. `python3 shape.py` prints it.
+
+**Primary goal, the one the owner has set: get within 5 points.** That is about
+**+4,200 cases, a map of roughly 6,650**, and 17 to 44 rounds depending on round size.
+It closes about 90 per cent of the gap and is the point where every class is within
+roughly half a point of its estimate on average.
+
+**Stretch goal, if it proves possible: the true scale model, within about 1 point.**
+That is **+21,000 cases, a map of roughly 23,500**, and 84 to 221 rounds. It is
+reachable by addition — the earlier handoffs were right that heads of state force
+about 18,600 cases — but it is a different order of effort and is not the target
+being worked toward.
+
+| | cases to add | total map | rounds at 95 | at 150 | at 250 |
+|---|---|---|---|---|---|
+| within 20 points | +1,000 | 3,450 | 11 | 7 | 4 |
+| within 11 points | +2,100 | 4,550 | 22 | 14 | 8 |
+| **within 5 points — THE GOAL** | **+4,200** | **6,650** | **44** | **28** | **17** |
+| within 3 points | +6,000 | 8,450 | 63 | 40 | 24 |
+| the floor, 1.3 points — the stretch | +21,000 | 23,500 | 221 | 140 | 84 |
+
+The curve is steep then flat: the first thousand cases close two-thirds of the gap and
+the last twenty thousand close four points. **Every figure above assumes additions
+avoid the classes that are already over their estimate. None of it holds otherwise.**
+
+### What that means for a round, as of 16 November 2026 (deviation 53.6)
+
+**Add cases where the infiltrator is a crime group or a political, religious or armed
+movement, and the body reached is a police force, army, intelligence service, court or
+cabinet ministry.** Nothing else is worth a search while the goal is the shape.
+
+| composition of a 150-case round | deviation 53.6 → |
+|---|---|
+| **crime group or movement → police, army, intelligence** | **43.0** |
+| mixed crime and movement → security, court, cabinet | 43.4 |
+| movement → cabinet ministry | 49.8 |
+| crime group → legislature or local council | 51.5 |
+| crime group → court | 51.9 |
+| company → company | **61.7** |
+
+**The company rebalance closed on 16 November 2026 and the instruction that drove it is
+now reversed.** `bk: company` sits at 29.5 per cent against an estimated 30, and
+`inf: corp` at 50.4 against 45. A company-shaped round now makes the shape *worse*: the
+last 430 cases, which were company-shaped, bought 3.9 points, where 430 aimed at the
+cells above would have bought 18.9. Any brief still steering researchers toward
+company-shaped records is out of date — see the note at the head of `briefs/BRIEF16.md`.
+
+Per case, the ranking is set almost entirely by the **infiltrator** axis, because seven
+of the eight body-reached classes now sit within two points of target. `movement` and
+`lender` are worth about 74 milli-points a case, `crime` close behind; `corp`, `lodge`
+and `elite` are negative. On the body axis only `security` is far enough out to matter
+much, with `court` and `cabinet` worth having.
+
+### The cheapest move available is not research
+
+`bk: exec` holds 186 records at 7.6 times its estimated 1 per cent, and it is the class
+that sets the floor. But the 1 per cent estimate was written for "head of state or
+government", and `exec` is not coded that way: of the 186, 85 are plainly a head of
+state, 36 a head alongside somebody else, **29 are the executive centre but not its
+head** — presidential staff, advisers, spouses, task-force chairs, ambassadors,
+governors, a governor-general — and 36 have a `rank` that does not say.
+
+Either `exec` means the executive centre and the estimate needs restating for that
+wider thing, or the estimate is right and those records belong under the body they
+actually reached. **Recoding the 65 is worth about 1,800 cases of research, roughly
+twelve rounds at 150 a round, and takes the deviation from 53.6 to 48.3 before a single
+case is added.** `bk: intl`, 73 records at 6.0 times, is 48 records from clearing its
+own ceiling against 4,848 cases of dilution. **Both are owner decisions and neither has
+been made.**
+
+### Two things that are not the goal
+
+- **Not "100 per cent of all infiltration that has happened."** That is not reachable or
+  even measurable. The About figure of 10 to 20 per cent is already set against what has
+  been written down somewhere a reader can check, and every benchmark is a list of cases
+  that reached a prosecutor, so complete coverage of all seventeen would mean complete
+  coverage of *prosecuted* infiltration. Nothing in the benchmark set can measure what
+  nobody charged.
+- **Not the benchmark match rate.** It has been 231 of 270 in-scope items since
+  14 November and did not move while 772 cases were added, because the benchmarks are
+  enforcement-shaped lists already near saturation. Benchmark coverage and field shape
+  move independently. Do not report either as the other.
+
 ## Coverage estimate (what remains)
 The remaining work is to keep adding, most relevant today and most widespread first. The 3 Nov 2026 round added 230 cases but stopped short in every scope because of search limits. Known gaps:
 - Not researched at all: capture of international bodies (sports federations, UN agencies, Interpol) and election-office access. That scope returned nothing because the search limit had already run out.
@@ -43,7 +132,7 @@ A second session ran the test the first one had not: whether the *world* looks t
 
 ## Four owner decisions of 14 November 2026 — read these before planning a round
 
-**1. An accurately rounded selection, not "biggest first."** BRIEF5's instruction to prioritise the largest cases has bent the map: against `data/field_estimate.json`, heads of state are over-represented elevenfold, international bodies eightfold, foreign states and services twofold, while infiltration of companies sits at 12 per cent of cases against an estimated 30. The owner wants the shape corrected. **By addition only** - nothing is removed to improve a ratio. The target is about **420 more cases in one shape: an outside party reaching inside a company, state-owned ones included.** Full tables and the per-category arithmetic are in `briefs/BRIEF16.md`.
+**1. An accurately rounded selection, not "biggest first."** *(The 420-case company target in this decision was met and closed on 16 November 2026. The standing goal above supersedes it; the principle — shape matters as much as size, by addition only — still holds.)* BRIEF5's instruction to prioritise the largest cases has bent the map: against `data/field_estimate.json`, heads of state are over-represented elevenfold, international bodies eightfold, foreign states and services twofold, while infiltration of companies sits at 12 per cent of cases against an estimated 30. The owner wants the shape corrected. **By addition only** - nothing is removed to improve a ratio. The target is about **420 more cases in one shape: an outside party reaching inside a company, state-owned ones included.** Full tables and the per-category arithmetic are in `briefs/BRIEF16.md`.
 
 **2. Keep the weighting toward the present.** 77 per cent of cases are post-2010 and the owner wants it that way - the map is a snapshot of where things stand now. Do not spend rounds on historical depth unless a historical case explains something still in force.
 
