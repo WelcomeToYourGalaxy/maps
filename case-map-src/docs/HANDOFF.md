@@ -1,12 +1,13 @@
 # Globalization Case Map: handoff for a new chat
 
-Last updated: round 36 — the AidData queue characterised before a single researcher is dispatched,
-and it is **a fifth of the size the handoff has been claiming**. The 793 rows are 653 financings,
-143 are disaster relief whose deaths belong to the disaster, 153 carry a protest flag that is a
-demonstration *farm*, and **59 financings carry the evidence that actually decides a case**. Nothing
-was deleted. Round 35, below, made the ICIJ claim checkable: 245 of its 249 rows now rest on a
-P-number printed on the matched case, up from 238, and two wrong case links were removed. Replaces
-every earlier handoff.
+Last updated: round 37 — the first AidData tranche is written, and **the lopsidedness this file
+calls the map's real defect has moved for the first time: five of the seven new cases are
+`documented` rather than `contested`**, against 29 of 30 in round 17 and 18 of 18 in round 19. The
+reason is structural and it is the argument for finishing this queue: Chinese state lenders publish
+no completion report, so the evidence that exists at all is press, court records and audit offices,
+which sit outside the lender. The map stands at **1,176 cases in 136 countries**. Round 36, below,
+characterised the queue before a researcher was dispatched; round 35 made the ICIJ claim checkable.
+Replaces every earlier handoff.
 
 ## The aim, settled 14 Nov 2026 — a defensible big picture, not a bigger map
 
@@ -34,11 +35,22 @@ forward without re-reading the panel.**
 | IMF arrangements | 160 | 1,693 | 9.5% |
 | World Bank projects, all years | **435** | 15,720 | **2.8%** |
 | Treaty lawsuits | 4 | 1,332 | 0.30% |
-| Chinese state loans, 2000-2021 | 82 | 20,985 | 0.39% |
+| Chinese state loans, 2000-2021 | **93** | 20,985 | **0.44%** |
 | Foreign company projects, 2021-2023 | 9 | 20,032 | 0.04% |
 | Aid activities | 35 | 1.5 million | 1 in 42,857 |
 | Private bank and bond lending | 79 | not counted | — |
 | Payment services for governments and armed groups | 5 | not counted | — |
+
+**How much of that table round 37 actually re-read, because this matters more than the figures.**
+The About panel was re-read from the rendered page after the merge and its rows are in "Current
+state" below. The eight-row coverage brief was **not**: it renders inside the "Every kind together"
+kind panel, which opens closed (`S.kindOpen` starts `false`), and a headless click-through to it was
+not built. **So every row of the table above except the Chinese one is round 35's reading and may be
+stale.** The Chinese row was changed because it is countable from the data: cases carrying `lk: "cn"`
+went 84 to 93 across round 37's seven cases and two of its extends, over the 20,985 denominator the
+panel prints. That is a count from `window.CASES`, not a figure read off the rendered brief. **The
+next round should open that brief headlessly and re-read all eight rows**, and whoever does it should
+add the click-through to the test script so it stops being skipped.
 
 Separate, and **not** a row of that table: **309** map cases whose harm began in 2004-2013 with the
 World Bank or IFC among the lenders. 234 of those are among the 249 matched; 75 are cases ICIJ never
@@ -80,9 +92,14 @@ data-derived ones survive below as research leads, which is what they always wer
    the same width, and the map could then state plainly: *this is the documented harm in World Bank
    lending in one decade.* That is the cheapest defensible big-picture claim available and it is now
    within one round. **Finish it.**
-2. **The lopsidedness is the real defect, not the count.** All 18 of round 19's cases are
-   `contested`, 29 of 30 in round 17, and every Chinese case in four tranches rests on the Bank's
-   documents alone. Round 31 moved this a little and the movement is instructive: **5 of its 43 cases
+2. **The lopsidedness is the real defect, not the count — and round 37 is the first round to move
+   it properly.** All 18 of round 19's cases are `contested`, 29 of 30 in round 17, and every
+   Chinese case in four ICIJ tranches rests on the Bank's documents alone. **Round 37's AidData
+   tranche returned 5 `documented` out of 7**, against round 31's 5 out of 43, and the reason
+   generalises: where there is no lender completion report to lean on, a case either has an outside
+   source or it is a drop. **That is the argument for finishing the AidData queue ahead of anything
+   that would add more lender-sourced World Bank cards.** The rest of this item is round 31's
+   evidence and still holds: **5 of its 43 cases
    are `documented`** — Raciborz in Poland on Polish press, Hade in Kosovo on an Inspection Panel
    investigation and Prishtina Insight, Chobhar in Nepal on the Kathmandu Post and a Request for
    Inspection, Kitwe in Zambia on the Times of Zambia, and the Pinheiros station collapse in São
@@ -100,11 +117,14 @@ data-derived ones survive below as research leads, which is what they always wer
    source of development finance on earth and sits at 0.4%. Round 19 noted three cards that name a
    live court case or a specific district, which is where an outside-sourcing pass starts.
 
-**So the order of work, and it is a change from "continue with ICIJ" alone:**
-finish round 22; finish the ICIJ confirmed table; then AidData, not the complaints; and run an
-outside-sourcing pass over existing `contested` cases alongside the tranches rather than after them.
-**Prefer twenty cases carrying a source outside the lender to a hundred more written off the Bank's
-own reports.**
+**So the order of work. Round 37 settled the open question in this paragraph, so it now reads:**
+the ICIJ confirmed table is down to two rows and round 22's drops are re-examined; the AidData
+queue's decisive front is written and **returned the best `documented` share this map has had**, so
+**continue with AidData's remaining 379 financings before the complaints and before the ICIJ
+possible-displacement rows**; and run an outside-sourcing pass over existing `contested` cases
+alongside the tranches rather than after them. **Prefer twenty cases carrying a source outside the
+lender to a hundred more written off the Bank's own reports** — round 37 is the measurement that
+turns that preference from a principle into a finding.
 
 **Foreign company investment: lists exist even though no register of harm does (round 30).** The
 owner asked whether bulk sources exist. Lists of investments, free and downloadable: the World Bank's
@@ -164,7 +184,8 @@ they should not be mixed.
 | --- | --- | --- | --- |
 | ICIJ confirmed-displacement table (234 open) | yes | 5 to 6 | **2 to 3** |
 | ICIJ possible-displacement rows (546, untouched) | yes | ~15 | **3 to 4**, most screening out |
-| AidData Chinese state finance (793) | yes | ~22 | **4 to 5** |
+| AidData Chinese state finance — 59 decisive financings | **done, round 37** | — | 1 (it took 1) |
+| AidData Chinese state finance — the remaining 379 financings | yes | — | **3 to 4**, thinner yield |
 | Complaint registers (91) | yes | ~3 | 1 to 2 |
 | Private bank and bond lending, aid, foreign company investment | **no** | — | — |
 
@@ -242,6 +263,196 @@ These came in over one session and all of them are done unless noted.
 7. **`case-map-src/HANDOFF.md` is a pointer now, not a handoff.** It held the round 13 text and was nine
    rounds stale. The current handoff is this file, `case-map-src/docs/HANDOFF.md`, and there should
    never again be two.
+
+## READ THIS FIRST: round 37 is merged, built, tested and pushed
+
+The first AidData case round. Three writers on the 59 decisive-evidence financings round 36
+identified, then three separate checkers, one per batch, none of whom saw the writing being done.
+Build is clean: `loan-condition cases matched 173 of 173`, 24 patterns, 25.0 MB, zero page and zero
+console errors headless. **1,169 to 1,176 cases, 135 to 136 countries** — Antigua and Barbuda is
+new, from the Booby Alley clearance.
+
+### What the 59 financings produced
+
+| Outcome | Financings |
+| --- | --- |
+| Case written | 7 |
+| Extend of a case already on the map | 8 |
+| Already on the map, nothing added | 5 |
+| Drop, with the deciding sentence or absence recorded | 36 |
+| Written by a writer and cut by its checker | 2 |
+| A drop the check overturned, back in the queue | 1 |
+
+All 59 are annotated in `docs/leads_aiddata.json` with `r37_outcome`, `r37_note` and, where there is
+one, `r37_case_id` — 92 rows, because a financing is several rows. Nothing was deleted.
+
+### The finding that matters, and it is not the case count
+
+**Five of the seven cases are `documented`.** Every ICIJ tranche ran the other way: 29 of 30
+`contested` in round 17, all 18 in round 19, every Chinese case in four tranches resting on the
+Bank's documents alone. Round 31 got 5 of 43 and that was the best until now.
+
+The mechanism is the one this file predicted under "the lopsidedness is the real defect": there is no
+lender document here to rest on, so a case either has an outside source or it has nothing. What
+carried these: Athi Water's own public statement, a Guyanese labour department report and a
+minister's finding of negligence, a High Court bailiff's eviction writ and a police statement, The
+Express Tribune and the Human Rights Commission of Pakistan, Dow Jones and the Mail & Guardian, two
+Dhaka newspapers, a peer-reviewed field study. **Prefer twenty cases carrying a source outside the
+lender to a hundred more written off a lender's own reports — this round is the evidence that the
+preference pays on this queue specifically.**
+
+The cost side is also now measured. The round was search-bound as predicted, but far less than
+feared: the three writers used 9, 6 and 9 WebSearch calls against a 30-call plan each, because
+AidData's own project pages serve in full over `curl` and most of the work was reading them.
+
+### Unlike every ICIJ tranche, this one left no follow-on backlog
+
+All seven cases arrived carrying whole-picture text, conditions prose **and** a settled condition
+type. That is why no panel row dipped this round. The only outstanding follow-on is **four company
+names without a description** (three on `karimenu-ii-dam-compensation`, one on
+`neshe-dam-compensation-oromia`). Do not commission a follow-on round for this tranche; it is a
+half-hour job.
+
+### What the checkers found, which is worth more than the seven cases
+
+**`kind: "off"` on four of the new cases would have filed Chinese state credit with the World
+Bank's.** `base.html` defines `MK_LOF = { off: [wb, ifc, miga, imf, idb, adb, afdb, ebrd, eib, aiib,
+ndb], gov: [cdb, cexim, jica, jbic, kfw, afd, proparco, fmo, dfc] }` — `off` is the multilateral
+class and the Chinese policy banks are in `gov`. On the map as it stands `kind: "off"` sits on 222
+cases and on **none** of the 84 existing `lk: "cn"` cases, which carry no `kind` at all. The field
+was removed from all seven to match them. **This is an open item for the owner, below:** `gov` is
+arguably right for all 93, but setting it on seven new cases while 86 older ones lack it would make
+the kind-of-money filters inconsistent in a new way. The error is invisible on a card and changes
+what the map's own filters say, which is why it is worth a standing check.
+
+**Both of batch B's self-named weakest cases were cut, and both deserved it.** The writers' habit of
+naming their own two weakest entries has now worked in every round that asked.
+- `lamu-coal-kwasasi-land` fails BRIEF36's own test — which part of the project the Chinese money
+  paid for. None of it. An indicative term sheet, a financing AidData statuses **Cancelled**, no
+  commitment date, no disbursement, construction never started, and the sources themselves say the
+  owners are unpaid *because the project never took off*. Hanging it on ICBC says the opposite of
+  what its own sources say. It is also the test that killed G405 New Clark City in the same batch,
+  and the two could not be decided differently. **The land harm is solid and named** — 975 acres
+  taken at Kwasasi in 2016 and never paid for — so the owner may want it back under a `land`
+  mechanism with the collapse of the financing as the cause. That is the owner's call.
+- `addis-djibouti-railway-compensation` fails limb (b). Everything in it checks out against The
+  Reporter of 31 March 2018 and there is no selective quotation on it, but the affected are
+  "several" or "thousands of" farmers along a 759 km corridor in two kebeles the document does not
+  name. No count and no named site: thinner than Bukoba on both of Bukoba's anchors.
+
+**One proposed death count was upheld and one was refused, and the pair is the deaths rule working.**
+- Upheld: `thar-block-ii-sehnri-dars-gorano` goes `killed: 0` to **1**. Dodo Bheel, a third-party
+  contract worker, beaten by the mine company's security guards. The Block-II siting is confirmed
+  three ways — The Express Tribune of 2 July 2021 places the family's sit-in in Thar Coal Block II,
+  Dawn has the detention over scrap theft "in the Thar Coal project's Block-II", and SECMC is the
+  Block II operator. `killed_note` was **replaced**, not appended: as submitted the merge would have
+  left "No deaths reported." standing in front of the death.
+- Refused: `karuma-dam-evictions-awoo` stays at `killed: 0`. The article says Rogers Twine's "body
+  was smashed" and that he "was hit by flying stones and debris"; **it never says he died**, and it
+  names its other deaths explicitly when it has them. The blast-fired-without-warning cause rests on
+  "a Chinese blasting supervisor **had apparently** ordered" plus "sources knowledgeable about the
+  incident said", while the engineer's own letters say only that "blasting procedure was not
+  followed". Procedure not followed is not a blast fired without warning the man in the tunnel. The
+  eight other site deaths stay uncounted for want of any stated cause.
+
+**A route failure had closed a real case, for the eleventh time in this project's notes.** G408,
+Samoa's Apia Park stadium, was dropped because a February 2007 worker death existed only in
+AidData's record. **It does not.** RNZ Pacific carries it — the Games chief executive answering a
+cover-up claim, the contractor Qindao Construction Group named, the death and two injured workers.
+`curl` to `amp.rnz.co.nz` fails with a proxy 502 and the canonical `www.rnz.co.nz` path 404s, but
+**WebFetch opens it.** The writer reported the 502 honestly as a route and still let it end a case.
+The checker did not write the card itself, on the reasoning that **a checker-added card is a card
+nobody checks** — which is the right call and worth keeping as a rule. It is back in the queue.
+
+**Dates lifted from a publication timestamp onto an event, four instances across three entries** —
+"December 2022" from a report that says "last December", a bail ruling dated from the article's
+byline, videos dated from the article's publication day where the text says "on Monday". BRIEF36
+states this rule explicitly and it still broke in every entry that cited a news report.
+
+**Selective quotation ran one direction again.** On three of batch B's five entries, six distinct
+favourable or official-answer clauses had been dropped with none added. The worst omission cost a
+card its best fact: RFA's sentence that protesters "had received compensation payment for only half
+of the 400 acres expropriated… despite claims by CNPC representatives that the company had made the
+full payment" — a land count, a payment count and the company's denial in one sentence. All six
+restored. Unusually, one omission ran in the *company's* favour, which is worth knowing: a card kept
+SECMC saying it was "cooperating with the police" and omitted that the item's own heading is about
+the company refusing to cooperate with the fact-finding mission.
+
+**Two figures corrected downward, both the same species.** `chambishi-bgrimm-explosives-blast` holds
+`killed: 49`, not 51: "at least 51" and "over 50" are floors, and the only figure given as a count is
+Dow Jones six months later, "the graves of 49 workers killed in April", which also names one of the
+dead. All four readings including AidData's flat 51 are in `killed_note`, which says why 49 is held.
+And two `displaced` fields were emptied and then the key removed altogether — Neshe's "approximately
+1,200" households is an interview estimate in a paper whose same sentence reads "Exact figures are
+difficult to find", and Booby Alley's "more than 240 persons" is a floor given by the project's own
+mobilisation manager to a government-owned paper. **No case among the 1,169 used `displaced: 0`**, so
+a zeroed field would have been a new thing on this map and would read as a claim that nobody moved.
+Both cases stand on limb (b) and lose nothing; the reasoning is in each `displaced_note`.
+
+### AidData writes a neighbouring project's incident into a record, and it would have made wrong cards
+
+Three instances in one round, all caught:
+- Both Formosa records carry a 24 March 2015 scaffolding collapse ("16 killed, 27 injured") as the
+  project site's. It belongs to a **Samsung C&T** seaport breakwater project at Son Duong inside the
+  same industrial park, and it predates both Chinese loans. Counts conflict at 13, 14 and 16 and no
+  source reconciles them. On no card.
+- The Upper Yeywa-Shwesaryan record carries the Upper Yeywa **dam's** prospective reservoir
+  relocation (143 households, 486 people) although the credit financed only the transmission line
+  and substation. Dropped for that reason — round 19's Burkina Faso shape.
+- AidData's coordinate for record 58737 points at a different village 66 km away, in another county.
+  A second bad one: record 34197 is located "Near HSIPAW", Shan State, for a Rakhine matter.
+
+**Check whose asset an incident sits on, and check the coordinate, before trusting an AidData
+sentence about either.**
+
+### A defect in round 36's own batch labels, worth fixing before the next tranche
+
+**`decisive_buckets`' "relocation count" does not distinguish a count from a projection.** Eight
+financings in batch A carry it and in seven the AidData figure behind it is prospective — "is
+expected to impact", "an estimated 600 families will be displaced", "will need to relocated",
+"allegedly would displace". A writer who trusts that label writes a plan figure into `displaced`,
+which is round 32's fault arriving pre-labelled. Rename the bucket, or split it into counted and
+projected, before the next tranche is built.
+
+### The relief trap is wider than `r36_relief` marks
+
+Round 36 flagged 143 rows as disaster or humanitarian relief. **Six more surfaced in this round
+carrying no such flag**, because the flag fired on the harm the money answered rather than on a
+disaster as such: Bolivia dengue, Guyana histoplasmosis, Grenada flooding, a Mali peacekeeping
+deployment after an air crash, two malaria-mortality rows. And a further class is new: **a death in
+China or a third country sitting behind a recipient-country loan** — 19 preschoolers killed in a
+crash in China behind a North Macedonian school-bus donation, Daphne Caruana Galizia's murder in
+Malta behind a Montenegrin wind park, the 1999 NATO strike on the Chinese embassy behind a Serbian
+loan, Kim Jong Il's death behind a crude oil donation, a Soviet sniper killed in 1944 behind a
+Kazakh monument. **A country-of-death check clears that whole class in one pass and is worth adding
+to the screen.**
+
+### Three things about the build and the merge
+
+1. **`build.py` now passes `mtime=0` to `gzip.compress`.** Without it the data blob's gzip member
+   header carried the build time, so **every rebuild changed `globalization.html` even when no datum
+   had** — same byte length, one differing line. That made the round's own `git diff` useless as a
+   check on what actually moved, which is the cheapest check available. Two consecutive builds are
+   now byte-identical. Verify with `cmp` after any change to the build.
+2. **`normalise.py` does not apply to a round written in merge.py's shape.** It converts BRIEF20's
+   one-object-keyed-by-case-id into top-level `cases`/`extend` arrays; round 37's writers were asked
+   for the latter directly, so it refuses the files as "top level is not an object keyed by case id".
+   Its *guards* still matter, so they were run separately: every `KEYS` field present, `mechanism`
+   valid, no nested `add` block, no non-string `fields_add`, and **no inert extend** — all eight were
+   confirmed to change their case before the merge and again after it. Keep doing both: the check
+   only means anything before the merge.
+3. **`merge.py` has no `cx_add`**, and every extend in this tranche wanted one. It also dedupes
+   `lenders_add` on the exact name string, so an added lender whose name already appears is silently
+   dropped — two extends needed their lender entry renamed or folded into `conditions` for that
+   reason. And it has no `status` field, so a cut case must be *removed* from the array rather than
+   marked.
+
+### What round 37 did not do
+
+**It did not touch the 379 financings without decisive evidence**, which is the rest of this queue
+and is where the next AidData round goes. It wrote no `cx`/`cp` AidData provenance onto the three
+existing cards that need it (below). And it did not re-read the rendered "How much of all lending
+does this map cover?" brief — see the note under the coverage table.
 
 ## READ THIS FIRST: round 36 is merged, built, tested and pushed
 
@@ -1185,18 +1396,31 @@ Deliberately batched, as this file's own plan allows, and the panel dips honestl
 whole-picture text, entity descriptions and condition types. **Whole text is at 96%, conditions 94%,
 company descriptions 84%.** Those three jobs for round 31's cases are the second item on the queue.
 
-## Current state (15 Nov 2026, round 33)
+## Current state (15 Nov 2026, round 37)
 
-**1,169 cases**, in 135 countries and territories. Read from the rendered About panel after the merge.
+**1,176 cases**, in 136 countries and territories. Read out of the rendered About panel after the
+merge, by clicking `#infoBtn` in a headless browser and taking the text of `#info` — which is the
+only way to get them, because the panel is computed in the browser and a grep over the built file
+returns the raw `<!--COMPLETENESS-->` marker.
 
 | What | Filled | Share | Last round |
 | --- | --- | --- | --- |
-| Rounded "what happened to people" paragraph (`whole`) | 1,162 of 1,169 | **99%** | 93% |
-| Cases that say what the money came with (`conditions`) | 1,140 of 1,169 | **98%** | 91% |
-| Lender's terms looked for and settled (at least one non-`research` `ct`) | 1,061 of 1,169 | **91%** | 93%, by a wrong formula |
-| Company names with a line saying what the firm is (`desc`) | 1,169 of 1,309 | **89%** | 81% |
+| Rounded "what happened to people" paragraph (`whole`) | 1,169 of 1,176 | **99%** | 99% |
+| Cases that say what the money came with (`conditions`) | 1,147 of 1,176 | **98%** | 98% |
+| Lender's terms looked for and settled (at least one non-`research` `ct`) | 1,068 of 1,176 | **91%** | 91% |
+| Company names with a line saying what the firm is (`desc`) | 1,178 of 1,322 | **89%** | 89% |
 | People with a checked `total` | 53 of 173 | 31% | 31% |
-| Cases with a documented buyer | 34 of 1,169 | 3% | 3% |
+| Cases with a documented buyer | 34 of 1,176 | 3% | 3% |
+
+**No row dipped, and that is the news.** Every ICIJ tranche arrived with none of the three text
+fields and left a follow-on round behind it; round 37's seven cases arrived with whole-picture text,
+conditions prose and a settled condition type, so the numerators moved with the denominators. The
+only gap this round opened is **four company names without a description** — three on
+`karimenu-ii-dam-compensation`, one on `neshe-dam-compensation-oromia`.
+
+The seven cases still without a whole-picture paragraph are the ones judged years ago to have no
+credible information: Morelos, Batang, Java 7, Pacitan, Tanjung Kasam, Cilacap, IPP4 Al-Manakher.
+Do not re-queue them.
 
 The backlog the last two rounds created is cleared. **The settled-terms row went down because its
 formula was wrong, not because the work went backwards**: it used to count a case nobody had looked
@@ -1207,7 +1431,70 @@ The seven cases still without a whole-picture paragraph are the ones judged year
 credible information: Morelos, Batang, Java 7, Pacitan, Tanjung Kasam, Cilacap, IPP4 Al-Manakher.
 Do not re-queue them.
 
-## The queue, after round 34
+## The queue, after round 37
+
+Round 37 closed the front of the AidData queue — the 59 financings carrying decisive evidence. In
+order of what each would do for the aim:
+
+1. **The rest of the AidData queue: 379 financings with no decisive-evidence sentence, plus two
+   named leads.** This is the live case-discovery queue and it is the one that moves the
+   lopsidedness, for the structural reason round 37 demonstrated. Before commissioning it, do three
+   cheap things round 37 paid to learn: rename or split the `decisive_buckets` "relocation count"
+   bucket so a projection cannot pass as a count; add a **country-of-death check**, which clears a
+   whole class of rows where the death is in China or a third country; and widen the relief screen,
+   because six relief rows in round 37 carried no `r36_relief` flag. Expect a thinner yield than
+   round 37 — these are the rows where the dataset's own text records no deciding sentence, so the
+   case has to come from outside it entirely. Budget it as search-bound but note that round 37's
+   writers used 6 to 9 searches each, not 30: AidData's project pages serve in full over `curl`.
+   - **G408 Samoa, Apia Park stadium** is a drop the check overturned and is ready to write: a
+     February 2007 worker death with a cause, carried by RNZ Pacific with the contractor named.
+     Reach it with WebFetch; `curl` fails on a proxy 502.
+   - **G316 Uganda, four industrial park substations** is the nearest miss of round 37's drops — it
+     names places and records right-of-way acquisition issues. Upheld as a drop, worth one more look.
+2. **Four company descriptions**, the only follow-on round 37 left. A half-hour job with a checker.
+3. **AidData provenance on three existing cards.** `banskhali-coal-plant` (record 52792),
+   `suralaya-java-9-10` (92603) and `thar-block-ii-sehnri-dars-gorano` (54315) each have an empty
+   `cp` and `cx` although the AidData record belongs on them. **This needs a script, not an
+   extend:** `merge.py` has no `cx_add`, so `cp_add: ["aiddata"]` alone would draw the AidData chip
+   on a card with no record row behind it. Round 37's checker deliberately wrote no extend for them
+   for that reason.
+4. **The 546 untouched ICIJ possible-displacement rows.** Still untouched; all tranches worked only
+   the confirmed table, which is down to two open rows.
+5. **Sweep the blank-`docty` wds records.** Carried from round 34, unchanged: `projectid=` plus
+   `repnb` makes each one a single call, and round 34's checker found the class is narrower than
+   round 32 implied.
+6. **The 108 cases still without a settled condition type.** Carried. Every one has been tried at
+   least twice, but round 33 added two routes no earlier attempt had — aide memoires, which
+   reproduce unpublished agreements' covenant schedules, and `projectid=` enumeration, which proves
+   an absence instead of asserting it.
+7. **The four follow-ons round 34 left** and **the three verified terms a checker left out on
+   purpose** in round 33. Both carried, both small.
+
+### Open for the owner, from round 37
+
+- **What `kind` should a Chinese state financing carry?** `MK_LOF` puts the Chinese policy banks in
+  `gov` and the multilaterals in `off`. All 93 `lk: "cn"` cases now carry **no `kind` at all**, which
+  is consistent but means they sit outside every kind-of-money drop-down that filters on it. Round
+  37 removed a wrong `kind: "off"` from four cases rather than set `gov` on seven while 86 older ones
+  lacked it. Either answer is defensible; both at once is not. It is a one-line migration across 93
+  cases once decided.
+- **Should `lamu-coal-kwasasi-land` come back under a `land` mechanism?** 975 acres taken at Kwasasi
+  in 2016 and never paid for is documented and named. It was cut because the Chinese financing was
+  never committed, so it fails the link and timing tests as a lending case — but the sources say the
+  owners are unpaid *because* the project collapsed, which is a harm with a documented cause that
+  this map has no row for. The owner's call.
+- **`merowe-dam-amri-manasir`'s lender role follows a staff comment that three records contradict.**
+  AidData's own row titles give New Amri US$37.7m (record 56927), Kehaila East US$80.75m (56959) and
+  El Makabra US$29.9m (85574); staff comment 7 on record 178 transposes them and hands US$110.7m to
+  New Amri, which is 80.75 + 29.9. The card follows the comment. Three records against one comment,
+  verified by round 37's checker and deliberately not changed, because rewriting a live figure is the
+  owner's call. The card's `cp` and `cx` are also empty although its role cites AidData 178.
+- **Two further deaths found and deliberately left off cards**, both for stated reasons: a CNNC
+  worker "reportedly electrocuted" at Thar Block-1 (a cause is stated, but nothing ties CNNC to the
+  two Shanghai Electric contracts the credit financed) and "as many as seven workers lost their
+  lives" at Block-2 over a few months (an upper bound, not a count).
+
+## The queue, after round 34 (superseded, kept for its reasoning)
 
 Round 33's first two jobs are closed: ICIJ's projects are matched one by one, and the lender-role
 audit has reached rounds 17 to 19, which was the last unaudited block.
@@ -3349,6 +3636,22 @@ Keys in every case: `id, title, place, iso3, lat, lng, point, start, end, mechan
 - **Contracts, tied aid, company-funded deals, offices, live projects, loan-conditions layers:** unchanged (see `infra_*.py`, `docs/offices_notes.md`, `case-map-live-src/`, `loan-conditions-src/`).
 
 ## Push status
+
+- **Round 37 is merged, built, tested and pushed** (15 Nov, on `main`): the first AidData tranche.
+  1,169 to 1,176 cases, 135 to 136 countries. Build printed `loan-condition cases matched 173 of
+  173`, 24 patterns, 25.0 MB; the page loaded headless with zero page and zero console errors; the
+  panel figures in "Current state" were read out of the rendered About panel after the merge.
+  Its files: `docs/r37_batch_{a,b,c}.json` (the batch inputs, one entry per financing with the full
+  untruncated AidData text and the pre-extracted candidate sentences),
+  `rounds/r37_{a,b,c}.json` with `_report.md` each,
+  `rounds/r37_{a,b,c}_checked.json` with `_check_log.md` each, and
+  `docs/leads_aiddata.json` annotated with `r37_outcome`/`r37_note`/`r37_case_id` on all 92 rows of
+  the 59 financings. `case-map-src/build.py` carries the `mtime=0` reproducibility fix.
+  **Two changes were applied by hand because no merge script can make them**, and both are recorded
+  in the check logs: `thar-block-ii-sehnri-dars-gorano`'s `killed` 0 to 1 with `killed_note`
+  replaced rather than appended, and the removal of a zeroed `displaced` key from two cases.
+  `merge.py` reported `cases +7 (total 1176), complaints +0 (total 3001), extended 8`, and all eight
+  extends were confirmed to have changed their cases both before and after the merge.
 
 - Everything through condition retry round 9a, whole-text round h11 and company batch 9 is merged, built, tested and pushed (11 Nov afternoon). Company descriptions and whole-picture text are both complete as first passes.
 - **Everything through condition rounds 10b, 11 and 11b and people round 3 is merged, built, tested and pushed** (11 Nov late evening, commits `1f5581e` and `b4a3061`).
