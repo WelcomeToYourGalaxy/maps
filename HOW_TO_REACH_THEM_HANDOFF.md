@@ -411,7 +411,7 @@ the way to reach them both change at each step:
 | National | 198 | Wikidata `P194`/`P527`, plus the front-page crawl | **done.** 275 chamber addresses across 182 countries, 136 method pages across 65. The crawl reached 75 of 193 front pages from this sandbox; re-running it from ordinary consumer networking roughly doubles that and needs no code change (§0c) |
 | Sub-national legislatures | ~3,800 ADM1 | `P194` by jurisdiction id | **done.** 5,159 jurisdictions, 1,727 with an address, 1,008 verified |
 | County-level councils | ~48,000 | `P194` on territories and on governments, rebuilt in round eleven | **structured source exhausted.** 4,622 entries, 2,133 with a website, 1,639 verified. Past that it is per-country registers: round sixteen took Spain's 18 provincial councils from one |
-| Municipalities | ~191,500 undissolved on Wikidata | six national registers and one provincial one, sharded on disk | **51,880 records, 27% of them.** Website 54% worldwide from Wikidata live; email 25%, telephone 20%, and the registers put France, Italy, Spain, Norway, the Netherlands, Finland and Quebec near complete on all three |
+| Municipalities | ~191,500 undissolved on Wikidata | seven national registers and one provincial one, sharded on disk | **57,448 records, 30% of them.** Website 54% worldwide from Wikidata live; email 25%, telephone 20%. France, Italy, Spain, Norway, the Netherlands, Finland and Quebec are near complete on all three; Brazil has an address and a switchboard and no email, because its register holds none (round twenty) |
 | Municipal office-holders | ~191,500 | the registers that name them | **not started.** Quebec publishes 1,103 mayors and 6,810 councillors against councils already on the page; Bulgaria publishes 265 administrations' post titles with nobody in them. Needs a shard field and a panel row (round nineteen) |
 | Below the municipality | millions | not proposed | — |
 
@@ -420,10 +420,10 @@ taken before anything was counted. Wikidata holds 191,503 undissolved
 ones and that is the denominator every figure above uses.
 
 The municipal count is where the remaining work is, and it is no longer
-mostly downloading. Of the countries still open, Brazil needs one host
-to answer, Germany needs a per-state register to exist, Sweden and
-Denmark need an account each, and Slovakia, Estonia, Greece and Japan
-need one identifier imported into Wikidata. Honest estimate after
+mostly downloading. Of the countries still open, Germany needs a per-state register to
+exist, Sweden and Denmark need an account each, and Slovakia, Estonia,
+Greece and Japan need one identifier imported into Wikidata. Brazil is
+done for address and telephone and has no source at all for email. Honest estimate after
 nineteen rounds: **7 to 10 more** to take email and telephone from a
 quarter of the world's municipalities to most of it, with the United
 States, Russia and Vietnam likely still thin at the end.
@@ -715,7 +715,7 @@ left — and it is not spread evenly:
 | Vietnam | 9,673 | 0% | 0% |
 | Spain | 8,391 | 77% | **done in round fifteen** |
 | Czechia | 6,305 | 99% | **98%** |
-| Brazil | 5,591 | 65% | 0% — one unreachable download away, round nineteen |
+| Brazil | 5,591 | 65% | **0%, and no source for it** — round twenty took its address and switchboard and found Receita holds no municipal email at all |
 | Romania | 2,965 | 82% | **99%** |
 | Austria | 2,395 | 88% | 87% |
 | Belgium | 593 | 96% | 87% |
@@ -764,7 +764,7 @@ Surveyed this round, so the next one does not start from nothing:
 | Norway | 357 | Enhetsregisteret | done in round thirteen, on `P2333` |
 | Germany | 13,698 | none national | the code to join one **does** exist — `P439` on 81% — and no national register does; a per-state job, and Brandenburg's file turned out to be state bodies only (round nineteen) |
 | Quebec (Canada) | 1,281 | Répertoire des municipalités | done (round nineteen) |
-| Brazil | 5,591 | IBGE code → CNPJ → Receita Federal | the crosswalk is live and the download is not — round nineteen |
+| Brazil | 5,591 | IBGE code → CNPJ → Receita Federal | done (round twenty), through the mirror; the bulk path is still undiscoverable |
 
 **Spain is a join problem, not a data problem.** DIR3's public exports
 are reachable and `Listado Unidades EELL.xlsx` carries 26,608 local
@@ -803,6 +803,77 @@ website, 2 a telephone and 1 an email** — about 2%. The contacts in OSM
 are on the town hall object, not the boundary, so Tier B needs a
 spatial join as well as a planet-sized download. Do not plan a round
 around it without first proving the extract is obtainable.
+
+### Round twenty: Brazil, and what its register does not hold
+
+Brazil is in. **5,568 municipalities** with the street address of their
+government and **3,007 with its switchboard**, from none of either. The
+shards hold **57,448 records**.
+
+**It adds no email, and round nineteen was wrong to call it the largest
+prize on the email table.** Receita Federal holds a contact block
+against every CNPJ and it holds an email address for **zero** of
+Brazil's 5,570 municipalities — measured on all of them, not sampled.
+Brazil's email figure stays at 0% and nothing found so far would move
+it. What this is instead is the largest address layer in the build:
+round seven recorded that 3,720 municipalities *worldwide* publish a
+street address, and Brazil alone adds 5,568 to that.
+
+**The missing half was an identifier, and the Treasury has it.** A
+Brazilian municipality is a legal person with a CNPJ, so Receita's
+record for it carries the seat's street address and telephone number.
+Wikidata holds no CNPJ on any Brazilian municipality — the wall Slovakia
+and Estonia are still behind. SICONFI, the Treasury's fiscal register,
+publishes the crosswalk and nothing else was needed:
+`apidatalake.tesouro.gov.br/ords/siconfi/tt/entes` returns every ente
+with the IBGE municipality code and the CNPJ side by side. So the chain
+is IBGE code → CNPJ → the Receita record, both hops on a published code,
+and `P1585` is on 5,571 Wikidata items. **All 5,570 joined. Nothing was
+dropped for want of an id and no code was ambiguous** — the first
+register here to lose nothing on the join since the Netherlands.
+
+**The field that looks like the key and is not.** The Receita record
+carries its own `codigo_municipio_ibge`, and it is the municipality the
+registered address sits in rather than an identifier of the body. Round
+thirteen refused exactly that field for Slovakia and the reason holds.
+What it is good for is the check: against SICONFI's code, which the join
+uses, it agrees for **100% of 5,567 comparisons** — every prefeitura is
+registered inside its own territory. `BR_GATE_FLOOR` is 0.98 and runs on
+every build. The official name agrees for 99.7% besides, the fifteen
+failures being spelling variants of one place (Açu against Assu, Luís
+against Luiz, Izabel against Isabel).
+
+Spot-checked against the buildings: São Paulo comes out at Viaduto do
+Chá 15, Rio at Rua São Clemente 360 in Botafogo, Salvador at Praça Thomé
+de Souza, Curitiba at Avenida Cândido de Abreu 817. Itu, which round
+eleven used as its example of a municipality reached at last through its
+câmara, now has a street and a number as well.
+
+**Two CNPJs that are not the municipality, dropped by class.**
+Brasília's is the Plano Piloto regional administration — an office in
+the Federal District and not its seat — and Igrapiúna's is that
+municipality's Câmara de Vereadores. The council's address is a good
+answer and that is the problem: one council among 5,568 executives,
+unlabelled, cannot be told apart on the page. The filter is
+`natureza_juridica` and not a name, so it will keep catching this.
+
+**No bulk route, and the reason is round eight's.** Receita's own files
+are the right source and the host answers, but the paths are not
+discoverable: every candidate under
+`arquivos.receitafederal.gov.br/dados/cnpj/` returns 404, and the page
+that lists the real ones renders its links in JavaScript — the same wall
+the Hungarian Helységnévtár put up in round eight. So the records come
+one CNPJ at a time from `minhareceita.org`, the public mirror of those
+monthly files, which reports its data as Receita's 2026-10 release. Six
+at a time takes 5,570 requests from twenty-three minutes to four. If
+anyone finds the bulk path, the build should move to it — same data, one
+download.
+
+**Uppercase on purpose.** Receita prints an address in capitals with the
+accents stripped, and the shards keep it that way: `VIADUTO DO CHA` is
+what the register holds, and restoring the á would be composing a
+spelling rather than quoting one. The postal code and the telephone
+number get their conventional punctuation, which is the same digits.
 
 ### Round nineteen: Quebec, and the key Germany was said not to have
 
@@ -856,9 +927,11 @@ is a complete chain on paper. It is blocked at the last step and only
 there: `arquivos.receitafederal.gov.br`, `dados.rfb.gov.br` and
 `dadosabertos.rfb.gov.br` all reset the connection from here and the
 legacy `200.152.38.155` answers 503. That is a download problem, which
-is the cheapest kind left — anyone with ordinary consumer networking
-should try it, and 5,591 municipalities at 0% email is the largest
-single prize on the table.
+is the cheapest kind left. **Round twenty did it through a mirror and
+corrects the rest of this paragraph: Receita holds no email for any
+Brazilian municipality, so Brazil was never the email prize it is called
+here.** What it had was an address for every municipality and a
+switchboard for half.
 
 **Ontario, measured and not taken.** `data.ontario.ca` publishes the
 directory of institutions under FIPPA and MFIPPA, and 443 of its 1,497
@@ -1655,7 +1728,7 @@ proving the extract is obtainable. Re-checked this round and it is not:
 answers but holds only its own region. Nothing has changed since round
 seven.
 
-### Where the registers stand after nineteen rounds
+### Where the registers stand after twenty rounds
 
 | Country | Municipalities | Joined on | State |
 | --- | --- | --- | --- |
@@ -1673,16 +1746,17 @@ seven.
 | Mexico | 2,462 | — | no national directory exists |
 | Philippines | 1,497 | — | no national contact set |
 | Germany | 13,698 | **`P439`, the municipality key, on 11,126 of them** | no register. Round nineteen corrects rounds seven and twelve, which recorded the code as absent; Brandenburg's file is state bodies only, and the other fifteen states are untested |
-| Brazil | 5,591 | **IBGE code → CNPJ, through the Treasury's `entes` endpoint** | the crosswalk is complete and Receita Federal's CNPJ download is unreachable from here — round nineteen |
+| Brazil | 5,591 | IBGE code → CNPJ, through the Treasury's `entes` endpoint | **5,568 — round twenty.** Street address for all of them, switchboard for 3,007, and no email: Receita holds none for any Brazilian municipality |
 | Ontario (Canada) | 444 | — | 443 rows with telephone and street address, two with an email, and no code to join on — round nineteen |
 
-Seven registers, **51,880 records** with a published contact detail.
-What each blocked country is blocked on is now one specific thing, and
-only one of them is missing data: Brazil needs a host to answer, Germany
-needs a state register to exist, Sweden and Denmark need an account
-each, Slovakia and Estonia need an identifier imported into Wikidata,
-Japan needs `P3548`, Bulgaria publishes no contacts at all, and Mexico
-and the Philippines have no register. The work left is not mostly
+Eight registers, **57,448 records** with a published contact detail.
+What each blocked country is blocked on is now one specific thing:
+Germany needs a state register to exist, Sweden and Denmark need an
+account each, Slovakia and Estonia need an identifier imported into
+Wikidata, Japan needs `P3548`, Bulgaria publishes no contacts at all,
+and Mexico and the Philippines have no register. Brazil shows the other
+shape this can take — a register that joins perfectly and simply does
+not hold the field you wanted. The work left is not mostly
 downloading — it is mostly getting one key, one credential or one host
 per country.
 
@@ -1973,7 +2047,7 @@ mostly is not one:
 | A level's street address | Wikidata, on the click | live, kept a day |
 | Which offices a jurisdiction has | Wikidata class walk | kept a week |
 | Place names and coordinates | Wikidata / Photon / Nominatim | kept a week |
-| Municipal registers (`muni/`) | France, Italy, Spain, Norway, the Netherlands, Finland, Quebec | rebuilt monthly |
+| Municipal registers (`muni/`) | France, Italy, Spain, Norway, the Netherlands, Finland, Quebec, Brazil | rebuilt monthly |
 | Country profiles (`LAWP`), `lawlinks.json` | written by hand | changed by hand |
 
 Three things make that true rather than nearly true.

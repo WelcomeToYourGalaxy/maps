@@ -1,6 +1,7 @@
 {
  "shards": 512,
  "countries": [
+  "BRA",
   "CAN",
   "ESP",
   "FIN",
@@ -25,7 +26,8 @@
   "NLD": "Register van Overheidsorganisaties (organisaties.overheid.nl), the municipalities export, keyed to Wikidata by CBS municipality code (P382)",
   "NOR": "Enhetsregisteret, the register of legal persons kept by the Bronnoysund Register Centre (data.brreg.no), units of form KOMM, keyed to Wikidata by organisation number (P2333) and never by the municipality number, which the 2020 reform reissued",
   "ESP": "DIR3, the Directorio Comun de Unidades Organicas y Oficinas (administracionelectronica.gob.es), top-level ayuntamientos, matched to the Registro de Entidades Locales (registroentidadeslocales.mpt.es) on the official municipality name inside a fixed province and through REL to Wikidata by INE code (P772) -- the one register here joined by name rather than by a shared code, because Spain publishes none, verified against the tax number the match never uses",
-  "CAN": "Repertoire des municipalites du Quebec, Ministere des Affaires municipales et de l'Habitation (donneesouvertes.affmunqc.net), keyed to Wikidata by the Statistics Canada Geographic Code (P3012), whose last five digits are the ministry's own geographic code -- usually but not always, so the match is verified against the official name it never uses. Quebec only: Canada keeps no national register of municipal contacts and the provinces keep their own"
+  "CAN": "Repertoire des municipalites du Quebec, Ministere des Affaires municipales et de l'Habitation (donneesouvertes.affmunqc.net), keyed to Wikidata by the Statistics Canada Geographic Code (P3012), whose last five digits are the ministry's own geographic code -- usually but not always, so the match is verified against the official name it never uses. Quebec only: Canada keeps no national register of municipal contacts and the provinces keep their own",
+  "BRA": "Receita Federal CNPJ records, read through the public mirror of its monthly files (minhareceita.org), reached by the CNPJ that the Treasury's SICONFI entes register publishes beside each IBGE municipality code (apidatalake.tesouro.gov.br), keyed to Wikidata by that IBGE code (P1585). Street address and switchboard only: Receita holds no email address for any Brazilian municipality"
  },
  "per_country": {
   "FRA": 34915,
@@ -34,8 +36,9 @@
   "NLD": 341,
   "NOR": 354,
   "ESP": 6983,
-  "CAN": 1106
+  "CAN": 1106,
+  "BRA": 5568
  },
- "records": 51880,
+ "records": 57448,
  "built": "2026-11-15"
 }
