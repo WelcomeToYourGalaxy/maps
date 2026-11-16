@@ -1,0 +1,95 @@
+{
+  "records": [],
+  "corrections": [],
+  "held": [
+    {
+      "iso3": "UGA",
+      "country": "Uganda",
+      "subject": "Alpha Capital Partners (Stephen Kaboyo, former Bank of Uganda director of financial markets)",
+      "what_is_missing": "No page found states who owns or holds shares in Alpha Capital Partners. Every page located this round says only that Kaboyo founded or manages it: Uganda Reinsurance Company's board biography calls him 'founder and Managing Director of Alpha Capital Partners' and says nothing about ownership, shareholding or private status; The Independent's tag archive for the firm names only his title as managing director. The Capital Markets Authority of Uganda's licensed-firms register (LIST OF APPROVED PERSONS AS OF MAY 2026) does not list Alpha Capital Partners at all under any category, so there is no regulator entry for the firm to carry ownership details. No state participation in the firm surfaced either, so the existing Uganda record is not shown to be wrong - it is simply still resting on 'founded' rather than on a stated-ownership sentence.",
+      "settling_url": "https://eregistry.ursb.go.ug/search",
+      "settling_url_note": "Uganda Registration Services Bureau online company search; a company extract for Alpha Capital Partners would name its shareholders. Needs a query submitted in the form, which a plain fetch cannot do."
+    },
+    {
+      "iso3": "KOR",
+      "country": "South Korea",
+      "subject": "Seoul Foreign Exchange Brokerage / Seoul Money Brokerage Services (Jeong Gyu-il, former Bank of Korea Deputy Governor, made chief executive 2021)",
+      "what_is_missing": "No source found names the brokerage's shareholders. Korean-language searches for the firm's shareholders, largest shareholder, ownership structure and audit report returned either unrelated companies or document dumps with no shareholder table. A Korean company-profile page for the firm exists at catch.co.kr but the host answers 403 to automated requests (verified by curl: 403 for both the desktop and mobile paths), so it was not read. The prior round's note that the firm's LEI record gives 'Parent Information Not Provided' still stands; nothing contradicts or supplements it.",
+      "settling_url": "https://www.catch.co.kr/Comp/CompInfo/F13463",
+      "settling_url_note": "Korean company-profile page returned by a search for 서울외국환중개; HTTP 403 to automation - needs a hand check. A DART/FSS audit report shareholder table would also settle it."
+    }
+  ],
+  "searched_no_result": [
+    {
+      "target": "QAT - Noura Abdulaziz Al Suwaidi at Lesha Bank",
+      "finding": "Settled negatively: she was never elected or appointed. Lesha Bank's Corporate Governance Report 2025 lists nine board members seated after the 24 February 2025 AGM (Sheikh Faisal bin Thani Al Thani, Mohamed Yousef Al Mana, Hamad Ali Al Mannai, Nasser Ali Al Hajri, Nasser Abdullah Al Misnad, Mohammed Ali Al Sulaiti, Meshaal Mohamed Al Mahmoud, Eisa Mohamad Al-Mohannadi, Abdulrahman Irfan Totonji) and contains no Al Suwaidi as director, alternate, committee member or executive. The bank's summary of resolutions for the annual and extraordinary general meeting of 25 February 2026 elects or appoints no director at all - its only appointment is KPMG as auditor for 2026 - and names no individual. The 28 May 2024 election named three members, none of them her. The refusal stands.",
+      "pages": [
+        "https://www.leshabank.com/wp-content/uploads/Lesha-Bank-CG-Report-2025-English-FINAL.pdf",
+        "https://www.leshabank.com/wp-content/uploads/Lesha-Bank-Summary-of-resolution-passed-during-the-AGM-and-EGM-25-Feb-EN.pdf",
+        "https://www.gulf-times.com/article/683532/business/lesha-bank-elects-three-board-members"
+      ],
+      "queries": [
+        "Lesha Bank board of directors elected members 2026 AGM Noura Al Suwaidi"
+      ]
+    },
+    {
+      "target": "UGA - Alpha Capital Partners ownership",
+      "queries": [
+        "\"Alpha Capital Partners\" Uganda shareholders directors Kaboyo fund manager licensed",
+        "\"Alpha Capital Partners\" Kaboyo \"privately owned\" OR \"wholly owned\" OR shareholding Uganda",
+        "Uganda Retirement Benefits Regulatory Authority licensed fund managers list \"Alpha Capital Partners\"",
+        "\"Alpha Capital Partners\" Uganda Kampala company profile \"private company\" OR \"privately held\" OR \"private limited company\" Kaboyo founder owner",
+        "\"Alpha Capital Partners\" Uganda registered company directors shareholders Kampala \"Ltd\" registry",
+        "Kaboyo \"Alpha Capital Partners\" \"which he owns\" OR \"his firm\" OR \"proprietor\" OR \"majority shareholder\"",
+        "\"Alpha Capital\" Uganda unit trust prospectus fund manager \"shareholders of the fund manager\" OR \"incorporated in Uganda\" Kaboyo",
+        "\"Alpha Capital\" Kaboyo \"private\" firm Kampala treasury advisory \"Alpha Capital Partners\" Monitor New Vision",
+        "URSB Uganda Registration Services Bureau company name search business registry online portal"
+      ],
+      "pages": [
+        "https://en.wikipedia.org/wiki/List_of_fund_manager_companies_in_Uganda - lists 20 Ugandan fund managers with no ownership information for any of them; Alpha Capital Partners does not appear (the similarly named Alpha Asset Managers Limited does, as a bare name)",
+        "https://independent.co.ug/tag/alpha-capital-partners - one tagged article, 'Behind MTN share offer', naming Kaboyo as managing director only; no owners, shareholders or directors",
+        "https://ugandare.com/?p=10904 - Uganda Reinsurance Company board biography: 'founder and Managing Director of Alpha Capital Partners'; no ownership, shareholding or private-status statement",
+        "https://cmauganda.co.ug/licensed-firms/ - Capital Markets Authority of Uganda, LIST OF APPROVED PERSONS AS OF MAY 2026: Alpha Capital Partners is not listed in any category, and the register shows no ownership data for any firm"
+      ]
+    },
+    {
+      "target": "KOR - Seoul Foreign Exchange Brokerage ownership",
+      "queries": [
+        "서울외국환중개 주주 은행 지분 주주현황",
+        "서울외국환중개 설립 출자 은행 공동 외국환중개회사 주주",
+        "\"서울외국환중개\" 감사보고서 주주 지분율 DART 전자공시",
+        "\"서울외국환중개\" 은행들이 공동 출자한 회사 사장 정규일 한국은행",
+        "\"Seoul Money Brokerage Services\" shareholders owned by banks joint venture established 1984 Tullett",
+        "\"서울외국환중개\" 최대주주 지분 소유 구조 기업정보",
+        "정규일 서울외국환중개 사장 선임 주주총회 2021 한국은행 부총재보"
+      ],
+      "pages": [
+        "https://www.catch.co.kr/Comp/CompInfo/F13463 - HTTP 403 to automation, needs a hand check",
+        "https://m.catch.co.kr/Comp/CompSummary/F13463 - HTTP 403 to automation, needs a hand check",
+        "https://www.segye.com/newsView/20210721517389 - unrelated: Bank of Korea appointing 이상형 deputy governor; no mention of 정규일 or 서울외국환중개"
+      ]
+    }
+  ],
+  "leads_not_opened": [
+    {
+      "url": "https://lei.bloomberg.com/leis/view/98840007LEN5VMRVQX37",
+      "why": "Possible LEI record for the Korean brokerage; a prior round already found its LEI gives 'Parent Information Not Provided', so it would not state shareholders."
+    },
+    {
+      "url": "https://urbra.go.ug/?p=5541",
+      "why": "Uganda Retirement Benefits Regulatory Authority public notice, likely a licensing list. Licensing does not state ownership, and the firm is absent from the comparable CMA register."
+    },
+    {
+      "url": "https://cmauganda.co.ug/wp-content/uploads/2022/05/Capital-Markets-Quarterly-Bulletin-1Q-2026.pdf",
+      "why": "CMA Uganda quarterly bulletin; market statistics and licensee counts, not shareholder registers."
+    },
+    {
+      "url": "https://vcinvest.com/company/alpha-capital-partners",
+      "why": "Aggregator profile reached by redirect from kando.tech; almost certainly a different, US-based firm of the same name, so it cannot be used for the Kampala firm."
+    },
+    {
+      "url": "https://www.leshabank.com/wp-content/uploads/Lesha-Bank-Annual-Report-2025-FINAL-ENGLISH-Low-Res.pdf",
+      "why": "Lesha Bank 2025 annual report; the 2025 corporate governance report already gave the full elected board and executive list with no Al Suwaidi, so the question is closed."
+    }
+  ]
+}

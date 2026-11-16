@@ -88,6 +88,20 @@ def fold(s):
 _url_cache = {}
 
 
+def person_stem(s):
+    """The person's name with the record's parenthetical role stripped, folded for comparison.
+
+    The duplicate key for a career move is (iso3, source_url, people[:40]). Records on this map
+    conventionally write people as "Name (post, dates)", so an agent that writes the bare name
+    produces a DIFFERENT first 40 characters for the same person and the key misses. Round 64
+    caught three records that way: Ecuador's was the same person, the same CV and the same URL as
+    a record already filed and counted, and the merge offered to file it again. Comparing the
+    name alone catches it. (round 64)
+    """
+    s = (s or '').split('(')[0].split(';')[0].split(',')[0]
+    return fold(s)
+
+
 def url_ok(u, waived):
     if not u:
         return False, 'no source_url', False
@@ -187,6 +201,12 @@ def main():
     have_rd = {(c.get('iso3'), (c.get('source_url') or ''), (c.get('people') or '')[:40])
                for c in cor['revolving_door']}
     have_ev = {(e.get('iso3'), (e.get('source_url') or '')) for e in evg['events']}
+    # (iso3, person stem) -> indices of the career moves already on the map for that person
+    rd_person = defaultdict(list)
+    for i, c in enumerate(cor['revolving_door']):
+        st = person_stem(c.get('people'))
+        if st:
+            rd_person[(c.get('iso3'), st)].append(i)
 
     filed = {'tie': [], 'event': [], 'rd': [], 'case': []}
     refused, dropped, handcheck_list = [], [], []
@@ -200,6 +220,18 @@ def main():
             refused.append((f, '-', f'file would not parse: {e}'))
             continue
         for r in (d.get('records') or []):
+            # An agent writing a list where the schema wants a string used to crash the collapse
+            # step with an unhashable-type traceback, which loses the whole run rather than one
+            # record. Refuse the record and name the field instead. (round 64)
+            bad = [k for k in ('iso3', 'people', 'source_url', 'summary', 'move', 'detail',
+                               'status', 'kind', 'entity', 'relation')
+                   if k in r and r[k] is not None and not isinstance(r[k], str)]
+            if bad:
+                refused.append((os.path.basename(f), str(r.get('iso3'))[:3],
+                                'these fields must be a single string, not '
+                                + ', '.join(f'{k}={type(r[k]).__name__}' for k in bad)
+                                + ' -- join a list into one string before merging'))
+                continue
             incoming.append((os.path.basename(f), r))
 
     # collapse same person, same source, same country BEFORE validating
@@ -303,6 +335,29 @@ def main():
                 refused.append((src, label, 'summary too short to stand alone in a box')); continue
             if (iso, r.get('source_url') or '', (r.get('people') or '')[:40]) in have_rd:
                 dropped.append((src, label, 'already on the map')); continue
+            st = person_stem(r.get('people'))
+            if st and rd_person.get((iso, st)):
+                hits = rd_person[(iso, st)]
+                at = ', '.join(str(i) for i in hits)
+                same_url = [i for i in hits if isinstance(i, int)
+                            and (cor['revolving_door'][i].get('source_url') or '')
+                                == (r.get('source_url') or '')]
+                # A person legitimately holds two records in one country -- nine people on the map
+                # do -- so say WHICH kind this is rather than refusing in the same words either
+                # way. Same source for the same person is a duplicate; a different source may be
+                # a second, distinct move.
+                why = (f'{iso} already holds revolving_door[{", ".join(str(i) for i in same_url)}] '
+                       'for this person FROM THE SAME SOURCE URL. Either the same career written '
+                       'twice, or this map\'s other practice: one career deliberately SPLIT by leg, '
+                       'so that a settled leg and an unsettled one carry their own reasoning '
+                       '(Sudan\'s Nimir is split that way). Read that record and edit it rather '
+                       'than filing beside it.'
+                       if same_url else
+                       f'{iso} already holds a career move for this person at revolving_door[{at}], '
+                       'from a different source. It may be a second, distinct move, which is fine, '
+                       'or the same career re-found. Read that record and merge by hand.')
+                refused.append((src, label, why + ' (the people string differs, so the duplicate '
+                                'key did not catch it)')); continue
 
         ok, why, handcheck = url_ok(r.get('source_url'), waived)
         if not ok:
@@ -318,6 +373,8 @@ def main():
             have_case.add((iso, r.get('source_url') or '', (r.get('people') or '')[:40]))
         else:
             have_rd.add((iso, r.get('source_url') or '', (r.get('people') or '')[:40]))
+            st = person_stem(r.get('people'))
+            if st: rd_person[(iso, st)].append('this run')
 
     NAME = {'tie': 'ties (networks.json)', 'event': 'events (events_gold.json)',
             'rd': 'revolving door (corruption.json)', 'case': 'corruption cases (corruption.json)'}
