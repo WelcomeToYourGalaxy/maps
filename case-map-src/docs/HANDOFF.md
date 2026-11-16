@@ -1,13 +1,14 @@
 # Globalization Case Map: handoff for a new chat
 
-Last updated: round 37 — the first AidData tranche is written, and **the lopsidedness this file
-calls the map's real defect has moved for the first time: five of the seven new cases are
-`documented` rather than `contested`**, against 29 of 30 in round 17 and 18 of 18 in round 19. The
-reason is structural and it is the argument for finishing this queue: Chinese state lenders publish
-no completion report, so the evidence that exists at all is press, court records and audit offices,
-which sit outside the lender. The map stands at **1,176 cases in 136 countries**. Round 36, below,
-characterised the queue before a researcher was dispatched; round 35 made the ICIJ claim checkable.
-Replaces every earlier handoff.
+Last updated: round 38 — the AidData queue is worked to its end as a queue, and **the lopsidedness
+this file calls the map's real defect has now moved twice: five of seven `documented` in round 37
+and five of six in round 38**, against 29 of 30 and 18 of 18 `contested` in the ICIJ tranches. The
+reason is structural and it held across both rounds: Chinese state lenders publish no completion
+report, so a case either has a source outside the lender or it is a drop. The map stands at
+**1,182 cases in 137 countries**. **What is left of that queue is 178 financings whose own text
+carries only a protest or a pollution flag, and a protest is not harm under test 2 unless something
+happened to the people in it — so the next round is not another AidData tranche.** Read "The queue,
+after round 38" before commissioning anything. Replaces every earlier handoff.
 
 ## The aim, settled 14 Nov 2026 — a defensible big picture, not a bigger map
 
@@ -273,6 +274,161 @@ These came in over one session and all of them are done unless noted.
 7. **`case-map-src/HANDOFF.md` is a pointer now, not a handoff.** It held the round 13 text and was nine
    rounds stale. The current handoff is this file, `case-map-src/docs/HANDOFF.md`, and there should
    never again be two.
+
+## READ THIS FIRST: round 38 is merged, built, tested and pushed
+
+The thin end of the AidData queue: the 52 limb-(b)-capable financings left after round 37, plus the
+Samoa lead round 37's checker reopened. Three writers, three separate checkers, **then a fourth
+check over a card one of the checkers wrote itself**. Build is clean: `loan-condition cases matched
+173 of 173`, 24 patterns, 25.0 MB, zero page and zero console errors headless. **1,176 to 1,182
+cases, 136 to 137 countries** — Samoa is new.
+
+| Outcome | Financings |
+| --- | --- |
+| Case written | 6 |
+| Extend | 4 |
+| Already on the map, nothing added | 6 |
+| Drop, with the deciding sentence or absence recorded | 37 |
+
+**Five of the six cases are `documented`**, holding round 37's result rather than reverting to the
+ICIJ pattern. Three deaths counted. All six arrived carrying whole-picture text, conditions prose and
+a settled condition type, so no panel row dipped and there is **no follow-on backlog again**.
+
+**The yield is thinner than round 37's and that was the prediction.** These were the rows whose own
+text carries no deciding sentence. The useful finding is where the cases actually came from: **in
+every one, the yield came from outside the flagged sentence.** The flags pointed at the right
+financing and the wrong harm. Two writers said the same thing independently.
+
+### A checker cut a card and then wrote a different one, and this is how that was handled
+
+Batch C's checker ruled the writer's Costa Rica expropriation harm was not harm — the entries into
+possession were agreed with the owners, with no unpaid sum, no deadline and no dissenting owner
+recorded, and the one money movement recorded runs the other way, funds already deposited for owners
+being returned. It then wrote a different case on the same financing: two named workers killed by a
+container falling from an overturning trailer at a roundabout on the Route 32 widening, 6 November
+2025.
+
+**That is a checker-authored card, and this file's own rule from round 37 is that a checker-added
+card is a card nobody checks.** So a fourth agent verified it against documents rather than against
+the check log. It **stands, at `killed: 2`, with eleven corrections**, and the verification is worth
+reading for three things:
+
+- It read **the loan agreement annexed to Law 9293** — the primary text, not a summary — which says
+  the facility covers up to 85% of the 3 June 2013 CONAVI-CHEC contract for the whole corridor, and
+  confirmed the roundabouts are works under **addenda 7 and 8** of that contract. So the Burkina
+  Faso error is not present. The one real limit is now on the card: the facility is capped at 85% of
+  the contract *as signed in 2013*, and no document says whether loan proceeds or the national
+  counterpart paid for the addenda.
+- The deaths are counted on the **Igoeti precedent** — a third party's speeding is a cause that ties
+  a death to the works where the documents place the worker at the works — and `killed_note` now says
+  in terms that they are counted for that reason **and not because any document blames the
+  roundabout**. The Traffic Police's cause is speeding, the two men were at breakfast, the people
+  blaming the roundabouts are hauliers and residents, and the judgment and the Lanamme report both
+  predate the deaths.
+- **The checker's own claim that everything cutting the other way was on the card was false in three
+  places**, and three of the four omissions favoured the card. A check is not exempt from the fault
+  it exists to catch.
+
+### A writer's reported dead end was a shell route, and reopening it changed two cases
+
+Batch A's writer recorded that `new.kenyalaw.org/search/` returns a JavaScript-rendered page with no
+results, and concluded that the Miritini High Court judgment "was never opened" and an appeal's
+result "is unknown". **The endpoint behind that page answers JSON, unchallenged:**
+`https://kenyalaw.org/search/api/documents/?search=<phrase>`. It is a phrase-exact index of Kenyan
+judgments, gazettes and cause lists. Through it the check found:
+
+- the Miritini judgment (Ogola J., 12 November 2019) **plus five later rulings to 20 February 2026**,
+  recording that the stay of execution "ha[s] not been varied" and that executing the judgment
+  "would be an exercise in futility" — so the four allottees are still unpaid eleven years after the
+  January 2015 acquisition notice, which is the harm persisting on the record;
+- **eight years of Kibwezi litigation nobody had found**, including 56 petitioners before Kenya's
+  Land Acquisition Tribunal, judgment 2 December 2025.
+
+That took `kibwezi-kitui-road-compensation` from resting on one newspaper, a parliamentary *question*
+that presupposes rather than finds the delay, and one senator's undated speech, to resting on court
+and tribunal records with named claimants. **This is the twelfth time a client-side failure was
+nearly recorded as an absence**, and the second round running where doing so had cost a real finding.
+
+### Three cuts and corrections worth carrying
+
+**A misattributed quotation was the only thing holding up a case.** The Bosnian card credited the
+Chinese embassy in Sarajevo with confirming that donated flood-relief machinery "was not handed to
+the residents hit by the floods". Those words are a **journalist's subordinate clause**; the
+embassy's own quoted words say only that it learned from the media that the equipment was sold and
+that it hopes the institutions establish the truth. With that gone, the counted cohort — "more than
+50 people" defrauded — is a prosecution allegation about a private individual impersonating a
+commissioner *after leaving office*, so the money went to a conman rather than being land,
+livelihood or compensation owed, and the flood-hit households are neither named nor counted. **Cut.**
+The check also refuted the round's own absence claim by finding a confirmed indictment covering one
+tractor and 15,852.84 KM — a court act whose victim is the public purse.
+
+**A date read off an article's timestamp, and a figure from an unnamed report.** "By February 2024,
+151 homes had been demolished" on the ECRL card took its date from the publication date and its
+figure from one outlet's paraphrase of a report it does not name. Cut as a dated outcome, kept as
+what that outlet actually says. The card was retitled and stands on four other limb-(b) legs.
+
+**All four company descriptions needed correcting, and the fault was one shape by a side door:** the
+writer's *notes* were scrupulous and the *descriptions* then asserted what the notes said was only
+attributed. Two had the admission in their own note. Athi Water's parent ministry came out
+altogether — **Legal Notice 28 of 2019, read on Kenya Law, names no parent ministry**, establishes
+**eight** agencies rather than the website's nine, and commenced 3 May 2019 rather than the
+website's 26 April. The agency's own website is wrong about its own instrument three times.
+
+### Two buckets of this queue are now known to be spent
+
+- **`arrest or detention` produced nothing, across both batches that had it.** Of roughly fourteen
+  financings carrying it, **not one held an arrest of anyone who objected** — they are ministry
+  officials, company executives, a contractor's project head, and in one case a call for an arrest
+  that never happened. Corruption prosecutions, not harm to affected people. **Add a sub-flag for
+  "arrest of an official" against "arrest of a resident" before any further word search on this
+  dataset**; two writers proposed it independently and it would have cleared a dozen rows without a
+  search.
+- **Three `land taken` flags were political-risk insurance clauses** — the trigger is a capitalised
+  "Expropriation" in a list of covered risks on a MIGA or Sinosure policy. A pre-screen on "against
+  the risks of" removes them before a writer opens them.
+
+### The three AidData register records, and the one that is deliberately not flagged
+
+`banskhali-coal-plant`, `suralaya-java-9-10` and `thar-block-ii-sehnri-dars-gorano` cited an AidData
+record in their text with an empty `cp` and `cx`. Round 37's checker wrote no extend for them
+because `merge.py` has no `cx_add`. **The route it did not know: `merge.py` accepts a top-level
+`complaints` array, and its own closing loop then writes the `cx` row and the `cp` entry from each
+record's `cs`.** No script needed.
+
+`h` is true, true and **false**. The false one is the call that matters and it was confirmed on
+appeal: **record 54315 describes financing and a timeline and none of the harm its card carries** —
+no protest, death, arrest, displacement or pollution anywhere in it. `h` is a statement about the
+record, not about the case, and the precedent agrees: `aiddata:30922` is `h: false` while describing
+obstacles over the resettlement of 3,000 people. Harm-flagged complaints inside a case are now
+**436 of 485**, which is the arithmetic both agents predicted independently.
+
+One shape note for later: the 24 existing `al` strings run 86-329 characters and these three run
+509-618. `al` is now both a one-line summary and a paragraph, and someone should decide which.
+
+### Read an AidData narrative to its end before writing any term
+
+Round 38's sharpest process finding. **All five of one batch's entries stated a loan term without
+the date the record attaches to it, and in three the figure had been superseded inside the same
+record**: Lower Sesan's 6.5% (amended in 2019 and 2022 to six-month LIBOR plus 280-350 basis
+points), the ECRL's seven-year grace (extended to 2027) and its RM44bn cost (rescoped to RM50.27bn).
+AidData prints the term at signature in its financial-terms panel and the amendments twenty lines
+down the narrative. Reading the panel and stopping produced all three. **Date every term to the
+agreement that set it.**
+
+Related, and new: **a frozen batch extract and the live AidData record disagree.** Three of
+seventeen financings in one batch differed on maturity, rate, date or amount, and in one the frozen
+text partitioned a loan in a way the live records do not. **Build future batches from the live
+records, not from an extract taken at screen time.**
+
+### Two hand-edits no merge script can make
+
+Both are recorded in the check logs and both were applied by hand:
+- `celukan-bawang-coal-bali`'s `whole` was **replaced**, not appended: its closing sentence said no
+  measured output or independent check was found, and record 49810 gives 5.2 billion kWh as of 17 May
+  2017. The replacement says the record names no source for its 40%-of-Bali figure and that the
+  sources it lists are dominated by Chinese state and company material.
+- `souapiti-dam-guinea`'s `ct` was set to `["tied","repay"]`. `fields_add` appends a string and
+  cannot write a list.
 
 ## READ THIS FIRST: round 37 is merged, built, tested and pushed
 
@@ -1407,27 +1563,34 @@ Deliberately batched, as this file's own plan allows, and the panel dips honestl
 whole-picture text, entity descriptions and condition types. **Whole text is at 96%, conditions 94%,
 company descriptions 84%.** Those three jobs for round 31's cases are the second item on the queue.
 
-## Current state (15 Nov 2026, round 37)
+## Current state (15 Nov 2026, round 38)
 
-**1,176 cases**, in 136 countries and territories. Read out of the rendered About panel after the
-merge, by clicking `#infoBtn` in a headless browser and taking the text of `#info` — which is the
-only way to get them, because the panel is computed in the browser and a grep over the built file
-returns the raw `<!--COMPLETENESS-->` marker.
+**1,182 cases**, in 137 countries and territories. Every figure below was read off the rendered page
+with `case-map-src/test_map.js` after the merge. Read them that way and no other: the panel is
+computed in the browser, a grep over the built file returns the raw `<!--COMPLETENESS-->` marker,
+and round 37 twice got the coverage brief wrong by computing a figure instead of reading it.
 
 | What | Filled | Share | Last round |
 | --- | --- | --- | --- |
-| Rounded "what happened to people" paragraph (`whole`) | 1,169 of 1,176 | **99%** | 99% |
-| Cases that say what the money came with (`conditions`) | 1,147 of 1,176 | **98%** | 98% |
-| Lender's terms looked for and settled (at least one non-`research` `ct`) | 1,068 of 1,176 | **91%** | 91% |
-| Company names with a line saying what the firm is (`desc`) | 1,178 of 1,322 | **89%** | 89% |
+| Rounded "what happened to people" paragraph (`whole`) | 1,175 of 1,182 | **99%** | 99% |
+| Cases that say what the money came with (`conditions`) | 1,153 of 1,182 | **98%** | 98% |
+| Lender's terms looked for and settled (at least one non-`research` `ct`) | 1,074 of 1,182 | **91%** | 91% |
+| Company names with a line saying what the firm is (`desc`) | 1,186 of 1,333 | **89%** | 89% |
 | People with a checked `total` | 53 of 173 | 31% | 31% |
-| Cases with a documented buyer | 34 of 1,176 | 3% | 3% |
+| Cases with a documented buyer | 34 of 1,182 | 3% | 3% |
 
-**No row dipped, and that is the news.** Every ICIJ tranche arrived with none of the three text
-fields and left a follow-on round behind it; round 37's seven cases arrived with whole-picture text,
-conditions prose and a settled condition type, so the numerators moved with the denominators. The
-only gap this round opened is **four company names without a description** — three on
-`karimenu-ii-dam-compensation`, one on `neshe-dam-compensation-oromia`.
+**No row has dipped for two rounds, and that is a change in how rounds are run.** Every ICIJ tranche
+arrived with none of the three text fields and left a follow-on round behind it. Rounds 37 and 38
+asked writers for `whole`, `conditions` and a `ct` type on the card, and got them on all thirteen
+cases, so the numerators moved with the denominators. **Keep asking for them**; it costs the writer
+little, because it is written from the same documents, and it retires the whole follow-on round.
+
+Also re-read from the rendered page: complaints belonging to a case are **788 of 3,004**, and
+harm-flagged complaints inside a case **436 of 485**.
+
+The seven cases still without a whole-picture paragraph are the ones judged years ago to have no
+credible information: Morelos, Batang, Java 7, Pacitan, Tanjung Kasam, Cilacap, IPP4 Al-Manakher.
+Do not re-queue them.
 
 The seven cases still without a whole-picture paragraph are the ones judged years ago to have no
 credible information: Morelos, Batang, Java 7, Pacitan, Tanjung Kasam, Cilacap, IPP4 Al-Manakher.
@@ -1442,12 +1605,84 @@ The seven cases still without a whole-picture paragraph are the ones judged year
 credible information: Morelos, Batang, Java 7, Pacitan, Tanjung Kasam, Cilacap, IPP4 Al-Manakher.
 Do not re-queue them.
 
-## The queue, after round 37
+## The queue, after round 38
 
-Round 37 closed the front of the AidData queue — the 59 financings carrying decisive evidence. In
-order of what each would do for the aim:
+**The AidData queue is finished as a queue, and the next round should not be another tranche of it.**
+Rounds 37 and 38 between them worked every financing in it whose own text carries a sentence capable
+of deciding a case: 59 with decisive evidence, then 52 able to meet limb (b). What remains is **178
+financings whose candidate sentences carry only a protest flag or a pollution flag**. A protest is
+not harm under test 2 unless something happened to the people in it, and round 38 established that
+the `arrest or detention` bucket — the one that could have turned a protest into limb (b) — holds
+nothing but prosecutions of officials and executives over the money.
+
+**That is a finding, not a gap, and it belongs in the "say it rather than chase it" column.** The
+honest shape of the Chinese state lending row is now: 97 of 20,985 deals have a case, AidData's own
+text flags 793 of them for any harm word at all, 111 of those were worth researching, and the
+remaining 178 record a protest or a pollution complaint and nothing that happened to anybody. Working
+them would cost three or four rounds and would mostly produce drops. **If the owner wants Chinese
+state lending covered further, the route is not AidData's free text — it is the complaint
+mechanisms, the national courts and the audit offices, which is where both rounds' cases actually
+came from.**
+
+So, in order of what each would do for the aim:
+
+1. **An outside-sourcing pass over the existing `contested` cases.** This is now the highest-value
+   job on the map and it is the one this file has recommended for five rounds without it being run.
+   The argument is stronger after rounds 37 and 38: both found that the evidence which makes a case
+   `documented` is press, court records and audit offices, and round 38 showed that **a single
+   search index nobody had used turned two thin cases into court-backed ones.** The map's harm is
+   still mostly harm the lender wrote down about itself, which is a floor rather than a measure, and
+   this is the job that changes it. Start with the cards round 19 noted that name a live court case
+   or a specific district, and with the Kenyan, Ugandan and South Asian cases where a national
+   judgment index exists. **Route found in round 38 and worth reusing:**
+   `kenyalaw.org/search/api/documents/?search=<phrase>` is a phrase-exact JSON index of Kenyan
+   judgments, gazettes and cause lists, and answers unchallenged where the web page does not.
+2. **The 546 untouched ICIJ possible-displacement rows.** Still untouched; every tranche worked only
+   the confirmed table, which is down to two open rows. This is the largest register-backed queue
+   left, and the harvest machinery for it already exists.
+3. **The leads round 38 found and did not take**, each a named case rather than a queue:
+   - **Nauru's 1999 US$99m General Electric Capital loan** to the Nauru Phosphate Royalties Trust,
+     its default, receivership and the public debt crisis that followed — mechanism `debt`, a
+     non-Chinese private creditor, and outside the AidData queue's scope entirely.
+   - **Route 32's wildlife crossings**: a Delfino item of 12 November 2025 on the Constitutional
+     Chamber giving CONAVI three days, which bears on that card's empty `ecosystem`; and the
+     Comptroller General's earlier report of 30 May 2022 on the project's conceptualisation, which
+     nobody on that card has read.
+   - **Six further Kibwezi rulings** found through the Kenya Law index and left off the card for
+     want of a read text.
+4. **The 108 cases still without a settled condition type.** Carried. Round 33's two routes — aide
+   memoires and `projectid=` enumeration — remain the only new ones since.
+5. **Sweep the blank-`docty` wds records.** Carried from round 34, unchanged.
+6. **The four follow-ons round 34 left** and **the three verified terms a checker left out on
+   purpose** in round 33. Both carried, both small.
+
+### Open for the owner, from round 38
+
+- **`lower-sesan-2-dam`'s `confidence_note` is wrong on the card's own evidence.** It says "Exact
+  split of the US$781 million among the **three banks**"; record 62217 names five Chinese financiers
+  and the card's own `lenders` array lists all five. Found by a checker working another field and
+  deliberately not fixed, because it is a live claim.
+- **`barishal-coal-plant-evictions` has two fields reading against each other.** `lenders[0].role`
+  states the US$427.5m facility while the same card's `confidence_note` says the current AidData
+  record does not give that figure. Already disclosed rather than hidden, but the two do not sit
+  together.
+- **The `al` field's length.** Round 38 added three register records of 509-618 characters where the
+  existing 24 run 86-329. Either `al` is a one-line summary or it is a paragraph.
+- **`sgr-phase-1-miritini-allottees` is the closest pair of points on the map**: 280 m from
+  `mombasa-mariakani-jomvu-evictions`, same ward and same start year, and 2.4 km from
+  `kenya-sgr-cargo-directive`. Different works, lenders, parcels, people and harm, and the check
+  recorded the reason — but if the owner ever wants a minimum distance between pins, this is the pair
+  that forces the question.
+
+## The queue, after round 37 (superseded by round 38, kept for its reasoning — item 1 is now done)
+
+In order of what each would do for the aim:
 
 1. **The rest of the AidData queue: 230 financings, of which 52 can meet limb (b) and 129 cannot.**
+   **Round 38 worked all 52 of those. The 178 that remain are the protest-and-pollution residue, and
+   the section above explains why they are not a queue.** The reasoning below is kept because it is
+   how the 52 were identified and because its warning about recounting a figure at financing level
+   still applies to anything built from this dataset.
    **The "379" an earlier version of this line gave was wrong, and so was round 36's own figure.**
    Round 36's table reads "left to research: 471 rows, 379 financings", but that does not survive
    being recounted at financing level. Counted properly — a financing screened out only when *every*
@@ -3690,6 +3925,28 @@ Keys in every case: `id, title, place, iso3, lat, lng, point, start, end, mechan
 - **Contracts, tied aid, company-funded deals, offices, live projects, loan-conditions layers:** unchanged (see `infra_*.py`, `docs/offices_notes.md`, `case-map-live-src/`, `loan-conditions-src/`).
 
 ## Push status
+
+- **Round 38 is merged, built, tested and pushed** (15 Nov, on `main`): the thin end of the AidData
+  queue. 1,176 to 1,182 cases, 136 to 137 countries. Build printed `loan-condition cases matched 173
+  of 173`, 24 patterns, 25.0 MB; zero page and zero console errors headless; every figure in
+  "Current state" read off the rendered page with `case-map-src/test_map.js`.
+  Its files: `docs/r38_batch_{a,b,c}.json` (batch inputs, with `screen_flags` on every candidate
+  sentence), `rounds/r38_{a,b,c}.json` with `_report.md` each,
+  `rounds/r38_{a,b,c}_checked.json` with `_check_log.md` each,
+  `rounds/r38_c_verified.json` and `_verify_log.md` (the fourth check over the checker-authored
+  card), `rounds/r38_cleanup{,_checked}.json` with report and log (the Samoa case and four company
+  descriptions), `rounds/r38_aiddata_cmp{,_checked}.json` likewise (the three register records),
+  `rounds/r38_codesc_merge.json` (the descriptions keyed by company name, which is the shape
+  `merge_codesc.py` wants), and `docs/leads_aiddata.json` annotated with `r38_outcome`/`r38_note`/
+  `r38_case_id` on the 53 financings worked.
+  `merge.py` reported `cases +6 (total 1182), complaints +3 (total 3004), extended 4`, all four
+  extends were confirmed to change their cases before and after the merge, and
+  `merge_codesc.py` reported 4. **Two hand-edits were applied afterwards** and are recorded above:
+  `celukan-bawang-coal-bali`'s `whole` replaced and `souapiti-dam-guinea`'s `ct` set.
+  **One path trap, for the next round:** `merge_codesc.py`, `merge_whole.py` and `merge_textfix.py`
+  resolve their argument against the current directory while `merge.py` resolves it against
+  `case-map-src/`, so from the repo root the first three need `case-map-src/rounds/...` and the
+  fourth needs `rounds/...`. This cost a failed call again.
 
 - **Round 37 is merged, built, tested and pushed** (15 Nov, on `main`): the first AidData tranche.
   1,169 to 1,176 cases, 135 to 136 countries. Build printed `loan-condition cases matched 173 of
