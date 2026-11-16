@@ -62,8 +62,18 @@ def cmd_search(phrase, y0=None, y1=None, rows=50):
     for r in re.findall(r'<record>(.*?)</record>', x, re.S):
         sym = re.search(r'<datafield tag="191".*?<subfield code="a">(.*?)</subfield>', r, re.S)
         ti = re.search(r'<datafield tag="245".*?<subfield code="a">(.*?)</subfield>', r, re.S)
-        pdfs = [u for u in re.findall(r'<subfield code="u">(https?://[^<]+)</subfield>', r)
-                if u.lower().endswith('.pdf')]
+        # Each record carries the same document in six languages and the Arabic link
+        # comes first. Taking pdfs[0] downloaded -AR.pdf every time, and an English
+        # keyword scan then found nothing in 23,000 words. Prefer English explicitly.
+        links = re.findall(r'<datafield tag="856".*?</datafield>', r, re.S)
+        bylang = {}
+        for df in links:
+            subs = dict(re.findall(r'<subfield code="(\w)">(.*?)</subfield>', df, re.S))
+            u = subs.get('u', '')
+            if u.lower().endswith('.pdf'):
+                bylang[subs.get('y', '')] = u
+        pdfs = [bylang[k] for k in ('English', 'Français', 'Español') if k in bylang] or \
+               [u for u in bylang.values()]
         if sym and pdfs:
             out.append({'symbol': sym.group(1), 'title': (ti.group(1) if ti else '')[:120],
                         'pdf': pdfs[0]})

@@ -219,6 +219,63 @@ per-turn ceiling but three things that matter:
 - **Relaxing the test for volume.** Unchanged from BRIEF16: a faster round with a looser
   test is not a faster round.
 
+### THE 20-RECORD CEILING WAS NOT TECHNICAL — tested 16 November 2026
+
+Rounds 7 and 8 averaged about 20 records per agent-turn and the handoff recorded that as
+the ceiling. **It was the cost of research, not a limit on writing.** Those agents spent
+their turns searching. Tested by running the alternative in a single turn against a local,
+prequalified corpus:
+
+| measurement | result |
+|---|---|
+| documents downloaded and indexed | 12 (UN Panels of Experts: Libya, Haiti x2, Yemen, South Sudan, others) |
+| words of source indexed | 287,034 |
+| WebSearch calls spent on any of it | **0** |
+| candidate paragraphs found mechanically | **120** |
+| new records written and merged | **7** |
+| existing records upgraded with new findings | 3 |
+| would-be duplicates caught against `cases.json` | **5** |
+| candidates rejected on the BRIEF11 test | the rest |
+| new-record yield per candidate | **5.8%** |
+| records per million words of source | **24** |
+
+**And a bug worth recording, because it cost two thirds of the yield.** The UN Digital
+Library returns the same document in six languages and the Arabic link comes first in
+field 856. Taking the first PDF downloaded `-AR.pdf` every time, so an English keyword
+scan found nothing in 23,000 words and eleven of fourteen documents measured as empty.
+`fetch_docs.py` now selects English explicitly. **Candidates went from 42 to 120 on the
+same twelve documents.** Any future tool that takes a link out of a catalogue record must
+check the language subfield.
+
+**So the real bottleneck is now qualifying candidate supply, not searching and not
+writing.** At 5.8 per cent conversion and 24 records per million words, 1,500 new records
+needs roughly 26,000 candidate paragraphs, or about 62 million words — on the order of
+2,000 reports of this size. Downloading them is free; indexing and reading them is the
+work. **Conversion is low on a family the map has already mined**: five of the paragraphs
+read were cases already on the map, including the Bengdara/National Oil Corporation record
+and the $300 million Al-Masraf diversion, both already held from an NGO report.
+
+**Which changes what a high-throughput round should look for.** Prefer families whose
+*format* is a case list — NABU's reports are the model, one block per case with entity,
+firm, officials, amount, period and stage — over narrative reports with annexes, however
+long. A 299-page Libya report and a 91-page Haiti report between them gave six new
+records. Length is not density and density is not conversion.
+
+**What an agent-turn can do, measured honestly.** This turn produced ten record-actions
+while also writing two tools, finding and fixing the language bug, indexing twelve
+documents and running the measurement. A turn spent only on writing from a ready corpus
+would land more — the per-record cost is one paragraph read locally and about 250 words
+written — but the number is bounded by how many qualifying candidates the corpus holds,
+which is why step 1 of a round is now discovery and indexing with no records written.
+
+**Two findings that are not throughput but came out of the same work.** A UN Panel of
+Experts report corroborating a record already held from an NGO source is a quality upgrade
+worth taking, and it is cheap: two records moved from a single NGO report to a corroborated
+intergovernmental finding. And a later report in a series often names what an earlier one
+left anonymous — the map's Arcahaie record said in terms that the panel had not given the
+name, and the September 2026 final report names her. **Re-reading a series against the
+map's own flagged unknowns is a seam of its own.**
+
 ### Source families, ranked by measured or estimated qualifying density
 
 Density is qualifying records per document, for this map's test. Only the first two rows
