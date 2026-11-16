@@ -274,6 +274,18 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .off .holder b{font-family:'Marcellus',serif;font-weight:400;font-size:19px;line-height:1.2;
   color:#f4f1e9;letter-spacing:.2px}
 .off .holder.none{font-size:11.5px;color:var(--faint);font-style:italic}
+.seats{margin:10px 0 2px}
+.seats .seatm{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 9px;margin-bottom:7px}
+.seats .seatm b{font-family:'Marcellus',serif;font-weight:400;font-size:17px;line-height:1.2;
+  color:var(--ink)}
+.seats .seatr{font-size:11px;letter-spacing:.3px;color:var(--faint)}
+.seats .seatcap{font-size:11px;letter-spacing:.3px;color:var(--faint);margin-bottom:5px}
+.seats .seatl{display:flex;flex-wrap:wrap;gap:4px 7px}
+.seats .seatl span{font-size:12px;line-height:1.35;color:var(--dim);
+  border:1px solid var(--line);border-radius:7px;padding:2px 7px;background:var(--panel2)}
+.seats details.seatx{margin:0}
+.seats details.seatx .seatl{padding:2px 0 6px}
+.seats .staleq{display:block;margin-top:7px}
 /* What each group of methods has in common, over the group. */
 .rfam{font-size:10.5px;letter-spacing:.9px;text-transform:uppercase;color:var(--stone);
   margin:13px 0 6px;font-weight:600}
@@ -5627,6 +5639,57 @@ function holderLine(holder){
   return '<div class="holder"><b>'+esc(holder)+'</b>'+
     '<span class="chip">check this</span></div>';
 }
+/* Who sits in the body, where a register names them.
+
+   Wikidata's P1308 answers this for a post — a mayor, a minister — and
+   `holderLine` prints it. It does not answer it for a body: a council
+   has members rather than a holder, and at municipal level Wikidata
+   records neither. A national register sometimes does. Quebec's names
+   the mayor and every councillor of all 1,103 of its municipalities
+   that fill a seat, 6,818 people, against councils whose email address
+   and telephone number are on this same page.
+
+   Three things keep it honest, and the third is why this is not on
+   Who to Contact. It is names only: no register here publishes a
+   contact for an individual member, so the route is the council and
+   saying otherwise would invent one. It is drawn once per office page
+   rather than inside each method's open row, which is the fault round
+   four fixed for the level rows and the hurdles — five methods meant
+   five copies. And it is drawn only on the kinds that are the
+   lawmaking body or its head: a municipal water authority is at the
+   same level and these are not its members.
+
+   Montréal's council is 64 seats and the median is 6, so a list long
+   enough to push the methods off the screen folds instead. Nothing in
+   the panel is meant to scroll (§1) and the spacing there has no
+   slack left. */
+const SEATKINDS={'leg/member':1, 'leg/chamber':1, 'leg/presiding':1, 'exec/head':1};
+function seatsBlock(o){
+  if(!o || !SEATKINDS[o.kind]) return '';
+  const lv=lvlOf(o);
+  if(lv==null) return '';
+  const sf=levself(lv);
+  if(!sf) return '';
+  const seats=(sf.cn && sf.cn.length) ? sf.cn : [];
+  if(!sf.m && !seats.length) return '';
+  const place=STACK[lv] ? STACK[lv].label : 'this level';
+  let h='<div class="seats">';
+  if(sf.m) h+='<div class="seatm"><b>'+esc(sf.m)+'</b>'+
+    '<span class="seatr">heads the council in '+esc(place)+'</span></div>';
+  if(seats.length){
+    const list='<div class="seatl">'+seats.map(n=>'<span>'+esc(n)+'</span>').join('')+'</div>';
+    const cap=(seats.length===1?'1 seat':seats.length+' seats')+' on the council in '+esc(place);
+    h+= seats.length>8
+      ? '<details class="govex seatx"><summary>'+cap+'</summary>'+list+'</details>'
+      : '<div class="seatcap">'+cap+'</div>'+list;
+  }
+  h+='<i class="staleq">named in the register this government\u2019s own ministry keeps, '+
+     'rebuilt monthly, so a seat can change before the next rebuild. No register here '+
+     'publishes an address for an individual member \u2014 the council itself is the route, '+
+     'and its own address is on this page.</i>';
+  return h+'</div>';
+}
+
 /* The search that finds the office's current address.
 
    Every address on this map comes from one public record, so a dead
@@ -5699,6 +5762,7 @@ function renderOffice(o){
   if(email) h+='<a href="mailto:'+esc(bareMail(email))+'">'+esc(bareMail(email))+'</a>';
   if(phone) h+='<span>'+esc(bareTel(phone))+'</span>';
   h+='</div></div>';
+  h+=seatsBlock(o);
   /* The methods that reach this office AND answer what the reader said
      they were trying to do. A flat list ranked only by how well each
      works put an OECD complaint and a shareholder proposal at the top
@@ -6091,7 +6155,7 @@ async function loadMuni(q){
        to this list is fetched, parsed and dropped on the floor: Italy's
        street address and certified address were both in the shards and
        invisible on the page until they were named here. */
-    ['u','e','p','o','a','c','j'].forEach(k=>{ if(rec[k]) e[k]=rec[k]; });
+    ['u','e','p','o','a','c','j','m','cn'].forEach(k=>{ if(rec[k]) e[k]=rec[k]; });
     e.reg=1;                                    /* from the country's own register */
     try{ if(CUR && !SEL) render(); }catch(err){ console.warn(err); }
   }catch(err){ console.warn('municipal register', q, err); }
