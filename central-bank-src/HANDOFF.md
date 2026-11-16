@@ -2,9 +2,13 @@
 
 Paste or attach this in a new chat to carry on adding to the map.
 
-Rewritten at round 43, current through round 67. It states the current position only. Earlier versions kept round-by-round narrative, which went stale and in round 26 sent agents to re-research records already on the map; the moves-against-the-bank section had grown four rounds of narrative again by round 42 and was rewritten as a statement. Keep it that way: when something changes, edit the statement, don't append a round note. The round-by-round account lives in `agents/work/research_log_2026-11.json`, which is where to look for what was searched and found nothing. **Where this names a country as dead or blocked, that is as of round 67 — re-derive the target list from `coverage.py` before briefing anything. Paste the list `coverage.py` prints; do not summarise it from memory. Round 56 lost an agent's calls to a target list written partly from memory that included a country which was not absent at all, and round 57 made the same mistake again — it pasted `coverage.py`'s list and then added QAT from this document's own prose, where QAT was not absent. **Round 64 is the third instance and it came from a different direction: the list of named one-page fetches below, not the absent list.** Ecuador sat at the top of that list as "the cheapest one" and Ecuador was already filed and already counted — record 327, the same person, the same CV and the same URL — so a third of one agent's budget went on re-finding a record the map had. The absent list was pasted correctly; the *leads* were not checked against it. **Check a named lead against `coverage.py`'s absent list too, not just the target list.** Paste what the script prints and add nothing to it.**
+Rewritten at round 43, current through round 68. It states the current position only. Earlier versions kept round-by-round narrative, which went stale and in round 26 sent agents to re-research records already on the map; the moves-against-the-bank section had grown four rounds of narrative again by round 42 and was rewritten as a statement. Keep it that way: when something changes, edit the statement, don't append a round note. The round-by-round account lives in `agents/work/research_log_2026-11.json`, which is where to look for what was searched and found nothing. **Where this names a country as dead or blocked, that is as of round 67 — re-derive the target list from `coverage.py` before briefing anything. Paste the list `coverage.py` prints; do not summarise it from memory. Round 56 lost an agent's calls to a target list written partly from memory that included a country which was not absent at all, and round 57 made the same mistake again — it pasted `coverage.py`'s list and then added QAT from this document's own prose, where QAT was not absent. **Round 64 is the third instance and it came from a different direction: the list of named one-page fetches below, not the absent list.** Ecuador sat at the top of that list as "the cheapest one" and Ecuador was already filed and already counted — record 327, the same person, the same CV and the same URL — so a third of one agent's budget went on re-finding a record the map had. The absent list was pasted correctly; the *leads* were not checked against it. **Check a named lead against `coverage.py`'s absent list too, not just the target list.** Paste what the script prints and add nothing to it.**
 
-**Round 66 is the fourth instance, and it was the briefer's own prose this time.** The gold agent's brief pasted the absent list correctly and then added a separate paragraph of "good odds" countries written from this document — a list that included Guatemala, Mongolia and Bangladesh, none of which were absent from the gold row. Four of the six records that came back were dropped as already on the map, and only Tunisia was a new place. The absent list was right there in the same brief, contradicting the paragraph below it. **Do not write a second list of names alongside the absent list.** If a lead deserves emphasis, name it *and* say it was checked against what `coverage.py` printed, in the same sentence. Any country name in a brief that is not in the pasted absent list is a bug unless the brief says why.
+**Round 68 took no instance of this at all, and the reason is mechanical rather than virtuous: `agents/work/mk_have.py` is new, it writes the absent lists and the per-country `have_*.json` files from the live data, and every brief was written from its output. One agent reported refusing a Malaysian record because it checked `have_rd.json` first and found four records there. Use it.**
+
+**But the SAME bug arrived from a new direction, and this is the shape to watch now: not a country name, a FIRM name.** Three of the five ties in one agent file were new spellings of parties already on the map -- a sixth spelling of RAMP ("Reserves Advisory and Management Program" for the map's "Reserve Advisory and Management Partnership"), a third of Goldman's asset arm, and "Schroders" for "Schroder Investment Management". `merge_links.py` cannot catch these, because it compares an incoming name only against what is filed FOR THAT BANK, and a firm arriving for a country that holds no record of it is not a duplicate by that test. The `have_*.json` files are keyed by COUNTRY, so they could not catch it either. **`mk_have.py` now also writes `party_names.json`, every party name the built map draws; put it in every brief and tell the agent to check a firm name against it the way it checks a country.** All three were folded onto the canonical spelling before filing, with the source's wording kept in `name_as_stated`.
+
+**Round 66 was the fourth instance of the country-name version, and it was the briefer's own prose.** The gold agent's brief pasted the absent list correctly and then added a separate paragraph of "good odds" countries written from this document — a list that included Guatemala, Mongolia and Bangladesh, none of which were absent from the gold row. Four of the six records that came back were dropped as already on the map, and only Tunisia was a new place. The absent list was right there in the same brief, contradicting the paragraph below it. **Do not write a second list of names alongside the absent list.** If a lead deserves emphasis, name it *and* say it was checked against what `coverage.py` printed, in the same sentence. Any country name in a brief that is not in the pasted absent list is a bug unless the brief says why.
 
 ## What it is
 - A standalone global map titled **"Central bank capture"**. It shows who owns and steers each central bank, what it hides, the corruption inside and around it, and how far its money reaches beyond its borders.
@@ -75,9 +79,9 @@ same commit as the work it did.
   - Links: `{n, cb | tn, rel, role, detail, src_t, src_u}`.
   - Popups turn each link into a plain sentence (`SAY` / `sayLink` / `srcItem` in `app.js`). Add a `SAY` entry for any new `role` string.
 
-## Where it stands (67 rounds in, 15 November 2026)
+## Where it stands (68 rounds in, 16 November 2026)
 
-1,715 outside parties and 2,497 ties. One writeup for every box, 1,944 of them. 20 patterns
+1,716 outside parties and 2,502 ties. One writeup for every box, 1,945 of them. 20 patterns
 and 14 suspected patterns.
 
 The party count is lower than the tie count implies, and deliberately: round 60 folded 28 duplicate
@@ -98,20 +102,34 @@ ignores" below.
 | Governor removals and pressure | 232 | 183 | 89% | 95% |
 | External auditors | 216 | 178 | 86% | 93% |
 | Banknote printers | 184 | 168 | 82% | 88% |
-| Outside reserve managers | 195 | 71 | 34% | 37% |
+| Outside reserve managers | 200 | 73 | 35% | 38% |
 | Gold custodians | 96 | 58 | 28% | 30% |
 | Swap lines | 240 | 84 | 41% | 44% |
 | Named shareholders | 228 | 9 | 4% | 5% |
 
-The revolving-door row counts the 288 records with a private employer. There are 342 career-move
-records in all; the other 54 are `public_move` and are listed in the country's box without being
-counted, because nobody moved between public office and private finance. TEN places hold
+The revolving-door row counts the 288 records with a private employer. There are 347 career-move
+records in all; the other 59 are `public_move` and are listed in the country's box without being
+counted, because nobody moved between public office and private finance. FIFTEEN places hold
 nothing but moves of that kind, so they read blank on the layer while their box is not empty:
-BOL BTN CPV CUB MRT QAT STP TLS TON VUT. Each needs one employer whose
-private ownership a source states — that is the whole of what stands between them and the row.
-**Round 64 corrected this number to eighteen; rounds 65, 66 and 67 converted eight of them between
-them, so it is ten. Round 67 alone took IRQ, MDG, SDN and SLE off it. Derive it, never read it:** the places in `core['E']` holding at least one career move where every
-one of them is `public_move`.
+BOL BTN CPV CUB HTI MRT QAT SLB SMR STP SYC TLS TON VUT WSM. **Derive it, never read it:** the
+places in `core['E']` holding at least one career move where every one of them is `public_move`.
+
+**The number went UP at round 68 and that was the honest result, not a regression.** Round 68 filed
+five career records and every one of them was public, so five places moved from holding NO record to
+holding a record that does not count: Haiti, the Solomon Islands, San Marino, Seychelles and Samoa.
+Their boxes stopped being empty and the row's percentage did not move. That is what this row looks
+like near its ceiling, and it is worth saying plainly in the round report rather than letting a flat
+percentage read as a wasted round.
+
+**And the "one ownership fetch converts it" framing is now wrong for most of this list, which earlier
+handoffs asserted and round 68 disproved by reading the records.** Of the ten places on it before
+this round, eight have careers that are public ON THEIR FACE rather than unsettled: ministries,
+provident funds, statutory insurance funds, a state currency-exchange entity, the ADB and the World
+Bank. Chasing the ownership of a national health insurance fund converts nothing. **Those places need
+a DIFFERENT PERSON, not a better source on the person already in the box.** Only Bolivia is still a
+genuine ownership fetch, and even there round 68 narrowed it: the CV's seven outside employers
+include railways, steel, sugar and a state commission, so **Bolivia has exactly TWO convertible
+employers, Banco de Cochabamba S.A. and Compañía Boliviana de Seguros S.A., not six.**
 
 The corruption row counts the 259 cases that are not `counterparty_only`. Two more findings are
 listed in a country's box without being counted, because the subject of the finding was another body
@@ -152,6 +170,104 @@ On the two layers compiled case by case — `cc` (corruption cases) and `ev` (mo
 Of the 52 places with no corruption case, 19 fall in the restricted bands, among them the UAE, Bahrain, Cuba, Egypt, Eritrea, Jordan, Saudi Arabia, Sudan and Uzbekistan. **Do not read those as clean.**
 
 Wiring: `agents/press_freedom.json` (Reporters Without Borders World Press Freedom Index 2026 situation band per country) → `D.PRESS` / `D.PRESSM`. A layer opts in with `blank: true`. `blankKind()` and `blankColor()` choose the shade, `colorOf(l, r, d, iso)` takes the iso3 as a fourth argument, the legend prints all three rows with their own info text, and `pressNote(iso)` adds the explanatory sentence to the country box. **Any future layer compiled case by case should opt in the same way.**
+
+
+## Two checks were passing while the thing they check was broken (round 68)
+
+Round 62 found three checkers crying wolf. Round 68 found the opposite failure, which is worse,
+because a check that cries wolf gets ignored while a check that prints "ok" gets BELIEVED.
+
+**`audit_data.py`'s auditor check was half-blind, and it had been clearing a stale list for eleven
+rounds.** It read `gaps["auditors"]` alone — and auditor records live in TWO stores, that one and the
+`audits its accounts` links in `networks.json`. This is exactly the hole round 55 fixed in
+`merge_links.py`, only mirrored: that script read `networks.json` and missed `gaps.json`, this one
+read `gaps.json` and missed `networks.json`. **Round 57 filed four auditors into `networks.json` —
+Cape Verde, Cambodia, Paraguay and Syria — and left all four sitting in `auditors_unavailable`, where
+the check printed "ok    no bank both has an auditor and is listed unavailable" every round since.**
+Two more of the same kind were found in the other maps: Tunisia's gold vaults were filed at round 66
+while `gold_unavailable` still said "no BCT annual report PDF surfaced in search; not reached this
+round", and Latvia's manager tie sat beside a note saying the page "could not be reached; not read".
+All six stale entries are removed, and the removed text is kept in
+`agents/work/r68/removed_stale_negatives.json` rather than thrown away.
+
+**The check now covers all four negatives maps and expands union keys. The hard part was that the
+overlap is NOT always an error**, and a naive version would have failed on eleven countries of which
+five were right. A country can hold a record for one part of a row and a documented blank for
+another: Iraq's own Baghdad vault is filed while the much larger "gold reserve abroad" line names
+nobody, Bolivia's three Fondo RAL-ME managers are filed while the note covers banks named only as
+holding gold deposits, and an ECCB or BEAC member's auditor comes from the union record expanding to
+members while the territory has no national auditor of its own to find. **So the rule is that such an
+entry must SAY SO: a negative deliberately kept beside a filed record carries an `also_filed` note
+giving the reason, and anything else fails.** That is the round-62 lesson applied to a new check
+rather than relearned on it.
+
+**`check_nodes.py` was reading only the ACTIVE phrasing, and the passive form hid a stale count.**
+The pattern matches "tied to N central banks", which is what the writeups brief produces — but a
+writer who opens a paragraph with the count produces "Fourteen central banks are tied to it" instead,
+and nothing read that. RAMP's paragraph said fourteen while its box held twenty-four, and it also
+still said "Only in Seychelles does RAMP run money" when seven more banks' own accounts now say the
+programme manages a portfolio. The inverted form is now matched, with the same guard as before so it
+cannot match a SOURCE's claim about the firm ("63 central banks own the BIS" does not match, because
+"own" is not this map's tie wording). **Adding it took the paragraphs being checked from 34 to 39 and
+immediately found a second stale count that had been hiding in the same blind spot: Crane Currency
+said seven when its box held twelve, missing Norway, Honduras, Kyrgyzstan, Lebanon and Mozambique.**
+Both paragraphs were rewritten rather than having a digit substituted.
+
+**The general lesson, and it is the one to carry: when a check passes, ask what it reads, not whether
+it ran.** Both of these printed a clean line every round while the fault sat in front of them.
+
+## `mk_have.py` — build the brief from the data, including the firm names (round 68)
+
+`coverage.py` prints the absent list and fixes half the duplicate problem. The other half is telling
+an agent what the map already holds for the places it IS sent to, and nothing in the repo produced
+that: every round built those files by hand, and the four duplicate incidents in rounds 56, 57, 64
+and 66 all came through that gap.
+
+`agents/work/mk_have.py` writes them, into the round's own directory:
+
+```bash
+python3 agents/work/mk_have.py agents/work/r<NN>
+```
+
+It emits `have_rd.json`, `have_cases.json`, `have_events.json`, `have_gold.json`, `have_mgr.json`,
+`have_aud.json`, `have_print.json` and `have_print_sibling.json`, all keyed by iso3 and all with
+union keys expanded so an agent sent to a member country can see the union record that covers it;
+`closed_negatives.json`, the four documented-negative maps; `absent.json`, the live absent lists
+including the all-public career list; and **`party_names.json`, every party name the built map draws**.
+
+**Two bugs it had on its first run are worth knowing, because both are traps the rest of the toolchain
+already carries and a new script will walk into them again.** First, the euro area is keyed `EMU` in
+the data and `ECB` in `UM`, so a plain `UM.get(iso, [iso])` leaves every EMU-keyed record unexpanded,
+and the symptom was ten euro-area members appearing absent on rows they are covered on. Second, the
+printers row counts a PRINTING relation only — `coverage.py`'s own test is `'print' in
+relation.lower()` — so grouping the substrate and paper siblings with it wrongly removed Zambia and
+Madagascar from the absent list. **Both were caught by diffing its seven absent lists against
+`coverage.py`'s, which is the round-63 lesson: a single source of truth cannot catch itself being
+wrong.** Do that diff whenever either script changes; the two now agree row for row.
+
+## The revolving door has a negatives store now (round 68)
+
+`gaps.json` has a **`revolving_door_unavailable` map**, created on the model of `cases_unavailable` at
+round 64 and for the same reason: the gold, manager, case and auditor rows each had somewhere to
+record a documented blank and this row had nowhere, so its negatives went into the research log and
+nowhere a script could read them. Round 68 alone produced 27 of them across 20 countries. Nothing in
+the build reads it; it is research state, and `audit_data.py` now checks it like the other four, with
+"filed" meaning a record the LAYER counts — a country whose only moves are public reads blank on the
+layer, so a negative beside those is correct and must not fail.
+
+## An ex officio board seat is not a career move (round 68)
+
+A round-68 agent offered Brunei's whole board as a revolving-door record, from the bank's own
+announcement of 21 October 2025: the Minister of Primary Resources and Tourism as chairman, the
+Deputy Minister of Finance and Economy as deputy chairman, the Deputy State Mufti, two Permanent
+Secretaries and the Solicitor General. **Refused, and the reasoning is worth keeping because the shape
+will recur.** It is the IDENTICAL document and the identical fact as the event the map already holds
+for Brunei, kind `government ministers chair and sit on the central bank's board`, dated 2025-10-21.
+Nobody moved: each member holds the ministry post concurrently and sits by virtue of it. **Government
+control of a board is a tie and an event, which is where the map already carries it**, and filing it
+again on the career row would double-count one fact across two rows and assert a move the source does
+not describe. The round-44 cross-filing rule is specific to a state act against a governor and does
+not reach this. Brunei stays absent on the revolving door and needs a real career.
 
 ## The three extraction failure modes, and the fix for each
 
@@ -1074,6 +1190,82 @@ that files a firm from a table with no address column. **Check `build_final.py`'
 nothing. **The failure mode is loud, which is the good case — but note that the row would simply
 have had no country had `record_type` happened to be present and `cb_iso3` absent.**
 
+
+## Host notes and named leads, round 68 (shelf life about a round — test, do not trust)
+
+**Serves plain curl, against what this document said:** `www.rbm.mw` (Malawi, the whole document list
+and every PDF), `law.moj.gov.tw` (Taiwan's law database), `cbos.gov.sd` (Sudan, including the 2025
+annual report at 9.8 MB), `bnr.rw/documents/`, `bcn.gob.ni`, `nationalassembly.sc`, `tsc.gob.hn`.
+**Constructed URLs are NOT provenance-blocked under curl**, so plausible document paths can be tried
+in batch — one agent covered 15 PDFs in 9 shell calls that way.
+**Refuses curl, serves WebFetch:** `sbp.org.pk` (403), `repositorio.bde.es` (403).
+**Refuses curl entirely, every path returning the same 404 page:** `asfi.gob.bo` — and this matters,
+because ASFI is the fetch that would settle Bolivia. The download-and-grep method does not work on it
+at all, so each ASFI document costs one windowed WebFetch per 100,000 characters.
+`Libro_Historia_Tomo_II.pdf` is 485,126 characters with 0-200,000 now read, leaving three windows.
+**Blocked on both tools, so a blocked host and not a blank:** `bcrp.gob.pe` (Incapsula stub on three
+BCRP documents), `nbrm.mk`, `centralbankbahamas.com`, `portalunico.iaip.gob.hn`.
+**Does not resolve at all, browser included:** `tcontas.cv`, `nbrb.by`.
+**Answers HTTP 500 to curl and needs a browser:** `web.pcc.gov.tw`.
+**Returns HTTP 200 with the site homepage for every document URL**, so nothing is actually tested:
+three `bancocentral.tl` PDF paths each returned the identical 158,178-byte homepage, to curl and
+WebFetch alike. **A 200 of the wrong length is the quietest failure on this list — check the size.**
+
+**A document can be present, extract at full length, and still return zero hits for words that are
+plainly in it.** The Central Bank of Sudan's 2025 annual report extracts 1,077,452 characters and a
+grep for مراجع, المراجعة or أساس الرأي returns nothing, because the PDF's text layer is Arabic
+PRESENTATION FORMS. Normalise first and the same greps return 14 hits:
+
+```python
+import unicodedata, re
+n = unicodedata.normalize('NFKC', text)
+n = re.sub(r'[\u200e\u200f\u202a-\u202e\u2066-\u2069]', '', n)
+```
+
+This is a FOURTH extraction failure mode, distinct from the three above: not a scan, not broken font
+encoding, not a full-page image — a document that extracts perfectly and greps falsely. **Apply it to
+any Arabic document before concluding it names nobody.**
+
+### Named leads for the next round, each checked against `coverage.py`'s absent list
+1. **MKD, reserve managers — the cheapest thing on the board.** WebFetch served
+   `Annual_Report_2024-NB.pdf` but only characters 0-100,000 of 349,275, stopping before Section VI
+   on reserves management and the notes. One or two `offset` calls close it.
+2. **BOL, revolving door** — ASFI's registers of banks and of insurers, for Banco de Cochabamba S.A.
+   and Compañía Boliviana de Seguros S.A., which are the only two convertible employers on the CV.
+   WebFetch only; see the host note above.
+3. **RWA, ZMB, reserve managers** — both are Angular single-page apps with no document links, both
+   serve PDFs to curl once a path is known, and both are plausible RAMP cases. Rwanda's
+   `bnr.rw/documents/` pattern works; Zambia's `boz.zm` needs a mirror or a parliamentary tabling.
+4. **SVN and SVK, reserve managers — a decision, not a search, and it is the same decision twice.**
+   Slovakia is new and is the cleaner of the two: NBS Annual Report 2020, footnote 3, says its
+   renminbi exposure is held through "the BISIP CNY, an open-ended fund comprising Chinese government
+   bonds and managed by the Bank for International Settlements in Basel", about USD 47m at end-2020,
+   alongside an equity portfolio of ETF shares of EUR 236m. Fund, named manager and figure. **And a
+   correction to what this document said about Slovenia: the "BIS fund and equity ETFs" wording is
+   NOT in the 2024 audited financial statements** — "BIS", "ETF" and "exchange-traded" return zero
+   hits there; the statements carry only a foreign-currency line "Investment funds", a valuation
+   policy turning on the bank's "level of influence on the day-to-day operations of the fund", and a
+   note on income from investments in investment funds, naming no fund and no manager. The quoted
+   wording is presumably in the Annual Report 2024, which was not opened. BCEAO's BISIP K units are
+   the precedent for counting these.
+5. **AUS, reserve managers** — Part 4 of the RBA Annual Report, the financial statements, is untested;
+   only Part 2 was read.
+6. **SDN, corruption cases — a decision for the owner.** See the Sudan entry in `cases_unavailable`:
+   the qualified opinion is now two years running and the Basis for Qualified Opinion section is
+   still not printed.
+7. **CHE, reserve managers** — the SNB confirms it awards mandates and names no firm; `simap.ch`, the
+   Swiss procurement portal, is the only route left and was not opened.
+8. **NLD, reserve managers** — DNB's 2025 annual report confirms externally managed equity and
+   corporate bond funds and "our first equity mandate", naming nobody. A Dutch award notice is the
+   next thing.
+9. **LUX, reserve managers — worth a note on a different row, not this one.** The BCL manages two
+   mandates FOR foreign central banks that outsourced part of their FX reserves, both clients
+   unnamed. That is the reverse direction and the map has no row for it.
+10. **The Central Banking award citations** remain unopened for BlackRock, PIMCO, State Street,
+    JPMorgan, Goldman, Wellington and Franklin Templeton. Trade press, so `weak_source: true`, and
+    **check each client name against the absent list AND against `party_names.json` first** — round
+    67 found every bank in three of these citations already filed.
+
 ## Host notes and named leads, round 67 (shelf life about a round — test, do not trust)
 
 **Expired or broken TLS — curl cannot, WebFetch can:** `beac.int` (closes six countries on the gold
@@ -1093,17 +1285,22 @@ reports. `digitallibrary.un.org` answers HTTP 202 with no file; `securitycouncil
 the one UN document that was needed.
 
 ### Named leads for the next round, each checked against `coverage.py`'s absent list
-1. **MWI, gold** — the Reserve Bank of Malawi ran a domestic gold purchase programme and reversed it
-   in 2026, so its statements should say where the gold sits. `rbm.mw` is a script-loaded document
-   list that blocks WebFetch by robots.txt. **Browser case, and the best single gold lead.**
+1. **MWI, gold — SETTLED NEGATIVELY at round 68 and must not be re-run.** See the gold row: the host
+   is open to plain curl, the FY2025 documents were read, and the note still names no Reserve Bank
+   and no city.
 2. **RWA, reserve managers** — `bnr.rw` is a single-page app and a plausible RAMP case, untested.
-3. **CPV, corruption cases** — `bcv.cv`'s SharePoint list needs a script-running browser; no Banco de
-   Cabo Verde annual report is indexed anywhere.
+3. **CPV, corruption cases** — still open, and round 68 narrowed why. `www.tcontas.cv`, the Tribunal
+   de Contas de Cabo Verde, **does not resolve at all — curl code 000 and a network error page in
+   Chrome too**, so it is the `nbrb.by` class of block and no tooling reaches it from here; `bcv.cv`
+   answers 403 to curl on every path. The only trace of the Tribunal's work that search reaches is
+   third-party: the EU Budget Support Group communique of November 2025 records its parecer on the
+   2023 Conta Geral do Estado and fiscalizacoes of municipios e organismos publicos, naming no audit
+   of the central bank.
 4. **AGO, corruption cases** — the Auditor-General of Singapore's reports FY2012/13 to FY2024/25,
    only one of which has been read; the MAS Act makes the AGO its statutory auditor every year. The
    cheapest unopened lead on that row.
-5. **TWN, auditors** — `web.pcc.gov.tw` needs a form POST in a browser, noting that the Ministry of
-   Audit's consolidated account is not an audit of the bank's own statements and must not be filed.
+5. **TWN, auditors — SETTLED STRUCTURALLY at round 68 and must not be re-run.** The statute gives the
+   audit of the accounts to the bank's own Board of Supervisors; see the auditors row.
 6. **SVN, reserve managers** — the owner's decision on whether units in a BIS fund plus ETFs,
    bundled in one line, clear the no-upgrade rule. BCEAO's BISIP K units are the precedent for yes.
 7. **SDN, revolving door / auditors** — the Abdelateef Hassan audit-partnership move, above: a scope
@@ -1695,10 +1892,36 @@ Bounded sets that worked:
 
 ## What is left
 
-### 1. External auditors — 93% of the reachable 192, and three of the longest-standing blanks fell at round 67
+### 1. External auditors — 93% of the reachable 192, and the row is now AT ITS CEILING
 178 of 206 done, union members included. `coverage.py` prints the list and does the subtraction: **14 countries remain**:
 
 `ARE BLR CUB EGY ERI IRN LAO MAC PSE QAT TKM TWN UZB VEN`
+
+**Every one of those fourteen now carries a documented negative in `gaps.json['auditors_unavailable']`,
+so the number of genuinely OPEN countries on this row is ZERO.** Subtract the negatives map from the
+absent list and nothing is left. This is the row the owner has said matters most to them, so it is
+worth stating what that means rather than only reporting 93%: the remaining fourteen are not
+unsearched, they are places where the audit is given to an internal body or a state organ by statute,
+or where the host cannot be reached from anywhere. More searching will not move this row. What could
+move it is a decision — whether a bank that names no auditor should be SHOWN as a confirmed blank on
+the layer rather than as a gap, the way the case layers already split "searched, nothing found" from
+"cannot be searched". That is the owner's call and it is the only thing left here.
+
+**Taiwan was the last one that still read as a search problem, and round 68 closed it structurally.**
+The entry had recorded a blocked fetch aimed at `law.moj.gov.tw` pcode G0380001 — and that pcode is
+the **Banking Act**, not the Central Bank Act, so the fetch would not have answered the question even
+if it had gone through. What answers it is the Rules of Procedure of the Board of Supervisors of the
+Central Bank (中央銀行監事會會議規則), made under article 7 of the Central Bank Act, at
+`law.moj.gov.tw/LawClass/LawAll.aspx?pcode=G0420002`, which serves plain curl. Its article 3 gives
+the Bank's OWN Board of Supervisors (監事會) the audit of the Bank's accounts (本行帳目之稽核) and the
+review of the Bank's final accounts (本行決算之審核), alongside examination of its assets and
+liabilities and of the currency issue reserve. **That is the Macao and Iran pattern exactly, and this
+map does not promote an internal supervisory board to an external auditor.** The procurement route was
+closed in the same sitting: the Government e-Procurement System award query
+(`web.pcc.gov.tw/prkms/tender/common/agent/readTenderAgent`), agency name 中央銀行, award notices
+2011-01-01 to 2026-11-16, returns no audit award at all. **The portal needs a browser to reach — it
+answers HTTP 500 to curl — but its results page is a plain GET, so set the date range in the URL
+rather than in the date picker, which silently overrides it.**
 
 ### The method that closed Mauritania, Madagascar and Sao Tome, and why it is the first thing to try now
 
@@ -2322,9 +2545,23 @@ corrected.
 WebFetch reads it fine. That one host closes six countries at once (CMR CAF TCD COG GAB GNQ), whose
 2018 accounts split 201,865.777 oz between unnamed "depositaires or" and "contreparties or".
 
-**The best remaining prospect is MWI**: the Reserve Bank of Malawi ran a domestic gold purchase
-programme and reversed it in 2026, so its statements should say where the gold sits, but `rbm.mw`
-loads its document list by script and blocks WebFetch by robots.txt — a browser case. **TZA has a
+**MWI is CLOSED, and it was neither a browser case nor the best lead — both halves of what this
+document said about it were wrong.** `www.rbm.mw` serves plain curl fine from the sandbox:
+`/Publications/FinancialStatements/` and `/Publications/AnnualReports/` both render and list every
+document back to 2010 as `/Home/GetContentFile/?ContentID=NNNN`. **This is the THIRD flip-flop on
+this host — round 60 found it was not blocked, round 67 re-asserted the block — so test it, do not
+read it.** ContentID 63591 (Consolidated and Separate Annual Financial Statements, year ended 31
+December 2025) and 63680 (Report and Accounts, same year) were both downloaded and grepped in full at
+round 68, and both carry the identical sentence the 2023-2025 documents already carried: "The Bank
+holds monetary gold on deposit with the Federal Reserve Bank", fair value K95,205 million at 31
+December 2025 against K57,848 million in 2024, representing 12,836.998 ounces. No city, no named
+Reserve Bank, no custody or earmarking wording, so the row's own rules still refuse it, and a grep
+for vault, strongroom, safe custody, Lilongwe and Blantyre returns only the registered office and the
+branch valuations. **One thing is new and is NOT this row:** the gold purchase programme run through
+EDF since 2021 holds 541.7375 kg of smelted gold at 31 December 2025 against 296.28 kg in 2024, cost
+K139,411 million — but it is carried as RAW GOLD INVENTORY under other assets, not as monetary
+reserves, and no vault is named for it either. The next move on Malawi is still a Federal Reserve
+list of earmarked gold by holder. **TZA has a
 second node waiting** too: the same Note 20 records TZS 1,517,580.5m "held at the Bank of Tanzania
 pending transfer to the foreign custodian", which the row's place-must-be-named rule bars until a
 document names the vault.
@@ -2677,6 +2914,23 @@ agent filed nothing at all, which is the honest outcome for a row near-exhausted
 Two agents produced no records between them and both were worth running: one settled Qatar
 negatively and killed a live lead, the other found that this document's own "cheapest fetch next
 round" had been filed six rounds earlier.
+Then round 68's 10 records across six parallel agents plus browser and shell work of my own, and the
+records are a small part of it. The reserve-manager row went up 5 records and 2 places, four of them
+out of a single Estonian annual report; the revolving door filed five records that are all public
+moves, so five boxes stopped being empty and the percentage did not move, which is what this row
+looks like at its ceiling. **131 documented blanks were filed, which is the largest number this
+project has recorded in one round and is most of what the round was worth.** Worth more than the
+records: **two checkers were found PASSING while the thing they check was broken** — `audit_data.py`
+reading one of the two auditor stores and so clearing four stale entries for eleven rounds, and
+`check_nodes.py` reading only the active phrasing of a tie count and so missing two stale
+paragraphs, one of them off by five countries; the auditors row, the one the owner cares most about,
+was established to be AT ITS CEILING with zero genuinely open countries, Taiwan closed structurally
+on its own statute; **three of five incoming firm names turned out to be new spellings of parties
+already on the map**, a failure direction no existing check covers, now addressed by
+`party_names.json`; a `revolving_door_unavailable` map created so that row can record a negative at
+all; `mk_have.py` written so a brief is built from the data rather than from this document; and two
+standing claims here corrected by opening the documents — Malawi's host is not blocked and its gold
+lead is dead, and the ownership-fetch framing no longer fits eight of the ten all-public places.
 
 ## Three tooling failures from round 49, all now fixed. Read this before running agents again.
 

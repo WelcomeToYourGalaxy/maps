@@ -50,6 +50,18 @@ WORDS = {'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5, 'six': 6, 'seven'
 # cries wolf gets ignored, which is how a check dies.
 PAT = re.compile(r'(?P<verb>tied to|audits the accounts of|audits|prints the notes of|prints)\s+'
                  r'(?P<n>' + '|'.join(WORDS) + r'|\d{1,3})\s+(?:of them|central banks)\b', re.I)
+# The INVERTED form, added at round 68 after it hid a stale count for several rounds.
+# RAMP's paragraph said "Fourteen central banks are tied to it" while its box held
+# twenty-four, and this check printed "none stale" every round, because the pattern
+# above only matches the active phrasing the writeups brief produces. A writer who
+# opens a paragraph with the count rather than the firm produces the passive form
+# instead, and nothing read it. It is the map's own count either way.
+# The same guard applies as above: this must not match a SOURCE's claim about the
+# firm, so the subject has to be "it" or "the firm" -- "63 central banks own the BIS"
+# and "more than 50 central banks use it" do not match, because "own" and "use" are
+# not this map's tie wording.
+PAT_INV = re.compile(r'(?P<n>' + '|'.join(WORDS) + r'|\d{1,3})\s+central banks\s+'
+                     r'are\s+tied\s+to\s+(?:it|the firm|this firm)\b', re.I)
 RELS = {'audits': ('audits its accounts',),
         'audits the accounts of': ('audits its accounts',),
         'prints': ('prints its banknotes',),
@@ -89,14 +101,18 @@ def main():
         if not t:
             continue
         m2 = PAT.search(t)
+        verb = m2.group('verb') if m2 else None
+        if not m2:
+            m2 = PAT_INV.search(t)
+            verb = 'tied to'          # the inverted form always counts every tie
         if not m2:
             continue
         checked += 1
         raw = m2.group('n').lower()
         said = WORDS[raw] if raw in WORDS else int(raw)
-        actual = count_for(i, m2.group('verb'))
+        actual = count_for(i, verb)
         if said != actual:
-            stale.append((nm, said, actual, m2.group('verb').lower()))
+            stale.append((nm, said, actual, verb.lower()))
 
     print('checked %d party paragraphs that state a count' % checked)
     if not stale:
