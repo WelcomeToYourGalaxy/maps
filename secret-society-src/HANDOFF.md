@@ -70,6 +70,38 @@ of the eight body-reached classes now sit within two points of target. `movement
 and `elite` are negative. On the body axis only `security` is far enough out to matter
 much, with `court` and `cabinet` worth having.
 
+### THE COMPOSITION DEPENDS ON THE SIZE OF THE ROUND
+
+**The table above is right for a round of about 150 and wrong for a large one.** A
+small round is a small fraction of the final map, so it should be aimed at the single
+most under-represented cell. A large round is a large fraction of it, so aiming it at
+one cell overshoots into a new skew. Measured at 2,455 cases:
+
+| a round of 1,500 | deviation 53.5 → |
+|---|---|
+| all `crime → security` | **98.7** — far worse than doing nothing |
+| half crime, half movement → security | 84.1 |
+| crime and movement → security, court, cabinet | 65.5 |
+| all `corp → company` | 114.4 |
+| **proportionate, as below** | **13.5** |
+
+**So a big round has to be a scale model of the field in miniature.** The composition a
+1,500-case round needs, from the shortfall of each class at the map size it would
+produce:
+
+| who infiltrates | share of the round | which body was reached | share of the round |
+|---|---|---|---|
+| crime group | 45% | police, army, intelligence | 36% |
+| company | 34% | company | 28% |
+| movement | 18% | cabinet ministry | 16% |
+| faith, money, lender, elite | 3% between them | legislature or local | 14% |
+| foreign state, lodge | none | court | 6% |
+
+**Company-reached records are still needed, at about 28 per cent of a large round.** What
+makes a company-shaped round harmful is *concentrating* in that cell, not including it.
+`python3 shape.py <n>` prints the optimal placement for any round size; run it with the
+size actually planned before writing the brief.
+
 ### The cheapest move available is not research
 
 `bk: exec` holds 186 records at 7.6 times its estimated 1 per cent, and it is the class
