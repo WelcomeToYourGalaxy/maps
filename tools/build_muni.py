@@ -42,6 +42,7 @@ them all. A country that cannot meet those four conditions is not
 matched by name -- it waits for a code.
 """
 import argparse, collections, csv, io, json, os, re, sys, time, unicodedata
+import concurrent.futures as futures
 import urllib.parse, urllib.request
 
 UA = {'User-Agent': 'how-to-reach-them-build/1.0 (civic map; github.com/WelcomeToYourGalaxy/maps)'}
@@ -1005,6 +1006,162 @@ def build_esp(stats, workdir):
     _es_provinces(stats, everything, out)
     return {k: v for k, v in out.items() if v is not None}
 
+# ------------------------------------------------------------------ Brazil
+# Brazil publishes no municipal email anywhere and this does not change
+# that. What it adds is the street address of every one of its 5,570
+# municipal governments and the switchboard of 3,007 of them, from zero
+# of either.
+#
+# It took two sources because neither is enough alone, and the missing
+# half was an identifier rather than data. The Receita Federal holds a
+# contact block against every CNPJ, a municipality is a legal person with
+# a CNPJ, and Wikidata holds no CNPJ on any Brazilian municipality -- the
+# same wall Slovakia and Estonia are still behind. The Treasury's SICONFI
+# publishes the crosswalk: `tt/entes` returns all 5,598 entes with the
+# IBGE municipality code and the CNPJ side by side, and `P1585`, the IBGE
+# code, is on 5,571 Wikidata items. So the chain is IBGE code -> CNPJ ->
+# the Receita record, both hops on a published code.
+#
+# The join is the ente's own IBGE code from SICONFI and never the
+# `codigo_municipio_ibge` on the Receita record, which is the
+# municipality the registered address sits in rather than an identifier
+# of the body. Round thirteen refused exactly that field for Slovakia and
+# the reason holds here. What it is good for is checking: the two agree
+# for 100% of 5,569 comparisons, so every prefeitura is registered inside
+# its own territory, and the check never touches the join. The official
+# name agrees for 99.7% besides, the fifteen failures being spelling
+# variants of one place (Acu against Assu, Luis against Luiz).
+#
+# Two of the 5,570 CNPJs are not the municipality and are dropped by
+# class rather than by name: Brasilia's is the Plano Piloto regional
+# administration, which is an office in the Federal District and not its
+# seat, and Igrapiuna's is that municipality's Camara de Vereadores. One
+# council among 5,568 executives, unlabelled, is the kind of
+# plausible-wrong this build exists to refuse -- the council's address is
+# a good answer and it cannot be told apart from the others on the page.
+#
+# Receita prints an address in capitals with the accents stripped. It is
+# left that way: "VIADUTO DO CHA" is what the register holds, and
+# restoring the accent would be composing a spelling rather than quoting
+# one. The postal code and the telephone number are given their
+# conventional punctuation, which is the same digits.
+BR_ENTES = 'https://apidatalake.tesouro.gov.br/ords/siconfi/tt/entes'
+BR_CNPJ = 'https://minhareceita.org/'
+
+BR_QUERY = '''PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+SELECT ?item ?code WHERE { ?item wdt:P1585 ?code .
+  FILTER NOT EXISTS { ?item wdt:P576 ?d } }'''
+
+BR_GATE_FLOOR = 0.98
+
+
+def _br_phone(value):
+    """The DDD and the number as Receita stores them, grouped the way
+    Brazil prints them. Ten digits is a landline, eleven a mobile."""
+    digits = re.sub(r'\D', '', str(value or ''))
+    if len(digits) == 10:
+        return '(%s) %s-%s' % (digits[:2], digits[2:6], digits[6:])
+    if len(digits) == 11:
+        return '(%s) %s-%s' % (digits[:2], digits[2:7], digits[7:])
+    return ''
+
+
+def _br_address(rec):
+    """Street, number, district, postal code, municipality and state,
+    each exactly as the register prints it."""
+    street = ' '.join(x for x in [str(rec.get('descricao_tipo_de_logradouro') or '').strip(),
+                                  str(rec.get('logradouro') or '').strip()] if x)
+    number = str(rec.get('numero') or '').strip()
+    line = ', '.join(x for x in [street, number] if x)
+    district = str(rec.get('bairro') or '').strip()
+    cep = re.sub(r'\D', '', str(rec.get('cep') or ''))
+    if len(cep) == 8:
+        cep = cep[:5] + '-' + cep[5:]
+    town = ' - '.join(x for x in [str(rec.get('municipio') or '').strip(),
+                                  str(rec.get('uf') or '').strip()] if x)
+    tail = ' '.join(x for x in [cep, town] if x)
+    return ', '.join(x for x in [line, district, tail] if x)
+
+
+def build_bra(stats, workdir):
+    entes = json.loads(fetch(BR_ENTES).decode('utf-8')).get('items') or []
+    muni = [e for e in entes if (e.get('esfera') or '') == 'M' and (e.get('cnpj') or '').strip()]
+    stats['BRA municipalities in the Treasury crosswalk'] = len(muni)
+    if len(muni) < 5000:
+        raise SystemExit('the Treasury returned %d municipal entes' % len(muni))
+
+    codes, ambiguous = by_code(BR_QUERY)
+    stats['BRA IBGE codes on Wikidata'] = len(codes)
+    stats['BRA codes ambiguous on Wikidata'] = ambiguous
+
+    # One request per CNPJ against the public mirror of Receita's own
+    # monthly files. There is no bulk route from here: the files are
+    # published behind a page that renders its links in JavaScript, which
+    # is round eight's Hungary wall. Six at a time takes the 5,570 from
+    # twenty-three minutes to four and is well inside what the mirror
+    # serves without complaint; do not raise it for the sake of it.
+    wanted = []
+    for ente in muni:
+        code = str(ente.get('cod_ibge') or '').strip()
+        qid = codes.get(code)
+        if not qid:
+            stats['BRA no Wikidata id for the IBGE code'] += 1
+            continue
+        wanted.append((code, qid, re.sub(r'\D', '', ente['cnpj'])))
+
+    def pull(job):
+        code, qid, cnpj = job
+        try:
+            return code, qid, json.loads(fetch(BR_CNPJ + cnpj, timeout=90, tries=3))
+        except SystemExit:
+            return code, qid, None
+
+    out, agree, differ = {}, 0, 0
+    done = 0
+    with futures.ThreadPoolExecutor(6) as pool:
+        results = list(pool.map(pull, wanted))
+    for code, qid, rec in results:
+        done += 1
+        if rec is None:
+            stats['BRA CNPJ record could not be fetched'] += 1
+            continue
+        if (rec.get('natureza_juridica') or '') != 'Município':
+            # Brasilia's regional administration and one Camara Municipal.
+            stats['BRA the CNPJ is not the municipality'] += 1
+            continue
+        # The check, on a field the join never uses: a prefeitura
+        # registered outside its own territory would show up here.
+        own = str(rec.get('codigo_municipio_ibge') or '').strip()
+        if own:
+            if own == code:
+                agree += 1
+            else:
+                differ += 1
+        entry = {}
+        phone = _br_phone(rec.get('ddd_telefone_1'))
+        address = _br_address(rec)
+        mail = clean_mail(rec.get('email'))
+        if mail:    entry['e'] = mail
+        if phone:   entry['p'] = phone
+        if address: entry['a'] = address
+        if not entry:
+            stats['BRA joined but no contact detail'] += 1
+            continue
+        put(out, qid, entry, stats, 'BRA')
+        stats['BRA joined'] += 1
+
+    checked = agree + differ
+    share = (agree / checked) if checked else 0.0
+    stats['BRA territory check comparisons'] = checked
+    stats['BRA territory check agreeing (per mille)'] = int(round(share * 1000))
+    if checked < 4000 or share < BR_GATE_FLOOR:
+        raise SystemExit('Brazil territory check is %.4f over %d comparisons, floor '
+                         '%.2f: the Treasury crosswalk and the Receita record have '
+                         'stopped agreeing about which municipality a government is'
+                         % (share, checked, BR_GATE_FLOOR))
+    return {k: v for k, v in out.items() if v is not None}
+
+
 # ---------------------------------------------------------- Quebec, Canada
 # The first sub-national register in this build, and the reason it is one
 # is that Canada has no national register of municipal contacts: the
@@ -1166,6 +1323,13 @@ COUNTRIES = {
     'NLD': ('Register van Overheidsorganisaties (organisaties.overheid.nl), the '
             'municipalities export, keyed to Wikidata by CBS municipality code (P382)',
             lambda stats, workdir: build_nld(stats, workdir)),
+    'BRA': ('Receita Federal CNPJ records, read through the public mirror of its '
+            'monthly files (minhareceita.org), reached by the CNPJ that the '
+            'Treasury\'s SICONFI entes register publishes beside each IBGE '
+            'municipality code (apidatalake.tesouro.gov.br), keyed to Wikidata by '
+            'that IBGE code (P1585). Street address and switchboard only: Receita '
+            'holds no email address for any Brazilian municipality',
+            lambda stats, workdir: build_bra(stats, workdir)),
     'CAN': ('Repertoire des municipalites du Quebec, Ministere des Affaires '
             'municipales et de l\'Habitation (donneesouvertes.affmunqc.net), keyed to '
             'Wikidata by the Statistics Canada Geographic Code (P3012), whose last '
