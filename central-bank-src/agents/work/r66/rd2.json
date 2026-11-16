@@ -1,0 +1,159 @@
+{
+  "records": [],
+  "held": [
+    {
+      "iso3": "MDG",
+      "country": "Madagascar",
+      "central_bank": "Banque Centrale de Madagascar",
+      "people": "Aivo Andrianarivelo",
+      "why_held": "The AFIS Africa profile of the governor says he spent 30 years as an economist in banking and finance and had earlier experience 'at bank level', but it does not name that bank, so there is no employer to check for ownership. Everything it does name is public: the Fonds de Portage et de Privatisation (which it describes as managing and selling shares for the Malagasy government), the IMF board, the Ministry of Economy and Finance, and Catholic Relief Services.",
+      "settling_url": "https://www.bfm.mg/en/governor-biography"
+    },
+    {
+      "iso3": "SMR",
+      "country": "San Marino",
+      "central_bank": "Banca Centrale della Repubblica di San Marino",
+      "people": "Giannini (named in the headline as the new director of the Central Bank)",
+      "why_held": "Ownership of San Marino's commercial banks is now settled in writing (see the BSM and BCN-style shareholder tables below), but no career list for any Banca Centrale director has been obtained. The one article that names a central bank director and his prior employer refuses automated fetching.",
+      "settling_url": "https://www.bluerating.com/?p=17393"
+    }
+  ],
+  "needs_a_hand_check": [
+    {
+      "iso3": "SMR",
+      "url": "https://www.bluerating.com/?p=17393",
+      "title": "SanMarino, Giannini e il nuovo direttore della Banca Centrale",
+      "note": "Third refusal. WebFetch returns 'client_error' with nothing of the page retrieved; a direct curl with a browser user agent was blocked by the local policy classifier, so the page could not be tested another way. The host has the page (it is returned by search) and refuses automation. This is the only document found that names a Banca Centrale della Repubblica di San Marino director together with where he came from."
+    },
+    {
+      "iso3": "HTI",
+      "url": "https://lenouvelliste.com/en/article/246200",
+      "title": "Ronald Gabriel's first interview as BRH governor",
+      "note": "Still behind a login wall (carried forward from round 1). Two newer Le Nouvelliste articles on the same board were opened this round and contain no career history at all."
+    },
+    {
+      "iso3": "YEM",
+      "url": "https://www.eremnews.com/news/arab-world/yemen",
+      "title": "Erem News profile of a Central Bank of Yemen governor",
+      "note": "Carried forward unopened; this round's Arabic searching did not surface it again, so the exact article URL still needs recovering by hand."
+    }
+  ],
+  "searched_no_result": [
+    {
+      "iso3": "BTN",
+      "document": "Bhutan National Bank, Annual Report 2024 (bnb.bt), full text extracted and searched",
+      "sections_read": "'Board of DIRECTORS' page (p.9), 'EXECUTIVE' page (p.11), 'Senior MANAGEMENT' page, and every occurrence of 'shareholder', 'ownership', 'Royal Monetary Authority', 'National Pension', 'Druk Holding'",
+      "finding": "The board page lists seven directors by name and title only, with no biographies and no employment history. There is no shareholding-pattern table anywhere in the report; the only holder identified is by the parenthesis '(DHI)' after director Sonam Tobgay, DHI being the state holding company Druk Holding and Investments. The report's own history line is 'Public ownership of banks'. Nothing private is stated and no career list exists here. Bhutan is now closed at both commercial banks: Bank of Bhutan (round 1) and Bhutan National Bank (this round).",
+      "url": "https://bnb.bt/wp-content/uploads/dld/ANNUAL%20REPORTS/Year%202024/BNB_AR_2024%20Final.pdf"
+    },
+    {
+      "iso3": "SMR",
+      "document": "Banca di San Marino, Bilancio 2016 (bsm.sm), full text extracted and searched",
+      "sections_read": "'GRUPPO BSM AL 31/12/2016' ownership diagram and 'ORGANI AMMINISTRATIVI' (pp.8-9), plus every occurrence of 'Banca Centrale', 'azionisti', 'compagine', 'capitale sociale'",
+      "finding": "Ownership IS stated here: the group diagram is headed 'Azionisti Privati', with 'N. Azionisti 1.838' and 'N. Soci 342' against the splits 9,87% and 90,13%, over 'Cap. Sociale E 114.616.800'. But the governance page gives only names and offices - President Fausto Mularoni, Vice President Fabio Gasperoni, five directors, Direttore Generale Emanuele Cesarini, Vice Direttore Generale Gian Luca Amici - with no employment history for any of them, and the only mentions of the Banca Centrale della Repubblica di San Marino are supervisory (authorisations, asset quality review, circulars). No career list, so no record.",
+      "url": "https://bsm.sm/wp-content/uploads/2024/11/bilancio-2016.pdf"
+    },
+    {
+      "iso3": "SMR",
+      "document": "Banca Agricola Commerciale, Bilancio Consolidato 2024 (bac.sm), full text extracted and searched",
+      "sections_read": "The 'Consiglio di Amministrazione' / 'Direttore Generale' front pages and every occurrence of 'azionist', 'soci', 'capitale sociale', 'Presidente'",
+      "finding": "The front pages name the officers and the dates the Assemblea dei soci appointed them - President Emanuele Cesarini (appointed by the Assemblea dei soci), a Vice President, a Direttore Generale and further appointments dated 27/02/2025 and 28/05/2024 - but carry no biographies and no career history, and there is no shareholder table. Note that the same Emanuele Cesarini was Direttore Generale of Banca di San Marino in 2016; that is a move between two commercial banks, not a central bank move.",
+      "url": "https://www.bac.sm/wp-content/uploads/2025/07/ITA_2024_BilancioConsolidato_BAC.def-con-grafica.pdf"
+    },
+    {
+      "iso3": "IRQ",
+      "document": "National Bank of Iraq (al-Masraf al-Ahli al-Iraqi), Annual Report 2023 (nbi.iq), Arabic text normalised and searched end to end",
+      "sections_read": "Section 3 'majlis idarat al-masraf' (board, all seven members with qualifications and 'al-khibrat' experience blocks), section 5 'a'da al-idara al-tanfidhiyya' (executive management, with dated employer-by-employer career lists), and every occurrence of 'al-bank al-markazi' in the document",
+      "finding": "This is a document of exactly the right shape - dated career lists plus a stated ownership figure - and it still produces nothing for Iraq. Ownership is stated: 'Capital Bank, which owns about 62% of the bank's capital, is the gateway for the National Bank of Iraq to open onto the world's economies'. But not one of the board or executive career lists includes the Central Bank of Iraq. The employers that do appear are Bank of Baghdad, Abu Dhabi Islamic Bank, Dar Es Salaam Bank, Bank Audi Baghdad and Bank Audi Lebanon, PricewaterhouseCoopers Jordan, Citibank, Standard Chartered, the Jordanian Social Security Corporation, the Jordanian Ministry of Finance and Ministry of Labour. The single central bank in the whole document is a foreign one, in the managing director's bio (see leads_not_opened).",
+      "url": "https://www.nbi.iq/-/media/pdfs/investor-relations/annual-reports/english/national-bank-annual-report-2023.ashx"
+    },
+    {
+      "iso3": "IRQ",
+      "document": "Islamic First Iraqi Bank (First Iraq Islamic Bank), Annual Report 2024 in English (fib.iq), full text searched",
+      "sections_read": "The shareholder disclosure 'names of the shareholders who own more than (9.9%) of the capital', the governance chapter, and every occurrence of 'Central Bank of Iraq', 'experience', 'worked', 'career', 'qualification'",
+      "finding": "Ownership is stated by name: the bank is a 'Private Joint Stock Company' that aims at 'maintaining the leading position of the bank among other private banks operating in' Iraq, and its over-9.9% holders are seven named individuals, each with 34,650,000,000 shares at 9.9% (Sabah Melhem Mohi, Balav Heshyar Saeed, Kawa Abdullah Junaid, Suz Kawa Abdullah, Ali Kawa Abdullah, Sirkat Abdullah Junaid, Fadila Abdullah Junaid). But the report publishes no biographies and no employment history for any director or manager; every mention of the Central Bank of Iraq is regulatory (licences, instructions, training courses run by its studies centre). No career list, so no record.",
+      "url": "https://fib.iq/wp-content/uploads/2026/02/%D8%A7%D9%84%D8%AA%D9%82%D8%B1%D9%8A%D8%B1-%D8%A7%D9%84%D8%B3%D9%86%D9%88%D9%8A-%D9%84%D9%85%D8%B5%D8%B1%D9%81-%D8%A7%D9%84%D8%B9%D8%B1%D8%A7%D9%82-%D8%A7%D9%84%D8%A7%D9%88%D9%84-english-1.pdf"
+    },
+    {
+      "iso3": "CPV",
+      "document": "Banco Caboverdiano de Negocios (BCN), Relatorio e Contas 2024 (bcn.cv), full text extracted and searched",
+      "sections_read": "The bank history pages, 'Estrutura Acionista' (p.12), 'Orgaos Sociais a data de 31 de dezembro de 2024' (p.11), and every occurrence of 'Banco de Cabo Verde', 'acionista', 'exerceu funcoes', 'carreira'",
+      "finding": "Ownership is fully stated: 'em marco de 2017, o BCN volta ao estatuto de unico Banco privado com capital 100% cabo-verdiano, na sequencia da aquisicao da maioria do seu capital pela Seguradora Impar', and the shareholder table reads IMPAR, SEGUROS 780.800 shares 86,76%; Cruz Vermelha de Cabo Verde 40.000 shares 4,44%; Investidores privados 79.200 shares 8,80%. But the Orgaos Sociais pages give names and offices only, with no biographies, and every mention of the Banco de Cabo Verde in the report is regulatory (avisos, circulares, solvency ratio). A follow-up search on the three executive directors by name returned no career page. No career list, so no record.",
+      "url": "https://bcn.cv/pt_PT/wp-content/uploads/2025/09/BCN_RC_2024_PT.pdf"
+    },
+    {
+      "iso3": "CPV",
+      "document": "Caixa Economica de Cabo Verde, Relatorio e Contas 2023 (as published via anacao.cv), full text searched",
+      "sections_read": "Every occurrence of 'Banco de Cabo Verde', 'acionista', 'capital social', 'privad'",
+      "finding": "The published file is the summarised report: it addresses 'Estimados Acionistas' but contains no shareholder table, no governance section and no director biographies. The two mentions of the Banco de Cabo Verde are monetary policy and prudential parameters. Nothing to work from.",
+      "url": "https://www.anacao.cv/wp-content/uploads/2024/07/Relatorio-caixa-final-2023.pdf"
+    },
+    {
+      "iso3": "WSM",
+      "document": "Central Bank of Samoa, Annual Report 2023-2024 (cbs.gov.ws), full text extracted and searched",
+      "sections_read": "'Leadership and Organizational Structure' sections (a) Board of Directors and (b) Governance, plus every occurrence of 'Board of Directors', 'Non-Executive', 'Chief Executive', 'ANZ', 'BSP', 'National Bank of Samoa'",
+      "finding": "The Board section is institutional text only: it says the Members are appointed by the Head of State on Cabinet's advice and comprise the Governor as Chair and 'three independent Board members who are citizens of Samoa with industrial, commercial or agricultural experience'. No director is named, no occupation or employer is given for any of them, and the only private banks in the document appear as supervised entities (an onsite examination of ANZ Bank (Samoa) Limited; work carried out at the National Bank of Samoa). Samoa is now closed at the board page, the Governor's IMF biography and the annual report.",
+      "url": "https://cbs.gov.ws/media/Annual-Report-English-2023-2024.pdf"
+    },
+    {
+      "iso3": "HTI",
+      "document": "Le Nouvelliste, 'Installation of the new Board of Directors of the BRH'",
+      "sections_read": "Whole article",
+      "finding": "The article names the whole new BRH board - Ronald Gabriel (governor), Guerly Leriche (deputy governor), Florient Jean Mari (general director), Michele Delerme and Edwige Jean - and gives no prior employer, no dates and no career history for any of the five. A targeted search on Ronald Gabriel's career returned only his BRH press appearances.",
+      "url": "https://lenouvelliste.com/en/article/271058/installation-of-the-new-board-of-directors-of-the-brh"
+    },
+    {
+      "iso3": "TKM",
+      "document": "Russian-language search for a Central Bank of Turkmenistan chairman's biography",
+      "sections_read": "Search results only; nothing opened because nothing biographical was returned",
+      "finding": "The Russian search for a chairman's biography returns only dismissal and appointment notices (Central Banking's 'Turkmenistan central bank chief sacked', 'Turkmen central bank chief replaced with former deputy', 'Turkmen central bank chief ousted', Fox News on the firings) and items about the president's son being made vice-premier. No biography, no prior employer, and still no Turkmen financial firm anywhere described as privately owned. Turkmenistan should be treated as structurally closed, not merely unsearched."
+    }
+  ],
+  "leads_not_opened": [
+    {
+      "iso3": "SAU",
+      "note": "NOT one of this round's targets, but a career move keyed to Saudi Arabia found in passing and worth passing to whoever holds SAU. The National Bank of Iraq's 2023 annual report, in the bio of managing director and board member Ayman Omran Abdullah Abu Dheim, states that he 'held the post of head of the financial and banking studies unit at the Banking Institute affiliated to the Saudi Central Bank', before joining Capital Bank Group / Jordan as head of financial management in 2011 and then the National Bank of Iraq. The same document states the hiring side's ownership: 'Capital Bank, which owns about 62% of the bank's capital'. Page 166 of the Arabic PDF.",
+      "url": "https://www.nbi.iq/-/media/pdfs/investor-relations/annual-reports/english/national-bank-annual-report-2023.ashx"
+    },
+    {
+      "iso3": "IRQ",
+      "note": "Iraqi Securities Commission disclosure filings carry the same board-and-executive CV format as the National Bank of Iraq report (dated employer-by-employer lists under the heading 'al-khibrat'), so one of them is the likeliest place a Central Bank of Iraq veteran's name sits. Two unopened filings and one more private bank's report: isc.gov.iq/upload/2025/03/05/67c7f483b2506.pdf, isc.gov.iq/upload/2025/05/08/681c92cbe8b11.pdf, and api.idb.iq/content/uploads//corporatePageSections/294~annual-reports-2024.pdf. Also still unopened from round 1: enterpriseam.com/menaplus/?p=116108",
+      "url": "https://isc.gov.iq/upload/2025/03/05/67c7f483b2506.pdf"
+    },
+    {
+      "iso3": "CPV",
+      "note": "Cabo Verde's ownership question is now answered for BCN, so a later round only needs a career list. Two unopened routes: the Boletim Oficial acts that appoint bank directors (boe.incv.cv/Bulletins/DownloadAct?id=112585 came up on a search pairing 'Banco de Cabo Verde' with commercial bank directors), and the Forbes Africa Lusofona piece on the Banco de Cabo Verde finally clearing the purchase of the BCA, which may name the incoming owners' officers.",
+      "url": "https://boe.incv.cv/Bulletins/DownloadAct?id=112585"
+    },
+    {
+      "iso3": "MDG",
+      "note": "BNI Madagascar's 2020 annual report is split into two PDFs and the part-1 URL returned 404 this round; part 2 was not tried. BNI's own team page at bni.mg/entreprise/en/category/team/ was also not opened. Either may carry director biographies, and BNI's ownership would still need a separate statement.",
+      "url": "https://www.bni.mg/assets/uploads/2022/03/BNI_Rapport-Annuel-2020_part-2-1.pdf"
+    },
+    {
+      "iso3": "YEM",
+      "note": "Two individual-CV routes not opened, both of which are exactly the per-person CV documents that have converted countries before: the Arab Planning Institute's expert CV files (arab-api.org/Files/ArabExperts/CV/571311220199560.pdf and arab-api.org/Files/ArabExperts/CV/4214_3102022.pdf, surfaced by an Arabic search for a Central Bank of Yemen governor's CV) and two PDFs on the bank's own media path, cby-ye.com/files/615d67a9d4e59.pdf and english.cby-ye.com/files/6a54b8fcd8b68.pdf.",
+      "url": "https://arab-api.org/Files/ArabExperts/CV/571311220199560.pdf"
+    },
+    {
+      "iso3": "BRN",
+      "note": "Carried forward unopened from round 1: the BDCB annual report on cms.bdcb.gov.bn.",
+      "url": "https://cms.bdcb.gov.bn"
+    },
+    {
+      "iso3": "CUB",
+      "note": "Carried forward unopened from round 1: the Cuba Business Report interview with Marta Wilson Gonzalez.",
+      "url": "https://www.cubabusinessreport.com"
+    },
+    {
+      "iso3": "DJI",
+      "note": "Carried forward unopened from round 1: the Oxford Business Group interview with governor Ahmed Osman Ali and his OpenSanctions position list.",
+      "url": "https://www.opensanctions.org"
+    },
+    {
+      "iso3": "ERI",
+      "note": "Still nothing retrieved. The prior blocker is unchanged: no Eritrean financial firm is described anywhere as privately owned, so even a career list would not produce a record. The bank's own site is boe.gov.er.",
+      "url": "https://boe.gov.er"
+    }
+  ]
+}

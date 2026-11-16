@@ -1,0 +1,142 @@
+{
+  "records": [
+    {
+      "iso3": "ETH",
+      "country": "Ethiopia",
+      "entity": "MSE Audit Service LLP",
+      "name_as_stated": "MSE Audit Service LLP, Chartered Certified Accountants",
+      "entity_type": "firm",
+      "hq_city": "Addis Ababa",
+      "hq_iso3": "ETH",
+      "cb_iso3": "ETH",
+      "relation": "audits its accounts",
+      "detail": "The National Bank of Ethiopia's own published accounts for the year ended 30 June 2025 carry an Independent Auditor's Report addressed to the Bank's Board of Directors and signed 'MSE Audit Service LLP, Chartered Certified Accountants' in Addis Ababa on 30 December 2025. The report says 'We have audited the financial statements of The National Bank of Ethiopia' and gives a clean opinion on the statement of financial position at 30 June 2025. The firm's letterhead gives its address as Guinea Conakry Street, Kazanchis District, Grant Thornton Building 4th Floor, Addis Ababa, and describes it as 'Formerly AW Thomas' and a 'Member firm of Grant Thornton International Ltd'. The named engagement partner is Seid Abdela, FCCA. The source is a 125-page scanned PDF on the Bank's own website (nbe.gov.et); the pages are images, so the wording above was read by running OCR over pages 1 to 10 of that file.",
+      "source_title": "National Bank of Ethiopia - Audited Financial Statements For the year ended 30 June 2025 (Independent Auditor's Report, pages 2-8)",
+      "source_url": "https://nbe.gov.et/wp-content/uploads/2025/12/Audited-Financial-Statements-for-the-Year-Ended-30-June-2025-.pdf",
+      "weak_source": false,
+      "quote": "INDEPENDENT AUDITOR'S REPORT TO THE BOARD OF DIRECTORS OF THE NATIONAL BANK OF ETHIOPIA ... We have audited the financial statements of The National Bank of Ethiopia (the \"Bank\"), which comprise the statement of financial position as at 30 June 2025 ... The engagement partner on the audit resulting in this independent auditor's report is Seid Abdela, FCCA. MSE Audit Service LLP, Chartered Certified Accountants ... Addis Ababa 30 December 2025"
+    }
+  ],
+  "confirmed_blank": [
+    {
+      "iso3": "ARE",
+      "document": "Central Bank of the UAE Annual Report 2023 (Arabic edition), downloaded in full from centralbank.ae/media/fxjntti5/cbuae-annual-report_2023_a4_a-revised-13-june.pdf",
+      "sections_read": "Section 1.9 Governance (Board committees / Audit Committee) and the financial-results section carrying the summary balance sheet",
+      "finding": "The financial-results text says only that 'the external auditor issued an unqualified opinion on the financial statements for the year ended 31 December 2023'. The Audit Committee description says the committee reviews and recommends the terms of engagement, selection, appointment and fees of the external auditor. No firm is named anywhere in the 374,000 characters of extracted text; a search for KPMG, Deloitte, PwC, EY, Grant Thornton, BDO and Mazars returns nothing. This is the Arabic edition, checked in addition to the English 2025 report already read in an earlier round."
+    },
+    {
+      "iso3": "EGY",
+      "document": "Central Bank of Egypt annual reports downloaded directly from cbe.org.eg: 2024/2025 English, 2024/2025 Arabic, 2023/2024 English, 2021/2022 English, 2019/2020 English, 2020/2021 Arabic, 2019/2020 Arabic, 2017/2018 Arabic",
+      "sections_read": "Whole text of each report, extracted and searched end to end for the Latin firm names and for the Arabic words for auditor (مراقب الحسابات, مدقق, مراجعة), after Unicode normalisation to catch Arabic presentation forms",
+      "finding": "None of these reports contains an auditor's report or a balance-sheet certification, and none names an audit firm. The only mentions of auditors are about OTHER banks: the 2024/2025 Arabic report refers to the result of a change in accounting policy being approved 'by the Bank's auditors' (مراقبي حسابات البنك) in an instruction addressed to commercial banks, and the English 2023/2024 report refers to 'auditors from the Central Bank's register'. Separately, the claim in the handoff that the CBE site sits behind an F5 wall no longer holds: with an ordinary desktop browser User-Agent, www.cbe.org.eg serves HTTP 200 and the annual-report PDFs download fully (8-17 MB each). The wall was passed; the firms are simply not in these documents. The Central Auditing Organization is not filed as the auditor."
+    },
+    {
+      "iso3": "PSE",
+      "document": "Palestine Monetary Authority Annual Report 2024 (Arabic) and Annual Report 2022 (Arabic), the PDFs served by the PMA site's content store at fayupjvyvxedvgathafk.supabase.co/storage/v1/object/public/cms-uploads/documents/",
+      "sections_read": "Whole text of both reports (531,000 and 579,000 characters), searched for the Latin firm names and for مدقق / المدقق / تدقيق / مراقب",
+      "finding": "The 2024 report says only that an action follows 'after the audit of the financial statements by the external auditor' (بعد الانتهاء من تدقيق البيانات المالية من قبل المدقق الخارجي). The 2022 report mentions only the regulation of external auditors of banks, and its own 'Internal Audit Office' (مكتب التدقيق الداخلي). No firm is named in either."
+    },
+    {
+      "iso3": "VEN",
+      "document": "Banco Central de Venezuela, Notas de los estados financieros al 30 de junio de 2024 (bcv.org.ve/system/files/estados_financieros/notas_de_los_estados_financieros_30-06-2024.pdf)",
+      "sections_read": "Notes 2.1 and 2.2 and the whole note set",
+      "finding": "Note 2.2 refers only to 'el informe de los comisarios' which the Directorio must send to the competent authorities under article 81; the comisarios are not named and no firm is named. Note 2.1 names Sudeban, the banking supervisor, as the body issuing accounting standards, which is a regulator and not the Bank's auditor. The statements cover the half-year to 30 June 2024 and the document does not say what period was audited. This host is unreachable by direct download from this sandbox but the file was readable through the fetch tool."
+    },
+    {
+      "iso3": "STP",
+      "document": "Banco Central de Sao Tome e Principe, 'Comite de Auditoria' page (bcstp.st/Conselho-Auditoria-Banco-Central), describing the committee under Lei n. 03/2025, the Bank's organic law",
+      "sections_read": "The committee's full list of statutory duties",
+      "finding": "The page says the committee's job is to 'Propor ao Conselho de Administracao a contratacao dos auditores externos, no ambito do processo de selecao' and to 'Apreciar os relatorios de auditoria externa sobre as demonstracoes financeiras anuais'. That is a mechanism; no firm is named. This matches what an earlier round found and adds the 2025 organic law as the current basis."
+    }
+  ],
+  "needs_a_hand_check": [
+    {
+      "iso3": "MRT",
+      "url": "https://marchespublics.gov.mr",
+      "what": "Mauritania's national e-procurement portal, linked from the regulator's own site at https://armp.mr. It answers HTTP 403 to both direct download and the fetch tool, so it has the page and refuses automation. A person should search it for 'Banque Centrale de Mauritanie' as contracting authority and for 'audit externe des etats financiers'. Note: beta.mr, which earlier search results suggested was the portal, is a job board, not a procurement site - its /files/offr/ documents are recruitment notices."
+    },
+    {
+      "iso3": "QAT",
+      "url": "https://monaqasat.mof.gov.qa/TendersOnlineServices/SearchTenders/27",
+      "what": "Qatar's Monaqasat tender portal. Live and indexed by search engines (tender detail pages such as /TendersOnlineServices/TenderCompaniesDetails/651583 appear in results) but every request from this sandbox fails to connect. A person should open the entity list and look for Qatar Central Bank as the contracting authority and for 'external audit services' / 'تدقيق خارجي'."
+    },
+    {
+      "iso3": "ARE",
+      "url": "https://www.centralbank.ae",
+      "what": "The CBUAE site homepage answers HTTP 403 to automation, though its /media/ PDF paths download fine. If the Bank publishes a tender register or a separate financial-statements PDF outside /media/, it needs a browser."
+    },
+    {
+      "iso3": "TWN",
+      "url": "https://web.pcc.gov.tw",
+      "what": "Taiwan's Government e-Procurement System is reachable from this sandbox (HTTP 200) but its tender search needs a form POST, and the public g0v mirror API at pcc.g0v.ronny.tw no longer serves its /api/searchbytitle and /api/searchbytitleandtime endpoints (both return the documentation page). A person should use the site's own 標案查詢 form with 中央銀行 as 機關名稱 and 查核/簽證/會計師 in the tender name. The earlier-round caution still stands: the Ministry of Audit's consolidated government account is not an audit of the Bank's own statements and must not be filed as one."
+    }
+  ],
+  "searched_no_result": [
+    {
+      "iso3": "BLR",
+      "tried": "Public procurement portal icetrade.by and www.icetrade.by: both fail to connect from this sandbox (no response at all), so the portal could not be searched. Two Russian-language searches were run instead - one for the National Bank of Belarus plus 'внешний аудит / аудиторская организация / конкурс / результат', one for 'аудиторское заключение' plus Эрнст энд Янг / Делойт / КПМГ / ПрайсуотерхаусКуперс. Both returned only Belarusian commercial banks' own IFRS reports and audit-market trade articles, no auditor of the National Bank."
+    },
+    {
+      "iso3": "UZB",
+      "tried": "The state procurement portal xarid.uzex.uz was opened and its Angular bundle read; its API hosts are xarid-api-purchase.uzex.uz, xarid-api-trade.uzex.uz, xarid-api-common.uzex.uz and apietender.uzex.uz, but the bundle exposes no public tender-search endpoint that could be called without a login, and the Central Bank does not appear as a contracting authority anywhere reachable. The Central Bank's own notices section (cbu.uz/oz/press_center/adverts/) was opened: the notices found are addressed to heads of organisations and firms about the Bank's regional branches, not an external-audit award. A search on 'Марказий банки аудит ташкилоти танлов' returned only Uzbek COMMERCIAL banks (Uznatsbank/NBU) tendering their own audits."
+    },
+    {
+      "iso3": "MDG",
+      "tried": "Madagascar's procurement portals armp.mg, pmp.gov.mg and marchespublics.mg all fail to connect from this sandbox. Two searches were run for Banky Foiben'i Madagasikara / Banque Centrale de Madagascar with 'audit externe', 'rapport d'audit', 'etats financiers certifies' and the firm names Deloitte, Mazars, EY, PwC and KPMG. Results were the Bank's 1994 and 2016 statutes, IMF country reports, and Malagasy commercial banks' own accounts. No firm named for the central bank."
+    },
+    {
+      "iso3": "MRT",
+      "tried": "Searches for 'Banque Centrale de Mauritanie' and 'البنك المركزي الموريتاني' with 'audit externe', 'commissaires aux comptes', 'certification des comptes' and the five large firm names. Results were terms of reference for audits of OTHER Mauritanian bodies (SOMELEC, World Bank project units) and the BCEAO's own auditor tenders. The regulator site armp.mr was opened and enumerated: it publishes decisions, statistical reports and audit reports of its own, none about the central bank."
+    },
+    {
+      "iso3": "LAO",
+      "tried": "Search for 'Bank of the Lao PDR' with 'annual report', 'independent auditor' and 'financial statements audited'. Every result was a Laotian commercial bank (BCEL, BFL-BRED, JDB, Maybank Laos, ICBC Vientiane) publishing its own audited accounts, not the central bank. bol.gov.la and the finance ministry site mef.gov.la both fail to connect from this sandbox, so no Lao procurement listing could be searched."
+    },
+    {
+      "iso3": "MAC",
+      "tried": "Search for 'Monetary Authority of Macao' / 'Autoridade Monetaria de Macau' with 'external auditor' and 'financial statements audited'. All results were Macao commercial banks' own disclosure documents. www.amcm.gov.mo is reachable but publishes no auditor's report; this adds nothing to the earlier round's full reading of the gazette report."
+    },
+    {
+      "iso3": "QAT",
+      "tried": "Two searches - one English on Monaqasat plus Qatar Central Bank and 'external audit', one Arabic on 'مصرف قطر المركزي' plus 'خدمات التدقيق الخارجي' / 'تدقيق البيانات المالية' / 'ترسية'. Neither returned any tender or award naming an auditor of the Bank; the Arabic search returned only a 2010 award for the Qatar Credit Information Centre and unrelated QNA news items."
+    },
+    {
+      "iso3": "CUB",
+      "tried": "Search for 'Banco Central de Cuba' with 'estados financieros', 'auditoria', 'Contraloria General de la Republica' and 'auditor externo', to test whether Cuba's supreme audit institution audits the Bank's own statements. It does not appear to: results were Nicaragua's Contraloria files, Cuban Gaceta Oficial issues, and an opposition-press article about Ernst & Young's past work for Cuban state entities generally, which does not state that EY audits the Banco Central de Cuba and is not a current mandate. The earlier round's structural reading of Decreto-Ley 361 stands."
+    },
+    {
+      "iso3": "STP",
+      "tried": "Search for 'Banco Central de Sao Tome e Principe' plus 'auditoria externa' and the firm names Deloitte, PwC, EY and KPMG. Nothing named the Bank's auditor. The Bank's own site was enumerated: its publications are served behind opaque encrypted query strings (/Banco-Central?x=...&z=...) that cannot be listed, so no annual accounts PDF could be located. Sao Tome's procurement portal gpa.gov.st does not resolve from this sandbox."
+    },
+    {
+      "iso3": "ALL",
+      "tried": "IMF Central Bank Transparency Code: one search for a 2026 Detailed Review Report and one fetch of the IMF's own CBT reports landing page at imf.org/external/datamapper/CBT/reports. The landing page says DRRs are 'sorted by region' and that they are published only when the authority publishes them or permits the IMF to, but it lists no countries in the text served. Search surfaced only the four already known - Oman 2025 (CR 2025/083), Montenegro 2025, Kosovo 2026 (CR 2026/063 region), Curacao/Sint Maarten 2026 - plus an unidentified CR 2026/087. No DRR was found for ARE, CUB, ETH, IRN, LAO, MAC, PSE, QAT, STP, TKM, TWN or UZB. Budget for this vein is spent, as instructed."
+    },
+    {
+      "iso3": "EGY",
+      "tried": "Egypt's e-procurement portal etenders.gov.eg and www.etenders.gov.eg do not resolve from this sandbox, so the portal vein could not be tried for the CBE. The CBE's own site was enumerated instead and every annual report it publishes was downloaded and searched (see confirmed_blank)."
+    }
+  ],
+  "leads_not_opened": [
+    {
+      "what": "IMF CBT reports index in machine-readable form",
+      "where": "https://www.imf.org/external/datamapper/CBT/reports - the fetch tool's own answer suggested the page has index.md / index.json siblings that may carry the full country list of Detailed Review Reports. Not opened: the two-call budget for this vein was spent, and imf.org refuses direct download from this sandbox (HTTP 403), so only the fetch tool can read it."
+    },
+    {
+      "what": "IMF Madagascar ECF review reports",
+      "where": "Search returned several, e.g. https://www.imf.org/-/media/Files/Publications/CR/2025/English/1mdgea2025003-source-pdf.ashx and the French 1MDGFA2023002 / 1MDGFA2024001. BFM's audited financial statements are a programme commitment, so a review's technical annex may name the firm. Not opened: these are long PDFs needing several offset reads each, and the remaining budget would not have covered one country."
+    },
+    {
+      "what": "IMF Mauritania Article IV and ECF reports",
+      "where": "https://www.imf.org/fr/publications/cr/issues/2024/12/20/islamic-republic-of-mauritania-staff-report-for-the-2024-article-iv-consultation-third-559801 and the French 1MRTFA2023001/003/004. Same reason as Madagascar."
+    },
+    {
+      "what": "Uzbek procurement API hosts",
+      "where": "xarid-api-purchase.uzex.uz, xarid-api-trade.uzex.uz, xarid-api-common.uzex.uz, apietender.uzex.uz. Found in the portal's own JavaScript. Their tender-search request schema is not in the public bundle, so a person with the portal open in a browser could read the network calls and query them for the Central Bank as customer."
+    },
+    {
+      "what": "Qatar Monaqasat entity listings",
+      "where": "https://monaqasat.mof.gov.qa/TendersOnlineServices/SearchTenders/27, /119 and /138 appeared in search results; each number is a contracting entity. Unreachable from this sandbox - listed under needs_a_hand_check."
+    }
+  ]
+}

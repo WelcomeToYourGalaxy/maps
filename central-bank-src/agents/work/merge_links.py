@@ -178,6 +178,18 @@ def main():
     tie_names = defaultdict(set)
     for l in nets['links']:
         tie_names[(fold(l['entity']), l.get('cb_iso3'), l.get('relation'))].add(l['entity'])
+    # Sibling relations describing one row. The key above includes the relation, so the same firm
+    # could file twice for one bank under two of these and neither would look like a duplicate.
+    # Round 66 filed Papierfabrik Louisenthal for Madagascar as 'supplies its banknote substrate'
+    # when the identical fact, from the identical source URL, was already on the map as 'makes its
+    # banknote paper'. For a paper mill those words mean the same thing.
+    FAMILY = {'prints its banknotes': 'print', 'prints some of its banknotes': 'print',
+              'makes its banknote paper': 'print', 'supplies its banknote substrate': 'print'}
+    fam_tie = defaultdict(set)
+    for l in nets['links']:
+        f = FAMILY.get(l.get('relation'))
+        if f:
+            fam_tie[(fold(l['entity']), l.get('cb_iso3'), f)].add(l['relation'])
     # An auditor already recorded in gaps.json['auditors'] is on the map just as much as one in
     # networks.json, but it is NOT in nets['links'], so without this it slips through as a second
     # record for the same bank -- and the map renders every auditor as "audits the accounts of X"
@@ -293,6 +305,16 @@ def main():
                                             'holds it, or the popup says the bank holds its gold '
                                             'in custody of itself'))
                 continue
+            _f = FAMILY.get(r['relation'])
+            if _f:
+                _seen = fam_tie.get((fold(r['entity']), iso, _f), set()) - {r['relation']}
+                if _seen:
+                    refused.append((src, label,
+                        'this firm is already on the map for this bank in the same row, as "%s". '
+                        'Those relations are siblings, so this is very likely the same fact written '
+                        'twice. If it really is a second arrangement, say so in the detail and file '
+                        'it by hand' % ', '.join(sorted(_seen))))
+                    continue
             key = (fold(r['entity']), iso, r['relation'])
             if key in have_tie:
                 seen_as = tie_names.get(key, set())
