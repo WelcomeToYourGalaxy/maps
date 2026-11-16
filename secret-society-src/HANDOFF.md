@@ -198,6 +198,20 @@ Against that: **the CGU's per-agreement leniency PDFs cannot be read** - the Car
 
 **Kazakhstan's company-shaped residual is thinner than the last handoff estimated.** The estimate of 20+ more company records was made from a scope that had not yet been worked; the obvious state-company cases with a named outside payer were largely already on the map, and what Antikor publishes most heavily now is akimat departments, regional ecology, revenue and land offices and inspection bodies, which code `gov`. A dedicated Kazakh round returned 10 company to 17 gov. Every one of the 17 still has a named outside payer and a named decision, so they are good records; they are just not the shape a rebalance round wants.
 
+## A pattern for bought inspections and dropped penalties is now justified (16 November 2026)
+
+Round seven left three orphans on the ground that the map has no pattern for **an outside party paying for an enforcement step to be dropped rather than for a contract**. Round eight produced about sixteen more of the same kind, and at that point the distinction stopped being a curiosity and became a hole. The clearest cases, all now sitting inside `kickbacks_contracts_laws` because that pattern's own summary covers rulings and licences:
+
+- **Vietnam's provincial vehicle-inspection centres**, nine of them in one round - Da Nang, Hue, Hoa Binh 28-01S, Phu Yen 78-02D, Bac Kan 97-01D, Dong Nai 60-04D and 60-05D, Can Tho, Binh Dinh, Hanoi 29-18D - where drivers and go-betweens paid to have failed vehicles passed and modification files falsified.
+- **Power-theft enforcement**: two Malaysian traders paying Tenaga Nasional officers to drop cases, bitcoin miners' agents offering a TNB officer RM15,000, crypto miners and a Thai Provincial Electricity Authority assistant governor, customers paying Samarkand's state power staff to drop electricity violations, and an Indian MSEDCL engineer at Dahanu taking 2 lakh over a power-theft case.
+- **Customs and quarantine**: a logistics owner paying KLIA customs officers not to inspect lorries, a Russian haulier paying 100m tenge to wave 1,003 lorries past West Kazakhstan checks, Qostanay phytosanitary inspectors moving quarantined cargo, Karaganda revenue chiefs dropping customs penalties.
+- **Inspection and penalty elsewhere**: a Mauritian transport examiner passing a vehicle he never examined, a Mauritian police inspector paid Rs 25,000 not to arrest, a Delhi shed holder paying a DSIIDC manager to avoid sealing, a cleaning firm owner paying a Shah Alam council assistant to stop a payment notice, a ZESCO customer paying to stay out of court.
+- **Two Vietnamese case-fixing rings that bought psychiatric findings** at the Central Forensic Psychiatry Institute and its Bien Hoa branch, so that defendants would be found not criminally liable. These went to `crime_inside_state` instead, whose own summary says what such groups want is no arrest.
+
+**What a pattern of this shape would say**, if the owner wants one: the decision bought is not a contract but the state's own check - the certificate, the inspection, the penalty, the prosecution - and the loser is not a rival bidder but whoever the check existed to protect, which for a vehicle inspection is everyone on the road. It is a different mechanism from a kickback and it is the one that touches ordinary people most directly.
+
+**Why they are in the kickbacks pattern meanwhile:** leaving sixteen cases as orphans to preserve a distinction the map does not yet draw would have hidden them from every reader. `kickbacks_contracts_laws` honestly covers them - it says "licences, laws and rulings" - but it now carries 812 curated titles, which is a sign the pattern is doing more than one job.
+
 ## Display notes
 - Default country shading "Overall: officials open to outside control" = mean of the two GI-TOC views (insiders weighted ¾, weak watchdogs ¼).
 - Glossary underlines the first use of each term per box; hover shows the definition (glossify() in app_template.html).
