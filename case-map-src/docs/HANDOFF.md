@@ -1,9 +1,10 @@
 # Globalization Case Map: handoff for a new chat
 
-Last updated: round 34 — two jobs that both made the map's claims smaller and firmer. **ICIJ's
-projects are now matched one by one: 249 of 968 are here, 26%, where the panel claimed 32%** on a
-numerator that was never the ICIJ overlap. And the `lenders[].role` audit reached rounds 17 to 19:
-**26 corrections live on 25 of 87 cards.** Replaces every earlier handoff.
+Last updated: round 35 — a desk round with no researchers that made the ICIJ claim checkable
+instead of larger. **The 249 of 968 stands, and 245 of those 249 rows now rest on a P-number printed
+on the matched case, up from 238.** Two wrong case links were found and removed, both the same-day
+collision round 34 named. The whole 2004-2013 approval population is now cached in the repo, so the
+check costs no web calls ever again. Replaces every earlier handoff.
 
 ## The aim, settled 14 Nov 2026 — a defensible big picture, not a bigger map
 
@@ -18,26 +19,43 @@ projects, thickest in World Bank lending between 2004 and 2013, plus every compl
 complaint offices have published. Not the whole of the subject. Most money that crosses a border is
 private, and no one keeps a record of the harm it does.
 
-**Where the map stands against its own subject** (the About panel computes these live; these are
-read from the rendered panel on 14 Nov):
+**Where the map stands against its own subject.** Read out of the rendered About panel and the
+rendered "How much of all lending does this map cover?" brief on 15 Nov, after round 35. **Every
+figure in the previous version of this table was stale or wrong; do not copy a figure in here
+forward without re-reading the panel.**
 
 | Kind of money | On the map | Published total | Share |
 | --- | --- | --- | --- |
 | Complaints recording harm, inside a case | 434 | 483 | 90% |
-| World Bank / IFC projects begun 2004-2013, against ICIJ's 969 | 309 | 969 | **32%** |
+| ICIJ's projects, matched one by one | 249 | 968 | **26%** |
+| — of those, where ICIJ confirmed displacement | 244 | 422 | 58% |
 | IMF arrangements | 160 | 1,693 | 9.5% |
-| World Bank projects, all years | ~410 | 15,720 | ~3% |
-| Treaty lawsuits | 4 | 1,332 | 0.3% |
-| Chinese state loans | 82 | 20,985 | 0.4% |
-| Foreign company projects | 9 | 20,032 | 0.04% |
+| World Bank projects, all years | **435** | 15,720 | **2.8%** |
+| Treaty lawsuits | 4 | 1,332 | 0.30% |
+| Chinese state loans, 2000-2021 | 82 | 20,985 | 0.39% |
+| Foreign company projects, 2021-2023 | 9 | 20,032 | 0.04% |
 | Aid activities | 35 | 1.5 million | 1 in 42,857 |
+| Private bank and bond lending | 79 | not counted | — |
+| Payment services for governments and armed groups | 5 | not counted | — |
 
-Read from the rendered About panel after round 32's merge. **The ICIJ row has gone 24% to 29% to 32%**
-over rounds 31 and 32, and that row is the one this file calls the cheapest defensible claim available.
-The confirmed-displacement table it is drawn from now has **two open rows left**, so the next move on
-that row is no longer a research round but the match the panel still hedges: ICIJ's 969 and this map's
-309 have never been compared project by project, and until they are, 32% is a share of two lists that
-may overlap imperfectly.
+Separate, and **not** a row of that table: **309** map cases whose harm began in 2004-2013 with the
+World Bank or IFC among the lenders. 234 of those are among the 249 matched; 75 are cases ICIJ never
+listed; 15 matched cases sit outside the 309, because a case's year here is the year the harm began
+and ICIJ's is the year the board approved the money.
+
+**What was wrong in the version this replaces.** The World Bank all-years row read ~410 and is 435;
+before that it read ~337. The ICIJ row read 309 of 969 at 32%, which round 34 showed was never the
+ICIJ overlap — it is the row now stated separately above. And the table dropped two rows the panel
+carries, private lending at 79 cases and payment services at 5.
+
+**The two low rows that are nearly complete already, which the table hides.** 434 of 483 harm-flagged
+complaints and 249 of 968 ICIJ rows are near their ceilings. The rows at 0.04% and 1 in 42,857 are
+not. **The reason is the denominator, not the work:** each of those divides by every deal of its kind
+that anyone counted, and most of those deals left no record of harm. Working every register that
+exists to the end would still leave them small. The treaty-lawsuit row is the clearest case — every
+one of the 1,332 is a company suing a country, which runs the other way from this map's subject, so
+4 of 1,332 is not 0.3% of anything the map is trying to cover. Both points are now in the panel's own
+prose, added in round 35.
 
 **The suspected patterns were replaced on 15 Nov 2026, all thirteen, and the standard changed
 again.** The owner ruled that none may be built from this map's own data or method, that the dry ones
@@ -223,6 +241,127 @@ These came in over one session and all of them are done unless noted.
    rounds stale. The current handoff is this file, `case-map-src/docs/HANDOFF.md`, and there should
    never again be two.
 
+## READ THIS FIRST: round 35 is merged, built, tested and pushed
+
+No researchers, no new cases. Three jobs, all desk work against documents and APIs, and all of it
+made existing claims checkable rather than bigger. Build is clean: `loan-condition cases matched
+173 of 173`, 24 patterns, zero console errors headless, 1,169 cases.
+
+### Job one: the 2004-2013 approval population is harvested and kept
+
+`docs/wb_approvals_2004_2013.json`, 925 KB, **5,798 projects**, from 120 monthly windows of the
+projects API with paging. The round 33 checker fetched this same population and it died with the
+session, as every cache on this map has. It is now in the repo.
+
+Two things it settles by enumeration rather than assertion. **The 5,798 the panel prints is
+confirmed**: the sum of the 120 monthly totals is 5,798 and the number of distinct P-numbers
+returned is also 5,798, with no window short of its own `total`. And **the ICIJ match can now be
+re-run offline in seconds**, by `case-map-src/verify_icij_match.py`, with no web calls at all.
+
+The harvester treats a window whose returned count is short of its own `total` as a failure and
+prints it, because both Bank APIs answer HTTP 200 with a failure body — the trap that cost round 31
+forty-five projects their documents.
+
+### Job two: every matched ICIJ row re-resolved, and two wrong case links removed
+
+Each of the 249 matched rows was resolved to a P-number offline on its own name, date and country,
+then checked against the P-numbers printed on its linked cases. **245 of 249 are confirmed by a
+P-number on the matched case**, counting a sibling — the same operation filed under two numbers,
+same approval date and same name once prefixes are stripped, which is what P079734 and P098770 are.
+
+**Two case links were wrong and are removed** (`docs/icij_matched.json`, in `corrections`). Both are
+the same-day collision round 34 named, surviving because the reverse pass was never re-run against
+the country:
+
+- **Lead 1**, Shaanxi Ankang Road Development, was linked to **`borj-chakir-landfill`** in Tunisia.
+  P075613 (Shaanxi, China) and P095012 (Tunisia solid waste) were both approved 13 March 2007. The
+  row stays matched on its China case.
+- **Lead 44**, Uganda's Electricity Sector Development Project, was linked to
+  **`bukoba-airport-resettlement-arrears`** in Tanzania, because P126206 was approved the same day,
+  30 June 2011. The row stays matched on `kawanda-masaka-line-galatiya`, and Bukoba loses nothing —
+  it is still matched as lead 123, which is P055120 and is on the card.
+
+**The headline figures did not move: 249 of 968, 26%, and 244 of the 422 confirmed rows.** Both rows
+kept a correct link, so no row lost its match. **`distinct_cases` goes 249 to 248**, because
+`borj-chakir-landfill` was on no other row. A country-agreement sweep over the whole file now returns
+zero cross-country links.
+
+**Add country agreement to any future match pass.** It is one line and it is what found both errors.
+
+### Job three: seven P-numbers written back, and the blind spot is now closed
+
+The handoff said 12 P-numbers were resolved for cases carrying none and were sitting in the audits'
+`checked` lines. **They are not there.** A diff of every P-number named in `r34f_roles_1/2/3.json`
+against what each case prints returns six numbers across five cases, and all five already carried a
+P-number, so none of them closes anything.
+
+The write-backs came from job two instead. Eight rows resolved at name similarity 1.00 with the
+country agreeing, against cases printing no P-number at all — which is exactly the blind spot round
+34 described. **Seven were written** (`rounds/r35f_pids_textfix.json`), each verified first against
+the Bank's own project record on round 34's standard: the board approval date the Bank gives matches
+a date the card already printed independently, or the card names the project verbatim.
+
+| Case | Written | Verified against the card's own |
+| --- | --- | --- |
+| `badia-east-lagos` | P071340 | name and "approved 6 July 2006" |
+| `nam-theun-2` | P049290 | "Approved on 31 March 2005" |
+| `bharatpur-bardaghat-line-dumkibas` | P115767 | name and "21 June 2011" |
+| `taunsa-barrage-relocation` | P088994 | "approved 15 March 2005" |
+| `gambella-villagization` | P121727 and P128891 | its own "22 February 2011 and 25 September 2012" |
+| `embobut-sengwer` | P095050 | name and "approved 27 March 2007" |
+| `kosovo-hade-shala` | P097635 | names the project verbatim; the only project of that name in all 5,798 |
+
+**The Gambella one is the find worth keeping.** The card's own "Phases approved 22 February 2011 and
+25 September 2012" had never been resolved. 22 February 2011 is **P121727**, Ethiopia Protection of
+Basic Services Phase 2 Project Additional Financing, and 25 September 2012 is **P128891**, Phase III.
+ICIJ's own row (lead 598) is Phase II proper, **P103022** of 14 May 2009, which is the parent of
+P121727 and is **not** on the card. It was not written, because no date on the card supports it.
+
+**The map now carries 342 P-numbers on 280 cases, up from 334 on 273.** As in round 34, the matched
+figure did not move — all eight rows were already counted by the forward pass. The gain is that
+seven of them no longer rest on one round's annotation. **Anyone repeating this job should expect the
+same shape: it makes existing matches checkable, it does not find new ones.**
+
+### Four rows that need a person, now recorded so a later run does not re-flag them
+
+In `docs/icij_matched.json` under `verified_round_35.needs_a_person`:
+
+- **Lead 73, Kandadji.** Settled by hand in the round 33 check as the same project as P130174. The
+  resolver cannot see it because ICIJ names the programme and the Bank names the project. No action.
+- **Lead 95, MDTF KP Emergency Roads.** A genuine date discrepancy: ICIJ prints 7 July 2011, the
+  Bank gives P125584 a board approval date of 16 July 2011. P125584 is the only project of that name
+  in all 5,798 approvals and the case prints it, so the match holds. **An earlier handoff said the
+  16 July date "matches the lead row". It does not** — that is the one real date discrepancy the
+  round 34 notes predicted.
+- **Lead 523, Teresina.** Resolves at 1.00 to P088966, approved 27 March 2008, the only Teresina
+  project in the decade. The case prints only P146870, the February 2016 additional financing, and
+  refers to "a first-phase loan that resettled 466 families" without naming or dating it. Opening
+  the card's own sources would settle it in a minute.
+- **Lead 598, Ethiopia PBS Phase II.** P103022, above.
+
+### Job four: the panel's low rows now say what their denominators are
+
+`allBriefHTML`'s "How much of all lending does this map cover?" is the eight-row table that keeps
+getting copied into handoffs and going stale. It already said the shares are of deals counted rather
+than harm done. Two things were added, because a reader was still being invited to read 0.04% as
+"barely started":
+
+- **A small share there does not say how much work is left.** Each row divides by every deal of its
+  kind that anyone counted, most of which left no record of harm, so working every register that
+  exists to the end would still leave the bottom rows small.
+- **The treaty-lawsuit row carries the direction point.** Every one of the 1,332 is a company suing
+  a country, which runs the other way from this map, where a case needs harm done to people. 4 of
+  1,332 is not a coverage figure.
+
+Nothing computes either sentence, so they go stale the way the "What this map shows" block does.
+
+### What round 35 did not do, and it is the thing that matters for the aim
+
+**No new cases.** The rows that would actually move — AidData's 793 and ICIJ's 546 untouched
+possible-displacement rows — need writers with a checker each, and this round had none. The ceiling
+on the ICIJ row is unchanged and still the method's: only 280 of 1,169 cases carry a P-number, and
+the round 33 checker put the true matched figure at 249 and not above about 255.
+
 ## READ THIS FIRST: round 34 is merged, built, tested and pushed
 
 Two jobs, neither of them a case round, and both ended with the map claiming less than it did
@@ -264,8 +403,8 @@ projects on 27 September 2012, and a Cameroon/Chad/CAR programme against a São 
 which tests nothing about the case. The pass earned its place by confirming the forward pass, not by
 extending it. **The four matches the annotations had genuinely missed, the checker found by hand**,
 all in one blind spot: the case names the project in prose and prints the P-number nowhere a regex
-over five fields can see it. Only **273 of 1,169 cases carry a P-number at all**, and that is the
-method's ceiling. The checker puts the true figure at 249 and not above about 255.
+over five fields can see it. Only **273 of 1,169 cases carried a P-number at all** when round 34 ran, and that is the
+method's ceiling. (Round 35 took it to 280.) The checker puts the true figure at 249 and not above about 255.
 
 **A bug of mine, recorded because it would have halved the figure with no sign.** My first date
 parser spelled months `March, April, June, July, Sept` where ICIJ prints `Mar. Apr. Jun. Jul. Sep.`
