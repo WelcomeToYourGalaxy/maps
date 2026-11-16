@@ -142,6 +142,21 @@ def main(path):
                                      f'(a figure spelled out in d will show here too)'))
         if not str(r.get('url','')).startswith('http'): bad(i,'url','not a url')
 
+        # Ruling 16: y is the year the conduct reached the institution, not the year the
+        # case became public. Caught 148 records on 16 November 2026, nearly all of them
+        # foreign-bribery settlements filed under the settlement year.
+        m = re.search(r'between (1[89]\d\d|20[0-3]\d) and (1[89]\d\d|20[0-3]\d)', str(r.get('d','')))
+        if m:
+            a, b = int(m.group(1)), int(m.group(2))
+            if not (a <= (r.get('y') or 0) <= b):
+                if b - a <= 10:
+                    bad(i,'year',f"y is {r.get('y')} but d says the conduct ran {a}-{b}; "
+                                 f'ruling 16 puts y at {a}')
+                else:
+                    notes.append((i,'year',f"y is {r.get('y')} and d says the conduct ran {a}-{b}; "
+                                           f'left as the year the case became public, because the '
+                                           f'conduct crosses more than a decade'))
+
         k = (r.get('c',''), t.lower())
         if k in seen_titles: bad(i,'dup-batch',f'same title as candidate {seen_titles[k]}')
         seen_titles[k] = i

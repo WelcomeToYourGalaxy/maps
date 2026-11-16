@@ -2759,5 +2759,93 @@
    ]
   ],
   "root": false
+ },
+ {
+  "id": "bought_off_checks",
+  "title": "Paying so the state's own check is not applied",
+  "kind": "capture",
+  "orgs": [],
+  "no_hq": true,
+  "role_by": {
+   "field": "lik",
+   "map": {
+    "established": "Proven",
+    "probable": "Charged or probable",
+    "possible": "Suspected",
+    "contested": "Disputed"
+   }
+  },
+  "case_titles": [
+   "Vehicle owners' 2.7bn dong bought Da Nang's vehicle inspection centre",
+   "Drivers paid Hoa Binh's state inspection centre 28-01S to pass failed vehicles",
+   "Drivers' 5.3bn dong ran inspection centre 78-02D in Phu Yen",
+   "Customers' payments passed failed vehicles at Bac Kan's centre 97-01D",
+   "Vehicle owners and two firms paid Dong Nai's inspection centre 60-04D",
+   "Vehicle owners' go-betweens paid Dong Nai's inspection centre 60-05D",
+   "No cash, no pass: 750m dong at Hanoi's inspection centre 29-18D",
+   "Hue's inspection centre and a design firm sold files for altered vehicles",
+   "Can Tho's inspection centre director took 918m dong on 778 vehicle files",
+   "Cuong Phat's money passed 379 false modification files in Binh Dinh",
+   "Design firms and a kit supplier bought Vietnam Register's two directors",
+   "Mauritius transport authority examiner passed a vehicle he never examined",
+   "Truck owners paid through Tuan Vinh for Hanoi's transport inspectors",
+   "Vessel owners' 2.09bn dong bought Ca Mau's fishing boat papers",
+   "Brazil's meatpackers paid farm ministry inspectors to pass unfit meat",
+   "Hoang Sa's bribes let banned meat past Vietnam's regional veterinary office",
+   "Scoular paid Mexican border inspectors to pass its grain trains",
+   "Lorry drivers paid Qostanay phytosanitary inspectors to move quarantined cargo",
+   "Telangana ACB: a rice miller's 75,000 rupees skipped a PDS quality check",
+   "Firms' bribes alleged over Vietnam's durian export codes and certificates",
+   "Two meat companies paid the farm ministry's inspectors in Tocantins",
+   "Traders charged with paying RM95,500 to a Tenaga Nasional enforcement man",
+   "Trader fined for paying a Tenaga Nasional officer to drop a power-theft case",
+   "Trader charged with paying RM53,000 to a Tenaga Nasional man over power cases",
+   "Bitcoin miners' agents jailed for offering RM15,000 to a TNB officer",
+   "Crypto miners allegedly paid a Provincial Electricity Authority assistant governor",
+   "Customers paid Samarkand state power staff to drop electricity violations",
+   "Maharashtra ACB: MSEDCL engineer at Dahanu took 2 lakh over a power theft case",
+   "Power-bypass customer paid two ZESCO staff to keep him out of court",
+   "Logistics firm's owner paid KLIA customs officers not to inspect lorries",
+   "Businesspeople paid Karaganda revenue chiefs to drop customs penalties",
+   "Russian haulier paid 100m tenge to wave 1,003 lorries past West Kazakhstan checks",
+   "Customs brokers paid Almaty's central customs laboratory for fast expert reports",
+   "Exporter and broker paid an Egyptian customs director to clear shipments",
+   "Freetown customs officers demanded a bribe to clear an exporter's container",
+   "Traders jailed for offering a Jebel Ali customs inspector Dh40,000",
+   "Zimmer Biomet's Mexican unit paid customs officials to clear implants",
+   "Brunei logistics firm's manager had a customs inspector bribed",
+   "Japan's banks paid Finance Ministry inspectors for advance tip-offs",
+   "Tycoon Truong My Lan paid Vietnam's bank inspection chief $5.2m",
+   "Maharashtra ACB: MHADA engineer took 40,000 to drop action on a row house",
+   "CBI: a Delhi shed holder paid a DSIIDC manager 1.7 lakh to avoid sealing",
+   "Cleaning firm owner paid a Shah Alam council assistant to stop a payment notice",
+   "Security men paid a Mauritian police inspector Rs 25,000 not to arrest them",
+   "Quad Peru paid education ministry officials to drop contract penalties",
+   "Odebrecht paid Ecuador's Comptroller General over $10m to drop fines",
+   "A catalyst supplier paid Pertamina's processing director to drop a test",
+   "A meat plant at Santa Fé de Goiás paid the inspectors who certify it",
+   "Head of Moldova's Central Customs Bureau detained over payments to clear imports",
+   "Trader accused of paying a Dubai Customs officer to clear undervalued perfume",
+   "Helmerich & Payne paid Venezuelan customs officials to cut inspections",
+   "Police say Puls club's people paid Štip tax inspectors to hide inspections"
+  ],
+  "summary": "Most of the money on this map buys something: a contract, a licence, a law. These cases buy the opposite. What is paid for is that nothing happens - that the inspection is not carried out, the penalty is not imposed, the goods are not examined, the meter is not read, the file is not opened.\n\nVietnam shows it at scale. Between 2022 and 2026 courts convicted the staff of provincial vehicle inspection centres in Da Nang, Hue, Hoa Binh, Phu Yen, Bac Kan, Dong Nai, Can Tho, Binh Dinh and Hanoi of taking money to pass vehicles that had failed, and to certify modifications that had not been checked; one Can Tho director took 918 million dong across 778 vehicle files, and the two directors of Vietnam Register, the national authority above those centres, were bought by design firms and an equipment supplier. A Mauritian examiner issued a fitness certificate for a vehicle he never examined.\n\nThe same bargain covers food and plants: Brazilian meatpackers paid farm ministry inspectors to pass unfit meat, a Vietnamese firm got banned meat past a regional veterinary office, Scoular paid Mexican border inspectors to pass its grain trains, and lorry drivers paid phytosanitary inspectors in Qostanay to move quarantined cargo. It covers electricity, where traders, bitcoin miners and crypto miners in Malaysia, Thailand, Uzbekistan, India and Zambia paid utility officers to drop power-theft cases. It covers customs valuation and clearance in Kazakhstan, Egypt, Moldova, Sierra Leone, the United Arab Emirates, Mexico, Venezuela, Brunei and Malaysia - in one case 100 million tenge to wave 1,003 lorries past West Kazakhstan checkpoints. And it covers the inspectors of money itself: Japan's banks paid finance ministry inspectors for advance warning of audits, and Truong My Lan paid Vietnam's bank inspection chief 5.2 million dollars while the bank she controlled was being supervised.\n\nFor ordinary people this is the kind of corruption they meet without knowing it. The loser is not a rival bidder who lost a tender; it is whoever the check existed to protect - everyone on the road behind an uninspected lorry, everyone eating meat that failed inspection, every other customer carrying the cost of electricity that was taken, and every depositor in a bank whose supervisor had been paid.",
+  "uncertain": "Several of these are charges rather than convictions, and each record says which. The pattern is drawn narrowly and two neighbouring kinds of case are deliberately left out of it. Drug smuggling through ports and border posts is also a bought-off check, but those cases sit in 'Organised crime inside the state', where the payer is a trafficking network rather than a business avoiding a regulator. Payments to judges for a verdict are left in 'Kickbacks for state contracts, laws and rulings', because a court is not a routine administrative check. Both lines are judgement calls and a reader may draw them elsewhere.",
+  "implications": "",
+  "roles": [],
+  "countries": [],
+  "links": [],
+  "timeline": [],
+  "view": [
+   [
+    -37.6,
+    -104.1
+   ],
+   [
+    59.9,
+    171.9
+   ]
+  ],
+  "root": false
  }
 ]

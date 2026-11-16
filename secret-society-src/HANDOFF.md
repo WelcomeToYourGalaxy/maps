@@ -239,6 +239,34 @@ Added to the list from the previous round, none fixed:
 - **The two 2005 Philippine CAMEC backhoe cases, at Viga and Romblon, are both P13.95 million from the same supplier.** They read as two municipalities and two decisions, and the identical price is worth confirming rather than assuming.
 - The `y` field question from the last round now has more instances: Mauritius mixes event and judgment years within one country, and the Felda record sits at 2021 although its operative outcome is the Federal Court restoring the sentence on 10 February 2026. **This needs a ruling, not more instances.**
 
+## Ruling 16: `y` is the year the conduct reached the institution (16 November 2026)
+
+The owner left this to me. The field drives four things - the era filter (Any year / Since 2010 / Cold War / Before 1945), the decade histogram a reader clicks to keep one decade, the recency weighting in each case's score, and the timeline - and every one of them is a question about **when the institution was reached**, not about when a court caught up. So:
+
+**`y` is the year the conduct reached the institution: the year of the decision, the payment or the placement the record is about.** Where the record's own text gives a span, `y` is the first year of the span. Where no conduct year is established in the sources read, `y` is the year of the first public proceeding - charge, indictment, settlement or verdict - and the record says which. **An outcome never sets `y`**; outcomes live in `d`, `undone`, `status` and `verified`.
+
+**148 records were moved** to the first year of their conduct, almost all of them foreign-bribery settlements filed under the settlement year: Rolls-Royce's SOCAR record from 2016 to 2000, ABB at Eskom from 2022 to 2014, McKinsey from 2024 to 2012, the ten Indonesian Asabri records from 2025 to 2012. **The old value is kept in a new `y_public` field on each**, so the change is reversible and nothing is lost; `build.py` does not read it.
+
+**Ten were left alone**, because their conduct crosses more than a decade and no single year represents it: Dell'Utri 1996-2013, Zambada 1980-2024, Xiao Jianhua 2001-2021, LITEMPO 1956-1969, SBM Offshore in Angola 1997-2012, Amec Foster Wheeler 1996-2014, Veljovic 2007-2020, Rolls-Royce in Thailand 1991-2005, Guralp 2003-2015, Neoway 2006-2019. Filing a 44-year practice in 1980 would mislead a reader clicking the 1980s bar.
+
+`validate_batch.py` now enforces this on new records: it fails a batch where `d` says the conduct ran between two years a decade or less apart and `y` falls outside that span, and notes it where the span is longer.
+
+**One measurement worth not repeating.** My first attempt at finding offenders compared `y` with the earliest four-digit year anywhere in the description, and returned 1,178 records. Nearly all of them were false: the earliest year was an organisation's founding date quoted as background - the Broederbond in 1918, the RSS in 1925, the Muslim Brotherhood in 1928. **The reliable detector is the record's own "between A and B" phrasing**, which is what the check uses. Other phrasings of a conduct span - "from 2014", "over four years", "during his term" - remain unaudited, so the 148 is a floor, not a total.
+
+## A new pattern: "Paying so the state's own check is not applied" (16 November 2026)
+
+Created as `bought_off_checks`, with **52 cases hand-picked across 21 countries**, 22 of them reaching a company and 30 a government body. The owner left the decision to me and the case for it was already written up here: round seven set three orphans aside for want of such a pattern and round eight produced sixteen more.
+
+**What distinguishes it:** most of the money on this map buys something - a contract, a licence, a law. These cases buy the opposite. What is paid for is that nothing happens: the inspection is not carried out, the penalty is not imposed, the goods are not examined, the meter is not read. The loser is not a rival bidder but whoever the check existed to protect.
+
+**The spine of it is Vietnam's provincial vehicle inspection centres** - ten records across Da Nang, Hue, Hoa Binh, Phu Yen, Bac Kan, Dong Nai, Can Tho, Binh Dinh and Hanoi, plus the two directors of Vietnam Register above them - together with food and plant inspection (Brazilian meatpackers, banned meat in Vietnam, Scoular's grain trains in Mexico, quarantined cargo in Qostanay), power theft (Malaysia, Thailand, Uzbekistan, India, Zambia), customs valuation and clearance in nine countries, and the inspectors of money themselves (Japan's banks buying advance warning of audits; Truong My Lan paying Vietnam's bank inspection chief 5.2 million dollars).
+
+**Two boundaries, both judgement calls, both stated in the pattern's own `uncertain` text so a reader can disagree:**
+- **Drug smuggling through ports and border posts is left out**, though it is also a bought-off check, because those cases belong with a trafficking network rather than a business avoiding its regulator. They stay in `crime_inside_state`.
+- **Payments to judges for a verdict are left out**, because a court is not a routine administrative check. They stay in `kickbacks_contracts_laws`.
+
+`kickbacks_contracts_laws` keeps these 52 as well - a case can sit in more than one pattern - so nothing was taken off the kickbacks pattern, which still carries 812 curated titles. **If the owner wants the split to be exclusive, removing these 52 from the kickbacks list is a one-line change.**
+
 ## Display notes
 - Default country shading "Overall: officials open to outside control" = mean of the two GI-TOC views (insiders weighted ¾, weak watchdogs ¼).
 - Glossary underlines the first use of each term per box; hover shows the definition (glossify() in app_template.html).
