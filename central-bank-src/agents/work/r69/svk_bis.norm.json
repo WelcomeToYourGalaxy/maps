@@ -1,0 +1,29 @@
+{
+ "records": [
+  {
+   "cb_iso3": "SVK",
+   "country": "Slovakia",
+   "central_bank": "Národná banka Slovenska",
+   "entity": "Bank for International Settlements",
+   "name_as_stated": "the Bank for International Settlements in Basel",
+   "entity_type": "international body",
+   "entity_hq_city": "Basel",
+   "entity_hq_iso3": "CHE",
+   "relation": "manages its reserves or programmes",
+   "detail": "Národná banka Slovenska's Annual Report 2020 says its investment in the Chinese renminbi is made through the BISIP CNY, described in footnote 3 as 'an open-ended fund comprising Chinese government bonds and managed by the Bank for International Settlements in Basel'. The report puts the market value of that indirect renminbi investment at around USD 47 million at the end of 2020, and its balance sheet carries a separate line for 'Participating interests in BISIP fund'. The audited statements confirm the arrangement independently of the narrative: the valuation note says the BISIP holding is valued using data 'provided by the Bank for International Settlements (BIS) in Basel, Switzerland on a monthly basis'. The as-at date is 31 December 2020 and no share of total reserves is given. The bank's separate equity portfolio of exchange-traded funds, EUR 236 million at the same date, is deliberately NOT part of this record: no manager is named for it and a listed fund bought on a market is not a mandate given to anyone.",
+   "source_title": "Annual Report 2020, Part B chapter 1 and the financial statements as at 31 December 2020 (Národná banka Slovenska)",
+   "source_url": "https://nbs.sk/_img/documents/_publikacie/annualreport/arnbs20.pdf",
+   "weak_source": false,
+   "quote": "an open-ended fund comprising Chinese government bonds and managed by the Bank for International Settlements"
+  }
+ ],
+ "blanks": [
+  {
+   "iso3": "SVN",
+   "kind": "refused",
+   "note": "REFUSED at round 69, and the refusal settles the rule rather than just this country. Banka Slovenije's Annual Report 2024 (bsi.si, Letno-porocilo-2024_EN_07_eng-GB_complete.pdf, section 3.9 'Management of Banka Slovenije's financial assets', read in full) mentions 'the BIS fund' EXACTLY ONCE, and in a clause about maturity: the largest maturity bucket is more than three years, '52%, including holdings in the BIS fund and of equity ETFs, which have no maturity'. It names no fund, gives no figure for it, and nowhere says the BIS manages it. The 2024 audited financial statements carry only an unnamed 'Investment funds' line, a valuation policy turning on the bank's level of influence over the fund's day-to-day operations, and a note on income from investments in investment funds; 'BIS', 'ETF' and 'exchange-traded' return zero hits in them. THE RULE THIS SETTLES: a holding of units in an outside-managed fund counts on this row when the source NAMES THE FUND, NAMES ITS MANAGER AND GIVES A FIGURE for it -- which is the BCEAO BISIP K precedent, and which Slovakia's BISIP CNY matches exactly and was filed on the same round. A passing reference to 'the BIS fund' as a maturity category does not. SEPARATELY AND FOR EVERY COUNTRY: an equity ETF never counts on this row. A listed exchange-traded fund is a security bought on a market, not a mandate given to a manager, and no manager is named for one. Slovenia's own equity ETF holding is 9% of its financial assets and is not a reserve-manager tie."
+  }
+ ],
+ "checked_not_in_assignment": [],
+ "leads_not_opened": []
+}

@@ -1,0 +1,90 @@
+{
+  "records": [
+    {
+      "cb_iso3": "MWI",
+      "country": "Malawi",
+      "central_bank": "Reserve Bank of Malawi",
+      "entity": "Crown Agents Investment Management",
+      "name_as_stated": "Crown Agents Fund manager",
+      "entity_type": "firm",
+      "entity_hq_city": null,
+      "entity_hq_iso3": "GBR",
+      "relation": "manages its reserves or programmes",
+      "detail": "The Reserve Bank of Malawi's audited statements for the year ended 31 December 2025 say the Bank sets a benchmark of the Merrill Lynch 1-3 Year US Government Bond Index (80%) and the Merrill Lynch 3-month US Dollar Deposit Offer Rate (20%) for foreign reserves 'being managed by external fund managers', allocates those managers a risk budget, and put the value of the external funds at K3,880 million as at 31 December 2025 (2024: K3,740 million). The credit-risk counterparty table in the same note carries one fund-manager row, 'Crown Agents Fund manager', country United Kingdom, counterparty limit 'No Limit', 5.00% of exposure, carrying amount K3,880 million - the identical figure - listed separately from the three 'Crown Agents Bank Limited' banking rows. The report gives no city, so the head office is left null and only the United Kingdom stated in the table is recorded. The same wording appears in the Annual Report and Accounts 2025 (ContentID 63680).",
+      "source_title": "Reserve Bank of Malawi, Consolidated and Separate Annual Financial Statements for the year ended 31 December 2025 (interest-rate risk note and credit-risk counterparty table, notes 3 and 37)",
+      "source_url": "https://www.rbm.mw/Home/GetContentFile/?ContentID=63591",
+      "weak_source": false,
+      "quote": "The value of the external funds being managed by the external fund managers stood at K3 880 million as at 31 December 2025"
+    }
+  ],
+  "blanks": [
+    {
+      "iso3": "LSO",
+      "kind": "refused",
+      "note": "NEAR-MISS, now stronger and needs a decision above me. The 2025 annual report does not exist on centralbank.org.ls (the corporate-reports page lists annual reports only to 2024), so I read the next document instead: Central Bank of Lesotho, Audited Financial Statements for the year ended 31 December 2025 (CBL-AFS-2025.pdf, 63 pages). The file is a scan and extracts no text, so I rasterised it at 170 dpi and OCR'd all 63 pages. Note 37 'Financial instruments and risk management', credit risk analysis, carries the same counterparty rows as 2024 - 'Crown Agents' GBP 119 and USD 128, 'Bank of N.Y' USD 698 / ZAR 7,004, 'World Bank RAMP' USD 44,650 under Fixed deposits (2024: 54,703), 'United States-RAMP' M1,932,669 thousand under Treasury notes and bonds - and NEW this year a row immediately beneath it reading 'United States-internally Managed' M4,610,394 thousand (2024 comparative: United States-RAMP 2,133,975 and United States-internally Managed 978,028). The table therefore classifies the Bank's US treasury notes and bonds by who manages them, RAMP against internally managed, which is the strongest evidence this row has had for Lesotho. But it is still a table label in a counterparty table with rating and collateral columns, not a sentence: I grepped the whole OCR for 'external', 'externally', 'outsourc', 'third part', 'Reserve Advisory', 'mandate', 'advis' and 'fund manager' and no sentence anywhere says the World Bank, RAMP or Crown Agents manages any portfolio. The only management sentences are about the Bank's own portfolio managers and its own statutory mandate to manage the reserves. I also read the Bank's own reserves-management page (centralbank.org.ls/index.php/financial-markets-about/598-reserves-management): it names nobody and attributes the function to the Department of Financial Markets under section 6(f). Filed as refused under the no-upgrade rule; if the project will accept the 'RAMP' versus 'internally Managed' row pair as the source distinguishing externally from internally managed money, this is a World Bank RAMP record of M1,932,669 thousand at 31 December 2025 waiting to be filed."
+    },
+    {
+      "iso3": "ETH",
+      "kind": "confirmed blank",
+      "note": "National Bank of Ethiopia Annual Report 2023/24 (nbe.gov.et/wp-content/uploads/2026/07/Annual-Report-2023-24.pdf, 261 pages, 39 MB). The audited Financial Statements for the Year Ended 30 June 2024 run from p.100 and are scanned images that extract no text, so I rasterised pp.100-210 at 150 dpi and OCR'd all 111 pages (231,000 characters). Grepped for externally managed, external manager, RAMP, Reserve Advisory, World Bank, IBRD, Crown Agents, BlackRock, Amundi, PIMCO, UBS, Wellington, Nomura, Franklin, fund manager, custodian and portfolio managed. Nothing. IBRD appears only in note 9(f) 'Cash and cash equivalents' as a one-year time deposit counterparty of Birr 2,930,459,469 alongside TDB and Afreximbank, and in a liabilities table. No external manager, no custodian, no RAMP mandate anywhere in the notes or the accounting-policy notes. The separate 'audited financial statement june 2024' page on nbe.gov.et returns 404 to curl and client_error to WebFetch, but it would be the same statements that are reproduced in this report."
+    },
+    {
+      "iso3": "GIN",
+      "kind": "confirmed blank",
+      "note": "Banque Centrale de la Republique de Guinee: TWO documents read for the year ended 31 December 2023 - 'BCRG Rapport IFRS 2023' (bcrg-guinee.org/wp-content/uploads/2026/03/BCRG-Rapport-IFRS-2023.pdf, 93,000 characters of text) and 'BCRG Rapport audit des etats financiers au 31122023' (.../2026/02/BCRG-Rapport-audit-des-etats-financiers-au-31122023.pdf). Grepped both for gestionnaire, gestion deleguee, geree par, externe, RAMP, Banque mondiale, World Bank, BIRD, IBRD, Crown Agents, BlackRock, Amundi, depositaire, mandat and conservateur. No outside reserve manager. Note 3.7 on operating segments puts 'la gestion des reserves de change et des activites avec l'etranger' inside the head office as one of three divisions of the Bank itself. The only depositaire hits are a Dubai gold refiner/depositary (3.1 tonnes, with a December 2024 dispute) and 'depositaires en or monetaire agrees' - a gold-custodian lead for the custodian row, not this one. 'Primes gestionnaires' is a revenue line, not a manager's name. The securities portfolio note 2325 lists only equity participations (Afreximbank, AfricaRe, Societe Monetique de Guinee, BNIG, AFC)."
+    },
+    {
+      "iso3": "BDI",
+      "kind": "not reached",
+      "note": "Host rate-limits. bcb.bi returned HTTP 429 with a 24 KB error body to two separate curl attempts 20 seconds apart for the only BRB document a search surfaced, https://bcb.bi/images/2026/ETATS%20FINANCIERS%20AU%2031%20MARS%202026.pdf. Nothing of Burundi was read, so the country is still untested. Next document: that same quarterly ETATS FINANCIERS file via WebFetch rather than curl, then the BRB rapport annuel note on 'avoirs exterieurs'. Note for the next round that the bcb.bi file paths are /images/YYYY/<NAME>.pdf with spaces percent-encoded."
+    },
+    {
+      "iso3": "DZA",
+      "kind": "not reached",
+      "note": "Host blocked to both tools. www.bank-of-algeria.dz/rapports-annuels/ is robots-disallowed to WebFetch and fails TLS/secure-connection establishment to curl on three attempts (exit 2, HTTP 000, zero bytes), so I never got the list of annual report PDFs and no Algerian document was opened. A search for the rapport annuel returned only press coverage and no PDF on the bank's own host. Next document: Banque d'Algerie rapport annuel chapter on 'gestion des reserves de change', reached through a direct PDF URL that a search returns rather than through the listing page, or the IMF Article IV staff report's reserve-management section."
+    },
+    {
+      "iso3": "EGY",
+      "kind": "not reached",
+      "note": "No document opened. One search for the Central Bank of Egypt annual report and its financial statements returned only commercial-bank statements, press coverage of CBE balance-sheet releases and the CBE's monthly External Position bulletins - no CBE annual report PDF on cbe.org.eg. Budget ran out before a second route. Next document: Central Bank of Egypt Annual Report 2023/2024, the note to the financial statements on foreign-currency securities, found through the cbe.org.eg Economic Research publications listing (try WebFetch on the listing page first, since cbe.org.eg is not known to be blocked here)."
+    },
+    {
+      "iso3": "MDG",
+      "kind": "not reached",
+      "note": "No document opened. Two searches, one in French for 'gestionnaires externes'/'gestion deleguee' plus Banky Foiben'i Madagasikara and one for banque-centrale.mg plus 'rapport annuel' pdf, returned nothing at all from the central bank's own host - only commercial-bank reports, IMF country reports and press. Next document: Banky Foiben'i Madagasikara rapport annuel, note on 'avoirs de reserve', via the publications listing on banque-centrale.mg fetched directly; failing that the IMF Article IV safeguards/reserve-management discussion for Madagascar. Still untested rather than closed."
+    },
+    {
+      "iso3": "MOZ",
+      "kind": "vein closed",
+      "note": "Already closed in closed_negatives.json as a confirmed blank on the Banco de Mocambique Relatorio Anual 2022 notes, which say the Bank 'contrata gestores externos para a gestao das suas reservas' with a benchmark per externally managed portfolio and section 5.4.1 limits, and name no firm. I did not re-read that document, as instructed, and the budget went to LSO, MWI, ETH and GIN before I could open a different one. Next document to try: the Relatorio Anual 2024 or 2025 notes, and any Banco de Mocambique 'relatorio de gestao de reservas' tabled in the Assembleia da Republica - the earlier years (2010-2014) are also worth a try, since the firms were sometimes named before the wording was generalised."
+    },
+    {
+      "iso3": "NAM",
+      "kind": "vein closed",
+      "note": "Already closed: Bank of Namibia Annual Report 2025 note 30 shows an 'Externally managed portfolios' line at 37% of the USD portfolio and names no manager. Not re-read. No different document opened this round - budget exhausted. Next document: Bank of Namibia annual reports for 2012-2016, where the externally managed portfolio line may carry the manager names, and the Bank's separately published investment/reserves management report."
+    },
+    {
+      "iso3": "MUS",
+      "kind": "vein closed",
+      "note": "Already closed: Bank of Mauritius Annual Report 2025 uses 'external fund managers' in notes 10(i), 24, 29 and 34(b)(ii) and names none. Not re-read. No different document opened this round. Next document: earlier Bank of Mauritius annual reports (the 2010-2014 editions, where the fund-manager note sometimes listed the firms), remembering the host note that bom.mu fails TLS verification to curl and must be taken with WebFetch."
+    },
+    {
+      "iso3": "NGA",
+      "kind": "vein closed",
+      "note": "Already closed: the CBN reserve-management page and the CBN Annual Report 2022 both describe the CBN itself as managing the reserves under section 2(c) of the CBN Act 2007. Not re-read. No different document opened. Next document: CBN Annual Report 2024 financial statements, the note on external reserves and the accounting-policy note, plus the quarterly 'Reserve Management' reports the CBN has at times tabled with the National Assembly."
+    },
+    {
+      "iso3": "GHA",
+      "kind": "vein closed",
+      "note": "Already closed: Bank of Ghana Annual Report and Financial Statements 2025 names no external, outsourced or appointed reserve manager, only a BIS collateralised gold transfer. Not re-read. No different document opened. Next document: Bank of Ghana annual reports for 2011-2015, and the Bank's reserve-management disclosures in the IMF ECF programme documents."
+    }
+  ],
+  "checked_not_in_assignment": [
+    "Seychelles (SYC) - a search for Lesotho's RAMP wording surfaced 'CBS International Reserves Management Report 2025' tabled in the Seychelles National Assembly (nationalassembly.sc), exactly the parliamentary-reserves-report vein the brief recommends. SYC is NOT in my assignment, so I did not open it and filed nothing. It is already present in have_mgr.json, so it is not a gap - recorded here only so the next round knows the document exists and where it is hosted."
+  ],
+  "leads_not_opened": [
+    "LSO: the 'United States-internally Managed' versus 'United States-RAMP' row pair is new in the 2025 audited statements and is a decision for the gold/judgement pass rather than a research question - see the LSO blank.",
+    "GIN: the BCRG IFRS 2023 report names a Dubai gold refiner and 'depositaire' holding 3.1 tonnes of gold, with a December 2024 dispute between the BCRG and that refiner/depositary. That is a gold-custodian and possibly a corruption-case lead, not a reserve-manager one, and Guinea's gold row was not mine to file.",
+    "MWI: the Reserve Bank of Malawi statements also show 'Investment with fund managers' and 'Cash at hand with fund managers' balance-sheet lines, and a separate set of Kwacha placements 'with fund managers' at 23-24% belonging to the Export Development Fund subsidiary. Those local-currency placements are a different arrangement from the Crown Agents foreign-reserves mandate and no firm is named against them."
+  ]
+}
