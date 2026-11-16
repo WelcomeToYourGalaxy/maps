@@ -313,6 +313,18 @@ The queue stood at **267** in the morning and at **92** by the end, with one bat
 
 **Newly blocked:** `mlex.com`, `walla.co.il`, `lereliefhaiti.com`, `lenouvelliste.com` (login), `tirto.id`, and `hacc-decided.ti-ukraine.org` when it is a record's own stored url - which is the provenance rule again, from the other direction.
 
+## Ruling 18: `d` describes the infiltration, `undone` carries where the case stands (16 November 2026)
+
+An outcome round pushes records over the word cap by design. Every record the queue touches is already near 130 words, and an outcome adds fifteen to thirty. One batch came back with **14 of its 19 rewrites at 132 to 149 words** after the agent had made three compression passes and moved everything it could into `undone`.
+
+**The fix is not a bigger cap, it is not duplicating the outcome.** `build.py` already passes `undone` to the page and `app_template.html` renders it as a labelled block, **"What happened next:"**, directly beneath the description in both the case popup and the country panel. An outcome in `undone` is therefore not hidden from anyone. So:
+
+**`d` describes the infiltration - who reached which body, with what, for which decision. `undone` carries where the case stands.** An outcome enters `d` only where leaving it out would let the description mislead: **an acquittal, a dismissal, a withdrawal, a case closed on a time limit, or a defendant who died before trial.** Those must appear in `d`, because a description that still reads as established when the case collapsed is the exact fault the outcome queue exists to find.
+
+**Applied mechanically where it was safe.** Four records were trimmed by dropping a tail sentence after checking that **every figure and every proper noun in it already appears in `undone`** - an auditable test, not a judgement. Seventeen are left over the cap: eleven because the tail carries something `undone` does not yet, and six because they have no `undone` at all and their length comes from dense material, which is the older decision already recorded above.
+
+**For the next outcome round, the brief should say it outright:** write the outcome into `undone` and do not restate it in `d` unless it is one of the five kinds above. That keeps the cap and loses nothing, because the reader sees both.
+
 ## Display notes
 - Default country shading "Overall: officials open to outside control" = mean of the two GI-TOC views (insiders weighted ¾, weak watchdogs ¼).
 - Glossary underlines the first use of each term per box; hover shows the definition (glossify() in app_template.html).
