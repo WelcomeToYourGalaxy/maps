@@ -268,11 +268,11 @@ function paint() {
 
 /* ---------- the key ---------- */
 function covLine() {
-  const pct = (100 * PE.length / D.NALL);
-  return '<div class="cov2">' + esc(PE.length.toLocaleString() + " of the " + D.NALL.toLocaleString() + " people Wikidata records in national office, " + pct.toFixed(1) + "%, went through one of the " + D.NDOC + " schools and programmes here.") +
-    ' ' + esc("No register of training pipelines exists, so the share of them mapped cannot be measured.") +
-    QM("The 258 here are the ones a published source documents as training people for power. The known gap is programmes that keep their participant lists closed: party schools, short courses and private fellowships. Method and sources sets out how both figures are counted.") + '</div>';
+  const host = new Set(); SCH.forEach((x) => { if (x.k !== "rec" && x.iso) host.add(x.iso); });
+  return '<div class="cov2">' + esc("These " + D.NDOC + " are the pipelines a published source names as one, found by a sweep of the record. Nobody has counted the undocumented rest, so a share of all pipelines would be a guess.") +
+    QM("Party schools, short courses and private fellowships keep their participant lists closed, so no register of training pipelines exists to measure against. A school is on the map only where a published source documents its role in producing people who hold power; each school's box gives its sources. They sit in " + host.size + " countries.") + '</div>';
 }
+
 function buildKey() {
   recompute();
   const nS = SCH.length, nC = Object.keys(AGG.cty).length;
