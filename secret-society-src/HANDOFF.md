@@ -168,7 +168,9 @@ These came out of reading eleven countries' records end to end. None is fixed, b
 
 ## WebFetch will not take a URL out of a file, even a url the map itself stored (16 November 2026)
 
-The outcome-queue round was planned on the assumption that an agent could fetch the `url` already stored on each record for free, so its search ration would go on finding new material rather than re-finding the page the record came from. **That assumption is wrong.** Every such attempt returned `PROVENANCE_REQUIRED`, so each record cost a search, and the agent cleared 20 of the 45 it was given instead of all 45. Plan an outcome round at **one search per record**, and treat a stored url as a record of where a fact came from, not as a way back to it.
+The outcome-queue round was planned on the assumption that an agent could fetch the `url` already stored on each record for free, so its search ration would go on finding new material rather than re-finding the page the record came from. **That assumption is wrong.** Every such attempt returned `PROVENANCE_REQUIRED`, so each record cost a search, and the agent cleared 20 of the 45 it was given instead of all 45. Treat a stored url as a record of where a fact came from, not as a way back to it.
+
+**The ratio that conclusion came with was wrong, and the correction matters more than the fault.** Measured the same day by an agent that worked the other way round: **a URL that a WebSearch has just surfaced is fetchable and costs nothing**, because the search returns links without snippets and each of those links can then be fetched free. So an outcome round's real budget is **fetches, not searches**, and its cheapest shape is one search on a scandal's name followed by several fetches down its coverage. That agent cleared all 22 of its records. The earlier measurement was taken by an agent that tried the stored url first, was refused, and drew the right conclusion about stored urls and the wrong one about the ratio.
 
 ## The outcome queue has now caught three records that stopped at a charge after an acquittal (16 November 2026)
 
