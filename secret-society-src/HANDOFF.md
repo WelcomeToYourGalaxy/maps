@@ -146,6 +146,26 @@ Four trims on 15 November were caught cutting the wrong thing and were repaired:
 
 One trim also dropped a case out of a regex-selected pattern again - the Spanish arms exporter in Cameroon - and the orphan rollcall caught it the same minute. Eight patterns select on a regex over title and description, so **any description edit can silently empty a pattern**; curating the case by title fixes it.
 
+## The writeups were not updated when cases were removed, and two still are not (15 November 2026)
+
+Rewriting eleven country writeups from the map's own records turned up a class of fault nobody had looked for: **a writeup can go on describing a case the owner removed.** North Macedonia's text still had its foreign minister joining the World Economic Forum's Young Global Leaders network in 2025, and there is no such case on the map - the owner removed 29 WEF alumni records as examples of what the test does not count, along with Skull and Bones/Mnuchin and OneWest/Otting. Denmark's text still carried King Frederik X's membership of the same programme and Finland's still carried President Stubb's and Sanna Marin's, each written up as "the reach of a private elite network". All three passages are now cut. Denmark fell to 174 words and Finland to 237, both still inside the guide, and Finland's now ends on the border guard who sold police files, which is a case the map actually holds.
+
+**The check, worth running after any removal:** for each writeup, take the distinctive phrases in it and ask whether any live case for that country carries them. Six mentions across two countries came out of one pass over the words "Young Global Leader", "World Economic Forum", "Skull and Bones" and "OneWest". A removal that leaves the country text untouched leaves the map asserting something its own test rejects.
+
+## Faults found in existing records, for a round with searches to spend
+
+These came out of reading eleven countries' records end to end. None is fixed, because each needs a page read and this round's shared search budget was spent.
+
+- **Malaysia's two Goldman Sachs records contradict each other.** The 2020 record says Goldman agreed in October 2020 to pay 2.9 billion dollars to authorities in the US, Malaysia, Singapore and the UK; the 2025 record says Goldman settled with Malaysia alone in July 2020 for about 3.9 billion. Both cannot be right as written, and the writeup used neither figure. One fetch settles it.
+- **Slovakia's two 2022 GRU records overlap heavily.** One has "Pavol B., a former vice-rector of a Slovak military academy", the other "Pavel Bucka, accused of passing NATO material since 2013", and both name Bohus Garbar, charged on 15 March 2022. They may be one prosecution written twice, or two defendants in it. The bodies reached differ - a military academy and parliament's classified reports - so they were not merged.
+- **Ukraine has two 2025 Energoatom records that are easy to conflate**: a 100 million dollar scheme and one of almost 100 million hryvnia over Chornobyl fuel storage. Different currencies, different facts, same year. A cross-reference in each would stop the next reader merging them.
+- **Kazakhstan's Astana LRT record holds two verdicts** - seven defendants in May 2021 and nine in May 2023, upheld July 2023 - and reads like two cases merged.
+- **Kenya's Family Bank and National Youth Service records are the same 791 million shillings** but are not duplicates: one is the theft from the state body, the other the bank officer who laundered it, so the bodies reached are different. They are tagged 2022 and 2024. Checked and both kept.
+- **Romania's Techno Montaj record gives "5,000 euro reached Circa on 20 December" with no year.**
+- **Kenya's gold-scheme record is tagged 2019** though its events are February 2018 and January 2019.
+- `bk: legis` **for a city or municipal government body is the map's own convention, not a miscoding.** The Ust-Kamenogorsk city construction department sits there, and so do about twenty mayor and city-hall records. Do not "fix" it.
+- **The `y` field means two different things across the map**: some records are tagged by the year of the conduct, others by the year of the first verdict or indictment. Romania's ARSVOM record is 2021 with a January 2026 plea agreement; North Macedonia's REK Bitola is 2022 with a November 2026 verdict. Not a fault in any one record, but it makes the map's oldest-to-newest sorting mean two things at once, and it is worth a ruling.
+
 ## Display notes
 - Default country shading "Overall: officials open to outside control" = mean of the two GI-TOC views (insiders weighted ¾, weak watchdogs ¼).
 - Glossary underlines the first use of each term per box; hover shows the definition (glossify() in app_template.html).
