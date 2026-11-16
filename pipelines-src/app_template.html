@@ -114,7 +114,7 @@ const kcol = (k) => ((P.light ? MK.satellite : mkp()).k)[KI[k]] || "#aaa";
 const halo = () => P.light ? "#f3efe4" : "#05060c";
 
 /* ---------- state ---------- */
-const S = { kind: {}, rmin: 1, where: "all", y0: 0, y1: 9999, now: false, lens: "all", bandOn: [1, 1, 1, 1, 1],
+const S = { idx: false, kind: {}, rmin: 1, where: "all", y0: 0, y1: 9999, now: false, lens: "all", bandOn: [1, 1, 1, 1, 1],
   schools: true, arcs: true, pat: null, focus: null, sel: null, q: "", open: { kinds: false }, hw: {} };
 KINDS.forEach((k) => { S.kind[k[0]] = true; });
 const ERAS = [["all", "Any year", 0, 9999], ["now", "Since 2010", 2010, 2100], ["cold", "1945–1991", 1945, 1991], ["early", "Before 1945", 0, 1944]];
@@ -210,8 +210,9 @@ function addLayers() {
   T({ id: "cap", type: "circle", source: "caps", paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 1, 1.6, 6, 3], "circle-color": ["get", "c"], "circle-opacity": 0.85, "circle-stroke-width": 0 } });
   map.addSource("schools", { type: "geojson", data: FC([]) });
   const RZ = (f) => ["interpolate", ["linear"], ["zoom"], 1, f(["get", "r"]), 6, f(["*", 1.35, ["get", "r"]])];
-  T({ id: "sch-halo", type: "circle", source: "schools", filter: ["==", ["get", "d"], 1], paint: { "circle-radius": RZ((r) => ["+", r, 2.6]), "circle-color": "rgba(0,0,0,0)", "circle-stroke-color": ["get", "c"], "circle-stroke-width": 0.8, "circle-stroke-opacity": ["*", ["get", "o"], 0.55], "circle-pitch-alignment": "map" } });
-  T({ id: "sch", type: "circle", source: "schools", layout: { "circle-sort-key": ["-", ["*", 100, ["get", "d"]], ["get", "r"]] }, paint: { "circle-radius": RZ((r) => r), "circle-color": ["get", "c"], "circle-opacity": ["get", "o"], "circle-stroke-color": ["get", "h"], "circle-stroke-width": ["get", "sw"], "circle-stroke-opacity": ["get", "o"], "circle-pitch-alignment": "map" } });
+  T({ id: "sch-cut", type: "circle", source: "schools", filter: ["==", ["get", "d"], 1], paint: { "circle-radius": RZ((r) => ["+", r, 2.2]), "circle-color": "rgba(0,0,0,0)", "circle-stroke-color": ["get", "h"], "circle-stroke-width": 2.4, "circle-stroke-opacity": ["*", ["get", "o"], 0.5], "circle-pitch-alignment": "map" } });
+  T({ id: "sch", type: "circle", source: "schools", layout: { "circle-sort-key": ["-", ["*", 100, ["get", "d"]], ["get", "r"]] }, paint: { "circle-radius": RZ((r) => r), "circle-color": ["get", "c"], "circle-opacity": ["*", ["get", "o"], 0.26], "circle-stroke-color": ["get", "c"], "circle-stroke-width": ["get", "sw"], "circle-stroke-opacity": ["get", "o"], "circle-pitch-alignment": "map" } });
+  T({ id: "sch-core", type: "circle", source: "schools", filter: ["==", ["get", "d"], 1], paint: { "circle-radius": RZ((r) => ["max", 1.5, ["*", r, 0.36]]), "circle-color": ["get", "c"], "circle-opacity": ["*", ["get", "o"], 0.95], "circle-stroke-width": 0, "circle-pitch-alignment": "map" } });
   const hover = (id, html) => { map.on("mousemove", id, (e) => { map.getCanvas().style.cursor = "pointer"; tip(html(e.features[0].properties, e), e.originalEvent.clientX, e.originalEvent.clientY); });
     map.on("mouseleave", id, () => { map.getCanvas().style.cursor = ""; tip(null); }); };
   hover("sch", (p) => { const s = SCH[p.i]; return "<b>" + esc(s.n) + "</b><br><span class=mute>" + esc(s.k === "rec" ? SUBT[s.t] : KINDS[KI[s.k]][1]) + " · " + esc(where(s)) + (s.y ? " · since " + s.y : "") + "<br>" + p.n + (p.n === 1 ? " office-holder" : " office-holders") + " under the current filters</span>"; });
@@ -262,7 +263,7 @@ function paint() {
   // schools
   map.getSource("schools").setData(FC(S.schools ? SCH.filter((s) => s.lat != null && schOK(s.i) && (s.k !== "rec" || AGG.sch[s.i].size)).map((s) => { const n = AGG.sch[s.i].size, on = S.focus == null || S.focus === s.i, rec = s.k === "rec";
     const m = mkp(), foc = S.focus === s.i;
-    return { type: "Feature", properties: { i: s.i, n, d: rec ? 0 : 1, c: rec && !foc ? m.rec : mk(s.k), h: m.edge, r: rec ? Math.min(5.5, 1.3 + 0.75 * Math.log2(1 + n)) : Math.min(11, 3.2 + 1.1 * Math.log2(1 + n)), o: on ? (rec ? (foc ? 0.95 : 0.5) : 0.95) : (rec ? 0.15 : 0.3), sw: foc ? 2 : rec ? 0 : 1 }, geometry: { type: "Point", coordinates: [s.lng, s.lat] } }; }) : []));
+    return { type: "Feature", properties: { i: s.i, n, d: rec ? 0 : 1, c: rec && !foc ? m.rec : mk(s.k), h: m.edge, r: rec ? Math.min(5.5, 1.3 + 0.75 * Math.log2(1 + n)) : Math.min(9.4, 2.5 + 1.0 * Math.log2(1 + n)), o: on ? (rec ? (foc ? 0.95 : 0.5) : 0.94) : (rec ? 0.15 : 0.28), sw: foc ? 2.2 : rec ? 0 : 1.25 }, geometry: { type: "Point", coordinates: [s.lng, s.lat] } }; }) : []));
 }
 
 /* ---------- the key ---------- */
@@ -277,7 +278,8 @@ function buildKey() {
   h += '<div class="psec">Shade the countries by' + QM((L_ ? L_[2] + " " : "") + "Counts are of people, not offices: someone who held three posts counts once.") + '</div><select id="lens">' + LENSES.map((l) => '<option value="' + l[0] + '"' + (S.lens === l[0] ? " selected" : "") + '>' + esc(l[1]) + '</option>').join("") + '<option value="none"' + (S.lens === "none" ? " selected" : "") + '>No shading</option></select>';
   if (S.lens !== "none") h += '<div class="hbar">' + BANDS.map((b, i) => '<span data-band="' + i + '" class="' + (S.bandOn[i] ? "" : "off") + '" style="background:' + P.r[i] + '" title="' + b[1] + ': ' + counts[i] + ' countries"></span>').join("") + '</div>' +
     '<div class="hlab">' + BANDS.map((b, i) => '<span data-band="' + i + '" class="' + (S.bandOn[i] ? "" : "off") + '">' + b[1] + '</span>').join("") + '</div>';
-  h += '<div class="psec">Find</div><input class="inp" id="find" style="width:100%" placeholder="A school, country or person" value="' + esc(S.q) + '"><div id="flist" class="scroll"></div>';
+  h += '<div class="psec">Find</div><input class="inp" id="find" style="width:100%" placeholder="A school, country or person" value="' + esc(S.q) + '"><div id="flist" class="scroll"></div>' +
+       '<div id="idxWrap"' + (S.idx ? ' class="open"' : '') + '><div id="idxToggle"><span class="car">' + (S.idx ? "\u25be" : "\u25b8") + '</span> Index of every school and programme</div><div id="idx"></div></div>';
   // filters
   h += '<div class="psec">Filter what is shown' + (filtered() ? ' <span class="frst" id="fReset" style="float:right;letter-spacing:0;text-transform:none">reset</span>' : '') + '</div><div class="desc" style="margin-top:0">Click to switch on or off. Double-click to show only that kind.</div>';
   h += '<div class="flab">Kind of school</div><div class="fchips">' + KINDS.map((k) => { const n = SCH.filter((s) => s.k === k[0]).length;
@@ -297,6 +299,7 @@ function buildKey() {
   $("#y0").addEventListener("change", (e) => { S.y0 = +e.target.value || 0; refresh(); });
   $("#y1").addEventListener("change", (e) => { S.y1 = +e.target.value || 9999; refresh(); });
   $("#find").addEventListener("input", (e) => { S.q = e.target.value; drawFind(); });
+  $("#idxToggle").addEventListener("click", () => { S.idx = !S.idx; const w = $("#idxWrap"); w.classList.toggle("open", S.idx); $("#idxToggle").querySelector(".car").textContent = S.idx ? "\u25be" : "\u25b8"; drawIdx(); });
   $("#fRank").addEventListener("change", (e) => { S.rmin = +e.target.value; refresh(); });
   $("#fWhere").addEventListener("change", (e) => { S.where = e.target.value; refresh(); });
   $("#fNow").addEventListener("change", (e) => { S.now = e.target.checked; refresh(); });
@@ -309,7 +312,17 @@ function buildKey() {
   drawFind(); buildPat(); buildLeg();
 }
 function filtered() { return KINDS.some((k) => !S.kind[k[0]]) || S.rmin > 1 || S.where !== "all" || S.now || S.y0 > 0 || S.y1 < 9999; }
-function refresh() { paint(); buildKey(); if (S.sel) reopen(); }
+function refresh() { paint(); buildKey(); drawIdx(); if (S.sel) reopen(); }
+function drawIdx() {
+  const el = $("#idx"); if (!el || !S.idx) return;
+  const list = SCH.filter((s) => s.k !== "rec").slice().sort((a, b) => a.n.localeCompare(b.n, "en"));
+  let h = "", letter = "";
+  list.forEach((s) => { const L = (s.n.match(/[A-Za-z]/) || ["#"])[0].toUpperCase();
+    if (L !== letter) { letter = L; h += '<div class="il">' + esc(L) + '</div>'; }
+    h += '<div class="ii" data-sch="' + s.i + '">' + esc(s.n) + '<span class="n">' + (AGG.sch[s.i] ? AGG.sch[s.i].size : 0) + '</span></div>'; });
+  el.innerHTML = h;
+  el.querySelectorAll(".ii").forEach((d) => d.addEventListener("click", () => openSchool(+d.dataset.sch, true)));
+}
 function drawFind() {
   const q = S.q.trim().toLowerCase(), el = $("#flist"); if (!el) return;
   if (q.length < 2) { el.innerHTML = '<div class="sub">Type two letters or more.</div>'; return; }
@@ -481,7 +494,7 @@ function openPattern(id) {
   const p = PAT_BY[id]; if (!p) return; recompute();
   const cs = Object.keys(AGG.cty).sort((a, b) => AGG.cty[b].all.size - AGG.cty[a].all.size);
   let h = '<div class="hp-k">Pattern behind the scenes</div><h3>' + esc(p.title) + '</h3><div class="bts">' + p.d.map((x) => '<p>' + esc(x) + '</p>').join("") + '</div>';
-  h += '<div class="imp-box"><b>What this means for who governs.</b> ' + esc(p.means) + '</div>';
+  h += '<div class="imp-box">' + esc(p.means) + '</div>';
   h += '<div class="hp-h">Schools in this pattern</div><div class="chips">' + [...p.set].map((si) => '<span data-sch="' + si + '"><span class="sw dot" style="background:' + kcol(SCH[si].k) + '"></span>' + esc(SCH[si].n) + ' <span class="n">' + AGG.sch[si].size + '</span></span>').join("") + '</div>';
   h += '<div class="hp-h">Where their former students hold or held office</div><div class="chips">' + cs.slice(0, 50).map((iso) => '<span data-cty="' + iso + '">' + esc(CTY[iso] ? CTY[iso].n : iso) + ' <span class="n">' + AGG.cty[iso].all.size + '</span></span>').join("") + (cs.length > 50 ? '<span class="est">and ' + (cs.length - 50) + ' more</span>' : '') + '</div>';
   h += '<div class="sub">The map now shows only this pattern\'s schools. Click the pattern again to show everything.</div>' + srcList(p.src);
