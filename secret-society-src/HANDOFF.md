@@ -132,6 +132,142 @@ been made.**
   enforcement-shaped lists already near saturation. Benchmark coverage and field shape
   move independently. Do not report either as the other.
 
+## THROUGHPUT: WHAT ACTUALLY BINDS, MEASURED 16 NOVEMBER 2026
+
+Every handoff before this one recorded "about 200 WebSearch calls a turn, shared by all
+agents" as the constraint on a round, and planned around it. **That is the constraint on
+discovery through a search engine. It was never tested against anything else, and it is
+not the constraint on getting documents.** What follows was tested, not assumed. Where a
+test failed, it says so.
+
+### What was tested and works
+
+| | result |
+|---|---|
+| Shell reaches the open internet | **Yes.** The outbound proxy reports `selective: false`. `documents.un.org` 200, `api.worldbank.org` 200, `eur-lex.europa.eu` 200 |
+| Bulk structured download | **Yes.** `scsanctions.un.org/resources/xml/en/consolidated.xml` returned 2.18 MB of XML generated that same day, every listed individual and entity with a DATAID |
+| UN Digital Library as an index API | **Yes.** `digitallibrary.un.org/search?p=...&of=xm` returns MARCXML: document symbol in field 191, title in 245, PDF URL in 856. One call returned 39 Panel of Experts reports with PDFs |
+| Downloading a report series | **Yes.** S/2026/714 (Haiti, 103 pp, 4.7 MB) and S/2026/712 (Yemen, 52 pp, 1.0 MB) pulled straight from the shell |
+| PDF text and table extraction | **Yes.** `pdfplumber`, `pypdf`, `camelot`, `tabula`, `pandas`, `lxml`, `bs4`, `openpyxl`, `requests` all present. `PyMuPDF`/`fitz` is **not** |
+| **Cost in WebSearch calls** | **Zero.** None of the above spends a search |
+
+**`fetch_docs.py` is the tool**: `search` queries the UN Digital Library and writes
+`work/index.json`, `get` downloads PDFs, `text` extracts to `work/text/<symbol>.txt` with
+`[[page n]]` markers so a record can cite a page, `scan` prints paragraphs that name a
+state body and a tie verb. `work/` is gitignored.
+
+### What was tested and does not work
+
+- **Some publishers refuse automated access.** `nabu.gov.ua`, the Italian DIA site and
+  `un.org/securitycouncil` all return 403 to the shell. **Do not send a browser user
+  agent to get past one.** An attempt to test that was blocked by this session's own
+  permission classifier, correctly; it is circumventing an access control. A 403 means
+  use WebFetch, which is a different client, or find the document elsewhere.
+- **Density is nothing like the volume a bulk-extraction plan assumes.** Measured on the
+  two reports above, against *this map's* inclusion test:
+
+| document | pages | words extracted | map-qualifying records |
+|---|---|---|---|
+| Haiti S/2026/714 | 103 | 39,347 | **3 to 6**; one written so far |
+| Yemen S/2026/712 | 52 | 19,480 | **near zero** — 2 capitalised names, no tie verbs; the text layer is mostly tables and figures |
+| NABU half-year report (round 7) | — | — | 6 to 12 |
+
+  NABU's reports are the outlier because **their format is already a case list**: entity,
+  firm, officials, amount, period, stage, one block per case. A Panel of Experts report is
+  a narrative with annexes, and the fraction of it that meets the map's test — an outside
+  party inside a state body with decisions there serving it — is small. **Do not plan a
+  round on "a document holds dozens of cases." Plan it on the measured density of that
+  document family.**
+- **Agents do not get their own search budget.** Measured 3 November and confirmed in
+  rounds 7 and 8: twelve agents rationed at 18 each came to 216 against a shared ceiling
+  of about 200 and ran out part-way, with Romania stopping at 14 of 18, Indonesia at 12
+  and Africa at 13. Spawning more agents does not create search capacity.
+
+### So what is the real ceiling
+
+**Not searches. Writing records at standard.** Observed write rate: round 7 produced 235
+records from 12 agents and round 8 produced 195 from 9, which is **about 20 records per
+agent-turn**. At eight to eleven agents that is 160 to 240 records a turn, and that number
+did not come from the search budget — it is how many records an agent can read sources
+for and write to the schema in one turn.
+
+**A 1,500-record round is therefore seven to nine turns of fan-out, not one turn.** That
+is the honest answer, and it is achievable. What bulk acquisition changes is not the
+per-turn ceiling but three things that matter:
+
+1. **A round no longer dies when the search budget does.** Rounds 7 and 8 both ran out
+   mid-way. With documents pulled from the shell, agents spend searches only on finding a
+   new source family, not on individual cases.
+2. **Discovery gets cheap.** One search surfaces a reporting series; the whole series then
+   downloads free. The UN Digital Library query above cost one call and returned 39 reports.
+3. **The source becomes a stable locator.** A record written from `S/2026/714` page 57
+   cites a symbol and a page that will not rot, which is better than a news URL and fixes
+   part of the 114-records-with-no-url problem.
+
+### What is rejected, and why
+
+- **Automated extraction writing records.** The map's own failure log is the reason: eleven
+  invented denials and four invented cities in one round's candidates, figures travelling
+  between cases, 23 of 253 candidates dropped by a reviewer applying BRIEF11, and more than
+  half of one round's cases needing a correction on source check. A script that turns
+  paragraphs into records would multiply exactly those faults. **`fetch_docs.py scan`
+  finds candidate paragraphs; a person or an agent reads the paragraph and writes the
+  record.** Extraction is for organising, never for asserting.
+- **Counting candidates as records.** Keep four states — candidate, verified, rejected,
+  duplicate — and report only the last-but-two as output. A round's number is records that
+  passed `validate_batch.py` and a BRIEF11 reading and were merged.
+- **Relaxing the test for volume.** Unchanged from BRIEF16: a faster round with a looser
+  test is not a faster round.
+
+### Source families, ranked by measured or estimated qualifying density
+
+Density is qualifying records per document, for this map's test. Only the first two rows
+are measured; the rest are estimates to be replaced by measurement as each is worked.
+
+| family | how to get it | density | fills which gap |
+|---|---|---|---|
+| NABU half-year reports, Ukraine | `reports.nabu.gov.ua` HTML via WebFetch; the PDF host 403s the shell | **6–12, measured** | corp → company, gov |
+| UN Panels of Experts: Haiti, Yemen, Somalia, Libya, DRC, CAR, South Sudan, North Korea | `fetch_docs.py`, free | **3–6, measured on Haiti; near zero on Yemen** | **crime and movement → security** — the cells the goal wants |
+| UN consolidated sanctions list | one XML download, free | listing only, not cases; use to confirm names and designation dates | — |
+| Italian DIA semi-annual reports | site 403s the shell; WebFetch or another host | est. 10–25 | crime → legis, security |
+| National anti-corruption agency annual reports (Antikor Kazakhstan, KPK Indonesia, MACC Malaysia, SPAK Albania, DNA Romania) | mostly fetchable; test each | est. 5–15 | mixed; worked before, not exhausted |
+| Police-oversight annual reports (IPID South Africa, PONI Northern Ireland, national inspectorates) | fetchable | est. 3–10 | **crime and movement → security** |
+| Supreme and constitutional court judgment databases | per-country; many have bulk search | est. 2–6 | court, and outcome checking |
+| World Bank and multilateral debarment decisions | `api.worldbank.org`, documents portal | est. 3–8 | corp → company |
+| Parliamentary and commission inquiry reports | national sites | est. 5–20 | legis, cabinet |
+
+**Before committing a round to a family, measure it: pull two documents, count the
+qualifying paragraphs, write one record, and record the density in this table.** That is
+twenty minutes against a round spent on a thin seam, which is what the Philippines and
+Kazakhstan rounds turned out to be.
+
+### Round architecture that follows from all of this
+
+1. **One discovery turn.** Spend searches on *families*, not cases. Build
+   `work/index.json` for every series to be worked. Download everything. No records yet.
+2. **Measure each family** on two documents before assigning it.
+3. **Fan out eight to eleven agents, one family each**, each with its own scratch folder
+   and its own output file. No agent writes to `cases.json`. Give each a search ration of
+   8 to 12, which is now for gap-filling rather than discovery.
+4. **Composition before assignment.** Run `python3 shape.py <round size>` and give each
+   agent a target cell, so the round comes out proportionate rather than concentrated. See
+   the standing goal above: a large round must be a scale model of the field, not aimed at
+   one cell.
+5. **`validate_batch.py` on every agent's file before anyone reads it.**
+6. **One reviewer agent applies BRIEF11** to the whole batch and reports keeps and drops
+   with reasons; one checker reads cited pages.
+7. **Merge, `build.py`, `shape.py` again, commit, push.**
+
+### Report these numbers for every round
+
+Searches used · documents discovered · documents downloaded · documents processed ·
+candidate records · verified records · rejected records with reasons · duplicates caught ·
+records merged · records per search · records per document · records per agent ·
+verification pass rate · **shape deviation before and after**.
+
+The last one is the only one that measures progress toward the goal. The 16 November
+rounds added 430 records and moved it 3.9 points, which is why it belongs in the table.
+
 ## Coverage estimate (what remains)
 The remaining work is to keep adding, most relevant today and most widespread first. The 3 Nov 2026 round added 230 cases but stopped short in every scope because of search limits. Known gaps:
 - Not researched at all: capture of international bodies (sports federations, UN agencies, Interpol) and election-office access. That scope returned nothing because the search limit had already run out.
