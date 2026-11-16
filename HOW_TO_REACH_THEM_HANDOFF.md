@@ -786,6 +786,124 @@ are on the town hall object, not the boundary, so Tier B needs a
 spatial join as well as a planet-sized download. Do not plan a round
 around it without first proving the extract is obtainable.
 
+### Round seventeen: Germany's first level, and four doors closed properly
+
+No new country. What this round ships is a fix worth more than the
+country it was looking for, and four corrections to what earlier rounds
+recorded as blocked — three of them blocked on something other than
+what was written down.
+
+**Germany's whole first level was an election candidate list.** Hannover
+resolved to *Germany → Q109290689 → Hannover Region → Hanover*, and
+Q109290689 is "list of candidates of a German state", with no English
+label. It answered to `state` in `WANT_REGION`, so it tied Lower Saxony
+on every test, and then won the last tie-break — the shorter label —
+because an item with no label comes back labelled with its own id and
+`Q109290689` is two characters shorter than `Lower Saxony`. Germany is
+13,694 municipalities, and none of them could reach the Landtag of Lower
+Saxony, the state's own site, or any office recorded against the state.
+
+Two guards, and the second is the general form of the first:
+
+- `RX_LIST` keeps a type naming a list from counting as a tier. A list
+  about a jurisdiction is not the jurisdiction, which is the rule
+  `RX_SYMBOL` already applies in the office classifier.
+- **A bare id is not a name.** A candidate labelled `Q\d+` now loses to
+  any candidate that has a label, whatever else is equal, instead of
+  winning the shortest-label test. That protects against any unlabelled
+  record, not just this one.
+
+Measured after: Hannover gives *Germany → Lower Saxony → Hannover Region
+→ Hanover*, and `SUBLEG[Q1197]` is the Landtag of Lower Saxony with its
+verified site — a record that has been in the file since round two and
+unreachable ever since. Andalusia reaches the Parliament of Andalusia
+the same way after round fifteen. That is twice now that a resolver fix
+has turned out to be worth more than the data round that found it, which
+is what round two said about the same thing.
+
+**And the place lookup was still non-deterministic, at the cause this
+time.** Fixing the above, Sierra Madre's state came back as Q22083019 —
+an unincorporated community also called California — on one pass and the
+U.S. state on the next, from identical code. Round six diagnosed this
+class of fault and raised `LIMIT` from 10 to 120; the limit was never the
+cause. `OPTIONAL{?x wdt:P31 ?t}` returns **one row per type**, so a
+well-documented place fills the limit by itself and which candidates
+reach the ranking at all is the query engine's choice. Raising the number
+only moves the threshold.
+
+The query now groups the types into one row per entity
+(`GROUP_CONCAT(DISTINCT ?tl)` with `GROUP BY ?x ?lab`), so 120 means 120
+candidates. Measured on California: **30 candidates**, the state among
+them every time, against an unknown slice of 120 rows before. The label
+has to be asked for explicitly because an aggregate query cannot use the
+label service — and where there is no English label the **id** is used,
+never the name being searched for, which would make an unlabelled item
+look like an exact match and win.
+
+Checked twice over, and the list is longer than it was: Sierra Madre,
+California City, Grenoble, Cape Town, Sorbas, and now **Hannover for the
+list guard and California for the row-count fault** — both passes
+identical. Then München, Graz, Cluj-Napoca, Mumbai and Shibuya, which
+give Bavaria, Styria, Cluj County, Maharashtra and Tokyo. `CACHE_V` went
+to `htrt11`.
+
+### The four doors, and what is actually behind each
+
+**Bulgaria's register holds no contacts at all.** Round fourteen said its
+office-holders were readable and its contacts sat behind a form that
+needed a browser, and named driving that form as the first thing to try
+from outside this sandbox. It was driven, from here. The listing at
+`/ras/adm_structures/municipality_administrations` gives all 265
+administrations 30 to a page with the IISDA id in each link, which is the
+`P13953` Wikidata already holds. The search at
+`/ras/search/search_adm_structure` works and leads to
+`/ras/search/organigram/<id>`, a second path to the same organigram. Both
+paths carry the tree of posts and nothing else: parsed across a municipal
+administration, an oblast administration and a regional agency, **not one
+node carries a populated `info` or `action` field**. Ten more URL patterns
+for a contact view all 404. The only email and telephone on those pages
+belong to the register's own helpdesk, under a line saying in terms that
+they are not a contact for any particular administration — so scraping
+the page would have put one helpdesk address under all 265 municipalities.
+**Bulgaria was never blocked on a browser. The data is not published.**
+
+**Japan carries no identifier the register is keyed by.** Round sixteen
+left it as the one to pick up from outside this sandbox, on the strength
+of 1,745 dantai codes and a corporate-number register covering every
+local public body. Counted this round, of the 1,968 items carrying a
+dantai code: **1,961 have a website, 1 has an email, 2 have a telephone
+number, and 0 carry a corporate number.** So the National Tax Agency's
+register cannot be joined to them at all — this is Slovakia's and
+Estonia's wall, not the CSRF token on the download. And the website
+figure is already 99.6% from Wikidata, live, so the register's addresses
+are the only thing it could add. Japan needs a `P3548` import first.
+
+**Spain's autonomous communities publish no contacts in DIR3.** The
+`Listado Unidades CCAA.xlsx` file is reachable and holds 18,827 rows, and
+its columns stop at the tax number: there is no `CONTACTOS` column, which
+the local-entity file has. So Spain's first level gets nothing from here
+and rounds fifteen and sixteen are the whole of Spain.
+
+**Italy's provinces have no shared code.** Round sixteen opened the county
+tier for Spain and Italy is the obvious country to follow, because IPA
+covers every public body: 109 rows under categories L5 and L45 are the
+provinces and metropolitan cities, each with a PEC. All 86 Italian
+province items on Wikidata carry `P635`, the three-digit ISTAT province
+code, and only 3 carry an email — so the gap is real. But IPA's province
+rows carry a tax code Wikidata holds for none of them, and a
+`Codice_ISTAT` that is five to nine digits long and blank for five of
+them, and neither is that code. The one field that looks like a bridge is
+`Codice_comune_ISTAT`, whose first three digits are the province — and
+that is **the comune the body sits in, not an identifier of the body**,
+which is exactly what round thirteen refused to use for Slovakia. Refused
+here too, for the same reason.
+
+Also checked while there, and worth not re-checking: **Italy's comuni are
+already complete.** IPA holds up to five addresses per body with a type
+on each, and round five took them all — 5,452 comuni have both a PEC and
+an ordinary address in the shards, 2,419 have a PEC only, and 7,877 of
+7,891 have the register's website. There is nothing left in that file.
+
 ### Round sixteen: Spain's provinces, and five doors that are still shut
 
 The shards hold **50,774 records**. Spain is 6,983 of them: 6,965
@@ -1288,7 +1406,7 @@ seven.
 | Norway | 357 | organisation number | 354 |
 | Netherlands | 341 | CBS code, then TOOI | 341 |
 | Finland | 291 | municipality number | 230 |
-| Bulgaria | 265 | **IISDA id, already on Wikidata** | office-holders readable now; contacts behind xajax (round fourteen) |
+| Bulgaria | 265 | **IISDA id, already on Wikidata** | no contacts published — the register holds structure only (round seventeen) |
 | Spain | 8,391 | official name inside a province, verified against the tax number; provinces on the INE province code | 6,965 municipalities and 18 provincial councils — rounds fifteen and sixteen |
 | Sweden | 292 | organisation number | needs a Bolagsverket account; SCB’s own register covers the state only — round sixteen |
 | Denmark | 98 | municipality code | needs a CVR account; the address API is 410 Gone — round sixteen |
@@ -1803,9 +1921,10 @@ Two more things the place lookup got wrong, both fixed this round:
 Check **both California and Los Angeles County** after any change here.
 They fail in opposite directions — one wants the containing unit, the
 other the exact match — and a ranking that fixes either one alone will
-break the other. The standing five-case check is Sierra Madre, California
-City, Grenoble, Hannover, Cape Town; run it twice in a row, because a
-single pass cannot show non-determinism.
+break the other. The standing check is Sierra Madre, California City, Grenoble, Hannover,
+Cape Town and Sorbas; run it twice in a row, because a single pass cannot
+show non-determinism. Hannover covers the list guard and California the
+row-count fault, both from round seventeen.
 
 ## 1. What you see, and in what order
 
