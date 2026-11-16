@@ -2664,7 +2664,7 @@ const qid = u => (u||'').split('/').pop();
 const isQ = s => /^Q\d+$/.test(s||'');
 function setDot(id, cls, txt){ const d=$('#d-'+id); if(!d) return; d.className='dot'+(cls?' '+cls:''); if(txt) $('#t-'+id).textContent=txt; }
 
-const CACHE_V='htrt9';
+const CACHE_V='htrt11';
 /* How long an answer is kept.
 
    Everything on this page except the municipal registers is asked of
@@ -7878,6 +7878,19 @@ const RX_ELECT = /\b(electoral|constituenc\w*|congressional|riding)\b/i;
    by — holds that generic class and nothing else, and it was beating the
    autonomous community of Andalusia on it. */
 const RX_GENERIC = /^\s*(administrative\s+)?territorial\s+entit(y|ies)\s*$/i;
+/* A list about a jurisdiction is not the jurisdiction.
+
+   Germany's first level resolved to Q109290689, whose type is "list of
+   candidates of a German state" — it answers to "state" in the pattern
+   above, so it tied Lower Saxony on every test, and then won the last
+   tie-break because it has no English label and "Q109290689" is two
+   characters shorter than "Lower Saxony". Germany is 13,694
+   municipalities in the table in §7 and the whole of its ADM1 layer was
+   coming from an election candidate list: no Landtag, no state site, and
+   none of the offices recorded against the state. The office classifier
+   already drops list articles in `RX_SYMBOL`; this is the same rule for
+   the chain. */
+const RX_LIST = /\b(list of|lists of|liste von|liste der|lista de|elenco di)\b/i;
 
 /* The forms of a boundary file's name worth asking Wikidata about.
 
@@ -7945,18 +7958,38 @@ async function resolveUnitInWith(nm, countryQ, want, names){
         .concat(NAMELANGS.map(l=>q(n)+'@'+l))
     ).join(' ');
   try{
-    /* An abolished jurisdiction is not one anybody can write to, and the
-       name of a place is very often also the name of what used to govern
-       it. The dissolution date is the one field that separates the two,
-       and it was never asked for. */
-    const rows = await sparql('SELECT ?x ?xLabel ?tLabel WHERE { VALUES ?l { '+vals+
-      ' } ?x rdfs:label|skos:altLabel ?l ; wdt:P17 wd:'+countryQ+' . OPTIONAL{?x wdt:P31 ?t} '+
+    /* One row per candidate, not one per type.
+
+       `LIMIT` counts rows and the ranking counts entities, and with a
+       type per row a well-documented place fills the limit by itself:
+       which candidates reach the ranking at all was then the query
+       engine's choice. That is the documented cause of a large city
+       County resolving three different ways on three consecutive runs,
+       and it came back for California — a small town's state resolved
+       to an unincorporated community of the same name on one pass and
+       to the state on the next, because the state was not always in the
+       set. Raising the limit only moves the threshold. Grouping the
+       types into one row per entity removes the mismatch: 120 now means
+       120 candidates.
+
+       The label is asked for explicitly rather than through the label
+       service, because an aggregate query cannot use it. An entity with
+       no English label leaves ?lab unbound, and the id is used in its
+       place — which is what the label service used to return, so the
+       bare-id tie-break below still sees it. It must not fall back to
+       the name being searched for: that would make an unlabelled item
+       look like an exact match and win. */
+    const rows = await sparql('SELECT ?x ?lab (GROUP_CONCAT(DISTINCT ?tl;separator="; ") AS ?types) '+
+      'WHERE { VALUES ?l { '+vals+
+      ' } ?x rdfs:label|skos:altLabel ?l ; wdt:P17 wd:'+countryQ+' . '+
       'FILTER NOT EXISTS { ?x wdt:P576 ?dissolved } '+
-      'SERVICE wikibase:label{bd:serviceParam wikibase:language "en"} } LIMIT 120', 'unit:'+countryQ+':'+nm+':'+names.length);
+      'OPTIONAL { ?x rdfs:label ?lab FILTER(lang(?lab)="en") } '+
+      'OPTIONAL { ?x wdt:P31 ?t . ?t rdfs:label ?tl FILTER(lang(?tl)="en") } '+
+      '} GROUP BY ?x ?lab LIMIT 120', 'unit:'+countryQ+':'+nm+':'+names.length);
     const cand={};
     rows.forEach(r=>{ const id=qid(r.x.value);
-      if(!cand[id]) cand[id]={id:id, label:(r.xLabel&&r.xLabel.value)||nm, types:[]};
-      if(r.tLabel) cand[id].types.push(r.tLabel.value); });
+      if(!cand[id]) cand[id]={id:id, label:(r.lab&&r.lab.value)||id, types:[]};
+      if(r.types&&r.types.value) cand[id].types=r.types.value.split('; ').filter(Boolean); });
     const ranked=Object.values(cand).sort((a,b)=>{
       /* What level is being resolved decides this, and nothing else
          does it reliably.
@@ -7982,7 +8015,7 @@ async function resolveUnitInWith(nm, countryQ, want, names){
          level, counties and districts below it — and a candidate of the
          right kind beats one of the wrong kind whatever its name. Only
          then does an exact name match break the tie. */
-      const fit=t=>want.test(t)&&!RX_SEAT.test(t)&&!RX_ELECT.test(t)&&!RX_GENERIC.test(t);
+      const fit=t=>want.test(t)&&!RX_SEAT.test(t)&&!RX_ELECT.test(t)&&!RX_GENERIC.test(t)&&!RX_LIST.test(t);
       const aw=want&&a.types.some(fit)?0:1, bw=want&&b.types.some(fit)?0:1;
       if(aw!==bw) return aw-bw;
       const ad=a.types.some(t=>RX_ADMIN.test(t)&&!RX_ELECT.test(t))?0:1,
@@ -8007,6 +8040,15 @@ async function resolveUnitInWith(nm, countryQ, want, names){
       const as=a.label.toLowerCase().startsWith(lw)?0:1,
             bs=b.label.toLowerCase().startsWith(lw)?0:1;
       if(as!==bs) return as-bs;
+      /* An item with no label in any of the languages asked for comes
+         back labelled with its own id, and the last test here is the
+         shorter label — so "Q109290689" beat "Lower Saxony" by two
+         characters. A bare id is not a name: a candidate that has one
+         loses to any candidate that does not, whatever else is equal.
+         This is the general form of the fault; RX_LIST above is the
+         particular record that found it. */
+      const ai=/^Q\d+$/.test(a.label)?1:0, bi=/^Q\d+$/.test(b.label)?1:0;
+      if(ai!==bi) return ai-bi;
       return a.label.length-b.label.length;
     });
     return ranked[0]||null;
@@ -8042,14 +8084,38 @@ async function resolveUnit(nm){
         .concat(NAMELANGS.map(l=>q(n)+'@'+l))
     ).join(' ');
   try{
-    const rows = await sparql('SELECT ?x ?xLabel ?tLabel WHERE { VALUES ?l { '+vals+
-      ' } ?x rdfs:label|skos:altLabel ?l ; wdt:P17 wd:'+country+' . OPTIONAL{?x wdt:P31 ?t} '+
+    /* One row per candidate, not one per type.
+
+       `LIMIT` counts rows and the ranking counts entities, and with a
+       type per row a well-documented place fills the limit by itself:
+       which candidates reach the ranking at all was then the query
+       engine's choice. That is the documented cause of a large city
+       County resolving three different ways on three consecutive runs,
+       and it came back for California — a small town's state resolved
+       to an unincorporated community of the same name on one pass and
+       to the state on the next, because the state was not always in the
+       set. Raising the limit only moves the threshold. Grouping the
+       types into one row per entity removes the mismatch: 120 now means
+       120 candidates.
+
+       The label is asked for explicitly rather than through the label
+       service, because an aggregate query cannot use it. An entity with
+       no English label leaves ?lab unbound, and the id is used in its
+       place — which is what the label service used to return, so the
+       bare-id tie-break below still sees it. It must not fall back to
+       the name being searched for: that would make an unlabelled item
+       look like an exact match and win. */
+    const rows = await sparql('SELECT ?x ?lab (GROUP_CONCAT(DISTINCT ?tl;separator="; ") AS ?types) '+
+      'WHERE { VALUES ?l { '+vals+
+      ' } ?x rdfs:label|skos:altLabel ?l ; wdt:P17 wd:'+country+' . '+
       'FILTER NOT EXISTS { ?x wdt:P576 ?dissolved } '+
-      'SERVICE wikibase:label{bd:serviceParam wikibase:language "en"} } LIMIT 120', 'unit:'+country+':'+nm);
+      'OPTIONAL { ?x rdfs:label ?lab FILTER(lang(?lab)="en") } '+
+      'OPTIONAL { ?x wdt:P31 ?t . ?t rdfs:label ?tl FILTER(lang(?tl)="en") } '+
+      '} GROUP BY ?x ?lab LIMIT 120', 'unit:'+country+':'+nm);
     const cand={};
     rows.forEach(r=>{ const id=qid(r.x.value);
-      if(!cand[id]) cand[id]={id:id, label:(r.xLabel&&r.xLabel.value)||nm, types:[]};
-      if(r.tLabel) cand[id].types.push(r.tLabel.value); });
+      if(!cand[id]) cand[id]={id:id, label:(r.lab&&r.lab.value)||id, types:[]};
+      if(r.types&&r.types.value) cand[id].types=r.types.value.split('; ').filter(Boolean); });
     const ranked=Object.values(cand).sort((a,b)=>{
       /* What level is being resolved decides this, and nothing else
          does it reliably.
@@ -8066,7 +8132,7 @@ async function resolveUnit(nm){
          level, counties and districts below it — and a candidate of the
          right kind beats one of the wrong kind whatever its name. Only
          then does an exact name match break the tie. */
-      const fit=t=>want.test(t)&&!RX_SEAT.test(t)&&!RX_ELECT.test(t)&&!RX_GENERIC.test(t);
+      const fit=t=>want.test(t)&&!RX_SEAT.test(t)&&!RX_ELECT.test(t)&&!RX_GENERIC.test(t)&&!RX_LIST.test(t);
       const aw=want&&a.types.some(fit)?0:1, bw=want&&b.types.some(fit)?0:1;
       if(aw!==bw) return aw-bw;
       const ad=a.types.some(t=>RX_ADMIN.test(t)&&!RX_ELECT.test(t))?0:1,
@@ -8091,6 +8157,15 @@ async function resolveUnit(nm){
       const as=a.label.toLowerCase().startsWith(lw)?0:1,
             bs=b.label.toLowerCase().startsWith(lw)?0:1;
       if(as!==bs) return as-bs;
+      /* An item with no label in any of the languages asked for comes
+         back labelled with its own id, and the last test here is the
+         shorter label — so "Q109290689" beat "Lower Saxony" by two
+         characters. A bare id is not a name: a candidate that has one
+         loses to any candidate that does not, whatever else is equal.
+         This is the general form of the fault; RX_LIST above is the
+         particular record that found it. */
+      const ai=/^Q\d+$/.test(a.label)?1:0, bi=/^Q\d+$/.test(b.label)?1:0;
+      if(ai!==bi) return ai-bi;
       return a.label.length-b.label.length;
     });
     return ranked[0] || null;
