@@ -48,6 +48,13 @@ that the document the card names?*
 - **`partial_list`** — a partial list of triggered safeguard policies read as the full list. One
   card named two of the five the report lists; another omitted Indigenous Peoples OP 4.10, which
   the appraisal's safeguards table carries and which was material to that card's subject.
+  **It applies whether or not the card claims its list is complete.** Round 34's batches split on
+  this — one left a card naming OP 4.12 alone because it claimed no full list, another corrected
+  the identical shape, and their checker called the inconsistency the clearest process fault in the
+  three audits. A card that names some of a project's triggered policies reads as naming them. The
+  test is the appraisal document's own safeguards table: every policy marked triggered there
+  belongs on the card. Policies added at a later restructuring are sourced to the completion report
+  and the restructuring paper instead, the appraisal table being unable to carry them.
 - **`wrong_document`** — a statement attributed to the wrong document. An extension reason that is
   in the review, not the report; a "High" rating that is the review's table entry where the
   report's own section says Substantial.
@@ -97,9 +104,13 @@ section it sits in** — if the heading says the material is adapted from the co
 finding is the report's. And read **the next sentence**: a review often quotes a report's claim in
 order to dispute it, and a card that stops at the quotation reverses the review's meaning.
 
-## A class the ten do not cover
+## An eleventh class, ruled in by round 34's checker
 
-`scope_misstated` — what a loan built, or where. One card says three loans financed "the
+`wrong_scope` — a mis-stated statement of what a loan built or where: sections, route, components
+or works, measured against the completion report's own component description. It is not
+`partial_list`, whose test (is the policy marked triggered in the appraisal's safeguards table?) is
+meaningless for a railway route, and not one of the nine that turn on which document, column or
+speaker a figure came from — on the card below every amount and date is right. For example, One card says three loans financed "the
 Khurja-to-Mughal Sarai freight line", where the completion report gives the three sections as
 Khurja–Kanpur, Kanpur–Mughal Sarai and Ludhiana–Khurja, so with the third in the line runs Ludhiana
 to Mughal Sarai. Every amount and date on that card is right. Round 34's auditors had to file two
@@ -107,9 +118,11 @@ such errors as unsettled because no class fitted.
 
 ## China loan numbers
 
-Read the agreement cover. Pre-2005 China operations print "-CHA" where the Bank's catalogue titles
-say "-CN"; 2009–2010 China loans really are "-CN". Two of round 34's corrections were "-CN" written
-where the cover says "-CHA", and the direction matters.
+**Read the suffix off the agreement cover, every time. Never infer it from the year or the number
+series.** Round 34's first auditor proposed that pre-2005 China operations print "-CHA" and
+2009–2010 ones "-CN"; its checker disproved that inside the same 87 cases. Loan 4881 is dated
+18 March 2008 and prints `-CHA`; loan 4847 is dated 6 April 2007 and prints `-CN`. Three cards said
+"-CN" where the cover says "-CHA"; one card correctly says "-CN" and must be left alone.
 
 ## Rules
 
@@ -124,8 +137,21 @@ where the cover says "-CHA", and the direction matters.
 - **Do not add material.** A term, figure or finding the card omits is not an error unless the card
   claims completeness (a policy list, a ratings pair, "the only"). Note it in `could_not_settle` for
   a later round rather than writing it in.
-- **Citation style is not a fact.** Round 22 found that 39 of 46 cited reviews print no date
-  anywhere while the cards cite one from the Bank's catalogue — unattributed, not wrong. Leave it.
+- **A citation's date is the Bank catalogue's `docdt`; a date in a card's prose is the document's
+  own.** This was ambiguous in the first version of this brief: two auditors resolved it one way,
+  their checker the other, and three corrections were spent on it. Settled:
+  - In a `sources` entry the date sits beside a URL pointing at the Bank's catalogue record, so it
+    is a **locator** for that record. The catalogue's `docdt` is right there even where the
+    document's cover prints another day. Round 22's ruling stands: a review that prints no date
+    anywhere, cited with the catalogue's date, is unattributed rather than wrong.
+  - In prose — "the completion report of 22 December 2017" — the date is a **claim about the
+    document** and may only be a date the document itself prints. Where the document's own copies
+    disagree, print both with where each appears, or drop the date.
+  - Why this is not pedantry: **one completion report can print two of its own dates.** ICR2972's
+    cover reads "July 30, 2014" and its own data sheet reads "ICR Date: 07/31/2014". "The cover
+    date" is therefore not uniquely a document's date, and a rule written only as "the cover wins"
+    cannot be applied. The cover-beats-catalogue rule is for **loan and credit numbers**, which are
+    facts about the operation, not for dates.
 - Plain words, short sentences, no researcher voice anywhere in a corrected substring.
 
 ## Where the documents are
@@ -139,6 +165,12 @@ that worked in round 33:
 - Fetch the PDF from **documents1**.worldbank.org. `documents.worldbank.org` refuses. A
   `/pdf/` path also serves as `/text/`, but `/text/` **301s to `/txt/`** and returns a 316-byte
   redirect body without `curl -L` — which a round could easily record as an empty document.
+- **Ask for `repnb`.** Add it to the field list and the API returns the Bank's own report number —
+  `ICRR0021994`, `ISR36770` — so a card citing "ICR2741" can be checked for the price of one field
+  instead of by opening the document. Round 34 found cited report numbers that came from a
+  catalogue file name rather than from the report. `harvest.py` now requests it and carries it into
+  `harvest_manifest.json`, so projects harvested from round 35 on have it already; for an earlier
+  project, make the call.
 - A blank `docty` hides a document from a type filter, and the hidden file may be the project's only
   completion report. Check filenames, not just `docty`.
 - Search `Aide Memoire` where no agreement or report is published: one carries a covenant-status

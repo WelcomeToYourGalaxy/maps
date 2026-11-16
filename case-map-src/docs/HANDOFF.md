@@ -1,10 +1,9 @@
 # Globalization Case Map: handoff for a new chat
 
-Last updated: round 33 — the follow-on pass on rounds 31 and 32's 76 new cases. **71 of 76 now carry
-a documented lender term, 76 of 76 a whole-picture paragraph, and 107 of 127 company names a
-description.** The round also found that the completeness panel's "settled terms" row had been
-counting a case nobody had ever looked at as settled; it is corrected, and the honest figure is 91%
-where the flattering one read 93%. Replaces every earlier handoff.
+Last updated: round 34 — two jobs that both made the map's claims smaller and firmer. **ICIJ's
+projects are now matched one by one: 249 of 968 are here, 26%, where the panel claimed 32%** on a
+numerator that was never the ICIJ overlap. And the `lenders[].role` audit reached rounds 17 to 19:
+**26 corrections live on 25 of 87 cards.** Replaces every earlier handoff.
 
 ## The aim, settled 14 Nov 2026 — a defensible big picture, not a bigger map
 
@@ -224,7 +223,151 @@ These came in over one session and all of them are done unless noted.
    rounds stale. The current handoff is this file, `case-map-src/docs/HANDOFF.md`, and there should
    never again be two.
 
-## READ THIS FIRST: round 33 is merged, built, tested and pushed
+## READ THIS FIRST: round 34 is merged, built, tested and pushed
+
+Two jobs, neither of them a case round, and both ended with the map claiming less than it did
+before. Build is clean: `loan-condition cases matched 173 of 173`, 24 patterns, zero console errors
+headless, 1,169 cases.
+
+### Job one: ICIJ's projects matched one by one, and the coverage row comes down from 32% to 26%
+
+The panel read "**309 cases began in those years**", a 32 per cent share of ICIJ's 969, hedged with
+"counted, though the two lists have not been matched project by project". The hedge was carrying
+more weight than it looked.
+
+**249 of ICIJ's 968 projects are on this map, 244 of the 422 where ICIJ confirmed displacement.**
+That is 26 per cent. The working is in `docs/icij_matched.json`, the check in
+`rounds/r34f_icij_match_check.md`.
+
+**The 309 was never the ICIJ overlap.** It counts map cases whose harm began in 2004–2013 with the
+World Bank or IFC among the lenders. 234 of those are among the 249; 75 are cases ICIJ never
+listed; and 15 matched cases sit *outside* the 309, because a case's year here is the year the harm
+began where ICIJ's is the year the board approved the money. The panel now carries both rows, and
+the second says in as many words that it is not the first.
+
+Two smaller corrections went with it. The denominator is **968, not 969** — a duplicate row was
+removed after the panel prose was written. And ICIJ's "nearly 7,200 projects funded in those years"
+now sits beside the Bank's own count for the same decade, **5,798 board approvals** (verified:
+`projects?format=json&rows=1&fl=id&strdate=2004-01-01&enddate=2013-12-31` returns `total: 5798`),
+instead of standing alone as though the two figures described one population.
+
+**How it was matched, and what the method cannot do.** Two passes, then the union. Forward: the case
+id each round since round 17 recorded for a lead row. Reverse: every P-number the map carries,
+looked up in the Bank's projects API for its board approval date, name and country, then matched to
+a lead row approved the same day — ICIJ copied its dates from the Bank's own record, so a date match
+plus the same name or country is close to conclusive.
+
+**The checker's verdict on the reverse pass is the finding to keep: it produced no correct unique
+match and two wrong ones.** Both were two different projects approved on the same day — two Haiti
+projects on 27 September 2012, and a Cameroon/Chad/CAR programme against a São Tomé case where the
+1.00 name match had compared the Bank's name for a project with ICIJ's name for *the same project*,
+which tests nothing about the case. The pass earned its place by confirming the forward pass, not by
+extending it. **The four matches the annotations had genuinely missed, the checker found by hand**,
+all in one blind spot: the case names the project in prose and prints the P-number nowhere a regex
+over five fields can see it. Only **273 of 1,169 cases carry a P-number at all**, and that is the
+method's ceiling. The checker puts the true figure at 249 and not above about 255.
+
+**A bug of mine, recorded because it would have halved the figure with no sign.** My first date
+parser spelled months `March, April, June, July, Sept` where ICIJ prints `Mar. Apr. Jun. Jul. Sep.`
+Five of twelve failed silently, 527 of 968 rows came back undated, and the run reported 112 matches
+instead of 254. "May." is 164 rows on its own.
+
+Also found: **of the 11 rows a round annotated where no ICIJ row shares the Bank's approval date,
+only one is a genuine date discrepancy.** The other ten were invisible to the reverse pass because
+their cases print no P-number. And the P-number extraction was short by 13: 335 numbers on 273
+cases, seven of which return no project record because they are Evaluation Group assessment numbers
+or a GEF number, which is the same filename-regex weakness that produced one of the two bad matches.
+
+### Job two: the lender-role audit reaches rounds 17 to 19
+
+Three auditors on 87 cases, then one checker over all three. Round 22 had audited the same field on
+rounds 20 and 21 and found errors on **19 of 46 cards, 41 per cent**.
+
+**Audited: 87 cases, 36 lender entries per batch. 26 corrections proposed on 27 cards, 31 per cent.
+The checker upheld 23, rejected 3, and found 3 more on cards marked clean. 26 corrections are now
+live on 25 cards** (`rounds/r34f_roles_textfix.json`).
+
+By class: `partial_list` 5, `wrong_column` 5, `wrong_number` 4, `wrong_document` 4, `date_unsupported` 3,
+`wrong_agency` 2, `review_prose_over_table` 2, `wrong_scope` 1.
+
+**The field is now a brief, not a handoff paragraph: `docs/ROLES.md`.** It carries the ten error
+classes round 22 named, the eleventh ruled in this round, the mechanism, and the routes.
+
+### What round 34 learned about auditing, which is worth more than the 26 corrections
+
+**The sharper version of round 22's mechanism: not "which document says this figure?" but "whose
+finding is this sentence?"** Four of one batch's ten corrections were a claim moved to the document
+that merely repeated it, and it ran both ways. A review's **Lessons** section reprinting the
+completion report's own lesson, credited to the evaluators — one such section is headed in as many
+words "Lessons — Adapted from ICR (paras 119-123)". And a report's own unevidenced assertion
+credited to the evaluators who **doubted** it. Two checks follow: read the heading of the section a
+quoted statement sits in, and read the next sentence, because a review often quotes a report's
+claim in order to dispute it.
+
+**A date absent from the completion report and the review may still be the Bank's own.** The
+Implementation Status and Results Reports print approval, signing, effectiveness and closing dates,
+they are listed in the same API call, and **relaying this finding mid-round killed three corrections
+the auditors had already drafted** — including two on one Kibera card where the "fix" would have
+been wrong twice over (the ISR gives credit IDA-49770 a Board approval date of 23 June 2011 and a
+US$30 million additional financing, so the card was right where the completion report's cover and
+the review alone said otherwise). An audit that skips ISRs turns correct dates into vaguer wrong
+ones, which is worse than leaving them alone.
+
+**The citation-date question is now settled, having cost three rounds of corrections.** It was the
+one ambiguity in ROLES.md that two auditors resolved one way and their checker the other. The rule:
+**in a `sources` entry the date is the Bank catalogue's `docdt`**, because it is a locator for the
+record the URL points at; **in prose it is the document's own**, because there it is a claim about
+the document. The reason this is not pedantry is that **one completion report can print two of its
+own dates** — ICR2972's cover reads "July 30, 2014" and its own data sheet reads
+"ICR Date: 07/31/2014" — so a rule written only as "the cover wins" cannot be applied. The
+cover-beats-catalogue rule is for loan and credit numbers, which are facts about the operation.
+
+**A generalisation proposed and disproved inside the same 87 cases.** An auditor offered the rule
+that pre-2005 China operations print "-CHA" where the catalogue says "-CN", and 2009–2010 ones
+really are "-CN". Loan 4881 is dated 18 March 2008 and prints `-CHA`; loan 4847 is dated 6 April
+2007 and prints `-CN`. Read the suffix off the cover, every time.
+
+**The clearest process fault was between batches, not inside one.** One batch left a card naming
+OP 4.12 alone on the reasoning that it claimed no full list; another corrected the identical shape.
+`partial_list` now says it applies whether or not the card claims completeness, with the appraisal
+document's own safeguards table as the test.
+
+**`repnb` settles every cited report number for the price of one field.** Adding it to the wds
+query returns the Bank's own number — `ICRR0021994`, `ISR36770` — where cards had been citing
+numbers that came from a catalogue file name. `harvest.py` now requests it and carries it into
+`harvest_manifest.json`.
+
+### The three corrections the checker threw out
+
+Worth reading, because two of them are the citation-date question and the third is the speaker test
+running the other way.
+
+- **Caldwell Bridge** and **Siddhirganj**, both `date_unsupported`: the cards' dates are the Bank
+  catalogue's `docdt` for the cited document, which the settled rule makes correct in a citation.
+- **Ningxia**, `wrong_document`: the auditor said "land acquisition almost completed" was the
+  completion report's claim credited to the evaluators who doubted it. The review asserts it in its
+  own voice, in its own "Quality-at-Entry" section, in the card's exact clause order. The correction
+  would have swapped one accurate attribution for another.
+
+The checker also made and caught the warned-of mistake itself: it logged a Bumbuna citation as a
+missed error on the cover and catalogue alone, then withdrew it on opening the data sheet.
+
+### Still open from this round
+
+- **Two name matches the checker found and did not count**, for a person to settle: a Greater Beirut
+  row whose project appears on `bisri-dam` only inside Inspection Panel case titles, and a Rwanda
+  land-husbandry row whose ICIJ project is a third operation the card does not name.
+- **Two more `wrong_scope` errors** an auditor filed before the class existed: a Burkina card
+  turning advice *on* a plan into advice *to make* one, and a Dakar card calling an IDA credit "for
+  the whole project" where the appraisal document says IDA did not finance Component A.
+- **P-numbers resolved for 12 cases that carry none**, listed in the audits' `checked` lines. Worth
+  writing back onto those cards: it would have made the reverse match see them.
+- **47 unsettled assertions**, read by the checker and called the strongest part of the three
+  audits. Three routes would close more of them: the projects API rather than a project web page
+  for commitment amounts, the ISR loan table for signing dates, and a browser rather than `curl`
+  for an AfDB PDF behind a Cloudflare challenge.
+
+## Round 33 — merged, built, tested and pushed
 
 Not a case round. The follow-on pass the queue had as its first job: whole-picture text, condition
 types and company descriptions for the 76 cases merged in rounds 31 and 32. Ten writers and ten
@@ -753,7 +896,32 @@ The seven cases still without a whole-picture paragraph are the ones judged year
 credible information: Morelos, Batang, Java 7, Pacitan, Tanjung Kasam, Cilacap, IPP4 Al-Manakher.
 Do not re-queue them.
 
-## The queue, after round 33
+## The queue, after round 34
+
+Round 33's first two jobs are closed: ICIJ's projects are matched one by one, and the lender-role
+audit has reached rounds 17 to 19, which was the last unaudited block.
+
+1. **Settle the three cards whose harm may not rest on their own documents** — Chobhar, Bijilo and
+   Hopewell, set out under round 33 below. Each needs a decision, not a round.
+2. **Sweep the blank-`docty` wds records.** One was a project's only completion report. Round 34's
+   checker narrowed the class usefully: on the two projects it tested, the single blank-`docty`
+   entry was the API's own `facets` key and not a hidden document, so the sweep should expect fewer
+   hits than round 32 implied — but `projectid=` plus `repnb` now makes each one a single call.
+3. **The 108 cases still without a settled condition type.** Every one has been tried at least
+   twice, so these are third and fourth attempts — but round 33 added two routes no earlier attempt
+   had: aide memoires, which reproduce unpublished agreements' covenant schedules, and
+   `projectid=` enumeration, which proves an absence instead of asserting it.
+4. **Write back the 12 P-numbers round 34's auditors resolved for cases that carry none**, listed in
+   the audits' `checked` lines. Cheap, and it is what the ICIJ match's blind spot is made of.
+5. **The four follow-ons round 34 left**, all listed in its section above: two uncounted name
+   matches for a person to settle, two `wrong_scope` errors filed before the class existed, and the
+   three routes that would close more of the 47 unsettled assertions.
+6. **AidData's 793 rows**, then the 546 untouched ICIJ possible-displacement rows, then the last two
+   confirmed rows.
+7. **The three verified terms a checker left out on purpose** in round 33 — a half-hour job with a
+   checker.
+
+## The queue, after round 33 (superseded, kept for its reasoning)
 
 Three of round 31's five jobs are now closed: round 22's drops re-examined (all 19 stand), the 94
 confirmed-displacement rows worked down to two, and the follow-on pass on rounds 31 and 32's 76

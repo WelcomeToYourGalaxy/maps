@@ -89,7 +89,7 @@ def wds_docs(pid):
         except Exception:
             pass
     url = ("https://search.worldbank.org/api/v3/wds?format=json&rows=200"
-           f"&projectid={pid}&fl=docdt,display_title,pdfurl,txturl,docty,entityids,projn")
+           f"&projectid={pid}&fl=docdt,display_title,pdfurl,txturl,docty,entityids,projn,repnb")
     for a in range(4):
         s = curl(url)
         if s and s.strip().startswith('{'):
@@ -224,6 +224,11 @@ def harvest_pid(pid):
             'docdt': (cdata(v.get('docdt')) or '')[:10],
             'title': cdata(v.get('display_title'))[:160],
             'id': v.get('id') or k.lstrip('D'),
+            # The Bank's own report number, e.g. ICRR0021994, ISR36770. A round 34
+            # checker asked for it: a card citing "ICR2741" can otherwise only be
+            # checked by opening the document, and several such numbers turned out
+            # to come from a catalogue file name rather than the report itself.
+            'repnb': cdata(v.get('repnb')),
             'txturl': cdata(v.get('txturl')), 'pdfurl': cdata(v.get('pdfurl')),
         })
     # Implementation status reports are excluded by default — a project has many
@@ -245,6 +250,7 @@ def harvest_pid(pid):
                     'docdt': (cdata(v.get('docdt')) or '')[:10],
                     'title': cdata(v.get('display_title'))[:160],
                     'id': v.get('id') or k.lstrip('D'),
+                    'repnb': cdata(v.get('repnb')),
                     'txturl': cdata(v.get('txturl')),
                     'pdfurl': cdata(v.get('pdfurl')),
                 })
