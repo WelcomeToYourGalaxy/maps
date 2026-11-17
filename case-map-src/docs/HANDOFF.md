@@ -36,11 +36,15 @@ forward without re-reading the panel.**
 | IMF arrangements | 160 | 1,693 | 9.5% |
 | World Bank projects, all years | **435** | 15,720 | **2.8%** |
 | Treaty lawsuits | 4 | 1,332 | 0.30% |
-| Chinese state loans, 2000-2021 | **91** | 20,985 | **0.43%** |
+| Chinese state loans, 2000-2021 | **97** | 20,985 | **0.46%** |
 | Foreign company projects, 2021-2023 | 9 | 20,032 | 0.04% |
 | Aid activities | 35 | 1.5 million | 1 in 42,857 |
 | Private bank and bond lending | 79 | not counted | — |
 | Payment services for governments and armed groups | 5 | not counted | — |
+
+**The Chinese row read 91 until 17 Nov and the page said 97**: round 38 added six Chinese cases and
+nobody re-read the row, which is the whole argument for the per-round chart two sections below. Run
+`coverage_chart.py` every round and this table stops going stale between rounds.
 
 **Every row of that table was re-read from the rendered page after round 37's merge, and the way to
 read it is now in the test script — because getting at it was the thing that went wrong twice.**
@@ -162,6 +166,200 @@ claims — thickest in 2004-2013 World Bank lending, every published complaint r
 resting on the lender's own documents. **If a round changes any of those, change that block in the
 same round.** It is prose and nothing computes it, so nothing will catch it going stale.
 
+## Maximising what a round returns — every method on the map, compiled (round 39, 17 Nov 2026)
+
+**This section replaces the scattered advice in rounds 31 to 38 and the "fewer rounds" plan above.**
+Every item is a method some round measured, with the measurement beside it, and every item was
+written down somewhere already — the point of compiling them is that no round has ever applied more
+than four at once. **Nothing here trades the check for speed.** The checkers cut between a third and
+a half of what writers submit; that is the mechanism that makes this map trustworthy rather than
+large, and it is the one thing on the map that must not be compressed.
+
+**The order matters. Items 1 to 8 are desk work that makes a researcher's hour worth more; 9 to 12
+are how to dispatch; 13 to 16 are what must not be given up.**
+
+### Before anyone is dispatched
+
+1. **Harvest the documents once and commit them.** Round 22 cached 526 files and all of them died
+   with the session; so did every cache before it. Round 31 harvested 1,467 files, 219 MB of text,
+   for 190 P-numbers and its six writers made **zero** Bank fetches. Round 35 committed
+   `docs/wb_approvals_2004_2013.json` (5,798 projects, the ICIJ match now re-runnable offline in
+   seconds). Round 36 committed `docs/aiddata_full_text.json.gz` (1.3 MB, all 793 flagged rows), so
+   no round pays the 28 MB download again. **A cache that is not in the repo does not exist.**
+2. **Read the full source text, not a lead file's copy of it.** `leads_aiddata.json` capped
+   `description` and `staff_comments` at 1,200 characters and cut 411 of 793 rows; for **210 rows
+   every candidate sentence sat past where the lead file stopped**. Any screen built on it was
+   reading 43 per cent of the evidence.
+3. **Build the batch from the live record, not from a frozen extract.** Round 38 found 3 of 17
+   financings disagreeing with the live AidData record on maturity, rate, date or amount, and in one
+   the frozen text partitioned a loan in a way the live records do not.
+4. **Pre-extract the deciding sentences.** One brief per row, each candidate sentence carrying its
+   document and paragraph, so the writer verifies and judges instead of hunting. Every writer who had
+   one said the inventory was worth more than everything else combined. The patterns to extract are
+   the ones writers actually spend time on: relocation and household counts, deaths with a cause,
+   compensation arrears, "replacement cost", the plan-reprint traps ("envisaged", a figure that also
+   appears in the appraisal), the staff-statement phrases ("informed IEG", "the project team"),
+   footnotes, compensation tables dated after the closing date, counts in a table's row label, the
+   borrower's own annex, the planned-versus-actual annex table, sentences saying nothing happened,
+   sentences limiting what the credit financed ("only", "financed by the counterpart", "not an
+   associated facility"), the explanation beside an unpaid count ("erroneously received
+   compensation"), and the hazard-relocation clause in the plan's own reasoning ("exposto ao risco",
+   "expuesto al riesgo", "flood-prone", "unsuitable for habitation") — that last one decided round
+   31's largest cut and nothing in the briefs looks for it yet.
+5. **Group by financing, not by row.** AidData files one row per lender in a syndicate: 793 rows are
+   653 financings, four rows for one Bangladeshi power plant and eight for one Peruvian loan.
+   Research the financing once or four cards land on one site.
+6. **Dedupe locally before dispatch — it is free and it pays better than any sort.** Round 36 found
+   35 rows sharing four or more distinctive words with a case already on the map, against 4 of 29 in
+   round 16. Most should be **extends**, not new cases. Shared country words are not a shared
+   project: two of round 36's hints matched on province names alone.
+7. **Pre-screen the buckets that are known to be spent.** Each of these was paid for with researcher
+   hours and each removes rows at no cost: 143 disaster-relief rows, which rank near the top because
+   the grant's description recites the disaster's own dead (the money responded to the harm, so they
+   fail tests 1 and 3 outright); 153 protest flags that are a demonstration farm or centre; the
+   `arrest or detention` bucket, where not one of about fourteen financings held the arrest of anyone
+   who objected — they are officials and executives prosecuted over the money, so **add a sub-flag
+   for "arrest of an official" against "arrest of a resident"**; and `land taken` flags that are a
+   capitalised "Expropriation" in a MIGA or Sinosure list of covered risks, removed by a screen on
+   "against the risks of".
+8. **The screen ranks. It never drops.** BRIEF22 told writers to drop a row on one sentence. Measured
+   blind against 57 settled outcomes it called **5 of 45 known cases a drop and caught only 4 of 12
+   known drops** — about one real case in nine destroyed, including the map's Inspection Panel
+   finding at Kwabenya. It is withdrawn. `r36_rank_score` orders the queue and removes nothing, and
+   the highest score is not the place to start, because it gives a point to protest and to pollution
+   and neither decides a case alone.
+
+### Dispatching
+
+9. **Widen the round rather than running more rounds, where the work is document-bound.** Six writers
+   on 16 rows each, every one with its own checker: 96 rows a round against 36. Round 31 did 90 rows
+   and returned 44 cases and three new countries, against one new country across rounds 16 to 22
+   together. The WebSearch cap of about 200 calls a turn was the reason for the old limit and **it
+   stopped binding** for document rounds — rounds 19 and 21 ran on `curl` and `pdftotext` and one
+   batch used two searches in total.
+10. **But a search-bound round cannot be widened, and knowing which it is comes first.** Chinese
+    state lenders publish no archive, so an AidData round spends about 30 searches a writer: three
+    writers, not six. Rounds 37 and 38 returned 7 and 6 cases from 59 and 52 financings. **Size the
+    round by where the evidence lives, not by the queue's length.**
+11. **Ask for `whole`, `conditions` and a settled `ct` on the card, in the same pass.** Every ICIJ
+    tranche arrived with none of the three and left a follow-on round behind it. Rounds 37 and 38
+    asked, and got them on all thirteen cases: **no panel row dipped and no follow-on backlog
+    exists.** It costs the writer little because it comes out of the same documents, and it retires a
+    whole round per tranche. This is the single cheapest compression on the list.
+12. **Take every URL from the manifest. Never construct one.** A round 31 batch shipped with all 23
+    Bank source URLs returning 404 because a writer built
+    `documents1.worldbank.org/curated/en/docsearch/projects/<PID>`, which is not a document path,
+    while the real URL for every cached document sat in `harvest/manifest.json`.
+
+### What must not be given up
+
+13. **Checkers scale one-for-one with writers.** A wider round means six checkers. **If a round is
+    too big to check, it is too big.** And a checker that writes a card has written a card nobody
+    checked: round 38 sent a fourth agent at one, which stood at `killed: 2` with eleven
+    corrections, three of four omissions favouring the card, after the checker's own claim that
+    everything cutting the other way was on the card proved false in three places.
+14. **An absence is a finding only when the route is named.** This file's blocked-host list has been
+    wrong ten times and a client-side render has been recorded as an absence twelve. Round 38's
+    writer concluded a Kenyan judgment "was never opened"; the endpoint behind that page answers
+    JSON unchallenged (`kenyalaw.org/search/api/documents/?search=<phrase>`) and held the judgment
+    plus five later rulings and eight years of litigation nobody had found. An unanswered permission
+    prompt closes the fetch gate for the rest of the session, so front-load the URLs needing a grant;
+    download a large PDF with `curl` and read it from disk with `pdftotext -layout`.
+15. **Run the reprint check across parent, sibling and additional-financing numbers.** Per row it
+    misses the pairing that matters: on one round 31 row the plan sat under the parent's P-number and
+    the outcome under the additional financing's, and 80 planned against 83 resettled is exactly
+    what the check exists to find.
+16. **Date every term to the agreement that set it, and read the narrative to its end.** All five
+    entries in one round 38 batch stated a loan term with no date, and in three the figure had been
+    superseded inside the same record. AidData prints the signature term in its panel and the
+    amendments twenty lines down.
+
+### What this does to the number of rounds
+
+**Measured, from `rounds/coverage_history.json`:** a narrow document round returned 18 to 34 cases
+(rounds 17, 20, 21, 23, 24; mean about 25). A wide document round returned 44 and 35 (rounds 31, 32).
+A search-bound round returned 7 and 6 (rounds 37, 38). A desk round returns no cases and is what
+makes the next round cheap — rounds 33 to 36 added almost nothing and are the reason 31 and 32 were
+possible.
+
+**What is actually left that a register can supply:**
+
+| Queue | Size | At the old rate | With the methods above |
+| --- | --- | --- | --- |
+| ICIJ confirmed-displacement table | 2 rows | — | finish inside another round |
+| ICIJ possible-displacement rows | 546, untouched | ~15 rounds | 1 desk + **3 to 4** wide rounds |
+| Outside-sourcing pass on `contested` cases | **202** cases rest half or more of their sources on a lender host; **54** of those sit in countries with a free national judgment index | never attempted | **2 to 3** wide rounds, the 54 first |
+| Cases with no settled condition type | 83 `research` + 40 with no `ct` at all | ~3 rounds | 1 desk round |
+| Complaint registers | 91 | ~3 rounds | 1 to 2 |
+| AidData protest-and-pollution residue | 178 financings | — | **0 — it is a finding, not a queue** |
+| Private lending, aid, foreign company investment | no register exists | — | **no number of rounds** |
+
+**So eight to eleven rounds to the end of every register that exists, against the forty-five this
+file has been estimating.** The shape: one desk round that harvests and pre-extracts the possible-
+displacement table and dispatches nobody; three or four wide rounds on it; two or three outside-
+sourcing rounds, which is the job that changes what the map can claim rather than how big it is; one
+desk round for condition types and the carried sweeps; one or two on the complaint registers.
+
+**Two cautions on that number.** The possible-displacement rows are expected to screen out heavily,
+so three or four rounds is a width estimate and not a yield estimate — and under item 8 a screen
+ranks rather than drops, so "screening out" there means a writer reading a brief and recording a
+drop, not a script deleting a row. And the outside-sourcing rounds move no case count at all: they
+move cases from `contested` to `documented`, which is the defect this file has called the real one
+for five rounds. **512 of 1,182 cases are `contested` today, against 670 `documented`.**
+
+## The per-round completeness chart across loan types — standing instruction
+
+**Every round from 39 on must print this chart and paste it into its own section of this file.** The
+reason is in this file's own history: the round 38 coverage table above says Chinese state lending is
+**91 of 20,985**, and the rendered page said **97** before this section was written, because round 38
+added six Chinese cases and nobody re-read the row. A per-round chart makes a stale row visible the
+round it goes stale, which no prose rule has managed.
+
+**How to run it.** Serve the repo, run the headless test, then the chart script against its output:
+
+```
+python3 -m http.server 8766 &
+NODE_PATH=$(npm root -g) node case-map-src/test_map.js > /tmp/rendered.txt
+python3 case-map-src/coverage_chart.py --round <N> --rendered /tmp/rendered.txt --write
+```
+
+`--rendered` is **not optional.** The script computes each row with base.html's own expression, and
+then checks its own answer against the figures read off the rendered brief, row by row. It prints
+`every row matches the page` or names the row that disagrees. **A row that disagrees is the script's
+fault, not the page's** — that is this file's standing rule, and the validation step earned its place
+immediately: leaving `window.MK_GRANT_MORE` out of `MK_GRANT` made the aid row read 23 against the
+page's 35, and nothing but the comparison would have caught it. `--write` appends the round to
+`case-map-src/rounds/coverage_history.json`.
+
+Rows before round 31 are marked `~` and are indicative. Attribution works by the earliest round whose
+files name a case id, and the rounds before 31 merged backlogs that name older cases. From round 31
+on it matches what those rounds recorded: 1,132 against the 1,136 round 31 reported, 1,169 for rounds
+34 to 36, 1,176 for 37, 1,182 for 38.
+
+### The chart as at round 38
+
+Read with `coverage_chart.py --round 38 --rendered`, every row validated against the rendered brief.
+
+| Round | Cases | World Bank /15,720 | IMF /1,693 | Chinese state /20,985 | Foreign company /20,032 | Treaty suits /1,332 | Aid /1.5m | Private lending | Payment services |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| ~17 | 623 | 182 (1.2%) | 153 (9.0%) | 14 (0.07%) | 6 (0.03%) | 3 (0.23%) | 2 | 3 | 0 |
+| ~20 | 650 | 183 (1.2%) | 153 (9.0%) | 18 (0.09%) | 8 (0.04%) | 4 (0.30%) | 2 | 3 | 0 |
+| ~24 | 714 | 183 (1.2%) | 153 (9.0%) | 20 (0.10%) | 8 (0.04%) | 4 (0.30%) | 22 | 13 | 5 |
+| ~26 | 1,088 | 354 (2.3%) | 160 (9.5%) | 84 (0.40%) | 9 (0.04%) | 4 (0.30%) | 35 | 79 | 5 |
+| 31 | 1,132 | 398 (2.5%) | 160 (9.5%) | 84 (0.40%) | 9 (0.04%) | 4 (0.30%) | 35 | 79 | 5 |
+| 32 | 1,167 | 433 (2.8%) | 160 (9.5%) | 84 (0.40%) | 9 (0.04%) | 4 (0.30%) | 35 | 79 | 5 |
+| 34 | 1,169 | 435 (2.8%) | 160 (9.5%) | 84 (0.40%) | 9 (0.04%) | 4 (0.30%) | 35 | 79 | 5 |
+| 37 | 1,176 | 435 (2.8%) | 160 (9.5%) | 91 (0.43%) | 9 (0.04%) | 4 (0.30%) | 35 | 79 | 5 |
+| **38** | **1,182** | **435 (2.8%)** | **160 (9.5%)** | **97 (0.46%)** | **9 (0.04%)** | **4 (0.30%)** | **35** | **79** | **5** |
+
+**What the chart shows that the single-round table could not.** Five of the eight rows have not moved
+in twelve rounds, and four of those cannot move much: aid, foreign company projects, treaty lawsuits
+and private lending divide by every deal anyone counted, and most of those deals left no record of
+harm. **Only two rows have moved at all since round 26 — World Bank, by the ICIJ tranches, and
+Chinese state lending, by the two AidData rounds.** Rounds 33 to 36 moved nothing and were still the
+right rounds to run. So the chart should be read for which rows a round was *trying* to move, and a
+round that moved none of them should say which row it was buying down for a later one.
+
 ## Suspected patterns — see `docs/HYP.md`
 
 `window.HYPS` in `base.html`; rendered by `hypsHTML()` at the bottom of the patterns section and by
@@ -274,6 +472,75 @@ These came in over one session and all of them are done unless noted.
 7. **`case-map-src/HANDOFF.md` is a pointer now, not a handoff.** It held the round 13 text and was nine
    rounds stale. The current handoff is this file, `case-map-src/docs/HANDOFF.md`, and there should
    never again be two.
+
+## READ THIS FIRST: round 39 is a desk round — the methods are compiled, the chart exists, and the outside-sourcing queue is built
+
+No researchers, no new cases, no page code. It did four things, and the third is worth more than the
+other three together.
+
+1. **Every method for making a round return more is compiled into one section**, "Maximising what a
+   round returns", with the measurement that earned each one. Sixteen items. No round has ever
+   applied more than four at once.
+2. **A per-round completeness chart across loan types now exists and is standing policy.**
+   `case-map-src/coverage_chart.py`, history in `case-map-src/rounds/coverage_history.json`. It
+   immediately caught the thing it was built for: this file's round 38 coverage table said Chinese
+   state lending was **91 of 20,985** and the rendered page said **97**, because round 38 added six
+   Chinese cases and nobody re-read the row. Fixed above.
+3. **The Kenya Law endpoint round 38 found is not Kenya's — it is a platform, and ten more national
+   judgment indexes answer the identical path.** Tested on 17 Nov 2026, all over plain `curl` with a
+   declared user-agent, all returning JSON with judgments in `results_html`:
+
+   | Index | Route | Tested |
+   | --- | --- | --- |
+   | Kenya Law, TanzLII, ULII, ZambiaLII, GhaLII, MalawiLII, NigeriaLII, SierraLII, LesothoLII, ZimLII, NamibLII | `https://<host>/search/api/documents/?search=%22<exact phrase>%22` | serves, all eleven |
+   | Indian Kanoon | `indiankanoon.org/search/?formInput=<terms>` | serves; HTML, not JSON |
+   | LawPhil (PHL), Nepal Kanoon Patrika, Supreme Court of Bangladesh | homepage serves; search route not yet found | partial |
+   | Supreme Court of Pakistan (`scp.gov.pk`), SAFLII | HTTP 403 to `curl` — **that is a route, not a host.** Try the rendered route before writing either off | refused on one route |
+   | LawNet Sri Lanka | connection failed; record as untested | untested |
+
+   **Two corrections that matter more than the list.** Round 38 called Kenya Law phrase-exact: it is
+   not unless the phrase is quoted. Unquoted, "Kenya Informal Settlements Improvement Project"
+   returns the 10,000 result cap; **quoted, it returns 21, and those 21 are the judgments that name
+   the project.** Send the phrase in double quotes, URL-encoded as `%22`. And the ordinary
+   `/search/?q=` page on every one of these sites is **JavaScript-rendered with no results in its
+   HTML** — zero result links, an empty app shell. A writer reading that page records an absence.
+   That is the thirteenth time on this map, and the API path is the answer every time.
+
+   **A live hit came out of the first card tried.** `kisip-informal-settlements-fatalities`, which
+   sits at the top of the new queue with every one of its sources on a lender host, has judgments on
+   Kenya Law naming the Kenya Informal Settlements Improvement Project — Obul & 4 others, [2018]
+   KEHC 4492, and a 2019 ruling. **Not read, not written to the card.** That is round 40's work and
+   it is the first thing to do.
+4. **The outside-sourcing queue is built**, which this file has asked for since round 31 without
+   ever having a list: `case-map-src/docs/leads_outside_sourcing.json`. It ranks and removes nothing.
+
+### What the queue says, measured off the cards
+
+| | Cases |
+| --- | --- |
+| `contested` | **512** of 1,182, against 670 `documented` |
+| `contested` with half or more of their own sources on a lender's host | **211** |
+| — of those, in a country whose judgment index was tested and serves | **35** (IND 12, TZA 6, KEN 3, NGA 3, GHA 3, BGD 2, UGA 2, ZMB 2, LSO 1, MWI 1) |
+| — of those, index named but route not yet proven | **18** (PHL 6, NPL 6, PAK 4, ZAF 2) |
+| Chinese `contested`, lender-heavy, with no free index known | **48** — structurally the hardest, and consistent with rounds 37 and 38 |
+
+**35 cases is one wide round at six writers on six rows each, which is narrower than round 31 ran.**
+The front is ordered in the file by `r39_rank_score`: lender-source share, plus whether the card's
+own text already names a court, a tribunal, an audit body or money owed, plus deaths and
+displacement. Each row carries its `search_hooks` — the words already on the card that an index can
+be searched on — so the writer verifies rather than hunts, which is item 4 of the compiled methods.
+
+**What the round moves, and what it does not.** It adds no cases and no countries, so every row of
+the coverage chart stays where it is. It moves cases from `contested` to `documented`, which is the
+defect this file has called the real one for five rounds. **Say so in the round's own section, per
+the chart's standing instruction: a round that moves no row should name the row it is buying down.**
+This one buys down none of them — it buys down the lopsidedness instead.
+
+### What round 39 did not do
+
+**No cases, and no reads of the judgments it found.** The KISIP rulings are identified and unread.
+Nothing in `base.html` changed, so the build and the panel are untouched from round 38: 1,182 cases,
+137 countries, and the chart's round 38 row is still the current state.
 
 ## READ THIS FIRST: round 38 is merged, built, tested and pushed
 
@@ -1626,7 +1893,9 @@ came from.**
 
 So, in order of what each would do for the aim:
 
-1. **An outside-sourcing pass over the existing `contested` cases.** This is now the highest-value
+1. **An outside-sourcing pass over the existing `contested` cases — the queue for it now exists,
+   `docs/leads_outside_sourcing.json`, built in round 39, with eleven national judgment indexes
+   tested and the front 35 ordered.** This is now the highest-value
    job on the map and it is the one this file has recommended for five rounds without it being run.
    The argument is stronger after rounds 37 and 38: both found that the evidence which makes a case
    `documented` is press, court records and audit offices, and round 38 showed that **a single
@@ -3885,6 +4154,8 @@ The owner asked for all five open decisions to be settled rather than carried fo
 - **Whole-picture text rules:** what the programme achieved where documented; lender-, company- or government-produced figures flagged as such ("no independent check was found"); plain figures; each kind of money gets its own full set of categories.
 - **Writing:** plain, novice-friendly wording, short sentences, no purple prose, show figures rather than characterising them. No orange, yellow or neon colours; earthy and muted palettes.
 - **Every batch is fact-checked by a separate agent before merging.**
+- **Every round prints the per-round completeness chart across loan types** and pastes it into its
+  own section of this file, with its rows validated against the rendered page.
 - **Repo updates** are committed and pushed directly from chat.
 
 ## Workflow
@@ -3904,6 +4175,12 @@ The owner asked for all five open decisions to be settled rather than carried fo
    comment: the completeness figures exist only in the browser, and the coverage brief must be read
    with `textContent` because its parent is hidden. Headless Chromium via Playwright directly
    (`NODE_PATH=$(npm root -g)`), served the same way, for anything the script does not cover. Re-rendering menus can make Playwright's own clicks hang; clicking through `page.evaluate(() => el.click())` is reliable. Check for page errors and the case count.
+7b. **Chart the coverage across loan types** — standing from round 39, and not optional:
+   `python3 case-map-src/coverage_chart.py --round <N> --rendered /tmp/rendered.txt --write`, where
+   `/tmp/rendered.txt` holds step 7's output. It validates every row against the rendered brief and
+   names any row that disagrees. Paste the chart into this round's section of `docs/HANDOFF.md`, and
+   if the round moved no row, say which row it was buying down for a later round. See
+   "The per-round completeness chart across loan types".
 8. **Push:** `git add globalization.html case-map-src && git commit` (attribution trailers from the session reminder), then `git pull --rebase -q && git push -q`. If the push is refused by the git proxy, attach the repo to the session first (add_repo, push access).
 
 ## Case shape
