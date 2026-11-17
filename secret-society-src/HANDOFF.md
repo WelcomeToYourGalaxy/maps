@@ -30,6 +30,13 @@ reachable by addition — the earlier handoffs were right that heads of state fo
 about 18,600 cases — but it is a different order of effort and is not the target
 being worked toward.
 
+**Correction to those two figures, 17 November 2026.** Both are right and they answer
+different questions. Solved against the current counts: **1.3 points is reached at
+12,047 cases (+9,583)**, and **23,500 cases is where deviation reaches 0.00** — a true
+scale model, every over-represented class diluted exactly to its estimate. The 23,500
+figure was labelled 1.3 by mistake. The 5-point goal is unchanged at 6,701 (+4,237).
+`shape.py`'s header line still says the floor is 1.3; it is 0.00, at 23,500.
+
 | | cases to add | total map | rounds at 95 | at 150 | at 250 |
 |---|---|---|---|---|---|
 | within 20 points | +1,000 | 3,450 | 11 | 7 | 4 |
@@ -69,6 +76,84 @@ of the eight body-reached classes now sit within two points of target. `movement
 `lender` are worth about 74 milli-points a case, `crime` close behind; `corp`, `lodge`
 and `elite` are negative. On the body axis only `security` is far enough out to matter
 much, with `court` and `cabinet` worth having.
+
+### ROUNDS REMAINING, MEASURED FROM THE ROUND HISTORY (17 November 2026)
+
+Every round this map has run has been measured for both volume and shape. The two do
+not move together, and four rounds are enough to show it.
+
+| round | cases added | deviation | moved |
+|---|---|---|---|
+| before round 6 | — | 61.4 | — |
+| round 6, 15 Nov (78% company) | +95 | 57.4 | closed 4.0 |
+| round 7, 15 Nov | +236 | 51.8 | closed 5.6 |
+| round 8, 15 Nov (company rebalance closes) | +195 | 53.6 | **opened 1.8** |
+| the three throughput rounds, 16 Nov | +12 net | 52.9 | closed 0.7 |
+
+Round 8 is the one to keep in view: 195 verified, sourced, correctly classified cases
+moved the map *away* from its goal. Round 7 closed 5.6 points on 236 cases (24
+milli-points a case). The three small rounds of 16 November closed 0.7 on 12 cases —
+**58 milli-points a case, the best per-case figure any round has posted** — because they
+were aimed at the deficit cells. Volume without placement is worth less than nothing.
+
+**Rounds remaining to the 5-point goal: +4,237 cases from 2,464, so a map of 6,701.**
+
+| pace | source of the figure | rounds left |
+|---|---|---|
+| 4 cases a round | the measured pace of the last three rounds | **1,060** |
+| 100 a round | half the round-7 figure | 43 |
+| 200 a round | round 7 and round 8 both cleared this | **22** |
+| 236 a round | the largest round the map has ever run | 18 |
+
+The honest answer is 22 rounds, and it is a projection rather than a measurement: no
+round has yet combined round-7 volume with 16-November placement. The last three rounds
+were spent building the throughput machinery, not using it, so 4 cases a round is the
+cost of that work and not the new pace.
+
+The first points stay cheap, which is the argument for running the next round at all:
+
+| target deviation | cases to add | rounds at 200 |
+|---|---|---|
+| 45 | +115 | 1 |
+| 40 | +192 | 1 |
+| 30 | +455 | 3 |
+| 20 | +989 | 5 |
+| 10 | +2,273 | 12 |
+| **5.0 — THE GOAL** | **+4,237** | **22** |
+
+### `corp` is over its share and still needs 1,778 more cases — do not misread shape.py
+
+`shape.py` prints `corp 50.2% vs 45.00% +5.2 OVER, cannot be fixed by looking`. That
+verdict is about the **share**, not about whether to write more. At the 6,701-case
+target, 45 per cent is 3,015 cases, and the map holds 1,237. The composition that lands
+deviation 5.0 is therefore:
+
+| axis | class | add | share of the round |
+|---|---|---|---|
+| inf | corp | +1,778 | 42% |
+| inf | crime | +1,531 | 36% |
+| inf | movement | +560 | 13% |
+| inf | state | +275 | 7% |
+| bk | security | +1,422 | 34% |
+| bk | company | +1,284 | 30% |
+| bk | cabinet | +676 | 16% |
+| bk | legis | +654 | 15% |
+| bk | court | +239 | 6% |
+
+A round that is 42 per cent `corp` still lowers the `corp` share, because 42 is less
+than the 50.2 the map sits at. Round 6 was 78 per cent company and that is why it
+bought so little. **The instruction is a ceiling on the company share of a round, not a
+ban.** Writing no company cases at all overshoots in the other direction.
+
+### The map is already at its floor for its size (measured 17 November 2026)
+
+Deviation always equals twice the sum of the positive gaps, and an over-represented
+class cannot lose cases, so at a given size its excess is fixed. At 2,464 cases the
+lowest deviation reachable without removing anything is **53.0**, and the map stands at
+52.9 — the same number within rounding, because every under-represented class is in
+fact under. Recoding, cleanup and reclassification cannot improve the shape from here —
+`exec` recode included, which is why that decision is worth 12 rounds rather than a
+step toward the goal on its own. Only cases in the deficit cells move it.
 
 ### THE COMPOSITION DEPENDS ON THE SIZE OF THE ROUND
 
@@ -399,6 +484,11 @@ verification pass rate · **shape deviation before and after**.
 
 The last one is the only one that measures progress toward the goal. The 16 November
 rounds added 430 records and moved it 3.9 points, which is why it belongs in the table.
+
+Run **`python3 shape.py rounds`** at the end of every round. It prints the floor at the
+current size, the cases still needed for each deviation target, and the rounds that is
+at 100, 200 and 236 cases a round. Add the round's own line to the measured history in
+the standing-goal section above — points closed, not just cases added.
 
 ## Coverage estimate (what remains)
 The remaining work is to keep adding, most relevant today and most widespread first. The 3 Nov 2026 round added 230 cases but stopped short in every scope because of search limits. Known gaps:

@@ -13,7 +13,7 @@ estimated field. Only the midpoint estimates are used: the lo and hi figures are
 independent bounds per class and do not sum to a distribution, so they cannot be a
 target.
 
-Run: python3 shape.py [cases-to-add]
+Run: python3 shape.py [cases-to-add]   |   python3 shape.py rounds
 """
 import json, sys, collections, os
 
@@ -34,7 +34,7 @@ def deviation(counts, n):
 
 dev = deviation(cnt, N)
 print(f'{N:,} cases. Shape deviation {dev:.1f} points. '
-      f'Goal is 5.0; the floor reachable by addition is about 1.3.\n')
+      f'Goal is 5.0 (at 6,701 cases); 1.3 at 12,047; 0.00 at 23,500.\n')
 
 for f, label in AXES:
     print(f'  {label}')
@@ -71,7 +71,7 @@ print('  worst:')
 for g, i, j in rows[-3:]:
     print(f'    {i:9s} -> {j:9s} {g*1000:7.2f}')
 
-K = int(sys.argv[1]) if len(sys.argv) > 1 else 0
+K = int(sys.argv[1]) if len(sys.argv) > 1 and sys.argv[1].isdigit() else 0
 if K:
     best = {}
     for f, _ in AXES:
@@ -82,3 +82,37 @@ if K:
             best[f][k] += want[k] if tw <= K else K*want[k]/tw
     print(f'\n  {K:,} cases placed optimally would take {dev:.1f} -> '
           f'{deviation(best, N+K):.1f} at {N+K:,} cases.')
+
+
+# Rounds remaining. Deviation is the sum of absolute gaps, so it always equals twice the
+# sum of the positive gaps. Over-represented classes cannot lose cases, so at a given
+# final size their excess is fixed and the under-represented classes must sit below
+# target by exactly that much. The lowest deviation reachable at a size is therefore
+# twice the over-cell excess, and the size needed for a target is a binary search on it.
+def floor_at(total):
+    return sum(2 * sum(max(0.0, cnt[f].get(k, 0)/total - fe[f][k]['mid']/100.0) * 100.0
+                       for k in fe[f]) for f, _ in AXES)
+
+
+def size_for(target):
+    lo, hi = N, 20_000_000
+    while lo < hi:
+        mid = (lo + hi) // 2
+        if floor_at(mid) <= target:
+            hi = mid
+        else:
+            lo = mid + 1
+    return lo
+
+
+if 'rounds' in sys.argv:
+    print(f'\n  The floor at {N:,} cases is {floor_at(N):.1f} and the map is at {dev:.1f}.')
+    print('  Recoding cannot close the rest; only cases in the deficit cells can.\n')
+    print(f'  {"target":>7} {"cases":>8} {"to add":>8} {"@100":>6} {"@200":>6} {"@236":>6}')
+    for t in (45, 40, 30, 20, 10, 5.0, 1.3):
+        s = size_for(t)
+        a = s - N
+        print(f'  {t:>7} {s:>8,} {a:>8,} '
+              f'{-(-a//100):>6} {-(-a//200):>6} {-(-a//236):>6}')
+    print('\n  Measured round history: r6 +95 closed 4.0; r7 +236 closed 5.6;')
+    print('  r8 +195 OPENED 1.8; the three 16 Nov rounds +12 closed 0.7.')
