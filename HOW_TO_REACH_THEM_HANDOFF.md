@@ -3,12 +3,179 @@
 **Live:** https://welcometoyourgalaxy.github.io/maps/how_to_reach_them.html
 **Files in this repo:** `how_to_reach_them.html` (one self-contained page),
 `world_lowest.topojson` (48,263 jurisdictions), `atlas-plate-how-to-reach-them.webp`
-(the Atlas basemap plate with this map's cartouche).
+(the Atlas basemap plate with this map's cartouche), `contacts/` (670,845
+buildings in 2° cells, §11), and `tools/completeness.py` and
+`tools/keycheck.py`, which are the two measurements every round starts with
+(§0).
+
+**Not in this repo, and it should be:** `muni/`, the municipal register
+shards, and `tools/build_muni.py`, which builds them. The page has no
+reference to `muni/` and `muni/index.json` 404s on the live site, so the
+register layer that rounds four to twenty-one built — 57,448 records across
+eight registers — is not deployed. If it exists on a local machine it needs
+pushing; if it does not, it is the thing §0b warns about.
 
 The map answers one question: who can a member of the public contact to make a
 law, where they live, at every level of government above them — and what can
 each of those offices actually do about it, how do you reach them, which routes
 work more often than others, and what stops them.
+
+---
+
+## 0. What every round does, in order
+
+Do these four things in every round from here on. The first two are
+scripts in `tools/` and take under thirty seconds between them; rounds
+seven, twelve and nineteen each spent most of a round on work one of them
+now does.
+
+1. **Measure.** `python3 -I tools/completeness.py`. It prints the chart
+   below from Wikidata itself, per layer and per field, and then every
+   country ranked by how many municipalities it holds with how much of
+   each field. Paste both tables into this file under the round. Do not
+   copy the previous round's figures forward: the underlying data moves,
+   and three rounds in this file built on a number that had stopped being
+   true.
+2. **Ask which codes exist**, for whichever country the chart points at:
+   `python3 -I tools/keycheck.py DEU POL HUN`. It lists every
+   literal-valued property that country's municipalities carry, ranked,
+   with the contact fields marked. Rounds seven and twelve both asked
+   whether a country carried the code they expected, got a miss, and
+   wrote the country off; Germany was written off twice that way and
+   carries `P439` on 81%. Ten seconds against most of a round.
+3. **Ship something.** Nine of twenty-one rounds shipped records; five
+   shipped nothing at all but a sharper account of what was blocked. A
+   survey is not a round.
+4. **Audit, then chart.** Open the eight standing places (§6), read every
+   level of every chain, and re-run step 1. The audit found four real
+   faults the last time it was done as a round of its own; as a step it
+   costs twenty minutes.
+
+### Maximising what a round returns
+
+Everything here is drawn from what the twenty-one rounds already in this
+file actually cost. **None of it comes from loosening a join** — the four
+conditions in round fifteen, the ambiguity refusal in `put()`, and the
+per-country floors (`CONCORD_FLOOR`, `CAN_NAME_FLOOR`, `BR_GATE_FLOOR`)
+all stay exactly as they are. The returns come from not re-treading
+ground and from doing in parallel what was being done in series.
+
+**Fan the survey out and integrate in the same round.** A survey of one
+country is: does Wikidata hold a code, does a register exist, does that
+register carry that code, does it hold contacts. Four questions, no
+judgement, and the answer is a go or a no-go. Round twelve answered them
+for six countries and round sixteen for seven, each over a whole round.
+Put one worker on each candidate, have each return only those four
+answers plus the endpoint it found, and spend the round itself on the
+ones that came back go. Ten candidates surveyed and two integrated beats
+one country investigated thoroughly, because the investigation is the
+cheap half.
+
+**Bound the concurrency on every fetch and never fetch serially.** Round
+twenty measured it: six at a time took 5,570 CNPJ lookups from
+twenty-three minutes to four. The same applies to the verification pass
+and to the parliament crawl.
+
+**Classify what blocked a country, then route it by class.** Four
+classes, and only one of them is work:
+
+| Class | What it needs | Who can do it | Municipalities behind it |
+| --- | --- | --- | --- |
+| No register exists | nothing — it is closed | — | Mexico, the Philippines, Chile, Portugal, Colombia (per-city only) |
+| Needs a credential | one application, once | the account holder | Sweden 292, Denmark 98 |
+| Needs an identifier on Wikidata | one import, which unblocks the country permanently and for everybody | anyone with a Wikidata account | Slovakia 2,898, Estonia 1,238, Greece 940, Japan 1,812 |
+| Host unreachable from this sandbox | the same script, run from an ordinary connection | a local machine | Russia 20,283, Poland 3,185, Hungary 3,191, Receita's bulk files, Geofabrik, 118 of 193 parliament front pages |
+
+The third and fourth classes are where the volume is, and neither is a
+round of research. **An import is the highest-leverage thing in this
+list**: the register already carries the code, the Wikidata item already
+exists, and the join becomes exact for every future round and for anyone
+else doing this work. The fourth class is a download run from the
+MacBook rather than from here — round eight's Hungarian wall, round
+twenty's Receita wall and round seven's Geofabrik wall are all the same
+wall and all of them fall to an ordinary consumer connection.
+
+**Prefer a code that already exists to a register that does not.**
+Measured this round: **137,398 municipalities (72%) carry `P402`, the
+OpenStreetMap relation id, and 93,014 of those have no email anywhere.**
+Round seven rejected OpenStreetMap partly because "the contacts in OSM
+are on the town hall object, not the boundary, so Tier B needs a spatial
+join as well as a planet-sized download". Half of that objection is
+gone: with `P402` the boundary relation is reached by a published id, not
+by geometry, and the relation names its own `admin_centre`. The download
+is still a download, which puts it in class four above. **This is the
+only route that reaches the 55,488 municipalities in countries where no
+register has been found at all**, so proving the yield on one country is
+worth a round on its own — and must be run locally.
+
+**Take the cheap half of a country rather than none of it.** Ontario
+publishes a telephone number and a street address for 443 of its 444
+municipalities and an email for two. Round nineteen measured that and
+left it. Ship the telephone and the street: the chart has a column for
+each field for exactly this reason, and a municipality with a switchboard
+and no email is not an empty record.
+
+**Never re-check a closed door without a reason.** Poland's open-data API
+was checked in rounds seven, twelve and sixteen; Overpass in seven,
+thirteen and fourteen; Bulgaria in thirteen, fourteen and seventeen. That
+is five rounds of re-treading. The register below is the record; add to
+it and read it before surveying anything.
+
+### Closed doors, and what would reopen each
+
+| Source | Last checked | Class | What would reopen it |
+| --- | --- | --- | --- |
+| Poland `api.dane.gov.pl` | round sixteen | unreachable here | run it from an ordinary connection |
+| Hungary `data.gov.hu`, KSH Helységnévtár | round eight | unreachable here / JS links | run it locally; key coverage is 99% |
+| Receita Federal bulk CNPJ files | round twenty | paths not discoverable | the mirror works; find the real paths locally |
+| Geofabrik, overpass-api.de, kumi, private.coffee | rounds seven, thirteen | unreachable here | a planet or country extract downloaded locally |
+| Rosstat | round twelve | self-signed certificate | locally, with OKTMO on 98% of items |
+| Bulgaria IISDA | round seventeen | **publishes no contacts at all** | nothing. It holds post titles. Closed. |
+| Spain DIR3 for autonomous communities | round seventeen | no `CONTACTOS` column | nothing in that file. Closed. |
+| Italy IPA for provinces | round seventeen | no shared code | a province identifier on Wikidata |
+| Japan National Tax Agency | round seventeen | no `P3548` on any item | the import |
+| Slovakia RPO, Estonia Business Register | round fourteen | no organisation id on Wikidata | the import |
+| Greece Di@ύgeia | round seven | keyed by VAT number | the import |
+| Sweden Bolagsverket, Denmark CVR | round sixteen | account required | the account |
+| TED (EU tender notices) | round fourteen | **joins perfectly, wrong payload** | nothing. A procurement officer's Gmail is not the council's address. Closed on purpose. |
+
+### The completeness chart, every round
+
+`tools/completeness.py` is the chart and it is not optional: it is what
+says which country the next round should touch, and it separates the two
+things this file has repeatedly confused — a municipality with no contact
+published anywhere, and a municipality whose contact is published and not
+joined yet. The first needs a source; the second needs a round.
+
+It measures Wikidata live, through QLever first (round nineteen's reason:
+Wikidata's own service has been answering `429 Aggressively rate-limiting
+to 1 req / min`, which makes a census impossible, and QLever answers the
+same dump in about a tenth of a second). It then reads `muni/` off disk
+and reports what the registers have shipped on top. **If `muni/` is not
+in the checkout it says so rather than reporting zero** — which is the
+state this repo is in, and it is the first thing to fix.
+
+As measured on the day this was written:
+
+| Layer | Units | Website | Email | Telephone | Street address | Lawmaking body |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Countries | 205 | 171 (83%) | 1 (0%) | 1 (0%) | 0 (0%) | 203 (99%) |
+| First-level divisions | 5,143 | 2,502 (49%) | 213 (4%) | 160 (3%) | 35 (1%) | 813 (16%) |
+| Municipalities | 191,524 | 102,686 (54%) | 47,086 (25%) | 38,365 (20%) | 3,720 (2%) | 2,158 (1%) |
+
+Jurisdictions of any level with a lawmaking body recorded: 5,091
+territories and 857 governments — round eleven exhausted that source.
+
+Three things in that chart are worth knowing before planning anything.
+**The country row's email and telephone columns are not a gap in the
+work**: a parliament's address comes from `nl` and the front-page crawl,
+not from `P968` on the country item, and one country in 205 carrying an
+email is what Wikidata holds rather than what the page shows. **The
+first-level row is the thinnest real layer** — 4% email across 5,143
+regions, and the only register that has touched it is Spain's eighteen
+provincial councils. **The street-address column is 2% worldwide and
+Brazil alone is 5,568 of it**, so a register that publishes a street and
+no email still moves a column nobody else is filling.
 
 ---
 
@@ -132,7 +299,34 @@ are six of them.
 
 ---
 
-## 0. Read this before editing
+### Also in this round: the query layer stops lying
+
+`sparql()` threw on the first refusal, and every caller caught it, wrote a
+line to the console and carried on — so a refused query produced a short
+list that read as a complete one. That is the fault behind every report of
+"the list is missing things": Austin came back with 104 offices on one run
+and 4 on the next, from the same click. It now tries three times, waits as
+long as the service asks for in `Retry-After`, gives up at once on a 4xx
+that is not 429 (that is the query's own fault and a retry fails the same
+way), and on final failure sets `QFAIL` and puts one line under the trail
+saying the lists are short and why.
+
+Checked both ways, and worth repeating after any change here: intercept
+`**/sparql*` and answer 429 with `Retry-After: 1` — expect three attempts,
+`QFAIL` above zero and the notice on screen (measured: 3 attempts, 7.2
+seconds, notice present); answer 400 and expect one attempt and no retry
+(measured: 1). Left alone, the notice stays empty.
+
+Not QLever, though it would sidestep the outage entirely: these queries
+lean on `SERVICE wikibase:label`, which QLever does not implement, so
+moving the page to it means rewriting every query to carry its own labels.
+The two tools in `tools/` already prefer QLever and ask their own
+label-free queries, which is why a census that WDQS refuses outright now
+takes ten seconds.
+
+---
+
+## 0b. Read this before editing
 
 `how_to_reach_them.html` **is the source.** An older note said it was assembled
 from parts (`n1.html`, `offices.js`, `routes.json`, `nassemble2.py`…). Those
