@@ -480,6 +480,162 @@ These came in over one session and all of them are done unless noted.
    rounds stale. The current handoff is this file, `case-map-src/docs/HANDOFF.md`, and there should
    never again be two.
 
+## READ THIS FIRST: round 41 — the second outside-sourcing round, and the route for this job is now mapped
+
+Sixteen cases: fifteen from the queue's tested-index front plus a single-case pass on the card round
+40 left one pass short. Four writers, four separate checkers. Build clean: `loan-condition cases
+matched 173 of 173`, 24 patterns, 25.0 MB, zero page and zero console errors headless. **1,182 cases,
+137 countries — unchanged, as intended.**
+
+| Outcome after checking | Cases |
+| --- | --- |
+| Promoted to `documented` | **2** |
+| `contested`, now resting on outside evidence as well | 8 |
+| Correction only | 4 |
+| No outside source for the card's own harm | 2 |
+| New sources merged | **40** |
+| Corrections | **61** across sixteen cards |
+
+**`documented` is 674 of 1,182, 57%**, from 672. Two rounds of this work have moved it four cases.
+That is the honest rate and the section below explains why it is not going to be much faster.
+
+### The two promotions
+
+- **`nhiip-india-corridor-land-acquisition`.** Round 40's checker found the Bank's procurement plan
+  and declined to promote on its own find. This pass confirmed it and found more: the plan of 9 June
+  2020 carries package NHIIP-BR-106-7, Birpur–Bihpur km 0 to 106 of NH-106, against loan IBRD-83010,
+  prior review, actual amount US$101,671,942.50. The ministry's own resettlement plan for that
+  package, disclosed by the Bank in 2014, resolved the geography that had held the card open for two
+  rounds: **Birpur–Bihpur is km 0–136, split into Package I, km 0–106, which the Bank financed, and
+  Package II, the Kosi missing link, which it did not** — so the "chainage inconsistency" earlier
+  rounds recorded was never an inconsistency, every figure was right for what it described. Both
+  claimants' villages sit inside the financed package by that plan's own chainage table.
+- **`zambia-2004-wage-freeze-teachers`**, and this one is the round's methodological result: **the
+  judgment index was useless and the press carried it.** ZambiaLII holds three documents on "wage
+  freeze", all university union cases. The Mail & Guardian and Inter Press Service both carry the
+  same Lusaka dispatch of 16 February 2004 on their own pages — the 6 February budget, PAYE raised,
+  a freeze on the wages of more than 120,000 public service workers, and the finance minister saying
+  the government had no option if it was to get back onto the PRGF by June. The harm is now outside
+  the lender. **The cause is still `contested` and the card says so**: the education ministry's own
+  press officer denied IMF causation in February 2004 and the minister asserted it nine months later.
+
+### What the checkers cut, and one of them caught a reversed outcome
+
+- **A litigation outcome stated backwards.** On `tanzania-tscp-compensation-delays` the writer had
+  the municipal council's two attempts to set aside an arbitral award failing. The index summary of
+  the April 2017 ruling says the award **was** set aside for the arbitrator exceeding his
+  jurisdiction. The council won. That would have gone onto the live card. The checker also cut the
+  writer's framing of the dispute as the counterpart-funding failure seen from the contractor's side
+  — nothing on the record ties it to money the council owed — and the card dropped to
+  correction-only. **This is CHECK40's first failure mode exactly: a contractor's dispute that names
+  the project, the package and the contract number and settles nothing about the people.**
+- **Bukoba's promotion was cut, and the reasoning is worth keeping.** `bukoba-airport-resettlement-
+  arrears` is the map's weakest keep. The writer promoted it on Tanzania's Controller and Auditor
+  General recording TZS 36,826,419 of unpaid compensation against the Transport Sector Support
+  Project, plus a 2018 High Court land case at Kashai, Bukoba. The checker cut it on three grounds:
+  **the audit carries the harm but not the place** (the figure is project-wide across 909 km of road
+  and four airports, and the step to Bukoba runs through the lender's own claim that no resettlement
+  was needed elsewhere); **the judgment carries the place but not the credit**, and the Airports
+  Authority's own 2016 plan says compensation under the 2008 valuation was finished before the Bank
+  joined in 2010, which puts the 2009 payment on the wrong side of the financing boundary; and
+  **nothing was read** — index metadata and the platform's own case note are not a judgment, on a
+  card whose whole significance is that its harm is documented without a count of people.
+  It also found the card wrong in the other direction: **the Bank's documents do give counts** — 14
+  people affected under the 2008 valuation, 15 in the 2009 plan, 41 plus a primary school at phase
+  II, and five payments pending broken down as three court cases, one untraceable claimant and one
+  grievance. Added as a source.
+- **A promotion held on narrower ground.** The NHIIP checker confirmed the financing link element by
+  element and then settled the transfer question **against** the writer: the balance Bihar works did
+  move to the Green National Highway Corridors Project, agreed mid-2020 and restructured 6 July 2022
+  with retroactive effect. It kept the promotion because the Bank's own plan carries this package by
+  chainage against this loan under prior review, and the acquisition, the construction and the July
+  2021 award all fall inside that period — so the Burkina airport and São Paulo Line 5 precedent does
+  not bite. It also cut four claims that were counsel's submissions rather than findings, and
+  "sixty households" back to **sixty structures**, which is what the court counted.
+
+### The method findings, and they matter more than the two promotions
+
+1. **Two quoted phrases in one peachjam query behave as AND, and that is what made this round work.**
+   `?search="Kariakoo" "Dar Rapid Transit"` returns 2 documents where `"Kariakoo"` alone returns
+   1,164. The five single phrases tried per card in round 39's prefetch had found nothing.
+2. **But the AND operates within an indexed page portion, not within a document — and reading it the
+   other way manufactures false absences.** A checker nearly wrote off a judgment's own figures on
+   zero-counts: `"Regina Peter Kamugisha"` paired with `"132,330,000"`, with `"4,768"`, with
+   `"exhibit D2"` all return zero, yet every one of those strings is in that judgment, and the
+   unpaired query finds it at once. **To test whether a document holds a phrase, query the phrase
+   alone, or pair it with something from the same page.** Only a count of zero on an unpaired phrase
+   is evidence of anything.
+3. **Every peachjam judgment page is walled, not just Kenya Law's.** Round 40 had this for Kenya Law,
+   GhaLII and LesothoLII. Round 41 adds TanzLII and ULII: `/akn/` paths answer 403 behind a
+   Cloudflare interstitial, including `/source` and `/source.pdf`, while the search API on the same
+   host serves unchallenged and the host's own 404s come back clean — so the wall is on the
+   document-view route, not the host. **Kenya Law's wall covers the official gazette too**, which
+   matters because the gazette is where Kenyan acquisition and compensation records live. Nobody
+   tried to defeat any of them. The consequence is structural and belongs on the cards: **in these
+   countries this map can cite that a judgment exists and what its cause title and page snippets
+   say, and cannot cite what it held.** One possible way through, found and unusable so far:
+   `media.tanzlii.org` serves judgment PDFs over plain curl but needs a signed path published only
+   on the walled page.
+4. **The audit offices are the better route where the index is thin, and they were tested.**
+   `nao.go.tz` serves and its archive reaches 2009, with the Development Projects series the source
+   of both Tanzanian findings this round, read in Swahili with `pdftotext -layout`. `cag.gov.in`
+   serves. `parliament.go.ke` serves and is where the Kenyan Auditor-General's project audits sit.
+   **Uganda's `oag.go.ug` serves but its archive begins at FY2017/18**, so it cannot reach a project
+   that closed in 2013 — the working listing paths are `/allvfms`, `/allengineeringaudits`,
+   `/reportextracts` and `/thematicreports`, while `/reports` returns 500. `ago.gov.zm` serves with
+   an empty index on a working route. `oagkenya.go.ke`, `oiagsmz.go.tz` (Zanzibar's real audit host,
+   not the `ocag.go.tz` an earlier note recorded) and `parliament.gov.zm` all fail — the last on TLS
+   verification, which nobody disabled.
+
+### Two procedural defects, both the same shape as round 40's
+
+**Two writers handed back without their report** (`r41_d_report.md` never existed, and
+`r41_nhiip_report.md` likewise), so two checkers worked without the writer's own account of where its
+work was thinnest — and both said so unprompted. Round 40 recorded the mirror image, a checker
+handing back without its log. **Require the report and the log before accepting a batch**, and say so
+in the dispatch rather than only in the brief.
+
+### What this means for the queue, and it is a narrowing
+
+**The tested-index front is now spent.** Rounds 40 and 41 worked 27 of the 35 cases on it. The eight
+left sit in Nigeria, Bangladesh, Ghana and Malawi, whose indexes hold **nothing** on this subject —
+Nigeria 0, Ghana 0, Malawi 0 documents on "Resettlement Action Plan", against Kenya Law's 155. So
+the judgment-index route, which round 39 built the queue around, is essentially worked out after two
+rounds, and it moved `documented` by four cases.
+
+**The remaining 184 lender-heavy `contested` cases need a different route**, and this round showed
+which: the national audit office and the national press. The Zambian promotion came from the press
+with no judgment anywhere; both Tanzanian findings came from the Controller and Auditor General.
+**Revise the estimate accordingly: the outside-sourcing job is not two or three rounds to 60%
+`documented`. It is a press-and-audit job of unknown length, and the next round should test it on
+five or six cases before anyone commits a wide round to it.** The 48 Chinese lender-heavy `contested`
+cases have neither an index nor an accessible audit office, and should be stated as a limit rather
+than chased.
+
+### Open from round 41
+
+- **A disbursement record naming the NH-106 package** is still the one document that would close its
+  financing chain outright. Both rounds' checkers named that gap.
+- **Three CAG Management Letters** on loan 8301-IN, referred to in the audit certificates and omitted
+  from the disclosed copies, are the only Indian state-audit text that could speak to compensation on
+  that corridor.
+- **An entity audit of the Tanzania Airports Authority for 2016/17 or 2017/18** may break the TZS
+  36,826,419 down by site and earn Bukoba its promotion.
+- **A possible new case, not an extend**: *Dennis Siara Kessy & 30 Others*, Land Case 120 of 2023,
+  decided 26 September 2024, where acquisition and valuation for the Dar es Salaam bus works were
+  held void for want of statutory notice and proper survey, 31 plaintiffs. Different parcels and nine
+  years after the clearance on the existing card, so on the financing boundary it probably belongs to
+  a later Dar es Salaam operation.
+- **By-product worth its own case**: the Tanzanian auditor records 1,125 households affected by the
+  expansion of Julius Nyerere International Airport still unpaid 23 years after the 1997 valuation,
+  the claim revalued in May 2020 from TZS 7.4bn to TZS 29.8bn without the Chief Government Valuer
+  approving the recalculation. Same authority, different airport and project.
+- **The Punjab roads board file** for the Dehlon bypass is still the shortest path to a promotion and
+  **cannot be reached from this environment at all**: `prbdb.punjab.gov.in` fails the HTTPS tunnel on
+  every curl variant tried and returns 503 over HTTP. It serves to a browser. The board publishes the
+  award announcement under section 23 and an unclaimed-compensation notice naming khatas, khasras,
+  owners and amounts for villages Dehlon and Rurka. **Anyone with an ordinary connection can
+  download those two files in a minute**, and that card becomes `documented`.
 ## READ THIS FIRST: round 40 is merged, built and tested — the first outside-sourcing round
 
 **The job this file has recommended since round 31 has now been run.** Twelve `contested` cases,
