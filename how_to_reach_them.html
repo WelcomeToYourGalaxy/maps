@@ -2655,17 +2655,65 @@ function cget(k){ try{ const r=localStorage.getItem(CACHE_V+':'+k); if(!r) retur
   const o=JSON.parse(r); if(Date.now()-o.t > 6048e5) return null; return o.v; }catch(e){ return null; } }
 function cset(k,v){ try{ localStorage.setItem(CACHE_V+':'+k, JSON.stringify({t:Date.now(),v:v})); }catch(e){} }
 
+/* Every office on this page comes from one query service, and that
+   service refuses requests when it is busy: 429 with a retry window, 503,
+   and through the late-2026 outage everything above one request a minute
+   ("429 Aggressively rate-limiting to 1 req / min"). This used to throw on
+   the first refusal; each caller caught it, wrote a line to the console and
+   carried on, so **a refused query produced a short list that read as a
+   complete one** — Austin came back with 104 offices on one run and 4 on
+   the next, from the same click, and a reader would have concluded their
+   city government has four offices in it.
+
+   Three attempts, waiting as long as the service asks for in `Retry-After`,
+   and an immediate give-up on a 4xx that is not 429, because that is the
+   query's own fault and a retry fails the same way. If it still refuses,
+   `QFAIL` is non-zero and the page says on screen that the lists are
+   incomplete. Check `QFAIL` in the console before suspecting the
+   classifier.
+
+   Not QLever, though it answers the same dump in milliseconds and would
+   sidestep the outage: these queries lean on `SERVICE wikibase:label`,
+   which QLever does not implement, so moving the page to it means
+   rewriting every query to carry its own labels. The census tools in
+   `tools/` already prefer it, and they ask their own label-free queries. */
+let QFAIL=0, QNOTE='';
+function noteQueryTrouble(){
+  QFAIL++;
+  QNOTE=' Some lists on this page are short of what the record holds: the '+
+        'service they come from refused '+QFAIL+(QFAIL===1?' request':' requests')+
+        ' just now. Press "Ask again for fresh records" in a moment.';
+  try{ noteBelow(''); }catch(e){}
+}
 async function sparql(query, cacheKey){
   if(cacheKey){ const c=cget(cacheKey); if(c) return c; }
-  const ac=new AbortController(), killer=setTimeout(()=>ac.abort(), 58000);
-  let r;
-  try{ r = await fetch(WDQS+'?query='+encodeURIComponent(query)+'&format=json',
-      {headers:{'Accept':'application/sparql-results+json'}, signal:ac.signal}); }
-  finally{ clearTimeout(killer); }
-  if(!r.ok) throw new Error(r.status===504?'the query timed out at Wikidata':'Wikidata returned '+r.status);
-  const rows = (await r.json()).results.bindings;
-  if(cacheKey) cset(cacheKey, rows);
-  return rows;
+  const url = WDQS+'?query='+encodeURIComponent(query)+'&format=json';
+  let last='';
+  for(let att=0; att<3; att++){
+    const ac=new AbortController(), killer=setTimeout(()=>ac.abort(), 58000);
+    let r=null;
+    try{ r = await fetch(url, {headers:{'Accept':'application/sparql-results+json'},
+                               signal:ac.signal}); }
+    catch(e){ last=(e&&e.name==='AbortError')?'the request timed out':((e&&e.message)||'fetch failed'); }
+    finally{ clearTimeout(killer); }
+    if(r && r.ok){
+      const rows = (await r.json()).results.bindings;
+      if(cacheKey) cset(cacheKey, rows);
+      return rows;
+    }
+    if(r){
+      last = r.status===504 ? 'the query timed out at Wikidata'
+                            : 'Wikidata returned '+r.status;
+      /* 429 and 503 are "come back later"; any other 4xx is this query */
+      if(r.status>=400 && r.status<500 && r.status!==429) break;
+      const ra=+(r.headers.get('Retry-After')||0);
+      await new Promise(z=>setTimeout(z, Math.min(Math.max(ra*1000, 1200*(att+1)), 8000)));
+    } else {
+      await new Promise(z=>setTimeout(z, 900*(att+1)));
+    }
+  }
+  noteQueryTrouble();
+  throw new Error(last||'the query service refused');
 }
 
 /* the jurisdiction's own channel, its legislature and its head of government */
@@ -3282,7 +3330,11 @@ function setAdmData(features){
   src.setData({type:'FeatureCollection',
     features: features.map((f,i)=>({...f, id:i+1}))});
 }
-function noteBelow(msg){ const el=$('#admnote'); if(el) el.textContent=msg||''; }
+/* One element carries both the note about this place and the note about a
+   refused query, because they are read in the same glance and a second
+   element under the trail would push the controls down a row. */
+function noteBelow(msg){ const el=$('#admnote');
+  if(el) el.textContent=(msg||'')+(QNOTE||''); }
 
 /* ---------- clicks ---------- */
 async function onCountry(f){
