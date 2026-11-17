@@ -135,7 +135,17 @@ for mapname, filed in (
         # those is right and must not fail.
         ("revolving_door_unavailable",
          set().union(*[_expand(r["iso3"]) for r in corr["revolving_door"]
-                       if not r.get("public_move")] or [set()]))):
+                       if not r.get("public_move")] or [set()])),
+        # New at round 71, for the same reason the line above was new at round 68: the
+        # removals-and-pressure row is now the only one of the six with nowhere to record a
+        # documented blank, so its negatives lived in this file's prose and in the research log
+        # rather than anywhere a script could read. Its nine absent countries are every one of
+        # them worked and reasoned, and that was invisible to tooling. "Filed" is the layer's
+        # own rule, kind != "other", because an event filed as `other` is counted nowhere and a
+        # negative beside one of those is correct.
+        ("events_unavailable",
+         set().union(*[_expand(v["iso3"]) for v in ev["events"]
+                       if v.get("kind") != "other"] or [set()]))):
     entries = gaps.get(mapname, {})
     bad = []
     for iso in sorted(set(entries) & filed):

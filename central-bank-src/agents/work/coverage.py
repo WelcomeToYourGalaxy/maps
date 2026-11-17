@@ -132,6 +132,42 @@ print(f"  {len(_gdp & LISTED)} of the {len(LISTED)} places the World Gold Counci
 print(f"  {len(_gdp - LISTED)} further places have a custodian but no gold holding of their own "
       f"(the BCEAO members, whose gold is pooled at the union rather than apportioned)")
 
+# ---- DEPTH: how many places hold exactly one record, on the three priority rows ----
+# The three rows the owner cares most about are at their breadth ceiling, so the honest measure of
+# a round is no longer the place count: it is how many places move off "exactly one". "One findable
+# case" is not "one case", which about.html says in its completeness paragraph.
+#
+# This lives here rather than in a round's own script on purpose. Round 71 derived it separately and
+# got three wrong numbers from two reimplementation bugs -- the EMU/ECB key mismatch that expand()
+# handles above, and case_updates' `match` field, whose name it guessed. Both are already solved in
+# this file. A second implementation of a filter this map has lost three scripts to drift is not a
+# cross-check, it is a fourth bug, so the distribution is computed from the same filtered lists the
+# table above uses and its "places with a record" column must equal the figures printed above.
+def _depth(rows, key='iso3'):
+    n = {}
+    for r in rows:
+        if not r.get(key):
+            continue
+        for i in expand({r[key]}) & places:
+            n[i] = n.get(i, 0) + 1
+    return n
+
+print("\nDepth on the three priority rows -- places by how many records they hold")
+print(f"  {'Row':<34}{'with':>6}{'one':>6}{'two':>6}{'3+':>5}")
+_DEPTH = {}
+for _lbl, _rows in (('Corruption cases', _cc_live),
+                    ('Revolving door', _rdc),
+                    ('Governor removals and pressure', _evc)):
+    _n = _depth(_rows)
+    _DEPTH[_lbl] = _n
+    _w = [k for k, v in _n.items() if v]
+    print(f"  {_lbl:<34}{len(_w):>6}{sum(1 for k in _w if _n[k]==1):>6}"
+          f"{sum(1 for k in _w if _n[k]==2):>6}{sum(1 for k in _w if _n[k]>=3):>5}")
+for _lbl, _n in _DEPTH.items():
+    _one = sorted(k for k, v in _n.items() if v == 1)
+    print(f"\n  {_lbl} -- {len(_one)} places hold exactly one, so a second record moves them:")
+    print("    " + ' '.join(_one))
+
 # ---- per-pattern completeness ----
 pat = L('patterns.json')['patterns']
 TIER = {

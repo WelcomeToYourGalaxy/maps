@@ -66,6 +66,21 @@ def main():
     # page's own arithmetic as {"p:ISO": {score, groups, pctl_dir, pctl_share}},
     # and that is the shape to prefer.
     computed = bool(boxes) and isinstance(next(iter(boxes.values())), dict)
+    # ROUND 71: refuse the legacy shape instead of passing on it. Round 70 found this script
+    # had reported "checked 0 country paragraphs" and then "no stale figures" for several
+    # rounds while 189 paragraphs went unverified, and fixed it by ADDING the computed shape
+    # above. The blind path itself was left in place: PANEL below still matches the uppercase
+    # heading ULTERIOR INFLUENCE, ALL AROUND, which app.js stopped printing when the heading
+    # went sentence case and which now appears nowhere in this repo except this file, mk_scores.py
+    # and the rendered dumps in r57-r63. So a boxes.json passed here again would match nothing,
+    # check nothing, and print a clean run -- the same silent pass, waiting for the next caller.
+    # A check that cannot fire must be loud about it, because a check that prints "ok" gets
+    # BELIEVED, which is worse than one that cries wolf.
+    if not computed:
+        sys.exit("check_scores.py: this input is a dump of rendered box text, and the panel "
+                 "heading it would have to match is no longer printed by app.js, so this run "
+                 "would verify nothing and report a clean pass.\n"
+                 "Run:  python3 agents/work/mk_scores.py   then pass agents/work/scores.json")
     fix = '--fix' in sys.argv[1:]
     wr = json.load(open(WR))
 
