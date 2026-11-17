@@ -30,6 +30,15 @@ import sys
 A = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..')
 
 
+def _num_words(n, units, tens):
+    """'forty-two' for 42. Only used to build the word table for the completeness
+    paragraph, which spells its figures out."""
+    if n < 20:
+        return units[n]
+    t, u = (n // 10) * 10, n % 10
+    return tens[t] if not u else f'{tens[t]}-{units[u]}'
+
+
 def load(n):
     return json.load(open(os.path.join(A, 'agents', n), encoding='utf-8'))
 
@@ -157,7 +166,7 @@ def main():
         if not m:
             unfound.append((label, pat))
             continue
-        raw = m.group(1)
+        raw = m.group(1).strip()   # patterns allow spaces for "one hundred"; trim the leading one
         got = WORDS.get(raw, None) if not raw.isdigit() else int(raw)
         if got is None:
             unfound.append((label, pat))
@@ -167,10 +176,22 @@ def main():
     # The completeness paragraph spells its figures out in words, and the handoff warns
     # that exactly these go stale: round 60 found "80 of the 135" had been wrong for
     # several rounds while the figure beside it was current. Check them too.
-    WORDNUM = {'four': 4, 'fifteen': 15, 'ninety-seven': 97, 'ninety-four': 94,
-               'eighty-eight': 88, 'eighty-nine': 89, 'ninety': 90, 'ninety-one': 91,
-               'eighty-seven': 87, 'ninety-two': 92, 'ninety-three': 93,
-               'ninety-five': 95, 'ninety-six': 96}
+    # Built rather than hand-listed: round 70 went blind on three figures at once
+    # because 'seventeen', 'eighty-one' and 'one hundred' were simply absent, and a
+    # blind check reads as a pass. This covers every spelling the paragraph can reach.
+    _UNITS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight',
+              'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen',
+              'sixteen', 'seventeen', 'eighteen', 'nineteen']
+    _TENS = {20: 'twenty', 30: 'thirty', 40: 'forty', 50: 'fifty', 60: 'sixty',
+             70: 'seventy', 80: 'eighty', 90: 'ninety'}
+    WORDNUM = {w: i for i, w in enumerate(_UNITS)}
+    for t, tw in _TENS.items():
+        WORDNUM[tw] = t
+        for u in range(1, 10):
+            WORDNUM[f'{tw}-{_UNITS[u]}'] = t + u
+    WORDNUM.update({'one hundred': 100, 'a hundred': 100})
+    for n in range(1, 100):
+        WORDNUM[f'one hundred and {_num_words(n, _UNITS, _TENS)}'] = 100 + n
     dec = collections.Counter()
     for c in counted_cases:
         y = re.search(r'(?:19|20)\d{2}', str(c.get('years') or ''))
@@ -194,9 +215,9 @@ def main():
         if n_ == 1:
             one += 1
     word_checks = [
-        ('cases in the 1980s', dec[1980], r'([a-z\-]+) in the 1980s'),
-        ('cases in the 1990s', dec[1990], r'and ([a-z\-]+) in the 1990s'),
-        ('cases in the 2010s', dec[2010], r'against ([a-z\-]+) in the 2010s'),
+        ('cases in the 1980s', dec[1980], r'([a-z\- ]+?) in the 1980s'),
+        ('cases in the 1990s', dec[1990], r'and ([a-z\- ]+?) in the 1990s'),
+        ('cases in the 2010s', dec[2010], r'against ([a-z\- ]+?) in the 2010s'),
         ('countries with exactly one counted case', one,
          r'([A-Za-z\-]+) of the \d+ countries with a counted case have exactly one'),
         ('countries coloured on the case layer', live_places,
@@ -207,7 +228,7 @@ def main():
         if not m:
             unfound.append((label, pat))
             continue
-        raw = m.group(1)
+        raw = m.group(1).strip()   # patterns allow spaces for "one hundred"; trim the leading one
         got = int(raw) if raw.isdigit() else WORDNUM.get(raw.lower())
         if got is None:
             unfound.append((label, pat))
