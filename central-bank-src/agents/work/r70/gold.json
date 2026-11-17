@@ -1,0 +1,115 @@
+{
+ "records": [
+  {
+   "cb_iso3": "MRT",
+   "country": "Mauritania",
+   "central_bank": "Banque Centrale de Mauritanie",
+   "entity": "Banque de France",
+   "name_as_stated": "Banque de France (table line: \"Or en dépôt chez la BDF\")",
+   "entity_type": "central bank",
+   "entity_hq_city": "Paris",
+   "entity_hq_iso3": "FRA",
+   "relation": "holds its gold reserves in custody",
+   "summary": "The Banque Centrale de Mauritanie's audited balance-sheet note on gold states that its gold holdings consist principally of gold deposited at the Banque de France, and the note's own breakdown table assigns the entire holding to that one line.",
+   "detail": "Rapport annuel 2025 of the Banque Centrale de Mauritanie, section V.4 'Notes sur le bilan', Note 2 'Avoirs en or' (p. 218): \"Les avoirs en or sont constitués principalement de l'or déposé à la Banque de France.\" The note's decomposition table carries a single line, \"Or en dépôt chez la BDF\", of MRU 1,910,755,583 at 31 December 2025 against MRU 1,157,149,570 at 31 December 2024 — that is 100% of the stated total, so the whole holding is placed at the Banque de France. The accompanying characteristics table gives the quantity as 11,125 troy ounces at both dates, valued at the London fixing (USD 4,308/oz at end-2025). BDF is the abbreviation the same report expands elsewhere; the report's own abbreviation list gives BoE for Banque d'Angleterre, which appears nowhere in the gold note.",
+   "source_title": "Banque Centrale de Mauritanie, Rapport annuel 2025, Note 2 « Avoirs en or » (section V.4 Notes sur le bilan, p. 218)",
+   "source_url": "https://bo.bcm.mr/sites/default/files/2026-08/Rapport%20annuel%20de%20la%20BCM%202025.pdf",
+   "weak_source": false,
+   "quote": "Les avoirs en or sont constitués principalement de l'or déposé à la Banque de France."
+  }
+ ],
+ "blanks": [
+  {
+   "iso3": "TKM",
+   "kind": "confirmed blank",
+   "note": "NOTHING IS PUBLISHED, not a silent document. The Central Bank of Turkmenistan host cbt.tm answers 403 to curl but renders through WebFetch; the site's own navigation has no annual report and no audited financial statements at all. Its only publications entry, 'Neşirler', points to https://www.cbt.tm/tm/journal/journal.html, a bank-news journal ('Bank habarlary'), and 'Arhiw' (https://www.cbt.tm/tm/archive.html) archives site data, exchange rates and precious-metal rates rather than reports. The single PDF served anywhere in the site chrome is Privacy_Policy.pdf. cbt.gov.tm does not resolve through the proxy (CONNECT tunnel 502). So there exists no CBT document of the class that could name a gold custodian; this is a want-of-document blank and should not be recorded as a document read and found silent. Only remaining route: the most recent IMF Article IV consultation for Turkmenistan, which describes reserve assets but will not name a custodian."
+  },
+  {
+   "iso3": "ERI",
+   "kind": "confirmed blank",
+   "note": "NOTHING IS PUBLISHED, not a silent document. www.bankoferitrea.gov.er does not resolve through the proxy (curl: CONNECT tunnel failed, response 502) and WebFetch refuses it as robots_disallowed, so the host could not be read either way. A WebSearch for 'Bank of Eritrea annual report audited financial statements published gold reserves' returned not one Bank of Eritrea document of any kind — only an Eritrea insurance-sector report, World Bank/IndexMundi reserve aggregates, tradingeconomics pages, and the National Bank of ETHIOPIA's statements (nbe.gov.et), which are a different bank. The Bank of Eritrea publishes no annual report and no audited financial statements, and Eritrea has had no Article IV consultation concluded for many years, so there is no document in existence to read. Want-of-document blank, not a silent document."
+  },
+  {
+   "iso3": "SSD",
+   "kind": "confirmed blank",
+   "note": "A DOCUMENT CLASS IS LISTED BUT NO FILE IS SERVED — closer to nothing published than to a silent document. boss.gov.ss loads normally (200, 202 KB). Its page https://boss.gov.ss/financial-statements/ ('Annual Reports & Financial Statements') lists nine documents, 2011-12, 2013, 2014, 2015, 2016, 2017, 2018, 2019 and 2020, and NOTHING after 2020. Every one of those links is dead: the 2020 and 2019 files (www.boss.gov.ss/an/Annual-Report-Financial-Statement-for-the-year-20XX.pdf) return HTTP 404 with a 125,655-byte HTML error page to curl and fail as client_error to WebFetch; the older /an/ paths (FinancialStatement2015.pdf, AnnualReportandFinancialStatement2017.pdf, AnnualReportandFinancialStatemet2018.pdf) also HEAD 404 text/html. https://boss.gov.ss/publications/ serves no PDF at all. So no Bank of South Sudan audited statements are retrievable from the bank, none is published for any year after 2020, and no document was read that could have been silent. Next route: the Auditor General (South Sudan), already a party on the map, or IMF staff reports on reserve composition, neither of which will name a custodian."
+  },
+  {
+   "iso3": "YEM",
+   "kind": "confirmed blank",
+   "note": "A DOCUMENT IS PUBLISHED, BUT NOT THE CLASS THAT COULD NAME A CUSTODIAN — and no audited statements are published. The Aden bank's host www.cby.gov.ye resets the connection (curl 35), but cby-ye.com (200, 52 KB) and english.cby-ye.com serve. The CBY's publications listing (cby-ye.com/publicationsandcirculars, 2 pages) carries circulars and credit-risk-information-system forms, not reports. The English site publishes a monthly statistical bulletin: 'Monetary and Financial Developments', December 2025 (https://english.cby-ye.com/files/69b90b6854bb2.pdf, 28,485 characters extracted) and September 2025 (.../69381ea532cd5.pdf, 28,673 characters) were both downloaded and grepped in full. Neither contains the word gold anywhere; the only hit for 'vault' is the definition of Currency Issued ('plus the cash held in banks' vaults'). The bulletin's foreign-asset tables report net foreign assets of the CBY with no asset-by-asset composition. No audited financial statements with notes have been published by either the Aden or the Sanaa bank since 2016, so there is no gold note to read. Want-of-document blank at the statements level, plus a read-and-silent blank on the two bulletins named."
+  },
+  {
+   "iso3": "AZE",
+   "kind": "confirmed blank",
+   "note": "NEW DOCUMENT, STATEMENTS LEVEL — this closes the lever round 69 left open. Central Bank of the Republic of Azerbaijan, CONSOLIDATED FINANCIAL STATEMENTS for the year ended 31 December 2025 (https://uploads.cbar.az/assets/consolidet.pdf, 1.72 MB, 188,458 characters extracted, downloaded in full and grepped). There is no gold asset line and no gold note anywhere in the statements: a case-sensitive search for 'Gold', 'GOLD', 'precious metal' and 'Precious' returns zero hits in the whole document. Lower-case 'gold' occurs twice only, both outside the asset notes — in the statutory-mandate recital ('Maintain and manage the gold and foreign currency reserves in its charge') and in the profit-distribution policy ('revaluation of assets and liabilities in foreign currency and gold at the year end'). The only custody wording in the document is 'IMF Quota and securities held in custody in respect of IMF Quota' and a 'Custodian fee' expense line, neither against gold — exactly the trap the brief names. 'Central Bank's own vaults' appears once, in the Independent Auditors' key-audit-matter on money in circulation (physical control over banknotes), not gold. This is on top of round 69's reading of Annual Report 2025 section 2.4. Confirmed blank on both the annual report and the audited consolidated statements."
+  },
+  {
+   "iso3": "MKD",
+   "kind": "not reached",
+   "note": "HOST FACT: nbrm.mk refuses this environment on both tools. The National Bank of the Republic of North Macedonia does publish the right document — WebSearch returned https://www.nbrm.mk/content/Independent-Auditor's-Report-and-Financial-Statement-of-the-National-Bank_2023.pdf — but the host answers HTTP 403 with an identical 5,725-5,731-byte HTML block page to curl for the root (https://www.nbrm.mk/ -> 403), for that statements PDF (apostrophe raw and as %27), for a constructed _2024 variant, and for a plainly search-returned monthly file (Statementoffinancialposition_NBRNM_31.12.2024.pdf -> 403); WebFetch of the same statements PDF fails as client_error. Round 69's confirmed blank rests on only the first 200,000 of the 349,275 characters of the Annual Report 2024, so the report's last 43% and the audited statements' notes are both still unread. Next document to open: Independent-Auditor's-Report-and-Financial-Statement-of-the-National-Bank_2023.pdf (and the 2024 edition) via a route that gets past the 403, then Note on monetary gold plus the foreign-reserves structure section; also note the NBRNM monthly 'Statement of financial position' files carry a gold line but no notes, so they cannot settle the row. Tried and failed this round on every host form: https://www.nbrm.mk/..., https://nbrm.mk/... and http://www.nbrm.mk/... all return the same ~5,730-byte 403 block page, so the refusal is host-wide and not a path or encoding problem."
+  },
+  {
+   "iso3": "ARM",
+   "kind": "not reached",
+   "note": "STATEMENTS LEVEL STILL UNTESTED. Round 69's confirmed blank is on the Annual Report 2022 only. The Central Bank of Armenia separately publishes IFRS financial statements with notes under https://www.cba.am/EN/pperiodicals/IFRS_FS_CBA_<date>_Eng.pdf — WebSearch returned the 30.09.23 and 30.06.23 editions — but every attempt here 404'd with a 37,591-byte HTML page, including the search-returned IFRS_FS_CBA_30.09.23_Eng.pdf itself and constructed year-end variants (31.12.25, 31.12.24, 31.12.2024, 30.06.25), and Annual_Report_2023/2024/2025.pdf also 404 (only Annual_Report_2022.pdf exists at that path). So the files have been moved or renamed rather than withdrawn. Next document to open: the CBA's own English periodicals/financial-statements listing page to recover the current filename of the year-end IFRS statements, then the monetary-gold note and the international-reserves structure section. Not tested, not silent. ADDED THIS ROUND: the FX-reserves-structure lever was tried on the one CBA document that is reachable — Annual Report 2022 (cba.am/EN/pperiodicals/Annual_Report_2022.pdf, 326,892 characters), first 100,000 characters read: the international-reserves section gives reserve totals and coverage ratios only, with no named bank, no custodian, no vault and no mention of the Bank's own vaults, and the only occurrence of 'gold' outside the profit-allocation policy is in the investment-and-collector-coins discussion ('gold investment coins by 15%'). So the structure lever is negative on the 2022 annual report; the audited IFRS statements are the part still unreached."
+  },
+  {
+   "iso3": "GEO",
+   "kind": "vein closed",
+   "note": "Carried from round 69 and not re-spent this round: National Bank of Georgia Annual Report 2024 (annual-eng-2024.pdf), Note 8 'MONETARY GOLD' gives 229,478 troy ounces bought in 2024 with price and value only, and the reserve-management narrative says the bars were bought 'from LBMA-accredited companies' — a seller, not a custodian — while the report's only custody language concerns IMF-quota securities and the World Bank RAMP global custodian, not gold. The annual report route is therefore exhausted. The one route not tried: the NBG's separately published audited IFRS financial statements for 2024/2025 (a different document from the annual report), specifically the monetary-gold note and the credit-risk/counterparty table. Not opened this round."
+  },
+  {
+   "iso3": "MDA",
+   "kind": "confirmed blank",
+   "note": "Carried from round 69, which read the right document to the end and found it silent: National Bank of Moldova, Financial statements 2024 (Financial statements 2024_eng_public.pdf, bnm.md), Note 8 'Monetary gold' reads in full that the gold 'comprises 74,133.48 grams of pure gold ... in the form of bullions of Good Delivery standard quality (based on the requirements of the London Bullion Market Association)' plus the revaluation basis, and the accounting-policy note names no custodian or location either. Nothing further spent this round. If anyone reopens it, the only untried lever is the NBM annual report's foreign-exchange-reserves structure section, a different section from Note 8."
+  },
+  {
+   "iso3": "LAO",
+   "kind": "not reached",
+   "note": "HOST FACT UPDATED: bol.gov.la refuses curl's socket outright (HTTP 000, zero-byte transfer, repeatable) but DOES answer WebFetch — it returned only a fragment, a language toggle (ລາວ / English) and the bank's address, 'Yonnet Road, P.O. Box 19, Vientiane, Lao PDR', with no publication links, so the site is script-rendered and its document list is not visible to either tool. No Bank of the Lao PDR document was opened, so Laos remains untested, not silent. Next document to open: the BOL annual economic report mirrored on the Open Development Mekong data portal (data.opendevelopmentmekong.net carries annual-economic-report files for the BOL), foreign-reserves chapter, then the 2025 Article IV staff report."
+  },
+  {
+   "iso3": "VNM",
+   "kind": "not reached",
+   "note": "Host refuses both tools: https://www.sbv.gov.vn/ answers HTTP 403 with a 730-byte block page to curl (round 69) and fails as client_error to WebFetch (this round), so nothing was opened and Vietnam is untested, not silent. Next document to open: the State Bank of Vietnam annual report, foreign-exchange-reserve-management chapter, through a route that gets past the block; the SBV publishes no audited financial statements with notes, so there is no gold note to grep and the expected outcome is a blank naming no institution. Vietnam's gold decrees (24/2012 and its 2025 replacement) govern the domestic bullion market and the SBV's import and branding monopoly, which is a different subject from where the SBV's own reserve metal sits, and a decree is a mechanism, not evidence."
+  },
+  {
+   "iso3": "CUB",
+   "kind": "not reached",
+   "note": "Nothing spent this round; the four never-probed countries and the five new codes took the budget. Round 69's host fact stands: https://www.bc.gob.cu/ returned HTTP 000 with a zero-byte transfer to curl. Next document to open: bc.gob.cu through WebFetch rather than curl, looking for the Informe Anual and any estados financieros. The BCC publishes the Informe Anual irregularly and it does not normally carry a gold note, so if the Informe Anual is reached and names nothing, close Cuba as a confirmed blank on that document rather than leaving it open a fourth round."
+  },
+  {
+   "iso3": "IRN",
+   "kind": "not reached",
+   "note": "Nothing spent this round. Round 69's host fact stands: https://www.cbi.ir/ returned HTTP 000 with a zero-byte transfer, likely sanctions-related network blocking rather than a transient reset. Next document to open: the CBI Annual Review / balance-sheet series and the Persian-language financial statements via WebFetch. Standing warning, now three rounds old: Iranian gold held abroad has been the subject of sanctions litigation and of repatriation claims against banks in Turkey and South Africa, but any such claim must come from a CBI document or a court filing that names the holder, not from press reconstruction, and this row refuses 'abroad' with no institution behind it."
+  }
+ ],
+ "checked_not_in_assignment": [
+  "No country outside the fourteen assigned codes was researched or filed. All fourteen (MRT TKM ERI SSD YEM CUB IRN LAO VNM ARM GEO AZE MDA MKD) were checked against have_gold.json first and none of them appears there, so none is a duplicate.",
+  "Note for the coordinator, because it contradicts the assignment text: ARM GEO AZE MDA MKD are described in the assignment as 'never worked on the gold row', but all five already carry a documented negative in closed_negatives.json -> gold_unavailable, written at round 69. They were not unworked. What was genuinely untried on them was the statements-level and FX-structure levers, which is what this round spent on: AZE is now closed at the statements level, ARM and MKD are the two where the right document exists and the host blocked it.",
+  "Banque de France: checked against party_names.json before writing the MRT record. The map already carries the exact spelling 'Banque de France' (and separately 'Banque de France printing works, Chamalières'), so the record uses 'Banque de France' and keeps the source's own wording in name_as_stated. No new spelling was introduced."
+ ],
+ "leads_not_opened": [
+  {
+   "lead": "National Bank of the Republic of North Macedonia, Independent Auditor's Report and Financial Statement of the National Bank, 2023 and 2024 editions",
+   "why": "This is the single best unopened lead left on the row from this assignment. The document exists and is search-indexed, it is the audited-statements class that has produced four of this row's finds, and MKD's existing blank covers only the first 200,000 of 349,275 characters of a different document (Annual Report 2024). The obstacle is purely the host: nbrm.mk returns an identical 403 block page to curl for its root and for every content path including plainly search-returned files, and WebFetch gets client_error. Any route that renders nbrm.mk should read the monetary-gold note and then the foreign-reserves structure section.",
+   "url": "https://www.nbrm.mk/content/Independent-Auditor's-Report-and-Financial-Statement-of-the-National-Bank_2023.pdf"
+  },
+  {
+   "lead": "Central Bank of Armenia year-end IFRS financial statements, current filename",
+   "why": "The CBA publishes IFRS statements with notes on a quarterly cycle at cba.am/EN/pperiodicals/IFRS_FS_CBA_<date>_Eng.pdf; the 30.09.23 and 30.06.23 editions are search-indexed, but every one of those paths now 404s, so the files have been renamed and only the periodicals listing page can give the live path. Armenia's existing blank rests on the 2022 annual report alone, so the statements notes and the international-reserves structure section are both untested.",
+   "url": "https://www.cba.am/EN/pperiodicals/IFRS_FS_CBA_30.09.23_Eng.pdf"
+  },
+  {
+   "lead": "National Bank of Georgia audited IFRS financial statements 2024/2025, as a document separate from the annual report",
+   "why": "Georgia's blank comes from the Annual Report 2024's Note 8 and reserve-management narrative. The NBG publishes stand-alone audited statements whose notes and counterparty/credit-risk tables are a different text, and Georgia's gold position is new (229,478 oz bought in 2024), so a first-year custody disclosure is plausible. Not opened this round.",
+   "url": null
+  },
+  {
+   "lead": "Banque Centrale de Mauritanie — second gold line, if one ever appears",
+   "why": "For whoever revisits Mauritania: the 2025 note says the holding consists 'principalement' of gold deposited at the Banque de France while the decomposition table shows one line only, 'Or en dépôt chez la BDF', equal to the stated total, so 'principalement' has no second line behind it in this year. If an earlier Rapport annuel itemises a remainder, that remainder would be a second custodian. The whole publication list is now reachable: bcm.mr is an empty 2,568-byte SPA, but its bundle at /assets/index-B9nUG0IK.js exposes the Drupal back end at https://bo.bcm.mr with a public JSON:API (node/page, node/actualites, media/document; note the host 301s to a /fr/ prefix and brackets must be percent-encoded), and files sit under /sites/default/files/<YYYY-MM>/. That unblocks Mauritania for every other row of this map, not just gold.",
+   "url": "https://bo.bcm.mr/fr/jsonapi/node/page?filter%5Bdrupal_internal__nid%5D=917"
+  }
+ ]
+}

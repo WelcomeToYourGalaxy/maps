@@ -60,6 +60,12 @@ def main():
     if len(sys.argv) < 2:
         sys.exit(__doc__)
     boxes = json.load(open(sys.argv[1]))
+    # Two input shapes. The original was a dump of RENDERED box text, matched with
+    # PANEL below; nothing has written one for several rounds, so the check was
+    # reporting "checked 0" and passing. agents/work/mk_scores.py now emits the
+    # page's own arithmetic as {"p:ISO": {score, groups, pctl_dir, pctl_share}},
+    # and that is the shape to prefer.
+    computed = bool(boxes) and isinstance(next(iter(boxes.values())), dict)
     fix = '--fix' in sys.argv[1:]
     wr = json.load(open(WR))
 
@@ -70,14 +76,21 @@ def main():
             continue                      # only country boxes carry an exposure score
         box = boxes.get(k)
         if box is None:
-            continue
-        m = PANEL.search(box)
-        if not m:
             if find_score(para):
-                no_panel.append(k)        # paragraph quotes a score the box no longer shows
+                no_panel.append(k)        # paragraph quotes a score the map no longer shows
             continue
+        if computed:
+            score = int(box['score'])
+            want_pctl = (box.get('pctl_dir'), box.get('pctl_share'))
+        else:
+            m = PANEL.search(box)
+            if not m:
+                if find_score(para):
+                    no_panel.append(k)
+                continue
+            score = int(m.group(1))
+            want_pctl = None
         checked += 1
-        score = int(m.group(1))
         new = para
 
         ms = find_score(new)
@@ -85,10 +98,14 @@ def main():
             stale_score.append((k, int(ms.group(1)), score))
             new = new[:ms.start()] + str(score) + new[ms.end():]
 
-        mp = PCTL.search(box)
+        if computed:
+            mp = want_pctl if want_pctl and want_pctl[0] else None
+        else:
+            mp = PCTL.search(box)
         mq = PARA_PCTL.search(new)
         if mp and mq:
-            want_dir, want_pct = mp.group(1).lower(), int(mp.group(2))
+            want_dir, want_pct = ((mp[0].lower(), int(mp[1])) if computed
+                                  else (mp.group(1).lower(), int(mp.group(2))))
             got_dir, got_pct = mq.group(1).lower(), int(mq.group(3))
             if (got_dir, got_pct) != (want_dir, want_pct):
                 stale_pctl.append((k, f'{got_dir} {got_pct}%', f'{want_dir} {want_pct}%'))
