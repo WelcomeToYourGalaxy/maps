@@ -296,6 +296,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 /* The recorded link is the field that goes stale fastest, so the
    search that finds the current one sits on the same line as the link
    rather than in a row of its own underneath it. */
+.findwrap{font-size:10.4px;color:var(--faint);white-space:nowrap;word-break:normal}
 .findsite{font-size:10.4px;color:var(--accent-hi);text-decoration:none;
   border:1px solid var(--line);border-radius:7px;padding:2px 7px;white-space:nowrap;
   word-break:normal}
@@ -601,7 +602,6 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .ochip:hover{border-color:rgba(140,189,154,.6);background:rgba(74,124,89,.16);color:var(--ink)}
 .ochip.law{border-color:rgba(156,207,167,.5);background:rgba(39,69,47,.8);color:var(--text)}
 .ochip.law:hover{border-color:#9ccfa7;background:rgba(39,69,47,1)}
-.ochip.walking{border-color:#cfe6d4;box-shadow:0 0 0 1px #cfe6d4,0 0 14px rgba(140,189,154,.5)}
 
 @media (max-width:900px){
   .pgcols{grid-template-columns:1fr;overflow-y:auto}
@@ -817,12 +817,38 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .onm{flex:1 1 auto;font-size:12px;line-height:1.35}
 .oar{flex:none;font-size:14px;color:var(--stone)}
 .orow:hover .oar{color:var(--accent-hi)}
-.orow.walking{border-color:#cfe6d4;box-shadow:0 0 0 1px #cfe6d4,0 0 14px rgba(140,189,154,.5)}
 
 /* a term of art, and its definition */
 .gl{text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;
   text-decoration-color:rgba(140,189,154,.75);cursor:help}
 .gl:hover,.gl:focus{color:var(--ink);text-decoration-color:var(--accent-hi);outline:none}
+/* the box a marker click opens, over the map */
+#mkpop{position:fixed;z-index:1200;width:300px;max-width:calc(100vw - 20px);
+  background:var(--panel);border:1px solid var(--accent-hi);border-radius:10px;
+  padding:12px 13px 11px;box-shadow:0 18px 46px rgba(0,0,0,.6);
+  opacity:0;visibility:hidden;transition:opacity .12s}
+#mkpop.on{opacity:1;visibility:visible}
+#mkpop .mkcl{position:absolute;top:4px;right:6px;background:none;border:0;cursor:pointer;
+  color:var(--faint);font-size:17px;line-height:1;padding:3px 5px;font-family:inherit}
+#mkpop .mkcl:hover{color:var(--ink)}
+#mkpop .mknm{font-family:'Marcellus',serif;font-size:14.5px;line-height:1.3;color:var(--ink);
+  padding-right:16px}
+#mkpop .mksub{font-size:11.5px;line-height:1.5;color:var(--accent-hi);margin-top:5px}
+#mkpop .mkfl{font-size:11px;color:var(--dim);margin-top:4px}
+#mkpop .mkgo{display:flex;align-items:center;justify-content:space-between;width:100%;
+  margin-top:11px;background:rgba(74,124,89,.18);border:1px solid var(--line);
+  border-radius:8px;padding:7px 10px;cursor:pointer;color:var(--ink);
+  font-family:inherit;font-size:11.5px;text-align:left}
+#mkpop .mkgo:hover{background:rgba(74,124,89,.32);border-color:var(--accent-hi)}
+#mkpop .mkar{color:var(--accent-hi);font-size:14px;line-height:1}
+
+/* what this body does, under the one line that names it */
+.entxt{font-size:11.6px;line-height:1.6;color:var(--dim);margin-top:7px}
+.entxs{font-size:10px;line-height:1.45;color:var(--faint);margin-top:5px;
+  padding-top:4px;border-top:1px solid var(--line)}
+.entxw{display:block;font-size:10.6px;color:var(--faint);margin-top:6px;font-style:italic}
+#mkpop .entxt{font-size:11.2px;margin-top:8px}
+
 #gltip{position:fixed;z-index:3000;display:none;background:rgba(17,24,21,.98);
   border:1px solid rgba(140,189,154,.42);border-radius:9px;padding:9px 11px;
   font-family:'DM Sans',sans-serif;font-size:11.5px;line-height:1.5;color:var(--text);
@@ -2624,7 +2650,7 @@ const qid = u => (u||'').split('/').pop();
 const isQ = s => /^Q\d+$/.test(s||'');
 function setDot(id, cls, txt){ const d=$('#d-'+id); if(!d) return; d.className='dot'+(cls?' '+cls:''); if(txt) $('#t-'+id).textContent=txt; }
 
-const CACHE_V='htrt3';
+const CACHE_V='htrt4';
 function cget(k){ try{ const r=localStorage.getItem(CACHE_V+':'+k); if(!r) return null;
   const o=JSON.parse(r); if(Date.now()-o.t > 6048e5) return null; return o.v; }catch(e){ return null; } }
 function cset(k,v){ try{ localStorage.setItem(CACHE_V+':'+k, JSON.stringify({t:Date.now(),v:v})); }catch(e){} }
@@ -2644,7 +2670,7 @@ async function sparql(query, cacheKey){
 
 /* the jurisdiction's own channel, its legislature and its head of government */
 function qCore(q){ return `
-SELECT ?kind ?item ?itemLabel ?itemDescription ?site ?email ?phone ?holder ?holderLabel WHERE {
+SELECT ?kind ?item ?itemLabel ?itemDescription ?enwiki ?site ?email ?phone ?holder ?holderLabel WHERE {
  { BIND("legislature" AS ?kind) wd:${q} wdt:P194 ?item . OPTIONAL{?item wdt:P856 ?site} }
  UNION { BIND("executive" AS ?kind) wd:${q} wdt:P1313 ?item .
          OPTIONAL{?item wdt:P856 ?site} OPTIONAL{?item wdt:P1308 ?holder} }
@@ -2652,17 +2678,21 @@ SELECT ?kind ?item ?itemLabel ?itemDescription ?site ?email ?phone ?holder ?hold
          OPTIONAL{?item wdt:P856 ?site} OPTIONAL{?item wdt:P1308 ?holder} }
  UNION { BIND("self" AS ?kind) BIND(wd:${q} AS ?item)
          { ?item wdt:P856 ?site } UNION { ?item wdt:P968 ?email } UNION { ?item wdt:P1329 ?phone } }
+ OPTIONAL{ ?art schema:about ?item ; schema:isPartOf <https://en.wikipedia.org/> ;
+           schema:name ?enwiki }
  SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" }
 } LIMIT 60`; }
 
 /* everything with this jurisdiction; classed in the browser, which is
    both faster and keeps the full result set visible */
 function qJuris(q){ return `
-SELECT ?item ?itemLabel ?itemDescription ?cls ?clsLabel ?site ?email ?phone ?holder ?holderLabel WHERE {
+SELECT ?item ?itemLabel ?itemDescription ?enwiki ?cls ?clsLabel ?site ?email ?phone ?holder ?holderLabel WHERE {
  ?item wdt:P1001 wd:${q} .
  FILTER NOT EXISTS { ?item wdt:P576 [] }
  OPTIONAL{?item wdt:P31 ?cls} OPTIONAL{?item wdt:P856 ?site} OPTIONAL{?item wdt:P968 ?email}
  OPTIONAL{?item wdt:P1329 ?phone} OPTIONAL{?item wdt:P1308 ?holder}
+ OPTIONAL{ ?art schema:about ?item ; schema:isPartOf <https://en.wikipedia.org/> ;
+           schema:name ?enwiki }
  SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" }
 } LIMIT 600`; }
 
@@ -2674,18 +2704,22 @@ SELECT ?item ?itemLabel ?itemDescription ?cls ?clsLabel ?site ?email ?phone ?hol
    most places — so they run behind the fast pair and are cached for a
    week once they land. */
 function qPositions(q){ return `
-SELECT ?item ?itemLabel ?itemDescription ?clsLabel ?site ?email ?phone ?holder ?holderLabel WHERE {
+SELECT ?item ?itemLabel ?itemDescription ?enwiki ?clsLabel ?site ?email ?phone ?holder ?holderLabel WHERE {
  ?item wdt:P1001 wd:${q} ; wdt:P31 ?cls . ?cls wdt:P279* wd:Q4164871 .
  FILTER NOT EXISTS { ?item wdt:P576 [] }
  OPTIONAL{?item wdt:P856 ?site} OPTIONAL{?item wdt:P968 ?email}
  OPTIONAL{?item wdt:P1329 ?phone} OPTIONAL{?item wdt:P1308 ?holder}
+ OPTIONAL{ ?art schema:about ?item ; schema:isPartOf <https://en.wikipedia.org/> ;
+           schema:name ?enwiki }
  SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" }
 } LIMIT 400`; }
 function qBodies(q){ return `
-SELECT ?item ?itemLabel ?itemDescription ?clsLabel ?site ?email ?phone WHERE {
+SELECT ?item ?itemLabel ?itemDescription ?enwiki ?clsLabel ?site ?email ?phone WHERE {
  ?item wdt:P1001 wd:${q} ; wdt:P31 ?cls . ?cls wdt:P279* wd:Q327333 .
  FILTER NOT EXISTS { ?item wdt:P576 [] }
  OPTIONAL{?item wdt:P856 ?site} OPTIONAL{?item wdt:P968 ?email} OPTIONAL{?item wdt:P1329 ?phone}
+ OPTIONAL{ ?art schema:about ?item ; schema:isPartOf <https://en.wikipedia.org/> ;
+           schema:name ?enwiki }
  SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" }
 } LIMIT 400`; }
 
@@ -2693,11 +2727,13 @@ SELECT ?item ?itemLabel ?itemDescription ?clsLabel ?site ?email ?phone WHERE {
    a country with P17 rather than P1001. The two sets differ — for Kenya,
    185 agencies against 112 — so the map asks for both. */
 function qByCountry(q){ return `
-SELECT ?item ?itemLabel ?itemDescription ?clsLabel ?site ?email ?phone ?coord WHERE {
+SELECT ?item ?itemLabel ?itemDescription ?enwiki ?clsLabel ?site ?email ?phone ?coord WHERE {
  ?item wdt:P17 wd:${q} ; wdt:P31 ?cls . ?cls wdt:P279* wd:Q327333 .
  FILTER NOT EXISTS { ?item wdt:P576 [] }
  OPTIONAL{?item wdt:P856 ?site} OPTIONAL{?item wdt:P968 ?email} OPTIONAL{?item wdt:P1329 ?phone}
  OPTIONAL{ ?item wdt:P625 ?coord }
+ OPTIONAL{ ?art schema:about ?item ; schema:isPartOf <https://en.wikipedia.org/> ;
+           schema:name ?enwiki }
  SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" }
 } LIMIT 400`; }
 
@@ -3548,7 +3584,7 @@ function classifyRows(core, items){
     const id=qid(r.item.value);
     if(!merged[id]) merged[id]={row:r, classes:[]};
     const cl=r.clsLabel&&r.clsLabel.value; if(cl) merged[id].classes.push(cl);
-    ['site','email','phone','holder','holderLabel','itemDescription']
+    ['site','email','phone','holder','holderLabel','itemDescription','enwiki']
       .forEach(f=>{ if(r[f]&&!merged[id].row[f]) merged[id].row[f]=r[f]; });
   });
   Object.values(merged).forEach(m=>{
@@ -3581,7 +3617,12 @@ function classifyRows(core, items){
       /* Wikidata's own one-line description of this office, which is
          the only thing on the record that distinguishes one office of
          a kind from another. Often absent; shown only when present. */
-      desc:(m.row.itemDescription && m.row.itemDescription.value) || ''};
+      desc:(m.row.itemDescription && m.row.itemDescription.value) || '',
+      /* The name of this office's own encyclopaedia article, where it
+         has one. It is not a description and nothing is drawn from it
+         directly: it is the key `loadEntTexts` reads the opening
+         paragraph by, twenty offices to a request. See ENTX. */
+      wiki:(m.row.enwiki && m.row.enwiki.value) || ''};
     /* Offices with no part in making a law are not on this map at
        all — see MAPKINDS. This is the only place the test is
        applied, which is what keeps the markers, the search and the
@@ -4362,7 +4403,78 @@ const GLOSSARY={
   'constitution':'The document setting out how a government is allowed to work and what it may not do. Ordinary laws that conflict with it can be struck down.',
   'referendum':'A vote by the whole public on one question, rather than a decision taken by elected officials.',
   'sanitation':'The public systems for clean water, sewers and waste.',
-  'utilities':'The services a place cannot run without \u2014 water, electricity, gas, sewers \u2014 whether run by a government or a company.',
+  'utilities':'The services a place cannot run without — water, electricity, gas, sewers — whether run by a government or a company.',
+
+  /* ---- how a legislature is shaped, and what it does to a bill ----
+
+     The one-line description under an office name is not written by
+     this map, and the longer account under it is written by whoever
+     wrote the office's public entry. Both use the vocabulary of
+     somebody who already knows it: a chamber comes back described as
+     "the upper house of the bicameral parliament", which defines one
+     term the reader did not know with two more. These are those terms.
+     As above, no definition here leans on another one. */
+  'bicameral':'Having two separate groups of lawmakers who both have to agree before something becomes law. Most countries with a large population work this way. The practical consequence for you is that there are two bodies to persuade, not one, and a rule can die in either.',
+  'unicameral':'Having one single group of lawmakers, with no second body that has to agree afterwards. There is one place to be heard and one vote that settles it.',
+  'upper house':'In a two-part legislature, the smaller of the two bodies. Its members usually serve longer terms and often represent whole regions rather than small districts. It can normally delay or block what the other body passed.',
+  'lower house':'In a two-part legislature, the larger of the two bodies, whose members each represent a small area and face election most often. Most new laws start here, and it is the body your own local member sits in.',
+  'house':'One of the groups of lawmakers in a legislature. A country with two of them needs both to agree before a bill becomes law.',
+  'plenary':'A sitting that the whole body attends and votes in, as opposed to a small group of its members meeting on one subject.',
+  'first reading':'The first of several formal stages a bill passes through. At this stage it is only being introduced and announced; no one argues about what it says yet.',
+  'second reading':'The stage at which the whole body debates whether it agrees with the point of a bill, before anybody argues over its exact wording.',
+  'third reading':'The last stage, at which the body votes on the final wording of a bill as it now stands.',
+  'assent':'The last signature a bill needs before it becomes law, given by a head of state who in most countries cannot in practice refuse it.',
+  'royal assent':'The signature a monarch gives a bill to make it law. In every country that still uses the term it is given as a matter of form, and refusing it has not happened in living memory.',
+  'promulgate':'To publish a law officially, which in many countries is the moment it starts to apply rather than the moment it was voted on.',
+  'gazette':'The official newspaper a government publishes its laws and rules in. If a rule is not in it, it is usually not yet in force; if you want to know what a law actually says, this is where the real wording is.',
+  'primary legislation':'A law passed by the elected lawmakers themselves. Changing one means going back to them.',
+  'secondary legislation':'The detailed rules a department writes under the authority of a law, without the lawmakers voting again. Far more of these are made than laws, and they are much easier to change — which is why writing to a department is often the shorter route.',
+  'statutory instrument':'A detailed rule a department makes under the authority of a law, which takes effect without the lawmakers voting on it again.',
+  'delegated legislation':'Rules made by a department because a law gave it permission to make them, rather than by the lawmakers directly.',
+  'executive order':'A written instruction from a head of government to the bodies under them. It can be issued without a vote and can be withdrawn the same way, so it is quick and it does not last.',
+  'decree-law':'A measure a head of government issues with the force of law, which the legislature then has to confirm or let lapse within a set period.',
+  'bylaw':'A rule a local council makes for its own area under a power a national law gave it.',
+  'byelaw':'A rule a local council makes for its own area under a power a national law gave it.',
+  'moratorium':'An official pause on something — a type of building, a licence, an eviction — for a stated period, rather than a permanent ban.',
+  'ratify':'To give final formal approval to something already agreed, usually an agreement between countries. Until it is ratified it binds nobody.',
+  'ratification':'The final formal approval of an agreement between countries, which is what makes it take effect.',
+
+  /* ---- the shape of a government, as the records describe it ---- */
+  'unitary':'A country where the central government holds the real power and any local bodies hold what it chooses to give them, and can have it taken back.',
+  'federation':'A country made of states or provinces that each hold powers of their own, which the central government cannot simply take away.',
+  'devolved':'Describing a power the central government has handed to a regional body, so that the regional body now decides it. The centre usually keeps the right to take it back.',
+  'devolution':'The handing of power from a central government to a regional one, so decisions are made closer to the people they affect.',
+  'subsidiarity':'The principle that a decision should be taken at the most local level able to take it, and only moved upward when that level cannot.',
+  'coalition':'A government formed by two or more parties together, because no one party has enough seats to govern alone. It matters to you because the agreement between them is usually published and names what they will and will not do.',
+  'portfolio':'The subject a minister is in charge of — health, transport, housing. Whose portfolio something falls in decides which office to write to.',
+  'cabinet-level':'Ranking high enough that whoever runs it sits in the group of ministers who run the government together.',
+  'chancellery':'The office that supports a head of government and co-ordinates the rest of the departments. It is where things go that cut across several subjects at once.',
+  'secretariat':'The permanent staff who run a body day to day, as distinct from the members who sit on it and vote. In practice they are who answers your letter.',
+  'directorate':'A large division inside a department, covering one part of its subject.',
+  'inspectorate':'A body whose job is checking that others are keeping to a law, and reporting what it finds.',
+  'interior ministry':'The department in charge of what happens inside the country — usually police, borders, identity documents, emergencies, and often the running of local government.',
+  'home affairs':'The part of government dealing with what happens inside the country rather than abroad — policing, borders, identity documents, emergencies.',
+  'foreign ministry':'The department in charge of dealings with other countries and with international bodies.',
+  'treasury':'The department in charge of public money — what is collected, what is spent, and what is borrowed. Almost any proposal that costs money has to get past it.',
+  'exchequer':'Another name for the department in charge of public money, used in Britain and Ireland.',
+  'procurement':'The process by which a public body buys goods or services. The rules are published and the contracts usually are too.',
+  'levy':'A charge a public body is allowed to collect for a stated purpose.',
+  'quango':'A body set up by government, funded by it, and run at arm’s length from the ministers of the day. It makes real decisions and nobody votes for the people who run it.',
+  'non-departmental public body':'A body set up by government to do one job independently of the ministers of the day.',
+  'autonomous community':'One of the regions of Spain, each with its own parliament and its own powers over named subjects.',
+  'voivodeship':'One of the regions of Poland, each with a regional assembly of its own.',
+  'comune':'The Italian word for a municipality — a town or city with a council and a mayor of its own. It is the lowest level of government in Italy and the one nearest you.',
+  'commune':'In France and several other countries, the smallest unit of government — a town or village with its own council and mayor.',
+  'prefect':'An official sent by the central government to represent it in a region, rather than somebody that region elected. They are not who to lobby about a local rule, but they often decide whether one is allowed.',
+  'oblast':'One of the regions of Russia, Ukraine and several neighbouring countries, with an administration and usually an assembly of its own.',
+
+  /* ---- going to court about it ---- */
+  'judicial review':'Asking a court to decide whether a public body was allowed to do what it did. The court does not ask whether the decision was wise, only whether it was within the body’s power and properly made — which is a narrower question than most people expect.',
+  'ultra vires':'Latin for beyond the powers. A decision is ultra vires when the body that made it had no authority to make it, which is one of the few grounds on which a court will undo it.',
+  'injunction':'A court order telling somebody to stop doing something, or to do something, straight away rather than after the case is finished.',
+  'precedent':'A decision by a higher court that lower courts then have to follow in similar cases, so one case can settle the question for everybody.',
+  'statute of limitations':'The time limit after which a claim can no longer be brought, however good it is.',
+  'remedy':'What a court or an official body can actually do for you if it agrees with you — money, an order to stop, a decision made again properly. Worth checking before you start, because a body can agree with you and still have nothing it can give.',
 };
 const GL_KEYS=Object.keys(GLOSSARY).sort((a,b)=>b.length-a.length);
 const RX_GLOSS=new RegExp('(?<![\\w-])('+
@@ -4606,6 +4718,10 @@ function kindRowBlank(L,k){
 /* ---- one kind of office: its own page ---- */
 function pageKind(L,k){
   const ents=officeEntriesFor([k], LEAFLVL);
+  /* One request covers twenty of them, so the page asks for every
+     office it is about to list rather than waiting for a click. By the
+     time the reader opens one the text is usually already here. */
+  wantEntTexts(ents.map(e=>e.o));
   const st=LAWSTAGE[k]||{};
   const when=(L.when&&L.when[k])||KINDWHEN[k]||'';
   let h='<div class="pg pg-kind">';
@@ -4638,7 +4754,8 @@ function pageKind(L,k){
       h+='<button type="button" class="orow'+(o.law?' law':'')+'" data-id="'+esc(o.id)+'" '+
          'onclick="openPin(\''+esc(o.id)+'\')"><span class="otx"><span class="onm">'+
          esc(o.label)+'</span>'+
-         (o.desc?'<span class="odesc">'+glossy(capFirst(o.desc),1)+'</span>':'')+'</span>'+
+         (function(){ const sub=mergeSub(o);
+            return sub?'<span class="odesc">'+glossy(sub,1)+'</span>':''; })()+'</span>'+
          '<span class="oar">\u203a</span></button>';
     });
     h+='</div></div>';
@@ -4648,9 +4765,17 @@ function pageKind(L,k){
   return h+'</div>';
 }
 
-function openKind(k){ LEAFKIND=k; SEL=null; render(); frameKinds([k]); }
-function closeKind(){ LEAFKIND=null; SEL=null; render();
-  const L=LEAVES[LEAF]; if(L) frameKinds(L.kinds); }
+/* The camera used to move on every one of these — opening a kind,
+   closing it, answering a question, stepping through the walk — so
+   working down the panel left the ground sliding and rescaling
+   underneath it. A reader narrowing from twelve kinds of office to one
+   made four or five choices and the map reframed after each, which
+   reads as the page malfunctioning rather than as the map following
+   along. None of these frame anything now: the view is set once, when
+   a place is searched for, and after that the map only moves when the
+   reader moves it or clicks something on it. */
+function openKind(k){ LEAFKIND=k; SEL=null; render(); }
+function closeKind(){ LEAFKIND=null; SEL=null; render(); }
 
 /* ---------- moving through it ---------- */
 function pickOpt(i){
@@ -4673,7 +4798,7 @@ function enterLeaf(key, label){
   PENDLEAF=key; LEAFLVL=null; LEAFSUB=null; LEAFKIND=null; SHOWALLK={};
   PATH.push({label:label||L.nm, next:nextStep(L, key, 'leaf')});
   if(PATH[PATH.length-1].next){ LEAF=null; return render(); }
-  LEAF=key; render(); frameKinds(L.kinds);
+  LEAF=key; render();
 }
 /* Which question, if any, comes after the one just answered.
    "Show me everything" is an answer to the subject question already,
@@ -4729,10 +4854,10 @@ function drawLevelQ(){
     ? 'Is the rule for the '+words.join(', ')+', or '+allOfThem(words.length)+'?'
     : 'Which level should the rule be made at?';
   return qframe(q,
-    'A rule made by the '+(words[0]||'local')+' government binds that place and nowhere else. '+
-    'One made by the '+(words[words.length-1]||'national')+' government binds everybody under it. '+
-    'Different people in different buildings make each, so this decides who the rest of the '+
-    'answers are about.', opts);
+    'A rule made by the '+(words[0]||'local')+' government applies in that place and nowhere '+
+    'else. A rule made by the '+(words[words.length-1]||'national')+' government applies '+
+    'everywhere inside it, that place included. Each one is made by a different set of people, '+
+    'so your answer here decides who all the later answers are about.', opts);
 }
 function pickLevel(i){
   LEAFLVL=i;
@@ -4741,13 +4866,12 @@ function pickLevel(i){
   PATH.push({label:(i==null?'Every level':(STACK[i]?STACK[i].label:'Level')), next:nx});
   if(nx){ LEAF=null; return render(); }
   LEAF=PENDLEAF; LEAFKIND=null; render();
-  frameIdsSoon(officesFor(L.kinds, i).map(o=>o.id));
 }
 function pickSubject(t){
   LEAFSUB=t;
   const L=LEAVES[PENDLEAF];
   PATH.push({label:t||'Any subject', next:null});
-  LEAF=PENDLEAF; LEAFKIND=null; render(); frameKinds(L.kinds);
+  LEAF=PENDLEAF; LEAFKIND=null; render();
 }
 /* A "where next" link. The subject and level already chosen are kept:
    somebody who said "environmental, in California" and then follows
@@ -4757,7 +4881,7 @@ function jumpLeaf(key){
   const L=LEAVES[key]; if(!L) return;
   PENDLEAF=key; SHOWALLK={}; LEAFKIND=null;
   PATH.push({label:L.nm, next:null});
-  LEAF=key; render(); frameKinds(L.kinds);
+  LEAF=key; render();
 }
 function treeGo(i){
   /* An office page is drawn from SEL before anything else in `render`,
@@ -4792,17 +4916,14 @@ function fitToIds(ids){
       {padding:{top:80,left:50,right:50,bottom:90}, duration:650, maxZoom:13});
   }catch(e){}
 }
-let FRAME_T=null;
-function frameIdsSoon(ids){
-  clearTimeout(FRAME_T);
-  FRAME_T=setTimeout(()=>{
-    if(ids && ids.some(i=>PINS[i])) return fitToIds(ids);
-    const top=STACK[STACK.length-1];
-    if(top && top.feature && top.feature.geometry) fitTo(top.feature.geometry);
-  }, 240);
-}
+/* `frameIdsSoon`, the debounced framer the panel used, is gone with
+   its callers. `fitToIds` stays: the search path frames the markers
+   with it once, and `fitToPins` is built on the same arithmetic. */
 function idsOfKinds(kinds, lvl){ return officesFor(kinds, lvl===undefined?LEAFLVL:lvl).map(o=>o.id); }
-function frameKinds(kinds){ frameIdsSoon(idsOfKinds(kinds)); }
+/* `frameKinds` was what the panel called to reframe the map on every
+   answer. Nothing calls it now and it is not kept: a framing helper
+   left lying about is the thing a later edit reaches for. `idsOfKinds`
+   stays — the office counts are read from it. */
 
 function bindTree(){
   const body=$('#mbody'); if(!body) return;
@@ -4810,16 +4931,15 @@ function bindTree(){
      so the map moved as the pointer crossed a list of options:
      four camera moves on the way down a question nobody had
      answered yet, and the ground never still long enough to read.
-     The map moves when something is chosen and not before; the
-     click paths (enterLeaf, openKind, walkTo) still frame what was
-     picked. The hover card stays, because it says what an option
-     is without moving anything. */
+     Nothing in the panel moves the map at all now — not hovering an
+     answer and not choosing one. The hover card stays, because it
+     says what an option is without moving anything. */
   body.querySelectorAll('.ochip').forEach(el=>{
     const ix=officeIndex()[el.dataset.id]; if(!ix) return;
     const o=ix.o;
     el.addEventListener('mouseenter',()=>{
       showCard('<h5>'+esc(o.label)+'</h5>'+
-        (o.what?'<p class="w">'+esc(o.what)+'</p>':'')+
+        (function(){ const sub=mergeSub(o); return sub?'<p class="w">'+esc(sub)+'</p>':''; })()+
         (o.how?'<p>'+esc(o.how)+'</p>':'')+
         '<p class="loc">'+(PINS[o.id]?'On the map, now in view':'No address recorded for this office')+'</p>');
     });
@@ -4945,8 +5065,10 @@ function render(){
   SELFCH=[];
   /* the site goes beside the place name instead of in this row */
   SELFSITE=[...sites][0]||null; paintSiteLink();
-  [...emails].forEach(x=>SELFCH.push(['<a href="mailto:'+esc(x)+'">'+esc(x)+'</a>']));
-  [...phones].forEach(x=>SELFCH.push(['<span>'+esc(x)+'</span>']));
+  [...emails].forEach(x=>{ const a=bareMail(x);
+    if(a) SELFCH.push(['<a href="mailto:'+esc(a)+'">'+esc(a)+'</a>']); });
+  [...phones].forEach(x=>{ const t=bareTel(x);
+    if(t) SELFCH.push(['<span>'+esc(t)+'</span>']); });
   /* the answers so far decide what the map still shows */
   recomputeScope();
   setPins();
@@ -5017,8 +5139,22 @@ function hurdleBlock(routeId){
    has.
    ==================================================================== */
 function siteOf(o){ const v=o&&o.row&&o.row.site&&o.row.site.value; return v?String(v):''; }
-function mailOf(o){ const v=o&&o.row&&o.row.email&&o.row.email.value; return v?String(v):''; }
-function telOf(o){  const v=o&&o.row&&o.row.phone&&o.row.phone.value; return v?String(v):''; }
+/* An email address in the public record is stored as a link, not as an
+   address: the value that comes back is `mailto:stadtverwaltung@stadt.graz.at`,
+   and a telephone number is sometimes stored the same way as `tel:+43...`.
+   The page printed the value exactly as it arrived and then built its own
+   link by putting `mailto:` in front of it, so the reader saw the scheme
+   twice over — the text read `mailto:stadtverwaltung@stadt.graz.at` and the
+   link behind it was `mailto:mailto:...`, which opens nothing at all.
+
+   The scheme is stripped here, at the one place every part of the page
+   reads these two fields, and each use adds back the scheme it needs. Do
+   not strip it at a use site instead: there are six of them and the next
+   one added would print the raw value again. */
+function bareMail(v){ return String(v||'').replace(/^\s*mailto:\s*/i,'').trim(); }
+function bareTel(v){  return String(v||'').replace(/^\s*tel:\s*/i,'').trim(); }
+function mailOf(o){ const v=o&&o.row&&o.row.email&&o.row.email.value; return v?bareMail(v):''; }
+function telOf(o){  const v=o&&o.row&&o.row.phone&&o.row.phone.value; return v?bareTel(v):''; }
 function hostOf(u){ return String(u).replace(/^https?:\/\//,'').replace(/\/$/,'').slice(0,46); }
 /* Which place to name in a search for an office.
 
@@ -5297,7 +5433,7 @@ const FAMWHAT={
   'International'         :'Go outside the country',
   'Money & representation':'Pay somebody, or stand yourself',
   'Insider'               :'From inside, or with inside evidence',
-  'Information'           :'Change what the people deciding are reading',
+  'Information'           :'Put facts in front of the people who decide',
 };
 /* Wikidata records some officeholders as a bare item id with no label
    attached, which is a record that somebody holds the post and no name. */
@@ -5325,9 +5461,16 @@ function holderLine(holder){
    something that does not exist. */
 function findSiteLink(o){
   if(!o) return '';
-  return '<a class="findsite" href="'+
+  /* It used to read "Find its current site" and sat hard against the
+     recorded address, so the two ran together into one unreadable
+     string: "www.parlament.gv.atFind its current site". The lead-in is
+     its own text node with a space on each side, the link is only the
+     words a reader clicks, and the sentence now reads on from the
+     address rather than standing beside it as a second thing. */
+  return '<span class="findwrap">Or, if that doesn\u2019t work, '+
+    '<a class="findsite" href="'+
     esc(findLink(o.label+' '+placeOf(o)+' official site'))+'" target="_blank" '+
-    'rel="noopener">Find its current site</a>';
+    'rel="noopener">find its site</a></span>';
 }
 
 function renderOffice(o){
@@ -5335,7 +5478,7 @@ function renderOffice(o){
   SEL=o; hideCard();
   const r=o.row;
   const holder=r.holderLabel&&r.holderLabel.value;
-  const site=r.site&&r.site.value, email=r.email&&r.email.value, phone=r.phone&&r.phone.value;
+  const site=r.site&&r.site.value, email=mailOf(o), phone=telOf(o);
   let h='';
   /* The trail is the one thing on every screen, and it was dropped
      here: arriving at an office lost Start \u203a Create a rule that does
@@ -5352,15 +5495,24 @@ function renderOffice(o){
      County, California, United States" the weight of a section and
      pushed everything under it down the screen. It belongs with the
      name, because that is what it is: part of the name's own record. */
+  /* The two subtitles are one line now — see mergeSub. */
+  const sub1=mergeSub(o);
   h+='<div class="off" style="border:0;padding-top:0"><div class="nm" style="font-size:19px">'+
-     esc(o.label)+(o.desc?'<span class="nmd">'+glossy(capFirst(o.desc))+'</span>':'')+'</div>'+
+     esc(o.label)+(sub1?'<span class="nmd">'+glossy(sub1)+'</span>':'')+'</div>'+
      /* `o.how` was a paragraph here, between the office's name and How
         to Reach Them, describing the kind of office rather than this
         one: the same words under every office of that kind, which is
         what the kind's own page is for. `what` stays, being one line.
         The paragraph is still in the classifier and still on the hover
         card. */
-     '<div class="what">'+esc(o.what)+'</div>'+holderLine(holder)+'<div class="meta">';
+     /* What this particular body does, in the words of whoever
+        published an account of it. The element is always drawn, even
+        empty, because the text arrives after the page does and
+        `entxArrived` writes into it. */
+     '<div id="entx">'+entxHtml(o.id)+'</div>'+holderLine(holder)+'<div class="meta">';
+  entDetail(o).then(()=>{ const el=document.getElementById('entx');
+    if(el && SEL && SEL.id===o.id) el.innerHTML=entxHtml(o.id); })
+    .catch(e=>console.warn('description lookup failed:', e && e.message));
   /* The long description of what this kind of office is, and where it
      sits among the others, belongs here as much as on the kind's page.
      A reader who answered the scope question may arrive at one office
@@ -5376,6 +5528,7 @@ function renderOffice(o){
   h+=findSiteLink(o);
   if(email) h+='<a href="mailto:'+esc(email)+'">'+esc(email)+'</a>';
   if(phone) h+='<span>'+esc(phone)+'</span>';
+  /* email and phone are read through bareMail/bareTel above */
   h+='</div></div>';
   /* The methods that reach this office AND answer what the reader said
      they were trying to do. A flat list ranked only by how well each
@@ -5517,6 +5670,392 @@ function lawLinksPlace(){
 function capFirst(v){
   const t=String(v==null?'':v);
   return t ? t.charAt(0).toUpperCase()+t.slice(1) : t;
+}
+function lcFirst(v){
+  const t=String(v==null?'':v);
+  /* An acronym keeps its capitals: "EU law" must not become "eU law". */
+  if(/^[A-Z]{2,}/.test(t)) return t;
+  return t ? t.charAt(0).toLowerCase()+t.slice(1) : t;
+}
+
+/* ====================================================================
+   ONE LINE UNDER THE NAME, NOT TWO
+
+   Every office used to carry two subtitles, one under the other:
+
+     Ministry of Cities
+     Federal ministry of Brazil            <- the record's own line
+     Runs the department that writes        <- what this kind of office
+     the detailed rules.                       does, from the classifier
+
+   They are answers to two different questions — which office is this,
+   and what does an office of this kind do — and stacking them read as
+   the page saying the same thing twice in two voices. They are one
+   sentence now, in that order, because that is the order a reader
+   needs them in: the record names this particular office, and the
+   clause after the dash says what it does about a law.
+
+   `mergeSub` is the only place either field is drawn, so the lists,
+   the office page, the hover card and the marker popup cannot drift
+   apart. Three cases it has to get right:
+
+   - the classifier could not read the title, so its half says nothing
+     ("Role not identified") and is dropped rather than printed;
+   - the record's line already says what the classifier's half would
+     add, so the dash would repeat it;
+   - the record holds no line at all, which is common below the
+     region, and then the classifier's half is the whole sentence. */
+const RX_NOROLE=/^(role not identified|title did not identify a role|offices the map could not place)/i;
+function mergeSub(o){
+  if(!o) return '';
+  const d=String(o.desc||'').replace(/\s+/g,' ').trim().replace(/[.;,]+$/,'');
+  let w=String(o.what||'').replace(/\s+/g,' ').trim().replace(/[.;,]+$/,'');
+  if(RX_NOROLE.test(w)) w='';
+  if(!d && !w) return '';
+  if(!d) return capFirst(w)+'.';
+  if(!w) return capFirst(d)+'.';
+  const dl=d.toLowerCase(), wl=w.toLowerCase();
+  /* "the body that writes and passes the law here" against a record
+     line reading "legislature of Bavaria" — the same claim twice. The
+     test is crude on purpose: the four words that carry the meaning. */
+  const key=wl.split(/\s+/).filter(x=>x.length>4).slice(0,4);
+  if(key.length && key.every(k=>dl.indexOf(k)>=0)) return capFirst(d)+'.';
+  return capFirst(d)+' — '+lcFirst(w)+'.';
+}
+
+/* ====================================================================
+   WHAT THIS PARTICULAR BODY ACTUALLY DOES
+
+   The line above is as much as the two existing sources can say, and
+   it is thin: "Austrian federal ministry" names a category, and a
+   reader deciding whether to spend an afternoon writing to it learns
+   nothing from a category. What they need is the ministry's actual
+   remit — which subjects it holds, what it is allowed to decide, who
+   it answers to.
+
+   There is no register of office remits, and composing one here would
+   be inventing it. Two sources describe them already, and both are
+   read in bulk rather than one body at a time:
+
+   1. The office's own encyclopaedia entry, where it has one. Its
+      opening paragraph is written to say what a body is and does, and
+      it is the richest text available anywhere for these bodies:
+      "the government ministry of Austria responsible for diplomatic
+      missions and immigration, the administration of foreign policy,
+      and the maintenance of the country's relations with
+      international organisations". The office queries now carry the
+      article's name (`?enwiki`), so no lookup is needed to find it,
+      and the API returns the opening paragraph for **twenty articles
+      in one request** — which is what makes this affordable at all.
+      Coverage is what it is: about a quarter of the offices at
+      national and regional level have an article, and almost none
+      below the county.
+
+   2. Where there is no article, the body's own record. Each of its
+      recorded statements is a fact somebody published — which
+      organisation it belongs to, which jurisdiction it has authority
+      over, the subject it works on, the year it was set up, who holds
+      the post — and a sentence that quotes those statements in order
+      is not a composed description, it is the record read aloud. This
+      one runs on the click rather than in bulk, because it is one
+      query per body.
+
+   Both say which of the two they are, under the text, because a
+   reader checking a claim has to know whether they are reading an
+   encyclopaedia or a database. Nothing here is written by this map
+   and nothing is paraphrased: the text is quoted, trimmed to its
+   first few sentences, and attributed.
+
+   What is deliberately not done: no text is put in the office lists.
+   The panel does not scroll and section 1 measured the row spacing as
+   having no slack in it, so a paragraph under every row would push
+   the list off the screen. It appears where the reader has asked for
+   one body — the marker popup, and the office's own page. */
+const ENTX={};                 /* id -> {t, src, pend} */
+let ENTX_WANT=[], ENTX_T=null;
+const WP_API='https://en.wikipedia.org/w/api.php';
+const WP_BATCH=20;             /* the API's own limit for intro extracts */
+/* Wikimedia asks a caller to identify itself and rate-limits anonymous
+   cross-origin requests that do not. See runEntTexts. */
+const WP_UA='HowToReachThem/1.0 (https://welcometoyourgalaxy.com; map of who to contact to make a law)';
+
+function entxGet(id){ return ENTX[id]||null; }
+
+/* Ask for an office's text. Cheap and idempotent: it queues the
+   article name and the batch goes out once the queue stops growing,
+   so rendering a list of twelve offices costs one request. */
+function wantEntText(o){
+  if(!o || !o.id || ENTX[o.id]) return;
+  if(!o.wiki){ ENTX[o.id]={t:'',src:'',pend:0}; return; }
+  ENTX[o.id]={t:'',src:'',pend:1,tries:0,title:o.wiki};
+  ENTX_WANT.push({id:o.id, title:o.wiki});
+  clearTimeout(ENTX_T);
+  ENTX_T=setTimeout(()=>{ runEntTexts(); }, 90);
+}
+function wantEntTexts(list){ (list||[]).forEach(wantEntText); }
+
+const wpNorm=t=>String(t||'').replace(/_/g,' ').replace(/\s+/g,' ').trim().toLowerCase();
+
+/* Three sentences at most, cut at a sentence end and never mid-word.
+   The opening paragraph of a long article runs to a screen and a half,
+   which is not what a reader deciding who to write to is reading. */
+/* An encyclopaedia opens by giving the body's name in its own language,
+   its abbreviation and sometimes how to say it out loud:
+
+     The National Council (Austrian German: Nationalrat, pronounced
+     [nat\u0361si\u032fo\u02c8na\u02d0l\u02ccra\u02d0t]) is one of the two houses…
+
+   None of that says what the body does, and the pronunciation is three
+   alphabets a reader has no use for here. A bracket is dropped where it
+   carries a colon (a language gloss), phonetic marks, or opens with a
+   word that introduces one — and nothing else is touched, because
+   "(Austria)" after a ministry's name is part of which ministry it is. */
+const RX_IPA=/[\u0250-\u02af\u02b0-\u02ff\u0300-\u036f]/;
+function entPlain(t){
+  let out='', depth=0, buf='';
+  for(const ch of String(t||'')){
+    if(ch==='('){ if(depth===0){ depth=1; buf='('; continue; } depth++; buf+=ch; continue; }
+    if(ch===')' && depth){ depth--; buf+=ch;
+      if(depth===0){
+        const inner=buf.slice(1,-1);
+        const drop = inner.indexOf(':')>=0 || RX_IPA.test(inner) ||
+                     /^\s*(?:pronounced|lit\.|literally|abbreviated|abbr\.|colloquially|formerly known as)\b/i.test(inner);
+        if(!drop) out+=buf;
+        buf='';
+      }
+      continue; }
+    if(depth) buf+=ch; else out+=ch;
+  }
+  out+=buf;
+  return out.replace(/\s+([,.;:])/g,'$1').replace(/\s{2,}/g,' ')
+            .replace(/,\s*(?=[,.;])/g,'').trim();
+}
+function entTrim(txt){
+  let t=entPlain(String(txt||'').replace(/\s+/g,' ')).trim();
+  if(!t) return '';
+  /* an abbreviation is not the end of a sentence */
+  const marks=[];
+  const rx=/([.!?])\s+(?=[A-Z("“])/g; let m;
+  while((m=rx.exec(t))){
+    const before=t.slice(Math.max(0,m.index-4), m.index+1);
+    if(/\b(?:[A-Z]|No|St|Dr|Mr|Mrs|Ms|vs|etc|cf|e\.g|i\.e)\.$/.test(before)) continue;
+    marks.push(m.index+1);
+  }
+  let cut = marks.length>=3 ? marks[2] : (marks.length?marks[marks.length-1]:t.length);
+  if(cut>620){
+    const earlier=marks.filter(x=>x<=620);
+    cut = earlier.length ? earlier[earlier.length-1] : 620;
+    if(!earlier.length){
+      const sp=t.lastIndexOf(' ', 620);
+      cut = sp>200 ? sp : 620;
+      t = t.slice(0,cut).replace(/[,;:]$/,'')+'…';
+      return t;
+    }
+  }
+  return t.slice(0,cut).trim();
+}
+
+async function runEntTexts(){
+  const take=ENTX_WANT.splice(0, WP_BATCH);
+  if(!take.length) return;
+  if(ENTX_WANT.length){ clearTimeout(ENTX_T); ENTX_T=setTimeout(()=>{ runEntTexts(); }, 350); }
+  /* several offices can share one article, so the title maps to a list */
+  const want={};
+  take.forEach(x=>{ const k=wpNorm(x.title); (want[k]=want[k]||[]).push(x.id); });
+  const titles=Object.keys(want).map(k=>take.find(x=>wpNorm(x.title)===k).title);
+  const url=WP_API+'?action=query&format=json&origin=*&redirects=1'+
+    '&prop=extracts&exintro=1&explaintext=1&exlimit='+WP_BATCH+
+    '&titles='+encodeURIComponent(titles.join('|'));
+  /* Two things about this request are not optional, and both were
+     found by making it without them.
+
+     **The header.** An anonymous cross-origin request to this API with
+     no identifying header is rate-limited almost immediately: the
+     first one answered and the next three came back
+     `429 You are making too many requests to the API`, which is the
+     condition this page would be in permanently. `Api-User-Agent`
+     names the caller, which is what the API asks for in the response
+     it refuses with, and with it the same requests answer 200.
+
+     **The retry.** It still refuses sometimes, and section 8 is about
+     exactly what happens when a refused request is treated as an
+     empty answer: the page shows a short list that reads as a
+     complete one. Three attempts, waiting as long as the service
+     asks for, and on a 4xx that is not 429 it gives up at once —
+     that is the query's own fault and retrying fails the same way. */
+  let data=null, lastErr='';
+  for(let att=0; att<3 && !data; att++){
+    try{
+      const r=await fetch(url, {headers:{'Api-User-Agent':WP_UA}});
+      if(r.status===429 || r.status===503){
+        const ra=+(r.headers.get('Retry-After')||0);
+        lastErr='Wikipedia returned '+r.status;
+        await new Promise(z=>setTimeout(z, Math.min(Math.max(ra*1000, 900*(att+1)), 6000)));
+        continue;
+      }
+      if(!r.ok){ lastErr='Wikipedia returned '+r.status; break; }
+      data=await r.json();
+    }catch(e){ lastErr=(e&&e.message)||'fetch failed';
+      await new Promise(z=>setTimeout(z, 700*(att+1))); }
+  }
+  if(!data){
+    /* A refused batch is not an answer, and treating it as one is the
+       fault this whole file keeps warning about \u2014 here it showed as a
+       popup that said "looking up what this body does" and then sat
+       empty for ever, because the ids were dropped and nothing asked
+       again. A refused batch goes back on the queue, twice, behind a
+       longer wait each time. After that the entry is marked as asked
+       and `entDetail` falls through to the body's own record, which is
+       the honest answer when Wikipedia will not answer. */
+    console.warn('description fetch failed:', lastErr);
+    let requeued=0;
+    take.forEach(x=>{
+      const e=ENTX[x.id];
+      if(e && (e.tries||0) < 2){ e.tries=(e.tries||0)+1; ENTX_WANT.push(x); requeued++; }
+      else if(e){ e.pend=0; }
+    });
+    if(requeued){
+      clearTimeout(ENTX_T);
+      ENTX_T=setTimeout(()=>{ runEntTexts(); }, 2500);
+    }
+    return;
+  }
+  const q=(data&&data.query)||{};
+  /* the API answers under the title it ended up at, which after a
+     redirect or a capitalisation fix is not the title that was asked
+     for; both mappings are published in the same response */
+  const back={};
+  (q.normalized||[]).forEach(n=>{ back[wpNorm(n.to)]=wpNorm(n.from); });
+  (q.redirects||[]).forEach(n=>{ back[wpNorm(n.to)]=wpNorm(n.from); });
+  const origin=k=>{ let cur=k; for(let i=0;i<5 && back[cur] && back[cur]!==cur;i++) cur=back[cur]; return cur; };
+  let got=0;
+  Object.values(q.pages||{}).forEach(pg=>{
+    const ids=want[origin(wpNorm(pg.title))]; if(!ids) return;
+    const t=entTrim(pg.extract);
+    ids.forEach(id=>{ if(ENTX[id]){ ENTX[id].t=t; ENTX[id].src=t?'wikipedia':''; ENTX[id].pend=0; } });
+    if(t) got++;
+  });
+  take.forEach(x=>{ if(ENTX[x.id]) ENTX[x.id].pend=0; });
+  if(got) entxArrived();
+}
+
+/* Where there is no article: the body's own recorded statements, in
+   the order a reader needs them, each one quoted rather than
+   summarised. One query, on the click. */
+function qEntFacts(id){ return `
+SELECT ?clsLabel ?parentLabel ?partLabel ?jurLabel ?fieldLabel ?found ?holderLabel ?hqLabel WHERE {
+ OPTIONAL{ wd:${id} wdt:P31 ?cls }
+ OPTIONAL{ wd:${id} wdt:P749 ?parent }
+ OPTIONAL{ wd:${id} wdt:P361 ?part }
+ OPTIONAL{ wd:${id} wdt:P1001 ?jur }
+ OPTIONAL{ wd:${id} wdt:P101 ?field }
+ OPTIONAL{ wd:${id} wdt:P571 ?found }
+ OPTIONAL{ wd:${id} wdt:P1308 ?holder }
+ OPTIONAL{ wd:${id} wdt:P159 ?hq }
+ SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" }
+} LIMIT 60`; }
+
+function listOf(rows, key, cap){
+  const seen={}, out=[];
+  rows.forEach(r=>{
+    const v=r[key] && r[key].value; if(!v) return;
+    if(/^Q\d+$/.test(v)) return;                 /* a bare id is not a name */
+    if(seen[v.toLowerCase()]) return;
+    seen[v.toLowerCase()]=1; out.push(v);
+  });
+  return out.slice(0, cap||2);
+}
+function joinAnd(a){
+  if(a.length<2) return a[0]||'';
+  return a.slice(0,-1).join(', ')+' and '+a[a.length-1];
+}
+
+async function entFactsText(id){
+  let rows;
+  try{ rows=await sparql(qEntFacts(id), 'facts:'+id); }
+  catch(e){ console.warn('record lookup failed for '+id+':', e && e.message); return ''; }
+  if(!rows || !rows.length) return '';
+  const cls=listOf(rows,'clsLabel',2),
+        parent=listOf(rows,'parentLabel',1),
+        part=listOf(rows,'partLabel',1),
+        jur=listOf(rows,'jurLabel',2),
+        field=listOf(rows,'fieldLabel',3),
+        hq=listOf(rows,'hqLabel',1),
+        holder=listOf(rows,'holderLabel',1);
+  let year='';
+  rows.forEach(r=>{ const v=r.found&&r.found.value; const m=v&&/^(-?\d{1,4})-/.exec(v);
+    if(m && !year) year=String(+m[1]); });
+  const bits=[];
+  if(cls.length) bits.push('The record classes it as '+joinAnd(cls.map(lcFirst))+'.');
+  const belong = parent[0] ? 'part of '+parent[0] : (part[0] ? 'part of '+part[0] : '');
+  if(belong) bits.push(capFirst(belong)+'.');
+  if(jur.length) bits.push('Its authority is recorded as covering '+joinAnd(jur)+'.');
+  if(field.length) bits.push('The subject it is recorded as working on is '+joinAnd(field.map(lcFirst))+'.');
+  if(year) bits.push('Set up in '+year+'.');
+  if(hq.length) bits.push('Based in '+hq[0]+'.');
+  if(holder.length) bits.push('The post is recorded as held by '+holder[0]+'.');
+  /* One or two statements is a line the reader already has above. It is
+     worth drawing only where the record actually says something. */
+  return bits.length>=3 ? bits.join(' ') : '';
+}
+
+/* The text for one body, with both sources tried in order. Returns
+   what it found and stores it, so opening the same office twice costs
+   nothing the second time. */
+async function entDetail(o){
+  if(!o || !o.id) return null;
+  const have=ENTX[o.id];
+  if(have && !have.pend && (have.t || have.src==='none')) return have;
+  /* Mark it pending before the first await, so anything drawn in the
+     meantime says the lookup is running rather than showing a blank
+     where the text will be. Measured on a Vienna court, which has no
+     encyclopaedia entry: the popup opened, the record query took a few
+     seconds, and the box sat empty with nothing to say it was waiting. */
+  if(!have) ENTX[o.id]={t:'', src:'', pend:1, tries:0};
+  if(o.wiki){
+    wantEntText(o);
+    /* The batch goes out on a 90ms timer, and a refused one is tried
+       twice more behind a longer wait, so this has to outlast all of
+       that rather than give up during it: three attempts in the call,
+       then up to two re-queues at 2.5s. Twenty-two seconds covers the
+       worst case and costs nothing in the ordinary one, because the
+       loop stops the moment the entry stops being pending. */
+    for(let i=0;i<180;i++){
+      const e=ENTX[o.id];
+      if(e && !e.pend) break;
+      await new Promise(r=>setTimeout(r,120));
+    }
+    const e=ENTX[o.id];
+    if(e && e.t) return e;
+  }
+  const t=await entFactsText(o.id);
+  ENTX[o.id]={t:t, src:t?'record':'none', pend:0};
+  /* The same repaint the Wikipedia batch does on arrival: whichever of
+     the popup and the office page is open gets the text. Without it a
+     body with no encyclopaedia entry showed its record only on a
+     second opening, from the cache. */
+  if(t) entxArrived();
+  return ENTX[o.id];
+}
+
+/* An arriving batch repaints whatever is open, the way `chainArrived`
+   does for offices: the popup and the office page both draw this text
+   and both can be on screen before it lands. */
+function entxArrived(){
+  try{ if(MKPOP_ID) paintMarkerPopupText(MKPOP_ID); }catch(e){}
+  try{ if(SEL && ENTX[SEL.id] && ENTX[SEL.id].t){ const el=document.getElementById('entx');
+    if(el) el.innerHTML=entxHtml(SEL.id); } }catch(e){}
+}
+
+const ENTX_SRC={wikipedia:'From this body’s entry on Wikipedia, quoted and cut to its first sentences.',
+                record:'Assembled from the statements on this body’s own public record — each sentence quotes one of them.'};
+function entxHtml(id){
+  const e=ENTX[id];
+  if(!e) return '';
+  if(e.pend) return '<span class="entxw">Looking up what this body does…</span>';
+  if(!e.t) return '';
+  return '<div class="entxt">'+glossy(e.t)+'</div>'+
+         '<div class="entxs">'+esc(ENTX_SRC[e.src]||'')+'</div>';
 }
 
 function renderNoEntity(nm, drawn){
@@ -5887,7 +6426,20 @@ function addChainLayers(){
     tip(e.lngLat, (f.properties.on ? f.properties.label
       : f.properties.label + ' \u2014 not in the jurisdiction you picked') + extra); });
   map.on('mouseleave','pin-hit', ()=>{ map.getCanvas().style.cursor=''; hideTip(); });
-  map.on('click','pin-hit', e=>{ const f=pickFeature(e.features); if(!f) return; openPin(f.properties.id); });
+  /* The popup first, and the panel only if the reader asks for it. */
+  map.on('click','pin-hit', e=>{ const f=pickFeature(e.features); if(!f) return;
+    openMarkerPopup(f.properties.id, e.lngLat); });
+  /* a click on bare ground closes it; the marker handler above runs
+     first and marks the event, so opening one does not close it */
+  map.on('click', e=>{ if(e.defaultPrevented) return;
+    const hit=(()=>{ try{ return map.queryRenderedFeatures(e.point,{layers:['pin-hit']}); }
+                     catch(err){ return []; } })();
+    if(!hit || !hit.length) closeMarkerPopup(); });
+  /* re-anchored on every frame rather than closed, so it stays on its
+     marker through the camera move a click on the map starts */
+  map.on('move', placeMarkerPopup);
+  addEventListener('resize', placeMarkerPopup);
+  addEventListener('keydown', e=>{ if(e.key==='Escape') closeMarkerPopup(); });
 }
 
 /* draw the nesting of jurisdictions the clicked unit sits inside */
@@ -6047,73 +6599,50 @@ async function loadMunicipalities(parentFeature, level){
    full. If it belongs to a level you are not inside, there is nothing
    resolved to show, so the marker says what it is and offers the record
    rather than failing silently. */
-/* Clicking an orb walks the walkthrough down to it.
-
-   It used to open the office page directly, which answered the question
-   but taught nothing: a reader arriving that way never saw which step of
-   lawmaking the office acts at, what else acts there, or what comes
-   before and after it. The walk takes the route a reader would take by
-   hand — the step on the rail lights up and opens, then the kind of
-   office inside it, then the office itself — at about half a second
-   each, so the context is seen before the page replaces it.
-
-   Any click while it is running takes you straight to the page, because
-   a reader who already knows where they are does not want to watch it
-   again. */
-let WALK=0;
-const walkWait = ms => new Promise(r=>setTimeout(r,ms));
+/* `walkHalo` stays: it rings the marker on the map for the office the
+   panel has open, which is worth having whether or not anything is
+   animated. `WALK`, `walkWait` and `walkGlow` went with the walk. */
 function walkHalo(id){
   try{ map.setFilter('pin-walk', ['==',['get','id'], id||'']); }catch(e){}
 }
-function walkGlow(el, on){ if(el) el.classList.toggle('walking', !!on); }
 
-async function walkTo(o){
-  const gen=++WALK;
+/* A click on an office opens that office, in one render.
+
+   This used to be an animation. The reader clicked a marker, and the
+   panel drew the list of every office over the place, lit the kind the
+   office belongs to, lit the office in that list, and only then opened
+   its page — about a second and a half with two other screens on the
+   way. What it was for was telling the reader where this office sits
+   among the others; what it read as was a misfire, three screens
+   flashing past on the way to the one they asked for.
+
+   And it did not arrive. The sequence is guarded by a generation
+   counter so that a second click abandons the first walk, and
+   somewhere in the real sequence — not in a replay of it, which
+   completes every time — that guard was firing on a walk nobody had
+   interrupted: the page stayed on the list and the office page never
+   drew at all. Clicking a marker did nothing visible. That was true
+   before any of this round's changes and it is the reason a marker
+   now opens a popup first: the popup already says what the office is,
+   which is the whole job the animation was doing, so there is nothing
+   left for it to show and it is gone.
+
+   The state it set up is kept, because the trail is read from it: the
+   page sequence above an office still reads Start › Every office over
+   this place › the kind › this office. */
+function showOffice(o){
+  if(!o) return;
   walkHalo(o.id);
-  /* The walkthrough is a set of questions, so a marker clicked on the
-     map has no branch of its own to arrive at. It lands on the
-     destination that holds every office \u2014 which is where somebody who
-     did not want to answer questions would have gone anyway \u2014 and the
-     walk then glows the kind of office and the office itself, so the
-     reader sees what it is and what sits beside it before the page
-     replaces the list. */
   PATH=[{label:'Every office over this place', next:null}];
   LEAF='all'; LEAFLVL=null; LEAFSUB=null; LEAFKIND=o.kind;
-  SEL=null; render();
-  await walkWait(60);
-  if(gen!==WALK) return;
-
-  /* `LEAFKIND` was set above, so the render already landed on the
-     office's own kind page and the office is in the list on it. The
-     walk shows the reader where that page sits — the kind, then the
-     office — before the office page replaces it. */
-  const body=$('#mbody');
-  const steps=[
-    body.querySelector('.pg-kind .qq'),
-    body.querySelector('.orow[data-id="'+o.id+'"]'),
-  ];
-  const frames=[ [o.kind], null ];
-  for(let i=0;i<steps.length;i++){
-    if(gen!==WALK) return;
-    const el=steps[i]; if(!el) continue;
-    if(el.scrollIntoView) el.scrollIntoView({behavior:'smooth', block:'nearest'});
-    walkGlow(el, true);
-    if(frames[i]) frameKinds(frames[i]); else frameIdsSoon([o.id]);
-    await walkWait(640);
-    walkGlow(el, false);
-    await walkWait(110);
-  }
-  if(gen!==WALK) return;
-  walkHalo('');
-  SEL=o; renderOffice(o);
+  SEL=o;
+  renderOffice(o);
 }
-/* clicking anything while it is running takes you to the end of it */
-document.addEventListener('click', ()=>{ if(WALK) WALK++; }, true);
 
 function openPin(id){
   if(LOCAL[id]) return openLocal(id);
   const o = BK && BK.byId && BK.byId[id];
-  if(o){ openModal(CUR?CUR.label:''); walkTo(o); return; }
+  if(o){ openModal(CUR?CUR.label:''); showOffice(o); return; }
   const p = PINS[id]; if(!p) return;
   /* A marker from a level above the open one. Most markers on screen
      are: the panel shows the municipality and the map shows every
@@ -6163,12 +6692,129 @@ function openLocal(id){
     row('What it is', KINDNAME[L.kind]||'')+
     row('Run by', L.oper)+
     row('Address', L.addr)+
-    row('Telephone', L.phone)+
-    row('Email', L.email)+
+    row('Telephone', bareTel(L.phone))+
+    row('Email', bareMail(L.email))+
     (L.site ? '<div class="fld"><dt>Website</dt><dd><a href="'+esc(L.site)+'" target="_blank" rel="noopener">'+esc(L.site)+'</a></dd></div>' : '')+
     '<div class="meta">OpenStreetMap contributors, via this account\u2019s executive-map data</div>'+
     '</div>';
   $('#mback').style.display='none';
+}
+
+/* ====================================================================
+   WHAT A CLICK ON A MARKER DOES
+
+   It used to replace the panel. The reader had the place they searched
+   for open, clicked a marker to find out what it was, and the panel
+   they were reading was gone and an office page was in its place — so
+   finding out what a marker is cost them their place in the
+   walkthrough, and the only way to learn that a marker was not what
+   they wanted was to lose the screen they were on.
+
+   A click asks a question now and the answer is a small box on the
+   map: the body's name, the one line under it, and a few sentences on
+   what it actually does. The button at the foot is the thing that
+   replaces the panel, so that only happens when the reader has read
+   what the marker is and decided they want it.
+
+   The box is a plain element over the canvas rather than a MapLibre
+   popup, for two reasons: it has a button in it, which a layer with
+   pointer events off cannot have, and it has to survive the camera
+   move that `openPin` starts — it is re-anchored on every frame of a
+   move instead of being torn down and rebuilt. */
+let MKPOP=null, MKPOP_ID='', MKPOP_LL=null;
+
+function markerBox(){
+  if(!MKPOP){
+    MKPOP=document.createElement('div');
+    MKPOP.id='mkpop';
+    document.body.appendChild(MKPOP);
+    /* A click inside the box is never a click on the map underneath. */
+    MKPOP.addEventListener('click', e=>{ e.stopPropagation(); });
+  }
+  return MKPOP;
+}
+function closeMarkerPopup(){
+  MKPOP_ID=''; MKPOP_LL=null;
+  if(MKPOP) MKPOP.classList.remove('on');
+}
+function placeMarkerPopup(){
+  if(!MKPOP_ID || !MKPOP_LL || !MKPOP) return;
+  let pt;
+  try{ pt=map.project(MKPOP_LL); }catch(e){ return; }
+  const w=MKPOP.offsetWidth||300, h=MKPOP.offsetHeight||140;
+  let left=pt.x-w/2, top=pt.y-h-18;
+  if(top<10) top=pt.y+18;                      /* under the marker instead */
+  left=Math.max(10, Math.min(left, innerWidth-w-10));
+  top =Math.max(10, Math.min(top,  innerHeight-h-10));
+  MKPOP.style.left=Math.round(left)+'px';
+  MKPOP.style.top =Math.round(top)+'px';
+}
+/* The text arrives after the box is drawn. */
+function paintMarkerPopupText(id){
+  if(MKPOP_ID!==id || !MKPOP) return;
+  const el=MKPOP.querySelector('.mkx');
+  if(el) el.innerHTML=entxHtml(id);
+  placeMarkerPopup();
+}
+
+function openMarkerPopup(id, lngLat){
+  const el=markerBox();
+  MKPOP_ID=id;
+  MKPOP_LL=lngLat || (PINS[id] ? [PINS[id].lng, PINS[id].lat] : null);
+  if(!MKPOP_LL){ closeMarkerPopup(); return openPin(id); }
+
+  const L=LOCAL[id];
+  const o=(BK && BK.byId && BK.byId[id]) || (PINS[id] && PINS[id].o) || null;
+  let h='<button type="button" class="mkcl" aria-label="Close" '+
+        'onclick="closeMarkerPopup()">×</button>';
+
+  if(L){
+    /* A building, not an office with a vote. The distinction is the
+       whole point of section 11 and it has to survive into the box. */
+    h+='<div class="mknm">'+esc(officeLabel(L.name))+'</div>'+
+       '<div class="mksub">'+esc(KINDNAME[L.kind]||'A place on the ground')+
+       ' — a building you can walk into, write to or ring, not an office with a vote.</div>'+
+       '<div class="mkx">'+
+       (L.addr?'<div class="mkfl">'+esc(L.addr)+'</div>':'')+
+       (L.phone?'<div class="mkfl">'+esc(bareTel(L.phone))+'</div>':'')+
+       '</div>'+
+       '<button type="button" class="mkgo" onclick="markerGo()">Open its page '+
+       '<span class="mkar">›</span></button>';
+  } else if(o){
+    /* Claimed as pending before the box is built, so the box says the
+       lookup is running instead of leaving the gap where the text goes.
+       `entDetail` does the same thing, but only after its first await,
+       which is later than this html. */
+    if(o.id && !ENTX[o.id]) ENTX[o.id]={t:'', src:'', pend:1, tries:0};
+    const sub=mergeSub(o);
+    h+='<div class="mknm">'+esc(o.label)+'</div>'+
+       (sub?'<div class="mksub">'+glossy(sub)+'</div>':'')+
+       '<div class="mkx">'+entxHtml(o.id)+'</div>'+
+       '<button type="button" class="mkgo" onclick="markerGo()">'+
+       'Open its page in the panel <span class="mkar">›</span></button>';
+    /* fills the .mkx element when it lands */
+    entDetail(o).then(()=>paintMarkerPopupText(o.id))
+      .catch(e=>console.warn('description lookup failed:', e && e.message));
+  } else {
+    const p=PINS[id];
+    h+='<div class="mknm">'+esc((p&&p.label)||id)+'</div>'+
+       '<div class="mksub">This one is on the map but sits outside the place you have open, '+
+       'so the ways of reaching it have not been worked out.</div>'+
+       '<div class="mkx"></div>'+
+       '<button type="button" class="mkgo" onclick="markerGo()">Open what is known '+
+       '<span class="mkar">›</span></button>';
+  }
+  el.innerHTML=h;
+  el.classList.add('on');
+  placeMarkerPopup();
+  /* offsetHeight is only right once it is laid out */
+  requestAnimationFrame(placeMarkerPopup);
+}
+/* the button at the foot: this is the only thing that moves the panel */
+function markerGo(){
+  const id=MKPOP_ID;
+  closeMarkerPopup();
+  if(id) openPin(id);
 }
 
 /* pull coordinates for a jurisdiction and merge them into the pin set */
@@ -6380,8 +7026,14 @@ async function loadChainPins(){
        all: once to the place itself in `enterPlace`, once to the
        offices here when they are all in. */
   }
-  /* no second fit here: enterPlace framed the country before this
-     started, and the markers appear inside that frame as they resolve */
+  /* The one exception to that, and it is the case above: if the
+     opening frame was drawn before any marker existed, the view the
+     reader is looking at was built from the place's outline alone.
+     Now that the chain is in, frame the contacts as intended. */
+  if(ZOOM_LATE && gen===CHAIN_GEN && Object.keys(PINS).length){
+    ZOOM_LATE=false;
+    fitToPins();
+  }
 }
 let CHAIN_DONE={}, CHAIN_CLAIMED={}, CHAIN_GEN=0;
 
@@ -6393,40 +7045,83 @@ let CHAIN_DONE={}, CHAIN_CLAIMED={}, CHAIN_GEN=0;
    view now opens on the markers themselves, with the place you searched
    for included, so what you can see is what you can contact. */
 function fitToPins(){
-  /* Which markers the view should frame is not "all of them". The
-     country's offices are real contacts and stay on the map, but the
-     United States has federal offices thousands of kilometres from any
-     one town, and framing those put Sierra Madre at zoom 1.6 — the whole
-     globe, which answers nothing. The frame is built from the levels
-     between the municipality and the region: those are the offices that
-     govern this place and sit near it. The country's are still drawn,
-     further out, and the breadcrumb goes there.
+  /* Which markers the view should frame is not "all of them", and the
+     percentile box this used to draw was not tight enough either.
 
-     Even inside one region a stray record can sit far away, so the
-     middle 90% of what is left decides the box and the outliers are
-     allowed to fall outside it. */
+     The offices that govern one town are not spread evenly over the
+     ground: there is a knot of them at the town hall, usually a second
+     knot at the regional capital, and then a scatter — one recorded
+     office in a field two hundred miles away, a national body whose
+     coordinate is its head office on another coast. A box drawn round
+     the middle 90% of all of them still has to reach every one of
+     those scattered single records, and the frame it produces is
+     mostly empty ground with the place the reader asked about as a
+     speck in one corner.
+
+     So the frame is built from where the markers are *concentrated*.
+     The markers are clustered, a cluster holding one lone marker is
+     not allowed to decide anything, and a cluster sitting further out
+     than `NEAR_DEG` from the place that was searched for is left off
+     the frame rather than pulled into it. Those markers are all still
+     drawn — nothing is hidden, and the reader can pull back and see
+     them — they just do not get a vote on the opening view.
+
+     The place that was searched for is always in frame, whether or not
+     it holds an office of its own: it is what the reader asked about. */
+  const NEAR_DEG=2.6;        /* ~290km; a regional capital is in, a distant
+                                single record is out */
   const idx = {};
   STACK.forEach((s,i)=>{ if(s.q) idx[s.q]=i; });
   const lvlOf = p => (p.lvlIdx!=null) ? p.lvlIdx : idx[p.lvlQ];
+  /* the country's own offices are excluded as before: the United States
+     keeps federal offices thousands of kilometres from any one town */
   let pts = Object.values(PINS).filter(p=>lvlOf(p)!==undefined && lvlOf(p)>=1);
   if(!pts.length) pts = Object.values(PINS).filter(p=>lvlOf(p)!==undefined);
-  if(!pts.length) return;
 
-  const cut = (vals)=>{
-    const v=vals.slice().sort((a,b)=>a-b);
-    if(v.length<8) return [v[0], v[v.length-1]];
-    const lo=Math.floor(v.length*0.05), hi=Math.ceil(v.length*0.95)-1;
-    return [v[lo], v[hi]];
-  };
-  const [x0r,x1r]=cut(pts.map(p=>p.lng));
-  const [y0r,y1r]=cut(pts.map(p=>p.lat));
-  let x0=x0r,x1=x1r,y0=y0r,y1=y1r;
-
-  /* the place itself belongs in the frame even when it holds no office */
   const top=STACK[STACK.length-1];
-  if(top && top.feature && top.feature.geometry){
-    const b=bboxOf(top.feature.geometry);
-    x0=Math.min(x0,b[0]); y0=Math.min(y0,b[1]); x1=Math.max(x1,b[2]); y1=Math.max(y1,b[3]);
+  const placeBox = (top && top.feature && top.feature.geometry)
+    ? bboxOf(top.feature.geometry) : null;
+  const anchor = placeBox
+    ? [(placeBox[0]+placeBox[2])/2, (placeBox[1]+placeBox[3])/2]
+    : (pts.length ? [pts[0].lng, pts[0].lat] : null);
+
+  /* nothing to go on but the place itself */
+  if(!pts.length){
+    if(top && top.feature && top.feature.geometry) fitTo(top.feature.geometry);
+    return;
+  }
+  if(!anchor) return;
+
+  /* `clusterPins` is the same single-link grouping the magnifying
+     bubbles use, so a level that reads as three groups in its bubble
+     reads as three groups here too. */
+  const groups=clusterPins(pts, 0.6);
+  const near=g=>{
+    const cx=g.reduce((a,p)=>a+p.lng,0)/g.length, cy=g.reduce((a,p)=>a+p.lat,0)/g.length;
+    return Math.abs(cx-anchor[0])<=NEAR_DEG && Math.abs(cy-anchor[1])<=NEAR_DEG;
+  };
+  let keep=groups.filter(g=>g.length>1 && near(g));
+  /* A place whose offices are all recorded one to a coordinate would
+     keep nothing at all under that test, so the groups near the place
+     are kept whatever their size. Only then, if there is still
+     nothing, does the nearest group decide — which is the case of a
+     town whose own records sit at the county seat an hour away. */
+  if(!keep.length) keep=groups.filter(near);
+  if(!keep.length){
+    const d=g=>{ const cx=g.reduce((a,p)=>a+p.lng,0)/g.length,
+                       cy=g.reduce((a,p)=>a+p.lat,0)/g.length;
+      return Math.abs(cx-anchor[0])+Math.abs(cy-anchor[1]); };
+    keep=[groups.slice().sort((a,b)=>d(a)-d(b))[0]];
+  }
+
+  let x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity;
+  keep.forEach(g=>g.forEach(p=>{
+    if(p.lng<x0)x0=p.lng; if(p.lng>x1)x1=p.lng;
+    if(p.lat<y0)y0=p.lat; if(p.lat>y1)y1=p.lat;
+  }));
+  if(placeBox){
+    x0=Math.min(x0,placeBox[0]); y0=Math.min(y0,placeBox[1]);
+    x1=Math.max(x1,placeBox[2]); y1=Math.max(y1,placeBox[3]);
   }
   if(!(x1>=x0 && y1>=y0)) return;
   const padx=Math.max((x1-x0)*0.10, 0.02), pady=Math.max((y1-y0)*0.10, 0.02);
@@ -6983,18 +7678,33 @@ function mainlandBounds(g){
    place with too few levels to draw any bubbles at all and for a
    basemap source that errors and never goes idle. Whichever arrives
    first wins and the other finds nothing to do. */
-let ZOOM_WANTED=false, ZOOM_T=null;
+let ZOOM_WANTED=false, ZOOM_T=null, ZOOM_LATE=false;
 function armSearchZoom(){
-  ZOOM_WANTED=true;
+  ZOOM_WANTED=true; ZOOM_LATE=false;
   clearTimeout(ZOOM_T);
   ZOOM_T=setTimeout(()=>{ try{ finishSearchZoom(); }catch(e){} }, 9000);
 }
 function finishSearchZoom(){
   if(!ZOOM_WANTED) return;
   ZOOM_WANTED=false; clearTimeout(ZOOM_T); ZOOM_T=null;
-  const top=STACK[STACK.length-1];
-  if(top && top.feature && top.feature.geometry) fitTo(top.feature.geometry);
-  else fitToPins();
+  /* The bubbles can be up before a single office has resolved, and on a
+     slow connection the fallback timer runs out first. Either way this
+     fires with nothing to frame, falls through to the place's own
+     outline, and the markers then arrive outside a frame that was
+     computed without them — measured on Graz, where the first marker
+     landed a tenth of a second after the frame was set. So the case is
+     recorded, and `loadChainPins` reframes once when the chain is in.
+     Once: this is the condition the four jerky per-level zoom-outs
+     below were removed for. */
+  if(!Object.keys(PINS).length) ZOOM_LATE=true;
+  /* This used to fit the searched place's own outline, which for a
+     municipality is a view of one town with every office that governs
+     it off the edge of the screen — a map of the place rather than a
+     map of who to contact about it. `fitToPins` frames the place
+     together with the knot of contacts around it, and leaves the
+     distant and the one-off records outside the frame. It falls back
+     to the outline itself when there are no markers to go on. */
+  fitToPins();
 }
 function fitToNational(){
   for(let i=0;i<STACK.length;i++){
@@ -7220,6 +7930,35 @@ function bubRank(fs){
    scale a bubble is framed at they are one dot. The list names them,
    ranks the ones reachable about a law first, and closes on the next
    click anywhere else. */
+/* A magnifying bubble is a window onto a piece of ground at its own
+   scale, and the main map is usually nowhere near it — the country
+   bubble is showing the capital while the main map sits over the town.
+   So clicking an office inside a bubble used to open a page for
+   something the reader could not then see: they had read about it in
+   the circle and the map underneath had not moved.
+
+   The main map now goes to whatever was clicked in a bubble, which
+   also means the marker, the popup and the office page are all about
+   the same point on the ground. Only from a bubble: a marker clicked
+   on the main map is already in view, and moving the camera to centre
+   it would shift the ground under the reader's own pointer.
+
+   The zoom only ever goes in. Clicking a city-hall marker from the
+   country bubble should arrive at the city, but clicking one while
+   already at street level should not pull back to it. */
+function bubFocusMain(id){
+  const p=PINS[id]; if(!p) return;
+  try{
+    map.stop();
+    const z=Math.max(map.getZoom(), 11.5);
+    map.easeTo({center:[p.lng, p.lat], zoom:Math.min(z, 14), duration:700});
+  }catch(e){}
+}
+/* the one entry point a bubble uses for a marker: move, then open */
+function bubOpenPin(id){
+  bubFocusMain(id);
+  openPin(id);
+}
 function bubChoose(fs, ev){
   bubChooseClose();
   const box=document.createElement('div');
@@ -7238,7 +7977,7 @@ function bubChoose(fs, ev){
   box.style.top =Math.round(Math.max(8, Math.min(innerHeight-r.height-8, y+12)))+'px';
   box.addEventListener('click', e=>{
     const b=e.target.closest('button[data-id]'); if(!b) return;
-    const id=b.getAttribute('data-id'); bubChooseClose(); openPin(id);
+    const id=b.getAttribute('data-id'); bubChooseClose(); bubOpenPin(id);
   });
   setTimeout(()=>{
     addEventListener('mousedown', bubChooseAway, true);
@@ -7375,7 +8114,7 @@ function bubAddPins(m, opts){
     bubRank(fs).forEach(f=>{ const id=f.properties.id;
       if(!seen[id]){ seen[id]=1; uniq.push(f); } });
     if(uniq.length>1){ bubChoose(uniq, e.originalEvent); return; }
-    const f=uniq[0]; if(f) openPin(f.properties.id);
+    const f=uniq[0]; if(f) bubOpenPin(f.properties.id);
   });
   /* after the marker handler, so the mark can take the snapped point */
   m.on('mousemove', e=>{
