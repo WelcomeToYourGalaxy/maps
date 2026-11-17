@@ -136,8 +136,12 @@ def main(outdir):
             })
 
     # ---- documented negatives: worth as much as a record -----------------
-    closed = {k: gaps[k] for k in ("gold_unavailable", "managers_unavailable",
-                                   "cases_unavailable", "auditors_unavailable")}
+    # Every *_unavailable map in gaps.json, derived rather than listed: round 68 created
+    # revolving_door_unavailable and this literal was not updated, so for three rounds a brief
+    # built from mk_have.py could not see 24 documented blanks on one of the three rows the
+    # owner cares most about. A hand-listed set of keys inside a brief-builder has an expiry
+    # date, exactly as check_about.py's hand-listed word table did.
+    closed = {k: v for k, v in gaps.items() if k.endswith("_unavailable")}
 
     # ---- the absent lists, live ------------------------------------------
     core = load("out/core.json")
