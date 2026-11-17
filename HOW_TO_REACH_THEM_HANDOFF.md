@@ -12,6 +12,126 @@ work more often than others, and what stops them.
 
 ---
 
+## 0a. The round of twelve fixes to what a reader sees
+
+Nothing about the data changed in this round. What changed is what the
+page does when a marker is clicked, what the camera does while the panel
+is being answered, and what an office's entry actually tells a reader.
+
+**A marker opens a box on the map, not the panel.** It used to replace
+the panel outright, so finding out what a marker was cost the reader the
+screen they were reading. `openMarkerPopup` draws the body's name, the
+one line under it and a few sentences on what it does, with a button at
+the foot that is now the only thing that moves the panel. It is a plain
+element over the canvas rather than a MapLibre popup, because it has a
+button in it and because it has to survive the camera move a click
+starts — it is re-anchored on every frame of a move (`placeMarkerPopup`
+on `map.on('move')`) rather than torn down.
+
+With it went the walk. `walkTo` used to light the step, then the kind,
+then the office, about a second and a half with two other screens on the
+way, and in the real sequence its generation guard sometimes fired on a
+walk nobody had interrupted and the office page never drew at all. The
+popup says what the office is, which was the whole job of the walk, so
+`showOffice` renders once. `WALK`, `walkWait` and `walkGlow` are gone;
+`walkHalo` stays.
+
+**Nothing in the panel moves the camera.** Answering a question, opening
+a kind, closing one — each reframed, so working down the panel left the
+ground sliding underneath it. `frameKinds` and `frameIdsSoon` are
+removed rather than left unused: a framing helper lying about is what a
+later edit reaches for. The view is set once per search and after that
+only the reader moves it.
+
+**The opening frame is the knot of contacts, not a box round all of
+them.** The percentile cut was not tight enough: one recorded office in
+a field two hundred miles away still had to be inside the frame, so the
+place the reader asked about came out a speck in the corner. `fitToPins`
+now clusters the markers with the same `clusterPins` the bubbles use,
+drops a cluster holding one lone marker, drops a cluster further than
+`NEAR_DEG` (2.6°) from the searched place, and unions what is left with
+the place's own outline. Nothing is hidden — those markers are still
+drawn, they just get no vote on the opening view. Measured: Vienna opens
+at zoom 9.94 on 16.38/48.21 with 304 markers loaded.
+
+That frame can be computed before a single office has resolved — in this
+sandbox the first marker landed a tenth of a second after it. So
+`finishSearchZoom` records that case in `ZOOM_LATE` and `loadChainPins`
+reframes **once** when the chain is in. Once: this is what the four
+per-level zoom-outs were removed for.
+
+**A click in a magnifying bubble moves the main map to it.** A bubble is
+a window onto ground the main map is nowhere near — the country bubble
+shows the capital while the map sits over the town — so opening an
+office from one left the reader reading about something they could not
+see. `bubOpenPin` eases the main map to the marker, zoom in only, then
+opens it. Only from a bubble: a marker on the main map is already in
+view and centring it would shift the ground under the pointer.
+
+**One subtitle, not two.** Every office carried the record's own line
+and the classifier's line stacked under each other — "Federal ministry
+of Brazil" over "Runs the department that writes the detailed rules" —
+which read as the page saying the same thing twice in two voices.
+`mergeSub` is the only place either field is drawn, so the lists, the
+office page, the hover card and the marker popup cannot drift apart. It
+drops the classifier's half where the title defeated it ("Role not
+identified"), drops it where the record's line already carries the same
+claim, and uses whichever half exists where only one does.
+
+**What a body actually does, in bulk.** "Austrian federal ministry"
+names a category, and a reader deciding whether to spend an afternoon
+writing to it learns nothing from a category. There is no register of
+office remits and composing one here would be inventing it, so two
+existing sources are read and both are attributed on the page:
+
+1. The office's own encyclopaedia entry. The office queries now select
+   `?enwiki`, so no lookup is needed to find the article, and the API
+   returns the opening paragraph for **twenty articles in one request**,
+   which is what makes it affordable — `wantEntTexts` queues and
+   `runEntTexts` batches. `Api-User-Agent` is not optional: without it
+   the second request back was `429 You are making too many requests`.
+   Three attempts, `Retry-After` honoured, and a refused batch goes back
+   on the queue twice rather than being treated as an empty answer —
+   §8's fault, which here showed as a popup saying "looking up what this
+   body does" for ever. `entPlain` drops the language gloss and the
+   phonetics ("(German: …, pronounced [nat͡si̯oˈnaːlˌʁaːt])") and
+   `entTrim` cuts at a sentence end inside 620 characters.
+2. Where there is no article, the body's own recorded statements, each
+   quoted in order: class, what it is part of, the jurisdiction it
+   covers, its subject, the year, its seat, who holds the post. One
+   query, on the click, and drawn only where the record says at least
+   three things. Measured on a Vienna court with no article: "The record
+   classes it as court. Its authority is recorded as covering Vienna.
+   Set up in 1987."
+
+Coverage is about a quarter of offices at national and regional level
+and almost none below the county. The text is drawn in the marker popup
+and on the office's own page, and **not** in the office lists: §1
+measured the row spacing there as having no slack left.
+
+**Twenty-six more terms are underlined.** Those descriptions are written
+by people who already know the vocabulary — a chamber comes back as "the
+upper house of the bicameral parliament", which defines one unknown term
+with two more. `GLOSSARY` is 153 entries now: bicameral, unicameral,
+upper and lower house, plenary, the three readings, assent, promulgate,
+gazette, primary and secondary legislation, statutory instrument,
+unitary, federation, devolved, subsidiarity, portfolio, cabinet-level,
+judicial review, ultra vires, injunction, precedent, remedy and the rest.
+No definition in it leans on another one.
+
+**Four wordings.** The level question no longer says a rule "binds" a
+place — it applies there, and a rule from the government above applies
+everywhere inside it. The Information family reads "Put facts in front of
+the people who decide". The search beside a recorded address reads on
+from it — "Or, if that doesn't work, find its site" — instead of
+colliding with it as "www.parlament.gv.atFind its current site". And an
+email address is printed without its scheme: `bareMail` and `bareTel`
+strip it in `mailOf`/`telOf`, at the one place both fields are read, and
+every use adds back what it needs. Do not strip at a use site — there
+are six of them.
+
+---
+
 ## 0. Read this before editing
 
 `how_to_reach_them.html` **is the source.** An older note said it was assembled
