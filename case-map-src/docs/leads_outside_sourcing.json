@@ -53,7 +53,9 @@
    "NPL": 6,
    "PAK": 4,
    "ZAF": 2
-  }
+  },
+  "worked_round_40": 12,
+  "worked_round_41": 15
  },
  "fields": {
   "lender_source_share": "share of the card's own sources sitting on a lender's host",
@@ -61,7 +63,9 @@
   "national_index": "a free national judgment index for that country, with its tested status",
   "r39_rank_score": "lender-source share, plus a named court or audit body, money owed, an index, deaths and displacement. Orders the queue. Removes nothing.",
   "r39_front": "lender-heavy AND a national index whose route was tested and serves",
-  "r39_second_bucket": "lender-heavy, index named, route not yet proven — test the route first and record the failure by route"
+  "r39_second_bucket": "lender-heavy, index named, route not yet proven — test the route first and record the failure by route",
+  "index_depth": "documents that country's index holds on \"Resettlement Action Plan\", measured round 40",
+  "r41_rank_score": "r39_rank_score plus a bump for how deep the country's judgment index actually is: +25 at 100 or more documents, +12 at 10 or more, +5 at 4 or more, +15 for India (Indian Kanoon is a different platform and not comparable on the phrase), 0 otherwise. It still only ranks."
  },
  "queue": [
   {
@@ -102,7 +106,10 @@
    },
    "r39_rank_score": 115,
    "r39_front": false,
-   "r39_second_bucket": true
+   "r39_second_bucket": true,
+   "index_depth": null,
+   "r41_rank_score": 115,
+   "worked_in_round": null
   },
   {
    "id": "zanzibar-drainage-deaths-compensation",
@@ -140,7 +147,10 @@
    },
    "r39_rank_score": 100,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 4,
+   "r41_rank_score": 105,
+   "worked_in_round": 41
   },
   {
    "id": "pakistan-earthquake-roads-compensation-arrears",
@@ -180,7 +190,10 @@
    },
    "r39_rank_score": 99,
    "r39_front": false,
-   "r39_second_bucket": true
+   "r39_second_bucket": true,
+   "index_depth": null,
+   "r41_rank_score": 99,
+   "worked_in_round": null
   },
   {
    "id": "eastern-dedicated-freight-corridor",
@@ -219,7 +232,10 @@
    },
    "r39_rank_score": 95,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 110,
+   "worked_in_round": 40
   },
   {
    "id": "kisip-informal-settlements-fatalities",
@@ -256,7 +272,10 @@
    },
    "r39_rank_score": 95,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 155,
+   "r41_rank_score": 120,
+   "worked_in_round": 40
   },
   {
    "id": "ceip-polder-land-payments-bangladesh",
@@ -292,7 +311,10 @@
    },
    "r39_rank_score": 95,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 95,
+   "worked_in_round": null
   },
   {
    "id": "kiidp-kampala-roads-compensation",
@@ -332,7 +354,10 @@
    },
    "r39_rank_score": 94,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 16,
+   "r41_rank_score": 106,
+   "worked_in_round": 41
   },
   {
    "id": "nagapattinam-canal-demolition-tsunami-rebuild",
@@ -370,7 +395,10 @@
    },
    "r39_rank_score": 92,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 107,
+   "worked_in_round": 40
   },
   {
    "id": "salem-tnudp-squatter-resettlement",
@@ -403,7 +431,10 @@
    },
    "r39_rank_score": 90,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 105,
+   "worked_in_round": 41
   },
   {
    "id": "dar-brt-kariakoo-clearance",
@@ -446,7 +477,10 @@
    },
    "r39_rank_score": 90,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 4,
+   "r41_rank_score": 95,
+   "worked_in_round": 41
   },
   {
    "id": "mafinga-igawa-road-deaths-displacement",
@@ -481,7 +515,10 @@
    },
    "r39_rank_score": 89,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 4,
+   "r41_rank_score": 94,
+   "worked_in_round": 41
   },
   {
    "id": "freetown-wellington-33kv-demolitions",
@@ -526,7 +563,10 @@
    },
    "r39_rank_score": 88,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 1,
+   "r41_rank_score": 88,
+   "worked_in_round": null
   },
   {
    "id": "karnataka-state-highways-ii-compensation",
@@ -563,7 +603,10 @@
    },
    "r39_rank_score": 87,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 102,
+   "worked_in_round": 40
   },
   {
    "id": "bajkaj-landfill-land-taken-before-payment",
@@ -600,7 +643,10 @@
    "national_index": null,
    "r39_rank_score": 86,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 86,
+   "worked_in_round": null
   },
   {
    "id": "swat-s3b-road-land-acquisition",
@@ -633,7 +679,10 @@
    },
    "r39_rank_score": 85,
    "r39_front": false,
-   "r39_second_bucket": true
+   "r39_second_bucket": true,
+   "index_depth": null,
+   "r41_rank_score": 85,
+   "worked_in_round": null
   },
   {
    "id": "dehlon-bypass-uncompensated-landowner",
@@ -666,7 +715,10 @@
    },
    "r39_rank_score": 85,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 100,
+   "worked_in_round": 40
   },
   {
    "id": "assam-roads-uncompensated-acquisition",
@@ -703,7 +755,10 @@
    },
    "r39_rank_score": 85,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 100,
+   "worked_in_round": 40
   },
   {
    "id": "lagos-brt-ikorodu-market-traders",
@@ -741,7 +796,10 @@
    },
    "r39_rank_score": 85,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 0,
+   "r41_rank_score": 85,
+   "worked_in_round": null
   },
   {
    "id": "kasumbalesa-market-traders-moved",
@@ -777,7 +835,10 @@
    },
    "r39_rank_score": 85,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 5,
+   "r41_rank_score": 90,
+   "worked_in_round": 41
   },
   {
    "id": "muntinlupa-sewage-plant-site-clearances",
@@ -816,7 +877,10 @@
    },
    "r39_rank_score": 83,
    "r39_front": false,
-   "r39_second_bucket": true
+   "r39_second_bucket": true,
+   "index_depth": null,
+   "r41_rank_score": 83,
+   "worked_in_round": null
   },
   {
    "id": "himachal-pradesh-state-roads-debris",
@@ -851,7 +915,10 @@
    },
    "r39_rank_score": 82,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 97,
+   "worked_in_round": 41
   },
   {
    "id": "nhiip-india-corridor-land-acquisition",
@@ -889,7 +956,10 @@
    },
    "r39_rank_score": 80,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 95,
+   "worked_in_round": 40
   },
   {
    "id": "laibin-water-environment-displacement",
@@ -923,7 +993,10 @@
    "national_index": null,
    "r39_rank_score": 80,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 80,
+   "worked_in_round": null
   },
   {
    "id": "zhamushui-guangrun-resettlement-postponed",
@@ -959,7 +1032,10 @@
    "national_index": null,
    "r39_rank_score": 80,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 80,
+   "worked_in_round": null
   },
   {
    "id": "shanghai-urban-environment-apl2-resettlement",
@@ -996,7 +1072,10 @@
    "national_index": null,
    "r39_rank_score": 79,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 79,
+   "worked_in_round": null
   },
   {
    "id": "bukoba-airport-resettlement-arrears",
@@ -1037,7 +1116,10 @@
    },
    "r39_rank_score": 79,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 4,
+   "r41_rank_score": 84,
+   "worked_in_round": 41
   },
   {
    "id": "honduras-road-rehabilitation-ii-land-taken",
@@ -1071,7 +1153,10 @@
    "national_index": null,
    "r39_rank_score": 79,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 79,
+   "worked_in_round": null
   },
   {
    "id": "shiyan-connecting-road-safeguards",
@@ -1106,7 +1191,10 @@
    "national_index": null,
    "r39_rank_score": 78,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 78,
+   "worked_in_round": null
   },
   {
    "id": "vietnam-distribution-efficiency-five-households",
@@ -1147,7 +1235,10 @@
    "national_index": null,
    "r39_rank_score": 78,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 78,
+   "worked_in_round": null
   },
   {
    "id": "trung-son-hydropower-resettlement",
@@ -1181,7 +1272,10 @@
    "national_index": null,
    "r39_rank_score": 78,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 78,
+   "worked_in_round": null
   },
   {
    "id": "addo-park-farm-worker-rehousing",
@@ -1218,7 +1312,10 @@
    },
    "r39_rank_score": 78,
    "r39_front": false,
-   "r39_second_bucket": true
+   "r39_second_bucket": true,
+   "index_depth": null,
+   "r41_rank_score": 78,
+   "worked_in_round": null
   },
   {
    "id": "guiyang-youxiao-road-resettlement",
@@ -1253,7 +1350,10 @@
    "national_index": null,
    "r39_rank_score": 77,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 77,
+   "worked_in_round": null
   },
   {
    "id": "chebei-village-guangzhou-resettlement",
@@ -1289,7 +1389,10 @@
    "national_index": null,
    "r39_rank_score": 77,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 77,
+   "worked_in_round": null
   },
   {
    "id": "lucknow-muzaffarpur-highway-land",
@@ -1323,7 +1426,10 @@
    },
    "r39_rank_score": 77,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 92,
+   "worked_in_round": 40
   },
   {
    "id": "nanning-urban-environment-resettlement",
@@ -1359,7 +1465,10 @@
    "national_index": null,
    "r39_rank_score": 77,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 77,
+   "worked_in_round": null
   },
   {
    "id": "lesotho-integrated-transport-farmland-and-resettlement",
@@ -1394,7 +1503,10 @@
    },
    "r39_rank_score": 77,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 0,
+   "r41_rank_score": 77,
+   "worked_in_round": 40
   },
   {
    "id": "orissa-state-roads-compensation",
@@ -1436,7 +1548,10 @@
    },
    "r39_rank_score": 76,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 91,
+   "worked_in_round": null
   },
   {
    "id": "sutp-brts-corridor-displacement",
@@ -1479,7 +1594,10 @@
    },
    "r39_rank_score": 76,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 91,
+   "worked_in_round": null
   },
   {
    "id": "iraq-expressway-worker-deaths-vendor-relocation",
@@ -1511,7 +1629,10 @@
    "national_index": null,
    "r39_rank_score": 76,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 76,
+   "worked_in_round": null
   },
   {
    "id": "bangladesh-fuel-strike-2013",
@@ -1544,7 +1665,10 @@
    },
    "r39_rank_score": 75,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 75,
+   "worked_in_round": null
   },
   {
    "id": "vietnam-medium-cities-phu-ly-noncompliance",
@@ -1579,7 +1703,10 @@
    "national_index": null,
    "r39_rank_score": 75,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 75,
+   "worked_in_round": null
   },
   {
    "id": "philippines-nrimp2-unpaid-land-claims",
@@ -1619,7 +1746,10 @@
    },
    "r39_rank_score": 75,
    "r39_front": false,
-   "r39_second_bucket": true
+   "r39_second_bucket": true,
+   "index_depth": null,
+   "r41_rank_score": 75,
+   "worked_in_round": null
   },
   {
    "id": "luan-huaibei-urban-transport-resettlement",
@@ -1655,7 +1785,10 @@
    "national_index": null,
    "r39_rank_score": 75,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 75,
+   "worked_in_round": null
   },
   {
    "id": "wuhan-nanhu-village-resettlement-delay",
@@ -1689,7 +1822,10 @@
    "national_index": null,
    "r39_rank_score": 75,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 75,
+   "worked_in_round": null
   },
   {
    "id": "shangrao-sanqingshan-airport-land-take",
@@ -1725,7 +1861,10 @@
    "national_index": null,
    "r39_rank_score": 75,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 75,
+   "worked_in_round": null
   },
   {
    "id": "laulara-solerema-road-structures",
@@ -1758,7 +1897,10 @@
    "national_index": null,
    "r39_rank_score": 75,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 75,
+   "worked_in_round": null
   },
   {
    "id": "narayanghat-mugling-road-structures",
@@ -1793,7 +1935,10 @@
    },
    "r39_rank_score": 75,
    "r39_front": false,
-   "r39_second_bucket": true
+   "r39_second_bucket": true,
+   "index_depth": null,
+   "r41_rank_score": 75,
+   "worked_in_round": null
   },
   {
    "id": "kabeli-transmission-line-compensation-arrears",
@@ -1831,7 +1976,10 @@
    },
    "r39_rank_score": 75,
    "r39_front": false,
-   "r39_second_bucket": true
+   "r39_second_bucket": true,
+   "index_depth": null,
+   "r41_rank_score": 75,
+   "worked_in_round": null
   },
   {
    "id": "pdue-cameroon-unpaid-compensation-yaounde",
@@ -1867,7 +2015,10 @@
    "national_index": null,
    "r39_rank_score": 75,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 75,
+   "worked_in_round": null
   },
   {
    "id": "manila-sewerage-site-clearances-san-mateo-road-5",
@@ -1904,7 +2055,10 @@
    },
    "r39_rank_score": 75,
    "r39_front": false,
-   "r39_second_bucket": true
+   "r39_second_bucket": true,
+   "index_depth": null,
+   "r41_rank_score": 75,
+   "worked_in_round": null
   },
   {
    "id": "drc-urban-project-injury-threats-and-works-before-resettlement",
@@ -1939,7 +2093,10 @@
    "national_index": null,
    "r39_rank_score": 74,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 74,
+   "worked_in_round": null
   },
   {
    "id": "rogun-stage1-resettlement",
@@ -1973,7 +2130,10 @@
    "national_index": null,
    "r39_rank_score": 73,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 73,
+   "worked_in_round": null
   },
   {
    "id": "pakistan-edtip-crop-compensation",
@@ -2015,7 +2175,10 @@
    },
    "r39_rank_score": 73,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 73,
+   "worked_in_round": null
   },
   {
    "id": "tanahu-hydropower-belbas",
@@ -2052,7 +2215,10 @@
    },
    "r39_rank_score": 72,
    "r39_front": false,
-   "r39_second_bucket": true
+   "r39_second_bucket": true,
+   "index_depth": null,
+   "r41_rank_score": 72,
+   "worked_in_round": null
   },
   {
    "id": "biftu-quarry-mizan-dima-road",
@@ -2084,7 +2250,10 @@
    "national_index": null,
    "r39_rank_score": 72,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 72,
+   "worked_in_round": null
   },
   {
    "id": "zhanghu-railway-resettlement",
@@ -2122,7 +2291,10 @@
    "national_index": null,
    "r39_rank_score": 72,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 72,
+   "worked_in_round": null
   },
   {
    "id": "shaying-river-sanba-village-resettlement",
@@ -2159,7 +2331,10 @@
    "national_index": null,
    "r39_rank_score": 72,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 72,
+   "worked_in_round": null
   },
   {
    "id": "corumana-dam-resettlement-mozambique",
@@ -2193,7 +2368,10 @@
    "national_index": null,
    "r39_rank_score": 72,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 72,
+   "worked_in_round": null
   },
   {
    "id": "xuancheng-industry-zone-house-demolition",
@@ -2227,7 +2405,10 @@
    "national_index": null,
    "r39_rank_score": 72,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 72,
+   "worked_in_round": null
   },
   {
    "id": "santos-vila-gilda-stilt-house-resettlement",
@@ -2261,7 +2442,10 @@
    "national_index": null,
    "r39_rank_score": 72,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 72,
+   "worked_in_round": null
   },
   {
    "id": "patna-ganga-riverfront-resettlement",
@@ -2296,7 +2480,10 @@
    },
    "r39_rank_score": 71,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 86,
+   "worked_in_round": 40
   },
   {
    "id": "canal-neyba-arroyo-rico-expropriations",
@@ -2330,7 +2517,10 @@
    "national_index": null,
    "r39_rank_score": 71,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 71,
+   "worked_in_round": null
   },
   {
    "id": "batwa-bwindi",
@@ -2366,7 +2556,10 @@
    },
    "r39_rank_score": 70,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 16,
+   "r41_rank_score": 82,
+   "worked_in_round": null
   },
   {
    "id": "uganda-ert2-grid-compensation",
@@ -2401,7 +2594,10 @@
    },
    "r39_rank_score": 70,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 16,
+   "r41_rank_score": 82,
+   "worked_in_round": 41
   },
   {
    "id": "rwanda-rssp2-marshland-resettlement",
@@ -2431,7 +2627,10 @@
    "national_index": null,
    "r39_rank_score": 70,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 70,
+   "worked_in_round": null
   },
   {
    "id": "xian-weiyang-xinjiamiao-resettlement",
@@ -2463,7 +2662,10 @@
    "national_index": null,
    "r39_rank_score": 70,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 70,
+   "worked_in_round": null
   },
   {
    "id": "qingyang-xifeng-ring-road-relocation",
@@ -2495,7 +2697,10 @@
    "national_index": null,
    "r39_rank_score": 70,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 70,
+   "worked_in_round": null
   },
   {
    "id": "kunming-line-3-jinmasi-relocation",
@@ -2526,7 +2731,10 @@
    "national_index": null,
    "r39_rank_score": 70,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 70,
+   "worked_in_round": null
   },
   {
    "id": "wushan-hospital-landslide-resettlement",
@@ -2558,7 +2766,10 @@
    "national_index": null,
    "r39_rank_score": 70,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 70,
+   "worked_in_round": null
   },
   {
    "id": "moba-gorge-forest-land-compensation",
@@ -2590,7 +2801,10 @@
    "national_index": null,
    "r39_rank_score": 70,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 70,
+   "worked_in_round": null
   },
   {
    "id": "wuhan-middle-ring-resettlement-overrun",
@@ -2622,7 +2836,10 @@
    "national_index": null,
    "r39_rank_score": 70,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 70,
+   "worked_in_round": null
   },
   {
    "id": "nigeria-federal-roads-trader-relocations",
@@ -2656,7 +2873,10 @@
    },
    "r39_rank_score": 70,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 0,
+   "r41_rank_score": 70,
+   "worked_in_round": null
   },
   {
    "id": "ertanggou-reservoir-tuyamar-village-inundation",
@@ -2687,7 +2907,10 @@
    "national_index": null,
    "r39_rank_score": 70,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 70,
+   "worked_in_round": null
   },
   {
    "id": "beira-maputo-climate-works-deaths-compensation",
@@ -2720,7 +2943,10 @@
    "national_index": null,
    "r39_rank_score": 70,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 70,
+   "worked_in_round": null
   },
   {
    "id": "shkodra-lezha-school-sites-land-cleared",
@@ -2756,7 +2982,10 @@
    "national_index": null,
    "r39_rank_score": 70,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 70,
+   "worked_in_round": null
   },
   {
    "id": "chongqing-small-cities-qianjiang-resettlement",
@@ -2788,7 +3017,10 @@
    "national_index": null,
    "r39_rank_score": 69,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 69,
+   "worked_in_round": null
   },
   {
    "id": "sichuan-small-towns-unfinished-resettlement",
@@ -2823,7 +3055,10 @@
    "national_index": null,
    "r39_rank_score": 69,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 69,
+   "worked_in_round": null
   },
   {
    "id": "xiangyang-panggong-resettlement-housing-delay",
@@ -2859,7 +3094,10 @@
    "national_index": null,
    "r39_rank_score": 69,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 69,
+   "worked_in_round": null
   },
   {
    "id": "liaoning-coastal-zone-resettlement",
@@ -2894,7 +3132,10 @@
    "national_index": null,
    "r39_rank_score": 69,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 69,
+   "worked_in_round": null
   },
   {
    "id": "han-river-urban-environment-resettlement",
@@ -2929,7 +3170,10 @@
    "national_index": null,
    "r39_rank_score": 69,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 69,
+   "worked_in_round": null
   },
   {
    "id": "ferghana-valley-drainage-land-taken-without-plan",
@@ -2966,7 +3210,10 @@
    "national_index": null,
    "r39_rank_score": 69,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 69,
+   "worked_in_round": null
   },
   {
    "id": "philippines-irrigation-canal-easement-relocations",
@@ -3001,7 +3248,10 @@
    },
    "r39_rank_score": 69,
    "r39_front": false,
-   "r39_second_bucket": true
+   "r39_second_bucket": true,
+   "index_depth": null,
+   "r41_rank_score": 69,
+   "worked_in_round": null
   },
   {
    "id": "kamuzu-barrage-liwonde-businesses",
@@ -3038,7 +3288,10 @@
    },
    "r39_rank_score": 69,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 0,
+   "r41_rank_score": 69,
+   "worked_in_round": null
   },
   {
    "id": "zambia-camdex-copper-revenue",
@@ -3081,7 +3334,10 @@
    },
    "r39_rank_score": 68,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 5,
+   "r41_rank_score": 73,
+   "worked_in_round": null
   },
   {
    "id": "da-nang-sustainable-city-164-pending",
@@ -3115,7 +3371,10 @@
    "national_index": null,
    "r39_rank_score": 68,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 68,
+   "worked_in_round": null
   },
   {
    "id": "rodriguez-ecotourism-site-397-families-relocated",
@@ -3152,7 +3411,10 @@
    },
    "r39_rank_score": 68,
    "r39_front": false,
-   "r39_second_bucket": true
+   "r39_second_bucket": true,
+   "index_depth": null,
+   "r41_rank_score": 68,
+   "worked_in_round": null
   },
   {
    "id": "rwanda-hillside-irrigation-relocation-deaths",
@@ -3183,7 +3445,10 @@
    "national_index": null,
    "r39_rank_score": 68,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 68,
+   "worked_in_round": null
   },
   {
    "id": "cap-labadie-road-compensation-escrow",
@@ -3220,7 +3485,10 @@
    "national_index": null,
    "r39_rank_score": 68,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 68,
+   "worked_in_round": null
   },
   {
    "id": "drc-rn5-rn6-rn2-compensation-arrears",
@@ -3254,7 +3522,10 @@
    "national_index": null,
    "r39_rank_score": 68,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 68,
+   "worked_in_round": null
   },
   {
    "id": "ogoni-shell-niger-delta",
@@ -3290,7 +3561,10 @@
    },
    "r39_rank_score": 67,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 0,
+   "r41_rank_score": 67,
+   "worked_in_round": null
   },
   {
    "id": "guiguang-railway-land-acquisition",
@@ -3325,7 +3599,10 @@
    "national_index": null,
    "r39_rank_score": 67,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 67,
+   "worked_in_round": null
   },
   {
    "id": "igoeti-sveneti-highway-worker-death-and-land-damage",
@@ -3358,7 +3635,10 @@
    "national_index": null,
    "r39_rank_score": 67,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 67,
+   "worked_in_round": null
   },
   {
    "id": "abidjan-riviera-2-shop-workers-unpaid-wages",
@@ -3394,7 +3674,10 @@
    "national_index": null,
    "r39_rank_score": 67,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 67,
+   "worked_in_round": null
   },
   {
    "id": "kinshasa-water-works-land-and-houses-taken",
@@ -3430,7 +3713,10 @@
    "national_index": null,
    "r39_rank_score": 67,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 67,
+   "worked_in_round": null
   },
   {
    "id": "rn34-colonia-santa-rosa-canteen-eviction",
@@ -3463,7 +3749,10 @@
    "national_index": null,
    "r39_rank_score": 67,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 67,
+   "worked_in_round": null
   },
   {
    "id": "riohacha-wayuu-lagoon-resettlement",
@@ -3498,7 +3787,10 @@
    "national_index": null,
    "r39_rank_score": 66,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 66,
+   "worked_in_round": null
   },
   {
    "id": "balakhani-landfill-families-and-waste-pickers",
@@ -3531,7 +3823,10 @@
    "national_index": null,
    "r39_rank_score": 66,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 66,
+   "worked_in_round": null
   },
   {
    "id": "japo-palacio-tambo-water",
@@ -3563,7 +3858,10 @@
    "national_index": null,
    "r39_rank_score": 65,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 65,
+   "worked_in_round": null
   },
   {
    "id": "sasan-ash-dyke-breach-2020",
@@ -3604,7 +3902,10 @@
    },
    "r39_rank_score": 65,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 80,
+   "worked_in_round": null
   },
   {
    "id": "jituhun-railway-resettlement",
@@ -3640,7 +3941,10 @@
    "national_index": null,
    "r39_rank_score": 65,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 65,
+   "worked_in_round": null
   },
   {
    "id": "cuijiaying-han-river-resettlement",
@@ -3675,7 +3979,10 @@
    "national_index": null,
    "r39_rank_score": 65,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 65,
+   "worked_in_round": null
   },
   {
    "id": "sichuan-urban-development-four-cities",
@@ -3707,7 +4014,10 @@
    "national_index": null,
    "r39_rank_score": 65,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 65,
+   "worked_in_round": null
   },
   {
    "id": "wuxikou-reservoir-chitan-resettlement",
@@ -3738,7 +4048,10 @@
    "national_index": null,
    "r39_rank_score": 65,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 65,
+   "worked_in_round": null
   },
   {
    "id": "vietnam-natural-disaster-risk-989-resettled",
@@ -3773,7 +4086,10 @@
    "national_index": null,
    "r39_rank_score": 65,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 65,
+   "worked_in_round": null
   },
   {
    "id": "jiangxi-third-highway-resettlement",
@@ -3808,7 +4124,10 @@
    "national_index": null,
    "r39_rank_score": 65,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 65,
+   "worked_in_round": null
   },
   {
    "id": "zhejiang-urban-environment-resettlement",
@@ -3844,7 +4163,10 @@
    "national_index": null,
    "r39_rank_score": 65,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 65,
+   "worked_in_round": null
   },
   {
    "id": "hubei-yiba-expressway-resettlement",
@@ -3879,7 +4201,10 @@
    "national_index": null,
    "r39_rank_score": 65,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 65,
+   "worked_in_round": null
   },
   {
    "id": "zhegan-line-railway-resettlement",
@@ -3913,7 +4238,10 @@
    "national_index": null,
    "r39_rank_score": 65,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 65,
+   "worked_in_round": null
   },
   {
    "id": "henan-towns-water-land-acquisition",
@@ -3949,7 +4277,10 @@
    "national_index": null,
    "r39_rank_score": 65,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 65,
+   "worked_in_round": null
   },
   {
    "id": "sichuan-wudu-canal-resettlement",
@@ -3984,7 +4315,10 @@
    "national_index": null,
    "r39_rank_score": 65,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 65,
+   "worked_in_round": null
   },
   {
    "id": "yining-urban-roads-demolition",
@@ -4019,7 +4353,10 @@
    "national_index": null,
    "r39_rank_score": 65,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 65,
+   "worked_in_round": null
   },
   {
    "id": "xining-wusixi-road-demolition",
@@ -4053,7 +4390,10 @@
    "national_index": null,
    "r39_rank_score": 65,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 65,
+   "worked_in_round": null
   },
   {
    "id": "baoro-bouar-road-house-damage-car",
@@ -4087,7 +4427,10 @@
    "national_index": null,
    "r39_rank_score": 65,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 65,
+   "worked_in_round": null
   },
   {
    "id": "ouagadougou-onea-works-before-compensation",
@@ -4120,7 +4463,10 @@
    "national_index": null,
    "r39_rank_score": 65,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 65,
+   "worked_in_round": null
   },
   {
    "id": "hunan-gansu-small-towns-demolition",
@@ -4153,7 +4499,10 @@
    "national_index": null,
    "r39_rank_score": 65,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 65,
+   "worked_in_round": null
   },
   {
    "id": "lutusi-liancheng-heritage-resettlement",
@@ -4184,7 +4533,10 @@
    "national_index": null,
    "r39_rank_score": 65,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 65,
+   "worked_in_round": null
   },
   {
    "id": "kigali-gasabo-electricity-land-retrospective-plan",
@@ -4219,7 +4571,10 @@
    "national_index": null,
    "r39_rank_score": 65,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 65,
+   "worked_in_round": null
   },
   {
    "id": "jordan-heritage-cities-house-shop-demolition",
@@ -4253,7 +4608,10 @@
    "national_index": null,
    "r39_rank_score": 65,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 65,
+   "worked_in_round": null
   },
   {
    "id": "peru-rural-electrification-right-of-way-arrears",
@@ -4289,7 +4647,10 @@
    "national_index": null,
    "r39_rank_score": 65,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 65,
+   "worked_in_round": null
   },
   {
    "id": "west-bank-substation-land-taking-eump",
@@ -4325,7 +4686,10 @@
    "national_index": null,
    "r39_rank_score": 65,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 65,
+   "worked_in_round": null
   },
   {
    "id": "ahwaz-jomhori-pumping-station-house-expropriation",
@@ -4356,7 +4720,10 @@
    "national_index": null,
    "r39_rank_score": 65,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 65,
+   "worked_in_round": null
   },
   {
    "id": "vietnam-rural-energy-2-land-loss",
@@ -4394,7 +4761,10 @@
    "national_index": null,
    "r39_rank_score": 64,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 64,
+   "worked_in_round": null
   },
   {
    "id": "second-shandong-environment-resettlement",
@@ -4429,7 +4799,10 @@
    "national_index": null,
    "r39_rank_score": 64,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 64,
+   "worked_in_round": null
   },
   {
    "id": "liuzhou-environment-management-resettlement",
@@ -4463,7 +4836,10 @@
    "national_index": null,
    "r39_rank_score": 64,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 64,
+   "worked_in_round": null
   },
   {
    "id": "tanzania-tscp-compensation-delays",
@@ -4498,7 +4874,10 @@
    },
    "r39_rank_score": 64,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 4,
+   "r41_rank_score": 69,
+   "worked_in_round": 41
   },
   {
    "id": "tripoli-tyre-heritage-market-relocation",
@@ -4529,7 +4908,10 @@
    "national_index": null,
    "r39_rank_score": 64,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 64,
+   "worked_in_round": null
   },
   {
    "id": "liuzhan-railway-resettlement",
@@ -4567,7 +4949,10 @@
    "national_index": null,
    "r39_rank_score": 62,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 62,
+   "worked_in_round": null
   },
   {
    "id": "shizheng-railway-resettlement",
@@ -4601,7 +4986,10 @@
    "national_index": null,
    "r39_rank_score": 62,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 62,
+   "worked_in_round": null
   },
   {
    "id": "huai-river-flood-drainage-resettlement",
@@ -4635,7 +5023,10 @@
    "national_index": null,
    "r39_rank_score": 62,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 62,
+   "worked_in_round": null
   },
   {
    "id": "guizhou-heritage-sites-demolition",
@@ -4667,7 +5058,10 @@
    "national_index": null,
    "r39_rank_score": 62,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 62,
+   "worked_in_round": null
   },
   {
    "id": "sena-railway-right-of-way-and-retrenchment",
@@ -4703,7 +5097,10 @@
    "national_index": null,
    "r39_rank_score": 62,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 62,
+   "worked_in_round": null
   },
   {
    "id": "agilis-kiryandongo",
@@ -4739,7 +5136,10 @@
    },
    "r39_rank_score": 61,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 16,
+   "r41_rank_score": 73,
+   "worked_in_round": null
   },
   {
    "id": "shaanxi-ankang-road-resettlement",
@@ -4774,7 +5174,10 @@
    "national_index": null,
    "r39_rank_score": 61,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 61,
+   "worked_in_round": null
   },
   {
    "id": "liaoning-medium-cities-resettlement",
@@ -4808,7 +5211,10 @@
    "national_index": null,
    "r39_rank_score": 61,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 61,
+   "worked_in_round": null
   },
   {
    "id": "nanguang-railway-resettlement",
@@ -4844,7 +5250,10 @@
    "national_index": null,
    "r39_rank_score": 61,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 61,
+   "worked_in_round": null
   },
   {
    "id": "naji-youjiang-waterways-resettlement",
@@ -4879,7 +5288,10 @@
    "national_index": null,
    "r39_rank_score": 61,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 61,
+   "worked_in_round": null
   },
   {
    "id": "lower-nzoia-irrigation-unpaid-compensation",
@@ -4913,7 +5325,10 @@
    },
    "r39_rank_score": 61,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 155,
+   "r41_rank_score": 86,
+   "worked_in_round": 41
   },
   {
    "id": "takon-landfill-land-taken-porto-novo",
@@ -4945,7 +5360,10 @@
    "national_index": null,
    "r39_rank_score": 61,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 61,
+   "worked_in_round": null
   },
   {
    "id": "tuz-golu-gas-storage-informal-households",
@@ -4976,7 +5394,10 @@
    "national_index": null,
    "r39_rank_score": 61,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 61,
+   "worked_in_round": null
   },
   {
    "id": "bukhara-sewer-pump-station-cleared-plot",
@@ -5007,7 +5428,10 @@
    "national_index": null,
    "r39_rank_score": 61,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 61,
+   "worked_in_round": null
   },
   {
    "id": "karachaganak-berezovka",
@@ -5041,7 +5465,10 @@
    "national_index": null,
    "r39_rank_score": 60,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 60,
+   "worked_in_round": null
   },
   {
    "id": "kulekhani-hydro-resettlement",
@@ -5074,7 +5501,10 @@
    },
    "r39_rank_score": 60,
    "r39_front": false,
-   "r39_second_bucket": true
+   "r39_second_bucket": true,
+   "index_depth": null,
+   "r41_rank_score": 60,
+   "worked_in_round": null
   },
   {
    "id": "nigeria-eleme-petrochemicals-sale",
@@ -5110,7 +5540,10 @@
    },
    "r39_rank_score": 60,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 0,
+   "r41_rank_score": 60,
+   "worked_in_round": null
   },
   {
    "id": "colombo-port-city-negombo-fishers",
@@ -5148,7 +5581,10 @@
    },
    "r39_rank_score": 60,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 60,
+   "worked_in_round": null
   },
   {
    "id": "sks-microfinance-andhra-suicides",
@@ -5186,7 +5622,10 @@
    },
    "r39_rank_score": 60,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 75,
+   "worked_in_round": null
   },
   {
    "id": "nis-railway-bypass-min-holding-tenants",
@@ -5219,7 +5658,10 @@
    "national_index": null,
    "r39_rank_score": 60,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 60,
+   "worked_in_round": null
   },
   {
    "id": "ningxia-highway-compensation-delays",
@@ -5255,7 +5697,10 @@
    "national_index": null,
    "r39_rank_score": 60,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 60,
+   "worked_in_round": null
   },
   {
    "id": "lahore-walled-city-shop-removals",
@@ -5286,7 +5731,10 @@
    },
    "r39_rank_score": 60,
    "r39_front": false,
-   "r39_second_bucket": true
+   "r39_second_bucket": true,
+   "index_depth": null,
+   "r41_rank_score": 60,
+   "worked_in_round": null
   },
   {
    "id": "gujarat-highway-ii-delayed-compensation",
@@ -5317,7 +5765,10 @@
    },
    "r39_rank_score": 60,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 75,
+   "worked_in_round": 41
   },
   {
    "id": "tongliang-road-land-lease-compensation",
@@ -5351,7 +5802,10 @@
    "national_index": null,
    "r39_rank_score": 60,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 60,
+   "worked_in_round": null
   },
   {
    "id": "fenjiang-river-foshan-resettlement",
@@ -5383,7 +5837,10 @@
    "national_index": null,
    "r39_rank_score": 60,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 60,
+   "worked_in_round": null
   },
   {
    "id": "qiantang-small-town-house-demolition",
@@ -5415,7 +5872,10 @@
    "national_index": null,
    "r39_rank_score": 60,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 60,
+   "worked_in_round": null
   },
   {
    "id": "newmap-nigeria-erosion-displacement",
@@ -5449,7 +5909,10 @@
    },
    "r39_rank_score": 60,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 0,
+   "r41_rank_score": 60,
+   "worked_in_round": null
   },
   {
    "id": "ctb-kwabenya-stone-crackers",
@@ -5487,7 +5950,10 @@
    },
    "r39_rank_score": 59,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 0,
+   "r41_rank_score": 59,
+   "worked_in_round": 40
   },
   {
    "id": "bilotserkivka-m03-bypass-house-damage",
@@ -5519,7 +5985,10 @@
    "national_index": null,
    "r39_rank_score": 59,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 59,
+   "worked_in_round": null
   },
   {
    "id": "upper-krishna-almatti",
@@ -5554,7 +6023,10 @@
    },
    "r39_rank_score": 58,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 73,
+   "worked_in_round": null
   },
   {
    "id": "niamey-bridge-february-1990",
@@ -5584,7 +6056,10 @@
    "national_index": null,
    "r39_rank_score": 58,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 58,
+   "worked_in_round": null
   },
   {
    "id": "manaus-prosamim-evictions",
@@ -5613,7 +6088,10 @@
    "national_index": null,
    "r39_rank_score": 58,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 58,
+   "worked_in_round": null
   },
   {
    "id": "hunan-urban-development-wwtp-resettlement",
@@ -5649,7 +6127,10 @@
    "national_index": null,
    "r39_rank_score": 58,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 58,
+   "worked_in_round": null
   },
   {
    "id": "ethiopia-sudan-interconnector-line-deaths",
@@ -5685,7 +6166,10 @@
    "national_index": null,
    "r39_rank_score": 58,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 58,
+   "worked_in_round": null
   },
   {
    "id": "tabanovce-kumanovo-motorway-compensation-arrears",
@@ -5719,7 +6203,10 @@
    "national_index": null,
    "r39_rank_score": 58,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 58,
+   "worked_in_round": null
   },
   {
    "id": "bijilo-cable-route-compensation-unpaid",
@@ -5754,7 +6241,10 @@
    "national_index": null,
    "r39_rank_score": 58,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 58,
+   "worked_in_round": null
   },
   {
    "id": "benet-mount-elgon-2008",
@@ -5789,7 +6279,10 @@
    },
    "r39_rank_score": 57,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 16,
+   "r41_rank_score": 69,
+   "worked_in_round": null
   },
   {
    "id": "nepal-road-sector-unpaid-compensation",
@@ -5827,7 +6320,10 @@
    },
    "r39_rank_score": 57,
    "r39_front": false,
-   "r39_second_bucket": true
+   "r39_second_bucket": true,
+   "index_depth": null,
+   "r41_rank_score": 57,
+   "worked_in_round": null
   },
   {
    "id": "nanchang-line-2-demolition",
@@ -5861,7 +6357,10 @@
    "national_index": null,
    "r39_rank_score": 57,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 57,
+   "worked_in_round": null
   },
   {
    "id": "ghana-tarkwa-mine-sale",
@@ -5897,7 +6396,10 @@
    },
    "r39_rank_score": 56,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 0,
+   "r41_rank_score": 56,
+   "worked_in_round": null
   },
   {
    "id": "corridor-vc-mostar-south-malo-polje",
@@ -5931,7 +6433,10 @@
    "national_index": null,
    "r39_rank_score": 56,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 56,
+   "worked_in_round": null
   },
   {
    "id": "ipp4-al-manakher-easep-detention",
@@ -5966,7 +6471,10 @@
    "national_index": null,
    "r39_rank_score": 56,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 56,
+   "worked_in_round": null
   },
   {
    "id": "vietnam-water-resources-assistance-resettlement",
@@ -6000,7 +6508,10 @@
    "national_index": null,
    "r39_rank_score": 56,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 56,
+   "worked_in_round": null
   },
   {
    "id": "wapp-apl3-zagtouli-bolgatanga-deaths",
@@ -6035,7 +6546,10 @@
    "national_index": null,
    "r39_rank_score": 56,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 56,
+   "worked_in_round": null
   },
   {
    "id": "senegal-river-perimeter-crops-destroyed",
@@ -6067,7 +6581,10 @@
    "national_index": null,
    "r39_rank_score": 56,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 56,
+   "worked_in_round": null
   },
   {
    "id": "lalara-fibre-assets-destroyed",
@@ -6098,7 +6615,10 @@
    "national_index": null,
    "r39_rank_score": 56,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 56,
+   "worked_in_round": null
   },
   {
    "id": "tema-ouagadougou-bamako-corridor-compensation",
@@ -6131,7 +6651,10 @@
    "national_index": null,
    "r39_rank_score": 56,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 56,
+   "worked_in_round": null
   },
   {
    "id": "kenya-finance-act-2023",
@@ -6167,7 +6690,10 @@
    },
    "r39_rank_score": 55,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 155,
+   "r41_rank_score": 80,
+   "worked_in_round": null
   },
   {
    "id": "gabon-eff-austerity-2018",
@@ -6198,7 +6724,10 @@
    "national_index": null,
    "r39_rank_score": 55,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 55,
+   "worked_in_round": null
   },
   {
    "id": "omkareshwar-reservoir-raising",
@@ -6237,7 +6766,10 @@
    },
    "r39_rank_score": 55,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 70,
+   "worked_in_round": null
   },
   {
    "id": "kabwe-lead-anglo-american",
@@ -6277,7 +6809,10 @@
    },
    "r39_rank_score": 55,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 5,
+   "r41_rank_score": 60,
+   "worked_in_round": null
   },
   {
    "id": "bakolori-dam-1980-killings",
@@ -6313,7 +6848,10 @@
    },
    "r39_rank_score": 55,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 0,
+   "r41_rank_score": 55,
+   "worked_in_round": null
   },
   {
    "id": "samherji-fishrot-namibia",
@@ -6351,7 +6889,10 @@
    },
    "r39_rank_score": 55,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 0,
+   "r41_rank_score": 55,
+   "worked_in_round": null
   },
   {
    "id": "mekenajo-dembidolo-road-coffee",
@@ -6381,7 +6922,10 @@
    "national_index": null,
    "r39_rank_score": 55,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 55,
+   "worked_in_round": null
   },
   {
    "id": "burkina-donsin-airport-roads-resettlement",
@@ -6414,7 +6958,10 @@
    "national_index": null,
    "r39_rank_score": 55,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 55,
+   "worked_in_round": null
   },
   {
    "id": "djibouti-ambouli-dike-resettlement",
@@ -6447,7 +6994,10 @@
    "national_index": null,
    "r39_rank_score": 55,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 55,
+   "worked_in_round": null
   },
   {
    "id": "thimphu-land-pooling-compensation-arrears",
@@ -6478,7 +7028,10 @@
    "national_index": null,
    "r39_rank_score": 55,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 55,
+   "worked_in_round": null
   },
   {
    "id": "abidjan-lagos-corridor-road-works-deaths-and-late-compensation",
@@ -6510,7 +7063,10 @@
    "national_index": null,
    "r39_rank_score": 55,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 55,
+   "worked_in_round": null
   },
   {
    "id": "nepal-raidp-land-donation",
@@ -6545,7 +7101,10 @@
    },
    "r39_rank_score": 54,
    "r39_front": false,
-   "r39_second_bucket": true
+   "r39_second_bucket": true,
+   "index_depth": null,
+   "r41_rank_score": 54,
+   "worked_in_round": null
   },
   {
    "id": "kribi-gas-plant-land-and-crops-taken-mpolongwe",
@@ -6582,7 +7141,10 @@
    "national_index": null,
    "r39_rank_score": 54,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 54,
+   "worked_in_round": null
   },
   {
    "id": "kampala-lubigi-kawaala",
@@ -6615,7 +7177,10 @@
    },
    "r39_rank_score": 53,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 16,
+   "r41_rank_score": 65,
+   "worked_in_round": null
   },
   {
    "id": "bahia-viver-melhor-ii-resettlement",
@@ -6649,7 +7214,10 @@
    "national_index": null,
    "r39_rank_score": 53,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 53,
+   "worked_in_round": null
   },
   {
    "id": "tedap-ukonga-mzinga-wayleaves",
@@ -6689,7 +7257,10 @@
    },
    "r39_rank_score": 53,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 4,
+   "r41_rank_score": 58,
+   "worked_in_round": 41
   },
   {
    "id": "okko-revutskoho-kyiv",
@@ -6721,7 +7292,10 @@
    "national_index": null,
    "r39_rank_score": 52,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 52,
+   "worked_in_round": null
   },
   {
    "id": "vreoci-kolubara-lignite",
@@ -6754,7 +7328,10 @@
    "national_index": null,
    "r39_rank_score": 52,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 52,
+   "worked_in_round": null
   },
   {
    "id": "cairo-metro-3-zamalek",
@@ -6787,7 +7364,10 @@
    "national_index": null,
    "r39_rank_score": 52,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 52,
+   "worked_in_round": null
   },
   {
    "id": "amulsar-gndevaz-jermuk",
@@ -6822,7 +7402,10 @@
    "national_index": null,
    "r39_rank_score": 52,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 52,
+   "worked_in_round": null
   },
   {
    "id": "cameroon-february-2008-riots",
@@ -6851,7 +7434,10 @@
    "national_index": null,
    "r39_rank_score": 51,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 51,
+   "worked_in_round": null
   },
   {
    "id": "kolkata-keiip-tranche2-vendors",
@@ -6888,7 +7474,10 @@
    },
    "r39_rank_score": 51,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 66,
+   "worked_in_round": null
   },
   {
    "id": "east-tsankhi-herder-displacement",
@@ -6920,7 +7509,10 @@
    "national_index": null,
    "r39_rank_score": 51,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 51,
+   "worked_in_round": null
   },
   {
    "id": "chandil-subernarekha",
@@ -6953,7 +7545,10 @@
    },
    "r39_rank_score": 50,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 65,
+   "worked_in_round": null
   },
   {
    "id": "rio-sala-san-pablo",
@@ -6989,7 +7584,10 @@
    "national_index": null,
    "r39_rank_score": 50,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 50,
+   "worked_in_round": null
   },
   {
    "id": "gecamines-voluntary-departures",
@@ -7024,7 +7622,10 @@
    "national_index": null,
    "r39_rank_score": 50,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 50,
+   "worked_in_round": null
   },
   {
    "id": "kenya-1991-university-fees-esac",
@@ -7057,7 +7658,10 @@
    },
    "r39_rank_score": 50,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 155,
+   "r41_rank_score": 75,
+   "worked_in_round": 41
   },
   {
    "id": "cusco-via-expresa-brickmakers",
@@ -7089,7 +7693,10 @@
    "national_index": null,
    "r39_rank_score": 50,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 50,
+   "worked_in_round": null
   },
   {
    "id": "zambia-2004-wage-freeze-teachers",
@@ -7122,7 +7729,10 @@
    },
    "r39_rank_score": 50,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 5,
+   "r41_rank_score": 55,
+   "worked_in_round": 41
   },
   {
    "id": "la-chorrera-pan-am-generating",
@@ -7154,7 +7764,10 @@
    "national_index": null,
    "r39_rank_score": 50,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 50,
+   "worked_in_round": null
   },
   {
    "id": "albania-electricity-arrests-2014",
@@ -7186,7 +7799,10 @@
    "national_index": null,
    "r39_rank_score": 50,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 50,
+   "worked_in_round": null
   },
   {
    "id": "central-romana-sugar-bateyes",
@@ -7222,7 +7838,10 @@
    "national_index": null,
    "r39_rank_score": 50,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 50,
+   "worked_in_round": null
   },
   {
    "id": "mekong-delta-transport-unpaid-compensation",
@@ -7252,7 +7871,10 @@
    "national_index": null,
    "r39_rank_score": 50,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 50,
+   "worked_in_round": null
   },
   {
    "id": "rsdp-apl3-road-deaths",
@@ -7281,7 +7903,10 @@
    "national_index": null,
    "r39_rank_score": 50,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 50,
+   "worked_in_round": null
   },
   {
    "id": "rwanda-electricity-access-rukarara-relocation",
@@ -7313,7 +7938,10 @@
    "national_index": null,
    "r39_rank_score": 50,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 50,
+   "worked_in_round": null
   },
   {
    "id": "burundi-fibre-backbone-unpaid-compensation",
@@ -7344,7 +7972,10 @@
    "national_index": null,
    "r39_rank_score": 50,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 50,
+   "worked_in_round": null
   },
   {
    "id": "kalangala-oil-palm",
@@ -7383,7 +8014,10 @@
    },
    "r39_rank_score": 49,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 16,
+   "r41_rank_score": 61,
+   "worked_in_round": null
   },
   {
    "id": "sonae-white-river-emissions",
@@ -7416,7 +8050,10 @@
    },
    "r39_rank_score": 49,
    "r39_front": false,
-   "r39_second_bucket": true
+   "r39_second_bucket": true,
+   "index_depth": null,
+   "r41_rank_score": 49,
+   "worked_in_round": null
   },
   {
    "id": "dennery-embankment-land-used-without-compensation",
@@ -7449,7 +8086,10 @@
    "national_index": null,
    "r39_rank_score": 49,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 49,
+   "worked_in_round": null
   },
   {
    "id": "amman-development-corridor-land",
@@ -7484,7 +8124,10 @@
    "national_index": null,
    "r39_rank_score": 48,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 48,
+   "worked_in_round": null
   },
   {
    "id": "xolobeni-titanium-rhadebe",
@@ -7520,7 +8163,10 @@
    },
    "r39_rank_score": 47,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 47,
+   "worked_in_round": null
   },
   {
    "id": "bhabadah-waterlogging-kjdrp",
@@ -7555,7 +8201,10 @@
    },
    "r39_rank_score": 47,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 47,
+   "worked_in_round": null
   },
   {
    "id": "benin-iame-transmission-compensation",
@@ -7597,7 +8246,10 @@
    "national_index": null,
    "r39_rank_score": 47,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 47,
+   "worked_in_round": null
   },
   {
    "id": "kumasi-lands-office-farmers-displaced",
@@ -7631,7 +8283,10 @@
    },
    "r39_rank_score": 47,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 0,
+   "r41_rank_score": 47,
+   "worked_in_round": null
   },
   {
    "id": "peru-sterilization-campaigns",
@@ -7662,7 +8317,10 @@
    "national_index": null,
    "r39_rank_score": 46,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 46,
+   "worked_in_round": null
   },
   {
    "id": "ghana-urban-water-unpaid-compensation",
@@ -7700,7 +8358,10 @@
    },
    "r39_rank_score": 46,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 0,
+   "r41_rank_score": 46,
+   "worked_in_round": null
   },
   {
    "id": "rurrenabaque-airport-land-compensation",
@@ -7738,7 +8399,10 @@
    "national_index": null,
    "r39_rank_score": 46,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 46,
+   "worked_in_round": null
   },
   {
    "id": "nigeria-fuel-subsidy-2012",
@@ -7771,7 +8435,10 @@
    },
    "r39_rank_score": 45,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 0,
+   "r41_rank_score": 45,
+   "worked_in_round": null
   },
   {
    "id": "indura-tela-bay",
@@ -7806,7 +8473,10 @@
    "national_index": null,
    "r39_rank_score": 45,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 45,
+   "worked_in_round": null
   },
   {
    "id": "aracruz-tupinikim-eviction-2006",
@@ -7837,7 +8507,10 @@
    "national_index": null,
    "r39_rank_score": 45,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 45,
+   "worked_in_round": null
   },
   {
    "id": "sri-lanka-2022-bond-payment-default",
@@ -7872,7 +8545,10 @@
    },
    "r39_rank_score": 45,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 45,
+   "worked_in_round": null
   },
   {
    "id": "kenya-sgr-cargo-directive",
@@ -7909,7 +8585,10 @@
    },
    "r39_rank_score": 45,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 155,
+   "r41_rank_score": 70,
+   "worked_in_round": null
   },
   {
    "id": "hambantota-port-zone-clashes",
@@ -7946,7 +8625,10 @@
    },
    "r39_rank_score": 45,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 45,
+   "worked_in_round": null
   },
   {
    "id": "kariobangi-north-evictions",
@@ -7979,7 +8661,10 @@
    },
    "r39_rank_score": 45,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 155,
+   "r41_rank_score": 70,
+   "worked_in_round": null
   },
   {
    "id": "rossing-uranium-worker-illness",
@@ -8015,7 +8700,10 @@
    },
    "r39_rank_score": 45,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 0,
+   "r41_rank_score": 45,
+   "worked_in_round": null
   },
   {
    "id": "michelin-thervoy-commons",
@@ -8050,7 +8738,10 @@
    },
    "r39_rank_score": 45,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 60,
+   "worked_in_round": null
   },
   {
    "id": "nandigram-salim-sez-firing",
@@ -8085,7 +8776,10 @@
    },
    "r39_rank_score": 45,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 60,
+   "worked_in_round": null
   },
   {
    "id": "sgr-phase-2a-kajiado-blasting-nairobi-park",
@@ -8123,7 +8817,10 @@
    },
    "r39_rank_score": 45,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 155,
+   "r41_rank_score": 70,
+   "worked_in_round": null
   },
   {
    "id": "northern-rangelands-isiolo-conservancies",
@@ -8161,7 +8858,10 @@
    },
    "r39_rank_score": 45,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 155,
+   "r41_rank_score": 70,
+   "worked_in_round": null
   },
   {
    "id": "mangaung-g4s-prison",
@@ -8197,7 +8897,10 @@
    },
    "r39_rank_score": 45,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 45,
+   "worked_in_round": null
   },
   {
    "id": "del-monte-kenya-guards",
@@ -8234,7 +8937,10 @@
    },
    "r39_rank_score": 45,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 155,
+   "r41_rank_score": 70,
+   "worked_in_round": null
   },
   {
    "id": "milot-rreshen-road-compensation-albania",
@@ -8266,7 +8972,10 @@
    "national_index": null,
    "r39_rank_score": 45,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 45,
+   "worked_in_round": null
   },
   {
    "id": "shihutang-dam-ganjiang-relocation",
@@ -8295,7 +9004,10 @@
    "national_index": null,
    "r39_rank_score": 45,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 45,
+   "worked_in_round": null
   },
   {
    "id": "manta-properties-taken-without-agreement",
@@ -8327,7 +9039,10 @@
    "national_index": null,
    "r39_rank_score": 45,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 45,
+   "worked_in_round": null
   },
   {
    "id": "ghana-2015-hiring-freeze-nurses",
@@ -8358,7 +9073,10 @@
    },
    "r39_rank_score": 44,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 0,
+   "r41_rank_score": 44,
+   "worked_in_round": null
   },
   {
    "id": "dariali-hpp-landslide-2014",
@@ -8387,7 +9105,10 @@
    "national_index": null,
    "r39_rank_score": 44,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 44,
+   "worked_in_round": null
   },
   {
    "id": "andhra-pradesh-community-forest",
@@ -8418,7 +9139,10 @@
    },
    "r39_rank_score": 43,
    "r39_front": true,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 58,
+   "worked_in_round": 40
   },
   {
    "id": "mozambique-lng-afungi",
@@ -8461,7 +9185,10 @@
    "national_index": null,
    "r39_rank_score": 43,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 43,
+   "worked_in_round": null
   },
   {
    "id": "leaf-ii-lakes-edward-albert",
@@ -8494,7 +9221,10 @@
    },
    "r39_rank_score": 43,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 16,
+   "r41_rank_score": 55,
+   "worked_in_round": null
   },
   {
    "id": "rcbc-coal-plants",
@@ -8529,7 +9259,10 @@
    },
    "r39_rank_score": 42,
    "r39_front": false,
-   "r39_second_bucket": true
+   "r39_second_bucket": true,
+   "index_depth": null,
+   "r41_rank_score": 42,
+   "worked_in_round": null
   },
   {
    "id": "blackfire-chicomuselo-abarca",
@@ -8562,7 +9295,10 @@
    "national_index": null,
    "r39_rank_score": 42,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 42,
+   "worked_in_round": null
   },
   {
    "id": "mekong-delta-water-management-compensation-delays",
@@ -8591,7 +9327,10 @@
    "national_index": null,
    "r39_rank_score": 42,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 42,
+   "worked_in_round": null
   },
   {
    "id": "guangxi-poor-rural-land-acquisition",
@@ -8624,7 +9363,10 @@
    "national_index": null,
    "r39_rank_score": 42,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 42,
+   "worked_in_round": null
   },
   {
    "id": "nigeria-phcn-power-privatization",
@@ -8660,7 +9402,10 @@
    },
    "r39_rank_score": 41,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 0,
+   "r41_rank_score": 41,
+   "worked_in_round": null
   },
   {
    "id": "ache-finca-470-ruta-10",
@@ -8690,7 +9435,10 @@
    "national_index": null,
    "r39_rank_score": 41,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 41,
+   "worked_in_round": null
   },
   {
    "id": "hopewell-road-land-taken-st-vincent",
@@ -8722,7 +9470,10 @@
    "national_index": null,
    "r39_rank_score": 41,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 41,
+   "worked_in_round": null
   },
   {
    "id": "mozal-bypass",
@@ -8757,7 +9508,10 @@
    "national_index": null,
    "r39_rank_score": 40,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 40,
+   "worked_in_round": null
   },
   {
    "id": "zimbabwe-fuel-protests-2019",
@@ -8790,7 +9544,10 @@
    },
    "r39_rank_score": 40,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 0,
+   "r41_rank_score": 40,
+   "worked_in_round": null
   },
   {
    "id": "cairo-metro-fares-2018",
@@ -8819,7 +9576,10 @@
    "national_index": null,
    "r39_rank_score": 40,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 40,
+   "worked_in_round": null
   },
   {
    "id": "plan-colombia-aerial-spraying",
@@ -8853,7 +9613,10 @@
    "national_index": null,
    "r39_rank_score": 40,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 40,
+   "worked_in_round": null
   },
   {
    "id": "tengiz-sarykamys-sulphur",
@@ -8889,7 +9652,10 @@
    "national_index": null,
    "r39_rank_score": 40,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 40,
+   "worked_in_round": null
   },
   {
    "id": "quy-nhon-coastal-cities-sanitation-resettlement",
@@ -8920,7 +9686,10 @@
    "national_index": null,
    "r39_rank_score": 40,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 40,
+   "worked_in_round": null
   },
   {
    "id": "drc-selembao-loange-compensation",
@@ -8948,7 +9717,10 @@
    "national_index": null,
    "r39_rank_score": 40,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 40,
+   "worked_in_round": null
   },
   {
    "id": "shah-deniz-sangachal",
@@ -8980,7 +9752,10 @@
    "national_index": null,
    "r39_rank_score": 39,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 39,
+   "worked_in_round": null
   },
   {
    "id": "dartlo-telavi-rehabilitation-compensation-delays",
@@ -9012,7 +9787,10 @@
    "national_index": null,
    "r39_rank_score": 39,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 39,
+   "worked_in_round": null
   },
   {
    "id": "agara-zemo-osiauri-e60-agarebi",
@@ -9042,7 +9820,10 @@
    "national_index": null,
    "r39_rank_score": 38,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 38,
+   "worked_in_round": null
   },
   {
    "id": "zimbabwe-food-riots-1998",
@@ -9073,7 +9854,10 @@
    },
    "r39_rank_score": 37,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 0,
+   "r41_rank_score": 37,
+   "worked_in_round": null
   },
   {
    "id": "swaziland-2011-smp-protests",
@@ -9102,7 +9886,10 @@
    "national_index": null,
    "r39_rank_score": 37,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 37,
+   "worked_in_round": null
   },
   {
    "id": "sao-gabriel-cable-station-urban-farmers",
@@ -9134,7 +9921,10 @@
    "national_index": null,
    "r39_rank_score": 37,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 37,
+   "worked_in_round": null
   },
   {
    "id": "zambia-textiles-collapse",
@@ -9166,7 +9956,10 @@
    },
    "r39_rank_score": 36,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 5,
+   "r41_rank_score": 41,
+   "worked_in_round": null
   },
   {
    "id": "ijora-oloye-lagos-1998",
@@ -9199,7 +9992,10 @@
    },
    "r39_rank_score": 36,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 0,
+   "r41_rank_score": 36,
+   "worked_in_round": null
   },
   {
    "id": "azad-kashmir-protests-2024",
@@ -9230,7 +10026,10 @@
    },
    "r39_rank_score": 36,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 36,
+   "worked_in_round": null
   },
   {
    "id": "qmm-fort-dauphin",
@@ -9263,7 +10062,10 @@
    "national_index": null,
    "r39_rank_score": 36,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 36,
+   "worked_in_round": null
   },
   {
    "id": "bear-creek-santa-ana-aymarazo",
@@ -9295,7 +10097,10 @@
    "national_index": null,
    "r39_rank_score": 36,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 36,
+   "worked_in_round": null
   },
   {
    "id": "chunhu-fenghua-access-road-demolition",
@@ -9325,7 +10130,10 @@
    "national_index": null,
    "r39_rank_score": 36,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 36,
+   "worked_in_round": null
   },
   {
    "id": "ceara-sanear-ii-resettlement",
@@ -9355,7 +10163,10 @@
    "national_index": null,
    "r39_rank_score": 36,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 36,
+   "worked_in_round": null
   },
   {
    "id": "serbia-social-card",
@@ -9385,7 +10196,10 @@
    "national_index": null,
    "r39_rank_score": 35,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 35,
+   "worked_in_round": null
   },
   {
    "id": "zambia-2020-eurobond-default",
@@ -9418,7 +10232,10 @@
    },
    "r39_rank_score": 35,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 5,
+   "r41_rank_score": 40,
+   "worked_in_round": null
   },
   {
    "id": "coca-codo-sinclair",
@@ -9449,7 +10266,10 @@
    "national_index": null,
    "r39_rank_score": 35,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 35,
+   "worked_in_round": null
   },
   {
    "id": "lundin-block-5a-sudan",
@@ -9490,7 +10310,10 @@
    "national_index": null,
    "r39_rank_score": 35,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 35,
+   "worked_in_round": null
   },
   {
    "id": "occidental-cano-limon-santo-domingo-1998",
@@ -9523,7 +10346,10 @@
    "national_index": null,
    "r39_rank_score": 35,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 35,
+   "worked_in_round": null
   },
   {
    "id": "uganda-ueb-umeme",
@@ -9560,7 +10386,10 @@
    },
    "r39_rank_score": 35,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 16,
+   "r41_rank_score": 47,
+   "worked_in_round": null
   },
   {
    "id": "linglong-zrenjanin-workers",
@@ -9593,7 +10422,10 @@
    "national_index": null,
    "r39_rank_score": 35,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 35,
+   "worked_in_round": null
   },
   {
    "id": "payra-1320mw-coal-bcpcl",
@@ -9629,7 +10461,10 @@
    },
    "r39_rank_score": 35,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 35,
+   "worked_in_round": null
   },
   {
    "id": "arab-bank-hamas-transfers-verdict",
@@ -9666,7 +10501,10 @@
    "national_index": null,
    "r39_rank_score": 35,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 35,
+   "worked_in_round": null
   },
   {
    "id": "vietnam-urban-water-wastewater-below-replacement",
@@ -9695,7 +10533,10 @@
    "national_index": null,
    "r39_rank_score": 35,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 35,
+   "worked_in_round": null
   },
   {
    "id": "haiphong-bac-son-nam-hai-road",
@@ -9724,7 +10565,10 @@
    "national_index": null,
    "r39_rank_score": 35,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 35,
+   "worked_in_round": null
   },
   {
    "id": "hanoi-ring-road-2-relocation",
@@ -9758,7 +10602,10 @@
    "national_index": null,
    "r39_rank_score": 35,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 35,
+   "worked_in_round": null
   },
   {
    "id": "malawi-grain-reserve",
@@ -9790,7 +10637,10 @@
    },
    "r39_rank_score": 33,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 0,
+   "r41_rank_score": 33,
+   "worked_in_round": null
   },
   {
    "id": "noor-midelt",
@@ -9825,7 +10675,10 @@
    "national_index": null,
    "r39_rank_score": 33,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 33,
+   "worked_in_round": null
   },
   {
    "id": "ebola-imf-wage-limits",
@@ -9856,7 +10709,10 @@
    },
    "r39_rank_score": 33,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 1,
+   "r41_rank_score": 33,
+   "worked_in_round": null
   },
   {
    "id": "dakar-ter-phase1",
@@ -9889,7 +10745,10 @@
    "national_index": null,
    "r39_rank_score": 33,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 33,
+   "worked_in_round": null
   },
   {
    "id": "maluku-sez-maes-inkiene-demolition",
@@ -9921,7 +10780,10 @@
    "national_index": null,
    "r39_rank_score": 33,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 33,
+   "worked_in_round": null
   },
   {
    "id": "el-alto-avenue-land-paid-for-afterwards",
@@ -9951,7 +10813,10 @@
    "national_index": null,
    "r39_rank_score": 33,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 33,
+   "worked_in_round": null
   },
   {
    "id": "vishnugad-pipalkoti-haat",
@@ -9984,7 +10849,10 @@
    },
    "r39_rank_score": 32,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 47,
+   "worked_in_round": null
   },
   {
    "id": "naso-san-san-druy",
@@ -10018,7 +10886,10 @@
    "national_index": null,
    "r39_rank_score": 32,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 32,
+   "worked_in_round": null
   },
   {
    "id": "nsel-chichigalpa-ckd",
@@ -10047,7 +10918,10 @@
    "national_index": null,
    "r39_rank_score": 32,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 32,
+   "worked_in_round": null
   },
   {
    "id": "hidrovias-miritituba",
@@ -10078,7 +10952,10 @@
    "national_index": null,
    "r39_rank_score": 32,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 32,
+   "worked_in_round": null
   },
   {
    "id": "togo-june-2010-fuel",
@@ -10105,7 +10982,10 @@
    "national_index": null,
    "r39_rank_score": 32,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 32,
+   "worked_in_round": null
   },
   {
    "id": "mes-aynak-resettlement",
@@ -10136,7 +11016,10 @@
    "national_index": null,
    "r39_rank_score": 32,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 32,
+   "worked_in_round": null
   },
   {
    "id": "noor-ouarzazate-pasture",
@@ -10172,7 +11055,10 @@
    "national_index": null,
    "r39_rank_score": 32,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 32,
+   "worked_in_round": null
   },
   {
    "id": "bogota-metro-line1-predios",
@@ -10207,7 +11093,10 @@
    "national_index": null,
    "r39_rank_score": 32,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 32,
+   "worked_in_round": null
   },
   {
    "id": "morupule-b-family-moved-fatal-accidents",
@@ -10239,7 +11128,10 @@
    "national_index": null,
    "r39_rank_score": 32,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 32,
+   "worked_in_round": null
   },
   {
    "id": "sudan-bread-protests-2018",
@@ -10268,7 +11160,10 @@
    "national_index": null,
    "r39_rank_score": 31,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 31,
+   "worked_in_round": null
   },
   {
    "id": "kenya-health-user-fees-1989",
@@ -10299,7 +11194,10 @@
    },
    "r39_rank_score": 31,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 155,
+   "r41_rank_score": 56,
+   "worked_in_round": null
   },
   {
    "id": "drummond-la-loma-union-killings",
@@ -10333,7 +11231,10 @@
    "national_index": null,
    "r39_rank_score": 31,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 31,
+   "worked_in_round": null
   },
   {
    "id": "colombia-water-easements-unsettled-at-closing",
@@ -10363,7 +11264,10 @@
    "national_index": null,
    "r39_rank_score": 31,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 31,
+   "worked_in_round": null
   },
   {
    "id": "montelimar-sugar-ckd",
@@ -10392,7 +11296,10 @@
    "national_index": null,
    "r39_rank_score": 30,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 30,
+   "worked_in_round": null
   },
   {
    "id": "indorama-agro-uzbekistan",
@@ -10423,7 +11330,10 @@
    "national_index": null,
    "r39_rank_score": 30,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 30,
+   "worked_in_round": null
   },
   {
    "id": "trident-kalumbila-resettlement",
@@ -10459,7 +11369,10 @@
    },
    "r39_rank_score": 30,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 5,
+   "r41_rank_score": 35,
+   "worked_in_round": null
   },
   {
    "id": "jalaur-dam-tumandok-killings",
@@ -10493,7 +11406,10 @@
    },
    "r39_rank_score": 30,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 30,
+   "worked_in_round": null
   },
   {
    "id": "malicounda-power-plant-land",
@@ -10528,7 +11444,10 @@
    "national_index": null,
    "r39_rank_score": 30,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 30,
+   "worked_in_round": null
   },
   {
    "id": "daewoo-bupyeong-2001",
@@ -10560,7 +11479,10 @@
    "national_index": null,
    "r39_rank_score": 29,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 29,
+   "worked_in_round": null
   },
   {
    "id": "aes-telasi-tbilisi",
@@ -10593,7 +11515,10 @@
    "national_index": null,
    "r39_rank_score": 29,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 29,
+   "worked_in_round": null
   },
   {
    "id": "gambella-villagization",
@@ -10622,7 +11547,10 @@
    "national_index": null,
    "r39_rank_score": 28,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 28,
+   "worked_in_round": null
   },
   {
    "id": "orissa-power-reform",
@@ -10656,7 +11584,10 @@
    },
    "r39_rank_score": 28,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 43,
+   "worked_in_round": null
   },
   {
    "id": "buchanan-renewables-liberia",
@@ -10688,7 +11619,10 @@
    "national_index": null,
    "r39_rank_score": 28,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 28,
+   "worked_in_round": null
   },
   {
    "id": "barkagaon-ntpc-firing-2016",
@@ -10722,7 +11656,10 @@
    },
    "r39_rank_score": 28,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 43,
+   "worked_in_round": null
   },
   {
    "id": "siddhirganj-pipeline-transmission-land",
@@ -10759,7 +11696,10 @@
    },
    "r39_rank_score": 28,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 28,
+   "worked_in_round": null
   },
   {
    "id": "ghana-poultry-rice-tariffs",
@@ -10791,7 +11731,10 @@
    },
    "r39_rank_score": 27,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 0,
+   "r41_rank_score": 27,
+   "worked_in_round": null
   },
   {
    "id": "wings-long-beluah",
@@ -10821,7 +11764,10 @@
    "national_index": null,
    "r39_rank_score": 27,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 27,
+   "worked_in_round": null
   },
   {
    "id": "bankers-patos-marinza",
@@ -10850,7 +11796,10 @@
    "national_index": null,
    "r39_rank_score": 27,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 27,
+   "worked_in_round": null
   },
   {
    "id": "angola-fuel-protests-2023",
@@ -10877,7 +11826,10 @@
    "national_index": null,
    "r39_rank_score": 27,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 27,
+   "worked_in_round": null
   },
   {
    "id": "da-nang-quang-ngai-expressway",
@@ -10909,7 +11861,10 @@
    "national_index": null,
    "r39_rank_score": 27,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 27,
+   "worked_in_round": null
   },
   {
    "id": "mallku-khota-south-american-silver",
@@ -10940,7 +11895,10 @@
    "national_index": null,
    "r39_rank_score": 27,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 27,
+   "worked_in_round": null
   },
   {
    "id": "coca-cola-bottlers-colombia-unionists",
@@ -10976,7 +11934,10 @@
    "national_index": null,
    "r39_rank_score": 27,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 27,
+   "worked_in_round": null
   },
   {
    "id": "jirau-dam-esbr-madeira",
@@ -11013,7 +11974,10 @@
    "national_index": null,
    "r39_rank_score": 27,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 27,
+   "worked_in_round": null
   },
   {
    "id": "proyecto-integral-morelos-samir-flores",
@@ -11048,7 +12012,10 @@
    "national_index": null,
    "r39_rank_score": 27,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 27,
+   "worked_in_round": null
   },
   {
    "id": "mannar-thambapavani-wind-adb",
@@ -11079,7 +12046,10 @@
    },
    "r39_rank_score": 27,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 27,
+   "worked_in_round": null
   },
   {
    "id": "caldwell-bridge-liberia-compensation",
@@ -11107,7 +12077,10 @@
    "national_index": null,
    "r39_rank_score": 27,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 27,
+   "worked_in_round": null
   },
   {
    "id": "apia-park-stadium-beam-death",
@@ -11138,7 +12111,10 @@
    "national_index": null,
    "r39_rank_score": 27,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 27,
+   "worked_in_round": null
   },
   {
    "id": "uzbekistan-cotton",
@@ -11168,7 +12144,10 @@
    "national_index": null,
    "r39_rank_score": 26,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 26,
+   "worked_in_round": null
   },
   {
    "id": "casablanca-riots-1981",
@@ -11197,7 +12176,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "lower-kihansi-dam",
@@ -11232,7 +12214,10 @@
    },
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 4,
+   "r41_rank_score": 30,
+   "worked_in_round": null
   },
   {
    "id": "escondida-punta-negra",
@@ -11266,7 +12251,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "bisha-mine-forced-labour",
@@ -11299,7 +12287,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "aktobe-south-west-corridor-villages",
@@ -11328,7 +12319,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "copper-mesa-junin-ecuador",
@@ -11361,7 +12355,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "chevron-lago-agrio-arbitration",
@@ -11400,7 +12397,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "santo-antonio-dam-madeira",
@@ -11434,7 +12434,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "livent-fenix-hombre-muerto-trapiche",
@@ -11468,7 +12471,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "nemagon-dbcp-chinandega",
@@ -11502,7 +12508,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "tiaa-matopiba-farmland-grilagem",
@@ -11534,7 +12543,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "exxon-arun-aceh-abuses",
@@ -11566,7 +12578,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "batang-coal-jbic",
@@ -11601,7 +12616,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "central-kalahari-san-evictions-gope",
@@ -11637,7 +12655,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "alto-mayo-redd-disney-evictions",
@@ -11671,7 +12692,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "ternium-las-encinas-aquila",
@@ -11703,7 +12727,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "scatec-los-prados-namasigue",
@@ -11735,7 +12762,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "rp-global-tranguil-macarena-valdes",
@@ -11767,7 +12797,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "nova-atlantida-tremembe-itapipoca",
@@ -11800,7 +12833,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "newmont-buenaventura-la-zanja-2004",
@@ -11832,7 +12868,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "mejillones-coal-plants-engie-aes",
@@ -11865,7 +12904,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "cirebon-1-coal-kanci",
@@ -11901,7 +12943,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "haut-penja-php-kingue",
@@ -11934,7 +12979,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "soco-virunga-block-v",
@@ -11965,7 +13013,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "kun-hou-shabunda-ulindi-gold",
@@ -11997,7 +13048,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "amara-kalsaka-sega-gold",
@@ -12029,7 +13083,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "novi-sad-station-canopy-collapse",
@@ -12067,7 +13124,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "drmno-kostolac-lignite-china-exim",
@@ -12100,7 +13160,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "stanari-raskovci-cdb-mine-plant",
@@ -12132,7 +13195,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "chancay-port-fishers-houses",
@@ -12164,7 +13230,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "tap-albania-land-compensation",
@@ -12200,7 +13269,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "kilombero-plantations-agrica",
@@ -12236,7 +13308,10 @@
    },
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 4,
+   "r41_rank_score": 30,
+   "worked_in_round": null
   },
   {
    "id": "rumaila-zubair-gas-flaring",
@@ -12270,7 +13345,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "bulgaria-2013-electricity-bills",
@@ -12303,7 +13381,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "kumtor-glaciers-barskoon-2013",
@@ -12337,7 +13418,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "topolobampo-ammonia-gpo-kfw",
@@ -12371,7 +13455,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "bnp-paribas-sudan-letters-of-credit",
@@ -12404,7 +13491,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "somsanga-drug-detention-laos",
@@ -12435,7 +13525,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "bolivia-chapare-us-funded-eradication",
@@ -12465,7 +13558,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "haiti-creole-pig-eradication",
@@ -12495,7 +13591,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "westpac-wtk-turubu-png",
@@ -12526,7 +13625,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "indofood-lonsum-bank-financing",
@@ -12559,7 +13661,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "para-beef-banks-sao-felix",
@@ -12595,7 +13700,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "bnp-rwanda-1994-arms-transfer",
@@ -12625,7 +13733,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "punta-catalina-bndes-sace",
@@ -12660,7 +13771,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "aes-rockash-arroyo-barril",
@@ -12692,7 +13806,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "yakjin-veng-sreng-2014",
@@ -12723,7 +13840,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "pueblo-viejo-barrick-cotui",
@@ -12755,7 +13875,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "libya-coast-guard-eu-italy-detention",
@@ -12785,7 +13908,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "limpopo-national-park-kfw-resettlement",
@@ -12815,7 +13941,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "virunga-eu-rangers-residents",
@@ -12845,7 +13974,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "tbla-dgs-mufg-danamon-peat",
@@ -12878,7 +14010,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "asian-rare-earth-bukit-merah",
@@ -12913,7 +14048,10 @@
    "national_index": null,
    "r39_rank_score": 25,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "addax-makeni",
@@ -12948,7 +14086,10 @@
    },
    "r39_rank_score": 24,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 1,
+   "r41_rank_score": 24,
+   "worked_in_round": null
   },
   {
    "id": "wadelai-irrigation-paten",
@@ -12982,7 +14123,10 @@
    },
    "r39_rank_score": 24,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 16,
+   "r41_rank_score": 36,
+   "worked_in_round": null
   },
   {
    "id": "giza-north-groundwater",
@@ -13012,7 +14156,10 @@
    "national_index": null,
    "r39_rank_score": 23,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 23,
+   "worked_in_round": null
   },
   {
    "id": "angola-diesel-protests-2025",
@@ -13039,7 +14186,10 @@
    "national_index": null,
    "r39_rank_score": 23,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 23,
+   "worked_in_round": null
   },
   {
    "id": "dakar-1994-devaluation-riot",
@@ -13067,7 +14217,10 @@
    "national_index": null,
    "r39_rank_score": 23,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 23,
+   "worked_in_round": null
   },
   {
    "id": "manantali-hydropower-floodplain",
@@ -13098,7 +14251,10 @@
    "national_index": null,
    "r39_rank_score": 23,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 23,
+   "worked_in_round": null
   },
   {
    "id": "paraguay-2002-privatization-protests",
@@ -13125,7 +14281,10 @@
    "national_index": null,
    "r39_rank_score": 22,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 22,
+   "worked_in_round": null
   },
   {
    "id": "conakry-water-lease",
@@ -13157,7 +14316,10 @@
    "national_index": null,
    "r39_rank_score": 22,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 22,
+   "worked_in_round": null
   },
   {
    "id": "lubuk-alung-kuraitaji-road-works-death",
@@ -13186,7 +14348,10 @@
    "national_index": null,
    "r39_rank_score": 22,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 22,
+   "worked_in_round": null
   },
   {
    "id": "rogun-dam",
@@ -13217,7 +14382,10 @@
    "national_index": null,
    "r39_rank_score": 21,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 21,
+   "worked_in_round": null
   },
   {
    "id": "mhp-vinnytsia-poultry",
@@ -13247,7 +14415,10 @@
    "national_index": null,
    "r39_rank_score": 20,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 20,
+   "worked_in_round": null
   },
   {
    "id": "romania-austerity-2010-2012",
@@ -13275,7 +14446,10 @@
    "national_index": null,
    "r39_rank_score": 20,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 20,
+   "worked_in_round": null
   },
   {
    "id": "m3-sanamadougou-mali",
@@ -13306,7 +14480,10 @@
    "national_index": null,
    "r39_rank_score": 20,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 20,
+   "worked_in_round": null
   },
   {
    "id": "hungary-2009-imf-pay-pension-cuts",
@@ -13334,7 +14511,10 @@
    "national_index": null,
    "r39_rank_score": 20,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 20,
+   "worked_in_round": null
   },
   {
    "id": "ambatovy-toamasina-so2",
@@ -13366,7 +14546,10 @@
    "national_index": null,
    "r39_rank_score": 20,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 20,
+   "worked_in_round": null
   },
   {
    "id": "rampal-coal-sundarbans",
@@ -13400,7 +14583,10 @@
    },
    "r39_rank_score": 20,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 20,
+   "worked_in_round": null
   },
   {
    "id": "morowali-imip-smelter-deaths",
@@ -13432,7 +14618,10 @@
    "national_index": null,
    "r39_rank_score": 20,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 20,
+   "worked_in_round": null
   },
   {
    "id": "adani-mundra-mangroves-fishers",
@@ -13466,7 +14655,10 @@
    },
    "r39_rank_score": 20,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 35,
+   "worked_in_round": null
   },
   {
    "id": "essar-mahan-singrauli",
@@ -13502,7 +14694,10 @@
    },
    "r39_rank_score": 20,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 35,
+   "worked_in_round": null
   },
   {
    "id": "zuari-cottonseed-child-labour",
@@ -13536,7 +14731,10 @@
    },
    "r39_rank_score": 20,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 35,
+   "worked_in_round": null
   },
   {
    "id": "richards-bay-minerals-dune-mining",
@@ -13570,7 +14768,10 @@
    },
    "r39_rank_score": 20,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 20,
+   "worked_in_round": null
   },
   {
    "id": "gwadar-port-eastbay-fishers",
@@ -13604,7 +14805,10 @@
    },
    "r39_rank_score": 20,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 20,
+   "worked_in_round": null
   },
   {
    "id": "okomu-socfin-edo",
@@ -13638,7 +14842,10 @@
    },
    "r39_rank_score": 20,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 0,
+   "r41_rank_score": 20,
+   "worked_in_round": null
   },
   {
    "id": "sahiwal-coal-plant-qadirabad",
@@ -13671,7 +14878,10 @@
    },
    "r39_rank_score": 20,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 20,
+   "worked_in_round": null
   },
   {
    "id": "mahenge-graphite-ulanga-faru",
@@ -13707,7 +14917,10 @@
    },
    "r39_rank_score": 20,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 4,
+   "r41_rank_score": 25,
+   "worked_in_round": null
   },
   {
    "id": "south-karakalpakstan-irrigation-reprisals",
@@ -13734,7 +14947,10 @@
    "national_index": null,
    "r39_rank_score": 20,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 20,
+   "worked_in_round": null
   },
   {
    "id": "path-hpv-khammam-vadodara",
@@ -13767,7 +14983,10 @@
    },
    "r39_rank_score": 20,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 35,
+   "worked_in_round": null
   },
   {
    "id": "sondu-miriu-jbic",
@@ -13800,7 +15019,10 @@
    },
    "r39_rank_score": 20,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": 155,
+   "r41_rank_score": 45,
+   "worked_in_round": null
   },
   {
    "id": "unicef-tube-wells-bangladesh-arsenic",
@@ -13831,7 +15053,10 @@
    },
    "r39_rank_score": 20,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 20,
+   "worked_in_round": null
   },
   {
    "id": "kaziranga-wwf-guards-shootings",
@@ -13862,7 +15087,10 @@
    },
    "r39_rank_score": 20,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 35,
+   "worked_in_round": null
   },
   {
    "id": "thar-block-1-varvai-tilvai-land",
@@ -13899,7 +15127,10 @@
    },
    "r39_rank_score": 20,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 20,
+   "worked_in_round": null
   },
   {
    "id": "mai-ndombe-redd",
@@ -13929,7 +15160,10 @@
    "national_index": null,
    "r39_rank_score": 18,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 18,
+   "worked_in_round": null
   },
   {
    "id": "jordan-fuel-strike-2022",
@@ -13956,7 +15190,10 @@
    "national_index": null,
    "r39_rank_score": 18,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 18,
+   "worked_in_round": null
   },
   {
    "id": "maputo-september-2010-riots",
@@ -13983,7 +15220,10 @@
    "national_index": null,
    "r39_rank_score": 18,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 18,
+   "worked_in_round": null
   },
   {
    "id": "santa-cruz-lata-airfield",
@@ -14013,7 +15253,10 @@
    "national_index": null,
    "r39_rank_score": 17,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 17,
+   "worked_in_round": null
   },
   {
    "id": "chenguang-kargilik-xinjiang",
@@ -14042,7 +15285,10 @@
    "national_index": null,
    "r39_rank_score": 17,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 17,
+   "worked_in_round": null
   },
   {
    "id": "argentina-pension-protests-2024-2025",
@@ -14069,7 +15315,10 @@
    "national_index": null,
    "r39_rank_score": 17,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 17,
+   "worked_in_round": null
   },
   {
    "id": "syrah-balama-graphite-police",
@@ -14101,7 +15350,10 @@
    "national_index": null,
    "r39_rank_score": 17,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 17,
+   "worked_in_round": null
   },
   {
    "id": "chad-austerity-protests-2018",
@@ -14129,7 +15381,10 @@
    "national_index": null,
    "r39_rank_score": 16,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 16,
+   "worked_in_round": null
   },
   {
    "id": "east-west-highway-khevi",
@@ -14160,7 +15415,10 @@
    "national_index": null,
    "r39_rank_score": 16,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 16,
+   "worked_in_round": null
   },
   {
    "id": "kyrgyz-tariffs-2010",
@@ -14189,7 +15447,10 @@
    "national_index": null,
    "r39_rank_score": 15,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 15,
+   "worked_in_round": null
   },
   {
    "id": "eagle-hills-belgrade-waterfront-savamala",
@@ -14220,7 +15481,10 @@
    "national_index": null,
    "r39_rank_score": 15,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 15,
+   "worked_in_round": null
   },
   {
    "id": "tayan-nuur-altain-khuder",
@@ -14251,7 +15515,10 @@
    "national_index": null,
    "r39_rank_score": 15,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 15,
+   "worked_in_round": null
   },
   {
    "id": "tendaho-sugar-india-exim-afar",
@@ -14283,7 +15550,10 @@
    "national_index": null,
    "r39_rank_score": 15,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 15,
+   "worked_in_round": null
   },
   {
    "id": "bertin-maraba-cattle",
@@ -14312,7 +15582,10 @@
    "national_index": null,
    "r39_rank_score": 13,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 13,
+   "worked_in_round": null
   },
   {
    "id": "cutral-co-ypf",
@@ -14343,7 +15616,10 @@
    "national_index": null,
    "r39_rank_score": 13,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 13,
+   "worked_in_round": null
   },
   {
    "id": "jawa-1-lng-power-fishers",
@@ -14377,7 +15653,10 @@
    "national_index": null,
    "r39_rank_score": 13,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 13,
+   "worked_in_round": null
   },
   {
    "id": "jordan-takaful-cash-algorithm",
@@ -14404,7 +15683,10 @@
    "national_index": null,
    "r39_rank_score": 13,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 13,
+   "worked_in_round": null
   },
   {
    "id": "agua-zarca-berta-caceres",
@@ -14440,7 +15722,10 @@
    "national_index": null,
    "r39_rank_score": 11,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 11,
+   "worked_in_round": null
   },
   {
    "id": "plantar-minas-gerais",
@@ -14469,7 +15754,10 @@
    "national_index": null,
    "r39_rank_score": 11,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 11,
+   "worked_in_round": null
   },
   {
    "id": "olam-palm-gabon",
@@ -14499,7 +15787,10 @@
    "national_index": null,
    "r39_rank_score": 11,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 11,
+   "worked_in_round": null
   },
   {
    "id": "portucel-mozambique-plantations",
@@ -14528,7 +15819,10 @@
    "national_index": null,
    "r39_rank_score": 11,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 11,
+   "worked_in_round": null
   },
   {
    "id": "trinidad-1989-austerity",
@@ -14555,7 +15849,10 @@
    "national_index": null,
    "r39_rank_score": 11,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 11,
+   "worked_in_round": null
   },
   {
    "id": "png-1995-adjustment-land-protests",
@@ -14583,7 +15880,10 @@
    "national_index": null,
    "r39_rank_score": 11,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 11,
+   "worked_in_round": null
   },
   {
    "id": "caracol-industrial-park-haiti",
@@ -14611,7 +15911,10 @@
    "national_index": null,
    "r39_rank_score": 11,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 11,
+   "worked_in_round": null
   },
   {
    "id": "turkey-january-1980-price-rises-sal",
@@ -14639,7 +15942,10 @@
    "national_index": null,
    "r39_rank_score": 11,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 11,
+   "worked_in_round": null
   },
   {
    "id": "tunisia-bread-riots-1984",
@@ -14666,7 +15972,10 @@
    "national_index": null,
    "r39_rank_score": 10,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 10,
+   "worked_in_round": null
   },
   {
    "id": "bolivia-impuestazo-2003",
@@ -14693,7 +16002,10 @@
    "national_index": null,
    "r39_rank_score": 10,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 10,
+   "worked_in_round": null
   },
   {
    "id": "bolivia-cochabamba-april-1982",
@@ -14720,7 +16032,10 @@
    "national_index": null,
    "r39_rank_score": 10,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 10,
+   "worked_in_round": null
   },
   {
    "id": "fez-december-1990",
@@ -14747,7 +16062,10 @@
    "national_index": null,
    "r39_rank_score": 10,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 10,
+   "worked_in_round": null
   },
   {
    "id": "egypt-2024-bread-fuel-price-rises",
@@ -14774,7 +16092,10 @@
    "national_index": null,
    "r39_rank_score": 10,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 10,
+   "worked_in_round": null
   },
   {
    "id": "png-lng-tumbi-landslide",
@@ -14805,7 +16126,10 @@
    "national_index": null,
    "r39_rank_score": 10,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 10,
+   "worked_in_round": null
   },
   {
    "id": "kahuzi-biega-batwa",
@@ -14836,7 +16160,10 @@
    "national_index": null,
    "r39_rank_score": 10,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 10,
+   "worked_in_round": null
   },
   {
    "id": "perenco-laguna-del-tigre",
@@ -14867,7 +16194,10 @@
    "national_index": null,
    "r39_rank_score": 10,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 10,
+   "worked_in_round": null
   },
   {
    "id": "renace-cahabon-grupo-cobra",
@@ -14899,7 +16229,10 @@
    "national_index": null,
    "r39_rank_score": 10,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 10,
+   "worked_in_round": null
   },
   {
    "id": "patuca-iii-dam-landowners",
@@ -14930,7 +16263,10 @@
    "national_index": null,
    "r39_rank_score": 10,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 10,
+   "worked_in_round": null
   },
   {
    "id": "neshe-dam-compensation-oromia",
@@ -14963,7 +16299,10 @@
    "national_index": null,
    "r39_rank_score": 10,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 10,
+   "worked_in_round": null
   },
   {
    "id": "ecuador-2025-public-dismissals",
@@ -14990,7 +16329,10 @@
    "national_index": null,
    "r39_rank_score": 7,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 7,
+   "worked_in_round": null
   },
   {
    "id": "asian-highway-karen-state",
@@ -15017,7 +16359,10 @@
    "national_index": null,
    "r39_rank_score": 7,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 7,
+   "worked_in_round": null
   },
   {
    "id": "russia-mass-privatization-mortality",
@@ -15045,7 +16390,10 @@
    "national_index": null,
    "r39_rank_score": 6,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 6,
+   "worked_in_round": null
   },
   {
    "id": "merowe-dam-amri-manasir",
@@ -15081,7 +16429,10 @@
    "national_index": null,
    "r39_rank_score": 6,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 6,
+   "worked_in_round": null
   },
   {
    "id": "lebanon-2022-electricity-tariff",
@@ -15108,7 +16459,10 @@
    "national_index": null,
    "r39_rank_score": 6,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 6,
+   "worked_in_round": null
   },
   {
    "id": "turkey-tobacco-law-tekel",
@@ -15138,7 +16492,10 @@
    "national_index": null,
    "r39_rank_score": 5,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 5,
+   "worked_in_round": null
   },
   {
    "id": "upper-paunglaung-dam",
@@ -15167,7 +16524,10 @@
    "national_index": null,
    "r39_rank_score": 5,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 5,
+   "worked_in_round": null
   },
   {
    "id": "tenke-fungurume-cmoc-so2",
@@ -15197,7 +16557,10 @@
    "national_index": null,
    "r39_rank_score": 5,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 5,
+   "worked_in_round": null
   },
   {
    "id": "simandou-rio-tinto",
@@ -15227,7 +16590,10 @@
    "national_index": null,
    "r39_rank_score": 4,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 4,
+   "worked_in_round": null
   },
   {
    "id": "mag-silver-cascabel-solorio-killings",
@@ -15256,7 +16622,10 @@
    "national_index": null,
    "r39_rank_score": 4,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 4,
+   "worked_in_round": null
   },
   {
    "id": "fortuna-san-jose-del-progreso",
@@ -15285,7 +16654,10 @@
    "national_index": null,
    "r39_rank_score": 4,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 4,
+   "worked_in_round": null
   },
   {
    "id": "hidrosogamoso-jbic-impregilo",
@@ -15318,7 +16690,10 @@
    "national_index": null,
    "r39_rank_score": 4,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 4,
+   "worked_in_round": null
   },
   {
    "id": "komodo-tnc-gef-fishers-shot",
@@ -15346,7 +16721,10 @@
    "national_index": null,
    "r39_rank_score": 4,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 4,
+   "worked_in_round": null
   },
   {
    "id": "savia-punta-lagunas-sechura-2012",
@@ -15375,7 +16753,10 @@
    "national_index": null,
    "r39_rank_score": 2,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 2,
+   "worked_in_round": null
   },
   {
    "id": "mozambique-cashew",
@@ -15402,7 +16783,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "gibe-iii-turkana",
@@ -15435,7 +16819,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "ban-chaung-coal",
@@ -15468,7 +16855,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "bolivia-tin-miners-1985-1986",
@@ -15495,7 +16885,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "poland-nowa-huta-1988",
@@ -15523,7 +16916,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "ecuador-2008-debt-audit-default",
@@ -15551,7 +16947,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "ecuador-2020-bond-payment-guayaquil",
@@ -15578,7 +16977,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "ukraine-farmland-market-2020",
@@ -15605,7 +17007,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "three-gorges-eca",
@@ -15636,7 +17041,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "tagaung-taung-nickel",
@@ -15665,7 +17073,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "myitsone-dam-evictions",
@@ -15695,7 +17106,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "panguna-mine-bougainville",
@@ -15725,7 +17139,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "socapalm-cameroon-palm",
@@ -15756,7 +17173,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "greece-esm-third-programme-pensions",
@@ -15783,7 +17203,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "wwf-cameroon-baka-ecoguards",
@@ -15812,7 +17235,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "smb-boke-bauxite",
@@ -15845,7 +17271,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "kaltim-prima-coal-dayak-basap",
@@ -15878,7 +17307,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "karuturi-gambella",
@@ -15908,7 +17340,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "vrg-rubber-cambodia",
@@ -15938,7 +17373,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "vinci-khimki-forest-motorway",
@@ -15967,7 +17405,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "balhaf-lng-detention-site",
@@ -15997,7 +17438,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "lawpita-baluchaung-karenni",
@@ -16027,7 +17471,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "annobon-somagec-blasting-arrests",
@@ -16057,7 +17504,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "hatgyi-dam-karen-displacement",
@@ -16089,7 +17539,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "nouadhibou-fishmeal-factories",
@@ -16118,7 +17571,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "pinpet-iron-mine-pa-o-land",
@@ -16148,7 +17604,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "koudiadiene-sephos-phosphate",
@@ -16179,7 +17638,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "tigyit-coal-mine-power-plant",
@@ -16210,7 +17672,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "kachin-rare-earth-mines",
@@ -16237,7 +17702,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "green-wheels-lavo-rafey-waste-pickers",
@@ -16267,7 +17735,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "busanga-dam-sicohydro-evictions",
@@ -16297,7 +17768,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "rempang-eco-city-xinyi",
@@ -16327,7 +17801,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "stora-enso-guangxi-land",
@@ -16356,7 +17833,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "southern-cardamom-redd-chong",
@@ -16387,7 +17867,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "areva-comuf-mounana-miners",
@@ -16417,7 +17900,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "nordgold-bissa-relocation",
@@ -16447,7 +17933,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "kangqiao-lead-poisoning-johnson-controls",
@@ -16478,7 +17967,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "chemaf-mutoshi-mukumbi-burning",
@@ -16507,7 +17999,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "metalkol-rtr-tshamundenda-farms",
@@ -16536,7 +18031,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "haiyu-nagonha-flood-2015",
@@ -16565,7 +18063,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "damietta-mopco-agrium-2011",
@@ -16594,7 +18095,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "tangier-amendis-veolia-2015",
@@ -16623,7 +18127,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "kyaukphyu-sez-citic-land",
@@ -16652,7 +18159,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "teluk-sepang-bengkulu-coal-china-exim",
@@ -16683,7 +18193,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "hsbc-sarawak-logging-loans",
@@ -16714,7 +18227,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "myanmar-junta-foreign-banks",
@@ -16742,7 +18258,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "nexen-block-14-hadramawt",
@@ -16771,7 +18290,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "desert-dumps-eu-north-africa",
@@ -16799,7 +18321,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "unodc-iran-counter-narcotics-executions",
@@ -16827,7 +18352,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "nech-sar-african-parks-guji",
@@ -16854,7 +18382,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "con-son-tiger-cages-us-aid",
@@ -16882,7 +18413,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "enb-tobar-maybank-watwat",
@@ -16911,7 +18445,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   },
   {
    "id": "drc-war-economy-bank-channels",
@@ -16939,7 +18476,10 @@
    "national_index": null,
    "r39_rank_score": 0,
    "r39_front": false,
-   "r39_second_bucket": false
+   "r39_second_bucket": false,
+   "index_depth": null,
+   "r41_rank_score": 0,
+   "worked_in_round": null
   }
  ],
  "national_index_routes_tested_17_nov_2026": {
@@ -17039,5 +18579,25 @@
     "status": "connection failed on 17 Nov; record as untested, not refused"
    }
   }
+ },
+ "index_depth_measured_round_40": {
+  "phrase": "Resettlement Action Plan",
+  "why": "Round 40 found the eleven peachjam indexes share one route and nothing like one depth, and that depth on this phrase predicted the round's yield exactly: Ghana and Lesotho returned nothing because their indexes hold nothing on this subject, not because the cases are weak.",
+  "counts": {
+   "KEN": 155,
+   "TZA": 4,
+   "UGA": 16,
+   "GHA": 0,
+   "ZMB": 5,
+   "MWI": 0,
+   "LSO": 0,
+   "NGA": 0,
+   "ZWE": 0,
+   "NAM": 0,
+   "SLE": 1,
+   "IND": null
+  },
+  "how_to_rerun": "python3 case-map-src/index_depth.py",
+  "rule": "Below about 5 documents on this phrase, treat an index absence as weak evidence and go to the country's audit office and press instead. Do not report a thin index's silence as a finding about the case."
  }
 }

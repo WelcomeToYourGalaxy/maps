@@ -1,0 +1,344 @@
+{
+ "zanzibar-drainage-deaths-compensation": {
+  "outcome": "no-outside-source-found",
+  "confidence": "contested",
+  "confidence_note": "The five deaths, the compensation delays and the three people never reached are recorded in the World Bank's own completion report and repeated in its Evaluation Group's review of that report. Round 41 searched outside the lender and found nothing on them. TanzLII, searched through its JSON index API with quoted phrases, holds no document containing \"Zanzibar Urban Services\" and none containing both \"Zanzibar Municipal Council\" and \"compensation\"; \"Mwanakwerekwe\" returns 24 documents, none of them about these works, and \"Mwanakwerekwe\" with \"fidia\" returns none. TanzLII is thin on this subject in any case: round 40 measured it at four documents in total for the phrase \"Resettlement Action Plan\", so its silence is weak evidence. The Controller and Auditor General of Zanzibar's site (ocag.go.tz) did not resolve through the session's egress and the Zanzibar House of Representatives site refused curl; one Zanzibar House of Representatives Hansard read through a fetch tool, which names the Buyu road compensation and a Mwanakwerekwe water problem, says nothing about the drainage works, the deaths or the Kibele landfill. Searches of Tanzanian and Zanzibari press in English and Swahili for the trench collapse of 8 November 2019 and the dump truck crash of 22 March 2020 returned nothing on either. The household and structure counts come from the borrower's own resettlement plans and are what was planned, not what was carried out.",
+  "sources_add": [],
+  "field_changes": {},
+  "corrections": [],
+  "what_the_outside_source_settles": "Nothing. No outside document bearing on this card's harm was found. The five deaths and the compensation delays still rest on the World Bank's completion report of 23 November 2021 and its Evaluation Group's review of that report, which is why `killed` is left at 5 and unchanged: the report gives a cause for each death that ties it to the works, and no outside document was found to add to or subtract from that.",
+  "what_it_does_not_settle": "Everything. No court record, audit report, gazette notice or press report was found that records any of the five deaths, the delayed payments to the 605 people compensated for the drainage and solid waste works, the 167 in the Kibele landfill buffer zone, or the three who were never reached. Whether the three were ever paid after the loan account closed at the end of September 2021 is unknown. One undated syndicated press item (africa-press.net, after November 2020 on the internal evidence of naming President Mwinyi) names the Zanzibar Urban Services Project, puts Zanzibar City's waste at about 280 tonnes a day with collection below 50 per cent, and reports a presidential visit to the Kibele site; it is not dated at document level and it records none of this card's harm, so it is not added as a source.",
+  "phrases_tried": [
+   "Zanzibar Urban Services",
+   "Zanzibar Municipal Council\" + \"compensation",
+   "Mwanakwerekwe",
+   "Mwanakwerekwe\" + \"fidia",
+   "Zanzibar mfereji Mwanakwerekwe ajali wafanyakazi wawili udongo Novemba 2019",
+   "Zanzibar drainage trench collapse two workers killed November 2019",
+   "Mwanakwerekwe ajali pikipiki lori Machi 2020",
+   "fidia Kibele Tunguu dampo Zanzibar ZUSP"
+  ],
+  "documents_opened": [
+   {
+    "url": "https://documents.worldbank.org/curated/en/507851638846519022/pdf/Tanzania-Zanzibar-Urban-Services-Project.pdf",
+    "what_it_is": "World Bank Implementation Completion and Results Report, Zanzibar Urban Services Project (P111155), read from disk with pdftotext",
+    "date_read_off": "paragraph 68 gives the three accidents and their dates: 3 April 2016, 8 November 2019, 22 March 2020"
+   },
+   {
+    "url": "https://www.zanzibarassembly.go.tz/storage/documents/hansards/all/1630403331.pdf",
+    "what_it_is": "Zanzibar House of Representatives Hansard, read through a fetch tool after curl was refused by the route",
+    "date_read_off": "no date read off; the document records a ministerial answer on the Kisauni-Shakani-Buyu-Fumba road and nothing on the drainage works"
+   },
+   {
+    "url": "https://www.africa-press.net/tanzania/all-news/mwinyi-issues-zmc-with-three-month-ultimatum",
+    "what_it_is": "Syndicated press report naming the Zanzibar Urban Services Project and the Kibele site, read through a fetch tool",
+    "date_read_off": "none; the report carries no publication date, which is why it is not used as a source"
+   }
+  ],
+  "routes_that_failed": [
+   {
+    "url": "https://www.ocag.go.tz/",
+    "how_it_failed": "The Zanzibar Controller and Auditor General route did not resolve: the egress proxy reported the host unreachable (no public DNS record or host down). Not a refusal by the host."
+   },
+   {
+    "url": "https://www.zanzibarassembly.go.tz/",
+    "how_it_failed": "The Zanzibar House of Representatives route reset the connection to curl on every attempt, including for a Hansard PDF; one Hansard was read through a fetch tool instead."
+   }
+  ]
+ },
+ "dar-brt-kariakoo-clearance": {
+  "outcome": "contested-but-strengthened",
+  "confidence": "contested",
+  "confidence_note": "The Kariakoo dispute the completion report describes in general terms is now identified in Tanzania's own records. The Government Gazette of 18 April 2008, number 16, page 3, carries a notice of intention to acquire for public purpose all the land known as plots 2446/208 and 2445/208, Block 'A', Msimbazi and Lindi streets, Kariakoo, Dar es Salaam, held by the Tanzania Building Agency, so that the land may be used for the bus station to be built by the Dar Rapid Transit Agency. The litigation over those two plots is on TanzLII in three entries: Abdallah A. Mkongo and 3 Others v. The Director General, Tanzania Building Agency and 3 Others, Land Application No. 49 of 2012, decided 22 March 2012, which TanzLII marks as reported at [2012] T.L.R. 1 and records as struck out for want of fresh leave for a representative suit and a defective affidavit; Abdallah A. Mkongo and Others v. Director General, Tanzania Building Agency and Others, Land Case No. 44 of 2012, [2012] TZHC 776, 20 September 2012; and Abdallah A. Mkongo and 84 Others v. Director General, Tanzania Building Agency and 4 Others in the same Land Case No. 44 of 2012, [2013] TZHC 2453, where the first page names the Attorney General among the respondents, prints \"Date of submissions: 06/12/2013\" and \"Date of Ruling: 11/12/2013\" against TanzLII's citation date of 1 December 2013, says the plaintiffs' claims are for \"fair, adequate and prompt compensation\", and the second page refers to the acquisition of their landed properties at plots 2445/208 and 2446/208. These are index records: the judgment pages themselves answer curl with a Cloudflare challenge, which was not attempted to be defeated, so the demolition and the grounds of each decision rest on TanzLII's own case summaries and flynotes rather than on judgment text read here. So the number 106, the clearance date of March 2012, the escrow account and the statement that most affected people had claimed their compensation remain the Bank's alone, and the card stays contested. The report names no affected family, does not say how many people the 106 families contained, does not say where they went, and does not say how many of them had been paid when the site was cleared. The completion report's cover page is dated 7 November 2017 while the Bank's document database and the file name give 7 December 2017.",
+  "sources_add": [
+   {
+    "title": "Tanzania Government Gazette dated 18 April 2008, number 16, page 3: notice of intended acquisition for public purpose of plots 2446/208 and 2445/208, Block 'A', Msimbazi and Lindi streets, Kariakoo, held by the Tanzania Building Agency, for the bus station to be built by the Dar Rapid Transit Agency",
+    "publisher": "United Republic of Tanzania (indexed by TanzLII)",
+    "year": 2008,
+    "url": "https://tanzlii.org/akn/tz/officialGazette/government-gazette/2008-04-18/16/eng@2008-04-18"
+   },
+   {
+    "title": "Abdallah A. Mkongo and 3 Others v. The Director General, Tanzania Building Agency and 3 Others (Land Application 49 of 2012) [2012] TZHCLandD 120, reported at [2012] T.L.R. 1",
+    "publisher": "High Court of Tanzania, Land Division (TanzLII index entry)",
+    "year": 2012,
+    "url": "https://tanzlii.org/akn/tz/judgment/tzhclandd/2012/120/eng@2012-03-22"
+   },
+   {
+    "title": "Abdallah A. Mkongo and Others v. Director General, Tanzania Building Agency and Others (Land Case No. 44 of 2012) [2012] TZHC 776",
+    "publisher": "High Court of Tanzania (TanzLII index entry)",
+    "year": 2012,
+    "url": "https://tanzlii.org/akn/tz/judgment/tzhc/2012/776/eng@2012-09-20"
+   },
+   {
+    "title": "Abdallah A. Mkongo and 84 Others v. Director General, Tanzania Building Agency and 4 Others (Land Case No. 44 of 2012) [2013] TZHC 2453",
+    "publisher": "High Court of Tanzania (TanzLII index entry)",
+    "year": 2013,
+    "url": "https://tanzlii.org/akn/tz/judgment/tzhc/2013/2453/eng@2013-12-01"
+   }
+  ],
+  "field_changes": {
+   "displaced_note": "ICIJ gives 2,862 for this project, which is its count of project-affected people and not a count of people moved. The Bank's completion report counts 106 families in semidetached buildings at the Kariakoo terminal site, cleared by the Government in March 2012. The same report gives 877 project-affected people at the start, rising to 1,236, which is a count of people affected and not of people moved. The court record gives a different kind of count: 85 plaintiffs, Abdallah A. Mkongo and 84 others, in Land Case No. 44 of 2012 over plots 2445/208 and 2446/208, the plots the Government Gazette of 18 April 2008 names for the bus station. Four plaintiffs, Mkongo and three others, brought the earlier Land Application No. 49 of 2012. Neither number is a count of people moved, and no document found says how many people the 106 families held."
+  },
+  "corrections": [
+   "The completion report says the High Court's December 2013 ruling \"formally released the site to the Government for public use (BRT terminal)\". TanzLII's record of the only December 2013 decision in the case describes something narrower: an interlocutory injunction refused on the Atilio v. Mbowe tests, with monetary compensation claims held not to be irreparable and the public interest in the BRT project held to outweigh the applicants' interests. The ruling's own first page, as the index shows it, prints the date of ruling as 11 December 2013 while TanzLII cites it as 1 December 2013. The judgment text is behind the route failure recorded below, so the card should not keep the words \"formally releasing the site\" without it.",
+   "The completion report describes two stages of litigation: the 2008 case dismissed on technical grounds and the separate civil suit with the December 2013 ruling. The court record holds a third, which the report does not mention: a ruling of 20 September 2012 in Land Case No. 44 of 2012, which TanzLII's summary describes as a temporary injunction dismissed as overtaken by events because the applicants' properties had already been demolished. If that summary reflects the judgment, the demolition is recorded in court by September 2012, between the March 2012 strike-out and the December 2013 refusal, with the main suit still alive.",
+   "The completion report says the Kariakoo people \"filed a court case in 2008 and secured an injunction\". The two cases found in Tanzania's judgment index are numbered 2012: Land Application No. 49 of 2012 and Land Case No. 44 of 2012. The 2008 document found for this site is not a suit but the Government Gazette notice of 18 April 2008 of intention to acquire the two plots. TanzLII holds no 2008 case for these plots, and it is thin, so this is a gap in the record rather than proof that no 2008 suit existed."
+  ],
+  "what_the_outside_source_settles": "That the Kariakoo terminal site is plots 2446/208 and 2445/208, Block 'A', at Msimbazi and Lindi streets; that the land was held by the Tanzania Building Agency and was taken for public purpose for a bus station to be built by the Dar Rapid Transit Agency, by a notice gazetted on 18 April 2008; that the people on it litigated against the Tanzania Building Agency's Director General, with the Attorney General among the respondents, in Land Application No. 49 of 2012 and Land Case No. 44 of 2012; that 85 of them were plaintiffs by 2013; that their claim was for fair, adequate and prompt compensation; and that the courts ruled against them three times between March 2012 and December 2013, the first time on the pleading defect the Bank calls a technical ground.",
+  "what_it_does_not_settle": "The harm itself. No outside document read records the clearance of 106 families, who they were, what they were paid, when, or where they went. The demolition appears only in TanzLII's machine-written summary of the 20 September 2012 ruling, not in judgment text read here. Nothing found says whether the main suit in Land Case No. 44 of 2012 was ever decided: TanzLII holds no later decision in it, and the Bank's report of 2017 says it was still awaiting judgment. Nothing found mentions the World Bank or the credit; the gazette notice names only the Tanzanian agencies. The Ubungo depot site, the two feeder stations never acquired and the daladala owners are not touched by anything found.",
+  "phrases_tried": [
+   "Dar Rapid Transit Agency",
+   "Kariakoo\" + \"Dar Rapid Transit",
+   "Dar Rapid Transit\" + \"Msimbazi",
+   "Wakala wa Majengo\" + \"Dar Rapid Transit",
+   "Kitalu\" + \"Dar Rapid Transit",
+   "2446/208",
+   "2445/208",
+   "Abdallah A. Mkongo",
+   "Mkongo",
+   "Land Case No. 44 of 2012",
+   "Land Application No. 49 of 2012",
+   "Abdallah A. Mkongo\" + each of compensation, demolished, houses, Kariakoo, terminal, injunction, Tanzania Building Agency, Attorney General, prompt compensation, 84",
+   "Tanzania Building Agency\" + \"Kariakoo",
+   "Kituo cha Mabasi",
+   "bus rapid transit",
+   "Kariakoo BRT bus terminal residents compensation court case 2012 (web)"
+  ],
+  "documents_opened": [
+   {
+    "url": "https://documents1.worldbank.org/curated/en/210491513006516919/pdf/ICR-P103633-2017-12-05-18-08-12062017.pdf",
+    "what_it_is": "World Bank Implementation Completion and Results Report, Second Central Transport Corridor Project, read from disk with pdftotext to set the lender's account against the court record",
+    "date_read_off": "paragraph 69 gives the 2008 filing, the March 2012 clearance of the site with 106 families and the December 2013 ruling"
+   },
+   {
+    "url": "https://tanzlii.org/search/api/documents/?search=%222446%2F208%22",
+    "what_it_is": "TanzLII JSON index API, quoted-phrase search on the plot number, which returned the 2013 ruling and the 2008 gazette and their page snippets",
+    "date_read_off": "17 November 2026, search run; gazette dated 18 April 2008 and ruling cited 1 December 2013"
+   },
+   {
+    "url": "https://tanzlii.org/search/api/documents/?search=%22Abdallah%20A.%20Mkongo%22",
+    "what_it_is": "TanzLII JSON index API, quoted-phrase search on the lead plaintiff's name, which returned five entries including the three decisions in this dispute with their titles, dates, summaries and page-one snippets",
+    "date_read_off": "22 March 2012, 20 September 2012 and 1 December 2013 as the decision dates"
+   },
+   {
+    "url": "https://tanzlii.org/akn/tz/judgment/tzhclandd/2012/120/eng@2012-03-22",
+    "what_it_is": "The page for the 22 March 2012 decision, read through a fetch tool, which carried the citation and metadata only and no judgment text",
+    "date_read_off": "22 March 2012; High Court Land Division; [2012] TZHCLandD 120; marked Reported"
+   }
+  ],
+  "routes_that_failed": [
+   {
+    "url": "https://tanzlii.org/akn/tz/judgment/tzhclandd/2023/17264/eng@2023-12-13",
+    "how_it_failed": "Judgment and gazette pages on this route answer curl with a Cloudflare interstitial (HTTP 403, \"Just a moment...\"), and so does the /source download endpoint. No attempt was made to defeat the challenge. The search API on the same host serves normally, so every finding above is index-level."
+   },
+   {
+    "url": "https://old.tanzlii.org/tz/judgment/high-court-tanzania/2018/2524/land-case-no-128-2012.pdf",
+    "how_it_failed": "The legacy PDF route, which a web search showed serving judgment PDFs, reset the connection to curl on every attempt through the session's egress; no judgment was retrieved from it."
+   }
+  ]
+ },
+ "himachal-pradesh-state-roads-debris": {
+  "outcome": "contested-but-strengthened",
+  "confidence": "contested",
+  "confidence_note": "The project and its land acquisition failure are now recorded outside the lender, in the Comptroller and Auditor General of India's performance audit of upgradation and maintenance of state highways and major district roads in Himachal Pradesh, in the Audit Report (Civil) No. 2 for the year ended 31 March 2010. That audit identifies the same project from the state's side: a World Bank loan of US$220 million, about Rs 990 crore, obtained in 2007-08 for a State Road Project covering upgradation of 10 state highways over 434.830 km and maintenance of 1,536 km of core network, assigned to the Himachal Pradesh Roads and Other Infrastructure Development Corporation in November 2006 and run through four construction management units. On land it records that of Rs 386.14 crore released to the corporation during 2006-10 only Rs 281.33 crore was spent, with between Rs 49.08 crore and Rs 104.81 crore unspent at each year end, which the Principal Secretary attributed in the exit conference of September 2010 to non-availability of encumbrance-free sites; that savings on the maintenance budget were attributed to forest sanctions and litigation by private landowners whose land fell in the road alignment; and, on one project contract, the strengthening of the Una-Barsar-Jahu-Kalkhar-Nerchowk road, SH-16, km 93.440 to 108.830, awarded in August 2008 for Rs 33.50 crore, that an encumbrance-free site reached the contractor only in July 2009 because land acquisition was not completed in time, leaving 10 per cent of the contract executed by May 2010. The state's own answer was that completing acquisition, forest sanctions and utility shifting before award is \"an ideal condition\" but that the project timeframe made it necessary to run them at the same time as the works. The environmental harm on the card is not outside the lender: the Moderately Unsatisfactory environmental rating over debris management and forest protection on contracts 5-I, 5-II, 6-I and 6-II, the landslides caused by poor sequencing on contract 9 in September 2011, and the 2008-2009 finding that the corporation did not act on allegations that contractors had occupied private land in excess of what had been acquired all still rest on the Bank's completion report and the Independent Evaluation Group's review of it. Indian Kanoon holds no judgment found on this project's land taking or its debris: searches on the project's own road names returned nothing on nine of the ten roads, and the HPRIDC judgments it does hold are contractor disputes. The completion report gives no count of affected people, so the scale of the land taking still cannot be checked against ICIJ's estimate of 16,896.",
+  "sources_add": [
+   {
+    "title": "Audit Report (Civil), Report No. 2, for the year ended 31 March 2010, Government of Himachal Pradesh: performance review 1.1, upgradation and maintenance of state highways and major district roads (published on cag.gov.in as chapter 3; the document's own heading is Chapter-I: Performance Reviews)",
+    "publisher": "Comptroller and Auditor General of India",
+    "year": 2010,
+    "url": "https://cag.gov.in/uploads/download_audit_report/2010/Himachal_Pradesh_civil_sector_2_2010_chapter_3.pdf"
+   }
+  ],
+  "field_changes": {},
+  "corrections": [
+   "The card reports the Bank's reasons for slow land acquisition - poor coordination, inaccurate holdings data, mismatched drawings and revenue maps, changes of alignment - as though the sequence itself were an accident. The state audit records it as a decision: the Principal Secretary told the auditors in September 2010 that completing land acquisition, forest sanctions and utility shifting before awarding work would be ideal but that, given the project's timeframe, it was considered necessary to carry them out simultaneously. On the Una-Barsar-Jahu-Kalkhar-Nerchowk contract that meant the contractor took possession in July 2009 of a site bought for a works contract awarded in August 2008."
+  ],
+  "what_the_outside_source_settles": "That the project existed on the terms the card gives, from the state's side rather than the lender's: the loan amount, the 10 state highways and 434.830 km, the 1,536 km maintenance network, the corporation's appointment in November 2006 and the implementing structure. That land acquisition on it was incomplete when works were awarded, in the state's own words a deliberate sequencing choice. That the money sat unspent for want of encumbrance-free sites, between Rs 49.08 crore and Rs 104.81 crore at the end of each year from 2007-08 to 2009-10. And that private landowners whose land fell in the alignment were in litigation with the state over it in that period.",
+  "what_it_does_not_settle": "None of the card's environmental harm: nothing found outside the lender records the debris disposal, the forest land, the September 2011 landslides on contract 9 or the 80 debris sites later rehabilitated. Nothing found records the allegation that contractors occupied private land in excess of what had been acquired, which is the sharpest harm on the card and remains a footnote in the Bank's own report. The audit names no affected person, gives no count of people, and does not say what the landowners' litigation concerned or how it ended. The audit's reporting period ends 31 March 2010, seven years before the loan closed.",
+  "phrases_tried": [
+   "Himachal Pradesh Road and Other Infrastructure Development Corporation",
+   "Himachal Pradesh State Roads Project",
+   "Himachal Pradesh Road and Other Infrastructure Development Corporation\" + \"land acquisition",
+   "HPRIDC\" + \"compensation",
+   "Theog Kotkhai Hatkoti Rohru",
+   "Sarkaghat Ghumarwin",
+   "Dhaman Sihunta",
+   "Barsar Bhota Jahu",
+   "Kumarhatti Sarahan Nahan",
+   "Mehatpur Una Jhalera",
+   "Bhawarna Lambagaon",
+   "Ranital Kotla",
+   "Jahu Kalakhar",
+   "Una Barsar\" + \"HPRIDC",
+   "Una Barsar\" + \"World Bank",
+   "Kotkhai\" + \"muck",
+   "Sarkaghat\" + \"muck",
+   "Rohru\" + \"debris\" + \"road widening"
+  ],
+  "documents_opened": [
+   {
+    "url": "https://cag.gov.in/uploads/download_audit_report/2010/Himachal_Pradesh_civil_sector_2_2010_chapter_3.pdf",
+    "what_it_is": "Comptroller and Auditor General of India, Himachal Pradesh civil audit report for the year ended 31 March 2010, performance audit chapter on state highways and major district roads, downloaded and read from disk with pdftotext",
+    "date_read_off": "exit conference of September 2010; the Una-Barsar contract awarded August 2008, site handed over July 2009, work in progress as of May 2010"
+   },
+   {
+    "url": "https://documents1.worldbank.org/curated/en/955551514995478139/pdf/Implementation-Completion-and-Results-Report-ICR-HPRSP-FInal-01022018.pdf",
+    "what_it_is": "World Bank completion report for the project, read from disk to list the ten upgrading packages and their roads so that the judgment index and the audit could be searched on them",
+    "date_read_off": "table 4.2 names the roads; the footnote on social safeguards gives the 2008 and 2009 Moderately Unsatisfactory ratings"
+   },
+   {
+    "url": "https://indiankanoon.org/doc/136820988/",
+    "what_it_is": "Harish Hazari v. State of H.P., Himachal Pradesh High Court, CWP No. 4905 of 2014, opened because the search snippet put it on a Sarkaghat-Ghumarwin road",
+    "date_read_off": "decided 4 September 2019; the eviction order under challenge is dated 30 April 2012"
+   },
+   {
+    "url": "https://www.cag.gov.in/uploads/download_audit_report/2019/Overview_of_Report_no_4_of_2019_Social_General_and_Economic_(Non_PSUs)_Sector_Government_of_Himachal_Pradesh.pdf",
+    "what_it_is": "Overview of the Comptroller and Auditor General's Himachal Pradesh report No. 4 of 2019, checked for a later audit of this project",
+    "date_read_off": "its two performance audits are of NABARD-financed rural roads and of another subject; neither is this project"
+   }
+  ],
+  "routes_that_failed": [
+   {
+    "url": "https://saiindia.gov.in/uploads/download_audit_report/2017/Index_HP_Report_No_3_of_2017_SGE_Sectors_Non_PSUs.pdf",
+    "how_it_failed": "The saiindia.gov.in mirror route reset the connection to curl through the session's egress, so the 2017 Himachal Pradesh audit index was not read; the cag.gov.in route served other years normally."
+   }
+  ]
+ },
+ "tanzania-tscp-compensation-delays": {
+  "outcome": "contested-but-strengthened",
+  "confidence": "contested",
+  "confidence_note": "The compensation delay itself is still the lender's: the completion report says resettlement plan implementation was often delayed, sometimes to over nine months, when local authorities lacked funds to compensate affected people, and no outside document found records a single one of those people. What round 41 found outside the lender is the other half of the same shortage. Tanzania's judgment index holds an arbitration between one of the eight local authorities and its contractor on this project's works, named in court as \"Tanzania Strategic Cities Project (TSCP) Package 2: Rehabilitation of Airport-Mwesenga-Gungu, Job Lusinde and Mjimwema roads\", under contract 2011/2012/08: an award was made in favour of Nyakirang'ani Construction Limited and Kigoma/Ujiji Municipal Council twice tried to have it set aside, in Miscellaneous Commercial Cause No. 333 of 2014, struck out on 12 June 2015 for failure to annex the award, and in Miscellaneous Commercial Cause No. 239 of 2015, decided 26 May 2016 on limitation and fee exemption, with a further ruling on 21 April 2017. These are index records: judgment pages on that route answer curl with a Cloudflare challenge, so the parties, the case numbers, the dates, the package name and the contract number come from the index's titles, summaries and page snippets, not from judgment text read here. Inside the lender's own account there is a hole the card should name. The completion report's financing table records the borrower's contribution as zero at appraisal, at revision and in actuals, and puts total project cost at US$340.37 million, all of it IDA; the same report says paying compensation was the local authorities' own responsibility as counterpart funding and that they repeatedly lacked the money. The money whose absence delayed compensation by over nine months is therefore not in the project's cost tables at all, and the project's cost excludes what it cost the people who were waiting. All the counts of people and structures on this card are planning figures from subproject resettlement plans of March 2010, not outcomes, and the completion report publishes no outcome figure for resettlement. Both it and the Independent Evaluation Group's review rated the project Satisfactory. The review prints no date on its pages; the 22 October 2021 date is the Bank's catalogue field and is unverified at document level.",
+  "sources_add": [
+   {
+    "title": "Kigoma/Ujiji Municipal Council v. Nyakirang'ani Construction Limited (Miscellaneous Commercial Application No. 239 of 2015) [2017] TZHC 3696, which names the contract as Tanzania Strategic Cities Project Package 2, contract 2011/2012/08, for the Airport-Mwesenga-Gungu, Job Lusinde and Mjimwema roads",
+    "publisher": "High Court of Tanzania (TanzLII index entry)",
+    "year": 2017,
+    "url": "https://tanzlii.org/akn/tz/judgment/tzhc/2017/3696/eng@2017-04-21"
+   },
+   {
+    "title": "Kigoma/Ujiji Municipal Council v. Nyakirang'ani Construction Limited (Miscellaneous Commercial Cause No. 333 of 2014) [2015] TZHC 3358, petition to set aside the arbitral award struck out",
+    "publisher": "High Court of Tanzania (TanzLII index entry)",
+    "year": 2015,
+    "url": "https://tanzlii.org/akn/tz/judgment/tzhc/2015/3358/eng@2015-06-12"
+   },
+   {
+    "title": "Kigoma/Ujiji Municipal Council v. Nyakirang'ani Construction Limited (Miscellaneous Commercial Cause No. 239 of 2015) [2016] TZHC 3562, on limitation for challenging the award and on court-fee exemption",
+    "publisher": "High Court of Tanzania (TanzLII index entry)",
+    "year": 2016,
+    "url": "https://tanzlii.org/akn/tz/judgment/tzhc/2016/3562/eng@2016-05-26"
+   }
+  ],
+  "field_changes": {
+   "outcome": "The credits closed on 26 November 2020 and the completion report rated the outcome Satisfactory, as did the Independent Evaluation Group's review. The report records that payments to contractors were also often delayed for the same shortage of counterpart funds, which delayed contract execution and brought periodic complaints to the Bank from contractors. One of those disputes is on the record outside the Bank: in Kigoma-Ujiji, the works contract for the project's Package 2 roads - Airport-Mwesenga-Gungu, Job Lusinde and Mjimwema, contract 2011/2012/08 - went to arbitration, an award was made in favour of the contractor Nyakirang'ani Construction Limited, and the municipal council's two attempts to have it set aside failed in the High Court's Commercial Division, the first struck out on 12 June 2015 for failure to annex the award and the second decided against the council on 26 May 2016, with a further ruling on 21 April 2017. It says the delayed availability of counterpart funds is a portfolio-wide issue affecting other Bank-financed urban projects as well. Whether the people whose compensation was more than nine months late were eventually paid in full is not stated."
+  },
+  "corrections": [
+   "The card says of the project that \"There was no borrower contribution\". That is what the completion report's financing table says - borrower or recipient zero in all three columns - but the same report says compensation to affected people was the local authorities' own counterpart funding and that they repeatedly could not pay it. The zero is an accounting fact about what the project booked, not about what the project required, and the card should not carry it without that qualification: the compensation money sits outside the project's US$340.37 million cost, and so does its absence.",
+   "The card's `whole` repeats the report's statement that all project-related grievances were addressed. The results framework shows that indicator with no baseline and no original target, a target of 100 per cent, and an achievement of 100 per cent marked \"Fully achieved\", and the report gives no count of grievances anywhere. The same report says the grievance mechanism was never budgeted at design, lacked funds, had no procedure at contractor level, and that its committees' survival after closing was uncertain, and that compensation delays of over nine months raised complaints by affected people. A 100 per cent with no denominator should be read as a self-report, not a finding."
+  ],
+  "what_the_outside_source_settles": "That the project's works in Kigoma-Ujiji ended in an arbitral award against one of the eight local government authorities and in favour of its contractor, and that the council spent from 2014 to 2017 trying to have the award set aside and failed; that the works are identified in court by the project's own name and package number. The counterpart-funding failure the Bank describes in general terms is therefore visible in Tanzania's own courts, from the contractor's side.",
+  "what_it_does_not_settle": "Not one of the affected people. Nothing found outside the lender records the nine-month compensation delays, which cities they fell in, how many people waited, how many complained, or whether anyone went unpaid at closing. Nothing found records the planned impacts in the March 2010 plans - the 279 households in Arusha, the 41 people in Mbeya, the households at Kikuyu and Chidaya, the graves and the shrine. The arbitration's subject matter and the award's amount were not read: the judgment pages are behind the route failure recorded below. The Controller and Auditor General of Tanzania's annual reports on development projects for 2013/14, 2014/15, 2016/17 and 2018/19 all audit this project, but only for financial compliance - unsupported payments, expenditure outside the financing agreement, purchases without revenue-authority receipts - and their findings on unpaid compensation to project-affected people name other projects, the water sector programme, the transport sector support programme, the Arusha-Taveta road and the Dar es Salaam urban transport programme, not this one.",
+  "phrases_tried": [
+   "Tanzania Strategic Cities",
+   "Nyakirang'ani Construction",
+   "Nyakirangani\" + each of unpaid, arbitral award, variation, termination, World Bank, counterpart, retention",
+   "Kigoma/UjijiMunicipality\" + \"Investment sub-projects",
+   "Mwesenga",
+   "Job Lusinde",
+   "Murriet",
+   "Urundini",
+   "Chidaya",
+   "Kikuyu",
+   "President's Office - Regional Administration and Local Government"
+  ],
+  "documents_opened": [
+   {
+    "url": "https://documents1.worldbank.org/curated/en/431531622033025775/pdf/Tanzania-Strategic-Cities-Project.pdf",
+    "what_it_is": "World Bank Implementation Completion and Results Report, Tanzania Strategic Cities Project, read from disk with pdftotext to check the lender's account against itself",
+    "date_read_off": "paragraph 63 gives the over-nine-month delay; the financing table gives borrower contribution zero and total cost US$340,372,832"
+   },
+   {
+    "url": "https://tanzlii.org/search/api/documents/?search=%22Tanzania%20Strategic%20Cities%22",
+    "what_it_is": "TanzLII JSON index API, quoted-phrase search, which returned the two Kigoma-Ujiji judgments naming the project",
+    "date_read_off": "judgments dated 30 May 2014 and 21 April 2017"
+   },
+   {
+    "url": "https://tanzlii.org/search/api/documents/?search=%22Mwesenga%22",
+    "what_it_is": "TanzLII JSON index API, quoted-phrase search on the road name, whose page-two snippet carries the words Tanzania Strategic Cities Project (TSCP) Package 2 and the three road names",
+    "date_read_off": "contract 2011/2012/08; ruling of 21 April 2017"
+   },
+   {
+    "url": "https://www.nao.go.tz/uploads/Ripoti-ya-Jumla-ya-Miradi-ya-Maendeleo-2013-2014.pdf",
+    "what_it_is": "Controller and Auditor General of Tanzania, annual general audit report on development projects 2013/14, downloaded and read from disk",
+    "date_read_off": "AGR/DP/2013/2014; TSCP appears in the tables of expenditure outside the financing agreement (Sh 45,768,398) and of purchases without revenue-authority receipts"
+   },
+   {
+    "url": "https://www.nao.go.tz/uploads/RIPOTI-KUU-YA-MIRADI-YA-MAENDELEO-2016-2017.pdf",
+    "what_it_is": "Controller and Auditor General of Tanzania, annual general audit report on development projects 2016/17, read from disk",
+    "date_read_off": "AGR/DP/2016/2017; unpaid compensation of Sh 11,870,767,751 is reported for three other projects, not this one"
+   },
+   {
+    "url": "https://www.nao.go.tz/uploads/MIRADI_YA_MAENDELEO_KWA_MWAKA_WA_FEDHA_2018-2019.pdf",
+    "what_it_is": "Controller and Auditor General of Tanzania, annual general audit report on development projects 2018/19, read from disk",
+    "date_read_off": "AGR/DP/2018/19; paragraph 3.4.6 reports Sh 5,815,781,142 of unpaid compensation under the Dar es Salaam urban transport programme and the transport sector support programme"
+   }
+  ],
+  "routes_that_failed": [
+   {
+    "url": "https://tanzlii.org/akn/tz/judgment/tzhc/2017/3696/eng@2017-04-21",
+    "how_it_failed": "Judgment pages on this route answer curl with a Cloudflare interstitial, as they do for every judgment in this batch; the search API on the same host serves. The arbitration's subject matter and the award's amount were therefore not read."
+   }
+  ]
+ },
+ "tedap-ukonga-mzinga-wayleaves": {
+  "outcome": "correction-only",
+  "confidence": "contested",
+  "confidence_note": "The 43 named affected people at Ukonga, the amounts paid, the Kurasini and Mbagala sequences and the Managing Director's decision to pay for improvements only all come from TANESCO's own amendment to the project's resettlement plan, published by the Bank in January 2014; round 41 read that amendment from disk and confirms the list of 43 names, the Tshs 300,639,109.92 paid at Ukonga, the Tshs 1,638,111,700 paid for the Kurasini substation land, and the contradiction between its introduction and its Ukonga section over which substation is Factory Zone II and which Factory Zone III. The 11,070 affected people, the 16 households at Mzinga Creek and the 3 left unpaid come from the Bank's completion report, which reports the findings of a resettlement audit the Bank itself commissioned; the audit report is not in the Bank's document archive. That report does not hold together on the point that matters most here. Paragraph 117 says no additional resettlement plans were prepared for the resettlements that had not been foreseen, and that the Bank commissioned the audit instead; paragraph 118, on the next page, says a resettlement action plan covering the impact on the 16 households at Mzinga Creek - the least foreseen impact of all, caused by a last-minute design change - \"was finalized\". The January 2014 amendment is itself an instrument prepared for unforeseen resettlement in Dar es Salaam. The same two paragraphs count the Mzinga Creek people as 16 households and as 16 project-affected persons without reconciling the two, and the report's footnote 8 and its paragraph 118 both leave the last three unpaid while paragraph 120 records only that a top-up payment was approved. The lender and the implementing agency are therefore reporting on their own project, inconsistently, and no independent account of these wayleaves was found. Tanzania's judgment index holds no case for any of the 43 named people - each of twelve distinctive names returns nothing - and nothing on the Mzinga Creek households. It does hold a long compensation fight by sixteen landowners at Guluka Kwalala, Ukonga, against TANESCO, which is recorded in the corrections below so that no later round reads it as a hit on this card.",
+  "sources_add": [],
+  "field_changes": {
+   "conditions": "The project was environmental category B and triggered six safeguard policies: environmental assessment, natural habitats, physical cultural resources, involuntary resettlement, safety of dams, and projects on international waterways. An environmental and social impact assessment was prepared in 2005 for the on-grid transmission lines and an environmental audit was done at the substations to be upgraded; TANESCO updated the assessment and the documents were disclosed in 2007. A resettlement action plan for the transmission lines and substations in Dar es Salaam, Moshi and Arusha was disclosed in July 2007; the amendment says that plan was prepared in 2007 and approved by the World Bank under the Transmission and Distribution Rehabilitation Project, not under this project. A resettlement policy framework and an environmental and social management framework were prepared for the off-grid component and disclosed in 2007; the Rural Energy Agency found them hard for subproject developers to use and had them rewritten by a consultant in June 2012, translated into Kiswahili and redisclosed as a revised framework and a Resettlement Management Framework. TANESCO prepared and disclosed the amendment to the resettlement plan in January 2014 to cover additional resettlement caused by civil works in Dar es Salaam. The completion report states in paragraph 117 that no additional resettlement plans were prepared for the resettlements that had not been foreseen and that the Bank commissioned a resettlement audit in September 2017 instead, ahead of closing; its paragraph 118 states that a resettlement action plan covering the impact on the 16 households at Mzinga Creek, an impact caused by a last-minute change of design, was finalised. The report does not reconcile the two statements, and the January 2014 amendment was itself prepared for resettlement the project had not foreseen (Implementation Completion and Results Report, 27 June 2018; Amendment of Resettlement Action Plan, January 2014)."
+  },
+  "corrections": [
+   "The lender's own account of safeguard instruments contradicts itself, and the card takes only one side of it. The completion report's paragraph 117 says no additional resettlement plans were prepared for the initially unforeseen resettlements, which is why the Bank commissioned an audit instead; its paragraph 118 says a resettlement action plan covering the 16 households at Mzinga Creek was finalised. Both statements are about the same unforeseen resettlement, a page apart, in the same report. Round 41 read both from the report itself.",
+   "The amendment attributes the original plan to a different operation: it says TANESCO needed to amend the resettlement action plan \"which was prepared in 2007 and approved by the World Bank under Transmission and Distribution Rehabilitation Project\". The card and the completion report treat the July 2007 plan as this project's instrument. The amendment is the document that carried out the Ukonga compensation, so its own account of which operation approved the plan it amends belongs on the card.",
+   "A near miss, recorded so that a later round does not mistake it for a hit. Tanzania's judgment index holds a decade of litigation by sixteen landowners at Guluka Kwalala, Ukonga, on the outskirts of Dar es Salaam, against TANESCO: Mufungo Leonard Majura and 15 others, approached by TANESCO in mid-2005 with notice to acquire their land for a project to distribute electricity, paid less than they expected, awarded TZS 945,266,500 as the balance of compensation by a judgment of 5 February 2015, and still litigating against TANESCO's applications for extension and stay in 2015, 2016, 2017 and 2018, with the Attorney General seeking revision in Civil Revision No. 1 of 2023, decided by the Court of Appeal on 28 June 2024. The place is this card's place and the utility is this card's utility, and one Court of Appeal summary describes TANESCO's conduct as using court proceedings to delay payment of court-ordered compensation. But nothing found ties that land to these works: the indexed text of those judgments contains no mention of 132 kV, the railway wayleave, Factory Zone II or III, Gongo la Mboto, Kipawa, the World Bank or this project, the acquisition began two years before this project was approved, and these are landowners with title while the card's 43 are people the amendment calls encroachers in the railway wayleave paid for improvements only. The indexing of those judgments is partial, so the absence proves little either way. It is not this card's harm unless a document is found that joins them."
+  ],
+  "what_the_outside_source_settles": "Nothing from outside the lender. What moved is the lender's account read against itself: the completion report cannot be used, as the card used it, for the flat statement that no additional resettlement plan was prepared for the unforeseen resettlement, because the next paragraph says one was finalised for Mzinga Creek; and the amendment attributes the plan it amends to another Bank operation. The amendment's own figures - 43 named people at Ukonga, Tshs 300,639,109.92, Tshs 1,638,111,700 at Kurasini, the Factory Zone II and III contradiction - were verified line by line and the card has them right.",
+  "what_it_does_not_settle": "Everything outside. No court record, audit report or press report was found that records the 43 people at Ukonga, the three families at Kurasini whose land had been sold to the oil storage company, the three Mbagala landowners whose plots were valued and then not used, the 16 households at Mzinga Creek, or the three of them left unpaid at closing. The resettlement audit of September 2017, the document that produced the figure of 11,070 affected people, remains unpublished. Nothing found says whether the top-up payment reached the three.",
+  "phrases_tried": [
+   "TANESCO\" + \"wayleave",
+   "TANESCO\" + \"Ukonga",
+   "TANESCO\" + \"Mzinga",
+   "Guluka Kwalala",
+   "Guluka Kwalala\" + each of mid-2005, TANESCO approached, small parcels, electricity, project, compensation, sub-station",
+   "Mufungo Leonard Majura",
+   "Mufungo Leonard Majura\" + each of 132 KV, Gongo la Mboto, Kipawa, Factory Zone, railway, wayleave, way leave, World Bank, TEDAP",
+   "945,266,500",
+   "balance of compensation\" + \"Ukonga",
+   "Civil Revision No. 1 of 2023\" + each of 132, kV, transmission line, compensation, World Bank, Guluka Kwalala",
+   "twelve of the 43 names from the amendment: Lyod Abel Siwale, Wange Mikola Kuja, Juma Hassan Ugumba, Zakaria Felix Mbuya, Hussein Makunja, Mselemu Mohamed Hamza, Burure Magige, Athuman Hassan Mhando, Kenedy Chricitocia Matemu, Mwanaidi M Bakari, Amiri Athuman Chamuya, Dionisia Thomas Mtaro"
+  ],
+  "documents_opened": [
+   {
+    "url": "https://documents1.worldbank.org/curated/en/437881531497722984/pdf/P101645-TZ-Energy-Development-and-Access-Expansion-Project-ICR-Final-07102018.pdf",
+    "what_it_is": "World Bank Implementation Completion and Results Report for the project, read from disk with pdftotext; paragraphs 117, 118 and 120 and footnote 8 read in full",
+    "date_read_off": "resettlement audit September 2017; 11,070 project-affected persons; 13 of 16 paid, 3 not"
+   },
+   {
+    "url": "https://documents1.worldbank.org/curated/en/477811468133183840/pdf/RP5390V70P101600Box385324B00PUBLIC0.pdf",
+    "what_it_is": "TANESCO, Amendment of Resettlement Action Plan for the TEDAP project, Dar es Salaam Region, January 2014, read from disk; the table of 43 named affected people and the budget table counted item by item",
+    "date_read_off": "meeting with affected people at Ukonga Magereza on 18 September 2011; Tshs 300,639,109.92 paid at Ukonga; Tshs 1,638,111,700 at Kurasini"
+   },
+   {
+    "url": "https://tanzlii.org/search/api/documents/?search=%22Guluka%20Kwalala%22",
+    "what_it_is": "TanzLII JSON index API, quoted-phrase search, which returned the twelve documents of the Mufungo Leonard Majura litigation and their page snippets",
+    "date_read_off": "TANESCO's approach \"in mid-2005\"; award of TZS 945,266,500; Court of Appeal revision decided 28 June 2024"
+   }
+  ],
+  "routes_that_failed": [
+   {
+    "url": "https://tanzlii.org/akn/tz/judgment/tzca/2024/520/eng@2024-06-28",
+    "how_it_failed": "Judgment pages on this route answer curl with a Cloudflare interstitial, so the Court of Appeal's revision judgment in Attorney General v. TANESCO was not read; what is said about that litigation above comes from the index's titles, summaries and page snippets."
+   }
+  ]
+ }
+}
