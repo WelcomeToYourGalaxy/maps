@@ -115,4 +115,6 @@ if 'rounds' in sys.argv:
         print(f'  {t:>7} {s:>8,} {a:>8,} '
               f'{-(-a//100):>6} {-(-a//200):>6} {-(-a//236):>6}')
     print('\n  Measured round history: r6 +95 closed 4.0; r7 +236 closed 5.6;')
-    print('  r8 +195 OPENED 1.8; the three 16 Nov rounds +12 closed 0.7.')
+    print('  r8 +195 OPENED 1.8; the three 16 Nov rounds +12 closed 0.7;')
+    print('  r9 +210 closed 14.3 - composition-locked to the deficit cells,')
+    print('  68 milli-points a case against r7\'s 24 and r8\'s negative.')
