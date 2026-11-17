@@ -137,6 +137,11 @@ def main():
     ap.add_argument("--round", type=int, required=True, help="current round number")
     ap.add_argument("--first", type=int, default=16, help="earliest round to replay")
     ap.add_argument("--rendered", help="file holding test_map.js output, for validation")
+    ap.add_argument("--edit-rounds", default="39,40",
+                    help=("rounds that CHANGED existing cases rather than adding any. Their files "
+                          "name case ids that already existed, and attributing on those names "
+                          "moved nine round-38 cases into round 40 the first time this ran. "
+                          "Add a round here whenever it merges edits, not cases."))
     ap.add_argument("--write", action="store_true")
     a = ap.parse_args()
 
@@ -148,14 +153,28 @@ def main():
     # A case belongs to the EARLIEST round whose files name it. A later round
     # that extends or re-checks an old case names its id too, and attributing
     # on the last mention moved 277 old cases into round 25.
+    edits = {int(x) for x in a.edit_rounds.split(",") if x.strip()}
     first_seen = {}
     for n in range(a.first, a.round + 1):
+        if n in edits:
+            continue
         for cid in round_ids(rounds_dir, n) & set(by_id):
             first_seen.setdefault(cid, n)
     states = {}
     for n in range(a.first - 1, a.round + 1):
         states[n] = [c for c in cases
                      if first_seen.get(c["id"], a.first - 1) <= n]
+
+    # Confidence cannot be reconstructed: a case's confidence today is not what it
+    # was in round 31, and rebuilding it from today's values would invent a series.
+    # So it is MEASURED for the current round and carried from the stored history
+    # for any earlier round that measured it. Everything else reads "--".
+    prev = {}
+    hp = os.path.join(rounds_dir, "coverage_history.json")
+    if os.path.exists(hp):
+        for r in json.load(open(hp, encoding="utf-8")).get("history", []):
+            if r.get("documented") is not None:
+                prev[r["round"]] = (r["documented"], r["contested"])
 
     hist = []
     for n in sorted(states):
@@ -166,6 +185,16 @@ def main():
                "countries": len({c.get("iso3") for c in st if c.get("iso3")})}
         for key, label, tot in ROWS:
             row[key] = count(st, MK, key)
+        if n == a.round:
+            row["documented"] = sum(1 for c in st if c.get("confidence") == "documented")
+            row["contested"] = sum(1 for c in st if c.get("confidence") == "contested")
+            row["confidence_measured"] = True
+        elif n in prev:
+            row["documented"], row["contested"] = prev[n]
+            row["confidence_measured"] = True
+        else:
+            row["documented"] = row["contested"] = None
+            row["confidence_measured"] = False
         hist.append(row)
 
     # ---- validation against the rendered brief ----
@@ -188,7 +217,7 @@ def main():
 
     print()
     print("=== completeness across loan types, by round ===")
-    hdr = ["round", "cases"] + [r[1] for r in ROWS]
+    hdr = ["round", "cases"] + [r[1] for r in ROWS] + ["documented", "contested"]
     print("| " + " | ".join(hdr) + " |")
     print("| " + " | ".join("---" for _ in hdr) + " |")
     for row in hist:
@@ -197,6 +226,13 @@ def main():
         for key, label, tot in ROWS:
             cells.append("%d (%s)" % (row[key], share(row[key], tot))
                          if tot else str(row[key]))
+        if row["confidence_measured"]:
+            tot_c = row["documented"] + row["contested"]
+            cells.append("%d (%d%%)" % (row["documented"],
+                                        round(row["documented"] / tot_c * 100)))
+            cells.append(str(row["contested"]))
+        else:
+            cells += ["--", "--"]
         print("| " + " | ".join(cells) + " |")
 
     print()

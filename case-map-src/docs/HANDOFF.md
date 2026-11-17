@@ -323,6 +323,13 @@ NODE_PATH=$(npm root -g) node case-map-src/test_map.js > /tmp/rendered.txt
 python3 case-map-src/coverage_chart.py --round <N> --rendered /tmp/rendered.txt --write
 ```
 
+**Where the chart goes: in the chat reply, in full, every round.** The owner asked for this
+explicitly on 17 Nov and the first version of this section got it wrong by writing the chart into
+this file only. **Paste the whole table into the reply that reports the round** — the per-round rows
+and the current state, not a summary of them and not a pointer to a file or a document. Keep a copy
+in this file's own round section as well, but the reply is where it is read. A round that reports
+"coverage unchanged" without printing the rows has not reported it.
+
 `--rendered` is **not optional.** The script computes each row with base.html's own expression, and
 then checks its own answer against the figures read off the rendered brief, row by row. It prints
 `every row matches the page` or names the row that disagrees. **A row that disagrees is the script's
@@ -473,6 +480,125 @@ These came in over one session and all of them are done unless noted.
    rounds stale. The current handoff is this file, `case-map-src/docs/HANDOFF.md`, and there should
    never again be two.
 
+## READ THIS FIRST: round 40 is merged, built and tested — the first outside-sourcing round
+
+**The job this file has recommended since round 31 has now been run.** Twelve `contested` cases,
+three writers and three separate checkers, every case worked against its own country's national
+judgment index rather than against the lender's archive. Build is clean: `loan-condition cases
+matched 173 of 173`, 24 patterns, 25.0 MB, zero page and zero console errors headless. **The case
+count did not move and was not meant to: 1,182 cases, 137 countries.** What moved is the thing the
+count cannot show.
+
+| Outcome | Cases |
+| --- | --- |
+| Promoted to `documented` | **2** |
+| `contested` but now resting on outside evidence as well | 6 |
+| No outside source for the card's own harm, recorded with the phrases tried | 4 |
+| New sources merged | **38** |
+| Corrections to cards | **40** across the twelve |
+
+**`documented` is now 672 of 1,182, 57%, against 670 before.** That is the number this round exists
+to move and it is now a measured column of the coverage chart.
+
+### The two promotions, and why they are the shape to look for
+
+- **`lucknow-muzaffarpur-highway-land`.** Three Allahabad High Court judgments on NH-28's
+  compensation. The sharpest is an arbitral award of 20 May 2015 holding the land should have been
+  paid for as non-agricultural, with the highways authority's appeals held time-barred in 2023 —
+  eleven years after the project closed. **The card said the only cases left in court were about who
+  owned the land. They are about what the land was worth, and the authority litigated against paying
+  for a decade.** That correction came out of the lender's own completion report being wrong, which
+  is the pattern rounds 21 and 31 found from the inside.
+- **`assam-roads-uncompensated-acquisition`.** Two Gauhati High Court orders that name the lender's
+  operation in words — "under the Assam State Road Project from Langla to Barpeta Town", with the
+  land acquisition case number — and record an award made and compensation not disbursed. **The
+  checker cut the third order and the count from three to two**, because one names no highway number
+  and is tied to the project only by the Project Director being a respondent, and another decided
+  nothing: the court held the petitioner had first to establish he was a person interested, and
+  refused the writ. The promotion survived on two orders, not three.
+
+### What the checkers cut, which is the round's real output
+
+They cut no card outright and corrected every one. The cuts worth carrying:
+
+- **A relief sought is not a finding.** Two NHIIP claims — "the road was constructed without payment
+  of any compensation to him" and a valuation claim — are quoted from the **petitions**, with the
+  court deciding nothing. A writer reading a judgment's opening recital will do this again.
+- **A figure read out of the wrong column.** The Patna link rested on "Patna Beur: Sewerage works,
+  13.9% disbursed"; that column is economic returns, not disbursement. **The link survived without
+  it** — the works are a listed investment contract and the lender's own report places the two 2021
+  deaths at project sites — but the stated basis was wrong.
+- **A programme statistic is not this project's harm.** The Andhra Pradesh card was downgraded: the
+  24,000 hectares of podu land is a statewide joint-forest-management figure cited to a 2000 paper,
+  and this credit funded 2,910 of some 6,200 committees with nothing saying which committees the
+  hectares lay in. The two population figures behind it — 46,725 and 11,680 — are not commensurable
+  and were pulled apart.
+- **A promotion no document names.** `killed` on the Patna card stays at 3 and did not move: the tie
+  the map's rule requires is made by the lender's own report, which was already the basis, and the
+  press makes it for none of the deaths. The `killed_note` was rewritten so it cannot be read as
+  claiming otherwise.
+- **The index's own absences were separated from route failures**, and the Ghanaian absence was
+  narrowed from "nothing" to nothing on GhaLII, the only Ghanaian source searched.
+
+### A checker found a document that may earn a third promotion, and did not promote on it
+
+Batch B's checker found the **Bank's Procurement Plan for NHIIP Phase I, 24 September 2013**, which
+lists the Birpur–Bihpur section of NH-106 as works package 12, Rs 435.89 crore, under Bank prior
+review. That answers the financing question the writer held the card open on. **It did not promote
+the card**, on this file's own rule that a card a checker writes is a card nobody checks, and
+flagged instead that the next pass should decide whether that plus the Patna High Court's record of
+an unpaid Rs 3,66,61,312 award earns `documented`. **That is the rule working.** The same happened on
+three smaller additions in batch C, all flagged as writer-work in the log.
+
+### Routes, and two of them are findings
+
+- **The eleven peachjam search APIs served every query over plain `curl` throughout.** The index is
+  reachable. **The judgment pages often are not:** Kenya Law's `/akn/` pages answer HTTP 202 with an
+  AWS WAF challenge and an empty body, GhaLII's answer 403 behind Cloudflare, LesothoLII's the same.
+  **So Kenyan and Ghanaian findings in this round are index metadata and search snippets, never
+  judgment text, and the cards say so.** Nobody tried to defeat a challenge. The batch B checker
+  established there is no second route: the alternate Kenya Law hostname answers the same challenge
+  and the document-detail API paths 404.
+- **Indian Kanoon serves both search and judgments over `curl`**, and prints "No matching results" in
+  the body, so a true empty is distinguishable from a failure. Two quirks that cost searches: its
+  result titles sit in `<h4 class="result_title">`, and its unquoted multi-term search behaves as an
+  AND, so a four-word query often returns nothing. It also drops short codes like "M7D".
+- **Index depth varies enormously and predicts the yield.** `case-map-src/index_depth.py`, with its
+  reading in `docs/index_depth.json`, counts each index on this map's own phrases. On "Resettlement
+  Action Plan": Kenya Law 155, ULII 16, ZambiaLII 5, TanzLII 4, SierraLII 1, and **zero for GhaLII,
+  MalawiLII, LesothoLII, NigeriaLII, ZimLII and NamibLII.** Kenya Law alone returns 472 on "Land
+  Acquisition Tribunal" where every other index returns none. **Run that script before committing a
+  round to a country.** It explains this round exactly: Ghana and Lesotho returned nothing because
+  their indexes hold nothing on this subject, not because the cases are weak.
+
+### What this round means for the eight-to-eleven-round estimate
+
+**Revise the outside-sourcing part of it downward in scope, not in rounds.** The queue counted 211
+lender-heavy `contested` cases and put 35 in countries with a tested index. This round worked 12 of
+them and promoted 2. At that rate the 35 yield about six promotions, and the 48 Chinese lender-heavy
+`contested` cases have no index at all. **The register for this job is Kenya, Uganda and India, and
+little else in the peachjam family.** The honest form of the estimate: two or three outside-sourcing
+rounds will take `documented` from 57% to somewhere near 60%, not to 80%, and the rest of the
+lopsidedness needs national press and audit offices, which is a different route from a judgment
+index and has not been tested at scale.
+
+### Open from round 40
+
+- **`nhiip-india-corridor-land-acquisition` is one writer pass from `documented`**, on the
+  procurement plan a checker found. First job of round 41.
+- **The Dehlon bypass lead.** `prbdb.punjab.gov.in` reset the connection to `curl` for the board's
+  own acquisition file for villages Dehlon and Rurka, which includes an award announcement and an
+  unclaimed-compensation schedule naming owners and amounts. Read through a fetch tool, with **no
+  figure or name taken from it**. If someone reaches that host with `curl` and `pdftotext`, that card
+  could become `documented`.
+- **Kenya's FY2021 Auditor-General report on KISIP is unread**, and it covers the months when the
+  compensation for the six deaths fell due. The FY2020 audit carries an Emphasis of Matter that
+  **USD 12,998,243.20 had been withdrawn into the project account and not accounted for** to the
+  Treasury by 30 June 2020. Neither audit mentions the deaths.
+- **Batch A's checker did not write its check log** before handing back; the checked JSON is complete
+  and was merged, and the log was requested afterwards. **A check without a log is half a check** —
+  require the log before accepting a batch.
+- **Six further Kibwezi rulings** and the Route 32 leads from round 38 are still untaken.
 ## READ THIS FIRST: round 39 is a desk round — the methods are compiled, the chart exists, and the outside-sourcing queue is built
 
 No researchers, no new cases, no page code. It did four things, and the third is worth more than the
@@ -4154,8 +4280,9 @@ The owner asked for all five open decisions to be settled rather than carried fo
 - **Whole-picture text rules:** what the programme achieved where documented; lender-, company- or government-produced figures flagged as such ("no independent check was found"); plain figures; each kind of money gets its own full set of categories.
 - **Writing:** plain, novice-friendly wording, short sentences, no purple prose, show figures rather than characterising them. No orange, yellow or neon colours; earthy and muted palettes.
 - **Every batch is fact-checked by a separate agent before merging.**
-- **Every round prints the per-round completeness chart across loan types** and pastes it into its
-  own section of this file, with its rows validated against the rendered page.
+- **Every round prints the per-round completeness chart across loan types in the chat reply**, in
+  full, with its rows validated against the rendered page, and keeps a copy in its section of this
+  file. The reply is where the owner reads it; a pointer to a file or a document is not the chart.
 - **Repo updates** are committed and pushed directly from chat.
 
 ## Workflow
