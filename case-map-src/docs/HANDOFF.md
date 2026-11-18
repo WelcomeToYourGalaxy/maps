@@ -1,7 +1,12 @@
 # Globalization Case Map: handoff for a new chat
 
 Last updated: round 46 — **the first OECD Watch round, and it set three class precedents that matter
-more than its seven cases.** The map stands at **1,189 cases in 137 countries**, 29 patterns, 31
+more than its seven cases.**
+
+**READ `THE PROGRAMME` SECTION BEFORE COMMISSIONING ANYTHING.** On 17 Nov 2026 the owner settled
+the shape of the remaining work: **all 26 wide rounds, or do not start.** No register is to be
+worked partway. The order of the registers, the expected yields, and the method for running a wide
+round are all in that section. The map stands at **1,189 cases in 137 countries**, 29 patterns, 31
 suspected patterns, 26.0 MB, `loan-condition cases matched 173 of 173`, zero page and zero console
 errors.
 
@@ -103,6 +108,132 @@ Reuters's at least one. No court has ruled.
   its standfirst and the card says so.
 
 Replaces every earlier handoff.
+
+## THE PROGRAMME, settled by the owner 17 Nov 2026: all 26 wide rounds, or do not start
+
+**The owner's instruction: "the 26 wide rounds or not try at all."** That is a decision about
+half-worked registers, and it governs what may be commissioned from here.
+
+**What it rules out.** Starting a register and stopping partway. A register worked to 40% leaves the
+map with a bias nobody can state: the cases that exist are the ones that happened to be reached
+first, and the coverage row cannot say whether the rest would have converted at the same rate or at
+a tenth of it. Round 46's own batch 1 is the argument in miniature — 1 case from 12 leads, which
+read like a collapsed yield until batches 2 and 3 brought the round to 29%. **A register is either
+worked to its end or left alone and named on the page as unworked.** The page already names unworked
+registers honestly, so leaving one alone costs nothing; abandoning one midway costs the map its
+ability to say what it covers.
+
+**What it commits to.** 24 research rounds and 2 harvest desk rounds, in this order. Do not reorder
+without a reason written here, because the order runs cheapest-evidence-first.
+
+| # | Rounds | Register | Leads | Expected cases | Why this position |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 1 desk | — | — | — | 28 OECD Watch extends: add the complaint link and the NCP flag to cases that already exist. No research. |
+| 2 | 5 | OECD Watch | 385 | ~110 | Harvested, triaged, sorted, and its conversion is measured at 29% rather than assumed. |
+| 3 | 1 desk | BankTrack harvest | — | — | Harvest 319 Dodgy Deal profiles the way round 45 harvested OECD Watch. |
+| 4 | 4 | BankTrack Dodgy Deals | 319 | 60-130 | The only register that exists for private bank and bond lending, the row with no denominator at all. |
+| 5 | 1 desk | BHRRC harvest | — | — | Harvest the 679 allegations against Chinese companies abroad, 2013-2020, plus 102 on transition minerals. |
+| 6 | 9 | BHRRC Chinese allegations | 781 | 120-230 | The one Chinese-lending list that sits outside the lender, which is the exact defect the Chinese row has. |
+| 7 | 6 | ICIJ possible-displacement | 546 | 55-135 | Last because ICIJ did not select these for recording displacement, so the assumed 10-25% is the weakest number in the plan. |
+
+**26 rounds, 2,031 leads, somewhere near 350-600 cases, putting the map at roughly 1,540-1,790.**
+Every expected-cases figure except OECD Watch's is an assumption, and each is to be replaced with a
+measured rate after that register's first round. **Write the measured rate in here when you have it.**
+
+**EJAtlas is NOT in the 26 and is not covered by this decision.** Over 3,800 socio-environmental
+conflicts, but an unknown share involve a foreign funder or owner at all, and its listing serves a
+637-byte shell with the cases behind an API. It needs a harvest-and-filter desk round before anyone
+can say whether it is 200 leads or 2,000, and only then can the owner apply the same all-or-nothing
+test to it. Do not start it inside the 26.
+
+## How to run a wide round — the method, as it actually ran in round 46
+
+A **wide round is 90 leads: six writers at 15 each, then six independent checkers, one per batch.**
+Round 31 established 90 as what a round carries. Round 46 ran at a third of that width and every
+figure below comes from it.
+
+### 1. Desk work first, before a single fetch
+
+- **Run the dedupe pass.** `dedupe_oecdw2.py` is the pattern: match distinctive company words
+  against the existing case set and require the country or place to agree. The title match alone is
+  not enough — round 46's batch 1 spent four of twelve leads on events already mapped under other
+  names, and the pass found 28 such leads across the queue afterwards. Stoplist country words and
+  generic finance words, or a Nigerian lead matches a Nigerian case on the word "nigeria".
+- **Sort by what decides a case**, not by volume: a severe harm flag plus harm falling outside a
+  rich country. Those sat at the top of the OECD Watch queue and are where the conversion is.
+- **Split into batch files of 15** under `rounds/rNN_batch_N.json`, each carrying the full lead
+  record. Do not make a writer go looking for its own leads.
+
+### 2. The writer brief carries the class precedents, not just the tests
+
+Every writer gets the three tests **and the precedent chain**, because round 46 proved these are
+decided wrong by default: a contractor, supplier or buyer fails test 1; a paid auditor, certifier,
+consultant, ratings agency or law firm fails it; an event rights-holder, licensor, franchisor or
+promoter fails it and sits below a buyer. **The ordering: owner, then lender or insurer, then buyer,
+then licensor — the line sits above buyer.** Deciding these in the brief is the single biggest
+available gain in conversion, because round 46 spent three cases' worth of research on leads that
+the precedent disqualified before anyone opened a document.
+
+Tell each writer which of its own leads are the same event filed against several companies. Round 46
+had four Formula One entities, three Samsung respondents and three Mozambique respondents in one
+tranche of 36; unflagged, that is one case written three times.
+
+### 3. Collision check between writers and checkers — do not skip this
+
+**Two writers in round 46 produced the same case independently, under the same id, with different
+death counts.** `merge.py` prints `skip dup` and silently keeps the first, losing the other's
+complaint links. So after the writers return and **before** dispatching checkers: compare ids,
+coordinates and place names across all six outputs. Where two drafts describe one event, stage both
+in one file and give a **reconciliation checker** the single question of settling them from the
+documents. Do not pick a draft yourself and do not let the writers' disagreement reach the merge.
+
+### 4. Checkers open every source themselves
+
+The standing failure mode is a figure attributed to a document that does not contain it; round 46
+found three in one batch. A checker that reads the card and judges it has done nothing. Round 46's
+checkers made **79 corrections across 13 drafted cases** and cut 3.
+
+**Where a checker does writer-work — reshaping a case rather than correcting or cutting it — the new
+shape has been checked by nobody, and it goes to a second reviewer before merging.** That is how the
+Ayoreo case was handled and the review confirmed the source wording word for word.
+
+### 5. Merge, build, test, read the page
+
+`merge.py rounds/rNN_chk_*.json` → `build.py` → `node test_map.js` → **read the coverage rows off the
+rendered page with `textContent`, never computed and never grepped** → `coverage_chart.py` → update
+this file → commit → push. Expect `loan-condition cases matched 173 of 173`, zero page errors and
+zero console errors. Any computed figure gets checked against the rendered total before it is
+believed: round 45's decade split summed to 303 against the page's 305 because the year 2020 fell in
+no bucket.
+
+### 6. What a wide round costs, measured
+
+Round 46's three writers used 31, 70 and 84 tool calls and 147k, 220k and 215k tokens; its four
+checkers 25-71 calls and 134k-230k tokens. Writers ran 7-21 minutes, checkers 4-20. **Scaled to six
+writers and six checkers, a wide round is roughly 2.2M agent tokens and 600-800 tool calls**, and
+with that much parallelism the wall clock is set by the slowest agent rather than the total.
+
+### 7. The two things that will stop a wide round running unattended
+
+- **Fetch approvals.** Several hosts return `PROVENANCE_REQUIRED`, which is an unanswered permission
+  prompt and not a host refusal. In round 46 that cost a Nominatim lookup, a Proceso article (later
+  reached another way) and The Wire entirely — two facts on the Kaziranga card rest on a standfirst
+  because of it. **An agent waiting on an approval cannot continue, and a message does not answer the
+  prompt.** A wide round run while the owner is away will lose leads this way; either run it while
+  they are reachable, or accept that some leads come back unresolved and requeue them rather than
+  writing round their absence.
+- **Host behaviour, which is per-host and stable enough to write down.** `oas.org` 403s behind a
+  Cloudflare challenge. `reuters.com` 401s; cite a mirror. `mining.com`, Zee Business and Mongabay
+  403 to plain curl but serve through WebFetch. `thewire.in` and `tuv.com` serve their bodies by
+  script, so curl returns the headline only. `geonames.nga.mil` closes a curl tunnel mid-exchange
+  through the proxy but serves through WebFetch. **Never work around a refusal by altering a URL or
+  spoofing an agent** — one such attempt in round 46 was correctly blocked; record the refusal.
+
+### 8. Report to the owner in the chat reply itself
+
+The completeness figures go in the reply, not only in a file. Give what converted, what was cut and
+on which test, and the round's conversion rate on genuinely new ground — leads minus
+already-mapped — rather than on raw leads, since raw leads understate it by a third.
 
 ## The aim, settled 14 Nov 2026 — a defensible big picture, not a bigger map
 
