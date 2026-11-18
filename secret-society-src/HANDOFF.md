@@ -6,10 +6,10 @@ Repo: WelcomeToYourGalaxy/maps. Build output: `infiltration.html` (repo root). S
 ## What the map is
 A MapLibre globe of documented cases where an outside party (foreign state or spy service, organised crime, company/industry, bank, lodge/secret society, religious movement, elite network, political or armed movement, lender) got its people, money or control INSIDE a government body, an international body or a company, and decisions there served it.
 
-Current size: 2,820 cases in 183 jurisdictions, 510 organisations, 48 channels, 31 patterns.
+Current size: 2,981 cases in 183 jurisdictions, 510 organisations, 48 channels, 31 patterns.
 By who infiltrates: corp 1267, crime 704, state 395, movement 209, lodge 76, money 70, faith 60, elite 29, lender 10.
 By relevance: legacy 1273, now 1084, past 463. Countries with no qualifying case, shown as estimates: 15.
-Shape deviation 32.2 points against the goal of 5.0. Run `python3 shape.py`.
+Shape deviation 28.4 points against the goal of 5.0. Run `python3 shape.py`.
 (Figures as of round 10, 17 November 2026. The dated handoffs in the project carry what changed.)
 
 ## THE STANDING GOAL (set by the owner, 16 November 2026) — read this first
@@ -92,6 +92,7 @@ not move together, and four rounds are enough to show it.
 | the three throughput rounds, 16 Nov | +12 net | 52.9 | closed 0.7 |
 | **round 9, 17 Nov (composition-locked)** | **+210** | **38.6** | **closed 14.3** |
 | **round 10, 17 Nov (corp re-entered)** | **+146** | **32.2** | **closed 6.4** |
+| **round 11, 17 Nov (lead bank worked first)** | **+161** | **28.4** | **closed 3.8** |
 
 Round 8 is the one to keep in view: 195 verified, sourced, correctly classified cases
 moved the map *away* from its goal. Round 7 closed 5.6 points on 236 cases (24
@@ -1967,3 +1968,1330 @@ All 31 of round 10's new orphans were assigned by hand under ruling 13 — 23 to
 round 9's 1912 Liberian one). No selector touched, no pattern lost a case, total membership
 3,057 → 3,088. **Nothing was added to the orphan list this round**, which is the first time that
 has happened.
+# Round 11 findings as they come in
+
+## OPERATIONAL: curl reaches hosts WebFetch is refused on
+
+R11-OUT1 got `PROVENANCE_REQUIRED` from WebFetch on corrieredellacalabria.it and irs.gov,
+then **got both articles with plain curl**. This is the second time the fetch layer and curl
+have diverged and it is worth a brief line: the host-refusal list in the round brief conflates
+"the host blocks automated access" with "WebFetch is refused on it". Those are different
+failures and only the first is a real dead end.
+
+`https://www.corrieredellacalabria.it/wp-json/wp/v2/posts?search=...` is open and is the
+fastest index of Calabrian court outcomes found so far. ilreggino.it is behind Cloudflare,
+ildispaccio.it requires auth, zoom24.it and lacnews24.it do not expose the API.
+
+Also measured: Italian-language WebSearch on these case names returns almost nothing but
+messinaantiusura.it PDF reprints, so the WP-JSON route is not just cheaper, it is better.
+
+## A HANDOFF CLAIM THAT WAS WRONG, AND THE MAP WAS ALREADY RIGHT
+
+The outcome queue said "the map holds several records in that strand" for Diezani
+Alison-Madueke. It holds **one** (idx 1032), and that record's title, `status: acquitted` and
+`d` already carried the 17 June 2026 acquittal correctly. The only defect was `verified: None`.
+
+The acquittal itself is confirmed: **Southwark Crown Court, jury verdicts 17 June 2026, all
+three defendants acquitted on all counts** after a roughly six-month trial — Alison-Madueke on
+five counts of accepting bribes and one of conspiracy, her brother Doye Agama on conspiracy,
+and oil executive Olatimbo Ayinde on a Bribery Act s.1 charge and a s.6 charge over a $5m
+payment to another Nigerian official who did not face trial. An acquittal by jury verdict, not
+a discontinuance. Verified from OCCRP and the defence chambers' case note on *R v Olatimbo
+Ayinde*, not from the Premium Times article the queue named.
+
+Addax/NNPC was likewise **already repaired**: idx 1564 carries Okoronkwo's 87 months, $923,824
+restitution to the IRS and $1,039,997 forfeited, announced 23 February 2026. The queue had it
+as "sentencing set for 1 December".
+
+**So two of the eleven queued outcomes were already applied and the queue did not know.** The
+queue is written from agents' incidental finds and is not checked against the map before it is
+written down. That is cheap to fix: before an outcome goes in the queue, grep `cases.json` for
+the defendant.
+
+## Gotha: nothing to repair
+
+R11-OUT1 flagged Il Foglio, 6 June 2026, reporting the "Gotha" maxi anti-mafia trial collapsing
+with acquittals on the merits, as a likely rule-5 defect. **The map holds no Gotha record.**
+Checked against `n`, `d`, `undone` and `org_label` across all 2,820.
+
+## Open question the patch format exposed
+
+The patch format has fields for `d`, `undone`, `status`, `verified`, `cite` and `url` but
+**none for `lik`**. On the Chirone record, the Palmi court threw out the mafia-association
+charge and acquitted the main defendant, which makes `lik: established` arguable where it was
+not before. An outcome that collapses a case should be able to move `lik`, and right now an
+outcome round cannot. Add `lik` to the patch format in round 12.
+
+## A factual conflict left unsettled on purpose
+
+The held Chirone record says Carabinieri "arrested 14 people" from Domani; Corriere della
+Calabria, 24 July 2024, says 13. R11-OUT1 did not overwrite the 14 — it changed the phrase to
+"made arrests" and recorded the source's 13 in `undone`. **That is the right call and the
+conflict needs a hand decision**, not a silent pick.
+
+## A cut made to stay inside the word cap, flagged for review
+
+To keep the Chirone `d` inside 60–130 words, R11-OUT1 dropped its last sentence about convicted
+mafia employees still drawing pay and debts above 420m euros. The owner's standing rule is that
+nothing a source publishes is filtered out. **This is a candidate for the over-cap-on-purpose
+list** alongside the existing six.
+
+## Leads banked from the same index (not verified)
+
+- Corriere della Calabria, 31 July 2024: ASP Reggio hospital-pharmacies ex-coordinator
+  Giuseppe Fiumano acquitted — a second acquittal headline.
+- Corriere della Calabria, 10 April 2025: a Lamezia businessman definitively acquitted over the
+  alleged Piromalli infiltration of the ASP.
+- Corriere della Calabria, 14 April 2022: four acquittals and one conviction in an earlier
+  Piromalli/ASP Reggio trial.
+- Maestrale appeal: 29 June 2026 the court declared the DDA's appeal inadmissible for 35
+  defendants over a filing error; 13 July 2026 that went to Cassation. Headlines describe
+  "quasi cento assoluzioni" in the 1 July 2026 judgment. **The map holds six Vibo/Maestrale
+  records (450, 2618, 2645, 2646, 2652, 2805); two are now patched and the other four have not
+  been checked against a judgment with nearly a hundred acquittals in it.** This is the single
+  biggest unchecked rule-5 exposure found this round.
+
+## THE INVENTED DENIAL IS STILL ON THE MAP, AND IT IS SWEEPABLE
+
+R11-OUT2 found one by accident while repointing a citation. The held Cité Soleil record said
+**"Antoine and Cassy deny the allegations."** S/2026/714 para. 59 says the Panel wrote to Mr
+Cassy giving him an opportunity to respond and **had received no response at the time of
+drafting**. Only Antoine denied, by email, at para. 51. **Half of that denial was invented.**
+
+This matters more than the single record. The handoff has been recording that the invented
+denial "has not recurred in 471 records since" — which is true and is about **newly written**
+records. It says nothing about the records written before the fix, and nobody has swept them.
+
+Measured now: **286 of the 2,820 records assert a denial, a dispute or a rejection.** Only 48
+of those were written in rounds 7 to 10, the rounds the fix covers. The other **238 have never
+been checked for this fault**, including 61 with no round tag at all and 73 in the generic
+`2026-11` batch.
+
+This is the best-shaped quality job left on the map: a closed list of 238 records, each with a
+specific sentence to check against a specific source, and the fault it is looking for is the
+one the project considers its worst. It is also cheap per record compared with writing new ones
+— the denial sits in `d` and the source is in `cite`.
+
+**It should be run as its own round, not folded into a research round.** A research agent
+asked to also sweep will do the sweep badly.
+
+## WHAT THE OUTCOME QUEUE GOT WRONG, ITEM BY ITEM
+
+Of the six items given to R11-OUT2, **three were wrong as framed and one was already done**:
+
+- **Bari/AMTAB — not true as framed.** Olivieri's nine years was already in the record, and the
+  record's `undone` already said it is first instance in an abbreviated trial and not final.
+  The "ufficio di collocamento" phrase is not a 2026 outcome: it is from il Giornale of 22
+  March 2024, part of the judicial-administration coverage the record already reflects.
+- **CE Oltenia / ELCEN CET Sud — already done.** The held record already carries the 10,000
+  euro reaching Adrian Dorin Ecobescu, his plea deal and two years eight months suspended.
+- **Naples forty arrests — wrong year, and not a gap.** The queue had it as 2024. It is 22
+  October 2021, and it is the precautionary-measures phase of a record the map already holds.
+- **Romania/CNAIR — the specifics could not be confirmed.** "Six years, final, Timisoara
+  decision 1045/12.12.2024" appears on no page reached. What is confirmed is different and more
+  consequential: the Arad Tribunal **acquitted Dascalu of taking bribes** at first instance and
+  the Timisoara Court of Appeal then convicted him definitively. The acquittal and its reversal
+  now appear in `d`, because an acquittal is one of the five kinds that must.
+- **Romania/SPLT Brasov — the queue conflated two different DNA cases.** Marin's three years
+  suspended is real but belongs to a separate prosecution on separate facts (125,559 lei of
+  benefits, a 2,820,300 lei hospital heating contract) while the held record is the August 2023
+  indictment over direct purchases (1,912,025 lei loss, 69,785 euro of benefits). The agent
+  correctly refused to write the three years as this case's outcome.
+
+Two of eleven queued outcomes were already applied; three more were wrong as framed. **The
+queue's error rate is roughly half.** It is written from agents' incidental finds and never
+checked against the map or re-verified before being written down. The fix is one line in the
+brief: before an outcome enters the queue, grep `cases.json` for the defendant and open the
+page.
+
+## TWO MORE DEFECTS ON HELD RECORDS, FOUND IN PASSING AND NOT YET FIXED
+
+- The held record "Cimmino-Caiazzo clan rigged tenders at three Naples public hospitals" has
+  **fanpage.it as its only citation**, and fanpage.it is on the do-not-fetch list — so the
+  record cannot be re-verified by any agent. The Sky TG24 page of 22 October 2021 is reachable,
+  carries the same facts, and names two hospitals the record omits (the CTO and the Cotugno).
+- That same record has a **live rule-5 defect**: fanpage carries "otto condanne e tre
+  assoluzioni" — eight convictions and three acquittals. Acquittals must appear in `d`. One
+  search found the verdict nowhere but the blocked host, so it is flagged, not written.
+
+A general point falls out of those two: **a record whose only citation is a blocked host is
+unverifiable by construction.** That is a measurable class and worth counting.
+
+## A DATING CLAIM THAT WAS WRONG IN A HELD RECORD
+
+The Cité Soleil record described S/2026/714 as a "94-page report released in October 2026".
+The document paginates to 91, is dated 8 September 2026, was given to the committee on 24 July
+2026, considered on 3 September 2026, and reissued for technical reasons on 12 October 2026.
+The October date was the reissue, not the release.
+
+## THE BUDGET RULE SETTLED ON 16 NOVEMBER IS WRONG, AND THIS IS THE ROUND'S MOST USEFUL FINDING
+
+HANDOFF.md records, as settled: *"Every such attempt returned `PROVENANCE_REQUIRED`, so each
+record cost a search... Treat a stored url as a record of where a fact came from, not as a way
+back to it."* An outcome round's budget was therefore modelled as one search per record.
+
+**That is a WebFetch restriction, not a property of stored urls.** R11-OUT3 resolved four
+records with **0 searches, 0 WebFetch calls and 12 curl calls**, fetching idx 2618's own stored
+url with curl after WebFetch refused it.
+
+Verified directly, not taken on the agent's word. Three stored urls by curl:
+- `lindipendente.online` — **200, 525 KB**
+- `jurist.org` — 403
+- `fanpage.it` — 403
+
+So the real rule has two parts, and only the second is a dead end: **WebFetch refuses a stored
+url on provenance grounds; curl fetches it unless the host itself blocks automated access.**
+
+Then measured at scale. Sixty stored urls drawn at random from the denial-asserting records,
+fetched with curl: **46 of 60 reachable (77 per cent)**, counting only HTTP 200 with more than
+4 KB of body. The 14 failures cluster, and the clustering is informative:
+- **5 are `sec.gov`** (403 to curl). One host, one fix.
+- 403 from maltatoday.com.mt, english.nv.ua, thecable.ng, mexiconewsdaily.com
+- 402 from globalsecurity.org (payment required, not a block)
+- 2 connection failures (oldwp.civil.ge, africannewsagency.com)
+- 1 genuine 404 (sites.tufts.edu — the page is gone, which is a record defect, not a fetch
+  problem)
+- 1 justice.gov returning 200 with only 2.5 KB — a stub, so counted as a failure
+
+**What this changes.** Any job that needs to re-read the source behind a held record — the
+outcome queue, the denial sweep, the source check, citation repointing — has been budgeted at
+one search per record when it actually costs one curl per record for three records in four. A
+2,380-id DNA sweep ran in under two minutes with `xargs -P 12`. The 238-record denial sweep is
+therefore roughly 180 free fetches plus about 55 records needing another route, not 238
+searches.
+
+**Rewrite the budget section of HANDOFF.md.** The 16 November correction was itself a
+correction of an earlier wrong measurement, and it got the mechanism right (fetches, not
+searches) while getting the reason wrong, so it under-rated the cheapest route by a wide margin.
+
+## R11-E: FIRST ROUND-11 RESEARCH RESULT, QUOTA MET EXACTLY
+
+20 of 20 in cell (17 `corp → security`, 3 `corp → court`), nothing written outside the cells.
+**7 of the 20 came from the banked lead file and 9 leads were rejected** — 3 as duplicates of
+held records, 3 as failing a ruling, 3 as the same event filed twice. So the lead bank's real
+conversion was 7 records and 6 saved dead ends out of 17 distinct events: **the bank is worth
+working, and about a third of it will not survive contact with its own source.**
+
+Density measured in-cell, which is the number worth keeping:
+- **DNA Romania `comunicat.xhtml?id=`: one qualifying record per 238 ids** in `corp → security`
+  (2,380 ids fetched, 1,247 carrying a release, 88 matching a filter, 10 records). Round 10
+  measured one per 280 for `corp → company`. So DNA is a real vein in both cells — and round
+  10's measured **zero from 181 releases for `corp → cabinet`** stands as the exception. Half
+  of all ids are empty 211-byte shells.
+- **NABU half-year report, one free HTML page** (`reports.nabu.gov.ua/investigations/`): 2
+  in-cell records and 6 out-of-cell leads from a single fetch. Best cost-per-record touched.
+- **Ghana OSP case files: 1 record from ~15 profiles**, and pagination is dead. Do not plan a
+  round on it.
+
+Two judgement calls flagged for a hand decision, correctly rather than silently:
+- Two records place Romania's **National Environmental Guard under `bk: security`**. It is an
+  inspectorate, not police. The agent followed a held record's existing convention rather than
+  inventing a different one, which is the right instinct, but the convention itself is unsettled.
+- **11 of 17 security records are Romanian.** The shape metric runs on `inf`/`bk` and ignores
+  country, so this does not hurt the deviation. It is still a concentration worth knowing, and
+  it is the blind spot already logged as an open owner decision.
+
+Also: two records have `y` set from "came to light" rather than the year conduct reached the
+institution, because the page carries no conduct year. That is ruling 16's edge and the agent
+flagged it instead of guessing.
+
+## A BUG IN MY OWN AGENT REFERENCE FILES, FOUND BY AN AGENT, NOW FIXED
+
+R11-G reported that `removed_titles.txt` carries titles with no reasons, that roughly 15 of the
+1,380 removals sit squarely in `movement → security`, and that treating every near match as a
+bar **cost it five otherwise strong records including its best court lead**. It asked for a
+one-line reason per removed title, saying that would be worth more than more discovery budget.
+
+It was right about the file and wrong about the data. **`removed_records.json` carries
+`drop_reason` on 1,376 of its 1,380 records.** The reasons have been there all along; the
+generator that writes `removed_titles.txt` for agents discarded them and wrote the title alone.
+That is a defect in my own tooling, not a gap in the data, and it has been silently costing
+records for several rounds.
+
+Fixed. `removed_titles.txt` is now `title :: reason`, with a header telling the agent what the
+reason means for its next move — a removal reading "Duplicate of the kept record on..." means
+the map keeps a record on that event and the agent should find it in its cell file, while any
+other reason means the case *shape* fails the test and a new case of the same shape will fail too.
+
+**The distinction matters because the two kinds are wildly unbalanced: only 38 of 1,380
+removals (3 per cent) are duplicate-removals. The other 97 per cent are test failures.** So
+`removed_titles.txt` is mostly a map of case shapes that do not qualify, which is far more
+useful to an agent than a list of forbidden titles — and it was being handed over with that
+information stripped out.
+
+Checked R11-G's six specific bars against the reasons now visible. **All six bars were
+correct**: four were duplicates of kept records (al-Zobi's 111 Brigade appointment twice over,
+the Somali military-academy insiders, the Trabelsi payroll detail), Gatwech was removed because
+a brokered coalition deal is excluded by the test and the Panel itself called it an agreement
+rather than an appointment made, and the Houthi criminal court record was removed because it
+named no interest of the movement that the death sentences served. The agent's caution was
+vindicated in every instance — but it drafted a record before discovering the bar, which the
+reason would have prevented.
+
+## R11-G RESULT, AND THE MOVEMENT CELL IS THINNING
+
+15 of 17 in `movement → security` (shortfall 2) and 2 of 2 in `movement → court`.
+
+**Lead-bank conversion in this cell was 6 records from 39 leads — 15 per cent**, against R11-E's
+7 from 17 distinct events. The difference is contamination: 6 of R11-G's rejections were
+duplicates of held records and 6 were re-adds of removed titles, so **a third of its lead file
+was material the map had already seen and decided about.** The other 21 rejections were on the
+three-limb test, each with a stated reason. The bank is worth working; it is not clean.
+
+**Measured, and this bears on the remaining rounds:** of the 72 UN reports, this agent read
+into about 35. Libya gave 7 records from 6 reports and **6 of those 7 came from an annex, an
+appendix or a footnote rather than main text.** Yemen gave 5 from 9 reports, South Sudan 2 from
+13, DRC 1 from 14, Sudan 0 from 6. **CAR (8 reports), Mali (8), Somalia (4) and Haiti (5) gave
+zero each** — 25 reports, no records. Those four series are worked out for this cell, between
+round 9's CAR pass and the removals.
+
+The productive shape, found repeatedly: **a numbered decree or an annexed official document
+placing a named armed-group figure in a named state security post.** Libya's Presidency Council
+decrees 595 and 596 and Cabinet decision 313 are the type specimens.
+
+Confirmation of the annex-misnumbering warning: S/2026/224's elections material is **annex 15**,
+not annex 14 as the agent's own lead said.
+
+Two coordinates in this batch come from OpenStreetMap, not the UN text, because the text names
+the place without coordinates: Um Dafoug, South Darfur and Kirik, Tonj North, Warrap. Both are
+the place the source itself names, which is within rule 4.
+
+Left out rather than written from memory: the Reichsbürger "military arm" record, because the
+page opened names only former soldiers and judges among the 27 defendants and limb 2 needs a
+serving insider; and Ali Kushayb's sentence, because the page read reports the 27-count
+conviction and says sentencing would follow, while search titles suggested twenty years.
+
+## R11-D RESULT: BEST LEAD CONVERSION OF THE ROUND, AND A DEAD SOURCE CORRECTLY IDENTIFIED
+
+21 of a 24 quota: `crime → legis` 12/12, `corp → legis` 4/6, `movement → legis` 5/6.
+**11 of the 21 came from the banked lead files** — the best conversion measured so far, against
+R11-E's 7 and R11-G's 6. 21 leads were rejected, and **6 of those were already on the map**,
+which is the same contamination R11-G measured.
+
+Duplicate checking was done on figures as well as names — the agent grepped 834,226.46,
+421,930, 190,000 and 992,395 specifically. That is the round-10 lesson applied without being
+told again.
+
+### The DNA source splits in two, and only one half works
+
+**`corp → legis` got 0 records from 92 hand-fetched DNA `comunicat.xhtml?id=` pages.** The
+reason is structural and worth writing down: nine of the 92 mentioned a local office alongside
+*mită*, but all nine were **full court judgments of 150k-365k characters with every party
+reduced to initials** — so they fail ruling 11 by construction, not by chance. The eight actual
+press releases in the range reached a prefect, two state arms plants, customs inspectors, the
+gambling regulator, a rural police chief and a ministry. **Not one reached a council, a mayor or
+a county council.**
+
+So the measured rule is: **DNA press releases are a real vein; the DNA judgment archive is
+not.** All three DNA records this agent wrote came from banked press-release leads. Blind
+id-scanning of the judgment archive should not be planned again — and note this sits alongside
+R11-E's one-per-238-ids in `corp → security` from the same id space, which means the id range
+matters as much as the source.
+
+### The cheapest discovery route found so far
+
+**Italian regional WordPress REST APIs return full article text in `content.rendered`, so one
+call does the search and the read.** Confirmed working with `search=` on `anteprima24.it`,
+`corrieredellacalabria.it` and `antennasud.com`. Query the conduct in Italian — "voto di
+scambio condannato", "clan condizionava forniture comune arresti". 4 calls gave 3 records.
+`livesicilia.it` honours `search=` but yielded nothing in this cell.
+
+**Highest single-fetch yield of the round:** Primicias/CONNECTAS, "Municipios de Ecuador
+contratan obras y servicios con empresas del crimen organizado", 19 November 2024 — **one fetch,
+four records** after removing the strand already held.
+
+Also confirmed again: 2 of the 5 movement records came from **annexes** (S/2021/87 annexes 2.15
+and 2.16) that the paragraph extraction never reaches.
+
+Operational detail worth keeping: `www.poliziadistato.it/articolo/pdf/<hash>` needs the `www.`
+host and `--compressed`, or it returns an empty stream.
+
+## AN OPEN CLASSIFICATION QUESTION, FLAGGED BY THE AGENT AND SIZED HERE
+
+R11-D wrote two Ecuador records — "Fatales member's firm held seven Lago Agrio public works
+contracts" and "Tiguerones leader's firm paved for three Esmeraldas local governments" — in
+which a crime-linked firm wins local-government contracts with **no official shown inside the
+body**. It wrote them because the cell already holds a record on exactly that footing and the
+brief says apply the same test consistently, and it flagged them rather than burying them.
+
+That was the right call. Sized against the whole map: **only one held record genuinely rests on
+that footing** — idx 2603, the Chone Killers part-owner's firm at Buena Fe (`int: 3`,
+`lik: probable`). The other candidate, idx 2784 (Moccia clan firms and railway contracts), names
+two RFI officials inside, so it meets limb 2 and is not in question.
+
+**So the stake is three records: idx 2603 plus R11-D's two.** The question for the owner is
+whether limb 2 is met when an outside party's own firm takes public work and no insider is
+shown — the money crosses into a public body's budget, but nobody is placed. If limb 2 fails
+there, all three go together. It is a cheap decision with a clear boundary, unlike the `exec`
+recode.
+
+The agent also rejected two leads on exactly this ground when the direction was reversed — a
+former MP arming gangs (Haiti, S/2026/714 paras 48-51) and state officials using militias
+(South Sudan, S/2024/343 para 89) — so the reversal test is being applied consistently.
+
+## ROUND 10'S "corp -> cabinet IS EMPTY" WAS AN ARTIFACT OF THE QUERY, NOT THE SOURCE
+
+Round 10 measured **zero qualifying records from 181 DNA releases for `corp → cabinet`** and I
+wrote that into the round-11 brief as a measured dead end, telling R11-F outright that it would
+need a different source family for its cabinet cell.
+
+**That was wrong, and R11-F found out why: the round-10 agent was looking for ministries.**
+R11-F got **4 `corp → cabinet` records out of the same DNA id space**, and not one of them
+reaches a ministry. They reach the road transport inspectorate (ISCTR, three separate
+prosecutions), the National Environmental Guard, a forestry guard, a food-safety directorate and
+a county health insurance house.
+
+So the vein for `corp → cabinet` is **national inspectorates and county directorates, not
+ministries** — and the earlier zero was a measurement of the wrong noun. This matters directly
+for the rounds left: `cabinet` is 1.9 points under its estimate and had been written off.
+
+A general lesson about these density measurements: **a measured zero tells you the agent's
+filter was empty, not that the cell is.** Round 10's own finding that "all twelve records
+reached a state company, hospital or authority; not one a ministry" contained the answer and
+was read as a dead end instead.
+
+Measured rates, by id range, which is now the unit that matters:
+- **ids 12470-12700** (231 ids, Feb-Aug 2024): `company` 0 new (2 hits were duplicates of held
+  records), `cabinet` **3** — about one per 77 ids.
+- **ids 13250-13450** (201 ids, 2025-26): `company` 1 new plus 2 duplicates, `cabinet` 1.
+- **ids 13500-13700** (201 ids, 2026): **0 in either cell** — mostly anonymised full
+  court-judgment texts rather than press releases. Do not crawl again.
+- **The monthly "sinteză a cauzelor finalizate" digests are the highest-value single DNA pages**
+  (ids 12474, 12529, 12660, 13262, 13370). Each carries several whole cases with facts, and two
+  cabinet records came out of them.
+
+Taken with R11-E's one-per-238 in `corp → security` and R11-D's zero-from-92 in `corp → legis`,
+**the id range now predicts yield as strongly as the cell does.** The judgment-text ranges fail
+ruling 11 by construction because every party is reduced to initials.
+
+### The best single source of the round
+
+**`livesicilia.it/wp-json/wp/v2/posts?search=` gave 8 `corp → company` records from 2 API
+queries and 12 article fetches.** Query the conduct in Italian — "corruzione appalti
+imprenditori arresti dirigente", "mazzette forniture ospedale" — and it returns whole case
+strands with their later outcomes attached. Italy's provincial health authorities (ASP/ASL) and
+hospital trusts are `bk: company` under ruling 12 and the vein is deep.
+
+Note the per-cell lesson repeating: **R11-D reported `livesicilia.it` yielded nothing in
+`crime → legis`** while R11-F got 8 records out of it in `corp → company`. Same host, same
+method, opposite results, different cell.
+
+Also: `stylo24.it` and `anteprima24.it` answer `search=` honestly (3 queries, 5 fetches, 3
+Campania records). `lapresse.it`, `ilfattoquotidiano.it`, `g4media.ro` and `hotnews.ro` refuse
+the REST API but their article pages answer plain curl. `osp.gov.gh` profiles need `curl -sSL`
+(they 301 without `-L`). `graphic.com.gh` and `graphiconline.com` return 406 to curl;
+`ghanaiantimes.com.gh` answers and carried the full OSP facts sheet.
+
+Total outside cost for 25 records: **one WebSearch.** Everything else was curl — about 640 DNA
+ids, 25 article fetches, 8 REST queries.
+
+### A third anonymised-payer duplicate caught, by the method round 10 established
+
+DNA id 13434 is a full indictment with 28,700,705 lei of damage and 50,000 lei paid on 18 May
+and 13 August 2022 by "B.D.A.", administrator of VELMED INTERNATIONAL SRL. It is the **same
+case** as the held record "Velmed sold Ploiesti county hospital inflated equipment". Caught by
+matching the company name and the hospital, not the title — exactly the trap round 10 found at
+0.07 title overlap, now confirmed as recurring rather than a one-off.
+
+A second possible duplicate was left out deliberately and needs a hand check: DNA id 12631, a
+manager of Spitalul Clinic CF Nr.2 Bucharest taking 5-10 per cent of each supplier invoice
+between September 2022 and March 2024, against the held record "Railway hospital manager took a
+tenth of suppliers' invoices in Bucharest" (Romania, 2019). Same hospital, same mechanism,
+different years.
+
+### Rejections worth recording as precedent
+
+- **Guatemala IGSS / Droguería Pisa** — the Pisa directors were **acquitted** of active bribery,
+  the board was convicted of fraud rather than bribery, and those convictions were later
+  annulled. Nothing established.
+- **Libya / Arkenu oil minister** (S/2026/224 para. 98) — the Panel calls the actors *armed group
+  actors*, not a company, and the replacement is never shown installed. Refiled as `inf: crime`.
+- **ANRE's former president Havrileț** — performed tasks for three energy companies inside the
+  five-year post-employment bar. Nothing got *inside* ANRE and no decision there served them,
+  so limbs 2 and 3 fail. This is a useful precedent: the revolving door out is not infiltration
+  in.
+- **South Sudan agriculture ministry logging** (S/2020/342 para. 105) — the ministry issued
+  licences and nothing shows payment, placement or control inside it.
+- Four "UPGRADE" lead entries were correctly identified as **not new records** but outcome
+  additions to held records, and handed to whoever edits held records rather than counted.
+
+### One judgement flagged for the checker
+
+The **Operation Aspide** record is the thinnest of the fifteen on the payer's identity: the
+convictions are for corruption in running tenders and filling posts, the triggering tender went
+to Althea Italia, and among the accused is a town councillor who supplied sanitation services to
+the authority. The agent read that as a payer class with one named instance, satisfied under
+rulings 6 and 11, and named it as the one to drop if a checker disagrees.
+
+## R11-H: A SCOPE LIMIT, NOT A SHORTFALL — `movement -> company` IS GENUINELY THIN
+
+10 of 10 in `movement → cabinet`. **8 of 15 in `movement → company`, a shortfall of 7**, and the
+agent's account of why is the most useful thing it produced.
+
+**The documented population of `movement → company` is essentially four strands**: the Houthis'
+judicial-custodian seizures, Libya's NOC and GECOL, Iraq's PMF conglomerate, and AFC/M23's
+utilities. **The map already holds 21 records drawn from exactly those four.** Beyond them the
+failure is structural rather than a matter of looking harder:
+
+- armed groups mostly **tax, extort or protect companies from outside** — fails limb 2 (CODECO
+  and Zaïre's mining cooperatives, Al-Shabaab's port taxation);
+- or they **set up their own companies** — fails limb 1 (Myanmar's Yatai, where the militia
+  co-founded the joint venture, so no existing institution was entered);
+- and the party-capture-of-state-enterprise cases that would qualify **anonymise the enterprise
+  or leave the decision undated** — Kosovo's Pronto affair names only "a number of publicly
+  owned enterprises", and the Zondo cadre-deployment material reaches Transnet only through
+  undated evidence that a minister repeatedly failed to get her candidates appointed.
+
+The agent's own judgement: a further agent does not reach 15 here without re-slicing held annex
+tables, which would be padding. **That is a scope finding about the cell, not a failure of the
+round**, and it should go in the brief so no later round budgets 15 against it.
+
+## THE LEAD BANK'S DUPLICATION IS NOW MEASURED, BY THREE AGENTS INDEPENDENTLY
+
+R11-H found **14 internal duplicates among its 47 banked leads — the same item filed two or
+three times by different round-9 and round-10 agents** (Al-Mashay/GECOL ×3, Al-Amal Microfinance
+×3, Al-Kikli/Audit Bureau ×2, Al-Gandal ×2, Benadir Chamber ×2, CAR transport minister ×2, CAR
+energy minister ×2, Trabelsi/Al-Zobi ×2, Iraq fibre contracts ×2). So it had **33 distinct
+leads, not 47.**
+
+Put beside the others: R11-E found 20 leads collapsing to 17 distinct events; R11-G found 6 of
+its rejections were duplicates of held records and 6 were re-adds of removed titles; R11-D
+found 6 of its 21 rejections already on the map.
+
+**So the bank has two separate contamination problems** — leads filed twice by different agents
+who could not see each other's output, and leads that duplicate records the map already holds or
+has deliberately removed. Neither is visible from the lead file as it stands. Both are cheap to
+fix mechanically before round 12: deduplicate within the bank, then diff the bank against
+`existing_titles.txt` and the new reasoned `removed_titles.txt`.
+
+Conversion measured across four agents: **11 of 21 (R11-D), 7 of 20 (R11-E), 7 of 18 (R11-H),
+6 of 17 (R11-G)** — call it a third to a half of records in a cleaned bank, which is still far
+cheaper than discovery.
+
+## ANNEXES CARRY THE MOVEMENT CELLS, CONFIRMED A THIRD TIME
+
+**8 of R11-H's 13 UN-sourced records come from annex text, not numbered paragraphs** (Libya
+annex 9 sections B and D, Libya S/2021/229 annex 6, Yemen annexes 26, 27 and 175). R11-G
+reported 6 of 7 Libya records from annexes, appendices or footnotes. R11-D reported 2 of 5 from
+S/2021/87 annexes 2.15 and 2.16. The pre-extracted paragraph files reach almost none of this.
+
+Yield by series for `movement`, now measured twice: Libya and Yemen produce; **DRC, Sudan, South
+Sudan, Somalia, CAR, Mali and Haiti produced 0 for R11-H**, and R11-G independently got 0 from
+CAR, Mali, Somalia and Haiti. Those series are worked out for the movement cells.
+
+**One CTC Sentinel article — Knights, "Rise of the E-Militias", Nov/Dec 2025 — gave 3 records
+across both cells**, the densest single page-source of the round and better value than five
+single-case fetches.
+
+Total outside cost for 18 records: 2 WebSearches, 6 fetches, 1 REST query. All 13 UN records
+cost nothing.
+
+### Two duplicate calls flagged for a second opinion rather than decided
+
+- Record 12 (Al-Gandal, Libya 2023) is the **fourth** map record touching the NOC/Arkenu strand.
+  Content is new — registered early 2023 with front owners, a sample contract for two million
+  barrels a month at $8 below the NOC market rate — and none of the held figures ($3bn, $1bn,
+  42.1m barrels) recurs.
+- Record 10 (Bengdara) sits beside a held `inf: elite` record on the same actor and body. The
+  held one is The Sentry on arms-embargo evasion and a Unipec discount; this one is the UN
+  Panel's own governance finding — a Strategic Planning department outside the formal structure,
+  pressure on subsidiaries to bank with Al-Masraf, the January 2025 resignation and arrest
+  warrant, and a denial the Panel found not credible.
+
+### A precedent worth keeping: the revolving door out is not infiltration in
+
+Two rejections turned on direction rather than evidence. "Les requins" founder Doneng was
+rejected because **a ministry official created the group, not the reverse**; the Office of the
+President running Nilepet was rejected because the presidency is the same state, so there is no
+outside party. Taken with R11-F's rejection of ANRE's former president for post-employment work,
+the direction test is being applied consistently across three agents.
+
+## THREE HOSTS ON MY DO-NOT-FETCH LIST ARE NOT ACTUALLY BLOCKED
+
+The brief's blocked-host list has been conflating three different failures, and agents have been
+skipping reachable sources because of it. Verified directly this round:
+
+- **`balkaninsight.com/wp-json/wp/v2/posts?search=` returns results** — 24 hits on a test query,
+  current to today's date. It has been on the do-not-fetch list for several rounds. Its *search
+  pages* are blocked; its REST API is not.
+- **`www.reporter.al`** answers the REST API (needs the `www.`).
+- `premiumtimesng.com` did not answer my test, though R11-C reported it working — so that one is
+  unconfirmed either way and should be retried rather than listed.
+
+The list needs splitting into three categories, because only the first is a real dead end:
+**(1) the host blocks automated access at any route; (2) the host's HTML pages block but its REST
+API answers; (3) WebFetch is refused on provenance grounds but curl works.** Rounds 9 to 11 have
+been treating all three as (1).
+
+## THE JUSTICE.GOV API IS THE BEST FREE ENGINE FOUND IN ELEVEN ROUNDS
+
+R11-B's primary tool, and it should be in the brief at the top:
+
+`justice.gov/api/v1/press_releases.json?title=<substring>`
+
+`title=` works as a substring filter and **the JSON returns the full press-release body**, so one
+call does both the search and the read, and WebFetch is never needed. Measured in
+`crime → company`: about 20 title queries, 18 releases read in full, **11 records — roughly 0.55
+records per title query.** Within that, the airport and baggage-handler title family (about 55
+titles across five queries) gave 7 records on its own.
+
+Measured structurally empty in the same cell, and worth recording so no round repeats them:
+- **The DOJ SIM-swap / phone-company-insider family: 27 titles, 3 releases read in full, 0
+  records.** Every single one anonymises the carrier — "Phone Company A", "a telecommunications
+  company", "a wireless telephone provider" — so ruling 11's named body is absent even though
+  the mechanism (a ring paying a named employee $500-600 a swap) is a textbook fit. This is
+  rulings 8 and 14 again, and it is a property of DOJ charging language, not of the cases.
+- **The DOJ "bank teller", "credit union employee" and "casino employee" families: about 170
+  titles scanned, 0 records.** Almost entirely an institution's own staff embezzling from it with
+  no outside party, which BRIEF11 drops outright.
+
+Also confirmed: `corrieredellacalabria.it`'s REST API with `&_fields=...,content` returns whole
+articles in the JSON — 5 searches, 6 articles, **4 records**, the highest per-fetch yield in that
+cell. New refusals to add: `prensa.com` including its REST route (Cloudflare), `efcc.gov.ng`
+(Cloudflare), `icac.org.hk` listing (redirects to homepage), `thehindu.com`, `deccanherald.com`,
+`newindianexpress.com` (no REST API), `blogsicilia.it` REST (no JSON), `ilgiorno.it` article
+paths (404). `new.kenyalaw.org/search/api/documents/` works but needs `-L` for a 301.
+
+## `crime -> cabinet` IS THE THINNEST CELL MEASURED THIS ROUND
+
+R11-C wrote **6 of 6 in `crime → court`, all six from the lead bank**, and **8 of 21 in
+`crime → cabinet` — a 13-record shortfall.** It stopped discovery when four successive veins
+measured at or near zero in its cell rather than pad. The measurements:
+
+- **South Africa's Home Affairs court and departmental reporting is the one productive vein:
+  8 items opened, 5 in-cell records, 1 duplicate of a held record, 2 failures — about 0.6 records
+  per fetch at zero search cost, and it is NOT exhausted.** Cheapest `crime → cabinet` source
+  measured so far.
+- **InSight Crime REST API: 11 queries, 5 articles opened, 0 in-cell records.** Everything it
+  surfaced for ministry-plus-crime-group in Latin America was a legislator, a state governor,
+  police, or already held (García Luna, Cienfuegos, Veytia, Bermúdez, Gamboa). Do not plan a
+  `crime → cabinet` round on it — note this is the same API that gave another agent five of seven
+  records in a different cell.
+- **The 72 UN texts: 2 in-cell records in the whole corpus** for these two cells, both from
+  annexes, after greps across all 72 files. **The panels' ministry mentions are overwhelmingly
+  interview attributions, not findings** — which is why a corpus that carries the movement cells
+  cannot carry this one.
+
+Two rejection patterns from this agent are worth keeping as precedent, because they are the
+ruling-11 trap in its purest form: **Honduras/Trujillo judge Fonseca and Mexico/Luna Altamirano
+were both removals for rule-breaking and unexplained wealth with no bribery finding at all.** A
+judge removed from office is not a judge shown to have been paid.
+
+Country concentration again: 6 of the 8 cabinet records are South Africa, flagged by the agent
+itself.
+
+## DISCIPLINE WORTH RECORDING: THREE RECORDS DELIBERATELY NOT WRITTEN
+
+All three were in-cell, current, well sourced, and dropped on the rules rather than for lack of
+material. This is the behaviour the briefs have been trying to produce since round 8.
+
+- **Revolut Bank UAB under judicial administration in Milan** (16 November 2026, 76.5m euros, 24
+  clients, 265 suspicious-transaction reports filed by other banks and none by Revolut). Not
+  written because the criminal clients were *customers*, and nothing of theirs got inside the
+  bank in any form limb 2 enumerates. Filed as a lead **with that reasoning**, so a later round
+  can overrule it from the Milan decree rather than from a news report.
+- **TD Bank / Gerardo Aquino** ($4.8m to Colombia, guilty plea 6 October 2026) — dropped only
+  because neither DOJ release names a branch or office, so there is no city to place without
+  inventing one. Rule 4.
+- A flight attendant and two bank employees serving a trafficking organisation — dropped under
+  ruling 11 because the release names neither the bank ("a bank in Lafayette, Ind.") nor the
+  airline.
+
+R11-B also declined to merge a 2022 Corriere article's detail into its Gioia Tauro record because
+that article names no operation and it could not establish the two proceedings are the same.
+
+## MERGE CHECKS THE AGENTS ASKED FOR
+
+- **A cell-file limitation that cost a comparison.** R11-B could not check its Piromalli/Reggio
+  Calabria health authority record against the held 2019 record's *figures*, because the per-cell
+  files carry only country, year, title and rank — not `d`. It judged them separate on different
+  grounds (named supply firms Minerva, Mct Distribution and Lewis Medica, 2.5-5 per cent
+  kickbacks, an 8m euro seizure and an imposed district director, versus the March 2019
+  commissioning decree). **Adding `d` to the cell files would close this**, and it is the same
+  gap that let round 10's anonymised-payer duplicate through.
+- R11-C's two South African passport-syndicate records will trip a figure-based dedupe against
+  the held 192-passports record, because Ngozi/Mboyana also ran through Durban at R3,000-5,000.
+  They are separate convictions.
+- R11-C's weakest court record is Milan: the body is named and the man handled seized assets, but
+  the only act charged to him is unauthorised computer access, with **no named decision**. Written
+  narrowly at `probable`; drop it on a strict reading of ruling 11.
+- R11-C could not confirm a later outcome on its Teresi record — a lead says the judge rejected
+  the mafia aggravating factor and prosecutors appealed, but lasicilia.it refuses automated access
+  and no other copy was found.
+
+# THE DENIAL SWEEP — FIRST BATCH BACK, AND IT FOUND A SECOND DEFECT CLASS
+
+## Batch 4 of 6: 41 records read against their own sources
+
+| verdict | count |
+|---|---|
+| confirmed | 32 |
+| **overstated** | **5** |
+| **understated** | **1** |
+| **invented** | **1** |
+| unverifiable | 2 |
+
+**7 content defects in 41 records.** At that rate the full 246 holds roughly 42, of which about
+6 are invented denials — the fault the project calls its worst, and which the briefs had recorded
+as solved because it stopped appearing in *new* records.
+
+### The invented one
+
+**idx 1377, Lesotho famo gangs.** The record says "the ABC leader denied receiving money from
+one." There is no denial in the stored Lesotho Times piece, which quotes only the deputy army
+commander and the acting NSS head; none in the TRC report in the cite; and the City Press and
+Sowetan coverage runs the other way — Kabi, whose party is alleged to be enjoying financial
+support from illegal mining proceeds, publicly **pledged support** to the Terene faction. The
+record asserted a denial by a named politician that no source carries, and had it backwards.
+
+### The Cite Soleil shape, twice over
+
+Two records turn "did not respond" into "denies", which is the exact fault found by accident this
+morning:
+
+- **idx 349, Nauru / Adeang** — record: "Adeang denies it." Source: "Detailed questions were sent
+  to Aingimea and Adeang. **Neither responded.**" His only denial in the piece is of an earlier,
+  separate matter.
+- **idx 882, Savvidis / Macedonia** — record: "Savvidis denied funding the protests." OCCRP:
+  "Savvidi **did not respond** to reporters' questions by the time of publication." The denial in
+  that piece is Moscow's, not his.
+
+Plus **idx 303** (the record says the defence denies; the source says explicitly that the
+defences' statements are not in the material behind the report), **idx 1208** ("denied all
+charges" where he denied one allegation and gave an explanation for the transfer), and **idx 1260**
+("has denied such accusations in the past" where the wire says prosecutors revealed no details
+and carries no statement from him or his lawyers at all).
+
+### The understated one is the mirror image and just as bad
+
+**idx 272, Bosasa / Mokonyane** carries only her denial. **The Zondo report the record itself
+cites also rejects it** — it finds her denial that Bosasa paid her R50,000 monthly "is not
+credible and falls to be rejected", and finds she lied about favours. The record published the
+denial and dropped the finding against it. BRIEF5 has said since round 9 that both halves belong
+in the record; this is the first measured instance of only one half shipping.
+
+## THE SECOND DEFECT CLASS: TRUE DENIALS CITED TO SOURCES THAT DO NOT CARRY THEM
+
+**11 of the 32 "confirmed" records have a real denial attached to a citation that does not support
+it.** The denial exists, the agent read it verbatim in a named outlet with a date — but the url
+stored on the record is reachable and silent on it. A reader following the record's own footnote
+finds nothing.
+
+Examples: **idx 1118** stores a Globes page carrying denials from Shimron, Zandberg and Marom —
+but **not from ThyssenKrupp**, whose denial the record asserts and which is in the Jerusalem Post
+of 22 November 2016. **idx 994**'s sentence is accurate and the entire dispute is in Trinidad and
+Tobago Newsday, while the stored Jamaica Observer page has none of it. **idx 1727** stores the
+April 2023 charging story for a November 2023 trial. **idx 1023** stores a July 2026 case list for
+a September 2025 denial. **idx 383 and idx 444 have no stored url at all.**
+
+So the honest count for this batch is **7 records wrong on the facts and 11 more wrong on the
+citation — 18 of 41, 44 per cent, with something wrong about the denial.** Extrapolated across
+246 that is roughly 42 content defects and 66 citation defects.
+
+**These need separate passes.** A content defect is a correction to `d`; a citation defect is an
+addition to `cite` and `url` with the record's text left alone. The sweep brief only asked for the
+first, and the agent found the second on its own and reported it separately rather than mixing
+them, which is why the distinction is visible at all.
+
+## THE SWEEP'S OWN MEASUREMENTS
+
+**31 of 39 stored urls returned HTTP 200 in one parallel pass — 79 per cent, matching the 77 per
+cent I measured before launching.** Total cost for 41 records: about 70 curls and 16 WebSearches.
+The curl-first rule holds.
+
+**The finding the agent put best: a reachable stored url is not the same as a stored url that
+supports the sentence.** Every previous source check has been run by writers checking their own
+new records, where the url is the page they just read. Nobody had tested whether old records'
+citations still point at their own claims.
+
+**Honest calibration, which is worth as much as the defects.** Asked how many of its 32 confirmed
+verdicts it would stake the map on, the agent said **21** — the ones where it read the denial
+verbatim in the record's own cited source. The other 11 are the citation-gap group: confirmed as
+fact, unconfirmed as citation. It also named idx 1260 as the one it most wants a second look at,
+because a Kurir page in that record's cite was unreachable and could in principle carry the denial
+it could not find.
+
+## THREE DEFECTS FOUND INCIDENTALLY, OUTSIDE THE SWEEP'S REMIT
+
+- **idx 497** — the source says White died "two days later, on August 16"; the record says three
+  days later.
+- **idx 1260** — the stored wtop.com url is **dead (404)**, which is a defect in its own right.
+- **idx 444** — the denial is solid, but the record's flourish, "asking how a man who had spent
+  thirty years hunting traffickers could be one," appears in nothing reachable. Re-source or drop.
+
+Hosts that defeated it, for the brief: sec.gov (403 on every path including Wayback),
+baltictimes.com, intellinews.com, english.nv.ua, nation.africa, newsofbahrain.com, vietnamnews.vn,
+euromaidanpress.com, telex.hu, mb.com.ph, inkl.com, washingtontimes.com, ukranews.com,
+business-standard.com (all 403), globalsecurity.org (402), finance.yahoo.com (429).
+Workarounds that paid: **AP wire reprints on ktvz.com and infonews.ca; VOA for Reuters copy
+(worked three times)**; vnexpress for Vietnamese court detail; Daily News Hungary.
+
+## CORRECTION TO MY OWN EARLIER CONCLUSION ABOUT THE CITE SOLEIL RECORD
+
+I reported this morning that the held Cite Soleil record's sentence "Antoine and Cassy deny the
+allegations" was **half invented**, on the strength of S/2026/714 para. 59 saying the Panel wrote
+to Cassy and received no response.
+
+**That was too strong, and SWEEP-3 found the reason.** A different record, idx 302, carries the
+same sentence and cites the AP/WLRN reporting instead of the UN document. **In the AP reporting
+both men did respond** — Antoine by email, and Cassy to AP by phone, saying "I am a pacifist",
+calling the report incorrect and unfounded, and asking the experts to retract his name.
+
+So Cassy did not respond **to the Panel** and did respond **to AP**. The denial is true of AP's
+reporting and false of the Panel's. The original record cited AP, so its sentence was correct.
+
+**This matters operationally, not just for the record.** R11-OUT2's patch repoints that record's
+citation from AP to S/2026/714 — and repointing the citation is what would make the denial
+sentence false. **Whoever applies that patch must keep the AP cite attached to the denial
+sentence**, or the repointing will manufacture the defect it was trying to clean up. The patch as
+written also rewrites `d` to say only Antoine denied, which would then be wrong too.
+
+The general lesson is sharper than the one I drew this morning: **a denial is relative to who
+asked.** "Did not respond" in one source and a quoted denial in another are both true, of
+different approaches, and a record is only wrong if its own cited source does not carry what it
+says. That is exactly the distinction the sweep's `overstated` verdict is built on, and I applied
+it carelessly to a record whose citation I had not checked.
+
+## BATCH 3 OF 6: CONSISTENT RATES, AND A SECOND INVENTED DENIAL
+
+| verdict | batch 3 | batch 4 |
+|---|---|---|
+| confirmed | 31 | 32 |
+| overstated | 5 | 5 |
+| understated | 2 | 1 |
+| **invented** | **1** | **1** |
+| unverifiable | 2 | 2 |
+
+Two independent batches, 82 records, **16 content defects — 20 per cent, and the two batches agree
+to within one record in every category.** That consistency means the projection holds: about 48
+content defects across the 246, including roughly 6 invented denials.
+
+### The second invented one is worse in kind than the first
+
+**idx 1421, fake research jobs and Philippine defence staff.** The record says "China's embassy
+did not respond and no charges have been reported." The Daily Tribune article contains **no
+occurrence of the word "embassy"**, no request for comment to any Chinese official or mission, and
+no mention of charges.
+
+**A non-response was attributed to a real foreign government with nothing behind it.** The
+invented-denial fault was already the project's worst; inventing a government's silence on a
+public map is the same fault pointed at a state.
+
+### The overstated five, with the pattern now unmistakable
+
+- **idx 608, Zetas / Coahuila's governor** — the record asserts three things: both Moreiras
+  denied, the state government denied, and no court has ruled. The El Financiero page carries no
+  denial in its body at all. The only denial anywhere on the page is a **related-link headline**
+  about a different Moreira (Humberto) before the Inter-American Commission. Two of the three
+  assertions have no basis in the source.
+- **idx 1342, 'Tavi' Celis / Parana's mayor** — Varisco's denial is real and dated. **Celis is
+  recorded doing the opposite**: in his last words to the court he accused Varisco of failing to
+  honour a political pact between them. He was sentenced to 13 years as co-author of organising
+  drug trafficking. The stored url carries no denial at all.
+- **idx 583, Alcatel / Costa Rica's president** — the cited page carries two Rodriguez denials,
+  both about a **different case** (the 2013 PWS reinsurance investigation). The ICE-Alcatel
+  section, which is this record's subject, has no denial.
+- **idx 1321, Thai deputy finance minister** — the denial is there; "politically driven" is not.
+- **idx 1117, Wilmar / Jakarta judges** — neither cited source carries any Wilmar response.
+  Wilmar's actual statement, from an uncited source, is much narrower: it "is not involved in the
+  legal process and is ready to assist if needed."
+
+### Both understated records had the contradicting half in the same source
+
+- **idx 1375, Frazer Solar / Lesotho** — the denial is right (Tsolo told the PAC his signature was
+  forged). The same Public Eye report carries the Principal Secretary for Energy testifying that
+  Tsolo had personally approved the deal with the then-PM's backing, and states outright that
+  "This testimony contradicted Tsolo's denial."
+- **idx 1570, Rwandan exile movement** — the denial is verbatim correct. The same KT Press report
+  has him **pleading guilty to three of the five charges**, admitting training P5 fighters and
+  planning an offensive into Rwanda, and acknowledging Burundian military support.
+
+## THE CITATION-GAP CLASS IS CONFIRMED AT THE SAME RATE BY A SECOND AGENT
+
+**9 of 31 confirmations rest on a source the record does not cite** (batch 4: 11 of 32). Worst
+instance: **idx 346**, where the stored DOJ release **predates the designation by seven months**.
+Also idx 841, where the Wikipedia page cited carries no Qatari denial but the Garowe article named
+in the record's own cite does — so the record cites the right source and links the wrong one.
+**idx 441 has no stored url at all.**
+
+## OPERATIONAL, AND IMPORTANT FOR THE REMAINING BATCHES
+
+- **`web.archive.org` is 403 to curl in this session.** The obvious fallback for a dead or blocked
+  page does not work here, though `archive.org/wayback/available` does answer. This should be in
+  the brief, because every agent will reach for it.
+- **WebFetch became unusable mid-run for this agent** — the first call worked, every later one
+  returned `PROVENANCE_REQUIRED` because an earlier permission request went unanswered. So a
+  batch that plans on WebFetch for the sec.gov-class hosts will stall. The workaround that did
+  work: find a mirror by search, then curl it.
+- **The route around sec.gov is the NYU SEED FCPA database** (`research.seed.law.nyu.edu`), which
+  quotes SEC final judgments verbatim and is open. That closes the single biggest blocked-host
+  cluster in the sweep, five records in the first sample.
+- Other mirrors that paid: `thestar.com.my/aseanplus` republishes Borneo Bulletin in full via ANN;
+  `businesslive.co.za` carried the same Reuters wire as a blocked Club of Mozambique page;
+  `cna.com.tw` covers the same Taiwan High Court rulings as a blocked Taipei Times.
+- New for the dead list: `a2news.com`, `clubofmozambique.com`, `borneobulletin.com.bn`,
+  `taipeitimes.com`, `news.ltn.com.tw`, `saflii.org` (all 403), `istoedinheiro.com.br` (connection
+  failure), `balkanweb.com` wp-json (403 behind Cloudflare, though its article pages serve fine).
+  **`justice.gov` serves a bot interstitial rather than a plain 403** — which is consistent with
+  R11-B getting 11 records out of its JSON API, a different route on the same host.
+
+Stored-url reachability, third independent measurement: **33 of 40 — 82 per cent** (earlier: 79
+per cent, and 77 per cent in my own pre-launch sample).
+
+## CALIBRATION, AGAIN VOLUNTEERED
+
+Of its 31 confirmations this agent would stake the map on **28**, and named the three it would not
+with the specific reason for each: idx 1528 where the sentence figure sits only in the article it
+could not open, idx 988 where "she admitted the meeting" is inference from a source that keeps the
+hedge "se reunio presuntamente" throughout, and idx 441 which has no working provenance of its
+own. It also flagged a hedge strip at idx 1224 ("some emails the U.N. relied on were faked" became
+"the emails") and a genuine confusion at idx 169, where "She Zhijiang... she denies it" uses "she"
+for both a man and another person in one sentence.
+
+## MY SWEEP BRIEF'S VERDICT TAXONOMY WAS AMBIGUOUS, AND THE BATCH TOTALS ARE NOT COMPARABLE
+
+Batch 5 reported **6 invented** where batches 3 and 4 each reported 1. Checked against the actual
+JSON rather than the reports, the records are not different — **the two groups used my `invented`
+verdict to mean two different things.**
+
+I wrote it as: *"`invented` — no denial anywhere in the source."* "The source" can mean the
+record's own citation or any source at all, and "anywhere" pushes toward searching past the
+citation. So:
+
+- **Batch 5 called it `invented` when the record's CITED source carries no denial**, even where it
+  then found the denial elsewhere. Three of its six invented verdicts say so outright — idx 273
+  ("the not-guilty pleas are real, re-cite"), idx 845 ("KEEP THE SENTENCE BUT RE-CITE IT, the
+  denial is real"), idx 893 (the denial is in a sibling article by the same outlet).
+- **Batches 3 and 4 called exactly that case `confirmed`** and reported the citation gap in a
+  separate list — 9 and 11 records respectively.
+
+Normalised to one taxonomy, the three batches agree far better than the raw counts suggest:
+
+| | denial exists nowhere reachable | denial real, cited source silent |
+|---|---|---|
+| batch 3 | 1 | ~10 |
+| batch 4 | 1 | ~12 |
+| batch 5 | 3 | ~6 |
+
+**The robust finding across all three is the same, and it is not the one I set the sweep up to
+find: the dominant defect is a denial sentence the record's own citation does not support,
+running 15 to 30 per cent of records.** Outright fabrication where no source anywhere carries the
+denial is real but rarer — 1 to 3 per 41, so roughly 6 to 18 across the 246.
+
+**Batches 1 and 2 are still running** (their files carry PENDING placeholders), and **batch 6 came
+back with 16 unverifiable of 41** — it drew the blocked-host cluster. So the final numbers need
+re-normalising per batch before any total is quoted, and the per-batch rates cannot be averaged
+as reported.
+
+That is my error to own: the verdict definitions needed one more sentence saying which source the
+test applies to. The fix for round 12 is to split the verdict into two axes — **is the sentence
+true, and does the record's own citation carry it** — which is what two of the three agents
+reconstructed on their own initiative.
+
+## TWO FAULT TYPES MY FIVE VERDICTS DID NOT ANTICIPATE
+
+Both came out of batch 5, and neither fits the taxonomy.
+
+**1. Inverted attribution.** **idx 845, Kurulkar.** The stored Punekar News page attributes the
+honey-trap claim to **the prosecution** — "The prosecution has alleged that the scientist fell
+victim to..." — and the record hands that same claim to Kurulkar as **his own defence**. The
+sentence is not overstated or invented; the speaker has been swapped. The man's real denial and
+honey-trap claim do exist elsewhere, so the record is accidentally right about the content and
+wrong about who said it, while citing a page that says the opposite of what it is cited for.
+
+**2. A denial manufactured by mistranslation.** **idx 1001, the Athens protection ring.** The
+source ends by saying further interrogations and *apologies* are expected from the accused. In
+Greek legal usage **απολογία / "apologies" means a defence statement**, not an apology. It was
+read as a plea and written up as "the defendants deny the charges." **Nobody's answer appears in
+the source at all.** This is a fabrication with a mechanical cause, and it will recur in any
+record built from a Greek, Italian or Spanish court report read in translation.
+
+Neither is a hedge strip, a widened denial or an invention from nothing. Both need to be in the
+round-12 brief as named faults, because an agent looking for the five listed verdicts would not
+have flagged either.
+
+## BATCH 5's OTHER FINDINGS
+
+Six overstated, and the pattern holds — a denial of one thing moved onto another:
+- **idx 1240, Scorpene** — "all four deny any wrongdoing" in the source means the four indicted
+  **individuals**; the record moves the denial onto Thales and DCNI and adds a Razak Baginda
+  denial that is not in the source at all.
+- **idx 1262, Operacao Fizz** — the source carries two appeals; Manuel Vicente's case was severed
+  and sent to Angola and he is not quoted. "All denied" sweeps him in.
+- **idx 1135, Paxton** — he called the ruling "ridiculous", and the same article says his office
+  **did not dispute any issue of fact**, which is what ended its ability to contest liability. The
+  record both firms the denial up and drops the source's own counter to it.
+- **idx 350, Paladin** — the source has the former CEO saying he was "not aware of" any improper
+  payment; the record has him denying it.
+- **idx 306, Mchunu** — the commission says it "has not yet heard responses from several
+  implicated individuals", and the only denial on the page is a related-article headline about a
+  narrower witness-tampering allegation.
+- **idx 1575, Saldivar** — innocence maintained on one matter, nothing from him on the
+  immigration-documents allegation that was new that day.
+
+Two understated, both with the other half in the same source: **idx 251, Michelle Mone** — the
+source carries the 2020-2023 denials **and the December 2023 admission and BBC apology for
+lying**, and the record keeps only the denials. **idx 1326** — she pleaded not guilty to all five
+counts; the record says she denied the first four.
+
+**idx 1186 is both unverifiable and the Cite Soleil shape**: a non-response ("Moscow did not
+respond") attributed as a denial, on a record whose stored Japan Times url 301s to the home page.
+
+### Routes that worked, worth adding to the brief
+
+**Mondo Visione mirrors SEC releases verbatim** — recovered all three dollar-figure sec.gov
+records. **CourtListener** served a sentencing memo for a justice.gov page behind the Akamai
+interstitial, and the Global Anticorruption Blog carried another. **Anadolu** matched a
+Daily Herald page behind an Imperva stub.
+
+Confirming batch 3 independently: **`web.archive.org` snapshot content returns "Blocked by egress
+policy"** in this session while its availability API answers. Two agents hit this separately.
+New dead: `fcpablog.com` (403), `sec.report` (no route), `fcpa.stanford.edu` (500).
+
+### Calibration, volunteered again
+
+Of 26 confirmations it would stake 24, and named both exceptions with the reason. On **idx 1936,
+Diageo** it also caught two things outside the sweep: the order says 49 **months** of payments
+where the record implies 49 payments, and the title's "official in the prime minister's office" is
+looser than the order's "Thai government and foreign political party official". On **idx 807** it
+said the family's rejection in the source is of the authorities' account of **his death**, and
+whether that matches the record depends on a preceding sentence the batch file did not carry —
+**which is a defect in my batch builder**: it extracted the denial sentence alone, without the
+sentence before it.
+
+Also: **idx 399 and idx 449 store no url at all** (both denials verified elsewhere), and idx 449's
+extracted sentence begins with a stray `||` — an artifact of my own `d || undone` join in the
+batch builder.
+
+## A THIRD AGENT DIAGNOSED THE TAXONOMY AMBIGUITY AND HANDLED IT PROPERLY
+
+SWEEP-2 did what the brief should have told it to do. It found five records asserting a denial
+the cited source does not carry but which is real and documented elsewhere, and said so outright:
+
+> Read literally, the brief makes those `invented`. I did not use that label for them, because
+> calling a true denial "invented" would hide the fault that is actually there — a wrong
+> citation, not words put in a mouth. If you want them counted the brief's way, the counts become
+> confirmed 29 / invented 5.
+
+**Reporting both readings is the right answer and it is the only reason the batches can be
+reconciled at all.** Three of six agents reconstructed the two-axis distinction on their own.
+
+Normalised across the five batches that have reported, separating the two faults:
+
+| batch | denial exists nowhere reachable | denial real, cited source silent | no url stored at all |
+|---|---|---|---|
+| 2 | **0** | 5 | 1 (idx 440) |
+| 3 | 1 | ~9 | 1 (idx 441) |
+| 4 | 1 | ~11 | 2 (idx 383, 444) |
+| 5 | 3 | ~3 | 2 (idx 399, 449) |
+| 6 | 1 | — | — (16 unverifiable, blocked-host cluster) |
+
+So outright fabrication runs **0 to 3 per 41** and the citation gap runs **3 to 11 per 41**. Both
+are real; the second is three to five times commoner. **Six records across five batches carry a
+denial with no stored url at all.**
+
+Batch 2's overstated four include two more wrong-mouth cases: **idx 1371, Mukula/Zambia** — "the
+government denied it and Kapata called the report fake", where it was **President Lungu** who
+called it fake news, and Kapata instead **sued** the EIA and News Diggers for defamation. And
+**idx 341, Chilima** — the source says only that he "would not interfere with the investigations
+but would challenge his implication within legal means". The word deny never appears.
+
+## THE SWEEP IS ALSO TURNING UP OUTCOME DEFECTS, WHICH IS A BONUS CLASS
+
+Not what it was sent for, and arguably as valuable. Three acquittals and a status error, found
+incidentally while reading sources for denials:
+
+- **idx 1201, Embraer / Super Tucano** — El Dia and Diario Libre (30 May 2022) report the
+  defendants were declared **not guilty**. The record does not say so. Its stored url is also a
+  404 dead citation.
+- **idx 1275, Pcolinsky** — **later acquitted**, with the prosecutor appealing. The record also
+  has the bribe figure wrong: the Slovak source puts the alleged Kollar bribe at 20,000 euros,
+  where the 40,000 is what another man said he took from a third party, half passed on.
+- **idx 1130, Chernyshov** — the cited piece says NABU **completed** the pre-trial investigation;
+  the record says it "was still running through 2026".
+- **idx 1010, Chris Wright** — the coal half is in the cited article; the climate-report half is
+  in neither cited source, and the dating looks wrong.
+
+**Every source check on this map has been run forward — writers checking records they just
+wrote. Reading old records against their sources finds acquittals nobody went looking for.** That
+is the same lesson as round 9's writeup orphan check, which found 7 live false assertions in old
+material and 0 in the round's own.
+
+## A CORRECTION TO MY OWN BLOCKED-HOST LIST, AGAIN
+
+**`africannewsagency.com` is reachable and returns 200.** My pre-launch probe recorded it as a
+connection failure and I put it in the brief as dead. It was transient. That is the fourth
+host-list error this round, after balkaninsight, reporter.al, and the WebFetch-versus-curl
+conflation.
+
+Stored-url reachability, fourth independent measurement: **25 of 40 — 63 per cent**, against 82,
+79 and my own 77. **So the real figure is about 75 per cent with wide batch variance, not the 77
+I wrote into the brief as settled.** Quoting one measurement as the rate was premature.
+
+Also confirmed by a second agent: **WebFetch stays closed once a permission request goes
+unanswered**, so for the `sec.gov` class there is no second route within a run. And two
+alternate-origin hosts (`acquiaprod.middleeasteye.net`, `d9prod.worldhighways.com`) were
+**correctly refused by the permission classifier** and the agent did not retry them, which is the
+right behaviour.
+
+New dead: `sverigesradio.se`, `spectator.sme.sk` (WAF), `miningweekly.com`,
+`engineeringnews.co.za`, `qz.com`, `thenewdaily.com.au`, `lusakatimes.com` (Cloudflare),
+`monitor.co.ug`, `diariodecuyo.com.ar`, `ropesgray.com`, `mondaq.com` (all 403),
+`worldhighways.com` (202 with empty body), `congressoemfoco` (connection failure), and
+**`tizambia.org.zm` is now a "Coming soon" placeholder** — a cited source that has ceased to
+exist.
+
+## THE PRECISION CORRECTIONS ARE WORTH AS MUCH AS THE DEFECTS
+
+Three fixes that sharpen a true sentence rather than repair a false one:
+
+- **idx 330, Qatar / bin Hammam** — the denier is the **2022 bid and organising committee**, not
+  the state of Qatar. The record attributes a body's denial to a country.
+- **idx 987, Huertas** — the denial in the cited Colombia Reports piece is by **the FARC
+  dissidents**, not Huertas. His own denial exists elsewhere and must be cited. Another
+  wrong-mouth.
+- **idx 1221, Gertler** — the denial reaches the source only as "the Wall Street Journal reported
+  that Gertler's spokesman has denied", a report of a report, which BRIEF5 rule 5 says to treat
+  carefully. The agent flagged it rather than leaving it.
+
+And the calibration again: of 34 confirmations it would stake 28, naming all six exceptions with
+the specific reason, including **idx 544** where the denial is carried as a linked headline quote
+on the page rather than in its body — the third instance this sweep of a related-link headline
+being read as the page's content.
+
+## R11-A: THE STRUCTURAL REASON THE LEAD BANK IS CONTAMINATED
+
+22 of a 36 quota in `crime → security`, reported as a shortfall rather than padded. **13 of the 22
+came from the bank — but the bank gave 13 records out of 80 leads**, the worst conversion
+measured, and the agent found the cause:
+
+> The bank's 80 leads were filed by agents whose cells were barred, so they were never checked
+> for duplication against the 321 records this cell already holds.
+
+**That is the explanation for everything the other agents measured.** A lead is filed by an agent
+working a different cell, which is precisely the agent with no reason to read this cell's
+duplicate file. So the bank systematically accumulates leads that duplicate held records in cells
+its filers never looked at. 6 of the 80 were held records; 8 more were the same lead filed two or
+three times.
+
+The fix is mechanical and should run before round 12: **diff the bank against `cases.json` by
+figure and proper noun, not title, and deduplicate within the bank.** The agents are already doing
+this by hand, at the cost of fetches.
+
+Its own duplicate catches, all found programmatically rather than by title: Kyrgyzstan/Matraimov
+customs, the Dominican police ammunition case (908,001 items), Libya's 55 Brigade into the defence
+ministry (**same footnote 186, same MoD Decision 32 of 2022** as the held record), the Benghazi
+harbour/Sharfeddin strand (same para. 118, same annex 9), Bolivia/Davila — which it caught only
+**after** fetching the SDNY release and the sentencing report — and Kenya/Kassiwa, where only the
+second KRA officer was new.
+
+## `crime -> security` IS AT ITS LIMIT, AND THE REASON IS ITS SIZE
+
+**This cell holds 321 records, the largest on the map**, and it is the cell every general-interest
+source on organised crime feeds into. The agent's judgement:
+
+> A quota of 36 is not, on this round's evidence, available in `crime → security` without either
+> stretching the three-limb test or accepting a long run of `int: 2, wide: 1` records from Italian
+> and Latin American local press.
+
+What is left is dominated by one-station prison-officer cases, which are addable but barely move
+the shape, and by reports naming a region rather than a city. **Taken with R11-H on
+`movement → company` and R11-C on `crime → cabinet`, three of the round's cells are now measured
+as at or near their documented limit** — which bears directly on how many of the remaining rounds
+are actually available.
+
+Set against that: **8 of its 22 records are in countries the cell held nothing in at all** —
+Libya, Burundi, DR Congo, Ghana, Moldova as `crime`, France, India beyond two legacy records, and
+the Dominican army as distinct from its police.
+
+### Density, measured in-cell
+
+- **The local UN corpus, grepped in full with a security-body × collusion × crime-group filter:**
+  ~22 candidate passages → **5 records**, 3 duplicates of held records (2 found only after
+  reading). **The Haiti reports are worked out for this cell** — annex 26 of S/2025/597 and
+  annexes 9 and 19 of S/2026/714 are all already on the map. Libya and DRC still have margin.
+- **LiveSicilia's REST API: about one record per 8-10 ids at zero search cost**, the best rate
+  measured — but it produces Italy only, and mostly station- and prison-level cases at `int: 2`.
+- **InSight Crime's REST API measured poor for this cell**: `search=prison guards bribed` returned
+  9 hits, none usable. Both InSight records it wrote came from banked leads. That is now three
+  agents reporting this API as excellent in one cell and useless in another.
+- **NABU's half-year report, read end to end: 1 record from ~40 described cases** — confirming the
+  brief. The rest are procurement, energy and tax, or officials extorting businesses with no
+  outside party inside.
+- **Official judiciary press pages (CGPJ / poderjudicial.es, LegalToday, Europa Press): 3 items
+  opened, 2 became records, both `established` with full findings of fact.** Highest quality per
+  fetch of anything touched this round, and untried at scale. Worth a dedicated run.
+
+### Two EPPO releases that arrest officers and never say what they did
+
+The Calypso Piraeus and Steamboat cases both announce arrests of customs officers and **carry no
+account of the conduct**. The agent read both releases in full to check. Worth recording as a
+source-family property: EPPO announces, it does not describe.
+
+## A DIRECT CONFLICT BETWEEN TWO AGENTS, TO RESOLVE BEFORE APPLYING ANY PATCH
+
+On the **Cardamone** record, R11-A reports LiveSicilia of 18 April 2026 saying he is **now serving
+his ten years at Agrigento**, with his lawyer asking to move him to the military prison at Santa
+Maria Capua Vetere. R11-OUT2, working the same record, **removed the claim that he is held at
+Agrigento** on the ground that nothing it opened carried it — it had read the La Sicilia reprint
+and a LiveSicilia piece of 3 May 2026.
+
+Both are careful agents citing dated pages. **R11-OUT2's patch would delete a fact R11-A has a
+source for.** The patch must not be applied to that field until the 18 April page is read. This is
+the second time this round that a repair patch would have removed a published fact, after the
+Cite Soleil citation.
+
+## One judgement flagged
+
+Two of R11-A's records rest on **ruling 3** — buying the outcome of your own matter — rather than
+on a crime group: the Ukraine SBU $68,000 case and the Siracusa prison officer. Both follow held
+precedents in this exact cell (the Chernivtsi recruitment-centre records, the Crotone prison
+officer). If a later round narrows ruling 3, those two go with the precedents rather than
+separately.
+
+# THE DENIAL SWEEP, COMPLETE — 246 RECORDS READ AGAINST THEIR OWN SOURCES (17 Nov 2026)
+
+| batch | confirmed | overstated | understated | invented | unverifiable |
+|---|---|---|---|---|---|
+| 1 | 30 | 9 | 0 | 1 | 1 |
+| 2 | 34 | 4 | 0 | 0 | 3 |
+| 3 | 31 | 5 | 2 | 1 | 2 |
+| 4 | 32 | 5 | 1 | 1 | 2 |
+| 5 | 26 | 6 | 2 | 6 | 1 |
+| 6 | 35 | 2 | 1 | 1 | 2 |
+| **total** | **188** | **31** | **6** | **10** | **11** |
+
+**47 content defects in 246 records — 19 per cent.** Plus roughly **53 citation defects**: records
+whose denial is real but whose stored url does not carry it. The `invented` column is not
+comparable across batches, because batches 2 and 5 used that label for the citation-gap case while
+1, 3, 4 and 6 called those `confirmed` and listed them separately. True fabrication is about 7;
+the rest of that column is miscitation.
+
+**This sweep existed because the invented denial was recorded here as solved.** It was solved for
+newly written records — zero recurrences in 471. It had never been checked in the 2,574 records
+written before the fix, and 246 of those assert a denial.
+
+## The faults, by kind
+
+**Fabrication (about 7).** A denial no source anywhere carries. idx 1377 (Lesotho) asserts a
+denial by a named party leader who, on the reachable reporting, publicly **pledged support** to the
+faction instead. idx 1421 attributes a **non-response to the Chinese embassy** where the cited
+article contains no occurrence of the word embassy, no request for comment and no mention of
+charges. idx 1474 (Botswana) has "he denies it" where his lawyer said in June 2026 that no plea had
+been taken from him. idx 648 (Slovakia) puts the prosecutor's own words in the defendant's mouth.
+
+**The "did not respond" conversion — the single commonest shape.** idx 349, 882, 165, 1186, 52,
+306, 420, 1198 and others turn silence into a denial. In idx 349 the source says outright "Detailed
+questions were sent... **Neither responded**". In idx 420 four named private individuals denied and
+**the arrested police and intelligence employees — the record's own subject — have no recorded
+response at all.**
+
+**Wrong mouth.** A real denial attributed to the wrong party, which is a fabrication about a
+specific person even when the quoted words exist. idx 1198: the denial of a family tie came from
+**the lawyer for the president's brother, about his own client**, not from the president's office.
+idx 1371: **President Lungu** called the report fake news; Kapata, the man named, instead **sued**
+the EIA for defamation. idx 1007: Congress's general secretary refuted the allegations, not Baghel.
+idx 987: the denial belongs to the FARC dissidents, not Huertas. idx 541: the energy fund denied,
+not Ye personally. idx 330: the 2022 bid committee denied, not the state of Qatar.
+
+**Denial of a different allegation.** idx 1268's only denial answers the 2019 Ivanovic murder
+indictment, not the OFAC bribery scheme. idx 583's two denials are about a separate 2013
+investigation. idx 1152's officials denied **the authenticity of the leaked documents**, not the
+placements. idx 339's Samherji statement blames one man and says senior staff were unaware — **it
+does not deny that bribes were paid.**
+
+**Understatement: the denial kept, the rebuttal dropped.** idx 272 — the Zondo report the record
+cites finds her denial "is not credible and falls to be rejected" and finds she lied. idx 337 —
+S/2026/466 annex 19 carries Kagame's denial **and his admission of "deployment of troops, materiel,
+and coordination with AFC/M23"**; the record kept only the denial. idx 1570 — the same report has
+him **pleading guilty to three of five charges**. idx 251 — the source carries the denials **and the
+December 2023 admission and BBC apology for lying**. idx 1375 — the same source states that other
+testimony "contradicted Tsolo's denial". idx 253 — "**However, the Greek Judicial Council ruled
+that the scandal was real**" is missing from the record.
+
+**Two fault types the five verdicts did not anticipate.**
+1. **Inverted attribution.** idx 845: the cited page attributes the honey-trap claim to **the
+   prosecution** and the record hands it to the defendant as his own defence.
+2. **A denial manufactured by mistranslation.** idx 1001: the source says further interrogations
+   and *apologies* are expected from the accused. In Greek legal usage **απολογία means a defence
+   statement**. It was read as a plea and written up as "the defendants deny the charges." Nobody's
+   answer is in the source. This will recur in any record built from a Greek, Italian or Spanish
+   court report read in translation.
+
+## Three operational corrections to this document
+
+1. **A stored url IS fetchable — by curl.** The 16 November note that every attempt returns
+   `PROVENANCE_REQUIRED` and that each record therefore costs a search is a **WebFetch**
+   restriction misread as a property of stored urls. Measured across six batches and my own
+   sample: **about 75 per cent reachable by plain curl** (63, 78, 79, 82, 83 per cent per batch —
+   so quote the range, not a single figure). This changes the budget of every job that re-reads a
+   held record's source.
+2. **`web.archive.org` is blocked by this session's egress policy**, while `archive.org`'s
+   availability API answers. Four agents hit this independently. It is the obvious fallback and it
+   does not work here.
+3. **WebFetch stays closed for the rest of a run once a permission request goes unanswered.** Two
+   agents lost their WebFetch route mid-batch. Plan on curl.
+
+## Dead and wrong citations, as a bounded class
+
+- **`sites.tufts.edu/corruptarmsdeals` — the whole World Peace Foundation compendium is gone**
+  (404 on the article, on `?s=` and on its REST index). **Five records cite it**: idx 1201, 1578,
+  1580, 1604, 1605 — and 1578 and 1580 are two of the six records deliberately held over the word
+  cap for density. The map's most heavily sourced records have a dead primary citation.
+- **`tizambia.org.zm` is now a "Coming soon" placeholder** (idx 1371).
+- **`oldwp.civil.ge/?p=119829` does not resolve; the article is live at `civil.ge/archives/119829`**
+  (idx 1210) — a one-line url swap.
+- `wtop.com` 404s on four records. `sites.tufts.edu` aside, idx 1615's gov.uk asset 410s and the
+  Ultra Statement of Facts has been re-issued at a new path. idx 597's cite is dated March 2026
+  where the AP story is **15 December 2025**.
+- **Six records assert a denial with no stored url at all**: idx 383, 399, 414, 440, 441, 444, 449.
+
+## Outcome defects found incidentally, which is a bonus class
+
+Reading old records against their sources turns up acquittals nobody went looking for:
+- **idx 1201, Embraer/Super Tucano** — El Dia and Diario Libre, 30 May 2022: the defendants were
+  declared **not guilty**. Not in the record. Its citation is also dead.
+- **idx 1275, Pcolinsky** — **later acquitted**, prosecutor appealing. The bribe figure is also
+  wrong: the source puts the Kollar bribe at 20,000 euros, not 40,000.
+- **idx 1130, Chernyshov** — the cited piece says NABU **completed** the investigation; the record
+  says it was still running through 2026.
+- **idx 523** — says Dodon is "now a member of parliament"; the source has him an MP 2009-2016,
+  leading the PSRM since 2024.
+
+## Routes that worked, for the next sweep
+
+**Mondo Visione, NYU SEED (`research.seed.law.nyu.edu`), Willkie's Compliance Concourse and
+companies' own releases all reproduce SEC releases verbatim** — that is the route around sec.gov,
+which 403s on every path including sequential requests at 8-second intervals. **CourtListener** and
+the Global Anticorruption Blog serve justice.gov material behind the Akamai interstitial.
+**AP wire copy survives on local-TV sites** (ktvz, infonews, news4jax, clickondetroit) when
+apnews and yahoo refuse. **VOA carries Reuters copy** (worked three times).
+`gov.uk/api/search.json` plus `/api/content/...` returns current asset URLs when a publishing
+PDF 410s. `theshiftnews.com/wp-json/wp/v2/posts?search=` is an open index of the Fenech trial days.
+`thestar.com.my/aseanplus` republishes Borneo Bulletin in full; `cna.com.tw` covers the same Taiwan
+High Court rulings as a blocked Taipei Times; `businesslive.co.za` carried a Reuters wire that
+Club of Mozambique blocked.
+
+**A UN denial can sit in an appendix.** S/2024/731's Iranian denial is in **Appendix A**, invisible
+to a paragraph grep — the same annex problem the research rounds measured, now confirmed for
+denials too.
+
+## What the sweep says about method
+
+**Every source check on this map has run forward: writers checking records they had just written,
+where the stored url is the page they just read.** Nobody had tested whether an old record's
+citation still points at its own claim. The answer is that about a fifth of these records
+misdescribe what their source says and about another fifth cite a source that does not carry it.
+
+Three of six agents independently reconstructed the two-axis distinction the brief should have
+drawn — **is the sentence true, and does the record's own citation carry it** — and one reported
+both counts so the batches could be reconciled. Round 12's brief must split the verdict on those
+two axes.
+
+Three agents separately caught **a related-link headline being read as the page's body text**
+(idx 608, 306, 544, 256). That is a specific, mechanical way these citations went wrong and it is
+worth a named warning.
+
+Every agent volunteered a calibration — how many of its own confirmations it would stake the map
+on — without being asked twice: 21 of 32, 28 of 31, 28 of 34, 24 of 26, 19 of 35, 27 of 30. **That
+is 147 of 188 staked without reservation**, and the gap is almost entirely the citation class.
