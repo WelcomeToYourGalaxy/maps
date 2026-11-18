@@ -1903,3 +1903,67 @@ with `search=voto+di+scambio+politico+mafioso`.
 
 The matching caution: a bare dissolution with no clan and no individual decision named is the
 thinnest shape the map accepts, and one such record was flagged by the reviewer as borderline.
+
+## ROUND 10 STEP 4: THE ORPHAN CHECK FOUND THREE MORE, AND A PATTERN GAP IS NOW COSTED
+
+**The writeup orphan check pays every time it is run over the whole file.** Round 9 found
+seven live false assertions; round 10 found three more, plus two unsupported details caught
+while rewriting. Round 10's own 19 removals again produced **zero** — confirming that the
+value is entirely in sweeping the *old* removals, not the round's own.
+
+| country | what the writeup still asserted | the removed record behind it |
+|---|---|---|
+| Myanmar | militias "control the parts of Shan and Karen states that produce much of Asia's methamphetamine" — no live record mentions Shan or methamphetamine | "Border militias inside the state structure — Shan State" and "Bai crime family's head ran Myanmar's Kokang zone and sat as MP" |
+| Myanmar | the Ma Ba Tha laws described as applying to "Muslim residents" | the live record's terms are conversion, marriage between Buddhist women and non-Buddhist men, monogamy and birth spacing |
+| Yemen | the Houthis as "a Zaydi Shia armed group" — `Zaydi` survives only in a removed record | "Houthi movement took over Yemen's state and runs it through its own council" |
+
+Two more, not orphans but drift of the same kind: **Peru** called Tren de Aragua "a Venezuelan
+gang" where the record does not say Venezuelan, and **Albania** said Sky ECC was "read by
+European police" where the record says Belgian, Dutch and French police via Eurojust.
+
+**One flagged rather than cut**: Cameroon's writeup names Biya and no live record does, but the
+surviving sentence says only that he has held the presidency since 1982 — a fact about who
+holds the office rather than an infiltration claim. Owner's call.
+
+**No `conditions.json` mismatch.** Taiwan, Vatican City and Kosovo are the only countries in
+`bts.json` with no row, and all three already say so correctly.
+
+**14 writeups rewritten** from their countries' own live records: Italy, Brazil, Romania, Yemen,
+Ukraine, Albania, Ecuador, Turkiye, Peru, Iraq, Libya, plus Mexico and Indonesia (round 9's two
+named priorities) and Myanmar as the check's repair. The whole file is now inside BRIEF7's
+150–300 words. Worth noting one process detail: Italy's aggregate figures were recomputed from
+the records after a first draft miscounted — sixteen dissolutions, fourteen vote-exchange cases,
+fourteen health-body cases, and 43 bought-officer cases split 26 police to 17 prison. **A
+writeup that totals its own country's records should have those totals recounted, not carried
+forward.**
+
+**Still stale**: round 9's backlog, plus France, the Dominican Republic and Moldova from this
+round. France and the Dominican Republic are the two to do next, because in both the new records
+open a strand the writeup does not describe at all.
+
+### The pattern gap is now costed, and it is an owner decision
+
+Round 9 identified it; round 10 priced it. **"State companies run as the network's own
+business"** — an armed or criminal network operating through a state company's own paperwork,
+the company being the instrument rather than an official inside it being bought.
+
+- **Five records already sit in `pattern_orphans.json` for want of it**: four Haftar-network bank
+  and NOC takeovers, and the Tubruq fuel exports.
+- **About ten more would move into it** from `militias_extremists_inside`, which holds them only
+  because its selector takes every `inf: movement` record: Haftar's request for 96 state
+  projects, his investment authority ordering the ports company to load scrap, a commander's
+  brother's firm on power and oil contracts, Iraq's state telecoms satellite contract for the
+  PMF, Arkenu's $3bn NOC diversion and its designer chairing the oversight committee, the
+  Misratah storming of the NOC, the RSF stake in Sudan's Al Khaleej Bank, the Houthi hold on
+  Yemenia, and the Muhandis General Company.
+
+That is roughly fifteen records that currently sit in no pattern or in a mislabelling one. A new
+pattern is an owner decision, so it was not created. The full case list is in
+`/home/claude/work/round10/patterns_note.md`.
+
+All 31 of round 10's new orphans were assigned by hand under ruling 13 — 23 to
+`kickbacks_contracts_laws`, 4 to `crime_inside_companies`, 2 to `bought_off_checks`, 1 each to
+`industry_capture` and `creditors_ran_finances` (the 1907 Dominican customs receivership, beside
+round 9's 1912 Liberian one). No selector touched, no pattern lost a case, total membership
+3,057 → 3,088. **Nothing was added to the orphan list this round**, which is the first time that
+has happened.
