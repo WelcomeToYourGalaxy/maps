@@ -69,6 +69,33 @@ def main(outdir):
     nets = load("agents/networks.json")
     gaps = load("agents/gaps.json")
     ev = load("agents/events_gold.json")
+    GOLD_HOLDERS = {r["iso3"] for r in ev["gold"]["rows"] if r.get("iso3") and r.get("tonnes")}
+    for _u in list(GOLD_HOLDERS):
+        GOLD_HOLDERS |= set(UM.get("ECB" if _u == "EMU" else _u, []))
+
+    # Three agents across rounds 72 and 73 read these files, compared them to the
+    # "places holding exactly one record" list, and reported the generator broken,
+    # because a file that lists two records for Thailand looks like a contradiction.
+    # It was not: app.js counts a case only when it is not counterparty_only AND its
+    # status is not a cleared outcome, and counts a career move only when it is not a
+    # public_move. The flag below is that rule, so the brief says which records the
+    # map actually colours. The events builder has carried the same flag since round 66.
+    # CC_OUT and the case_updates pass are coverage.py's, for the same reason: a status
+    # in corruption.json can be stale, and build_final.py applies these before writing.
+    CC_OUT = {'acquitted', 'case dismissed', 'charge withdrawn',
+              'investigation closed', 'conviction annulled (time-barred)'}
+    live_status = {}
+    for _i, _c in enumerate(corr["cases"]):
+        live_status[_i] = _c.get("status") or ""
+    for _u in (gaps.get("case_updates") or []):
+        _m = (_u.get("match") or "").split("/")[0].split(" (")[0].strip().lower()
+        if not _m:
+            continue
+        for _i, _c in enumerate(corr["cases"]):
+            if _m in (_c.get("people") or "").lower() or _m in (_c.get("summary") or "").lower():
+                if _u.get("status"):
+                    live_status[_i] = _u["status"]
+                break
 
     def blank():
         return {}
@@ -80,6 +107,7 @@ def main(outdir):
             rd.setdefault(iso, []).append({
                 "index": i, "people": r.get("people"), "move": r.get("move"),
                 "public_move": bool(r.get("public_move")),
+                "counted": not r.get("public_move"),
                 "source_url": r.get("source_url"),
                 "via": r["iso3"] if r["iso3"] != iso else None,
             })
@@ -93,6 +121,9 @@ def main(outdir):
                 "category": c.get("category"), "years": c.get("years"),
                 "status": c.get("status"),
                 "counterparty_only": bool(c.get("counterparty_only")),
+                "live_status": live_status[i],
+                "counted": (not c.get("counterparty_only")
+                            and live_status[i] not in CC_OUT),
                 "source_url": c.get("source_url"),
                 "via": c["iso3"] if c["iso3"] != iso else None,
             })
@@ -169,7 +200,13 @@ def main(outdir):
         "external_auditors": absent(aud),
         "banknote_printers": absent(ties["print"]),
         "reserve_managers": absent(ties[MGR_REL]),
-        "gold_custodians": absent(ties[GOLD_REL]),
+        # The gold row's own denominator, matching coverage.py. A bank with no gold cannot hold
+        # gold in custody, so the 74 reachable places absent from the World Gold Council table are
+        # not targets and must not reach a brief. coverage.py separated them at round 72 and this
+        # script did not, which is the two-scripts-must-agree problem round 68 fixed once already:
+        # a single source of truth cannot catch itself being wrong, so they are diffed, and that
+        # only works if they apply the same rule.
+        "gold_custodians": [c for c in absent(ties[GOLD_REL]) if c in GOLD_HOLDERS],
     }
     # the places whose only career moves are public read blank on the layer
     # while their box is not empty -- derive it, never read it from prose
@@ -189,6 +226,13 @@ def main(outdir):
     # NET.nodes is much larger than networks.json's link entities.
     party_names = sorted({n["name"] for n in D["NET"]["nodes"]})
 
+    searched_all = load("agents/searched.json") if os.path.exists(
+        os.path.join(CB, "agents", "searched.json")) else {}
+    if not searched_all:
+        print("NOTE: agents/searched.json is missing. Run mk_searched.py first, or this "
+              "round's brief carries no record of what earlier rounds already read.")
+    searched = {k: v for k, v in searched_all.items()}
+
     files = {
         "party_names.json": party_names,
         "have_rd.json": rd, "have_cases.json": cases, "have_events.json": events,
@@ -196,6 +240,12 @@ def main(outdir):
         "have_aud.json": aud, "have_print.json": ties["print"],
         "have_print_sibling.json": ties["print_sibling"],
         "closed_negatives.json": closed, "absent.json": absent_lists,
+        # Every documented blank every earlier round recorded, keyed by place and row, so a
+        # brief can say "already read, do not re-read" for the countries in its own
+        # assignment. Until round 73 these were written and never read back, and a depth
+        # round could spend an agent's budget re-enumerating a vein a previous round had
+        # already closed. Built by mk_searched.py; regenerate it before this script.
+        "searched.json": searched,
     }
     for name, obj in files.items():
         with open(os.path.join(outdir, name), "w", encoding="utf-8") as fh:

@@ -93,9 +93,9 @@ same commit as the work it did.
   - Links: `{n, cb | tn, rel, role, detail, src_t, src_u}`.
   - Popups turn each link into a plain sentence (`SAY` / `sayLink` / `srcItem` in `app.js`). Add a `SAY` entry for any new `role` string.
 
-## Where it stands (72 rounds in, 17 November 2026)
+## Where it stands (73 rounds in, 17 November 2026)
 
-1,715 outside parties and 2,514 ties. One writeup for every box, 1,944 of them. 20 patterns
+1,721 outside parties and 2,522 ties. One writeup for every box, 1,944 of them. 20 patterns
 and 14 suspected patterns.
 
 The party count is lower than the tie count implies, and deliberately: round 60 folded 28 duplicate
@@ -111,9 +111,9 @@ ignores" below.
 
 | Category | Records | Places | of 206 | of 192 |
 |---|---|---|---|---|
-| Corruption cases | 283 | 175 | 85% | 91% |
-| Revolving door | 307 | 172 | 83% | 90% |
-| Governor removals and pressure | 256 | 183 | 89% | 95% |
+| Corruption cases | 292 | 175 | 85% | 91% |
+| Revolving door | 310 | 172 | 83% | 90% |
+| Governor removals and pressure | 258 | 183 | 89% | 95% |
 | External auditors | 216 | 178 | 86% | 93% |
 | Banknote printers | 184 | 168 | 82% | 88% |
 | Outside reserve managers | 207 | 79 | 38% | 41% |
@@ -144,6 +144,12 @@ Change over 17 November, which is rounds 70, 71 and 72 together, against round 6
 | Named shareholders | 0.0% | 0.0% | 0.0pp | 5% of 192 |
 | **All rows together** | **+4.0%** | | | |
 
+Round 73 against round 72: corruption cases +3.2% in records, the revolving door +1.0%, removals and
+pressure +0.8%, all rows +0.7%, and 0.0pp of coverage on every one of the nine. Depth moved on all
+three priority rows: places holding exactly one case fell 4.5% and places holding three or more rose
+9.1%; on the revolving door exactly-one fell 3.0% and two rose 13.0%; on removals exactly-one fell
+1.6% and two rose 4.0%. Fifteen records filed, from five agents.
+
 Round 72 alone: corruption cases +1.4%, the revolving door +1.3%, removals and pressure +2.0%, all
 rows +0.6%, and 0.0pp of coverage on every one of the nine. **Three rounds in a day moved the three
 priority rows between 6.6% and 10.3% in records and not one percentage point of coverage, because
@@ -163,8 +169,8 @@ user cares most about are at their breadth ceiling and were worked for second an
 countries that already held one. The records column is the honest measure of such a round; the place
 column will barely move and the percentages not at all.
 
-The revolving-door row counts the 296 records with a private employer. There are 358 career-move
-records in all; the other 62 are `public_move` and are listed in the country's box without being
+The revolving-door row counts the 310 records with a private employer. There are 374 career-move
+records in all; the other 64 are `public_move` and are listed in the country's box without being
 counted, because nobody moved between public office and private finance. SIXTEEN places hold
 nothing but moves of that kind, so they read blank on the layer while their box is not empty:
 BOL BTN CPV CUB HTI MRT QAT SLB SMR STP SYC TLS TON VUT WSM YEM. **Derive it, never read it:** the
@@ -187,9 +193,12 @@ genuine ownership fetch, and even there round 68 narrowed it: the CV's seven out
 include railways, steel, sugar and a state commission, so **Bolivia has exactly TWO convertible
 employers, Banco de Cochabamba S.A. and Compañía Boliviana de Seguros S.A., not six.**
 
-The corruption row counts the 268 cases that are not `counterparty_only`. Two more findings are
+The corruption row counts the 292 cases that are not `counterparty_only`. FIVE more findings are
 listed in a country's box without being counted, because the subject of the finding was another body
-and the central bank was only the counterparty — see the decisions section below.
+and the central bank was only the counterparty — Palestine, Samoa, Haiti, Curaçao and, added at
+round 73, Senegal, where the Cour des comptes' finding on 15 billion CFA francs spent without
+authorisation is against the Treasury and its ministers and not against the BCEAO. See the
+decisions section below.
 
 Named shareholders reads low because only about ten central banks have private shareholders at
 all. Outside reserve managers reads low because 103 of its 207 ties are Norway's fund — and no
@@ -268,8 +277,21 @@ direction is good.**
 row as 176 places with 94 holding exactly one, which is the UNFILTERED record count, while its own
 caption said the figures were counted the way each layer counts. On the layer's rule the row is 156
 places, and `about.html` had the right figure — 81 at the time — all along. The revolving-door and
-removals rows in that table were correct. **When this table and `about.html` disagree, `about.html`
-has `check_about.py` behind it and this document has nothing.**
+removals rows in that table were correct. **When this table and `about.html` disagreed, `about.html`
+had `check_about.py` behind it and this document had nothing. That is fixed: `check_handoff.py`,
+written at round 73, checks seventeen of this document's figures against the data and reads the
+standing table's nine rows out of `coverage.py`'s own snapshot rather than re-deriving them.** It
+found the revolving-door prose stale by 14 records and the corruption prose stale by 24, both wrong
+since round 70 or earlier. It also reports any figure it can no longer FIND, so rewording a sentence
+cannot quietly switch a check off.
+
+**Its first draft got four of ten figures wrong by reimplementing the row filters** — 245 removals
+against the layer's 258, 167 auditors against 216, because the auditor row is not just
+`gaps.json['auditors']` and the removals row is not just `kind != "other"`. That is the round-72
+depth-distribution mistake repeated, and it has the same fix, which is now written into the script:
+do not re-derive what `coverage.py` already derives. Party and tie counts come from the BUILT page
+for the same reason — counting `networks.json`'s links gives 668 against the page's 2,522, because
+`gaps.json`'s auditors and the union expansions also render.
 
 **Round 71 moved 25 places off "exactly one" and not one percentage changed:** cases 81 to 71,
 removals 136 to 127, the revolving door 110 to 104. Measured from the start of the day, rounds 70
@@ -515,6 +537,298 @@ basis is now written per employer, and the phrase to reuse is "listed, or wholly
 private group, or a privately held group" — not "listed". The same review also removed reliance on a
 1993-1995 Hungarian commercial bank leg, since banks of that vintage were largely state-held before
 the 1996-97 privatisations and no source opened states that one's ownership.
+
+## The brief files did not say which records the LAYER counts, and three agents misread them the same way (round 73)
+
+Three agents across rounds 72 and 73 read `have_cases.json`, compared it to the live "places holding
+exactly one record" list, and reported the generator broken. One wrote that "the exactly-one
+generator is wrong about those three and should be fixed upstream." The generator was right every
+time. I verified it three times, the third time country by country: Ghana, Brazil, Britain, Thailand,
+Tonga and Samoa each hold exactly ONE counted case, because the second record in each is acquitted,
+charge withdrawn, case dismissed, conviction annulled time-barred, or counterparty-only.
+
+So this was a tool failure, not an agent failure. `have_cases.json` listed every record with no
+indication of whether the layer counts it, so an agent holding a file that shows two Thai records and
+a list saying Thailand holds one sees a contradiction, every time, and the honest thing for it to do
+is report the contradiction. Three agents did exactly that, and three agents were right to.
+
+`mk_have.py` now emits a `counted` flag on every case and career-move entry, with `live_status` on
+cases so the reason is visible. The rule is the layer's own: a case counts when it is not
+`counterparty_only` AND its status is not one of the cleared outcomes on `CC_OUT`, with `gaps.json`'s
+`case_updates` applied first because a status in `corruption.json` can be stale; a career move counts
+when it is not a `public_move`. The events builder has carried the same flag since round 66, which is
+why the confusion was always about cases and never about events. Verified against `coverage.py`: both
+scripts now say 156 places are coloured on the case layer. (They differ by two on "holds a record",
+177 against 175, because `mk_have.py` keys PSE and XKX and `coverage.py` excludes them from its place
+set. That difference is real and intended, not a bug in either.)
+
+**The general shape, which is this project's one recurring bug in its sixth direction: work that is
+done and written down, then done again because the written form is not the form the next step reads.**
+Rounds 56, 57, 64 and 66 lost agent budget to countries already on the map. Round 72 lost a brief to
+a target list I typed by hand. Rounds 72 and 73 lost three agents to a file that did not say what the
+layer counts. Every instance has been fixed by making the data say it, never by writing a warning
+into the brief.
+
+## Documented blanks were written for 42 rounds and never read back (round 73)
+
+The depth brief tells each agent to record a blank for every country it worked and did not convert,
+and to name what it read. Agents do this well — round 73 alone returned 59 structured blanks naming
+specific governor pages, audit registers and resolution series that hold nothing. Nothing ever read
+them. `coverage.py` prints the live absent and exactly-one lists and `mk_have.py` prints what the map
+holds, so a new round's brief could send an agent to a country whose vein an earlier round had already
+enumerated and closed, and the brief could not tell, because the only record of that work was a JSON
+file in a round directory nobody opens.
+
+`agents/work/mk_searched.py` now accumulates every blank from every round into `agents/searched.json`,
+keyed by place and row, each entry carrying the round and the agent's own words about what it read.
+First run: **436 documented blanks from 36 agent files across 42 rounds, covering 151 places** —
+86 on reserve managers, 69 on corruption cases, 45 on the revolving door, 31 on gold custodians, 23 on
+removals, 7 on named leads. All of it previously write-only. `mk_have.py` writes the per-round copy as
+`searched.json`, so a brief can carry "already read, do not re-read" for the countries in its own
+assignment. Run `mk_searched.py` BEFORE `mk_have.py` each round; `mk_have.py` prints a NOTE if the
+file is missing rather than silently writing a brief with no memory.
+
+One mapping detail worth keeping: the revolving-door agent files are named `rd.json`, `rd1.json`,
+`rd2.json`, `rd3.json` and `rd_depth.json` across rounds, so the first row-matcher missed four of the
+five forms and dropped 28 places into "unknown". Fixed with a regex. If a future round adds a file
+name shape, check the `unknown` count in the script's own output — it prints one line per row.
+
+## One episode, filed twice, on two different rows (round 73)
+
+Two agents working different assignments found the same Taiwanese episode: Control Yuan corrective
+measure 114財正0002 against the Central Mint, over the Mint's handling of a workplace-bullying
+complaint by an employee the document names only as A君. The cases agent filed it as a corruption
+case; the removals agent filed it as a state oversight body's formal correction. Filing both would
+have given Taiwan a depth gain on two rows out of one finding, which is the accretion defect the
+verifiers keep catching, arriving this time from two directions at once.
+
+The cases copy was dropped and is parked at `agents/work/r73/dropped_twn_case.json`. Both agents
+said in their own notes that the conduct is maladministration and not financial corruption, so the
+removals row is the right one. The record is sound: the Control Yuan document cites 憲法第97條第1項
+and 監察法第24條, says the Mint's handling 顯有怠失, and transmits the case to the Central Bank to
+require improvement — all confirmed in the .docx text. Taiwan therefore gains on removals and stays
+on exactly-one for cases.
+
+**Two lessons.** First, when two agents work adjacent rows in the same round, check their outputs
+against EACH OTHER and not only against the live data; the dry-run merge will not catch it, because
+each record is new and neither duplicates anything already filed. Second, the agent that files a
+borderline record on a row should say which row it rejected and why, and both of these did, which is
+the only reason the duplication was obvious rather than discovered by the verifier.
+
+## Kyrgyzstan stays on exactly-one, and the `other` kind is doing two jobs (round 73)
+
+The removals agent proposed re-kinding `events_gold.json` idx 82 to a counted kind, which would have
+moved Kyrgyzstan off the exactly-one list with no research at all. Refused. Both Kyrgyz `other`
+events are unexplained resignations: idx 82, 26 June 2024, parliament approving Kubanychbek
+Bokontaev's resignation letter and relieving him ahead of schedule, and idx 92, 18 March 2026, Melis
+Turgunbaev submitting a resignation letter the page calls voluntary. **Neither source gives a reason
+from either side.** Every counted kind on the removals row asserts a cause — dismissed, forced out,
+pushed to resign — so filing either under one of them would put a claim on the map that no source
+makes. This is the Namibia precedent: an unexplained early exit is not pressure.
+
+**The handoff's own wording invited the mistake and is now fixed.** It said `other` is for
+appointments and court rulings and that one must "never file a real episode that way", which reads as
+a ban, so an agent seeing two Kyrgyz records filed `other` concluded they were mis-filed. `other`
+holds two distinct things: events the layer deliberately excludes (appointments, routine court
+rulings), and exits where no source states a cause, which cannot go on the removals row without
+inventing the cause. The warning covers only the first. **Getting a record out of `other` needs a
+source that states the cause, not a re-reading of the same source.** Written up in
+`agents/work/r73/decisions.md`.
+
+## `check_dates.py`, four fixes, and what each one was hiding (round 73)
+
+The date checker went from 15 flags to 5 at round 71 by fixing the script rather than the records.
+Round 73 took it from 5 to 2, and both survivors are hand-verified and disclosed in their records.
+
+1. **It did not read the second sources a record cites.** The Maldives record's 17 November 2023 is
+   printed on its second source, psmnews.mv, as "November 17, 2023". The script checked only
+   `source_url` and reported the date absent, while its own advice said to go and read the second
+   source by hand. It now pools `second_source_url` and every URL in the record's own prose, which
+   does that mechanically. Every URL it fetches is one the record already published.
+2. **It reported a date as absent when the page carrying it was never read.** psmnews.mv answers 403
+   to scripted fetches and opens for a browser, so the pooled fetch returned nothing and the flag
+   stood. It now prints `SECOND SOURCE REFUSED, NOT READ` with the URL. A flag raised over a page
+   nobody read is not evidence against a record.
+3. **Serbian and Russian decline the month.** The DRI audit report writes
+   "2. фебруара 2007. године", genitive, where `MONTHS_ALT` holds the nominative "фебруар", and the
+   trailing `\b` refused the match. Cyrillic month names now take an optional case ending; Latin
+   matching is unchanged.
+4. **"read 17 November 2026" is a fetch stamp, not a claim.** Agents write it to record when they
+   opened a page. Three of round 73's five flags were that stamp. Now ignored.
+
+## A host that 404s to every client and serves the document only from cache (round 73)
+
+Round 72 recorded that the PwC investigation report on the Centrale Bank van Curaçao en Sint Maarten
+was on disk as a 142,531-byte scan from which `pdftotext` extracted zero characters, and that it
+needed one OCR pass. **That was wrong, and the wrong version was sitting in `gaps.json` where it
+renders in Curaçao's box.** The 142,531 bytes are the host's HTML error page: knipselkrant-curacao.com
+answers HTTP 404 with a page reading "Knipsel niet gevonden" to curl on both the single- and
+double-slash path and with a browser user-agent, and the adoc.pub mirror answers 403. There was never
+a scan to OCR. `gaps.json` is corrected.
+
+The report itself is real. Read through the fetch tool's cache, its cover is "Onderzoek CBCS" and
+"04 augustus 2014" and its chapter 4 is the Harbour case, which matches the record. **So it is filed
+with `weak_source: true` and a note that says the weakness is the HOST and not the document** — a
+reader clicking the citation gets an error page, which is the thing this map's no-fabrication rule
+exists to prevent. Flagged for the owner below: a record whose source URL serves nothing to a reader
+is a judgement call, and it is the owner's.
+
+## Two defects found by hand on round 73's records, before the verifier
+
+**An accretion.** The Nicaraguan record on resolution RIA-UAI-007-2022 called the Fondo de Ahorro y
+Retiro the Bank's STAFF savings and retirement fund. The resolution does not say who the fund's
+members are. "Staff" was not in the source and came out. The fund is the Bank's; whose savings it
+holds is not stated. This is the map's commonest defect and it arrived again in its usual size — one
+word that makes a record say more than its document.
+
+**A source conflict.** On the Maldives record, VFP says the Public Accounts Committee "unanimously
+supported" the recommendation to remove Governor Ali Hashim; PSM News says it "passed by a majority
+of the committee members who attended". The two cannot both be right, the Majlis's own minutes were
+not read, and the record stated only PSM's version. It now states that the motion was approved and
+does NOT state the margin, with the conflict written into the record. VFP also puts the gap in the
+governor's advice at "the past seven months" where PSM gives a start date of 17 November 2023, which
+is eight months before the committee met.
+
+## Named leads, round 73: two veins exhausted, one cheap one left
+
+- **Serbia's State Audit Institution is finished.** All nine per-entity reports on the National Bank
+  of Serbia (audit subject 1071 in the final-reports register) are now opened and read. Two converted:
+  FY2012, on EUR 8,030,000 paid in full to the Interior Ministry for Mühlbauer ID Services equipment
+  part of which was never delivered, under a contract assignment of 2 February 2007; and FY2014, on
+  open tender JN 89/2014 awarded on an incomplete industrial-trials report. FY2015's two Priority 1
+  items are the SAME two as the FY2016 record already on the map, so it was not filed. FY2009, FY2010,
+  FY2011 and FY2013 are clean, with reasons recorded. Serbia crossed the score midpoint as a result and
+  its paragraph needed its direction word flipped from "less" to "more" — see the scores section.
+- **Iceland's Ríkisendurskoðun "Skýrsla til Alþingis" category is structurally closed.** All 569
+  reports from 1988 to 2026 were enumerated and no title names Seðlabanki Íslands. The /Skilalisti
+  path turns out to cover only cemeteries, political organisations and candidates. One record came
+  out of it anyway, from the June 2012 report to Althingi: the Auditor General's memorandum of
+  19 January 2011 calling the Governor's seats on the boards of companies the Bank owns inappropriate,
+  with the Governor simultaneously head of foreign-exchange surveillance and chairman of the Bank's own
+  company.
+- **Nicaragua is the cheapest remaining vein on the map.** Three resolutions converted this round
+  (RIA-UAI-007-2022, RIA-119-14, RIA-UAI-505-2025) and roughly a third of those read carried findings.
+  About a dozen more BCN resolutions are known by exact URL and unopened; the URLs are in
+  `agents/work/r73/leads.json` under `leads_not_opened`. cgr.gob.ni refuses command-line fetches and
+  serves the documents to the fetch tool.
+- **Turkey and Hungary are source notes, not records.** yapikredi.nl states Koç Group holds 61.17% of
+  Yapı ve Kredi Bankası with no state holding; unicreditbank.hu states "Shareholder: UniCredit S.p.A"
+  with a 100% ownership and voting share. Neither page carries a date for its figures, and the
+  yapikrediinvestorrelations.com redirect was refused again.
+- **Senegal's Cour des comptes report is open and filed counterparty_only.** Round 72 named it and
+  could not open it; courdescomptes.sn answers 404 to curl on both spellings, and the Government of
+  Senegal's own portal serves the identical PDF at vie-publique.sn. The whole 160,000-character text
+  was grepped for BCEAO: fifteen hits, twelve of them account-name rows in Treasury bank-statement
+  tables, and **no finding anywhere in the report is against the central bank**, so it is filed to show
+  in Senegal's box without colouring the row.
+
+## The verifier's third pass: eight defects, and the one I had already claimed to have fixed (round 73)
+
+Round 71's verifier found four defects, round 72's found seven, round 73's found eight, of which
+four are substantive. Every one is corrected in the data and the correction is written into the
+record's own `detail` field, so the box says what changed and why. The pattern holds: **an
+independent reader who did not produce the work finds things the producer cannot, and the rate is
+not falling.**
+
+**The worst one was mine.** I found the Nicaraguan "staff savings and retirement fund" accretion by
+hand, removed it from the `category` field, appended a note recording the removal — and left the
+word standing in the `detail` field two sentences above that note. I then told the verifier not to
+re-report it because it was already fixed. It checked anyway and found it live in
+`corruption.json`. **Fixing a claim in one field and announcing it fixed is worse than not finding
+it, because the announcement stops the next reader looking.** Check every field for the phrase, not
+the field you first saw it in.
+
+The three other substantive ones:
+
+- **SRB FY2012, a figure read as the wrong kind of figure.** The record gave "the equipment's book
+  value at 31 December 2012 was 24,128 thousand dinars". The report gives 24,128 as the
+  `набавна вредност`, the ACQUISITION value, against a `исправка вредности` of 14,064 and a
+  `садашња вредност` — net book value — of 10,064. The record now gives all three. The same record
+  said the equipment was "never delivered to the Bank" where the report says
+  `није у целости испоручен`, not delivered in full, and Recommendation 5 calls it
+  `плаћену а непреузету опрему`, paid for but not taken over. And it claimed to be "the seventh of
+  nine" reports in a register the cited PDF never mentions — FY2012 is the fourth of FY2009 to
+  FY2017. Three defects in one record, all in the direction of making it say more.
+- **ISL, a party's assertion attributed to the audit institution.** The record had the National
+  Audit Office recording that the Governor was simultaneously head of foreign-exchange surveillance
+  and chairman of the board of the Bank's own company. That clause sits inside a public statement
+  issued by the bidder the Bank excluded, introduced by `Í yfirlýsingu sem umræddur aðili sendi
+  frá sér` and carried in the Icelandic subjunctive of indirect speech throughout — `hafi`, `sé` —
+  and closing `Þessu hafi viðkomandi andmælt`, the party contested this. The Audit Office's own
+  view is the milder one the record already carried, that the dual role `væri óheppileg`. **This is
+  the defect this map can least afford: an audit institution reporting what someone said is not the
+  institution finding it.** When a record quotes a report quoting a party, read the mood of the verb.
+- **CYM, the financial leg discarded and a professional-services firm put in its place.** The record
+  rested the private finding "on the Deloitte partnership alone", reasoning that Deloitte Cayman
+  sells audit and advisory work to the financial-services industry. Deloitte is private but not
+  FINANCIAL, which this round's own brief says to log rather than file; the page names its roles as
+  Consulting Leader and Risk Advisory Leader and nowhere as audit, the audit department in that
+  career being Price Waterhouse's. Meanwhile the page states the real leg in its own words:
+  `moved to Barclays Bank & Trust (Cayman) Limited ("Barclays"), a Class A Registered Bank in the
+  Cayman Islands, where he worked his way to the position of Chief Operating Officer`. The record
+  had excluded it because the page "makes no ownership statement" — **applying the ownership test to
+  a sentence that already characterises the employer as a licensed bank, which the brief's own list
+  of qualifying descriptions covers.** The record is rebuilt on Barclays.
+
+And one where the file's own metadata contradicted itself: **TWN was dated 2025-03 from the .docx
+`dcterms:created` timestamp of 2025-03-20, disclosed as derived. The same `core.xml` carries
+`cp:lastPrinted` of 2025-02-04 with `cp:revision` 2 and a last-modifier different from the creator.
+A document cannot be printed six weeks before it was created, so the creation timestamp is a re-save
+and the correction existed by 4 February 2025 at the latest.** The record is now dated to the year,
+which the ROC-114 file series supports independently. **If you take a date from file metadata, read
+all of the metadata: `lastPrinted` and `revision` can falsify `created`.**
+
+Minor findings, all corrected: NOR said Swedbank was "not a subsidiary and not state-owned" on the
+strength of a listing sentence that says neither; DNK cut its Finance Denmark quote mid-sentence
+with no ellipsis, and carries the industry-body question below; MDA cited art.32(7) alone where the
+decision says `în temeiul art.31 alin.(3) și art.32 alin.(7)`; the CUW Girobank record resolved
+"the bank's Supervisory Board (RvC)" to Girobank's where the article does not settle whose it is;
+and the SEN record's own grep breakdown was off by one category, though its count of fifteen and its
+conclusion were right.
+
+**One flagged contradiction turned out not to be one, and that is worth as much as a defect.** The
+verifier noticed that the RIA-UAI-649-2024 record already on the map says two of four FINDINGS were
+confirmed while the new RIA-UAI-505-2025 record says FOUR RECOMMENDATIONS went unimplemented, and
+judged the older record likely wrong. Re-reading RIA-UAI-649-2024 settles it: it confirms hallazgos
+2 and 4, dismisses 1 and 3, makes the recommendations contained in findings 2 and 4 binding within
+sixty days, and states no number of recommendations anywhere. Two confirmed findings can carry four
+recommendations. Both records are right, they count different things, and the resolution is written
+into the newer record so a later round does not "fix" a correct one.
+
+Four records were checked properly and found clean: SRB FY2014, NIC RIA-119-14, NIC RIA-UAI-505-2025
+and MDV. No wrong-row defects and no duplicates beyond the Taiwan one I had already caught.
+
+## Three decisions left for the owner at round 73
+
+None of these is a bug and none is urgent. Each is a judgement about what the map should carry, and
+that is the owner's to make, not mine.
+
+1. **The Curaçao PwC record, whose source URL serves a reader nothing.** The document is real and
+   verified; no host serves it to a plain request. It is filed with `weak_source: true` and a note
+   saying the weakness is the host. The question is whether a record whose citation leads to a 404
+   belongs on a map whose rule is that every record rests on a readable source. Three ways to go:
+   keep it as filed, drop it, or keep it and host a copy somewhere stable and cite that. I have not
+   chosen for you. Note that Curaçao's other new record this round, on the Girobank supervisory
+   failure, has a working source, so the place's depth does not depend on this one.
+2. **The Nicaraguan follow-up record, RIA-UAI-505-2025.** Its finding is that the Bank implemented
+   NONE of the four recommendations in resolution RIA-UAI-649-2024 — a resolution already on the map
+   as Nicaragua's second record. It is a different document, a different audited year and different
+   conduct (non-implementation rather than the original procurement finding), so it is filed as a
+   distinct record. But the content of the finding is parasitic on the earlier one: it exists because
+   the earlier one was not acted on. Fold it into the earlier record if you would rather one episode
+   carried one record. Nicaragua already held two records, so nothing in the depth figures turns on
+   this either way.
+3. **The Taiwan Control Yuan correction on the removals row.** A 糾正 is a formal finding of
+   administrative fault against the audited agency, and the agency here is the Central Mint, which the
+   central bank owns. The conduct is mishandling a workplace-bullying complaint, not financial
+   corruption and not pressure on monetary policy. It is on the removals-and-pressure row because the
+   state acted formally on a body the bank owns and transmitted the case through the bank. If you
+   read that row as being about threats to the bank's independence specifically, this record does not
+   belong on it and should come off. It is Taiwan's only gain this round.
+
+Still open from earlier rounds and unchanged: `Shawmut Bank` against `National Shawmut Bank`,
+`Goldman Sachs Asset Management L.P.` against `Goldman Sachs`, Kosovo's place in the denominators,
+and the five global asset managers drawn at their client's country.
 
 ## Host notes, round 72 (shelf life about a round — test, do not trust)
 
@@ -1159,7 +1473,7 @@ Five were filed on that test: Kazakhstan (a state audit ordered the bank to retu
 - **Ownership reasoned from silence is not ownership.** A source that simply says nothing about who owns the hiring firm has not said it is private. Round 54 held a Uruguayan record on that ground and filed another, weak, where the source itself described the employer as founded by 26 financial institutions both public and private — stated mixed ownership on the face of the record is admissible, inferred private ownership is not.
 - **Which case statuses count.** A case stops counting only when the official was cleared, or the charge is gone and no finding stands. `acquitted`, `case dismissed`, `charge withdrawn`, `investigation closed`, `conviction annulled (time-barred)` do not count. Everything still running does, and so does a case whose ending no source states. `build_final.py` refuses to build on a status that is on neither list.
 - **`alleged`** means publicly accused with no charge, inquiry or ruling. `S.alleged` decides whether those count; the tick box is on by default.
-- **Event kinds decide whether an event counts.** `app.js` computes `evN = (p.ev||[]).filter(i => D.EV[i].kind !== "other").length`, so an event filed with kind `other` shows in the country box but is **not counted** on the layer, in the score, or by `coverage.py`. `other` is for appointments and court rulings, which the layer deliberately excludes. Never file a real episode that way. Kinds are free text and render as written, so a new one is safe (`attempted law change` was added for South Africa). **No place now holds only `other` events.** Mexico and Pakistan were the last two; Mexico gained a counted event earlier, and Pakistan gained one at round 55 (the National Assembly Public Accounts Committee directing the Auditor General to audit the State Bank over about Rs1,145 billion of TERF concessional loans, 8 August 2023). `coverage.py` prints a section listing any such place under the table, and that section is now absent, which is how you check it. If it reappears, a real episode has been filed as `other` by mistake. Pakistan is the model for restraint here: its source says the governor cited personal reasons and reports no government pressure, so the unnamed officials who called that a cover were not enough to promote it.
+- **Event kinds decide whether an event counts.** `app.js` computes `evN = (p.ev||[]).filter(i => D.EV[i].kind !== "other").length`, so an event filed with kind `other` shows in the country box but is **not counted** on the layer, in the score, or by `coverage.py`. **`other` does TWO jobs and round 73 proved that saying only the first invites a wrong promotion.** Job one: events the layer deliberately excludes — appointments and routine court rulings. Never hide a real episode of pressure there to dodge the work. Job two: an exit where no source states a cause. Every counted kind on this row asserts a cause (dismissed, forced out, pushed to resign), so an unexplained early exit cannot be moved onto the row without inventing one — the Namibia precedent. **Getting a record out of `other` needs a source that states the cause, not a re-reading of the same source.** Round 73's agent read the two Kyrgyz `other` records, saw the warning as a flat ban, and proposed re-kinding one; both are resignations where 24.kg gives no reason from either side, and both stay where they are. Kinds are free text and render as written, so a new one is safe (`attempted law change` was added for South Africa). **No place now holds only `other` events.** Mexico and Pakistan were the last two; Mexico gained a counted event earlier, and Pakistan gained one at round 55 (the National Assembly Public Accounts Committee directing the Auditor General to audit the State Bank over about Rs1,145 billion of TERF concessional loans, 8 August 2023). `coverage.py` prints a section listing any such place under the table, and that section is now absent, which is how you check it. If it reappears, a real episode has been filed as `other` by mistake. Pakistan is the model for restraint here: its source says the governor cited personal reasons and reports no government pressure, so the unnamed officials who called that a cover were not enough to promote it.
 - **Union banks.** Union-wide records are keyed to the union code (`ECB`, `BCEAO`, `BEAC`, `ECCB`) and expand to every member country — for **all** kinds of tie, service ties included. The old head-office rule is reversed, and merge scripts must not map `BCEAO`→`SEN`, `BEAC`→`CMR`, `ECCB`→`KNA`. In a pattern, `app.js` checks `RC[p.iso]` before the union, so a member country's own note wins over the union's.
 - **A prosecution of an individual is not a move against the bank.** The round-44 rule lists the acts that count — removed, suspended or pressed out — and names this among the things that do not. Round 57 refused the Central Bank of Malta's governor, arraigned on 29 May 2024 over the Vitals hospitals concession: the conduct charged was his own as a former finance minister, not the bank's, and no source says he was removed or suspended. If a later round finds he was suspended from his duties, that is a different record and it qualifies.
 - **A regulator sanctioning a governor for his own private business is not a move either.** Namibia's competition commission fined the sitting governor for completing a private share sale without prior approval; that is not an organ of the state acting on the bank or on him as its governor.
@@ -1228,8 +1542,10 @@ python3 agents/work/check_nodes.py dist/central_bank_independence.html
 python3 agents/work/mk_scores.py                                 # writes agents/work/scores.json
 python3 agents/work/check_scores.py agents/work/scores.json      # --fix to rewrite
 python3 agents/work/check_about.py
+python3 agents/work/check_handoff.py                             # new at round 73
 python3 agents/work/check_prose.py
 python3 agents/work/check_dates.py <this round's record files>   # new at round 71
+python3 agents/work/mk_searched.py                               # new at round 73; before mk_have.py
 ```
 
 The first finds one firm drawn as two parties, and one name standing for several countries'
