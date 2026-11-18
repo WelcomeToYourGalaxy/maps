@@ -6,7 +6,7 @@ Repo: WelcomeToYourGalaxy/maps. Build output: `infiltration.html` (repo root). S
 ## What the map is
 A MapLibre globe of documented cases where an outside party (foreign state or spy service, organised crime, company/industry, bank, lodge/secret society, religious movement, elite network, political or armed movement, lender) got its people, money or control INSIDE a government body, an international body or a company, and decisions there served it.
 
-Current size: 3,190 cases in 183 jurisdictions, 510 organisations, 48 channels, 31 patterns.
+Current size: 3,182 cases in 183 jurisdictions, 510 organisations, 48 channels, 31 patterns.
 By who infiltrates: corp 1267, crime 704, state 395, movement 209, lodge 76, money 70, faith 60, elite 29, lender 10.
 By relevance: legacy 1273, now 1084, past 463. Countries with no qualifying case, shown as estimates: 15.
 Shape deviation 22.1 points against the goal of 5.0. Run `python3 shape.py`.
@@ -4699,3 +4699,66 @@ leads, and `flagleads.py`'s `none` flag should be read as "nothing close on the 
 R13-C reported `secret-society-src/dupsweep2.py` as modified in the repo by another agent, which
 rule 11 bars. **That file is mine**, committed at 23:02 as part of the duplicate-sweep work. The
 vigilance was right and the rule stands; the file was not an agent leak.
+
+## THE DUPLICATE MERGE: EIGHT PAIRS RESOLVED, SEVEN RETIRED (18 November 2026)
+
+Map at **3,182**. The eight survivors carry everything both records held; the eight losers are in
+`removed_records.json` with the history recorded.
+
+| survivor | retired | what moved into the survivor |
+|---|---|---|
+| Fishrot, Namibia | 309 | the Prevention of Organised Crime Act charge framing; Iceland's own Samherji investigation |
+| Michelle Mone, UK | 251 | the £200m contract total; the gowns not shown sterile; £29m of profits to a trust she could benefit from; the 2020-23 denials, Nov 2023 admission, Dec 2023 BBC apology, Oct 2025 High Court ruling and £122m repayment |
+| Guyana police officer | 434 | that neither officer has been tried; the narcotics finding correctly attributed to the State Department rather than Treasury |
+| Yemen overflight fees | 2977 | the precise locator (annex 175, pp. 452-453); the direct UN PDF url; the government's notice to airlines to redirect fees to Aden |
+| Bystroň / Voice of Europe | 88 | the Czech BIS briefing on the recorded Prague meeting with Marchevsky and ~€20,000; his sanctioning; the May 2024 office search; the denial with no charge reported |
+| Crypto AG | 324 | that the machines were rigged; Iran among the states read; Hans Bühler's 1992 arrest in Iran |
+| Susurluk, Türkiye | 396 | Çatlı's diplomatic passport; Ağar's resignation on 8 Nov 1996; the commission's finding of a working relationship, with almost no convictions |
+| Beam Suntory, India | 1696 | the Canteen Stores Department as the Ministry of Defence body running the forces' shops; the 21 Oct 2020 criminal information |
+
+**A defect in my own worklist builder, caught by the agent applying it.** My extract carried only
+the fields I thought a merge needed — it omitted `inside`, `undone`, `org_note`, `verified`,
+`status` and the coordinates. The agent read both records from `cases.json` instead, and said so:
+**"merging from pairs.json alone would have silently dropped fields."** Any future worklist that
+feeds a merge must carry the whole record, not a projection of it.
+
+**A conflict it refused to resolve rather than paper over.** The two Fishrot records disagree on
+when the ministers were arrested: one says they resigned and were arrested in November 2019, the
+other says they resigned the next day and were arrested in December, and the survivor's own
+citation string reads "arrests and charges, Dec 2019-Feb 2020". It kept the survivor's dating,
+which its cite supports, and flagged the conflict rather than asserting a month on the strength of
+the weaker record.
+
+**Four survivors are over the 130-word cap on purpose**: Guyana at 161 (it was already at 130
+before the merge, and trimming would cost the semi-submersible logistics or the March 2025 182kg
+interdiction), Bystroň at 147, Fishrot and Susurluk at 139. Four are inside it.
+
+### Two codings left for a hand decision
+
+- **The Mone record keeps `bk: legis`**, though its own description is about the Department of
+  Health and the Cabinet Office being worked on, so `cabinet` may be the truer cell. Re-coding is
+  not a merge.
+- **It also keeps `status: reported`**, and the agent deliberately did not import the retired
+  record's `status: convicted`: **a civil contract ruling is not a conviction**, and the status enum
+  has no better slot for one. Worth a ruling if that distinction recurs.
+
+## A DATA DEFECT FOUND IN PASSING: 21 RECORDS WHOSE `rank` IS A SECTOR LABEL
+
+The merge agent noticed that one record's `rank` read *"Semi-submersible vessels and clandestine
+airfields (shipping, freight & ports)"* — a sector label, not the post reached — in a record titled
+"Guyana police officer arranged safe passage for traffickers". It replaced that one with "serving
+and former police officers" and flagged it.
+
+Swept map-wide: **21 records carry a `rank` from a four-category sector taxonomy** that belongs to
+some other dataset — `(shipping, freight & ports)` 8, `(banks & money transmission)` 5,
+`(lawyers, brokers & formation agents)` 4, `(gold, commodities & agribusiness)` 4. All 21 are
+untagged by round, so they predate the round tracking. 17 sit in `crime → company`.
+
+**The records themselves are sound** — TD Bank, Credit Suisse, Banca Privada d'Andorra are all
+named in `d`, so ruling 11 is satisfied. **It is only `rank` that fails to carry the post**, and
+that matters in three places: `rank` is displayed on the map as the body reached;
+`dupsweep2.py` and `flagleads.py` read `rank` for body names, so a sector label gives the duplicate
+detector nothing; and agents read `rank` in the cell files to spot duplicates cheaply.
+
+Fixing them means reading each `d` for the post and rewriting one field — a reader's job, not a
+script's.
