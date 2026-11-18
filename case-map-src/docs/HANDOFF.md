@@ -528,6 +528,28 @@ NGO that made it, not presented as established. `private-courts-for-investors` h
 in its title; if anything survives as a suspicion it has to be retitled around the arbitrator
 concentration or the regulatory chill, which are the only contested parts.
 
+**Three of the sixteen narrower titles are mis-pitched, and two of them concede too much.** The
+check verified Chile's purpose directly — National Security Decision Memorandum 93's own words, the
+"make the economy scream" instruction recorded at the Track II meeting, and Inter-American
+Development Bank lending falling from $46m in 1970 to $2m in 1972 — so
+**`loans-cut-off-to-topple-governments` should not be narrowed to "the US blocks loans to
+governments it opposes"**: for Chile the purpose is documented. The same for
+**`poor-countries-take-the-poison`**, where "ends up in" drops the Amsterdam refusal, the $17,000
+price and the Dutch concealment fine. And `bribes-built-into-financed-contracts` concedes too
+little, which is why it is a graduation rather than a retitle.
+
+**Two inventory claims in the reviewers' own reports are wrong, and both would have broken a merge.**
+`who-owns-the-debt` does **not** carry Zambia's missed $42.5m payment, contrary to one report's
+list of what that pattern already holds. And the load-bearing line behind the tax-haven leftover —
+that the lender disputed the NGO's reading rather than its numbers — **is in neither document**: the
+check read the secondary account in full and it carries no reply from the institution at all. Anyone
+merging that entry must not write that sentence.
+
+One route note worth keeping, because it is the right instinct: `sec.gov/Archives` refuses an
+automated client that does not declare a contact address, which is the agency's policy rather than a
+block. **The checker declined to invent one** and read the filing through the full-text search index
+instead, so the disclosure series is sourced to the index rather than to the document body.
+
 ### The six that came back documented, and what settles each
 
 - **`rankings-bent-for-money`** — the WilmerHale report of 15 September 2021, opened from the Bank's
@@ -602,13 +624,20 @@ Each is an error on the page now, found by a reviewer reading the entry's own so
    whose data was changed **downward** out of a manager's personal disbelief — a motive with no money
    in it, inside the same report the entry rests on.
 4. **`carbon-credits-new-land-grab`** presents a judgment as settled that the Kenyan index shows is
-   under appeal, with a Court of Appeal ruling on 25 September 2026.
+   under appeal — **and the card's date for it is wrong.** The judgment is *Osman & 164 others v
+   NRT*, [2025] KEELC 99, of **24 January 2025**, not the 31st; the appeal is *NRT v Osman*, Civil
+   Appeal (Application) E019 of 2026, [2026] KECA 1774, ruling 25 September 2026. The judgment pages
+   are walled, so **what the appeal ruling decided is unknown** and the card must not imply either
+   way.
 5. **`ratings-that-punish-relief`**: "19 African countries … $74.5 billion" is not in the brief the
    entry cites, whose samples are 13 and 16 with a union of 21 and no country count attached to the
    figure. The same number is in the entry's `conviction` line.
-6. **`banks-that-bank-the-looters`**: the Senate report's $700m covers balances **and loans
-   together**; the regulator's finding was of failure to control, naming no bank and prosecuting
-   none, and the card reads as though it found the banks held stolen money knowingly.
+6. **`banks-that-bank-the-looters`**: partly refuted. The Senate findings do say balances and
+   outstanding loans "together approached $700 million", so **the card's figure is supported** — but
+   the executive summary separately gives deposits ranging from $400m to $700m at a time, and the fix
+   is to give the range rather than the single number. What stands: the regulator's finding was of
+   failure to control, naming no bank and prosecuting none, while the card reads as though it found
+   the banks held stolen money knowingly.
 7. **`markets-opened-for-subsidized-food`** opens on an agency report that never mentions either
    lender; the programme attribution is supported, but by a different outlet.
 8. **`companies-behind-coups`**: the compensation figure said to come from the company's own tax
