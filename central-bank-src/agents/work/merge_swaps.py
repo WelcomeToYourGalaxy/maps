@@ -37,6 +37,55 @@ def readable(u, waived):
     except Exception as e:
         return False, type(e).__name__
 
+def apply_status_updates(rows, files, dry):
+    """Apply record-level status changes from agent output.
+
+    Matched on (counterparty_iso3, provider name substring, signed_or_renewed). A change is
+    applied only when exactly one record matches: zero matches means the agent was aiming at a
+    record that is not there, and two means the key does not identify a record, and in both cases
+    the right answer is to stop and look rather than to guess which one was meant. An entry whose
+    new_status begins "no change" records a finding and is never written.
+    """
+    applied, noop, miss, amb = [], [], [], []
+    for f in files:
+        d = json.load(open(f, encoding="utf-8"))
+        for u in (d.get("status_updates") or []):
+            iso, prov = u.get("counterparty_iso3"), (u.get("provider") or "")
+            want = u.get("match_signed_or_renewed")
+            new = (u.get("new_status") or "").strip()
+            hits = [r for r in rows
+                    if r.get("counterparty_iso3") == iso
+                    and prov.lower() in (r.get("provider_cb") or "").lower()
+                    and (r.get("signed_or_renewed") or None) == (want or None)]
+            if len(hits) != 1:
+                (miss if not hits else amb).append((iso, prov, want, len(hits)))
+                continue
+            r = hits[0]
+            if new.lower().startswith("no change"):
+                noop.append((iso, want)); continue
+            if (r.get("status") or "") == new:
+                noop.append((iso, want)); continue
+            applied.append((iso, want, (r.get("status") or "")[:28], new[:46]))
+            if not dry:
+                r["status"] = new
+                r["status_source_url"] = u.get("source_url")
+    print("\n%s %d status changes:" % ("WOULD APPLY" if dry else "APPLIED", len(applied)))
+    for iso, when, was, now in applied:
+        print("  %-4s %-12s %-28s -> %s" % (iso, when or "(null)", was or "(blank)", now))
+    if noop:
+        print("\nNO CHANGE, recorded only %d: %s" % (len(noop), " ".join(
+            "%s/%s" % (a, b or "null") for a, b in noop)))
+    if miss:
+        print("\nNO RECORD MATCHES %d -- look at these by hand:" % len(miss))
+        for iso, prov, when, n in miss:
+            print("  %-4s %-26s %s" % (iso, prov[:26], when))
+    if amb:
+        print("\nKEY MATCHES MORE THAN ONE RECORD %d -- refused:" % len(amb))
+        for iso, prov, when, n in amb:
+            print("  %-4s %-26s %-12s %d records" % (iso, prov[:26], when, n))
+    return bool(applied)
+
+
 def main(argv):
     dry = "--dry" in argv
     waived = {a.split("=", 1)[1] for a in argv if a.startswith("--url-ok=")}
@@ -85,10 +134,12 @@ def main(argv):
         for iso, why in bad:
             print("  %-4s %s" % (iso, why))
 
+    touched = apply_status_updates(rows, files, dry)
+
     if dry:
         print("\n(dry run; nothing written)")
         return 0
-    if filed:
+    if filed or touched:
         rows.extend(filed)
         json.dump(raw, open(p, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
         print("\nwritten: swaps.json now holds %d records. Rebuild, then run audit_data.py and "

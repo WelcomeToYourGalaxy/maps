@@ -33,8 +33,10 @@ ROLES = {"owns shares", "bribery or misconduct with the bank", "paid or bribed t
          "named in the event", "pressured, dismissed or prosecuted bank officials",
          "froze or seized the bank's reserves",
          "guarantees the currency under a cooperation agreement", "audits its accounts",
-         "manages its reserves or programmes", "holds its gold reserves in custody",
+         "manages its reserves or programmes", "manages its sovereign wealth fund",
+         "holds its gold reserves in custody",
          "owned or ran an asset officials held", "prints its banknotes", "makes its banknote paper",
+         "prints some of its banknotes",
          "supplies its banknote substrate", "directs the bank's management of a state fund", "other"}
 UNION = {"ECB", "EMU", "BCEAO", "BEAC", "ECCB"}
 # entity_type has its own small closed vocabulary and agents reach for synonyms every round --

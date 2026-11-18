@@ -575,9 +575,15 @@ const SAY = {
   "Guarantees the currency under a cooperation agreement": "{P} guarantees the currency issued by {B} under a cooperation agreement",
   "Audits its accounts": "{P} audits the accounts of {B}",
   "Manages its reserves or programmes": "{P} manages reserves or funds for {B}",
+  // Round 77 split this off. 103 of the manager row's 207 ties were external managers of the
+  // Government Pension Fund Global -- half the row, all from one published mandate list -- and a
+  // sovereign wealth fund is not foreign exchange reserves. Keeping them on one relation made the
+  // row mean two things and made one country half of it.
+  "Manages its sovereign wealth fund": "{P} manages part of the sovereign wealth fund of {B}",
   "Holds its gold reserves in custody": "{P} holds gold reserves belonging to {B}",
   "Owned or ran an asset officials held": "{P} owned or ran an asset held by officials of {B}",
   "Prints its banknotes": "{P} prints banknotes for {B}",
+  "Prints some of its banknotes": "{P} prints part of the banknotes of {B}",
   "Makes its banknote paper": "{P} makes banknote paper for {B}",
   "Supplies its banknote substrate": "{P} supplies banknote material for {B}",
   "Other": "{P} has another documented tie to {B}" };
@@ -1208,7 +1214,7 @@ function detail(k) {
   // The third custody state. Where no custodian is filed, a bare tonnage leaves a reader unable
   // to tell "nobody has looked" from "the bank's own accounts say the gold is abroad and decline
   // to say with whom", and on this row the second is the more telling. Quote the bank's own words.
-  if (p.gabs) rows.push(['Where that gold is', 'Held abroad, holder not disclosed. The bank\u2019s own accounts say \u201c' + esc(p.gabs.q) + '\u201d and name no institution <span class="note">(' + esc(p.gabs.d) + ')</span>']);
+  if (p.gabs) rows.push(['Where that gold is', esc(p.gabs.w || 'Held abroad, holder not disclosed.') + ' The bank\u2019s own accounts say \u201c' + esc(p.gabs.q) + '\u201d and name no institution <span class="note">(' + esc(p.gabs.d) + ')</span>']);
   if (rows.length) h.push('<table class="kv">' + rows.map((x) => '<tr><th>' + x[0] + '</th><td>' + x[1] + '</td></tr>').join("") + '</table>');
   const sw = (p.sw || []).map((i) => D.SW[i]);
   if (sw.length) {

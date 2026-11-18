@@ -2,7 +2,7 @@
 
 Paste or attach this in a new chat to carry on adding to the map.
 
-Rewritten at round 43, current through round 70. It states the current position only. Earlier versions kept round-by-round narrative, which went stale and in round 26 sent agents to re-research records already on the map; the moves-against-the-bank section had grown four rounds of narrative again by round 42 and was rewritten as a statement. Keep it that way: when something changes, edit the statement, don't append a round note. The round-by-round account lives in `agents/work/research_log_2026-11.json`, which is where to look for what was searched and found nothing. **Where this names a country as dead or blocked, that is as of round 70 — re-derive the target list from `coverage.py` before briefing anything. Paste the list `coverage.py` prints; do not summarise it from memory. Round 56 lost an agent's calls to a target list written partly from memory that included a country which was not absent at all, and round 57 made the same mistake again — it pasted `coverage.py`'s list and then added QAT from this document's own prose, where QAT was not absent. **Round 64 is the third instance and it came from a different direction: the list of named one-page fetches below, not the absent list.** Ecuador sat at the top of that list as "the cheapest one" and Ecuador was already filed and already counted — record 327, the same person, the same CV and the same URL — so a third of one agent's budget went on re-finding a record the map had. The absent list was pasted correctly; the *leads* were not checked against it. **Check a named lead against `coverage.py`'s absent list too, not just the target list.** Paste what the script prints and add nothing to it.**
+Rewritten at round 43, current through round 77. It states the current position only. Earlier versions kept round-by-round narrative, which went stale and in round 26 sent agents to re-research records already on the map; the moves-against-the-bank section had grown four rounds of narrative again by round 42 and was rewritten as a statement. Keep it that way: when something changes, edit the statement, don't append a round note. The round-by-round account lives in `agents/work/research_log_2026-11.json`, which is where to look for what was searched and found nothing. **Where this names a country as dead or blocked, that is as of round 70 — re-derive the target list from `coverage.py` before briefing anything. Paste the list `coverage.py` prints; do not summarise it from memory. Round 56 lost an agent's calls to a target list written partly from memory that included a country which was not absent at all, and round 57 made the same mistake again — it pasted `coverage.py`'s list and then added QAT from this document's own prose, where QAT was not absent. **Round 64 is the third instance and it came from a different direction: the list of named one-page fetches below, not the absent list.** Ecuador sat at the top of that list as "the cheapest one" and Ecuador was already filed and already counted — record 327, the same person, the same CV and the same URL — so a third of one agent's budget went on re-finding a record the map had. The absent list was pasted correctly; the *leads* were not checked against it. **Check a named lead against `coverage.py`'s absent list too, not just the target list.** Paste what the script prints and add nothing to it.**
 
 **Round 68 took no instance of this at all, and the reason is mechanical rather than virtuous: `agents/work/mk_have.py` is new, it writes the absent lists and the per-country `have_*.json` files from the live data, and every brief was written from its output. One agent reported refusing a Malaysian record because it checked `have_rd.json` first and found four records there. Use it.**
 
@@ -93,9 +93,9 @@ same commit as the work it did.
   - Links: `{n, cb | tn, rel, role, detail, src_t, src_u}`.
   - Popups turn each link into a plain sentence (`SAY` / `sayLink` / `srcItem` in `app.js`). Add a `SAY` entry for any new `role` string.
 
-## Where it stands (74 rounds in, 17 November 2026)
+## Where it stands (77 rounds in, 18 November 2026)
 
-1,726 outside parties and 2,528 ties. One writeup for every box, 1,944 of them. 20 patterns
+1,726 outside parties and 2,536 ties. One writeup for every box, 1,944 of them. 20 patterns
 and 14 suspected patterns.
 
 The party count is lower than the tie count implies, and deliberately: round 60 folded 28 duplicate
@@ -115,11 +115,14 @@ ignores" below.
 | Revolving door | 327 | 172 | 83% | 90% |
 | Governor removals and pressure | 279 | 183 | 89% | 95% |
 | External auditors | 216 | 178 | 86% | 93% |
-| Banknote printers | 184 | 168 | 82% | 88% |
-| Outside reserve managers | 207 | 79 | 38% | 41% |
-| Gold custodians | 103 | 59 | 29% | 31% |
-| Swap lines | 240 | 84 | 41% | 44% |
+| Banknote printers | 187 | 169 | 82% | 88% |
+| Outside reserve managers | 107 | 81 | 39% | 42% |
+| Gold custodians | 104 | 63 | 31% | 33% |
+| Swap lines | 279 | 91 | 44% | 47% |
 | Named shareholders | 228 | 9 | 4% | 5% |
+| Sovereign wealth fund managers | 103 | 1 | — | — |
+
+**The last row is Norway only, split off this row's neighbour at round 77.** The three rows whose 'of 192' column is meaningless — named shareholders, outside reserve managers and gold custodians — carry their own denominators in the completeness chart and in their sections below: 9, about 144, and 108.
 
 **The comparison is reported as PERCENTAGES, not counts — the owner asked for that at round 71, and
 `coverage.py --since` prints it.** Records and places are relative change; coverage is in percentage
@@ -210,9 +213,10 @@ authorisation is against the Treasury and its ministers and not against the BCEA
 decisions section below.
 
 Named shareholders reads low because only about ten central banks have private shareholders at
-all. Outside reserve managers reads low because 103 of its 207 ties are Norway's fund — and no
-list of which banks hire outside managers is published anywhere, so this row has no honest
-denominator. Gold custodians has its own denominator: see the row's section below.
+all. Outside reserve managers read low partly because 103 of its ties were Norway's sovereign wealth fund,
+which round 77 moved onto a relation of its own, and partly because no list of which banks hire outside
+managers is published anywhere. The World Bank's RAMP survey gives the share rather than the names, which
+puts the universe near 144, so that is the denominator the chart uses and 192 is not. Gold custodians has its own denominator: see the row's section below.
 
 `agents/work/coverage.py` computes this table from the data files and prints, per row, the places
 holding no record of that kind, with union codes and the ten places with no central bank separated
@@ -263,9 +267,13 @@ denominator has not been established rather than quietly printing 5% again.**
 or 2026. The United States rests on the 2018 Capital Stock Master Report obtained by
 freedom-of-information request, and it is structurally closed rather than merely stale: the Federal
 Reserve does not publish holder-level stock registers, so only a new FOIA request would move it.
-South Africa's named holders rest on 2022 press reporting; the Bank's own 2025/26 annual report
-gives 855 shareholders at 31 March 2026 against a 10,000-share cap, which updates the count from a
-primary source but names nobody, the named register existing only inside the Bank. Türkiye is the
+South Africa's named holders rest on 2022 press reporting. A round-75 research pass reported that the
+Bank's own 2025/26 annual report gives 855 shareholders at 31 March 2026 against a 10,000-share cap, which
+would update the count from a primary source while still naming nobody. **That figure is NOT in the map's
+figures and should not be quoted as if it were.** It could not be re-read by the curator, because the fetch
+needed an approval nobody answered, so it sits in `gaps.json['zaf_note']` as an attributed, unverified
+lead. The Bank's own page says 'just over 800', which is not wrong, only less precise. Either confirm the
+855 against the annual report or leave the Bank's own wording. Türkiye is the
 strongest open lead: the CBRT's own 2025 annual report gives the class split this document has said
 could not be stated — A 55.12%, B 23.25%, C 2.51%, D 19.12%, with no privileged companies among the
 shareholders. Greece is the thinnest register on the map, two rows, one of them Wikipedia.
@@ -388,11 +396,12 @@ anything about an external management programme, and this row stands where it do
 MANAGERS' disclosure rather than the banks'. The places still absent are mostly ones no document
 will name. There is also no rate to project from: no round has yet worked this row for records.
 
-**Half this row is one country, verified directly rather than taken on report: 103 of its 207 ties
-are Norway's, and 103 of its 142 distinct firms, all from a single page.** Everything else is 104
-ties, 40 firms, 60 places. Two problems. Those 103 manage the Government Pension Fund Global, a
-SOVEREIGN WEALTH FUND rather than foreign exchange reserves, unlike every other block on the row —
-so the row conflates two instruments. And it is a disclosure artefact: a bank with equally many
+**Half this row WAS one country, and round 77 split it off.** 103 of the then 207 ties were Norway's,
+and 103 of its 142 distinct firms, all from a single published mandate list. They manage the Government
+Pension Fund Global, a SOVEREIGN WEALTH FUND rather than foreign exchange reserves, unlike every other
+block on the row, so the row was conflating two instruments. They now sit on `manages its sovereign
+wealth fund`, with their own sentence in `app.js`. Nothing was dropped. What remains on this row is 107
+ties at 40 firms across 81 places. The second problem is unchanged and cannot be split away: And it is a disclosure artefact: a bank with equally many
 external managers that publishes nothing scores zero. The completeness chart counts places, not
 ties, which avoids the worst of it. Whether to move the Norway block to its own
 sovereign-wealth-fund relation is an open decision for the owner. All of this is in
@@ -3609,6 +3618,137 @@ Bounded sets that worked:
 
 **A vein checked and ruled out:** IMF safeguards assessments would name central banks' external auditors, but the assessments are confidential and the published policy papers aggregate without naming banks. Don't spend a round on it.
 
+## Round 77: the five low rows, what they reached, and what is left on each
+
+Reported as percentages, with the start-of-round column, as the owner asks each round. Three rows
+carry a denominator that is not 192, and the chart on the map says why in its own words.
+
+| Row | Start of round 77 | End of round 77 | Change | Denominator |
+|---|---|---|---|---|
+| Named shareholders | 100% | 100% | +0.0pp | 9 of 9 |
+| Governor removals and pressure | 95% | 95% | +0.0pp | 183 of 192 |
+| External auditors | 93% | 93% | +0.0pp | 178 of 192 |
+| Corruption cases | 91% | 91% | +0.0pp | 175 of 192 |
+| Revolving door | 90% | 90% | +0.0pp | 172 of 192 |
+| Banknote printers | 88% | 88% | +0.5pp | 169 of 192 |
+| Outside reserve managers | 54% | 56% | +2.1pp | 81 of 144 |
+| Gold custodians | 52% | 55% | +2.8pp | 59 of 108 |
+| Swap lines | 47% | 47% | +0.5pp | 91 of 192 |
+
+**Named shareholders was already complete** and nothing on it was worth a fetch. The row is 9 of the
+9 central banks that have any non-state shareholder at all. What is thin is freshness, not coverage:
+see the shareholder section above for the United States FOIA problem and the South African count.
+
+**Swap lines: four providers worked, two left.** The People's Bank of China publishes a current
+table, "Status of Bilateral Local Currency Swap Agreements Signed by PBoC (As of September 30,
+2025)", naming 32 counterparties against an RMB 79.3 billion outstanding balance. Eleven
+counterparties the map carries are absent from it, so **nineteen records moved from status
+`unknown` to `lapsed`**, each citing that table. Serbia is also absent and was checked separately:
+the PBoC's own re-signing announcement raises its line from RMB 1.5bn/RSD 27bn to RMB 5bn/RSD 74bn
+for five years, which post-dates the table, so Serbia's 2026 record **stays active** and its 2016
+record became "superseded, not lapsed". Nine records were added from the Reserve Bank of India, the
+CBUAE and the Swiss National Bank, including **the first swap record of any kind for Ethiopia** (AED
+3bn / ETB 46bn with the National Bank of Ethiopia, 16 July 2024, read as raw text). The Bank of
+Korea's own table was read in full and all nine of its bilateral counterparties plus the CMIM are
+already filed, so that provider is exhausted. **Still open: the Bank of England and the Reserve Bank
+of Australia.** The one document that would give a cross-provider denominator, IMF working paper
+2021/210's appendix tables, refuses every automated request on both PDF paths; nothing was built on
+a summary of it. `agents/work/merge_swaps.py` now applies `status_updates` as well as records: it
+matches on counterparty, provider name and `signed_or_renewed`, and refuses any update that matches
+zero records or more than one, because in both cases the right move is to look rather than guess.
+
+**Gold: two places added, one of them without a fetch.** Suriname is filed from the Centrale Bank
+van Suriname's 2020 accounts, note 4.1(c), whose own sentence places the stock at the Royal Canadian
+Mint (verified from raw text; the auditor withholds an opinion on those accounts, which the record
+says). Morocco was added to the third state — gold abroad with no institution named — from Bank
+Al-Maghrib's Rapport annuel 2025, which says the line covers gold kept in Morocco and with foreign
+depositaries and names none of them. **Tajikistan was reclassified rather than researched:** round 69
+had already read Note 13 of the National Bank's statements line by line and filed a confirmed blank
+under the rules of that round, before this third state existed. That note itemises gold at foreign
+refineries and in accounts at foreign banks and names neither, which is exactly what the state is
+for. The reclassification is recorded as such in `gaps.json`, with round 69 credited for the reading.
+**The third state now carries its own lead-in wording per entry** (`where` in
+`gold_abroad_undisclosed`, `p.gabs.w` in `app.js`), because Morocco's and Tajikistan's gold is partly
+at home and "Held abroad" alone would have overstated both.
+
+**El Salvador is HELD, not blank, and it is the clearest case of the link being the problem rather
+than the fact.** Two separately fetched PwC-audited documents place the metal with the Bank for
+International Settlements, one of them carrying a single counterparty line at 44,105.998 troy
+ounces, and round 75 reached the same figure independently. It is not filed because no readable URL
+serves it: the transparency-portal document ids 404 to ordinary requests, the whole document tree
+under that host 404s, and bcr.gob.sv serves its statements page through script with no PDF link in
+the HTML. File it the round a URL answers. Papua New Guinea is a near neighbour deliberately not
+filed: its note says the gold is "placed on deposit with a financial institution", which is an
+unnamed institution but does not say the metal is abroad, so it fails this state's own test.
+
+**Gold cannot reach 80% and the arithmetic is in `agents/work/to80.py`.** Of the places still
+absent, about two thirds had their statements read and those statements disclose no location at all.
+That is the ceiling of the audited-accounts method, not a backlog.
+
+**Outside reserve managers: three places added and one earlier reading corrected.** Brazil is filed
+from the BCB's audited 2023 statements, whose balance sheet carries "Recursos sob Administração
+Externa" split into BIS-administered funds of R$23,088 million and ETF funds of R$38,731 million,
+with Note 6.1 naming the BIS Investment Pools. **That contradicts the BCB's own reserve-management
+report, which calls the whole portfolio internally managed**, so the negative is kept beside the
+record with an `also_filed` note rather than quietly dropped: the audited accounts are the stronger
+document and the disagreement is worth seeing. Sri Lanka is the correction that matters more. An
+earlier round recorded it as a confirmed blank against the very document that states the fact — Note
+9.1 of the CBSL's financial statements says the foreign securities portfolio "includes the
+investments made by the Bank in the Reserves Advisory and Management Program (RAMP) managed by the
+World Bank". **A negative recorded against a document that does state the fact is worse than a gap,
+because it stops anyone looking again.** The correction is in `gaps.json['managers_corrections']`.
+North Macedonia is filed from its own vice-governor's remarks, with the caveat in the record's text
+that programme membership is not a statement that the World Bank runs a tranche. Four named leads
+were all opened and all closed: Mauritius confirms the mechanism three times and names no firm,
+Iceland's 2022 report gives an internal mandate, the IMF case studies name only one firm already on
+the map, and the BIS names no client, so the BIS side can only ever be recorded from client banks'
+accounts. **ZAF, TUR and TWN hold nothing at all on this row and are the cheapest untested large
+holders.**
+
+**Banknote printers: the euro area's shape is now known, and it is the reason this row stalls
+there.** The ECB publishes which national bank commissions which denomination, year by year from
+2002 to 2028, and never who prints it; its rule since October 2004 is that banks with their own or
+public printing works keep their production and the rest tender. The small banks' own reports do not
+fill the gap — Banka Slovenije's 2024 accounts say only that it is "involved in the printing of euro
+banknotes at Eurosystem level" against a EUR 1.5m expense, naming nobody. The EU procurement journal
+does name winners, and **across the whole euro area it yields exactly one banknote award with named
+printers**: De Nederlandsche Bank's framework agreements "Supply of Euro Banknotes ES2 2025 -2028",
+award decision 21 December 2023, to Oberthur Fiduciaire SAS, Giesecke+Devrient Currency Technology
+GmbH and Bundesdruckerei GmbH. **The Netherlands is a new place on this row.** Greece went onto the
+sibling paper row instead: EuropaFi SAS has won the Bank of Greece's "Supply of EURO 5 ES2 banknote
+paper" three years running, and no source read states who prints the notes, so no printer tie was
+filed for it. Belgium, Ireland and Slovakia have published banknote tenders with no award naming a
+winner; Cyprus, Estonia, Finland, Lithuania, Latvia, Luxembourg, Malta and Slovenia have none at
+all. **The one lead that could convert several of those at once is the Dutch contract notice's
+participant list** — the award says orders may be placed by "the Contracting Authority and the other
+Participating NCBs", which makes it a joint procurement, and the participants are named in contract
+notice 351379-2023 or its Selection Guidelines. That was not assumed.
+
+### TED is reachable, but only through its API, and this changes how to brief it
+`ted.europa.eu` answers automated clients with **HTTP 202 and an empty body** plus an
+`x-amzn-waf-action: challenge` header, on the HTML, XML and PDF paths alike. It opens normally in a
+browser. So `merge_links.py`'s reachability check **passes it falsely** (202 is under 400) and
+`check_dates.py` correctly reports SKIP and says so. Every field in the four records filed from TED
+was read instead from `api.ted.europa.eu/v3/notices/search`, which answers plain POST requests, and
+re-read by the curator before filing. Three notes for the next round:
+- Query by `publication-number=65988-2024`; useful fields are `notice-type`, `buyer-name`,
+  `title-proc`, `winner-name`, `winner-country`, `winner-decision-date`.
+- **`winner-country` is a separate array in a different order from `winner-name`.** Do not pair them
+  by position. The countries in the Dutch records are each firm's own home country.
+- Passing an unsupported value in `fields` makes the API return the whole field list, about 48 kB,
+  which is the cheapest way to find a field name.
+
+### One relation had 59 ties and no sentence
+`prints some of its banknotes` was in `networks.json` 59 times with **no `SAY` entry in `app.js`, no
+`REL` entry in `build_net.py` and no place in `normalise_agent_output.py`'s vocabulary**. It was
+rendering through the fallback, "{P}: prints some of its banknotes ({B})", while
+`REL.get(..., "service")` quietly put it in the right group by default. All three are fixed. The
+shape is the same as the hand-listed keys above: a relation that enters the data without entering
+the three places that describe it works well enough to go unnoticed. **When adding a relation, check
+all three — and when an agent's relation is flagged as outside the vocabulary, check whether the
+data already uses it before changing the record.** This round nearly lost the Dutch records'
+precision that way.
+
 ## What is left
 
 ### 1. External auditors — 93% of the reachable 192, and the row is now AT ITS CEILING
@@ -3848,7 +3988,7 @@ nothing to file.
 
 **What the row shows.** The Big Four sign off on about half the records; eight networks cover roughly seven in ten; the rest are national audit offices and local firms. The countries left are disproportionately places where the auditor is a state body or unpublished, so finishing will likely push the Big Four share *down* a point or two rather than up. Take the exact figures from the data, not from this paragraph.
 
-### 2. Banknote printers — 82%
+### 2. Banknote printers — 88% of the reachable 192
 **Round 66 added Djibouti** — `frenchbanknotes.com` states Djibouti is "not tied to the French
 banking system other than Banque de France printing their banknotes" and lists `Printer: BdF` on ten
 note entries. The host answers **409 to the reachability check** while serving the page perfectly to
@@ -4081,7 +4221,9 @@ names no issuing authority and no year; it reverses on the Bank of Eritrea procl
 dated governor removal.
 
 **Where this row goes next.** The absent list is long and no longer a short list of rich democracies, so work it by shape. The thickest untouched ground is the auditor-general-and-parliament route that produced Uganda: it is untried across nearly all of Africa, the reports are free and primary, and a single special audit can carry both an inquiry record and a corruption case. After that, Guatemala and Bolivia in Latin America, and Ecuador's 2021 Ley de Defensa de la Dolarización as a second Ecuadorean record. **Pakistan is no longer the blank-by-design case.** The restraint rule was right about the 2014 resignation — the source says the governor cited personal reasons and reports no government pressure, so the unnamed officials who called that a cover were not enough to promote it — and that event stays `other`. What changed at round 55 is that a different, dated episode was found: on 8 August 2023 the National Assembly Public Accounts Committee, chaired by Noor Alam Khan, directed the Auditor General to audit the State Bank over the disbursement of about Rs1,145 billion in TERF concessional loans and directed an inquiry into whether they went out on merit. **That is the Uganda shape, and it is the lesson: a place that looks blank under the restraint rule is not closed, it just needs a different episode.**
-### 4. Outside reserve managers — 41% of the reachable 192, 207 ties at 79 banks, 103 of them Norway
+### 4. Outside reserve managers — 56% of an estimated 144 banks that use one, 107 ties at 81 banks
+
+**Two corrections to this row's own measurement, both made since the heading above last read 41%.** The denominator is not 192: the World Bank's RAMP survey puts the share of central banks using external managers near three-quarters, so the universe is about 144, and the survey is anonymised by design, so no roster of which banks exists or can. And round 77 moved Norway's 103 external managers of the Government Pension Fund Global onto a relation of their own, `manages its sovereign wealth fund`: they were half this row, all from one published mandate list, and a sovereign wealth fund is not foreign exchange reserves. Nothing was dropped. What is left here is 107 ties at 40 firms across 81 places, and the row means one thing.
 
 **Round 67 added Morocco, Kazakhstan and South Korea, and the primary vein did not pay.** The
 Central Banking award citations, named here last round as the best single lead, were opened for
@@ -4268,7 +4410,7 @@ ceiling is not.**
 
 **Retry later:** Peru's BCRP transparency PDF (bot-protection stub), Lesotho's and Tanzania's 2024 annual reports (site errors).
 
-### 5. Gold custodians — 96 ties at 58 places, and the row's real ceiling is 108, not 206
+### 5. Gold custodians — 104 ties at 63 places, and the row's real ceiling is 108, not 206
 
 **Round 67 was this row's best round: twelve records across six new countries, and twenty-five
 documented blanks.** Against the 108 places with a holding above zero, 48 now have a custodian, 44
