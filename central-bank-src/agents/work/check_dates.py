@@ -41,22 +41,22 @@ MONTHS = ("january february march april may june july august september october n
 # page as silent when it states the date perfectly. These are the languages this map's sources
 # actually come in; add to the row rather than widening the regex.
 MONTHS_ALT = {
-    "january": ("janvier", "enero", "janeiro", "gennaio", "januar", "janúar", "ocak"),
+    "january": ("janvier", "enero", "janeiro", "gennaio", "januar", "janúar", "ocak", "јануар", "январ"),
     "february": ("fevrier", "février", "febrero", "fevereiro", "febbraio", "februar",
-                 "febrúar", "шубат"),
-    "march": ("mars", "marzo", "março", "märz", "mart"),
-    "april": ("avril", "abril", "aprile", "april", "apríl", "nisan"),
-    "may": ("mai", "mayo", "maio", "maggio", "maí", "mayıs"),
-    "june": ("juin", "junio", "junho", "giugno", "juni", "júní", "haziran"),
+                 "febrúar", "шубат", "фебруар", "феврал"),
+    "march": ("mars", "marzo", "março", "märz", "mart", "март", "марта"),
+    "april": ("avril", "abril", "aprile", "april", "apríl", "nisan", "април", "апрел"),
+    "may": ("mai", "mayo", "maio", "maggio", "maí", "mayıs", "мај", "мая", "май"),
+    "june": ("juin", "junio", "junho", "giugno", "juni", "júní", "haziran", "јун", "июн"),
     "july": ("juillet", "julio", "julho", "luglio", "juli", "júlí", "temmuz",
-             "července", "cervence"),
-    "august": ("aout", "août", "agosto", "august", "ágúst", "ağustos"),
-    "september": ("septembre", "septiembre", "setembro", "settembre", "september", "eylül"),
+             "července", "cervence", "јул", "июл"),
+    "august": ("aout", "août", "agosto", "august", "ágúst", "ağustos", "август", "августа"),
+    "september": ("septembre", "septiembre", "setembro", "settembre", "september", "eylül", "септембар", "сентябр"),
     "october": ("octobre", "octubre", "outubro", "ottobre", "oktober", "október", "ekim",
-                "ríjna", "rijna"),
-    "november": ("novembre", "noviembre", "novembro", "november", "nóvember", "kasım"),
+                "ríjna", "rijna", "октобар", "октябр"),
+    "november": ("novembre", "noviembre", "novembro", "november", "nóvember", "kasım", "новембар", "ноябр"),
     "december": ("decembre", "décembre", "diciembre", "dezembro", "dicembre", "dezember",
-                 "desember", "aralık"),
+                 "desember", "aralık", "децембар", "декабр"),
 }
 # Clauses where a date deliberately refers to something OTHER than this source: a sibling record
 # already on the map, or an explicit statement that the source itself gives no date. Round 71's
@@ -66,7 +66,13 @@ IGNORE_MARKER = re.compile(
     r"distinct from|already on the map|already holds|already carries|gives no (?:calendar )?date"
     r"|source does not (?:say|mention|give|state|carry)|which the source does not"
     r"|no dates? (?:at all|are given|is given)|not mentioned in the source"
-    r"|the map's existing|reverses on", re.I)
+    r"|the map's existing|reverses on"
+    # A record routinely points at the SIBLING record it must not be confused with, and the
+    # wordings for that are many. Round 72 reported four dates that all sat in one of these.
+    r"|existing (?:record|event|case)|one existing|not a duplicate|a different episode"
+    r"|different (?:actors|years|borrower|committee)|expanded into every"
+    # A statute citation dates the LAW, not the episode, and the page need not print it.
+    r"|Law No|Loi n|Act No|Decree|Ley \d|Regulation \(E", re.I)
 
 
 def strip_ignored(text):
@@ -76,11 +82,16 @@ def strip_ignored(text):
     "ordered on 8 August 2023, which the source does not mention" and the date sits BEFORE the
     disclaimer, so it was still reported. The unit has to be the sentence.
     """
+    # Protect abbreviation periods before splitting. Round 72 flagged a statute date because
+    # "Law No. 99-64 of 15 July 1999" split at "No." and the half carrying the date no longer
+    # contained the marker that was supposed to drop it.
+    t = re.sub(r"\b(No|Nos|Art|Arts|nr|n|No\u00ba|Decreto|Ley|Lei|vol|pp|p|cf|e\.g|i\.e)\.\s",
+               lambda m: m.group(1) + "\u2024 ", text, flags=re.I)
     out = []
-    for part in re.split(r"(?<=[.;])\s+", text):
+    for part in re.split(r"(?<=[.;])\s+", t):
         if not IGNORE_MARKER.search(part):
             out.append(part)
-    return " ".join(out)
+    return " ".join(out).replace("\u2024", ".")
 FIELDS = ("summary", "move", "people", "detail", "years", "date")
 
 
@@ -105,6 +116,19 @@ def fetch(url):
         if head.startswith(b"%PDF"):
             t = subprocess.run(["pdftotext", "/tmp/_cd.bin", "-"], capture_output=True)
             return t.stdout.decode("utf-8", "replace")
+        # A .docx is a zip and sniffs as PK; without this the bytes read as noise, pass the
+        # length test, and the record's every date is reported missing. Round 72 hit exactly
+        # that on a Control Yuan report served as Word.
+        if head.startswith(b"PK"):
+            try:
+                import zipfile
+                with zipfile.ZipFile("/tmp/_cd.bin") as z:
+                    names = [n for n in z.namelist()
+                             if n.endswith(".xml") and ("document" in n or "content" in n)]
+                    raw = " ".join(z.read(n).decode("utf-8", "replace") for n in names)
+                return re.sub(r"<[^>]+>", " ", raw)
+            except Exception:
+                return None
         raw = open("/tmp/_cd.bin", "rb").read().decode("utf-8", "replace")
         # crude de-tagging is enough: we only look for dates
         return re.sub(r"<[^>]+>", " ", raw)
@@ -139,6 +163,23 @@ def dates_in(text):
         y, mo, d = mm.groups()
         out.add(y)
         if 1 <= int(mo) <= 12:
+            out.add(f"{int(d)} {MONTHS[int(mo) - 1]}")
+    # Taiwanese official documents date everything in ROC/Minguo years and print no Gregorian
+    # year at all: a Control Yuan report round 72 filed from carries 47 instances of 111年 and
+    # zero of "2022". The conversion is exact, ROC + 1911, so emit both forms.
+    for mm in re.finditer(r"(\d{2,3})\s*\u5e74(?:\s*(\d{1,2})\s*\u6708(?:\s*(\d{1,2})\s*\u65e5)?)?", text):
+        roc, mo, d = mm.groups()
+        if 1 <= int(roc) <= 200:
+            out.add(str(int(roc) + 1911))
+            if mo and 1 <= int(mo) <= 12 and d:
+                out.add(f"{int(d)} {MONTHS[int(mo) - 1]}")
+    # Numeric forms: 31.12.2016, 31/12/2016, 19. 10. 2017. A Serbian audit report and most
+    # continental official documents print dates this way and never spell the month, so without
+    # this every date in such a source reads as missing.
+    for mm in re.finditer(r"\b(\d{1,2})\s*[./]\s*(\d{1,2})\s*[./]\s*(\d{4})\b", text):
+        d, mo, y = mm.groups()
+        out.add(y)
+        if 1 <= int(mo) <= 12 and 1 <= int(d) <= 31:
             out.add(f"{int(d)} {MONTHS[int(mo) - 1]}")
     return out
 
@@ -199,7 +240,9 @@ def main():
               f"  - the date comes from a SECOND source the record cites in its own text;\n"
               f"  - `years` is a RANGE the record composes, so neither end need appear verbatim;\n"
               f"  - the page prints it in a form this script does not parse -- a numeric date, a "
-              f"month in a language not in MONTHS_ALT, or a PDF whose text layer garbles accents;\n"
+              f"month in a language not in MONTHS_ALT, a NON-GREGORIAN calendar such as the ROC/Minguo\n"
+              f"    years Taiwanese official documents use (2024 is printed 113), or a PDF whose text\n"
+              f"    layer garbles accents;\n"
               f"  - or the date was reconstructed from context, in which case it has to come out.\n"
               f"Round 71 went from 15 flags to 5 by fixing this script rather than the records, and "
               f"the two real defects it found were a committee hearing and a tabling date that "

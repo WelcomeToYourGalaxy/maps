@@ -93,7 +93,7 @@ same commit as the work it did.
   - Links: `{n, cb | tn, rel, role, detail, src_t, src_u}`.
   - Popups turn each link into a plain sentence (`SAY` / `sayLink` / `srcItem` in `app.js`). Add a `SAY` entry for any new `role` string.
 
-## Where it stands (71 rounds in, 17 November 2026)
+## Where it stands (72 rounds in, 17 November 2026)
 
 1,715 outside parties and 2,514 ties. One writeup for every box, 1,944 of them. 20 patterns
 and 14 suspected patterns.
@@ -109,25 +109,46 @@ the round-53 table overstated the revolving door by 12 places because `coverage.
 records the layer does not count — see "The revolving-door row was counting records the layer
 ignores" below.
 
-| Category | Records | Places | of 206 | of 192 | At the start of 17 Nov | Moved today (r70+r71) | This round |
-|---|---|---|---|---|---|---|---|
-| Corruption cases | 279 | 175 | 85% | 91% | 259 records, 175 places | +20 records, +0 places | +11 records |
-| Revolving door | 303 | 172 | 83% | 90% | 288 records, 172 places | +15 records, +0 places | +7 records |
-| Governor removals and pressure | 251 | 183 | 89% | 95% | 232 records, 183 places | +19 records, +0 places | +9 records |
-| External auditors | 216 | 178 | 86% | 93% | 216 records, 178 places | no change (at ceiling) | not worked |
-| Banknote printers | 184 | 168 | 82% | 88% | 184 records, 168 places | not worked today | not worked |
-| Outside reserve managers | 207 | 79 | 38% | 41% | 203 records, 76 places | +4 records, +3 places | not worked |
-| Gold custodians | 97 | 59 | 29% | 31% | 96 records, 58 places | +1 record, +1 place | not worked |
-| Swap lines | 240 | 84 | 41% | 44% | 240 records, 84 places | not worked today | not worked |
-| Named shareholders | 228 | 9 | 4% | 5% | 228 records, 9 places | not worked today | not worked |
+| Category | Records | Places | of 206 | of 192 |
+|---|---|---|---|---|
+| Corruption cases | 283 | 175 | 85% | 91% |
+| Revolving door | 307 | 172 | 83% | 90% |
+| Governor removals and pressure | 256 | 183 | 89% | 95% |
+| External auditors | 216 | 178 | 86% | 93% |
+| Banknote printers | 184 | 168 | 82% | 88% |
+| Outside reserve managers | 207 | 79 | 38% | 41% |
+| Gold custodians | 97 | 59 | 29% | 31% |
+| Swap lines | 240 | 84 | 41% | 44% |
+| Named shareholders | 228 | 9 | 4% | 5% |
 
-**Round 70 and round 71 both fell on 17 November, so the start-of-today column is round 69's table
-(commit `3fe49f04` of the 15th) for both of them and "moved today" is the two rounds together.**
-Round 71's own column is given separately because the day's figure otherwise hides which round did
-what. Not one percentage moved today across nine rows, and both rounds were deliberate depth work:
-the three rows the owner cares most about are at their breadth ceiling, so the records column is the
-honest measure and the place column will not move. The metric that did move is in the depth table
-below.
+**The comparison is reported as PERCENTAGES, not counts — the owner asked for that at round 71, and
+`coverage.py --since` prints it.** Records and places are relative change; coverage is in percentage
+POINTS, because a percentage of a percentage is unreadable. Snapshots live in
+`agents/work/baselines/`; take the start-of-day one by running the CURRENT `coverage.py` against the
+old tree (`git archive <sha> central-bank-src | tar -x -C /tmp/old`, copy `coverage.py` in, run it
+with `--snapshot`) so both sides are computed on the same basis.
+
+Change over 17 November, which is rounds 70, 71 and 72 together, against round 69's commit
+`3fe49f04`:
+
+| Category | Records | Places | Coverage | Level now |
+|---|---|---|---|---|
+| Corruption cases | +9.3% | 0.0% | 0.0pp | 91% of 192 |
+| Revolving door | +6.6% | 0.0% | 0.0pp | 90% of 192 |
+| Governor removals and pressure | +10.3% | 0.0% | 0.0pp | 95% of 192 |
+| External auditors | 0.0% | 0.0% | 0.0pp | 93% of 192 |
+| Banknote printers | 0.0% | 0.0% | 0.0pp | 88% of 192 |
+| Outside reserve managers | +2.0% | +3.9% | +1.6pp | 41% of 192 |
+| Gold custodians | +1.0% | +1.7% | +0.5pp | 31% of 192 |
+| Swap lines | 0.0% | 0.0% | 0.0pp | 44% of 192 |
+| Named shareholders | 0.0% | 0.0% | 0.0pp | 5% of 192 |
+| **All rows together** | **+4.0%** | | | |
+
+Round 72 alone: corruption cases +1.4%, the revolving door +1.3%, removals and pressure +2.0%, all
+rows +0.6%, and 0.0pp of coverage on every one of the nine. **Three rounds in a day moved the three
+priority rows between 6.6% and 10.3% in records and not one percentage point of coverage, because
+those rows are at their breadth ceiling.** That is not a stalled day; it is what the only remaining
+kind of work looks like, and the depth table below is where it shows.
 
 **The start-of-day column is a standing requirement the user asked for at round 69: every coverage
 report carries where each row stood at the start of that day, so the rate of change is visible and
@@ -189,12 +210,27 @@ useful number in this document:
 
 | Row | Absent | Of those, a documented negative | Genuinely open |
 |---|---|---|---|
-| Corruption cases | 17 | 17 | none (Eritrea closed this round) |
-| External auditors | 14 | 14 | none |
-| Revolving door | 20 | 20 | none |
-| Outside reserve managers | 113 | 113 | none |
-| Gold custodians | 133 | 132 | PSE |
-| Governor removals and pressure | 9 | 9 | none |
+| Corruption cases | 17 | 17 | **none** |
+| External auditors | 14 | 14 | **none** |
+| Revolving door | 20 | 20 | **none** |
+| Outside reserve managers | 113 | 113 | **none** |
+| Gold custodians | 59 real targets (of 133 absent) | 59 | **none** |
+| Governor removals and pressure | 9 | 9 | **none** |
+
+**At round 72 the remainder is zero on every row, and the last apparent exception turned out to be
+a denominator bug in this very table.** Round 71 reported Palestine as the one country still open on
+gold. It is not a target at all: **Palestine is absent from the World Gold Council table entirely**,
+and a bank with no gold cannot have a gold custodian. The row's PERCENTAGE has been measured against
+the 108 places holding gold above zero since round 52, but its ABSENT LIST was still computed against
+all 192 reachable places, so it read "133 to go" when 74 of those can never be filled — overstating
+the row's remaining work by more than double for twenty rounds. `coverage.py` now separates them the
+way it already separated the ten places with no central bank, and the row honestly reads 59 to go,
+every one of which carries a documented negative.
+
+**So breadth is finished, with no exception and nothing to chase.** Any future round that wants to
+add a PLACE to any row needs a source that does not exist today, not a search that has not been
+run. What remains is depth, and the completeness estimate in `about.html` — roughly 40% of every
+documented instance of any size and any year — is the honest statement of how much is left.
 
 So there is no country left on these rows that research alone can convert, and a round aimed at
 breadth will produce nothing. **Eritrea was the last genuinely open country on the corruption row
@@ -217,9 +253,16 @@ main table uses, so its "places with a record" column must equal the figures pri
 
 | Row | Places with a record | Exactly one | Two | Three or more |
 |---|---|---|---|---|
-| Corruption cases | 156 | 71 | 52 | 33 |
-| Revolving door | 172 | 104 | 19 | 49 |
-| Governor removals and pressure | 183 | 127 | 45 | 11 |
+| Corruption cases | 156 | 67 | 56 | 33 |
+| Revolving door | 172 | 100 | 23 | 49 |
+| Governor removals and pressure | 183 | 122 | 50 | 11 |
+
+As percentages, which is how this is now reported: round 72 moved "exactly one" down 5.6% on cases,
+3.8% on the revolving door and 3.9% on removals, and moved "two" up 7.7%, 21.1% and 11.1%. Over the
+whole of 17 November — rounds 70, 71 and 72 — "exactly one" fell 24.7% on cases (89 places to 67),
+9.9% on the revolving door (111 to 100) and 16.4% on removals (146 to 122). **A fall here is
+progress, and `coverage.py --since` labels the column so a reader is not left to work out which
+direction is good.**
 
 **The round-70 table here was wrong and the way it was wrong is worth knowing.** It gave the cases
 row as 176 places with 94 holding exactly one, which is the UNFILTERED record count, while its own
@@ -377,6 +420,157 @@ commit, because that sentence had become false the moment the file changed.
 EMR, Guinea's three commercial gold handlers, carry no city and Guinea's iso3; and Haiti's
 `Federal Reserve Bank` node carries USA with no city **on purpose**, because its statements say only
 "Federal Reserve Bank" and naming New York would be an inference.
+
+## The currency-union members cannot be reached by their own audit institutions, and the unions' own statutes say so (round 72)
+
+Thirteen countries on the corruption row hold exactly one case each, and in every one of the
+thirteen that record is not theirs: it is the currency union's, expanded into every member. Seven
+WAEMU members share the 2011 BCEAO governor's resignation; six CEMAC members share BEAC's. Not one
+had a case of its own. Round 72 sent an agent at their NATIONAL audit institutions on the reasoning
+that a national finding would be each country's first own record — and the route turns out to be
+closed by the unions' own statutes, read as primary documents:
+
+- **BCEAO Statuts 2010, articles 7 and 107 to 110**: the accounts are certified by internationally
+  reputed firms under the UMOA Council of Ministers, control sits with the Comité d'Audit, and the
+  bank holds immunities in each member state.
+- **BEAC Statuts révisés 2021, article 6 and articles 68 to 69**: immunity from member states'
+  executive, legislative and judicial power, with Commissaires aux Comptes chosen by the Board.
+
+**The inversion test confirmed it twice from the other side.** Cameroon's Chambre des Comptes annual
+report for 2023, 172,000 characters grepped, names BEAC once and only as a body that helped the
+finance ministry prepare a draft text. Mali's Bureau du Vérificateur Général annual report for 2018,
+164,000 characters, has no BCEAO hits at all.
+
+**So a national case in a union member has to come from a PROSECUTION of agency staff, not from an
+audit** — and that is exactly how the one conversion arrived: Equatorial Guinea, where the head of
+BEAC's own agency at Ebibeyin is held in Yaoundé over a counterfeit CFA network and has been
+suspended by BEAC. Do not send another agent at these thirteen countries' audit institutions.
+
+## Three records refused and one WITHDRAWN AFTER FILING at round 72
+
+**DOM — the Camara de Cuentas' figure for the central bank's accumulated deficit. Refused: a
+quantification is not a case.** It records contingent liabilities of 664,333 millones de pesos of
+which 94.05 per cent is the Banco Central's accumulated deficit of 624,824 millones, tripled since
+2005. No conduct is alleged and no body is found at fault. That is the Finland test and round 71's
+Moldova test together: a balance-sheet magnitude is not corruption.
+
+**ZWE — refused because the record was INVERTED, which is worth knowing as a failure shape.** Its
+kind said the governor's property was blocked by a foreign authority and its date was 4 March 2024;
+the cited Federal Register notice of 7 March 2024 records that the three Executive Orders were
+REVOKED effective 4 March 2024 and the listed persons were no longer blocked. **The record dated an
+imposition to the day it was lifted.** A sanctions document read quickly looks the same whether it
+imposes or revokes.
+
+**MLI — refused on the counterparty test.** ECOWAS froze the assets of the REPUBLIC of Mali held in
+ECOWAS central banks. The object is the state's money and the bank is its custodian, which is the
+Denmark shape this row already refuses. Mali is a BCEAO member with no central bank of its own, so
+the record would assert a move against a bank that is not Mali's.
+
+**TWN — filed, then WITHDRAWN when the independent verifier read the source. The bank was the
+detector.** The Control Yuan's report on the Central Mint is real and every fact in the record
+checked out, ROC-calendar conversions included. But the document shows the CENTRAL BANK finding the
+power cable running from a plant socket to the deputy director's private car during a routine
+mid-year financial check, the bank's issue department pressing the Mint to act, and the bank's ethics
+office taking the whistle-blower call. **The only bodies that ruled on graft rejected it** — the
+Agency Against Corruption held the conduct did not involve official duties and was not a graft
+offence, and Taipei prosecutors declined to prosecute on 13 May 2024. What is established is a
+two-demerit internal discipline. Filing it credits Taiwan with a corruption case for catching and
+clearing a petty matter, which is what the Saudi Arabia and Singapore refusals turn on. **Note that
+it passed my own review and only failed on an independent read of the source**, which is the argument
+for having one.
+
+## The verifier's second pass: accretion again, and a counting basis that did not describe its own employers (round 72)
+
+Round 71's verifier found four records carrying a date the cited page does not state. Round 72's
+found the same class again in four of sixteen, which makes it this map's commonest defect rather than
+a one-off:
+
+- a years field of "2019-2021" where the page gives control missions 2015-2020, implementing texts to
+  the end of 2019 and deposit-rate breaches in the first quarter of 2019 — **2021 was the press
+  publication date**;
+- a minister given a title ("Secretary of State") the report does not use, and two disbursements both
+  described as made on WRITTEN instructions where the report says written for one only;
+- a sanctions prohibition attributed to a regulation's RECITALS when it is in the operative article,
+  and a status line ("In force") not visible on the cited page at all;
+- a year inferred from a publication date in a record that asserted every date in it was printed on
+  the page.
+
+All corrected. `agents/work/check_dates.py` is the mechanical answer and round 72 spent real effort
+making it readable rather than loud: from 15 flags on 29 records to 1 on 15, by fixing the SCRIPT in
+six ways — whole-sentence ignoring of clauses that point at a sibling record, abbreviation-aware
+sentence splitting, `.docx` support, numeric European dates, Cyrillic month names, and ROC/Minguo
+year conversion for Taiwanese documents, which print 113年 and never 2024. **Its one remaining flag
+on this round was a date the record itself attributes to a second report it cites by URL**, which is
+the first of the innocent reasons its own message lists.
+
+**And a lesson about stating a reason rather than a conclusion.** Round 71 counted three career moves
+on the basis that "a large listed commercial bank whose private ownership is not in question" is not
+the kind of employer the no-unstated-ownership rule exists to catch. Round 72 reused that sentence
+for two more — and the verifier pointed out it does not describe either employer: UniCredit Bank
+Hungary Zrt. is not listed, it is a wholly owned subsidiary of the listed Italian group, and Fiba
+Group, the employer immediately before the central bank in the other record, is a privately held
+group and not a listed company. **The conclusion was right and the stated reason was wrong, which is
+worse than it sounds on a map whose whole claim is that each record says what it rests on.** The
+basis is now written per employer, and the phrase to reuse is "listed, or wholly owned by a listed
+private group, or a privately held group" — not "listed". The same review also removed reliance on a
+1993-1995 Hungarian commercial bank leg, since banks of that vintage were largely state-held before
+the 1996-97 privatisations and no source opened states that one's ownership.
+
+## Host notes, round 72 (shelf life about a round — test, do not trust)
+
+**Serves plain curl:** `dri.rs` (Serbia's State Audit Institution, per-entity PDFs — the richest new
+vein found this round), `cybsbox.cy.gov.tw/CYBSBoxSSL/edoc/download/<id>` and `multimedia.cy.gov.tw`
+(Taiwan's Control Yuan; round 71's Taiwan failure was the UTF-8 paths on `www.cy.gov.tw`, not these
+hosts), `cscca.gouv.ht`, `businessnews.com.tn`, `financialafrik.com`, `tcontas.ao`.
+**Refuses curl, serves the fetch tool:** `www.bportugal.pt` (403, and it returns an HTML error page
+for a .pdf URL), `sbp.org.pk` (Cloudflare), `www.mnb.hu`, `tcmb.gov.tr`, `cgr.gob.ni` (**a TCP reset
+with no HTTP status, with or without a browser user-agent — a curl-based checker records this as a
+false failure**), `mirror.pco.gov.ph`, `www.intellinews.com`, `www.dawn.com`, `monitorul.fisc.md`.
+**Dead since round 71:** `al.gov.mo` attachment PDFs now serve a 117-byte meta-refresh to the site
+index, to curl and the fetch tool alike, on three paths tested.
+**Unreachable:** `parliament.gov.zm` (curl code 000, and the fetch tool refuses its URLs as too
+long), `otvoreniparlament.rs` (403), `courdescomptes.sn` (404 on both spellings of the report path,
+and both fetch attempts refused for provenance).
+**Format note:** `eur-lex.europa.eu/eli/...` serves metadata only; the full text needs the CELEX HTML
+path. A Control Yuan `.docx` is readable by unzipping `word/document.xml`.
+
+### Named leads for the next round, each checked against the live exactly-one list
+1. **SRB — eight more DRI reports.** The State Audit Institution lists the National Bank of Serbia as
+   audit subject 1071 with NINE per-entity reports covering financial years 2009 to 2017; round 72
+   opened two (FY2016 converted, FY2017 is clean). **This is an annual per-entity series on a host
+   that serves plain curl, which is the shape round 70 named as the best vein on this row.**
+2. **NIC — about eighteen more CGR resolutions** under `ria-uai-...-bcn` at `cgr.gob.ni`, an annual
+   series with the Banco Central as audited entity. The host resets curl; use the fetch tool.
+3. **CUW — a PwC investigation report on the CBCS** is already on disk at `/tmp/cuwpwc.pdf` as a
+   zero-text scan needing one OCR pass and no fetch. If that scratch file is gone, it is one fetch.
+4. **PAK — `sbp.org.pk/about/governors/DG5.htm` and `DG9` to `DG11`**, one dated biography per deputy
+   governor, which sometimes state ownership in words. Unopened and the cheapest leads on the
+   revolving door.
+5. **TUR and HUN — one ownership page each** converts the two records currently resting on a
+   per-employer basis rather than a source: Yapı Kredi's shareholding page was blocked with
+   PROVENANCE_REQUIRED, and UniCredit's group structure page would settle the Hungarian one.
+6. **ISL — Ríkisendurskoðun's remaining categories.** Its per-entity "Endurskoðunarskýrsla" index was
+   enumerated in full (126 reports, FY2016-2021) and the central bank is absent despite being its
+   statutory auditor, which is now a documented blank. Unopened: the "Skýrsla til Alþingis" category,
+   the `/Skilalisti` register, and the government's own "Mat á frammistöðu Seðlabanka Íslands
+   2020-22" (HTTP 520 to curl). `althingi.is` needs the fetch tool, not curl.
+7. **SEN — `courdescomptes.sn`** is "not reached", not negative.
+8. **TWN — the Control Yuan correction 114財正0002** faults the Central Mint over its handling of
+   bullying complaints. Not corruption, so not that row, but **a candidate for the removals row if
+   the owner wants it** — it is a state oversight organ correcting a central bank subsidiary.
+9. **The ECB's CON opinions** remain the repeatable removals vein for every EU country, and must be
+   reached through a national bank's own site: both `ecb.europa.eu` HTML and the `lagen.nu` mirror are
+   robots-disallowed.
+10. **Party linking for rounds 71 and 72's employers is still outstanding**, and the list is in
+    `agents/work/r71/link_r71.py` under `UNLINKED`, which names what each one needs. Round 72 adds
+    United Bank Limited (Pakistan), UniCredit Bank Hungary Zrt., Yapı ve Kredi Bankası A.Ş., Fiba
+    Group, and the unnamed listed Sri Lankan commercial bank, which gets no node by design because
+    the source withholds the firm. **`BDO Unibank, Inc.` must NOT be folded into the map's existing
+    `BDO` node, which is the audit network and a different business.** Copy
+    `agents/work/r71/link_r71.py`: it keys each entry on (record index, a token that must appear in
+    that record) and refuses to write anything if one token is missing, which is what catches the
+    round-11 positional-pointer bug before it happens. **Do not guess a head office** — the four
+    linked at round 71 were linked only because the map already carried a sourced city for them.
 
 ## How complete the map is, as a whole
 
@@ -891,6 +1085,7 @@ Note `gaps.json['no_central_bank']` is a dict with `note` and `places`, not a li
 These accumulate. Read them as live instructions, not history.
 
 - **Report coverage every round, by row, and account for the rate of change.** The level alone is not the answer; say what moved, by how much, and why. Report against both denominators (see below).
+- **Express the comparison table's diffs as PERCENTAGES, not record and place counts**, asked at round 71. `coverage.py --snapshot <file>` writes the round's rows and `coverage.py --since <file>` prints the diff table: records and places as relative change, coverage as percentage POINTS, because a percentage of a percentage is unreadable. Baselines live in `agents/work/baselines/`. **On a depth round the two columns diverge sharply and that is the point of showing both** — round 71 moved the three priority rows 5.2% to 8.2% in records and 0.0pp in coverage. The depth block prints its own percentage diff, where a FALL in "exactly one" is progress and the header says so.
 - **Carry a START-OF-TODAY column in that table**, added at round 68: beside this round's figures, what each row stood at when the day began, so the day's work is visible as well as the round's. Derive the baseline rather than copying it: find the last commit to touch `central_bank_independence.html` before local midnight —
 
   ```bash
@@ -3592,6 +3787,25 @@ that file had already solved; this document's own round-70 depth table was found
 the wrong basis while `about.html` had it right; one Ghanaian bank was found drawn as two diamonds;
 and a head office this document had called wrong on its face for four rounds was sourced in one
 search, moving a marker out of Kazakhstan.
+
+Then round 72's 15 records across six parallel agents, 82 documented blanks, four refusals and one
+record withdrawn after filing. The depth metric moved 13 places off "exactly one" — cases down 5.6%,
+the revolving door 3.8%, removals 3.9% — against 0.0pp of coverage on all nine rows, and the day's
+three rounds together moved the priority rows 6.6% to 10.3% in records with no coverage change at
+all. **Breadth is now finished with no exception: the absent-minus-negatives remainder is zero on
+every row**, the last apparent exception having been a denominator bug in this document's own table,
+where the gold row's absent list was computed against all 192 reachable places while its percentage
+was measured against the 108 that hold gold — so it read 133 to go when 74 of those can never be
+filled. Worth more than the records: the thirteen currency-union members were established to be
+unreachable by their own audit institutions, with the unions' statutes read as primary documents and
+the inversion test run twice to confirm it, so a national case there must come from a prosecution of
+agency staff and that is exactly how the one conversion arrived; an independent verifier found date
+and context accretion for the second round running, which makes it this map's commonest defect and
+not a one-off; `check_dates.py` was taken from 15 flags to 1 by fixing the script six ways rather
+than the records; a record that passed my own review was withdrawn on the verifier's read because
+the bank was the detector and no corruption was found; and a counting basis reused from round 71 was
+found not to describe either of the employers it was applied to, which is the kind of error that
+matters most on a map whose claim is that each record says what it rests on.
 
 ## Host notes, round 71 (shelf life about a round — test, do not trust)
 
