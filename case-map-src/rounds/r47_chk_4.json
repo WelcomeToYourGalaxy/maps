@@ -1,0 +1,158 @@
+{
+ "complaints": [],
+ "complaint_links": [
+  {
+   "k": "ncp:CED & RELUFA vs. SG Sustainable Oils Cameroon",
+   "cs": "herakles-sgsoc-cameroon"
+  },
+  {
+   "k": "ncp:Greenpeace vs. Herakles Capital",
+   "cs": "herakles-sgsoc-cameroon"
+  },
+  {
+   "k": "ncp:Greenpeace vs. Herakles Farms",
+   "cs": "herakles-sgsoc-cameroon"
+  }
+ ],
+ "extend": [
+  {
+   "id": "herakles-sgsoc-cameroon",
+   "cp_add": [
+    "ncp"
+   ],
+   "sources_add": [
+    {
+     "title": "CED & RELUFA vs. SG Sustainable Oils Cameroon",
+     "publisher": "OECD Watch",
+     "year": 2013,
+     "url": "https://oecdwatch.org/complaint/ced-relufa-vs-sg-sustainable-oils-cameroon/"
+    }
+   ],
+   "fields_add": {
+    "outcome": "The 2013 complaint by CED and RELUFA went to mediation in Yaoundé, observed by the US NCP, and was concluded with an agreement under which SGSOC undertook to investigate credible cases of alleged past corruption put to it in writing by the NGOs and to respond in writing within three months."
+   },
+   "complaint_h": [
+    {
+     "k": "ncp:CED & RELUFA vs. SG Sustainable Oils Cameroon",
+     "h": true
+    }
+   ]
+  },
+  {
+   "id": "herakles-sgsoc-cameroon",
+   "cp_add": [
+    "ncp"
+   ],
+   "sources_add": [
+    {
+     "title": "Greenpeace vs. Herakles Capital",
+     "publisher": "OECD Watch",
+     "year": 2014,
+     "url": "https://oecdwatch.org/complaint/greenpeace-vs-herakles-capital/"
+    }
+   ],
+   "fields_add": {},
+   "complaint_h": [
+    {
+     "k": "ncp:Greenpeace vs. Herakles Capital",
+     "h": true
+    }
+   ]
+  },
+  {
+   "id": "herakles-sgsoc-cameroon",
+   "cp_add": [
+    "ncp"
+   ],
+   "sources_add": [
+    {
+     "title": "Greenpeace vs. Herakles Farms",
+     "publisher": "OECD Watch",
+     "year": 2014,
+     "url": "https://oecdwatch.org/complaint/greenpeace-vs-herakles-farms/"
+    }
+   ],
+   "fields_add": {},
+   "complaint_h": [
+    {
+     "k": "ncp:Greenpeace vs. Herakles Farms",
+     "h": true
+    }
+   ]
+  }
+ ],
+ "check_log": [
+  {
+   "pair_id": "ced-relufa-vs-sg-sustainable-oils-cameroon__herakles-sgsoc-cameroon",
+   "writer_verdict": "extend",
+   "checker_verdict": "extend",
+   "corrections": [
+    "Rewrote the fields_add sentence. The writer wrote that the mediation \"ended in June 2015 in an agreement\"; the harvested outcome text gives no date for the agreement, and 17 June 2015 on the OECD Watch page is the date of the NCP's final statement, listed under Documents, not the date the mediation ended. The date is struck and the sentence now carries only what the outcome text states: mediation in Yaounde, observed by the US NCP, concluded with an agreement under which SGSOC would investigate credible cases of alleged past corruption put to it in writing and reply within three months."
+   ],
+   "opened": [
+    "https://oecdwatch.org/complaint/ced-relufa-vs-sg-sustainable-oils-cameroon/"
+   ],
+   "note": "Identity is firm: the complaint names SGSOC as the Herakles affiliate developing an oil palm plantation and refinery in South West Cameroon, which is the case's own operation, and the complaint's keywords on the page are Corruption and Land rights. The h flip from false to true is right: the case's suppression field records Nasako Besingi beaten on 29 August 2012 and arrested with five colleagues in the gendarme raid on the SEFE office at Mundemba on 14 November 2012, and its community field records forest and farms bulldozed; the complaint's own harm flag is violence. Harm on the ground is recorded, so h is true whatever the NCP did with the complaint. Record checks: complaint_link.k matches cmp_key character for character, complaint_record is correctly absent because cmp_record_exists is true, sources_add is the complaint URL and is not already in case.source_urls, and nothing outside cp, sources and outcome is touched."
+  },
+  {
+   "pair_id": "greenpeace-vs-herakles-capital__herakles-sgsoc-cameroon",
+   "writer_verdict": "extend",
+   "checker_verdict": "extend",
+   "corrections": [
+    "Struck the flat claim in why that \"the only Herakles operation in Cameroon is the SGSOC palm oil concession\". No document in the pair, and nothing on the OECD Watch page I opened, says Herakles had no other Cameroon operation. The supportable form is the one the writer used on the sibling pair: no other Herakles Cameroon operation appears in these documents. The verdict does not turn on the stronger wording, so the pair passes."
+   ],
+   "opened": [
+    "https://oecdwatch.org/complaint/greenpeace-vs-herakles-capital/"
+   ],
+   "note": "I opened both Greenpeace pages. They carry the harvested allegations and outcome word for word and add nothing: no site, no project name, keyword Disclosure, country of harm Cameroon, and a Related complaints line pointing at the sibling. So the writer's reading of the batch is right on the point you asked about: the 2013 CED/RELUFA mediation and the two 2014 Greenpeace filings are two separate events, and the two 2014 filings are one event against two respondents (Herakles Capital and Herakles Farms, same allegations, both filed 11 March 2014, both concluded 19 May 2014, each naming the other as a related complaint). Keeping them as two records with two links to the same case is what BRIEF47 requires. This is the batch's weakest identity: the complaint is about corporate disclosure by the New York parent the case names, tied to Cameroon but to no named site. I pass it because the respondent is the case's own parent company, the country of harm is Cameroon, the affected people on the sibling page include Communities, and the harvest had already placed this complaint at Mundemba in the case's own division. A later round could firm it up with a Greenpeace source tying the disclosure filing to the SGSOC plantation campaign. The h flip is right by the brief's own test: the complaint alleges only a disclosure shortfall, but h is harm recorded by the complaint or by the case, and the case records the beating, the armed raid and arrests and the bulldozed farms at this operation. Ecosystem is empty and killed is 0, which does not disturb that."
+  },
+  {
+   "pair_id": "greenpeace-vs-herakles-farms__herakles-sgsoc-cameroon",
+   "writer_verdict": "extend",
+   "checker_verdict": "extend",
+   "corrections": [],
+   "opened": [
+    "https://oecdwatch.org/complaint/greenpeace-vs-herakles-farms/"
+   ],
+   "note": "Passed unchanged. Every claim in why and identity_evidence is in the harvested record or on the page I opened, including the related-complaint link and the shared 19 May 2014 conclusion date, and the writer correctly qualified the single-operation point with \"in these documents\". Key matches cmp_key character for character; complaint_record correctly absent; sources_add not already in case.source_urls. h flip to true on the same ground as the sibling pair: harm is recorded by the case, not by this complaint."
+  },
+  {
+   "pair_id": "evangelical-lutheran-church-of-png-et-al-on-behalf-of-affected-morobe-province-communities-vs-newcrest-mining-ltd-and-harmony-gold-australia-pty-ltd__lihir-gold-mine",
+   "writer_verdict": "false_match",
+   "checker_verdict": "false_match",
+   "corrections": [
+    "Struck \"about 900 km away\" from why. No document gives a distance, and the two records' own coordinates (case -3.1286, 152.6352; complaint record -6.7302, 147.0008) are about 740 km apart. The cut does not depend on the figure."
+   ],
+   "opened": [],
+   "note": "The cut is right and I checked it on its own terms, not on the writer's. The complaint is about the Wafi-Golpu Joint Venture, a proposed underground copper-gold mine, and its plan to dump tailings into the Huon Gulf in Morobe Province, on behalf of 2,596 Morobe Province community members. The case is the Lihir mine on Lihir Island in New Ireland Province, producing since 1995, with its own existing sea tailings outfall. Different project, different province, different island, and the complaint text never mentions Lihir. This is not a cut on the respondent's role: Newcrest is a real respondent and a real later owner of Lihir, but the event is a different operation at a different site, which BRIEF47 rule 2 makes a false match. The writer's requeue note is accurate against the outcome text, including the Australian NCP final statement of 29 August 2025, the 28 recommendations and the five heads of non-compliance, and the related complaint against the same two companies in the reverse order belongs with any new case."
+  },
+  {
+   "pair_id": "friends-of-the-earth-japan-and-walhi-vs-marubeni__jawa-1-lng-power-fishers",
+   "writer_verdict": "false_match",
+   "checker_verdict": "false_match",
+   "corrections": [
+    "Struck \"roughly 200 km west of Cirebon\" from why. No document gives a distance, and the two records' own coordinates (case -6.2491, 107.5921; complaint record -6.7137, 108.5608) are about 120 km apart. The cut does not depend on the figure."
+   ],
+   "opened": [],
+   "note": "The cut is right. The complaint is about the Cirebon coal-fired power project in West Java, its Unit 1 and the then-planned Unit 2, the legality of that project's environmental permit and the fishers it damaged; the case is the Jawa-1 gas-fired plant at Cilamaya in Karawang and Subang, financed by the ADB and JBIC, with its own set of fishers and its own ADB compliance review. Different plant, different fuel, different permit, different communities. Marubeni appears in both, as a respondent in the complaint and as a Jawa-1 sponsor in the case, but that is the same company at a different operation. Both cases turn on fishers' lost catch in West Java, so this pair is the one in the batch most likely to be re-proposed by a later machine pass; a later round should keep the two apart on the plant name. The writer's requeue note matches the outcome text, including the Japanese NCP's final statement of 13 February 2024 and the companies' refusal to engage while Indonesian proceedings continued."
+  },
+  {
+   "pair_id": "employees-of-kawaguchi-manufacturing-vs-kawaguchi-manufacturing-sony-and-panasonic__ecrl-gombak-demolitions-floods",
+   "writer_verdict": "false_match",
+   "checker_verdict": "false_match",
+   "corrections": [
+    "Struck \"electronics supplier\" from why. The harvested record gives the sector as Manufacturing and says Sony and Panasonic sourced from Kawaguchi Manufacturing; it does not say what the plant makes. The cut does not depend on it."
+   ],
+   "opened": [],
+   "note": "The cut is right and plainly so. The complaint is 251 workers alleging forced-labour indicators at Kawaguchi Manufacturing Sdn. Bhd. in Malaysia, with Sony and Panasonic as buyers; the case is the East Coast Rail Link railway at Gombak in Selangor, homes cleared at Desa Mukmin and flooding after hillside works. No shared operation, site, company or sector. The machine matched on \"sdn\" and \"bhd\", which are the Malaysian corporate-form words and will pair any Malaysian company with any other; that pattern should be excluded from the matcher before the next pass. Note also that the existing complaint record for this complaint already carries h true and cs empty, and nothing in this round changes it."
+  },
+  {
+   "pair_id": "acf-et-al-vs-anz-bank__phnom-penh-sugar-kampong-speu",
+   "writer_verdict": "false_match",
+   "checker_verdict": "false_match",
+   "corrections": [],
+   "opened": [],
+   "note": "The cut is right. The 2006 complaint is about ANZ financing Rimbunan Hijau's logging in Papua New Guinea, rejected by the Australian NCP in October 2006 for want of an investment nexus; the case is ANZ's lending to Phnom Penh Sugar in Kampong Speu, Cambodia, from 2010, whose OECD Watch complaint is the 2014 Equitable Cambodia and Inclusive Development International filing the case already carries in cx_existing. Same bank, different borrower, different country, different decade. This pair had cmp_record_exists false, so no record was due on a false match and none was written. The writer's requeue note is right that a case of its own would need its own sourcing, since the harvested text names no site or affected community in PNG."
+  }
+ ]
+}

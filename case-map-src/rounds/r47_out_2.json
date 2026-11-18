@@ -1,0 +1,96 @@
+{"pairs": [
+ {
+  "pair_id": "bigwave-et-al-vs-posco-holdings__posco-daewoo-bio-inti-agrindo-merauke",
+  "verdict": "false_match",
+  "why": "The complaint's own allegations text says the complaints 'concern the greenhouse gas emissions and pollution of the Krakatau POSCO coal-fired steel mill in Cilegon, Banten, Indonesia', and the remedies sought are about that mill's blast furnaces. The case is the PT Bio Inti Agrindo oil palm concession in Ulilin district, Merauke, South Papua, about 2,000 km away and a different industry. Same parent company and same country, different operation and different site, so the identity test fails.",
+  "identity_evidence": ["complaint names the Krakatau POSCO steel mill, Cilegon, Banten; case names the PT BIA palm concession, Ulilin, Merauke", "different sector: steelmaking against oil palm", "no overlap in the operation named"],
+  "fetched": [],
+  "complaint_link": null,
+  "complaint_record": null,
+  "complaint_h": null,
+  "extend": null,
+  "requeue_note": "Machine hint 'posco' matched on the parent only. This looks like a lead for a case of its own: the Krakatau POSCO coal-fired steel mill at Cilegon, Banten, with alleged PM2.5 levels around 18 times the WHO limit and acute respiratory infections in nearby villages rising from 665 to 1,065 cases in a year. Three complaints were filed over it on 19 August 2026 (POSCO Holdings, POSCO, National Pension Service), so a Cilegon case would take all three."
+ },
+ {
+  "pair_id": "bigwave-et-al-vs-posco__posco-daewoo-bio-inti-agrindo-merauke",
+  "verdict": "false_match",
+  "why": "This is the same 19 August 2026 filing as the previous pair, lodged against POSCO rather than POSCO Holdings, and its allegations text is identical: the Krakatau POSCO coal-fired steel mill in Cilegon, Banten. The case is the PT Bio Inti Agrindo palm concession at Ulilin, Merauke. The respondent's role in the complaint is as operator and part-owner of the Cilegon mill, not of the Merauke plantation, so the event is not the case's event.",
+  "identity_evidence": ["complaint names the Krakatau POSCO steel mill, Cilegon, Banten; case names the PT BIA palm concession, Ulilin, Merauke", "different sector: steelmaking against oil palm", "respondent's stated role is at the Cilegon mill"],
+  "fetched": [],
+  "complaint_link": null,
+  "complaint_record": null,
+  "complaint_h": null,
+  "extend": null,
+  "requeue_note": "Machine hint 'posco' matched on the company name only. Same Cilegon lead as the pair above; the two POSCO complaints and the National Pension Service one belong together on a Cilegon case if one is opened."
+ },
+ {
+  "pair_id": "ktnc-watch-et-al-vs-posco-international-national-pension-service-and-kexim__posco-daewoo-bio-inti-agrindo-merauke",
+  "verdict": "extend",
+  "why": "The complaint's subtitle is 'POSCO's violations in palm plantation in Papua, Indonesia' and its allegations text says POSCO International's subsidiary in the palm industry in Papua has caused health, labour and environmental harm, and that POSCO and its financiers failed to carry out adequate human rights due diligence over that subsidiary; the remedy sought is to refrain from further lending to that Papuan subsidiary. That subsidiary is PT Bio Inti Agrindo, the operation this case covers, 85% owned by POSCO Daewoo, renamed POSCO International in 2019 (case companies and lenders; Korea Times source already in the case). The respondent's stated role, the operation and the district all agree, and the existing complaint record already places the complaint at Merauke. I set complaint_h to true: the case records forest clearing without consent at Iltadeh in Ulilin, and violent acts by military officers guarding the plantation and security officers shooting towards villagers who blocked the entrance (GRAIN).",
+  "identity_evidence": ["the operation: POSCO International's palm plantation subsidiary in Papua, which is PT Bio Inti Agrindo", "the district: Merauke, Papua, in both the complaint record and the case", "the respondent's role: parent and 85% owner of the plantation operator", "the dates: complaint filed December 2019 against operations running since 2011"],
+  "fetched": [],
+  "complaint_link": {"k": "ncp:KTNC Watch et al vs. POSCO International, National Pension Service and KEXIM", "cs": "posco-daewoo-bio-inti-agrindo-merauke"},
+  "complaint_record": null,
+  "complaint_h": {"k": "ncp:KTNC Watch et al vs. POSCO International, National Pension Service and KEXIM", "h": true},
+  "extend": {
+   "id": "posco-daewoo-bio-inti-agrindo-merauke",
+   "cp_add": ["ncp"],
+   "sources_add": [{"title": "KTNC Watch et al vs. POSCO International, National Pension Service and KEXIM", "publisher": "OECD Watch", "year": 2019, "url": "https://oecdwatch.org/complaint/ktnc-watch-et-al-vs-posco-international-national-pension-service-and-kexim/"}],
+   "fields_add": {"outcome": "The Korean NCP accepted the December 2019 complaint by KTNC Watch, PUSAKA, SKP-KAMe and WALHI Papua for good offices in March 2020, and in its final statement of 13 January 2022 said three mediation meetings had not produced full agreement, recommending that POSCO International explain its efforts to the complainants and implement the No Deforestation, No Peat, No Exploitation policy and the Roundtable on Sustainable Palm Oil criteria."}
+  },
+  "requeue_note": ""
+ },
+ {
+  "pair_id": "leaders-of-paguyuban-ukpwr-vs-itochu__batang-coal-jbic",
+  "verdict": "extend",
+  "why": "The complaint's allegations text names the coal-fired power plant in Batang built and operated by Bhimasena Power Indonesia, the joint venture Itochu and J-Power established, and the harms alleged are the land acquisition, the intimidation, the arrests and the loss of farming and fishing income. That is this case: the Batang plant site, with PT Bhimasena Power Indonesia as project company and Itochu as shareholder, and the case's own lender note already records that local leaders filed complaints against both companies with Japan's OECD contact point in July 2015 (FoE Japan). The respondent's role, the site, the operation and the dates all agree. I set complaint_h to true: the case records arrests and a conviction of protesters, a community leader jailed for eight months, fences cutting farmers off from unsold land, a fall in fishers' daily catch and photos of people injured during demonstrations.",
+  "identity_evidence": ["the operation: the Bhimasena Power Indonesia coal-fired plant at Batang", "the site: Batang Regency, Central Java", "the respondent's role: Itochu as a shareholder in the joint venture building the plant", "the dates: complaint filed 29 July 2015, which the case's own lender note already cites"],
+  "fetched": [],
+  "complaint_link": {"k": "ncp:Leaders of Paguyuban UKPWR from the Indonesian community of Batang vs.  ITOCHU Corporation", "cs": "batang-coal-jbic"},
+  "complaint_record": null,
+  "complaint_h": {"k": "ncp:Leaders of Paguyuban UKPWR from the Indonesian community of Batang vs.  ITOCHU Corporation", "h": true},
+  "extend": {
+   "id": "batang-coal-jbic",
+   "cp_add": ["ncp"],
+   "sources_add": [{"title": "Leaders of Paguyuban UKPWR from the Indonesian community of Batang vs.  ITOCHU Corporation", "publisher": "OECD Watch", "year": 2015, "url": "https://oecdwatch.org/complaint/leaders-of-paguyuban-ukpwr-vs-itochu/"}],
+   "fields_add": {"outcome": "The Japanese NCP accepted the July 2015 complaint by 23 leaders of Paguyuban UKPWR against Itochu and accepted most of its allegations in its initial assessment of 28 June 2016, and after the companies formally declined its good offices on 21 November 2023 it published a final statement on 13 February 2024 recommending that they continue to observe the Guidelines and engage with the complainants and other residents."}
+  },
+  "requeue_note": ""
+ },
+ {
+  "pair_id": "shehri-citizens-for-a-better-environment-vs-shv-holdings-nv__thar-block-1-varvai-tilvai-land",
+  "verdict": "false_match",
+  "why": "The complaint concerns Makro Habib Pakistan Ltd., the department store chain jointly owned by SHV Holdings and the Pakistani House of Habib, and the land transfer and conversion at issue is the Karachi store site, which the Supreme Court in December 2009 ordered Makro-Habib to leave; the existing complaint record places it at Karachi. The case is land taken at Varvai, Tilvai and Bhave Jo Tar in the Thar Coal Block-I mining area in Tharparkar, Sindh, a Chinese-financed coal mine and power plant with no connection to a retail chain. The machine matched on the word 'habib' alone, which appears in the case as Habib Bank Limited, a syndicate lender, and in the complaint as the unrelated House of Habib.",
+  "identity_evidence": ["the operation: a Makro department store against a coal mine and power plant", "the site: Karachi against Tharparkar", "the dates: complaint filed 2008 and concluded 2010; case runs 2018 to 2022", "no shared respondent: Habib Bank Limited is not the House of Habib"],
+  "fetched": [],
+  "complaint_link": null,
+  "complaint_record": null,
+  "complaint_h": null,
+  "extend": null,
+  "requeue_note": "Machine hint wrong: 'habib' is a surname shared by Habib Bank Limited (a Thar Block-I lender) and the House of Habib (Makro's Pakistani co-owner). A later round should treat bare surname matches on Pakistani company names as no evidence. The complaint is not a lead for a case of its own under this map's tests on the harvested text, which records only the land transfer at a retail site and names no funder of a qualifying kind."
+ },
+ {
+  "pair_id": "swiss-tibetan-friendship-association-and-others-vs-international-olympic-committee__xuancheng-industry-zone-house-demolition",
+  "verdict": "false_match",
+  "why": "The complaint is against the International Olympic Committee over its due diligence in awarding the 2022 Winter Olympics to Beijing, and the harms alleged are forced and prison labour and labour rights abuses in Tibet, Xinjiang, Hong Kong and Inner Mongolia; the Swiss NCP's final statement of 21 December 2021 is about the IOC's human rights due diligence and its dealings with sponsors and suppliers. The case is the demolition of the houses of 86 households and the death of a crane operator in the Xuancheng Economic and Technological Development Zone in Anhui, financed by World Bank loan IBRD-82700. Nothing in the complaint names Xuancheng, Anhui or the zone. The machine matched on the word 'committee', which appears in the case only as the Xuancheng zone's Management Committee.",
+  "identity_evidence": ["the operation: awarding and holding the 2022 Winter Olympics against a World Bank-financed industrial zone", "the site: Beijing and the regions named against Xuanzhou district, Xuancheng, Anhui", "no shared respondent"],
+  "fetched": [],
+  "complaint_link": null,
+  "complaint_record": null,
+  "complaint_h": null,
+  "extend": null,
+  "requeue_note": "Machine hint badly wrong: 'committee' is a generic word matching the Xuancheng zone Management Committee against the International Olympic Committee. A later round should exclude generic organisational words (committee, corporation, group, holdings, bank, international) from the company-word matcher."
+ },
+ {
+  "pair_id": "anvemca-vs-general-motors-do-brasil__guaraquecaba-carbon-reserves",
+  "verdict": "false_match",
+  "why": "The complaint's allegations text says ANVEMCA alleged that General Motors do Brasil had breached the disclosure, employment and industrial relations, bribery, and consumer interests provisions of the Guidelines, and the existing complaint record notes no site named; the Brazilian NCP concluded on 19 September 2006 that it did not merit further consideration. The case is the Guaraqueçaba carbon reserves in Antonina and Guaraqueçaba, Paraná, where General Motors paid The Nature Conservancy $10 million for carbon rights over the Cachoeira reserve. The complaint names no project, no site and no conduct connected to the reserves, so there is no identity of event; a consumer and bribery complaint against the Brazilian subsidiary is not a record of the carbon offset project.",
+  "identity_evidence": ["the complaint names no site or project; the case is a specific reserve at Antonina and Guaraqueçaba, Paraná", "the subject matter: consumer interests, disclosure and bribery against land closure and policing of carbon reserves", "the case's GM involvement is a payment to The Nature Conservancy, not conduct by General Motors do Brasil"],
+  "fetched": [],
+  "complaint_link": null,
+  "complaint_record": null,
+  "complaint_h": null,
+  "extend": null,
+  "requeue_note": "Machine hint 'motors' matched the corporate name only, and the complaint is against the Brazilian subsidiary while the case's funder is the US parent. Not a lead for a case of its own: the harvested text carries no site and no recorded harm, and the NCP rejected it without a finding."
+ }
+]}

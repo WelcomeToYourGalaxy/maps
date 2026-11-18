@@ -1,7 +1,7 @@
 # Globalization Case Map: handoff for a new chat
 
-Last updated: round 46 — **the first OECD Watch round, and it set three class precedents that matter
-more than its seven cases.**
+Last updated: round 47 — **the extends desk round. The OECD Watch extend queue is now empty, and
+the matcher that built it was wrong 11 times in 28.**
 
 **READ `THE PROGRAMME` SECTION BEFORE COMMISSIONING ANYTHING.** On 17 Nov 2026 the owner settled
 the shape of the remaining work: **all 26 wide rounds, or do not start.** No register is to be
@@ -9,6 +9,188 @@ worked partway. The order of the registers, the expected yields, and the method 
 round are all in that section. The map stands at **1,189 cases in 137 countries**, 29 patterns, 31
 suspected patterns, 26.0 MB, `loan-condition cases matched 173 of 173`, zero page and zero console
 errors.
+
+## Round 47 — the extends desk round, merged, built and tested
+
+**Programme item 1 of 26 is done.** The 28 OECD Watch leads the round 46 dedupe pass called extends
+are settled: **17 complaints are now linked to 17 of the map's own cases, 11 pairings were wrong and
+are closed.** No case was added, no research was commissioned, no fetch was needed to decide a pair:
+the round 45 harvest already held the allegations and outcome text for every one.
+
+| | |
+| --- | --- |
+| Candidate pairs worked | 28 |
+| Linked to an existing case | 17 |
+| Wrong pairings, closed | 11 |
+| Unresolved | 0 |
+| Checker corrections across 17 passed pairs | 22 |
+| Verdicts a checker reversed | 0 |
+
+Figures off the rendered page, before and after: complaints named in a case **771 to 788**; OECD
+Watch complaints named in a case **98 to 115**; cases carrying a contact-point complaint **50 to
+60**; complaints recording harm on the ground and inside a case **436 of 485 to 453 of 502**, which
+holds the panel's share at 90% because every flip raises both sides of it. Every coverage row
+validated against the brief: `every row matches the page`. No row of the loan-type chart moved,
+which is what a round that adds no case should do.
+
+### The matcher was wrong in 11 of 28, and the reason is a stoplist, not bad luck
+
+Every wrong pairing was a company-word match with no project or site in common. Four kinds, and the
+first two are now fixed in `dedupe_oecdw2.py`:
+
+- **Corporate-form words in other jurisdictions.** `sdn` and `bhd` are the Malaysian equivalent of
+  "Ltd", so they pair any Malaysian company with any other: a forced-labour complaint against an
+  electronics manufacturer was matched to a railway clearance case. Added to the stoplist with
+  `tbk llc llp ltda cia cie oy oyj kk kgaa pjsc jsc ooo sarl sas aps`.
+- **Generic organisational words.** `committee` matched the **International Olympic Committee** to a
+  Chinese industrial zone's **Management Committee**. Added with `council board commission
+  organisation organization secretariat ministry department office bureau`.
+- **A real company at a different operation**, which no stoplist can catch: Newcrest at Wafi-Golpu
+  against Newcrest at Lihir; Marubeni at Cirebon against Marubeni at Jawa-1; Freeport's 2017 labour
+  dispute against the 1990s Grasberg expansion; POSCO's Cilegon steel mill against POSCO's Merauke
+  plantation; General Motors do Brasil's consumer complaint against the Guaraqueçaba reserve.
+  **A company name with no project or site token beside it is close to worthless as a hint.**
+- **A bank inside a syndicate list.** `rabobank` matched on its appearance in a list of 44 banks
+  that lent to Indofood; the complaint is about a different grower in a different province. A lender
+  name drawn from a syndicate list should be down-weighted or dropped as a match key.
+
+After both fixes and with the 11 settled pairings excluded, the pass returns **0** candidates, so
+the extend queue is empty and the next round starts on new ground.
+
+### What the checkers caught, and all 22 corrections are the same family
+
+Nothing rose to a wrong verdict, and no checker reversed a writer. Every correction was a claim
+reaching past the document it cited:
+
+- **A conditional recommendation written as a finding of fact.** On the RENACE case a writer wrote
+  that the contact point recommended compensating "any damage caused by inadequate due diligence".
+  The text says damage that the failure *may have* caused. One word, and it converts a conditional
+  into a finding.
+- **A date taken from the wrong row.** The Cameroon mediation agreement was dated June 2015; that is
+  the date of the contact point's final statement, filed under Documents. The outcome text gives the
+  agreement no date at all. Same fault on the Batang complaint: "the July 2015 complaint" where July
+  is the filing date and acceptance was 10 September.
+- **A party named as appearing in a document that does not name it.** A fishers' colônia was listed
+  as a complainant in the Suape case's outcome; only Forum Suape, Both ENDS and Conectas are.
+- **Distances no document gives**, and both wrong: "about 900 km away" where the records' own
+  coordinates are 740 km apart, "roughly 200 km west" where it is about 120.
+
+**The 17 harm flags all flip from false to true, and all 17 hold.** Every existing complaint record
+in this queue carried `h: false`. The flag means harm recorded on the ground, by the complaint or by
+the case, and the cases carry it: nine killed at Jalaur, four killed and 41 villagers injured in a
+baton charge at Jagatsinghpur, Reza Barati killed and at least 69 injured on Manus, more than 80
+families removed from Tatuoca with catches down 80-90%, about 30 km of the Cahabón left with little
+or no water. The thinnest is Tozzi Green — no deaths, empty ecosystem field — and it stands on
+herders fined or chased off grazing land with dogs and an activist arrested in 2020. A later round
+may revisit that one.
+
+### Defects found in passing, each outside what this round could change
+
+1. **The complaints layer is keyed on the complaint's title, and five titles in the register are
+   shared by two complaints each** — `Community members in Bandayi and Mege, DRC vs. AngloGold
+   Ashanti`, `Amnesty International and Friends of the Earth vs Shell`,
+   `Reprieve vs.  British Telecommunications plc`, `CIPCE vs. Skanska`,
+   `Transparency International Germany vs. Ratiopharm`. `merge.py` resolves a link by that key, so
+   two complaints sharing one key means a link can silently attach to the wrong one. **The key
+   should carry the OECD Watch slug, not the title.** Two leads were left unmarked in this round for
+   exactly this reason.
+2. **`ap` is wrong on at least five existing records.** `ncp:KTNC Watch et al vs Daewoo`,
+   `ncp:KTNC Watch et al vs KEXIM`, the Korean POSCO filing and the G4S complaint all carry
+   `ap: true` although each was rejected at initial assessment; the Tozzi Green record's `ap: true`
+   is unverified while the complaint still sits at Filed.
+3. **One case carries a company record inside `cp`.** `webuye-interchange-traders` has a dict in a
+   field that holds office codes.
+4. **The harvested `affected` list for the Freeport complaint contains OECD Watch's site navigation
+   and cookie-banner text.** A later harvest should strip it.
+5. **Rounds 45 and 46 never wrote the chart.** `coverage_history.json` ran to round 44; the standing
+   instruction two sections below has been broken twice. Round 47 backfilled both from the rendered
+   page.
+6. **Round 46 merged seven cases from OECD Watch leads and left all seven leads unflagged.** Round
+   47 backfilled them by matching the complaint named in each case's `cx`. A round that converts a
+   lead must mark the lead in the same round.
+
+### Bookkeeping, so the queue count is honest
+
+`docs/leads_oecdwatch.json` now records this round on every lead it touched: `already_on_map` set to
+the case id for the 17 extends and for the 7 backfilled from round 46, and `r47_false_match` holding
+the case id for each closed pairing, with the lead left **open** because the event may still be a
+case of its own. **The OECD Watch queue falls from 413 open leads to 389.**
+
+### Leads the round found and did not work, each a possible case of its own
+
+- **The Krakatau POSCO coal-fired steel mill at Cilegon, Banten.** Three complaints filed on 19
+  August 2026 — POSCO Holdings, POSCO, and the National Pension Service — seeking changes to that
+  mill's blast furnaces. Nothing at Cilegon is on the map. Would be one case taking three records.
+- **The Wafi-Golpu Joint Venture**, tailings into the Huon Gulf, Morobe Province. The Australian
+  contact point issued a final statement on 29 August 2025 with 28 recommendations and findings of
+  non-compliance.
+- **The Cirebon coal plant**, Units 1 and 2, West Java. **Keep it apart from the Jawa-1 case on the
+  plant name** — both turn on fishers' lost catch in West Java and a later machine pass will
+  re-propose the pairing.
+- **Freeport's 2017 labour dispute**, Timika, Mimika, Papua: over 3,000 PT Freeport Indonesia
+  workers dismissed after a strike. Still at Filed with the US contact point.
+- **The Golden Youth plantation**, Bumitama Agri Group, West Kalimantan.
+- **A companion complaint against Electric Power Development Co. Ltd.** over the Batang plant, named
+  inside the Itochu complaint's own record and not in this round's queue. Confirm it was not dropped
+  from the register.
+
+### The method that produced this, for the two desk rounds still in the programme
+
+Four writers on seven pairs each, then four independent checkers, one per batch. **Batch by case,
+not by volume**: 28 pairs fell on 19 cases, and five cases drew two or three pairs each, so batching
+by case is what kept two writers off one card. The collision check found nothing because the
+batching had already prevented it.
+
+**The one question a desk extend round asks is whether the complaint concerns the same operation at
+the same site as the case. It does not re-run test 1.** The case already passed the tests; a
+complaint against a contractor, buyer, certifier, licensor or pension fund can still be a true
+record of that case's events, and linking it claims nothing about whether that respondent is a
+qualifying funder. Writing that into the brief is what stopped the round cutting good links on the
+respondent's role — and one checker recorded that it would have been an invalid ground had a writer
+used it.
+
+**One complaint filed at several contact points, or against several respondents, stays several
+records.** Three POSCO filings of 9 October 2012 at the Korean, Dutch and Norwegian contact points
+are one event and three records, each linked to the same case; so are two 2018 Jalaur filings and
+two 2014 Greenpeace filings. OECD Watch files them separately and the complaints layer counts them
+separately.
+
+**Fetches were refused four times**, all `PROVENANCE_REQUIRED` on `oecdwatch.org`, which is an
+unanswered permission prompt and not a host refusal. No verdict rested on a fetch, because the round
+45 harvest already held the text. **A desk round is the one round shape that survives an absent
+owner.**
+
+Round 46's three class precedents are unchanged and still govern the wide rounds. The brief and the
+check brief for this round are `docs/BRIEF47.md` and `docs/CHECK47.md`; the batches are
+`rounds/r47_batch_1..4.json`, the writers' output `rounds/r47_out_1..4.json`, the merged-ready check
+files `rounds/r47_chk_1..4.json`, and the candidate list as dispatched is kept at
+`rounds/r47_pairs_as_dispatched.json`.
+
+### The chart as at round 47
+
+Read with `coverage_chart.py --round 47 --rendered`, every row validated against the rendered brief.
+Rounds 45 and 46 are backfilled here for the first time.
+
+| Round | Cases | World Bank /15,720 | IMF /1,693 | Chinese state /20,985 | Foreign company /20,032 | Treaty suits /1,332 | Aid /1.5m | Private lending | Payment services | documented | contested |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 41 | 1,182 | 435 (2.8%) | 160 (9.5%) | 97 (0.46%) | 9 (0.04%) | 4 (0.30%) | 35 | 79 | 5 | 674 (57%) | 508 |
+| 43 | 1,182 | 435 (2.8%) | 160 (9.5%) | 97 (0.46%) | 9 (0.04%) | 4 (0.30%) | 35 | 79 | 5 | 674 (57%) | 508 |
+| 44 | 1,182 | 435 (2.8%) | 160 (9.5%) | 97 (0.46%) | 9 (0.04%) | 4 (0.30%) | 35 | 79 | 5 | 674 (57%) | 508 |
+| 45 | 1,182 | 435 (2.8%) | 160 (9.5%) | 97 (0.46%) | 9 (0.04%) | 4 (0.30%) | 35 | 79 | 5 | -- | -- |
+| 46 | 1,189 | 435 (2.8%) | 160 (9.5%) | 97 (0.46%) | 11 (0.05%) | 4 (0.30%) | 35 | 79 | 5 | -- | -- |
+| **47** | **1,189** | **435 (2.8%)** | **160 (9.5%)** | **97 (0.46%)** | **11 (0.05%)** | **4 (0.30%)** | **35** | **79** | **5** | **676 (57%)** | **513** |
+
+The foreign-company row moved from 9 to 11 in **round 46**, not in this one, and nobody recorded it
+at the time — which is the same fault the chart exists to catch. Confidence last measured at round
+44 and now: documented 674 to 676, contested 508 to 513, both from round 46's seven cases.
+
+### What round 47 did not do
+
+It worked no new ground, so it says nothing about the 29% conversion rate round 46 measured, and the
+`ceiling.py` assumption for complaint registers still rests on that one round. It did not touch the
+five defects listed above beyond recording them. **Next in the programme: the five wide rounds on
+the 389 remaining OECD Watch leads**, sorted as `THE PROGRAMME` directs, with the fetch-approval
+warning in that section applying in full — those rounds do need the owner reachable.
 
 ## Round 46 in one table
 
