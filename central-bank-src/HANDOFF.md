@@ -95,7 +95,7 @@ same commit as the work it did.
 
 ## Where it stands (77 rounds in, 18 November 2026)
 
-1,726 outside parties and 2,536 ties. One writeup for every box, 1,944 of them. 20 patterns
+1,726 outside parties and 2,537 ties. One writeup for every box, 1,944 of them. 20 patterns
 and 14 suspected patterns.
 
 The party count is lower than the tie count implies, and deliberately: round 60 folded 28 duplicate
@@ -117,7 +117,7 @@ ignores" below.
 | External auditors | 216 | 178 | 86% | 93% |
 | Banknote printers | 187 | 169 | 82% | 88% |
 | Outside reserve managers | 107 | 81 | 39% | 42% |
-| Gold custodians | 104 | 63 | 31% | 33% |
+| Gold custodians | 105 | 64 | 31% | 33% |
 | Swap lines | 279 | 91 | 44% | 47% |
 | Named shareholders | 228 | 9 | 4% | 5% |
 | Sovereign wealth fund managers | 103 | 1 | — | — |
@@ -132,9 +132,10 @@ old tree (`git archive <sha> central-bank-src | tar -x -C /tmp/old`, copy `cover
 with `--snapshot`) so both sides are computed on the same basis.
 
 Change over 17 November, which is rounds 70, 71 and 72 together, against round 69's commit
-`3fe49f04`:
+`3fe49f04`. **The last column is the level AT ROUND 72 and is kept as history; the current levels
+are in the standing table above and in the round-77 section below:**
 
-| Category | Records | Places | Coverage | Level now |
+| Category | Records | Places | Coverage | Level at round 72 |
 |---|---|---|---|---|
 | Corruption cases | +9.3% | 0.0% | 0.0pp | 91% of 192 |
 | Revolving door | +6.6% | 0.0% | 0.0pp | 90% of 192 |
@@ -367,16 +368,17 @@ set of places that could ever hold a record. Named shareholders was the first �
 | Row | was | is | denominator |
 |---|---|---|---|
 | Named shareholders | 5% of 192 | **100%** | 9 banks with any non-state shareholder |
-| Outside reserve managers | 41% of 192 | **55%** | ~144 banks that use an external manager |
-| Gold custodians | 31% of 192 | **52%** | 108 places that hold gold, incl. the abroad-undisclosed state |
+| Outside reserve managers | 41% of 192 | **56%** | ~144 banks that use an external manager |
+| Gold custodians | 31% of 192 | **56%** | 108 places that hold gold, incl. the abroad-undisclosed state |
 | Swap lines | 44% of 192 | 47% | provider-bounded; see below |
 
 ### Gold cannot reach 80%, and the arithmetic is now on record
 
-Of the 56 places still absent, each blank was classified by what it actually says: **34 had their
-statements read and the statements disclose no location at all**, 18 are documents that could not be
-obtained, 4 were never assigned. So 22 are genuinely open, and converting every one gives 78 of 108
-— **72%**. The audited-accounts method tops out below the target. The only route past it is the
+Run `python3 agents/work/to80.py` for the live arithmetic; it classifies every absent place by what
+its own blank says rather than counting them. At round 77 it reads: 60 of 108 filed, 54 still absent,
+of which **37 had their statements read and the statements disclose no location at all**, 16 are
+documents that could not be obtained and 1 is unclear. So 17 are genuinely open, and converting every
+one of them gives 77 of 108 — **71%**. The audited-accounts method tops out below the target. The only route past it is the
 third state, because those 34 silent-statement places are where the headroom is, and re-reading them
 for "abroad, holder undisclosed" is cheaper than anything else available.
 
@@ -387,8 +389,8 @@ is anonymised by design: "Survey results are presented in an aggregate format to
 anonymity."** So no list of which banks use external managers exists or can be built from it. What
 it gives is the share, stable across four editions — 72% of 94 respondents in 2019, 75% of 119 in
 2021, 77% of 125 in 2023, and "almost three-quarters" of 136 in 2025, which the report says has held
-within two points since 2019. That puts the universe near 144. The row's 79 places are therefore
-**55%**, not 41%.
+within two points since 2019. That puts the universe near 144. The row's 81 places are therefore
+**56%**, not 42%.
 
 80% of 144 is 116 places, 37 more, and 64 are arithmetically open — but **treat 80% as unproven
 rather than reachable.** The same survey finds fewer than a quarter of central banks disclose
@@ -3631,8 +3633,13 @@ carry a denominator that is not 192, and the chart on the map says why in its ow
 | Corruption cases | 91% | 91% | +0.0pp | 175 of 192 |
 | Revolving door | 90% | 90% | +0.0pp | 172 of 192 |
 | Banknote printers | 88% | 88% | +0.5pp | 169 of 192 |
-| Outside reserve managers | 54% | 56% | +2.1pp | 81 of 144 |
-| Gold custodians | 52% | 55% | +2.8pp | 59 of 108 |
+| Outside reserve managers | 55% | 56% | +1.4pp | 81 of 144 |
+| Gold custodians | 52% | 56% | +3.7pp | 60 of 108 |
+
+**Read the managers row like-for-like.** 79 places at the start, 81 at the end, which is +1.4pp. An
+earlier draft of this table showed 54% to 56%, +2.1pp, by taking the start AFTER Norway left the row.
+That folded the split's own loss of one place into the starting figure and credited the round with a
+gain it did not make. The split is reported on its own, below, and not inside the round's movement.
 | Swap lines | 47% | 47% | +0.5pp | 91 of 192 |
 
 **Named shareholders was already complete** and nothing on it was worth a fetch. The row is 9 of the
@@ -3642,13 +3649,20 @@ see the shareholder section above for the United States FOIA problem and the Sou
 **Swap lines: four providers worked, two left.** The People's Bank of China publishes a current
 table, "Status of Bilateral Local Currency Swap Agreements Signed by PBoC (As of September 30,
 2025)", naming 32 counterparties against an RMB 79.3 billion outstanding balance. Eleven
-counterparties the map carries are absent from it, so **nineteen records moved from status
-`unknown` to `lapsed`**, each citing that table. Serbia is also absent and was checked separately:
-the PBoC's own re-signing announcement raises its line from RMB 1.5bn/RSD 27bn to RMB 5bn/RSD 74bn
-for five years, which post-dates the table, so Serbia's 2026 record **stays active** and its 2016
-record became "superseded, not lapsed". Nine records were added from the Reserve Bank of India, the
-CBUAE and the Swiss National Bank, including **the first swap record of any kind for Ethiopia** (AED
-3bn / ETB 46bn with the National Bank of Ethiopia, 16 July 2024, read as raw text). The Bank of
+counterparties the map carries are absent from it, so **eighteen records moved from status
+`unknown` to `lapsed`**, each citing that table. Serbia is also absent, and it is the case that tests the
+inference. Its 2026 record **stays active**, because the re-signing post-dates the table. Its 2016
+record reads **lapsed**, on the same basis as the other eleven, because the PBoC's announcement says
+the agreement was "re-signed" and that its size was "expanded from RMB1.5 billion / RSD27 billion" —
+you re-sign what has ended, and the expansion is measured against the old line's own size. This round
+first wrote it up as "superseded, not lapsed" on the ground that the table merely pre-dated the
+re-signing, and verification showed that reasoning took the other eighteen lapses down with it: a line
+in force but missing from the table would mean the table is not a roster of what is in force. It is,
+and the word "re-signed" is why. Nine records were added: three from the Reserve Bank of
+India, two from the CBUAE, three from the Swiss National Bank, and one — Qatar and Türkiye, 2018 —
+from Gulf Times, which carries `weak_source: true`, no amount, and a publication date in place of a
+signing date, each stated in the record. Among them is **the first swap record of any kind for
+Ethiopia** (AED 3bn / ETB 46bn with the National Bank of Ethiopia, 16 July 2024, read as raw text). The Bank of
 Korea's own table was read in full and all nine of its bilateral counterparties plus the CMIM are
 already filed, so that provider is exhausted. **Still open: the Bank of England and the Reserve Bank
 of Australia.** The one document that would give a cross-provider denominator, IMF working paper
@@ -3657,7 +3671,7 @@ a summary of it. `agents/work/merge_swaps.py` now applies `status_updates` as we
 matches on counterparty, provider name and `signed_or_renewed`, and refuses any update that matches
 zero records or more than one, because in both cases the right move is to look rather than guess.
 
-**Gold: two places added, one of them without a fetch.** Suriname is filed from the Centrale Bank
+**Gold: three places entered the counted set, one of them without a fetch.** Suriname is filed from the Centrale Bank
 van Suriname's 2020 accounts, note 4.1(c), whose own sentence places the stock at the Royal Canadian
 Mint (verified from raw text; the auditor withholds an opinion on those accounts, which the record
 says). Morocco was added to the third state — gold abroad with no institution named — from Bank
@@ -3671,19 +3685,34 @@ for. The reclassification is recorded as such in `gaps.json`, with round 69 cred
 `gold_abroad_undisclosed`, `p.gabs.w` in `app.js`), because Morocco's and Tajikistan's gold is partly
 at home and "Held abroad" alone would have overstated both.
 
-**El Salvador is HELD, not blank, and it is the clearest case of the link being the problem rather
-than the fact.** Two separately fetched PwC-audited documents place the metal with the Bank for
-International Settlements, one of them carrying a single counterparty line at 44,105.998 troy
-ounces, and round 75 reached the same figure independently. It is not filed because no readable URL
-serves it: the transparency-portal document ids 404 to ordinary requests, the whole document tree
-under that host 404s, and bcr.gob.sv serves its statements page through script with no PDF link in
-the HTML. File it the round a URL answers. Papua New Guinea is a near neighbour deliberately not
-filed: its note says the gold is "placed on deposit with a financial institution", which is an
-unnamed institution but does not say the metal is abroad, so it fails this state's own test.
+**El Salvador was held for one round and is now FILED, and the reversal is worth reading as a rule
+about what "readable" means.** Two separately fetched PwC-audited documents place the metal with the
+Bank for International Settlements — Note 4 "Oro" under the heading "Depósitos en Oro Físico", and a
+liquidity-reserve statement whose Note 7 carries one counterparty line, "Bank For International
+Settlements $90,964,193.72", at 44,105.998 troy ounces — and round 75 reached the same figure
+independently, as did the verification pass afterwards. It was held back because the transparency
+portal's document ids 404 to curl and the whole document tree under that host 404s. But **a reader
+opening that URL does get the document**, which is what this row's rule asks; the 404 is a script's
+problem. Holding it longer would have applied a harder test to El Salvador than to the four records
+this same round filed from EU procurement notices that no script can fetch at all. It carries
+`verbatim_unverified: true` and no quote, because the strings reach the record through a reader
+rather than a text search, and the record says so. Papua New Guinea stays out: its note says the gold
+is "placed on deposit with a financial institution", which is an unnamed institution but does not say
+the metal is abroad, so it fails this state's own test and filing it would put a location in a record
+that its source does not state.
 
-**Gold cannot reach 80% and the arithmetic is in `agents/work/to80.py`.** Of the places still
-absent, about two thirds had their statements read and those statements disclose no location at all.
-That is the ceiling of the audited-accounts method, not a backlog.
+**Gold cannot reach 80% and the arithmetic is in `agents/work/to80.py`.** Of the 54 places still
+absent, 37 had their statements read and those statements disclose no location at all, 16 are
+documents that could not be obtained and 1 is unclear. Converting every genuinely open place gives 77
+of 108, 71%. That is the ceiling of the audited-accounts method, not a backlog.
+
+**Every entry in the third gold state now carries its own source URL, and the box links it.** The
+merge that wrote Morocco's entry dropped the URL the research pass had supplied, and the four earlier
+entries had never had one, so six places in this row's headline figure rested on a document title a
+reader could not open. All six URLs were re-fetched on 18 November 2026 and answered 200; `app.js`
+renders `p.gabs.d` as a link when `p.gabs.u` is present. Tajikistan's URL is the bank's own
+financial-reports listing rather than the file, because the direct path carries an iblock hash the
+bank rotates, and the entry says so.
 
 **Outside reserve managers: three places added and one earlier reading corrected.** Brazil is filed
 from the BCB's audited 2023 statements, whose balance sheet carries "Recursos sob Administração
@@ -3698,7 +3727,11 @@ investments made by the Bank in the Reserves Advisory and Management Program (RA
 World Bank". **A negative recorded against a document that does state the fact is worse than a gap,
 because it stops anyone looking again.** The correction is in `gaps.json['managers_corrections']`.
 North Macedonia is filed from its own vice-governor's remarks, with the caveat in the record's text
-that programme membership is not a statement that the World Bank runs a tranche. Four named leads
+that programme membership is not a statement that the World Bank runs a tranche. **That caveat used
+to be contradicted by the map's own sentence.** The relation is "manages its reserves or programmes"
+and the popup said only "manages reserves or funds for", so a bank that had merely joined RAMP read
+as one whose reserves the World Bank runs. The sentence now reads "manages reserves for {B}, or runs
+a reserve programme it belongs to", which leaves the record's own text to draw the line in each case. Four named leads
 were all opened and all closed: Mauritius confirms the mechanism three times and names no firm,
 Iceland's 2022 report gives an internal mandate, the IMF case studies name only one firm already on
 the map, and the BIS names no client, so the BIS side can only ever be recorded from client banks'

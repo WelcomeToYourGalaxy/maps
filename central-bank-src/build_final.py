@@ -154,7 +154,7 @@ for r in EG["gold"]["rows"]:
 # is the more telling of the two.
 for k, v in (load("gaps.json", {}).get("gold_abroad_undisclosed") or {}).items():
     if k in P:
-        P[k]["gabs"] = {"q": v.get("quote"), "d": v.get("document"), "w": v.get("where")}
+        P[k]["gabs"] = {"q": v.get("quote"), "d": v.get("document"), "w": v.get("where"), "u": v.get("source_url")}
 # ---------- corruption, secrecy, money laundering, bank rescues ----------
 XT = json.load(open("/root/cb/out/extra.json"))
 for k, v in XT.items():
