@@ -93,7 +93,7 @@ same commit as the work it did.
   - Links: `{n, cb | tn, rel, role, detail, src_t, src_u}`.
   - Popups turn each link into a plain sentence (`SAY` / `sayLink` / `srcItem` in `app.js`). Add a `SAY` entry for any new `role` string.
 
-## Where it stands (73 rounds in, 17 November 2026)
+## Where it stands (74 rounds in, 17 November 2026)
 
 1,721 outside parties and 2,522 ties. One writeup for every box, 1,944 of them. 20 patterns
 and 14 suspected patterns.
@@ -112,8 +112,8 @@ ignores" below.
 | Category | Records | Places | of 206 | of 192 |
 |---|---|---|---|---|
 | Corruption cases | 292 | 175 | 85% | 91% |
-| Revolving door | 310 | 172 | 83% | 90% |
-| Governor removals and pressure | 258 | 183 | 89% | 95% |
+| Revolving door | 327 | 172 | 83% | 90% |
+| Governor removals and pressure | 279 | 183 | 89% | 95% |
 | External auditors | 216 | 178 | 86% | 93% |
 | Banknote printers | 184 | 168 | 82% | 88% |
 | Outside reserve managers | 207 | 79 | 38% | 41% |
@@ -144,6 +144,15 @@ Change over 17 November, which is rounds 70, 71 and 72 together, against round 6
 | Named shareholders | 0.0% | 0.0% | 0.0pp | 5% of 192 |
 | **All rows together** | **+4.0%** | | | |
 
+Round 74 against round 73, the round that tested the misallocation diagnosis and confirmed it: the
+revolving door +5.5% in records, removals and pressure +8.1%, corruption cases 0.0% because that row
+was deliberately not worked, all rows +1.9%, and 0.0pp of coverage on every one of the nine. **The
+depth movement is the largest in the project's history: places holding exactly one career move fell
+15.5% and those holding two rose 53.8%; on removals exactly-one fell 16.7% and two rose 36.5%.**
+Thirty-five places moved off exactly-one, against eight the round before, and the per-agent rate went
+from 1.6 to 5.8 — the best ever recorded here, the previous best being 3.4. Six agents, 41 records
+offered, 38 filed, three held.
+
 Round 73 against round 72: corruption cases +3.2% in records, the revolving door +1.0%, removals and
 pressure +0.8%, all rows +0.7%, and 0.0pp of coverage on every one of the nine. Depth moved on all
 three priority rows: places holding exactly one case fell 4.5% and places holding three or more rose
@@ -169,7 +178,7 @@ user cares most about are at their breadth ceiling and were worked for second an
 countries that already held one. The records column is the honest measure of such a round; the place
 column will barely move and the percentages not at all.
 
-The revolving-door row counts the 310 records with a private employer. There are 374 career-move
+The revolving-door row counts the 327 records with a private employer. There are 391 career-move
 records in all; the other 64 are `public_move` and are listed in the country's box without being
 counted, because nobody moved between public office and private finance. SIXTEEN places hold
 nothing but moves of that kind, so they read blank on the layer while their box is not empty:
@@ -210,6 +219,315 @@ holding no record of that kind, with union codes and the ten places with no cent
 out as "not targets". **Run it every round and build the target list from that absent list; never
 from prose in this document.** It prints both denominators — the raw 206 and the reachable 192 —
 because the user asked for both.
+
+## The misallocation diagnosis was right, and here is the number that settles it (round 74)
+
+Round 74 was designed as a test. Rounds 70 to 73 showed conversions falling — 22, 22, 13, 8 — and
+3.4, 2.2, 1.6 per agent. I had read that for three rounds as the map approaching its limit.
+`runway.py` showed instead that the corruption-case row was 58 of 64 searched out while the
+revolving door and removals rows had 188 untried places between them. So round 74 ran six agents on
+those two rows and none on cases.
+
+| | conversions | agents | per agent |
+|---|---|---|---|
+| r70-r71 | 44 | 13 | 3.4 |
+| r72 | 13 | 6 | 2.2 |
+| r73 | 8 | 5 | 1.6 |
+| **r74** | **35** | **6** | **5.8** |
+
+**Places holding exactly one record went 281 to 246 in a single round, and the per-agent rate more
+than tripled.** The earlier decline was not the map running out. It was one vein running out while
+two others sat unworked, and four rounds of effort went into the exhausted one.
+
+The backlog now: 246 at exactly one, 108 of them already searched and blank, **138 untried** — 83 on
+removals, 49 on the revolving door, 6 on cases. At this round's rate that is four rounds; with decay
+at 0.85, six. The pessimistic 0.62 line converges about 92 conversions out, but that decay was
+measured on the exhausted row and this round contradicts it.
+
+**The lesson generalises past this map.** A falling yield has two explanations that look identical in
+the aggregate — the work is running out, or the work is being sent to the wrong place — and they are
+told apart only by splitting the backlog by where it actually is. Four rounds of reading one as the
+other cost perhaps sixty conversions. `runway.py` exists so that the split is printed rather than
+reasoned about, and `mk_targets.py` so that the next round's list follows it mechanically.
+
+**And a bug in `runway.py` worth recording, because it is this project's signature failure arriving
+inside the tool built to prevent it.** Its closing advice was a hardcoded sentence: that the rate had
+fallen every round measured, so the pessimistic projection was the one to read. Round 74 quadrupled
+the rate, and the sentence was false the first time the script ran after the round it was written
+in. It now derives the trend from the rates and says whether the rate rose, fell or held — and when
+it falls, it says to check the untried column before reading it as exhaustion. **Stale prose in a
+tool is worse than stale prose in a document, because the tool is what you check the document
+against.**
+
+## Party linking is OUTSTANDING for round 74's records, deliberately (round 74)
+
+Round 74's 38 records are filed and the page is rebuilt, but **the revolving-door records have not
+been linked to party nodes**, so the firms in them do not yet draw on the network layer. Node and
+link counts are unchanged at 1,721 and 2,522. This is deferred on purpose and not forgotten.
+
+The reason is ordering. `parties.json` links carry POSITIONAL `record_index` pointers — the round-11
+bug — so a link written now and a verifier correction that reorders or withdraws a record afterwards
+leave the pointers aimed at the wrong records. Round 74's verifier was still running when the
+records were filed. Linking first would mean either redoing the links or running
+`fix_record_index.py` over work that had not settled. **Verify, correct, then link.**
+
+What the next session needs to know about the work itself, from a check already run against the
+built page:
+
+- **Reuse these existing nodes rather than creating second spellings:** HSBC (for HSBC Holdings plc),
+  BlackRock, Merrill Lynch, Bank of America, BNP Paribas, Fortis Bank, BNY Mellon, Arab Bank plc,
+  UniCredit S.p.A., and Harbour Asset Management, which is already on the map.
+- **These need new nodes, with head offices:** HDFC Bank, Citibank, Access Bank (Ghana) PLC,
+  Banco de Fomento Angola, Kapital Bank, Atlantbank, ForteBank, Platinum Bank, Ueno, Nirdhan Bank,
+  Mundial Seguros, and ING Bank — note that a search for "ING" matches several unrelated nodes by
+  substring, so check that one by exact name before deciding it is absent.
+- **Two fold decisions are open, not errors:** whether HSBC Holdings plc is the same node as the
+  existing `HSBC`, and whether Access Bank (Ghana) PLC folds toward the existing
+  `Access Bank (SL) Limited` or stands separately. The uniBank precedent from round 73 says fold
+  toward the country-qualified name where two countries' banks share a stem, which argues for
+  keeping them separate.
+- Use round 73's `link_r73.py` as the pattern: it refuses to write if any verification token is
+  missing, which is what makes the positional pointers safe to touch.
+
+## The verifier's fourth pass: 27 defects on 38 records, and what the rate per record says (round 74)
+
+Round 71's verifier found 4 defects, round 72's 7, round 73's 8, round 74's **27** — 14 in events,
+13 in the revolving door. Before reading that as a collapse in quality, divide: round 73 filed 15
+records and round 74 filed 38. The defect rate went from about 0.5 a record to about 0.7. It rose,
+and the rise is real, but the headline number is mostly the round being two and a half times larger.
+
+All 27 are corrected in the data, each correction written into the record's own `detail` or
+`summary` so the box says what changed. **Filing integrity was clean** — all 38 filed
+field-for-field identical to the agent outputs, no drift — and **no duplicates anywhere**, against
+each other or against the existing rows for all 21 countries.
+
+### The five worst, each a different failure
+
+- **CHN, outside commentary filed as the government's own policy page.** The record cited
+  english.www.gov.cn and called it the Chinese government's own English-language page, weak_source
+  false. The page is bylined China Daily and signed by He Qing, a professor at Renmin University's
+  School of Finance, and Hu Tong, an assistant researcher there. It is academic commentary
+  republished in gov.cn's policy-watch section. **And the page disputes the record's own reading**:
+  it says the PBOC's more focused policymaking function "should not be simply taken as a lessening
+  of the PBOC's role", which the record did not mention. A government domain is not a government
+  source; read the byline.
+- **UKR, a numbered-slot URL that no longer serves the content.** The record cited
+  `bank.gov.ua/en/about/structure/details?member=10`, said it had been opened and confirmed to serve
+  Rozhkova's biography, and described her First Deputy Governor post as current. That URL now serves
+  a bare NBU Council page with her name and nothing else; `?member=11` serves her successor. All
+  four NBU dates and all three bank employers became unverifiable at the citation — **and the record
+  itself recorded that it knew she had been replaced.** A positional URL is never a safe citation
+  for a departed officer. Withdrawn to the held file. Worse, the Kyiv Post paragraph the record DID
+  use goes on to say that in 2024 Ukraine's Supreme Court ruled Rozhkova and eleven others bore
+  joint civil liability for Platinum Bank's 2017 insolvency and ordered them to pay Hr 1.5 billion.
+  On a capture map that is the most material fact on the page, and it was omitted.
+- **PER, the wrong leg chosen off the right page.** The record filed a Merrill Lynch post from
+  1995-2002 and never mentioned what the article is about: Palomino's designation as a BCRP director
+  by Resolución Suprema N.º 250-2026-PCM, taken up **while he currently sits on the boards of
+  Laboratorios Portugal and Southern Copper Corporation**, having chaired the audit committee of the
+  Bolsa de Valores de Lima. It also hid fourteen years at the Instituto Peruano de Economía in
+  between, and claimed the page would not render to curl — it reads in full with content-encoding
+  negotiation, which is how it was re-read for the rebuild. The page calls those boards "empresas e
+  instituciones privadas", so the private leg is settled in the source's own words. Rebuilt.
+- **AUT, an enacted statute filed as an attempt.** Kind "attempted law change", with the record
+  saying that because the source is a submission on a draft rather than a statute, no in-force check
+  applied. The draft was enacted as the Sonderpensionenbegrenzungsgesetz, BGBl. I Nr. 46/2014,
+  applying since 1 January 2015, and the Constitutional Court upheld it twice. **The sentence
+  explaining why no check was needed is what stopped the check being done.**
+- **ZWE, a provision misread in the direction that strengthens the claim.** The record had Board
+  minutes going to the Minister "within seven days of each meeting". s.28(5) says "no later than
+  seven days after each FOLLOWING meeting" — after the next meeting, a materially weaker
+  obligation. The ZimLII page also carries two inconsistent currency statements, 31 December 2021
+  and 31 December 2016, and the record reported only the one that suited it.
+
+### The pattern across the rest
+
+Six defects are the same shape: a hedge or a qualifier in the source, dropped. URY's Página/12 uses
+the Spanish conditional of rumour, "el presidente ya HABRÍA propuesto", and the record asserted it
+flatly. ISL's source says "óskaði eftir" — requested — twice, and the record said "required" and
+"demanded", on a row where the verb carries the kind. HRV's ECB opinion makes its "not in line with
+central bank independence" finding of the audit limb only and says the parliamentary-vote limb
+"could affect" independence; the record conflated them. EGY dropped "renewable once" to
+"renewable". CRI turned a publication date into a vote date. **A source's hedges are part of what it
+says.**
+
+Three were unsourced assertions dressed as sourcing: PHL stated that the governor had publicly said
+the BSP could absorb the dividend loss, which is nowhere in RA 11954 and had no citation; SGP called
+HSBC Holdings plc "the publicly traded holding company" and then said in the next clause that the
+page does not state its ownership "and that is said here rather than asserted"; GHA called Access
+Bank (Ghana) PLC "a commercial bank" and rested the row on it, where the article says only the name.
+**Compare the four records in the same batch that settled the leg with a document — BlackRock's
+10-K, Harbour's Disclose filing, UniCredit's issuer report, the Kazakh shareholder register — all
+four of which survived checking intact.** The lesson is not that the others are wrong; it is that
+one lookup separates a record that holds from one that argues.
+
+And `weak_source` was set inconsistently across the batch: a speaker-bio page with no dates and no
+ownership was false while 2012 trade press was true; a record resting on a newspaper's phrase "el
+sector privado" was false while one with a named 90.92 per cent shareholder was true. Now set by one
+rule, with eight records moved to true.
+
+### Two of the three held records turned out to have readable sources, and one is now filed
+
+The verifier went looking, which was not in its brief. **ZWE is filed**, on a Nehanda Radio page
+republishing NewsDay that was read in full here before filing: "leaving the Zimbabwe Stock
+Exchange-listed financial institution at the end of the month after being appointed central bank
+governor" — both legs in the source's own words. It is narrower than FBC's own notice, carrying none
+of the career history, and is press rather than a company filing, so it goes in weak. **MUS stays
+held**: a commercial consolidator does carry the Act's text with the "with the concurrence of the
+Minister" wording at s.5(2)(a) and s.36(1), and amendment notes to Act No. 3 of 2026 that would
+close the in-force gap, but it refuses scripted requests, so it would again rest on a fetch summary
+— the thing this round ruled out. **LBN stays held**: no substitute found, bdl.gov.lb refusing every
+request.
+
+So the round ends 38 filed, 27 corrected, 4 held. Nine records were checked line by line against
+raw source text and found clean: ISR, TZA, CHN article 5, SSD, COL and the NPL event; NZL, CAN and
+KAZ on the career row.
+
+## Three records held rather than filed at round 74, and why that is the rule working
+
+Forty-one records were offered and 38 filed. The three held are in
+`agents/work/r74/held_r74.json`, each with its reason in a `_held_reason` field. None is doubted on
+its facts; each fails rule 1, that a record needs a readable source URL that states the fact.
+
+- **ZWE, Mushayavanhu from FBC Holdings to the governorship.** The agent called it the strongest of
+  its five and it probably was. Its source, FBC's own shareholder notice, 404s on fbc.co.zw with a
+  browser user-agent; the Zimbabwe Stock Exchange's copy 404s too; the one live host carrying the
+  notice text verbatim 403s every scripted request, so it could not be read here either. The fact
+  is in many places and the FBC notice's own words settle the ownership leg by calling the group
+  listed on the Zimbabwe Stock Exchange. **Held because no copy could be READ, not because the
+  record is doubted.** Next round: General Notice 410 of 2024 in the Gazette, and FBC's annual report.
+- **LBN, Saad Andary's career.** arabnet.me's speaker page is gone, 404 to a browser. Banque du
+  Liban's own vice-governor biography is the obvious live substitute and was not tried.
+- **MUS, the consolidated Bank of Mauritius Act.** The agent said plainly that this one rests on a
+  fetch summary of a long statute rather than on extracted text, bom.mu refusing raw retrieval, and
+  called it the weakest of its eight. **This round established in the section below that a fetch
+  summary is not evidence. Holding this record is that rule applied to the round that wrote it**,
+  which is the only way to find out whether a rule is real.
+
+Contrast round 73's Curaçao PwC record, which WAS filed on a dead URL with `weak_source` and a host
+note, and is still an open decision for the owner. The difference is that its document had been read
+and its cover verified; these three have not been read here at all. **A record whose source nobody
+has read is not the same kind of thing as a record whose source is hard to reach.**
+
+## The fetch tool's summariser invents the words a record needs, and an agent caught it twice (round 74)
+
+This is the most important thing round 74 found and it reframes several earlier defects.
+
+The round-74 revolving-door agent working slice C reported that **the fetch tool's summariser twice
+supplied ownership language that is not on the page**: it rendered Kapital Bank as "Kapital Bank, a
+private commercial bank", and Unitel as "state-controlled". The agent did not trust either. It
+pulled both pages with curl and read the raw text: the Unitel characterisation was true and is in a
+record, and **the Kapital Bank one was false — the page says no such thing.** Only the true one was
+filed.
+
+**Read that against this map's defect history.** Accretion — a claim the source does not make — is
+the commonest defect here and has been blamed on agents for six rounds. At least some of it is not
+the agent writing beyond its source. It is the agent faithfully reporting a summary that already
+contained the invention, because a fetch returns prose ABOUT a page rather than the page. The
+summariser fills a gap of exactly the kind this row's rules turn on: whether an employer is
+private.
+
+**So the rule for anything load-bearing: get the raw text.** A fetch summary is fine for deciding
+whether a page is worth reading. It is not evidence. Where a record turns on a characterisation —
+"private", "state-owned", "commercial bank", "listed" — the words must come from page text the
+agent actually read, by curl where the host allows it, and the record should say which. The two
+rounds of Icelandic and Serbian defects are the same lesson from the other end: read the document,
+not a description of it.
+
+### Ten records this round rested on an employer the page names and does not characterise
+
+The brief's rule is that ownership reasoned from silence is not ownership, and round 59 refused four
+places on it. Both revolving-door agents hit it honestly — each record says in its own words
+exactly what its source does and does not state — and that is the right way to hand the problem up
+rather than guess. On review most of the ten survive, because the round-73 Cayman ruling applies:
+where the source names the employer AS A BANK, that is the characterisation, and the ownership test
+is for employers it does not characterise. ING Bank, Kapital Bank, Atlantbank, Nirdhan Bank, Arab
+Bank, BBAC, Citibank, Bank of America, Access Bank (Ghana) PLC and HDFC Bank Limited are all named
+as banks by their own sources. Angola's three carry stated MIXED ownership from a named second
+source, which the round-54 precedent expressly admits.
+
+Three were genuinely uncharacterised, and two were closed by going to the employer's own filing
+rather than by reasoning:
+
+- **CAN, BlackRock.** Closed. BlackRock's own Form 10-K for 2025, SEC Commission File No.
+  001-42297, registers its common stock under BLK on the New York Stock Exchange.
+- **NZL, Harbour Asset Management.** Closed, and the date matters. Harbour's own Other Material
+  Information document on the New Zealand Disclose register states that its ultimate parent, Jarden
+  Group Limited, "is 100% privately owned by directors, management and employees of that business"
+  with 125 shareholders. The copy read is dated 1 July 2020 against a March 2019 move, which the
+  record states; Harbour was folded into the NAB/Jarden/Pacific Equity Partners FirstCape group only
+  in 2024, after this record's period, and that is not what it rests on.
+- **PER, Merrill Lynch.** Left open, already `weak_source: true`. One fetch would close it.
+
+**The lesson for briefing: tell the agent to settle ownership from the EMPLOYER's own filing, not
+from the page that mentions the employer.** A regulator's register, a 10-K, a disclosure document
+or an annual report states ownership as a matter of obligation. A biography page mentions a former
+job and has no reason to say who owned it. Both of the closures above took one search each.
+
+## How much work is actually left, and why the falling rate was my own misallocation (round 74)
+
+**The headline: 194 genuinely untried places, 87 already searched and blank, and the
+corruption-case row is finished at depth.** `agents/work/runway.py` computes all of this from
+the baselines and `searched.json`; run it rather than reasoning from this section.
+
+The backlog is places holding exactly one record on the three priority rows, because converting
+those is the only work the map has left. It went 346, 302, 289, 281 over rounds 70 to 73 — 22, 22,
+13 and 8 conversions a round, and 3.4, 2.2 then 1.6 conversions PER AGENT. Normalised for agent
+count the rate still fell, so this is not just thinner rounds. For three rounds I read that as the
+map approaching its limit.
+
+It was not. Subtract the places a previous round already worked and blanked on that row, and the
+281 splits very unevenly:
+
+| Row | at exactly one | already searched | untried |
+|---|---|---|---|
+| Corruption cases | 64 | 58 | **6** |
+| Revolving door | 97 | 12 | **85** |
+| Governor removals and pressure | 120 | 17 | **103** |
+| **Total** | **281** | **87** | **194** |
+
+**The corruption-case row is 91% searched out and its last six are BFA, COG, GAB, NER, TCD and
+TGO — BCEAO and BEAC members whose national institutions round 72 proved cannot reach them.** That
+row is done at depth. Meanwhile the revolving door and removals rows have 188 untried places
+between them and have barely been worked for second records at all.
+
+Rounds 70 to 73 kept sending their case agents at the row that was nearly mined out. The decay I
+measured was the decay of ONE vein, read as the decay of the map. **Round 74 therefore runs six
+agents, three on the revolving door and three on removals, and no case agent at all.** The untried
+lists include Canada, China, India, Russia, Australia, Austria, Israel, Chile, Singapore, Hong
+Kong, New Zealand and Ukraine — countries that publish heavily, on rows where nobody has looked
+for a second record.
+
+**On "how many rounds are left", the honest answer is a range and the shape matters more than the
+number.** At the best rate yet observed, 22 a round when fresh rows were being worked, the 194
+untried clear in about nine rounds. At round 73's 8 a round, about twenty-five. If the decay
+continues at the observed 0.62 a round it never reaches zero at all and converges about 21
+conversions from here — but that decay figure is measured on the exhausted row, so it is the one
+assumption this round is designed to test. `runway.py` prints all three and says to read the
+pessimistic one; after round 74 it will be worth re-reading, because a jump back toward 20 would
+confirm the misallocation diagnosis and a stay near 8 would refute it.
+
+**And there is no finish line, which is worth saying plainly rather than discovering later.** The
+87 searched-and-blank places need a NEW vein, not another pass, and for some there may not be one.
+A map of documented findings can always take one more record. What ends is not the work but its
+yield: at some point a round costs six agents and moves two places, and the question becomes
+whether that is worth doing rather than whether it is possible.
+
+### Three tools written for this, all new at round 74
+
+- **`runway.py`** — the table above, the yield history, and the projection at three decay
+  assumptions. It refuses to run if `searched.json` is missing rather than reporting a backlog
+  that ignores the blanks.
+- **`mk_targets.py`** — derives a round's target list from `coverage.py`'s live exactly-one lists
+  minus the already-searched places, and slices it. **No code in its output is one it did not read
+  out of `coverage.py` a moment earlier.** Round 72 lost a brief to a list I typed by hand, 39 of
+  whose 123 codes were not live; round 73's door brief listed 100 places, twelve already blanked.
+  Both are closed by deriving the list instead of writing it.
+- **`check_assign.py`** — reads every `assign_*.md` in a round directory, pulls the fenced code
+  block under "## Your targets", and refuses if any code is not live, is on the wrong row, is
+  assigned twice, or if any assigned place was left out of every slice. The round-72 stray-code
+  check was written ad hoc after the damage; this is that check, kept. Round 74 passed it with 188
+  codes across six assignments.
 
 ## Every row has run out of countries, so depth is the only work left (round 71)
 
@@ -1547,6 +1865,20 @@ python3 agents/work/check_prose.py
 python3 agents/work/check_dates.py <this round's record files>   # new at round 71
 python3 agents/work/mk_searched.py                               # new at round 73; before mk_have.py
 ```
+
+And at the START of a round, in this order, before any agent is spawned:
+
+```bash
+python3 agents/work/mk_searched.py                 # accumulate every round's blanks
+python3 agents/work/runway.py                      # what is left, and where it actually is
+python3 agents/work/mk_targets.py agents/work/rNN --rows <rows> --slices N
+python3 agents/work/mk_have.py agents/work/rNN     # the briefs, now carrying searched.json
+# write the assignments from the generated blocks, then:
+python3 agents/work/check_assign.py agents/work/rNN
+```
+
+`check_assign.py` exiting non-zero means a brief would send an agent somewhere the data does not
+support. Do not spawn anything until it passes.
 
 The first finds one firm drawn as two parties, and one name standing for several countries'
 institutions. The second finds a party paragraph whose stated tie count its box no longer supports.
