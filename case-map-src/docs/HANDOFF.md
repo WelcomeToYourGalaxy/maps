@@ -480,6 +480,121 @@ These came in over one session and all of them are done unless noted.
    rounds stale. The current handoff is this file, `case-map-src/docs/HANDOFF.md`, and there should
    never again be two.
 
+## READ THIS FIRST: round 43 — the nine defects on live pattern cards are fixed and merged
+
+An authoring round, not a research one. One writer, one separate checker, and the fixes are on the
+page. Build clean: `loan-condition cases matched 173 of 173`, 24 patterns, 31 suspected patterns,
+25.0 MB, zero page and zero console errors headless. **1,182 cases, 137 countries, and no coverage
+row moved** — this round changed what cards say, not how many there are.
+
+**The checker stood all twelve entries, with corrections on seven. Two of those corrections restored
+true facts the fix had removed**, which is the failure mode an over-zealous correction round has:
+
+- `rankings-bent-for-money` lost the sentence that Saudi Arabia's king had said in 2006 he wanted the
+  country among the top ten by 2010. The writer removed it without recording the removal. **It is
+  true and it is the motive's own context**, so it went back. The checker also found the writer had
+  left **paragraph 4 carrying the same two-country framing the defect was about**, and wrote the edit
+  the writer missed.
+- `aid-cover-for-spies` lost a torture accusation along with the Wikipedia legs it sat beside, and
+  lost the programme's own name. Both restored: the Congressional Record item says "Channelled mostly
+  through the AID Office of Public Safety", so the name is sourced from the document already in the
+  entry's list.
+
+### What was fixed, each from a document opened in the round
+
+1. **`water-handed-to-companies`** — the half-quote is gone. The 1998 Jabotabek completion report
+   (Report No. 18049) now appears on the card with both halves of its sentence: the privatisation was
+   "parallel to but facilitated by the Project" **and** not envisaged by the government or the Bank
+   at appraisal, with paragraph 28's statement that such a proposal would most likely have been
+   turned down in the late 1980s.
+2. **`rankings-bent-for-money`** — all four countries of the investigation are on the card now,
+   including **Azerbaijan, whose data was changed downward on stated personal animus with no money
+   involved**, and the instruction to drop Jordan from the Top Improvers list, which was the first
+   stated consideration in the Saudi change. The paid-advisory motive is one of three factors under a
+   finding the report words as "likely", and the card says so.
+3. **`carbon-credits-new-land-grab`** — the judgment is *Osman & 164 others v NRT*, [2025] KEELC 99,
+   of **24 January 2025**, and the appeal is [2026] KECA 1774 with a ruling of 25 September 2026. The
+   card states that nothing available says what the appeal decided or whether the January ruling
+   stands. The checker cut "the Court of Appeal at Meru" to "the Court of Appeal", because the index
+   entry gives only the court, and changed "its judgment pages do not open to a reader outside Kenya"
+   to "will not open for us" — **the wall is real, the reason for it is not known**, which is this
+   file's rule about naming the route rather than the cause.
+4. **`ratings-that-punish-relief`** — the "19 African countries … $74.5 billion" figure is corrected
+   in the story and in the `conviction` line: the brief's samples are 13 and 16 countries, union 21,
+   and the figure is the two tables added together with no country count attached. **The Fitch
+   substitution is the round's weakest source and both agents said so.** Fitch's own 9 February 2021
+   action commentary serves a script-only body, so the card rests on Fitch's "Frontier Markets
+   Quarterly – 1Q21", which lists that downgrade and gives the reasoning. The checker moved it out of
+   paragraph 3 and narrowed the claim again: the trigger on the record is **private-creditor
+   involvement**, not asking for relief.
+5. **`banks-that-bank-the-looters`** — both Senate readings are on the card, deposits "ranging from
+   $400 to $700 million at a time" and findings' balances-and-loans approaching $700m. Paragraph 2 no
+   longer reads as a second finding of knowing handling: it gives the regulator's finding as a control
+   failure, records that the $1.3bn was turnover rather than necessarily proceeds of crime, that
+   several banks had reported suspicions in good time, that **the regulator had no power at that date
+   to name a bank**, and that none was prosecuted.
+6. **`lending-to-known-thieves`** — "leaked from Zaire" is now leaked in Brussels, which is where the
+   source's dateline puts it. The debt disagreement is on the card with attribution: $4.1bn from one
+   source, $5bn from the other. **The "50 to 80 per cent" figure was left alone**, because round 42's
+   check found it verbatim in a source already in the entry's list.
+7. **`companies-behind-coups`** — the compensation figure attributed to the company's own tax
+   declaration is **removed**, because it is not in the diplomatic record the entry leans on, and
+   replaced with what that record does say: 234,000 acres at Tiquisate, 172,532 at Bananera, agrarian
+   bonds, and Washington's written objection that bonds were not prompt and effective compensation.
+   "This has not stopped" is gone.
+8. **`secret-loans-banks-traders`** — Chad's 98% is 2017, from the joint debt sustainability analysis
+   of July 2019. **The same wrong year survived in the entry's `countries` array**, where the edit
+   format could not reach it, and was fixed by hand in the merge.
+9. **`aid-cover-for-spies`** — paragraph 2 is re-sourced on the Congressional Record item of 5 March
+   1992 already in its own list: $60m a year, police in 34 countries by 1968, and intelligence
+   agencies "given an important role". Three claims came off because that document does not carry
+   them — the 1,500 advisers, the 52 countries, and one named official described as a CIA operative.
+
+### Three hand edits the delivery format could not carry, applied in the merge
+
+The edit format reaches `story`, `conviction`, `title`, `sources` and `case_ids`, and not the
+`countries` array. So: Chad's year as above; **`northern-rangelands-isiolo-conservancies` added to
+`carbon-credits-new-land-grab`, which is the case its own third paragraph is about and which it did
+not link**; and the Wikipedia "Office of Public Safety" source removed from `aid-cover-for-spies`,
+with the Uruguay, Brazil and Guatemala `countries` notes that were taken through it **now saying on
+their face that they rest on a source since removed and have not been re-sourced.** That is the
+honest state of those three notes and someone should re-source them.
+
+### `merge_hyps.py`, and why it refused the round once
+
+New script, `case-map-src/merge_hyps.py`. It applies checked edits to `window.HYPS` and **refuses the
+whole file rather than applying a near match**, because a silently missed edit leaves the defect on
+the page while the round reports it fixed. It earned that on its first run: the checker had expressed
+a case link as an edit on the `case_ids` array, which cannot be applied as a string replacement, and
+the script wrote nothing until the link was moved to `case_ids_add`. Pass checked files to it; it
+backs up `base.html` first and prints each entry's word count.
+
+### Still open after round 43
+
+- **`case_ids` is still empty on three entries** — the spying, looted-money and debt-for-nature
+  entries — and both agents checked the 1,182 ids rather than forcing a link: there is **no espionage
+  case on this map**, no case of a Western bank holding stolen public money, and nothing resembling a
+  debt-for-nature swap. Those are three gaps in the map, not three missing links.
+- **The one case link added is by shape only.** `development-money-through-tax-havens` now names
+  `amulsar-gndevaz-jermuk`, where the IFC put $16.4m into a holding company incorporated in Jersey
+  with its mine in Armenia. **Oxfam's count behind that entry covers sub-Saharan Africa in 2015 and
+  Armenia is not in it**, and the card does not claim otherwise.
+- **Four stories now run past HYP.md's 350-500 word guide** — `rankings-bent-for-money` at 704 words,
+  `banks-that-bank-the-looters` 631, `water-handed-to-companies` 626, `aid-cover-for-spies` 608.
+  Seven of the nine were already over 500 before this round. The growth is the cost of the required
+  additions. **If the owner wants them back under 500, the place to cut is `rankings-bent-for-money`
+  paragraph 1**, about sixty words of scene-setting, and that is the writer's own recommendation.
+- **The Cochabamba loan condition on `water-handed-to-companies` still rests on an advocacy source**,
+  as does the $600m debt-relief claim on the `cochabamba-water-war` case card. That is now the
+  weakest thing on that card and no better source was found.
+- **The reclassification itself is not done.** Round 42 sorted the thirty-one; this round fixed their
+  facts. The six moves, four merges and sixteen retitles are still to do, and the structural question
+  is the owner's: `PATS` entries carry `computed`, `counts` and `case_results`, and these stories have
+  none, so either a documented pattern without a computed count belongs in `PATS` anyway or the page
+  needs a third category.
+- Nothing procedural: **both the report and the check log exist**, the first round in four where
+  every required document was delivered. The log arrived after the checked JSON rather than with it,
+  so a merge step that waits for the log will wait a few minutes.
 ## The probable ceiling: what share of each loan type is attainable, and in how many rounds
 
 **Run `python3 case-map-src/ceiling.py` rather than copying the table below.** Every number in it is
