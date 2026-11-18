@@ -117,4 +117,7 @@ if 'rounds' in sys.argv:
     print('\n  Measured round history: r6 +95 closed 4.0; r7 +236 closed 5.6;')
     print('  r8 +195 OPENED 1.8; the three 16 Nov rounds +12 closed 0.7;')
     print('  r9 +210 closed 14.3 - composition-locked to the deficit cells,')
-    print('  68 milli-points a case against r7\'s 24 and r8\'s negative.')
+    print('  68 milli-points a case against r7\'s 24 and r8\'s negative;')
+    print('  r10 +146 closed 6.4, with corp re-entered and now at target.')
+    print('  The per-round yield decays as the over classes dilute: a 210-case')
+    print('  round closes about 8.0 now, then 4.6, 3.8, 3.3, 2.7, then under 1.2.')
