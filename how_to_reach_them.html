@@ -99,10 +99,13 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   background:rgba(74,124,89,.3);border-radius:999px;padding:1px 5px}
 #hurdcar{font-weight:400;font-size:10px;transition:transform .15s}
 #hurdbtn.open #hurdcar{transform:rotate(180deg)}
-/* the question mark leads the row: it explains the map, not a place */
-#habout{flex:none;width:22px;height:22px;border-radius:50%;border:1px solid var(--stone)!important;
-  background:var(--panel2)!important;color:var(--dim);font-size:11px;line-height:1;padding:0!important;
-  margin-right:2px;cursor:pointer;font-family:inherit}
+/* It leads the row because it explains the map, not a place. It was a
+   22px circle holding a question mark, which is a shape a reader has to
+   click to find out what it is; the word fits in a pill the same
+   height and says it. */
+#habout{flex:none;height:22px;border-radius:999px;border:1px solid var(--stone)!important;
+  background:var(--panel2)!important;color:var(--dim);font-size:10.5px;line-height:1;
+  padding:0 10px!important;margin-right:2px;cursor:pointer;font-family:inherit;white-space:nowrap}
 #habout:hover{color:var(--ink);border-color:var(--accent-hi)!important;background:var(--accent-soft)!important}
 /* What is on the map. A city returns several hundred buildings of
    seven different kinds alongside its offices, and a reader looking
@@ -253,6 +256,11 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 #aclose:hover{color:var(--ink)}
 #about h4{padding-right:30px}
 #about h4{font-family:'Marcellus',serif;font-size:14px;margin-bottom:9px}
+/* the sections under the title, which the panel now has four of */
+#about h4.asub{font-size:12px;letter-spacing:.7px;text-transform:uppercase;
+  color:var(--stone);margin:17px 0 7px;padding-right:0;border-top:1px solid var(--line);
+  padding-top:13px}
+#about h4.asub:first-of-type{border-top:0;padding-top:0;margin-top:13px}
 #about p{font-size:12.5px;line-height:1.6;color:var(--dim)}
 #about p+p{margin-top:9px}
 #about ul{margin:4px 0 10px;padding-left:17px;font-size:12px;line-height:1.55;color:var(--dim)}
@@ -890,6 +898,12 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .entxs{font-size:10px;line-height:1.45;color:var(--faint);margin-top:5px;
   padding-top:4px;border-top:1px solid var(--line)}
 .entxw{display:block;font-size:10.6px;color:var(--faint);margin-top:6px;font-style:italic}
+/* What a body of this kind does, set apart from the body's own lines
+   so the two are not read as one description. */
+.entxk{margin-top:8px;border-left:2px solid var(--stone);padding:1px 0 1px 11px}
+.entxk dt{font-size:10.2px;letter-spacing:.3px;text-transform:uppercase;color:var(--stone);margin-bottom:3px}
+.entxk dd{font-size:11.6px;line-height:1.6;color:var(--dim);margin:0}
+.entxk dd i{display:block;font-style:normal;font-size:10px;line-height:1.45;color:var(--faint);margin-top:4px}
 #mkpop .entxt{font-size:11.2px;margin-top:8px}
 
 #gltip{position:fixed;z-index:3000;display:none;background:rgba(17,24,21,.98);
@@ -1059,12 +1073,19 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 
 /* What a click in a bubble does, said once at the foot of the column
    rather than guessed at. */
-#bubhint{position:absolute;left:18px;width:calc(var(--bd,156px) + 32px);margin-left:-16px;
-  text-align:center;font-size:9.2px;line-height:1.4;letter-spacing:.2px;
-  text-transform:uppercase;color:var(--faint);pointer-events:none;
+/* This read "click a circle to zoom in · double-click to zoom out" in
+   9px uppercase grey at the foot of the column, which is the size of
+   thing a reader scans past. It carries what the circles actually do
+   now, at a size that can be read. */
+#bubhint{position:absolute;left:18px;width:calc(var(--bd,156px) + 46px);margin-left:-23px;
+  text-align:center;color:var(--dim);pointer-events:none;
   text-shadow:0 1px 7px rgba(0,0,0,.95),0 0 3px rgba(0,0,0,.8)}
-#bubbles.lightbase #bubhint{color:#4a5a50;
+#bubhint b{display:block;font-size:10px;line-height:1.3;letter-spacing:.5px;
+  text-transform:uppercase;color:var(--accent-hi);margin-bottom:3px}
+#bubhint span{display:block;font-size:10.4px;line-height:1.5}
+#bubbles.lightbase #bubhint{color:#3d4a42;
   text-shadow:0 1px 6px rgba(255,255,255,.98),0 0 3px rgba(255,255,255,.95)}
+#bubbles.lightbase #bubhint b{color:#2d5a3c}
 
 /* the aiming mark inside a bubble */
 .bubx{position:absolute;width:19px;height:19px;margin:-10px 0 0 -10px;pointer-events:none;
@@ -1117,7 +1138,13 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 <div id="map"></div>
 <div id="hdr">
   <div id="hline"><h1>How To Make A Law</h1></div>
-  <div class="sub">Every person to contact, in every country, at every level down to the municipality.</div>
+  <!-- "Every person to contact" was a claim the map does not meet and
+       cannot: it lists offices, not people, and names a holder only
+       where the record happens to carry one, which for most offices it
+       does not. The levels and the countries are true — the record is
+       read live for any place searched, at every level above it — so
+       the claim is cut back to what the map actually draws. -->
+  <div class="sub">The offices to contact about a law, in every country, at every level down to the municipality.</div>
 </div>
 <!-- The row above the panel, in order of how often each part is used.
      The level key is read constantly and now sits where it can be seen;
@@ -1136,7 +1163,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
       Hurdles to Expect <i id="hurdn"></i> <b id="hurdcar">&#9662;</b></button>
   </div>
   <button id="sopen" onclick="openStart()">&#9906; Search</button>
-  <button id="habout" onclick="toggleAbout()" title="About this map">?</button>
+  <button id="habout" onclick="toggleAbout()" title="About this map">About</button>
   <div id="showrow">
     <button id="showbtn" onclick="toggleShow()">Shown &#9662;</button>
     <div id="showbox"></div>
@@ -1224,6 +1251,34 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
      whole map, not of whichever place happens to be open. -->
 <div id="about"><button id="aclose" onclick="toggleAbout()">&times;</button>
     <h4>About this map</h4>
+    <!-- Coverage first. It decides whether anything else on this page is
+         any use for the reader's own country, and it was at the foot,
+         under six paragraphs about sources. -->
+    <h4 class="asub">How complete the records are</h4>
+    <p><b>Countries</b>, 205 units</p>
+    <ul>
+      <li>Website 83% &middot; Email 92% &middot; Telephone 94% &middot; Street address 94% &middot; Council or legislature 99%</li>
+    </ul>
+    <p><b>First-level divisions</b>, 5,143 units</p>
+    <ul>
+      <li>Website 49% &middot; Email 4% &middot; Telephone 3% &middot; Street address 1% &middot; Council or legislature 16%</li>
+    </ul>
+    <p><b>Municipalities</b>, 191,524 units</p>
+    <ul>
+      <li>Website 54% &middot; Email 25% &middot; Telephone 20% &middot; Street address 2% &middot; Council or legislature 1%</li>
+    </ul>
+    <p>Those percentages are places with some contact recorded, not people. The map lists the
+       offices a place has, and names whoever holds one only where the record happens to say,
+       which for most offices on Earth it does not.</p>
+    <h4 class="asub">The magnifying circles</h4>
+    <p>The circles down the left are magnifiers, one for each level of government over the place you
+       searched, each showing the real basemap rather than a sketch of it. Click the ground in one to
+       zoom it in a step, double-click to zoom out, drag to move it, and hover to open a second circle
+       holding a closer view of wherever the pointer is. Click a marker to open that office; where
+       several sit on one spot you get the list to pick from. The scroll wheel is deliberately off
+       inside them, so scrolling zooms the map behind instead. Move off a circle and it goes back to
+       framing its own level. They need a window wider than 1180px and at least two levels to appear.</p>
+    <h4 class="asub">What is on the map</h4>
     <p>Search a place and the map draws the offices of government recorded for it, at every level from the
        municipality up to the country. Offices with a green dot are ones a member of the public can contact
        about what a law says: asking a legislator to introduce a bill, writing to a committee, commenting on
@@ -1248,19 +1303,6 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
        Inter-Parliamentary Union's dataset on national parliaments, filled in by each parliament itself.
        Parline data is used here under
        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>.</p>
-    <h4 style="margin-top:14px">How complete the records are</h4>
-    <p><b>Countries</b>, 205 units</p>
-    <ul>
-      <li>Website 83% · Email 92% · Telephone 94% · Street address 94% · Council or legislature 99%</li>
-    </ul>
-    <p><b>First-level divisions</b>, 5,143 units</p>
-    <ul>
-      <li>Website 49% · Email 4% · Telephone 3% · Street address 1% · Council or legislature 16%</li>
-    </ul>
-    <p><b>Municipalities</b>, 191,524 units</p>
-    <ul>
-      <li>Website 54% · Email 25% · Telephone 20% · Street address 2% · Council or legislature 1%</li>
-    </ul>
   </div>
 <script>
 /* --- shared basemaps, ported from the Culprits map --- */
@@ -4985,8 +5027,17 @@ function pageKind(L,k){
      (LAWKINDS.has(k)?'<i class="lawdot" title="a route to a law"></i>':'')+'</h3>';
   h+='<p class="qsub">'+glossy([when, st.rel].filter(Boolean).join(' '))+'</p>';
   h+=loadNote(ents.length);
+  /* The methods do not come from the record, so there is nothing to
+     wait for before drawing them. This used to return a bare spinner
+     until the whole place had resolved — several seconds on a country
+     with a deep record — and then draw a page whose main content had
+     been sitting ready the entire time. The one line that does depend
+     on the record says it is still being read. */
   if(!ents.length && CUR && CUR.state!=='done'){
-    return h+'<div class="spin">Still resolving\u2026</div></div>';
+    h+='<p class="pgblank">Still reading the record for offices of this kind. '+
+       'Any that are in it will appear here in a few seconds. How to reach one '+
+       'does not depend on the record, so it is below already.</p>';
+    return h+kindMethods(k, null)+'</div>';
   }
   if(!ents.length){
     h+='<p class="pgblank">No office of this kind is in the record for this place'+
@@ -5397,7 +5448,15 @@ function navGo(d){
   SHOWALLK=Object.assign({},s.showall);
   SEL=null;
   if(s.sel){ const e=officeIndex()[s.sel]; if(e && e.o) SEL=e.o; }
-  try{ render(); }catch(e){}
+  /* `render` draws the walkthrough, which is every page but one: an
+     office's own page is painted by `renderOffice` and `render` has no
+     branch for it. Going back from an office and forward again
+     therefore landed on the list the office was opened from, and
+     forward to an office opened by clicking it on the map did nothing
+     at all, because that page had never been recorded. Both halves are
+     fixed: `renderOffice` records the page, and this sends a recorded
+     office page back to the function that draws it. */
+  try{ if(SEL) renderOffice(SEL); else render(); }catch(e){}
   NAVLOCK=false;
   paintNav();
 }
@@ -6014,6 +6073,11 @@ function renderOffice(o){
       h+='</div>';
     });
   }
+  /* An office page is a page, so it goes in the history like the
+     rest. It is drawn here rather than by `render`, which is the one
+     place the history was being recorded, so clicking a marker on the
+     map left no step to come forward to. */
+  navPush();
   const sig=pageSig(), same=(sig===PAGESIG);
   const body=$('#mbody');
   const at=same ? body.scrollTop : 0;
@@ -6385,9 +6449,136 @@ async function runEntTexts(){
   if(got) entxArrived();
 }
 
+/* ====================================================================
+   WHAT A BODY DOES, WHERE NO ARTICLE SAYS
+
+   Most bodies on this map have no encyclopaedia article. What was
+   drawn for them instead was the shape of the record — what it is
+   classed as, what it is part of, what it covers — and a reader
+   looking at "the record classes it as department of parks and
+   recreation, part of a large county" has been told the
+   title again and nothing about the work.
+
+   No register anywhere states, in prose, what every government body
+   on Earth does. Three things do exist for every country, and they
+   are asked for in that order:
+
+     1. the body's own one-line description on its record, written by
+        hand — "county agency responsible for parks in a large city
+        County" — which is short and is about this body;
+     2. what a body of its kind does. The record already says the kind
+        — a parks and recreation department, a city council, a
+        ministry of health — and the kind is itself a record with its
+        own article. That article describes the work, and there are a
+        few hundred kinds behind hundreds of thousands of bodies, so
+        the second office of a kind costs nothing. It is labelled as
+        being about the kind and not about this body, because that is
+        what it is;
+     3. the recorded statements, as before, under a heading that says
+        they came from the record.
+
+   All of it comes from the same public record the offices come from,
+   through its ordinary read API rather than the query service: three
+   small requests that the service caches and answers in a fraction of
+   a second, where the one query this replaced took several seconds
+   and timed out often enough to leave the box empty.
+   ==================================================================== */
+const WD_API='https://www.wikidata.org/w/api.php';
+const WD_PROPS={parent:'P749', part:'P361', jur:'P1001', field:'P101',
+                hq:'P159', holder:'P1308'};
+
+/* One read of the public record, for up to fifty items at a time. */
+async function wdEntities(ids, props){
+  ids=[...new Set((ids||[]).filter(x=>/^Q\d+$/.test(x)))].slice(0,50);
+  if(!ids.length) return {};
+  /* The labels-and-descriptions reads are small and are asked for over
+     and over — a few hundred kinds of body stand behind every office
+     on Earth — so they are worth keeping. A claims read is a different
+     thing: one body's statements run to kilobytes, it is asked for
+     once, and filling the browser's store with them would push the
+     boundary files out of it. */
+  const keep = props.indexOf('claims')<0;
+  const key='wd:'+props+':'+ids.join(',');
+  if(keep){ const c=cget(key); if(c) return c; }
+  const url=WD_API+'?action=wbgetentities&format=json&origin=*'+
+    '&languages=en&languagefallback=1&sitefilter=enwiki'+
+    '&props='+encodeURIComponent(props)+'&ids='+encodeURIComponent(ids.join('|'));
+  for(let att=0; att<3; att++){
+    try{
+      const r=await fetch(url, {headers:{'Api-User-Agent':WP_UA}});
+      if(r.status===429 || r.status===503){
+        const ra=+(r.headers.get('Retry-After')||0);
+        await new Promise(z=>setTimeout(z, Math.min(Math.max(ra*1000, 900*(att+1)), 6000)));
+        continue;
+      }
+      if(!r.ok){ if(r.status>=400 && r.status<500) break; continue; }
+      const j=await r.json();
+      const e=(j && j.entities) || {};
+      if(keep) cset(key, e);
+      return e;
+    }catch(err){ await new Promise(z=>setTimeout(z, 700*(att+1))); }
+  }
+  return {};
+}
+const wdLabel = e => (e && e.labels && e.labels.en && e.labels.en.value) || '';
+const wdDesc  = e => (e && e.descriptions && e.descriptions.en && e.descriptions.en.value) || '';
+const wdSite  = e => (e && e.sitelinks && e.sitelinks.enwiki && e.sitelinks.enwiki.title) || '';
+function wdClaimIds(e, pid, cap){
+  const out=[];
+  ((e && e.claims && e.claims[pid]) || []).forEach(st=>{
+    const v=st && st.mainsnak && st.mainsnak.datavalue && st.mainsnak.datavalue.value;
+    if(v && v.id) out.push(v.id);
+  });
+  return out.slice(0, cap||2);
+}
+function wdClaimYear(e, pid){
+  const st=((e && e.claims && e.claims[pid]) || [])[0];
+  const v=st && st.mainsnak && st.mainsnak.datavalue && st.mainsnak.datavalue.value;
+  const m=v && v.time && /^([+-]?\d{1,4})-/.exec(v.time);
+  return m ? String(+m[1]) : '';
+}
+
+/* A body's description, the kind it belongs to, and the record's
+   statements, from the read API. Returns null if the request failed,
+   so the caller can fall back to the query service. */
+async function wdBodyText(id){
+  const first=await wdEntities([id], 'descriptions|claims');
+  const me=first[id];
+  if(!me || me.missing!==undefined) return null;
+  const classes=wdClaimIds(me, 'P31', 2);
+  const refs=[];
+  Object.keys(WD_PROPS).forEach(k=>{ wdClaimIds(me, WD_PROPS[k], 2).forEach(q=>refs.push(q)); });
+  const second=await wdEntities(classes.concat(refs), 'labels|descriptions|sitelinks');
+  const nameOf = q => wdLabel(second[q]) || '';
+  const named  = k => wdClaimIds(me, WD_PROPS[k], 2).map(nameOf).filter(Boolean);
+
+  /* the kind of body, and where its article can be read */
+  let cl='', clDesc='', clWiki='', clId='';
+  for(const q of classes){
+    const e=second[q]; if(!e) continue;
+    if(!cl){ cl=wdLabel(e); clDesc=wdDesc(e); clWiki=wdSite(e); clId=q; }
+    if(wdSite(e)){ cl=wdLabel(e); clDesc=wdDesc(e); clWiki=wdSite(e); clId=q; break; }
+  }
+  const bits=[];
+  const parent=named('parent'), part=named('part'), jur=named('jur'),
+        field=named('field'), hq=named('hq'), holder=named('holder');
+  if(cl) bits.push('The record classes it as '+lcFirst(cl)+'.');
+  const belong = parent[0] ? 'part of '+parent[0] : (part[0] ? 'part of '+part[0] : '');
+  if(belong) bits.push(capFirst(belong)+'.');
+  if(jur.length) bits.push('Its authority is recorded as covering '+joinAnd(jur)+'.');
+  if(field.length) bits.push('The subject it is recorded as working on is '+joinAnd(field.map(lcFirst))+'.');
+  const year=wdClaimYear(me,'P571');
+  if(year) bits.push('Set up in '+year+'.');
+  if(hq.length) bits.push('Based in '+hq[0]+'.');
+  if(holder.length) bits.push('The post is recorded as held by '+holder[0]+'.');
+  return {d:wdDesc(me), cl:cl, clDesc:clDesc, clWiki:clWiki, clId:clId,
+          r:(bits.length>=2 ? bits.join(' ') : '')};
+}
+
 /* Where there is no article: the body's own recorded statements, in
    the order a reader needs them, each one quoted rather than
-   summarised. One query, on the click. */
+   summarised. One query, on the click. Kept as the fallback for when
+   the read API above cannot be reached. */
 function qEntFacts(id){ return `
 SELECT ?clsLabel ?parentLabel ?partLabel ?jurLabel ?fieldLabel ?found ?holderLabel ?hqLabel WHERE {
  OPTIONAL{ wd:${id} wdt:P31 ?cls }
@@ -6474,8 +6665,31 @@ async function entDetail(o){
     const e=ENTX[o.id];
     if(e && e.t) return e;
   }
+  /* The read API first: it carries the body's own one-line
+     description, which no other source has, and it names the kind of
+     body so the kind's article can be read. */
+  let got=null;
+  try{ got=await wdBodyText(o.id); }catch(e){ got=null; }
+  if(got){
+    /* What a body of this kind does. The kind is a record of its own
+       with its own article, and the same kind stands behind thousands
+       of bodies, so it is read once and answered from the cache after
+       that. Nothing waits for it: the body's own description and the
+       record's statements are already here, so they are drawn now and
+       the kind's paragraph appears under them when it lands. `ck` is
+       where it will be, and the draw reads it there rather than a copy
+       of it, so an article arriving for one office shows up on every
+       other office of the same kind as well. */
+    const ck = got.clId ? 'kind:'+got.clId : '';
+    ENTX[o.id]={t:'', src:'none', pend:0,
+                d:got.d, cl:got.cl, clDesc:got.clDesc, r:got.r, ck:ck};
+    if(ck && got.clWiki && !ENTX[ck]) wantEntText({id:ck, wiki:got.clWiki});
+    entxArrived();
+    return ENTX[o.id];
+  }
+  /* the read API could not be reached: the query service, as before */
   const t=await entFactsText(o.id);
-  ENTX[o.id]={t:t, src:t?'record':'none', pend:0};
+  ENTX[o.id]={t:'', src:'none', pend:0, r:t};
   /* The same repaint the Wikipedia batch does on arrival: whichever of
      the popup and the office page is open gets the text. Without it a
      body with no encyclopaedia entry showed its record only on a
@@ -6489,19 +6703,43 @@ async function entDetail(o){
    and both can be on screen before it lands. */
 function entxArrived(){
   try{ if(MKPOP_ID) paintMarkerPopupText(MKPOP_ID); }catch(e){}
-  try{ if(SEL && ENTX[SEL.id] && ENTX[SEL.id].t){ const el=document.getElementById('entx');
-    if(el) el.innerHTML=entxHtml(SEL.id); } }catch(e){}
+  /* Any of the four blocks arriving is worth a repaint, not only the
+     article. A body with no article carries its description, its kind
+     and its record statements in other fields, and keying this on the
+     article alone left those drawn only on a second opening. */
+  try{ if(SEL){ const e=ENTX[SEL.id];
+    if(e && (e.t || e.d || e.ck || e.r)){ const el=document.getElementById('entx');
+      if(el) el.innerHTML=entxHtml(SEL.id); } } }catch(e){}
 }
 
 const ENTX_SRC={wikipedia:'From this body’s entry on Wikipedia, quoted and cut to its first sentences.',
                 record:'Assembled from the statements on this body’s own public record — each sentence quotes one of them.'};
+/* Whichever of the four things about this body could be found, in the
+   order a reader needs them: its article if it has one, otherwise the
+   one-line description written on its record, then what a body of its
+   kind does, then the record's own statements. The kind block says in
+   its heading that it is about the kind, because a reader who takes it
+   for a description of this body has been misled by it. */
 function entxHtml(id){
   const e=ENTX[id];
   if(!e) return '';
   if(e.pend) return '<span class="entxw">Looking up what this body does…</span>';
-  if(!e.t) return '';
-  return '<div class="entxt">'+glossy(e.t)+'</div>'+
-         '<div class="entxs">'+esc(ENTX_SRC[e.src]||'')+'</div>';
+  if(e.t)
+    return '<div class="entxt">'+glossy(e.t)+'</div>'+
+           '<div class="entxs">'+esc(ENTX_SRC.wikipedia)+'</div>';
+  let h='';
+  if(e.d) h+='<div class="entxt">'+glossy(capFirst(e.d).replace(/\.*$/,'')+'.')+'</div>';
+  const ke = e.ck ? ENTX[e.ck] : null;
+  const ct = (ke && ke.t) || '';
+  if(ct || (e.cl && e.clDesc)){
+    h+='<div class="entxk"><dt>What a '+esc(lcFirst(e.cl||'body of this kind'))+' does</dt>'+
+       '<dd>'+glossy(ct || capFirst(e.clDesc)+'.')+
+       '<i>This describes the kind of body, not this one in particular. '+
+       'The record says it is one; what it does differs from place to place.</i></dd></div>';
+  }
+  if(e.r) h+='<div class="entxt">'+glossy(e.r)+'</div>'+
+             '<div class="entxs">'+esc(ENTX_SRC.record)+'</div>';
+  return h;
 }
 
 function renderNoEntity(nm, drawn){
@@ -6777,6 +7015,19 @@ function orbImage(hex, strength, light){
   return g.getImageData(0,0,S,S);
 }
 const ORB_STRENGTH={on:1, off:0.44, bldg:0.20};
+/* On the two light basemaps the ink is the other way round: a dark
+   disc under a muted orb is the strongest mark on a pale map and reads
+   as the marker itself. */
+function paintPinBack(){
+  if(!map.getLayer('pin-back')) return;
+  const light=baseIsLight(BASEKEY);
+  try{
+    map.setPaintProperty('pin-back','circle-color', light ? '#f4f2ec' : '#07100c');
+    map.setPaintProperty('pin-back','circle-stroke-color',
+      light ? 'rgba(24,36,30,.45)' : 'rgba(231,228,220,.5)');
+  }catch(e){}
+}
+
 function addPinImages(){
   Object.keys(LEVELSETS).forEach(k=>{
     LEVELSETS[k].forEach((hex,i)=>{
@@ -6825,6 +7076,24 @@ function addChainLayers(){
      property. The layer was then never added at all, and no error is
      thrown for it, so the markers simply did not appear. The two
      factors are multiplied out into the stops instead. */
+  /* A dark disc under each orb, faded in as the camera comes down.
+     The orbs are muted on purpose and the palette follows the basemap,
+     so at street level a county orb was sitting on a photograph of
+     roofs and lawns at roughly its own brightness and had nothing to
+     separate it from them. The backing is the basemap's own ink rather
+     than a colour of its own, so nothing about the palette changes:
+     above it the orb reads as an object on the ground, below zoom 10
+     it is invisible and the orbs look exactly as they did. */
+  map.addLayer({id:'pin-back',type:'circle',source:SRC_PIN,
+    filter:['all',['get','on'],['!',['get','bldg']]],
+    paint:{'circle-radius':['interpolate',['linear'],['zoom'],
+             10, ['case',['get','law'],7,5.5],
+             14, ['case',['get','law'],12,9.5],
+             17, ['case',['get','law'],16,13]],
+           'circle-color':'#07100c',
+           'circle-opacity':['interpolate',['linear'],['zoom'],9.6,0,11.5,0.5,14,0.62],
+           'circle-stroke-width':['interpolate',['linear'],['zoom'],9.6,0,12,1.1],
+           'circle-stroke-color':'rgba(231,228,220,.5)'}});
   map.addLayer({id:'pin-on',type:'symbol',source:SRC_PIN,
     filter:['get','on'],
     layout:{'icon-image':['get','img'],
@@ -6833,10 +7102,16 @@ function addChainLayers(){
             'symbol-sort-key':['case',['get','law'],2,['get','bldg'],0,1],
             /* buildings are drawn smaller as well as fainter: a city
                returns several hundred and they are context, not the answer */
+            /* The stops used to stop at zoom 11 and the map goes past
+               18, so every scale from a city block down drew the orb at
+               its zoom-11 size against a basemap carrying far more
+               detail. They keep growing to 17 instead. */
             'icon-size':['interpolate',['linear'],['zoom'],
               2,  ['case',['get','bldg'],0.32,['get','law'],0.58,0.46],
               6,  ['case',['get','bldg'],0.46,['get','law'],0.86,0.68],
-              11, ['case',['get','bldg'],0.62,['get','law'],1.18,0.92]]}});
+              11, ['case',['get','bldg'],0.62,['get','law'],1.18,0.92],
+              14, ['case',['get','bldg'],0.78,['get','law'],1.55,1.2],
+              17, ['case',['get','bldg'],0.92,['get','law'],1.9,1.45]]}});
   /* the name, once there is room for it */
   map.addLayer({id:'pin-label',type:'symbol',source:SRC_PIN,
     filter:['all',['get','on'],['get','law']], minzoom:6.5,
@@ -6938,6 +7213,9 @@ function setPins(){
   });
   src.setData({type:'FeatureCollection',features:feats.filter(f=>f.properties.vis)});
   paintShow();
+  /* this runs on every repaint, a basemap change included, which is
+     when the backing disc has to flip between dark and light ink */
+  try{ paintPinBack(); }catch(e){}
   if(typeof schedBubbles==='function') schedBubbles();
   const vis=feats.filter(f=>f.properties.vis);
   const on=vis.filter(f=>f.properties.on);
@@ -8848,7 +9126,11 @@ function buildBubbles(L){
         '<span class="bgrp" id="bubg'+i+'"></span></div>'+
     '</div>').join('')+
     '<div id="bubhint" style="top:'+(BUB_TOP+L.length*step-6)+'px">'+
-      'Click a circle to zoom in \u00b7 double-click to zoom out'+
+      '<b>Each circle is a magnifier</b>'+
+      '<span>Click the ground in one to zoom in \u00b7 double-click to zoom out \u00b7 '+
+      'drag to move \u00b7 hover for a closer view \u00b7 click a marker to open it. '+
+      'The scroll wheel is off in the circles, so scrolling still zooms the map behind. '+
+      'Leaving a circle puts it back on its own level.</span>'+
     '</div>';
   /* The captions and the groups are known without a map, so they are
      filled in now and the circles arrive under them. */
