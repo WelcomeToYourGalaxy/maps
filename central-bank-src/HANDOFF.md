@@ -345,6 +345,108 @@ not the same as the Bank not disclosing it in its own audited accounts. **Both a
 a blank written from somebody else's failure to get an answer rather than from the bank's own
 documents.**
 
+## All three low rows were measured against the wrong denominator, and two cannot reach 80% (round 76)
+
+The owner asked how many rounds until gold custodians, swap lines and outside reserve managers
+reach 80%. **For two of the three the answer is not a number of rounds, because the method cannot
+get there**, and for all three the figure being measured was wrong. `agents/work/to80.py` computes
+this; run it rather than reasoning from this section.
+
+The pattern that keeps recurring: a row's percentage is divided by 192 places when 192 is not the
+set of places that could ever hold a record. Named shareholders was the first — 5% that was really
+9 of 9. Round 76 found the same on both others.
+
+| Row | was | is | denominator |
+|---|---|---|---|
+| Named shareholders | 5% of 192 | **100%** | 9 banks with any non-state shareholder |
+| Outside reserve managers | 41% of 192 | **55%** | ~144 banks that use an external manager |
+| Gold custodians | 31% of 192 | **52%** | 108 places that hold gold, incl. the abroad-undisclosed state |
+| Swap lines | 44% of 192 | 47% | provider-bounded; see below |
+
+### Gold cannot reach 80%, and the arithmetic is now on record
+
+Of the 56 places still absent, each blank was classified by what it actually says: **34 had their
+statements read and the statements disclose no location at all**, 18 are documents that could not be
+obtained, 4 were never assigned. So 22 are genuinely open, and converting every one gives 78 of 108
+— **72%**. The audited-accounts method tops out below the target. The only route past it is the
+third state, because those 34 silent-statement places are where the headroom is, and re-reading them
+for "abroad, holder undisclosed" is cheaper than anything else available.
+
+### Outside reserve managers: the denominator is a population and can never be a roster
+
+**The World Bank Treasury's RAMP survey is the only global census of reserve-management practice and
+is anonymised by design: "Survey results are presented in an aggregate format to preserve
+anonymity."** So no list of which banks use external managers exists or can be built from it. What
+it gives is the share, stable across four editions — 72% of 94 respondents in 2019, 75% of 119 in
+2021, 77% of 125 in 2023, and "almost three-quarters" of 136 in 2025, which the report says has held
+within two points since 2019. That puts the universe near 144. The row's 79 places are therefore
+**55%**, not 41%.
+
+80% of 144 is 116 places, 37 more, and 64 are arithmetically open — but **treat 80% as unproven
+rather than reachable.** The same survey finds fewer than a quarter of central banks disclose
+anything about an external management programme, and this row stands where it does mainly on the
+MANAGERS' disclosure rather than the banks'. The places still absent are mostly ones no document
+will name. There is also no rate to project from: no round has yet worked this row for records.
+
+**Half this row is one country, verified directly rather than taken on report: 103 of its 207 ties
+are Norway's, and 103 of its 142 distinct firms, all from a single page.** Everything else is 104
+ties, 40 firms, 60 places. Two problems. Those 103 manage the Government Pension Fund Global, a
+SOVEREIGN WEALTH FUND rather than foreign exchange reserves, unlike every other block on the row —
+so the row conflates two instruments. And it is a disclosure artefact: a bank with equally many
+external managers that publishes nothing scores zero. The completeness chart counts places, not
+ties, which avoids the worst of it. Whether to move the Norway block to its own
+sovereign-wealth-fund relation is an open decision for the owner. All of this is in
+`gaps.json['reserve_managers_denominator']`.
+
+### Swap lines: count the providers, not the places
+
+**This row's universe is bounded by who is willing to PROVIDE a line, and that is a short list.** Of
+the records now filed, 85 are the People's Bank of China, 86 the Federal Reserve, 70 Japan, 16 the
+ECB, 14 the Bank of Korea. Calling the places the map holds "the universe" would be the numerator
+restated, so the bound comes from the supply side instead — enumerate the providers' own published
+lists, which is independent of what the map holds. **Three of the largest are now exhausted
+against the map:**
+
+- the PBoC's own table as of 30 September 2025 lists 32 counterparties and every one was already
+  filed;
+- the Federal Reserve's standing, NAFA and FIMA arrangements are filed, and its entire 1962-1998
+  reciprocal currency network was enumerated from NBER working paper 20755 read as extracted text —
+  16 records, all lapsed, the FOMC having eliminated every standing swap facility on 17 November
+  1998;
+- the ECB's published list, from which Bulgaria and Croatia were missing and are now filed.
+
+Thirty records were filed this round, taking the row to 270 records across 90 places. **The supply
+side still to enumerate is the Bank of Korea, Japan's Chiang Mai network and the Swiss National
+Bank**, and that is the next round's work here.
+
+Three things that round threw up and are worth keeping. The PBoC table also shows that **twelve
+filed counterparties are no longer on it** — Albania, Armenia, Belarus, Georgia, Kazakhstan,
+Morocco, Nepal, Serbia, Suriname, Tajikistan, Ukraine, Uzbekistan — which is good evidence those
+lines lapsed; a later round should update `status` in place rather than re-file them. **The Arab
+Monetary Fund was refused on scope**, correctly: its 2025 annual report describes its lending as
+going to governments and finance ministries, "signed with the Government of the Hashemite Kingdom
+of Jordan", not as lines with member central banks, and filing 22 Arab states on membership would
+have invented the instrument. **The Asian Clearing Union was refused by the same test** and is held:
+it settles trade between members rather than lending between central banks, and its host serves
+nothing but the fetch tool — two independent reasons, either sufficient.
+
+**And the euro-area question is the owner's, not a source's.** The map keys the ECB's lines to the
+union and expands union records to every member, which is its convention for all relations, so on
+that convention all twenty euro members have a line. But only NINE of the twenty are shown by a
+source to have ever held one of their own: Austria, Belgium, France, Germany, Italy and the
+Netherlands through the Fed's 1962-1998 network, Estonia and Latvia through the Riksbank, Croatia
+through the ECB's 2020 line. For the other eleven none was found, and the Cleveland Fed and NBER
+record the FOMC REFUSING Ireland's request as too small in trade and financial dealings, and
+Venezuela's as not compliant with IMF Article VIII. The figures follow the map's own convention.
+
+### A new merge script, because this row had none
+
+`agents/work/merge_swaps.py`. Swaps had been merged by hand or by round-specific scripts since
+round 4, which is how a row acquires duplicates. It keys on provider, counterparty, kind AND
+signing date — deliberately tighter than provider-and-counterparty, because a renewal is a real
+second record and collapsing renewals would lose what this row is for. On its first run it caught
+two of round 76's records as already filed and refused ten whose host could not be read.
+
 ## The owner has redirected the project to the three lowest rows (round 75)
 
 From round 75 the project works **named shareholders, gold custodians and swap lines only**, in

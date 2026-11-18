@@ -1205,6 +1205,10 @@ function detail(k) {
   // rounds because the box it was written from showed zero. Give small holdings the
   // decimals they need so a real holding never prints as none.
   if (p.gold) rows.push(['Gold', fmt(p.gold.t, p.gold.t > 0 && p.gold.t < 0.05 ? 2 : 1) + ' tonnes' + (p.gold.pct != null ? ' · ' + fmt(p.gold.pct, 1) + '% of reserves' : '') + rankOf("gold", k)]);
+  // The third custody state. Where no custodian is filed, a bare tonnage leaves a reader unable
+  // to tell "nobody has looked" from "the bank's own accounts say the gold is abroad and decline
+  // to say with whom", and on this row the second is the more telling. Quote the bank's own words.
+  if (p.gabs) rows.push(['Where that gold is', 'Held abroad, holder not disclosed. The bank\u2019s own accounts say \u201c' + esc(p.gabs.q) + '\u201d and name no institution <span class="note">(' + esc(p.gabs.d) + ')</span>']);
   if (rows.length) h.push('<table class="kv">' + rows.map((x) => '<tr><th>' + x[0] + '</th><td>' + x[1] + '</td></tr>').join("") + '</table>');
   const sw = (p.sw || []).map((i) => D.SW[i]);
   if (sw.length) {
