@@ -90,6 +90,36 @@ def fold_de(s):
     return ' '.join(sorted(out))
 
 
+def fold_ar(s):
+    """The same fold with common Arabic-to-English romanisation variants collapsed.
+
+    Round 73 found the map drawing Yemen's former president as TWO person nodes --
+    'Abd-Rabbu Mansour Hadi' and 'Abd Rabbuh Mansur Hadi', one tie each, from two
+    events whose sources romanised the name differently. Neither the plain fold nor
+    fold_de catches it: 'ou' against 'u' and a trailing 'h' are not accent
+    differences, and step 3's distinctive-token test SKIPS person nodes, so nothing
+    looked. A third spelling, 'Abdrabbuh Mansur Hadi', sits in corruption.json.
+
+    SEPARATE test for the same reason fold_de is separate: collapsing 'ou' into 'u'
+    everywhere would merge genuinely different names, and stripping a trailing 'h'
+    certainly would. This is advisory output a human reads, like the rest, so a false
+    pair here costs a glance and a missed duplicate costs a wrong node on the map.
+    """
+    out = []
+    for w in words(s):
+        for x, y in (('ou', 'u'), ('oo', 'u'), ('ee', 'i'), ('aa', 'a')):
+            w = w.replace(x, y)
+        if len(w) > 3 and w.endswith('h'):
+            w = w[:-1]
+        # A doubled consonant is the commonest romanisation difference of all and it is
+        # on this map twice over: Mohammed against Mohamed, Hammam against Hamam, which
+        # are the two spellings of the Yemeni central bank head in the sources. Collapse
+        # runs of the same letter rather than a fixed list, so no pair is special-cased.
+        w = re.sub(r'([bcdfghjklmnpqrstvwxyz])\1+', r'\1', w)
+        out.append(w)
+    return ' '.join(sorted(out))
+
+
 # Generic words that carry no identity on their own. A shared one says only that
 # two bodies are both public, or both in the same country -- "Government of
 # Zimbabwe" and "Ministry of Finance of Zimbabwe" are two bodies, not two
@@ -230,9 +260,17 @@ def main():
     same_de = [sorted(v) for k, v in byde.items()
                if k and len(v) > 1 and frozenset(v) not in seen0]
 
+    # 1c. identical once Arabic romanisation variants are collapsed (round 73)
+    byar = defaultdict(list)
+    for i, n in enumerate(nodes):
+        byar[fold_ar(n['name'])].append(i)
+    seen0b = seen0 | {frozenset(g) for g in same_de}
+    same_ar = [sorted(v) for k, v in byar.items()
+               if k and len(v) > 1 and frozenset(v) not in seen0b]
+
     # 2. one folded word set inside another
     seen = ({frozenset(g) for g in same} | {frozenset(g) for g in reordered}
-            | {frozenset(g) for g in same_de})
+            | {frozenset(g) for g in same_de} | {frozenset(g) for g in same_ar})
     subset = []
     items = [(i, ws[i]) for i in range(len(nodes)) if len(ws[i]) >= 2]
     for a, wa in items:
@@ -269,6 +307,8 @@ def main():
               'or the name reduces to one word ("Crane Bank" is not "Crane AB"):',
               reordered)
     n += show('Identical once German ue/oe/ae are collapsed -- one party, two spellings:', same_de)
+    n += show('Identical once Arabic romanisation is collapsed -- one party, two spellings:',
+              same_ar)
     n += show('One name inside the other -- almost always one party:', subset)
     n += show('Share a distinctive word -- read these, a parent and a subsidiary are not a duplicate:', token)
     print('\n%d parties, %d groups to read' % (len(nodes), n))

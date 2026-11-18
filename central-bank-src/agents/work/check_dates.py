@@ -67,6 +67,10 @@ IGNORE_MARKER = re.compile(
     r"|source does not (?:say|mention|give|state|carry)|which the source does not"
     r"|no dates? (?:at all|are given|is given)|not mentioned in the source"
     r"|the map's existing|reverses on"
+    # An agent writes "read 17 November 2026" to stamp WHEN it opened a page. That is a fact
+    # about the fetch, never a claim the page makes, and round 73 spent three of five flags
+    # on it. The stamp always sits in the same clause as the URL it belongs to.
+    r"|read \d{1,2} [A-Za-z]+ \d{4}|read on |as read on|accessed"
     # A record routinely points at the SIBLING record it must not be confused with, and the
     # wordings for that are many. Round 72 reported four dates that all sat in one of these.
     r"|existing (?:record|event|case)|one existing|not a duplicate|a different episode"
@@ -152,12 +156,18 @@ def dates_in(text):
         # "Nov 30, 2017" is the commonest form in news and the full-word list misses it.
         forms = (m, m[:3]) + MONTHS_ALT.get(m, ())
         for name in forms:
+            # Serbian and Russian decline the month: the Serbian audit reports write
+            # "2. фебруара 2007. године", genitive, where MONTHS_ALT holds the nominative
+            # "фебруар". A trailing \b then refuses the match and the script reports a date
+            # that is printed on the page in full. Round 73's Serbian record was flagged for
+            # exactly this. Only Cyrillic names get the ending, so Latin matching is unchanged.
+            tail = r"[а-яёћђжшчџљњ]{0,3}" if any("\u0400" <= c <= "\u04ff" for c in name) else ""
             # Romance languages write "12 de agosto" and Czech "10. rijna", so the connector has
             # to be optional. Round 71 reported four dates missing that were on the page in this form.
             for mm in re.finditer(r"\b(\d{1,2})\.?\s+(?:de\s+|d'|du\s+)?" + re.escape(name)
-                                  + r"\b", low):
+                                  + tail + r"\b", low):
                 out.add(f"{int(mm.group(1))} {m}")
-            for mm in re.finditer(r"\b" + re.escape(name) + r"\s+(\d{1,2})\b", low):
+            for mm in re.finditer(r"\b" + re.escape(name) + tail + r"\s+(\d{1,2})\b", low):
                 out.add(f"{int(mm.group(1))} {m}")
     for mm in re.finditer(r"\b(\d{4})-(\d{2})-(\d{2})\b", text):
         y, mo, d = mm.groups()
@@ -202,9 +212,29 @@ def main():
     pages, bad, checked = {}, [], 0
     for fname, r in records:
         url = r["source_url"]
+        # A record that cites a second source puts the extra date THERE, and round 73's Maldives
+        # record was flagged for a date printed on its second source as "November 17, 2023".
+        # The script's own advice was to read it by hand; pooling the pages the record itself
+        # names does that mechanically. Every URL here is one the record already published.
+        extra = [r[k] for k in ("second_source_url", "third_source_url", "source_url_2")
+                 if isinstance(r.get(k), str) and r[k].startswith("http")]
+        for k in FIELDS:
+            v = r.get(k)
+            if isinstance(v, str):
+                extra += re.findall(r"https?://[^\s)'\"<>]+", v)
+        extra = list(dict.fromkeys(u.rstrip(").,;'\"") for u in extra))
+        for u in extra:
+            if u not in pages:
+                pages[u] = fetch(u)
         if url not in pages:
             pages[url] = fetch(url)
         page = pages[url]
+        refused = []
+        for u in extra:
+            if pages.get(u):
+                page = page + " " + pages[u] if page else pages[u]
+            else:
+                refused.append(u)
         label = f"{fname} {r.get('iso3')}"
         if page is None or len(page) < 400:
             print(f"SKIP  {label}: host refused or served nothing readable ({url}). "
@@ -224,6 +254,13 @@ def main():
             bad.append((label, miss, url))
             print(f"\nMISSING {label}: {', '.join(miss)}")
             print(f"  {url}")
+            # Without this line the script reports a date as absent when the page carrying it
+            # was never read. Round 73's Maldives record prints "November 17, 2023" on its
+            # second source, psmnews.mv, which answers 403 to this script and opens for a
+            # browser. A flag raised over a page nobody read is not evidence against a record.
+            for u in refused:
+                print(f"  SECOND SOURCE REFUSED, NOT READ: {u} -- check this date there by "
+                      f"hand before treating the flag as a defect")
             for m in miss:
                 for k in ([only] if only else FIELDS):
                     v = r.get(k)
