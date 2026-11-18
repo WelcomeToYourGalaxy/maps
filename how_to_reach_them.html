@@ -209,6 +209,12 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 #mtop{padding:17px 20px 0;border-bottom:1px solid var(--line);flex:none;position:relative}
 #mtitlerow{display:flex;align-items:baseline;gap:11px;flex-wrap:wrap;padding-right:214px}
 #mtitle{font-family:'Marcellus',serif;font-size:22px;line-height:1.22}
+#mself{flex:1 1 240px;min-width:0;font-size:11.5px;line-height:1.5;color:var(--faint);padding-top:2px}
+#mself a{color:var(--accent-hi);text-decoration:none}
+#mself a:hover{text-decoration:underline}
+#mself .msl{display:block}
+#mself .msl b{color:var(--dim);font-weight:600;margin-right:4px}
+#mself details summary{cursor:pointer;color:var(--accent-hi);display:inline}
 #msite{font-size:13px;line-height:1.2;color:var(--accent-hi);text-decoration:underline;
   text-underline-offset:2px;white-space:nowrap;border:1px solid rgba(140,189,154,.45);
   border-radius:999px;padding:3px 11px;background:rgba(74,124,89,.14)}
@@ -1160,7 +1166,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
          than as something to click — and it is the one link on the
          panel most readers want, because it is where everything else
          here has to be checked. -->
-    <div id="mtitlerow"><div id="mtitle">&nbsp;</div><a id="msite" target="_blank"
+    <div id="mtitlerow"><div id="mtitle">&nbsp;</div><div id="mself"></div><a id="msite" target="_blank"
       rel="noopener" style="display:none"></a><a id="mfind" target="_blank"
       rel="noopener" style="display:none"></a></div>
     <!-- Where you are, what is on the map and what is still loading. It
@@ -4072,7 +4078,6 @@ function trail(){
        '<button type="button" class="pcr pcrnow">'+esc(SEL.label)+'</button>';
   }
   h+='</div>';
-  if(SELFCH.length) h+='<div class="pself">'+SELFCH.map(x=>x[0]).join('<span class="psep">\u00b7</span>')+'</div>';
   return h+'</div>';
 }
 
@@ -5132,18 +5137,11 @@ function render(){
   [...phones].forEach(x=>{ const t=bareTel(x);
     if(t) SELFCH.push(['<span>'+esc(t)+'</span>']); });
   /* the street address the register publishes, on the place itself */
-  if(mr&&mr.a) SELFCH.push(['<span>'+esc(mr.a)+'</span>']);
-  /* and the way to everything else the register holds for it, which is a
-     page of its own rather than four more chips on this line */
-  if(mr){
-    const extra=[];
-    if(mr.m) extra.push('the mayor');
-    if(asList(mr.cn).length) extra.push(asList(mr.cn).length+' councillors');
-    if(mr.a||mr.o) extra.push('an address to post to');
-    SELFCH.push(['<a onclick="openGov('+mi+')">'+
-      esc(STACK[mi].label)+'\u2019s own office'+
-      (extra.length?' \u2014 '+esc(extra.join(', ')):'')+'</a>']);
-  }
+  /* the title row carries the contacts and the register's record, condensed */
+  const selfEl=$('#mself');
+  if(selfEl) selfEl.innerHTML=
+    (SELFCH.length ? '<span class="msl">'+SELFCH.map(x=>x[0]).join(' \u00b7 ')+'</span>' : '')+
+    (mr ? regBlockHTML(mr, STACK[mi]) : '');
   /* the answers so far decide what the map still shows */
   recomputeScope();
   setPins();
@@ -7210,6 +7208,28 @@ function regName(){
    on a page of its own. It is not folded into Who to Contact: section 1
    measured that screen as having no vertical slack left, and a council of
    sixty-four names would push the list of offices off the window. */
+/* The register's record for the place, condensed into the title row. Every
+   field the register holds for it is here; nothing is folded away except a
+   council above eight, which opens to its names. */
+function regBlockHTML(r, st){
+  if(!r) return '';
+  const rows=[];
+  if(r.m) rows.push('<span class="msl"><b>Mayor</b>'+esc(r.m)+'</span>');
+  const cn=asList(r.cn);
+  if(cn.length){
+    const nm=cn.map(x=>'<a href="https://duckduckgo.com/?q='+encodeURIComponent(x+' '+st.label+' council')+
+      '" target="_blank" rel="noopener">'+esc(x)+'</a>').join(' \u00b7 ');
+    rows.push('<span class="msl"><b>Council ('+cn.length+')</b>'+
+      (cn.length>8 ? '<details><summary>show the names</summary>'+nm+'</details>' : nm)+'</span>');
+  }
+  if(r.a) rows.push('<span class="msl"><b>Address</b>'+esc(r.a)+', '+esc(st.label)+'</span>');
+  if(r.o) rows.push('<span class="msl"><b>Postal address</b>'+esc(r.o)+'</span>');
+  const of=asList(r.of).filter(x=>Array.isArray(x)&&x[1]);
+  if(of.length) rows.push('<span class="msl"><b>Other posts</b>'+
+    of.map(x=>esc(x[0])+': '+esc(x[1])).join(' \u00b7 ')+'</span>');
+  return rows.join('');
+}
+
 function openGov(i){
   const r=muniAt(i); if(!r) return;
   const st=STACK[i];
