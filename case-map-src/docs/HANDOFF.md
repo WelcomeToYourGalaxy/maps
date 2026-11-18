@@ -480,6 +480,113 @@ These came in over one session and all of them are done unless noted.
    rounds stale. The current handoff is this file, `case-map-src/docs/HANDOFF.md`, and there should
    never again be two.
 
+## READ THIS FIRST: round 44, part two — five entries are now documented patterns, three are merged, and one card is held
+
+**Merged, built and tested.** `loan-condition cases matched 173 of 173`, **29 patterns** (was 24),
+**31 suspected patterns of which 8 are graduated and 23 still render as suspicions**, 26.0 MB, zero
+page and zero console errors. 1,182 cases, 137 countries, no coverage row moved.
+
+The checker stood all nine items and made **31 corrections**. Nothing was cut.
+
+| Was a suspicion | Is now the pattern |
+| --- | --- |
+| `rankings-bent-for-money` | `doing-business-data-changed` |
+| `secret-loans-banks-traders` | `hidden-loans-banks-traders` |
+| `companies-pay-armed-groups` | `payments-to-armed-forces-abroad` |
+| `water-handed-to-companies` | `city-water-into-private-hands` |
+| `private-equity-with-development-money` | `for-profit-health-who-it-reached` (retitled) |
+| `vulture-funds` | merged into `holdout-funds-rich-courts` |
+| `bondholders-block-debt-relief` | merged into `who-owns-the-debt` |
+| `development-money-through-tax-havens` | merged into `offshore-routing-lost-tax` |
+
+**The rendering fix was exercised for the first time and it holds**: 31 entries, 8 documented, 23
+still suspected, and exactly 23 radio inputs in the DOM — no graduated entry is listed. Every
+`graduated_to` resolves to a pattern that exists. Zero page errors.
+
+### What the check caught, and the first one is the worst kind
+
+- **A figure on a document that does not contain it.** The new pattern said the July 2019 debt
+  analysis records $231m of Chad's $271m net oil revenue going to the trader. The checker searched
+  its full text: **no 231, no 271, no 85 per cent.** Cut; the verified 98 per cent carries the point
+  without it. `imf.org` refuses the country report where the figure may actually sit, so it could be
+  checked nowhere. **The suspicion card makes the same misattribution and still does** — recorded as
+  a live card defect for the next text pass.
+- **A study's scope misstated, on the entry's one cross-institution claim.** `for-profit-health` said
+  an NGO traced 350+ investments by five institutions including the World Bank. It counted **358 by
+  four European institutions**, 2010-2022. Three more errors in the same entry: "more than nine
+  years' income" where the report says nine; a body kept "for two years" where the report gives up to
+  two years for bodies generally; and an unscoped no-evaluation claim that dropped the report's own
+  partial exception. **All four are also on the suspicion card, so the checker wrote four card edits
+  too.**
+- **Counter-evidence dropped from the middle of a source's own sentence**, which is the same fault
+  round 42 confirmed in this entry. `city-water` listed part of the evaluation's 24 failed projects
+  and omitted the six countries where the same evaluation says private operators ran services
+  efficiently for years. Restored.
+- **Claims stronger than the card they came from**: Azerbaijan's "three reforms its own internal audit
+  had confirmed" (the audit confirmed the large majority, and three topics were frozen anyway);
+  "soldiers shot dead a 17-year-old" in Cochabamba, where the case card records the officer's
+  acquittal and the State Department's "likely"; and Jakarta's tariff rises "in three years" where the
+  card's years are 2001, 2003 and 2004.
+- **The Jordan instruction understated, independently of the trim round.** Both checkers caught the
+  same thing within minutes: the report says the director instructed the team to **find a way to
+  alter the data** such that Jordan fell from first place, not to drop it from a list.
+- **A sum misattributed to a judgment that expressly leaves it open.** Donegal's $15.5m was given as
+  something Zambia "agreed to pay", cited to the High Court judgment; the checker opened it and the
+  judgment leaves the sum for argument. It is the court's April 2007 order, reported elsewhere.
+- Pay-to-play attributed to the investigators' risk analysis rather than to employees' words; the
+  officials' denial added under the fairness rule; "cancelled 5%" corrected to **suspended**.
+
+### The two hard merge conditions were met, and verified independently
+
+`$12.9 billion` and "single private creditor" appear nowhere — the writer found a debt-campaign
+briefing nobody had opened and the checker verified it figure by figure, including that one Italian
+bank suspended Zambia's payments. Zambia's missed $42.5m is opened and verified. On
+`offshore-routing-lost-tax` the barred sentence is absent, the count is attributed to the NGO three
+times over, and **that merge is the only item of the nine needing no correction at all.**
+
+### What is held, and it is a decision rather than a defect
+
+**`private-courts-for-investors` was delivered marked `documented` with `graduated_to`
+`company-sued-the-state` and no edits at all.** Its card would then keep asserting "Private tribunals
+that can order countries to pay companies billions" as documented, while its genuinely open parts —
+the arbitrator concentration and the regulatory chill — go unasserted. Round 42 made a retitle the
+condition of this merge.
+
+**So the pattern text was applied and the card's disposition was held.** The Reko Diq material is
+sound and is live in `company-sued-the-state`; the entry itself is untouched and still renders as a
+suspicion. It is recorded under `held_back` in `rounds/r44_graduate_checked.json` with what to do:
+**retire it out of `HYPS`, or rewrite it fresh around the concentration and the chill. Do not leave
+it as delivered.**
+
+### `ratings-that-punish-relief` stays a suspicion, and the checker agrees
+
+Round 43's fixes are live so it is in better shape than round 42 described, but the mechanism its new
+title names rests on a single document — the agency's quarterly review, not its action commentary —
+with a second agency known only through a wire report and a third through nothing. **What would carry
+it, named: the 9 February 2021 action commentary, the March 2021 review release, and a brief added to
+its sources so the three agencies' statements on bilateral-only relief can go in.** One reservation
+left standing: its new title states a fact where HYP rule 2 asks a title to state the suspicion.
+
+### Two defects in my own merge script, found by the checker
+
+`merge_pats.py` looked for a `check` block **inside** each `pats_add` object while this round put it
+at the top level keyed by id, so **the cut guard was inert for the whole round** — harmless only
+because nothing was cut. And it counted sources from a `sources` key while the new patterns use
+`confirmed_by`, so it reported zero sources for entries carrying twelve. Both fixed: it now reads
+either shape and counts both keys.
+
+### Still open
+
+- **`private-courts-for-investors`**, as above.
+- **The Chad misattribution is still on the suspicion card**, and the four `for-profit-health` card
+  errors are fixed on the card by this round's edits but the Chad one is not.
+- **Twelve of the sixteen `overclaimed` verdicts remain unchecked** and must not be acted on. Of the
+  four checked, three narrower titles were mis-pitched.
+- **`city-water-into-private-hands` is the weakest of the five graduations, and the writer said so
+  first.** It is defensible as a programme claim resting on one sentence in one 2010 evaluation; read
+  city by city it fails on its own second case, because the Bank's completion report says Jakarta's
+  privatisation was neither envisaged nor wanted. Those limits are carried in the entry. **If the
+  owner reads the title city by city, it should come back down.**
 ## READ THIS FIRST: round 44, part one — the trims, the three country notes, and a rendering fault that would have contradicted the page
 
 Two writers and two checkers. **The trims and the residual fixes are merged; the five graduations and
