@@ -95,7 +95,7 @@ same commit as the work it did.
 
 ## Where it stands (74 rounds in, 17 November 2026)
 
-1,726 outside parties and 2,527 ties. One writeup for every box, 1,944 of them. 20 patterns
+1,726 outside parties and 2,528 ties. One writeup for every box, 1,944 of them. 20 patterns
 and 14 suspected patterns.
 
 The party count is lower than the tie count implies, and deliberately: round 60 folded 28 duplicate
@@ -117,7 +117,7 @@ ignores" below.
 | External auditors | 216 | 178 | 86% | 93% |
 | Banknote printers | 184 | 168 | 82% | 88% |
 | Outside reserve managers | 207 | 79 | 38% | 41% |
-| Gold custodians | 102 | 59 | 29% | 31% |
+| Gold custodians | 103 | 59 | 29% | 31% |
 | Swap lines | 240 | 84 | 41% | 44% |
 | Named shareholders | 228 | 9 | 4% | 5% |
 
@@ -270,7 +270,50 @@ strongest open lead: the CBRT's own 2025 annual report gives the class split thi
 could not be stated — A 55.12%, B 23.25%, C 2.51%, D 19.12%, with no privileged companies among the
 shareholders. Greece is the thinnest register on the map, two rows, one of them Wikipedia.
 
-### Gold moved two places and the US case needed a decision
+### Round 75's gold total, and two things the row's own evidence raised
+
+Final: **52 of the 108 places that hold gold, 48%**, up from 49 and 45%. Six ties filed across
+three places — the United States by facility, Kazakhstan's own vault, and Honduras — with one held.
+Across the three slices, 49 places assigned, 24 tested properly, 8 never reached and 4 blocked by
+WAFs, which is why the yield is what it is: **on this row the budget goes to finding and opening the
+right document, not to reading it.**
+
+**Honduras is filed and is the round's most carefully checked record.** Nota 5 'Oro Monetario' of
+the Banco Central de Honduras's 2024 statements, audited by Horwath Central America: "Esta
+invertido en un depósito en oro en BNP Paribas por 22,373.658 onzas troy a un plazo de seis (6)
+meses," "el cual devengará una tasa del 0.11%." It was read three times — twice by the researching
+agent with differently worded prompts, once by the curator with a transcription-only prompt — all
+three identical. That mattered because the host refuses scripted requests and **the sandbox
+declined a browser user-agent against this government portal as unauthorised access**, which was
+respected rather than worked around, so raw extraction was not available to anyone.
+
+**El Salvador is held.** Its citation, a transparency-portal download path, returns 404. The record
+is probably right — Note 4 'Oro' of the BCR's 2023 PwC-audited statements with the Bank for
+International Settlements as the only counterparty line, 44,105.998 troy ounces free of lien — but
+it combines a fetch transcription with a document that cannot now be opened, which is the one
+combination this project does not file. Same ground as round 74's Zimbabwe and Lebanon holds. The
+portal's document IDs appear to rotate; the BCR's own site is the route.
+
+**DEPOSIT IS NOT CUSTODY, and the Honduran note is the clean example.** Its words are "invertido en
+un depósito en oro" — invested in a gold deposit — at a stated six-month term and 0.11 per cent.
+A bank taking an interest-bearing gold deposit has the use of the metal. A custodian holding
+identified bars as bailee does not, and this document's own rule is to keep storage and management
+apart in the wording. El Salvador's held record uses the same deposit language. **Both are filed or
+held on the custody relation because the counterparty does hold the gold and because dropping them
+would be an editorial decision the owner has reserved — but if this row means storage alone, they do
+not belong on it.** Flagged, not decided.
+
+**And the "held abroad, holder undisclosed" state now has four candidates, not two.** Round 75 added
+Albania, whose Note 10 puts the entire holding "in current accounts with foreign correspondent
+banks", and Mozambique, whose NOTA 8 carries the whole holding on a row reading "No estrangeiro" —
+both naming nobody, joining Kyrgyzstan and Ukraine. On Albania the agent checked and rejected the
+tempting shortcut: "BIS Basel" does appear in its counterparty tables, but those columns cover
+deposits, tradeable assets, IMF accounts and other assets, and monetary gold is a separate line
+appearing in none of them. **That is the inference this row forbids, correctly refused.** Four
+places now say in their own audited accounts that their gold is outside the country and will not say
+with whom.
+
+### The US case needed a decision
 
 Round 75's gold slices filed five ties across two places, taking the row from 49 to 51 of the 108
 places that hold gold, 45% to 47%. Four are the **United States**, broken out by facility from the

@@ -8456,6 +8456,20 @@
    "source_url": "https://nationalbank.kz/file/download/130762",
    "source_note": "PDF, 211 pages, 3,013,106 bytes, downloaded and extracted in full. Cover reads 'НАЦИОНАЛЬНЫЙ БАНК РЕСПУБЛИКИ КАЗАХСТАН / КОНСОЛИДИРОВАННАЯ ФИНАНСОВАЯ ОТЧЕТНОСТЬ ЗА ГОД, ЗАКОНЧИВШИЙСЯ 31 ДЕКАБРЯ 2025 ГОДА'. URL came from a web search result, not constructed.",
    "weak_source": false
+  },
+  {
+   "cb_iso3": "HND",
+   "entity": "BNP Paribas",
+   "name_as_stated": "BNP Paribas",
+   "entity_type": "bank",
+   "entity_hq_city": null,
+   "entity_hq_iso3": null,
+   "relation": "holds its gold reserves in custody",
+   "source_url": "https://portalunico.iaip.gob.hn/ver_archivo/MjM1NTI0MQ==",
+   "quote": "Esta invertido en un depósito en oro en BNP Paribas por 22,373.658 onzas troy",
+   "weak_source": true,
+   "summary": "The Banco Central de Honduras keeps its monetary gold, 22,373.658 troy ounces, in a gold deposit placed with BNP Paribas rather than in its own vaults in Tegucigalpa.",
+   "detail": "Source document: 'Estados Financieros y Opinión de los Auditores Independientes' of the Banco Central de Honduras for the year ended 31 December 2024, audited by Horwath Central America. The balance-sheet line 'Oro Monetario' of L1,488,505,485 is explained in Note 5, which states the holding is invested in a gold deposit at BNP Paribas of 22,373.658 troy ounces, on a six-month term, earning 0.11 per cent; the note gives no vault or city. Because the note describes an interest-bearing term gold deposit and not a pure safekeeping account, the curator should decide whether this reads as custody or as a placement. Provenance caveat, stated plainly: the host (portalunico.iaip.gob.hn) sits behind a Cloudflare challenge and returned 403 to curl on four tries and to three URL variants, so the raw PDF text could not be extracted locally; the quoted line is the fetch tool's transcription of the page, and it was obtained twice, from two differently worded requests, which returned the same sentence, the same ounce figure and the same rate. The auditor's name and the 19 March 2025 report date also come from that same reading of the document, not from a second source. All figures and the year 2024 are on the cited page; no date here is reconstructed from context. TWO CAVEATS, BOTH THE CURATOR'S TO WEIGH. First, SOURCE QUALITY: both of this slice's hosts sit behind Cloudflare and refused curl on every attempt, so the quoted phrase is the fetch tool's transcription and not raw extracted text. Round 74 established that a fetch summary is not evidence, after the summariser was caught twice inventing characterisations absent from the page. The mitigation here was real but partial: the agent re-read the document with a differently worded, transcription-only prompt and got the identical sentence, institution name, ounce figure and amounts both times, and figures at this precision are not plausibly confabulated identically twice. The curator could not verify it either — a browser user-agent against these government portals was refused by the sandbox as unauthorised access, and that refusal was respected rather than worked around. weak_source is therefore set TRUE, which it was not as filed. Second, DEPOSIT IS NOT NECESSARILY CUSTODY. Both notes use deposit language rather than vault language, and in the Honduran case the terms are given: a six-month gold deposit at 0.11 per cent. A bank taking an interest-bearing gold deposit has the use of the metal; a custodian holding identified bars as bailee does not, and this map's own rule is to keep storage and management apart in the wording. These are filed on the custody relation because the counterparty does hold the gold and because filtering them out would be an editorial decision, but if this row is meant to mean storage alone they belong elsewhere or nowhere."
   }
  ],
  "g30": [

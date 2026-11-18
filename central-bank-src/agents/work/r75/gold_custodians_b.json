@@ -1,0 +1,118 @@
+{
+  "records": [
+    {
+      "cb_iso3": "HND",
+      "entity": "BNP Paribas",
+      "name_as_stated": "BNP Paribas",
+      "entity_type": "bank",
+      "entity_hq_city": null,
+      "entity_hq_iso3": null,
+      "relation": "holds its gold reserves in custody",
+      "source_url": "https://portalunico.iaip.gob.hn/ver_archivo/MjM1NTI0MQ==",
+      "quote": "Esta invertido en un depósito en oro en BNP Paribas por 22,373.658 onzas troy",
+      "weak_source": true,
+      "summary": "The Banco Central de Honduras keeps its monetary gold, 22,373.658 troy ounces, in a gold deposit placed with BNP Paribas rather than in its own vaults in Tegucigalpa.",
+      "detail": "Source document: 'Estados Financieros y Opinión de los Auditores Independientes' of the Banco Central de Honduras for the year ended 31 December 2024, audited by Horwath Central America. The balance-sheet line 'Oro Monetario' of L1,488,505,485 is explained in Note 5, which states the holding is invested in a gold deposit at BNP Paribas of 22,373.658 troy ounces, on a six-month term, earning 0.11 per cent; the note gives no vault or city. Because the note describes an interest-bearing term gold deposit and not a pure safekeeping account, the curator should decide whether this reads as custody or as a placement. Provenance caveat, stated plainly: the host (portalunico.iaip.gob.hn) sits behind a Cloudflare challenge and returned 403 to curl on four tries and to three URL variants, so the raw PDF text could not be extracted locally; the quoted line is the fetch tool's transcription of the page, and it was obtained twice, from two differently worded requests, which returned the same sentence, the same ounce figure and the same rate. The auditor's name and the 19 March 2025 report date also come from that same reading of the document, not from a second source. All figures and the year 2024 are on the cited page; no date here is reconstructed from context. TWO CAVEATS, BOTH THE CURATOR'S TO WEIGH. First, SOURCE QUALITY: both of this slice's hosts sit behind Cloudflare and refused curl on every attempt, so the quoted phrase is the fetch tool's transcription and not raw extracted text. Round 74 established that a fetch summary is not evidence, after the summariser was caught twice inventing characterisations absent from the page. The mitigation here was real but partial: the agent re-read the document with a differently worded, transcription-only prompt and got the identical sentence, institution name, ounce figure and amounts both times, and figures at this precision are not plausibly confabulated identically twice. The curator could not verify it either — a browser user-agent against these government portals was refused by the sandbox as unauthorised access, and that refusal was respected rather than worked around. weak_source is therefore set TRUE, which it was not as filed. Second, DEPOSIT IS NOT NECESSARILY CUSTODY. Both notes use deposit language rather than vault language, and in the Honduran case the terms are given: a six-month gold deposit at 0.11 per cent. A bank taking an interest-bearing gold deposit has the use of the metal; a custodian holding identified bars as bailee does not, and this map's own rule is to keep storage and management apart in the wording. These are filed on the custody relation because the counterparty does hold the gold and because filtering them out would be an editorial decision, but if this row is meant to mean storage alone they belong elsewhere or nowhere."
+    }
+  ],
+  "blanks": [
+    {
+      "iso3": "ALB",
+      "kind": "confirmed blank",
+      "read": "Bank of Albania, 'Pasqyrat Financiare' annexed to the Annual Report 2024 (https://www.bankofalbania.org/rc/doc/PASQYRAT_FINANCIARE_RV_2024_shqip_ok_32674.pdf, 910,708 bytes, downloaded and the whole 182,227 characters of extracted text grepped). Note 10 'ARI MONETAR' read in full: the whole balance, 26,724 million lek (2023: 21,039 million), sits in the 'Llogari rrjedhese' row, and the note's one sentence of explanation reads 'Ari monetar eshte vendosur ne llogari rrjedhese (2023: llogari rrjedhese) prane bankave korrespondente te huaja' - placed in current accounts with foreign correspondent banks, none of them named. So the note does establish that none of Albania's gold is held at home, which is half a finding, but it names no custodian. I also checked whether the gold could be tied to a named counterparty elsewhere in the same statements: the credit-quality tables and the counterparty-concentration table (which do name 'BIS Bazel' as a counterparty) cover only accounts and deposits with financial institutions, tradeable assets, IMF accounts and other assets; monetary gold is a separate balance-sheet line and appears in none of those columns, so nothing there attributes the gold to the BIS and I have not treated it as doing so. Vein for the next round: the note's wording ('foreign correspondent banks', plural) means the names exist somewhere; the Bank of Albania's separate reserve-management reports, not opened here, are the place to look."
+    },
+    {
+      "iso3": "CHL",
+      "kind": "confirmed blank",
+      "read": "Banco Central de Chile, 'Estados Financieros 2024' (fetched from the mirror host https://portalbiblioteca.bcentral.cl/documents/33528/133480/estados_financieros_2024.pdf, 578,922 bytes, 95 pages, downloaded and grepped in full; the identical path on www.bcentral.cl returns a 212-byte Incapsula stub to curl, which is worth knowing for later rounds). NOTA 7 'ACTIVOS DE RESERVA', sub-section (d) 'Oro monetario', read in full: it gives 7,940 troy ounces of fine gold at US$2,615.72 an ounce, US$20.8 million, no change in ounces from 2023, and a table line of MM$20,603.6 - and no location, no vault, no institution. The accounting-policy section (NOTA 2, 'Oro monetario y no monetario') references only the London Gold Fixing as the price source. 'Custodi*' occurs five times in the document and every occurrence is about securities custodians for the FX portfolio or the sovereign funds' custody guidelines, never about gold. The 2022 statements were downloaded and grepped the same way and carry the same note with the same 7,940 ounces, so this is a stable disclosure practice rather than a one-year omission."
+    },
+    {
+      "iso3": "EST",
+      "kind": "confirmed blank",
+      "read": "Eesti Pank Annual Report 2019 (https://haldus.eestipank.ee/sites/default/files/publication/en/AnnualReport/2019/ep_aa_2019_eng.pdf, 5,287,481 bytes, downloaded and grepped in full). 'NOTE 1 - GOLD AND GOLD RECEIVABLES' in the Annual Accounts read in full: it is a four-row table - 8,250.171 ounces, unchanged from 2018, ounce market value EUR 1,354.104, revaluation EUR 3,984 thousand - and nothing else; no custodian, no city, no institution. The narrative chapter earlier in the same report says only that the bank holds 256.6 kg or 8,250 ounces and that most of Estonia's gold was sold when independence was regained. Every other 'gold' hit in the document is the Eurosystem accounting policy, the ECB claim remuneration rule, or the Swiss gold francs of the BIS share subscription. Not tested: the 2024 and 2025 reports, which the search returned as HTML landing pages rather than PDFs; the note's shape has not changed across the years I saw, so I would not expect a location table to have appeared, but that is an expectation and not a finding."
+    },
+    {
+      "iso3": "LUX",
+      "kind": "confirmed blank",
+      "read": "Banque centrale du Luxembourg, Rapport annuel 2024 (https://www.bcl.lu/fr/publications/rapports_annuels/2024/BCL_RAPPORT_ANNUEL_2024_FR.pdf, 4,326,056 bytes, downloaded and grepped in full). 'NOTE 3 - AVOIRS ET CREANCES EN OR' read in full: one sentence, 'Au 31 decembre 2024, la BCL detient 72 464,97 onces d'or pour une valeur de 181,96 millions d'euros (72 301,30 onces d'or pour une valeur de 135,05 millions d'euros au 31 decembre 2023)' - quantity and value, no location, no depository, no institution. The reserve-management chapter (section 1.2) says only that the gold holding is passively managed and that its size is set by the Governing Council. The report's other 'or' hits are the euro-per-fine-ounce revaluation rule and the Eurosystem rule on each NCB's gold share, and its 'Banque des reglements internationaux' hits are the BIS membership and governance chapter, not a custody statement, so I have not read the BIS into the gold note."
+    },
+    {
+      "iso3": "MOZ",
+      "kind": "confirmed blank",
+      "read": "Banco de Mocambique, 'Demonstracoes Financeiras 2025' (https://www.bancomoc.mz/media/zmspqk5l/demonstra%C3%A7%C3%B5es-financeiras-2025.pdf, 3,576,539 bytes, 106 pages, downloaded and grepped in full; the unencoded URL fails, the percent-encoded one works). 'NOTA 8 - OURO' read in full: the balance of 35,034,985 thousand meticais, individual and consolidated, sits on a single table row headed 'Ouro em moedas e barras' with the sub-line 'No estrangeiro' - gold in coins and bars, abroad - and the note then gives approximately 126,575 ounces (2024: 126,575), valued at USD 548,192,544 (2024: USD 331,885,414) on the London gold market price. So the note states that the entire holding is held outside Mozambique and names no holder of it. That is the same shape as Albania: the location question is half answered, the custodian is not. The adjacent NOTA 9 does disclose that FX investments sit under the custody of asset managers appointed by the bank, with fees of 0.10 to 0.30 per cent, but that note is about financial assets at fair value through profit or loss and says nothing about gold, so it cannot be carried across. Vein for a later round: a counterparty table or the bank's reserve-management report may name the foreign holder of the 'No estrangeiro' gold."
+    },
+    {
+      "iso3": "THA",
+      "kind": "confirmed blank",
+      "read": "Bank of Thailand, 'Financial Statements 2024' (https://www.bot.or.th/content/dam/bot/documents/en/research-and-publications/reports/financial-reports/annual-report/Statement_2024_EN.pdf, 717,423 bytes, downloaded and grepped in full across its 64,080 characters). There is no note dedicated to gold. Gold appears as accounting policy 3.7, 'Gold', which says only that gold is held for risk diversification of reserve management, is carried at fair value, that unrealised gains and losses go to the Assets and Liabilities Revaluation Reserve, and that cost of gold sold is weighted average; and then as a line in the classification tables (note 4) and the fair-value hierarchy (note 30, 258,670 million baht at level 1 for 2024). The numbered notes run 1 to 30 and none of them is about gold holdings or their location. 'Custod*', 'vault', 'depositor*', 'London', 'abroad' and 'overseas' were all grepped: the only hit in the whole document is the bank's residential building in London among disposed premises. Separately, the Annual Report 2024 (18 MB, downloaded and grepped) carries no financial-statement notes at all; its only substantive gold passages are a 12.5 kg donation to the currency reserve and the Currency Act's list of permitted backing assets. Vein: Statement_2025_EN.pdf on the same path was identified but not opened."
+    },
+    {
+      "iso3": "BHR",
+      "kind": "confirmed blank",
+      "read": "Central Bank of Bahrain Annual Report 2023 including the CBB financial statements (https://www.cbb.gov.bh/wp-content/uploads/2024/03/CBB-Annual-Report-2023-EnglishCBB-Finacial.pdf, 2,454,725 bytes, 77 pages). The word 'gold' does not appear anywhere in the extracted text, which would read as a document that says nothing - but the financial-statement section, pages 65 to 77, is a scan with no text layer, so the extraction was not the test. Those thirteen pages were rasterised at 150 dpi and OCRed. The result: the balance sheet carries 'Gold' at BD 2,500 thousand against note 4; accounting policy 3.3 reads 'Gold is carried at cost.'; and note 4, 'EXCESS OF AUTHORISED BACKING OVER CURRENCY IN CIRCULATION', lists Gold 2,500 and Foreign reserves 4,859,778 as the authorised backing, cites Article 19 of the Central Bank of Bahrain and Financial Institutions Law, and adds that the fair value of gold at 31 December 2023 was BD 116,931 thousand (2022: BD 103,366 thousand). Notes 1 to 14 were OCRed and none of them states where the gold sits or with whom. Note 5 'Foreign reserves' breaks out only bank deposits and a bonds portfolio."
+    },
+    {
+      "iso3": "DOM",
+      "kind": "confirmed blank",
+      "read": "Banco Central de la Republica Dominicana, Memoria 2024, whose 'Estados financieros auditados' section begins at page 117 (https://repositoriocultural.bancentral.gov.do/bitstreams/508e334b-631b-4aa2-b02b-eb47b887d9d5/download, 39,247,877 bytes, downloaded on a retry after two earlier 500s and grepped in full). Accounting policy note 3.1, 'Oro', read in full: gold reserves are valued at the previous day's close by reference to the London and United Kingdom spot price, with fair-value changes through profit or loss - a price source, not a location. Gold then appears only as a figure in the foreign-currency asset table (note 4), in the cash-equivalents reconciliation at RD$2,907,076,697 for 2024, and in the maturity table (note 30). Note 32.1 on international reserves does say that the FX portfolio is invested and held in custody abroad, but it lists what it covers - term and demand deposits, government bonds and other high-credit-quality assets - and gold is not among them, so that sentence cannot be used for gold. 'Custodi*', 'deposita*', 'boveda', 'Banco de Inglaterra', 'Reserva Federal' and 'Pagos Internacionales' were grepped across the whole document and none of the hits concerns the gold holding."
+    },
+    {
+      "iso3": "PHL",
+      "kind": "vein closed",
+      "read": "Bangko Sentral ng Pilipinas Annual Report 2025 (https://www.bsp.gov.ph/Media_And_Research/Annual%20Report/AnnRep_2025.pdf, 27,350,839 bytes, downloaded and grepped in full across 308,364 characters). The report contains no audited financial statements and no notes: 'independent auditor', 'audited financial statement', 'Commission on Audit' and 'COA' return no hits, and the statements of financial position are not in it. Gold appears only as reserve-composition commentary (gold was the second largest component after foreign investments at 78.4 per cent), as LBMA Responsible Gold certification of the bank's gold buying stations, and as rows in the GIR and monetary statistics tables. So the document that the method calls for is not this one. The route was tried from both ends: the BSP publications index was fetched and its links extracted (which is how the annual report URL was obtained), /SitePages/MediaAndResearch/AnnualReport.aspx and /Pages/MediaAndResearch/AnnualReport.aspx both return 404, and four searches for the BSP's audited financial statements or its Commission on Audit annual audit report returned only commercial-bank and other-agency filings. Vein for the next round: the COA website's agency audit reports for the BSP, which were not reached here."
+    },
+    {
+      "iso3": "QAT",
+      "kind": "vein closed",
+      "read": "Qatar Central Bank Annual Report 2020 (https://portal.usqbc.org/wp-content/uploads/2021/12/QCB-ANNUAL-REPORT-2020-revised-final-Sep-28.pdf, 2,471,737 bytes, downloaded and grepped in full across 417,442 characters) - the only full QCB report the searches surfaced. It contains no audited financial statements, no auditor's report and no notes: 'Notes to the financial statements', 'Auditor' and 'balance sheet of Qatar Central Bank' all return no hits. 'Gold' occurs twice: as a row in the international-reserves table (QR 4,676m, 7,486m and 12,572m across the columns) and as the sentence that investment in gold rose by 67.9 per cent to QR 12.6 billion. So the note that this row depends on does not exist in the document that was read, and the one search spent on QCB financial statements returned only Gulf press reports of monthly reserve figures. The vein that is closed is the annual report; not tested is whether the QCB publishes audited statements anywhere else."
+    },
+    {
+      "iso3": "KHM",
+      "kind": "vein closed",
+      "read": "National Bank of Cambodia Annual Report 2023, English edition (23,435,739 bytes, downloaded from the Open Development Cambodia mirror at https://data.opendevelopmentcambodia.net/km/dataset/18c89406-5ec5-492f-8522-7f6acd2b31ba/resource/61ab2d5c-3279-4f07-addb-f0ac7424da33/download/nbc-annual-report-2023-eng.pdf and grepped in full across 254,878 characters). The report carries no financial statements and no notes - 'Notes to the financial statements', 'Auditor' and 'balance sheet' return nothing of the kind - and the word 'gold' occurs exactly once in the whole document, in a chart footnote about the change in gold within international reserves. So this is not a blank in a gold note; it is a document that has no gold note to read. Vein for a later round: whether the NBC publishes its audited financial statements separately from the annual report, which was not tested here."
+    }
+  ],
+  "checked_not_in_assignment": [
+    {
+      "note": "No country was added. I worked only the sixteen ISO3 codes in assign_gold_custodians_b.md, and I checked each of the sixteen against work/r75/have_gold.json and against agents/searched.json before searching. All sixteen are absent from have_gold.json, and none of them carries a gold-custodian entry in searched.json (the keys present for them are corruption_cases, reserve_managers, revolving_door, governor_removals and unknown), so all sixteen were genuinely untried on this row. No candidate country occurred to me that I then had to look up."
+    }
+  ],
+  "leads_not_opened": [
+    {
+      "iso3": "JOR",
+      "lead": "Central Bank of Jordan audited financial statements, not reached. The CBJ website blocks this environment: www.cbj.gov.jo returns a 331,422-byte 'Request Rejected' WAF page to curl for /Default.aspx and for /Pages/viewpage.aspx?pageID=136 and ?pageID=161 alike, with a support ID rather than content. Two searches, one English and one Arabic, returned only Jordanian commercial-bank annual reports and press pieces on monthly gold-reserve values. Jordan has not actually been tested on this row. Next route: WebFetch rather than curl against a CBJ annual-report URL that a search has returned, or the IMF Article IV and statistical annexes."
+    },
+    {
+      "iso3": "OMN",
+      "lead": "Central Bank of Oman annual reports, not reached for a network reason worth recording. The CBO's own index page (https://cbo.gov.om/Pages/AnnualReport.aspx) was fetched and gives the 2023, 2024 and 2025 annual report PDFs on the host publishing.bnet.om, and says each contains the audited balance sheet and the independent auditor's report. That host is unreachable from here: curl returns 'CONNECT tunnel failed, response 502' and the agent proxy reports connect_unreachable for publishing.bnet.om:443. The alternative path on cbo.gov.om itself also returned nothing. Next route: try WebFetch against the publishing.bnet.om URLs, which may egress differently."
+    },
+    {
+      "iso3": "URY",
+      "lead": "Banco Central del Uruguay own audited financial statements, not reached. www.bcu.gub.uy resets the connection: 'Recv failure: Connection reset by peer' on six curl attempts across two paths, and WebFetch on the Rendicion de cuentas page is refused by the site's robots.txt. Two searches returned Banco Republica (BROU, a commercial bank) statements and pension-fund filings instead of the central bank's own. Uruguay has not been tested. Next route: the BCU's Memoria Anual via a search-returned PDF URL, or the Tribunal de Cuentas."
+    },
+    {
+      "iso3": "SLV",
+      "lead": "Later-year BCR statements. The record filed here is for 31 December 2023. The El Salvador transparency portal lists further BCR documents under /institutions/bcr/documents/ (593992, 607296, 509734, 482948 among the IDs the search returned), one of which is likely the 2024 or 2025 statements; curl gets Cloudflare 403 or 404 on all of them and only WebFetch reads them, so confirming whether the BIS deposit persists into 2024 costs one fetch per document."
+    },
+    {
+      "iso3": "THA",
+      "lead": "Bank of Thailand Statement_2025_EN.pdf, on the same /financial-reports/annual-report/ path as the 2024 file that was read. Worth one curl next round in case the 2025 statements add a note on gold holdings where the 2024 ones have only accounting policy 3.7."
+    },
+    {
+      "iso3": "EST",
+      "lead": "Eesti Pank Annual Report 2024 and 2025. The 2024 report's landing page (https://www.eestipank.ee/en/publications/annual-report/2024/eesti-pank-annual-report-2024) was returned by search but not opened; only the 2019 PDF was read. One fetch would make the Estonian blank current."
+    },
+    {
+      "iso3": "HND",
+      "lead": "Honduras raw text. The BCH statements sit behind Cloudflare on portalunico.iaip.gob.hn and curl cannot get past it, so the BNP Paribas line in Note 5 could not be verified against raw PDF text. If the project can route one request through a browser tool, the quote in the HND record is the thing to check first. The Banco Central de Honduras own site (www.bch.gob.hn) does respond to curl with 127,464 bytes and was not mined for a direct copy of the same statements."
+    },
+    {
+      "iso3": "ALB",
+      "lead": "The named foreign correspondent banks behind Albania's gold current accounts. Note 10 establishes that the whole holding is abroad in current accounts with foreign correspondent banks but names none; the Bank of Albania's reserve-management reporting, not opened, is the place those names would appear."
+    },
+    {
+      "iso3": "MOZ",
+      "lead": "The holder of Mozambique's 126,575 ounces. NOTA 8 classifies the entire gold balance as 'No estrangeiro' without a name; earlier Banco de Mocambique annual reports and the separate 'Relatorio e Contas' series (2021 and 2018 editions were surfaced by search but not opened) may carry a counterparty table that names it."
+    }
+  ]
+}
