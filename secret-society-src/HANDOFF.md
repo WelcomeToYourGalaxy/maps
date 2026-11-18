@@ -4762,3 +4762,64 @@ detector nothing; and agents read `rank` in the cell files to spot duplicates ch
 
 Fixing them means reading each `d` for the post and rewriting one field — a reader's job, not a
 script's.
+
+## THE SECTOR-LABEL `rank` FIX, AND WHAT IT UNCOVERED (18 November 2026)
+
+**13 of the 21 rewritten to post plus body**, taken only from each record's own description:
+`relationship manager, Credit Suisse`; `senior managers, Banca Privada d'Andorra`;
+`store manager and bank employees, TD Bank`; `chief mate, second mate and crew, MSC Gayane`;
+`IT contractors and terminal planners, container terminals at Rotterdam and Antwerp`;
+`naval officers and customs officials, Mexican Navy and its port customs posts`. Where the
+description gives a function rather than a job title the rank says so and invents nothing —
+`dock hiring and container handling, Port of Gioia Tauro`.
+
+### The eight that could not be rewritten are a scope problem, not a formatting one
+
+**The alien sector labels cluster almost exactly on the records whose `d` names no infiltrated body
+at all.** The agent's own observation, and it is the useful finding: "the clean bank/port/ship cases
+rewrote without difficulty, the front-company and sector-wide cases did not."
+
+Those eight, left on the map and flagged rather than removed:
+
+| idx | record | what `d` actually names |
+|---|---|---|
+| 468 | Drug networks recruited drivers in Ontario's trucking sector | a sector, the drivers recruited, and a brokerage **the network itself set up** |
+| 469 | PCC money in São Paulo funds, fintechs and fuel firms | a district and classes of firm; "Named firms deny wrongdoing" without naming them |
+| 471 | CJNG money inside tequila firms and petrol stations | classes of business secretly owned; no named firm |
+| 473 | PCC money in forty investment funds and a port terminal | says outright "Authorities named no individuals or companies, citing sealed proceedings" |
+| 474 | PCC controlled more than a thousand petrol stations | counts and classes only |
+| 478 | Traffickers recruited airport ground staff | staff classes across several countries; no airport, airline or handler |
+| 479 | Crime groups bought or funded football clubs | "lower-division football clubs" in three countries; no club named |
+| 480 | Glencore bribed officials who allocated oil business | **the only named body is Glencore, the actor**; the officials and their ministry are unnamed |
+
+**Under ruling 11 — a named body and a named decision — none of the eight qualifies**, and several
+describe an outside party's **own** fronts rather than a body it reached, which fails limb 1 as
+well. **This is an owner decision, not mine**: removing eight published records is exactly the kind
+of editorial filtering the owner has said not to do on their behalf. The queue is here so it can be
+decided in one pass.
+
+**The `rank` field and the named-body rule fail together.** A record whose description names no body
+cannot produce a valid `rank`, which is why the sector label was sitting where the body should have
+been. That makes `rank` a cheap detector for ruling-11 failures across the whole map, and it has
+never been used that way.
+
+### Three further flags from the same read
+
+- **Possible duplicates**: idx 469, 473 and 474 are all Operation Carbono Oculto PCC holdings —
+  funds, ethanol plants, a port terminal, petrol stations — **split three ways**; and idx 477
+  overlaps 465 (Rotterdam PIN codes) and 464 (Antwerp terminal staff).
+- **idx 470 (UAE 2024, Gacanin): the country field and the body disagree.** The body reached is
+  Bosnian — "the head of the country's state security service" of Bosnia and Herzegovina, plus
+  Bosnian politicians — while `c` is United Arab Emirates, where the organisation's own free-zone
+  companies and a local sponsor sat. Those are its vehicle, not a body infiltrated.
+- **idx 475 (Colombia 2020, Clan del Golfo) is coded `legis`** but mayoral candidates are local
+  executive office, and `d`'s own closing line says the aim was "to place friendly officials in
+  local government". Under ruling 21 a subnational executive is `cabinet`.
+
+### Where the four sector categories came from
+
+One source, on the agent's reading: the four are parallel in construction (plural sector noun,
+ampersand, no post element), mutually exclusive, and together cover a single frame — trade and
+transport, finance, professional enablers, commodities — which is the standard typology for sectors
+carrying illicit financial flows. All 21 share one two-part shape, `<descriptor> (<sector>)`, which
+points to a single import rather than ad-hoc pasting.
