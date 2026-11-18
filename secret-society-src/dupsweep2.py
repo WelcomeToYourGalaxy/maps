@@ -63,15 +63,30 @@ def main(thresh=0.95):
                     s += ov; why.append('title overlap %.2f' % ov)
                 for v in (fi & fj):
                     n = dff.get(v, 0)
-                    s += 0.6 if n <= RARE_FIG else (0.25 if n <= 8 else 0.05)
-                    why.append('figure %s (in %d)' % (v, n))
+                    # A company-wide disgorgement or settlement total is identical across
+                    # every count of one enforcement action - that is, across records that
+                    # ruling 11 makes DISTINCT. Measured as the single worst signal: it
+                    # paired Oracle, Ultra Electronics and Asabri records that are all
+                    # distinct. So a figure in three or more records scores nothing.
+                    if n > 2:
+                        continue
+                    s += 0.6; why.append('rare figure %s (in %d)' % (v, n))
                 for v in (bi & bj):
                     n = dfb.get(v, 0)
                     if n <= RARE_BODY:
                         s += 0.7; why.append('both name "%s" (in %d)' % (v, n))
+                # A recurring title prefix naming the investigating agency or the
+                # jurisdiction is near-zero evidence: "Odisha Vigilance:", "Mato Grosso do
+                # Sul", "Tenaga Nasional" and "Bouches-du-Rhone" produced five clean false
+                # positives. The useful rare token is a person or a payer, so require two.
                 shared_rare = rare_tokens(dft, ci.get('n', '')) & rare_tokens(dft, cj.get('n', ''))
-                for v in sorted(shared_rare)[:3]:
-                    s += 0.55; why.append('both titles use "%s" (in %d titles)' % (v, dft[v]))
+                if len(shared_rare) >= 2:
+                    for v in sorted(shared_rare)[:3]:
+                        s += 0.55; why.append('both titles use "%s" (in %d titles)' % (v, dft[v]))
+                # Same supplier and same price but a different named buyer is DISTINCT:
+                # one CAMEC backhoe at P13,950,000 sold to two municipalities is two cases.
+                if (bi & bj) and not (bi == bj) and (fi & fj) and ci.get('rank') != cj.get('rank'):
+                    s -= 0.4; why.append('different body named, so a shared price is weak')
                 if s >= thresh:
                     pairs.append((s, i, j, '; '.join(why[:3])))
     pairs.sort(reverse=True)

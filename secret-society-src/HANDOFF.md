@@ -6,10 +6,10 @@ Repo: WelcomeToYourGalaxy/maps. Build output: `infiltration.html` (repo root). S
 ## What the map is
 A MapLibre globe of documented cases where an outside party (foreign state or spy service, organised crime, company/industry, bank, lodge/secret society, religious movement, elite network, political or armed movement, lender) got its people, money or control INSIDE a government body, an international body or a company, and decisions there served it.
 
-Current size: 3,102 cases in 183 jurisdictions, 510 organisations, 48 channels, 31 patterns.
+Current size: 3,190 cases in 183 jurisdictions, 510 organisations, 48 channels, 31 patterns.
 By who infiltrates: corp 1267, crime 704, state 395, movement 209, lodge 76, money 70, faith 60, elite 29, lender 10.
 By relevance: legacy 1273, now 1084, past 463. Countries with no qualifying case, shown as estimates: 15.
-Shape deviation 25.9 points against the goal of 5.0. Run `python3 shape.py`.
+Shape deviation 22.1 points against the goal of 5.0. Run `python3 shape.py`.
 (Figures as of round 10, 17 November 2026. The dated handoffs in the project carry what changed.)
 
 ## THE STANDING GOAL (set by the owner, 16 November 2026) — read this first
@@ -94,6 +94,8 @@ not move together, and four rounds are enough to show it.
 | **round 10, 17 Nov (corp re-entered)** | **+146** | **32.2** | **closed 6.4** |
 | **round 11, 17 Nov (lead bank worked first)** | **+161** | **28.4** | **closed 3.8** |
 | **round 12, 17 Nov (quotas from measured availability)** | **+123** | **25.9** | **closed 2.5** |
+| **exec recode, 18 Nov (rulings 17-21)** | **-36 reclassified** | **23.7** | **closed 2.2** |
+| **round 13, 18 Nov** | **+88** | **22.1** | **closed 1.6** |
 
 Round 8 is the one to keep in view: 195 verified, sourced, correctly classified cases
 moved the map *away* from its goal. Round 7 closed 5.6 points on 236 cases (24
@@ -4558,3 +4560,142 @@ himself a baggage handler, which is the removed Biman and Santa Marta ground.
 One class question left open rather than guessed: an **ICE deportation officer** convicted of taking
 about $75,000 for employment authorisation documents fits ruling 4, but **the payers are individual
 migrants**, so `inf: crime` could not be justified.
+
+# ROUND 13: +88, DEVIATION 23.7 -> 22.1, AND `postmerge.py` TO STOP A RECURRING BUG
+
+88 records from four agents, **all 88 clean on the validator** — which now includes cross-cell
+locator and figure-plus-body duplicate checks, so it would have caught the eight records agents had
+already withdrawn themselves. Every shortfall came with a measurement.
+
+| cell | quota | written |
+|---|---|---|
+| crime → legis | 12 | 12 |
+| corp → legis | 8 | 8 |
+| corp → company | 20 | 12 |
+| corp → security | 15 | 13 |
+| corp → cabinet | 14 | 11 |
+| crime → cabinet | 10 | 8 |
+| crime → company | 22 | 8 |
+| crime → security | 20 | 7 |
+| movement → security | 12 | 4 |
+| movement → cabinet | 6 | 3 |
+| crime → court | 8 | 2 |
+
+## `postmerge.py`: THE SAME BUG TWICE, NOW FIXED IN ONE PLACE
+
+**The agent reference files went stale twice and agents paid for it both times.** Round 12: the
+cell files predated round 11's merge, and one agent withdrew four finished records. Round 13: I
+regenerated them mid-round and then merged 123 more, so they drifted again — an agent measured it
+exactly, **corp/cabinet 234 in the cell file against 244 in `cases.json`**, and withdrew four more
+finished records, **three of which were in `cases.json` and absent from the cell file**, so the
+prescribed check could not have caught them.
+
+Its conclusion is now the rule: **"duplicate checking has to run against `cases.json`, filtered by
+`inf`/`bk`, not the cell dumps."** `postmerge.py` rebuilds every reference file, reruns
+`flagleads.py` and rebuilds the map in one command, and the cell files now say in their own header
+that they are a cheap first look and that `findheld.py` is the authoritative check.
+
+## THE ITALIAN PREFECTURAL DISSOLUTION REPORT: A NEW SEAM, AND THE BEST RATE MEASURED
+
+**1.33 records per query in `crime → legis`**, against the 0.75-0.8 this document recorded for the
+same host. R13-C's framing is the useful part:
+
+> **The Italian prefectural dissolution report is to `crime → legis` what the prevention-measure
+> decree is to `crime → company`**: it names the comune, the clan or the clan-linked firm, the
+> specific awards and the dates.
+
+**The productive query is the procedure, not the conduct** — `motivazioni scioglimento comune
+relazione` and `relazione prefetto appalti ditte cosche comune` returned the interior ministry's
+dissolution reports for Soriano, Altomonte, Tropea, Stefanaconi, Guardavalle, Simeri Crichi,
+Scilla, Lamezia and Capistrano **in two calls**. Not exhausted: Portigliola, Castellammare di
+Stabia, Casabona, Badolato, San Luca and Marano all have reports nobody has reached.
+`?slug=&_fields=content` worked every time; no page was ever fetched.
+
+## THE DNA RANGE MAP IN THIS DOCUMENT WAS WRONG, AND RANGE YIELD IS PER-CELL
+
+Round 12 measured ids **6500-7599 as the best range** and I wrote that into the round-13 brief.
+R13-C crawled it for `corp → cabinet`, `corp → legis` and `crime → legis` and got **zero records**
+from a 59-hit shortlist and ten releases read: every ministry-level hit failed on the body (a
+hospital, a sports complex, a state railway) or on limb 3.
+
+What it measured instead, from 3,100 ids in about six minutes:
+- **5500-6499: 11 records, one per 91 ids — the best range measured, and untouched before this.**
+- **8700-9699: 5 records, one per 200 ids.**
+- 6500-7599: **0 in all three of its cells**, where round 12 got 12 in two different cells.
+
+**So DNA range productivity is per-cell, like every other source on this map.** Both measurements
+are right about their own cells.
+
+**And the filter is wrong too.** `COMUNICAT`/`ECLI` misses judgments: ranges 5500-6499 and
+8700-9699 are thick with **un-ECLI'd `DECIZIA PENALĂ`** texts. Filter on the body after the
+`IMPARȚIALITATE` marker for `DOSAR NR|DECIZIA PENAL|SENTINȚA PENAL|Şedinţa publică` — that split
+3,100 ids into 1,640 press releases and 332 judgments.
+
+**A better outcome check than `Actualizare`: the forward link.** A DNA indictment page links
+**forward** to its conviction page by id, and a conviction page links back. Four of eight
+`corp → legis` records got a final judgment that way for one extra curl each.
+
+## `justice.gov` FOR `corp -> cabinet`: THE FCPA SEAM IS CLOSE TO MINED OUT
+
+1,564 releases cached from ~79 paged calls, grepped to 203 ministry hits, 12 bodies read, 7
+candidates, **4 kept after the duplicate check — 0.05 records per call.** The three strongest finds
+were all already on the map. Mechanical: **`pagesize` caps at 50 whatever you ask for**, so page it.
+Highest-yield titles: `Foreign Bribery` (199), `Foreign Corrupt` (84), `Bribing` (247), `Minister`
+(171). `Ministry` holds only 23 and `Ministerio` zero.
+
+## MEASURED EMPTY FOR `corp -> cabinet`, DO NOT SPEND A ROUND
+
+The **72 UN Panel reports: 116 ministry-plus-payment passages scanned programmatically, 0 records**
+— the Panels report governance and transparency failures, not placements. CGPJ/poderjudicial.es
+(listing is ~148 recent items, almost all ordinary crime). `hacc-decided.ti-ukraine.org` (403 to
+curl). The DNA monthly digests for ministry cases (3 hits, all EU-fund fraud by applicants).
+
+REST endpoints that do not exist or refuse: `ilfattoquotidiano` 401, `open.online` 403,
+`ojo-publico`/`elfaro`/`eldiario`/`lapoliticaonline` 404, `infobae`/`elpais` 301.
+**`www.g4media.ro` answers but returns `rest_search_disabled`.** `www.reporter.al` works and is
+productive — one query surfaced the whole Balluku file.
+
+## WHY `corp -> cabinet` CAME SHORT, AND IT IS RULING 17 WORKING AS INTENDED
+
+The cell needs a named ministry or programme administrator, a named decision, and a company as the
+outside party. **Ruling 17 strips out most of what the sources offer**: Romanian inspectorates and
+the tax administration go to `security`; hospitals, clinical institutes, state railways, state
+sports complexes and county health insurance providers go to `company`; EU-funds cases are
+applicants defrauding an agency with nobody inside. 45 candidate pages read, 11 converted. That is
+the ruling doing its job, not a research failure.
+
+## THE LEAD BANK IS NOW MEASURED AS SPENT IN SEVERAL CELLS
+
+**R13-C: 79 banked leads worked across three cells, zero converted. R13-A: ~107 leads, one record.
+R13-B: 33 leads, zero. R13-D: ~105 leads, zero.** Four agents, four cells, essentially nothing.
+
+And R13-C found why, which is more useful than the count: **roughly 30 of the 49 `none`-flagged
+leads in `crime_legis` carry their own rejection in the lead text** — "LEFT OUT: no favour or
+decision of the comune is itemised", "suplente, never seated", "the court expressly did not find a
+group inside". **It is a rejection log, not a work queue.** Rejection shapes in that one file: no
+decision inside the body named (~18), merely holding or standing for a seat (~6), already held (9),
+host refuses curl (3), failed electoral attempt (2).
+
+**That is the honest status of the bank: the clean leads have been taken, and what remains is
+mostly material earlier agents already decided against.** A round should budget discovery, not
+leads, and `flagleads.py`'s `none` flag should be read as "nothing close on the map", never as
+"this is worth writing".
+
+## CLOSED CASES WORTH RECORDING SO NOBODY RESEARCHES THEM AGAIN
+
+- **Ischia judge Alberto Capuano: definitively acquitted**, Rome Court of Appeal, 9-10 January
+  2026, "perché il fatto non sussiste", overturning a ten-year first-instance sentence. **Three
+  agents in two rounds reached a draft record and withdrew it**, each finding the acquittal from
+  the sources rather than the map.
+- **Talarico (Basso Profilo) and Sorbello (Melilli)**: both convicted of political-mafia vote
+  exchange **at elections they lost**, so nothing got inside. Rejected independently twice.
+- **Innospec's agent Naaman**, $150,000 to Iraqi Ministry of Oil officials in 2006 to make a
+  rival's product fail a field test — real and sourced, but the held Innospec record already spans
+  "2000 and 2007" at the same ministry. Judged an update under ruling 19 rather than an event, and
+  flagged for a decision rather than left hanging.
+
+## A NOTE ON A FALSE ALARM, SO NOBODY CHASES IT
+
+R13-C reported `secret-society-src/dupsweep2.py` as modified in the repo by another agent, which
+rule 11 bars. **That file is mine**, committed at 23:02 as part of the duplicate-sweep work. The
+vigilance was right and the rule stands; the file was not an agent leak.
