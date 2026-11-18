@@ -8,12 +8,14 @@ buildings in 2° cells, §11), and `tools/completeness.py` and
 `tools/keycheck.py`, which are the two measurements every round starts with
 (§0).
 
-**Not in this repo, and it should be:** `muni/`, the municipal register
-shards, and `tools/build_muni.py`, which builds them. The page has no
-reference to `muni/` and `muni/index.json` 404s on the live site, so the
-register layer that rounds four to twenty-one built — 57,448 records across
-eight registers — is not deployed. If it exists on a local machine it needs
-pushing; if it does not, it is the thing §0b warns about.
+`muni/` (the municipal register shards, 513 files) and `tools/build_muni.py`,
+which builds them, are now here and deployed — **two registers of the eight
+rounds four to twenty-one describe**. Nothing of that earlier work survived:
+the page had no reference to `muni/` and `muni/index.json` 404ed on the live
+site, so the shards, the builder and the loader were all written again from
+the register endpoints and join keys this file records. Italy and Quebec are
+rebuilt and shipping; France, Spain, Norway, the Netherlands, Finland and
+Brazil are not, and each is one entry in `COUNTRIES` away (§0a).
 
 The map answers one question: who can a member of the public contact to make a
 law, where they live, at every level of government above them — and what can
@@ -179,7 +181,128 @@ no email still moves a column nobody else is filling.
 
 ---
 
-## 0a. The round of twelve fixes to what a reader sees
+## 0a. Round twenty-two: the register layer, rebuilt and actually deployed
+
+**8,995 municipal records are on the live page.** Italy 7,889 and Quebec
+1,106, from the two registers' own files, joined to Wikidata on codes both
+sides publish, sharded into `muni/` and fetched per level by the page.
+
+This round exists because the layer was gone. Rounds four to twenty-one
+describe 57,448 records across eight registers; the repo had no `muni/`
+directory, the page had no reference to one, and `muni/index.json` 404ed on
+the live site. So the figures in those sections were a record of work whose
+output no longer existed anywhere. Everything below was written again from
+the endpoints and join keys this file records, which is the one thing those
+rounds left that was worth more than the data.
+
+### What shipped, and what each number means
+
+| | Italy | Quebec |
+| --- | ---: | ---: |
+| In the register | 7,891 | 1,281 |
+| Joined on a published code | 7,890 | 1,249 |
+| Register publishes no contact | 0 | 143 |
+| No live Wikidata item on the code | 0 | 32 |
+| Refused as ambiguous | 4 codes, 1 row | 0 |
+| **Shipped** | **7,889** | **1,106** |
+
+Both figures land exactly on what round five and round nineteen reported,
+which is the strongest evidence available that the joins are the same ones.
+
+Italy: `c` a certified address for all 7,889, `a` a street address for all
+7,889, `u` a website for 7,875, `e` an ordinary email for 5,463. IPA
+publishes no telephone number, so Italy has none. Quebec: `o` a postal
+address for 1,106, `p` a switchboard for 1,105, `cn` councillors for 1,104,
+`m` a mayor for 1,103, `e` an email for 1,096, `u` a website for 1,082.
+
+Quebec's 143 are every one of the register's unorganized territories and
+Indian reserves: it publishes no address, telephone number or email for any
+of them, because an unorganized territory has no council and a reserve is
+governed by a band council the ministry does not keep. Nothing was filtered
+by hand — they fall out on the contact test.
+
+**One field more than the earlier rounds took.** The Quebec register names
+the director general, the clerk, the treasurer and the heads of police,
+fire, public works, planning, permits and communications, by name, for
+1,103 municipalities. Those are in `of` as `[title, name]`. A reader asking
+who to write to about a building permit is better served by the name of
+whoever holds that job than by a switchboard, and leaving published fields
+out is an editorial decision this build does not make.
+
+### Two faults, both found by running it
+
+**A code that is nearly a code, taken nationally.** The Quebec register
+keys each row by the ministry's five-digit number; Wikidata holds the
+seven-digit Statistics Canada code, whose last five digits are usually
+those same five. Taking the last five of *every* Canadian code put 843 of
+them in collision — the code is two digits of province, two of census
+division and three of subdivision, so the last five repeat across provinces
+— and the ambiguity rule correctly refused all of them, which cost a fifth
+of the province. Quebec is province 24. Scoping the key to codes beginning
+`24` took it from 909 records to 1,106, with nothing refused. **The lesson
+is the general one in §9: a code is only unique inside the scope its own
+structure gives it.**
+
+**An arriving record wiped the page the reader had open.** `loadMuni`
+repaints the panel when a record lands, so the place's own line can carry
+it. On Sherbrooke the register arrived a second after the government page
+was opened and replaced it with the opening question. `render` sets
+`jrn-on` on the panel body and the two bespoke pages clear it, so that
+class is the test for whether a repaint would destroy a page the reader
+asked for. Check it by opening a Quebec municipality's own office
+immediately and watching whether it survives.
+
+### Where the records are drawn
+
+**The place's own line** in the trail row already carried the jurisdiction's
+email and telephone from Wikidata. The register wins on a field it carries
+and is silent on one it does not: an absent field in a register is not a
+statement that there is no email, so Wikidata's value stands where the
+register has nothing.
+
+**A page of its own**, `openGov(i)`, reached from a link on that same line
+reading "Sherbrooke's own office — the mayor, 14 councillors, an address to
+post to". Website, every email the register holds, the certified address
+with a line saying what it refuses, telephone, postal and street address,
+the mayor, the council, and the other posts. The names fold behind a
+`<details>` above eight, because the median council in these registers is
+six and Montréal's is sixty-four.
+
+**Not on Who to Contact and not inside a method's open row.** §1 measured
+that screen as having no vertical slack, and a method's row would draw the
+same block once per method — the fault round four fixed for the level rows.
+
+### Adding the next register
+
+Four steps, and nothing in `how_to_reach_them.html` changes:
+
+1. Write a builder returning `{QID: {u,e,p,o,a,c,m,cn,of}}` and add it to
+   `COUNTRIES` in `tools/build_muni.py`.
+2. Join on a code both sides publish. If there is none, the four conditions
+   in the round-fifteen section are the only exception and the record
+   carries `j`.
+3. Give it a gate: a published field the join never touches, with a floor
+   that raises rather than ships. Italy's is the official name against the
+   Italian label at 99.78% against a 95% floor; Quebec's is the French label
+   at 99.36% against 97%.
+4. Run it. `tools/check_muni_build.py` refuses a build where any country
+   falls under 50 records or below 80% of its last build, and
+   `.github/workflows/muni-refresh.yml` runs the whole thing on the 1st of
+   the month and commits what changed.
+
+The order to work in, by what each would add that Wikidata does not already
+serve live: **Spain 6,965** (REL on the INE code, DIR3 for the contacts,
+name join inside a province with the tax-number concordance as its gate),
+**Brazil 5,568** street addresses and 3,007 switchboards (IBGE code → CNPJ
+through SICONFI, then the Receita mirror), **the Netherlands 341**,
+**Norway 354**, **Finland 230**. France is last, not first: its register is
+the largest but Wikidata already carries an email for 95% of French
+communes and a telephone for 96%, so the round would add almost nothing.
+All five endpoints answered when probed this round.
+
+---
+
+## 0b. The round of twelve fixes to what a reader sees
 
 Nothing about the data changed in this round. What changed is what the
 page does when a marker is clicked, what the camera does while the panel
@@ -326,7 +449,7 @@ takes ten seconds.
 
 ---
 
-## 0b. Read this before editing
+## 0c. Read this before editing
 
 `how_to_reach_them.html` **is the source.** An older note said it was assembled
 from parts (`n1.html`, `offices.js`, `routes.json`, `nassemble2.py`…). Those
