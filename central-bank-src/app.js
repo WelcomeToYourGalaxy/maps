@@ -574,7 +574,10 @@ const SAY = {
   "Froze or seized the bank's reserves": "{P} froze or seized reserves belonging to {B}",
   "Guarantees the currency under a cooperation agreement": "{P} guarantees the currency issued by {B} under a cooperation agreement",
   "Audits its accounts": "{P} audits the accounts of {B}",
-  "Manages its reserves or programmes": "{P} manages reserves or funds for {B}",
+  // The relation is "reserves OR programmes" and the sentence used to say only "reserves or funds",
+  // so a bank that had merely joined the World Bank's RAMP read as one whose reserves the World Bank
+  // runs. The record text draws that line in each case; the sentence now leaves room for it.
+  "Manages its reserves or programmes": "{P} manages reserves for {B}, or runs a reserve programme it belongs to",
   // Round 77 split this off. 103 of the manager row's 207 ties were external managers of the
   // Government Pension Fund Global -- half the row, all from one published mandate list -- and a
   // sovereign wealth fund is not foreign exchange reserves. Keeping them on one relation made the
@@ -1214,7 +1217,7 @@ function detail(k) {
   // The third custody state. Where no custodian is filed, a bare tonnage leaves a reader unable
   // to tell "nobody has looked" from "the bank's own accounts say the gold is abroad and decline
   // to say with whom", and on this row the second is the more telling. Quote the bank's own words.
-  if (p.gabs) rows.push(['Where that gold is', esc(p.gabs.w || 'Held abroad, holder not disclosed.') + ' The bank\u2019s own accounts say \u201c' + esc(p.gabs.q) + '\u201d and name no institution <span class="note">(' + esc(p.gabs.d) + ')</span>']);
+  if (p.gabs) rows.push(['Where that gold is', esc(p.gabs.w || 'Held abroad, holder not disclosed.') + ' The bank\u2019s own accounts say \u201c' + esc(p.gabs.q) + '\u201d and name no institution <span class="note">(' + (p.gabs.u ? '<a href="' + esc(p.gabs.u) + '" target="_blank" rel="noopener">' + esc(p.gabs.d) + '</a>' : esc(p.gabs.d)) + ')</span>']);
   if (rows.length) h.push('<table class="kv">' + rows.map((x) => '<tr><th>' + x[0] + '</th><td>' + x[1] + '</td></tr>').join("") + '</table>');
   const sw = (p.sw || []).map((i) => D.SW[i]);
   if (sw.length) {

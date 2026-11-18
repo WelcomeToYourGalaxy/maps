@@ -1284,10 +1284,12 @@ Measured, not guessed. These are the user's own repos and need no research.
 
 All seven files are now cut into `contacts/` (§11).
 
-**`central_bank_independence.html` — a smaller, careful set.** Its `NET.nodes`
-array holds 1,479 nodes across 169 countries, 1,473 with coordinates and 1,185
-of those marked exact: 112 agencies, 101 government bodies, 73 courts, 30 state
-bodies, 29 international bodies, 374 banks. Useful as a coordinate fallback for
+**`central_bank_independence.html` — a smaller, careful set.** Figures below are
+as of that map's round 77, 18 November 2026. Its `NET.nodes` array holds 1,726
+nodes across 186 countries, 1,720 with coordinates and 1,397 of those marked
+exact: 450 banks, 316 firms, 174 people, 162 government bodies, 158 companies,
+122 agencies, 72 courts, 43 foundations, 39 state bodies, 35 state printing
+works, 28 international bodies. Useful as a coordinate fallback for
 named institutions. **Caveat:** the nodes carry no Wikidata ids, so joining
 them to this map's offices means matching on name, which risks placing an
 office somewhere it is not. Given the no-fabrication standard, any such join
