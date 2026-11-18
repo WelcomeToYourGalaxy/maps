@@ -480,6 +480,105 @@ These came in over one session and all of them are done unless noted.
    rounds stale. The current handoff is this file, `case-map-src/docs/HANDOFF.md`, and there should
    never again be two.
 
+## READ THIS FIRST: round 44, part one — the trims, the three country notes, and a rendering fault that would have contradicted the page
+
+Two writers and two checkers. **The trims and the residual fixes are merged; the five graduations and
+four merges are NOT**, because their check file arrived with no verdicts in it and no log, and
+merging a structural change on an unchecked file is the one thing this file's rules do not allow.
+`rounds/r44_graduate_checked.json` is on disk and waiting. Build clean: `loan-condition cases matched
+173 of 173`, 24 patterns, 31 suspected patterns, zero page and zero console errors, 1,182 cases.
+
+### The rendering fault, found by a writer and fixed in `base.html`
+
+**`hypsHTML()` filtered on `status` for its count but not for its list, and `detailHyp()` always
+printed the "Suspected pattern · not documented" kicker and the dashed box.** So the moment any entry
+was marked `documented`, nine entries would have sat under "Suspected patterns" carrying a
+"not documented" box while the same material was live above as documented patterns. The round's own
+graduations would have contradicted the page.
+
+Fixed three ways, in the direction the code's own comment already intended ("One that becomes
+documented graduates into PATS"):
+1. the list now filters on `h.status !== "documented"`, as the count already did;
+2. `detailHyp()` returns early for a graduated entry and renders a short card saying the record
+   settled it, naming the pattern that now carries it, with a button that opens that pattern through
+   `setEnt("pat", h.graduated_to)` — because an old link or a saved view can still reach the entry;
+3. the heading comment records what happened, so the next reader does not re-introduce it.
+
+**The fix cannot be exercised until a graduation merges — no entry is `documented` yet, so the live
+page is unchanged.** Test it the moment the graduations go in: open the patterns section, check the
+count and the list agree, and open a graduated id directly.
+
+### The four trims, and the cut that weakened a finding
+
+| Entry | Before | After | Asked |
+| --- | --- | --- | --- |
+| `rankings-bent-for-money` | 704 | 669 | −62 |
+| `banks-that-bank-the-looters` | 631 | 621 | −25 |
+| `water-handed-to-companies` | 626 | 616 | −45 |
+| `aid-cover-for-spies` | 608 | 580 | −35 |
+
+**The checker restored four trims that had saved a word by weakening a claim past its source, and one
+of them matters.** The writer had the investigation's director telling the team to "drop Jordan from
+the top of the draft Top Improvers list". The report's own §20 says he instructed them to **find a way
+to alter the data such that Jordan fell from its first-place position**. A trim had turned an
+instruction to change data into an instruction about a ranking. Also restored: "then" before his
+title, "outstanding" before "loans" in the Senate reading, and the second "often" in "filing a report
+is often enough", which the trim had made an absolute statement about what the law requires.
+
+**Record removed in three places, not the two the writer reported**: the fiscal-1990 sentence on the
+spies card (a length cut, not a defect fix), and on the water card both the paragraph-28 sentence
+**and the old closer "without the Bank having designed or wanted it"** — which is record from the
+Bank's own completion report. The third was non-record. Everything else across the nine edits was
+wording, verified figure by figure.
+
+**The employing-workers passage was touched, contrary to the writer's report that it was left
+alone** — two sentences merged with a colon, two noun phrases turned into pronouns. Nothing was lost
+and paragraph 1's closing clause still has its support, but the report's wording was inaccurate and
+the checker said so.
+
+**650 words is not reachable on the rankings card without dropping checked record, and both agents
+tested the arithmetic.** Compressing the two economists saves 12 words rather than 35, because the
+fairness rule keeps both the retraction and the denial; the "190 countries" explainer had about four
+spare words, not fifteen. The floor is about 665. Below it you lose the UAE by-product, the king's
+2006 aim, the three-motive finding, the no-involvement finding or the 2013 panel. **Treat ~670 as the
+ceiling for that card.**
+
+### The three country notes on `aid-cover-for-spies`, now sourced or gone
+
+These could not be re-sourced from the document already on the card, so they were worked separately
+and applied by hand in the merge:
+- **Brazil** — re-sourced to the National Security Archive briefing book, which says Mitrione "was
+  hired by the U.S. AID Office of Public Safety to train policemen in Brazil and Uruguay" in the
+  mid-1960s, with the second clause on the Congressional Record item already in the entry's list.
+- **Uruguay** — re-sourced to the same book, **and "from 1964" came off**: the document gives no start
+  year, so the date is not carried on a source that does not state it.
+- **Guatemala** — **the superlative is gone.** "Largest Office of Public Safety programme in Central
+  America" is a comparative claim, and nothing either agent could open ranks the country programmes;
+  the checker searched the police archive's own report for the comparison and it is not there. The
+  note now says what that report does carry: a US Public Safety Program from 1956, and the Office of
+  Public Safety advising the coordination of Guatemala's security forces in the 1960s. **The checker
+  argued against dropping Guatemala altogether, and it is right**: `countries` is a line about what
+  the record in that place is, so removing the country because a predecessor's note overclaimed would
+  take Guatemala off a police-training map.
+
+Two corrections inside the repairs are worth carrying as a shape. The banks card had put the
+publication's naming of the police and the criminal intelligence service **into the regulator's
+mouth** — the regulator said "the appropriate law enforcement authorities", and the naming is the
+publication's gloss. And the water card's new joining sentence attributed to the completion report
+what the ICIJ piece attributes to **World Bank loan documents**, and said "this loan" where the source
+says "the loans". Both narrowed.
+
+### `merge_pats.py`, and a dry-run trap
+
+New script for the structural moves: it adds patterns, edits existing ones, and sets `status` and
+`graduated_to` on entries. Like `merge_hyps.py` it **refuses the whole file on a near match** and
+writes nothing; it also refuses a new pattern missing any field all thirteen existing patterns carry,
+and refuses a `case_ids` entry or a `graduated_to` that names nothing real.
+
+**The trap, from the trim check:** three of nine `old` strings do not appear as literal bytes in
+`base.html`, because the paragraph contains escaped quote characters. They match the **decoded** entry
+exactly once, which is what a merge applies to. So a dry run that greps the raw file will report a
+miss that is not one — check against the parsed JSON, which is what both merge scripts do.
 ## READ THIS FIRST: round 43 — the nine defects on live pattern cards are fixed and merged
 
 An authoring round, not a research one. One writer, one separate checker, and the fixes are on the
