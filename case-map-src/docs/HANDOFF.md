@@ -480,6 +480,132 @@ These came in over one session and all of them are done unless noted.
    rounds stale. The current handoff is this file, `case-map-src/docs/HANDOFF.md`, and there should
    never again be two.
 
+## READ THIS FIRST: round 42 — the suspected patterns are sorted, and the owner's reading was right
+
+**The owner's finding, 17 Nov 2026: the map mixes potential patterns with actual ones, and some of
+the former are the latter.** Three reviewers took all thirty-one entries under "Suspected patterns"
+one at a time, against a four-way test written up in `docs/REVIEW42.md`, and the result says the
+section has been mis-labelled at scale.
+
+| Verdict | Entries |
+| --- | --- |
+| **`documented`** — an investigation, judgment, regulator's finding or the institution's own admission settles what the title asserts, as a practice | **6** |
+| **`overclaimed`** — the title asserts more than the record carries, and a narrower statement of the same thing is documented | **16** |
+| **`suspected`** — the pieces are documented, the pattern joining them is not, and what is open is intent or whether it is systematic | **5** |
+| **`duplicate`** — the documented core is already a pattern on the page | **4** |
+
+**Only five of thirty-one are suspicions in the sense this section claims.** Sixteen more carry a
+documented core under a title that overreaches, which is the shape the owner spotted: the entry is
+not wrong, its label is. Four restate patterns already on the page.
+
+**A separate checker is testing the six promotions, the four duplicates and a sample of the
+overclaimed before anything moves on the page**, under this file's own rule that every batch is
+checked by a separate agent. **Nothing in `window.HYPS` or `window.PATS` has been changed.** The
+verdicts are in `rounds/r42_{a,b,c}.json` with reports beside them; the check will be
+`rounds/r42_checked.json`.
+
+### The six that came back documented, and what settles each
+
+- **`rankings-bent-for-money`** — the WilmerHale report of 15 September 2021, opened from the Bank's
+  own server. It found improper changes for China in Doing Business 2018 (approved at rank 85,
+  published at 78 after pressure through the president's office) and for Saudi Arabia in DB2020,
+  concluding the Saudi change was likely made to reward the country for its paid advisory contracts.
+  Two editions, two paying countries, and the product cancelled.
+- **`secret-loans-banks-traders`** — the FCA's Final Notice of 19 October 2021 fining Credit Suisse
+  £147,190,200, recording that the bank took a general IMF-compliance representation rather than
+  undertake to inform the IMF of the loans, **plus the World Bank's own board paper on debt
+  vulnerabilities of 4 October 2018**, whose "Hidden Debt" box names Congo's undisclosed oil-trader
+  prefinancing and Togo's prefinanced debt alongside Mozambique. The generalisation is the lender's
+  own. The word "routine" stays suspected.
+- **`ratings-that-punish-relief`** — downgrades and reviews following requests for relief.
+- **`private-equity-with-development-money`** — the UK aid watchdog's March 2019 review for
+  Parliament: CDC invests through private equity funds, £258.8m in health at end-2017, and on one
+  Indian healthcare fund that the services "largely reached those on above-average incomes".
+- **`companies-pay-armed-groups`** — a 2007 guilty plea over more than a hundred payments, $1.7m,
+  $300,000 of it after the Justice Department said stop, **and a current 10-K filed 13 February 2026
+  still stating that the subsidiary pays support costs for government-provided security**, including
+  allowances to military and police. A plea settles its instance; a standing securities disclosure
+  settles that it is ordinary business.
+- **`water-handed-to-companies`** — the Bank's own evaluation group, 30 June 2010: 13% of urban water
+  projects aimed to introduce private participation and 46 of 70 closed ones did.
+
+### The four duplicates
+
+`vulture-funds` restates `holdout-funds-rich-courts`; `bondholders-block-debt-relief` restates
+`who-owns-the-debt`, which already carries Zambia and BlackRock's holdings; `development-money-
+through-tax-havens` restates `offshore-routing-lost-tax`; and **`private-courts-for-investors`
+restates `company-sued-the-state`** — its title asserts only that such tribunals exist and can order
+states to pay, which is settled by treaty and by the arbitrators' own published awards, and this map
+already counts 1,332 of those cases. In each the leftover is worth keeping: the poorest-country and
+debt-relief angle for the holdout funds, and for the tax-haven entry **the lenders' own portfolio**,
+which one reviewer argues is itself documented and belongs beside the existing pattern rather than
+under suspicions.
+
+### The five that are genuinely suspected, and what would settle them
+
+`aid-cover-for-spies` (four exposed episodes, one conceded; no record of standing practice),
+`ports-that-become-naval-bases` (the title is already hedged, and the dataset calls its own shortlist
+reading the tea leaves), `pension-funds-buy-up-farmland`, and the two that turn on intent:
+
+- **`lenders-expect-the-riots`.** The association is measured across 120 countries, 1972-2007, with
+  repression worse under programmes and worse as conditions multiply. Foreknowledge rests on one
+  leaked strategy document and one insider's account to a reporter. **Settles it:** a count across
+  published staff reports and programme documents of how often a risk section forecasts unrest before
+  a major price rise, and whether the programme changed. Doable from public documents now.
+- **`rescue-money-timed-for-elections`.** Dates, amounts and one president's public condition are
+  documented; the academic leg is thinner than the entry reads, and is about forecasts rather than
+  when money arrives. **Settles it:** Treasury voting instructions and board minutes for the 1996
+  Russian and 2018 Argentine arrangements, plus a count of pre-election approvals by voting
+  alignment.
+
+### Nine defects on live cards, which are worth more than the classification
+
+Each is an error on the page now, found by a reviewer reading the entry's own sources:
+
+1. **`lending-to-known-thieves`**: the memo's "50 to 80 per cent" for land and resettlement money
+   could not be verified on any reachable copy; the mirror that opened carries 20-30% instead. And
+   the story says the report leaked from Zaire where its source says Brussels, while two sources on
+   the card give the debt as $5bn and $4.1bn without the card saying they disagree.
+2. **`water-handed-to-companies`** quotes half a sentence. The 1998 Jakarta completion report calls
+   the privatisation "parallel to but facilitated by the Project" and, in the same sentence, says it
+   was **not envisaged** by the government or the Bank at appraisal, adding that such a proposal
+   would most likely have been refused in the late 1980s. Only the helpful clause is on the card.
+3. **`rankings-bent-for-money`** omits two of the investigation's four countries, including the one
+   whose data was changed **downward** out of a manager's personal disbelief — a motive with no money
+   in it, inside the same report the entry rests on.
+4. **`carbon-credits-new-land-grab`** presents a judgment as settled that the Kenyan index shows is
+   under appeal, with a Court of Appeal ruling on 25 September 2026.
+5. **`ratings-that-punish-relief`**: "19 African countries … $74.5 billion" is not in the brief the
+   entry cites, whose samples are 13 and 16 with a union of 21 and no country count attached to the
+   figure. The same number is in the entry's `conviction` line.
+6. **`banks-that-bank-the-looters`**: the Senate report's $700m covers balances **and loans
+   together**; the regulator's finding was of failure to control, naming no bank and prosecuting
+   none, and the card reads as though it found the banks held stolen money knowingly.
+7. **`markets-opened-for-subsidized-food`** opens on an agency report that never mentions either
+   lender; the programme attribution is supported, but by a different outlet.
+8. **`companies-behind-coups`**: the compensation figure said to come from the company's own tax
+   declaration is not in the diplomatic record the entry leans on, and its "this has not stopped"
+   is unsupported.
+9. **`secret-loans-banks-traders`**: Chad's 98% is dated to 2016 where the joint debt analysis puts
+   it at 2017.
+
+**Four entries carry an empty `case_ids`** — the spying, tax-haven, looted-money and debt-for-nature
+entries — so they are not tied to the map at all, against this file's rule 5. And **`r42_b_report.md`
+was written while `r42_a` and `r42_c` reports exist; one reviewer handed back without one**, the
+third time in three rounds that a required report or log has been missing. Say in the dispatch that
+the report is part of the deliverable.
+
+### What to do with this, in order
+
+1. **Fix the nine defects first.** They are errors on a live page and they do not depend on the
+   classification.
+2. **Then move the six and merge the four**, after the checker reports. A graduated entry takes
+   `status: "documented"` and `graduated_to` under this file's rule 6 — but note that `PATS` entries
+   carry `computed`, `counts` and `case_results`, which these stories do not have, so graduating is
+   an authoring job and not a field change. Decide with the owner whether a documented pattern with
+   no computed count belongs in `PATS` or in a third category on the page.
+3. **Retitle the sixteen to their narrower titles**, each saying in its own first line which part is
+   documented and which is open. That is the owner's complaint answered.
 ## READ THIS FIRST: round 41 — the second outside-sourcing round, and the route for this job is now mapped
 
 Sixteen cases: fifteen from the queue's tested-index front plus a single-case pass on the card round
