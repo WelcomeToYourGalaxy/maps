@@ -18,7 +18,15 @@ STOP = set("the of and for ltd ltd. limited inc inc. plc sa s.a a.g ag nv n.v bv
            "plantation plantations water services service systems technologies global national "
            "state enterprise trading trade investments investment capital fund funds partners "
            "consortium joint venture subsidiary works plant plants company's export import credit "
-           "agency authority public private union federation association foundation institute".split())
+           "agency authority public private union federation association foundation institute "
+           # round 47: corporate-form words in other jurisdictions, which pair any two companies
+           # from the same country. "sdn"/"bhd" matched a Malaysian electronics supplier to a
+           # Malaysian railway case; they are the local equivalent of "Ltd".
+           "sdn bhd tbk llc llp ltda cia cie oy oyj kk kgaa pjsc jsc ooo sarl sas aps "
+           # round 47: generic organisational words. "committee" matched the International
+           # Olympic Committee to a Chinese industrial zone's Management Committee.
+           "committee council board commission organisation organization secretariat ministry "
+           "department office bureau".split())
 
 # country and place words carry no company identity: a lead in Nigeria matching a case in
 # Nigeria on the word "nigeria" is not a match. Round 46's first pass produced a dozen of these.
@@ -81,6 +89,10 @@ print("company tokens in cases:", len(df), "— distinctive (in 4 cases or fewer
 hits = []
 for r in leads:
     if r["already_on_map"]:
+        continue
+    # round 47: a pair a checker settled as a false match is not re-proposed. The lead stays
+    # open as a possible case of its own; it is this pairing that is closed.
+    if r.get("r47_false_match"):
         continue
     want = toks(r.get("company_in_violation") or "") | toks(r.get("defendant") or "")
     if not want:

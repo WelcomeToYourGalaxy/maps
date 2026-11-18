@@ -1,0 +1,241 @@
+{
+ "complaints": [],
+ "complaint_links": [
+  {
+   "k": "ncp:Lok Shakti Abhiyan et. al. vs ABP",
+   "cs": "posco-odisha-dhinkia"
+  },
+  {
+   "k": "ncp:Lok Shakti Abhiyan et.al vs Norwegian Government Pension Fund – Global",
+   "cs": "posco-odisha-dhinkia"
+  },
+  {
+   "k": "ncp:Lok Shakti Abhiyan et al. vs POSCO",
+   "cs": "posco-odisha-dhinkia"
+  },
+  {
+   "k": "ncp:Human Rights Law Centre and Raid vs G4S",
+   "cs": "manus-g4s-reza-barati"
+  },
+  {
+   "k": "ncp:Alianza por la Solidaridad v. Grupo ACS-COBRA",
+   "cs": "renace-cahabon-grupo-cobra"
+  },
+  {
+   "k": "ncp:ActionAid Italy et al. vs. JTF Tozzi Green",
+   "cs": "tozzi-green-ihorombe"
+  }
+ ],
+ "extend": [
+  {
+   "id": "posco-odisha-dhinkia",
+   "cp_add": [
+    "ncp"
+   ],
+   "sources_add": [
+    {
+     "title": "Lok Shakti Abhiyan et. al. vs ABP",
+     "publisher": "OECD Watch",
+     "year": 2012,
+     "url": "https://oecdwatch.org/complaint/lok-shakti-abhiyan-et-al-vs-abp/"
+    }
+   ],
+   "fields_add": {
+    "outcome": "In March 2013, after meetings facilitated by the Dutch contact point on the complaint Lok Shakti Abhiyan et. al. vs ABP, a joint final statement was issued in which ABP and its asset manager APG committed to exercise their leverage to bring POSCO's business practices in line with international standards (OECD Watch)."
+   },
+   "complaint_h": [
+    {
+     "k": "ncp:Lok Shakti Abhiyan et. al. vs ABP",
+     "h": true
+    }
+   ]
+  },
+  {
+   "id": "posco-odisha-dhinkia",
+   "cp_add": [
+    "ncp"
+   ],
+   "sources_add": [
+    {
+     "title": "Lok Shakti Abhiyan et.al vs Norwegian Government Pension Fund – Global",
+     "publisher": "OECD Watch",
+     "year": 2012,
+     "url": "https://oecdwatch.org/complaint/lok-shakti-abhiyan-et-al-vs-government-pension-fund-global/"
+    }
+   ],
+   "fields_add": {
+    "outcome": "On 27 May 2013, on the complaint Lok Shakti Abhiyan et.al vs Norwegian Government Pension Fund – Global, the Norwegian contact point concluded that NBIM was in violation of the OECD Guidelines for refusing to cooperate with it and for lacking a strategy on how to address human rights risks related to companies in which it invests (OECD Watch)."
+   },
+   "complaint_h": [
+    {
+     "k": "ncp:Lok Shakti Abhiyan et.al vs Norwegian Government Pension Fund – Global",
+     "h": true
+    }
+   ]
+  },
+  {
+   "id": "posco-odisha-dhinkia",
+   "cp_add": [
+    "ncp"
+   ],
+   "sources_add": [
+    {
+     "title": "Lok Shakti Abhiyan et al. vs POSCO",
+     "publisher": "OECD Watch",
+     "year": 2012,
+     "url": "https://oecdwatch.org/complaint/lok-shakti-abhiyan-et-al-vs-posco/"
+    }
+   ],
+   "fields_add": {},
+   "complaint_h": [
+    {
+     "k": "ncp:Lok Shakti Abhiyan et al. vs POSCO",
+     "h": true
+    }
+   ]
+  },
+  {
+   "id": "manus-g4s-reza-barati",
+   "cp_add": [
+    "ncp"
+   ],
+   "sources_add": [
+    {
+     "title": "Human Rights Law Centre and Raid vs G4S",
+     "publisher": "OECD Watch",
+     "year": 2014,
+     "url": "https://oecdwatch.org/complaint/human-rights-law-centre-and-raid-vs-g4s/"
+    }
+   ],
+   "fields_add": {},
+   "complaint_h": [
+    {
+     "k": "ncp:Human Rights Law Centre and Raid vs G4S",
+     "h": true
+    }
+   ]
+  },
+  {
+   "id": "renace-cahabon-grupo-cobra",
+   "cp_add": [
+    "ncp"
+   ],
+   "sources_add": [
+    {
+     "title": "Alianza por la Solidaridad v. Grupo ACS-COBRA",
+     "publisher": "OECD Watch",
+     "year": 2017,
+     "url": "https://oecdwatch.org/complaint/alianza-por-la-solidaridad-v-grupo-acs-cobra/"
+    }
+   ],
+   "fields_add": {
+    "outcome": "Spain's contact point concluded the complaint Alianza por la Solidaridad v. Grupo ACS-COBRA with a final statement that ACS, in its role of contractor, was not exempted from the OECD Guidelines' requirements, and recommended that ACS redress any damage that its failure to conduct adequate due diligence may have caused to the communities (OECD Watch)."
+   },
+   "complaint_h": [
+    {
+     "k": "ncp:Alianza por la Solidaridad v. Grupo ACS-COBRA",
+     "h": true
+    }
+   ]
+  },
+  {
+   "id": "tozzi-green-ihorombe",
+   "cp_add": [
+    "ncp"
+   ],
+   "sources_add": [
+    {
+     "title": "ActionAid Italy et al. vs. JTF Tozzi Green",
+     "publisher": "OECD Watch",
+     "year": 2023,
+     "url": "https://oecdwatch.org/complaint/actionaid-italy-et-al-vs-jtf-tozzi-green/"
+    }
+   ],
+   "fields_add": {},
+   "complaint_h": [
+    {
+     "k": "ncp:ActionAid Italy et al. vs. JTF Tozzi Green",
+     "h": true
+    }
+   ]
+  }
+ ],
+ "check_log": [
+  {
+   "pair_id": "lok-shakti-abhiyan-et-al-vs-abp__posco-odisha-dhinkia",
+   "writer_verdict": "extend",
+   "checker_verdict": "extend",
+   "corrections": [
+    "Rewrote fields_add: the writer had the Dutch contact point facilitating the joint final statement, while the harvested outcome says it facilitated several meetings and that the statement was then issued. The sentence now says the statement was issued after meetings the contact point facilitated.",
+    "Checked the complaint_h flip from false to true and passed it: the case records four killed, a 7 March 2013 baton charge that injured 41 villagers, at least 105 betel vine farms destroyed and a threatened displacement of over 22,000 people."
+   ],
+   "opened": [],
+   "note": "First of three separate filings of the one 9 October 2012 complaint (Dutch, Norwegian and Korean contact points). I satisfied myself from the three harvested records that this is what the documents show: the allegations text is identical across all three, each gives the same filing date, each names the other two under 'Related complaints', and the shared outcome text opens 'The complaint was filed simultaneously at the Korean, Dutch and Norwegian NCPs.' The three are kept as three records with three links and three distinct cmp_keys, not merged. This one is the Dutch filing against ABP (st: agreement). Both this extend and the Norwegian one append a sentence to the same case's outcome; merge.py appends fields_add in order, so the two sentences will sit one after the other."
+  },
+  {
+   "pair_id": "lok-shakti-abhiyan-et-al-vs-government-pension-fund-global__posco-odisha-dhinkia",
+   "writer_verdict": "extend",
+   "checker_verdict": "extend",
+   "corrections": [
+    "Rewrote fields_add: the writer reworded the Norwegian finding ('had violated ... by refusing') and wrote the complaint title with a hyphen where the complaint uses an en dash. The sentence now follows the harvested wording ('was in violation ... for refusing to cooperate') and the title exactly.",
+    "Checked the complaint_h flip from false to true and passed it, on the same case fields: four killed, 41 villagers injured, betel vine farms destroyed, over 22,000 threatened with displacement."
+   ],
+   "opened": [],
+   "note": "Second of the three filings: the Norwegian one against the Government Pension Fund - Global (st: no resolution). Its own record and link, sharing the case with the ABP and POSCO filings."
+  },
+  {
+   "pair_id": "lok-shakti-abhiyan-et-al-vs-posco__posco-odisha-dhinkia",
+   "writer_verdict": "extend",
+   "checker_verdict": "extend",
+   "corrections": [
+    "Checked the complaint_h flip from false to true and passed it, on the case's killed (4), community and suppression fields.",
+    "No correction to the records. fields_add left empty, which is right: the harvested text says the Korean contact point rejected the complaint in June 2013 without a finding on the allegations."
+   ],
+   "opened": [],
+   "note": "Third of the three filings: the Korean one against POSCO itself (st: rejected). Kept as its own record. Worth a later round's attention, but outside what this round may touch: the existing complaint record carries ap: true although the Korean contact point rejected the complaint, so ap looks wrong on this record."
+  },
+  {
+   "pair_id": "human-rights-law-centre-and-raid-vs-g4s__manus-g4s-reza-barati",
+   "writer_verdict": "extend",
+   "checker_verdict": "extend",
+   "corrections": [
+    "Checked the complaint_h flip from false to true and passed it: the case records Reza Barati killed on 17 February 2014 (killed: 1) and at least 69 injured, and the complaint records the same death and up to 69 injuries.",
+    "No correction. The writer's claim that the harvested outcome says nothing about the UK contact point's own handling is right: the outcome text covers only the Australian contact point's rejection, appeal and 2017 appeal statement, so an empty fields_add is correct."
+   ],
+   "opened": [],
+   "note": "The case's cp already holds 'ncp' and its outcome already names this complaint and the Australian rejection, so this extend only adds the OECD Watch source and sets h. The existing complaint record carries ap: true although the complaint was rejected at both contact points named in the harvested text; a later round should look at ap on this record."
+  },
+  {
+   "pair_id": "alianza-por-la-solidaridad-v-grupo-acs-cobra__renace-cahabon-grupo-cobra",
+   "writer_verdict": "extend",
+   "checker_verdict": "extend",
+   "corrections": [
+    "Rewrote fields_add: the writer wrote 'any damage caused by inadequate due diligence', asserting damage the harvested text only puts conditionally ('any damage that its failure to conduct adequate due diligence may have caused to the communities'). Restored the conditional and the text's 'exempted from the OECD Guidelines' requirements'.",
+    "Checked the complaint_h flip from false to true and passed it: the case's community field records about 30 km of the Cahabon left with little or no water, about 29,000 Q'eqchi' people affected, a September 2015 environment ministry fine over Renace II and reported intimidation."
+   ],
+   "opened": [],
+   "note": "The case already cites the Spanish contact point's own final statement PDF (comercio.gob.es, case E-00007); the OECD Watch page is a different URL, so sources_add is right to include it."
+  },
+  {
+   "pair_id": "actionaid-italy-et-al-vs-jtf-tozzi-green__tozzi-green-ihorombe",
+   "writer_verdict": "extend",
+   "checker_verdict": "extend",
+   "corrections": [
+    "Checked the complaint_h flip from false to true and passed it, though this is the thinnest of the six: the case records no deaths and its ecosystem field is empty, but the community field records herders fined or chased away with dogs off grazing land they had used and the loss of that land, and the suppression field records an activist arrested in Ihosy in 2020 and gendarmerie interventions.",
+    "No correction to the records. fields_add empty is right: the complaint is at 'Filed' and the harvested outcome text is empty."
+   ],
+   "opened": [],
+   "note": "Identity is settled by the case's own outcome text, which names the 13 October 2023 complaint to Italy's contact point by the same three groups. The complainant name differs between the sources (BMTT in the complaint, BIMTT in the case); a later round may want to settle the spelling. The existing record's ap: true is unverified while the complaint is only at 'Filed'."
+  },
+  {
+   "pair_id": "caring-work-group-on-work-strike-in-the-environment-of-pt-freeport-indonesia-papua-timika-jayapura-jakarta-vs-freeport-mcmoran-inc__grasberg-freeport",
+   "writer_verdict": "false_match",
+   "checker_verdict": "false_match",
+   "corrections": [
+    "No correction. Upheld the writer's false_match: the complaint is a 2017 labour dispute over the dismissal of more than 3,000 PT Freeport Indonesia workers and their wages, employment status and medical care, and none of that appears in the case, whose events are the 1990 MIGA guarantee, the 1995 evictions from the Waa, Tsinga and Arwaa valleys, the killings ACFOA reported for 1994-95 and the Ajkwa tailings, with the case ending in 1996."
+   ],
+   "opened": [],
+   "note": "Borderline, and I say so deliberately: the complaint concerns the same company at the same mining operation and district as the case, so a later round could read test 1 the other way. I upheld the cut because identity on this map also rests on the dates and the event, and the case is built on the 1990-1996 MIGA-guaranteed expansion and its harms, 21 years before the dismissals. The writer's requeue note is sound: the 2017 dismissals look like a lead for a case of their own. The harvested 'affected' list for this complaint is polluted with OECD Watch's site navigation and cookie-banner text, which a later harvest should clean."
+  }
+ ]
+}
