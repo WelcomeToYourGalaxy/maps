@@ -1,39 +1,106 @@
 # Globalization Case Map: handoff for a new chat
 
-Last updated: round 45 — **a register round with no cases in it.** The owner asked how complete a
-picture the map gives of its subject, told the work to go after the outstanding registers starting
-with OECD Watch, and told it to leave the `documented`/`contested` sourcing push alone. Three things
-came out of it and all three are on disk:
+Last updated: round 46 — **the first OECD Watch round, and it set three class precedents that matter
+more than its seven cases.** The map stands at **1,189 cases in 137 countries**, 29 patterns, 31
+suspected patterns, 26.0 MB, `loan-condition cases matched 173 of 173`, zero page and zero console
+errors.
 
-1. **OECD Watch is harvested.** All 503 complaints it publishes are in `docs/leads_oecdwatch.json`,
-   fetched from its own pages over plain `curl`, no refusals. **90 are already named in cases here,
-   413 are open, and 138 of those carry a severe harm flag with the harm outside a rich country.**
-   The writer brief is `docs/BRIEF45.md`. **Read its middle section before commissioning anything:
-   an NCP's `Rejected` is usually procedural and says nothing about whether the harm happened, so
-   test 2 has to be met from outside the complaint.** At the measured 30-60% for complaint registers
-   this is worth 124-248 cases, the largest addition left from any register.
-2. **Every kind of money has been checked for a register of harm, and the answer per row is in
-   `docs/REGISTERS.md`.** Two more unworked registers were found and are now named on the page:
-   **BankTrack's Dodgy Deals, 319 profiles, for private bank and bond lending**, and the **Business &
-   Human Rights Resource Centre's 679 allegations against Chinese companies abroad, 2013-2020**,
-   which is the one Chinese-lending list that sits outside the lender. The Environmental Justice
-   Atlas (3,800+ conflicts) is a third. **Aid, the IMF and payment services have no register of harm
-   anywhere**, so those rows cannot be raised by reading documents and the page now says so per row.
-3. **The coverage panel now says what each row can reach.** Every counted row carries a "What this
-   row can reach" line, and **the foreign-company row's year window is no longer silently
-   misleading**: it divided by projects announced 2021-2023 and counted only harm beginning in those
-   years, so it showed 9 while the map held 305 such cases. A new all-years row carries the 305 with
-   its decade split (13 in the 2020s, 113 in the 2010s, 112 in the 2000s, 67 before 2000). The same
-   fixes are in the per-kind briefs for `fdi`, `gov`, `gra` and `prv`.
+## Round 46 in one table
 
-The map still stands at **1,182 cases in 137 countries**, 29 patterns, 31 suspected patterns, 26.0 MB,
-`loan-condition cases matched 173 of 173`, zero page and zero console errors. No coverage row moved,
-because no case was added.
+| | |
+| --- | --- |
+| Leads worked, from the top of the OECD Watch priority queue | 36 |
+| Events already on the map under another name | 12 |
+| Dropped on the three tests by the writers | 16 |
+| Cases merged | 7 |
+| Cut after independent checking | 1 |
+| Writer and checker corrections | 79 |
 
-**A bucket bug worth not repeating:** the first version of the all-years decade split read
-`2021-2099, 2010s, 2000s, pre-2000` and summed to 303 against the page's own 305, because **2020 fell
-in no bucket**. Any computed split gets checked against the rendered total before it is believed -
-the same rule this file already states for the coverage rows.
+**Conversion on genuinely new ground: 7 of 24, 29%** — below the 30-60% `ceiling.py` assumes for
+complaint registers. Do not rewrite that assumption yet: three of this round's cuts were class
+decisions now written down, so later tranches should decide them before the research rather than
+after. Revisit after two more tranches.
+
+## The three class precedents, each argued from documents and written into `docs/BRIEF45.md`
+
+1. **A paid auditor, certifier, consultant, ratings agency or law firm fails test 1.** Cut the Rana
+   Plaza case. A certifier monetises a representation about risk and carries none of the loss, which
+   is the element that makes an insurer a funding tie.
+2. **An event rights-holder, licensor, franchisor, promoter or sanctioning body fails test 1**, and
+   sits *below* a buyer. Cut the Bahrain Grand Prix case. A local promoter pays a fee for the right
+   to stage the event, so the money leaves the host country. **The ordering the precedent now runs
+   on: owner, then lender or insurer, then buyer, then licensor. The line sits above buyer.**
+3. **The OECD Guidelines' business-relationship reach is wider than test 1 by design**, so an NCP
+   accepting a complaint says nothing about test 1, and what an NCP accepts is often a due-diligence
+   shortfall, which is not harm under test 2 either.
+
+**The failure mode those cuts share: a card citing as its link evidence the very document that
+denies the link.** The Bahrain card cited the UK NCP assessment that says at paragraph 26 that the
+information does not link the companies to any abuses and at 28 that promoting a high-profile event
+which attracts protests does not itself link them. Read what a cited document concludes, not only
+what it describes.
+
+## What is merged
+
+`kaziranga-inlay-pathar-hyatt`, `yavatmal-polo-pesticide-poisonings`, `logbaba-gas-ndogpassi`,
+`la-platosa-ejido-la-sierrita`, `nikomas-gemilang-serang-nike`, `kibali-bandayi-mege-demolitions`,
+`pncat-ayoreo-chaco-leather`.
+
+Two of those stand on a link the writer got wrong and a checker re-grounded:
+
+- **Nikomas** was written on Nike and survives on Pou Chen and Yue Yuen, which invested about
+  US$100m in the complex in 1993. Nike is on the card as the non-qualifying buyer. The adidas case
+  beside it was cut, because no foreign owner, lender or insurer stood behind that factory at all.
+- **The Ayoreo case** was written on Conceria Pasubio, an Italian tannery that only bought hides.
+  Its checker reshaped rather than cut it, moving two Brazilian-owned ranch firms into `lenders`.
+  **Because a case reshaped by its own checker has had no independent check of the new shape, it went
+  to a second reviewer before merging** — which confirmed Earthsight's wording word for word and
+  added two Survival International reports. Keep that rule: a checker that does writer-work needs a
+  second pair of eyes on the new shape.
+
+## The Durba reconciliation, and how `killed` was settled at 3
+
+Two writers produced this case independently under the same id and disagreed, 4 against 3. The
+parliamentary mission counted four deaths: **one soldier killed by protesters and three protesters
+shot with live ammunition by state security forces** — the forces that were protecting the
+demolition machinery, against a protest about those demolitions, with police blocking the march to
+Kibali's own community centre. The soldier is out; the three are in, which matches Maikanch, where
+three Adivasis shot by Odisha police are counted because the police acted against a blockade of the
+project. **Five other counts are in `killed_note`**: ASF's at least four, the complainant's six to
+Canada's NCP, a Congolese outlet's six, Barrick's own two civilians and one police officer, and
+Reuters's at least one. No court has ruled.
+
+## Two conventions confirmed, and both had been broken
+
+- **`killed` is 0, not null, where deaths were considered and not counted.** CHECK20 says so and the
+  data agrees: 770 cases use 0, 460 of them with a note, against 229 null, where null reads as not
+  yet researched. One merged case came in null against a note.
+- **A company's own annual report or filing counts as the company's answer.** "The company's
+  position was not obtained" cannot be written while such a filing sits in `sources`. The La Platosa
+  card said exactly that while Excellon's own 2016 annual information form, cited on the same card
+  for production figures, carried the position in full — and carried a tribunal ruling of 16 November
+  2016 that the card reported as still pending, six days after the newspaper article it ended on.
+
+## Housekeeping from this round
+
+- **Wikipedia got into five cards across two batches.** It is not acceptable where a primary or
+  press source exists, and in every instance a primary source was available.
+- **`dedupe_oecdw2.py`** is the second-pass dedupe: the title match misses leads whose event is
+  already a case under another name, and batch 1 hit four in twelve. It matches distinctive company
+  words and requires the country or place to agree. **28 of the 413 open leads are extends rather
+  than new cases** — cheap desk work, no research. Country words and generic finance words are
+  stoplisted, because the first run matched a Nigerian lead to a Nigerian case on the word "nigeria".
+- **The two OECD Watch match counts in the coverage panel now compute at build time.** One had gone
+  stale inside this round.
+- Leads worth a later round, found while dropping others: **Anglo American held about 41-42.6% of
+  AngloGold Ashanti**, which would make Obuasi a foreign-owner case on ActionAid's own evidence
+  (the Swedish equipment suppliers were cut); and **Carlos Casado S.A., a subsidiary of Spain's
+  Grupo San José**, holds a second ranch on Ayoreo land, per Survival International, 2016.
+- Hosts: `oas.org` 403s behind a Cloudflare challenge; `reuters.com` 401s, so Reuters is cited at a
+  mirror; `mining.com`, `zeebusiness` and `mongabay` 403 to plain curl but serve through WebFetch;
+  `thewire.in` and `tuv.com` serve their bodies by script, so curl returns headlines only.
+  **`thewire.in` could not be read at all this round**, so two facts on the Kaziranga card rest on
+  its standfirst and the card says so.
 
 Replaces every earlier handoff.
 
