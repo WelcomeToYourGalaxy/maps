@@ -553,7 +553,11 @@ true facts the fix had removed**, which is the failure mode an over-zealous corr
 ### Three hand edits the delivery format could not carry, applied in the merge
 
 The edit format reaches `story`, `conviction`, `title`, `sources` and `case_ids`, and not the
-`countries` array. So: Chad's year as above; **`northern-rangelands-isiolo-conservancies` added to
+`countries` array. So: Chad's year — and **the first attempt at it was a blind swap of "end-2016"
+for "2017" that left the note ungrammatical and still on the wrong denominator**, which the checker
+caught. The analysis's own words are that the Glencore loan accounts for about 98 per cent of
+commercial debt stock in 2017, and the note now says that. **A hand edit gets no checker, so do not
+make one by string substitution without reading the sentence it lands in.** Also: **`northern-rangelands-isiolo-conservancies` added to
 `carbon-credits-new-land-grab`, which is the case its own third paragraph is about and which it did
 not link**; and the Wikipedia "Office of Public Safety" source removed from `aid-cover-for-spies`,
 with the Uruguay, Brazil and Guatemala `countries` notes that were taken through it **now saying on
@@ -569,6 +573,22 @@ a case link as an edit on the `case_ids` array, which cannot be applied as a str
 the script wrote nothing until the link was moved to `case_ids_add`. Pass checked files to it; it
 backs up `base.html` first and prints each entry's word count.
 
+### Three things the check found in passing, each worth its own pass
+
+- **`banks-that-bank-the-looters`: "none was prosecuted" is unsourced live text**, and the entry's own
+  source says the regulator was discussing potential breaches with the police and the National
+  Criminal Intelligence Service. That sentence was outside round 43's remit and it is now the
+  weakest claim on the card.
+- **`water-handed-to-companies` paragraph 2 may read as a contradiction to a novice.** It now says
+  the Bank assigned consultants who advised privatisation and, two sentences later, that the Bank had
+  not designed or wanted it. Both are sourced, from different pages of different documents, and that
+  is the honest record — but the owner's standard is novice-friendly prose, so it wants a sentence
+  joining the two rather than leaving the reader to.
+- **The three flagged country notes cannot be re-sourced from the document already on the card.** The
+  checker read the Congressional Record item for exactly this: Brazil appears only in its torture
+  sentence, and Uruguay and Guatemala only in 1990-era narcotics passages. So those notes need a new
+  source or they come off.
+
 ### Still open after round 43
 
 - **`case_ids` is still empty on three entries** — the spying, looted-money and debt-for-nature
@@ -580,10 +600,28 @@ backs up `base.html` first and prints each entry's word count.
   with its mine in Armenia. **Oxfam's count behind that entry covers sub-Saharan Africa in 2015 and
   Armenia is not in it**, and the card does not claim otherwise.
 - **Four stories now run past HYP.md's 350-500 word guide** — `rankings-bent-for-money` at 704 words,
-  `banks-that-bank-the-looters` 631, `water-handed-to-companies` 626, `aid-cover-for-spies` 608.
-  Seven of the nine were already over 500 before this round. The growth is the cost of the required
-  additions. **If the owner wants them back under 500, the place to cut is `rankings-bent-for-money`
-  paragraph 1**, about sixty words of scene-setting, and that is the writer's own recommendation.
+  `banks-that-bank-the-looters` 633, `water-handed-to-companies` 626, `aid-cover-for-spies` 610, then
+  ratings 576, carbon 554, coups 520, secret-loans 519, lending 503. Seven of the nine were already
+  over 500 before this round, and the growth is the cost of the required additions rather than
+  decoration.
+
+  **The writer and the checker disagreed about where to cut, and the checker is right.** The writer
+  offered sixty words of scene-setting in `rankings-bent-for-money` paragraph 1; the checker points
+  out that **HYP.md requires the opening scene** ("open on a real scene and tell it completely"), so
+  cutting there trades a rule for a guide. Its list instead, and the one it would make without
+  argument first:
+  - **`water-handed-to-companies` −45**: the fix spends 110 words correcting a half-quote where the
+    first sentence does the work and the paragraph-28 sentence only corroborates.
+  - **`rankings-bent-for-money` −62**: compress the two economists to one sentence, compress the
+    Jordan trip, shorten the "190 countries" explainer. **Do not touch the employing-workers
+    passage** — it is the only support for paragraph 1's closing clause about workers' protections.
+  - **`aid-cover-for-spies` −35**: the fiscal-1990 sentence, which is a different era from its
+    paragraph.
+  - **`banks-that-bank-the-looters` −25**.
+
+  Four would still land near 600 after all of that. **The checker's recommendation, and it is the
+  right one: take those cuts and treat about 650 as the ceiling for these four rather than cutting
+  checked record to meet a guide written for shorter entries.**
 - **The Cochabamba loan condition on `water-handed-to-companies` still rests on an advocacy source**,
   as does the $600m debt-relief claim on the `cochabamba-water-war` case card. That is now the
   weakest thing on that card and no better source was found.
