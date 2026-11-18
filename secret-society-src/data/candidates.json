@@ -10174,6 +10174,106 @@
    "bk": "court",
    "status": "apparently_qualifying",
    "note": "Out-of-cell or defective lead filed by round 10 agent d9_courts on 2026-11-17. Read by that agent, not verified. See the locator."
+  },
+  {
+   "title": "Former NATO official and Turkish defence contractor indicted over military construction contracts",
+   "country": "Belgium",
+   "inf": "corp",
+   "bk": "intl",
+   "status": "apparently_qualifying",
+   "symbol": "https://www.justice.gov/opa/pr/former-nato-official-and-turkish-defense-contractor-indicted-bribery-scheme-related-military",
+   "excerpt": "A Turkish national and a German national charged over an alleged bribery scheme involving contracts with the US military and NATO. Indictment unsealed in the District of Columbia, 24 January 2026.",
+   "note": "Held back by round 16: bk would be intl, which the round composition bars. Writable in a round that is not barring intl."
+  },
+  {
+   "title": "Lafayette assistant district attorney jailed seven years for bribery",
+   "country": "United States",
+   "inf": "",
+   "bk": "court",
+   "status": "apparently_qualifying",
+   "symbol": "https://www.justice.gov/usao-wdla/pr/former-lafayette-assistant-district-attorney-sentenced-seven-years-federal-prison",
+   "excerpt": "Gary Haynes, 67, former Lafayette assistant district attorney, sentenced 12 December 2025 to seven years after conviction for bribery conspiracy, bribery, money laundering conspiracy and obstruction.",
+   "note": "Held back by round 16: the accessible release names no payer and no decision, so ruling 11 fails on the release alone. The indictment or trial record would settle it."
+  },
+  {
+   "title": "Two brothers and a public official convicted in a multi-state bribery and fraud conspiracy",
+   "country": "United States",
+   "inf": "corp",
+   "bk": "cabinet",
+   "status": "apparently_qualifying",
+   "symbol": "https://www.justice.gov/usao-ndoh/pr/two-brothers-and-public-official-sentenced-collective-55-years-prison-fraud-and",
+   "excerpt": "Zubair Al Zubair (288 months), Muzzammil Al Zubair (276 months) and Michael Leon Smedley convicted of conspiracy to commit bribery concerning programs receiving federal funds, honest services wire fraud and Hobbs Act conspiracy. Sentenced 5 May 2026.",
+   "note": "Held back by round 16: Smedley is described as the public official but the release does not name the body he held office in, so ruling 11's named body is absent on the release alone."
+  },
+  {
+   "title": "Phoenix, Illinois officers took cash and drugs from motorists at traffic stops",
+   "country": "United States",
+   "inf": "",
+   "bk": "security",
+   "status": "apparently_qualifying",
+   "symbol": "https://www.justice.gov/usao-ndil/pr/former-suburban-chicago-police-officer-convicted-federal-corruption-charges",
+   "excerpt": "Antoine Larry, patrol officer, Phoenix Illinois Police Department, convicted of conspiring with another officer to solicit cash and drugs from vehicle occupants in exchange for dropping charges or avoiding impoundment; reports falsified. Sentenced to more than five years, 17 June 2026.",
+   "note": "Held back by round 16 for the owner: the payers are private defendants in their own traffic cases, not a crime group, so no inf value fits. This is the same question the lead bank already raises in the cell file named '(payer is a private defendant in his own traffic case, not a crime group)'. Ruling 3 says buying the outcome of your own case is in scope; what it does not say is which inf class the payer belongs to."
+  },
+  {
+   "title": "Job-selling inside Romanian public health bodies: managers paid by staff and candidates",
+   "country": "Romania",
+   "inf": "",
+   "bk": "company",
+   "status": "apparently_qualifying",
+   "symbol": "https://www.dna.ro/comunicat.xhtml?id=13998 ; https://www.dna.ro/comunicat.xhtml?id=12500 ; https://www.dna.ro/comunicat.xhtml?id=13579 ; https://www.dna.ro/comunicat.xhtml?id=12731",
+   "excerpt": "Caba Doina, manager of the Mavromati Botosani county hospital, took 11,000 euros and gold jewellery over 22,000 lei from hospital employees and from candidates in its own recruitment competitions (Dec 2021-Jul 2022). Adascalitei Monica-Delia, a later manager of the SAME hospital, took 5,000-10,000 lei from three people including two subordinates to approve a hiring and a transfer (Oct-Dec 2023). Gavan Constantin took 49,500 euros from seven people claiming influence over his son-in-law, the manager of the Dolj county ambulance service, to get them and their relatives hired as drivers and nurses.",
+   "note": "HELD BACK BY ROUND 16 FOR AN OWNER RULING. This is the purest form of the map's own subject - outsiders' money placing people INSIDE a public body - and it is a large family in the Romanian corpus. It fails only BRIEF11 limb 1, because a job applicant is none of the listed outside parties. If limb 1 is widened, or an inf class is created, this family is writable at volume."
+  },
+  {
+   "title": "Ruling 3 has no inf class: a private individual buying the outcome of his own case",
+   "country": "Romania",
+   "inf": "",
+   "bk": "security",
+   "status": "apparently_qualifying",
+   "symbol": "https://www.dna.ro/comunicat.xhtml?id=13001 ; https://www.dna.ro/comunicat.xhtml?id=13257 ; https://www.dna.ro/comunicat.xhtml?id=13221 ; https://www.dna.ro/comunicat.xhtml?id=13243 ; https://www.dna.ro/comunicat.xhtml?id=12602",
+   "excerpt": "Iancu Costinel, officer of the Pitesti Special Operations Brigade, and Pascu Robert Bogdan of IPJ Arges took 100,000 euros claiming influence over a magistrate to get a favourable ruling in a criminal case. M.M.C. demanded 180,000 euros claiming influence over judges of the Bucharest Tribunal. G.E.N. demanded 25,000 euros claiming influence over an officer of the Bucharest Organised Crime Brigade. Perde Emanuel, Cluj transport police, handed over a BLANK contravention report form for 1,000 euros. Vieru Sergiu Vasile, IPJ Neamt, two counts over a driving case he had himself registered.",
+   "note": "HELD BACK BY ROUND 16 FOR AN OWNER RULING, and this is the gap that blocks the most records. Ruling 3 settles that a defendant paying so his own matter is decided his way IS an outside party. But the inf enum has no class for a private individual: state, crime, corp, money, lodge, faith, elite, movement, lender. Where the payer is a business under investigation the round wrote it as corp (Ciulei, Sirbu Catalin-George, the tax-evasion cases). Where the payer is a bare individual there is nothing to write. The lead bank already names this twice in its own cell filenames - '(payer is a private defendant in his own traffic case, not a crime group)' and '(payers are lorry drivers, not a crime group)' - so this is the third independent arrival at the same wall. It also blocks the US cases: Antoine Larry's traffic stops in Phoenix, Illinois, and the Massachusetts CDL family."
+  },
+  {
+   "title": "Patient payments to Romanian hospital doctors and managers",
+   "country": "Romania",
+   "inf": "",
+   "bk": "company",
+   "status": "apparently_qualifying",
+   "symbol": "https://www.dna.ro/comunicat.xhtml?id=12901 ; https://www.dna.ro/comunicat.xhtml?id=12878",
+   "excerpt": "Gorgan Radu-Mircea, head of Neurosurgery IV at the Bagdasar-Arseni emergency hospital in Bucharest, received money directly 89 times between 23 September 2024 and 3 March 2025, sums from 200 lei to 1,000 euros, over 25,000 euros in total, from patients or their relatives. Tinica Grigore, manager of the Georgescu cardiovascular institute in Iasi, received over 20 times, 500 lei to 3,500 euros, from patients or relatives, for performing surgery preferentially and quickly (27 charged acts).",
+   "note": "HELD BACK BY ROUND 16: fails BRIEF11 limb 1 for the same reason as the job-selling family. A patient is not an outside party on the list. Recorded because the Romanian corpus produces this family in volume and a later round should not spend reads rediscovering that it fails."
+  },
+  {
+   "title": "Negoita Robert Sorin: Bucharest Sector 3 built a road on a company's private land",
+   "country": "Romania",
+   "inf": "corp",
+   "bk": "cabinet",
+   "status": "apparently_qualifying",
+   "symbol": "https://www.dna.ro/comunicat.xhtml?id=13536",
+   "excerpt": "In summer 2025 the mayor of Bucharest Sector 3 ordered a connecting street built and asphalted on land privately owned by S.C. Future Business Ideas S.R.L., with no legal documentation for a public investment and no building permits, costing the district over 902,000 lei while giving the landowning company an undue benefit. 800,000 lei bail.",
+   "note": "HELD BACK BY ROUND 16: a company obtained a public work on its own land, but no payment to the mayor and no insider placement is shown, so limb 2 is not made out on the release. Abuse of office benefiting a company is the commonest shape in this corpus that the test excludes. Worth a ruling on whether it should be."
+  },
+  {
+   "title": "Dumitrescu Iulian, president of Prahova County Council: 923,350 lei in 43 cash instalments",
+   "country": "Romania",
+   "inf": "corp",
+   "bk": "cabinet",
+   "status": "apparently_qualifying",
+   "symbol": "https://www.dna.ro/comunicat.xhtml?id=12647",
+   "excerpt": "Charged with giving bribes in continuous form (50 acts), influence peddling (3 acts), taking bribes (8 acts) and financial operations offences. Between 22 October 2021 and 8 November 2022, as decision-maker in a company owning land and real beneficiary of the account feeding it, he is alleged to have given one individual 923,350 lei in cash in 43 instalments.",
+   "note": "HELD BACK BY ROUND 16: a sitting county council president and the largest figure of its kind in the corpus, but the accessible release does not state what the payments bought, so ruling 11's named decision is absent. The indictment would settle it. Worth one fetch in a later round."
+  },
+  {
+   "title": "Romanian inspectors took 1,000-14,000 euros to confiscate less from caterers",
+   "country": "Romania",
+   "inf": "corp",
+   "bk": "security",
+   "status": "apparently_qualifying",
+   "symbol": "https://www.dna.ro/comunicat.xhtml?id=12654",
+   "excerpt": "Between 2022 and 2024, during inspections, three officials including Avram Marina-Roxana and Iordache Florentina demanded and received from representatives of several public catering companies sums between 1,000 and 14,000 euros, to order confiscation of smaller sums than were due, and drew up false inspection notes recording lower revenues than the companies had illegally earned during a suspension of activity.",
+   "note": "HELD BACK BY ROUND 16 only because the release does not name the inspecting body or a city, so the record could not be placed without guessing. One fetch of the DNA territorial service page would fix it. Writable as corp -> security."
   }
  ]
 }
