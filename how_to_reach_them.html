@@ -2791,6 +2791,95 @@ SELECT ?item ?itemLabel ?itemDescription ?enwiki ?clsLabel ?site ?email ?phone ?
            schema:name ?enwiki }
  SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" }
 } LIMIT 400`; }
+/* SEATS AND CHAIRS.
+
+   For a long time the Members and Presiding Officers boxes on this map
+   said "not in the record here" for every place on Earth, and the
+   reason was a mismatch of one word, not thin data.
+
+   `qPositions` above asks for things that are an INSTANCE of some kind
+   of public office: ?item wdt:P31 ?cls, ?cls wdt:P279* wd:Q4164871.
+   Wikidata does not model a legislative seat that way. "Member of the
+   California State Assembly" is not an instance of anything -- it is
+   itself a CLASS, a subclass of legislator (Q4175034). And Q4175034
+   does not sit under Q4164871; asking Wikidata
+   `ASK { wd:Q4175034 wdt:P279* wd:Q4164871 }` returns false.
+
+   So no query on this map could ever have returned a seat or a
+   speaker's chair, in any country, at any level. This one walks the
+   subclass tree on the item itself and gets both, because speakers and
+   whips are classed under legislator too: California returns the two
+   member seats plus the Speaker and the President pro tempore.
+
+   4,191 such positions carry a jurisdiction, across 3,236 places.
+   What they do NOT carry is a person: 113 of the 4,191 name a current
+   holder, and for California's two member seats not one of the people
+   Wikidata returns has an email. That is the right trade for this map.
+   A seat and what it can do is stable; who is sitting in it is not, and
+   the About panel says so.
+
+   Two filters, both structural rather than word lists, because a word
+   list only ever works in the languages somebody thought of:
+
+   The P279 filter drops a seat that is a subclass of another seat for
+   the same place. That is how Wikidata stores one term of a body --
+   "Member of the 15th Lok Sabha" is a subclass of "Member of the Lok
+   Sabha" -- and a term that ended in 2014 has no business on a map of
+   who to contact now. The existing `isTenure` guard does not catch
+   these: its ordinal test is anchored to the start of a label, and the
+   ordinal here sits in the middle.
+
+   The `|| EXISTS { ?item wdt:P1308 [] }` escape puts back the ones that
+   are real offices in their own right. Leader of the Opposition in the
+   Lok Sabha is also stored as a subclass of the plain seat, and the
+   filter alone dropped it; it records a sitting holder, and a finished
+   term never does, so an incumbent is the signal that separates them.
+
+   The label service asks for sixteen languages, not two. 1,516 of these
+   positions have no English label, and with only en and mul the panel
+   printed the bare Q-id: Germany's local-council seat showed as
+   "Q112626437" rather than "Mitglied des Ortsrats". */
+function qSeats(q){ return `
+SELECT ?item ?itemLabel ?itemDescription ?enwiki ?clsLabel ?site ?email ?phone ?holder ?holderLabel WHERE {
+ ?item wdt:P1001 wd:${q} ; wdt:P279* wd:Q4175034 .
+ FILTER NOT EXISTS { ?item wdt:P576 [] }
+ FILTER( !EXISTS { ?item wdt:P279 ?gen . ?gen wdt:P1001 wd:${q} ; wdt:P279* wd:Q4175034 . }
+         || EXISTS { ?item wdt:P1308 [] } )
+ OPTIONAL{?item wdt:P31 ?cls}
+ OPTIONAL{?item wdt:P856 ?site} OPTIONAL{?item wdt:P968 ?email}
+ OPTIONAL{?item wdt:P1329 ?phone} OPTIONAL{?item wdt:P1308 ?holder}
+ OPTIONAL{ ?art schema:about ?item ; schema:isPartOf <https://en.wikipedia.org/> ;
+           schema:name ?enwiki }
+ SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul,de,fr,es,pt,ru,ar,zh,hi,ja,it,nl,pl,tr,id" }
+} LIMIT 400`; }
+
+/* COMMITTEES: asked for, measured, and deliberately not shipped.
+
+   Committees are empty on this map for a findable reason. 1,228
+   parliamentary committees exist in Wikidata and only 79 record a
+   jurisdiction (P1001), which is the key every other query here joins
+   on. 547 record which body they are part of (P361), and the chambers
+   are already known by the time the branches are drawn, so the question
+   can be asked from the other end -- given these chambers, what is part
+   of them -- which reaches 516 committees across 88 chambers.
+
+   That query was written and run. It is not in this file because the
+   records it returns cannot be told apart. Asking it of the US House
+   and Senate returns 106 committees. Of those, 29 record a website or a
+   chair and 77 record neither; the defunct-wording check catches 21.
+   And the 77 are not the dead ones: they include the Church Committee,
+   wound up in 1976, alongside the House Committee on Ethics, which sits
+   today. Neither carries an end date. Both were founded long ago --
+   Agriculture in 1820 and still sitting, Alcoholic Liquor Traffic
+   abolished in 1927 -- so inception separates nothing either.
+
+   There is no property in the record that says which committees still
+   meet. Shipping the query would have put abolished committees in front
+   of readers as places to send a submission, so it is left out. A
+   per-country source is the only honest route: Open States carries
+   committees for all fifty US state legislatures, and the European
+   Parliament and UK Parliament publish their own. */
+
 function qBodies(q){ return `
 SELECT ?item ?itemLabel ?itemDescription ?enwiki ?clsLabel ?site ?email ?phone WHERE {
  ?item wdt:P1001 wd:${q} ; wdt:P31 ?cls . ?cls wdt:P279* wd:Q327333 .
@@ -3621,13 +3710,14 @@ async function openJuris(q, label){
     CUR.items = items; render();
   }catch(e){ if(CUR.token!==token) return; CUR.items=[]; }
   const isCountry = STACK.length<=1;
-  const [pos, bod, byc] = await Promise.all([
+  const [pos, seat, bod, byc] = await Promise.all([
     sparql(qPositions(q),'pos:'+q).catch(()=>[]),
+    sparql(qSeats(q),'seat:'+q).catch(()=>[]),
     sparql(qBodies(q),'bod:'+q).catch(()=>[]),
     isCountry ? sparql(qByCountry(q),'ctr:'+q).catch(()=>[]) : Promise.resolve([])
   ]);
   if(CUR.token!==token) return;
-  CUR.items=(CUR.items||[]).concat(pos,bod,byc); CUR.state='done'; render();
+  CUR.items=(CUR.items||[]).concat(pos,seat,bod,byc); CUR.state='done'; render();
   /* pins carry the office name once the names are known */
   if(typeof PINS!=='undefined'){
     Object.values(PINS).forEach(x=>{ const o=BK&&BK.byId&&BK.byId[x.id]; if(o) x.label=o.label; });
@@ -3673,6 +3763,10 @@ function classifyRows(core, items){
     const label=(m.row.itemLabel&&m.row.itemLabel.value)||qid(m.row.item.value);
     const cls=m.classes.join(' ');
     if(isTenure(label,m.classes)) return;
+    /* The label service returns the Q-id itself when it has no label in
+       any language asked for. That is a record with no title, and a
+       panel entry reading "Q4115712" tells a reader nothing. */
+    if(/^Q[0-9]+$/.test(label.trim())) return;
     /* An office that no longer exists.
 
        "Member of the a city's common council", described by the
@@ -6790,6 +6884,7 @@ function openLocal(id){
     row('Address', L.addr)+
     row('Telephone', bareTel(L.phone))+
     row('Email', bareMail(L.email))+
+    row('Open', L.hours)+
     (L.site ? '<div class="fld"><dt>Website</dt><dd><a href="'+esc(L.site)+'" target="_blank" rel="noopener">'+esc(L.site)+'</a></dd></div>' : '')+
     '<div class="meta">OpenStreetMap contributors, via this account\u2019s executive-map data</div>'+
     '</div>';
@@ -7032,7 +7127,13 @@ async function loadLocalContacts(feature, lvlIdx){
       const id='L:'+k+':'+i;
       if(PINS[id]) return;
       LOCAL[id]={name:r[2], kind:r[3], site:r[4]||'', phone:r[5]||'',
-                 email:r[6]||'', addr:r[7]||'', oper:r[8]||''};
+                 email:r[6]||'', addr:r[7]||'', oper:r[8]||'',
+                 /* Opening hours matter here and nowhere else on the map:
+                    this is the one kind of entry a reader can physically
+                    walk into, and a filing deadline is no use if the
+                    counter shuts at noon. Wikidata id is the join key
+                    back to the jurisdiction record. */
+                 hours:r[9]||'', wd:r[10]||''};
       PINS[id]={id:id, lng:lng, lat:lat, label:r[2], lvlQ:null, lvlIdx:lvlIdx};
       added++;
     });
