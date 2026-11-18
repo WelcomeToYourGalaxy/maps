@@ -6,11 +6,14 @@ Repo: WelcomeToYourGalaxy/maps. Build output: `infiltration.html` (repo root). S
 ## What the map is
 A MapLibre globe of documented cases where an outside party (foreign state or spy service, organised crime, company/industry, bank, lodge/secret society, religious movement, elite network, political or armed movement, lender) got its people, money or control INSIDE a government body, an international body or a company, and decisions there served it.
 
-Current size: 3,182 cases in 183 jurisdictions, 510 organisations, 48 channels, 31 patterns.
-By who infiltrates: corp 1267, crime 704, state 395, movement 209, lodge 76, money 70, faith 60, elite 29, lender 10.
-By relevance: legacy 1273, now 1084, past 463. Countries with no qualifying case, shown as estimates: 15.
-Shape deviation 22.1 points against the goal of 5.0. Run `python3 shape.py`.
-(Figures as of round 10, 17 November 2026. The dated handoffs in the project carry what changed.)
+Current size: 3,304 cases in 183 jurisdictions, 510 organisations, 48 channels, 31 patterns.
+By who infiltrates: corp 1456, crime 915, state 393, movement 296, lodge 76, money 70, faith 59, elite 29, lender 10.
+By relevance: legacy 1489, now 1306, past 509. Countries with no qualifying case, shown as estimates: 15.
+Shape deviation 19.9 points against the goal of 5.0. Run `python3 shape.py`.
+(Figures as of round 14, 18 November 2026. The dated handoffs in the project carry what changed,
+and HANDOFF-ROUND14.md is the current one. DO NOT state a held-count anywhere in this file: one of
+them went stale between rounds and cost an agent four finished records. State the rate and let
+findheld.py answer the count when the brief is written.)
 
 ## THE STANDING GOAL (set by the owner, 16 November 2026) — read this first
 
