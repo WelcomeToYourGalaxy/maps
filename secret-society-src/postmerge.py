@@ -56,6 +56,16 @@ def main():
             r = c.get('drop_reason') or c.get('why') or c.get('reason') or '(no reason recorded)'
             f.write('%s :: %s\n' % (c.get('n', ''), ' '.join(str(r).split())[:220]))
 
+    # Cases that look writable and are not, because the outcome went the other
+    # way. Each entry cost an agent a drafted record. Cheap to carry, expensive
+    # to omit, so every round gets it whether its brief mentions it or not.
+    cl = json.load(open(D('closed_cases.json'), encoding='utf-8'))
+    with open(os.path.join(B5, 'closed_cases.txt'), 'w', encoding='utf-8') as f:
+        f.write('# %s\n\n' % cl['note'])
+        for c in cl['cases']:
+            f.write('%s\n    CLOSED: %s\n    LOOKS WRITABLE FROM: %s  (found %s)\n\n'
+                    % (c['case'], c['closed'], c['source_shape'], c['found']))
+
     with open(os.path.join(B5, 'orgs.txt'), 'w', encoding='utf-8') as f:
         for o in og:
             f.write('%s | %s | %s | %s\n' % (o.get('k', ''), o.get('n', ''), o.get('ty', ''), o.get('c', '')))

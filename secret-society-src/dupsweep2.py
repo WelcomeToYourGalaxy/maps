@@ -57,7 +57,20 @@ def main(thresh=0.95):
                 s, why = 0.0, []
                 if li & lj:
                     k = sorted(li & lj)[0]
-                    s += 1.0; why.append('same %s %s' % k)
+                    # A SINGLE-CASE LOCATOR IS NOT ALWAYS SINGLE-CASE. Measured on the
+                    # whole map: 120 locators, exactly one of them shared by two records,
+                    # and that one firing was a false positive. DNA release 12750 sends two
+                    # separate prosecutions to trial in one notice - Dumitrescu at the
+                    # Prahova county council and Iacomi, mayor of Lehliu-Gara - and round
+                    # 14 counted 81 monthly digests in ids 159-5,499, each covering many
+                    # cases. So the locator keeps its full weight only where the two
+                    # records name the same body; where they name different ones it is the
+                    # multi-case-document shape and scores a fifth of that.
+                    same_body = (str(ci.get('rank', '')).lower() == str(cj.get('rank', '')).lower())
+                    s += 1.0 if same_body else 0.2
+                    why.append('same %s %s%s' % (k + ('' if same_body else
+                               ' BUT the two name different bodies, so it may be one notice '
+                               'covering two prosecutions',)))
                 ov = len(ti & tj_) / max(1, len(ti | tj_))
                 if ov > 0:
                     s += ov; why.append('title overlap %.2f' % ov)
