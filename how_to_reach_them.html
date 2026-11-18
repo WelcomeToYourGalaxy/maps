@@ -5131,6 +5131,8 @@ function render(){
     if(a) SELFCH.push(['<a href="mailto:'+esc(a)+'">'+esc(a)+'</a>']); });
   [...phones].forEach(x=>{ const t=bareTel(x);
     if(t) SELFCH.push(['<span>'+esc(t)+'</span>']); });
+  /* the street address the register publishes, on the place itself */
+  if(mr&&mr.a) SELFCH.push(['<span>'+esc(mr.a)+'</span>']);
   /* and the way to everything else the register holds for it, which is a
      page of its own rather than four more chips on this line */
   if(mr){
@@ -7215,7 +7217,9 @@ function openGov(i){
   SELFSITE=null; paintSiteLink();
   const fld=(t,inner)=> inner ? '<div class="fld"><dt>'+t+'</dt><dd>'+inner+'</dd></div>' : '';
   const mails=a=>a.map(x=>'<a href="mailto:'+esc(bareMail(x))+'">'+esc(bareMail(x))+'</a>').join('<br>');
-  const names=a=>a.map(x=>esc(x)).join(' &middot; ');
+  /* each name opens a search for that councillor on this council, so a reader
+     can check who sits on it; the search is the same kind the site links use */
+  const names=a=>a.map(x=>'<a href="https://duckduckgo.com/?q='+encodeURIComponent(x+' '+st.label+' council')+'" target="_blank" rel="noopener">'+esc(x)+'</a>').join(' &middot; ');
   let h='';
   if(r.u) h+=fld('Website','<a href="'+esc(r.u)+'" target="_blank" rel="noopener">'+esc(r.u)+'</a>');
   if(r.e) h+=fld(asList(r.e).length>1?'Email addresses':'Email', mails(asList(r.e))+
