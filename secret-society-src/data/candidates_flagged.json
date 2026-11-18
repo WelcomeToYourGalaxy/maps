@@ -1,5 +1,5 @@
 {
- "note": "Round-12 lead bank, scored. Every lead names the CLOSEST held record with a score and the reason, so the agent always has something to compare against. high = score >=0.85 (an identical single-case locator, a high title overlap, or a rare figure). check = 0.40-0.85, read the named record first. none = nothing close. REMOVED = matches a deliberately removed record, with the reason. A figure is weighted by how often it appears on the map: 10000 is in 77 records and means nothing; a figure in <=2 records is strong. NOTHING REMOVED FROM THE BANK.",
+ "note": "Flag the banked leads against the records the map already holds and has removed.\n\nRun after every merge:  python3 flagleads.py\n\nWHY THIS EXISTS, AND WHY IT IS BUILT THIS WAY. Leads are filed by agents whose\nown cells were barred, so they are filed by precisely the agents with no reason\nto read the cell they land in. The bank therefore accumulates leads that\nduplicate records the map already holds. Measured at 41 per cent contamination\nacross the bank, and higher in some cells.\n\nThree attempts taught the design:\n\n  1. A flag that states a verdict will be wrong often enough to cost records.\n     Two agents lost the most valuable leads in their files to flags that fired\n     on a round figure. So every lead now NAMES THE CLOSEST HELD RECORD with a\n     score and the reason, and the agent reads that record rather than trusting\n     a label.\n\n  2. Every signal has to be weighted by how rare it is on the map. The figure\n     10,000 appears in 77 held records and means nothing; a figure in one or two\n     records is strong. The body \"ministry of defence\" appears in 17 and means\n     nothing; \"ASP Trapani\" identifies one case.\n\n  3. Titles alone miss the commonest duplicate. An agent measured 0 of 25\n     records from this bank because lead titles paraphrase held titles with no\n     shared figure: \"a none flag on an Italian health lead means nothing; the\n     body name is the tell\". Hence the third signal.\n\nNOTHING IS EVER REMOVED FROM THE BANK. A flag an agent disproves is a real lead.\n",
  "candidates": [
   {
    "id": "round9-a10_movements-984acc334206",
@@ -12,9 +12,9 @@
    "bk": "finance",
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a10_movements on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 2459,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Armed group leaders' grip on two Libyan ministries blocked the payroll\" (shares names ['Armed', 'Bank', 'Central', 'Libya']). REMOVAL REASON: Duplicate: the map already holds the UN Panel's payroll finding on al-Zobi's ministry control from the same report paragraphs, so the Trabelsi detail belongs there as an update. [round 10 review, 2026"
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 3083,
+   "DUP_NOTE": "closest held record is 3083: \"Libya's oil minister suspended to clear the way for an armed groups'\" (score 0.25 — title overlap 0.25)"
   },
   {
    "id": "round9-a10_movements-09c07406b010",
@@ -27,9 +27,9 @@
    "bk": "company",
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a10_movements on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 1042,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Militia chief became Libya's defence undersecretary and border chief\" (shares names ['Abdulhamid', 'Dabiba', 'Libya', 'Militia']). REMOVAL REASON: Duplicate of the kept record on the same appointment of the 111 Brigade commander as defence undersecretary. [round 9 review, 2026-11-17]"
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 2792,
+   "DUP_NOTE": "closest held record is 2792: \"Militia chief's brother ran a firm on Libya's power and oil contract\" (score 0.30 — title overlap 0.30)"
   },
   {
    "id": "round9-a10_movements-d2d160839caa",
@@ -42,9 +42,9 @@
    "bk": "security",
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a10_movements on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 2459,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Militia's migrant prison re-badged by a Libyan interior ministry\" (shares names ['Apparatus', 'General', 'Libyan', 'Stability']). REMOVAL REASON: Duplicate of the kept Al-Maya record on the same 8 March 2023 interior ministry decision. [round 9 review, 2026-11-17]"
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 2533,
+   "DUP_NOTE": "closest held record is 2533: \"Libya's coastal security took in a militia's boat units\" (score 0.27 — title overlap 0.27)"
   },
   {
    "id": "round9-a10_movements-0661e86d36ed",
@@ -59,7 +59,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a10_movements on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "high",
    "DUP_HELD_IDX": 2950,
-   "DUP_NOTE": "closest held record is 2950: \"Libya's eastern security agency closed election centres before the v\" (score 0.90 — title overlap 0.90; shared: agency, before, centres)"
+   "DUP_NOTE": "closest held record is 2950: \"Libya's eastern security agency closed election centres before the v\" (score 0.90 — title overlap 0.90)"
   },
   {
    "id": "round9-a10_movements-98d64b87538d",
@@ -72,9 +72,9 @@
    "bk": "legis",
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a10_movements on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 2469,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Militia's migrant prison re-badged by a Libyan interior ministry\" (shares names ['Apparatus', 'Busriba', 'Hassan', 'Libyan']). REMOVAL REASON: Duplicate of the kept Al-Maya record on the same 8 March 2023 interior ministry decision. [round 9 review, 2026-11-17]"
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 2944,
+   "DUP_NOTE": "closest held record is 2944: \"Militia commander Bahrun sat inside Libya's Zawiyah security directo\" (score 0.27 — title overlap 0.27)"
   },
   {
    "id": "round9-a10_movements-e533b3d72885",
@@ -88,8 +88,8 @@
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a10_movements on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "check",
-   "DUP_NOTE": "closest held record is 3083: \"Libya's oil minister suspended to clear the way for an armed groups'\" (score 0.56 — title overlap 0.56; shared: clear, deal, libya)",
-   "DUP_HELD_IDX": 3083
+   "DUP_HELD_IDX": 3083,
+   "DUP_NOTE": "closest held record is 3083: \"Libya's oil minister suspended to clear the way for an armed groups'\" (score 0.56 — title overlap 0.56)"
   },
   {
    "id": "round9-a10_movements-5c0493fd5021",
@@ -132,9 +132,9 @@
    "bk": "security",
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a10_movements on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 208,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Ugandan army chief made Ituri a province and named its governor in Con\" (shares names ['Congo', 'Democratic', 'General', 'Republic']). REMOVAL REASON: Not directly infiltration (Nov 2026 stricter test): Open military occupation, not infiltration."
+   "DUP_FLAG": "check",
+   "DUP_HELD_IDX": 2520,
+   "DUP_NOTE": "closest held record is 2520: \"AFC/M23 put its own staff in Congo's migration and customs posts at \" (score 0.44 — title overlap 0.44)"
   },
   {
    "id": "round9-a10_movements-e126a9cb98d3",
@@ -147,9 +147,9 @@
    "bk": "finance",
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a10_movements on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 1231,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"M23 replaced Congo's mining offices and took the Twangiza gold mine\" (shares names ['Congo', 'Democratic', 'Republic', 'United']). REMOVAL REASON: This is conquest: after taking Luhihi the movement replaced state services with its own mining office, courts and tax structures, which the UN Group calls usurping state functions. Nobody is placed in"
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 208,
+   "DUP_NOTE": "closest held record is 208: \"Glencore pays Congo $180m over bribery of officials\" (score 0.08 — title overlap 0.08)"
   },
   {
    "id": "round9-a11_courts-f9b78e99f68a",
@@ -222,7 +222,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a12_legis on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2477,
-   "DUP_NOTE": "closest held record is 2477: \"Libyan armed groups ran local councils and fielded their own electio\" (score 0.33 — title overlap 0.33; shared: armed, groups, libyan)"
+   "DUP_NOTE": "closest held record is 2477: \"Libyan armed groups ran local councils and fielded their own electio\" (score 0.33 — title overlap 0.33)"
   },
   {
    "id": "round9-a12_legis-ecb26982ad61",
@@ -237,7 +237,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a12_legis on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2674,
-   "DUP_NOTE": "closest held record is 2674: \"Court: Guerini's waste firms infiltrated Bouches-du-Rhone's institut\" (score 0.40 — title overlap 0.40; shared: bouches, guerini, rhone)"
+   "DUP_NOTE": "closest held record is 2674: \"Court: Guerini's waste firms infiltrated Bouches-du-Rhone's institut\" (score 0.40 — title overlap 0.40)"
   },
   {
    "id": "round9-a12_legis-6fbfc8e04a14",
@@ -252,7 +252,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a12_legis on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2677,
-   "DUP_NOTE": "closest held record is 2677: \"Prosecutors say Estre's proxy ran Bauru's R$5.2bn waste concession\" (score 0.33 — title overlap 0.33; shared: bauru, proxy, waste)"
+   "DUP_NOTE": "closest held record is 2677: \"Prosecutors say Estre's proxy ran Bauru's R$5.2bn waste concession\" (score 0.33 — title overlap 0.33)"
   },
   {
    "id": "round9-a12_legis-5d4b71a3de73",
@@ -293,8 +293,9 @@
    "bk": "legis",
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a12_legis on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Kenya's security minister named five MPs and tycoons as drug suspects\" (shares names ['Harun', 'Kenyan', 'Mwau', 'Parliament']). REMOVAL REASON: Not directly infiltration (Nov 2026 stricter test): Names on a suspect list with no conviction or use of office shown."
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 401,
+   "DUP_NOTE": "closest held record is 401: \"Akasha brothers paid Kenyan judges, prosecutors and police\" (score 0.09 — title overlap 0.09)"
   },
   {
    "id": "round9-a12_legis-13014de83ad8",
@@ -354,7 +355,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a13_gaps on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2831,
-   "DUP_NOTE": "closest held record is 2831: \"Mombasa port's verification head charged over an ivory container rel\" (score 0.67 — title overlap 0.67; shared: container, head, ivory)"
+   "DUP_NOTE": "closest held record is 2831: \"Mombasa port's verification head charged over an ivory container rel\" (score 0.67 — title overlap 0.67)"
   },
   {
    "id": "round9-a13_gaps-98b705c7a1c6",
@@ -472,8 +473,7 @@
    "bk": "cabinet",
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a13_gaps on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Scam-compound boss advised two Cambodian prime ministers\" (shares names ['Cambodian', 'Chen', 'Prince', 'Treasury']). REMOVAL REASON: Not directly infiltration (Nov 2026 stricter test): A scam boss who advised prime ministers; nothing shows the advisory role used to steer decisions for his group."
+   "DUP_FLAG": "none"
   },
   {
    "id": "round9-a13_gaps-7fa5b4e45ab8",
@@ -518,7 +518,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a13_gaps on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "high",
    "DUP_HELD_IDX": 2509,
-   "DUP_NOTE": "closest held record is 2509: \"Intelligence report put 272 Biman staff inside gold smuggling rings\" (score 1.06 — same node id 68096; title overlap 0.06)"
+   "DUP_NOTE": "closest held record is 2509: \"Intelligence report put 272 Biman staff inside gold smuggling rings\" (score 1.07 — same node id 68096, one locator is one prosecution; title overlap 0.07)"
   },
   {
    "id": "round9-a1_haiti_car-f1a28a02cd5c",
@@ -533,7 +533,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a1_haiti_car on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2890,
-   "DUP_NOTE": "closest held record is 2890: \"Gang leader demanded a senior Carrefour post for a close associate\" (score 0.60 — title overlap 0.60; shared: associate, carrefour, demanded)"
+   "DUP_NOTE": "closest held record is 2890: \"Gang leader demanded a senior Carrefour post for a close associate\" (score 0.60 — title overlap 0.60)"
   },
   {
    "id": "round9-a1_haiti_car-3d18bd6e6efd",
@@ -563,7 +563,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a1_haiti_car on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2842,
-   "DUP_NOTE": "closest held record is 2842: \"Haitian gangs placed informants inside remittance houses and taxed p\" (score 0.42 — title overlap 0.42; shared: gangs, haitian, houses)"
+   "DUP_NOTE": "closest held record is 2842: \"Haitian gangs placed informants inside remittance houses and taxed p\" (score 0.42 — title overlap 0.42)"
   },
   {
    "id": "round9-a1_haiti_car-43b6436a3dec",
@@ -578,7 +578,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a1_haiti_car on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2900,
-   "DUP_NOTE": "closest held record is 2900: \"Barge owners pay Haitian police to guard a private sea route from AP\" (score 0.75 — title overlap 0.75; shared: barge, guard, haitian)"
+   "DUP_NOTE": "closest held record is 2900: \"Barge owners pay Haitian police to guard a private sea route from AP\" (score 0.75 — title overlap 0.75)"
   },
   {
    "id": "round9-a1_haiti_car-ad17bd3e2544",
@@ -623,7 +623,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a1_haiti_car on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2502,
-   "DUP_NOTE": "closest held record is 2502: \"Senator said to run the BLTS gang placed two heads of Haiti's aid of\" (score 0.42 — title overlap 0.42; shared: haiti, heads, office)"
+   "DUP_NOTE": "closest held record is 2502: \"Senator said to run the BLTS gang placed two heads of Haiti's aid of\" (score 0.45 — title overlap 0.45)"
   },
   {
    "id": "round9-a1_haiti_car-fcdb82fe3978",
@@ -668,7 +668,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a1_haiti_car on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2820,
-   "DUP_NOTE": "closest held record is 2820: \"Dominican army ammunition reached Haitian gangs through its own offi\" (score 0.60 — title overlap 0.60; shared: ammunition, army, dominican)"
+   "DUP_NOTE": "closest held record is 2820: \"Dominican army ammunition reached Haitian gangs through its own offi\" (score 0.60 — title overlap 0.60)"
   },
   {
    "id": "round9-a1_haiti_car-3edb926f8ead",
@@ -681,9 +681,9 @@
    "bk": "security",
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a1_haiti_car on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
-   "DUP_FLAG": "REMOVED",
+   "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2820,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Dominican army lieutenant held with 1,516 rounds and a Haitian nationa\" (shares names ['Army', 'December', 'Dominican', 'Haitian']). REMOVAL REASON: A single arrest of an army officer carrying ammunition, with no network, buyer or decision identified and no further information from the authorities. [round 9 review, 2026-11-17]"
+   "DUP_NOTE": "closest held record is 2820: \"Dominican army ammunition reached Haitian gangs through its own offi\" (score 0.13 — title overlap 0.13)"
   },
   {
    "id": "round9-a1_haiti_car-4a7db925fae5",
@@ -698,7 +698,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a1_haiti_car on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2641,
-   "DUP_NOTE": "closest held record is 2641: \"CAR put armed group men in new army battalions and used them as prox\" (score 0.45 — title overlap 0.45; shared: armed, army, group)"
+   "DUP_NOTE": "closest held record is 2641: \"CAR put armed group men in new army battalions and used them as prox\" (score 0.45 — title overlap 0.45)"
   },
   {
    "id": "round9-a1_haiti_car-d5a2fff35825",
@@ -728,7 +728,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a2_drc_ssudan on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "high",
    "DUP_HELD_IDX": 2957,
-   "DUP_NOTE": "closest held record is 2957: \"Peace funds bought rebel commanders posts in South Sudan's police an\" (score 1.05 — title overlap 0.45; figure 1050000 (in 1 records); shared: army, bought, commanders)"
+   "DUP_NOTE": "closest held record is 2957: \"Peace funds bought rebel commanders posts in South Sudan's police an\" (score 1.05 — title overlap 0.45; figure 1050000 (in 1 records))"
   },
   {
    "id": "round9-a2_drc_ssudan-c75cf5bf54b7",
@@ -788,7 +788,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a2_drc_ssudan on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 1673,
-   "DUP_NOTE": "closest held record is 1673: \"South Sudan's security service sat on the board of the state oil com\" (score 0.44 — title overlap 0.44; shared: security, service, south)"
+   "DUP_NOTE": "closest held record is 1673: \"South Sudan's security service sat on the board of the state oil com\" (score 0.44 — title overlap 0.44)"
   },
   {
    "id": "round9-a2_drc_ssudan-14eadae424f9",
@@ -818,7 +818,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a2_drc_ssudan on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2821,
-   "DUP_NOTE": "closest held record is 2821: \"Gold network had Burundian police wave its mules through Gatumba\" (score 0.42 — title overlap 0.42; shared: burundian, gatumba, gold)"
+   "DUP_NOTE": "closest held record is 2821: \"Gold network had Burundian police wave its mules through Gatumba\" (score 0.42 — title overlap 0.42)"
   },
   {
    "id": "round9-a2_drc_ssudan-2f6242ca3289",
@@ -833,7 +833,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a2_drc_ssudan on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2822,
-   "DUP_NOTE": "closest held record is 2822: \"Banned timber convoys paid $160 a truck at a Congolese army checkpoi\" (score 0.56 — title overlap 0.56; shared: banned, checkpoint, convoys)"
+   "DUP_NOTE": "closest held record is 2822: \"Banned timber convoys paid $160 a truck at a Congolese army checkpoi\" (score 0.56 — title overlap 0.56)"
   },
   {
    "id": "round9-a2_drc_ssudan-2eee0a8b4231",
@@ -847,8 +847,7 @@
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a2_drc_ssudan on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 1444,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Sudan-brokered deal would put rebel leader Gatwech in South Sudan's ar\" (shares figure 21900). REMOVAL REASON: A brokered coalition deal, which the test excludes, and the Panel itself says it is an agreement rather than an appointment made - Gatwech was still in Sudan with a year to return. Nobody is inside th"
+   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Sudan-brokered deal would put rebel leader Gatwech in South Sudan's ar\" (shares the rare figure 21900). READ THE REASON: A brokered coalition deal, which the test excludes, and the Panel itself says it is an agreement rather than an appointment made - Gatwech was still in Sudan with a year to return. Nobody is inside th"
   },
   {
    "id": "round9-a3_libya_yemen-b368ab941ab7",
@@ -863,7 +862,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a3_libya_yemen on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2823,
-   "DUP_NOTE": "closest held record is 2823: \"Zawiyah's drug market ran under the interior ministry's anti-drug un\" (score 0.58 — title overlap 0.58; shared: anti, drug, interior)"
+   "DUP_NOTE": "closest held record is 2823: \"Zawiyah's drug market ran under the interior ministry's anti-drug un\" (score 0.58 — title overlap 0.58)"
   },
   {
    "id": "round9-a3_libya_yemen-2ac27c81962e",
@@ -878,7 +877,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a3_libya_yemen on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2824,
-   "DUP_NOTE": "closest held record is 2824: \"Tubruq trafficking networks used military posts to dodge police raid\" (score 0.78 — title overlap 0.78; shared: military, networks, posts)"
+   "DUP_NOTE": "closest held record is 2824: \"Tubruq trafficking networks used military posts to dodge police raid\" (score 0.78 — title overlap 0.78)"
   },
   {
    "id": "round9-a3_libya_yemen-ffba4903d7bf",
@@ -906,9 +905,9 @@
    "bk": "finance",
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a3_libya_yemen on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 2459,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Armed group leaders' grip on two Libyan ministries blocked the payroll\" (shares names ['Armed', 'Bank', 'Central', 'Libya']). REMOVAL REASON: Duplicate: the map already holds the UN Panel's payroll finding on al-Zobi's ministry control from the same report paragraphs, so the Trabelsi detail belongs there as an update. [round 10 review, 2026"
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 3083,
+   "DUP_NOTE": "closest held record is 3083: \"Libya's oil minister suspended to clear the way for an armed groups'\" (score 0.25 — title overlap 0.25)"
   },
   {
    "id": "round9-a3_libya_yemen-a19ebb5e0ac3",
@@ -921,9 +920,9 @@
    "bk": "company",
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a3_libya_yemen on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 2470,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Militia chief became Libya's defence undersecretary and border chief\" (shares names ['Abdulhamid', 'Dabiba', 'Militia', 'Prime']). REMOVAL REASON: Duplicate of the kept record on the same appointment of the 111 Brigade commander as defence undersecretary. [round 9 review, 2026-11-17]"
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 2588,
+   "DUP_NOTE": "closest held record is 2588: \"Militia chief al-Kikli's pick ran Libya's state electricity company\" (score 0.30 — title overlap 0.30)"
   },
   {
    "id": "round9-a3_libya_yemen-f589f60843b6",
@@ -936,9 +935,9 @@
    "bk": "company",
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a3_libya_yemen on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 1043,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Militia's migrant prison re-badged by a Libyan interior ministry\" (shares names ['Kikli', 'Libya', 'Libyan', 'March']). REMOVAL REASON: Duplicate of the kept Al-Maya record on the same 8 March 2023 interior ministry decision. [round 9 review, 2026-11-17]"
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 3083,
+   "DUP_NOTE": "closest held record is 3083: \"Libya's oil minister suspended to clear the way for an armed groups'\" (score 0.23 — title overlap 0.23)"
   },
   {
    "id": "round9-a3_libya_yemen-d8feb3d51fe3",
@@ -951,9 +950,9 @@
    "bk": "company",
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a3_libya_yemen on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 1454,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"UN panel: Libya's oil corporation reshaped to suit armed groups' firms\" (shares names ['Bank', 'Haftar', 'Libya', 'Masraf']). REMOVAL REASON: Duplicate: the same chairman in the same post over the same years as the held National Oil Corporation record, resting on the same annex of the same report. [round 9 review, 2026-11-17]"
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 1464,
+   "DUP_NOTE": "closest held record is 1464: \"Libyan state bank's $300m deposit backed loans to a Haftar fixer's f\" (score 0.20 — title overlap 0.20)"
   },
   {
    "id": "round9-a3_libya_yemen-45898da6ef54",
@@ -966,9 +965,9 @@
    "bk": "company",
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a3_libya_yemen on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 1473,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"UN panel: Libya's oil corporation reshaped to suit armed groups' firms\" (shares names ['Corporation', 'Haftar', 'Ibrahim', 'Libya']). REMOVAL REASON: Duplicate: the same chairman in the same post over the same years as the held National Oil Corporation record, resting on the same annex of the same report. [round 9 review, 2026-11-17]"
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 2961,
+   "DUP_NOTE": "closest held record is 2961: \"Armed group chiefs held Libya's interior and defence ministries\" (score 0.23 — title overlap 0.23)"
   },
   {
    "id": "round9-a3_libya_yemen-2157cfe7ffc4",
@@ -983,7 +982,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a3_libya_yemen on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2962,
-   "DUP_NOTE": "closest held record is 2962: \"Premier's nephew drove out Libya's oil minister to clear the Arkenu \" (score 0.50 — title overlap 0.50; shared: arkenu, deal, libya)"
+   "DUP_NOTE": "closest held record is 2962: \"Premier's nephew drove out Libya's oil minister to clear the Arkenu \" (score 0.50 — title overlap 0.50)"
   },
   {
    "id": "round9-a3_libya_yemen-a4279f818953",
@@ -996,9 +995,9 @@
    "bk": "legis",
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a3_libya_yemen on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 1045,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Darfur movements put unchecked recruits into Sudan's joint security fo\" (shares names ['Agreement', 'Juba', 'Peace', 'Sudan']). REMOVAL REASON: No decision shown serving the movements: supplying combatants to the joint force was an openly agreed part of the peace deal, and the record establishes only that the state could not verify who they w"
+   "DUP_FLAG": "check",
+   "DUP_HELD_IDX": 2478,
+   "DUP_NOTE": "closest held record is 2478: \"Darfur movement member made deputy governor helped the RSF take El G\" (score 0.54 — title overlap 0.54)"
   },
   {
    "id": "round9-a3_libya_yemen-cd5e1557ff94",
@@ -1024,9 +1023,9 @@
    "bk": "security",
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a3_libya_yemen on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
-   "DUP_FLAG": "REMOVED",
+   "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2541,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Janjaweed-born RSF made a state force; its chief Hemedti reached the t\" (shares names ['Council', 'Darfur', 'Mohamed', 'Sudan']). REMOVAL REASON: Not directly infiltration (Nov 2026 stricter test): The state built the RSF itself; no outside party got in."
+   "DUP_NOTE": "closest held record is 2541: \"Ex-rebel movement inside Sudan's army recruited 4,000 fighters for i\" (score 0.15 — title overlap 0.15)"
   },
   {
    "id": "round9-a3_libya_yemen-b00b4f8ef606",
@@ -1054,9 +1053,9 @@
    "bk": "cabinet",
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a3_libya_yemen on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
-   "DUP_FLAG": "none",
-   "DUP_HELD_IDX": 2466,
-   "DUP_NOTE": "closest held record is 2466: \"Houthi-appointed trade ministry moved trademarks to Houthi-linked fi\" (score 0.21 — title overlap 0.21)"
+   "DUP_FLAG": "check",
+   "DUP_HELD_IDX": 2465,
+   "DUP_NOTE": "closest held record is 2465: \"Yemen transport ministry staff given weapons training by the Houthis\" (score 0.82 — title overlap 0.12; both name \"ministry transport\", a body in only 2 record(s))"
   },
   {
    "id": "round9-a3_libya_yemen-34a9e8529866",
@@ -1069,9 +1068,9 @@
    "bk": "company",
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a3_libya_yemen on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 2466,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Houthi custodian's nephew made director of Twintech university in Sana\" (shares names ['Houthi', 'Mesfer', 'Raed', 'Saleh']). REMOVAL REASON: The body reached is a private university, which is not a government body, an international body or a company, so the company coding is only a residual. [round 10 review, 2026-11-17]"
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 2798,
+   "DUP_NOTE": "closest held record is 2798: \"Houthi custodian put a ministry undersecretary over eight seized fir\" (score 0.30 — title overlap 0.30)"
   },
   {
    "id": "round9-a3_libya_yemen-0d91a594fcaa",
@@ -1084,9 +1083,9 @@
    "bk": "security",
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a3_libya_yemen on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 1397,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"UAE-backed southern council's chief becomes Yemen's vice-president\" (shares names ['Council', 'December', 'January', 'Southern']). REMOVAL REASON: Not directly infiltration (Nov 2026 stricter test): Open power-sharing place for a foreign-backed group; no decision shown serving the UAE."
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 3079,
+   "DUP_NOTE": "closest held record is 3079: \"Houthis seized the Yemen Digital Media Company and its assets\" (score 0.08 — title overlap 0.08)"
   },
   {
    "id": "round9-a3_libya_yemen-cb20a20f54f0",
@@ -1116,7 +1115,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a3_libya_yemen on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2539,
-   "DUP_NOTE": "closest held record is 2539: \"RSF men collected arms at Libya's border through a Haftar battalion\" (score 0.27 — title overlap 0.27; shared: battalion, border, haftar)"
+   "DUP_NOTE": "closest held record is 2539: \"RSF men collected arms at Libya's border through a Haftar battalion\" (score 0.27 — title overlap 0.27)"
   },
   {
    "id": "round9-a3_libya_yemen-52d58fb88668",
@@ -1144,9 +1143,9 @@
    "bk": "cabinet",
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a3_libya_yemen on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
-   "DUP_FLAG": "check",
+   "DUP_FLAG": "high",
    "DUP_HELD_IDX": 2873,
-   "DUP_NOTE": "closest held record is 2873: \"Libya's foreign ministry mobilised for the Sharfeddin fuel network\" (score 0.56 — title overlap 0.56; shared: foreign, fuel, ministry)"
+   "DUP_NOTE": "closest held record is 2873: \"Libya's foreign ministry mobilised for the Sharfeddin fuel network\" (score 1.26 — title overlap 0.56; both name \"ministry foreign affairs\", a body in only 3 record(s))"
   },
   {
    "id": "round9-a4_italy-a96b0afdeddf",
@@ -1161,7 +1160,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a4_italy on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2871,
-   "DUP_NOTE": "closest held record is 2871: \"Milan court driver held in a mafia 'hidden bank' laundering case\" (score 0.36 — title overlap 0.36; shared: case, driver, laundering)"
+   "DUP_NOTE": "closest held record is 2871: \"Milan court driver held in a mafia 'hidden bank' laundering case\" (score 0.36 — title overlap 0.36)"
   },
   {
    "id": "round9-a4_italy-175e9704494c",
@@ -1189,9 +1188,9 @@
    "bk": "legis",
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a4_italy on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
-   "DUP_FLAG": "none",
+   "DUP_FLAG": "high",
    "DUP_HELD_IDX": 2887,
-   "DUP_NOTE": "closest held record is 2887: \"Ring linked to a cosca ran Reggio Calabria's public housing allocati\" (score 0.38 — title overlap 0.38; shared: calabria, cosca, housing)"
+   "DUP_NOTE": "closest held record is 2887: \"Ring linked to a cosca ran Reggio Calabria's public housing allocati\" (score 1.08 — title overlap 0.38; both name \"comune reggio calabria\", a body in only 1 record(s))"
   },
   {
    "id": "round9-a4_italy-cac1c7568ed3",
@@ -1221,7 +1220,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a4_italy on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2849,
-   "DUP_NOTE": "closest held record is 2849: \"Fourteen Gioia Tauro port workers cleared cocaine containers with fa\" (score 0.40 — title overlap 0.40; shared: cocaine, containers, gioia)"
+   "DUP_NOTE": "closest held record is 2849: \"Fourteen Gioia Tauro port workers cleared cocaine containers with fa\" (score 0.40 — title overlap 0.40)"
   },
   {
    "id": "round9-a4_italy-57a4fdb8a393",
@@ -1236,7 +1235,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a4_italy on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2885,
-   "DUP_NOTE": "closest held record is 2885: \"Camorra group took Caivano's contract secrets from town administrato\" (score 0.40 — title overlap 0.40; shared: administrators, caivano, camorra)"
+   "DUP_NOTE": "closest held record is 2885: \"Camorra group took Caivano's contract secrets from town administrato\" (score 0.40 — title overlap 0.40)"
   },
   {
    "id": "round9-a4_italy-22a38620f40f",
@@ -1281,7 +1280,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a5_balkans on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2846,
-   "DUP_NOTE": "closest held record is 2846: \"Zagreb airport employee indicted with a cocaine ring using private j\" (score 0.45 — title overlap 0.45; shared: airport, cocaine, employee)"
+   "DUP_NOTE": "closest held record is 2846: \"Zagreb airport employee indicted with a cocaine ring using private j\" (score 0.45 — title overlap 0.45)"
   },
   {
    "id": "round9-a5_balkans-9dc7096e086f",
@@ -1416,7 +1415,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a6_latam on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 279,
-   "DUP_NOTE": "closest held record is 279: \"Odebrecht says it paid $59m to Panamanian officials\" (score 0.11 — title overlap 0.11)"
+   "DUP_NOTE": "closest held record is 279: \"Odebrecht says it paid $59m to Panamanian officials\" (score 0.12 — title overlap 0.12)"
   },
   {
    "id": "round9-a6_latam-f89c4be45819",
@@ -1431,7 +1430,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a6_latam on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2847,
-   "DUP_NOTE": "closest held record is 2847: \"Cocaine network used Tocumen airport's staff and facilities for bagg\" (score 0.38 — title overlap 0.38; shared: airport, baggage, cocaine)"
+   "DUP_NOTE": "closest held record is 2847: \"Cocaine network used Tocumen airport's staff and facilities for bagg\" (score 0.38 — title overlap 0.38)"
   },
   {
    "id": "round9-a6_latam-d73b01aaf9a0",
@@ -1506,7 +1505,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a6_latam on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 983,
-   "DUP_NOTE": "closest held record is 983: \"Guatemalan prison guards charged over escape of 20 Barrio 18 leaders\" (score 0.33 — title overlap 0.33; shared: guards, guatemalan, prison)"
+   "DUP_NOTE": "closest held record is 983: \"Guatemalan prison guards charged over escape of 20 Barrio 18 leaders\" (score 0.33 — title overlap 0.33)"
   },
   {
    "id": "round9-a6_latam-64affeeb948a",
@@ -1521,7 +1520,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a6_latam on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2888,
-   "DUP_NOTE": "closest held record is 2888: \"Chone Killers leader's wife's firm won a Duran park contract\" (score 0.30 — title overlap 0.30; shared: chone, duran, killers)"
+   "DUP_NOTE": "closest held record is 2888: \"Chone Killers leader's wife's firm won a Duran park contract\" (score 0.30 — title overlap 0.30)"
   },
   {
    "id": "round9-a6_latam-8b5c68b09418",
@@ -1535,7 +1534,7 @@
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a6_latam on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "REMOVED",
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Serving Trinidad police officer charged in US cocaine conspiracy\" (title overlap 0.88). REMOVAL REASON: The record states outright that it does not set out what the officer is alleged to have done beyond being a serving officer charged in the conspiracy. Too vague to say what got inside what, and the 'i"
+   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Serving Trinidad police officer charged in US cocaine conspiracy\" (title overlap 0.83). READ THE REASON: The record states outright that it does not set out what the officer is alleged to have done beyond being a serving officer charged in the conspiracy. Too vague to say what got inside what, and the 'i"
   },
   {
    "id": "round9-a6_latam-62975977646e",
@@ -1625,7 +1624,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a7_ports on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 1473,
-   "DUP_NOTE": "closest held record is 1473: \"Report says Haftar-aligned chairman used Libya's National Oil Corpor\" (score 0.13 — title overlap 0.13)"
+   "DUP_NOTE": "closest held record is 1473: \"Report says Haftar-aligned chairman used Libya's National Oil Corpor\" (score 0.14 — title overlap 0.14)"
   },
   {
    "id": "round9-a7_ports-42741d34e8be",
@@ -1640,7 +1639,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a7_ports on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2900,
-   "DUP_NOTE": "closest held record is 2900: \"Barge owners pay Haitian police to guard a private sea route from AP\" (score 0.62 — title overlap 0.62; shared: barge, owners, port)"
+   "DUP_NOTE": "closest held record is 2900: \"Barge owners pay Haitian police to guard a private sea route from AP\" (score 0.62 — title overlap 0.62)"
   },
   {
    "id": "round9-a7_ports-c2f413a8244e",
@@ -1745,7 +1744,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a7_ports on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2511,
-   "DUP_NOTE": "closest held record is 2511: \"Ivory network's containers cleared by Mombasa port and revenue men\" (score 0.30 — title overlap 0.30; shared: containers, mombasa, port)"
+   "DUP_NOTE": "closest held record is 2511: \"Ivory network's containers cleared by Mombasa port and revenue men\" (score 0.30 — title overlap 0.30)"
   },
   {
    "id": "round9-a7_ports-d9f1f35931ff",
@@ -1790,7 +1789,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a7_ports on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 3018,
-   "DUP_NOTE": "closest held record is 3018: \"Volla's mayor and officials took Langella cash, with a cut for clan \" (score 0.30 — title overlap 0.30; shared: mayor, veneruso, volla)"
+   "DUP_NOTE": "closest held record is 3018: \"Volla's mayor and officials took Langella cash, with a cut for clan \" (score 0.30 — title overlap 0.30)"
   },
   {
    "id": "round9-a7_ports-e8358322d6ea",
@@ -1805,7 +1804,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a7_ports on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2650,
-   "DUP_NOTE": "closest held record is 2650: \"D'Alessandro clan ran emergency transport inside Castellammare's hos\" (score 0.44 — title overlap 0.44; shared: alessandro, castellammare, clan)"
+   "DUP_NOTE": "closest held record is 2650: \"D'Alessandro clan ran emergency transport inside Castellammare's hos\" (score 0.44 — title overlap 0.44)"
   },
   {
    "id": "round9-a7_ports-e67db342e4f5",
@@ -1878,9 +1877,9 @@
    "bk": "cabinet",
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a8_warecon on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 2469,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Militia's migrant prison re-badged by a Libyan interior ministry\" (shares names ['Kikli', 'Libya', 'Libyan', 'March']). REMOVAL REASON: Duplicate of the kept Al-Maya record on the same 8 March 2023 interior ministry decision. [round 9 review, 2026-11-17]"
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 2533,
+   "DUP_NOTE": "closest held record is 2533: \"Libya's coastal security took in a militia's boat units\" (score 0.14 — title overlap 0.14)"
   },
   {
    "id": "round9-a8_warecon-a291b6787530",
@@ -1893,9 +1892,9 @@
    "bk": "finance",
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a8_warecon on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 2459,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Armed group leaders' grip on two Libyan ministries blocked the payroll\" (shares names ['Armed', 'Bank', 'Central', 'Libya']). REMOVAL REASON: Duplicate: the map already holds the UN Panel's payroll finding on al-Zobi's ministry control from the same report paragraphs, so the Trabelsi detail belongs there as an update. [round 10 review, 2026"
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 3083,
+   "DUP_NOTE": "closest held record is 3083: \"Libya's oil minister suspended to clear the way for an armed groups'\" (score 0.23 — title overlap 0.23)"
   },
   {
    "id": "round9-a8_warecon-cc109b6c8375",
@@ -1908,9 +1907,8 @@
    "bk": "finance",
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a8_warecon on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
-   "DUP_FLAG": "none",
-   "DUP_NOTE": "closest held record is 1464: \"Libyan state bank's $300m deposit backed loans to a Haftar fixer's f\" (score 0.20 — title overlap 0.20)",
-   "DUP_HELD_IDX": 1464
+   "DUP_FLAG": "internal",
+   "DUP_NOTE": "the same item is already banked as: Banker backed by Saddam Haftar drew letters of credit from Libya's cen"
   },
   {
    "id": "round9-a8_warecon-66ab8d479a59",
@@ -1923,9 +1921,9 @@
    "bk": "security",
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a8_warecon on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 2540,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Militia chief became Libya's defence undersecretary and border chief\" (shares names ['Border', 'Brigade', 'Critical', 'Directorate']). REMOVAL REASON: Duplicate of the kept record on the same appointment of the 111 Brigade commander as defence undersecretary. [round 9 review, 2026-11-17]"
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 2473,
+   "DUP_NOTE": "closest held record is 2473: \"Libya's defence ministry took in the brigade that ran a migrant pris\" (score 0.09 — title overlap 0.09)"
   },
   {
    "id": "round9-a8_warecon-e4dc726d5ec0",
@@ -1940,7 +1938,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a8_warecon on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2961,
-   "DUP_NOTE": "closest held record is 2961: \"Armed group chiefs held Libya's interior and defence ministries\" (score 0.70 — title overlap 0.70; shared: armed, defence, group)"
+   "DUP_NOTE": "closest held record is 2961: \"Armed group chiefs held Libya's interior and defence ministries\" (score 0.70 — title overlap 0.70)"
   },
   {
    "id": "round9-a8_warecon-eb149acb4a29",
@@ -1955,7 +1953,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a8_warecon on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2994,
-   "DUP_NOTE": "closest held record is 2994: \"Fuel smuggling network ran Benghazi's old harbour through a commande\" (score 0.36 — title overlap 0.36; shared: benghazi, commander, harbour)"
+   "DUP_NOTE": "closest held record is 2994: \"Fuel smuggling network ran Benghazi's old harbour through a commande\" (score 0.36 — title overlap 0.36)"
   },
   {
    "id": "round9-a8_warecon-b5a58a32a1fc",
@@ -1970,7 +1968,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a8_warecon on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2967,
-   "DUP_NOTE": "closest held record is 2967: \"US says Iraq's deputy oil minister diverted oil for an Iran-backed m\" (score 0.40 — title overlap 0.40; shared: deputy, diverted, iraq)"
+   "DUP_NOTE": "closest held record is 2967: \"US says Iraq's deputy oil minister diverted oil for an Iran-backed m\" (score 0.44 — title overlap 0.44)"
   },
   {
    "id": "round9-a8_warecon-5f87d9d9bd33",
@@ -1985,7 +1983,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a8_warecon on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2968,
-   "DUP_NOTE": "closest held record is 2968: \"Iraq's communications ministry waived bidding for a PMF firm's fibre\" (score 0.62 — title overlap 0.62; shared: communications, contracts, iraq)"
+   "DUP_NOTE": "closest held record is 2968: \"Iraq's communications ministry waived bidding for a PMF firm's fibre\" (score 0.62 — title overlap 0.62)"
   },
   {
    "id": "round9-a8_warecon-02a03f435cb6",
@@ -2014,7 +2012,7 @@
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a8_warecon on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "REMOVED",
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Puntland's fisheries ministry licensed 52 Iranian trawlers through loc\" (shares figure 10000). REMOVAL REASON: The licences were obtained through private agents paying registration fees, and no official of the fisheries ministry is shown paid, recruited or placed, matching the removed Yemeni customs-broker rec"
+   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Puntland's fisheries ministry licensed 52 Iranian trawlers through loc\" (title overlap 0.80). READ THE REASON: The licences were obtained through private agents paying registration fees, and no official of the fisheries ministry is shown paid, recruited or placed, matching the removed Yemeni customs-broker rec"
   },
   {
    "id": "round9-a8_warecon-3cb426a88d4c",
@@ -2027,9 +2025,9 @@
    "bk": "finance",
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a8_warecon on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 2491,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Houthi custodian's nephew made director of Twintech university in Sana\" (shares names ['Houthi', 'Mesfer', 'Raed', 'Saleh']). REMOVAL REASON: The body reached is a private university, which is not a government body, an international body or a company, so the company coding is only a residual. [round 10 review, 2026-11-17]"
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 2798,
+   "DUP_NOTE": "closest held record is 2798: \"Houthi custodian put a ministry undersecretary over eight seized fir\" (score 0.27 — title overlap 0.27)"
   },
   {
    "id": "round9-a8_warecon-28ad8ad84d34",
@@ -2059,7 +2057,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a8_warecon on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2973,
-   "DUP_NOTE": "closest held record is 2973: \"Broker sold Libyan crude $8 under the state price for armed group ow\" (score 0.46 — title overlap 0.46; shared: armed, crude, group)"
+   "DUP_NOTE": "closest held record is 2973: \"Broker sold Libyan crude $8 under the state price for armed group ow\" (score 0.46 — title overlap 0.46)"
   },
   {
    "id": "round9-a9_ministries-2a1ac871335f",
@@ -2074,7 +2072,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a9_ministries on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2823,
-   "DUP_NOTE": "closest held record is 2823: \"Zawiyah's drug market ran under the interior ministry's anti-drug un\" (score 0.67 — title overlap 0.67; shared: anti, drug, head)"
+   "DUP_NOTE": "closest held record is 2823: \"Zawiyah's drug market ran under the interior ministry's anti-drug un\" (score 0.67 — title overlap 0.67)"
   },
   {
    "id": "round9-a9_ministries-72d50fb0d593",
@@ -2087,9 +2085,9 @@
    "bk": "cabinet",
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a9_ministries on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 2459,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Militia chief given command of Libya's western border force\" (shares names ['Imad', 'Interior', 'Libya', 'Trabelsi']). REMOVAL REASON: Duplicate of the kept record on the same October-November 2023 appointments of the same commander to the western border force. [round 9 review, 2026-11-17]"
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 2961,
+   "DUP_NOTE": "closest held record is 2961: \"Armed group chiefs held Libya's interior and defence ministries\" (score 0.29 — title overlap 0.29)"
   },
   {
    "id": "round9-a9_ministries-98a12e027c78",
@@ -2102,9 +2100,9 @@
    "bk": "security",
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a9_ministries on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 2459,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Militia chief became Libya's defence undersecretary and border chief\" (shares names ['Brigade', 'Defence', 'Libya', 'Libyan']). REMOVAL REASON: Duplicate of the kept record on the same appointment of the 111 Brigade commander as defence undersecretary. [round 9 review, 2026-11-17]"
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 2473,
+   "DUP_NOTE": "closest held record is 2473: \"Libya's defence ministry took in the brigade that ran a migrant pris\" (score 0.33 — title overlap 0.33)"
   },
   {
    "id": "round9-a9_ministries-ea99991a4ac2",
@@ -2117,9 +2115,9 @@
    "bk": "cabinet",
    "status": "apparently_qualifying",
    "note": "Filed as an out-of-cell lead by round 9 agent a9_ministries on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 2464,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Houthi loyalists lead Yemen's state telecoms corporation and Yemen Mob\" (shares names ['Corporation', 'Houthi', 'Public', 'Sana']). REMOVAL REASON: Duplicate of the kept communications ministry record, which rests on the same report paragraphs and the same facts. [round 9 review, 2026-11-17]"
+   "DUP_FLAG": "check",
+   "DUP_HELD_IDX": 2467,
+   "DUP_NOTE": "closest held record is 2467: \"Houthi loyalists lead Yemen's communications ministry and its revenu\" (score 0.40 — title overlap 0.40)"
   },
   {
    "id": "round9-a9_ministries-ff392788aace",
@@ -2134,7 +2132,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a9_ministries on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2943,
-   "DUP_NOTE": "closest held record is 2943: \"Ghana charges the illegal-mining committee's secretary over a licenc\" (score 0.70 — title overlap 0.45; figure 35000 (in 6 records); shared: charges, committee, ghana)"
+   "DUP_NOTE": "closest held record is 2943: \"Ghana charges the illegal-mining committee's secretary over a licenc\" (score 0.70 — title overlap 0.45; figure 35000 (in 6 records))"
   },
   {
    "id": "round9-a9_ministries-bca0d3abb9b4",
@@ -2149,7 +2147,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a9_ministries on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2681,
-   "DUP_NOTE": "closest held record is 2681: \"Prosecutors: PT Ceria Nugraha paid energy ministry staff for export \" (score 0.55 — title overlap 0.55; shared: ceria, energy, export)"
+   "DUP_NOTE": "closest held record is 2681: \"Prosecutors: PT Ceria Nugraha paid energy ministry staff for export \" (score 0.55 — title overlap 0.55)"
   },
   {
    "id": "round9-a9_ministries-7f21be15fe67",
@@ -2164,7 +2162,7 @@
    "note": "Filed as an out-of-cell lead by round 9 agent a9_ministries on 2026-11-17. Read by that agent, not verified; cell was barred by the round composition or a limb of the test was unmet. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2942,
-   "DUP_NOTE": "closest held record is 2942: \"Kazakh fisheries committee chiefs jailed for systematic bribes from \" (score 0.75 — title overlap 0.75; shared: business, chiefs, committee)"
+   "DUP_NOTE": "closest held record is 2942: \"Kazakh fisheries committee chiefs jailed for systematic bribes from \" (score 0.75 — title overlap 0.75)"
   },
   {
    "id": "round9-a9_ministries-53315f633117",
@@ -2207,9 +2205,9 @@
    "bk": "company",
    "status": "apparently_qualifying",
    "note": "Out-of-cell lead filed by round 9 agent b2_italy_health on 2026-11-17. Read by that agent, not verified. See the locator.",
-   "DUP_FLAG": "none",
-   "DUP_HELD_IDX": 2989,
-   "DUP_NOTE": "closest held record is 2989: \"Court found the Tegano clan colonised Reggio Calabria's Multiservizi\" (score 0.33 — title overlap 0.33; shared: calabria, clan, reggio)"
+   "DUP_FLAG": "high",
+   "DUP_HELD_IDX": 2887,
+   "DUP_NOTE": "closest held record is 2887: \"Ring linked to a cosca ran Reggio Calabria's public housing allocati\" (score 1.01 — title overlap 0.31; both name \"comune reggio calabria\", a body in only 1 record(s))"
   },
   {
    "id": "round9-b2_italy_health-c8b4704fc14b",
@@ -2224,7 +2222,7 @@
    "note": "Out-of-cell lead filed by round 9 agent b2_italy_health on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2989,
-   "DUP_NOTE": "closest held record is 2989: \"Court found the Tegano clan colonised Reggio Calabria's Multiservizi\" (score 0.27 — title overlap 0.27; shared: calabria, clan, reggio)"
+   "DUP_NOTE": "closest held record is 2989: \"Court found the Tegano clan colonised Reggio Calabria's Multiservizi\" (score 0.27 — title overlap 0.27)"
   },
   {
    "id": "round9-b2_italy_health-a5cd0deb324f",
@@ -2254,7 +2252,7 @@
    "note": "Out-of-cell lead filed by round 9 agent b2_italy_health on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2920,
-   "DUP_NOTE": "closest held record is 2920: \"Medical suppliers' agents and officials rigged 33m euro Calabrian he\" (score 0.33 — title overlap 0.33; shared: calabrian, health, rigged)"
+   "DUP_NOTE": "closest held record is 2920: \"Medical suppliers' agents and officials rigged 33m euro Calabrian he\" (score 0.33 — title overlap 0.33)"
   },
   {
    "id": "round9-b2_italy_health-fe2f212a001f",
@@ -2267,9 +2265,9 @@
    "bk": "company",
    "status": "apparently_qualifying",
    "note": "Out-of-cell lead filed by round 9 agent b2_italy_health on 2026-11-17. Read by that agent, not verified. See the locator.",
-   "DUP_FLAG": "check",
+   "DUP_FLAG": "high",
    "DUP_HELD_IDX": 2926,
-   "DUP_NOTE": "closest held record is 2926: \"Operation Aspide: six convicted over rigged tenders and posts at ASP\" (score 0.62 — title overlap 0.62; shared: aspide, operation, rigged)"
+   "DUP_NOTE": "closest held record is 2926: \"Operation Aspide: six convicted over rigged tenders and posts at ASP\" (score 1.32 — title overlap 0.62; both name \"asp trapani\", a body in only 1 record(s))"
   },
   {
    "id": "round9-b2_italy_health-2cde52d720c7",
@@ -2282,9 +2280,9 @@
    "bk": "company",
    "status": "apparently_qualifying",
    "note": "Out-of-cell lead filed by round 9 agent b2_italy_health on 2026-11-17. Read by that agent, not verified. See the locator.",
-   "DUP_FLAG": "none",
-   "DUP_HELD_IDX": 2921,
-   "DUP_NOTE": "closest held record is 2921: \"Sorella sanita: health suppliers bought Sicily's hospital tender chi\" (score 0.25 — title overlap 0.25; shared: sanita, sorella, tender)"
+   "DUP_FLAG": "check",
+   "DUP_HELD_IDX": 2928,
+   "DUP_NOTE": "closest held record is 2928: \"Orthopaedic suppliers paid an ASP Palermo doctor in cash and shellfi\" (score 0.80 — title overlap 0.10; both name \"asp palermo\", a body in only 1 record(s))"
   },
   {
    "id": "round9-b2_italy_health-411aa2e47104",
@@ -2313,8 +2311,8 @@
    "status": "apparently_qualifying",
    "note": "Out-of-cell lead filed by round 9 agent b2_italy_health on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "check",
-   "DUP_NOTE": "closest held record is 3005: \"Vibo prison health director accused of compliant reports for clan me\" (score 0.67 — title overlap 0.67; shared: clan, compliant, director)",
-   "DUP_HELD_IDX": 3005
+   "DUP_HELD_IDX": 3005,
+   "DUP_NOTE": "closest held record is 3005: \"Vibo prison health director accused of compliant reports for clan me\" (score 0.67 — title overlap 0.67)"
   },
   {
    "id": "round9-b2_italy_health-df7a6c9f1477",
@@ -2329,7 +2327,7 @@
    "note": "Out-of-cell lead filed by round 9 agent b2_italy_health on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "high",
    "DUP_HELD_IDX": 2885,
-   "DUP_NOTE": "closest held record is 2885: \"Camorra group took Caivano's contract secrets from town administrato\" (score 0.88 — title overlap 0.88; shared: administrators, caivano, camorra)"
+   "DUP_NOTE": "closest held record is 2885: \"Camorra group took Caivano's contract secrets from town administrato\" (score 0.88 — title overlap 0.88)"
   },
   {
    "id": "round9-b2_italy_health-d7b237f48210",
@@ -2359,7 +2357,7 @@
    "note": "Out-of-cell lead filed by round 9 agent b2_italy_health on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2883,
-   "DUP_NOTE": "closest held record is 2883: \"Casalesi-linked waste contractor sat as a Campania regional councill\" (score 0.75 — title overlap 0.75; shared: campania, casalesi, councillor)"
+   "DUP_NOTE": "closest held record is 2883: \"Casalesi-linked waste contractor sat as a Campania regional councill\" (score 0.75 — title overlap 0.75)"
   },
   {
    "id": "round9-b2_italy_health-2c2abf886ccf",
@@ -2389,7 +2387,7 @@
    "note": "Out-of-cell lead filed by round 9 agent b3_courts_asia on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2870,
-   "DUP_NOTE": "closest held record is 2870: \"Bacolod court clerk dismissed for selling favours to litigants\" (score 0.40 — title overlap 0.40; shared: bacolod, clerk, dismissed)"
+   "DUP_NOTE": "closest held record is 2870: \"Bacolod court clerk dismissed for selling favours to litigants\" (score 0.40 — title overlap 0.40)"
   },
   {
    "id": "round9-b3_courts_asia-fe1b04477ab4",
@@ -2417,9 +2415,9 @@
    "bk": "court",
    "status": "apparently_qualifying",
    "note": "Out-of-cell lead filed by round 9 agent b3_courts_asia on 2026-11-17. Read by that agent, not verified. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 2490,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Harry Roque — ex-presidential spokesman charged over POGO hub\" (shares names ['Branch', 'City', 'Regional', 'Trial']). REMOVAL REASON: Roque is charged with human trafficking and with helping a gambling hub seek a licence after leaving office; no one is shown inside a government body for the hub."
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 2483,
+   "DUP_NOTE": "closest held record is 2483: \"Drug defendants' families paid a Baguio judge for acquittals\" (score 0.08 — title overlap 0.08)"
   },
   {
    "id": "round9-b3_courts_asia-2186e2511f82",
@@ -2434,7 +2432,7 @@
    "note": "Out-of-cell lead filed by round 9 agent b3_courts_asia on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2998,
-   "DUP_NOTE": "closest held record is 2998: \"Gang leader's family bribed Yunnan prison officials for three term c\" (score 0.29 — title overlap 0.29; shared: bribed, prison, three)"
+   "DUP_NOTE": "closest held record is 2998: \"Gang leader's family bribed Yunnan prison officials for three term c\" (score 0.29 — title overlap 0.29)"
   },
   {
    "id": "round9-b3_courts_asia-44186f59779d",
@@ -2449,7 +2447,7 @@
    "note": "Out-of-cell lead filed by round 9 agent b3_courts_asia on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2999,
-   "DUP_NOTE": "closest held record is 2999: \"Kunming police took bribes and bailed a gang leader after an assault\" (score 0.40 — title overlap 0.40; shared: after, assault, gang)"
+   "DUP_NOTE": "closest held record is 2999: \"Kunming police took bribes and bailed a gang leader after an assault\" (score 0.40 — title overlap 0.40)"
   },
   {
    "id": "round9-b3_courts_asia-29c18d026470",
@@ -2494,7 +2492,7 @@
    "note": "Out-of-cell lead filed by round 9 agent b3_courts_asia on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 667,
-   "DUP_NOTE": "closest held record is 667: \"Fugitive Djoko Tjandra bribed police generals and a prosecutor\" (score 0.40 — title overlap 0.40; shared: djoko, fugitive, prosecutor)"
+   "DUP_NOTE": "closest held record is 667: \"Fugitive Djoko Tjandra bribed police generals and a prosecutor\" (score 0.40 — title overlap 0.40)"
   },
   {
    "id": "round9-b3_courts_asia-d6151ccefb7b",
@@ -2539,7 +2537,7 @@
    "note": "Out-of-cell lead filed by round 9 agent b4_latam_legis on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "high",
    "DUP_HELD_IDX": 2888,
-   "DUP_NOTE": "closest held record is 2888: \"Chone Killers leader's wife's firm won a Duran park contract\" (score 1.23 — title overlap 0.62; figure 190000 (in 1 records); shared: chone, contract, duran)"
+   "DUP_NOTE": "closest held record is 2888: \"Chone Killers leader's wife's firm won a Duran park contract\" (score 1.23 — title overlap 0.62; figure 190000 (in 1 records))"
   },
   {
    "id": "round9-b4_latam_legis-7e0de4fdb694",
@@ -2554,7 +2552,7 @@
    "note": "Out-of-cell lead filed by round 9 agent b4_latam_legis on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2888,
-   "DUP_NOTE": "closest held record is 2888: \"Chone Killers leader's wife's firm won a Duran park contract\" (score 0.36 — title overlap 0.36; shared: chone, contract, duran)"
+   "DUP_NOTE": "closest held record is 2888: \"Chone Killers leader's wife's firm won a Duran park contract\" (score 0.36 — title overlap 0.36)"
   },
   {
    "id": "round9-b4_latam_legis-408345662057",
@@ -2599,7 +2597,7 @@
    "note": "Out-of-cell lead filed by round 9 agent b4_latam_legis on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2654,
-   "DUP_NOTE": "closest held record is 2654: \"Belford Roxo barricade clearance handed territory back to Comando Ve\" (score 0.42 — title overlap 0.42; shared: belford, comando, roxo)"
+   "DUP_NOTE": "closest held record is 2654: \"Belford Roxo barricade clearance handed territory back to Comando Ve\" (score 0.42 — title overlap 0.42)"
   },
   {
    "id": "round9-b4_latam_legis-89162d249682",
@@ -2777,9 +2775,9 @@
    "bk": "security",
    "status": "apparently_qualifying",
    "note": "Out-of-cell lead filed by round 9 agent b5_haiti_new on 2026-11-17. Read by that agent, not verified. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 875,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Fourteen Somali security officers held over the military academy bombi\" (shares names ['Academy', 'Army', 'Brigade', 'House']). REMOVAL REASON: Duplicate: the map already carries a record on the same July 2023 Mogadishu training-centre attack and the finding that insiders in the security forces facilitated it. [round 9 review, 2026-11-17]"
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 1228,
+   "DUP_NOTE": "closest held record is 1228: \"UN: Somali commanders' arms and ammunition reached al-Shabaab\" (score 0.17 — title overlap 0.17)"
   },
   {
    "id": "round9-b5_haiti_new-0c5905bff4ca",
@@ -2824,7 +2822,7 @@
    "note": "Out-of-cell lead filed by round 9 agent b5_haiti_new on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2631,
-   "DUP_NOTE": "closest held record is 2631: \"A gendarmerie colonel led a CMA militia of serving Malian officers\" (score 0.40 — title overlap 0.40; shared: colonel, gendarmerie, malian)"
+   "DUP_NOTE": "closest held record is 2631: \"A gendarmerie colonel led a CMA militia of serving Malian officers\" (score 0.40 — title overlap 0.40)"
   },
   {
    "id": "round9-b5_haiti_new-4e9ec8ede575",
@@ -2854,7 +2852,7 @@
    "note": "Out-of-cell lead filed by round 9 agent b5_haiti_new on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2455,
-   "DUP_NOTE": "closest held record is 2455: \"Six Haitian police officers worked inside the Tokyo gang\" (score 0.25 — title overlap 0.25; shared: gang, inside, officers)"
+   "DUP_NOTE": "closest held record is 2455: \"Six Haitian police officers worked inside the Tokyo gang\" (score 0.25 — title overlap 0.25)"
   },
   {
    "id": "round9-b5_haiti_new-5f474c89516c",
@@ -2884,7 +2882,7 @@
    "note": "Out-of-cell lead filed by round 9 agent b6_italy_security on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2626,
-   "DUP_NOTE": "closest held record is 2626: \"Judge found Trani prison officers were on the detainees' payroll\" (score 0.25 — title overlap 0.25; shared: detainees, judge, prison)"
+   "DUP_NOTE": "closest held record is 2626: \"Judge found Trani prison officers were on the detainees' payroll\" (score 0.25 — title overlap 0.25)"
   },
   {
    "id": "round9-b6_italy_security-2b162ff2a7b4",
@@ -2959,7 +2957,7 @@
    "note": "Out-of-cell lead filed by round 9 agent b6_italy_security on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2881,
-   "DUP_NOTE": "closest held record is 2881: \"Appeal court confirms 12 years for Sicilian deputy who helped the ma\" (score 0.25 — title overlap 0.25; shared: appeal, deputy, mafia)"
+   "DUP_NOTE": "closest held record is 2881: \"Appeal court confirms 12 years for Sicilian deputy who helped the ma\" (score 0.25 — title overlap 0.25)"
   },
   {
    "id": "round9-b6_italy_security-238182af1d88",
@@ -2974,7 +2972,7 @@
    "note": "Out-of-cell lead filed by round 9 agent b6_italy_security on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2882,
-   "DUP_NOTE": "closest held record is 2882: \"Camorra pact at Sant'Antimo: 21 convicted, two ex-councillors among \" (score 0.36 — title overlap 0.36; shared: antimo, camorra, pact)"
+   "DUP_NOTE": "closest held record is 2882: \"Camorra pact at Sant'Antimo: 21 convicted, two ex-councillors among \" (score 0.36 — title overlap 0.36)"
   },
   {
    "id": "round9-b6_italy_security-baa4f6789738",
@@ -3049,7 +3047,7 @@
    "note": "Out-of-cell lead filed by round 9 agent b7_cabinet on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2964,
-   "DUP_NOTE": "closest held record is 2964: \"Central African transport minister led a militia funded via his mini\" (score 0.36 — title overlap 0.36; shared: funded, militia, minister)"
+   "DUP_NOTE": "closest held record is 2964: \"Central African transport minister led a militia funded via his mini\" (score 0.36 — title overlap 0.36)"
   },
   {
    "id": "round9-b7_cabinet-8203635832ce",
@@ -3064,7 +3062,7 @@
    "note": "Out-of-cell lead filed by round 9 agent b7_cabinet on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2953,
-   "DUP_NOTE": "closest held record is 2953: \"Houthi defence ministry's procurement director ran its arms shipment\" (score 0.60 — title overlap 0.60; shared: defence, director, houthi)"
+   "DUP_NOTE": "closest held record is 2953: \"Houthi defence ministry's procurement director ran its arms shipment\" (score 0.60 — title overlap 0.60)"
   },
   {
    "id": "round9-b7_cabinet-e1827f479692",
@@ -3107,7 +3105,7 @@
    "note": "Out-of-cell lead filed by round 9 agent b7_cabinet on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2823,
-   "DUP_NOTE": "closest held record is 2823: \"Zawiyah's drug market ran under the interior ministry's anti-drug un\" (score 0.50 — title overlap 0.50; shared: anti, drug, head)"
+   "DUP_NOTE": "closest held record is 2823: \"Zawiyah's drug market ran under the interior ministry's anti-drug un\" (score 0.50 — title overlap 0.50)"
   },
   {
    "id": "round9-b7_cabinet-37601ee91af6",
@@ -3120,9 +3118,9 @@
    "bk": "cabinet",
    "status": "apparently_qualifying",
    "note": "Out-of-cell lead filed by round 9 agent b7_cabinet on 2026-11-17. Read by that agent, not verified. See the locator.",
-   "DUP_FLAG": "none",
+   "DUP_FLAG": "high",
    "DUP_HELD_IDX": 1722,
-   "DUP_NOTE": "closest held record is 1722: \"Cambodian foreign ministry officials accused of selling 12,000 visas\" (score 0.15 — title overlap 0.15)"
+   "DUP_NOTE": "closest held record is 1722: \"Cambodian foreign ministry officials accused of selling 12,000 visas\" (score 0.85 — title overlap 0.15; both name \"ministry foreign affairs\", a body in only 3 record(s))"
   },
   {
    "id": "round9-b7_cabinet-87c92f1eeee4",
@@ -3197,7 +3195,7 @@
    "note": "Out-of-cell lead filed by round 9 agent b8_mali_somalia on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2896,
-   "DUP_NOTE": "closest held record is 2896: \"Sanctioned armed-group secretary-general sits on Mali's transition c\" (score 0.36 — title overlap 0.36; shared: armed, council, group)"
+   "DUP_NOTE": "closest held record is 2896: \"Sanctioned armed-group secretary-general sits on Mali's transition c\" (score 0.36 — title overlap 0.36)"
   },
   {
    "id": "round9-b8_mali_somalia-2c1ae05dacc7",
@@ -3212,7 +3210,7 @@
    "note": "Out-of-cell lead filed by round 9 agent b8_mali_somalia on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2896,
-   "DUP_NOTE": "closest held record is 2896: \"Sanctioned armed-group secretary-general sits on Mali's transition c\" (score 0.80 — title overlap 0.80; shared: armed, council, general)"
+   "DUP_NOTE": "closest held record is 2896: \"Sanctioned armed-group secretary-general sits on Mali's transition c\" (score 0.80 — title overlap 0.80)"
   },
   {
    "id": "round9-b8_mali_somalia-1b199366f465",
@@ -3227,7 +3225,7 @@
    "note": "Out-of-cell lead filed by round 9 agent b8_mali_somalia on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "high",
    "DUP_HELD_IDX": 2895,
-   "DUP_NOTE": "closest held record is 2895: \"An MNLA commander holds a seat in Mali's parliament and transition c\" (score 1.00 — title overlap 1.00; shared: commander, council, holds)"
+   "DUP_NOTE": "closest held record is 2895: \"An MNLA commander holds a seat in Mali's parliament and transition c\" (score 1.00 — title overlap 1.00)"
   },
   {
    "id": "round9-b8_mali_somalia-5d5971c21337",
@@ -3255,7 +3253,7 @@
    "note": "Out-of-cell lead filed by round 9 agent b8_mali_somalia on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 875,
-   "DUP_NOTE": "closest held record is 875: \"Al-Shabaab agents inside Mogadishu's city hall, spy agency and chamb\" (score 0.21 — title overlap 0.21)"
+   "DUP_NOTE": "closest held record is 875: \"Al-Shabaab agents inside Mogadishu's city hall, spy agency and chamb\" (score 0.23 — title overlap 0.23)"
   },
   {
    "id": "round9-b8_mali_somalia-66e6efaab46a",
@@ -3270,7 +3268,7 @@
    "note": "Out-of-cell lead filed by round 9 agent b8_mali_somalia on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2964,
-   "DUP_NOTE": "closest held record is 2964: \"Central African transport minister led a militia funded via his mini\" (score 0.27 — title overlap 0.27; shared: militia, minister, transport)"
+   "DUP_NOTE": "closest held record is 2964: \"Central African transport minister led a militia funded via his mini\" (score 0.27 — title overlap 0.27)"
   },
   {
    "id": "round9-b8_mali_somalia-76e8c316d636",
@@ -3298,8 +3296,9 @@
    "bk": "security",
    "status": "apparently_qualifying",
    "note": "Out-of-cell lead filed by round 9 agent b8_mali_somalia on 2026-11-17. Read by that agent, not verified. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"HCUA's tribal council co-opted a serving Malian army general\" (shares names ['Conseil', 'General', 'Imghad', 'Malian']). REMOVAL REASON: The movement took a serving general into its own tribal structure and used him against a rival movement; no action inside the Malian army is shown serving it. [round 9 review, 2026-11-17]"
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 2631,
+   "DUP_NOTE": "closest held record is 2631: \"A gendarmerie colonel led a CMA militia of serving Malian officers\" (score 0.14 — title overlap 0.14)"
   },
   {
    "id": "round9-b8_mali_somalia-cf52578a3043",
@@ -3329,7 +3328,7 @@
    "note": "Out-of-cell lead filed by round 9 agent c1_brazil_legis on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2655,
-   "DUP_NOTE": "closest held record is 2655: \"Rio councillor allegedly traded kiosks for Comando Vermelho's permis\" (score 0.25 — title overlap 0.25; shared: comando, councillor, vermelho)"
+   "DUP_NOTE": "closest held record is 2655: \"Rio councillor allegedly traded kiosks for Comando Vermelho's permis\" (score 0.27 — title overlap 0.27)"
   },
   {
    "id": "round9-c1_brazil_legis-6ba3eaf1d77f",
@@ -3342,9 +3341,9 @@
    "bk": "legis",
    "status": "apparently_qualifying",
    "note": "Out-of-cell lead filed by round 9 agent c1_brazil_legis on 2026-11-17. Read by that agent, not verified. See the locator.",
-   "DUP_FLAG": "none",
+   "DUP_FLAG": "high",
    "DUP_HELD_IDX": 2691,
-   "DUP_NOTE": "closest held record is 2691: \"Manaus city hall adviser held in Comando Vermelho infiltration inqui\" (score 0.31 — title overlap 0.31; shared: adviser, comando, manaus)"
+   "DUP_NOTE": "closest held record is 2691: \"Manaus city hall adviser held in Comando Vermelho infiltration inqui\" (score 1.01 — title overlap 0.31; both name \"casa civil\", a body in only 1 record(s))"
   },
   {
    "id": "round9-c1_brazil_legis-bd207f3e589f",
@@ -3449,7 +3448,7 @@
    "note": "Out-of-cell lead filed by round 9 agent c1_brazil_legis on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 415,
-   "DUP_NOTE": "closest held record is 415: \"PCC gang allegedly paid Sao Paulo police for protection\" (score 0.33 — title overlap 0.33; shared: allegedly, paulo)"
+   "DUP_NOTE": "closest held record is 415: \"PCC gang allegedly paid Sao Paulo police for protection\" (score 0.33 — title overlap 0.33)"
   },
   {
    "id": "round9-c1_brazil_legis-ff7d3653bcb0",
@@ -3479,7 +3478,7 @@
    "note": "Out-of-cell lead filed by round 9 agent c1_brazil_legis on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2477,
-   "DUP_NOTE": "closest held record is 2477: \"Libyan armed groups ran local councils and fielded their own electio\" (score 0.60 — title overlap 0.60; shared: armed, fielded, groups)"
+   "DUP_NOTE": "closest held record is 2477: \"Libyan armed groups ran local councils and fielded their own electio\" (score 0.60 — title overlap 0.60)"
   },
   {
    "id": "round9-c1_brazil_legis-4d9d02a7122f",
@@ -3524,7 +3523,7 @@
    "note": "Out-of-cell lead filed by round 9 agent c1_brazil_legis on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 303,
-   "DUP_NOTE": "closest held record is 303: \"PCC crime group's money ran two São Paulo city bus firms\" (score 0.09 — title overlap 0.09)"
+   "DUP_NOTE": "closest held record is 303: \"PCC crime group's money ran two São Paulo city bus firms\" (score 0.10 — title overlap 0.10)"
   },
   {
    "id": "round9-c2_car-45210f8240be",
@@ -3539,7 +3538,7 @@
    "note": "Out-of-cell lead filed by round 9 agent c2_car on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2965,
-   "DUP_NOTE": "closest held record is 2965: \"Central African energy minister was in the armed group behind an att\" (score 0.36 — title overlap 0.36; shared: armed, energy, group)"
+   "DUP_NOTE": "closest held record is 2965: \"Central African energy minister was in the armed group behind an att\" (score 0.36 — title overlap 0.36)"
   },
   {
    "id": "round9-c2_car-48f5c750c07f",
@@ -3599,7 +3598,7 @@
    "note": "Out-of-cell lead filed by round 9 agent c2_car on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2951,
-   "DUP_NOTE": "closest held record is 2951: \"Janjaweed chief Ali Kushayb put in charge of a Sudanese police force\" (score 0.27 — title overlap 0.27; shared: chief, janjaweed, kushayb)"
+   "DUP_NOTE": "closest held record is 2951: \"Janjaweed chief Ali Kushayb put in charge of a Sudanese police force\" (score 0.27 — title overlap 0.27)"
   },
   {
    "id": "round9-c2_car-86a8b6be58c3",
@@ -3644,7 +3643,7 @@
    "note": "Out-of-cell lead filed by round 9 agent c2_car on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2640,
-   "DUP_NOTE": "closest held record is 2640: \"Armed movements' fighters placed inside CAR's joint security units\" (score 0.27 — title overlap 0.27; shared: inside, joint, security)"
+   "DUP_NOTE": "closest held record is 2640: \"Armed movements' fighters placed inside CAR's joint security units\" (score 0.27 — title overlap 0.27)"
   },
   {
    "id": "round9-c2_car-117cbe609687",
@@ -3659,7 +3658,7 @@
    "note": "Out-of-cell lead filed by round 9 agent c2_car on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2897,
-   "DUP_NOTE": "closest held record is 2897: \"Armed coalition packed Birao's branch of the national elections auth\" (score 0.31 — title overlap 0.31; shared: armed, authority, elections)"
+   "DUP_NOTE": "closest held record is 2897: \"Armed coalition packed Birao's branch of the national elections auth\" (score 0.31 — title overlap 0.31)"
   },
   {
    "id": "round9-c2_car-afabe5c7315a",
@@ -3672,9 +3671,9 @@
    "bk": "security",
    "status": "apparently_qualifying",
    "note": "Out-of-cell lead filed by round 9 agent c2_car on 2026-11-17. Read by that agent, not verified. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 1494,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Wagner remnants supply tramadol to Central African presidential guard\" (shares names ['African', 'Bangui', 'Central', 'July']). REMOVAL REASON: Infiltration is incidental, not the main subject: The main subject is a drug-supply trade to security forces, not an outside party getting inside the state to steer decisions."
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 2642,
+   "DUP_NOTE": "closest held record is 2642: \"Azande militia folded into CAR's army as auxiliaries at Obo\" (score 0.08 — title overlap 0.08)"
   },
   {
    "id": "round9-c2_car-6b4a47a23438",
@@ -3687,9 +3686,9 @@
    "bk": "legis",
    "status": "apparently_qualifying",
    "note": "Out-of-cell lead filed by round 9 agent c2_car on 2026-11-17. Read by that agent, not verified. See the locator.",
-   "DUP_FLAG": "REMOVED",
+   "DUP_FLAG": "none",
    "DUP_HELD_IDX": 138,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Wagner guards the CAR president and fights for the army\" (shares names ['African', 'Central', 'President', 'Republic']). REMOVAL REASON: Wagner fighters guarding the president and fighting rebels under an open Russia–CAR military agreement is mercenary contracting, not infiltration."
+   "DUP_NOTE": "closest held record is 138: \"Wagner man Valery Zakharov becomes CAR president's security adviser\" (score 0.15 — title overlap 0.15)"
   },
   {
    "id": "round9-c2_car-39b8b1c19112",
@@ -3734,7 +3733,7 @@
    "note": "Out-of-cell lead filed by round 9 agent c2_car on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 1494,
-   "DUP_NOTE": "closest held record is 1494: \"Wagner officers took command of Central African army units\" (score 0.15 — title overlap 0.15)"
+   "DUP_NOTE": "closest held record is 1494: \"Wagner officers took command of Central African army units\" (score 0.17 — title overlap 0.17)"
   },
   {
    "id": "round9-c2_car-cd59241c4f85",
@@ -3822,7 +3821,7 @@
    "note": "Out-of-cell lead filed by round 9 agent c3_courts_sasia on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 1934,
-   "DUP_NOTE": "closest held record is 1934: \"Helmerich & Payne paid Venezuelan customs officials to cut inspectio\" (score 0.08 — title overlap 0.08)"
+   "DUP_NOTE": "closest held record is 1934: \"Helmerich & Payne paid Venezuelan customs officials to cut inspectio\" (score 0.09 — title overlap 0.09)"
   },
   {
    "id": "round9-c3_courts_sasia-f35a98378465",
@@ -3852,7 +3851,7 @@
    "note": "Out-of-cell lead filed by round 9 agent c3_courts_sasia on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 387,
-   "DUP_NOTE": "closest held record is 387: \"Bolivia's anti-drug chief guarded traffickers' cocaine\" (score 0.17 — title overlap 0.17)"
+   "DUP_NOTE": "closest held record is 387: \"Bolivia's anti-drug chief guarded traffickers' cocaine\" (score 0.18 — title overlap 0.18)"
   },
   {
    "id": "round9-c3_courts_sasia-85be35196336",
@@ -3882,7 +3881,7 @@
    "note": "Out-of-cell lead filed by round 9 agent c3_courts_sasia on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 276,
-   "DUP_NOTE": "closest held record is 276: \"Shell said it had placed its people in all Nigeria's key ministries\" (score 0.09 — title overlap 0.09)"
+   "DUP_NOTE": "closest held record is 276: \"Shell said it had placed its people in all Nigeria's key ministries\" (score 0.10 — title overlap 0.10)"
   },
   {
    "id": "round9-c3_courts_sasia-77557c54711e",
@@ -3895,8 +3894,7 @@
    "bk": "court",
    "status": "apparently_qualifying",
    "note": "Out-of-cell lead filed by round 9 agent c3_courts_sasia on 2026-11-17. Read by that agent, not verified. See the locator.",
-   "DUP_FLAG": "none",
-   "DUP_HELD_IDX": 272
+   "DUP_FLAG": "none"
   },
   {
    "id": "round9-c3_courts_sasia-4bdfd547040f",
@@ -3941,7 +3939,7 @@
    "note": "Out-of-cell lead filed by round 9 agent c3_courts_sasia on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2916,
-   "DUP_NOTE": "closest held record is 2916: \"Mining litigant's Rp150m bought rulings from two South Jakarta judge\" (score 0.36 — title overlap 0.36; shared: jakarta, judges, rp150m)"
+   "DUP_NOTE": "closest held record is 2916: \"Mining litigant's Rp150m bought rulings from two South Jakarta judge\" (score 0.36 — title overlap 0.36)"
   },
   {
    "id": "round9-c3_courts_sasia-e731730e25bd",
@@ -3969,9 +3967,9 @@
    "bk": "court",
    "status": "apparently_qualifying",
    "note": "Out-of-cell lead filed by round 9 agent c3_courts_sasia on 2026-11-17. Read by that agent, not verified. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 1129,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Golfito judge investigated for helping Costa Rican drug gangs avoid pr\" (shares names ['Attorney', 'Costa', 'December', 'Department']). REMOVAL REASON: Ruling 11 requires a named body and a named decision: the reporting names no judge, no case, no decision and no trafficking group, only an unnamed judge and assistant under investigation for helping u"
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 1447,
+   "DUP_NOTE": "closest held record is 1447: \"Costa Rica arrests two judges and an investigator over a trafficking\" (score 0.36 — title overlap 0.36)"
   },
   {
    "id": "round10-d10_corp_gov-ad10ea1d0836",
@@ -3984,9 +3982,8 @@
    "bk": "cabinet",
    "status": "apparently_qualifying",
    "note": "Out-of-cell or defective lead filed by round 10 agent d10_corp_gov on 2026-11-17. Read by that agent, not verified. See the locator.",
-   "DUP_FLAG": "check",
-   "DUP_NOTE": "closest held record is 2942: \"Kazakh fisheries committee chiefs jailed for systematic bribes from \" (score 0.75 — title overlap 0.75; shared: business, chiefs, committee)",
-   "DUP_HELD_IDX": 2942
+   "DUP_FLAG": "internal",
+   "DUP_NOTE": "the same item is already banked as: Kazakhstan: fisheries committee chiefs jailed for systematic bribes fr"
   },
   {
    "id": "round10-d10_corp_gov-6ad181f8d330",
@@ -4014,9 +4011,9 @@
    "bk": "security",
    "status": "apparently_qualifying",
    "note": "Out-of-cell or defective lead filed by round 10 agent d10_corp_gov on 2026-11-17. Read by that agent, not verified. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 1381,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Mining operator's cash reached the secretary of Ghana's illegal-mining\" (shares names ['Ghana', 'Office', 'Prosecutor', 'Special']). REMOVAL REASON: The money that reached the committee secretary came from private investigators posing as the firm's representative, so no real outside party's money got inside, the ground on which the Fabio Lobo stin"
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 2031,
+   "DUP_NOTE": "closest held record is 2031: \"Consortium chief charged with paying Ghana's Northern Development Au\" (score 0.14 — title overlap 0.14)"
   },
   {
    "id": "round10-d10_corp_gov-c12233cd100b",
@@ -4031,7 +4028,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d10_corp_gov on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "high",
    "DUP_HELD_IDX": 2901,
-   "DUP_NOTE": "closest held record is 2901: \"Clearing agents' palm-oil diversion drew in Ghana customs officers\" (score 1.55 — same OSP case 52; title overlap 0.55; shared: agents, clearing, customs)"
+   "DUP_NOTE": "closest held record is 2901: \"Clearing agents' palm-oil diversion drew in Ghana customs officers\" (score 1.55 — same OSP case 52, one locator is one prosecution; title overlap 0.55)"
   },
   {
    "id": "round10-d10_corp_gov-fbf5d7037bd9",
@@ -4046,7 +4043,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d10_corp_gov on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2608,
-   "DUP_NOTE": "closest held record is 2608: \"Belford Roxo mayor made two militia leaders city secretaries, says M\" (score 0.07 — title overlap 0.07)"
+   "DUP_NOTE": "closest held record is 2608: \"Belford Roxo mayor made two militia leaders city secretaries, says M\" (score 0.08 — title overlap 0.08)"
   },
   {
    "id": "round10-d10_corp_gov-8212562bc733",
@@ -4089,9 +4086,8 @@
    "bk": "cabinet",
    "status": "apparently_qualifying",
    "note": "Out-of-cell or defective lead filed by round 10 agent d10_corp_gov on 2026-11-17. Read by that agent, not verified. See the locator.",
-   "DUP_FLAG": "none",
-   "DUP_NOTE": "closest held record is 1228: \"UN: Somali commanders' arms and ammunition reached al-Shabaab\" (score 0.08 — title overlap 0.08)",
-   "DUP_HELD_IDX": 1228
+   "DUP_FLAG": "internal",
+   "DUP_NOTE": "the same item is already banked as: NEFCO leveraged two Somali federal ministers for catch and health cert"
   },
   {
    "id": "round10-d11_cabinet-c36399fb92b1",
@@ -4106,7 +4102,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d11_cabinet on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2972,
-   "DUP_NOTE": "closest held record is 2972: \"Libya's power company kept diverting fuel for armed groups after exp\" (score 0.54 — title overlap 0.54; shared: armed, diverting, fuel)"
+   "DUP_NOTE": "closest held record is 2972: \"Libya's power company kept diverting fuel for armed groups after exp\" (score 0.54 — title overlap 0.54)"
   },
   {
    "id": "round10-d11_cabinet-e93a0628c868",
@@ -4121,7 +4117,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d11_cabinet on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2944,
-   "DUP_NOTE": "closest held record is 2944: \"Militia commander Bahrun sat inside Libya's Zawiyah security directo\" (score 0.64 — title overlap 0.64; shared: bahrun, directorate, inside)"
+   "DUP_NOTE": "closest held record is 2944: \"Militia commander Bahrun sat inside Libya's Zawiyah security directo\" (score 0.64 — title overlap 0.64)"
   },
   {
    "id": "round10-d11_cabinet-2ef0565bd248",
@@ -4136,7 +4132,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d11_cabinet on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 1439,
-   "DUP_NOTE": "closest held record is 1439: \"Houthis run Yemenia Airways through loyalists and hold its $100m\" (score 0.25 — title overlap 0.25; shared: 100m, airways, yemenia)"
+   "DUP_NOTE": "closest held record is 1439: \"Houthis run Yemenia Airways through loyalists and hold its $100m\" (score 0.25 — title overlap 0.25)"
   },
   {
    "id": "round10-d11_cabinet-3cd034346273",
@@ -4166,7 +4162,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d11_cabinet on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2544,
-   "DUP_NOTE": "closest held record is 2544: \"Houthi women's security wing sits inside Yemen's police and intellig\" (score 0.29 — title overlap 0.29; shared: houthi, inside, women)"
+   "DUP_NOTE": "closest held record is 2544: \"Houthi women's security wing sits inside Yemen's police and intellig\" (score 0.29 — title overlap 0.29)"
   },
   {
    "id": "round10-d11_cabinet-34f1b6ba0d0e",
@@ -4180,8 +4176,7 @@
    "status": "apparently_qualifying",
    "note": "Out-of-cell or defective lead filed by round 10 agent d11_cabinet on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 1420,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"IRGC-trained Houthi official runs Yemen interior ministry personnel\" (shares names ['Adnan', 'Corps', 'Force', 'Guard']). REMOVAL REASON: The record shows only that the man was once posted to the Houthi office in Tehran and received Quds Force training, and that his ministry post controls hiring. No Iranian people, money or control insi"
+   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"IRGC-trained Houthi official runs Yemen interior ministry personnel\" (both name \"guard corps quds force\" and the titles overlap 0.33). READ THE REASON: The record shows only that the man was once posted to the Houthi office in Tehran and received Quds Force training, and that his ministry post controls hiring. No Iranian people, money or control insi"
   },
   {
    "id": "round10-d11_cabinet-1c3cbee67d88",
@@ -4196,7 +4191,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d11_cabinet on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2798,
-   "DUP_NOTE": "closest held record is 2798: \"Houthi custodian put a ministry undersecretary over eight seized fir\" (score 0.25 — title overlap 0.25; shared: houthi, ministry, undersecretary)"
+   "DUP_NOTE": "closest held record is 2798: \"Houthi custodian put a ministry undersecretary over eight seized fir\" (score 0.25 — title overlap 0.25)"
   },
   {
    "id": "round10-d11_cabinet-1aa06d0bf531",
@@ -4256,7 +4251,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d11_cabinet on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2966,
-   "DUP_NOTE": "closest held record is 2966: \"Mali made four armed group men ministers; one gave the groups border\" (score 0.27 — title overlap 0.27; shared: armed, four, group)"
+   "DUP_NOTE": "closest held record is 2966: \"Mali made four armed group men ministers; one gave the groups border\" (score 0.27 — title overlap 0.27)"
   },
   {
    "id": "round10-d11_cabinet-dda114787d80",
@@ -4284,9 +4279,9 @@
    "bk": "finance",
    "status": "apparently_qualifying",
    "note": "Out-of-cell or defective lead filed by round 10 agent d11_cabinet on 2026-11-17. Read by that agent, not verified. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 1231,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"M23 replaced Congo's mining offices and took the Twangiza gold mine\" (shares names ['Congo', 'Democratic', 'Republic', 'United']). REMOVAL REASON: This is conquest: after taking Luhihi the movement replaced state services with its own mining office, courts and tax structures, which the UN Group calls usurping state functions. Nobody is placed in"
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 1221,
+   "DUP_NOTE": "closest held record is 1221: \"Och-Ziff money funded bribes to Congo's officials for mining assets\" (score 0.08 — title overlap 0.08)"
   },
   {
    "id": "round10-d11_cabinet-9f26aa0cb1bb",
@@ -4300,8 +4295,8 @@
    "status": "apparently_qualifying",
    "note": "Out-of-cell or defective lead filed by round 10 agent d11_cabinet on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "check",
-   "DUP_NOTE": "closest held record is 3081: \"US says Hezbollah paid Marada's leader to take reformist MPs' seats\" (score 0.56 — title overlap 0.56; shared: hezbollah, marada, reformist)",
-   "DUP_HELD_IDX": 3081
+   "DUP_HELD_IDX": 3081,
+   "DUP_NOTE": "closest held record is 3081: \"US says Hezbollah paid Marada's leader to take reformist MPs' seats\" (score 0.50 — title overlap 0.50)"
   },
   {
    "id": "round10-d11_cabinet-ec1fdcc4ce61",
@@ -4330,7 +4325,7 @@
    "status": "apparently_qualifying",
    "note": "Out-of-cell or defective lead filed by round 10 agent d11_cabinet on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "REMOVED",
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Uruguay issued a passport to trafficker Sebastian Marset\" (title overlap 0.75). REMOVAL REASON: The passport was lawful under decree 129 of 2014, the prosecutor concluded no criminal liability could be assigned and the case was archived. No payment and no official working for the trafficker is s"
+   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Uruguay issued a passport to trafficker Sebastian Marset\" (title overlap 0.75). READ THE REASON: The passport was lawful under decree 129 of 2014, the prosecutor concluded no criminal liability could be assigned and the case was archived. No payment and no official working for the trafficker is s"
   },
   {
    "id": "round10-d1_brazil_legis-521a01927cf7",
@@ -4525,7 +4520,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d1_brazil_legis on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2501,
-   "DUP_NOTE": "closest held record is 2501: \"PCC-linked firms rigged labour tenders in twelve São Paulo councils\" (score 0.27 — title overlap 0.27; shared: linked, paulo, twelve)"
+   "DUP_NOTE": "closest held record is 2501: \"PCC-linked firms rigged labour tenders in twelve São Paulo councils\" (score 0.27 — title overlap 0.27)"
   },
   {
    "id": "round10-d1_brazil_legis-ecaa3c7d185e",
@@ -4555,7 +4550,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d1_brazil_legis on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2890,
-   "DUP_NOTE": "closest held record is 2890: \"Gang leader demanded a senior Carrefour post for a close associate\" (score 0.36 — title overlap 0.36; shared: carrefour, demanded, gang)"
+   "DUP_NOTE": "closest held record is 2890: \"Gang leader demanded a senior Carrefour post for a close associate\" (score 0.36 — title overlap 0.36)"
   },
   {
    "id": "round10-d1_brazil_legis-c924902966aa",
@@ -4598,9 +4593,8 @@
    "bk": "legis",
    "status": "apparently_qualifying",
    "note": "Out-of-cell or defective lead filed by round 10 agent d1_brazil_legis on 2026-11-17. Read by that agent, not verified. See the locator.",
-   "DUP_FLAG": "none",
-   "DUP_NOTE": "closest held record is 303: \"PCC crime group's money ran two São Paulo city bus firms\" (score 0.09 — title overlap 0.09)",
-   "DUP_HELD_IDX": 303
+   "DUP_FLAG": "internal",
+   "DUP_NOTE": "the same item is already banked as: Nilopolis councillor named as head of a group close to Rio's largest m"
   },
   {
    "id": "round10-d2_italy_security-9c5f7bb58b43",
@@ -4615,7 +4609,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d2_italy_security on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 1008,
-   "DUP_NOTE": "closest held record is 1008: \"Italy dissolves Foggia council over 'Società foggiana' infiltration\" (score 0.27 — title overlap 0.27; shared: foggia, foggiana, societa)"
+   "DUP_NOTE": "closest held record is 1008: \"Italy dissolves Foggia council over 'Società foggiana' infiltration\" (score 0.27 — title overlap 0.27)"
   },
   {
    "id": "round10-d2_italy_security-e9cb639c06f2",
@@ -4645,7 +4639,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d2_italy_security on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2650,
-   "DUP_NOTE": "closest held record is 2650: \"D'Alessandro clan ran emergency transport inside Castellammare's hos\" (score 0.27 — title overlap 0.27; shared: alessandro, castellammare, clan)"
+   "DUP_NOTE": "closest held record is 2650: \"D'Alessandro clan ran emergency transport inside Castellammare's hos\" (score 0.27 — title overlap 0.27)"
   },
   {
    "id": "round10-d2_italy_security-da3546228b01",
@@ -4673,9 +4667,9 @@
    "bk": "security",
    "status": "apparently_qualifying",
    "note": "Out-of-cell or defective lead filed by round 10 agent d2_italy_security on 2026-11-17. Read by that agent, not verified. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 641,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Operation Chirone: 'ndrangheta inside Reggio Calabria's health authori\" (shares names ['Melito', 'Porto', 'Reggio', 'Salvo']). REMOVAL REASON: Duplicate: the map already carries 'Ndrangheta clans steered Reggio Calabria's public health authority', which covers the same Operation Chirone measures of March 2021, the Piromalli clan and the dire"
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 2712,
+   "DUP_NOTE": "closest held record is 2712: \"Finance officer accused of warning a Piromalli clan man of an inquir\" (score 0.08 — title overlap 0.08)"
   },
   {
    "id": "round10-d2_italy_security-26ff2b747e9c",
@@ -4690,7 +4684,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d2_italy_security on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2711,
-   "DUP_NOTE": "closest held record is 2711: \"Clan held seizure papers from an unidentified Genoa finance officer\" (score 0.33 — title overlap 0.33; shared: clan, finance, officer)"
+   "DUP_NOTE": "closest held record is 2711: \"Clan held seizure papers from an unidentified Genoa finance officer\" (score 0.33 — title overlap 0.33)"
   },
   {
    "id": "round10-d2_italy_security-56c3ddd7e01f",
@@ -4765,7 +4759,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d3_corp_company on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "high",
    "DUP_HELD_IDX": 2843,
-   "DUP_NOTE": "closest held record is 2843: \"Exam-fixing ring paid at least €81,000 inside Romania's road authori\" (score 2.30 — same dna release 13914; title overlap 0.70; figure 81000 (in 1 records))"
+   "DUP_NOTE": "closest held record is 2843: \"Exam-fixing ring paid at least €81,000 inside Romania's road authori\" (score 2.30 — same dna release 13914, one locator is one prosecution; title overlap 0.70; figure 81000 (in 1 records))"
   },
   {
    "id": "round10-d3_corp_company-c11a15df1ac6",
@@ -4780,7 +4774,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d3_corp_company on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "high",
    "DUP_HELD_IDX": 2934,
-   "DUP_NOTE": "closest held record is 2934: \"Arad food-safety chiefs kept paying a vet concession that did no wor\" (score 1.33 — same dna release 13822; title overlap 0.33; shared: arad, chiefs, food)"
+   "DUP_NOTE": "closest held record is 2934: \"Arad food-safety chiefs kept paying a vet concession that did no wor\" (score 1.33 — same dna release 13822, one locator is one prosecution; title overlap 0.33)"
   },
   {
    "id": "round10-d3_corp_company-4d6f15ae096c",
@@ -4810,7 +4804,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d3_corp_company on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "high",
    "DUP_HELD_IDX": 2892,
-   "DUP_NOTE": "closest held record is 2892: \"Contractors paid Zanesti's mayor about half their profit on commune \" (score 1.27 — same dna release 13892; title overlap 0.27; shared: commune, mayor, zanesti)"
+   "DUP_NOTE": "closest held record is 2892: \"Contractors paid Zanesti's mayor about half their profit on commune \" (score 1.27 — same dna release 13892, one locator is one prosecution; title overlap 0.27)"
   },
   {
    "id": "round10-d3_corp_company-39e402bba228",
@@ -4825,7 +4819,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d3_corp_company on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "high",
    "DUP_HELD_IDX": 2891,
-   "DUP_NOTE": "closest held record is 2891: \"Developer's money reached Navodari's chief architect over building p\" (score 2.95 — same dna release 12777; title overlap 0.50; figure 56530 (in 1 records))"
+   "DUP_NOTE": "closest held record is 2891: \"Developer's money reached Navodari's chief architect over building p\" (score 2.95 — same dna release 12777, one locator is one prosecution; title overlap 0.50; figure 56530 (in 1 records))"
   },
   {
    "id": "round10-d3_corp_company-04f7f11581d3",
@@ -4840,7 +4834,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d3_corp_company on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "high",
    "DUP_HELD_IDX": 2893,
-   "DUP_NOTE": "closest held record is 2893: \"Road contractor's 421,930 lei reached Prahova's county council presi\" (score 1.40 — same dna release 12750; title overlap 0.40; shared: council, county, prahova)"
+   "DUP_NOTE": "closest held record is 2893: \"Road contractor's 421,930 lei reached Prahova's county council presi\" (score 1.40 — same dna release 12750, one locator is one prosecution; title overlap 0.40)"
   },
   {
    "id": "round10-d3_corp_company-f96b39d5b6e7",
@@ -4855,7 +4849,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d3_corp_company on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "high",
    "DUP_HELD_IDX": 2935,
-   "DUP_NOTE": "closest held record is 2935: \"Botosani environment inspectors shielded polluting firms for cash an\" (score 1.57 — same dna release 12932; title overlap 0.57; shared: botosani, environment, inspectors)"
+   "DUP_NOTE": "closest held record is 2935: \"Botosani environment inspectors shielded polluting firms for cash an\" (score 1.57 — same dna release 12932, one locator is one prosecution; title overlap 0.57)"
   },
   {
    "id": "round10-d3_corp_company-8ef66fa9d0f5",
@@ -4870,7 +4864,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d3_corp_company on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "high",
    "DUP_HELD_IDX": 2936,
-   "DUP_NOTE": "closest held record is 2936: \"Haulage firms paid Timis road transport inspectors to wave overloade\" (score 1.15 — same dna release 12919; title overlap 0.15)"
+   "DUP_NOTE": "closest held record is 2936: \"Haulage firms paid Timis road transport inspectors to wave overloade\" (score 1.15 — same dna release 12919, one locator is one prosecution; title overlap 0.15)"
   },
   {
    "id": "round10-d3_corp_company-ab2e8ad1ba74",
@@ -4885,7 +4879,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d3_corp_company on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "high",
    "DUP_HELD_IDX": 2902,
-   "DUP_NOTE": "closest held record is 2902: \"Importers' men paid customs inspectors at Romania's Constanta border\" (score 1.50 — same dna release 13879; title overlap 0.50; shared: border, constanta, customs)"
+   "DUP_NOTE": "closest held record is 2902: \"Importers' men paid customs inspectors at Romania's Constanta border\" (score 1.50 — same dna release 13879, one locator is one prosecution; title overlap 0.50)"
   },
   {
    "id": "round10-d3_corp_company-295f6c583972",
@@ -4900,7 +4894,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d3_corp_company on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "high",
    "DUP_HELD_IDX": 3041,
-   "DUP_NOTE": "closest held record is 3041: \"100,000 lei released a contractor's flood-works money at Apele Roman\" (score 1.25 — same dna release 11876; title overlap 0.20; figure 100000 (in 53 records))"
+   "DUP_NOTE": "closest held record is 3041: \"100,000 lei released a contractor's flood-works money at Apele Roman\" (score 1.25 — same dna release 11876, one locator is one prosecution; title overlap 0.20; figure 100000 (in 53 records))"
   },
   {
    "id": "round10-d3_corp_company-c4e34ed83790",
@@ -4915,7 +4909,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d3_corp_company on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "high",
    "DUP_HELD_IDX": 2939,
-   "DUP_NOTE": "closest held record is 2939: \"Care providers' gifts to the Maramures health insurance house direct\" (score 1.45 — same dna release 12758; title overlap 0.45; shared: directors, health, house)"
+   "DUP_NOTE": "closest held record is 2939: \"Care providers' gifts to the Maramures health insurance house direct\" (score 1.45 — same dna release 12758, one locator is one prosecution; title overlap 0.45)"
   },
   {
    "id": "round10-d3_corp_company-08b1c7b6f40d",
@@ -4945,7 +4939,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d3_corp_company on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "high",
    "DUP_HELD_IDX": 3042,
-   "DUP_NOTE": "closest held record is 3042: \"7 per cent of a Baia Mare hospital works contract reached its manage\" (score 1.38 — same dna release 13151; title overlap 0.33; figure 10000 (in 77 records))"
+   "DUP_NOTE": "closest held record is 3042: \"7 per cent of a Baia Mare hospital works contract reached its manage\" (score 1.38 — same dna release 13151, one locator is one prosecution; title overlap 0.33; figure 10000 (in 77 records))"
   },
   {
    "id": "round10-d3_corp_company-e4d3154f11a3",
@@ -4975,7 +4969,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d3_corp_company on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2189,
-   "DUP_NOTE": "closest held record is 2189: \"CNAIR road maintenance director fed tender data to a snow-clearing f\" (score 0.25 — title overlap 0.25; shared: cnair, director, maintenance)"
+   "DUP_NOTE": "closest held record is 2189: \"CNAIR road maintenance director fed tender data to a snow-clearing f\" (score 0.25 — title overlap 0.25)"
   },
   {
    "id": "round10-d3_corp_company-85f9d65b2ec9",
@@ -5005,7 +4999,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d3_corp_company on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2182,
-   "DUP_NOTE": "closest held record is 2182: \"Brasov heating service directors sold procurement secrets to three f\" (score 0.33 — title overlap 0.33; shared: brasov, heating, service)"
+   "DUP_NOTE": "closest held record is 2182: \"Brasov heating service directors sold procurement secrets to three f\" (score 0.33 — title overlap 0.33)"
   },
   {
    "id": "round10-d3_corp_company-c22e6491a9be",
@@ -5048,9 +5042,9 @@
    "bk": "company",
    "status": "apparently_qualifying",
    "note": "Out-of-cell or defective lead filed by round 10 agent d3_corp_company on 2026-11-17. Read by that agent, not verified. See the locator.",
-   "DUP_FLAG": "none",
+   "DUP_FLAG": "high",
    "DUP_HELD_IDX": 2181,
-   "DUP_NOTE": "closest held record is 2181: \"Recruitment firm's rigged selection put a chosen man atop Apa Brasov\" (score 0.20 — title overlap 0.20)"
+   "DUP_NOTE": "closest held record is 2181: \"Recruitment firm's rigged selection put a chosen man atop Apa Brasov\" (score 0.90 — title overlap 0.20; both name \"compania apa brasov\", a body in only 1 record(s))"
   },
   {
    "id": "round10-d4_ukraine_ee-e892ece1a8f5",
@@ -5065,7 +5059,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d4_ukraine_ee on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2905,
-   "DUP_NOTE": "closest held record is 2905: \"Drone maker's owner and a Ukrainian border guard official demanded $\" (score 0.56 — title overlap 0.56; shared: border, drone, guard)"
+   "DUP_NOTE": "closest held record is 2905: \"Drone maker's owner and a Ukrainian border guard official demanded $\" (score 0.56 — title overlap 0.56)"
   },
   {
    "id": "round10-d4_ukraine_ee-53fe874452f4",
@@ -5215,7 +5209,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d4_ukraine_ee on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2829,
-   "DUP_NOTE": "closest held record is 2829: \"Smuggling group paid Moldovan border police for secret crossings\" (score 0.44 — title overlap 0.44; shared: border, group, moldovan)"
+   "DUP_NOTE": "closest held record is 2829: \"Smuggling group paid Moldovan border police for secret crossings\" (score 0.44 — title overlap 0.44)"
   },
   {
    "id": "round10-d4_ukraine_ee-855c1671645c",
@@ -5244,8 +5238,8 @@
    "status": "apparently_qualifying",
    "note": "Out-of-cell or defective lead filed by round 10 agent d4_ukraine_ee on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "high",
-   "DUP_NOTE": "closest held record is 3002: \"Czech policeman convicted of selling operation details to a dealer\" (score 1.62 — same node id 8519505; title overlap 0.62; shared: czech, dealer, details)",
-   "DUP_HELD_IDX": 3002
+   "DUP_HELD_IDX": 3002,
+   "DUP_NOTE": "closest held record is 3002: \"Czech policeman convicted of selling operation details to a dealer\" (score 1.62 — same node id 8519505, one locator is one prosecution; title overlap 0.62)"
   },
   {
    "id": "round10-d4_ukraine_ee-2aadac51eccf",
@@ -5274,8 +5268,8 @@
    "status": "apparently_qualifying",
    "note": "Out-of-cell or defective lead filed by round 10 agent d4_ukraine_ee on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "check",
-   "DUP_NOTE": "closest held record is 3065: \"Criminal group inside a Polish labour office cleared 12,500 work ent\" (score 0.83 — title overlap 0.23; figure 12500 (in 1 records))",
-   "DUP_HELD_IDX": 3065
+   "DUP_HELD_IDX": 3065,
+   "DUP_NOTE": "closest held record is 3065: \"Criminal group inside a Polish labour office cleared 12,500 work ent\" (score 0.83 — title overlap 0.23; figure 12500 (in 1 records))"
   },
   {
    "id": "round10-d5_latam_security-418a0f0308b5",
@@ -5290,7 +5284,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d5_latam_security on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2868,
-   "DUP_NOTE": "closest held record is 2868: \"Bolivian prosecutors freed trafficker Marset and returned seized goo\" (score 0.33 — title overlap 0.33; shared: bolivian, freed, marset)"
+   "DUP_NOTE": "closest held record is 2868: \"Bolivian prosecutors freed trafficker Marset and returned seized goo\" (score 0.33 — title overlap 0.33)"
   },
   {
    "id": "round10-d5_latam_security-4d7dafb421c8",
@@ -5320,7 +5314,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d5_latam_security on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 983,
-   "DUP_NOTE": "closest held record is 983: \"Guatemalan prison guards charged over escape of 20 Barrio 18 leaders\" (score 0.40 — title overlap 0.40; shared: barrio, guards, guatemalan)"
+   "DUP_NOTE": "closest held record is 983: \"Guatemalan prison guards charged over escape of 20 Barrio 18 leaders\" (score 0.40 — title overlap 0.40)"
   },
   {
    "id": "round10-d5_latam_security-586764ed7b20",
@@ -5335,7 +5329,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d5_latam_security on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2825,
-   "DUP_NOTE": "closest held record is 2825: \"Gangs 'bought the wing' from guards at Ecuador's Litoral prison\" (score 0.45 — title overlap 0.45; shared: gangs, guards, litoral)"
+   "DUP_NOTE": "closest held record is 2825: \"Gangs 'bought the wing' from guards at Ecuador's Litoral prison\" (score 0.45 — title overlap 0.45)"
   },
   {
    "id": "round10-d5_latam_security-e08fbf275e8c",
@@ -5349,8 +5343,8 @@
    "status": "apparently_qualifying",
    "note": "Out-of-cell or defective lead filed by round 10 agent d5_latam_security on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "check",
-   "DUP_NOTE": "closest held record is 3004: \"Two Ecuadorian navy personnel worked as a Choneros leader's bodyguar\" (score 0.78 — title overlap 0.78; shared: bodyguards, choneros, ecuadorian)",
-   "DUP_HELD_IDX": 3004
+   "DUP_HELD_IDX": 3004,
+   "DUP_NOTE": "closest held record is 3004: \"Two Ecuadorian navy personnel worked as a Choneros leader's bodyguar\" (score 0.78 — title overlap 0.78)"
   },
   {
    "id": "round10-d5_latam_security-e67ca94544f3",
@@ -5378,8 +5372,9 @@
    "bk": "security",
    "status": "apparently_qualifying",
    "note": "Out-of-cell or defective lead filed by round 10 agent d5_latam_security on 2026-11-17. Read by that agent, not verified. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Archives of Terror found in Paraguayan police station\" (shares names ['December', 'Operation', 'Paraguay', 'Paraguayan']). REMOVAL REASON: Operation Condor was a pact among South American military governments to hunt their own opponents; the record covers state repression and later trials, not an outside party getting inside an instituti"
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 806,
+   "DUP_NOTE": "closest held record is 806: \"PCC paid Paraguayan prison staff as 75 inmates walked free\" (score 0.08 — title overlap 0.08)"
   },
   {
    "id": "round10-d5_latam_security-78af5110d44b",
@@ -5409,7 +5404,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d5_latam_security on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 994,
-   "DUP_NOTE": "closest held record is 994: \"Trinidad detains prison superintendent as an associate of a jailed g\" (score 0.25 — title overlap 0.25; shared: gang, prison, trinidad)"
+   "DUP_NOTE": "closest held record is 994: \"Trinidad detains prison superintendent as an associate of a jailed g\" (score 0.25 — title overlap 0.25)"
   },
   {
    "id": "round10-d5_latam_security-3b8f559fd9e5",
@@ -5499,7 +5494,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d5_latam_security on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 387,
-   "DUP_NOTE": "closest held record is 387: \"Bolivia's anti-drug chief guarded traffickers' cocaine\" (score 0.36 — title overlap 0.36; shared: anti, bolivia, chief)"
+   "DUP_NOTE": "closest held record is 387: \"Bolivia's anti-drug chief guarded traffickers' cocaine\" (score 0.36 — title overlap 0.36)"
   },
   {
    "id": "round10-d6_asia_movements-093e0c180722",
@@ -5514,7 +5509,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d6_asia_movements on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2899,
-   "DUP_NOTE": "closest held record is 2899: \"CAR peace deals put armed groups' advisers in Bangui's legislature\" (score 0.44 — title overlap 0.44; shared: advisers, armed, groups)"
+   "DUP_NOTE": "closest held record is 2899: \"CAR peace deals put armed groups' advisers in Bangui's legislature\" (score 0.44 — title overlap 0.44)"
   },
   {
    "id": "round10-d6_asia_movements-31b940311fde",
@@ -5529,7 +5524,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d6_asia_movements on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2960,
-   "DUP_NOTE": "closest held record is 2960: \"Court said to be Houthi-run declared a mobile firm bankrupt in Sana'\" (score 0.15 — title overlap 0.15)"
+   "DUP_NOTE": "closest held record is 2960: \"Court said to be Houthi-run declared a mobile firm bankrupt in Sana'\" (score 0.17 — title overlap 0.17)"
   },
   {
    "id": "round10-d6_asia_movements-a1643ee04168",
@@ -5544,7 +5539,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d6_asia_movements on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2775,
-   "DUP_NOTE": "closest held record is 2775: \"US says Hezbollah drew intelligence from inside Lebanon's army and s\" (score 0.14 — title overlap 0.14)"
+   "DUP_NOTE": "closest held record is 2775: \"US says Hezbollah drew intelligence from inside Lebanon's army and s\" (score 0.15 — title overlap 0.15)"
   },
   {
    "id": "round10-d6_asia_movements-c590910ba9ac",
@@ -5559,7 +5554,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d6_asia_movements on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 1291,
-   "DUP_NOTE": "closest held record is 1291: \"US says Hezbollah paid and used Lebanese transport and finance minis\" (score 0.13 — title overlap 0.13)"
+   "DUP_NOTE": "closest held record is 1291: \"US says Hezbollah paid and used Lebanese transport and finance minis\" (score 0.14 — title overlap 0.14)"
   },
   {
    "id": "round10-d6_asia_movements-7a860f482bb8",
@@ -5572,9 +5567,9 @@
    "bk": "company",
    "status": "apparently_qualifying",
    "note": "Out-of-cell or defective lead filed by round 10 agent d6_asia_movements on 2026-11-17. Read by that agent, not verified. See the locator.",
-   "DUP_FLAG": "none",
+   "DUP_FLAG": "high",
    "DUP_HELD_IDX": 300,
-   "DUP_NOTE": "closest held record is 300: \"Scam-city builders partnered with Myanmar army's Karen border force\" (score 0.25 — title overlap 0.25; shared: border, force, karen)"
+   "DUP_NOTE": "closest held record is 300: \"Scam-city builders partnered with Myanmar army's Karen border force\" (score 0.95 — title overlap 0.25; both name \"guard force\", a body in only 2 record(s))"
   },
   {
    "id": "round10-d6_asia_movements-5a27748f7230",
@@ -5634,7 +5629,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d7_state_firms on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2844,
-   "DUP_NOTE": "closest held record is 2844: \"Clan men inside a Catania port terminal firm moved cocaine container\" (score 0.31 — title overlap 0.31; shared: catania, inside, port)"
+   "DUP_NOTE": "closest held record is 2844: \"Clan men inside a Catania port terminal firm moved cocaine container\" (score 0.31 — title overlap 0.31)"
   },
   {
    "id": "round10-d7_state_firms-1a37813eb69f",
@@ -5649,7 +5644,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d7_state_firms on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2585,
-   "DUP_NOTE": "closest held record is 2585: \"Cimmino-Caiazzo clan rigged tenders at three Naples public hospitals\" (score 0.29 — title overlap 0.29; shared: caiazzo, cimmino, clan)"
+   "DUP_NOTE": "closest held record is 2585: \"Cimmino-Caiazzo clan rigged tenders at three Naples public hospitals\" (score 0.29 — title overlap 0.29)"
   },
   {
    "id": "round10-d7_state_firms-fbd2a6c7125d",
@@ -5664,7 +5659,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d7_state_firms on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2865,
-   "DUP_NOTE": "closest held record is 2865: \"Casalesi-backed firm held the ambulance monopoly at Aversa's hospita\" (score 0.60 — title overlap 0.60; shared: ambulance, aversa, casalesi)"
+   "DUP_NOTE": "closest held record is 2865: \"Casalesi-backed firm held the ambulance monopoly at Aversa's hospita\" (score 0.60 — title overlap 0.60)"
   },
   {
    "id": "round10-d7_state_firms-a9b52092034d",
@@ -5692,9 +5687,9 @@
    "bk": "company",
    "status": "apparently_qualifying",
    "note": "Out-of-cell or defective lead filed by round 10 agent d7_state_firms on 2026-11-17. Read by that agent, not verified. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 1002,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Contini clan used Naples's San Giovanni Bosco hospital for its own peo\" (shares names ['Bosco', 'Contini', 'Giovanni', 'June']). REMOVAL REASON: Duplicate: the same clan inside the same Naples hospital as the held record, documented in a second custody order rather than as a separate infiltration. [round 9 review, 2026-11-17]"
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 2785,
+   "DUP_NOTE": "closest held record is 2785: \"Contini clan men ran the booking desk inside a Naples public hospita\" (score 0.31 — title overlap 0.31)"
   },
   {
    "id": "round10-d7_state_firms-8dbbb8eab834",
@@ -5722,9 +5717,9 @@
    "bk": "legis",
    "status": "apparently_qualifying",
    "note": "Out-of-cell or defective lead filed by round 10 agent d7_state_firms on 2026-11-17. Read by that agent, not verified. See the locator.",
-   "DUP_FLAG": "none",
+   "DUP_FLAG": "high",
    "DUP_HELD_IDX": 2884,
-   "DUP_NOTE": "closest held record is 2884: \"Catania clans and Trecastagni's technical office in a refuse-tender \" (score 0.25 — title overlap 0.25; shared: clans, refuse, trecastagni)"
+   "DUP_NOTE": "closest held record is 2884: \"Catania clans and Trecastagni's technical office in a refuse-tender \" (score 0.95 — title overlap 0.25; both name \"comune trecastagni\", a body in only 1 record(s))"
   },
   {
    "id": "round10-d7_state_firms-e71f746a2d4d",
@@ -5754,7 +5749,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d7_state_firms on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2826,
-   "DUP_NOTE": "closest held record is 2826: \"Scan images at Ghana's Tema Port let a 3.9-tonne cocaine export thro\" (score 0.27 — title overlap 0.27; shared: images, port, scan)"
+   "DUP_NOTE": "closest held record is 2826: \"Scan images at Ghana's Tema Port let a 3.9-tonne cocaine export thro\" (score 0.27 — title overlap 0.27)"
   },
   {
    "id": "round10-d7_state_firms-9e50e028d1f7",
@@ -5767,9 +5762,9 @@
    "bk": "company",
    "status": "apparently_qualifying",
    "note": "Out-of-cell or defective lead filed by round 10 agent d7_state_firms on 2026-11-17. Read by that agent, not verified. See the locator.",
-   "DUP_FLAG": "none",
-   "DUP_HELD_IDX": 2923,
-   "DUP_NOTE": "closest held record is 2923: \"An auditor's circle took bribes on six Sicilian hospital tenders wor\" (score 0.29 — title overlap 0.29; shared: euros, sicilian, tenders)"
+   "DUP_FLAG": "high",
+   "DUP_HELD_IDX": 2926,
+   "DUP_NOTE": "closest held record is 2926: \"Operation Aspide: six convicted over rigged tenders and posts at ASP\" (score 0.93 — title overlap 0.23; both name \"asp trapani\", a body in only 1 record(s))"
   },
   {
    "id": "round10-d7_state_firms-c8c1c216a1a2",
@@ -5784,7 +5779,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d7_state_firms on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2930,
-   "DUP_NOTE": "closest held record is 2930: \"Romeo Gestioni's gifts to officials over the Cardarelli hospital cle\" (score 0.33 — title overlap 0.33; shared: cardarelli, hospital, romeo)"
+   "DUP_NOTE": "closest held record is 2930: \"Romeo Gestioni's gifts to officials over the Cardarelli hospital cle\" (score 0.33 — title overlap 0.33)"
   },
   {
    "id": "round10-d7_state_firms-98702d2f6b3a",
@@ -5797,9 +5792,9 @@
    "bk": "company",
    "status": "apparently_qualifying",
    "note": "Out-of-cell or defective lead filed by round 10 agent d7_state_firms on 2026-11-17. Read by that agent, not verified. See the locator.",
-   "DUP_FLAG": "check",
+   "DUP_FLAG": "high",
    "DUP_HELD_IDX": 2924,
-   "DUP_NOTE": "closest held record is 2924: \"Builder's bribes won split contracts at ASL Caserta's mental health \" (score 0.75 — title overlap 0.75; shared: caserta, contracts, department)"
+   "DUP_NOTE": "closest held record is 2924: \"Builder's bribes won split contracts at ASL Caserta's mental health \" (score 1.45 — title overlap 0.75; both name \"asl caserta\", a body in only 1 record(s))"
   },
   {
    "id": "round10-d7_state_firms-1d5f45e9d3e6",
@@ -5829,7 +5824,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d7_state_firms on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 3000,
-   "DUP_NOTE": "closest held record is 3000: \"Ivory syndicate used Dar es Salaam airport security men to move tusk\" (score 0.40 — title overlap 0.40; shared: airport, ivory, salaam)"
+   "DUP_NOTE": "closest held record is 3000: \"Ivory syndicate used Dar es Salaam airport security men to move tusk\" (score 0.40 — title overlap 0.40)"
   },
   {
    "id": "round10-d8_movement_company-cb2312f289be",
@@ -5842,9 +5837,9 @@
    "bk": "finance",
    "status": "apparently_qualifying",
    "note": "Out-of-cell or defective lead filed by round 10 agent d8_movement_company on 2026-11-17. Read by that agent, not verified. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 2491,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Houthi custodian's nephew made director of Twintech university in Sana\" (shares names ['Houthis', 'Mesfer', 'Raed', 'Saleh']). REMOVAL REASON: The body reached is a private university, which is not a government body, an international body or a company, so the company coding is only a residual. [round 10 review, 2026-11-17]"
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 2799,
+   "DUP_NOTE": "closest held record is 2799: \"Houthis seized Yemen's Kamaran tobacco firm and named its chief exec\" (score 0.33 — title overlap 0.33)"
   },
   {
    "id": "round10-d8_movement_company-8d80c1293bd9",
@@ -5857,9 +5852,8 @@
    "bk": "finance",
    "status": "apparently_qualifying",
    "note": "Out-of-cell or defective lead filed by round 10 agent d8_movement_company on 2026-11-17. Read by that agent, not verified. See the locator.",
-   "DUP_FLAG": "none",
-   "DUP_NOTE": "closest held record is 2798: \"Houthi custodian put a ministry undersecretary over eight seized fir\" (score 0.17 — title overlap 0.17)",
-   "DUP_HELD_IDX": 2798
+   "DUP_FLAG": "internal",
+   "DUP_NOTE": "the same item is already banked as: Houthi-run social affairs ministry absorbed Al-Amal Microfinance Bank"
   },
   {
    "id": "round10-d8_movement_company-02a5905866eb",
@@ -5933,8 +5927,8 @@
    "status": "apparently_qualifying",
    "note": "Out-of-cell or defective lead filed by round 10 agent d8_movement_company on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
-   "DUP_HELD_IDX": 188,
-   "DUP_NOTE": "closest held record is 188: \"Kosovo's intelligence service secretly handed six Turks to Ankara\" (score 0.08 — title overlap 0.08)"
+   "DUP_HELD_IDX": 1268,
+   "DUP_NOTE": "closest held record is 1268: \"US says Veselinović group bribed Kosovo and Serbian security officia\" (score 0.09 — title overlap 0.09)"
   },
   {
    "id": "round10-d8_movement_company-b05a9e0daad3",
@@ -5949,7 +5943,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d8_movement_company on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2968,
-   "DUP_NOTE": "closest held record is 2968: \"Iraq's communications ministry waived bidding for a PMF firm's fibre\" (score 0.75 — title overlap 0.75; shared: communications, contracts, fibre)"
+   "DUP_NOTE": "closest held record is 2968: \"Iraq's communications ministry waived bidding for a PMF firm's fibre\" (score 0.75 — title overlap 0.75)"
   },
   {
    "id": "round10-d8_movement_company-d1dee9db4af5",
@@ -5977,9 +5971,8 @@
    "bk": "company",
    "status": "apparently_qualifying",
    "note": "Out-of-cell or defective lead filed by round 10 agent d8_movement_company on 2026-11-17. Read by that agent, not verified. See the locator.",
-   "DUP_FLAG": "check",
-   "DUP_NOTE": "closest held record is 2973: \"Broker sold Libyan crude $8 under the state price for armed group ow\" (score 0.46 — title overlap 0.46; shared: armed, crude, group)",
-   "DUP_HELD_IDX": 2973
+   "DUP_FLAG": "internal",
+   "DUP_NOTE": "the same item is already banked as: Armed-group brokers sold Libyan crude $8 below the state price through"
   },
   {
    "id": "round10-d8_movement_company-b651c611bb17",
@@ -6009,7 +6002,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d8_movement_company on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2873,
-   "DUP_NOTE": "closest held record is 2873: \"Libya's foreign ministry mobilised for the Sharfeddin fuel network\" (score 0.31 — title overlap 0.31; shared: foreign, fuel, libya)"
+   "DUP_NOTE": "closest held record is 2873: \"Libya's foreign ministry mobilised for the Sharfeddin fuel network\" (score 0.31 — title overlap 0.31)"
   },
   {
    "id": "round10-d8_movement_company-7cb60b4ec41f",
@@ -6024,7 +6017,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d8_movement_company on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "check",
    "DUP_HELD_IDX": 2975,
-   "DUP_NOTE": "closest held record is 2975: \"Houthi-run ministry renamed a seized foundation and changed its sign\" (score 0.67 — title overlap 0.67; shared: changed, foundation, houthi)"
+   "DUP_NOTE": "closest held record is 2975: \"Houthi-run ministry renamed a seized foundation and changed its sign\" (score 0.67 — title overlap 0.67)"
   },
   {
    "id": "round10-d8_movement_company-6fe39800bb61",
@@ -6037,9 +6030,9 @@
    "bk": "company",
    "status": "apparently_qualifying",
    "note": "Out-of-cell or defective lead filed by round 10 agent d8_movement_company on 2026-11-17. Read by that agent, not verified. See the locator.",
-   "DUP_FLAG": "REMOVED",
-   "DUP_HELD_IDX": 2796,
-   "DUP_NOTE": "MATCHES A DELIBERATELY REMOVED RECORD: \"Houthi custodian's nephew made director of Twintech university in Sana\" (shares names ['Alshaer', 'Houthi', 'Major', 'Saleh']). REMOVAL REASON: The body reached is a private university, which is not a government body, an international body or a company, so the company coding is only a residual. [round 10 review, 2026-11-17]"
+   "DUP_FLAG": "none",
+   "DUP_HELD_IDX": 2974,
+   "DUP_NOTE": "closest held record is 2974: \"Houthi asset custodian's nephew made director of a seized Yemeni uni\" (score 0.29 — title overlap 0.29)"
   },
   {
    "id": "round10-d8_movement_company-0f5dca6245a8",
@@ -6054,7 +6047,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d8_movement_company on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 2960,
-   "DUP_NOTE": "closest held record is 2960: \"Court said to be Houthi-run declared a mobile firm bankrupt in Sana'\" (score 0.27 — title overlap 0.27; shared: bankrupt, declared, houthi)"
+   "DUP_NOTE": "closest held record is 2960: \"Court said to be Houthi-run declared a mobile firm bankrupt in Sana'\" (score 0.30 — title overlap 0.30)"
   },
   {
    "id": "round10-d8_movement_company-9fd476d2d99b",
@@ -6084,7 +6077,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d8_movement_company on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 1673,
-   "DUP_NOTE": "closest held record is 1673: \"South Sudan's security service sat on the board of the state oil com\" (score 0.30 — title overlap 0.30; shared: security, south, sudan)"
+   "DUP_NOTE": "closest held record is 1673: \"South Sudan's security service sat on the board of the state oil com\" (score 0.30 — title overlap 0.30)"
   },
   {
    "id": "round10-d8_movement_company-f4c5c15f60bc",
@@ -6097,9 +6090,9 @@
    "bk": "company",
    "status": "apparently_qualifying",
    "note": "Out-of-cell or defective lead filed by round 10 agent d8_movement_company on 2026-11-17. Read by that agent, not verified. See the locator.",
-   "DUP_FLAG": "none",
-   "DUP_HELD_IDX": 2528,
-   "DUP_NOTE": "closest held record is 2528: \"South Sudan's army handed its operations to militias with their own \" (score 0.08 — title overlap 0.08)"
+   "DUP_FLAG": "check",
+   "DUP_HELD_IDX": 2814,
+   "DUP_NOTE": "closest held record is 2814: \"Glencore's cash bought crude cargoes for its South Sudan venture\" (score 0.70 — both name \"ministry petroleum\", a body in only 3 record(s))"
   },
   {
    "id": "round10-d9_courts-b228036f6d8b",
@@ -6159,7 +6152,7 @@
    "note": "Out-of-cell or defective lead filed by round 10 agent d9_courts on 2026-11-17. Read by that agent, not verified. See the locator.",
    "DUP_FLAG": "none",
    "DUP_HELD_IDX": 1117,
-   "DUP_NOTE": "closest held record is 1117: \"Palm oil firms' lawyers allegedly paid Jakarta judges to acquit them\" (score 0.25 — title overlap 0.25; shared: jakarta, judges, lawyers)"
+   "DUP_NOTE": "closest held record is 1117: \"Palm oil firms' lawyers allegedly paid Jakarta judges to acquit them\" (score 0.25 — title overlap 0.25)"
   },
   {
    "id": "round10-d9_courts-3a9af71cf2e8",
