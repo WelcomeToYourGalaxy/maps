@@ -207,7 +207,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 #sopen.on{opacity:1}
 #toprow #sopen:not(.on){opacity:.55}
 #mtop{padding:17px 20px 0;border-bottom:1px solid var(--line);flex:none;position:relative}
-#mtitlerow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);column-gap:20px;align-items:start}
+#mtitlerow{display:grid;grid-template-columns:minmax(0,240px) minmax(0,1fr);column-gap:20px;align-items:start}
 #mleft{min-width:0}
 #mlinks{display:flex;flex-wrap:wrap;align-items:center;gap:6px 11px;margin-top:6px}
 #mtitle{font-family:'Marcellus',serif;font-size:22px;line-height:1.22}
@@ -242,6 +242,9 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 #about h4{font-family:'Marcellus',serif;font-size:14px;margin-bottom:9px}
 #about p{font-size:12.5px;line-height:1.6;color:var(--dim)}
 #about p+p{margin-top:9px}
+#about ul{margin:4px 0 10px;padding-left:17px;font-size:12px;line-height:1.55;color:var(--dim)}
+#about ul li+li{margin-top:3px}
+#about b{color:var(--ink);font-weight:600}
 #about a{color:var(--accent-hi);text-decoration:none}
 #mback{position:absolute;top:14px;right:52px;height:28px;padding:0 10px;border-radius:7px;
   border:1px solid var(--line);background:var(--panel2);color:var(--dim);cursor:pointer;font-size:11px;font-family:inherit}
@@ -1206,6 +1209,33 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
        places and local buildings from OpenStreetMap. How often each method works is carried over from the
        leverage chart in this repository, with the dataset behind each one; where nobody has measured a
        method, it says so instead of guessing.</p>
+    <h4 style="margin-top:14px">How complete the records are</h4>
+    <p>Each percentage is the share of the places at that level that have the field. A <b>unit</b> is one
+       place counted at that level. The figures come from Wikidata alone, measured 17 November 2026, round
+       twenty-three. The registers added since then (Italy, Spain, Canada) are not in them, so the
+       municipal numbers understate what the map now holds.</p>
+    <p><b>What each field means</b></p>
+    <ul>
+      <li><b>Website:</b> the government's own web address.</li>
+      <li><b>Email:</b> a public email address for the office.</li>
+      <li><b>Telephone:</b> a switchboard number.</li>
+      <li><b>Street address:</b> a building address you can visit or post to.</li>
+      <li><b>Council or legislature:</b> a link to the body that makes the law at that place, as its own
+          entry in Wikidata. It is not a count of members, and it is blank wherever no such entry has been
+          linked, even where the council exists.</li>
+    </ul>
+    <p><b>Countries</b>, 205 units</p>
+    <ul>
+      <li>Website 83% · Email 0% · Telephone 0% · Street address 0% · Council or legislature 99%</li>
+    </ul>
+    <p><b>First-level divisions</b>, 5,143 units</p>
+    <ul>
+      <li>Website 49% · Email 4% · Telephone 3% · Street address 1% · Council or legislature 16%</li>
+    </ul>
+    <p><b>Municipalities</b>, 191,524 units</p>
+    <ul>
+      <li>Website 54% · Email 25% · Telephone 20% · Street address 2% · Council or legislature 1%</li>
+    </ul>
   </div>
 <script>
 /* --- shared basemaps, ported from the Culprits map --- */
@@ -6588,8 +6618,7 @@ function setPins(){
      or ring, which may hold several offices or none. */
   el.innerHTML = SCOPE
     ? (on.length-bd)+' of '+offices+' offices left by your answers'
-    : (on.length-bd)+' <b>offices</b> govern this place — posts with powers, '+lw+
-      ' of them reachable about a law'+
+    : (on.length-bd)+' <b>offices</b> \u00b7 '+lw+' reachable about a law'+
       (bd?' — and '+bd+' <b>buildings</b> you can walk into or ring':'');
 }
 
