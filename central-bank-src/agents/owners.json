@@ -4013,5 +4013,184 @@
   "Bank of Greece: Greek State 8.93% (1,774,088 shares) is verified from a BoG Law 3556/2007 announcement (2011). The e-EFKA 12.44% figure is from Wikipedia, unsourced, and marked unverified. Before 2011, DEKA S.A. held 1,309,210 shares (6.59%) per BoG announcements of 2009 and 2010.",
   "BIS: bis.org (accessed 24 Oct 2026) says 'The Bank's capital is held by central banks only' and lists 63 member central banks, including the ECB (iso3 given as EUU, a non-ISO placeholder). Private shareholders were removed when the EGM of 8 Jan 2001 approved a mandatory repurchase of all privately held shares at CHF 16,000 each. The Hague Arbitral Tribunal's final award (published 22 Sep 2003) added CHF 9,052.90 per share. bis.org gives the number of withdrawn private shares as 72,648 in one note and 72,638 in another. Before the buyout, central banks held 100% of voting rights and 86.27% of property rights (BIS note of 15 Sep 2000). Source: https://www.bis.org/about/legal/shares-withdrawal. No private shareholders remain.",
   "Mullins page numbers: in the archive.org 1991 scan, the 1914 subscription figures are on p.34, the founding banks' stockholders and the 'London Connection' merchant-bank ranking on pp.65-68, Chart I around pp.91-92, and the 1983 list on pp.178-179. The user's cited pp.113-119 do not contain this material in that scan; another edition may paginate differently."
- ]
+ ],
+ "eligible": {
+  "what_this_is": "The DENOMINATOR for the named-shareholders row: every central bank in the world that has any shareholder other than its own national state. Established at round 75 because the row's headline figure was being divided by 192 places, which measures something that cannot exist — almost every central bank has state-only capital or no share capital at all. Against this list the row is complete.",
+  "count": 9,
+  "places": [
+   "BEL",
+   "CHE",
+   "GRC",
+   "ITA",
+   "JPN",
+   "SMR",
+   "TUR",
+   "USA",
+   "ZAF"
+  ],
+  "primary_source": {
+   "title": "BIS Papers No 71, 'Central bank finances', Archer and Moser-Boehm, 2013, footnote 5",
+   "url": "https://www.bis.org/publications/paper-71-central-bank-finances.pdf",
+   "quote": "The US Federal Reserve System is perhaps the best known example of a central bank established in the 20th century that continues to have private shareholders. The central banks of Belgium, Greece, Italy, Japan, South Africa, Switzerland and Turkey also have private shareholders.",
+   "verified": "Downloaded and read in raw extracted text at round 75, not through a fetch summary. The old /publ/bppdf/bispap71.pdf path now redirects to this one."
+  },
+  "second_source": {
+   "title": "Jannie Rossouw, 'Private shareholding: an analysis of an eclectic group of central banks', South African Journal of Economic and Management Sciences 19(1), 2016",
+   "note": "The only academic survey of the subject, built from questionnaires to the banks' own company secretaries. Gives the same closed list of eight and corrects two earlier lists, including IMF working paper Lybek and Morris (2004), which wrongly kept Austria and Pakistan in."
+  },
+  "beyond_the_literature": "San Marino is the ninth and appears in NEITHER survey, because neither covers microstates. The map carries it from the Banca Centrale della Repubblica di San Marino's own 2025 balance sheet. So the published literature's list of eight understates by one, and this map is ahead of it by that one bank.",
+  "listed_on_an_exchange": {
+   "places": [
+    "BEL",
+    "GRC",
+    "CHE",
+    "JPN"
+   ],
+   "note": "Only four of the nine are exchange-listed. South African Reserve Bank shares trade over the counter in a process the Bank runs itself, which is not a listing."
+  },
+  "register_freshness": "Seven of the nine rest on a register dated 2025 or 2026. The United States rests on the 2018 Capital Stock Master Report obtained by FOIA, and South Africa's named holders on 2022 press reporting. The US case is structurally closed rather than merely stale: the Federal Reserve does not publish holder-level stock registers, so only a new FOIA would move it.",
+  "excluded_after_checking": [
+   {
+    "iso3": "AUT",
+    "bank": "Oesterreichische Nationalbank",
+    "why_a_candidate": "Until 2010 the OeNB had non-state shareholders: Rossouw records that before nationalisation the Austrian government held 70.27% of the share capital and Austrian banks held shares alongside it (the banks' combined percentage is not stated on the page). It is the most recent central-bank nationalisation anywhere.",
+    "finding": "Wholly state-owned. Nominal capital EUR 12 million held in its entirety by the federal government; the Republic of Austria is the sole shareholder.",
+    "source_url": "https://www.oenb.at/en/About-Us/legal-framework.html",
+    "second_source_url": "https://distantreader.org/stacks/journals/sajems/sajems-1329.pdf",
+    "second_source_says": "Rossouw (2016), p.152-153: 'This changed in 2010, when the central bank in Austria was nationalised... Only the Austrian government (with 70.27 per cent of the share capital) and Austrian banks held shares in the Austrian National Bank before its nationalisation.'",
+    "access_caveat": "oenb.at returns 404 to curl for both the HTML pages and the financial-statement PDFs, so the two OeNB sentences ('Its nominal capital of EUR 12 million is held in its entirety by the central government', legal-framework page; 'The Republic of Austria is the sole shareholder of the OeNB', Organization page) were read only through the fetch tool's summariser and are NOT raw-text verified. They are consistent with each other and with Rossouw, whose text WAS read raw. Treated as sound but flagged; the Nationalbank Act §8 itself was not read (ris.bka.gv.at returned 503 three times and jusline.at timed out).",
+    "weak_source": false
+   },
+   {
+    "iso3": "PAK",
+    "bank": "State Bank of Pakistan",
+    "why_a_candidate": "The SBP was the one post-war central bank founded with private shareholders, and the IMF working paper Lybek & Morris (2004) still listed it as privately held.",
+    "finding": "Wholly state-owned since 1974/75. Rossouw corrects the IMF list explicitly.",
+    "source_url": "https://distantreader.org/stacks/journals/sajems/sajems-1329.pdf",
+    "source_says": "Rossouw (2016), p.152: 'Lybek and Morris (2004:7) also incorrectly identified the central banks of Austria, Belgium, Greece, Italy, Japan, Pakistan, South Africa, Switzerland and the Federal Reserve Banks in the US as institutions with private shareholders, as the Turkish central bank also has shareholders and the central bank of Pakistan was nationalised in 1975.'",
+    "access_caveat": "The SBP Act itself was not read raw: sbp.org.pk returns 403 (Cloudflare) and na.gov.pk fails TLS chain verification to curl. The fetch tool, reading the National Assembly PDF of the SBP (Amendment) Bill at https://www.na.gov.pk/uploads/documents/61cdbc39980af_376.pdf, reported section 4 as saying the capital 'shall be fully paid-up and held exclusively by the Federal Government' and 'shall not be transferable to any other person or entity', with authorised capital Rs 500bn and paid-up Rs 100bn. That is a fetch summary of a BILL, not of the Act in force, so it is recorded here as corroboration only and the phrases are not treated as verified quotations.",
+    "weak_source": false
+   },
+   {
+    "iso3": "MUS",
+    "bank": "Bank of Mauritius",
+    "why_a_candidate": "Named by the caller as a bank sometimes said to have non-state holders.",
+    "finding": "Wholly state-owned. Bank of Mauritius Act, section 10(3)(b): the amounts paid as capital shall 'be subscribed and held solely by Government'.",
+    "source_url": "https://www.bom.mu/sites/default/files/bank_of_mauritius_act_august_2023.pdf",
+    "access_caveat": "bom.mu does not serve a complete certificate chain, so curl fails with 'unable to get local issuer certificate' on both www.bom.mu and bom.mu; the Act was reached only through the fetch tool, which returned section 10(3)(b) and the phrase quoted above. Not raw-text verified. The site's own note says the internet version is for information only and the Government Gazette text is authoritative.",
+    "weak_source": false
+   },
+   {
+    "iso3": "LKA",
+    "bank": "Central Bank of Sri Lanka",
+    "why_a_candidate": "Named by the caller.",
+    "finding": "No shareholders and no shares. The capital is a capital account funded by capitalising the Bank's own reserves with the Minister of Finance's concurrence.",
+    "source_url": "https://www.cbsl.gov.lk/sites/default/files/cbslweb_documents/publications/fsor/2023/en/Financial_Statements.pdf",
+    "source_says": "CBSL 'Financial Statements and Operations 2023', Note 34.1 'Capital Funds' (p.50), read in full: 'Contributed Capital - The capital account represents the capital of the Bank in accordance with section 6 of the Monetary Law Act (MLA). As per the section 6 of the MLA (Amendment) Act No. 15 of 2014, the capital of the Bank has been increased to Rs. 50.00 Bn. Accordingly, the Bank has increased its capital up to Rs. 50.00 Bn by capitalizing the Bank's reserves with the concurrence of Minister of Finance in September 2014. In terms of CBA, section 4 applies to capital of CBSL.' The whole document was grepped for 'sharehold', 'shares' and 'capital': there is no shareholder, no share count and no register anywhere in it.",
+    "not_read": "Section 4 of the Central Bank of Sri Lanka Act No. 16 of 2023 itself was not read — documents.gov.lk 404s for the Act PDF and srilankalaw.lk serves a login shell with no statute text. The Act section would be the cleanest citation and is a cheap open lead.",
+    "weak_source": false
+   },
+   {
+    "iso3": "PER",
+    "bank": "Banco Central de Reserva del Perú",
+    "why_a_candidate": "Named by the caller; Peru's 1922 predecessor bank had shareholder banks, and Rossouw records a 1974-75 wave of South American central-bank nationalisations.",
+    "finding": "Wholly state-owned. Ley Orgánica (Decreto Ley 26123), article 5: capital of S/. 50,000,000 'suscrito y pagado por el Estado', with no shares issued.",
+    "source_url": "https://vlex.com.pe/vid/29904845",
+    "access_caveat": "bcrp.gob.pe is behind Incapsula and serves a bot-block page to both curl and the fetch tool for every path tried, including the official Ley-Organica-BCRP.pdf. The article-5 wording above came from the fetch tool reading the vlex reproduction of Decreto Ley 26123, so it is neither raw-text verified nor from the issuing institution. Corroborating but weaker: Rossouw (2016) p.152 records the nationalisation wave of 1974-75 in South America. Treat Peru as sound-but-unverified until the BCRP's own PDF can be opened.",
+    "weak_source": true
+   },
+   {
+    "iso3": "CHL",
+    "bank": "Banco Central de Chile",
+    "why_a_candidate": "Named by the caller; De Kock (1974) recorded Chile as one of five central banks where the government held only a MINORITY of the share capital, and it was nationalised in the 1974-75 wave.",
+    "finding": "No shareholders and no shares. Ley Orgánica Constitucional 18.840, article 1: the Bank is 'un organismo autónomo, de rango constitucional, de carácter técnico, con personalidad jurídica, patrimonio propio y duración indefinida'. Article 5: 'El capital inicial del Banco será la suma de $ 500.000.000.000'; it may be increased only by capitalising reserves, or by the Bank asking the Minister of Hacienda for a capital increase or specific contributions out of the national budget. No private party can subscribe capital.",
+    "source_url": "https://tdlc.cl/wp-content/uploads/2023/10/Ley-Organica-Constitucional-del-Banco-Central-de-Chile.pdf",
+    "access_caveat": "Raw PDF downloaded (386 KB) and read as text; the quoted Spanish is copied from that text. This is a republication of the law by Chile's competition tribunal, not by the Banco Central itself — the bcentral.cl copy was not fetched.",
+    "weak_source": false
+   },
+   {
+    "iso3": "DNK",
+    "bank": "Danmarks Nationalbank",
+    "why_a_candidate": "A privately owned central bank until the 1930s; sometimes described as not state-owned, which is true in an unusual way.",
+    "finding": "No shareholders, and also not owned by the state: a self-governing institution. Its own FAQ: 'Yes, Danmarks Nationalbank is a self-governing and independent institution established by law. Danmarks Nationalbank's independence dates right back to its establishment in 1818.' BIS Papers No 71 fn 5 records 'the National Bank of Denmark in 1936' among central banks nationalised from the 1930s on.",
+    "source_url": "https://www.nationalbanken.dk/en/frequently-asked-questions/questions-about-us",
+    "access_caveat": "Page downloaded raw (31 KB) and the sentence above copied from its text. The page answers an independence question, not an ownership question: it does not use the words shareholder, share capital or owner at all. So Denmark is excluded as having no private shareholder, but the claim 'has no owner' is not made in those words by this page.",
+    "weak_source": false
+   },
+   {
+    "iso3": "NZL",
+    "bank": "Reserve Bank of New Zealand",
+    "has_non_state_shareholders": false,
+    "finding": "Nationalised 1935 — the first central-bank nationalisation.",
+    "source_url": "https://www.bis.org/publications/paper-71-central-bank-finances.pdf",
+    "source_says": "BIS Papers No 71 fn 5: 'From the 1930s on, many privately owned central banks were nationalised (the Reserve Bank of New Zealand in 1935, the National Bank of Denmark in 1936, the Bank of England in 1946, for example).'",
+    "weak_source": false
+   },
+   {
+    "iso3": "GBR",
+    "bank": "Bank of England",
+    "has_non_state_shareholders": false,
+    "finding": "Nationalised 1946.",
+    "source_url": "https://www.bis.org/publications/paper-71-central-bank-finances.pdf",
+    "source_says": "BIS Papers No 71 fn 5, same sentence as above, names the Bank of England in 1946.",
+    "weak_source": false
+   },
+   {
+    "iso3": "MEX",
+    "bank": "Banco de México",
+    "has_non_state_shareholders": false,
+    "finding": "Government held at least 50% in 1974 and the bank was nationalised in the 1974-75 wave.",
+    "source_url": "https://distantreader.org/stacks/journals/sajems/sajems-1329.pdf",
+    "source_says": "Rossouw (2016) p.152, citing De Kock (1974:305-307): 'In Austria, Belgium, Japan, Mexico, Pakistan and Venezuela, the respective governments held at least 50 per cent of the share capital' and 'the central banks of Chile, Ecuador, Portugal, Mexico, Pakistan and Venezuela were also nationalised in 1974 and 1975.' Banxico's own law was not read this round.",
+    "weak_source": false
+   },
+   {
+    "iso3": "ECU",
+    "bank": "Banco Central del Ecuador",
+    "has_non_state_shareholders": false,
+    "finding": "Nationalised in the 1974-75 wave; government had held a minority of the capital before that.",
+    "source_url": "https://distantreader.org/stacks/journals/sajems/sajems-1329.pdf",
+    "source_says": "Rossouw (2016) p.152, as quoted in the Mexico entry. The bank's own law was not read this round.",
+    "weak_source": false
+   },
+   {
+    "iso3": "PRT",
+    "bank": "Banco de Portugal",
+    "has_non_state_shareholders": false,
+    "finding": "Nationalised in the 1974-75 wave; government had held a minority before that.",
+    "source_url": "https://distantreader.org/stacks/journals/sajems/sajems-1329.pdf",
+    "source_says": "Rossouw (2016) p.152, as quoted in the Mexico entry. The bank's own law was not read this round.",
+    "weak_source": false
+   },
+   {
+    "iso3": "VEN",
+    "bank": "Banco Central de Venezuela",
+    "has_non_state_shareholders": false,
+    "finding": "Nationalised in the 1974-75 wave; government had held at least 50% before that.",
+    "source_url": "https://distantreader.org/stacks/journals/sajems/sajems-1329.pdf",
+    "source_says": "Rossouw (2016) p.152, as quoted in the Mexico entry. The bank's own law was not read this round.",
+    "weak_source": false
+   },
+   {
+    "iso3": "COL",
+    "bank": "Banco de la República",
+    "has_non_state_shareholders": false,
+    "finding": "De Kock (1974) flagged its nationalisation as imminent; it is absent from both the BIS and Rossouw lists of banks that still have private shareholders.",
+    "source_url": "https://distantreader.org/stacks/journals/sajems/sajems-1329.pdf",
+    "source_says": "Rossouw (2016) p.152: 'De Kock (1974:306 and 307) draws attention to the imminent nationalisation of the central bank of Colombia.' Exclusion rests on absence from the two closed lists plus this sentence, not on Colombian law, which was not read.",
+    "weak_source": false
+   },
+   {
+    "iso3": "__ALL_OTHERS__",
+    "bank": "every other central bank",
+    "has_non_state_shareholders": false,
+    "finding": "Excluded as a class, not one by one: both authoritative surveys state their lists as closed. BIS Papers No 71 fn 5 names the US Federal Reserve plus Belgium, Greece, Italy, Japan, South Africa, Switzerland and Turkey as the central banks that have private shareholders; Rossouw (2016), abstract, states 'it is shown that only the central banks of Belgium, Greece, Italy, Japan, South Africa, Switzerland, Turkey and the United States (US) Federal Reserve Banks allow shareholding other than by the government of the respective countries'. Rossouw built his list by writing to the company secretaries of the candidate banks and by auditing and correcting two earlier published lists (his own 2004 paper and IMF Working Paper Lybek & Morris 2004), which is why the correction trail is visible in the text.",
+    "source_url": "https://distantreader.org/stacks/journals/sajems/sajems-1329.pdf",
+    "second_source_url": "https://www.bis.org/publications/paper-71-central-bank-finances.pdf",
+    "weak_source": false
+   }
+  ],
+  "excluded_note": "Banks tested and found to have no non-state shareholder. This list is what makes the denominator defensible: a denominator with no exclusion list is an assertion. Austria (nominal capital held entirely by the central government, nationalised 2010), Mauritius (Act s.10(3)(b), capital 'subscribed and held solely by Government'), Pakistan (nationalised 1975), Sri Lanka (no shares at all; capital is an account raised by capitalising the Bank's own reserves), Peru (capital 'suscrito y pagado por el Estado'), Chile (no shares; only the Fisco may contribute capital), and Denmark, New Zealand, the United Kingdom, Mexico, Ecuador, Portugal, Venezuela and Colombia on the nationalisation record. Four of these rest partly on fetch-summariser readings because the hosts would not serve raw text — Austria, Mauritius, Peru and Pakistan — and Austria's Nationalbank Act section 8 was not read at all.",
+  "not_this_row": "Shareholding in the Bank for International Settlements is a different relation: central banks are shareholders OF the BIS. It is recorded elsewhere and is not a non-state shareholder of the central bank itself."
+ }
 }

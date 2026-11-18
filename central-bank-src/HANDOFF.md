@@ -95,7 +95,7 @@ same commit as the work it did.
 
 ## Where it stands (74 rounds in, 17 November 2026)
 
-1,721 outside parties and 2,522 ties. One writeup for every box, 1,944 of them. 20 patterns
+1,726 outside parties and 2,527 ties. One writeup for every box, 1,944 of them. 20 patterns
 and 14 suspected patterns.
 
 The party count is lower than the tie count implies, and deliberately: round 60 folded 28 duplicate
@@ -117,7 +117,7 @@ ignores" below.
 | External auditors | 216 | 178 | 86% | 93% |
 | Banknote printers | 184 | 168 | 82% | 88% |
 | Outside reserve managers | 207 | 79 | 38% | 41% |
-| Gold custodians | 97 | 59 | 29% | 31% |
+| Gold custodians | 102 | 59 | 29% | 31% |
 | Swap lines | 240 | 84 | 41% | 44% |
 | Named shareholders | 228 | 9 | 4% | 5% |
 
@@ -219,6 +219,156 @@ holding no record of that kind, with union codes and the ten places with no cent
 out as "not targets". **Run it every round and build the target list from that absent list; never
 from prose in this document.** It prints both denominators — the raw 206 and the reachable 192 —
 because the user asked for both.
+
+## The named-shareholders row is COMPLETE: nine of nine, and the denominator is now in the data (round 75)
+
+**The row that read 5% is at 100%, and the 5% was an artifact of dividing by 192.** Round 75
+established the denominator with sources, which is what this document had been guessing at with the
+phrase "about ten central banks have private shareholders". It is nine, and the map holds all nine:
+BEL CHE GRC ITA JPN SMR TUR USA ZAF.
+
+Two independent authorities give the same closed list of eight. **BIS Papers No 71, "Central bank
+finances" (Archer and Moser-Boehm, 2013), footnote 5**, which was downloaded and read in extracted
+text rather than through a fetch summary: "The US Federal Reserve System is perhaps the best known
+example of a central bank established in the 20th century that continues to have private
+shareholders. The central banks of Belgium, Greece, Italy, Japan, South Africa, Switzerland and
+Turkey also have private shareholders." And **Jannie Rossouw, "Private shareholding: an analysis of
+an eclectic group of central banks", SAJEMS 19(1), 2016**, the only academic survey of the subject,
+built from questionnaires to the banks' own company secretaries, which gives the same eight and
+corrects two earlier lists — including IMF working paper Lybek and Morris (2004), which wrongly kept
+Austria and Pakistan in.
+
+**San Marino is a ninth that appears in neither survey, because neither covers microstates.** The
+map carries it from the Banca Centrale della Repubblica di San Marino's own 2025 balance sheet. So
+the published literature understates the set by one and this map is ahead of it by that one bank.
+
+Fifteen further banks were tested and found to have no non-state shareholder at all: Austria
+(nominal capital held entirely by the central government, nationalised 2010), Mauritius (Act
+s.10(3)(b), capital "subscribed and held solely by Government"), Pakistan (nationalised 1975), Sri
+Lanka (no shares whatever — capital is an account raised by capitalising the Bank's own reserves),
+Peru ("suscrito y pagado por el Estado"), Chile (no shares; only the Fisco may contribute capital),
+and Denmark, New Zealand, the United Kingdom, Mexico, Ecuador, Portugal, Venezuela and Colombia on
+the nationalisation record. **That exclusion list is what makes the denominator defensible: a
+denominator with no exclusion list is an assertion.** Four of the fifteen rest partly on fetch
+summaries because the hosts would not serve raw text, and Austria's Nationalbank Act section 8 was
+not read at all, which is the one soft spot.
+
+All of this is now in `agents/owners.json` under a new `eligible` key — the count, the places, both
+sources with the BIS quote, the exclusion list, which four banks are exchange-listed, and the
+register-freshness note. `mk_completeness.py` reads it, so the chart shows 9 of 9 rather than 9 of
+192, and says in the chart WHY. **If the key is missing the chart falls back to saying the
+denominator has not been established rather than quietly printing 5% again.**
+
+**What is thin on this row is freshness, not coverage.** Seven of the nine registers are dated 2025
+or 2026. The United States rests on the 2018 Capital Stock Master Report obtained by
+freedom-of-information request, and it is structurally closed rather than merely stale: the Federal
+Reserve does not publish holder-level stock registers, so only a new FOIA request would move it.
+South Africa's named holders rest on 2022 press reporting; the Bank's own 2025/26 annual report
+gives 855 shareholders at 31 March 2026 against a 10,000-share cap, which updates the count from a
+primary source but names nobody, the named register existing only inside the Bank. Türkiye is the
+strongest open lead: the CBRT's own 2025 annual report gives the class split this document has said
+could not be stated — A 55.12%, B 23.25%, C 2.51%, D 19.12%, with no privileged companies among the
+shareholders. Greece is the thinnest register on the map, two rows, one of them Wikipedia.
+
+### Gold moved two places and the US case needed a decision
+
+Round 75's gold slices filed five ties across two places, taking the row from 49 to 51 of the 108
+places that hold gold, 45% to 47%. Four are the **United States**, broken out by facility from the
+Treasury's own Status Report of U.S. Government Gold Reserve, read as raw JSON from the
+fiscaldata.treasury.gov API at record_date 2026-10-31: the Mint's deep-storage vaults at Fort Knox,
+West Point and Denver, and the Federal Reserve Bank of New York vault. The fifth is **Kazakhstan**,
+whose Note 14 splits gold by location and puts the largest line in the Bank's own vault.
+
+Two things about the US record worth keeping. `merge_links.py` refused it while the entity was named
+"Federal Reserve Bank of New York", on the ground that a domestic gold-custody record whose entity
+name carries no place word makes the popup say a bank holds its gold in custody of itself. **That
+guard is right here and the fix was to name the vault, not to work around the guard.** The
+consequence is a second node beside the institution node that nine other countries use as custodian,
+and that is deliberate: one is the NY Fed acting as custodian for foreign central banks, the other
+is where United States gold sits. `dup_parties.py` will flag the pair as a subset match; leave it.
+Note also that the guard post-dates most of the data it governs — existing domestic records read
+"Banca d'Italia", "Czech National Bank" with no place word, grandfathered in.
+
+And the US is genuinely odd on this row in a way no other record is: **the metal is the Treasury's,
+not the central bank's**, the Federal Reserve holding gold certificates against it. So the depositor
+is the state. The owner may want it rendered differently; it is filed with that said in the record.
+
+Both places were also listed in `gold_unavailable`, and `audit_data.py`'s check caught it — the
+"filing a record does not clear the stale negative" failure this document has recorded before. Both
+cleared, with the superseded wording kept in `agents/work/r75/cleared_negatives.json`. The USA blank
+had said the Treasury report was no longer served and the API timed out; it is served. The KAZ blank
+rested on BullionStar recording that the Bank did not reply to a storage-location request, which is
+not the same as the Bank not disclosing it in its own audited accounts. **Both are the same error:
+a blank written from somebody else's failure to get an answer rather than from the bank's own
+documents.**
+
+## The owner has redirected the project to the three lowest rows (round 75)
+
+From round 75 the project works **named shareholders, gold custodians and swap lines only**, in
+that order of priority with shareholders and gold first. The corruption, removals, revolving-door,
+auditor and printer rows are not to be worked further unless the owner says so.
+
+**Two of the three headline percentages for those rows are measured against the wrong denominator,
+and reading them as coverage is the first mistake to avoid.**
+
+- **Named shareholders, "5%".** Dividing by 192 measures nothing, because almost every central bank
+  is wholly owned by its own state and can never have a private shareholder. The map holds nine
+  places — BEL CHE GRC ITA JPN SMR TUR USA ZAF — and this document has carried the unsourced
+  estimate that "about ten central banks have private shareholders at all". If that estimate is
+  right the row is near complete. **Establishing the real set, with a citable source per bank AND a
+  list of banks checked and found wholly state-owned, is the work on this row**, and it was briefed
+  at round 75. Until it exists, no percentage on this row should be quoted as coverage.
+- **Gold custodians, "31%".** Same error: 74 of the 192 places hold no gold at all and so can hold
+  none in custody. Against the 108 places the World Gold Council shows above zero tonnes the row is
+  at 45%, which `coverage.py` has printed below the table since round 52 and which the new
+  completeness chart now shows instead of the 31%.
+- **Swap lines, "44%"** is the one of the three whose denominator is defensible as all 192, because
+  any central bank could in principle sign one. A blank there may mean none was sought, none was
+  offered or none is published, and the large networks come from the lender's side — the Federal
+  Reserve, the ECB, the People's Bank of China.
+
+### The gold row's real denominator is DISCLOSURE, not holdings, and round 75 is evidence of it
+
+Round 75's first gold slice returned **zero records from 17 assigned places**. It tested nine of
+them properly, downloading and grepping eight audited statements in full, and **every one gives
+tonnage or ounces and no location**: Brazil's Note 11 'Ouro Monetário', Iceland's Note 14, Aruba's
+Note 1, the HKMA Exchange Fund's Note 14 at a holding unchanged for years, Nigeria's 2011 Note 2,
+Kyrgyzstan's Note 7, Ukraine's consolidated statements where no gold note exists at all, and
+Uzbekistan's annual report, which contains no financial statements whatever.
+
+Set that against the composition of what is already filed. Of the 52 places with a custody record,
+**38 name an external custodian and 14 keep their gold only at home** — and the external ones
+concentrate heavily: 29 Bank of England, 9 Federal Reserve Bank of New York, 8 Bank for
+International Settlements, 5 Banque de France. Those places are on the map because a depositor's
+accounts say "held at the Bank of England" in terms. **Banks that use the big custodians tend to
+say so; banks that do not, mostly say nothing at all.** So the reachable set on this row is not the
+108 places that hold gold. It is the smaller set that discloses location, and the 49 already filed
+may be close to it.
+
+That is a hypothesis after one slice, not a finding — six of that slice's seventeen were never
+reached and two were blocked by Incapsula and Cloudflare, so it was not fully worked. But it is the
+thing to test deliberately rather than discover after four more rounds, which is exactly the error
+rounds 70 to 73 made on the corruption row.
+
+### A third state this row does not currently carry, and a question for the owner
+
+Two of the seventeen say something weaker than a custodian name and stronger than silence.
+Kyrgyzstan's Note 7 line reads "Золото на счетах в иностранных банках и в слитках" — gold in
+accounts at foreign banks and in bullion — with a concentration disclosure about gold on deposit at
+foreign banks rated A+ by Fitch exceeding 10% of own capital. Ukraine's policy note says "Gold in
+foreign banks generating interest", plural and unnamed, with Note 6 giving UAH 9,951 million of gold
+deposits and no counterparty.
+
+**Both affirm that the gold is outside the country and name nobody.** On the map as it stands they
+read as blank, indistinguishable from a place about which nothing is known. A reader is told
+nothing, when the source in fact says something that matters: this country's gold is held abroad by
+someone it will not name.
+
+So the row could carry three states rather than two — named external custodian, held at home, and
+**held abroad with the holder undisclosed**. That would convert several current blanks into
+informative records and would make the row's completeness figure mean something closer to "we know
+where this gold is, or know that we are not being told". It also changes what the row measures, so
+it is the owner's call and is not being done unasked. The two cases above are the first candidates.
 
 ## The misallocation diagnosis was right, and here is the number that settles it (round 74)
 
