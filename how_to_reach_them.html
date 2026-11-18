@@ -1209,6 +1209,13 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
        places and local buildings from OpenStreetMap. How often each method works is carried over from the
        leverage chart in this repository, with the dataset behind each one; where nobody has measured a
        method, it says so instead of guessing.</p>
+    <p>Wikidata records a national legislature's name but hardly ever an address, a number or an email, so
+       the way to reach a national chamber &mdash; and the link to its rules of procedure, which is the
+       document saying how a bill is introduced there &mdash; comes from
+       <a href="https://data.ipu.org/" target="_blank" rel="noopener">IPU Parline</a>, the
+       Inter-Parliamentary Union's dataset on national parliaments, filled in by each parliament itself.
+       Parline data is used here under
+       <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>.</p>
     <h4 style="margin-top:14px">How complete the records are</h4>
     <p><b>Countries</b>, 205 units</p>
     <ul>
@@ -5146,6 +5153,114 @@ function moveCard(e){
   c.style.left=x+'px'; c.style.top=y+'px';
 }
 
+/* ====================================================================
+   IPU PARLINE: the way to reach a national parliament
+
+   Wikidata knows the name of nearly every country's legislature and
+   almost nothing about how to reach it. The completeness chart puts
+   email, telephone and street address all at 0% for the country level,
+   which is the level a reader lands on first.
+
+   Parline is the Inter-Parliamentary Union's dataset on national
+   parliaments, filled in by each parliament through its own
+   correspondent. Across its 281 chambers it records a postal address
+   for 99%, a telephone for 98%, an email for 96%, the chamber's site
+   for 95%, a link to its list of members for 80%, and a link to its
+   RULES OF PROCEDURE for 72% -- which is the document that says how a
+   bill is actually introduced in that chamber, and the single most
+   useful link on this map for somebody trying to make a law.
+
+   It is a static file in this repository rather than a live call, for
+   three reasons: it changes slowly, the page already waits on Wikidata,
+   and the licence obligation below stays attached to one file that can
+   be deleted without unpicking anything.
+
+   LICENCE. Parline is CC BY-NC-SA 4.0, published by the
+   Inter-Parliamentary Union, declared by the API in every response.
+   Attribution is required, which is why every field taken from it is
+   credited where it is shown. Non-commercial and ShareAlike both apply
+   to the data. Rebuild with build_parline.py.
+
+   The holder names are the weak part and are shown as such. Parline
+   stores them only as a URL slug ("gb-sir-lindsay-hoyle"), so accents
+   and internal capitals are already gone before this map sees them:
+   Yael Braun Pivet for Yaël Braun-Pivet. The official title beside the
+   name is exact; the name is a lead, which is what the About panel
+   says about every holder here.
+   ==================================================================== */
+let PARLINE=null, PARLINEQ=null;
+async function parline(){
+  if(PARLINE!==null) return PARLINE;
+  if(PARLINEQ) return PARLINEQ;
+  PARLINEQ = fetch('parline.json').then(r=>r.ok?r.json():null)
+    .then(j=>{ PARLINE = j || false; return PARLINE; })
+    .catch(()=>{ PARLINE = false; return PARLINE; });
+  return PARLINEQ;
+}
+/* Parline is keyed by two-letter code and STACK carries three, so the
+   ISO table the country outlines are already built from does the join. */
+function iso2FromIso3(iso3){
+  if(!iso3) return '';
+  /* ISO3NUM is keyed by three-letter code and holds the two-letter one,
+     whatever its name suggests; the reverse walk is the fallback for a
+     country that table missed. */
+  if(ISO3NUM && ISO3NUM[iso3]) return ISO3NUM[iso3];
+  for(const k in ISO2ISO3) if(ISO2ISO3[k]===iso3) return k;
+  return '';
+}
+function parlineChambers(){
+  if(!PARLINE || !PARLINE.countries) return [];
+  const iso3=(STACK && STACK[0] && STACK[0].iso3)||'';
+  const iso2=iso2FromIso3(iso3);
+  return (iso2 && PARLINE.countries[iso2]) || [];
+}
+/* Strip a title down to comparable words: no case, no accents, no
+   punctuation, and none of the words that appear in every chamber name
+   in some language or other and so distinguish nothing. */
+const PL_STOP=new Set(['the','of','de','del','la','le','les','du','des','national',
+  'federal','state','republic','and','et','y','parliament','parlement']);
+/* Words that both chambers of a two-chamber parliament tend to carry, so
+   they break no tie on their own. "Assembly", "council", "senate",
+   "commons" and "lords" are NOT here: those do tell chambers apart, and
+   discounting "assembly" would have lost France's National Assembly. */
+const PL_WEAK=new Set(['house','chamber','chambre','camara','kamer','casa','haus']);
+function plWords(x){
+  return String(x||'').normalize('NFD').replace(/[̀-ͯ]/g,'')
+    .toLowerCase().replace(/[^a-z0-9 ]+/g,' ').split(/\s+/)
+    .filter(w=>w && !PL_STOP.has(w));
+}
+/* Which Parline chamber, if any, is the office on screen. A country
+   with one chamber needs no matching at all; a bicameral one is decided
+   on shared words, and a tie decides nothing and returns nothing --
+   printing the Senate's address under the House is worse than printing
+   no address. */
+function parlineMatch(o){
+  if(!o || o.kind!=='leg/chamber') return null;
+  const cs=parlineChambers();
+  if(!cs.length) return null;
+  if(cs.length===1) return cs[0];
+  const want=plWords(o.label);
+  if(!want.length) return null;
+  const scored=cs.map(c=>{
+    const have=new Set([].concat(plWords(c.name),plWords(c.full),plWords(c.local)));
+    const hit=want.filter(w=>have.has(w));
+    return {c:c, strong:hit.filter(w=>!PL_WEAK.has(w)).length, all:hit.length};
+  }).sort((a,b)=> (b.strong-a.strong) || (b.all-a.all));
+  /* A shared word has to be one that tells the two chambers apart.
+     Japan's are the case that proves it: Wikidata calls the upper one
+     the House of Councillors and Parline calls it the Senate, so the
+     only word they share with each other is "house" -- which the LOWER
+     house also has, and scoring on it alone put the Diet's lower-house
+     address under its upper house. With "house" discounted neither
+     scores, nothing is shown, and a reader is not sent to the wrong
+     chamber of their own parliament.
+
+     A tie also returns nothing, for the same reason. */
+  if(!scored[0].strong) return null;
+  if(scored[1] && scored[1].strong===scored[0].strong) return null;
+  return scored[0].c;
+}
+
 function openOffice(id){ const o=BK&&BK.byId&&BK.byId[id]; if(o){ SEL=o; renderOffice(o); } }
 
 /* the way back out of an office, sitting beside Up a level rather than
@@ -5715,12 +5830,45 @@ function renderOffice(o){
      way of reaching anybody, which is what the page is for. What is
      left in this row is the ways in: the site, the address, the
      number. */
+  /* Parline fills the blanks and never overwrites: where Wikidata has
+     an email for a chamber it is the one shown, and the parliament's own
+     record only supplies what is missing — which at country level is
+     usually all of it. */
+  const pl=parlineMatch(o);
+  const plSite  = (!site  && pl && pl.site  && pl.site[0])  || '';
+  const plEmail = (!email && pl && pl.email && pl.email[0]) || '';
+  const plPhone = (!phone && pl && pl.phone && pl.phone[0]) || '';
   if(site)  h+='<a href="'+esc(site)+'" target="_blank" rel="noopener">'+esc(hostOf(site))+'</a>';
+  else if(plSite) h+='<a href="'+esc(plSite)+'" target="_blank" rel="noopener">'+esc(hostOf(plSite))+'</a>';
   h+=findSiteLink(o);
   if(email) h+='<a href="mailto:'+esc(email)+'">'+esc(email)+'</a>';
+  else if(plEmail) h+='<a href="mailto:'+esc(plEmail)+'">'+esc(plEmail)+'</a>';
   if(phone) h+='<span>'+esc(phone)+'</span>';
+  else if(plPhone) h+='<span>'+esc(plPhone)+'</span>';
   /* email and phone are read through bareMail/bareTel above */
   h+='</div></div>';
+  if(pl){
+    const bits=[];
+    if(pl.addr) bits.push(fld('Address', pl.addr));
+    if(pl.seats) bits.push(fld('Seats', String(pl.seats)));
+    (pl.speakers||[]).forEach(sp=>{
+      const who = sp.vacant ? 'vacant'
+        : ((sp.n||'') + (sp.acting?' (acting)':'')) || '\u2014';
+      if(sp.t) bits.push(fld(sp.t, who));
+    });
+    const links=[];
+    if(pl.rules && pl.rules[0])
+      links.push('<a href="'+esc(pl.rules[0])+'" target="_blank" rel="noopener">Rules of procedure</a>');
+    if(pl.members && pl.members[0])
+      links.push('<a href="'+esc(pl.members[0])+'" target="_blank" rel="noopener">List of members</a>');
+    if(bits.length || links.length){
+      h+='<div class="off">'+bits.join('')+
+         (links.length?'<div class="meta">'+links.join('')+'</div>':'')+
+         /* attribution is a licence condition, not a courtesy */
+         '<div class="meta">Inter-Parliamentary Union, IPU Parline \u2014 CC BY-NC-SA 4.0. '+
+         'Office titles are exact; a holder\u2019s name is a lead to check.</div></div>';
+    }
+  }
   /* The methods that reach this office AND answer what the reader said
      they were trying to do. A flat list ranked only by how well each
      works put an OECD complaint and a shareholder proposal at the top
@@ -7585,6 +7733,7 @@ async function boot(){
   try{
     const rows = await sparql(
       'SELECT ?c ?iso ?iso3 WHERE { ?c wdt:P31 wd:Q6256 ; wdt:P299 ?iso . OPTIONAL{?c wdt:P298 ?iso3} }', 'iso2q3');
+    parline();
     rows.forEach(r=>{ ISO2Q[r.iso.value]=qid(r.c.value);
       if(r.iso3){ ISO2ISO3[r.iso.value]=r.iso3.value; ISO3NUM[r.iso3.value]=r.iso.value; } });
     setDot('wd','ok','Wikidata live');
