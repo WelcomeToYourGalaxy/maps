@@ -75,9 +75,55 @@ print(f"Monetary authorities on the map: {N}")
 print(f"Reachable (excluding the {len(NOCB & places)} places with no central bank and the "
       f"{len(UKEYS & places)} currency-union keys): {R}\n")
 print(f"{'Category':34} {'Records':>8} {'Places':>7} {'of 206':>7} {'of ' + str(R):>7}")
+ROWS = {}
 for k, (s, n) in cats.items():
     have = len(s & places) or len(s)
+    ROWS[k] = {"records": n, "places": have, "pct206": 100 * have / N, "pct192": 100 * have / R}
     print(f"{k:34} {n:8d} {have:7d} {100*have/N:6.0f}% {100*have/R:6.0f}%")
+
+# ---- the comparison table, in PERCENTAGES ----------------------------------------------------
+# The owner asked at round 71 that the comparison carry its diffs as percentages rather than
+# record and place counts. Counts answer "how much did we add"; percentages answer "how much
+# closer is this", which is the question this map's reporting is for -- and on a depth round the
+# two diverge sharply, because the records column can move several per cent while the coverage
+# column does not move at all. Both are shown so that divergence is visible rather than hidden.
+#
+# Records and places are RELATIVE change (a per cent of where the row stood). Coverage is change
+# in percentage POINTS, because a percentage of a percentage is unreadable: a row going from 91%
+# to 92% has gained 1.1% of its own level and 1.0 point of the subject, and the point is the one
+# that means anything to a reader.
+#
+#   python3 agents/work/coverage.py --snapshot agents/work/baselines/r71.json
+#   python3 agents/work/coverage.py --since    agents/work/baselines/r71.json
+if "--snapshot" in sys.argv:
+    _out = sys.argv[sys.argv.index("--snapshot") + 1]
+    os.makedirs(os.path.dirname(_out), exist_ok=True)
+    json.dump(ROWS, open(_out, "w"), indent=1)
+    print(f"\nsnapshot of these rows written to {_out}")
+
+if "--since" in sys.argv:
+    _base = sys.argv[sys.argv.index("--since") + 1]
+    _b = json.load(open(_base))
+    _lbl = os.path.basename(_base).replace(".json", "")
+    def _pc(now, was):
+        if not was:
+            return "     new" if now else "       -"
+        d = 100.0 * (now - was) / was
+        return f"{d:+7.1f}%" if d else "    0.0%"
+    print(f"\nChange since {_lbl}, as percentages")
+    print(f"{'Category':34} {'Records':>9} {'Places':>9} {'of 192':>9}   level now")
+    for k, v in ROWS.items():
+        w = _b.get(k)
+        if not w:
+            print(f"{k:34} {'new row':>9}")
+            continue
+        pp = v["pct192"] - w["pct192"]
+        pps = f"{pp:+7.1f}pp" if abs(pp) >= 0.05 else "   0.0pp"
+        print(f"{k:34} {_pc(v['records'], w['records']):>9} "
+              f"{_pc(v['places'], w['places']):>9} {pps:>9}   {v['pct192']:.0f}% of 192")
+    _r = sum(x["records"] for x in ROWS.values())
+    _rw = sum(_b[k]["records"] for k in ROWS if k in _b)
+    print(f"{'ALL ROWS TOGETHER':34} {_pc(_r, _rw):>9}")
 
 # THE CASES ROW HAS TWO HONEST PLACE FIGURES AND THEY DIFFER BY 19. The row above counts a
 # place that holds a case record. app.js colours a place only if ccN > 0, and ccN also drops the
@@ -163,6 +209,41 @@ for _lbl, _rows in (('Corruption cases', _cc_live),
     _w = [k for k, v in _n.items() if v]
     print(f"  {_lbl:<34}{len(_w):>6}{sum(1 for k in _w if _n[k]==1):>6}"
           f"{sum(1 for k in _w if _n[k]==2):>6}{sum(1 for k in _w if _n[k]>=3):>5}")
+_DEPTH_SNAP = {}
+for _lbl, _n in _DEPTH.items():
+    _w = [k for k, v in _n.items() if v]
+    _DEPTH_SNAP[_lbl] = {"with": len(_w), "one": sum(1 for k in _w if _n[k] == 1),
+                         "two": sum(1 for k in _w if _n[k] == 2),
+                         "three_plus": sum(1 for k in _w if _n[k] >= 3)}
+
+# The depth figures go in the snapshot too, and their diff is the one that matters on a depth
+# round: "places holding exactly one record" is the number that moves while every published
+# coverage percentage stands still. A FALL here is the good direction, so the sign is flipped in
+# the label rather than in the arithmetic -- a reader seeing "-12.3%" against "exactly one" should
+# read it as progress, and the column header says so.
+if "--snapshot" in sys.argv:
+    _out = sys.argv[sys.argv.index("--snapshot") + 1]
+    _prev = json.load(open(_out))
+    _prev["_depth"] = _DEPTH_SNAP
+    json.dump(_prev, open(_out, "w"), indent=1)
+
+if "--since" in sys.argv:
+    _bd = json.load(open(sys.argv[sys.argv.index("--since") + 1])).get("_depth") or {}
+    if _bd:
+        print("\n  Depth, change as percentages (a FALL in 'exactly one' is progress)")
+        print(f"  {'Row':34}{'exactly one':>14}{'two':>10}{'three+':>10}")
+        for _lbl, _v in _DEPTH_SNAP.items():
+            _w = _bd.get(_lbl)
+            if not _w:
+                continue
+            def _d(a, b):
+                if not b:
+                    return "     new" if a else "       -"
+                x = 100.0 * (a - b) / b
+                return f"{x:+7.1f}%" if abs(x) >= 0.05 else "    0.0%"
+            print(f"  {_lbl:34}{_d(_v['one'], _w['one']):>14}"
+                  f"{_d(_v['two'], _w['two']):>10}{_d(_v['three_plus'], _w['three_plus']):>10}")
+
 for _lbl, _n in _DEPTH.items():
     _one = sorted(k for k, v in _n.items() if v == 1)
     print(f"\n  {_lbl} -- {len(_one)} places hold exactly one, so a second record moves them:")
@@ -219,8 +300,23 @@ for k in ('External auditors', 'Banknote printers', 'Gold custodians',
     s_, _n = cats[k]
     ab = sorted(places - (s_ & places))
     real = [c for c in ab if c not in UNION_CODES and c not in NOCB]
+    # THE GOLD ROW NEEDS ITS OWN DENOMINATOR HERE TOO, AND FOR ROUNDS IT DID NOT HAVE IT.
+    # A bank with no gold cannot have a gold custodian -- the row's percentage has been measured
+    # against the 108 places holding gold above zero since round 52, but its ABSENT list was still
+    # computed against all 192 reachable places. So it read "133 to go" when 74 of those hold no
+    # gold at all and can never be filled, overstating the row's remaining work by more than
+    # double. Round 72 found it by subtracting the negatives from the absent list and getting one
+    # country, Palestine, which turns out to be absent from the World Gold Council table entirely.
+    # These are separated out the same way the ten places with no central bank already are.
+    nogold = []
+    if k == 'Gold custodians':
+        nogold = [c for c in real if c not in GOLDP]
+        real = [c for c in real if c in GOLDP]
     print(f"  {k} — {len(real)} to go")
     print("    " + " ".join(real))
+    if nogold:
+        print(f"    not targets, hold no gold at all so can hold none in custody ({len(nogold)}): "
+              + " ".join(nogold))
     extra = [c for c in ab if c in UNION_CODES or c in NOCB]
     if extra: print("    not targets: " + " ".join(extra))
     print()

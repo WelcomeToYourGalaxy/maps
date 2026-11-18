@@ -1,0 +1,126 @@
+{
+  "records": [
+    {
+      "iso3": "SRB",
+      "country": "Serbia",
+      "central_bank": "National Bank of Serbia (Narodna banka Srbije)",
+      "category": "unexplained accounts or weak controls",
+      "years": "2016-2017",
+      "people": "National Bank of Serbia management and staff borrowers (unnamed in the report); Dr Bojana Mitrovic, Vice-President of the State Audit Institution, who signed the report",
+      "summary": "Serbia's State Audit Institution audited the National Bank of Serbia's 2016 accounts and regularity of operations and issued a Priority 1 (high) recommendation over the bank's own housing loans to its employees: claims outstanding at 31 December 2016 stood at 685,711 thousand dinars, 114 loans carried statutory default interest of 3,166 thousand dinars, a Commission was set up from 1 August 2016 to deal with borrowers not meeting their contractual obligations, and although the bank's General Affairs Directorate began registering mortgages, only two borrowers had registered one during 2016 and the bank itself had still not registered the mortgages by the close of the audit, although the loan contracts explicitly required security. The report, signed on 19 October 2017, also set a Priority 1 recommendation on reconciling the bank's book stock of finished products held by the Interior Ministry's commission agent with the actual stock. A value adjustment of 14,524 thousand dinars was made on the employee housing claims. The DRI's Priority 1 label is defined in the report as errors and irregularities indicating an immediate risk of incorrect or irregular payments, or a risk that public funds are not protected.",
+      "detail": "This is a second, separate Serbian episode from the 2006 arrest of vice-governor Dejan Simic already on the map: a different year, a different subject (the bank's own employee housing loan book and stock reconciliation), and a different document, namely the State Audit Institution's own per-entity audit report on the central bank. The audit covers the part of the bank's operations relating to the use of public funds and to dealings with the state budget. The DRI's reports index (dri.rs/izvestaji) lists the National Bank of Serbia, Belgrade as audit subject number 1071 with nine audit reports covering financial years 2009 to 2017, so this is an annual per-entity audit series. The report for the following year, financial year 2017 (report dated 9 November 2018, dri.rs/izvestaj/1207), records no findings at any of the three priority levels, and confirms that the bank filed its response report on 22 January 2018 and that the DRI's post-audit report of 19 February 2018 rated the corrective measures satisfactory. All figures, dates and the signing officer's name above appear in the PDF at source_url.",
+      "status": "official finding",
+      "quote": "Препоручује се Народној банци Србије да у циљу наплате доспелих потраживања по кредитима/зајмовима интензивира активности за упис хипотека",
+      "source_title": "Izveštaj o reviziji finansijskih izveštaja i pravilnosti poslovanja Narodne banke Srbije za 2016. godinu u delu koji se odnosi na korišćenje javnih sredstava i na poslovanje sa državnim budžetom (Državna revizorska institucija, 19 October 2017)",
+      "source_url": "https://www.dri.rs/storage/upload/documents/revision/2017/Izve%C5%A1taj%20o%20reviziji%20finansijskih%20izve%C5%A1taja%20i%20pravilnosti%20poslovanja%20Narodne%20banke%20Srbije%20za%202016.%20godinu.pdf",
+      "counterparty_only": false,
+      "weak_source": false
+    }
+  ],
+  "blanks": [
+    {
+      "iso3": "ISL",
+      "kind": "confirmed blank (inversion test) on the per-entity audit-report series; the Skyrsla til Althingis series is not reached",
+      "note": "Rikisendurskodun's own published-reports index was opened and enumerated, not searched for. https://www.rikisendurskodun.is/skyrslur has a GET form with three filters (searchString1 year, searchString2 publication type, searchString3). Filtering type = 'Endurskodunarskyrsla' (value 2) with 'Oll ar' (all years) and paging through pageIndex=1..8 (https://www.rikisendurskodun.is/skyrslur?pageIndex=N&CurrentFilter1=0&CurrentFilter2=1&CurrentFilter3=0) returns 126 per-entity audit reports, covering financial years 2016 to 2021. The titles were extracted in full and read: they name ministries, universities, hospitals, police districts, sheriffs, funds, the Competition Authority, Bankasysla rikisins (the State Financial Investments agency) and the Landspitali, and Sedlabanki Islands is ABSENT from the entire list. That is the inversion test: the institution that is the central bank's statutory auditor publishes an entity-by-entity audit report series and the central bank is not in it, so there is no published Rikisendurskodun audit report on the Central Bank of Iceland in that series. What is NOT closed: the second publication category on the same index, 'Skyrsla til Althingis' (searchString2=2), was not enumerated, and the free-text search at /leit renders its results in JavaScript and returned only the static filter page to curl (two different query strings returned byte-identical 20,763-byte pages, so nothing was tested there). althingi.is is behind a Cloudflare interstitial to curl (HTTP 403, 5,504 bytes on /altext/144/s/1001.html) and should be tried with WebFetch next round. One further unopened lead below.",
+      "state": "confirmed blank"
+    },
+    {
+      "iso3": "SRB",
+      "kind": "converted, and the vein is much richer than one record",
+      "note": "dri.rs is reachable to curl (otvoreniparlament.rs still answers HTTP 403 with the same 5,883-byte block page, so round 71's note holds and that host should be abandoned). The route that worked: https://www.dri.rs/izvestaji serves a 1.87 MB page whose audit-subject filter list contains 'НАРОДНА БАНКА СРБИЈЕ, БЕОГРАД' as subject id 1071 with a counter of 9 audits; https://www.dri.rs/izvestaji?subjects=1071 (singular parameter, no brackets - the bracketed form returns HTTP 500) lists all nine. Eight of the nine are still unopened, for financial years 2009, 2010, 2011, 2012, 2013, 2014, 2015 and 2017; the 2017 one (/izvestaj/1207) was opened and is a clean report with no findings at any priority. Note the PDF filenames on this host contain spaces and Serbian diacritics and must be percent-encoded; an unencoded path returns a zero-byte body with HTTP code 000.",
+      "state": "vein open - converted"
+    },
+    {
+      "iso3": "AFG",
+      "kind": "not reached",
+      "note": "No document opened. have_cases and have_events entries read for the duplicate check (RFE/RL 2004-2010 supervisory finding; 2021 asset freeze and 2022 seizure events). Budget was spent on the Iceland inversion test and the Serbian DRI conversion.",
+      "state": "not reached"
+    },
+    {
+      "iso3": "ARE",
+      "kind": "not reached",
+      "note": "No document opened. have_cases and have_events read (2026 Banque Misr branch investigation; 2018 Decretal Federal Law No 14 event).",
+      "state": "not reached"
+    },
+    {
+      "iso3": "JOR",
+      "kind": "not reached",
+      "note": "No document opened. have_cases and have_events read (Petra Bank / Chalabi, Wikipedia-sourced, 1989-1992; 2003 public pressure event). The Audit Bureau (Diwan al-Muhasaba) annual report remains the named standing lead and is still untested.",
+      "state": "not reached"
+    },
+    {
+      "iso3": "KWT",
+      "kind": "not reached",
+      "note": "No document opened. have_cases and have_events read (Al Hashel share-trading allegation; 1968 statutory control event). The State Audit Bureau's reports to the National Assembly remain untested.",
+      "state": "not reached"
+    },
+    {
+      "iso3": "LAO",
+      "kind": "not reached",
+      "note": "No document opened. have_cases and have_events read (2026 convictions of Khamphout and Aod; 1995 banking law event).",
+      "state": "not reached"
+    },
+    {
+      "iso3": "SYR",
+      "kind": "not reached",
+      "note": "No document opened. have_cases and have_events read (OeBS kickback verdicts 2005-2011; 2002 statutory event).",
+      "state": "not reached"
+    },
+    {
+      "iso3": "TJK",
+      "kind": "not reached",
+      "note": "No Tajik audit-chamber document was fetched, exactly as in round 71. have_cases and have_events read (IMF creative-accounting finding 2004-2008; 2011 NBT law event). This country is still genuinely untested on the audit-institution vein.",
+      "state": "not reached"
+    },
+    {
+      "iso3": "TLS",
+      "kind": "not reached",
+      "note": "No document opened. have_cases and have_events read; note the single existing case record is counterparty_only (a Ministry of Finance finding), so a national finding whose subject is the Banco Central de Timor-Leste itself would be the country's first colouring record. The Camara de Contas remains the named lead.",
+      "state": "not reached"
+    },
+    {
+      "iso3": "UZB",
+      "kind": "not reached",
+      "note": "One search was run for Hisob palatasi audit results naming the Central Bank (Uzbek: 'Hisob palatasi Markaziy bank audit natijalari buzilish'). It returned the Central Bank's own internal-audit department page, two lex.uz statutes, one api-portal.gov.uz PDF, and Azerbaijani and Kyrgyz audit-chamber stories - no Accounts Chamber document naming the Central Bank of Uzbekistan. No Hisob palatasi document was opened, so this stays 'not reached' rather than a negative. have_cases and have_events read (2025 internal-discipline finding from the bank's own report; 2024 dismissal event).",
+      "state": "not reached"
+    },
+    {
+      "iso3": "THA",
+      "kind": "deprioritised - already holds two case records",
+      "note": "Not worked. have_cases shows THA already holds TWO corruption-case records (Rerngchai Marakanond, acquitted; Surapong Suebwonglee and the selection-committee appointments, convicted), so it is not on 'exactly one' for this row and a third record buys less than a second elsewhere. Flagging this because the assignment lists it as an exactly-one target and the live data does not agree.",
+      "state": "vein closed for this round's purpose"
+    },
+    {
+      "iso3": "TON",
+      "kind": "deprioritised - already holds two case records",
+      "note": "Not worked. have_cases shows TWO records (the Senior Exchange Control Officer conviction, and the board conflict-of-interest case dismissed at TOCA 2025/25). The assignment's own note also says 'Tonga already holds two records'.",
+      "state": "vein closed for this round's purpose"
+    },
+    {
+      "iso3": "WSM",
+      "kind": "deprioritised - already holds two case records, and is an existing documented negative on this vein",
+      "note": "Not worked, deliberately. have_cases shows TWO records (a 2014 counterparty_only audit finding on state debt payments, and a 2024 internal-discipline finding from the Central Bank of Samoa's own 2023/24 annual report), and the assignment states Samoa is already a documented negative on the audit-institution vein in closed_negatives.json and must not be re-run.",
+      "state": "vein closed"
+    }
+  ],
+  "checked_not_in_assignment": [
+    {
+      "note": "No country outside the assigned fourteen was researched. Five codes appear in the quoted round-71 note (PNG, PAK, BTN, HKG, MYS) and were deliberately not touched, per the assignment's warning that all five were worked last round and three filed."
+    }
+  ],
+  "leads_not_opened": [
+    {
+      "iso3": "SRB",
+      "lead": "Eight unopened DRI per-entity audit reports on the National Bank of Serbia. Listing: https://www.dri.rs/izvestaji?subjects=1071 . Report pages: /izvestaj/809 (FY2015), /izvestaj/510 (FY2014), /izvestaj/54 (FY2013), /izvestaj/157 (FY2012), /izvestaj/311 (FY2011), /izvestaj/346 (FY2010), /izvestaj/369 (FY2009). Each page carries a direct PDF link under 'Izvestaj'; percent-encode the filename. Also unopened: the DRI's post-audit report (poslerevizioni izvestaj) number 400-297/2017-07/10 of 19 February 2018 on the bank's corrective measures, and the DRI's 'Registar preporuka' pages for 2023 and 2024, which would show whether the bank has any open recommendations now."
+    },
+    {
+      "iso3": "ISL",
+      "lead": "Two unopened Icelandic documents. (1) 'Mat a frammistodu Sedlabanka Islands 2020-22' at https://fm.mfa.is/library/02-Rit--skyrslur-og-skrar/Mat%20%c3%a1%20frammist%c3%b6%c3%b0u%20Se%c3%b0labanka%20%c3%8dslands%202020-22.pdf - an external assessment of the Central Bank of Iceland's performance, announced by the government on 31 January 2023 (https://www.stjornarradid.is/efst-a-baugi/frettir/stok-frett/2023/01/31/Skyrsla-uttektarnefndar-um-arangur-Sedlabanka-Islands/). curl returned HTTP 520 with a 16-byte body; retry, and try WebFetch. (2) Rikisendurskodun's 'Skyrsla til Althingis' publication category, https://www.rikisendurskodun.is/skyrslur?pageIndex=1&CurrentFilter1=0&CurrentFilter2=2&CurrentFilter3=0 , not enumerated this round. Also: althingi.is needs WebFetch, not curl."
+    },
+    {
+      "iso3": "ISL",
+      "lead": "https://www.rikisendurskodun.is/Skilalisti/?listi=1 - a 'submission list' linked from the institution's front page, not opened. It may be a register of bodies required to file accounts with Rikisendurskodun, which would be a second and independent inversion-test document for Iceland."
+    }
+  ],
+  "notes": "Fetches used: 3 WebSearch plus about 27 curl calls, mostly cheap HTML index pages on two hosts. No shared rate limit was reported. One record filed (SRB). Three of the fourteen assigned countries (THA, TON, WSM) already hold two case records each in have_cases.json and so are not on the live exactly-one list; that is flagged in blanks rather than worked. Iceland, the assignment's strongest lead, is now a documented blank by the inversion test rather than an untested country: Rikisendurskodun's own 126-report per-entity audit series was enumerated in full and the central bank is absent from it, which is a real finding about the project's assumption that the statutory auditor must hold per-entity material on its own central bank. Serbia's DRI, by contrast, turned out to publish exactly the annual per-entity series brief_depth.md describes, nine reports deep on the National Bank of Serbia, and eight of those nine are still unopened."
+}
