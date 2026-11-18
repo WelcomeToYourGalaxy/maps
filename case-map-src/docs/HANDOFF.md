@@ -1,14 +1,41 @@
 # Globalization Case Map: handoff for a new chat
 
-Last updated: round 38 — the AidData queue is worked to its end as a queue, and **the lopsidedness
-this file calls the map's real defect has now moved twice: five of seven `documented` in round 37
-and five of six in round 38**, against 29 of 30 and 18 of 18 `contested` in the ICIJ tranches. The
-reason is structural and it held across both rounds: Chinese state lenders publish no completion
-report, so a case either has a source outside the lender or it is a drop. The map stands at
-**1,182 cases in 137 countries**. **What is left of that queue is 178 financings whose own text
-carries only a protest or a pollution flag, and a protest is not harm under test 2 unless something
-happened to the people in it — so the next round is not another AidData tranche.** Read "The queue,
-after round 38" before commissioning anything. Replaces every earlier handoff.
+Last updated: round 45 — **a register round with no cases in it.** The owner asked how complete a
+picture the map gives of its subject, told the work to go after the outstanding registers starting
+with OECD Watch, and told it to leave the `documented`/`contested` sourcing push alone. Three things
+came out of it and all three are on disk:
+
+1. **OECD Watch is harvested.** All 503 complaints it publishes are in `docs/leads_oecdwatch.json`,
+   fetched from its own pages over plain `curl`, no refusals. **90 are already named in cases here,
+   413 are open, and 138 of those carry a severe harm flag with the harm outside a rich country.**
+   The writer brief is `docs/BRIEF45.md`. **Read its middle section before commissioning anything:
+   an NCP's `Rejected` is usually procedural and says nothing about whether the harm happened, so
+   test 2 has to be met from outside the complaint.** At the measured 30-60% for complaint registers
+   this is worth 124-248 cases, the largest addition left from any register.
+2. **Every kind of money has been checked for a register of harm, and the answer per row is in
+   `docs/REGISTERS.md`.** Two more unworked registers were found and are now named on the page:
+   **BankTrack's Dodgy Deals, 319 profiles, for private bank and bond lending**, and the **Business &
+   Human Rights Resource Centre's 679 allegations against Chinese companies abroad, 2013-2020**,
+   which is the one Chinese-lending list that sits outside the lender. The Environmental Justice
+   Atlas (3,800+ conflicts) is a third. **Aid, the IMF and payment services have no register of harm
+   anywhere**, so those rows cannot be raised by reading documents and the page now says so per row.
+3. **The coverage panel now says what each row can reach.** Every counted row carries a "What this
+   row can reach" line, and **the foreign-company row's year window is no longer silently
+   misleading**: it divided by projects announced 2021-2023 and counted only harm beginning in those
+   years, so it showed 9 while the map held 305 such cases. A new all-years row carries the 305 with
+   its decade split (13 in the 2020s, 113 in the 2010s, 112 in the 2000s, 67 before 2000). The same
+   fixes are in the per-kind briefs for `fdi`, `gov`, `gra` and `prv`.
+
+The map still stands at **1,182 cases in 137 countries**, 29 patterns, 31 suspected patterns, 26.0 MB,
+`loan-condition cases matched 173 of 173`, zero page and zero console errors. No coverage row moved,
+because no case was added.
+
+**A bucket bug worth not repeating:** the first version of the all-years decade split read
+`2021-2099, 2010s, 2000s, pre-2000` and summed to 303 against the page's own 305, because **2020 fell
+in no bucket**. Any computed split gets checked against the rendered total before it is believed -
+the same rule this file already states for the coverage rows.
+
+Replaces every earlier handoff.
 
 ## The aim, settled 14 Nov 2026 — a defensible big picture, not a bigger map
 
