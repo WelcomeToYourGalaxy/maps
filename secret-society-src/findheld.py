@@ -75,6 +75,10 @@ def main(argv):
     if year:
         out = [(i, c) for i, c in out if isinstance(c.get('y'), int) and abs(c['y'] - year) <= 2]
     print('%d HELD record(s) match %r%s' % (len(out), q, ' near %d' % year if year else ''))
+    if len(out) > 12 and len(q.strip()) < 7:
+        print('  NOTE: that is a short query and these are substring matches, so most of')
+        print('  these are noise ("INIS" matched 995 records). Query the full body name,')
+        print('  the lead defendant or the figure instead of an acronym.')
     for i, c in out:
         print('  idx %-5d [%s/%s] %s %-18s %s'
               % (i, c.get('inf'), c.get('bk'), c.get('y'), (c.get('c') or '')[:18], c['n'][:74]))
@@ -93,4 +97,13 @@ def main(argv):
 
 
 if __name__ == '__main__':
-    sys.exit(main(sys.argv[1:]))
+    # Piping to head closes the pipe mid-print. Harmless, but it printed a
+    # traceback over the answer, which is what an agent is reading.
+    try:
+        sys.exit(main(sys.argv[1:]))
+    except BrokenPipeError:
+        try:
+            sys.stdout.close()
+        except Exception:
+            pass
+        os._exit(0)

@@ -4511,7 +4511,14 @@ there is no outside party at all.
 **A new unmined vein for `crime → cabinet`: the US motor-vehicle agencies.** `title=DMV` alone (62
 titles) gave four geographically separate rings, `title=Motor Vehicle` three more — **about 1.4
 records per title query, the best rate measured in any cell**, and the map holds **no** US record in
-`crime → cabinet` at all. A state Department or Registry of Motor Vehicles administers a licensing
+`crime → cabinet` at all. **CORRECTED IN ROUND 14, AND THE CORRECTION IS THE LESSON: that last
+clause was true when it was written and false by the time the round-14 brief copied it, because
+round 13 then wrote seven of them.** R14-B burned four finished candidates on held records before
+checking, and said so: "the vein is still live, but it is a second pass, not a first one."
+Re-measured in round 14 the motor-vehicle family gives **1.56 records per title query across nine
+titles (228 titles, 14 records)** — still the best in the cell. **Never again state a held-count in
+this file: state the rate, and let `findheld.py` answer the count at the moment the brief is
+written.** A state Department or Registry of Motor Vehicles administers a licensing
 programme, so it is `cabinet` under ruling 17. Measured empty beside it: `Food Stamp` (31 titles,
 retailers defrauding a programme from outside) and `Birth Certificate` (city-hall staff, `legis`).
 
@@ -4520,6 +4527,32 @@ read, **7 records — 0.5 per release read.** AFP's own term for the shape is "t
 **Note the path**: `/news-centre?keywords=` **silently ignores the keyword** and returns the latest
 releases — the same trap as `balkaninsight.com` and `theprint.in`, and the third instance this
 project has met. Several releases describe one event, so combine them before writing.
+
+**ROUND 14 RETIRES AFP FROM `crime → security` AND THE REASON IS DEFINITIONAL, NOT EXHAUSTION.**
+R14-D ran 18 searches, read 18 releases and wrote **nothing** in that cell. AFP's releases define
+"trusted insider" themselves as a person who, through employment with a *supply chain business*,
+uses their access — so every release in that family is a freight handler, stevedore, forklift
+driver, truck driver, postal subcontractor or baggage handler. **That is `crime → company`, which
+is where round 13 filed all four of its AFP records (idx 3097, 3098, 3099, 3103).** Searching the
+security bodies directly (`abuse of public office`, `Border Force officer charged`, `prison
+officer`, `customs officer drugs`, `ASIC card aviation security`, eleven queries in all) produced
+exactly one in-cell candidate, already held as idx 3102. **Keep AFP for `crime → company` at its
+measured 0.5 per release; do not brief it for `crime → security` again.**
+
+**`justice.gov`'s `title=` filter matches WORDS, NOT A SUBSTRING.** Two agents measured this
+independently in round 14: `title=Jail Officer` returns titles containing "Jail" and "Officer"
+separately, and `title=Prison Guard` returned "Prison for ... Guard". `pagesize` caps at 50, so a
+single-page read of a broad family is a floor and not a count.
+
+**ON A LARGE PRESS-RELEASE CORPUS, CACHE AND GREP; NEVER TRIAGE BY TITLE.** The two methods ran
+side by side in round 14 on the same cell. R14-D cached 1,193 release bodies in 27 parallel curls,
+grepped the cache for officer-plus-payment language with `undercover|posing as|fictitious|purported|
+represented to contain` as a negative filter, read 14 of the hits and wrote 8 records — **0.57 per
+release read, at zero search cost, because the grep did the searching.** Its AFP page-by-page pass
+cost 40 curls for 0. R14-B cached 44 title families in ~70 curls and wrote 42 records with **zero
+page fetches, zero WebSearch and zero WebFetch.** The sting filter is not optional: it kills about
+a third of the prison-contraband family, and those releases are indistinguishable from the real
+ones by title.
 
 **`www.corrieredellacalabria.it` fell to 0.17 records per query for R13-A**, against 0.75–0.8 in
 round 12 — and the reason is not the source. **The Italian prevention-measure decree family was
