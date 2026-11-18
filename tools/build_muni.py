@@ -408,21 +408,27 @@ def build_spain():
               "export_data/file_export/export_excel/municipios/all/all",
               timeout=420)
     open("/tmp/rel.xls", "wb").write(rel)
-    # The export is a legacy .xls. LibreOffice is the one converter present
-    # on both this machine and the Action's runner.
-    os.system("cd /tmp && soffice --headless --convert-to xlsx --outdir /tmp "
-              "/tmp/rel.xls >/dev/null 2>&1")
-    import openpyxl
-    sh = openpyxl.load_workbook("/tmp/rel.xlsx").worksheets[0]
-    rows = list(sh.iter_rows(values_only=True))
+    # The export is a legacy .xls. `xlrd` reads that format in process —
+    # the first version of this shelled out to LibreOffice, which is on this
+    # machine and is not on the Action's runner, so the build would have
+    # worked here and failed there with no file to find.
+    import xlrd
+    sh = xlrd.open_workbook("/tmp/rel.xls").sheet_by_index(0)
+    rows = [[sh.cell_value(i, c) for c in range(sh.ncols)]
+            for i in range(sh.nrows)]
     hi = next(i for i, r in enumerate(rows)
-              if r and any(str(x) == "NUMERO_INSCRIPCION" for x in r if x))
-    H = {str(h): i for i, h in enumerate(rows[hi]) if h}
+              if any(str(x).strip() == "NUMERO_INSCRIPCION" for x in r))
+    H = {str(h).strip(): i for i, h in enumerate(rows[hi]) if str(h).strip()}
     rel_rows = []
     for r in rows[hi + 1:]:
-        # the conversion drops a leading zero, because it reads the column as
-        # a number; the published form is eight digits
-        num = str(r[H["NUMERO_INSCRIPCION"]] or "").strip()
+        # The column is stored as a number, so the leading zero is not in it
+        # and a float arrives: 1189136.0 for the published 01189136. Zero-pad
+        # to eight and the INE code is the five digits in the middle —
+        # Abánades is 01190019 against INE 19001.
+        num = r[H["NUMERO_INSCRIPCION"]]
+        if isinstance(num, float):
+            num = str(int(num))
+        num = str(num or "").strip()
         num = num.zfill(8) if num.isdigit() else num
         if len(num) != 8 or not num.isdigit():
             continue
@@ -436,6 +442,9 @@ def build_spain():
              "Soluciones/238/Descargas/Listado%20Unidades%20EELL.xlsx",
              timeout=420)
     open("/tmp/eell.xlsx", "wb").write(d3)
+    import openpyxl
+    # Not read_only: the file carries no usable dimension record, so a
+    # read-only load reports one row by one column and finds nothing.
     sh = openpyxl.load_workbook("/tmp/eell.xlsx")["Unidades EELL"]
     rows = list(sh.iter_rows(values_only=True))
     D = {}
