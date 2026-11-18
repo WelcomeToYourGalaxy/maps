@@ -6,11 +6,11 @@ Repo: WelcomeToYourGalaxy/maps. Build output: `infiltration.html` (repo root). S
 ## What the map is
 A MapLibre globe of documented cases where an outside party (foreign state or spy service, organised crime, company/industry, bank, lodge/secret society, religious movement, elite network, political or armed movement, lender) got its people, money or control INSIDE a government body, an international body or a company, and decisions there served it.
 
-Current size: 2,674 cases in 183 jurisdictions, 510 organisations, 48 channels, 30 patterns.
-By who infiltrates: corp 1237, crime 611, state 395, movement 187, lodge 76, money 70, faith 60, elite 29, lender 9.
-By relevance: legacy 1226, now 993, past 455. Countries with no qualifying case, shown as estimates: 15.
-Shape deviation 38.6 points against the goal of 5.0. Run `python3 shape.py`.
-(Figures as of round 9, 17 November 2026. The dated handoffs in the project carry what changed.)
+Current size: 2,820 cases in 183 jurisdictions, 510 organisations, 48 channels, 31 patterns.
+By who infiltrates: corp 1267, crime 704, state 395, movement 209, lodge 76, money 70, faith 60, elite 29, lender 10.
+By relevance: legacy 1273, now 1084, past 463. Countries with no qualifying case, shown as estimates: 15.
+Shape deviation 32.2 points against the goal of 5.0. Run `python3 shape.py`.
+(Figures as of round 10, 17 November 2026. The dated handoffs in the project carry what changed.)
 
 ## THE STANDING GOAL (set by the owner, 16 November 2026) — read this first
 
@@ -91,6 +91,7 @@ not move together, and four rounds are enough to show it.
 | round 8, 15 Nov (company rebalance closes) | +195 | 53.6 | **opened 1.8** |
 | the three throughput rounds, 16 Nov | +12 net | 52.9 | closed 0.7 |
 | **round 9, 17 Nov (composition-locked)** | **+210** | **38.6** | **closed 14.3** |
+| **round 10, 17 Nov (corp re-entered)** | **+146** | **32.2** | **closed 6.4** |
 
 Round 8 is the one to keep in view: 195 verified, sourced, correctly classified cases
 moved the map *away* from its goal. Round 7 closed 5.6 points on 236 cases (24
@@ -1448,3 +1449,457 @@ Sudan, Mali — plus Albania, Honduras, Bangladesh and Bulgaria, where three cas
 or more of what they hold). **34 remain stale but accurate, with no orphaned assertion.**
 Mexico and Indonesia are the ones to do first: not because three cases move much against
 bases of 71 and 110, but because they are the largest bases that have now drifted.
+
+# ROUND 10, 17 NOVEMBER 2026 — WHAT IT MEASURED
+
+146 verified cases merged from 165 written, deviation 38.6 to 32.2. Twelve research agents,
+each locked to one `inf`/`bk` cell with a quota set from round 9's measurements, plus two
+reviewers, three source checkers and a correction pass. `corp` was allowed again for the first
+time in four rounds and is now at target. Everything below is measured in that round.
+
+## DENSITY IS PER CELL, NOT PER SOURCE — DEMONSTRATED ON ONE SOURCE IN ONE ROUND
+
+Round 9 established that a source family's density has to be measured per cell. Round 10
+produced the clean experiment, by accident: two agents worked **Romania's DNA press
+releases** at the same time for different cells and reported opposite verdicts.
+
+| agent | cell | method | result |
+|---|---|---|---|
+| `corp` → **company** | state firms, hospitals, authorities | crawled ids 10700–14080, 3,381 pages, by plain curl | **12 records — "the densest usable source I found, about 1 writable record per 280 ids, at zero search cost"** |
+| `corp` → **cabinet** | ministries | fetched 181 releases, 66 matched a ministry+company+bribery filter | **0 usable — "do not spend a round on it"** |
+
+Both are right. All twelve of the first agent's Romanian records reached a **state company,
+public hospital or state authority** — two state arms factories, four hospitals, the auto
+register, the boiler-inspection company, Bucharest airports, a water-management branch, a
+land-improvement branch. **Not one reached a ministry.** The second agent was hunting
+ministries, and reports the reason its filter failed: "nearly every `Ministerul` hit is
+`Ministerul Public`", the prosecution service.
+
+So the entry for Romania's DNA in the source table is: **rich for `corp → company`, empty
+for `corp → cabinet`.** Had either agent worked alone, the handoff would have recorded a
+flat verdict on the whole family and the next round would have believed it.
+
+**The method that made the rich half work, and it is reusable:** DNA publishes two kinds of
+document at the same URL pattern. The **press releases** name companies and officials; the
+**anonymised court judgments** render defendants as initials and bodies as "Unitatea
+Administrativ Teritorială Municipiul I.", which fails ruling 11 by construction. Filter the
+judgments out by the `ECLI` marker in the first 300 characters. The crawl recipe is in
+`/home/claude/work/round10/scratch/d3/dna2.py`.
+
+## THE REST-API ROUTE IS NOW THE PRIMARY DISCOVERY METHOD, MEASURED ACROSS SIX AGENTS
+
+Round 9 found that one news site exposed a WordPress REST index. Round 10 pointed six
+agents at the idea and the result is no longer a trick but the default:
+
+| agent and cell | records from a free query | searches used |
+|---|---|---|
+| `crime`/`security`, Latin America | **17 of 20** (12 from InSight Crime alone) | 5 of 12 |
+| `crime`/`security`, Italy | **14 of 19** | 6 of 14 |
+| `crime`/`legis`, Italy and Brazil | ~1 record per page fetched, "by far the densest thing I touched" | 7 of 14 |
+| `corp`/`company`, Romania | 12 of 14 (DNA crawl) | **2 of 14** |
+| `crime`/`company`, Italy | 9 records and 10 leads from ~25 free queries | 14 of 14 |
+| `corp`/`cabinet`, Balkans | 3 of 9 from `reporter.al` | 14 of 14 |
+
+One agent ran an entire round on **`curl` plus a twelve-line HTML-to-text script and used
+WebFetch not once.** Plain curl through the session proxy reaches most hosts and costs no
+ration, so the binding constraint has moved from searches to knowing which hosts answer.
+
+### How to query them
+
+`GET https://<host>/wp-json/wp/v2/posts?search=<terms>&per_page=30&_fields=title,link,date`
+
+- **Use two or three distinctive words.** Relevance is **OR-weighted, not AND**, so a
+  four-word query returns noise. "finanziere infedele", "doganiere arrestato", "voto di
+  scambio politico mafioso" work.
+- **Query conduct, not countries.** "bribed police officers", "navy officers drug
+  trafficking", "prison director gang bribe arrested" beat any country name, which mostly
+  returns profile pages.
+- **Prefer one-page news briefs to long investigations.** One agent read roughly 15,000
+  words of a flagship investigative series for **zero** records while the briefs gave twelve.
+- Where an article page is JS-rendered or Cloudflare-blocked but the host runs WordPress,
+  the content still comes through the API: `?slug=<slug>&_fields=title,content,date`.
+- `/wp-json/wp/v2/posts/<id>` returns one post's full text.
+
+### The trap: hosts that silently ignore `search=`
+
+**`theprint.in`, `citizen.co.za`, `myjoyonline.com` and `cnnbrasil.com.br` return their
+latest posts regardless of the search term.** That looks exactly like a hit list and is not.
+**Check that the returned titles actually contain your terms before trusting any of them.**
+
+### Confirmed working
+
+Italy, and this is the richest set found: `corrieredellacalabria.it`, `anteprima24.it`,
+`cronachedellacampania.it`, `casertace.net`, `strettoweb.com`, `livesicilia.it`,
+`blogsicilia.it`, `ilsicilia.it`, `borderline24.com`, `telebari.it`, `trmtv.it`,
+`antennasud.com`, `immediato.net`, `sardiniapost.it`, `cagliaripad.it`, `stylo24.it`,
+`internapoli.it`, `ilmetropolitano.it`, `ilriformista.it`.
+
+Balkans and eastern Europe: **`balkaninsight.com`** — note this **corrects an earlier
+entry**: its *listing* pages refuse automated access but **its REST API answers plain
+curl**. Also `reporter.al` (richer than the English wire, but **its search breaks on
+non-ASCII terms — use ASCII-only tokens**), `rise.md`, `detektor.ba`, `cins.rs`, `irl.mk`,
+`jam-news.net`.
+
+Latin America: `insightcrime.org` (English and `/es/`), `apublica.org`,
+`brasildefato.com.br`, `acritica.com`, `emtempo.com.br`, `oimparcial.com.br`,
+`pbagora.com.br`, `diariodopara.com.br`, `aquinoticias.com`, `tribunadonorte.com.br`,
+`oeco.org.br`, `ciperchile.cl`, `armando.info`, `runrun.es`, `idl-reporteros.pe`,
+`confidencial.digital`, `prensalibre.com`, `lahora.gt`, `criterio.hn`,
+`contracorriente.red`, `marsactu.fr`.
+
+Africa and Asia: `premiumtimesng.com`, `newzimbabwe.com`, `diggers.news`, `observer.ug`,
+`independent.co.ug`, `nyasatimes.com`, `newsday.co.zw`, `thereporterethiopia.com`,
+`citinewsroom.com`, `beninwebtv.com/en`, `qiraatafrican.com/en`, `mongabay.co.id`,
+`economynext.com`, `kathmandupost.com`, `news.mn`, `kloop.kg`, `thaienquirer.com`,
+`english.dvb.no`, `myanmar-now.org`, `globalvoices.org`, `beta.eacc.go.ke`.
+
+### Confirmed refusing, so nobody retries
+
+`ilfattoquotidiano.it` (401), `fanpage.it`, `ilmattino.it`, `ilsole24ore.com`,
+`open.online`, `lagazzettadelmezzogiorno.it`, `ilquotidianodelsud.it` (TLS),
+`lacnews24.it`, `ilvibonese.it`, `ilreggino.it`, `unionesarda.it`, `gazzettadelsud.it`,
+`foggiatoday.it`, `cronachelucane.it`, `basilicata24.it`, `g4media.ro`
+(`rest_search_disabled`), `hotnews.ro`, `graphic.com.gh`, `punchng.com`, `lusakatimes.com`,
+`thecable.ng`, `oliberal.com`, `imirante.com`, `folhape.com.br`,
+`diariodepernambuco.com.br`, `opopular.com.br`, `jornalopcao.com.br`,
+`campograndenews.com.br`, `midiamax.com.br`, `metropoles.com`, `poder360.com.br`,
+`nsctotal.com.br`, `intercept.com.br`, `d24am.com`, `tempo.co`, `tirto.id`, `kumparan`,
+`katadata`, `suara.com`, `hukumonline`, `rappler.com`, `jakartaglobe.id`, `en.tempo.co`,
+`thediplomat.com`, `eurasianet.org`, `thejakartapost.com`, `freemalaysiatoday.com`,
+`turkishminute.com`, `newsinfo.inquirer.net`, `dawn.com`, `newagebd`, `thewire.in`,
+`scroll.in`, `tribune.com.pk`, `kashmirtimes.com`, `english.enabbaladi.net`, `seneweb`,
+`le360`, `hetq.am`, `civilnet.am`, `zdg.md`, `kallxo.com`, `koha.net`, `prizma.mk` (401),
+`nashigroshi.org` (401), `bihus.info`, `madamasr.com`, `hespress.com`, `monitor.ug`,
+`oc-media.org` (Next.js, not WordPress), `dgabc.com.br` (500), `saharareporters` (502).
+
+Agency sites are mostly unreachable this way: `efcc.gov.ng` (React SPA), `eacc.go.ke`,
+`npa.gov.za`, `nab.gov.pk`, `acc.org.bd`, `kpk.go.id`, `antikorupsi.org`, `antikor.gov.kz`,
+`cbi.gov.in`, `ciaboc.gov.lk`, `anticorruption.ge`, `antikorup.am`, `ciaa.gov.np`,
+`knab.gov.lv`, `stt.lt`, `anticoruptie.md`, `nabu.gov.ua`, `acc.gov.zm` (curl refused,
+WebFetch reaches its PDFs), **`sec.gov` 403 on every path including direct litigation
+PDFs**, and `justice.gov`'s FCPA paths 404 with a press-release API that ignores keywords.
+
+### Two more free query APIs, with their limits
+
+- **AfricanLII / Laws.Africa**: `https://<host>/search/api/documents/?search=<terms>` with
+  `curl -sL` works on tanzlii.org, ulii.org, zambialii.org, malawilii.org, ghalii.org,
+  lesotholii.org, namiblii.org, zimlii.org, eswatinilii.org and sierralii.gov.sl, returning
+  titles, court, flynotes and a matched snippet. **But the judgment pages themselves return
+  403**, so you get the snippet and nothing more.
+- **Kenya Law has moved host.** `new.kenyalaw.org/search/api/documents/?search=` now returns
+  **301 with zero bytes**; the live path is `https://kenyalaw.org/search/api/documents/?search=`
+  and you must follow redirects. It works, but two agents measured it as useless for case
+  discovery: relevance ranks statutes above judgments, three-word queries return 9,000 to
+  10,000 OR-matched hits, and the judgment pages return **202 with an empty body** because
+  they render asynchronously.
+
+### A date trick that saved a record from a wrong year
+
+Several outlets print only today's date in the rendered page. The real publication date is
+in the HTML head: `curl -s <url> | grep -oiE '"datePublished"[^,]{0,45}'`. One agent found a
+Turkish page that reads "17 Kasım 2026" throughout and was published 16 August 2026. Outlets
+where this matters so far: gzt.com, serbestiyet.com, shqiptarja.com, portafolio.co,
+haberturk.com, cumhuriyet.com.tr, ojacare.com.br.
+
+## CORRECTIONS TO THINGS THIS ROUND'S OWN BRIEFS GOT WRONG
+
+Three source families were recommended to agents on the strength of a ruling or an earlier
+estimate, and measurement contradicted all three. Recording them so the recommendation is
+not made again.
+
+**1. Multilateral debarment decisions are not a usable source, despite ruling 5.** Ruling 5
+is right that a World Bank or AfDB debarment is an adjudication and stays `established`, and
+two agents were pointed at them on that basis. Measured: one read **45 decisions** (Nos.
+104–148) for 2 records; the other read 10 in full for **zero**. The defect is not evidence
+but anonymisation, and it runs **both** ways — the payer is "the Respondent Firm" and the
+body reached is "the Employer", "the Project Manager", "Project officials". Across ten
+decisions the only named public bodies were a Ministry of Public Health in a case with no
+payment inside, and ministries of labour in a case of insufficient evidence. The ministry is
+named in roughly **one decision in seven**. That is the Herbalife and Airbus defect (rulings
+8 and 14), so **ruling 11 bars most of the family**. The debarment *list* names firms but no
+body and no decision. One agent's recommendation, which I accept: close the idea rather than
+re-measure it. The free locator, if anyone wants the one-in-seven:
+`https://search.worldbank.org/api/v3/wds?qterm=Sanctions+Board+Decision&fl=docna,docdt,txturl&format=json`
+returns 189 hits with plain-text links.
+
+**2. NABU's 6-to-12 records per report is a map-wide figure, not a per-cell one — and NABU
+is a `corp` source, not a `crime` one.** The handoff's source table has carried "6–12,
+measured" since round 8, and a round-10 agent was sent to work it at depth for
+`crime → security`. It pulled **nine half-year reports, H1 2022 to H1 2026**, and measured
+**2 in-cell records, a median of 0 per report.** Its explanation holds up: the H1 2026
+report alone describes about 27 cases and 10 to 14 would pass the map's test *somewhere*, so
+6–12 is fair map-wide — but NABU's section headings are energy, defence procurement, the
+Rada, the Supreme Court, customs, agriculture and illicit enrichment, and **its payers are
+overwhelmingly contractors, suppliers and companies.** The table's own "fills which gap"
+column already said `corp → company, gov`. Point a round at NABU for `corp`, never for a
+crime-group cell.
+
+**Two access facts about NABU that belong with it.** `reports.nabu.gov.ua` **answers plain
+curl with HTTP 200**, although `nabu.gov.ua` does 403 the shell — so the reports are free,
+and full-text extraction is a four-line regex. And a trap: **the archive pages are
+contaminated.** Each `/archive/<report>/investigations.../` page injects the **current**
+H1 2026 case blocks into its body, so a naive read of the H2 2022 page returns January 2026
+cases as if they were 2022 content. Four archive pages are almost entirely injected text,
+their own content running 31 to 77 lines. **Dedupe every archive page against the live H1
+2026 page or the years will be wrong.**
+
+**3. State carriers and state ports outside Europe are not the seam the Biman records
+suggested.** Round 9 wrote four Biman Bangladesh Airlines records and one Mombasa case, and
+round 10's brief generalised that into a template across Air India, PIA, Ethiopian, Kenya
+Airways, SriLankan, Thai, and the port authorities of Mombasa, Dar es Salaam, Durban, Lagos,
+Karachi, Chittagong, Colombo and Port Klang. **Nine searches produced two records.** What the
+open record actually holds for those bodies is either (a) a single employee caught with gold
+or drugs and no syndicate named — the shape a reviewer had already ruled too thin when it
+dropped one of the Biman records — or (b) scanning and clearance officials, which is
+`bk: security`, not `company`. The cases that *do* name a network and a body usually name a
+**private** terminal or handling company, which lands on the unresolved contradiction below.
+
+**What that agent found instead, and it is live**: the Italian state-owned-company seam is
+much broader than the health authorities it was pointed at. **State and municipal companies
+generally** — RFI and the Ferrovie group, regional purchasing companies, municipal waste and
+transport companies — gave five of its ten records and are not exhausted. The
+dissolution-decree route it was also given added nothing, because every health-authority
+commissioning is already on the map.
+
+## RULING 15'S PORT CONTRADICTION NOW HAS A TEST CASE
+
+The open owner decision — ruling 15 bars private company-to-company bribery, yet the map
+holds five port records where the operator is private (Antwerp MPET, the Antwerp
+port-company clerk, two Rotterdam ECT, Vlissingen) — was put to three agents this round with
+instructions to set aside anything turning on it rather than write or silently drop it. Two
+cases came back, and one is a clean test:
+
+**Catania, Europea Servizi Terminalistici Srl.** Placed under judicial administration in
+March 2026; affiliates of the Pillera-Puntina clan employed in the port taking 30 to 40 per
+cent of each load; at least 215 kg across three imports; a named father and three sons. The
+agent's assessment: "Facts are strong; only the private status of the terminal/logistics
+operator blocks it. This is the best single test case for the open owner decision."
+
+If the contradiction resolves in favour of concession-holding operators, that record is
+writable and the cell has considerably more in it. If it resolves the other way, the five
+held port records need removing. Either way the decision is now concrete rather than
+abstract.
+
+(The second set-aside, a 2024 Naples forty-arrests case, fails independently: the only
+reachable account names no hospital, no official, no prosecutor and no date, so ruling 11
+bars it regardless.)
+
+## OUTCOMES BEARING ON RECORDS ALREADY ON THE MAP, FOUND WHILE RESEARCHING ROUND 10
+
+Agents kept finding later outcomes for cases the map already holds. BRIEF5 rule 5 makes a
+record that stops at the charge a defect, so these are repairs, not optional extras. None has
+been applied; each needs the page opened and the record edited.
+
+**The one that may make a held record wrong:**
+- **Armando Veneto acquitted on appeal of concorso esterno**, per an Espansione TV headline of
+  1 March 2024. Veneto is the ex-MEP in the map's record "Bellocco clan paid 120,000 euros to
+  a judge to free three 'Ndrangheta men" (Italy, 2009). The agent that found it **did not open
+  the page**, so this is unverified — but it must be checked before that record is trusted.
+- **Diezani Alison-Madueke acquitted of bribery charges by a UK court**, per Premium Times,
+  17 June 2026. The map holds several records in that strand across cells.
+
+**Outcomes to fold in:**
+- **Cardamone** (Bicocca prison commander): conviction became final in December 2025 at **ten
+  years** for corruption and external participation; declared a fugitive January 2026, caught
+  at Librino, Catania. La Sicilia, 16 April 2026, which also reports the system paid officers
+  200–300 euros a parcel.
+- **Addax/NNPC** (Nigeria 2015): Paulinus Okoronkwo found guilty in California on 29 August
+  2025 of money laundering, tax evasion and obstruction; sentencing was set for 1 December.
+- **Operation Chirone / ASP Reggio Calabria**: the July 2024 Palmi judgment gave six
+  convictions and six acquittals, the mafia-association charge was dropped, and the main
+  defendant and two ASP staff were acquitted. This bears on the held record and on the round-9
+  record dropped as its duplicate.
+- **Cesare Pasqua**, ASP Vibo manager, **acquitted 1 July 2026** in Maestrale — bears on the
+  held Vibo records.
+- **Romania**: CNAIR road maintenance director Dascalu Florea convicted, six years, final
+  (Timisoara Court of Appeal 1045/12.12.2024). SPLT Brasov director convicted, three years
+  suspended, final 15 March 2025. The CE Oltenia Rovinari prosecution also charged ELCEN's CET
+  Sud plant director with taking 10,000 euros and names both officials.
+- **Bari/AMTAB** ("codice interno"): Olivieri's nine years and the AMTAB "ufficio di
+  collocamento" are the 2026 outcome of the held Bari case.
+- **Operación Enjambre** (Mexico): La Razón, 21 May 2026, puts it at **147** public servants
+  detained since November 2024, where the record has "more than 85 by July 2026".
+- **Cité Soleil municipal commission**: S/2026/714 para. 43 is a citation upgrade for the held
+  record, which currently rests on AP's coverage.
+
+**A gap found while checking, not yet written:** the 2024 case of forty arrests over contracts
+at Naples health facilities, attributed to the Cimmino-Caiazzo clan of the Vomero. Note the
+caution above — the only reachable account names no hospital, official, prosecutor or date, so
+it needs the custody order or a prosecutors' release before it is writable.
+
+## THE DUPLICATE CHECK: THE FIGURES ARE THE TELL, NOT THE NAMES
+
+Round 9 established that `existing_titles.txt` is insufficient and that the fix is to filter
+`cases.json` by `inf` and `bk` and read the held records' `rank` and `d`. Round 10 built that
+into the briefs as **63 per-cell files** at `/home/claude/work/b5/cells/<inf>_<bk>.txt`, and
+the agents' own reports confirm it worked:
+
+- One agent: the cell file "caught two cases I would otherwise have researched to the end…
+  Both appear in the cell file under titles that share almost no words with the Italian
+  article headlines, so a titles-only check would have missed them."
+- Another: **nine** duplicates caught by the per-cell list, including one it had "researched
+  to the point of a finished draft" (Addax/NNPC) — "the cell list is doing real work; it saved
+  roughly four records' worth of wasted writing in this round alone."
+- A third: "`existing_titles.txt` would not have caught either duplicate I hit; `data/cases.json`
+  would and did. Searching the full JSON for a distinctive proper noun before researching cost
+  nothing and saved two written records."
+
+**But the reviewer still found eight cross-map duplicates that had passed all of that, and one
+of them shows the limit of every name-based method.**
+
+> Record 65, "Six per cent offered to the head of Romania's state auto register", duplicates the
+> held "Romania's ex-transport minister sent to trial over an RAR bribe offer" — same
+> procurement, same six per cent, same director general who reported it. **Title overlap: 0.07.**
+> It was invisible to the titles file *and* to proper-noun matching, because the new record
+> anonymises the payer as "B.D.C." where the held record names Buse. **Caught only on reading
+> the figures.**
+
+So the duplicate check has three layers, in increasing cost and increasing catch rate:
+
+1. `existing_titles.txt` — catches almost nothing in a saturated cell.
+2. The per-cell file, plus a `cases.json` search for distinctive proper nouns — catches most,
+   and is what saved roughly a dozen records' worth of wasted research this round.
+3. **A reviewer reading the figures**: the amount, the percentage, the number of defendants, the
+   date of the operation. Where a source anonymises a party, the figures are all that is left to
+   match on, and they still match.
+
+Layer 3 cannot be automated away, which is the argument for a cold reviewer on every round
+rather than a validator rule. `validate_batch.py`'s own name-overlap check is loose in the other
+direction — it flagged six false positives this round on generic words ("Los Lobos", "Central
+African", "south african") — so it is a prompt to read, not a verdict.
+
+**One structural cause worth fixing in the assignment rather than the review.** Round 9's
+intra-batch duplicates came from overlapping scopes and were eliminated in round 10 by naming the
+overlap in both briefs. Round 10's eight duplicates are different: they are **cross-map**, against
+records the map already held, and seven of the eight come from agents working a cell the map is
+already deep in. The lesson is the same one the cell sizes already imply: the deeper the cell, the
+more of the agent's effort goes into not rewriting what is there, and the lower the quota should be.
+
+## THE SOURCE CHECK, ROUND 10: THE DOMINANT FAULT HAS NOW RISEN THROUGH FIVE CONSECUTIVE MEASUREMENTS
+
+Three checkers read all 165 records of round 10 against their cited sources.
+
+| | round 9 | round 10 |
+|---|---|---|
+| records checked | 261 | 165 |
+| clean | 92 of 159 in wave 1 | **111 of 165** |
+| needing a fix | 67 | **49** |
+| **central claim collapsed** | 5, all in one wave | **3** |
+| faults | 196 | 85 |
+
+### "A claim the cited source does not carry" is not fixable by briefing. Only by checking.
+
+This is now measured five times, and it has risen every time:
+
+| wave | share of all faults |
+|---|---|
+| round 9, wave 1 (writers not warned) | 39% |
+| round 9, wave 2 (writers warned, with the diagnosis) | 42% |
+| round 9, wave 3 (warned again) | 48% |
+| round 10, part A (warned, third round) | **52%** |
+| round 10, part B | 42% |
+
+Round 10's writers had the diagnosis, the test and worked examples in their briefs. It made no
+difference. The faults are the same shape every time — a small, true-sounding detail the writer
+knew from general knowledge or a neighbouring article, written as though the cited page said it:
+
+> "two **state-owned munitions** factories" where the release names only the company · "ran
+> **slot machines** in Milan bars" where the paper says bars and the gambling business ·
+> "licenses and polices extraction from **riverbeds**" where the release gives only inspection
+> powers · "climbing down the **perimeter wall**" where the court report says an internal
+> courtyard · "the organisation that began in a Venezuelan prison" · "that kept their weapons
+> when FARC demobilised" · "both operate along the Colombia–Ecuador border" · "a
+> **raspberry-processing** company" where neither page says what the firm does
+
+**The conclusion to act on: a source checker is a permanent part of a round, not overhead to be
+optimised away.** Five attempts to prevent the fault at the writing stage have failed; every
+attempt to catch it at the checking stage has worked. Round 10's checkers also caught two faults
+in each other's predecessors' work, so the checking is self-correcting in a way the briefing is not.
+
+**A second, cheaper lesson: arrest dates taken from the date of a court order.** Three records this
+round. The order's date is not the arrest's date, and the two are usually weeks apart.
+
+### The invented denial is still gone, and its inverted form is the one to watch
+
+Zero invented denials in round 10's 165 records, after zero in round 9's 261. Six consecutive
+waves clean. What does appear, four times now, is the **inverted** form: a record omitting a
+response the source records — including, twice, a denial the source records **and rejects**. A
+denial without the body's rejection of it misrepresents the source as badly as inventing one.
+
+### Citation drift is a linking fault, and it is worth a validator rule
+
+Ten of round 10 part B's 31 faults, and the checker's own summary is the point: "facts true every
+time, link wrong". A record drafted against two or three sources with only one in `url`, and the
+load-bearing facts on an unlinked page. **The rule to enforce: `url` must be the page carrying the
+record's central claim, and every fact from another source must be checkable at an address in
+`cite`.** `validate_batch.py` could flag a record whose `cite` names more than one publication
+while `url` holds a single link.
+
+For UN documents the same fault takes a different form — the annex number one or two off from the
+one holding the facts. Round 10's UN records were otherwise exact: annex titles and numbers
+matched across S/2023/833 annex 85, S/2024/731 annexes 174, 177 and 192, S/2021/229 annex 12
+appendices A and C, S/2021/79 annexes 26 and 27 and S/2020/326 annex 26.
+
+### The hedge check now works
+
+Round 9: nearly every hedge fault was a missing "at least" or "allegedly". Round 10's briefs told
+writers to grep the cited paragraph for those words. **Result: one stripped hedge in 87 records in
+part A, four in 69 in part B** — against ten in 159 in round 9's first wave. One checker listed
+the hedges correctly carried: "at least", "about", "allegedly", "no less than", "may number as
+many as", "almeno", "purportedly", "said to be". **This is the one failure mode that briefing did
+fix**, and the difference from the dominant mode is that the hedge check is mechanical and the
+plausibility check is not.
+
+## WHAT THE CELLS ARE WORTH, SECOND MEASUREMENT
+
+Round 10 set every quota from round 9's measurements rather than from hope, and the agents hit
+or missed them in a pattern worth recording. Delivered against quota:
+
+| cell and scope | quota | written | note |
+|---|---|---|---|
+| `crime`/`legis`, Brazil then Italy | 20 | **20** | hit, but only by pivoting continent — see below |
+| `crime`/`security`, Italy | 18 | **19** | over quota, in genuinely new geography |
+| `crime`/`security`, Latin America | 20 | **20** | hit, 17 of 20 from free REST queries |
+| `crime`/`security`, Ukraine and eastern Europe | 20 | 19 | three more were a field short each |
+| `crime`/`court`, worldwide | 14 | **14** | hit, at the quota set from round 9's shortfall |
+| `corp`/`cabinet` + `corp`/`legis` | 12 | **12** | hit |
+| `corp`/`company` | 20 | 14 | 12 of 14 Romania |
+| `movement`/`security`, Asia and Middle East | 20 | 11 | the UN series is worked out |
+| `movement`/`company` | 18 | 11 | six more blocked by the `finance` conflict |
+| `crime`/`company`, state carriers and Italian health | 20 | 10 | the state-carrier half failed, see corrections |
+| `corp`/`cabinet`, Africa and south Asia | 16 | 9 | reachable adjudications ran out, not the shape |
+| `movement`/`cabinet` + `crime`/`cabinet` + lender | 13 | 6 | `crime`/`cabinet` confirmed exhausted |
+
+**Where a quota was set from measurement, it was hit.** `crime`/`court` was cut to 14 after three
+agents wrote 20 against 46 in round 9, and came in at exactly 14. `crime`/`cabinet` was cut to 4
+and came in at 1, with its agent confirming "the cell reads as exhausted, not under-researched —
+the four most promising leads in it were all already held."
+
+**Where a quota rested on a seam that had not been measured, it missed.** The three biggest
+shortfalls all trace to a brief's assumption rather than to an agent: the state-carrier template,
+the UN series for Asian movements, and the `bk: finance` conflict blocking six bank takeovers.
+
+### One hit quota that should be read as a miss
+
+The `crime`/`legis` agent wrote 20 of 20 — but **16 of the 20 are Italy**, because the Brazilian
+seam it was sent to continue was largely worked out and it opened Italian mafia-political
+vote-exchange prosecutions and art. 143 dissolutions instead. Its own warning: "country is not in
+the shape metric, but if the next round wants the thin regions filled, it should not be given this
+cell again without a different continent."
+
+That is a real gap in how rounds are planned. **The shape metric scores `inf` and `bk` and is
+blind to country**, so an agent can hit its cell perfectly while leaving the coverage gaps in the
+"Regions not researched at all" list untouched. Round 10's 165 records are heavily Italy (about 60)
+and Romania (12). If geographic spread matters to the owner, it needs its own instruction in the
+brief, because the metric will never ask for it.
+
+### Italian art. 416-ter prosecutions: a new rich seam, and why
+
+The same agent found why Italy keeps producing: **art. 416-ter prosecutions state what the clan
+was given** — jobs, permits, concessions, works, cash — and the ministerial dissolution reports
+itemise appointments and awards. Those documents satisfy limb 3 by construction, which is the limb
+that kills most narco-politics reporting elsewhere. Query the Italian regional outlets' REST APIs
+with `search=voto+di+scambio+politico+mafioso`.
+
+The matching caution: a bare dissolution with no clan and no individual decision named is the
+thinnest shape the map accepts, and one such record was flagged by the reviewer as borderline.
