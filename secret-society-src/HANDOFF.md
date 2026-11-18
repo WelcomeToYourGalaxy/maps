@@ -6,10 +6,10 @@ Repo: WelcomeToYourGalaxy/maps. Build output: `infiltration.html` (repo root). S
 ## What the map is
 A MapLibre globe of documented cases where an outside party (foreign state or spy service, organised crime, company/industry, bank, lodge/secret society, religious movement, elite network, political or armed movement, lender) got its people, money or control INSIDE a government body, an international body or a company, and decisions there served it.
 
-Current size: 2,981 cases in 183 jurisdictions, 510 organisations, 48 channels, 31 patterns.
+Current size: 3,102 cases in 183 jurisdictions, 510 organisations, 48 channels, 31 patterns.
 By who infiltrates: corp 1267, crime 704, state 395, movement 209, lodge 76, money 70, faith 60, elite 29, lender 10.
 By relevance: legacy 1273, now 1084, past 463. Countries with no qualifying case, shown as estimates: 15.
-Shape deviation 28.4 points against the goal of 5.0. Run `python3 shape.py`.
+Shape deviation 25.9 points against the goal of 5.0. Run `python3 shape.py`.
 (Figures as of round 10, 17 November 2026. The dated handoffs in the project carry what changed.)
 
 ## THE STANDING GOAL (set by the owner, 16 November 2026) — read this first
@@ -93,6 +93,7 @@ not move together, and four rounds are enough to show it.
 | **round 9, 17 Nov (composition-locked)** | **+210** | **38.6** | **closed 14.3** |
 | **round 10, 17 Nov (corp re-entered)** | **+146** | **32.2** | **closed 6.4** |
 | **round 11, 17 Nov (lead bank worked first)** | **+161** | **28.4** | **closed 3.8** |
+| **round 12, 17 Nov (quotas from measured availability)** | **+123** | **25.9** | **closed 2.5** |
 
 Round 8 is the one to keep in view: 195 verified, sourced, correctly classified cases
 moved the map *away* from its goal. Round 7 closed 5.6 points on 236 cases (24
@@ -3490,3 +3491,645 @@ cap. `build.py` renders `undone` as a visible "What happened next:" block, so no
 
 Cost for 17 applied corrections: 27 curls and 6 searches, nothing defeated. One mechanical note:
 `noviny.sk` 404s on a bare numeric path and needs the full slug.
+# Round 12 findings
+
+## THE SWEEP'S FIX PROPOSALS HAVE THEIR OWN ERROR RATE, AND IT IS HIGH
+
+FIX-1 applied 16 of the sweep's corrections and found **5 of the 16 proposed fixes wrong — 31 per
+cent.** The brief told it to verify rather than paste, because round 10 caught two bad checker
+suggestions. That instruction has now paid for itself five times in one batch.
+
+**This changes how the sweep's own numbers should be read.** The 47 content defects are an
+**upper bound**, not a count: some were not defects, and some corrections would have introduced a
+new fault. The sweep remains worth having — the defects it found are real and several were
+serious — but "19 per cent of records misdescribe their source" should be stated as "up to 19 per
+cent", pending the applying pass.
+
+### The catch that matters most: a fabrication the fix would have preserved
+
+**idx 845, Kurulkar.** The checker said keep the sentence and re-cite it to Wikipedia's "DRDO
+espionage case", which reads "He has denied the charges, claiming that he was honey-trapped by the
+Pakistani operative." FIX-1 followed Wikipedia's **own footnote** for that sentence — The Hindu, 16
+May 2023 — and opened it. **No denial by Kurulkar anywhere on it, and the honeytrap description is
+the ATS's.** So the Wikipedia sentence is itself unsourced, and citing it would have breached
+BRIEF5 rule 9 while leaving the original fabrication in place behind a respectable-looking
+citation.
+
+What went in instead, from PTI copy on The Hitavada, 16 April 2026: investigators, not Kurulkar,
+describe the contact as a honey trap, and at his bail hearing he argued the information was already
+in the public domain.
+
+**The lesson is a method, not a record: follow a secondary source's own footnote to the primary.**
+Four records in this sweep had a denial "found" in a related-link headline; this one had a denial
+found in an encyclopedia sentence with nothing behind it.
+
+### A record that was not defective at all
+
+**idx 350, Paladin.** The checker marked it overstated because the former CEO said he "was not
+aware of" any improper payment. **Two paragraphs below on the same page he says: "We paid nothing
+to any official and got nothing from them."** That is a flat denial. The record was right;
+narrowing it would have weakened a true sentence. FIX-1 kept the denial and made it specific.
+
+### A correction correctly declined
+
+**idx 253, Novartis.** The checker wanted "the Greek Judicial Council nonetheless ruled that the
+scandal was real" added as established fact. On the cited page that rests on a single footnote to a
+**capital.gr headline quoting a Syriza MP** — a politician's characterisation of a decision, not a
+report of one. capital.gr returns HTTP 500 and no other outlet carrying the ruling was found, so it
+was left out. **If that ruling can be sourced it is a real counterweight to the ministers' denials
+and belongs in the record** — worth the owner's attention.
+
+### A fix right on the facts but resting on the wrong sentence
+
+**idx 1377, Lesotho.** The proposed fix asserted Kabi "publicly pledged his support to the Terene
+faction" while quoting a Sowetan line that says only that he would see the famo gangs "taken care
+of in all spheres of their lives". FIX-1 opened the page: the Terene detail **is** there, in its
+own words — "has thrown his weight behind the Terene faction". The claim stands, but only because
+it was checked. It also corrected the record's cite from City Press, 18 September 2022 to Sowetan,
+30 August 2022, and dated the twelve-group ban to June 2024 from the TRC report.
+
+## THE ROUND-9 DAMAGE DID NOT RECUR
+
+Four of the proposed fixes (583, 1001, 1349, 1377) **ended with a note addressed to the owner** —
+"the source read does not record how they answered the charges", "no denial by the party appears in
+the cited sources". FIX-1 wrote none of them into the records. That is precisely the round-9 failure
+the brief describes, where a mechanical pass left checkers' notes in descriptions as visible prose,
+and it was avoided by the reader-not-script rule.
+
+## TWO ITEMS NEEDING AN OWNER DECISION
+
+- **idx 583, Rodriguez: `status: "acquitted"` looks wrong.** The cited page says only that in 2012
+  the sentence was revoked amid accusations of prosecutor misconduct — not that he was acquitted.
+  `d` now says an appeals court set the sentence aside, and `inside` was aligned so the two do not
+  contradict, but the status field was left alone. **BRIEF5 has an `annulled` status that may fit
+  better.** A sentence set aside for prosecutorial misconduct is not an acquittal, and the map
+  currently says it is.
+- **Three records are now over the 130-word cap on purpose**: idx 165 at 136 (the extra is a
+  denial plus the paper's rebuttal of it), 1377 at 132, and 1117 at 131 — though 1117 is now
+  *shorter* than as published, because the judges' conviction moved to `undone`. idx 1570 came
+  down from 165 to 121. The standing rule is that accuracy beats the cap; these are candidates for
+  the over-cap-on-purpose list alongside the existing six.
+
+## A DEAD CITATION REPAIRED, AND A MECHANICAL TRAP WORTH KNOWING
+
+**idx 1260's stored url 404s.** Repointed to the live AP reprint at ktvz.com, with `cite` set to
+"AP, 24 July 2023 (via KTVZ); Kurir, 30 January 2024". This is the fourth confirmation that **AP
+wire copy survives on local-TV sites** when the original 404s.
+
+A near-miss worth recording for anyone parsing HTML: FIX-1's first pass at the Wikipedia page
+appeared to show no denial because its own ref-stripping script **swallowed the sentence on a
+self-closing `<ref name="Hindu"/>` tag.** It caught this by verifying against the page's footnoted
+source rather than trusting its own extraction. A text-extraction bug can manufacture a "no denial
+in source" finding.
+
+New hosts that refused: `malaymail.com` (403 — would have corroborated the arrest of a Wilmar
+employee two days after the company's statement; the claim was left out rather than asserted),
+`capital.gr` (500), `freepressjournal.in` REST API (403, though its article pages load fine),
+`theedgemalaysia.com/node/751428` (404).
+
+Cost for 16 applied corrections: about 33 curls and 3 searches.
+
+## THE SECOND FIX BATCH CONFIRMS THE RATE, AND NAMES THE SYSTEMATIC ERROR IN THE FIXES
+
+FIX-3 found **5 of 15 proposed fixes wrong — 33 per cent**, against FIX-1's 31. Two independent
+measurements, the same rate.
+
+And the errors have one shape. **The sweep found real citation faults and then proposed deletion
+where the right remedy was re-citation.** In four of FIX-3's five catches the denial was true,
+published and findable — the checker had only established that the *stored* page did not carry it:
+
+- **idx 89, Bystron** — the fix said drop the denial for want of a source. AFP via Courthouse
+  News, 16 May 2024, carries Munich prosecutors confirming a preliminary investigation against **a
+  member of the German Bundestag** on suspicion of bribery of elected officials and money
+  laundering, the search of his Bundestag offices, and his own words: he "had not accepted any
+  money to advocate pro-Russian positions." The fix also called him an MEP; he was a Bundestag MP
+  at the time and became an MEP only in June 2024.
+- **idx 1076, Mexican banks** — the fix would have deleted Mexico's finance ministry statement as
+  unsourced. El CEO, 25 June 2025, has the SHCP saying it asked the US Treasury for evidence its
+  financial intelligence unit or banking regulator could verify, and received none.
+- **idx 1240, Scorpene** — the fix implied the Thales, DCNI and Baginda statements should go. All
+  three are carried by **the record's own later cites**: Thales "strongly contests these
+  allegations" (AFP via Free Malaysia Today), a Thales representative "categorically denied", a
+  DCNI spokesperson "strongly denies any wrongdoing in connection with the Malaysian contract",
+  and Baginda "categorically denied all allegations of wrongdoing" (The Vibes citing Bloomberg).
+- **idx 1474, Moagi** — the fix proposed an unverifiable claim about his lawyer. Mmegi's report of
+  the acquittal quotes him directly: he has always maintained his innocence on every matter
+  levelled against him.
+
+**Deleting a true published fact is a worse error than leaving a miscited one**, and the fix
+proposals leaned that way. This is the same failure mode as the Cite Soleil patch and the
+Cardamone removal: a repair pass that only reads one page concludes a fact is unsupported when it
+is merely cited to the wrong page.
+
+So the right remedy for most of the sweep's findings is **re-citation, not excision** — which is
+cheaper, safer and leaves the map saying more rather than less.
+
+Also corrected: **idx 648, Očistec** — the record hedged "five or six counts"; Noviny.sk (TASR), 21
+October 2026, gives six, broken down (two against Bödör, one against Gašpar, four against Krajmer,
+one covering two men). The fix had left both the hedge and the prosecutor's own waiver out. Added
+from the 26 October report: the defendants waived their right to complain and asked the court to
+hear the time-barred counts, on which it may rule on guilt but impose no sentence.
+
+## BOTH CROSS-AGENT CONFLICTS RESOLVED, AND IN BOTH CASES THE REMOVAL WOULD HAVE BEEN WRONG
+
+**(a) Cardamone: Agrigento stays.** The LiveSicilia page of 18 April 2026 says it in its first
+body line — the 70-year-old Giuliano Gerardo Cardamone, former head of the prison police at Catania
+Bicocca, definitively sentenced to ten years for corruption and external mafia complicity, **"non è
+al sicuro nell'istituto penitenziario di Agrigento dove è detenuto per scontare la pena"**, with
+lawyer Giuseppe Lipera's application to Nordio, Piantedosi and the DAP for transfer to the military
+prison at Santa Maria Capua Vetere.
+
+The first agent was right. **The second agent's removal would have deleted a sourced fact** — and
+its reasoning was also correct on its own evidence, because the La Sicilia reprint and the 3 May
+LiveSicilia piece genuinely do not carry it. Two careful agents, two correct readings of different
+pages, one wrong conclusion. The flight, arrest, Agrigento detention and transfer request now sit
+in `undone`; that record's `d` came down from 156 words to 131.
+
+**(b) Cite Soleil: both sources cited, the denial split by source.** Verified on both sides.
+S/2026/714 para. 51: "The Panel contacted Mr. Antoine, who denied his connections to gangs, in an
+email." Para. 59: "The Panel wrote to Mr. Cassy ... but had received no response at the time of
+drafting." And AP via WLRN, 8 October 2026: Cassy told the Associated Press by phone "I am a
+pacifist", and called on the experts to retract his name, saying the report was "incorrect and
+unfounded".
+
+So the citation upgrade was taken — url now the UN PDF, paras. 37, 43, 48-51, 52-59 and 62 in
+`cite` — **and the AP/WLRN cite kept with the denial attached to it.** Applied as the patch was
+written, the upgrade would have manufactured a false denial.
+
+Two further corrections fell out of it: the record called the document "94-page" and "released in
+October 2026". **It is 91 pages, dated 8 September 2026 and reissued 12 October.** The 94 was AP's
+count, repeated as if it were the document's.
+
+## THE CITATION-GAP CLASS, NOW VISIBLE FROM THE OTHER SIDE
+
+FIX-3 reports that in its batch of 15, the stored urls for **idx 89 (Moscow Times, 27 March 2024),
+idx 273 (the Wikipedia Thales Group page) and idx 1342 (El Litoral) do not carry the denials those
+records attribute to them**, and idx 1375's stored Lesotho Tribune page carries neither the forgery
+claim nor a response. Four of fifteen, found while doing something else.
+
+That is the same rate the sweep measured from the other direction, and it is now confirmed by an
+agent that had the sources open. **It wants a dedicated re-citation pass, not another sweep** — the
+facts are mostly fine; the links are wrong.
+
+## OVER THE CAP, DELIBERATELY
+
+- **idx 302 (Cite Soleil): 159 words**, up from 124. Carrying both halves of a two-person denial
+  with the source each belongs to does not fit, and the alternative was dropping the
+  Latortue/Victor Artibonite finding.
+- **idx 337 (Rwanda/M23): 148 words**, unchanged — the Kagame correction went into `undone`.
+- **idx 1152 (TÜGVA): 132**, up from 130, because "said the papers were forged" became "officials
+  denied that the documents were authentic".
+
+Four corrections sit in `undone` rather than `d` (337, 648, 1240, 1474) because that is where the
+published sentence already was, and moving them into `d` would have pushed those records far over
+cap. `build.py` renders `undone` as a visible "What happened next:" block, so nothing is hidden.
+
+Cost for 17 applied corrections: 27 curls and 6 searches, nothing defeated. One mechanical note:
+`noviny.sk` 404s on a bare numeric path and needs the full slug.
+
+## `crime -> security` IS NOT EXHAUSTED, AND ROUND 11'S LIMIT FINDING NEEDS RESTATING
+
+R12-B delivered **26 against a quota of 25** in the cell round 11 reported as at its documented
+limit — and its correction is precise:
+
+> Contrary to the prompt's framing, this cell is **not** out of material. What is exhausted is the
+> general-interest English-language organised-crime literature.
+
+It stopped at 26 because the quota was met, not because the sources dried up, and estimates
+another 15 to 20 available from two veins:
+- **The Italian regional WordPress REST APIs: 11 searches across 4 hosts, ~60 whole articles
+  returned, 13 records — 1.2 records per search**, the best rate anyone has measured in any cell.
+  `stylo24.it` and `antennasud.com` densest. Query the conduct in Italian.
+- **The UN Libya annexes: 4 records from two annexes** (21, 24 and 25 of the Libya series).
+  **Libya had no record at all in this cell before this round.**
+
+So the round-11 shortfall was real and its diagnosis was half right. **A cell is exhausted only
+with respect to a literature, and the measurement should name which one.** The same correction
+probably applies to `movement → company` and `crime → cabinet`, both of which were written off on
+one round's evidence.
+
+## A BUG IN MY OWN TOOLING, CAUGHT MID-ROUND
+
+**The per-cell duplicate files I handed round 12's agents were generated before round 11's 161
+records were merged.** So `crime_security.txt` showed 321 records when the map held 343, and the
+missing 22 were round 11's own additions. An agent checking only its cell file would re-add a case
+the map took last round.
+
+R12-B caught it because the lead-file flags — which I generated *after* the merge — named held
+records that were absent from the cell file it had been given. **Six of its leads were duplicates
+of round-11 records invisible to the stale cell file.** Its note: "The flags saved me six fetches;
+the cell file alone would not have."
+
+Regenerated at 2,981 records and the four still-running agents were told mid-run. **The rule for
+future rounds: regenerate the reference files immediately after every merge, not before the next
+round's launch.**
+
+## MY DUPLICATE FLAGS WERE MEASURED, AND THEY FAIL IN ONE DIRECTION
+
+R12-G audited them properly:
+
+> The flags never produced a false alarm I disproved — no `high` turned out to be a real lead —
+> but they missed six duplicates between them.
+
+In its `corp_court` file **all four `review` flags were in fact duplicates** and should have been
+`high` or `internal`. Measured contamination in its two cells was **8 of 17 leads — 47 per cent**,
+worse than the 41 per cent I measured bank-wide. R12-B likewise found two duplicates flagged
+`none` and two internal re-files with no `internal` flag.
+
+**Every miss was catchable on a shared figure** — Rp150m, S$47,000, S/7,497,583 — and none on a
+title. So the matcher has been rebuilt: **a shared distinctive figure (five digits or more) in the
+same country now flags `high` on its own**, where before it also required a shared proper noun.
+Distribution is now 256 `none`, 126 `review`, 38 `high`, 6 `internal`, and nothing is removed.
+
+One attempt at this made it worse before it made it better. Expanding scaled figures ("5 million"
+→ 5000000 *and* 5) matched 84 to 84,000,000 and treated 2025 as a figure, producing 38 spurious
+upgrades. Reverted to literal figures of five digits or more, which produces hits that hold up:
+the Ghana OSP 35,000, ASL Bari's 250,000, the Chone Killers' $190,000 Durán contract, Romania's
+81,000-euro exam ring, Aqua Force's 11,000 at Navodari and South Sudan's $1,050,000 are all
+genuinely held records.
+
+## A PROCESS NOTE ON MY OWN HANDLING, WORTH RECORDING AS A NEAR-MISS
+
+I ran `git checkout -- data/cases.json` mid-session while rebuilding the flagger. That would have
+destroyed the 49 applied corrections had they not already been committed. They were, so the
+checkout restored them from `dc9f01b` and all 49 markers verified intact — but the safety came
+from the commit, not from the command. **Do not run `git checkout` on a data file in a session
+that holds uncommitted work.**
+
+## `justice.gov`'s API CONFIRMED AT THE SAME RATE IN DIFFERENT CELLS
+
+R12-G measured **0.47 records per title query** in `corp → legis` and `corp → court`, against
+R11-B's 0.55 in `crime → company`. 15 queries, 14 full bodies read out of the same JSON with no
+second fetch, 7 records. Productive title families: `bribing a state` (4 records from one query —
+real-estate developers, coal executives, healthcare executives), `Superior Court Judge`,
+`bribe a judge`.
+
+**Measured dead in these cells, with the reason:** `alderman` and `councilman` (35 and 40 titles,
+mostly child pornography, drugs and tax evasion; the bribery ones are **FBI stings with a
+fictitious official**, which fails limb 2, or a payer who is another public official, which fails
+limb 1); `state court judge` (threats and nominations); `Justice of the Peace` (theft, not
+bribery); `judicial bribery` (one title).
+
+## THE SHAPE OF THE `corp -> court` SHORTFALL, WHICH IS A SEARCH STRATEGY
+
+R12-G came one short of 8 and explained why in a way that is directly actionable:
+
+> Judge-bribery reporting is plentiful, but the payer is overwhelmingly a private litigant, a
+> defence lawyer or a crime group, not a company or an industry... The cases that do land in this
+> cell are the ones where a *company* was the litigant: a tax appellant, an agribusiness in a land
+> suit, a company under tax prosecution, a plaintiffs' firm with a case on the docket. **That is
+> the search to run next time — the company's side of the docket, not the judge.** Tax tribunals
+> and land registries are where it concentrates.
+
+Also worth keeping: ruling 3's "buying the outcome of your own matter" admits the structure but
+**does not by itself make the payer `corp`** — two hospital officials paying for their own
+acquittal are not a company.
+
+## A NEGATIVE MEASUREMENT THAT CLOSES A SOURCE I RECOMMENDED
+
+I put the Spanish judiciary press pages in the brief as "measured high-quality and untried at
+scale, worth a dedicated run", on round 11's 2-records-from-3-items. R12-B gave it that run:
+
+**the CGPJ Noticias Judiciales listing caps at 148 unique items — roughly the last three weeks.**
+It crawled 120 pages with `startAt=`/`pag01=` and every page past the cap repeats. 57 of the 148
+slugs matched police, prison or bribery keywords; 2 could be in-cell; **0 in-cell records.**
+
+The pages themselves are as good as round 11 found — full findings of fact, named sentences, named
+decisions — **but there is no archive depth, so this family cannot be a cell's main vein** unless
+someone gets into the CENDOJ search behind `/search/openDocument/`, which returns 403.
+
+## MECHANICAL NOTES
+
+- **`corrieredellacalabria.it` and `antennasud.com` need the `www.` host.** The bare domain fails
+  TLS certificate verification on the first and returns non-JSON on the second. `stylo24.it` and
+  `anteprima24.it` answer bare.
+- **WebFetch is not reliably lost.** R12-G used it twice with no refusal and no permission prompt,
+  on `hacc-decided.ti-ukraine.org` where curl gets a Cloudflare interstitial. So the rule is
+  narrower than the brief states: WebFetch closes for a run only once a permission request goes
+  unanswered. It is worth one attempt on a Cloudflare-blocked host.
+- **`hacc-decided.ti-ukraine.org`** — Transparency International Ukraine's High Anti-Corruption
+  Court case database: structured, in English, naming courts, amounts, articles and verdict dates.
+  2 cases opened, 0 records, but worth a dedicated run by an agent in a Ukraine-bearing cell.
+- **Kenya Law's `search/api/documents/` is open and fast but OR-weighted** — `bribe+magistrate+
+  convicted` returns 10,000 appeal judgments complaining about trial magistrates. It needs a
+  distinctive phrase, not a concept.
+- Agents are writing scratch files into the repo despite rule 11: `secret-society-src/dna12660.html`,
+  `secret-society-src/doj_visa.json` and `ng1.html` at the root. Committing explicit paths rather
+  than `git add -A` is now necessary, and the rule needs restating in the brief.
+
+## FIGURE CONFLICTS AND WEAK RECORDS FLAGGED RATHER THAN BURIED
+
+- **A held record says 42 guards; Meganoticias says 66 detained of whom 44 were Gendarmería
+  officials** in Chile's Operación Apocalipsis at Santiago 1. Needs a hand decision.
+- An Augusta prison officer's name is spelled "Michele Pidone" in one sentence of the source and
+  "Michele Pedone" in the next, so R12-B **left the name out** and wrote him by post instead.
+- A Palermo headline quotes "Mi dava ventimila euro" but the body does not carry the figure, so
+  the record says "money and four motorcycles", which the body does carry.
+- R12-B's weakest record, named deliberately: a Foggia municipal police officer dealing heroin in
+  a clan-linked network. Limb 2 is met but **no decision inside the municipal police is shown**,
+  so limb 3 rests on the convention set by a held Bari municipal police record. On a stricter
+  reading, drop it and the cell is at 25.
+- R12-G's weakest: an Albanian record whose `y` is 2026, the year SPAK closed the investigation,
+  **because neither source dates the conduct** — the one to drop if ruling 16 is applied strictly.
+
+## TWO ROUND-11 RECORDS RE-ADDED CASES ROUND 9 HAD REMOVED. BOTH ARE NOW OFF THE MAP.
+
+R12-C reported that the map "both keeps and rejects the same shape in the same country" and asked
+for an owner ruling. **Checked, and the framing was wrong in a way that makes the answer clear
+rather than contested.** The `inside` sentences separate the records cleanly:
+
+| idx | the sentence | insider? |
+|---|---|---|
+| 2494 | relatives, associates and companies **filled posts** and won contracts | yes |
+| 2495 | asked Durán's **officials** for contracts and council jobs for backing a mayoral run | decision sought |
+| 2603 | a man prosecutors charge with **steering public contracting** for the group | steering alleged |
+| 2888 | a gang **had officials inside** a city government and its agencies | yes |
+| 2889 | a trafficker **put his own people inside** a city transit authority | yes |
+| **2890** | a gang member **chaired the construction company that held seven contracts** | **none** |
+| **2891** | a man later named a gang leader **held the road-works contracts** | **none** |
+
+The five the map keeps each name an insider or a steered decision. **2890 and 2891 name neither
+— and they are the same cases, same country, same years, as two records round 9 deliberately
+removed**, whose stated reason was exactly that: "nothing of the gang is shown inside the
+councils: a firm headed by a man linked to the group simply held contracts, with no influence over
+the award alleged."
+
+So this was never a classification question. **Round 11 re-added two records round 9 had removed
+nine days earlier**, and both are now back in `removed_records.json` with that history recorded.
+Map at 2,979; deviation unchanged at 28.4.
+
+**The cause is my own tooling, in two layers.** `removed_titles.txt` was generated without
+`drop_reason`, so R11-D saw bare titles; and the titles differ enough ("Fatales member's firm held
+seven Lago Agrio public works contracts" against "Los Fatales figure's company held seven Lago
+Agrio local contracts") that an exact-title check passes. R11-D did flag the shape honestly,
+saying that if the pattern fails limb 2 "these two and the held Buena Fe record should go
+together" — it simply could not see that the map had already decided, because the reason was
+stripped out before it got there.
+
+**It also corrects something I told the owner.** I reported the stake as "three records on the
+same footing — 2603 plus R11-D's two", having checked only titles and `int` values. Reading the
+`inside` sentences shows 2603 alleges steering and is distinguishable. The stake was two records
+and they were a straightforward re-add.
+
+## A SOURCE I VERIFIED AND PUT IN THE BRIEF IS A TRAP
+
+R12-A reports `balkaninsight.com`'s REST API **accepts `search=` and silently ignores it**. I had
+"verified" it earlier, found 24 hits, and wrote it into the round-12 brief as reachable and
+productive — contradicting the blocked-host list, which I also presented as a correction.
+
+Tested properly this time, with a control:
+
+| query | hits | first result |
+|---|---|---|
+| `bribery%20minister` | 24 | Kosovo's Thaci Found Guilty of Trying to Obstruct Justice |
+| `zzzzqqqq%20nonsense` | 24 | Democracy Digest: Polish Man Charged With Plotting to Kill PM |
+
+**Identical hit count for a nonsense query.** It returns recent posts in date order regardless of
+terms — the same failure mode as `theprint.in`, `citizen.co.za`, `myjoyonline.com` and
+`cnnbrasil.com.br`, which the brief already warns about.
+
+**My check was insufficient in a specific, repeatable way: I confirmed the endpoint returned
+results and not that the results matched the query.** The brief tells agents to "check your hits
+actually contain your terms" and I did not apply it to my own verification. Up to three agents may
+have spent queries on it.
+
+**The rule for any new REST endpoint: run a nonsense control query first.** If it returns the same
+count, the host is ignoring `search=`.
+
+## `crime -> company`: THE DOJ ENGINE IS EXHAUSTED, AND THE REPLACEMENT IS BETTER
+
+R12-A wrote 14 of 30 and stopped rather than pad. **`justice.gov`'s title API measured 0.04
+records per query against the brief's 0.55** — 24 queries, 1 record. The airport and
+baggage-insider family that gave round 11 seven records is mined out, and the 22 other families
+tried (dockworker, longshoreman, stevedore, customs broker, freight, cargo, ramp agent, money
+services business, armored car, pharmacy, pharmaceutical distributor, rail, security guard, title
+company, trucking and more) return almost only two barred shapes: **an institution's own staff
+defrauding it**, which BRIEF11 drops, and **private commercial bribery**, which ruling 15 excludes.
+
+A mechanical finding worth keeping: **`title=` is a literal substring filter, so conduct phrases
+return zero titles.** "bribed an employee", "corrupt insider" and "recruited an employee" all gave
+nothing. Only job titles work.
+
+**What replaced it is better and is not exhausted: the Italian prevention-measure decree** —
+`amministrazione giudiziaria` or `controllo giudiziario` of a *named* company. Those decrees name
+the body, the clan, the mechanism and the date, which is precisely what rulings 11 and 12 require.
+**Eight of R12-A's 14 came from that vein.**
+
+Source rates measured in this cell: **`www.corrieredellacalabria.it` at ~0.8 records per query**
+(11 queries, 9 records) — and R12-C independently measured the same host at **0.75 in
+`crime → legis` and `crime → court`**, where it produced 6 of 9 records and "carries court material
+no Campanian or Puglian outlet does". Two agents, three cells, the same host at the top.
+`livesicilia.it` 2 from 10; `insightcrime.org` 1 from 5; `internapoli.it` 1 from 4; `stylo24.it`
+and `anteprima24.it` 0, though stylo24 yielded two outcome updates.
+
+## THREE MORE ACQUITTALS AND A CONVICTION TALLY, FOUND IN DISCOVERY
+
+R12-C rejected three candidates that read as clean records and are not:
+- **Ischia judge Capuano — definitively acquitted** "perché il fatto non sussiste", Rome appeal
+  court, 9 January 2026, overturning a ten-year first-instance sentence, with three co-defendants.
+- **Melito di Napoli's mayor and council president — acquitted** by the Naples gup on 25 July
+  2024, while 13 others were convicted up to ten years.
+- **Capua's Antropoli** — the GIP called him "il referente politico-istituzionale del clan dei
+  casalesi", and he was **later acquitted of the camorra charge**.
+
+And R12-A filed three outcome updates for held records, each a rule-3 defect:
+- the Gioia Tauro forged-seals record is the "Tre Croci" proceeding: **12 convictions totalling
+  143 years and one acquittal** at Palmi;
+- the Caserta hospital record names a director general **fully acquitted** on appeal in February
+  2019, with Cassation confirming other sentences in September 2020;
+- the Catanzaro ambulances record's abbreviated-rite judgment came on 29 September 2021.
+
+## WHERE THE REMOVED LIST IS THE OPERATIVE TEST, NOT THE LEAD FILE
+
+R12-C's most useful method finding, and it inverts the brief's priority:
+
+> `removed_records.json` has about 75 cases in `inf: crime` with `bk: legis` or `court`, and
+> reading those drop reasons **first** is worth more in these two cells than any lead file, because
+> they define the line that most new candidates fail.
+
+It withdrew four records against the removed list **after** doing the work, and all four came from
+discovery rather than the bank — so the `REMOVED` flags on lead files, which I added this round,
+would not have saved any of it. The flags help with banked leads; **the drop reasons are a
+specification for what not to write at all.**
+
+## THE FLAG AUDIT, NOW FROM FOUR AGENTS
+
+- **`high`: right every time**, across four independent audits. Safe to skip the fetch.
+- **`review`: right more often than the flag claims.** R12-C found every `review` lead in both its
+  cells was a genuine duplicate; R12-A found all seven of its were duplicates or out of cell, two
+  of a different held record than named; R12-F found 6 of 6. **The wording should be "probably a
+  duplicate, work out which one."**
+- **`none` is not a clean bill**: under-called by five for R12-A, wrong twice for R12-C, and R12-F
+  found three.
+
+## TWO RULINGS THE AGENTS ASKED FOR AND DID NOT TAKE THEMSELVES
+
+- **Does ruling 12's "state authority" reach a national social-security institute?** R12-A found
+  Operation Podere mafioso — the Laudani clan and an INPS official, 1.5m euros of fake farm-worker
+  benefits — real and well documented, and **declined to code INPS as `bk: company` by analogy
+  with the ASP health authorities without a ruling.** Filed as a lead with the question attached.
+- **Is a later UN Panel finding about the same office-holder a new case or an update?** R12-F's
+  question, and it recurs through the Libya series. It cost a $300m diversion finding this round.
+
+## RECORDS DELIBERATELY NOT WRITTEN, WITH THE REASON FILED SO NOBODY REPEATS THEM
+
+- **Banca Progetto** — judicial administration over 10m euros lent to 'ndrangheta-linked firms, but
+  the finding is superficial loan vetting with no bank officer paid or placed.
+- **Revolut Bank UAB**, Milan decree of 17 November 2026 — **the decree itself says "nessun dolo"**
+  and finds only "agevolazione colposa", so nobody got inside. Round 11 had also declined this one,
+  on different reasoning, and filed it as a lead; the decree now settles it.
+- Three Italian cases blocked only by a missing conduct year or a missing registered seat
+  (Petrol-mafie/Max Petroli, Propaggine/Alvaro, Misericordia di Isola Capo Rizzuto).
+
+## ROUND 12 RESULT: +123, DEVIATION 28.4 -> 25.9, CLOSED 2.5 AT 20 MILLI-POINTS A CASE
+
+126 written, **3 duplicates caught by the pre-merge validator**, 123 merged. The decay continues:
+68 milli-points a case in round 9, 44 in round 10, 24 in round 11, **20 now.**
+
+Against quota the round delivered 123 of 208, and **every shortfall came with a measurement**:
+`crime → company` 14 of 30 (its engine measured exhausted), `crime → legis` 4 of 20 and
+`crime → court` 5 of 15 (after 8 records were withdrawn against the stale cell file and the
+removed list), both cabinet cells 11 of 26, the four `movement` cells 15 of 36. Two cells beat
+quota: `crime → security` 26 of 25 and `corp → company`/`corp → security` 34 of 35.
+
+## THE PRE-MERGE VALIDATOR EARNED ITS PLACE, AND THE SIGNAL THAT WORKED IS NARROW
+
+Three duplicates reached the merge step and were caught there, not by any agent:
+- **Zănești's mayor** and **Prahova's county council president** — each sharing an **identical DNA
+  release id** (13892 and 12750) with a round-11 record, same man, same counts.
+- **Burundi's Gatumba gold network** — same UN document, same year, same cell, caught on a shared
+  distinctive figure (455,000).
+
+**The reliable duplicate signal is a single-case locator: one DNA release, one OSP case profile,
+one article node id is one prosecution.** Matching on a shared **UN document symbol does not
+work** — it produced 16 candidates of which only one was real, because a single Panel report
+carries dozens of distinct cases. That distinction should go in the brief and in the validator.
+
+The lead-flag version of this check was added this round but **ran after the agents had finished**,
+so it caught the two DNA collisions too late to save the work. **The locator check belongs in the
+pre-merge validator, which it now is.**
+
+## FOUR BUGS IN MY OWN TOOLING, ALL FOUND BY AGENTS
+
+1. **Cell files predated the round-11 merge.** R12-B found it; R12-C withdrew four completed
+   records because of it. Regenerated mid-round and the four running agents were told.
+2. **The lead flags were never diffed against `removed_records.json`.** R12-F lost roughly a third
+   of its round, including two fully drafted records. 43 leads now carry a `REMOVED` flag with the
+   removal reason. But R12-C's four removed-list collisions all came from **discovery, not the
+   bank**, so the flags would not have helped — which is why its inverse finding matters more.
+3. **The flags were too lenient.** Rebuilt to flag on a distinctive five-digit figure alone, then
+   on an identical single-case locator. An intermediate attempt that expanded scaled figures
+   ("5 million" → 5000000 *and* 5) matched 84 to 84,000,000 and was reverted.
+4. **I put `balkaninsight.com` in the brief as productive after an insufficient check.** It accepts
+   `search=` and silently ignores it. A nonsense control query returns the same 24 posts. **The
+   rule for any new REST endpoint: run a nonsense control first.**
+
+## THE REMOVED LIST IS A SPECIFICATION, NOT A BLOCKLIST
+
+R12-C's method finding, which inverts the brief's priority:
+
+> `removed_records.json` has about 75 cases in `inf: crime` with `bk: legis` or `court`, and
+> reading those drop reasons **first** is worth more in these two cells than any lead file, because
+> they define the line that most new candidates fail.
+
+Confirmed from the other side by R12-E, which **drafted two records and then dropped them** on
+recognising removed shapes: Uzbekistan's deputy water minister, whose own company held a $950,320
+ministry contract and was overpaid $562,428 (the removed Timor-Leste shape — "an insider enriching
+himself through his own company rather than an outside party getting in"), and Romania's Havrileț,
+paid 1,195,599 lei by three energy operators within the five-year bar (the removed Renzi, Schröder
+and Merz shape). **Self-dealing is not infiltration, and the removals say so more clearly than the
+briefs do.**
+
+## THE ECUADOR RE-ADD: TWO RECORDS REMOVED, AND MY EARLIER REPORT CORRECTED
+
+Set out in full above. Two round-11 records re-added cases round 9 had removed nine days earlier;
+both are now back in `removed_records.json` with the history recorded. The five adjacent Ecuador
+records the map keeps each name an insider or a steered decision; those two named neither.
+
+**It also corrects what I told the owner.** I reported the stake as three records on the same
+footing, having compared titles and `int` values. Reading the `inside` sentences showed the kept
+records are distinguishable and the stake was two straightforward re-adds.
+
+## SOURCE RATES MEASURED THIS ROUND
+
+**`www.corrieredellacalabria.it` is the best source on the map**, measured independently by three
+agents in three different cells: **0.8 records per query** in `crime → company` (9 from 11),
+**0.75** across `crime → legis` and `crime → court` (6 of 9 records), and it was the top source for
+`crime → security` too. It "carries court material no Campanian or Puglian outlet does". **It needs
+the `www.` prefix** — the bare domain fails TLS verification.
+
+**The Italian prevention-measure decree is the productive shape for `crime → company`** —
+`amministrazione giudiziaria` or `controllo giudiziario` of a *named* company. The decree names the
+body, the clan, the mechanism and the date, which is what rulings 11 and 12 require. 8 of R12-A's
+14 came from it and it is not exhausted.
+
+**`justice.gov`'s title API has split by cell.** 0.55 in `crime → company` in round 11; **0.04 in
+the same cell now** (24 queries, 1 record) because the airport and baggage families are mined out;
+0.47 in `corp → legis` and `corp → court`; 0 in `crime → legis` and `crime → court`; and the source
+of 4 of R12-E's 6 `corp → cabinet` records. Mechanically: **`title=` is a literal substring filter,
+so conduct phrases return nothing** — "bribed an employee", "corrupt insider" and "recruited an
+employee" all gave zero titles. Only job titles work.
+
+**R12-E's method for it is the best yet and is nearly free**: cache the release bodies in bulk
+(595 of them), then **grep the cache for `Ministr(y|ies)|Ministerio|Department of|National Agency`
+and read only the ~19 hits.** That found Tyson, Magyar Telekom, PCI and Teva/Ukraine.
+Cross-checking absent FCPA defendants against `cases.json` first ruled out Snamprogetti, JGC,
+Diebold, Pfizer, Walmart and SQM with no fetch at all.
+
+**Romania's DNA, now mapped by id range:** 11500–13879 crawled for `corp → security` (1 per 238);
+12470–12700 productive for cabinet (1 per 77); 13250–13450 poor; **12700–13250 and 13450–13500
+measured empty for cabinet across 602 ids crawled in 25 seconds**; 13500–13700 empty because they
+are anonymised court judgments. Ids from about **12990 upward are increasingly judgments rather
+than releases** — that is the boundary, and it explains every zero.
+
+**South Africa's Home Affairs vein is thinning, not exhausted:** 0.25 records per item read against
+round 11's 0.6, because the convictions are the part already held — 3 of 8 strong items were
+duplicates by figure (192 passports, R94,600) and one by investigation stage. What remains is
+arrests and departmental statistics. `sundayworld.co.za` and `protectionweb.co.za` both serve the
+REST API with full content.
+
+**Confirmed empty or unusable:** the CGPJ listing caps at 148 items (~3 weeks, no archive depth);
+`balkaninsight.com` ignores `search=`; `premiumtimesng.com` and `reporter.al` answer but are so
+OR-weighted they returned opinion columns and sermons; `hacc-decided.ti-ukraine.org` is behind
+Cloudflare to curl though WebFetch reads it, and is the most promising unreached source for
+Ukrainian `corp → cabinet`.
+
+## FOUR MORE ACQUITTALS, AND THREE OUTCOME UPDATES FOR HELD RECORDS
+
+Found in discovery and correctly not written: **Ischia's judge Capuano**, definitively acquitted
+"perché il fatto non sussiste" on 9 January 2026, overturning a ten-year sentence; **Melito di
+Napoli's mayor and council president**, acquitted 25 July 2024 while 13 others were convicted;
+**Capua's Antropoli**, whom a GIP called the Casalesi's "referente politico-istituzionale" and who
+was later acquitted of the camorra charge.
+
+And filed against held records: the Gioia Tauro forged-seals record is the "Tre Croci" proceeding
+with **12 convictions totalling 143 years and one acquittal**; the Caserta hospital record names a
+director general **fully acquitted** on appeal in February 2019; the Catanzaro ambulances record's
+judgment came on 29 September 2021.
+
+## THREE QUESTIONS THE AGENTS PUT UP RATHER THAN DECIDING
+
+1. **Does ruling 12's "state authority" reach a national social-security institute?** R12-A found
+   Operation Podere mafioso — the Laudani clan and an INPS official, 1.5m euros of fake
+   farm-worker benefits — and declined to code INPS as `bk: company` by analogy with the ASP
+   health authorities.
+2. **Is a later UN Panel finding about the same office-holder a new case or an update?** R12-F's
+   question; it recurs through the Libya series and cost a $300m diversion finding this round.
+3. **Havrileț, Romania — worth a ruling because it is stronger than the shapes it resembles.** He
+   was paid 1,195,599 lei by Electrica, DEER and OMV Petrom within five years of chairing the
+   energy regulator, **while holding a state secretaryship at the energy ministry with control
+   over those same operators.** The indictment charges the incompatibility and alleges no decision
+   serving them. R12-E called it "the single best corp→cabinet candidate I had to discard".
+
+Also flagged, not decided: the **Polish district labour office** coded `cabinet` (an organ of state
+administration issuing a national-law document, with the sibling Polish visa case already at
+cabinet); the **UK Ministry of Defence** coded `cabinet` following Kuwait/Airbus, Malaysia/Scorpene
+and Italy/Lockheed; and **no inspectorate was written at all** this round, so the 6:1 `security`
+convention cost nothing to apply.
+
+## COUNTRY CONCENTRATION IS NOW WORTH A DECISION
+
+`crime → cabinet` is now roughly **13 South African Home Affairs-family records**, after 4 of 5
+this round and 6 of 8 last. `crime → security` took 13 Italian records of 26. The shape metric
+ignores country entirely, so none of this costs a point — but it is the blind spot already logged
+as an open owner decision, and it is getting more pronounced each round rather than less.
