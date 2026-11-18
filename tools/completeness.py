@@ -9,6 +9,15 @@ should touch, because it separates "no contact published anywhere" from
 
     python3 -I tools/completeness.py            # the whole chart
     python3 -I tools/completeness.py --quick    # layers only, no per-country
+    python3 -I tools/completeness.py --record 23   # and add a row to the ledger
+    python3 -I tools/completeness.py --history     # the ledger, as a table
+
+`--record N` appends this round's figures to `tools/rounds.json` and prints
+the whole ledger. Run it once at the end of every round and paste the
+history table into the round's section, because a single round's chart says
+where the map stands and only the ledger says whether a round moved it:
+rounds five to eleven in this file added no municipal records at all, and
+nothing in the file at the time said so.
 
 QLever first and Wikidata's own service second, for the reason round
 nineteen gives: WDQS has been answering `429 Aggressively rate-limiting to
@@ -18,7 +27,11 @@ third party and its index is a dump rather than the live store, so a figure
 from it is "as of that dump" and the two are spot-checked against each
 other on the totals.
 """
-import json, sys, time, urllib.parse, urllib.request
+import json, os, sys, time, urllib.parse, urllib.request
+
+# Run from anywhere: the ledger sits beside this file and the shards above it.
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(HERE)
 
 ENDPOINTS = ["https://qlever.dev/api/wikidata",
              "https://qlever.cs.uni-freiburg.de/api/wikidata",
@@ -122,15 +135,18 @@ def country_table():
 def shards():
     """What the registers have actually shipped, read off disk."""
     try:
-        idx = json.load(open("muni/index.json"))
+        idx = json.load(open(os.path.join(ROOT, "muni", "index.json")))
     except Exception:
         return ("`muni/` is not in this checkout, so the register layer "
                 "cannot be counted here. If the shards exist only on a local "
                 "machine they are not deployed: the page fetches them from "
                 "this repo.")
-    import glob, os
+    # `import os` here would make `os` local to this whole function and the
+    # path join above would raise before the import ran, which the except
+    # then reported as "not in this checkout" while the shards sat there.
+    import glob
     recs, fields = 0, {}
-    for f in glob.glob("muni/[0-9]*.json"):
+    for f in glob.glob(os.path.join(ROOT, "muni", "[0-9]*.json")):
         for q, v in json.load(open(f)).items():
             recs += 1
             for k in v:
@@ -140,8 +156,79 @@ def shards():
     return (f"Shards: {recs:,} records across "
             f"{len(idx.get('countries', idx) or [])} registers. Fields: {line}")
 
+LEDGER = os.path.join(HERE, "rounds.json")
+
+def municipal_fields():
+    """The three columns the municipal rounds are about, measured."""
+    cls, keep = "wd:Q15284", ""
+    tot = one("SELECT (COUNT(DISTINCT ?x) AS ?n) WHERE { " + live(cls, keep) + "}")
+    out = {"municipalities": tot}
+    for fname, pid in [("website", "P856"), ("email", "P968"),
+                       ("telephone", "P1329"), ("street", "P6375")]:
+        out[fname] = one("SELECT (COUNT(DISTINCT ?x) AS ?n) WHERE { "
+                         + live(cls, "; wdt:%s ?v" % pid) + "}")
+    return out
+
+def shard_counts():
+    try:
+        idx = json.load(open(os.path.join(ROOT, "muni", "index.json")))
+    except Exception:
+        return {}, 0
+    per = {k: v["shipped"] for k, v in (idx.get("counts") or {}).items()}
+    return per, sum(per.values())
+
+def record(n):
+    try:
+        led = json.load(open(LEDGER))
+    except Exception:
+        led = []
+    per, tot = shard_counts()
+    row = {"round": int(n), "date": time.strftime("%Y-%m-%d"),
+           "shards": tot, "registers": len(per), "per_register": per}
+    row.update(municipal_fields())
+    led = [r for r in led if r.get("round") != int(n)] + [row]
+    led.sort(key=lambda r: r["round"])
+    json.dump(led, open(LEDGER, "w"), indent=1)
+    return led
+
+def history():
+    try:
+        led = json.load(open(LEDGER))
+    except Exception:
+        return "(no ledger yet — run with --record N)"
+    out = ["| Round | Date | Registers | Records in the shards | "
+           "Municipal website | email | telephone | street |",
+           "| ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: |"]
+    for r in led:
+        m = r.get("municipalities") or 0
+        pc = lambda k: (f"{round(100*r.get(k,0)/m)}%" if m else "—")
+        out.append(f"| {r['round']} | {r['date']} | {r.get('registers',0)} | "
+                   f"{r.get('shards',0):,} | {pc('website')} | {pc('email')} | "
+                   f"{pc('telephone')} | {pc('street')} |")
+    led2 = [r for r in led if r.get("shards") is not None]
+    if len(led2) >= 2:
+        d = led2[-1]["shards"] - led2[0]["shards"]
+        n = led2[-1]["round"] - led2[0]["round"]
+        if n > 0:
+            out.append(f"\nAcross those {n} rounds the shards grew by {d:,} "
+                       f"records, {round(d/n):,} a round. The municipal "
+                       f"percentages are Wikidata alone and move slowly; the "
+                       f"shards are what a round adds.")
+    return "\n".join(out)
+
 if __name__ == "__main__":
-    quick = "--quick" in sys.argv
+    argv = sys.argv[1:]
+    if "--history" in argv:
+        print("### The ledger, one row per round\n")
+        print(history())
+        raise SystemExit(0)
+    rec = None
+    if "--record" in argv:
+        i = argv.index("--record")
+        rec = argv[i+1] if len(argv) > i+1 else None
+        if rec is None:
+            raise SystemExit("--record needs a round number")
+    quick = "--quick" in argv
     t, rows = layer_table()
     print("### Completeness by layer and field\n")
     print(t)
@@ -160,3 +247,7 @@ if __name__ == "__main__":
     if not quick:
         print("### Municipalities by country, worst gaps first to work from\n")
         print(country_table())
+    if rec is not None:
+        record(rec)
+        print("\n### The ledger, one row per round\n")
+        print(history())

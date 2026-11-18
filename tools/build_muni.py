@@ -337,10 +337,209 @@ def build_quebec():
     gate("official name against the French label", agree, checked, 0.97)
     return b
 
+# ---------------------------------------------------------------- Spain
+
+ES_ART = ("la", "el", "los", "las", "o", "a", "os", "as", "es", "l",
+          "les", "els", "lo")
+
+def es_key(name):
+    """The canonical form of a Spanish official municipality name.
+
+    Three things have to be undone, and all three are how the register
+    writes a name rather than anything inferred:
+
+    - the article sits at the end of an official name (`Vall de Gallinera,
+      la`) where ordinary prose puts it in front, so it is moved off and
+      dropped;
+    - a bilingual official name is written in either order — REL has
+      `Alacant/Alicante` where DIR3 has `Alicante/Alacant` — so the halves
+      are sorted. Both sides must still hold the same two names spelled the
+      same way, so this adds no fuzziness; it cost 19 municipalities until
+      round sixteen found it;
+    - accents and punctuation are dropped, because the two files disagree
+      about them and about nothing else.
+    """
+    t = str(name or "").strip()
+    t = re.sub(r"^ayuntamiento\s+(de\s+la|de\s+los|de\s+las|del|de|d')\s*", "",
+               t, flags=re.I)
+    t = re.sub(r"^ayuntamiento\s+", "", t, flags=re.I)
+    m = re.match(r"^(.*),\s*([A-Za-zÀ-ÿ']{1,4})$", t)
+    if m and fold(m.group(2)) in ES_ART:
+        t = m.group(1)
+    parts = [fold(x) for x in re.split(r"\s*/\s*", t) if fold(x)]
+    return "/".join(sorted(parts))
+
+def cif_code(cif):
+    """The five digits a Spanish local-authority tax number carries between
+    its letters. **Never a key**: those digits are the Registro de Entidades
+    Locales' own sequence and they diverge from the INE code wherever a
+    municipality has been created or dissolved — joining on them gives 59%
+    of Spain a neighbouring town's address. They are only ever the check,
+    below, because the join never touches them."""
+    m = re.match(r"^[A-Za-z](\d{5})", str(cif or "").strip())
+    return m.group(1) if m else None
+
+def build_spain():
+    """Two registers of the same bodies kept by the same ministry, and no
+    code to join them on.
+
+    REL, the Registro de Entidades Locales, is the authority list: every
+    municipality with its official name and, inside `NUMERO_INSCRIPCION`,
+    the INE code — `01`, then the five-digit code, then a check digit, so
+    Abánades is `01190019` against INE 19001. That is the code Wikidata
+    holds on 8,205 Spanish municipality items. DIR3 holds the contacts and
+    carries no INE code at all: 8,133 top-level ayuntamientos with a tax
+    number, a two-digit province and an email, and **exactly one** Spanish
+    municipality on Wikidata carries a DIR3 id.
+
+    So this is the one country here joined on a name, and the four
+    conditions on that exception are in the code below:
+
+    1. the match is exact on a canonical official name, never fuzzy and
+       never nearest;
+    2. it is bounded by a published administrative code — the province —
+       so two places of one name in different provinces cannot meet;
+    3. a name claimed by two rows on either side is refused and counted;
+    4. the result is checked against a published field the match never
+       uses, with a floor that stops the country shipping.
+    """
+    # --- REL: the authority list, keyed by the INE code
+    rel = get("https://registroentidadeslocales.mpt.es/REL/frontend/"
+              "export_data/file_export/export_excel/municipios/all/all",
+              timeout=420)
+    open("/tmp/rel.xls", "wb").write(rel)
+    # The export is a legacy .xls. LibreOffice is the one converter present
+    # on both this machine and the Action's runner.
+    os.system("cd /tmp && soffice --headless --convert-to xlsx --outdir /tmp "
+              "/tmp/rel.xls >/dev/null 2>&1")
+    import openpyxl
+    sh = openpyxl.load_workbook("/tmp/rel.xlsx").worksheets[0]
+    rows = list(sh.iter_rows(values_only=True))
+    hi = next(i for i, r in enumerate(rows)
+              if r and any(str(x) == "NUMERO_INSCRIPCION" for x in r if x))
+    H = {str(h): i for i, h in enumerate(rows[hi]) if h}
+    rel_rows = []
+    for r in rows[hi + 1:]:
+        # the conversion drops a leading zero, because it reads the column as
+        # a number; the published form is eight digits
+        num = str(r[H["NUMERO_INSCRIPCION"]] or "").strip()
+        num = num.zfill(8) if num.isdigit() else num
+        if len(num) != 8 or not num.isdigit():
+            continue
+        ine = num[2:7]
+        rel_rows.append({"ine": ine, "prov": ine[:2],
+                         "name": str(r[H["DENOMINACION"]] or "").strip()})
+    print(f"    REL: {len(rel_rows):,} municipalities with an INE code")
+
+    # --- DIR3: the contacts, keyed by nothing that joins
+    d3 = get("https://administracionelectronica.gob.es/ctt/resources/"
+             "Soluciones/238/Descargas/Listado%20Unidades%20EELL.xlsx",
+             timeout=420)
+    open("/tmp/eell.xlsx", "wb").write(d3)
+    sh = openpyxl.load_workbook("/tmp/eell.xlsx")["Unidades EELL"]
+    rows = list(sh.iter_rows(values_only=True))
+    D = {}
+    for i, h in enumerate(rows[1]):
+        D.setdefault(str(h), i)
+    ay = []
+    for r in rows[2:]:
+        if str(r[D["C_ID_TIPO_ENT_PUBLICA"]]) != "AY":
+            continue
+        if str(r[D["N_NIVEL_JERARQUICO"]]) != "1":
+            continue
+        nm = str(r[D["C_DNM_UD_ORGANICA"]] or "").strip()
+        # the file carries a few bodies of other kinds at this level — a
+        # regional IT company among them — and they are not ayuntamientos
+        if not nm.lower().startswith("ayuntamiento"):
+            continue
+        prov = str(r[D["C_ID_AMB_PROVINCIA"]] or "").strip().zfill(2)
+        ay.append({"name": nm, "prov": prov,
+                   "cif": str(r[D["NIF_CIF"]] or "").strip(),
+                   "contact": str(r[D["CONTACTOS"]] or "").strip()})
+    print(f"    DIR3: {len(ay):,} top-level ayuntamientos, "
+          f"{sum(1 for x in ay if x['contact']):,} with a contact")
+
+    # --- the name join, inside a province, one-to-one only
+    def one_to_one(items):
+        by = {}
+        for x in items:
+            by.setdefault((x["prov"], es_key(x["name"])), []).append(x)
+        return ({k: v[0] for k, v in by.items() if len(v) == 1},
+                sum(1 for v in by.values() if len(v) > 1))
+    rel_by, rel_dup = one_to_one(rel_rows)
+    ay_by, ay_dup = one_to_one(ay)
+    pairs = {k: (rel_by[k], ay_by[k]) for k in rel_by if k in ay_by}
+    print(f"    matched one-to-one: {len(pairs):,}; "
+          f"names claimed twice refused: {rel_dup} in REL, {ay_dup} in DIR3; "
+          f"in REL and not in DIR3 under that name: {len(rel_by)-len(pairs):,}")
+
+    # --- the gate: an ordering the join never touches
+    # Both the tax number's embedded digits and the INE code number a
+    # province's municipalities alphabetically, from different epochs, so a
+    # match that had swapped two towns would put a pair in the wrong order.
+    # A scrambled match sits near half.
+    byprov = {}
+    for (prov, _), (rr, ar) in pairs.items():
+        c = cif_code(ar["cif"])
+        if c:
+            byprov.setdefault(prov, []).append((int(rr["ine"]), int(c)))
+    agree = total = 0
+    for prov, lst in byprov.items():
+        for i in range(len(lst)):
+            for j in range(i + 1, len(lst)):
+                total += 1
+                if (lst[i][0] - lst[j][0]) * (lst[i][1] - lst[j][1]) > 0:
+                    agree += 1
+    gate("the INE and tax-number orderings inside a province", agree, total, 0.95)
+
+    # --- Wikidata on the INE code
+    wd = {}
+    # The class filter is load-bearing: `P772` is the Instituto Nacional de
+    # Estadística id and Spain puts it on twelve thousand other things as
+    # well — census areas, districts, entities below the municipality — so
+    # asking only for Spanish items with that property returned 37,317 of
+    # them and would have let a non-municipality win a code. Municipality
+    # items carrying it: 8,205, which is what round fifteen counted.
+    for r in sparql("""SELECT ?x ?ine WHERE {
+            ?x wdt:P772 ?ine ; wdt:P31/wdt:P279* wd:Q2074737 .
+            FILTER NOT EXISTS { ?x wdt:P576 ?d } }"""):
+        qid = r["x"]["value"].rsplit("/", 1)[-1]
+        wd.setdefault(qid, {"ine": set()})["ine"].add(
+            str(r["ine"]["value"]).zfill(5))
+    by_ine, amb = index_by_code(wd, "ine")
+    print(f"    {len(wd):,} Spanish municipality items with an INE code, "
+          f"{len(by_ine):,} usable")
+
+    b = Build("ESP", "DIR3 and the Registro de Entidades Locales")
+    b.dropped_ambig_code = amb + rel_dup + ay_dup
+    for (prov, _), (rr, ar) in pairs.items():
+        qid = by_ine.get(rr["ine"])
+        if not qid:
+            b.dropped_nocode += 1
+            continue
+        rec = {}
+        # A register can publish more than one address for one council, and
+        # which to write to is the reader's choice, so each is its own entry
+        # rather than one dead comma-joined string.
+        mails = [m.strip() for m in re.split(r"[;,\s]+", ar["contact"])
+                 if "@" in m]
+        seen, keep = set(), []
+        for m in mails:
+            if m.lower() not in seen:
+                seen.add(m.lower()); keep.append(m)
+        if keep:
+            rec["e"] = keep
+            # every row that got in on a name says so, and the panel prints
+            # it under the address
+            rec["j"] = "name"
+        b.put(qid, rec)
+    return b
+
 # ---------------------------------------------------------------- registry
 
 COUNTRIES = {
     "ITA": ("Italy", build_italy),
+    "ESP": ("Spain", build_spain),
     "CAN": ("Canada — Quebec only", build_quebec),
 }
 
