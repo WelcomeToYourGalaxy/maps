@@ -264,6 +264,19 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 #about p{font-size:12.5px;line-height:1.6;color:var(--dim)}
 #about p+p{margin-top:9px}
 #about ul{margin:4px 0 10px;padding-left:17px;font-size:12px;line-height:1.55;color:var(--dim)}
+/* The coverage grid. Levels down the side, fields across the top, so
+   the comparison a reader is making — how much thinner the record gets
+   the further down you go — is one column read downwards. */
+.acov{width:100%;border-collapse:collapse;margin:2px 0 4px;font-size:11.5px}
+.acov th,.acov td{padding:5px 6px;text-align:right;border-bottom:1px solid var(--line)}
+.acov thead th{font-size:9.6px;letter-spacing:.5px;text-transform:uppercase;
+  color:var(--stone);font-weight:400;border-bottom-color:var(--stone)}
+.acov tbody th,.acov tfoot th{text-align:left;color:var(--ink);font-weight:600;white-space:nowrap}
+.acov tbody td{color:var(--dim);font-variant-numeric:tabular-nums}
+.acov thead th:first-child,.acov tbody th,.acov tfoot th{text-align:left}
+.acov tfoot th{font-weight:400;color:var(--stone);font-size:10.4px;vertical-align:top}
+.acov tfoot td{text-align:left;color:var(--faint);font-size:10.4px;line-height:1.45}
+.acov tfoot tr:last-child th,.acov tfoot tr:last-child td{border-bottom:0}
 #about ul li+li{margin-top:3px}
 #about b{color:var(--ink);font-weight:600}
 #about a{color:var(--accent-hi);text-decoration:none}
@@ -1077,15 +1090,29 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
    9px uppercase grey at the foot of the column, which is the size of
    thing a reader scans past. It carries what the circles actually do
    now, at a size that can be read. */
-#bubhint{position:absolute;left:18px;width:calc(var(--bd,156px) + 46px);margin-left:-23px;
-  text-align:center;color:var(--dim);pointer-events:none;
-  text-shadow:0 1px 7px rgba(0,0,0,.95),0 0 3px rgba(0,0,0,.8)}
-#bubhint b{display:block;font-size:10px;line-height:1.3;letter-spacing:.5px;
-  text-transform:uppercase;color:var(--accent-hi);margin-bottom:3px}
-#bubhint span{display:block;font-size:10.4px;line-height:1.5}
-#bubbles.lightbase #bubhint{color:#3d4a42;
-  text-shadow:0 1px 6px rgba(255,255,255,.98),0 0 3px rgba(255,255,255,.95)}
-#bubbles.lightbase #bubhint b{color:#2d5a3c}
+/* This was a line of small grey type under the last circle, which put
+   it below the fold on a short window and in the one place a reader
+   scrolling the column has already passed. It is a card at the head of
+   the column instead, above the first circle, where the circles are
+   about to be used, and it says one action per row rather than running
+   them together in a sentence. */
+#bubhint{position:absolute;left:18px;top:74px;width:calc(var(--bd,156px) + 30px);
+  margin-left:-15px;box-sizing:border-box;padding:9px 11px 10px;
+  background:rgba(17,24,21,.93);border:1px solid var(--line);border-radius:10px;
+  backdrop-filter:blur(3px);color:var(--dim);pointer-events:none;
+  box-shadow:0 10px 28px rgba(0,0,0,.45)}
+#bubhint b{display:block;font-family:'Marcellus',serif;font-size:11.5px;line-height:1.25;
+  text-transform:none;letter-spacing:0;color:var(--ink);font-weight:400;
+  margin-bottom:7px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+#bubhint span{display:block;font-size:10.2px;line-height:1.5;margin-top:2px}
+#bubhint span i{font-style:normal;font-weight:600;color:var(--accent-hi)}
+#bubhint .bhn{margin-top:8px;padding-top:7px;border-top:1px solid var(--line);
+  font-size:9.8px;line-height:1.45;color:var(--faint)}
+#bubbles.lightbase #bubhint{background:rgba(248,247,243,.94);border-color:rgba(24,36,30,.16);
+  color:#3d4a42}
+#bubbles.lightbase #bubhint b{color:#14201a;border-bottom-color:rgba(24,36,30,.16)}
+#bubbles.lightbase #bubhint span i{color:#2d5a3c}
+#bubbles.lightbase #bubhint .bhn{color:#5a6a60;border-top-color:rgba(24,36,30,.16)}
 
 /* the aiming mark inside a bubble */
 .bubx{position:absolute;width:19px;height:19px;margin:-10px 0 0 -10px;pointer-events:none;
@@ -1255,29 +1282,27 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
          any use for the reader's own country, and it was at the foot,
          under six paragraphs about sources. -->
     <h4 class="asub">How complete the records are</h4>
-    <p><b>Countries</b>, 205 units</p>
-    <ul>
-      <li>Website 83% &middot; Email 92% &middot; Telephone 94% &middot; Street address 94% &middot; Council or legislature 99%</li>
-    </ul>
-    <p><b>First-level divisions</b>, 5,143 units</p>
-    <ul>
-      <li>Website 49% &middot; Email 4% &middot; Telephone 3% &middot; Street address 1% &middot; Council or legislature 16%</li>
-    </ul>
-    <p><b>Municipalities</b>, 191,524 units</p>
-    <ul>
-      <li>Website 54% &middot; Email 25% &middot; Telephone 20% &middot; Street address 2% &middot; Council or legislature 1%</li>
-    </ul>
-    <p>Those percentages are places with some contact recorded, not people. The map lists the
-       offices a place has, and names whoever holds one only where the record happens to say,
-       which for most offices on Earth it does not.</p>
-    <h4 class="asub">The magnifying circles</h4>
-    <p>The circles down the left are magnifiers, one for each level of government over the place you
-       searched, each showing the real basemap rather than a sketch of it. Click the ground in one to
-       zoom it in a step, double-click to zoom out, drag to move it, and hover to open a second circle
-       holding a closer view of wherever the pointer is. Click a marker to open that office; where
-       several sit on one spot you get the list to pick from. The scroll wheel is deliberately off
-       inside them, so scrolling zooms the map behind instead. Move off a circle and it goes back to
-       framing its own level. They need a window wider than 1180px and at least two levels to appear.</p>
+    <!-- Was three headings, three bullet lines and a paragraph under
+         them. A grid says the same thing: the row is the level, the
+         column is the field, and a reader comparing municipalities with
+         countries reads down one column instead of across two lists.
+         Offices and holders are two more columns rather than a
+         paragraph saying the percentages are not people. -->
+    <table class="acov">
+      <thead>
+        <tr><th>Level</th><th>Units</th><th>Web</th><th>Email</th><th>Phone</th>
+            <th>Address</th><th>Council</th></tr>
+      </thead>
+      <tbody>
+        <tr><th>Countries</th><td>205</td><td>83%</td><td>92%</td><td>94%</td><td>94%</td><td>99%</td></tr>
+        <tr><th>First-level divisions</th><td>5,143</td><td>49%</td><td>4%</td><td>3%</td><td>1%</td><td>16%</td></tr>
+        <tr><th>Municipalities</th><td>191,524</td><td>54%</td><td>25%</td><td>20%</td><td>2%</td><td>1%</td></tr>
+      </tbody>
+      <tfoot>
+        <tr><th>Unit of measurement</th><td colspan="6">places with that field recorded — not people</td></tr>
+        <tr><th>Named officeholders</th><td colspan="6">only where the record carries one, which for most offices it does not</td></tr>
+      </tfoot>
+    </table>
     <h4 class="asub">What is on the map</h4>
     <p>Search a place and the map draws the offices of government recorded for it, at every level from the
        municipality up to the country. Offices with a green dot are ones a member of the public can contact
@@ -1303,6 +1328,14 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
        Inter-Parliamentary Union's dataset on national parliaments, filled in by each parliament itself.
        Parline data is used here under
        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>.</p>
+    <h4 class="asub">The magnifying circles</h4>
+    <p>The circles down the left are magnifiers, one for each level of government over the place you
+       searched. Click the ground in one to zoom it in a step, double-click to zoom out, drag to move
+       it, and hover to open a second circle holding a closer view of wherever the pointer is. Click a
+       marker to open that office; where several sit on one spot you get the list to pick from. The
+       scroll wheel is deliberately off inside them, so scrolling zooms the map behind instead. Move
+       off a circle and it goes back to framing its own level. They need a window wider than 1180px
+       and at least two levels to appear.</p>
   </div>
 <script>
 /* --- shared basemaps, ported from the Culprits map --- */
@@ -6727,8 +6760,14 @@ function entxHtml(id){
   if(e.t)
     return '<div class="entxt">'+glossy(e.t)+'</div>'+
            '<div class="entxs">'+esc(ENTX_SRC.wikipedia)+'</div>';
+  /* The order is this body, then its kind: the description and the
+     record's statements are about the office in front of the reader,
+     and the paragraph about the kind is background behind them. Put
+     above them it was read as the description of the office. */
   let h='';
   if(e.d) h+='<div class="entxt">'+glossy(capFirst(e.d).replace(/\.*$/,'')+'.')+'</div>';
+  if(e.r) h+='<div class="entxt">'+glossy(e.r)+'</div>'+
+             '<div class="entxs">'+esc(ENTX_SRC.record)+'</div>';
   const ke = e.ck ? ENTX[e.ck] : null;
   const ct = (ke && ke.t) || '';
   if(ct || (e.cl && e.clDesc)){
@@ -6737,8 +6776,6 @@ function entxHtml(id){
        '<i>This describes the kind of body, not this one in particular. '+
        'The record says it is one; what it does differs from place to place.</i></dd></div>';
   }
-  if(e.r) h+='<div class="entxt">'+glossy(e.r)+'</div>'+
-             '<div class="entxs">'+esc(ENTX_SRC.record)+'</div>';
   return h;
 }
 
@@ -8679,6 +8716,9 @@ function fitToNational(){
    ==================================================================== */
 const BUB_MAX=170, BUB_MIN=112, BUB_LBL=60, BUB_LBL_G=86, BUB_TOP=74,
       DEEP_D=210, DEEP_STEP=2.5, DEEP_MAX=18;
+/* The card at the head of the column saying what the circles do. The
+   circles start below it, so its height comes out of theirs. */
+const BUB_HINT=112;
 /* The space under each circle is what its caption needs, and a caption
    with the group chip on it is a line taller than one without. Sized
    for the short one, the bottom bubble's chip ran off the foot of the
@@ -8687,7 +8727,7 @@ const BUB_MAX=170, BUB_MIN=112, BUB_LBL=60, BUB_LBL_G=86, BUB_TOP=74,
 function bubSize(count, lbl){
   /* 30px rather than 14: the line under the column saying what a click
      in a circle does needs somewhere to sit. */
-  const avail=innerHeight-BUB_TOP-30;
+  const avail=innerHeight-BUB_TOP-BUB_HINT-10;
   const d=Math.floor(avail/Math.max(1,count))-(lbl||BUB_LBL);
   /* 88 rather than BUB_MIN when it is that or nothing: a small circle
      is worse than a legible one, and a caption off the screen is worse
@@ -9119,18 +9159,19 @@ function buildBubbles(L){
   const D=bubSize(L.length, lbl), step=D+lbl;
   box.style.setProperty('--bd', D+'px');
   box.innerHTML=L.map((info,i)=>
-    '<div class="bub" data-i="'+i+'" style="top:'+(BUB_TOP+i*step)+'px">'+
+    '<div class="bub" data-i="'+i+'" style="top:'+(BUB_TOP+BUB_HINT+i*step)+'px">'+
       '<div class="bubc"><div class="bubm" id="bubm'+i+'"></div></div>'+
       '<div class="bubl"><b>'+esc(info.st.label||'')+'</b>'+
         '<span class="bubs" id="bubs'+i+'"></span>'+
         '<span class="bgrp" id="bubg'+i+'"></span></div>'+
     '</div>').join('')+
-    '<div id="bubhint" style="top:'+(BUB_TOP+L.length*step-6)+'px">'+
-      '<b>Each circle is a magnifier</b>'+
-      '<span>Click the ground in one to zoom in \u00b7 double-click to zoom out \u00b7 '+
-      'drag to move \u00b7 hover for a closer view \u00b7 click a marker to open it. '+
-      'The scroll wheel is off in the circles, so scrolling still zooms the map behind. '+
-      'Leaving a circle puts it back on its own level.</span>'+
+    '<div id="bubhint">'+
+      '<b>These circles are magnifiers</b>'+
+      '<span><i>Click</i> zoom in \u00b7 <i>double-click</i> out</span>'+
+      '<span><i>Drag</i> move \u00b7 <i>hover</i> closer view</span>'+
+      '<span><i>Click a marker</i> open that office</span>'+
+      '<span class="bhn">The wheel zooms the big map, not these. '+
+      'Move off one and it returns to its level.</span>'+
     '</div>';
   /* The captions and the groups are known without a map, so they are
      filled in now and the circles arrive under them. */
