@@ -74,3 +74,62 @@ a disputed record is the field working, not a sourcing failure.
 
 Draft → a separate checker that opens the sources itself → merge → `build.py` → headless test →
 update `HANDOFF.md` and this brief → commit → push. The checker never trusts the writer's citations.
+
+## Two rules confirmed in round 46, from the documents
+
+**1. A paid auditor, certifier, consultant, ratings agency or law firm fails test 1, on the same
+ground as a contractor, supplier or buyer.** Round 46 cut the Rana Plaza case on this. TÜV
+Rheinland India's June 2012 social audit recorded "good construction quality, duly approved" ten
+months before the building fell, and a German retailer said it accepted goods from Rana Plaza
+because the factory could show the resulting certificate — so reliance was real. It still fails.
+The reason an insurer counts as a funding tie is that it carries the loss when the risk lands; a
+certifier monetises a representation about risk and carries none of the loss. The analogy fails on
+the one element that matters. Admitting certifiers would also reopen a class — auditors,
+consultants, ratings agencies, law firms — none of which put money into the thing that caused the
+harm, and it would be incoherent beside cutting equipment suppliers and buyers in the same round.
+
+**2. A company's own annual report, information form or regulatory filing counts as the company's
+answer.** "The company's position was not obtained" cannot be written while such a filing sits in
+`sources`. Round 46 found exactly that on the La Platosa card: the `confidence_note` recorded the
+company's position as missing while Excellon's own 2016 annual information form, already cited on
+the card for production figures, carried that position in full — and carried a court ruling six
+days after the newspaper article the card ended on, which the card therefore reported as still
+pending.
+
+**3. Check buyer-versus-owner before writing, not after.** Round 46's checker saved the Nikomas case
+by finding the qualifying link was never Nike: Yue Yuen invested about US$100 million in the Nikomas
+complex in 1993 and Pou Chen owns the factory. Nike was the buyer and is now marked on the card as
+not qualifying. The same question cut the adidas case beside it, where no foreign owner, lender or
+insurer stood behind the factory at all. Ask of every lead: who put money into the place where the
+harm happened?
+
+**4. Wikipedia keeps getting in.** It was found in four of five cases in one batch of this round.
+It is not an acceptable source where a primary or press source exists, and in every instance this
+round a primary source was available and nothing was lost by the substitution. Do not cite it.
+
+**5. Event rights-holders, licensors, franchisors, promoters and sanctioning bodies fail test 1.**
+Round 46 cut the Bahrain Grand Prix case on this. A round is staged by a local promoter that pays a
+fee for the right to hold it, so the money leaves the host country rather than entering it; the
+rights-holder puts in no capital, holds no stake, insures nothing and sets no condition. That places
+a licensor below a buyer in the ordering the precedent now runs on — **owner, then lender or insurer,
+then buyer, then licensor** — and the line sits above buyer. Such a company passes only on a document
+showing equity in the local venue or promoter, a loan to it, insurance of it, a financing condition
+set on it, or security forces acting under its direction. The same reasoning covers leagues and
+bodies that award large sporting events.
+
+The Bahrain card also shows the failure mode to watch for: **it cited as its link evidence the very
+assessment that denies the link.** The UK NCP wrote that the information does not link the companies
+to any abuses, and that promoting a high-profile event which attracts protests does not itself link
+them. Read what a cited document concludes, not only what it describes.
+
+**6. The OECD Guidelines' reach is wider than test 1, deliberately.** The Guidelines bind a company
+that neither caused nor contributed to harm, through a business relationship. Test 1 does not. A
+complaint accepted by an NCP therefore says nothing about test 1, and accepting the Guidelines'
+reach as the link test would collapse it into any business relationship anywhere. What an NCP
+accepts is often a shortfall in due diligence, policy or communication — and a due-diligence
+shortfall is not harm under test 2 either.
+
+**7. `killed` is 0, not null, where deaths were considered and not counted.** CHECK20 says the
+account goes in `killed_note` and `killed` stays 0. The data agrees: 770 cases use 0 and 460 of
+those carry a note, against 229 null, where null reads as not yet researched. Round 46 merged one
+case with null against a note and it was corrected.
