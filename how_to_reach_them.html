@@ -759,6 +759,15 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
    page's own prose rather than a footnote under a list, so it is set
    at reading size. */
 .pg-kind .pgblank{font-size:12.3px;line-height:1.62;color:var(--dim);margin:10px 0 2px}
+/* The note says the record has nothing. This is the one thing a reader
+   can still do about it, so it sits directly under the note rather
+   than below the methods. */
+.blankfind{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin:9px 0 2px}
+.blankfind a{font-size:12px;line-height:1.2;color:var(--accent-hi);text-decoration:none;
+  border:1px solid rgba(140,189,154,.45);border-radius:999px;padding:4px 12px;
+  background:rgba(74,124,89,.14);white-space:nowrap}
+.blankfind a:hover{color:var(--ink);background:rgba(74,124,89,.3);border-color:var(--accent-hi)}
+.blankfind i{font-style:normal;font-size:11px;line-height:1.5;color:var(--faint)}
 .pgblank b{color:var(--dim)}
 
 /* A collapsed row is one line: the name, where it comes in the making
@@ -4986,6 +4995,10 @@ function pageKind(L,k){
        'holds no office of this kind rather than that the government has none. What it '+
        'takes to reach one is the same wherever it sits, so every method is listed below, '+
        'and each ends with a search that finds the office itself for this place.</p>';
+    h+='<div class="blankfind"><a href="'+
+       esc(findLink(doQ('{place} {country} '+(KINDQ[k]||(KINDLABEL[k]||k)), null)))+
+       '" target="_blank" rel="noopener">Search for it \u2197</a>'+
+       '<i>searched on Ecosia for this place, since the record here has nothing to open</i></div>';
     h+=kindMethods(k, null);
     return h+'</div>';
   }
@@ -5552,7 +5565,31 @@ function leafPlace(){ return STACK.length?(STACK[STACK.length-1].label||''):''; 
 /* A search rather than a guessed path. Appending /contact to a domain
    produces a dead link more often than a live one, and a dead link
    that looks official is worse than none. */
-function findLink(q){ return 'https://duckduckgo.com/?q='+encodeURIComponent(q); }
+function findLink(q){ return 'https://www.ecosia.org/search?q='+encodeURIComponent(q); }
+/* What to search for when the record holds no office of a kind for a
+   place. The label on the row is a filing word — "Chambers",
+   "Presiding Officers" — and searching for it finds the word rather
+   than the office, so each kind carries the names it actually goes by.
+   They are written to run after the place name and to hold at any
+   level, because the same kind of office is a city council in one
+   jurisdiction and a national assembly in another. */
+const KINDQ={
+  'leg/member'   :'elected members of the council or legislature contact',
+  'leg/committee':'legislative committees list',
+  'leg/chamber'  :'council or legislature official site',
+  'leg/presiding':'speaker or chair of the council or legislature',
+  'exec/head'    :'mayor governor or head of government official site',
+  'exec/minister':'government departments and ministries list',
+  'exec/clerk'   :'clerk of the council or registrar filings',
+  'exec/legal'   :'attorney general or chief legal officer',
+  'exec/envoy'   :'embassies and diplomatic missions',
+  'jud/court'    :'courts official list',
+  'jud/judge'    :'judges of the court list',
+  'jud/defender' :'public defender or ombudsman office',
+  'ag/agency'    :'government agencies list',
+  'ag/audit'     :'audit office or inspector general',
+  'ag/police'    :'police department official site',
+};
 /* a national portal is the right address where the method is a
    national process rather than something this office runs */
 const DOPORTAL={ comment:'directives:regulations', rulemaking:'directives:regulations',
@@ -7559,7 +7596,7 @@ function regBlockHTML(r, st){
   if(r.m) rows.push('<span class="msl"><b>Mayor</b>'+esc(r.m)+'</span>');
   const cn=asList(r.cn);
   if(cn.length){
-    const nm=cn.map(x=>'<a href="https://duckduckgo.com/?q='+encodeURIComponent(x+' '+st.label+' council')+
+    const nm=cn.map(x=>'<a href="'+esc(findLink(x+' '+st.label+' council'))+
       '" target="_blank" rel="noopener">'+esc(x)+'</a>').join(' \u00b7 ');
     rows.push('<span class="msl"><b>Council ('+cn.length+')</b>'+
       (cn.length>8 ? '<details><summary>show the names</summary>'+nm+'</details>' : nm)+'</span>');
@@ -7581,7 +7618,8 @@ function openGov(i){
   const mails=a=>a.map(x=>'<a href="mailto:'+esc(bareMail(x))+'">'+esc(bareMail(x))+'</a>').join('<br>');
   /* each name opens a search for that councillor on this council, so a reader
      can check who sits on it; the search is the same kind the site links use */
-  const names=a=>a.map(x=>'<a href="https://duckduckgo.com/?q='+encodeURIComponent(x+' '+st.label+' council')+'" target="_blank" rel="noopener">'+esc(x)+'</a>').join(' &middot; ');
+  const names=a=>a.map(x=>'<a href="'+esc(findLink(x+' '+st.label+' council'))+
+    '" target="_blank" rel="noopener">'+esc(x)+'</a>').join(' &middot; ');
   let h='';
   if(r.u) h+=fld('Website','<a href="'+esc(r.u)+'" target="_blank" rel="noopener">'+esc(r.u)+'</a>');
   if(r.e) h+=fld(asList(r.e).length>1?'Email addresses':'Email', mails(asList(r.e))+
