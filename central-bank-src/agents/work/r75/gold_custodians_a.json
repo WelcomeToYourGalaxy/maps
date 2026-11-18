@@ -1,0 +1,187 @@
+{
+  "records": [],
+  "blanks": [
+    {
+      "iso3": "BRA",
+      "kind": "confirmed blank",
+      "document": "Banco Central do Brasil, Demonstracoes Financeiras 2023 (audited annual financial statements), Note 11 'Ouro Monetario' (fl. 33) and accounting-policy Note 2.6 'Ouro Monetario' (fl. 13)",
+      "source_url": "https://www.bcb.gov.br/content/acessoinformacao/balanceteslai/Demonstra%C3%A7%C3%B5es%20Financeiras%20BCB%202023.pdf",
+      "read": "PDF downloaded (3.2 MB) and the full extracted text (332,746 characters) grepped for 'ouro', 'custodi', 'depositad', 'exterior', 'Bank of England', 'Reserve Bank', 'BIS'. Note 11 is three sentences long: it gives cost, fair-value adjustment and balance (R$41,674m at 31.12.2023), says the BCB holds part of the country's international reserves in monetary gold, and attributes the year's change to the international gold price and the real/dollar rate. It names no custodian, no institution and no location, domestic or foreign. Note 2.6 is accounting policy only and states that fair value is taken from the London exchange quotation ('cotacao obtida junto a Bolsa de Londres') - that is a price source, not a storage location, and must not be read as one. The BIS appears throughout the document (Note 6.1 BISIP investment pools, Note 12 BIS shareholding, Note 23 counterparty limits) but never in connection with gold storage.",
+      "note": "Vein for next round: the BCB gold note has carried no location field for at least the 2016-2023 statements in this series. A different route would be the BCB's Relatorio de Gestao das Reservas Internacionais or an Acesso a Informacao (LAI) request response, not the financial statements."
+    },
+    {
+      "iso3": "UKR",
+      "kind": "confirmed blank",
+      "document": "National Bank of Ukraine, Consolidated Financial Statements for the year ended 31 December 2024 (audited), accounting-policy section on monetary gold (p. 14), Note 6 'Funds and Deposits in Foreign Currency and Investment Metals' (p. 18) and Note 23 'Analysis of Financial Assets and Liabilities by Geographical Concentration Risk' (pp. 53-54)",
+      "source_url": "https://roundtable.bank.gov.ua/admin_uploads/article/NBU_2024_consolidated_fsu_eng.pdf",
+      "read": "PDF downloaded (8.4 MB) and the full extracted text (681,474 characters) grepped for 'gold', 'vault', 'storage', 'custod', 'non-resident bank', 'held with/at/in'. There is no separate note on monetary gold: monetary gold sits on the face of the consolidated statement of financial position and the only narrative is the accounting policy, which defines monetary gold as bullion and coins of not less than 995 fineness belonging to the NBU, and adds that 'Gold in foreign banks generating interest is reported as funds and deposits in foreign currency and investment metals' - foreign banks in the plural and unnamed. Note 6 discloses short-term deposits in gold of UAH 9,951 million at 31.12.2024 (UAH 5,932 million at 31.12.2023) and names no counterparty. Note 23, the only geographical table in the document, covers financial assets only and monetary gold is not a line in it, so the Ukraine / OECD / IMF / Other split cannot be read onto the gold. No custodian, and no statement that the holding is domestic.",
+      "note": "Vein for next round: the gold-on-deposit counterparties might be reachable through Note 24 (credit risk) rating bands in an earlier year's statements, but those give ratings rather than names in 2024."
+    },
+    {
+      "iso3": "ISL",
+      "kind": "confirmed blank",
+      "document": "Central Bank of Iceland, Annual Report 2022, financial statements, Note 14 'Gold' (p. 58 of the notes) plus the reserve-management chapter (p. 1150 of extracted text) and Note 39 'Gold price risk' (p. 79)",
+      "source_url": "https://www.cb.is/library/Skraarsafn---EN/Annual-Report/Annual%20Report%202022_03.01.24_vefur.pdf",
+      "read": "PDF downloaded (3.4 MB) and the full extracted text (381,289 characters) grepped for 'gold'. Note 14 is a four-line movement table: opening balance ISK 15,211,571 thousand, exchange rate difference ISK 1,314,359 thousand, closing balance ISK 16,525,930 thousand, and 'Gold holdings at the year-end, in ounces 63,797'. It names no custodian and no location. The gold-price-risk note adds only that the Bank owns about 64,000 ounces, 2% of the reserves, and that 'The Bank did not loan gold to other financial institutions during the year'. The reserve-management narrative states that deposits were 49% of reserves and 'the vast majority of them held in central banks' - that sentence is about foreign-currency deposits, not about the gold, and was not read onto the gold. Note 15.1 separately discloses deposits with foreign central banks, again not gold.",
+      "note": "Vein for next round: Iceland's gold is widely said in trade press to sit at the Bank of England, but nothing in the audited statements says so and the custodian's side is closed by design. The untried route is the Bank's Rules on Reserve Maintenance, referred to in the reserve-maintenance section, which was not opened."
+    },
+    {
+      "iso3": "ABW",
+      "kind": "confirmed blank",
+      "document": "Centrale Bank van Aruba, Condensed Financial Statements 2025 (audited by Ernst & Young), Note 1 'Gold' (p. 12 per the contents list)",
+      "source_url": "https://www.cbaruba.org/readBlob.do?id=19026",
+      "read": "PDF downloaded (1.07 MB) and the full extracted text grepped for 'gold', 'custod', 'vault', 'safekeep', 'bewaar', 'Bank of England', 'Federal Reserve', 'Settlements', 'abroad'. Note 1 gives the valuation basis (monthly market pricing from 1 January 2025, quarterly before that), the price per fine troy ounce, a quantity of 111,294.165 fine troy ounces unchanged year on year, and a two-line movement table. It states no location and names no custodian. The phrase 'the gold holdings at the CBA as of December 31, 2025' is a reference to the Bank's own holdings at a date and was deliberately not read as a storage location. Note 4 'Money in custody' is about third-party funds received in custody by the CBA, not about gold.",
+      "note": "Found in the same document and belonging to a different row, not filed here: Note 2.1 'Due from banks and other financial institutions' states the CBA's foreign-currency current accounts are held at De Nederlandsche Bank (DNB), the Bank of England (BOE), the Federal Reserve Bank of New York (FRNY), the Centrale Bank van Curacao en St. Maarten (CBCS) and other financial institutions in the U.S.A., with time deposits at a financial institution in Colombia. That is FX deposits, not gold custody, so it is listed in leads_not_opened rather than filed as a gold custodian."
+    },
+    {
+      "iso3": "KGZ",
+      "kind": "confirmed blank",
+      "document": "National Bank of the Kyrgyz Republic, Consolidated Financial Statements and independent auditor's report for the year ended 31 December 2024, Note 7 'Monetarnoe zoloto' (Monetary gold, p. 44) and accounting-policy Note 3(a)(i)",
+      "source_url": "https://www.nbkr.kg/DOC/30042025/000000000064466.pdf",
+      "read": "PDF downloaded (8.2 MB) and the full extracted text (922,498 characters) grepped for the Russian stem 'zolot'. Note 7 is the strongest near-miss of this slice: the single line of the table reads 'Zoloto na schetakh v inostrannykh bankakh i v slitkakh' (gold on accounts in foreign banks and in bars), 278,261,231 thousand som at 31.12.2024 against 127,413,613 thousand at 31.12.2023, and the note carries a sub-heading 'Kontsentratsiya zolota na depozitakh v inostrannykh bankakh' (concentration of gold on deposits in foreign banks) stating that at both dates the Group held gold on accounts at foreign banks rated A+ by Fitch Ratings Inc., and that balances at those banks exceeded 10 per cent of its own capital. So the document affirms that the monetary gold is at foreign banks and that the exposure is concentrated - and names not one of them. The accounting policy repeats the same unnamed formula in the consolidated and in the separate financial statements (two copies in the one PDF). No custodian name anywhere; also nothing stating any part is held domestically.",
+      "note": "Vein for next round: the NBKR discloses rating bands and concentration but not names, consistently across the consolidated and separate statements. The untried route is the NBKR's annual report (a different document from the statements) or its reserve-management regulation, neither of which was opened."
+    },
+    {
+      "iso3": "HKG",
+      "kind": "confirmed blank",
+      "document": "Hong Kong Monetary Authority, Annual Report 2025, 'The Exchange Fund' financial statements, Note 14 'Gold' (p. 222-223) and accounting-policy Note 2.10 'Gold'",
+      "source_url": "https://www.hkma.gov.hk/media/eng/publication-and-research/annual-report/2025/19_The_Exchange_Fund.pdf",
+      "read": "PDF downloaded (2.0 MB) and the full extracted text (373,237 characters) grepped for 'gold', 'custodian', 'custody', 'bullion', 'vault'. Note 14 is one table and one sentence: gold at fair value, 66,798 ounces (2024: 66,798 ounces), HK$2,246 million (2024: HK$1,355 million), and 'The fair value of gold is based on quoted price in an active market. It is classified under Level 1 of the fair value hierarchy.' No location, no custodian. Note 2.10 is two sentences of accounting policy. The only 'custodian' occurrences in the whole document are the 'Investment management and custodian fees' expense line, which names no firm and is not tied to gold.",
+      "note": "Confirmed blank for the Exchange Fund accounts, which are where Hong Kong's gold sits. The holding has been 66,798 ounces for years and the note has carried no location in this series."
+    },
+    {
+      "iso3": "SGP",
+      "kind": "confirmed blank",
+      "document": "Monetary Authority of Singapore, Financial Statements FY2025/2026, accounting-policy Note 3.9 'Gold'",
+      "source_url": "https://www.mas.gov.sg/-/media/mas-media-library/publications/annual-report/2026/mas-financial-statements-2025_2026.pdf",
+      "read": "WEAKER EVIDENCE THAN THE OTHER BLANKS, flagged deliberately. The mas.gov.sg host served an identical 853,817-byte HTML 'Maintenance' page to curl for both the FY2025/26 and the FY2021/22 statements URLs, so no raw PDF text was ever obtained and the file was not greppable. The same URL rendered through WebFetch, which reported that the only gold content is accounting-policy Note 3.9, to the effect that gold is a long-term investment stated at cost with provision for other-than-temporary diminution, that the balance sheet and cash flow statement carry a Gold line (S$5,658 million FY2026, S$7,597 million FY2025) with no note reference, and that nothing in the statements says where the gold is held or who holds it. Because round 74 caught the summariser inventing characterisations, the absence of a location is reported here as a summariser-mediated reading and NOT as a verified full-text grep. Treat as provisional.",
+      "note": "Next round: retry the same URL for the raw PDF when mas.gov.sg is out of maintenance, and grep it in full. If it confirms, this becomes a confirmed blank; Singapore's holding is large (MAS bought heavily from 2021) so the note is worth re-reading rather than taking from this summary."
+    },
+    {
+      "iso3": "NGA",
+      "kind": "vein closed",
+      "document": "Central Bank of Nigeria, Annual Report 2011, Appendix A & B - CBN Financial Statements & Report of the Independent Joint Auditors, Note 2 'External reserves' and accounting-policy section (d) 'External reserves'",
+      "source_url": "https://www.cbn.gov.ng/Out/2012/publications/reports/rsd/arp-2011/Appendix%20A%20&%20B%20-%20CBN%20Financial%20Statements%20&%20Report%20of%20the%20Independent%20Joint%20Auditors.pdf",
+      "read": "PDF downloaded (1.2 MB) and the full extracted text (83,971 characters) grepped for 'gold', 'custod', 'vault', 'safekeep', 'bullion', 'Bank of England', 'Federal Reserve'. Gold appears exactly twice. Policy (d) says only 'Gold reserves are held for long-term purposes and are not being traded. It is carried at cost.' Note 2 lists Gold at N19 million within external reserves of N5,426,974 million and breaks down convertible currencies into current accounts with foreign banks, time deposits, domiciliary accounts and other foreign securities - with no institution named and gold excluded from that breakdown. No custodian, no location. The word 'vault' occurs once, about provisions for the Bank's fleet and vaults, unrelated to gold.",
+      "note": "This is a 2011 document, the most recent CBN audited statements reachable this round: no search returned a direct PDF of the 2024 financial statements (only trade-press write-ups of them, which would be weak_source). The vein that is closed is the pre-2012 CBN statements; the 2024 statements, which cover a much larger gold position after CBN's recent purchases, were NOT reached and are the obvious target."
+    },
+    {
+      "iso3": "MLT",
+      "kind": "not reached",
+      "document": "Central Bank of Malta, Annual Report 2025, 'Part III - Financial Statements' / 'Full Report and Statement of Accounts' - identified but not opened",
+      "source_url": "https://www.centralbankmalta.org/annual-reports",
+      "read": "www.centralbankmalta.org sits behind a Cloudflare interstitial: curl on the ar-2024 landing page and on the 2025 balance-sheet PDF both returned the 'Just a moment...' challenge page (5,411 and 5,544 bytes), so neither was a document. WebFetch on the annual-reports index rendered the page but the tool returned link labels without href values, so the PDF path for Part III - Financial Statements is still unknown. The gold note was never read. Malta has not been tested.",
+      "note": "Next round: get the href values for 'Part III - Financial Statements' and 'Full Report and Statement of Accounts' off the annual-reports index (a raw HTML fetch, not a summary), then grep the PDF for 'Gold and gold receivables'."
+    },
+    {
+      "iso3": "PER",
+      "kind": "not reached",
+      "document": "Banco Central de Reserva del Peru, Memoria 2024 and Memoria 2025, chapter 7 (estados financieros) - identified but not opened",
+      "source_url": "https://www.bcrp.gob.pe/docs/Publicaciones/Memoria/2025/memoria-bcrp-2025-7.pdf",
+      "read": "Blocked, not blank. bcrp.gob.pe is behind Incapsula: curl returned a ~1 KB Incapsula challenge page for memoria-bcrp-2025-7.pdf and three separate attempts at memoria-bcrp-2024-7.pdf (1,054 / 1,166 / 1,158 bytes), and WebFetch on the same URL returned only the Incapsula meta tags and said the financial statements were not in the content. The gold note was never read, so Peru has not been tested on this row by this agent.",
+      "note": "This is the highest-value unreached target in the slice: Peru holds a substantial gold position and the BCRP memoria's gold note is the document the method points at. Next round needs a route past Incapsula on bcrp.gob.pe - the English series (eng-docs/Publications/Annual-Reports/<year>/annual-report-<year>-7.pdf) is on the same host and will probably behave the same, so try a different transport rather than a different path."
+    },
+    {
+      "iso3": "UZB",
+      "kind": "not reached",
+      "document": "Central Bank of the Republic of Uzbekistan, Annual Report 2024 (published as 'Annual-Report-2025_.pdf') read in full - it contains no audited financial statements, so the gold note does not exist in it",
+      "source_url": "https://cbu.uz/upload/medialibrary/f27/1pe2gj41x2s1qafmi548hnvzg4aoh87x/Annual-Report-2025_.pdf",
+      "read": "PDF downloaded (3.0 MB) and the full extracted text (618,534 characters) grepped for 'gold', 'Monetary gold', 'independent auditor', 'Notes to the', 'FINANCIAL STATEMENTS'. The document is narrative only: it reports that international reserves reached USD 41.2 billion of which gold accounted for USD 32.1 billion, that gold's share of reserves rose from 71 per cent, that physical volume was nearly unchanged while value rose USD 6.7 billion on price, and that the CBU bought gold from domestic producers and exported 100 tons. There is no balance sheet, no notes and no auditor's report in this file, and the phrase 'monetary gold' occurs once, in an export-statistics sentence. No location or custodian anywhere. The CBU's audited financial statements are a separate publication and were not found or opened.",
+      "note": "Uzbekistan is untested on the method. Next round: find the CBU's separate audited financial statements (not the annual report) and read the monetary-gold note. The 100-tons-exported and buy-from-domestic-producers facts suggest refining and sale channels that may themselves name counterparties, but that is a different row."
+    },
+    {
+      "iso3": "CYP",
+      "kind": "not reached",
+      "document": "Central Bank of Cyprus annual report / financial statements - not located",
+      "source_url": null,
+      "read": "One search spent. It returned only Cyprus trade press on the CBC's monthly balance-sheet totals (cyprus-mail, cbn.com.cy) and other banks' statements; no centralbank.cy annual report or financial statements PDF came back, and the brief forbids constructing a URL. The gold note was never opened.",
+      "note": "Next round: fetch the CBC's own publications index directly rather than searching by country name, then the gold-and-gold-receivables note. Cyprus holds about 13.9 tonnes."
+    },
+    {
+      "iso3": "EGY",
+      "kind": "not reached",
+      "document": "Central Bank of Egypt annual report / financial statements - not located",
+      "source_url": null,
+      "read": "One search spent. It returned commercial-bank statements (eg-bank.com, ca-egypt.com), a centralbanking.com record of the 2000-2001 annual report behind a paywall, and trade press on Egypt's reserves and the 2024 gold increase. No CBE annual report or audited financial statements PDF came back. The gold note was never opened.",
+      "note": "Next round: go to the CBE's own publications index, and expect the Arabic edition - if the PDF is Arabic, normalise with unicodedata.normalize('NFKC', text) and strip bidi marks before grepping, per the common brief."
+    },
+    {
+      "iso3": "PRY",
+      "kind": "not reached",
+      "document": "Banco Central del Paraguay estados financieros auditados - not located",
+      "source_url": null,
+      "read": "Two searches spent, both of which returned Paraguayan commercial banks' balances (Atlas, GNB, ueno, Familiar, Citibank Paraguay) and contrataciones.gov.py procurement files, plus one unrelated Banco Central de Nicaragua statements PDF. Nothing from bcp.gov.py's statements series came back. The gold note was never opened.",
+      "note": "Next round: fetch the BCP's own transparency/estados financieros index directly; country-name searching is useless here because the commercial banks dominate the results."
+    },
+    {
+      "iso3": "BDI",
+      "kind": "not reached",
+      "document": "Banque de la Republique du Burundi, etats financiers - never opened",
+      "source_url": null,
+      "read": "No search or fetch spent on Burundi. The budget went on the places that publish full audited statements (BRA, UKR, KGZ, HKG, ISL, ABW, NGA, SGP) and on the three hosts that blocked (PER, MLT, SGP). Burundi has not been tested on this row.",
+      "note": "Next round: the BRB publishes 'Etats financiers' and a 'Rapport annuel' in French; the gold note would be 'Or' or 'Or monetaire'."
+    },
+    {
+      "iso3": "LBY",
+      "kind": "not reached",
+      "document": "Central Bank of Libya, audited financial statements - never opened",
+      "source_url": null,
+      "read": "No search or fetch spent on Libya. Not tested. Note that Libya does not appear in agents/searched.json at all, on any row, so nothing has ever been recorded against it there.",
+      "note": "Next round: the CBL has published audited statements (Deloitte-era) covering the period after the 2011 split, and its gold is large (about 117 tonnes per the WGC). Expect Arabic and an institution split between Tripoli and Benghazi administrations - a location claim would need to say which institution's statements it came from."
+    },
+    {
+      "iso3": "SYR",
+      "kind": "not reached",
+      "document": "Central Bank of Syria, financial statements - never opened",
+      "source_url": null,
+      "read": "No search or fetch spent on Syria. Not tested on this row.",
+      "note": "Next round: the CBS has not published audited financial statements in the ordinary way for years, so this is likely to end as a vein closed rather than a record. Any claim about Syrian gold must not be taken from sanctions commentary or trade press without the bank's own document, and nothing may be inferred from the country's alliances."
+    }
+  ],
+  "checked_not_in_assignment": [
+    {
+      "note": "No country outside the 17 was searched. Before starting, every one of ABW BDI BRA CYP EGY HKG ISL KGZ LBY MLT NGA PER PRY SGP SYR UKR UZB was looked up in agents/work/r75/have_gold.json (59 keys) and none of the 17 is present there, so none is a duplicate. agents/searched.json was also checked per country: it has entries for 14 of the 17 (not LBY, PRY, UKR) and not one of those entries carries a gold-custodian row, so all 17 were genuinely untried on this row. No country name was written from prose."
+    },
+    {
+      "entity": "De Nederlandsche Bank, Bank of England, Federal Reserve Bank of New York, Centrale Bank van Curacao en St. Maarten",
+      "note": "party_names.json was grepped before any entity was written. The map already carries the spellings 'Bank of England', 'Federal Reserve Bank of New York', 'Bank for International Settlements', 'Banque de France' and 'Swiss National Bank', and uses the pattern '<Bank>'s own vault, <City>' for domestic holdings (e.g. 'Bank of Mongolia's own vault, Ulaanbaatar', 'Banque du Liban's own vaults, Beirut'). No entity was filed this round, so no new spelling enters the map."
+    }
+  ],
+  "leads_not_opened": [
+    {
+      "iso3": "ABW",
+      "row": "reserve deposits / reserve_managers, not gold custodians",
+      "lead": "Centrale Bank van Aruba, Condensed Financial Statements 2025, Note 2.1 'Due from banks and other financial institutions' names the institutions holding the CBA's foreign-currency current accounts: De Nederlandsche Bank (DNB), the Bank of England (BOE), the Federal Reserve Bank of New York (FRNY), the Centrale Bank van Curacao en St. Maarten (CBCS), other financial institutions in the U.S.A., and time deposits at a financial institution in Colombia. Same document, already downloaded and greppable.",
+      "source_url": "https://www.cbaruba.org/readBlob.do?id=19026",
+      "why_not_filed": "This is foreign-exchange deposits, not gold custody. The gold row's relation is 'holds its gold reserves in custody' and Note 1 (Gold) says nothing about location, so filing BOE or FRNY here would be exactly the inference the assignment forbids."
+    },
+    {
+      "iso3": "ABW",
+      "row": "audit",
+      "lead": "The same 2025 condensed financial statements carry an independent auditor's report signed for Ernst & Young, Aruba (contact block on the report's letterhead).",
+      "source_url": "https://www.cbaruba.org/readBlob.do?id=19026",
+      "why_not_filed": "Out of row; it is recorded here so a later audit round does not have to re-fetch the document."
+    },
+    {
+      "iso3": "KGZ",
+      "row": "gold custodians",
+      "lead": "NBKR Note 7 states the monetary gold sits on accounts at foreign banks rated A+ by Fitch and that those balances exceed 10 per cent of the Bank's own capital. A single A+ rated counterparty bank holding the great majority of Kyrgyz monetary gold is therefore disclosed in all but name. The NBKR's own annual report (a separate publication from the statements) and its reserve-management regulation were not opened.",
+      "source_url": "https://www.nbkr.kg/DOC/30042025/000000000064466.pdf",
+      "why_not_filed": "No name on the page. Deducing which A+ bank it is would be fabrication."
+    },
+    {
+      "iso3": "SGP",
+      "row": "gold custodians",
+      "lead": "mas.gov.sg served an identical 853,817-byte maintenance page to curl for two different financial-statements URLs. The documents exist and render through WebFetch; retry for raw PDF text when the host recovers.",
+      "source_url": "https://www.mas.gov.sg/-/media/mas-media-library/publications/annual-report/2026/mas-financial-statements-2025_2026.pdf",
+      "why_not_filed": "The only reading of Note 3.9 obtained this round came through a fetch summary, which the assignment says is not evidence."
+    },
+    {
+      "iso3": "NGA",
+      "row": "gold custodians",
+      "lead": "The CBN's 2024 audited financial statements were released around 2 May 2025 and were covered in detail by Nigerian trade press (nairametrics, Guardian Nigeria, TheCable), which reported the gold revaluation gain. The audited PDF itself was not returned by any search; cbn.gov.ng hosts its statements under /Out/<year>/... paths.",
+      "source_url": "https://nairametrics.com/2025/05/02/cbns-gold-reserves-gain-over-n1-trillion-in-2024-as-prices-hit-record-levels/",
+      "why_not_filed": "Trade press was not opened and would be weak_source at best; and none of the headlines suggests the articles state a custodian or a location, which is the only fact this row needs."
+    }
+  ]
+}

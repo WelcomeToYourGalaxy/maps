@@ -1,0 +1,201 @@
+{
+  "records": [
+    {
+      "cb_iso3": "USA",
+      "entity": "United States Mint deep-storage vault, Fort Knox, KY",
+      "name_as_stated": "Mint Held Gold - Deep Storage / Gold Bullion / Fort Knox, KY",
+      "entity_type": "state mint",
+      "entity_hq_city": "Fort Knox",
+      "entity_hq_iso3": "USA",
+      "relation": "holds its gold reserves in custody",
+      "summary": "The largest single block of United States gold, 147,341,858.382 fine troy ounces, sits in deep storage in the US Mint's depository at Fort Knox, Kentucky, on the Treasury's own facility-by-facility report.",
+      "detail": "The US is a split case: the gold itself belongs to the Treasury, not to the Federal Reserve, which holds gold certificates against it. The Treasury's Status Report of U.S. Government Gold Reserve, published as a monthly dataset by the Bureau of the Fiscal Service, lists holdings by facility. The row for 31 October 2026 gives facility 'Mint Held Gold - Deep Storage', form 'Gold Bullion', location 'Fort Knox, KY', 147,341,858.382 fine troy ounces, book value USD 6,221,097,412.78. The record date 2026-10-31 is the record_date field in that row.",
+      "quote": "Mint Held Gold - Deep Storage",
+      "as_of": "2026-10-31",
+      "source_url": "https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/gold_reserve?filter=record_date:eq:2026-10-31",
+      "source_note": "Raw JSON from the Treasury's own API for the dataset 'Status Report of U.S. Government Gold Reserve' (human-facing page: https://fiscaldata.treasury.gov/datasets/status-report-government-gold-reserve/u-s-treasury-owned-gold). Values read from the raw response, not from a fetch summary.",
+      "weak_source": false
+    },
+    {
+      "cb_iso3": "USA",
+      "entity": "United States Mint deep-storage vault, West Point, NY",
+      "name_as_stated": "Mint Held Gold - Deep Storage / Gold Bullion / West Point, NY",
+      "entity_type": "state mint",
+      "entity_hq_city": "West Point",
+      "entity_hq_iso3": "USA",
+      "relation": "holds its gold reserves in custody",
+      "summary": "A second deep-storage block of United States gold, 54,067,331.379 fine troy ounces, is held at the US Mint facility at West Point, New York, according to the Treasury's facility-level status report.",
+      "detail": "Same document and same reporting date as the Fort Knox row. The Treasury's Status Report of U.S. Government Gold Reserve for 31 October 2026 carries the row facility 'Mint Held Gold - Deep Storage', form 'Gold Bullion', location 'West Point, NY', 54,067,331.379 fine troy ounces, book value USD 2,282,841,677.17. The gold is Treasury-owned; the Federal Reserve holds gold certificates against the stock rather than the metal.",
+      "quote": "West Point, NY",
+      "as_of": "2026-10-31",
+      "source_url": "https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/gold_reserve?filter=record_date:eq:2026-10-31",
+      "source_note": "Raw JSON from the Treasury's own API for 'Status Report of U.S. Government Gold Reserve'; human-facing page https://fiscaldata.treasury.gov/datasets/status-report-government-gold-reserve/u-s-treasury-owned-gold",
+      "weak_source": false
+    },
+    {
+      "cb_iso3": "USA",
+      "entity": "United States Mint deep-storage vault, Denver, CO",
+      "name_as_stated": "Mint Held Gold - Deep Storage / Gold Bullion / Denver, CO",
+      "entity_type": "state mint",
+      "entity_hq_city": "Denver",
+      "entity_hq_iso3": "USA",
+      "relation": "holds its gold reserves in custody",
+      "summary": "The third deep-storage block of United States gold, 43,853,707.279 fine troy ounces, is held at the US Mint facility in Denver, Colorado, on the Treasury's own facility-level report.",
+      "detail": "Same document and date as the Fort Knox and West Point rows. The Treasury's Status Report of U.S. Government Gold Reserve for 31 October 2026 carries facility 'Mint Held Gold - Deep Storage', form 'Gold Bullion', location 'Denver, CO', 43,853,707.279 fine troy ounces, book value USD 1,851,599,995.81. A fourth Mint row, 'Mint Held Gold - Working Stock', 2,783,218.656 ounces of coins and blanks, gives its location only as 'All Locations- Coins, blanks, miscellaneous' and so names no site.",
+      "quote": "Denver, CO",
+      "as_of": "2026-10-31",
+      "source_url": "https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/gold_reserve?filter=record_date:eq:2026-10-31",
+      "source_note": "Raw JSON from the Treasury's own API for 'Status Report of U.S. Government Gold Reserve'; human-facing page https://fiscaldata.treasury.gov/datasets/status-report-government-gold-reserve/u-s-treasury-owned-gold",
+      "weak_source": false
+    },
+    {
+      "cb_iso3": "USA",
+      "entity": "Federal Reserve Bank of New York vault",
+      "name_as_stated": "Federal Reserve Bank Held Gold / Federal Reserve Banks - NY Vault",
+      "entity_type": "central bank",
+      "entity_hq_city": "New York",
+      "entity_hq_iso3": "USA",
+      "relation": "holds its gold reserves in custody",
+      "summary": "The portion of the United States gold stock that is not in Mint deep storage sits in the Federal Reserve Bank of New York's vault: 13,376,987.724 fine troy ounces of bullion plus 73,452.066 ounces of gold coins.",
+      "detail": "The Treasury's Status Report of U.S. Government Gold Reserve for 31 October 2026 splits its rows into 'Mint Held Gold' and 'Federal Reserve Bank Held Gold'. Under the latter, location 'Federal Reserve Banks - NY Vault' carries 13,376,987.724 fine troy ounces of gold bullion (book value USD 564,805,851.07) and 73,452.066 ounces of gold coins (USD 3,101,307.82). Two further Fed rows, location 'Federal Reserve Banks - Display', hold 1,993.321 ounces of bullion and 377.434 ounces of coins across unspecified Reserve Banks. The metal remains Treasury property; the report is the depositor's own accounting of where it is kept. TWO CURATORIAL NOTES. First, the entity is named as the VAULT rather than as the institution because merge_links.py refuses a domestic gold-custody record whose entity name contains no place word, on the ground that the popup would otherwise read as a bank holding its gold in custody of itself. That guard is right for this case: the Federal Reserve Bank of New York is part of the same central banking system as the depositor, so only the vault is the place. A second node will therefore exist alongside the institution node 'Federal Reserve Bank of New York', which is the custodian nine other countries use. THAT IS DELIBERATE AND SHOULD NOT BE FOLDED: one node is the NY Fed acting as custodian for foreign central banks, the other is the vault where United States gold sits. Expect dup_parties.py to flag the pair as a subset match and leave it. Second, the United States is a genuinely odd case on this row and the owner may want to render it differently: the metal is owned by the Treasury, not by the Federal Reserve, which holds gold certificates against it. So the depositor here is the state rather than the central bank, which is not true of any other record on this row.",
+      "quote": "Federal Reserve Banks - NY Vault",
+      "as_of": "2026-10-31",
+      "source_url": "https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/gold_reserve?filter=record_date:eq:2026-10-31",
+      "source_note": "Raw JSON from the Treasury's own API for 'Status Report of U.S. Government Gold Reserve'; human-facing page https://fiscaldata.treasury.gov/datasets/status-report-government-gold-reserve/u-s-treasury-owned-gold. Entity spelling matched to the existing map party 'Federal Reserve Bank of New York' in party_names.json.",
+      "weak_source": false
+    },
+    {
+      "cb_iso3": "KAZ",
+      "entity": "National Bank of Kazakhstan's own vault",
+      "name_as_stated": "Золото в слитках в хранилище НБК",
+      "entity_type": "central bank's own vault",
+      "entity_hq_city": null,
+      "entity_hq_iso3": "KAZ",
+      "relation": "holds its gold reserves in custody",
+      "summary": "The National Bank of Kazakhstan's audited 2025 consolidated accounts split its gold by where it sits, and the largest line, 14,239,574,101 thousand tenge, is gold bars in the National Bank's own vault.",
+      "detail": "National Bank of the Republic of Kazakhstan, Consolidated Financial Statements for the year ended 31 December 2025, Note 14 'ЗОЛОТО' (Gold), pages 97-98. The note's table has three blocks: 'Золото в слитках в хранилище НБК' (gold bars in the NBK's vault) 14,239,574,101 thousand tenge at 31 December 2025 against 5,208,748,898 a year earlier; gold on deposit with foreign banks, 1,025,128,196; and gold in the accounts and vaults of foreign banks, 8,858,285,834; total 24,122,988,131. The note names no city for the NBK vault and names none of the foreign banks, grading them only by credit rating. Figures read from the raw pdftotext extraction of the PDF, not from a fetch summary.",
+      "quote": "Золото в слитках в хранилище НБК",
+      "as_of": "2025-12-31",
+      "source_url": "https://nationalbank.kz/file/download/130762",
+      "source_note": "PDF, 211 pages, 3,013,106 bytes, downloaded and extracted in full. Cover reads 'НАЦИОНАЛЬНЫЙ БАНК РЕСПУБЛИКИ КАЗАХСТАН / КОНСОЛИДИРОВАННАЯ ФИНАНСОВАЯ ОТЧЕТНОСТЬ ЗА ГОД, ЗАКОНЧИВШИЙСЯ 31 ДЕКАБРЯ 2025 ГОДА'. URL came from a web search result, not constructed.",
+      "weak_source": false
+    }
+  ],
+  "blanks": [
+    {
+      "iso3": "KAZ",
+      "kind": "vein closed",
+      "read": "KAZ converted on the domestic half but is a documented blank on the foreign half. National Bank of the Republic of Kazakhstan, Consolidated Financial Statements for the year ended 31 December 2025, Note 14 'ЗОЛОТО' (pp. 97-98, read in full): 1,025,128,196 thousand tenge of gold sits on deposit with foreign banks and 8,858,285,834 thousand tenge in the accounts and vaults of foreign banks, but the note identifies those banks only by credit-rating band (AA-, A- to A+, BBB+, AAA). The continuation page adds that at 31 December 2025 the gold on the accounts of two counterparties each exceeded 10% of the NBK's equity, and still does not name them. The only institution named anywhere in the note is the London Bullion Market Association, and that is the price fixing used for valuation, not a custodian. The note also names no city for the NBK's own vault. Route for a later round: the NBK's separate (non-consolidated) statements, or its gold and foreign-exchange asset management reports."
+    },
+    {
+      "iso3": "MYS",
+      "kind": "confirmed blank",
+      "read": "Bank Negara Malaysia Annual Report 2024, 'Our Finances' chapter (ar2024_en_ch4.pdf, 4,145,875 bytes, downloaded and extracted in full, 30,858 characters). Note 3 'Gold and Foreign Financial Assets' gives Gold RM14,556 million (2023: RM11,884 million) as one line beside Securities, Deposits and bank balances, and Others, and states nothing about where the gold is. Accounting policy note 2.5 'Gold' says only that gold is stated at fair value with unrealised gains and losses taken to the Risk Reserve. The words custody, custodian, safekeeping, vault, London, Bank of England and Settlements do not occur anywhere in the financial statements chapter. BNM publishes no location for its gold in this document."
+    },
+    {
+      "iso3": "TTO",
+      "kind": "confirmed blank",
+      "read": "Central Bank of Trinidad and Tobago Annual Report 2025 (cbtt-annual-report-2025-revised-08.05.26-may-2026.pdf, 13,078,758 bytes, downloaded and extracted in full, 291,595 characters). Accounting policy note 's. Gold holdings' covers only valuation: gold at year-end market price, a single gold valuation in Trinidad and Tobago dollars per troy ounce, gains or losses on gold 'held by the Bank' recognised only when realised. Gold then appears only as a line in the fair-value hierarchy table and in the revaluation-reserve movement table, and in the statistical appendix column 'Gold Reserves'. Every occurrence of the word gold in the document was read; none gives a location, an institution or a country. The words custodian and vault occur in the document but never in connection with gold (custodian pricing of investments; a currency-processing machine in the Bank's vault)."
+    },
+    {
+      "iso3": "IDN",
+      "kind": "vein closed",
+      "read": "Wrong document, and worth recording so the next round does not repeat it. 'Laporan Kelembagaan Bank Indonesia 2025' (bi.go.id/id/publikasi/laporan/Documents/LKBI-2025.pdf, 7,916,528 bytes, downloaded and extracted in full, 464,907 characters) is the institutional report, not the financial statements. It carries only 'Tabel 1. LAPORAN POSISI KEUANGAN Per 31 Desember 2025 dan 31 Desember 2024', a summary balance sheet whose asset line 1 is 'Emas' at Rp198,350,642 million (2024: Rp106,555,642 million), with no notes at all. The report itself states that the audited document is the separate 'Laporan Keuangan Tahunan Bank Indonesia' (LKTBI), which received an unqualified (Wajar Tanpa Pengecualian) opinion from BPK RI for 2025, the 23rd consecutive year. No custody or location wording appears anywhere. Route for a later round: the LKTBI PDF itself, published at bi.go.id/id/publikasi/laporan under 'Laporan Keuangan Tahunan BI'; a 2022 edition exists at Documents/Laporan-Keuangan-Tahunan-BI-2022.pdf. Note that bi.go.id refuses curl's default HTTP/2 request with an empty reply and serves the file normally with --http1.1."
+    },
+    {
+      "iso3": "ARE",
+      "kind": "vein closed",
+      "read": "Central Bank of the UAE Annual Report 2024 (centralbank.ae/media/ymgnwy3x/2024-en-annualreport.pdf, 8,109,017 bytes, downloaded and extracted in full, 203,840 characters). The report carries a 'Financial Highlights' summary balance sheet only, with an asset line 'Gold bullion' at AED 22,982 million (2023: AED 18,147 million) and no notes to the financial statements. Every one of the seven occurrences of the word gold was read: the others are commemorative gold coin issues and commodity-market commentary. No location, institution or country is given for the bullion. Route for a later round: the CBUAE's separate audited financial statements with notes, which this annual report does not contain. The 2025 annual report URL returned by search, centralbank.ae/media/pjimtxfq/annual-report-2025-en.pdf, 404s both with and without the www host."
+    },
+    {
+      "iso3": "CHN",
+      "kind": "not reached",
+      "read": "No PBoC financial-statement document was opened, so China has not actually been tested on this row. A single web search was not spent on it. The only PBoC document available locally was an unofficial English translation of the Law of the People's Republic of China on the People's Bank of China, which is a statute and not an audited statement, and the assignment's standing instruction is not to infer. Route for a later round: whether the PBoC publishes audited annual financial statements with notes at all is the first thing to settle; its public reporting is largely the monthly balance-sheet statistics ('Balance Sheet of Monetary Authority') on pbc.gov.cn, which have no location breakdown. Treat as untested, not as a negative."
+    },
+    {
+      "iso3": "SAU",
+      "kind": "not reached",
+      "read": "No SAMA financial-statement document was opened. Two web searches were spent and both returned almost entirely commercial-bank annual reports and Argaam/Zawya coverage of SAMA's monthly asset totals. The one SAMA-hosted annual report URL that search returned, sama.gov.sa/en-US/EconomicReports/AnnualReport/Sixtieth_Annual_Report-EN.pdf, returns HTTP 404 (717 bytes of HTML) over HTTP/1.1 and an empty reply over HTTP/2. Route for a later round: fetch SAMA's own publications index (sama.gov.sa/en-US/EconomicReports/Pages/report.aspx?cid=55 was returned by search and not opened) rather than searching by country name, per the common brief's rule. Untested, not a negative."
+    },
+    {
+      "iso3": "PAK",
+      "kind": "not reached",
+      "read": "The State Bank of Pakistan's 'Annual Accounts of State Bank of Pakistan' PDF (sbp.org.pk/publications/anu_stats/2020/Part-2/08-Annual Accounts of State Bank of Pakistan.pdf), returned by web search, was requested three times and returned HTTP 403 with a 199-byte and then a 5,187-byte HTML body, both over HTTP/2 and over HTTP/1.1 with a generic user agent. The brief forbids spoofing a browser user agent, so the file was not obtained and the gold note was never read. Route for a later round: try WebFetch rather than curl on the same path, or the consolidated/unconsolidated financial statements under sbp.org.pk/Reports/Annual/FS/, several editions of which web search returned. Untested, not a negative."
+    },
+    {
+      "iso3": "PNG",
+      "kind": "not reached",
+      "read": "No Bank of Papua New Guinea financial statements were opened. A locally available copy of the Auditor-General of Papua New Guinea's 'Part IV Report of the Auditor-General 2024 on the Accounts of Public Authorities and Statutory Bodies' (4,260,612 bytes, extracted in full) was grepped: its Bank of Papua New Guinea section is an audit-opinion summary and its only reference to gold is the statutory statement that the Bank is to 'manage the gold, foreign exchange and other international reserves of PNG'. That is a mechanism, not a location, and the common brief rules it out as a record. Route for a later round: BPNG's own annual report financial statements at bankpng.gov.pg."
+    },
+    {
+      "iso3": "BIH",
+      "kind": "not reached",
+      "read": "One web search was spent and returned no CBBH-hosted financial statements, only news coverage (biznis.rs on the CBBH's monetary gold reserves reaching 3.5 tonnes, n1info on 2025 results) and a CBBH press-release URL (cbbh.ba/press/ShowNews/1539) that was not opened. No CBBH annual report or financial statements PDF was fetched, so the gold note was never read. Route for a later round: the CBBH annual report financial statements on cbbh.ba, fetched from the bank's own publications index rather than by search."
+    },
+    {
+      "iso3": "DZA",
+      "kind": "not reached",
+      "read": "No search or fetch was spent on Algeria. The Banque d'Algerie's annual report (rapport annuel) and its bulletins on bank-of-algeria.dz are the untried route. Untested."
+    },
+    {
+      "iso3": "FJI",
+      "kind": "not reached",
+      "read": "No search or fetch was spent on Fiji's gold note. A locally available copy of the Reserve Bank of Fiji Act (Cap. 210, Rev. 1985) was inspected only far enough to confirm it is the statute and not a financial statement; a statute naming a power is not a record under the common brief. Route for a later round: the RBF annual report financial statements on rbf.gov.fj. Untested."
+    },
+    {
+      "iso3": "KWT",
+      "kind": "not reached",
+      "read": "No search or fetch was spent on Kuwait. The Central Bank of Kuwait's annual report financial statements on cbk.gov.kw are the untried route. Untested."
+    },
+    {
+      "iso3": "MAR",
+      "kind": "not reached",
+      "read": "No search or fetch was spent on Morocco. Bank Al-Maghrib's 'Rapport annuel' and its separate 'Etats financiers' / comptes annuels on bkam.ma are the untried route, and Bank Al-Maghrib does publish full notes to its financial statements. Untested."
+    },
+    {
+      "iso3": "SUR",
+      "kind": "not reached",
+      "read": "No search or fetch was spent on Suriname. The Centrale Bank van Suriname's jaarverslag and audited annual accounts on cbvs.sr are the untried route. Untested."
+    }
+  ],
+  "checked_not_in_assignment": [
+    {
+      "iso3": "ALL_16",
+      "note": "Every one of the 16 assigned codes (ARE BIH CHN DZA FJI IDN KAZ KWT MAR MYS PAK PNG SAU SUR TTO USA) was looked up in agents/work/r75/have_gold.json before any searching: none of the 16 appears in that file, so none is a duplicate on this row. agents/searched.json was also checked for all 16: it has entries for several of them on other rows (corruption_cases, revolving_door, reserve_managers, governor_removals, unknown) but no gold_custodians entry for any of the 16, so all were genuinely untried on this row. No country outside the assignment was added."
+    }
+  ],
+  "leads_not_opened": [
+    {
+      "iso3": "IDN",
+      "lead": "Bank Indonesia's audited 'Laporan Keuangan Tahunan Bank Indonesia' (LKTBI), the separate document with notes, published under bi.go.id/id/publikasi/laporan; a 2022 edition is at .../Documents/Laporan-Keuangan-Tahunan-BI-2022.pdf. Use curl --http1.1; bi.go.id gives an empty reply to curl's default HTTP/2."
+    },
+    {
+      "iso3": "ARE",
+      "lead": "The CBUAE's separate audited financial statements with notes. The 2024 annual report contains only a summary balance sheet. An Arabic 2025 annual report press PDF exists at centralbank.ae/media/arvpnoyu/the-uae-central-bank-issues-its-2025-annual-report-ar.pdf (not opened)."
+    },
+    {
+      "iso3": "SAU",
+      "lead": "SAMA's own publications index at sama.gov.sa/en-US/Publications/EconomicReports/Pages/report.aspx?cid=55 (returned by search, not opened). Country-name searches return only commercial banks."
+    },
+    {
+      "iso3": "PAK",
+      "lead": "SBP annual accounts: sbp.org.pk 403s to curl. Try WebFetch on sbp.org.pk/publications/anu_stats/2020/Part-2/08-Annual Accounts of State Bank of Pakistan.pdf or on sbp.org.pk/Reports/Annual/FS/FY11/Cons-Financial-Statements-FY-2011-12.pdf and its later editions."
+    },
+    {
+      "iso3": "KAZ",
+      "lead": "The NBK's non-consolidated financial statements and its gold-and-foreign-exchange asset management reporting, to try to put names to the foreign banks in Note 14 and a city to the NBK vault. nationalbank.kz serves files by numeric id (file/download/130762 is the 2025 consolidated statements); 101825, 113064 and 107289 were also returned by search and not opened and are likely earlier editions."
+    },
+    {
+      "iso3": "BIH",
+      "lead": "cbbh.ba/press/ShowNews/1539 (CBBH press item returned by a search for its monetary gold) and the CBBH annual report financial statements."
+    },
+    {
+      "iso3": "TTO",
+      "lead": "Earlier CBTT annual reports (2010-2024 PDFs all available under central-bank.org.tt) in case an older gold note carried a location that the 2025 note dropped."
+    },
+    {
+      "iso3": "USA",
+      "lead": "The legacy monthly HTML editions of the Status Report of U.S. Government Gold Reserve at fiscal.treasury.gov/reports-statements/gold-report/ (e.g. 15-04.html) if the curator would rather cite an HTML page than the JSON API. Not opened; the API response was used instead because it states the facility rows in plain text."
+    }
+  ]
+}
