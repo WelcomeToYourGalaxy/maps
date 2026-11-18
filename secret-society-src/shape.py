@@ -119,5 +119,8 @@ if 'rounds' in sys.argv:
     print('  r9 +210 closed 14.3 - composition-locked to the deficit cells,')
     print('  68 milli-points a case against r7\'s 24 and r8\'s negative;')
     print('  r10 +146 closed 6.4, with corp re-entered and now at target.')
+    print('  r11 +161 closed 3.8 at 24 milli-points a case - the decay is real;')
+    print('  three of the five deficit cells measured at their documented limit:')
+    print('  crime->security (321 held), crime->cabinet, movement->company.')
     print('  The per-round yield decays as the over classes dilute: a 210-case')
     print('  round closes about 8.0 now, then 4.6, 3.8, 3.3, 2.7, then under 1.2.')
