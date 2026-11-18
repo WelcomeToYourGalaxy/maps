@@ -214,6 +214,19 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 #mself{min-width:0;padding:4px 96px 0 0;font-size:11.5px;line-height:1.5;color:var(--faint);padding-top:2px}
 #mself a{color:var(--accent-hi);text-decoration:none}
 #mself a:hover{text-decoration:underline}
+/* The right-hand column holds the place's own emails, numbers and
+   register record. Where the record has none of those it was still
+   taking two thirds of the row, which squeezed the place name, the
+   breadcrumb and the office count into a 240px gutter and wrapped
+   them over four lines for no reason. With nothing beside it the row
+   is a single column and the text spans the box. */
+#mself:empty{display:none}
+#mtitlerow.noself{grid-template-columns:minmax(0,1fr)}
+/* only the title's own line runs under the back/forward/close buttons,
+   which sit 14px from the top and are 28px tall; the breadcrumb and the
+   counts below them clear that line and take the full width */
+#mtitlerow.noself #mtitle{padding-right:150px}
+#mtitlerow.noself #crumbs{padding-right:0}
 #mself .msl{display:block}
 #mself .msl b{color:var(--dim);font-weight:600;margin-right:4px}
 #mself details summary{cursor:pointer;color:var(--accent-hi);display:inline}
@@ -290,9 +303,15 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   margin:13px 0 6px;font-weight:600}
 .rfam:first-of-type{margin-top:4px}
 /* a step of the lawmaking sequence with no office recorded for the place */
-.krow.blank{opacity:.78;cursor:default;background:transparent;border-style:dashed}
+/* The dashed border still says the record holds no office of this
+   kind here, but the row opens a page like any other: the methods
+   that reach this kind of office do not depend on the office's name,
+   and a dead row was the one step of the sequence a reader could not
+   follow. */
+.krow.blank{opacity:.78;background:transparent;border-style:dashed}
+.krow.blank:hover{opacity:1}
 .krow.blank .rct{color:var(--stone)}
-.krow.blank .rhead{cursor:default}
+
 /* where the method is actually carried out */
 .doat dd{display:flex;flex-direction:column;gap:5px}
 .doat dd a{display:block;font-size:11.6px;line-height:1.45;color:var(--accent-hi);
@@ -736,6 +755,10 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   border:1px solid var(--line);border-radius:4px;padding:1px 6px}
 
 .pgblank{font-size:11px;line-height:1.5;color:var(--faint);margin-top:9px}
+/* On a kind-of-office page with no office recorded this note is the
+   page's own prose rather than a footnote under a list, so it is set
+   at reading size. */
+.pg-kind .pgblank{font-size:12.3px;line-height:1.62;color:var(--dim);margin:10px 0 2px}
 .pgblank b{color:var(--dim)}
 
 /* A collapsed row is one line: the name, where it comes in the making
@@ -4888,13 +4911,51 @@ function kindRow(L,k,ents,i){
    at a glance into a page of small print. */
 function kindRowBlank(L,k){
   const st=LAWSTAGE[k]||{};
-  return '<div class="route krow blank"><div class="rhead"><div class="rmain">'+
+  return '<button type="button" class="route krow blank" data-kind="'+esc(k)+'" '+
+    'onclick="openKind(\''+esc(k)+'\')"><div class="rhead"><div class="rmain">'+
     '<div class="rnm">'+esc(KINDLABEL[k]||k)+
       (LAWKINDS.has(k)?'<i class="lawdot" title="a route to a law"></i>':'')+
       (st.stage?'<span class="rstage">'+esc(st.stage)+'</span>':'')+
       '<span class="rct">not in the record here</span></div>'+
     '<div class="rwhen">'+glossy(st.one||'')+'</div>'+
-    '</div></div></div>';
+    '</div><div class="rtog">\u203a</div></div></button>';
+}
+
+/* Every method that reaches this kind of office, grouped the way an
+   office page groups them.
+
+   An office page builds this list for one named office. A kind of
+   office with nothing recorded for the place has no name to build it
+   from, and the list barely changes without one: who may file, what it
+   costs, how long it takes and what stops it are properties of the
+   method, not of the office, and the one line that does depend on the
+   office — where to do it — falls back to a search for this place. */
+function kindMethods(k, o){
+  const pick=routesFor(k);
+  const rts=pick.ids.map(id=>ROUTES.find(x=>x.id===id)).filter(Boolean);
+  if(!rts.length) return '';
+  let h='<div class="sec">How to Reach Them</div>';
+  if(pick.off){
+    h+='<p class="offleaf">None of these is a way of doing what you said you wanted. They '+
+       'are listed because this kind of office sits over your place and what it can be '+
+       'contacted about is worth knowing. For what you asked, go back and open one of the '+
+       'other steps.</p>';
+  }
+  const fams=[];
+  rts.forEach(rt=>{ if(fams.indexOf(rt.fam)<0) fams.push(rt.fam); });
+  fams.sort((a,b)=>{
+    const ia=FAM_ORDER.indexOf(a), ib=FAM_ORDER.indexOf(b);
+    return (ia<0?99:ia)-(ib<0?99:ib);
+  });
+  let n=0;
+  fams.forEach(fm=>{
+    const grp=rts.filter(rt=>rt.fam===fm)
+      .sort((a,b)=>BANDS[rateBand(a.rate)].ord-BANDS[rateBand(b.rate)].ord);
+    h+='<div class="rfam">'+esc(FAMWHAT[fm]||fm)+'</div><div class="rgrid one">';
+    grp.forEach(rt=>{ h+=routeTile(rt,700+(n++),ROUTEWHEN[rt.id],null,o); });
+    h+='</div>';
+  });
+  return h;
 }
 
 /* ---- one kind of office: its own page ---- */
@@ -4919,8 +4980,13 @@ function pageKind(L,k){
     return h+'<div class="spin">Still resolving\u2026</div></div>';
   }
   if(!ents.length){
-    h+='<p class="pgblank">Not in the record for this place'+
-       (LEAFSUB?' under '+esc(LEAFSUB):'')+'.</p>';
+    h+='<p class="pgblank">No office of this kind is in the record for this place'+
+       (LEAFSUB?' under '+esc(LEAFSUB):'')+'. Coverage is deep for some countries and thin '+
+       'for others, and thinnest at the municipal level, so a blank here means the record '+
+       'holds no office of this kind rather than that the government has none. What it '+
+       'takes to reach one is the same wherever it sits, so every method is listed below, '+
+       'and each ends with a search that finds the office itself for this place.</p>';
+    h+=kindMethods(k, null);
     return h+'</div>';
   }
 
@@ -5375,6 +5441,10 @@ function render(){
   if(selfEl) selfEl.innerHTML=
     (SELFCH.length ? '<span class="msl">'+SELFCH.map(x=>x[0]).join(' \u00b7 ')+'</span>' : '')+
     (mr ? regBlockHTML(mr, STACK[mi]) : '');
+  /* nothing beside the name: the row goes to one column, so the
+     breadcrumb and the counts under it use the width of the box */
+  const trowEl=$('#mtitlerow');
+  if(trowEl) trowEl.classList.toggle('noself', !(selfEl && selfEl.innerHTML.trim()));
   /* the answers so far decide what the map still shows */
   recomputeScope();
   setPins();
