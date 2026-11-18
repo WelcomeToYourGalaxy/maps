@@ -67,12 +67,20 @@ def figs(s):
 
 def bodies(s):
     out = set()
-    for m in re.finditer(BW + r"(?:\s+(?:di|de|of|del|della|din|the))?(?:\s+[A-ZÀ-Ý][\w'-]+){0,3}",
+    for m in re.finditer(BW + r"(?:\s+(?:di|de|of|for|and|del|della|din|du|da|the))?(?:\s+[A-ZÀ-Ý][\w'-]+){0,3}",
                          str(s or '')):
         t = ' '.join(w for w in _n(m.group(0)).split() if len(w) > 2)
         if len(t.split()) >= 2:
             out.add(t)
     return out
+
+
+def rare_tokens(df, s, cap=3):
+    """Words that appear in very few records. The generalisation of the figure and
+    body rules: rarity is the signal, whatever kind of token it is. A pair of
+    records sharing "overflight" is a likelier duplicate than one sharing "police".
+    """
+    return {w for w in toks(s) if 0 < df.get(w, 0) <= cap}
 
 
 def locs(s):

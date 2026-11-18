@@ -4438,3 +4438,123 @@ penalty as the decision.
 cell's richest non-Romanian source **was already mined by rounds 9 and 10.** Sixteen queries across
 four Italian hosts gave three writable cases after duplicates. Filling the gap would have meant
 opening a new country family or breaking the Romania cap, so it stopped.
+
+## TWO NEW SCRIPTS, BOTH WRITTEN BECAUSE AGENTS MEASURED THE SAME COST TWICE
+
+### `findheld.py` — ask whether the map already holds a case, across EVERY cell
+
+    python3 findheld.py "ASP Trapani"
+    python3 findheld.py 421930
+    python3 findheld.py --url "comunicat.xhtml?id=12750"
+
+**The blind spot it closes.** Agents check duplicates against `cells/<inf>_<bk>.txt`, which lists
+only the cell they are writing in. **A record that duplicates theirs but was coded into a different
+cell is invisible to that check**, and two round-13 agents reported the same cost independently:
+
+> "The flagging has one structural blind spot that cost me more than the duplicates did: it
+> compares only within the cell. Grep `data/cases.json` for the company name before spending the
+> fetch; the cell summary file will not show it."
+
+> "The cell files did not catch these, because the held records sit in different cells from the
+> ones I would have assigned."
+
+Between them they lost eight finished or nearly finished records that way — a Tegano public-housing
+case held as `crime/legis` while being written as `crime/company`, Bari's AMTAB the same, the
+Iacolino prosecution, Euroscatola, Eurospin Sicilia, Schenker Italiana, a Durban passport syndicate
+and the Yemen overflight finding.
+
+Seen from the inside, the same blind spot has already produced a double-hold: **S/2024/914 annex 24,
+the Al-Habouni and Al-Katani networks using LAAF officer positions, is held twice — once as
+`crime/cabinet` and once as `crime/security`.**
+
+The script searches `n`, `d`, `rank`, `who`, `org_label`, `undone` and `inside` across all records
+and **all cells**, plus the removed records with their reasons, and matches a figure with or without
+separators. It falls back from a contiguous substring to all-words-present, because "Reggio Calabria
+public housing" must still find "Reggio Calabria's public housing allocations" — the possessive
+breaks a contiguous match, which is exactly how one of those eight was lost.
+
+**Run it on every company, body, named person and distinctive figure before spending a fetch.**
+
+### `dupsweep2.py` — sweep the whole map for the same event written twice
+
+Found **32 candidate pairs**, handed to a reader rather than resolved by script. It needed a fourth
+signal to find the pair I had already confirmed by hand — the Houthi Sana'a overflight finding
+written in round 11 and again in round 12, same cell, same year, same UN paragraph:
+
+**rare words.** The generalisation of everything the last two rounds taught: **rarity is the signal,
+whatever kind of token it is.** A figure in two records, a body named in two records, or the word
+"overflight" in two titles all carry information; "10,000" in 77 records, "ministry of defence" in
+17 and "police" in hundreds carry none. That pair shares four title words, no figure and no body —
+only the rare word.
+
+It also exposed a plain bug in the body matcher: **the connector list had no "for"**, so "Authority
+**for** Civil Aviation" never matched anything. Added `for`, `and`, `du`, `da`.
+
+The sweep deliberately does not decide. Of its 32 pairs, some are plainly the same event (a
+Fishrot/Samherji pair, two near-identical Guyanese police records) and some plainly are not: two
+Ultra Electronics records name **an airport authority and an ICT ministry**, which is two records
+under ruling 11, and two Jiwasraya records involve **different investment managers** routing through
+the same man. That distinction needs a reader, which is the round-9 lesson about corrections applied
+by script.
+
+## R13-A AND R13-D: SOURCE FINDINGS, INCLUDING ONE THAT REVERSES ROUND 12
+
+**`justice.gov`'s title API is strongly productive for `crime → security`, against round 12's
+reading of it.** 6 queries, 11 bodies read, **4 records — 0.67 per query.** The vein is the prison
+contraband family under ruling 3: officers paid by detainees and their outside facilitators. **The
+United States holds only 3 records in that cell**, so it is barely touched.
+**Avoid the sting cases:** two police families read were undercover agents posing as traffickers, so
+there is no outside party at all.
+
+**A new unmined vein for `crime → cabinet`: the US motor-vehicle agencies.** `title=DMV` alone (62
+titles) gave four geographically separate rings, `title=Motor Vehicle` three more — **about 1.4
+records per title query, the best rate measured in any cell**, and the map holds **no** US record in
+`crime → cabinet` at all. A state Department or Registry of Motor Vehicles administers a licensing
+programme, so it is `cabinet` under ruling 17. Measured empty beside it: `Food Stamp` (31 titles,
+retailers defrauding a programme from outside) and `Birth Certificate` (city-hall staff, `legis`).
+
+**`afp.gov.au/search?keys=` is the best single engine anyone has used**: 10 searches, 14 releases
+read, **7 records — 0.5 per release read.** AFP's own term for the shape is "trusted insider".
+**Note the path**: `/news-centre?keywords=` **silently ignores the keyword** and returns the latest
+releases — the same trap as `balkaninsight.com` and `theprint.in`, and the third instance this
+project has met. Several releases describe one event, so combine them before writing.
+
+**`www.corrieredellacalabria.it` fell to 0.17 records per query for R13-A**, against 0.75–0.8 in
+round 12 — and the reason is not the source. **The Italian prevention-measure decree family was
+mined by round 12 under titles that give no overlap signal.** Of seven named companies opened,
+three were already held. That is `findheld.py`'s exact use case.
+
+**Exhausted, now measured twice:** South Africa's Home Affairs vein for `crime → cabinet` (of five
+items read: one duplicate, one self-dealing, one update, two bare announcements — **drop it from
+future briefs**); the UN Libya annexes for both `crime` cells; `insightcrime.org` for
+`crime → court` and `crime → security` (two unrelated discovery hits, both already held, which is
+the clearest measure of how saturated that cell is).
+
+**`stylo24.it` is worth keeping purely for outcome checks** on Campanian cases — one query surfaced
+the Capuano acquittal.
+
+## THE CAPUANO ACQUITTAL, FOUND INDEPENDENTLY THREE TIMES
+
+Three agents in two rounds reached a draft record on the Ischia judge and withdrew it: the Rome
+Court of Appeal acquitted Alberto Capuano "perché il fatto non sussiste" on 9–10 January 2026,
+overturning a ten-year first-instance sentence, with the corruption charge already downgraded to
+trafficking in influence. **Each found it from the sources, none from the map.** Worth recording as
+a named closed case so a fourth agent does not spend the same effort.
+
+## DISCIPLINE WORTH RECORDING
+
+R13-A **withdrew a finished record on a figure check**: its Paraguay marijuana case turned out to be
+the held `crime/court` record on the Salto del Guaíra prosecutor — same InSight Crime piece, same
+nine arrests of 1 August 2018, same Flaviano Giménez, same 16 tonnes, with the police and customs
+limb already described in the held record's own text.
+
+Two cases filed as leads rather than written, each naming the family it belongs to rather than the
+case alone: **Revolut Bank UAB** (Milan, 16 November 2026, 41.9m euros moved by 24 investigated or
+convicted people, zero suspicious-transaction reports against 265 filed by other banks) — the shape
+of the **removed HSBC, Danske, ING, ABN AMRO and Western Union records**, crime groups as customers
+with nobody placed inside; and **Auckland Airport's Operation Santana**, where the organiser was
+himself a baggage handler, which is the removed Biman and Santa Marta ground.
+
+One class question left open rather than guessed: an **ICE deportation officer** convicted of taking
+about $75,000 for employment authorisation documents fits ruling 4, but **the payers are individual
+migrants**, so `inf: crime` could not be justified.

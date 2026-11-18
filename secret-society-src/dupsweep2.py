@@ -1,0 +1,88 @@
+#!/usr/bin/env python3
+"""Sweep the whole map for internal duplicates: the same event written twice.
+
+    python3 dupsweep2.py            list candidate pairs, highest score first
+
+WHY A MAP-WIDE SWEEP AND NOT A PER-CELL ONE. Agents check duplicates against
+`cells/<inf>_<bk>.txt`, which shows only the cell they are writing in. A record
+that duplicates theirs but was coded into a DIFFERENT cell is invisible to that
+check, and an agent put it plainly: "the cell files did not catch these, because
+the held records sit in different cells from the ones I would have assigned.
+Recommend future rounds grep data/cases.json directly."
+
+It found a real pair that way: the Houthi Sana'a overflight-fees finding was
+written in round 11 and again in round 12, same cell, same year, same UN
+paragraph, and neither a title check nor a figure check caught it because the
+titles share few tokens and the case carries no distinctive figure.
+
+The three signals are the ones flagleads.py uses, weighted the same way: a
+shared figure, a shared named body, and a shared single-case locator each count
+only in proportion to how rare they are across the map.
+"""
+import json, re, os, sys, collections, unicodedata
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+RARE_FIG, RARE_BODY = 2, 3
+sys.path.insert(0, HERE)
+from flagleads import toks, figs, bodies, locs, rare_tokens  # noqa: E402
+
+
+def main(thresh=0.95):
+    cs = json.load(open(os.path.join(HERE, 'data', 'cases.json'), encoding='utf-8'))
+    dff, dfb, dft = collections.Counter(), collections.Counter(), collections.Counter()
+    F = []
+    for i, c in enumerate(cs):
+        blob = c.get('n', '') + ' ' + (c.get('d') or '') + ' ' + str(c.get('undone') or '')
+        f = figs(blob)
+        b = bodies(str(c.get('rank', ''))) | bodies(c.get('n', '')) | bodies((c.get('d') or '')[:400])
+        l = locs(str(c.get('url', '')) + ' ' + str(c.get('cite', '')))
+        F.append((i, c, toks(c.get('n', '')), f, b, l))
+        for x in f: dff[x] += 1
+        for x in b: dfb[x] += 1
+        for x in toks(c.get('n', '')): dft[x] += 1
+
+    # only compare within a country and year window: a duplicate is the same event
+    by = collections.defaultdict(list)
+    for rec in F:
+        by[rec[1].get('c')].append(rec)
+    pairs = []
+    for c, group in by.items():
+        for a in range(len(group)):
+            for b2 in range(a + 1, len(group)):
+                i, ci, ti, fi, bi, li = group[a]
+                j, cj, tj_, fj, bj, lj = group[b2]
+                ya, yb = ci.get('y'), cj.get('y')
+                if isinstance(ya, int) and isinstance(yb, int) and abs(ya - yb) > 2:
+                    continue
+                s, why = 0.0, []
+                if li & lj:
+                    k = sorted(li & lj)[0]
+                    s += 1.0; why.append('same %s %s' % k)
+                ov = len(ti & tj_) / max(1, len(ti | tj_))
+                if ov > 0:
+                    s += ov; why.append('title overlap %.2f' % ov)
+                for v in (fi & fj):
+                    n = dff.get(v, 0)
+                    s += 0.6 if n <= RARE_FIG else (0.25 if n <= 8 else 0.05)
+                    why.append('figure %s (in %d)' % (v, n))
+                for v in (bi & bj):
+                    n = dfb.get(v, 0)
+                    if n <= RARE_BODY:
+                        s += 0.7; why.append('both name "%s" (in %d)' % (v, n))
+                shared_rare = rare_tokens(dft, ci.get('n', '')) & rare_tokens(dft, cj.get('n', ''))
+                for v in sorted(shared_rare)[:3]:
+                    s += 0.55; why.append('both titles use "%s" (in %d titles)' % (v, dft[v]))
+                if s >= thresh:
+                    pairs.append((s, i, j, '; '.join(why[:3])))
+    pairs.sort(reverse=True)
+    print('%d candidate duplicate pairs at score >= %.2f\n' % (len(pairs), thresh))
+    for s, i, j, why in pairs:
+        print('  score %.2f  %s' % (s, why))
+        print('    %d [%s/%s %s] %s' % (i, cs[i].get('inf'), cs[i].get('bk'), cs[i].get('y'), cs[i]['n'][:72]))
+        print('    %d [%s/%s %s] %s' % (j, cs[j].get('inf'), cs[j].get('bk'), cs[j].get('y'), cs[j]['n'][:72]))
+        print('    added: %s / %s\n' % (cs[i].get('added'), cs[j].get('added')))
+    return pairs
+
+
+if __name__ == '__main__':
+    main(float(sys.argv[1]) if len(sys.argv) > 1 else 0.95)
