@@ -625,11 +625,22 @@ backs up `base.html` first and prints each entry's word count.
 - **The Cochabamba loan condition on `water-handed-to-companies` still rests on an advocacy source**,
   as does the $600m debt-relief claim on the `cochabamba-water-war` case card. That is now the
   weakest thing on that card and no better source was found.
-- **The reclassification itself is not done.** Round 42 sorted the thirty-one; this round fixed their
-  facts. The six moves, four merges and sixteen retitles are still to do, and the structural question
-  is the owner's: `PATS` entries carry `computed`, `counts` and `case_results`, and these stories have
-  none, so either a documented pattern without a computed count belongs in `PATS` anyway or the page
-  needs a third category.
+- **The reclassification itself is not done.** Round 42 sorted the thirty-one; round 43 fixed their
+  facts. The six moves, four merges and sixteen retitles are round 44 and after.
+
+  **The structural question is settled, and it settled itself from the data: only one of the thirteen
+  `PATS` entries carries `computed`, and only one carries `counts`.** The fields all thirteen have are
+  `id`, `title`, `kind`, `years`, `summary`, `implications`, `countries` and `timeline`. So a
+  documented pattern with no computed count is already the norm, twelve times over, and rule 6
+  applies as written: a graduated entry goes into `PATS` with those universal fields, needs no
+  computed count, and the page needs no third category. **Nobody should invent a `counts` block to
+  fill a shape** — one entry has one because its round actually counted something.
+
+- **Twelve of the sixteen `overclaimed` verdicts are unchecked, and they must not be acted on yet.**
+  Round 42's checker tested four of them, and **three of those four narrower titles were mis-pitched**
+  — two conceding too much, one too little. A three-in-four error rate on the checked sample is the
+  reason the other twelve wait for a checking round rather than going straight to a retitle. Retitling
+  a card on an unchecked verdict would put sixteen new errors on the page to fix nineteen old ones.
 - Nothing procedural: **both the report and the check log exist**, the first round in four where
   every required document was delivered. The log arrived after the checked JSON rather than with it,
   so a merge step that waits for the log will wait a few minutes.
