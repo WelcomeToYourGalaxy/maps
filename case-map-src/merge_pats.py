@@ -37,9 +37,13 @@ snapshot = (copy.deepcopy(PA), copy.deepcopy(HY))
 for path in sys.argv[1:]:
     R = json.load(open(path, encoding="utf-8"))
 
+    top_check = R.get("check") or {}
     for p in R.get("pats_add") or []:
         pid = p.get("id")
-        ch = (p.get("check") or {}).get("verdict")
+        # a round may carry its check per object or in one top-level block, keyed by id.
+        # Reading only the first made this guard inert for round 44, which a checker caught.
+        ch = ((p.get("check") or {}).get("verdict")
+              or (top_check.get(pid) or {}).get("verdict"))
         if ch == "cut":
             refused.append((pid, "check verdict: cut")); continue
         if not pid or pid in Pix:
@@ -53,11 +57,14 @@ for path in sys.argv[1:]:
         p.pop("check", None)
         PA.append(p); Pix[pid] = p; added.append(pid)
         print("pats_add  %-34s countries=%d sources=%d%s" % (
-            pid[:34], len(p.get("countries") or []), len(p.get("sources") or []),
+            pid[:34], len(p.get("countries") or []),
+            len(p.get("sources") or []) + len(p.get("confirmed_by") or []),
             "  counts" if ("counts" in p or "computed" in p) else ""))
 
     for e in R.get("pats_edits") or []:
         pid = e.get("id")
+        if (top_check.get(pid) or {}).get("verdict") == "cut":
+            refused.append((pid, "check verdict: cut")); continue
         if pid not in Pix:
             refused.append((pid, "pats_edits: no such pattern")); continue
         rec = Pix[pid]
