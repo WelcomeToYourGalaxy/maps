@@ -1397,3 +1397,54 @@ The `exec` recode (186 records at 7.6 times the estimate, worth about 1,800 case
 research), `bk: intl` at 6.0 times needing the same question, the proportionate-draw layer
 proposed on 15 November, and the Italian art. 143 dissolutions (298 in the register against
 14 on the map, coding `bk: legis`, which is at target).
+
+## THE WRITEUP ORPHAN CHECK FOUND SEVEN LIVE FALSE ASSERTIONS (17 November 2026)
+
+The fault class found on 15 November — **a country writeup can go on describing a case the
+owner removed** — was not a one-off. Run properly after round 9, over the whole of
+`data/bts.json` rather than only the countries the round touched, it found **seven more**,
+all surviving from earlier rounds' removals:
+
+| country | what the writeup still asserted | the removed record behind it |
+|---|---|---|
+| Monaco | Lamine Diack convicted of selling doping cover-ups to Russian officials, named as "the clearest case" | `Lamine Diack — IAAF president convicted of selling cover-ups to Russia` |
+| Trinidad and Tobago | the whole Jack Warner/FIFA passage, plus "an international sports body" in the opening list | `FIFA vice-president Jack Warner sat in Trinidad's cabinet` |
+| Vatican City | the IOR/Banco Ambrosiano passage, $224 million to creditors, and that losses through the IOR "can fall outside the reach of ordinary courts" | `Vatican Bank controlled Banco Ambrosiano…` and `…Marcinkus shielded from Ambrosiano charges` |
+| Sao Tome and Principe | the Sovereign Military Order of Malta sentence | two removed Order of Malta records |
+| Suriname | Desi Bouterse's 1999 Dutch conviction for 450 kg of cocaine, and "for years it reached the presidency" | `Desi Bouterse — head of state, later President` |
+| Tanzania | the Kibaha leadership school "paid for by China's Communist Party" | `Nyerere Leadership School — CCP trains six ruling parties' cadres` |
+| Singapore | the whole foreign-interference paragraph, whose only concrete instance was a business-chamber leader at a united front body | `Philip Chan — Singapore's first 'politically significant person'` |
+
+Monaco and Suriname had to be rebuilt rather than trimmed: once the orphaned case went,
+the remaining material did not support the writeup's own shape.
+
+**An eighth fault of a different kind, worth its own check.** Vatican City's writeup cited
+"the Global Organized Crime Index scores officials acting for criminal interests at 7 out
+of 10" — and `data/conditions.json`, which holds those scores, **has no Vatican City row**.
+The figure had no source. It now says the index does not score the Vatican, on the model of
+Kosovo's writeup, which was checked and is sound. Those two were the only writeups citing a
+score for a country absent from that file.
+
+### The check that works, and the one that does not
+
+Two passes were tried. **The one that found every fault** compares, per country, the tokens
+that appear in that country's *removed* records against the tokens in its *live* ones: a
+proper noun present in the removed set and absent from the live set, which the writeup
+still uses, is an orphaned assertion. The broad pass — every capitalised phrase in every
+writeup checked against that country's records — returned 593 hits that were almost all
+demonyms and geography.
+
+**Run it over the whole writeup file after any removal, not only over the countries the
+round touched.** Round 9's own 51 removals produced **zero** orphans, which is the expected
+result because they were candidates killed in review before any writeup was written off
+them. All seven faults were older. A round that checks only its own countries finds
+nothing and leaves the map asserting seven cases its test rejects.
+
+### Writeups left stale after round 9
+
+49 countries gained cases; 15 were rewritten (the eleven largest gains — Italy, Libya,
+Central African Republic, Brazil, Haiti, Congo Dem. Rep., Ecuador, Yemen, South Sudan,
+Sudan, Mali — plus Albania, Honduras, Bangladesh and Bulgaria, where three cases is a fifth
+or more of what they hold). **34 remain stale but accurate, with no orphaned assertion.**
+Mexico and Indonesia are the ones to do first: not because three cases move much against
+bases of 71 and 110, but because they are the largest bases that have now drifted.
